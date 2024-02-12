@@ -17,6 +17,9 @@
 	var/ks1type = /obj/item/device/encryptionkey
 	var/ks2type = null
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/device/radio/headset/Initialize()
 	. = ..()
 	internal_channels.Cut()
@@ -78,16 +81,6 @@
 	origin_tech = list(TECH_ILLEGAL = 2)
 	syndie = 1
 	ks1type = /obj/item/device/encryptionkey/raider
-
-/obj/item/device/radio/headset/abductor
-	name = "alien headset"
-	desc = "An advanced alien headset designed to monitor communications of human space stations. Why does it have a microphone? No one knows."
-	origin_tech = list(TECH_ILLEGAL = 2)
-	icon = 'icons/obj/abductor.dmi'
-	icon_state = "abductor_headset"
-	item_state = "headset"
-	syndie = 1
-	var/team_number
 
 /obj/item/device/radio/headset/raider/Initialize()
 	. = ..()
@@ -305,7 +298,7 @@
 
 
 			for(var/ch_name in channels)
-				radio_controller.remove_object(src, radiochannels[ch_name])
+				SSradio.remove_object(src, GLOB.radio_channels[ch_name])
 				secure_radio_connections[ch_name] = null
 
 
@@ -344,7 +337,7 @@
 
 /obj/item/device/radio/headset/MouseDrop(obj/over_object)
 	var/mob/M = usr
-	if((!istype(over_object, /obj/screen)) && (src in M) && CanUseTopic(M))
+	if((!istype(over_object, /atom/movable/screen)) && (src in M) && CanUseTopic(M))
 		return attack_self(M)
 	return
 
@@ -388,13 +381,13 @@
 
 
 	for (var/ch_name in channels)
-		if(!radio_controller)
-			sleep(30) // Waiting for the radio_controller to be created.
-		if(!radio_controller)
+		if(!SSradio)
+			sleep(30) // Waiting for the SSradio to be created.
+		if(!SSradio)
 			src.SetName("broken radio headset")
 			return
 
-		secure_radio_connections[ch_name] = radio_controller.add_object(src, radiochannels[ch_name],  RADIO_CHAT)
+		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.radio_channels[ch_name],  RADIO_CHAT)
 
 	if(setDescription)
 		setupRadioDescription()

@@ -27,7 +27,7 @@
 		}
 	)
 
-	blacklisted_maps = list(/datum/map/polar)
+
 
 /datum/event/space_dust_base/get_mtth()
 	. = ..()

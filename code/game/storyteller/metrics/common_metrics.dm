@@ -85,7 +85,6 @@
 		if(MODE_DEATHSQUAD)    return 6
 		if(MODE_CHANGELING)    return 8
 		if(MODE_NINJA)         return 12
-		if(MODE_ABDUCTOR)      return 16
 		if(MODE_WIZARD)        return 16
 		if(MODE_MALFUNCTION)   return 24
 	return 0

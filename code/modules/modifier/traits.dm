@@ -153,10 +153,10 @@
 	desc = "You don't feel cold!"
 
 /datum/modifier/trait/cold_resist/on_applied()
-	holder.mutations.Add(MUTATION_COLD_RESISTANCE)
+	holder.add_mutation(MUTATION_COLD_RESISTANCE)
 
 /datum/modifier/trait/cold_resist/on_expire()
-	holder.mutations.Remove(MUTATION_COLD_RESISTANCE)
+	holder.remove_mutation(MUTATION_COLD_RESISTANCE)
 
 /datum/modifier/trait/noslip
 	name = "No Slip"

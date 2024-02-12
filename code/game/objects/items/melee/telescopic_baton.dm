@@ -12,6 +12,8 @@
 	mod_reach = 0.5
 	mod_handy = 1.0
 	var/on = FALSE
+	drop_sound = SFX_DROP_CROWBAR
+	pickup_sound = SFX_PICKUP_CROWBAR
 
 /obj/item/melee/telebaton/attack_self(mob/user as mob)
 	on = !on

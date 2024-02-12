@@ -45,7 +45,7 @@
 	var/broken = VENT_UNDAMAGED
 
 	var/frequency = 1439
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 	var/radio_filter_out
 	var/radio_filter_in
@@ -77,7 +77,7 @@
 	icon = null
 
 /obj/machinery/atmospherics/unary/vent_pump/Destroy()
-	unregister_radio(src, frequency)
+	SSradio.remove_object(src, frequency)
 	if(initial_loc)
 		initial_loc.air_vent_info -= id_tag
 		initial_loc.air_vent_names -= id_tag
@@ -234,11 +234,7 @@
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
-	signal.source = src
-
-	signal.data = list(
+	var/list/data = list(
 		"area" = src.area_uid,
 		"tag" = src.id_tag,
 		"device" = "AVP",
@@ -257,8 +253,10 @@
 		var/new_name = "[initial_loc.name] Vent Pump #[initial_loc.air_vent_names.len+1]"
 		initial_loc.air_vent_names[id_tag] = new_name
 		src.SetName(new_name)
-	initial_loc.air_vent_info[id_tag] = signal.data
 
+	initial_loc.air_vent_info[id_tag] = data
+
+	var/datum/signal/signal = new(data)
 	radio_connection.post_signal(src, signal, radio_filter_out)
 
 	return 1
@@ -275,7 +273,7 @@
 	radio_filter_in = frequency==1439?(RADIO_FROM_AIRALARM):null
 	radio_filter_out = frequency==1439?(RADIO_TO_AIRALARM):null
 	if(frequency)
-		radio_connection = register_radio(src, frequency, frequency, radio_filter_in)
+		radio_connection = SSradio.add_object(src, frequency, radio_filter_in)
 		src.broadcast_status()
 
 /obj/machinery/atmospherics/unary/vent_pump/receive_signal(datum/signal/signal)

@@ -237,6 +237,7 @@ macro "borghotkeymode"
 		name = "ALT+UP"
 		command = ".winset :map.right-click=false"
 
+
 macro "macro"
 	elem
 		name = "Tab"
@@ -424,6 +425,7 @@ macro "macro"
 	elem
 		name = "ALT+UP"
 		command = ".winset :map.right-click=false"
+
 
 macro "hotkeymode"
 	elem
@@ -684,6 +686,7 @@ macro "hotkeymode"
 	elem
 		name = "ALT+UP"
 		command = ".winset :map.right-click=false"
+
 
 macro "borgmacro"
 	elem
@@ -967,128 +970,6 @@ menu "menu"
 		category = "&Help"
 		saved-params = "is-checked"
 
-window "chemdispenser"
-	elem "chemdispenser"
-		type = MAIN
-		pos = 281,0
-		size = 340x480
-		anchor1 = none
-		anchor2 = none
-		is-visible = false
-		saved-params = "pos;size;is-minimized;is-maximized"
-		title = "Chem Dispenser"
-		statusbar = false
-	elem "energy"
-		type = LABEL
-		pos = 8,24
-		size = 56x16
-		anchor1 = none
-		anchor2 = none
-		saved-params = ""
-		text = "Energy: 25"
-	elem "eject"
-		type = BUTTON
-		pos = 264,4
-		size = 72x20
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "[Insert beaker]"
-		command = "skincmd \"chemdispenser;eject\""
-	elem "amountc"
-		type = BUTTON
-		pos = 208,4
-		size = 48x20
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "[Other]"
-		command = "skincmd \"chemdispenser;amountc\""
-	elem "amount3"
-		type = BUTTON
-		pos = 176,4
-		size = 24x20
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "[30]"
-		command = "skincmd \"chemdispenser;amount30\""
-	elem "amount2"
-		type = BUTTON
-		pos = 144,4
-		size = 24x20
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "[20]"
-		command = "skincmd \"chemdispenser;amount20\""
-	elem "amount1"
-		type = BUTTON
-		pos = 112,4
-		size = 24x20
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "[10]"
-		command = "skincmd \"chemdispenser;amount10\""
-	elem "amount"
-		type = LABEL
-		pos = 4,4
-		size = 100x20
-		anchor1 = none
-		anchor2 = none
-		font-size = 12
-		saved-params = ""
-		text = "Amount: 30"
-	elem "child1"
-		type = CHILD
-		pos = 0,40
-		size = 340x440
-		anchor1 = none
-		anchor2 = none
-		saved-params = "splitter"
-		left = "chemdispenser_reagents"
-		is-vert = false
-
-window "chemdispenser_reagents"
-	elem "chemdispenser_reagents"
-		type = MAIN
-		pos = 281,0
-		size = 340x448
-		anchor1 = none
-		anchor2 = none
-		saved-params = "pos;size;is-minimized;is-maximized"
-		titlebar = false
-		statusbar = false
-		can-close = false
-		can-minimize = false
-		can-resize = false
-		is-pane = true
-		can-scroll = vertical
-	elem "template_dispense"
-		type = BUTTON
-		pos = 256,8
-		size = 64x32
-		anchor1 = none
-		anchor2 = none
-		is-visible = false
-		saved-params = "is-checked"
-		text = "Dispense"
-		image = 'icons\\dispensebutton_bg.png'
-		command = ""
-		is-flat = true
-	elem "template_name"
-		type = LABEL
-		pos = 18,8
-		size = 230x32
-		anchor1 = none
-		anchor2 = none
-		font-size = 15
-		is-visible = false
-		saved-params = ""
-		text = "Chloral Hydrate"
-		image = 'icons\\reagentname_bg.png'
-		image-mode = stretch
 
 window "mainwindow"
 	elem "mainwindow"
@@ -1152,6 +1033,7 @@ window "mainwindow"
 		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
 		button-type = pushbox
 
+
 window "mapwindow"
 	elem "mapwindow"
 		type = MAIN
@@ -1178,7 +1060,8 @@ window "mapwindow"
 		saved-params = "icon-size;zoom-mode"
 		on-show = ".winset\"mainwindow.mainvsplit.left=mapwindow\""
 		on-hide = ".winset\"mainwindow.mainvsplit.left=\""
-		style=".center { text-align: center; } .maptext { font-family: 'Small Fonts'; font-size: 7px; -dm-text-outline: 1px black; color: white; line-height: 1.1; } .maptext i {font-style: normal; font-size: 6px;} .small { font-size: 6px; } .big { font-size: 8px; } .reallybig { font-size: 8px; } .extremelybig { font-size: 8px; } .clown { color: #FF69Bf;} .tajaran {color: #803B56;} .skrell {color: #00CED1;} .solcom {color: #22228B;} .com_srus {color: #7c4848;} .zombie {color: #ff0000;} .soghun {color: #228B22;} .vox {color: #AA00AA;} .diona {color: #804000; font-weight: bold;} .trinary {color: #727272;} .metroid {color: #0077AA;} .abductor {color: #800080; font-style: italic;} .his_grace { color: #15D512; } .hypnophrase { color: #0d0d0d; font-weight: bold; } .yell { font-weight: bold; }"
+		style=".center { text-align: center; } .maptext { font-family: 'Small Fonts'; font-size: 7px; -dm-text-outline: 1px black; color: white; line-height: 1.1; } .maptext i {font-style: normal; font-size: 6px;} .small { font-size: 6px; } .big { font-size: 8px; } .reallybig { font-size: 8px; } .extremelybig { font-size: 8px; } .clown { color: #FF69Bf;} .tajaran {color: #803B56;} .skrell {color: #00CED1;} .solcom {color: #22228B;} .com_srus {color: #7c4848;} .zombie {color: #ff0000;} .soghun {color: #228B22;} .vox {color: #AA00AA;} .diona {color: #804000; font-weight: bold;} .trinary {color: #727272;} .metroid {color: #0077AA;} .hypnophrase { color: #0d0d0d; font-weight: bold; } .yell { font-weight: bold; }"
+
 
 window "outputwindow"
 	elem "outputwindow"
@@ -1249,6 +1132,7 @@ window "outputwindow"
 		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle_alt.is-checked=false input_alt.focus=true : mainwindow.macro=hotkeymode hotkey_toggle_alt.is-checked=true mapwindow.map.focus=true\""
 		button-type = pushbox
 
+
 window "browserwindow"
 	elem "browserwindow"
 		type = MAIN
@@ -1268,6 +1152,7 @@ window "browserwindow"
 		background-color = #ffffff
 		is-default = true
 		saved-params = ""
+
 
 window "infowindow"
 	elem "infowindow"
@@ -1365,6 +1250,7 @@ window "infowindow"
 		command = "Changelog"
 		group = "rpanemode"
 
+
 window "saywindow"
 	elem "saywindow"
 		type = MAIN
@@ -1406,55 +1292,6 @@ window "saywindow"
 		on-focus = ".add_speech_bubble 1"
 		on-blur = ".remove_speech_bubble"
 
-window "text_editor"
-	elem "text_editor"
-		type = MAIN
-		pos = 281,0
-		size = 360x488
-		anchor1 = none
-		anchor2 = none
-		is-visible = false
-		border = sunken
-		saved-params = "pos;size;is-minimized;is-maximized"
-		title = "Text Editor"
-		can-minimize = false
-		can-resize = false
-	elem "exit"
-		type = BUTTON
-		pos = 248,456
-		size = 104x24
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "Exit without saving"
-		command = ""
-	elem "save"
-		type = BUTTON
-		pos = 128,456
-		size = 104x24
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "Save"
-		command = ""
-	elem "saveexit"
-		type = BUTTON
-		pos = 8,456
-		size = 104x24
-		anchor1 = none
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "Save + Exit"
-		command = ""
-	elem "textedit"
-		type = INPUT
-		pos = 0,0
-		size = 360x448
-		anchor1 = none
-		anchor2 = none
-		border = line
-		saved-params = ""
-		multi-line = true
 
 window "statwindow"
 	elem "statwindow"

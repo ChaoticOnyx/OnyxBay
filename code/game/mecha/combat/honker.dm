@@ -110,7 +110,7 @@
 	output += "</div>"
 	return output
 
-/obj/mecha/combat/honker/mechstep(direction)
+/obj/mecha/combat/honker/mechstep(direction, old_dir)
 	var/result = step(src, direction)
 	if(result)
 		if(!squeak)
@@ -118,6 +118,8 @@
 			squeak = 1
 		else
 			squeak = 0
+	if(strafe)
+		set_dir(old_dir)
 	return result
 
 /obj/mecha/combat/honker/Topic(href, href_list)

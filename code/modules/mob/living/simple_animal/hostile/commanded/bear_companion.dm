@@ -105,9 +105,8 @@
 	update_icon()
 	visible_message("\The [src] starts to dance!.")
 	var/datum/gender/G = gender_datums[gender]
-	var/decl/emote/human/dance/dance_emote = new /decl/emote/human/dance
 	spawn(0)
-		dance_emote.do_emote(src)
+		emote("dance")
 	for(var/i in 1 to 10)
 		if(stance != COMMANDED_MISC || incapacitated()) //something has stopped this ride.
 			return
@@ -127,7 +126,6 @@
 		visible_message("\The [src] [message]")
 		sleep(30)
 
-	dance_emote.dancing.Remove(weakref(src))
 	set_dir(SOUTH)
 	visible_message("\The [src] bows, finished with [G.his] dance.")
 	stance = COMMANDED_STOP

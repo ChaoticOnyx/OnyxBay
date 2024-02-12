@@ -233,3 +233,8 @@
 	var/turf/T = get_turf(src)
 	if(T)
 		T.update_turf_height()
+
+/obj/proc/change_pull_slowdown(new_slowdown)
+	pull_slowdown = new_slowdown
+	if(pulledby)
+		pulledby.update_pull_slowdown()

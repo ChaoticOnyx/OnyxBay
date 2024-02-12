@@ -87,7 +87,7 @@
 		signal.data["code"] = docking_codes
 		receive_signal(signal)
 
-/datum/computer/file/embedded_program/docking/receive_signal(datum/signal/signal, receive_method, receive_param)
+/datum/computer/file/embedded_program/docking/receive_signal(datum/signal/signal, receive_param)
 	var/receive_tag = signal.data["tag"]		//for docking signals, this is the sender id
 	var/command = signal.data["command"]
 	var/recipient = signal.data["recipient"]	//the intended recipient of the docking signal
@@ -277,7 +277,7 @@
 	return undocked()
 
 /datum/computer/file/embedded_program/docking/proc/send_docking_command(recipient, command)
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.data["tag"] = id_tag
 	signal.data["command"] = command
 	signal.data["recipient"] = recipient
@@ -285,7 +285,7 @@
 	post_signal(signal)
 
 /datum/computer/file/embedded_program/docking/proc/broadcast_docking_status()
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.data["tag"] = id_tag
 	signal.data["dock_status"] = get_docking_status()
 	post_signal(signal)

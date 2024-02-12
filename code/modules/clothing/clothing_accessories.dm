@@ -46,7 +46,7 @@
 	if(usr.incapacitated())
 		return
 
-	if(!usr.drop(src))
+	if(!usr.drop(src, changing_slots = TRUE))
 		return
 
 	switch(over_object.name)
@@ -65,6 +65,9 @@
 	slowdown_accessory = 0
 	for(var/obj/item/clothing/accessory/A in accessories)
 		slowdown_accessory += A.slowdown
+	if(ismob(loc))
+		var/mob/M = loc
+		M.update_equipment_slowdown()
 
 /**
  *  Attach accessory A to src

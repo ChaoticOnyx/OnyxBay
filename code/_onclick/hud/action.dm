@@ -23,7 +23,7 @@
 	var/check_flags = 0
 	var/processing = 0
 	var/active = 0
-	var/obj/screen/movable/action_button/button = null
+	var/atom/movable/screen/movable/action_button/button = null
 	var/button_icon = 'icons/hud/actions.dmi'
 	var/button_icon_state = "default"
 	var/background_icon_state = "bg_default"
@@ -126,11 +126,11 @@
 /datum/action/proc/UpdateName()
 	return name
 
-/obj/screen/movable/action_button
+/atom/movable/screen/movable/action_button
 	var/datum/action/owner
 	screen_loc = "WEST,NORTH"
 
-/obj/screen/movable/action_button/Click(location,control,params)
+/atom/movable/screen/movable/action_button/Click(location,control,params)
 	var/list/modifiers = params2list(params)
 	if(modifiers["shift"])
 		moved = 0
@@ -140,7 +140,7 @@
 	owner.Trigger()
 	return 1
 
-/obj/screen/movable/action_button/proc/UpdateIcon()
+/atom/movable/screen/movable/action_button/proc/UpdateIcon()
 	if(!owner)
 		return
 	icon = owner.button_icon
@@ -166,13 +166,13 @@
 		color = rgb(255,255,255,255)
 
 //Hide/Show Action Buttons ... Button
-/obj/screen/movable/action_button/hide_toggle
+/atom/movable/screen/movable/action_button/hide_toggle
 	name = "Hide Buttons"
 	icon = 'icons/hud/actions.dmi'
 	icon_state = "bg_default"
 	var/hidden = 0
 
-/obj/screen/movable/action_button/hide_toggle/Click()
+/atom/movable/screen/movable/action_button/hide_toggle/Click()
 	usr.hud_used.action_buttons_hidden = !usr.hud_used.action_buttons_hidden
 
 	hidden = usr.hud_used.action_buttons_hidden
@@ -184,7 +184,7 @@
 	usr.update_action_buttons()
 
 
-/obj/screen/movable/action_button/hide_toggle/proc/InitialiseIcon(mob/living/user)
+/atom/movable/screen/movable/action_button/hide_toggle/proc/InitialiseIcon(mob/living/user)
 	if(isalien(user))
 		icon_state = "bg_alien"
 	else
@@ -192,7 +192,7 @@
 	UpdateIcon()
 	return
 
-/obj/screen/movable/action_button/hide_toggle/UpdateIcon()
+/atom/movable/screen/movable/action_button/hide_toggle/UpdateIcon()
 	ClearOverlays()
 	var/image/img = image(icon,src,hidden?"show":"hide")
 	AddOverlays(img)
@@ -215,7 +215,7 @@
 	var/coord_row_offset = AB_NORTH_OFFSET
 	return "WEST[coord_col]:[coord_col_offset],NORTH[coord_row]:[coord_row_offset]"
 
-/datum/hud/proc/SetButtonCoords(obj/screen/button,number)
+/datum/hud/proc/SetButtonCoords(atom/movable/screen/button,number)
 	var/row = round((number - 1) / AB_MAX_COLUMNS)
 	var/col = ((number - 1) % (AB_MAX_COLUMNS)) + 1
 	button.SetTransform(
@@ -319,7 +319,7 @@
 /datum/action/cooldown/Activate(atom/target)
 	return
 
-/datum/action/cooldown/proc/UpdateButton(/obj/screen/movable/action_button/button)
+/datum/action/cooldown/proc/UpdateButton(/atom/movable/screen/movable/action_button/button)
 	if(!button)
 		return
 	var/time_left = max(next_use_time - world.time, 0)

@@ -1,4 +1,4 @@
-var/obj/screen/ai
+var/atom/movable/screen/ai
 
 /mob/living/silicon/ai
 	hud_type = /datum/hud/ai
@@ -7,11 +7,11 @@ var/obj/screen/ai
 
 	static_inventory = list()
 
-	var/obj/screen/using
+	var/atom/movable/screen/using
 
 //AI core
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("AI core")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -21,7 +21,7 @@ var/obj/screen/ai
 
 //AI Core Display
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Set AI Core Display")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -31,7 +31,7 @@ var/obj/screen/ai
 
 //AI Status
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("AI Status")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -41,7 +41,7 @@ var/obj/screen/ai
 
 //Change Hologram
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Change Hologram")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -51,7 +51,7 @@ var/obj/screen/ai
 
 //Camera list
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Show Camera List")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -61,7 +61,7 @@ var/obj/screen/ai
 
 //Track
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Track With Camera")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -72,7 +72,7 @@ var/obj/screen/ai
 
 //Camera light
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Toggle Camera Light")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -83,7 +83,7 @@ var/obj/screen/ai
 //Crew Manifest
 
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Crew Manifest")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -93,7 +93,7 @@ var/obj/screen/ai
 
 //Announcement
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Make Announcement")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -103,7 +103,7 @@ var/obj/screen/ai
 
 //Shuttle
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Call Emergency Shuttle")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -113,7 +113,7 @@ var/obj/screen/ai
 
 //Laws
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("State Laws")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -123,7 +123,7 @@ var/obj/screen/ai
 
 //Medical/Security sensors
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Sensor Augmentation")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -133,7 +133,7 @@ var/obj/screen/ai
 
 //Take Image
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Take Image")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -143,7 +143,7 @@ var/obj/screen/ai
 
 //View Images
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("View Images")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -153,7 +153,7 @@ var/obj/screen/ai
 
 //Delete Image
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Delete Image")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -163,7 +163,7 @@ var/obj/screen/ai
 
 //Store Camera Location
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Store Camera Location")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -173,7 +173,7 @@ var/obj/screen/ai
 
 //Goto Camera Location
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Goto Camera Location")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -183,7 +183,7 @@ var/obj/screen/ai
 
 //Delete Camera Location
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Delete Camera Location")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -193,7 +193,7 @@ var/obj/screen/ai
 
 //PDA Ringer
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Toggle Ringer")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -203,7 +203,7 @@ var/obj/screen/ai
 
 //PDA Send Message
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Send Message")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -213,7 +213,7 @@ var/obj/screen/ai
 
 //PDA Log
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Show Message Log")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -223,7 +223,7 @@ var/obj/screen/ai
 
 //PDA Toggle Sender/Receiver
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Toggle Sender/Receiver")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -233,7 +233,7 @@ var/obj/screen/ai
 
 //Multitool Mode
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Toggle Multitool Mode")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -243,7 +243,7 @@ var/obj/screen/ai
 
 //Shutdown
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Toggle Shutdown")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -253,7 +253,7 @@ var/obj/screen/ai
 
 //Power Override
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Toggle Power Override")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
@@ -263,7 +263,7 @@ var/obj/screen/ai
 
 //Radio Settings
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("Radio Settings")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_ai.dmi'

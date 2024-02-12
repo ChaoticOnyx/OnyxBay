@@ -39,12 +39,12 @@
 
 //Hud stuff
 
-	var/obj/screen/inv1 = null
-	var/obj/screen/inv2 = null
-	var/obj/screen/inv3 = null
+	var/atom/movable/screen/inv1 = null
+	var/atom/movable/screen/inv2 = null
+	var/atom/movable/screen/inv3 = null
 
 	var/shown_robot_modules = 0 //Used to determine whether they have the module menu shown or not
-	var/obj/screen/robot_modules_background
+	var/atom/movable/screen/robot_modules_background
 
 //3 Modules can be activated at any one time.
 	var/obj/item/robot_module/module = null
@@ -1123,7 +1123,7 @@
 
 	var/list/icontypes
 	for(var/hull_key as anything in module_hulls)
-		LAZYADDASSOC(icontypes, hull_key, image(module_hulls[hull_key].icon, module_hulls[hull_key].icon_state))
+		LAZYSET(icontypes, hull_key, image(module_hulls[hull_key].icon, module_hulls[hull_key].icon_state))
 
 	var/radius = 32 * (1 + 0.05 * clamp(length(icontypes), 0, 8))
 	var/new_icontype = show_radial_menu(src, src, icontypes, radius = radius)

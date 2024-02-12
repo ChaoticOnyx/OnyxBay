@@ -6,9 +6,11 @@
 	desc = "It's an anatomical model of a human skeletal system made of plaster."
 	var/list/swag = list()
 	var/next_rattle_time
+	var/mob/living/carbon/human/dummy/mannequin/mannequin
 
-/obj/structure/skele_stand/New()
-	..()
+/obj/structure/skele_stand/Initialize()
+	. = ..()
+	mannequin = new()
 	gender = pick(MALE, FEMALE)
 
 /obj/structure/skele_stand/proc/rattle_bones(mob/user, atom/thingy)
@@ -76,10 +78,12 @@
 	for(var/slot in swag)
 		var/obj/item/I = swag[slot]
 		I.forceMove(loc)
-	. = ..()
+
+	QDEL_NULL(mannequin)
+	return ..()
 
 /obj/structure/skele_stand/on_update_icon()
 	ClearOverlays()
 	for(var/slot in swag)
 		var/obj/item/I = swag[slot]
-		AddOverlays(I.get_mob_overlay(null, slot))
+		AddOverlays(I.get_mob_overlay(mannequin, slot))

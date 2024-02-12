@@ -1,3 +1,9 @@
+#define PICKUP_SOUND_VOLUME_MIN 20
+#define PICKUP_SOUND_VOLUME_MAX 60
+#define DROP_SOUND_VOLUME_MIN 20
+#define DROP_SOUND_VOLUME_MAX 70
+#define THROW_SOUND_VOLUME 90
+
 //Sound environment defines. Reverb preset for sounds played in an area, see sound datum reference for more.
 #define GENERIC 0
 #define PADDED_CELL 1
@@ -114,14 +120,6 @@
 #define SFX_AMBIENT_MORGUE              "ambient_morgue"
 #define SFX_AMBIENT_JUNGLE              "ambient_jungle"
 
-// AMBIENT WEATHER
-#define SFX_WEATHER_OUT_NORMAL          "weather_out_normal"
-#define SFX_WEATHER_IN_NORMAL           "weather_in_normal"
-#define SFX_WEATHER_OUT_STORM_INCOMING  "weather_out_storm_incoming"
-#define SFX_WEATHER_IN_STORM_INCOMING   "weather_in_storm_incoming"
-#define SFX_WEATHER_OUT_STORM           "weather_out_storm"
-#define SFX_WEATHER_IN_STORM            "weather_in_storm"
-
 // AMBIENT MUSIC
 #define SFX_AMBIENT_MUSIC_NORMAL       "ambient_music_normal"
 #define SFX_AMBIENT_MUSIC_MYSTIC       "ambient_music_mystic"
@@ -151,7 +149,122 @@
 #define SFX_PULL_WOOD               "pull_wood"
 
 // PICKUP
+#define SFX_PICKUP_GENERIC          "pickup_generic"
+#define SFX_PICKUP_ACCESSORY        "pickup_accessory"
+#define SFX_PICKUP_AMMOBOX          "pickup_ammobox"
+#define SFX_PICKUP_AXE              "pickup_axe"
+#define SFX_PICKUP_BACKPACK         "pickup_backpack"
+#define SFX_PICKUP_BALL             "pickup_ball"
+#define SFX_PICKUP_BOOK             "pickup_book"
+#define SFX_PICKUP_BOOTS            "pickup_boots"
 #define SFX_PICKUP_BOTTLE           "pickup_bottle"
+#define SFX_PICKUP_GLASSBOTTLE      "pickup_glassbottle"
+#define SFX_PICKUP_CARD             "pickup_card"
+#define SFX_PICKUP_CARDBOARD        "pickup_cardboard"
+#define SFX_PICKUP_CLOTH            "pickup_cloth"
+#define SFX_PICKUP_COMPONENT        "pickup_component"
+#define SFX_PICKUP_CROWBAR          "pickup_crowbar"
+#define SFX_PICKUP_DEVICE           "pickup_device"
+#define SFX_PICKUP_DISK             "pickup_disk"
+#define SFX_PICKUP_DRINKGLASS       "pickup_drinkglass"
+#define SFX_PICKUP_FLESH            "pickup_flesh"
+#define SFX_PICKUP_FOOD             "pickup_food"
+#define SFX_PICKUP_GASCAN           "pickup_gascan"
+#define SFX_PICKUP_GLASS            "pickup_glass"
+#define SFX_PICKUP_GLASSSMALL       "pickup_glasssmall"
+#define SFX_PICKUP_GLOVES           "pickup_gloves"
+#define SFX_PICKUP_GUN              "pickup_gun"
+#define SFX_PICKUP_HAT              "pickup_hat"
+#define SFX_PICKUP_HELMET           "pickup_helmet"
+#define SFX_PICKUP_HERB             "pickup_herb"
+#define SFX_PICKUP_KNIFE            "pickup_knife"
+#define SFX_PICKUP_LEATHER          "pickup_leather"
+#define SFX_PICKUP_MATCHBOX         "pickup_matchbox"
+#define SFX_PICKUP_METALPOT         "pickup_metalpot"
+#define SFX_PICKUP_METALWEAPON      "pickup_metalweapon"
+#define SFX_PICKUP_MULTITOOL        "pickup_multitool"
+#define SFX_PICKUP_PAPER            "pickup_paper"
+#define SFX_PICKUP_PAPERCUP         "pickup_papercup"
+#define SFX_PICKUP_PILLBOTTLE       "pickup_pillbottle"
+#define SFX_PICKUP_PLUSHIE          "pickup_plushie"
+#define SFX_PICKUP_RING             "pickup_ring"
+#define SFX_PICKUP_RUBBER           "pickup_rubber"
+#define SFX_PICKUP_SCREWDRIVER      "pickup_screwdriver"
+#define SFX_PICKUP_SHEL              "pickup_shelldrop"
+#define SFX_PICKUP_SHOES            "pickup_shoes"
+#define SFX_PICKUP_SHOVEL           "pickup_shovel"
+#define SFX_PICKUP_SODACAN          "pickup_sodacan"
+#define SFX_PICKUP_SWORD            "pickup_sword"
+#define SFX_PICKUP_TOOLBELT         "pickup_toolbelt"
+#define SFX_PICKUP_TOOLBOX          "pickup_toolbox"
+#define SFX_PICKUP_WELDINGTOOL      "pickup_weldingtool"
+#define SFX_PICKUP_WIRECUTTER       "pickup_wirecutter"
+#define SFX_PICKUP_WOODEN           "pickup_wooden"
+#define SFX_PICKUP_WRAPPER          "pickup_wrapper"
+#define SFX_PICKUP_WRENCH           "pickup_wrench"
+
+// DROP
+#define SFX_DROP_GENERIC            "drop_generic"
+#define SFX_DROP_ACCESSORY          "drop_accessory"
+#define SFX_DROP_AMMOBOX            "drop_ammobox"
+#define SFX_DROP_AXE                "drop_axe"
+#define SFX_DROP_BACKPACK           "drop_backpack"
+#define SFX_DROP_BALL               "drop_ball"
+#define SFX_DROP_BOOK               "drop_book"
+#define SFX_DROP_BOOTS              "drop_boots"
+#define SFX_DROP_BOTTLE             "drop_bottle"
+#define SFX_DROP_GLASSBOTTLE        "drop_glassbottle"
+#define SFX_DROP_CARD               "drop_card"
+#define SFX_DROP_CARDBOARD          "drop_cardboard"
+#define SFX_DROP_CLOTH              "drop_cloth"
+#define SFX_DROP_COMPONENT          "drop_component"
+#define SFX_DROP_CROWBAR            "drop_crowbar"
+#define SFX_DROP_DEVICE             "drop_device"
+#define SFX_DROP_DISK               "drop_disk"
+#define SFX_DROP_DRINKGLASS         "drop_drinkglass"
+#define SFX_DROP_FLESH              "drop_flesh"
+#define SFX_DROP_FOOD               "drop_food"
+#define SFX_DROP_GASCAN             "drop_gascan"
+#define SFX_DROP_GLASS              "drop_glass"
+#define SFX_DROP_GLASSSMALL         "drop_glasssmall"
+#define SFX_DROP_GLOVES             "drop_gloves"
+#define SFX_DROP_GUN                "drop_gun"
+#define SFX_DROP_HAT                "drop_hat"
+#define SFX_DROP_HELMET             "drop_helmet"
+#define SFX_DROP_HERB               "drop_herb"
+#define SFX_DROP_KNIFE              "drop_knife"
+#define SFX_DROP_LEATHER            "drop_leather"
+#define SFX_DROP_MATCHBOX           "drop_matchbox"
+#define SFX_DROP_METALPOT           "drop_metalpot"
+#define SFX_DROP_METALWEAPON        "drop_metalweapon"
+#define SFX_DROP_MULTITOOL          "drop_multitool"
+#define SFX_DROP_PAPER              "drop_paper"
+#define SFX_DROP_PAPERCUP           "drop_papercup"
+#define SFX_DROP_PILLBOTTLE         "drop_pillbottle"
+#define SFX_DROP_PLUSHIE            "drop_plushie"
+#define SFX_DROP_RING               "drop_ring"
+#define SFX_DROP_RUBBER             "drop_rubber"
+#define SFX_DROP_SCREWDRIVER        "drop_screwdriver"
+#define SFX_DROP_SHELL              "drop_shelldrop"
+#define SFX_DROP_SHOES              "drop_shoes"
+#define SFX_DROP_SHOVEL             "drop_shovel"
+#define SFX_DROP_SODACAN            "drop_sodacan"
+#define SFX_DROP_SWORD              "drop_sword"
+#define SFX_DROP_TOOLBELT           "drop_toolbelt"
+#define SFX_DROP_TOOLBOX            "drop_toolbox"
+#define SFX_DROP_WELDINGTOOL        "drop_weldingtool"
+#define SFX_DROP_WIRECUTTER         "drop_wirecutter"
+#define SFX_DROP_WOODEN             "drop_wooden"
+#define SFX_DROP_WRAPPER            "drop_wrapper"
+#define SFX_DROP_WRENCH             "drop_wrench"
+
+// HOLSTER & SHEATH
+#define SFX_HOLSTERIN               "holster_in"
+#define SFX_HOLSTEROUT              "holster_out"
+#define SFX_SHEATHIN                "sheath_in"
+#define SFX_SHEATHOUT               "sheath_out"
+#define SFX_TACHOLSTERIN            "tacholster_in"
+#define SFX_TACHOLSTEROUT           "tacholster_out"
 
 // DRINK & EAT
 #define SFX_DRINK                   "drink"
@@ -171,6 +284,11 @@
 #define SFX_SPARK                   "spark"
 #define SFX_SPARK_MEDIUM            "spark_medium"
 #define SFX_SPARK_HEAVY             "spark_heavy"
+
+// TURRETS
+#define SFX_TURRET_DEPLOY           "turret_deploy"
+#define SFX_TURRET_RETRACT          "turret_retract"
+#define SFX_TURRET_ROTATE           "turret_rotate"
 
 // EXPLOSION
 #define SFX_EXPLOSION               "explosion"
@@ -214,6 +332,7 @@
 #define SFX_RADIO                   "radio"
 #define SFX_THROWING                "throwing"
 #define SFX_DISPOSAL                "disposal"
+#define SFX_OINK                    "oink"
 
 // FOOTSTEPS
 #define SFX_DISTANT_MOVEMENT        "distant_movement"
@@ -228,5 +347,12 @@
 #define SFX_FOOTSTEP_BLANK          "footstep_blank"
 #define SFX_FOOTSTEP_ROBOT_LEGS     "footstep_robot_legs"
 #define SFX_FOOTSTEP_ROBOT_SPIDER   "footstep_robot_spider"
+#define SFX_FOOTSTEP_STAIRS         "footstep_stairs"
+
+// VENDING
+#define SFX_VENDING_CANS            "vending_cans"
+#define SFX_VENDING_COFFEE          "vending_coffee"
+#define SFX_VENDING_DROP            "vending_drop"
+#define SFX_VENDING_GENERIC         "vending_generic"
 
 #define GET_SFX(name) pick(GLOB.sfx_list[name])

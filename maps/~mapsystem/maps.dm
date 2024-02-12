@@ -30,6 +30,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/shuttle_types = null         // Only the specified shuttles will be initialized.
 	var/list/map_levels
 
+	var/list/derelict_levels		// List for random derelicts
+
 	var/list/usable_email_tlds = list("freemail.nt")
 	var/base_floor_type = /turf/simulated/floor/plating/airless // The turf type used when generating floors between Z-levels at startup.
 	var/base_floor_area                                 // Replacement area, if a base_floor_type is generated. Leave blank to skip.
@@ -142,6 +144,14 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 /datum/map/proc/setup_map()
 	ASSERT(length(map_levels))
+
+	var/derelicts_index = config.mapping.derelicts_amount
+	while(length(derelict_levels) && derelicts_index)
+		var/list/rand_derelict = pick(derelict_levels)
+		derelict_levels.Remove(rand_derelict)
+		map_levels.Add(rand_derelict)
+		derelicts_index--
+
 	for(var/level = 1; level <= length(map_levels); level++)
 		var/datum/space_level/L = map_levels[level]
 

@@ -3,7 +3,7 @@
 */
 /obj/machinery/smartfridge
 	name = "\improper SmartFridge"
-	icon = 'icons/obj/vending.dmi'
+	icon = 'icons/obj/machines/vending.dmi'
 	icon_state = "smartfridge"
 	layer = BELOW_OBJ_LAYER
 	density = 1
@@ -51,7 +51,7 @@
 /obj/machinery/smartfridge/seeds
 	name = "\improper MegaSeed Servitor"
 	desc = "When you need seeds fast!"
-	icon = 'icons/obj/vending.dmi'
+	icon = 'icons/obj/machines/vending.dmi'
 	icon_state = "seeds"
 	icon_on = "seeds"
 	icon_off = "seeds-off"
@@ -314,7 +314,7 @@
 	I.add_product(O)
 	SSnano.update_uis(src)
 
-/obj/machinery/smartfridge/attack_ai(mob/user as mob)
+/obj/machinery/smartfridge/attack_ai(mob/user)
 	attack_hand(user)
 
 /obj/machinery/smartfridge/attack_hand(mob/user as mob)
@@ -375,7 +375,7 @@
 			if((count - amount) < 0)
 				amount = count
 			for(var/i = 1 to amount)
-				I.get_product(get_turf(src))
+				I.get_product(get_turf(src), user)
 			update_icon()
 
 		return 1

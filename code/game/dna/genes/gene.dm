@@ -110,13 +110,13 @@
 	return probinj(activation_prob,(flags&MUTCHK_FORCED))
 
 /datum/dna/gene/basic/activate(mob/M)
-	M.mutations.Add(mutation)
+	M.add_mutation(mutation)
 	if(activation_messages.len)
 		var/msg = pick(activation_messages)
 		to_chat(M, "<span class='notice'>[msg]</span>")
 
 /datum/dna/gene/basic/deactivate(mob/M)
-	M.mutations.Remove(mutation)
+	M.remove_mutation(mutation)
 	if(deactivation_messages.len)
 		var/msg = pick(deactivation_messages)
 		to_chat(M, "<span class='warning'>[msg]</span>")

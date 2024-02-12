@@ -89,6 +89,8 @@
 	if(bodyparts)
 		bodyparts = decls_repository.get_decl(bodyparts)
 
+	add_movespeed_modifier(/datum/movespeed_modifier/simple_animal)
+
 /mob/living/simple_animal/Destroy()
 	mob_ai.holder = null
 	QDEL_NULL(mob_ai)
@@ -179,6 +181,7 @@
 /mob/living/simple_animal/proc/handle_supernatural()
 	if(purge)
 		purge -= 1
+		update_purge_movespeed()
 
 /mob/living/simple_animal/gib(anim, do_gibs = TRUE)
 	..(icon_gib, do_gibs)
@@ -259,20 +262,16 @@
 	if(supernatural && istype(O,/obj/item/nullrod))
 		damage *= 2
 		purge = 3
+		update_purge_movespeed()
 	adjustBruteLoss(damage)
 
 	return 0
 
-/mob/living/simple_animal/movement_delay()
-	var/tally = ..() //Incase I need to add stuff other than "speed" later
-
-	tally += speed
-	if(purge)//Purged creatures will move more slowly. The more time before their purge stops, the slower they'll move.
-		if(tally <= 0)
-			tally = 1
-		tally *= purge
-
-	return tally + config.movement.animal_delay
+/mob/living/simple_animal/proc/update_purge_movespeed()
+	if(purge > 0)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/purge_slowdown, slowdown = cached_slowdown * purge)
+	else
+		remove_movespeed_modifier(/datum/movespeed_modifier/purge_slowdown)
 
 /mob/living/simple_animal/Stat()
 	. = ..()

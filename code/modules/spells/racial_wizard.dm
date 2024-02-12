@@ -14,8 +14,8 @@
 		SPECIES_TAJARA = /datum/spell/messa_shroud,
 		SPECIES_UNATHI = /datum/spell/moghes_blessing,
 		SPECIES_DIONA = /datum/spell/aoe_turf/conjure/grove/gestalt,
-		SPECIES_SKRELL = /obj/item/contract/apprentice/skrell,
-		SPECIES_IPC = /datum/spell/camera_connection)
+		SPECIES_SKRELL = /obj/item/contract/apprentice/skrell
+		)
 
 /obj/item/magic_rock/attack_self(mob/user)
 	if(!istype(user,/mob/living/carbon/human))

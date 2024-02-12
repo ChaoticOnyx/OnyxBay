@@ -4,6 +4,19 @@ GLOBAL_DATUM_INIT(tgui_machinery_state, /datum/ui_state/machinery, new)
 	ASSERT(istype(src_object))
 
 	if(src_object.stat & ( BROKEN | NOPOWER ))
-		return FALSE
+		return UI_CLOSE
+
+	if(!src_object.allowed(user))
+		return UI_UPDATE
+
+	return user.tgui_default_can_use_topic(src_object)
+
+GLOBAL_DATUM_INIT(tgui_machinery_no_access_check_state, /datum/ui_state/machinery_noaccesscheck, new)
+
+/datum/ui_state/machinery_noaccesscheck/can_use_topic(obj/machinery/src_object, mob/user)
+	ASSERT(istype(src_object))
+
+	if(src_object.stat & (BROKEN | NOPOWER))
+		return UI_CLOSE
 
 	return user.tgui_default_can_use_topic(src_object)

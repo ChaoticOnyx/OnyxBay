@@ -164,10 +164,11 @@
 			panel_open = !panel_open
 			to_chat(usr, "\The [src]'s maintanence panel is now [panel_open ? "opened" : "closed"].")
 		if("idset")
-			if(!params["value"])
+			var/new_id = sanitize(params["value"], MAX_NAME_LEN)
+			if(!length(new_id))
 				return TRUE
 
-			id = clamp(params["value"], 1000, 9999)
+			id = new_id
 		if("modeset")
 			gate.set_state(FALSE)
 			change_mode()
@@ -197,12 +198,12 @@
 
 	switch(mode)
 		if(MODE_TELEPORT)
-			// TO-DO: refactor beacons to use their own global list.
-			for(var/obj/item/device/radio/beacon/beacon in world)
+			for(var/obj/item/device/bluespace_beacon/beacon as anything in GLOB.bluespace_beacons)
 				var/turf/T = get_turf(beacon)
 				if(!is_suitable(T))
 					continue
-				LAZYADDASSOC(targets, avoid_assoc_duplicate_keys(T.loc.name, areaindex), beacon)
+
+				LAZYSET(targets, avoid_assoc_duplicate_keys(T.loc.name, areaindex), beacon)
 		if(MODE_TARGET)
 			// TO-DO: refactor implants to use their own global list.
 			for(var/obj/item/implant/tracking/implant in world)
@@ -215,13 +216,13 @@
 				var/turf/T = get_turf(M)
 				if(!is_suitable(T))
 					continue
-				LAZYADDASSOC(targets, avoid_assoc_duplicate_keys(M.name, areaindex), implant)
+				LAZYSET(targets, avoid_assoc_duplicate_keys(M.name, areaindex), implant)
 		if(MODE_GATEWAY)
 			for(var/obj/machinery/computer/teleporter/console as anything in linked_consoles)
 				var/turf/T = get_turf(console)
 				if(!is_suitable(T) || !console.gate)
 					continue
-				LAZYADDASSOC(targets, avoid_assoc_duplicate_keys(T.loc.name, areaindex), console)
+				LAZYSET(targets, avoid_assoc_duplicate_keys(T.loc.name, areaindex), console)
 
 	return targets
 

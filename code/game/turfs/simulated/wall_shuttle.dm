@@ -3,6 +3,7 @@
 	icon = 'icons/turf/shuttle.dmi'
 	thermal_conductivity = 0.05
 	heat_capacity = 0
+	dynamic_lighting = TRUE
 
 /turf/simulated/shuttle/wall
 	name = "wall"
@@ -33,7 +34,7 @@
 
 /turf/simulated/shuttle/wall/syndi
 	name = "shuttle wall"
-	icon = 'icons/turf/shuttle_syndi.dmi'
+	icon = 'icons/turf/walls/shuttle_syndi.dmi'
 	icon_state = "syndiwall0"
 
 /turf/simulated/shuttle/wall/corner
@@ -202,7 +203,7 @@
 	dir = SOUTH|WEST
 
 /turf/simulated/shuttle/wall/corner/syndi
-	icon = 'icons/turf/shuttle_syndi.dmi'
+	icon = 'icons/turf/walls/shuttle_syndi.dmi'
 	icon_state = "corner_syndiwall"
 	corner_overlay_state = "corner_syndiwall"
 

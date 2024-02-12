@@ -11,7 +11,7 @@
 	var/active = FALSE
 	var/activation_sound = 'sound/items/goggles_charge.ogg'
 	var/deactivation_sound = 'sound/items/goggles_switch.ogg'
-	var/obj/screen/overlay = null
+	var/atom/movable/screen/overlay = null
 	var/electric = FALSE //if the glasses should be disrupted by EMP
 	var/hud_type
 	var/one_eyed = FALSE
@@ -170,6 +170,9 @@
 		)
 	tint = TINT_BLIND
 	flash_protection = FLASH_PROTECTION_MAJOR
+
+	drop_sound = SFX_DROP_GLOVES
+	pickup_sound = SFX_PICKUP_GLOVES
 
 /obj/item/clothing/glasses/sunglasses/blindfold/tape
 	name = "length of tape"

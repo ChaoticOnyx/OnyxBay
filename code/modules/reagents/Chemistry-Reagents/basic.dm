@@ -433,7 +433,7 @@
 	glass_icon = DRINK_ICON_NOISY
 
 /datum/reagent/sugar/affect_blood(mob/living/carbon/M, alien, removed)
-	M.nutrition += removed * 3
+	M.add_nutrition(removed * 3)
 
 	if(alien == IS_UNATHI)
 		if(M.chem_doses[type] < 2)

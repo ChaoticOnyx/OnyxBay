@@ -24,15 +24,12 @@
 	return 0
 
 /mob/living/carbon/human/isSynthetic()
-	if(istype(species, /datum/species/machine))
-		return 1
 	if(isnull(full_prosthetic))
 		robolimb_count = 0
 		for(var/obj/item/organ/external/E in organs)
 			if(BP_IS_ROBOTIC(E))
 				robolimb_count++
 		full_prosthetic = (robolimb_count == organs.len)
-		update_emotes()
 	return full_prosthetic
 
 /mob/living/silicon/isSynthetic()
@@ -599,7 +596,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	if(client)
 		client.images -= image
 
-/mob/proc/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
+/mob/proc/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /atom/movable/screen/fullscreen/flash)
 	return
 
 /mob/proc/fully_replace_character_name(new_name, in_depth = TRUE)
@@ -697,7 +694,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			winset(O.client, "mainwindow", "flash=5")
 
 		if(source)
-			var/obj/screen/movable/alert/notify_action/A = O.throw_alert("\ref[source]_notify_action", /obj/screen/movable/alert/notify_action)
+			var/atom/movable/screen/movable/alert/notify_action/A = O.throw_alert("\ref[source]_notify_action", /atom/movable/screen/movable/alert/notify_action)
 			if(A)
 
 				var/ui_style = O.client?.prefs?.UI_style

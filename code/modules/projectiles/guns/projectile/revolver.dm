@@ -240,14 +240,20 @@
 		return ..()
 	insert_cell(C, user)
 	return 1
+
 /obj/item/gun/projectile/revolver/m2019/detective/proc/usecharge(UC)
-	if(bcell && chambered?.expend())
-		if(bcell.checked_use(UC))
-			return 1
-		else
-			update_icon()
-			return 0
-	return null
+	if(!bcell)
+		return
+
+	if(!chambered)
+		return
+
+	if(!chambered.projectile_type || chambered.is_spent)
+		return
+
+	if(bcell.checked_use(UC))
+		update_icon()
+		return TRUE
 
 /obj/item/gun/projectile/revolver/m2019/detective/proc/insert_cell(obj/item/cell/B, mob/user)
 	if(bcell)

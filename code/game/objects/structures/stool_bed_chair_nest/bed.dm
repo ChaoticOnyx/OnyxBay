@@ -264,6 +264,8 @@
 	w_class = ITEM_SIZE_GARGANTUAN // Not sure if it's actually necessary, I can barely imagine this thing being bigger than a mecha part;
 	var/rollertype = /obj/item/roller
 	var/bedtype = /obj/structure/bed/roller
+	drop_sound = SFX_DROP_AXE
+	pickup_sound = SFX_PICKUP_AXE
 
 /obj/item/roller/adv
 	name = "advanced roller bed"

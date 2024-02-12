@@ -50,14 +50,20 @@
 	instances += product
 	return 1
 
-/datum/stored_items/proc/get_product(product_location)
+/datum/stored_items/proc/get_product(product_location, mob/user)
 	if(!get_amount() || !product_location)
 		return
+
 	init_products()
 
 	var/atom/movable/product = instances[instances.len]	// Remove the last added product
 	instances -= product
-	product.forceMove(product_location)
+
+	if(user?.Adjacent(product_location))
+		user.pick_or_drop(product, product_location)
+	else
+		product.forceMove(product_location)
+
 	return product
 
 /datum/stored_items/proc/get_specific_product(product_location, atom/movable/product)

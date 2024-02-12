@@ -12,6 +12,9 @@
 	var/timing = FALSE
 	var/time = 10
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/device/assembly/timer/proc/timer_end()
 	if(!secured)
 		return 0

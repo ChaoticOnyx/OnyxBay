@@ -61,7 +61,7 @@
 			signalDoor(tag_exterior_door, "update")		//signals connected doors to update their status
 			signalDoor(tag_interior_door, "update")
 
-/datum/computer/file/embedded_program/airlock/receive_signal(datum/signal/signal, receive_method, receive_param)
+/datum/computer/file/embedded_program/airlock/receive_signal(datum/signal/signal, receive_param)
 	var/receive_tag = signal.data["tag"]
 	if(!receive_tag) return
 
@@ -303,13 +303,13 @@
 	return (ext_closed && int_closed)
 
 /datum/computer/file/embedded_program/airlock/proc/signalDoor(tag, command)
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.data["tag"] = tag
 	signal.data["command"] = command
 	post_signal(signal, RADIO_AIRLOCK)
 
 /datum/computer/file/embedded_program/airlock/proc/signalPump(tag, power, direction, pressure)
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.data = list(
 		"tag" = tag,
 		"sigtype" = "command",
@@ -337,7 +337,7 @@
 			signalDoor(tag_interior_door, command)
 
 /datum/computer/file/embedded_program/airlock/proc/signal_mech_sensor(command, sensor)
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.data["tag"] = sensor
 	signal.data["command"] = command
 	post_signal(signal)

@@ -23,6 +23,9 @@
 
 	w_class = ITEM_SIZE_NO_CONTAINER
 	throw_range = 3
+
+	drop_sound = null
+	pickup_sound = null
 /*
 	This section is for overrides of existing procs.
 */

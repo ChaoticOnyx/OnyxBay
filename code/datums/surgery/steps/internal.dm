@@ -7,6 +7,9 @@
 	delicate = TRUE
 	shock_level = 40
 	priority = 2
+	preop_sound = 'sound/surgery/hemostat1.ogg'
+	success_sound = 'sound/surgery/hemostat1.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/internal/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
 	return target.surgery_status.operated_organs[get_parent_zone(target_zone)]
@@ -41,7 +44,7 @@
 			continue
 
 		if(O.status & ORGAN_CUT_AWAY)
-			attachable_organs[O] = agjust_organ_image(O)
+			attachable_organs[O] = adjust_organ_image(O)
 
 	var/obj/item/organ/preselected_organ = ..()
 	if(istype(preselected_organ))
@@ -110,7 +113,7 @@
 			continue
 
 		if(!(O.status & ORGAN_CUT_AWAY))
-			attached_organs[O] = agjust_organ_image(O)
+			attached_organs[O] = adjust_organ_image(O)
 
 	var/obj/item/organ/preselected_organ = ..()
 	if(istype(preselected_organ))
@@ -170,7 +173,7 @@
 	var/obj/item/organ/external/parent_organ = target.get_organ(target_zone)
 	for(var/obj/item/organ/internal/O in parent_organ.implants)
 		if(O.status & ORGAN_CUT_AWAY)
-			removable_organs[O] = agjust_organ_image(O)
+			removable_organs[O] = adjust_organ_image(O)
 
 	var/obj/item/organ/preselected_organ = ..()
 	if(istype(preselected_organ))
@@ -222,6 +225,9 @@
 	allowed_tools = list(
 		/obj/item/organ/internal = 100
 		)
+
+	preop_sound = 'sound/effects/squelch1.ogg'
+	success_sound = 'sound/effects/squelch2.ogg'
 
 /datum/surgery_step/internal/replace_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
@@ -300,8 +306,6 @@
 		log_debug("[user] ([user.ckey]) replaced organ [O], which didn't have ORGAN_CUT_AWAY set, in [target] ([target.ckey])")
 		O.status |= ORGAN_CUT_AWAY
 
-	playsound(target.loc, 'sound/effects/squelch1.ogg', 15, TRUE)
-
 /datum/surgery_step/internal/replace_organ/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
 		"[user]'s hand slips, damaging \the [tool]!",
@@ -341,7 +345,7 @@
 		if(!I.surface_accessible && parent_organ.open() < (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
 			continue
 
-		damaged_organs[I] = agjust_organ_image(I)
+		damaged_organs[I] = adjust_organ_image(I)
 
 	var/obj/item/organ/internal/preselected_organ = ..()
 	if(istype(preselected_organ))
@@ -688,7 +692,7 @@
 			continue
 
 		if(!(O.status & ORGAN_CUT_AWAY) && (O.status & ORGAN_DEAD) && O.parent_organ == parent_organ.organ_tag)
-			dead_organs[O] = agjust_organ_image(O)
+			dead_organs[O] = adjust_organ_image(O)
 
 	var/obj/item/organ/internal/preselected_organ = ..()
 	if(istype(preselected_organ))

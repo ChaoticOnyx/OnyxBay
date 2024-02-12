@@ -80,7 +80,7 @@
 #define COLOR_ASSEMBLY_BLUE    "#38559e"
 #define COLOR_ASSEMBLY_PURPLE  "#6f6192"
 
-//Color defines used by pipes.
+//Color defines used by pipes & floor lights.
 
 #define	PIPE_COLOR_GREY        "#ffffff"	//yes white is grey
 #define	PIPE_COLOR_RED         "#ff0000"

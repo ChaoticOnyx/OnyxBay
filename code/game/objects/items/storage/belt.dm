@@ -15,6 +15,9 @@
 	attack_verb = list("whipped", "lashed", "disciplined")
 	use_sound = SFX_SEARCH_CLOTHES
 
+	drop_sound = SFX_DROP_TOOLBELT
+	pickup_sound = SFX_PICKUP_TOOLBELT
+
 /obj/item/storage/belt/verb/toggle_layer()
 	set name = "Switch Belt Layer"
 	set category = "Object"

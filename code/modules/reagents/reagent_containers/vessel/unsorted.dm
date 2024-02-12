@@ -34,6 +34,9 @@
 	unacidable = FALSE
 	lid_type = null
 
+	drop_sound = SFX_DROP_METALPOT
+	pickup_sound = SFX_PICKUP_METALPOT
+
 /obj/item/reagent_containers/vessel/bucket/full
 	startswith = list(/datum/reagent/water)
 
@@ -173,6 +176,9 @@
 	lid_type = null
 	unacidable = FALSE
 
+	drop_sound = SFX_DROP_PAPERCUP
+	pickup_sound = SFX_PICKUP_PAPERCUP
+
 /obj/item/reagent_containers/vessel/shaker
 	name = "shaker"
 	desc = "A metal shaker to mix drinks in."
@@ -252,7 +258,7 @@
 		return
 
 	if(iscarbon(user) || isrobot(user))
-		if(!(istype(over_object, /obj/screen)))
+		if(!(istype(over_object, /atom/movable/screen)))
 			return ..()
 
 		if(loc != user)

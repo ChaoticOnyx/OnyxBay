@@ -19,7 +19,7 @@
 
 	var/frequency = 0
 	var/id = null
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 	level = 1
 
@@ -86,20 +86,16 @@
 	flick("inject", src)
 
 /obj/machinery/atmospherics/unary/outlet_injector/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency)
+		radio_connection = SSradio.add_object(src, frequency)
 
 /obj/machinery/atmospherics/unary/outlet_injector/proc/broadcast_status()
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
-	signal.source = src
-
-	signal.data = list(
+	var/list/data = list(
 		"tag" = id,
 		"device" = "AO",
 		"power" = use_power,
@@ -107,6 +103,7 @@
 		"sigtype" = "status"
 	 )
 
+	var/datum/signal/signal = new(data)
 	radio_connection.post_signal(src, signal)
 
 	return 1

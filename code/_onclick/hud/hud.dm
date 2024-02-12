@@ -28,22 +28,24 @@
 	/// Used to toggle action buttons
 	var/action_buttons_hidden = FALSE
 
-	var/obj/screen/movable/action_button/hide_toggle/hide_actions_toggle
-	var/obj/screen/lingchemdisplay
-	var/obj/screen/r_hand_hud_object
-	var/obj/screen/l_hand_hud_object
-	var/obj/screen/action_intent
-	var/obj/screen/move_intent
+	var/atom/movable/screen/movable/action_button/hide_toggle/hide_actions_toggle
+	var/atom/movable/screen/lingchemdisplay
+	var/atom/movable/screen/r_hand_hud_object
+	var/atom/movable/screen/l_hand_hud_object
+	var/atom/movable/screen/action_intent
+	var/atom/movable/screen/move_intent
 
 	/// List of status objects (healths, toxin and etc.)
-	var/list/obj/screen/infodisplay
+	var/list/atom/movable/screen/infodisplay
 
 	/// List of all static buttons
-	var/list/obj/screen/static_inventory
+	var/list/atom/movable/screen/static_inventory
 	/// List of all equipment slot buttons
-	var/list/obj/screen/toggleable_inventory
+	var/list/atom/movable/screen/toggleable_inventory
 	/// List of all buttons that never exit the view
-	var/list/obj/screen/always_visible_inventory
+	var/list/atom/movable/screen/always_visible_inventory
+
+	var/atom/movable/screen/holomap_obj
 
 /datum/hud/New(mob/owner)
 	mymob = owner
@@ -155,6 +157,9 @@
 	var/ui_color = mymob.client.prefs.UI_style_color
 	var/ui_alpha = mymob.client.prefs.UI_style_alpha
 
+	holomap_obj = new /atom/movable/screen/holomap
+	LAZYADD(always_visible_inventory, holomap_obj)
+
 	FinalizeInstantiation(ui_style, ui_color, ui_alpha)
 
 /datum/hud/proc/FinalizeInstantiation(ui_style, ui_color, ui_alpha)
@@ -252,7 +257,7 @@
 			screenmob.client.screen -= alerts[alerts[i]]
 		return 1
 	for(var/i in 1 to alerts.len)
-		var/obj/screen/movable/alert/alert = alerts[alerts[i]]
+		var/atom/movable/screen/movable/alert/alert = alerts[alerts[i]]
 		if(alert.icon_state == "template")
 			alert.icon = ui_style2icon(screenmob.client.prefs.UI_style)
 		switch(i)
@@ -272,7 +277,7 @@
 		screenmob.client.screen |= alert
 	return 1
 
-/obj/screen/movable/alert/Click(location, control, params)
+/atom/movable/screen/movable/alert/Click(location, control, params)
 	if(!usr || !usr.client)
 		return FALSE
 	if(usr != owner)
@@ -282,12 +287,12 @@
 
 	return TRUE
 
-/obj/screen/movable/alert/_examine_text(mob/user, infix, suffix)
+/atom/movable/screen/movable/alert/_examine_text(mob/user, infix, suffix)
 	.="[name]"
 	.+=" - [SPAN("info", desc)]"
 	return FALSE
 
-/obj/screen/movable/alert/Destroy()
+/atom/movable/screen/movable/alert/Destroy()
 	. = ..()
 	severity = 0
 	master = null

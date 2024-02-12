@@ -38,6 +38,10 @@
 	duration = CAUTERIZE_DURATION
 	check_stump = FALSE
 
+	preop_sound = 'sound/surgery/cautery1.ogg'
+	success_sound = 'sound/surgery/cautery2.ogg'
+	failure_sound = 'sound/surgery/cautery.ogg'
+
 /datum/surgery_step/generic/cauterize/check_zone(mob/living/carbon/human/target, target_zone)
 	return (..() && target_zone != BP_MOUTH)
 
@@ -92,6 +96,9 @@
  */
 /datum/surgery_step/generic/cut
 	duration = CUT_DURATION
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/scalpel2.ogg'
+	failure_sound = 'sound/weapons/bladeslice.ogg'
 
 /datum/surgery_step/generic/cut/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && !parent_organ.open())
@@ -126,7 +133,6 @@
 		"You have made an incision on [target]'s [parent_organ] with \the [tool]."
 		)
 	parent_organ.createwound(CUT, parent_organ.min_broken_damage / 2, 1)
-	playsound(target.loc, 'sound/weapons/bladeslice.ogg', 15, 1)
 
 /datum/surgery_step/generic/cut/default/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
@@ -152,6 +158,10 @@
 		/obj/item/scalpel/laser1 = 100,
 		/obj/item/melee/energy/sword/one_hand = 50
 		)
+
+	preop_sound = 'sound/surgery/cautery1.ogg'
+	success_sound = 'sound/surgery/cautery2.ogg'
+	failure_sound = 'sound/surgery/cautery.ogg'
 
 /datum/surgery_step/generic/cut/laser/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
@@ -196,6 +206,10 @@
 	allowed_tools = list(
 		/obj/item/scalpel/manager = 100
 		)
+
+	preop_sound = 'sound/surgery/scalpel.ogg'
+	success_sound = 'sound/surgery/retractor.ogg'
+	failure_sound = 'sound/effects/fighting/crunch2.ogg'
 
 /datum/surgery_step/generic/incision_manager/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && (parent_organ.open() == SURGERY_CLOSED || parent_organ.open() == SURGERY_OPEN))
@@ -252,6 +266,10 @@
 		/obj/item/device/assembly/mousetrap = 20
 		)
 
+	preop_sound = 'sound/surgery/hemostat1.ogg'
+	success_sound = 'sound/surgery/hemostat.ogg'
+	failure_sound = 'sound/surgery/hatchet.ogg'
+
 /datum/surgery_step/generic/clamp_bleeders/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && parent_organ.open() && !parent_organ.clamped())
 
@@ -300,6 +318,10 @@
 
 	priority = 1
 	duration = RETRACT_DURATION
+
+	preop_sound = 'sound/surgery/retractor1.ogg'
+	success_sound = 'sound/surgery/retractor.ogg'
+	failure_sound = 'sound/surgery/retractor2.ogg'
 
 /datum/surgery_step/generic/retract_skin/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && parent_organ.open() == SURGERY_OPEN)
@@ -350,6 +372,14 @@
 		/obj/item/material/knife = 50,
 		/obj/item/material/hatchet = 75
 		)
+
+	preop_sound = list(
+		/obj/item/circular_saw = 'sound/surgery/saw.ogg',
+		/obj/item/material/knife = 'sound/surgery/scalpel1.ogg',
+		/obj/item/material/hatchet = 'sound/surgery/hatchet.ogg',
+	)
+	success_sound = 'sound/surgery/organ2.ogg'
+	failure_sound = 'sound/effects/fighting/circsawhit.ogg'
 
 /datum/surgery_step/generic/saw/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && parent_organ.open() == SURGERY_RETRACTED)

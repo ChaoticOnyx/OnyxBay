@@ -54,8 +54,7 @@
 
 /obj/machinery/status_display/Destroy()
 	GLOB.ai_status_display_list -= src
-	if(radio_controller)
-		radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	ClearOverlays()
 	QDEL_NULL(picture)
 	return ..()
@@ -64,8 +63,7 @@
 /obj/machinery/status_display/Initialize()
 	. = ..()
 	GLOB.ai_status_display_list += src
-	if(radio_controller)
-		radio_controller.add_object(src, frequency)
+	SSradio.add_object(src, frequency)
 
 	if(!picture)
 		picture = image('icons/obj/status_display.dmi', icon_state = "blank")

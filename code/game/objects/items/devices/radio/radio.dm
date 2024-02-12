@@ -30,13 +30,13 @@
 	var/list/internal_channels
 
 /obj/item/device/radio
-	var/datum/radio_frequency/radio_connection
-	var/list/datum/radio_frequency/secure_radio_connections = new
+	var/datum/frequency/radio_connection
+	var/list/datum/frequency/secure_radio_connections = new
 
 	proc/set_frequency(new_frequency)
-		radio_controller.remove_object(src, frequency)
+		SSradio.remove_object(src, frequency)
 		frequency = new_frequency
-		radio_connection = radio_controller.add_object(src, frequency, RADIO_CHAT)
+		radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)
 
 /obj/item/device/radio/Initialize()
 	. = ..()
@@ -49,15 +49,14 @@
 	set_frequency(frequency)
 
 	for (var/ch_name in channels)
-		secure_radio_connections[ch_name] = radio_controller.add_object(src, radiochannels[ch_name],  RADIO_CHAT)
+		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.radio_channels[ch_name],  RADIO_CHAT)
 
 /obj/item/device/radio/Destroy()
 	QDEL_NULL(wires)
 	GLOB.listening_objects -= src
-	if(radio_controller)
-		radio_controller.remove_object(src, frequency)
-		for (var/ch_name in channels)
-			radio_controller.remove_object(src, radiochannels[ch_name])
+	SSradio.remove_object(src, frequency)
+	for (var/ch_name in channels)
+		SSradio.remove_object(src, GLOB.radio_channels[ch_name])
 	return ..()
 
 /obj/item/device/radio/attack_self(mob/user)
@@ -108,7 +107,7 @@
 		var/chan_stat = channels[ch_name]
 		var/listening = !!(chan_stat & FREQ_LISTENING) != 0
 
-		dat.Add(list(list("chan" = ch_name, "display_name" = ch_name, "secure_channel" = 1, "sec_channel_listen" = !listening, "chan_span" = frequency_span_class(radiochannels[ch_name]))))
+		dat.Add(list(list("chan" = ch_name, "display_name" = ch_name, "secure_channel" = 1, "sec_channel_listen" = !listening, "chan_span" = frequency_span_class(GLOB.radio_channels[ch_name]))))
 
 	return dat
 
@@ -206,7 +205,7 @@
 		SSnano.update_uis(src)
 
 /obj/item/device/radio/proc/autosay(message, from, channel, say_verb="states", datum/language/speaking) //BS12 EDIT
-	var/datum/radio_frequency/connection = null
+	var/datum/frequency/connection = null
 	if(channel && channels && channels.len > 0)
 		if (channel == "department")
 			channel = channels[1]
@@ -278,7 +277,7 @@
 	*/
 
 	//#### Grab the connection datum ####//
-	var/datum/radio_frequency/connection = handle_message_mode(M, message, channel)
+	var/datum/frequency/connection = handle_message_mode(M, message, channel)
 	if (!istype(connection))
 		return 0
 
@@ -335,20 +334,8 @@
 
   /* ###### Radio headsets can only broadcast through subspace ###### */
 	if(subspace_transmission)
-		// No one can hear our screams in an area with the unstable bluespace.
-		if(GLOB.using_map.level_has_trait(position.z, ZTRAIT_SNOWSTORM))
-			return
-		// The bluespace is less unstable so we can transmit something.
-		else if(GLOB.using_map.level_has_trait(position.z, ZTRAIT_SNOWFALL))
-			message = stars(message)
-
-		// First, we want to generate a new radio signal
-		var/datum/signal/signal = new
-		signal.transmission_method = 2 // 2 would be a subspace transmission.
-									   // transmission_method could probably be enumerated through #define. Would be neater.
-
 		// --- Finally, tag the actual signal with the appropriate values ---
-		signal.data = list(
+		var/list/data = list(
 		  // Identity-associated tags:
 			"mob" = M, // store a reference to the mob
 			"mobtype" = M.type, 	// the mob's type
@@ -378,10 +365,9 @@
 			"verb" = verb,
 			"loud" = loud
 		)
-		signal.frequency = connection.frequency // Quick frequency set
 
 	  //#### Sending the signal to all subspace receivers ####//
-
+		var/datum/signal/signal = new(data = data, method = TRANSMISSION_SUBSPACE, frequency = connection.frequency)
 		for(var/obj/machinery/telecomms/receiver/R in telecomms_list)
 			R.receive_signal(signal)
 
@@ -401,15 +387,9 @@
 	if(istype(src, /obj/item/device/radio/intercom))
 		filter_type = 1
 
-
-	var/datum/signal/signal = new
-	signal.transmission_method = 2
-
-
 	/* --- Try to send a normal subspace broadcast first */
 
-	signal.data = list(
-
+	var/list/data = list(
 		"mob" = M, // store a reference to the mob
 		"mobtype" = M.type, 	// the mob's type
 		"realname" = real_name, // the mob's real name
@@ -419,7 +399,6 @@
 		"vmessage" = pick(M.speak_emote), // the message to display if the voice wasn't understood
 		"vname" = M.voice_name, // the name to display if the voice wasn't understood
 		"vmask" = voicemask,	// 1 if the mob is using a voice gas mas
-
 		"compression" = 0, // uncompressed radio signal
 		"message" = message, // the actual sent message
 		"connection" = connection, // the radio connection to use
@@ -434,11 +413,10 @@
 		"verb" = verb,
 		"loud" = loud
 	)
-	signal.frequency = connection.frequency // Quick frequency set
 
+	var/datum/signal/signal = new(data = data, method = TRANSMISSION_SUBSPACE, frequency = connection.frequency)
 	for(var/obj/machinery/telecomms/receiver/R in telecomms_list)
 		R.receive_signal(signal)
-
 
 	sleep(rand(10,25)) // wait a little...
 
@@ -490,7 +468,7 @@
 		var/turf/position = get_turf(src)
 		if(!position || !(position.z in level))
 			return -1
-	if(freq in ANTAG_FREQS)
+	if(freq in GLOB.antagonist_frequencies)
 		if(!(src.syndie))//Checks to see if it's allowed on that frequency, based on the encryption keys
 			return -1
 	if (!on)
@@ -502,7 +480,7 @@
 		var/accept = (freq==frequency && listening)
 		if (!accept)
 			for (var/ch_name in channels)
-				var/datum/radio_frequency/RF = secure_radio_connections[ch_name]
+				var/datum/frequency/RF = secure_radio_connections[ch_name]
 				if (RF && RF.frequency == freq && (channels[ch_name] & FREQ_LISTENING))
 					accept = 1
 					break
@@ -531,14 +509,15 @@
 	user.set_machine(src)
 	if (!( isScrewdriver(W) ))
 		return
-	b_stat = !( b_stat )
-	if(!istype(src, /obj/item/device/radio/beacon))
-		if (b_stat)
-			user.show_message("<span class='notice'>\The [src] can now be attached and modified!</span>")
-		else
-			user.show_message("<span class='notice'>\The [src] can no longer be modified or attached!</span>")
-		updateDialog()
-		return
+
+	b_stat = !b_stat
+	if(b_stat)
+		user.show_message(SPAN("notice", "\The [src] can now be attached and modified!"))
+	else
+		user.show_message(SPAN("notice", "\The [src] can no longer be modified or attached!"))
+
+	updateDialog()
+	return
 
 /obj/item/device/radio/emp_act(severity)
 	broadcasting = 0
@@ -609,7 +588,7 @@
 
 
 			for(var/ch_name in channels)
-				radio_controller.remove_object(src, radiochannels[ch_name])
+				SSradio.remove_object(src, GLOB.radio_channels[ch_name])
 				secure_radio_connections[ch_name] = null
 
 
@@ -659,11 +638,11 @@
 			src.syndie = 1
 
 	for (var/ch_name in src.channels)
-		if(!radio_controller)
+		if(!SSradio)
 			src.SetName("broken radio")
 			return
 
-		secure_radio_connections[ch_name] = radio_controller.add_object(src, radiochannels[ch_name],  RADIO_CHAT)
+		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.radio_channels[ch_name],  RADIO_CHAT)
 
 /obj/item/device/radio/borg/Topic(href, href_list)
 	if(..())
@@ -731,14 +710,12 @@
 		ui.open()
 
 /obj/item/device/radio/proc/config(op)
-	if(radio_controller)
-		for (var/ch_name in channels)
-			radio_controller.remove_object(src, radiochannels[ch_name])
+	for(var/ch_name in channels)
+		SSradio.remove_object(src, GLOB.radio_channels[ch_name])
 	secure_radio_connections = new
 	channels = op
-	if(radio_controller)
-		for (var/ch_name in op)
-			secure_radio_connections[ch_name] = radio_controller.add_object(src, radiochannels[ch_name],  RADIO_CHAT)
+	for(var/ch_name in op)
+		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.radio_channels[ch_name],  RADIO_CHAT)
 	return
 
 /obj/item/device/radio/off
@@ -780,7 +757,11 @@
 
 /obj/item/device/radio/phone/medbay/New()
 	..()
-	internal_channels = GLOB.default_medbay_channels.Copy()
+	internal_channels = list(
+		num2text(PUB_FREQ) = list(),
+		num2text(MED_FREQ) = list(access_medical_equip),
+		num2text(MED_I_FREQ) = list(access_medical_equip)
+		)
 
 /obj/item/device/radio/CouldUseTopic(mob/user)
 	..()

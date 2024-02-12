@@ -10,13 +10,13 @@
 	icon_off = "miningsecoff"
 	req_access = list(access_mining)
 
-/obj/structure/closet/secure_closet/miner/New()
-	..()
-	sleep(2)
+/obj/structure/closet/secure_closet/miner/Initialize()
+	. = ..()
 	if(prob(50))
 		new /obj/item/storage/backpack/industrial(src)
 	else
 		new /obj/item/storage/backpack/satchel/eng(src)
+
 	new /obj/item/device/radio/headset/headset_cargo(src)
 	new /obj/item/clothing/under/rank/miner(src)
 	new /obj/item/clothing/gloves/thick(src)
@@ -191,6 +191,9 @@
 	attack_verb = list("bashed", "bludgeoned", "thrashed", "whacked")
 	sharp = 0
 	edge = 1
+
+	drop_sound = SFX_DROP_SHOVEL
+	pickup_sound = SFX_PICKUP_SHOVEL
 
 /obj/item/shovel/spade
 	name = "spade"
@@ -424,17 +427,12 @@
 			to_chat(user, "<span class='info'>[src] is only effective on lesser beings.</span>")
 			return
 
-/obj/item/lazarus_injector/attackby(obj/item/I, mob/living/user)
-	if(istype(I, /obj/item/card/emag) && !emagged)
-		var/obj/item/card/emag/emag_card = I
-		if(!emag_card.uses)
-			return
-		emagged = TRUE
-		emag_card.uses -= 1
-		to_chat(user, SPAN_WARNING("You overload \the [src]'s injection matrix."))
+/obj/item/lazarus_injector/emag_act(remaining_charges, mob/user)
+	if(emagged)
 		return
-
-	return ..()
+	emagged = TRUE
+	to_chat(user, SPAN_WARNING("You overload \the [src]'s injection matrix."))
+	return 1
 
 /obj/item/lazarus_injector/emp_act()
 	if(!malfunctioning)

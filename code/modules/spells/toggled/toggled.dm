@@ -35,6 +35,7 @@
 	if(toggled)
 		mana_current -= mana_drain_per_tick
 		if(mana_current <= 0)
+			mana_current = 0
 			toggled = FALSE
 			deactivate()
 	else if(mana_current < mana_max)
@@ -45,7 +46,7 @@
 	set_next_think(world.time + 1 SECOND)
 
 /datum/spell/toggled/proc/update_screen_button()
-	var/obj/screen/ability/spell/S = connected_button
+	var/atom/movable/screen/ability/spell/S = connected_button
 	if(!istype(S))
 		return
 

@@ -34,7 +34,7 @@
 
 	var/frequency = 0
 	var/id = null
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 	var/pressure_checks = PRESSURE_CHECK_EXTERNAL
 	//1: Do not pass external_pressure_bound
@@ -161,20 +161,16 @@
 //Radio remote control
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/proc/broadcast_status()
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
-	signal.source = src
-
-	signal.data = list(
+	var/list/data = list(
 		"tag" = id,
 		"device" = "ADVP",
 		"power" = use_power,
@@ -185,6 +181,8 @@
 		"external" = external_pressure_bound,
 		"sigtype" = "status"
 	)
+
+	var/datum/signal/signal = new(data)
 	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
 	return 1

@@ -119,14 +119,23 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 				return 0
 	return 1
 
-/obj/item/clothing/equipped(mob/user)
-	playsound(src, SFX_USE_OUTFIT, 75, 1)
+/obj/item/clothing/equipped(mob/user, slot)
 	SHOULD_CALL_PARENT(TRUE)
 	for(var/obj/item/clothing/accessory/accessory in accessories)
 		accessory.equipped(user)
 	if(needs_vision_update())
 		update_vision()
 	return ..()
+
+/obj/item/clothing/play_handling_sound(slot)
+	if(!pickup_sound)
+		return
+
+	if(slot == slot_l_hand || slot == slot_r_hand)
+		var/volume = clamp(rand(5,15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
+		playsound(src, pickup_sound, volume, TRUE, extrarange = -5)
+	else
+		playsound(src, SFX_USE_OUTFIT, 75, TRUE, extrarange = -5)
 
 /obj/item/clothing/proc/refit_for_species(target_species)
 	if(!species_restricted)
@@ -135,7 +144,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	//Set species_restricted list
 	switch(target_species)
 		if(SPECIES_HUMAN, SPECIES_SKRELL)	//humanoid bodytypes
-			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC) //skrell/humans/machines can wear each other's suits
+			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL) //skrell/humans can wear each other's suits
 		else
 			species_restricted = list(target_species)
 
@@ -151,9 +160,9 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	//Set species_restricted list
 	switch(target_species)
 		if(SPECIES_SKRELL)
-			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC) //skrell helmets fit humans too
+			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL) //skrell helmets fit humans too
 		if(SPECIES_HUMAN)
-			species_restricted = list(SPECIES_HUMAN, SPECIES_IPC) //human helmets fit IPCs too
+			species_restricted = list(SPECIES_HUMAN)
 		else
 			species_restricted = list(target_species)
 
@@ -226,6 +235,9 @@ BLIND     // can't see anything
 	var/light_protection = 0
 	blood_overlay_type = null // These are too small to bother, no need to waste CPU time
 
+	drop_sound = SFX_DROP_ACCESSORY
+	pickup_sound = SFX_PICKUP_ACCESSORY
+
 /obj/item/clothing/glasses/update_clothing_icon()
 	if(ismob(src.loc))
 		var/mob/M = src.loc
@@ -252,6 +264,9 @@ BLIND     // can't see anything
 	blood_overlay_type = "bloodyhands"
 	var/transfer_blood = 0
 	var/mob/living/carbon/human/bloody_hands_mob
+
+	drop_sound = SFX_DROP_GLOVES
+	pickup_sound = SFX_PICKUP_GLOVES
 
 /obj/item/clothing/gloves/Initialize()
 	if(item_flags & ITEM_FLAG_PREMODIFIED)
@@ -404,6 +419,9 @@ BLIND     // can't see anything
 
 	blood_overlay_type = "helmetblood"
 
+	drop_sound = SFX_DROP_HAT
+	pickup_sound = SFX_PICKUP_HAT
+
 /obj/item/clothing/head/get_mob_overlay(mob/user_mob, slot)
 	var/image/ret = ..()
 	var/species_name = "Default"
@@ -517,7 +535,7 @@ BLIND     // can't see anything
 	var/down_flags_inv = 0
 	var/pull_mask = 0
 	var/hanging = 0
-	var/obj/screen/overlay = null
+	var/atom/movable/screen/overlay = null
 	blood_overlay_type = "maskblood"
 
 /obj/item/clothing/mask/New()
@@ -597,6 +615,9 @@ BLIND     // can't see anything
 	blood_overlay_type = "shoeblood"
 
 	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
+
+	drop_sound = SFX_DROP_SHOES
+	pickup_sound = SFX_PICKUP_SHOES
 
 /obj/item/clothing/shoes/Destroy()
 	if(holding)
@@ -690,6 +711,8 @@ BLIND     // can't see anything
 	blood_overlay_type = "suitblood"
 	siemens_coefficient = 0.9
 	w_class = ITEM_SIZE_NORMAL
+	drop_sound = SFX_DROP_CLOTH
+	pickup_sound = SFX_PICKUP_CLOTH
 
 /obj/item/clothing/suit/update_clothing_icon()
 	if (ismob(src.loc))
@@ -742,6 +765,9 @@ BLIND     // can't see anything
 	var/worn_state = null
 	valid_accessory_slots = list(ACCESSORY_SLOT_UTILITY,ACCESSORY_SLOT_HOLSTER,ACCESSORY_SLOT_ARMBAND,ACCESSORY_SLOT_RANK,ACCESSORY_SLOT_DEPT,ACCESSORY_SLOT_DECOR,ACCESSORY_SLOT_MEDAL,ACCESSORY_SLOT_INSIGNIA)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_UTILITY,ACCESSORY_SLOT_HOLSTER,ACCESSORY_SLOT_ARMBAND,ACCESSORY_SLOT_RANK,ACCESSORY_SLOT_DEPT)
+
+	drop_sound = SFX_DROP_CLOTH
+	pickup_sound = SFX_PICKUP_CLOTH
 
 /obj/item/clothing/under/New()
 	..()
@@ -961,3 +987,6 @@ BLIND     // can't see anything
 	species_restricted = list("exclude", SPECIES_DIONA)
 	var/undergloves = 1
 	blood_overlay_type = null
+
+	drop_sound = SFX_DROP_RING
+	pickup_sound = SFX_PICKUP_RING

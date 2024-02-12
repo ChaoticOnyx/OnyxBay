@@ -19,6 +19,7 @@
 #define SIGNAL_MOB_RESIST "!mob_resist"
 #define SIGNAL_MOB_GRAB_SET_STATE "!mob_grab_set_state"
 
+/// Called when an atom starts orbiting another atom (/atom)
 #define SIGNAL_ORBIT_BEGIN "orbit_begin"
-
+/// Called when an atom stops orbiting another atom (/atom)
 #define SIGNAL_ORBIT_STOP "orbit_stop"

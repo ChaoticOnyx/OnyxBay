@@ -35,7 +35,7 @@
 		}
 	)
 
-	blacklisted_maps = list(/datum/map/polar)
+
 
 /datum/event/electrical_storm_base/get_description()
 	return "An electric storm is approaching [station_name()]"

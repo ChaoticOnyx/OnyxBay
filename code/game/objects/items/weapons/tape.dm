@@ -5,6 +5,8 @@
 	icon_state = "taperoll"
 	var/tape_speed = 30
 	w_class = ITEM_SIZE_SMALL
+	drop_sound = SFX_DROP_CARDBOARD
+	pickup_sound = SFX_PICKUP_CARDBOARD
 
 /obj/item/tape_roll/attack(mob/living/carbon/human/H, mob/user)
 	if(istype(H))

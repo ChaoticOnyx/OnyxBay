@@ -12,6 +12,7 @@
 	open_delay = 3
 
 	dremovable = 0
+	intact_closet = FALSE
 
 	storage_types = CLOSET_STORAGE_ITEMS
 

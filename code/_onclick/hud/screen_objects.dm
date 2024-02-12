@@ -6,20 +6,19 @@
 	They are used with the client/screen list and the screen_loc var.
 	For more information, see the byond documentation on the screen_loc and screen vars.
 */
-/obj/screen
+/atom/movable/screen
 	name = ""
 	plane = HUD_PLANE
 	layer = HUD_BASE_LAYER
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS |NO_CLIENT_COLOR
-	unacidable = 1
 	var/obj/master = null    //A reference to the object in the slot. Grabs or items, generally.
 	var/globalscreen = FALSE //Global screens are not qdeled when the holding mob is destroyed.
 
-/obj/screen/Destroy()
+/atom/movable/screen/Destroy()
 	master = null
 	return ..()
 
-/obj/screen/text
+/atom/movable/screen/text
 	icon = null
 	icon_state = null
 	mouse_opacity = 0
@@ -28,14 +27,14 @@
 	maptext_width = 480
 
 
-/obj/screen/inventory
+/atom/movable/screen/inventory
 	var/slot_id	//The indentifier for the slot. It has nothing to do with ID cards.
 
 
-/obj/screen/close
+/atom/movable/screen/close
 	name = "close"
 
-/obj/screen/close/Click()
+/atom/movable/screen/close/Click()
 	if(master)
 		if(istype(master, /obj/item/storage))
 			var/obj/item/storage/S = master
@@ -43,14 +42,14 @@
 	return 1
 
 
-/obj/screen/item_action
+/atom/movable/screen/item_action
 	var/obj/item/owner
 
-/obj/screen/item_action/Destroy()
+/atom/movable/screen/item_action/Destroy()
 	. = ..()
 	owner = null
 
-/obj/screen/item_action/Click()
+/atom/movable/screen/item_action/Click()
 	if(!usr || !owner)
 		return 1
 	if(!usr.canClick())
@@ -65,10 +64,10 @@
 	owner.ui_action_click()
 	return 1
 
-/obj/screen/storage
+/atom/movable/screen/storage
 	name = "storage"
 
-/obj/screen/storage/Click()
+/atom/movable/screen/storage/Click()
 	if(!usr.canClick())
 		return 1
 	if(usr.stat || usr.paralysis || usr.stunned || usr.weakened)
@@ -81,19 +80,19 @@
 			usr.ClickOn(master)
 	return 1
 
-/obj/screen/stored
+/atom/movable/screen/stored
 	name = "stored"
 
-/obj/screen/stored/Click()
+/atom/movable/screen/stored/Click()
 	return 1
 
-/obj/screen/zone_sel
+/atom/movable/screen/zone_sel
 	name = "damage zone"
 	icon_state = "zone_sel"
 	screen_loc = ui_zonesel
 	var/selecting = BP_CHEST
 
-/obj/screen/zone_sel/Click(location, control,params)
+/atom/movable/screen/zone_sel/Click(location, control,params)
 	var/list/PL = params2list(params)
 	var/icon_x = text2num(PL["icon-x"])
 	var/icon_y = text2num(PL["icon-y"])
@@ -154,23 +153,23 @@
 		update_icon()
 	return 1
 
-/obj/screen/zone_sel/proc/set_selected_zone(bodypart)
+/atom/movable/screen/zone_sel/proc/set_selected_zone(bodypart)
 	var/old_selecting = selecting
 	selecting = bodypart
 	if(old_selecting != selecting)
 		update_icon()
 
-/obj/screen/zone_sel/on_update_icon()
+/atom/movable/screen/zone_sel/on_update_icon()
 	ClearOverlays()
 	AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[selecting]"))
 
-/obj/screen/intent
+/atom/movable/screen/intent
 	name = "intent"
 	icon_state = "intent_help"
 	screen_loc = ui_acti
 	var/intent = I_HELP
 
-/obj/screen/intent/Click(location, control, params)
+/atom/movable/screen/intent/Click(location, control, params)
 	var/list/P = params2list(params)
 	var/icon_x = text2num(P["icon-x"])
 	var/icon_y = text2num(P["icon-y"])
@@ -193,10 +192,10 @@
 
 
 
-/obj/screen/intent/on_update_icon()
+/atom/movable/screen/intent/on_update_icon()
 	icon_state = "intent_[intent]"
 
-/obj/screen/Click(location, control, params)
+/atom/movable/screen/Click(location, control, params)
 	switch(name)
 		if("toggle")
 			if(usr.hud_used.inventory_shown)
@@ -227,11 +226,9 @@
 		if("mov_intent")
 			switch(usr.m_intent)
 				if(M_RUN)
-					usr.m_intent = M_WALK
-					usr.hud_used.move_intent.icon_state = "walking"
+					usr.set_m_intent(M_WALK)
 				if(M_WALK)
-					usr.m_intent = M_RUN
-					usr.hud_used.move_intent.icon_state = "running"
+					usr.set_m_intent(M_RUN)
 
 		if("Reset Machine")
 			usr.unset_machine()
@@ -555,7 +552,7 @@
 			return 0
 	return 1
 
-/obj/screen/inventory/Click()
+/atom/movable/screen/inventory/Click()
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	if(!usr.canClick())
@@ -583,8 +580,18 @@
 				usr.update_inv_r_hand(0)
 	return 1
 
-/obj/screen/rec
+/atom/movable/screen/rec
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "rec"
 	screen_loc = "TOP-2,WEST+2"
 	layer = FULLSCREEN_LAYER
+
+/atom/movable/screen/holomap
+	icon = 'icons/480x480.dmi'
+	icon_state = "blank"
+	name = "holomap"
+	icon = null
+	icon_state = ""
+	screen_loc = ui_holomap
+	mouse_opacity = 0
+	alpha = 255

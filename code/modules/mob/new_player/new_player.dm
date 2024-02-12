@@ -174,7 +174,7 @@
 			if(!client.holder && !config.ghost.allow_antag_hud)           // For new ghosts we remove the verb from even showing up if it's not allowed.
 				observer.verbs -= /mob/observer/ghost/verb/toggle_antagHUD        // Poor guys, don't know what they are missing!
 			observer.key = key
-			var/obj/screen/splash/S = new(observer.client, TRUE)
+			var/atom/movable/screen/splash/S = new(observer.client, TRUE)
 			S.Fade(TRUE, TRUE)
 			QDEL_NULL(mind)
 			qdel(src)
@@ -574,12 +574,15 @@
 	new_character.regenerate_icons()
 
 	new_character.key = key		//Manually transfer the key to log them in
-	var/obj/screen/splash/S = new(new_character.client, TRUE)
+	var/atom/movable/screen/splash/S = new(new_character.client, TRUE)
 	S.Fade(TRUE, TRUE)
 
 	// Give them their cortical stack if we're using them.
 	if(config && config.revival.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
 		new_character.create_stack()
+
+	if(new_character.isSynthetic())
+		new_character.add_synth_emotes()
 
 	return new_character
 
@@ -643,7 +646,7 @@
 /mob/new_player/is_ready()
 	return ready && ..()
 
-/mob/new_player/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null)
+/mob/new_player/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
 	return
 
 /mob/new_player/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0)

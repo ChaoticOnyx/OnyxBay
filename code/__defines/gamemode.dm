@@ -37,7 +37,6 @@
 #define ANTAG_RANDOM_EXCEPTED   0x800 // If a game mode randomly selects antag types, antag types with this flag should be excluded.
 
 // Mode/antag template macros.
-#define MODE_ABDUCTOR "abductor"
 #define MODE_BORER "borer"
 #define MODE_XENOMORPH "xenomorph"
 #define MODE_LOYALIST "loyalist"

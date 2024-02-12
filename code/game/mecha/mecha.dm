@@ -89,6 +89,8 @@
 	var/max_equip = 3
 	var/datum/legacy_events/events
 
+	var/strafe = FALSE
+
 /obj/mecha/drain_power(drain_check)
 
 	if(drain_check)
@@ -293,8 +295,8 @@
 		mech_click = world.time
 
 		if(!istype(object, /atom)) return
-		if(istype(object, /obj/screen))
-			var/obj/screen/using = object
+		if(istype(object, /atom/movable/screen))
+			var/atom/movable/screen/using = object
 			if(using.screen_loc == ui_acti || using.screen_loc == ui_iarrowleft || using.screen_loc == ui_iarrowright)//ignore all HUD objects save 'intent' and its arrows
 				return ..()
 			else
@@ -394,18 +396,22 @@
 
 /obj/mecha/proc/do_move(direction)
 	if(!can_move)
-		return 0
+		return FALSE
+
 	if(src.pr_inertial_movement.active())
-		return 0
+		return FALSE
+
 	if(!has_charge(step_energy_drain))
-		return 0
+		return FALSE
+
 	var/move_result = 0
+	var/old_dir = dir
 	if(hasInternalDamage(MECHA_INT_CONTROL_LOST))
 		move_result = mechsteprand()
-	else if(src.dir!=direction)
+	else if(dir != direction && !strafe)
 		move_result = mechturn(direction)
 	else
-		move_result	= mechstep(direction)
+		move_result	= mechstep(direction, old_dir)
 	if(move_result)
 		can_move = 0
 		use_power(step_energy_drain)
@@ -415,18 +421,21 @@
 				src.log_message("Movement control lost. Inertial movement started.")
 		spawn(step_in)
 			can_move = 1
-		return 1
-	return 0
+		return TRUE
+
+	return FALSE
 
 /obj/mecha/proc/mechturn(direction)
 	set_dir(direction)
 	playsound(src,'sound/mecha/mechturn.ogg',40,1)
 	return 1
 
-/obj/mecha/proc/mechstep(direction)
+/obj/mecha/proc/mechstep(direction, old_dir)
 	var/result = step(src,direction)
 	if(result)
 		playsound(src,'sound/mecha/mechstep.ogg',40,1)
+	if(strafe)
+		set_dir(old_dir)
 	return result
 
 
@@ -1049,56 +1058,63 @@
 	src.log_message("Now taking air from [use_internal_tank?"internal airtank":"environment"].")
 	return
 
-
-/obj/mecha/verb/move_inside()
-	set category = "Object"
-	set name = "Enter Exosuit"
-	set src in oview(1)
-
-	if(usr.stat || !ishuman(usr))
+/obj/mecha/verb/toggle_strafing()
+	set name = "Toggle strafing"
+	set category = "Exosuit Interface"
+	set src = usr.loc
+	set popup_menu = 0
+	if(usr != occupant)
 		return
 
-	if(usr.buckled)
-		to_chat(usr, SPAN("warning", "You can't climb into the exosuit while buckled!"))
+	strafe = !strafe
+	occupant_message("Strafing mod [strafe? "on":"off"].")
+
+/obj/mecha/MouseDrop_T(target, mob/living/user)
+	. = ..()
+	if(user.is_ic_dead() || !ishuman(user))
 		return
 
-	log_message("[usr] tries to move in.")
+	if(user.buckled)
+		to_chat(user, SPAN("warning", "You can't climb into the exosuit while buckled!"))
+		return
 
-	var/mob/living/carbon/human/H = usr
+	log_message("[user] tries to move in.")
+
+	var/mob/living/carbon/human/H = user
 	if(H.handcuffed)
-		to_chat(usr, SPAN("danger", "Kinda hard to climb in while handcuffed don't you think?"))
+		to_chat(user, SPAN("danger", "Kinda hard to climb in while handcuffed don't you think?"))
 		return
 
 	if(occupant)
-		to_chat(usr, SPAN("danger", "The [src] is already occupied!"))
+		to_chat(user, SPAN("danger", "The [src] is already occupied!"))
 		src.log_append_to_last("Permission denied.")
 		return
 
 	var/passed = FALSE
 	if(dna)
-		if(usr.dna.unique_enzymes == dna)
+		if(user.dna.unique_enzymes == dna)
 			passed = TRUE
-	else if(operation_allowed(usr))
+	else if(operation_allowed(user))
 		passed = TRUE
 	if(!passed)
-		to_chat(usr, "<span class='warning'>Access denied</span>")
+		to_chat(user, "<span class='warning'>Access denied</span>")
 		log_append_to_last("Permission denied.")
 		return
 
-	for(var/mob/living/carbon/metroid/M in range(1, usr))
-		if(M.Victim == usr)
-			to_chat(usr, "You're too busy getting your life sucked out of you.")
+	for(var/mob/living/carbon/metroid/M in range(1, user))
+		if(M.Victim == user)
+			to_chat(user, "You're too busy getting your life sucked out of you.")
 			return
 
-	visible_message("<span class='notice'>\The [usr] starts to climb into [src.name]</span>")
+	visible_message("<span class='notice'>\The [user] starts to climb into [src.name]</span>")
 
-	if(enter_after(40, usr))
+	if(do_after(user, 40, target))
 		if(!occupant)
-			moved_inside(usr)
-		else if(occupant != usr)
-			to_chat(usr, "[occupant] was faster. Try better next time, loser.")
+			moved_inside(user)
+		else if(occupant != user)
+			to_chat(user, "[occupant] was faster. Try better next time, loser.")
 	else
-		to_chat(usr, "You stop entering the exosuit.")
+		to_chat(user, "You stop entering the exosuit.")
 	return
 
 /obj/mecha/proc/moved_inside(mob/living/carbon/human/H)
@@ -1113,6 +1129,7 @@
 	forceMove(src.loc)
 	log_append_to_last("[H] moved in as pilot.")
 	icon_state = src.reset_icon()
+	update_icon()
 	set_dir(dir_in)
 	playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
 	if(!hasInternalDamage())
@@ -1293,6 +1310,7 @@
 		occupant = null
 		icon_state = reset_icon()+"-open"
 		set_dir(dir_in)
+		update_icon()
 	return
 
 /////////////////////////

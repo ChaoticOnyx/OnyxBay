@@ -14,6 +14,8 @@
 	var/page = 1    // current page
 	var/list/pages = list()  // Ordered list of pages as they are to be displayed. Can be different order than src.contents.
 
+	drop_sound = SFX_DROP_PAPER
+	pickup_sound = SFX_PICKUP_PAPER
 
 /obj/item/paper_bundle/attackby(obj/item/W, mob/user)
 	..()

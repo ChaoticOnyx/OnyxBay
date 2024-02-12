@@ -24,7 +24,7 @@ GLOBAL_LIST_INIT(all_ui_styles, list(
 
 	var/icon/ic = GLOB.all_ui_styles[prefs.UI_style]
 
-	for(var/obj/screen/I in icons)
+	for(var/atom/movable/screen/I in icons)
 		if(I.name in list(I_HELP, I_HURT, I_DISARM, I_GRAB))
 			I.icon = ic
 			continue

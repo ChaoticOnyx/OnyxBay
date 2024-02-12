@@ -516,93 +516,6 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/jungle/junglethunder2.ogg',
 		'sound/ambient/jungle/junglethunder1.ogg',
 	),
-	// AMBIENT WEATHER
-	SFX_WEATHER_OUT_NORMAL = list(
-		'sound/ambient/weather/wind_01.ogg',
-		'sound/ambient/weather/wind_02.ogg',
-		'sound/ambient/weather/wind_03.ogg',
-		'sound/ambient/weather/wind_04.ogg',
-		'sound/ambient/weather/wind_05.ogg',
-		'sound/ambient/weather/wind_06.ogg',
-		'sound/ambient/weather/wind_07.ogg',
-		'sound/ambient/weather/wind_08.ogg',
-		'sound/ambient/weather/wind_09.ogg',
-	),
-	SFX_WEATHER_IN_NORMAL = list(
-		'sound/ambient/weather/wind_gust_01.ogg',
-		'sound/ambient/weather/wind_gust_02.ogg',
-		'sound/ambient/weather/wind_gust_03.ogg',
-		'sound/ambient/weather/wind_gust_04.ogg',
-		'sound/ambient/weather/wind_gust_05.ogg',
-		'sound/ambient/weather/wind_gust_06.ogg',
-		'sound/ambient/weather/wind_gust_07.ogg',
-		'sound/ambient/weather/wind_gust_08.ogg',
-		'sound/ambient/weather/wind_gust_09.ogg',
-		'sound/ambient/weather/wind_gust_10.ogg',
-		'sound/ambient/weather/wind_gust_11.ogg',
-		'sound/ambient/weather/wind_gust_12.ogg',
-		'sound/ambient/weather/wind_gust_13.ogg',
-		'sound/ambient/weather/wind_gust_14.ogg',
-		'sound/ambient/weather/wind_gust_15.ogg',
-		'sound/ambient/weather/wind_gust_16.ogg',
-		'sound/ambient/weather/wind_gust_17.ogg',
-		'sound/ambient/weather/wind_gust_18.ogg',
-		'sound/ambient/weather/wind_gust_19.ogg',
-		'sound/ambient/weather/wind_gust_20.ogg',
-		'sound/ambient/weather/wind_gust_21.ogg',
-		'sound/ambient/weather/wind_gust_22.ogg',
-		'sound/ambient/weather/wind_gust_23.ogg',
-		'sound/ambient/weather/wind_gust_24.ogg'
-	),
-	SFX_WEATHER_OUT_STORM_INCOMING = list(
-		'sound/ambient/weather/storm_near_01.ogg',
-		'sound/ambient/weather/storm_near_02.ogg',
-		'sound/ambient/weather/storm_near_03.ogg',
-		'sound/ambient/weather/storm_near_04.ogg',
-		'sound/ambient/weather/storm_near_05.ogg',
-		'sound/ambient/weather/storm_near_06.ogg',
-		'sound/ambient/weather/storm_near_07.ogg',
-		'sound/ambient/weather/storm_near_08.ogg',
-		'sound/ambient/weather/storm_near_09.ogg',
-		'sound/ambient/weather/storm_near_10.ogg',
-	),
-	SFX_WEATHER_IN_STORM_INCOMING = list(
-		'sound/ambient/weather/storm_far_01.ogg',
-		'sound/ambient/weather/storm_far_02.ogg',
-		'sound/ambient/weather/storm_far_03.ogg',
-		'sound/ambient/weather/storm_far_04.ogg',
-		'sound/ambient/weather/storm_far_05.ogg',
-		'sound/ambient/weather/storm_far_06.ogg',
-		'sound/ambient/weather/storm_far_07.ogg',
-		'sound/ambient/weather/storm_far_08.ogg',
-		'sound/ambient/weather/storm_far_09.ogg',
-		'sound/ambient/weather/storm_far_10.ogg',
-		'sound/ambient/weather/storm_far_11.ogg',
-		'sound/ambient/weather/storm_far_12.ogg',
-		'sound/ambient/weather/storm_far_13.ogg',
-		'sound/ambient/weather/storm_far_14.ogg',
-		'sound/ambient/weather/storm_far_15.ogg',
-		'sound/ambient/weather/storm_far_16.ogg',
-		'sound/ambient/weather/storm_far_17.ogg',
-		'sound/ambient/weather/storm_far_18.ogg',
-		'sound/ambient/weather/storm_far_19.ogg',
-	),
-	SFX_WEATHER_OUT_STORM = list(
-		'sound/ambient/weather/storm_sweet_01.ogg',
-		'sound/ambient/weather/storm_sweet_02.ogg',
-		'sound/ambient/weather/storm_sweet_03.ogg'
-	),
-	SFX_WEATHER_IN_STORM = list(
-		'sound/ambient/weather/cave_wind_sweet_01.ogg',
-		'sound/ambient/weather/cave_wind_sweet_02.ogg',
-		'sound/ambient/weather/cave_wind_sweet_03.ogg',
-		'sound/ambient/weather/cave_wind_sweet_04.ogg',
-		'sound/ambient/weather/cave_wind_sweet_05.ogg',
-		'sound/ambient/weather/cave_wind_sweet_06.ogg',
-		'sound/ambient/weather/cave_wind_sweet_07.ogg',
-		'sound/ambient/weather/cave_wind_sweet_08.ogg',
-		'sound/ambient/weather/cave_wind_sweet_09.ogg'
-	),
 	// AMBIENT MUSIC
 	SFX_AMBIENT_MUSIC_NORMAL = list(
 		'sound/ambient_music/normal_1.ogg',
@@ -907,9 +820,351 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/pull/pull_wood37.ogg'
 	),
 	// PICKUP
+	SFX_PICKUP_GENERIC = list(
+		'sound/effects/pickup/generic1.ogg',
+		'sound/effects/pickup/generic2.ogg',
+		'sound/effects/pickup/generic3.ogg'
+	),
+	SFX_PICKUP_ACCESSORY = list(
+		'sound/effects/pickup/accessory.ogg'
+	),
+	SFX_PICKUP_AMMOBOX = list(
+		'sound/effects/pickup/ammobox.ogg'
+	),
+	SFX_PICKUP_AXE = list(
+		'sound/effects/pickup/axe.ogg'
+	),
+	SFX_PICKUP_BACKPACK = list(
+		'sound/effects/pickup/backpack.ogg'
+	),
+	SFX_PICKUP_BALL = list(
+		'sound/effects/pickup/ball.ogg'
+	),
 	SFX_PICKUP_BOTTLE = list(
 		'sound/effects/using/bottles/pickup1.ogg',
+		'sound/effects/using/bottles/pickup2.ogg',
+	),
+	SFX_PICKUP_GLASSBOTTLE = list(
+		'sound/effects/using/bottles/pickup3.ogg',
+	),
+	SFX_PICKUP_BOOK = list(
+		'sound/effects/pickup/book.ogg'
+	),
+	SFX_PICKUP_BOOTS = list(
+		'sound/effects/pickup/boots.ogg'
+	),
+	SFX_PICKUP_CARD = list(
+		'sound/effects/pickup/card.ogg'
+	),
+	SFX_PICKUP_CARDBOARD = list(
+		'sound/effects/pickup/cardboardbox.ogg'
+	),
+	SFX_PICKUP_CLOTH = list(
+		'sound/effects/pickup/cloth.ogg'
+	),
+	SFX_PICKUP_COMPONENT = list(
+		'sound/effects/pickup/component.ogg'
+	),
+	SFX_PICKUP_CROWBAR = list(
+		'sound/effects/pickup/crowbar.ogg'
+	),
+	SFX_PICKUP_DEVICE = list(
+		'sound/effects/pickup/device.ogg'
+	),
+	SFX_PICKUP_DISK = list(
+		'sound/effects/pickup/disk.ogg'
+	),
+	SFX_PICKUP_DRINKGLASS = list(
+		'sound/effects/pickup/drinkglass.ogg'
+	),
+	SFX_PICKUP_FLESH = list(
+		'sound/effects/pickup/flesh.ogg'
+	),
+	SFX_PICKUP_FOOD = list(
+		'sound/effects/pickup/food.ogg'
+	),
+	SFX_PICKUP_GASCAN = list(
+		'sound/effects/pickup/gascan.ogg'
+	),
+	SFX_PICKUP_GLASS = list(
+		'sound/effects/pickup/glass.ogg'
+	),
+	SFX_PICKUP_GLASSSMALL = list(
+		'sound/effects/pickup/glass_small.ogg'
+	),
+	SFX_PICKUP_GLOVES = list(
+		'sound/effects/pickup/gloves.ogg'
+	),
+	SFX_PICKUP_GUN = list(
+		'sound/effects/pickup/gun.ogg'
+	),
+	SFX_PICKUP_HAT = list(
+		'sound/effects/pickup/hat.ogg'
+	),
+	SFX_PICKUP_HELMET = list(
+		'sound/effects/pickup/helm.ogg'
+	),
+	SFX_PICKUP_HERB = list(
+		'sound/effects/pickup/herb.ogg'
+	),
+	SFX_PICKUP_KNIFE = list(
+		'sound/effects/pickup/knife.ogg'
+	),
+	SFX_PICKUP_LEATHER = list(
+		'sound/effects/pickup/leather.ogg'
+	),
+	SFX_PICKUP_MATCHBOX = list(
+		'sound/effects/pickup/matchbox.ogg'
+	),
+	SFX_PICKUP_METALPOT = list(
+		'sound/effects/pickup/metal_pot.ogg'
+	),
+	SFX_PICKUP_METALWEAPON = list(
+		'sound/effects/pickup/metalweapon.ogg'
+	),
+	SFX_PICKUP_MULTITOOL = list(
+		'sound/effects/pickup/multitool.ogg'
+	),
+	SFX_PICKUP_PAPER = list(
+		'sound/effects/pickup/paper.ogg'
+	),
+	SFX_PICKUP_PAPERCUP = list(
+		'sound/effects/pickup/papercup.ogg'
+	),
+	SFX_PICKUP_PILLBOTTLE = list(
+		'sound/effects/pickup/pillbottle.ogg'
+	),
+	SFX_PICKUP_PLUSHIE = list(
+		'sound/effects/pickup/plushie.ogg'
+	),
+	SFX_PICKUP_RING = list(
+		'sound/effects/pickup/ring.ogg'
+	),
+	SFX_PICKUP_RUBBER = list(
+		'sound/effects/pickup/rubber.ogg'
+	),
+	SFX_PICKUP_SCREWDRIVER = list(
+		'sound/effects/pickup/screwdriver.ogg'
+	),
+	SFX_PICKUP_SHELL = list(
+		'sound/effects/drop/shell_drop.ogg'
+	),
+	SFX_PICKUP_SHOES = list(
+		'sound/effects/pickup/shoes.ogg'
+	),
+	SFX_PICKUP_SHOVEL = list(
+		'sound/effects/pickup/shovel.ogg'
+	),
+	SFX_PICKUP_SODACAN = list(
+		'sound/effects/pickup/soda.ogg'
+	),
+	SFX_PICKUP_SWORD = list(
+		'sound/effects/pickup/sword1.ogg',
+		'sound/effects/pickup/sword2.ogg',
+		'sound/effects/pickup/sword3.ogg'
+	),
+	SFX_PICKUP_TOOLBELT = list(
+		'sound/effects/pickup/toolbelt.ogg'
+	),
+	SFX_PICKUP_TOOLBOX = list(
+		'sound/effects/pickup/toolbox.ogg'
+	),
+	SFX_PICKUP_WELDINGTOOL = list(
+		'sound/effects/pickup/weldingtool.ogg'
+	),
+	SFX_PICKUP_WIRECUTTER = list(
+		'sound/effects/pickup/wirecutter.ogg'
+	),
+	SFX_PICKUP_WOODEN = list(
+		'sound/effects/pickup/wooden.ogg'
+	),
+	SFX_PICKUP_WRAPPER = list(
+		'sound/effects/pickup/wrapper.ogg'
+	),
+	SFX_PICKUP_WRENCH = list(
+		'sound/effects/pickup/wrench.ogg'
+	),
+	//DROP
+	SFX_DROP_GENERIC = list(
+		'sound/effects/drop/generic1.ogg',
+		'sound/effects/drop/generic2.ogg'
+	),
+	SFX_DROP_ACCESSORY = list(
+		'sound/effects/pickup/accessory.ogg'
+	),
+	SFX_DROP_AMMOBOX = list(
+		'sound/effects/drop/ammobox.ogg'
+	),
+	SFX_DROP_AXE = list(
+		'sound/effects/drop/axe.ogg'
+	),
+	SFX_DROP_BACKPACK = list(
+		'sound/effects/drop/backpack.ogg'
+	),
+	SFX_DROP_BALL = list(
+		'sound/effects/drop/ball.ogg'
+	),
+	SFX_DROP_BOTTLE = list(
+		'sound/effects/using/bottles/pickup1.ogg',
 		'sound/effects/using/bottles/pickup2.ogg'
+	),
+	SFX_DROP_GLASSBOTTLE = list(
+		'sound/effects/using/bottles/pickup3.ogg',
+		'sound/effects/drop/bottle.ogg'
+	),
+	SFX_DROP_BOOK = list(
+		'sound/effects/drop/book.ogg'
+	),
+	SFX_DROP_BOOTS = list(
+		'sound/effects/drop/boots.ogg'
+	),
+	SFX_DROP_CARD = list(
+		'sound/effects/drop/card.ogg'
+	),
+	SFX_DROP_CARDBOARD = list(
+		'sound/effects/drop/cardboardbox.ogg'
+	),
+	SFX_DROP_CLOTH = list(
+		'sound/effects/drop/cloth.ogg'
+	),
+	SFX_DROP_COMPONENT = list(
+		'sound/effects/drop/component.ogg'
+	),
+	SFX_DROP_CROWBAR = list(
+		'sound/effects/drop/crowbar.ogg'
+	),
+	SFX_DROP_DEVICE = list(
+		'sound/effects/drop/device.ogg'
+	),
+	SFX_DROP_DISK = list(
+		'sound/effects/drop/disk.ogg'
+	),
+	SFX_DROP_DRINKGLASS = list(
+		'sound/effects/drop/drinkglass.ogg'
+	),
+	SFX_DROP_FLESH = list(
+		'sound/effects/drop/flesh.ogg'
+	),
+	SFX_DROP_FOOD = list(
+		'sound/effects/drop/food.ogg'
+	),
+	SFX_DROP_GASCAN = list(
+		'sound/effects/drop/gascan.ogg'
+	),
+	SFX_DROP_GLASS = list(
+		'sound/effects/drop/glass.ogg'
+	),
+	SFX_DROP_GLASSSMALL = list(
+		'sound/effects/drop/glass_small.ogg'
+	),
+	SFX_DROP_GLOVES = list(
+		'sound/effects/drop/gloves.ogg'
+	),
+	SFX_DROP_GUN = list(
+		'sound/effects/drop/gun.ogg'
+	),
+	SFX_DROP_HAT = list(
+		'sound/effects/drop/hat.ogg'
+	),
+	SFX_DROP_HELMET = list(
+		'sound/effects/drop/helm.ogg'
+	),
+	SFX_DROP_HERB = list(
+		'sound/effects/drop/herb.ogg'
+	),
+	SFX_DROP_KNIFE = list(
+		'sound/effects/drop/knife.ogg'
+	),
+	SFX_DROP_LEATHER = list(
+		'sound/effects/drop/leather.ogg'
+	),
+	SFX_DROP_MATCHBOX = list(
+		'sound/effects/drop/matchbox.ogg'
+	),
+	SFX_DROP_METALPOT = list(
+		'sound/effects/drop/metal_pot.ogg'
+	),
+	SFX_DROP_METALWEAPON = list(
+		'sound/effects/drop/metalweapon.ogg'
+	),
+	SFX_DROP_MULTITOOL = list(
+		'sound/effects/drop/multitool.ogg'
+	),
+	SFX_DROP_PAPER = list(
+		'sound/effects/drop/paper.ogg'
+	),
+	SFX_DROP_PAPERCUP = list(
+		'sound/effects/drop/papercup.ogg'
+	),
+	SFX_DROP_PILLBOTTLE = list(
+		'sound/effects/drop/pillbottle.ogg'
+	),
+	SFX_DROP_PLUSHIE = list(
+		'sound/effects/drop/plushie.ogg'
+	),
+	SFX_DROP_RING = list(
+		'sound/effects/drop/ring.ogg'
+	),
+	SFX_DROP_RUBBER = list(
+		'sound/effects/drop/rubber.ogg'
+	),
+	SFX_DROP_SCREWDRIVER = list(
+		'sound/effects/drop/screwdriver.ogg'
+	),
+	SFX_DROP_SHELL = list(
+		'sound/effects/drop/shell_drop.ogg'
+	),
+	SFX_DROP_SHOES = list(
+		'sound/effects/drop/shoes.ogg'
+	),
+	SFX_DROP_SHOVEL = list(
+		'sound/effects/drop/shovel.ogg'
+	),
+	SFX_DROP_SODACAN = list(
+		'sound/effects/drop/soda.ogg'
+	),
+	SFX_DROP_SWORD = list(
+		'sound/effects/drop/sword.ogg'
+	),
+	SFX_DROP_TOOLBELT = list(
+		'sound/effects/drop/toolbelt.ogg'
+	),
+	SFX_DROP_TOOLBOX = list(
+		'sound/effects/drop/toolbox.ogg'
+	),
+	SFX_DROP_WELDINGTOOL = list(
+		'sound/effects/drop/weldingtool.ogg'
+	),
+	SFX_DROP_WIRECUTTER = list(
+		'sound/effects/drop/wirecutter.ogg'
+	),
+	SFX_DROP_WOODEN = list(
+		'sound/effects/drop/wooden.ogg'
+	),
+	SFX_DROP_WRAPPER = list(
+		'sound/effects/drop/wrapper.ogg'
+	),
+	SFX_DROP_WRENCH = list(
+		'sound/effects/drop/wrench.ogg'
+	),
+	// HOLSTER & SHEATH
+	SFX_HOLSTERIN = list(
+		'sound/effects/holster/holsterin.ogg'
+	),
+	SFX_HOLSTEROUT = list(
+		'sound/effects/holster/holsterout.ogg'
+	),
+	SFX_SHEATHIN = list(
+		'sound/effects/holster/sheathin.ogg'
+	),
+	SFX_SHEATHOUT = list(
+		'sound/effects/holster/sheathout.ogg'
+	),
+	SFX_TACHOLSTERIN = list(
+		'sound/effects/holster/tactiholsterin.ogg'
+	),
+	SFX_TACHOLSTEROUT = list(
+		'sound/effects/holster/tactiholsterout.ogg'
 	),
 	// DRINK & EAT
 	SFX_DRINK = list(
@@ -1004,6 +1259,16 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/electric/heavy_spark2.ogg',
 		'sound/effects/electric/heavy_spark3.ogg',
 		'sound/effects/electric/heavy_spark4.ogg'
+	),
+	// TURRETS
+	SFX_TURRET_DEPLOY = list(
+		'sound/machines/turrets/turret_deploy.ogg'
+	),
+	SFX_TURRET_RETRACT = list(
+		'sound/machines/turrets/turret_retract.ogg'
+	),
+	SFX_TURRET_ROTATE = list(
+		'sound/machines/turrets/turret_rotate.ogg'
 	),
 	// EXPLOSION
 	SFX_EXPLOSION = list(
@@ -1342,6 +1607,11 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/using/disposal/drop3.ogg',
 		'sound/effects/using/disposal/drop4.ogg'
 	),
+	SFX_OINK = list(
+		'sound/effects/pig1.ogg',
+		'sound/effects/pig2.ogg',
+		'sound/effects/pig3.ogg'
+	),
 	// DEVICES
 	SFX_GEIGER_LOW = list(
 		'sound/effects/geiger/geiger_low_1.ogg',
@@ -1451,6 +1721,9 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/robot_footstep/spider02.ogg',
 		'sound/effects/robot_footstep/spider03.ogg'
 	),
+	SFX_FOOTSTEP_STAIRS = list(
+		'sound/effects/stairs_step.ogg'
+	),
 	SFX_KEYBOARD = list(
 		'sound/machines/keyboard/keystroke1.ogg',
 		'sound/machines/keyboard/keystroke2.ogg',
@@ -1460,5 +1733,17 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/machines/keyboard/keypress2.ogg',
 		'sound/machines/keyboard/keypress3.ogg',
 		'sound/machines/keyboard/keypress4.ogg'
+	),
+	SFX_VENDING_CANS = list(
+		'sound/machines/vending/vending_cans.ogg'
+	),
+	SFX_VENDING_COFFEE = list(
+		'sound/machines/vending/vending_coffee.ogg'
+	),
+	SFX_VENDING_DROP = list(
+		'sound/machines/vending/vending_drop.ogg'
+	),
+	SFX_VENDING_GENERIC = list(
+		'sound/effects/using/disposal/drop2.ogg'
 	)
 ))

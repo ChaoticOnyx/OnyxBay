@@ -25,6 +25,9 @@
 	var/ff_reagent = /datum/reagent/water/firefoam
 	var/external_source = FALSE
 
+	drop_sound = SFX_DROP_GASCAN
+	pickup_sound = SFX_PICKUP_GASCAN
+
 /obj/item/extinguisher/mini
 	name = "fire extinguisher"
 	desc = "A light and compact fibreglass-framed model fire extinguisher."

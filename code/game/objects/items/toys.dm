@@ -30,6 +30,8 @@
 	mod_weight = 0.25
 	mod_reach = 0.25
 	mod_handy = 0.25
+	drop_sound = SFX_DROP_GLOVES
+	pickup_sound = SFX_PICKUP_GLOVES
 
 /obj/item/toy/proc/speak(message)
 	if (!message)
@@ -117,6 +119,9 @@
 	item_state = "syndballoon"
 	w_class = ITEM_SIZE_HUGE
 
+	drop_sound = SFX_DROP_RUBBER
+	pickup_sound = SFX_PICKUP_RUBBER
+
 /obj/item/toy/balloon/New()
 	..()
 	desc = "Across the balloon is printed: \"[desc]\""
@@ -139,7 +144,7 @@
 /obj/item/toy/blink
 	name = "electronic blink toy game"
 	desc = "Blink.  Blink.  Blink. Ages 8 and up."
-	icon = 'icons/obj/radio.dmi'
+	icon = 'icons/obj/device.dmi'
 	icon_state = "beacon"
 	item_state = "signaler"
 
@@ -495,7 +500,7 @@
 /obj/item/toy/figure/gardener
 	name = "Gardener action figure"
 	desc = "A \"Space Life\" brand Gardener action figure."
-	icon_state = "botanist"
+	icon_state = "gardener"
 
 /obj/item/toy/figure/captain
 	name = "Captain action figure"

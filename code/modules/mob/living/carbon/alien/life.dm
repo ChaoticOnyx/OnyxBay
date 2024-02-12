@@ -20,7 +20,7 @@
 
 /mob/living/carbon/alien/updatehealth()
 	if(is_ooc_dead())
-		return 0
+		return FALSE
 
 	if(status_flags & GODMODE)
 		health = maxHealth
@@ -29,8 +29,11 @@
 		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss()
 		if(health <= 0)
 			death()
-			return 0
-	return 1
+			return FALSE
+
+	update_health_slowdown()
+
+	return TRUE
 
 
 // Currently both Dionaea and larvae like to eat radiation, so I'm defining the
@@ -40,7 +43,7 @@
 		return
 	var/rads = radiation / (0.05 SIEVERT)
 	radiation = max(SPACE_RADIATION, radiation - rads)
-	nutrition += rads
+	add_nutrition(rads)
 	heal_overall_damage(rads, rads)
 	adjustOxyLoss(-rads)
 	adjustToxLoss(-rads)
@@ -95,12 +98,12 @@
 
 	if(!is_ooc_dead())
 		if(blinded)
-			overlay_fullscreen("blind", /obj/screen/fullscreen/blind)
+			overlay_fullscreen("blind", /atom/movable/screen/fullscreen/blind)
 		else
 			clear_fullscreen("blind")
-			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /obj/screen/fullscreen/impaired, 1)
+			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /atom/movable/screen/fullscreen/impaired, 1)
 			set_renderer_filter(eye_blurry, SCENE_GROUP_RENDERER, EYE_BLURRY_FILTER_NAME, 0, EYE_BLURRY_FILTER(eye_blurry))
-			set_fullscreen(druggy, "high", /obj/screen/fullscreen/high)
+			set_fullscreen(druggy, "high", /atom/movable/screen/fullscreen/high)
 		if(machine)
 			if(machine.check_eye(src) < 0)
 				reset_view(null)

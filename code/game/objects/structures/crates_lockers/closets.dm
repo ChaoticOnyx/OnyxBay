@@ -47,10 +47,13 @@
 
 	var/material = /obj/item/stack/material/steel
 
+	var/intact_closet = TRUE // List operations overhead bad
+
 /obj/structure/closet/nodoor
 	nodoor = TRUE
 	opened = TRUE
 	density = FALSE
+	intact_closet = FALSE
 
 /obj/item/shield/closet
 	name = "closet door"
@@ -123,6 +126,9 @@
 	if((setup & CLOSET_HAS_LOCK))
 		verbs += /obj/structure/closet/proc/togglelock_verb
 
+	if(intact_closet && (z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
+		GLOB.intact_station_closets.Add(src)
+
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/closet/LateInitialize(mapload, ...)
@@ -158,6 +164,8 @@
 
 /obj/structure/closet/Destroy()
 	QDEL_NULL(cdoor)
+	if(intact_closet)
+		GLOB.intact_station_closets.Remove(src)
 	return ..()
 
 /obj/structure/closet/proc/WillContain()
@@ -249,6 +257,11 @@
 	playsound(src.loc, open_sound, 50, 1, -3)
 	density = FALSE
 	update_icon()
+
+	if(intact_closet)
+		intact_closet = FALSE
+		GLOB.intact_station_closets.Remove(src)
+
 	return TRUE
 
 /obj/structure/closet/proc/close()
@@ -543,7 +556,7 @@
 /obj/structure/closet/MouseDrop_T(atom/movable/O, mob/user)
 	if(QDELETED(O))
 		return
-	if(istype(O, /obj/screen))	//fix for HUD elements making their way into the world	-Pete
+	if(istype(O, /atom/movable/screen))	//fix for HUD elements making their way into the world	-Pete
 		return
 	if(O.loc == user)
 		return

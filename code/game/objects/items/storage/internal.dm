@@ -40,7 +40,7 @@
 			src.open(user)
 			return 0
 
-		if (!( istype(over_object, /obj/screen) ))
+		if (!( istype(over_object, /atom/movable/screen) ))
 			return 1
 
 		//makes sure master_item is equipped before putting it in hand, so that we can't drag it into our hand from miles away.
@@ -52,10 +52,10 @@
 		if (!( user.restrained() ) && !( user.stat ))
 			switch(over_object.name)
 				if(BP_R_HAND)
-					if(user.drop(master_item))
+					if(user.drop(master_item, changing_slots = TRUE))
 						user.put_in_r_hand(master_item)
 				if(BP_L_HAND)
-					if(user.drop(master_item))
+					if(user.drop(master_item, changing_slots = TRUE))
 						user.put_in_l_hand(master_item)
 			master_item.add_fingerprint(user)
 			return 0

@@ -20,6 +20,9 @@
 	var/starting_label = null
 	var/true_desc = "It's an airtight container for storing medication."
 
+	pickup_sound = SFX_PICKUP_PILLBOTTLE
+	drop_sound = SFX_DROP_PILLBOTTLE
+
 /obj/item/storage/pill_bottle/Initialize()
 	. = ..()
 	update_icon()
@@ -50,7 +53,7 @@
 			to_chat(user, SPAN_NOTICE("You take \the [I] out of \the [src]."))
 			user.swap_hand()
 		else
-			I.dropInto(loc)
+			remove_from_storage(I, get_turf(user.loc))
 			to_chat(user, SPAN_WARNING("You fumble around with \the [src] and drop \the [I] on the floor."))
 	else
 		to_chat(user, SPAN_WARNING("\The [src] is empty."))

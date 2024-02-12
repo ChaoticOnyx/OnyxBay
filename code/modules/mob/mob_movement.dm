@@ -131,9 +131,17 @@
 		if(O.buckled_mob)
 			O.buckled_mob.set_glide_size(glide_size, min, max)
 
+	SEND_SIGNAL(src, SIGNAL_UPDATE_GLIDE_SIZE, glide_size)
+
 //This proc should never be overridden elsewhere at /atom/movable to keep directions sane.
 /atom/movable/Move(newloc, direct)
 	var/old_loc = loc
+
+	var/turf/old_turf = get_turf(old_loc)
+	var/turf/new_turf = get_turf(newloc)
+
+	if(old_turf?.z != new_turf?.z)
+		SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, old_turf, new_turf)
 
 	if (direct & (direct - 1))
 		if (direct & 1)
@@ -179,14 +187,6 @@
 		src.m_flag = 1
 		if ((A != src.loc && A && A.z == src.z))
 			src.last_move = get_dir(A, src.loc)
-
-	if(orbiters)
-		for(var/thing in orbiters)
-			var/datum/orbit/O = thing
-			O.Check()
-
-	if(istype(orbiting))
-		orbiting.Check()
 
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
 
@@ -294,3 +294,6 @@
 	DO_MOVE(WEST)
 
 #undef DO_MOVE
+
+/mob/proc/update_move_intent_slowdown()
+	add_movespeed_modifier((m_intent == M_WALK) ? /datum/movespeed_modifier/walk : /datum/movespeed_modifier/run)

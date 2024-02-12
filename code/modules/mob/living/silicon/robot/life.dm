@@ -218,12 +218,12 @@
 
 	if(!is_ooc_dead())
 		if(blinded)
-			overlay_fullscreen("blind", /obj/screen/fullscreen/blind)
+			overlay_fullscreen("blind", /atom/movable/screen/fullscreen/blind)
 		else
 			clear_fullscreen("blind")
-			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /obj/screen/fullscreen/impaired, 1)
+			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /atom/movable/screen/fullscreen/impaired, 1)
 			set_renderer_filter(eye_blurry, SCENE_GROUP_RENDERER, EYE_BLURRY_FILTER_NAME, 0, EYE_BLURRY_FILTER(eye_blurry))
-			set_fullscreen(druggy, "high", /obj/screen/fullscreen/high)
+			set_fullscreen(druggy, "high", /atom/movable/screen/fullscreen/high)
 
 		if(machine)
 			if(machine.check_eye(src) < 0)
@@ -266,7 +266,7 @@
 				set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
 				src.client.screen |= GLOB.global_hud.nvg
 			if(FLASH_PROTECTION_VISION)
-				src.set_fullscreen(1, "flash_protection", /obj/screen/fullscreen/impaired, TINT_MODERATE)
+				src.set_fullscreen(1, "flash_protection", /atom/movable/screen/fullscreen/impaired, TINT_MODERATE)
 			else
 				if(!is_ooc_dead())
 					set_sight(sight&(~SEE_TURFS)&(~SEE_MOBS)&(~SEE_OBJS))

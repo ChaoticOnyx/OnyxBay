@@ -541,6 +541,9 @@ forbid_singulo_following = true
 toggle_gun_safety = false
 
 [mapping]
+## How many derelicts are going to show up
+derelicts_amount = 2
+
 ## Which engine should be on map (not all the maps support this).
 ## Pick one from: "random", "singularity", "supermatter"
 preferable_engine = "singularity"

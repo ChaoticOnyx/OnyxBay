@@ -1,10 +1,4 @@
 /mob/living/carbon/human/_examine_text(mob/user)
-
-	if(istype(wear_suit, /obj/item/clothing/suit/armor/abductor/vest))
-		var/obj/item/clothing/suit/armor/abductor/vest/abd_vest = wear_suit
-		if(abd_vest.stealth_active)
-			return abd_vest.disguise.examine
-
 	var/skipgloves = 0
 	var/skipsuitstorage = 0
 	var/skipjumpsuit = 0
@@ -44,6 +38,8 @@
 	else
 		if(icon)
 			msg += "[icon2html(icon, user)] " // fucking BYOND: this should stop dreamseeker crashing if we -somehow- examine somebody before their icon is generated
+		else
+			msg += "[icon2html(get_flat_icon(src, SOUTH), user)]"
 
 	if(!T)
 		// Just in case someone VVs the gender to something strange. It'll runtime anyway when it hits usages, better to CRASH() now with a helpful message.
@@ -53,11 +49,9 @@
 
 	var/is_synth = isSynthetic()
 	if(!(skipjumpsuit && skipface))
-		var/species_name = "\improper "
-		if(is_synth && species.type != /datum/species/machine)
-			species_name += "Cyborg "
-		species_name += "[species.name]"
+		var/species_name = "\improper [is_synth ? "Cyborg" : species.name]"
 		msg += ", <b><font color='[species.get_flesh_colour(src)]'> \a [species_name]!</font></b>"
+
 	var/extra_species_text = species.get_additional_examine_text(src)
 	if(extra_species_text)
 		msg += "[extra_species_text]<br>"

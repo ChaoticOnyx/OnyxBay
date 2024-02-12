@@ -20,6 +20,9 @@
 	var/string_color = COLOR_RED
 	var/sides = 2
 
+	drop_sound = SFX_DROP_RING
+	pickup_sound = SFX_PICKUP_RING
+
 /obj/item/material/coin/set_material(new_material)
 	. = ..()
 	if(material.name in icon_states(icon))

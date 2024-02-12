@@ -27,6 +27,9 @@
 	var/buffer_name
 	var/atom/buffer_object
 
+	drop_sound = SFX_DROP_MULTITOOL
+	pickup_sound = SFX_PICKUP_MULTITOOL
+
 /obj/item/device/multitool/Destroy()
 	unregister_buffer(buffer_object)
 	return ..()

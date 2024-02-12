@@ -44,7 +44,7 @@
 	var/datum/reagents/R = get_ingested_reagents()
 	if(istype(R))
 		R.clear_reagents()
-	nutrition = 300
+	set_nutrition(300)
 	..()
 
 /mob/living/carbon/Move(NewLoc, direct)
@@ -53,9 +53,9 @@
 		return
 
 	if(nutrition && stat != 2)
-		nutrition -= min(nutrition, DEFAULT_HUNGER_FACTOR/10)
+		remove_nutrition(min(nutrition, DEFAULT_HUNGER_FACTOR / 10))
 		if(m_intent == M_RUN)
-			nutrition -= min(nutrition, DEFAULT_HUNGER_FACTOR/10)
+			remove_nutrition(min(nutrition, DEFAULT_HUNGER_FACTOR / 10))
 	if((MUTATION_FAT in mutations) && m_intent == M_RUN && bodytemperature <= 360)
 		bodytemperature += 2
 
@@ -276,7 +276,7 @@
 /mob/living/carbon/proc/get_ear_protection()
 	return 0
 
-/mob/living/carbon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
+/mob/living/carbon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /atom/movable/screen/fullscreen/flash, effect_duration = 25)
 	if(eyecheck() < intensity || override_blindness_check)
 		return ..()
 
@@ -301,7 +301,7 @@
 		return
 	if(stat || !target)
 		return
-	if(target.type == /obj/screen)
+	if(target.type == /atom/movable/screen)
 		return
 
 	var/atom/movable/item = get_active_hand()
@@ -437,11 +437,17 @@
 	else
 		chem_effects[effect] = magnitude
 
+	if(effect == CE_SPEEDBOOST || effect == CE_SLOWDOWN)
+		update_chem_slowdown(effect)
+
 /mob/living/carbon/proc/add_up_to_chemical_effect(effect, magnitude = 1)
 	if(effect in chem_effects)
 		chem_effects[effect] = max(magnitude, chem_effects[effect])
 	else
 		chem_effects[effect] = magnitude
+
+	if(effect == CE_SPEEDBOOST || effect == CE_SLOWDOWN)
+		update_chem_slowdown(effect)
 
 /mob/living/carbon/get_default_language()
 	if(default_language && can_speak(default_language))

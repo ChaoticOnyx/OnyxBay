@@ -93,6 +93,11 @@
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
 
+/obj/item/organ/external/Initialize(mapload, ...)
+	. = ..()
+	if(!mapload && owner)
+		owner.update_organ_movespeed()
+
 /obj/item/organ/external/proc/get_fingerprint()
 
 	if((limb_flags & ORGAN_FLAG_FINGERPRINT) && dna && !is_stump() && !BP_IS_ROBOTIC(src))
@@ -902,6 +907,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 				stump.sever_artery()
 			stump.update_damages()
 			stump.replaced(victim)
+
+	victim.update_organ_movespeed()
+
 	spawn(1) // Yes, we DO need to wait before regenerating icons since all the stuff takes a literal eternity
 		if(!QDELETED(victim)) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
 			victim.updatehealth()
@@ -1048,6 +1056,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 		movement_tally += splinted_tally * damage_multiplier
 	else if(status & ORGAN_BROKEN)
 		movement_tally += broken_tally * damage_multiplier
+
+	owner.update_organ_movespeed()
 
 /obj/item/organ/external/proc/fracture()
 	if(!config.health.bones_can_break)

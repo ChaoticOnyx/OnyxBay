@@ -93,6 +93,9 @@
 	var/mob/autofiring_by
 	var/autofiring_timer
 
+	drop_sound = SFX_DROP_GUN
+	pickup_sound = SFX_PICKUP_GUN
+
 /obj/item/gun/Initialize()
 	. = ..()
 	for(var/i in 1 to firemodes.len)
@@ -100,6 +103,9 @@
 
 	if(isnull(scoped_accuracy))
 		scoped_accuracy = accuracy
+
+	if(config.misc.toogle_gun_safety)
+		verbs |= /obj/item/gun/proc/toggle_safety_verb
 
 /obj/item/gun/Destroy()
 	// autofire timer is automatically cleaned up
@@ -671,7 +677,7 @@
 	if(safety_icon)
 		AddOverlays((image(icon,"[safety_icon][safety()]")))
 
-/obj/item/gun/verb/toggle_safety_verb()
+/obj/item/gun/proc/toggle_safety_verb()
 	set src in usr
 	set category = "Object"
 	set name = "Toggle Gun Safety"

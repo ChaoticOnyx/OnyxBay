@@ -458,7 +458,7 @@
 /datum/hallucination/hud_error
 	duration = 10 SECONDS
 	min_power = 30
-	var/obj/screen/fake
+	var/atom/movable/screen/fake
 
 /datum/hallucination/hud_error/can_affect(mob/living/carbon/C)
 	if(!..())
@@ -468,12 +468,11 @@
 /datum/hallucination/hud_error/start()
 	ASSERT(istype(holder, /mob/living/carbon/human))
 	var/mob/living/carbon/human/H = holder
-	var/obj/screen/origin = pick(H.toxin, H.oxygen, H.fire, H.bodytemp, H.pressure, H.nutrition_icon)
+	var/atom/movable/screen/origin = pick(H.toxin, H.oxygen, H.fire, H.bodytemp, H.pressure, H.nutrition_icon)
 	fake = new()
 	fake.name = origin.name
 	fake.icon = origin.icon
 	fake.appearance_flags = origin.appearance_flags
-	fake.unacidable = origin.unacidable
 	fake.globalscreen = FALSE
 	fake.plane = HUD_PLANE
 	fake.layer = HUD_ABOVE_ITEM_LAYER

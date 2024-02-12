@@ -72,7 +72,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 		var/datum/signal/copy
 		if(copysig)
 			copy = new
-			copy.transmission_method = 2
+			copy.method = TRANSMISSION_SUBSPACE
 			copy.frequency = signal.frequency
 			copy.data = signal.data.Copy()
 
@@ -286,7 +286,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	if(!check_receive_level(signal))
 		return
 
-	if(signal.transmission_method == 2)
+	if(signal.method == TRANSMISSION_SUBSPACE)
 
 		if(is_freq_listening(signal)) // detect subspace signals
 

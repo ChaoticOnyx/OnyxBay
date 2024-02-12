@@ -246,6 +246,8 @@
 #define BP_ALL_LIMBS list(BP_CHEST, BP_GROIN, BP_HEAD, BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND, BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)
 #define BP_BY_DEPTH list(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM, BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG, BP_GROIN, BP_CHEST)
 #define BP_FEET list(BP_L_FOOT, BP_R_FOOT)
+#define BP_LIMBS_LOCOMOTION list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)
+#define BP_LIMBS_ARM_LOCOMOTION list(BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM)
 
 // Prosthetic helpers.
 #define BP_IS_ROBOTIC(org)  (org.status & ORGAN_ROBOTIC)
@@ -296,7 +298,6 @@
 #define SPECIES_TAJARA      "Tajara"
 #define SPECIES_DIONA       "Diona"
 #define SPECIES_VOX         "Vox"
-#define SPECIES_IPC         "Machine"
 #define SPECIES_UNATHI      "Unathi"
 #define SPECIES_SKRELL      "Skrell"
 #define SPECIES_PROMETHEAN  "Promethean"
@@ -304,7 +305,6 @@
 #define SPECIES_SLIMEPERSON "Slimeperson"
 #define SPECIES_LUMINESCENT "Luminescent"
 #define SPECIES_EGYNO       "Egyno"
-#define SPECIES_ABDUCTOR    "Abductor"
 #define SPECIES_SWINE		"Trottine"
 
 #define SPECIES_MONKEY      "Monkey"
@@ -332,7 +332,6 @@
 #define SPECIES_GOLEM_PLASTEEL 		"Plasteel Golem"
 #define SPECIES_GOLEM_TITANIUM 		"Titanium Golem"
 #define SPECIES_GOLEM_PLASTITANIUM 	"Plastitanium Golem"
-#define SPECIES_GOLEM_ALIEN 		"Alien Golem"
 #define SPECIES_GOLEM_WOOD 			"Wood Golem"
 #define SPECIES_GOLEM_URANIUM 		"Uranium Golem"
 #define SPECIES_GOLEM_SAND 			"Sand Golem"

@@ -14,6 +14,9 @@
 	volume = 30
 	var/mimic_color = FALSE
 
+	drop_sound = SFX_DROP_FOOD
+	pickup_sound = SFX_PICKUP_FOOD
+
 /obj/item/reagent_containers/pill/Initialize()
 	. = ..()
 	if(!icon_state)
@@ -43,7 +46,7 @@
 		if(!do_mob(user, M))
 			return
 
-		if(user.get_active_hand() != src)
+		if(!isrobot(user) && user.get_active_hand() != src)
 			return
 
 		user.visible_message("<span class='warning'>[user] forces [M] to swallow \the [src].</span>")

@@ -682,7 +682,7 @@
 	cooldown_per_use = 5
 	var/frequency = 1357
 	var/code = 30
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 	var/hearing_range = 1
 
 /obj/item/integrated_circuit/input/signaler/Initialize()
@@ -693,7 +693,7 @@
 	set_pin_data(IC_INPUT, 2, code)
 
 /obj/item/integrated_circuit/input/signaler/Destroy()
-	radio_controller.remove_object(src,frequency)
+	SSradio.remove_object(src,frequency)
 	QDEL_NULL(radio_connection)
 	frequency = 0
 	return ..()
@@ -717,7 +717,6 @@
 
 /obj/item/integrated_circuit/input/signaler/proc/create_signal()
 	var/datum/signal/signal = new()
-	signal.transmission_method = 1
 	signal.source = src
 	if(isnum(code))
 		signal.encryption = code
@@ -727,9 +726,9 @@
 /obj/item/integrated_circuit/input/signaler/proc/set_frequency(new_frequency)
 	if(!frequency)
 		return
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = radio_controller.add_object(src, frequency, RADIO_CHAT)
+	radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)
 
 /obj/item/integrated_circuit/input/signaler/proc/signal_good(datum/signal/signal)
 	if(!signal || signal.source == src)
@@ -780,7 +779,6 @@
 
 /obj/item/integrated_circuit/input/signaler/advanced/create_signal()
 	var/datum/signal/signal = new()
-	signal.transmission_method = 1
 	signal.data["tag"] = code
 	signal.data["command"] = command
 	signal.encryption = 0

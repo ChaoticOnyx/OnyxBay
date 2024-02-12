@@ -124,6 +124,9 @@
 			if(is_new_area && is_destination_turf)
 				destination.loc.Entered(src, origin)
 
+	if(origin?.z != destination?.z)
+		SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, origin, destination)
+
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, origin, destination)
 
 	return 1
@@ -254,7 +257,7 @@
 		src.loc = null
 		if (Move(previous))
 			Move(step)
-		if(!loc)
+		if(!loc && !QDELETED(src)) // Check for gc_destroyed is absolutely mandatory here, in case thrown atom was somehow GC'd
 			// we got into nullspace! abort!
 			loc = previous
 			break

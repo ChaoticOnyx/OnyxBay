@@ -272,9 +272,8 @@ Class Procs:
 		return TRUE
 	if(user.lying || user.stat)
 		return TRUE
-	if ( ! (istype(usr, /mob/living/carbon/human) || \
-			istype(usr, /mob/living/silicon)))
-		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
+	if (!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/living/silicon)))
+		to_chat(usr, FEEDBACK_YOU_LACK_DEXTERITY)
 		return TRUE
 /*
 	//distance checks are made by atom/proc/DblClick
@@ -351,9 +350,14 @@ Class Procs:
 
 /obj/machinery/proc/default_part_replacement(mob/user, obj/item/storage/part_replacer/R)
 	if(!istype(R))
-		return 0
+		return FALSE
+
+	if(!R.active)
+		return FALSE
+
 	if(!component_parts)
-		return 0
+		return FALSE
+
 	if(panel_open)
 		var/obj/item/circuitboard/CB = locate(/obj/item/circuitboard) in component_parts
 		var/P
@@ -371,12 +375,14 @@ Class Procs:
 						component_parts.Add(B)
 						B.forceMove(src)
 						to_chat(user, SPAN("notice", "[A.name] has been replaced with [B.name]."))
+						R.post_usage()
 						break
 			update_icon()
 			RefreshParts()
 	else
 		to_chat(user, get_parts_infotext())
-	return 1
+
+	return TRUE
 
 /obj/machinery/proc/dismantle()
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)

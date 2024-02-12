@@ -130,6 +130,7 @@
 				now_pushing = 0
 				return
 			tmob.LAssailant = weakref(src)
+
 		if(isobj(AM) && !AM.anchored)
 			var/obj/I = AM
 			if(!can_pull_size || can_pull_size < I.w_class)
@@ -141,7 +142,7 @@
 		spawn(0)
 			..()
 			var/saved_dir = AM.dir
-			if (!istype(AM, /atom/movable) || AM.anchored)
+			if (!istype(AM, /atom/movable) || AM.anchored || AM.atom_flags & ATOM_FLAG_UNPUSHABLE)
 				if(confused && prob(50) && m_intent == M_RUN && !lying)
 					var/obj/machinery/disposal/D = AM
 					if(istype(D) && !(D.stat & BROKEN))
@@ -217,7 +218,6 @@
 		set_stat(CONSCIOUS)
 	else
 		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss() - getHalLoss()
-
 
 //This proc is used for mobs which are affected by pressure to calculate the amount of pressure that actually
 //affects them once clothing is factored in. ~Errorage
@@ -547,6 +547,7 @@
 		for(var/mob/living/carbon/metroid/M in view(1, src))
 			M.UpdateFeed()
 
+
 /mob/living/proc/can_pull()
 	if(!moving)
 		return FALSE
@@ -676,12 +677,6 @@
 		spawn() closet.mob_breakout(src)
 		return TRUE
 
-	//Trying to escape from abductors?
-	if(src.loc && (istype(src.loc, /obj/machinery/abductor/experiment)))
-		var/obj/machinery/abductor/experiment/experiment = loc
-		spawn() experiment.mob_breakout(src)
-		return TRUE
-
 	//Trying to escape from Spider?
 	if(src.loc && (istype(src.loc, /obj/structure/spider/cocoon)))
 		var/obj/structure/spider/cocoon/cocoon = loc
@@ -743,7 +738,7 @@
 		to_chat(src, SPAN("notice", "You are now [resting ? "resting" : "getting up"]."))
 
 //called when the mob receives a bright flash
-/mob/living/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
+/mob/living/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /atom/movable/screen/fullscreen/flash, effect_duration = 25)
 	if(override_blindness_check || !(disabilities & BLIND))
 		overlay_fullscreen("flash", type)
 		spawn(effect_duration)
@@ -768,7 +763,7 @@
 /mob/living/proc/slip_on_obj(/obj/slipped_on, stun_duration = 8, slip_dist = 0)
 	return 0
 
-/mob/living/carbon/drop(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
 	if(W in internal_organs)
 		return
 	. = ..()
@@ -862,10 +857,14 @@
 		GLOB.available_mobs_for_possess -= "\ref[src]"
 	return ..()
 
-/mob/living/proc/set_m_intent(intent)
+/mob/proc/set_m_intent(intent)
 	if(intent != M_WALK && intent != M_RUN)
-		return 0
+		return FALSE
+
 	m_intent = intent
+
+	update_move_intent_slowdown()
+
 	if(hud_used)
 		if(hud_used.move_intent)
 			hud_used.move_intent.icon_state = (intent == M_WALK ? "walking" : "running")

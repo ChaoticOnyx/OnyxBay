@@ -57,7 +57,7 @@
 		M.eye_blurry += 3*eye_effect // But stacking these doesn't hurt too much
 
 	if(eye_effect >= 0)
-		M.flash_eyes(intensity = INFINITY, type = /obj/screen/fullscreen/flash/persistent, effect_duration = (10 * eye_effect))
+		M.flash_eyes(intensity = INFINITY, type = /atom/movable/screen/fullscreen/flash/persistent, effect_duration = (10 * eye_effect))
 
 	// Deafening effect
 	if(ear_effect >= 3)
@@ -105,6 +105,7 @@
 	icon_state = "clusterbang"
 
 /obj/item/grenade/flashbang/clusterbang/detonate()
+	var/cluster_loc = loc
 	var/numspawned = rand(4,8)
 	var/again = 0
 	for(var/more = numspawned,more > 0,more--)
@@ -114,12 +115,12 @@
 
 	for(,numspawned > 0, numspawned--)
 		spawn(0)
-			new /obj/item/grenade/flashbang/cluster(src.loc)//Launches flashbangs
+			new /obj/item/grenade/flashbang/cluster(cluster_loc)//Launches flashbangs
 			playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 
 	for(,again > 0, again--)
 		spawn(0)
-			new /obj/item/grenade/flashbang/clusterbang/segment(src.loc)//Creates a 'segment' that launches a few more flashbangs
+			new /obj/item/grenade/flashbang/clusterbang/segment(cluster_loc)//Creates a 'segment' that launches a few more flashbangs
 			playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 	qdel(src)
 	return
@@ -135,7 +136,7 @@
 	active = 1
 	banglet = 1
 	var/stepdist = rand(1,4)//How far to step
-	var/temploc = src.loc//Saves the current location to know where to step away from
+	var/temploc = loc//Saves the current location to know where to step away from
 	walk_away(src,temploc,stepdist)//I must go, my people need me
 	var/dettime = rand(15,60)
 	spawn(dettime)
@@ -143,6 +144,7 @@
 	..()
 
 /obj/item/grenade/flashbang/clusterbang/segment/detonate()
+	var/cluster_loc = loc
 	var/numspawned = rand(4,8)
 	for(var/more = numspawned,more > 0,more--)
 		if(prob(35))
@@ -150,7 +152,7 @@
 
 	for(,numspawned > 0, numspawned--)
 		spawn(0)
-			new /obj/item/grenade/flashbang/cluster(src.loc)
+			new /obj/item/grenade/flashbang/cluster(cluster_loc)
 			playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 	qdel(src)
 	return

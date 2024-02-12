@@ -245,7 +245,6 @@ var/global/list/additional_antag_types = list()
 		"malfunctioning von Neumann probe swarms",
 		"shadowy interlopers",
 		"a stranded Vox arkship",
-		"haywire IPC constructs",
 		"rogue Unathi exiles",
 		"artifacts of eldritch horror",
 		"a brain slug infestation",
@@ -363,7 +362,7 @@ var/global/list/additional_antag_types = list()
 	return
 
 // Manipulates the end-game cinematic in conjunction with GLOB.cinematic
-/datum/game_mode/proc/nuke_act(obj/screen/cinematic_screen, station_missed = 0)
+/datum/game_mode/proc/nuke_act(atom/movable/screen/cinematic_screen, station_missed = 0)
 	if(!cinematic_icon_states)
 		return
 	if(station_missed < 2)

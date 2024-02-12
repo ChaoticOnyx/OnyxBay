@@ -23,20 +23,6 @@ var/const/GHOST_IMAGE_ALL = ~GHOST_IMAGE_NONE
 	ghost_image.layer = layer
 	ghost_image.appearance = src
 	ghost_image.appearance_flags = DEFAULT_APPEARANCE_FLAGS | KEEP_TOGETHER | RESET_ALPHA
-	if(ghost_image_flag & GHOST_IMAGE_DARKNESS)
-		GLOB.ghost_darkness_images |= ghost_image //so ghosts can see the eye when they disable darkness
-	if(ghost_image_flag & GHOST_IMAGE_SIGHTLESS)
-		GLOB.ghost_sightless_images |= ghost_image //so ghosts can see the eye when they disable ghost sight
-	updateallghostimages()
-
-/mob/observer/Destroy()
-	if(ghost_image)
-		GLOB.ghost_darkness_images -= ghost_image
-		GLOB.ghost_sightless_images -= ghost_image
-		qdel(ghost_image)
-		ghost_image = null
-		updateallghostimages()
-	return ..()
 
 /mob/observer/check_airflow_movable()
 	return FALSE
@@ -58,10 +44,6 @@ var/const/GHOST_IMAGE_ALL = ~GHOST_IMAGE_NONE
 
 /mob/observer/set_stat()
 	stat = DEAD // They are also always dead
-
-/proc/updateallghostimages()
-	for (var/mob/observer/ghost/O in GLOB.player_list)
-		O.updateghostimages()
 
 /mob/observer/touch_map_edge()
 	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_SEALED))

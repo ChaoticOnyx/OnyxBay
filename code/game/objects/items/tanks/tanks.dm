@@ -53,6 +53,8 @@ var/list/global/tank_gauge_cache = list()
 	Wired and assembled tanks may be disarmed with a set of wirecutters. Any exploding or rupturing tank will generate shrapnel, assuming their relief valves have been welded beforehand. Even if not, they can be incited to expel hot gas on ignition if pushed above 173�C. \
 	Relatively easy to make, the single tank bomb requries no tank transfer valve, and is still a fairly formidable weapon that can be manufactured from any tank."
 
+	drop_sound = SFX_DROP_GASCAN
+	pickup_sound = SFX_PICKUP_GASCAN
 
 /obj/item/tank/Initialize()
 	. = ..()

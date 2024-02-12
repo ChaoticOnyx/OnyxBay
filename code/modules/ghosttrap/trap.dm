@@ -15,7 +15,7 @@ var/list/ghost_traps
 
 /proc/populate_ghost_traps()
 	ghost_traps = list()
-	for(var/traptype in typesof(/datum/ghosttrap))
+	for(var/traptype in subtypesof(/datum/ghosttrap))
 		var/datum/ghosttrap/G = new traptype
 		ghost_traps[G.object] = G
 

@@ -211,5 +211,5 @@ var/list/wrapped_species_by_ref = list()
 	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[src]"]]
 	var/list/body_builds = S.get_body_build_datum_list(src.gender)
 	if(!(body_build in body_builds))
-		body_build = body_builds[1]
+		change_body_build(body_builds[1])
 		regenerate_icons()

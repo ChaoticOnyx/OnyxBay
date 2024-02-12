@@ -185,7 +185,7 @@ var/list/slot_equipment_priority = list( \
 // Removes an item from inventory and places it in the target atom.
 // If canremove or other conditions must be ignored then use 'force = TRUE'.
 // Returns TRUE if an item's removed from inventory AND still exists.
-/mob/proc/drop(obj/item/I, atom/target = null, force = FALSE)
+/mob/proc/drop(obj/item/I, atom/target = null, force = FALSE, changing_slots = FALSE)
 	if(!I)
 		return FALSE
 
@@ -204,7 +204,7 @@ var/list/slot_equipment_priority = list( \
 		I.forceMove(target)
 	else
 		I.dropInto(loc)
-	I.dropped(src)
+	I.dropped(src, changing_slots)
 
 	if(!I?.loc)
 		return FALSE // self destroying objects (tk, grabs)
@@ -325,6 +325,3 @@ var/list/slot_equipment_priority = list( \
 /mob/proc/is_item_in_hands(atom/A)
 	if(A && (l_hand == A || r_hand == A))
 		return TRUE
-
-/mob/proc/update_equipment_slowdown()
-	return
