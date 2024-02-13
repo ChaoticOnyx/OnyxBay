@@ -1,8 +1,11 @@
 /obj/machinery/optable
 	name = "Operating Table"
 	desc = "Used for advanced medical procedures."
-	icon = 'icons/obj/surgery.dmi'
-	icon_state = "table2"
+
+	icon = 'icons/obj/machines/surgery_table.dmi'
+	icon_state = "surgery_table-idle"
+	base_icon_state = "surgery_table"
+
 	density = 1
 	anchored = 1.0
 	idle_power_usage = 1 WATTS
@@ -13,7 +16,7 @@
 	/// Weakref to an operating computer
 	var/weakref/opcomp
 	/// Weakref to a patient on this table
-	var/weakref/victim
+	var/weakref/victim_ref
 
 	component_types = list(
 		/obj/item/circuitboard/optable,
@@ -24,7 +27,7 @@
 
 /obj/machinery/optable/Initialize()
 	. = ..()
-	icon_state = "[icon_state]-idle"
+
 	var/obj/machinery/computer/operating/comp = locate(/obj/machinery/computer/operating) in orange(2, src)
 	if(istype(comp) && !comp.optable)
 		comp.optable = weakref(src)
@@ -36,6 +39,18 @@
 		register_signal(turf_to_listen, SIGNAL_EXITED, nameof(.proc/atom_exited))
 
 	RefreshParts()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/optable/LateInitialize()
+	update_icon()
+
+/obj/machinery/optable/on_update_icon()
+	if(stat & (BROKEN | NOPOWER) || isnull(victim_ref))
+		icon_state = "[base_icon_state]-idle"
+		return
+
+	var/mob/living/carbon/human/victim = victim_ref?.resolve()
+	icon_state = "[base_icon_state][victim?.pulse() ? "-active" : "-idle"]"
 
 /obj/machinery/optable/proc/on_moved()
 	var/turf/turf_to_listen = get_turf(src)
@@ -43,19 +58,19 @@
 		register_signal(turf_to_listen, SIGNAL_EXITED, nameof(.proc/atom_exited))
 
 /obj/machinery/optable/proc/atom_exited(atom, atom/movable/exitee)
-	if(ishuman(exitee) && exitee == victim?.resolve())
-		victim = null
-		icon_state = "[initial(icon_state)]-idle"
+	if(ishuman(exitee) && exitee == victim_ref?.resolve())
+		victim_ref = null
+		update_icon()
 		STOP_PROCESSING(SSmachines, src)
 
 /obj/machinery/optable/Process()
-	var/mob/living/carbon/human/H = victim?.resolve()
+	var/mob/living/carbon/human/H = victim_ref?.resolve()
 	if(!istype(H) || H.loc != loc)
 		STOP_PROCESSING(SSmachines, src)
 		return
 
 	play_beep()
-	icon_state = H.pulse() ? "[initial(icon_state)]-idle" : "[initial(icon_state)]-idle"
+	update_icon()
 
 /obj/machinery/optable/RefreshParts()
     var/default_strip = 6 SECONDS
@@ -106,7 +121,7 @@
 		show_splash_text(usr, "no power!")
 		return
 
-	var/mob/living/carbon/human/patient = victim?.resolve()
+	var/mob/living/carbon/human/patient = victim_ref?.resolve()
 	if(!istype(patient))
 		show_splash_text(usr, "no patient detected!")
 		return
@@ -142,7 +157,7 @@
 
 	busy = FALSE
 
-/obj/machinery/optable/proc/take_victim(mob/living/carbon/C, mob/living/carbon/user as mob)
+/obj/machinery/optable/proc/take_victim_ref(mob/living/carbon/C, mob/living/carbon/user as mob)
 	if(C == user)
 		user.visible_message("[user] climbs on \the [src].","You climb on \the [src].")
 	else
@@ -157,7 +172,7 @@
 	add_fingerprint(user)
 
 	if(ishuman(C))
-		victim = weakref(C)
+		victim_ref = weakref(C)
 		START_PROCESSING(SSmachines, src)
 
 /obj/machinery/optable/MouseDrop_T(mob/target, mob/user)
@@ -166,7 +181,7 @@
 		return
 
 	if(istype(M))
-		take_victim(target,user)
+		take_victim_ref(target,user)
 	else
 		return ..()
 
@@ -174,7 +189,7 @@
 	if(usr.is_ic_dead() || !ishuman(usr) || usr.incapacitated() || !check_table(usr))
 		return
 
-	take_victim(usr, usr)
+	take_victim_ref(usr, usr)
 
 /obj/machinery/optable/attackby(obj/item/W, mob/living/carbon/user)
 	if(default_deconstruction_screwdriver(user, W))
@@ -189,11 +204,11 @@
 	if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		if(iscarbon(G.affecting) && check_table(G.affecting))
-			take_victim(G.affecting, usr)
+			take_victim_ref(G.affecting, usr)
 			qdel(W)
 
 /obj/machinery/optable/proc/check_table(mob/living/carbon/patient)
-	var/mob/living/carbon/human/occupant = victim?.resolve()
+	var/mob/living/carbon/human/occupant = victim_ref?.resolve()
 	if(istype(occupant) && get_turf(occupant) == get_turf(src) && occupant.lying)
 		show_splash_text(usr, "already occupied!")
 		return FALSE
@@ -206,5 +221,5 @@
 
 /obj/machinery/optable/Destroy()
 	opcomp = null
-	victim = null
+	victim_ref = null
 	return ..()

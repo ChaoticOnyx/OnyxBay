@@ -41,8 +41,11 @@
 /obj/machinery/power/supermatter
 	name = "Supermatter"
 	desc = "A strangely translucent and iridescent crystal. <span class='danger'>You get headaches just from looking at it.</span>"
+
 	icon = 'icons/obj/engine.dmi'
 	icon_state = "darkmatter"
+	base_icon_state = "darkmatter"
+
 	density = 1
 	anchored = 0
 	light_outer_range = 4
@@ -50,9 +53,6 @@
 	layer = ABOVE_OBJ_LAYER
 
 	var/gasefficency = 0.25
-
-	var/base_icon_state = "darkmatter"
-
 	var/damage = 0
 	var/damage_archived = 0
 	var/safe_alert = "Crystaline hyperstructure returning to safe operating levels."

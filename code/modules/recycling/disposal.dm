@@ -649,7 +649,7 @@
 	dir = 0				// dir will contain dominant direction for junction pipes
 	var/health = 10 	// health points 0-10
 	alpha = 192 // Plane and alpha modified for mapping, reset to normal on spawn.
-	var/base_icon_state	// initial icon state on map
+	base_icon_state	// initial icon state on map
 	var/sortType = ""
 	var/subtype = 0
 	// new pipe, set the icon_state as on map
@@ -727,7 +727,7 @@
 	// if invisible, append "f" to icon_state to show faded version
 	// this will be revealed if a T-scanner is used
 	// if visible, use regular icon_state
-	update_icon()
+	on_update_icon()
 /*		if(invisibility)	//we hide things with alpha now, no need for transparent icons
 			icon_state = "[base_icon_state]f"
 		else
