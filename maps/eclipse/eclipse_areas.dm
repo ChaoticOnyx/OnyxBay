@@ -568,8 +568,12 @@
 	name = "\improper Security Brig Sector 3"
 	icon_state = "brig"
 
-/area/eclipse/security/main/processing
-	name = "\improper Security Processing Room"
+/area/eclipse/security/main/processing1
+	name = "\improper First Security Processing Room"
+	icon_state = "brig"
+
+/area/eclipse/security/main/processing2
+	name = "\improper Second Security Processing Room"
 	icon_state = "brig"
 
 /area/eclipse/security/main/interrogation
