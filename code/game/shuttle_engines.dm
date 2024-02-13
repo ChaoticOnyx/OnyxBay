@@ -5,7 +5,7 @@
 /obj/structure/shuttle/window
 	name = "shuttle window"
 	icon = 'icons/obj/podwindows.dmi'
-	icon_state = "1"
+	icon_state = "window-whiteship0"
 	density = 1
 	opacity = 0
 	anchored = 1

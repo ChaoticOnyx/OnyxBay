@@ -70,7 +70,6 @@
 "kQ" = (/obj/effect/floor_decal/corner/yellow{dir = 9},/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/machinery/atmospherics/pipe/manifold/hidden,/obj/structure/cable/green{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/effect/floor_decal/industrial/standclear/yellow{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "kV" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass_engineering{name = "Singularity Generator Access"; req_access = list(11)},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "le" = (/obj/effect/floor_decal/corner/yellow{dir = 10},/obj/machinery/door/blast/regular/singulo{density = 0; dir = 4; icon_state = "pdoor0"; id = "singulo_collector_shutters2"; name = "Collector Shutters"; opacity = 0},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
-"lg" = (/obj/structure/shuttle/engine/propulsion/burst{dir = 4},/turf/simulated/shuttle/wall/corner/smoothwhite/se,/area/shuttle/escape_pod1/station)
 "ll" = (/obj/effect/floor_decal/industrial/warning{dir = 9},/turf/simulated/floor/plating,/area/engineering/engine_room)
 "lo" = (/obj/machinery/atmospherics/binary/passive_gate/on,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "ls" = (/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/corner/yellow{dir = 1},/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
@@ -193,7 +192,7 @@
 "Df" = (/obj/structure/bed/chair/office/light,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable/green{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "Do" = (/obj/machinery/hologram/holopad,/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "Dw" = (/obj/machinery/door/blast/regular{density = 0; dir = 4; icon_state = "pdoor0"; id = "escapepods"; name = "Escape Pods Dock"; opacity = 0},/obj/machinery/shield_diffuser,/turf/simulated/floor/plating/airless,/area/engineering/eva_airlock)
-"DD" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "swall_c"},/area/shuttle/escape_pod1/station)
+"DD" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/nw,/area/shuttle/escape_pod1/station)
 "DF" = (/obj/effect/floor_decal/corner/yellow{dir = 6},/obj/effect/floor_decal/industrial/warning/corner{dir = 4},/obj/machinery/camera/network/engine{c_tag = "Singularity Generator Room - Central"; dir = 8},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/firealarm{dir = 4; pixel_x = 24},/obj/machinery/light{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "DX" = (/obj/structure/closet/radiation,/obj/effect/floor_decal/industrial/warning{dir = 6},/turf/simulated/floor/tiled/rough,/area/engineering/workshop)
 "Ee" = (/obj/structure/sign/warning/radioactive{pixel_x = 32},/turf/simulated/floor/asteroid,/area/mine/explored)
@@ -204,7 +203,7 @@
 "EG" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/machinery/power/terminal{dir = 8},/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/machinery/camera/network/engineering{c_tag = "Engineering Substation"; dir = 8},/turf/simulated/floor/plating,/area/maintenance/substation/engineering)
 "ES" = (/obj/structure/cable/cyan{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/tiled/rough,/area/engineering/grav_generator)
 "ET" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/plating/airless,/area/engineering/singularity)
-"EW" = (/obj/structure/window_frame/grille,/obj/structure/window/shuttle,/turf/simulated/floor/plating,/area/shuttle/escape_pod1/station)
+"EW" = (/obj/structure/window_frame/grille,/obj/structure/window/shuttle{icon_state = "2"},/turf/simulated/floor/plating,/area/shuttle/escape_pod1/station)
 "Fb" = (/turf/simulated/floor/asteroid,/area/mine/explored)
 "Ff" = (/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/effect/floor_decal/industrial/warning/corner,/obj/effect/floor_decal/industrial/warning/corner{dir = 8},/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 8},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_smes)
 "Fn" = (/obj/effect/floor_decal/industrial/warning/corner{dir = 1},/turf/simulated/floor/tiled/rough,/area/engineering/grav_generator)
@@ -259,7 +258,7 @@
 "NT" = (/obj/machinery/light/he{dir = 8},/obj/structure/catwalk,/turf/simulated/floor/asteroid,/area/engineering/singularity)
 "Ob" = (/obj/machinery/disposal,/obj/item/device/radio/intercom{dir = 1; pixel_y = -22},/obj/structure/disposalpipe/trunk{dir = 4},/obj/machinery/light,/turf/simulated/floor/tiled/rough,/area/crew_quarters/heads/chief)
 "Oh" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable/green{d1 = 2; d2 = 4; icon_state = "2-4"},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
-"Oj" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "swall_straight"},/area/shuttle/escape_pod1/station)
+"Oj" = (/turf/simulated/shuttle/wall{icon_state = "whiteship_straight"; dir = 4},/area/shuttle/escape_pod1/station)
 "Ol" = (/obj/machinery/door/airlock/external{frequency = 1379; icon_state = "door_locked"; id_tag = "eng_eva_outer"; locked = 1; name = "Engineering EVA External Access"; req_access = list(13)},/turf/simulated/floor/plating,/area/engineering/eva_airlock)
 "Ou" = (/obj/effect/floor_decal/corner/yellow{dir = 8},/obj/effect/floor_decal/industrial/warning/corner{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "OI" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/industrial/warning/corner{dir = 8},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/manifold/hidden/supply,/turf/simulated/floor/tiled/rough,/area/engineering/workshop)
@@ -278,7 +277,7 @@
 "PG" = (/obj/machinery/the_singularitygen,/turf/simulated/floor/plating/airless,/area/engineering/singularity)
 "PO" = (/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/table/reinforced,/obj/machinery/recharger,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "Qd" = (/obj/effect/floor_decal/industrial/warning{dir = 5},/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 8; frequency = 1379; id_tag = "eng_eva_pump"},/obj/machinery/light/small/red{dir = 4},/turf/simulated/floor/plating,/area/engineering/eva_airlock)
-"Qh" = (/obj/structure/shuttle/engine/propulsion/burst{dir = 4},/turf/simulated/shuttle/wall/corner/smoothwhite/ne,/area/shuttle/escape_pod1/station)
+"Qh" = (/obj/structure/shuttle/engine/propulsion/burst{dir = 4},/turf/simulated/shuttle/wall{icon_state = "whiteship"; dir = 8},/area/shuttle/escape_pod1/station)
 "Qm" = (/obj/machinery/door/airlock/external{frequency = 1379; icon_state = "door_locked"; id_tag = "singulo_outer2"; locked = 1; name = "Singularity Access Airlock"; req_access = list(11)},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/engineering/engine_room)
 "Qt" = (/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/industrial/warning,/obj/effect/floor_decal/industrial/warning/corner{dir = 1},/obj/structure/extinguisher_cabinet{pixel_x = -24},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_smes)
 "Qw" = (/obj/structure/table/reinforced,/obj/item/modular_computer/tablet/preset/custom_loadout/advanced,/obj/item/clothing/glasses/hud/standard/meson,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/cable/green{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
@@ -326,7 +325,7 @@
 "VL" = (/obj/effect/floor_decal/corner/yellow{dir = 5},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "VZ" = (/obj/machinery/door/blast/regular{density = 0; dir = 4; icon_state = "pdoor0"; id = "escapepods"; name = "Escape Pods Dock"; opacity = 0},/obj/machinery/shield_diffuser,/obj/machinery/light,/turf/simulated/floor/plating/airless,/area/engineering/eva_airlock)
 "Wc" = (/obj/machinery/atmospherics/pipe/manifold/hidden{dir = 8},/turf/simulated/floor/plating,/area/engineering/eva_airlock)
-"Wo" = (/turf/simulated/shuttle/wall/corner/smoothwhite/sw,/area/shuttle/escape_pod1/station)
+"Wo" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/sw,/area/shuttle/escape_pod1/station)
 "Wv" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/tiled/rough,/area/engineering/workshop)
 "WF" = (/obj/effect/floor_decal/corner/yellow/three_quarters{dir = 4},/obj/structure/table/reinforced,/obj/item/storage/belt/utility,/obj/item/storage/toolbox/mechanical{pixel_y = 5},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "WW" = (/obj/effect/floor_decal/corner/yellow{dir = 10},/obj/structure/table/reinforced,/obj/item/material/ashtray/plastic,/obj/random/drinkbottle,/obj/machinery/camera/network/engineering{c_tag = "Singularity Generator Room - South"; dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
@@ -382,7 +381,7 @@ KxKxKxKxKxKxKxtvFbFbFbFbtvtvtvtvtvtvtvtvtvtvPsSPkAkAwukgoYpsPstvNmjJNsNsNsJMNmtv
 KxKxKxKxKxKxKxKxKxFbFbFbFbKxKxKxtvtvPsPsPsPsPsPsMpMpPsRbWcYFPstvNmnLNsNsNsEuNmtv
 KxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxgpDDOjOjQhPsyynXPsPsRXPsPstvNmttNsoCNsTINmtv
 KxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxDwEWJxLMwRYicBfpPsxhqBQdPstvNmvXyIyIyIFnNmtv
-KxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxVZWoOjOjlgPsiQnXPsfqcDXhPstvNmNmNmNmNmNmNmtv
+KxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxVZWoOjOjQhPsiQnXPsfqcDXhPstvNmNmNmNmNmNmNmtv
 KxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxPsPsPsPsPsPsPsPsPsvPtiYfPstvtvtvtvtvtvtvtvtv
 KxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxPsPsOlPsPstvtvtvtvtvtvtvtvtv
 RxRxRxRxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxKxsNUfEoUftvtvtvtvtvtvtvKxKxKx
