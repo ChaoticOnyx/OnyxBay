@@ -127,7 +127,8 @@
 	recipes += new /datum/stack_recipe("freezer floor tile", /obj/item/stack/tile/floor_freezer, 1, 4, 20)
 	recipes += new /datum/stack_recipe("hazard cone", /obj/item/caution/cone, 2, on_floor = 1)
 	recipes += new /datum/stack_recipe("small knife grip", /obj/item/material/shivgrip/plastic, 2, time = 20, one_per_turf = 0, on_floor = 1, supplied_material = "[name]")
-
+	recipes += new /datum/stack_recipe("plastic flaps", /obj/structure/plasticflaps, 5, time = 100, one_per_turf = 1, on_floor = 1)
+	recipes += new /datum/stack_recipe("mining plastic flaps", /obj/structure/plasticflaps/mining, 20, time = 130, one_per_turf = 1, on_floor = 1)
 
 /material/wood/generate_recipes()
 	..()
