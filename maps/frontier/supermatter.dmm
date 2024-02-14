@@ -30,7 +30,7 @@
 "da" = (/obj/machinery/mass_driver{dir = 8; id = "ReactorCatapult"},/obj/machinery/atmospherics/pipe/simple/heat_exchanging{dir = 5},/turf/simulated/floor/grid/greengrid/airless,/area/engineering/engine_room)
 "df" = (/obj/machinery/atmospherics/pipe/manifold/visible/yellow{dir = 8},/turf/simulated/floor/plating,/area/engineering/engine_room)
 "di" = (/obj/machinery/atmospherics/pipe/simple/heat_exchanging{dir = 10},/turf/space,/area/space)
-"dr" = (/obj/structure/window_frame/grille,/obj/structure/window/shuttle,/turf/simulated/floor/plating,/area/shuttle/escape_pod1/station)
+"dr" = (/obj/structure/window_frame/grille,/obj/structure/window/shuttle{icon_state = "2"},/turf/simulated/floor/plating,/area/shuttle/escape_pod1/station)
 "dt" = (/obj/effect/floor_decal/industrial/warning/corner{dir = 1},/obj/structure/cable/cyan{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/plating,/area/engineering/engine_room)
 "du" = (/obj/item/wirecutters,/turf/simulated/floor/asteroid,/area/mine/explored)
 "dv" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/effect/floor_decal/corner/yellow/diagonal,/obj/structure/bed/chair{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/engineering/break_room)
@@ -41,12 +41,11 @@
 "eh" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/rough,/area/engineering/grav_generator)
 "em" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/structure/cable/cyan{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/plating,/area/engineering/engine_room)
 "ew" = (/obj/machinery/power/apc/super/critical{dir = 4; pixel_x = 24},/obj/structure/cable/cyan{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area/engineering/engine_room)
-"eA" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "swall_c"},/area/shuttle/escape_pod1/station)
+"eA" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/nw,/area/shuttle/escape_pod1/station)
 "eZ" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/turf/simulated/floor/plating/airless,/area/mine/explored)
 "fa" = (/obj/effect/floor_decal/corner/yellow{dir = 9},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 1},/obj/structure/cable{icon_state = "2-8"},/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor/tiled/dark/rough,/area/engineering/break_room)
 "fi" = (/obj/machinery/door/firedoor/border_only,/obj/structure/window_frame/electric/rglass,/turf/simulated/floor/plating,/area/crew_quarters/heads/chief)
 "fo" = (/obj/machinery/power/apc{dir = 1; name = "north bump"; pixel_y = 24},/obj/structure/cable/green{d2 = 8; icon_state = "0-8"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/obj/effect/floor_decal/spline/fancy/wood,/turf/simulated/floor/trim/wood,/area/engineering/break_room)
-"fw" = (/obj/structure/shuttle/engine/propulsion/burst{dir = 4},/turf/simulated/shuttle/wall/corner/smoothwhite/se,/area/shuttle/escape_pod1/station)
 "fx" = (/obj/machinery/atmospherics/omni/filter{tag_east = 1; tag_south = 3; tag_west = 2},/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/structure/sign/atmosplaque{desc = "Sign with a text on it 'Certified by actual engineers' , a huge stamp and a signature of someone named 'N. Tippers'."; name = "\improper '*Now* Certified Working Engine' sign"; pixel_y = 32},/turf/simulated/floor/plating,/area/engineering/engine_room)
 "fB" = (/obj/effect/floor_decal/industrial/outline/grey,/obj/machinery/atmospherics/portables_connector{dir = 1},/turf/simulated/floor/plating,/area/engineering/engine_room)
 "fJ" = (/obj/machinery/atmospherics/pipe/simple/visible/black,/turf/simulated/floor/plating,/area/engineering/engine_room)
@@ -278,7 +277,7 @@
 "FZ" = (/obj/structure/table/reinforced,/obj/item/clipboard,/obj/item/clothing/glasses/hud/standard/meson{pixel_y = 4},/obj/item/clothing/glasses/welding/superior,/obj/item/storage/fancy/cigarettes,/obj/effect/floor_decal/corner/yellow/full,/obj/effect/floor_decal/corner/yellow/three_quarters,/turf/simulated/floor/tiled/rough,/area/crew_quarters/heads/chief)
 "Gg" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/effect/floor_decal/industrial/warning/corner{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engine_room)
 "Gy" = (/obj/machinery/light{dir = 1},/obj/machinery/power/terminal{dir = 4},/obj/structure/cable/yellow{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating,/area/engineering/engine_smes)
-"Gz" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "swall_straight"},/area/shuttle/escape_pod1/station)
+"Gz" = (/turf/simulated/shuttle/wall{icon_state = "whiteship_straight"; dir = 4},/area/shuttle/escape_pod1/station)
 "GL" = (/obj/structure/window/reinforced,/obj/machinery/portable_atmospherics/canister/nitrogen/prechilled,/obj/effect/floor_decal/industrial/outline/blue,/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/plating,/area/engineering/engine_room)
 "GO" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/rough,/area/engineering/grav_generator)
 "GP" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/engineering/engineering_monitoring)
@@ -306,7 +305,7 @@
 "JE" = (/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "escape_pod_1_hatch"; locked = 1; name = "Escape Pod Hatch"; req_access = list(13)},/turf/simulated/floor/shuttle/blue,/area/shuttle/escape_pod1/station)
 "JK" = (/obj/effect/floor_decal/industrial/caution/yellow,/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/machinery/shield_diffuser,/turf/simulated/floor/plating/airless,/area/mine/explored)
 "JN" = (/obj/machinery/light,/obj/machinery/atmospherics/pipe/manifold/visible/black,/obj/machinery/meter,/turf/simulated/floor/plating,/area/engineering/engine_room)
-"JP" = (/turf/simulated/shuttle/wall/corner/smoothwhite/sw,/area/shuttle/escape_pod1/station)
+"JP" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/sw,/area/shuttle/escape_pod1/station)
 "JQ" = (/obj/machinery/light{dir = 1},/obj/structure/sign/poster{pixel_y = 32},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/rough,/area/engineering/workshop)
 "JV" = (/obj/effect/floor_decal/industrial/warning{dir = 6},/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 8; frequency = 1379; id_tag = "eng_eva_pump"},/obj/machinery/light/small/red{dir = 4},/obj/machinery/camera/network/security{c_tag = "Engineering Airlock Access"; dir = 1},/turf/simulated/floor/plating,/area/engineering/eva_airlock)
 "JX" = (/obj/effect/floor_decal/industrial/warning{dir = 9},/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 4; frequency = 1379; id_tag = "eng_eva_pump"},/obj/machinery/light/small/red{dir = 8},/turf/simulated/floor/plating,/area/engineering/eva_airlock)
@@ -335,7 +334,7 @@
 "MQ" = (/obj/machinery/atmospherics/pipe/simple/visible/cyan,/obj/effect/floor_decal/industrial/arrows/blue{dir = 1; pixel_x = -6; pixel_y = -7},/obj/effect/floor_decal/industrial/arrows/blue{dir = 1; pixel_x = 6; pixel_y = -7},/turf/simulated/floor/plating,/area/engineering/engine_room)
 "MS" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6},/obj/structure/disposalpipe/junction{dir = 8},/obj/effect/floor_decal/spline/fancy/wood,/turf/simulated/floor/trim/wood,/area/engineering/break_room)
 "MV" = (/obj/machinery/atmospherics/pipe/simple/visible/cyan{dir = 4},/obj/machinery/atmospherics/pipe/simple/visible/cyan,/turf/simulated/floor/plating,/area/engineering/engine_room)
-"MZ" = (/obj/structure/shuttle/engine/propulsion/burst{dir = 4},/turf/simulated/shuttle/wall/corner/smoothwhite/ne,/area/shuttle/escape_pod1/station)
+"MZ" = (/obj/structure/shuttle/engine/propulsion/burst{dir = 4},/turf/simulated/shuttle/wall{icon_state = "whiteship"; dir = 8},/area/shuttle/escape_pod1/station)
 "Nn" = (/obj/effect/floor_decal/corner/yellow{dir = 9},/obj/machinery/alarm{dir = 4; pixel_x = -24},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark/rough,/area/engineering/break_room)
 "Ny" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/floor_decal/corner/yellow/diagonal,/obj/structure/table/standard,/obj/machinery/microwave,/turf/simulated/floor/tiled/dark/rough,/area/engineering/break_room)
 "NB" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/tiled/rough,/area/engineering/workshop)
@@ -477,7 +476,7 @@ bzbzbzbzbzbzbznNRzAyAyAyAyAyAyAyAyAyAyoRnNbubububuPvKcKcZWJXFhXXhabHgXgXgXOmhabu
 bzbzbzbzbzbzbzChnNnNnNnNnNtWnNnNnNnNnNnNZWZWZWZWZWZWalalZWGRPMauhaehgXgWgXGOhabu
 bzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzpqeAGzGzMZZWZpdAZWYJQvJVhaORiMiMiMXAhabu
 bzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzCHdrEQgAJEEKBQFAZWZWliZWhahahahahahahabu
-bzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzpvJPGzGzfwZWCAdAZWgkjnydbubububububububu
+bzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzpvJPGzGzMZZWCAdAZWgkjnydbubububububububu
 bzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzZWZWZWZWZWZWZWZWZWbzbzbzbzbzbzbububububu
 ZKZKZKZKbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbz
 ZKZKZKZKbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbzbz
