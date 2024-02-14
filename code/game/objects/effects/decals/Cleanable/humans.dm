@@ -97,7 +97,7 @@ var/global/list/image/splatter_cache=list()
 
 	H.update_inv_shoes(1)
 
-	if(prob(amount * 5))
+	if(prob(amount * 8))
 		H.slip("the [name]", 3)
 
 	amount--
