@@ -96,10 +96,6 @@ var/global/list/image/splatter_cache=list()
 		W.bloodiness = 4
 
 	H.update_inv_shoes(1)
-
-	if(prob(amount * 8))
-		H.slip("the [name]", 3)
-
 	amount--
 
 /obj/effect/decal/cleanable/blood/proc/dry()
