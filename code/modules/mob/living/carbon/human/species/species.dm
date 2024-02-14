@@ -624,10 +624,13 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 // Impliments different trails for species depending on if they're wearing shoes.
 /datum/species/proc/get_move_trail(mob/living/carbon/human/H)
-	if( H.shoes || ( H.wear_suit && (H.wear_suit.body_parts_covered & FEET) ) )
+	if(H.lying)
+		return /obj/effect/decal/cleanable/blood/tracks/trail
+
+	if(H.shoes || (H.wear_suit && (H.wear_suit.body_parts_covered & FEET)))
 		return /obj/effect/decal/cleanable/blood/tracks/footprints
-	else
-		return move_trail
+
+	return move_trail
 
 /datum/species/proc/update_skin(mob/living/carbon/human/H)
 	return

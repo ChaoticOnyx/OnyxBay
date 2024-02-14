@@ -65,35 +65,37 @@ var/global/list/image/splatter_cache=list()
 		SetName(initial(name))
 		desc = initial(desc)
 
-/obj/effect/decal/cleanable/blood/Crossed(mob/living/carbon/human/perp)
-	if(!istype(perp))
+/obj/effect/decal/cleanable/blood/Crossed(mob/living/carbon/human/H)
+	if(!istype(H))
 		return
 	if(amount < 1)
 		return
 
-	var/obj/item/organ/external/l_foot = perp.get_organ(BP_L_FOOT)
-	var/obj/item/organ/external/r_foot = perp.get_organ(BP_R_FOOT)
+	var/obj/item/organ/external/l_foot = H.get_organ(BP_L_FOOT)
+	var/obj/item/organ/external/r_foot = H.get_organ(BP_R_FOOT)
+
 	var/hasfeet = TRUE
 	if((!l_foot || l_foot.is_stump()) && (!r_foot || r_foot.is_stump()))
 		hasfeet = FALSE
-	if(perp.shoes && !perp.buckled)//Adding blood to shoes
-		var/obj/item/clothing/shoes/S = perp.shoes
+
+	if(H.shoes && !H.buckled) // Adding blood to shoes
+		var/obj/item/clothing/shoes/S = H.shoes
 		if(istype(S))
 			S.add_blood(basecolor, amount)
 			S.blood_DNA |= blood_DNA
 
-	else if(hasfeet)//Or feet
-		perp.feet_blood_color = basecolor
-		perp.track_blood = max(amount, perp.track_blood)
-		if(!perp.feet_blood_DNA)
-			perp.feet_blood_DNA = list()
-		perp.feet_blood_DNA |= blood_DNA.Copy()
+	else if(hasfeet) // Or feet
+		H.feet_blood_color = basecolor
+		H.track_blood = max(amount, H.track_blood)
+		if(!H.feet_blood_DNA)
+			H.feet_blood_DNA = list()
+		H.feet_blood_DNA |= blood_DNA.Copy()
 
-	else if (perp.buckled && istype(perp.buckled, /obj/structure/bed/chair/wheelchair))
-		var/obj/structure/bed/chair/wheelchair/W = perp.buckled
+	else if(H.buckled && istype(H.buckled, /obj/structure/bed/chair/wheelchair)) // Or a wheelchair
+		var/obj/structure/bed/chair/wheelchair/W = H.buckled
 		W.bloodiness = 4
 
-	perp.update_inv_shoes(1)
+	H.update_inv_shoes(1)
 	amount--
 
 /obj/effect/decal/cleanable/blood/proc/dry()
