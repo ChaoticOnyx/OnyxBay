@@ -542,8 +542,10 @@
 	explosion_block = 3
 	maxhealth = 40
 	reinf = 1
-	basestate = "w"
 	dir = 5
+
+/obj/structure/window/shuttle/on_update_icon()
+	return
 
 /obj/structure/window/miningpod
 	name = "shuttle window"
