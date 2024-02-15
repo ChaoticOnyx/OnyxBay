@@ -1,4 +1,4 @@
-/obj/item/computer_hardware/hard_drive/
+/obj/item/computer_hardware/hard_drive
 	name = "basic hard drive"
 	desc = "A small power efficient solid state drive, with 128GQ of storage capacity for use in basic computers where power efficiency is desired."
 	power_usage = 25					// SSD or something with low power usage
@@ -54,6 +54,17 @@
 	max_capacity = 32
 	icon_state = "hdd_micro"
 	hardware_size = 1
+
+
+/obj/item/computer_hardware/hard_drive/Initialize()
+	. = ..()
+	install_default_programs()
+
+/obj/item/computer_hardware/hard_drive/Destroy()
+	if(holder2 && (holder2.hard_drive == src))
+		holder2.hard_drive = null
+	QDEL_LIST(stored_files)
+	return ..()
 
 /obj/item/computer_hardware/hard_drive/diagnostics(mob/user)
 	..()
@@ -160,13 +171,3 @@
 		if(F.filename == filename)
 			return F
 	return null
-
-/obj/item/computer_hardware/hard_drive/Destroy()
-	if(holder2 && (holder2.hard_drive == src))
-		holder2.hard_drive = null
-	QDEL_LIST(stored_files)
-	return ..()
-
-/obj/item/computer_hardware/hard_drive/New()
-	..()
-	install_default_programs()

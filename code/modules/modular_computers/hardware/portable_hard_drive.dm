@@ -1,5 +1,5 @@
 // These are basically USB data sticks and may be used to transfer files between devices
-/obj/item/computer_hardware/hard_drive/portable/
+/obj/item/computer_hardware/hard_drive/portable
 	name = "basic flash drive"
 	desc = "Small flash drive with imprinted photonic circuits that can be used to store data. Its capacity is 16 GQ."
 	power_usage = 10
@@ -26,8 +26,8 @@
 	max_capacity = 256
 	origin_tech = list(TECH_DATA = 4)
 
-/obj/item/computer_hardware/hard_drive/portable/New()
-	..()
+/obj/item/computer_hardware/hard_drive/portable/Initialize()
+	. = ..()
 	stored_files = list()
 	recalculate_size()
 
