@@ -1,4 +1,4 @@
-/obj/item/computer_hardware/
+/obj/item/computer_hardware
 	name = "Hardware"
 	desc = "Unknown Hardware."
 	icon = 'icons/obj/modular_components.dmi'
@@ -12,6 +12,16 @@
 	var/damage_malfunction = 20		// "Malfunction" threshold. When damage exceeds this value the hardware piece will semi-randomly fail and do !!FUN!! things
 	var/damage_failure = 50			// "Failure" threshold. When damage exceeds this value the hardware piece will not work at all.
 	var/malfunction_probability = 10// Chance of malfunction when the component is damaged
+
+/obj/item/computer_hardware/Initialize()
+	. = ..()
+	w_class = hardware_size
+	if(istype(loc, /obj/item/modular_computer))
+		holder2 = loc
+
+/obj/item/computer_hardware/Destroy()
+	holder2 = null
+	return ..()
 
 /obj/item/computer_hardware/attackby(obj/item/W, mob/living/user)
 	// Multitool. Runs diagnostics
@@ -45,17 +55,6 @@
 // Called on multitool click, prints diagnostic information to the user.
 /obj/item/computer_hardware/proc/diagnostics(mob/user)
 	to_chat(user, "Hardware Integrity Test... (Corruption: [damage]/[max_damage]) [damage > damage_failure ? "FAIL" : damage > damage_malfunction ? "WARN" : "PASS"]")
-
-/obj/item/computer_hardware/New(obj/L)
-	..()
-	w_class = hardware_size
-	if(istype(L, /obj/item/modular_computer))
-		holder2 = L
-		return
-
-/obj/item/computer_hardware/Destroy()
-	holder2 = null
-	return ..()
 
 // Handles damage checks
 /obj/item/computer_hardware/proc/check_functionality()

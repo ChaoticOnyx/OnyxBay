@@ -9,6 +9,7 @@
 	origin_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
 	var/battery_rating = 75
 	var/obj/item/cell/battery = null
+	var/default_battery_type = /obj/item/cell
 
 /obj/item/computer_hardware/battery_module/advanced
 	name = "advanced battery"
@@ -55,27 +56,25 @@
 	icon_state = "battery_lambda"
 	hardware_size = 1
 	battery_rating = 3000
-
-/obj/item/computer_hardware/battery_module/lambda/New()
-	..()
-	battery = new /obj/item/cell/infinite(src)
+	default_battery_type = /obj/item/cell/infinite
 
 
-/obj/item/computer_hardware/battery_module/diagnostics(mob/user)
-	..()
-	to_chat(user, "Internal battery charge: [battery.charge]/[battery.maxcharge] CU")
-
-/obj/item/computer_hardware/battery_module/New()
-	battery = new /obj/item/cell(src)
-	battery.maxcharge = battery_rating
-	battery.charge = 0
-	..()
+/obj/item/computer_hardware/battery_module/Initialize()
+	. = ..()
+	if(default_battery_type)
+		battery = new default_battery_type(src)
+		battery.maxcharge = battery_rating
+		battery.charge = 0
 
 /obj/item/computer_hardware/battery_module/Destroy()
 	QDEL_NULL(battery)
 	if(holder2 && (holder2.battery_module == src))
 		holder2.ai_slot = null
 	return ..()
+
+/obj/item/computer_hardware/battery_module/diagnostics(mob/user)
+	..()
+	to_chat(user, "Internal battery charge: [battery.charge]/[battery.maxcharge] CU")
 
 /obj/item/computer_hardware/battery_module/proc/charge_to_full()
 	if(battery)

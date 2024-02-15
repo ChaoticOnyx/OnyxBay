@@ -1,6 +1,5 @@
-var/global/ntnet_card_uid = 1
 
-/obj/item/computer_hardware/network_card/
+/obj/item/computer_hardware/network_card
 	name = "basic NTNet network card"
 	desc = "A basic network card for usage with standard NTNet frequencies."
 	power_usage = 50
@@ -13,22 +12,6 @@ var/global/ntnet_card_uid = 1
 	var/long_range = 0
 	var/ethernet = 0 // Hard-wired, therefore always on, ignores NTNet wireless checks.
 	malfunction_probability = 1
-
-/obj/item/computer_hardware/network_card/diagnostics(mob/user)
-	..()
-	to_chat(user, "NIX Unique ID: [identification_id]")
-	to_chat(user, "NIX User Tag: [identification_string]")
-	to_chat(user, "Supported protocols:")
-	to_chat(user, "511.m SFS (Subspace) - Standard Frequency Spread")
-	if(long_range)
-		to_chat(user, "511.n WFS/HB (Subspace) - Wide Frequency Spread/High Bandiwdth")
-	if(ethernet)
-		to_chat(user, "OpenEth (Physical Connection) - Physical network connection port")
-
-/obj/item/computer_hardware/network_card/New(l)
-	..(l)
-	identification_id = ntnet_card_uid
-	ntnet_card_uid++
 
 /obj/item/computer_hardware/network_card/advanced
 	name = "advanced NTNet network card"
@@ -48,11 +31,27 @@ var/global/ntnet_card_uid = 1
 	icon_state = "netcard_ethernet"
 	hardware_size = 3
 
+
+/obj/item/computer_hardware/network_card/Initialize()
+	. = ..()
+	identification_id = random_id("network_card_id", 1000, 9999)
+
 /obj/item/computer_hardware/network_card/Destroy()
 	if(holder2 && (holder2.network_card == src))
 		holder2.network_card = null
 	holder2 = null
 	return ..()
+
+/obj/item/computer_hardware/network_card/diagnostics(mob/user)
+	..()
+	to_chat(user, "NIX Unique ID: [identification_id]")
+	to_chat(user, "NIX User Tag: [identification_string]")
+	to_chat(user, "Supported protocols:")
+	to_chat(user, "511.m SFS (Subspace) - Standard Frequency Spread")
+	if(long_range)
+		to_chat(user, "511.n WFS/HB (Subspace) - Wide Frequency Spread/High Bandiwdth")
+	if(ethernet)
+		to_chat(user, "OpenEth (Physical Connection) - Physical network connection port")
 
 // Returns a string identifier of this network card
 /obj/item/computer_hardware/network_card/proc/get_network_tag()
