@@ -117,12 +117,8 @@ var/server_name = "OnyxBay"
 #define RECOMMENDED_VERSION 514
 /world/New()
 	__init_tracy()
+	__detect_rust_g()
 	SetupLogs()
-
-	if(world.system_type == UNIX)
-		GLOB.converter_dll = "./libconverter.so"
-	else
-		GLOB.converter_dll = "converter.dll"
 
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 

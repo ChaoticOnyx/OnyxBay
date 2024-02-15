@@ -79,7 +79,7 @@ SUBSYSTEM_DEF(events)
 	event_presets = list()
 
 	if(fexists(EVENT_PRESETS_FILE))
-		event_presets = FROM_TOML(file2text(EVENT_PRESETS_FILE))
+		event_presets = rustg_read_toml_file(EVENT_PRESETS_FILE)
 
 	log_debug("Loaded [length(event_presets)] event presets")
 
