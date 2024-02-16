@@ -2,7 +2,7 @@
 
 SUBSYSTEM_DEF(events)
 	name = "Events"
-	wait = 30 SECONDS
+	wait = 1 MINUTE
 	priority = SS_PRIORITY_EVENT
 
 	var/paused = FALSE

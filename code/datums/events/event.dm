@@ -47,7 +47,9 @@
 	if(time == 0)
 		return 0
 
-	return (1 - 2 ** (-_mtth_passed / time))
+	var/tick_chance = 1 - (2.718 ** (log(0.5) / mtth))
+
+	return 1 - (2.718 ** (_mtth_passed * log(1 - tick_chance)))
 
 /datum/event/proc/get_mtth()
 	return mtth * abs(SSstoryteller.character.rarity_ratio)
