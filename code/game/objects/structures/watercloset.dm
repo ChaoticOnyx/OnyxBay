@@ -7,6 +7,7 @@
 	desc = "The HT-451, a torque rotation-based, waste disposal unit for small matter. This one seems remarkably clean."
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "toilet00"
+	base_icon_state = "toilet"
 	density = 0
 	anchored = 1
 	var/open = 0			//if the lid is up
@@ -46,7 +47,7 @@
 	update_icon()
 
 /obj/structure/toilet/on_update_icon()
-	icon_state = "toilet[open][cistern]"
+	icon_state = "[base_icon_state][open][cistern]"
 
 /obj/structure/toilet/attackby(obj/item/I as obj, mob/living/user as mob)
 	if(isCrowbar(I))
@@ -71,6 +72,11 @@
 		to_chat(user, "You carefully place \the [I] into the cistern.")
 		return
 
+/obj/structure/toilet/gold
+	name = "golden toilet"
+	desc = "The HT-451, a torque rotation-based, waste disposal unit for small matter. This one is LUXURIOUS."
+	icon_state = "goldtoilet00"
+	base_icon_state = "goldtoilet"
 
 
 /obj/structure/urinal
