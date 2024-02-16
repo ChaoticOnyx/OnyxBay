@@ -62,7 +62,7 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 	if(!fexists(config_file))
 		config_file = "config/example/config.toml" // Fallback to example if user hasnt setup config properly
 
-	raw_data = FROM_TOML(return_file_text(config_file))
+	raw_data = rustg_read_toml_file(config_file)
 
 	// Now pass through all our stuff
 	load_all_sections()
