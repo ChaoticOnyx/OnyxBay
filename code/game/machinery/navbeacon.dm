@@ -392,3 +392,7 @@ Transponder Codes:<UL>"}
 /obj/machinery/navbeacon/delivery/Hydroponics
 	location = "Hydroponics"
 	codes = list("delivery" = 1, "dir" = 2)
+
+/obj/machinery/navbeacon/delivery/Bridge
+	location = "Bridge"
+	codes = list("delivery" = 1, "dir" = 1)
