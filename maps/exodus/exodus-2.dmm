@@ -4759,7 +4759,7 @@
 "bNA" = (/turf/simulated/floor/tiled/rough,/area/crew_quarters/heads/hop)
 "bNB" = (/obj/machinery/light,/obj/machinery/camera/network/command{dir = 1; c_tag = "AI - Upload Foyer"},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/turf/simulated/floor/tiled/dark,/area/turret_protected/ai_upload_foyer)
 "bNC" = (/obj/structure/window_frame/reinforced/hull,/obj/structure/disposalpipe/segment{icon_state = "pipe-c"; dir = 8},/turf/simulated/floor/plating,/area/quartermaster/office)
-"bND" = (/obj/machinery/door/airlock/highsecurity{name = "AI Upload Access"; req_access = list(16)},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled,/area/turret_protected/ai_upload_foyer)
+"bND" = (/obj/machinery/door/airlock/highsecurity{name = "AI Upload Access"; req_access = list(16)},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled/dark,/area/turret_protected/ai_upload_foyer)
 "bNE" = (/obj/structure/window_frame/grille,/turf/simulated/floor/plating,/area/maintenance/exterior)
 "bNF" = (/obj/machinery/atmospherics/unary/vent_scrubber/on,/turf/simulated/floor/grid/bluegrid,/area/turret_protected/ai_server_room)
 "bNG" = (/obj/structure/cable/cyan{icon_state = "0-2"; d2 = 2},/obj/machinery/power/apc{name = "north bump"; dir = 1; pixel_y = 24},/turf/simulated/floor/tiled/dark,/area/turret_protected/ai_server_room)
