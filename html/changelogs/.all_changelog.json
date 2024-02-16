@@ -1,6 +1,39 @@
 [
   {
     "author": "Rampoch",
+    "date": "2024-02-16T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "Приведение стенок на шаттлах в соответствие с последними обновлениями.",
+        "pr": 11603
+      }
+    ]
+  },
+  {
+    "author": "BaraBara",
+    "date": "2024-02-16T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Plastic flaps теперь можно собрать и разобрать.",
+        "pr": 11562
+      }
+    ]
+  },
+  {
+    "author": "TobyThorne",
+    "date": "2024-02-16T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "На \"Исход\" вернулась плашка \"Space Station 13\". И ещё несколько мелких изменений на карте.",
+        "pr": 11611
+      }
+    ]
+  },
+  {
+    "author": "Rampoch",
     "date": "2024-02-14T00:00:00+03:00",
     "changes": [
       {
