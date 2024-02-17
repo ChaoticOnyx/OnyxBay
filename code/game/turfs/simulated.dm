@@ -91,7 +91,7 @@
 		// Dirt overlays.
 		update_dirt()
 
-		if(M.buckled && !istype(H.buckled, /obj/structure/bed/chair/wheelchair)) // No bloody trails for rollerbedded dudes pls
+		if(M.buckled && !istype(M.buckled, /obj/structure/bed/chair/wheelchair)) // No bloody trails for rollerbedded dudes pls
 			return ..()
 
 		if(ishuman(M))
