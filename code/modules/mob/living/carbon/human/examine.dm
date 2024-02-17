@@ -165,9 +165,6 @@
 		if(o && o.splinted && o.splinted.loc == o)
 			msg += SPAN("warning", "[T.He] [T.has] \a [o.splinted] on [T.his] [o.name]!\n")
 
-	if(mSmallsize in mutations)
-		msg += "[T.He] [T.is] small halfling!\n"
-
 	var/distance = 0
 	if(isghost(user) || user?.is_ooc_dead()) // ghosts can see anything
 		distance = 1

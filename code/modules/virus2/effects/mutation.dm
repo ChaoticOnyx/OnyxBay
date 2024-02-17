@@ -95,23 +95,17 @@
 		if(!data["name"] || !data["UI"] || !data["SE"])
 			data["name"] = mob.real_name
 			data["UI"] = mob.dna.UI.Copy()
-			data["SE"] = mob.dna.SE.Copy()
 			host = 1
 			return
 
 		original_dna["name"] = mob.real_name
 		original_dna["UI"] = mob.dna.UI.Copy()
-		original_dna["SE"] = mob.dna.SE.Copy()
 
 		to_chat(mob, SPAN("danger", "You don't feel like yourself."))
 		var/list/newUI = data["UI"]
-		var/list/newSE = data["SE"]
 		mob.UpdateAppearance(newUI.Copy())
-		mob.dna.SE = newSE.Copy()
-		mob.dna.UpdateSE()
 		mob.real_name = data["name"]
 		mob.flavor_text = ""
-		domutcheck(mob)
 		transformed = 1
 
 /datum/disease2/effect/dnaspread/deactivate(mob/living/carbon/human/mob)
@@ -120,10 +114,7 @@
 	if(!original_dna["name"] || !original_dna["UI"] || !original_dna["SE"])
 		return
 	var/list/newUI = original_dna["UI"]
-	var/list/newSE = original_dna["SE"]
 	mob.UpdateAppearance(newUI.Copy())
-	mob.dna.SE = newSE.Copy()
-	mob.dna.UpdateSE()
 	mob.real_name = original_dna["name"]
 
 	to_chat(mob, SPAN("notice", "You feel more like yourself."))

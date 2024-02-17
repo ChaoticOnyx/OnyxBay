@@ -15,57 +15,13 @@
 // DNA Gene activation boundaries, see dna2.dm.
 // Returns a list object with 4 numbers.
 /proc/GetDNABounds(block)
-	var/list/BOUNDS=dna_activity_bounds[block]
-	if(!istype(BOUNDS))
-		return DNA_DEFAULT_BOUNDS
-	return BOUNDS
-
-// Give Random Bad Mutation to M
-/proc/randmutb(mob/living/M)
-	if(!M) return
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		if(!H.should_have_organ(BP_HEART))
-			return
-	M.dna.check_integrity()
-	var/block = pick(GLOB.GLASSESBLOCK,GLOB.COUGHBLOCK,GLOB.FAKEBLOCK,GLOB.NERVOUSBLOCK,GLOB.CLUMSYBLOCK,GLOB.TWITCHBLOCK,GLOB.HEADACHEBLOCK,GLOB.BLINDBLOCK,GLOB.DEAFBLOCK,GLOB.HALLUCINATIONBLOCK)
-	M.dna.SetSEState(block, 1)
-
-// Give Random Good Mutation to M
-/proc/randmutg(mob/living/M)
-	if(!M) return
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		if(!H.should_have_organ(BP_HEART))
-			return
-	M.dna.check_integrity()
-	var/block = pick(GLOB.HULKBLOCK,GLOB.XRAYBLOCK,GLOB.FIREBLOCK,GLOB.TELEBLOCK,GLOB.NOBREATHBLOCK,GLOB.REMOTEVIEWBLOCK,GLOB.REGENERATEBLOCK,GLOB.INCREASERUNBLOCK,GLOB.REMOTETALKBLOCK,GLOB.MORPHBLOCK,GLOB.BLENDBLOCK,GLOB.NOPRINTSBLOCK,GLOB.SHOCKIMMUNITYBLOCK,GLOB.SMALLSIZEBLOCK,GLOB.BARTENDERBLOCK)
-	M.dna.SetSEState(block, 1)
+	return DNA_DEFAULT_BOUNDS
 
 // Random Appearance Mutation
 /proc/randmuti(mob/living/M)
 	if(!M) return
 	M.dna.check_integrity()
 	M.dna.SetUIValue(rand(1,DNA_UI_LENGTH),rand(1,4095))
-
-// Scramble UI or SE.
-/proc/scramble(UI, mob/M, prob)
-	if(!M)	return
-	M.dna.check_integrity()
-	if(UI)
-		for(var/i = 1, i <= DNA_UI_LENGTH-1, i++)
-			if(prob(prob))
-				M.dna.SetUIValue(i,rand(1,4095),1)
-		M.dna.UpdateUI()
-		M.UpdateAppearance()
-
-	else
-		for(var/i = 1, i <= DNA_SE_LENGTH-1, i++)
-			if(prob(prob))
-				M.dna.SetSEValue(i,rand(1,4095),1)
-		M.dna.UpdateSE()
-		domutcheck(M, null)
-	return
 
 // I haven't yet figured out what the fuck this is supposed to do.
 /proc/miniscramble(input,rs,rd)

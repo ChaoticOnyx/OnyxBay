@@ -331,9 +331,8 @@
 /datum/disease2/effect/telepathic/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	mob.dna.SetSEState(GLOB.REMOTETALKBLOCK, 1)
-	domutcheck(mob, null, MUTCHK_FORCED)
 
+	mob.add_mutation(mRemotetalk)
 
 /datum/disease2/effect/shakey
 	name = "World Shaking Syndrome"

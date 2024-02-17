@@ -21,8 +21,6 @@ SUBSYSTEM_DEF(misc)
 	GLOB.syndicate_code_response = generate_code_phrase()
 	GLOB.code_response_highlight_rule = generate_code_regex(GLOB.syndicate_code_response, @"\u0430-\u0451") // Russian chars only
 
-	setupgenetics()
-
 	//Create colors for different poisonous lizards
 	var/list/toxin_color = list()
 	toxin_color["notoxin"] = hex2rgb(rand_hex_color())
