@@ -1,7 +1,3 @@
-// Bitflags for mutations.
-#define STRUCDNASIZE 27
-#define   UNIDNASIZE 13
-
 // Generic mutations:
 #define MUTATION_TK              1
 #define MUTATION_COLD_RESISTANCE 2
