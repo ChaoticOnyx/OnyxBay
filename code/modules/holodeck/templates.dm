@@ -1,4 +1,6 @@
 /datum/map_template/holodeck
+	returns_created_atoms = TRUE
+
 	var/template_id
 
 /datum/map_template/holodeck/basketball
