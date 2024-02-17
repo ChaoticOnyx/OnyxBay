@@ -9,6 +9,10 @@
 	var/base_turf_for_zs = null
 	var/accessibility_weight = 0
 	var/template_flags = TEMPLATE_FLAG_ALLOW_DUPLICATES
+	/// Whether this template will put initialized atoms in `created_atoms`.
+	var/returns_created_atoms = FALSE
+	/// List of all atoms created during template loading, use with `returns_created_atoms`.
+	var/list/atom/created_atoms
 
 /datum/map_template/New(list/paths = null, rename = null)
 	if(paths && !islist(paths))
@@ -54,7 +58,10 @@
 		if(istype(A, /obj/machinery))
 			machines += A
 
-	SSatoms.InitializeAtoms(atoms)
+	if(returns_created_atoms)
+		created_atoms = SSatoms.InitializeAtoms(atoms)
+	else
+		SSatoms.InitializeAtoms(atoms)
 
 	SSmachines.setup_template_powernets(cables)
 	SSair.setup_template_machinery(atmos_machines)
