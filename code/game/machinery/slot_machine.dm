@@ -40,6 +40,7 @@
 		AddOverlays(emissive_appearance(icon, "slot-ea"))
 	else
 		icon_state = "slot[skin_variation]_off"
+		set_light(0)
 
 /obj/machinery/slot_machine/proc/update_standing_icon()
 	if(!anchored)
