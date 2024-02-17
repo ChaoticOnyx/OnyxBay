@@ -84,6 +84,17 @@
 		if(!C.species?.bullet_act(P, C))
 			return
 
+	var/mob/living/firer = P.firer
+	if(istype(firer))
+		for(var/datum/modifier/noattack/noamod in firer.modifiers)
+			var/mob/living/modifier_target = noamod.atom_target.resolve()
+			if(!istype(modifier_target))
+				continue
+
+			if(modifier_target == src)
+				to_chat(firer, SPAN_DANGER("Are you daft? You can't attack them!"))
+				return FALSE
+
 	if(!P.nodamage)
 		apply_damage(damage, P.damage_type, def_zone, absorb, flags, P)
 	P.on_hit(src, absorb, def_zone)

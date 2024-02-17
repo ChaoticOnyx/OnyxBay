@@ -55,6 +55,15 @@ avoid code duplication. This includes items that may sometimes act as a standard
 			to_chat(user, SPAN("warning", "You can't attack while blocking!"))
 			return 0
 
+	for(var/datum/modifier/noattack/noamod in user.modifiers)
+		var/mob/living/modifier_target = noamod.atom_target.resolve()
+		if(!istype(modifier_target))
+			continue
+
+		if(modifier_target == M)
+			to_chat(user, SPAN_DANGER("Are you daft? You can't attack them!"))
+			return FALSE
+
 	//////////Logging////////
 	if(!no_attack_log)
 		admin_attack_log(user, M, "Attacked using \a [src] (DAMTYE: [uppertext(damtype)])", "Was attacked with \a [src] (DAMTYE: [uppertext(damtype)])", "used \a [src] (DAMTYE: [uppertext(damtype)]) to attack")

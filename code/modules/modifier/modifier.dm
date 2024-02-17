@@ -49,6 +49,10 @@
 	var/stammering
 	var/burrieng
 	var/lisping
+	/// List of chemicals that trigger this modifier's effects
+	var/list/affected_chemicals
+	/// List of items that trigger specific reactions on
+	var/list/affected_items
 
 /datum/modifier/New(new_holder, new_origin)
 	holder = new_holder
@@ -115,7 +119,7 @@
 // Call this to add a modifier to a mob. First argument is the modifier type you want, second is how long it should last, in ticks.
 // Third argument is the 'source' of the modifier, if it's from someone else.  If null, it will default to the mob being applied to.
 // The SECONDS/MINUTES macro is very helpful for this.  E.g. M.add_modifier(/datum/modifier/example, 5 MINUTES)
-/mob/living/proc/add_modifier(modifier_type, expire_at = null, mob/living/origin = null)
+/mob/living/proc/add_modifier(modifier_type, expire_at = null, mob/living/origin = null, additional_params = null)
 	// First, check if the mob already has this modifier.
 	for(var/datum/modifier/M in modifiers)
 		if(ispath(modifier_type, M))
@@ -131,7 +135,7 @@
 					return
 
 	// If we're at this point, the mob doesn't already have it, or it does but stacking is allowed.
-	var/datum/modifier/mod = new modifier_type(src, origin)
+	var/datum/modifier/mod = new modifier_type(src, origin, additional_params)
 	if(!mod.can_apply(src))
 		qdel(mod)
 		return
@@ -239,3 +243,10 @@
 	if(abs)
 		return "[abs( ((multi - 1) * 100) )]%"
 	return "[((multi - 1) * 100)]%"
+
+/// Triggered when a certain chemical is applied to a mob with this modifier.
+/datum/modifier/proc/trigger_chem_effect(mob/M, amount, chemical)
+	pass()
+
+/datum/modifier/proc/run_item_damage(damage, damagetype, def_zone, blocked, damage_flags, used_weapon)
+	pass()

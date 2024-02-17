@@ -481,6 +481,13 @@ This function restores all organs.
 	if(!istype(organ))
 		return 0
 
+	for(var/datum/modifier/M in modifiers)
+		if(!M.affected_items.len)
+			continue
+
+		if(used_weapon.type in M.affected_items)
+			damage += M.run_item_damage(damage, damagetype, def_zone, blocked, damage_flags, used_weapon)
+
 	handle_suit_punctures(damagetype, damage, def_zone)
 
 	if(blocked >= 100)	return 0

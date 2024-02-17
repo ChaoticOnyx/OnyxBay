@@ -8,8 +8,10 @@
 	var/list/atom/movable/screen/ability/vampire_power_objects = list()
 	var/showing = 0 // If we're 'open' or not.
 
-	var/open_state = "master_open"		// What the button looks like when it's 'open', showing the other buttons.
-	var/closed_state = "master_closed"	// Button when it's 'closed', hiding everything else.
+	/// What the button looks like when it's 'open', showing the other buttons.
+	var/open_state = "master_open"
+	/// Button when it's 'closed', hiding everything else.
+	var/closed_state = "master_closed"
 
 	screen_loc = ui_spell_master // TODO: Rename
 
@@ -565,3 +567,12 @@
 
 /atom/movable/screen/ability/vampire_power/activate()
 	power.use(usr)
+
+// Devil (deity)
+
+/atom/movable/screen/movable/ability_master/proc/reskin_devil()
+	icon_state = "changeling_spell_base"
+	open_state = "devil_open"
+	closed_state = "devil_closed"
+	ClearOverlays()
+	AddOverlays(open_state)
