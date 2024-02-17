@@ -413,10 +413,6 @@
 		else
 			. += "<span class='notice'>[strip_html_properly(msg)]... <a href='byond://?src=\ref[src];flavor_more=1'>More...</a></span>"
 
-	if(length(flavor_texts["ooc"]) > 0)
-		. += "\n"
-		. += SPAN_INFO("<a href='byond://?src=\ref[src];show_ooc_flavor=1'>OOC Flavor</a>")
-
 /*
 /mob/verb/help()
 	set name = "Help"
@@ -528,9 +524,6 @@
 		onclose(usr, "[name]")
 	if(href_list["flavor_change"])
 		update_flavor_text()
-	if(href_list["show_ooc_flavor"])
-		show_browser(usr, text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", name, replacetext(flavor_texts["ooc"], "\n", "<BR>")), text("window=[];size=500x200", name))
-		onclose(usr, "[name]")
 
 //	..()
 	return

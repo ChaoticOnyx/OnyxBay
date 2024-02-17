@@ -113,7 +113,7 @@
 	HTML += "<a href='?src=\ref[src];flavor_text=feet'>Feet:</a> "
 	HTML += TextPreview(pref.flavor_texts["feet"])
 	HTML += "<br>"
-	HTML += "<a href='?src=\ref[src];flavor_text=ooc'>OOC:</a> "
+	HTML += "<a href='?src=\ref[src];flavor_text=ooc'>Action:</a> "
 	HTML += TextPreview(pref.flavor_texts["ooc"])
 	HTML += "<br>"
 	HTML += "<hr />"
