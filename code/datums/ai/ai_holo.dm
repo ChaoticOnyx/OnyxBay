@@ -38,7 +38,7 @@ GLOBAL_LIST_INIT(AI_holos, init_subtypes(/datum/ai_holo))
 	icon_state = "Face"
 
 /datum/ai_holo/carp
-	icon_state = "Carp"
+	icon_state = "carp"
 
 /datum/ai_holo/solgov
 	icon_state = "SolGov"

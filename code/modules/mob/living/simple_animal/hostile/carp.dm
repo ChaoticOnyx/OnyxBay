@@ -48,3 +48,27 @@
 		if(prob(15))
 			L.Weaken(3)
 			L.visible_message("<span class='danger'>\The [src] knocks down \the [L]!</span>")
+
+/mob/living/simple_animal/hostile/carp/holographicgraphic
+	icon_state = "carp"
+	icon = 'icons/mob/hologram.dmi'
+
+	alpha = 127
+
+	icon_living = "carp"
+
+	meat_amount = 0
+	meat_type = null
+
+	faction = "neutral"
+
+/mob/living/simple_animal/hostile/carp/holographicgraphic/Initialize()
+	. = ..()
+	set_light(0.5, 0.1, 2)
+
+/mob/living/simple_animal/hostile/carp/holographic/gib(anim, do_gibs)
+	death()
+
+/mob/living/simple_animal/hostile/carp/holographic/death()
+	..(null, "fades away!", "You have been destroyed.")
+	qdel(src)

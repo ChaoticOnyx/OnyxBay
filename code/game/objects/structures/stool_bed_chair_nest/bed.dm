@@ -105,7 +105,7 @@
 	return
 
 /obj/structure/bed/attackby(obj/item/W as obj, mob/user as mob)
-	if(isWrench(W))
+	if(isWrench(W) && !(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		dismantle()
 		qdel(src)

@@ -102,8 +102,11 @@
 	if(display_message)
 		visible_message("[src] shatters!")
 
-	cast_new(shardtype, is_fulltile() ? 4 : 1, loc)
-	if(reinf) cast_new(/obj/item/stack/rods, is_fulltile() ? 4 : 1, loc)
+	if(!(atom_flags & ATOM_FLAG_HOLOGRAM))
+		cast_new(shardtype, is_fulltile() ? 4 : 1, loc)
+		if(reinf)
+			cast_new(/obj/item/stack/rods, is_fulltile() ? 4 : 1, loc)
+
 	qdel(src)
 	return
 

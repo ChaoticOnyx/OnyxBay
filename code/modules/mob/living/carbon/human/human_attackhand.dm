@@ -28,7 +28,7 @@
 			H.do_attack_animation(src)
 			return 0
 
-		if(istype(H.gloves, /obj/item/clothing/gloves/boxing/hologlove))
+		if(istype(H.gloves, /obj/item/clothing/gloves/boxing))
 			H.do_attack_animation(src)
 			var/damage = rand(0, 9)
 			if(!damage)

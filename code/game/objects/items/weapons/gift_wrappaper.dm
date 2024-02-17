@@ -67,7 +67,7 @@
 		/obj/item/book/wiki/chef_recipes,
 		/obj/item/bikehorn,
 		/obj/item/beach_ball,
-		/obj/item/beach_ball/holoball,
+		/obj/item/beach_ball/basketball,
 		/obj/item/toy/water_balloon,
 		/obj/item/toy/blink,
 		/obj/item/toy/crossbow,
