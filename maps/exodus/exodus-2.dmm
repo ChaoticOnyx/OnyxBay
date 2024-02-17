@@ -5532,7 +5532,7 @@
 "cct" = (/obj/machinery/light/small{dir = 1},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/plating/airless,/area/rnd/test_area)
 "ccu" = (/obj/structure/window/plasmareinforced,/turf/simulated/floor/plating/airless,/area/rnd/test_area)
 "ccv" = (/obj/machinery/light{dir = 1},/obj/machinery/camera/network/research{c_tag = "Research - Toxins Test Chamber North"},/obj/structure/window/plasmareinforced,/turf/simulated/floor/plating/airless,/area/rnd/test_area)
-"ccw" = (/obj/machinery/door/airlock/mining{name = "Mining Dock"; req_access = list(48); id_tag = "cargodoor"},/obj/machinery/door/firedoor,/turf/simulated/floor/tiled/rough,/area/quartermaster/miningdock)
+"ccw" = (/obj/machinery/door/airlock/mining{name = "Mining Dock"; req_access = list(48); id_tag = "cargodoor"},/obj/machinery/door/firedoor,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/rough,/area/quartermaster/miningdock)
 "ccx" = (/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 4; frequency = 1380; id_tag = "mining_dock_pump"},/obj/effect/floor_decal/industrial/warning{dir = 9},/turf/simulated/floor/plating/rough,/area/quartermaster/miningdock)
 "ccy" = (/obj/machinery/computer/shuttle_control/mining,/obj/effect/floor_decal/rust,/turf/simulated/floor/shuttle/pod,/area/shuttle/mining/station)
 "ccz" = (/obj/machinery/light_switch{dir = 4; pixel_x = -24; pixel_y = -10; on = 1},/obj/item/modular_computer/telescreen/preset/generic{name = "west bump"; pixel_x = -32},/turf/simulated/floor/trim/wood,/area/engineering/break_room)
