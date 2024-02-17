@@ -1,0 +1,85 @@
+"a" = (/turf/simulated/floor/natural/lava,/area/space)
+"b" = (/obj/machinery/door/unpowered/simple/wood,/turf/simulated/floor/trim/darkwood,/area/space)
+"c" = (/obj/structure/bed/chair/wood{dir = 8},/obj/effect/decal/remains,/turf/simulated/floor/trim/carpet/red,/area/space)
+"d" = (/obj/effect/decal/remains,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid/air/prison,/area/space)
+"e" = (/obj/structure/kitchenspike,/turf/simulated/floor/asteroid/air/prison,/area/space)
+"f" = (/obj/structure/grille/cult,/turf/simulated/floor/asteroid/air/prison,/area/space)
+"i" = (/obj/effect/decal/remains,/turf/simulated/floor/trim/darkwood,/area/space)
+"k" = (/turf/space,/area/space)
+"m" = (/mob/living/simple_animal/pig,/turf/simulated/floor/asteroid/air/prison,/area/space)
+"o" = (/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/natural/lava,/area/space)
+"p" = (/obj/structure/bed/chair/wood{dir = 8},/turf/simulated/floor/trim/carpet/red,/area/space)
+"q" = (/turf/unsimulated/wall,/area/space)
+"r" = (/obj/structure/table/steel,/obj/item/material/hatchet,/turf/simulated/floor/asteroid/air/prison,/area/space)
+"s" = (/obj/structure/flora/pottedplant/eye,/turf/simulated/floor/trim/darkwood,/area/space)
+"t" = (/obj/structure/table/steel,/obj/item/scalpel,/obj/item/circular_saw,/turf/simulated/floor/asteroid/air/prison,/area/space)
+"u" = (/obj/structure/closet/secure_closet/personal/cabinet,/turf/simulated/floor/trim/darkwood,/area/space)
+"v" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/enchiladas,/turf/simulated/floor/trim/carpet/red,/area/space)
+"w" = (/mob/living/simple_animal/hostile/faithless/cult{dir = 4},/turf/simulated/floor/trim/darkwood,/area/space)
+"x" = (/obj/structure/flora/pottedplant/autumn,/turf/simulated/floor/trim/darkwood,/area/space)
+"y" = (/mob/living/simple_animal/hostile/faithless/cult{dir = 8},/turf/simulated/floor/trim/darkwood,/area/space)
+"z" = (/obj/structure/bed,/obj/item/bedsheet/red,/turf/simulated/floor/trim/darkwood,/area/space)
+"A" = (/obj/structure/window/reinforced,/obj/effect/decal/remains,/turf/simulated/floor/natural/lava,/area/space)
+"B" = (/obj/effect/decal/remains,/turf/simulated/floor/natural/lava,/area/space)
+"C" = (/obj/structure/table/steel,/obj/item/clothing/suit/chef/classic,/obj/item/material/knife/butch,/turf/simulated/floor/asteroid/air/prison,/area/space)
+"D" = (/obj/structure/window/reinforced,/turf/simulated/floor/natural/lava,/area/space)
+"E" = (/obj/structure/bed/chair/wood{dir = 4},/turf/simulated/floor/trim/carpet/red,/area/space)
+"F" = (/turf/simulated/floor/trim/carpet/red,/area/space)
+"G" = (/obj/structure/bed/chair/wood/wings,/turf/simulated/floor/trim/carpet/red,/area/space)
+"H" = (/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid/air/prison,/area/space)
+"I" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/vessel/bottle/pwine,/obj/item/reagent_containers/vessel/glass/wine{pixel_x = 9},/obj/item/reagent_containers/vessel/glass/wine{pixel_x = 9},/obj/item/reagent_containers/vessel/glass/wine{pixel_x = -9},/turf/simulated/floor/trim/carpet/red,/area/space)
+"J" = (/obj/structure/bed/chair/wood{dir = 4},/obj/effect/decal/remains,/turf/simulated/floor/trim/carpet/red,/area/space)
+"K" = (/turf/simulated/floor/asteroid/air/prison,/area/space)
+"M" = (/obj/structure/table/woodentable,/obj/item/mirror,/turf/simulated/floor/trim/darkwood,/area/space)
+"O" = (/turf/simulated/floor/trim/darkwood,/area/space)
+"P" = (/obj/structure/bed/chair{dir = 4},/turf/simulated/floor/asteroid/air/prison,/area/space)
+"Q" = (/turf/unsimulated/wall/cult,/area/space)
+"R" = (/obj/structure/window/reinforced{dir = 8},/turf/simulated/floor/natural/lava,/area/space)
+"S" = (/obj/structure/window/reinforced{dir = 1},/turf/simulated/floor/natural/lava,/area/space)
+"U" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/sliceable/tofubread,/turf/simulated/floor/trim/carpet/red,/area/space)
+"W" = (/obj/machinery/acting/changer/mirror{pixel_y = 0; pixel_x = -32},/obj/structure/bed/chair/comfy/red{dir = 8},/turf/simulated/floor/trim/darkwood,/area/space)
+"Y" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/vessel/skullgoblet/gold,/turf/simulated/floor/trim/carpet/red,/area/space)
+"Z" = (/mob/living/simple_animal/hostile/retaliate/clown,/turf/simulated/floor/asteroid/air/prison,/area/space)
+
+(1,1,1) = {"
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkQQQQQQkkkkkkkkkkkkkkkkk
+qkkQQQQQQQQQQQQQQQBaaaQkkkkkkkkkkkkkkkkk
+qkkQmfdfZQQaaaaaQQDDDAQkkkkkkkkkkkkkkkkk
+qkkQfffffQQaaaaaQQMOOOQkkkkkkkkkkkkkkkkk
+qkkQHKKKKQQQDDDQQQWOOzQkkkkkkkkkkkkkkkkk
+qkkQPKKKKQxOOOOOxQsOOOQkkkkkkkkkkkkkkkkk
+qkkQHHKKKbOOOOiOObOOOuQkkkkkkkkkkkkkkkkk
+qkkQeertCQwOFGFOyQQQQQQkkkkkkkkkkkkkkkkk
+qkkQQQQQQQOOJYpOOQQQkkkkkkkkkkkkkkkkkkkk
+qkkkkkkQaQwOEUpOyQBQkkkkkkkkkkkkkkkkkkkk
+qkkkkkkQaoOOEvpOORaQkkkkkkkkkkkkkkkkkkkk
+qkkkkkkQaQwOEIcOyQaQkkkkkkkkkkkkkkkkkkkk
+qkkkkkkQBoOiFFFOORaQkkkkkkkkkkkkkkkkkkkk
+qkkkkkkQaQxOOOOOxQaQkkkkkkkkkkkkkkkkkkkk
+qkkkkkkQaQQSQSQSQQaQkkkkkkkkkkkkkkkkkkkk
+qkkkkkkQaaaaaaaaaaBQkkkkkkkkkkkkkkkkkkkk
+qkkkkkkQQQQQQQQQQQQQkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+qkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+"}
