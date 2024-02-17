@@ -85,13 +85,16 @@
 	. = ..()
 
 /turf/simulated/Entered(atom/A, atom/OL)
-	if (istype(A,/mob/living))
+	if(isliving(A))
 		var/mob/living/M = A
 
 		// Dirt overlays.
 		update_dirt()
 
-		if(istype(M, /mob/living/carbon/human))
+		if(M.buckled && !istype(H.buckled, /obj/structure/bed/chair/wheelchair)) // No bloody trails for rollerbedded dudes pls
+			return ..()
+
+		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			// Tracking blood
 			var/list/bloodDNA = null
@@ -125,8 +128,10 @@
 			return ..()
 
 		if(wet)
+			if(M.buckled)
+				return // TODO: Lube-drifting wheelchairs aka dejavu
 
-			if(M.buckled || (M.m_intent == M_WALK && prob(min(100, 100/(wet/10))) ) )
+			if(M.m_intent == M_WALK && prob(min(100, 100 / (wet / 10))))
 				return
 
 			var/slip_dist = 1
