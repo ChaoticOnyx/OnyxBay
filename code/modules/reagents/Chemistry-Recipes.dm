@@ -383,6 +383,12 @@
 	required_reagents = list(/datum/reagent/ammonia = 1, /datum/reagent/water = 1)
 	result_amount = 2
 
+/datum/chemical_reaction/reconstituted_space_cleaner
+	name = "Reconstituted space cleaner"
+	result = /datum/reagent/space_cleaner
+	required_reagents = list(/datum/reagent/space_cleaner/dry = 1, /datum/reagent/water = 10)
+	result_amount = 10
+
 /datum/chemical_reaction/plantbgone
 	name = "Plant-B-Gone"
 	result = /datum/reagent/toxin/plantbgone
