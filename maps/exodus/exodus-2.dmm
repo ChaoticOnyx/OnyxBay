@@ -3196,7 +3196,7 @@
 "bjx" = (/obj/machinery/door/firedoor/border_only,/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/hydroponics/garden)
 "bjy" = (/obj/structure/flora/ausbushes/lavendergrass{pixel_x = 1; pixel_y = 3},/obj/structure/flora/ausbushes/sparsegrass{pixel_x = 19; pixel_y = 20},/turf/simulated/floor/natural/grass,/area/hydroponics/garden)
 "bjz" = (/obj/structure/window/basic{dir = 4},/obj/effect/floor_decal/spline/fancy{dir = 4},/turf/simulated/floor/natural/grass,/area/hydroponics/garden)
-"bjA" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass_mining{name = "Mining Block Access"; req_access = list(48)},/turf/simulated/floor/tiled/rough,/area/quartermaster/office)
+"bjA" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass_mining{name = "Cargo Office"; req_access = list(50); id_tag = "cargodoor"},/turf/simulated/floor/tiled/rough,/area/quartermaster/office)
 "bjB" = (/obj/structure/bookcase/prefitted/fiction,/turf/simulated/floor/trim/wood,/area/library)
 "bjC" = (/obj/structure/bookcase/prefitted/nonfiction,/turf/simulated/floor/trim/wood,/area/library)
 "bjD" = (/obj/machinery/camera/network/civilian_east{dir = 8; c_tag = "Library Central"},/turf/simulated/floor/trim/wood,/area/library)
