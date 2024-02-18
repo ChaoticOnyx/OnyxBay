@@ -147,7 +147,6 @@
 	var/can_pull_mobs = MOB_PULL_SAME          // Whether or not the mob can pull other mobs.
 
 	var/datum/dna/dna = null//Carbon
-	var/list/active_genes=list()
 	var/list/mutations = list() //Carbon -- Doohl
 	//see: setup.dm for list of mutations
 

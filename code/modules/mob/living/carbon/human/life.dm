@@ -205,14 +205,6 @@
 		if((MUTATION_COLD_RESISTANCE in mutations) || (prob(1)))
 			heal_organ_damage(0,1)
 
-	// DNA2 - Gene processing.
-	// The HULK stuff that was here is now in the hulk gene.
-	for(var/datum/dna/gene/gene in dna_genes)
-		if(!gene.block)
-			continue
-		if(gene.is_active(src))
-			gene.OnMobLife(src)
-
 	radiation -= RADIATION_SPEED_COEFFICIENT
 	radiation = max(radiation, SPACE_RADIATION)
 
@@ -1274,9 +1266,6 @@
 		var/isRemoteObserve = 0
 		if(shadow && client.eye == shadow && !is_physically_disabled())
 			isRemoteObserve = 1
-		else if((mRemote in mutations) && remoteview_target)
-			if(remoteview_target.stat == CONSCIOUS)
-				isRemoteObserve = 1
 		if(!isRemoteObserve && client && !client.adminobs)
 			remoteview_target = null
 			reset_view(null, 0)

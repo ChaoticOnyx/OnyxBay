@@ -209,9 +209,7 @@
 	if(..())
 		return
 	mob.bodytemperature = max(mob.bodytemperature, 350)
-	scramble(0, mob, 10)
 	mob.apply_damage(10, CLONE)
-
 
 /datum/disease2/effect/gbs
 	name = "Gravitokinetic Bipotential SADS+"

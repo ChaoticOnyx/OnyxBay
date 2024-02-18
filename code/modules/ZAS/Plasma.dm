@@ -13,10 +13,6 @@ var/image/contamination_overlay = image('icons/effects/contamination.dmi')
 	var/PLASMAGUARD_ONLY_NAME = "\"PlasmaGuard Only\""
 	var/PLASMAGUARD_ONLY_DESC = "If this is on, only biosuits and spacesuits protect against contamination and ill effects."
 
-	var/GENETIC_CORRUPTION = 0
-	var/GENETIC_CORRUPTION_NAME = "Genetic Corruption Chance"
-	var/GENETIC_CORRUPTION_DESC = "Chance of genetic corruption as well as toxic damage, X in 10,000."
-
 	var/SKIN_BURNS = 0
 	var/SKIN_BURNS_DESC = "Plasma has an effect similar to mustard gas on the un-suited."
 	var/SKIN_BURNS_NAME = "Skin Burns"
@@ -106,14 +102,6 @@ var/image/contamination_overlay = image('icons/effects/contamination.dmi')
 				else
 					if(!(wear_mask.body_parts_covered & EYES))
 						burn_eyes()
-
-	//Genetic Corruption
-	if(vsc.plc.GENETIC_CORRUPTION)
-		if(rand(1,10000) < vsc.plc.GENETIC_CORRUPTION)
-			randmutb(src)
-			to_chat(src, "<span class='danger'>High levels of toxins cause you to spontaneously mutate!</span>")
-			domutcheck(src,null)
-
 
 /mob/living/carbon/human/proc/burn_eyes()
 	var/obj/item/organ/internal/eyes/E = internal_organs_by_name[BP_EYES]

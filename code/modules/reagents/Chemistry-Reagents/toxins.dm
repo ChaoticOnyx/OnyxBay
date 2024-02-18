@@ -316,11 +316,6 @@
 	if(M.dna)
 		if(prob(removed * mutation_potency)) // Approx. one mutation per 10 injected/20 ingested/30 touching units
 			randmuti(M)
-			if(prob(98))
-				randmutb(M)
-			else
-				randmutg(M)
-			domutcheck(M, null)
 			M.UpdateAppearance()
 	M.radiation += (0.05 SIEVERT) * removed
 

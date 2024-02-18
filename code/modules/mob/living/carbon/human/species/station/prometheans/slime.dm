@@ -125,7 +125,6 @@
 	spare.real_name = spare.dna.real_name
 	spare.name = spare.dna.real_name
 	spare.UpdateAppearance(mutcolor_update=1)
-	domutcheck(spare, null)
 	spare.Move(get_step(H.loc, pick(NORTH,SOUTH,EAST,WEST)))
 	spare.AddComponent(/datum/component/body_swapper)
 

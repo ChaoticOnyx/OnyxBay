@@ -79,8 +79,6 @@
 	..()
 	if(!(mRemotetalk in user.mutations))
 		user.add_mutation(mRemotetalk)
-		user.dna.SetSEState(GLOB.REMOTETALKBLOCK,1)
-		domutcheck(user, null, MUTCHK_FORCED)
 		to_chat(user, SPAN_NOTICE("You expand your mind outwards."))
 		return 1
 	return 0
