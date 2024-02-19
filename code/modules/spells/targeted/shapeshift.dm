@@ -83,6 +83,7 @@
 		transformer.key = target.key
 	playsound(target, revert_sound, 50, 1)
 	transformer.forceMove(get_turf(target))
+	transformer.reset_view()
 	remove_target(target)
 	qdel(target)
 
