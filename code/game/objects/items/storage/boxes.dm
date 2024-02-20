@@ -636,3 +636,9 @@
 	desc = "A box full of balloons."
 	icon_state = "balloons"
 	startswith = list(/obj/item/balloon_flat = 14)
+
+/obj/item/storage/box/cleanerpods
+	name = "box of cleaner pods"
+	desc = "A box full of tasty, colorful space cleaner pods."
+	icon_state = "cleanerpods"
+	startswith = list(/obj/item/reagent_containers/pill/cleanerpod = 14)
