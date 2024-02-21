@@ -15,7 +15,7 @@
 	if(armour_pen >= 100)
 		return 0 //might as well just skip the processing
 
-	var/armor = getarmor(def_zone, attack_flag)
+	var/armor = get_flat_armor(def_zone, attack_flag)
 
 	if(armour_pen >= armor)
 		return 0 //effective_armor is going to be 0, fullblock is going to be 0, blocked is going to 0, let's save ourselves the trouble
@@ -56,10 +56,15 @@
 	var/protection_b = 1/(blocked_mult(armor_b)) - 1
 	return 100 - 1/(protection_a + protection_b + 1)*100
 
-//if null is passed for def_zone, then this should return something appropriate for all zones (e.g. area effect damage)
-/mob/living/proc/getarmor(def_zone, type)
+// Returns "flattened" armor value of a bodypart (or the whole body if def_zone = null)
+// Basically just combines all the layers, and thus is used everywhere except direct combat
+/mob/living/proc/get_flat_armor(def_zone, type)
 	return 0
 
+// Returns a list of armor values, from the outer layer (suit accessories) to the inner (undies)
+// Unlike in get_flat_armor(), def_zone MUST be specified, since it would make no sense otherwise
+/mob/living/proc/get_layered_armor(def_zone, type)
+	return 0
 
 /mob/living/bullet_act(obj/item/projectile/P, def_zone)
 

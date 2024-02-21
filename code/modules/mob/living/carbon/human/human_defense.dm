@@ -136,23 +136,23 @@ meteor_act
 
 // Muchacho later is NOW. ~ToTh
 /mob/living/carbon/human/run_armor_check(def_zone = null, attack_flag = "melee", armor_pen = 0, absorb_text = null, soften_text = null, aforce = 0)
-	var/effective_armor = getarmor(def_zone, attack_flag) - armor_pen
+	var/effective_armor = get_flat_armor(def_zone, attack_flag) - armor_pen
 
 	if(effective_armor <= 0)
 		return 0
 
 	return effective_armor
 
-/mob/living/carbon/human/getarmor(def_zone, type)
+/mob/living/carbon/human/get_flat_armor(def_zone, type)
 	var/armorval = 0
 	var/total = 0
 
 	if(def_zone)
 		if(isorgan(def_zone))
-			return getarmor_organ(def_zone, type)
+			return get_flat_armor_organ(def_zone, type)
 		var/obj/item/organ/external/affecting = get_organ(def_zone)
 		if(affecting)
-			return getarmor_organ(affecting, type)
+			return get_flat_armor_organ(affecting, type)
 		//If a specific bodypart is targetted, check how that bodypart is protected and return the value.
 
 	//If you don't specify a bodypart, it checks ALL your bodyparts for protection, and averages out the values
@@ -161,7 +161,7 @@ meteor_act
 			var/obj/item/organ/external/organ = organs_by_name[organ_name]
 			if(organ)
 				var/weight = organ_rel_size[organ_name]
-				armorval += (getarmor_organ(organ, type) * weight) //use plain addition here because we are calculating an average
+				armorval += (get_flat_armor_organ(organ, type) * weight) //use plain addition here because we are calculating an average
 				total += weight
 	return (armorval/max(total, 1))
 
@@ -182,7 +182,7 @@ meteor_act
 	return siemens_coefficient
 
 //this proc returns the armour value for a particular external organ.
-/mob/living/carbon/human/proc/getarmor_organ(obj/item/organ/external/def_zone, type)
+/mob/living/carbon/human/proc/get_flat_armor_organ(obj/item/organ/external/def_zone, type)
 	if(!type || !def_zone) return 0
 	if(!istype(def_zone))
 		def_zone = get_organ(check_zone(def_zone))

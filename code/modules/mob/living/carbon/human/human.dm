@@ -151,7 +151,7 @@
 		if(1.0)
 			b_loss = 400
 			f_loss = 100
-			if(!prob(getarmor(null, "bomb")))
+			if(!prob(get_flat_armor(null, "bomb")))
 				gib()
 				return
 			else
@@ -180,7 +180,7 @@
 				Paralyse(10)
 
 	// factor in armour
-	var/protection = blocked_mult(getarmor(null, "bomb"))
+	var/protection = blocked_mult(get_flat_armor(null, "bomb"))
 	b_loss *= protection
 	f_loss *= protection
 

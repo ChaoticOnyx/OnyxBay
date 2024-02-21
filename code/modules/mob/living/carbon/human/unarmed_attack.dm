@@ -48,7 +48,7 @@ var/global/list/sparring_attack_cache = list()
 	if(target.is_ic_dead())
 		return
 
-	var/effective_armor = target.getarmor(zone, "melee")
+	var/effective_armor = target.get_flat_armor(zone, "melee")
 	attack_damage *= specmod
 	target.damage_poise(round(attack_damage*0.5 + attack_damage*0.5*((100-effective_armor)/100),0.1))
 

@@ -508,7 +508,7 @@
 	for(var/mob/living/M in view(toxrange, loc))
 		if(M.status_flags & GODMODE)
 			continue
-		toxdamage = (toxdamage - (toxdamage * M.getarmor(null, "rad")))
+		toxdamage = (toxdamage - (toxdamage * M.get_flat_armor(null, "rad")))
 		M.apply_effect(toxdamage, TOX)
 
 	for(var/obj/singularity/child/SC in childs)
