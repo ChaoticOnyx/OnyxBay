@@ -479,6 +479,7 @@
 /obj/structure/window/plasmareinforced/full
 	dir = 5
 	icon_state = "plasmawindow0"
+	is_full_window = TRUE
 
 /obj/structure/window/reinforced
 	name = "reinforced glass panel"
@@ -510,6 +511,7 @@
 /obj/structure/window/reinforced/full
 	dir = 5
 	icon_state = "fwindow"
+	is_full_window = TRUE
 
 /obj/structure/window/reinforced/tinted
 	name = "tinted window"
@@ -534,8 +536,10 @@
 	explosion_block = 3
 	maxhealth = 40
 	reinf = 1
-	basestate = "w"
-	dir = 5
+	is_full_window = TRUE
+
+/obj/structure/window/shuttle/on_update_icon()
+	return
 
 /obj/structure/window/miningpod
 	name = "shuttle window"
@@ -547,6 +551,7 @@
 	maxhealth = 40
 	explosion_block = 3
 	dir = 5
+	is_full_window = TRUE
 
 /obj/structure/window/research
 	name = "shuttle window"
@@ -558,6 +563,7 @@
 	maxhealth = 40
 	explosion_block = 3
 	dir = 5
+	is_full_window = TRUE
 
 /obj/structure/window/syndi
 	name = "shuttle window"
@@ -569,6 +575,7 @@
 	maxhealth = 40
 	explosion_block = 3
 	dir = 5
+	is_full_window = TRUE
 
 /obj/structure/window/reinforced/polarized
 	name = "electrochromic window"
@@ -579,6 +586,7 @@
 /obj/structure/window/reinforced/polarized/full
 	dir = 5
 	icon_state = "fwindow"
+	is_full_window = TRUE
 
 /obj/structure/window/reinforced/polarized/attackby(obj/item/W as obj, mob/user as mob)
 	if(isMultitool(W))
