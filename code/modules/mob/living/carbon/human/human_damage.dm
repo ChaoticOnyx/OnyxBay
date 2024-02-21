@@ -416,7 +416,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 	var/burn_avg = burn / parts.len
 	for(var/obj/item/organ/external/E in parts)
 		if(brute_avg)
-			apply_damage(damage = brute_avg, damagetype = BRUTE, blocked = get_flat_armor_organ(E, "melee"), damage_flags = dam_flags, used_weapon = used_weapon, given_organ = E)
+			apply_damage(damage = brute_avg, damagetype = BRUTE, blocked = get_organ_armor(E, "melee"), damage_flags = dam_flags, used_weapon = used_weapon, given_organ = E)
 		if(burn_avg)
 			apply_damage(damage = burn_avg, damagetype = BURN, damage_flags = dam_flags, used_weapon = used_weapon, given_organ = E)
 

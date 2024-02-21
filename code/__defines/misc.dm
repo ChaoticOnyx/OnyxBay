@@ -159,6 +159,12 @@
 //Of course, this will affect code that checks for blocked < 100, as blocked will be less likely to actually be 100.
 #define ARMOR_BLOCK_CHANCE_MULT 1.0
 
+// Multiplier for projectiles' damage dealt to internal organs
+#define PROJECTILE_INTERNAL_DAMAGE_MULT 1.0
+
+// Projectiles' chance to embed/sever an artery, 25 seems to be fair but one might tweak it if needed
+#define PROJECTILE_EMBED_CHANCE 25
+
 // Special return values from bullet_act(). Positive return values are already used to indicate the blocked level of the projectile.
 #define PROJECTILE_CONTINUE		-1 //if the projectile should continue flying after calling bullet_act()
 #define PROJECTILE_FORCE_MISS	-2 //if the projectile should treat the attack as a miss (suppresses attack and admin logs) - only applies to mobs.
