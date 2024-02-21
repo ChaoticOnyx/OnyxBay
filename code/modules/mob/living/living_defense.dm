@@ -11,6 +11,7 @@
 	a blocked amount between 0 - 100, representing the success of the armor check.
 */
 /mob/living/proc/run_armor_check(def_zone = null, attack_flag = "melee", armour_pen = 0, absorb_text = null, soften_text = null)
+	// No need to check for armor at all, infinite force beats infinite defence
 	if(armour_pen >= 100)
 		return 0 //might as well just skip the processing
 
@@ -73,19 +74,26 @@
 	var/damage = P.damage
 	var/flags = P.damage_flags()
 	var/absorb = run_armor_check(def_zone, P.check_armour, P.armor_penetration)
+
+	// Turning bullets blunt and dissipating lasers
 	if(absorb >= damage)
 		if(flags & DAM_LASER)
 			//the armour causes the heat energy to spread out, which reduces the damage (and the blood loss)
 			//this is mostly so that armour doesn't cause people to lose MORE fluid from lasers than they would otherwise
 			damage *= FLUIDLOSS_CONC_BURN/FLUIDLOSS_WIDE_BURN
 		flags &= ~(DAM_SHARP|DAM_EDGE)
+
+	// Species-specific bullet_act
 	if(iscarbon(src))
 		var/mob/living/carbon/C = src
 		if(!C.species?.bullet_act(P, C))
 			return
 
+	// Applying damage
 	if(!P.nodamage)
 		apply_damage(damage, P.damage_type, def_zone, absorb, flags, P)
+
+	// Applying projectile-specific stuff
 	P.on_hit(src, absorb, def_zone)
 
 	return absorb

@@ -8,18 +8,21 @@ meteor_act
 /mob/living/carbon/human/bullet_act(obj/item/projectile/P, def_zone)
 	if(status_flags & GODMODE)
 		return 0
+
+	// Checking for hit zone; may result in a miss
 	def_zone = check_zone(def_zone)
 	if(!has_organ(def_zone))
 		return PROJECTILE_FORCE_MISS //if they don't have the organ in question then the projectile just passes by.
 
-	//Marauder Shields
+	// Checking for shields as they obviously have greater priority than armor
 	var/shield_check = check_shields(P.damage, P, null, def_zone, "the [P.name]")
 	if(shield_check)
 		return shield_check
 
 	var/obj/item/organ/external/organ = get_organ(def_zone)
 
-	var/disarm_slot // Shooting peoples' hands may get them disarmed
+	// Shooting peoples' hands may get them disarmed
+	var/disarm_slot
 	switch(def_zone)
 		if(BP_L_HAND)
 			disarm_slot = slot_l_hand
@@ -76,7 +79,9 @@ meteor_act
 				SP.forceMove(organ)
 				organ.embed(SP)
 
+	// Poise damage, the last actual harmful thing to happen
 	projectile_affect_poise(P, P.poisedamage * blocked_mult(blocked), def_zone)
+	// Spawning blood if necessary
 	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
 
 	return blocked
@@ -129,7 +134,7 @@ meteor_act
 ///		ARMOR	//////
 //////////////////////
 
-//Tis but a placeholder for now. Gonna change it later. Much later. Mucho later. Muchacho later. ~Toby
+// Muchacho later is NOW. ~ToTh
 /mob/living/carbon/human/run_armor_check(def_zone = null, attack_flag = "melee", armor_pen = 0, absorb_text = null, soften_text = null, aforce = 0)
 	var/effective_armor = getarmor(def_zone, attack_flag) - armor_pen
 
