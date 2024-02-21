@@ -131,7 +131,7 @@
 				if(!G) //check that we still have a grab
 					return FALSE
 
-				if(QDELETED(src) || QDESTROYING(src))
+				if(QDELETED(src))
 					return FALSE
 
 				G.affecting.forceMove(src.loc)
