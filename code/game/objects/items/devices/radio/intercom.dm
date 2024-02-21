@@ -208,6 +208,7 @@
 			if(isCrowbar(W))
 				eject_radio(user)
 				return
+				
 		if(INTERCOM_COMPLETE)
 			if(isScrewdriver(W))
 				unscrew_frame(user)
