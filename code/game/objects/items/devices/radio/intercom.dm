@@ -19,7 +19,7 @@
 	var/last_tick //used to delay the powercheck
 	var/static/mutable_appearance/ea_overlay
 	var/buildstage = INTERCOM_COMPLETE
-	var/open_panel = FALSE
+	var/wiresexposed = FALSE
 
 /obj/item/device/radio/intercom/get_storage_cost()
 	return ITEM_SIZE_NO_CONTAINER
@@ -174,7 +174,7 @@
 
 	if(istype(frame))
 		buildstage = INTERCOM_EMPTY
-		open_panel = TRUE
+		wiresexposed = TRUE
 		on = 0
 		icon_state = "intercom_b0"
 		ClearOverlays()
@@ -282,7 +282,7 @@
 
 	if(do_after(user, 40, src))
 		show_splash_text(user, "finished \the [src]!")
-		open_panel = FALSE
+		wiresexposed = FALSE
 		on = 1
 		buildstage = INTERCOM_COMPLETE
 		update_icon()
