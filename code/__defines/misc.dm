@@ -166,9 +166,10 @@
 #define PROJECTILE_EMBED_CHANCE 25
 
 // Special return values from bullet_act(). Positive return values are already used to indicate the blocked level of the projectile.
-#define PROJECTILE_CONTINUE		-1 //if the projectile should continue flying after calling bullet_act()
-#define PROJECTILE_FORCE_MISS	-2 //if the projectile should treat the attack as a miss (suppresses attack and admin logs) - only applies to mobs.
-#define PROJECTILE_FORCE_BLOCK	-3 //if the projectile should treat the attack as blocked (supresses attack, but not admin logs) - only applies to humans and human subtypes.
+#define PROJECTILE_CONTINUE         -1 //if the projectile should continue flying after calling bullet_act()
+#define PROJECTILE_FORCE_MISS       -2 //if the projectile should treat the attack as a miss (suppresses attack and admin logs) - only applies to mobs.
+#define PROJECTILE_FORCE_BLOCK      -3 //if the projectile should treat the attack as blocked (supresses attack, but not admin logs) - only applies to humans and human subtypes.
+#define PROJECTILE_FORCE_ARMORBLOCK -4 //the same as PROJECTILE_FORCE_BLOCK - only used for fancy messages
 
 // These determine how well one can block things with items
 #define BLOCK_TIER_NONE        0

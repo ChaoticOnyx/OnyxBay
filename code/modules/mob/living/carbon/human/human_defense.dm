@@ -45,7 +45,7 @@ meteor_act
 	// Fullblock, only poise damage required
 	if(blocked >= 100)
 		projectile_affect_poise(P, P.poisedamage / 3, def_zone)
-		return blocked
+		return PROJECTILE_FORCE_ARMORBLOCK
 
 	// Internal damage
 	// Some day we should make internals deal with blunt and sharp damage differently, but for now it's like this, if 'blocked' is non-zero, then the projectile's already lost its SHARP/EDGE flags and thus we cut the damage accordingly
@@ -570,8 +570,9 @@ meteor_act
 	if(!affecting)
 		return //should be prevented by attacked_with_item() but for sanity.
 
-	var/blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
+	var/blocked = 0
 
+	// Getting hit by a humanoid
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		if(parrying)
@@ -581,6 +582,7 @@ meteor_act
 			if(handle_block_weapon(A, I))
 				return
 		if(!atype)
+			blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 			standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		else
 			// We only check disarm attacks for melee armor since they are dealt w/ blunt parts/handles/etc.
@@ -588,6 +590,8 @@ meteor_act
 			alt_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		return blocked
 
+	// Getting hit by a non-humanoid
+	blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 	standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 
 	return blocked
