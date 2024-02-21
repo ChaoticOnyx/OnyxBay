@@ -101,7 +101,7 @@
 /obj/structure/mirror/raider
 	name = "cracked mirror"
 	desc = "Something seems strange about this old, dirty mirror. Your reflection doesn't look like you remember it."
-	icon_state = "mirror_broke"
+	icon_state = "mirrormagic_broke"
 	shattered = 1
 
 /obj/structure/mirror/raider/attack_hand(mob/living/carbon/human/user)
@@ -124,6 +124,24 @@
 					GLOB.raiders.update_access(vox)
 				qdel(user)
 	..()
+
+/obj/structure/mirror/magic
+	name = "magic mirror"
+	desc = "Something seems strange about this mirror. Your reflection doesn't look like you remember it."
+	icon_state = "mirrormagic"
+
+/obj/structure/mirror/magic/shatter()
+	if(shattered)
+		return
+	shattered = TRUE
+	icon_state = "mirrormagic_broke"
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
+	desc = "Oh no, seven years of bad luck!"
+
+	var/obj/effect/reflection/reflection = ref.resolve()
+	if(istype(reflection))
+		reflection.alpha_icon_state = "mirror_mask_broken"
+		reflection.update_mirror_filters()
 
 /obj/item/mirror
 	name = "mirror"

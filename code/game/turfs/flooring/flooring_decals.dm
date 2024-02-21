@@ -788,6 +788,13 @@ var/list/floor_decals = list()
 	name = "hazard stripes"
 	icon_state = "warningcee_red"
 
+/obj/effect/floor_decal/industrial/warning/mag
+	name = "hazard stripes"
+	icon_state = "magwarning"
+
+/obj/effect/floor_decal/industrial/warning/mag/corner
+	icon_state = "magwarningcorner"
+
 /obj/effect/floor_decal/industrial/hatch
 	name = "hatched marking"
 	icon_state = "delivery"
