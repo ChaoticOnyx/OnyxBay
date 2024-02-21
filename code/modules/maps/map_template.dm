@@ -107,21 +107,27 @@
 
 	return locate(world.maxx/2, world.maxy/2, world.maxz)
 
-/datum/map_template/proc/load(turf/T, centered=FALSE, clear_contents=FALSE)
+/datum/map_template/proc/load(turf/T, centered = FALSE, clear_contents = FALSE)
 	if(centered)
 		T = locate(T.x - round(width/2) , T.y - round(height/2) , T.z)
+
 	if(!T)
 		return
+
 	if(T.x+width > world.maxx)
 		return
+
 	if(T.y+height > world.maxy)
 		return
 
 	var/list/atoms_to_initialise = list()
 
-	for (var/mappath in mappaths)
-		var/datum/map_load_metadata/M = maploader.load_map(file(mappath), T.x, T.y, T.z, cropMap=TRUE, clear_contents= clear_contents)
-		if (M)
+	var/list/turf_blacklist = list()
+	update_blacklist(T, centered, turf_blacklist)
+
+	for(var/mappath in mappaths)
+		var/datum/map_load_metadata/M = maploader.load_map(file(mappath), T.x, T.y, T.z, cropMap=TRUE, clear_contents= clear_contents, turf_blacklist=turf_blacklist)
+		if(M)
 			atoms_to_initialise += M.atoms_to_initialise
 		else
 			return FALSE
@@ -134,6 +140,9 @@
 	loaded++
 
 	return TRUE
+
+/datum/map_template/proc/update_blacklist(turf/source_turf, centered = FALSE, list/turf_blacklist)
+	return
 
 /datum/map_template/proc/extend_bounds_if_needed(list/existing_bounds, list/new_bounds)
 	var/list/bounds_to_combine = existing_bounds.Copy()
