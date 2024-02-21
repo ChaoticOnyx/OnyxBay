@@ -1,18 +1,21 @@
 ///////////////////////////////////////////////////////////////////////
 //Under clothing
 /obj/item/clothing/under
+	name = "under"
 	icon = 'icons/obj/clothing/uniforms.dmi'
 	item_icons = list(
 		slot_l_hand_str = 'icons/inv_slots/uniforms/hand_l_default.dmi',
 		slot_r_hand_str = 'icons/inv_slots/uniforms/hand_r_default.dmi',
 		)
-	name = "under"
+	w_class = ITEM_SIZE_NORMAL
+	force = 0
+
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	permeability_coefficient = 0.90
 	slot_flags = SLOT_ICLOTHING
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
-	w_class = ITEM_SIZE_NORMAL
-	force = 0
+	coverage = 1.0
+
 	species_restricted = list("exclude", SPECIES_MONKEY)
 	var/has_sensor = SUIT_HAS_SENSORS //For the crew computer 2 = unable to change mode
 	var/sensor_mode = 0

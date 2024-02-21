@@ -10,6 +10,7 @@
 	species_restricted = list("exclude", SPECIES_DIONA)
 	var/undergloves = 1
 	blood_overlay_type = null
+	coverage = 0
 
 	drop_sound = SFX_DROP_RING
 	pickup_sound = SFX_PICKUP_RING

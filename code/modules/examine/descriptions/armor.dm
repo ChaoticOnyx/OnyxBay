@@ -57,19 +57,25 @@
 	if(min_cold_protection_temperature == SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE)
 		. += "It provides very good protection against very cold temperatures. \n"
 
+	var/islist_coverage = islist(coverage)
 	var/list/covers = list()
 	var/list/slots = list()
 
 	for(var/name in string_part_flags)
 		if(body_parts_covered & string_part_flags[name])
-			covers += name
+			var/coverage_entry = name
+			if(islist_coverage)
+				for(var/entry in coverage)
+					if(entry == name)
+						coverage_entry += " ([round(coverage[entry] * 100)]%)"
+			covers += coverage_entry
 
 	for(var/name in string_slot_flags)
 		if(slot_flags & string_slot_flags[name])
 			slots += name
 
 	if(covers.len)
-		. += "It covers the [english_list(covers)]. \n"
+		. += "It covers [islist_coverage ? ("[round(coverage * 100)] of ") : ""]the [english_list(covers)]. \n"
 
 	if(slots.len)
 		. += "It can be worn on your [english_list(slots)]. \n"

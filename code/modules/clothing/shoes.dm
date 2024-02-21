@@ -5,24 +5,25 @@
 	icon = 'icons/obj/clothing/shoes.dmi'
 	desc = "Comfortable-looking shoes."
 	gender = PLURAL //Carn: for grammarically correct text-parsing
+	force = 2
+
+	permeability_coefficient = 0.50
 	siemens_coefficient = 0.7
 	body_parts_covered = FEET
 	slot_flags = SLOT_FEET
+	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
+	coverage = 1.0
 
-	var/can_hold_knife
-	var/obj/item/holding
-	var/track_blood = 0
-
-	permeability_coefficient = 0.50
-	force = 2
-	var/overshoes = 0
 	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "shoeblood"
 
-	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
-
 	drop_sound = SFX_DROP_SHOES
 	pickup_sound = SFX_PICKUP_SHOES
+
+	var/overshoes = 0
+	var/can_hold_knife
+	var/obj/item/holding
+	var/track_blood = 0
 
 /obj/item/clothing/shoes/Destroy()
 	if(holding)

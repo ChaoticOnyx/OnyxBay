@@ -15,14 +15,17 @@ BLIND     // can't see anything
 	w_class = ITEM_SIZE_SMALL
 	body_parts_covered = EYES
 	slot_flags = SLOT_EYES
-	var/vision_flags = 0
-	var/darkness_view = 0//Base human is 2
-	var/see_invisible = -1
-	var/light_protection = 0
+	coverage = 1.0
+
 	blood_overlay_type = null // These are too small to bother, no need to waste CPU time
 
 	drop_sound = SFX_DROP_ACCESSORY
 	pickup_sound = SFX_PICKUP_ACCESSORY
+
+	var/vision_flags = 0
+	var/darkness_view = 0//Base human is 2
+	var/see_invisible = -1
+	var/light_protection = 0
 
 /obj/item/clothing/glasses/update_clothing_icon()
 	if(ismob(src.loc))

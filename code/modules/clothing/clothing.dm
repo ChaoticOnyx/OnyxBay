@@ -1,6 +1,12 @@
 /obj/item/clothing
 	name = "clothing"
 	siemens_coefficient = 0.9
+
+	/// How much of a bodypart we cover
+	/// Can be either a number (a common coverage rate for every bodypart we use)
+	/// or a dictionary (i.e. list(UPPER_TORSO = 1.0, LOWER_TORSO = 0.5))
+	var/coverage = 1.0
+
 	var/flash_protection = FLASH_PROTECTION_NONE	// Sets the item's level of flash protection.
 	var/tint = TINT_NONE							// Sets the item's level of visual impairment tint.
 	/// Only these species can wear this kit.

@@ -6,22 +6,28 @@
 	w_class = ITEM_SIZE_SMALL
 	icon = 'icons/obj/clothing/gloves.dmi'
 	siemens_coefficient = 0.75
-	var/wired = FALSE
-	var/wire_color
-	var/clipped = FALSE
-	var/weakref/ring = null            // Covered ring (obj/item/clothing/ring)
-	var/weakref/wearer = null          // Used for covered rings when dropping (mob/living/carbon/human)
-	var/unarmed_damage_override = null // Overrides unarmed attack damage if not null
+	coverage = 1.0
 	body_parts_covered = HANDS
 	slot_flags = SLOT_GLOVES
 	attack_verb = list("challenged")
 	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "bloodyhands"
-	var/transfer_blood = 0
-	var/mob/living/carbon/human/bloody_hands_mob
 
 	drop_sound = SFX_DROP_GLOVES
 	pickup_sound = SFX_PICKUP_GLOVES
+
+	var/transfer_blood = 0
+	var/mob/living/carbon/human/bloody_hands_mob
+
+	var/wired = FALSE
+	var/wire_color
+
+	var/clipped = FALSE
+
+	var/weakref/ring = null            // Covered ring (obj/item/clothing/ring)
+	var/weakref/wearer = null          // Used for covered rings when dropping (mob/living/carbon/human)
+
+	var/unarmed_damage_override = null // Overrides unarmed attack damage if not null
 
 /obj/item/clothing/gloves/Initialize()
 	if(item_flags & ITEM_FLAG_PREMODIFIED)

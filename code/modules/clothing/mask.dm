@@ -3,8 +3,10 @@
 /obj/item/clothing/mask
 	name = "mask"
 	icon = 'icons/obj/clothing/masks.dmi'
+	blood_overlay_type = "maskblood"
 	slot_flags = SLOT_MASK
 	body_parts_covered = FACE|EYES
+	coverage = 1.0
 
 	var/voicechange = 0
 	var/list/say_messages
@@ -17,7 +19,6 @@
 	var/pull_mask = 0
 	var/hanging = 0
 	var/atom/movable/screen/overlay = null
-	blood_overlay_type = "maskblood"
 
 /obj/item/clothing/mask/New()
 	if(pull_mask)

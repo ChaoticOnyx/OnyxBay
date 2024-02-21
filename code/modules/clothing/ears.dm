@@ -5,6 +5,7 @@
 	w_class = ITEM_SIZE_TINY
 	throwforce = 2
 	slot_flags = SLOT_EARS
+	coverage = 0
 	blood_overlay_type = null // These are small anyways
 
 /obj/item/clothing/ears/update_clothing_icon()

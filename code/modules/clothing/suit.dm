@@ -1,18 +1,22 @@
 ///////////////////////////////////////////////////////////////////////
 //Suit
 /obj/item/clothing/suit
-	icon = 'icons/obj/clothing/suits.dmi'
 	name = "suit"
-	var/fire_resist = 100 CELSIUS
+	icon = 'icons/obj/clothing/suits.dmi'
+	w_class = ITEM_SIZE_NORMAL
+
+	siemens_coefficient = 0.9
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	allowed = list(/obj/item/tank/emergency)
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	slot_flags = SLOT_OCLOTHING
+	coverage = 1.0
+
 	blood_overlay_type = "suitblood"
-	siemens_coefficient = 0.9
-	w_class = ITEM_SIZE_NORMAL
 	drop_sound = SFX_DROP_CLOTH
 	pickup_sound = SFX_PICKUP_CLOTH
+
+	var/fire_resist = 100 CELSIUS
 
 /obj/item/clothing/suit/update_clothing_icon()
 	if (ismob(src.loc))

@@ -10,6 +10,7 @@
 	body_parts_covered = HEAD
 	slot_flags = SLOT_HEAD
 	w_class = ITEM_SIZE_SMALL
+	coverage = 1.0
 
 	var/light_overlay = "helmet_light"
 	var/light_applied
