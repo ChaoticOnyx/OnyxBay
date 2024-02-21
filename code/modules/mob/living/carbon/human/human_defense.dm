@@ -70,7 +70,7 @@ meteor_act
 
 			if(length(victims))
 				for(var/obj/item/organ/internal/victim in victims)
-					victim.take_internal_damage(damage_amt / victims.len)
+					victim.take_internal_damage(penetrating_damage / victims.len)
 
 	// Embed or sever artery, only happens if the projectile's successfully bypassed armor
 	if(!blocked && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(PROJECTILE_EMBED_CHANCE) && P.can_embed())
@@ -153,7 +153,7 @@ meteor_act
 
 	for(var/armor_layer in armor)
 		// Completely ignoring this layer due to ineffective coverage %
-		if(prob(armor_layer[2])
+		if(!prob(armor_layer[2] * 100))
 			continue
 
 		var/effective_armor = armor_layer[1] - armor_pen
@@ -236,10 +236,10 @@ meteor_act
 	for(var/obj/item/clothing/C in protective_gear)
 		if(length(C.accessories))
 			for(var/obj/item/clothing/accessory/CA in C.accessories)
-				armor_layer = CA.get_armor_coverage(affecting, type)
+				armor_layer = CA.get_armor_coverage(src, affecting, type)
 				if(armor_layer)
 					. += armor_layer
-		armor_layer = C.get_armor_coverage(affecting, type)
+		armor_layer = C.get_armor_coverage(src, affecting, type)
 		if(armor_layer)
 			. += armor_layer
 

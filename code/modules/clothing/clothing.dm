@@ -204,15 +204,15 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 			to_chat(user, "Attached to \the [src] are [english_list(ties)].")
 		return TOPIC_HANDLED
 
-/obj/item/clothing/proc/get_armor_coverage(obj/item/organ/external/def_zone, type)
+/obj/item/clothing/proc/get_armor_coverage(obj/item/organ/external/def_zone, type, mob/living/carbon/human/H)
 	if(!coverage)
 		return
 
 	if(!type || !def_zone)
 		return
 
-	if(!istype(def_zone))
-		def_zone = get_organ(check_zone(def_zone))
+	if(!istype(def_zone) && H)
+		def_zone = H.get_organ(check_zone(def_zone))
 
 	if(!def_zone)
 		return
