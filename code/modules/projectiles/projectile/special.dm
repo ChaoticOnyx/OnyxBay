@@ -165,6 +165,7 @@
 	if(ishuman(target))
 		var/mob/living/carbon/human/M = target
 		M.confused += rand(5,8)
+
 /obj/item/projectile/chameleon
 	name = "bullet"
 	icon_state = "bullet"
@@ -194,29 +195,29 @@
 /obj/item/projectile/energy/laser/small // Pistol level
 	name = "small laser bolt"
 	icon_state = "laser_small"
-	damage = 35
-	armor_penetration = 10
+	damage = 30
+	armor_penetration = 0
 	projectile_inner_range = 0.15
 
 /obj/item/projectile/energy/laser/lesser // Carbine level
 	icon_state = "laser_lesser"
-	damage = 45
+	damage = 40
 	agony = 5
-	armor_penetration = 12.5
+	armor_penetration = 10
 	projectile_inner_range = 0.2
 
 /obj/item/projectile/energy/laser/mid // Rifle level
 	icon_state = "laser"
-	damage = 55
+	damage = 50
 	agony = 10
-	armor_penetration = 15.0
+	armor_penetration = 20
 
 /obj/item/projectile/energy/laser/greater // Advanced laser rifle or something
 	name = "large laser bolt"
 	icon_state = "laser_greater"
-	damage = 65
+	damage = 60
 	agony = 15
-	armor_penetration = 17.5
+	armor_penetration = 30
 	projectile_inner_range = 0.35
 	projectile_outer_range = 1.75
 
@@ -225,7 +226,7 @@
 	icon_state = "laser_heavy"
 	damage = 75
 	agony = 20
-	armor_penetration = 20
+	armor_penetration = 40
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
 	projectile_inner_range = 0.4
 	projectile_outer_range = 2.0

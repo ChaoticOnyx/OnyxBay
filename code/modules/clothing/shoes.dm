@@ -11,7 +11,7 @@
 	siemens_coefficient = 0.7
 	body_parts_covered = FEET
 	slot_flags = SLOT_FEET
-	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
+	armor = list(melee = 40, bullet = 10, laser = 10,energy = 15, bomb = 25, bio = 20)
 	coverage = 1.0
 
 	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)

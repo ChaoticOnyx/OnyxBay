@@ -108,7 +108,7 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 20, bullet = 20, laser = 30, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/space
@@ -163,6 +163,7 @@
 		slot_hand_str = "black"
 		)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = -25, bomb = 0, bio = 0)
 
 /obj/item/clothing/under/gentlesuit
 	name = "gentlemans suit"
@@ -552,7 +553,7 @@
 	desc = "A high visibility jumpsuit made from heat and radiation resistant materials."
 	icon_state = "hazard"
 	siemens_coefficient = 0.8
-	armor = list(melee = 0, bullet = 0, laser = 5,energy = 0, bomb = 5, bio = 0)
+	armor = list(melee = 5, bullet = 5, laser = 10, energy = 15, bomb = 5, bio = 0)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 
 /obj/item/clothing/under/sterile
@@ -563,7 +564,7 @@
 		slot_hand_str = "white"
 		)
 	permeability_coefficient = 0.50
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30)
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 30)
 
 /obj/item/clothing/under/suit_jacket/charcoal
 	name = "charcoal suit"
@@ -726,6 +727,7 @@
 	icon_state = "hunterhide"
 	item_state = "hunter"
 	body_parts_covered = LOWER_TORSO|LEGS|ARMS
+	coverage = 0.3
 
 /obj/item/clothing/under/savage_hunter/female
 	name = "savage huntress's hides"
@@ -739,12 +741,14 @@
 	icon_state = "fig_leaf"
 	body_parts_covered = LOWER_TORSO
 	has_sensor = 0
+	coverage = 0.05
 
 /obj/item/clothing/under/contortionist
 	name = "contortionist's jumpsuit"
 	desc = "A light jumpsuit useful for squeezing through narrow vents."
 	icon_state = "darkholme"
 	item_state = "darkholme"
+	coverage = 0.35
 
 /obj/item/clothing/under/latex_suit
 	name = "Latex suit"

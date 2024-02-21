@@ -157,8 +157,9 @@ meteor_act
 			continue
 
 		var/effective_armor = armor_layer[1] - armor_pen
-		var/dice_roll = rand(0, 100)
+		armor_pen /= 2 // Whatever happens, the armor pen goes down after colliding with each layer
 
+		var/dice_roll = rand(0, 100)
 		if(dice_roll > effective_armor)
 			// Ineffective block
 			continue

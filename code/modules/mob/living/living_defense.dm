@@ -11,10 +11,6 @@
 	a blocked amount between 0 - 100, representing the success of the armor check.
 */
 /mob/living/proc/run_armor_check(def_zone = null, attack_flag = "melee", armor_pen = 0, absorb_text = null, soften_text = null)
-	// No need to check for armor at all, infinite force beats infinite defence
-	if(armor_pen >= 100)
-		return 0 //might as well just skip the processing
-
 	var/armor = get_flat_armor(def_zone, attack_flag)
 
 	if(armor_pen >= armor)

@@ -6,6 +6,8 @@
 	item_state = ""	//no inhands
 	slot_flags = SLOT_TIE
 	w_class = ITEM_SIZE_SMALL
+	coverage = 0.0
+
 	var/slot = ACCESSORY_SLOT_DECOR
 	var/obj/item/clothing/has_suit = null		//the suit the tie may be attached to
 	var/image/inv_overlay = null	//overlay used when attached to clothing.

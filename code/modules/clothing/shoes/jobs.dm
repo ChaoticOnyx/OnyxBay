@@ -6,9 +6,9 @@
 	item_flags = ITEM_FLAG_NOSLIP
 	can_hold_knife = 1
 	species_restricted = null
-	siemens_coefficient = 0.4
+	siemens_coefficient = 0.3
 
-	armor = list(melee = 35, bullet = 30, laser = 30,energy = 35, bomb = 25, bio = 35)
+	armor = list(melee = 55, bullet = 20, laser = 20, energy = 35, bomb = 25, bio = 70)
 
 	drop_sound = SFX_DROP_BOOTS
 	pickup_sound = SFX_PICKUP_BOOTS
@@ -22,7 +22,7 @@
 	desc = "Tall synthleather boots with an artificial shine."
 	icon_state = "jackboots"
 	force = 3
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 20, bio = 10)
+	armor = list(melee = 70, bullet = 70, laser = 60, energy = 25, bomb = 20, bio = 30)
 	siemens_coefficient = 0.5
 	can_hold_knife = 1
 	cold_protection = FEET
@@ -34,7 +34,7 @@
 /obj/item/clothing/shoes/jackboots/tactical
 	name = "tactical jackboots"
 	desc = "Tall synthleather boots with an artificial shine. These ones seem to be reinforced with some sort of plating."
-	armor = list(melee = 80, bullet = 60, laser = 60, energy = 25, bomb = 50, bio = 10)
+	armor = list(melee = 80, bullet = 80, laser = 70, energy = 25, bomb = 50, bio = 30)
 	siemens_coefficient = 0.4
 
 /obj/item/clothing/shoes/jackboots/unathi
@@ -43,12 +43,13 @@
 	item_state = "digiboots"
 	siemens_coefficient = 0.7
 	species_restricted = null
+	coverage = 0.8
 
 /obj/item/clothing/shoes/workboots
 	name = "workboots"
 	desc = "A pair of steel-toed work boots designed for use in industrial settings. Safety first."
 	icon_state = "workboots"
-	armor = list(melee = 45, bullet = 30, laser = 30, energy = 25, bomb = 20, bio = 0)
+	armor = list(melee = 80, bullet = 40, laser = 50, energy = 25, bomb = 40, bio = 0)
 	siemens_coefficient = 0.4
 	can_hold_knife = 1
 
@@ -61,3 +62,4 @@
 	icon_state = "workbootstoeless"
 	siemens_coefficient = 0.6
 	species_restricted = null
+	coverage = 0.8
