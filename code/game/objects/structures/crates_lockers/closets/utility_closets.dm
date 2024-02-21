@@ -8,6 +8,7 @@
  *		Hydrant
  *		First Aid
  *		Excavation Closet
+ *		Emergency vox N2 Closet
  */
 
 /*
@@ -295,3 +296,16 @@
 	new /obj/item/device/radio(src)
 	new /obj/item/storage/box/survival
 	new /obj/item/storage/box/survival
+
+/obj/structure/closet/voxn2closet
+	name = "emergency N2 closet"
+	desc = "It's a storage unit for emergency breathmasks and N2 tanks."
+	icon_state = "emergencyvox"
+	icon_closed = "emergencyvox"
+	icon_opened = "emergencyvoxopen"
+
+/obj/structure/closet/voxn2closet/New()
+	new /obj/item/tank/emergency/nitrogen(src)
+	new /obj/item/tank/emergency/nitrogen/double(src)
+	new /obj/item/clothing/mask/gas/old(src)
+	new /obj/item/clothing/mask/gas/old(src)

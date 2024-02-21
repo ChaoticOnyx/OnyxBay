@@ -12,6 +12,12 @@
 	else
 		icon_state = icon_opened
 
+/obj/structure/closet/cabinet/wizcabinet
+	desc = "Magic will forever be in fashion."
+	icon_state = "wizcabinet_closed"
+	icon_closed = "wizcabinet_closed"
+	icon_opened = "wizcabinet_open"
+
 /obj/structure/closet/acloset
 	name = "strange closet"
 	desc = "It looks alien!"
