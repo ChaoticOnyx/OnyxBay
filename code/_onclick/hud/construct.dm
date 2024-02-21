@@ -19,35 +19,35 @@
 	infodisplay = list()
 	static_inventory = list()
 
-	mymob.pullin = new /obj/screen()
+	mymob.pullin = new /atom/movable/screen()
 	mymob.pullin.icon = 'icons/hud/mob/screen_construct.dmi'
 	mymob.pullin.icon_state = "pull0"
 	mymob.pullin.SetName("pull")
 	mymob.pullin.screen_loc = ui_construct_pull
 	static_inventory += mymob.pullin
 
-	mymob.fire = new /obj/screen()
+	mymob.fire = new /atom/movable/screen()
 	mymob.fire.icon = 'icons/hud/mob/screen_construct.dmi'
 	mymob.fire.icon_state = "fire0"
 	mymob.fire.SetName("fire")
 	mymob.fire.screen_loc = ui_construct_fire
 	infodisplay += mymob.fire
 
-	mymob.healths = new /obj/screen()
+	mymob.healths = new /atom/movable/screen()
 	mymob.healths.icon = 'icons/hud/mob/screen_construct.dmi'
 	mymob.healths.icon_state = "[constructtype]_health0"
 	mymob.healths.SetName("health")
 	mymob.healths.screen_loc = ui_construct_health
 	infodisplay += mymob.healths
 
-	mymob.purged = new /obj/screen()
+	mymob.purged = new /atom/movable/screen()
 	mymob.purged.icon = 'icons/hud/mob/screen_construct.dmi'
 	mymob.purged.icon_state = "purge0"
 	mymob.purged.SetName("purged")
 	mymob.purged.screen_loc = ui_construct_purge
 	infodisplay += mymob.purged
 
-	mymob.zone_sel = new /obj/screen/zone_sel()
+	mymob.zone_sel = new /atom/movable/screen/zone_sel()
 	mymob.zone_sel.icon = 'icons/hud/mob/screen_construct.dmi'
 	mymob.zone_sel.ClearOverlays()
 	mymob.zone_sel.AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[mymob.zone_sel.selecting]"))

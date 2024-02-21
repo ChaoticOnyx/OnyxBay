@@ -85,19 +85,21 @@
 	. = ..()
 
 /turf/simulated/Entered(atom/A, atom/OL)
-	if (istype(A,/mob/living))
+	if(isliving(A))
 		var/mob/living/M = A
-		if(M.lying)
-			return ..()
 
 		// Dirt overlays.
 		update_dirt()
 
-		if(istype(M, /mob/living/carbon/human))
+		if(M.buckled && !istype(M.buckled, /obj/structure/bed/chair/wheelchair)) // No bloody trails for rollerbedded dudes pls
+			return ..()
+
+		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			// Tracking blood
 			var/list/bloodDNA = null
 			var/bloodcolor = ""
+
 			if(H.shoes)
 				var/obj/item/clothing/shoes/S = H.shoes
 				if(istype(S))
@@ -107,24 +109,29 @@
 							bloodDNA = S.blood_DNA
 						bloodcolor = S.blood_color
 						S.track_blood--
-			else
-				if(H.track_blood)
-					if(H.feet_blood_DNA)
-						bloodDNA = H.feet_blood_DNA
-					bloodcolor = H.feet_blood_color
-					H.track_blood--
 
-			if (bloodDNA)
-				src.AddTracks(H.species.get_move_trail(H),bloodDNA,H.dir,0,bloodcolor) // Coming
-				var/turf/simulated/from = get_step(H,reverse_direction(H.dir))
+			else if(H.track_blood)
+				if(H.feet_blood_DNA)
+					bloodDNA = H.feet_blood_DNA
+				bloodcolor = H.feet_blood_color
+				H.track_blood--
+
+			if(bloodDNA)
+				AddTracks(H.species.get_move_trail(H), bloodDNA, H.dir, 0, bloodcolor) // Coming
+				var/turf/simulated/from = get_step(H, reverse_direction(H.dir))
 				if(istype(from) && from)
-					from.AddTracks(H.species.get_move_trail(H),bloodDNA,0,H.dir,bloodcolor) // Going
+					from.AddTracks(H.species.get_move_trail(H), bloodDNA, 0, H.dir, bloodcolor) // Going
 
 				bloodDNA = null
 
-		if(wet)
+		if(M.lying)
+			return ..()
 
-			if(M.buckled || (M.m_intent == M_WALK && prob(min(100, 100/(wet/10))) ) )
+		if(wet)
+			if(M.buckled)
+				return // TODO: Lube-drifting wheelchairs aka dejavu
+
+			if(M.m_intent == M_WALK && prob(min(100, 100 / (wet / 10))))
 				return
 
 			var/slip_dist = 1

@@ -9,7 +9,7 @@
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
 	var/hud_type = null
-	var/obj/screen/overlay = null
+	var/atom/movable/screen/overlay = null
 	var/vision_flags = 0
 	var/see_invisible = 0
 	var/darkness_view = 0 //Base human is 2

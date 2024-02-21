@@ -110,7 +110,7 @@ var/global/photo_count = 0
 /obj/item/storage/photo_album/MouseDrop(obj/over_object as obj)
 	if((ishuman(usr)))
 		var/mob/M = usr
-		if(!istype(over_object, /obj/screen))
+		if(!istype(over_object, /atom/movable/screen))
 			return ..()
 		playsound(loc, SFX_SEARCH_CLOTHES, 50, 1, -5)
 		if((!M.restrained() && !M.stat && M.back == src))

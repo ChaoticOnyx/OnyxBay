@@ -47,7 +47,7 @@
 	update_recursive_enhancement()
 
 /datum/changeling_power/proc/update_screen_button()
-	var/obj/screen/ability/changeling_power/CP = my_mob.ability_master.get_ability_by_changeling_power(src)
+	var/atom/movable/screen/ability/changeling_power/CP = my_mob.ability_master.get_ability_by_changeling_power(src)
 	CP?.update_icon()
 
 /datum/changeling_power/proc/check_incapacitated(_max_stat, _allow_stasis)

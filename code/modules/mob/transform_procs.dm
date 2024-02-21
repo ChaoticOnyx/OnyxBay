@@ -32,8 +32,6 @@
 	for(var/obj/item/I in src)
 		drop(I)
 	set_species(species.primitive_form)
-	dna.SetSEState(GLOB.MONKEYBLOCK,1)
-	dna.SetSEValueRange(GLOB.MONKEYBLOCK,0xDAC, 0xFFF)
 
 	to_chat(src, "<B>You are now [species.name]. </B>")
 	qdel(animation)

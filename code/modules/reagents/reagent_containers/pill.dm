@@ -271,3 +271,11 @@
 	icon_state = "sugar_cubes"
 	startswith = list(/datum/reagent/sugar = 5)
 	mimic_color = TRUE
+
+//Not actually a pill, but pills type provide everything needed for this
+/obj/item/reagent_containers/pill/cleanerpod
+	name = "space cleaner pod"
+	desc = "BLAM!-brand non-foaming space cleaner in concentrated form! Use one pod per 100u of water. Should not be consumed, but hey I'm not your mom nor a doctor."
+	icon_state = "cleanerpod"
+	startswith = list(/datum/reagent/space_cleaner/dry = 10)
+	mimic_color = FALSE

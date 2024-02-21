@@ -427,17 +427,12 @@
 			to_chat(user, "<span class='info'>[src] is only effective on lesser beings.</span>")
 			return
 
-/obj/item/lazarus_injector/attackby(obj/item/I, mob/living/user)
-	if(istype(I, /obj/item/card/emag) && !emagged)
-		var/obj/item/card/emag/emag_card = I
-		if(!emag_card.uses)
-			return
-		emagged = TRUE
-		emag_card.uses -= 1
-		to_chat(user, SPAN_WARNING("You overload \the [src]'s injection matrix."))
+/obj/item/lazarus_injector/emag_act(remaining_charges, mob/user)
+	if(emagged)
 		return
-
-	return ..()
+	emagged = TRUE
+	to_chat(user, SPAN_WARNING("You overload \the [src]'s injection matrix."))
+	return 1
 
 /obj/item/lazarus_injector/emp_act()
 	if(!malfunctioning)

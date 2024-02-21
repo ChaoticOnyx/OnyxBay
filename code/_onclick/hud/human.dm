@@ -16,14 +16,14 @@
 	static_inventory = list()
 	toggleable_inventory = list()
 
-	var/obj/screen/using
-	var/obj/screen/inventory/inv_box
+	var/atom/movable/screen/using
+	var/atom/movable/screen/inventory/inv_box
 
 	// Draw the various inventory equipment slots.
 	var/has_hidden_gear
 	for(var/gear_slot in hud_data.gear)
 
-		inv_box = new /obj/screen/inventory()
+		inv_box = new /atom/movable/screen/inventory()
 		inv_box.icon = ui_style
 		inv_box.color = ui_color
 		inv_box.alpha = ui_alpha
@@ -44,7 +44,7 @@
 			static_inventory += inv_box
 
 	if(has_hidden_gear)
-		using = new /obj/screen()
+		using = new /atom/movable/screen()
 		using.SetName("toggle")
 		using.icon = ui_style
 		using.icon_state = "other"
@@ -56,7 +56,7 @@
 	// Draw the attack intent dialogue.
 	if(hud_data.has_a_intent)
 
-		using = new /obj/screen/intent()
+		using = new /atom/movable/screen/intent()
 		using.icon = ui_style
 		static_inventory += using
 		action_intent = using
@@ -64,7 +64,7 @@
 		static_inventory |= using
 
 	if(hud_data.has_m_intent)
-		using = new /obj/screen()
+		using = new /atom/movable/screen()
 		using.SetName("mov_intent")
 		using.icon = ui_style
 		using.icon_state = (mymob.m_intent == M_RUN ? "running" : "walking")
@@ -75,7 +75,7 @@
 		move_intent = using
 
 	if(hud_data.has_drop)
-		using = new /obj/screen()
+		using = new /atom/movable/screen()
 		using.SetName("drop")
 		using.icon = ui_style
 		using.icon_state = "act_drop"
@@ -85,7 +85,7 @@
 		static_inventory += using
 
 	if(hud_data.has_rest)
-		using = new /obj/screen()
+		using = new /atom/movable/screen()
 		using.SetName("rest")
 		using.icon = ui_style
 		using.icon_state = "rest"
@@ -97,7 +97,7 @@
 
 	if(hud_data.has_hands)
 
-		using = new /obj/screen()
+		using = new /atom/movable/screen()
 		using.SetName("equip")
 		using.icon = ui_style
 		using.icon_state = "act_equip"
@@ -106,7 +106,7 @@
 		using.alpha = ui_alpha
 		static_inventory += using
 
-		inv_box = new /obj/screen/inventory()
+		inv_box = new /atom/movable/screen/inventory()
 		inv_box.SetName("r_hand")
 		inv_box.icon = ui_style
 		inv_box.icon_state = "r_hand_inactive"
@@ -120,7 +120,7 @@
 		r_hand_hud_object = inv_box
 		static_inventory += inv_box
 
-		inv_box = new /obj/screen/inventory()
+		inv_box = new /atom/movable/screen/inventory()
 		inv_box.SetName("l_hand")
 		inv_box.icon = ui_style
 		inv_box.icon_state = "l_hand_inactive"
@@ -133,7 +133,7 @@
 		l_hand_hud_object = inv_box
 		static_inventory += inv_box
 
-		using = new /obj/screen/inventory()
+		using = new /atom/movable/screen/inventory()
 		using.SetName("hand")
 		using.icon = ui_style
 		using.icon_state = "hand1"
@@ -142,7 +142,7 @@
 		using.alpha = ui_alpha
 		static_inventory += using
 
-		using = new /obj/screen/inventory()
+		using = new /atom/movable/screen/inventory()
 		using.SetName("hand")
 		using.icon = ui_style
 		using.icon_state = "hand2"
@@ -152,7 +152,7 @@
 		static_inventory += using
 
 	if(hud_data.has_resist)
-		using = new /obj/screen()
+		using = new /atom/movable/screen()
 		using.SetName("resist")
 		using.icon = ui_style
 		using.icon_state = "act_resist"
@@ -162,7 +162,7 @@
 		static_inventory += using
 
 	if(hud_data.has_throw)
-		mymob.throw_icon = new /obj/screen()
+		mymob.throw_icon = new /atom/movable/screen()
 		mymob.throw_icon.icon = ui_style
 		mymob.throw_icon.icon_state = "act_throw_off"
 		mymob.throw_icon.SetName("throw")
@@ -171,7 +171,7 @@
 		mymob.throw_icon.alpha = ui_alpha
 		static_inventory += mymob.throw_icon
 
-		mymob.pullin = new /obj/screen()
+		mymob.pullin = new /atom/movable/screen()
 		mymob.pullin.icon = ui_style
 		mymob.pullin.icon_state = "pull0"
 		mymob.pullin.SetName("pull")
@@ -179,7 +179,7 @@
 		static_inventory += mymob.pullin
 
 	if(hud_data.has_block)
-		mymob.block_icon = new /obj/screen()
+		mymob.block_icon = new /atom/movable/screen()
 		mymob.block_icon.icon = ui_style
 		mymob.block_icon.icon_state = "act_block0"
 		mymob.block_icon.SetName("block")
@@ -189,7 +189,7 @@
 		static_inventory += mymob.block_icon
 
 	if(hud_data.has_blockswitch)
-		mymob.blockswitch_icon = new /obj/screen()
+		mymob.blockswitch_icon = new /atom/movable/screen()
 		mymob.blockswitch_icon.icon = ui_style
 		mymob.blockswitch_icon.icon_state = "act_blockswitch0"
 		mymob.blockswitch_icon.SetName("blockswitch")
@@ -199,7 +199,7 @@
 		static_inventory += mymob.blockswitch_icon
 
 	if(hud_data.has_internals)
-		mymob.internals = new /obj/screen()
+		mymob.internals = new /atom/movable/screen()
 		mymob.internals.icon = ui_style
 		mymob.internals.icon_state = "internal0"
 		mymob.internals.SetName("internal")
@@ -207,21 +207,21 @@
 		infodisplay |= mymob.internals
 
 	if(hud_data.has_warnings)
-		mymob.oxygen = new /obj/screen()
+		mymob.oxygen = new /atom/movable/screen()
 		mymob.oxygen.icon = ui_style
 		mymob.oxygen.icon_state = "oxy0"
 		mymob.oxygen.SetName("oxygen")
 		mymob.oxygen.screen_loc = ui_oxygen
 		infodisplay |= mymob.oxygen
 
-		mymob.toxin = new /obj/screen()
+		mymob.toxin = new /atom/movable/screen()
 		mymob.toxin.icon = ui_style
 		mymob.toxin.icon_state = "tox0"
 		mymob.toxin.SetName("toxin")
 		mymob.toxin.screen_loc = ui_toxin
 		infodisplay |= mymob.toxin
 
-		mymob.fire = new /obj/screen()
+		mymob.fire = new /atom/movable/screen()
 		mymob.fire.icon = ui_style
 		mymob.fire.icon_state = "fire0"
 		mymob.fire.SetName("fire")
@@ -229,7 +229,7 @@
 		infodisplay |= mymob.fire
 
 	if(hud_data.has_pain)
-		mymob.pains = new /obj/screen()
+		mymob.pains = new /atom/movable/screen()
 		mymob.pains.icon = 'icons/hud/common/screen_pain.dmi'
 		mymob.pains.icon_state = "pain0"
 		mymob.pains.SetName("pain")
@@ -237,7 +237,7 @@
 		infodisplay |= mymob.pains
 
 	if(hud_data.has_health)
-		mymob.healths = new /obj/screen()
+		mymob.healths = new /atom/movable/screen()
 		mymob.healths.icon = ui_style
 		mymob.healths.icon_state = "health"
 		mymob.healths.SetName("health")
@@ -245,7 +245,7 @@
 		infodisplay |= mymob.healths
 
 	if(hud_data.has_pressure)
-		mymob.pressure = new /obj/screen()
+		mymob.pressure = new /atom/movable/screen()
 		mymob.pressure.icon = ui_style
 		mymob.pressure.icon_state = "pressure0"
 		mymob.pressure.SetName("pressure")
@@ -253,7 +253,7 @@
 		infodisplay |= mymob.pressure
 
 	if(hud_data.has_bodytemp)
-		mymob.bodytemp = new /obj/screen()
+		mymob.bodytemp = new /atom/movable/screen()
 		mymob.bodytemp.icon = ui_style
 		mymob.bodytemp.icon_state = "temp1"
 		mymob.bodytemp.SetName("body temperature")
@@ -261,7 +261,7 @@
 		infodisplay |= mymob.bodytemp
 
 	if(target.isSynthetic())
-		target.cells = new /obj/screen()
+		target.cells = new /atom/movable/screen()
 		target.cells.icon = 'icons/hud/mob/screen_robot.dmi'
 		target.cells.icon_state = "charge-empty"
 		target.cells.SetName("cell")
@@ -269,7 +269,7 @@
 		infodisplay |= target.cells
 
 	else if(hud_data.has_nutrition)
-		mymob.nutrition_icon = new /obj/screen()
+		mymob.nutrition_icon = new /atom/movable/screen()
 		mymob.nutrition_icon.icon = ui_style
 		mymob.nutrition_icon.icon_state = "nutrition0"
 		mymob.nutrition_icon.SetName("nutrition")
@@ -277,7 +277,7 @@
 		infodisplay |= mymob.nutrition_icon
 
 	if(hud_data.has_poise)
-		mymob.poise_icon = new /obj/screen()
+		mymob.poise_icon = new /atom/movable/screen()
 		mymob.poise_icon.icon = 'icons/hud/common/screen_poise.dmi'
 		mymob.poise_icon.icon_state = "50"
 		mymob.poise_icon.SetName("poise")
@@ -285,10 +285,10 @@
 		infodisplay |= mymob.poise_icon
 
 
-	mymob.pain = new /obj/screen/fullscreen/pain( null )
+	mymob.pain = new /atom/movable/screen/fullscreen/pain( null )
 	infodisplay |= mymob.pain
 
-	mymob.zone_sel = new /obj/screen/zone_sel( null )
+	mymob.zone_sel = new /atom/movable/screen/zone_sel( null )
 	mymob.zone_sel.icon = ui_style
 	mymob.zone_sel.color = ui_color
 	mymob.zone_sel.alpha = ui_alpha
@@ -297,23 +297,23 @@
 	static_inventory |= mymob.zone_sel
 
 	//Handle the gun settings buttons
-	mymob.gun_setting_icon = new /obj/screen/gun/mode(null)
+	mymob.gun_setting_icon = new /atom/movable/screen/gun/mode(null)
 	mymob.gun_setting_icon.icon = ui_style
 	mymob.gun_setting_icon.color = ui_color
 	mymob.gun_setting_icon.alpha = ui_alpha
 	static_inventory |= mymob.gun_setting_icon
 
-	mymob.item_use_icon = new /obj/screen/gun/item(null)
+	mymob.item_use_icon = new /atom/movable/screen/gun/item(null)
 	mymob.item_use_icon.icon = ui_style
 	mymob.item_use_icon.color = ui_color
 	mymob.item_use_icon.alpha = ui_alpha
 
-	mymob.gun_move_icon = new /obj/screen/gun/move(null)
+	mymob.gun_move_icon = new /atom/movable/screen/gun/move(null)
 	mymob.gun_move_icon.icon = ui_style
 	mymob.gun_move_icon.color = ui_color
 	mymob.gun_move_icon.alpha = ui_alpha
 
-	mymob.radio_use_icon = new /obj/screen/gun/radio(null)
+	mymob.radio_use_icon = new /atom/movable/screen/gun/radio(null)
 	mymob.radio_use_icon.icon = ui_style
 	mymob.radio_use_icon.color = ui_color
 	mymob.radio_use_icon.alpha = ui_alpha

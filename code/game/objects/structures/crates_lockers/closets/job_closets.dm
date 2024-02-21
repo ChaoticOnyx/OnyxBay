@@ -73,7 +73,8 @@
 		/obj/item/storage/bag/trash,
 		/obj/item/clothing/shoes/galoshes,
 		/obj/item/soap/nanotrasen,
-		/obj/item/storage/belt/janitor
+		/obj/item/storage/belt/janitor,
+		/obj/item/storage/box/cleanerpods
 		)
 /*
  * Lawyer

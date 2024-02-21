@@ -247,8 +247,8 @@
 	var/seal_target = !canremove
 	var/failed_to_seal
 
-	var/obj/screen/rig_booting/booting_L = new
-	var/obj/screen/rig_booting/booting_R = new
+	var/atom/movable/screen/rig_booting/booting_L = new
+	var/atom/movable/screen/rig_booting/booting_R = new
 
 	if(!seal_target)
 		booting_L.icon_state = "boot_left"
@@ -368,7 +368,7 @@
 		wearer.wearing_rig = src
 	wearer.update_equipment_slowdown()
 
-/obj/item/rig/proc/r_booting_done(mob/initiator, obj/screen/rig_booting/booting_R)
+/obj/item/rig/proc/r_booting_done(mob/initiator, atom/movable/screen/rig_booting/booting_R)
 	wearer?.client?.screen -= booting_R
 	qdel(booting_R)
 
@@ -936,7 +936,7 @@
 	return src
 
 //Boot animation screen objects
-/obj/screen/rig_booting
+/atom/movable/screen/rig_booting
 	screen_loc = "1,1"
 	icon = 'icons/obj/rig_boot.dmi'
 	icon_state = ""

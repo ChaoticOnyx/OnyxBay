@@ -1,7 +1,8 @@
 /obj/machinery/mineral/unloading_machine
 	name = "unloading machine"
+
 	icon_state = "unloader-map"
-	gameicon = "unloader"
+	base_icon_state = "unloader"
 
 	component_types = list(
 		/obj/item/circuitboard/unloading_machine,
@@ -48,15 +49,15 @@
 
 		switch(choice)
 			if("default")
-				gameicon = "unloader"
+				base_icon_state = "unloader"
 				corner_turn_dir = 0
 				holodir_helper_path = /obj/effect/holodir_helper
 			if("angled")
-				gameicon = "unloader-corner"
+				base_icon_state = "unloader-corner"
 				corner_turn_dir = 90
 				holodir_helper_path = /obj/effect/holodir_helper/corner
 			if("angled (mirrored)")
-				gameicon = "unloader-corner"
+				base_icon_state = "unloader-corner"
 				corner_turn_dir = -90
 				holodir_helper_path = /obj/effect/holodir_helper/corner_mirrored
 		update_icon()
@@ -81,13 +82,15 @@
 /// Prefab for mapping
 /obj/machinery/mineral/unloading_machine/angled
 	icon_state = "unloader-corner-map"
-	gameicon = "unloader-corner"
+	base_icon_state = "unloader-corner"
+
 	holodir_helper_path = /obj/effect/holodir_helper/corner
 	corner_turn_dir = 90
 
 /// Prefab for mapping
 /obj/machinery/mineral/unloading_machine/angled_mirrored
 	icon_state = "unloader-corner-map"
-	gameicon = "unloader-corner"
+	base_icon_state = "unloader-corner"
+
 	holodir_helper_path = /obj/effect/holodir_helper/corner_mirrored
 	corner_turn_dir = -90

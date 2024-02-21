@@ -255,9 +255,6 @@ Regenerative extracts:
 		var/mob/living/carbon/human/T = target
 		var/mob/living/carbon/human/D = new T.type(target.loc)
 		var/list/newUI = T.dna.UI.Copy()
-		var/list/newSE = T.dna.SE.Copy()
-		D.dna.SE = newSE.Copy()
-		D.dna.UpdateSE()
 		D.real_name = T.real_name
 		D.name = T.name
 		D.ClearOverlays()

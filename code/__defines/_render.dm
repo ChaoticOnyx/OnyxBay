@@ -186,7 +186,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 
 /atom/movable/renderer/lighting/Initialize(mapload, mob/owner)
 	. = ..()
-	owner.overlay_fullscreen("lighting_backdrop", /obj/screen/fullscreen/lighting_backdrop)
+	owner.overlay_fullscreen("lighting_backdrop", /atom/movable/screen/fullscreen/lighting_backdrop)
 	filters += filter(
 		type = "alpha",
 		render_source = EMISSIVE_TARGET,

@@ -535,7 +535,7 @@ BLIND     // can't see anything
 	var/down_flags_inv = 0
 	var/pull_mask = 0
 	var/hanging = 0
-	var/obj/screen/overlay = null
+	var/atom/movable/screen/overlay = null
 	blood_overlay_type = "maskblood"
 
 /obj/item/clothing/mask/New()

@@ -152,7 +152,7 @@ var/const/FINGERPRINT_COMPLETE = 6
 	return FALSE
 
 /mob/living/carbon/get_full_print()
-	if (!dna || (mFingerprints in mutations))
+	if (!dna)
 		return FALSE
 	return md5(dna.uni_identity)
 

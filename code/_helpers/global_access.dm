@@ -193,8 +193,6 @@
 			return global.asset_datums;
 		if("assigned")
 			return global.assigned;
-		if("assigned_blocks")
-			return global.assigned_blocks;
 		if("atmosphere_alarm")
 			return global.atmosphere_alarm;
 		if("attack_log_repository")
@@ -303,10 +301,6 @@
 			return global.department_accounts;
 		if("department_radio_keys")
 			return global.department_radio_keys;
-		if("dna_activity_bounds")
-			return global.dna_activity_bounds;
-		if("dna_genes")
-			return global.dna_genes;
 		if("dreams")
 			return global.dreams;
 		if("dummy_lighting_corner")
@@ -539,8 +533,6 @@
 			return global.next_duration_update;
 		if("next_station_date_change")
 			return global.next_station_date_change;
-		if("ntnet_card_uid")
-			return global.ntnet_card_uid;
 		if("ntnet_global")
 			return global.ntnet_global;
 		if("ntnrc_uid")
@@ -1018,8 +1010,6 @@
 			global.asset_datums=newval;
 		if("assigned")
 			global.assigned=newval;
-		if("assigned_blocks")
-			global.assigned_blocks=newval;
 		if("atmosphere_alarm")
 			global.atmosphere_alarm=newval;
 		if("attack_log_repository")
@@ -1128,10 +1118,6 @@
 			global.department_accounts=newval;
 		if("department_radio_keys")
 			global.department_radio_keys=newval;
-		if("dna_activity_bounds")
-			global.dna_activity_bounds=newval;
-		if("dna_genes")
-			global.dna_genes=newval;
 		if("dreams")
 			global.dreams=newval;
 		if("dummy_lighting_corner")
@@ -1364,8 +1350,6 @@
 			global.next_duration_update=newval;
 		if("next_station_date_change")
 			global.next_station_date_change=newval;
-		if("ntnet_card_uid")
-			global.ntnet_card_uid=newval;
 		if("ntnet_global")
 			global.ntnet_global=newval;
 		if("ntnrc_uid")

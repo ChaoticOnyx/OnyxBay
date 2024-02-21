@@ -126,9 +126,14 @@
 				G.assailant.next_move = world.time + 13 //also should prevent user from triggering this repeatedly
 				visible_message("<span class='warning'>[G.assailant] starts putting [G.affecting] on \the [src].</span>")
 				if(!do_after(G.assailant, 13))
-					return 0
+					return FALSE
+
 				if(!G) //check that we still have a grab
-					return 0
+					return FALSE
+
+				if(QDELETED(src))
+					return FALSE
+
 				G.affecting.forceMove(src.loc)
 				G.affecting.Weaken(rand(1,4))
 				G.affecting.Stun(1)

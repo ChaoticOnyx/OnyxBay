@@ -84,6 +84,6 @@
 		message = "[user_name] <i>[message]</i>"
 
 	if(message_type & VISIBLE_MESSAGE)
-		visible_message(message)
+		visible_message(message, checkghosts = /datum/client_preference/ghost_sight)
 	else
-		audible_message(message)
+		audible_message(message, checkghosts = /datum/client_preference/ghost_sight)

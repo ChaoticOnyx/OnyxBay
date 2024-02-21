@@ -48,6 +48,17 @@
 			if (prob(5))
 				qdel(src)
 
+/obj/structure/plasticflaps/attackby(obj/item/O, mob/user)
+	if(isWrench(O))
+		playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
+		show_splash_text(user, "deconstructing...")
+		if(do_after(user, 30, src))
+			new /obj/item/stack/material/plastic(loc, 5)
+			qdel(src)
+		return
+
+	return ..()
+
 /obj/structure/plasticflaps/mining //A specific type for mining that doesn't allow airflow because of them damn crates
 	name = "airtight plastic flaps"
 	desc = "Heavy duty, airtight, plastic flaps."

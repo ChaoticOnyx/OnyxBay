@@ -41,7 +41,7 @@
 	var/list/data = list()
 
 	var/obj/machinery/optable/table = optable?.resolve()
-	var/mob/living/carbon/human/H = table?.victim?.resolve()
+	var/mob/living/carbon/human/H = table?.victim_ref?.resolve()
 
 	data["medical_data"] = H?.get_medical_data_ui()
 

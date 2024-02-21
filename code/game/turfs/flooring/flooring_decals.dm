@@ -2033,3 +2033,59 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/diagonal_edge
 	icon_state = "diagonal_edge"
+
+/obj/effect/floor_decal/ss13_new/l1
+	name = "L1"
+	icon_state = "CL1"
+
+/obj/effect/floor_decal/ss13_new/l2
+	name = "L2"
+	icon_state = "CL2"
+
+/obj/effect/floor_decal/ss13_new/l3
+	name = "L3"
+	icon_state = "CL3"
+
+/obj/effect/floor_decal/ss13_new/l4
+	name = "L4"
+	icon_state = "CL4"
+
+/obj/effect/floor_decal/ss13_new/l5
+	name = "L5"
+	icon_state = "CL5"
+
+/obj/effect/floor_decal/ss13_new/l6
+	name = "L6"
+	icon_state = "CL6"
+
+/obj/effect/floor_decal/ss13_new/l7
+	name = "L7"
+	icon_state = "CL7"
+
+/obj/effect/floor_decal/ss13_new/l8
+	name = "L8"
+	icon_state = "CL8"
+
+/obj/effect/floor_decal/ss13_new/l9
+	name = "L9"
+	icon_state = "CL9"
+
+/obj/effect/floor_decal/ss13_new/l10
+	name = "L10"
+	icon_state = "CL10"
+
+/obj/effect/floor_decal/ss13_new/l11
+	name = "L11"
+	icon_state = "CL11"
+
+/obj/effect/floor_decal/ss13_new/l12
+	name = "L12"
+	icon_state = "CL12"
+
+/obj/effect/floor_decal/ss13_new/l13
+	name = "L13"
+	icon_state = "CL13"
+
+/obj/effect/floor_decal/ss13_new/l14
+	name = "L14"
+	icon_state = "CL14"

@@ -71,5 +71,4 @@
 		H.b_type = chosen_dna.dna.b_type
 		H.sync_organ_dna()
 		H.make_changeling()
-	domutcheck(my_mob, null)
 	my_mob.UpdateAppearance()

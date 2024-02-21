@@ -674,7 +674,7 @@
 		return FLASH_PROTECTION_MAJOR
 	return total_protection
 
-/mob/living/carbon/human/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
+/mob/living/carbon/human/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /atom/movable/screen/fullscreen/flash, effect_duration = 25)
 	if(internal_organs_by_name[BP_EYES]) // Eyes are fucked, not a 'weak point'.
 		var/obj/item/organ/internal/eyes/I = internal_organs_by_name[BP_EYES]
 		I.additional_flash_effects(intensity)
@@ -781,94 +781,6 @@
 		sleep(350)	//wait 35 seconds before next volley
 		lastpuke = 0
 
-/mob/living/carbon/human/proc/morph()
-	set name = "Morph"
-	set category = "Superpower"
-
-	if(stat!=CONSCIOUS)
-		reset_view(0)
-		remoteview_target = null
-		return
-
-	if(!(mMorph in mutations))
-		src.verbs -= /mob/living/carbon/human/proc/morph
-		return
-
-	var/new_facial = input("Please select facial hair color.", "Character Generation",rgb(r_facial,g_facial,b_facial)) as color
-	if(new_facial)
-		r_facial = hex2num(copytext(new_facial, 2, 4))
-		g_facial = hex2num(copytext(new_facial, 4, 6))
-		b_facial = hex2num(copytext(new_facial, 6, 8))
-
-	var/new_hair = input("Please select hair color.", "Character Generation",rgb(r_hair,g_hair,b_hair)) as color
-	if(new_hair)
-		r_hair = hex2num(copytext(new_hair, 2, 4))
-		g_hair = hex2num(copytext(new_hair, 4, 6))
-		b_hair = hex2num(copytext(new_hair, 6, 8))
-
-	var/new_s_hair = input("Please select secondary hair color.", "Character Generation",rgb(r_s_hair,g_s_hair,b_s_hair)) as color
-	if(new_s_hair)
-		r_s_hair = hex2num(copytext(new_hair, 2, 4))
-		g_s_hair = hex2num(copytext(new_hair, 4, 6))
-		b_s_hair = hex2num(copytext(new_hair, 6, 8))
-
-	var/new_eyes = input("Please select eye color.", "Character Generation",rgb(r_eyes,g_eyes,b_eyes)) as color
-	if(new_eyes)
-		r_eyes = hex2num(copytext(new_eyes, 2, 4))
-		g_eyes = hex2num(copytext(new_eyes, 4, 6))
-		b_eyes = hex2num(copytext(new_eyes, 6, 8))
-		update_eyes()
-
-	var/new_tone = input("Please select skin tone level: 1-220 (1=albino, 35=caucasian, 150=black, 220='very' black)", "Character Generation", "[35-s_tone]")  as text
-
-	if (!new_tone)
-		new_tone = 35
-	s_tone = max(min(round(text2num(new_tone)), 220), 1)
-	s_tone =  -s_tone + 35
-
-	// hair
-	var/list/all_hairs = typesof(/datum/sprite_accessory/hair) - /datum/sprite_accessory/hair
-	var/list/hairs = list()
-
-	// loop through potential hairs
-	for(var/x in all_hairs)
-		var/datum/sprite_accessory/hair/H = new x // create new hair datum based on type x
-		hairs.Add(H.name) // add hair name to hairs
-		qdel(H) // delete the hair after it's all done
-
-	var/new_style = input("Please select hair style", "Character Generation",h_style)  as null|anything in hairs
-
-	// if new style selected (not cancel)
-	if (new_style)
-		h_style = new_style
-
-	// facial hair
-	var/list/all_fhairs = typesof(/datum/sprite_accessory/facial_hair) - /datum/sprite_accessory/facial_hair
-	var/list/fhairs = list()
-
-	for(var/x in all_fhairs)
-		var/datum/sprite_accessory/facial_hair/H = new x
-		fhairs.Add(H.name)
-		qdel(H)
-
-	new_style = input("Please select facial style", "Character Generation",f_style)  as null|anything in fhairs
-
-	if(new_style)
-		f_style = new_style
-
-	var/new_gender = alert(usr, "Please select gender.", "Character Generation", "Male", "Female", "Neutral")
-	if (new_gender)
-		if(new_gender == "Male")
-			gender = MALE
-		else if(new_gender == "Female")
-			gender = FEMALE
-		else
-			gender = NEUTER
-	regenerate_icons()
-	check_dna()
-
-	visible_message("<span class='notice'>\The [src] morphs and changes [get_visible_gender() == MALE ? "his" : get_visible_gender() == FEMALE ? "her" : "their"] appearance!</span>", "<span class='notice'>You change your appearance!</span>", "<span class='warning'>Oh, god!  What the hell was that?  It sounded like flesh getting squished and bone ground into a different shape!</span>")
-
 /mob/living/carbon/human/proc/remotesay()
 	set name = "Project mind"
 	set category = "Superpower"
@@ -897,43 +809,6 @@
 	log_say("[key_name(usr)] sent a telepathic message to [key_name(target)]: [say]")
 	for(var/mob/observer/ghost/G in world)
 		G.show_message("<i>Telepathic message from <b>[src]</b> to <b>[target]</b>: [say]</i>")
-
-/mob/living/carbon/human/proc/remoteobserve()
-	set name = "Remote View"
-	set category = "Superpower"
-
-	if(stat!=CONSCIOUS)
-		remoteview_target = null
-		reset_view(0)
-		return
-
-	if(!(mRemote in src.mutations))
-		remoteview_target = null
-		reset_view(0)
-		src.verbs -= /mob/living/carbon/human/proc/remoteobserve
-		return
-
-	if(client.eye != client.mob)
-		remoteview_target = null
-		reset_view(0)
-		return
-
-	var/list/mob/creatures = list()
-
-	for(var/mob/living/carbon/h in world)
-		var/turf/temp_turf = get_turf(h)
-		if((temp_turf.z != 1 && temp_turf.z != 5) || h.stat!=CONSCIOUS) //Not on mining or the station. Or dead
-			continue
-		creatures += h
-
-	var/mob/target = input ("Who do you want to project your mind to ?") as mob in creatures
-
-	if (target)
-		remoteview_target = target
-		reset_view(target)
-	else
-		remoteview_target = null
-		reset_view(0)
 
 /atom/proc/get_visible_gender()
 	return gender
@@ -1314,38 +1189,57 @@
 
 
 /mob/living/carbon/human/print_flavor_text(shrink = 1)
-	var/list/equipment = list(src.head,src.wear_mask,src.glasses,src.w_uniform,src.wear_suit,src.gloves,src.shoes)
-	var/head_exposed = 1
-	var/face_exposed = 1
-	var/eyes_exposed = 1
-	var/torso_exposed = 1
-	var/arms_exposed = 1
-	var/legs_exposed = 1
-	var/hands_exposed = 1
-	var/feet_exposed = 1
+	var/list/equipment = list(head, wear_mask, glasses, w_uniform, wear_suit, gloves, shoes)
+	var/head_exposed = TRUE
+	var/face_exposed = TRUE
+	var/eyes_exposed = TRUE
+	var/torso_exposed = TRUE
+	var/arms_exposed = TRUE
+	var/legs_exposed = TRUE
+	var/hands_exposed = TRUE
+	var/feet_exposed = TRUE
+
+	if(!has_intact_limb(BP_L_ARM) && !has_intact_limb(BP_R_ARM))
+		arms_exposed = FALSE
+		hands_exposed = FALSE //No need to check for hands if it has no arms
+
+	if(hands_exposed && !has_intact_limb(BP_L_HAND) && !has_intact_limb(BP_R_HAND))
+		hands_exposed = FALSE
+
+	if(!has_intact_limb(BP_L_LEG) && !has_intact_limb(BP_R_LEG))
+		legs_exposed = FALSE
+		feet_exposed = FALSE
+
+	if(feet_exposed && !has_intact_limb(BP_L_FOOT) && !has_intact_limb(BP_R_FOOT))
+		feet_exposed = FALSE
+
+	if(!has_intact_limb(BP_HEAD))
+		head_exposed = FALSE
+		face_exposed = FALSE
+		eyes_exposed = FALSE
 
 	for(var/obj/item/clothing/C in equipment)
 		if(C.body_parts_covered & HEAD)
-			head_exposed = 0
+			head_exposed = FALSE
 		if(C.body_parts_covered & FACE)
-			face_exposed = 0
+			face_exposed = FALSE
 		if(C.body_parts_covered & EYES)
-			eyes_exposed = 0
+			eyes_exposed = FALSE
 		if(C.body_parts_covered & UPPER_TORSO)
-			torso_exposed = 0
-		if(C.body_parts_covered & ARMS)
-			arms_exposed = 0
-		if(C.body_parts_covered & HANDS)
-			hands_exposed = 0
-		if(C.body_parts_covered & LEGS)
-			legs_exposed = 0
-		if(C.body_parts_covered & FEET)
-			feet_exposed = 0
+			torso_exposed = FALSE
+		if(arms_exposed && C.body_parts_covered & ARMS)
+			arms_exposed = FALSE
+		if(hands_exposed && C.body_parts_covered & HANDS)
+			hands_exposed = FALSE
+		if(legs_exposed && C.body_parts_covered & LEGS)
+			legs_exposed = FALSE
+		if(feet_exposed && C.body_parts_covered & FEET)
+			feet_exposed = FALSE
 
 	flavor_text = ""
 	for (var/T in flavor_texts)
 		if(flavor_texts[T] && flavor_texts[T] != "")
-			if((T == "general") || (T == "head" && head_exposed) || (T == "face" && face_exposed) || (T == "eyes" && eyes_exposed) || (T == "torso" && torso_exposed) || (T == "arms" && arms_exposed) || (T == "hands" && hands_exposed) || (T == "legs" && legs_exposed) || (T == "feet" && feet_exposed))
+			if((T == "general") || (T == "head" && head_exposed) || (T == "face" && face_exposed) || (T == "eyes" && eyes_exposed) || (T == "torso" && torso_exposed) || (T == "arms" && arms_exposed) || (T == "hands" && hands_exposed) || (T == "legs" && legs_exposed) || (T == "feet" && feet_exposed) || (T == "ooc" && !is_ic_dead()))
 				flavor_text += flavor_texts[T]
 				flavor_text += "\n\n"
 	if(!shrink)
@@ -1580,6 +1474,20 @@
 	limb = organs_by_name[limb_check]
 
 	if(limb && !limb.is_stump())
+		if(BP_IS_ROBOTIC(limb))
+			return 2
+		else return 1
+	return 0
+
+/// Basically the same as before, but also checks whether limb is FUBAR
+/mob/living/carbon/human/proc/has_intact_limb(limb_check)
+	if(limb_check == BP_CHEST || limb_check == BP_GROIN)
+		return
+
+	var/obj/item/organ/external/limb
+	limb = organs_by_name[limb_check]
+
+	if(limb && !limb.is_stump() && !(limb.status & ORGAN_DISFIGURED))
 		if(BP_IS_ROBOTIC(limb))
 			return 2
 		else return 1

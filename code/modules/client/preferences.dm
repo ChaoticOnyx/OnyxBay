@@ -35,7 +35,7 @@
 	var/datum/category_collection/player_setup_collection/player_setup
 	var/datum/browser/panel
 
-	var/list/char_render_holders // Should only be a key-value list of north/south/east/west = obj/screen.
+	var/list/char_render_holders // Should only be a key-value list of north/south/east/west = atom/movable/screen.
 	var/static/list/preview_screen_locs = list(
 		"1" = "character_preview_map:1,5:-12",
 		"2" = "character_preview_map:1,3:15",
@@ -188,7 +188,7 @@
 /datum/preferences/proc/update_character_previews(mutable_appearance/MA)
 	if(!client)
 		return
-	var/obj/screen/BG = LAZYACCESS(char_render_holders, "BG")
+	var/atom/movable/screen/BG = LAZYACCESS(char_render_holders, "BG")
 	if(!BG)
 		BG = new
 		BG.appearance_flags = TILE_BOUND|PIXEL_SCALE|NO_CLIENT_COLOR
@@ -200,7 +200,7 @@
 	BG.screen_loc = preview_screen_locs["BG"]
 
 	for(var/D in GLOB.cardinal)
-		var/obj/screen/O = LAZYACCESS(char_render_holders, "[D]")
+		var/atom/movable/screen/O = LAZYACCESS(char_render_holders, "[D]")
 		if(!O)
 			O = new
 			LAZYSET(char_render_holders, "[D]", O)
@@ -219,7 +219,7 @@
 
 datum/preferences/proc/clear_character_previews()
 	for(var/index in char_render_holders)
-		var/obj/screen/S = char_render_holders[index]
+		var/atom/movable/screen/S = char_render_holders[index]
 		client?.screen -= S
 		qdel(S)
 	char_render_holders = null
@@ -430,6 +430,7 @@ datum/preferences/proc/clear_character_previews()
 	character.flavor_texts["hands"] = flavor_texts["hands"]
 	character.flavor_texts["legs"] = flavor_texts["legs"]
 	character.flavor_texts["feet"] = flavor_texts["feet"]
+	character.flavor_texts["ooc"] = flavor_texts["ooc"]
 
 	character.med_record = med_record
 	character.sec_record = sec_record
