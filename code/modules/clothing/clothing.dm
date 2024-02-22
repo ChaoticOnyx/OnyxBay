@@ -204,17 +204,16 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 			to_chat(user, "Attached to \the [src] are [english_list(ties)].")
 		return TOPIC_HANDLED
 
-/obj/item/clothing/proc/get_armor_coverage(obj/item/organ/external/def_zone, type, mob/living/carbon/human/H)
+/obj/item/clothing/proc/get_armor_coverage(def_zone, type, mob/living/carbon/human/H)
 	if(!coverage)
 		return
 
 	if(!type || !def_zone)
 		return
 
-	if(!istype(def_zone) && H)
-		def_zone = H.get_organ(check_zone(def_zone))
+	var/obj/item/organ/external/affecting = isorgan(def_zone) ? def_zone : H?.get_organ(check_zone(def_zone))
 
-	if(!def_zone)
+	if(!affecting)
 		return
 
 	// If a BP is specified (or nonspecified) in 'coverage' but not in 'body_parts_covered'
@@ -222,10 +221,10 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	// then the former takes priority
 	if(islist(coverage))
 		for(var/entry in coverage)
-			if(entry & def_zone.body_part)
+			if(entry & affecting.body_part)
 				return list(armor[type], coverage[entry])
 
-	else if(body_parts_covered & def_zone.body_part)
+	else if(body_parts_covered & affecting.body_part)
 		return list(armor[type], coverage)
 
 	return

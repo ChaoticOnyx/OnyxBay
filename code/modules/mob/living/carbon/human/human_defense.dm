@@ -146,35 +146,46 @@ meteor_act
 // Not specifying 'def_zone' (aka using the whole-body check) will call for parent 'run_armor_check' which uses get_flat_armor() as well
 /mob/living/carbon/human/run_armor_check(def_zone = null, attack_flag = "melee", armor_pen = 0, absorb_text = null, soften_text = null)
 	if(!def_zone)
-		return ..() // Edgecase stuff, using
+		return ..() // Edgecase stuff, going back to the legacy armorcheck
 
 	var/damage_ratio = 1.0
-	var/armor = get_layered_armor(def_zone, attack_flag)
+	var/list/armor = get_layered_armor(def_zone, attack_flag)
+	visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | [armor]") // Debug Message
 
-	for(var/armor_layer in armor)
+	if(!islist(armor) || !length(armor))
+		return 0 // 404 no armor found
+
+	for(var/i = 1, i <= length(armor) / 2, i++)
 		// Completely ignoring this layer due to ineffective coverage %
-		if(!prob(armor_layer[2] * 100))
+		var/current_layer = i * 2 - 1 // Armor value is armor[current_layer] and its coverage is armor[current_layer+1]
+		visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | [armor[current_layer]], [armor[current_layer+1]]") // Debug Message
+		if(!prob(armor[current_layer+1] * 100))
+			visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | ARMOR IGNORE") // Debug Message
 			continue
 
-		var/effective_armor = armor_layer[1] - armor_pen
-		armor_pen /= 2 // Whatever happens, the armor pen goes down after colliding with each layer
+		var/effective_armor = armor[current_layer] - armor_pen
 
 		var/dice_roll = rand(0, 100)
 		if(dice_roll > effective_armor)
 			// Ineffective block
+			armor_pen /= 2
+			visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | ARMOR FAIL") // Debug Message
 			continue
 		else if(dice_roll > effective_armor / 2)
 			// Semi-successful block, halving the damage
 			damage_ratio /= 2
+			armor_pen /= 2
+			visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | ARMOR REDUCED") // Debug Message
 		else
 			// Successful block, ignoring the damage
 			damage_ratio = 0
+			visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | ARMOR BLOCKED") // Debug Message
 			break
 
 	if(!damage_ratio)
-		show_message(SPAN("warning", absorb_text ? absorb_text : "Your armor absorbs the blow!"))
+		to_chat(user, SPAN("warning", absorb_text ? absorb_text : "Your armor absorbs the blow!"))
 	else if(damage_ratio < 1.0)
-		show_message(SPAN("warning", soften_text ? soften_text : "Your armor softens the blow!"))
+		to_chat(user, SPAN("warning", soften_text ? soften_text : "Your armor softens the blow!"))
 
 	return round((1.0 - damage_ratio) * 100)
 
@@ -228,7 +239,7 @@ meteor_act
 
 	. = list()
 
-	var/armor_layer
+	var/list/armor_layer
 	var/list/protective_gear = list(head, wear_mask, wear_suit, w_uniform, gloves, shoes)
 
 	// Unlike in get_flat_armor, here we iterate over everything since a piece
@@ -236,11 +247,12 @@ meteor_act
 	for(var/obj/item/clothing/C in protective_gear)
 		if(length(C.accessories))
 			for(var/obj/item/clothing/accessory/CA in C.accessories)
-				armor_layer = CA.get_armor_coverage(src, affecting, type)
-				if(armor_layer)
+				armor_layer = CA.get_armor_coverage(affecting, type, src)
+				if(islist(armor_layer))
 					. += armor_layer
-		armor_layer = C.get_armor_coverage(src, affecting, type)
-		if(armor_layer)
+
+		armor_layer = C.get_armor_coverage(affecting, type, src)
+		if(islist(armor_layer))
 			. += armor_layer
 
 //this proc returns the Siemens coefficient of electrical resistivity for a particular external organ.
@@ -399,12 +411,10 @@ meteor_act
 	//visible_message("Debug \[HIT\]: [src] lost [poise_damage] poise ([src.poise]/[src.poise_pool])") // Debug Message
 
 	////////// Here goes the REAL armor processing.
-	effective_force -= blocked*0.05 // Flat armor (i.e. reduces damage by 2.5 if armor=50)
-
 	if(MUTATION_HULK in user.mutations)
 		effective_force *= 2
 
-	if(src.lying)
+	if(lying)
 		effective_force *= 1.5 // Well it's easier to beat a lying dude to death right?
 
 	if(istype(user,/mob/living/carbon/human))
@@ -412,7 +422,7 @@ meteor_act
 		if((A.body_build.name == "Slim" || A.body_build.name == "Slim Alt") && !I.sharp)
 			effective_force *= 0.75 // It's kinda hard to club people when you're two times thinner than a regular person.
 
-	effective_force *= round((100-blocked)/100, 0.01)
+	effective_force *= round((100-blocked)/100, 0.1)
 
 	//Apply weapon damage
 	var/damage_flags = I.damage_flags()
