@@ -7,8 +7,8 @@ LINEN BINS
 /obj/item/bedsheet
 	name = "bedsheet"
 	desc = "A surprisingly soft linen bedsheet."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "sheet"
+	icon = 'icons/obj/bedsheets.dmi'
+	icon_state = "sheetwhite"
 	item_state = "bedsheet"
 	randpixel = 0
 	slot_flags = SLOT_BACK
@@ -43,6 +43,10 @@ LINEN BINS
 			icon_state = initial(icon_state)
 	return
 
+/obj/item/bedsheet/gray
+	icon_state = "sheetgray"
+	item_state = "sheetgray"
+
 /obj/item/bedsheet/blue
 	icon_state = "sheetblue"
 	item_state = "sheetblue"
@@ -66,6 +70,14 @@ LINEN BINS
 /obj/item/bedsheet/red
 	icon_state = "sheetred"
 	item_state = "sheetred"
+
+/obj/item/bedsheet/brown
+	icon_state = "sheetbrown"
+	item_state = "sheetbrown"
+
+/obj/item/bedsheet/black
+	icon_state = "sheetblack"
+	item_state = "sheetblack"
 
 /obj/item/bedsheet/yellow
 	icon_state = "sheetyellow"
@@ -91,6 +103,10 @@ LINEN BINS
 	icon_state = "sheetmedical"
 	item_state = "sheetmedical"
 
+/obj/item/bedsheet/chap
+	icon_state = "sheetchap"
+	item_state = "sheetchap"
+
 /obj/item/bedsheet/hos
 	icon_state = "sheethos"
 	item_state = "sheethos"
@@ -103,10 +119,45 @@ LINEN BINS
 	icon_state = "sheetce"
 	item_state = "sheetce"
 
-/obj/item/bedsheet/brown
-	icon_state = "sheetbrown"
-	item_state = "sheetbrown"
+/obj/item/bedsheet/qm
+	icon_state = "sheetqm"
+	item_state = "sheetqm"
 
+/obj/item/bedsheet/cmo
+	icon_state = "sheetcmo"
+	item_state = "sheetcmo"
+
+/obj/item/bedsheet/nt
+	icon_state = "sheetNT"
+	item_state = "sheetNT"
+
+/obj/item/bedsheet/centcom
+	icon_state = "sheetcentcom"
+	item_state = "sheetcentcom"
+
+/obj/item/bedsheet/syndie
+	icon_state = "sheetsyndie"
+	item_state = "sheetsyndie"
+
+/obj/item/bedsheet/cult
+	icon_state = "sheetcult"
+	item_state = "sheetcult"
+
+/obj/item/bedsheet/wiz
+	icon_state = "sheetwiz"
+	item_state = "sheetwiz"
+
+/obj/item/bedsheet/runtime
+	icon_state = "sheetruntime"
+	item_state = "sheetruntime"
+
+/obj/item/bedsheet/ian
+	icon_state = "sheetian"
+	item_state = "sheetian"
+
+/obj/item/bedsheet/pirate
+	icon_state = "sheetpirate"
+	item_state = "sheetpirate"
 
 /obj/structure/bedsheetbin
 	name = "linen bin"
