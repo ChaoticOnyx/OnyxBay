@@ -150,7 +150,6 @@ meteor_act
 
 	var/damage_ratio = 1.0
 	var/list/armor = get_layered_armor(def_zone, attack_flag)
-	visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | [armor]") // Debug Message
 
 	if(!islist(armor) || !length(armor))
 		return 0 // 404 no armor found
@@ -158,9 +157,7 @@ meteor_act
 	for(var/i = 1, i <= length(armor) / 2, i++)
 		// Completely ignoring this layer due to ineffective coverage %
 		var/current_layer = i * 2 - 1 // Armor value is armor[current_layer] and its coverage is armor[current_layer+1]
-		visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | [armor[current_layer]], [armor[current_layer+1]]") // Debug Message
 		if(!prob(armor[current_layer+1] * 100))
-			visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | ARMOR IGNORE") // Debug Message
 			continue
 
 		var/effective_armor = armor[current_layer] - armor_pen
@@ -169,23 +166,20 @@ meteor_act
 		if(dice_roll > effective_armor)
 			// Ineffective block
 			armor_pen /= 2
-			visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | ARMOR FAIL") // Debug Message
 			continue
 		else if(dice_roll > effective_armor / 2)
 			// Semi-successful block, halving the damage
 			damage_ratio /= 2
 			armor_pen /= 2
-			visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | ARMOR REDUCED") // Debug Message
 		else
 			// Successful block, ignoring the damage
 			damage_ratio = 0
-			visible_message("Debug \[run_armor_check\]: [name]'s [def_zone] armor | ARMOR BLOCKED") // Debug Message
 			break
 
 	if(!damage_ratio)
-		to_chat(user, SPAN("warning", absorb_text ? absorb_text : "Your armor absorbs the blow!"))
+		to_chat(src, SPAN("warning", absorb_text ? absorb_text : "Your armor absorbs the blow!"))
 	else if(damage_ratio < 1.0)
-		to_chat(user, SPAN("warning", soften_text ? soften_text : "Your armor softens the blow!"))
+		to_chat(src, SPAN("warning", soften_text ? soften_text : "Your armor softens the blow!"))
 
 	return round((1.0 - damage_ratio) * 100)
 
@@ -203,7 +197,7 @@ meteor_act
 
 	//If you don't specify a bodypart, it checks ALL your bodyparts for protection, and averages out the values
 	for(var/organ_name in organs_by_name)
-		if (organ_name in organ_rel_size)
+		if(organ_name in organ_rel_size)
 			var/obj/item/organ/external/organ = organs_by_name[organ_name]
 			if(organ)
 				var/weight = organ_rel_size[organ_name]
@@ -426,7 +420,7 @@ meteor_act
 
 	//Apply weapon damage
 	var/damage_flags = I.damage_flags()
-	if(prob(blocked)) //armour provides a chance to turn sharp/edge weapon attacks into blunt ones
+	if(prob(blocked + 25)) // successful armorblock greatly reduces the cutties, but doesn't prevent them completely
 		damage_flags &= ~(DAM_SHARP|DAM_EDGE)
 
 	//Oh you've run outta poise? I see... You're wrecked, my boy.
@@ -510,7 +504,7 @@ meteor_act
 		if(A.body_build.name == "Slim" || A.body_build.name == "Slim Alt")
 			effective_force *= 0.8
 
-	effective_force *= round((100-blocked)/60, 0.01)
+	effective_force *= round((100-blocked)/100, 0.01)
 
 	if(poise <= poise_pool*0.7)
 		switch(hit_zone) // strong punches can have effects depending on where they hit
