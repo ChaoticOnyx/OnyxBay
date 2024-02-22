@@ -177,9 +177,15 @@ meteor_act
 			break
 
 	if(!damage_ratio)
-		to_chat(src, SPAN("warning", absorb_text ? absorb_text : "Your armor absorbs the blow!"))
+		if(absorb_text)
+			to_chat(src, SPAN("warning", "<b>[absorb_text]"))
+		else
+			to_chat(src, SPAN("warning", "Your armor absorbs the blow!"))
 	else if(damage_ratio < 1.0)
-		to_chat(src, SPAN("warning", soften_text ? soften_text : "Your armor softens the blow!"))
+		if(soften_text)
+			to_chat(src, SPAN("warning", "[soften_text]"))
+		else
+			to_chat(src, SPAN("warning", "Your armor softens the blow!"))
 
 	return round((1.0 - damage_ratio) * 100)
 
