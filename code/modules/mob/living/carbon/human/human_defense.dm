@@ -178,14 +178,14 @@ meteor_act
 
 	if(!damage_ratio)
 		if(absorb_text)
-			to_chat(src, SPAN("warning", "<b>[absorb_text]"))
+			to_chat(src, SPAN("notice", "<b>[absorb_text]</b>"))
 		else
-			to_chat(src, SPAN("warning", "Your armor absorbs the blow!"))
+			to_chat(src, SPAN("notice", "<b>Your armor absorbs the blow!</b>"))
 	else if(damage_ratio < 1.0)
 		if(soften_text)
-			to_chat(src, SPAN("warning", "[soften_text]"))
+			to_chat(src, SPAN("notice", "<b>[soften_text]</b>"))
 		else
-			to_chat(src, SPAN("warning", "Your armor softens the blow!"))
+			to_chat(src, SPAN("notice", "<b>Your armor softens the blow!</b>"))
 
 	return round((1.0 - damage_ratio) * 100)
 
@@ -458,9 +458,8 @@ meteor_act
 
 		//Apply blood
 		attack_bloody(I, user, effective_force, hit_zone)
-	//visible_message("Debug \[HIT\]: effective_force = [effective_force] | armor = [blocked] | flat_defence = [blocked*0.05]") // Debug Message
+
 	if(effective_force <= 0)
-		show_message(SPAN("warning", "Your armor absorbs the blow!"))
 		return 0
 
 	apply_damage(effective_force, I.damtype, hit_zone, blocked, damage_flags, used_weapon=I)
@@ -560,9 +559,8 @@ meteor_act
 				if(poise <= effective_force*I.mod_reach)
 					visible_message(SPAN("danger", "[user] takes [src] down with their [I.name]!"))
 					apply_effect((I.mod_reach*5), WEAKEN, blocked)
-	//visible_message("Debug \[BASH\]: effective_force = [effective_force] | armor = [blocked] | poise_damage = [poise_damage]") // Debug Message
+
 	if(effective_force <= 0)
-		show_message(SPAN("warning", "Your armor absorbs the blow!"))
 		return 0
 
 	apply_damage(effective_force*0.5, PAIN, hit_zone, blocked, damage_flags, used_weapon=I)
