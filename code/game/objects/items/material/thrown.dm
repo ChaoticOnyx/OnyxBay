@@ -19,3 +19,4 @@
 /obj/item/material/star/ninja
 	default_material = MATERIAL_URANIUM
 	desc = "A sharp, perfectly weighted piece of metal."
+	armor_penetration = 50 // Keeping it relevant

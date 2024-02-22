@@ -1,16 +1,3 @@
-// MAINTENANCE JACK - Allows removing of braces with certain delay.
-/obj/item/crowbar/brace_jack
-	name = "maintenance jack"
-	desc = "A special crowbar that can be used to safely remove airlock braces from airlocks."
-	w_class = ITEM_SIZE_NORMAL
-	icon = 'icons/obj/tools.dmi'
-	icon_state = "maintenance_jack"
-	force = 13
-	mod_weight = 1.25
-	throwforce = 12
-
-
-
 
 // BRACE - Can be installed on airlock to reinforce it and keep it closed.
 /obj/item/airlock_brace

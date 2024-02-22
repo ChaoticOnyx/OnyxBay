@@ -504,6 +504,7 @@
 	mod_weight = 0.5
 	mod_reach = 0.4
 	mod_handy = 0.75
+	armor_penetration = 20
 	throwforce = 5
 	throw_range = 5
 	item_state = "beer"

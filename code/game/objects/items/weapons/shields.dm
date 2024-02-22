@@ -59,6 +59,7 @@
 	mod_reach = 1.5
 	mod_handy = 1.5
 	mod_shield = 2.0
+	armor_penetration = 20 // Heavy blunt impact and all
 	block_tier = BLOCK_TIER_PROJECTILE
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_GLASS = 7500, MATERIAL_STEEL = 1000)
@@ -125,6 +126,7 @@
 	mod_reach = 0.3
 	mod_handy = 1.0
 	mod_shield = 3.0
+	armor_penetration = 40
 	origin_tech = list(TECH_MATERIAL = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 4)
 	attack_verb = list("shoved", "bashed")
 	var/active = 0

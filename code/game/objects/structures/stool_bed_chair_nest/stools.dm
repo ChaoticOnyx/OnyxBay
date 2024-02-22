@@ -12,6 +12,7 @@ var/global/list/stool_cache = list() //haha stool
 	mod_reach = 0.85
 	mod_weight = 1.5
 	mod_handy = 0.85
+	armor_penetration = 20
 	throwforce = 10
 	w_class = ITEM_SIZE_HUGE
 
