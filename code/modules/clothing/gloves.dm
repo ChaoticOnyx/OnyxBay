@@ -113,6 +113,7 @@
 		return
 
 	clipped = TRUE
+	coverage /= 2
 	name = "modified [name]"
 	desc = "[desc]<br>They have been modified to accommodate a different shape."
 	if("exclude" in species_restricted)
