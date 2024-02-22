@@ -305,6 +305,26 @@
 			return
 	M.clean_blood()
 
+/datum/reagent/space_cleaner/affect_blood(mob/living/carbon/M, alien, removed)
+	if(alien == IS_VOX)
+		M.adjustOxyLoss(-removed * 5)
+	else if(alien != IS_DIONA)
+		M.adjustToxLoss(removed)
+
+/datum/reagent/space_cleaner/dry
+	name = "Concentrated space cleaner"
+	description = "A compound used to clean things after getting dissolved in water."
+	taste_description = "regrets"
+	reagent_state = SOLID
+	color = "#5DD8D4"
+
+/datum/reagent/space_cleaner/dry/affect_blood(mob/living/carbon/M, alien, removed)
+	if(alien == IS_VOX)
+		M.adjustOxyLoss(-removed * 10)
+	else if(alien != IS_DIONA)
+		M.adjustToxLoss(removed * 5)
+		M.druggy = max(M.druggy, 5)
+
 /datum/reagent/lube // TODO: spraying on borgs speeds them up
 	name = "Space Lube"
 	description = "Lubricant is a substance introduced between two moving surfaces to reduce the friction and wear between them. giggity."

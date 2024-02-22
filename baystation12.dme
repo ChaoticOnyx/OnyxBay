@@ -2915,6 +2915,7 @@
 #include "code\modules\tgui\states\human_adjacent.dm"
 #include "code\modules\tgui\states\inventory.dm"
 #include "code\modules\tgui\states\machinery.dm"
+#include "code\modules\tgui\states\machinery_noacess.dm"
 #include "code\modules\tgui\states\never.dm"
 #include "code\modules\tgui\states\new_player.dm"
 #include "code\modules\tgui\states\not_incapacitated.dm"

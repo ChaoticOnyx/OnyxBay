@@ -1020,6 +1020,7 @@ something, make sure it's not in one of the other lists.
 				/obj/random/clothing/gloves = 10,
 				/obj/random/clothing/suit = 20,
 				/obj/random/clothing/accessory = 20,
+				/obj/item/storage/box/cleanerpods = 3,
 
 				/obj/random/cash = 10)
 

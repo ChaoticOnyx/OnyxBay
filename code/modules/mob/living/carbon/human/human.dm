@@ -1189,38 +1189,57 @@
 
 
 /mob/living/carbon/human/print_flavor_text(shrink = 1)
-	var/list/equipment = list(src.head,src.wear_mask,src.glasses,src.w_uniform,src.wear_suit,src.gloves,src.shoes)
-	var/head_exposed = 1
-	var/face_exposed = 1
-	var/eyes_exposed = 1
-	var/torso_exposed = 1
-	var/arms_exposed = 1
-	var/legs_exposed = 1
-	var/hands_exposed = 1
-	var/feet_exposed = 1
+	var/list/equipment = list(head, wear_mask, glasses, w_uniform, wear_suit, gloves, shoes)
+	var/head_exposed = TRUE
+	var/face_exposed = TRUE
+	var/eyes_exposed = TRUE
+	var/torso_exposed = TRUE
+	var/arms_exposed = TRUE
+	var/legs_exposed = TRUE
+	var/hands_exposed = TRUE
+	var/feet_exposed = TRUE
+
+	if(!has_intact_limb(BP_L_ARM) && !has_intact_limb(BP_R_ARM))
+		arms_exposed = FALSE
+		hands_exposed = FALSE //No need to check for hands if it has no arms
+
+	if(hands_exposed && !has_intact_limb(BP_L_HAND) && !has_intact_limb(BP_R_HAND))
+		hands_exposed = FALSE
+
+	if(!has_intact_limb(BP_L_LEG) && !has_intact_limb(BP_R_LEG))
+		legs_exposed = FALSE
+		feet_exposed = FALSE
+
+	if(feet_exposed && !has_intact_limb(BP_L_FOOT) && !has_intact_limb(BP_R_FOOT))
+		feet_exposed = FALSE
+
+	if(!has_intact_limb(BP_HEAD))
+		head_exposed = FALSE
+		face_exposed = FALSE
+		eyes_exposed = FALSE
 
 	for(var/obj/item/clothing/C in equipment)
 		if(C.body_parts_covered & HEAD)
-			head_exposed = 0
+			head_exposed = FALSE
 		if(C.body_parts_covered & FACE)
-			face_exposed = 0
+			face_exposed = FALSE
 		if(C.body_parts_covered & EYES)
-			eyes_exposed = 0
+			eyes_exposed = FALSE
 		if(C.body_parts_covered & UPPER_TORSO)
-			torso_exposed = 0
-		if(C.body_parts_covered & ARMS)
-			arms_exposed = 0
-		if(C.body_parts_covered & HANDS)
-			hands_exposed = 0
-		if(C.body_parts_covered & LEGS)
-			legs_exposed = 0
-		if(C.body_parts_covered & FEET)
-			feet_exposed = 0
+			torso_exposed = FALSE
+		if(arms_exposed && C.body_parts_covered & ARMS)
+			arms_exposed = FALSE
+		if(hands_exposed && C.body_parts_covered & HANDS)
+			hands_exposed = FALSE
+		if(legs_exposed && C.body_parts_covered & LEGS)
+			legs_exposed = FALSE
+		if(feet_exposed && C.body_parts_covered & FEET)
+			feet_exposed = FALSE
 
 	flavor_text = ""
 	for (var/T in flavor_texts)
 		if(flavor_texts[T] && flavor_texts[T] != "")
-			if((T == "general") || (T == "head" && head_exposed) || (T == "face" && face_exposed) || (T == "eyes" && eyes_exposed) || (T == "torso" && torso_exposed) || (T == "arms" && arms_exposed) || (T == "hands" && hands_exposed) || (T == "legs" && legs_exposed) || (T == "feet" && feet_exposed))
+			if((T == "general") || (T == "head" && head_exposed) || (T == "face" && face_exposed) || (T == "eyes" && eyes_exposed) || (T == "torso" && torso_exposed) || (T == "arms" && arms_exposed) || (T == "hands" && hands_exposed) || (T == "legs" && legs_exposed) || (T == "feet" && feet_exposed) || (T == "ooc" && !is_ic_dead()))
 				flavor_text += flavor_texts[T]
 				flavor_text += "\n\n"
 	if(!shrink)
@@ -1455,6 +1474,20 @@
 	limb = organs_by_name[limb_check]
 
 	if(limb && !limb.is_stump())
+		if(BP_IS_ROBOTIC(limb))
+			return 2
+		else return 1
+	return 0
+
+/// Basically the same as before, but also checks whether limb is FUBAR
+/mob/living/carbon/human/proc/has_intact_limb(limb_check)
+	if(limb_check == BP_CHEST || limb_check == BP_GROIN)
+		return
+
+	var/obj/item/organ/external/limb
+	limb = organs_by_name[limb_check]
+
+	if(limb && !limb.is_stump() && !(limb.status & ORGAN_DISFIGURED))
 		if(BP_IS_ROBOTIC(limb))
 			return 2
 		else return 1
