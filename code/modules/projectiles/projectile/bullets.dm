@@ -270,7 +270,7 @@
 	stun = 3
 	weaken = 3
 	penetrating = 5
-	armor_penetration = 80
+	armor_penetration = 125
 	hitscan = 1 //so the PTR isn't useless as a sniper weapon
 	penetration_modifier = 1.25
 	poisedamage = 125.0 //you can't withstand a knuckle-sized chunk of metal with borderline escape velocity
@@ -278,7 +278,7 @@
 /obj/item/projectile/bullet/rifle/a145/apds
 	damage = 75
 	penetrating = 6
-	armor_penetration = 95
+	armor_penetration = 175
 	penetration_modifier = 1.5
 
 /* Miscellaneous */

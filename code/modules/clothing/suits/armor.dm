@@ -160,7 +160,7 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 45, bullet = 175, laser = 30, energy = 15, bomb = 25, bio = 0)
+	armor = list(melee = 45, bullet = 155, laser = 30, energy = 15, bomb = 45, bio = 0)
 	siemens_coefficient = 0.7
 	starting_accessories = list(/obj/item/clothing/accessory/armguards/ballistic, /obj/item/clothing/accessory/legguards/ballistic)
 
@@ -175,7 +175,7 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 40, bullet = 40, laser = 175, energy = 80, bomb = 0, bio = 0)
+	armor = list(melee = 40, bullet = 40, laser = 155, energy = 80, bomb = 0, bio = 0)
 	siemens_coefficient = 0
 	starting_accessories = list(/obj/item/clothing/accessory/armguards/ablative, /obj/item/clothing/accessory/legguards/ablative)
 
