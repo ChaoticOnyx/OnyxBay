@@ -158,9 +158,38 @@
 	pixel_y = (dir & (NORTH|SOUTH))? (dir == NORTH ? -22 : 22) : 0
 
 /obj/item/device/radio/intercom/attackby(obj/item/W, mob/user)
-	if(isScrewdriver(W))
-		unscrew_frame(user)
-		return
+	switch(buildstage)
+		if(INTERCOM_EMPTY)
+			if(isCoil(W))
+				add_cable(W, user)
+				return
+
+			if(isWelder(W))
+				deconstruct_frame(W, user)
+				return
+
+		if(INTERCOM_WIRED)
+			if(istype(W, /obj/item/device/radio))
+				add_radio(W, user)
+				return
+
+			if(isWirecutter(W))
+				remove_cable(user)
+				return
+
+		if(INTERCOM_RADIO)
+			if(isScrewdriver(W))
+				finish_frame(user)
+				return
+
+			if(isCrowbar(W))
+				eject_radio(user)
+				return
+
+		if(INTERCOM_COMPLETE)
+			if(isScrewdriver(W))
+				unscrew_frame(user)
+				return
 
 	return ..()
 
