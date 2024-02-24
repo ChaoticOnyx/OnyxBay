@@ -17,15 +17,11 @@ import { Window } from "tgui/layouts";
 import { JOB2ICON } from "./common/JobToIcon";
 
 const ANTAG2COLOR = {
-  "Ash Walkers": "olive",
-  "Bounty Hunters": "yellow",
+  Vampire: "olive",
+  Cultist: "yellow",
   CentCom: "teal",
-  "Digital Anomalies": "teal",
   "Emergency Response Team": "teal",
-  "Escaped Fugitives": "orange",
   Xenomorph: "violet",
-  "Spacetime Aberrations": "white",
-  "Deviant Crew": "white",
 } as const;
 
 const THREAT = {
