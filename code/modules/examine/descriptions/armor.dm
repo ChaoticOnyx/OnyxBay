@@ -9,13 +9,13 @@
 				return "It offers a small amount of protection against [descriptive_attack_type]."
 			if(41 to 55)
 				return "It offers a moderate defense against [descriptive_attack_type]."
-			if(56 to 70)
+			if(56 to 75)
 				return "It provides a strong defense against [descriptive_attack_type]."
-			if(81 to 100)
+			if(76 to 100)
 				return "It is very strong against [descriptive_attack_type]."
-			if(101 to 120)
+			if(101 to 125)
 				return "This gives a very robust defense against [descriptive_attack_type]."
-			if(121 to 150)
+			if(126 to 150)
 				return "Wearing this would make you nigh-invulerable against [descriptive_attack_type]."
 			if(151 to INFINITY)
 				return "You would be practically immune to [descriptive_attack_type] if you wore this."
@@ -74,8 +74,8 @@
 		if(slot_flags & string_slot_flags[name])
 			slots += name
 
-	if(covers.len)
-		. += "It covers [islist_coverage ? ("[round(coverage * 100)] of ") : ""]the [english_list(covers)]. \n"
+	if(length(covers))
+		. += "It covers [!islist_coverage ? ("[round(coverage * 100)] of ") : ""]the [english_list(covers)]. \n"
 
 	if(slots.len)
 		. += "It can be worn on your [english_list(slots)]. \n"
