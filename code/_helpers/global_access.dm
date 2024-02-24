@@ -349,8 +349,6 @@
 			return global.flooring_types;
 		if("fluidtrack_cache")
 			return global.fluidtrack_cache;
-		if("follow_repository")
-			return global.follow_repository;
 		if("forced_ambiance_list")
 			return global.forced_ambiance_list;
 		if("fruit_icon_cache")
@@ -1166,8 +1164,6 @@
 			global.flooring_types=newval;
 		if("fluidtrack_cache")
 			global.fluidtrack_cache=newval;
-		if("follow_repository")
-			global.follow_repository=newval;
 		if("forced_ambiance_list")
 			global.forced_ambiance_list=newval;
 		if("fruit_icon_cache")

@@ -36,6 +36,8 @@
 
 	var/datum/radiation_source/pulse_source
 
+	is_poi = TRUE
+
 /obj/singularity/New(loc, starting_energy = 50, temp = 0)
 	//CARN: admin-alert for chuckle-fuckery.
 	admin_investigate_setup()

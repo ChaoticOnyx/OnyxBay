@@ -23,3 +23,9 @@
 #define SIGNAL_ORBIT_BEGIN "orbit_begin"
 /// Called when an atom stops orbiting another atom (/atom)
 #define SIGNAL_ORBIT_STOP "orbit_stop"
+
+// Point of interest signals
+/// Sent from base of /datum/controller/subsystem/points_of_interest/proc/on_poi_element_added : (atom/new_poi)
+#define SIGNAL_ADDED_POI "added_point_of_interest"
+/// Sent from base of /datum/controller/subsystem/points_of_interest/proc/on_poi_element_removed : (atom/old_poi)
+#define SIGNAL_REMOVED_POI "removed_point_of_interest"

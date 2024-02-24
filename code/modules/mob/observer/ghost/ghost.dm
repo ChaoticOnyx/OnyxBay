@@ -47,6 +47,9 @@
 
 	var/icon/original_mob_icon
 
+	/// Holder for a follow-orbit panel.
+	var/datum/follow_panel/follow_panel = new()
+
 /mob/observer/ghost/Initialize()
 	see_in_dark = 100
 	verbs += /mob/proc/toggle_antag_pool
@@ -415,15 +418,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!client)
 		return
 
-	var/response = tgui_input_list(src, "Choose a target to follow.", "Follow", get_follow_targets())
-	if(!response)
-		return
-
-	var/datum/follow_holder/holder = response
-	if(!holder.show_entry())
-		return
-
-	ManualFollow(holder.followed_instance)
+	follow_panel.tgui_interact(usr)
 
 /mob/observer/ghost/proc/ghost_to_turf(turf/target_turf)
 	if(check_is_holy_turf(target_turf))
