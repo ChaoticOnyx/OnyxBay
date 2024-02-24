@@ -121,6 +121,10 @@
 	register_signal(holo_atom, SIGNAL_QDELETING, nameof(.proc/remove_from_spawned))
 	holo_atom.atom_flags |= ATOM_FLAG_HOLOGRAM
 
+	if(length(holo_atom.contents))
+		for(var/atom/contained_atom as anything in holo_atom.contents)
+			add_to_spawned(contained_atom)
+
 	if(isholoeffect(holo_atom))
 		var/obj/effect/holodeck_effect/holo_effect = holo_atom
 		effects += holo_effect
