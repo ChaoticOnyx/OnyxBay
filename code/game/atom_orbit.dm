@@ -41,6 +41,6 @@
 	return output
 
 /mob/get_all_orbiters(list/processed, source = TRUE, ignore_stealthed_admins = TRUE)
-	if(!source)
+	if(!source && ignore_stealthed_admins && client?.holder?.stealthy_ == 1)
 		return list()
 	return ..()
