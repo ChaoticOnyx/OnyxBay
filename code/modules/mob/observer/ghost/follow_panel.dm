@@ -32,6 +32,10 @@
 			serialized["orbiters"] = number_of_orbiters
 
 		if(isobserver(mob_poi))
+			var/mob/observer/ghost/ghost = mob_poi
+			if(ghost.client?.holder?.stealthy_ == 1) // 1 is STEALTH_MANUAL, so we have a sneaky boi here
+				continue
+
 			ghosts += list(serialized)
 			continue
 
