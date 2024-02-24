@@ -1,15 +1,15 @@
-"a" = (/turf/simulated/floor/holofloor/space,/area/template_noop)
-"z" = (/obj/effect/landmark/event/other/holodeck/randcarps,/turf/simulated/floor/holofloor/space,/area/template_noop)
+"b" = (/turf/simulated/floor/holospace,/area/template_noop)
+"A" = (/obj/effect/landmark/event/other/holodeck/carps,/turf/simulated/floor/holospace,/area/template_noop)
 
 (1,1,1) = {"
-aaaaaaaaaa
-aaazaaaaza
-aaaaaaaaaa
-azaaaazaaa
-aaaaaaaaaa
-aaaaaaaaaa
-aaazaaaaza
-aaaaaaaaaa
-azaaaazaaa
-aaaaaaaaaa
+bbbbbbbbbb
+bbbAbbbbAb
+bbbbbbbbbb
+bAbbbbAbbb
+bbbbbbbbbb
+bbbbbbbbbb
+bbbAbbbbAb
+bbbbbbbbbb
+bAbbbbAbbb
+bbbbbbbbbb
 "}

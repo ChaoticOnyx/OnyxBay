@@ -1,9 +1,8 @@
-// TODO: add names & update maps
 /datum/map_template/holodeck
 	returns_created_atoms = TRUE
-
+	/// Internal template identifier, might be or might not be a file name, used generally by UI.
 	var/template_id
-
+	/// Whether the template can be unlocked by emagging a console.
 	var/restricted = FALSE
 
 /datum/map_template/holodeck/update_blacklist(turf/source_turf, centered, list/turf_blacklist)
@@ -14,61 +13,81 @@
 		turf_blacklist[affecting_turf] = TRUE
 
 /datum/map_template/holodeck/basketball
+	name = "basketball field"
 	template_id = "holodeck_basketball"
 	mappaths = list("maps/templates/holodeck_basketball.dmm")
 
 /datum/map_template/holodeck/beach
+	name = "sunny beach"
 	template_id = "holodeck_beach"
 	mappaths = list("maps/templates/holodeck_beach.dmm")
 
 /datum/map_template/holodeck/boxing
+	name = "boxing arena"
 	template_id = "holodeck_boxing"
 	mappaths = list("maps/templates/holodeck_boxing.dmm")
 
 /datum/map_template/holodeck/chess
+	name = "space chess"
 	template_id = "holodeck_chess"
 	mappaths = list("maps/templates/holodeck_chess.dmm")
 
-/datum/map_template/holodeck/courtempty
-	template_id = "holodeck_courtempty"
-	mappaths = list("maps/templates/holodeck_courtempty.dmm")
-
 /datum/map_template/holodeck/courtroom
+	name = "courtroom"
 	template_id = "holodeck_courtroom"
 	mappaths = list("maps/templates/holodeck_courtroom.dmm")
 
 /datum/map_template/holodeck/desert
+	name = "le-bandito desert"
 	template_id = "holodeck_desert"
 	mappaths = list("maps/templates/holodeck_desert.dmm")
 
+/datum/map_template/holodeck/disco
+	name = "disco room"
+	template_id = "holodeck_disco"
+	mappaths = list("maps/templates/holodeck_disco.dmm")
+
+/datum/map_template/holodeck/lasertag
+	name = "lasertag arena"
+	template_id = "holodeck_lasertag"
+	mappaths = list("maps/templates/holodeck_lasertag.dmm")
+
 /datum/map_template/holodeck/meetingroom
+	name = "meeting room"
 	template_id = "holodeck_meetingroom"
 	mappaths = list("maps/templates/holodeck_meetingroom.dmm")
 
 /datum/map_template/holodeck/offline
+	name = "offline"
 	template_id = "holodeck_offline"
 	mappaths = list("maps/templates/holodeck_offline.dmm")
 
 /datum/map_template/holodeck/picnic
+	name = "mediterranean picnic"
 	template_id = "holodeck_picnic"
 	mappaths = list("maps/templates/holodeck_picnic.dmm")
 
 /datum/map_template/holodeck/snow
+	name = "snow desert"
 	template_id = "holodeck_snow"
 	mappaths = list("maps/templates/holodeck_snow.dmm")
 
 /datum/map_template/holodeck/space
+	name = "totally accurate space"
 	template_id = "holodeck_space"
 	mappaths = list("maps/templates/holodeck_space.dmm")
 
+/datum/map_template/holodeck/theatre
+	name = "space theatre"
+	template_id = "holodeck_theatre"
+	mappaths = list("maps/templates/holodeck_theatre.dmm")
+
 /datum/map_template/holodeck/thunderdome
+	name = "thunderdome arena"
 	template_id = "holodeck_thunderdome"
 	mappaths = list("maps/templates/holodeck_thunderdome.dmm")
 
 /datum/map_template/holodeck/wildlife
+	name = "wildlife simulation"
 	template_id = "holodeck_wildlife"
 	mappaths = list("maps/templates/holodeck_wildlife.dmm")
-
-/datum/map_template/holodeck/theatre
-	template_id = "holodesck_theatre"
-	mappaths = list("maps/templates/holodesck_theatre.dmm")

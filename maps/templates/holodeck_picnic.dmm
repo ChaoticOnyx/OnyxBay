@@ -1,32 +1,51 @@
-"a" = (/obj/structure/flora/ausbushes/brflowers,/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"c" = (/obj/structure/flora/ausbushes/ywflowers,/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"g" = (/obj/structure/flora/ausbushes/brflowers,/obj/effect/floor_decal/spline/fancy/wood{dir = 4},/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"h" = (/obj/structure/flora/ausbushes/sparsegrass,/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"i" = (/obj/structure/flora/ausbushes/ywflowers,/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 8},/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"p" = (/obj/structure/flora/ausbushes/brflowers,/obj/effect/floor_decal/spline/fancy/wood/corner,/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"r" = (/obj/structure/table/woodentable,/turf/simulated/floor/holofloor/desert,/area/template_noop)
-"s" = (/obj/structure/flora/ausbushes/ywflowers,/obj/effect/floor_decal/spline/fancy/wood,/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"A" = (/obj/structure/flora/ausbushes/brflowers,/obj/effect/floor_decal/spline/fancy/wood,/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"E" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/holofloor/desert,/area/template_noop)
-"H" = (/obj/structure/flora/ausbushes/brflowers,/obj/effect/floor_decal/spline/fancy/wood{dir = 9},/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"I" = (/obj/structure/flora/ausbushes/ywflowers,/obj/effect/floor_decal/spline/fancy/wood{dir = 5},/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"L" = (/obj/structure/flora/ausbushes/ywflowers,/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 4},/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"O" = (/obj/structure/flora/ausbushes/brflowers,/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 1},/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"S" = (/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"W" = (/obj/structure/flora/ausbushes/ywflowers,/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"X" = (/obj/effect/decal/cleanable/dirt,/obj/item/stool/padded,/turf/simulated/floor/holofloor/desert,/area/template_noop)
-"Y" = (/obj/structure/flora/ausbushes/ywflowers,/obj/effect/floor_decal/spline/fancy/wood{dir = 4},/turf/simulated/floor/holofloor/grass,/area/template_noop)
-"Z" = (/obj/structure/flora/ausbushes/brflowers,/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/turf/simulated/floor/holofloor/grass,/area/template_noop)
+"a" = (/obj/structure/flora/ausbushes/jungleflora/bushc,/turf/simulated/floor/natural/jungle/grasscorner1{dir = 1},/area/template_noop)
+"c" = (/turf/simulated/floor/natural/jungle/grasscorner2{dir = 1},/area/template_noop)
+"e" = (/obj/structure/flora/ausbushes/grassybush,/turf/simulated/floor/natural/jungle/grasscorner1{dir = 1},/area/template_noop)
+"f" = (/turf/simulated/floor/natural/jungle/grasscorner1{dir = 1},/area/template_noop)
+"h" = (/turf/simulated/floor/natural/jungle/grasscorner2{dir = 8},/area/template_noop)
+"j" = (/turf/simulated/floor/natural/jungle/grasscorner2,/area/template_noop)
+"k" = (/obj/structure/flora/tree/green/small/tree6,/turf/simulated/floor/natural/jungle,/area/template_noop)
+"l" = (/turf/simulated/floor/natural/jungle/grassedge{dir = 4},/area/template_noop)
+"n" = (/obj/structure/table/woodentable,/obj/item/trash/dish/tray{pixel_y = 7},/obj/item/reagent_containers/food/meatkabob{pixel_y = 14; pixel_x = -5},/obj/item/reagent_containers/food/meatkabob{pixel_y = 11},/obj/item/reagent_containers/food/meatkabob{pixel_y = 8; pixel_x = 5},/turf/simulated/floor/natural/jungle/dirt,/area/template_noop)
+"p" = (/turf/simulated/floor/natural/jungle/grassedge,/area/template_noop)
+"q" = (/obj/structure/flora/ausbushes/jungleflora/bushb,/obj/structure/flora/jungleplants/alienplant5,/obj/item/reagent_containers/vessel/flask/vacuumflask{pixel_y = 4},/obj/item/reagent_containers/vessel/mug/metal{pixel_y = -8; pixel_x = -7},/turf/simulated/floor/natural/jungle,/area/template_noop)
+"r" = (/turf/simulated/floor/natural/jungle/grasscorner1{dir = 8},/area/template_noop)
+"s" = (/obj/structure/flora/ausbushes/jungleflora/busha,/turf/simulated/floor/natural/jungle,/area/template_noop)
+"u" = (/turf/simulated/floor/natural/jungle/grasscorner2{dir = 4},/area/template_noop)
+"v" = (/obj/structure/flora/jungleplants/alienplant4,/turf/simulated/floor/natural/jungle,/area/template_noop)
+"w" = (/obj/structure/flora/jungleplants/glowingflower/yellow,/turf/simulated/floor/natural/jungle/grassedge{dir = 4},/area/template_noop)
+"x" = (/turf/simulated/floor/natural/jungle,/area/template_noop)
+"y" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/vessel/teapot,/turf/simulated/floor/natural/jungle/dirt,/area/template_noop)
+"A" = (/obj/structure/flora/tree/green/tree5,/turf/simulated/floor/natural/jungle,/area/template_noop)
+"B" = (/turf/simulated/floor/natural/jungle/grassedge{dir = 1},/area/template_noop)
+"C" = (/obj/structure/flora/ausbushes/jungleflora/bushc,/turf/simulated/floor/natural/jungle/grasscorner1,/area/template_noop)
+"D" = (/obj/item/stool/bar,/turf/simulated/floor/natural/jungle/dirt,/area/template_noop)
+"F" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/vessel/mug{pixel_x = -5; pixel_y = 7},/obj/item/reagent_containers/food/carrotfries,/obj/item/reagent_containers/food/bacon{pixel_y = 1; pixel_x = -2},/turf/simulated/floor/natural/jungle/dirt,/area/template_noop)
+"G" = (/obj/structure/flora/ausbushes/jungleflora/bushc,/turf/simulated/floor/natural/jungle,/area/template_noop)
+"H" = (/obj/structure/flora/jungleplants/glowingflower/yellow,/turf/simulated/floor/natural/jungle/grasscorner1,/area/template_noop)
+"I" = (/obj/structure/flora/jungleplants/alienplant5,/turf/simulated/floor/natural/jungle/grasscorner1{dir = 8},/area/template_noop)
+"K" = (/obj/structure/flora/ausbushes/jungleflora/busha,/turf/simulated/floor/natural/jungle/grassedge{dir = 4},/area/template_noop)
+"M" = (/obj/structure/flora/jungleplants/glowingflower/yellow,/turf/simulated/floor/natural/jungle/grasscorner1{dir = 4},/area/template_noop)
+"N" = (/turf/simulated/floor/natural/jungle/grasscorner1,/area/template_noop)
+"O" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/vessel/mug/one{pixel_y = -2; pixel_x = 8},/obj/item/reagent_containers/vessel/mug/punitelli{pixel_y = 7},/obj/item/reagent_containers/vessel/mug/heart{pixel_x = -5; pixel_y = -1},/turf/simulated/floor/natural/jungle/dirt,/area/template_noop)
+"S" = (/obj/structure/flora/ausbushes/grassybush,/turf/simulated/floor/natural/jungle,/area/template_noop)
+"T" = (/turf/simulated/floor/natural/jungle/grassedge{dir = 8},/area/template_noop)
+"U" = (/obj/structure/flora/ausbushes/jungleflora/bushb,/turf/simulated/floor/natural/jungle/grasscorner1,/area/template_noop)
+"V" = (/obj/structure/flora/ausbushes/jungleflora/busha,/obj/structure/flora/tree/green/small/tree6,/turf/simulated/floor/natural/jungle,/area/template_noop)
+"W" = (/obj/structure/flora/jungleplants/glowingflower/yellow,/turf/simulated/floor/natural/jungle,/area/template_noop)
+"X" = (/obj/structure/flora/ausbushes/jungleflora/bushb,/turf/simulated/floor/natural/jungle,/area/template_noop)
+"Y" = (/turf/simulated/floor/natural/jungle/grasscorner1{dir = 4},/area/template_noop)
+"Z" = (/turf/simulated/floor/natural/jungle/dirt,/area/template_noop)
 
 (1,1,1) = {"
-SWaWaWaWaS
-SaWaWaWaWh
-SWpsAsAiah
-haYEEEEZWS
-hWgXrrXcaS
-SWgXrrXcah
-SaYEEEEZWS
-hWOIEEHLah
-SaWgEEcaaS
-SWaYEEcaWS
+XslZTxWGxx
+XkIBMXSvAW
+xWsNppaqHp
+pfNjDDupjZ
+ZTKDFyDZZZ
+ZTlDnODZcB
+BYrhDDZcYx
+WxsrBBBMVv
+GAUexCpfxG
+sXwTWlZTXS
 "}
