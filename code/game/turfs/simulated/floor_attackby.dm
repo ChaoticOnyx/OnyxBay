@@ -1,4 +1,6 @@
 /turf/simulated/floor/attackby(obj/item/C as obj, mob/user as mob)
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)
+		return
 
 	if(!C || !user)
 		return 0

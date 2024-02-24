@@ -6,10 +6,9 @@
 
 	var/restricted = FALSE
 
-// TODO: replace type checks with flags
 /datum/map_template/holodeck/update_blacklist(turf/source_turf, centered, list/turf_blacklist)
 	for(var/turf/affecting_turf as anything in get_affected_turfs(source_turf, centered))
-		if(istype(affecting_turf, /turf/simulated/floor/holofloor) || istype(affecting_turf, /turf/simulated/floor/reinforced)) // Kinda crude, but we'll manage for now...
+		if(affecting_turf.holodeck_compatible || (affecting_turf.atom_flags & ATOM_FLAG_HOLOGRAM))
 			continue
 
 		turf_blacklist[affecting_turf] = TRUE

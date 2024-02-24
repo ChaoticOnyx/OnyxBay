@@ -142,6 +142,10 @@
 		holo_obj.atom_flags |= ATOM_FLAG_NO_DECONSTRUCTION
 		return
 
+	if(isturf(holo_atom))
+		holo_atom.atom_flags |= ATOM_FLAG_NO_DECONSTRUCTION
+		return
+
 /obj/machinery/computer/holodeck/proc/clear_projections()
 	for(var/holo_atom in spawned)
 		derez(holo_atom)
@@ -178,7 +182,7 @@
 
 /obj/machinery/computer/holodeck/proc/check_flooring()
 	for(var/turf/checking_turf in linked_area)
-		if(!is_type_in_list(checking_turf, GLOB.holodeck_valid_turf_typecache))
+		if(!checking_turf.holodeck_compatible && !(checking_turf.atom_flags & ATOM_FLAG_HOLOGRAM))
 			return FALSE
 
 	return TRUE

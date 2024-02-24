@@ -41,6 +41,9 @@
 
 	var/turf_height = 0 // "Vertical" offset. Mostly used for mobs and dropped items.
 
+	/// Whether this turf can be used inside a blank holodeck i.e reinforced tile.
+	var/holodeck_compatible = FALSE
+
 /turf/Initialize(mapload, ...)
 	. = ..()
 	if(dynamic_lighting)
