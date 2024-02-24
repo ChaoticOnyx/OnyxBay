@@ -7,18 +7,18 @@
 				return "It provides a very small defense against [descriptive_attack_type]."
 			if(31 to 40)
 				return "It offers a small amount of protection against [descriptive_attack_type]."
-			if(41 to 50)
+			if(41 to 55)
 				return "It offers a moderate defense against [descriptive_attack_type]."
-			if(51 to 60)
+			if(56 to 70)
 				return "It provides a strong defense against [descriptive_attack_type]."
-			if(61 to 70)
+			if(81 to 100)
 				return "It is very strong against [descriptive_attack_type]."
-			if(71 to 80)
+			if(101 to 120)
 				return "This gives a very robust defense against [descriptive_attack_type]."
-			if(81 to 99)
+			if(121 to 150)
 				return "Wearing this would make you nigh-invulerable against [descriptive_attack_type]."
-			if(100)
-				return "You would be immune to [descriptive_attack_type] if you wore this."
+			if(151 to INFINITY)
+				return "You would be practically immune to [descriptive_attack_type] if you wore this."
 
 
 
