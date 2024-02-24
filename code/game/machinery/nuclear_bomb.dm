@@ -25,8 +25,8 @@ var/bomb_set
 	var/datum/wires/nuclearbomb/wires = null
 	var/decl/security_level/original_level
 
-/obj/machinery/nuclearbomb/New()
-	..()
+/obj/machinery/nuclearbomb/Initialize(mapload)
+	. = ..()
 	r_code = "[rand(10000, 99999.0)]"//Creates a random code upon object spawn.
 	wires = new /datum/wires/nuclearbomb(src)
 
@@ -377,6 +377,8 @@ var/bomb_set
 
 	drop_sound = SFX_DROP_DISK
 	pickup_sound = SFX_PICKUP_DISK
+
+	is_poi = TRUE
 
 /obj/item/disk/nuclear/Initialize()
 	. = ..()

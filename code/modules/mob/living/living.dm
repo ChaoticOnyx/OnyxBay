@@ -1,3 +1,6 @@
+/mob/living
+	is_poi = TRUE
+
 /mob/living/Initialize()
 	. = ..()
 	if(is_ooc_dead())
