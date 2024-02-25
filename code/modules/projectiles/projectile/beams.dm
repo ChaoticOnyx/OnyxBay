@@ -33,33 +33,33 @@
 
 /obj/item/projectile/beam/laser/small
 	name = "small laser beam"
-	damage = 27.5
-	armor_penetration = 20
+	damage = 20.0
+	armor_penetration = 5
 
 	muzzle_type = /obj/effect/projectile/muzzle/laser/small
 	tracer_type = /obj/effect/projectile/tracer/laser/small
 	impact_type = /obj/effect/projectile/impact/laser/small
 
 /obj/item/projectile/beam/laser/lesser
-	damage = 32.5
-	armor_penetration = 22.5
+	damage = 27.5
+	armor_penetration = 10
 
 /obj/item/projectile/beam/laser/mid
 	icon_state = "laser"
-	damage = 37.5
+	damage = 35.0
 	armor_penetration = 25
 
 /obj/item/projectile/beam/laser/greater
 	name = "large laser beam"
-	damage = 42.5
-	armor_penetration = 27.5
+	damage = 40.0
+	armor_penetration = 45
 
 /obj/item/projectile/beam/laser/heavy
 	name = "heavy laser beam"
 	icon_state = "heavylaser"
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
 	damage = 55.0
-	armor_penetration = 30
+	armor_penetration = 70
 
 	muzzle_type = /obj/effect/projectile/muzzle/laser/heavy
 	tracer_type = /obj/effect/projectile/tracer/laser/heavy
@@ -71,7 +71,7 @@
 	icon_state = "xray"
 	fire_sound = 'sound/effects/weapons/heavy/fire1.ogg'
 	damage = 50
-	armor_penetration = 50
+	armor_penetration = 80
 	stun = 3
 	weaken = 3
 	stutter = 3
@@ -86,7 +86,7 @@
 	icon_state = "xray"
 	fire_sound = 'sound/effects/weapons/energy/fire16.ogg'
 	damage = 30
-	armor_penetration = 30
+	armor_penetration = 40
 	penetration_modifier = 0.85
 
 	muzzle_type = /obj/effect/projectile/muzzle/xray
@@ -110,11 +110,11 @@
 
 /obj/item/projectile/beam/pulse/mid
 	damage = 35
-	armor_penetration = 25
+	armor_penetration = 50
 
 /obj/item/projectile/beam/pulse/heavy
 	damage = 45
-	armor_penetration = 40
+	armor_penetration = 80
 
 /obj/item/projectile/beam/pulse/destroy
 	name = "destroyer pulse"
@@ -143,6 +143,7 @@
 	damage = 0
 	nodamage = TRUE
 	no_attack_log = 1
+
 /obj/item/projectile/beam/lasertag/blue
 	icon_state = "bluelaser"
 
@@ -261,7 +262,7 @@
 	check_armour = "laser"
 	kill_count = 5
 	pass_flags = PASS_FLAG_TABLE
-	armor_penetration = 10
+	armor_penetration = 50
 	muzzle_type = /obj/effect/projectile/muzzle/trilaser
 	tracer_type = /obj/effect/projectile/tracer/trilaser
 	impact_type = /obj/effect/projectile/impact/trilaser

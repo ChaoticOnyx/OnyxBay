@@ -38,9 +38,10 @@
 	slot_flags = SLOT_BELT
 	force = 14.5
 	throwforce = 10.0
-	mod_weight = 1.35
+	mod_weight = 1.4
 	mod_reach = 1.25
-	mod_handy = 0.9
+	mod_handy = 0.7
+	armor_penetration = 70
 	icon_state = "pickaxe"
 	item_state = "pickaxe"
 	w_class = ITEM_SIZE_HUGE
@@ -90,7 +91,8 @@
 	force = 17.5
 	mod_weight = 1.5
 	mod_reach = 1.35
-	mod_handy = 0.9
+	mod_handy = 0.8
+	armor_penetration = 90
 	power = 50 //faster than drill, but cannot dig
 	origin_tech = list(TECH_MATERIAL = 3, TECH_POWER = 2, TECH_ENGINEERING = 2)
 	desc = "Cracks rocks with sonic blasts, perfect for killing cave lizards."
@@ -144,6 +146,7 @@
 	mod_weight = 1.5
 	mod_reach = 1.0
 	mod_handy = 0.4
+	armor_penetration = 100 // It crushes walls
 	drill_verb = "hammering"
 	power = 50
 	var/wielded = 0
@@ -184,6 +187,7 @@
 	mod_weight = 1.25
 	mod_reach = 1.5
 	mod_handy = 0.9
+	armor_penetration = 20
 	item_state = "shovel"
 	w_class = ITEM_SIZE_HUGE
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
@@ -205,6 +209,7 @@
 	mod_weight = 0.7
 	mod_reach = 0.7
 	mod_handy = 0.9
+	armor_penetration = 10
 	w_class = ITEM_SIZE_SMALL
 
 /**********************Flags**************************/
@@ -481,6 +486,7 @@
 	mod_weight = 1.5
 	mod_reach = 1.25
 	mod_handy = 0.9
+	armor_penetration = 60
 	throwforce = 10
 	var/burst_time = 50
 	var/fieldlimit = 4

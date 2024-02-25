@@ -37,6 +37,7 @@
 	mod_weight = 0.5
 	mod_reach = 0.8
 	mod_handy = 0.75
+	armor_penetration = 40
 	w_class = ITEM_SIZE_SMALL
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "metal-rod"

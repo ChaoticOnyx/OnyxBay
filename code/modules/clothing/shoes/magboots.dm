@@ -16,7 +16,7 @@
 	center_of_mass = null
 	randpixel = 0
 
-	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10)
+	armor = list(melee = 90, bullet = 90, laser = 100, energy = 45, bomb = 50, bio = 10)
 	siemens_coefficient = 0.3
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 33.8 MEGA ELECTRONVOLT,

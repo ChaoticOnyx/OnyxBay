@@ -6,6 +6,7 @@
 	worn_state = "blackskirt"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	rolled_sleeves = -1
+	coverage = 0.8
 
 /obj/item/clothing/under/skirt/plaid_blue
 	name = "blue plaid skirt"
@@ -34,6 +35,7 @@
 	icon_state = "skirt_khaki"
 	worn_state = "skirt_khaki"
 	body_parts_covered = LOWER_TORSO
+	coverage = 0.7
 
 /obj/item/clothing/under/skirt/swept
 	name = "swept skirt"
@@ -41,6 +43,7 @@
 	icon_state = "skirt_swept"
 	worn_state = "skirt_swept"
 	body_parts_covered = LOWER_TORSO
+	coverage = 0.6
 
 // colour selection, needs to be different for loadout type selection
 
@@ -50,6 +53,7 @@
 	icon_state = "skirt_short"
 	worn_state = "skirt_short"
 	body_parts_covered = LOWER_TORSO
+	coverage = 0.7
 
 // dresses
 /obj/item/clothing/under/skirt_c/dress
@@ -58,6 +62,7 @@
 	icon_state = "shortdress"
 	worn_state = "shortdress"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	coverage = 0.9
 
 /obj/item/clothing/under/skirt_c/dress/long
 	name = "maxi dress"
@@ -66,6 +71,7 @@
 	worn_state = "longdress"
 	flags_inv = HIDESHOES
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET
+	coverage = 0.95
 
 /obj/item/clothing/under/skirt_c/dress/long/gown
 	name = "silk gown"

@@ -663,7 +663,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				target.visible_message("<span class='danger'>[target]'s [W] goes off during the struggle!</span>")
 				return W.afterattack(shoot_to,target)
 
-	var/effective_armor = target.getarmor(attacker.zone_sel.selecting, "melee")
+	var/effective_armor = target.get_flat_armor(attacker.zone_sel.selecting, "melee")
 	var/poisedmg = round(4.0 + 4.0 * ((100 - effective_armor) / 100), 0.1)
 	if(istype(attacker.gloves, /obj/item/clothing/gloves/chameleon/robust))
 		poisedmg *= 1.75

@@ -1,24 +1,24 @@
 /obj/item/clothing/proc/describe_armor(armor_type, descriptive_attack_type)
 	if(armor[armor_type])
 		switch(armor[armor_type])
-			if(1 to 20)
+			if(1 to 9)
 				return "It barely protects against [descriptive_attack_type]."
-			if(21 to 30)
+			if(10 to 19)
 				return "It provides a very small defense against [descriptive_attack_type]."
-			if(31 to 40)
+			if(20 to 39)
 				return "It offers a small amount of protection against [descriptive_attack_type]."
-			if(41 to 50)
+			if(40 to 59)
 				return "It offers a moderate defense against [descriptive_attack_type]."
-			if(51 to 60)
+			if(60 to 79)
 				return "It provides a strong defense against [descriptive_attack_type]."
-			if(61 to 70)
+			if(80 to 99)
 				return "It is very strong against [descriptive_attack_type]."
-			if(71 to 80)
+			if(100 to 124)
 				return "This gives a very robust defense against [descriptive_attack_type]."
-			if(81 to 99)
+			if(125 to 149)
 				return "Wearing this would make you nigh-invulerable against [descriptive_attack_type]."
-			if(100)
-				return "You would be immune to [descriptive_attack_type] if you wore this."
+			if(150 to INFINITY)
+				return "You would be practically immune to [descriptive_attack_type] if you wore this."
 
 
 
@@ -51,25 +51,31 @@
 	if(item_flags & ITEM_FLAG_THICKMATERIAL)
 		. += "The material is exceptionally thick. \n"
 
-	if(max_heat_protection_temperature == FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE)
+	if(max_heat_protection_temperature >= FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE)
 		. += "It provides very good protection against fire and heat. \n"
 
 	if(min_cold_protection_temperature == SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE)
 		. += "It provides very good protection against very cold temperatures. \n"
 
+	var/islist_coverage = islist(coverage)
 	var/list/covers = list()
 	var/list/slots = list()
 
 	for(var/name in string_part_flags)
 		if(body_parts_covered & string_part_flags[name])
-			covers += name
+			var/coverage_entry = name
+			if(islist_coverage)
+				for(var/entry in coverage)
+					if(entry == name)
+						coverage_entry += " ([round(coverage[entry] * 100)]%)"
+			covers += coverage_entry
 
 	for(var/name in string_slot_flags)
 		if(slot_flags & string_slot_flags[name])
 			slots += name
 
-	if(covers.len)
-		. += "It covers the [english_list(covers)]. \n"
+	if(length(covers))
+		. += "It covers [!islist_coverage ? ("[round(coverage * 100)]% of ") : ""]the [english_list(covers)]. \n"
 
 	if(slots.len)
 		. += "It can be worn on your [english_list(slots)]. \n"

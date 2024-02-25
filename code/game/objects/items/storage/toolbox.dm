@@ -14,6 +14,7 @@
 	mod_weight = 1.6
 	mod_reach = 0.75
 	mod_handy = 0.75
+	armor_penetration = 20
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_LARGEBOX_STORAGE //enough to hold all starting contents
 	origin_tech = list(TECH_COMBAT = 1)

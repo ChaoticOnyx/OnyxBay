@@ -259,15 +259,27 @@
 
 	//hit messages
 	if(silenced)
-		if(impacted_organ)
-			to_chat(target_mob, SPAN("danger", "You've been hit in the [impacted_organ] by \the [src]!"))
+		if(result != PROJECTILE_FORCE_BLOCK)
+			if(impacted_organ)
+				to_chat(target_mob, SPAN("danger", "You've been hit in the [impacted_organ] by \the [src]!"))
+			else
+				to_chat(target_mob, SPAN("danger", "You've been hit by \the [src]!"))
 		else
-			to_chat(target_mob, SPAN("danger", "You've been hit by \the [src]!"))
+			if(impacted_organ)
+				to_chat(target_mob, SPAN("danger", "You've been harmlessly hit in the [impacted_organ] by \the [src]!"))
+			else
+				to_chat(target_mob, SPAN("danger", "You've been harmlessly hit by \the [src]!"))
 	else
-		if(impacted_organ)
-			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src] in the [impacted_organ]!"))//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
+		if(result != PROJECTILE_FORCE_BLOCK)
+			if(impacted_organ)
+				target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src] in the [impacted_organ]!"))//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
+			else
+				target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src]!"))
 		else
-			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src]!"))
+			if(impacted_organ)
+				target_mob.visible_message(SPAN("danger", "\The [target_mob]'s [impacted_organ] armor stops \the [src]!"))
+			else
+				target_mob.visible_message(SPAN("danger", "\The [target_mob] armor stops \the [src]!"))
 
 		new /obj/effect/effect/hitmarker(target_mob.loc)
 		for(var/mob/O in hearers(7, get_turf(target_mob)))

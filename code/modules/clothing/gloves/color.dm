@@ -33,6 +33,7 @@
 	body_parts_covered = NO_BODYPARTS	//fingerless gloves don't prevent from leaving fingerprints
 	clipped = TRUE
 	species_restricted = list("exclude", SPECIES_VOX)
+	coverage = 0.5
 
 /obj/item/clothing/gloves/rainbow/modified
 	item_flags = ITEM_FLAG_PREMODIFIED

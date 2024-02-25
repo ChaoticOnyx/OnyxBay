@@ -76,7 +76,7 @@
 	agony = 65
 	tasing = 6
 	damage_type = PAIN
-	armor_penetration = 10
+	armor_penetration = 25
 	//Damage will be handled on the MOB side, to prevent window shattering.
 	projectile_light = TRUE
 	projectile_brightness_color = COLOR_YELLOW
@@ -92,7 +92,7 @@
 	icon_state = "electrode-heavy"
 	agony = 100
 	tasing = 8
-	armor_penetration = 15
+	armor_penetration = 40
 	hitscan = TRUE
 
 /obj/item/projectile/energy/electrode/stunshot
@@ -100,7 +100,7 @@
 	damage = 15
 	agony = 70
 	damage_type = BURN
-	armor_penetration = 10
+	armor_penetration = 30
 	penetration_modifier = 0.2
 
 /obj/item/projectile/energy/electrode/stunsphere
@@ -108,7 +108,7 @@
 	icon_state = "spark"
 	agony = 70
 	stutter = 10
-	armor_penetration = 10
+	armor_penetration = 30
 
 /obj/item/projectile/energy/electrode/c45
 	name = "stun bullet"
@@ -117,7 +117,7 @@
 	agony = 40 // Weaker than the stunsphere la'classique
 	damage_type = BURN
 	damage = 3 //A little ouchie.
-	armor_penetration = 10
+	armor_penetration = 20
 	fire_sound = 'sound/effects/weapons/gun/gunshot.ogg'
 	projectile_inner_range = 0.2
 
@@ -128,7 +128,7 @@
 	agony = 60
 	damage_type = BRUTE
 	damage = 5 //It's still a bullet
-	armor_penetration = 10
+	armor_penetration = 20
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 	projectile_inner_range = 0.2
 
@@ -139,7 +139,7 @@
 	agony = 20
 	eyeblur = 4
 	damage_type = BURN
-	armor_penetration = 15
+	armor_penetration = 40
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 	projectile_light = TRUE
 	projectile_brightness_color = "#ff8c3f"
@@ -194,7 +194,7 @@
 	damage_type = BURN
 	agony = 15
 	check_armour = "bio"
-	armor_penetration = 25	// It's acid
+	armor_penetration = 50	// It's acid
 
 /obj/item/projectile/energy/plasma
 	name = "plasma bolt"
