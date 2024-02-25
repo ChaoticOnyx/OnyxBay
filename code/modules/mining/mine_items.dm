@@ -38,9 +38,9 @@
 	slot_flags = SLOT_BELT
 	force = 14.5
 	throwforce = 10.0
-	mod_weight = 1.35
+	mod_weight = 1.4
 	mod_reach = 1.25
-	mod_handy = 0.9
+	mod_handy = 0.7
 	armor_penetration = 70
 	icon_state = "pickaxe"
 	item_state = "pickaxe"
@@ -91,7 +91,7 @@
 	force = 17.5
 	mod_weight = 1.5
 	mod_reach = 1.35
-	mod_handy = 0.9
+	mod_handy = 0.8
 	armor_penetration = 90
 	power = 50 //faster than drill, but cannot dig
 	origin_tech = list(TECH_MATERIAL = 3, TECH_POWER = 2, TECH_ENGINEERING = 2)

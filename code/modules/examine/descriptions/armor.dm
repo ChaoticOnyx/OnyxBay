@@ -1,23 +1,23 @@
 /obj/item/clothing/proc/describe_armor(armor_type, descriptive_attack_type)
 	if(armor[armor_type])
 		switch(armor[armor_type])
-			if(1 to 20)
+			if(1 to 9)
 				return "It barely protects against [descriptive_attack_type]."
-			if(21 to 30)
+			if(10 to 19)
 				return "It provides a very small defense against [descriptive_attack_type]."
-			if(31 to 40)
+			if(20 to 39)
 				return "It offers a small amount of protection against [descriptive_attack_type]."
-			if(41 to 55)
+			if(40 to 59)
 				return "It offers a moderate defense against [descriptive_attack_type]."
-			if(56 to 75)
+			if(60 to 79)
 				return "It provides a strong defense against [descriptive_attack_type]."
-			if(76 to 100)
+			if(80 to 99)
 				return "It is very strong against [descriptive_attack_type]."
-			if(101 to 125)
+			if(100 to 124)
 				return "This gives a very robust defense against [descriptive_attack_type]."
-			if(126 to 150)
+			if(125 to 149)
 				return "Wearing this would make you nigh-invulerable against [descriptive_attack_type]."
-			if(151 to INFINITY)
+			if(150 to INFINITY)
 				return "You would be practically immune to [descriptive_attack_type] if you wore this."
 
 
@@ -51,7 +51,7 @@
 	if(item_flags & ITEM_FLAG_THICKMATERIAL)
 		. += "The material is exceptionally thick. \n"
 
-	if(max_heat_protection_temperature == FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE)
+	if(max_heat_protection_temperature >= FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE)
 		. += "It provides very good protection against fire and heat. \n"
 
 	if(min_cold_protection_temperature == SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE)
@@ -75,7 +75,7 @@
 			slots += name
 
 	if(length(covers))
-		. += "It covers [!islist_coverage ? ("[round(coverage * 100)] of ") : ""]the [english_list(covers)]. \n"
+		. += "It covers [!islist_coverage ? ("[round(coverage * 100)]% of ") : ""]the [english_list(covers)]. \n"
 
 	if(slots.len)
 		. += "It can be worn on your [english_list(slots)]. \n"
