@@ -20,6 +20,8 @@
 	air_properties_vary_with_direction = 1
 	var/timer = null
 	hitby_sound = SFX_GLASS_HIT
+	var/material_used = MATERIAL_REINFORCED_GLASS //For material windoors
+	var/assembly_used = /obj/structure/windoor_assembly //For various windoors
 
 /obj/machinery/door/window/Initialize()
 	. = ..()
@@ -38,12 +40,13 @@
 		icon_state = "[base_state]open"
 
 /obj/machinery/door/window/proc/shatter(display_message = 1)
-	new /obj/item/material/shard(loc)
+	var/obj/item/material/shard/S = new /obj/item/material/shard(loc)
+	S.default_material = material_used
 	var/obj/item/stack/cable_coil/CC = new /obj/item/stack/cable_coil(loc)
 	CC.amount = 2
 	var/obj/item/airlock_electronics/ae
 	if(!electronics)
-		ae = new /obj/item/airlock_electronics( loc )
+		ae = new /obj/item/airlock_electronics(loc)
 		if(!req_access)
 			check_access()
 		if(req_access.len)
@@ -217,7 +220,7 @@
 		if(do_after(user,40,src))
 			to_chat(user, "<span class='notice'>You removed the windoor electronics!</span>")
 
-			var/obj/structure/windoor_assembly/wa = new /obj/structure/windoor_assembly(loc)
+			var/obj/structure/windoor_assembly/wa = new assembly_used(loc)
 			if(istype(src, /obj/machinery/door/window/brigdoor))
 				wa.secure = "secure_"
 				wa.SetName("Secure Wired Windoor Assembly")
@@ -283,6 +286,29 @@
 	maxhealth = 300
 	health = 300.0 //Stronger doors for prison (regular window door health is 150)
 
+/obj/machinery/door/window/plasma
+	icon = 'icons/obj/doors/plasmawindoor.dmi'
+	icon_state = "leftsecure"
+	base_state = "leftsecure"
+	material_used = MATERIAL_REINFORCED_PLASS
+	assembly_used = /obj/structure/windoor_assembly/plasma
+
+/obj/machinery/door/window/brigdoor/plasma
+	name = "secure door"
+	icon = 'icons/obj/doors/plasmawindoor.dmi'
+	icon_state = "leftsecure"
+	base_state = "leftsecure"
+	req_access = list(access_security)
+	maxhealth = 300
+	material_used = MATERIAL_REINFORCED_PLASS
+	assembly_used = /obj/structure/windoor_assembly/plasma
+	health = 300.0 //Stronger doors for prison (regular window door health is 150)
+
+/obj/machinery/door/window/brigdoor/pod
+	name = "secure door"
+	icon = 'icons/obj/doors/pwindow.dmi'
+	icon_state = "windoor"
+	base_state = "windoor"
 /obj/machinery/door/window/northleft
 	dir = NORTH
 
@@ -349,6 +375,70 @@
 	color = "#818181"
 
 /obj/machinery/door/window/brigdoor/southright
+	dir = SOUTH
+	icon_state = "rightsecure"
+	base_state = "rightsecure"
+
+/obj/machinery/door/window/plasma/northleft
+	dir = NORTH
+
+/obj/machinery/door/window/plasma/eastleft
+	dir = EAST
+
+/obj/machinery/door/window/plasma/westleft
+	dir = WEST
+
+/obj/machinery/door/window/plasma/southleft
+	dir = SOUTH
+
+/obj/machinery/door/window/plasma/northright
+	dir = NORTH
+	icon_state = "right"
+	base_state = "right"
+
+/obj/machinery/door/window/plasma/eastright
+	dir = EAST
+	icon_state = "right"
+	base_state = "right"
+
+/obj/machinery/door/window/plasma/westright
+	dir = WEST
+	icon_state = "right"
+	base_state = "right"
+
+/obj/machinery/door/window/plasma/southright
+	dir = SOUTH
+	icon_state = "right"
+	base_state = "right"
+
+/obj/machinery/door/window/brigdoor/plasma/northleft
+	dir = NORTH
+
+/obj/machinery/door/window/brigdoor/plasma/eastleft
+	dir = EAST
+
+/obj/machinery/door/window/brigdoor/plasma/westleft
+	dir = WEST
+
+/obj/machinery/door/window/brigdoor/plasma/southleft
+	dir = SOUTH
+
+/obj/machinery/door/window/brigdoor/plasma/northright
+	dir = NORTH
+	icon_state = "rightsecure"
+	base_state = "rightsecure"
+
+/obj/machinery/door/window/brigdoor/plasma/eastright
+	dir = EAST
+	icon_state = "rightsecure"
+	base_state = "rightsecure"
+
+/obj/machinery/door/window/brigdoor/plasma/westright
+	dir = WEST
+	icon_state = "rightsecure"
+	base_state = "rightsecure"
+
+/obj/machinery/door/window/brigdoor/plasma/southright
 	dir = SOUTH
 	icon_state = "rightsecure"
 	base_state = "rightsecure"

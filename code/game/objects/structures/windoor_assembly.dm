@@ -17,6 +17,9 @@
 	density = 0
 	dir = NORTH
 	w_class = ITEM_SIZE_NORMAL
+	var/material_used = MATERIAL_REINFORCED_GLASS
+	var/created_windoor = /obj/machinery/door/window
+	var/created_windoor_secure = /obj/machinery/door/window/brigdoor
 
 	var/obj/item/airlock_electronics/electronics = null
 
@@ -76,7 +79,10 @@
 					if(do_after(user, 40,src))
 						if(!src || !WT.isOn()) return
 						to_chat(user, "<span class='notice'>You dissasembled the windoor assembly!</span>")
-						new /obj/item/stack/material/glass/reinforced(get_turf(src), 5)
+						if(material_used == MATERIAL_REINFORCED_PLASS)
+							new /obj/item/stack/material/glass/rplass(get_turf(src), 5)
+						else
+							new /obj/item/stack/material/glass/reinforced(get_turf(src), 5)
 						if(secure)
 							new /obj/item/stack/rods(get_turf(src), 4)
 						qdel(src)
@@ -212,7 +218,7 @@
 					to_chat(user, "<span class='notice'>You finish the windoor!</span>")
 
 					if(secure)
-						var/obj/machinery/door/window/brigdoor/windoor = new /obj/machinery/door/window/brigdoor(src.loc)
+						var/obj/machinery/door/window/brigdoor/windoor = new created_windoor_secure(src.loc)
 						if(src.facing == "l")
 							windoor.icon_state = "leftsecureopen"
 							windoor.base_state = "leftsecure"
@@ -230,7 +236,7 @@
 						windoor.electronics = src.electronics
 						src.electronics.forceMove(windoor)
 					else
-						var/obj/machinery/door/window/windoor = new /obj/machinery/door/window(src.loc)
+						var/obj/machinery/door/window/windoor = new created_windoor(src.loc)
 						if(src.facing == "l")
 							windoor.icon_state = "leftopen"
 							windoor.base_state = "left"
@@ -294,3 +300,9 @@
 
 	update_icon()
 	return
+
+/obj/structure/windoor_assembly/plasma
+	icon = 'icons/obj/doors/plasmawindoor.dmi'
+	material_used = MATERIAL_REINFORCED_PLASS
+	created_windoor = /obj/machinery/door/window/plasma
+	created_windoor_secure = /obj/machinery/door/window/brigdoor/plasma

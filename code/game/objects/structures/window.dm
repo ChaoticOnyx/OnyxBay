@@ -524,6 +524,13 @@
 	basestate = "fwindow"
 	maxhealth = 30
 
+/obj/structure/window/reinforced/podded
+	name = "podded window"
+	desc = "It looks rather strong over. Looks like it might take a few less hits then a normal reinforced window."
+	icon_state = "pwindow"
+	basestate = "pwindow"
+	maxhealth = 30
+
 /obj/structure/window/shuttle
 	name = "shuttle window"
 	desc = "It looks rather strong. Might take a few good hits to shatter it."
