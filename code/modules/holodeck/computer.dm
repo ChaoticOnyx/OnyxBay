@@ -1,6 +1,5 @@
 #define PROJECTION_POWER_COST 5 HECTO WATTS
 
-// TODO: add ability to construct holodeck console & document usage
 /obj/machinery/computer/holodeck
 	name = "holodeck control console"
 	desc = "A computer used to control a nearby holodeck."
@@ -11,29 +10,39 @@
 
 	active_power_usage = 8 KILO WATTS
 
+	/// Area type holodeck console should look for.
 	var/mapped_start_area_typepath = /area/holodeck
-
+	/// Reference to a linked area.
 	var/area/holodeck/linked_area
+	/// Reference to a bottom left turf.
 	var/turf/bottom_left
 
+	/// Reference to a currently used map template.
 	var/datum/map_template/holodeck/using_template
+	/// List of all atoms included in map template plus extra added via `add_to_spawned`.
 	var/list/atom/spawned
-	var/list/atom/effects
+	/// List of all special effect included in map template.
+	var/list/obj/effect/effects
 
+	/// List of json-like objects representing programs, used by UI.
 	var/list/programs_cache
+	/// List of json-like objects representing restricted programs, used by UI.
 	var/list/emag_programs_cache
 
-	var/active = FALSE
-
-	var/locked = FALSE
-
+	/// Currently loaded program's `template_id`.
+	var/program
+	/// Previously loaded program's `template_id`.
+	var/last_program
+	/// `template_id` of the template that should be loaded by default.
 	var/offline_program = "holodeck_offline"
 
-	var/program
-	var/last_program
-
+	/// Whether not `offline_program` is currently loaded.
+	var/active = FALSE
+	/// Whether controls are locked.
+	var/locked = FALSE
+	/// Whether safety is disabled. Allows to spawn unnerfed weapons ant etc.
 	var/safety_disabled = FALSE
-
+	/// Whether gravity is disabled inside a holodeck zone.
 	var/gravity_disabled = FALSE
 
 /obj/machinery/computer/holodeck/Initialize()
