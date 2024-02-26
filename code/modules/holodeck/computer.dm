@@ -4,6 +4,8 @@
 	name = "holodeck control console"
 	desc = "A computer used to control a nearby holodeck."
 
+	req_access = list(access_heads)
+
 	icon_keyboard = "tech_key"
 	icon_screen = "holocontrol"
 	light_color = "#41E0FC"
@@ -284,7 +286,7 @@
 	tgui_interact(user)
 
 /obj/machinery/computer/holodeck/tgui_state(mob/user)
-	return GLOB.tgui_machinery_no_access_check_state
+	return GLOB.tgui_machinery_noaccess_state
 
 /obj/machinery/computer/holodeck/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -297,7 +299,7 @@
 	var/list/data = list()
 
 	data["isLocked"] = locked
-	data["canToggleSafety"] = issilicon(user) || is_admin(user)
+	data["canToggleSafety"] = allowed(user)
 	data["isSafetyDisabled"] = safety_disabled
 	data["isGravityDisabled"] = gravity_disabled
 
