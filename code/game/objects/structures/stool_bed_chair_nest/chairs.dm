@@ -165,7 +165,7 @@
 	if(!foldable)
 		return
 
-	if(atom_flags & ATOM_FLAG_HOLOGRAM) // No folding, bozo
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION) // No folding, bozo
 		return
 
 	if(!user.Adjacent(src))

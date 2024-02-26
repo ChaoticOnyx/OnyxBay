@@ -108,6 +108,8 @@
 				. += "\n<span class='notice'>It has a few scrapes and dents.</span>"
 
 /obj/structure/table/attackby(obj/item/W, mob/user)
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)
+		return ..()
 
 	if(reinforced && isScrewdriver(W))
 		remove_reinforced(W, user)
@@ -301,6 +303,9 @@
 // is to avoid filling the list with nulls, as place_shard won't place shards of certain materials (holo-wood, holo-steel)
 
 /obj/structure/table/proc/break_to_parts(full_return = 0)
+	if(atom_flags & ATOM_FLAG_HOLOGRAM)
+		return
+
 	var/list/shards = list()
 	var/obj/item/material/shard/S = null
 	if(reinforced)

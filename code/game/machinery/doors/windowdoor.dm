@@ -38,30 +38,33 @@
 		icon_state = "[base_state]open"
 
 /obj/machinery/door/window/proc/shatter(display_message = 1)
-	new /obj/item/material/shard(loc)
-	var/obj/item/stack/cable_coil/CC = new /obj/item/stack/cable_coil(loc)
-	CC.amount = 2
-	var/obj/item/airlock_electronics/ae
-	if(!electronics)
-		ae = new /obj/item/airlock_electronics( loc )
-		if(!req_access)
-			check_access()
-		if(req_access.len)
-			ae.conf_access = req_access
-		else if(req_one_access.len)
-			ae.conf_access = req_one_access
-			ae.one_access = 1
-	else
-		ae = electronics
-		electronics = null
-		ae.dropInto(loc)
-	if(operating == -1)
-		ae.icon_state = "door_electronics_smoked"
-		operating = 0
-	set_density(0)
 	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] shatters!")
+
+	if(!(atom_flags & ATOM_FLAG_HOLOGRAM))
+		new /obj/item/material/shard(loc)
+		var/obj/item/stack/cable_coil/CC = new /obj/item/stack/cable_coil(loc)
+		CC.amount = 2
+		var/obj/item/airlock_electronics/ae
+		if(!electronics)
+			ae = new /obj/item/airlock_electronics( loc )
+			if(!req_access)
+				check_access()
+			if(req_access.len)
+				ae.conf_access = req_access
+			else if(req_one_access.len)
+				ae.conf_access = req_one_access
+				ae.one_access = 1
+		else
+			ae = electronics
+			electronics = null
+			ae.dropInto(loc)
+		if(operating == -1)
+			ae.icon_state = "door_electronics_smoked"
+			operating = 0
+
+	set_density(0)
 	qdel(src)
 
 /obj/machinery/door/window/deconstruct(mob/user, moved = FALSE)
