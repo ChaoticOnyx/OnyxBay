@@ -79,7 +79,7 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/gun/energy/temperature/Fire(atom/target, mob/living/user, clickparams, pointblank, reflex)
+/obj/item/gun/energy/temperature/Fire(atom/target, mob/living/user, clickparams, pointblank, reflex, target_zone = BP_CHEST)
 	if(temperature >= 450)
 		temperature -= rand(0,100)
 	. = ..()

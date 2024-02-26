@@ -244,50 +244,59 @@
 	else
 		return ..() //Pistolwhippin'
 
-/obj/item/gun/proc/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
-	if(!user || !target) return
-	if(target.z != user.z) return
-
-	add_fingerprint(user)
-
-	if(!special_check(user))
+/obj/item/gun/proc/Fire(atom/target, atom/movable/firer, clickparams, pointblank = FALSE, reflex = FALSE, target_zone = BP_CHEST)
+	if(!firer || !target)
 		return
 
+	if(target.z != firer.z)
+		return
+
+	if(ismob(firer))
+		add_fingerprint(firer)
+
+		if(!special_check(firer))
+			return
+
 	if(world.time < next_fire_time)
-		if (world.time % 3) //to prevent spam
-			to_chat(user, "<span class='warning'>[src] is not ready to fire again!</span>")
+		if(world.time % 3) //to prevent spam
+			to_chat(firer, SPAN_WARNING("[src] is not ready to fire again!"))
 		return
 
 	var/shoot_time = (burst - 1)* burst_delay
-	user.setClickCooldown(shoot_time) //no clicking on things while shooting
-	user.setMoveCooldown(shoot_time) //no moving while shooting either
-	next_fire_time = world.time + shoot_time
 
-	var/held_twohanded = (user.can_wield_item(src) && src.is_held_twohanded(user))
+	var/held_twohanded = TRUE
+
+	if(ismob(firer))
+		var/mob/user = firer
+		user.setClickCooldown(shoot_time) //no clicking on things while shooting
+		user.setMoveCooldown(shoot_time) //no moving while shooting either
+		held_twohanded = user.can_wield_item(src) && src.is_held_twohanded(user)
+
+	next_fire_time = world.time + shoot_time
 
 	//actually attempt to shoot
 	var/turf/targloc = get_turf(target) //cache this in case target gets deleted during shooting, e.g. if it was a securitron that got destroyed.
 	var/fired = FALSE
 	for(var/i in 1 to burst)
-		var/obj/projectile = consume_next_projectile(user)
+		var/obj/projectile = consume_next_projectile(firer)
 		if(!projectile)
-			handle_click_empty(user)
+			handle_click_empty(firer)
 			break
 
 		fired = TRUE
-		process_accuracy(projectile, user, target, i, held_twohanded)
+		process_accuracy(projectile, firer, target, i, held_twohanded)
 
 		if(pointblank)
-			process_point_blank(projectile, user, target)
+			process_point_blank(projectile, firer, target)
 
-		if(process_projectile(projectile, user, target, user.zone_sel?.selecting, clickparams))
+		if(process_projectile(projectile, firer, target, target_zone, clickparams))
 			var/burstfire = 0
 			if(burst > 1) // It ain't a burst? Then just act normally
 				if(i > 1)
 					burstfire = -1  // We've already seen the BURST message, so shut up
 				else
 					burstfire = 1 // We've yet to see the BURST message
-			handle_post_fire(user, target, pointblank, reflex, burstfire)
+			handle_post_fire(firer, target, pointblank, reflex, burstfire)
 			update_icon()
 
 		if(i < burst)
@@ -298,15 +307,19 @@
 			pointblank = 0
 
 	//update timing
-	var/turf/T = get_turf(user)
+	var/turf/T = get_turf(firer)
 	var/area/A = get_area(T)
-	if(((istype(T, /turf/space)) || (A.has_gravity == FALSE)) && fired)
-		user.inertia_dir = get_dir(target, src)
-		user.setMoveCooldown(shoot_time) //no moving while shooting either
-		step(user, user.inertia_dir) // they're in space, move em in the opposite direction
+	if(ismob(firer))
+		var/mob/user = firer
 
-	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	user.setMoveCooldown(move_delay)
+		if(((istype(T, /turf/space)) || (A.has_gravity == FALSE)) && fired)
+			user.inertia_dir = get_dir(target, src)
+			user.setMoveCooldown(shoot_time) //no moving while shooting either
+			step(user, user.inertia_dir) // they're in space, move em in the opposite direction
+
+		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+		user.setMoveCooldown(move_delay)
+
 	next_fire_time = world.time + fire_delay
 
 //obtains the next projectile to fire
@@ -333,48 +346,51 @@
 	user.visible_message(SPAN_WARNING("[user] squeezes the trigger of \the [src] but it doesn't move!"), SPAN_WARNING("You squeeze the trigger but it doesn't move!"), range = 3)
 
 //called after successfully firing
-/obj/item/gun/proc/handle_post_fire(mob/user, atom/target, pointblank = 0, reflex = 0, burstfire = 0)
+/obj/item/gun/proc/handle_post_fire(atom/movable/firer, atom/target, pointblank = 0, reflex = 0, burstfire = 0)
 
 	if(!silenced && (burstfire != -1))
 		if(reflex)
-			user.visible_message(
-				"<span class='reflex_shoot'><b>\The [user] fires \the [src][pointblank ? " point blank at \the [target]":""][burstfire == 1 ? " in a burst":""] by reflex!</b></span>",
+			firer.visible_message(
+				"<span class='reflex_shoot'><b>\The [firer] fires \the [src][pointblank ? " point blank at \the [target]":""][burstfire == 1 ? " in a burst":""] by reflex!</b></span>",
 				"<span class='reflex_shoot'>You fire \the [src] by reflex!</span>",
 				"You hear a [fire_sound_text]!"
 			)
 		else
-			user.visible_message(
-				"<span class='danger'>\The [user] fires \the [src][pointblank ? " point blank at \the [target]":""][burstfire == 1 ? " in a burst":""]!</span>",
+			firer.visible_message(
+				"<span class='danger'>\The [firer] fires \the [src][pointblank ? " point blank at \the [target]":""][burstfire == 1 ? " in a burst":""]!</span>",
 				"<span class='warning'>You fire \the [src]!</span>",
 				"You hear a [fire_sound_text]!"
 				)
 
-	if(one_hand_penalty && (burstfire != -1))
-		if(!src.is_held_twohanded(user))
-			switch(one_hand_penalty)
-				if(1)
-					if(prob(50)) //don't need to tell them every single time
-						to_chat(user, "<span class='warning'>Your aim wavers slightly.</span>")
-				if(2)
-					to_chat(user, "<span class='warning'>Your aim wavers as you fire \the [src] with just one hand.</span>")
-				if(3)
-					to_chat(user, "<span class='warning'>You have trouble keeping \the [src] on target with just one hand.</span>")
-				if(4 to INFINITY)
-					to_chat(user, "<span class='warning'>You struggle to keep \the [src] on target with just one hand!</span>")
-		else if(!user.can_wield_item(src))
-			switch(one_hand_penalty)
-				if(1)
-					if(prob(50)) //don't need to tell them every single time
-						to_chat(user, "<span class='warning'>Your aim wavers slightly.</span>")
-				if(2)
-					to_chat(user, "<span class='warning'>Your aim wavers as you try to hold \the [src] steady.</span>")
-				if(3)
-					to_chat(user, "<span class='warning'>You have trouble holding \the [src] steady.</span>")
-				if(4 to INFINITY)
-					to_chat(user, "<span class='warning'>You struggle to hold \the [src] steady!</span>")
+	if(ismob(firer))
+		var/mob/user = firer
 
-	if(screen_shake)
-		INVOKE_ASYNC(GLOBAL_PROC, /proc/directional_recoil, user, screen_shake+1, Get_Angle(user, target))
+		if(one_hand_penalty && (burstfire != -1))
+			if(!src.is_held_twohanded(user))
+				switch(one_hand_penalty)
+					if(1)
+						if(prob(50)) //don't need to tell them every single time
+							to_chat(user, "<span class='warning'>Your aim wavers slightly.</span>")
+					if(2)
+						to_chat(user, "<span class='warning'>Your aim wavers as you fire \the [src] with just one hand.</span>")
+					if(3)
+						to_chat(user, "<span class='warning'>You have trouble keeping \the [src] on target with just one hand.</span>")
+					if(4 to INFINITY)
+						to_chat(user, "<span class='warning'>You struggle to keep \the [src] on target with just one hand!</span>")
+			else if(!user.can_wield_item(src))
+				switch(one_hand_penalty)
+					if(1)
+						if(prob(50)) //don't need to tell them every single time
+							to_chat(user, "<span class='warning'>Your aim wavers slightly.</span>")
+					if(2)
+						to_chat(user, "<span class='warning'>Your aim wavers as you try to hold \the [src] steady.</span>")
+					if(3)
+						to_chat(user, "<span class='warning'>You have trouble holding \the [src] steady.</span>")
+					if(4 to INFINITY)
+						to_chat(user, "<span class='warning'>You struggle to hold \the [src] steady!</span>")
+
+		if(screen_shake)
+			INVOKE_ASYNC(GLOBAL_PROC, /proc/directional_recoil, user, screen_shake+1, Get_Angle(user, target))
 
 	if(combustion)
 		var/turf/curloc = get_turf(src)
@@ -402,7 +418,7 @@
 	P.damage *= max_mult
 	P.accuracy += 4
 
-/obj/item/gun/proc/process_accuracy(obj/projectile, mob/user, atom/target, burst, held_twohanded)
+/obj/item/gun/proc/process_accuracy(obj/projectile, atom/movable/firer, atom/target, burst, held_twohanded)
 	var/obj/item/projectile/P = projectile
 	if(!istype(P))
 		return //default behaviour only applies to true projectiles
@@ -416,7 +432,8 @@
 			disp_mod += one_hand_penalty*0.5 //dispersion per point of two-handedness
 
 	// Shooting precisely while trying to turtle yourself up with a shield is hard
-	if(user?.blocking)
+	var/mob/user = firer
+	if(istype(user) && user.blocking)
 		acc_mod -= 1
 		disp_mod += 1
 
@@ -432,7 +449,7 @@
 		P.accuracy += 2
 
 //does the actual launching of the projectile
-/obj/item/gun/proc/process_projectile(obj/projectile, mob/user, atom/target, target_zone, params=null)
+/obj/item/gun/proc/process_projectile(obj/projectile, atom/movable/firer, atom/target, target_zone, params=null)
 	var/obj/item/projectile/P = projectile
 	if(!istype(P))
 		return 0 //default behaviour only applies to true projectiles
@@ -442,21 +459,21 @@
 
 	//shooting while in shock
 	var/shock_dispersion = 0
-	if(istype(user, /mob/living/carbon/human))
-		var/mob/living/carbon/human/mob = user
+	if(istype(firer, /mob/living/carbon/human))
+		var/mob/living/carbon/human/mob = firer
 		if(mob.shock_stage > 120)
 			shock_dispersion = rand(-4,4)
 		else if(mob.shock_stage > 70)
 			shock_dispersion = rand(-2,2)
 	P.dispersion += shock_dispersion
 
-	var/launched = !P.launch(target, target_zone, user, params, src)
+	var/launched = !P.launch(target, target_zone, firer, params, src)
 	if(launched)
-		play_fire_sound(user,P)
+		play_fire_sound(firer, P)
 
 	return launched
 
-/obj/item/gun/proc/play_fire_sound(mob/user, obj/item/projectile/P)
+/obj/item/gun/proc/play_fire_sound(atom/movable/firer, obj/item/projectile/P)
 	var/shot_sound = (istype(P) && P.fire_sound)? P.fire_sound : fire_sound
 
 	if (!silenced)
