@@ -222,9 +222,8 @@
 	gravity_disabled = !gravity_disabled
 	set_gravity(!gravity_disabled)
 
-// TODO: fix this proc
 /obj/machinery/computer/holodeck/proc/set_gravity(new_value)
-	if(!isnull(new_value))
+	if(isnull(new_value))
 		var/obj/machinery/gravity_generator/main/gravity_generator = GLOB.station_gravity_generator
 		linked_area.gravitychange(gravity_generator?.enabled)
 		return
