@@ -169,7 +169,7 @@
 
 /obj/machinery/computer/holodeck/proc/derez(atom/holo_atom, silent = TRUE)
 	spawned -= holo_atom
-	if(isnull(holo_atom))
+	if(isnull(holo_atom) || isturf(holo_atom))
 		return
 
 	unregister_signal(holo_atom, SIGNAL_QDELETING)
