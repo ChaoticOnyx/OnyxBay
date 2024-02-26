@@ -62,7 +62,7 @@
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people as a hot knife through butter."
 	icon_state = "arm_blade"
 	force = 25
-	armor_penetration = 15
+	armor_penetration = 50 // I guess that's more like a regular knife goes through butter, not a hot one, but hey it's not an esword
 	sharp = 1
 	edge = 1
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
@@ -71,13 +71,13 @@
 	name = "arm greatblade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people and armor as a hot knife through butter."
 	force = 35
-	armor_penetration = 20
+	armor_penetration = 80
 
 /obj/item/melee/changeling/claw
 	name = "hand claw"
 	desc = "A grotesque claw made out of bone and flesh that cleaves through people as a hot knife through butter."
 	icon_state = "ling_claw"
-	armor_penetration = 20
+	armor_penetration = 70
 	force = 15
 	sharp = 1
 	edge = 1
@@ -87,7 +87,7 @@
 	name = "hand greatclaw"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people and armor as a hot knife through butter."
 	force = 20
-	armor_penetration = 50
+	armor_penetration = 100
 
 ///// Changeling emag /////
 /obj/item/finger_lockpick

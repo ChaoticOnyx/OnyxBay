@@ -95,6 +95,8 @@
 	mod_weight_u = 1.2
 	mod_reach_u = 1.25
 
+	armor_penetration = 0
+
 	force_wielded = 30
 	force_divisor = 0.5
 	unwielded_force_divisor = 0.33
@@ -190,6 +192,7 @@
 	sharp = TRUE
 	edge = TRUE
 	active = TRUE
+	armor_penetration = 75
 
 	update_icon()
 	update_force()
@@ -208,6 +211,7 @@
 	sharp = FALSE
 	edge = FALSE
 	active = FALSE
+	armor_penetration = 0
 
 	update_icon()
 	update_force()
@@ -227,6 +231,7 @@
 	unwielded_force_divisor = 0.2
 	sharp = 1
 	edge = 1
+	armor_penetration = 40
 	w_class = ITEM_SIZE_HUGE
 	mod_handy_w = 1.2
 	mod_weight_w = 2.0
@@ -268,6 +273,7 @@
 	force_const = 6.5
 	sharp = 1
 	edge = 1
+	armor_penetration = 65 // Impale those fuckers
 	w_class = ITEM_SIZE_HUGE
 	mod_handy_w = 1.25
 	mod_weight_w = 1.25

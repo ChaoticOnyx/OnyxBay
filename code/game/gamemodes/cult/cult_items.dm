@@ -10,6 +10,7 @@
 	mod_weight = 1.4
 	mod_reach = 1.4
 	mod_handy = 1.15
+	armor_penetration = 60 // Keeping it relevant against all the armored shitsecs
 	throwforce = 10
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")

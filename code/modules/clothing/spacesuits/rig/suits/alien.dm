@@ -20,7 +20,7 @@
 	desc = "An authentic Unathi breacher chassis. Huge, bulky and absurdly heavy. It must be like wearing a tank."
 	suit_type = "breacher chassis"
 	icon_state = "breacher_rig"
-	armor = list(melee = 90, bullet = 90, laser = 90, energy = 90, bomb = 90, bio = 100) //Takes TEN TIMES as much damage to stop someone in a breacher. In exchange, it's slow.
+	armor = list(melee = 120, bullet = 130, laser = 150, energy = 35, bomb = 90, bio = 100) // Heavy Syndicate powersuit level, but hey it's slow AF
 	vision_restriction = TINT_NONE //Still blind when offline. It is fully armoured after all
 
 /obj/item/clothing/head/helmet/space/rig/unathi

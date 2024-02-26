@@ -8,6 +8,7 @@
 	mod_weight = 1.75
 	mod_reach = 1.65
 	mod_handy = 1.25
+	armor_penetration = 50
 	force_const = 12
 	thrown_force_const = 5
 	force_divisor = 0.4 // 24 when wielded with hardnes 60 (steel)
@@ -25,6 +26,7 @@
 	desc = "What are you standing around staring at this for? Get to looking cringy!"
 	edge = 0
 	sharp = 0
+	armor_penetration = 0
 	force_const = 3.0
 	force_divisor = 0.35 // 7 when wielded with weight 20 (steel)
 	thrown_force_divisor = 0.2
@@ -38,13 +40,15 @@
 	w_class = ITEM_SIZE_LARGE
 	mod_weight = 1.3
 	mod_reach = 1.5
-	mod_handy = 1.5
+	mod_handy = 1.75
+	armor_penetration = 30 // MUCH faster than the regular sword, but not as good against armor
 	slot_flags = SLOT_BELT | SLOT_BACK
 
 /obj/item/material/sword/katana/replica
 	desc = "The best friend of a samurai wannabe. This one looks not so sharp."
 	edge = 0
 	sharp = 0
+	armor_penetration = 0
 	force_const = 2.5
 	force_divisor = 0.25 // 5 when wielded with weight 20 (steel)
 	thrown_force_divisor = 0.2

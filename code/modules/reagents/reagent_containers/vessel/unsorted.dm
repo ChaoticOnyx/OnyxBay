@@ -184,6 +184,7 @@
 	desc = "A metal shaker to mix drinks in."
 	icon_state = "shaker"
 	item_state = "shaker"
+	base_icon_state = "shaker"
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "5;10;15;25;30;60" //Professional bartender should be able to transfer as much as needed
 	volume = 120
@@ -235,7 +236,7 @@
 			"like there is no tomorrow")
 		user.visible_message(SPAN_NOTICE("\The [user] shakes \the [src] [adjective]!"), SPAN_NOTICE("You shake \the [src] [adjective]!"))
 		ClearOverlays()
-		icon_state = "shaker_shaking"
+		icon_state = "[base_icon_state]_shaking"
 		if(iscarbon(loc))
 			var/mob/living/carbon/M = loc
 			M.update_inv_l_hand()
@@ -252,6 +253,13 @@
 			var/mob/living/carbon/M = loc
 			M.update_inv_l_hand()
 			M.update_inv_r_hand()
+
+/obj/item/reagent_containers/vessel/shaker/bluespace
+	name = "bluespace shaker"
+	desc = "A bluespace metal shaker to mix drinks in. If you shake it too hard, a singularity will appear."
+	icon_state = "bluespaceshaker"
+	base_icon_state = "bluespaceshaker"
+	volume = 360
 
 /obj/item/reagent_containers/vessel/shaker/MouseDrop(obj/over_object, mob/user = usr) // Braindead copypasta from obj/item/storage
 	if(!canremove)

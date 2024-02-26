@@ -26,6 +26,7 @@
 		icon_state += "_open"
 		w_class = ITEM_SIZE_NORMAL
 		attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+		armor_penetration = 30
 	else
 		force = 3
 		edge = 0
@@ -34,6 +35,7 @@
 		icon_state = initial(icon_state)
 		w_class = initial(w_class)
 		attack_verb = initial(attack_verb)
+		armor_penetration = initial(armor_penetration)
 
 /obj/item/material/butterfly/attack_self(mob/user)
 	active = !active
@@ -65,6 +67,7 @@
 	mod_weight = 0.5
 	mod_reach = 0.4
 	mod_handy = 1.0
+	armor_penetration = 30
 	force_const = 5.5
 	thrown_force_const = 3
 	force_divisor = 0.05 // 6 when wielded with hardness 60 (steel)
@@ -93,6 +96,7 @@
 	mod_weight = 0.65
 	mod_reach = 0.5
 	mod_handy = 1.1
+	armor_penetration = 50
 	applies_material_colour = 0
 
 /obj/item/material/knife/kitchen
@@ -138,6 +142,7 @@
 	mod_weight = 0.25
 	mod_reach = 0.4
 	mod_handy = 0.5
+	armor_penetration = 50 // Basically a screwdriver on crack
 	force_const = 5.0
 	thrown_force_const = 3
 	force_divisor = 0.05 // 3 when wielded with hardness 60 (steel)

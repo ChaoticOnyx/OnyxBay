@@ -18,6 +18,8 @@ var/list/all_virtual_listeners = list()
 
 	var/static/list/overlay_icons
 
+	is_poi = FALSE
+
 /mob/observer/virtual/New(location, atom/movable/host)
 	..()
 	if(!istype(host, host_type))

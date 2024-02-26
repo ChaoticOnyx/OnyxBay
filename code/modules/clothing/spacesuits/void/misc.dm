@@ -6,7 +6,7 @@
 	icon_state = "deathsquad"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS
 	allowed = list(/obj/item/gun, /obj/item/ammo_magazine, /obj/item/ammo_casing, /obj/item/melee/baton, /obj/item/handcuffs, /obj/item/tank)
-	armor = list(melee = 80, bullet = 70, laser = 70, energy = 45, bomb = 65, bio = 100)
+	armor = list(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 100)
 	flags_inv = HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 0.6
 	rad_resist = list(
@@ -27,7 +27,7 @@
 		slot_l_hand_str = "syndicate-helm-black-red",
 		slot_r_hand_str = "syndicate-helm-black-red",
 		)
-	armor = list(melee = 80, bullet = 70, laser = 70, energy = 45, bomb = 65, bio = 100)
+	armor = list(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 100)
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL
 	flags_inv = BLOCKHAIR
 	siemens_coefficient = 0.6
@@ -47,7 +47,7 @@
 		slot_l_hand_str = "caphelmet",
 		slot_r_hand_str = "caphelmet",
 	)
-	armor = list(melee = 75, bullet = 60, laser = 60, energy = 35, bomb = 55, bio = 100)
+	armor = list(melee = 90, bullet = 80, laser = 90, energy = 40, bomb = 55, bio = 100)
 	siemens_coefficient = 0.5
 	light_overlay = "helmet_light_dual"
 
@@ -59,7 +59,7 @@
 		slot_l_hand_str = "capspacesuit",
 		slot_r_hand_str = "capspacesuit",
 	)
-	armor = list(melee = 75, bullet = 60, laser = 60, energy = 35, bomb = 55, bio = 100)
+	armor = list(melee = 90, bullet = 80, laser = 90, energy = 40, bomb = 55, bio = 100)
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit, /obj/item/ammo_magazine, /obj/item/ammo_casing, /obj/item/melee/baton, /obj/item/handcuffs, /obj/item/disk/nuclear)
 	siemens_coefficient = 0.5
 
@@ -76,6 +76,11 @@
 	item_state = "helm_explorer"
 	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100)
 	light_overlay = "explorer_light"
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/suit/space/void/exploration
 	name = "exploration voidsuit"
@@ -83,6 +88,11 @@
 	icon_state = "void_explorer"
 	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/device/healthanalyzer,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/bluespace_beacon,/obj/item/material/hatchet/machete,/obj/item/shovel)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/suit/space/void/exploration/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/exploration
@@ -100,6 +110,11 @@
 		slot_r_hand_str = "eng_helm",
 		)
 	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/suit/space/void/engineering/salvage
 	name = "salvage voidsuit"
@@ -111,6 +126,11 @@
 	)
 	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/suit/space/void/engineering/salvage/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/engineering/salvage
@@ -123,7 +143,7 @@
 	desc = "An atmos resistant helmet for space and planet exploration."
 	icon_state = "rig0_pilot"
 	item_state = "pilot_helm"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor = list(melee = 40, bullet = 10, laser = 35,energy = 15, bomb = 0, bio = 100)
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
 
@@ -132,7 +152,7 @@
 	desc = "An atmos resistant voidsuit for space and planet exploration."
 	icon_state = "rig-pilot"
 	item_state = "rig-pilot"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor = list(melee = 40, bullet = 10, laser = 35,energy = 15, bomb = 0, bio = 100)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
 

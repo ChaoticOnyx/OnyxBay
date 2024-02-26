@@ -788,6 +788,24 @@ var/list/floor_decals = list()
 	name = "hazard stripes"
 	icon_state = "warningcee_red"
 
+/obj/effect/floor_decal/industrial/warning/wiz
+	name = "hazard stripes"
+	icon_state = "warning_wiz"
+
+/obj/effect/floor_decal/industrial/warning/wiz/corner
+	icon_state = "warningcorner_wiz"
+
+/obj/effect/floor_decal/industrial/warning/wiz/full
+	name = "hazard stripes"
+	icon_state = "warningfull_wiz"
+
+/obj/effect/floor_decal/industrial/warning/wiz/full/tile
+	icon_state = "warningfulltile_wiz"
+
+/obj/effect/floor_decal/industrial/warning/wiz/cee
+	name = "hazard stripes"
+	icon_state = "warningcee_wiz"
+
 /obj/effect/floor_decal/industrial/hatch
 	name = "hatched marking"
 	icon_state = "delivery"

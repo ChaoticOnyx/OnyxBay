@@ -108,7 +108,8 @@
 	blood_overlay_type = "coatblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	allowed = list(/obj/item/tank/emergency,/obj/item/device/flashlight,/obj/item/gun/energy,/obj/item/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/storage/fancy/cigarettes,/obj/item/flame/lighter,/obj/item/device/taperecorder)
-	armor = list(melee = 35, bullet = 35, laser = 35, energy = 20, bomb = 25, bio = 0)
+	armor = list(melee = 50, bullet = 60, laser = 40, energy = 20, bomb = 25, bio = 0)
+	coverage = 0.8
 
 /obj/item/clothing/suit/storage/toggle/det_trench/grey
 	icon_state = "detective2_open"
@@ -129,7 +130,8 @@
 	blood_overlay_type = "coatblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	allowed = list(/obj/item/tank/emergency,/obj/item/device/flashlight,/obj/item/storage/fancy/cigarettes,/obj/item/flame/lighter,/obj/item/device/taperecorder)
-	armor = list(melee = 10, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 20, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
+	coverage = 0.8
 
 /obj/item/clothing/suit/storage/civ_trench/grey
 	name = "grey trenchcoat"
@@ -146,6 +148,7 @@
 	blood_overlay_type = "armorblood"
 	allowed = list(/obj/item/tank/emergency,/obj/item/device/flashlight,/obj/item/gun/energy,/obj/item/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/device/taperecorder)
 	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0)
+	coverage = 0.8
 
 /obj/item/clothing/suit/storage/toggle/forensics/toggle()
 	if(!CanPhysicallyInteract(usr))
@@ -155,10 +158,12 @@
 		icon_state = icon_closed
 		item_state = icon_closed
 		to_chat(usr, "You button up the jacket.")
+		coverage = 1.0
 	else if(icon_state == icon_closed)
 		icon_state = icon_open
 		item_state = icon_open
 		to_chat(usr, "You unbutton the jacket.")
+		coverage = 0.8
 	else
 		to_chat(usr, "You attempt to button-up the velcro on your [src], before promptly realising how silly you are.")
 		return
@@ -199,6 +204,8 @@
 	/obj/item/crowbar, /obj/item/screwdriver, /obj/item/weldingtool, /obj/item/wirecutters, /obj/item/wrench, /obj/item/tank/emergency, \
 	/obj/item/clothing/mask/gas, /obj/item/taperoll/engineering)
 	body_parts_covered = UPPER_TORSO
+	coverage = 0.5
+	armor = list(melee = 10, bullet = 10, laser = 50, energy = 10, bomb = 0, bio = 0) // Reflective stripes go brrr
 
 /obj/item/clothing/suit/storage/hazardvest/blue
 	name = "blue hazard vest"
@@ -225,6 +232,7 @@
 	icon_closed = "suitjacket"
 	blood_overlay_type = "coatblood"
 	body_parts_covered = UPPER_TORSO|ARMS
+	coverage = 0.8
 
 /obj/item/clothing/suit/storage/toggle/suit/blue
 	name = "blue suit jacket"
@@ -250,6 +258,7 @@
 	allowed = list(/obj/item/stack/medical, /obj/item/reagent_containers/dropper, /obj/item/reagent_containers/hypospray, /obj/item/reagent_containers/syringe, \
 	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/tank/emergency)
 	body_parts_covered = UPPER_TORSO|ARMS
+	coverage = 0.8
 
 /obj/item/clothing/suit/storage/toggle/fr_jacket/ems
 	name = "\improper EMS jacket"
@@ -258,6 +267,7 @@
 	item_state = "ems_jacket_closed"
 	icon_open = "ems_jacket_open"
 	icon_closed = "ems_jacket_closed"
+	coverage = 1.0
 
 /obj/item/clothing/suit/surgicalapron
 	name = "surgical apron"
@@ -269,3 +279,4 @@
 	allowed = list(/obj/item/stack/medical, /obj/item/reagent_containers/dropper, /obj/item/reagent_containers/hypospray, /obj/item/reagent_containers/syringe, \
 	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/tank/emergency,/obj/item/scalpel,/obj/item/retractor,/obj/item/hemostat, \
 	/obj/item/cautery,/obj/item/bonegel,/obj/item/FixOVein)
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 50)

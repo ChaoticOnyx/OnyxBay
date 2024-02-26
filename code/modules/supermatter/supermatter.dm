@@ -106,6 +106,8 @@
 
 	var/datum/radiation_source/rad_source = null
 
+	is_poi = TRUE
+
 /obj/machinery/power/supermatter/Initialize()
 	. = ..()
 	uid = gl_uid++

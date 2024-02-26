@@ -51,6 +51,9 @@
 	/// This atom's cache of overlays that can only be removed explicitly, like C4. Do not manipulate directly- See SSoverlays.
 	var/list/atom_protected_overlay_cache
 
+	/// This defines whether this atom will be added to SSpoi, set TRUE if you want it to be shown in follow panel
+	var/is_poi = FALSE
+
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
@@ -97,6 +100,9 @@
 		var/turf/T = loc
 		if(istype(T))
 			T.RecalculateOpacity()
+
+	if(is_poi)
+		SSpoints_of_interest.make_point_of_interest(src)
 
 	return INITIALIZE_HINT_NORMAL
 

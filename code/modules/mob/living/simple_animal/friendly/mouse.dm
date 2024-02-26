@@ -134,7 +134,7 @@
 			if(limb)
 				break
 
-		var/blocked = H.run_armor_check(limb.organ_tag, "melee")
+		var/blocked = H.get_flat_armor(limb.organ_tag, "melee")
 		for(var/obj/item/clothing/clothes in list(H.head, H.wear_mask, H.wear_suit, H.w_uniform, H.gloves, H.shoes))
 			if(istype(clothes) && (clothes.body_parts_covered & limb.body_part) && ((clothes.item_flags & ITEM_FLAG_THICKMATERIAL) || (blocked >= 30)))
 				visible_message(SPAN_NOTICE("[src] bites [H]'s [clothes] harmlessly."),

@@ -7,6 +7,11 @@
 	worn_state = "chief"
 	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
 	siemens_coefficient = 0.6
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 133 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.5 ELECTRONVOLT
+	)
 
 /obj/item/clothing/under/rank/atmospheric_technician
 	desc = "It's a jumpsuit worn by atmospheric technicians."
@@ -14,7 +19,7 @@
 	icon_state = "atmos"
 	item_state = "atmos_suit"
 	worn_state = "atmos"
-	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
+	armor = list(melee = 20, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
 
 /obj/item/clothing/under/rank/engineer
 	desc = "It's an orange high visibility jumpsuit worn by engineers. It has minor radiation shielding."
@@ -24,6 +29,11 @@
 	worn_state = "engine"
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.7
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 133 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.5 ELECTRONVOLT
+	)
 
 /obj/item/clothing/under/rank/roboticist
 	desc = "It's a slimming black jumpsuit with reinforced seams; great for industrial work."

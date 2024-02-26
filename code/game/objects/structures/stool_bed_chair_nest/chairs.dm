@@ -120,6 +120,7 @@
 	mod_weight = 1.25
 	mod_reach = 1.15
 	mod_handy = 0.3
+	armor_penetration = 20
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 2000)
 	var/material/padding_material
