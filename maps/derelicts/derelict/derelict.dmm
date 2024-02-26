@@ -44,7 +44,7 @@
 "aR" = (/obj/machinery/door/blast/regular/retro{dir = 2; id = "derelict_gun"},/turf/simulated/floor/plating/airless,/area/derelict/medical/chapel)
 "aS" = (/turf/simulated/floor/plating/airless,/area/derelict/medical/chapel)
 "aT" = (/turf/simulated/wall/r_wall,/area/derelict/arrival)
-"aU" = (/obj/machinery/door/window/holowindoor,/obj/structure/closet/coffin,/obj/machinery/mass_driver{dir = 8; id = "derelict_gun"; name = "mass driver"},/turf/simulated/floor/plating/airless,/area/derelict/medical/chapel)
+"aU" = (/obj/machinery/door/window,/obj/structure/closet/coffin,/obj/machinery/mass_driver{dir = 8; id = "derelict_gun"; name = "mass driver"},/turf/simulated/floor/plating/airless,/area/derelict/medical/chapel)
 "aV" = (/obj/item/firstaid_arm_assembly,/turf/simulated/floor/tiled/white/airless,/area/derelict/medical)
 "aW" = (/turf/simulated/floor/tiled/airless,/area/derelict/medical)
 "aX" = (/obj/structure/window/reinforced{dir = 1; health = 1e+006},/turf/simulated/floor/plating/airless,/area/space)
