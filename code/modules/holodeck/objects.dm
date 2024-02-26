@@ -50,10 +50,7 @@
 /obj/machinery/button/minigame/proc/inititate_event()
 	disabled = TRUE
 
-	for(var/obj/item/contract/window in current_area)
-		if(window.type != /obj/structure/window/basic)
-			continue
-
+	for(var/obj/structure/window/basic/window in current_area)
 		qdel(window)
 
 	for(var/mob/participant in current_area)
