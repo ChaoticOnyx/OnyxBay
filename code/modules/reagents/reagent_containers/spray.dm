@@ -72,7 +72,7 @@
 	else
 		spawn(0)
 			var/obj/effect/effect/water/chempuff/D = new /obj/effect/effect/water/chempuff(get_turf(src))
-			if(istype(src, /obj/item/reagent_containers/spray/noreact))
+			if(atom_flags & ATOM_FLAG_NO_REACT)
 				D.atom_flags |= ATOM_FLAG_NO_REACT
 			var/turf/my_target = get_turf(A)
 			D.create_reagents(amount_per_transfer_from_this)
@@ -98,7 +98,7 @@
 			if(actual_container.reagents.total_volume < 1)
 				break
 			var/obj/effect/effect/water/chempuff/D = new /obj/effect/effect/water/chempuff(get_turf(src))
-			if(istype(src, /obj/item/reagent_containers/spray/noreact))
+			if(atom_flags & ATOM_FLAG_NO_REACT)
 				D.atom_flags |= ATOM_FLAG_NO_REACT
 			var/turf/my_target = the_targets[a]
 			D.create_reagents(amount_per_transfer_from_this)
