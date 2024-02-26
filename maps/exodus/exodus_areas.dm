@@ -2204,6 +2204,7 @@
 /area/holodeck
 	name = "\improper Holodeck"
 	icon_state = "Holodeck"
+	requires_power = FALSE
 	dynamic_lighting = FALSE
 	sound_env = LARGE_ENCLOSED
 
