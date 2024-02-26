@@ -38,6 +38,10 @@
 
 /obj/machinery/computer/holodeck/Initialize()
 	. = ..()
+
+	LAZYINITLIST(spawned)
+	LAZYINITLIST(effects)
+
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer/holodeck/LateInitialize()
@@ -91,10 +95,12 @@
 
 	active = program != offline_program
 
-	nerf(!emagged)
 	linked_area.forced_ambience = length(using_template.ambience) ? using_template.ambience : initial(linked_area.forced_ambience)
 	linked_area.ambient_music_tags = length(using_template.ambience_music) ? using_template.ambience_music : initial(linked_area.ambient_music_tags)
+
 	finish_loading()
+	nerf(!emagged)
+
 	update_use_power(active ? POWER_USE_ACTIVE : POWER_USE_IDLE)
 
 /obj/machinery/computer/holodeck/proc/finish_loading()
@@ -123,12 +129,13 @@
 	register_signal(holo_atom, SIGNAL_QDELETING, nameof(.proc/remove_from_spawned))
 	holo_atom.atom_flags |= ATOM_FLAG_HOLOGRAM
 
-	if(length(holo_atom.contents))
-		for(var/atom/contained_atom as anything in holo_atom.contents)
-			add_to_spawned(contained_atom)
+	if(isturf(holo_atom))
+		holo_atom.atom_flags |= ATOM_FLAG_NO_DECONSTRUCTION
+		return
 
 	if(isholoeffect(holo_atom))
 		var/obj/effect/holodeck_effect/holo_effect = holo_atom
+
 		effects += holo_effect
 		spawned -= holo_effect
 
@@ -142,14 +149,14 @@
 
 		return
 
+	if(length(holo_atom.contents))
+		for(var/atom/contained_atom as anything in holo_atom.contents)
+			add_to_spawned(contained_atom)
+
 	if(isobj(holo_atom))
 		var/obj/holo_obj = holo_atom
 		holo_obj.unacidable = TRUE
 		holo_obj.atom_flags |= ATOM_FLAG_NO_DECONSTRUCTION
-		return
-
-	if(isturf(holo_atom))
-		holo_atom.atom_flags |= ATOM_FLAG_NO_DECONSTRUCTION
 		return
 
 /obj/machinery/computer/holodeck/proc/clear_projections()
@@ -184,7 +191,7 @@
 		nerfing_item.damtype = nerf ? PAIN : initial(nerfing_item.damtype)
 
 	for(var/obj/effect/holodeck_effect/nerfing_effect as anything in effects)
-		nerfing_effect.toggle_safety(nerf)
+		nerfing_effect.nerf(nerf)
 
 /obj/machinery/computer/holodeck/proc/check_flooring()
 	for(var/turf/checking_turf in linked_area)
