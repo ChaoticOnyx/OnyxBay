@@ -49,7 +49,7 @@
 			L.Weaken(3)
 			L.visible_message("<span class='danger'>\The [src] knocks down \the [L]!</span>")
 
-/mob/living/simple_animal/hostile/carp/holographicgraphic
+/mob/living/simple_animal/hostile/carp/holographic
 	icon_state = "carp"
 	icon = 'icons/mob/hologram.dmi'
 
@@ -62,7 +62,7 @@
 
 	faction = "neutral"
 
-/mob/living/simple_animal/hostile/carp/holographicgraphic/Initialize()
+/mob/living/simple_animal/hostile/carp/holographic/Initialize()
 	. = ..()
 	set_light(0.5, 0.1, 2)
 
