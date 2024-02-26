@@ -112,6 +112,14 @@
 
 	update_use_power(active ? POWER_USE_ACTIVE : POWER_USE_IDLE)
 
+/obj/machinery/computer/holodeck/proc/clear_projections()
+	for(var/holo_atom in spawned)
+		derez(holo_atom)
+
+	for(var/obj/effect/holodeck_effect/holo_effect as anything in effects)
+		effects -= holo_effect
+		holo_effect.deactivate()
+
 /obj/machinery/computer/holodeck/proc/finish_loading()
 	for(var/atom/holo_atom as anything in spawned)
 		if(QDELETED(holo_atom))
@@ -120,19 +128,12 @@
 
 		finilize_spawned(holo_atom)
 
-/obj/machinery/computer/holodeck/proc/add_to_spawned(atom/holo_atom)
-	spawned |= holo_atom
+/obj/machinery/computer/holodeck/proc/nerf(nerf = TRUE)
+	for(var/obj/item/nerfing_item in spawned)
+		nerfing_item.damtype = nerf ? PAIN : initial(nerfing_item.damtype)
 
-	if(emagged && isitem(holo_atom))
-		var/obj/item/holo_item = holo_atom
-		holo_item.damtype = PAIN
-
-	finilize_spawned(holo_atom)
-
-/obj/machinery/computer/holodeck/proc/remove_from_spawned(datum/to_remove, _force)
-	SIGNAL_HANDLER
-	spawned -= to_remove
-	unregister_signal(to_remove, SIGNAL_QDELETING)
+	for(var/obj/effect/holodeck_effect/nerfing_effect as anything in effects)
+		nerfing_effect.nerf(nerf)
 
 /obj/machinery/computer/holodeck/proc/finilize_spawned(atom/holo_atom)
 	register_signal(holo_atom, SIGNAL_QDELETING, nameof(.proc/remove_from_spawned))
@@ -168,13 +169,19 @@
 		holo_obj.atom_flags |= ATOM_FLAG_NO_DECONSTRUCTION
 		return
 
-/obj/machinery/computer/holodeck/proc/clear_projections()
-	for(var/holo_atom in spawned)
-		derez(holo_atom)
+/obj/machinery/computer/holodeck/proc/add_to_spawned(atom/holo_atom)
+	spawned |= holo_atom
 
-	for(var/obj/effect/holodeck_effect/holo_effect as anything in effects)
-		effects -= holo_effect
-		holo_effect.deactivate()
+	if(emagged && isitem(holo_atom))
+		var/obj/item/holo_item = holo_atom
+		holo_item.damtype = PAIN
+
+	finilize_spawned(holo_atom)
+
+/obj/machinery/computer/holodeck/proc/remove_from_spawned(datum/to_remove, _force)
+	SIGNAL_HANDLER
+	spawned -= to_remove
+	unregister_signal(to_remove, SIGNAL_QDELETING)
 
 /obj/machinery/computer/holodeck/proc/derez(atom/holo_atom, silent = TRUE)
 	spawned -= holo_atom
@@ -195,133 +202,22 @@
 
 	qdel(holo_atom)
 
-/obj/machinery/computer/holodeck/proc/nerf(nerf = TRUE)
-	for(var/obj/item/nerfing_item in spawned)
-		nerfing_item.damtype = nerf ? PAIN : initial(nerfing_item.damtype)
-
-	for(var/obj/effect/holodeck_effect/nerfing_effect as anything in effects)
-		nerfing_effect.nerf(nerf)
-
-/obj/machinery/computer/holodeck/proc/check_flooring()
-	for(var/turf/checking_turf in linked_area)
-		if(!checking_turf.holodeck_compatible && !(checking_turf.atom_flags & ATOM_FLAG_HOLOGRAM))
-			return FALSE
-
-	return TRUE
-
-/obj/machinery/computer/holodeck/proc/toggle_power(new_state)
-	if(active == new_state)
-		return
-
-	if(active)
-		load_program(offline_program)
-		set_gravity()
-	else
-		if(last_program && (last_program != program))
-			load_program(last_program)
-			set_gravity(!gravity_disabled)
-
-
-/obj/machinery/computer/holodeck/proc/toggle_gravity()
-	THROTTLE(cooldown, 3 SECONDS)
-	if(!cooldown)
-		audible_message(SPAN_WARNING("ERROR. Recalibrating gravity field."))
-		return
-
-	gravity_disabled = !gravity_disabled
-	set_gravity(!gravity_disabled)
-
-/obj/machinery/computer/holodeck/proc/set_gravity(new_value)
-	if(isnull(new_value))
-		var/obj/machinery/gravity_generator/main/gravity_generator = GLOB.station_gravity_generator
-		linked_area.gravitychange(gravity_generator?.enabled)
-		return
-
-	linked_area.gravitychange(new_value)
-
-/obj/machinery/computer/holodeck/proc/toggle_safety()
-	safety_disabled = !safety_disabled
-	nerf(!safety_disabled)
-
-	message_admins("[key_name_admin(usr)] [safety_disabled ? "restored" : "overrode"] the holodeck's safeties")
-	log_game("[key_name(usr)] [safety_disabled ? "restored" : "overrode"] the holodeck's safeties")
-
-// TODO: use fax state due to access complications
-/obj/machinery/computer/holodeck/tgui_interact(mob/user, datum/tgui/ui)
-	ui = SStgui.try_update_ui(user, src, ui)
-
-	if(!ui)
-		ui = new(user, src, "Holodeck")
-		ui.open()
-
-/obj/machinery/computer/holodeck/tgui_data(mob/user)
-	var/list/data = list()
-
-	data["isLocked"] = locked
-	data["isSafetyDisabled"] = safety_disabled
-	data["isGravityDisabled"] = gravity_disabled
-	data["canToggleSafety"] = issilicon(user) || is_admin(user)
-
-	data["currentProgram"] = program
-
-	data["programs"] = list()
-	if(!isnull(programs_cache))
-		data["programs"] += programs_cache
-	if(emagged && !isnull(emag_programs_cache))
-		data["programs"] += emag_programs_cache
-
-	return data
-
-/obj/machinery/computer/holodeck/tgui_act(action, params)
-	. = ..()
-	if(.)
-		return
-
-	switch(action)
-		if("toggleLock")
-			if(!allowed(usr))
-				return
-
-			locked = !locked
-			return TRUE
-
-		if("toggleSafety")
-			if(!issilicon(usr) || !is_admin(usr))
-				return
-
-			toggle_safety()
-			return TRUE
-
-		if("toggleGravity")
-			toggle_gravity()
-			return TRUE
-
-		if("changeProgram")
-			var/program_id = params["id"]
-			if(isnull(program_id))
-				return
-
-			load_program(program_id)
-			return TRUE
-
-/obj/machinery/computer/holodeck/proc/emergency_shutdown()
-	load_program(offline_program, TRUE)
-	set_gravity()
-
-/obj/machinery/computer/holodeck/ex_act(severity)
-	INVOKE_ASYNC(src, CALLBACK(nameof(.proc/emergency_shutdown)))
-	return ..()
-
 /obj/machinery/computer/holodeck/Destroy()
-	INVOKE_ASYNC(src, CALLBACK(nameof(.proc/emergency_shutdown)))
+	emergency_shutdown()
 	return ..()
 
-/obj/machinery/computer/holodeck/power_change()
-	. = ..()
-	INVOKE_ASYNC(src, nameof(.proc/toggle_power), !(stat & NOPOWER))
+/obj/machinery/computer/holodeck/proc/reset_to_default()
+	if(program == offline_program)
+		return
+
+	program = offline_program
+	clear_projections()
+
+	var/offline_template = SSmapping.holodeck_templates[offline_program]
+	INVOKE_ASYNC(CALLBACK(offline_template, nameof(/datum/map_template/proc/load), bottom_left))
 
 /obj/machinery/computer/holodeck/Process()
-	if(program == offline_program)
+	if(!active)
 		return
 
 	if(!check_flooring())
@@ -345,8 +241,154 @@
 	if(active)
 		use_power_oneoff(active_power_usage + length(spawned) * PROJECTION_POWER_COST + length(effects) * PROJECTION_POWER_COST)
 
+/obj/machinery/computer/holodeck/proc/check_flooring()
+	for(var/turf/checking_turf in linked_area)
+		if(!checking_turf.holodeck_compatible && !(checking_turf.atom_flags & ATOM_FLAG_HOLOGRAM))
+			return FALSE
+
+	return TRUE
+
+/obj/machinery/computer/holodeck/proc/emergency_shutdown()
+	load_program(offline_program, TRUE)
+	set_gravity()
+
+/obj/machinery/computer/holodeck/proc/set_gravity(new_value)
+	if(isnull(new_value))
+		var/obj/machinery/gravity_generator/main/gravity_generator = GLOB.station_gravity_generator
+		linked_area.gravitychange(gravity_generator?.enabled)
+		return
+
+	linked_area.gravitychange(new_value)
+
+/obj/machinery/computer/holodeck/power_change()
+	. = ..()
+	INVOKE_ASYNC(src, nameof(.proc/toggle_power), !(stat & NOPOWER))
+
+/obj/machinery/computer/holodeck/proc/toggle_power(new_state)
+	if(active == new_state)
+		return
+
+	if(active)
+		load_program(offline_program)
+		set_gravity()
+		return
+
+	if(last_program)
+		load_program(last_program)
+		set_gravity(!gravity_disabled)
+
 /obj/machinery/computer/holodeck/attack_hand(mob/user)
 	tgui_interact(user)
 
 /obj/machinery/computer/holodeck/attack_ai(mob/user)
 	tgui_interact(user)
+
+/obj/machinery/computer/holodeck/tgui_state(mob/user)
+	return GLOB.tgui_machinery_no_access_check_state
+
+/obj/machinery/computer/holodeck/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
+	if(!ui)
+		ui = new(user, src, "Holodeck")
+		ui.open()
+
+/obj/machinery/computer/holodeck/tgui_data(mob/user)
+	var/list/data = list()
+
+	data["isLocked"] = locked
+	data["canToggleSafety"] = issilicon(user) || is_admin(user)
+	data["isSafetyDisabled"] = safety_disabled
+	data["isGravityDisabled"] = gravity_disabled
+
+	data["currentProgram"] = program
+	data["programs"] = emagged ? programs_cache + emag_programs_cache : programs_cache
+
+	return data
+
+/obj/machinery/computer/holodeck/tgui_act(action, params)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("toggleLock")
+			if(!allowed(usr))
+				return
+
+			locked = !locked
+			return TRUE
+
+		if("toggleSafety")
+			if(locked)
+				return
+
+			if(!allowed(usr))
+				return
+
+			toggle_safety()
+			return TRUE
+
+		if("toggleGravity")
+			if(locked)
+				return
+
+			toggle_gravity()
+			return TRUE
+
+		if("changeProgram")
+			if(locked)
+				return
+
+			var/program_id = params["id"]
+			if(isnull(program_id))
+				return
+
+			if(!is_valid_program_id(program_id))
+				return
+
+			load_program(program_id)
+			return TRUE
+
+/obj/machinery/computer/holodeck/allowed(mob/M)
+	return ..() || is_admin(M)
+
+/obj/machinery/computer/holodeck/proc/toggle_safety(new_value)
+	safety_disabled = isnull(new_value) ? !safety_disabled : new_value
+	nerf(!safety_disabled)
+
+	message_admins("[key_name_admin(usr)] [safety_disabled ? "restored" : "overrode"] the holodeck's safeties")
+	log_game("[key_name(usr)] [safety_disabled ? "restored" : "overrode"] the holodeck's safeties")
+
+/obj/machinery/computer/holodeck/proc/toggle_gravity()
+	THROTTLE(cooldown, 3 SECONDS)
+	if(!cooldown)
+		audible_message(SPAN_WARNING("ERROR. Recalibrating gravity field."))
+		return
+
+	gravity_disabled = !gravity_disabled
+	set_gravity(!gravity_disabled)
+
+/obj/machinery/computer/holodeck/proc/is_valid_program_id(verifying_id)
+	var/programs = emagged ? programs_cache + emag_programs_cache : programs_cache
+
+	for(var/list/program as anything in programs)
+		if(program["id"] == verifying_id)
+			return TRUE
+
+	return FALSE
+
+/obj/machinery/computer/holodeck/emag_act(remaining_charges, mob/user, emag_source)
+	if(emagged)
+		return FALSE
+
+	toggle_safety(FALSE)
+	emagged = TRUE
+
+	return TRUE
+
+/obj/machinery/computer/holodeck/ex_act(severity)
+	emergency_shutdown()
+	return ..()
+
+#undef PROJECTION_POWER_COST
