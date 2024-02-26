@@ -516,6 +516,14 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/jungle/junglethunder2.ogg',
 		'sound/ambient/jungle/junglethunder1.ogg',
 	),
+	SFX_AMBIENT_DESERT = list(
+		'sound/effects/wind/wind_2_1.ogg',
+		'sound/effects/wind/wind_2_2.ogg',
+		'sound/effects/wind/wind_3_1.ogg',
+		'sound/effects/wind/wind_4_1.ogg',
+		'sound/effects/wind/wind_4_2.ogg',
+		'sound/effects/wind/wind_5_1.ogg'
+	),
 	// AMBIENT MUSIC
 	SFX_AMBIENT_MUSIC_NORMAL = list(
 		'sound/ambient_music/normal_1.ogg',
@@ -601,6 +609,15 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_AMBIENT_MUSIC_CENTCOMM = list(
 		'sound/ambient_music/centcomm_1.ogg',
+	),
+	SFX_AMBIENT_MUSIC_THUNDERDOME = list(
+		'sound/music/THUNDERDOME.ogg'
+	),
+	SFX_AMBIENT_MUSIC_PICNIC = list(
+		'sound/music/classic/title2.ogg'
+	),
+	SFX_AMBIENT_MUSIC_COURT = list(
+		'sound/music/classic/traitor.ogg'
 	),
 	// ITEMS USING
 	SFX_USE_HANDCUFFS = list(
@@ -1745,5 +1762,5 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_VENDING_GENERIC = list(
 		'sound/effects/using/disposal/drop2.ogg'
-	)
+	),
 ))

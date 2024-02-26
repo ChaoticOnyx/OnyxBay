@@ -4,6 +4,10 @@
 	var/template_id
 	/// Whether the template can be unlocked by emagging a console.
 	var/restricted = FALSE
+	/// List of SFX tags to be played when template is loaded.
+	var/list/ambience
+	/// List of SFX tags to be played as ambience music when template is loaded.
+	var/list/ambience_music
 
 /datum/map_template/holodeck/update_blacklist(turf/source_turf, centered, list/turf_blacklist)
 	for(var/turf/affecting_turf as anything in get_affected_turfs(source_turf, centered))
@@ -16,6 +20,7 @@
 	name = "basketball field"
 	template_id = "holodeck_basketball"
 	mappaths = list("maps/templates/holodeck_basketball.dmm")
+	ambience_music = list(SFX_AMBIENT_MUSIC_THUNDERDOME)
 
 /datum/map_template/holodeck/beach
 	name = "sunny beach"
@@ -26,6 +31,7 @@
 	name = "boxing arena"
 	template_id = "holodeck_boxing"
 	mappaths = list("maps/templates/holodeck_boxing.dmm")
+	ambience_music = list(SFX_AMBIENT_MUSIC_THUNDERDOME)
 
 /datum/map_template/holodeck/chess
 	name = "space chess"
@@ -36,11 +42,13 @@
 	name = "courtroom"
 	template_id = "holodeck_courtroom"
 	mappaths = list("maps/templates/holodeck_courtroom.dmm")
+	ambience_music = list(SFX_AMBIENT_MUSIC_COURT)
 
 /datum/map_template/holodeck/desert
-	name = "le-bandito desert"
+	name = "space-mexican desert"
 	template_id = "holodeck_desert"
 	mappaths = list("maps/templates/holodeck_desert.dmm")
+	ambience = list(SFX_AMBIENT_DESERT)
 
 /datum/map_template/holodeck/disco
 	name = "disco room"
@@ -51,6 +59,7 @@
 	name = "lasertag arena"
 	template_id = "holodeck_lasertag"
 	mappaths = list("maps/templates/holodeck_lasertag.dmm")
+	ambience_music = list(SFX_AMBIENT_MUSIC_THUNDERDOME)
 
 /datum/map_template/holodeck/meetingroom
 	name = "meeting room"
@@ -66,16 +75,19 @@
 	name = "mediterranean picnic"
 	template_id = "holodeck_picnic"
 	mappaths = list("maps/templates/holodeck_picnic.dmm")
+	ambience_music = list(SFX_AMBIENT_MUSIC_PICNIC)
 
 /datum/map_template/holodeck/snow
 	name = "snow desert"
 	template_id = "holodeck_snow"
 	mappaths = list("maps/templates/holodeck_snow.dmm")
+	ambience = list(SFX_AMBIENT_DESERT)
 
 /datum/map_template/holodeck/space
 	name = "totally accurate space"
 	template_id = "holodeck_space"
 	mappaths = list("maps/templates/holodeck_space.dmm")
+	ambience = list(SFX_AMBIENT_SPACE)
 
 /datum/map_template/holodeck/theatre
 	name = "space theatre"
@@ -86,8 +98,10 @@
 	name = "thunderdome arena"
 	template_id = "holodeck_thunderdome"
 	mappaths = list("maps/templates/holodeck_thunderdome.dmm")
+	ambience_music = list(SFX_AMBIENT_MUSIC_THUNDERDOME)
 
 /datum/map_template/holodeck/wildlife
 	name = "wildlife simulation"
 	template_id = "holodeck_wildlife"
 	mappaths = list("maps/templates/holodeck_wildlife.dmm")
+	restricted = TRUE

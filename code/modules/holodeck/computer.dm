@@ -92,6 +92,8 @@
 	active = program != offline_program
 
 	nerf(!emagged)
+	linked_area.forced_ambience = length(using_template.ambience) ? using_template.ambience : initial(linked_area.forced_ambience)
+	linked_area.ambient_music_tags = length(using_template.ambience_music) ? using_template.ambience_music : initial(linked_area.ambient_music_tags)
 	finish_loading()
 	update_use_power(active ? POWER_USE_ACTIVE : POWER_USE_IDLE)
 
