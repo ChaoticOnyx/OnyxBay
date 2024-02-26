@@ -288,8 +288,8 @@
 
 /obj/machinery/door/window/plasma
 	icon = 'icons/obj/doors/plasmawindoor.dmi'
-	icon_state = "leftsecure"
-	base_state = "leftsecure"
+	icon_state = "left"
+	base_state = "left"
 	material_used = MATERIAL_REINFORCED_PLASS
 	assembly_used = /obj/structure/windoor_assembly/plasma
 
