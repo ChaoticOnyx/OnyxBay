@@ -1233,7 +1233,7 @@
 	set_trait(TRAIT_YIELD,2)
 	set_trait(TRAIT_POTENCY,10)
 	set_trait(TRAIT_PRODUCT_ICON,"treefruit")
-	set_trait(TRAIT_PRODUCT_COLOUR,"#cca935")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#BC6912")
 	set_trait(TRAIT_PLANT_ICON,"tree2")
 	set_trait(TRAIT_IDEAL_HEAT, 298)
 	set_trait(TRAIT_WATER_CONSUMPTION, 6)
