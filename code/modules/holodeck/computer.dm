@@ -128,7 +128,7 @@
 			spawned -= holo_atom
 			continue
 
-		finilize_spawned(holo_atom)
+		finalize_spawned(holo_atom)
 
 /obj/machinery/computer/holodeck/proc/nerf(nerf = TRUE)
 	for(var/obj/item/nerfing_item in spawned)
@@ -137,7 +137,7 @@
 	for(var/obj/effect/holodeck_effect/nerfing_effect as anything in effects)
 		nerfing_effect.nerf(nerf)
 
-/obj/machinery/computer/holodeck/proc/finilize_spawned(atom/holo_atom)
+/obj/machinery/computer/holodeck/proc/finalize_spawned(atom/holo_atom)
 	register_signal(holo_atom, SIGNAL_QDELETING, nameof(.proc/remove_from_spawned))
 	holo_atom.atom_flags |= ATOM_FLAG_HOLOGRAM
 
@@ -178,7 +178,7 @@
 		var/obj/item/holo_item = holo_atom
 		holo_item.damtype = PAIN
 
-	finilize_spawned(holo_atom)
+	finalize_spawned(holo_atom)
 
 /obj/machinery/computer/holodeck/proc/remove_from_spawned(datum/to_remove, _force)
 	SIGNAL_HANDLER
