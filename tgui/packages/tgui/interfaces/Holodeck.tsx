@@ -51,7 +51,7 @@ export const Holodeck = (props: any, context: any) => {
                     isSafetyDisabled ? "disabled" : "enabled"
                   }.`}
                   selected={!isSafetyDisabled}
-                  disabled={!!canToggleSafety}
+                  disabled={!canToggleSafety}
                   onClick={() => act("toggleSafety")}
                 />
               </Stack.Item>
@@ -68,7 +68,7 @@ export const Holodeck = (props: any, context: any) => {
               <Stack.Item>
                 <HolodeckButton
                   icon={isLocked ? "lock" : "lock-open"}
-                  desc={`Controls are ${isLocked ? "unlocked" : "locked"}.`}
+                  desc={`Controls are ${isLocked ? "locked" : "unlocked"}.`}
                   selected={!!isLocked}
                   onClick={() => act("toggleLock")}
                 />
