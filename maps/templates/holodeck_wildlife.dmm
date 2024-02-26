@@ -1,5 +1,5 @@
 "a" = (/turf/simulated/floor/reinforced,/area/template_noop)
-"K" = (/obj/effect/landmark/event/other/holodeck/carps,/turf/simulated/floor/reinforced,/area/template_noop)
+"K" = (/obj/effect/holodeck_effect/carp,/turf/simulated/floor/reinforced,/area/template_noop)
 
 (1,1,1) = {"
 aaaaaaaaaa
