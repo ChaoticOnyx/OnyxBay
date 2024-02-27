@@ -44,10 +44,10 @@
 	if(target.invisibility >= INVISIBILITY_LEVEL_ONE)
 		return FALSE
 
-	if(!emagged && issilicon(target))
+	if(!owner.emagged && issilicon(target))
 		return FALSE
 
-	if(emagged && !isAI(target))
+	if(owner.emagged && !isAI(target))
 		return TRUE
 
 	if(owner.check_synth && !issilicon(target))
