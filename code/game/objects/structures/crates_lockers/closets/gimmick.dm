@@ -17,6 +17,7 @@
 	icon_state = "wizcabinet_closed"
 	icon_closed = "wizcabinet_closed"
 	icon_opened = "wizcabinet_open"
+	dremovable = FALSE
 
 /obj/structure/closet/acloset
 	name = "strange closet"
