@@ -3,7 +3,7 @@
 	name = "Water"
 	description = "A ubiquitous chemical substance that is composed of hydrogen and oxygen."
 	reagent_state = LIQUID
-	color = "#0064c877"
+	color = "#3073b6"
 	metabolism = REM * 10
 	taste_description = "water"
 	glass_name = "water"

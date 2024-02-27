@@ -25,3 +25,4 @@
 	icon_locked = "vault1"
 	icon_opened = "vaultopen"
 	icon_off = "vaultoff"
+	dremovable = FALSE
