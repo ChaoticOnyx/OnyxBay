@@ -60,5 +60,8 @@
 				return TRUE
 		return FALSE
 
+	if(!owner.lethal_mode && !owner.can_non_lethal())
+		return FALSE
+
 	var/mob/living/L = target
 	return L.assess_perp(holder, owner.check_access, owner.check_weapons, owner.check_records, owner.check_arrest) >= threat_level_threshold

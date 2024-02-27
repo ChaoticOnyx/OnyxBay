@@ -89,6 +89,32 @@
 			var/datum/firemode/current_mode = installed_gun.firemodes[firemode_index]
 			add_log("Turret firing mode changed to [current_mode.name]")
 
+/obj/machinery/turret/network/proc/lethal_nonlethal_switch()
+	if(!can_non_lethal())
+		return
+
+	for(var/i = 1 to installed_gun?.firemodes?.len)
+		var/datum/firemode/mode = installed_gun?.firemodes[i]
+		if(mode.name == "stun" && !lethal_mode)
+			installed_gun.sel_mode = i
+			installed_gun.switch_firemodes()
+			break
+
+		if(mode.name != "stun" && lethal_mode)
+			installed_gun.sel_mode = i
+			installed_gun.switch_firemodes()
+			break
+
+/obj/machinery/turret/network/proc/can_non_lethal()
+	if(!islist(installed_gun?.firemodes))
+		return FALSE
+
+	for(var/datum/firemode/mode in installed_gun?.firemodes)
+		if(mode.name == "stun")
+			return TRUE
+
+	return FALSE
+
 /obj/machinery/turret/network/proc/isLocked(mob/user)
 	if(ailock && issilicon(user))
 		show_splash_text(user, "Blocked by firewall!")
@@ -196,6 +222,7 @@
 
 		if("lethal_mode")
 			lethal_mode = !lethal_mode
+			lethal_nonlethal_switch()
 			return TRUE
 
 		if("check_synth")

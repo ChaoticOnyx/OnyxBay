@@ -210,6 +210,7 @@
 		T.check_arrest = check_arrest
 		T.check_anomalies = check_anomalies
 		T.enabled = enabled
+		T.lethal_nonlethal_switch()
 
 /obj/machinery/turretcp/on_update_icon()
 	..()
