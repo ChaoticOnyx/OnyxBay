@@ -309,6 +309,7 @@
 	icon = 'icons/obj/doors/pwindow.dmi'
 	icon_state = "windoor"
 	base_state = "windoor"
+
 /obj/machinery/door/window/northleft
 	dir = NORTH
 
