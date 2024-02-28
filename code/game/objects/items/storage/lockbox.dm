@@ -3,15 +3,14 @@
 	desc = "A locked box."
 	icon_state = "lockbox+l"
 	item_state = "lockbox"
+	base_icon_state = "lockbox"
+	inspect_state = "illdomyshitmyself"
 	w_class = ITEM_SIZE_HUGE
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 	req_access = list(access_armory)
-	var/locked = 1
-	var/broken = 0
-	var/icon_locked = "lockbox+l"
-	var/icon_closed = "lockbox"
-	var/icon_broken = "lockbox+b"
+	var/locked = TRUE
+	var/broken = FALSE
 
 /obj/item/storage/lockbox/Initialize()
 	update_icon()
@@ -19,18 +18,16 @@
 
 /obj/item/storage/lockbox/on_update_icon()
 	if(locked)
-		icon_state = icon_locked
+		icon_state = base_icon_state + "+l"
 		return
-	if(broken)
-		icon_state = icon_broken
-		return
-	icon_state = icon_closed
+
+	icon_state = base_icon_state + (being_inspected ? "+o" : "") + (broken ? "+b" : "")
 
 /obj/item/storage/lockbox/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/card/id))
 		if(broken)
 			to_chat(user, SPAN_WARNING("[src] broken!"))
-			. = ..()
+			return
 		if(check_access(W))
 			locked = !locked
 			update_icon()
@@ -48,7 +45,7 @@
 		var/obj/item/melee/energy/WS = W
 		if(broken)
 			to_chat(user, SPAN_WARNING("[src] already broken!"))
-			. = ..()
+			return
 		if(WS.active)
 			emag_act(INFINITY, user, W, "The locker has been sliced open by [user] with an energy blade!", "You hear metal being sliced and sparks flying.")
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
@@ -60,7 +57,8 @@
 			update_icon()
 			return
 
-	. = ..()
+	if(!locked)
+		return ..()
 
 /obj/item/storage/lockbox/attack_hand(mob/user)
 	add_fingerprint(user)
@@ -84,10 +82,16 @@
 
 /obj/item/storage/lockbox/MouseDrop(over_object, src_location, over_location)
 	add_fingerprint(usr)
-	if (locked)
+	if(locked)
 		to_chat(usr, SPAN_WARNING("[src] is locked and cannot be opened!"))
 		return
 	. = ..()
+
+/obj/item/storage/secure/AltClick(mob/usr)
+	if(locked)
+		add_fingerprint(usr)
+		return
+	..()
 
 /obj/item/storage/lockbox/emag_act(remaining_charges, mob/user, emag_source, visual_feedback = "", audible_feedback = "")
 	if(!broken)
@@ -103,7 +107,7 @@
 		broken = TRUE
 		locked = FALSE
 		desc = "It appears to be broken."
-		icon_state = icon_broken
+		update_icon()
 		visible_message(visual_feedback, audible_feedback)
 		return TRUE
 

@@ -6,6 +6,7 @@
 	description_antag = "Carrying one of these and being bald tends to instill a certain primal fear in most people."
 	icon_state = "red"
 	item_state = "toolbox_red"
+	inspect_state = TRUE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 15
 	throwforce = 10
@@ -28,13 +29,15 @@
 	icon_state = "red"
 	item_state = "toolbox_red"
 
-/obj/item/storage/toolbox/emergency/New()
-	..()
-	new /obj/item/crowbar/red(src)
-	new /obj/item/extinguisher/mini(src)
-	var/item = pick(list(/obj/item/device/flashlight, /obj/item/device/flashlight/flare,  /obj/item/device/flashlight/glowstick/red))
-	new item(src)
-	new /obj/item/device/radio(src)
+	startswith = list(
+		/obj/item/crowbar/red,
+		/obj/item/extinguisher/mini,
+		/obj/item/device/radio)
+
+/obj/item/storage/toolbox/emergency/Initialize()
+	. = ..()
+	var/obj/item/I = pick(list(/obj/item/device/flashlight, /obj/item/device/flashlight/flare, /obj/item/device/flashlight/glowstick/red))
+	new I(src)
 
 /obj/item/storage/toolbox/mechanical
 	name = "mechanical toolbox"
@@ -42,14 +45,13 @@
 	icon_state = "blue"
 	item_state = "toolbox_blue"
 
-/obj/item/storage/toolbox/mechanical/New()
-	..()
-	new /obj/item/screwdriver(src)
-	new /obj/item/wrench(src)
-	new /obj/item/weldingtool(src)
-	new /obj/item/crowbar(src)
-	new /obj/item/device/analyzer(src)
-	new /obj/item/wirecutters(src)
+	startswith = list(
+		/obj/item/screwdriver,
+		/obj/item/wrench,
+		/obj/item/weldingtool,
+		/obj/item/crowbar,
+		/obj/item/wirecutters,
+		/obj/item/device/analyzer)
 
 /obj/item/storage/toolbox/electrical
 	name = "electrical toolbox"
@@ -57,18 +59,20 @@
 	icon_state = "yellow"
 	item_state = "toolbox_yellow"
 
-/obj/item/storage/toolbox/electrical/New()
-	..()
-	new /obj/item/screwdriver(src)
-	new /obj/item/wirecutters(src)
-	new /obj/item/device/t_scanner(src)
-	new /obj/item/crowbar(src)
-	new /obj/item/stack/cable_coil/random(src,30)
-	new /obj/item/stack/cable_coil/random(src,30)
+	startswith = list(
+		/obj/item/screwdriver,
+		/obj/item/wirecutters,
+		/obj/item/crowbar,
+		/obj/item/device/t_scanner)
+
+/obj/item/storage/toolbox/electrical/Initialize()
+	. = ..()
+	new /obj/item/stack/cable_coil/random(src, 30)
+	new /obj/item/stack/cable_coil/random(src, 30)
 	if(prob(5))
 		new /obj/item/clothing/gloves/insulated(src)
 	else
-		new /obj/item/stack/cable_coil/random(src,30)
+		new /obj/item/stack/cable_coil/random(src, 30)
 
 /obj/item/storage/toolbox/syndicate
 	name = "black and red toolbox"
@@ -82,13 +86,12 @@
 	mod_handy = 1.0
 	max_storage_space = 23
 
-/obj/item/storage/toolbox/syndicate/New()
-	..()
-	new /obj/item/clothing/gloves/insulated(src)
-	new /obj/item/screwdriver(src)
-	new /obj/item/wrench(src)
-	new /obj/item/weldingtool(src)
-	new /obj/item/crowbar(src)
-	new /obj/item/wirecutters(src)
-	new /obj/item/device/multitool(src)
-	new /obj/item/clothing/glasses/welding(src)
+	startswith = list(
+		/obj/item/screwdriver,
+		/obj/item/wrench,
+		/obj/item/weldingtool,
+		/obj/item/crowbar,
+		/obj/item/wirecutters,
+		/obj/item/device/analyzer,
+		/obj/item/clothing/gloves/insulated,
+		/obj/item/clothing/glasses/welding)
