@@ -137,7 +137,6 @@
 	name = "\improper NanoTrasen backpack"
 	desc = "It's a light backpack modeled for use in laboratories and other scientific institutions. The colors on it denote it as a NanoTrasen backpack."
 	icon_state = "ntpack"
-	inspect_state = FALSE
 
 /obj/item/storage/backpack/hydroponics
 	name = "herbalist's backpack"
@@ -172,7 +171,6 @@
 	name = "dufflebag"
 	desc = "A large dufflebag for holding extra things."
 	icon_state = "duffle"
-	inspect_state = FALSE
 	w_class = ITEM_SIZE_HUGE
 	max_storage_space = DEFAULT_BACKPACK_STORAGE + 14
 	worn_access = FALSE
@@ -225,7 +223,6 @@
 	name = "satchel"
 	desc = "A trendy looking satchel."
 	icon_state = "satchel-norm"
-	inspect_state = FALSE
 	max_w_class = ITEM_SIZE_NORMAL // It's not nearly as spaceous as backpacks, how TF can you fit a rifle inside?
 	item_state_slots = null
 
@@ -241,13 +238,21 @@
 	icon_state = "satchel"
 	color = "#3d2711"
 
+/obj/item/storage/backpack/satchel/leather/Initialize()
+	. = ..()
+	update_icon()
+
+/obj/item/storage/backpack/satchel/leather/on_update_icon()
+	ClearOverlays()
+	AddOverlays(OVERLAY(icon, (being_inspected ? "satchel_overlay-open" : "satchel_overlay"), alpha, RESET_COLOR))
+
 /obj/item/storage/backpack/satchel/leather/khaki
 	name = "khaki leather satchel"
 	color = "#baa481"
 
 /obj/item/storage/backpack/satchel/leather/black
 	name = "black leather satchel"
-	color = "#212121"
+	color = "#3F3F3F"
 
 /obj/item/storage/backpack/satchel/leather/navy
 	name = "navy leather satchel"
@@ -265,15 +270,20 @@
 	name = "black pocketbook"
 	desc = "A neat little folding clasp pocketbook with a shoulder sling."
 	icon_state = "pocketbook"
-	w_class = ITEM_SIZE_HUGE // to avoid recursive backpacks
-	slot_flags = SLOT_BACK
-	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_LARGEBOX_STORAGE
-	color = "#212121"
+	color = "#3F3F3F"
 	item_state_slots = list(
 		slot_l_hand_str = "satchel-flat",
 		slot_r_hand_str = "satchel-flat",
 		)
+
+/obj/item/storage/backpack/satchel/pocketbook/Initialize()
+	. = ..()
+	update_icon()
+
+/obj/item/storage/backpack/satchel/pocketbook/on_update_icon()
+	ClearOverlays()
+	AddOverlays(OVERLAY(icon, (being_inspected ? "pocketbook_overlay-open" : "pocketbook_overlay"), alpha, RESET_COLOR))
 
 /obj/item/storage/backpack/satchel/pocketbook/brown
 	name = "brown pocketbook"
@@ -341,13 +351,13 @@
 	name = "captain's satchel"
 	desc = "An exclusive satchel for officers."
 	icon_state = "satchel-cap"
-	inspect_state = FALSE
 
 //ERT backpacks.
 /obj/item/storage/backpack/ert
 	name = "emergency response team backpack"
 	desc = "A spacious backpack with lots of pockets, used by members of the Emergency Response Team."
 	icon_state = "ert_commander"
+	inspect_state = FALSE
 	item_state_slots = list(
 		slot_l_hand_str = "securitypack",
 		slot_r_hand_str = "securitypack",
@@ -384,7 +394,6 @@
 	name = "messenger bag"
 	desc = "A sturdy backpack worn over one shoulder."
 	icon_state = "courierbag"
-	inspect_state = FALSE
 
 /obj/item/storage/backpack/messenger/chem
 	name = "chemistry messenger bag"

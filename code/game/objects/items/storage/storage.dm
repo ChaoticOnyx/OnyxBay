@@ -55,6 +55,8 @@
 	if(inspect_state)
 		if(!base_icon_state)
 			base_icon_state = icon_state // It'll save us later
+		if(!item_state)
+			item_state = icon_state // I wish that dumb feature never was a thing at all
 		register_signal(src, SIGNAL_STORAGE_OPENED, nameof(.proc/on_storage_opened))
 		register_signal(src, SIGNAL_STORAGE_CLOSED, nameof(.proc/on_storage_closed))
 
