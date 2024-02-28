@@ -455,8 +455,12 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	..()
 	state_machine?.evaluate()
 
-/obj/machinery/turret/proc/toggle_enabled()
-	enabled = !enabled
+/obj/machinery/turret/proc/toggle_enabled(override = NULL)
+	if(isnull(override))
+		enabled = !enabled
+	else
+		enabled = override
+
 	state_machine.evaluate()
 
 /obj/machinery/turret/proc/change_firemode(firemode_index)

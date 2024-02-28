@@ -211,7 +211,7 @@
 		T.check_arrest = check_arrest
 		T.check_anomalies = check_anomalies
 		T.check_synth = check_synth
-		T.enabled = enabled
+		T.toggle_enabled(override = enabled)
 		T.lethal_nonlethal_switch()
 
 /obj/machinery/turret_control_panel/on_update_icon()
