@@ -144,7 +144,7 @@
 	ui = SStgui.try_update_ui(user, src, ui)
 
 	if(!ui)
-		ui = new(user, src, "TurretPanel", "Turret Control Panel")
+		ui = new(user, src, "Turret", "Turret Control Panel")
 		ui.open()
 
 /obj/machinery/turret/network/tgui_data(mob/user)

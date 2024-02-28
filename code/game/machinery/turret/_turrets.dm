@@ -83,6 +83,9 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	/// The spark system for generating sparks
 	var/datum/effect/effect/system/spark_spread/spark_system
 
+	/// Will show a nice ray that displays this turret's targeting states.
+	var/debug_mode = FALSE
+
 /obj/machinery/turret/Initialize(mapload, _signaler)
 	hostility = new hostility()
 
@@ -467,7 +470,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	return TRUE
 
 /obj/machinery/turret/on_update_icon()
-	if(!turret_ray)
+	if(!turret_ray && debug_mode)
 		turret_ray = image(icon, "turret_ray")
 		turret_ray.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		turret_ray.appearance_flags = KEEP_APART | RESET_COLOR | TILE_BOUND | PIXEL_SCALE
