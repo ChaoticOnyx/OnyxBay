@@ -87,8 +87,9 @@
 		return
 	. = ..()
 
-/obj/item/storage/secure/AltClick(mob/usr)
+/obj/item/storage/lockbox/AltClick(mob/usr)
 	if(locked)
+		to_chat(usr, SPAN_WARNING("[src] is locked and cannot be opened!"))
 		add_fingerprint(usr)
 		return
 	..()
