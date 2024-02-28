@@ -43,7 +43,6 @@
 		if(INTERCOM_RADIO)
 			icon_state = "intercom_b2"
 
-
 /obj/item/intercom_frame/attackby(obj/item/W, mob/user)
 	switch(buildstage)
 		if(INTERCOM_EMPTY)
