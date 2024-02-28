@@ -23,8 +23,6 @@
 	var/check_synth = FALSE 	//if active, will shoot at anything not an AI or cyborg
 	var/ailock = FALSE 	//Silicons cannot use this
 
-	var/page = 0
-
 	req_access = list(access_ai_upload)
 
 /obj/machinery/turret_control_panel/Initialize(mapload)
@@ -133,6 +131,10 @@
 
 /obj/machinery/turret_control_panel/tgui_data(mob/user)
 	var/list/data = list(
+		"enabled" = enabled,
+	)
+
+	var/list/targeting_data = list(
 		"lethalMode" = lethal,
 		"checkSynth" = check_synth,
 		"checkWeapon" = check_weapons,
@@ -140,16 +142,16 @@
 		"checkArrests" = check_arrest,
 		"checkAccess" = check_access,
 		"checkAnomalies" = check_anomalies,
-		"enabled" = enabled,
-		"page" = page
 	)
+
+	data["targetingData"] += targeting_data
 
 	data["turrets"] = list()
 	var/list/connected_turrets = get_connected_turrets()
 	for(var/obj/machinery/turret/network/T in connected_turrets)
 		var/list/turret_data = list()
-		turret_data += T.get_gun_data()
-		turret_data += T.get_turret_data()
+		turret_data["turretSettings"] += T.get_gun_data()
+		turret_data["turretSettings"] += T.get_turret_data()
 		data["turrets"] += list(turret_data)
 
 	return data
@@ -162,11 +164,6 @@
 	switch(action)
 		if("toggle")
 			enabled = !enabled
-			update_turrets()
-			return TRUE
-
-		if("change_page")
-			page = !page
 			update_turrets()
 			return TRUE
 

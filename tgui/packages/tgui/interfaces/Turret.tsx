@@ -15,7 +15,7 @@ enum Tab {
   Settings,
 }
 
-export interface turretSettingsProps {
+export interface SettingsData {
   gun: string;
   status: boolean;
   integrity: number;
@@ -27,7 +27,7 @@ export interface turretSettingsProps {
   defaultBearing: number;
 }
 
-export interface turretTargetProps {
+export interface TargetingData {
   lethalMode: boolean;
   checkSynth: boolean;
   checkWeapon: boolean;
@@ -37,11 +37,13 @@ export interface turretTargetProps {
   checkAnomalies: boolean;
 }
 
-export interface InputData extends turretTargetProps, turretSettingsProps {
+export interface InputData {
   masterController: boolean;
   isMalf: boolean;
   signalerInstalled: boolean;
   enabled: boolean;
+  settingsData: SettingsData;
+  targettingData: TargetingData;
 }
 
 export const Turret = (props: any, context: any) => {
@@ -51,6 +53,7 @@ export const Turret = (props: any, context: any) => {
     "tabName",
     Tab.Targeting
   );
+
   return (
     <Window title="Turret Panel" width={240} height={290}>
       <Window.Content scrollable>
@@ -87,8 +90,26 @@ export const Turret = (props: any, context: any) => {
           <NoticeBox>Turret is remotely controlled.</NoticeBox>
         ) : (
           <Section>
-            {(currentTab === Tab.Settings && <TurretSettings />) ||
-              (currentTab === Tab.Targeting && <TurretTargeting />)}
+            {(currentTab === Tab.Settings && (
+              <TurretSettings
+                params={data.settingsData}
+                onBearingChange={(value) =>
+                  act("adjust_default_bearing", { new_bearing: value })
+                }
+              />
+            )) ||
+              (currentTab === Tab.Targeting && (
+                <TurretTargeting
+                  params={data.targettingData}
+                  lethalModeSwitch={() => act("lethal_mode")}
+                  synthSwitch={() => act("check_synth")}
+                  weaponSwitch={() => act("check_weapon")}
+                  recordsSwitch={() => act("check_records")}
+                  arrestSwitch={() => act("check_arrest")}
+                  accessSwitch={() => act("check_access")}
+                  anomaliesSwitch={() => act("check_anomalies")}
+                />
+              ))}
           </Section>
         )}
       </Window.Content>
@@ -96,8 +117,13 @@ export const Turret = (props: any, context: any) => {
   );
 };
 
-export const TurretSettings = (props: any, context: any) => {
-  const { act, data } = useBackend<turretSettingsProps>(context);
+interface TurretSettingsProps {
+  params: SettingsData;
+  onBearingChange: (value: number) => void;
+}
+
+export const TurretSettings = (props: TurretSettingsProps, context: any) => {
+  const { params, onBearingChange } = props;
   const {
     gun,
     status,
@@ -108,10 +134,10 @@ export const TurretSettings = (props: any, context: any) => {
     storedAmmo,
     currentBearing,
     defaultBearing,
-  } = data;
+  } = params;
 
   return (
-    <Stack.Item>
+    <>
       <LabeledList>
         <LabeledList.Item label="Installed gun">{gun}</LabeledList.Item>
         <LabeledList.Item label="Integrity">
@@ -148,9 +174,7 @@ export const TurretSettings = (props: any, context: any) => {
             minValue={0}
             maxValue={360}
             bipolar={true}
-            onChange={(e: any, value: number) =>
-              act("adjust_default_bearing", { new_bearing: value })
-            }
+            onChange={(e: any, value: number) => onBearingChange(value)}
           />
         </LabeledList.Item>
         <LabeledList.Item label="Current bearing">
@@ -158,13 +182,32 @@ export const TurretSettings = (props: any, context: any) => {
         </LabeledList.Item>
       </LabeledList>
       <LabeledList.Divider size={1} />
-    </Stack.Item>
+    </>
   );
 };
 
-export const TurretTargeting = (props: any, context: any) => {
-  const { children } = props;
-  const { act, data } = useBackend<turretTargetProps>(context);
+interface TurgetTargetingProps {
+  params: TargetingData;
+  lethalModeSwitch: () => void;
+  synthSwitch: () => void;
+  weaponSwitch: () => void;
+  recordsSwitch: () => void;
+  arrestSwitch: () => void;
+  accessSwitch: () => void;
+  anomaliesSwitch: () => void;
+}
+
+export const TurretTargeting = (props: TurgetTargetingProps, context: any) => {
+  const {
+    params,
+    lethalModeSwitch,
+    synthSwitch,
+    weaponSwitch,
+    recordsSwitch,
+    arrestSwitch,
+    accessSwitch,
+    anomaliesSwitch,
+  } = props;
   const {
     lethalMode,
     checkSynth,
@@ -173,7 +216,7 @@ export const TurretTargeting = (props: any, context: any) => {
     checkArrests,
     checkAccess,
     checkAnomalies,
-  } = data;
+  } = params;
 
   return (
     <Section>
@@ -185,49 +228,49 @@ export const TurretTargeting = (props: any, context: any) => {
               content={"Lethal Mode"}
               icon={lethalMode ? "circle-check" : "circle"}
               color={lethalMode ? "red" : "green"}
-              onClick={() => act("lethal_mode", {})}
+              onClick={() => lethalModeSwitch()}
             />
             <Button
               fluid
               content={"Neutralize ALL Non-Synthetics"}
               icon={checkSynth ? "circle-check" : "circle"}
               color={checkSynth ? "red" : "green"}
-              onClick={() => act("check_synth", {})}
+              onClick={() => synthSwitch()}
             />
             <Button
               fluid
               content={"Check Weapon Authorization"}
               icon={checkWeapon ? "circle-check" : "circle"}
               color={checkWeapon ? "red" : "green"}
-              onClick={() => act("check_weapon", {})}
+              onClick={() => weaponSwitch()}
             />
             <Button
               fluid
               content={"Check Security Records"}
               icon={checkRecords ? "circle-check" : "circle"}
               color={checkRecords ? "red" : "green"}
-              onClick={() => act("check_records", {})}
+              onClick={() => recordsSwitch()}
             />
             <Button
               fluid
               content={"Check Arrest Status"}
               icon={checkArrests ? "circle-check" : "circle"}
               color={checkArrests ? "red" : "green"}
-              onClick={() => act("check_arrest", {})}
+              onClick={() => arrestSwitch()}
             />
             <Button
               fluid
               content={"Check Access Authorization"}
               icon={checkAccess ? "circle-check" : "circle"}
               color={checkAccess ? "red" : "green"}
-              onClick={() => act("check_access", {})}
+              onClick={() => accessSwitch()}
             />
             <Button
               fluid
               content={"Check misc. Lifeforms"}
               icon={checkAnomalies ? "circle-check" : "circle"}
               color={checkAnomalies ? "red" : "green"}
-              onClick={() => act("check_anomalies", {})}
+              onClick={() => anomaliesSwitch()}
             />
           </Stack.Item>
         </Stack>

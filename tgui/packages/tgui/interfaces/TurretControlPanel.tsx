@@ -1,20 +1,22 @@
 import { useBackend, useLocalState } from "../backend";
-import { Button, Section, Stack } from "../components";
+import { Button, Section, Box, Stack } from "../components";
 import { Window } from "../layouts";
-import { Turret, TurretTargeting, turretTargetProps } from "./Turret";
-import { TurretSettings, turretSettingsProps } from "./Turret";
+import { Turret, TurretTargeting, TargetingData, SettingsData } from "./Turret";
+import { TurretSettings } from "./Turret";
 
 enum Tab {
   Targeting,
   Settings,
 }
 
-interface Turret extends turretSettingsProps {}
+interface Turret {
+  turretSettings: SettingsData;
+}
 
-export interface InputData extends turretTargetProps {
-  page: number;
+export interface InputData {
   turrets: Turret[];
   enabled: boolean;
+  targetingData: TargetingData;
 }
 
 export const TurretControlPanel = (props: any, context: any) => {
@@ -27,7 +29,7 @@ export const TurretControlPanel = (props: any, context: any) => {
 
   return (
     <Window title="Turret Control Panel" width={240} height={295}>
-      <Window.Content scrollable>
+      <Window.Content>
         <Section
           title="Turret Control Panel"
           buttons={
@@ -53,17 +55,31 @@ export const TurretControlPanel = (props: any, context: any) => {
         <Section>
           {" "}
           {(currentTab === Tab.Settings && (
-            <Stack vertical>
-              {data.turrets.map((turret: Turret) => (
-                <TurretSettings
-                  props={turret}
-                  data={turret}
-                  children={turret}
-                />
+            <Stack overflowY="scroll" fill vertical>
+              {data.turrets.map((turret) => (
+                <Stack.Item>
+                  <TurretSettings
+                    params={turret.turretSettings}
+                    onBearingChange={(value) =>
+                      act("adjust_default_bearing", { new_bearing: value })
+                    }
+                  />
+                </Stack.Item>
               ))}
             </Stack>
           )) ||
-            (currentTab === Tab.Targeting && <TurretTargeting />)}
+            (currentTab === Tab.Targeting && (
+              <TurretTargeting
+                params={data.targetingData}
+                lethalModeSwitch={() => act("lethal_mode")}
+                synthSwitch={() => act("check_synth")}
+                weaponSwitch={() => act("check_weapon")}
+                recordsSwitch={() => act("check_records")}
+                arrestSwitch={() => act("check_arrest")}
+                accessSwitch={() => act("check_access")}
+                anomaliesSwitch={() => act("check_anomalies")}
+              />
+            ))}
         </Section>
       </Window.Content>
     </Window>

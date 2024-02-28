@@ -149,6 +149,12 @@
 
 /obj/machinery/turret/network/tgui_data(mob/user)
 	var/list/data = list(
+		"page" = page,
+		"masterController" = FALSE,
+		"isMalf" = FALSE,
+	)
+
+	var/list/targeting_data = list(
 		"lethalMode" = lethal_mode,
 		"checkSynth" = check_synth,
 		"checkWeapon" = check_weapons,
@@ -156,14 +162,13 @@
 		"checkArrests" = check_arrest,
 		"checkAccess" = check_access,
 		"checkAnomalies" = check_anomalies,
-		"page" = page,
-		"masterController" = FALSE,
-		"isMalf" = FALSE,
 	)
 
-	data += get_turret_data()
+	data["targettingData"] += targeting_data
 
-	data += get_gun_data()
+	data["settingsData"] += get_turret_data()
+
+	data["settingsData"] += get_gun_data()
 
 	if(istype(signaler))
 		data["signalerInstalled"] = TRUE
