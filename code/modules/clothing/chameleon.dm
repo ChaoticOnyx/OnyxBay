@@ -222,6 +222,7 @@
 	name = "backpack"
 	icon_state = "backpack"
 	item_state = "backpack"
+	inspect_state = FALSE // TODO: Ughhh make it work or something, chameleon clothes are pain in the ass tbh
 	desc = "A backpack outfitted with cloaking tech. It seems to have a small dial inside, kept away from the storage."
 	origin_tech = list(TECH_ILLEGAL = 3)
 	var/global/list/clothing_choices

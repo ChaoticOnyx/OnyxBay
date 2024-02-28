@@ -110,7 +110,10 @@
 
 	if((((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !islarva(usr))) && !usr.incapacitated() && Adjacent(usr)))
 		add_fingerprint(usr)
-		open(usr)
+		if(usr.s_active == src)
+			close(usr)
+		else
+			open(usr)
 		return TRUE
 
 /obj/item/storage/proc/return_inv()

@@ -12,6 +12,7 @@
 		)
 	icon = 'icons/obj/storage/backpacks.dmi'
 	icon_state = "backpack"
+	inspect_state = TRUE
 	item_state = null
 	w_class = ITEM_SIZE_HUGE
 	slot_flags = SLOT_BACK
@@ -68,6 +69,7 @@
 	desc = "A backpack that opens into a localized pocket of Blue Space."
 	origin_tech = list(TECH_BLUESPACE = 4)
 	icon_state = "holdingpack"
+	inspect_state = FALSE
 	max_w_class = ITEM_SIZE_GARGANTUAN
 	max_storage_space = 56
 
@@ -87,6 +89,7 @@
 	desc = "Space Santa uses this to deliver toys to all the nice children in space for Christmas! Wow, it's pretty big!"
 	icon_state = "giftbag0"
 	item_state = "giftbag"
+	inspect_state = FALSE
 	w_class = ITEM_SIZE_HUGE
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = 400 // can store a ton of shit!
@@ -134,6 +137,7 @@
 	name = "\improper NanoTrasen backpack"
 	desc = "It's a light backpack modeled for use in laboratories and other scientific institutions. The colors on it denote it as a NanoTrasen backpack."
 	icon_state = "ntpack"
+	inspect_state = FALSE
 
 /obj/item/storage/backpack/hydroponics
 	name = "herbalist's backpack"
@@ -168,6 +172,7 @@
 	name = "dufflebag"
 	desc = "A large dufflebag for holding extra things."
 	icon_state = "duffle"
+	inspect_state = FALSE
 	w_class = ITEM_SIZE_HUGE
 	max_storage_space = DEFAULT_BACKPACK_STORAGE + 14
 	worn_access = FALSE
@@ -220,6 +225,7 @@
 	name = "satchel"
 	desc = "A trendy looking satchel."
 	icon_state = "satchel-norm"
+	inspect_state = FALSE
 	max_w_class = ITEM_SIZE_NORMAL // It's not nearly as spaceous as backpacks, how TF can you fit a rifle inside?
 	item_state_slots = null
 
@@ -335,6 +341,7 @@
 	name = "captain's satchel"
 	desc = "An exclusive satchel for officers."
 	icon_state = "satchel-cap"
+	inspect_state = FALSE
 
 //ERT backpacks.
 /obj/item/storage/backpack/ert
@@ -377,6 +384,7 @@
 	name = "messenger bag"
 	desc = "A sturdy backpack worn over one shoulder."
 	icon_state = "courierbag"
+	inspect_state = FALSE
 
 /obj/item/storage/backpack/messenger/chem
 	name = "chemistry messenger bag"
@@ -458,6 +466,7 @@
 	name = "Space carp backpack"
 	desc = "It's a backpack made of real space carp."
 	icon_state = "carppack"
+	inspect_state = FALSE
 	item_state_slots = list(
 		slot_l_hand_str = "backpack",
 		slot_r_hand_str = "backpack",
@@ -476,6 +485,7 @@
 	name = "Spaceship backpack"
 	desc = "Some say that humanity conquered space inside such things. Today it has obviously broken but looks neat, and you can store your stuff inside."
 	icon_state = "shipack"
+	inspect_state = FALSE
 	item_state_slots = list(
 		slot_l_hand_str = "shipack",
 		slot_r_hand_str = "shipack",
