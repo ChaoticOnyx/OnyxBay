@@ -2,8 +2,8 @@
 #define INTERCOM_WIRED     1
 #define INTERCOM_RADIO     2
 
-/obj/item/intercom_frame
-	name = "intercom frame"
+/obj/item/intercom_assembly
+	name = "intercom asssembly"
 	desc = "Unassembled intercom."
 	icon = 'icons/obj/radio.dmi'
 	icon_state = "intercom_b0"
@@ -16,7 +16,7 @@
 	unacidable = TRUE
 	var/buildstage = INTERCOM_EMPTY
 
-/obj/item/intercom_frame/New(loc, dir, atom/frame)
+/obj/item/intercom_assembly/Initialize(mapload, dir, atom/frame)
 	..(loc)
 
 	if(dir)
@@ -34,7 +34,7 @@
 
 	on_update_icon()
 
-/obj/item/intercom_frame/on_update_icon()
+/obj/item/intercom_assembly/on_update_icon()
 	switch(buildstage)
 		if(INTERCOM_EMPTY)
 			icon_state = "intercom_b0"
@@ -44,7 +44,7 @@
 			icon_state = "intercom_b2"
 
 
-/obj/item/intercom_frame/attackby(obj/item/W, mob/user)
+/obj/item/intercom_assembly/attackby(obj/item/W, mob/user)
 	switch(buildstage)
 		if(INTERCOM_EMPTY)
 			if(isCoil(W))
@@ -75,7 +75,7 @@
 
 	return ..()
 
-/obj/item/intercom_frame/proc/add_cable(obj/item/stack/cable_coil/C, mob/user)
+/obj/item/intercom_assembly/proc/add_cable(obj/item/stack/cable_coil/C, mob/user)
 	if (C.get_amount() < 1)
 		show_splash_text(user, "need more coil!")
 		return
@@ -87,7 +87,7 @@
 			buildstage = INTERCOM_WIRED
 			update_icon()
 
-/obj/item/intercom_frame/proc/remove_cable(mob/user)
+/obj/item/intercom_assembly/proc/remove_cable(mob/user)
 	playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
 	show_splash_text(user, "cutting cable...")
 
@@ -97,7 +97,7 @@
 		buildstage = INTERCOM_EMPTY
 		update_icon()
 
-/obj/item/intercom_frame/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user)
+/obj/item/intercom_assembly/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user)
 	if(WT.remove_fuel(0, user))
 		playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 		show_splash_text(user, "dissasembling...")
@@ -112,7 +112,7 @@
 		return
 
 
-/obj/item/intercom_frame/proc/add_radio(obj/item/device/radio/R, mob/user)
+/obj/item/intercom_assembly/proc/add_radio(obj/item/device/radio/R, mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	show_splash_text(user, "installing radio...")
 
@@ -125,7 +125,7 @@
 		buildstage = INTERCOM_RADIO
 		update_icon()
 
-/obj/item/intercom_frame/proc/eject_radio(mob/user)
+/obj/item/intercom_assembly/proc/eject_radio(mob/user)
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 	show_splash_text(user, "removing radio...")
 
@@ -135,7 +135,7 @@
 		buildstage = INTERCOM_WIRED
 		update_icon()
 
-/obj/item/intercom_frame/proc/finish_frame(mob/user)
+/obj/item/intercom_assembly/proc/finish_frame(mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	show_splash_text(user, "finishing \the [src]...")
 

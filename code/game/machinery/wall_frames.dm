@@ -78,4 +78,4 @@
 	desc = "Used for building intercoms."
 	icon = 'icons/obj/radio.dmi'
 	icon_state = "intercom_bitem"
-	build_machine_type = /obj/item/intercom_frame
+	build_machine_type = /obj/item/intercom_assembly

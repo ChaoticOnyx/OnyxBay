@@ -147,7 +147,7 @@
 		icon_state = "intercom-p"
 		set_light(0)
 
-/obj/item/device/radio/intercom/New(loc, dir)
+/obj/item/device/radio/intercom/Initialize(mapload, dir)
 	..(loc)
 
 	if(dir)
@@ -170,7 +170,7 @@
 
 	if(do_after(user, 40, src))
 		show_splash_text(user, "unscrewed!")
-		new /obj/item/intercom_frame(loc, dir, src)
+		new /obj/item/intercom_assembly(loc, dir, src)
 		qdel(src)
 
 /obj/item/device/radio/intercom/broadcasting
