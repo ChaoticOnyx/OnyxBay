@@ -609,7 +609,7 @@
 		if(lightbulb && !(lightbulb.status == LIGHT_BROKEN))
 			playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 
-		if(has_power())
+		if(powered())
 			s.set_up(3, 1, src)
 			s.start()
 
@@ -623,6 +623,7 @@
 
 	lightbulb.status = LIGHT_OK
 
+	on = has_power()
 	update(FALSE)
 
 // explosion effect
