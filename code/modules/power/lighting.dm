@@ -517,7 +517,7 @@
 		update(FALSE)
 		sleep(rand(5, 15))
 
-	on = get_status() == LIGHT_OK
+	on = has_power()
 	update(FALSE)
 
 	flickering = FALSE
@@ -584,7 +584,6 @@
 
 	// create a light tube/bulb item and put it in the user's hand
 	user.put_in_active_hand(remove_bulb())	//puts it in our active hand
-
 
 /obj/machinery/light/attack_tk(mob/user)
 	if(!lightbulb)
@@ -829,7 +828,7 @@
 		L.lightbulb = null
 		L.current_mode = null
 		if(!QDELETED(L))
-			L.update_icon()
+			update(FALSE)
 	return ..()
 
 /obj/item/light/_examine_text(mob/user)
