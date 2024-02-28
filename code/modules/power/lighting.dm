@@ -828,7 +828,7 @@
 		L.lightbulb = null
 		L.current_mode = null
 		if(!QDELETED(L))
-			update(FALSE)
+			L.update(FALSE)
 	return ..()
 
 /obj/item/light/_examine_text(mob/user)
