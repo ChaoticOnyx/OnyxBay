@@ -252,6 +252,7 @@
 	icon_state = "guncase"
 	item_state = "guncase"
 	icon_opened = "guncase0"
+	inspect_state = FALSE
 	force = 8.0
 	throw_range = 4
 	w_class = ITEM_SIZE_LARGE
