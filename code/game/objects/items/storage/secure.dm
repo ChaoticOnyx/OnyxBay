@@ -35,13 +35,11 @@
 /obj/item/storage/secure/on_update_icon()
 	ClearOverlays()
 
-	if(istext(inspect_state))
-		if(being_inspected)
-			icon_state = inspect_state
-			return
-		else
-			icon_state = base_icon_state
+	if(being_inspected && istext(inspect_state))
+		icon_state = inspect_state
+		return
 
+	icon_state = base_icon_state ? base_icon_state : initial(icon_state)
 	if(emagged)
 		AddOverlays(image(icon, icon_locking))
 	else if(!locked)
