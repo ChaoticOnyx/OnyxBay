@@ -144,7 +144,9 @@
 	active_power_usage = 20 WATTS
 	power_channel = STATIC_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
 
+	/// Whether light is currently turned on.
 	var/on = TRUE
+	/// Whether bulb is currently asynchronously flickering.
 	var/flickering = FALSE
 	var/light_type = /obj/item/light/tube		// the type of light item
 	var/construct_type = /obj/machinery/light_construct
@@ -245,7 +247,7 @@
 	. = ..()
 
 /obj/machinery/light/proc/update_glow()
-	if(!on || isnull(lightbulb) || (stat & (BROKEN | NOPOWER)))
+	if(!on)
 		set_light(0)
 		return FALSE
 
@@ -472,10 +474,12 @@
 	update(TRUE)
 
 /**
- * Updates lighting, icon and optionally calls `switch_on` on the inserted lightbulb.
+ * Updates lighting, icon and optionally calls `switch_on` on the inserted lightbulb. This
+ * method is prefered over `update_icon` due to multiple edge-case handlers.
  *
  * Vars:
  * * trigger - If set to `TRUE` calls `switch_on` on a lightbulb.
+ *
  */
 /obj/machinery/light/proc/update(trigger = FALSE)
 	switch(get_status())
