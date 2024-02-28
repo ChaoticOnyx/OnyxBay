@@ -30,8 +30,12 @@
 /obj/machinery/turret_control_panel/Initialize(mapload)
 	. = ..()
 	signaler = new signaler()
+	return INITIALIZE_HINT_LATELOAD
 
+/obj/machinery/turret_control_panel/LateInitialize()
+	. = ..()
 	signaler.frequency = rand(RADIO_LOW_FREQ, RADIO_HIGH_FREQ)
+
 	signaler.code = rand(1, 100)
 
 	for(var/obj/machinery/turret/T in GLOB.all_turrets)
@@ -209,6 +213,7 @@
 		T.check_records = check_records
 		T.check_arrest = check_arrest
 		T.check_anomalies = check_anomalies
+		T.check_synth = check_synth
 		T.enabled = enabled
 		T.lethal_nonlethal_switch()
 

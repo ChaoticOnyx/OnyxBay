@@ -10,9 +10,10 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	icon_state = "turretCover"
 	anchored = TRUE
 	density = TRUE
-	idle_power_usage = 500
-	active_power_usage = 10 KILO WATTS
+	idle_power_usage = 50 WATTS
+	active_power_usage = 300 WATTS
 	interact_offline = TRUE
+	power_channel = STATIC_EQUIP
 
 	var/transform_animate_time = 0.2 SECONDS
 	// Visuals.
@@ -37,6 +38,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 	// Power
 	var/enabled = TRUE // If false, turret turns off.
+	/// Determines how fast energy weapons will be recharged
+	var/cell_charge_modifier = 1
 
 	// Angles
 	// Remember that in BYOND, NORTH equals 0 absolute degrees, and not 90.
@@ -153,7 +156,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		if(energy_gun.power_supply)
 			var/obj/item/cell/power_cell = energy_gun.power_supply
 			if(!power_cell.fully_charged())
-				power_cell.give(active_power_usage * CELLRATE)
+				power_cell.give(active_power_usage * CELLRATE * cell_charge_modifier)
 				update_use_power(POWER_USE_ACTIVE)
 				return
 			else

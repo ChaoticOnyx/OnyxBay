@@ -78,10 +78,13 @@
 	req_access = list(access_cent_general)
 
 /obj/machinery/turret/network/station
-	installed_gun = /obj/item/gun/energy/rifle
+	cell_charge_modifier = 6
+	installed_gun = /obj/item/gun/energy/egun/elite
 
 /obj/machinery/turret/network/centcomm
 	installed_gun = /obj/item/gun/energy/egun/elite
+
+	cell_charge_modifier = 10
 
 	enabled = FALSE
 	ailock = TRUE

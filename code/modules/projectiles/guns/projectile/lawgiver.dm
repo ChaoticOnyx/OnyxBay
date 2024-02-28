@@ -240,7 +240,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 		if(msg in F.settings["voice_activator"])
 			set_firemode(ind)
 
-/obj/item/gun/projectile/lawgiver/proc/set_firemode(ind)
+/obj/item/gun/projectile/lawgiver/set_firemode(ind)
 	sel_mode = ind
 	var/datum/firemode/F = firemodes[sel_mode]
 	F.apply_to(src)

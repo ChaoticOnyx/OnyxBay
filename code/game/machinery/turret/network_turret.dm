@@ -32,7 +32,8 @@
 
 /obj/machinery/turret/network/Initialize()
 	. = ..()
-	name = "[name] + [rand(1, 100)]"
+	name = "[name] [rand(1, 100)]"
+	lethal_nonlethal_switch()
 
 /obj/machinery/turret/network/attackby(obj/item/I, mob/user)
 	. = ..()
@@ -97,12 +98,12 @@
 		var/datum/firemode/mode = installed_gun?.firemodes[i]
 		if(mode.name == "stun" && !lethal_mode)
 			installed_gun.sel_mode = i
-			installed_gun.switch_firemodes()
+			installed_gun.set_firemode()
 			break
 
 		if(mode.name != "stun" && lethal_mode)
 			installed_gun.sel_mode = i
-			installed_gun.switch_firemodes()
+			installed_gun.set_firemode()
 			break
 
 /obj/machinery/turret/network/proc/can_non_lethal()

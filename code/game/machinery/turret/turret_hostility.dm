@@ -41,6 +41,9 @@
 		log_error("Network turret hostility referenced with a non turret holder: [holder]!")
 		return
 
+	if(!ismob(target))
+		return FALSE
+
 	if(target.invisibility >= INVISIBILITY_LEVEL_ONE)
 		return FALSE
 

@@ -653,6 +653,13 @@
 
 	return new_mode
 
+/obj/item/gun/proc/set_firemode()
+	if(sel_mode > firemodes.len)
+		return
+
+	var/datum/firemode/new_mode = firemodes[sel_mode]
+	new_mode.apply_to(src)
+
 /obj/item/gun/attack_self(mob/user)
 	var/datum/firemode/new_mode = switch_firemodes(user)
 	if(new_mode)
