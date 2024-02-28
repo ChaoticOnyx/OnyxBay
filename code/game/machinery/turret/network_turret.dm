@@ -24,9 +24,6 @@
 	var/check_synth = FALSE
 	var/lethal_mode = FALSE
 
-	/// Used for turret's TGUI
-	var/page = 0
-
 	/// List of events stored in a neat format
 	var/list/logs
 
@@ -149,7 +146,6 @@
 
 /obj/machinery/turret/network/tgui_data(mob/user)
 	var/list/data = list(
-		"page" = page,
 		"masterController" = FALSE,
 		"isMalf" = FALSE,
 	)
@@ -220,10 +216,6 @@
 	switch(action)
 		if("toggle")
 			enabled = !enabled
-			return TRUE
-
-		if("change_page")
-			page = !page
 			return TRUE
 
 		if("lethal_mode")
