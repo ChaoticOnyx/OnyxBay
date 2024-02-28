@@ -906,6 +906,7 @@
 #include "code\game\machinery\telecomms\telemonitor.dm"
 #include "code\game\machinery\telecomms\traffic_control.dm"
 #include "code\game\machinery\turret\_turret_control.dm"
+#include "code\game\machinery\turret\_turret_control_frame.dm"
 #include "code\game\machinery\turret\_turret_frame.dm"
 #include "code\game\machinery\turret\_turrets.dm"
 #include "code\game\machinery\turret\network_turret.dm"

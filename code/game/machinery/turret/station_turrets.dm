@@ -78,6 +78,8 @@
 	req_access = list(access_cent_general)
 
 /obj/machinery/turret/network/station
+	idle_power_usage = 50 WATTS
+	active_power_usage = 300 WATTS
 	cell_charge_modifier = 6
 	installed_gun = /obj/item/gun/energy/egun/elite
 

@@ -69,6 +69,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/reloading = FALSE
 	/// Firewall that prevents AI and synth from interacting with it directly.
 	var/ailock = TRUE
+	/// Whether this turret is locked or not, used for removing guns and disassembly.
+	var/locked = TRUE
 
 	// Integrity
 	var/integrity = 80
@@ -195,6 +197,44 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		else if(islist(proj_gun.allowed_magazines) && is_type_in_list(magazine, proj_gun.allowed_magazines))
 			store_ammo(I, user)
 			return
+
+	if(istype(I, /obj/item/card/id) || istype(I, /obj/item/device/pda))
+		if(allowed(user))
+			if(emagged)
+				show_splash_text(user, "Control panel is unresponsive")
+			else
+				locked = !locked
+				show_splash_text(user, "Turret [locked ? "locked" : "unlocked"]")
+		return
+
+	if(isCrowbar(I) && !locked && installed_gun)
+		if(do_after(user, 50, src))
+			if(QDELETED(src) || !installed_gun || locked)
+				return
+
+			show_splash_text(user, "Weapon removed!")
+			user.pick_or_drop(installed_gun)
+
+		return
+
+	if(isWelder(I))
+		var/obj/item/weldingtool/WT = I
+		if(!WT.isOn())
+			return
+
+		if(WT.get_fuel() < 5)
+			show_splash_text(user, "Not enough fuel!")
+
+		playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
+		if(do_after(user, 30 SECONDS, src))
+			if(QDELETED(src) || !WT.remove_fuel(5, user))
+				return
+
+		show_splash_text(user, "External armor removed!")
+
+		new /obj/machinery/turret_frame(get_turf(src), istype(signaler) ? signaler : null, 7) //7 == BUILDSTAGE_EARMOR_WELD
+
+		qdel_self()
 
 	return ..()
 
@@ -455,7 +495,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	..()
 	state_machine?.evaluate()
 
-/obj/machinery/turret/proc/toggle_enabled(override = NULL)
+/obj/machinery/turret/proc/toggle_enabled(override = null)
 	if(isnull(override))
 		enabled = !enabled
 	else

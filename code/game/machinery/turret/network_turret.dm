@@ -27,6 +27,8 @@
 	/// List of events stored in a neat format
 	var/list/logs
 
+	req_access = list(access_ai_upload)
+
 /obj/machinery/turret/network/Initialize()
 	. = ..()
 	name = "[name] [rand(1, 100)]"
@@ -75,7 +77,7 @@
 	if(.)
 		add_log("Target Engaged: \the [A]")
 
-/obj/machinery/turret/network/toggle_enabled()
+/obj/machinery/turret/network/toggle_enabled(override)
 	. = ..()
 	if(.)
 		add_log("Turret was [enabled ? "enabled" : "disabled"]")
@@ -255,15 +257,5 @@
 			QDEL_NULL(signaler)
 			master_controller = null
 			return TRUE
-
-/obj/item/circuitboard/sentry_turret
-	name = "circuitboard (sentry turret)"
-	board_type = "machine"
-	build_path = /obj/machinery/turret/network
-	origin_tech = "{'programming':5,'combat':5,'engineering':4}"
-	req_components = list(
-							/obj/item/stock_parts/capacitor = 1,
-							/obj/item/stock_parts/scanning_module = 1,
-							/obj/item/stock_parts/manipulator = 2)
 
 #undef MAX_TURRET_LOGS

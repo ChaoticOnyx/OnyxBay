@@ -25,9 +25,14 @@
 
 	req_access = list(access_ai_upload)
 
-/obj/machinery/turret_control_panel/Initialize(mapload)
+/obj/machinery/turret_control_panel/Initialize(mapload, _signaler)
 	. = ..()
-	signaler = new signaler()
+	if(!_signaler && mapload)
+		signaler = new signaler()
+	if(_signaler)
+		signaler = _signaler
+		signaler.forceMove(src)
+
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/turret_control_panel/LateInitialize()
@@ -94,8 +99,27 @@
 				show_splash_text(user, "Panel [locked ? "locked" : "unlocked"]")
 		return
 
-	else
-		return ..()
+	if(isWelder(W))
+		var/obj/item/weldingtool/WT = W
+		if(!WT.isOn())
+			return
+
+		if(WT.get_fuel() < 5)
+			show_splash_text(user, "Not enough fuel!")
+
+		playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
+		if(do_after(user, 30 SECONDS, src))
+			if(QDELETED(src) || !WT.remove_fuel(5, user))
+				return
+
+		show_splash_text(user, "External armor removed!")
+
+		new /obj/structure/turret_control_frame(get_turf(src), istype(signaler) ? signaler : null, 5) //5 == BUILSTAGE_ARMOR_WELD
+
+		qdel_self()
+		return
+
+	return ..()
 
 /obj/machinery/turret_control_panel/emag_act(remaining_charges, mob/user)
 	if(emagged)

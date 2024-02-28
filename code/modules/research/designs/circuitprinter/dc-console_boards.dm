@@ -138,3 +138,9 @@
 	id = "solarcontrol"
 	build_path = /obj/item/circuitboard/solar_control
 	sort_string = "JAAAF"
+
+/datum/design/circuit/turret_control_panel
+	name = "turret control panel"
+	id = "turretcontrolpanel"
+	build_path = /obj/item/circuitboard/turret_control_panel
+	sort_string = "JAAAG"
