@@ -145,6 +145,7 @@
 	desc = "Contains tools for surgery. Has precise foam fitting for safe transport and automatically sterilizes the content between uses."
 	icon_state = "surgerykit"
 	item_state = "firstaid-surgery"
+	inspect_state = TRUE
 
 	storage_slots = 14
 	max_w_class = ITEM_SIZE_NORMAL
