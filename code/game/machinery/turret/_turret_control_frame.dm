@@ -94,7 +94,7 @@
 
 					show_splash_text(user, "External armor welded")
 
-					//The final step: create a full turret
+					//The final step: create a full turret control panel
 					var/obj/machinery/turret_control_panel/tcp = new target_type(get_turf(src), signaler)
 					tcp.enabled = FALSE
 
