@@ -1,8 +1,13 @@
-import { useBackend } from "../backend";
+import { useBackend, useLocalState } from "../backend";
 import { Button, Section, Stack } from "../components";
 import { Window } from "../layouts";
-import { TurretTargeting, turretTargetProps } from "./TurretTargeting";
-import { TurretSettings, turretSettingsProps } from "./TurretSettings";
+import { Turret, TurretTargeting, turretTargetProps } from "./Turret";
+import { TurretSettings, turretSettingsProps } from "./Turret";
+
+enum Tab {
+  Targeting,
+  Settings,
+}
 
 interface Turret extends turretSettingsProps {}
 
@@ -12,35 +17,14 @@ export interface InputData extends turretTargetProps {
   enabled: boolean;
 }
 
-const mainPage = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
-
-  return <TurretTargeting />;
-};
-
-const turretPage = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
-
-  return (
-    <Stack vertical>
-      {data.turrets.map((turret) => (
-        <TurretSettings data={turret} />
-      ))}
-    </Stack>
-  );
-};
-
-const PAGES = {
-  0: {
-    render: mainPage,
-  },
-  1: {
-    render: turretPage,
-  },
-};
-
 export const TurretControlPanel = (props: any, context: any) => {
   const { act, data } = useBackend<InputData>(context);
+  const [currentTab, setCurrentTab] = useLocalState(
+    context,
+    "tabName",
+    Tab.Targeting
+  );
+
   return (
     <Window title="Turret Control Panel" width={240} height={295}>
       <Window.Content scrollable>
@@ -50,7 +34,9 @@ export const TurretControlPanel = (props: any, context: any) => {
             <Button
               icon={"screwdriver-wrench"}
               tooltip={"Manage turrets"}
-              onClick={() => act("change_page", {})}
+              onClick={() =>
+                setCurrentTab(currentTab ? Tab.Targeting : Tab.Settings)
+              }
             />
           }
         >
@@ -64,7 +50,21 @@ export const TurretControlPanel = (props: any, context: any) => {
             {data.enabled ? "online" : "offline"}
           </Button>
         </Section>
-        <Section>{PAGES[data.page].render(props, context)}</Section>
+        <Section>
+          {" "}
+          {(currentTab === Tab.Settings && (
+            <Stack vertical>
+              {data.turrets.map((turret: Turret) => (
+                <TurretSettings
+                  props={turret}
+                  data={turret}
+                  children={turret}
+                />
+              ))}
+            </Stack>
+          )) ||
+            (currentTab === Tab.Targeting && <TurretTargeting />)}
+        </Section>
       </Window.Content>
     </Window>
   );
