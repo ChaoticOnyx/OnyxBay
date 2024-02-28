@@ -167,7 +167,7 @@
 	if(istype(signaler))
 		data["signalerInstalled"] = TRUE
 
-	var/obj/machinery/turretcp/control_panel = master_controller?.resolve()
+	var/obj/machinery/turret_control_panel/control_panel = master_controller?.resolve()
 	if(istype(control_panel))
 		data["masterController"] = TRUE
 

@@ -1,4 +1,4 @@
-/obj/machinery/turretcp/ai_upload
+/obj/machinery/turret_control_panel/ai_upload
 	name = "AI Upload turret control"
 
 	control_area = list(
@@ -15,7 +15,7 @@
 	check_records = TRUE
 	check_anomalies = TRUE
 
-/obj/machinery/turretcp/ai_chamber
+/obj/machinery/turret_control_panel/ai_chamber
 	name = "AI Chamber turret control"
 
 	control_area = list(
@@ -33,7 +33,7 @@
 	check_records = TRUE
 	check_anomalies = TRUE
 
-/obj/machinery/turretcp/station_ghetto
+/obj/machinery/turret_control_panel/station_ghetto
 	control_area = list(
 		/area/maintenance/exterior
 	)
@@ -48,7 +48,7 @@
 	check_records = TRUE
 	check_anomalies = TRUE
 
-/obj/machinery/turretcp/tcomms_lethal
+/obj/machinery/turret_control_panel/tcomms_lethal
 	name = "Telecoms lethal turret control"
 
 	control_area = list(
@@ -57,7 +57,7 @@
 	lethal = TRUE
 	req_access = list(access_tcomsat)
 
-/obj/machinery/turretcp/tcomms_foyer
+/obj/machinery/turret_control_panel/tcomms_foyer
 	name = "Telecoms Foyer turret control"
 
 	control_area = list(
@@ -65,13 +65,13 @@
 	)
 	req_access = list(access_tcomsat)
 
-/obj/machinery/turretcp/sensor_array
+/obj/machinery/turret_control_panel/sensor_array
 	name = "Sensor Array turret control"
 
 	control_area = list(
 		/area/turret_protected/sensor_array_foyer
 	)
-/obj/machinery/turretcp/centcomm
+/obj/machinery/turret_control_panel/centcomm
 	control_area = list(
 		/area/centcom/control
 	)

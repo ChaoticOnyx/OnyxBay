@@ -72,7 +72,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/max_integrity = 80
 	var/auto_repair = TRUE
 
-	/// Weakref to an '/obj/machinery/turretcp'
+	/// Weakref to an '/obj/machinery/turret_control_panel'
 	var/weakref/master_controller = null
 
 	/// Signaller

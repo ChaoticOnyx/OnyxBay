@@ -1,4 +1,4 @@
-/obj/machinery/turretcp
+/obj/machinery/turret_control_panel
 	name = "turret control panel"
 	desc = "Used to control a room's automated defenses."
 	icon = 'icons/obj/machines/turret_control.dmi'
@@ -27,7 +27,7 @@
 
 	req_access = list(access_ai_upload)
 
-/obj/machinery/turretcp/Initialize(mapload)
+/obj/machinery/turret_control_panel/Initialize(mapload)
 	. = ..()
 	signaler = new signaler()
 
@@ -43,13 +43,13 @@
 		T.signaler?.code = signaler.code
 		T.master_controller = weakref(src)
 
-/obj/machinery/turretcp/Destroy()
+/obj/machinery/turret_control_panel/Destroy()
 	QDEL_NULL(signaler)
 	master_ai = null
 
 	return ..()
 
-/obj/machinery/turretcp/proc/get_connected_turrets()
+/obj/machinery/turret_control_panel/proc/get_connected_turrets()
 	. = list()
 	for(var/obj/machinery/turret/T in GLOB.all_turrets)
 		if(T.signaler?.frequency != signaler?.frequency)
@@ -63,7 +63,7 @@
 
 		. += T
 
-/obj/machinery/turretcp/proc/isLocked(mob/user)
+/obj/machinery/turret_control_panel/proc/isLocked(mob/user)
 	if(ailock && issilicon(user))
 		show_splash_text(user, "Blocked by firewall!")
 		return TRUE
@@ -79,7 +79,7 @@
 
 	return FALSE
 
-/obj/machinery/turretcp/attackby(obj/item/W, mob/user)
+/obj/machinery/turret_control_panel/attackby(obj/item/W, mob/user)
 	if(inoperable(MAINT))
 		return ..()
 
@@ -95,7 +95,7 @@
 	else
 		return ..()
 
-/obj/machinery/turretcp/emag_act(remaining_charges, mob/user)
+/obj/machinery/turret_control_panel/emag_act(remaining_charges, mob/user)
 	if(emagged)
 		return FALSE
 
@@ -106,19 +106,19 @@
 	ailock = FALSE
 	return TRUE
 
-/obj/machinery/turretcp/attack_ai(mob/user)
+/obj/machinery/turret_control_panel/attack_ai(mob/user)
 	if(isLocked(user))
 		return
 
 	tgui_interact(user)
 
-/obj/machinery/turretcp/attack_hand(mob/user)
+/obj/machinery/turret_control_panel/attack_hand(mob/user)
 	if(isLocked(user))
 		return
 
 	tgui_interact(user)
 
-/obj/machinery/turretcp/tgui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/turret_control_panel/tgui_interact(mob/user, datum/tgui/ui)
 	. = ..()
 
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -127,7 +127,7 @@
 		ui = new(user, src, "TurretControlPanel", "Turret Control Panel")
 		ui.open()
 
-/obj/machinery/turretcp/tgui_data(mob/user)
+/obj/machinery/turret_control_panel/tgui_data(mob/user)
 	var/list/data = list(
 		"lethalMode" = lethal,
 		"checkSynth" = check_synth,
@@ -150,7 +150,7 @@
 
 	return data
 
-/obj/machinery/turretcp/tgui_act(action, list/params)
+/obj/machinery/turret_control_panel/tgui_act(action, list/params)
 	. = ..()
 	if(.)
 		return
@@ -201,7 +201,7 @@
 			update_turrets()
 			return TRUE
 
-/obj/machinery/turretcp/proc/update_turrets()
+/obj/machinery/turret_control_panel/proc/update_turrets()
 	var/list/turrets = get_connected_turrets()
 	for(var/obj/machinery/turret/network/T in turrets)
 		T.check_access = check_access
@@ -212,7 +212,7 @@
 		T.enabled = enabled
 		T.lethal_nonlethal_switch()
 
-/obj/machinery/turretcp/on_update_icon()
+/obj/machinery/turret_control_panel/on_update_icon()
 	..()
 	if(stat & NOPOWER)
 		icon_state = "control_off"

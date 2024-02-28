@@ -173,7 +173,7 @@
 	Topic(src, list("breaker"="1"))
 	return 1
 
-/obj/machinery/turretcp/AICtrlClick() //turns off/on Turrets
+/obj/machinery/turret_control_panel/AICtrlClick() //turns off/on Turrets
 	if(usr.incapacitated())
 		return
 
@@ -183,7 +183,7 @@
 /atom/proc/AIAltClick(atom/A)
 	return AltClick(A)
 
-/obj/machinery/turretcp/AIAltClick() //toggles lethal on turrets
+/obj/machinery/turret_control_panel/AIAltClick() //toggles lethal on turrets
 	if(usr.incapacitated())
 		return
 
