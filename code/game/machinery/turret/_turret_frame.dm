@@ -13,7 +13,7 @@
 	icon_state = "turret_frame"
 	density = TRUE
 	/// Type of the turret
-	var/target_type = /obj/machinery/turret
+	var/target_type = /obj/machinery/turret/network
 	/// Current stage of the building process
 	var/build_step = BUILDSTAGE_INITIAL
 	/// Signaler that will be used in completed turret

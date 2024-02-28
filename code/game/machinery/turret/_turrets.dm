@@ -86,7 +86,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 /obj/machinery/turret/Initialize(mapload, _signaler)
 	hostility = new hostility()
 
-	if(!_signaler)
+	if(!_signaler && mapload)
 		signaler = new signaler()
 	else
 		signaler = _signaler
