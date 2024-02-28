@@ -836,7 +836,7 @@
 "aqp" = (/obj/structure/flora/pottedplant/unusual,/obj/machinery/alarm{pixel_y = 23},/turf/simulated/floor/tiled/dark/rough,/area/turret_protected/ai_upload_foyer)
 "aqq" = (/obj/machinery/hologram/holopad,/turf/simulated/floor/tiled/dark/rough,/area/turret_protected/ai_upload_foyer)
 "aqr" = (/obj/machinery/cryopod{dir = 2},/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/sleep/cryo)
-"aqs" = (/obj/machinery/atmospherics/unary/vent_scrubber/on,/obj/effect/floor_decal/industrial/warning/corner{dir = 4},/obj/item/device/radio/intercom/locked/ai_private{pixel_x = -12; pixel_y = 22},/obj/machinery/turret_control_panel/exodus,/turf/simulated/floor/tiled/dark/rough,/area/turret_protected/ai_upload_foyer)
+"aqs" = (/obj/machinery/atmospherics/unary/vent_scrubber/on,/obj/effect/floor_decal/industrial/warning/corner{dir = 4},/obj/item/device/radio/intercom/locked/ai_private{pixel_x = -12; pixel_y = 22},/obj/machinery/turret_control_panel/ai_upload{pixel_x = 6; pixel_y = 24},/turf/simulated/floor/tiled/dark/rough,/area/turret_protected/ai_upload_foyer)
 "aqu" = (/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 4},/obj/structure/cable{icon_state = "1-8"; d1 = 1; d2 = 8},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/trim/carpet,/area/security/detectives_office)
 "aqv" = (/obj/machinery/light{dir = 8},/obj/machinery/light_switch{pixel_x = -26},/turf/simulated/floor/trim/wood,/area/crew_quarters/captain)
 "aqw" = (/obj/structure/table/woodentable,/obj/effect/floor_decal/spline/fancy/wood{dir = 10},/obj/item/pinpointer,/obj/item/disk/nuclear,/obj/random_multi/single_item/captains_spare_id{weight = 10},/turf/simulated/floor/trim/wood,/area/crew_quarters/captain)
