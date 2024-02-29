@@ -39,7 +39,7 @@
 		icon_state = inspect_state
 		return
 
-	icon_state = base_icon_state
+	icon_state = base_icon_state ? base_icon_state : initial(icon_state)
 	if(emagged)
 		AddOverlays(image(icon, icon_locking))
 	else if(!locked)
