@@ -166,7 +166,7 @@
 
 /obj/item/device/radio/intercom/proc/unscrew_frame(mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
-	show_splash_text(user, "unscrewing [src]...")
+	show_splash_text(user, "unscrewing...")
 
 	if(do_after(user, 40, src))
 		show_splash_text(user, "unscrewed!")
