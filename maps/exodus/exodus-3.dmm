@@ -1688,7 +1688,7 @@
 "GD" = (/obj/structure/cable{d2 = 4; icon_state = "0-4"},/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/obj/random/pottedplant,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/outpost/abandonedpost)
 "GE" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/machinery/atmospherics/pipe/simple/hidden,/turf/simulated/floor/trim/wood,/area/outpost/abandonedpost)
 "GF" = (/obj/effect/decal/cleanable/spiderling_remains,/turf/simulated/floor/trim/wood,/area/outpost/abandonedpost)
-"GG" = (/obj/machinery/door/airlock{name = "Bedroom"},/area/outpost/abandonedpost)
+"GG" = (/obj/machinery/door/airlock{name = "Bedroom"},/turf/simulated/floor/trim/wood,/area/outpost/abandonedpost)
 "GH" = (/obj/effect/decal/cleanable/generic,/turf/simulated/floor/trim/carpet,/area/outpost/abandonedpost)
 "GI" = (/obj/machinery/light/small{dir = 4},/obj/random/plushie,/turf/simulated/floor/trim/carpet,/area/outpost/abandonedpost)
 "GJ" = (/obj/structure/closet/crate/internals,/turf/simulated/floor/shuttle/yellow,/area/outpost/abandoned)
