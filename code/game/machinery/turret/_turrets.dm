@@ -93,7 +93,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 	if(!_signaler && mapload)
 		signaler = new signaler()
-	else
+	else if(_signaler)
 		signaler = _signaler
 		signaler.forceMove(src)
 

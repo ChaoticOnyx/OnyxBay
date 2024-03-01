@@ -180,7 +180,7 @@
 
 /obj/machinery/turret/network/proc/get_turret_data()
 	return list(
-		"bearing" = current_bearing,
+		"bearing" = default_bearing,
 		"integrity" = integrity,
 		"maxIntegrity" = max_integrity,
 	)
@@ -262,7 +262,7 @@
 	if(!istype(user))
 		return
 
-	var/new_bearing = tgui_input_number(user, "", "Bearing Change", 0, -1, 360)
+	var/new_bearing = tgui_input_number(user, "", "Bearing Change", 0, 360, -1)
 	if(isnull(new_bearing))
 		return
 
