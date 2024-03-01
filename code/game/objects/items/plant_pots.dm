@@ -1,12 +1,12 @@
 
 /obj/item/plant_pot
 	name = "plant pot"
-	desc = "A pot. For plants."
+	desc = "A small pot. For small plants."
 	icon = 'icons/obj/flora/plant_pots.dmi'
 	icon_state = "pot"
 	base_icon_state = "pot"
 	center_of_mass = "x=16;y=13"
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEM_SIZE_SMALL
 	var/obj/item/reagent_containers/food/pottable_plant/my_plant = null
 	var/obj/item/my_secret = null
 
@@ -27,8 +27,11 @@
 
 /obj/item/plant_pot/on_update_icon()
 	ClearOverlays()
+	icon_state = base_icon_state
 	if(my_plant)
-		AddOverlays(my_plant)
+		var/image/PI = image(my_plant.icon, my_plant.icon_state)
+		PI.color = my_plant.color
+		AddOverlays(PI)
 		AddOverlays(OVERLAY(icon, base_icon_state + "-overlay"))
 
 /obj/item/plant_pot/attack_hand(mob/user)
@@ -80,10 +83,12 @@
 	if(my_plant)
 		user.pick_or_drop(my_plant, get_turf(src))
 		to_chat(user, SPAN("notice", "You uproot \the [my_plant] from \the [src]."))
+		my_plant = null
 		update_info()
 	else if(my_secret)
 		user.pick_or_drop(my_secret, get_turf(src))
 		to_chat(user, SPAN("notice", "You take \the [my_secret] from \the [src]."))
+		my_secret = null
 		update_info()
 
 /obj/item/plant_pot/attackby(obj/item/I, mob/user)
@@ -125,13 +130,24 @@
 	if(!my_plant)
 		name = base_name
 		desc = base_desc
+		if(my_secret)
+			desc += " It seems there's something hidden inside."
 	else
 		name = "potted " + my_plant.base_name
 		desc = my_plant.desc
-		if(my_secret)
-			desc += " It looks like there's something hidden inside."
 	update_icon()
 
+
+/obj/item/plant_pot/random
+	name = "random potted plant"
+	icon_state = "random"
+	startplant = null
+
+/obj/item/plant_pot/random/Initialize()
+	. = ..()
+	startplant = pick(subtypesof(/obj/item/reagent_containers/food/pottable_plant))
+	my_plant = new startplant(src)
+	update_info()
 
 // Yes, these are snackies
 /obj/item/reagent_containers/food/pottable_plant
