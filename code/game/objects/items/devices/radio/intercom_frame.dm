@@ -81,7 +81,7 @@
 
 	show_splash_text(user, "wiring...")
 	if(do_after(user, 40, src))
-		if (C.use(1))
+		if(C.use(1))
 			show_splash_text(user, "wired!")
 			buildstage = INTERCOM_WIRED
 			update_icon()
