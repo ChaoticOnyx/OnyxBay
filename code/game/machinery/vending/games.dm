@@ -26,7 +26,9 @@
 		/obj/item/storage/pill_bottle/dice = 5,
 		/obj/item/storage/box/checkers = 2,
 		/obj/item/storage/box/checkers/chess/red = 2,
-		/obj/item/storage/box/checkers/chess = 2
+		/obj/item/storage/box/checkers/chess = 2,
+		/obj/item/plant_pot = 5,
+		/obj/item/pottable_plant_gacha = 10
 		)
 
 	illegal = list(
@@ -50,7 +52,9 @@
 		/obj/item/storage/pill_bottle/dice = 6,
 		/obj/item/storage/box/checkers = 10,
 		/obj/item/storage/box/checkers/chess/red = 10,
-		/obj/item/storage/box/checkers/chess = 10
+		/obj/item/storage/box/checkers/chess = 10,
+		/obj/item/plant_pot = 10,
+		/obj/item/pottable_plant_gacha = 10
 		)
 
 /obj/item/vending_cartridge/games
