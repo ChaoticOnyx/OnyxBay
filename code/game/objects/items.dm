@@ -107,6 +107,8 @@
 		pixel_y = rand(-randpixel, randpixel)
 
 /obj/item/Destroy()
+	unzoom()
+
 	QDEL_NULL(hidden_uplink)
 	if(ismob(loc))
 		var/mob/m = loc
@@ -830,7 +832,6 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
-	register_signal(src, SIGNAL_QDELETING, nameof(.proc/unzoom))
 	register_signal(src, SIGNAL_MOVED, nameof(.proc/zoom_move))
 	register_signal(src, SIGNAL_DIR_SET, nameof(.proc/unzoom))
 	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/zoom_drop))
@@ -850,7 +851,6 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 	zoom = 0
 
-	unregister_signal(src, SIGNAL_QDELETING)
 	unregister_signal(src, SIGNAL_MOVED, nameof(.proc/zoom_move))
 	unregister_signal(src, SIGNAL_DIR_SET)
 	unregister_signal(src, SIGNAL_ITEM_UNEQUIPPED)
