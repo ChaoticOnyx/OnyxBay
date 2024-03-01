@@ -82,12 +82,12 @@
 
 	if(my_plant)
 		user.pick_or_drop(my_plant, get_turf(src))
-		to_chat(user, SPAN("notice", "You uproot \the [my_plant] from \the [src]."))
+		to_chat(user, SPAN("notice", "You uproot \the [my_plant] from \the [base_name]."))
 		my_plant = null
 		update_info()
 	else if(my_secret)
 		user.pick_or_drop(my_secret, get_turf(src))
-		to_chat(user, SPAN("notice", "You take \the [my_secret] from \the [src]."))
+		to_chat(user, SPAN("notice", "You take \the [my_secret] from \the [base_name]."))
 		my_secret = null
 		update_info()
 
