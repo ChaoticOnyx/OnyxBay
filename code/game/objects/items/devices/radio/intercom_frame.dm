@@ -17,7 +17,7 @@
 	var/buildstage = INTERCOM_EMPTY
 
 /obj/item/intercom_assembly/Initialize(mapload, dir, atom/frame)
-	..(loc)
+	. = ..()
 
 	if(dir)
 		set_dir(dir)
