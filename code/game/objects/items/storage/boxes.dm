@@ -25,6 +25,7 @@
 	icon = 'icons/obj/storage/boxes.dmi'
 	icon_state = "box"
 	item_state = "syringe_kit"
+	inspect_state = "box-open"
 	max_storage_space = DEFAULT_BOX_STORAGE
 	var/obj/item/foldable = /obj/item/stack/material/cardboard	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
 	use_sound = SFX_SEARCH_CLOTHES
@@ -32,12 +33,10 @@
 	drop_sound = SFX_DROP_CARDBOARD
 	pickup_sound = SFX_PICKUP_CARDBOARD
 
-/obj/item/storage/box/large
-	name = "large box"
-	icon_state = "largebox"
-	w_class = ITEM_SIZE_LARGE
-	max_w_class = ITEM_SIZE_NORMAL
-	max_storage_space = DEFAULT_LARGEBOX_STORAGE
+/obj/item/storage/box/on_update_icon()
+	ClearOverlays()
+	if(being_inspected && istext(inspect_state))
+		AddOverlays(OVERLAY(icon, inspect_state))
 
 // BubbleWrap - A box can be folded up to make card
 /obj/item/storage/box/attack_self(mob/user)
@@ -74,10 +73,20 @@
 	..()
 	foldable = null //special form fitted boxes should not be foldable.
 
+
+/obj/item/storage/box/large
+	name = "large box"
+	icon_state = "largebox"
+	inspect_state = "large-open"
+	w_class = ITEM_SIZE_LARGE
+	max_w_class = ITEM_SIZE_NORMAL
+	max_storage_space = DEFAULT_LARGEBOX_STORAGE
+
 /obj/item/storage/box/survival
 	name = "crew survival kit"
 	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and white stripe indicate this one contains oxygen. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survival"
+	inspect_state = "survival-open"
 	foldable = /obj/item/crowbar/emergency
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/tank/emergency/oxygen = 1,
@@ -90,6 +99,7 @@
 	name = "vox survival kit"
 	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and black stripe indicate this one contains nitrogen. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survivalvox"
+	inspect_state = "survival-open"
 	foldable = /obj/item/crowbar/emergency/vox
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/tank/emergency/nitrogen = 1,
@@ -101,6 +111,7 @@
 	name = "engineer survival kit"
 	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and orange stripe indicate this one as the engineering variant. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survivaleng"
+	inspect_state = "survival-open"
 	foldable = /obj/item/crowbar/emergency/eng
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/tank/emergency/oxygen/engi = 1,
@@ -114,6 +125,7 @@
 	name = "security survival kit"
 	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and red & black stripe indicate this one as the security variant. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survivalsec"
+	inspect_state = "survival-open"
 	foldable = /obj/item/crowbar/emergency/sec
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/tank/emergency/oxygen = 1,
@@ -174,19 +186,19 @@
 	max_storage_space = 20
 	drop_sound = SFX_DROP_AMMOBOX
 	pickup_sound = SFX_PICKUP_AMMOBOX
+	inspect_state = FALSE
 
 /obj/item/storage/box/shotgun/on_update_icon()
-	. = ..()
-
 	ClearOverlays()
 
-	for (var/i = 1, i < contents.len, i++)
-		if (i == 1 || i % 3 == 0)
+	if(!length(contents))
+		return
+
+	for(var/i = 1, i < contents.len, i++)
+		if(i == 1 || i % 3 == 0)
 			var/icon/I = icon(icon, "[contents[i].icon_state]")
-
-			if (i != 1)
+			if(i != 1)
 				I.Shift(WEST, i)
-
 			AddOverlays(I)
 
 /obj/item/storage/box/shotgun/shells
@@ -236,6 +248,7 @@
 	name = "box of flashbangs"
 	desc = "A box containing 7 antipersonnel flashbang grenades.<br> WARNING: These devices are extremely dangerous and can cause blindness or deafness from repeated use."
 	icon_state = "flashbang"
+	inspect_state = "sec-open"
 	startswith = list(/obj/item/grenade/flashbang = 7)
 	drop_sound = SFX_DROP_AMMOBOX
 	pickup_sound = SFX_PICKUP_AMMOBOX
@@ -244,6 +257,7 @@
 	name = "box of pepperspray grenades"
 	desc = "A box containing 7 tear gas grenades. A gas mask is printed on the label.<br> WARNING: Exposure carries risk of serious injury or death. Keep away from persons with lung conditions."
 	icon_state = "peppers"
+	inspect_state = "sec-open"
 	startswith = list(/obj/item/grenade/chem_grenade/teargas = 7)
 	drop_sound = SFX_DROP_AMMOBOX
 	pickup_sound = SFX_PICKUP_AMMOBOX
@@ -252,6 +266,7 @@
 	name = "box of emp grenades"
 	desc = "A box containing 5 military grade EMP grenades.<br> WARNING: Do not use near unshielded electronics or biomechanical augmentations, death or permanent paralysis may occur."
 	icon_state = "EMPs"
+	inspect_state = "sec-open"
 	startswith = list(/obj/item/grenade/empgrenade = 5)
 	drop_sound = SFX_DROP_AMMOBOX
 	pickup_sound = SFX_PICKUP_AMMOBOX
@@ -260,6 +275,7 @@
 	name = "box of frag grenades"
 	desc = "A box containing 5 military grade fragmentation grenades.<br> WARNING: Live explosives. Misuse may result in serious injury or death."
 	icon_state = "frags"
+	inspect_state = "sec-open"
 	startswith = list(/obj/item/grenade/frag = 5)
 	drop_sound = SFX_DROP_AMMOBOX
 	pickup_sound = SFX_PICKUP_AMMOBOX
@@ -268,6 +284,7 @@
 	name = "box of frag shells"
 	desc = "A box containing 5 military grade fragmentation shells.<br> WARNING: Live explosive munitions. Misuse may result in serious injury or death."
 	icon_state = "fragshells"
+	inspect_state = "sec-open"
 	startswith = list(/obj/item/grenade/frag/shell = 5)
 	drop_sound = SFX_DROP_AMMOBOX
 	pickup_sound = SFX_PICKUP_AMMOBOX
@@ -276,6 +293,7 @@
 	name = "box of smoke bombs"
 	desc = "A box containing 5 smoke bombs."
 	icon_state = "smokebombs"
+	inspect_state = "sec-open"
 	startswith = list(/obj/item/grenade/smokebomb = 5)
 	drop_sound = SFX_DROP_AMMOBOX
 	pickup_sound = SFX_PICKUP_AMMOBOX
@@ -284,6 +302,7 @@
 	name = "box of anti-photon grenades"
 	desc = "A box containing 5 experimental photon disruption grenades."
 	icon_state = "antiphotons"
+	inspect_state = "sec-open"
 	startswith = list(/obj/item/grenade/anti_photon = 5)
 	drop_sound = SFX_DROP_AMMOBOX
 	pickup_sound = SFX_PICKUP_AMMOBOX
@@ -355,6 +374,7 @@
 	desc = "Drymate brand monkey cubes. Just add water!"
 	icon = 'icons/obj/food.dmi'
 	icon_state = "monkeycubebox"
+	inspect_state = TRUE
 	can_hold = list(/obj/item/reagent_containers/food/monkeycube)
 	startswith = list(/obj/item/reagent_containers/food/monkeycube/wrapped = 5)
 
@@ -389,12 +409,14 @@
 	name = "box of spare R.O.B.U.S.T. Cartridges"
 	desc = "A box full of R.O.B.U.S.T. Cartridges, used by Security."
 	icon_state = "seccarts"
+	inspect_state = "sec-open"
 	startswith = list(/obj/item/cartridge/security = 7)
 
 /obj/item/storage/box/handcuffs
 	name = "box of spare handcuffs"
 	desc = "A box full of handcuffs."
 	icon_state = "handcuff"
+	inspect_state = "sec-open"
 	startswith = list(/obj/item/handcuffs = 7)
 
 /obj/item/storage/box/mousetraps
@@ -417,6 +439,7 @@
 	desc = "Eight wrappers of fun! Ages 8 and up. Not suitable for children."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "spbox"
+	inspect_state = TRUE
 	can_hold = list(/obj/item/toy/snappop)
 	startswith = list(/obj/item/toy/snappop = 8)
 
@@ -426,6 +449,7 @@
 	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "matchbox"
 	item_state = "zippo"
+	inspect_state = FALSE
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_BELT
 	can_hold = list(/obj/item/flame/match)
@@ -565,6 +589,7 @@
 	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "portafreezer"
 	item_state = "portafreezer"
+	inspect_state = TRUE
 	foldable = null
 	max_w_class = ITEM_SIZE_NORMAL
 	w_class = ITEM_SIZE_HUGE

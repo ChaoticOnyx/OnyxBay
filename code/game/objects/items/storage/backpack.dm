@@ -12,6 +12,7 @@
 		)
 	icon = 'icons/obj/storage/backpacks.dmi'
 	icon_state = "backpack"
+	inspect_state = TRUE
 	item_state = null
 	w_class = ITEM_SIZE_HUGE
 	slot_flags = SLOT_BACK
@@ -68,6 +69,7 @@
 	desc = "A backpack that opens into a localized pocket of Blue Space."
 	origin_tech = list(TECH_BLUESPACE = 4)
 	icon_state = "holdingpack"
+	inspect_state = FALSE
 	max_w_class = ITEM_SIZE_GARGANTUAN
 	max_storage_space = 56
 
@@ -87,6 +89,7 @@
 	desc = "Space Santa uses this to deliver toys to all the nice children in space for Christmas! Wow, it's pretty big!"
 	icon_state = "giftbag0"
 	item_state = "giftbag"
+	inspect_state = FALSE
 	w_class = ITEM_SIZE_HUGE
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = 400 // can store a ton of shit!
@@ -235,13 +238,21 @@
 	icon_state = "satchel"
 	color = "#3d2711"
 
+/obj/item/storage/backpack/satchel/leather/Initialize()
+	. = ..()
+	update_icon()
+
+/obj/item/storage/backpack/satchel/leather/on_update_icon()
+	ClearOverlays()
+	AddOverlays(OVERLAY(icon, (being_inspected ? "satchel_overlay-open" : "satchel_overlay"), alpha, RESET_COLOR))
+
 /obj/item/storage/backpack/satchel/leather/khaki
 	name = "khaki leather satchel"
 	color = "#baa481"
 
 /obj/item/storage/backpack/satchel/leather/black
 	name = "black leather satchel"
-	color = "#212121"
+	color = "#3F3F3F"
 
 /obj/item/storage/backpack/satchel/leather/navy
 	name = "navy leather satchel"
@@ -259,15 +270,20 @@
 	name = "black pocketbook"
 	desc = "A neat little folding clasp pocketbook with a shoulder sling."
 	icon_state = "pocketbook"
-	w_class = ITEM_SIZE_HUGE // to avoid recursive backpacks
-	slot_flags = SLOT_BACK
-	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_LARGEBOX_STORAGE
-	color = "#212121"
+	color = "#3F3F3F"
 	item_state_slots = list(
 		slot_l_hand_str = "satchel-flat",
 		slot_r_hand_str = "satchel-flat",
 		)
+
+/obj/item/storage/backpack/satchel/pocketbook/Initialize()
+	. = ..()
+	update_icon()
+
+/obj/item/storage/backpack/satchel/pocketbook/on_update_icon()
+	ClearOverlays()
+	AddOverlays(OVERLAY(icon, (being_inspected ? "pocketbook_overlay-open" : "pocketbook_overlay"), alpha, RESET_COLOR))
 
 /obj/item/storage/backpack/satchel/pocketbook/brown
 	name = "brown pocketbook"
@@ -341,6 +357,7 @@
 	name = "emergency response team backpack"
 	desc = "A spacious backpack with lots of pockets, used by members of the Emergency Response Team."
 	icon_state = "ert_commander"
+	inspect_state = FALSE
 	item_state_slots = list(
 		slot_l_hand_str = "securitypack",
 		slot_r_hand_str = "securitypack",
@@ -458,6 +475,7 @@
 	name = "Space carp backpack"
 	desc = "It's a backpack made of real space carp."
 	icon_state = "carppack"
+	inspect_state = FALSE
 	item_state_slots = list(
 		slot_l_hand_str = "backpack",
 		slot_r_hand_str = "backpack",
@@ -476,6 +494,7 @@
 	name = "Spaceship backpack"
 	desc = "Some say that humanity conquered space inside such things. Today it has obviously broken but looks neat, and you can store your stuff inside."
 	icon_state = "shipack"
+	inspect_state = FALSE
 	item_state_slots = list(
 		slot_l_hand_str = "shipack",
 		slot_r_hand_str = "shipack",

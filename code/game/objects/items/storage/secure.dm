@@ -32,6 +32,19 @@
 	QDEL_NULL(lock_menu)
 	return ..()
 
+/obj/item/storage/secure/on_update_icon()
+	ClearOverlays()
+
+	if(being_inspected && istext(inspect_state))
+		icon_state = inspect_state
+		return
+
+	icon_state = base_icon_state ? base_icon_state : initial(icon_state)
+	if(emagged)
+		AddOverlays(image(icon, icon_locking))
+	else if(!locked)
+		AddOverlays(image(icon, icon_opened))
+
 /obj/item/storage/secure/_examine_text(mob/user)
 	. = ..()
 	. += "The service panel is [open ? "open" : "closed"]."
@@ -123,26 +136,25 @@
 		return
 	if(href_list["type"])
 		if(href_list["type"] == "E")
-			if((src.l_set == 0) && (length(src.code) == 5) && (!src.l_setshort) && (src.code != "ERROR"))
-				src.l_code = src.code
-				src.l_set = 1
-			else if((src.code == src.l_code) && (src.emagged == 0) && (src.l_set == 1))
-				src.locked = 0
-				ClearOverlays()
-				AddOverlays(image(icon, icon_opened))
-				src.code = null
+			if(!l_set && length(code) == 5 && !l_setshort && code != "ERROR")
+				l_code = code
+				l_set = TRUE
+			else if(code == l_code && !emagged && l_set)
+				locked = FALSE
+				update_icon()
+				code = null
 			else
-				src.code = "ERROR"
+				code = "ERROR"
 		else
-			if((href_list["type"] == "R") && (src.emagged == 0) && (!src.l_setshort))
-				src.locked = 1
-				ClearOverlays()
-				src.code = null
-				src.close(usr)
+			if((href_list["type"] == "R") && !emagged && !l_setshort)
+				locked = TRUE
+				code = null
+				close(usr)
+				update_icon()
 			else
-				src.code += text("[]", href_list["type"])
-				if(length(src.code) > 5)
-					src.code = "ERROR"
+				code += text("[]", href_list["type"])
+				if(length(code) > 5)
+					code = "ERROR"
 		for(var/mob/M in viewers(1, src.loc))
 			if((M.client && M.machine == src))
 				show_lock_menu(M)
@@ -159,15 +171,14 @@
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, src.loc)
 	spark_system.start()
-	playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
-	playsound(src.loc, "spark", 50, 1)
+	playsound(loc, 'sound/weapons/blade1.ogg', 50, 1)
+	playsound(loc, "spark", 50, 1)
 	if(!emagged)
 		emagged = TRUE
 		AddOverlays(image(icon, icon_sparking))
 		sleep(6)
-		ClearOverlays()
-		AddOverlays(image(icon, icon_locking))
 		locked = FALSE
+		update_icon()
 
 // -----------------------------
 //        Secure Briefcase
@@ -176,6 +187,7 @@
 	name = "secure briefcase"
 	icon_state = "secure"
 	item_state = "sec-case"
+	inspect_state = "secure-open"
 	desc = "A large briefcase with a digital locking system."
 	force = 8.0
 	throw_range = 4
@@ -209,6 +221,7 @@
 	icon_opened = "safe0"
 	icon_locking = "safeb"
 	icon_sparking = "safespark"
+	inspect_state = "safe-open"
 	force = 0
 	w_class = ITEM_SIZE_NO_CONTAINER
 	max_w_class = ITEM_SIZE_HUGE
@@ -239,6 +252,7 @@
 	icon_state = "guncase"
 	item_state = "guncase"
 	icon_opened = "guncase0"
+	inspect_state = FALSE
 	force = 8.0
 	throw_range = 4
 	w_class = ITEM_SIZE_LARGE
@@ -355,8 +369,7 @@
 				l_set = 1
 			else if((code == l_code) && !emagged && (l_set == 1))
 				locked = 0
-				ClearOverlays()
-				AddOverlays(image(icon, icon_opened))
+				update_icon()
 				code = null
 				if(!gunspawned)
 					spawn_set(guntype)
@@ -450,8 +463,7 @@
 		to_chat(user, SPAN("notice", "You [locked ? "un" : ""]lock \the [src]."))
 		locked = !locked
 		ClearOverlays()
-		if(!locked)
-			AddOverlays(image(icon, icon_opened))
+		update_icon()
 		return
 	return ..()
 
@@ -564,8 +576,7 @@
 		to_chat(user, SPAN("notice", "You [locked ? "un" : ""]lock \the [src]."))
 		locked = !locked
 		ClearOverlays()
-		if(!locked)
-			AddOverlays(image(icon, icon_opened))
+		update_icon()
 		return
 	return ..()
 

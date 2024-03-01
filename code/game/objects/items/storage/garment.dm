@@ -3,7 +3,7 @@
 	desc = "A bag for storing multiple clothig items in a better and convenient way!"
 
 	icon = 'icons/obj/storage/misc.dmi'
-	icon_state = "garment0"
+	icon_state = "garment"
 
 	can_hold = list(
 		/obj/item/clothing
@@ -17,17 +17,7 @@
 	allow_quick_empty = TRUE
 	allow_quick_gather = TRUE
 
-/obj/item/storage/garment/Initialize()
-	. = ..()
-
-	register_signal(src, SIGNAL_STORAGE_OPENED, nameof(.proc/on_storage_opened))
-	register_signal(src, SIGNAL_STORAGE_CLOSED, nameof(.proc/on_storage_closed))
-
-/obj/item/storage/garment/proc/on_storage_opened(obj/item/storage/source, mob/user)
-	icon_state = "garment1"
-
-/obj/item/storage/garment/proc/on_storage_closed(obj/item/storage/source, mob/user)
-	icon_state = "garment0"
+	inspect_state = TRUE
 
 /obj/item/storage/garment/hos
 	name = "head of security's garment bag"

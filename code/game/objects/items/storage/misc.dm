@@ -34,9 +34,10 @@
  */
 
 /obj/item/storage/box/donut
+	name = "donut box"
 	icon = 'icons/obj/food.dmi'
 	icon_state = "donutbox"
-	name = "donut box"
+	inspect_state = FALSE
 	can_hold = list(/obj/item/reagent_containers/food/donut)
 	max_storage_space = 12 // Eggs-actly 6 donuts, not a single bite more
 	foldable = /obj/item/stack/material/cardboard
@@ -64,6 +65,7 @@
 	desc = "A box of chalk. Outlining corpses? Mixing coke with it? Decorating your gun and convincing people to subscribe to SpacePewCake? Whatever pleases you."
 	icon = 'icons/obj/crayons.dmi'
 	icon_state = "chalkbox"
+	inspect_state = FALSE
 	w_class = ITEM_SIZE_SMALL
 	max_w_class = ITEM_SIZE_TINY
 	max_storage_space = 6
