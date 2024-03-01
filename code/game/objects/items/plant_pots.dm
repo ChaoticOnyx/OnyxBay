@@ -431,3 +431,19 @@
 /obj/item/plant_pot/bluefern
 	icon_state = "27"
 	startplant = /obj/item/reagent_containers/food/pottable_plant/bluefern
+
+// Gacha
+/obj/item/pottable_plant_gacha
+	name = "Mysterious Potty pack"
+	desc = "Find the potted plant of your dreams! You'll most probably find the one you want in the 27th pack you open."
+	icon = 'icons/obj/flora/plant_pots.dmi'
+	icon_state = "gacha"
+	w_class = ITEM_SIZE_SMALL
+
+/obj/item/pottable_plant_gacha/attack_self(mob/user)
+	var/prize_type = pick(subtypesof(/obj/item/reagent_containers/food/pottable_plant))
+	var/obj/item/reagent_containers/food/pottable_plant/prize = new prize_type(get_turf(src))
+	to_chat(user, SPAN("notice", "You unwrap \the [src]... There's \an [prize] inside!"))
+	playsound(user.loc, 'sound/items/shpshpsh.ogg', 50, 1)
+	qdel(src)
+	user.pick_or_drop(prize)
