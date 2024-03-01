@@ -115,10 +115,6 @@
 		slot_hand_str = "black"
 		)
 
-/obj/item/clothing/under/rank/head_of_security/old
-	icon_state = "hos_corp"
-	desc = "It's a jumpsuit worn by those few with the dedication to achieve the position of \"Head of Security\". It has additional armor to protect the wearer. This one must be quite old, yet it's colors are so vibrant it hurts your eyes."
-
 /obj/item/clothing/under/rank/head_of_security/jensen
 	desc = "You never asked for anything that stylish."
 	name = "head of security's jumpsuit"

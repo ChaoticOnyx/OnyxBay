@@ -26,10 +26,3 @@
 	armor = list(melee = 5, bullet = -20, laser = 5, energy = 0, bomb = 0, bio = 0) // Getting shot despite being tacticool hurts on a different level
 	siemens_coefficient = 1
 	has_sensor = SUIT_HAS_SENSORS
-
-/obj/item/clothing/under/syndicate/tacticool/bundeswehr
-	desc = "A durable black suit worn by various private security members."
-	name = "tactical uniform"
-	icon_state = "black"
-	item_state = "BW_uniform_r"
-	worn_state = "BW_uniform_r"

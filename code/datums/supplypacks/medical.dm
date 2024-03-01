@@ -261,7 +261,6 @@
 					/obj/item/clothing/under/rank/virologist,
 					/obj/item/clothing/under/rank/nursesuit,
 					/obj/item/clothing/under/rank/nurse,
-					/obj/item/clothing/under/rank/orderly,
 					/obj/item/clothing/under/rank/medical = 3,
 					/obj/item/clothing/under/rank/medical/paramedic = 3,
 					/obj/item/clothing/suit/storage/toggle/labcoat = 3,

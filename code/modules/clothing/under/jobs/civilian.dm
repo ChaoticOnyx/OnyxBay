@@ -5,12 +5,10 @@
 	name = "bartender's uniform"
 	icon_state = "ba_suit"
 
-
 /obj/item/clothing/under/rank/captain //Alright, technically not a 'civilian' but its better then giving a .dm file for a single define.
 	desc = "It's a blue jumpsuit with some gold markings denoting the rank of \"Captain\"."
 	name = "captain's jumpsuit"
 	icon_state = "captain"
-
 
 /obj/item/clothing/under/rank/cargo
 	name = "quartermaster's jumpsuit"
@@ -26,7 +24,6 @@
 	icon_state = "cargo"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
-
 /obj/item/clothing/under/rank/chaplain
 	desc = "It's a black jumpsuit, often worn by religious folk."
 	name = "chaplain's jumpsuit"
@@ -40,26 +37,23 @@
 	name = "chef's uniform"
 	icon_state = "chef"
 
-
 /obj/item/clothing/under/rank/clown
 	name = "clown suit"
 	desc = "<i>'HONK!'</i>"
 	icon_state = "clown"
-
 
 /obj/item/clothing/under/rank/head_of_personnel
 	desc = "It's a jumpsuit worn by someone who works in the position of \"Head of Personnel\"."
 	name = "head of personnel's jumpsuit"
 	icon_state = "hop"
 
-/obj/item/clothing/under/rank/head_of_personnel_whimsy
+/obj/item/clothing/under/rank/head_of_personnel/whimsy
 	desc = "A blue jacket and red tie, with matching red cuffs! Snazzy. Wearing this makes you feel more important than your job title does."
 	name = "head of personnel's suit"
 	icon_state = "hopwhimsy"
 	item_state_slots = list(
 		slot_hand_str = "hop"
 		)
-
 
 /obj/item/clothing/under/rank/hydroponics
 	desc = "It's a jumpsuit designed to protect against minor plant-related hazards."
@@ -70,7 +64,6 @@
 		)
 	permeability_coefficient = 0.50
 
-
 /obj/item/clothing/under/rank/internalaffairs
 	desc = "The plain, professional attire of an Internal Affairs Agent. The collar is <i>immaculately</i> starched."
 	name = "Internal Affairs uniform"
@@ -80,23 +73,11 @@
 		)
 	starting_accessories = list(/obj/item/clothing/accessory/black)
 
-/obj/item/clothing/under/rank/internalaffairs/plain
-	desc = "A plain shirt and pair of pressed black pants."
-	name = "formal outfit"
-	starting_accessories = null
-
-/obj/item/clothing/under/rank/internalaffairs/plain/nt
-	desc = "A plain shirt and pair of pressed black pants."
-	name = "formal outfit"
-	starting_accessories = list(/obj/item/clothing/accessory/red_long)
-
-
 /obj/item/clothing/under/rank/janitor
 	desc = "It's the official uniform of the janitor. It has minor protection from biohazards."
 	name = "janitor's jumpsuit"
 	icon_state = "janitor"
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
-
 
 /obj/item/clothing/under/lawyer
 	desc = "Slick threads."
@@ -118,11 +99,9 @@
 	name = "red Lawyer suit"
 	icon_state = "lawyer_red"
 
-
 /obj/item/clothing/under/lawyer/blue
 	name = "blue Lawyer suit"
 	icon_state = "lawyer_blue"
-
 
 /obj/item/clothing/under/lawyer/bluesuit
 	name = "Blue Suit"
@@ -132,7 +111,6 @@
 		slot_hand_str = "ba_suit"
 		)
 	starting_accessories = list(/obj/item/clothing/accessory/red)
-
 
 /obj/item/clothing/under/lawyer/purpsuit
 	name = "Purple Suit"
@@ -148,7 +126,6 @@
 	item_state_slots = list(
 		slot_hand_str = "johnny"
 		)
-
 
 /obj/item/clothing/under/librarian
 	name = "sensible suit"
