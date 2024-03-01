@@ -75,7 +75,7 @@
 	return ..()
 
 /obj/item/intercom_assembly/proc/add_cable(obj/item/stack/cable_coil/C, mob/user)
-	if (C.get_amount() < 1)
+	if(C.get_amount() < 1)
 		show_splash_text(user, "need more coil!")
 		return
 
