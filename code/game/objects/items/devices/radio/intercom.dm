@@ -148,7 +148,7 @@
 		set_light(0)
 
 /obj/item/device/radio/intercom/Initialize(mapload, dir)
-	..(loc)
+	. = ..()
 
 	if(dir)
 		set_dir(dir)
