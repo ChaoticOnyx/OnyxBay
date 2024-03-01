@@ -107,7 +107,7 @@
 		update_info()
 		return
 
-	if(I.w_class == ITEM_SIZE_TINY)
+	if(I.w_class <= ITEM_SIZE_SMALL)
 		if(my_secret)
 			if(user)
 				to_chat(user, SPAN("notice", "There's already something hidden in \the [src]!"))
