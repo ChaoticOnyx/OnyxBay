@@ -138,8 +138,6 @@
 	tgui_interact(user)
 
 /obj/machinery/turret/network/tgui_interact(mob/user, datum/tgui/ui)
-	. = ..()
-
 	ui = SStgui.try_update_ui(user, src, ui)
 
 	if(!ui)
@@ -147,115 +145,131 @@
 		ui.open()
 
 /obj/machinery/turret/network/tgui_data(mob/user)
-	var/list/data = list(
-		"masterController" = FALSE,
-		"isMalf" = FALSE,
-	)
+	var/list/data = list()
 
-	var/list/targeting_data = list(
-		"lethalMode" = lethal_mode,
-		"checkSynth" = check_synth,
-		"checkWeapon" = check_weapons,
-		"checkRecords" = check_records,
-		"checkArrests" = check_arrest,
-		"checkAccess" = check_access,
-		"checkAnomalies" = check_anomalies,
-	)
+	data["isMalf"] = FALSE
 
-	data["targettingData"] += targeting_data
+	var/mob/living/silicon/ai = user
+	if(istype(ai))
+		data["isMalf"] = ai.is_malf() ? TRUE : FALSE
 
-	data["settingsData"] += get_turret_data()
+	data["isEnabled"] = enabled
 
-	data["settingsData"] += get_gun_data()
-
-	if(istype(signaler))
-		data["signalerInstalled"] = TRUE
+	data["hasMaster"] = FALSE
 
 	var/obj/machinery/turret_control_panel/control_panel = master_controller?.resolve()
 	if(istype(control_panel))
 		data["masterController"] = TRUE
 
-	if(issilicon(user))
-		var/mob/living/silicon/ai = user
-		if(ai.is_malf())
-			data["isMalf"] = TRUE
+	data["hasSignaler"] = istype(signaler) ? TRUE : FALSE
 
-	return data
+	data["gunData"] += get_gun_data()
+	data["settingsData"] += get_turret_data()
 
-/obj/machinery/turret/network/proc/get_turret_data()
-	var/list/data = list(
-		"status" = enabled,
-		"storedAmmo" = stored_ammo,
-		"currentBearing" = current_bearing,
-		"defaultBearing" = default_bearing,
-		"signalerInstalled" = FALSE,
-		"integrity" = integrity,
-		"maxIntegrity" = max_integrity
+	data["targettingData"] = list(
+		"lethalMode" = lethal_mode,
+		"checkSynth" = check_synth,
+		"checkWeapon" = check_weapons,
+		"checkRecords" = check_records,
+		"checkAccess" = check_access,
+		"checkArrests" = check_arrest,
+		"checkAnomalies" = check_anomalies,
 	)
 
 	return data
 
+/obj/machinery/turret/network/proc/get_turret_data()
+	return list(
+		"bearing" = current_bearing,
+		"integrity" = integrity,
+		"maxIntegrity" = max_integrity,
+	)
+
 /obj/machinery/turret/network/proc/get_gun_data()
 	var/list/data = list()
-	if(istype(installed_gun))
-		data["gun"] = installed_gun.name
-		if(istype(installed_gun, /obj/item/gun/projectile))
-			var/obj/item/gun/projectile/proj_gun = installed_gun
-			data["gunAmmo"] = proj_gun.getAmmo()
-			data["gunMaxAmmo"] = proj_gun.ammo_magazine?.max_ammo
-		else if(istype(installed_gun, /obj/item/gun/energy))
-			var/obj/item/gun/energy/egun = installed_gun
-			data["gunAmmo"] = egun.power_supply?.charge
-			data["gunMaxAmmo"] = egun.power_supply?.maxcharge
+
+	if(!istype(installed_gun))
+		return data
+
+	data["gunName"] = installed_gun.name
+
+	if(istype(installed_gun, /obj/item/gun/projectile))
+		var/obj/item/gun/projectile/proj_gun = installed_gun
+		data["gunAmmo"] = proj_gun.getAmmo()
+		data["gunMaxAmmo"] = proj_gun.ammo_magazine?.max_ammo
+	else if(istype(installed_gun, /obj/item/gun/energy))
+		var/obj/item/gun/energy/egun = installed_gun
+		data["gunAmmo"] = egun.power_supply?.charge
+		data["gunMaxAmmo"] = egun.power_supply?.maxcharge
+
+	data["storedAmmo"] = stored_ammo
 
 	return data
 
 /obj/machinery/turret/network/tgui_act(action, list/params)
 	. = ..()
+
 	if(.)
 		return
 
 	switch(action)
 		if("toggle")
-			enabled = !enabled
+			switch(params["check"])
+				if("power")
+					enabled = !enabled
+					return TRUE
+
+				if("mode")
+					lethal_mode = !lethal_mode
+					lethal_nonlethal_switch()
+					return TRUE
+
+				if("synth")
+					check_synth = !check_synth
+					return TRUE
+
+				if("weapon")
+					check_weapons = !check_weapons
+					return TRUE
+
+				if("records")
+					check_records = !check_records
+					return TRUE
+
+				if("arrest")
+					check_arrest = !check_arrest
+					return TRUE
+
+				if("access")
+					check_access = !check_access
+					return TRUE
+
+				if("anomalies")
+					check_anomalies = !check_anomalies
+					return TRUE
+
+		if("changeBearing")
+			change_bearing(usr)
 			return TRUE
 
-		if("lethal_mode")
-			lethal_mode = !lethal_mode
-			lethal_nonlethal_switch()
-			return TRUE
-
-		if("check_synth")
-			check_synth = !check_synth
-			return TRUE
-
-		if("check_weapon")
-			check_weapons = !check_weapons
-			return TRUE
-
-		if("check_records")
-			check_records = !check_records
-			return TRUE
-
-		if("check_arrest")
-			check_arrest = !check_arrest
-			return TRUE
-
-		if("check_access")
-			check_access = !check_access
-			return TRUE
-
-		if("check_anomalies")
-			check_anomalies = !check_anomalies
-			return TRUE
-
-		if("adjust_default_bearing")
-			default_bearing = Clamp(text2num(params["new_bearing"]), 0, 360)
-			return TRUE
-
-		if("destroy_signaler")
+		if("destroySignaler")
 			QDEL_NULL(signaler)
 			master_controller = null
 			return TRUE
+
+// TODO: figure out why it doesn't accept value and loops infinitely.
+/obj/machinery/turret/network/proc/change_bearing(mob/user)
+	if(!istype(user))
+		return
+
+	var/new_bearing = tgui_input_number(user, "", "Bearing Change", 0, -1, 360)
+	if(isnull(new_bearing))
+		return
+
+	switch(new_bearing) // Maybe if(new_bearing == -1)
+		if(-1)
+			default_bearing = null
+		else
+			default_bearing = trunc(new_bearing)
 
 #undef MAX_TURRET_LOGS

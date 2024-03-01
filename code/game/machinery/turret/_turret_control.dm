@@ -150,15 +150,24 @@
 	ui = SStgui.try_update_ui(user, src, ui)
 
 	if(!ui)
-		ui = new(user, src, "TurretControlPanel", "Turret Control Panel")
+		ui = new(user, src, "TurretControl", "Turret Control Panel")
 		ui.open()
 
 /obj/machinery/turret_control_panel/tgui_data(mob/user)
-	var/list/data = list(
-		"enabled" = enabled,
-	)
+	var/list/data = list()
 
-	var/list/targeting_data = list(
+	data["isEnabled"] = enabled
+
+	data["turrets"] = list()
+	for(var/obj/machinery/turret/network/T as anything in get_connected_turrets())
+		data["turrets"] += list(list(
+			"ref" = ref(T),
+			"gunData" = T.get_gun_data(),
+			"settingsData" = T.get_turret_data(),
+		))
+
+	// TODO: refactor turret settings to /datum/turret_settings to make thus allowing to simply call turret_settings.tgui_data()
+	data["targetingData"] = list(
 		"lethalMode" = lethal,
 		"checkSynth" = check_synth,
 		"checkWeapon" = check_weapons,
@@ -167,16 +176,6 @@
 		"checkAccess" = check_access,
 		"checkAnomalies" = check_anomalies,
 	)
-
-	data["targetingData"] += targeting_data
-
-	data["turrets"] = list()
-	var/list/connected_turrets = get_connected_turrets()
-	for(var/obj/machinery/turret/network/T in connected_turrets)
-		var/list/turret_data = list()
-		turret_data["turretSettings"] += T.get_gun_data()
-		turret_data["turretSettings"] += T.get_turret_data()
-		data["turrets"] += list(turret_data)
 
 	return data
 
@@ -187,43 +186,60 @@
 
 	switch(action)
 		if("toggle")
-			enabled = !enabled
-			update_turrets()
-			return TRUE
+			switch(params["check"])
+				if("power")
+					enabled = !enabled
+					update_turrets()
+					return TRUE
 
-		if("lethal_mode")
-			lethal = !lethal
-			update_turrets()
-			return TRUE
+				if("mode")
+					lethal = !lethal
+					update_turrets()
+					return TRUE
 
-		if("check_synth")
-			check_synth = !check_synth
-			update_turrets()
-			return TRUE
+				if("synth")
+					check_synth = !check_synth
+					update_turrets()
+					return TRUE
 
-		if("check_weapon")
-			check_weapons = !check_weapons
-			update_turrets()
-			return TRUE
+				if("weapon")
+					check_weapons = !check_weapons
+					update_turrets()
+					return TRUE
 
-		if("check_records")
-			check_records = !check_records
-			update_turrets()
-			return TRUE
+				if("records")
+					check_records = !check_records
+					update_turrets()
+					return TRUE
 
-		if("check_arrest")
-			check_arrest = !check_arrest
-			update_turrets()
-			return TRUE
+				if("arrest")
+					check_arrest = !check_arrest
+					update_turrets()
+					return TRUE
 
-		if("check_access")
-			check_access = !check_access
-			update_turrets()
-			return TRUE
+				if("access")
+					check_access = !check_access
+					update_turrets()
+					return TRUE
 
-		if("check_anomalies")
-			check_anomalies = !check_anomalies
-			update_turrets()
+				if("anomalies")
+					check_anomalies = !check_anomalies
+					update_turrets()
+					return TRUE
+
+		if("changeBearing")
+			var/turret_ref = params["ref"]
+			if(isnull(turret_ref))
+				return
+
+			var/obj/machinery/turret/network/target_turret = locate(turret_ref)
+			if(!istype(target_turret))
+				return
+
+			if(!(target_turret in get_connected_turrets()))
+				return
+
+			target_turret.change_bearing(usr)
 			return TRUE
 
 /obj/machinery/turret_control_panel/proc/update_turrets()

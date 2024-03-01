@@ -1,3 +1,4 @@
+import { BooleanLike } from "common/react";
 import { useBackend, useLocalState } from "../backend";
 import {
   Button,
@@ -6,208 +7,189 @@ import {
   Stack,
   LabeledList,
   ProgressBar,
-  NumberInput,
+  Box,
 } from "../components";
 import { Window } from "../layouts";
-
-enum Tab {
-  Targeting,
-  Settings,
-}
+import { toTitleCase } from "common/string";
 
 export interface SettingsData {
-  gun: string;
-  status: boolean;
+  bearing: number;
   integrity: number;
   maxIntegrity: number;
+}
+
+export interface GunData {
+  gunName: string;
   gunAmmo: number;
   gunMaxAmmo: number;
   storedAmmo: number;
-  currentBearing: number;
-  defaultBearing: number;
 }
 
 export interface TargetingData {
-  lethalMode: boolean;
-  checkSynth: boolean;
-  checkWeapon: boolean;
-  checkRecords: boolean;
-  checkArrests: boolean;
-  checkAccess: boolean;
-  checkAnomalies: boolean;
+  lethalMode: BooleanLike;
+  checkSynth: BooleanLike;
+  checkWeapon: BooleanLike;
+  checkRecords: BooleanLike;
+  checkAccess: BooleanLike;
+  checkArrests: BooleanLike;
+  checkAnomalies: BooleanLike;
 }
 
-export interface InputData {
-  masterController: boolean;
-  isMalf: boolean;
-  signalerInstalled: boolean;
-  enabled: boolean;
+export interface TurretData {
+  isMalf: BooleanLike;
+  isEnabled: BooleanLike;
+  hasMaster: BooleanLike;
+  hasSignaler: BooleanLike;
+  gunData: GunData;
   settingsData: SettingsData;
   targettingData: TargetingData;
 }
 
 export const Turret = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
-  const [currentTab, setCurrentTab] = useLocalState(
-    context,
-    "tabName",
-    Tab.Targeting
-  );
+  const { data } = useBackend<TurretData>(context);
 
   return (
-    <Window title="Turret Panel" width={240} height={290}>
-      <Window.Content scrollable>
-        <Section
-          title="Turret Control Panel"
-          buttons={
-            <Button
-              icon={"screwdriver-wrench"}
-              tooltip={"Manage turrets"}
-              onClick={() =>
-                setCurrentTab(currentTab ? Tab.Targeting : Tab.Settings)
-              }
-            />
-          }
-        >
-          {!data.isMalf ? (
-            <></>
-          ) : (
-            <Button
-              fluid
-              color={"bad"}
-              icon={"plug-circle-xmark"}
-              disabled={!data.signalerInstalled}
-              tooltip={
-                "Fries this turret's signaler, breaking connection with its remote control panel."
-              }
-              onClick={() => act("destroy_signaler")}
-            >
-              Destroy signaler
-            </Button>
-          )}
-        </Section>
-        {data.masterController ? (
-          <NoticeBox>Turret is remotely controlled.</NoticeBox>
-        ) : (
-          <Section>
-            {(currentTab === Tab.Settings && (
-              <TurretSettings
-                params={data.settingsData}
-                onBearingChange={(value) =>
-                  act("adjust_default_bearing", { new_bearing: value })
-                }
-              />
-            )) ||
-              (currentTab === Tab.Targeting && (
-                <TurretTargeting
-                  params={data.targettingData}
-                  lethalModeSwitch={() => act("lethal_mode")}
-                  synthSwitch={() => act("check_synth")}
-                  weaponSwitch={() => act("check_weapon")}
-                  recordsSwitch={() => act("check_records")}
-                  arrestSwitch={() => act("check_arrest")}
-                  accessSwitch={() => act("check_access")}
-                  anomaliesSwitch={() => act("check_anomalies")}
-                />
-              ))}
-          </Section>
-        )}
+    <Window title="Turret Panel" width={300} height={250}>
+      <Window.Content>
+        <TurretDisplay turretData={data} />
       </Window.Content>
     </Window>
   );
 };
 
+export interface TurretDisplayProps {
+  turretData: TurretData;
+}
+
+export const TurretDisplay = (props: TurretDisplayProps, context: any) => {
+  const { act } = useBackend(context);
+  const { turretData } = props;
+
+  const { isMalf, isEnabled, hasMaster, hasSignaler } = turretData;
+
+  const [settingsOpen, setSettingsOpen] = useLocalState(
+    context,
+    "settingsOpen",
+    false
+  );
+
+  const onToggleHandler = (action: string) => act("toggle", { check: action });
+
+  return (
+    <Section
+      fill
+      title="Turret Control Panel"
+      buttons={
+        <>
+          <Button
+            icon={isEnabled ? "toggle-on" : "toggle-off"}
+            color={isEnabled ? "default" : "green"}
+            onClick={() => onToggleHandler("power")}
+          />
+          <Button
+            icon={"screwdriver-wrench"}
+            onClick={() => setSettingsOpen(!settingsOpen)}
+          />
+        </>
+      }
+    >
+      {isMalf ? (
+        <Button
+          fluid
+          color="bad"
+          disabled={!hasSignaler}
+          icon="plug-circle-xmark"
+          content="Destroy Connection"
+          tooltip="Fries turret's signaler, thus breaking connection with its remote control panel."
+          onClick={() => act("destroySignaler")}
+        />
+      ) : null}
+      <Stack fill vertical>
+        {hasMaster ? (
+          <NoticeBox>Turret is remotely controlled.</NoticeBox>
+        ) : (
+          <Stack.Item grow>
+            {settingsOpen ? (
+              <TurretSettings
+                gun={turretData.gunData}
+                settings={turretData.settingsData}
+                onBearingClick={() => act("changeBearing")}
+              />
+            ) : (
+              <TurretTargeting
+                data={turretData.targettingData}
+                onToggle={onToggleHandler}
+              />
+            )}
+          </Stack.Item>
+        )}
+      </Stack>
+    </Section>
+  );
+};
+
 interface TurretSettingsProps {
-  params: SettingsData;
-  onBearingChange: (value: number) => void;
+  gun: GunData;
+  settings: SettingsData;
+  onBearingClick: () => void;
 }
 
 export const TurretSettings = (props: TurretSettingsProps, context: any) => {
-  const { params, onBearingChange } = props;
-  const {
-    gun,
-    status,
-    integrity,
-    maxIntegrity,
-    gunAmmo,
-    gunMaxAmmo,
-    storedAmmo,
-    currentBearing,
-    defaultBearing,
-  } = params;
+  const { gun, settings, onBearingClick } = props;
+
+  const { gunName, gunAmmo, gunMaxAmmo, storedAmmo } = gun;
+  const { bearing, integrity, maxIntegrity } = settings;
 
   return (
-    <>
-      <LabeledList>
-        <LabeledList.Item label="Installed gun">{gun}</LabeledList.Item>
-        <LabeledList.Item label="Integrity">
-          <ProgressBar
-            value={integrity}
-            minValue={0}
-            maxValue={maxIntegrity}
-            ranges={{
-              bad: [-Infinity, 0.7],
-              average: [0.7, 0.9],
-              good: [0.9, Infinity],
-            }}
-          />
-        </LabeledList.Item>
-        <LabeledList.Item label="Ammo">
-          <ProgressBar
-            value={gunAmmo}
-            minValue={0}
-            maxValue={gunMaxAmmo}
-            ranges={{
-              bad: [-Infinity, 0.7],
-              average: [0.7, 0.9],
-              good: [0.9, Infinity],
-            }}
-          />
-        </LabeledList.Item>
-        <LabeledList.Item label="Default bearing">
-          <NumberInput
-            inline
-            size={1}
-            step={1}
-            stepPixelSize={2}
-            value={defaultBearing}
-            minValue={0}
-            maxValue={360}
-            bipolar={true}
-            onChange={(e: any, value: number) => onBearingChange(value)}
-          />
-        </LabeledList.Item>
-        <LabeledList.Item label="Current bearing">
-          {currentBearing}
-        </LabeledList.Item>
-      </LabeledList>
+    <LabeledList>
+      <LabeledList.Item label="Integrity">
+        <ProgressBar
+          value={integrity}
+          minValue={0}
+          maxValue={maxIntegrity}
+          ranges={{
+            bad: [-Infinity, 0.7],
+            average: [0.7, 0.9],
+            good: [0.9, Infinity],
+          }}
+        />
+      </LabeledList.Item>
       <LabeledList.Divider size={1} />
-    </>
+      <LabeledList.Item label="Gun">{toTitleCase(gunName)}</LabeledList.Item>
+      <LabeledList.Item label="Ammo">
+        <ProgressBar
+          value={gunAmmo}
+          minValue={0}
+          maxValue={gunMaxAmmo}
+          ranges={{
+            bad: [-Infinity, 0.7],
+            average: [0.7, 0.9],
+            good: [0.9, Infinity],
+          }}
+        />
+      </LabeledList.Item>
+      {storedAmmo > 0 && (
+        <LabeledList.Item label="Magazines">storedAmmo</LabeledList.Item>
+      )}
+      <LabeledList.Divider size={1} />
+      <LabeledList.Item label="Default bearing">
+        <Button
+          icon="pen"
+          content={bearing !== null ? "not set" : `${bearing}\u00B0`}
+          onClick={() => onBearingClick()}
+        />
+      </LabeledList.Item>
+    </LabeledList>
   );
 };
 
 interface TurgetTargetingProps {
-  params: TargetingData;
-  lethalModeSwitch: () => void;
-  synthSwitch: () => void;
-  weaponSwitch: () => void;
-  recordsSwitch: () => void;
-  arrestSwitch: () => void;
-  accessSwitch: () => void;
-  anomaliesSwitch: () => void;
+  data: TargetingData;
+  onToggle: (action: string) => void;
 }
 
 export const TurretTargeting = (props: TurgetTargetingProps, context: any) => {
-  const {
-    params,
-    lethalModeSwitch,
-    synthSwitch,
-    weaponSwitch,
-    recordsSwitch,
-    arrestSwitch,
-    accessSwitch,
-    anomaliesSwitch,
-  } = props;
+  const { data, onToggle } = props;
   const {
     lethalMode,
     checkSynth,
@@ -216,65 +198,73 @@ export const TurretTargeting = (props: TurgetTargetingProps, context: any) => {
     checkArrests,
     checkAccess,
     checkAnomalies,
-  } = params;
+  } = data;
 
   return (
-    <Section>
+    <Stack fill vertical>
       <Stack.Item>
-        <Stack>
-          <Stack.Item align="right">
-            <Button
-              fluid
-              content={"Lethal Mode"}
-              icon={lethalMode ? "circle-check" : "circle"}
-              color={lethalMode ? "red" : "green"}
-              onClick={() => lethalModeSwitch()}
-            />
-            <Button
-              fluid
-              content={"Neutralize ALL Non-Synthetics"}
-              icon={checkSynth ? "circle-check" : "circle"}
-              color={checkSynth ? "red" : "green"}
-              onClick={() => synthSwitch()}
-            />
-            <Button
-              fluid
-              content={"Check Weapon Authorization"}
-              icon={checkWeapon ? "circle-check" : "circle"}
-              color={checkWeapon ? "red" : "green"}
-              onClick={() => weaponSwitch()}
-            />
-            <Button
-              fluid
-              content={"Check Security Records"}
-              icon={checkRecords ? "circle-check" : "circle"}
-              color={checkRecords ? "red" : "green"}
-              onClick={() => recordsSwitch()}
-            />
-            <Button
-              fluid
-              content={"Check Arrest Status"}
-              icon={checkArrests ? "circle-check" : "circle"}
-              color={checkArrests ? "red" : "green"}
-              onClick={() => arrestSwitch()}
-            />
-            <Button
-              fluid
-              content={"Check Access Authorization"}
-              icon={checkAccess ? "circle-check" : "circle"}
-              color={checkAccess ? "red" : "green"}
-              onClick={() => accessSwitch()}
-            />
-            <Button
-              fluid
-              content={"Check misc. Lifeforms"}
-              icon={checkAnomalies ? "circle-check" : "circle"}
-              color={checkAnomalies ? "red" : "green"}
-              onClick={() => anomaliesSwitch()}
-            />
-          </Stack.Item>
-        </Stack>
+        <Button
+          fluid
+          content={"Lethal Mode"}
+          icon={!!lethalMode ? "circle-check" : "circle"}
+          color={!!lethalMode ? "red" : "green"}
+          onClick={() => onToggle("mode")}
+        />
       </Stack.Item>
-    </Section>
+      <Stack.Item>
+        <Button
+          fluid
+          content={"Neutralize ALL Non-Synthetics"}
+          icon={checkSynth ? "circle-check" : "circle"}
+          color={checkSynth ? "red" : "green"}
+          onClick={() => onToggle("synth")}
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          fluid
+          content={"Check Weapon Authorization"}
+          icon={checkWeapon ? "circle-check" : "circle"}
+          color={checkWeapon ? "red" : "green"}
+          onClick={() => onToggle("weapon")}
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          fluid
+          content={"Check Security Records"}
+          icon={checkRecords ? "circle-check" : "circle"}
+          color={checkRecords ? "red" : "green"}
+          onClick={() => onToggle("records")}
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          fluid
+          content={"Check Arrest Status"}
+          icon={checkArrests ? "circle-check" : "circle"}
+          color={checkArrests ? "red" : "green"}
+          onClick={() => onToggle("arrest")}
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          fluid
+          content={"Check Access Authorization"}
+          icon={checkAccess ? "circle-check" : "circle"}
+          color={checkAccess ? "red" : "green"}
+          onClick={() => onToggle("access")}
+        />
+      </Stack.Item>
+      <Stack.Item>
+        <Button
+          fluid
+          content={"Check misc. Lifeforms"}
+          icon={checkAnomalies ? "circle-check" : "circle"}
+          color={checkAnomalies ? "red" : "green"}
+          onClick={() => onToggle("anomalies")}
+        />
+      </Stack.Item>
+    </Stack>
   );
 };
