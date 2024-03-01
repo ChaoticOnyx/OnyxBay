@@ -11,7 +11,7 @@
 	var/obj/item/my_secret = null
 
 	var/base_name = "plant pot"
-	var/base_desc = "A pot. For plants."
+	var/base_desc = "A small pot. For small plants."
 	var/startplant = null
 
 /obj/item/plant_pot/Initialize()
