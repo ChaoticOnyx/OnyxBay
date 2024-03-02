@@ -7,6 +7,11 @@
 	path = /obj/item/clothing/under/color
 	flags = GEAR_HAS_COLOR_SELECTION
 
+/datum/gear/uniform/jumpskirt
+	display_name = "jumpskirt, colour select"
+	path = /obj/item/clothing/under/jumpskirt
+	flags = GEAR_HAS_COLOR_SELECTION
+
 /datum/gear/uniform/roboticist_skirt
 	display_name = "skirt, roboticist"
 	path = /obj/item/clothing/under/rank/roboticist/skirt
@@ -31,9 +36,7 @@
 	suits += /obj/item/clothing/under/lawyer/black
 	suits += /obj/item/clothing/under/scratch
 	suits += /obj/item/clothing/under/lawyer/bluesuit
-	suits += /obj/item/clothing/under/rank/internalaffairs/plain
 	suits += /obj/item/clothing/under/blazer
-	suits += /obj/item/clothing/under/blackjumpskirt
 	suits += /obj/item/clothing/under/kilt
 	suits += /obj/item/clothing/under/dress/dress_hr
 	suits += /obj/item/clothing/under/det
@@ -125,32 +128,6 @@
 /datum/gear/uniform/tacticool_turtleneck
 	display_name = "tacticool turtleneck"
 	path = /obj/item/clothing/under/syndicate/tacticool
-
-// /datum/gear/uniform/turtleneck
-// 	display_name = "sweater, colour select"
-// 	path = /obj/item/clothing/under/rank/psych/turtleneck/sweater
-// 	flags = GEAR_HAS_COLOR_SELECTION
-
-/* MissingNo. uniform. Causes logs wreckage. *shrug
-/datum/gear/uniform/corporate
-	display_name = "corporate uniform selection"
-	path = /obj/item/clothing/under
-
-/datum/gear/uniform/corporate/New()
-	..()
-	var/corps = list()
-	// corps += /obj/item/clothing/under/saare
-	// corps += /obj/item/clothing/under/aether
-	// corps += /obj/item/clothing/under/hephaestus
-	// corps += /obj/item/clothing/under/grayson
-	// corps += /obj/item/clothing/under/focal
-	// corps += /obj/item/clothing/under/rank/ntwork
-	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(corps)
-*/
-
-/datum/gear/uniform/sterile
-	display_name = "sterile jumpsuit"
-	path = /obj/item/clothing/under/sterile
 
 /datum/gear/uniform/hazard
 	display_name = "hazard jumpsuit"
@@ -344,7 +321,7 @@
 
 /datum/gear/uniform/shortjumpskirt
 	display_name = "short jumpskirt"
-	path = /obj/item/clothing/under/shortjumpskirt
+	path = /obj/item/clothing/under/jumpskirt/grey
 	price = 10
 
 /datum/gear/uniform/charcoal

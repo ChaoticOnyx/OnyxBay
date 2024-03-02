@@ -70,7 +70,7 @@
 		/obj/item/clothing/under/dress/dress_hr,
 		/obj/item/clothing/under/dress/dress_hop,
 		/obj/item/clothing/under/rank/head_of_personnel,
-		/obj/item/clothing/under/rank/head_of_personnel_whimsy,
+		/obj/item/clothing/under/rank/head_of_personnel/whimsy,
 		/obj/item/clothing/suit/armor/vest,
 		/obj/item/clothing/shoes/black,
 		/obj/item/clothing/shoes/white
