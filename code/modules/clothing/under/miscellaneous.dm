@@ -479,24 +479,6 @@
 	icon_state = "sundress_white"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
-/obj/item/clothing/under/blackjumpskirt
-	name = "black jumpskirt"
-	desc = "A black jumpskirt, with a pink undershirt."
-	icon_state = "blackjumpskirt"
-	item_state_slots = list(
-		slot_hand_str = "black"
-		)
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-
-/obj/item/clothing/under/shortjumpskirt
-	name = "short jumpskirt"
-	desc = "A slimming, short jumpskirt."
-	icon_state = "shortjumpskirt"
-	item_state_slots = list(
-		slot_hand_str = "white"
-		)
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-
 /obj/item/clothing/under/captainformal
 	name = "captain's formal uniform"
 	desc = "A captain's formal-wear, for special occasions."

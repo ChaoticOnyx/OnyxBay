@@ -7,6 +7,11 @@
 	path = /obj/item/clothing/under/color
 	flags = GEAR_HAS_COLOR_SELECTION
 
+/datum/gear/uniform/jumpskirt
+	display_name = "jumpskirt, colour select"
+	path = /obj/item/clothing/under/jumpskirt
+	flags = GEAR_HAS_COLOR_SELECTION
+
 /datum/gear/uniform/roboticist_skirt
 	display_name = "skirt, roboticist"
 	path = /obj/item/clothing/under/rank/roboticist/skirt
@@ -32,7 +37,6 @@
 	suits += /obj/item/clothing/under/scratch
 	suits += /obj/item/clothing/under/lawyer/bluesuit
 	suits += /obj/item/clothing/under/blazer
-	suits += /obj/item/clothing/under/blackjumpskirt
 	suits += /obj/item/clothing/under/kilt
 	suits += /obj/item/clothing/under/dress/dress_hr
 	suits += /obj/item/clothing/under/det
@@ -317,7 +321,7 @@
 
 /datum/gear/uniform/shortjumpskirt
 	display_name = "short jumpskirt"
-	path = /obj/item/clothing/under/shortjumpskirt
+	path = /obj/item/clothing/under/jumpskirt/grey
 	price = 10
 
 /datum/gear/uniform/charcoal
