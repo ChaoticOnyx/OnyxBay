@@ -181,7 +181,7 @@
 					return TRUE
 
 				if("mode")
-					lethal = !lethal
+					targeting_settings.lethal_mode = !targeting_settings.lethal_mode
 					update_turrets()
 					return TRUE
 
