@@ -147,6 +147,32 @@
 		icon_state = "intercom-p"
 		set_light(0)
 
+/obj/item/device/radio/intercom/Initialize(mapload, dir)
+	. = ..()
+
+	if(dir)
+		set_dir(dir)
+
+	power_change()
+	pixel_x = (dir & (NORTH|SOUTH))? 0 : (dir == EAST ? -22 : 22)
+	pixel_y = (dir & (NORTH|SOUTH))? (dir == NORTH ? -22 : 22) : 0
+
+/obj/item/device/radio/intercom/attackby(obj/item/W, mob/user)
+	if(isScrewdriver(W))
+		unscrew_frame(user)
+		return
+
+	return ..()
+
+/obj/item/device/radio/intercom/proc/unscrew_frame(mob/user)
+	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
+	show_splash_text(user, "unscrewing...")
+
+	if(do_after(user, 40, src))
+		show_splash_text(user, "unscrewed!")
+		new /obj/item/intercom_assembly(loc, dir, src)
+		qdel(src)
+
 /obj/item/device/radio/intercom/broadcasting
 	broadcasting = 1
 

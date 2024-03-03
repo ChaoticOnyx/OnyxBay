@@ -95,6 +95,7 @@
 	recipes += new /datum/stack_recipe("apc frame", /obj/item/frame/apc, 3)
 	recipes += new /datum/stack_recipe("air alarm frame", /obj/item/frame/air_alarm, 3)
 	recipes += new /datum/stack_recipe("fire alarm frame", /obj/item/frame/fire_alarm, 3)
+	recipes += new /datum/stack_recipe("intercom frame", /obj/item/frame/intercom, 3)
 
 	recipes += new /datum/stack_recipe_list("modular computer frames", list( \
 		new /datum/stack_recipe("modular console frame", /obj/item/modular_computer/console, 20, one_per_turf = 1, on_floor = 1),\
