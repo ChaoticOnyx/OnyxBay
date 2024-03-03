@@ -430,7 +430,7 @@ datum/preferences/proc/clear_character_previews()
 	character.flavor_texts["hands"] = flavor_texts["hands"]
 	character.flavor_texts["legs"] = flavor_texts["legs"]
 	character.flavor_texts["feet"] = flavor_texts["feet"]
-	character.flavor_texts["ooc"] = flavor_texts["ooc"]
+	character.flavor_texts["action"] = flavor_texts["action"]
 
 	character.med_record = med_record
 	character.sec_record = sec_record
