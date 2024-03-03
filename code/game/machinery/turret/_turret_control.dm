@@ -146,8 +146,6 @@
 	tgui_interact(user)
 
 /obj/machinery/turret_control_panel/tgui_interact(mob/user, datum/tgui/ui)
-	. = ..()
-
 	ui = SStgui.try_update_ui(user, src, ui)
 
 	if(!ui)
@@ -242,13 +240,7 @@
 	var/list/turrets = get_connected_turrets()
 	for(var/obj/machinery/turret/network/T in turrets)
 		var/datum/targeting_settings/targ = T.targeting_settings
-		targ.lethal_mode = targeting_settings.lethal_mode
-		targ.check_access = targeting_settings.check_access
-		targ.check_weapons = targeting_settings.check_weapons
-		targ.check_records = targeting_settings.check_records
-		targ.check_arrest = targeting_settings.check_arrest
-		targ.check_anomalies = targeting_settings.check_anomalies
-		targ.check_synth = targeting_settings.check_synth
+		targ.copy_from(targeting_settings)
 		T.toggle_enabled(override = enabled)
 		T.lethal_nonlethal_switch()
 

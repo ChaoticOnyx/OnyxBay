@@ -32,8 +32,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/popdown_anim = "popdown"
 
 	// Sounds
-	var/turn_on_sound = null // Played when turret goes from off to on.
-	var/turn_off_sound = null // The above, in reverse.
+	var/turn_on_sound = SFX_TURRET_DEPLOY // Played when turret goes from off to on.
+	var/turn_off_sound = SFX_TURRET_RETRACT // The above, in reverse.
 
 	// Shooting
 	var/obj/item/gun/installed_gun = /obj/item/gun/energy/laser/practice // Instance of the gun inside the turret.
@@ -582,6 +582,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 /// Plays opening animation
 /obj/machinery/turret/proc/popup()
+	playsound(src, turn_on_sound, 80, TRUE)
 	var/atom/flick_holder = new /atom/movable/porta_turret_cover(loc)
 	flick_holder.layer = layer + 0.1
 	var/icon/flick_icon = icon(icon, popup_anim)
@@ -594,6 +595,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 /// Plays closing animation
 /obj/machinery/turret/proc/popdown()
+	playsound(src, turn_off_sound, 80, TRUE)
 	var/atom/flick_holder = new /atom/movable/porta_turret_cover(loc)
 	flick_holder.layer = layer + 0.1
 	var/icon/flick_icon = icon(icon, popdown_anim)

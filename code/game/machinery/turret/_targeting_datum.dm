@@ -29,3 +29,12 @@
 		"checkAnomalies" = check_anomalies,
 	)
 	return data
+
+/datum/targeting_settings/proc/copy_from(datum/targeting_settings/origin)
+	lethal_mode = origin.lethal_mode
+	check_access = origin.check_access
+	check_weapons = origin.check_weapons
+	check_records = origin.check_records
+	check_arrest = origin.check_arrest
+	check_anomalies = origin.check_anomalies
+	check_synth = origin.check_synth

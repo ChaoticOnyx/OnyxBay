@@ -43,8 +43,6 @@
 /datum/state/turret/idle
 	ray_color = "#ffffffff"
 	ray_alpha = 0
-	switched_to_sound = SFX_TURRET_RETRACT
-	switched_from_sound = SFX_TURRET_DEPLOY
 	// Timer for returning to default bearing.
 	timer_proc = /obj/machinery/turret/proc/process_idle
 	timer_wait = 5 SECONDS
