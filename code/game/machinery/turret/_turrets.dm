@@ -620,6 +620,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		if(force < 5)
 			return
 
+	state_machine.evaluate()
+
 	integrity -= force
 
 	if(force > 5 && prob(45))
@@ -638,18 +640,17 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 	take_damage(damage)
 
-
-
 /obj/machinery/turret/emp_act(severity)
 	if(enabled)
 		//if the turret is on, the EMP no matter how severe disables the turret for a while
 		if(prob(5))
 			emagged = TRUE
 
-		enabled = FALSE
-		spawn(rand(60,600))
+		toggle_enabled(FALSE)
+		spawn(rand(60, 600))
 			if(!enabled)
-				enabled = TRUE
+				toggle_enabled(TRUE)
+
 	..()
 
 /obj/machinery/turret/ex_act(severity)

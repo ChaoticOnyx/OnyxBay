@@ -35,7 +35,7 @@
 /datum/hostility/turret/network
 	var/static/threat_level_threshold = 4
 
-/datum/hostility/turret/network/can_special_target(atom/holder, atom/movable/target)
+/datum/hostility/turret/network/can_special_target(atom/holder, mob/target)
 	var/obj/machinery/turret/network/owner = holder
 	var/datum/targeting_settings/targeting = owner.targeting_settings
 	if(!istype(holder))
@@ -65,6 +65,9 @@
 		return FALSE
 
 	if(!targeting.lethal_mode && !owner.can_non_lethal())
+		return FALSE
+
+	if(target.incapacitated())
 		return FALSE
 
 	var/mob/living/L = target
