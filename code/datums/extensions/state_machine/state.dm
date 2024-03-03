@@ -25,7 +25,7 @@ GLOBAL_LIST_INIT(fsm_states, list(); for(var/state in subtypesof(/datum/state)) 
 
 // Stub for child states to modify the holder when switched to.
 // Again, `holder` is not the FSM.
-/datum/state/proc/entered_state(datum/holder)
+/datum/state/proc/entered_state(datum/holder, datum/state/previous_state)
 	return
 
 // Another stub for when leaving a state.

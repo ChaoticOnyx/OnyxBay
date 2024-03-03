@@ -26,6 +26,11 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/image/transverse_left // Images for displaying the range of the turret's transverse
 	var/image/transverse_right
 
+	/// Animation played when this turret goes up
+	var/popup_anim = "popup"
+	/// Animation played when this turret goes down
+	var/popdown_anim = "popdown"
+
 	// Sounds
 	var/turn_on_sound = null // Played when turret goes from off to on.
 	var/turn_off_sound = null // The above, in reverse.
@@ -568,6 +573,35 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		AddOverlays(turret_ray)
 
 	return ..()
+
+/// Plays opening animation
+/obj/machinery/turret/proc/popup()
+	var/atom/flick_holder = new /atom/movable/porta_turret_cover(loc)
+	flick_holder.layer = layer + 0.1
+	var/icon/flick_icon = icon(icon, popup_anim)
+	flick_holder.SetTransform(rotation = current_bearing)
+	flick(flick_icon, flick_holder)
+	QDEL_IN(flick_holder, 1 SECOND)
+	raised = FALSE
+	update_icon()
+
+/// Plays closing animation
+/obj/machinery/turret/proc/popdown()
+	var/atom/flick_holder = new /atom/movable/porta_turret_cover(loc)
+	flick_holder.layer = layer + 0.1
+	var/icon/flick_icon = icon(icon, popdown_anim)
+	flick_holder.SetTransform(rotation = current_bearing)
+	flick(flick_icon, flick_holder)
+	QDEL_IN(flick_holder, 1 SECOND)
+	raised = TRUE
+	update_icon()
+
+/// Pops turret down or up according to the var 'state'.
+/obj/machinery/turret/proc/change_raised(state)
+	if(state)
+		popup()
+	else
+		popdown()
 
 /obj/machinery/turret/proc/take_damage(force)
 	if(stat & BROKEN)

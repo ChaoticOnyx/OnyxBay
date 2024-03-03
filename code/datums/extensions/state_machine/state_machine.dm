@@ -58,12 +58,13 @@ GLOBAL_LIST_EMPTY(state_machines)
 // Resets back to our initial state.
 /datum/state_machine/proc/reset()
 	var/datum/holder_instance = get_holder()
+	var/datum/state/previous_state = current_state
 	if(istype(current_state))
 		current_state.exited_state(holder_instance)
 	current_state = initial(current_state)
 	if(ispath(current_state, /datum/state))
 		current_state = GLOB.fsm_states[current_state]
-		current_state.entered_state(holder_instance)
+		current_state.entered_state(holder_instance, previous_state)
 	else
 		current_state = null
 	return current_state
@@ -79,11 +80,12 @@ GLOBAL_LIST_EMPTY(state_machines)
 /datum/state_machine/proc/evaluate()
 	var/datum/holder_instance = get_holder()
 	var/list/options = current_state.get_open_transitions(holder_instance)
+	var/datum/state/previous_state = current_state
 	if(LAZYLEN(options))
 		var/datum/state_transition/choice = choose_transition(options)
 		current_state.exited_state(holder_instance)
 		current_state = GLOB.fsm_states[choice.target]
-		current_state.entered_state(holder_instance)
+		current_state.entered_state(holder_instance, previous_state)
 		return current_state
 
 // Decides which transition to walk into, to the next state.
@@ -95,6 +97,7 @@ GLOBAL_LIST_EMPTY(state_machines)
 // Use responsibly.
 /datum/state_machine/proc/set_state(new_state_type)
 	var/datum/holder_instance = get_holder()
+	var/datum/state/previous_state = current_state
 	if(istype(current_state))
 		current_state.exited_state(holder_instance)
 	if(ispath(new_state_type))
@@ -102,5 +105,5 @@ GLOBAL_LIST_EMPTY(state_machines)
 	else // need to include null here, so we can't do an istype
 		current_state = new_state_type
 	if(istype(current_state))
-		current_state.entered_state(holder_instance)
+		current_state.entered_state(holder_instance, previous_state)
 		return current_state
