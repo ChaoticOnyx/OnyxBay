@@ -524,6 +524,17 @@
 	basestate = "fwindow"
 	maxhealth = 30
 
+/obj/structure/window/reinforced/trading
+	name = "trading window"
+	desc = "Perfect for those who are willing to leave their belongings behind. Not for long, though."
+	icon_state = "pwindow"
+	basestate = "pwindow"
+	maxhealth = 30
+
+/obj/structure/window/reinforced/trading/light
+	icon_state = "pwindow_light"
+	basestate = "pwindow_light"
+
 /obj/structure/window/shuttle
 	name = "shuttle window"
 	desc = "It looks rather strong. Might take a few good hits to shatter it."
