@@ -16,13 +16,7 @@
 	hostility = /datum/hostility/turret/network
 
 	// Targeting modes.
-	var/check_access = FALSE
-	var/check_weapons = FALSE
-	var/check_records = FALSE
-	var/check_arrest = FALSE
-	var/check_anomalies = FALSE
-	var/check_synth = FALSE
-	var/lethal_mode = FALSE
+	var/datum/targeting_settings/targeting_settings = /datum/targeting_settings
 
 	/// List of events stored in a neat format
 	var/list/logs
@@ -33,6 +27,11 @@
 	. = ..()
 	name = "[name] [rand(1, 100)]"
 	lethal_nonlethal_switch()
+	targeting_settings = new targeting_settings()
+
+/obj/machinery/turret/network/Destroy()
+	QDEL_NULL(targeting_settings)
+	return ..()
 
 /obj/machinery/turret/network/attackby(obj/item/I, mob/user)
 	. = ..()
@@ -95,12 +94,12 @@
 
 	for(var/i = 1 to installed_gun?.firemodes?.len)
 		var/datum/firemode/mode = installed_gun?.firemodes[i]
-		if(mode.name == "stun" && !lethal_mode)
+		if(mode.name == "stun" && !targeting_settings.lethal_mode)
 			installed_gun.sel_mode = i
 			installed_gun.set_firemode()
 			break
 
-		if(mode.name != "stun" && lethal_mode)
+		if(mode.name != "stun" && targeting_settings.lethal_mode)
 			installed_gun.sel_mode = i
 			installed_gun.set_firemode()
 			break
@@ -166,15 +165,7 @@
 	data["gunData"] += get_gun_data()
 	data["settingsData"] += get_turret_data()
 
-	data["targettingData"] = list(
-		"lethalMode" = lethal_mode,
-		"checkSynth" = check_synth,
-		"checkWeapon" = check_weapons,
-		"checkRecords" = check_records,
-		"checkAccess" = check_access,
-		"checkArrests" = check_arrest,
-		"checkAnomalies" = check_anomalies,
-	)
+	data["targettingData"] = targeting_settings.tgui_data()
 
 	return data
 
@@ -220,32 +211,32 @@
 					return TRUE
 
 				if("mode")
-					lethal_mode = !lethal_mode
+					targeting_settings.lethal_mode = !targeting_settings.lethal_mode
 					lethal_nonlethal_switch()
 					return TRUE
 
 				if("synth")
-					check_synth = !check_synth
+					targeting_settings.check_synth = !targeting_settings.check_synth
 					return TRUE
 
 				if("weapon")
-					check_weapons = !check_weapons
+					targeting_settings.check_weapons = !targeting_settings.check_weapons
 					return TRUE
 
 				if("records")
-					check_records = !check_records
+					targeting_settings.check_records = !targeting_settings.check_records
 					return TRUE
 
 				if("arrest")
-					check_arrest = !check_arrest
+					targeting_settings.check_arrest = !targeting_settings.check_arrest
 					return TRUE
 
 				if("access")
-					check_access = !check_access
+					targeting_settings.check_access = !targeting_settings.check_access
 					return TRUE
 
 				if("anomalies")
-					check_anomalies = !check_anomalies
+					targeting_settings.check_anomalies = !targeting_settings.check_anomalies
 					return TRUE
 
 		if("changeBearing")

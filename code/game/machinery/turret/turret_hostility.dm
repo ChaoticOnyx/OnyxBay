@@ -37,6 +37,7 @@
 
 /datum/hostility/turret/network/can_special_target(atom/holder, atom/movable/target)
 	var/obj/machinery/turret/network/owner = holder
+	var/datum/targeting_settings/targeting = owner.targeting_settings
 	if(!istype(holder))
 		log_error("Network turret hostility referenced with a non turret holder: [holder]!")
 		return
@@ -53,18 +54,18 @@
 	if(owner.emagged && !isAI(target))
 		return TRUE
 
-	if(owner.check_synth && !issilicon(target))
+	if(targeting.check_synth && !issilicon(target))
 		return TRUE
 
 	if(!ishuman(target))
 		// Attack any living, non-small/silicon/human target.
-		if(owner.check_anomalies)
+		if(targeting.check_anomalies)
 			if(isliving(target) && (!issilicon(target) && !issmall(target)))
 				return TRUE
 		return FALSE
 
-	if(!owner.lethal_mode && !owner.can_non_lethal())
+	if(!targeting.lethal_mode && !owner.can_non_lethal())
 		return FALSE
 
 	var/mob/living/L = target
-	return L.assess_perp(holder, owner.check_access, owner.check_weapons, owner.check_records, owner.check_arrest) >= threat_level_threshold
+	return L.assess_perp(holder, targeting.check_access, targeting.check_weapons, targeting.check_records, targeting.check_arrest) >= threat_level_threshold

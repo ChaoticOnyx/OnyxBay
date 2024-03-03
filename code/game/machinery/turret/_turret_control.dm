@@ -15,12 +15,7 @@
 	/// Signaller
 	var/obj/item/device/assembly/signaler/signaler = /obj/item/device/assembly/signaler
 
-	var/check_arrest = TRUE	//checks if the perp is set to arrest
-	var/check_records = TRUE	//checks if a security record exists at all
-	var/check_weapons = FALSE	//checks if it can shoot people that have a weapon they aren't authorized to have
-	var/check_access = TRUE	//if this is active, the turret shoots everything that does not meet the access requirements
-	var/check_anomalies = TRUE	//checks if it can shoot at unidentified lifeforms (ie xenos)
-	var/check_synth = FALSE 	//if active, will shoot at anything not an AI or cyborg
+	var/datum/targeting_settings/targeting_settings = /datum/targeting_settings
 	var/ailock = FALSE 	//Silicons cannot use this
 
 	req_access = list(access_ai_upload)
@@ -32,6 +27,8 @@
 	if(_signaler)
 		signaler = _signaler
 		signaler.forceMove(src)
+
+	targeting_settings = new (targeting_settings)
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -52,8 +49,8 @@
 
 /obj/machinery/turret_control_panel/Destroy()
 	QDEL_NULL(signaler)
+	QDEL_NULL(targeting_settings)
 	master_ai = null
-
 	return ..()
 
 /obj/machinery/turret_control_panel/proc/get_connected_turrets()
@@ -166,16 +163,7 @@
 			"settingsData" = T.get_turret_data(),
 		))
 
-	// TODO: refactor turret settings to /datum/turret_settings to make thus allowing to simply call turret_settings.tgui_data()
-	data["targetingData"] = list(
-		"lethalMode" = lethal,
-		"checkSynth" = check_synth,
-		"checkWeapon" = check_weapons,
-		"checkRecords" = check_records,
-		"checkArrests" = check_arrest,
-		"checkAccess" = check_access,
-		"checkAnomalies" = check_anomalies,
-	)
+	data["targetingData"] = targeting_settings.tgui_data()
 
 	return data
 
@@ -198,32 +186,32 @@
 					return TRUE
 
 				if("synth")
-					check_synth = !check_synth
+					targeting_settings.check_synth = !targeting_settings.check_synth
 					update_turrets()
 					return TRUE
 
 				if("weapon")
-					check_weapons = !check_weapons
+					targeting_settings.check_weapons = !targeting_settings.check_weapons
 					update_turrets()
 					return TRUE
 
 				if("records")
-					check_records = !check_records
+					targeting_settings.check_records = !targeting_settings.check_records
 					update_turrets()
 					return TRUE
 
 				if("arrest")
-					check_arrest = !check_arrest
+					targeting_settings.check_arrest = !targeting_settings.check_arrest
 					update_turrets()
 					return TRUE
 
 				if("access")
-					check_access = !check_access
+					targeting_settings.check_access = !targeting_settings.check_access
 					update_turrets()
 					return TRUE
 
 				if("anomalies")
-					check_anomalies = !check_anomalies
+					targeting_settings.check_anomalies = !targeting_settings.check_anomalies
 					update_turrets()
 					return TRUE
 
@@ -245,12 +233,13 @@
 /obj/machinery/turret_control_panel/proc/update_turrets()
 	var/list/turrets = get_connected_turrets()
 	for(var/obj/machinery/turret/network/T in turrets)
-		T.check_access = check_access
-		T.check_weapons = check_weapons
-		T.check_records = check_records
-		T.check_arrest = check_arrest
-		T.check_anomalies = check_anomalies
-		T.check_synth = check_synth
+		var/datum/targeting_settings/targ = T.targeting_settings
+		targ.check_access = targeting_settings.check_access
+		targ.check_weapons = targeting_settings.check_weapons
+		targ.check_records = targeting_settings.check_records
+		targ.check_arrest = targeting_settings.check_arrest
+		targ.check_anomalies = targeting_settings.check_anomalies
+		targ.check_synth = targeting_settings.check_synth
 		T.toggle_enabled(override = enabled)
 		T.lethal_nonlethal_switch()
 
