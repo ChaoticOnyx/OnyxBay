@@ -39,7 +39,7 @@
 		icon_state = inspect_state
 		return
 
-	icon_state = base_icon_state
+	icon_state = base_icon_state ? base_icon_state : initial(icon_state)
 	if(emagged)
 		AddOverlays(image(icon, icon_locking))
 	else if(!locked)
@@ -252,6 +252,7 @@
 	icon_state = "guncase"
 	item_state = "guncase"
 	icon_opened = "guncase0"
+	inspect_state = FALSE
 	force = 8.0
 	throw_range = 4
 	w_class = ITEM_SIZE_LARGE

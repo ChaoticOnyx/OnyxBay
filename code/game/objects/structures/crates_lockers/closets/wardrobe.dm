@@ -441,7 +441,6 @@
 	new /obj/item/clothing/under/suit_jacket/really_black(src)
 	new /obj/item/clothing/under/suit_jacket/red(src)
 	new /obj/item/clothing/under/scratch(src)
-	new /obj/item/clothing/under/rank/internalaffairs/plain(src)
 	new /obj/item/clothing/suit/storage/toggle/suit/black(src)
 	new /obj/item/clothing/under/assistantformal(src)
 	new /obj/item/clothing/under/lawyer/female(src)

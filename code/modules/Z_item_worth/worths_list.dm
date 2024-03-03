@@ -462,7 +462,7 @@ var/list/worths = list(
 //UNDERS,
 					/obj/item/clothing/under/rank/captain = 100,
 					/obj/item/clothing/under/rank/head_of_personnel = 60,
-					/obj/item/clothing/under/rank/head_of_personnel_whimsy = 80,
+					/obj/item/clothing/under/rank/head_of_personnel/whimsy = 80,
 					/obj/item/clothing/under/rank/chief_engineer = 95,
 					/obj/item/clothing/under/rank/research_director = 60,
 					/obj/item/clothing/under/rank/chief_medical_officer = 65,

@@ -98,16 +98,6 @@
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
-/obj/item/clothing/under/rank/orderly
-	desc = "A white suit to be worn by medical attendants."
-	name = "orderly's uniform"
-	icon_state = "orderly"
-	item_state_slots = list(
-		slot_hand_str = "nursesuit"
-		)
-	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
-
 /obj/item/clothing/under/rank/medical
 	desc = "It's made of a special fiber that provides minor protection against biohazards. It has a cross on the chest denoting that the wearer is trained medical personnel."
 	name = "medical doctor's jumpsuit"
@@ -115,8 +105,8 @@
 	item_state_slots = list(
 		slot_hand_str = "white"
 		)
-	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	permeability_coefficient = 0.5
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 30)
 
 /obj/item/clothing/under/rank/medical/paramedic
 	name = "short sleeve medical jumpsuit"

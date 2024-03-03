@@ -5,7 +5,7 @@
 "ae" = (/obj/structure/gravemarker/cross,/turf/simulated/floor/natural/snow,/area/derelict/snowasteroid)
 "af" = (/turf/simulated/wall/wood,/area/derelict/snowasteroid)
 "ag" = (/obj/structure/window_frame/glass,/turf/simulated/floor/plating,/area/derelict/snowasteroid)
-"ah" = (/obj/structure/closet/cabinet,/obj/machinery/light/small{dir = 8},/obj/item/clothing/accessory/nt_tunic,/obj/item/clothing/suit/storage/toggle/hoodie/nt,/obj/item/clothing/under/rank/internalaffairs/plain/nt,/obj/item/clothing/under/suit_jacket/really_black,/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)
+"ah" = (/obj/structure/closet/cabinet,/obj/machinery/light/small{dir = 8},/obj/item/clothing/accessory/nt_tunic,/obj/item/clothing/suit/storage/toggle/hoodie/nt,/obj/item/clothing/under/rank/internalaffairs,/obj/item/clothing/under/suit_jacket/really_black,/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)
 "ai" = (/obj/structure/bed/padded,/obj/item/bedsheet/captain,/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)
 "aj" = (/obj/structure/table/woodentable,/obj/item/device/flashlight/lamp,/obj/item/cane,/obj/effect/decal/cleanable/cobweb2,/turf/simulated/floor/trim/wood,/area/derelict/snowasteroid)
 "ak" = (/obj/structure/flora/ausbushes/sparsegrass,/turf/simulated/floor/natural/snow,/area/derelict/snowasteroid)
