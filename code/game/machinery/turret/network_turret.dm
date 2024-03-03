@@ -207,7 +207,12 @@
 		if("toggle")
 			switch(params["check"])
 				if("power")
-					enabled = !enabled
+					if(world.time >= last_enabled + toggle_cooldown)
+						last_enabled = world.time
+						enabled = !enabled
+						state_machine.evaluate()
+					else
+						show_splash_text(usr, "Turrets recalibrating!")
 					return TRUE
 
 				if("mode")

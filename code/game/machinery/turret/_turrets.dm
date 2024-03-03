@@ -43,6 +43,9 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 	// Power
 	var/enabled = TRUE // If false, turret turns off.
+	/// World.time of last enabled, to prevent spam
+	var/last_enabled
+	var/toggle_cooldown = 2 SECONDS
 	/// Determines how fast energy weapons will be recharged
 	var/cell_charge_modifier = 1
 
@@ -255,6 +258,9 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 // State machine processing steps, called by looping timer
 /obj/machinery/turret/proc/process_turning()
+	if(!enabled || inoperable())
+		return
+
 	var/distance_from_target_bearing = get_distance_from_target_bearing()
 
 	var/turn_rate = calculate_turn_rate_per_process()
@@ -581,9 +587,10 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/icon/flick_icon = icon(icon, popup_anim)
 	flick_holder.SetTransform(rotation = current_bearing)
 	flick(flick_icon, flick_holder)
-	QDEL_IN(flick_holder, 1 SECOND)
-	raised = FALSE
+	raised = TRUE
 	update_icon()
+	sleep(10)
+	qdel(flick_holder)
 
 /// Plays closing animation
 /obj/machinery/turret/proc/popdown()
@@ -592,16 +599,17 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/icon/flick_icon = icon(icon, popdown_anim)
 	flick_holder.SetTransform(rotation = current_bearing)
 	flick(flick_icon, flick_holder)
-	QDEL_IN(flick_holder, 1 SECOND)
-	raised = TRUE
+	sleep(10)
+	qdel(flick_holder)
+	raised = FALSE
 	update_icon()
 
 /// Pops turret down or up according to the var 'state'.
 /obj/machinery/turret/proc/change_raised(state)
 	if(state)
-		popup()
+		INVOKE_ASYNC(src, nameof(.proc/popup))
 	else
-		popdown()
+		INVOKE_ASYNC(src, nameof(.proc/popdown))
 
 /obj/machinery/turret/proc/take_damage(force)
 	if(stat & BROKEN)
@@ -629,6 +637,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	..()
 
 	take_damage(damage)
+
+
 
 /obj/machinery/turret/emp_act(severity)
 	if(enabled)

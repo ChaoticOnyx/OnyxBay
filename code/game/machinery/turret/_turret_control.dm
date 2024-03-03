@@ -6,6 +6,10 @@
 	anchored = TRUE
 	density = FALSE
 	var/enabled = FALSE
+	/// World.time of last enabled, to prevent spam
+	var/last_enabled
+	var/toggle_cooldown = 2 SECONDS
+
 	var/lethal = FALSE
 	var/locked = TRUE
 
@@ -176,8 +180,12 @@
 		if("toggle")
 			switch(params["check"])
 				if("power")
-					enabled = !enabled
-					update_turrets()
+					if(world.time >= last_enabled + toggle_cooldown)
+						last_enabled = world.time
+						enabled = !enabled
+						update_turrets()
+					else
+						show_splash_text(usr, "Turrets recalibrating!")
 					return TRUE
 
 				if("mode")
