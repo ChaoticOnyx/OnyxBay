@@ -234,6 +234,7 @@
 	var/list/turrets = get_connected_turrets()
 	for(var/obj/machinery/turret/network/T in turrets)
 		var/datum/targeting_settings/targ = T.targeting_settings
+		targ.lethal_mode = targeting_settings.lethal_mode
 		targ.check_access = targeting_settings.check_access
 		targ.check_weapons = targeting_settings.check_weapons
 		targ.check_records = targeting_settings.check_records
