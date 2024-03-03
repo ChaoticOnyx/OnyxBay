@@ -1359,7 +1359,7 @@
 "aAx" = (/obj/effect/floor_decal/carpet,/obj/structure/bed/couch/middle/sofa{dir = 1},/obj/effect/floor_decal/carpet{dir = 6},/obj/effect/floor_decal/carpet{dir = 4},/turf/unsimulated/floor{icon_state = "carpet"},/area/centcom/holding)
 "aAy" = (/obj/machinery/door/unpowered/simple/wood,/turf/unsimulated/floor{icon_state = "wood"},/area/centcom/holding)
 "aAz" = (/obj/structure/table/standard,/obj/item/storage/firstaid/surgery/syndie,/obj/effect/floor_decal/spline/fancy{dir = 5},/turf/unsimulated/floor{icon_state = "freezerfloor"},/area/centcom/holding)
-"aAA" = (/obj/machinery/turret/network/centcomm{check_synth = 1; enabled = 1},/obj/effect/floor_decal/industrial/hatch/yellow,/turf/unsimulated/floor{icon_state = "lino"},/area/centcom/creed)
+"aAA" = (/obj/machinery/turret/network/centcomm,/obj/effect/floor_decal/industrial/hatch/yellow,/turf/unsimulated/floor{icon_state = "lino"},/area/centcom/creed)
 "aAB" = (/obj/machinery/door/blast/regular{dir = 4; id = "ASSAULT1"; name = "Launch Bay #1"},/turf/unsimulated/floor{name = "plating"},/area/centcom/specops)
 "aAC" = (/obj/machinery/mass_driver{dir = 8; id = "ASSAULT1"; name = "gravpult"},/turf/unsimulated/floor{name = "plating"},/area/centcom/specops)
 "aAD" = (/obj/item/mecha_parts/mecha_equipment/tool/drill/diamonddrill,/obj/item/mecha_parts/mecha_equipment/tool/cable_layer,/obj/structure/table/steel_reinforced,/turf/unsimulated/floor{dir = 1; icon_state = "vault"},/area/centcom/specops)
