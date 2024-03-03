@@ -49,7 +49,7 @@ export const Turret = (props: any, context: any) => {
   const { data } = useBackend<TurretData>(context);
 
   return (
-    <Window title="Turret Panel" width={300} height={250}>
+    <Window title="Turret Panel" width={300} height={260}>
       <Window.Content>
         <TurretDisplay turretData={data} />
       </Window.Content>
