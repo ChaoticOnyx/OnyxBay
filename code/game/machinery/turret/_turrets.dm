@@ -562,9 +562,11 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		icon_state = "turretCover"
 
 	// Changes the ray color based on state.
-	CutOverlays(turret_ray)
-	turret_ray.color = ray_color
-	AddOverlays(turret_ray)
+	if(debug_mode)
+		CutOverlays(turret_ray)
+		turret_ray?.color = ray_color
+		AddOverlays(turret_ray)
+
 	return ..()
 
 /obj/machinery/turret/proc/take_damage(force)
