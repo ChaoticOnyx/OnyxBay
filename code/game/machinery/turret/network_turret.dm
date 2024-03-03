@@ -4,8 +4,8 @@
 	name = "sentry turret"
 	desc = "An automatic turret capable of identifying and dispatching targets using a mounted firearm."
 
-	idle_power_usage = 5 KILO WATTS
-	active_power_usage = 5 KILO WATTS // Determines how fast energy weapons can be recharged, so highly values are better.
+	idle_power_usage = 50 WATTS
+	active_power_usage = 1 KILO WATT // Determines how fast energy weapons can be recharged, so highly values are better.
 
 	installed_gun = null
 	gun_looting_prob = 100
@@ -47,14 +47,11 @@
 			show_splash_text(user, "Operation failed!")
 
 /obj/machinery/turret/network/RefreshParts()
-	. = ..()
-	//active_power_usage = 5 * clamp(total_component_rating_of_type(/obj/item/stock_parts/capacitor), 1, 5) KILO WATTS
-	//reloading_speed = 10 * clamp(total_component_rating_of_type(/obj/item/stock_parts/manipulator), 1, 5)
+	var/total_capacitors = 0
+	for(var/obj/item/stock_parts/capacitor/C in component_parts)
+		total_capacitors++
 
-	//var/new_range = clamp(total_component_rating_of_type(/obj/item/stock_parts/scanning_module)*3, 4, 8)
-	//if(vision_range != new_range)
-	//	vision_range = new_range
-	//	proximity?.set_range(vision_range)
+	active_power_usage = clamp(total_capacitors, 1, 5) KILO WATTS
 
 /obj/machinery/turret/network/proc/add_log(log_string)
 	LAZYADD(logs, "([stationtime2text()], [stationdate2text()]) [log_string]")
