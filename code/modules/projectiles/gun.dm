@@ -152,7 +152,7 @@
 		clear_autofire()
 	else if(can_autofire())
 		autofiring_by.set_dir(get_dir(src, autofiring_at))
-		Fire(autofiring_at, autofiring_by, null, (get_dist(autofiring_at, autofiring_by) <= 1), FALSE, FALSE)
+		Fire(autofiring_at, autofiring_by, null, (get_dist(autofiring_at, autofiring_by) <= 1), FALSE, FALSE, target_zone = autofiring_by.zone_sel?.selecting)
 
 /obj/item/gun/update_twohanding()
 	if(one_hand_penalty)
@@ -232,7 +232,7 @@
 		PreFire(A,user,params) //They're using the new gun system, locate what they're aiming at.
 		return
 
-	Fire(A,user,params) //Otherwise, fire normally.
+	Fire(A, user, params, target_zone = user.zone_sel?.selecting) //Otherwise, fire normally.
 
 /obj/item/gun/attack(atom/A, mob/living/user, def_zone)
 	if(ishuman(A) && user.zone_sel.selecting == BP_MOUTH && user.a_intent != I_HURT && !weapon_in_mouth)
@@ -240,7 +240,7 @@
 	if (A == user && user.zone_sel.selecting == BP_MOUTH && !mouthshoot)
 		handle_suicide(user)
 	else if(user.a_intent == I_HURT) //point blank shooting
-		Fire(A, user, pointblank=1)
+		Fire(A, user, pointblank = 1, target_zone = def_zone)
 	else
 		return ..() //Pistolwhippin'
 
