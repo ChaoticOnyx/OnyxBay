@@ -1,6 +1,13 @@
 var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called manually after an event.
 
-#define CELLRATE (1 / ( 3600 / SSmachines.wait )) // Multiplier for charge units. Converts cell charge units(watthours) to joules. Takes into consideration SSmachines wait.
+/// Despite the fact that our SSmachine's wait is 3
+/// I have no desire to fix shit breaking after changing MACHINERY_TICKRATE ~ Filatelele
+/// TODO: make this use actualy SSmachinery's wait instead of an arbitrary value.
+#define MACHINERY_TICKRATE 2
+
+/// Multiplier for charge units. Converts cell charge units(watthours) to joules.
+/// Takes into consideration that our machinery ticks once per two seconds.
+#define CELLRATE (1 / ( 3600 / MACHINERY_TICKRATE ))
 
 // Doors!
 #define DOOR_CRUSH_DAMAGE 40

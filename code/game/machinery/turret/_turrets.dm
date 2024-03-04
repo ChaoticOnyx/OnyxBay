@@ -226,6 +226,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 			show_splash_text(user, "Weapon removed!")
 			user.pick_or_drop(installed_gun)
+			installed_gun = null
 
 		return
 
