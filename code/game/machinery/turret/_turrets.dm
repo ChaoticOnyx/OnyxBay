@@ -187,6 +187,10 @@ GLOBAL_LIST_EMPTY(all_turrets)
 				show_splash_text(user, "Unsupported weapon!")
 				return
 
+		else if(!istype(I, /obj/item/gun/energy))
+			show_splash_text(user, "Unsupported weapon!")
+			return
+
 		if(!user.drop(I, src))
 			return
 
