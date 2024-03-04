@@ -285,6 +285,7 @@
 #include "code\datums\cinematic.dm"
 #include "code\datums\datum.dm"
 #include "code\datums\hierarchy.dm"
+#include "code\datums\http.dm"
 #include "code\datums\mind.dm"
 #include "code\datums\mutable_appearance.dm"
 #include "code\datums\position_point_vector.dm"
