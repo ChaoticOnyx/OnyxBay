@@ -16,23 +16,37 @@
 	unacidable = TRUE
 	var/buildstage = INTERCOM_EMPTY
 
-/obj/item/intercom_assembly/Initialize(mapload, dir, atom/frame)
-	. = ..()
+/obj/item/intercom_assembly/Initialize(mapload, _dir, atom/frame)
+	. = ..(mapload)
 
-	if(dir)
-		set_dir(dir)
+	if(_dir)
+		set_dir(_dir)
 
 	if(istype(frame, /obj/item/frame/intercom))
 		buildstage = INTERCOM_EMPTY
-		pixel_x = (dir & (NORTH|SOUTH))? 0 : (dir == EAST ? -22 : 22)
-		pixel_y = (dir & (NORTH|SOUTH))? (dir == NORTH ? -22 : 22) : 0
 		frame.transfer_fingerprints_to(src)
+		switch(dir)
+			if(NORTH)
+				pixel_y = -22
+			if(SOUTH)
+				pixel_y = 22
+			if(EAST)
+				pixel_x = 22
+			if(WEST)
+				pixel_x = -22
 	else
 		buildstage = INTERCOM_RADIO
-		pixel_x = (dir & (NORTH|SOUTH))? 0 : (dir == EAST ? -22 : 22)
-		pixel_y = (dir & (NORTH|SOUTH))? (dir == NORTH ? -22 : 22) : 0
+		switch(dir)
+			if(NORTH)
+				pixel_y = -22
+			if(SOUTH)
+				pixel_y = 22
+			if(EAST)
+				pixel_x = 22
+			if(WEST)
+				pixel_x = -22
 
-	on_update_icon()
+	update_icon()
 
 /obj/item/intercom_assembly/on_update_icon()
 	switch(buildstage)
