@@ -2,7 +2,7 @@ import { useBackend, useLocalState } from "../backend";
 import { Window } from "../layouts";
 import { Section, Box, Input, TextArea, Button } from "../components";
 
-export const BugReporter = (context: any) => {
+export const BugReporter = (props: any, context: any) => {
   const { act } = useBackend(context);
 
   const [title, setReportTitle] = useLocalState(context, "name", "");
