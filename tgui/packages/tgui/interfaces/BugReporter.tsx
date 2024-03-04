@@ -2,8 +2,8 @@ import { useBackend, useLocalState } from "../backend";
 import { Window } from "../layouts";
 import { Section, Box, Input, TextArea, Button } from "../components";
 
-export const BugReporter = (props: any, context: any) => {
-  const { act, data } = useBackend(context);
+export const BugReporter = (context: any) => {
+  const { act } = useBackend(context);
 
   const [title, setReportTitle] = useLocalState(context, "name", "");
   const [messageText, setReportText] = useLocalState(context, "message", "");
@@ -17,7 +17,7 @@ export const BugReporter = (props: any, context: any) => {
               maxLength={100}
               placeholder="Title of your report..."
               fluid
-              onChange={(e, value) => {
+              onChange={(value) => {
                 setReportTitle(value);
               }}
             />
@@ -31,7 +31,7 @@ export const BugReporter = (props: any, context: any) => {
               height="200px"
               mb={1}
               maxLength={1024}
-              onChange={(e, value) => {
+              onChange={(value) => {
                 setReportText(value);
               }}
             />
