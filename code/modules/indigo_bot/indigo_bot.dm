@@ -1,32 +1,71 @@
 GLOBAL_DATUM_INIT(indigo_bot, /datum/indigo_bot, new)
 
 /datum/indigo_bot/proc/is_enabled()
-	return config.indigo_bot.address != null && config.indigo_bot.secret != null
+	return config.indigo_bot.address != null
 
 /datum/indigo_bot/proc/identity()
-	var/res = __send("/api/identity")
-	return res
+	var/datum/http_request/R = new()
+	R.prepare(RUSTG_HTTP_METHOD_GET, "/api/identity")
 
-/datum/indigo_bot/proc/__send(query)
+	var/datum/http_response/res = __send(R)
+
+	if(res.errored || res.status_code != 200)
+		CRASH("Invalid '/api/identity' response: code [res.status_code]")
+
+	return res.body
+
+/datum/indigo_bot/proc/__send(datum/http_request/R, wait = TRUE)
 	if(!is_enabled())
 		return
 
-	var/response = world.Export("[config.indigo_bot.address][query]")
+	R.url = "[config.indigo_bot.address][R.url]"
+	R.begin_async()
 
-	if(response != null)
-		var/content = file2text(response["CONTENT"])
-		return json_decode(content)
+	if(!wait)
+		return
+
+	while(!R.is_complete())
+		stoplag()
+
+	return R.into_response()
 
 /datum/indigo_bot/proc/chat_webhook(secret, message)
 	if(secret == null)
 		return
 
-	message = url_encode(message)
-	__send("/api/byond/webhook/[secret]?message=[message]")
+	message = rustg_url_encode(message)
+
+	var/datum/http_request/R = new()
+	R.prepare(RUSTG_HTTP_METHOD_POST, "/api/webhook/[secret]", json_encode(list(
+		"message" = message
+	)), list("Content-Type" = "application/json"), "")
+
+	__send(R, FALSE)
 
 /datum/indigo_bot/proc/round_end_webhook(secret, round_id, game_mode, players_count, round_duration)
 	round_id = url_encode(round_id)
 	game_mode = url_encode(game_mode)
 	players_count = url_encode(players_count)
 	round_duration = url_encode(round_duration)
-	__send("/api/byond/webhook/[secret]?round_id=[round_id]&game_mode=[game_mode]&players=[players_count]&round_duration=[round_duration]")
+
+	var/datum/http_request/R = new()
+	R.prepare(RUSTG_HTTP_METHOD_POST, "/api/webhook/[secret]", json_encode(list(
+		"round_id" = round_id,
+		"game_mode" = game_mode,
+		"players" = players_count,
+		"round_duration" = round_duration
+	)), list("Content-Type" = "application/json"), "")
+
+	__send(R, FALSE)
+
+/datum/indigo_bot/proc/bug_report_webhook(secret, title, body, ckey)
+	var/datum/http_request/R = new()
+	var/request_body = json_encode(list(
+		"title" = title,
+		"body" = body,
+		"player" = ckey
+	))
+
+	R.prepare(RUSTG_HTTP_METHOD_POST, "/api/webhook/[secret]", request_body, list("Content-Type" = "application/json"), "")
+
+	__send(R, FALSE)
