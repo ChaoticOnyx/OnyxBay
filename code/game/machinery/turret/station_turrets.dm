@@ -126,14 +126,14 @@
 /obj/machinery/turret/network/station
 	idle_power_usage = 50 WATTS
 	active_power_usage = 300 WATTS
-	cell_charge_modifier = 10
+	cell_charge_modifier = 20
 	installed_gun = /obj/item/gun/energy/egun/elite
 	targeting_settings = /datum/targeting_settings/ai_upload
 
 /obj/machinery/turret/network/centcomm
 	installed_gun = /obj/item/gun/energy/egun/elite
 
-	cell_charge_modifier = 20
+	cell_charge_modifier = 30
 
 	enabled = FALSE
 	ailock = TRUE
