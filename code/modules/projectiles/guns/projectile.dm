@@ -16,7 +16,7 @@
 
 	var/caliber = "357"		//determines which casings will fit
 	var/handle_casings = EJECT_CASINGS	//determines how spent casings should be handled
-	var/load_method = SINGLE_CASING|SPEEDLOADER //1 = Single shells, 2 = box or quick loader, 3 = magazine
+	var/load_method = SINGLE_CASING | SPEEDLOADER //1 = Single shells, 2 = box or quick loader, 3 = magazine
 	var/obj/item/ammo_casing/chambered = null
 
 	//For SINGLE_CASING or SPEEDLOADER guns
@@ -107,7 +107,7 @@
 
 //Attempts to load A into src, depending on the type of thing being loaded and the load_method
 //Maybe this should be broken up into separate procs for each load method?
-/obj/item/gun/projectile/proc/load_ammo(obj/item/A, mob/user)
+/obj/item/gun/projectile/proc/load_ammo(obj/item/A, atom/movable/loader)
 	if(istype(A, /obj/item/ammo_magazine))
 		var/obj/item/ammo_magazine/AM = A
 		if(!(load_method & AM.mag_type) || caliber != AM.caliber)
@@ -116,73 +116,99 @@
 		switch(AM.mag_type)
 			if(MAGAZINE)
 				if((ispath(allowed_magazines) && !istype(A, allowed_magazines)) || (islist(allowed_magazines) && !is_type_in_list(A, allowed_magazines)))
-					to_chat(user, "<span class='warning'>\The [A] won't fit into [src].</span>")
+					to_chat(loader, "<span class='warning'>\The [A] won't fit into [src].</span>")
 					return
+
 				if(ammo_magazine)
-					to_chat(user, "<span class='warning'>[src] already has a magazine loaded.</span>")//already a magazine here
+					to_chat(loader, "<span class='warning'>[src] already has a magazine loaded.</span>")//already a magazine here
 					return
-				user.drop(AM, src)
+
+				if(ismob(loader))
+					var/mob/user = loader
+					user.drop(AM, src)
+				else
+					AM.forceMove(src)
+
 				ammo_magazine = AM
-				user.visible_message("[user] inserts [AM] into [src].", "<span class='notice'>You insert [AM] into [src].</span>")
+				loader.visible_message("[loader] inserts [AM] into [src].", "<span class='notice'>You insert [AM] into [src].</span>")
 				playsound(src.loc, mag_insert_sound, rand(45, 60), FALSE)
+
 			if(SPEEDLOADER)
 				if(loaded.len >= max_shells)
-					to_chat(user, "<span class='warning'>[src] is full!</span>")
+					to_chat(loader, "<span class='warning'>[src] is full!</span>")
 					return
+
 				var/count = 0
 				for(var/obj/item/ammo_casing/C in AM.stored_ammo)
 					if(loaded.len >= max_shells)
 						break
+
 					if(C.caliber == caliber)
 						C.forceMove(src)
 						loaded += C
 						AM.stored_ammo -= C //should probably go inside an ammo_magazine proc, but I guess less proc calls this way...
 						count++
+
 				if(count)
-					user.visible_message("[user] reloads [src].", "<span class='notice'>You load [count] round\s into [src].</span>")
+					loader.visible_message("[loader] reloads [src].", "<span class='notice'>You load [count] round\s into [src].</span>")
 					playsound(src, mag_insert_sound, rand(50, 75), FALSE)
+
 		AM.update_icon()
+
 	else if(istype(A, /obj/item/ammo_casing))
 		var/obj/item/ammo_casing/C = A
 		if(!(load_method & SINGLE_CASING) || caliber != C.caliber)
 			return //incompatible
+
 		if(loaded.len >= max_shells)
-			to_chat(user, "<span class='warning'>[src] is full.</span>")
+			to_chat(loader, "<span class='warning'>[src] is full.</span>")
 			return
 
-		user.drop(C, src)
+		if(ismob(loader))
+			var/mob/user = loader
+			user.drop(C, src)
+		else
+			C.forceMove(src)
+
 		loaded.Insert(1, C) //add to the head of the list
-		user.visible_message("[user] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
+		loader.visible_message("[loader] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
 
 		if (istype(C, /obj/item/ammo_casing/shotgun))
-			playsound(user, SFX_SHELL_INSERT, rand(45, 60), FALSE)
+			playsound(loader, SFX_SHELL_INSERT, rand(45, 60), FALSE)
 		else
-			playsound(user, SFX_BULLET_INSERT, rand(45, 60), FALSE)
+			playsound(loader, SFX_BULLET_INSERT, rand(45, 60), FALSE)
 	update_icon()
 
 //attempts to unload src. If allow_dump is set to 0, the speedloader unloading method will be disabled
-/obj/item/gun/projectile/proc/unload_ammo(mob/user, allow_dump=1)
+/obj/item/gun/projectile/proc/unload_ammo(atom/movable/unloader, allow_dump = TRUE, dump_loc = null)
 	if(is_jammed)
-		user.visible_message("<b>[user]</b> begins to unjam [src].", "You clear the jam and unload [src]")
-		if(!do_after(user, 4, src))
+		unloader.visible_message("<b>[unloader]</b> begins to unjam [src].", "You clear the jam and unload [src]")
+		if(!do_after(unloader, 4, src))
 			return
+
 		is_jammed = 0
 		playsound(src.loc, 'sound/weapons/flipblade.ogg', rand(50, 75), FALSE)
+
 	if(ammo_magazine)
 		if(allow_dump)
-			ammo_magazine.dropInto(user.loc)
-			user.visible_message("[user] ejects [ammo_magazine] from [src].", SPAN_NOTICE("You eject [ammo_magazine] from [src]."))
-		else
+			ammo_magazine.dropInto(isnull(dump_loc) ? unloader.loc : dump_loc)
+			unloader.visible_message("[unloader] ejects [ammo_magazine] from [src].", SPAN_NOTICE("You eject [ammo_magazine] from [src]."))
+		else if(ismob(unloader))
+			var/mob/user = unloader
 			user.pick_or_drop(ammo_magazine)
-			user.visible_message("[user] removes [ammo_magazine] from [src].", SPAN_NOTICE("You remove [ammo_magazine] from [src]."))
+			unloader.visible_message("[user] removes [ammo_magazine] from [src].", SPAN_NOTICE("You remove [ammo_magazine] from [src]."))
+		else if(Adjacent(src, unloader))
+			ammo_magazine.forceMove(get_turf(unloader))
+
 		playsound(src.loc, mag_eject_sound, 50, 1)
 		ammo_magazine.update_icon()
 		ammo_magazine = null
+
 	else if(loaded.len)
 		//presumably, if it can be speed-loaded, it can be speed-unloaded.
 		if(allow_dump && (load_method & SPEEDLOADER))
 			var/count = 0
-			var/turf/T = get_turf(user)
+			var/turf/T = get_turf(unloader)
 			if(T)
 				for(var/obj/item/ammo_casing/C in loaded)
 					C.forceMove(T)
@@ -191,15 +217,21 @@
 					count++
 				loaded.Cut()
 			if(count)
-				user.visible_message("<b>[user]</b> unloads [src].", SPAN("notice", "You unload [count] round\s from [src]."))
+				unloader.visible_message("<b>[unloader]</b> unloads [src].", SPAN("notice", "You unload [count] round\s from [src]."))
 		else if(load_method & SINGLE_CASING)
 			var/obj/item/ammo_casing/C = loaded[loaded.len]
 			loaded.len--
-			user.pick_or_drop(C)
-			user.visible_message("<b>[user]</b> removes \a [C] from [src].", SPAN("notice", "You remove \a [C] from [src]."))
+			if(ismob(unloader))
+				var/mob/user = unloader
+				user.pick_or_drop(C)
+			else if(Adjacent(src, unloader))
+				C.forceMove(get_turf(unloader))
+
+			unloader.visible_message("<b>[unloader]</b> removes \a [C] from [src].", SPAN("notice", "You remove \a [C] from [src]."))
 			playsound(src.loc, "bullet_insert", 50, 1)
 	else
-		to_chat(user, SPAN("warning", "[src] is empty."))
+		to_chat(unloader, SPAN("warning", "[src] is empty."))
+
 	update_icon()
 
 /obj/item/gun/projectile/attackby(obj/item/A as obj, mob/user as mob)
