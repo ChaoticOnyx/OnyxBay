@@ -147,15 +147,24 @@
 		icon_state = "intercom-p"
 		set_light(0)
 
-/obj/item/device/radio/intercom/Initialize(mapload, dir)
-	. = ..()
+/obj/item/device/radio/intercom/Initialize(mapload, _dir)
+	. = ..(mapload)
 
-	if(dir)
-		set_dir(dir)
+	if(_dir)
+		set_dir(_dir)
 
 	power_change()
-	pixel_x = (dir & (NORTH|SOUTH))? 0 : (dir == EAST ? -22 : 22)
-	pixel_y = (dir & (NORTH|SOUTH))? (dir == NORTH ? -22 : 22) : 0
+
+	if(!pixel_x && !pixel_y) // Don't touch the premapped shifts
+		switch(dir)
+			if(NORTH)
+				pixel_y = -22
+			if(SOUTH)
+				pixel_y = 22
+			if(EAST)
+				pixel_x = 22
+			if(WEST)
+				pixel_x = -22
 
 /obj/item/device/radio/intercom/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
