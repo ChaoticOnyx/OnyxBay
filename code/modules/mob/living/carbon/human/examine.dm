@@ -10,7 +10,7 @@
 	var/skipjumpsuitaccessories = FALSE
 
 	var/visible_sexybits = FALSE // Can we get the gender right even w/ ambiguous bodybuilds?
-	var/examine_distance = get_dist(user, src)
+	var/examine_distance = isliving(user) ? get_dist(user, src) : 255 // Ghosts shall not be bothered by the eyesight issues
 
 	// exosuits and helmets obscure our view and stuff.
 	if(wear_suit)
