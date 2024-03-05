@@ -108,6 +108,9 @@
 
 /obj/item/Destroy()
 	QDEL_NULL(hidden_uplink)
+
+	unzoom(src)
+
 	if(ismob(loc))
 		var/mob/m = loc
 		m.drop(src, force = TRUE)
@@ -350,6 +353,8 @@
 
 	if(!changing_slots && !istype(loc, /obj/item/clothing/accessory))
 		play_drop_sound()
+
+	unzoom(user)
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
 
@@ -830,15 +835,13 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
-	register_signal(src, SIGNAL_QDELETING, nameof(.proc/unzoom))
 	register_signal(src, SIGNAL_MOVED, nameof(.proc/zoom_move))
-	register_signal(src, SIGNAL_DIR_SET, nameof(.proc/unzoom))
-	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/zoom_drop))
 	register_signal(user, SIGNAL_STAT_SET, nameof(.proc.unzoom))
 	register_signal(user, SIGNAL_VIEW_SHIFTED_SET, nameof(.proc/unzoom))
 
-/obj/item/proc/zoom_drop(obj/item/I, mob/user)
-	unzoom(user)
+/obj/item/set_dir(new_dir)
+	unzoom(src)
+	return ..()
 
 /obj/item/proc/zoom_move(atom/movable/AM)
 	if(ismob(AM.loc))
@@ -850,10 +853,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 	zoom = 0
 
-	unregister_signal(src, SIGNAL_QDELETING)
 	unregister_signal(src, SIGNAL_MOVED, nameof(.proc/zoom_move))
-	unregister_signal(src, SIGNAL_DIR_SET)
-	unregister_signal(src, SIGNAL_ITEM_UNEQUIPPED)
 	unregister_signal(user, SIGNAL_VIEW_SHIFTED_SET, nameof(.proc/unzoom))
 
 	user = user == src ? loc : (user || loc)
