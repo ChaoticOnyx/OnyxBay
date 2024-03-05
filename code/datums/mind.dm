@@ -89,10 +89,10 @@
 	if(new_current && QDELETED(new_current))
 		util_crash_with("Tried to set a mind's current var to a qdeleted mob, what the fuck")
 	if(current)
-		unregister_signal(src, SIGNAL_QDELETING)
+		unregister_signal(current, SIGNAL_QDELETING)
 	current = new_current
 	if(current)
-		register_signal(src, SIGNAL_QDELETING, nameof(.proc/clear_current))
+		register_signal(current, SIGNAL_QDELETING, nameof(.proc/clear_current))
 
 /datum/mind/proc/clear_current(datum/source)
 	set_current(null)
