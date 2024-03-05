@@ -31,9 +31,9 @@
 			if(SOUTH)
 				pixel_y = 22
 			if(EAST)
-				pixel_x = 22
-			if(WEST)
 				pixel_x = -22
+			if(WEST)
+				pixel_x = 22
 	else
 		buildstage = INTERCOM_RADIO
 		switch(dir)
@@ -42,9 +42,9 @@
 			if(SOUTH)
 				pixel_y = 22
 			if(EAST)
-				pixel_x = 22
-			if(WEST)
 				pixel_x = -22
+			if(WEST)
+				pixel_x = 22
 
 	update_icon()
 
