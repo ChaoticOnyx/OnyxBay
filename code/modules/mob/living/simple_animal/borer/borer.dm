@@ -60,7 +60,7 @@
 	if(!initial)
 		request_player()
 
-/mob/living/simple_animal/borer/add_to_dead_mob_list()
+/mob/living/simple_animal/borer/death(gibbed, deathmessage, show_dead_message)
 	GLOB.borers.remove_antagonist(host.mind)
 	clear_abilities()
 	return ..()
