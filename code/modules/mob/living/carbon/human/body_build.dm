@@ -147,7 +147,7 @@ var/global/datum/body_build/default_body_build = new
 /datum/body_build/slim/flat
 	name                 = "Slim Flat"
 	index                = "_slim_flat"
-	roboindex            = "_slim"
+	roboindex            = "_slim_flat"
 	genders              = list(FEMALE)
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_slim_m.dmi',
@@ -163,7 +163,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_s_store"   = 'icons/inv_slots/belts/mirror/mob_slim.dmi',
 		"slot_back"      = 'icons/inv_slots/back/mob_slim_m.dmi',
 		"slot_tie"       = 'icons/inv_slots/acessories/mob_slim_m.dmi',
-		"slot_hidden"    = 'icons/inv_slots/hidden/mob_slim_m.dmi',
+		"slot_hidden"    = 'icons/inv_slots/hidden/mob_slim_flat.dmi',
 		"slot_wear_id"   = 'icons/mob/onmob/id.dmi',
 		"slot_l_hand"    = 'icons/mob/onmob/items/lefthand_slim.dmi',
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand_slim.dmi'
