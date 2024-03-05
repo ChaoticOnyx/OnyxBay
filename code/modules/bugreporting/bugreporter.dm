@@ -30,8 +30,8 @@
 
 	switch(action)
 		if("sendReport")
-			if(jobban_isbanned(src, "BUGREPORT"))
-				to_chat(src, SPAN_WARNING("You are banned from using in-game bug report system."))
+			if(jobban_isbanned(usr, "BUGREPORT"))
+				to_chat(usr, SPAN_WARNING("You are banned from using in-game bug report system."))
 				return
 
 			THROTTLE(cooldown, 1 SECOND)
