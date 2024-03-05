@@ -33,9 +33,12 @@
 	var/list/msg = list("This is ")
 
 	var/datum/gender/T = gender_datums[get_gender()]
+
 	if(skipjumpsuit && skipface) // big suits/masks/helmets make it hard to tell their gender
 		T = gender_datums[PLURAL]
 	else
+		if(species.troublesome_sexual_dimorphism && (user.species != species))
+			T = gender_datums[PLURAL]
 		if(icon)
 			msg += "[icon2html(icon, user)] " // fucking BYOND: this should stop dreamseeker crashing if we -somehow- examine somebody before their icon is generated
 		else

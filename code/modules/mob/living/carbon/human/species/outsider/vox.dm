@@ -16,6 +16,7 @@
 	dealing with their traders and merchants; those that do rarely enjoy the experience."
 
 	taste_sensitivity = TASTE_DULL
+	troublesome_sexual_dimorphism = TRUE
 
 	speech_sounds = list('sound/voice/shriek1.ogg')
 	speech_chance = 20
