@@ -128,6 +128,9 @@
 			spawned -= holo_atom
 			continue
 
+		if(isturf(holo_atom))
+			spawned -= holo_atom
+
 		finalize_spawned(holo_atom)
 
 /obj/machinery/computer/holodeck/proc/nerf(nerf = TRUE)
@@ -138,12 +141,13 @@
 		nerfing_effect.nerf(nerf)
 
 /obj/machinery/computer/holodeck/proc/finalize_spawned(atom/holo_atom)
-	register_signal(holo_atom, SIGNAL_QDELETING, nameof(.proc/remove_from_spawned))
 	holo_atom.atom_flags |= ATOM_FLAG_HOLOGRAM
 
 	if(isturf(holo_atom))
 		holo_atom.atom_flags |= ATOM_FLAG_NO_DECONSTRUCTION
 		return
+
+	register_signal(holo_atom, SIGNAL_QDELETING, nameof(.proc/remove_from_spawned))
 
 	if(isholoeffect(holo_atom))
 		var/obj/effect/holodeck_effect/holo_effect = holo_atom
@@ -238,7 +242,7 @@
 	if(!emagged)
 		for(var/spawned_atom in spawned)
 			if(get_area(spawned_atom) != linked_area)
-				derez(spawned_atom)
+				derez(spawned_atom, FALSE)
 
 	if(active)
 		use_power_oneoff(active_power_usage + length(spawned) * PROJECTION_POWER_COST + length(effects) * PROJECTION_POWER_COST)
