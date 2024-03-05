@@ -1,11 +1,3 @@
-/mob
-	/// Holder for a bugreporter datum.
-	var/datum/bugreporter/bugreporter
-
-/mob/Destroy()
-	QDEL_NULL(bugreporter)
-	return ..()
-
 /mob/proc/report_bug()
 	THROTTLE(cooldown, 1 SECOND)
 	if(!cooldown)
@@ -38,13 +30,18 @@
 
 	switch(action)
 		if("sendReport")
-			var/title = sanitize(params["title"], max_length = 100)
-			var/text = sanitize(params["text"])
-			var/ckey = usr.ckey
+			if(jobban_isbanned(src, "BUGREPORT"))
+				to_chat(src, SPAN_WARNING("You are banned from using in-game bug report system."))
+				return
+
 			THROTTLE(cooldown, 1 SECOND)
 			if(!cooldown)
 				to_chat(usr, SPAN_DANGER("Wait a bit before sending another report!"))
 				return
+
+			var/title = sanitize(params["title"], max_length = 100)
+			var/text = "[sanitize(params["text"])]\nBYOND major: [usr?.client?.byond_version]/minor: [usr?.client?.byond_build]"
+			var/ckey = usr.ckey
 
 			if(!isnull(title) && !isnull(text) && !isnull(ckey))
 				GLOB.indigo_bot.bug_report_webhook(config.indigo_bot.bug_report_webhook, title, text, ckey)

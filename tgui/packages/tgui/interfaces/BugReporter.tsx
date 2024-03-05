@@ -17,7 +17,7 @@ export const BugReporter = (props: any, context: any) => {
               maxLength={100}
               placeholder="Title of your report..."
               fluid
-              onChange={(value) => {
+              onChange={(_, value: string) => {
                 setReportTitle(value);
               }}
             />
@@ -31,7 +31,7 @@ export const BugReporter = (props: any, context: any) => {
               height="200px"
               mb={1}
               maxLength={1024}
-              onChange={(value) => {
+              onChange={(_, value: string) => {
                 setReportText(value);
               }}
             />
