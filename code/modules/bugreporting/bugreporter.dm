@@ -50,6 +50,6 @@
 				return
 
 			if(!isnull(title) && !isnull(text) && !isnull(ckey))
-				return TRUE
-				//GLOB.indigo_bot.bug_report_webhook(config.indigo_bot.bug_report_webhook, title, text, ckey)
+				GLOB.indigo_bot.bug_report_webhook(config.indigo_bot.bug_report_webhook, title, text, ckey)
+
 			return TRUE
