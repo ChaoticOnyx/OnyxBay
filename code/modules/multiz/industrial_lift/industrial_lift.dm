@@ -200,10 +200,13 @@ GLOBAL_LIST_EMPTY(lifts)
 		SIGNAL_ATOM_INITIALIZED_ON = nameof(.proc/AddItemOnLift)
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
-	register_signal(src, SIGNAL_MOVABLE_BUMP, nameof(.proc/GracefullyBreak))
 
 	if(!lift_master_datum)
 		lift_master_datum = new(src)
+
+/obj/structure/industrial_lift/Bumped(AM)
+	GracefullyBreak()
+	return ..()
 
 /obj/structure/industrial_lift/LateInitialize()
 	. = ..()
