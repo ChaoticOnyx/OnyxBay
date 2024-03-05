@@ -67,10 +67,6 @@
 
 	icon_state = "wiz_bear"
 
-/datum/spell/aoe_turf/conjure/summon/bear/New()
-	. = ..()
-	register_signal(src, SIGNAL_MOB_SPELL_LEARNED, nameof(.proc/spell_learned))
-
 /datum/spell/aoe_turf/conjure/summon/bear/before_cast()
 	..()
 	newVars["master"] = holder //why not do this in the beginning? MIND SWITCHING.
@@ -109,7 +105,7 @@
 						)
 			return "Your bear is now worshiped as a god amongst bears."
 
-/datum/spell/aoe_turf/conjure/summon/bear/proc/spell_learned(mob/user)
+/datum/spell/aoe_turf/conjure/summon/bear/spell_learned(mob/user)
 	if(!user || !user.mind)
 		return
 
@@ -127,7 +123,3 @@
 						Simply pronounce your bear name when issuing a command. Remember to address your bear by name or else it will not heed the command.<br/>"}
 
 	user.mind.store_memory(bear_guide)
-
-/datum/spell/aoe_turf/conjure/summon/bear/Destroy()
-	unregister_signal(src, SIGNAL_MOB_SPELL_LEARNED)
-	return ..()

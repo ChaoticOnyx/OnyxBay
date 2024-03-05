@@ -41,7 +41,7 @@
 			mind.learned_spells = list()
 		mind.learned_spells |= spell_to_add
 	ability_master.add_spell(spell_to_add, spell_base)
-	SEND_SIGNAL(spell_to_add, SIGNAL_MOB_SPELL_LEARNED, src)
+	spell_to_add.spell_learned()
 	return 1
 
 /mob/proc/remove_spell(datum/spell/spell_to_remove)
