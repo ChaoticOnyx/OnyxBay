@@ -154,6 +154,13 @@ var/const/NO_EMAG_ACT = -50
 		return desc
 	return SPAN("warning", "It is too far away.")
 
+/obj/item/card/id/get_examine_line(examine_distance = 10)
+	var/visible_name = examine_distance < 3 ? "ID Card" : name
+	if(is_bloodied)
+		. = SPAN("warning", "\icon[src] a [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[visible_name]</em>")]")
+	else
+		. = "\icon[src] \a [SPAN("info", "<em>[visible_name]</em>")]"
+
 /obj/item/card/id/proc/prevent_tracking()
 	return 0
 
