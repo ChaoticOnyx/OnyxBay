@@ -54,7 +54,7 @@
 	set desc = "Create bug report to developers."
 	set hidden = 1
 
-	report_bug(mob) // As per byond documentation verbs are slower than procs, so we execute minimal amount of code here.
+	mob?.report_bug() // As per byond documentation verbs are slower than procs, so we execute minimal amount of code here.
 
 /client/verb/hotkeys_help()
 	set name = "Hotkeys Help"

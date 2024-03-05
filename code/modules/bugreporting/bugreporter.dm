@@ -6,23 +6,20 @@
 	QDEL_NULL(bugreporter)
 	return ..()
 
-/proc/report_bug(mob/reporter)
-	if(!reporter)
-		return
-
+/mob/proc/report_bug()
 	THROTTLE(cooldown, 1 SECOND)
 	if(!cooldown)
-		to_chat(usr, SPAN_DANGER("Wait a bit before sending another report!"))
+		to_chat(src, SPAN_DANGER("Wait a bit before sending another report!"))
 		return
 
-	if(!istype(reporter.bugreporter))
-		reporter.bugreporter = new ()
+	if(!istype(bugreporter))
+		bugreporter = new ()
 
-	if(jobban_isbanned(reporter, "BUGREPORT"))
-		to_chat(reporter, SPAN_WARNING("You are banned from using in-game bug report system."))
+	if(jobban_isbanned(src, "BUGREPORT"))
+		to_chat(src, SPAN_WARNING("You are banned from using in-game bug report system."))
 		return
 
-	reporter.bugreporter.tgui_interact(reporter)
+	bugreporter.tgui_interact(src)
 
 /datum/bugreporter/tgui_state(mob/user)
 	return GLOB.tgui_always_state
