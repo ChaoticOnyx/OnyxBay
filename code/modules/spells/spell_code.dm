@@ -382,7 +382,7 @@
 	return temp
 
 /datum/spell/proc/spell_learned()
-	SHOULD_NOT_OVERRIDE(FALSE)
+	return
 
 /datum/spell/proc/spell_do_after(mob/user as mob, delay as num, numticks = 5)
 	if(QDELETED(user))
