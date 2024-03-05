@@ -1,13 +1,15 @@
 /mob/living/carbon/human/_examine_text(mob/user)
-	var/skipgloves = 0
-	var/skipsuitstorage = 0
-	var/skipjumpsuit = 0
-	var/skipshoes = 0
-	var/skipmask = 0
-	var/skipears = 0
-	var/skipeyes = 0
-	var/skipface = 0
+	var/skipgloves      = FALSE
+	var/skipsuitstorage = FALSE
+	var/skipjumpsuit    = FALSE
+	var/skipshoes       = FALSE
+	var/skipmask        = FALSE
+	var/skipears        = FALSE
+	var/skipeyes        = FALSE
+	var/skipface        = FALSE
 	var/skipjumpsuitaccessories = FALSE
+
+	var/examine_distance = get_dist(user, src)
 
 	// exosuits and helmets obscure our view and stuff.
 	if(wear_suit)
@@ -26,9 +28,9 @@
 	if(wear_mask)
 		skipface |= wear_mask.flags_inv & HIDEFACE
 
-	// no accuately spotting headsets from across the room.
-	if(get_dist(user, src) > 3)
-		skipears = 1
+	// no accurately spotting headsets from across the room.
+	if(examine_distance > 3)
+		skipears = TRUE
 
 	var/list/msg = list("This is ")
 
@@ -84,11 +86,11 @@
 
 	// left hand
 	if(l_hand)
-		msg += "[T.He] [T.is] holding [l_hand.get_examine_line()] in [T.his] left hand.\n"
+		msg += "[T.He] [T.is] holding [l_hand.get_examine_line(examine_distance)] in [T.his] left hand.\n"
 
 	// right hand
 	if(r_hand)
-		msg += "[T.He] [T.is] holding [r_hand.get_examine_line()] in [T.his] right hand.\n"
+		msg += "[T.He] [T.is] holding [r_hand.get_examine_line(examine_distance)] in [T.his] right hand.\n"
 
 	// gloves
 	if(gloves && !skipgloves)
@@ -98,7 +100,7 @@
 
 	// belt
 	if(belt)
-		msg += "[T.He] [T.has] [belt.get_examine_line()] about [T.his] waist.\n"
+		msg += "[T.He] [T.has] [belt.get_examine_line(examine_distance)] about [T.his] waist.\n"
 
 	// shoes
 	if(shoes && !skipshoes)
@@ -131,7 +133,7 @@
 
 	// ID
 	if(wear_id)
-		msg += "[T.He] [T.is] wearing [wear_id.get_examine_line()].\n"
+		msg += "[T.He] [T.is] wearing [wear_id.get_examine_line(examine_distance)].\n"
 
 	// handcuffed?
 	if(handcuffed)
