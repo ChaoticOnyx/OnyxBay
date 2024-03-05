@@ -155,7 +155,7 @@ var/const/NO_EMAG_ACT = -50
 	return SPAN("warning", "It is too far away.")
 
 /obj/item/card/id/get_examine_line(examine_distance = 10)
-	var/visible_name = examine_distance < 3 ? "ID Card" : name
+	var/visible_name = examine_distance < 3 ? name : "ID Card"
 	if(is_bloodied)
 		. = SPAN("warning", "\icon[src] a [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[visible_name]</em>")]")
 	else
