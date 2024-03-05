@@ -141,10 +141,12 @@
 	ClearOverlays()
 	if(on)
 		icon_state = "intercom"
+		em_block_state = "intercom-eb"
 		AddOverlays(ea_overlay)
 		set_light(0.75, 0.5, 1, 2, "#008000")
 	else
 		icon_state = "intercom-p"
+		em_block_state = null
 		set_light(0)
 
 /obj/item/device/radio/intercom/Initialize(mapload, _dir)
@@ -153,8 +155,6 @@
 	if(_dir)
 		set_dir(_dir)
 
-	power_change()
-
 	if(!pixel_x && !pixel_y) // Don't touch the premapped shifts
 		switch(dir)
 			if(NORTH)
@@ -162,9 +162,11 @@
 			if(SOUTH)
 				pixel_y = 22
 			if(EAST)
-				pixel_x = 22
-			if(WEST)
 				pixel_x = -22
+			if(WEST)
+				pixel_x = 22
+
+	power_change()
 
 /obj/item/device/radio/intercom/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
