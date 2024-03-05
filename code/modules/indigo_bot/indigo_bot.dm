@@ -33,8 +33,6 @@ GLOBAL_DATUM_INIT(indigo_bot, /datum/indigo_bot, new)
 	if(secret == null)
 		return
 
-	message = rustg_url_encode(message)
-
 	var/datum/http_request/R = new()
 	R.prepare(RUSTG_HTTP_METHOD_POST, "/api/webhook/[secret]", json_encode(list(
 		"message" = message
@@ -43,11 +41,6 @@ GLOBAL_DATUM_INIT(indigo_bot, /datum/indigo_bot, new)
 	__send(R, FALSE)
 
 /datum/indigo_bot/proc/round_end_webhook(secret, round_id, game_mode, players_count, round_duration)
-	round_id = url_encode(round_id)
-	game_mode = url_encode(game_mode)
-	players_count = url_encode(players_count)
-	round_duration = url_encode(round_duration)
-
 	var/datum/http_request/R = new()
 	R.prepare(RUSTG_HTTP_METHOD_POST, "/api/webhook/[secret]", json_encode(list(
 		"round_id" = round_id,
