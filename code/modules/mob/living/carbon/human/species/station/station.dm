@@ -181,6 +181,7 @@
 	secondary_langs = list(LANGUAGE_SKRELLIAN)
 	name_language = LANGUAGE_SKRELLIAN
 	health_hud_intensity = 1.75
+	troublesome_sexual_dimorphism = TRUE
 
 	min_age = 18
 	max_age = 90
