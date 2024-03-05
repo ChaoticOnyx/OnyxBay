@@ -494,8 +494,4 @@ BORER_STATUS_HUSK = list(\
 		if(host)
 			host.verbs -= BORER_ALL_ABILITIES[abilities_type]
 
-/mob/living/simple_animal/borer/proc/on_mob_death()
-	GLOB.borers.remove_antagonist(host.mind)
-	clear_abilities()
-
 #undef BORER_ALL_ABILITIES

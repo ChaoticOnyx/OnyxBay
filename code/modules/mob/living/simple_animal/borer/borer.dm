@@ -60,10 +60,10 @@
 	if(!initial)
 		request_player()
 
-/mob/living/simple_animal/borer/Initialize()
-	. = ..()
-	register_signal(src, SIGNAL_MOB_DEATH, CALLBACK(src, nameof(.proc/on_mob_death)))
-
+/mob/living/simple_animal/borer/add_to_dead_mob_list()
+	GLOB.borers.remove_antagonist(host.mind)
+	clear_abilities()
+	return ..()
 
 /mob/living/simple_animal/borer/Life()
 
