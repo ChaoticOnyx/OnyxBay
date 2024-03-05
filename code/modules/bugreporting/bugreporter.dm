@@ -49,5 +49,7 @@
 			if(!isnull(title) && !isnull(text) && !isnull(ckey))
 				GLOB.indigo_bot.bug_report_webhook(config.indigo_bot.bug_report_webhook, title, text, ckey)
 				to_chat(usr, SPAN_DANGER("Thank you for submitting this bug report!"))
+			else
+				to_chat(usr, SPAN_DANGER("Something went wrong. Check whether you have filled all input fields correctly."))
 
 			return TRUE
