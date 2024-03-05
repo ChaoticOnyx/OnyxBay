@@ -9,6 +9,7 @@
 	var/skipface        = FALSE
 	var/skipjumpsuitaccessories = FALSE
 
+	var/visible_sexybits = FALSE // Can we get the gender right even w/ ambiguous bodybuilds?
 	var/examine_distance = get_dist(user, src)
 
 	// exosuits and helmets obscure our view and stuff.
@@ -18,6 +19,8 @@
 		skipjumpsuit = wear_suit.flags_inv & HIDEJUMPSUIT
 		skipshoes = wear_suit.flags_inv & HIDESHOES
 		skipjumpsuitaccessories = wear_suit.flags_inv & HIDEJUMPSUITACCESSORIES
+	else if(!w_uniform)
+		visible_sexybits = TRUE
 
 	if(head)
 		skipmask = head.flags_inv & HIDEMASK
@@ -39,10 +42,13 @@
 	if(skipjumpsuit && skipface) // big suits/masks/helmets make it hard to tell their gender
 		T = gender_datums[PLURAL]
 	else
-		if(ishuman(user))
+		if(!visible_sexybits && body_build?.ambiguous_gender && (T.key != "male" || f_style == "Shaved"))
+			T = gender_datums[PLURAL]
+		else if(ishuman(user))
 			var/mob/living/carbon/human/HU = user
 			if(species.troublesome_sexual_dimorphism && (HU.species != species))
 				T = gender_datums[PLURAL]
+
 		if(icon)
 			msg += "[icon2html(icon, user)] " // fucking BYOND: this should stop dreamseeker crashing if we -somehow- examine somebody before their icon is generated
 		else
