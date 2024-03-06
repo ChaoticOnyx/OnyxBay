@@ -11,6 +11,12 @@
 
 	resources = list(/datum/deity_resource/souls)
 
+	evolution_packages = list(
+		/datum/evolution_package/thalamus/basic,
+		/datum/evolution_package/thalamus/basic_defense,
+		/datum/evolution_package/thalamus/basic_convert
+	)
+
 /datum/god_form/thalamus/setup_form(mob/living/deity/D)
 	. = ..()
 

@@ -27,8 +27,8 @@
 		data["forms"] += list(form_data)
 
 	data["user"] = list(
-			"class"           = form?.type,
-			"name"            = user.name,
+			"form" = form?.type,
+			"name" = user.name,
 		)
 
 
@@ -49,6 +49,16 @@
 		)
 
 		data["items"] += list(building_data)
+
+	data["evolutionItems"] = list()
+	for(var/datum/evolution_package/evo in form?.evolution_packages)
+		var/list/evo_data = list(
+			"name" = evo.name,
+			"desc" = evo.desc,
+			"icon" = evo.icon,
+			"depth" = evo.tier,
+			"unlocked" = evo.unlocked
+		)
 
 	return data
 

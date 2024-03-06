@@ -37,6 +37,11 @@
 		/datum/deity_resource/tower/favor
 	)
 
+	evolution_packages = list(
+		/datum/evolution_package/tower/basic,
+		/datum/evolution_package/tower/basic_altar,
+		/datum/evolution_package/tower/basic_statue
+	)
 
 /datum/god_form/starlight/take_charge(mob/living/user, charge)
 	charge = max(5, charge/100)

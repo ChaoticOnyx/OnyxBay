@@ -2,8 +2,8 @@
 	var/name
 	var/desc
 	var/icon
-	var/icon_state
 	var/tier
+	var/unlocked = FALSE
 	var/list/requirements
 	var/list/resource_cost = list() // Name = cost
 	var/list/building_requirements

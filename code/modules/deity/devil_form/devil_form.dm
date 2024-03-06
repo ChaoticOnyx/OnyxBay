@@ -1,5 +1,5 @@
 GLOBAL_LIST_INIT(devil_spells_persistent, list(/datum/spell/targeted/summon_conract, /datum/spell/targeted/equip_item/pitchfork))
-GLOBAL_LIST_INIT(devil_spells_1lvl, list(/datum/spell/hand/build_teleport, /datum/spell/toggled/pride/regen_form, /datum/spell/toggled/pride/mobility_form, /datum/spell/toggled/pride/tank_form, /datum/spell/toggled/pride/melee_form))
+GLOBAL_LIST_INIT(devil_spells_1lvl, list(/datum/spell/toggled/pride/regen_form, /datum/spell/toggled/pride/mobility_form, /datum/spell/toggled/pride/tank_form, /datum/spell/toggled/pride/melee_form))
 
 /datum/god_form/devil
 	name = "Devil"
