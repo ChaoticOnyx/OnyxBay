@@ -193,6 +193,7 @@
 	desc = "A small lighting fixture."
 	light_type = /obj/item/light/bulb
 	construct_type = /obj/machinery/light_construct/small
+	pixel_shift = 3
 
 /obj/machinery/light/small/he
 	name = "high efficiency light fixture"
@@ -260,6 +261,17 @@
 
 /obj/machinery/light/on_update_icon()
 	ClearOverlays()
+
+	if(pixel_shift)
+		switch(dir)
+			if(NORTH)
+				pixel_y = pixel_shift
+			if(SOUTH)
+				pixel_y = -pixel_shift
+			if(EAST)
+				pixel_x = pixel_shift
+			if(WEST)
+				pixel_x = -pixel_shift
 
 	switch(get_status())
 		if(LIGHT_OK)
