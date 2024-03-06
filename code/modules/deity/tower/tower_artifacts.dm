@@ -117,15 +117,7 @@
 
 /obj/aura/shadowling_aura/New(mob/living/target)
 	. = ..()
-	if(!(MUTATION_SPACERES in target.mutations))
-		target.mutations.Add(MUTATION_SPACERES)
-		added_mutation = TRUE
-
-/obj/aura/shadowling_aura/Destroy()
-	if(added_mutation)
-		added_mutation = FALSE
-		user.mutations.Remove(MUTATION_SPACERES)
-	return ..()
+	/// Do something xd
 
 /obj/aura/shadowling_aura/bullet_act(obj/item/projectile/P, def_zone)
 	if(P.check_armour == "laser" || P.damage_type == "BURN")

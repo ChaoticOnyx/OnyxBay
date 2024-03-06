@@ -71,7 +71,7 @@
 	target = null
 	update_icon()
 
-/obj/structure/deity/altar/Process()
+/obj/structure/deity/altar/think()
 	if(!target || !linked_deity)
 		set_next_think(0)
 		return
@@ -84,8 +84,7 @@
 
 	var/time_passed = conversion_start_time - world.time
 	if(time_passed <= 0)
-		visible_message(SPAN_DANGER("For one thundering moment, \the [target] cries out in pain before going limp and broken."))
-		GLOB.godcult.add_antagonist_mind(target.mind, TRUE, "Servant of [linked_deity]", "Your loyalty may be faulty, but you know that it now has control over you...")
+		convert()
 		remove_target()
 		set_next_think(0)
 		return
@@ -104,6 +103,11 @@
 
 	to_chat(target, SPAN_OCCULT(text))
 	set_next_think(world.time + 10 SECONDS)
+
+/// The actual conversion happens here
+/obj/structure/deity/altar/proc/convert()
+	visible_message(SPAN_DANGER("For one thundering moment, \the [target] cries out in pain before going limp and broken."))
+	GLOB.godcult.add_antagonist_mind(target.mind, TRUE, "Servant of [linked_deity]", "Your loyalty may be faulty, but you know that it now has control over you...")
 
 /obj/structure/deity/altar/on_update_icon()
 	overlays.Cut()

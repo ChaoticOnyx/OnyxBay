@@ -1,7 +1,7 @@
 /datum/god_form/starlight
 	name = "Starlight Herald"
 	desc = "The bringer of life, and all that entails."
-	form_state = "sungod"
+	form_state = "starlight"
 
 	buildables = list(
 		/datum/deity_power/structure/starlight/pylon,
