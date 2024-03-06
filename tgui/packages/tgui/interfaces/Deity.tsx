@@ -20,8 +20,7 @@ import {
   Input,
   Dropdown,
 } from "../components";
-import { escapeRegExp } from "../sanitize";
-import { InfernoNode } from "inferno";
+import { SkillTreeView } from "SkillTreeView";
 
 const PAGE_FORMS = 0;
 const PAGE_BOONS = 1;

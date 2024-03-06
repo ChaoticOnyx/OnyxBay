@@ -17,7 +17,7 @@
 
 	data["forms"] = list()
 	for(var/datum/god_form/form in GLOB.deity_forms)
-		var/static/icon/form_icon = new /icon('icons/mob/deity.dmi', "neomorph")
+		var/icon/form_icon = new /icon("icon" = 'icons/mob/deity.dmi', "icon_state" = form.form_state)
 		var/list/form_data = list(
 			"name" = form.name,
 			"icon" = icon2base64html(form_icon),

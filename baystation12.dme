@@ -1778,6 +1778,7 @@
 #include "code\modules\deity\deity_powers\deity_phenomena.dm"
 #include "code\modules\deity\deity_powers\deity_power.dm"
 #include "code\modules\deity\deity_powers\deity_structures.dm"
+#include "code\modules\deity\deity_powers\evolution.dm"
 #include "code\modules\deity\deity_powers\structure_datum.dm"
 #include "code\modules\deity\devil_form\banes.dm"
 #include "code\modules\deity\devil_form\contract.dm"
