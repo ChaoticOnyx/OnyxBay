@@ -86,7 +86,7 @@
 		if(T && !is_type_in_list(T, no_touchie))
 			if(istype(held, /obj/item/gun) && prob(80))
 				var/obj/item/gun/G = held
-				G.Fire(T, H)
+				G.Fire(T, H, target_zone = H.zone_sel?.selecting)
 			if(istype(held, /obj/item/reagent_containers) && prob(80))
 				var/obj/item/reagent_containers/C = held
 				C.attack(H, H)

@@ -131,17 +131,14 @@
 
 /obj/item/projectile/bullet/pistol
 	damage = 27.5 //9mm, .38, etc
-	armor_penetration = 13.5
 	poisedamage = 5.0
 
 /obj/item/projectile/bullet/pistol/medium
 	damage = 30 //.45
-	armor_penetration = 14.5
 	poisedamage = 7.5
 
 /obj/item/projectile/bullet/pistol/medium/smg
 	damage = 32.5 //10mm
-	armor_penetration = 19.5
 	poisedamage = 6.0
 
 /obj/item/projectile/bullet/pistol/medium/revolver
@@ -153,12 +150,12 @@
 /obj/item/projectile/bullet/pistol/strong //matebas
 	fire_sound = 'sound/effects/weapons/gun/fire_mateba.ogg'
 	damage = 60 //.50AE
-	armor_penetration = 30
+	armor_penetration = 50
 	poisedamage = 20.0
 
 /obj/item/projectile/bullet/pistol/strong/revolver //revolvers
 	damage = 50 //Revolvers get snowflake bullets, to keep them relevant
-	armor_penetration = 20
+	armor_penetration = 30
 	poisedamage = 20.0
 
 // for rapid-fire mode (lawgiver)
@@ -175,7 +172,6 @@
 	agony = 30
 	embed = 0
 	sharp = 0
-	armor_penetration = 2.5
 	penetration_modifier = 0.2
 	poisedamage = 10.0
 
@@ -192,7 +188,7 @@
 /obj/item/projectile/bullet/pistol/accelerated/c38
 	name = "accelerated bullet"
 	damage = 35.0 // .38 + gauss
-	armor_penetration = 35
+	armor_penetration = 50
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg' // Gauss .38 should sound like a badass
 	poisedamage = 12.5
 
@@ -201,8 +197,8 @@
 
 /obj/item/projectile/bullet/shotgun
 	name = "slug"
-	damage = 55
-	armor_penetration = 20
+	damage = 60
+	armor_penetration = 30
 	poisedamage = 20.0
 
 /obj/item/projectile/bullet/shotgun/beanbag		//because beanbags are not bullets
@@ -230,7 +226,7 @@
 /obj/item/projectile/bullet/pellet/scattershot // Used by *heavy* shotguns, i.e. LBX AC 10 "Scattershot"
 	name = "shrapnel"
 	damage = 35
-	armor_penetration = 20
+	armor_penetration = 30
 	pellets = 5
 	range_step = 2
 	spread_step = 15
@@ -258,7 +254,7 @@
 /* "Rifle" rounds */
 
 /obj/item/projectile/bullet/rifle
-	armor_penetration = 25
+	armor_penetration = 40
 	penetrating = 1
 	poisedamage = 7.0
 
@@ -267,14 +263,14 @@
 
 /obj/item/projectile/bullet/rifle/a762
 	damage = 35
-	armor_penetration = 30
+	armor_penetration = 50
 
 /obj/item/projectile/bullet/rifle/a145
 	damage = 80
 	stun = 3
 	weaken = 3
 	penetrating = 5
-	armor_penetration = 80
+	armor_penetration = 125
 	hitscan = 1 //so the PTR isn't useless as a sniper weapon
 	penetration_modifier = 1.25
 	poisedamage = 125.0 //you can't withstand a knuckle-sized chunk of metal with borderline escape velocity
@@ -282,7 +278,7 @@
 /obj/item/projectile/bullet/rifle/a145/apds
 	damage = 75
 	penetrating = 6
-	armor_penetration = 95
+	armor_penetration = 175
 	penetration_modifier = 1.5
 
 /* Miscellaneous */
@@ -352,7 +348,7 @@
 	name = "micrometeor"
 	icon_state = "rock"
 	damage = 40
-	armor_penetration = 25
+	armor_penetration = 50
 	kill_count = 255
 	poisedamage = 255 // SLAM JAM
 

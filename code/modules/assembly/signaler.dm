@@ -18,11 +18,9 @@
 	drop_sound = SFX_DROP_COMPONENT
 	pickup_sound = SFX_PICKUP_COMPONENT
 
-/obj/item/device/assembly/signaler/New()
-	..()
-	addtimer(CALLBACK(src, nameof(.proc/set_frequency), frequency), 4 SECOND)
-	return
-
+/obj/item/device/assembly/signaler/Initialize()
+	. = ..()
+	set_frequency(frequency)
 
 /obj/item/device/assembly/signaler/activate()
 	if(!..())
@@ -128,10 +126,10 @@
 	set waitfor = 0
 	if(!frequency)
 		return
-	if(!SSradio)
-		sleep(20)
+
 	if(!SSradio)
 		return
+
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)

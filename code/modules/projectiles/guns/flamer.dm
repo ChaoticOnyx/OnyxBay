@@ -204,7 +204,7 @@
 		set_next_think(world.time)
 	return TRUE
 
-/obj/item/gun/flamer/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0)
+/obj/item/gun/flamer/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0, target_zone = BP_CHEST)
 	var/turf/curloc = get_turf(user) //In case the target or we are expired.
 	var/turf/targloc = get_turf(target)
 	if(!targloc || !curloc)

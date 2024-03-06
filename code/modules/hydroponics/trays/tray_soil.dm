@@ -4,6 +4,7 @@
 	density = 0
 	use_power = POWER_USE_OFF
 	mechanical = 0
+	vertical_shift = 8
 	tray_light = 0
 	layer = BELOW_DOOR_LAYER
 

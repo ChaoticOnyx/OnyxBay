@@ -9,7 +9,7 @@
 	var/block_tier_a = BLOCK_TIER_ADVANCED
 	sharp = 0
 	edge = 0
-	armor_penetration = 50
+	armor_penetration = 75
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	var/active_max_bright = 0.3
 	var/active_outer_range = 1.6
@@ -153,6 +153,7 @@
 	mod_reach_a = 1.25
 	mod_handy_a = 1.5
 	mod_shield_a = 1.25
+	armor_penetration = 100
 	block_tier_a = BLOCK_TIER_MELEE
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	obj_flags = OBJ_FLAG_CONDUCTIBLE

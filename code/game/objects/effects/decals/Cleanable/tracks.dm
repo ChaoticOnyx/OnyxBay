@@ -167,7 +167,6 @@ var/global/list/image/fluidtrack_cache = list()
 	drydesc = "They look like dried tracks left by footwear."
 	coming_state = "human1"
 	going_state  = "human2"
-	amount = 0
 
 /obj/effect/decal/cleanable/blood/tracks/snake
 	name = "wet tracks"
@@ -176,8 +175,6 @@ var/global/list/image/fluidtrack_cache = list()
 	drydesc = "They look like dried tracks left by a giant snake."
 	coming_state = "snake1"
 	going_state  = "snake2"
-	random_icon_states = null
-	amount = 0
 
 /obj/effect/decal/cleanable/blood/tracks/paw
 	name = "wet tracks"
@@ -186,8 +183,6 @@ var/global/list/image/fluidtrack_cache = list()
 	drydesc = "They look like dried tracks left by a mammal."
 	coming_state = "paw1"
 	going_state  = "paw2"
-	random_icon_states = null
-	amount = 0
 
 /obj/effect/decal/cleanable/blood/tracks/claw
 	name = "wet tracks"
@@ -196,8 +191,6 @@ var/global/list/image/fluidtrack_cache = list()
 	drydesc = "They look like dried tracks left by a reptile."
 	coming_state = "claw1"
 	going_state  = "claw2"
-	random_icon_states = null
-	amount = 0
 
 /obj/effect/decal/cleanable/blood/tracks/wheels
 	name = "wet tracks"
@@ -207,5 +200,11 @@ var/global/list/image/fluidtrack_cache = list()
 	coming_state = "wheels"
 	going_state  = ""
 	gender = PLURAL
-	random_icon_states = null
-	amount = 0
+
+/obj/effect/decal/cleanable/blood/tracks/trail
+	name = "wet trails"
+	dryname = "dried trails"
+	desc = "They look like still wet trail left by crawler."
+	drydesc = "They look like dried trail left by crawler."
+	coming_state = "trail1"
+	going_state = "trail2"

@@ -382,23 +382,8 @@ var/global/list/damage_icon_parts = list()
 
 
 /mob/living/carbon/human/update_mutations(update_icons=1)
-	var/fat
-	if(MUTATION_FAT in mutations)
-		fat = "fat"
-
 	var/image/standing	= overlay_image('icons/effects/genetics.dmi', flags=RESET_COLOR)
 	var/add_image = 0
-	var/g = "m"
-	if(gender == FEMALE)	g = "f"
-	// DNA2 - Drawing underlays.
-	for(var/datum/dna/gene/gene in dna_genes)
-		if(!gene.block)
-			continue
-		if(gene.is_active(src))
-			var/underlay=gene.OnDrawUnderlays(src,g,fat)
-			if(underlay)
-				standing.underlays += underlay
-				add_image = 1
 	for(var/mut in mutations)
 		switch(mut)
 			if(MUTATION_LASER)

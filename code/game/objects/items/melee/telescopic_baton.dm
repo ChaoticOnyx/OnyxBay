@@ -11,6 +11,7 @@
 	mod_weight = 1.0
 	mod_reach = 0.5
 	mod_handy = 1.0
+	armor_penetration = 20
 	var/on = FALSE
 	drop_sound = SFX_DROP_CROWBAR
 	pickup_sound = SFX_PICKUP_CROWBAR

@@ -101,7 +101,6 @@
 	for(var/datum/disease2/effect/dnaspread/E in D.effects)
 		E.data["name"] = candidate.real_name
 		E.data["UI"] = candidate.dna.UI.Copy()
-		E.data["SE"] = candidate.dna.SE.Copy()
 
 	if(candidate.species.name in D.affected_species)
 		infect_virus2(candidate,D,1)

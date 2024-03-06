@@ -95,8 +95,10 @@
 
 /obj/machinery/mineral/stacking_machine
 	name = "stacking machine"
+
 	icon_state = "stacker-map"
-	gameicon = "stacker"
+	base_icon_state = "stacker"
+
 	ea_color = "#0090F8"
 	/// List of stored materials
 	var/list/machine_storage = list()

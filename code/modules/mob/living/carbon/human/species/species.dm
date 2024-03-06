@@ -61,6 +61,7 @@
 	var/blood_volume = 560                    // Initial blood volume.
 	var/hunger_factor = DEFAULT_HUNGER_FACTOR // Multiplier for hunger.
 	var/taste_sensitivity = TASTE_NORMAL      // How sensitive the species is to minute tastes.
+	var/troublesome_sexual_dimorphism = FALSE // Do other species have hard time differentiating our biological genders?
 
 	var/min_age = 17
 	var/max_age = 70
@@ -624,10 +625,13 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 // Impliments different trails for species depending on if they're wearing shoes.
 /datum/species/proc/get_move_trail(mob/living/carbon/human/H)
-	if( H.shoes || ( H.wear_suit && (H.wear_suit.body_parts_covered & FEET) ) )
+	if(H.lying)
+		return /obj/effect/decal/cleanable/blood/tracks/trail
+
+	if(H.shoes || (H.wear_suit && (H.wear_suit.body_parts_covered & FEET)))
 		return /obj/effect/decal/cleanable/blood/tracks/footprints
-	else
-		return move_trail
+
+	return move_trail
 
 /datum/species/proc/update_skin(mob/living/carbon/human/H)
 	return
@@ -660,7 +664,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				target.visible_message("<span class='danger'>[target]'s [W] goes off during the struggle!</span>")
 				return W.afterattack(shoot_to,target)
 
-	var/effective_armor = target.getarmor(attacker.zone_sel.selecting, "melee")
+	var/effective_armor = target.get_flat_armor(attacker.zone_sel.selecting, "melee")
 	var/poisedmg = round(4.0 + 4.0 * ((100 - effective_armor) / 100), 0.1)
 	if(istype(attacker.gloves, /obj/item/clothing/gloves/chameleon/robust))
 		poisedmg *= 1.75

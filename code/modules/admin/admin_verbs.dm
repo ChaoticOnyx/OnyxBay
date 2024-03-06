@@ -942,16 +942,20 @@ var/list/admin_verbs_mentor = list(
 			to_chat(src, "<b>Enabled maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has enabled maint drones.", 1)
 
-/client/proc/man_up(datum/follow_holder/fh in get_follow_targets(mobs_only = TRUE))
+/client/proc/man_up()
 	set category = "Fun"
 	set name = "Man Up"
 	set desc = "Tells mob to man up and deal with it."
 
-	var/mob/T = fh.followed_instance
-	to_chat(T, "<span class='notice'><b><font size=3>Man up and deal with it.</font></b></span>")
-	to_chat(T, "<span class='notice'>Move on.</span>")
+	var/mob/mob = tgui_input_list(usr, "Select a client", "Man up", GLOB.player_list)
 
-	log_and_message_admins("told [key_name(T)] to man up and deal with it.")
+	if(!istype(mob))
+		return
+
+	to_chat(mob, "<span class='notice'><b><font size=3>Man up and deal with it.</font></b></span>")
+	to_chat(mob, "<span class='notice'>Move on.</span>")
+
+	log_and_message_admins("told [key_name(mob)] to man up and deal with it.")
 
 /client/proc/global_man_up()
 	set category = "Fun"

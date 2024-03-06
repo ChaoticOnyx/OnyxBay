@@ -27,14 +27,14 @@
 "aA" = (/obj/structure/closet/crate/secure/weapon{req_access = list(50)},/obj/random/energy,/obj/random/energy,/obj/effect/floor_decal/industrial/hatch/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "aB" = (/obj/structure/table/gamblingtable,/obj/item/deck/cards,/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "aC" = (/obj/structure/bed/chair/wood{dir = 8},/obj/machinery/alarm{pixel_y = 25},/obj/machinery/atmospherics/unary/vent_pump/on,/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
-"aD" = (/turf/simulated/shuttle/wall{dir = 8; icon_state = "swall_t"},/area/outpost/abandoned)
+"aD" = (/turf/simulated/shuttle/wall{icon_state = "whiteship_t"; dir = 8},/area/outpost/abandoned)
 "aF" = (/obj/structure/sign/poster{pixel_y = 30},/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "aG" = (/obj/structure/table/woodentable,/obj/item/flame/lighter/zippo,/obj/item/clothing/mask/smokable/cigarette/cigar,/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "aH" = (/obj/machinery/vending/cigars,/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "aI" = (/obj/machinery/media/jukebox,/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "aJ" = (/turf/simulated/shuttle/wall/syndi{dir = 4; icon_state = "syndiwall_t"},/area/maintenance/ghetto_syndie)
 "aK" = (/obj/machinery/door/airlock/external,/turf/simulated/floor,/area/outpost/abandoned)
-"aL" = (/turf/simulated/shuttle/wall{dir = 1; icon_state = "swall_straight"},/area/outpost/abandoned)
+"aL" = (/turf/simulated/shuttle/wall{icon_state = "whiteship_straight"},/area/outpost/abandoned)
 "aM" = (/obj/structure/bed/chair/wood{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "aN" = (/obj/structure/table/gamblingtable,/obj/item/material/ashtray/bronze,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "aO" = (/obj/structure/bed/chair/wood{dir = 8},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
@@ -60,7 +60,7 @@
 "bi" = (/turf/simulated/shuttle/wall/syndi{dir = 6; icon_state = "syndiwall"},/area/outpost/prydwen)
 "bj" = (/obj/item/material/shard{icon_state = "small"},/obj/structure/window_frame/broken,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "bk" = (/obj/item/stack/rods,/obj/structure/door_assembly/door_assembly_ext{name = "Broken External Airlock"},/turf/simulated/floor,/area/outpost/abandoned)
-"bl" = (/turf/simulated/shuttle/wall{icon_state = "swall_t"},/area/outpost/abandoned)
+"bl" = (/turf/simulated/shuttle/wall{icon_state = "whiteship_t"},/area/outpost/abandoned)
 "bm" = (/obj/structure/window_frame/reinforced/hull,/turf/simulated/floor/plating,/area/outpost/abandoned)
 "bn" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/structure/disposalpipe/segment,/obj/effect/floor_decal/corner/lime{dir = 6},/turf/simulated/floor/tiled,/area/outpost/research/chemistry)
 "bo" = (/turf/simulated/shuttle/wall/syndi{dir = 10; icon_state = "syndiwall"},/area/outpost/prydwen)
@@ -69,8 +69,7 @@
 "br" = (/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)
 "bs" = (/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)
 "bt" = (/obj/structure/table/darkwood_reinforced,/obj/item/material/ashtray/bronze,/obj/machinery/light/small/hl,/turf/simulated/floor/trim/carpet/red,/area/outpost/main_outpost/bar)
-"bu" = (/turf/simulated/shuttle/wall{dir = 1; icon_state = "pwall"},/area/outpost/abandoned)
-"bv" = (/turf/simulated/floor/plating/airless,/turf/simulated/shuttle/wall{dir = 10; icon_state = "pwall"},/area/outpost/abandoned)
+"bv" = (/turf/simulated/floor/plating/airless,/turf/simulated/shuttle/wall/corner/smoothwhite/ne,/area/outpost/abandoned)
 "bw" = (/obj/item/stack/rods,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
 "bx" = (/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
 "by" = (/obj/structure/sign/warning/docking_area,/turf/simulated/wall/r_wall,/area/mine/explored)
@@ -101,7 +100,7 @@
 "bX" = (/obj/structure/table/darkwood_reinforced,/obj/item/material/ashtray/bronze,/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8},/obj/random/music_tape,/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "bY" = (/obj/structure/bed/couch/right/sofa{dir = 4},/turf/simulated/floor/trim/carpet/red,/area/outpost/main_outpost/bar)
 "bZ" = (/obj/machinery/door/airlock{name = "Toilet"},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/dorms)
-"ca" = (/turf/simulated/floor/plating/airless,/turf/simulated/shuttle/wall{dir = 6; icon_state = "pwall"},/area/outpost/abandoned)
+"ca" = (/turf/simulated/floor/plating/airless,/turf/simulated/shuttle/wall/corner/smoothwhite/se,/area/outpost/abandoned)
 "cb" = (/obj/item/material/shard,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
 "cc" = (/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
 "cd" = (/turf/simulated/wall,/area/outpost/abandoned)
@@ -233,7 +232,7 @@
 "eB" = (/obj/structure/catwalk,/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 8; frequency = 1327; id_tag = "abandoned_outpost_pump"},/obj/structure/table/rack,/obj/machinery/airlock_sensor{dir = 4; frequency = 1380; id_tag = "engineering_outpost_sensor"; pixel_x = 25},/obj/item/clothing/suit/space/void/engineering/salvage/prepared,/turf/simulated/floor/plating,/area/outpost/abandonedpost)
 "eC" = (/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/outpost/main_outpost/nhallway)
 "eD" = (/turf/simulated/shuttle/wall/syndi{dir = 1; icon_state = "syndiwall_t"},/area/outpost/prydwen)
-"eE" = (/turf/simulated/shuttle/wall{icon_state = "swall"; dir = 4},/area/outpost/abandoned)
+"eE" = (/turf/simulated/shuttle/wall{icon_state = "whiteship"; dir = 4},/area/outpost/abandoned)
 "eF" = (/obj/random/assembly,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "eG" = (/obj/item/remains/xeno,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "eH" = (/obj/structure/table/standard,/obj/random/loot,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
@@ -262,7 +261,6 @@
 "fe" = (/obj/machinery/atmospherics/unary/vent_scrubber/on,/obj/structure/cable/blue{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/yellow{dir = 1},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled,/area/outpost/engineering/hallway)
 "ff" = (/obj/structure/closet/secure_closet/personal,/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/obj/structure/window/reinforced{dir = 8},/turf/simulated/floor/trim/carpet,/area/outpost/main_outpost/dorms/proom1)
 "fg" = (/obj/structure/table/rack,/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/cobweb{dir = 8},/obj/item/clothing/suit/space/void/exploration,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
-"fh" = (/turf/space,/turf/simulated/shuttle/wall/corner/blockwhite/nw,/area/outpost/abandoned)
 "fi" = (/obj/machinery/light{dir = 1},/obj/structure/cable/blue{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/yellow{dir = 1},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 10},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled,/area/outpost/engineering/hallway)
 "fj" = (/obj/structure/table/standard,/obj/item/storage/firstaid/fire,/obj/item/storage/firstaid/fire,/turf/simulated/floor/tiled/white/rough,/area/outpost/main_outpost/infirmary)
 "fk" = (/obj/structure/gravemarker/cross{message = "Pa Truller"},/turf/simulated/floor/asteroid,/area/mine/explored)
@@ -290,7 +288,7 @@
 "fG" = (/obj/item/material/shard{icon_state = "medium"},/obj/structure/window_frame/reinforced/unfinished,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "fH" = (/obj/machinery/door/airlock,/turf/simulated/floor,/area/outpost/abandoned)
 "fI" = (/obj/structure/window_frame/reinforced/unfinished,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
-"fJ" = (/turf/simulated/shuttle/wall{icon_state = "swall"; dir = 8},/area/outpost/abandoned)
+"fJ" = (/turf/simulated/shuttle/wall{icon_state = "whiteship"; dir = 8},/area/outpost/abandoned)
 "fK" = (/turf/simulated/shuttle/wall/syndi{dir = 1; icon_state = "syndiwall_straight"},/area/maintenance/ghetto_syndie)
 "fL" = (/obj/effect/floor_decal/rust,/obj/item/trash/liquidfood,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
 "fM" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8},/turf/simulated/floor/tiled,/area/outpost/engineering/hallway)
@@ -332,7 +330,7 @@
 "gw" = (/obj/effect/floor_decal/corner/yellow{dir = 5},/obj/structure/computerframe,/obj/item/stack/cable_coil,/turf/simulated/floor/tiled/dark,/area/maintenance/ghetto_syndie)
 "gx" = (/turf/simulated/shuttle/wall/syndi{dir = 4; icon_state = "syndiwall"},/area/maintenance/ghetto_syndie)
 "gy" = (/turf/simulated/shuttle/wall/syndi{dir = 8; icon_state = "syndiwall_t"},/area/maintenance/ghetto_syndie)
-"gz" = (/turf/simulated/shuttle/wall{dir = 1; icon_state = "swall_t"},/area/outpost/abandoned)
+"gz" = (/turf/simulated/shuttle/wall{icon_state = "whiteship_t"; dir = 1},/area/outpost/abandoned)
 "gA" = (/obj/random/obstruction,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "gB" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall_t"},/area/outpost/prydwen)
 "gC" = (/turf/simulated/shuttle/wall/syndi{dir = 8; icon_state = "syndiwall_straight"},/area/maintenance/ghetto_syndie)
@@ -419,7 +417,7 @@
 "if" = (/obj/structure/disposalpipe/segment,/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)
 "ig" = (/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/firealarm{dir = 4; layer = 3.3; pixel_x = 26},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/trim/lino,/area/outpost/main_outpost/dorms)
 "ih" = (/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)
-"ii" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "swall_straight"},/area/outpost/abandoned)
+"ii" = (/turf/simulated/shuttle/wall{icon_state = "whiteship_straight"; dir = 4},/area/outpost/abandoned)
 "ij" = (/obj/machinery/light/small{dir = 8},/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)
 "ik" = (/obj/machinery/door/airlock/medical{icon = 'icons/obj/doors/doorviro.dmi'; name = "Operating Theatre"},/turf/simulated/floor/tiled/white/airless,/area/outpost/abandoned)
 "il" = (/obj/effect/floor_decal/rust,/obj/machinery/door/airlock/medical{icon = 'icons/obj/doors/doorviro.dmi'; name = "Storage"},/turf/simulated/floor/tiled/white/airless,/area/outpost/abandoned)
@@ -849,7 +847,7 @@
 "qt" = (/obj/machinery/atmospherics/pipe/manifold/hidden/supply,/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/yellow{dir = 8},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/outpost/engineering/hallway)
 "qu" = (/obj/effect/decal/cleanable/blood,/obj/effect/decal/remains,/obj/item/clothing/under/confederacy,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "qv" = (/obj/random/tech_supply,/turf/simulated/floor/plating,/area/outpost/prydwen)
-"qw" = (/turf/simulated/shuttle/wall{icon_state = "swall"},/area/outpost/abandoned)
+"qw" = (/obj/structure/window/shuttle{icon_state = "11"; dir = 8},/obj/structure/window_frame/grille,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "qx" = (/turf/simulated/floor/plating,/area/outpost/prydwen)
 "qy" = (/obj/effect/floor_decal/corner/red{dir = 9},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/maintenance/ghetto_syndie)
 "qz" = (/obj/machinery/door/airlock/hatch{name = "Cockpit"},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
@@ -939,7 +937,7 @@
 "sf" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/machinery/power/apc{name = "south bump"; pixel_y = -24},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/generic,/turf/simulated/floor/tiled,/area/outpost/main_outpost/challway)
 "sg" = (/obj/machinery/light/small,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "sh" = (/obj/structure/table/steel,/obj/item/storage/toolbox/mechanical,/obj/random/maintenance,/turf/simulated/floor/plating,/area/outpost/main_outpost/challway)
-"si" = (/obj/structure/shuttle/window,/obj/structure/grille,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
+"si" = (/obj/structure/window/shuttle{icon_state = "11"; dir = 4},/obj/structure/window_frame/grille,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "sj" = (/obj/machinery/power/port_gen/pacman/super,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/effect/floor_decal/industrial/warning/cee{dir = 8},/turf/simulated/floor/plating,/area/outpost/prydwen)
 "sk" = (/obj/effect/floor_decal/industrial/loading{dir = 4},/obj/effect/floor_decal/oldflood,/obj/machinery/light/small/hl,/turf/simulated/floor/tiled,/area/outpost/mining_main/refinery)
 "sl" = (/obj/machinery/door/airlock/engineering{name = "Storage"; req_access = list(10)},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/door/firedoor/border_only,/obj/structure/cable/blue{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled,/area/outpost/engineering/storage)
@@ -1095,7 +1093,7 @@
 "vf" = (/obj/machinery/door/airlock{name = "Toilet"},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/shallway)
 "vg" = (/obj/effect/floor_decal/corner/purple{dir = 8},/obj/machinery/light,/turf/simulated/floor/tiled,/area/outpost/main_outpost/shallway)
 "vh" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
-"vi" = (/turf/space,/turf/simulated/shuttle/wall/corner/blockwhite/ne,/area/outpost/abandoned)
+"vi" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/ne,/area/outpost/abandoned)
 "vj" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/door/firedoor/border_only,/obj/machinery/camera/network/mining{c_tag = "Mining Outpost West - Airlock"; dir = 1},/turf/simulated/floor/plating,/area/outpost/abandoned)
 "vk" = (/obj/structure/window_frame/reinforced/hull,/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area/outpost/abandoned)
 "vl" = (/obj/structure/closet/emcloset,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/corner/brown{dir = 5},/obj/effect/floor_decal/industrial/warning/corner{dir = 8},/turf/simulated/floor/tiled,/area/outpost/main_outpost/dock)
@@ -1755,7 +1753,7 @@
 "HQ" = (/obj/structure/sign/warning/science{desc = "A warning sign which reads 'ANOMALOUS MATERIALS'"; name = "\improper ANOMALOUS MATERIALS"; pixel_y = 32},/obj/machinery/light{dir = 1},/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)
 "HR" = (/obj/machinery/access_button{command = "cycle_exterior"; frequency = 1379; master_tag = "research_airlock"; name = "exterior access button"; pixel_x = 25; pixel_y = 25; req_one_access = list(13,65)},/obj/effect/floor_decal/industrial/warning/dust,/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)
 "HS" = (/obj/structure/sign/warning/science{desc = "A warning sign which reads 'ANOMALOUS MATERIALS'"; name = "\improper ANOMALOUS MATERIALS"; pixel_y = 32},/obj/machinery/light{dir = 1},/obj/effect/floor_decal/industrial/loading{dir = 4},/turf/simulated/floor/plating/airless,/area/mine/explored)
-"HT" = (/obj/structure/shuttle/engine/heater{dir = 4},/turf/simulated/shuttle/wall{dir = 1; icon_state = "swall_straight"},/area/outpost/abandoned)
+"HT" = (/obj/structure/shuttle/engine/heater{dir = 4},/turf/simulated/shuttle/wall{icon_state = "whiteship_straight"},/area/outpost/abandoned)
 "HU" = (/obj/item/storage/secure/safe{pixel_x = 32},/turf/simulated/floor/trim/wood,/area/outpost/main_outpost/dorms/proom3)
 "HV" = (/obj/machinery/disposal/deliveryChute{dir = 8},/obj/structure/disposalpipe/trunk{dir = 1},/turf/simulated/floor,/area/mine/explored)
 "HW" = (/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor/tiled,/area/outpost/research/isolation_monitoring)
@@ -1874,7 +1872,7 @@
 "Kf" = (/obj/machinery/alarm/monitor/isolation{alarm_id = "isolation_three"; dir = 8; pixel_x = 22},/obj/machinery/atmospherics/unary/vent_scrubber{dir = 8},/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/reinforced,/area/outpost/research/isolation_c)
 "Kg" = (/obj/item/device/radio/intercom{dir = 4; pixel_x = -22},/turf/simulated/floor/reinforced,/area/outpost/research/isolation_a)
 "Kh" = (/turf/simulated/floor/reinforced,/area/outpost/research/isolation_a)
-"Ki" = (/turf/space,/turf/simulated/shuttle/wall/corner/blockwhite/se,/area/outpost/abandoned)
+"Ki" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/se,/area/outpost/abandoned)
 "Kj" = (/obj/item/device/radio/intercom{dir = 4; pixel_x = -22},/turf/simulated/floor/reinforced,/area/outpost/research/isolation_b)
 "Kk" = (/obj/effect/landmark{name = "bluespacerift"},/turf/simulated/floor/reinforced,/area/outpost/research/isolation_b)
 "Kl" = (/obj/structure/closet/crate/freezer/rations,/turf/simulated/floor/shuttle/yellow,/area/outpost/abandoned)
@@ -1955,12 +1953,11 @@
 "LI" = (/obj/structure/closet/walllocker/emerglocker/west,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/outpost/main_outpost/challway)
 "LJ" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled/white/rough,/area/outpost/research/anomaly_analysis)
 "LK" = (/obj/structure/closet/crate/uranium,/turf/simulated/floor/shuttle/yellow,/area/outpost/abandoned)
-"LL" = (/obj/structure/grille,/obj/structure/shuttle/window,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
+"LL" = (/obj/structure/window_frame/grille,/obj/structure/shuttle/window,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "LM" = (/obj/structure/computerframe,/turf/simulated/floor/shuttle/blue,/area/outpost/abandoned)
 "LN" = (/obj/structure/bed/chair/comfy/captain{dir = 8},/obj/effect/decal/cleanable/blood,/obj/item/remains/human,/obj/item/clothing/head/collectable/captain,/obj/random/drinkbottle,/turf/simulated/floor/shuttle/blue,/area/outpost/abandoned)
 "LO" = (/obj/machinery/door/airlock/centcom{name = "Cockpit"},/turf/simulated/floor/shuttle/blue,/area/outpost/abandoned)
 "LP" = (/obj/structure/largecrate/animal/mulebot,/turf/simulated/floor/shuttle/yellow,/area/outpost/abandoned)
-"LQ" = (/turf/space,/turf/simulated/shuttle/wall/corner/blockwhite/sw,/area/outpost/abandoned)
 "LR" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/tiled,/area/outpost/main_outpost/shallway)
 "LS" = (/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/asteroid,/area/mine/explored)
 "LT" = (/obj/machinery/conveyor_switch/oneway{id = "mining_internal"; name = "mining conveyor"},/obj/effect/floor_decal/industrial/warning/dust/corner{dir = 4},/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)
@@ -2087,7 +2084,7 @@
 "OM" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl,/turf/simulated/floor,/area/outpost/security/mining_main)
 "ON" = (/obj/structure/sign/warning/high_voltage,/turf/simulated/wall,/area/outpost/engineering/hallway)
 "OO" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/manifold/hidden/supply,/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,/turf/simulated/floor/tiled,/area/outpost/security/shallway)
-"OP" = (/turf/space,/turf/simulated/shuttle/wall{dir = 9; icon_state = "pwall"},/area/outpost/abandoned)
+"OP" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/nw,/area/outpost/abandoned)
 "OQ" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor,/area/outpost/security/mining_main)
 "OR" = (/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 8; frequency = 1380; id_tag = "security_outpost_pump"},/turf/simulated/floor,/area/outpost/main_outpost/dock/security)
 "OT" = (/obj/machinery/firealarm{pixel_y = 24},/turf/simulated/floor/tiled/rough,/area/outpost/security/mining_main)
@@ -2312,7 +2309,7 @@
 "Ve" = (/obj/item/clothing/under/gorka,/obj/effect/decal/remains,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid,/area/mine/explored)
 "Vf" = (/obj/structure/closet/secure_closet/personal,/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/obj/structure/window/reinforced{dir = 8},/turf/simulated/floor/trim/carpet,/area/outpost/main_outpost/dorms/proom3)
 "Vh" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/decal/cleanable/dirt,/obj/structure/disposalpipe/junction{dir = 1; icon_state = "pipe-j2"},/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled,/area/outpost/main_outpost/challway)
-"Vi" = (/turf/space,/turf/simulated/shuttle/wall{dir = 5; icon_state = "pwall"},/area/outpost/abandoned)
+"Vi" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/sw,/area/outpost/abandoned)
 "Vj" = (/obj/machinery/door/airlock/glass{name = "Central Access"},/turf/simulated/floor/tiled/rough,/area/outpost/security/mining_main)
 "Vk" = (/obj/structure/cable/blue{d1 = 2; d2 = 4; icon_state = "2-4"},/turf/simulated/floor/tiled,/area/outpost/engineering/storage)
 "Vl" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/effect/floor_decal/industrial/warning/dust{dir = 8},/turf/simulated/floor/plating/airless,/area/mine/explored)
@@ -2529,19 +2526,19 @@ BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbabababBbBbBbBbBbBbababababababBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababBbBbBbBbabababBbBbBbBbababBbBbBbBbBbabababababababababababababBbBbBbBbBbabababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababababababBbBbBbBbBbBbBbBbBbBbBbababababababababababBbBbBbBbahababababababababababababababTcabacadadadadadadadadadadadadadadadadadUcUcTcTcTcTcTcTcTcTcahahahahahahTcTcTcahahahTcTcahTcahTcTcUcadadadaeaeadadadadCxCxCxCxCxCxCxCxCxadadadadaeaeadacababababababababababababababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababababababababababababBbababBbBbBbababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbabababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababababBbBbBbBbBbahababababababababababababacacabacadadadadadadadadacacacacacacadadadadadUcTcTcTcTcTcadTcTcTcTcahahahahTcTcahahTcahahahahahahTcTcUcadadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababababababababababBbBbBbahBbBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababababababababababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbabababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbabababBbBbBbBbahababababababababababababacadadacacadadadadacacacacababababababacadadadadUcTcTcTcadadadadTcTcTcTcTcahahahahahTcTcahTcTcahahTcTcTcUcadadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababababababababababBbBbBbahabBbBbBbBbBbBbBbBbBb
-BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbabababababBbBbBbababBbababBbBbBbBbababababababababababababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbfhfJsisieEfJvheEiigzviBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababBbBbBbabababBbBbBbBbBbBbBbBbBbabBbahababababababababababababacadadacadadadacacababababababababababacadadadUcUcTcTcadadadadadadadTcTcTcTcTcahahahahahahahTcahahTcTcTcUcadadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababababababababababBbBbahababBbBbBbBbBbBbBbBbBb
+BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbabababababBbBbBbababBbababBbBbBbBbababababababababababababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbOPiisiqwiifJvheEiigzviBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababBbBbBbabababBbBbBbBbBbBbBbBbBbabBbahababababababababababababacadadacadadadacacababababababababababacadadadUcUcTcTcadadadadadadadTcTcTcTcTcahahahahahahahTcahahTcTcTcUcadadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababababababababababBbBbahababBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababBbBbababababababBbBbBbababababababababababababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbGtGJHoHtHJHoHKHoHPHTIiBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbabababababababababBbBbBbBbBbBbBbBbBbabahababababababababababababababacadadadadadacabababababababababababadadadadadadadadadadadadadadadadTcTcTcTcTcTcTcTcahahahahahTcTcTcTcUcadadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababababababababababBbBbahababBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababBbBbBbabababababBbBbBbBbabababababababababababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbGtMwIyIlIlIlIlIlIzaDKiBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababababababababababBbBbabababBbBbababababababababababababababababababacacadadadadababababababababababadadadadadadadadadadadadadadadadadTcTcTcTcTcTcTcahahTcTcTcTcTcTcTcTcUcadadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababababababababababBbBbahababBbBbBbBbBbBbBbBbBb
-BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababBbBbBbBbBbBbBbabababababababababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbqwHoKlIlKoKOKPIlLpaLBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababababababababababBbBbBbabababababababababababababababababababababababacadadadababababababababababadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcTcahdiTcTcTcTcTcTcTcUcUcUcadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababababababBbBbBbBbBbBbabababBbBbBbBbBbBbBbBbBb
-BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababahahahababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbfhiiblfJGJIlHoLGIlbILKaDviBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababababababababababBbBbabababababababababababababababababababababababacadadadadabababababababababadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcxiahMidiTcTcTcTcTcTcUcadUcadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacabababababababababababababBbBbBbBbBbBbBbBbBbBbababBbBbBbBbBbBbBbBbBb
+BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababBbBbBbBbBbBbBbabababababababababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbaLHoKlIlKoKOKPIlLpaLBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababababababababababBbBbBbabababababababababababababababababababababababacadadadababababababababababadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcTcahdiTcTcTcTcTcTcTcUcUcUcadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababababababBbBbBbBbBbBbabababBbBbBbBbBbBbBbBbBb
+BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababahahahababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbOPiiblfJGJIlHoLGIlbILKaDviBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbababababababababababababBbBbabababababababababababababababababababababababacadadadadabababababababababadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcxiahMidiTcTcTcTcTcTcUcadUcadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacabababababababababababababBbBbBbBbBbBbBbBbBbBbababBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbahahababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbLLLMLNLOIlHKbIIlIlHKLPHTIiBbBbBbBbahahahabBbBbBbBbBbBbBbBbBbBbBbBbababababababababababababBbBbBbababababababababababababababababababababababadadadadadadababababababababadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcTiTcTcTcTcTcTcTcTcTcUcadUcadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababBbBbBbBbBbBbBbBbBbBbBbabBbBbBbBbBbBbBbBbBbBb
-BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbLQiiiifJsisieEfJvheEiiblKiBbBbBbahahababababababBbBbBbBbBbBbBbBbBbBbahababababababababababBbBbBbababababababababababababababababababababababadadadadadadadababababababadadadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcTcTcTcTcTcTcTcTcTcUcadadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababBbBbBbababababababBbBbBbBbBbBbBbBbBbBbBbBbBb
+BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbViiiiiiisiqwiifJvheEiiblKiBbBbBbahahababababababBbBbBbBbBbBbBbBbBbBbahababababababababababBbBbBbababababababababababababababababababababababadadadadadadadababababababadadadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcTcTcTcTcTcTcTcTcTcUcadadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacababababababababababababBbBbBbababababababBbBbBbBbBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbbmaKbmBbBbBbBbBbBbahabababababababababBbBbBbBbBbBbBbBbBbahahababababababababBbBbBbababababababababababababababababababababababadadadadadadadadababadadadadadadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcTcTcTcTcTcTcTcTcTcUcUcadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeadacabababababababababababBbBbBbahabababababBbBbBbBbBbBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbbmaWbmBbBbBbBbBbBbabababababababababababBbBbBbBbBbBbBbBbBbBbahahabababababBbBbBbBbababababababababababababababababababababababadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcTcTcTcTcTcTcTcTcUcadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeacacababababababababababBbBbBbahabababababababBbBbBbBbBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbbjbkbmbmBbBbBbBbBbababababababababababababBbBbBbBbBbBbBbBbBbBbBbabababababBbBbBbababababababababababababababababababababababadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcTcTcTcTcTcababacadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeacabababababababababababBbBbBbahababababababababBbBbBbBbBbBbBbBbBbBbBbBb
-BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbOPbububvbwbxbmBbBbBbBbababahahabababababababababababBbBbBbBbBbBbBbBbBbBbabababBbBbBbBbababababababababababababababababababababababadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcababababababacacacaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeacababababababababababahBbBbBbababababababababababBbBbBbBbBbBbBbBbBbBbBb
+BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbOPiiiibvbwbxbmBbBbBbBbababahahabababababababababababBbBbBbBbBbBbBbBbBbBbabababBbBbBbBbababababababababababababababababababababababadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadTcTcTcTcTcTcababababababacacacaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeacababababababababababahBbBbBbababababababababababBbBbBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbbHbIbJbKbLbMbmBbBbBbBbahahahahahababababababababababBbBbBbBbBbabababBbBbBbBbBbBbBbababababababababababababababababababababababababadadadadadadadadadadadadadadadabababadadadadadadadabababababadadadadadadadadadadTcTcabababababababababababacaeaeadadadadadadCxCxCxCxCxadadadadadadaeaeacababababababababababahBbBbabababababababababababBbBbBbBbBbBbBbBbBbBbBb
-BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbVibubucacbcccdBbBbBbababahahahababababababababababababBbBbBbBbBbababababBbabababababababababababababababababababababababababababadadadadabadadadadadadadadadabababababadadadadadadabababababadadadadadadadadadadadadadadadabababababababababacaeaeadadadadadadCxCxCxCxCxadadadadadadaeaeacababababababababababahBbBbabababababababababababBbBbBbBbBbBbBbBbBbBbBb
+BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbViiiiicacbcccdBbBbBbababahahahababababababababababababBbBbBbBbBbababababBbabababababababababababababababababababababababababababadadadadabadadadadadadadadadabababababadadadadadadabababababadadadadadadadadadadadadadadadabababababababababacaeaeadadadadadadCxCxCxCxCxadadadadadadaeaeacababababababababababahBbBbabababababababababababBbBbBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbabababababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbcubwcccdabababababahahahababababababababababababBbBbBbBbBbababababababababababababababababababababababababababababababababadadadabababadadadadadadadadadabababadadadadadadadababababadadadadadadadadadadadadadadadadadadadabababababacacaeaeadadadadadadCxCxCxCxCxadadadadadadaeaeacababababababababababahBbBbababababababababababBbBbBbBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbahahababababababababababahahahahababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbeYBbBbBbBbBbWibmbxcccdababababababahababababababababababababababBbBbBbBbabababababababababababababababababababababababababababababababadadadadabababababadadadadadadadadadabadadadadadababababababadadadadadadadadadadadadadadadadadadadadadadadadadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeacababababababababababahBbBbBbabababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBb
 BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbahahabababababababababababababahabababababababBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbbmbmbmcddbdccdcdcdcdababababababababababababababababababBbBbBbBbBbababababababababababababababababababababababababababababababadadadadadabababababababadadadadadadadadadadadadabababababababadadadadadadadadadadadadadadadadadadadadadadadadadaeaeadadadadadCxCxCxCxCxCxCxadadadadadaeaeacabababababababababababBbBbBbababababBbBbBbBbBbababBbBbBbBbBbBbBbBbBbBb

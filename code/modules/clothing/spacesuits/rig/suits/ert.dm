@@ -11,7 +11,8 @@
 
 	req_access = list(access_cent_specops)
 
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 100)
+	armor = list(melee = 100, bullet = 110, laser = 120, energy = 15, bomb = 30, bio = 100)
+
 	allowed = list(/obj/item/device/flashlight, /obj/item/tank,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/handcuffs, /obj/item/device/t_scanner, /obj/item/rcd, /obj/item/crowbar, \
 	/obj/item/screwdriver, /obj/item/weldingtool, /obj/item/wirecutters, /obj/item/wrench, /obj/item/device/multitool, \
 	/obj/item/device/radio, /obj/item/device/analyzer,/obj/item/storage/briefcase/inflatable, /obj/item/melee/baton, /obj/item/gun, \
@@ -44,7 +45,7 @@
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has orange highlights. Armored and space ready."
 	suit_type = "ERT engineer"
 	icon_state = "ert_engineer_rig"
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 100)
+	armor = list(melee = 100, bullet = 110, laser = 120, energy = 40, bomb = 60, bio = 100)
 
 	glove_type = /obj/item/clothing/gloves/rig/ert/engineer
 
@@ -63,7 +64,7 @@
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has purple highlights. Armored and space ready."
 	suit_type = "ERT sanitation"
 	icon_state = "ert_janitor_rig"
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 40, bomb = 40, bio = 100)
+	armor = list(melee = 100, bullet = 110, laser = 120, energy = 15, bomb = 30, bio = 100)
 
 	initial_modules = list(
 		/obj/item/rig_module/ai_container,
@@ -107,7 +108,7 @@
 	desc = "That's not red paint. That's real blood."
 	suit_type = "Death Squad"
 	icon_state = "asset_protection_rig"
-	armor = list(melee = 70, bullet = 55, laser = 55,energy = 40, bomb = 70, bio = 100)
+	armor = list(melee = 130, bullet = 150, laser = 150, energy = 65, bomb = 80, bio = 100)
 
 	glove_type = /obj/item/clothing/gloves/rig/ert/assetprotection
 

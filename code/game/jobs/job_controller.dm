@@ -550,7 +550,7 @@ var/global/datum/controller/occupations/job_master
 		if(!config.misc.load_jobs_from_txt)
 			return FALSE
 
-		var/raw_data = FROM_TOML(return_file_text(jobsfile))
+		var/raw_data = rustg_read_toml_file(jobsfile)
 
 		var/list/jobEntries = raw_data[GLOB.using_map.name]
 

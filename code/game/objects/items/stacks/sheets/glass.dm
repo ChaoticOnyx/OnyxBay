@@ -15,6 +15,7 @@
 	singular_name = "glass sheet"
 	icon_state = "glass"
 	var/created_window = /obj/structure/window/basic
+	var/created_windoor_assembly = null
 	var/is_reinforced = 0
 	var/list/construction_options = list("One Direction", "Full Window")
 	default_type = "glass"
@@ -116,7 +117,7 @@
 				to_chat(user, "<span class='warning'>You need more glass to do that.</span>")
 				return 1
 
-			new /obj/structure/windoor_assembly(user.loc, user.dir, 1)
+			new created_windoor_assembly(user.loc, user.dir, 1)
 			src.use(5)
 
 	return 0
@@ -133,6 +134,7 @@
 	created_window = /obj/structure/window/reinforced
 	is_reinforced = 1
 	construction_options = list("One Direction", "Full Window", "Windoor")
+	created_windoor_assembly = /obj/structure/windoor_assembly
 
 /*
  * Plasma Glass sheets
@@ -170,4 +172,6 @@
 	icon_state = "rplass"
 	default_type = "reinforced plass"
 	created_window = /obj/structure/window/plasmareinforced
+	created_windoor_assembly = /obj/structure/windoor_assembly/plasma
 	is_reinforced = 1
+	construction_options = list("One Direction", "Full Window", "Windoor")

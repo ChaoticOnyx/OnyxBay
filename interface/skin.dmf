@@ -1236,7 +1236,7 @@ window "infowindow"
 		anchor1 = 56,0
 		anchor2 = 67,0
 		saved-params = "is-checked"
-		text = "Bug Report"
+		text = "In-Game Bug Report"
 		command = "bug-report"
 		group = "rpanemode"
 	elem "changelog"

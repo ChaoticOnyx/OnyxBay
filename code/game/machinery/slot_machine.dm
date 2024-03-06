@@ -27,7 +27,7 @@
 	update_icon()
 
 /obj/machinery/slot_machine/on_update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & BROKEN)
 		icon_state = "slot[skin_variation]_off"
 	else if(!(stat & (NOPOWER | POWEROFF)))
@@ -40,6 +40,7 @@
 		AddOverlays(emissive_appearance(icon, "slot-ea"))
 	else
 		icon_state = "slot[skin_variation]_off"
+		set_light(0)
 
 /obj/machinery/slot_machine/proc/update_standing_icon()
 	if(!anchored)
@@ -89,7 +90,6 @@
 	if(roll == 1) //1 - 300
 		exclamation = "JACKPOT! "
 		amount = 300 * wager
-		/datum/announce/slot_machine
 		SSannounce.play_station_announce(/datum/announce/slot_machine, "Congratulations to [current_player] on winning a Jackpot of [amount] credits!")
 	else if(roll <= 5) //4 - 400
 		exclamation = "Big Winner! "
@@ -193,8 +193,10 @@
 		return FALSE
 
 	var/target_wager = input("What is your bet?", "Slots transaction") as num
-	if(target_wager <= 0)
+	if(target_wager < 1)
 		return FALSE
+
+	target_wager = floor(target_wager)
 
 	if(target_wager > customer_account.money)
 		to_chat(user, "Insufficient funds in account.")
@@ -209,4 +211,5 @@
 		customer_account.do_transaction(T)
 		wager = target_wager
 		current_player = customer_account.owner_name
+		to_chat(user, "You spend [wager] credits.")
 		return TRUE

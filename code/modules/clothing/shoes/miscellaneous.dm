@@ -9,7 +9,7 @@
 	siemens_coefficient = 0.5
 	species_restricted = null
 
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 35, bomb = 20, bio = 30)
+	armor = list(melee = 70, bullet = 40, laser = 40, energy = 35, bomb = 20, bio = 60)
 
 /obj/item/clothing/shoes/mime
 	name = "mime shoes"
@@ -20,7 +20,7 @@
 	desc = "When you want to turn up the heat."
 	icon_state = "swat"
 	force = 3
-	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10)
+	armor = list(melee = 100, bullet = 90, laser = 80, energy = 25, bomb = 50, bio = 30)
 	item_flags = ITEM_FLAG_NOSLIP
 	siemens_coefficient = 0.4
 	can_hold_knife = 1
@@ -30,7 +30,7 @@
 	desc = "When you REALLY want to turn up the heat."
 	icon_state = "swat"
 	force = 5
-	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10)
+	armor = list(melee = 100, bullet = 90, laser = 80, energy = 25, bomb = 50, bio = 30)
 	item_flags = ITEM_FLAG_NOSLIP
 	siemens_coefficient = 0.1
 	can_hold_knife = 1
@@ -53,6 +53,7 @@
 	species_restricted = null
 	body_parts_covered = NO_BODYPARTS
 	siemens_coefficient = 1.0
+	coverage = 0.4
 
 	wizard_garb = 1
 
@@ -63,6 +64,7 @@
 	name = "magic shoes"
 	icon_state = "black"
 	body_parts_covered = FEET
+	coverage = 1.0
 
 /obj/item/clothing/shoes/sandal/color
 	name = "sandals"
@@ -108,7 +110,7 @@
 	species_restricted = null
 	siemens_coefficient = 0.5 // these things are kinda rubberish, aint they?
 
-	armor = list(melee = 35, bullet = 35, laser = 35,energy = 15, bomb = 25, bio = 15)
+	armor = list(melee = 35, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 30)
 
 /obj/item/clothing/shoes/clown_shoes/New()
 	..()
@@ -131,7 +133,7 @@
 	force = 2
 	siemens_coefficient = 0.5
 
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 20, bio = 10)
+	armor = list(melee = 90, bullet = 80, laser = 60, energy = 35, bomb = 20, bio = 40)
 
 	cold_protection = FEET
 	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE

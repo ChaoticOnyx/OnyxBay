@@ -6,11 +6,12 @@
 	brightness_on = 4 //luminosity when on
 	light_overlay = "hardhat_light"
 	w_class = ITEM_SIZE_NORMAL
-	armor = list(melee = 45, bullet = 35, laser = 35,energy = 10, bomb = 20, bio = 10)
+	armor = list(melee = 80, bullet = 70, laser = 60, energy = 20, bomb = 35, bio = 10)
 	flags_inv = 0
 	siemens_coefficient = 0.5
 	heat_protection = HEAD
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
+	coverage = 0.8
 
 	pickup_sound = SFX_PICKUP_HELMET
 	drop_sound = SFX_DROP_HELMET

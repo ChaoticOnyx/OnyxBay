@@ -10,12 +10,6 @@
 /proc/cmp_crew_sensor_modifier(crew_sensor_modifier/a, crew_sensor_modifier/b)
 	return b.priority - a.priority
 
-/proc/cmp_follow_holder(datum/follow_holder/a, datum/follow_holder/b)
-	if(a.sort_order == b.sort_order)
-		return sorttext(b.get_name(), a.get_name())
-
-	return a.sort_order - b.sort_order
-
 /proc/cmp_name_or_type_asc(atom/a, atom/b)
 	return sorttext(istype(b) || ("name" in b.vars) ? b.name : b.type, istype(a) || ("name" in a.vars) ? a.name : a.type)
 

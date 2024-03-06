@@ -18,6 +18,7 @@
 	QDEL_NULL(skybox)
 	QDEL_NULL(ability_master)
 	QDEL_NULL(shadow)
+	QDEL_NULL(bugreporter)
 
 	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
@@ -409,9 +410,9 @@
 	if (flavor_text && flavor_text != "")
 		var/msg = replacetext(flavor_text, "\n", " ")
 		if(length(msg) <= 40)
-			return "<span class='notice'>[msg]</span>"
+			. += "<span class='notice'>[msg]</span>"
 		else
-			return "<span class='notice'>[copytext_preserve_html(msg, 1, 37)]... <a href='byond://?src=\ref[src];flavor_more=1'>More...</a></span>"
+			. += "<span class='notice'>[copytext_preserve_html(msg, 1, 37)]... <a href='byond://?src=\ref[src];flavor_more=1'>More...</a></span>"
 
 /*
 /mob/verb/help()

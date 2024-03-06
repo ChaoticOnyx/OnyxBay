@@ -72,3 +72,10 @@
 	icon_state = "bulb-construct-item"
 	refund_amt = 1
 	build_machine_type = /obj/machinery/light_construct/small
+
+/obj/item/frame/intercom
+	name = "intercom frame"
+	desc = "Used for building intercoms."
+	icon = 'icons/obj/radio.dmi'
+	icon_state = "intercom_bitem"
+	build_machine_type = /obj/item/intercom_assembly

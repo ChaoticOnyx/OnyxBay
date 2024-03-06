@@ -147,7 +147,6 @@
 	var/can_pull_mobs = MOB_PULL_SAME          // Whether or not the mob can pull other mobs.
 
 	var/datum/dna/dna = null//Carbon
-	var/list/active_genes=list()
 	var/list/mutations = list() //Carbon -- Doohl
 	//see: setup.dm for list of mutations
 
@@ -205,6 +204,7 @@
 
 	var/memory = ""
 	var/flavor_text = ""
+	var/list/flavor_texts = list()
 	var/datum/browser/show_inventory
 
 	var/last_time_pointed_at = 0
@@ -233,3 +233,5 @@
 	var/list/feet_blood_DNA
 	var/track_blood_type
 	var/feet_blood_color
+	/// Holder for a bugreporter datum.
+	var/datum/bugreporter/bugreporter

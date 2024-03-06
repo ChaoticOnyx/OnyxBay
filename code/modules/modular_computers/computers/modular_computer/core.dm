@@ -58,7 +58,8 @@
 			prog_file = new prog_file
 			hard_drive.store_file(prog_file)
 
-/obj/item/modular_computer/New()
+/obj/item/modular_computer/Initialize()
+	. = ..()
 	set_next_think(world.time)
 	add_think_ctx("ambient", CALLBACK(src, nameof(.proc/ambient_think)), world.time)
 
@@ -67,7 +68,6 @@
 		install_default_programs()
 	update_icon()
 	update_verbs()
-	..()
 
 /obj/item/modular_computer/Destroy()
 	kill_program(1)

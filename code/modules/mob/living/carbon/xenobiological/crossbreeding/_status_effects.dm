@@ -817,7 +817,6 @@
 		for(var/i=1 to H.dna.UI.len)
 			H.dna.SetUIValue(i,rand(1,4095))
 
-		domutcheck(H, null)
 		H.UpdateAppearance()
 	set_next_think(world.time+1)
 	return ..()
@@ -834,7 +833,6 @@
 		var/mob/living/carbon/human/H = holder
 		H.real_name = originalname
 		H.setDNA(originalDNA)
-		domutcheck(H, null)
 		H.UpdateAppearance()
 	set_next_think(0)
 	return ..()

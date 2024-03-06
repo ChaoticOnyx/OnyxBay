@@ -10,6 +10,7 @@
 	mod_weight = 1.25
 	mod_reach = 1.25
 	mod_handy = 1.5
+	armor_penetration = 30 // No stun, but smacks nicely
 	drop_sound = SFX_DROP_CROWBAR
 	pickup_sound = SFX_PICKUP_CROWBAR
 

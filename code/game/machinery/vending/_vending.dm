@@ -429,6 +429,9 @@
 
 	tgui_interact(user)
 
+/obj/machinery/vending/tgui_state(mob/user)
+	return GLOB.tgui_machinery_noaccess_state
+
 /obj/machinery/vending/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 

@@ -311,7 +311,7 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 		if(1.0)
 			brute = 400
 			burn = 100
-			if(!anchored && !prob(getarmor(null, "bomb")))
+			if(!anchored && !prob(get_flat_armor(null, "bomb")))
 				gib()
 		if(2.0)
 			brute = 60
@@ -319,7 +319,7 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 		if(3.0)
 			brute = 30
 
-	var/protection = blocked_mult(getarmor(null, "bomb"))
+	var/protection = blocked_mult(get_flat_armor(null, "bomb"))
 	brute *= protection
 	burn *= protection
 
@@ -332,7 +332,7 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 	if(is_ic_dead())
 		return
 
-	var/protection = blocked_mult(getarmor(null, "bomb"))
+	var/protection = blocked_mult(get_flat_armor(null, "bomb"))
 	var/brute = damage * 2
 
 	brute *= protection

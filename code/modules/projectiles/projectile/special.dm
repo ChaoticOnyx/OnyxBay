@@ -116,16 +116,8 @@
 				H.Stun(5)
 				for (var/mob/V in viewers(src))
 					V.show_message(SPAN_WARNING("[M] writhes in pain as \his vacuoles boil."), 3, SPAN_WARNING("You hear the crunching of leaves."), 2)
-			if(prob(35))
-				if(prob(80))
-					randmutb(M)
-					domutcheck(M,null)
-				else
-					randmutg(M)
-					domutcheck(M,null)
-			else
-				M.adjustFireLoss(rand(5,15))
-				M.show_message(SPAN_DANGER("The radiation beam singes you!"))
+			M.adjustFireLoss(rand(5,15))
+			M.show_message(SPAN_DANGER("The radiation beam singes you!"))
 	else if(istype(target, /mob/living/carbon))
 		M.show_message(SPAN_NOTICE("The radiation beam dissipates harmlessly through your body."))
 	else
@@ -173,6 +165,7 @@
 	if(ishuman(target))
 		var/mob/living/carbon/human/M = target
 		M.confused += rand(5,8)
+
 /obj/item/projectile/chameleon
 	name = "bullet"
 	icon_state = "bullet"
@@ -202,38 +195,38 @@
 /obj/item/projectile/energy/laser/small // Pistol level
 	name = "small laser bolt"
 	icon_state = "laser_small"
-	damage = 35
-	armor_penetration = 10
+	damage = 27.5
+	armor_penetration = 0
 	projectile_inner_range = 0.15
 
 /obj/item/projectile/energy/laser/lesser // Carbine level
 	icon_state = "laser_lesser"
-	damage = 45
+	damage = 35
 	agony = 5
-	armor_penetration = 12.5
+	armor_penetration = 5
 	projectile_inner_range = 0.2
 
 /obj/item/projectile/energy/laser/mid // Rifle level
 	icon_state = "laser"
-	damage = 55
+	damage = 45
 	agony = 10
-	armor_penetration = 15.0
+	armor_penetration = 10
 
 /obj/item/projectile/energy/laser/greater // Advanced laser rifle or something
 	name = "large laser bolt"
 	icon_state = "laser_greater"
-	damage = 65
+	damage = 55
 	agony = 15
-	armor_penetration = 17.5
+	armor_penetration = 20
 	projectile_inner_range = 0.35
 	projectile_outer_range = 1.75
 
 /obj/item/projectile/energy/laser/heavy // Cannon level
 	name = "heavy laser bolt"
 	icon_state = "laser_heavy"
-	damage = 75
+	damage = 70
 	agony = 20
-	armor_penetration = 20
+	armor_penetration = 40
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
 	projectile_inner_range = 0.4
 	projectile_outer_range = 2.0

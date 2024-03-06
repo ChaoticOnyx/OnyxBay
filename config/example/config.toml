@@ -671,9 +671,10 @@ msg_delay = 50
 ## https://github.com/ChaoticOnyx/indigo-bot
 [indigo_bot]
 #secret = "secret"
-address = "http://127.0.0.1:4774"
+#address = "http://127.0.0.1:4774"
 #ooc_webhook = "secret"
 #emote_webhook = "secret"
 #ahelp_webhook = "secret"
 #round_end_webhook = "secret"
 #ban_webhook = "secret"
+#bug_report_webhook = "secret"

@@ -1,3 +1,6 @@
+/mob/living
+	is_poi = TRUE
+
 /mob/living/Initialize()
 	. = ..()
 	if(is_ooc_dead())
@@ -540,7 +543,7 @@
 	if(. && pulling)
 		handle_pulling_after_move(old_loc)
 
-	if(s_active && !(s_active in contents) && get_turf(s_active) != get_turf(src))
+	if(s_active && !((s_active in contents) || Adjacent(s_active)))
 		s_active.close(src)
 
 	if(update_metroids)

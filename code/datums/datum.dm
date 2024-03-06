@@ -9,6 +9,8 @@
 	var/list/comp_lookup = list()
 	/// Lazy associated list of signals that are run when the datum receives that signal
 	var/list/signal_procs = list()
+	/// Used to avoid unnecessary refstring creation in Destroy().
+	var/has_state_machine = FALSE
 
 	// Thinking
 	var/list/_think_ctxs

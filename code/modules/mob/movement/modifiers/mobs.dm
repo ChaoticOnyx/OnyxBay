@@ -12,11 +12,6 @@
 /datum/movespeed_modifier/mutation_fat
 	slowdown = 1.5
 
-/datum/movespeed_modifier/mutation_run
-	slowdown = 0
-	priority = MOVESPEED_PRIORITY_LAST
-	flags = MOVESPEED_FLAG_OVERRIDING_SPEED
-
 /datum/movespeed_modifier/blocking
 	slowdown = 1.5
 

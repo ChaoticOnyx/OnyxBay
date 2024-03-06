@@ -165,6 +165,13 @@
 		/obj/item/grenade
 		)
 
+/obj/item/clothing/under/syndicate/tacticool/bundeswehr
+	desc = "A durable black suit worn by various private security members."
+	name = "tactical uniform"
+	icon_state = "black"
+	item_state = "BW_uniform_r"
+	worn_state = "BW_uniform_r"
+
 // AnimeshkaTvar
 /obj/item/clothing/head/helmet/space/void/syndi/clown_syndie
 	name = "strange clown helmet"

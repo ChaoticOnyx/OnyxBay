@@ -17,3 +17,12 @@
 
 /obj/structure/closet/secure_closet/slice_into_parts(obj/item/weldingtool/WT, mob/user)
 	to_chat(user, "<span class='notice'>\The [src] is too strong to be taken apart.</span>")
+
+/obj/structure/closet/secure_closet/vault
+	name = "secure locker"
+	icon_state = "vault1"
+	icon_closed = "vault"
+	icon_locked = "vault1"
+	icon_opened = "vaultopen"
+	icon_off = "vaultoff"
+	dremovable = FALSE

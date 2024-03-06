@@ -36,6 +36,8 @@
 
 	var/datum/radiation_source/pulse_source
 
+	is_poi = TRUE
+
 /obj/singularity/New(loc, starting_energy = 50, temp = 0)
 	//CARN: admin-alert for chuckle-fuckery.
 	admin_investigate_setup()
@@ -508,7 +510,7 @@
 	for(var/mob/living/M in view(toxrange, loc))
 		if(M.status_flags & GODMODE)
 			continue
-		toxdamage = (toxdamage - (toxdamage * M.getarmor(null, "rad")))
+		toxdamage = (toxdamage - (toxdamage * M.get_flat_armor(null, "rad")))
 		M.apply_effect(toxdamage, TOX)
 
 	for(var/obj/singularity/child/SC in childs)

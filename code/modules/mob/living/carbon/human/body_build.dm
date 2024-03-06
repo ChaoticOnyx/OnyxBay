@@ -37,6 +37,7 @@ var/global/datum/body_build/default_body_build = new
 	var/equipment_modifier = 0 // Positive values allow to partially ignore equipment_slowdown, negative values apply additional slowdown if any slowing-down equipment is being worn
 	var/poise_pool         = HUMAN_DEFAULT_POISE
 	var/stomach_capacity   = STOMACH_CAPACITY_NORMAL
+	var/ambiguous_gender   = FALSE // If TRUE, both females and females will be PLURAL if there's no beard and their groin is covered
 
 /datum/body_build/proc/get_mob_icon(slot, icon_state)
 	var/icon/I
@@ -141,6 +142,37 @@ var/global/datum/body_build/default_body_build = new
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_m_slim.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_m_slim.dmi'
 
+	ambiguous_gender = TRUE
+
+/datum/body_build/slim/flat
+	name                 = "Slim Flat"
+	index                = "_slim_flat"
+	roboindex            = "_slim_flat"
+	genders              = list(FEMALE)
+	clothing_icons       = list(
+		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_slim_m.dmi',
+		"slot_suit"      = 'icons/inv_slots/suits/mob_slim_m.dmi',
+		"slot_gloves"    = 'icons/inv_slots/gloves/mob_slim.dmi',
+		"slot_glasses"   = 'icons/inv_slots/glasses/mob_slim.dmi',
+		"slot_l_ear"     = 'icons/inv_slots/ears/mob_slim.dmi',
+		"slot_r_ear"     = 'icons/inv_slots/ears/mob_r_slim.dmi',
+		"slot_wear_mask" = 'icons/inv_slots/masks/mob_slim.dmi',
+		"slot_head"      = 'icons/inv_slots/hats/mob.dmi',
+		"slot_shoes"     = 'icons/inv_slots/shoes/mob_slim.dmi',
+		"slot_belt"      = 'icons/inv_slots/belts/mob_slim.dmi',
+		"slot_s_store"   = 'icons/inv_slots/belts/mirror/mob_slim.dmi',
+		"slot_back"      = 'icons/inv_slots/back/mob_slim_m.dmi',
+		"slot_tie"       = 'icons/inv_slots/acessories/mob_slim_m.dmi',
+		"slot_hidden"    = 'icons/inv_slots/hidden/mob_slim_flat.dmi',
+		"slot_wear_id"   = 'icons/mob/onmob/id.dmi',
+		"slot_l_hand"    = 'icons/mob/onmob/items/lefthand_slim.dmi',
+		"slot_r_hand"    = 'icons/mob/onmob/items/righthand_slim.dmi'
+		)
+	blood_icon           = 'icons/mob/human_races/masks/blood_human_m_slim.dmi'
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_m_slim.dmi'
+
+	ambiguous_gender = TRUE
+
 /datum/body_build/fat
 	name                 = "Fat"
 	index                = "_fat"
@@ -174,6 +206,7 @@ var/global/datum/body_build/default_body_build = new
 	movespeed_modifier = /datum/movespeed_modifier/bodybuild/fat
 	equipment_modifier = 0.5
 	poise_pool         = HUMAN_HIGH_POISE
+	ambiguous_gender = TRUE
 
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
@@ -258,6 +291,7 @@ var/global/datum/body_build/default_body_build = new
 	movespeed_modifier = /datum/movespeed_modifier/bodybuild/fat
 	equipment_modifier = 0.5
 	poise_pool         = HUMAN_HIGH_POISE
+	ambiguous_gender = TRUE
 
 /datum/body_build/unathi
 	name                 = SPECIES_UNATHI

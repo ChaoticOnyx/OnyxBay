@@ -39,6 +39,7 @@
 	mod_handy = 0.7
 	mod_weight = 0.65
 	mod_reach = 0.6
+	armor_penetration = 5
 	w_class = ITEM_SIZE_SMALL
 	spray_amount = 80
 	max_volume = 1000

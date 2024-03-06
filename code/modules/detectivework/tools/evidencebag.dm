@@ -3,11 +3,13 @@
 /obj/item/evidencebag
 	name = "evidence bag"
 	desc = "An empty evidence bag."
+
 	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "evidenceobj"
-	item_state = ""
+	base_icon_state = "evidence"
+
 	w_class = ITEM_SIZE_SMALL
-	var/base_icon_state = "evidence"
+
 	var/obj/item/stored_item = null
 
 /obj/item/evidencebag/attackby(obj/item/I, mob/user)

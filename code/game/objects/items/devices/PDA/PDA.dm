@@ -370,6 +370,12 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		return attack_self(M)
 	return
 
+/obj/item/device/pda/get_examine_line(examine_distance = 10)
+	var/visible_name = examine_distance < 3 ? name : initial(name)
+	if(is_bloodied)
+		. = SPAN("warning", "\icon[src] a [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[visible_name]</em>")]")
+	else
+		. = "\icon[src] \a [SPAN("info", "<em>[visible_name]</em>")]"
 
 /obj/item/device/pda/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	ui_tick++
