@@ -1,5 +1,16 @@
 [
   {
+    "author": "Filatelele",
+    "date": "2024-03-07T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Синты снова могут качаться и не терять нутриенты.",
+        "pr": 11753
+      }
+    ]
+  },
+  {
     "author": "IgorSaux & Filatelele",
     "date": "2024-03-05T00:00:00+03:00",
     "changes": [
