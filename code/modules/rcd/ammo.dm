@@ -10,17 +10,17 @@
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 7500)
 
-	var/remaining = 10
+	var/ammoamt = 40
 
 /obj/item/rcd_ammo/_examine_text(mob/user)
 	. = ..()
 
 	if(get_dist(src, user) <= 1)
-		. += "\n" + SPAN("notice", "It has [remaining] unit\s of matter left.")
+		. += "\n" + SPAN("notice", "It has [ammoamt] unit\s of matter left.")
 
 /obj/item/rcd_ammo/large
 	name = "high-capacity matter cartridge"
 	desc = "Do not ingest."
 	matter = list(MATERIAL_STEEL = 45000, MATERIAL_GLASS = 22500)
-	remaining = 30
+	ammoamt = 160
 	origin_tech = list(TECH_MATERIAL = 4)

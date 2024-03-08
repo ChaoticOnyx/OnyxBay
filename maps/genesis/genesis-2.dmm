@@ -5661,7 +5661,7 @@
 "cfh" = (/turf/simulated/wall,/area/maintenance/atmos_control)
 "cfi" = (/obj/structure/disposalpipe/segment,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden,/turf/simulated/floor/tiled,/area/maintenance/atmos_control)
 "cfj" = (/obj/machinery/space_heater,/turf/simulated/floor/tiled,/area/maintenance/atmos_control)
-"cfk" = (/obj/structure/table/reinforced,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd,/turf/simulated/floor/tiled,/area/crew_quarters/heads/chief)
+"cfk" = (/obj/structure/table/reinforced,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/construction/rcd,/turf/simulated/floor/tiled,/area/crew_quarters/heads/chief)
 "cfl" = (/obj/machinery/light{icon_state = "tube1"; dir = 4},/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled,/area/crew_quarters/heads/chief)
 "cfm" = (/turf/simulated/wall,/area/crew_quarters/heads/chief)
 "cfn" = (/obj/machinery/button/remote/driver{id = "enginecore"; name = "Emergency Core Eject"; pixel_x = -20; pixel_y = 0},/obj/effect/floor_decal/industrial/hatch/yellow,/obj/structure/window/basic{dir = 4},/turf/simulated/floor/tiled,/area/crew_quarters/heads/chief)

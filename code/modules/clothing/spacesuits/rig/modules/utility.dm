@@ -109,8 +109,7 @@
 	engage_string = "Configure RCD"
 	use_power_cost = 300
 	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 5, TECH_ENGINEERING = 7)
-	device_type = /obj/item/rcd/mounted
-
+	device_type = /obj/item/construction/rcd/mounted
 
 /obj/item/rig_module/chem_dispenser
 	name = "mounted chemical dispenser"

@@ -62,14 +62,19 @@
 	if(.)
 		return
 
+	return handle_act(action, params)
+
+/obj/item/airlock_electronics/proc/handle_act(action, params)
 	switch(action)
 		if("clear")
 			conf_access = list()
 			one_access = 0
 			return TRUE
+
 		if("one_access")
 			one_access = !one_access
 			return TRUE
+
 		if("set")
 			var/access = text2num(params["access"])
 			if (!(access in conf_access))
@@ -77,29 +82,52 @@
 			else
 				conf_access -= access
 			return TRUE
+
 		if("unlock")
 			if(!lockable)
 				return TRUE
+
 			if(!req_access || istype(usr, /mob/living/silicon))
 				locked = 0
 				last_configurator = usr.name
 				return TRUE
+
 			else
 				var/obj/item/card/id/I = usr.get_active_hand()
 				I = I ? I.get_id_card() : null
 				if(!istype(I, /obj/item/card/id))
 					to_chat(usr, SPAN("warning", "[\src] flashes a yellow LED near the ID scanner. Did you remember to scan your ID or PDA?"))
 					return TRUE
+
 				if (check_access(I))
 					locked = 0
 					last_configurator = I.registered_name
 				else
 					to_chat(usr, SPAN("warning", "[\src] flashes a red LED near the ID scanner, indicating your access has been denied."))
 					return TRUE
+
 		if("lock")
 			if(!lockable)
 				return TRUE
+
 			locked = 1
+
+	return FALSE
+
+/**
+ * Create a copy of the electronics
+ * Arguments
+ * * [location][atom]- the location to create the new copy in
+ */
+/obj/item/airlock_electronics/proc/create_copy(atom/location)
+	var/obj/item/airlock_electronics/new_electronics = new(location)
+	new_electronics.secure = secure
+	new_electronics.conf_access = conf_access.Copy()
+	new_electronics.one_access = one_access
+	new_electronics.last_configurator = last_configurator
+	new_electronics.locked = locked
+	new_electronics.lockable = lockable
+	return new_electronics
 
 /obj/item/airlock_electronics/secure
 	name = "secure airlock electronics"

@@ -157,3 +157,41 @@
 	req_tech = list(TECH_MATERIAL = 7, TECH_POWER = 8, TECH_ENGINEERING = 6)
 	build_path = /obj/item/smes_coil/super_io
 	sort_string = "VAXAC"
+
+/datum/design/item/rcd_updgrade
+	category_items = list("Engineering")
+
+/datum/design/item/rcd_updgrade/frames
+	name = "RCD upgrade (frames)"
+	id = "rcd_upgrade_frames"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 2)
+	build_path = /obj/item/rcd_upgrade/frames
+	sort_string = "VAXAD"
+
+/datum/design/item/rcd_updgrade/simple_circuits
+	name = "RCD upgrade (simple circuits)"
+	id = "rcd_upgrade_simple_circuits"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 2)
+	build_path = /obj/item/rcd_upgrade/simple_circuits
+	sort_string = "VAXAE"
+
+/datum/design/item/rcd_updgrade/anti_interrupt
+	name = "RCD upgrade (anti interrupt)"
+	id = "rcd_upgrade_anti_interrupt"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 2)
+	build_path = /obj/item/rcd_upgrade/anti_interrupt
+	sort_string = "VAXAF"
+
+/datum/design/item/rcd_updgrade/cooling
+	name = "RCD upgrade (cooling)"
+	id = "rcd_upgrade_cooling"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 2)
+	build_path = /obj/item/rcd_upgrade/cooling
+	sort_string = "VAXAG"
+
+/datum/design/item/rcd_updgrade/furnishing
+	name = "RCD upgrade (furnishing)"
+	id = "rcd_upgrade_furnishing"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 2)
+	build_path = /obj/item/rcd_upgrade/furnishing
+	sort_string = "VAXAH"

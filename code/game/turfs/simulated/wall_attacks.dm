@@ -344,7 +344,7 @@
 		F.try_build(src)
 		return
 
-	else if(!istype(W,/obj/item/rcd) && !istype(W, /obj/item/reagent_containers))
+	else if(!istype(W,/obj/item/construction/rcd) && !istype(W, /obj/item/reagent_containers))
 		if(!W.force)
 			return attack_hand(user)
 		var/dam_threshhold = material.integrity

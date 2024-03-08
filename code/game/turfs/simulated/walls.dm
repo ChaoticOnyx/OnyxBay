@@ -430,3 +430,34 @@
 				W.burn((temperature/4))
 			for(var/obj/machinery/door/airlock/plasma/D in range(3,src))
 				D.ignite(temperature/4)
+
+/turf/simulated/wall/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	switch(the_rcd.mode)
+		if(RCD_DECONSTRUCT)
+			return list("delay" = 4 SECONDS, "cost" = 26)
+
+		if(RCD_WALLFRAME)
+			return list("delay" = 1 SECONDS, "cost" = 8)
+
+	return FALSE
+
+/turf/simulated/wall/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	switch(rcd_data["[RCD_DESIGN_MODE]"])
+		if(RCD_WALLFRAME) // We need a hero who will make a single parent-class for all wallmounts...
+			var/obj/wallmount = rcd_data["[RCD_DESIGN_PATH]"]
+			if(ispath(wallmount, /obj/machinery/firealarm) || ispath(wallmount, /obj/machinery/alarm))
+				new wallmount(user.drop_location(), GLOB.flip_dir[user.dir], src)
+
+			else if(ispath(wallmount, /obj/machinery/power/apc))
+				new wallmount(user.drop_location(), user.dir, TRUE)
+
+			else if(ispath(wallmount, /obj/item/device/radio/intercom))
+				new wallmount(user.drop_location(), GLOB.flip_dir[user.dir])
+
+			return TRUE
+
+		if(RCD_DECONSTRUCT)
+			dismantle_wall(no_product = TRUE)
+			return TRUE
+
+	return FALSE
