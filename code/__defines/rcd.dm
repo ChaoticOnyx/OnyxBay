@@ -30,16 +30,14 @@
 #define RCD_UPGRADE_FRAMES (1 << 0)
 /// Upgrade for installing circuitboards in air alarms, fire alarms, apc & cells in them
 #define RCD_UPGRADE_SIMPLE_CIRCUITS (1 << 1)
-/// Upgrade for drawing iron from ore silo
-#define RCD_UPGRADE_SILO_LINK (1 << 2)
 /// Upgrade for building furnishing items
-#define RCD_UPGRADE_FURNISHING (1 << 3)
+#define RCD_UPGRADE_FURNISHING (1 << 2)
 /// Upgrade to stop construction effect from getting attacked
-#define RCD_UPGRADE_ANTI_INTERRUPT (1 << 4)
+#define RCD_UPGRADE_ANTI_INTERRUPT (1 << 3)
 /// Upgrade to disable delay multiplier when building multiple structures
-#define RCD_UPGRADE_NO_FREQUENT_USE_COOLDOWN (1 << 5)
+#define RCD_UPGRADE_NO_FREQUENT_USE_COOLDOWN (1 << 4)
 /// All upgrades packed in 1 flag
-#define RCD_ALL_UPGRADES (RCD_UPGRADE_FRAMES | RCD_UPGRADE_SIMPLE_CIRCUITS | RCD_UPGRADE_SILO_LINK | RCD_UPGRADE_FURNISHING | RCD_UPGRADE_ANTI_INTERRUPT | RCD_UPGRADE_NO_FREQUENT_USE_COOLDOWN)
+#define RCD_ALL_UPGRADES (RCD_UPGRADE_FRAMES | RCD_UPGRADE_SIMPLE_CIRCUITS | RCD_UPGRADE_FURNISHING | RCD_UPGRADE_ANTI_INTERRUPT | RCD_UPGRADE_NO_FREQUENT_USE_COOLDOWN)
 /// Upgrades for the Rapid Pipe Dispenser to unwrench pipes
 #define RPD_UPGRADE_UNWRENCH (1 << 0)
 
