@@ -15,8 +15,6 @@
 	mod_reach = 0.75
 	mod_handy = 1.0
 
-	//custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 50)
-	//req_access = list(ACCESS_ENGINE_EQUIP)
 	/// the spark system which sparks whever the ui options are dited
 	var/datum/effect/effect/system/spark_spread/spark_system
 	/// current local local_matter inside the device
