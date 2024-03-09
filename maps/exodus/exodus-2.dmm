@@ -3016,7 +3016,7 @@
 "bfZ" = (/obj/structure/table/woodentable,/obj/item/plant_pot/random,/turf/simulated/floor/trim/wood,/area/library)
 "bga" = (/obj/structure/closet/secure_closet/personal,/turf/simulated/floor/tiled/rough,/area/crew_quarters/locker)
 "bgb" = (/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/obj/machinery/light{dir = 8},/obj/effect/floor_decal/corner/blue{dir = 1},/turf/simulated/floor/tiled/rough,/area/hallway/primary/central_two)
-"bgc" = (/obj/structure/window/reinforced/full,/turf/simulated/floor/grid/bluegrid,/area/bridge)
+"bgc" = (/obj/structure/window/reinforced/full,/obj/structure/sign/flag/nt,/turf/simulated/floor/grid/bluegrid,/area/bridge)
 "bgd" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/hallway/primary/central_one)
 "bge" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/effect/floor_decal/corner/red{dir = 10},/obj/structure/table/reinforced,/obj/machinery/recharger,/turf/simulated/floor/tiled/dark/rough,/area/security/checkpoint2)
 "bgf" = (/obj/structure/table/woodentable,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/cable/green{icon_state = "1-2"; d2 = 2; d1 = 1},/turf/simulated/floor/trim/carpet/oldred,/area/chapel/main)
