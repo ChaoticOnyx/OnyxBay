@@ -57,7 +57,6 @@
 	. = ..()
 	airlock_electronics = new(src)
 	airlock_electronics.name = "Access Control"
-	//airlock_electronics.holder = src
 
 	root_category =  GLOB.rcd_designs[1]
 	design_category = GLOB.rcd_designs[root_category][1]
