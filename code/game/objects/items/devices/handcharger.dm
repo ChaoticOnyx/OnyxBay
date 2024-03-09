@@ -31,7 +31,7 @@
 
 /obj/item/device/handcharger/proc/remove_cell(mob/user)
 	if(!my_cell)
-		return
+		return FALSE
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -43,6 +43,8 @@
 	playsound(loc, "bullet_insert", 50, 1)
 	my_cell = null
 	update_icon()
+
+	return TRUE
 
 /obj/item/device/handcharger/_examine_text(mob/user)
 	. = ..()
@@ -110,8 +112,8 @@
 
 /obj/item/device/handcharger/attack_hand(mob/user)
 	if(user.get_inactive_hand() == src)
-		remove_cell(user)
-		return
+		if(remove_cell(user))
+			return
 	return ..()
 
 /obj/item/device/handcharger/attack_self(mob/user)
