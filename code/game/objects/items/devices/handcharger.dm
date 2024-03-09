@@ -30,6 +30,9 @@
 	. = ..()
 
 /obj/item/device/handcharger/proc/remove_cell(mob/user)
+	if(!my_cell)
+		return
+
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		H.pick_or_drop(my_cell)
