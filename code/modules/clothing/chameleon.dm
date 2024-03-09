@@ -297,7 +297,7 @@
 		)
 		var/blocked_cat = list(
 			/obj/item/storage/backpack/dufflebag/syndie_kit,
-			/obj/item/storage/backpack/stachel/syndie_kit
+			/obj/item/storage/backpack/satchel/syndie_kit
 		)
 		clothing_choices = generate_chameleon_choices(/obj/item/storage/backpack, blocked, blocked_cat)
 
