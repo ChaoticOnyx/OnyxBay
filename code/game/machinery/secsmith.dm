@@ -45,7 +45,7 @@
 		return
 
 	else if(istype(I, /obj/item/gun))
-		show_splash_text(user, "taser not supported!")
+		show_splash_text(user, "gun not supported!")
 		return
 
 	..()
