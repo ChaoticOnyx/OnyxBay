@@ -10,7 +10,6 @@
 	var/last_enabled
 	var/toggle_cooldown = 2 SECONDS
 
-	var/lethal = FALSE
 	var/locked = TRUE
 
 	var/list/area/control_area //can be area name, path or nothing.
@@ -32,7 +31,7 @@
 		signaler = _signaler
 		signaler.forceMove(src)
 
-	targeting_settings = new (targeting_settings)
+	targeting_settings = new targeting_settings()
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -182,6 +181,7 @@
 						last_enabled = world.time
 						enabled = !enabled
 						update_turrets()
+						update_icon()
 					else
 						show_splash_text(usr, "Turrets recalibrating!")
 					return TRUE
@@ -189,6 +189,7 @@
 				if("mode")
 					targeting_settings.lethal_mode = !targeting_settings.lethal_mode
 					update_turrets()
+					update_icon()
 					return TRUE
 
 				if("synth")
@@ -245,17 +246,21 @@
 		T.lethal_nonlethal_switch()
 
 /obj/machinery/turret_control_panel/on_update_icon()
-	..()
+	ClearOverlays()
+
 	if(stat & NOPOWER)
 		icon_state = "control_off"
 		set_light(0)
-	else if (enabled)
-		if (lethal)
+	else if(enabled)
+		if(targeting_settings.lethal_mode)
 			icon_state = "control_kill"
+			AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
 			set_light(0.5, 0.5, 2, 2, "#990000")
 		else
 			icon_state = "control_stun"
+			AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
 			set_light(0.5, 0.5, 2, 2, "#ff9900")
 	else
 		icon_state = "control_standby"
+		AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
 		set_light(0.5, 0.5, 2, 2, "#003300")
