@@ -353,13 +353,13 @@
 			firer.visible_message(
 				"<span class='reflex_shoot'><b>\The [firer] fires \the [src][pointblank ? " point blank at \the [target]":""][burstfire == 1 ? " in a burst":""] by reflex!</b></span>",
 				"<span class='reflex_shoot'>You fire \the [src] by reflex!</span>",
-				"You hear a [fire_sound_text]!"
+				(ismob(firer) ? "You hear a [fire_sound_text]!" : world.view)
 			)
 		else
 			firer.visible_message(
 				"<span class='danger'>\The [firer] fires \the [src][pointblank ? " point blank at \the [target]":""][burstfire == 1 ? " in a burst":""]!</span>",
 				"<span class='warning'>You fire \the [src]!</span>",
-				"You hear a [fire_sound_text]!"
+				(ismob(firer) ? "You hear a [fire_sound_text]!" : world.view)
 				)
 
 	if(ismob(firer))
