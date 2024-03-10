@@ -167,7 +167,7 @@
 		playsound(src, 'sound/items/Welder.ogg', 80, 1)
 		visible_message("<span class='alium'>The acid has started melting \the [name]'s reinforcements!</span>")
 		if(T)
-			T.audible_message("<span class='warning'>A strange sizzling noise eminates from the ceiling.</span>")
+			T.audible_message("<span class='warning'>A strange sizzling noise eminates from the ceiling.</span>", splash_override = "*sizzle*")
 		burnt = 1
 		remove_decals()
 		update_icon()

@@ -31,7 +31,7 @@
 	icon_state = "[base_state][on]"
 
 /obj/item/device/t_scanner/emp_act()
-	audible_message(src, "<span class = 'notice'> \The [src] buzzes oddly.</span>")
+	audible_message(src, "<span class = 'notice'> \The [src] buzzes oddly.</span>", splash_override = "*buzz-z-z*")
 	set_active(FALSE)
 
 /obj/item/device/t_scanner/attack_self(mob/user)

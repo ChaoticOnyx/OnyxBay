@@ -86,7 +86,7 @@
 		)
 
 	illegal = list(
-		/obj/item/rcd = 1,
+		/obj/item/construction/rcd = 1,
 		/obj/item/rcd_ammo = 5
 		)
 

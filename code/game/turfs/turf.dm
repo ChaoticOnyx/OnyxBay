@@ -41,6 +41,11 @@
 
 	var/turf_height = 0 // "Vertical" offset. Mostly used for mobs and dropped items.
 
+	/// If this turf contained an RCD'able object (or IS one, for walls)
+	/// but is now destroyed, this will preserve the value.
+	/// See __DEFINES/construction.dm for RCD_MEMORY_*.
+	var/rcd_memory
+
 /turf/Initialize(mapload, ...)
 	. = ..()
 	if(dynamic_lighting)

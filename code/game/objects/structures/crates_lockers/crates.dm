@@ -183,7 +183,7 @@
 /obj/structure/closet/crate/rcd/WillContain()
 	return list(
 		/obj/item/rcd_ammo = 3,
-		/obj/item/rcd
+		/obj/item/construction/rcd
 	)
 
 /obj/structure/closet/crate/solar

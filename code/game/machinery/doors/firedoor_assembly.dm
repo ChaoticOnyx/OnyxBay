@@ -67,3 +67,26 @@
 			to_chat(user, "<span class='notice'>You need more welding fuel.</span>")
 	else
 		..(C, user)
+
+/obj/structure/firelock_frame/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("delay" = 5 SECONDS, "cost" = 16)
+
+	else if(the_rcd.upgrade & RCD_UPGRADE_SIMPLE_CIRCUITS)
+		return list("delay" = 2 SECONDS, "cost" = 1)
+
+	return FALSE
+
+/obj/structure/firelock_frame/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	switch(rcd_data["[RCD_DESIGN_MODE]"])
+		if(RCD_UPGRADE_SIMPLE_CIRCUITS)
+			show_splash_text(user, "circuit installed")
+			new /obj/machinery/door/firedoor(get_turf(src))
+			qdel_self()
+			return TRUE
+
+		if(RCD_DECONSTRUCT)
+			qdel_self()
+			return TRUE
+
+	return FALSE

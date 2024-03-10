@@ -655,7 +655,7 @@ datum
 
 
 			RCD
-				steal_target = /obj/item/rcd
+				steal_target = /obj/item/construction/rcd
 				explanation_text = "Steal a rapid construction device."
 				weight = 20
 

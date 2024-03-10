@@ -96,7 +96,7 @@
 "bS" = (/obj/machinery/light{dir = 8; icon_state = "tube1"; pixel_y = 0},/turf/simulated/floor/reinforced,/area/derelict/snowasteroid/bunker)
 "bT" = (/turf/simulated/floor/reinforced,/area/derelict/snowasteroid/bunker)
 "bU" = (/obj/structure/sign/warning/secure_area,/turf/simulated/wall/r_wall,/area/derelict/snowasteroid/bunker)
-"bV" = (/obj/machinery/turret/network/station{dir = 10},/turf/simulated/floor/reinforced,/area/derelict/snowasteroid/bunker)
+"bV" = (/obj/machinery/turret/network/station,/turf/simulated/floor/reinforced,/area/derelict/snowasteroid/bunker)
 "bW" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/turf/simulated/floor/reinforced,/area/derelict/snowasteroid/bunker)
 "bX" = (/obj/machinery/light{dir = 4; icon_state = "tube1"},/turf/simulated/floor/reinforced,/area/derelict/snowasteroid/bunker)
 "bY" = (/obj/structure/cable{icon_state = "0-4"; d2 = 4},/obj/effect/floor_decal/industrial/warning{icon_state = "warning"; dir = 1},/obj/machinery/power/smes/buildable/outpost_substation,/turf/simulated/floor/plating,/area/derelict/snowasteroid)

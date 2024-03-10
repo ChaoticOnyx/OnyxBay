@@ -68,3 +68,14 @@
 			if((istype(loc, /turf/space) || istype(loc, /turf/simulated/open)) && !(locate(/obj/structure/lattice) in loc))
 				new /obj/structure/lattice(loc)
 			qdel(src)
+
+/obj/structure/catwalk/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("mode" = RCD_DECONSTRUCT, "delay" = 1 SECONDS, "cost" = 5)
+
+	return FALSE
+
+/obj/structure/catwalk/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
+	if(passed_mode == RCD_DECONSTRUCT)
+		qdel_self()
+		return TRUE
