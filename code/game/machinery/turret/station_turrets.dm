@@ -64,7 +64,6 @@
 	control_area = list(
 		/area/tcommsat/chamber
 	)
-	lethal = TRUE
 	req_access = list(access_tcomsat)
 
 	targeting_settings = /datum/targeting_settings/tcomms_lethal
