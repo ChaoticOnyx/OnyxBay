@@ -14,6 +14,7 @@
 	var/base_icon = null
 	var/material_path = null
 	var/door_path = null
+	rotatable = TRUE
 
 /obj/structure/secure_door_assembly/Destroy()
 	QDEL_NULL(signaler)
