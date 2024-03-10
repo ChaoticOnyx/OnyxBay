@@ -33,6 +33,8 @@
 
 	targeting_settings = new targeting_settings()
 
+	update_icon()
+
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/turret_control_panel/LateInitialize()
@@ -49,6 +51,8 @@
 		T.signaler?.frequency = signaler.frequency
 		T.signaler?.code = signaler.code
 		T.master_controller = weakref(src)
+
+	update_turrets()
 
 /obj/machinery/turret_control_panel/Destroy()
 	QDEL_NULL(signaler)
