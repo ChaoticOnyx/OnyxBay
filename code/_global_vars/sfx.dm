@@ -66,6 +66,15 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/weapons/gun/casing_drop6.ogg',
 		'sound/effects/weapons/gun/casing_drop7.ogg'
 	),
+	SFX_792_FIRE = list(
+		'sound/effects/weapons/gun/fire_792.ogg'
+	),
+	SFX_792_BOLT_BACK = list(
+		'sound/effects/weapons/gun/bolt_back_2.ogg'
+	),
+	SFX_792_BOLT_FORWARD = list(
+		'sound/effects/weapons/gun/bolt_forward_2.ogg'
+	),
 	// FEMALE EMOTES
 	SFX_FEMALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/f_internalb1.ogg'

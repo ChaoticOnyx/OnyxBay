@@ -334,3 +334,13 @@
 		if(ammo_counters[mode] != LAWGIVER_MAX_AMMO)
 			return FALSE
 	return TRUE
+
+/obj/item/ammo_magazine/c792
+	name = "clip (7.92mm)"
+	icon_state = "c792"
+	mag_type = SPEEDLOADER
+	caliber = "7.92"
+	matter = list(MATERIAL_STEEL = 2000)
+	ammo_type = /obj/item/ammo_casing/a792
+	max_ammo = 5
+	multiple_sprites = TRUE
