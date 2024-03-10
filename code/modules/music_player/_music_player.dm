@@ -385,7 +385,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	qdel(src)
 
 /obj/item/music_player/proc/break_act()
-	audible_message(SPAN_WARNING("\The [src]'s speakers pop with a sharp crack!"))
+	audible_message(SPAN_WARNING("\The [src]'s speakers pop with a sharp crack!"), splash_override = "*CRACK*")
 	playsound(src, 'sound/effects/snap.ogg', 100, 1)
 	StopPlaying()
 	broken = TRUE
