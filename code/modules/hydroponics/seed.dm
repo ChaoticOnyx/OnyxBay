@@ -27,6 +27,7 @@
 	var/customsprite = 0		   // Set to 1 if you want to use a non-paintable harvest icon.
 	var/planter_ckey			   // ckey of player that plant seed.
 	var/fun_level = 1              // Disables this mutation if it's higher than config.misc.fun_hydroponics. 0 - regular plants, 1 - joke plants, 2 - somewhat OOC-related stuff.
+	var/canonical_icon             // If the plant's appearance hasn't been altered via mutations, it uses this state.
 
 /datum/seed/New()
 
@@ -791,7 +792,9 @@
 	return new_seed
 
 /datum/seed/proc/update_growth_stages()
-	if(get_trait(TRAIT_PLANT_ICON))
+	if(is_canonical())
+		growth_stages = SSplants.canonical_plant_sprites[canonical_icon]
+	else if(get_trait(TRAIT_PLANT_ICON))
 		growth_stages = SSplants.plant_sprites[get_trait(TRAIT_PLANT_ICON)]
 	else
 		growth_stages = 0
@@ -814,11 +817,9 @@
 	var/image/res = image('icons/obj/hydroponics_growing.dmi', "[plant_icon]-[growth_stage]")
 	if(get_growth_type())
 		res.icon_state = "[get_growth_type()]-[growth_stage]"
+		res.icon = 'icons/obj/hydroponics_vines.dmi'
 	else
 		res.icon_state = "[plant_icon]-[growth_stage]"
-
-	if(get_growth_type())
-		res.icon = 'icons/obj/hydroponics_vines.dmi'
 
 	res.color = get_trait(TRAIT_PLANT_COLOUR)
 
@@ -834,3 +835,9 @@
 		I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		res.AddOverlays(I)
 	return res
+
+/datum/seed/proc/get_canonical_key()
+	return canonical_icon ? "[get_trait(TRAIT_PLANT_ICON)]_[get_trait(TRAIT_PLANT_COLOUR)]_[get_trait(TRAIT_PRODUCT_ICON)]_[get_trait(TRAIT_PRODUCT_COLOUR)]" : null
+
+/datum/seed/proc/is_canonical()
+	return canonical_icon && (SSplants.canonical_plants[canonical_icon] == get_canonical_key())

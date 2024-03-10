@@ -90,7 +90,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	switch(action)
 		if("idInteract")
 			if(inserted_id)
-				if(ishuman(usr))
+				if(ishuman(usr) && Adjacent(usr, src))
 					usr.pick_or_drop(inserted_id, loc)
 					inserted_id = null
 				else
@@ -102,7 +102,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 					inserted_id = I
 			return TRUE
 		if("paperInteract")
-			if(copyitem)
+			if(copyitem && Adjacent(usr, src))
 				usr.pick_or_drop(copyitem, loc)
 				to_chat(usr, SPAN_NOTICE("You take \the [copyitem] out of \the [src]."))
 				copyitem = null
@@ -124,7 +124,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 
 			playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 			var/id = IAAJ_generate_fake_id()
-			new /obj/item/complaint_folder(src.loc, id)
+			new /obj/item/complaint_folder(get_turf(loc), id)
 			print_cooldown = world.time + FAX_PRINT_COOLDOWN
 			return TRUE
 		if("send")
