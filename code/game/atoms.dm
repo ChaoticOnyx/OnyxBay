@@ -494,6 +494,7 @@ its easier to just keep the beam vertical.
 // message is the message output to anyone who can hear.
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
+// spash_override replaces the runechatted message if provided. i.e. you can make the atom go "*beep*" instead of "The Machine states, "Bee ..."
 /atom/proc/audible_message(message, deaf_message, hearing_distance = world.view, checkghosts = null, splash_override = null)
 	var/list/hearing_mobs = list()
 	var/list/hearing_objs = list()
