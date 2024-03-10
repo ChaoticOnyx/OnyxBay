@@ -999,3 +999,18 @@ About the new airlock wires panel:
 	var/area/A = get_area(src)
 	name = A.name
 	..()
+
+/obj/machinery/door/airlock/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	switch(the_rcd.mode)
+		if(RCD_DECONSTRUCT)
+			return list("delay" = 5 SECONDS, "cost" = 32)
+
+	return FALSE
+
+/obj/machinery/door/airlock/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	switch(rcd_data["[RCD_DESIGN_MODE]"])
+		if(RCD_DECONSTRUCT)
+			qdel_self()
+			return TRUE
+
+	return FALSE

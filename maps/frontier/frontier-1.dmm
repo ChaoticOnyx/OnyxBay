@@ -2901,7 +2901,7 @@
 "bki" = (/obj/structure/bed/pew/pewchapel/left{icon_state = "chair_pewchapel_left_over"; dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/chapel/main/mass_driver)
 "bkj" = (/obj/structure/bed/pew/pewchapel/right{icon_state = "chair_pewchapel_right_over"; dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/chapel/main/mass_driver)
 "bkk" = (/obj/structure/closet/secure_closet/engineering_chief,/obj/item/rig/ce/equipped,/obj/machinery/power/apc{name = "north bump"; dir = 1; pixel_y = 24},/obj/structure/cable/green{icon_state = "0-2"; d2 = 2},/turf/simulated/floor/tiled/rough,/area/crew_quarters/heads/chief)
-"bkl" = (/obj/structure/table/reinforced,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/backwear/powered/rpd/loaded,/obj/item/rcd,/turf/simulated/floor/tiled/rough,/area/crew_quarters/heads/chief)
+"bkl" = (/obj/structure/table/reinforced,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/rcd_ammo,/obj/item/backwear/powered/rpd/loaded,/obj/item/construction/rcd,/turf/simulated/floor/tiled/rough,/area/crew_quarters/heads/chief)
 "bkm" = (/obj/structure/table/reinforced,/obj/machinery/photocopier/faxmachine{department = "Chief Engineer's Office"},/obj/item/book/wiki/nt_regs,/turf/simulated/floor/tiled/rough,/area/crew_quarters/heads/chief)
 "bkn" = (/turf/simulated/wall/r_wall,/area/engineering/drone_fabrication)
 "bko" = (/obj/machinery/computer/message_monitor,/turf/simulated/floor/tiled/dark/rough,/area/server)

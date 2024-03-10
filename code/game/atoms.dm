@@ -809,3 +809,12 @@ its easier to just keep the beam vertical.
 		offset_y = tf_offset_y,
 		others = others
 	)
+
+
+/// Respond to an RCD acting on our item
+/atom/proc/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	return FALSE
+
+///Return the values you get when an RCD eats you?
+/atom/proc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	return FALSE
