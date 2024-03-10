@@ -191,7 +191,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 /obj/item/gun/energy/secure/special_check()
 	if(!emagged && (!authorized_modes[sel_mode] || !registered_owner))
-		audible_message("<span class='warning'>\The [src] buzzes, refusing to fire.</span>")
+		audible_message("<span class='warning'>\The [src] buzzes, refusing to fire.</span>", splash_override = "*buzz*")
 		playsound(loc, 'sound/signals/error1.ogg', 50, 0)
 		return 0
 

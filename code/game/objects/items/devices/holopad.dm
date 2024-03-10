@@ -61,7 +61,7 @@
 /obj/item/device/holopad/proc/ring()
 	if(call_state != CALL_RINGING)
 		return
-	audible_message(SPAN_WARNING("Something vibrates.."), hearing_distance = 4)
+	audible_message(SPAN_WARNING("Something vibrates.."), hearing_distance = 4, splash_override = "*buzz*")
 	addtimer(CALLBACK(src, nameof(.proc/ring)), 50)
 
 /obj/item/device/holopad/proc/placeCall(mob/user)
@@ -92,7 +92,7 @@
 			icon_state = "holopad_in_call"
 			addtimer(CALLBACK(src, nameof(.proc/update_holo)), 1)
 
-			audible_message("<span class='name'>[voice]</span> transmits, \"Connection established\"", hearing_distance = 1)
+			audible_message("<span class='name'>[voice]</span> transmits, \"Connection established\"", hearing_distance = 1, splash_override = "Connection established")
 		else
 			call_state = CALL_NONE
 			icon_state = initial(icon_state)
@@ -104,7 +104,7 @@
 		icon_state = "holopad_in_call"
 		addtimer(CALLBACK(src, nameof(.proc/update_holo)), 1)
 
-		audible_message("<span class='name'>[voice]</span> transmits, \"Connection established\"", hearing_distance = 1)
+		audible_message("<span class='name'>[voice]</span> transmits, \"Connection established\"", hearing_distance = 1, splash_override = "Connection established")
 
 /obj/item/device/holopad/proc/hangUp(remote = 0)
 	if(!remote && abonent)

@@ -281,21 +281,38 @@
 		to_chat(user, "<span class='notice'>Now finishing the airlock.</span>")
 
 		if(do_after(user, 40,src))
-			if(!src) return
-			to_chat(user, "<span class='notice'>You finish the airlock!</span>")
-			var/path
-			if(istext(glass))
-				path = text2path("/obj/machinery/door/airlock/[glass]")
-			else if (glass == 1)
-				path = text2path("/obj/machinery/door/airlock[glass_type]")
-			else
-				path = text2path("/obj/machinery/door/airlock[airlock_type]")
+			if(QDELETED(src))
+				return
 
-			new path(src.loc, src)
-			qdel(src)
+			finish_door(user)
+
 	else
 		..()
 	update_state()
+
+/obj/structure/door_assembly/proc/finish_door(user)
+	show_splash_text(user, "Door finished!")
+	var/path = get_finished_type()
+
+	if(!isnull(path))
+		new path(get_turf(loc), src)
+		qdel_self()
+
+/obj/structure/door_assembly/proc/get_finished_type()
+	if(ispath(glass_type))
+		return glass_type
+
+	else if(ispath(airlock_type))
+		return airlock_type
+
+	if(istext(glass))
+		return text2path("/obj/machinery/door/airlock/[glass]")
+
+	else if(glass == 1)
+		return text2path("/obj/machinery/door/airlock[glass_type]")
+
+	else
+		return text2path("/obj/machinery/door/airlock[airlock_type]")
 
 /obj/structure/door_assembly/proc/update_state()
 	icon_state = "door_as_[glass == 1 ? "g" : ""][istext(glass) ? glass : base_icon_state][state]"
@@ -310,3 +327,16 @@
 			final_name = "Near Finished "
 	final_name += "[glass == 1 ? "Window " : ""][istext(glass) ? "[glass] Airlock" : base_name] Assembly"
 	SetName(final_name)
+
+/obj/structure/door_assembly/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("delay" = 5 SECONDS, "cost" = 16)
+
+	return FALSE
+
+/obj/structure/door_assembly/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_DECONSTRUCT)
+		qdel_self()
+		return TRUE
+
+	return FALSE

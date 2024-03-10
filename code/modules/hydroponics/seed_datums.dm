@@ -6,6 +6,7 @@
 	chems = list(/datum/reagent/capsaicin = list(3,5), /datum/reagent/nutriment = list(1,25))
 	mutants = list("icechili","flamechili")
 	kitchen_tag = "chili"
+	canonical_icon = "chili"
 
 /datum/seed/chili/New()
 	..()
@@ -27,6 +28,7 @@
 	mutants = null
 	chems = list(/datum/reagent/frostoil = list(3,5), /datum/reagent/nutriment = list(1,50))
 	kitchen_tag = "icechili"
+	canonical_icon = "icechili"
 
 /datum/seed/chili/ice/New()
 	..()
@@ -42,6 +44,7 @@
 	chems = list(/datum/reagent/fuel = list(5,10))
 	kitchen_tag = "flamechili"
 	fun_level = 1
+	canonical_icon = "chili"
 
 /datum/seed/chili/flame/New()
 	..()
@@ -56,6 +59,7 @@
 	mutants = list("glowberries","poisonberries","blueberries")
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/berry = list(10,10))
 	kitchen_tag = "berries"
+	canonical_icon = "berry"
 
 /datum/seed/berry/New()
 	..()
@@ -78,6 +82,7 @@
 	mutants = list("berries","poisonberries","glowberries")
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/berry = list(10,10))
 	kitchen_tag = "blueberries"
+	canonical_icon = null
 
 /datum/seed/berry/blue/New()
 	..()
@@ -95,6 +100,7 @@
 	display_name = "glowberry bush"
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/uranium = list(3,5))
+	canonical_icon = "glowberry"
 
 /datum/seed/berry/glow/New()
 	..()
@@ -115,6 +121,7 @@
 	display_name = "poison berry bush"
 	mutants = list("deathberries")
 	chems = list(/datum/reagent/nutriment = list(1), /datum/reagent/toxin = list(3,5), /datum/reagent/toxin/poisonberryjuice = list(10,5))
+	canonical_icon = "poisonberry"
 
 /datum/seed/berry/poison/New()
 	..()
@@ -128,6 +135,7 @@
 	display_name = "death berry bush"
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1), /datum/reagent/toxin = list(3,3), /datum/reagent/lexorin = list(1,5))
+	canonical_icon = "deathberry"
 
 /datum/seed/berry/poison/death/New()
 	..()
@@ -144,7 +152,7 @@
 	mutants = list("deathnettle")
 	chems = list(/datum/reagent/nutriment = list(1,50), /datum/reagent/acid = list(0,1))
 	kitchen_tag = "nettle"
-	kitchen_tag = "nettle"
+	canonical_icon = "nettle"
 
 /datum/seed/nettle/New()
 	..()
@@ -165,6 +173,7 @@
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1,50), /datum/reagent/acid/polyacid = list(0,1))
 	kitchen_tag = "deathnettle"
+	canonical_icon = "deathnettle"
 
 /datum/seed/nettle/death/New()
 	..()
@@ -181,6 +190,7 @@
 	mutants = list("bluetomato","bloodtomato","tomacco")
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/tomato = list(10,10))
 	kitchen_tag = "tomato"
+	canonical_icon = "tomato"
 
 /datum/seed/tomato/New()
 	..()
@@ -204,6 +214,7 @@
 	mutants = list("killertomato","nanotomato")
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/blood = list(1,5))
 	splat_type = /obj/effect/decal/cleanable/blood/splatter
+	canonical_icon = "bloodtomato"
 
 /datum/seed/tomato/blood/New()
 	..()
@@ -216,6 +227,7 @@
 	display_name = "nanoblood tomato plant"
 	mutants = list("automato")
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/nanoblood = list(1,5))
+	canonical_icon = null
 
 /datum/seed/tomato/blood/nano/New()
 	..()
@@ -229,6 +241,7 @@
 	chems = list(/datum/reagent/nanites = list(1,10))
 	splat_type = /obj/effect/decal/cleanable/blood/oil
 	fun_level = 1
+	canonical_icon = null
 
 /datum/seed/tomato/automato/New()
 	..()
@@ -245,6 +258,7 @@
 	can_self_harvest = 1
 	has_mob_product = /mob/living/simple_animal/hostile/tomato
 	fun_level = 1
+	canonical_icon = "killertomato"
 
 /datum/seed/tomato/killer/New()
 	..()
@@ -264,6 +278,7 @@
 	display_name = "blue tomato plant"
 	mutants = list("bluespacetomato")
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/lube = list(1,5))
+	canonical_icon = "bluetomato"
 
 /datum/seed/tomato/blue/New()
 	..()
@@ -277,6 +292,7 @@
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/ethanol/singulo = list(10,5))
 	fun_level = 1
+	canonical_icon = "bluespacetomato"
 
 /datum/seed/tomato/blue/teleport/New()
 	..()
@@ -293,6 +309,7 @@
 	mutants = list("realeggplant")
 	chems = list(/datum/reagent/nutriment = list(1,10))
 	kitchen_tag = "eggplant"
+	canonical_icon = "eggplant"
 
 /datum/seed/eggplant/New()
 	..()
@@ -314,6 +331,7 @@
 	mutants = null
 	has_custom_product = /obj/item/reagent_containers/food/egg/randomcolor
 	fun_level = 1
+	canonical_icon = "eggy"
 
 /datum/seed/eggplant/realeggplant/New()
 	..()
@@ -328,6 +346,7 @@
 	mutants = list("poisonapple","greenapple","yellowapple")
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/apple = list(10,10))
 	kitchen_tag = "apple"
+	canonical_icon = "apple"
 
 /datum/seed/apple/New()
 	..()
@@ -346,6 +365,7 @@
 	name = "greenapple"
 	seed_name = "green apple"
 	mutants = list("rapple","apple","yellowapple")
+	canonical_icon = null
 
 /datum/seed/apple/green/New()
 	..()
@@ -355,6 +375,7 @@
 	name = "yellowapple"
 	seed_name = "yellow apple"
 	mutants = list("goldapple","apple","greenapple")
+	canonical_icon = null
 
 /datum/seed/apple/yellow/New()
 	..()
@@ -372,6 +393,7 @@
 	mutants = null
 	chems = list(/datum/reagent/radium = list(1,15))
 	fun_level = 1
+	canonical_icon = null
 
 /datum/seed/apple/rapple/New()
 	..()
@@ -385,6 +407,7 @@
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/gold = list(1,5))
 	kitchen_tag = "goldapple"
 	fun_level = 1
+	canonical_icon = null
 
 /datum/seed/apple/gold/New()
 	..()
@@ -402,6 +425,7 @@
 	mutants = list("ambrosiadeus")
 	chems = list(/datum/reagent/nutriment = list(1), /datum/reagent/space_drugs = list(1,8), /datum/reagent/kelotane = list(1,8,1), /datum/reagent/bicaridine = list(1,10,1), /datum/reagent/toxin = list(1,10))
 	kitchen_tag = "ambrosia"
+	canonical_icon = "ambrosiavulgaris"
 
 /datum/seed/ambrosia/New()
 	..()
@@ -422,6 +446,7 @@
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1), /datum/reagent/bicaridine = list(1,8), /datum/reagent/synaptizine = list(1,8,1), /datum/reagent/hyperzine = list(1,10,1), /datum/reagent/space_drugs = list(1,10))
 	kitchen_tag = "ambrosiadeus"
+	canonical_icon = "ambrosiadeus"
 
 /datum/seed/ambrosia/deus/New()
 	..()
@@ -438,6 +463,7 @@
 	chems = list(/datum/reagent/nutriment = list(1,25))
 	splat_type = /obj/effect/vine
 	kitchen_tag = "mushroom"
+	canonical_icon = "chanter"
 
 /datum/seed/mushroom/New()
 	..()
@@ -458,6 +484,7 @@
 	seed_name = "brown mold"
 	display_name = "brown mold"
 	mutants = null
+	canonical_icon = null
 
 /datum/seed/mushroom/mold/New()
 	..()
@@ -476,6 +503,7 @@
 	mutants = list("walkingmushroom","towercap")
 	chems = list(/datum/reagent/nutriment = list(2,10))
 	kitchen_tag = "plumphelmet"
+	canonical_icon = "plump"
 
 /datum/seed/mushroom/plump/New()
 	..()
@@ -495,6 +523,7 @@
 	can_self_harvest = 1
 	has_mob_product = /mob/living/simple_animal/mushroom
 	fun_level = 1
+	canonical_icon = "walkingmushroom"
 
 /datum/seed/mushroom/plump/walking/New()
 	..()
@@ -509,6 +538,7 @@
 	display_name = "reishi"
 	mutants = list("libertycap","glowshroom")
 	chems = list(/datum/reagent/nutriment = list(1,50), /datum/reagent/psilocybin = list(3,5))
+	canonical_icon = null
 
 /datum/seed/mushroom/hallucinogenic/New()
 	..()
@@ -527,6 +557,7 @@
 	display_name = "liberty cap mushrooms"
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1), /datum/reagent/soporific = list(3,3), /datum/reagent/space_drugs = list(1,25))
+	canonical_icon = "liberty"
 
 /datum/seed/mushroom/hallucinogenic/strong/New()
 	..()
@@ -543,6 +574,7 @@
 	display_name = "fly amanita mushrooms"
 	mutants = list("destroyingangel","plastic")
 	chems = list(/datum/reagent/nutriment = list(1), /datum/reagent/toxin/amatoxin = list(3,3), /datum/reagent/psilocybin = list(1,25))
+	canonical_icon = "amanita"
 
 /datum/seed/mushroom/poison/New()
 	..()
@@ -561,6 +593,7 @@
 	display_name = "destroying angel mushrooms"
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1,50), /datum/reagent/toxin/amatoxin = list(13,3), /datum/reagent/psilocybin = list(1,25))
+	canonical_icon = "angel"
 
 /datum/seed/mushroom/poison/death/New()
 	..()
@@ -578,6 +611,7 @@
 	display_name = "tower caps"
 	chems = list(/datum/reagent/woodpulp = list(10,1))
 	mutants = null
+	canonical_icon = "towercap"
 
 /datum/seed/mushroom/towercap/New()
 	..()
@@ -593,6 +627,7 @@
 	display_name = "glowshrooms"
 	mutants = null
 	chems = list(/datum/reagent/radium = list(1,20))
+	canonical_icon = "glowshroom"
 
 /datum/seed/mushroom/glowshroom/New()
 	..()
@@ -613,6 +648,7 @@
 	display_name = "plastellium"
 	mutants = null
 	chems = list(/datum/reagent/toxin/plasticide = list(1,10))
+	canonical_icon = null
 
 /datum/seed/mushroom/plastic/New()
 	..()
@@ -631,6 +667,7 @@
 	seed_name = "harebell"
 	display_name = "harebells"
 	chems = list(/datum/reagent/nutriment = list(1,20))
+	canonical_icon = "harebell"
 
 /datum/seed/flower/New()
 	..()
@@ -650,6 +687,7 @@
 	chems = list(/datum/reagent/nutriment = list(1,20))
 	kitchen_tag = "poppy"
 	mutants = list("opiumpoppies")
+	canonical_icon = "poppy"
 
 /datum/seed/flower/poppy/New()
 	..()
@@ -670,6 +708,7 @@
 	display_name = "somniferum poppies"
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/painkiller/opium = list(1,10))
+	canonical_icon = null
 
 /datum/seed/flower/poppy/opium/New()
 	..()
@@ -689,6 +728,7 @@
 	seed_name = "sunflower"
 	display_name = "sunflowers"
 	mutants = list("moonflowers")
+	canonical_icon = "sunflower"
 
 /datum/seed/flower/sunflower/New()
 	..()
@@ -706,6 +746,7 @@
 	display_name = "moonflowers"
 	mutants = null
 	chems = list(/datum/reagent/ethanol/moonshine = list(1,20))
+	canonical_icon = null
 
 /datum/seed/flower/sunflower/moon/New()
 	..()
@@ -717,6 +758,7 @@
 	seed_name = "lavender"
 	display_name = "lavender"
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/bicaridine = list(1,10))
+	canonical_icon = null
 
 /datum/seed/flower/lavender/New()
 	..()
@@ -738,6 +780,7 @@
 	display_name = "grapevines"
 	mutants = list("greengrapes")
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/sugar = list(1,5), /datum/reagent/drink/juice/grape = list(10,10))
+	canonical_icon = "grape"
 
 /datum/seed/grapes/New()
 	..()
@@ -759,6 +802,7 @@
 	display_name = "green grapevines"
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/kelotane = list(3,5), /datum/reagent/drink/juice/grape = list(10,10))
+	canonical_icon = "greengrape"
 
 /datum/seed/grapes/green/New()
 	..()
@@ -770,6 +814,7 @@
 	seed_name = "peanut"
 	display_name = "peanut vines"
 	chems = list(/datum/reagent/nutriment = list(1,10))
+	canonical_icon = null
 
 /datum/seed/peanuts/New()
 	..()
@@ -788,6 +833,7 @@
 	seed_name = "peppercorn"
 	display_name = "black pepper"
 	chems = list(/datum/reagent/blackpepper = list(10,10))
+	canonical_icon = null
 
 /datum/seed/peppercorn/New()
 	..()
@@ -807,6 +853,7 @@
 	display_name = "cabbages"
 	chems = list(/datum/reagent/nutriment = list(1,10))
 	kitchen_tag = "cabbage"
+	canonical_icon = "cabbage"
 
 /datum/seed/cabbage/New()
 	..()
@@ -831,6 +878,7 @@
 	trash_type = /obj/item/bananapeel
 	kitchen_tag = "banana"
 	mutants = list("lubanana","bunana")
+	canonical_icon = "banana"
 
 /datum/seed/banana/New()
 	..()
@@ -866,6 +914,7 @@
 	chems = list(/datum/reagent/lube = list(10,10))
 	mutants = list("banbanana")
 	fun_level = 1
+	canonical_icon = null
 
 /datum/seed/banana/lubanana/New()
 	..()
@@ -892,6 +941,7 @@
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/nutriment/cornoil = list(1,10))
 	kitchen_tag = "corn"
 	trash_type = /obj/item/corncob
+	canonical_icon = "corn"
 
 /datum/seed/corn/New()
 	..()
@@ -914,6 +964,7 @@
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/potato = list(10,10))
 	kitchen_tag = "potato"
 	mutants = list("potatocell")
+	canonical_icon = "potato"
 
 /datum/seed/potato/New()
 	..()
@@ -945,6 +996,7 @@
 	display_name = "garlic"
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/garlic = list(10,10))
 	kitchen_tag = "garlic"
+	canonical_icon = null
 
 /datum/seed/garlic/New()
 	..()
@@ -963,6 +1015,7 @@
 	display_name = "onions"
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/onion = list(10,10))
 	kitchen_tag = "onion"
+	canonical_icon = null
 
 /datum/seed/onion/New()
 	..()
@@ -981,6 +1034,7 @@
 	display_name = "soybeans"
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/drink/milk/soymilk = list(10,20))
 	kitchen_tag = "soybeans"
+	canonical_icon = "soybean"
 
 /datum/seed/soybean/New()
 	..()
@@ -999,6 +1053,7 @@
 	display_name = "wheat stalks"
 	chems = list(/datum/reagent/nutriment = list(1,25), /datum/reagent/nutriment/flour = list(15,15))
 	kitchen_tag = "wheat"
+	canonical_icon = "wheat"
 
 /datum/seed/wheat/New()
 	..()
@@ -1019,6 +1074,7 @@
 	display_name = "rice stalks"
 	chems = list(/datum/reagent/nutriment = list(1,25), /datum/reagent/nutriment/rice = list(10,15))
 	kitchen_tag = "rice"
+	canonical_icon = null
 
 /datum/seed/rice/New()
 	..()
@@ -1039,6 +1095,7 @@
 	display_name = "carrots"
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/imidazoline = list(3,5), /datum/reagent/drink/juice/carrot = list(10,20))
 	kitchen_tag = "carrot"
+	canonical_icon = "carrot"
 
 /datum/seed/carrots/New()
 	..()
@@ -1056,6 +1113,7 @@
 	name = "weeds"
 	seed_name = "weed"
 	display_name = "weeds"
+	canonical_icon = "weeds"
 
 /datum/seed/weeds/New()
 	..()
@@ -1075,6 +1133,7 @@
 	display_name = "white-beets"
 	chems = list(/datum/reagent/nutriment = list(0,20), /datum/reagent/sugar = list(1,5))
 	kitchen_tag = "whitebeet"
+	canonical_icon = "whitebeet"
 
 /datum/seed/whitebeets/New()
 	..()
@@ -1093,6 +1152,7 @@
 	seed_name = "sugarcane"
 	display_name = "sugarcanes"
 	chems = list(/datum/reagent/sugar = list(4,5))
+	canonical_icon = "sugarcane"
 
 /datum/seed/sugarcane/New()
 	..()
@@ -1113,6 +1173,7 @@
 	display_name = "watermelon vine"
 	chems = list(/datum/reagent/nutriment = list(1,6), /datum/reagent/drink/juice/watermelon = list(10,6))
 	kitchen_tag = "watermelon"
+	canonical_icon = "watermelon"
 
 /datum/seed/watermelon/New()
 	..()
@@ -1137,6 +1198,7 @@
 	display_name = "pumpkin vine"
 	chems = list(/datum/reagent/nutriment = list(1,6))
 	kitchen_tag = "pumpkin"
+	canonical_icon = "pumpkin"
 
 /datum/seed/pumpkin/New()
 	..()
@@ -1158,6 +1220,7 @@
 	display_name = "lime trees"
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/drink/juice/lime = list(10,20))
 	kitchen_tag = "lime"
+	canonical_icon = "lime"
 
 /datum/seed/citrus/New()
 	..()
@@ -1178,6 +1241,7 @@
 	display_name = "lemon trees"
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/drink/juice/lemon = list(10,20))
 	kitchen_tag = "lemon"
+	canonical_icon = "lemon"
 
 /datum/seed/citrus/lemon/New()
 	..()
@@ -1192,6 +1256,7 @@
 	display_name = "orange trees"
 	kitchen_tag = "orange"
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/drink/juice/orange = list(10,20))
+	canonical_icon = "orange"
 
 /datum/seed/citrus/orange/New()
 	..()
@@ -1205,6 +1270,7 @@
 	display_name = "grass"
 	chems = list(/datum/reagent/nutriment = list(1,20))
 	kitchen_tag = "grass"
+	canonical_icon = "grass"
 
 /datum/seed/grass/New()
 	..()
@@ -1224,6 +1290,7 @@
 	seed_name = "cacao"
 	display_name = "cacao tree"
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/nutriment/coco = list(4,5))
+	canonical_icon = "cocoapod"
 
 /datum/seed/cocoa/New()
 	..()
@@ -1244,6 +1311,7 @@
 	display_name = "coconut palm"
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/coconut = list(20,40))
 	mutants = list("cowcownut")
+	canonical_icon = null
 
 /datum/seed/coconut/New()
 	..()
@@ -1267,6 +1335,7 @@
 	chems = null
 	mutants = null
 	fun_level = 1
+	canonical_icon = null
 
 /datum/seed/coconut/cowcownut/New()
 	..()
@@ -1281,6 +1350,7 @@
 	display_name = "cherry tree"
 	chems = list(/datum/reagent/nutriment = list(1,15), /datum/reagent/sugar = list(1,15), /datum/reagent/nutriment/cherryjelly = list(10,15))
 	kitchen_tag = "cherries"
+	canonical_icon = null
 
 /datum/seed/cherries/New()
 	..()
@@ -1322,6 +1392,7 @@
 	can_self_harvest = 1
 	has_mob_product = /mob/living/carbon/alien/diona
 	mutants = list("maneater")
+	canonical_icon = "replicapod"
 
 /datum/seed/diona/New()
 	..()
@@ -1343,6 +1414,7 @@
 	mutants = null
 	customsprite = 1
 	fun_level = 1
+	canonical_icon = "maneater"
 
 /datum/seed/diona/maneater/New()
 	..()
@@ -1358,6 +1430,7 @@
 	display_name = "S'randar's hand leaves"
 	chems = list(/datum/reagent/bicaridine = list(0,10))
 	kitchen_tag = "shand"
+	canonical_icon = null
 
 /datum/seed/shand/New()
 	..()
@@ -1378,6 +1451,7 @@
 	display_name = "Messa's tear leaves"
 	chems = list(/datum/reagent/nutriment/honey = list(1,10), /datum/reagent/kelotane = list(3,5))
 	kitchen_tag = "mtear"
+	canonical_icon = null
 
 /datum/seed/mtear/New()
 	..()
@@ -1398,6 +1472,7 @@
 	display_name = "tobacco leaves"
 	mutants = list("finetobacco", "puretobacco")
 	chems = list(/datum/reagent/tobacco = list(1,10))
+	canonical_icon = null
 
 /datum/seed/tobacco/New()
 	..()
@@ -1418,6 +1493,7 @@
 	seed_name = "fine tobacco"
 	display_name = "fine tobacco leaves"
 	chems = list(/datum/reagent/tobacco/fine = list(1,10))
+	canonical_icon = null
 
 /datum/seed/tobacco/finetobacco/New()
 	..()
@@ -1431,6 +1507,7 @@
 	seed_name = "succulent tobacco"
 	display_name = "succulent tobacco leaves"
 	chems = list(/datum/reagent/nicotine = list(1,10))
+	canonical_icon = null
 
 /datum/seed/tobacco/puretobacco/New()
 	..()
@@ -1447,6 +1524,7 @@
 	display_name = "alien weeds"
 	force_layer = OBJ_LAYER
 	chems = list(/datum/reagent/toxin/plasma = list(1,3))
+	canonical_icon = null
 
 /datum/seed/xenomorph/New()
 	..()
@@ -1467,6 +1545,7 @@
 	display_name = "cannabis buds"
 	chems = list(/datum/reagent/thc = list(8,14))
 	kitchen_tag = "cannabis"
+	canonical_icon = null
 
 /datum/seed/cannabis/New()
 	..()
