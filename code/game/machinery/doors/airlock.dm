@@ -840,7 +840,7 @@ About the new airlock wires panel:
 
 	locked = TRUE
 	playsound(src, bolts_dropping, 30, 0, -6)
-	audible_message("You hear a click from the bottom of the door.", hearing_distance = 1)
+	audible_message("You hear a click from the bottom of the door.", hearing_distance = 1, splash_override = "*click*")
 	update_icon()
 	return 1
 
@@ -853,7 +853,7 @@ About the new airlock wires panel:
 
 	locked = FALSE
 	playsound(src, bolts_rising, 30, 0, -6)
-	audible_message("You hear a click from the bottom of the door.", hearing_distance = 1)
+	audible_message("You hear a click from the bottom of the door.", hearing_distance = 1, splash_override = "*click*")
 	update_icon()
 	return 1
 
