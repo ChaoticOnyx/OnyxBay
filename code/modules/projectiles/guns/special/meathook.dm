@@ -21,7 +21,7 @@
 	damage_type = BRUTE
 	damage = 36.0 // 360 would be too much, I guess
 	armor_penetration = 100 // pure damage is scary
-	poisedamage = 25.0
+	poisedamage = 20.0
 	embed = FALSE
 	sharp = TRUE
 	hitscan = TRUE
