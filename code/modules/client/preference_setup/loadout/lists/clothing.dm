@@ -9,11 +9,12 @@
 	slot = slot_tie
 	flags = GEAR_HAS_COLOR_SELECTION
 
-/datum/gear/clothing/flannel_alt
-	display_name = "flannel soft (colorable)"
-	path = /obj/item/clothing/accessory/toggleable/flannel/alt
-	slot = slot_tie
-	flags = GEAR_HAS_COLOR_SELECTION
+/datum/gear/clothing/flannel/New()
+	..()
+	var/list/flannel = list()
+	flannel["comfy flannel"] = /obj/item/clothing/accessory/toggleable/flannel
+	flannel["soft flannel"] = /obj/item/clothing/accessory/toggleable/flannel/alt
+	gear_tweaks += new /datum/gear_tweak/path(flannel)
 
 /datum/gear/clothing/scarf
 	display_name = "scarf"
