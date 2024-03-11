@@ -155,7 +155,7 @@
 	var/darksight_range = 2            // Native darksight distance.
 	var/darksight_tint = DARKTINT_NONE // How shadows are tinted.
 	var/species_flags = 0              // Various specific features.
-	var/appearance_flags = 0           // Appearance/display related features.
+	var/species_appearance_flags = 0           // Appearance/display related features.
 	var/spawn_flags = 0                // Flags that specify who can spawn as this species
 	/// Movespeed modifier. Defined in movespeed_species.dm
 	var/movespeed_modifier = /datum/movespeed_modifier/species
@@ -704,9 +704,9 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	return "<span class='danger'>[T.His] face is horribly mangled!</span>\n"
 
 /datum/species/proc/max_skin_tone()
-	if(appearance_flags & HAS_SKIN_TONE_GRAV)
+	if(species_appearance_flags & HAS_SKIN_TONE_GRAV)
 		return 100
-	if(appearance_flags & HAS_SKIN_TONE_SPCR)
+	if(species_appearance_flags & HAS_SKIN_TONE_SPCR)
 		return 165
 	return 220
 
@@ -751,7 +751,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	return TRUE
 
 /datum/species/proc/get_species_runechat_color(mob/living/carbon/human/H)
-	if(appearance_flags & HAS_SKIN_COLOR)
+	if(species_appearance_flags & HAS_SKIN_COLOR)
 		return H.s_base
 	else
 		var/list/A = list(max(64, H.r_hair), max(64, H.g_hair), max(64, H.b_hair))

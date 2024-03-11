@@ -9,7 +9,7 @@
 	var/blood_vamp = 0                                     // How much vampire blood do we have?
 	var/frenzy = 0                                         // A vampire's frenzy meter.
 	var/last_frenzy_message = 0                            // Keeps track of when the last frenzy alert was sent.
-	var/status = 0                                         // Bitfield including different statuses.
+	var/vamp_status = 0                                    // Bitfield including different statuses.
 	var/stealth = TRUE                                     // Do you want your victims to know of your sucking?
 
 	var/list/purchased_powers = list()                      // List of power datums we currently use.
@@ -19,7 +19,7 @@
 	var/mob/living/carbon/human/my_mob = null              // Vampire mob
 
 /datum/vampire/thrall
-	status = VAMP_ISTHRALL
+	vamp_status = VAMP_ISTHRALL
 
 /datum/vampire/proc/transfer_to(mob/living/new_character)
 	if(my_mob)
@@ -56,7 +56,7 @@
 
 	if(my_mob.is_ooc_dead()) // We're done here, but let's check for resurrection (or body destroying) from time to time
 		// Might be worth using some RESURRECTED signal, but for now it's far out of scope
-		if(status & VAMP_FRENZIED)
+		if(vamp_status & VAMP_FRENZIED)
 			frenzy = 0
 			stop_frenzy(TRUE, FALSE)
 		set_next_think(world.time + 3 SECONDS)
@@ -68,7 +68,7 @@
 		if(prob(20))
 			to_chat(my_mob, "You feel like you're [pick("burning", "on fire", "melting", "scorching")]!")
 
-	if(!(status & VAMP_ISTHRALL))
+	if(!(vamp_status & VAMP_ISTHRALL))
 		if(my_mob.reagents.has_reagent(/datum/reagent/water/holywater) || my_mob.get_ingested_reagents().has_reagent(/datum/reagent/water/holywater))
 			my_mob.adjust_fire_stacks(0.2)
 			my_mob.IgniteMob()
@@ -103,7 +103,7 @@
 
 
 /datum/vampire/proc/set_up_organs()
-	if(status & VAMP_ISTHRALL)
+	if(vamp_status & VAMP_ISTHRALL)
 		return
 
 	blood_usable = 30
@@ -196,8 +196,8 @@
 				continue
 			add_power(P, announce)
 
-	if(!(status & VAMP_FULLPOWER) && blood_total >= 650)
-		status |= VAMP_FULLPOWER
+	if(!(vamp_status & VAMP_FULLPOWER) && blood_total >= 650)
+		vamp_status |= VAMP_FULLPOWER
 		to_chat(my_mob, SPAN("notice", "You've gained full power. Some abilities now have bonus functionality, or work faster."))
 
 	my_mob.ability_master.reskin_vampire()
@@ -214,7 +214,7 @@
 		NOTIFIED_WARNING("[target] doesn't seem to even have a mind.")
 		return FALSE
 
-	if((status & VAMP_FULLPOWER) && !(target.mind.vampire && (target.mind.vampire.status & VAMP_FULLPOWER)))
+	if((vamp_status & VAMP_FULLPOWER) && !(target.mind.vampire && (target.mind.vampire.vamp_status & VAMP_FULLPOWER)))
 		// We are a fullpowered vampire and our target isn't
 		return TRUE
 
@@ -223,7 +223,7 @@
 		return FALSE
 
 	if(target.mind.vampire)
-		if(!(target.mind.vampire.status & VAMP_ISTHRALL))
+		if(!(target.mind.vampire.vamp_status & VAMP_ISTHRALL))
 			// The target is a vampire
 			NOTIFIED_WARNING("You lack the power required to affect another creature of the Veil.")
 			return FALSE
@@ -259,10 +259,10 @@
  */
 /datum/vampire/proc/check_frenzy(force_frenzy = FALSE)
 	// Thralls don't frenzy.
-	if(status & VAMP_ISTHRALL)
+	if(vamp_status & VAMP_ISTHRALL)
 		return
 
-	if(status & VAMP_FRENZIED)
+	if(vamp_status & VAMP_FRENZIED)
 		if(frenzy < 10)
 			stop_frenzy()
 		return
@@ -293,11 +293,11 @@
 		last_frenzy_message = world.time
 
 /datum/vampire/proc/start_frenzy(force_frenzy = FALSE)
-	if(status & VAMP_FRENZIED)
+	if(vamp_status & VAMP_FRENZIED)
 		return
 
 	if(prob(force_frenzy ? 100 : frenzy * 0.5))
-		status |= VAMP_FRENZIED
+		vamp_status |= VAMP_FRENZIED
 		my_mob.visible_message(SPAN("danger", "A dark aura manifests itself around [my_mob], their eyes turning red and their composure changing to be more beast-like."),\
 							   SPAN("danger", "You can resist no longer. The power of the Veil takes control over your mind: you are unable to speak or think. In people, you see nothing but prey to be feasted upon. You are reduced to an animal."))
 
@@ -312,11 +312,11 @@
 				break
 
 /datum/vampire/proc/stop_frenzy(force_stop = FALSE, show_msg = TRUE)
-	if(!(status & VAMP_FRENZIED))
+	if(!(vamp_status & VAMP_FRENZIED))
 		return
 
 	if(prob(force_stop ? 100 : blood_usable))
-		status &= ~VAMP_FRENZIED
+		vamp_status &= ~VAMP_FRENZIED
 
 		my_mob.remove_mutation(MUTATION_HULK)
 		my_mob.update_mutations()

@@ -6,7 +6,7 @@
 	name_plural = "Stargazers"
 	icobase = 'icons/mob/human_races/prometheans/r_stargazer.dmi'
 	/// Special "project thought" telepathy action for stargazers.
-	appearance_flags = HAS_SKIN_COLOR | HAS_EYE_COLOR | HAS_HAIR_COLOR | RADIATION_GLOWS
+	species_appearance_flags = HAS_SKIN_COLOR | HAS_EYE_COLOR | HAS_HAIR_COLOR | RADIATION_GLOWS
 
 
 /datum/species/promethean/stargazer/handle_post_spawn(mob/living/carbon/H)

@@ -28,7 +28,7 @@
 	swap_flags =       MONKEY|METROID|SIMPLE_ANIMAL
 	push_flags =       MONKEY|METROID|SIMPLE_ANIMAL
 	species_flags =    SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_BLOOD | SPECIES_NO_LACE
-	appearance_flags = HAS_SKIN_COLOR | HAS_SKIN_TONE_NORMAL
+	species_appearance_flags = HAS_SKIN_COLOR | HAS_SKIN_TONE_NORMAL
 	spawn_flags =      SPECIES_IS_RESTRICTED
 
 	has_eyes_icon = FALSE
