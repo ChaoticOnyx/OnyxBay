@@ -32,7 +32,7 @@
 /obj/item/device/tvcamera/_examine_text(mob/user)
 	. = ..()
 	. += "\nVideo feed is currently: [camera.status ? "Online" : "Offline"]"
-	. += "\nAudio feed is currently: [radio.broadcasting ? "Online" : "Offline"]"
+	. += "\nAudio feed is currently: [radio.get_broadcasting() ? "Online" : "Offline"]"
 
 /obj/item/device/tvcamera/attack_self(mob/user)
 	add_fingerprint(user)
@@ -40,7 +40,7 @@
 	var/dat = list()
 	dat += "Channel name is: <a href='?src=\ref[src];channel=1'>[channel ? channel : "unidentified broadcast"]</a><br>"
 	dat += "Video streaming is: <a href='?src=\ref[src];video=1'>[camera.status ? "Online" : "Offline"]</a><br>"
-	dat += "Microphone is: <a href='?src=\ref[src];sound=1'>[radio.broadcasting ? "Online" : "Offline"]</a><br>"
+	dat += "Microphone is: <a href='?src=\ref[src];sound=1'>[radio.get_broadcasting() ? "Online" : "Offline"]</a><br>"
 	dat += "Sound is being broadcasted on frequency: [format_frequency(radio.frequency)] ([get_frequency_name(radio.frequency)])<br>"
 	var/datum/browser/popup = new(user, "Press Camera Drone", "EyeBuddy", 300, 390, src)
 	popup.set_content(jointext(dat,null))
@@ -63,8 +63,8 @@
 			to_chat(usr,"<span class='notice'>Video streaming: Deactivated.</span>")
 		update_icon()
 	if(href_list["sound"])
-		radio.ToggleBroadcast()
-		if(radio.broadcasting)
+		radio.set_broadcasting(!radio.get_broadcasting())
+		if(radio.get_broadcasting())
 			to_chat(usr,"<span class='notice'>Audio streaming: Activated. Broadcasting on frequency: [format_frequency(radio.frequency)].</span>")
 		else
 			to_chat(usr,"<span class='notice'>Audio streaming: Deactivated.</span>")

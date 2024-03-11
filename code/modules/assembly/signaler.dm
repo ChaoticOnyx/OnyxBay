@@ -117,7 +117,7 @@
 	pulse(1)
 
 	if(!holder)
-		for(var/mob/O in hearers(1, src.loc))
+		for(var/mob/O in get_hearers_in_LOS(1, src))
 			O.show_message(text("\icon[] *beep* *beep*", src), 3, "*beep* *beep*", 2)
 	return
 

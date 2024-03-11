@@ -37,15 +37,13 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/clothing/mask/gas/poltergeist/hear_talk(mob/M as mob, text)
-	..()
+/obj/item/clothing/mask/gas/poltergeist/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	if(heard_talk.len > max_stored_messages)
 		heard_talk.Remove(pick(heard_talk))
-	heard_talk.Add(text)
+
+	heard_talk.Add(message)
 	if(istype(src.loc, /mob/living) && world.time - last_twitch > 50)
 		last_twitch = world.time
-
-
 
 //a vampiric statuette
 //todo: cult integration
@@ -131,10 +129,9 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/vampiric/hear_talk(mob/M as mob, text)
-	..()
-	if(world.time - last_bloodcall >= bloodcall_interval && (M in view(7, src)))
-		bloodcall(M)
+/obj/item/vampiric/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+	if(world.time - last_bloodcall >= bloodcall_interval)
+		bloodcall(speaker)
 
 /obj/item/vampiric/proc/bloodcall(mob/living/carbon/human/M)
 	last_bloodcall = world.time

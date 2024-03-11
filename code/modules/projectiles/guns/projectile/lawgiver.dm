@@ -224,20 +224,23 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 		return 0
 	return 1
 
-/obj/item/gun/projectile/lawgiver/hear_talk(mob/living/M, msg)
+/obj/item/gun/projectile/lawgiver/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	var/mob/living/carbon/human/owner = loc
 	// Only gunholder can change firemodes
-	if(!istype(owner) || !istype(M) || owner.GetVoice() != M.GetVoice())
+	if(!istype(owner) || !istype(speaker) || owner.GetVoice() != speaker.GetVoice())
 		return
+
 	if(!dna_profile)
 		return
+
 	if(dna_profile != owner.dna.unique_enzymes)
 		return
+
 	var/ind
-	msg = sanitize_phrase(lowertext(msg))
+	message = sanitize_phrase(lowertext(message))
 	for(var/datum/firemode/F in firemodes)
 		ind++
-		if(msg in F.settings["voice_activator"])
+		if(message in F.settings["voice_activator"])
 			set_firemode(ind)
 
 /obj/item/gun/projectile/lawgiver/set_firemode(ind)

@@ -1,6 +1,3 @@
-/mob/proc/say()
-	return
-
 /mob/verb/whisper()
 	set name = "Whisper"
 	set category = "IC"
@@ -130,3 +127,6 @@
 			return L
 
 	return null
+
+/mob/proc/GetVoice()
+	return name

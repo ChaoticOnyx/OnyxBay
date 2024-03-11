@@ -1,6 +1,4 @@
-// At minimum every mob has a hear_say proc.
-
-/mob/proc/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = FALSE, mob/speaker = null, sound/speech_sound, sound_vol)
+/mob/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = FALSE, mob/speaker = null, sound/speech_sound, sound_vol)
 	if(!client)
 		return
 

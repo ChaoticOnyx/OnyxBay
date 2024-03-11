@@ -154,6 +154,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	for(var/level = 1; level <= length(map_levels); level++)
 		var/datum/space_level/L = map_levels[level]
+		L.z_value = level
 
 		log_to_dd("Loading map '[L.path]' at [level]")
 		maploader.load_map(L.path, 1, 1, level, FALSE, FALSE, TRUE, FALSE)

@@ -86,17 +86,14 @@
 	mytape = null
 	update_icon()
 
-
-/obj/item/device/taperecorder/hear_talk(mob/living/M as mob, msg, verb="says", datum/language/speaking=null)
+/obj/item/device/taperecorder/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	if(mytape && recording)
-
-		if(speaking)
-			if(!speaking.machine_understands)
-				msg = speaking.scramble(msg)
-			mytape.record_speech("[M.GetVoice()] [speaking.format_message_plain(msg, verb)]")
+		if(language)
+			if(!language.machine_understands)
+				message = language.scramble(message)
+			mytape.record_speech("[speaker.GetVoice()] [language.format_message_plain(message, verb)]")
 		else
-			mytape.record_speech("[M.GetVoice()] [verb], \"[msg]\"")
-
+			mytape.record_speech("[speaker.GetVoice()] [verb], \"[message]\"")
 
 /obj/item/device/taperecorder/see_emote(mob/M as mob, text, emote_type)
 	if(emote_type != AUDIBLE_MESSAGE) //only hearable emotes

@@ -23,6 +23,7 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ATOM_AWAITING_OVERLAY_UPDATE     0x0400 // SSoverlays must update this atom's overlays.
 #define ATOM_FLAG_SILENTCONTAINER        0x0800 // Chemical reaction won't trigger bubbling sound
 #define ATOM_FLAG_UNPUSHABLE             0x1000 // This atom can't be pushed when bumped
+#define ATOM_FLAG_HEARING                0x2000 // This atom will hear
 
 #define OBJ_FLAG_ANCHORABLE              0x0001 // This object can be stuck in place with a tool
 #define OBJ_FLAG_CONDUCTIBLE             0x0002 // Conducts electricity. (metal etc.)

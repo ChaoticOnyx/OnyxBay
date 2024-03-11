@@ -22,7 +22,6 @@
 
 /obj/item/device/radio/intercom/custom
 	name = "intercom (Custom)"
-	broadcasting = 0
 	listening = 0
 
 /obj/item/device/radio/intercom/interrogation
@@ -39,7 +38,6 @@
 
 /obj/item/device/radio/intercom/department
 	canhear_range = 5
-	broadcasting = 0
 	listening = 1
 
 /obj/item/device/radio/intercom/department/medbay
@@ -185,7 +183,7 @@
 		qdel(src)
 
 /obj/item/device/radio/intercom/broadcasting
-	broadcasting = 1
+	broadcasting_on_init = TRUE
 
 /obj/item/device/radio/intercom/locked
 	var/locked_frequency
@@ -199,7 +197,7 @@
 /obj/item/device/radio/intercom/locked/ai_private
 	name = "\improper AI intercom"
 	locked_frequency = AI_FREQ
-	broadcasting = 1
+	broadcasting_on_init = TRUE
 	listening = 1
 
 /obj/item/device/radio/intercom/locked/confessional

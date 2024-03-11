@@ -22,7 +22,7 @@
 		if (stat)
 			return 0
 
-		var/list/listeners = hearers(5,src)
+		var/list/listeners = get_hearers_in_view(5, src)
 		listeners |= src
 
 		for(var/mob/living/silicon/D in listeners)

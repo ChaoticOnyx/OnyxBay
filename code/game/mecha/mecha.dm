@@ -275,9 +275,9 @@
 /obj/mecha/proc/drop_item()//Derpfix, but may be useful in future for engineering exosuits.
 	return
 
-/obj/mecha/hear_talk(mob/M as mob, text)
-	if(M==occupant && radio.broadcasting)
-		radio.talk_into(M, text)
+/obj/mecha/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+	if(speaker == occupant && radio.get_broadcasting())
+		radio.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 	return
 
 /obj/mecha/hides_inside_walls() // Won't let us hide piloted mechas inside walls, the simpliest way for now (and probably for ages)
@@ -1446,7 +1446,7 @@
 						<div class='links'>
 						<a href='?src=\ref[src];toggle_lights=1'>Toggle Lights</a><br>
 						<b>Radio settings:</b><br>
-						Microphone: <a href='?src=\ref[src];rmictoggle=1'><span id="rmicstate">[radio.broadcasting?"Engaged":"Disengaged"]</span></a><br>
+						Microphone: <a href='?src=\ref[src];rmictoggle=1'><span id="rmicstate">[radio.get_broadcasting() ? "Engaged" : "Disengaged"]</span></a><br>
 						Speaker: <a href='?src=\ref[src];rspktoggle=1'><span id="rspkstate">[radio.listening?"Engaged":"Disengaged"]</span></a><br>
 						Frequency:
 						<a href='?src=\ref[src];rfreq=-10'>-</a>
@@ -1623,8 +1623,8 @@
 		return
 	if(href_list["rmictoggle"])
 		if(usr != src.occupant)	return
-		radio.broadcasting = !radio.broadcasting
-		send_byjax(src.occupant,"exosuit.browser","rmicstate",(radio.broadcasting?"Engaged":"Disengaged"))
+		radio.set_broadcasting(!radio.get_broadcasting())
+		send_byjax(src.occupant, "exosuit.browser", "rmicstate", (radio.get_broadcasting() ? "Engaged" : "Disengaged"))
 		return
 	if(href_list["rspktoggle"])
 		if(usr != src.occupant)	return

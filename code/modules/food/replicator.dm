@@ -68,10 +68,10 @@
 	else
 		src.icon_state = "[initial(icon_state)]-off"
 
-/obj/machinery/food_replicator/hear_talk(mob/M as mob, text, verb, datum/language/speaking)
-	if(!speaking || speaking.machine_understands)
+/obj/machinery/food_replicator/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+	if(!language || language.machine_understands)
 		spawn(20)
-			var/true_text = lowertext(html_decode(text))
+			var/true_text = lowertext(html_decode(message))
 			for(var/menu_item in menu)
 				if(findtext(true_text, menu_item))
 					queue_dish(menu_item)
@@ -79,7 +79,6 @@
 				state_status()
 			else if(findtext(true_text, "menu") || findtext(true_text, "меню"))
 				state_menu()
-	..()
 
 /obj/machinery/food_replicator/proc/state_status()
 	var/message_bio = "boop beep"

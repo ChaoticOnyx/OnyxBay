@@ -13,7 +13,11 @@
 	var/canhear_range = 3 // the range which mobs can hear this radio from
 	var/datum/wires/radio/wires = null
 	var/b_stat = 0
-	var/broadcasting = 0
+	/// Whether the radio will transmit dialogue it hears nearby into its radio channel.
+	VAR_PRIVATE/broadcasting = FALSE
+	/// Set this to TRUE if you want broadcasting enabled on init
+	var/broadcasting_on_init = FALSE
+
 	var/listening = 1
 	var/list/channels = list() //see communications.dm for full list. First channel is a "default" for :h
 	var/subspace_transmission = 0
@@ -50,6 +54,9 @@
 
 	for (var/ch_name in channels)
 		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.radio_channels[ch_name],  RADIO_CHAT)
+
+	if(broadcasting)
+		become_hearing_sensitive()
 
 /obj/item/device/radio/Destroy()
 	QDEL_NULL(wires)
@@ -148,8 +155,24 @@
 			Speaker: <A href='byond://?src=\ref[src];ch_name=[chan_name];listen=[!list]'>[list ? "Engaged" : "Disengaged"]</A><BR>
 			"}
 
-/obj/item/device/radio/proc/ToggleBroadcast()
-	broadcasting = !broadcasting && !(wires.IsIndexCut(WIRE_TRANSMIT) || wires.IsIndexCut(WIRE_SIGNAL))
+/// Getter for the broadcasting variable. necessary due to VAR_PROTECTED
+/obj/item/device/radio/proc/get_broadcasting()
+	return broadcasting
+
+/**
+ * setter for broadcasting that makes us not hearing sensitive if not broadcasting and hearing sensitive if broadcasting
+ * hearing sensitive in this case only matters for the purposes of listening for words said in nearby tiles, talking into us directly bypasses hearing
+ *
+ * * new_broadcasting- the new value we want to set broadcasting to
+ */
+/obj/item/device/radio/proc/set_broadcasting(new_broadcasting)
+	broadcasting = new_broadcasting && !(wires.IsIndexCut(WIRE_TRANSMIT) || wires.IsIndexCut(WIRE_SIGNAL))
+
+	if(broadcasting && on) //we dont need hearing sensitivity if we arent broadcasting, because talk_into doesnt care about hearing
+		become_hearing_sensitive()
+
+	else if(!broadcasting)
+		lose_hearing_sensitivity()
 
 /obj/item/device/radio/proc/ToggleReception()
 	listening = !listening && !(wires.IsIndexCut(WIRE_RECEIVE) || wires.IsIndexCut(WIRE_SIGNAL))
@@ -181,7 +204,7 @@
 				close_browser(usr, "window=radio")
 		. = 1
 	else if (href_list["talk"])
-		ToggleBroadcast()
+		set_broadcasting(!get_broadcasting())
 		. = 1
 	else if (href_list["listen"])
 		var/chan_name = href_list["ch_name"]
@@ -434,12 +457,10 @@
 					  filter_type, signal.data["compression"], GetConnectedZlevels(position.z), connection.frequency,verb,speaking,loud)
 
 
-/obj/item/device/radio/hear_talk(mob/M as mob, msg, verb = "says", datum/language/speaking = null)
-
-	if (broadcasting)
-		if(get_dist(src, M) <= canhear_range)
-			talk_into(M, msg,null,verb,speaking)
-
+/obj/item/device/radio/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+	. = ..()
+	if(broadcasting)
+		talk_into(speaker, message, null, verb, language)
 
 /*
 /obj/item/device/radio/proc/accept_rad(obj/item/device/radio/R as obj, message)
@@ -489,10 +510,9 @@
 	return canhear_range
 
 /obj/item/device/radio/proc/send_hear(freq, level)
-
 	var/range = receive_range(freq, level)
 	if(range > -1)
-		return get_mobs_or_objects_in_view(canhear_range, src)
+		return get_hearers_in_range(canhear_range, src)
 
 
 /obj/item/device/radio/_examine_text(mob/user)
@@ -746,7 +766,6 @@
 /obj/item/device/radio/phone
 	name = "phone"
 	desc = "Unfortunately, it's not affiliated with bananas."
-	broadcasting = 0
 	icon = 'icons/obj/items.dmi'
 	icon_state = "red_phone"
 	randpixel = 0

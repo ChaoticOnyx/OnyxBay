@@ -917,18 +917,18 @@
 	GLOB.listening_objects -= src
 	. = ..()
 
-/obj/item/integrated_circuit/input/microphone/hear_talk(mob/living/M as mob, text, verb, datum/language/speaking)
+/obj/item/integrated_circuit/input/microphone/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	var/translated = TRUE
-	if(M && text)
-		if(speaking && !speaking.machine_understands)
-			text = speaking.scramble(text)
+	if(speaker && message)
+		if(language && !language.machine_understands)
+			message = language.scramble(message)
 			translated = FALSE
-		set_pin_data(IC_OUTPUT, 1, M.GetVoice())
-		set_pin_data(IC_OUTPUT, 2, text)
+		set_pin_data(IC_OUTPUT, 1, speaker.GetVoice())
+		set_pin_data(IC_OUTPUT, 2, message)
 
 	push_data()
 	activate_pin(1)
-	if(translated && !(speaking.name == LANGUAGE_GALCOM))
+	if(translated && !(language.name == LANGUAGE_GALCOM))
 		activate_pin(2)
 
 /obj/item/integrated_circuit/input/sensor

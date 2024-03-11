@@ -17,20 +17,20 @@
 	GLOB.listening_objects -= src
 	return ..()
 
-/obj/item/device/assembly/voice/hear_talk(mob/living/M, msg)
+/obj/item/device/assembly/voice/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	if(cooldown > 0)
 		return
+
 	if(listening)
-		recorded = msg
+		recorded = message
 		listening = FALSE
 		var/turf/T = get_turf(src)	//otherwise it won't work in hand
 		T.visible_message("\icon[src] beeps, \"Activation message is '[recorded]'.\"")
 	else
-		if(findtext(msg, recorded))
+		if(findtext(message, recorded))
 			pulse(0)
 			cooldown = 2
 			addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
-
 
 /obj/item/device/assembly/voice/activate()
 	if(!..())

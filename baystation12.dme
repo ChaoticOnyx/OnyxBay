@@ -1,7 +1,7 @@
 // DM Environment file for baystation12.dme.
 // All manual changes should be made outside the BEGIN_ and END_ blocks.
 // New source code should be placed in .dm files: choose File/New --> Code File.
-// #define TRACY_PROFILER
+#define TRACY_PROFILER
 // BEGIN_INTERNALS
 // END_INTERNALS
 // BEGIN_FILE_DIR
@@ -51,6 +51,7 @@
 #include "code\__defines\flags.dm"
 #include "code\__defines\gamemode.dm"
 #include "code\__defines\hydroponics.dm"
+#include "code\__defines\important_recursive_contents.dm"
 #include "code\__defines\integrated_circuits.dm"
 #include "code\__defines\inventory_sizes.dm"
 #include "code\__defines\items_clothing.dm"
@@ -77,6 +78,7 @@
 #include "code\__defines\rust_g.dm"
 #include "code\__defines\shields.dm"
 #include "code\__defines\sound.dm"
+#include "code\__defines\spatial_gridmap.dm"
 #include "code\__defines\species.dm"
 #include "code\__defines\subsystem-priority.dm"
 #include "code\__defines\subsystems.dm"
@@ -102,6 +104,7 @@
 #include "code\__defines\ces\signals_item.dm"
 #include "code\__defines\ces\signals_mob.dm"
 #include "code\__defines\ces\signals_obj.dm"
+#include "code\__defines\ces\signals_spatial_grid.dm"
 #include "code\__defines\ces\signals_turf.dm"
 #include "code\__std\constants.dm"
 #include "code\__std\conv.dm"
@@ -162,6 +165,7 @@
 #include "code\_helpers\russian.dm"
 #include "code\_helpers\sanitize_values.dm"
 #include "code\_helpers\sound.dm"
+#include "code\_helpers\spatial_info.dm"
 #include "code\_helpers\spawn_sync.dm"
 #include "code\_helpers\sql.dm"
 #include "code\_helpers\storage.dm"
@@ -253,6 +257,7 @@
 #include "code\controllers\subsystems\radio.dm"
 #include "code\controllers\subsystems\shuttle.dm"
 #include "code\controllers\subsystems\skybox.dm"
+#include "code\controllers\subsystems\spatial_gridmap.dm"
 #include "code\controllers\subsystems\sun.dm"
 #include "code\controllers\subsystems\supply.dm"
 #include "code\controllers\subsystems\tgui.dm"
@@ -568,6 +573,7 @@
 #include "code\game\periodic_news.dm"
 #include "code\game\radio.dm"
 #include "code\game\response_team.dm"
+#include "code\game\say.dm"
 #include "code\game\shuttle_engines.dm"
 #include "code\game\world.dm"
 #include "code\game\actions\charge.dm"
@@ -1426,6 +1432,7 @@
 #include "code\game\verbs\who.dm"
 #include "code\js\byjax.dm"
 #include "code\js\menus.dm"
+#include "code\modules\cell_tracker.dm"
 #include "code\modules\acting\acting_items.dm"
 #include "code\modules\admin\admin.dm"
 #include "code\modules\admin\admin_attack_log.dm"

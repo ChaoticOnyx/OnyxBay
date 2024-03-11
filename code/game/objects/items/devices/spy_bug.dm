@@ -47,8 +47,8 @@
 	else
 		..()
 
-/obj/item/device/spy_bug/hear_talk(mob/M, msg, verb, datum/language/speaking)
-	radio.hear_talk(M, msg, speaking)
+/obj/item/device/spy_bug/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+	radio.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 
 /obj/item/device/spy_bug/proc/pair_with(obj/item/device/spy_monitor/SM)
 	paired_with = SM
@@ -250,9 +250,8 @@
 
 	return 1
 
-/obj/item/device/spy_monitor/hear_talk(mob/M, msg, verb, datum/language/speaking)
-	return radio.hear_talk(M, msg, speaking)
-
+/obj/item/device/spy_monitor/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+	return radio.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 
 /obj/machinery/camera/spy
 	// These cheap toys are accessible from the syndicate camera console as well
@@ -269,7 +268,6 @@
 /obj/item/device/radio/spy
 	listening = 0
 	frequency = 1473
-	broadcasting = 0
 	canhear_range = 1
 	name = "spy device"
 	icon_state = "syn_cypherkey"

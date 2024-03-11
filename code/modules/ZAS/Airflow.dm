@@ -108,7 +108,7 @@ mob/living/carbon/metroid/airflow_stun()
 	airborne_acceleration = 0
 
 /mob/airflow_hit(atom/A)
-	for(var/mob/M in hearers(src))
+	for(var/mob/M in get_hearers_in_view(world.view, src))
 		M.show_message("<span class='danger'>\The [src] slams into \a [A]!</span>",1,"<span class='danger'>You hear a loud slam!</span>",2)
 	playsound(src.loc, "smash.ogg", 25, 1, -1)
 	var/weak_amt = istype(A,/obj/item) ? A:w_class : rand(1,5) //Heheheh
@@ -116,7 +116,7 @@ mob/living/carbon/metroid/airflow_stun()
 	. = ..()
 
 /obj/airflow_hit(atom/A)
-	for(var/mob/M in hearers(src))
+	for(var/mob/M in get_hearers_in_view(world.view, src))
 		M.show_message("<span class='danger'>\The [src] slams into \a [A]!</span>",1,"<span class='danger'>You hear a loud slam!</span>",2)
 	playsound(src.loc, "smash.ogg", 25, 1, -1)
 	. = ..()

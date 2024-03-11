@@ -685,9 +685,10 @@
 /datum/species/golem/bronze/proc/gong(mob/living/carbon/human/H)
 	var/datum/component/golem/bronze/golem_comp = H.get_component(/datum/component/golem/bronze)
 	golem_comp.last_gong_time = world.time
-	for(var/mob/living/carbon/human/M in hearers(7, H.loc))
+	for(var/mob/living/carbon/human/M in get_hearers_in_view(7, H.loc))
 		if(M.stat == DEAD) //F
 			continue
+
 		if(M == H)
 			H.show_message(SPAN_OCCULT(FONT_SMALL("You cringe with pain as your body rings around you!")), AUDIBLE_MESSAGE)
 			H.playsound_local(H, 'sound/effects/gong.ogg', 100, TRUE)

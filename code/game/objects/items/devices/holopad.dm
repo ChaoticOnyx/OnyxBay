@@ -171,12 +171,12 @@
 		if(CALL_IN_CALL)
 			hangUp()
 
-/obj/item/device/holopad/hear_talk(mob/user,  datum/language/speaking)
+/obj/item/device/holopad/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	if(call_state == CALL_IN_CALL)
-		abonent.receive(speaking, user == loc)
+		abonent.receive(language, speaker)
 
 /obj/item/device/holopad/proc/receive(speaking, mob/user)
-	var/list/listening = get_mobs_or_objects_in_view(3, src)
+	var/list/listening = get_hearers_in_view(3, src)
 
 	for(var/mob/observer/ghost/G in GLOB.ghost_mob_list)
 		if(get_dist(src, G) > world.view && G.get_preference_value(/datum/client_preference/ghost_ears) != GLOB.PREF_ALL_SPEECH)

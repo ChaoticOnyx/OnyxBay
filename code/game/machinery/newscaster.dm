@@ -732,23 +732,23 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 	if(stat & BROKEN)
 		playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 100, 1)
-		for(var/mob/O in hearers(5, loc))
+		for(var/mob/O in get_hearers_in_LOS(5, src))
 			O.show_message("<EM>[user.name]</EM> further abuses the shattered [name].")
 	else
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		if(I.force <15)
-			for (var/mob/O in hearers(5, src.loc))
+			for (var/mob/O in get_hearers_in_LOS(5, src))
 				O.show_message("<span class='warning'>[user.name] hits the [src.name] with the [I.name] with no visible effect.</span>" )
 				playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		else
 			src.hitstaken++
 			if(hitstaken==3)
-				for (var/mob/O in hearers(5, src.loc))
+				for (var/mob/O in get_hearers_in_LOS(5, src))
 					O.show_message("<span class='warning'>[user.name] smashes the [src.name]!</span>" )
 				set_broken(TRUE)
 				playsound(src.loc, GET_SFX(SFX_BREAK_WINDOW), 75, 1)
 			else
-				for (var/mob/O in hearers(5, src.loc))
+				for (var/mob/O in get_hearers_in_LOS(5, src))
 					O.show_message("<span class='warning'>[user.name] forcefully slams the [src.name] with the [I.name]!</span>" )
 				playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		user.setClickCooldown(I.update_attack_cooldown())
@@ -973,7 +973,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 /obj/machinery/newscaster/proc/newsAlert(news_call)   //This isn't Agouri's work, for it is ugly and vile.
 	var/turf/T = get_turf(src)                      //Who the fuck uses spawn(600) anyway, jesus christ
 	if(news_call)
-		for(var/mob/O in hearers(world.view-1, T))
+		for(var/mob/O in get_hearers_in_view(world.view - 1, T))
 			O.show_message("<span class='newscaster'><EM>[src.name]</EM> beeps, \"[news_call]\"</span>",2)
 		src.alert = 1
 		src.update_icon()
@@ -982,7 +982,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			src.update_icon()
 		playsound(src.loc, 'sound/signals/ping6.ogg', 75, 0)
 	else
-		for(var/mob/O in hearers(world.view-1, T))
+		for(var/mob/O in get_hearers_in_view(world.view - 1, T))
 			O.show_message("<span class='newscaster'><EM>[src.name]</EM> beeps, \"Attention! Wanted issue distributed!\"</span>",2)
 		playsound(src.loc, 'sound/signals/warning1.ogg', 75, 0)
 	return

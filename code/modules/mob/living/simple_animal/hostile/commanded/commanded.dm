@@ -126,7 +126,7 @@
 
 //returns a list of everybody we wanna do stuff with.
 /mob/living/simple_animal/hostile/commanded/proc/get_targets_by_name(text, filter_friendlies = 0)
-	var/list/possible_targets = hearers(src, 10)
+	var/list/possible_targets = get_hearers_in_LOS(10, src)
 	. = list()
 
 	for(var/mob/M in possible_targets)

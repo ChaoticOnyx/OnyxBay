@@ -1,3 +1,5 @@
+GLOBAL_LIST_EMPTY(station_turfs)
+
 /turf
 	icon = 'icons/turf/floors.dmi'
 	level = 1
@@ -46,12 +48,19 @@
 	/// See __DEFINES/construction.dm for RCD_MEMORY_*.
 	var/rcd_memory
 
+	///what /mob/oranges_ear instance is already assigned to us as there should only ever be one.
+	///used for guaranteeing there is only one oranges_ear per turf when assigned, speeds up view() iteration
+	var/mob/oranges_ear/assigned_oranges_ear
+
 /turf/Initialize(mapload, ...)
 	. = ..()
 	if(dynamic_lighting)
 		luminosity = 0
 	else
 		luminosity = 1
+
+	if(isStationLevel(z))
+		GLOB.station_turfs += src
 
 	RecalculateOpacity()
 
@@ -61,6 +70,7 @@
 
 	changing_turf = FALSE
 	remove_cleanables()
+	GLOB.station_turfs -= src
 	..()
 	return QDEL_HINT_IWILLGC
 
