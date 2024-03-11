@@ -262,6 +262,11 @@
 		icon_state += "b"
 	update_clothing_icon()
 
+/obj/item/clothing/accessory/toggleable/flannel/alt
+	name = "flannel soft shirt"
+	desc = "A soft, plaid flannel shirt."
+	icon_state = "flannel_alt"
+
 /obj/item/clothing/accessory/tangzhuang
 	name = "tangzhuang jacket"
 	desc = "A traditional Chinese coat tied together with straight, symmetrical knots."

@@ -9,6 +9,12 @@
 	slot = slot_tie
 	flags = GEAR_HAS_COLOR_SELECTION
 
+/datum/gear/clothing/flannel_alt
+	display_name = "flannel soft (colorable)"
+	path = /obj/item/clothing/accessory/toggleable/flannel/alt
+	slot = slot_tie
+	flags = GEAR_HAS_COLOR_SELECTION
+
 /datum/gear/clothing/scarf
 	display_name = "scarf"
 	path = /obj/item/clothing/accessory/scarf
