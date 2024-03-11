@@ -282,7 +282,7 @@
 				target_mob.visible_message(SPAN("danger", "\The [target_mob] armor stops \the [src]!"))
 
 		new /obj/effect/effect/hitmarker(target_mob.loc)
-		for(var/mob/O in hearers(7, get_turf(target_mob)))
+		for(var/mob/O in get_hearers_in_view(7, target_mob))
 			if(O.client)
 				if(O.get_preference_value(/datum/client_preference/play_hitmarker) == GLOB.PREF_YES)
 					O.playsound_local(target_mob, 'sound/effects/weapons/misc/hitmarker.ogg', 50, 1)

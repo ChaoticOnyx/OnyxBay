@@ -87,6 +87,7 @@
 	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	nameof(.proc/set_blackness))
 	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	nameof(.proc/set_blackness))
 	register_signal(src, SIGNAL_SIGHT_SET,			nameof(.proc/set_blackness))
+	become_hearing_sensitive()
 	START_PROCESSING(SSmobs, src)
 
 /mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
@@ -120,16 +121,12 @@
 // self_message (optional) is what the src mob sees  e.g. "You do something!"
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
 /mob/visible_message(message, self_message, blind_message, range = world.view, checkghosts = null, narrate = FALSE)
-	var/list/seeing_mobs = list()
-	var/list/seeing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
+	var/list/hearers = get_hearers_in_view(range, src)
 
-	for(var/o in seeing_objs)
-		var/obj/O = o
+	for(var/obj/O in hearers)
 		O.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 
-	for(var/m in seeing_mobs)
-		var/mob/M = m
+	for(var/mob/M in hearers)
 		if(self_message && M == src)
 			M.show_message(self_message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
@@ -145,6 +142,7 @@
 		if(blind_message)
 			M.show_message(blind_message, AUDIBLE_MESSAGE)
 			continue
+
 	//Multiz, have shadow do same
 	if(shadow)
 		shadow.visible_message(message, self_message, blind_message)
@@ -163,16 +161,12 @@
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
 /mob/audible_message(message, self_message, deaf_message, hearing_distance = world.view, checkghosts = null, narrate = FALSE)
-	var/list/hearing_mobs = list()
-	var/list/hearing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
+	var/list/hearers = get_hearers_in_view(hearing_distance, src)
 
-	for(var/o in hearing_objs)
-		var/obj/O = o
+	for(var/obj/O in hearers)
 		O.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 
-	for(var/m in hearing_mobs)
-		var/mob/M = m
+	for(var/mob/M in hearers)
 		if(self_message && M == src)
 			M.show_message(self_message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 		else if(isghost(M))

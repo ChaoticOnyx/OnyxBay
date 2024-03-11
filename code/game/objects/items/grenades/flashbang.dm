@@ -7,12 +7,8 @@
 
 /obj/item/grenade/flashbang/detonate()
 	..()
-	for(var/obj/structure/closet/L in hear(7, get_turf(src)))
-		if(locate(/mob/living/carbon/, L))
-			for(var/mob/living/carbon/M in L)
-				bang(get_turf(src), M)
 
-	for(var/mob/living/carbon/M in hear(7, get_turf(src)))
+	for(var/mob/living/carbon/M in get_hearers_in_view(7, src))
 		bang(get_turf(src), M)
 
 	new /obj/effect/sparks(loc)

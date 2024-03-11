@@ -214,12 +214,11 @@
 	return ..()
 
 /obj/item/reagent_containers/food/packaged/surstromming/proc/trigger_vomit()
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), 3, mobs, objs, 0)
-	for(var/mob/living/carbon/human/H in mobs)
+	var/list/hearers = get_hearers_in_range(3, src)
+	for(var/mob/living/carbon/human/H in hearers)
 		if(H.internals && H.internals.icon_state == "internal1")
 			continue
+
 		H.vomit(0, 7, 3)
 		to_chat(H, FONT_HUGE(SPAN_WARNING("You feel horrible stench! Every breath you take makes you want to puke!")))
 	set_next_think(world.time + 20 SECONDS)

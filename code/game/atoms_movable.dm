@@ -29,6 +29,36 @@
 	var/mutable_appearance/em_block
 	/// [EMISSIVE_BLOCK_GENERIC] will use this as the em_block mask if specified. Cause we have /obj/item/'s with emissives.
 	var/em_block_state
+	/// String representing the spatial grid groups we want to be held in.
+	/// acts as a key to the list of spatial grid contents types we exist in via SSspatial_grid.spatial_grid_categories.
+	/// We do it like this to prevent people trying to mutate them and to save memory on holding the lists ourselves
+	var/spatial_grid_key
+	/**
+	 * an associative lazylist of relevant nested contents by "channel", the list is of the form: list(channel = list(important nested contents of that type))
+	 * each channel has a specific purpose and is meant to replace potentially expensive nested contents iteration.
+	 * do NOT add channels to this for little reason as it can add considerable memory usage.
+	 */
+	var/list/important_recursive_contents
+	///contains every client mob corresponding to every client eye in this container. lazily updated by SSparallax and is sparse:
+	///only the last container of a client eye has this list assuming no movement since SSparallax's last fire
+	var/list/client_mobs_in_contents
+	// Whether or not atom can understand other atoms.
+
+	/// Set to TRUE to enable this atom to speak to everyone.
+	var/universal_speak = FALSE
+	/// Set to TRUE to enable this atom to understand everyone.
+	var/universal_understand = FALSE
+	/// Languages this atom can speak & understand.
+	var/list/languages = list(LANGUAGE_GALCOM)
+	/// For species who want reset to use a specified default.
+	var/species_language = null
+	/// For species who can only speak their default and no other languages. Does not effect understanding.
+	var/only_species_language = FALSE
+	/// Verbs used when speaking. Defaults to 'say' if speak_emote is null.
+	var/list/speak_emote = list("says")
+	/// Defines emote default type, 1 for seen emotes, 2 for heard emotes
+	var/emote_type = 1
+	var/real_name = null
 
 /atom/movable/Initialize()
 	. = ..()
@@ -130,6 +160,8 @@
 		SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, origin, destination)
 
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, origin, destination)
+
+	Moved(origin, destination)
 
 	return 1
 
@@ -406,3 +438,43 @@
 /// Called on `/mob/proc/start_pulling`.
 /atom/movable/proc/on_pulling_try(mob/user)
 	return
+
+///allows this movable to hear and adds itself to the important_recursive_contents list of itself and every movable loc its in
+/atom/movable/proc/become_hearing_sensitive()
+	atom_flags |= ATOM_FLAG_HEARING
+	if(!(atom_flags & ATOM_FLAG_HEARING))
+		return
+
+	for(var/atom/movable/location as anything in get_nested_locs(src) + src)
+		LAZYINITLIST(location.important_recursive_contents)
+		var/list/recursive_contents = location.important_recursive_contents // blue hedgehog velocity
+		if(!length(recursive_contents[RECURSIVE_CONTENTS_HEARING_SENSITIVE]))
+			SSspatial_grid.add_grid_awareness(location, SPATIAL_GRID_CONTENTS_TYPE_HEARING)
+		recursive_contents[RECURSIVE_CONTENTS_HEARING_SENSITIVE] += list(src)
+
+	var/turf/our_turf = get_turf(src)
+	SSspatial_grid.add_grid_membership(src, our_turf, SPATIAL_GRID_CONTENTS_TYPE_HEARING)
+
+/**
+ * removes the hearing sensitivity channel from the important_recursive_contents list of this and all nested locs containing us if there are no more sources of the trait left
+ * since RECURSIVE_CONTENTS_HEARING_SENSITIVE is also a spatial grid content type, removes us from the spatial grid if the trait is removed
+ *
+ * * trait_source - trait source define or ALL, if ALL, force removes hearing sensitivity. if a trait source define, removes hearing sensitivity only if the trait is removed
+ */
+/atom/movable/proc/lose_hearing_sensitivity()
+	if(!(atom_flags & ATOM_FLAG_HEARING))
+		return
+
+	atom_flags &= ~ATOM_FLAG_HEARING
+
+	var/turf/our_turf = get_turf(src)
+	/// We get our awareness updated by the important recursive contents stuff, here we remove our membership
+	SSspatial_grid.remove_grid_membership(src, our_turf, SPATIAL_GRID_CONTENTS_TYPE_HEARING)
+
+	for(var/atom/movable/location as anything in get_nested_locs(src) + src)
+		var/list/recursive_contents = location.important_recursive_contents // blue hedgehog velocity
+		recursive_contents[RECURSIVE_CONTENTS_HEARING_SENSITIVE] -= src
+		if(!length(recursive_contents[RECURSIVE_CONTENTS_HEARING_SENSITIVE]))
+			SSspatial_grid.remove_grid_awareness(location, SPATIAL_GRID_CONTENTS_TYPE_HEARING)
+		ASSOC_UNSETEMPTY(recursive_contents, RECURSIVE_CONTENTS_HEARING_SENSITIVE)
+		UNSETEMPTY(location.important_recursive_contents)

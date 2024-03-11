@@ -38,14 +38,13 @@
 		psychic_rift.glitches_active--
 		psychic_rift.check_rift_state()
 		my_rift = null
-	for(var/a in hearers(src, 4))
-		if(istype(a,/mob/living/carbon/human))
-			if(prob(50))
-				continue
 
-			var/mob/living/carbon/human/H = a
-			to_chat(H, SPAN("warning", "As \the [src] is fading, you can feel some of your sanity fading as well."))
-			H.adjust_hallucination(15, rand(35, 85))
+	for(var/mob/living/carbon/human/H in get_hearers_in_range(4, src))
+		if(prob(50))
+			continue
+
+		to_chat(H, SPAN("warning", "As \the [src] is fading, you can feel some of your sanity fading as well."))
+		H.adjust_hallucination(15, rand(35, 85))
 	new /obj/effect/effect/psychic_glitch(loc)
 	qdel(src)
 

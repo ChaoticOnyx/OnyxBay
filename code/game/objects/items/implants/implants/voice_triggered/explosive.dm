@@ -47,7 +47,6 @@
 
 /obj/item/implant/voice_triggered/explosive/Initialize()
 	. = ..()
-	GLOB.listening_objects += src
 	set_frequency(frequency)
 
 /obj/item/implant/voice_triggered/explosive/Topic(href, href_list)
@@ -90,8 +89,8 @@
 	frequency = new_frequency
 	radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)
 
-/obj/item/implant/voice_triggered/explosive/hear_talk(mob/M, msg)
-	hear(msg)
+/obj/item/implant/voice_triggered/explosive/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
+	hear(message)
 
 /obj/item/implant/voice_triggered/explosive/hear(msg)
 	if(!phrase)
@@ -155,6 +154,7 @@
 	var/memo = "Explosive implant in [target] can be activated by saying something containing the phrase ''[phrase]'', <B>say [phrase]</B> to attempt to activate. It can also be triggered with a radio signal on frequency <b>[format_frequency(src.frequency)]</b> with code <b>[code]</b>."
 	usr.mind.store_memory(memo, 0, 0)
 	to_chat(usr, memo)
+	become_hearing_sensitive()
 	return TRUE
 
 /obj/item/implant/voice_triggered/explosive/emp_act(severity)
@@ -173,7 +173,6 @@
 
 /obj/item/implant/voice_triggered/explosive/Destroy()
 	removed()
-	GLOB.listening_objects -= src
 	return ..()
 
 /obj/item/implanter/explosive

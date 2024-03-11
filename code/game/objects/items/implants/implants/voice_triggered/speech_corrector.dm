@@ -23,13 +23,8 @@
 /obj/item/implant/voice_triggered/speech_corrector/islegal()
 	return TRUE
 
-/obj/item/implant/voice_triggered/speech_corrector/Initialize()
-	. = ..()
-	GLOB.listening_objects += src
-
 /obj/item/implant/voice_triggered/speech_corrector/Destroy()
 	removed()
-	GLOB.listening_objects -= src
 	return ..()
 
 /obj/item/implant/voice_triggered/speech_corrector/get_data()
@@ -52,6 +47,7 @@
 
 /obj/item/implant/voice_triggered/speech_corrector/implanted(mob/target)
 	var/memo = "You will be tasered every time when saying something containing this ''[jointext(words_list,", ")]''."
+	become_hearing_sensitive()
 	target.mind.store_memory(memo, 0, 0)
 	to_chat(target, SPAN("notice",memo))
 	return TRUE
@@ -76,13 +72,14 @@
 		agony_limit = AGONY_LIMIT
 		agony = agony_limit
 
-/obj/item/implant/voice_triggered/speech_corrector/hear_talk(mob/M, msg)
-	if(M==imp_in)
-		hear(msg)
+/obj/item/implant/voice_triggered/speech_corrector/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
+	if(speaker == imp_in)
+		hear(message)
 
 /obj/item/implant/voice_triggered/speech_corrector/hear(msg)
 	if(!words_list)
 		return
+
 	var/list/msg_words_list=splittext(sanitize_phrase(lowertext(msg))," ")
 	for (var/phrase in msg_words_list)
 		if((phrase in words_list) || ((phrase in obscene_word_list) && check_obscene_words))

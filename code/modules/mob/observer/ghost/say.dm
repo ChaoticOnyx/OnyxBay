@@ -8,16 +8,12 @@
 
 		var/message_to_send = stars(message, 85)
 
-		var/list/hearing_mobs = list()
-		var/list/hearing_objs = list()
-		get_mobs_and_objs_in_view_fast(get_turf(gg), world.view, hearing_mobs, hearing_objs, checkghosts = null)
+		var/list/hearers = get_hearers_in_view(world.view, gg)
 
-		for(var/o in hearing_objs)
-			var/obj/O = o
+		for(var/obj/O in hearers)
 			O.show_message(SPAN_DEADSAY("<B>[gg]</B>: [message_to_send]"), AUDIBLE_MESSAGE)
 
-		for(var/m in hearing_mobs)
-			var/mob/M = m
+		for(var/mob/M in hearers)
 			M.show_message(SPAN_DEADSAY("<B>[gg]</B>: [message_to_send]"), AUDIBLE_MESSAGE)
 			if(M.get_preference_value("CHAT_RUNECHAT") == GLOB.PREF_YES)
 				M.create_chat_message(gg, message_to_send)

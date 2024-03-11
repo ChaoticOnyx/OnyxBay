@@ -12,62 +12,61 @@ GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphon
 	w_class = ITEM_SIZE_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
-	var/active = FALSE
+	VAR_PRIVATE/active = FALSE
 	var/emagged = FALSE
 
 	/// Last `world.time` device was successfully used.
 	var/last_use = 0
 
+/obj/item/device/megaphone/Initialize()
+	. = ..()
+	if(active)
+		become_hearing_sensitive()
+
+/obj/item/device/megaphone/proc/get_active()
+	return active
+
+/obj/item/device/megaphone/proc/set_active(new_active)
+	active = new_active
+
+	if(active)
+		become_hearing_sensitive()
+	else
+		lose_hearing_sensitivity()
 
 /obj/item/device/megaphone/on_update_icon()
 	icon_state = "megaphone[active ? "_on" : ""]"
 
-
-/obj/item/device/megaphone/Initialize()
-	GLOB.listening_objects |= src
-	return ..()
-
-
-/obj/item/device/megaphone/Destroy()
-	GLOB.listening_objects -= src
-	return ..()
-
-
 /obj/item/device/megaphone/attack_self(mob/living/user)
 	show_splash_text(user, "toggled [active ? "off" : "on"]")
-	active = !active
+	set_active(!active)
 	update_icon()
 
-
-/obj/item/device/megaphone/hear_talk(mob/M, text, verb, datum/language/speaking)
+/obj/item/device/megaphone/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(!active)
 		return
 
-	if(M != loc)
+	if(speaker != loc)
 		return
 
 	if(world.time <= last_use + MEGAPHONE_COOLDOWN)
 		show_splash_text(loc, "needs to recharge!")
 		return
 
-	_speak(M, capitalize(text), speaking)
-
+	_speak(speaker, capitalize(message), language)
 
 /obj/item/device/megaphone/proc/_speak(mob/living/talker, message, datum/language/speaking)
 	var/msg = emagged && prob(50) ? pick(GLOB.megaphone_insults) : message
 
-	var/list/mob/hearing_mobs = list()
-	var/list/obj/hearing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(talker), world.view, hearing_mobs, hearing_objs)
+	var/list/hearing = get_hearers_in_view(world.view, talker)
 
-	for(var/mob/O in hearing_mobs)
+	for(var/atom/movable/O in hearing)
+		if(O == src)
+			continue
+
 		O.hear_say(FONT_GIANT(SPAN_BOLD(msg)), "broadcasts", speaking, speaker = talker, speech_sound = 'sound/items/megaphone.ogg', sound_vol = 20)
 
-	for(var/obj/item/device/radio/intercom/I in hearing_objs)
-		I.talk_into(talker, msg, verb = "broadcasts", speaking = speaking)
-
 	last_use = world.time
-
 
 /obj/item/device/megaphone/emag_act(remaining_charges, mob/user)
 	if(emagged)

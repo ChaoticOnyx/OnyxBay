@@ -291,7 +291,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 				R.receive()
 
 	// Get a list of mobs who can hear from the radios we collected.
-	var/list/receive = get_mobs_in_radio_ranges(radios)
+	var/list/receive = get_hearers_in_radio_ranges(radios)
 
   /* ###### Organize the receivers into categories for displaying the message ###### */
 
@@ -304,15 +304,17 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	var/list/heard_garbled	= list() // garbled message (ie "f*c* **u, **i*er!")
 	var/list/heard_gibberish= list() // completely screwed over message (ie "F%! (O*# *#!<>&**%!")
 
-	for (var/mob/R in receive)
+	for(var/atom/movable/R in receive)
 
 	  /* --- Loop through the receivers and categorize them --- */
 		if(istype(R, /mob/new_player)) // we don't want new players to hear messages. rare but generates runtimes.
 			continue
 
 		// Ghosts hearing all radio chat don't want to hear syndicate intercepts, they're duplicates
-		if(data == 3 && isghost(R) && R.get_preference_value(/datum/client_preference/ghost_radio) == GLOB.PREF_ALL_CHATTER)
-			continue
+		if(data == 3 && isghost(R))
+			var/mob/observer/ghost/G = R
+			if(G.get_preference_value(/datum/client_preference/ghost_radio) == GLOB.PREF_ALL_CHATTER)
+				continue
 
 		// --- Check for compression ---
 		if(compression > 0)
@@ -414,34 +416,34 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 	  	/* --- Process all the mobs that heard a masked voice (understood) --- */
 
-		if (length(heard_masked))
-			for (var/mob/R in heard_masked)
+		if(length(heard_masked))
+			for(var/atom/movable/R in heard_masked)
 				R.hear_radio(message,verbage, speaking, part_a, part_b, part_c, M, 0, name, loud)
 
 		/* --- Process all the mobs that heard the voice normally (understood) --- */
 
-		if (length(heard_normal))
-			for (var/mob/R in heard_normal)
+		if(length(heard_normal))
+			for(var/atom/movable/R in heard_normal)
 				R.hear_radio(message, verbage, speaking, part_a, part_b, part_c, M, 0, realname, loud)
 
 		/* --- Process all the mobs that heard the voice normally (did not understand) --- */
 
-		if (length(heard_voice))
-			for (var/mob/R in heard_voice)
+		if(length(heard_voice))
+			for(var/atom/movable/R in heard_voice)
 				R.hear_radio(message,verbage, speaking, part_a, part_b, part_c, M,0, vname, loud)
 
 		/* --- Process all the mobs that heard a garbled voice (did not understand) --- */
 			// Displays garbled message (ie "f*c* **u, **i*er!")
 
-		if (length(heard_garbled))
-			for (var/mob/R in heard_garbled)
+		if(length(heard_garbled))
+			for(var/atom/movable/R in heard_garbled)
 				R.hear_radio(message, verbage, speaking, part_a, part_b, part_c, M, 1, vname, loud)
 
 
 		/* --- Complete gibberish. Usually happens when there's a compressed message --- */
 
-		if (length(heard_gibberish))
-			for (var/mob/R in heard_gibberish)
+		if(length(heard_gibberish))
+			for(var/atom/movable/R in heard_gibberish)
 				R.hear_radio(message, verbage, speaking, part_a, part_b, part_c, M, compression, loud)
 
 	return 1

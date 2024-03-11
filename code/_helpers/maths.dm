@@ -5,6 +5,8 @@
 /// isnum() returns TRUE for NaN. Also, NaN != NaN. Checkmate, BYOND.
 #define isnan(x) ( (x) != (x) )
 
+#define ROUND_UP(x) ( -round(-(x)))
+
 #define isinf(x) (isnum((x)) && (((x) == text2num("inf")) || ((x) == text2num("-inf"))))
 
 /// NaN isn't a number, damn it. Infinity is a problem too.

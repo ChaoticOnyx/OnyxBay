@@ -15,12 +15,7 @@
 /obj/item/device/radio/electropack/Initialize()
 	. = ..()
 	wires = new(src)
-	GLOB.listening_objects += src
 	set_frequency(frequency)
-
-/obj/item/device/radio/electropack/Destroy()
-	GLOB.listening_objects -= src
-	return ..()
 
 /obj/item/device/radio/electropack/attack_hand(mob/user)
 	var/mob/living/carbon/C = user

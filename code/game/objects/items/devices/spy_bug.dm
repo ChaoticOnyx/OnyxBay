@@ -23,12 +23,12 @@
 	. = ..()
 	radio = new(src)
 	camera = new(src)
-	GLOB.listening_objects += src
+	become_hearing_sensitive()
+
 
 /obj/item/device/spy_bug/Destroy()
 	QDEL_NULL(radio)
 	QDEL_NULL(camera)
-	GLOB.listening_objects -= src
 	return ..()
 
 /obj/item/device/spy_bug/_examine_text(mob/user)
@@ -47,8 +47,8 @@
 	else
 		..()
 
-/obj/item/device/spy_bug/hear_talk(mob/M, msg, verb, datum/language/speaking)
-	radio.hear_talk(M, msg, speaking)
+/obj/item/device/spy_bug/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
+	radio.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 
 /obj/item/device/spy_bug/proc/pair_with(obj/item/device/spy_monitor/SM)
 	paired_with = SM
@@ -100,14 +100,8 @@
 /obj/item/device/spy_monitor/Initialize()
 	. = ..()
 	radio = new(src)
-	GLOB.listening_objects += src
 
 /obj/item/device/spy_monitor/Destroy()
-	GLOB.listening_objects -= src
-	var/mob/user = camera_user.resolve()
-	if(istype(user))
-		unregister_signal(user, SIGNAL_MOVED)
-	camera_user = null
 	return ..()
 
 /obj/item/device/spy_monitor/_examine_text(mob/user)
@@ -280,9 +274,8 @@
 
 	return 1
 
-/obj/item/device/spy_monitor/hear_talk(mob/M, msg, verb, datum/language/speaking)
-	return radio.hear_talk(M, msg, speaking)
-
+/obj/item/device/spy_monitor/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
+	return radio.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 
 /obj/machinery/camera/spy
 	// These cheap toys are accessible from the syndicate camera console as well
@@ -299,7 +292,6 @@
 /obj/item/device/radio/spy
 	listening = 0
 	frequency = 1473
-	broadcasting = 0
 	canhear_range = 1
 	name = "spy device"
 	icon_state = "syn_cypherkey"

@@ -191,12 +191,6 @@ var/list/channel_to_radio_key = new
 	if(!message_data["message"] || message_data["message"] == "")
 		return FALSE
 
-	//handle nonverbal and sign languages here
-	say_handle_inaudible_language(message_data)
-	if(message_data["stop_say"])
-		return message_data["say_result"]
-
-
 	var/list/handle_v = handle_speech_sound()
 	message_data["sound"] = handle_v[1]
 	message_data["sound_volume"] = handle_v[2]
@@ -215,8 +209,14 @@ var/list/channel_to_radio_key = new
 	message_data["listening_obj"] = list()
 	var/turf/T = get_turf(src)
 	if(T)
-		// make sure the air can transmit speech - speaker's side
-		say_handle_enviroment(message_data, T)
+		var/datum/gas_mixture/environment = T.return_air()
+		var/pressure = (environment) ? environment.return_pressure() : 0
+		if(pressure < SOUND_MINIMUM_PRESSURE)
+			message_data["message_range"] = 1
+
+		if(pressure < ONE_ATMOSPHERE*0.4) // sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
+			message_data["italics"] = TRUE
+			message_data["sound_volume"] *= 0.5 // muffle the sound a bit, so it's like we're actually talking through contact
 
 	say_do_say(message_data)
 
@@ -233,13 +233,14 @@ var/list/channel_to_radio_key = new
 		return FALSE
 	return TRUE
 
-/mob/living/proc/say_check_emote(list/message_data)
-	var/prefix = copytext_char(message_data["message"], 1, 2)
+/mob/living/proc/say_check_emote(message)
+	var/prefix = copytext_char(message, 1, 2)
 	if(prefix == get_prefix_key(/decl/prefix/custom_emote))
-		message_data["say_result"] = emote(copytext_char(message_data["message"], 2), intentional = TRUE, target = null)
+		emote(copytext_char(message, 2), intentional = TRUE, target = null)
 		return FALSE
+
 	if(prefix == get_prefix_key(/decl/prefix/visible_emote))
-		message_data["say_result"] = custom_emote(1, copytext_char(message_data["message"], 2))
+		custom_emote(1, copytext_char(message, 2))
 		return FALSE
 	return TRUE
 
@@ -313,80 +314,6 @@ var/list/channel_to_radio_key = new
 			if(message_data["sound"])
 				message_data["sound_volume"] *= 0.5
 
-/mob/living/proc/say_handle_enviroment(list/message_data, turf/T)
-	var/datum/gas_mixture/environment = T.return_air()
-	var/pressure = (environment) ? environment.return_pressure() : 0
-	if(pressure < SOUND_MINIMUM_PRESSURE)
-		message_data["message_range"] = 1
-
-	if(pressure < ONE_ATMOSPHERE*0.4) // sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
-		message_data["italics"] = TRUE
-		message_data["sound_volume"] *= 0.5 // muffle the sound a bit, so it's like we're actually talking through contact
-
-	get_mobs_and_objs_in_view_fast(T, message_data["message_range"], message_data["listening"], message_data["listening_obj"], /datum/client_preference/ghost_ears)
-
-/mob/living/proc/say_do_say(list/message_data)
-	var/mob/above = shadow
-	var/above_range = message_data["message_range"] //Gets lower every z-level
-	while(!QDELETED(above))
-		var/turf/ST = get_turf(above)
-		above_range = max(--above_range, 0)
-		if(ST)
-			get_mobs_and_objs_in_view_fast(ST, above_range, message_data["listening"], message_data["listening_obj"]) //No need to check for ghosts, that will hear anyway
-		if(!above_range)
-			break
-		above = above.shadow
-
-	for(var/mob/M in message_data["listening"])
-		if(M)
-			M.hear_say(
-			  message_data["message"],
-			  message_data["verb"],
-			  message_data["language"],
-			  message_data["alt_name"],
-			  message_data["italics"],
-			  src,
-			  message_data["sound"],
-			  message_data["sound_volume"]
-			)
-
-	for(var/obj/O in message_data["listening_obj"])
-		spawn(0)
-			if(O) // It's possible that it could be deleted in the meantime.
-				O.hear_talk(src, message_data["message"], message_data["verb"], message_data["language"])
-
-	if(message_data["whispering"])
-		var/eavesdroping_range = 5
-		var/list/eavesdroping = list()
-		var/list/eavesdroping_obj = list()
-		get_mobs_and_objs_in_view_fast(get_turf(src), eavesdroping_range, eavesdroping, eavesdroping_obj)
-		eavesdroping -= message_data["listening"]
-		eavesdroping_obj -= message_data["listening_obj"]
-		for(var/mob/M in eavesdroping)
-			if(M)
-				M.hear_say(
-				  stars(message_data["message"]),
-				  message_data["verb"],
-				  message_data["language"],
-				  message_data["alt_name"],
-				  message_data["italics"],
-				  src,
-				  message_data["sound"],
-				  message_data["sound_vol"]
-		        )
-
-		for(var/obj/O in eavesdroping_obj)
-			spawn(0)
-				if(O) // It's possible that it could be deleted in the meantime.
-					O.hear_talk(src, stars(message_data["message"]), message_data["verb"], message_data["language"])
-
-	// Showing speech bubble is a logical end of this function. - N
-	var/list/speech_bubble_recipients
-	for(var/mob/M in message_data["listening"])
-		if(M.client)
-			LAZYADD(speech_bubble_recipients, M.client)
-	show_bubble_to_clients(bubble_icon, say_test(message_data["message"]), src, speech_bubble_recipients)
-
 /mob/living/proc/say_log_message(list/message_data)
 	if(message_data["whispering"])
 		log_whisper("[key_name(src)]: [message_data["message"]]")
@@ -399,5 +326,39 @@ var/list/channel_to_radio_key = new
 		O.hear_signlang(message, verb, language, src)
 	return TRUE
 
-/mob/living/proc/GetVoice()
-	return name
+/mob/say_do_say(list/message_data)
+	var/mob/above = shadow
+	var/above_range = message_data["message_range"] //Gets lower every z-level
+	var/list/listeners = get_hearers_in_view(world.view, src)
+
+	while(!QDELETED(above))
+		var/turf/ST = get_turf(above)
+		above_range = max(--above_range, 0)
+		if(istype(ST))
+			listeners |= get_hearers_in_view(above_range, ST)
+
+		if(!above_range)
+			break
+
+		above = above.shadow
+
+	for(var/atom/movable/M in listeners)
+		if(M)
+			M.hear_say(
+				message_data["message"],
+				message_data["verb"],
+				message_data["language"],
+				message_data["alt_name"],
+				message_data["italics"],
+				src,
+				message_data["sound"],
+				message_data["sound_volume"]
+			)
+
+	// Showing speech bubble is a logical end of this function. - N
+	var/list/speech_bubble_recipients
+	for(var/mob/M in listeners)
+		if(M.client)
+			LAZYADD(speech_bubble_recipients, M.client)
+
+	show_bubble_to_clients(bubble_icon, say_test(message_data["message"]), src, speech_bubble_recipients)

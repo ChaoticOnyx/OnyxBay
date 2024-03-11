@@ -17,7 +17,6 @@
 	var/ownerckey
 	var/invasive
 	var/default_language
-	var/list/languages = list()
 	var/datum/mind/backup
 
 /obj/item/organ/internal/stack/emp_act()

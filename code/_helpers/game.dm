@@ -4,6 +4,9 @@
     locate(min(CENTER.x + (RADIUS), world.maxx), min(CENTER.y + (RADIUS), world.maxy), CENTER.z) \
   )
 
+///Returns all turfs in a zlevel
+#define Z_TURFS(ZLEVEL) block(locate(1, 1, ZLEVEL), locate(world.maxx, world.maxy, ZLEVEL))
+
 /proc/dopage(src, target)
 	var/href_list
 	var/href
@@ -95,10 +98,11 @@
 	if(!centre)
 		return
 
-	var/turf/x1y1 = locate(((centre.x - rad)<1 ? 1 : centre.x - rad),((centre.y - rad)<1 ? 1 : centre.y - rad),centre.z)
-	var/turf/x2y2 = locate(((centre.x + rad)>world.maxx ? world.maxx : centre.x + rad),((centre.y + rad)>world.maxy ? world.maxy : centre.y + rad),centre.z)
+	var/turf/x1y1 = locate(((centre.x - rad) < 1 ? 1 : centre.x - rad),((centre.y - rad)<1 ? 1 : centre.y - rad),centre.z)
+	var/turf/x2y2 = locate(((centre.x + rad) > world.maxx ? world.maxx : centre.x + rad), ((centre.y + rad) > world.maxy ? world.maxy : centre.y + rad),centre.z)
 	return block(x1y1, x2y2)
 
+///Returns the distance between two atoms
 /proc/get_dist_euclidian(atom/Loc1, atom/Loc2)
 	var/dx = Loc1.x - Loc2.x
 	var/dy = Loc1.y - Loc2.y
@@ -161,49 +165,6 @@
 
 	return L
 
-// Returns a list of mobs and/or objects in range of R from source. Used in radio and say code.
-/proc/get_mobs_or_objects_in_view(R, atom/source, include_mobs = 1, include_objects = 1)
-	var/turf/T = get_turf(source)
-	var/list/hear = list()
-
-	if(!T)
-		return hear
-
-	var/list/range = hear(R, T)
-
-	for(var/I in range)
-		if(ismob(I))
-			hear |= recursive_content_check(I, hear, 3, 1, 0, include_mobs, include_objects)
-			if(include_mobs)
-				var/mob/M = I
-				if(M.client)
-					hear += M
-		else if(istype(I,/obj/))
-			hear |= recursive_content_check(I, hear, 3, 1, 0, include_mobs, include_objects)
-			if(include_objects)
-				hear += I
-
-	return hear
-
-
-/proc/get_mobs_in_radio_ranges(list/obj/item/device/radio/radios)
-	set background = 1
-
-	. = list()
-	// Returns a list of mobs who can hear any of the radios given in @radios
-	var/list/speaker_coverage = list()
-	for(var/r in radios)
-		var/obj/item/device/radio/R = r // You better fucking be a radio.
-		var/turf/speaker = get_turf(R)
-		if(speaker)
-			for(var/turf/T in hear(R.canhear_range, speaker))
-				speaker_coverage[T] = R
-
-	// Try to find all the players who can hear the message
-	for(var/mob/M in GLOB.player_list)
-		if(M.can_hear_radio(speaker_coverage))
-			. += M
-
 /mob/proc/can_hear_radio(list/hearturfs)
 	return FALSE
 
@@ -225,68 +186,38 @@
 /mob/observer/ghost/can_hear_radio(list/hearturfs)
 	return get_preference_value(/datum/client_preference/ghost_radio) == GLOB.PREF_ALL_CHATTER
 
-// Uses dview to quickly return mobs and objects in view,
-// then adds additional mobs or objects if they are in range 'smartly',
-// based on their presence in lists of players or registered objects
-/proc/get_mobs_and_objs_in_view_fast(turf/T, range, list/mobs, list/objs, checkghosts = null)
-	var/list/hear = dview(range, T, INVISIBILITY_MAXIMUM)
-	var/list/hearturfs = list()
-
-	for(var/thing in hear)
-		// Can't use isobj() because /atom/movable returns true in that, and so lighting overlays would be included
-		if(istype(thing, /obj))
-			objs += thing
-			hearturfs |= get_turf(thing)
-			continue
-		if(ismob(thing))
-			mobs += thing
-			hearturfs |= get_turf(thing)
-
-	// A list of every mob with a client
-	for(var/mob in GLOB.player_list)
-		if(get_turf(mob) in hearturfs)
-			mobs |= mob
-			continue
-
-		var/mob/M = mob
-		if(checkghosts && M && M.is_ooc_dead() && M.get_preference_value(checkghosts) != GLOB.PREF_NEARBY)
-			mobs |= M
-
-	// For objects below the top level who still want to hear
-	for(var/obj in GLOB.listening_objects)
-		if(get_turf(obj) in hearturfs)
-			objs |= obj
-
-
 /proc/inLineOfSight(X1, Y1, X2, Y2, Z = 1, PX1 = 16.5, PY1 = 16.5, PX2 = 16.5, PY2 = 16.5)
 	var/turf/T
 	if(X1 == X2)
 		if(Y1 == Y2)
-			return 1 // Light cannot be blocked on same tile
+			return TRUE //Light cannot be blocked on same tile
+
 		else
 			var/s = MATH_SIGN(Y2 - Y1)
 			Y1 += s
 			while(Y1 != Y2)
 				T = locate(X1, Y1, Z)
 				if(T.opacity)
-					return 0
-				Y1 += s
+					return FALSE
+
+				Y1+=s
 	else
-		var/m = (32 * (Y2 - Y1) + (PY2 - PY1)) / (32 * (X2 - X1) + (PX2 - PX1))
-		var/b = (Y1 + PY1 / 32 - 0.015625) - m * (X1 + PX1 / 32 - 0.015625) // In tiles
+		var/m=(32 * (Y2 - Y1) + (PY2 - PY1)) / (32 *(X2 - X1) + (PX2 - PX1))
+		var/b=(Y1 + PY1 / 32 - 0.015625) - m*(X1 + PX1 / 32 - 0.015625) //In tiles
 		var/signX = MATH_SIGN(X2 - X1)
 		var/signY = MATH_SIGN(Y2 - Y1)
 		if(X1 < X2)
 			b += m
-		while(X1!=X2 || Y1!=Y2)
+		while(X1 != X2 || Y1 != Y2)
 			if(round(m * X1 + b - Y1))
-				Y1 += signY // Line exits tile vertically
+				Y1 += signY //Line exits tile vertically
 			else
-				X1 += signX // Line exits tile horizontally
+				X1 += signX //Line exits tile horizontally
 			T = locate(X1, Y1, Z)
 			if(T.opacity)
-				return 0
-	return 1
+				return FALSE
+
+	return TRUE
 
 /proc/isInSight(atom/A, atom/B)
 	var/turf/Aturf = get_turf(A)
