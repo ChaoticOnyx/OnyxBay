@@ -17,6 +17,7 @@
 	mod_weight = 1.5
 	mod_reach = 0.5
 	mod_handy = 1.5
+	unacidable = TRUE
 
 	var/current_shape = IW_WAND
 
