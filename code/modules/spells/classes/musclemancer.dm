@@ -16,8 +16,23 @@
 	user.add_mutation(MUTATION_STRONG)
 	user.update_mutations()
 
-	var/datum/spell/new_spell = new /datum/spell/targeted/equip_item/cream_puff
-	user.add_spell(new_spell)
+	var/datum/spell/CP = new /datum/spell/targeted/equip_item/cream_puff
+	user.add_spell(CP)
+
+	var/datum/spell/HS = new /datum/spell/toggled/hamstring_magic
+	user.add_spell(HS)
+
+	var/datum/spell/HM = new /datum/spell/targeted/equip_item/cream_puff
+	user.add_spell(HM)
+
+	var/datum/spell/DM = new /datum/spell/hand/deltoid_magic
+	user.add_spell(DM)
+
+	var/datum/spell/BM = new /datum/spell/hand/biceps_magic
+	user.add_spell(BM)
+
+	var/datum/spell/GM = new /datum/spell/gastrocnemius_magic
+	user.add_spell(GM)
 
 	if(spellbook)
 		user.drop(spellbook)

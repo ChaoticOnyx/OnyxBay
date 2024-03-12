@@ -16,7 +16,7 @@ Basically: I can use it to target things where I click. I can then pass these ta
 /obj/item/magic_hand/New(datum/spell/hand/S)
 	..(null)
 	hand_spell = S
-	name = "[name] ([S.name])"
+	name = S.hand_name_override ? S.hand_name_override : "[name] ([S.name])"
 	icon_state = S.hand_state
 
 /obj/item/magic_hand/get_storage_cost()
