@@ -25,7 +25,7 @@
 	if(!(affecting.a_intent == I_HELP))
 		upgrade(TRUE)
 
-//. For when we start choking 'em straight away
+/// For when we start choking 'em straight away
 /obj/item/grab/normal/quickchoke
 	type_name = GRAB_QUICKCHOKE
 	start_grab_name = NORM_KILL
