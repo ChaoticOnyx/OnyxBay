@@ -9,6 +9,7 @@
 #define MUTATION_LASER           8  // Harm intent - click anywhere to shoot lasers from eyes.
 #define MUTATION_SKELETON        9
 #define MUTATION_BARTENDER       10 // You can professionally do miracles with bottles and other vessels
+#define MUTATION_STRONG          11 // Basically hulk, but without greens.
 
 // Other Mutations:
 #define mRemotetalk    100 // Remote talking.

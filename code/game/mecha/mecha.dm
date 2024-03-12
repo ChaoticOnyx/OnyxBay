@@ -619,7 +619,7 @@
 			user.visible_message(SPAN("danger", "\The [user] hits \the [src]. Nothing happens."), SPAN("danger", "You hit \the [src] with no visible effect."))
 			log_append_to_last("Armor saved.")
 		return
-	else if((MUTATION_HULK in user.mutations) && !deflect_hit(is_melee = 1))
+	else if(((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations)) && !deflect_hit(is_melee = 1))
 		hit_damage(damage = 15, is_melee = 1)
 		check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL, MECHA_INT_TANK_BREACH, MECHA_INT_CONTROL_LOST))
 		user.visible_message("<font color='red'><b>[user] hits [name], doing some damage.</b></font>", "<font color='red'><b>You hit [name] with all your might. The metal creaks and bends.</b></font>")

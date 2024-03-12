@@ -206,6 +206,11 @@
 		user.do_attack_animation(src)
 		shatter()
 
+	else if(MUTATION_STRONG in user.mutations)
+		user.visible_message(SPAN("danger", "[user] smashes through [src]!"))
+		user.do_attack_animation(src)
+		shatter()
+
 	else if (user.a_intent && user.a_intent == I_HURT)
 
 		if (istype(user,/mob/living/carbon/human))

@@ -41,6 +41,9 @@
 			if(MUTATION_HULK in H.mutations)
 				damage += 5
 
+			if(MUTATION_STRONG in H.mutations)
+				damage += 5
+
 			playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 
 			visible_message("<span class='danger'>[H] has punched \the [src]!</span>")
@@ -274,6 +277,9 @@
 			attack_damage *= damage_multiplier
 			if(MUTATION_HULK in H.mutations)
 				real_damage *= 2 // Hulks do twice the damage
+				attack_damage *= 2
+			if(MUTATION_STRONG in H.mutations)
+				real_damage *= 2
 				attack_damage *= 2
 			real_damage = max(1, real_damage)
 

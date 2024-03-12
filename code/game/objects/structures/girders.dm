@@ -255,7 +255,7 @@
 	qdel(src)
 
 /obj/structure/girder/attack_hand(mob/user as mob)
-	if(MUTATION_HULK in user.mutations)
+	if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
 		user.visible_message(SPAN("danger", "[user] smashes \the [src] apart!"), \
 							 SPAN("danger", "You smash \the [src] apart!"))
 		dismantle()
