@@ -13,18 +13,25 @@
 	range = 0
 	icon_state = "wiz_sleep"
 
+/datum/spell/healthy_sleep/New()
+	..()
+	add_think_ctx("wakethefuckup", CALLBACK(src, nameof(.proc/wakethefuckup)), 0)
+
 /datum/spell/healthy_sleep/cast(list/targets, mob/user)
 	user.sleeping = max(30, user.sleeping)
-	addtimer(CALLBACK(src, nameof(.proc/wakethefuckup), user), duration)
+	set_next_think_ctx("wakethefuckup", world.time + duration)
 
-/datum/spell/healthy_sleep/proc/wakethefuckup(mob/user)
-	if(QDELETED(user) || user.is_ic_dead())
+/datum/spell/healthy_sleep/proc/wakethefuckup()
+	if(QDELETED(holder))
 		return
 
-	if(!ishuman(user))
+	if(!ishuman(holder))
 		return
 
-	var/mob/living/carbon/human/H = user
+	var/mob/living/carbon/human/H = holder
+
+	if(H.is_ic_dead())
+		return
 
 	H.restore_blood()
 	H.adjustToxLoss(H.getToxLoss() * -1)
@@ -44,6 +51,6 @@
 			E.stage = 0
 
 	H.updatehealth()
-	user.sleeping = 0
+	H.sleeping = 0
 	to_chat(H, SPAN("notice", "<b>You've had a good rest. Now you absolutely need to munch on something.</b>"))
 	H.remove_nutrition(H.nutrition)

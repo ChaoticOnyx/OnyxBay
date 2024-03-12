@@ -34,7 +34,7 @@
 
 /obj/item/immovable_wand/dropped(mob/user)
 	..()
-	addtimer(CALLBACK(src, nameof(.proc/get_glued_to_timespace)), 2 SECONDS)
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/immovable_wand/attack_hand(mob/user)
 	if(ishuman(user))
@@ -66,8 +66,9 @@
 		L.Weaken(10)
 
 // So we can throw it
-/obj/item/immovable_wand/proc/get_glued_to_timespace()
-	anchored = TRUE
+/obj/item/immovable_wand/think()
+	if(isturf(loc))
+		anchored = TRUE
 
 /obj/item/immovable_wand/proc/reshape(new_shape)
 	SetName("immovable [new_shape]")

@@ -36,5 +36,6 @@
 
 	var/turf/T = get_turf(user)
 	T.ex_act(rand(2, 3))
+	playsound(T, 'sound/effects/bang.ogg', rand(80, 100), 1, -1)
 
 	admin_attacker_log_many_victims(user, victims, "used Gastrocnemius Magic to stun", "was stunned by [key_name(user)] using Gastrocnemius Magic", "used Gastrocnemius Magic to stun")
