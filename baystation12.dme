@@ -1991,6 +1991,7 @@
 #include "code\modules\mining\machines\vending.dm"
 #include "code\modules\mining\machines\vending_prison.dm"
 #include "code\modules\mob\animations.dm"
+#include "code\modules\mob\client_mobs_in_contents.dm"
 #include "code\modules\mob\death.dm"
 #include "code\modules\mob\gender.dm"
 #include "code\modules\mob\hear_say.dm"

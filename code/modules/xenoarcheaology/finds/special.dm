@@ -59,6 +59,7 @@
 /obj/item/vampiric/Initialize()
 	. = ..()
 	set_next_think(world.time + 1 SECOND)
+	become_hearing_sensitive()
 
 /obj/item/vampiric/think()
 	//see if we've identified anyone nearby
