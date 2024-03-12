@@ -21,8 +21,8 @@
 					 "liquid nutrition" = /obj/item/reagent_containers/food/soydope,
 					 "pudding substitute" = /obj/item/reagent_containers/food/ricepudding)
 
-/obj/machinery/food_replicator/New()
-	..()
+/obj/machinery/food_replicator/Initialize()
+	. = ..()
 	component_parts = list()
 	component_parts += new /obj/item/circuitboard/replicator(src)
 	component_parts += new /obj/item/stock_parts/matter_bin(src) //used to hold the biomass
@@ -30,6 +30,8 @@
 	component_parts += new /obj/item/stock_parts/micro_laser(src) //used to deconstruct the stuff
 
 	RefreshParts()
+
+	become_hearing_sensitive()
 
 /obj/machinery/food_replicator/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/reagent_containers/food))
@@ -70,15 +72,14 @@
 
 /obj/machinery/food_replicator/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	if(!language || language.machine_understands)
-		spawn(20)
-			var/true_text = lowertext(html_decode(message))
-			for(var/menu_item in menu)
-				if(findtext(true_text, menu_item))
-					queue_dish(menu_item)
-			if(findtext(true_text, "status") || findtext(true_text, "статус"))
-				state_status()
-			else if(findtext(true_text, "menu") || findtext(true_text, "меню"))
-				state_menu()
+		var/true_text = lowertext(html_decode(message))
+		for(var/menu_item in menu)
+			if(findtext(true_text, menu_item))
+				queue_dish(menu_item)
+		if(findtext(true_text, "status") || findtext(true_text, "статус"))
+			state_status()
+		else if(findtext(true_text, "menu") || findtext(true_text, "меню"))
+			state_menu()
 
 /obj/machinery/food_replicator/proc/state_status()
 	var/message_bio = "boop beep"

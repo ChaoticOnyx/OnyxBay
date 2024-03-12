@@ -43,13 +43,11 @@
 	T.visible_message("\icon[src] beeps, \"[listening ? "Now" : "No longer"] recording input.\"")
 	return TRUE
 
-
 /obj/item/device/assembly/voice/attack_self(mob/user)
 	if(!user)
 		return 0
 	activate()
 	return 1
-
 
 /obj/item/device/assembly/voice/toggle_secure()
 	. = ..()
