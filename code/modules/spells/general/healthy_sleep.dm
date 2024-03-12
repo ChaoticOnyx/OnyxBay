@@ -5,6 +5,7 @@
 	spell_flags = INCLUDEUSER
 	charge_max = 120 SECONDS
 	duration = 30 SECONDS
+	need_target = FALSE
 
 	invocation = "lies down and falls asleep immediately."
 	invocation_type = SPI_EMOTE

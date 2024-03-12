@@ -48,6 +48,8 @@ Basically: I can use it to target things where I click. I can then pass these ta
 	if(hand_spell.show_message)
 		user.visible_message("\The [user][hand_spell.show_message]")
 	if(hand_spell.cast_hand(A,user))
+		if(QDELETED(hand_spell))
+			return
 		next_spell_time = world.time + hand_spell.spell_delay
 		if(hand_spell.move_delay)
 			user.addMoveCooldown(hand_spell.move_delay)

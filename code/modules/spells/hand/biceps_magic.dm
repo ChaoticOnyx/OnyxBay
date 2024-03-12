@@ -10,6 +10,7 @@
 	invocation = "BICEPS BRACHII!"
 	invocation_type = SPI_SHOUT
 	spell_delay = 5 SECONDS
+	charge_max = 5 SECONDS
 	hand_name_override = "sheer muscular power"
 
 	icon_state = "wiz_biceps"

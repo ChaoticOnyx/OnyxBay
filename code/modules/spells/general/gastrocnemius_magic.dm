@@ -4,6 +4,7 @@
 	desc = "Stomp the floor with everything your calves have to offer."
 	spell_flags = 0
 	charge_max = 15 SECONDS
+	need_target = FALSE
 
 	invocation = "GASTROCNEMIUS! SOLEUS!"
 	invocation_type = SPI_SHOUT
@@ -12,7 +13,7 @@
 	icon_state = "wiz_gastrocnemius"
 
 /datum/spell/gastrocnemius_magic/cast(list/targets, mob/living/carbon/user)
-	user.remove_nutrition(50)
+	user.remove_nutrition(100)
 	user.visible_message(SPAN("danger", "[user] stomps the floor!"))
 
 	for(var/mob/M in GLOB.player_list)
@@ -30,5 +31,8 @@
 		if(ishuman(L))
 			var/mob/living/carbon/human/H = L
 			H.damage_poise(25)
+
+	var/turf/T = get_turf(user)
+	T.ex_act(rand(1, 2))
 
 	admin_attacker_log_many_victims(user, victims, "used Gastrocnemius Magic to stun", "was stunned by [key_name(user)] using Gastrocnemius Magic", "used Gastrocnemius Magic to stun")
