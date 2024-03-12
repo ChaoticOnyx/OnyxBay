@@ -23,12 +23,10 @@
 	..()
 	radio = new(src)
 	camera = new(src)
-	GLOB.listening_objects += src
 
 /obj/item/device/spy_bug/Destroy()
 	QDEL_NULL(radio)
 	QDEL_NULL(camera)
-	GLOB.listening_objects -= src
 	return ..()
 
 /obj/item/device/spy_bug/_examine_text(mob/user)
@@ -92,11 +90,6 @@
 /obj/item/device/spy_monitor/New()
 	..()
 	radio = new(src)
-	GLOB.listening_objects += src
-
-/obj/item/device/spy_monitor/Destroy()
-	GLOB.listening_objects -= src
-	return ..()
 
 /obj/item/device/spy_monitor/_examine_text(mob/user)
 	. = ..()

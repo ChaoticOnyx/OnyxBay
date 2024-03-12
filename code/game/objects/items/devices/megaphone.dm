@@ -22,17 +22,6 @@ GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphon
 /obj/item/device/megaphone/on_update_icon()
 	icon_state = "megaphone[active ? "_on" : ""]"
 
-
-/obj/item/device/megaphone/Initialize()
-	GLOB.listening_objects |= src
-	return ..()
-
-
-/obj/item/device/megaphone/Destroy()
-	GLOB.listening_objects -= src
-	return ..()
-
-
 /obj/item/device/megaphone/attack_self(mob/living/user)
 	show_splash_text(user, "toggled [active ? "off" : "on"]")
 	active = !active

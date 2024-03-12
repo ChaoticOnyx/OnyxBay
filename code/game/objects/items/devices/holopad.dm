@@ -24,11 +24,9 @@
 	id = rand(1000, 9999)
 	name = "[initial(name)] [id] #[uniq_id]"
 	voice = "Holopad [id]"
-	GLOB.listening_objects += src
 	. = ..()
 
 /obj/item/device/holopad/Destroy()
-	GLOB.listening_objects -= src
 	abonent = null
 	. = ..()
 
@@ -66,10 +64,7 @@
 
 /obj/item/device/holopad/proc/placeCall(mob/user)
 	var/list/Targets = list()
-	for(var/obj/item/device/holopad/H in GLOB.listening_objects)
-		if(H == src)
-			continue
-		Targets[H.getName()] = H
+
 	var/selection = input("Who do you want to call?") as null|anything in Targets
 	if(!selection)
 		return

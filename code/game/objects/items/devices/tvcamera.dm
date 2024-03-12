@@ -9,12 +9,7 @@
 	var/obj/machinery/camera/network/thunder/camera
 	var/obj/item/device/radio/radio
 
-/obj/item/device/tvcamera/New()
-	..()
-	GLOB.listening_objects += src
-
 /obj/item/device/tvcamera/Destroy()
-	GLOB.listening_objects -= src
 	QDEL_NULL(camera)
 	QDEL_NULL(radio)
 	. = ..()

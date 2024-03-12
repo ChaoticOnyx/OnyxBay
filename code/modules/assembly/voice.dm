@@ -9,14 +9,6 @@
 	drop_sound = SFX_DROP_COMPONENT
 	pickup_sound = SFX_PICKUP_COMPONENT
 
-/obj/item/device/assembly/voice/New()
-	..()
-	GLOB.listening_objects += src
-
-/obj/item/device/assembly/voice/Destroy()
-	GLOB.listening_objects -= src
-	return ..()
-
 /obj/item/device/assembly/voice/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	if(cooldown > 0)
 		return

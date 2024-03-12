@@ -47,7 +47,6 @@
 
 /obj/item/implant/voice_triggered/explosive/Initialize()
 	. = ..()
-	GLOB.listening_objects += src
 	set_frequency(frequency)
 
 /obj/item/implant/voice_triggered/explosive/Topic(href, href_list)
@@ -173,7 +172,6 @@
 
 /obj/item/implant/voice_triggered/explosive/Destroy()
 	removed()
-	GLOB.listening_objects -= src
 	return ..()
 
 /obj/item/implanter/explosive

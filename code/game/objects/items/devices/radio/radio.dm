@@ -46,7 +46,6 @@
 	. = ..()
 	wires = new(src)
 	internal_channels = GLOB.using_map.default_internal_channels()
-	GLOB.listening_objects += src
 
 	if(frequency < RADIO_LOW_FREQ || frequency > RADIO_HIGH_FREQ)
 		frequency = sanitize_frequency(frequency, RADIO_LOW_FREQ, RADIO_HIGH_FREQ)
@@ -60,7 +59,6 @@
 
 /obj/item/device/radio/Destroy()
 	QDEL_NULL(wires)
-	GLOB.listening_objects -= src
 	SSradio.remove_object(src, frequency)
 	for (var/ch_name in channels)
 		SSradio.remove_object(src, GLOB.radio_channels[ch_name])

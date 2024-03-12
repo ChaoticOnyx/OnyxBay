@@ -909,14 +909,6 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 5
 
-/obj/item/integrated_circuit/input/microphone/Initialize()
-	. = ..()
-	GLOB.listening_objects += src
-
-/obj/item/integrated_circuit/input/microphone/Destroy()
-	GLOB.listening_objects -= src
-	. = ..()
-
 /obj/item/integrated_circuit/input/microphone/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	var/translated = TRUE
 	if(speaker && message)

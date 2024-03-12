@@ -23,12 +23,8 @@
 
 /obj/item/clothing/mask/gas/poltergeist/Initialize()
 	set_next_think(world.time)
-	GLOB.listening_objects += src
 	. = ..()
 
-/obj/item/clothing/mask/gas/poltergeist/Destroy()
-	GLOB.listening_objects -= src
-	return ..()
 
 /obj/item/clothing/mask/gas/poltergeist/think()
 	if(heard_talk.len && istype(src.loc, /mob/living) && prob(10))
@@ -63,11 +59,6 @@
 /obj/item/vampiric/Initialize()
 	. = ..()
 	set_next_think(world.time + 1 SECOND)
-	GLOB.listening_objects += src
-
-/obj/item/vampiric/Destroy()
-	GLOB.listening_objects -= src
-	return ..()
 
 /obj/item/vampiric/think()
 	//see if we've identified anyone nearby

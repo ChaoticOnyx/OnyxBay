@@ -13,14 +13,6 @@
 	var/obj/item/device/assembly/a_right = null
 	var/obj/special_assembly = null
 
-/obj/item/device/assembly_holder/New()
-	..()
-	GLOB.listening_objects += src
-
-/obj/item/device/assembly_holder/Destroy()
-	GLOB.listening_objects -= src
-	return ..()
-
 /obj/item/device/assembly_holder/proc/detached()
 	return
 
