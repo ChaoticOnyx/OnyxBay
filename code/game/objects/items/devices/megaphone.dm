@@ -12,19 +12,34 @@ GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphon
 	w_class = ITEM_SIZE_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
-	var/active = FALSE
+	VAR_PRIVATE/active = FALSE
 	var/emagged = FALSE
 
 	/// Last `world.time` device was successfully used.
 	var/last_use = 0
 
+/obj/item/device/megaphone/Initialize()
+	. = ..()
+	if(active)
+		become_hearing_sensitive()
+
+/obj/item/device/megaphone/proc/get_active()
+	return active
+
+/obj/item/device/megaphone/proc/set_active(new_active)
+	active = new_active
+
+	if(active)
+		become_hearing_sensitive()
+	else
+		lose_hearing_sensitivity()
 
 /obj/item/device/megaphone/on_update_icon()
 	icon_state = "megaphone[active ? "_on" : ""]"
 
 /obj/item/device/megaphone/attack_self(mob/living/user)
 	show_splash_text(user, "toggled [active ? "off" : "on"]")
-	active = !active
+	set_active(!active)
 	update_icon()
 
 /obj/item/device/megaphone/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
@@ -45,11 +60,11 @@ GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphon
 
 	var/list/hearing = get_hearers_in_view(world.view, talker)
 
-	for(var/mob/O in hearing)
-		O.hear_say(FONT_GIANT(SPAN_BOLD(msg)), "broadcasts", speaking, speaker = talker, speech_sound = 'sound/items/megaphone.ogg', sound_vol = 20)
+	for(var/atom/movable/O in hearing)
+		if(hearing == src)
+			continue
 
-	for(var/obj/item/device/radio/intercom/I in hearing)
-		I.talk_into(talker, msg, verb = "broadcasts", speaking = speaking)
+		O.hear_say(FONT_GIANT(SPAN_BOLD(msg)), "broadcasts", speaking, speaker = talker, speech_sound = 'sound/items/megaphone.ogg', sound_vol = 20)
 
 	last_use = world.time
 
