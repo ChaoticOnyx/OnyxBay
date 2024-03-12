@@ -203,7 +203,7 @@
 	name = "RCD advanced design disk"
 	desc = "It seems to be empty."
 	icon = 'icons/obj/cloning.dmi'
-	icon_state = "datadisk3"
+	icon_state = "datadisk2"
 	item_state = "card-id"
 	var/upgrade
 
