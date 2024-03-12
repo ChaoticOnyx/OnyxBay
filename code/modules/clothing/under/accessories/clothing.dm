@@ -180,7 +180,7 @@
 	color = color_rotation(rand(-11,12)*15)
 
 /obj/item/clothing/accessory/toggleable/flannel
-	name = "flannel comfy shirt"
+	name = "comfy flannel shirt"
 	desc = "A comfy, plaid flannel shirt."
 	icon_state = "flannel"
 	var/rolled = 0
