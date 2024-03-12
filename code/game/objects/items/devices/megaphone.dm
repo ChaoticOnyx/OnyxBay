@@ -61,7 +61,7 @@ GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphon
 	var/list/hearing = get_hearers_in_view(world.view, talker)
 
 	for(var/atom/movable/O in hearing)
-		if(hearing == src)
+		if(O == src)
 			continue
 
 		O.hear_say(FONT_GIANT(SPAN_BOLD(msg)), "broadcasts", speaking, speaker = talker, speech_sound = 'sound/items/megaphone.ogg', sound_vol = 20)

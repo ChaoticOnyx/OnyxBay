@@ -154,6 +154,7 @@
 	var/memo = "Explosive implant in [target] can be activated by saying something containing the phrase ''[phrase]'', <B>say [phrase]</B> to attempt to activate. It can also be triggered with a radio signal on frequency <b>[format_frequency(src.frequency)]</b> with code <b>[code]</b>."
 	usr.mind.store_memory(memo, 0, 0)
 	to_chat(usr, memo)
+	become_hearing_sensitive()
 	return TRUE
 
 /obj/item/implant/voice_triggered/explosive/emp_act(severity)
