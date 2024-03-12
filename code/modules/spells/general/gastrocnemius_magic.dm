@@ -35,6 +35,6 @@
 			H.damage_poise(25)
 
 	var/turf/T = get_turf(user)
-	T.ex_act(rand(1, 2))
+	T.ex_act(rand(2, 3))
 
 	admin_attacker_log_many_victims(user, victims, "used Gastrocnemius Magic to stun", "was stunned by [key_name(user)] using Gastrocnemius Magic", "used Gastrocnemius Magic to stun")
