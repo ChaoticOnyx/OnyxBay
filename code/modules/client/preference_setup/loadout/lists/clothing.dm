@@ -13,9 +13,7 @@
 	..()
 	var/list/flannel = list()
 	flannel["comfy flannel"] = /obj/item/clothing/accessory/toggleable/flannel
-
 	flannel["soft flannel"] = /obj/item/clothing/accessory/toggleable/flannel/alt
-
 	gear_tweaks += new /datum/gear_tweak/path(flannel)
 
 /datum/gear/clothing/scarf
