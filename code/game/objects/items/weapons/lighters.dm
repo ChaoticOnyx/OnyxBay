@@ -110,7 +110,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	set_next_think(world.time)
 
 /obj/item/flame/lighter/proc/light_effects(mob/living/carbon/user)
-	if(prob(0))
+	if(prob(95))
 		user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src]."))
 	else
 		try_burn(user, (user.l_hand == src ? BP_L_HAND : BP_R_HAND), 2)
