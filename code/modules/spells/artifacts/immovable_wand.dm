@@ -80,6 +80,7 @@
 			mod_reach = 0.5
 			mod_handy = 1.5
 			block_tier = BLOCK_TIER_MELEE
+			w_class = ITEM_SIZE_SMALL
 			desc = "It looks like a regular metal rod, but appears to be insanely heavy."
 			icon_state = "immovable_wand"
 		if(IW_RACKET)
@@ -90,7 +91,7 @@
 			mod_reach = 0.8
 			mod_handy = 1.5
 			block_tier = BLOCK_TIER_ADVANCED
-			w_class = ITEM_SIZE_NORMAL
+			w_class = ITEM_SIZE_LARGE
 			desc = "It looks like a tennis racket made of solid metal. It appears to be insanely heavy."
 			icon_state = "immovable_racket"
 		if(IW_BAT)
@@ -101,7 +102,7 @@
 			mod_reach = 1.0
 			mod_handy = 1.5
 			block_tier = BLOCK_TIER_MELEE
-			w_class = ITEM_SIZE_NORMAL
+			w_class = ITEM_SIZE_LARGE
 			desc = "It looks like a baseball bat made of some sort of metal. It appears to be insanely heavy."
 			icon_state = "immovable_bat"
 		if(IW_BALL)
@@ -112,7 +113,7 @@
 			mod_reach = 0.5
 			mod_handy = 0.5
 			block_tier = BLOCK_TIER_MELEE
-			w_class = ITEM_SIZE_NORMAL
+			w_class = ITEM_SIZE_LARGE
 			desc = "It looks like a basketball made entirely of metal. It appears to be insanely heavy."
 			icon_state = "immovable_ball"
 
