@@ -55,12 +55,14 @@
 		playsound(src.loc, 'sound/effects/weightlifter.ogg', 50, 1)
 		user.set_dir(SOUTH)
 
+		var/usetime = 20 + (weight * 10)
 		if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
 			flick("[icon_state]_[weight]s", src)
+			usetime = 14
 		else
 			flick("[icon_state]_[weight]", src)
 
-		if(do_after(user, 20 + (weight * 10)))
+		if(do_after(user, usetime))
 			playsound(src.loc, 'sound/effects/weightdrop.ogg', 25, 1)
 			user.remove_nutrition(weight * 10)
 			if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
