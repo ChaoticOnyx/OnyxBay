@@ -1,5 +1,5 @@
-/// each cell in a spatial_grid is this many turfs in length and width (with world.max(x or y) being 255, 15 of these fit on each side of a z level)
-#define SPATIAL_GRID_CELLSIZE 17
+/// each cell in a spatial_grid is this many turfs in length and width (with world.max(x or y) being 255, 17 of these fit on each side of a z level)
+#define SPATIAL_GRID_CELLSIZE 15
 /// Takes a coordinate, and spits out the spatial grid index (x or y) it's inside
 #define GET_SPATIAL_INDEX(coord) ROUND_UP((coord) / SPATIAL_GRID_CELLSIZE)
 /// changes the cell_(x or y) vars on /datum/spatial_grid_cell to the x or y coordinate on the map for the LOWER LEFT CORNER of the grid cell.
