@@ -25,15 +25,21 @@
 		to_chat(user, SPAN("danger", "They are missing that limb!"))
 		return FALSE
 
-	H.apply_damage(rand(20, 40), BRUTE, affecting)
-	H.Weaken(8)
-	H.Stun(4)
-
 	user.do_attack_animation(H)
-	H.throw_at(get_edge_target_turf(H, turn(get_dir(H, user), 180)), 5, 1)
-	H.damage_poise(30)
-
 	playsound(H.loc, 'sound/effects/bang.ogg', rand(80, 100), 1, -1)
-	user.visible_message(SPAN("danger", "[user] has punched \the [H] so hard, they're sent flying!"))
+
+	var/throw_dir = user.dir
+	if(user == H)
+		throw_dir = turn(get_dir(H, user), 180)
+		user.visible_message(SPAN("danger", "[user] has punched the floor, sending themselves flying!"))
+	else
+		user.visible_message(SPAN("danger", "[user] has punched \the [H] so hard, they're sent flying!"))
+		H.apply_damage(rand(20, 40), BRUTE, affecting)
+		H.Weaken(8)
+		H.Stun(4)
+		H.damage_poise(30)
+
+	H.throw_at(get_edge_target_turf(H, throw_dir), 5, 1)
+
 
 	return TRUE
