@@ -50,8 +50,8 @@
 	if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
 		var/choice = show_radial_menu(user, user, radial_options, require_near = TRUE)
 		if(choice)
-			reshape(choice)
 			user.visible_message("<b>[user]</b> bends and reshapes \the [src] with their bare hands!")
+			reshape(choice)
 		return
 
 	return ..()
@@ -71,6 +71,7 @@
 /obj/item/immovable_wand/proc/reshape(new_shape)
 	SetName("immovable [new_shape]")
 	current_shape = new_shape
+
 	switch(new_shape)
 		if(IW_WAND)
 			throw_range = 5
@@ -116,6 +117,9 @@
 			w_class = ITEM_SIZE_LARGE
 			desc = "It looks like a basketball made entirely of metal. It appears to be insanely heavy."
 			icon_state = "immovable_ball"
+
+	update_held_icon()
+	return
 
 
 #undef IW_WAND

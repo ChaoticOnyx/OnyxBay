@@ -30,7 +30,7 @@
 	H.Stun(4)
 
 	user.do_attack_animation(H)
-	H.throw_at(get_step_away(H, user), 5, 1)
+	H.throw_at(get_edge_target_turf(H, get_dir(H, user)), 5, 1)
 	H.damage_poise(30)
 
 	playsound(H.loc, 'sound/effects/bang.ogg', rand(80, 100), 1, -1)

@@ -41,5 +41,4 @@
 		O.equip(user)
 		var/obj/item/reagent_containers/food/cream_puff/CR = new /obj/item/reagent_containers/food/cream_puff(get_turf(user))
 		user.pick_or_drop(CR)
-		new /obj/item/teleportation_scroll(get_turf(user))
 	return

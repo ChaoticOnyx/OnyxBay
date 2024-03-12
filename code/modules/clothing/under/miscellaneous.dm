@@ -547,6 +547,11 @@
 	item_state = "sl_suit"
 	worn_state = "navy_suit"
 
+/obj/item/clothing/under/suit_jacket/navy/scholar
+	name = "scholar suit"
+	desc = "A navy suit. It resembles some sort of a school uniform."
+	starting_accessories = list(/obj/item/clothing/accessory/red)
+
 /obj/item/clothing/under/suit_jacket/burgundy
 	name = "burgundy suit"
 	desc = "A burgundy suit and black tie. Somewhat formal."
@@ -692,8 +697,3 @@
 		var/pipe = user.start_ventcrawl()
 		if(pipe)
 			user.handle_ventcrawl(pipe)
-
-/obj/item/clothing/under/musclemancer
-	name = "fitness tracksuit"
-	desc = "A tight-fitting tracksuit designed to be as comfortable as possible while hitting the gym."
-	icon_state = "latex_suit" // TODO: Draw something better. Works for now though.

@@ -31,3 +31,13 @@
 	head = /obj/item/clothing/head/wizard/violetwizard
 	suit = /obj/item/clothing/suit/wizrobe/violetwizard
 	shoes = /obj/item/clothing/shoes/sandal/marisa
+
+/decl/hierarchy/outfit/musclemancer
+	name = "Musclemancer"
+	head = null
+	suit = /obj/item/clothing/suit/musclemancer
+	shoes = /obj/item/clothing/shoes/laceup
+	uniform = /obj/item/clothing/under/suit_jacket/navy/scholar
+	r_pocket = /obj/item/teleportation_scroll
+	l_ear = /obj/item/device/radio/headset
+	flags = OUTFIT_RESET_EQUIPMENT|OUTFIT_NO_SURVIVAL

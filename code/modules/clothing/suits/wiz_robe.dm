@@ -167,8 +167,8 @@
 	wizard_garb = TRUE
 
 /obj/item/clothing/suit/musclemancer
-	name = "black robe"
-	desc = "Some sort of a plain, black robe. Looks kinda old-fashioned, but doesn't appear to be special in any way."
-	icon_state = "chaplain_hoodie"
-	item_state = "chaplain_hoodie"
+	name = "scholar robe"
+	desc = "Some sort of a plain, dark navy robe. Looks kinda old-fashioned, but doesn't appear to be special in any way."
+	icon_state = "muscle_robe"
+	item_state = "muscle_robe"
 	body_parts_covered = UPPER_TORSO|ARMS

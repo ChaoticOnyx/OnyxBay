@@ -22,9 +22,11 @@
 
 	var/list/victims = list()
 	for(var/mob/living/L in view(5, user))
+		if(L == user)
+			continue
 		L.Weaken(6)
 		L.Stun(3)
-		L.throw_at(get_turf(L), 5, 1, src)
+		L.SpinAnimation(speed = 4, loops = 1)
 		victims += L
 		if(L.client && !L.stat)
 			to_chat(L, SPAN("danger", "You are sent flying!"))
