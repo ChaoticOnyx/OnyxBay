@@ -19,10 +19,11 @@
 	var/obj/item/device/radio/spy/radio
 	var/obj/machinery/camera/spy/camera
 
-/obj/item/device/spy_bug/New()
-	..()
-	radio = new(src)
-	camera = new(src)
+/obj/item/device/spy_bug/Initialize()
+	. = ..()
+	radio = new (src)
+	camera = new (src)
+	become_hearing_sensitive()
 
 /obj/item/device/spy_bug/Destroy()
 	QDEL_NULL(radio)

@@ -46,9 +46,11 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 /obj/item/gun/projectile/lawgiver/proc/init_voice_activators()
 	if(voice_activators_init_complete)
 		return
+
 	if(!fexists("config/names/lawgiver.txt"))
 		CRASH("Lawgiver voice activators file not found")
 	voice_activators_init_complete = TRUE
+	become_hearing_sensitive()
 	var/list/voice_activators = world.file2list("config/names/lawgiver.txt")
 	var/ind
 	for(ind = 1, ind <= length(GLOB.lawgiver_modes), ind++)

@@ -47,6 +47,7 @@
 
 /obj/item/implant/voice_triggered/speech_corrector/implanted(mob/target)
 	var/memo = "You will be tasered every time when saying something containing this ''[jointext(words_list,", ")]''."
+	become_hearing_sensitive()
 	target.mind.store_memory(memo, 0, 0)
 	to_chat(target, SPAN("notice",memo))
 	return TRUE
@@ -78,6 +79,7 @@
 /obj/item/implant/voice_triggered/speech_corrector/hear(msg)
 	if(!words_list)
 		return
+
 	var/list/msg_words_list=splittext(sanitize_phrase(lowertext(msg))," ")
 	for (var/phrase in msg_words_list)
 		if((phrase in words_list) || ((phrase in obscene_word_list) && check_obscene_words))
