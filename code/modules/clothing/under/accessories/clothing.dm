@@ -263,7 +263,7 @@
 	update_clothing_icon()
 
 /obj/item/clothing/accessory/toggleable/flannel/alt
-	name = "flannel soft shirt"
+	name = "soft flannel shirt"
 	desc = "A soft, plaid flannel shirt."
 	icon_state = "flannel_alt"
 
