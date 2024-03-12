@@ -30,14 +30,14 @@
 	if(T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		to_chat(my_mob, SPAN("warning", "[T] has no blood and can not be affected by your powers!"))
 		return
-	if(vampire.status & VAMP_DRAINING)
+	if(vampire.vamp_status & VAMP_DRAINING)
 		to_chat(my_mob, SPAN("warning", "Your fangs are already sunk into a victim's neck!"))
 		return
 
 	if(T.mind.vampire)
 		var/datum/vampire/draining_vamp = T.mind.vampire
 
-		if(draining_vamp.status & VAMP_ISTHRALL)
+		if(draining_vamp.vamp_status & VAMP_ISTHRALL)
 			var/choice_text = ""
 			var/denial_response = ""
 			if(draining_vamp.master?.resolve() == my_mob)
@@ -52,12 +52,12 @@
 				return
 
 			GLOB.thralls.remove_antagonist(T.mind, 0, 0)
-			draining_vamp.status &= ~VAMP_ISTHRALL
+			draining_vamp.vamp_status &= ~VAMP_ISTHRALL
 		else
 			to_chat(my_mob, SPAN("warning", "You feel corruption running in [T]'s blood. Much like yourself, \he[T] is already a spawn of the Veil, and cannot be Embraced."))
 			return
 
-	vampire.status |= VAMP_DRAINING
+	vampire.vamp_status |= VAMP_DRAINING
 
 	my_mob.visible_message(SPAN("danger", "[my_mob] bites [T]'s neck!"),\
 						   SPAN("danger", "You bite [T]'s neck and begin to drain their blood, as the first step of introducing the corruption of the Veil to them."),\
@@ -100,5 +100,5 @@
 	T.mind.vampire.frenzy = 50
 	T.mind.vampire.check_frenzy()
 
-	vampire.status &= ~VAMP_DRAINING
+	vampire.vamp_status &= ~VAMP_DRAINING
 	use_blood()

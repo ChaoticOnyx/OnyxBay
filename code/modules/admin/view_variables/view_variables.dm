@@ -143,6 +143,17 @@
 	else
 		vtext = "[value]"
 
+	if(varname in GLOB.bitfields)
+		var/list/flags = list()
+		for (var/i in GLOB.bitfields[varname])
+			if (value & GLOB.bitfields[varname][i])
+				flags += i
+
+		if(length(flags))
+			return "[(jointext(flags, ", "))]"
+		else
+			return "NONE"
+
 	return "<span class=value>[vtext]</span>[jointext(extra, null)]"
 
 /proc/make_view_variables_var_entry(datum/D, varname, value, level=0)
