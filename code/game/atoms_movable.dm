@@ -42,6 +42,10 @@
 	///contains every client mob corresponding to every client eye in this container. lazily updated by SSparallax and is sparse:
 	///only the last container of a client eye has this list assuming no movement since SSparallax's last fire
 	var/list/client_mobs_in_contents
+	// Whether or not atom can understand other atoms.
+
+	var/universal_speak = FALSE // Set to 1 to enable the mob to speak to everyone -- TLE
+	var/universal_understand = FALSE
 
 /atom/movable/Initialize()
 	. = ..()

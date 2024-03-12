@@ -31,3 +31,18 @@
 
 /atom/movable/proc/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = FALSE, mob/speaker = null, sound/speech_sound, sound_vol)
 	pass()
+
+/atom/movable/proc/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0, vname ="", loud)
+	hear_say(message, verb, language, speaker = speaker)
+
+/atom/movable/proc/say_understands(atom/movable/other, datum/language/language = null)
+	if(universal_speak || universal_understand)
+		return TRUE
+
+	if(other.universal_speak)
+		return TRUE
+
+	if(language.flags & INNATE)
+		return TRUE
+
+	return FALSE

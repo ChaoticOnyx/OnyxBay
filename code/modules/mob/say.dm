@@ -40,8 +40,7 @@
 /mob/proc/say_dead(message)
 	communicate(/decl/communication_channel/dsay, client, message)
 
-/mob/proc/say_understands(mob/other,datum/language/language = null)
-
+/mob/say_understands(mob/other,datum/language/language = null)
 	if(src.is_ooc_dead())
 		return TRUE
 
