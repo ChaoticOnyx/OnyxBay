@@ -692,3 +692,8 @@
 		var/pipe = user.start_ventcrawl()
 		if(pipe)
 			user.handle_ventcrawl(pipe)
+
+/obj/item/clothing/under/musclemancer
+	name = "fitness tracksuit"
+	desc = "A tight-fitting tracksuit designed to be as comfortable as possible while hitting the gym."
+	icon_state = "latex_suit" // TODO: Draw something better. Works for now though.

@@ -18,6 +18,7 @@
 
 	var/mob/living/carbon/human/H = holder
 	H.add_movespeed_modifier(/datum/movespeed_modifier/hamstring_magic)
+	invocation_type = SPI_NONE
 	return
 
 /datum/spell/toggled/hamstring_magic/deactivate(no_message = TRUE)
@@ -27,6 +28,7 @@
 
 	var/mob/living/carbon/human/H = holder
 	H.remove_movespeed_modifier(/datum/movespeed_modifier/hamstring_magic)
+	invocation_type = SPI_SHOUT
 	return
 
 /datum/spell/toggled/immaterial_form/think()

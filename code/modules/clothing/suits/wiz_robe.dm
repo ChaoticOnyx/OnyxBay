@@ -165,3 +165,10 @@
 	allowed = list(/obj/item/teleportation_scroll)
 	siemens_coefficient = 0.8
 	wizard_garb = TRUE
+
+/obj/item/clothing/suit/musclemancer
+	name = "black robe"
+	desc = "Some sort of a plain, black robe. Looks kinda old-fashioned, but doesn't appear to be special in any way."
+	icon_state = "chaplain_hoodie"
+	item_state = "chaplain_hoodie"
+	body_parts_covered = UPPER_TORSO|ARMS

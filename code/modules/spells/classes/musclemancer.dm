@@ -1,6 +1,6 @@
 
 /datum/wizard_class/musclemancer
-	name = "Athlete"
+	name = "Musclemancer"
 	feedback_tag = "MM"
 	description = "Your proficiency in the art of spellcasting is comparable to that of a cream puff's. But you've spent years hitting the gym."
 	icon_state = "muscle_tome"
@@ -19,10 +19,10 @@
 	var/datum/spell/CP = new /datum/spell/targeted/equip_item/cream_puff
 	user.add_spell(CP)
 
-	var/datum/spell/HS = new /datum/spell/toggled/hamstring_magic
+	var/datum/spell/HS = new /datum/spell/healthy_sleep
 	user.add_spell(HS)
 
-	var/datum/spell/HM = new /datum/spell/targeted/equip_item/cream_puff
+	var/datum/spell/HM = new /datum/spell/toggled/hamstring_magic
 	user.add_spell(HM)
 
 	var/datum/spell/DM = new /datum/spell/hand/deltoid_magic
@@ -37,6 +37,8 @@
 	if(spellbook)
 		user.drop(spellbook)
 		qdel(spellbook)
+		var/decl/hierarchy/outfit/O = outfit_by_type(/decl/hierarchy/outfit/musclemancer)
+		O.equip(user)
 		var/obj/item/reagent_containers/food/cream_puff/CR = new /obj/item/reagent_containers/food/cream_puff(get_turf(user))
 		user.pick_or_drop(CR)
 	return

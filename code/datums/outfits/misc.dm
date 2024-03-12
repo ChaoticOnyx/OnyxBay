@@ -57,3 +57,11 @@
 /decl/hierarchy/outfit/clown/New()
 	..()
 	backpack_overrides[/decl/backpack_outfit/backpack] = /obj/item/storage/backpack/clown
+
+/decl/hierarchy/outfit/musclemancer
+	name = "Musclemancer"
+	head = null
+	suit = /obj/item/clothing/suit/musclemancer
+	shoes = /obj/item/clothing/shoes/laceup
+	uniform = /obj/item/clothing/under/musclemancer
+	flags = OUTFIT_RESET_EQUIPMENT
