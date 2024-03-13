@@ -124,6 +124,7 @@
 			desc = "It looks like a basketball made entirely of metal. It appears to be insanely heavy."
 			icon_state = "immovable_ball"
 
+	update_blood_overlay()
 	update_held_icon()
 	return
 
