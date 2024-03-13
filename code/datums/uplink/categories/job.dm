@@ -10,3 +10,10 @@
 	item_cost = 5
 	job_specific = list("Chef")
 	path = /obj/item/material/knife/butch/kitchen/syndie
+
+/datum/uplink_item/item/job/meathook
+	name = "Meat Hook"
+	desc = "A nightmarish meat hook attached to a long chain. When launched, the hook will snag the first target it encounters, dragging it back to you. Instantly informs everyone around about your sadistic slaughterous."
+	item_cost = 4
+	job_specific = list("Chef")
+	path = /obj/item/gun/meathook
