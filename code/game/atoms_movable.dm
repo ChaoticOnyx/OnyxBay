@@ -191,7 +191,9 @@
 	throw_dir = get_dir(src, target)
 	if(usr)
 		if(MUTATION_HULK in usr.mutations)
-			src.throwing = 2 // really strong throw!
+			throwing = 2 // really strong throw!
+		else if(MUTATION_STRONG in usr.mutations)
+			throwing = 2
 
 	var/dist_travelled = 0
 	var/dist_since_sleep = 0

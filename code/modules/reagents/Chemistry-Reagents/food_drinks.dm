@@ -1156,3 +1156,15 @@
 
 	glass_name = "nothing"
 	glass_desc = "Absolutely nothing."
+
+/datum/reagent/nutriment/magical_custard
+	name = "Magical Custard"
+	description = "It's both tasty and healthy. Must be magic."
+	taste_description = "sweet pleasure"
+	reagent_state = LIQUID
+	color = "#FFE6A3"
+	scannable = TRUE
+	flags = IGNORE_MOB_SIZE
+
+/datum/reagent/magical_custard/affect_ingest(mob/living/carbon/M, alien, removed)
+	M.heal_organ_damage(5 * removed, 5 * removed)

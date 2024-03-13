@@ -94,7 +94,7 @@
 	add_fingerprint(user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	var/rotting = (locate(/obj/effect/overlay/wallrot) in src)
-	if (MUTATION_HULK in user.mutations)
+	if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
 		if (rotting || !prob(material.hardness))
 			success_smash(user)
 		else

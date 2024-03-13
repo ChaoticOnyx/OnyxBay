@@ -414,6 +414,9 @@ meteor_act
 	if(MUTATION_HULK in user.mutations)
 		effective_force *= 2
 
+	if(MUTATION_STRONG in user.mutations)
+		effective_force *= 2
+
 	if(lying)
 		effective_force *= 1.5 // Well it's easier to beat a lying dude to death right?
 
@@ -502,8 +505,13 @@ meteor_act
 
 	if(MUTATION_HULK in user.mutations)
 		effective_force *= 2
+
+	if(MUTATION_STRONG in user.mutations)
+		effective_force *= 2
+
 	if(src.lying)
 		effective_force *= 1.5 // Well it's easier to beat all the shit outta lying dudes right?
+
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		if(A.body_build.name == "Slim" || A.body_build.name == "Slim Alt")
