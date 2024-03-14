@@ -3,8 +3,8 @@
 	name = "meat hook"
 	desc = "A symbolic nightmare, its curved blade a frightening reminder of its owner's slaughterous intent. Or, maybe, you're overthinking it and this is just a regular meat hook."
 	icon = 'icons/obj/kitchen.dmi'
-	icon_state = "pudgehook"
-	item_state = "pudgehook"
+	icon_state = "meathook"
+	item_state = "meathook"
 	fire_sound = 'sound/weapons/meathook.ogg'
 	fire_sound_text = "clanging chains"
 	clumsy_unaffected = TRUE
@@ -29,7 +29,8 @@
 	muzzle_type = /obj/effect/projectile/muzzle/meathook
 	tracer_type = /obj/effect/projectile/tracer/meathook
 	impact_type = /obj/effect/projectile/impact/meathook
-	kill_count = 1000
+	kill_count = 10
+	pass_flags = PASS_FLAG_TABLE
 	projectile_light = FALSE
 
 /obj/item/projectile/meathook/on_hit(atom/target, blocked, def_zone)
@@ -53,9 +54,6 @@
 			"Look who's coming for dinner!",\
 			"Time for a little butchery!")
 		to_chat(firer, SPAN("notice", "<b>[success_msg]</b>"))
-		if(isliving(T))
-			var/mob/living/L = T
-			to_chat(L, "<b>[firer]'s</b> thought echoes in your mind, \"<b>[success_msg]</b>\"")
 	else
 		var/fail_msg = pick(\
 			"I meant to do that...",\

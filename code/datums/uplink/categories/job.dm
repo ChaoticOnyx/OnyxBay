@@ -13,7 +13,7 @@
 
 /datum/uplink_item/item/job/meathook
 	name = "Meat Hook"
-	desc = "A nightmarish meat hook attached to a long chain. When launched, the hook will snag the first target it encounters, dragging it back to you. Instantly informs everyone around about your sadistic slaughterous."
+	desc = "A high-tech version of an ancient assassin weapon, disguised as a meat hook. It can be thrown with an incredible accuracy, and will snag the first target it encounters, dragging it back to you. However, all the witnesses will know for sure that you're up for something."
 	item_cost = 4
 	job_specific = list("Chef")
 	path = /obj/item/gun/meathook
