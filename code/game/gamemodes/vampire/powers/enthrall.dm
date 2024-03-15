@@ -27,7 +27,7 @@
 	if (!T.client || !T.mind)
 		to_chat(my_mob, SPAN("warning", "[T]'s mind is empty and useless. They cannot be forced into a blood bond."))
 		return
-	if(vampire.status & VAMP_DRAINING)
+	if(vampire.vamp_status & VAMP_DRAINING)
 		to_chat(my_mob, SPAN("warning", "Your fangs are already sunk into a victim's neck!"))
 		return
 

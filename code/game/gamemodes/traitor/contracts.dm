@@ -7,7 +7,7 @@ GLOBAL_LIST_EMPTY(all_contracts)
 GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"the captain's antique laser gun" =                 list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/captain),
 	"a bluespace rift generator in hand teleporter" =   list(CONTRACT_STEAL_SCIENCE, /obj/item/integrated_circuit/manipulation/bluespace_rift),
-	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/rcd),
+	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/construction/rcd),
 	// "a jetpack" =                                    list(CONTRACT_STEAL_OPERATION, /obj/item/tank/jetpack), // jetpack doesn't stuff in STD, redo STD then uncomment this.
 	"a captain's jumpsuit" =                            list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/captain),
 	"a pair of magboots" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/shoes/magboots),

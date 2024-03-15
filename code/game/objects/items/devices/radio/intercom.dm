@@ -141,11 +141,48 @@
 	ClearOverlays()
 	if(on)
 		icon_state = "intercom"
+		em_block_state = "intercom-eb"
 		AddOverlays(ea_overlay)
 		set_light(0.75, 0.5, 1, 2, "#008000")
 	else
 		icon_state = "intercom-p"
+		em_block_state = null
 		set_light(0)
+
+/obj/item/device/radio/intercom/Initialize(mapload, _dir)
+	. = ..(mapload)
+
+	if(_dir)
+		set_dir(_dir)
+
+	if(!pixel_x && !pixel_y) // Don't touch the premapped shifts
+		switch(dir)
+			if(NORTH)
+				pixel_y = -22
+			if(SOUTH)
+				pixel_y = 22
+			if(EAST)
+				pixel_x = -22
+			if(WEST)
+				pixel_x = 22
+
+	power_change()
+
+/obj/item/device/radio/intercom/attackby(obj/item/W, mob/user)
+	if(isScrewdriver(W))
+		unscrew_frame(user)
+		return
+
+	return ..()
+
+/obj/item/device/radio/intercom/proc/unscrew_frame(mob/user)
+	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
+	show_splash_text(user, "unscrewing...")
+
+	if(do_after(user, 40, src))
+		show_splash_text(user, "unscrewed!")
+		new /obj/item/intercom_assembly(loc, dir, src)
+		qdel(src)
 
 /obj/item/device/radio/intercom/broadcasting
 	broadcasting = 1

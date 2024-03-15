@@ -174,6 +174,8 @@
 		else
 			user.visible_message(SPAN("danger", "[user] hits \the [src] with \the [W], but it bounces off!"))
 
+	return ..()
+
 /obj/structure/girder/proc/construct_wall(obj/item/stack/material/S, mob/user)
 	if(S.get_amount() < 2)
 		to_chat(user, SPAN("notice", "There isn't enough material here to construct a wall."))
@@ -253,7 +255,7 @@
 	qdel(src)
 
 /obj/structure/girder/attack_hand(mob/user as mob)
-	if(MUTATION_HULK in user.mutations)
+	if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
 		user.visible_message(SPAN("danger", "[user] smashes \the [src] apart!"), \
 							 SPAN("danger", "You smash \the [src] apart!"))
 		dismantle()
@@ -313,3 +315,30 @@
 				             SPAN("notice", "You drill through \the [src]!"))
 		new /obj/item/remains/human(get_turf(src))
 		dismantle()
+
+/obj/structure/girder/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	switch(the_rcd.mode)
+		if(RCD_TURF)
+			return rcd_result_with_memory(
+				list("delay" = 2 SECONDS, "cost" = 8),
+				get_turf(src), RCD_MEMORY_WALL,
+			)
+
+		if(RCD_DECONSTRUCT)
+			return list("delay" = 2 SECONDS, "cost" = 13)
+
+	return FALSE
+
+/obj/structure/girder/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	switch(rcd_data["[RCD_DESIGN_MODE]"])
+		if(RCD_TURF)
+			var/turf/T = get_turf(src)
+			T.ChangeTurf(/turf/simulated/wall)
+			qdel_self()
+			return TRUE
+
+		if(RCD_DECONSTRUCT)
+			qdel_self()
+			return TRUE
+
+	return FALSE

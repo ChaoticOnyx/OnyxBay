@@ -1051,7 +1051,7 @@
 		g_skin = 0
 		b_skin = 0
 
-	if(default_colour || !(species.appearance_flags & HAS_EYE_COLOR))
+	if(default_colour || !(species.species_appearance_flags & HAS_EYE_COLOR))
 		r_eyes = hex2num(copytext(species.default_eye_color, 2, 4))
 		g_eyes = hex2num(copytext(species.default_eye_color, 4, 6))
 		b_eyes = hex2num(copytext(species.default_eye_color, 6, 8))
@@ -1239,7 +1239,7 @@
 	flavor_text = ""
 	for (var/T in flavor_texts)
 		if(flavor_texts[T] && flavor_texts[T] != "")
-			if((T == "general") || (T == "head" && head_exposed) || (T == "face" && face_exposed) || (T == "eyes" && eyes_exposed) || (T == "torso" && torso_exposed) || (T == "arms" && arms_exposed) || (T == "hands" && hands_exposed) || (T == "legs" && legs_exposed) || (T == "feet" && feet_exposed) || (T == "ooc" && !is_ic_dead()))
+			if((T == "general") || (T == "head" && head_exposed) || (T == "face" && face_exposed) || (T == "eyes" && eyes_exposed) || (T == "torso" && torso_exposed) || (T == "arms" && arms_exposed) || (T == "hands" && hands_exposed) || (T == "legs" && legs_exposed) || (T == "feet" && feet_exposed) || (T == "action" && !is_ic_dead()))
 				flavor_text += flavor_texts[T]
 				flavor_text += "\n\n"
 	if(!shrink)

@@ -29,7 +29,11 @@
 /proc/fast_emissive_blocker(atom/make_blocker)
 	var/mutable_appearance/blocker = new()
 	blocker.icon = make_blocker.icon
-	blocker.icon_state = make_blocker.icon_state
+	if(istype(make_blocker, /atom/movable))
+		var/atom/movable/mb = make_blocker
+		blocker.icon_state = mb.em_block_state ? mb.em_block_state : mb.icon_state
+	else
+		blocker.icon_state = make_blocker.icon_state
 	blocker.appearance_flags |= make_blocker.appearance_flags | EMISSIVE_APPEARANCE_FLAGS
 	blocker.dir = make_blocker.dir
 	blocker.color = GLOB.em_block_color

@@ -45,8 +45,10 @@
 			I.color = brightness_color
 			AddOverlays(I)
 			AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
+			em_block_state = "[initial(icon_state)]-eb"
 	else
 		icon_state = "[initial(icon_state)]"
+		em_block_state = null
 
 /obj/item/device/flashlight/proc/switch_light(state = FALSE)
 	on = state
@@ -315,8 +317,10 @@
 		icon_state = "[initial(icon_state)]-on"
 		AddOverlays(image(icon, "[initial(icon_state)]-overlay"))
 		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
+		em_block_state = "[initial(icon_state)]-eb"
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"
+		em_block_state = null
 
 /obj/item/device/flashlight/flare/think()
 	var/turf/pos = get_turf(src)
@@ -395,6 +399,7 @@
 		set_light(0)
 	else if(on)
 		icon_state = "[initial(icon_state)]-on"
+		em_block_state = "[initial(icon_state)]-eb"
 		var/image/I = image(icon, "[initial(icon_state)]-overlay")
 		I.color = brightness_color
 		AddOverlays(I)
@@ -403,6 +408,8 @@
 		set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 	else
 		icon_state = "glowstick"
+		em_block_state = null
+
 	var/mob/M = loc
 	if(istype(M))
 		if(M.l_hand == src)
@@ -463,11 +470,13 @@
 	flashlight_outer_range = 4
 	brightness_color = "#ffff00"
 	light_overlay = FALSE
-	on = 1 //Bio-luminesence has one setting, on.
+	on = TRUE //Bio-luminesence has one setting, on.
+	blocks_emissive = EMISSIVE_BLOCK_NONE
 
 /obj/item/device/flashlight/metroid/Initialize()
 	. = ..()
 	set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
+	AddOverlays(emissive_appearance(icon, "slime-ea"))
 
 /obj/item/device/flashlight/metroid/on_update_icon()
 	return

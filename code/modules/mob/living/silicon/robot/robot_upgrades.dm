@@ -396,7 +396,7 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/rcd/borg(R.module)
+		R.module.modules += new /obj/item/construction/rcd/borg(R.module)
 		installed = 1
 		return 1
 

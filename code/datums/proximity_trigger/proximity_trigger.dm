@@ -24,6 +24,8 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	var/on_turfs_changed
 
 	var/range_
+	var/l_angle_
+	var/r_angle_
 
 	var/list/turfs_in_range
 	var/list/seen_turfs_
@@ -41,7 +43,10 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 /datum/proximity_trigger/square
 	turf_selection = /decl/turf_selection/square
 
-/datum/proximity_trigger/New(holder, on_turf_entered, on_turfs_changed, range = 2, proximity_flags = 0, proc_owner)
+/datum/proximity_trigger/angle
+	turf_selection = /decl/turf_selection/angle
+
+/datum/proximity_trigger/New(holder, on_turf_entered, on_turfs_changed, range = 2, proximity_flags = 0, proc_owner, l_angle = 0, r_angle = 0)
 	..()
 
 	if(!ispath(turf_selection, /decl/turf_selection))
@@ -54,6 +59,8 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	range_ = range
 	src.proximity_flags = proximity_flags
 	src.proc_owner = proc_owner || holder
+	l_angle_ = l_angle
+	r_angle_ = r_angle
 
 	turfs_in_range = list()
 	seen_turfs_ = list()
@@ -150,7 +157,7 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 			. += T
 
 /datum/proximity_trigger/proc/acquire_relevant_turfs()
-	. = turf_selection.get_turfs(holder, range_)
+	. = turf_selection.get_turfs(holder, range_, l_angle_, r_angle_)
 	if(proximity_flags & PROXIMITY_EXCLUDE_HOLDER_TURF)
 		. -= get_turf(holder)
 

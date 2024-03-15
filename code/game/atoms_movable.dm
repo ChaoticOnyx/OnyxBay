@@ -25,8 +25,10 @@
 
 	/// Either [EMISSIVE_BLOCK_NONE], [EMISSIVE_BLOCK_GENERIC], or [EMISSIVE_BLOCK_UNIQUE]
 	var/blocks_emissive = EMISSIVE_BLOCK_NONE
-	///Internal holder for emissive blocker object, DO NOT USE DIRECTLY. Use blocks_emissive
+	/// Internal holder for emissive blocker object, DO NOT USE DIRECTLY. Use blocks_emissive
 	var/mutable_appearance/em_block
+	/// [EMISSIVE_BLOCK_GENERIC] will use this as the em_block mask if specified. Cause we have /obj/item/'s with emissives.
+	var/em_block_state
 
 /atom/movable/Initialize()
 	. = ..()
@@ -189,7 +191,9 @@
 	throw_dir = get_dir(src, target)
 	if(usr)
 		if(MUTATION_HULK in usr.mutations)
-			src.throwing = 2 // really strong throw!
+			throwing = 2 // really strong throw!
+		else if(MUTATION_STRONG in usr.mutations)
+			throwing = 2
 
 	var/dist_travelled = 0
 	var/dist_since_sleep = 0
@@ -312,7 +316,7 @@
 				)
 	return em_block
 
-/atom/movable/on_update_icon()
+/atom/movable/update_icon()
 	..()
 	if(em_block)
 		CutOverlays(em_block)

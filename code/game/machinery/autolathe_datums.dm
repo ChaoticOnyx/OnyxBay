@@ -611,7 +611,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 
 /datum/autolathe/recipe/rcd
 	name = "rapid construction device"
-	path = /obj/item/rcd
+	path = /obj/item/construction/rcd
 	hidden = 1
 	category = "Engineering"
 

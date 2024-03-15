@@ -28,7 +28,7 @@
 	)
 	armor = list(melee = 50, bullet = 45, laser = 70, energy = 45, bomb = 35, bio = 100)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/construction/rcd)
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 266 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 200 MEGA ELECTRONVOLT,

@@ -1061,7 +1061,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	languages = list()
 
 /obj/item/robot_module/drone/construction/New()
-	src.modules += new /obj/item/rcd/borg(src)
+	src.modules += new /obj/item/construction/rcd/borg(src)
 	..()
 
 /obj/item/robot_module/drone/respawn_consumable(mob/living/silicon/robot/R, amount)

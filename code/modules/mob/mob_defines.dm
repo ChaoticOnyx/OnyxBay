@@ -233,3 +233,5 @@
 	var/list/feet_blood_DNA
 	var/track_blood_type
 	var/feet_blood_color
+	/// Holder for a bugreporter datum.
+	var/datum/bugreporter/bugreporter

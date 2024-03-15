@@ -211,7 +211,7 @@
 		else
 			health -= rand(1,3)
 
-	else if (MUTATION_HULK in user.mutations)
+	else if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
 		health = 0
 	else
 		health -= rand(5,8)

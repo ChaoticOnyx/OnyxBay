@@ -131,7 +131,7 @@
 /obj/machinery/power/apc/BorgCtrlClick() // turns off/on APCs. Forwards to AI code.
 	AICtrlClick()
 
-/obj/machinery/turretid/BorgCtrlClick() //turret control on/off. Forwards to AI code.
+/obj/machinery/turret_control_panel/BorgCtrlClick() //turret control on/off. Forwards to AI code.
 	AICtrlClick()
 
 /atom/proc/BorgAltClick(mob/living/silicon/robot/user)
@@ -141,7 +141,7 @@
 /obj/machinery/door/airlock/BorgAltClick() // Eletrifies doors. Forwards to AI code.
 	AICtrlAltClick()
 
-/obj/machinery/turretid/BorgAltClick() //turret lethal on/off. Forwards to AI code.
+/obj/machinery/turret_control_panel/BorgAltClick() //turret lethal on/off. Forwards to AI code.
 	AIAltClick()
 
 /*

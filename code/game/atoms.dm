@@ -494,7 +494,8 @@ its easier to just keep the beam vertical.
 // message is the message output to anyone who can hear.
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
-/atom/proc/audible_message(message, deaf_message, hearing_distance = world.view, checkghosts = null)
+// spash_override replaces the runechatted message if provided. i.e. you can make the atom go "*beep*" instead of "The Machine states, "Bee ..."
+/atom/proc/audible_message(message, deaf_message, hearing_distance = world.view, checkghosts = null, splash_override = null)
 	var/list/hearing_mobs = list()
 	var/list/hearing_objs = list()
 	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
@@ -507,7 +508,7 @@ its easier to just keep the beam vertical.
 		var/mob/M = m
 		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 		if(M.get_preference_value("CHAT_RUNECHAT") == GLOB.PREF_YES)
-			M.create_chat_message(src, message)
+			M.create_chat_message(src, splash_override ? splash_override : message)
 
 /atom/movable/proc/dropInto(atom/destination)
 	while(istype(destination))
@@ -808,3 +809,12 @@ its easier to just keep the beam vertical.
 		offset_y = tf_offset_y,
 		others = others
 	)
+
+
+/// Respond to an RCD acting on our item
+/atom/proc/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	return FALSE
+
+///Return the values you get when an RCD eats you?
+/atom/proc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	return FALSE

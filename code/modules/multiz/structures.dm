@@ -91,7 +91,7 @@
 	"You begin climbing [direction] \the [src]!",
 	"You hear the grunting and clanging of a metal ladder being used.")
 
-	target_ladder.audible_message("<span class='notice'>You hear something coming [direction] \the [src]</span>")
+	target_ladder.audible_message("<span class='notice'>You hear something coming [direction] \the [src]</span>", splash_override = "*crank crank*")
 
 	var/time = dragging ? drag_time : climb_time
 

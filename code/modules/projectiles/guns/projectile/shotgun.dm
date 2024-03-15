@@ -31,15 +31,15 @@
 		recentpump = world.time
 		pump(user)
 
-/obj/item/gun/projectile/shotgun/pump/proc/pump(mob/M as mob)
-	playsound(M, SFX_SHOTGUN_PUMP_IN, rand(45, 60), FALSE)
+/obj/item/gun/projectile/shotgun/pump/proc/pump(atom/movable/user)
+	playsound(user, SFX_SHOTGUN_PUMP_IN, rand(45, 60), FALSE)
 
 	if(chambered)//We have a shell in the chamber
 		ejectCasing()
 		chambered = null
 
 	sleep(5)
-	playsound(M, SFX_SHOTGUN_PUMP_OUT, rand(45, 60), FALSE)
+	playsound(user, SFX_SHOTGUN_PUMP_OUT, rand(45, 60), FALSE)
 
 	if(loaded.len)
 		var/obj/item/ammo_casing/AC = loaded[1] //load next casing.

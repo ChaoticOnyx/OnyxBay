@@ -112,7 +112,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		pref.h_style	= sanitize_inlist(pref.h_style, GLOB.hair_styles_list, S.default_h_style)
 		pref.f_style	= sanitize_inlist(pref.f_style, GLOB.facial_hair_styles_list, S.default_f_style)
 
-	if(S && !(S.appearance_flags & HAS_EYE_COLOR))
+	if(S && !(S.species_appearance_flags & HAS_EYE_COLOR))
 		pref.r_eyes		= hex2num(copytext(S.default_eye_color, 2, 4))
 		pref.g_eyes		= hex2num(copytext(S.default_eye_color, 4, 6))
 		pref.b_eyes		= hex2num(copytext(S.default_eye_color, 6, 8))
@@ -723,11 +723,11 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		dat += "</br><b>Has excellent traction.</b>"
 	if(current_species.species_flags & SPECIES_FLAG_NO_POISON)
 		dat += "</br><b>Immune to most poisons.</b>"
-	if(current_species.appearance_flags & HAS_A_SKIN_TONE)
+	if(current_species.species_appearance_flags & HAS_A_SKIN_TONE)
 		dat += "</br><b>Has a variety of skin tones.</b>"
-	if(current_species.appearance_flags & HAS_SKIN_COLOR)
+	if(current_species.species_appearance_flags & HAS_SKIN_COLOR)
 		dat += "</br><b>Has a variety of skin colours.</b>"
-	if(current_species.appearance_flags & HAS_EYE_COLOR)
+	if(current_species.species_appearance_flags & HAS_EYE_COLOR)
 		dat += "</br><b>Has a variety of eye colours.</b>"
 	if(current_species.species_flags & SPECIES_FLAG_IS_PLANT)
 		dat += "</br><b>Has a plantlike physiology.</b>"

@@ -755,8 +755,6 @@
 			return global.trait_type_to_ref;
 		if("transfer_controller")
 			return global.transfer_controller;
-		if("turret_icons")
-			return global.turret_icons;
 		if("uniqueness_repository")
 			return global.uniqueness_repository;
 		if("universe_has_ended")
@@ -1570,8 +1568,6 @@
 			global.trait_type_to_ref=newval;
 		if("transfer_controller")
 			global.transfer_controller=newval;
-		if("turret_icons")
-			global.turret_icons=newval;
 		if("universe_has_ended")
 			global.universe_has_ended=newval;
 		if("uplink")

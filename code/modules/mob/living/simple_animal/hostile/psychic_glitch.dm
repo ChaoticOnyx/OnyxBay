@@ -86,12 +86,14 @@
 	icon = 'icons/mob/psychic_glitch.dmi'
 	icon_state = "rift1"
 	density = FALSE
+	anchored = TRUE
 	var/max_glitches_at_time = 10 // Max psychic_glitch'es to exist at once
 	var/max_glitches = 40 // How many glitches must be killed to close the rift
 	var/glitches_active = 0 // Currently existing psychic_glitch'es
 	var/glitches_destroyed = 0 // How many glitches have been killed so far
 	var/rift_active = FALSE // Fancy shattering effect
 	var/restoration_ticks = TICKS_TO_RESTORE_GLITCH // Decreasing glitches_destroyed count once in a while
+	var/rift_state = 0
 
 /obj/structure/psychic_rift/Initialize()
 	. = ..()
@@ -105,21 +107,32 @@
 		qdel(src)
 		return FALSE
 
+	var/new_rift_state = 5
 	if(glitches_destroyed < max_glitches * 0.4)
-		icon_state = "rift1"
+		new_rift_state = 1
 	else if(glitches_destroyed < max_glitches * 0.6)
-		icon_state = "rift2"
+		new_rift_state = 2
 	else if(glitches_destroyed < max_glitches * 0.85)
-		icon_state = "rift3"
+		new_rift_state = 3
 	else if(glitches_destroyed < max_glitches * 0.95)
-		icon_state = "rift4"
-	else
-		icon_state = "rift5"
+		new_rift_state = 4
+
+	if(new_rift_state != rift_state)
+		rift_state = new_rift_state
+		update_icon()
 
 	return TRUE
 
+/obj/structure/psychic_rift/on_update_icon()
+	icon_state = "rift[rift_state]"
+	ClearOverlays()
+	if(rift_state < 4)
+		AddOverlays(emissive_appearance(icon, "[icon_state]-ea"))
+
 /obj/structure/psychic_rift/proc/spawn_glitch()
-	if(glitches_active + glitches_destroyed > max_glitches_at_time)
+	if(glitches_active >= max_glitches_at_time)
+		return
+	if(glitches_active + glitches_destroyed >= max_glitches)
 		return
 	glitches_active++
 	var/mob/living/simple_animal/hostile/psychic_glitch/PG = new(loc)
@@ -140,6 +153,6 @@
 		glitches_destroyed--
 		restoration_ticks = TICKS_TO_RESTORE_GLITCH
 
-	set_next_think(world.time + 3 SECOND)
+	set_next_think(world.time + 3 SECONDS)
 
 #undef TICKS_TO_RESTORE_GLITCH

@@ -13,7 +13,7 @@
 	req_access = list(access_security)
 
 	var/obj/item/gun/energy/security/taser = null
-	var/list/models = list("pistol", "SMG", "rifle")
+	var/static/list/models = list("pistol" = /decl/taser_types/pistol, "SMG" = /decl/taser_types/smg, "rifle" = /decl/taser_types/rifle)
 
 /obj/machinery/secsmith/on_update_icon()
 	if(inoperable())
@@ -28,113 +28,101 @@
 /obj/machinery/secsmith/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/gun/energy/security))
 		if(taser)
-			to_chat(user, "[src] already contains a taser!")
+			show_splash_text(user, "already contains a taser!")
 			return
+
 		if(!user.drop(I, src))
 			return
-		to_chat(user, "You insert \the [I] into [src].")
+
+		show_splash_text(user, "taser inserted!")
 		taser = I
 		update_icon()
-		updateUsrDialog()
+		tgui_update()
 		return
+
 	else if(istype(I, /obj/item/gun/energy/classictaser))
-		to_chat(user, "\The [I]'s model is outdated, and not supported by [src].")
+		show_splash_text(user, "taser not supported!")
 		return
+
 	else if(istype(I, /obj/item/gun))
-		to_chat(user, "[src] is not suited for this type of weapon.")
+		show_splash_text(user, "gun not supported!")
 		return
+
 	..()
 
 /obj/machinery/secsmith/attack_hand(mob/user)
-	if(..() || stat & (BROKEN|NOPOWER))
+	tgui_interact(user)
+
+/obj/machinery/secsmith/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
+	if(!ui)
+		ui = new(user, src, "SecSmith", "Sec-Smith B33-P")
+		ui.open()
+
+/obj/machinery/secsmith/tgui_data(mob/user)
+	var/list/data = list(
+		"taserInstalled" = istype(taser) ? TRUE : FALSE
+	)
+
+	var/decl/taser_types/tt = taser?.subtype
+	if(istype(tt))
+		data["model"] = tt.type_name
+		data["owner"] = taser.owner
+		data["charge"] = text2num(round(taser.power_supply?.charge / taser.power_supply?.maxcharge * 100))
+		data["rateOfFire"] = text2num(round(600 / tt.fire_delay))
+		data["ammo"] = tt.max_shots
+		data["info"] = tt.type_desc
+
+	data["taserVariants"] = list()
+	for(var/model in models)
+		var/list/variant_data = list(
+			"name" = model,
+			"type" = models[model]
+		)
+		data["taserVariants"] += list(variant_data)
+
+	return data
+
+/obj/machinery/secsmith/tgui_act(action, params)
+	. = ..()
+
+	if(.)
 		return
 
-	if(!user.IsAdvancedToolUser())
-		return 0
-
-	user.set_machine(src)
-
-	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Sec-Smith B33-P</TITLE></HEAD>"
-	dat += "Welcome to <b>Sec-Smith B33-P</b><BR> Security equipment assembling system"
-	dat += "<BR><FONT SIZE=1>Property of NanoTransen</FONT>"
-
-	if(!taser)
-		dat += "<br><font color='red'>No equipment found.</font>"
-	else
-		var/decl/taser_types/tt = taser.subtype
-		dat += "<br><h2><b>Equipment found:</b></h2>"
-		dat += "<b>Model:</b> [tt.type_name]"
-		dat += "<br><b>Assigned User:</b> [taser.owner ? taser.owner : "none"]"
-		dat += "<br><b>Charge:</b> [round(taser.power_supply.charge / taser.power_supply.maxcharge * 100)]%"
-		dat += "<br><b>Rate of fire:</b> [round(600 / tt.fire_delay)] RPM"
-		dat += "<br><b>Ammunition:</b> [tt.max_shots] shots"
-		dat += "<hr><b>Info:</b> [tt.type_desc]"
-		dat += "<hr>"
-		dat += "<h3><b>Customisation:</b></h3>"
-		dat += "<A href='?src=\ref[src];select_model=1'>\[reassemble\]</a>"
-		dat += "<A href='?src=\ref[src];reset_owner=1'><br>\[reset owner\]</a>"
-		dat += "<A href='?src=\ref[src];set_owner=1'><br>\[set owner\]</a>"
-		dat += "<A href='?src=\ref[src];eject_taser=1'><br>\[eject\]</a>"
-
-	show_browser(user, dat, "window=secsmith")
-	onclose(user, "secsmith")
-	return
-
-/obj/machinery/secsmith/Topic(href, href_list)
-	if(href_list["eject_taser"])
-		if(!taser)
-			return
-		taser.forceMove(get_turf(src))
-		taser = null
-		update_icon()
-	else if(href_list["set_owner"])
-		if(!taser)
-			return
-		var/str = sanitizeSafe(input("Label text?","Set label",""), MAX_NAME_LEN)
-		if(!str || !length(str) || !taser)
-			return
-		taser.owner = str
-	else if(href_list["reset_owner"])
-		if(!taser)
-			return
-		taser.owner = null
-	else if(href_list["select_model"])
-		if(!taser)
-			return
-		var/choice = input("Wanted Model.","Sec-Smith B33-P",null) as null|anything in models
-		if(!choice || !taser)
-			return
-		var/new_model = null
-		switch(choice)
-			if("pistol")
-				new_model = /decl/taser_types/pistol
-			if("SMG")
-				new_model = /decl/taser_types/smg
-			if("rifle")
-				new_model = /decl/taser_types/rifle
-			else
+	switch(action)
+		if("eject_taser")
+			if(!taser)
 				return
-		taser.subtype = decls_repository.get_decl(new_model)
-		taser.update_subtype()
-		update_icon()
 
-	updateUsrDialog()
-	return
+			taser.forceMove(get_turf(src))
+			taser = null
+			return TRUE
 
-/obj/machinery/secsmith/verb/eject()
-	set src in oview(1)
-	set category = "Object"
-	set name = "Eject Taser"
+		if("reset_owner")
+			if(!taser)
+				return
 
-	if(usr.stat)
-		return
+			taser.owner = null
+			return TRUE
 
-	if(!taser)
-		to_chat(usr, "[src] is empty.")
-		return
+		if("set_owner")
+			if(!taser)
+				return
 
-	taser.forceMove(get_turf(src))
-	taser = null
-	update_icon()
-	add_fingerprint(usr)
-	return
+			var/string = sanitizeSafe(params["ownerName"])
+			if(!string || !length(string))
+				return
+
+			taser.owner = string
+			return TRUE
+
+		if("select_model")
+			if(!taser)
+				return
+
+			var/new_model = params["newModelType"]
+			taser.subtype = decls_repository.get_decl(new_model)
+			taser.update_subtype()
+			update_icon()
+			return TRUE

@@ -1,13 +1,16 @@
 /mob/living/carbon/human/_examine_text(mob/user)
-	var/skipgloves = 0
-	var/skipsuitstorage = 0
-	var/skipjumpsuit = 0
-	var/skipshoes = 0
-	var/skipmask = 0
-	var/skipears = 0
-	var/skipeyes = 0
-	var/skipface = 0
+	var/skipgloves      = FALSE
+	var/skipsuitstorage = FALSE
+	var/skipjumpsuit    = FALSE
+	var/skipshoes       = FALSE
+	var/skipmask        = FALSE
+	var/skipears        = FALSE
+	var/skipeyes        = FALSE
+	var/skipface        = FALSE
 	var/skipjumpsuitaccessories = FALSE
+
+	var/visible_sexybits = FALSE // Can we get the gender right even w/ ambiguous bodybuilds?
+	var/examine_distance = isliving(user) ? get_dist(user, src) : 0 // Ghosts shall not be bothered by the eyesight issues
 
 	// exosuits and helmets obscure our view and stuff.
 	if(wear_suit)
@@ -16,6 +19,8 @@
 		skipjumpsuit = wear_suit.flags_inv & HIDEJUMPSUIT
 		skipshoes = wear_suit.flags_inv & HIDESHOES
 		skipjumpsuitaccessories = wear_suit.flags_inv & HIDEJUMPSUITACCESSORIES
+	else if(!w_uniform)
+		visible_sexybits = TRUE
 
 	if(head)
 		skipmask = head.flags_inv & HIDEMASK
@@ -26,16 +31,24 @@
 	if(wear_mask)
 		skipface |= wear_mask.flags_inv & HIDEFACE
 
-	// no accuately spotting headsets from across the room.
-	if(get_dist(user, src) > 3)
-		skipears = 1
+	// no accurately spotting headsets from across the room.
+	if(examine_distance > 3)
+		skipears = TRUE
 
 	var/list/msg = list("This is ")
 
 	var/datum/gender/T = gender_datums[get_gender()]
+
 	if(skipjumpsuit && skipface) // big suits/masks/helmets make it hard to tell their gender
 		T = gender_datums[PLURAL]
 	else
+		if(!visible_sexybits && body_build?.ambiguous_gender && (T.key != "male" || f_style == "Shaved"))
+			T = gender_datums[PLURAL]
+		else if(ishuman(user))
+			var/mob/living/carbon/human/HU = user
+			if(species.troublesome_sexual_dimorphism && (HU.species != species))
+				T = gender_datums[PLURAL]
+
 		if(icon)
 			msg += "[icon2html(icon, user)] " // fucking BYOND: this should stop dreamseeker crashing if we -somehow- examine somebody before their icon is generated
 		else
@@ -79,11 +92,11 @@
 
 	// left hand
 	if(l_hand)
-		msg += "[T.He] [T.is] holding [l_hand.get_examine_line()] in [T.his] left hand.\n"
+		msg += "[T.He] [T.is] holding [l_hand.get_examine_line(examine_distance)] in [T.his] left hand.\n"
 
 	// right hand
 	if(r_hand)
-		msg += "[T.He] [T.is] holding [r_hand.get_examine_line()] in [T.his] right hand.\n"
+		msg += "[T.He] [T.is] holding [r_hand.get_examine_line(examine_distance)] in [T.his] right hand.\n"
 
 	// gloves
 	if(gloves && !skipgloves)
@@ -93,7 +106,7 @@
 
 	// belt
 	if(belt)
-		msg += "[T.He] [T.has] [belt.get_examine_line()] about [T.his] waist.\n"
+		msg += "[T.He] [T.has] [belt.get_examine_line(examine_distance)] about [T.his] waist.\n"
 
 	// shoes
 	if(shoes && !skipshoes)
@@ -126,7 +139,7 @@
 
 	// ID
 	if(wear_id)
-		msg += "[T.He] [T.is] wearing [wear_id.get_examine_line()].\n"
+		msg += "[T.He] [T.is] wearing [wear_id.get_examine_line(examine_distance)].\n"
 
 	// handcuffed?
 	if(handcuffed)

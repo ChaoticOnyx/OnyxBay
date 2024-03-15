@@ -68,7 +68,8 @@
 	recipes += new /datum/stack_recipe("wall girder assembly",/obj/item/stack/gassembly, 2, time = 30, one_per_turf = 0, on_floor = 1)
 	recipes += new /datum/stack_recipe("machine frame", /obj/machinery/constructable_frame/machine_frame, 5, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("vending frame", /obj/machinery/vending_frame, 5, time = 25, one_per_turf = 1, on_floor = 1)
-	recipes += new /datum/stack_recipe("turret frame", /obj/machinery/porta_turret_construct, 5, time = 25, one_per_turf = 1, on_floor = 1)
+	recipes += new /datum/stack_recipe("turret frame", /obj/machinery/turret_frame, 5, time = 25, one_per_turf = 1, on_floor = 1)
+	recipes += new /datum/stack_recipe("turret frame", /obj/structure/turret_control_frame, 5, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("shutters assembly", /obj/structure/secure_door_assembly/shutters, 10, time = 50, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe_list("airlock assemblies", list( \
 		new /datum/stack_recipe("standard airlock assembly", /obj/structure/door_assembly, 4, time = 50, one_per_turf = 1, on_floor = 1), \
@@ -95,6 +96,7 @@
 	recipes += new /datum/stack_recipe("apc frame", /obj/item/frame/apc, 3)
 	recipes += new /datum/stack_recipe("air alarm frame", /obj/item/frame/air_alarm, 3)
 	recipes += new /datum/stack_recipe("fire alarm frame", /obj/item/frame/fire_alarm, 3)
+	recipes += new /datum/stack_recipe("intercom frame", /obj/item/frame/intercom, 3)
 
 	recipes += new /datum/stack_recipe_list("modular computer frames", list( \
 		new /datum/stack_recipe("modular console frame", /obj/item/modular_computer/console, 20, one_per_turf = 1, on_floor = 1),\

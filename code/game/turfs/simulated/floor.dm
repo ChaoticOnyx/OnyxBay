@@ -25,6 +25,9 @@
 	heat_capacity = 10000
 	var/lava = 0
 
+	/// Determines if you can deconstruct this with a RCD
+	var/rcd_proof = FALSE
+
 /turf/simulated/floor/proc/dismantle_floor()
 	ChangeTurf(get_base_turf_by_area(src))
 

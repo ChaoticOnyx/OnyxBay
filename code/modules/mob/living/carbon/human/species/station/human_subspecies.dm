@@ -15,7 +15,7 @@
 	brute_mod =     0.85
 	movespeed_modifier = /datum/movespeed_modifier/human_gravworlder
 
-	appearance_flags = HAS_HAIR_COLOR | HAS_SKIN_TONE_GRAV | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR
+	species_appearance_flags = HAS_HAIR_COLOR | HAS_SKIN_TONE_GRAV | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR
 	spawn_flags = SPECIES_IS_RESTRICTED
 
 	body_builds = list(
@@ -38,7 +38,7 @@
 	darksight_range = 6
 	darksight_tint = DARKTINT_MODERATE
 
-	appearance_flags = HAS_HAIR_COLOR | HAS_SKIN_TONE_SPCR | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR
+	species_appearance_flags = HAS_HAIR_COLOR | HAS_SKIN_TONE_SPCR | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR
 	spawn_flags = SPECIES_IS_RESTRICTED
 
 	body_builds = list(

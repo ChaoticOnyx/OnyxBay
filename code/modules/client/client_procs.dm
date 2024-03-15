@@ -212,11 +212,11 @@
 
 	. = ..()	// calls mob.Login()
 
-	if(byond_version < config.general.client_min_major_version || byond_build < config.general.client_min_minor_version)
-		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
-		<font size='3'>Please update it to [config.general.client_min_major_version].[config.general.client_min_minor_version].</font></center>")
-		spawn(1)
-			qdel(src)
+	if(byond_version < config.general.client_min_major_version || byond_build < config.general.client_min_minor_version || (byond_build in config.general.client_blacklisted_minor_versions))
+		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is [(byond_build in config.general.client_blacklisted_minor_versions) ? "blacklisted" : "too out of date!"]</font><br>\
+		<font size='3'>Please update it to [config.general.client_min_major_version].[config.general.client_recommended_minor_version].</font>\
+		<font size='3'>You can use this link: https://secure.byond.com/download/build/515/</font></center>")
+		QDEL_IN(src, 1)
 		return
 
 	GLOB.using_map.map_info(src)

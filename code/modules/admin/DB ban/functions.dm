@@ -398,7 +398,7 @@
 
 	output += "<table width='100%'><tr><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddtype\">Ban type</label><select name='dbbanaddtype' class=\"form-control form-control-sm\" id=\"dbbanaddtype\"><option value=''>--</option><option value='1'>PERMABAN</option><option value='2'>TEMPBAN</option><option value='3'>JOB PERMABAN</option><option value='4'>JOB TEMPBAN</option></select></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddckey\">Ckey</label><input type='text' name='dbbanaddckey'class=\"form-control form-control-sm\" id=\"dbbanaddckey\"></div></td></tr><tr><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddip\">IP</label><input type='text' name='dbbanaddip'class=\"form-control form-control-sm\" id=\"dbbanaddip\"></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddcid\">CID</label><input type='text' name='dbbanaddcid'class=\"form-control form-control-sm\" id=\"dbbanaddcid\"></div></td></tr><tr><td width='50%'><div class=\"form-group\"><label for=\"dbbaddduration\">Duration</label><input type='text'name='dbbaddduration' class=\"form-control form-control-sm\" id=\"dbbaddduration\"></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddjob\">Ban job</label><select name='dbbanaddjob'class=\"form-control form-control-sm\" id=\"dbbanaddjob\"><option value=''>--</option>"
 
-	for(var/j in list("OOC", "LOOC", "AHelp", "Species", "Male", "Female", "Appearance", "Name")) // new bans
+	for(var/j in list("OOC", "LOOC", "AHelp", "Species", "Male", "Female", "Appearance", "Name", "Bug reporting")) // new bans
 		output += "<option value='[j]'>[j]</option>"
 	for(var/j in get_all_jobs())
 		output += "<option value='[j]'>[j]</option>"

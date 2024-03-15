@@ -44,6 +44,11 @@
 	/// Whether this turf can be used inside a blank holodeck i.e reinforced tile.
 	var/holodeck_compatible = FALSE
 
+	/// If this turf contained an RCD'able object (or IS one, for walls)
+	/// but is now destroyed, this will preserve the value.
+	/// See __DEFINES/construction.dm for RCD_MEMORY_*.
+	var/rcd_memory
+
 /turf/Initialize(mapload, ...)
 	. = ..()
 	if(dynamic_lighting)

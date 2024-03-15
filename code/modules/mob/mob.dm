@@ -18,6 +18,7 @@
 	QDEL_NULL(skybox)
 	QDEL_NULL(ability_master)
 	QDEL_NULL(shadow)
+	QDEL_NULL(bugreporter)
 
 	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)

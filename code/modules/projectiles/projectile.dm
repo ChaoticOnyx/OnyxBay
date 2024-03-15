@@ -173,15 +173,15 @@
 /obj/item/projectile/proc/check_penetrate(atom/A)
 	return 1
 
-/obj/item/projectile/proc/launch(atom/target, target_zone, mob/user, params, obj/item/gun/launcher, Angle_override, forced_spread = 0)
+/obj/item/projectile/proc/launch(atom/target, target_zone, atom/movable/firer, params, obj/item/gun/launcher, Angle_override, forced_spread = 0)
 	original = target
 	previous = get_turf(loc)
 	def_zone = check_zone(target_zone)
-	firer = user
+	src.firer = firer
 	var/direct_target
 	if(get_turf(target) == get_turf(src))
 		direct_target = target
-	preparePixelProjectile(target, user? user : get_turf(src), params, forced_spread)
+	preparePixelProjectile(target, firer? firer : get_turf(src), params, forced_spread)
 	return fire(Angle_override, direct_target)
 
 //sets the click point of the projectile using mouse input params

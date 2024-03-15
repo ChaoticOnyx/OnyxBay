@@ -65,3 +65,6 @@
 /datum/movespeed_modifier/vtec_speedup
 	flags = MOVESPEED_FLAG_SPACEMOVEMENT
 	slowdown = -1
+
+/datum/movespeed_modifier/hamstring_magic
+	slowdown = -1.0

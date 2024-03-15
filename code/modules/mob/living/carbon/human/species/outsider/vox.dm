@@ -16,6 +16,7 @@
 	dealing with their traders and merchants; those that do rarely enjoy the experience."
 
 	taste_sensitivity = TASTE_DULL
+	troublesome_sexual_dimorphism = TRUE
 
 	speech_sounds = list('sound/voice/shriek1.ogg')
 	speech_chance = 20
@@ -39,7 +40,7 @@
 
 	species_flags = SPECIES_FLAG_NO_SCAN
 	spawn_flags = SPECIES_IS_RESTRICTED
-	appearance_flags = HAS_HAIR_COLOR
+	species_appearance_flags = HAS_HAIR_COLOR
 
 	blood_color = "#2299fc"
 	flesh_color = "#808d11"

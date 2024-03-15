@@ -209,6 +209,11 @@
 		user.do_attack_animation(src)
 		shatter()
 
+	else if(MUTATION_STRONG in user.mutations)
+		user.visible_message(SPAN("danger", "[user] smashes through [src]!"))
+		user.do_attack_animation(src)
+		shatter()
+
 	else if (user.a_intent && user.a_intent == I_HURT)
 
 		if (istype(user,/mob/living/carbon/human))
@@ -439,7 +444,18 @@
 		hit(damage_per_fire_tick, 0)
 	..()
 
+/obj/structure/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("delay" = 2 SECONDS, "cost" = 5)
 
+	return FALSE
+
+/obj/structure/window/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_DECONSTRUCT)
+		qdel_self()
+		return TRUE
+
+	return FALSE
 
 /obj/structure/window/basic
 	name = "glass panel"
@@ -531,6 +547,17 @@
 	icon_state = "fwindow"
 	basestate = "fwindow"
 	maxhealth = 30
+
+/obj/structure/window/reinforced/trading
+	name = "trading window"
+	desc = "Perfect for those who are willing to leave their belongings behind. Not for long, though."
+	icon_state = "pwindow"
+	basestate = "pwindow"
+	maxhealth = 30
+
+/obj/structure/window/reinforced/trading/light
+	icon_state = "pwindow_light"
+	basestate = "pwindow_light"
 
 /obj/structure/window/shuttle
 	name = "shuttle window"
