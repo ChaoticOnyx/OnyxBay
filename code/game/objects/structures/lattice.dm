@@ -56,11 +56,13 @@
 		return
 	if(isWelder(C))
 		var/obj/item/weldingtool/WT = C
-		if(!WT.remove_fuel(0, user))
+		if(!WT.use_tool(src, user, amount = 1))
 			return
-		to_chat(user, "<span class='notice'>Slicing lattice joints ...</span>")
+
+		to_chat(user, SPAN_NOTICE("Slicing lattice joints."))
 		new /obj/item/stack/rods(loc)
 		qdel(src)
+
 	if (istype(C, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = C
 		if(R.use(2))

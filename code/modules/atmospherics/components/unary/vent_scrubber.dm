@@ -303,26 +303,16 @@
 
 		var/obj/item/weldingtool/WT = W
 
-		if(!WT.isOn())
-			to_chat(user, "<span class='notice'>The welding tool needs to be on to start this task.</span>")
-			return 1
-
-		if(!WT.remove_fuel(0,user))
-			to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
-			return 1
-
 		if(broken)
-			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
+				return
+
+			if(QDELETED(src) || !user)
+				return
+
 			user.visible_message(SPAN_NOTICE("\The [user] repairing \the [src]."), \
 				SPAN_NOTICE("Now repairing \the [src]."), \
 				"You hear welding.")
-
-			if(!do_after(user, 10, src))
-				to_chat(user, SPAN_NOTICE("You must remain still to finish this task!"))
-				return 1
-			if(!WT.isOn())
-				to_chat(user, SPAN_NOTICE("The welding tool needs to be on to finish this task."))
-				return 1
 
 			switch(broken)
 				if(VENT_DAMAGED_STAGE_ONE)
@@ -333,31 +323,24 @@
 					broken=VENT_DAMAGED_STAGE_TWO
 				if(VENT_BROKEN)
 					to_chat(user, SPAN_NOTICE("\The [src] is ruined! You can't repair it!"))
-					return 1
+					return
 
 			update_icon()
 			return
 
-		to_chat(user, "<span class='notice'>Now welding \the [src].</span>")
-		playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+		else
+			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
+				return
 
-		if(!do_after(user, 20, src))
-			to_chat(user, "<span class='notice'>You must remain close to finish this task.</span>")
-			return 1
+			if(QDELETED(src) || !user)
+				return
 
-		if(!src)
-			return 1
-
-		if(!WT.isOn())
-			to_chat(user, "<span class='notice'>The welding tool needs to be on to finish this task.</span>")
-			return 1
-
-		welded = !welded
-		update_icon()
-		user.visible_message("<span class='notice'>\The [user] [welded ? "welds \the [src] shut" : "unwelds \the [src]"].</span>", \
-			"<span class='notice'>You [welded ? "weld \the [src] shut" : "unweld \the [src]"].</span>", \
-			"You hear welding.")
-		return 1
+			welded = !welded
+			update_icon()
+			user.visible_message("<span class='notice'>\The [user] [welded ? "welds \the [src] shut" : "unwelds \the [src]"].</span>", \
+				"<span class='notice'>You [welded ? "weld \the [src] shut" : "unweld \the [src]"].</span>", \
+				"You hear welding.")
+			return
 
 	return ..()
 

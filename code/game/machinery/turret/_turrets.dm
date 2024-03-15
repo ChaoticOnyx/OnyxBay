@@ -232,16 +232,11 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 	if(isWelder(I))
 		var/obj/item/weldingtool/WT = I
-		if(!WT.isOn())
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 			return
 
-		if(WT.get_fuel() < 5)
-			show_splash_text(user, "Not enough fuel!")
-
-		playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
-		if(do_after(user, 30 SECONDS, src))
-			if(QDELETED(src) || !WT.remove_fuel(5, user))
-				return
+		if(QDELETED(src) || !user)
+			return
 
 		show_splash_text(user, "External armor removed!")
 

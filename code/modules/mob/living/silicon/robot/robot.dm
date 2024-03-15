@@ -578,19 +578,18 @@
 			to_chat(user, "Nothing to fix here!")
 			return
 		var/obj/item/weldingtool/WT = W
-		if (src == user && !do_after(user, 30, src))
-			to_chat(user, "<span class='warning'>You must stand still to repair yourself!</span>")
+		if(!WT.use_tool(src, user, delay = 3 SECONDS, amount = 5))
 			return
-		if (WT.remove_fuel(0))
-			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			adjustBruteLoss(-30)
-			updatehealth()
-			add_fingerprint(user)
-			for(var/mob/O in viewers(user, null))
-				O.show_message(text("<span class='warning'>[user] has fixed some of the dents on [src]!</span>"), 1)
-		else
-			to_chat(user, "Need more welding fuel!")
+
+		if(QDELETED(src) || !user)
 			return
+
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		adjustBruteLoss(-30)
+		updatehealth()
+		add_fingerprint(user)
+		for(var/mob/O in viewers(user, null))
+			O.show_message(text("<span class='warning'>[user] has fixed some of the dents on [src]!</span>"), 1)
 
 	else if(isCoil(W) && (wiresexposed || istype(src,/mob/living/silicon/robot/drone)))
 		if (!getFireLoss())

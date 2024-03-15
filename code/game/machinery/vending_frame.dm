@@ -66,15 +66,15 @@
 				create_vendomat()
 
 /obj/machinery/vending_frame/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user)
-	if(!WT.remove_fuel(0, user))
-		to_chat(user, "The welding tool must be on to complete this task.")
+	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
 		return
-	playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-	if(do_after(user, 20, src))
-		if(!src || !WT.isOn()) return
-		to_chat(user, "<span class='notice'>You deconstruct the frame.</span>")
-		new /obj/item/stack/material/steel(src.loc, 5)
-		qdel(src)
+
+	if(QDELETED(src) || !user)
+		return
+
+	to_chat(user, SPAN_NOTICE("You deconstruct the frame."))
+	new /obj/item/stack/material/steel(src.loc, 5)
+	qdel(src)
 
 /obj/machinery/vending_frame/proc/wrench_frame(mob/user)
 	playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)

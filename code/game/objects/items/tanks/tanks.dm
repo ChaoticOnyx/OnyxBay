@@ -185,37 +185,41 @@ var/list/global/tank_gauge_cache = list()
 
 	if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
-		if(WT.remove_fuel(1,user))
-			if(!valve_welded)
-				to_chat(user, "<span class='notice'>You begin welding the \the [src] emergency pressure relief valve.</span>")
-				if(do_after(user, 40,src))
-					to_chat(user, "<span class='notice'>You carefully weld \the [src] emergency pressure relief valve shut.</span><span class='warning'> \The [src] may now rupture under pressure!</span>")
-					valve_welded = 1
-					leaking = 0
-				else
-					GLOB.bombers += "[key_name(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]"
-					message_admins("[key_name_admin(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]")
-					if(WT.welding)
-						to_chat(user, "<span class='danger'>You accidentally rake \the [W] across \the [src]!</span>")
-						maxintegrity -= rand(2,6)
-						integrity = min(integrity,maxintegrity)
-				WT.eyecheck(user)
-			else
-				to_chat(user, "<span class='notice'>The emergency pressure relief valve has already been welded.</span>")
 
-			if (src.air_contents)
-				var/const/welder_temperature = 1893.15
-				var/const/welder_mean_energy = 26000
-				var/const/welder_heat_capacity = welder_mean_energy / welder_temperature
+		if(valve_welded)
+			to_chat(user, SPAN_NOTICE("The emergency pressure relief valve has already been welded."))
 
-				var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
-				var/total_capacity = src.air_contents.heat_capacity() + welder_heat_capacity
-				var/total_energy = current_energy + welder_mean_energy
+		to_chat(user, SPAN_NOTICE("You begin welding the \the [src] emergency pressure relief valve."))
 
-				var/new_temperature = total_energy / total_capacity
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
+			GLOB.bombers += "[key_name(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]"
+			message_admins("[key_name_admin(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]")
+			if(WT.welding)
+				to_chat(user, SPAN_DANGER("You accidentally rake \the [W] across \the [src]!"))
+				maxintegrity -= rand(2,6)
+				integrity = min(integrity,maxintegrity)
 
-				src.air_contents.temperature = new_temperature
-				set_next_think(world.time)
+		if(QDELETED(src) || !user)
+			return
+
+		to_chat(user, SPAN_NOTICE("You carefully weld \the [src] emergency pressure relief valve shut."))
+		to_chat(user, SPAN_WARNING("\The [src] may now rupture under pressure!"))
+		valve_welded = 1
+		leaking = 0
+
+		if(air_contents)
+			var/const/welder_temperature = 1893.15
+			var/const/welder_mean_energy = 26000
+			var/const/welder_heat_capacity = welder_mean_energy / welder_temperature
+
+			var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
+			var/total_capacity = src.air_contents.heat_capacity() + welder_heat_capacity
+			var/total_energy = current_energy + welder_mean_energy
+
+			var/new_temperature = total_energy / total_capacity
+
+			src.air_contents.temperature = new_temperature
+			set_next_think(world.time)
 
 		add_fingerprint(user)
 

@@ -135,19 +135,19 @@
 
 	else if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
-		if(!WT.isOn())
-			return
 		if(health == max_health)
 			to_chat(user, SPAN("notice", "\The [src] is undamaged."))
 			return
-		if(!WT.remove_fuel(0,user))
-			to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
-			return
+
 		user.visible_message(SPAN("notice", "[user] is repairing the damage to \the [src]..."), \
 				             SPAN("notice", "You start repairing the damage to \the [src]..."))
-		playsound(src, 'sound/items/Welder.ogg', 100, 1)
-		if(!do_after(user, max(5, health / 3), src) && WT && WT.isOn())
+
+		if(!WT.use_tool(src, user, delay = max(5, health /3), amount = 5))
 			return
+
+		if(QDELETED(src) || !user)
+			return
+
 		health = max_health
 		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
 				             SPAN("notice", "You repair \the [src]."))

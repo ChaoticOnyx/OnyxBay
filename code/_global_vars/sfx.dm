@@ -1638,6 +1638,16 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/geiger/geiger_very_high_1.ogg',
 		'sound/effects/geiger/geiger_very_high_2.ogg'
 	),
+	SFX_WELDING = list(
+		'sound/items/Welder.ogg',
+		'sound/items/Welder2.ogg'
+	),
+	SFX_WELDER_ACTIVATE = list(
+		'sound/effects/welderactivate.ogg'
+	),
+	SFX_WELDER_DEACTIVATE = list(
+		'sound/effects/welderdeactivate.ogg'
+	),
 	// FOOTSTEPS
 	SFX_DISTANT_MOVEMENT = list(
 		'sound/effects/footstep/distant/distant1.ogg',

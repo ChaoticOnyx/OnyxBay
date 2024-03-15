@@ -54,17 +54,18 @@
 		update_icon()
 	else if(!anchored && isWelder(C))
 		var/obj/item/weldingtool/WT = C
-		if(WT.remove_fuel(0, user))
-			user.visible_message("<span class='warning'>[user] dissassembles \the [src].</span>",
+		user.visible_message("<span class='warning'>[user] dissassembles \the [src].</span>",
 			"You start to dissassemble \the [src].")
-			if(do_after(user, 40, src))
-				if(!src || !WT.isOn()) return
-				user.visible_message("<span class='warning'>[user] has dissassembled \the [src].</span>",
-									"You have dissassembled \the [src].")
-				new /obj/item/stack/material/steel(src.loc, 2)
-				qdel(src)
-		else
-			to_chat(user, "<span class='notice'>You need more welding fuel.</span>")
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 1))
+			return
+
+		if(QDELETED(src) || !user)
+			return
+
+		user.visible_message("<span class='warning'>[user] has dissassembled \the [src].</span>",
+								"You have dissassembled \the [src].")
+		new /obj/item/stack/material/steel(src.loc, 2)
+		qdel(src)
 	else
 		..(C, user)
 

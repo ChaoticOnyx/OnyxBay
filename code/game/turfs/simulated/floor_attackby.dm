@@ -128,30 +128,26 @@
 
 		else if(isWelder(C))
 			var/obj/item/weldingtool/welder = C
-			if(welder.isOn() && (is_plating()))
+			if((is_plating()))
 				if(broken || burnt)
-					if(welder.isOn())
+					if(welder.use_tool(src, user, amount = 1))
 						to_chat(user, "<span class='notice'>You fix some dents on the broken plating.</span>")
 						playsound(src, 'sound/items/Welder.ogg', 80, 1)
 						icon_state = base_icon_state
 						burnt = null
 						broken = null
-					else
-						to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
-					return
 				else
-					if(welder.isOn())
-						playsound(src, 'sound/items/Welder.ogg', 80, 1)
-						visible_message("<span class='notice'>[user] has started melting the plating's reinforcements!</span>")
-						if(do_after(user, 5 SECONDS) && welder.isOn())
-							visible_message("<span class='warning'>[user] has melted the plating's reinforcements! It should be possible to pry it off.</span>")
-							playsound(src, 'sound/items/Welder.ogg', 80, 1)
-							burnt = 1
-							remove_decals()
-							update_icon()
-					else
-						to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
-					return
+					visible_message("<span class='notice'>[user] has started melting the plating's reinforcements!</span>")
+					if(!welder.use_tool(src, user, delay = 5 SECONDS, amount = 5))
+						return
+
+					if(QDELETED(src) || !user)
+						return
+
+					visible_message("<span class='warning'>[user] has melted the plating's reinforcements! It should be possible to pry it off.</span>")
+					burnt = 1
+					remove_decals()
+					update_icon()
 
 	return ..()
 

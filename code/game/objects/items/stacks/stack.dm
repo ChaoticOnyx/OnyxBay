@@ -163,35 +163,32 @@
 			to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
 			return
 
-	if((WT && WT.remove_fuel(0, user)) || uses_charge || craft_tool == 1)
+	to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
+	if(!WT?.use_tool(src, user, delay = recipe.time, amount = 5) || uses_charge || craft_tool == 1)
+		return
 
-		if (recipe.time)
-			to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
-			if (!do_after(user, recipe.time))
-				return
-
-		if (use(required))
-			var/atom/O
-			if(recipe.use_material)
-				if(istype(src.loc,/turf))
-					O = new recipe.result_type(src.loc, recipe.use_material)
-				else
-					O = new recipe.result_type(user.loc, recipe.use_material)
+	if(use(required))
+		var/atom/O
+		if(recipe.use_material)
+			if(istype(src.loc,/turf))
+				O = new recipe.result_type(src.loc, recipe.use_material)
 			else
-				if(istype(src.loc,/turf))
-					O = new recipe.result_type(src.loc)
-				else
-					O = new recipe.result_type(user.loc)
-			O.set_dir(user.dir)
-			O.add_fingerprint(user)
+				O = new recipe.result_type(user.loc, recipe.use_material)
+		else
+			if(istype(src.loc,/turf))
+				O = new recipe.result_type(src.loc)
+			else
+				O = new recipe.result_type(user.loc)
+		O.set_dir(user.dir)
+		O.add_fingerprint(user)
 
-			if (recipe.goes_in_hands && !recipe.on_floor)
-				user.pick_or_drop(O)
+		if (recipe.goes_in_hands && !recipe.on_floor)
+			user.pick_or_drop(O)
 
-			if (istype(O, /obj/item/stack))
-				var/obj/item/stack/S = O
-				S.amount = produced
-				S.add_to_stacks(user, recipe.goes_in_hands)
+		if (istype(O, /obj/item/stack))
+			var/obj/item/stack/S = O
+			S.amount = produced
+			S.add_to_stacks(user, recipe.goes_in_hands)
 
 /obj/item/stack/Topic(href, href_list)
 	..()

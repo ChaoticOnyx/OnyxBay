@@ -126,29 +126,31 @@ field_generator power level display
 				to_chat(user, "<span class='warning'>The [src.name] needs to be wrenched to the floor.</span>")
 				return
 			if(1)
-				if (WT.remove_fuel(0,user))
-					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
-					user.visible_message("[user.name] starts to weld the [src.name] to the floor.", \
-						"You start to weld the [src] to the floor.", \
-						"You hear welding")
-					if (do_after(user,20,src))
-						if(!src || !WT.isOn()) return
-						state = 2
-						to_chat(user, "You weld the field generator to the floor.")
-				else
+				user.visible_message("[user.name] starts to weld the [src.name] to the floor.", \
+					"You start to weld the [src] to the floor.", \
+					"You hear welding")
+				if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 					return
+
+				if(QDELETED(src) || !user)
+					return
+
+				state = 2
+				to_chat(user, "You weld the field generator to the floor.")
+				return
 			if(2)
-				if (WT.remove_fuel(0,user))
-					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
-					user.visible_message("[user.name] starts to cut the [src.name] free from the floor.", \
-						"You start to cut the [src] free from the floor.", \
-						"You hear welding")
-					if (do_after(user,20,src))
-						if(!src || !WT.isOn()) return
-						state = 1
-						to_chat(user, "You cut the [src] free from the floor.")
-				else
+				user.visible_message("[user.name] starts to cut the [src.name] free from the floor.", \
+					"You start to cut the [src] free from the floor.", \
+					"You hear welding")
+				if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 					return
+
+				if(QDELETED(src) || !user)
+					return
+
+				state = 1
+				to_chat(user, "You cut the [src] free from the floor.")
+				return
 	else
 		..()
 		return

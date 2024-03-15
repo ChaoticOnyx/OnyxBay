@@ -318,6 +318,9 @@
 #define SFX_GEIGER_MODERATE         "geiger_moderate"
 #define SFX_GEIGER_HIGH             "geiger_high"
 #define SFX_GEIGER_VERY_HIGH        "geiger_very_high"
+#define SFX_WELDING                 "welding_sound"
+#define SFX_WELDER_ACTIVATE         "welder_activate"
+#define SFX_WELDER_DEACTIVATE       "welder_deactivate"
 
 // MISC
 #define SFX_VENT                    "vent"
