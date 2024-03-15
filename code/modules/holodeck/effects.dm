@@ -26,7 +26,7 @@
 	return holo_carp
 
 /obj/effect/holodeck_effect/carp/nerf(nerf = TRUE)
-	var/mob/living/simple_animal/hostile/carp/holographic/holo_carp = carp_ref.resolve()
+	var/mob/living/simple_animal/hostile/carp/holographic/holo_carp = carp_ref?.resolve()
 	if(!istype(holo_carp))
 		return
 
@@ -36,5 +36,5 @@
 	icon_state = "holocarp_random"
 
 /obj/effect/holodeck_effect/carp/random/activate()
-	if(prob(4))
+	if(prob(50))
 		return ..()

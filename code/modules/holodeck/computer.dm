@@ -352,9 +352,6 @@
 			load_program(program_id)
 			return TRUE
 
-/obj/machinery/computer/holodeck/allowed(mob/M)
-	return ..() || is_admin(M)
-
 /obj/machinery/computer/holodeck/proc/toggle_safety(new_value)
 	safety_disabled = isnull(new_value) ? !safety_disabled : new_value
 	nerf(!safety_disabled)
