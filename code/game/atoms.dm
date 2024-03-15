@@ -108,7 +108,7 @@
 
 //called if Initialize returns INITIALIZE_HINT_LATELOAD
 /atom/proc/LateInitialize()
-	return
+	set waitfor = FALSE
 
 /atom/proc/drop_location()
 	var/atom/L = loc

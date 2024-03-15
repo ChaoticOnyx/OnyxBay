@@ -165,6 +165,10 @@
 /obj/structure/bed/chair/proc/fold(mob/user)
 	if(!foldable)
 		return
+
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION) // No folding, bozo
+		return
+
 	if(!user.Adjacent(src))
 		return
 

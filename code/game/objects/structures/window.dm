@@ -22,7 +22,7 @@
 	var/glasstype = null // Set this in subtypes. Null is assumed strange or otherwise impossible to dismantle, such as for shuttle glass.
 	var/silicate = 0 // number of units of silicate
 	var/real_explosion_block // ignore this, just use explosion_block
-	var/is_full_window = FALSE
+	var/is_full_window = FALSE //TODO: Make full windows a separate type of window.
 
 	hitby_sound = SFX_GLASS_HIT
 	hitby_loudness_multiplier = 2.0
@@ -103,8 +103,11 @@
 	if(display_message)
 		visible_message("[src] shatters!")
 
-	cast_new(shardtype, is_full_window ? 4 : 1, loc)
-	if(reinf) cast_new(/obj/item/stack/rods, is_full_window ? 4 : 1, loc)
+	if(!(atom_flags & ATOM_FLAG_HOLOGRAM))
+		cast_new(shardtype, is_full_window ? 4 : 1, loc)
+		if(reinf)
+			cast_new(/obj/item/stack/rods, is_full_window ? 4 : 1, loc)
+
 	qdel(src)
 	return
 
@@ -531,7 +534,12 @@
 	desc = "It looks rather strong and opaque. Might take a few good hits to shatter it."
 	icon_state = "twindow"
 	basestate = "twindow"
-	opacity = 1
+	opacity = TRUE
+
+/obj/structure/window/reinforced/tinted/full
+	icon_state = "rblackwindow_preview"
+	basestate = "rblackwindow"
+	is_full_window = TRUE
 
 /obj/structure/window/reinforced/tinted/frosted
 	name = "frosted window"

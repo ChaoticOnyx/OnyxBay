@@ -354,7 +354,6 @@
 			/obj/item/clothing/gloves/color/white/bluespace_tech,
 			/obj/item/clothing/gloves/color/white/modified,
 			/obj/item/clothing/gloves/color/modified,
-			/obj/item/clothing/gloves/boxing/hologlove,
 			/obj/item/clothing/gloves/duty/modified,
 			/obj/item/clothing/gloves/latex/modified,
 			/obj/item/clothing/gloves/latex/nitrile/modified,

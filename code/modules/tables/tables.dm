@@ -108,6 +108,8 @@
 				. += "\n<span class='notice'>It has a few scrapes and dents.</span>"
 
 /obj/structure/table/attackby(obj/item/W, mob/user)
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)
+		return ..()
 
 	if(reinforced && isScrewdriver(W))
 		remove_reinforced(W, user)
@@ -259,7 +261,12 @@
 	material = common_material_remove(user, material, 20, "plating", "bolts", 'sound/items/Ratchet.ogg')
 
 /obj/structure/table/proc/dismantle(obj/item/wrench/W, mob/user)
-	if(manipulating) return
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)
+		return
+
+	if(manipulating)
+		return
+
 	manipulating = 1
 	user.visible_message("<span class='notice'>\The [user] begins dismantling \the [src].</span>",
 	                              "<span class='notice'>You begin dismantling \the [src].</span>")
@@ -296,6 +303,9 @@
 // is to avoid filling the list with nulls, as place_shard won't place shards of certain materials (holo-wood, holo-steel)
 
 /obj/structure/table/proc/break_to_parts(full_return = 0)
+	if(atom_flags & ATOM_FLAG_HOLOGRAM)
+		return
+
 	var/list/shards = list()
 	var/obj/item/material/shard/S = null
 	if(reinforced)
