@@ -13,31 +13,31 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 
 // NOTE: We declare ATOM_FLAG_INITIALIZED earlier, in __initialization.dm, as FLAG(0)
 /// If a dense atom (potentially) only blocks movements from a given direction, i.e. window panes
-#define ATOM_FLAG_CHECKS_BORDER 1<<1
+#define ATOM_FLAG_CHECKS_BORDER (1<<1)
 /// This object can be climbed on.
-#define ATOM_FLAG_CLIMBABLE 1<<2
+#define ATOM_FLAG_CLIMBABLE (1<<2)
 /// Used for items if they don't want to get a blood overlay.
-#define ATOM_FLAG_NO_BLOOD 1<<3
+#define ATOM_FLAG_NO_BLOOD (1<<3)
 /// Reagents don't react inside this container.
-#define ATOM_FLAG_NO_REACT 1<<4
+#define ATOM_FLAG_NO_REACT (1<<4)
 /// Is an open container for chemistry purposes.
-#define ATOM_FLAG_OPEN_CONTAINER 1<<5
+#define ATOM_FLAG_OPEN_CONTAINER (1<<5)
 /// Blocks interactions with most atoms on the same tile, except mobs, items and anything that has the flag below, i.e. fulltile windows.
-#define ATOM_FLAG_FULLTILE_OBJECT 1<<6
+#define ATOM_FLAG_FULLTILE_OBJECT (1<<6)
 /// Skips adjacent checks for atoms that should always be reachable in window tiles.
-#define ATOM_FLAG_ADJACENT_EXCEPTION 1<<7
+#define ATOM_FLAG_ADJACENT_EXCEPTION (1<<7)
 /// It will not produce any radiation when it will be a radiation source.
-#define ATOM_FLAG_IGNORE_RADIATION 1<<8
+#define ATOM_FLAG_IGNORE_RADIATION (1<<8)
 /// SSoverlays must update this atom's overlays.
-#define ATOM_AWAITING_OVERLAY_UPDATE 1<<9
+#define ATOM_AWAITING_OVERLAY_UPDATE (1<<9)
 /// Chemical reaction won't trigger bubbling sound.
-#define ATOM_FLAG_SILENTCONTAINER 1<<10
+#define ATOM_FLAG_SILENTCONTAINER (1<<10)
 /// This atom can't be pushed when bumped.
-#define ATOM_FLAG_UNPUSHABLE 1<<11
+#define ATOM_FLAG_UNPUSHABLE (1<<11)
 /// This atom was spawned inside a holodeck as a hologram, handle accrodingly.
-#define ATOM_FLAG_HOLOGRAM 1<<12
+#define ATOM_FLAG_HOLOGRAM (1<<12)
 /// This atom can'be deconstructed by a normal means.
-#define ATOM_FLAG_NO_DECONSTRUCTION 1<<13
+#define ATOM_FLAG_NO_DECONSTRUCTION (1<<13)
 
 #define OBJ_FLAG_ANCHORABLE              0x0001 // This object can be stuck in place with a tool
 #define OBJ_FLAG_CONDUCTIBLE             0x0002 // Conducts electricity. (metal etc.)
