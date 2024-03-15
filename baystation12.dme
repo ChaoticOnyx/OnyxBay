@@ -2243,7 +2243,6 @@
 #include "code\modules\mob\living\simple_animal\mob_ai.dm"
 #include "code\modules\mob\living\simple_animal\shade.dm"
 #include "code\modules\mob\living\simple_animal\simple_animal.dm"
-#include "code\modules\mob\living\simple_animal\worm.dm"
 #include "code\modules\mob\living\simple_animal\borer\borer.dm"
 #include "code\modules\mob\living\simple_animal\borer\borer_captive.dm"
 #include "code\modules\mob\living\simple_animal\borer\borer_powers.dm"
