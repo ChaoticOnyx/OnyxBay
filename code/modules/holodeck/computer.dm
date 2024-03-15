@@ -165,10 +165,6 @@
 
 		return
 
-	if(length(holo_atom.contents))
-		for(var/atom/contained_atom as anything in holo_atom.contents)
-			add_to_spawned(contained_atom)
-
 	if(isobj(holo_atom))
 		var/obj/holo_obj = holo_atom
 		holo_obj.unacidable = TRUE
@@ -363,8 +359,7 @@
 	safety_disabled = isnull(new_value) ? !safety_disabled : new_value
 	nerf(!safety_disabled)
 
-	message_admins("[key_name_admin(usr)] [safety_disabled ? "restored" : "overrode"] the holodeck's safeties")
-	log_game("[key_name(usr)] [safety_disabled ? "restored" : "overrode"] the holodeck's safeties")
+	log_game("[key_name(usr)] [safety_disabled ? "restored" : "overrode"] the holodeck's safeties", notify_admin = TRUE)
 
 /obj/machinery/computer/holodeck/proc/toggle_gravity()
 	THROTTLE(cooldown, 3 SECONDS)
@@ -390,6 +385,11 @@
 
 	toggle_safety(FALSE)
 	emagged = TRUE
+
+	audible_message(SPAN_WARNING("WARNING! Automatic shutoff and derezing protocols have been corrupted. Please call [GLOB.using_map.company_name] maintenance and do not use the simulator."))
+	to_chat(usr, SPAN_NOTICE("You vastly increase projector power and override the safety and security protocols."))
+
+	log_game("[key_name(usr)] emagged the holodeck computer", notify_admin = TRUE)
 
 	return TRUE
 
