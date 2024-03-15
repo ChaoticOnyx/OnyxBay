@@ -73,15 +73,20 @@
 // USE THIS WHEN COPYING STUFF OR YOU'LL GET CORRUPTION!
 /datum/dna/proc/Clone()
 	var/datum/dna/new_dna = new()
-	new_dna.unique_enzymes=unique_enzymes
-	new_dna.b_type=b_type
+
+	new_dna.unique_enzymes = unique_enzymes
+	new_dna.b_type = b_type
 	new_dna.body_build = body_build
-	new_dna.real_name=real_name
-	new_dna.species=species
-	new_dna.body_markings=body_markings.Copy()
-	new_dna.s_base=s_base
-	new_dna.body_height=body_height
+	new_dna.real_name = real_name
+	new_dna.species = species
+	new_dna.body_markings = body_markings.Copy()
+	new_dna.s_base = s_base
+	new_dna.body_height = body_height
+
+	for(var/i = 1; i <= DNA_UI_LENGTH; i++)
+		new_dna.UI[i] = UI[i]
 	new_dna.UpdateUI()
+
 	return new_dna
 ///////////////////////////////////////
 // UNIQUE IDENTITY
