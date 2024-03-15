@@ -243,3 +243,63 @@
 	bottle_addition = "pourer"
 	bottle_desc = "There is a pourer in the bottle."
 	icon_state = "pourer"
+
+/obj/item/reagent_containers/glass/coffee_cup
+	name = "coffee cup"
+	desc = "A heat-formed plastic coffee cup. Can theoretically be used for other hot drinks, if you're feeling adventurous."
+	icon = 'icons/obj/machines/coffeemaker.dmi'
+	icon_state = "coffee_cup_e"
+	base_icon_state = "coffee_cup"
+	possible_transfer_amounts = list(10)
+	volume = 30
+
+/obj/item/reagent_containers/glass/coffee_cup/on_update_icon()
+	icon_state = reagents.total_volume ? base_icon_state : "[base_icon_state]_e"
+
+/*
+ *	Syrup bottles, basically a unspillable cup that transfers reagents upon clicking on it with a cup
+ */
+
+/obj/item/reagent_containers/vessel/bottle/syrup_bottle
+	name = "syrup bottle"
+	desc = "A bottle with a syrup pump to dispense the delicious substance directly into your coffee cup."
+	icon = 'icons/obj/reagent_containers/bottles.dmi'
+	icon_state = "syrup"
+	possible_transfer_amounts = list(5, 10)
+	amount_per_transfer_from_this = 5
+	lid_type = /datum/vessel_lid/pump_cap
+
+/obj/item/reagent_containers/vessel/bottle/syrup_bottle/_examine_text(mob/user)
+	. = ..()
+	. += SPAN_NOTICE("Alt-click to toggle the pump cap. \n")
+
+/obj/item/reagent_containers/vessel/bottle/syrup_bottle/attackby(obj/item/W, mob/user)
+	if(lid.state == LID_CLOSED && W.is_open_container())
+		if(!reagents.total_volume)
+			show_splash_text(user, "bottle empty!")
+
+		var/free_amount = W.reagents.get_free_space()
+		if(free_amount <= 0)
+			show_splash_text(user, "container is full!")
+
+		var/transfer_amount = min(amount_per_transfer_from_this, free_amount)
+		reagents.trans_to(W, transfer_amount)
+
+		flick("syrup_anim", src)
+		return
+
+	return ..()
+
+/obj/item/reagent_containers/vessel/bottle/syrup_bottle/AltClick(mob/user)
+	lid.toggle(user)
+
+//types of syrups
+/obj/item/reagent_containers/vessel/bottle/syrup_bottle/caramel
+	name = "bottle of caramel syrup"
+	desc = "A pump bottle containing caramalized sugar, also known as caramel. Do not lick."
+	startswith = list(/datum/reagent/sugar/caramel)
+
+/obj/item/reagent_containers/vessel/bottle/syrup_bottle/liqueur
+	name = "bottle of coffee liqueur syrup"
+	desc = "A pump bottle containing mexican coffee-flavoured liqueur syrup. In production since 1936, HONK."
+	startswith = list(/datum/reagent/ethanol/kahlua)

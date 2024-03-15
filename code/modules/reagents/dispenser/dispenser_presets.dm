@@ -90,7 +90,6 @@
 			/obj/item/reagent_containers/chem_disp_cartridge/sugar,
 			/obj/item/reagent_containers/chem_disp_cartridge/milk,
 			/obj/item/reagent_containers/chem_disp_cartridge/cream,
-			/obj/item/reagent_containers/chem_disp_cartridge/coffee,
 			/obj/item/reagent_containers/chem_disp_cartridge/hot_coco,
 			/obj/item/reagent_containers/chem_disp_cartridge/tea,
 			/obj/item/reagent_containers/chem_disp_cartridge/icetea,
@@ -141,9 +140,6 @@
 
 /obj/machinery/chemical_dispenser/bar_coffee/full
 	spawn_cartridges = list(
-			/obj/item/reagent_containers/chem_disp_cartridge/coffee,
-			/obj/item/reagent_containers/chem_disp_cartridge/cafe_latte,
-			/obj/item/reagent_containers/chem_disp_cartridge/soy_latte,
 			/obj/item/reagent_containers/chem_disp_cartridge/hot_coco,
 			/obj/item/reagent_containers/chem_disp_cartridge/milk,
 			/obj/item/reagent_containers/chem_disp_cartridge/cream,

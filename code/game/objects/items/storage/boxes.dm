@@ -667,3 +667,62 @@
 	desc = "A box full of tasty, colorful space cleaner pods."
 	icon_state = "cleanerpods"
 	startswith = list(/obj/item/reagent_containers/pill/cleanerpod = 14)
+
+/obj/item/storage/box/coffeepack
+	icon_state = "arabica_beans"
+	name = "arabica beans"
+	desc = "A bag containing fresh, dry coffee arabica beans. Ethically sourced and packaged by Waffle Corp."
+	startswith = list(/obj/item/reagent_containers/food/grown/coffee = 5)
+
+/obj/item/storage/box/coffeepack/robusta
+	icon_state = "robusta_beans"
+	name = "robusta beans"
+	desc = "A bag containing fresh, dry coffee robusta beans. Ethically sourced and packaged by Waffle Corp."
+	startswith = list(/obj/item/reagent_containers/food/grown/coffee/robusta = 5)
+
+/obj/item/storage/box/coffee_condi_display
+	name = "coffee condiments display"
+	desc = "A neat small box, holding all your favorite coffee condiments."
+	icon_state = "condi_display"
+
+	var/static/image/sugar_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "[icon_state]_sugar")
+	var/static/image/creamer_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "[icon_state]_creamer")
+	var/static/image/astrotame_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "[icon_state]_astrotame")
+	var/static/image/chocolate_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "[icon_state]_chocolate")
+
+
+	can_hold = list(/obj/item/reagent_containers/vessel/condiment/pack/sugar,
+					/obj/item/reagent_containers/vessel/condiment/pack/creamer,
+					/obj/item/reagent_containers/vessel/condiment/pack/astrotame,
+					/obj/item/reagent_containers/food/chocolatebar
+					)
+
+/obj/item/storage/box/coffee_condi_display/Initialize(mapload)
+	. = ..()
+	for(var/i in 1 to 4)
+		new /obj/item/reagent_containers/vessel/condiment/pack/sugar(src)
+		new /obj/item/reagent_containers/vessel/condiment/pack/creamer(src)
+		new /obj/item/reagent_containers/vessel/condiment/pack/astrotame(src)
+		new /obj/item/reagent_containers/food/chocolatebar(src)
+
+/obj/item/storage/box/coffee_condi_display/on_update_icon()
+	. = ..()
+	if(is_path_in_list(/obj/item/reagent_containers/vessel/condiment/pack/sugar, contents))
+		AddOverlays(sugar_overlay)
+	else
+		CutOverlays(sugar_overlay)
+
+	if(is_path_in_list(/obj/item/reagent_containers/vessel/condiment/pack/creamer, contents))
+		AddOverlays(creamer_overlay)
+	else
+		CutOverlays(creamer_overlay)
+
+	if(is_path_in_list(/obj/item/reagent_containers/vessel/condiment/pack/astrotame, contents))
+		AddOverlays(astrotame_overlay)
+	else
+		CutOverlays(astrotame_overlay)
+
+	if(is_path_in_list(/obj/item/reagent_containers/food/chocolatebar, contents))
+		AddOverlays(chocolate_overlay)
+	else
+		CutOverlays(chocolate_overlay)

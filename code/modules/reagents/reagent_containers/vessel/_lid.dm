@@ -290,3 +290,38 @@
 		return SPAN("notice", "It's open.")
 	else if(state == LID_CLOSED)
 		return SPAN("notice", "It's closed.")
+
+/datum/vessel_lid/pump_cap
+	name = "pump cap"
+	state = LID_CLOSED
+
+/datum/vessel_lid/pump_cap/toggle(mob/user)
+	switch(state)
+		if(LID_CLOSED)
+			playsound(owner.loc, 'sound/effects/flask_lid2.ogg', rand(10, 30), 1)
+			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
+			state = LID_OPEN
+			if(user)
+				owner.show_splash_text(user, "removed pump cap")
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.update_icon()
+			return TRUE
+		if(LID_OPEN)
+			playsound(owner.loc, 'sound/effects/flask_lid1.ogg', rand(10, 30), 1)
+			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
+			state = LID_CLOSED
+			if(user)
+				owner.show_splash_text(user, "put pump cap on")
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.update_icon()
+			return TRUE
+	return FALSE
+
+/datum/vessel_lid/pump_cap/get_icon_state()
+	if(state == LID_OPEN)
+		return "[icon_state]_open"
+	return "[icon_state]"
+
+/datum/vessel_lid/pump_cap/get_examine_hint()
+	if(state == LID_CLOSED)
+		return SPAN("notice", "It's pump is on.")

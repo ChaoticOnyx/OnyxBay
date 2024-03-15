@@ -56,7 +56,7 @@
 /obj/item/reagent_containers/chem_disp_cartridge/darkbeer
 	spawn_reagent = /datum/reagent/ethanol/beer/dark
 /obj/item/reagent_containers/chem_disp_cartridge/kahlua
-	spawn_reagent = /datum/reagent/ethanol/coffee/kahlua
+	spawn_reagent = /datum/reagent/ethanol/kahlua
 /obj/item/reagent_containers/chem_disp_cartridge/whiskey
 	spawn_reagent = /datum/reagent/ethanol/whiskey
 /obj/item/reagent_containers/chem_disp_cartridge/wine
@@ -108,13 +108,7 @@
 /obj/item/reagent_containers/chem_disp_cartridge/lemon
 	spawn_reagent = /datum/reagent/drink/juice/lemon
 
-	// Bar, coffee
-/obj/item/reagent_containers/chem_disp_cartridge/coffee
-	spawn_reagent = /datum/reagent/drink/coffee
-/obj/item/reagent_containers/chem_disp_cartridge/cafe_latte
-	spawn_reagent = /datum/reagent/drink/coffee/cafe_latte
-/obj/item/reagent_containers/chem_disp_cartridge/soy_latte
-	spawn_reagent = /datum/reagent/drink/coffee/soy_latte
+	// Bar, hot chocolate and milk
 /obj/item/reagent_containers/chem_disp_cartridge/hot_coco
 	spawn_reagent = /datum/reagent/drink/hot_coco
 /obj/item/reagent_containers/chem_disp_cartridge/milk

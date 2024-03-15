@@ -70,7 +70,7 @@
 	icon_state = "coffee"
 	item_state = "coffee"
 	center_of_mass = "x=15;y=10"
-	startswith = list(/datum/reagent/drink/coffee = 30)
+	startswith = list(/datum/reagent/caffeine/coffee = 30)
 	lid_type = null
 	unacidable = FALSE
 
@@ -301,6 +301,23 @@
 	filling_states = "15;30;50;70;85;100"
 	lid_type = null
 	precise_measurement = TRUE
+
+/obj/item/reagent_containers/vessel/coffeepot
+	name = "coffeepot"
+	desc = "A large pot for dispensing that ambrosia of corporate life known to mortals only as coffee. Contains 4 standard cups."
+	icon_state = "coffeepot"
+	volume = 120
+	amount_per_transfer_from_this = 10
+	center_of_mass = "x=16;y=9"
+	filling_states = "1;30;60;100"
+	lid_type = null
+	precise_measurement = TRUE
+
+/obj/item/reagent_containers/vessel/coffeepot/bluespace
+	name = "bluespace coffeepot"
+	desc = "The most advanced coffeepot the eggheads could cook up: sleek design; graduated lines; connection to a pocket dimension for coffee containment; yep, it's got it all. Contains 8 standard cups."
+	volume = 240
+	icon_state = "coffeepot_bluespace"
 
 /obj/item/reagent_containers/vessel/skullgoblet
 	name = "skull goblet"
