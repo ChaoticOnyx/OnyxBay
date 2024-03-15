@@ -154,33 +154,35 @@
 
 	if(isWelder(W) && ( (istext(glass)) || (glass == 1) || (!anchored) ))
 		var/obj/item/weldingtool/WT = W
-		if (WT.remove_fuel(0, user))
-			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
-			if(istext(glass))
-				user.visible_message("[user] welds the [glass] plating off the airlock assembly.", "You start to weld the [glass] plating off the airlock assembly.")
-				if(do_after(user, 40,src))
-					if(!src || !WT.isOn()) return
-					to_chat(user, "<span class='notice'>You welded the [glass] plating off!</span>")
-					var/M = text2path("/obj/item/stack/material/[glass]")
-					new M(src.loc, 2)
-					glass = 0
-			else if(glass == 1)
-				user.visible_message("[user] welds the glass panel out of the airlock assembly.", "You start to weld the glass panel out of the airlock assembly.")
-				if(do_after(user, 40,src))
-					if(!src || !WT.isOn()) return
-					to_chat(user, "<span class='notice'>You welded the glass panel out!</span>")
-					new /obj/item/stack/material/glass/reinforced(src.loc)
-					glass = 0
-			else if(!anchored)
-				user.visible_message("[user] dissassembles the airlock assembly.", "You start to dissassemble the airlock assembly.")
-				if(do_after(user, 40,src))
-					if(!src || !WT.isOn()) return
-					to_chat(user, "<span class='notice'>You dissasembled the airlock assembly!</span>")
-					new /obj/item/stack/material/steel(src.loc, 4)
-					qdel (src)
-		else
-			to_chat(user, "<span class='notice'>You need more welding fuel.</span>")
+
+		if(istext(glass))
+			user.visible_message("[user] welds the [glass] plating off the airlock assembly.", "You start to weld the [glass] plating off the airlock assembly.")
+		else if(glass == 1)
+			user.visible_message("[user] welds the glass panel out of the airlock assembly.", "You start to weld the glass panel out of the airlock assembly.")
+		else if(!anchored)
+			user.visible_message("[user] dissassembles the airlock assembly.", "You start to dissassemble the airlock assembly.")
+
+
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 			return
+
+		if(QDELETED(src) || !user)
+			return
+
+		if(istext(glass))
+			to_chat(user, SPAN_NOTICE("You welded the [glass] plating off!"))
+			var/M = text2path("/obj/item/stack/material/[glass]")
+			new M(src.loc, 2)
+			glass = 0
+		else if(glass == 1)
+			to_chat(user, SPAN_NOTICE("You welded the glass panel out!"))
+			new /obj/item/stack/material/glass/reinforced(src.loc)
+			glass = 0
+		else if(!anchored)
+			to_chat(user, SPAN_NOTICE("You dissasembled the airlock assembly!"))
+			new /obj/item/stack/material/steel(src.loc, 4)
+			qdel_self()
+
 
 	else if(isWrench(W) && state == 0)
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)

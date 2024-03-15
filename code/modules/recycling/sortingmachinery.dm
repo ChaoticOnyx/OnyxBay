@@ -510,24 +510,23 @@
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			to_chat(user, "You attach the screws around the power connection.")
 			return
-	else if(isWelder(I) && c_mode==1)
-		var/obj/item/weldingtool/W = I
-		if(W.remove_fuel(1,user))
-			to_chat(user, "You start slicing the floorweld off the delivery chute.")
-			if(do_after(user,20, src))
-				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
-				if(!src || !W.isOn()) return
-				to_chat(user, "You sliced the floorweld off the delivery chute.")
-				var/obj/structure/disposalconstruct/C = new (src.loc)
-				C.ptype = 8 // 8 =  Delivery chute
-				C.update()
-				C.anchored = 1
-				C.set_density(1)
-				qdel(src)
+	else if(isWelder(I) && c_mode == 1)
+		var/obj/item/weldingtool/WT = I
+		to_chat(user, "You start slicing the floorweld off the delivery chute.")
+		if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 			return
-		else
-			to_chat(user, "You need more welding fuel to complete this task.")
+
+		if(QDELETED(src) || !user)
 			return
+
+		to_chat(user, "You sliced the floorweld off the delivery chute.")
+		var/obj/structure/disposalconstruct/C = new (src.loc)
+		C.ptype = 8 // 8 =  Delivery chute
+		C.update()
+		C.anchored = TRUE
+		C.set_density(TRUE)
+		qdel(src)
+		return
 
 /obj/machinery/disposal/deliveryChute/Destroy()
 	if(trunk)

@@ -269,11 +269,11 @@
 			return
 	else if(isWelder(W))
 		if(buildstate == 1)
-			var/obj/item/weldingtool/T = W
-			if(T.remove_fuel(0,user))
-				if(!src || !T.isOn()) return
-				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
-				to_chat(user, "<span class='notice'>You weld the rods into place.</span>")
+			var/obj/item/weldingtool/WT = W
+			if(!WT.use_tool(src, user, amount = 1))
+				return
+
+			to_chat(user, "<span class='notice'>You weld the rods into place.</span>")
 			buildstate++
 			update_icon()
 		return

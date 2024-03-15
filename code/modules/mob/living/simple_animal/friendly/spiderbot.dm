@@ -98,18 +98,17 @@
 
 	if(isWelder(O))
 		var/obj/item/weldingtool/WT = O
-		if (WT.remove_fuel(0))
-			if(health < maxHealth)
-				health += pick(1,1,1,2,2,3)
-				if(health > maxHealth)
-					health = maxHealth
-				add_fingerprint(user)
-				src.visible_message("<span class='notice'>\The [user] has spot-welded some of the damage to \the [src]!</span>")
-			else
-				to_chat(user, "<span class='warning'>\The [src] is undamaged!</span>")
-		else
-			to_chat(user, "<span class='danger'>You need more welding fuel for this task!</span>")
+		if(!WT.use_tool(src, user, amount = 1))
 			return
+
+		if(health < maxHealth)
+			health += pick(1,1,1,2,2,3)
+			if(health > maxHealth)
+				health = maxHealth
+			add_fingerprint(user)
+			src.visible_message("<span class='notice'>\The [user] has spot-welded some of the damage to \the [src]!</span>")
+		else
+			to_chat(user, "<span class='warning'>\The [src] is undamaged!</span>")
 	else if(istype(O, /obj/item/card/id)||istype(O, /obj/item/device/pda))
 		if (!mmi)
 			to_chat(user, "<span class='danger'>There's no reason to swipe your ID - \the [src] has no brain to remove.</span>")
