@@ -67,6 +67,11 @@
 		qdel(src)
 		return
 
+	if(get_area(src) == linked_area)
+		log_debug("[src] was placed inside managed area! This might cause recursion and other errors.")
+		qdel(src)
+		return
+
 	bottom_left = locate(linked_area.x, linked_area.y, z)
 	if(isnull(bottom_left))
 		log_debug("[src] has an invalid holodeck area.")
