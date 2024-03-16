@@ -327,10 +327,10 @@
 						size_text = "huge"
 			if(i < 1)
 				P.icon_state = "deliverycrate1"
-				size_text = "tiny parcel")
+				size_text = "tiny parcel"
 			if(i > 5)
 				P.icon_state = "deliverycrate5"
-				size_text = "huge parcel")
+				size_text = "huge parcel"
 
 			P.SetName("[size_text] parcel")
 			P.desc = "A [size_text] wrapped package."
