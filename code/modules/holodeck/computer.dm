@@ -6,6 +6,8 @@
 
 	req_access = list(access_heads)
 
+	circuit = /obj/item/circuitboard/holodeckcontrol
+
 	icon_keyboard = "tech_key"
 	icon_screen = "holocontrol"
 	light_color = "#41E0FC"
@@ -30,6 +32,9 @@
 	var/list/programs_cache
 	/// List of json-like objects representing restricted programs, used by UI.
 	var/list/emag_programs_cache
+
+	/// Whether holodeck is currently loading a program. Blocks other `load_program` calls.
+	var/loading_map = FALSE
 
 	/// Currently loaded program's `template_id`.
 	var/program
@@ -59,6 +64,11 @@
 	linked_area = pick_area_by_type(mapped_start_area_typepath, list())
 	if(isnull(linked_area))
 		log_debug("[src] has no matching holodeck area.")
+		qdel(src)
+		return
+
+	if(get_area(src) == linked_area)
+		log_debug("[src] was placed inside managed area! This might cause recursion and other errors.")
 		qdel(src)
 		return
 
@@ -94,6 +104,11 @@
 		audible_message(SPAN_WARNING("ERROR. Recalibrating projection apparatus."))
 		return
 
+	if(loading_map)
+		return
+
+	loading_map = TRUE
+
 	clear_projections()
 
 	using_template = SSmapping.holodeck_templates[map_id]
@@ -111,6 +126,8 @@
 
 	finish_loading()
 	nerf(!emagged)
+
+	loading_map = FALSE
 
 	update_use_power(active ? POWER_USE_ACTIVE : POWER_USE_IDLE)
 
@@ -384,7 +401,7 @@
 	emagged = TRUE
 
 	audible_message(SPAN_WARNING("WARNING! Automatic shutoff and derezing protocols have been corrupted. Please call [GLOB.using_map.company_name] maintenance and do not use the simulator."))
-	to_chat(usr, SPAN_NOTICE("You vastly increase projector power and override the safety and security protocols."))
+	show_splash_text(user, "projector power increased")
 
 	log_game("[key_name(usr)] emagged the holodeck computer", notify_admin = TRUE)
 
