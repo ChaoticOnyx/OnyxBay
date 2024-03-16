@@ -16,7 +16,7 @@
 "aap" = (/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/tiled,/area/eclipse/civilian/dormitory/holodeck/source_picnicarea)
 "aaq" = (/obj/structure/flora/ausbushes/sparsegrass,/turf/simulated/floor/tiled,/area/eclipse/civilian/dormitory/holodeck/source_picnicarea)
 "aar" = (/obj/item/clothing/under/dress/dress_saloon,/obj/item/clothing/head/hairflower,/turf/simulated/floor/tiled,/area/eclipse/civilian/dormitory/holodeck/source_theatre)
-"aas" = (/obj/effect/landmark/costume,/turf/simulated/floor/tiled,/area/eclipse/civilian/dormitory/holodeck/source_theatre)
+"aas" = (/turf/simulated/floor/tiled,/area/eclipse/civilian/dormitory/holodeck/source_theatre)
 "aau" = (/obj/structure/flora/pottedplant{tag = "icon-plant-10"; icon_state = "plant-10"},/turf/simulated/floor/tiled,/area/eclipse/civilian/dormitory/holodeck/source_courtroom)
 "aaw" = (/turf/simulated/floor/tiled,/area/eclipse/civilian/dormitory/holodeck/source_wildlife)
 "aax" = (/turf/simulated/floor/tiled,/area/eclipse/civilian/dormitory/holodeck/source_plating)
