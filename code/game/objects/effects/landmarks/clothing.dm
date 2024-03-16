@@ -177,6 +177,6 @@
 /obj/effect/landmark/costume/random/Initialize()
 	. = ..()
 
-	var/list/paths = typesof(/obj/effect/landmark/costume) - /obj/effect/landmark/costume/random
+	var/list/paths = subtypesof(/obj/effect/landmark/costume) - /obj/effect/landmark/costume/random
 	var/chosen_path = pick(paths)
 	new chosen_path(loc)
