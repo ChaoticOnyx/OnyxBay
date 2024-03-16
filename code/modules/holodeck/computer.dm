@@ -396,7 +396,7 @@
 	emagged = TRUE
 
 	audible_message(SPAN_WARNING("WARNING! Automatic shutoff and derezing protocols have been corrupted. Please call [GLOB.using_map.company_name] maintenance and do not use the simulator."))
-	to_chat(usr, SPAN_NOTICE("You vastly increase projector power and override the safety and security protocols."))
+	show_splash_text(user, "projector power increased")
 
 	log_game("[key_name(usr)] emagged the holodeck computer", notify_admin = TRUE)
 
