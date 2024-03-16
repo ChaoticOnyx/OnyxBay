@@ -33,6 +33,9 @@
 	/// List of json-like objects representing restricted programs, used by UI.
 	var/list/emag_programs_cache
 
+	/// Whether holodeck is currently loading a program. Blocks other `load_program` calls.
+	var/loading_map = FALSE
+
 	/// Currently loaded program's `template_id`.
 	var/program
 	/// Previously loaded program's `template_id`.
@@ -96,6 +99,11 @@
 		audible_message(SPAN_WARNING("ERROR. Recalibrating projection apparatus."))
 		return
 
+	if(loading_map)
+		return
+
+	loading_map = TRUE
+
 	clear_projections()
 
 	using_template = SSmapping.holodeck_templates[map_id]
@@ -113,6 +121,8 @@
 
 	finish_loading()
 	nerf(!emagged)
+
+	loading_map = FALSE
 
 	update_use_power(active ? POWER_USE_ACTIVE : POWER_USE_IDLE)
 
