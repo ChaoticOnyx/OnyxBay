@@ -107,12 +107,14 @@
 		if(!pedaled)
 			pedal(user)
 
-/obj/structure/bed/chair/pedalgen/Move(NewLoc)
+/obj/structure/bed/chair/pedalgen/Move(newloc, direct)
 	. = ..()
-	if(buckled_mob)
-		if(buckled_mob.buckled == src)
-			buckled_mob.forceMove(loc)
-			update_mob(buckled_mob)
+	if(!.)
+		return
+
+	if(buckled_mob?.buckled == src)
+		buckled_mob.forceMove(loc)
+		update_mob(buckled_mob)
 
 /obj/structure/bed/chair/pedalgen/post_buckle_mob(mob/user)
 	update_mob(user, 1)

@@ -374,10 +374,12 @@
 ////////  Movement procs  ////////
 //////////////////////////////////
 
-/obj/mecha/Move()
+/obj/mecha/Move(newloc, direct)
 	. = ..()
-	if(.)
-		events.fireEvent("onMove",get_turf(src))
+	if(!.)
+		return
+
+	events.fireEvent("onMove", get_turf(src))
 
 /obj/mecha/relaymove(mob/user,direction)
 	if(user != src.occupant) //While not "realistic", this piece is player friendly.

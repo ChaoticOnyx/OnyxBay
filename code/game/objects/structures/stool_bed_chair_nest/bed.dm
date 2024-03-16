@@ -160,9 +160,12 @@
 	if(Adjacent(user)) // Robots can open/close it, but not the AI.
 		attack_hand(user)
 
-/obj/structure/bed/Move()
+/obj/structure/bed/Move(newloc, direct)
 	. = ..()
-	if(buckled_mob)
+	if(!.)
+		return
+
+	if(buckled_mob?.buckled == src)
 		buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 
 /obj/structure/bed/forceMove()
@@ -367,8 +370,11 @@
 		unbuckle()
 
 
-/obj/structure/bed/roller/Move()
+/obj/structure/bed/roller/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	if(buckled_bodybag)
 		buckled_bodybag.set_glide_size(glide_size)
 		buckled_bodybag.forceMove(loc)

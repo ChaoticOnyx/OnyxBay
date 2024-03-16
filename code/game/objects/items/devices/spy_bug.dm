@@ -56,14 +56,20 @@
 /obj/item/device/spy_bug/proc/unpair()
 	paired_with = null
 
-/obj/item/device/spy_bug/Move()
+/obj/item/device/spy_bug/Move(newloc, direct)
 	. = ..()
-	if(. && paired_with)
+	if(!.)
+		return
+
+	if(paired_with)
 		paired_with.bug_moved()
 
 /obj/item/device/spy_bug/forceMove()
 	. = ..()
-	if(. && paired_with)
+	if(!.)
+		return
+
+	if(paired_with)
 		paired_with.bug_moved()
 
 /obj/item/device/spy_monitor

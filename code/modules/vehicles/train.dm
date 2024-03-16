@@ -27,16 +27,16 @@
 	for(var/obj/vehicle/train/T in orange(1, src))
 		latch(T)
 
-/obj/vehicle/train/Move()
+/obj/vehicle/train/Move(newloc, direct)
 	var/old_loc = get_turf(src)
-	if(..())
-		if(tow)
-			tow.Move(old_loc)
-		return 1
-	else
+	. = ..()
+	if(!.)
 		if(lead)
 			unattach()
-		return 0
+		return
+
+	if(tow)
+		tow.Move(old_loc)
 
 /obj/vehicle/train/Bump(atom/Obstacle)
 	if(!istype(Obstacle, /atom/movable))

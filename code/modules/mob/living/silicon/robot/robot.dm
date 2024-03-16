@@ -974,57 +974,48 @@
 	return I
 
 
-/mob/living/silicon/robot/Move(a, b, flag)
-
+/mob/living/silicon/robot/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
 
-	if(module)
-		if(module.type == /obj/item/robot_module/janitor/general)
-			var/turf/tile = loc
-			if(isturf(tile))
-				tile.clean_blood()
-				if (istype(tile, /turf/simulated))
-					var/turf/simulated/S = tile
-					S.dirt = 0
-				for(var/A in tile)
-					if(istype(A, /obj/effect))
-						if(istype(A, /obj/effect/rune) || istype(A, /obj/effect/decal/cleanable) || istype(A, /obj/effect/overlay))
-							qdel(A)
-					else if(istype(A, /obj/item))
-						var/obj/item/cleaned_item = A
-						cleaned_item.clean_blood()
-					else if(istype(A, /mob/living/carbon/human))
-						var/mob/living/carbon/human/cleaned_human = A
-						if(cleaned_human.lying)
-							if(cleaned_human.head)
-								cleaned_human.head.clean_blood()
-								cleaned_human.update_inv_head(0)
-							if(cleaned_human.wear_suit)
-								cleaned_human.wear_suit.clean_blood()
-								cleaned_human.update_inv_wear_suit(0)
-							else if(cleaned_human.w_uniform)
-								cleaned_human.w_uniform.clean_blood()
-								cleaned_human.update_inv_w_uniform(0)
-							if(cleaned_human.shoes)
-								cleaned_human.shoes.clean_blood()
-								cleaned_human.update_inv_shoes(0)
-							cleaned_human.clean_blood(1)
-							to_chat(cleaned_human, "<span class='warning'>[src] cleans your face!</span>")
-/*		if(module.type == /obj/item/robot_module/engineering)
-			var/obj/item/robot_module/engineering/general/mod = src.module
-			var/turf/tile = loc
-			world<< mod.synths
-			locate() in
-			if(isturf(tile))
-				for(var/I in tile)
-					if (istype(I,/obj/item/stack/material/steel))
-						mod.synths.metal.add_charge(1000)
-						spawn(0) //give the stacks a chance to delete themselves if necessary
-					else if (istype(I,/obj/item/stack/material/cyborg/glass/reinforced))
-						var/datum/matter_synth/metal.add_charge(500)
-						var/datum/matter_synth/glass.add_charge(1000)
-						spawn(0) //give the stacks a chance to delete themselves if necessary
-*/
+	if(!module || module.type != /obj/item/robot_module/janitor/general)
+		return
+
+	var/turf/tile = loc
+	if(!isturf(tile))
+		return
+
+	tile.clean_blood()
+
+	if(istype(tile, /turf/simulated))
+		var/turf/simulated/S = tile
+		S.dirt = 0
+
+	for(var/A in tile)
+		if(istype(A, /obj/effect))
+			if(istype(A, /obj/effect/rune) || istype(A, /obj/effect/decal/cleanable) || istype(A, /obj/effect/overlay))
+				qdel(A)
+		else if(istype(A, /obj/item))
+			var/obj/item/cleaned_item = A
+			cleaned_item.clean_blood()
+		else if(istype(A, /mob/living/carbon/human))
+			var/mob/living/carbon/human/cleaned_human = A
+			if(cleaned_human.lying)
+				if(cleaned_human.head)
+					cleaned_human.head.clean_blood()
+					cleaned_human.update_inv_head(0)
+				if(cleaned_human.wear_suit)
+					cleaned_human.wear_suit.clean_blood()
+					cleaned_human.update_inv_wear_suit(0)
+				else if(cleaned_human.w_uniform)
+					cleaned_human.w_uniform.clean_blood()
+					cleaned_human.update_inv_w_uniform(0)
+				if(cleaned_human.shoes)
+					cleaned_human.shoes.clean_blood()
+					cleaned_human.update_inv_shoes(0)
+				cleaned_human.clean_blood(1)
+				to_chat(cleaned_human, SPAN("warning", "<b>[src]</b> cleans your face!"))
 
 /mob/living/silicon/robot/proc/self_destruct()
 	gib()

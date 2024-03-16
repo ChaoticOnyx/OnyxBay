@@ -13,10 +13,16 @@
 	T = new /obj/item/stack/tile/floor(src)
 	..()
 
-/obj/machinery/floorlayer/Move(new_turf,M_Dir)
+/obj/machinery/floorlayer/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
 
-	if(on)
+	var/turf/new_turf
+	if(isturf(loc))
+		new_turf = loc
+
+	if(on && istype(old_turf))
 		if(mode["dismantle"])
 			dismantleFloor(old_turf)
 
@@ -26,8 +32,8 @@
 		if(mode["collect"])
 			CollectTiles(old_turf)
 
-
-	old_turf = new_turf
+	if(istype(new_turf))
+		old_turf = newloc
 
 /obj/machinery/floorlayer/attack_hand(mob/user as mob)
 	on=!on

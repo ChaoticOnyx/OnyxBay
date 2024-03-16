@@ -385,7 +385,7 @@
 		W.update_icon()
 
 
-/obj/structure/window/Move()
+/obj/structure/window/Move(newloc, direct)
 	var/ini_dir = dir
 	update_nearby_tiles(need_rebuild=1)
 	. = ..()
