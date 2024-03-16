@@ -1,4 +1,8 @@
 /mob/living/carbon/human/proc/get_unarmed_attack(mob/living/carbon/human/target, hit_zone)
+	if(istype(gloves, /obj/item/clothing/gloves/boxing))
+		var/obj/item/clothing/gloves/boxing/b_gloves = gloves
+		return b_gloves.attack
+
 	for(var/datum/unarmed_attack/u_attack in species.unarmed_attacks)
 		if(u_attack.is_usable(src, target, hit_zone))
 			if(pulling_punches)
@@ -27,33 +31,6 @@
 		if(H != src && check_shields(0, null, H, H.zone_sel.selecting, H.name))
 			H.do_attack_animation(src)
 			return 0
-
-		if(istype(H.gloves, /obj/item/clothing/gloves/boxing))
-			H.do_attack_animation(src)
-			var/damage = rand(0, 9)
-			if(!damage)
-				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
-				visible_message("<span class='danger'>\The [H] has attempted to punch \the [src]!</span>")
-				return 0
-			var/obj/item/organ/external/affecting = get_organ(ran_zone(H.zone_sel.selecting))
-			var/armor_block = run_armor_check(affecting, "melee")
-
-			if(MUTATION_HULK in H.mutations)
-				damage += 5
-
-			if(MUTATION_STRONG in H.mutations)
-				damage += 5
-
-			playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
-
-			visible_message("<span class='danger'>[H] has punched \the [src]!</span>")
-
-			apply_damage(damage, PAIN, affecting, armor_block)
-			if(damage >= 9)
-				visible_message("<span class='danger'>[H] has weakened \the [src]!</span>")
-				apply_effect(4, WEAKEN, armor_block)
-
-			return
 
 	if(istype(M,/mob/living/carbon))
 		var/mob/living/carbon/C = M
