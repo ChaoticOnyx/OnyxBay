@@ -2156,7 +2156,7 @@
 "aPx" = (/obj/structure/sign/poster{pixel_y = -32},/obj/structure/table/standard,/obj/item/material/ashtray,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_main_west)
 "aPy" = (/obj/structure/bed/chair{dir = 1},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/obj/structure/extinguisher_cabinet{pixel_x = 32},/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_main_west)
 "aPz" = (/turf/simulated/wall,/area/crew_quarters/underdorm/sauna)
-"aPA" = (/obj/machinery/power/apc{name = "west bump"; dir = 8; pixel_x = -24},/obj/structure/cable{icon_state = "0-8"; dir = 1; d2 = 8},/turf/simulated/floor/plating,/area/maintenance/underground/security)
+"aPA" = (/obj/machinery/power/apc{name = "west bump"; dir = 8; pixel_x = -24},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor/plating,/area/maintenance/underground/security)
 "aPB" = (/obj/structure/table/standard,/obj/effect/floor_decal/corner/purple{dir = 9},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 4},/obj/item/storage/box/monkeycubes,/turf/simulated/floor/tiled/white/rough,/area/rnd/xenobiology/xenoflora_storage)
 "aPC" = (/obj/structure/table/darkwood_reinforced,/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8},/obj/item/material/ashtray/bronze,/turf/simulated/floor/trim/carpet/oldred,/area/crew_quarters/underdorm)
 "aPD" = (/obj/effect/floor_decal/corner/grey/three_quarters,/obj/machinery/disposal,/obj/structure/disposalpipe/trunk{dir = 1},/turf/simulated/floor/tiled/dark,/area/crew_quarters/underdorm)
