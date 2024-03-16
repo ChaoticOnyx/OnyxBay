@@ -6,6 +6,8 @@
 
 	req_access = list(access_heads)
 
+	circuit = /obj/item/circuitboard/holodeckcontrol
+
 	icon_keyboard = "tech_key"
 	icon_screen = "holocontrol"
 	light_color = "#41E0FC"

@@ -1083,6 +1083,7 @@
 #include "code\game\objects\items\circuitboards\other.dm"
 #include "code\game\objects\items\circuitboards\computer\air_management.dm"
 #include "code\game\objects\items\circuitboards\computer\computer.dm"
+#include "code\game\objects\items\circuitboards\computer\holodeckcontrol.dm"
 #include "code\game\objects\items\circuitboards\computer\research.dm"
 #include "code\game\objects\items\circuitboards\computer\station_alert.dm"
 #include "code\game\objects\items\circuitboards\computer\telecomms.dm"
