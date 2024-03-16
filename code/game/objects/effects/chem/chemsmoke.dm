@@ -26,14 +26,16 @@
 	if(destination)
 		walk_to(src, destination)
 
-/obj/effect/effect/smoke/chem/Move()
+/obj/effect/effect/smoke/chem/Move(newloc, direct)
 	var/list/oldlocs = view(1, src)
 	. = ..()
-	if(.)
-		for(var/turf/T in view(1, src) - oldlocs)
-			for(var/atom/movable/AM in T)
-				if(!istype(AM, /obj/effect/effect/smoke/chem))
-					reagents.splash(AM, splash_amount, copy = 1)
+	if(!.)
+		return
+
+	for(var/turf/T in view(1, src) - oldlocs)
+		for(var/atom/movable/AM in T)
+			if(!istype(AM, /obj/effect/effect/smoke/chem))
+				reagents.splash(AM, splash_amount, copy = 1)
 
 /obj/effect/effect/smoke/chem/Crossed(atom/movable/AM)
 	..()

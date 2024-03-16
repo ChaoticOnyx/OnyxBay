@@ -47,9 +47,11 @@
 	sleep(10)
 	qdel(src)
 
-/obj/effect/effect/water/Move(turf/newloc)
-	if(newloc.density)
-		return 0
+/obj/effect/effect/water/Move(newloc, direct)
+	var/turf/new_turf = newloc
+	if(istype(new_turf) && new_turf.density)
+		return FALSE
+
 	. = ..()
 
 /obj/effect/effect/water/Bump(atom/A)

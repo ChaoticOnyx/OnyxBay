@@ -524,7 +524,7 @@
 
 	return
 
-/mob/living/Move(a, b, flag)
+/mob/living/Move(newloc, direct)
 	if(buckled)
 		return
 
@@ -533,14 +533,13 @@
 
 	var/turf/old_loc = get_turf(src)
 
-	if(lying)
-		pull_sound = SFX_PULL_BODY
-	else
-		pull_sound = null
+	pull_sound = lying ? SFX_PULL_BODY : null
 
 	. = ..()
+	if(!.)
+		return
 
-	if(. && pulling)
+	if(pulling)
 		handle_pulling_after_move(old_loc)
 
 	if(s_active && !((s_active in contents) || Adjacent(s_active)))

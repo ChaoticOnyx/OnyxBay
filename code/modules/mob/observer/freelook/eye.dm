@@ -29,10 +29,10 @@
 	visualnet = null
 	. = ..()
 
-/mob/observer/eye/Move(n, direct)
+/mob/observer/eye/Move(newloc, direct)
 	if(owner == src)
 		return EyeMove(direct)
-	return 0
+	return FALSE
 
 /mob/observer/eye/facedir(ndir)
 	if(!canface())

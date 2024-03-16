@@ -69,7 +69,7 @@
 /mob
 	var/obj/skybox/skybox
 
-/mob/Move()
+/mob/Move(newloc, direct)
 	. = ..()
 	if(. && skybox)
 		skybox.update()

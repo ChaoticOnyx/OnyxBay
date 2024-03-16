@@ -16,7 +16,7 @@
 
 	return ..()
 
-/atom/movable/Move()
+/atom/movable/Move(newloc, direct)
 	. = ..()
 	if(opacity && .)
 		updateVisibility(src)
