@@ -10,7 +10,16 @@
 
 /obj/item/clothing/gloves/boxing/hologloves
 	alpha = 180 // Semi-transparent since its a hologram
-	color = "#52C6C6"
+
+/obj/item/clothing/gloves/boxing/hologloves/green
+	icon_state = "boxinggreen"
+
+/obj/item/clothing/gloves/boxing/hologloves/blue
+	icon_state = "boxingblue"
+
+/obj/item/clothing/gloves/boxing/hologloves/yellow
+	icon_state = "boxingyellow"
+
 
 /obj/item/clothing/gloves/boxing/Initialize()
 	. = ..()
