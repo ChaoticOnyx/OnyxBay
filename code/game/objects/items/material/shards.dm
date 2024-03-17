@@ -71,7 +71,7 @@
 		if(!WT.use_tool(src, user, amount = 1))
 			return
 
-		material.place_sheet(loc)
+		material.place_sheet(get_turf(loc))
 		qdel_self()
 		return
 
