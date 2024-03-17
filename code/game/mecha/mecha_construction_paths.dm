@@ -9,7 +9,6 @@
 	if(isWelder(I))
 		var/obj/item/weldingtool/WT = I
 		WT.use_tool(src, user, amount = 1)
-		return
 
 	else if(isWrench(I))
 		playsound(holder, 'sound/items/Ratchet.ogg', 50, 1)
@@ -44,7 +43,6 @@
 	if(isWelder(I))
 		var/obj/item/weldingtool/W = I
 		W.use_tool(src, user, amount = 1)
-		return
 
 	else if(isWrench(I))
 		playsound(holder, 'sound/items/Ratchet.ogg', 50, 1)
