@@ -8,7 +8,7 @@
 
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_MATERIAL = 2)
-	matter = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 7500)
+	matter = list(MATERIAL_STEEL = 50000, MATERIAL_GLASS = 10000)
 
 	var/ammoamt = 40
 
@@ -21,6 +21,6 @@
 /obj/item/rcd_ammo/large
 	name = "high-capacity matter cartridge"
 	desc = "Do not ingest."
-	matter = list(MATERIAL_STEEL = 45000, MATERIAL_GLASS = 22500)
+	matter = list(MATERIAL_STEEL = 65000, MATERIAL_GLASS = 25000)
 	ammoamt = 160
 	origin_tech = list(TECH_MATERIAL = 4)

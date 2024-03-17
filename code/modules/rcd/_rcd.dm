@@ -1,4 +1,7 @@
 //RAPID HANDHELD DEVICE. the base for all rapid devices
+
+#define MATTER_REDUCTION_COEFFICIENT 5
+
 /obj/item/construction
 	name = "not for ingame use"
 	desc = "A device used to rapidly build and deconstruct. Reload with iron, plasteel, glass or compressed local_matter cartridges."
@@ -80,6 +83,7 @@
 	if(istype(item, /obj/item/rcd_ammo))
 		var/obj/item/rcd_ammo/ammo = item
 		var/load = min(ammo.ammoamt, max_matter - local_matter)
+		load = round(load / MATTER_REDUCTION_COEFFICIENT)
 		if(load <= 0)
 			show_splash_text(user, "storage full!")
 			return FALSE
@@ -100,11 +104,12 @@
 		show_splash_text(user, "invalid sheets!")
 		return FALSE
 
-	var/maxsheets = round((max_matter-local_matter) / the_stack.amount) //calculate the max number of sheets that will fit in RCD
+	var/sheet_amt_to_matter = round(the_stack.amount / MATTER_REDUCTION_COEFFICIENT)
+	var/maxsheets = round(((max_matter - local_matter) - sheet_amt_to_matter) * MATTER_REDUCTION_COEFFICIENT) //calculate the max number of sheets that will fit in RCD
 	if(maxsheets > 0)
 		var/amount_to_use = min(the_stack.amount, maxsheets)
 		the_stack.use(amount_to_use)
-		local_matter += the_stack.amount * amount_to_use
+		local_matter += round(amount_to_use / MATTER_REDUCTION_COEFFICIENT)
 		playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
 		return TRUE
 
@@ -241,3 +246,5 @@
 		)
 	else
 		return defaults
+
+#undef MATTER_REDUCTION_COEFFICIENT
