@@ -23,7 +23,8 @@
 
 /obj/item/clothing/gloves/boxing/Initialize()
 	. = ..()
-	attack = new attack()
+	if(ispath(attack))
+		attack = new attack()
 
 /obj/item/clothing/gloves/boxing/attackby(obj/item/W, mob/user)
 	if(isWirecutter(W) || istype(W, /obj/item/scalpel) || isCoil(W))
