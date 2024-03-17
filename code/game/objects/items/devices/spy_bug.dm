@@ -243,6 +243,7 @@
 	while(selected_camera && CanPhysicallyInteract(user))
 		check_eye(user)
 		selected_camera = tgui_input_list(user, "Select camera bug to view", "Spy Monitor", cameras)
+		register_signal(user, SIGNAL_MOVED, nameof(.proc/user_moved), override = TRUE)
 		view_camera(user)
 
 /obj/item/device/spy_monitor/proc/user_moved(mob/moved_user)
