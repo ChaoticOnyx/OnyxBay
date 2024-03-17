@@ -164,7 +164,13 @@
 			return
 
 	to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
-	if(!WT?.use_tool(src, user, delay = recipe.time, amount = 5) || uses_charge || craft_tool == 1)
+	if(craft_tool != 1 && !WT?.use_tool(src, user, delay = recipe.time, amount = 5))
+		return
+
+	else if(!do_after(user, recipe.time))
+		return
+
+	if(QDELETED(src))
 		return
 
 	if(use(required))
