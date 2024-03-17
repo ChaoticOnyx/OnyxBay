@@ -8,7 +8,7 @@
 
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_MATERIAL = 2)
-	matter = list(MATERIAL_STEEL = 50000, MATERIAL_GLASS = 10000)
+	matter = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 10000)
 
 	var/ammoamt = 40
 
