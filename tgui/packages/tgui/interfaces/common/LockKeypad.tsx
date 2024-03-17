@@ -24,6 +24,7 @@ export const LockKeypad = (props: any, context: any) => {
                 fluid
                 bold
                 key={key}
+                textColor="black"
                 mb="6px"
                 content={key}
                 textAlign="center"

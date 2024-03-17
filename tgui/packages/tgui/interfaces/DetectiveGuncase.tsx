@@ -24,10 +24,10 @@ interface Data extends LockData {
 }
 
 export const DetectiveGuncase = (props: any, context: any) => {
-  const { act, data, getTheme } = useBackend<Data>(context);
+  const { act, data } = useBackend<Data>(context);
 
   return (
-    <Window width={430} height={490} theme={getTheme("neutral")}>
+    <Window width={430} height={490}>
       <Window.Content>
         <Section title="The detective's gun case">
           Be careful! Once you chose your weapon and unlock the gun case, you
