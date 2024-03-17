@@ -8,6 +8,10 @@
 	var/static/datum/unarmed_attack/punch/boxing/attack = /datum/unarmed_attack/punch/boxing
 	species_restricted = list("exclude", SPECIES_VOX)
 
+/obj/item/clothing/gloves/boxing/hologloves
+	alpha = 180 // Semi-transparent since its a hologram
+	color = "#52C6C6"
+
 /obj/item/clothing/gloves/boxing/Initialize()
 	. = ..()
 	attack = new attack()
