@@ -1,4 +1,8 @@
 /mob/living/carbon/human/proc/get_unarmed_attack(mob/living/carbon/human/target, hit_zone)
+	if(istype(gloves, /obj/item/clothing/gloves/boxing))
+		var/obj/item/clothing/gloves/boxing/b_gloves = gloves
+		return b_gloves.attack
+
 	for(var/datum/unarmed_attack/u_attack in species.unarmed_attacks)
 		if(u_attack.is_usable(src, target, hit_zone))
 			if(pulling_punches)
@@ -28,7 +32,7 @@
 			H.do_attack_animation(src)
 			return 0
 
-		if(istype(H.gloves, /obj/item/clothing/gloves/boxing))
+		if(istype(H.gloves, /obj/item/clothing/gloves/boxing/hologloves))
 			H.do_attack_animation(src)
 			var/damage = rand(0, 9)
 			if(!damage)
