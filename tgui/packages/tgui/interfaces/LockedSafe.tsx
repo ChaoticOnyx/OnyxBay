@@ -15,10 +15,10 @@ export interface LockData {
 }
 
 export const LockedSafe = (props: any, context: any) => {
-  const { act, data } = useBackend<LockData>(context);
+  const { act, data, getTheme } = useBackend<LockData>(context);
   const { input_code, locked, lock_code, emagged, lock_setshort } = data;
   return (
-    <Window width={300} height={400}>
+    <Window width={300} height={400} theme={getTheme("neutral")}>
       <Window.Content>
         <LockMenu></LockMenu>
       </Window.Content>
@@ -45,7 +45,7 @@ export const LockMenu = (props: any, context: any) => {
             : "Unlocked"
           : ""}
       </Box>
-      <Stack ml="48px" mt="12px">
+      <Stack ml="42px" mt="12px">
         <Stack.Item>
           <LockKeypad />
         </Stack.Item>
