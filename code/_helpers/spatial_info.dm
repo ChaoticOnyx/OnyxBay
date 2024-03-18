@@ -215,7 +215,7 @@
 /proc/circle_range(center = usr,radius = 3)
 
 	var/turf/center_turf = get_turf(center)
-	var/list/atoms = new/list()
+	var/list/atoms = list()
 	var/rsq = radius * (radius + 0.5)
 
 	for(var/atom/checked_atom as anything in range(radius, center_turf))
@@ -230,7 +230,7 @@
 /proc/circle_view(center=usr,radius=3)
 
 	var/turf/center_turf = get_turf(center)
-	var/list/atoms = new/list()
+	var/list/atoms = list()
 	var/rsq = radius * (radius + 0.5)
 
 	for(var/atom/checked_atom as anything in view(radius, center_turf))
