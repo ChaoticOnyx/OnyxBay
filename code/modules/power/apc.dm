@@ -580,8 +580,9 @@
 				"<span class='warning'>[src] has been cut from the wall by [user.name] with the weldingtool.</span>",\
 				"<span class='notice'>You cut the APC frame from the wall.</span>",\
 				"You hear welding.")
-			qdel(src)
-			return
+
+		qdel(src)
+		return
 	else if (istype(W, /obj/item/frame/apc) && opened && emagged)
 		emagged = 0
 		if (opened==2)
