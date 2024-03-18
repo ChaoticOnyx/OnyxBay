@@ -58,9 +58,10 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	var/holopadType = HOLOPAD_SHORT_RANGE //Whether the holopad is short-range or long-range.
 	var/base_icon = "holopad-B"
 
-/obj/machinery/hologram/holopad/New()
-	..()
+/obj/machinery/hologram/holopad/Initialize()
+	. = ..()
 	desc = "It's a floor-mounted device for projecting holographic images. Its ID is '[loc.loc]'"
+	become_hearing_sensitive()
 
 /obj/machinery/hologram/holopad/attack_hand(mob/living/carbon/human/user) //Carn: Hologram requests.
 	if(!istype(user))
@@ -192,15 +193,14 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 			else
 				rendered = "<i><span class='game say'>Holopad received, <span class='name'>[name_used]</span> [verb], <span class='message'>\"[text]\"</span></span></i>"
 			master.show_message(rendered, 2)
-	var/name_used = speaker.GetVoice()
 	if(targetpad) //If this is the pad you're making the call from
-		var/msg = "<i><span class='game say'>Holopad received, <span class='name'>[name_used]</span> [language.format_message(text, verb)]</span></i>"
-		targetpad.audible_message(msg)
-		targetpad.last_message = msg
+		targetpad.say(message, language, speaker)
+		targetpad.last_message = message
 	if(sourcepad) //If this is a pad receiving a call
-		if(name_used==caller_id||text==last_message||findtext(text, "Holopad received")) //prevent echoes
+		if(text==last_message || findtext(text, "Holopad received")) //prevent echoes
 			return
-		sourcepad.audible_message("<i><span class='game say'>Holopad received, <span class='name'>[name_used]</span> [language.format_message(text, verb)]</span></i>", splash_override = text)
+
+		sourcepad.say(message, language, speaker)
 
 /obj/machinery/hologram/holopad/see_emote(mob/living/M, text)
 	if(M)

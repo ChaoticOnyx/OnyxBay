@@ -7,7 +7,21 @@
 	if(!message || message == "")
 		return
 
-	say_do_say()
+	var/list/message_data = list(
+	  "message" = message,
+	  "language" = language,
+	  "verb" = verb,
+	  "whispering" = whispering,
+	  "italics" = FALSE,
+	  "message_range" = 0,
+	  "sound" = null,
+	  "sound_volume" = 0,
+	  "log_message" = log_message,
+	  "alt_name" = alt_name,
+	)
+
+
+	say_do_say(message_data)
 
 /atom/movable/proc/say_do_say(list/message_data)
 	var/list/listeners = get_hearers_in_view(world.view, src)
