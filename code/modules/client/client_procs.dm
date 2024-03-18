@@ -519,12 +519,10 @@
 	if((new_value == GLOB.PREF_BASIC) || (new_value == GLOB.PREF_FULL))
 		winset(src, "mainwindow", "is-maximized=false;can-resize=false;titlebar=false")
 		if(new_value == GLOB.PREF_FULL)
-			winset(src, "mainwindow", "menu=null;statusbar=false")
-		winset(src, "mainwindow.mainvsplit", "pos=0x0")
+			winset(src, "mainwindow", "menu=null;")
 	else
 		winset(src, "mainwindow", "is-maximized=false;can-resize=true;titlebar=true")
-		winset(src, "mainwindow", "menu=menu;statusbar=true")
-		winset(src, "mainwindow.mainvsplit", "pos=3x0")
+		winset(src, "mainwindow", "menu=menu;")
 	winset(src, "mainwindow", "is-maximized=true")
 
 /client/verb/fit_viewport()

@@ -1,6 +1,6 @@
 /mob/living/carbon/human/proc/get_unarmed_attack(mob/living/carbon/human/target, hit_zone)
-	if(istype(gloves, /obj/item/clothing/gloves/boxing))
-		var/obj/item/clothing/gloves/boxing/b_gloves = gloves
+	var/obj/item/clothing/gloves/boxing/b_gloves = gloves
+	if(istype(b_gloves))
 		return b_gloves.attack
 
 	for(var/datum/unarmed_attack/u_attack in species.unarmed_attacks)

@@ -45,6 +45,8 @@ export const setClientTheme = (name) => {
       "outputwindow.text-color": "#000000",
       "mainwindow.background-color": "none",
       "mainvsplit.background-color": "none",
+      "statusbar.background-color": "none",
+      "statusbar.text-color": "#000000",
       // Buttons
       "changelog.background-color": "none",
       "changelog.text-color": "#000000",
@@ -102,6 +104,8 @@ export const setClientTheme = (name) => {
       "outputwindow.text-color": COLOR_DARK_TEXT,
       "mainwindow.background-color": COLOR_DARK_BG,
       "mainvsplit.background-color": COLOR_DARK_BG,
+      "statusbar.background-color": COLOR_DARK_BG,
+      "statusbar.text-color": COLOR_DARK_TEXT,
       // Buttons
       "changelog.background-color": "#494949",
       "changelog.text-color": COLOR_DARK_TEXT,
