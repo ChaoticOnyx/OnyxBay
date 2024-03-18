@@ -263,7 +263,6 @@
 	if(!isnull(text))
 		var/sanitized_text = sanitize(text)
 		say(sanitized_text, all_languages[LANGUAGE_GALCOM], "enounces")
-		speaker.name = get_object().name
 		if(assembly)
 			log_say("[assembly] [ref(assembly)]: [sanitized_text]")
 		else
