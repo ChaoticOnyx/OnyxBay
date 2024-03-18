@@ -197,7 +197,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 		targetpad.say(message, language, speaker)
 		targetpad.last_message = message
 	if(sourcepad) //If this is a pad receiving a call
-		if(text==last_message || findtext(text, "Holopad received")) //prevent echoes
+		if(text == last_message) //prevent echoes
 			return
 
 		sourcepad.say(message, language, speaker)
