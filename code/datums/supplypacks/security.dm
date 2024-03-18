@@ -409,12 +409,12 @@
 	access = access_security
 
 /decl/hierarchy/supply_pack/security/surplusfirearms
-	name = "Misc - Surplus firearms"
+	name = "Weapons - Surplus firearms"
 	contains = list(/obj/item/gun/projectile/bolt_action = 2,
 					/obj/item/gun/projectile/bolt_action/mauser = 2,
 					/obj/item/ammo_magazine/c792 = 4
 					)
-	cost = 20
+	cost = 40
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Surplus Firearms"
 	access = access_security

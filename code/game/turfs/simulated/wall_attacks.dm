@@ -180,9 +180,7 @@
 	var/turf/T = user.loc	//get user's location for delay checks
 
 	if(damage && isWelder(W))
-
 		var/obj/item/weldingtool/WT = W
-
 		to_chat(user, SPAN("notice","You start repairing the damage to [src]."))
 		if(!WT.use_tool(src, user, delay = max(5, damage / 5), amount = 5))
 			return
@@ -273,26 +271,37 @@
 						to_chat(user, SPAN("notice", "You replace the outer grille."))
 						return
 			if(4)
-				var/cut_cover
 				if(isWelder(W))
 					var/obj/item/weldingtool/WT = W
 					if(!WT.use_tool(src, user, amount = 1))
 						return
 
-					cut_cover = 1
-					to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
-					return
-				else if (istype(W, /obj/item/gun/energy/plasmacutter))
-					cut_cover = 1
-				if(cut_cover)
 					to_chat(user, SPAN("notice","You begin slicing through the metal cover."))
-					playsound(src, 'sound/items/Welder.ogg', 100, 1)
-					if(!do_after(user, 60, src) || !istype(src, /turf/simulated/wall) || construction_stage != 4)
+					if(!WT.use_tool(src, user, delay = 6 SECONDS, amount = 5) || !istype(src, /turf/simulated/wall) || construction_stage != 4)
 						return
+
+					if(QDELETED(src))
+						return
+
 					construction_stage = 3
 					update_icon()
 					to_chat(user, SPAN("notice","You press firmly on the cover, dislodging it."))
 					return
+
+				else if (istype(W, /obj/item/gun/energy/plasmacutter))
+					to_chat(user, SPAN("notice","You begin slicing through the metal cover."))
+					playsound(src, 'sound/items/Welder.ogg', 100, 1)
+					if(!do_after(user, 60, src) || !istype(src, /turf/simulated/wall) || construction_stage != 4)
+						return
+
+					if(QDELETED(src))
+						return
+
+					to_chat(user, SPAN("notice","You press firmly on the cover, dislodging it."))
+					construction_stage = 3
+					update_icon()
+					return
+
 			if(3)
 				if(isCrowbar(W))
 					to_chat(user, SPAN("notice","You struggle to pry off the cover."))
@@ -314,25 +323,36 @@
 					to_chat(user, SPAN("notice","You remove the bolts anchoring the support rods."))
 					return
 			if(1)
-				var/cut_cover
 				if(isWelder(W))
 					var/obj/item/weldingtool/WT = W
-					if(!WT.use_tool(src, user, amount = 1))
+					to_chat(user, SPAN("notice","You begin slicing through the support rods."))
+					if(!WT.use_tool(src, user, delay = 7 SECONDS, amount = 5) || !istype(src, /turf/simulated/wall) || construction_stage != 1)
 						return
 
-					cut_cover = 1
-				else if(istype(W, /obj/item/gun/energy/plasmacutter))
-					cut_cover = 1
-				if(cut_cover)
-					to_chat(user, SPAN("notice","You begin slicing through the support rods."))
-					playsound(src, 'sound/items/Welder.ogg', 100, 1)
-					if(!do_after(user,70,src) || !istype(src, /turf/simulated/wall) || construction_stage != 1)
+					if(QDELETED(src))
 						return
+
 					construction_stage = 0
 					update_icon()
 					new /obj/item/stack/rods(src)
 					to_chat(user, SPAN("notice","The support rods drop out as you cut them loose from the frame."))
 					return
+
+				else if(istype(W, /obj/item/gun/energy/plasmacutter))
+					to_chat(user, SPAN("notice","You begin slicing through the support rods."))
+					playsound(src, 'sound/items/Welder.ogg', 100, 1)
+					if(!do_after(user,70,src) || !istype(src, /turf/simulated/wall) || construction_stage != 1)
+						return
+
+					if(QDELETED(src))
+						return
+
+					construction_stage = 0
+					update_icon()
+					new /obj/item/stack/rods(src)
+					to_chat(user, SPAN("notice","The support rods drop out as you cut them loose from the frame."))
+					return
+
 			if(0)
 				if(isCrowbar(W))
 					to_chat(user, SPAN("notice","You struggle to pry off the outer sheath."))
