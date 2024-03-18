@@ -633,7 +633,7 @@ SUBSYSTEM_DEF(spatial_grid)
 ///i really fucking hope this never gets called after init :clueless:
 /datum/controller/subsystem/spatial_grid/proc/pregenerate_more_oranges_ears(number_to_generate)
 	for(var/new_ear in 1 to number_to_generate)
-		pregenerated_oranges_ears += new mob/oranges_ear(null)
+		pregenerated_oranges_ears += new /mob/oranges_ear(null)
 
 	number_of_oranges_ears = length(pregenerated_oranges_ears)
 
