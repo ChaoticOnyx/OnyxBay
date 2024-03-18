@@ -457,8 +457,8 @@
 
 /obj/item/device/radio/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	. = ..()
-	if(broadcasting)
-		talk_into(speaker, message, null, verb, language)
+	if(broadcasting && (get_dist(src, speaker) <= canhear_range))
+		INVOKE_ASYNC(src, nameof(.proc/talk_into), speaker, message, null, verb, language)
 
 /*
 /obj/item/device/radio/proc/accept_rad(obj/item/device/radio/R as obj, message)

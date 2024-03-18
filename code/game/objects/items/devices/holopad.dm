@@ -1,3 +1,5 @@
+/// Global list of all holopads for target selection in calls
+GLOBAL_LIST_EMPTY(all_holopad_devices)
 #define CALL_NONE 0
 #define CALL_CALLING 1
 #define CALL_RINGING 2
@@ -20,16 +22,18 @@
 	origin_tech = list(TECH_DATA = 4, TECH_BLUESPACE = 2, TECH_MAGNET = 4)
 
 /obj/item/device/holopad/Initialize()
+	. = ..()
 	uniq_id = random_id("holopad_device", 00000, 99999)
 	id = rand(1000, 9999)
 	name = "[initial(name)] [id] #[uniq_id]"
 	voice = "Holopad [id]"
-	. = ..()
+	GLOB.all_holopad_devices += src
+	become_hearing_sensitive()
 
 /obj/item/device/holopad/Destroy()
 	abonent = null
+	GLOB.all_holopad_devices -= src
 	. = ..()
-
 
 /obj/item/device/holopad/verb/setID()
 	set name="Set ID"
@@ -64,6 +68,11 @@
 
 /obj/item/device/holopad/proc/placeCall(mob/user)
 	var/list/Targets = list()
+	for(var/obj/item/device/holopad/H in GLOB.all_holopad_devices)
+		if(H == src)
+			continue
+
+		Targets[H.getName()] = H
 
 	var/selection = input("Who do you want to call?") as null|anything in Targets
 	if(!selection)
@@ -168,20 +177,22 @@
 
 /obj/item/device/holopad/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
 	if(call_state == CALL_IN_CALL)
-		abonent.receive(language, speaker)
+		abonent.receive(message, speaker)
 
-/obj/item/device/holopad/proc/receive(speaking, mob/user)
+/obj/item/device/holopad/proc/receive(message, mob/user)
 	var/list/listening = get_hearers_in_view(3, src)
 
 	for(var/mob/observer/ghost/G in GLOB.ghost_mob_list)
 		if(get_dist(src, G) > world.view && G.get_preference_value(/datum/client_preference/ghost_ears) != GLOB.PREF_ALL_SPEECH)
 			continue
+
 		listening |= G
 
 	if(!user)
 		voice = "Holopad Background Voice"
+
 	for(var/mob/M in listening)
-		to_chat(M, "<span class='name'>[voice]</span> transmits, \"[speaking]\" ")
+		to_chat(M, "<span class='name'>[voice]</span> transmits, \"[message]\" ")
 
 #undef CALL_NONE
 #undef CALL_CALLING

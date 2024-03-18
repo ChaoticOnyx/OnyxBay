@@ -261,15 +261,16 @@
 		if(istype(H) && H.has_headset_in_ears() && prob(20))
 			to_chat(src, SPAN("warning", "You feel your headset vibrate [loud ? "really hard " : ""]but can hear nothing from it!"))
 	else
-		var/text = "[part_a][speaker_name][part_b][formatted][part_c]"
-		if(loud)
-			text = FONT_LARGE(text)
-		to_chat(src, text)
+		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 
 /proc/say_timestamp()
 	return SPAN("say_quote", "\[[stationtime2text()]\]")
 
 /mob/proc/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+	var/text = "[part_a][speaker_name][part_b][formatted][part_c]"
+	if(loud)
+		text = FONT_LARGE(text)
+	to_chat(src, text)
 
 /mob/observer/ghost/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 	var/text = "[part_a][track][part_b][formatted][part_c]"

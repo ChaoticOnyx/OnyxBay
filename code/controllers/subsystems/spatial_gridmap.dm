@@ -352,6 +352,10 @@ SUBSYSTEM_DEF(spatial_grid)
 /datum/controller/subsystem/spatial_grid/proc/enter_cell(atom/movable/new_target, turf/target_turf)
 	if(!initialized)
 		return
+
+	if(!istype(target_turf))
+		target_turf = get_turf(target_turf)
+
 	if(QDELETED(new_target))
 		CRASH("qdeleted or null target trying to enter the spatial grid!")
 
@@ -422,6 +426,9 @@ SUBSYSTEM_DEF(spatial_grid)
 /datum/controller/subsystem/spatial_grid/proc/exit_cell(atom/movable/old_target, turf/target_turf, exclusive_type)
 	if(!initialized)
 		return
+
+	if(!istype(target_turf))
+		target_turf = get_turf(target_turf)
 
 	if(!target_turf || !old_target.spatial_grid_key)
 		util_crash_with("/datum/controller/subsystem/spatial_grid/proc/exit_cell() was given null arguments or a old_target that doesn't use the spatial grid!")

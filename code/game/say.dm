@@ -39,10 +39,10 @@
 	if(universal_speak || universal_understand)
 		return TRUE
 
-	if(other.universal_speak)
+	if(other?.universal_speak)
 		return TRUE
 
-	if(language.flags & INNATE)
+	if(language?.flags & INNATE)
 		return TRUE
 
 	return FALSE

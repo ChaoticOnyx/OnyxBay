@@ -27,8 +27,8 @@
 #define SS_INIT_MAPPING          8
 #define SS_INIT_OPEN_SPACE       7
 #define SS_INIT_CIRCUIT          6
-#define SS_INIT_ATOMS            5
-#define SS_INIT_SPATIAL_GRID     4
+#define SS_INIT_SPATIAL_GRID     5
+#define SS_INIT_ATOMS            4
 #define SS_INIT_ICON_UPDATE      3
 #define SS_INIT_RUNECHAT         2
 #define SS_INIT_MACHINES         1
