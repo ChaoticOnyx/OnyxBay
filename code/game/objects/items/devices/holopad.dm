@@ -96,7 +96,7 @@ GLOBAL_LIST_EMPTY(all_holopad_devices)
 			icon_state = "holopad_in_call"
 			addtimer(CALLBACK(src, nameof(.proc/update_holo)), 1)
 
-			audible_message("<span class='name'>[voice]</span> transmits, \"Connection established\"", hearing_distance = 1, splash_override = "Connection established")
+			say("Connection established!", language = null, verb = "transmits")
 		else
 			call_state = CALL_NONE
 			icon_state = initial(icon_state)
@@ -108,7 +108,7 @@ GLOBAL_LIST_EMPTY(all_holopad_devices)
 		icon_state = "holopad_in_call"
 		addtimer(CALLBACK(src, nameof(.proc/update_holo)), 1)
 
-		audible_message("<span class='name'>[voice]</span> transmits, \"Connection established\"", hearing_distance = 1, splash_override = "Connection established")
+		say("Connection established", language = null, verb = "transmits")
 
 /obj/item/device/holopad/proc/hangUp(remote = 0)
 	if(!remote && abonent)
@@ -176,23 +176,30 @@ GLOBAL_LIST_EMPTY(all_holopad_devices)
 			hangUp()
 
 /obj/item/device/holopad/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
-	if(call_state == CALL_IN_CALL)
-		abonent.receive(message, speaker)
+	if(call_state == CALL_IN_CALL && get_dist(src, speaker) <= 3)
+		abonent?.say(message, language = null, verb = "transmits")
 
-/obj/item/device/holopad/proc/receive(message, mob/user)
-	var/list/listening = get_hearers_in_view(3, src)
+/obj/item/device/holopad/say_do_say(list/message_data)
+	var/list/listeners = get_hearers_in_view(3, src)
 
-	for(var/mob/observer/ghost/G in GLOB.ghost_mob_list)
-		if(get_dist(src, G) > world.view && G.get_preference_value(/datum/client_preference/ghost_ears) != GLOB.PREF_ALL_SPEECH)
+	for(var/atom/movable/M in listeners)
+		if(M == src)
 			continue
 
-		listening |= G
+		if(istype(M, /obj/item/device/holopad))
+			continue
 
-	if(!user)
-		voice = "Holopad Background Voice"
-
-	for(var/mob/M in listening)
-		to_chat(M, "<span class='name'>[voice]</span> transmits, \"[message]\" ")
+		if(M)
+			M.hear_say(
+				message_data["message"],
+				message_data["verb"],
+				message_data["language"],
+				message_data["alt_name"],
+				message_data["italics"],
+				src,
+				message_data["sound"],
+				message_data["sound_volume"]
+			)
 
 #undef CALL_NONE
 #undef CALL_CALLING

@@ -44,8 +44,21 @@
 	var/list/client_mobs_in_contents
 	// Whether or not atom can understand other atoms.
 
-	var/universal_speak = FALSE // Set to 1 to enable the mob to speak to everyone -- TLE
+	/// Set to TRUE to enable this atom to speak to everyone.
+	var/universal_speak = FALSE
+	/// Set to TRUE to enable this atom to understand everyone.
 	var/universal_understand = FALSE
+	/// Languages this atom can speak & understand.
+	var/list/languages = list(LANGUAGE_GALCOM)
+	/// For species who want reset to use a specified default.
+	var/species_language = null
+	/// For species who can only speak their default and no other languages. Does not effect understanding.
+	var/only_species_language = FALSE
+	/// Verbs used when speaking. Defaults to 'say' if speak_emote is null.
+	var/list/speak_emote = list("says")
+	/// Defines emote default type, 1 for seen emotes, 2 for heard emotes
+	var/emote_type = 1
+	var/real_name = null
 
 /atom/movable/Initialize()
 	. = ..()

@@ -143,7 +143,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 
 /obj/item/gun/projectile/lawgiver/proc/remove_dna()
 	dna_profile = null
-	audible_message("<b>\The [src]</b> reports, \"No DNA profile found.\"", splash_override = "No DNA profile found.")
+	say("No DNA profile found.", language = null, verb = "reports")
 	verbs += /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
 	verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
 	update_icon()
@@ -192,10 +192,10 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 
 /obj/item/gun/projectile/lawgiver/proc/bad_dna_action(mob/user)
 	if(access_security in user.GetAccess())
-		audible_message("<b>\The [src]</b> reports, \"ERROR: DNA PROFILE DOES NOT MATCH.\"", splash_override = "ERROR: DNA PROFILE DOES NOT MATCH.")
+		say("ERROR: DNA PROFILE DOES NOT MATCH", language = null, verb = "reports")
 		return
 	else
-		audible_message("<b>\The [src]</b> reports, \"UNAUTHORIZED ACCESS DETECTED.\"", splash_override = "UNAUTHORIZED ACCESS DETECTED.")
+		say("UNAUTHORIZED ACCESS DETECTED", language = null, verb = "reports")
 		if(electrocute_mob(user, get_area(src), src, 0.7))
 			var/datum/effect/effect/system/spark_spread/spark = new /datum/effect/effect/system/spark_spread()
 			spark.set_up(3, 1, src)
@@ -221,7 +221,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 			return 0
 	else
 		handle_click_empty(user)
-		audible_message("<b>\The [src]</b> reports, \"PLEASE REGISTER A DNA SAMPLE.\"", splash_override = "PLEASE REGISTER A DNA SAMPLE.")
+		say("PLEASE REGISTER A DNA SAMPLE", language = null, verb = "reports")
 		return 0
 	return 1
 
@@ -250,7 +250,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	F.apply_to(src)
 	update_icon()
 	playsound(playsound(src, 'sound/effects/weapons/energy/toggle_mode1.ogg', rand(50, 75), FALSE))
-	audible_message("<b>\The [src]</b> reports, \"[uppertext("[F.name].\"")]", splash_override = "[uppertext("[F.name].\"")]")
+	say("[uppertext("[F.name]")].", language = null, verb = "reports")
 
 /obj/item/gun/projectile/lawgiver/proc/sanitize_phrase(phrase)
 	var/list/replacechars = list("'" = "","\"" = "",">" = "","<" = "","(" = "",")" = "","-" = "","," = "",":" = "","!" = "","." = "","?" = "",";" = "")

@@ -23,7 +23,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	var/hide_on_manifest = 0
 	var/channels = list()
 	var/networks = list()
-	var/languages = list(
+	languages = list(
 		LANGUAGE_SOL_COMMON = 1,
 		LANGUAGE_LUNAR = 1,
 		LANGUAGE_UNATHI = 0,

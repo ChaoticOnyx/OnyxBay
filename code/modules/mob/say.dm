@@ -70,19 +70,6 @@
 
 	return FALSE
 
-/mob/proc/say_quote(message, datum/language/language = null)
-	var/ending = copytext(message, length(message))
-	if(language)
-		return language.get_spoken_verb(ending)
-
-	var/verb = pick(speak_emote)
-	if(verb == "says") // a little bit of a hack, but we can't let speak_emote default to an empty list without breaking other things
-		if(ending == "!")
-			verb = pick("exclaims","shouts","yells")
-		else if(ending == "?")
-			verb ="asks"
-	return verb
-
 /mob/proc/get_ear()
 	// returns an atom representing a location on the map from which this
 	// mob can hear things
@@ -114,7 +101,7 @@
 
 // parses the language code (e.g. :j) from text, such as that supplied to say.
 // returns the language object only if the code corresponds to a language that src can speak, otherwise null.
-/mob/proc/parse_language(message)
+/mob/parse_language(message)
 	var/prefix = copytext_char(message,1,2)
 	if(length_char(message) >= 1 && prefix == get_prefix_key(/decl/prefix/audible_emote))
 		return all_languages["Noise"]
@@ -126,6 +113,3 @@
 			return L
 
 	return null
-
-/mob/proc/GetVoice()
-	return name
