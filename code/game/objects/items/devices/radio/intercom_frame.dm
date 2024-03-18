@@ -111,19 +111,15 @@
 		update_icon()
 
 /obj/item/intercom_assembly/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user)
-	if(WT.remove_fuel(0, user))
-		playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
-		show_splash_text(user, "dissasembling...")
-		if(do_after(user, 40, src))
-			if(!WT.isOn())
-				return
-
-			new /obj/item/stack/material/steel(loc, 3)
-			qdel(src)
-	else
-		show_splash_text(user, "turn \the [WT] on first!")
+	show_splash_text(user, "dissasembling...")
+	if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 		return
 
+	if(QDELETED(src) || !user)
+		return
+
+	new /obj/item/stack/material/steel(loc, 3)
+	qdel(src)
 
 /obj/item/intercom_assembly/proc/add_radio(obj/item/device/radio/R, mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)

@@ -453,6 +453,8 @@
 					R.cell.charge -= 20
 				else
 					B.deductcharge(B.hitcost)
+
+				playsound(get_turf(src), GET_SFX(SFX_SPARK_SMALL), 50, TRUE, -1)
 				user.visible_message( \
 					"<span class='danger'>[user] was stunned by \his wet [O]!</span>", \
 					"<span class='userdanger'>[user] was stunned by \his wet [O]!</span>")

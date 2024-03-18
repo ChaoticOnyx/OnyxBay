@@ -86,24 +86,17 @@
 
 
 /obj/machinery/floor_light/proc/_repair_damage(mob/user, obj/item/weldingtool/WT)
-	if(istype(WT))
+	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
 		return
 
-	if(!WT.remove_fuel(0, user))
-		to_chat(user, "\The [WT] must be on to complete this task.")
+	if(QDELETED(src) || !user)
 		return
 
-	playsound(loc, 'sound/items/Welder.ogg', 50, 1)
-	if(do_after(user, 20, src))
-		if(!WT.isOn())
-			return
-
-		visible_message(SPAN("notice", "\The [user] has repaired \the [src]"))
-		set_broken(FALSE)
-		damagekey = 0
-		damage = 0
-		update_icon()
-
+	visible_message(SPAN("notice", "\The [user] has repaired \the [src]"))
+	set_broken(FALSE)
+	damagekey = 0
+	damage = 0
+	update_icon()
 
 /obj/machinery/floor_light/proc/_open_settings(mob/user)
 	if(!length(settings))

@@ -71,21 +71,16 @@
 
 			else if(isWelder(I))
 				var/obj/item/weldingtool/WT = I
-				if(!WT.isOn())
-					return
-				if(WT.get_fuel() < 5)
-					show_splash_text(user, "Not enough fuel!")
+				if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 					return
 
-				playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
-				if(do_after(user, 20, src))
-					if(QDELETED(src) || !WT.remove_fuel(5, user))
-						return
-
-					buildstage = BUILDSTAGE_IARMOR_ATTACH
-					show_splash_text(user, "Internal armor removed!")
-					new /obj/item/stack/material/steel(get_turf(src), 2)
+				if(QDELETED(src) || !user)
 					return
+
+				buildstage = BUILDSTAGE_IARMOR_ATTACH
+				show_splash_text(user, "Internal armor removed!")
+				new /obj/item/stack/material/steel(get_turf(src), 2)
+				return
 
 		if(BUILDSTAGE_PROX)
 			if(isprox(I))
@@ -133,24 +128,19 @@
 		if(BUILDSTAGE_EARMOR_WELD)
 			if(isWelder(I))
 				var/obj/item/weldingtool/WT = I
-				if(!WT.isOn())
+				if(!WT.use_tool(src, user, delay = 3 SECONDS, amount = 5))
+					return FALSE
+
+				if(QDELETED(src) || !user)
 					return
 
-				if(WT.get_fuel() < 5)
-					show_splash_text(user, "Not enough fuel!")
+				show_splash_text(user, "External armor welded")
 
-				playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
-				if(do_after(user, 30, src))
-					if(QDELETED(src) || !WT.remove_fuel(5, user))
-						return
+				//The final step: create a full turret
+				var/obj/machinery/turret/T = new target_type(get_turf(src), signaler)
+				T.enabled = FALSE
 
-					show_splash_text(user, "External armor welded")
-
-					//The final step: create a full turret
-					var/obj/machinery/turret/T = new target_type(get_turf(src), signaler)
-					T.enabled = FALSE
-
-					qdel_self()
+				qdel_self()
 
 			else if(isCrowbar(I))
 				playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)

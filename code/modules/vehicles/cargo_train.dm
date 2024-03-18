@@ -65,7 +65,7 @@
 	AddOverlays(I)
 	turn_off()	//so engine verbs are correctly set
 
-/obj/vehicle/train/cargo/engine/Move(turf/destination)
+/obj/vehicle/train/cargo/engine/Move(newloc, direct)
 	if(on && cell.charge < (charge_use * CELLRATE))
 		turn_off()
 		update_stats()
@@ -73,11 +73,11 @@
 			to_chat(load, "The drive motor briefly whines, then drones to a stop.")
 
 	if(is_train_head() && !on)
-		return 0
+		return FALSE
 
 	//space check ~no flying space trains sorry
-	if(on && istype(destination, /turf/space))
-		return 0
+	if(on && istype(newloc, /turf/space))
+		return FALSE
 
 	return ..()
 

@@ -19,6 +19,7 @@
 
 // Grab Types
 #define GRAB_NORMAL			"normal"
+#define GRAB_QUICKCHOKE     "choke"
 
 // Grab levels.
 #define NORM_PASSIVE    "normal passive"

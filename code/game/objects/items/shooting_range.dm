@@ -35,10 +35,12 @@
 	attackby(obj/item/W as obj, mob/user as mob)
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
-			if(WT.remove_fuel(0, user))
-				ClearOverlays()
-				to_chat(usr, "You slice off [src]'s uneven chunks of aluminum and scorch marks.")
+			if(!WT.use_tool(src, user, amount = 1))
 				return
+
+			ClearOverlays()
+			to_chat(usr, "You slice off [src]'s uneven chunks of aluminum and scorch marks.")
+			return
 
 
 	attack_hand(mob/user as mob)

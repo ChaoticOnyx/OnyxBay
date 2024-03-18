@@ -7,3 +7,7 @@
 #define TOOL_SCREWDRIVER "screwdriver"
 #define TOOL_MULTITOOL "multitool"
 #define TOOL_CROWBAR "crowbar"
+
+/// Minimal duration of tool's use_tool(). If less than MIN_TOOL_SOUND_DELAY, then
+/// tool_sound is played only when use_tool() is started. If more, then it is played twice.
+#define MIN_TOOL_SOUND_DELAY 2 SECONDS

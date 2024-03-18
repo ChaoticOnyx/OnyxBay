@@ -1,3 +1,5 @@
+GLOBAL_LIST_EMPTY(__http_requests)
+
 /datum/http_request
 	var/id
 	var/in_progress = FALSE
@@ -10,6 +12,26 @@
 	var/output_file
 
 	var/_raw_response
+
+/datum/http_request/Destroy(force)
+	if(in_progress)
+		util_crash_with("Deleting an asynchronous HTTP request leads to a memory leak. Waiting until completion...")
+
+	while(!is_complete())
+		stoplag()
+
+	GLOB.__http_requests -= src
+
+	. = ..()
+
+/datum/http_request/think()
+	if(!in_progress)
+		return
+	if(is_complete())
+		GLOB.__http_requests -= src
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /datum/http_request/proc/prepare(method, url, body = "", list/headers, output_file)
 	if (!length(headers))
@@ -37,6 +59,9 @@
 		_raw_response = "Proc error: [id]"
 	else
 		in_progress = TRUE
+
+	GLOB.__http_requests += src
+	set_next_think(world.time + 1 SECOND)
 
 /datum/http_request/proc/build_options()
 	if(output_file)

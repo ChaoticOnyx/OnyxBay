@@ -54,11 +54,21 @@
 		being_used = 1
 		playsound(src.loc, 'sound/effects/weightlifter.ogg', 50, 1)
 		user.set_dir(SOUTH)
-		flick("[icon_state]_[weight]", src)
-		if(do_after(user, 20 + (weight * 10)))
+
+		var/usetime = 20 + (weight * 10)
+		if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
+			flick("[icon_state]_[weight]s", src)
+			usetime = 14
+		else
+			flick("[icon_state]_[weight]", src)
+
+		if(do_after(user, usetime))
 			playsound(src.loc, 'sound/effects/weightdrop.ogg', 25, 1)
 			user.remove_nutrition(weight * 10)
-			to_chat(user, "<span class='notice'>You lift the weights [qualifiers[weight]].</span>")
+			if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
+				to_chat(user, SPAN("notice", "You shred the weights without barely noticing it."))
+			else
+				to_chat(user, SPAN("notice", "You lift the weights [qualifiers[weight]]."))
 			being_used = 0
 		else
 			to_chat(user, "<span class='notice'>Against your previous judgement, perhaps working out is not for you.</span>")

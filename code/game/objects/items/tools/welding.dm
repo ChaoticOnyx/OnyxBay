@@ -32,13 +32,20 @@
 	origin_tech = list(TECH_ENGINEERING = 1)
 
 	//Welding tool specific stuff
-	var/welding = 0 	//Whether or not the welding tool is off(0), on(1) or currently welding(2)
+	/// Whether or not the welding tool is off(FALSE) or on (TRUE)
+	var/welding = FALSE
+	/// Whether or not the welding tool is currently welding
+	VAR_PRIVATE/currently_welding = FALSE
 	var/status = 1 		//Whether the welder is secured or unsecured (able to attach rods to it to make a flamethrower)
 
 	var/obj/item/welder_tank/tank = /obj/item/welder_tank // where the fuel is stored
 
 	drop_sound = SFX_DROP_WELDINGTOOL
 	pickup_sound = SFX_PICKUP_WELDINGTOOL
+
+	tool_sound = SFX_WELDING
+	var/toggle_on_sound = SFX_WELDER_ACTIVATE
+	var/toggle_off_sound = SFX_WELDER_DEACTIVATE
 
 /obj/item/weldingtool/Initialize()
 	if(ispath(tank))
@@ -189,7 +196,6 @@
 /obj/item/weldingtool/proc/get_fuel()
 	return tank ? tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
 
-
 //Removes fuel from the welding tool. If a mob is passed, it will perform an eyecheck on the mob. This should probably be renamed to use()
 /obj/item/weldingtool/proc/remove_fuel(amount = 1, mob/M = null)
 	if(!welding)
@@ -229,11 +235,11 @@
 			location.hotspot_expose(700, 5)
 
 //Returns whether or not the welding tool is currently on.
-/obj/item/weldingtool/proc/isOn()
-	return src.welding
+/obj/item/weldingtool/is_tool_on()
+	return welding
 
 /obj/item/weldingtool/get_storage_cost()
-	if(isOn())
+	if(is_tool_on())
 		return ITEM_SIZE_NO_CONTAINER
 	return ..()
 
@@ -270,6 +276,8 @@
 				to_chat(M, "<span class='notice'>You switch the [src] on.</span>")
 			else if(T)
 				T.visible_message("<span class='danger'>\The [src] turns on.</span>")
+
+			playsound(get_turf(src), GET_SFX(toggle_on_sound), 100, TRUE)
 			force = 15
 			damtype = "fire"
 			hitsound = 'sound/effects/flare.ogg' // Surprisingly it sounds just perfect
@@ -288,6 +296,7 @@
 			to_chat(M, "<span class='notice'>You switch \the [src] off.</span>")
 		else if(T)
 			T.visible_message("<span class='warning'>\The [src] turns off.</span>")
+		playsound(get_turf(src), GET_SFX(toggle_off_sound), 100, TRUE)
 		force = 3
 		damtype = "brute"
 		hitsound = initial(hitsound)
@@ -336,8 +345,68 @@
 				spawn(100)
 					H.disabilities &= ~NEARSIGHTED
 
+/obj/item/weldingtool/use_tool(atom/target, mob/living/user, delay = 0, amount = 0, volume = 0, can_move = FALSE, datum/callback/extra_checks)
+	if(!is_tool_on())
+		show_splash_text(user, "Welder must be turned on!")
+		return
+
+	if(amount > get_fuel())
+		show_splash_text(user, "Not enough fuel!")
+		return
+
+	playsound(loc, 'sound/items/Welder.ogg', 100, 1)
+	var/atom/movable/fake_overlay/welding_overlay/effect = new(get_turf(target))
+	var/datum/callback/checks = CALLBACK(src, nameof(.proc/check_active_and_extra), extra_checks)
+	INVOKE_ASYNC(src, nameof(.proc/start_welding), target)
+	. = ..(target, user, delay, amount, volume, extra_checks = checks)
+	stop_welding()
+	qdel(effect)
+
+/obj/item/weldingtool/use_tool_resources(amount, mob)
+	. = remove_fuel(amount, mob)
+	if(!.)
+		show_splash_text(mob, "Not enough fuel!")
+
+/obj/item/weldingtool/proc/start_welding(atom/target) // Process of welding something
+	var/datum/effect/effect/system/spark_spread/spark = new /datum/effect/effect/system/spark_spread(volume = 10)
+	spark.set_up(1, 1, target)
+	currently_welding = TRUE
+	while(currently_welding)
+		sleep(10)
+		spark.start()
+
+/obj/item/weldingtool/proc/check_active_and_extra(datum/callback/extra_checks)
+	if(!is_tool_on() || !get_fuel())
+		return FALSE
+
+	if(!extra_checks)
+		return TRUE
+
+	return extra_checks.Invoke()
+
+/obj/item/weldingtool/proc/stop_welding()
+	currently_welding = FALSE
+
+/atom/movable/fake_overlay/welding_overlay
+	density = FALSE
+	anchored = TRUE
+	layer = ABOVE_PROJECTILE_LAYER
+	plane = DEFAULT_PLANE
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "welding_sparks"
+
+/atom/movable/fake_overlay/welding_overlay/Initialize(mapload)
+	. = ..()
+	set_light(0.6, 0.5, 1.5, 2, "#e38f46")
+	AddOverlays(emissive_appearance(icon, "[icon_state]-ea"))
+
+/obj/item/weldingtool/tool_use_check(mob/living/user, amount)
+	return get_fuel() >= amount
+
 /obj/item/weldingtool/get_temperature_as_from_ignitor()
-	if(isOn())
+	if(is_tool_on())
 		return 3800
 	return 0
 

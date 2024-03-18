@@ -109,11 +109,13 @@
 /obj/item/boomstickframe/attackby(obj/item/W, mob/user)
 	if(isWelder(W) && buildstate == 0)
 		var/obj/item/weldingtool/WT = W
-		if(WT.remove_fuel(0, user))
-			user.visible_message("<span class='notice'>\The [user] secures \the [src]'s barrel.</span>")
-			add_fingerprint(user)
-			buildstate++
-			update_icon()
+		if(!WT.use_tool(src, user, amount = 1))
+			return
+
+		user.visible_message("<span class='notice'>\The [user] secures \the [src]'s barrel.</span>")
+		add_fingerprint(user)
+		buildstate++
+		update_icon()
 		return
 	else if(istype(W,/obj/item/stack/rods) && buildstate == 1)
 		var/obj/item/stack/rods/R = W

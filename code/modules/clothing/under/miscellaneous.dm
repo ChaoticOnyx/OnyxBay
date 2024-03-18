@@ -547,6 +547,11 @@
 	item_state = "sl_suit"
 	worn_state = "navy_suit"
 
+/obj/item/clothing/under/suit_jacket/navy/scholar
+	name = "scholar suit"
+	desc = "A navy suit. It resembles some sort of a school uniform."
+	starting_accessories = list(/obj/item/clothing/accessory/red)
+
 /obj/item/clothing/under/suit_jacket/burgundy
 	name = "burgundy suit"
 	desc = "A burgundy suit and black tie. Somewhat formal."

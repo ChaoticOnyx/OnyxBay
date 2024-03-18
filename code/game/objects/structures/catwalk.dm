@@ -59,15 +59,16 @@
 /obj/structure/catwalk/attackby(obj/item/C, mob/user)
 	if(isWelder(C))
 		var/obj/item/weldingtool/WT = C
-		if(WT.remove_fuel(0, user))
-			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			to_chat(user, SPAN("notice", "Slicing catwalk joints ..."))
-			new /obj/item/stack/rods(loc)
-			new /obj/item/stack/rods(loc)
-			//Lattice would delete itself, but let's save ourselves a new obj
-			if((istype(loc, /turf/space) || istype(loc, /turf/simulated/open)) && !(locate(/obj/structure/lattice) in loc))
-				new /obj/structure/lattice(loc)
-			qdel(src)
+		if(!WT.use_tool(src, user, amount = 1))
+			return
+
+		to_chat(user, SPAN("notice", "Slicing catwalk joints ..."))
+		new /obj/item/stack/rods(loc)
+		new /obj/item/stack/rods(loc)
+		//Lattice would delete itself, but let's save ourselves a new obj
+		if((istype(loc, /turf/space) || istype(loc, /turf/simulated/open)) && !(locate(/obj/structure/lattice) in loc))
+			new /obj/structure/lattice(loc)
+		qdel_self()
 
 /obj/structure/catwalk/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if(the_rcd.mode == RCD_DECONSTRUCT)

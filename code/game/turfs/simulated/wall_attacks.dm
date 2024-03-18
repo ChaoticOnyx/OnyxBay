@@ -94,7 +94,7 @@
 	add_fingerprint(user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	var/rotting = (locate(/obj/effect/overlay/wallrot) in src)
-	if (MUTATION_HULK in user.mutations)
+	if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
 		if (rotting || !prob(material.hardness))
 			success_smash(user)
 		else
@@ -139,12 +139,14 @@
 	if(locate(/obj/effect/overlay/wallrot) in src)
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
-			if( WT.remove_fuel(0,user) )
-				to_chat(user, SPAN("notice","You burn away the fungi with \the [WT]."))
-				playsound(src, 'sound/items/Welder.ogg', 10, 1)
-				for(var/obj/effect/overlay/wallrot/WR in src)
-					qdel(WR)
+			if(!WT.use_tool(src, user, amount = 1))
 				return
+
+			to_chat(user, SPAN("notice","You burn away the fungi with \the [WT]."))
+			playsound(src, 'sound/items/Welder.ogg', 10, 1)
+			for(var/obj/effect/overlay/wallrot/WR in src)
+				qdel(WR)
+			return
 		else if(!is_sharp(W) && W.force >= 10 || W.force >= 20)
 			to_chat(user, SPAN("notice","\The [src] crumbles away under the force of your [W.name]."))
 			src.dismantle_wall(1)
@@ -154,9 +156,11 @@
 	if(thermite)
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
-			if( WT.remove_fuel(0,user) )
-				thermitemelt(user)
+			if(!WT.use_tool(src, user, amount = 1))
 				return
+
+			thermitemelt(user)
+			return
 
 		else if(istype(W, /obj/item/gun/energy/plasmacutter))
 			thermitemelt(user)
@@ -179,18 +183,15 @@
 
 		var/obj/item/weldingtool/WT = W
 
-		if(!WT.isOn())
+		to_chat(user, SPAN("notice","You start repairing the damage to [src]."))
+		if(!WT.use_tool(src, user, delay = max(5, damage / 5), amount = 5))
 			return
 
-		if(WT.remove_fuel(0,user))
-			to_chat(user, SPAN("notice","You start repairing the damage to [src]."))
-			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			if(do_after(user, max(5, damage / 5), src) && WT && WT.isOn())
-				to_chat(user, SPAN("notice","You finish repairing the damage to [src]."))
-				take_damage(-damage)
-		else
-			to_chat(user, SPAN("notice","You need more welding fuel to complete this task."))
+		if(QDELETED(src) || !user)
 			return
+
+		to_chat(user, SPAN("notice","You finish repairing the damage to [src]."))
+		take_damage(-damage)
 		return
 
 	// Basic dismantling.
@@ -202,14 +203,19 @@
 
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
-			if(!WT.isOn())
+			to_chat(user, SPAN("notice", "You begin cutting through the outer plating."))
+
+			if(!WT.use_tool(src, user, cut_delay * 0.7, 5))
 				return
-			if(!WT.remove_fuel(0,user))
-				to_chat(user, SPAN("notice","You need more welding fuel to complete this task."))
+
+			if(QDELETED(src) || !user)
 				return
-			dismantle_verb = "cutting"
-			dismantle_sound = 'sound/items/Welder.ogg'
-			cut_delay *= 0.7
+
+			to_chat(user, SPAN("notice","You remove the outer plating."))
+			dismantle_wall()
+			user.visible_message(SPAN("warning","\The [src] was torn open by [user]!"))
+			return
+
 		else if(istype(W,/obj/item/melee/energy/blade))
 			dismantle_sound = "spark"
 			dismantle_verb = "slicing"
@@ -229,7 +235,7 @@
 			if(cut_delay<0)
 				cut_delay = 0
 
-			if(!do_after(user,cut_delay,src))
+			if(!do_after(user, cut_delay, src))
 				return
 
 			to_chat(user, SPAN("notice","You remove the outer plating."))
@@ -270,13 +276,12 @@
 				var/cut_cover
 				if(isWelder(W))
 					var/obj/item/weldingtool/WT = W
-					if(!WT.isOn())
+					if(!WT.use_tool(src, user, amount = 1))
 						return
-					if(WT.remove_fuel(0,user))
-						cut_cover=1
-					else
-						to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
-						return
+
+					cut_cover = 1
+					to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
+					return
 				else if (istype(W, /obj/item/gun/energy/plasmacutter))
 					cut_cover = 1
 				if(cut_cover)
@@ -312,11 +317,10 @@
 				var/cut_cover
 				if(isWelder(W))
 					var/obj/item/weldingtool/WT = W
-					if( WT.remove_fuel(0,user) )
-						cut_cover=1
-					else
-						to_chat(user, SPAN("notice","You need more welding fuel to complete this task."))
+					if(!WT.use_tool(src, user, amount = 1))
 						return
+
+					cut_cover = 1
 				else if(istype(W, /obj/item/gun/energy/plasmacutter))
 					cut_cover = 1
 				if(cut_cover)

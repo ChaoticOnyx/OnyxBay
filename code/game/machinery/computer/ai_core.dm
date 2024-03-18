@@ -39,16 +39,16 @@
 					state = AI_STAGE_CIRCUIT
 			if(isWelder(P))
 				var/obj/item/weldingtool/WT = P
-				if(!WT.isOn())
-					to_chat(user, "The welder must be on for this task.")
+				if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 					return
-				playsound(loc, 'sound/items/Welder.ogg', 50, 1)
-				if(do_after(user, 20, src))
-					if(!src || !WT.remove_fuel(0, user)) return
-					to_chat(user, SPAN("notice", "You deconstruct the frame."))
-					new /obj/item/stack/material/plasteel(loc, 4)
-					qdel(src)
+
+				if(QDELETED(src) || !user)
 					return
+
+				to_chat(user, SPAN("notice", "You deconstruct the frame."))
+				new /obj/item/stack/material/plasteel(loc, 4)
+				qdel(src)
+				return
 		if(AI_STAGE_CIRCUIT)
 			if(isWrench(P))
 				playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)

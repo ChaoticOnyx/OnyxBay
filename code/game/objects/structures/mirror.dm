@@ -239,7 +239,7 @@
 		return
 	var/datum/vampire/V = H.mind.vampire
 	if(V)
-		if(V.status & VAMP_ISTHRALL)
+		if(V.vamp_status & VAMP_ISTHRALL)
 			filters += blur_filter
 		else
 			H.vis_flags |= VIS_HIDE
@@ -251,7 +251,7 @@
 		return
 	var/datum/vampire/V = H.mind.vampire
 	if(V)
-		if(V.status & VAMP_ISTHRALL)
+		if(V.vamp_status & VAMP_ISTHRALL)
 			filters -= blur_filter
 		else
 			H.vis_flags &= ~VIS_HIDE

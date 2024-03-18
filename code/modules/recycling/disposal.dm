@@ -76,29 +76,24 @@
 			if(!panel_open)
 				to_chat(user, "You cannot work on the delivery chute if it is not turned off with its power connection exposed.")
 
-			var/obj/item/weldingtool/W = I
-			if(W.remove_fuel(0, user))
-				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
-				to_chat(user, "You start slicing the floorweld off the disposal unit.")
-
-				if(do_after(user, 20, src))
-					if(!src || !W.isOn())
-						return
-
-					eject() // In case if something's got inside while we were slicin' and the GC got fucked due to lag
-					to_chat(user, "You sliced the floorweld off the disposal unit.")
-					var/obj/structure/disposalconstruct/C = new (src.loc)
-					transfer_fingerprints_to(C)
-					C.ptype = 6 // 6 = disposal unit
-					C.anchored = 1
-					C.set_density(1)
-					C.update()
-					qdel_self()
+			var/obj/item/weldingtool/WT = I
+			to_chat(user, "You start slicing the floorweld off the disposal unit.")
+			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 				return
 
-			else
-				to_chat(user, "You need more welding fuel to complete this task.")
+			if(QDELETED(src) || !user)
 				return
+
+			eject() // In case if something's got inside while we were slicin' and the GC got fucked due to lag
+			to_chat(user, "You sliced the floorweld off the disposal unit.")
+			var/obj/structure/disposalconstruct/C = new (src.loc)
+			transfer_fingerprints_to(C)
+			C.ptype = 6 // 6 = disposal unit
+			C.anchored = 1
+			C.set_density(1)
+			C.update()
+			qdel_self()
+			return
 
 	if(istype(I, /obj/item/storage/bag/trash))
 		var/obj/item/storage/bag/trash/T = I
@@ -858,23 +853,15 @@
 			return		// prevent interaction with T-scanner revealed pipes
 		src.add_fingerprint(user, 0, I)
 		if(isWelder(I))
-			var/obj/item/weldingtool/W = I
-
-			if(W.remove_fuel(0,user))
-				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
-				// check if anything changed over 2 seconds
-				var/turf/uloc = user.loc
-				var/atom/wloc = W.loc
-				to_chat(user, "Slicing the disposal pipe.")
-				sleep(30)
-				if(!W.isOn()) return
-				if(user.loc == uloc && wloc == W.loc)
-					welded()
-				else
-					to_chat(user, "You must stay still while welding the pipe.")
-			else
-				to_chat(user, "You need more welding fuel to cut the pipe.")
+			var/obj/item/weldingtool/WT = I
+			to_chat(user, "Slicing the disposal pipe.")
+			if(!WT.use_tool(src, user, delay = 3 SECONDS, amount = 1))
 				return
+
+			if(QDELETED(src) || !user)
+				return
+
+			welded()
 
 	// called when pipe is cut with welder
 	proc/welded()
@@ -1512,23 +1499,15 @@
 		return		// prevent interaction with T-scanner revealed pipes
 	src.add_fingerprint(user, 0, I)
 	if(isWelder(I))
-		var/obj/item/weldingtool/W = I
-
-		if(W.remove_fuel(0,user))
-			playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
-			// check if anything changed over 2 seconds
-			var/turf/uloc = user.loc
-			var/atom/wloc = W.loc
-			to_chat(user, "Slicing the disposal pipe.")
-			sleep(30)
-			if(!W.isOn()) return
-			if(user.loc == uloc && wloc == W.loc)
-				welded()
-			else
-				to_chat(user, "You must stay still while welding the pipe.")
-		else
-			to_chat(user, "You need more welding fuel to cut the pipe.")
+		var/obj/item/weldingtool/WT = I
+		if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 			return
+
+		if(QDELETED(src) || !user)
+			return
+
+		welded()
+		return
 
 	// would transfer to next pipe segment, but we are in a trunk
 	// if not entering from disposal bin,
@@ -1644,24 +1623,24 @@
 				to_chat(user, "You attach the screws around the power connection.")
 				return
 		else if(isWelder(I) && mode==1)
-			var/obj/item/weldingtool/W = I
-			if(W.remove_fuel(0,user))
-				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
-				to_chat(user, "You start slicing the floorweld off the disposal outlet.")
-				if(do_after(user,20, src))
-					if(!src || !W.isOn()) return
-					to_chat(user, "You sliced the floorweld off the disposal outlet.")
-					var/obj/structure/disposalconstruct/C = new (src.loc)
-					src.transfer_fingerprints_to(C)
-					C.ptype = 7 // 7 =  outlet
-					C.update()
-					C.anchored = 1
-					C.set_density(1)
-					qdel(src)
+			var/obj/item/weldingtool/WT = I
+			to_chat(user, "You start slicing the floorweld off the disposal outlet.")
+			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 				return
-			else
-				to_chat(user, "You need more welding fuel to complete this task.")
+
+			if(QDELETED(src) || !user)
 				return
+
+			to_chat(user, "You sliced the floorweld off the disposal outlet.")
+			var/obj/structure/disposalconstruct/C = new (src.loc)
+			src.transfer_fingerprints_to(C)
+			C.ptype = 7 // 7 =  outlet
+			C.update()
+			C.anchored = TRUE
+			C.set_density(TRUE)
+			qdel(src)
+			return
+
 
 // called when movable is expelled from a disposal pipe or outlet
 // by default does nothing, override for special behaviour

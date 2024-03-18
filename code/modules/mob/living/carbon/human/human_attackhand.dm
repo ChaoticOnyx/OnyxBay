@@ -1,4 +1,8 @@
 /mob/living/carbon/human/proc/get_unarmed_attack(mob/living/carbon/human/target, hit_zone)
+	if(istype(gloves, /obj/item/clothing/gloves/boxing))
+		var/obj/item/clothing/gloves/boxing/b_gloves = gloves
+		return b_gloves.attack
+
 	for(var/datum/unarmed_attack/u_attack in species.unarmed_attacks)
 		if(u_attack.is_usable(src, target, hit_zone))
 			if(pulling_punches)
@@ -28,7 +32,7 @@
 			H.do_attack_animation(src)
 			return 0
 
-		if(istype(H.gloves, /obj/item/clothing/gloves/boxing/hologlove))
+		if(istype(H.gloves, /obj/item/clothing/gloves/boxing/hologloves))
 			H.do_attack_animation(src)
 			var/damage = rand(0, 9)
 			if(!damage)
@@ -39,6 +43,9 @@
 			var/armor_block = run_armor_check(affecting, "melee")
 
 			if(MUTATION_HULK in H.mutations)
+				damage += 5
+
+			if(MUTATION_STRONG in H.mutations)
 				damage += 5
 
 			playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
@@ -274,6 +281,9 @@
 			attack_damage *= damage_multiplier
 			if(MUTATION_HULK in H.mutations)
 				real_damage *= 2 // Hulks do twice the damage
+				attack_damage *= 2
+			if(MUTATION_STRONG in H.mutations)
+				real_damage *= 2
 				attack_damage *= 2
 			real_damage = max(1, real_damage)
 

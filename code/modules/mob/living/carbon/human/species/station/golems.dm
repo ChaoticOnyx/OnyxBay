@@ -7,7 +7,7 @@
 	additional_langs = LANGUAGE_SOL_COMMON
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch)
 	generic_attack_mod = 1.5
-	appearance_flags = HAS_SKIN_COLOR | HAS_SKIN_TONE_NORMAL
+	species_appearance_flags = HAS_SKIN_COLOR | HAS_SKIN_TONE_NORMAL
 	has_eyes_icon = FALSE
 	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_NO_LACE | SPECIES_FLAG_NO_FIRE
 	spawn_flags = SPECIES_IS_RESTRICTED
