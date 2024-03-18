@@ -405,6 +405,9 @@
 	if(WT.use_tool(src, user, delay = 10 SECONDS, amount = 5))
 		return FALSE
 
+	if(QDELETED(src))
+		return FALSE
+
 	return TRUE
 
 /obj/machinery/camera/interact(mob/living/user as mob)
