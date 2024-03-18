@@ -178,6 +178,9 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	return
 
 /obj/machinery/hologram/holopad/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
+	if(istype(speaker, /obj/machinery/hologram/holopad))
+		return
+
 	if(speaker)
 		for(var/mob/living/silicon/ai/master in masters)
 			if(!master.say_understands(speaker, language))//The AI will be able to understand most mobs talking through the holopad.
@@ -194,13 +197,13 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 				rendered = "<i><span class='game say'>Holopad received, <span class='name'>[name_used]</span> [verb], <span class='message'>\"[text]\"</span></span></i>"
 			master.show_message(rendered, 2)
 	if(targetpad) //If this is the pad you're making the call from
-		targetpad.say(message, language, speaker)
 		targetpad.last_message = message
+		targetpad.say(message, language, verb = "transmits")
 	if(sourcepad) //If this is a pad receiving a call
 		if(text == last_message) //prevent echoes
 			return
 
-		sourcepad.say(message, language, speaker)
+		sourcepad.say(message, language, verb = "transmits")
 
 /obj/machinery/hologram/holopad/see_emote(mob/living/M, text)
 	if(M)
