@@ -43,7 +43,7 @@
 /// Returns TRUE if the message was received and understood.
 // At minimum every atom movable has a hear_say proc.
 
-/atom/movable/proc/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = FALSE, mob/speaker = null, sound/speech_sound, sound_vol)
+/atom/movable/proc/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = FALSE, atom/movable/speaker = null, sound/speech_sound, sound_vol)
 	pass()
 
 /atom/movable/proc/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0, vname ="", loud)

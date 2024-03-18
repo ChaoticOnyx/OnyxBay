@@ -99,7 +99,7 @@
 	mytape = null
 	update_icon()
 
-/obj/item/device/taperecorder/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/device/taperecorder/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(mytape && recording)
 		if(language)
 			if(!language.machine_understands)

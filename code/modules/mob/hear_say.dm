@@ -1,14 +1,9 @@
-/mob/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = FALSE, mob/speaker = null, sound/speech_sound, sound_vol)
+/mob/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = FALSE, atom/movable/speaker = null, sound/speech_sound, sound_vol)
 	if(!client)
 		return
 
 	var/dist_speech = get_dist(speaker, src)
 	var/near = dist_speech <= world.view
-
-	if(speaker && !speaker.client && isghost(src) && get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && !near)
-			//Does the speaker have a client?  It's either random stuff that observers won't care about (Experiment 97B says, 'EHEHEHEHEHEHEHE')
-			//Or someone snoring.  So we make it where they won't hear it.
-		return
 
 	//make sure the air can transmit speech - hearer's side
 	var/turf/T = get_turf(src)

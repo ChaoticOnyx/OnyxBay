@@ -198,7 +198,7 @@
 		master.receive_signal()
 	return 1
 
-/obj/item/device/assembly_holder/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/device/assembly_holder/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(a_right)
 		a_right.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 	if(a_left)

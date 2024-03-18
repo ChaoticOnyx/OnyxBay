@@ -89,7 +89,7 @@
 	frequency = new_frequency
 	radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)
 
-/obj/item/implant/voice_triggered/explosive/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/implant/voice_triggered/explosive/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	hear(message)
 
 /obj/item/implant/voice_triggered/explosive/hear(msg)

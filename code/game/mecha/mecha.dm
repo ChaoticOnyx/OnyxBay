@@ -275,7 +275,7 @@
 /obj/mecha/proc/drop_item()//Derpfix, but may be useful in future for engineering exosuits.
 	return
 
-/obj/mecha/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/mecha/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(speaker == occupant && radio.get_broadcasting())
 		radio.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 	return

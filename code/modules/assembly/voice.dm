@@ -20,7 +20,7 @@
 	else
 		lose_hearing_sensitivity()
 
-/obj/item/device/assembly/voice/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/device/assembly/voice/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(cooldown > 0)
 		return
 

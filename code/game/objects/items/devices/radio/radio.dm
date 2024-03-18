@@ -455,7 +455,7 @@
 					  filter_type, signal.data["compression"], GetConnectedZlevels(position.z), connection.frequency,verb,speaking,loud)
 
 
-/obj/item/device/radio/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/device/radio/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	. = ..()
 	if(broadcasting && (get_dist(src, speaker) <= canhear_range))
 		INVOKE_ASYNC(src, nameof(.proc/talk_into), speaker, message, null, verb, language)

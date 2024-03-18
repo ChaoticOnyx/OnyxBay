@@ -72,7 +72,7 @@
 		agony_limit = AGONY_LIMIT
 		agony = agony_limit
 
-/obj/item/implant/voice_triggered/speech_corrector/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/implant/voice_triggered/speech_corrector/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(speaker == imp_in)
 		hear(message)
 

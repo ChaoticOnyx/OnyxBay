@@ -46,7 +46,7 @@
 	else
 		..()
 
-/obj/item/device/spy_bug/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/device/spy_bug/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	radio.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 
 /obj/item/device/spy_bug/proc/pair_with(obj/item/device/spy_monitor/SM)
@@ -278,7 +278,7 @@
 
 	return 1
 
-/obj/item/device/spy_monitor/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/device/spy_monitor/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	return radio.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 
 /obj/machinery/camera/spy

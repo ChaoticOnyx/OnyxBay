@@ -913,7 +913,7 @@
 	. = ..()
 	become_hearing_sensitive()
 
-/obj/item/integrated_circuit/input/microphone/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/integrated_circuit/input/microphone/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	var/translated = TRUE
 	if(speaker && message)
 		if(language && !language.machine_understands)

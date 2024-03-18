@@ -177,7 +177,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 		to_chat(caller_id, "<span class='danger'>ERROR:</span> Unable to project hologram.")
 	return
 
-/obj/machinery/hologram/holopad/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/machinery/hologram/holopad/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(speaker)
 		for(var/mob/living/silicon/ai/master in masters)
 			if(!master.say_understands(speaker, language))//The AI will be able to understand most mobs talking through the holopad.

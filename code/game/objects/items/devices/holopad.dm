@@ -175,7 +175,7 @@ GLOBAL_LIST_EMPTY(all_holopad_devices)
 		if(CALL_IN_CALL)
 			hangUp()
 
-/obj/item/device/holopad/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/device/holopad/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(call_state == CALL_IN_CALL)
 		abonent.receive(message, speaker)
 

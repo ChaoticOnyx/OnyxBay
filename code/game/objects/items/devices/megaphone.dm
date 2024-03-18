@@ -42,7 +42,7 @@ GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphon
 	set_active(!active)
 	update_icon()
 
-/obj/item/device/megaphone/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/device/megaphone/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(!active)
 		return
 

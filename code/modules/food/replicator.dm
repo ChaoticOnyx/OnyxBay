@@ -70,7 +70,7 @@
 	else
 		src.icon_state = "[initial(icon_state)]-off"
 
-/obj/machinery/food_replicator/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/machinery/food_replicator/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(!language || language.machine_understands)
 		var/true_text = lowertext(html_decode(message))
 		for(var/menu_item in menu)

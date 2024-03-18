@@ -225,7 +225,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 		return 0
 	return 1
 
-/obj/item/gun/projectile/lawgiver/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/gun/projectile/lawgiver/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	var/mob/living/carbon/human/owner = loc
 	// Only gunholder can change firemodes
 	if(!istype(owner) || !istype(speaker) || owner.GetVoice() != speaker.GetVoice())

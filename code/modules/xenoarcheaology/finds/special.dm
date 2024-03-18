@@ -33,7 +33,7 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/clothing/mask/gas/poltergeist/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/clothing/mask/gas/poltergeist/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(heard_talk.len > max_stored_messages)
 		heard_talk.Remove(pick(heard_talk))
 
@@ -121,7 +121,7 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/vampiric/hear_say(message, verb, datum/language/language, alt_name, italics, mob/speaker, sound/speech_sound, sound_vol)
+/obj/item/vampiric/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(world.time - last_bloodcall >= bloodcall_interval)
 		bloodcall(speaker)
 
