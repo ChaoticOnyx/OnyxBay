@@ -149,7 +149,7 @@ var/const/NO_EMAG_ACT = -50
 			access |= j.get_access()
 
 /obj/item/card/id/_examine_text(mob/user)
-	if(in_range(user, src) && isghost(user))
+	if(in_range(user, src))
 		show(user)
 		return desc
 
