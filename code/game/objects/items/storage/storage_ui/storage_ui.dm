@@ -1,5 +1,8 @@
 /datum/storage_ui
 	var/obj/item/storage/storage
+	var/list/click_border_start = list()
+	var/list/click_border_end = list()
+
 
 /datum/storage_ui/New(storage)
 	src.storage = storage
