@@ -164,13 +164,16 @@
 			return
 
 	to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
-	if(craft_tool != 1 && !WT?.use_tool(src, user, delay = recipe.time, amount = 5))
+	if(craft_tool == 2 && WT?.use_tool(src, user, delay = recipe.time, amount = 5))
+		finalize_recipe_production(recipe, required, produced, user)
 		return
 
-	else if(!do_after(user, recipe.time))
+	else if(do_after(user, recipe.time))
+		finalize_recipe_production(recipe, required, produced, user)
 		return
 
-	if(QDELETED(src))
+/obj/item/stack/proc/finalize_recipe_production(datum/stack_recipe/recipe, required, produced, mob/user)
+	if(QDELETED(src)) // This proc is called after do_after(), some checks are therefore needed
 		return
 
 	if(use(required))
@@ -188,10 +191,10 @@
 		O.set_dir(user.dir)
 		O.add_fingerprint(user)
 
-		if (recipe.goes_in_hands && !recipe.on_floor)
+		if(recipe.goes_in_hands && !recipe.on_floor)
 			user.pick_or_drop(O)
 
-		if (istype(O, /obj/item/stack))
+		if(istype(O, /obj/item/stack))
 			var/obj/item/stack/S = O
 			S.amount = produced
 			S.add_to_stacks(user, recipe.goes_in_hands)

@@ -137,6 +137,9 @@
 		unload_item(incoming_stack.type, stack_amt)
 
 /obj/machinery/mineral/stacking_machine/unload_item(type, amount)
+	if(amount <= 0)
+		return
+
 	var/obj/item/stack/material/out = new type()
 	out.amount = amount
 	machine_storage[type] -= amount
