@@ -192,9 +192,12 @@
 
 //This proc determins the size of the inventory to be displayed. Please touch it only if you know what you're doing.
 /datum/storage_ui/default/proc/slot_orient_objs()
+	click_border_start.Cut()
+	click_border_end.Cut()
+
 	var/adjusted_contents = storage.contents.len
 	var/row_num = 0
-	var/col_count = min(7,storage.storage_slots) -1
+	var/col_count = min(7, storage.storage_slots) - 1
 	if (adjusted_contents > 7)
 		row_num = round((adjusted_contents-1) / 7) // 7 is the maximum allowed width.
 	arrange_item_slots(row_num, col_count)
@@ -214,7 +217,14 @@
 			cx = 4
 			cy--
 
-	closer.screen_loc = "[4+cols+1]:16,2:16"
+	click_border_start += (cx - 4) * 32
+	click_border_end += (cx - 4) * 32 + 32
+	cx++
+	if(cx > (4 + cols))
+		cx = 4
+		cy--
+
+	closer.screen_loc = "[4 + cols + 1]:16,2:16"
 
 /datum/storage_ui/default/proc/space_orient_objs()
 
@@ -223,6 +233,8 @@
 	var/stored_cap_width = 4 //length of sprite for start and end of the box representing the stored item
 	var/storage_width = min( round( 224 * storage.max_storage_space/baseline_max_storage_space ,1) ,284) //length of sprite for the box representing total storage space
 
+	click_border_start.Cut()
+	click_border_end.Cut()
 	storage_start.ClearOverlays()
 
 	storage_continue.SetTransform(scale_x = (storage_width - storage_cap_width * 2 + 3) / 32)
@@ -237,6 +249,9 @@
 	for(var/obj/item/O in storage.contents)
 		startpoint = endpoint + 1
 		endpoint += storage_width * O.get_storage_cost()/storage.max_storage_space
+
+		click_border_start.Add(startpoint)
+		click_border_end.Add(endpoint)
 
 		stored_start.SetTransform(offset_x = startpoint)
 		stored_end.SetTransform(offset_x = endpoint - stored_cap_width)
