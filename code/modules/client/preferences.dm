@@ -474,7 +474,6 @@ datum/preferences/proc/clear_character_previews()
 	ASSERT(client)
 
 	client.apply_fps(clientfps)
-	client.update_chat_position(client.get_preference_value(/datum/client_preference/chat_position))
 
 	if(client.get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		client.toggle_fullscreen(client.get_preference_value(/datum/client_preference/fullscreen_mode))
