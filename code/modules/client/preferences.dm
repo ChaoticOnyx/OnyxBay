@@ -484,3 +484,6 @@ datum/preferences/proc/clear_character_previews()
 		winset(client, "browseroutput", "is-disabled=1;is-visible=0")
 	else
 		client.tgui_panel.initialize()
+
+	if(client.get_preference_value("STATUSBAR") != GLOB.PREF_YES)
+		winset(client, "statusbar", "is-visible=0")

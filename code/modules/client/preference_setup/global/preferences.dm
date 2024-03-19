@@ -316,6 +316,15 @@ var/global/list/_client_preferences_by_type
 	if(preference_mob.client)
 		preference_mob.client.toggle_fullscreen(new_value)
 
+/datum/client_preference/statusbar
+	description = "Show Statusbar"
+	key = "STATUSBAR"
+	category = PREF_CATEGORY_UI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/statusbar/changed(mob/preference_mob, new_value)
+	winset(preference_mob, "statusbar", "is-visible=[new_value == GLOB.PREF_YES]")
+
 /datum/client_preference/chat_position
 	description = "Use Alternative Chat Position"
 	key = "CHAT_ALT"
