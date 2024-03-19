@@ -74,10 +74,12 @@
 		return
 
 	if(!isigniter(detonator.a_left))
-		detonator.a_left.activate()
+		if(!istype(detonator.a_left, /obj/item/device/assembly/voice))
+			detonator.a_left.activate()
 		active = TRUE
 	if(!isigniter(detonator.a_right))
-		detonator.a_right.activate()
+		if(!istype(detonator.a_right, /obj/item/device/assembly/voice))
+			detonator.a_right.activate()
 		active = TRUE
 
 	broken = TRUE

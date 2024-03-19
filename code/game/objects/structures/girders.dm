@@ -76,25 +76,31 @@
 			user.visible_message(SPAN("notice", "[user] is securing \the [src]..."), \
 					   	         SPAN("notice", "Now securing \the [src]..."))
 			if(do_after(user, 40,src))
-				if(!src) return
+				if(QDELETED(src))
+					return
 				user.visible_message(SPAN("notice", "[user] secured \the [src]!"), \
 					   	         	 SPAN("notice", "You secured \the [src]!"))
 				reset_girder()
 				shove_everything(shove_objects = FALSE, shove_items = FALSE)
+			return
 
 	else if((istype(W, /obj/item/gun/energy/plasmacutter) || (istype(W, /obj/item/melee/energy) && W.force > 20)) && user.a_intent == I_HELP)
 		user.visible_message(SPAN("notice", "[user] is slicing apart \the [src]..."), \
 				             SPAN("notice", "Now slicing apart \the [src]..."))
 		if(do_after(user,30,src))
-			if(!src) return
+			if(QDELETED(src))
+				return
+
 			user.visible_message(SPAN("notice", "[user] slices apart \the [src]!"), \
 				             	 SPAN("notice", "You slice apart \the [src]!"))
 			dismantle()
+		return
 
 	else if(istype(W, /obj/item/pickaxe/drill/diamonddrill))
 		user.visible_message(SPAN("notice", "[user] drills through \the [src]!"), \
 				             SPAN("notice", "You drill through \the [src]!"))
 		dismantle()
+		return
 
 	else if(isScrewdriver(W))
 		if(state == 2)
@@ -108,30 +114,37 @@
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 			reinforcing = !reinforcing
 			to_chat(user, SPAN("notice", "\The [src] can now be [reinforcing? "reinforced" : "constructed"]!"))
+		return
 
 	else if(isWirecutter(W) && state == 1)
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		to_chat(user, SPAN("notice", "Now removing the support struts from \the [src]..."))
 		if(do_after(user, 40, src))
-			if(!src) return
+			if(QDELETED(src))
+				return
+
 			to_chat(user, SPAN("notice", "You removed the support struts from \the [src]!"))
 			if(reinf_material)
 				reinf_material.place_dismantled_product(get_turf(src))
 				reinf_material = null
 
 			reset_girder()
+			return
 
 	else if(isCrowbar(W) && state == 0 && anchored)
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 		user.visible_message(SPAN("notice", "[user] is dislodging \the [src]..."), \
 				             SPAN("notice", "Now dislodging \the [src]..."))
 		if(do_after(user, 40, src))
-			if(!src) return
+			if(QDELETED(src))
+				return
+
 			user.visible_message(SPAN("notice", "[user] dislodged \the [src]."), \
-				                 SPAN("notice", "You dislodged \the [src]."))
+				                	SPAN("notice", "You dislodged \the [src]."))
 			icon_state = "displaced"
 			anchored = 0
 			cover = 40
+			return
 
 	else if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
@@ -151,6 +164,7 @@
 		health = max_health
 		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
 				             SPAN("notice", "You repair \the [src]."))
+		return
 
 	else if(istype(W, /obj/item/stack/material))
 		if(reinforcing && !reinf_material)

@@ -50,7 +50,7 @@
 	return
 
 /client/verb/bugreport()
-	set name = "In-game Bug Report"
+	set name = "Report Bug"
 	set desc = "Create bug report to developers."
 	set hidden = 1
 

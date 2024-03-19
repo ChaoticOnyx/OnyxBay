@@ -149,9 +149,13 @@ var/const/NO_EMAG_ACT = -50
 			access |= j.get_access()
 
 /obj/item/card/id/_examine_text(mob/user)
-	if(in_range(user, src))
+	if(in_range(user, src) && isghost(user))
 		show(user)
 		return desc
+
+	if(isghost(user))
+		return desc
+
 	return SPAN("warning", "It is too far away.")
 
 /obj/item/card/id/get_examine_line(examine_distance = 10)
