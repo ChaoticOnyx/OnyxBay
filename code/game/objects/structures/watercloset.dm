@@ -79,7 +79,7 @@
 			show_splash_text(user, "tighter grip is needed!")
 			return
 
-		if(get_turf(G.affecing) != get_turf(src))
+		if(get_turf(G.affecting) != get_turf(src))
 			show_splash_text(user, "victim needs to be on the toilet!")
 
 		if(lid_open && !swirlie)
