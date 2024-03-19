@@ -212,17 +212,13 @@
 		O.screen_loc = "[cx]:16,[cy]:16"
 		O.maptext = ""
 		O.hud_layerise()
+		click_border_start += (cx - 4) * 32
+		click_border_end += (cx - 4) * 32 + 32
+
 		cx++
 		if (cx > (4+cols))
 			cx = 4
 			cy--
-
-	click_border_start += (cx - 4) * 32
-	click_border_end += (cx - 4) * 32 + 32
-	cx++
-	if(cx > (4 + cols))
-		cx = 4
-		cy--
 
 	closer.screen_loc = "[4 + cols + 1]:16,2:16"
 
