@@ -16,9 +16,9 @@ GLOBAL_VAR_CONST(PREF_X15, "x1.5")
 GLOBAL_VAR_CONST(PREF_X2, "x2")
 GLOBAL_VAR_CONST(PREF_X25, "x2.5")
 GLOBAL_VAR_CONST(PREF_X3, "x3")
-GLOBAL_VAR_CONST(PREF_NORMAL, "normal")
-GLOBAL_VAR_CONST(PREF_DISTORT, "distort")
-GLOBAL_VAR_CONST(PREF_BLUR, "blur")
+GLOBAL_VAR_CONST(PREF_NORMAL, "Normal")
+GLOBAL_VAR_CONST(PREF_DISTORT, "Distort")
+GLOBAL_VAR_CONST(PREF_BLUR, "Blur")
 GLOBAL_VAR_CONST(PREF_PRIMARY, "Primary")
 GLOBAL_VAR_CONST(PREF_ALL, "All")
 GLOBAL_VAR_CONST(PREF_OFF, "Off")
@@ -319,6 +319,7 @@ var/global/list/_client_preferences_by_type
 	key = "PIXEL_SIZE"
 	category = PREF_CATEGORY_GRAPHICS
 	options = list(GLOB.PREF_STRETCH, GLOB.PREF_X1, GLOB.PREF_X15, GLOB.PREF_X2, GLOB.PREF_X25, GLOB.PREF_X3)
+	default_value = GLOB.PREF_STRETCH
 
 /datum/client_preference/pixel_size/changed(mob/preference_mob, new_value)
 	winset(preference_mob, "mapwindow.map", "zoom=[max(0, options.Find(new_value) - 1)]")
