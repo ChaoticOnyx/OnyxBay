@@ -40,7 +40,6 @@
 
 	if(alert(usr, "Are you sure? You have to switch to the English keyboard layout first.\nWarning: This will close all open windows.", "Fix hotkeys", "Yes", "No") == "Yes")
 		winset(src, null, "reset=true")
-		update_chat_position()
 		nuke_chat()
 
 /client/verb/info_storyteller()
@@ -51,4 +50,3 @@
 		to_chat(src, "<b>Current Storyteller:</b> N/A")
 	else
 		to_chat(src, "<b>Current Storyteller:</b> [SSstoryteller.character.name] - [SSstoryteller.character.desc]")
-

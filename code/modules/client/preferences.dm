@@ -474,7 +474,13 @@ datum/preferences/proc/clear_character_previews()
 	ASSERT(client)
 
 	client.apply_fps(clientfps)
-	client.update_chat_position(client.get_preference_value(/datum/client_preference/chat_position))
+
+	var/datum/client_preference/zoom_pref = get_client_preference_by_key("PIXEL_SIZE")
+	var/zoom = client.get_preference_value("PIXEL_SIZE")
+	winset(client, "mapwindow.map", "zoom=[max(0, zoom_pref.options.Find(zoom) - 1)]")
+
+	var/zoom_mode = client.get_preference_value("SCALING_METHOD")
+	winset(client, "mapwindow.map", "zoom-mode=[lowertext(zoom_mode)]")
 
 	if(client.get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		client.toggle_fullscreen(client.get_preference_value(/datum/client_preference/fullscreen_mode))
