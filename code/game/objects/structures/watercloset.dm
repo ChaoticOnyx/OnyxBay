@@ -362,6 +362,7 @@
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "rubberducky"
 	item_state = "rubberducky"
+	slot_flags = SLOT_HEAD
 
 
 
