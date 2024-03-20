@@ -97,7 +97,7 @@
 			user.visible_message(SPAN_DANGER("[user] gives [G.affecting.name] a swirlie!"), \
 									SPAN_DANGER("You give [G.affecting.name] a swirlie!"))
 			playsound(src, 'sound/effects/toilet_flush.ogg', 100, TRUE)
-			if(!G?.affecting?.internal)
+			if(!G?.affecting?.internal && !G.affecting.isSynthetic())
 				G.affecting.adjustOxyLoss(TOILET_OXYLOSS_PER_SWIRLIE)
 				G.affecting.emote("gasp")
 			swirlie = null

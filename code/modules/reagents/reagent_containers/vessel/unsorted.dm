@@ -96,7 +96,7 @@
 								SPAN_DANGER("You raise [G.affecting.name]'s head out of \the [src]!"))
 		reagents.trans_to(G.affecting, min(reagents.total_volume, 5))
 		playsound(get_turf(src), GET_SFX(SFX_FOOTSTEP_WATER), 100, TRUE)
-		if(!G?.affecting?.internal)
+		if(!G?.affecting?.internal && !G.affecting.isSynthetic())
 			G.affecting.adjustOxyLoss(OXYLOS_PER_HEAD_DIP)
 			G.affecting.emote("gasp")
 		return
