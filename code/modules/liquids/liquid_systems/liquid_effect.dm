@@ -225,7 +225,8 @@
 
 	src.overlays += liquid_state_overlay
 
-	var/mutable_appearance/shine = mutable_appearance(icon, "shine", alpha = 32, appearance_flags = RESET_COLOR|RESET_ALPHA)
+	var/mutable_appearance/shine = mutable_appearance(icon, "shine", flags = RESET_COLOR|RESET_ALPHA)
+	shine.alpha = 32
 	src.overlays += shine
 
 	//Add a fire overlay too
