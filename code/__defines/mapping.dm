@@ -47,31 +47,3 @@
 #define MAP_BAR_CLASSIC "classic"
 #define MAP_BAR_MODERN  "modern"
 #define MAP_BAR_SALOON  "saloon"
-
-/// Create directional subtypes for a path to simplify mapping.
-#define MAPPING_DIRECTIONAL_HELPERS(path, offset) ##path/directional/north {\
-	dir = NORTH; \
-	pixel_y = offset; \
-} \
-##path/directional/south {\
-	dir = SOUTH; \
-	pixel_y = -offset; \
-} \
-##path/directional/east {\
-	dir = EAST; \
-	pixel_x = offset; \
-} \
-##path/directional/west {\
-	dir = WEST; \
-	pixel_x = -offset; \
-}
-
-#define BIOME_LOW_HEAT "low_heat"
-#define BIOME_LOWMEDIUM_HEAT "lowmedium_heat"
-#define BIOME_HIGHMEDIUM_HEAT "highmedium_heat"
-#define BIOME_HIGH_HEAT "high_heat"
-
-#define BIOME_LOW_HUMIDITY "low_humidity"
-#define BIOME_LOWMEDIUM_HUMIDITY "lowmedium_humidity"
-#define BIOME_HIGHMEDIUM_HUMIDITY "highmedium_humidity"
-#define BIOME_HIGH_HUMIDITY "high_humidity"
