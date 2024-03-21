@@ -663,7 +663,7 @@
 
 /obj/structure/sculpting_block/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten first!")
+		show_splash_text(user, "unfasten it first!")
 		return
 
 	else

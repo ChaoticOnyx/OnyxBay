@@ -239,7 +239,7 @@
 
 /obj/machinery/suspension_gen/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten first!")
+		show_splash_text(user, "unfasten it first!")
 		return
 
 	else

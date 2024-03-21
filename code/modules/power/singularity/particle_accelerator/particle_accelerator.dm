@@ -92,7 +92,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 
 /obj/structure/particle_accelerator/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten first!")
+		show_splash_text(user, "unfasten it first!")
 		return
 
 	else
@@ -256,7 +256,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 
 /obj/machinery/particle_accelerator/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten first!")
+		show_splash_text(user, "unfasten it first!")
 		return
 
 	else

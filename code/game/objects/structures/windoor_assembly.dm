@@ -269,7 +269,7 @@
 //Rotates the windoor assembly clockwise
 /obj/structure/windoor_assembly/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten first!")
+		show_splash_text(user, "unfasten it first!")
 		return
 
 	if(state != "01")
