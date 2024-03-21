@@ -75,7 +75,7 @@
 	flags = GEAR_HAS_TYPE_SELECTION
 
 /datum/gear/uniform/skirt_c
-	display_name = "short skirt, colour select"
+	display_name = "skirt selection, colour select"
 	path = /obj/item/clothing/under/skirt_c
 	flags = GEAR_HAS_COLOR_SELECTION
 
@@ -83,6 +83,23 @@
 	display_name = "simple dress, colour select"
 	path = /obj/item/clothing/under/skirt_c/dress
 	flags = GEAR_HAS_COLOR_SELECTION
+
+/datum/gear/uniform/skirt_c/New()
+	..()
+	var/skirts_colorable = list()
+	skirts_colorable += /obj/item/clothing/under/skirt_c
+	skirts_colorable += /obj/item/clothing/under/skirt_c/pencil
+	skirts_colorable += /obj/item/clothing/under/skirt_c/casual
+	skirts_colorable += /obj/item/clothing/under/skirt_c/high
+	skirts_colorable += /obj/item/clothing/under/skirt_c/long
+	skirts_colorable += /obj/item/clothing/under/skirt_c/swept
+	skirts_colorable += /obj/item/clothing/under/skirt_c/puffy
+	skirts_colorable += /obj/item/clothing/under/skirt_c/plaid
+	skirts_colorable += /obj/item/clothing/under/skirt_c/pleated
+	skirts_colorable += /obj/item/clothing/under/skirt_c/skater
+	skirts_colorable += /obj/item/clothing/under/skirt_c/tube
+	skirts_colorable += /obj/item/clothing/under/skirt_c/straightlong
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(skirts_colorable)
 
 /datum/gear/uniform/casual_pants
 	display_name = "casual pants selection"
