@@ -130,7 +130,7 @@
 		. = ..()
 
 /obj/proc/rotate(mob/user)
-	if(!user)
+	if(!user || user.incapacitated() || !Adjacent(user))
 		return
 
 	set_dir(turn(dir, -90)) // rotating clockwise
