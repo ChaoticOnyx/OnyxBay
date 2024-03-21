@@ -12,7 +12,7 @@
 
 	var/obj/item/reagent_containers/container = null
 
-/obj/machinery/disease2/antibodyanalyser/update_icon()
+/obj/machinery/disease2/antibodyanalyser/on_update_icon()
 	if(scanning)
 		icon_state = "analyser_processing"
 	else

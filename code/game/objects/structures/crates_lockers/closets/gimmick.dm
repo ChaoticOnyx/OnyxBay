@@ -6,11 +6,18 @@
 	icon_opened = "cabinet_open"
 	dremovable = FALSE
 
-/obj/structure/closet/cabinet/update_icon()
+/obj/structure/closet/cabinet/on_update_icon()
 	if(!opened)
 		icon_state = icon_closed
 	else
 		icon_state = icon_opened
+
+/obj/structure/closet/cabinet/wizcabinet
+	desc = "Magic will forever be in fashion."
+	icon_state = "wizcabinet_closed"
+	icon_closed = "wizcabinet_closed"
+	icon_opened = "wizcabinet_open"
+	dremovable = FALSE
 
 /obj/structure/closet/acloset
 	name = "strange closet"

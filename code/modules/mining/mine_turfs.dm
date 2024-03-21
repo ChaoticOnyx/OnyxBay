@@ -65,14 +65,14 @@ var/list/mining_floors = list()
 /turf/simulated/mineral/is_plating()
 	return 1
 
-/turf/simulated/mineral/update_icon(update_neighbors)
+/turf/simulated/mineral/on_update_icon(update_neighbors)
 	if(!mineral)
 		SetName(initial(name))
 		icon_state = initial(icon_state)
 	else
 		SetName("[mineral.display_name] deposit")
 
-	overlays.Cut()
+	ClearOverlays()
 
 	for(var/direction in GLOB.cardinal)
 		var/turf/turf_to_check = get_step(src,direction)
@@ -91,16 +91,16 @@ var/list/mining_floors = list()
 					rock_side.pixel_x += world.icon_size
 				if(WEST)
 					rock_side.pixel_x -= world.icon_size
-			overlays += rock_side
+			AddOverlays(rock_side)
 
 	if(ore_overlay)
-		overlays += ore_overlay
+		AddOverlays(ore_overlay)
 
 	if(excav_overlay)
-		overlays += excav_overlay
+		AddOverlays(excav_overlay)
 
 	if(archaeo_overlay)
-		overlays += archaeo_overlay
+		AddOverlays(archaeo_overlay)
 
 /turf/simulated/mineral/ex_act(severity)
 	switch(severity)
@@ -168,7 +168,7 @@ var/list/mining_floors = list()
 //Not even going to touch this pile of spaghetti
 /turf/simulated/mineral/attackby(obj/item/W, mob/user)
 	if(!user.IsAdvancedToolUser())
-		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
+		to_chat(usr, FEEDBACK_YOU_LACK_DEXTERITY)
 		return
 
 	if(istype(W, /obj/item/device/core_sampler))
@@ -241,7 +241,7 @@ var/list/mining_floors = list()
 		if(newDepth >= 200)
 			excavation_level = 200
 
-		if(durability <= 0) // This means the rock is mined out fully
+		if(durability <= 0 || excavation_level >= 200) // This means the rock is mined out fully
 			var/obj/structure/boulder/B
 			if(artifact_find)
 				if(excavation_level > 0 || prob(15))
@@ -323,7 +323,7 @@ var/list/mining_floors = list()
 		return ..()
 
 /turf/simulated/mineral/proc/clear_ore_effects()
-	overlays -= ore_overlay
+	CutOverlays(ore_overlay)
 	ore_overlay = null
 
 /turf/simulated/mineral/proc/DropMineral(direction = null)
@@ -450,8 +450,8 @@ var/list/mining_floors = list()
 	if(prob(mineralChance) && !mineral)
 		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
-		if(mineral_name && (mineral_name in ore_data))
-			mineral = ore_data[mineral_name]
+		if(mineral_name && (mineral_name in GLOB.ore_data))
+			mineral = GLOB.ore_data[mineral_name]
 			UpdateMineral()
 	MineralSpread()
 
@@ -508,8 +508,8 @@ var/list/mining_floors = list()
 	if(prob(mineralChance) && !mineral)
 		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
-		if(mineral_name && (mineral_name in ore_data))
-			mineral = ore_data[mineral_name]
+		if(mineral_name && (mineral_name in GLOB.ore_data))
+			mineral = GLOB.ore_data[mineral_name]
 			UpdateMineral()
 	MineralSpread()
 
@@ -525,6 +525,17 @@ var/list/mining_floors = list()
 		MATERIAL_SILVER = 10,
 		MATERIAL_PLASMA = 20
 		)
+
+/turf/simulated/mineral/air
+	name = "rock"
+	icon = 'icons/turf/walls.dmi'
+	icon_state = "rock"
+	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	opacity = 1
+	density = 1
+	blocks_air = 1
+	temperature = 30 CELSIUS
+	mined_turf = /turf/simulated/floor/asteroid/air
 
 /**********************Asteroid**************************/
 
@@ -640,7 +651,7 @@ var/list/mining_floors = list()
 
 /turf/simulated/floor/asteroid/proc/updateMineralOverlays(update_neighbors)
 
-	overlays.Cut()
+	ClearOverlays()
 
 	var/list/step_overlays = list("n" = NORTH, "s" = SOUTH, "e" = EAST, "w" = WEST)
 	for(var/direction in step_overlays)
@@ -648,13 +659,13 @@ var/list/mining_floors = list()
 		if(istype(get_step(src, step_overlays[direction]), /turf/space))
 			var/image/aster_edge = image('icons/turf/flooring/asteroid.dmi', "asteroid_edges", dir = step_overlays[direction])
 			aster_edge.turf_decal_layerise()
-			overlays += aster_edge
+			AddOverlays(aster_edge)
 
 	//todo cache
 	if(overlay_detail)
 		var/image/floor_decal = image(icon = 'icons/turf/flooring/decals.dmi', icon_state = overlay_detail)
 		floor_decal.turf_decal_layerise()
-		overlays |= floor_decal
+		AddOverlays(floor_decal)
 
 	if(update_neighbors)
 		var/list/all_step_directions = list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,SOUTHWEST,WEST,NORTHWEST)
@@ -697,5 +708,9 @@ var/list/mining_floors = list()
 							ore.Move(OB)
 
 /turf/simulated/floor/asteroid/air
+	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+
+// Contains extra CO2 for better breathing.
+/turf/simulated/floor/asteroid/air/prison
 	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
 	temperature = 30 CELSIUS

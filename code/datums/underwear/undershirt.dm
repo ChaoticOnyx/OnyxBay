@@ -156,6 +156,10 @@
 	underwear_name = "undershirt"
 	has_color = TRUE
 
+/datum/category_item/underwear/undershirt/longsleeve/crop
+	name = "Cropped Undershirt"
+	icon_state = "longsleeve_crop"
+
 /datum/category_item/underwear/undershirt/longsleeve/stripes
 	name = "Undershirt (striped)"
 	icon_state = "longsleeve_stripes"

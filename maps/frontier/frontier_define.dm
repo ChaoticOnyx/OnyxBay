@@ -5,8 +5,8 @@
 	path = "frontier"
 
 	shuttle_types = list(
-		/datum/shuttle/autodock/ferry/escape_pod/escape_pod3,
-		/datum/shuttle/autodock/ferry/escape_pod/escape_pod5,
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod1,
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod2,
 		/datum/shuttle/autodock/ferry/supply/drone,
 		/datum/shuttle/autodock/ferry/elevator,
 		/datum/shuttle/autodock/multi/antag/mining,
@@ -49,11 +49,6 @@
 	company_short = "NT"
 	system_name   = "Arcturus"
 
-	emergency_shuttle_docked_message = "The Emergency Shuttle has docked with the station. You have approximately %ETD% to board the Emergency Shuttle."
-	emergency_shuttle_leaving_dock = "The Emergency Shuttle has left the station. Estimate %ETA% until the shuttle docks at %dock_name%."
-	emergency_shuttle_called_message = "An emergency evacuation shuttle has been called. It will arrive in approximately %ETA%"
-	emergency_shuttle_recall_message = "The emergency shuttle has been recalled."
-
 	evac_controller_type = /datum/evacuation_controller/shuttle
 
 	station_networks = list(
@@ -87,8 +82,6 @@
 		/area/shuttle/escape/centcom,
 		/area/shuttle/escape_pod1,
 		/area/shuttle/escape_pod2,
-		/area/shuttle/escape_pod3,
-		/area/shuttle/escape_pod5,
 		/area/shuttle/transport/centcom,
 		/area/shuttle/administration/,
 		/area/shuttle/specops/centcom,

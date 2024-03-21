@@ -27,3 +27,9 @@
 
 /// Called on `/atom/movable/proc/handle_fall` (turf)
 #define SIGNAL_ATOM_FALL "atom_fall"
+
+/// Called on 'atom/Move' (/atom, old_turf, new_turf)
+#define SIGNAL_Z_CHANGED "movable_z_changed"
+
+/// Called on `/atom/movable/set_glide_size` (new_glide_size)
+#define SIGNAL_UPDATE_GLIDE_SIZE "movable_glide_size"

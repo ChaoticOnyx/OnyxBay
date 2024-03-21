@@ -1,4 +1,4 @@
-
+GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of synthetic
 
 /mob/living/silicon
 	gender = NEUTER
@@ -62,6 +62,15 @@
 	for(var/datum/alarm_handler/AH in SSalarm.all_handlers)
 		AH.unregister_alarm(src)
 	return ..()
+
+/mob/living/silicon/mind_initialize()
+	. = ..()
+	GLOB.all_synthetic_mind_to_data[mind] = list(name, type, weakref(src))
+
+/mob/living/silicon/SetName(new_name)
+	. = ..()
+	if(mind)
+		GLOB.all_synthetic_mind_to_data[mind][1] = name
 
 /mob/living/silicon/fully_replace_character_name(new_name)
 	..()
@@ -302,7 +311,7 @@
 		if(1.0)
 			brute = 400
 			burn = 100
-			if(!anchored && !prob(getarmor(null, "bomb")))
+			if(!anchored && !prob(get_flat_armor(null, "bomb")))
 				gib()
 		if(2.0)
 			brute = 60
@@ -310,7 +319,7 @@
 		if(3.0)
 			brute = 30
 
-	var/protection = blocked_mult(getarmor(null, "bomb"))
+	var/protection = blocked_mult(get_flat_armor(null, "bomb"))
 	brute *= protection
 	burn *= protection
 
@@ -323,7 +332,7 @@
 	if(is_ic_dead())
 		return
 
-	var/protection = blocked_mult(getarmor(null, "bomb"))
+	var/protection = blocked_mult(get_flat_armor(null, "bomb"))
 	var/brute = damage * 2
 
 	brute *= protection
@@ -429,7 +438,7 @@
 	ghostize(0)
 	qdel(src)
 
-/mob/living/silicon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
+/mob/living/silicon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /atom/movable/screen/fullscreen/flash)
 	if(affect_silicon)
 		return ..()
 

@@ -32,7 +32,7 @@
 		for(var/obj/item/I in T)
 			if(!suspension_field.contents.len)
 				suspension_field.icon_state = "energynet"
-				suspension_field.overlays += "shield2"
+				suspension_field.AddOverlays("shield2")
 			I.forceMove(suspension_field)
 
 		if(cell.charge <= 0)
@@ -42,7 +42,7 @@
 	var/dat = "<meta charset=\"utf-8\"><b>Multi-phase mobile suspension field generator MK II \"Steadfast\"</b><br>"
 	if(cell)
 		var/colour = "red"
-		var/percent = cell.percent()
+		var/percent = CELL_PERCENT(cell)
 		if(percent > 66)
 			colour = "green"
 		else if(percent > 33)
@@ -104,7 +104,7 @@
 	else if(href_list["ejectcard"])
 		if(auth_card)
 			if(ishuman(user))
-				auth_card.loc = user.loc
+				auth_card.dropInto(user.loc)
 				if(!user.get_active_hand())
 					user.put_in_hands(auth_card)
 				auth_card = null
@@ -211,7 +211,7 @@
 
 	if(collected)
 		suspension_field.icon_state = "energynet"
-		suspension_field.overlays += "shield2"
+		suspension_field.AddOverlays("shield2")
 		src.visible_message(SPAN("notice", "\icon[suspension_field] [suspension_field] gently absconds [collected > 1 ? "something" : "several things"]."))
 	else
 		if(istype(T,/turf/simulated/mineral) || istype(T,/turf/simulated/wall))

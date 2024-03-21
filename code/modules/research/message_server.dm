@@ -132,12 +132,12 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 				Console.icon_state = "req_comp[priority]"
 			if(priority > 1)
 				playsound(Console.loc, 'sound/signals/warning7.ogg', 75, 0)
-				Console.audible_message("\icon[Console]<span class='warning'>\The [Console] announces: 'High priority message received from [sender]!'</span>", hearing_distance = 8)
+				Console.audible_message("\icon[Console]<span class='warning'>\The [Console] announces: 'High priority message received from [sender]!'</span>", hearing_distance = 8, splash_override = "High priority message received from [sender]!")
 				Console.message_log += "<FONT color='red'>High Priority message from <A href='?src=\ref[Console];write=[sender]'>[sender]</A></FONT><BR>[authmsg]"
 			else
 				if(!Console.silent)
 					playsound(Console.loc, 'sound/signals/ping8.ogg', 75, 0)
-					Console.audible_message("\icon[Console]<span class='notice'>\The [Console] announces: 'Message received from [sender].'</span>", hearing_distance = 5)
+					Console.audible_message("\icon[Console]<span class='notice'>\The [Console] announces: 'Message received from [sender].'</span>", hearing_distance = 5, splash_override = "Message received from [sender].")
 				Console.message_log += "<B>Message from <A href='?src=\ref[Console];write=[sender]'>[sender]</A></B><BR>[authmsg]"
 		Console.set_light(0.3, 0.1, 2)
 
@@ -159,7 +159,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	else
 		..(O, user)
 
-/obj/machinery/message_server/update_icon()
+/obj/machinery/message_server/on_update_icon()
 	if((stat & (BROKEN|NOPOWER)))
 		icon_state = "server-nopower"
 	else if (!active)
@@ -262,7 +262,6 @@ var/obj/machinery/blackbox_recorder/blackbox
 	var/list/msg_raider = list()
 	var/list/msg_cargo = list()
 	var/list/msg_service = list()
-	var/list/msg_exploration = list()
 
 	var/list/datum/feedback_variable/feedback = new()
 
@@ -312,7 +311,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 	var/pda_msg_amt = 0
 	var/rc_msg_amt = 0
 
-	for(var/obj/machinery/message_server/MS in GLOB.machines)
+	for(var/obj/machinery/message_server/MS in SSmachines.machinery)
 		if(MS.pda_msgs.len > pda_msg_amt)
 			pda_msg_amt = MS.pda_msgs.len
 		if(MS.rc_msgs.len > rc_msg_amt)

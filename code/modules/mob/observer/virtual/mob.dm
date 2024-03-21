@@ -4,9 +4,9 @@
 /mob/observer/virtual/mob/New(location, mob/host)
 	..()
 
-	register_signal(host, SIGNAL_SIGHT_SET, /mob/observer/virtual/mob/proc/sync_sight)
-	register_signal(host, SIGNAL_SEE_INVISIBLE_SET, /mob/observer/virtual/mob/proc/sync_sight)
-	register_signal(host, SIGNAL_SEE_IN_DARK_SET, /mob/observer/virtual/mob/proc/sync_sight)
+	register_signal(host, SIGNAL_SIGHT_SET, nameof(.proc/sync_sight))
+	register_signal(host, SIGNAL_SEE_INVISIBLE_SET, nameof(.proc/sync_sight))
+	register_signal(host, SIGNAL_SEE_IN_DARK_SET, nameof(.proc/sync_sight))
 
 	sync_sight(host)
 

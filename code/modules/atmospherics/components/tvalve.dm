@@ -22,7 +22,7 @@
 	icon_state = "map_tvalve1"
 	state = 1
 
-/obj/machinery/atmospherics/tvalve/update_icon(animation)
+/obj/machinery/atmospherics/tvalve/on_update_icon(animation)
 	if(animation)
 		flick("tvalve[src.state][!src.state]",src)
 	else
@@ -46,9 +46,9 @@
 /obj/machinery/atmospherics/tvalve/hide(i)
 	update_underlays()
 
-/obj/machinery/atmospherics/tvalve/New()
+/obj/machinery/atmospherics/tvalve/Initialize()
+	. = ..()
 	initialize_directions()
-	..()
 
 /obj/machinery/atmospherics/tvalve/proc/initialize_directions()
 	switch(dir)
@@ -100,8 +100,6 @@
 	return null
 
 /obj/machinery/atmospherics/tvalve/Destroy()
-	loc = null
-
 	if(node1)
 		node1.disconnect(src)
 		qdel(network_node1)
@@ -115,6 +113,9 @@
 	node1 = null
 	node2 = null
 	node3 = null
+	network_node1 = null
+	network_node2 = null
+	network_node3 = null
 
 	return ..()
 
@@ -283,13 +284,13 @@
 
 	var/frequency = 0
 	var/id = null
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 /obj/machinery/atmospherics/tvalve/digital/bypass
 	icon_state = "map_tvalve1"
 	state = 1
 
-/obj/machinery/atmospherics/tvalve/digital/update_icon()
+/obj/machinery/atmospherics/tvalve/digital/on_update_icon()
 	..()
 	if(!powered())
 		icon_state = "tvalvenopower"
@@ -308,10 +309,10 @@
 //Radio remote control
 
 /obj/machinery/atmospherics/tvalve/digital/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
+		radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 
 
 
@@ -405,7 +406,7 @@
 	update_icon()
 	update_underlays()
 
-/obj/machinery/atmospherics/tvalve/mirrored/update_icon(animation)
+/obj/machinery/atmospherics/tvalve/mirrored/on_update_icon(animation)
 	if(animation)
 		flick("tvalvem[src.state][!src.state]",src)
 	else
@@ -418,13 +419,13 @@
 
 	var/frequency = 0
 	var/id = null
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 /obj/machinery/atmospherics/tvalve/mirrored/digital/bypass
 	icon_state = "map_tvalvem1"
 	state = 1
 
-/obj/machinery/atmospherics/tvalve/mirrored/digital/update_icon()
+/obj/machinery/atmospherics/tvalve/mirrored/digital/on_update_icon()
 	..()
 	if(!powered())
 		icon_state = "tvalvemnopower"
@@ -443,10 +444,10 @@
 //Radio remote control -eh?
 
 /obj/machinery/atmospherics/tvalve/mirrored/digital/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
+		radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/tvalve/mirrored/digital/Initialize()
 	. = ..()

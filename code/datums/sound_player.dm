@@ -117,7 +117,7 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	listeners = list()
 	listener_status = list()
 
-	register_signal(source, SIGNAL_QDELETING, /datum/proc/qdel_self)
+	register_signal(source, SIGNAL_QDELETING, nameof(.proc/qdel_self))
 
 	if(ismovable(source))
 		proxy_listener = new(source, /datum/sound_token/proc/PrivAddListener, /datum/sound_token/proc/PrivLocateListeners, range, proc_owner = src)
@@ -205,8 +205,8 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 
 	listeners += listener
 
-	register_signal(listener, SIGNAL_MOVED, /datum/sound_token/proc/PrivUpdateListenerLoc, override = TRUE)
-	register_signal(listener, SIGNAL_QDELETING, /datum/sound_token/proc/PrivRemoveListener, override = TRUE)
+	register_signal(listener, SIGNAL_MOVED, nameof(.proc/PrivUpdateListenerLoc), override = TRUE)
+	register_signal(listener, SIGNAL_QDELETING, nameof(.proc/PrivRemoveListener), override = TRUE)
 
 	PrivUpdateListenerLoc(listener, FALSE)
 
@@ -220,6 +220,8 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 /datum/sound_token/proc/PrivUpdateListenerLoc(atom/listener, update_sound = TRUE)
 	var/turf/source_turf = get_turf(source)
 	var/turf/listener_turf = get_turf(listener)
+
+	ASSERT(istype(source_turf) && istype(listener_turf))
 
 	var/distance = get_dist(source_turf, listener_turf)
 	if(!listener_turf || (distance > range) || !(listener_turf in can_be_heard_from))

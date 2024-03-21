@@ -13,6 +13,7 @@
 	hitsound = SFX_FIGHTING_SWING
 	material_amount = 2
 	var/max_butts = 10
+	var/holey = FALSE
 
 /obj/item/material/ashtray/Destroy()
 	for(var/obj/O in contents)
@@ -28,14 +29,16 @@
 	else if(contents.len)
 		. += "\nIt has [contents.len] cig butts in it."
 
-/obj/item/material/ashtray/update_icon()
-	overlays.Cut()
+/obj/item/material/ashtray/on_update_icon()
+	ClearOverlays()
 	if (contents.len == max_butts)
-		overlays |= image('icons/obj/objects.dmi', "ashtray_full")
+		AddOverlays(image('icons/obj/objects.dmi', "ashtray_full"))
 	else if (contents.len >= max_butts/2)
-		overlays |= image('icons/obj/objects.dmi', "ashtray_half")
+		AddOverlays(image('icons/obj/objects.dmi', "ashtray_half"))
 
 /obj/item/material/ashtray/proc/store(obj/item/W, mob/user)
+	if(QDELETED(W))
+		return FALSE
 	if(!(istype(W, /obj/item/cigbutt) || istype(W, /obj/item/clothing/mask/smokable/cigarette) || istype(W, /obj/item/flame/match)))
 		return FALSE
 	if(length(contents) >= max_butts)
@@ -46,6 +49,8 @@
 		if(C.lit)
 			visible_message("[user] crushes [C] in [src], putting it out.")
 			W = C.die(nomessage = TRUE, nodestroy = TRUE)
+			if(QDELETED(W))
+				return // things without after-die remnants
 		else
 			to_chat(user, SPAN_NOTICE("You place [C] in [src] without even smoking it. Why would you do that?"))
 
@@ -65,6 +70,19 @@
 		return
 	if(store(W, user))
 		return
+	if(isScrewdriver(W))
+		to_chat(user, "You punch some holes in \the [src]!")
+		holey = TRUE
+		return
+	else if(holey && istype(W, /obj/item/stack/rods))
+		var/obj/item/stack/rods/V = W
+		V.use(1)
+		var/obj/item/hookah_coal/makeshift/HC = new (get_turf(src))
+		HC.color = color
+		if(user.get_inactive_hand() == src)
+			user.drop(src)
+			user.pick_or_drop(HC)
+		qdel_self()
 	else
 		..()
 		health = max(0, health - W.force)

@@ -25,6 +25,9 @@
 	var/handcutter = FALSE
 	var/noisystepper = FALSE
 
+	drop_sound = SFX_DROP_GLASS
+	pickup_sound = SFX_PICKUP_GLASS
+
 /obj/item/material/shard/set_material(new_material)
 	..(new_material)
 	if(!istype(material))
@@ -53,7 +56,7 @@
 	else
 		qdel(src)
 
-/obj/item/material/shard/update_icon()
+/obj/item/material/shard/on_update_icon()
 	if(material)
 		color = material.icon_colour
 		// 1-(1-x)^2, so that glass shards with 0.3 opacity end up somewhat visible at 0.51 opacity
@@ -65,10 +68,13 @@
 /obj/item/material/shard/attackby(obj/item/W, mob/user)
 	if(isWelder(W) && material.shard_can_repair)
 		var/obj/item/weldingtool/WT = W
-		if(WT.remove_fuel(0, user))
-			material.place_sheet(loc)
-			qdel(src)
+		if(!WT.use_tool(src, user, amount = 1))
 			return
+
+		material.place_sheet(get_turf(loc))
+		qdel_self()
+		return
+
 	return ..()
 
 /obj/item/material/shard/Crossed(mob/M)
@@ -143,7 +149,7 @@
 		var/hand_to_damage = user.hand ? BP_L_HAND : BP_R_HAND
 		var/obj/item/organ/external/E = H.get_organ(hand_to_damage)
 		if(E)
-			if(H.getarmor(hand_to_damage, "melee") > force)
+			if(H.get_flat_armor(hand_to_damage, "melee") > force)
 				return
 			E.take_external_damage((force * rand(3, 7) / 10), 0, used_weapon = name)
 			to_chat(user, SPAN("danger", "You cut your hand with \the [src]!"))

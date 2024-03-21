@@ -203,16 +203,6 @@
 			effects.Add(ITCH_EFFECT_WARNING(organ.name), IMMORTAL_RECOVER_EFFECT_WARNING(organ.name), IMMORTAL_HEALING_EFFECT_WARNING(organ.name), ORGANS_SHUTDOWN_EFFECT_WARNING(organ.name), GIBBINGTONS_EFFECT_WARNING(organ.name))
 	to_chat(holder, pick(effects))
 
-/datum/hallucination/evacuation
-	min_power = 60 // Very high
-
-/datum/hallucination/evacuation/can_affect()
-	return prob(5)
-
-/datum/hallucination/evacuation/start()
-	holder.playsound_local(holder, 'sound/effects/Evacuation.ogg', 35)
-	to_chat(holder, "<h1 class='alert'>Priority Announcement</h1><br>[SPAN("alert", replacetext(GLOB.using_map.emergency_shuttle_docked_message, "%ETD%", "3 minutes"))]")
-
 //Seeing stuff
 /datum/hallucination/mirage
 	duration = 30 SECONDS
@@ -468,7 +458,7 @@
 /datum/hallucination/hud_error
 	duration = 10 SECONDS
 	min_power = 30
-	var/obj/screen/fake
+	var/atom/movable/screen/fake
 
 /datum/hallucination/hud_error/can_affect(mob/living/carbon/C)
 	if(!..())
@@ -478,12 +468,11 @@
 /datum/hallucination/hud_error/start()
 	ASSERT(istype(holder, /mob/living/carbon/human))
 	var/mob/living/carbon/human/H = holder
-	var/obj/screen/origin = pick(H.toxin, H.oxygen, H.fire, H.bodytemp, H.pressure, H.nutrition_icon)
+	var/atom/movable/screen/origin = pick(H.toxin, H.oxygen, H.fire, H.bodytemp, H.pressure, H.nutrition_icon)
 	fake = new()
 	fake.name = origin.name
 	fake.icon = origin.icon
 	fake.appearance_flags = origin.appearance_flags
-	fake.unacidable = origin.unacidable
 	fake.globalscreen = FALSE
 	fake.plane = HUD_PLANE
 	fake.layer = HUD_ABOVE_ITEM_LAYER

@@ -22,8 +22,8 @@
 /datum/species/proc/get_examine_name(mob/living/carbon/human/H)
 	return name
 
-/datum/species/proc/get_icobase(mob/living/carbon/human/H, get_deform)
-	return (get_deform ? deform : icobase)
+/datum/species/proc/get_icobase(mob/living/carbon/human/H)
+	return (icobase)
 
 /datum/species/proc/get_station_variant()
 	return name

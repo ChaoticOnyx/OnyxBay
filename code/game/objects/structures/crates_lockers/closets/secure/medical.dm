@@ -63,8 +63,6 @@
 		/obj/item/clothing/head/nursehat,
 		/obj/item/clothing/under/rank/medical,
 		/obj/item/clothing/under/rank/nurse,
-		/obj/item/clothing/under/rank/orderly,
-		///obj/item/clothing/under/rank/rosa,
 		/obj/item/clothing/suit/storage/toggle/labcoat,
 		/obj/item/clothing/suit/storage/toggle/fr_jacket,
 		/obj/item/clothing/shoes/white,
@@ -124,20 +122,17 @@
 	return list(
 		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/medic, /obj/item/storage/backpack/satchel/med)),
 		new /datum/atom_creator/simple(/obj/item/storage/backpack/dufflebag/med, 50),
+		/obj/item/storage/garment/chief_medical_officer,
 		/obj/item/clothing/suit/bio_suit/cmo,
 		/obj/item/clothing/head/bio_hood/cmo,
-		/obj/item/clothing/shoes/white,
-		/obj/item/clothing/under/rank/chief_medical_officer,
-		/obj/item/clothing/suit/storage/toggle/labcoat/cmo,
-		/obj/item/clothing/suit/storage/toggle/labcoat/cmoalt,
-		/obj/item/clothing/accessory/storage/white_vest,
-		/obj/item/cartridge/cmo,
-		/obj/item/clothing/gloves/latex,
-		/obj/item/clothing/shoes/brown,
+		/obj/item/storage/belt/medical,
 		/obj/item/device/radio/headset/heads/cmo,
+		/obj/item/cartridge/cmo,
+		/obj/item/device/hudmatrix/medical,
 		/obj/item/device/flash,
-		/obj/item/reagent_containers/hypospray/vial,
-		RANDOM_SCRUBS
+		/obj/item/melee/telebaton,
+		/obj/item/device/flashlight/pen,
+		/obj/item/reagent_containers/hypospray/vial
 	)
 
 /obj/structure/closet/secure_closet/chemical

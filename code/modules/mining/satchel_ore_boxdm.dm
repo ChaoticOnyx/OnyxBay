@@ -90,7 +90,7 @@
 
 	for (var/obj/item/ore/O in contents)
 		contents -= O
-		O.loc = src.loc
+		O.dropInto(loc)
 	to_chat(usr, "<span class='notice'>You empty the ore box</span>")
 
 	return
@@ -98,7 +98,7 @@
 /obj/structure/ore_box/ex_act(severity)
 	if(severity == 1.0 || (severity < 3.0 && prob(50)))
 		for (var/obj/item/ore/O in contents)
-			O.loc = src.loc
+			O.dropInto(loc)
 			O.ex_act(severity++)
 		qdel(src)
 		return

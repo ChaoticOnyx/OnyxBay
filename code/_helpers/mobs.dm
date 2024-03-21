@@ -128,15 +128,30 @@
 /proc/get_exposed_defense_zone(atom/movable/target)
 	return pick(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_FOOT, BP_R_FOOT, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG, BP_CHEST, BP_GROIN)
 
-/proc/do_mob(atom/movable/affecter, mob/target, time = 30, target_zone = 0, uninterruptible = 0, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT)
+/proc/do_mob(atom/movable/affecter, mob/target, time = 30, target_zone = 0, uninterruptible = 0, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT, can_multitask = FALSE, datum/callback/extra_checks)
 	if(!affecter || !target)
-		return 0
+		return FALSE
+
+	var/uniqueid
+	if(!can_multitask)
+		uniqueid = "domob_\ref[affecter]_\ref[target]"
+		if(uniqueid in GLOB.domobs)
+			return FALSE
+
+		LAZYADD(GLOB.domobs, uniqueid)
+
 	var/mob/user = affecter
 	var/is_mob_type = istype(user)
 	var/user_loc = affecter.loc
 	var/target_loc = target.loc
 
 	var/holding = affecter.get_active_item()
+
+	if(istype(user,/mob/living))
+		var/mob/living/L = user
+		for(var/datum/modifier/actionspeed/ASM in L.modifiers)
+			time = time * ASM.actionspeed_coefficient
+
 	var/datum/progressbar/progbar
 	if(is_mob_type && progress)
 		progbar = new(user, time, target)
@@ -174,12 +189,26 @@
 			. = 0
 			break
 
+		if(extra_checks && !extra_checks.Invoke(user, target))
+			. = FALSE
+			break
+
 	if(progbar)
 		qdel(progbar)
 
-/proc/do_after(mob/user, delay, atom/target = null, needhand = 1, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = 0, can_move = 0)
+	if(!can_multitask)
+		LAZYREMOVE(GLOB.domobs, uniqueid)
+
+/proc/do_after(mob/user, delay, atom/target = null, needhand = TRUE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = FALSE, can_move = FALSE, datum/callback/extra_checks)
 	if(!user)
-		return 0
+		return FALSE
+
+	var/uniqueid = "doafter_\ref[user]_\ref[target]"
+	if(uniqueid in GLOB.doafters)
+		return FALSE
+
+	LAZYADD(GLOB.doafters, uniqueid)
+
 	var/atom/target_loc = null
 	var/target_type = null
 
@@ -192,6 +221,11 @@
 	var/atom/original_loc = user.loc
 
 	var/holding = user.get_active_hand()
+
+	if(istype(user,/mob/living))
+		var/mob/living/L = user
+		for(var/datum/modifier/actionspeed/ASM in L.modifiers)
+			delay = delay * ASM.actionspeed_coefficient
 
 	var/datum/progressbar/progbar
 	if (progress)
@@ -218,8 +252,14 @@
 				. = 0
 				break
 
-	if (progbar)
+		if(extra_checks && !extra_checks.Invoke(user, target))
+			. = FALSE
+			break
+
+	if(progbar)
 		qdel(progbar)
+
+	LAZYREMOVE(GLOB.doafters, uniqueid)
 
 /proc/is_species(A, species_datum)
 	. = FALSE
@@ -280,6 +320,8 @@
 /mob/proc/remove_from_dead_mob_list()
 	return GLOB.dead_mob_list_.Remove(src)
 
+/mob/proc/can_block_magic()
+	return FALSE
 //Find a dead mob with a brain and client.
 /proc/find_dead_player(find_key, include_observers = 0)
 	if(isnull(find_key))

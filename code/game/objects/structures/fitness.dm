@@ -22,7 +22,7 @@
 			flick("[icon_state]_hit", src)
 			playsound(src.loc, 'sound/effects/woodhit.ogg', 25, 1, -1)
 			user.do_attack_animation(src)
-			user.nutrition = user.nutrition - 5
+			user.remove_nutrition(5)
 			to_chat(user, "<span class='warning'>You [pick(hit_message)] \the [src].</span>")
 
 /obj/structure/fitness/weightlifter
@@ -54,11 +54,21 @@
 		being_used = 1
 		playsound(src.loc, 'sound/effects/weightlifter.ogg', 50, 1)
 		user.set_dir(SOUTH)
-		flick("[icon_state]_[weight]", src)
-		if(do_after(user, 20 + (weight * 10)))
+
+		var/usetime = 20 + (weight * 10)
+		if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
+			flick("[icon_state]_[weight]s", src)
+			usetime = 14
+		else
+			flick("[icon_state]_[weight]", src)
+
+		if(do_after(user, usetime))
 			playsound(src.loc, 'sound/effects/weightdrop.ogg', 25, 1)
-			user.nutrition -= weight * 10
-			to_chat(user, "<span class='notice'>You lift the weights [qualifiers[weight]].</span>")
+			user.remove_nutrition(weight * 10)
+			if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
+				to_chat(user, SPAN("notice", "You shred the weights without barely noticing it."))
+			else
+				to_chat(user, SPAN("notice", "You lift the weights [qualifiers[weight]]."))
 			being_used = 0
 		else
 			to_chat(user, "<span class='notice'>Against your previous judgement, perhaps working out is not for you.</span>")

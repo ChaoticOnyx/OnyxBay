@@ -37,20 +37,20 @@ field_generator power level display
 	var/field_power_draw = 2000	//power needed per field object
 
 
-/obj/machinery/field_generator/update_icon()
-	overlays.Cut()
+/obj/machinery/field_generator/on_update_icon()
+	ClearOverlays()
 	if(!active)
 		if(warming_up)
-			overlays += "+a[warming_up]"
+			AddOverlays("+a[warming_up]")
 	if(fields.len)
-		overlays += "+on"
+		AddOverlays("+on")
 	// Power level indicator
 	// Scale % power to % num_power_levels and truncate value
 	var/level = round(num_power_levels * power / field_generator_max_power)
 	// Clamp between 0 and num_power_levels for out of range power values
 	level = between(0, level, num_power_levels)
 	if(level)
-		overlays += "+p[level]"
+		AddOverlays("+p[level]")
 
 	return
 
@@ -126,29 +126,31 @@ field_generator power level display
 				to_chat(user, "<span class='warning'>The [src.name] needs to be wrenched to the floor.</span>")
 				return
 			if(1)
-				if (WT.remove_fuel(0,user))
-					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
-					user.visible_message("[user.name] starts to weld the [src.name] to the floor.", \
-						"You start to weld the [src] to the floor.", \
-						"You hear welding")
-					if (do_after(user,20,src))
-						if(!src || !WT.isOn()) return
-						state = 2
-						to_chat(user, "You weld the field generator to the floor.")
-				else
+				user.visible_message("[user.name] starts to weld the [src.name] to the floor.", \
+					"You start to weld the [src] to the floor.", \
+					"You hear welding")
+				if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 					return
+
+				if(QDELETED(src) || !user)
+					return
+
+				state = 2
+				to_chat(user, "You weld the field generator to the floor.")
+				return
 			if(2)
-				if (WT.remove_fuel(0,user))
-					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
-					user.visible_message("[user.name] starts to cut the [src.name] free from the floor.", \
-						"You start to cut the [src] free from the floor.", \
-						"You hear welding")
-					if (do_after(user,20,src))
-						if(!src || !WT.isOn()) return
-						state = 1
-						to_chat(user, "You cut the [src] free from the floor.")
-				else
+				user.visible_message("[user.name] starts to cut the [src.name] free from the floor.", \
+					"You start to cut the [src] free from the floor.", \
+					"You hear welding")
+				if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 					return
+
+				if(QDELETED(src) || !user)
+					return
+
+				state = 1
+				to_chat(user, "You cut the [src] free from the floor.")
+				return
 	else
 		..()
 		return
@@ -285,7 +287,7 @@ field_generator power level display
 			CF.set_master(src,G)
 			fields += CF
 			G.fields += CF
-			CF.loc = T
+			CF.forceMove(T)
 			CF.set_dir(field_dir)
 	var/listcheck = 0
 	for(var/obj/machinery/field_generator/FG in connected_gens)
@@ -330,7 +332,7 @@ field_generator power level display
 	//I want to avoid using global variables.
 	spawn(1)
 		var/temp = 1 //stops spam
-		for(var/obj/singularity/O in GLOB.machines)
+		for(var/obj/singularity/O in SSmachines.machinery)
 			if(O.last_warning && temp)
 				if((world.time - O.last_warning) > 50) //to stop message-spam
 					temp = 0

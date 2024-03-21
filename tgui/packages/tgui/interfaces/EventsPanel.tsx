@@ -3,6 +3,7 @@ import { useBackend, useLocalState } from "../backend";
 import {
   Button,
   Divider,
+  Dropdown,
   Icon,
   LabeledList,
   Section,
@@ -14,6 +15,7 @@ import { Event } from "./EventWindow";
 type InputData = {
   events: Event[];
   paused: boolean;
+  presets: string[];
 };
 
 function EventTooltip(props: { event: Event }, context: any) {
@@ -122,6 +124,14 @@ export function EventsPanel(props: any, context: any) {
             <LabeledList.Item label="Status">
               {data.paused ? "Paused" : "Running"}
             </LabeledList.Item>
+            <LabeledList.Item label="Presets">
+              <Dropdown
+                options={data.presets}
+                onSelected={(preset_name: string) => {
+                  act("apply_preset", { preset_name });
+                }}
+              />
+            </LabeledList.Item>
           </LabeledList>
         </Section>
         <Section title="Waiting">
@@ -129,7 +139,22 @@ export function EventsPanel(props: any, context: any) {
             return <EventButton event={e} />;
           })}
         </Section>
-        <Section title="Possible">
+        <Section
+          title="Possible"
+          buttons={
+            <>
+              <Button onClick={() => act("enable_all_events")} icon="toggle-on">
+                Enable all
+              </Button>
+              <Button
+                onClick={() => act("disable_all_events")}
+                icon="toggle-off"
+              >
+                Disable all
+              </Button>
+            </>
+          }
+        >
           {events.map((e) => {
             return <EventButton event={e} />;
           })}

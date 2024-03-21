@@ -12,7 +12,7 @@
 	var/id_tag = null
 
 	var/frequency = 1379
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 /obj/machinery/mech_sensor/CanPass(atom/movable/mover, turf/target)
 	if(!src.enabled())
@@ -56,7 +56,7 @@
 /obj/machinery/mech_sensor/proc/enabled()
 	return on && !(stat & NOPOWER)
 
-/obj/machinery/mech_sensor/update_icon(safety = 0)
+/obj/machinery/mech_sensor/on_update_icon(safety = 0)
 	if (enabled())
 		icon_state = "mech_sensor_standby"
 	else
@@ -68,10 +68,10 @@
 
 /obj/machinery/mech_sensor/proc/set_frequency(new_frequency)
 	if(radio_connection)
-		radio_controller.remove_object(src, frequency)
+		SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency)
+		radio_connection = SSradio.add_object(src, frequency)
 
 /obj/machinery/mech_sensor/receive_signal(datum/signal/signal)
 	if(stat & NOPOWER)

@@ -195,11 +195,11 @@
 /datum/disease2/effect/hungry
 	name = "Appetiser Effect"
 	stage = 2
+
 /datum/disease2/effect/hungry/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	mob.nutrition = max(0, mob.nutrition - 200)
-
+	mob.set_nutrition(max(0, mob.nutrition - 200))
 
 /datum/disease2/effect/cough
 	name = "Anima Syndrome"
@@ -331,9 +331,8 @@
 /datum/disease2/effect/telepathic/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	mob.dna.SetSEState(GLOB.REMOTETALKBLOCK, 1)
-	domutcheck(mob, null, MUTCHK_FORCED)
 
+	mob.add_mutation(mRemotetalk)
 
 /datum/disease2/effect/shakey
 	name = "World Shaking Syndrome"

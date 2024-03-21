@@ -46,6 +46,10 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 		set_next_think(world.time)
 	update_icon()
 
+/obj/item/gun/energy/Destroy()
+	QDEL_NULL(power_supply)
+	return ..()
+
 /obj/item/gun/energy/think()
 	if(self_recharge) //Every [recharge_time] ticks, recharge a shot for the cyborg
 		charge_tick++
@@ -66,7 +70,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 		power_supply.give(charge_cost) //... to recharge the shot
 		update_icon()
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/energy/consume_next_projectile()
@@ -99,16 +103,16 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 /obj/item/gun/energy/_examine_text(mob/user)
 	. = ..()
-	. += "\nHas [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining."
+	. += "\nHas <b>[power_supply ? round(power_supply.charge / charge_cost) : "0"]</b> shot\s remaining."
 
-/obj/item/gun/energy/update_icon()
+/obj/item/gun/energy/on_update_icon()
 	if(charge_meter)
 		var/ratio
 		if(power_supply)
 			if(power_supply.charge < charge_cost)
 				ratio = 0
 			else
-				ratio = max(round(power_supply.percent(), icon_rounder), icon_rounder)
+				ratio = max(round(CELL_PERCENT(power_supply), icon_rounder), icon_rounder)
 		else
 			ratio = 0
 
@@ -187,7 +191,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 /obj/item/gun/energy/secure/special_check()
 	if(!emagged && (!authorized_modes[sel_mode] || !registered_owner))
-		audible_message("<span class='warning'>\The [src] buzzes, refusing to fire.</span>")
+		audible_message("<span class='warning'>\The [src] buzzes, refusing to fire.</span>", splash_override = "*buzz*")
 		playsound(loc, 'sound/signals/error1.ogg', 50, 0)
 		return 0
 

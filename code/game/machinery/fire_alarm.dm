@@ -6,6 +6,7 @@
 	name = "fire alarm"
 	desc = "<i>\"In case of emergency press HERE\"</i>. Or shoot."
 	icon = 'icons/obj/monitors.dmi'
+	base_icon_state = "fire"
 	icon_state = "fire"
 	var/activated = FALSE
 	var/detecting = TRUE
@@ -19,8 +20,37 @@
 	layer = ABOVE_WINDOW_LAYER
 	var/wiresexposed = FALSE
 	var/buildstage = FIREALARM_COMPLETE
-	var/image/alarm_overlay
-	var/image/seclevel_overlay
+
+	var/static/status_overlays = FALSE
+	var/static/list/alarm_overlays
+	var/mutable_appearance/seclevel_overlay // There's a whole system for different seclevels across different maps so let's just leave it like this until I figure out what the fuck
+
+/obj/machinery/firealarm/New(loc, dir, atom/frame)
+	..(loc)
+
+	if(dir)
+		set_dir(dir)
+
+	if(istype(frame))
+		buildstage = FIREALARM_NOCIRCUIT
+		wiresexposed = TRUE
+		icon_state = "fire_b0"
+		ClearOverlays()
+		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
+		pixel_y = (dir & 3)? (dir ==1 ? -24 : 24) : 0
+		frame.transfer_fingerprints_to(src)
+	GLOB.firealarm_list += src
+
+/obj/machinery/firealarm/Initialize()
+	. = ..()
+	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
+		update_icon()
+
+/obj/machinery/firealarm/Destroy()
+	GLOB.firealarm_list -= src
+	ClearOverlays()
+	QDEL_NULL(seclevel_overlay)
+	return ..()
 
 /obj/machinery/firealarm/_examine_text(mob/user)
 	. = ..()
@@ -28,18 +58,17 @@
 		var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 		. += "\nThe current alert level is <span style='color:[security_state.current_security_level.light_color_alarm];'>[security_state.current_security_level.name]</span>."
 
-/obj/machinery/firealarm/update_icon()
-	if(!alarm_overlay)
-		alarm_overlay = image(icon, "fire[activated]")
-		alarm_overlay.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-		alarm_overlay.layer = ABOVE_LIGHTING_LAYER
+/obj/machinery/firealarm/on_update_icon()
+	if(!status_overlays)
+		status_overlays = TRUE
+		generate_overlays()
 
 	if(!seclevel_overlay)
-		seclevel_overlay = image(icon, "seclevel-null")
-		seclevel_overlay.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-		seclevel_overlay.layer = ABOVE_LIGHTING_LAYER
+		var/image/SO = image(icon, "seclevel-null")
+		SO.alpha = 200
+		seclevel_overlay = SO
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if(wiresexposed)
 		switch(buildstage)
@@ -63,8 +92,8 @@
 		set_light(0)
 		return
 
-	alarm_overlay.icon_state = "fire[activated]"
-	overlays += alarm_overlay
+	AddOverlays(alarm_overlays[activated+1])
+	AddOverlays(alarm_overlays[activated+3])
 
 	if(!detecting)
 		return
@@ -76,7 +105,19 @@
 		set_light(sl.light_max_bright, sl.light_inner_range, sl.light_outer_range, 2, sl.light_color_alarm)
 		seclevel_overlay.icon = sl.icon
 		seclevel_overlay.icon_state = sl.overlay_alarm
-		overlays += seclevel_overlay
+		AddOverlays(seclevel_overlay)
+		AddOverlays(emissive_appearance(sl.icon, "[sl.overlay_alarm]_ea"))
+
+/obj/machinery/firealarm/proc/generate_overlays()
+	alarm_overlays = new
+	alarm_overlays.len = 4
+	alarm_overlays[1] = image(icon, "fire0")
+	alarm_overlays[2] = image(icon, "fire1")
+	alarm_overlays[1].alpha = 200
+#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, cache = FALSE);
+	OVERLIGHT_IMAGE(alarm_overlays[3], "fire_ea0")
+	OVERLIGHT_IMAGE(alarm_overlays[4], "fire_ea1")
+#undef OVERLIGHT_IMAGE
 
 /obj/machinery/firealarm/fire_act(datum/gas_mixture/air, temperature, volume)
 	if(!detecting)
@@ -263,39 +304,30 @@
 	playsound(src, 'sound/machines/fire_alarm.ogg', 25, 0)
 	return TRUE
 
-/obj/machinery/firealarm/New(loc, dir, atom/frame)
-	..(loc)
-
-	if(dir)
-		src.set_dir(dir)
-
-	if(istype(frame))
-		buildstage = FIREALARM_NOCIRCUIT
-		wiresexposed = TRUE
-		icon_state = "fire_b0"
-		overlays.Cut()
-		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
-		pixel_y = (dir & 3)? (dir ==1 ? -24 : 24) : 0
-		frame.transfer_fingerprints_to(src)
-	GLOB.firealarm_list += src
-
-/obj/machinery/firealarm/Initialize()
-	. = ..()
-	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
-		update_icon()
-
-/obj/machinery/firealarm/Destroy()
-	GLOB.firealarm_list -= src
-	..()
-
 /*
 FIRE ALARM CIRCUIT
 Just a object used in constructing fire alarms
 */
 /obj/item/firealarm_electronics
 	name = "fire alarm electronics"
-	icon = 'icons/obj/doors/door_assembly.dmi'
-	icon_state = "door_electronics"
+	icon = 'icons/obj/monitors.dmi'
+	icon_state = "fire_electronics"
 	desc = "A circuit. It has a label on it, it says \"Can handle heat levels up to 40 degrees celsius!\"."
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
+
+/obj/machinery/firealarm/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if((buildstage == FIREALARM_NOCIRCUIT) && (the_rcd.upgrade & RCD_UPGRADE_SIMPLE_CIRCUITS))
+		return list("delay" = 2 SECONDS, "cost" = 1)
+
+	return FALSE
+
+/obj/machinery/firealarm/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	switch(rcd_data["[RCD_DESIGN_MODE]"])
+		if(RCD_WALLFRAME)
+			show_splash_text(user, "circuit installed")
+			buildstage = FIREALARM_NOWIRES
+			update_icon()
+			return TRUE
+
+	return FALSE

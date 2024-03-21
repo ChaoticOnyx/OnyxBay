@@ -12,6 +12,8 @@
 	attack_verb = list("whipped")
 	hitsound = 'sound/weapons/towelwhip.ogg'
 	desc = "A soft cotton towel."
+	drop_sound = SFX_DROP_CLOTH
+	pickup_sound = SFX_PICKUP_CLOTH
 
 /obj/item/towel/Initialize()
 	. = ..()

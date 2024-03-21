@@ -41,7 +41,7 @@
 	update_icon()
 	return ..()
 
-/obj/structure/bed/chair/update_icon()
+/obj/structure/bed/chair/on_update_icon()
 	..()
 
 	var/cache_key = "[base_icon]-[material.name]-over"
@@ -51,7 +51,7 @@
 			I.color = material.icon_colour
 		I.layer = ABOVE_HUMAN_LAYER
 		stool_cache[cache_key] = I
-	overlays |= stool_cache[cache_key]
+	AddOverlays(stool_cache[cache_key])
 	// Padding overlay.
 	if(padding_material)
 		var/padding_cache_key = "[base_icon]-padding-[padding_material.name]-over"
@@ -61,7 +61,7 @@
 				I.color = padding_material.icon_colour
 			I.layer = ABOVE_HUMAN_LAYER
 			stool_cache[padding_cache_key] = I
-		overlays |= stool_cache[padding_cache_key]
+		AddOverlays(stool_cache[padding_cache_key])
 
 	if(buckled_mob && padding_material)
 		cache_key = "[base_icon]-armrest-[padding_material.name]"
@@ -71,7 +71,7 @@
 			if(material_alteration & MATERIAL_ALTERATION_COLOR)
 				I.color = padding_material.icon_colour
 			stool_cache[cache_key] = I
-		overlays |= stool_cache[cache_key]
+		AddOverlays(stool_cache[cache_key])
 
 /obj/structure/bed/chair/set_dir()
 	..()
@@ -120,6 +120,7 @@
 	mod_weight = 1.25
 	mod_reach = 1.15
 	mod_handy = 0.3
+	armor_penetration = 20
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 2000)
 	var/material/padding_material
@@ -164,6 +165,10 @@
 /obj/structure/bed/chair/proc/fold(mob/user)
 	if(!foldable)
 		return
+
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION) // No folding, bozo
+		return
+
 	if(!user.Adjacent(src))
 		return
 
@@ -257,8 +262,11 @@
 		return
 	..()
 
-/obj/structure/bed/chair/office/Move()
+/obj/structure/bed/chair/office/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	if(buckled_mob)
 		var/mob/living/occupant = buckled_mob
 		if (occupant && (src.loc != occupant.loc))

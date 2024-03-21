@@ -134,28 +134,38 @@
 		return
 
 
-/obj/structure/sign/poster/attack_hand(mob/user as mob)
-
+/obj/structure/sign/poster/attack_hand(mob/user)
 	if(ruined)
 		return
 
-	if(alert("Do I want to rip the poster from the wall?","You think...","Yes","No") == "Yes")
+	if(alert("Do I want to rip the poster from the wall?","You think...","Yes","No") != "Yes")
+		return
 
-		if(ruined || !user.Adjacent(src))
-			return
+	if(ruined || !user.Adjacent(src))
+		return
 
-		visible_message("<span class='warning'>\The [user] rips \the [src] in a single, decisive motion!</span>" )
-		playsound(src.loc, 'sound/items/poster_ripped.ogg', 100, 1)
-		ruined = 1
-		icon_state = "poster_ripped"
-		SetName("ripped poster")
-		desc = "You can't make out anything from the poster's original print. It's ruined."
+	ruin(user)
+
+/obj/structure/sign/poster/proc/ruin(mob/user = null)
+	if(ruined)
+		return
+
+	if(user)
+		visible_message(SPAN("warning", "\The [user] rips \the [src] in a single, decisive motion!"))
+		playsound(loc, 'sound/items/poster_ripped.ogg', 100, 1)
 		add_fingerprint(user)
+
+	ruined = TRUE
+	SetName("ripped poster")
+	desc = "You can't make out anything from the poster's original print. It's ruined."
+
+	var/icon/I = icon(icon, "ripped_mask[rand(1, 4)]")
+	filters += filter(type = "alpha", icon = I)
 
 /obj/structure/sign/poster/proc/roll_and_drop(turf/newloc)
 	var/obj/item/contraband/poster/P = new(src, serial_number)
-	P.loc = newloc
-	src.loc = P
+	P.forceMove(newloc)
+	forceMove(P)
 	qdel(src)
 
 /datum/poster

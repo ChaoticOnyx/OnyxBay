@@ -20,7 +20,7 @@
 	..()
 	throw_spin = TRUE
 
-/obj/item/syringe_cartridge/update_icon()
+/obj/item/syringe_cartridge/on_update_icon()
 	underlays.Cut()
 	if(syringe)
 		underlays += image(syringe.icon, src, syringe.icon_state)
@@ -62,7 +62,7 @@
 	if(syringe)
 		//check speed to see if we hit hard enough to trigger the rapid injection
 		//incidentally, this means syringe_cartridges can be used with the pneumatic launcher
-		if(speed >= 7 && isliving(hit_atom))
+		if((speed >= 10 || speed <= 0.9) && isliving(hit_atom))
 			var/mob/living/L = hit_atom
 			//unfortuately we don't know where the dart will actually hit, since that's done by the parent.
 			if(L.can_inject(null, ran_zone()) && syringe.reagents)
@@ -92,7 +92,7 @@
 	fire_sound = 'sound/weapons/empty.ogg'
 	fire_sound_text = "a metallic thunk"
 	screen_shake = 0
-	release_force = 10
+	release_force = 0.1
 	throw_distance = 10
 
 	var/list/darts = list()

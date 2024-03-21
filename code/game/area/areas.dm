@@ -108,7 +108,7 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/E in all_doors)
-		INVOKE_ASYNC(E, /obj/machinery/door/proc/close)
+		INVOKE_ASYNC(E, nameof(/obj/machinery/door.proc/close))
 
 /area/proc/air_doors_open()
 	if(!air_doors_activated)
@@ -120,7 +120,7 @@
 		if(!E.density || (E.stat & (BROKEN|NOPOWER)))
 			continue
 		if(E.can_safely_open())
-			INVOKE_ASYNC(E, /obj/machinery/door/proc/open)
+			INVOKE_ASYNC(E, nameof(/obj/machinery/door.proc/open))
 
 
 /area/proc/fire_alert()
@@ -133,7 +133,7 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/D in all_doors)
-		INVOKE_ASYNC(D, /obj/machinery/door/proc/close)
+		INVOKE_ASYNC(D, nameof(/obj/machinery/door.proc/close))
 
 /area/proc/fire_reset()
 	if (!fire)
@@ -145,7 +145,7 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/D in all_doors)
-		INVOKE_ASYNC(D, /obj/machinery/door/proc/open)
+		INVOKE_ASYNC(D, nameof(/obj/machinery/door.proc/open))
 
 /area/proc/readyalert()
 	if(!eject)
@@ -173,9 +173,9 @@
 	mouse_opacity = 0
 	update_icon()
 	for(var/obj/machinery/door/firedoor/D in src)
-		INVOKE_ASYNC(D, /obj/machinery/door/proc/open)
+		INVOKE_ASYNC(D, nameof(/obj/machinery/door.proc/open))
 
-/area/update_icon()
+/area/on_update_icon()
 	if ((eject || party) && (!requires_power||power_environ))//If it doesn't require power, can still activate this proc.
 		/*else if(atmosalm && !fire && !eject && !party)
 			icon_state = "bluenew"*/
@@ -317,8 +317,13 @@ var/list/mob/living/forced_ambiance_list = new
 		var/mob/living/carbon/human/H = mob
 		if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & ITEM_FLAG_NOSLIP))
 			return
+
+		if(istype(H.buckled, /obj/effect/dummy/immaterial_form))
+			return
+
 		if(H.species?.can_overcome_gravity(H))
 			return
+
 		H.AdjustStunned(1)
 		H.AdjustWeakened(1)
 		to_chat(mob, SPAN_WARNING("The sudden appearance of gravity makes you fall to the floor!"))

@@ -4,21 +4,20 @@ SUBSYSTEM_DEF(mapping)
 	flags = SS_NO_FIRE
 
 	var/list/map_templates = list()
-	var/list/random_room_templates = list()
+	var/list/holodeck_templates = list()
 
 	///All possible biomes in assoc list as type || instance
 	var/list/biomes = list()
 
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	preloadTemplates()
-	preloadRandomRoomsTemplates()
-	run_map_generation()
-	..()
+	preloadHolodeckTemplates()
+	return ..()
 
 /datum/controller/subsystem/mapping/Recover()
 	flags |= SS_NO_INIT
 	map_templates = SSmapping.map_templates
-	random_room_templates = SSmapping.random_room_templates
+	holodeck_templates = SSmapping.holodeck_templates
 
 /datum/controller/subsystem/mapping/proc/preloadTemplates(path = "maps/templates/") //see master controller setup
 	var/list/filelist = flist(path)
@@ -26,12 +25,11 @@ SUBSYSTEM_DEF(mapping)
 		var/datum/map_template/T = new(paths = list("[path][map]"), rename = "[map]")
 		map_templates[T.name] = T
 
-/datum/controller/subsystem/mapping/proc/preloadRandomRoomsTemplates(path = "maps/random_rooms/")
-	var/list/maplists = subtypesof(/datum/map_template/random_room)
-	for(var/map in maplists)
-		var/datum/map_template/random_room/T = new map
-		random_room_templates[T.room_id] = T
+/datum/controller/subsystem/mapping/proc/preloadHolodeckTemplates(path = "maps/templates/")
+	for(var/item in subtypesof(/datum/map_template/holodeck))
+		var/datum/map_template/holodeck/holodeck_type = item
+		if(!initial(holodeck_type.mappaths))
+			continue
 
-/datum/controller/subsystem/mapping/proc/run_map_generation()
-	for(var/area/A in GLOB.areas)
-		A.RunGeneration()
+		var/datum/map_template/holodeck/holodeck_template = new holodeck_type()
+		holodeck_templates[holodeck_template.template_id] = holodeck_template

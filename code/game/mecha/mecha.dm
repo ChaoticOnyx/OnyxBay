@@ -24,8 +24,8 @@
 	w_class = ITEM_SIZE_NO_CONTAINER
 
 	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 60 MEGA ELECTRONVOLT,
+		RADIATION_ALPHA_PARTICLE = 250 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 10 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
@@ -89,6 +89,8 @@
 	var/max_equip = 3
 	var/datum/legacy_events/events
 
+	var/strafe = FALSE
+
 /obj/mecha/drain_power(drain_check)
 
 	if(drain_check)
@@ -117,8 +119,8 @@
 	update_icon()
 	return
 
-/obj/mecha/update_icon()
-	overlays.Cut()
+/obj/mecha/on_update_icon()
+	ClearOverlays()
 	var/hand = 0
 	var/back = 0
 	for(var/obj/item/mecha_parts/mecha_equipment/i in equipment)
@@ -133,11 +135,11 @@
 /obj/mecha/proc/draw_layer(obj/item/mecha_parts/mecha_equipment/equip, entry)
 	var/icon_name = "[equip.icon_state][entry ? "_r" : "_l"]"
 	var/icon/weapon = icon("icons/mecha/mecha_overlay.dmi", icon_name)
-	overlays += weapon
+	AddOverlays(weapon)
 	if(equip.need_colorize)
 		var/icon/padding = icon("icons/mecha/mecha_overlay.dmi", "[icon_name]_padding")
 		padding.Blend(base_color, ICON_MULTIPLY)
-		overlays += padding
+		AddOverlays(padding)
 
 /obj/mecha/Destroy()
 	src.go_out()
@@ -293,8 +295,8 @@
 		mech_click = world.time
 
 		if(!istype(object, /atom)) return
-		if(istype(object, /obj/screen))
-			var/obj/screen/using = object
+		if(istype(object, /atom/movable/screen))
+			var/atom/movable/screen/using = object
 			if(using.screen_loc == ui_acti || using.screen_loc == ui_iarrowleft || using.screen_loc == ui_iarrowright)//ignore all HUD objects save 'intent' and its arrows
 				return ..()
 			else
@@ -372,10 +374,12 @@
 ////////  Movement procs  ////////
 //////////////////////////////////
 
-/obj/mecha/Move()
+/obj/mecha/Move(newloc, direct)
 	. = ..()
-	if(.)
-		events.fireEvent("onMove",get_turf(src))
+	if(!.)
+		return
+
+	events.fireEvent("onMove", get_turf(src))
 
 /obj/mecha/relaymove(mob/user,direction)
 	if(user != src.occupant) //While not "realistic", this piece is player friendly.
@@ -394,18 +398,22 @@
 
 /obj/mecha/proc/do_move(direction)
 	if(!can_move)
-		return 0
+		return FALSE
+
 	if(src.pr_inertial_movement.active())
-		return 0
+		return FALSE
+
 	if(!has_charge(step_energy_drain))
-		return 0
+		return FALSE
+
 	var/move_result = 0
+	var/old_dir = dir
 	if(hasInternalDamage(MECHA_INT_CONTROL_LOST))
 		move_result = mechsteprand()
-	else if(src.dir!=direction)
+	else if(dir != direction && !strafe)
 		move_result = mechturn(direction)
 	else
-		move_result	= mechstep(direction)
+		move_result	= mechstep(direction, old_dir)
 	if(move_result)
 		can_move = 0
 		use_power(step_energy_drain)
@@ -415,18 +423,21 @@
 				src.log_message("Movement control lost. Inertial movement started.")
 		spawn(step_in)
 			can_move = 1
-		return 1
-	return 0
+		return TRUE
+
+	return FALSE
 
 /obj/mecha/proc/mechturn(direction)
 	set_dir(direction)
 	playsound(src,'sound/mecha/mechturn.ogg',40,1)
 	return 1
 
-/obj/mecha/proc/mechstep(direction)
+/obj/mecha/proc/mechstep(direction, old_dir)
 	var/result = step(src,direction)
 	if(result)
 		playsound(src,'sound/mecha/mechstep.ogg',40,1)
+	if(strafe)
+		set_dir(old_dir)
 	return result
 
 
@@ -610,7 +621,7 @@
 			user.visible_message(SPAN("danger", "\The [user] hits \the [src]. Nothing happens."), SPAN("danger", "You hit \the [src] with no visible effect."))
 			log_append_to_last("Armor saved.")
 		return
-	else if((MUTATION_HULK in user.mutations) && !deflect_hit(is_melee = 1))
+	else if(((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations)) && !deflect_hit(is_melee = 1))
 		hit_damage(damage = 15, is_melee = 1)
 		check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL, MECHA_INT_TANK_BREACH, MECHA_INT_CONTROL_LOST))
 		user.visible_message("<font color='red'><b>[user] hits [name], doing some damage.</b></font>", "<font color='red'><b>You hit [name] with all your might. The metal creaks and bends.</b></font>")
@@ -746,14 +757,14 @@
 //////////////////////
 
 /obj/mecha/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/device/mmi))
+	if(istype(W, /obj/item/organ/internal/cerebrum/mmi))
 		if(move_mmi_inside(W,user))
 			to_chat(user, "[src]-MMI interface initialized successfully.")
 		else
 			to_chat(user, "[src]-MMI interface initialization failed.")
 		return
 
-	if(istype(W, /obj/item/organ/internal/posibrain))
+	if(istype(W, /obj/item/organ/internal/cerebrum/posibrain))
 		if(move_posibrain_inside(W, user))
 			to_chat(user, "[src]-posibrain interface initialized successfully.")
 		else
@@ -852,19 +863,23 @@
 
 	else if(isWelder(W) && user.a_intent != I_HURT)
 		var/obj/item/weldingtool/WT = W
-		if (WT.remove_fuel(0,user))
-			if (hasInternalDamage(MECHA_INT_TANK_BREACH))
-				clearInternalDamage(MECHA_INT_TANK_BREACH)
-				to_chat(user, "<span class='notice'>You repair the damaged gas tank.</span>")
-				user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		else
+
+		if(!WT.use_tool(src, user, amount = 1))
 			return
-		if(src.health<initial(src.health))
-			to_chat(user, "<span class='notice'>You repair some damage to [src.name].</span>")
+
+		if(!hasInternalDamage(MECHA_INT_TANK_BREACH))
+			return
+
+		clearInternalDamage(MECHA_INT_TANK_BREACH)
+		to_chat(user, SPAN_NOTICE("You repair the damaged gas tank."))
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+
+		if(health < initial(health))
+			to_chat(user, SPAN_NOTICE("You repair some damage to [src.name]."))
 			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			src.health += min(10, initial(src.health)-src.health)
+			src.health += min(10, initial(health) - health)
 		else
-			to_chat(user, "The [src.name] is at full integrity")
+			to_chat(user, "\The [name] is at full integrity")
 		return
 
 	else if(istype(W, /obj/item/mecha_parts/mecha_tracking))
@@ -1049,56 +1064,63 @@
 	src.log_message("Now taking air from [use_internal_tank?"internal airtank":"environment"].")
 	return
 
-
-/obj/mecha/verb/move_inside()
-	set category = "Object"
-	set name = "Enter Exosuit"
-	set src in oview(1)
-
-	if(usr.stat || !ishuman(usr))
+/obj/mecha/verb/toggle_strafing()
+	set name = "Toggle strafing"
+	set category = "Exosuit Interface"
+	set src = usr.loc
+	set popup_menu = 0
+	if(usr != occupant)
 		return
 
-	if(usr.buckled)
-		to_chat(usr, SPAN("warning", "You can't climb into the exosuit while buckled!"))
+	strafe = !strafe
+	occupant_message("Strafing mod [strafe? "on":"off"].")
+
+/obj/mecha/MouseDrop_T(target, mob/living/user)
+	. = ..()
+	if(user.is_ic_dead() || !ishuman(user))
 		return
 
-	log_message("[usr] tries to move in.")
+	if(user.buckled)
+		to_chat(user, SPAN("warning", "You can't climb into the exosuit while buckled!"))
+		return
 
-	var/mob/living/carbon/human/H = usr
+	log_message("[user] tries to move in.")
+
+	var/mob/living/carbon/human/H = user
 	if(H.handcuffed)
-		to_chat(usr, SPAN("danger", "Kinda hard to climb in while handcuffed don't you think?"))
+		to_chat(user, SPAN("danger", "Kinda hard to climb in while handcuffed don't you think?"))
 		return
 
 	if(occupant)
-		to_chat(usr, SPAN("danger", "The [src] is already occupied!"))
+		to_chat(user, SPAN("danger", "The [src] is already occupied!"))
 		src.log_append_to_last("Permission denied.")
 		return
 
 	var/passed = FALSE
 	if(dna)
-		if(usr.dna.unique_enzymes == dna)
+		if(user.dna.unique_enzymes == dna)
 			passed = TRUE
-	else if(operation_allowed(usr))
+	else if(operation_allowed(user))
 		passed = TRUE
 	if(!passed)
-		to_chat(usr, "<span class='warning'>Access denied</span>")
+		to_chat(user, "<span class='warning'>Access denied</span>")
 		log_append_to_last("Permission denied.")
 		return
 
-	for(var/mob/living/carbon/metroid/M in range(1, usr))
-		if(M.Victim == usr)
-			to_chat(usr, "You're too busy getting your life sucked out of you.")
+	for(var/mob/living/carbon/metroid/M in range(1, user))
+		if(M.Victim == user)
+			to_chat(user, "You're too busy getting your life sucked out of you.")
 			return
 
-	visible_message("<span class='notice'>\The [usr] starts to climb into [src.name]</span>")
+	visible_message("<span class='notice'>\The [user] starts to climb into [src.name]</span>")
 
-	if(enter_after(40, usr))
+	if(do_after(user, 40, target))
 		if(!occupant)
-			moved_inside(usr)
-		else if(occupant != usr)
-			to_chat(usr, "[occupant] was faster. Try better next time, loser.")
+			moved_inside(user)
+		else if(occupant != user)
+			to_chat(user, "[occupant] was faster. Try better next time, loser.")
 	else
-		to_chat(usr, "You stop entering the exosuit.")
+		to_chat(user, "You stop entering the exosuit.")
 	return
 
 /obj/mecha/proc/moved_inside(mob/living/carbon/human/H)
@@ -1113,13 +1135,14 @@
 	forceMove(src.loc)
 	log_append_to_last("[H] moved in as pilot.")
 	icon_state = src.reset_icon()
+	update_icon()
 	set_dir(dir_in)
 	playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
 	if(!hasInternalDamage())
 		sound_to(occupant, sound('sound/mecha/nominal.ogg', volume = 50))
 	return TRUE
 
-/obj/mecha/proc/move_mmi_inside(obj/item/device/mmi/MMI, mob/user)
+/obj/mecha/proc/move_mmi_inside(obj/item/organ/internal/cerebrum/mmi/MMI, mob/user)
 	if(!MMI?.brainmob?.client)
 		to_chat(user, "Consciousness matrix not detected.")
 		return FALSE
@@ -1147,7 +1170,7 @@
 		to_chat(user, "You stop inserting \the [src].")
 	return FALSE
 
-/obj/mecha/proc/move_posibrain_inside(obj/item/organ/internal/posibrain/PB, mob/user)
+/obj/mecha/proc/move_posibrain_inside(obj/item/organ/internal/cerebrum/posibrain/PB, mob/user)
 	if(!PB?.brainmob?.client)
 		to_chat(user, "Consciousness matrix not detected.")
 		return FALSE
@@ -1175,8 +1198,8 @@
 	if(!I || !user.Adjacent(src))
 		return FALSE
 	var/mob/brainmob
-	if(istype(I, /obj/item/device/mmi))
-		var/obj/item/device/mmi/MMI = I
+	if(istype(I, /obj/item/organ/internal/cerebrum/mmi))
+		var/obj/item/organ/internal/cerebrum/mmi/MMI = I
 		if(!MMI?.brainmob?.client)
 			to_chat(user, "Consciousness matrix not detected.")
 			return FALSE
@@ -1184,8 +1207,8 @@
 			to_chat(user, "Beta-rhythm below acceptable level.")
 			return FALSE
 		brainmob = MMI.brainmob
-	else if(istype(I, /obj/item/organ/internal/posibrain))
-		var/obj/item/organ/internal/posibrain/PB = I
+	else if(istype(I, /obj/item/organ/internal/cerebrum/posibrain))
+		var/obj/item/organ/internal/cerebrum/posibrain/PB = I
 		if(!PB?.brainmob?.client)
 			to_chat(user, "Consciousness matrix not detected.")
 			return FALSE
@@ -1203,7 +1226,7 @@
 	user.drop(I, src)
 	brainmob.reset_view(src)
 	occupant = brainmob
-	brainmob.loc = src // should allow relaymove
+	brainmob.forceMove(src) // should allow relaymove
 	//brainmob.canmove = TRUE
 	//mmi_as_oc.mecha = src
 	verbs -= /obj/mecha/verb/eject
@@ -1279,21 +1302,21 @@
 		occupant.reset_view()
 		show_browser(occupant, null, "window=exosuit")
 
-		if(istype(mob_container, /obj/item/device/mmi))
-			var/obj/item/device/mmi/mmi = mob_container
+		if(istype(mob_container, /obj/item/organ/internal/cerebrum/mmi))
+			var/obj/item/organ/internal/cerebrum/mmi/mmi = mob_container
 			if(mmi.brainmob)
-				occupant.loc = mmi
-			mmi.mecha = null
+				occupant.forceMove(mmi)
 			verbs += /obj/mecha/verb/eject
-		if(istype(mob_container, /obj/item/organ/internal/posibrain))
-			var/obj/item/organ/internal/posibrain/pb = mob_container
+		if(istype(mob_container, /obj/item/organ/internal/cerebrum/posibrain))
+			var/obj/item/organ/internal/cerebrum/posibrain/pb = mob_container
 			if(pb.brainmob)
-				occupant.loc = pb
+				occupant.forceMove(pb)
 			verbs += /obj/mecha/verb/eject
 
 		occupant = null
 		icon_state = reset_icon()+"-open"
 		set_dir(dir_in)
+		update_icon()
 	return
 
 /////////////////////////
@@ -1412,7 +1435,7 @@
 	var/output = {"[report_internal_damage()]
 						[integrity<30?"<font color='red'><b>DAMAGE LEVEL CRITICAL</b></font><br>":null]
 						<b>Integrity: </b> [integrity]%<br>
-						<b>Powercell charge: </b>[isnull(cell_charge)?"No powercell installed":"[cell.percent()]%"]<br>
+						<b>Powercell charge: </b>[isnull(cell_charge)?"No powercell installed":"[CELL_PERCENT(cell)]%"]<br>
 						<b>Air source: </b>[use_internal_tank?"Internal Airtank":"Environment"]<br>
 						<b>Airtank pressure: </b>[tank_pressure]kPa<br>
 						<b>Airtank temperature: </b>[tank_temperature]K|[isnum(tank_temperature) ? "tank_temperature - T0C&deg;C" : ""]<br>

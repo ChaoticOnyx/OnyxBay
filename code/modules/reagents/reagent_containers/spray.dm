@@ -72,6 +72,8 @@
 	else
 		spawn(0)
 			var/obj/effect/effect/water/chempuff/D = new /obj/effect/effect/water/chempuff(get_turf(src))
+			if(atom_flags & ATOM_FLAG_NO_REACT)
+				D.atom_flags |= ATOM_FLAG_NO_REACT
 			var/turf/my_target = get_turf(A)
 			D.create_reagents(amount_per_transfer_from_this)
 			if(!src || !actual_container)
@@ -96,6 +98,8 @@
 			if(actual_container.reagents.total_volume < 1)
 				break
 			var/obj/effect/effect/water/chempuff/D = new /obj/effect/effect/water/chempuff(get_turf(src))
+			if(atom_flags & ATOM_FLAG_NO_REACT)
+				D.atom_flags |= ATOM_FLAG_NO_REACT
 			var/turf/my_target = the_targets[a]
 			D.create_reagents(amount_per_transfer_from_this)
 			if(!src || !actual_container)
@@ -190,10 +194,13 @@
 	volume = 10
 	startswith = list(/datum/reagent/water)
 
+	drop_sound = SFX_DROP_HERB
+	pickup_sound = SFX_PICKUP_HERB
+
 /obj/item/reagent_containers/spray/chemsprayer
 	name = "chem sprayer"
 	desc = "A utility used to spray large amounts of reagent in a given area."
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "chemsprayer"
 	item_state = "chemsprayer"
 	throwforce = 3
@@ -217,3 +224,12 @@
 	if(!proximity)
 		return
 	..()
+
+/obj/item/reagent_containers/spray/noreact
+	name = "stasis spray"
+	icon_state = "cleaner_noreact"
+	desc = "The label says 'Finally, a use for that pesky experimental bluespace technology for the whole house to enjoy!'\n\
+	A disclaimer towards the bottom states <span class = 'warning'>Warning: Do not use around the house, or in proximity of dogs|children|clowns</span>"
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER|ATOM_FLAG_NO_REACT
+	origin_tech = list(TECH_BLUESPACE = 3, TECH_MATERIAL = 5)
+	possible_transfer_amounts = "5;10;25"

@@ -310,14 +310,14 @@
 		return //don't let you cremate something twice or w/e
 
 	if(contents.len <= 0)
-		src.audible_message("<span class='warning'>You hear a hollow crackle.</span>", 1)
+		src.audible_message("<span class='warning'>You hear a hollow crackle.</span>", 1, splash_override = "*crackle*")
 		return
 
 	else
 		if(!isemptylist(src.search_contents_for(/obj/item/disk/nuclear)))
 			to_chat(loc, "The button's status indicator flashes yellow, indicating that something important is inside the crematorium, and must be removed.")
 			return
-		src.audible_message("<span class='warning'>You hear a roar as the [src] activates.</span>", 1)
+		src.audible_message("<span class='warning'>You hear a roar as the [src] activates.</span>", 1, splash_override = "*roaring*")
 
 		cremating = 1
 		locked = 1
@@ -437,7 +437,7 @@
 	icon_state = "crema_switch"
 	id = 1
 
-/obj/machinery/button/crematorium/update_icon()
+/obj/machinery/button/crematorium/on_update_icon()
 	return
 
 /obj/machinery/button/crematorium/attack_hand(mob/user as mob)

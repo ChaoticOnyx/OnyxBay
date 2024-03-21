@@ -59,6 +59,7 @@
 	mod_reach = 1.5
 	mod_handy = 1.5
 	mod_shield = 2.0
+	armor_penetration = 20 // Heavy blunt impact and all
 	block_tier = BLOCK_TIER_PROJECTILE
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_GLASS = 7500, MATERIAL_STEEL = 1000)
@@ -79,6 +80,12 @@
 			cooldown = world.time
 	else
 		..()
+
+/obj/item/shield/riot/assault
+    name = "assault shield"
+    desc = "An assault composite shield, looks like one of the old Nova-Magnitka models."
+    icon_state = "assault"
+    item_state = "assault"
 
 /obj/item/shield/buckler
 	name = "buckler"
@@ -119,6 +126,7 @@
 	mod_reach = 0.3
 	mod_handy = 1.0
 	mod_shield = 3.0
+	armor_penetration = 40
 	origin_tech = list(TECH_MATERIAL = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 4)
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
@@ -130,6 +138,9 @@
 	return
 
 /obj/item/shield/energy/attack_self(mob/living/user)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, "<span class='warning'>You beat yourself in the head with [src].</span>")
 		user.take_organ_damage(5)
@@ -165,7 +176,7 @@
 	add_fingerprint(user)
 	return
 
-/obj/item/shield/energy/update_icon()
+/obj/item/shield/energy/on_update_icon()
 	icon_state = "eshield[active]"
 	if(active)
 		set_light(0.4, 0.1, 1, 2, "#006aff")
@@ -201,7 +212,7 @@
 	. = ..()
 	cell = new /obj/item/cell/device/high(src)
 
-/obj/item/shield/barrier/update_icon()
+/obj/item/shield/barrier/on_update_icon()
 	if(!cell)
 		icon_state = "secshield_nocell"
 	else
@@ -215,7 +226,7 @@
 /obj/item/shield/barrier/_examine_text(mob/user)
 	. = ..()
 	if(cell)
-		. += SPAN("notice", "\nHas <b>[cell.percent()]%</b> charge left.")
+		. += SPAN("notice", "\nHas <b>[CELL_PERCENT(cell)]%</b> charge left.")
 	else
 		. += "\n<b>Has no battery installed.</b>"
 
@@ -305,7 +316,9 @@
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, SPAN("warning", "You beat yourself in the head with [src]."))
 		user.take_organ_damage(5)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
 	toggle(user)
 	add_fingerprint(user)
 	return
-

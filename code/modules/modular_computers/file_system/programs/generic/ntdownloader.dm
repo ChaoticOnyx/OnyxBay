@@ -4,6 +4,7 @@
 	program_icon_state = "generic"
 	program_key_state = "generic_key"
 	program_menu_icon = "arrowthickstop-1-s"
+	program_light_color = "#00B000"
 	extended_desc = "This program allows downloads of software from official NT repositories"
 	unsendable = 1
 	undeletable = 1

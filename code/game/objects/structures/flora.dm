@@ -17,16 +17,19 @@
 		if(do_after(usr, TIME_CUT))
 			playsound(user, 'sound/weapons/chainsaw_attack1.ogg', 25, 1)
 			to_chat(user, SPAN_WARNING("You cut down \the [src] with \the [W]."))
-			new /obj/item/stack/material/wood/ten(loc)
+			if(!(atom_flags & ATOM_FLAG_HOLOGRAM))
+				new /obj/item/stack/material/wood/ten(loc)
 			qdel(src)
 			return
+
 	if(cut_level !=PLANT_NO_CUT && (istype(W, /obj/item/material/hatchet) || istype(W, /obj/item/material/twohanded/fireaxe)))
 		cut_hits--
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		to_chat(user, SPAN_WARNING("You chop \the [src] with \the [W]."))
 		playsound(src, 'sound/effects/fighting/chop3.ogg', 25, 1)
 		if(cut_hits <= 0)
-			new /obj/item/stack/material/wood/ten(loc)
+			if(!(atom_flags & ATOM_FLAG_HOLOGRAM))
+				new /obj/item/stack/material/wood/ten(loc)
 			qdel(src)
 		return
 
@@ -53,13 +56,10 @@
 	..()
 	icon_state = "pine_c"
 
-/obj/structure/flora/tree/pine/xmas/update_icon()
-	overlays.Cut()
+/obj/structure/flora/tree/pine/xmas/on_update_icon()
+	ClearOverlays()
 	if(light_overlay)
-		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
-		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-		overlays.Add(LO)
+		AddOverlays(OVERLAY(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER))
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
 
@@ -165,13 +165,10 @@
 	var/l_falloff_curve = 1
 	var/l_color = COLOR_BLUE_LIGHT
 
-/obj/structure/flora/tree/green/pink/update_icon()
-	overlays.Cut()
+/obj/structure/flora/tree/green/pink/on_update_icon()
+	ClearOverlays()
 	if(light_overlay)
-		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
-		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-		overlays.Add(LO)
+		AddOverlays(OVERLAY(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER))
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
 
@@ -367,7 +364,7 @@
 /obj/structure/flora/ausbushes/glowshroom/New()
 	..()
 	icon_state = "glowshroom_[rand(1, 4)]"
-	set_light(1, 0.6, 1, "#99FF66")
+	set_light(1, 0.6, 1, 2, "#99FF66")
 
 /obj/structure/flora/ausbushes/reedbush
 	icon_state = "reedbush_1"
@@ -444,7 +441,7 @@
 
 /obj/structure/flora/ausbushes/ywflowers/New()
 	..()
-	icon_state = "ywflowers_[rand(1, 3)]"
+	icon_state = "ywflowers_[rand(1, 4)]"
 
 /obj/structure/flora/ausbushes/brflowers
 	icon_state = "brflowers_1"
@@ -458,7 +455,7 @@
 
 /obj/structure/flora/ausbushes/ppflowers/New()
 	..()
-	icon_state = "ppflowers_[rand(1, 4)]"
+	icon_state = "ppflowers_[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/sparsegrass
 	icon_state = "sparsegrass_1"
@@ -640,13 +637,12 @@
 			qdel(src)
 		return
 
-/obj/structure/flora/jungleplants/update_icon()
-	overlays.Cut()
+/obj/structure/flora/jungleplants/on_update_icon()
+	ClearOverlays()
 	if(light_overlay)
-		var/image/LO = overlay_image(icon, "[icon_state]-overlay")
-		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-		overlays.Add(LO)
+		var/image/emissive_overlay = OVERLAY(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH)
+		AddOverlays(emissive_overlay)
+		AddOverlays(emissive_appearance(emissive_overlay.icon, emissive_overlay.icon_state))
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
 
@@ -892,6 +888,10 @@
 /obj/structure/flora/pottedplant/unusual/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#007fff")
+	var/image/I = image(icon, "[icon_state]_over")
+	I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	I.layer = ABOVE_LIGHTING_LAYER
+	AddOverlays(I)
 
 /obj/structure/flora/pottedplant/orientaltree
 	name = "potted oriental tree"
@@ -951,6 +951,10 @@
 /obj/structure/flora/pottedplant/subterranean/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#ff6633")
+	var/image/I = image(icon, "[icon_state]_over")
+	I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	I.layer = ABOVE_LIGHTING_LAYER
+	AddOverlays(I)
 
 /obj/structure/flora/pottedplant/minitree
 	name = "potted tree"
@@ -1061,54 +1065,8 @@
 /obj/effect/firefly/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#ffc233")
-
-/*********
- * Rocks *
- *********/
-// (I know these aren't plants)
-
-/obj/structure/rock/flora
-	name = "large rock"
-	icon_state = "basalt1"
-	iconlist = list("basalt1")
-	desc = "A volcanic rock. Pioneers used to ride these babies for miles."
-	icon = 'icons/obj/flora/rocksflora.dmi'
-	density = TRUE
-	structure
-	mineralSpawnChanceList = list(/obj/item/ore/glass = 40, iron = 20, coal = 20, diamond = 2, silver = 8, plasma = 10)
-	harvest_amount_low = 10
-	harvest_amount_high = 20
-
-/obj/structure/rock/flora/style_2
-	icon_state = "basalt2"
-	iconlist = list("basalt2")
-
-/obj/structure/rock/flora/style_3
-	icon_state = "basalt3"
-	iconlist = list("basalt3")
-
-/obj/structure/rock/flora/style_4
-	icon_state = "basalt4"
-	iconlist = list("basalt4")
-
-/obj/structure/rock/flora/style_random
-	iconlist = list("basalt1", "basalt2", "basalt3", "basalt4")
-
-/obj/structure/rock/flora/pile
-	name = "rock pile"
-	desc = "A pile of rocks."
-	icon_state = "lavarocks1"
-	iconlist = list("lavarocks1")
-	harvest_amount_low = 5
-	harvest_amount_high = 10
-	density = FALSE
-
-/obj/structure/rock/flora/pile/style_2
-	iconlist = list("lavarocks2")
-
-/obj/structure/rock/flora/pile/style_3
-	icon_state = "lavarocks3"
-	iconlist = list("lavarocks3")
-
-/obj/structure/rock/flora/pile/style_random
-	iconlist = list("lavarocks1", "lavarocks2", "lavarocks3")
+	var/image/I = image(icon, icon_state)
+	I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	I.layer = ABOVE_LIGHTING_LAYER
+	AddOverlays(I)
+	icon_state = null

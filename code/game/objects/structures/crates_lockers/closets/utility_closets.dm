@@ -8,6 +8,7 @@
  *		Hydrant
  *		First Aid
  *		Excavation Closet
+ *		Emergency vox N2 Closet
  */
 
 /*
@@ -92,7 +93,7 @@
 	new /obj/item/clothing/head/hardhat/red(src)
 	new /obj/item/backwear/reagent/extinguisher(src)
 
-/obj/structure/closet/firecloset/update_icon()
+/obj/structure/closet/firecloset/on_update_icon()
 	if(!opened)
 		icon_state = icon_closed
 	else
@@ -209,6 +210,7 @@
 	storage_types = CLOSET_STORAGE_ITEMS
 	setup = 0
 	dremovable = 0
+	intact_closet = FALSE
 
 /obj/structure/closet/hydrant/New()
 	..()
@@ -237,8 +239,9 @@
 	storage_types = CLOSET_STORAGE_ITEMS
 	setup = 0
 	dremovable = 0
+	intact_closet = FALSE
 
-/obj/structure/closet/medical_wall/update_icon()
+/obj/structure/closet/medical_wall/on_update_icon()
 	if(!opened)
 		icon_state = icon_closed
 	else
@@ -263,8 +266,9 @@
 	storage_types = CLOSET_STORAGE_ITEMS
 	setup = 0
 	dremovable = 0
+	intact_closet = FALSE
 
-/obj/structure/closet/shipping_wall/update_icon()
+/obj/structure/closet/shipping_wall/on_update_icon()
 	if(!opened)
 		icon_state = icon_closed
 	else
@@ -292,3 +296,16 @@
 	new /obj/item/device/radio(src)
 	new /obj/item/storage/box/survival
 	new /obj/item/storage/box/survival
+
+/obj/structure/closet/voxn2closet
+	name = "emergency N2 closet"
+	desc = "It's a storage unit for emergency breathmasks and N2 tanks."
+	icon_state = "emergencyvox"
+	icon_closed = "emergencyvox"
+	icon_opened = "emergencyvoxopen"
+
+/obj/structure/closet/voxn2closet/New()
+	new /obj/item/tank/emergency/nitrogen(src)
+	new /obj/item/tank/emergency/nitrogen/double(src)
+	new /obj/item/clothing/mask/gas/old(src)
+	new /obj/item/clothing/mask/gas/old(src)

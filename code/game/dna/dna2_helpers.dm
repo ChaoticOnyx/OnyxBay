@@ -15,57 +15,13 @@
 // DNA Gene activation boundaries, see dna2.dm.
 // Returns a list object with 4 numbers.
 /proc/GetDNABounds(block)
-	var/list/BOUNDS=dna_activity_bounds[block]
-	if(!istype(BOUNDS))
-		return DNA_DEFAULT_BOUNDS
-	return BOUNDS
-
-// Give Random Bad Mutation to M
-/proc/randmutb(mob/living/M)
-	if(!M) return
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		if(!H.should_have_organ(BP_HEART))
-			return
-	M.dna.check_integrity()
-	var/block = pick(GLOB.GLASSESBLOCK,GLOB.COUGHBLOCK,GLOB.FAKEBLOCK,GLOB.NERVOUSBLOCK,GLOB.CLUMSYBLOCK,GLOB.TWITCHBLOCK,GLOB.HEADACHEBLOCK,GLOB.BLINDBLOCK,GLOB.DEAFBLOCK,GLOB.HALLUCINATIONBLOCK)
-	M.dna.SetSEState(block, 1)
-
-// Give Random Good Mutation to M
-/proc/randmutg(mob/living/M)
-	if(!M) return
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		if(!H.should_have_organ(BP_HEART))
-			return
-	M.dna.check_integrity()
-	var/block = pick(GLOB.HULKBLOCK,GLOB.XRAYBLOCK,GLOB.FIREBLOCK,GLOB.TELEBLOCK,GLOB.NOBREATHBLOCK,GLOB.REMOTEVIEWBLOCK,GLOB.REGENERATEBLOCK,GLOB.INCREASERUNBLOCK,GLOB.REMOTETALKBLOCK,GLOB.MORPHBLOCK,GLOB.BLENDBLOCK,GLOB.NOPRINTSBLOCK,GLOB.SHOCKIMMUNITYBLOCK,GLOB.SMALLSIZEBLOCK)
-	M.dna.SetSEState(block, 1)
+	return DNA_DEFAULT_BOUNDS
 
 // Random Appearance Mutation
 /proc/randmuti(mob/living/M)
 	if(!M) return
 	M.dna.check_integrity()
 	M.dna.SetUIValue(rand(1,DNA_UI_LENGTH),rand(1,4095))
-
-// Scramble UI or SE.
-/proc/scramble(UI, mob/M, prob)
-	if(!M)	return
-	M.dna.check_integrity()
-	if(UI)
-		for(var/i = 1, i <= DNA_UI_LENGTH-1, i++)
-			if(prob(prob))
-				M.dna.SetUIValue(i,rand(1,4095),1)
-		M.dna.UpdateUI()
-		M.UpdateAppearance()
-
-	else
-		for(var/i = 1, i <= DNA_SE_LENGTH-1, i++)
-			if(prob(prob))
-				M.dna.SetSEValue(i,rand(1,4095),1)
-		M.dna.UpdateSE()
-		domutcheck(M, null)
-	return
 
 // I haven't yet figured out what the fuck this is supposed to do.
 /proc/miniscramble(input,rs,rd)
@@ -132,7 +88,7 @@
 // Use mob.UpdateAppearance() instead.
 
 // Simpler. Don't specify UI in order for the mob to use its own.
-/mob/proc/UpdateAppearance(list/UI=null)
+/mob/proc/UpdateAppearance(list/UI=null, mutcolor_update=FALSE)
 	if(istype(src, /mob/living/carbon/human))
 		if(UI!=null)
 			src.dna.UI=UI
@@ -143,20 +99,29 @@
 		H.g_hair   = dna.GetUIValueRange(DNA_UI_HAIR_G,    255)
 		H.b_hair   = dna.GetUIValueRange(DNA_UI_HAIR_B,    255)
 
+		H.r_s_hair   = dna.GetUIValueRange(DNA_UI_S_HAIR_R,    255)
+		H.g_s_hair   = dna.GetUIValueRange(DNA_UI_S_HAIR_G,    255)
+		H.b_s_hair   = dna.GetUIValueRange(DNA_UI_S_HAIR_B,    255)
+
 		H.r_facial = dna.GetUIValueRange(DNA_UI_BEARD_R,   255)
 		H.g_facial = dna.GetUIValueRange(DNA_UI_BEARD_G,   255)
 		H.b_facial = dna.GetUIValueRange(DNA_UI_BEARD_B,   255)
-
-		H.r_skin   = dna.GetUIValueRange(DNA_UI_SKIN_R,    255)
-		H.g_skin   = dna.GetUIValueRange(DNA_UI_SKIN_G,    255)
-		H.b_skin   = dna.GetUIValueRange(DNA_UI_SKIN_B,    255)
+		if(mutcolor_update)
+			var/RGB = hex2rgb(dna.mcolor)
+			H.r_skin   = RGB[1]
+			H.g_skin   = RGB[2]
+			H.b_skin   = RGB[3]
+		else
+			H.r_skin   = dna.GetUIValueRange(DNA_UI_SKIN_R,    255)
+			H.g_skin   = dna.GetUIValueRange(DNA_UI_SKIN_G,    255)
+			H.b_skin   = dna.GetUIValueRange(DNA_UI_SKIN_B,    255)
 
 		H.r_eyes   = dna.GetUIValueRange(DNA_UI_EYES_R,    255)
 		H.g_eyes   = dna.GetUIValueRange(DNA_UI_EYES_G,    255)
 		H.b_eyes   = dna.GetUIValueRange(DNA_UI_EYES_B,    255)
 		H.update_eyes()
 
-		H.s_tone   = 35 - dna.GetUIValueRange(DNA_UI_SKIN_TONE, 220) // Value can be negative.
+		H.s_tone   = H.species.fixed_skin_tone ? H.species.fixed_skin_tone : (35 - dna.GetUIValueRange(DNA_UI_SKIN_TONE, 220)) // Value can be negative.
 
 		if(H.gender != NEUTER)
 			if (dna.GetUIState(DNA_UI_GENDER))
@@ -164,7 +129,7 @@
 			else
 				H.gender = MALE
 
-		H.body_build = H.species.get_body_build(H.gender, dna.body_build)
+		H.change_body_build(H.species.get_body_build(H.gender, dna.body_build))
 		H.fix_body_build()
 		H.body_height = dna.body_height
 

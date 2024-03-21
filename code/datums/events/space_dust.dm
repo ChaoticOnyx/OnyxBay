@@ -27,7 +27,7 @@
 		}
 	)
 
-	blacklisted_maps = list(/datum/map/polar)
+
 
 /datum/event/space_dust_base/get_mtth()
 	. = ..()
@@ -58,14 +58,14 @@
 /datum/event/space_dust/New()
 	. = ..()
 
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/space_dust/on_fire()
 	severity = SSevents.evars["space_dust_severity"]
 	SSevents.evars["space_dust_running"] = TRUE
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
-	command_announcement.Announce("The [station_name()] is now passing through a belt of space dust.", "[station_name()] Sensor Array", zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/space_dust_start)
 
 	set_next_think_ctx("end", world.time + (rand(1, 3) MINUTES))
 	set_next_think(world.time)
@@ -73,7 +73,7 @@
 /datum/event/space_dust/proc/end()
 	set_next_think(0)
 	SSevents.evars["space_dust_running"] = FALSE
-	command_announcement.Announce("The [station_name()] has now passed through the belt of space dust.", "[station_name()] Sensor Array", zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/space_dust_end)
 
 /datum/event/space_dust/think()
 	if(!prob(10))
@@ -107,6 +107,6 @@
 	for(var/turf/T in starters)
 		for(var/i = 1 to rocks_per_tile)
 			var/obj/item/projectile/bullet/rock/R = new(T)
-			R.launch(targloc, null, startloc.x - T.x, startloc.y - T.y)
+			R.launch(targloc)
 
 	set_next_think(world.time + (2 SECONDS))

@@ -6,9 +6,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal
 	name = "floor decal"
 	icon = 'icons/turf/flooring/decals.dmi'
-	plane = FLOOR_PLANE
+
 	layer = DECAL_LAYER
-	appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
+	appearance_flags = RESET_COLOR
 	var/supplied_dir
 
 /obj/effect/floor_decal/New(newloc, newdir, newcolour)
@@ -25,16 +25,15 @@ var/list/floor_decals = list()
 		var/cache_key = "[alpha]-[color]-[dir]-[icon_state]-[plane]-[layer]-[pixel_x]-[pixel_y]"
 		if(!floor_decals[cache_key])
 			var/image/I = image(icon = src.icon, icon_state = src.icon_state, dir = src.dir)
-			I.turf_decal_layerise()
+			I.layer = layer
 			I.appearance_flags = appearance_flags
 			I.color = src.color
 			I.alpha = src.alpha
 			I.pixel_x = src.pixel_x
 			I.pixel_y = src.pixel_y
 			floor_decals[cache_key] = I
-		if(!T.decals) T.decals = list()
-		T.decals |= floor_decals[cache_key]
-		T.overlays |= floor_decals[cache_key]
+		LAZYADD(T.decals, floor_decals[cache_key])
+		T.queue_icon_update()
 	atom_flags |= ATOM_FLAG_INITIALIZED
 	return INITIALIZE_HINT_QDEL
 
@@ -766,6 +765,10 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/industrial/warning/dust/full
 	name = "hazard stripes"
 	icon_state = "warningfull_dust"
+
+/obj/effect/floor_decal/industrial/warning/dust/full/tile
+	icon_state = "warningfulltile_dust"
+
 /obj/effect/floor_decal/industrial/warning/red
 	name = "hazard stripes"
 	icon_state = "warning_red"
@@ -778,9 +781,30 @@ var/list/floor_decals = list()
 	name = "hazard stripes"
 	icon_state = "warningfull_red"
 
+/obj/effect/floor_decal/industrial/warning/red/full/tile
+	icon_state = "warningfulltile_red"
+
 /obj/effect/floor_decal/industrial/warning/red/cee
 	name = "hazard stripes"
 	icon_state = "warningcee_red"
+
+/obj/effect/floor_decal/industrial/warning/wiz
+	name = "hazard stripes"
+	icon_state = "warning_wiz"
+
+/obj/effect/floor_decal/industrial/warning/wiz/corner
+	icon_state = "warningcorner_wiz"
+
+/obj/effect/floor_decal/industrial/warning/wiz/full
+	name = "hazard stripes"
+	icon_state = "warningfull_wiz"
+
+/obj/effect/floor_decal/industrial/warning/wiz/full/tile
+	icon_state = "warningfulltile_wiz"
+
+/obj/effect/floor_decal/industrial/warning/wiz/cee
+	name = "hazard stripes"
+	icon_state = "warningcee_wiz"
 
 /obj/effect/floor_decal/industrial/hatch
 	name = "hatched marking"
@@ -1220,3 +1244,866 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/techgrid/full
 	name = "techgrid full corner"
 	icon_state = "corner_techgrid_full"
+
+/// Trimlines
+
+/obj/effect/floor_decal/trimline
+	alpha = 110
+	icon_state = "trimline_box"
+
+/// White trimlines
+
+/obj/effect/floor_decal/trimline/white
+	color = "#FFFFFF"
+
+/obj/effect/floor_decal/trimline/white/line
+	name = "trim decal"
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/white/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/white/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/white/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/white/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/white/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/white/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/white/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/white/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/white/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/white/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/white/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/white/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/white/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/white/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/white/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/white/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Red trimlines
+
+/obj/effect/floor_decal/trimline/red
+	color = "#DE3A3A"
+
+/obj/effect/floor_decal/trimline/red/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/red/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/red/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/red/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/red/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/red/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/red/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/red/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/red/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/red/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/red/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/red/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/red/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/red/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/red/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/red/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/red/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Dark red trimlines
+
+/obj/effect/floor_decal/trimline/dark_red
+	color = "#B11111"
+
+/obj/effect/floor_decal/trimline/dark_red/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/dark_red/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/dark_red/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/dark_red/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/dark_red/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/dark_red/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/dark_red/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/dark_red/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/dark_red/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/dark_red/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/dark_red/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/dark_red/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/dark_red/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/dark_red/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/dark_red/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/dark_red/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/dark_red/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Green trimlines
+
+/obj/effect/floor_decal/trimline/green
+	color = "#9FED58"
+
+/obj/effect/floor_decal/trimline/green/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/green/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/green/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/green/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/green/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/green/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/green/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/green/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/green/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/green/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/green/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/green/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/green/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/green/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/green/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/green/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/green/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Dark green Trimlines
+
+/obj/effect/floor_decal/trimline/dark_green
+	color = "#439C1E"
+
+/obj/effect/floor_decal/trimline/dark_green/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/dark_green/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/dark_green/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/dark_green/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/dark_green/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/dark_green/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/dark_green/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/dark_green/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/dark_green/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/dark_green/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/dark_green/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/dark_green/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/dark_green/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/dark_green/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/dark_green/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/dark_green/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/dark_green/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Blue trimlines
+
+/obj/effect/floor_decal/trimline/blue
+	color = "#52B4E9"
+
+/obj/effect/floor_decal/trimline/blue/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/blue/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/blue/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/blue/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/blue/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/blue/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/blue/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/blue/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/blue/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/blue/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/blue/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/blue/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/blue/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/blue/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/blue/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/blue/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/blue/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Dark blue trimlines
+
+/obj/effect/floor_decal/trimline/dark_blue
+	color = "#486091"
+
+/obj/effect/floor_decal/trimline/dark_blue/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/dark_blue/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/dark_blue/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/dark_blue/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/dark_blue/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/dark_blue/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/dark_blue/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/dark_blue/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/dark_blue/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/dark_blue/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/dark_blue/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/dark_blue/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/dark_blue/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/dark_blue/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/dark_blue/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/dark_blue/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/dark_blue/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Yellow trimlines
+
+/obj/effect/floor_decal/trimline/yellow
+	color = "#EFB341"
+
+/obj/effect/floor_decal/trimline/yellow/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/yellow/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/yellow/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/yellow/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/yellow/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/yellow/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/yellow/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/yellow/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/yellow/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/yellow/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/yellow/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/yellow/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/yellow/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/yellow/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/yellow/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/yellow/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/yellow/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Purple trimlines
+
+/obj/effect/floor_decal/trimline/purple
+	color = "#D381C9"
+
+/obj/effect/floor_decal/trimline/purple/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/purple/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/purple/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/purple/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/purple/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/purple/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/purple/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/purple/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/purple/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/purple/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/purple/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/purple/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/purple/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/purple/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/purple/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/purple/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/purple/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Brown trimlines
+
+/obj/effect/floor_decal/trimline/brown
+	color = "#A46106"
+
+/obj/effect/floor_decal/trimline/brown/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/brown/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/brown/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/brown/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/brown/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/brown/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/brown/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/brown/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/brown/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/brown/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/brown/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/brown/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/brown/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/brown/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/brown/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/brown/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/brown/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Neutral trimlines
+
+/obj/effect/floor_decal/trimline/neutral
+	color = "#D4D4D4"
+	alpha = 50
+
+/obj/effect/floor_decal/trimline/neutral/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/neutral/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/neutral/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/neutral/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/neutral/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/neutral/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/neutral/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/neutral/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/neutral/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/neutral/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/neutral/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/neutral/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/neutral/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/neutral/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/neutral/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/neutral/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/neutral/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Dark trimlines
+
+/obj/effect/floor_decal/trimline/dark
+	color = "#0e0f0f"
+
+/obj/effect/floor_decal/trimline/dark/line
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/dark/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/dark/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/dark/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/dark/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/dark/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/dark/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/dark/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/dark/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/dark/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/dark/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/dark/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/dark/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/dark/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/dark/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/dark/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/dark/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/// Black trimlines
+
+/obj/effect/floor_decal/trimline/black
+	color = "#000000"
+
+/obj/effect/floor_decal/trimline/black/line
+	name = "trim decal"
+	icon_state = "trimline"
+
+/obj/effect/floor_decal/trimline/black/corner
+	icon_state = "trimline_corner"
+
+/obj/effect/floor_decal/trimline/black/end
+	icon_state = "trimline_end"
+
+/obj/effect/floor_decal/trimline/black/arrow_cw
+	icon_state = "trimline_arrow_cw"
+
+/obj/effect/floor_decal/trimline/black/arrow_ccw
+	icon_state = "trimline_arrow_ccw"
+
+/obj/effect/floor_decal/trimline/black/warning
+	icon_state = "trimline_warn"
+
+/obj/effect/floor_decal/trimline/black/mid_joiner
+	icon_state = "trimline_mid"
+
+/obj/effect/floor_decal/trimline/black/filled
+	icon_state = "trimline_box_fill"
+
+/obj/effect/floor_decal/trimline/black/filled/line
+	icon_state = "trimline_fill"
+
+/obj/effect/floor_decal/trimline/black/filled/corner
+	icon_state = "trimline_corner_fill"
+
+/obj/effect/floor_decal/trimline/black/filled/end
+	icon_state = "trimline_end_fill"
+
+/obj/effect/floor_decal/trimline/black/filled/arrow_cw
+	icon_state = "trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/trimline/black/filled/arrow_ccw
+	icon_state = "trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/trimline/black/filled/warning
+	icon_state = "trimline_warn_fill"
+
+/obj/effect/floor_decal/trimline/black/filled/mid_joiner
+	icon_state = "trimline_mid_fill"
+
+/obj/effect/floor_decal/trimline/black/filled/shrink_cw
+	icon_state = "trimline_shrink_cw"
+
+/obj/effect/floor_decal/trimline/black/filled/shrink_ccw
+	icon_state = "trimline_shrink_ccw"
+
+/obj/effect/floor_decal/siding/wood
+	icon_state = "siding_wood_line"
+	color = "#55391A"
+
+/obj/effect/floor_decal/siding/wood/corner
+	icon_state = "siding_wood_corner"
+
+/obj/effect/floor_decal/siding/wood/end
+	icon_state = "siding_wood_end"
+
+/obj/effect/floor_decal/numbers/zero
+	icon_state = "number_0"
+
+/obj/effect/floor_decal/numbers/one
+	icon_state = "number_1"
+
+/obj/effect/floor_decal/numbers/two
+	icon_state = "number_2"
+
+/obj/effect/floor_decal/numbers/three
+	icon_state = "number_3"
+
+/obj/effect/floor_decal/numbers/four
+	icon_state = "number_4"
+
+/obj/effect/floor_decal/numbers/five
+	icon_state = "number_5"
+
+/obj/effect/floor_decal/numbers/six
+	icon_state = "number_6"
+
+/obj/effect/floor_decal/numbers/seven
+	icon_state = "number_7"
+
+/obj/effect/floor_decal/numbers/eight
+	icon_state = "number_8"
+
+/obj/effect/floor_decal/numbers/nine
+	icon_state = "number_9"
+
+/obj/effect/floor_decal/bot/right
+	icon_state = "bot_right"
+
+/obj/effect/floor_decal/bot/left
+	icon_state = "bot_left"
+
+/obj/effect/floor_decal/bot_white
+	icon_state = "bot_white"
+
+/obj/effect/floor_decal/bot_white/right
+	icon_state = "bot_right_white"
+
+/obj/effect/floor_decal/bot_white/left
+	icon_state = "bot_left_white"
+
+/obj/effect/floor_decal/bot_red
+	icon_state = "bot_red"
+
+/obj/effect/floor_decal/bot_red/right
+	icon_state = "bot_right_red"
+
+/obj/effect/floor_decal/bot_red/left
+	icon_state = "bot_left_red"
+
+/obj/effect/floor_decal/diagonal_centre
+	icon_state = "diagonal_centre"
+
+/obj/effect/floor_decal/diagonal_edge
+	icon_state = "diagonal_edge"
+
+/obj/effect/floor_decal/ss13_new/l1
+	name = "L1"
+	icon_state = "CL1"
+
+/obj/effect/floor_decal/ss13_new/l2
+	name = "L2"
+	icon_state = "CL2"
+
+/obj/effect/floor_decal/ss13_new/l3
+	name = "L3"
+	icon_state = "CL3"
+
+/obj/effect/floor_decal/ss13_new/l4
+	name = "L4"
+	icon_state = "CL4"
+
+/obj/effect/floor_decal/ss13_new/l5
+	name = "L5"
+	icon_state = "CL5"
+
+/obj/effect/floor_decal/ss13_new/l6
+	name = "L6"
+	icon_state = "CL6"
+
+/obj/effect/floor_decal/ss13_new/l7
+	name = "L7"
+	icon_state = "CL7"
+
+/obj/effect/floor_decal/ss13_new/l8
+	name = "L8"
+	icon_state = "CL8"
+
+/obj/effect/floor_decal/ss13_new/l9
+	name = "L9"
+	icon_state = "CL9"
+
+/obj/effect/floor_decal/ss13_new/l10
+	name = "L10"
+	icon_state = "CL10"
+
+/obj/effect/floor_decal/ss13_new/l11
+	name = "L11"
+	icon_state = "CL11"
+
+/obj/effect/floor_decal/ss13_new/l12
+	name = "L12"
+	icon_state = "CL12"
+
+/obj/effect/floor_decal/ss13_new/l13
+	name = "L13"
+	icon_state = "CL13"
+
+/obj/effect/floor_decal/ss13_new/l14
+	name = "L14"
+	icon_state = "CL14"

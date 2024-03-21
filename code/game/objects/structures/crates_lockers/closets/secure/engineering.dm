@@ -12,17 +12,11 @@
 		new /datum/atom_creator/weighted(list(/obj/item/clothing/accessory/storage/brown_vest = 70, /obj/item/clothing/accessory/storage/webbing = 30)),
 		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/industrial, /obj/item/storage/backpack/satchel/eng)),
 		new /datum/atom_creator/simple(/obj/item/storage/backpack/dufflebag/eng, 50),
+		/obj/item/storage/garment/chief_engineer,
 		/obj/item/blueprints,
-		/obj/item/clothing/under/rank/chief_engineer,
-		/obj/item/clothing/head/hardhat/white,
-		/obj/item/clothing/head/welding,
-		/obj/item/clothing/gloves/insulated,
-		/obj/item/clothing/shoes/brown,
 		/obj/item/cartridge/ce,
 		/obj/item/device/radio/headset/heads/ce,
 		/obj/item/storage/toolbox/mechanical,
-		/obj/item/clothing/suit/storage/hazardvest,
-		/obj/item/clothing/mask/gas,
 		/obj/item/combotool/advtool,
 		/obj/item/device/flash,
 		/obj/item/taperoll/engineering,
@@ -43,7 +37,8 @@
 		/obj/item/clothing/gloves/insulated = 3,
 		/obj/item/storage/toolbox/electrical = 3,
 		/obj/item/module/power_control = 3,
-		/obj/item/device/multitool = 3
+		/obj/item/device/multitool = 3,
+		/obj/item/device/handcharger = 3
 	)
 
 /obj/structure/closet/secure_closet/engineering_welding

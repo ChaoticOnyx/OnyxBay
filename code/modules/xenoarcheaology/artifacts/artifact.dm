@@ -140,7 +140,7 @@
 			action_triggers |= TRIGGER_ENERGY
 	else if(istype(W,/obj/item/melee/energy) ||\
 		    istype(W,/obj/item/melee/cultblade) ||\
-		    istype(W,/obj/item/card/emag) ||\
+		    isEmag(W) ||\
 		    isMultitool(W)
 		   )
 		action_triggers |= TRIGGER_ENERGY
@@ -231,10 +231,14 @@
 				secondary_effect.ToggleActivate()
 	return
 
-/obj/machinery/artifact/Move()
+/obj/machinery/artifact/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	if(main_effect)
 		main_effect.UpdateMove()
+
 	if(secondary_effect)
 		secondary_effect.UpdateMove()
 

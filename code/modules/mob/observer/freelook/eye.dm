@@ -29,10 +29,10 @@
 	visualnet = null
 	. = ..()
 
-/mob/observer/eye/Move(n, direct)
+/mob/observer/eye/Move(newloc, direct)
 	if(owner == src)
 		return EyeMove(direct)
-	return 0
+	return FALSE
 
 /mob/observer/eye/facedir(ndir)
 	if(!canface())
@@ -53,7 +53,7 @@
 /mob/observer/eye/_examine_text(mob/user)
 	return
 
-/mob/observer/eye/proc/possess(mob/user)
+/mob/observer/eye/proc/possess(mob/user, reset_location=TRUE)
 	if(owner && owner != user)
 		return
 	if(owner && owner.eyeobj != src)
@@ -63,7 +63,8 @@
 	SetName("[owner.name] ([name_sufix])") // Update its name
 	if(owner.client)
 		owner.client.eye = src
-	setLoc(owner)
+	if(reset_location)
+		setLoc(owner)
 	visualnet.update_eye_chunks(src, TRUE)
 
 /mob/observer/eye/proc/release(mob/user)

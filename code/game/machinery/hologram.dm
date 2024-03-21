@@ -36,8 +36,9 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	desc = "It's a floor-mounted device for projecting holographic images."
 	icon_state = "holopad-B0"
 
-	plane = FLOOR_PLANE
+
 	layer = ABOVE_TILE_LAYER
+	plane = TURF_PLANE
 
 	var/power_per_hologram = 500 //per usage per hologram
 	idle_power_usage = 5 WATTS
@@ -95,7 +96,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 				last_request = world.time
 				var/list/holopadlist = list()
 				var/zlevels = GetConnectedZlevels(z)
-				for(var/obj/machinery/hologram/holopad/H in GLOB.machines)
+				for(var/obj/machinery/hologram/holopad/H in SSmachines.machinery)
 					if((H.z in zlevels) && H.operable())
 						holopadlist["[H.loc.loc.name]"] = H	//Define a list and fill it with the area of every holopad in the world
 				holopadlist = sortAssoc(holopadlist)
@@ -121,7 +122,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	targetpad.incoming_connection = 1
 	playsound(targetpad.loc, 'sound/signals/processing19.ogg', 50)
 	targetpad.icon_state = "[targetpad.base_icon]1"
-	targetpad.audible_message("<b>\The [src]</b> announces, \"Incoming communications request from [targetpad.sourcepad.loc.loc].\"")
+	targetpad.audible_message("<b>\The [src]</b> announces, \"Incoming communications request from [targetpad.sourcepad.loc.loc].\"", splash_override = "Incoming communications request")
 	to_chat(user, "<span class='notice'>Trying to establish a connection to the holopad in [targetpad.loc.loc]... Please await confirmation from recipient.</span>")
 
 
@@ -201,7 +202,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	if(sourcepad) //If this is a pad receiving a call
 		if(name_used==caller_id||text==last_message||findtext(text, "Holopad received")) //prevent echoes
 			return
-		sourcepad.audible_message("<i><span class='game say'>Holopad received, <span class='name'>[name_used]</span> [speaking.format_message(text, verb)]</span></i>")
+		sourcepad.audible_message("<i><span class='game say'>Holopad received, <span class='name'>[name_used]</span> [speaking.format_message(text, verb)]</span></i>", splash_override = text)
 
 /obj/machinery/hologram/holopad/see_emote(mob/living/M, text)
 	if(M)
@@ -239,21 +240,21 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		var/datum/computer_file/crew_record/R = get_crewmember_record(caller_id.name)
 		if(R)
 			tempicon = R.photo_front
-		hologram.overlays += getHologramIcon(icon(tempicon), hologram_color = holopadType) // Add the callers image as an overlay to keep coloration!
+		hologram.AddOverlays(getHologramIcon(icon(tempicon), hologram_color = holopadType)) // Add the callers image as an overlay to keep coloration!
 	else
 		if(holopadType == HOLOPAD_LONG_RANGE)
-			hologram.overlays += A.holo_icon_longrange
+			hologram.AddOverlays(A.holo_icon_longrange)
 		else
-			hologram.overlays += A.holo_icon // Add the AI's configured holo Icon
+			hologram.AddOverlays(A.holo_icon) // Add the AI's configured holo Icon
 	if(A)
 		if(A.holo_icon_malf == TRUE)
-			hologram.overlays += icon("icons/effects/effects.dmi", "malf-scanline")
+			hologram.AddOverlays(image("icons/effects/effects.dmi", "malf-scanline"))
 	hologram.mouse_opacity = 0//So you can't click on it.
 	hologram.layer = ABOVE_HUMAN_LAYER //Above all the other objects/mobs. Or the vast majority of them.
 	hologram.anchored = 1//So space wind cannot drag it.
 	if(caller_id)
 		hologram.SetName("[caller_id.name] (Hologram)")
-		hologram.loc = get_step(src,1)
+		hologram.forceMove(get_step(src, 1))
 		masters[caller_id] = hologram
 	else
 		hologram.SetName("[A.name] (Hologram)") //If someone decides to right click.

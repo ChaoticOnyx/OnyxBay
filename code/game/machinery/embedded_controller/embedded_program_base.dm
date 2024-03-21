@@ -20,7 +20,7 @@
 /datum/computer/file/embedded_program/proc/receive_user_command(command)
 	return
 
-/datum/computer/file/embedded_program/proc/receive_signal(datum/signal/signal, receive_method, receive_param)
+/datum/computer/file/embedded_program/proc/receive_signal(datum/signal/signal, receive_param)
 	return
 
 /datum/computer/file/embedded_program/proc/process()

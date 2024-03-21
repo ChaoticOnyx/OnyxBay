@@ -28,17 +28,6 @@
 	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.8
 
-/obj/item/clothing/under/rank/dispatch
-	name = "dispatcher's uniform"
-	desc = "A dress shirt and khakis with a security patch sewn on."
-	icon_state = "dispatch"
-	item_state_slots = list(
-		slot_hand_str = "blue"
-		)
-	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
-	siemens_coefficient = 0.9
-
 /obj/item/clothing/under/rank/security/corp
 	icon_state = "sec_corp"
 	item_state_slots = list(
@@ -114,10 +103,6 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
-
-/obj/item/clothing/under/rank/head_of_security/old
-	icon_state = "hos_corp"
-	desc = "It's a jumpsuit worn by those few with the dedication to achieve the position of \"Head of Security\". It has additional armor to protect the wearer. This one must be quite old, yet it's colors are so vibrant it hurts your eyes."
 
 /obj/item/clothing/under/rank/head_of_security/jensen
 	desc = "You never asked for anything that stylish."

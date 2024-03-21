@@ -1,0 +1,41 @@
+"a" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/siding/wood{dir = 4},/turf/simulated/floor/tiled,/area/template_noop)
+"b" = (/obj/structure/railing/wood,/obj/effect/floor_decal/siding/wood,/obj/structure/table/woodentable,/obj/item/device/flashlight/lamp/brown,/turf/simulated/floor/trim/wood,/area/template_noop)
+"d" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/siding/wood/corner{dir = 1},/turf/simulated/floor/tiled,/area/template_noop)
+"e" = (/obj/structure/railing/wood,/obj/effect/floor_decal/siding/wood{dir = 6},/obj/structure/table/woodentable,/turf/simulated/floor/trim/wood,/area/template_noop)
+"f" = (/obj/structure/railing/wood,/obj/structure/bed/pew/pewchapel/left{dir = 1},/turf/simulated/floor/trim/wood,/area/template_noop)
+"h" = (/obj/effect/floor_decal/siding/wood/corner{dir = 8},/turf/simulated/floor/trim/wood,/area/template_noop)
+"i" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/siding/wood/corner{dir = 8},/turf/simulated/floor/tiled,/area/template_noop)
+"j" = (/obj/structure/railing/wood,/obj/structure/table/woodentable,/obj/effect/floor_decal/siding/wood,/obj/item/device/megaphone,/turf/simulated/floor/trim/wood,/area/template_noop)
+"k" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/siding/wood/corner{dir = 4},/turf/simulated/floor/tiled,/area/template_noop)
+"l" = (/obj/structure/railing/wood,/obj/structure/table/woodentable,/obj/effect/floor_decal/siding/wood,/obj/item/clothing/suit/storage/hooded/wintercoat/centcom,/obj/item/clothing/head/centhat,/obj/item/clothing/glasses/sunglasses,/turf/simulated/floor/trim/wood,/area/template_noop)
+"p" = (/obj/effect/floor_decal/stairs,/turf/simulated/floor/tiled,/area/template_noop)
+"s" = (/obj/random/pottedplant,/obj/effect/floor_decal/siding/wood/end,/obj/effect/floor_decal/siding/wood{dir = 1},/obj/effect/floor_decal/siding/wood/corner{dir = 1},/obj/effect/floor_decal/siding/wood/corner{dir = 4},/turf/simulated/floor/trim/wood,/area/template_noop)
+"w" = (/obj/effect/floor_decal/corner/grey/full,/turf/simulated/floor/tiled,/area/template_noop)
+"x" = (/obj/structure/bed/pew/pewchapel/right{dir = 1},/obj/structure/railing/wood,/turf/simulated/floor/trim/wood,/area/template_noop)
+"y" = (/obj/structure/railing/wood,/obj/structure/table/woodentable,/obj/effect/floor_decal/siding/wood,/obj/item/clothing/suit/storage/hooded/wintercoat/captain,/obj/item/clothing/head/caphat,/obj/item/clothing/glasses/sunglasses,/turf/simulated/floor/trim/wood,/area/template_noop)
+"z" = (/obj/structure/bed/chair/comfy/captain,/turf/simulated/floor/trim/carpet,/area/template_noop)
+"A" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/tiled,/area/template_noop)
+"E" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/siding/wood{dir = 8},/turf/simulated/floor/tiled,/area/template_noop)
+"G" = (/turf/simulated/floor/trim/wood,/area/template_noop)
+"I" = (/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/trim/wood,/area/template_noop)
+"J" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/siding/wood{dir = 1},/turf/simulated/floor/tiled,/area/template_noop)
+"L" = (/obj/effect/floor_decal/corner/grey/full,/obj/effect/floor_decal/siding/wood/corner,/turf/simulated/floor/tiled,/area/template_noop)
+"M" = (/turf/simulated/floor/trim/carpet,/area/template_noop)
+"O" = (/obj/structure/bed/pew/pewchapel/middle{dir = 1; icon_state = "chair_pewchapel_middle_over"},/obj/structure/railing/wood,/turf/simulated/floor/trim/wood,/area/template_noop)
+"V" = (/obj/effect/floor_decal/siding/wood/corner,/turf/simulated/floor/trim/wood,/area/template_noop)
+"W" = (/obj/structure/bed/pew/pewchapel/left{dir = 1},/obj/structure/railing/wood,/turf/simulated/floor/trim/wood,/area/template_noop)
+"X" = (/obj/structure/railing/wood,/obj/structure/table/woodentable,/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/trim/wood,/area/template_noop)
+"Z" = (/obj/structure/railing/wood,/obj/effect/floor_decal/siding/wood{dir = 10},/obj/structure/table/woodentable,/turf/simulated/floor/trim/wood,/area/template_noop)
+
+(1,1,1) = {"
+sGGGGGGGGs
+IhMzMMzMVI
+pZbyXjlbep
+LAAAiLAAAi
+aWOxEaWOxE
+aWOxEaWOxE
+afOxEaWOxE
+afOxEaWOxE
+kJJJdkJJJd
+swwwwwwwws
+"}

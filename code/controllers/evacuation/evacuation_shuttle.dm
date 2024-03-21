@@ -3,10 +3,6 @@
 
 /datum/evacuation_controller/shuttle
 	name = "escape shuttle controller"
-	evac_waiting =  new(0, new_sound = sound('sound/AI/shuttledock.ogg'))
-	evac_called =   new(0, new_sound = sound('sound/AI/shuttlecalled.ogg'))
-	evac_recalled = new(0, new_sound = sound('sound/AI/shuttlerecalled.ogg'))
-
 	emergency_prep_additional_delay = 0 MINUTES
 	transfer_prep_additional_delay = 0 MINUTES
 
@@ -39,6 +35,7 @@
 	if(autopilot && shuttle.moving_status == SHUTTLE_IDLE)
 		evac_arrival_time = world.time + (shuttle.move_time*10) + (shuttle.warmup_time*10)
 		shuttle.launch(src)
+	launch_map_vote()
 	// Announcements, state changes and such are handled by the shuttle itself to prevent desync.
 
 /datum/evacuation_controller/shuttle/finish_preparing_evac()

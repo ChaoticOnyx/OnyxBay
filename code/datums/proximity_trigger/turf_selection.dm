@@ -32,3 +32,13 @@
 		return
 	for(var/turf/T in trange(range, center))
 		. += T
+
+/decl/turf_selection/angle/get_turfs(atom/origin, range, l_angle, r_angle)
+	. = list()
+	var/turf/center = get_turf(origin)
+	if(!center)
+		return
+
+	for(var/turf/T in RANGE_TURFS(range, center))
+		if((l_angle == 0 && r_angle == 0) || angle_between_two_angles(l_angle, Atan2(T.x - center.x, T.y - center.y) - 90, r_angle))
+			. += T

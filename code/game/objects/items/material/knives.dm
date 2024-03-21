@@ -26,6 +26,7 @@
 		icon_state += "_open"
 		w_class = ITEM_SIZE_NORMAL
 		attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+		armor_penetration = 30
 	else
 		force = 3
 		edge = 0
@@ -34,6 +35,7 @@
 		icon_state = initial(icon_state)
 		w_class = initial(w_class)
 		attack_verb = initial(attack_verb)
+		armor_penetration = initial(armor_penetration)
 
 /obj/item/material/butterfly/attack_self(mob/user)
 	active = !active
@@ -65,6 +67,7 @@
 	mod_weight = 0.5
 	mod_reach = 0.4
 	mod_handy = 1.0
+	armor_penetration = 30
 	force_const = 5.5
 	thrown_force_const = 3
 	force_divisor = 0.05 // 6 when wielded with hardness 60 (steel)
@@ -74,6 +77,9 @@
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	unbreakable = 1
 	material_amount = 2
+
+	drop_sound = SFX_DROP_KNIFE
+	pickup_sound = SFX_PICKUP_KNIFE
 
 /obj/item/material/knife/hook
 	name = "meat hook"
@@ -90,6 +96,7 @@
 	mod_weight = 0.65
 	mod_reach = 0.5
 	mod_handy = 1.1
+	armor_penetration = 50
 	applies_material_colour = 0
 
 /obj/item/material/knife/kitchen
@@ -135,6 +142,7 @@
 	mod_weight = 0.25
 	mod_reach = 0.4
 	mod_handy = 0.5
+	armor_penetration = 50 // Basically a screwdriver on crack
 	force_const = 5.0
 	thrown_force_const = 3
 	force_divisor = 0.05 // 3 when wielded with hardness 60 (steel)
@@ -159,7 +167,7 @@
 			mod_handy = W.mod_handy
 			unbreakable = 1
 			to_chat(user, "<span class='notice'>You insert [src] into [W].</span>")
-			overlays += image("icon" = 'icons/obj/weapons.dmi', "icon_state" = "[W.icon_state]")
+			AddOverlays(image('icons/obj/weapons.dmi', W.icon_state))
 			qdel(W)
 			return
 		if(isCoil(W))
@@ -171,7 +179,7 @@
 				mod_weight += 0.05
 				mod_handy = 1.0
 				to_chat(user, "<span class='notice'>You wind up [src]'s grip with the cable.</span>")
-				overlays += image("icon" = 'icons/obj/weapons.dmi', "icon_state" = "shiv_wire")
+				AddOverlays(image('icons/obj/weapons.dmi', "shiv_wire"))
 			return
 		if(istype(W,/obj/item/tape_roll))
 			hasgrip = 1
@@ -180,7 +188,7 @@
 			mod_weight += 0.1
 			mod_handy = 1.0
 			to_chat(user, "<span class='notice'>You wind up [src]'s grip with the cable.</span>")
-			overlays += image("icon" = 'icons/obj/weapons.dmi', "icon_state" = "shiv_tape")
+			AddOverlays(image('icons/obj/weapons.dmi', "shiv_tape"))
 			return
 	..()
 

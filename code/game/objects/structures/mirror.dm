@@ -9,6 +9,16 @@
 	var/shattered = 0
 	var/list/ui_users = list()
 
+	/// Visual object for handling the viscontents
+	var/weakref/ref
+	vis_flags = VIS_HIDE
+	var/timerid = null
+
+/obj/structure/mirror/Initialize()
+	. = ..()
+	var/obj/effect/reflection/reflection = new(src.loc)
+	reflection.setup_visuals(src)
+	ref = weakref(reflection)
 /obj/structure/mirror/attack_hand(mob/user as mob)
 
 	if(shattered)	return
@@ -32,6 +42,10 @@
 	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	desc = "Oh no, seven years of bad luck!"
 
+	var/obj/effect/reflection/reflection = ref.resolve()
+	if(istype(reflection))
+		reflection.alpha_icon_state = "mirror_mask_broken"
+		reflection.update_mirror_filters()
 
 /obj/structure/mirror/bullet_act(obj/item/projectile/Proj)
 
@@ -75,13 +89,19 @@
 		qdel(AC)
 	ui_users.Cut()
 
+	var/obj/effect/reflection/reflection = ref.resolve()
+	if(istype(reflection))
+		unregister_signal(src.loc, SIGNAL_ENTERED)
+		unregister_signal(src.loc, SIGNAL_EXITED)
+		qdel(reflection)
+		ref = null
 	return ..()
 
 // The following mirror is ~special~.
 /obj/structure/mirror/raider
 	name = "cracked mirror"
 	desc = "Something seems strange about this old, dirty mirror. Your reflection doesn't look like you remember it."
-	icon_state = "mirror_broke"
+	icon_state = "mirrormagic_broke"
 	shattered = 1
 
 /obj/structure/mirror/raider/attack_hand(mob/living/carbon/human/user)
@@ -104,6 +124,24 @@
 					GLOB.raiders.update_access(vox)
 				qdel(user)
 	..()
+
+/obj/structure/mirror/magic
+	name = "magic mirror"
+	desc = "Something seems strange about this mirror. Your reflection doesn't look like you remember it."
+	icon_state = "mirrormagic"
+
+/obj/structure/mirror/magic/shatter()
+	if(shattered)
+		return
+	shattered = TRUE
+	icon_state = "mirrormagic_broke"
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
+	desc = "Oh no, seven years of bad luck!"
+
+	var/obj/effect/reflection/reflection = ref.resolve()
+	if(istype(reflection))
+		reflection.alpha_icon_state = "mirror_mask_broken"
+		reflection.update_mirror_filters()
 
 /obj/item/mirror
 	name = "mirror"
@@ -133,3 +171,87 @@
 	ui_users.Cut()
 
 	return ..()
+
+/obj/effect/reflection
+	name = "reflection"
+	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE
+	mouse_opacity = 0
+	vis_flags = VIS_HIDE
+	layer = ABOVE_OBJ_LAYER
+	var/alpha_icon = 'icons/obj/watercloset.dmi'
+	var/alpha_icon_state = "mirror_mask"
+	var/obj/mirror
+	desc = "Why are you locked in the bathroom?"
+	anchored = TRUE
+	unacidable = TRUE
+
+	var/blur_filter
+
+/obj/effect/reflection/proc/setup_visuals(target)
+	mirror = target
+	register_signal(mirror.loc, SIGNAL_ENTERED, nameof(.proc/check_vampire_enter))
+	register_signal(mirror.loc, SIGNAL_EXITED, nameof(.proc/check_vampire_exit))
+
+	if(mirror.pixel_x > 0)
+		dir = WEST
+	else if (mirror.pixel_x < 0)
+		dir = EAST
+
+	if(mirror.pixel_y > 0)
+		dir = SOUTH
+	else if (mirror.pixel_y < 0)
+		dir = NORTH
+
+	pixel_x = mirror.pixel_x
+	pixel_y = mirror.pixel_y
+
+	blur_filter = filter(type="blur", size = 1)
+
+	update_mirror_filters()
+
+/obj/effect/reflection/proc/update_mirror_filters()
+	filters = null
+
+	vis_contents = null
+
+	if(!mirror)
+		return
+
+	var/matrix/M = matrix()
+	if(dir == WEST || dir == EAST)
+		M.Scale(-1, 1)
+	else if(dir == SOUTH|| dir == NORTH)
+		M.Scale(1, -1)
+		pixel_y = mirror.pixel_y + 5
+
+	transform = M
+
+	filters += filter("type" = "alpha", "icon" = icon(alpha_icon, alpha_icon_state), "x" = 0, "y" = 0)
+	for(var/mob/living/carbon/human/H in loc)
+		check_vampire_enter(H.loc, H)
+
+	vis_contents += get_turf(mirror)
+
+/obj/effect/reflection/proc/check_vampire_enter(turf/T, mob/living/carbon/human/H)
+	if(!istype(H))
+		return
+	if (!H.mind)
+		return
+	var/datum/vampire/V = H.mind.vampire
+	if(V)
+		if(V.vamp_status & VAMP_ISTHRALL)
+			filters += blur_filter
+		else
+			H.vis_flags |= VIS_HIDE
+
+/obj/effect/reflection/proc/check_vampire_exit(turf/T, mob/living/carbon/human/H)
+	if(!istype(H))
+		return
+	if (!H.mind)
+		return
+	var/datum/vampire/V = H.mind.vampire
+	if(V)
+		if(V.vamp_status & VAMP_ISTHRALL)
+			filters -= blur_filter
+		else
+			H.vis_flags &= ~VIS_HIDE

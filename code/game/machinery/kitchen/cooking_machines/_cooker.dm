@@ -7,6 +7,8 @@
 
 // Tracks precooked food to stop deep fried baked grilled grilled grilled diona nymph cereal.
 /obj/item/reagent_containers/food
+	drop_sound = SFX_DROP_FOOD
+	pickup_sound = SFX_PICKUP_FOOD
 	var/list/cooked_types = list()
 
 // Root type for cooking machines. See following files for specific implementations.
@@ -38,6 +40,7 @@
 	var/cooking_done_time
 	var/next_burn_time
 	var/cooking_is_done = FALSE
+
 
 /obj/machinery/cooker/Destroy()
 	if(thing_inside)
@@ -228,7 +231,8 @@
 		if(is_cooking)
 			stop()
 		return
-	if(receiver)
+
+	if(receiver && Adjacent(receiver))
 		if(isliving(thing_inside))
 			var/mob/living/L = thing_inside
 			L.get_scooped(receiver, self_grab = FALSE)
@@ -299,7 +303,7 @@
 			I.color = S.filling_color
 		if(!I.color)
 			I.color = food_color
-		product.overlays += I
+		product.AddOverlays(I)
 	return product
 
 #undef NO_PRODUCT

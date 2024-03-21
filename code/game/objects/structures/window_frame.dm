@@ -175,9 +175,9 @@
 	explosion_resistance = 1
 
 	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 664 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 4.8 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.1 ELECTRONVOLT
 	)
 
 	var/max_health = 8
@@ -337,8 +337,8 @@
 		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 // The scariest thing present. Let's just -=HoPe=- it's not -=ThAt=- performance-heavy.
-/obj/structure/window_frame/update_icon()
-	overlays.Cut()
+/obj/structure/window_frame/on_update_icon()
+	ClearOverlays()
 	underlays.Cut()
 	icon_state = icon_base
 	var/new_opacity = FALSE
@@ -349,84 +349,73 @@
 	layer = WINDOW_FRAME_LAYER
 
 	if(frame_state == FRAME_ELECTRIC || frame_state == FRAME_RELECTRIC)
-		var/image/I = image(icon, "[icon_base]_cable")
-		I.color = cable_color
-		overlays += I
+		var/image/I = OVERLAY(icon, "[icon_base]_cable", color = cable_color)
+		AddOverlays(I)
 
 	if(signaler)
-		overlays += image(icon, "winframe_signaler")
+		AddOverlays(OVERLAY(icon, "winframe_signaler"))
 
 	if(inner_pane)
-		var/list/dirs = list()
-		if(inner_pane.state >= 2)
-			for(var/obj/structure/window_frame/W in orange(src, 1))
-				if(W.inner_pane?.state >= 2)
-					dirs += get_dir(src, W)
+		var/connections = 0
+		for(var/I in GLOB.cardinal)
+			var/obj/structure/window_frame/W = locate() in get_step(src, I)
+			if(!istype(W))
+				continue
+			if(W.inner_pane?.state >= 2)
+				connections += get_dir(src, W)
 
-		var/list/connections = dirs_to_corner_states(dirs)
-
-		for(var/i = 1 to 4)
-			var/image/I = image(icon, "[inner_pane.icon_base][connections[i]]", dir = 1<<(i-1))
-			I.layer = WINDOW_INNER_LAYER
-			overlays += I
+		var/image/I = image(GLOB.bitmask_icon_sheets["[inner_pane.icon_base]"], "[connections]")
+		I.layer = WINDOW_INNER_LAYER
+		AddOverlays(I)
 
 		if(inner_pane.tinted)
 			new_opacity = TRUE
-			var/image/I = image(icon, "winframe_tint")
-			I.layer = WINDOW_INNER_LAYER
-			overlays += I
+			AddOverlays(OVERLAY(icon, "winframe_tint", layer = WINDOW_INNER_LAYER))
 
 		if(inner_pane.damage_state)
-			var/image/I = image(icon, "winframe_damage[inner_pane.damage_state]")
-			I.layer = WINDOW_INNER_LAYER
-			overlays += I
+			AddOverlays(OVERLAY(icon, "winframe_damage[inner_pane.damage_state]", layer = WINDOW_INNER_LAYER))
 
 		if(inner_pane.opacity)
 			new_opacity = TRUE
 
 	if(outer_pane)
 		if(outer_pane.reinforced)
-			underlays += image(icon, "winframe_shadow")
+			underlays += OVERLAY(icon, "winframe_shadow")
 
-		var/list/dirs = list()
-		if(outer_pane.state >= 2)
-			for(var/obj/structure/window_frame/W in orange(src, 1))
-				if(W.outer_pane?.state >= 2)
-					dirs += get_dir(src, W)
+		var/connections = 0
+		for(var/I in GLOB.cardinal)
+			var/obj/structure/window_frame/W = locate() in get_step(src, I)
+			if(!istype(W))
+				continue
+			if(W.outer_pane?.state >= 2)
+				connections += get_dir(src, W)
 
-		var/list/connections = dirs_to_corner_states(dirs)
-
-		for(var/i = 1 to 4)
-			var/image/I = image(icon, "[outer_pane.icon_base][connections[i]]", dir = 1<<(i-1))
-			I.layer = WINDOW_OUTER_LAYER
-			overlays += I
+		var/image/I = image(GLOB.bitmask_icon_sheets["[outer_pane.icon_base]"], "[connections]")
+		I.layer = WINDOW_OUTER_LAYER
+		AddOverlays(I)
 
 		if(outer_pane.tinted)
 			new_opacity = TRUE
-			var/image/I = image(icon, "winframe_tint")
-			I.layer = WINDOW_OUTER_LAYER
-			overlays += I
+			AddOverlays(OVERLAY(icon, "winframe_tint", layer = WINDOW_OUTER_LAYER))
 
 		if(outer_pane.damage_state)
-			var/image/I = image(icon, "winframe_damage[outer_pane.damage_state]")
-			I.layer = WINDOW_OUTER_LAYER
-			overlays += I
+			AddOverlays(OVERLAY(icon, "winframe_damage[outer_pane.damage_state]", layer = WINDOW_OUTER_LAYER))
 
 		if(outer_pane.opacity)
 			new_opacity = TRUE
 
 	if(outer_pane?.state >= 1)
-		var/list/dirs = list()
-		for(var/obj/structure/window_frame/W in orange(src, 1))
+		var/connections = 0
+		for(var/I in GLOB.cardinal)
+			var/obj/structure/window_frame/W = locate() in get_step(src, I)
+			if(!istype(W))
+				continue
 			if(W.outer_pane?.state >= 1)
-				dirs += get_dir(src, W)
+				connections += get_dir(src, W)
 
-		var/list/connections = dirs_to_corner_states(dirs)
-
-		for(var/i = 1 to 4)
-			var/image/I = image(icon, "[icon_border][connections[i]]", dir = 1<<(i-1))
-			I.layer = WINDOW_BORDER_LAYER
-			overlays += I
+		var/image/I = image(GLOB.bitmask_icon_sheets["[icon_border]"], "[connections]")
+		I.layer = WINDOW_BORDER_LAYER
+		AddOverlays(I)
 
 	if(opacity != new_opacity)
 		set_opacity(new_opacity)
@@ -504,6 +493,11 @@
 			user.do_attack_animation(src)
 			affected.shatter()
 
+		else if(MUTATION_STRONG in user.mutations)
+			user.visible_message(SPAN("danger", "[user] smashes through \the [src]!"))
+			user.do_attack_animation(src)
+			affected.shatter()
+
 		else if(user.a_intent == I_HURT)
 			if(ishuman(user))
 				var/mob/living/carbon/human/H = user
@@ -526,7 +520,7 @@
 	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
 	user.do_attack_animation(src)
 
-	var/damage_dealt = 1
+	var/damage_dealt = 2
 	var/attack_message = "kicks"
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
@@ -539,8 +533,9 @@
 
 	if(MUTATION_HULK in user.mutations)
 		damage_dealt += 5
-	else
-		damage_dealt += 1
+
+	if(MUTATION_STRONG in user.mutations)
+		damage_dealt += 5
 
 	attack_generic(user, damage_dealt, attack_message)
 
@@ -1003,7 +998,7 @@
 			spawn()
 				WF.toggle_tint()
 
-/obj/machinery/button/window_frame_tint/update_icon()
+/obj/machinery/button/window_frame_tint/on_update_icon()
 	icon_state = "light0"
 
 
@@ -1020,6 +1015,12 @@
 	max_health = 10
 	pane_melee_mult = 0.9
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 0 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0 ELECTRONVOLT
+	)
+
 // Pretty much the same as the old grille, but smarter.
 /obj/structure/window_frame/grille
 	frame_state = FRAME_GRILLE
@@ -1033,6 +1034,12 @@
 	max_health = 12
 	pane_melee_mult = 0.7
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0 ELECTRONVOLT
+	)
+
 /obj/structure/window_frame/broken
 	frame_state = FRAME_DESTROYED
 	name = "broken grille"
@@ -1043,6 +1050,12 @@
 	hitby_loudness_multiplier = 0.5
 	density = FALSE
 	max_health = 6
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 0 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0 ELECTRONVOLT
+	)
 
 /obj/structure/window_frame/broken/Initialize()
 	. = ..()
@@ -1058,6 +1071,12 @@
 	icon_border = "winborder"
 	density = FALSE
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 0 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0 ELECTRONVOLT
+	)
+
 /obj/structure/window_frame/relectric
 	frame_state = FRAME_RELECTRIC
 	name = "wired reinforced window frame"
@@ -1070,6 +1089,12 @@
 	max_health = 10
 	pane_melee_mult = 0.9
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 0 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0 ELECTRONVOLT
+	)
+
 // The simpliest window to exist. To be used in totally-no-safety-required areas.
 /obj/structure/window_frame/glass
 	name = "window"
@@ -1077,6 +1102,12 @@
 	density = TRUE
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.1 ELECTRONVOLT
+	)
 
 // Regular window with reinforced glass. Default window for most occasions.
 /obj/structure/window_frame/rglass
@@ -1086,6 +1117,12 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.2 ELECTRONVOLT
+	)
+
 /obj/structure/window_frame/black
 	name = "window"
 	icon_state = "winframe-black"
@@ -1093,6 +1130,12 @@
 	density = TRUE
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/black
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.2 ELECTRONVOLT
+	)
 
 /obj/structure/window_frame/rblack
 	name = "window"
@@ -1102,6 +1145,12 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rblack
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.2 ELECTRONVOLT
+	)
+
 // Reinforced window with two reinforced glass panes. Mostly used for hulls.
 /obj/structure/window_frame/reinforced/hull
 	name = "reinforced window"
@@ -1110,6 +1159,12 @@
 	preset_outer_pane = /datum/windowpane/rglass
 	preset_inner_pane = /datum/windowpane/rglass
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 200 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.8 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.4 ELECTRONVOLT
+	)
+
 // Reinforced window with two reinforced plass panes. Totally the best choice to constrain extremely high temperatures (combustion chamber/engine/etc.)
 /obj/structure/window_frame/reinforced/thermal
 	name = "reinforced window"
@@ -1117,6 +1172,12 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rplass
 	preset_inner_pane = /datum/windowpane/rplass
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 250 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/structure/window_frame/reinforced/unfinished
 	name = "unfinished reinforced window"
@@ -1131,12 +1192,24 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.1 ELECTRONVOLT
+	)
+
 // Can't hold the second windowpane, but can be used to shock people.
 /obj/structure/window_frame/grille/rglass
 	name = "windowed grille"
 	icon_state = "grille-rglass"
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.2 ELECTRONVOLT
+	)
 
 /obj/structure/window_frame/electric/glass
 	name = "electrochromic window"
@@ -1145,6 +1218,12 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.1 ELECTRONVOLT
+	)
+
 /obj/structure/window_frame/electric/rglass
 	name = "electrochromic window"
 	icon_state = "winframe_e-rglass"
@@ -1152,11 +1231,23 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.2 ELECTRONVOLT
+	)
+
 /obj/structure/window_frame/relectric/glass
 	name = "reinforced electrochromic window"
 	icon_state = "winframe_re-glass"
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.1 ELECTRONVOLT
+	)
 
 /obj/structure/window_frame/relectric/rglass
 	name = "reinforced electrochromic window"
@@ -1164,6 +1255,11 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 0.2 ELECTRONVOLT
+	)
 
 /obj/structure/window_frame/indestructible
 	name = "window"

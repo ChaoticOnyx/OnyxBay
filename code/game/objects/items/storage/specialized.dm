@@ -42,6 +42,22 @@
 	allow_quick_empty = 1
 	use_to_pickup = 1
 
+// -----------------------------
+//          Xenobio bag
+// -----------------------------
+/obj/item/storage/xenobag
+	name = "Xenobiology satchel"
+	desc = "This bag can be used to store all kinds of plant products and botanical specimen."
+	icon = 'icons/obj/objects.dmi'
+	icon_state = "xenobag"
+	slot_flags = SLOT_BELT
+	max_storage_space = 100
+	max_w_class = ITEM_SIZE_SMALL
+	w_class = ITEM_SIZE_NORMAL
+	can_hold = list(/obj/item/metroid_extract, /obj/item/metroidcross, /obj/item/reagent_containers/food/monkeycube)
+	allow_quick_gather = 1
+	allow_quick_empty = 1
+	use_to_pickup = 1
 
 // -----------------------------
 //        Sheet Snatcher
@@ -170,7 +186,7 @@
 	var/icon_closed
 
 /obj/item/music_tape_box/Initialize()
-	..()
+	. = ..()
 	music_tape = new music_tape()
 	icon_state = icon_closed
 
@@ -193,7 +209,7 @@
 		to_chat(user, SPAN("warning", "[A] does not fit in [src]."))
 	update_icon()
 
-/obj/item/music_tape_box/update_icon()
+/obj/item/music_tape_box/on_update_icon()
 	..()
 	if(!music_tape)
 		icon_state = icon_closed + "_open"
@@ -221,6 +237,7 @@
 		add_fingerprint(user)
 		attack_hand(user)
 		return TRUE
+
 /obj/item/music_tape_box/newyear
 	name = "New Year tape box"
 	icon_closed = "box_xmas"
@@ -260,3 +277,8 @@
 	name = "Spooky tape box"
 	icon_closed = "box_pumpkin"
 	music_tape = /obj/item/music_tape/random/halloween
+
+/obj/item/music_tape_box/retrojazz
+	name = "Retro Jazz tape box"
+	icon_closed = "box_retrojazz"
+	music_tape = /obj/item/music_tape/random/retrojazz

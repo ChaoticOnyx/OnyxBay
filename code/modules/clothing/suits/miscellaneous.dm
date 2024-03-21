@@ -274,8 +274,9 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 2.0
+
 //swimsuit
-/obj/item/clothing/under/swimsuit/
+/obj/item/clothing/under/swimsuit
 	siemens_coefficient = 1
 	body_parts_covered = NO_BODYPARTS
 
@@ -426,6 +427,14 @@
 	body_parts_covered = UPPER_TORSO|ARMS
 	siemens_coefficient = 0.7
 	initial_closed = TRUE
+
+//fox231 's custom item
+/obj/item/clothing/suit/storage/toggle/punk_jacket_RD/punk_jacket_RD_cropped
+	name = "cropped punk jacket"
+	desc = "A raven leather jacket but shortened in the belly area. Women's fashion!"
+	icon_state = "punk_jacket_RD_cropped"
+	icon_open = "punk_jacket_RD_open_cropped"
+	icon_closed = "punk_jacket_RD_cropped"
 
 /obj/item/clothing/suit/storage/toggle/punk_jacket_TS
 	name = "brown punk jacket"

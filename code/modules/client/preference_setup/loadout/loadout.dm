@@ -121,9 +121,6 @@ var/list/hash_to_gear = list()
 
 /datum/category_item/player_setup_item/loadout/content(mob/user)
 	. = list()
-	if(!pref.preview_icon)
-		pref.update_preview_icon()
-	send_rsc(user, pref.preview_icon, "previewicon.png")
 
 	if(!user.client)
 		return
@@ -146,7 +143,6 @@ var/list/hash_to_gear = list()
 	. += "<b>Loadout Set <a href='?src=\ref[src];prev_slot=1'>\<\<</a><b><font color = '[fcolor]'>\[[pref.gear_slot]\]</font></b><a href='?src=\ref[src];next_slot=1'>\>\></a></b><br>"
 
 	. += "<table style='white-space: nowrap;'><tr>"
-	. += "<td><img src=previewicon.png width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></td>"
 
 	. += "<td style=\"vertical-align: top;\">"
 	if(max_loadout_points < INFINITY)

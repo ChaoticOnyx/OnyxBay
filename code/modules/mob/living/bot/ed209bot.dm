@@ -121,10 +121,12 @@
 		if(3)
 			if(isWelder(W))
 				var/obj/item/weldingtool/WT = W
-				if(WT.remove_fuel(0, user))
-					build_step++
-					SetName("shielded frame assembly")
-					to_chat(user, "<span class='notice'>You welded the vest to [src].</span>")
+				if(!WT.use_tool(src, user, amount = 1))
+					return
+
+				build_step++
+				SetName("shielded frame assembly")
+				to_chat(user, "<span class='notice'>You welded the vest to [src].</span>")
 		if(4)
 			if(istype(W, /obj/item/clothing/head/helmet))
 				if(!user.drop(W))

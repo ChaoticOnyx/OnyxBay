@@ -9,7 +9,7 @@
 /datum/event/wallrot/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
 
 /datum/event/wallrot/get_mtth()
 	. = ..()
@@ -18,14 +18,7 @@
 	. = max(1 HOUR, .)
 
 /datum/event/wallrot/proc/announce()
-	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
-
-	command_announcement.Announce(
-		"Harmful fungi detected on [station_name()]. Structures may be contaminated.",
-		"Biohazard Alert",
-		zlevels = affecting_z,
-		new_sound = 'sound/AI/wallrotstart.ogg'
-	)
+	SSannounce.play_station_announce(/datum/announce/wallrot)
 
 /datum/event/wallrot/on_fire()
 	set_next_think_ctx("announce", world.time + (rand(2, 5) MINUTES))

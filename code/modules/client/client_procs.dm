@@ -212,11 +212,11 @@
 
 	. = ..()	// calls mob.Login()
 
-	if(byond_version < config.general.client_min_major_version || byond_build < config.general.client_min_minor_version)
-		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
-		<font size='3'>Please update it to [config.general.client_min_major_version].[config.general.client_min_minor_version].</font></center>")
-		spawn(1)
-			qdel(src)
+	if(byond_version < config.general.client_min_major_version || byond_build < config.general.client_min_minor_version || (byond_build in config.general.client_blacklisted_minor_versions))
+		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is [(byond_build in config.general.client_blacklisted_minor_versions) ? "blacklisted" : "too out of date!"]</font><br>\
+		<font size='3'>Please update it to [config.general.client_min_major_version].[config.general.client_recommended_minor_version].</font>\
+		<font size='3'>You can use this link: https://secure.byond.com/download/build/515/</font></center>")
+		QDEL_IN(src, 1)
 		return
 
 	GLOB.using_map.map_info(src)
@@ -468,63 +468,14 @@
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
 		fps = client_fps
 
-/client/proc/update_chat_position(use_alternative)
-	var/input_height = 0
-	var/mode = get_preference_value(/datum/client_preference/chat_position)
-	var/currently_alternative = (winget(src, "input", "is-default") == "false") ? TRUE : FALSE
-
-	// Hell
-	if(mode == GLOB.PREF_YES && !currently_alternative)
-		input_height = winget(src, "input", "size")
-		input_height = text2num(splittext(input_height, "x")[2])
-
-		winset(src, "input_alt", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "saybutton_alt", "is-visible=true;is-disabled=false;is-default=true")
-
-		winset(src, "input", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "saybutton", "is-visible=false;is-disabled=true;is-default=false")
-
-		var/current_size = splittext(winget(src, "outputwindow.output", "size"), "x")
-		var/new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
-		winset(src, "outputwindow.output", "size=[new_size]")
-		winset(src, "outputwindow.browseroutput", "size=[new_size]")
-
-		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
-		new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
-		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
-	else if(mode == GLOB.PREF_NO && currently_alternative)
-		input_height = winget(src, "input_alt", "size")
-		input_height = text2num(splittext(input_height, "x")[2])
-
-		winset(src, "input_alt", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "saybutton_alt", "is-visible=false;is-disabled=true;is-default=false")
-
-		winset(src, "input", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "saybutton", "is-visible=true;is-disabled=false;is-default=true")
-
-		var/current_size = splittext(winget(src, "outputwindow.output", "size"), "x")
-		var/new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
-		winset(src, "outputwindow.output", "size=[new_size]")
-		winset(src, "outputwindow.browseroutput", "size=[new_size]")
-
-		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
-		new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
-		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
-
 /client/proc/toggle_fullscreen(new_value)
 	if((new_value == GLOB.PREF_BASIC) || (new_value == GLOB.PREF_FULL))
 		winset(src, "mainwindow", "is-maximized=false;can-resize=false;titlebar=false")
 		if(new_value == GLOB.PREF_FULL)
-			winset(src, "mainwindow", "menu=null;statusbar=false")
-		winset(src, "mainwindow.mainvsplit", "pos=0x0")
+			winset(src, "mainwindow", "menu=null;")
 	else
 		winset(src, "mainwindow", "is-maximized=false;can-resize=true;titlebar=true")
-		winset(src, "mainwindow", "menu=menu;statusbar=true")
-		winset(src, "mainwindow.mainvsplit", "pos=3x0")
+		winset(src, "mainwindow", "menu=menu;")
 	winset(src, "mainwindow", "is-maximized=true")
 
 /client/verb/fit_viewport()
@@ -613,3 +564,21 @@
 			return TRUE
 
 	return FALSE
+
+/client/MouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
+	. = ..()
+	var/mob/living/M = mob
+	if(istype(M))
+		M.OnMouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
+
+/client/MouseUp(object, location, control, params)
+	. = ..()
+	var/mob/living/M = mob
+	if(istype(M))
+		M.OnMouseUp(object, location, control, params)
+
+/client/MouseDown(object, location, control, params)
+	. = ..()
+	var/mob/living/M = mob
+	if(istype(M) && !M.in_throw_mode)
+		M.OnMouseDown(object, location, control, params)

@@ -150,8 +150,8 @@
 
 /obj/structure/closet/wardrobe/yellow
 	name = "yellow wardrobe"
-	icon_state = "wardrobe-y"
-	icon_closed = "wardrobe-y"
+	icon_state = "yellow"
+	icon_closed = "yellow"
 
 /obj/structure/closet/wardrobe/yellow/New()
 	..()
@@ -441,7 +441,6 @@
 	new /obj/item/clothing/under/suit_jacket/really_black(src)
 	new /obj/item/clothing/under/suit_jacket/red(src)
 	new /obj/item/clothing/under/scratch(src)
-	new /obj/item/clothing/under/rank/internalaffairs/plain(src)
 	new /obj/item/clothing/suit/storage/toggle/suit/black(src)
 	new /obj/item/clothing/under/assistantformal(src)
 	new /obj/item/clothing/under/lawyer/female(src)

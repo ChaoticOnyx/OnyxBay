@@ -11,7 +11,6 @@
 	simulated = 0
 	mouse_opacity = 0
 
-	var/movement_tally = 0     // Movement slow if aiming
 	var/mob/living/aiming_at   // Who are we currently targeting, if anyone?
 	var/obj/item/aiming_with   // What are we targeting with?
 	var/mob/living/owner       // Who do we belong to?
@@ -23,7 +22,7 @@
 /obj/aiming_overlay/New(newowner)
 	..()
 	owner = newowner
-	loc = null
+	forceMove(null)
 	verbs.Cut()
 
 /obj/aiming_overlay/proc/toggle_permission(perm)
@@ -176,22 +175,22 @@
 			playsound(owner, 'sound/weapons/TargetOn.ogg', 50,1)
 
 		aiming_at.aimed |= src
-		movement_tally = 5
+		owner.add_movespeed_modifier(/datum/movespeed_modifier/aiming_tally)
 		toggle_active(1)
 		update_icon()
 		lock_time = world.time + 35
-		register_signal(owner, SIGNAL_MOVED, /obj/aiming_overlay/proc/update_aiming)
-		register_signal(aiming_at, SIGNAL_MOVED, /obj/aiming_overlay/proc/target_moved)
-		register_signal(aiming_at, SIGNAL_QDELETING, /obj/aiming_overlay/proc/cancel_aiming)
+		register_signal(owner, SIGNAL_MOVED, nameof(.proc/update_aiming))
+		register_signal(aiming_at, SIGNAL_MOVED, nameof(.proc/target_moved))
+		register_signal(aiming_at, SIGNAL_QDELETING, nameof(.proc/cancel_aiming))
 	else
-		loc = null
+		forceMove(null)
 		set_next_think(0)
 		return
 
 
 
 
-/obj/aiming_overlay/update_icon()
+/obj/aiming_overlay/on_update_icon()
 	if(locked)
 		icon_state = "locked"
 	else
@@ -215,7 +214,8 @@
 		else
 			to_chat(owner, "<span class='notice'>You will no longer aim rather than fire.</span>")
 			owner.client.remove_gun_icons()
-		owner.gun_setting_icon.icon_state = "gun[active]"
+		if(owner.gun_setting_icon)
+			owner.gun_setting_icon.icon_state = "gun[active]"
 
 /obj/aiming_overlay/proc/cancel_aiming(no_message = 0)
 	if(!aiming_with || !aiming_at)
@@ -226,15 +226,15 @@
 		owner.visible_message("<span class='notice'>\The [owner] lowers \the [aiming_with].</span>")
 
 	unregister_signal(owner, SIGNAL_MOVED)
+	owner.remove_movespeed_modifier(/datum/movespeed_modifier/aiming_tally)
 	if(aiming_at)
 		unregister_signal(aiming_at, SIGNAL_MOVED)
 		unregister_signal(aiming_at, SIGNAL_QDELETING)
 		aiming_at.aimed -= src
 		aiming_at = null
-		movement_tally = 0
 
 	aiming_with = null
-	loc = null
+	forceMove(null)
 	set_next_think(0)
 
 /obj/aiming_overlay/proc/target_moved()

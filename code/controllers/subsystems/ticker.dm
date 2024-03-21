@@ -57,9 +57,6 @@ SUBSYSTEM_DEF(ticker)
 		Master.SetRunLevel(RUNLEVEL_SETUP)
 		return
 
-	if(!bypass_gamemode_vote && (pregame_timeleft <= config.vote.autogamemode_timeleft SECONDS) && !gamemode_vote_results)
-		if(!SSvote.active_vote)
-			SSvote.initiate_vote(/datum/vote/gamemode, automatic = 1)
 
 /datum/controller/subsystem/ticker/proc/setup_tick()
 	switch(choose_gamemode())
@@ -128,27 +125,13 @@ SUBSYSTEM_DEF(ticker)
 	if((mode_finished && game_finished()) || force_end)
 		Master.SetRunLevel(RUNLEVEL_POSTGAME)
 		end_game_state = END_GAME_READY_TO_END
-		INVOKE_ASYNC(src, .proc/declare_completion)
-		if(config.game.map_switching && GLOB.all_maps.len > 1)
-			if (config.game.auto_map_vote)
-				SSvote.initiate_vote(/datum/vote/map/end_game, automatic = 1)
-			else if (config.game.auto_map_switching)
-				// Select random map exclude the current
-				var/datum/map/current_map = GLOB.using_map
-				var/datum/map/next_map = current_map
-
-				while (next_map.type == current_map.type)
-					next_map = GLOB.all_maps[pick(GLOB.all_maps)]
-
-				to_world("<span class='notice'>Map has been changed to: <b>[next_map.name]</b></span>")
-				fdel("data/use_map")
-				text2file("[next_map.type]", "data/use_map")
+		INVOKE_ASYNC(src, nameof(.proc/declare_completion))
 
 	else if(mode_finished && (end_game_state <= END_GAME_NOT_OVER))
 		end_game_state = END_GAME_MODE_FINISH_DONE
 		mode.cleanup()
 		log_and_message_admins(": All antagonists are deceased or the gamemode has ended.") //Outputs as "Event: All antagonists are deceased or the gamemode has ended."
-		SSvote.initiate_vote(/datum/vote/transfer, automatic = 1)
+		SSvote.initiate_vote(/datum/vote/transfer, forced = 1)
 
 /datum/controller/subsystem/ticker/proc/post_game_tick()
 	switch(end_game_state)
@@ -439,8 +422,6 @@ Helpers
 /datum/controller/subsystem/ticker/proc/start_now(mob/user)
 	if(!(GAME_STATE == RUNLEVEL_LOBBY))
 		return
-	if(istype(SSvote.active_vote, /datum/vote/gamemode))
-		SSvote.cancel_vote(user)
-		bypass_gamemode_vote = 1
+
 	Master.SetRunLevel(RUNLEVEL_SETUP)
 	return 1

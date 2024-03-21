@@ -10,6 +10,15 @@ GLOBAL_VAR_CONST(PREF_SHOW, "Show")
 GLOBAL_VAR_CONST(PREF_HIDE, "Hide")
 GLOBAL_VAR_CONST(PREF_FANCY, "Fancy")
 GLOBAL_VAR_CONST(PREF_PLAIN, "Plain")
+GLOBAL_VAR_CONST(PREF_STRETCH, "Stretch to Fit")
+GLOBAL_VAR_CONST(PREF_X1, "x1")
+GLOBAL_VAR_CONST(PREF_X15, "x1.5")
+GLOBAL_VAR_CONST(PREF_X2, "x2")
+GLOBAL_VAR_CONST(PREF_X25, "x2.5")
+GLOBAL_VAR_CONST(PREF_X3, "x3")
+GLOBAL_VAR_CONST(PREF_NORMAL, "Normal")
+GLOBAL_VAR_CONST(PREF_DISTORT, "Distort")
+GLOBAL_VAR_CONST(PREF_BLUR, "Blur")
 GLOBAL_VAR_CONST(PREF_PRIMARY, "Primary")
 GLOBAL_VAR_CONST(PREF_ALL, "All")
 GLOBAL_VAR_CONST(PREF_OFF, "Off")
@@ -25,6 +34,15 @@ GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 GLOBAL_VAR_CONST(PREF_WHITE, "White")
 GLOBAL_VAR_CONST(PREF_DARK, "Dark")
+GLOBAL_VAR_CONST(PREF_LOW, "Low")
+GLOBAL_VAR_CONST(PREF_MED, "Medium")
+GLOBAL_VAR_CONST(PREF_HIGH, "High")
+GLOBAL_VAR_CONST(PREF_AS_GHOST, "Only as ghost")
+GLOBAL_VAR_CONST(PREF_AS_LIVING, "Only when alive")
+GLOBAL_VAR_CONST(PREF_DARKNESS_VISIBLE, "Fully visible")
+GLOBAL_VAR_CONST(PREF_DARKNESS_MOSTLY_VISIBLE, "Mostly visible")
+GLOBAL_VAR_CONST(PREF_DARKNESS_BARELY_VISIBLE, "Barely visible")
+GLOBAL_VAR_CONST(PREF_DARKNESS_INVISIBLE, "Invisible")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -90,6 +108,13 @@ var/global/list/_client_preferences_by_type
 /*********************
 * Player Preferences *
 *********************/
+
+/datum/client_preference/become_midround_antag
+	description = "Become Midround Antag"
+	key = "GAME_MIDROUND_ANTAG"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO, GLOB.PREF_AS_GHOST, GLOB.PREF_AS_LIVING)
+	default_value = GLOB.PREF_YES
+
 /datum/client_preference/runechat
 	description = "Show Runechat (Above-Head-Speech)"
 	key = "CHAT_RUNECHAT"
@@ -158,6 +183,26 @@ var/global/list/_client_preferences_by_type
 	description ="Hitmarker Sound"
 	key = "SOUND_HITMARKER"
 	category = PREF_CATEGORY_AUDIO
+
+/datum/client_preference/announcer
+	description = "Announcer"
+	key = "SOUND_ANNOUNCER"
+	category = PREF_CATEGORY_AUDIO
+	default_value = GLOB.PREF_ANNOUNCER_DEFAULT
+	options = list(
+		GLOB.PREF_ANNOUNCER_DEFAULT,
+		GLOB.PREF_ANNOUNCER_VGSTATION,
+		GLOB.PREF_ANNOUNCER_BAYSTATION12,
+		GLOB.PREF_ANNOUNCER_BAYSTATION12_TORCH,
+		GLOB.PREF_ANNOUNCER_TGSTATION
+	)
+
+/datum/client_preference/announcer/changed(mob/preference_mob, new_value)
+	if(!preference_mob.client)
+		return
+
+	if(!SSannounce.is_announcer_available(preference_mob, new_value))
+		to_chat(preference_mob, SPAN_WARNING("Selected announcer is not available due to a low patron tier, default announcer will be used instead."))
 
 /datum/client_preference/language_display
 	description = "Display Language Names"
@@ -265,8 +310,29 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
 /datum/client_preference/ambient_occlusion/changed(mob/preference_mob, new_value)
-	if (preference_mob.client)
-		preference_mob.UpdatePlanes()
+	if(preference_mob?.client)
+		var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
+		R.GraphicsUpdate()
+
+/datum/client_preference/pixel_size
+	description = "Pixel Size"
+	key = "PIXEL_SIZE"
+	category = PREF_CATEGORY_GRAPHICS
+	options = list(GLOB.PREF_STRETCH, GLOB.PREF_X1, GLOB.PREF_X15, GLOB.PREF_X2, GLOB.PREF_X25, GLOB.PREF_X3)
+	default_value = GLOB.PREF_STRETCH
+
+/datum/client_preference/pixel_size/changed(mob/preference_mob, new_value)
+	winset(preference_mob, "mapwindow.map", "zoom=[max(0, options.Find(new_value) - 1)]")
+
+/datum/client_preference/scaling_method
+	description = "Scaling Method"
+	key = "SCALING_METHOD"
+	category = PREF_CATEGORY_GRAPHICS
+	options = list(GLOB.PREF_NORMAL, GLOB.PREF_DISTORT, GLOB.PREF_BLUR)
+	default_value = GLOB.PREF_NORMAL
+
+/datum/client_preference/scaling_method/changed(mob/preference_mob, new_value)
+	winset(preference_mob, "mapwindow.map", "zoom-mode=[lowertext(new_value)]")
 
 /datum/client_preference/fullscreen_mode
 	description = "Fullscreen Mode"
@@ -279,15 +345,14 @@ var/global/list/_client_preferences_by_type
 	if(preference_mob.client)
 		preference_mob.client.toggle_fullscreen(new_value)
 
-/datum/client_preference/chat_position
-	description = "Use Alternative Chat Position"
-	key = "CHAT_ALT"
+/datum/client_preference/statusbar
+	description = "Show Statusbar"
+	key = "STATUSBAR"
 	category = PREF_CATEGORY_UI
-	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
-/datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
-	if(preference_mob.client)
-		preference_mob.client.update_chat_position()
+/datum/client_preference/statusbar/changed(mob/preference_mob, new_value)
+	winset(preference_mob, "statusbar", "is-visible=[new_value == GLOB.PREF_YES]")
 
 /datum/client_preference/cinema_credits
 	description = "Show Cinema-like Credits At Round-end"
@@ -318,26 +383,37 @@ var/global/list/_client_preferences_by_type
 /********************
 * Ghost Preferences *
 ********************/
+/datum/client_preference/ghost_hud
+	description = "Ghost HUD"
+	key = "GHOST_SEEHUD"
+	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_YES
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+
+/datum/client_preference/ghost_hud/changed(mob/preference_mob, new_value)
+	if(isobserver(preference_mob))
+		preference_mob?.hud_used?.show_hud()
+
 /datum/client_preference/ghost_ears
-	description ="Ghost ears"
+	description = "Ghost ears"
 	key = "CHAT_GHOSTEARS"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
 
 /datum/client_preference/ghost_sight
-	description ="Ghost sight"
+	description = "Ghost sight"
 	key = "CHAT_GHOSTSIGHT"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
 
 /datum/client_preference/ghost_radio
-	description ="Ghost radio"
+	description = "Ghost radio"
 	key = "CHAT_GHOSTRADIO"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
 
 /datum/client_preference/ghost_follow_link_length
-	description ="Ghost Follow Links"
+	description = "Ghost Follow Links"
 	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
@@ -346,7 +422,6 @@ var/global/list/_client_preferences_by_type
 	var/mob/observer/ghost/preference_ghost = preference_mob
 	if(istype(preference_ghost))
 		preference_ghost.updateghostprefs()
-		preference_ghost.updateghostsight()
 
 /datum/client_preference/affects_ghost/ghost_anonymous_chat
 	description = "Ghost anonymous chat"
@@ -372,7 +447,7 @@ var/global/list/_client_preferences_by_type
 	description = "Ghost lighting"
 	key = "GHOST_DARKVISION"
 	category = PREF_CATEGORY_GHOST
-	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+	options = list(GLOB.PREF_DARKNESS_VISIBLE, GLOB.PREF_DARKNESS_MOSTLY_VISIBLE, GLOB.PREF_DARKNESS_BARELY_VISIBLE, GLOB.PREF_DARKNESS_INVISIBLE)
 
 /********************
 * General Staff Preferences *

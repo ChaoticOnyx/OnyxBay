@@ -28,7 +28,7 @@
 			L.update_icon() //so siding get updated properly
 
 
-/obj/structure/catwalk/update_icon()
+/obj/structure/catwalk/on_update_icon()
 	var/connectdir = 0
 	for(var/direction in GLOB.cardinal)
 		if(locate(/obj/structure/catwalk, get_step(src, direction)))
@@ -59,12 +59,24 @@
 /obj/structure/catwalk/attackby(obj/item/C, mob/user)
 	if(isWelder(C))
 		var/obj/item/weldingtool/WT = C
-		if(WT.remove_fuel(0, user))
-			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			to_chat(user, SPAN("notice", "Slicing catwalk joints ..."))
-			new /obj/item/stack/rods(loc)
-			new /obj/item/stack/rods(loc)
-			//Lattice would delete itself, but let's save ourselves a new obj
-			if((istype(loc, /turf/space) || istype(loc, /turf/simulated/open)) && !(locate(/obj/structure/lattice) in loc))
-				new /obj/structure/lattice(loc)
-			qdel(src)
+		if(!WT.use_tool(src, user, amount = 1))
+			return
+
+		to_chat(user, SPAN("notice", "Slicing catwalk joints ..."))
+		new /obj/item/stack/rods(loc)
+		new /obj/item/stack/rods(loc)
+		//Lattice would delete itself, but let's save ourselves a new obj
+		if((istype(loc, /turf/space) || istype(loc, /turf/simulated/open)) && !(locate(/obj/structure/lattice) in loc))
+			new /obj/structure/lattice(loc)
+		qdel_self()
+
+/obj/structure/catwalk/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("mode" = RCD_DECONSTRUCT, "delay" = 1 SECONDS, "cost" = 5)
+
+	return FALSE
+
+/obj/structure/catwalk/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
+	if(passed_mode == RCD_DECONSTRUCT)
+		qdel_self()
+		return TRUE

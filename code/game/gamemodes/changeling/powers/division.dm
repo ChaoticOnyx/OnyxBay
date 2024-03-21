@@ -37,7 +37,7 @@
 	if(!affecting)
 		to_chat(my_mob, SPAN("changeling", "They are missing that body part!"))
 
-	var/obj/item/organ/internal/brain/B = T.internal_organs_by_name[BP_BRAIN]
+	var/obj/item/organ/internal/cerebrum/brain/B = T.internal_organs_by_name[BP_BRAIN]
 	if(!B || B.status == DEAD)
 		to_chat(my_mob, SPAN("changeling", "[T] is dead. We need a living creature to divide."))
 		return
@@ -48,6 +48,11 @@
 
 	changeling.using_proboscis = TRUE
 	for(var/stage = 1 to 3)
+		if(changeling.geneticpoints < 2) // Checking each time to prevent geneticpoints from going negative if the changeling buys an ability while dividing.
+			to_chat(my_mob, SPAN("changeling", "We require more DNA to divide!"))
+			changeling.using_proboscis = FALSE
+			return
+
 		switch(stage)
 			if(1)
 				to_chat(my_mob, SPAN("changeling", "This creature is compatible. We must hold still..."))
@@ -66,6 +71,10 @@
 			changeling.using_proboscis = FALSE
 			return
 
+	if(changeling.geneticpoints < 2) // Checking once again for the same raisin.
+		to_chat(my_mob, SPAN("changeling", "We require more DNA to divide!"))
+		changeling.using_proboscis = FALSE
+		return
 
 	my_mob.visible_message(SPAN("danger", "[my_mob] transfuses something into [T] through their proboscis!"), \
 		 				   SPAN("changeling", "We have transfused a new core into [T]!"))

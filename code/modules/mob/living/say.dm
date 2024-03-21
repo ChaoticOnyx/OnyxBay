@@ -169,9 +169,6 @@ var/list/channel_to_radio_key = new
 
 	say_get_alt_name(message_data)
 
-	if(!say_check_special(message_data))
-		return message_data["say_result"]
-
 	client?.spellcheck(message_data["message"])
 
 	// This is broadcast to all mobs with the language,
@@ -239,17 +236,10 @@ var/list/channel_to_radio_key = new
 /mob/living/proc/say_check_emote(list/message_data)
 	var/prefix = copytext_char(message_data["message"], 1, 2)
 	if(prefix == get_prefix_key(/decl/prefix/custom_emote))
-		message_data["say_result"] = emote(copytext_char(message_data["message"], 2))
+		message_data["say_result"] = emote(copytext_char(message_data["message"], 2), intentional = TRUE, target = null)
 		return FALSE
 	if(prefix == get_prefix_key(/decl/prefix/visible_emote))
 		message_data["say_result"] = custom_emote(1, copytext_char(message_data["message"], 2))
-		return FALSE
-	return TRUE
-
-/mob/living/proc/say_check_special(list/message_data)
-	if(is_muzzled() && !(message_data["language"]?.flags & (NONVERBAL|SIGNLANG)))
-		to_chat(src, SPAN("danger", "You're muzzled and cannot speak!"))
-		message_data["say_result"] = FALSE
 		return FALSE
 	return TRUE
 

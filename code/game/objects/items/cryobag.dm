@@ -26,6 +26,7 @@
 	item_path = /obj/item/bodybag/cryobag
 
 	storage_types = CLOSET_STORAGE_MOBS
+	intact_closet = FALSE
 	var/datum/gas_mixture/airtank
 
 	var/syndi
@@ -58,9 +59,9 @@
 		set_next_think(0)
 	. = ..()
 
-/obj/structure/closet/body_bag/cryobag/update_icon()
+/obj/structure/closet/body_bag/cryobag/on_update_icon()
 	..()
-	overlays.Cut()
+	ClearOverlays()
 	var/image/I = image(icon, "indicator[opened]")
 	I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	var/maxstasis = initial(stasis_power)
@@ -70,7 +71,7 @@
 		I.color = COLOR_YELLOW
 	else
 		I.color = COLOR_RED
-	overlays += I
+	AddOverlays(I)
 
 /obj/structure/closet/body_bag/cryobag/proc/get_saturation()
 	return -155 * (1 - stasis_power/initial(stasis_power))

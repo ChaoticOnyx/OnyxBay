@@ -82,7 +82,7 @@
 			qdel(R.module)
 			R.module = null
 		R.drop_all_upgrades()
-		var/module_type = robot_modules[module]
+		var/module_type = GLOB.robot_modules[module]
 		new module_type(R)
 		R.modtype = module
 		R.hands.icon_state = lowertext(module)
@@ -149,8 +149,10 @@
 /obj/item/borg/upgrade/rename/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 	spawn(1)
-		if (held_name == initial(held_name))
+		while(held_name == initial(held_name))
 			held_name = sanitizeSafe(input(R, "Enter new robot name", "Robot Reclassification", held_name), MAX_NAME_LEN)
+			if(!held_name)
+				held_name = initial(held_name)
 		R.notify_ai(ROBOT_NOTIFICATION_NEW_NAME, R.name, held_name)
 		R.SetName(held_name)
 		R.custom_name = held_name
@@ -207,15 +209,14 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/vtec/action(mob/living/silicon/robot/R)
-	if(..()) return 0
+	if(..()) return FALSE
 
-	if(R.speed == -1)
-		return 0
+	if(R.has_movespeed_modifier(/datum/movespeed_modifier/vtec_speedup))
+		return FALSE
 
-	R.speed--
-	installed = 1
-	return 1
-
+	R.add_movespeed_modifier(/datum/movespeed_modifier/vtec_speedup)
+	installed = TRUE
+	return TRUE
 
 /obj/item/borg/upgrade/tasercooler
 	name = "robotic Rapid Taser Cooling Module"
@@ -395,7 +396,7 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/rcd/borg(R.module)
+		R.module.modules += new /obj/item/construction/rcd/borg(R.module)
 		installed = 1
 		return 1
 

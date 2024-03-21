@@ -7,7 +7,7 @@
 	desc = "A blood-red powersuit featuring some fairly illegal technology."
 	icon_state = "merc_rig"
 	suit_type = "crimson powersuit"
-	armor = list(melee = 80, bullet = 65, laser = 65, energy = 15, bomb = 80, bio = 100)
+	armor = list(melee = 100, bullet = 110, laser = 140, energy = 25, bomb = 80, bio = 100)
 	online_slowdown = 1
 	offline_slowdown = 3
 	offline_vision_restriction = TINT_HEAVY
@@ -38,7 +38,7 @@
 	desc = "A blood-red powersuit featuring some fairly illegal technology and real curves."
 	icon_state = "merc_rig_heavy"
 	suit_type = "heavy crimson powersuit"
-	armor = list(melee = 90, bullet = 80, laser = 80, energy = 25, bomb = 90, bio = 100)
+	armor = list(melee = 120, bullet = 130, laser = 150, energy = 35, bomb = 90, bio = 100)
 	offline_slowdown = 4
 	online_slowdown = 2
 

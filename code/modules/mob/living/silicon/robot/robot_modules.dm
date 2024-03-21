@@ -1,4 +1,4 @@
-var/global/list/robot_modules = list(
+GLOBAL_LIST_INIT(robot_modules, list(
 	"Standard"		= /obj/item/robot_module/standard,
 	"Service" 		= /obj/item/robot_module/service/butler,
 	"Research" 		= /obj/item/robot_module/research/general,
@@ -11,7 +11,7 @@ var/global/list/robot_modules = list(
 	"Advanced Medical"		= /obj/item/robot_module/medical/crisis_adv,
 	"Advanced Engineering"	= /obj/item/robot_module/engineering/adv,
 	"Advanced Miner"		= /obj/item/robot_module/miner/adv
-	)
+))
 
 /obj/item/robot_module
 	name = "robot module"
@@ -55,6 +55,7 @@ var/global/list/robot_modules = list(
 	var/list/original_languages = list()
 	var/list/added_networks = list()
 	var/appointed_huds = list("Disable", "Security", "Medical")
+
 /obj/item/robot_module/New(mob/living/silicon/robot/R)
 	..()
 	if (!istype(R))
@@ -71,7 +72,7 @@ var/global/list/robot_modules = list(
 		R.silicon_radio.recalculateChannels()
 
 	R.set_module_hulls(hulls)
-	R.choose_hull(R.module_hulls.len + 1, R.module_hulls)
+	R.choose_hull(R.module_hulls)
 
 	for(var/obj/item/I in modules)
 		I.canremove = 0
@@ -84,7 +85,7 @@ var/global/list/robot_modules = list(
 
 	if(R.silicon_radio)
 		R.silicon_radio.recalculateChannels()
-	R.choose_hull(0, R.set_module_hulls(list(
+	R.choose_hull(R.set_module_hulls(list(
 		"Default" = new /datum/robot_hull/spider/robot
 		)))
 
@@ -919,7 +920,7 @@ var/global/list/robot_modules = list(
 /obj/item/robot_module/syndicate/New(mob/living/silicon/robot/R)
 	supported_upgrades += list(/obj/item/borg/upgrade/tasercooler,/obj/item/borg/upgrade/lasercooler,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/detective)
 
-	loc = R
+	forceMove(R)
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/crowbar(src)
 	src.modules += new /obj/item/extinguisher/mini(src)
@@ -1060,7 +1061,7 @@ var/global/list/robot_modules = list(
 	languages = list()
 
 /obj/item/robot_module/drone/construction/New()
-	src.modules += new /obj/item/rcd/borg(src)
+	src.modules += new /obj/item/construction/rcd/borg(src)
 	..()
 
 /obj/item/robot_module/drone/respawn_consumable(mob/living/silicon/robot/R, amount)

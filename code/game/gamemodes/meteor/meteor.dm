@@ -36,12 +36,12 @@
 	// Send an alert halfway through the round.
 	if((round_duration_in_ticks >= (next_wave / 2)) && !alert_sent)
 		alert_sent = 1
-		command_announcement.Announce(alert_text, alert_title)
+		SSannounce.play_station_announce(/datum/announce/meteor_mode_alert, alert_text, alert_title)
 	// And then another one when the meteors start flying around.
 	if((round_duration_in_ticks >= next_wave) && (alert_sent == 1))
 		alert_sent = 2
-		command_announcement.Announce(start_text, alert_title)
-		for(var/obj/machinery/shield_diffuser/SD in GLOB.machines)
+		SSannounce.play_station_announce(/datum/announce/meteor_mode_start, start_text, alert_title)
+		for(var/obj/machinery/shield_diffuser/SD in SSmachines.machinery)
 			SD.meteor_alarm(INFINITY)
 		next_wave = round_duration_in_ticks + (meteor_wave_delay * time_between_waves_minutes)
 	if((round_duration_in_ticks >= METEOR_FAILSAFE_THRESHOLD) && (meteor_severity < 15) && !failsafe_triggered)

@@ -5,9 +5,10 @@
 	max_health = BLOB_CORE_HEALTH
 	damage = BLOB_CORE_DAMAGE
 
+	is_poi = TRUE
+
 /obj/structure/blob/core/New(loc, ...)
-	. = ..()
-	
+	..()
 	core = src
 
 /obj/structure/blob/core/can_expand()

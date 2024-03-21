@@ -28,14 +28,21 @@
 	var/species_preview
 	// Traits which modifier characters for better or worse (mostly worse).
 	var/list/traits
-	// Mob preview
-	var/icon/preview_icon = null
 
 	var/client/client = null
 	var/client_ckey = null
 
 	var/datum/category_collection/player_setup_collection/player_setup
 	var/datum/browser/panel
+
+	var/list/char_render_holders // Should only be a key-value list of north/south/east/west = atom/movable/screen.
+	var/static/list/preview_screen_locs = list(
+		"1" = "character_preview_map:1,5:-12",
+		"2" = "character_preview_map:1,3:15",
+		"4"  = "character_preview_map:1,2:10",
+		"8"  = "character_preview_map:1,1:5",
+		"BG" = "character_preview_map:1,1 to 1,5"
+	)
 
 /datum/preferences/New(client/C)
 	ASSERT(istype(C))
@@ -44,6 +51,10 @@
 	client_ckey = C.ckey
 
 	..()
+
+/datum/preferences/Destroy()
+	QDEL_NULL_LIST(char_render_holders)
+	return ..()
 
 /datum/preferences/proc/setup()
 	player_setup = new(src)
@@ -148,7 +159,13 @@
 	if(!SScharacter_setup.initialized || SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
 		to_chat(user, SPAN("notice", "Please, wait for the game to initialize!"))
 		return
-	var/datum/browser/popup = new(user, "preferences_browser","Character Setup", 1200, 800, src)
+
+	if(!char_render_holders)
+		update_preview_icon()
+	show_character_previews()
+
+	winshow(user, "preferences_window", TRUE)
+	var/datum/browser/popup = new(user, "preferences_browser","Character Setup", 1000, 1000, src)
 	var/content = {"
 	<script type='text/javascript'>
 		function update_content(data){
@@ -158,16 +175,60 @@
 	<div id='content'>[get_content(user)]</div>
 	"}
 	popup.set_content(content)
-	popup.open()
+	popup.open(FALSE)
+	onclose(user, "preferences_window", src)
+
 	SSwarnings.show_warning(user.client, WARNINGS_NEWCOMERS, "window=Warning;size=360x240;can_resize=0;can_minimize=0")
 
 /datum/preferences/proc/update_setup_window(mob/user)
-	send_output(user, url_encode(get_content(user)), "preferences_browser.browser:update_content")
+	// TODO: Figure out how to make this work again. For now, I'm more than fed up with all this shit. ~ToTh
+	//send_output(user, url_encode(get_content(user)), "preferences_browser.browser:update_content")
+	open_setup_window(user)
+
+/datum/preferences/proc/update_character_previews(mutable_appearance/MA)
+	if(!client)
+		return
+	var/atom/movable/screen/BG = LAZYACCESS(char_render_holders, "BG")
+	if(!BG)
+		BG = new
+		BG.appearance_flags = TILE_BOUND|PIXEL_SCALE|NO_CLIENT_COLOR
+		BG.layer = TURF_LAYER
+		BG.icon = 'icons/effects/preview_bg.dmi'
+		LAZYSET(char_render_holders, "BG", BG)
+		client.screen |= BG
+	BG.icon_state = bgstate
+	BG.screen_loc = preview_screen_locs["BG"]
+
+	for(var/D in GLOB.cardinal)
+		var/atom/movable/screen/O = LAZYACCESS(char_render_holders, "[D]")
+		if(!O)
+			O = new
+			LAZYSET(char_render_holders, "[D]", O)
+			client.screen |= O
+		O.appearance = MA
+		O.appearance_flags = PIXEL_SCALE|KEEP_TOGETHER
+		O.dir = D
+		O.screen_loc = preview_screen_locs["[D]"]
+		O.plane = PREVIEW_PLANE
+
+/datum/preferences/proc/show_character_previews()
+	if(!client || !char_render_holders)
+		return
+	for(var/render_holder in char_render_holders)
+		client.screen |= char_render_holders[render_holder]
+
+datum/preferences/proc/clear_character_previews()
+	for(var/index in char_render_holders)
+		var/atom/movable/screen/S = char_render_holders[index]
+		client?.screen -= S
+		qdel(S)
+	char_render_holders = null
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
-
-	if(!user)	return
-	if(isliving(user)) return
+	if(!user)
+		return
+	if(isliving(user))
+		return
 
 	if(href_list["preference"] == "open_whitelist_forum")
 		if(config.link.forum)
@@ -175,6 +236,10 @@
 		else
 			to_chat(user, "<span class='danger'>The forum URL is not set in the server configuration.</span>")
 			return
+	else if(href_list["close"])
+		// User closed preferences window, cleanup anything we need to.
+		clear_character_previews()
+		return 1
 	update_setup_window(usr)
 	return 1
 
@@ -236,7 +301,7 @@
 	var/datum/species/S = all_species[species]
 
 	character.gender = gender
-	character.body_build = S.get_body_build(gender, body)
+	character.change_body_build(S.get_body_build(gender, body))
 	character.fix_body_build()
 	character.age = age
 	character.b_type = b_type
@@ -250,6 +315,9 @@
 	character.r_hair = r_hair
 	character.g_hair = g_hair
 	character.b_hair = b_hair
+	character.r_s_hair = r_s_hair
+	character.g_s_hair = g_s_hair
+	character.b_s_hair = b_s_hair
 
 	character.f_style = f_style
 	character.r_facial = r_facial
@@ -261,7 +329,6 @@
 	character.b_skin = b_skin
 
 	character.s_tone = s_tone
-	character.s_base = s_base
 
 	character.h_style = h_style
 	character.f_style = f_style
@@ -363,6 +430,7 @@
 	character.flavor_texts["hands"] = flavor_texts["hands"]
 	character.flavor_texts["legs"] = flavor_texts["legs"]
 	character.flavor_texts["feet"] = flavor_texts["feet"]
+	character.flavor_texts["action"] = flavor_texts["action"]
 
 	character.med_record = med_record
 	character.sec_record = sec_record
@@ -374,7 +442,7 @@
 	character.religion = religion
 
 	if(!character.isSynthetic())
-		character.nutrition = rand(140, 360) * character.body_build.stomach_capacity
+		character.set_nutrition(rand(140, 360) * character.body_build.stomach_capacity)
 
 	return
 
@@ -406,7 +474,13 @@
 	ASSERT(client)
 
 	client.apply_fps(clientfps)
-	client.update_chat_position(client.get_preference_value(/datum/client_preference/chat_position))
+
+	var/datum/client_preference/zoom_pref = get_client_preference_by_key("PIXEL_SIZE")
+	var/zoom = client.get_preference_value("PIXEL_SIZE")
+	winset(client, "mapwindow.map", "zoom=[max(0, zoom_pref.options.Find(zoom) - 1)]")
+
+	var/zoom_mode = client.get_preference_value("SCALING_METHOD")
+	winset(client, "mapwindow.map", "zoom-mode=[lowertext(zoom_mode)]")
 
 	if(client.get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		client.toggle_fullscreen(client.get_preference_value(/datum/client_preference/fullscreen_mode))
@@ -416,3 +490,6 @@
 		winset(client, "browseroutput", "is-disabled=1;is-visible=0")
 	else
 		client.tgui_panel.initialize()
+
+	if(client.get_preference_value("STATUSBAR") != GLOB.PREF_YES)
+		winset(client, "statusbar", "is-visible=0")

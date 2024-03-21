@@ -449,7 +449,6 @@
 	if(gray <= tone_gray) return BlendRGB("#000000", tone, gray / (tone_gray || 1))
 	else return BlendRGB(tone, "#ffffff", (gray - tone_gray) / ((255 - tone_gray) || 1))
 
-
 /*
 	Get flat icon by DarkCampainger. As it says on the tin, will return an icon with all the overlays
 	as a single icon. Useful for when you want to manipulate an icon via the above as overlays are not normally included.
@@ -506,7 +505,7 @@
 
 	var/render_icon = curicon
 
-	if (render_icon)
+	if(render_icon)
 		var/curstates = icon_states(curicon)
 		if(!(curstate in curstates))
 			if ("" in curstates)
@@ -559,7 +558,11 @@
 		var/addY1 = 0
 		var/addY2 = 0
 
-		for(var/image/layer_image as anything in layers)
+		for(var/I in layers)
+			var/image/layer_image = I
+			if(layer_image.plane == EMISSIVE_PLANE) // Just replace this with whatever it is TG is doing these days sometime. Getflaticon breaks emissives
+				continue
+
 			if(layer_image.alpha == 0)
 				continue
 
@@ -664,7 +667,7 @@
 			if(2)	I.pixel_x++
 			if(3)	I.pixel_y--
 			if(4)	I.pixel_y++
-		overlays += I // And finally add the overlay.
+		AddOverlays(I) // And finally add the overlay.
 
 // For determining the color of holopads based on whether they're short or long range.
 #define HOLOPAD_SHORT_RANGE 1
@@ -728,7 +731,7 @@
 	cap_mode is capturing mode (optional), user is capturing mob (requred only wehen cap_mode = CAPTURE_MODE_REGULAR),
 	lighting determines lighting capturing (optional), suppress_errors suppreses errors and continues to capture (optional).
 */
-/proc/generate_image(tx, ty, tz, range, cap_mode = CAPTURE_MODE_PARTIAL, mob/living/user, lighting = 1, suppress_errors = 1)
+/proc/generate_image(tx, ty, tz, range, cap_mode = CAPTURE_MODE_PARTIAL, mob/living/user, lighting = 1, suppress_errors = 1, see_ghosts = FALSE)
 	var/list/turfstocapture = list()
 	// Lines below determine what tiles will be rendered
 	for(var/xoff = 0 to range)
@@ -753,7 +756,7 @@
 			if(istype(A, /atom/movable/lighting_overlay) && lighting) // Special case for lighting
 				atoms.Add(A)
 				continue
-			if(isghost(A) && prob(1 + GLOB.cult.cult_rating * 0.1))
+			if(isghost(A) && (prob(1 + GLOB.cult.cult_rating * 0.1) || see_ghosts))
 				atoms.Add(A)
 				continue
 			if(A.invisibility)
@@ -766,7 +769,7 @@
 	cap.Blend("#000", ICON_OVERLAY)
 	for(var/atom/A in atoms)
 		if(A)
-			var/icon/img = getFlatIcon(A, no_anim = TRUE)
+			var/icon/img = ishuman(A) ? A.get_flat_icon(user) : getFlatIcon(A, no_anim = TRUE)
 			if(istype(img, /icon))
 				if(istype(A, /mob/living) && A:lying)
 					img.BecomeLying()
@@ -907,3 +910,147 @@
 		return "<img class='game-icon' src='data:image/png;base64,[cached]'>"
 
 	CRASH("[thing] is must be a path or an icon")
+
+/mob/living/carbon/human/proc/generate_preview()
+	var/icon/flat = icon('icons/effects/blank.dmi') // Final flattened icon
+
+	// Layers will be a sorted list of icons/overlays, based on the order in which they are displayed
+	var/list/layers = overlays.Copy()
+	var/icon/add // Icon of overlay being added
+
+	for(var/I in layers)
+		if(isnull(I))
+			continue
+		var/image/layer_image = I
+		if(layer_image.plane != FLOAT_PLANE)
+			continue
+
+		if(!layer_image.icon)
+			continue
+
+		if(layer_image.alpha == 0)
+			continue
+
+		//add = icon(layer_image.icon, layer_image.icon_state, dir)
+		add = getFlatIcon(image(I), dir, null, null, null, FALSE, TRUE, TRUE)
+		flat.Blend(add, ICON_OVERLAY)
+
+	if(color)
+		flat.Blend(color, ICON_MULTIPLY)
+	if(alpha < 255)
+		flat.Blend(rgb(255, 255, 255, alpha), ICON_MULTIPLY)
+
+	return icon(flat, "", SOUTH)
+
+// Returns a flattened icon of an atom with emissive blockers stripped.
+// The icon gets rendered on 'caller's side. If there's no 'caller' provided or the 'caller' has no client,
+// the icon will be rendered on a random client's side (unless 'allow_ratty_rendering = FALSE', in this case we give up).
+// 'dir' accepts either a single dir, uses 'src.dir' if not provided.
+// I'm not completely sure how ethical the 'allow_ratty_rendering' usage is, since it's basically lowkey cryptomining, but who fucking cares?
+/atom/proc/get_flat_icon(mob/caller, dir, force_appearance_flags, allow_ratty_rendering = TRUE)
+	var/client/rendering_client
+	if(caller?.client)
+		rendering_client = caller.client // We are good, let the caller deal with their own stuff.
+	else if(allow_ratty_rendering)
+		for(var/mob/prey in shuffle(GLOB.player_list)) // We are not that good, randomly choosing a poor being to deal with rendering.
+			if(prey?.client)
+				rendering_client = prey.client
+				break
+
+	if(!rendering_client)
+		return null // Everything's broken somehow, giving up.
+
+	if(!dir)
+		dir = src.dir
+
+	var/obj/dummy = new
+	dummy.appearance_flags = DEFAULT_APPEARANCE_FLAGS | NO_CLIENT_COLOR
+	dummy.icon = icon
+	dummy.icon_state = icon_state
+	dummy.alpha = alpha
+	dummy.color = color
+	dummy.transform = transform
+	dummy.dir = dir
+
+	for(var/entry in overlays)
+		var/image/I = entry
+		var/mutable_appearance/MA = new(I)
+		if(MA.plane == EMISSIVE_PLANE)
+			continue
+		MA.dir = dir
+		MA.appearance_flags = I.appearance_flags | force_appearance_flags
+		dummy.underlays += MA
+
+	for(var/entry in overlays)
+		var/image/I = entry
+		var/mutable_appearance/MA = new(I)
+		if(MA.plane == EMISSIVE_PLANE)
+			continue
+		MA.dir = dir
+		MA.appearance_flags = I.appearance_flags | force_appearance_flags
+		dummy.overlays += MA
+
+	qdel(dummy)
+	return icon(rendering_client.RenderIcon(dummy))
+
+// Extended version of the above. It can accept 'dirs' as a list, and returns an icon with all the provided directions inserted.
+// It's cheaper than calling 'get_flat_icon' multiple times.
+/atom/proc/get_flat_icon_directional(mob/caller, dirs = null, force_appearance_flags, allow_ratty_rendering = TRUE)
+	var/client/rendering_client
+	if(caller?.client)
+		rendering_client = caller.client // We are good, let the caller deal with their own stuff.
+	else if(allow_ratty_rendering)
+		for(var/mob/prey in shuffle(GLOB.player_list)) // We are not that good, randomly choosing a poor being to deal with rendering.
+			if(prey?.client)
+				rendering_client = prey.client
+				break
+
+	if(!rendering_client)
+		return list() // Everything's broken somehow, giving up.
+
+	var/dirs_list = list() // Final list of directions we'll use
+	dirs_list |= LAZYLEN(dirs) ? dirs : GLOB.cardinal
+
+	 // Multiple dummies. Apparently, RenderIcon() is a bit slow (it waits for the next tick, I guess), so if we were to use a single dummy object,
+	 // it would return some icons AFTER we've already turned it to match the next direction, resulting in wrong directions in the resulting icon.
+	var/list/dummies = list()
+	for(var/_dir in dirs_list)
+		var/obj/dummy = new
+
+		dummy.appearance_flags = DEFAULT_APPEARANCE_FLAGS | NO_CLIENT_COLOR | force_appearance_flags
+		dummy.icon = icon
+		dummy.icon_state = icon_state
+		dummy.alpha = alpha
+		dummy.color = color
+		dummy.transform = transform
+
+		dummies["[_dir]"] = dummy
+
+	var/icon/ret = icon('icons/effects/blank.dmi')
+
+	for(var/current_dir in dirs_list)
+		var/obj/dummy = dummies["[current_dir]"]
+		dummy.dir = current_dir
+
+		for(var/entry in overlays)
+			var/image/I = entry
+			var/mutable_appearance/MA = new(I)
+			if(MA.plane == EMISSIVE_PLANE)
+				continue
+			MA.dir = current_dir
+			MA.appearance_flags = I.appearance_flags | force_appearance_flags
+			dummy.underlays += MA
+
+		for(var/entry in overlays)
+			var/image/I = entry
+			var/mutable_appearance/MA = new(I)
+			if(MA.plane == EMISSIVE_PLANE)
+				continue
+			MA.dir = current_dir
+			MA.appearance_flags = I.appearance_flags | force_appearance_flags
+			dummy.overlays += MA
+
+		ret.Insert(rendering_client.RenderIcon(dummy), dir = current_dir)
+
+	QDEL_LIST_ASSOC_VAL(dummies)
+	return ret

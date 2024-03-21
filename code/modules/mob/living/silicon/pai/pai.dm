@@ -84,7 +84,7 @@
 
 /mob/living/silicon/pai/New(obj/item/device/paicard)
 	status_flags |= NO_ANTAG
-	src.loc = paicard
+	forceMove(paicard)
 	card = paicard
 	sradio = new(src)
 

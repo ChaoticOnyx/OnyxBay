@@ -29,7 +29,7 @@
 		return 0
 	return 1
 
-/obj/machinery/ntnet_relay/update_icon()
+/obj/machinery/ntnet_relay/on_update_icon()
 	if(operable())
 		icon_state = "bus"
 	else
@@ -92,18 +92,19 @@
 		ntnet_global.add_log("Manual override: Network blacklist cleared.")
 		return 1
 
-/obj/machinery/ntnet_relay/New()
+/obj/machinery/ntnet_relay/Initialize()
+	. = ..()
+
 	uid = gl_uid
 	gl_uid++
 	component_parts = list()
-	component_parts += new /obj/item/stack/cable_coil(src,15)
+	component_parts += new /obj/item/stack/cable_coil(src, 15)
 	component_parts += new /obj/item/circuitboard/ntnet_relay(src)
 
 	if(ntnet_global)
 		ntnet_global.relays.Add(src)
 		NTNet = ntnet_global
 		ntnet_global.add_log("New quantum relay activated. Current amount of linked relays: [NTNet.relays.len]")
-	..()
 
 /obj/machinery/ntnet_relay/Destroy()
 	if(ntnet_global)

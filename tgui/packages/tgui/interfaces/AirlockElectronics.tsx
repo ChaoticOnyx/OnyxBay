@@ -1,5 +1,5 @@
 import { useBackend, useLocalState } from "../backend";
-import { Button, Flex, LabeledList, Section, Tabs } from "../components";
+import { Button, Flex, LabeledList, Section, Tabs, Stack } from "../components";
 import { Window } from "../layouts";
 
 interface Access {
@@ -35,28 +35,41 @@ export const AirlockElectronics = (props: any, context: any) => {
   return (
     <Window width={420} height={485}>
       <Window.Content scrollable fitted>
-        <Section title="Main">
-          <LabeledList>
-            <LabeledList.Item label="Access Required">
-              <Button
-                icon={oneAccess ? "unlock" : "lock"}
-                content={oneAccess ? "One" : "All"}
-                onClick={() => act("one_access")}
-              />
-            </LabeledList.Item>
-          </LabeledList>
-        </Section>
-        <AirlockAccessList
-          regions={regions}
-          selectedList={accesses}
-          accessMod={(id: number) =>
-            act("set", {
-              access: id,
-            })
-          }
-        />
+        <AirlockMainSection />
       </Window.Content>
     </Window>
+  );
+};
+
+export const AirlockMainSection = (props: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
+  const regions = data.regions || [];
+  const oneAccess = data.oneAccess;
+  let accesses: Access[] = [];
+
+  return (
+    <>
+      <Section title="Main">
+        <LabeledList>
+          <LabeledList.Item label="Access Required">
+            <Button
+              icon={oneAccess ? "unlock" : "lock"}
+              content={oneAccess ? "One" : "All"}
+              onClick={() => act("one_access")}
+            />
+          </LabeledList.Item>
+        </LabeledList>
+      </Section>
+      <AirlockAccessList
+        regions={regions}
+        selectedList={accesses}
+        accessMod={(id: number) =>
+          act("set", {
+            access: id,
+          })
+        }
+      />
+    </>
   );
 };
 

@@ -12,7 +12,6 @@
 	var/on = 0
 	var/area/connected_area = null
 	var/other_area = null
-	var/image/overlay
 
 /obj/machinery/light_switch/Initialize()
 	. = ..()
@@ -27,20 +26,20 @@
 	connected_area.set_lightswitch(on)
 	update_icon()
 
-/obj/machinery/light_switch/update_icon()
-	if(!overlay)
-		overlay = image(icon, "light1-overlay")
-		overlay.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-		overlay.layer = ABOVE_LIGHTING_LAYER
+/obj/machinery/light_switch/Destroy()
+	connected_area = null
+	other_area = null
+	ClearOverlays()
+	return ..()
 
-	overlays.Cut()
+/obj/machinery/light_switch/on_update_icon()
+	ClearOverlays()
 	if(stat & (NOPOWER|BROKEN))
 		icon_state = "light-p"
 		set_light(0)
 	else
 		icon_state = "light[on]"
-		overlay.icon_state = "light[on]-overlay"
-		overlays += overlay
+		AddOverlays(emissive_appearance(icon, "light-ea"))
 		set_light(0.15, 0.1, 1, 2, (on ? "#82ff4c" : "#f86060"))
 
 /obj/machinery/light_switch/_examine_text(mob/user)

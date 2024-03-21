@@ -70,7 +70,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		src.lit = 1
 		src.damtype = "burn"
 		src.icon_state = "match_lit"
-		src.set_light(0.2, 0.5, 2, 3.5, "#e38f46")
+		src.set_light(0.75, 0.35, 2, 4.5, "#E28436")
 		set_next_think(world.time)
 		playsound(src.loc, 'sound/items/match.ogg', 60, 1, -4)
 		user.visible_message(SPAN_NOTICE("[user] strikes the match on a shoe."))
@@ -106,20 +106,27 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	lit = 1
 	update_icon()
 	light_effects(user)
-	set_light(0.2, 0.5, 2, 3.5, "#e38f46")
+	set_light(0.75, 0.35, 2, 4.5, "#E28436")
 	set_next_think(world.time)
 
 /obj/item/flame/lighter/proc/light_effects(mob/living/carbon/user)
 	if(prob(95))
 		user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src]."))
 	else
-		to_chat(user, SPAN("warning", "You burn yourself while lighting the lighter."))
-		if(user.l_hand == src)
-			user.apply_damage(2, BURN,BP_L_HAND)
-		else
-			user.apply_damage(2, BURN,BP_R_HAND)
-		user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src], they however burn their finger in the process."))
+		try_burn(user, (user.l_hand == src ? BP_L_HAND : BP_R_HAND), 2)
+
 	playsound(src.loc, SFX_USE_LIGHTER, 100, 1, -4)
+
+/obj/item/flame/lighter/proc/try_burn(mob/living/carbon/user, burned_limb, damage_amount)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(BP_IS_ROBOTIC(H.get_organ(burned_limb)))
+			user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src]."))
+			return
+
+	user.apply_damage(damage_amount, BURN, burned_limb)
+	to_chat(user, SPAN("warning", "You burn yourself[damage_amount > 5 ? " badly " : " "]while lighting the lighter."))
+	user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src], they however burn their finger[damage_amount > 5 ? " badly " : " "]in the process."))
 
 /obj/item/flame/lighter/proc/shutoff(mob/user, silent = FALSE)
 	lit = 0
@@ -155,12 +162,13 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	spawn(5)
 		spam_flag = 0
 
-/obj/item/flame/lighter/update_icon()
-	overlays.Cut()
+/obj/item/flame/lighter/on_update_icon()
+	ClearOverlays()
 	if(lit)
 		icon_state = "[base_icon ? base_icon : initial(icon_state)]on"
 		item_state = "[initial(item_state)]on"
-		overlays += image(icon, src, flame_overlay)
+		AddOverlays(image(icon, src, flame_overlay))
+		AddOverlays(emissive_appearance(icon, "[flame_overlay]-ea"))
 	else
 		icon_state = "[base_icon ? base_icon : initial(icon_state)]"
 		item_state = initial(item_state)
@@ -207,6 +215,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 /obj/item/flame/lighter/dropped()
 	if(requires_hold)
 		shutoff(silent = TRUE)
+	..()
 
 
 /obj/item/flame/lighter/random/Initialize()
@@ -390,12 +399,8 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	if(user.mind?.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
 		user.visible_message(SPAN("rose", "Without even breaking stride, [user] flips open and lights [src] in one smooth movement."))
 	else
-		to_chat(user, SPAN("warning", "You burn yourself badly while lighting [src]!"))
-		if(user.l_hand == src)
-			user.apply_damage(15, BURN, BP_L_HAND)
-		else
-			user.apply_damage(15, BURN, BP_R_HAND)
-		user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src], they however badly burn their hand in the process."))
+		try_burn(user, (user.l_hand == src ? BP_L_HAND : BP_R_HAND), 15)
+
 	playsound(src.loc, 'sound/items/zippo_open.ogg', 100, 1, -4)
 
 /obj/item/flame/lighter/zippo/syndie/shutoff_effects(mob/living/carbon/user)

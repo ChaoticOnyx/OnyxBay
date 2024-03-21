@@ -5,7 +5,7 @@
 /obj/machinery/vending
 	name = "Vendomat"
 	desc = "A generic vending machine."
-	icon = 'icons/obj/vending.dmi'
+	icon = 'icons/obj/machines/vending.dmi'
 	icon_state = "generic"
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
@@ -61,7 +61,9 @@
 	var/scan_id = 1
 	var/obj/item/material/coin/coin
 	var/datum/wires/vending/wires = null
-	var/is_stuck = FALSE // If true - `currently_vending` is the thing stuck in the vending.
+
+	/// If true - `currently_vending` is the thing stuck in the vending.
+	var/is_stuck = FALSE
 
 	// Content-related stuff
 	var/list/products = list() // In case we want to add something extra to our vending machine
@@ -71,8 +73,10 @@
 	var/list/prices = list()
 	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
 
-/obj/machinery/vending/update_icon()
-	overlays.Cut()
+	var/vending_sound = SFX_VENDING_DROP
+
+/obj/machinery/vending/on_update_icon()
+	ClearOverlays()
 	if(stat & BROKEN)
 		icon_state = "[base_icon]-broken"
 	else if(!(stat & (NOPOWER | POWEROFF)))
@@ -80,13 +84,13 @@
 	else
 		icon_state = "[base_icon]-off"
 	if(panel_open)
-		overlays += image(icon, "[base_icon]-panel")
+		AddOverlays(image(icon, "[base_icon]-panel"))
 
 /obj/machinery/vending/Initialize(mapload)
 	. = ..()
 	wires = new(src)
 	if(vend_delay == null)
-		vend_delay = rand(4 SECONDS, 8 SECONDS)
+		vend_delay = rand(2 SECONDS, 4 SECONDS)
 	if(product_slogans)
 		slogan_list += splittext(product_slogans, ";")
 		// So not all machines speak at the exact same time.
@@ -250,29 +254,33 @@
 	V.set_dir(dir)
 	V.state = 3
 	for(var/obj/I in component_parts)
+		component_parts -= I
 		I.forceMove(V)
-	cartridge = null
 	V.refresh_cartridge()
+	cartridge = null
 	V.update_icon()
 	V.update_desc()
 	qdel(src)
 	return FALSE
 
-/obj/machinery/vending/proc/attempt_to_repair(mob/user, obj/item/weldingtool/W)
-	if(!istype(W) || !W.isOn())
+/obj/machinery/vending/proc/attempt_to_repair(mob/user, obj/item/weldingtool/WT)
+	if(!istype(WT))
 		return FALSE
+
 	if(health == max_health)
 		to_chat(user, SPAN("notice", "\The [src] is undamaged."))
 		return FALSE
-	if(!W.remove_fuel(0, user))
-		to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
-		return FALSE
-	playsound(src, 'sound/items/Welder.ogg', 100, 1)
+
 	user.visible_message(SPAN("notice", "[user] is repairing \the [src]..."), SPAN("notice", "You start repairing the damage to [src]..."))
-	if(do_after(user, 30, src) && W.isOn())
-		health = max_health
-		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), SPAN("notice", "You repair \the [src]."))
-		set_broken(0)
+	if(!WT.use_tool(src, user, delay = 3 SECONDS, amount = 5))
+		return
+
+	if(QDELETED(src) || !user)
+		return
+
+	health = max_health
+	user.visible_message(SPAN("notice", "[user] repairs \the [src]."), SPAN("notice", "You repair \the [src]."))
+	set_broken(0)
 	return TRUE
 
 /obj/machinery/vending/MouseDrop_T(obj/item/I, mob/user)
@@ -413,16 +421,19 @@
 		playsound(src, 'sound/effects/vent/vent12.ogg', 40, TRUE)
 		shake_animation(stime = 4)
 		user.do_attack_animation(src)
-		user.visible_message(SPAN("danger", "\The [user] knock \the [src]!"),
+		user.visible_message(SPAN("danger", "\The [user] knocks \the [src]!"),
 			SPAN("danger", "You knock \the [src]!"),
 			SPAN("danger", "You hear a knock sound."))
 
-		if(is_stuck && prob(20))
+		if(is_stuck && prob(50))
 			unstuck()
 
 		return
 
 	tgui_interact(user)
+
+/obj/machinery/vending/tgui_state(mob/user)
+	return GLOB.tgui_machinery_noaccess_state
 
 /obj/machinery/vending/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -508,7 +519,7 @@
 			if(!vend_ready || currently_vending)
 				return TRUE
 
-			if((!allowed(usr)) && !emagged && scan_id)	// For SECURE VENDING MACHINES YEAH
+			if((!allowed(usr)) && !emagged)	// For SECURE VENDING MACHINES YEAH
 				to_chat(usr, SPAN("warning", "Access denied.")) // Unless emagged of course
 				flick("[base_icon]-deny", src)
 				return TRUE
@@ -550,7 +561,7 @@
 			return TRUE
 
 /obj/machinery/vending/proc/vend(datum/stored_items/vending_products/R, mob/user)
-	if((!allowed(usr)) && !emagged && scan_id)	// For SECURE VENDING MACHINES YEAH
+	if((!allowed(usr)) && !emagged)	// For SECURE VENDING MACHINES YEAH
 		to_chat(usr, SPAN("warning", "Access denied.")) // Unless emagged of course
 		flick("[base_icon]-deny", src)
 		return
@@ -586,18 +597,18 @@
 
 	spawn(vend_delay) //Time to vend
 		// A chance to stuck in.
-		if(prob(5))
+		if(prob(1))
 			stuck()
 			return
 
-		playsound(src, 'sound/effects/using/disposal/drop2.ogg', 40, TRUE)
+		playsound(src, vending_sound, 70, TRUE)
 
 		if(prob(diona_spawn_chance)) //Hehehe
 			var/turf/T = get_turf(src)
 			var/mob/living/carbon/alien/diona/S = new(T)
 			visible_message(SPAN("notice", "\The [src] makes an odd grinding noise before coming to a halt as \a [S.name] slurmps out from the receptacle."))
 		else //Just a normal vend, then
-			R.get_product(get_turf(src))
+			R.get_product(get_turf(src), user)
 			visible_message("\The [src] whirs as it vends \the [R.item_name].")
 			if(prob(1)) //The vending gods look favorably upon you
 				sleep(3)
@@ -728,3 +739,6 @@
 		spark_system.set_up(5, 0, loc)
 		spark_system.start()
 		playsound(loc, SFX_SPARK, 50, 1)
+
+/obj/machinery/vending/check_access(obj/item/I)
+	return ..() || !scan_id

@@ -1,13 +1,14 @@
 /obj/machinery/portable_atmospherics/hydroponics
 	name = "hydroponics tray"
 	icon = 'icons/obj/hydroponics_machines.dmi'
-	icon_state = "hydrotray3"
+	icon_state = "hydrotray4"
 	density = 1
 	anchored = 1
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	volume = 100
 
 	var/mechanical = 1         // Set to 0 to stop it from drawing the alert lights.
+	var/vertical_shift = 0     // As we want plants to grow from the visual center of soil trays
 	var/base_name = "tray"
 
 	// Plant maintenance vars.
@@ -156,7 +157,7 @@
 			nymph.visible_message("<span class='info'><b>[nymph]</b> begins rooting through [src], ripping out weeds and eating them noisily.</span>","<span class='info'>You begin rooting through [src], ripping out weeds and eating them noisily.</span>")
 			playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
 		else if(nymph.nutrition > 100 && nutrilevel < 10)
-			nymph.nutrition -= ((10-nutrilevel)*5)
+			nymph.remove_nutrition((10 - nutrilevel) * 5)
 			nutrilevel = 10
 			nymph.visible_message("<span class='info'><b>[nymph]</b> secretes a trickle of green liquid, refilling [src].</span>","<span class='info'>You secrete a trickle of green liquid, refilling [src].</span>")
 		else

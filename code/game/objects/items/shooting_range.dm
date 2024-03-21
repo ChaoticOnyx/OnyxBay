@@ -23,7 +23,7 @@
 		// After target moves, check for nearby stakes. If associated, move to target
 		for(var/obj/structure/target_stake/M in view(3,src))
 			if(M.density == 0 && M.pinned_target == src)
-				M.loc = loc
+				M.forceMove(loc)
 
 		// This may seem a little counter-intuitive but I assure you that's for a purpose.
 		// Stakes are the ones that carry targets, yes, but in the stake code we set
@@ -35,10 +35,12 @@
 	attackby(obj/item/W as obj, mob/user as mob)
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
-			if(WT.remove_fuel(0, user))
-				overlays.Cut()
-				to_chat(usr, "You slice off [src]'s uneven chunks of aluminum and scorch marks.")
+			if(!WT.use_tool(src, user, amount = 1))
 				return
+
+			ClearOverlays()
+			to_chat(usr, "You slice off [src]'s uneven chunks of aluminum and scorch marks.")
+			return
 
 
 	attack_hand(mob/user as mob)
@@ -61,7 +63,7 @@
 						user.pick_or_drop(src)
 						to_chat(user, "You take the target out of the stake.")
 				else
-					src.loc = get_turf(user)
+					forceMove(get_turf(user))
 					to_chat(user, "You take the target out of the stake.")
 
 				stake.pinned_target = null
@@ -140,7 +142,7 @@
 			virtualIcon.DrawBox(null, B.b1x1, B.b1y,  B.b1x2, B.b1y) // horizontal line, left to right
 			virtualIcon.DrawBox(null, B.b2x, B.b2y1,  B.b2x, B.b2y2) // vertical line, top to bottom
 
-		overlays += bmark // add the decal
+		AddOverlays(bmark) // add the decal
 
 		icon = virtualIcon // apply bulletholes over decals
 

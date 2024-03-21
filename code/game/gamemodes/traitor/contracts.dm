@@ -7,7 +7,7 @@ GLOBAL_LIST_EMPTY(all_contracts)
 GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"the captain's antique laser gun" =                 list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/captain),
 	"a bluespace rift generator in hand teleporter" =   list(CONTRACT_STEAL_SCIENCE, /obj/item/integrated_circuit/manipulation/bluespace_rift),
-	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/rcd),
+	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/construction/rcd),
 	// "a jetpack" =                                    list(CONTRACT_STEAL_OPERATION, /obj/item/tank/jetpack), // jetpack doesn't stuff in STD, redo STD then uncomment this.
 	"a captain's jumpsuit" =                            list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/captain),
 	"a pair of magboots" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/shoes/magboots),
@@ -471,8 +471,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return ..() && target && !QDELETED(target_mind) && !QDELETED(target_mind.current)
 
 /datum/antag_contract/item/assassinate/check_contents(list/contents)
-	var/obj/item/organ/internal/brain/_brain = brain?.resolve()
-	var/obj/item/device/mmi/MMI = _brain?.loc
+	var/obj/item/organ/internal/cerebrum/brain/_brain = brain?.resolve()
+	var/obj/item/organ/internal/cerebrum/mmi/MMI = _brain?.loc
 	detected_less_tc = ((istype(MMI) && (MMI in contents)) || (_brain in contents))
 	if(detected_less_tc)
 		target_detected_in_STD = TRUE
@@ -488,9 +488,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/assassinate/complete(obj/item/device/uplink/close_uplink)
 	var/datum/mind/M = close_uplink.uplink_owner
-	var/obj/item/organ/internal/brain/_brain = brain?.resolve()
+	var/obj/item/organ/internal/cerebrum/brain/_brain = brain?.resolve()
 	var/mob/living/carbon/human/_H = H?.resolve()
-	if((istype(_H) && !_H.stat && _H.mind) || (istype(_brain?.loc, /obj/item/device/mmi) && !target_detected_in_STD))
+	if((istype(_H) && !_H.stat && _H.mind) || (istype(_brain?.loc, /obj/item/organ/internal/cerebrum/mmi) && !target_detected_in_STD))
 		if(M)
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return

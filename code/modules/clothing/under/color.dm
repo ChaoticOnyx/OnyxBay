@@ -62,3 +62,53 @@
 /obj/item/clothing/under/color/brown
 	name = "brown jumpsuit"
 	color = "#c08720"
+
+
+/obj/item/clothing/under/jumpskirt
+	name = "jumpskirt"
+	desc = "A slimming, short jumpskirt."
+	icon_state = "jumpskirt"
+	item_state_slots = list(
+		slot_hand_str = "white"
+		)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+
+/obj/item/clothing/under/jumpskirt/white
+	name = "white jumpskirt"
+	color = "#ffffff"
+
+/obj/item/clothing/under/jumpskirt/black
+	name = "black jumpskirt"
+	color = "#3d3d3d"
+
+/obj/item/clothing/under/jumpskirt/grey
+	name = "grey jumpskirt"
+	color = "#c4c4c4"
+
+/obj/item/clothing/under/jumpskirt/blue
+	name = "blue jumpskirt"
+	color = "#0066ff"
+
+/obj/item/clothing/under/jumpskirt/pink
+	name = "pink jumpskirt"
+	color = "#df20a6"
+
+/obj/item/clothing/under/jumpskirt/red
+	name = "red jumpskirt"
+	color = "#ee1511"
+
+/obj/item/clothing/under/jumpskirt/green
+	name = "green jumpskirt"
+	color = "#42a345"
+
+/obj/item/clothing/under/jumpskirt/yellow
+	name = "yellow jumpskirt"
+	color = "#ffee00"
+
+/obj/item/clothing/under/jumpskirt/lightpurple
+	name = "light purple jumpskirt"
+	color = "#c600fc"
+
+/obj/item/clothing/under/jumpskirt/brown
+	name = "brown jumpskirt"
+	color = "#c08720"

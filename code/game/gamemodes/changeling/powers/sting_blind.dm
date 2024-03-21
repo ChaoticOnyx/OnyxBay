@@ -12,7 +12,7 @@
 	to_chat(target, SPAN("danger", "Your eyes burn horrifically!"))
 
 	target.sdisabilities |= NEARSIGHTED
-	addtimer(CALLBACK(target, /mob/living/carbon/human/proc/remove_nearsighted), 30 SECONDS)
+	addtimer(CALLBACK(target, nameof(/mob/living/carbon/human.proc/remove_nearsighted)), 30 SECONDS)
 
 	target.eye_blind += 10
 	target.eye_blurry += 20

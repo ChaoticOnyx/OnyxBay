@@ -25,7 +25,7 @@
 		desc = "A case for implants."
 		origin_tech.Cut()
 
-/obj/item/implantcase/update_icon()
+/obj/item/implantcase/on_update_icon()
 	if (imp)
 		icon_state = "implantcase-[imp.implant_color]"
 	else

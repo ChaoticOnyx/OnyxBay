@@ -25,7 +25,7 @@
 		update_icon()
 
 
-/obj/item/storage/fancy/update_icon()
+/obj/item/storage/fancy/on_update_icon()
 	if(!opened)
 		icon_state = initial(icon_state)
 		return
@@ -119,11 +119,11 @@
 		/obj/item/pen/crayon/purple,
 		)
 
-/obj/item/storage/fancy/crayons/update_icon()
-	overlays = list() //resets list
-	overlays += image('icons/obj/crayons.dmi',"crayonbox")
+/obj/item/storage/fancy/crayons/on_update_icon()
+	ClearOverlays() //resets list
+	AddOverlays(image('icons/obj/crayons.dmi',"crayonbox"))
 	for(var/obj/item/pen/crayon/crayon in contents)
-		overlays += image('icons/obj/crayons.dmi',crayon.colourName)
+		AddOverlays(image('icons/obj/crayons.dmi',crayon.colourName))
 
 	. = ..()
 
@@ -330,7 +330,7 @@
 	key_type = /obj/item/reagent_containers/vessel/beaker/vial
 	startswith = list(/obj/item/reagent_containers/vessel/beaker/vial = 6)
 
-/obj/item/storage/fancy/vials/update_icon()
+/obj/item/storage/fancy/vials/on_update_icon()
 	var/key_count = count_by_type(contents, key_type)
 	icon_state = "[initial(icon_state)][key_count]"
 
@@ -340,6 +340,7 @@
 	icon = 'icons/obj/vialbox.dmi'
 	icon_state = "vialbox0"
 	item_state = "syringe_kit"
+	inspect_state = FALSE
 	w_class = ITEM_SIZE_NORMAL
 	max_w_class = ITEM_SIZE_TINY
 	max_storage_space = null
@@ -347,16 +348,16 @@
 	req_access = list(access_virology)
 	can_hold = list(/obj/item/reagent_containers/vessel/beaker/vial)
 
-/obj/item/storage/lockbox/vials/update_icon()
+/obj/item/storage/lockbox/vials/on_update_icon()
 	var/total_contents = count_by_type(contents, /obj/item/reagent_containers/vessel/beaker/vial)
-	overlays.Cut()
+	ClearOverlays()
 	icon_state = "vialbox[Floor(total_contents)]"
 	if (!broken)
-		overlays += image(icon, src, "led[locked]")
+		AddOverlays(image(icon, src, "led[locked]"))
 		if(locked)
-			overlays += image(icon, src, "cover")
+			AddOverlays(image(icon, src, "cover"))
 	else
-		overlays += image(icon, src, "ledb")
+		AddOverlays(image(icon, src, "ledb"))
 	return
 
 /*

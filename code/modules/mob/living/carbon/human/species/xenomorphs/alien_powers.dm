@@ -220,7 +220,7 @@
 	else
 		if(istype(O, /turf/simulated/wall))
 			var/turf/simulated/wall/W = O
-			if(W.material.flags & MATERIAL_UNMELTABLE)
+			if(W.material.material_flags & MATERIAL_UNMELTABLE)
 				cannot_melt = 1
 		else if(istype(O, /turf/simulated/floor))
 			cannot_melt = 1
@@ -308,10 +308,6 @@
 	var/obj/item/grab/G = locate() in src
 	if(!G || !istype(G))
 		to_chat(src, SPAN("warning", "I have no prey to gut."))
-		return
-
-	if(G.type_name < NAB_AGGRESSIVE)
-		to_chat(src, SPAN("warning", "I must have a firmer grab on my prey!"))
 		return
 
 	last_special = world.time + 50

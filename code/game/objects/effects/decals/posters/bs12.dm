@@ -374,3 +374,48 @@
 	name = "26st Century Wyccoid Man"
 	desc = "The poster depicts a man in a straitjacket. One side of the man has turned into a monkey. The writing on the poster cannot explain to you any of what is happening on it."
 
+/datum/poster/bay_76
+	icon_state="bsposter76"
+	name = "Space Pork"
+	desc = "The poster depicts a piggy face in space. It reads, \"Space Pork\". Perhaps it's some sort of a racist thing depicting trottines?"
+
+/datum/poster/bay_77
+	icon_state="bsposter77"
+	name = "Bring Them"
+	desc = "The poster depicts an adorable toy piglet. What makes these so popular?.."
+
+/datum/poster/bay_78
+	icon_state="bsposter78"
+	name = "PlayTrasen #211"
+	desc = "A controversial poster that, perhaps, shouldn't be hung in public places."
+
+/datum/poster/bay_79
+	icon_state="bsposter79"
+	name = "Do not look at me!"
+	desc = "Obviously, you lost."
+
+/datum/poster/bay_80
+	icon_state="bsposter80"
+	name = "Tajaran Today, Special #222"
+	desc = "A controversial front page pinup from NTFashion, banned on numerous stations for its unreasonably cute depictions."
+
+/datum/poster/bay_81
+	icon_state="bsposter81"
+	name = "Pinup Girl Val"
+	desc = "Luscious Val McNeil, the vertically challenged Legal Extraordinaire, winner of Miss Space two years running and favoured pinup girl of Lawyers Weekly."
+
+/datum/poster/bay_82
+	icon_state="bsposter82"
+	name = "Derpman, Enforcer of the State"
+	desc = "Here to protect and serve... your donuts! A generously proportioned man, he teaches you the value of hiding your snacks."
+
+/datum/poster/bay_83
+	icon_state="bsposter83"
+	name = "Strike the Earth"
+	desc = "What are you waiting for?"
+
+/datum/poster/bay_84
+	icon_state="bsposter84"
+	name = "Kosmicheskaya Stantsiya 13 Does Not Exist"
+	desc = "A poster mocking CentCom's denial of the existence of the derelict station near Space Station 13."
+

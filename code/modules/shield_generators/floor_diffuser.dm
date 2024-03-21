@@ -27,7 +27,7 @@
 		for(var/obj/effect/shield/S in shielded_tile)
 			qdel(S)
 
-/obj/machinery/shield_diffuser/attackby(obj/item/O as obj, mob/user as mob)
+/obj/machinery/shield_diffuser/attackby(obj/item/O, mob/user)
 	if(default_deconstruction_screwdriver(user, O))
 		return
 	if(default_deconstruction_crowbar(user, O))
@@ -35,7 +35,7 @@
 	if(default_part_replacement(user, O))
 		return
 
-/obj/machinery/shield_diffuser/update_icon()
+/obj/machinery/shield_diffuser/on_update_icon()
 	if(alarm)
 		icon_state = "fdiffuser_emergency"
 		return

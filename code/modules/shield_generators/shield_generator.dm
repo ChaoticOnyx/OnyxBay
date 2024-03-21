@@ -30,7 +30,7 @@
 	var/mode_cooldown = 2 SECONDS       // Hiding performance-heavy things behind a cooldown wall.
 	var/last_mode_toggle = 0
 
-/obj/machinery/power/shield_generator/update_icon()
+/obj/machinery/power/shield_generator/on_update_icon()
 	if(running)
 		icon_state = "generator1"
 	else

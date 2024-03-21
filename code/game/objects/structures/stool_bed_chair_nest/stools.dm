@@ -12,6 +12,7 @@ var/global/list/stool_cache = list() //haha stool
 	mod_reach = 0.85
 	mod_weight = 1.5
 	mod_handy = 0.85
+	armor_penetration = 20
 	throwforce = 10
 	w_class = ITEM_SIZE_HUGE
 
@@ -68,7 +69,7 @@ var/global/list/stool_cache = list() //haha stool
 /obj/item/stool/bar/padded/New(newloc, new_material)
 	..(newloc, MATERIAL_STEEL, MATERIAL_CARPET)
 
-/obj/item/stool/update_icon()
+/obj/item/stool/on_update_icon()
 	// Base icon.
 	var/list/noverlays = list()
 	var/cache_key = "[base_icon]-[material.name]"
@@ -85,7 +86,7 @@ var/global/list/stool_cache = list() //haha stool
 			I.color = padding_material.icon_colour
 			stool_cache[padding_cache_key] = I
 		noverlays |= stool_cache[padding_cache_key]
-	overlays = noverlays
+	SetOverlays(noverlays)
 	// Strings.
 	if(padding_material)
 		SetName("[padding_material.display_name] [initial(name)]") //this is not perfect but it will do for now.
@@ -160,7 +161,7 @@ var/global/list/stool_cache = list() //haha stool
 			padding_type = MATERIAL_CARPET
 		else if(istype(W,/obj/item/stack/material))
 			var/obj/item/stack/material/M = W
-			if(M.material && (M.material.flags & MATERIAL_PADDING))
+			if(M.material && (M.material.material_flags & MATERIAL_PADDING))
 				padding_type = "[M.material.name]"
 		if(!padding_type)
 			to_chat(user, "You cannot pad \the [src] with that.")

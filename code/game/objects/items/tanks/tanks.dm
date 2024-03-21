@@ -53,6 +53,8 @@ var/list/global/tank_gauge_cache = list()
 	Wired and assembled tanks may be disarmed with a set of wirecutters. Any exploding or rupturing tank will generate shrapnel, assuming their relief valves have been welded beforehand. Even if not, they can be incited to expel hot gas on ignition if pushed above 173�C. \
 	Relatively easy to make, the single tank bomb requries no tank transfer valve, and is still a fairly formidable weapon that can be manufactured from any tank."
 
+	drop_sound = SFX_DROP_GASCAN
+	pickup_sound = SFX_PICKUP_GASCAN
 
 /obj/item/tank/Initialize()
 	. = ..()
@@ -76,7 +78,8 @@ var/list/global/tank_gauge_cache = list()
 	if(istype(loc, /obj/item/device/transfer_valve))
 		var/obj/item/device/transfer_valve/TTV = loc
 		TTV.remove_tank(src)
-		qdel(TTV)
+		if(!QDELETED(TTV))
+			qdel(TTV)
 
 	. = ..()
 
@@ -182,37 +185,41 @@ var/list/global/tank_gauge_cache = list()
 
 	if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
-		if(WT.remove_fuel(1,user))
-			if(!valve_welded)
-				to_chat(user, "<span class='notice'>You begin welding the \the [src] emergency pressure relief valve.</span>")
-				if(do_after(user, 40,src))
-					to_chat(user, "<span class='notice'>You carefully weld \the [src] emergency pressure relief valve shut.</span><span class='warning'> \The [src] may now rupture under pressure!</span>")
-					valve_welded = 1
-					leaking = 0
-				else
-					GLOB.bombers += "[key_name(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]"
-					message_admins("[key_name_admin(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]")
-					if(WT.welding)
-						to_chat(user, "<span class='danger'>You accidentally rake \the [W] across \the [src]!</span>")
-						maxintegrity -= rand(2,6)
-						integrity = min(integrity,maxintegrity)
-				WT.eyecheck(user)
-			else
-				to_chat(user, "<span class='notice'>The emergency pressure relief valve has already been welded.</span>")
 
-			if (src.air_contents)
-				var/const/welder_temperature = 1893.15
-				var/const/welder_mean_energy = 26000
-				var/const/welder_heat_capacity = welder_mean_energy / welder_temperature
+		if(valve_welded)
+			to_chat(user, SPAN_NOTICE("The emergency pressure relief valve has already been welded."))
 
-				var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
-				var/total_capacity = src.air_contents.heat_capacity() + welder_heat_capacity
-				var/total_energy = current_energy + welder_mean_energy
+		to_chat(user, SPAN_NOTICE("You begin welding the \the [src] emergency pressure relief valve."))
 
-				var/new_temperature = total_energy / total_capacity
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
+			GLOB.bombers += "[key_name(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]"
+			message_admins("[key_name_admin(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]")
+			if(WT.welding)
+				to_chat(user, SPAN_DANGER("You accidentally rake \the [W] across \the [src]!"))
+				maxintegrity -= rand(2,6)
+				integrity = min(integrity,maxintegrity)
 
-				src.air_contents.temperature = new_temperature
-				set_next_think(world.time)
+		if(QDELETED(src) || !user)
+			return
+
+		to_chat(user, SPAN_NOTICE("You carefully weld \the [src] emergency pressure relief valve shut."))
+		to_chat(user, SPAN_WARNING("\The [src] may now rupture under pressure!"))
+		valve_welded = 1
+		leaking = 0
+
+		if(air_contents)
+			var/const/welder_temperature = 1893.15
+			var/const/welder_mean_energy = 26000
+			var/const/welder_heat_capacity = welder_mean_energy / welder_temperature
+
+			var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
+			var/total_capacity = src.air_contents.heat_capacity() + welder_heat_capacity
+			var/total_energy = current_energy + welder_mean_energy
+
+			var/new_temperature = total_energy / total_capacity
+
+			src.air_contents.temperature = new_temperature
+			set_next_think(world.time)
 
 		add_fingerprint(user)
 
@@ -379,7 +386,7 @@ var/list/global/tank_gauge_cache = list()
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/tank/update_icon(override)
+/obj/item/tank/on_update_icon(override)
 	var/needs_updating = override
 
 	if((atom_flags & ATOM_FLAG_INITIALIZED) && istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/) && !override) //So we don't eat up our tick. Every tick, when we're not actually in play.
@@ -400,16 +407,16 @@ var/list/global/tank_gauge_cache = list()
 		return
 
 
-	overlays.Cut() // Each time you modify this, the object is redrawn. Cunts.
+	ClearOverlays() // Each time you modify this, the object is redrawn. Cunts.
 
 	if(proxyassembly.assembly || wired)
-		overlays += image(icon,"bomb_assembly")
+		AddOverlays(image(icon, "bomb_assembly"))
 		if(proxyassembly.assembly)
 			var/image/bombthing = image(proxyassembly.assembly.icon, proxyassembly.assembly.icon_state)
-			bombthing.overlays |= proxyassembly.assembly.overlays
+			bombthing.CopyOverlays(proxyassembly.assembly)
 			bombthing.pixel_y = -1
 			bombthing.pixel_x = -3
-			overlays += bombthing
+			AddOverlays(bombthing)
 
 	if(!gauge_icon)
 		return
@@ -417,7 +424,7 @@ var/list/global/tank_gauge_cache = list()
 	var/indicator = "[gauge_icon][(gauge_pressure == -1) ? "overload" : gauge_pressure]"
 	if(!tank_gauge_cache[indicator])
 		tank_gauge_cache[indicator] = image(icon, indicator)
-	overlays += tank_gauge_cache[indicator]
+	AddOverlays(tank_gauge_cache[indicator])
 
 /// Handle exploding, leaking, and rupturing of the tank.
 /// Returns `TRUE` if it should continue thinking.
@@ -458,13 +465,7 @@ var/list/global/tank_gauge_cache = list()
 			var/num_fragments = round(rand(8,10) * sqrt(strength * mult))
 			fragmentate(T, num_fragments, 7, list(/obj/item/projectile/bullet/pellet/fragment/tank/small = 7,/obj/item/projectile/bullet/pellet/fragment/tank = 2,/obj/item/projectile/bullet/pellet/fragment/strong = 1))
 
-			if(istype(loc, /obj/item/device/transfer_valve))
-				var/obj/item/device/transfer_valve/TTV = loc
-				TTV.remove_tank(src)
-				qdel(TTV)
-
-			if(src)
-				qdel(src)
+			qdel(src)
 
 			return FALSE
 		else
@@ -489,10 +490,6 @@ var/list/global/tank_gauge_cache = list()
 
 			var/num_fragments = round(rand(6,8) * sqrt(strength * mult)) //Less chunks, but bigger
 			fragmentate(T, num_fragments, 7, list(/obj/item/projectile/bullet/pellet/fragment/tank/small = 1,/obj/item/projectile/bullet/pellet/fragment/tank = 5,/obj/item/projectile/bullet/pellet/fragment/strong = 4))
-
-			if(istype(loc, /obj/item/device/transfer_valve))
-				var/obj/item/device/transfer_valve/TTV = loc
-				TTV.remove_tank(src)
 
 			qdel(src)
 
@@ -626,7 +623,7 @@ var/list/global/tank_gauge_cache = list()
 	air_contents.temperature = new_temperature
 	set_next_think(world.time)
 
-/obj/item/device/tankassemblyproxy/update_icon()
+/obj/item/device/tankassemblyproxy/on_update_icon()
 	tank.update_icon()
 
 /obj/item/device/tankassemblyproxy/HasProximity(atom/movable/AM as mob|obj)

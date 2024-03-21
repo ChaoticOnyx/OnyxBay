@@ -24,21 +24,16 @@
 
 	SSevents.evars["money_hacker_running"] = TRUE
 
-	command_announcement.Announce(
+	SSannounce.play_station_announce(/datum/announce/money_hack_start,
 		"A brute force hack has been detected (in progress since [stationtime2text()]). The target of the attack is: Financial accounts, \
 		without intervention this attack will succeed in approximately 10 minutes. Possible solutions: suspension of accounts, disabling NTnet server, \
-		increase account security level. Notifications will be sent as updates occur.",
-		"[station_name()] Firewall Subroutines",
-		new_sound = 'sound/AI/moneyhackstart.ogg'
-	)
+		increase account security level. Notifications will be sent as updates occur.")
 
-	addtimer(CALLBACK(src, .proc/end), 10 MINUTES)
+	addtimer(CALLBACK(src, nameof(.proc/end)), 10 MINUTES)
 
 /datum/event/money_hacker/proc/end()
 	SSevents.evars["money_hacker_running"] = FALSE
 
-	var/message
-	var/snd
 	var/list/datum/money_account/affected_accounts = list()
 
 	for(var/datum/money_account/M in all_money_accounts)
@@ -54,8 +49,6 @@
 
 	if(ntnet_global?.check_function() && length(affected_accounts))
 		//hacker wins
-		message = "The hack attempt has succeeded."
-		snd = 'sound/AI/moneyhackwin.ogg'
 		var/target_name = pick("","yo brotha from anotha motha","el Presidente","chieF smackDowN")
 		var/purpose = pick("Ne$ ---ount fu%ds init*&lisat@*n","PAY BACK YOUR MUM","Funds withdrawal","pWnAgE","l33t hax","liberationez")
 		var/d1 = "31 December, 1999"
@@ -64,6 +57,8 @@
 		var/t1 = rand(0, 99999999)
 		var/t2 = "[round(t1 / 36000)+12]:[(t1 / 600 % 60) < 10 ? add_zero(t1 / 600 % 60, 1) : t1 / 600 % 60]"
 		var/time = pick("", stationtime2text(), t2)
+
+		SSannounce.play_station_announce(/datum/announce/money_hack_success)
 
 		//create a taunting log entry
 		spawn()
@@ -82,6 +77,4 @@
 
 	else
 		//crew wins
-		snd = 'sound/AI/moneyhackloose.ogg'
-
-	command_announcement.Announce(message, "[station_name()] Firewall Subroutines", new_sound = snd)
+		SSannounce.play_station_announce(/datum/announce/money_hack_fail)

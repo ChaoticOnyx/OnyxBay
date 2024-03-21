@@ -13,7 +13,8 @@
 		slot_r_hand_str = "s_helmet",
 		)
 	permeability_coefficient = 0
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100)
+	armor = list(melee = 40, bullet = 10, laser = 35,energy = 15, bomb = 0, bio = 100)
+	coverage = 1.0
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
 	visor_body_parts_covered = NO_BODYPARTS
@@ -22,7 +23,7 @@
 	siemens_coefficient = 0.9
 	center_of_mass = null
 	randpixel = 0
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA, "Xenomorph")
+	species_restricted = list("exclude", SPECIES_DIONA, "Xenomorph")
 	flash_protection = FLASH_PROTECTION_MAJOR
 
 	var/obj/machinery/camera/camera
@@ -87,12 +88,13 @@
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank/emergency,/obj/item/device/suit_cooling_unit)
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100)
+	armor = list(melee = 20, bullet = 10, laser = 30,energy = 15, bomb = 0, bio = 100)
+	coverage = 1.0
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.9
 	center_of_mass = null
 	randpixel = 0
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA, "Xenomorph")
+	species_restricted = list("exclude", SPECIES_DIONA, "Xenomorph")
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)

@@ -45,10 +45,12 @@
 		icon_state = icon_closed
 		to_chat(usr, "You button up the coat.")
 		flags_inv |= HIDEJUMPSUITACCESSORIES
+		coverage = 1.0
 	else if(icon_state == icon_closed)
 		icon_state = icon_open
 		to_chat(usr, "You unbutton the coat.")
 		flags_inv &= HIDEJUMPSUITACCESSORIES
+		coverage = 0.8
 	else
 		to_chat(usr, "You attempt to button-up the velcro on your [src], before promptly realising how silly you are.")
 		return

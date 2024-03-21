@@ -18,6 +18,9 @@
 	var/list/seen_turfs
 	var/datum/proximity_trigger/line/transparent/proximity_trigger
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/device/assembly/infra/New()
 	..()
 	beams = list()
@@ -52,10 +55,10 @@
 	set_active(secured ? on : FALSE)
 	return secured
 
-/obj/item/device/assembly/infra/update_icon()
-	overlays.Cut()
+/obj/item/device/assembly/infra/on_update_icon()
+	ClearOverlays()
 	if(on)
-		overlays += "infrared_on"
+		AddOverlays("infrared_on")
 	if(holder)
 		holder.update_icon()
 
@@ -127,7 +130,7 @@
 	if(!holder)
 		visible_message("\icon[src] *beep* *beep*")
 	cooldown = 2
-	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 
 /obj/item/device/assembly/infra/proc/on_visibility_change(list/old_turfs, list/new_turfs)
 	seen_turfs = new_turfs
@@ -183,6 +186,6 @@
 /obj/effect/beam/ir_beam
 	name = "ir beam"
 	icon = 'icons/obj/projectiles.dmi'
-	icon_state = "ibeam"
+	icon_state = "infrared"
 	anchored = TRUE
 	simulated = FALSE

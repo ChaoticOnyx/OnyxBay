@@ -33,21 +33,21 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
  * 2) Read the map line by line, parsing the result (using parse_grid)
  *
  */
-/dmm_suite/load_map(dmm_file, x_offset, y_offset, z_offset, cropMap, measureOnly, no_changeturf, clear_contents, lower_crop_x, lower_crop_y, upper_crop_x, upper_crop_y)
+/dmm_suite/load_map(dmm_file, x_offset, y_offset, z_offset, cropMap, measureOnly, no_changeturf, clear_contents, lower_crop_x, lower_crop_y, upper_crop_x, upper_crop_y, turf_blacklist)
 	//How I wish for RAII
 	Master.StartLoadingMap()
 	space_key = null
 	#ifdef TESTING
 	turfsSkipped = 0
 	#endif
-	. = load_map_impl(dmm_file, x_offset, y_offset, z_offset, cropMap, measureOnly, no_changeturf, clear_contents, lower_crop_x, upper_crop_x, lower_crop_y, upper_crop_y)
+	. = load_map_impl(dmm_file, x_offset, y_offset, z_offset, cropMap, measureOnly, no_changeturf, clear_contents, lower_crop_x, upper_crop_x, lower_crop_y, upper_crop_y, turf_blacklist)
 	#ifdef TESTING
 	if(turfsSkipped)
 		testing("Skipped loading [turfsSkipped] default turfs")
 	#endif
 	Master.StopLoadingMap()
 
-/dmm_suite/proc/load_map_impl(dmm_file, x_offset, y_offset, z_offset, cropMap, measureOnly, no_changeturf, clear_contents, x_lower = -INFINITY, x_upper = INFINITY, y_lower = -INFINITY, y_upper = INFINITY)
+/dmm_suite/proc/load_map_impl(dmm_file, x_offset, y_offset, z_offset, cropMap, measureOnly, no_changeturf, clear_contents, x_lower = -INFINITY, x_upper = INFINITY, y_lower = -INFINITY, y_upper = INFINITY, turf_blacklist)
 	var/tfile = dmm_file//the map file we're creating
 	if(isfile(tfile))
 		tfile = file2text(tfile)
@@ -169,7 +169,7 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 								if(!no_afterchange || (model_key != space_key))
 									if(!grid_models[model_key])
 										throw EXCEPTION("Undefined model key in DMM.")
-									var/datum/grid_load_metadata/M = parse_grid(grid_models[model_key], model_key, xcrd, ycrd, zcrd, no_changeturf || zexpansion, clear_contents)
+									var/datum/grid_load_metadata/M = parse_grid(grid_models[model_key], model_key, xcrd, ycrd, zcrd, no_changeturf || zexpansion, clear_contents, turf_blacklist)
 									if (M)
 										atoms_to_initialise += M.atoms_to_initialise
 										atoms_to_delete += M.atoms_to_delete
@@ -194,6 +194,7 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 		if(!measureOnly)
 			if(clear_contents)
 				for(var/atom/to_delete in atoms_to_delete)
+					to_delete.atom_flags = ATOM_FLAG_INITIALIZED
 					qdel(to_delete)
 		var/datum/map_load_metadata/M = new
 		M.bounds = bounds
@@ -232,7 +233,7 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 		/obj/structure,
 	)
 
-/dmm_suite/proc/parse_grid(model as text, model_key as text, xcrd as num,ycrd as num,zcrd as num, no_changeturf as num, clear_contents as num)
+/dmm_suite/proc/parse_grid(model as text, model_key as text, xcrd as num,ycrd as num,zcrd as num, no_changeturf as num, clear_contents as num, turf_blacklist)
 	/*Method parse_grid()
 	- Accepts a text string containing a comma separated list of type paths of the
 		same construction as those contained in a .dmm file, and instantiates them.
@@ -318,6 +319,9 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 
 	//The next part of the code assumes there's ALWAYS an /area AND a /turf on a given tile
 	var/turf/crds = locate(xcrd,ycrd,zcrd)
+
+	if(turf_blacklist?[crds])
+		return
 
 	var/is_not_noop = FALSE
 	var/atoms_to_delete = list()

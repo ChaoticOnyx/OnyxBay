@@ -1,5 +1,3 @@
-#define SURGERY_FAILURE -1
-#define SURGERY_BLOCKED -2
 #define SURGERY_ORGAN_REMOVE 0
 #define SURGERY_ORGAN_INSERT 1
 #define SURGERY_ORGAN_HEAL 2
@@ -13,7 +11,6 @@
 #define SURGERY_RETRACTOR 5
 #define SURGERY_CAUTERY 6
 #define SURGERY_DRILL 7
-#define SURGERY_FAILED_STATE -1337
 
 /obj/item/integrated_circuit/medical
 	category_text = "Medical"
@@ -66,7 +63,7 @@
 	QDEL_NULL(st)
 	if(istype(I, /obj/item/organfixer/advanced))
 		operation_intent = SURGERY_ORGAN_HEAL
-		st = new /datum/surgery_step/internal/fix_organ_multiple()
+		st = new /datum/surgery_step/internal/fix_organ/multiple()
 
 /obj/item/integrated_circuit/medical/surgery_device/get_selected_zone()
 	return selected_zone
@@ -113,7 +110,7 @@
 			activate_pin(2)
 		if(3)
 			activate_pin(3)
-	var/mob/living/carbon/H = get_pin_data(IC_INPUT, 1)
+	var/mob/living/carbon/human/H = get_pin_data(IC_INPUT, 1)
 	if(!istype(H))
 		activate_pin(3)
 		return
@@ -134,42 +131,31 @@
 	if(!selected_zone || !(selected_zone in BP_ALL_LIMBS))
 		activate_pin(3)
 		return
-	if(selected_zone in H.op_stage.in_progress) //Can't operate on someone repeatedly.
-		activate_pin(3)
-		return
 
-	var/status = do_int_surgery(H)
-	if(status && !(status == SURGERY_FAILURE || status == SURGERY_BLOCKED))
+	if(do_int_surgery(H))
 		var/atom/A = get_object()
 		A.investigate_log("made some operation on ([H]) with [src].", INVESTIGATE_CIRCUIT)
 		activate_pin(2)
 	else
 		activate_pin(3)
 
-/obj/item/integrated_circuit/medical/surgery_device/proc/can_use(mob/living/carbon/human/target, obj/item/organ/internal/organ, target_zone)
-	return TRUE
-
-/obj/item/integrated_circuit/medical/surgery_device/proc/do_int_surgery(mob/living/carbon/M)
-	for(var/datum/surgery_step/S in surgery_steps)
+/obj/item/integrated_circuit/medical/surgery_device/proc/do_int_surgery(mob/living/carbon/human/H)
+	for(var/datum/surgery_step/S in GLOB.surgery_steps)
 		if(istype(S, /datum/surgery_step/internal) && S.type != st?.type)
 			continue
-		var/status = do_real_surgery(M, S)
-		if(status != SURGERY_FAILED_STATE)
-			return status
+
+		// `do_step` can return `0` or `-1` if failed, we handle those differently in internal surgery circuit!
+		var/step_status = S.do_step(get_object(), H, instrument, selected_zone)
+		if(!step_status)
+			continue
+
+		if(step_status == SURGERY_FAILURE)
+			return FALSE
+
+		return TRUE
+
 	return FALSE
 
-/obj/item/integrated_circuit/medical/surgery_device/proc/do_real_surgery(mob/living/carbon/M, datum/surgery_step/S, use_integrated_circuit_can_use_check = FALSE, obj/item/organ/organ)
-	//check if tool is right or close enough and if this step is possible
-	var/obj/item/user = get_object()
-	if(S.tool_quality(instrument))
-		var/step_is_valid
-		if(use_integrated_circuit_can_use_check)
-			step_is_valid = can_use(M, organ, selected_zone)
-		else
-			step_is_valid = S.can_use(user, M, selected_zone, instrument)
-		if(step_is_valid && S.is_valid_target(M))
-			return S.do_surgery_process(M, user, selected_zone, instrument, step_is_valid)
-	return SURGERY_FAILED_STATE // for checks...
 /*
 	SUBTYPES.
 */
@@ -202,7 +188,7 @@
 		return
 	if(istype(I, /obj/item/scalpel))
 		operation_intent = SURGERY_ORGAN_DISCONNECT
-		st = new /datum/surgery_step/internal/detatch_organ()
+		st = new /datum/surgery_step/internal/detach_organ()
 	else if(istype(I, /obj/item/hemostat))
 		operation_intent = SURGERY_ORGAN_REMOVE
 		st = new /datum/surgery_step/internal/remove_organ()
@@ -211,7 +197,7 @@
 		st = new /datum/surgery_step/internal/attach_organ()
 	else if(istype(I, /obj/item/organfixer))
 		operation_intent = SURGERY_ORGAN_HEAL
-		st = new /datum/surgery_step/internal/fix_organ()
+		st = new /datum/surgery_step/internal/fix_organ/default()
 	else if(istype(I, /obj/item/reagent_containers/dropper))
 		operation_intent = SURGERY_ORGAN_TREAT
 		st = new /datum/surgery_step/internal/treat_necrosis()
@@ -234,9 +220,6 @@
 	if(!selected_zone || !(selected_zone in BP_ALL_LIMBS))
 		activate_pin(3)
 		return
-	if(selected_zone in H.op_stage.in_progress) //Can't operate on someone repeatedly.
-		activate_pin(3)
-		return
 	if(operation_intent == SURGERY_ORGAN_INSERT)
 		E = H.organs_by_name[O.parent_organ]
 	else
@@ -245,8 +228,7 @@
 		activate_pin(3)
 		return
 
-	var/status = do_int_surgery(H)
-	if(status && !(status == SURGERY_FAILURE || status == SURGERY_BLOCKED))
+	if(do_int_surgery(H))
 		organ = null
 		var/atom/A = get_object()
 		A.investigate_log("made some operation on ([H]) with [src].", INVESTIGATE_CIRCUIT)
@@ -254,19 +236,15 @@
 	else
 		activate_pin(3)
 
-/obj/item/integrated_circuit/medical/surgery_device/internal/do_int_surgery(mob/living/carbon/M)
-	var/status = do_real_surgery(M, st, TRUE, organ)
-	if(status != SURGERY_FAILED_STATE)
-		return status
-	return FALSE
+/obj/item/integrated_circuit/medical/surgery_device/internal/do_int_surgery(mob/living/carbon/human/H)
+	// We are doing a bit risky stuff here!
+	H.surgery_status.operated_organs[check_zone(selected_zone)] = organ
+	. = ..()
+	if(.)
+		return
 
-/obj/item/integrated_circuit/medical/surgery_device/internal/can_use(mob/living/carbon/human/target, obj/item/organ/internal/organ, target_zone)
-	if(operation_intent == SURGERY_ORGAN_INSERT)
-		return st.can_use(src, target, target_zone, organ)
-	else
-		st.ignore_tool = TRUE
-		st.preselected_organ = organ
-		return st.can_use(src, target, target_zone, instrument)
+	// If super call returned `FALSE` organ ref wasn't automatically nullified and it WILL cause runtimes in the future.
+	H.surgery_status.operated_organs[check_zone(selected_zone)] = null
 
 /obj/item/integrated_circuit/medical/surgery_device/face
 	name = "plastic surgery device"
@@ -291,8 +269,7 @@
 	var/mob/living/carbon/human/H = get_pin_data(IC_INPUT, 1)
 	selected_zone = BP_MOUTH
 
-	var/status = do_int_surgery(H)
-	if(status && !(status == SURGERY_FAILURE || status == SURGERY_BLOCKED))
+	if(do_int_surgery(H))
 		var/atom/A = get_object()
 		A.investigate_log("made some operation on ([H]) with [src].", INVESTIGATE_CIRCUIT)
 		activate_pin(2)
@@ -319,7 +296,7 @@
 	if(!istype(H)) //Invalid input
 		return
 	if(H.Adjacent(get_turf(src))) // Like normal analysers, it can't be used at range.
-		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 		set_pin_data(IC_OUTPUT, 1, (brain && !H.is_ic_dead()))
 		set_pin_data(IC_OUTPUT, 2, H.get_pulse_as_number())
 		set_pin_data(IC_OUTPUT, 3, (H.stat == 0))
@@ -370,7 +347,7 @@
 	if(!istype(H)) //Invalid input
 		return
 	if(H in view(get_turf(src))) // Like medbot's analyzer it can be used in range..
-		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 		set_pin_data(IC_OUTPUT, 1, (brain && !H.is_ic_dead()))
 		set_pin_data(IC_OUTPUT, 2, (H.stat == 0))
 		set_pin_data(IC_OUTPUT, 3, damage_to_severity(100 * H.getBruteLoss() / H.maxHealth))
@@ -405,6 +382,8 @@
 	var/list/obj/item/organ/internal/weakref_list = list()
 	if(H.Adjacent(get_turf(src))) // Like normal analysers, it can't be used at range.
 		for(var/obj/item/organ/internal/I in H.internal_organs)
+			if(I.hidden)
+				continue
 			if(I?.damage > 0)
 				weakref_list.Add(weakref(I))
 	set_pin_data(IC_OUTPUT, 1, weakref_list)
@@ -436,6 +415,8 @@
 /obj/item/integrated_circuit/medical/organ_info/do_work()
 	var/obj/item/organ/internal/I = get_pin_data_as_type(IC_INPUT, 1, /obj/item/organ/internal)
 	if(!istype(I)) // invalid input
+		return
+	if(I.hidden)
 		return
 	var/mob/living/carbon/human/H = I.owner
 	if(!istype(H)) //Invalid input
@@ -598,14 +579,11 @@
 	push_data()
 	activate_pin(2)
 
-#undef SURGERY_FAILURE
-#undef SURGERY_BLOCKED
 #undef SURGERY_ORGAN_REMOVE
 #undef SURGERY_ORGAN_INSERT
 #undef SURGERY_ORGAN_HEAL
 #undef SURGERY_ORGAN_CONNECT
 #undef SURGERY_ORGAN_DISCONNECT
-#undef SURGERY_FAILED_STATE
 #undef SURGERY_BONEGEL
 #undef SURGERY_BONESET
 #undef SURGERY_BONESET_ULTRA

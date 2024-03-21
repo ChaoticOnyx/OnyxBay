@@ -5,6 +5,7 @@
 	program_icon_state = "shield"
 	program_key_state = "generic_key"
 	program_menu_icon = "radio-on"
+	program_light_color = "#00B000"
 	extended_desc = "This program connects to shield generators and monitors their statuses."
 	ui_header = "shield.gif"
 	requires_ntnet = 1
@@ -27,7 +28,7 @@
 
 	var/list/shields = list()
 	var/connected_z_levels = GetConnectedZlevels(T.z)
-	for(var/obj/machinery/power/shield_generator/S in GLOB.machines)
+	for(var/obj/machinery/power/shield_generator/S in SSmachines.machinery)
 		if(!(S.z in connected_z_levels))
 			continue
 		shields.Add(S)
@@ -98,7 +99,7 @@
 		var/obj/machinery/power/shield_generator/S = locate(href_list["ref"]) in shields
 		if(S)
 			deselect_shield()
-			register_signal(S, SIGNAL_QDELETING, /datum/nano_module/shields_monitor/proc/deselect_shield)
+			register_signal(S, SIGNAL_QDELETING, nameof(.proc/deselect_shield))
 			active = S
 		return 1
 

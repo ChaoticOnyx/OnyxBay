@@ -9,7 +9,7 @@
 	var/block_tier_a = BLOCK_TIER_ADVANCED
 	sharp = 0
 	edge = 0
-	armor_penetration = 50
+	armor_penetration = 75
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	var/active_max_bright = 0.3
 	var/active_outer_range = 1.6
@@ -17,6 +17,9 @@
 	var/needs_blocking = TRUE
 	var/activate_sound = 'sound/weapons/saberon.ogg'
 	var/deactivate_sound = 'sound/weapons/saberon.ogg'
+
+	drop_sound = SFX_DROP_WELDINGTOOL
+	pickup_sound = SFX_PICKUP_WELDINGTOOL
 
 /obj/item/melee/energy/proc/activate(mob/living/user)
 	if(active)
@@ -53,6 +56,10 @@
 	check_armour = "melee"
 
 /obj/item/melee/energy/attack_self(mob/living/user)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
+
 	if(active)
 		if(!clumsy_unaffected && (MUTATION_CLUMSY in user.mutations) && prob(50))
 			user.visible_message(SPAN("danger", "\The [user] accidentally cuts \himself with \the [src]."), \
@@ -71,6 +78,7 @@
 	return
 
 /obj/item/melee/energy/dropped()
+	..()
 	spawn(9)
 		if(isturf(loc))
 			deactivate()
@@ -145,6 +153,7 @@
 	mod_reach_a = 1.25
 	mod_handy_a = 1.5
 	mod_shield_a = 1.25
+	armor_penetration = 100
 	block_tier_a = BLOCK_TIER_MELEE
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
@@ -189,6 +198,9 @@
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	var/blade_color
 
+	drop_sound = SFX_DROP_DEVICE
+	pickup_sound = SFX_PICKUP_DEVICE
+
 /obj/item/melee/energy/sword/activate(mob/living/user)
 	if(!active)
 		to_chat(user, SPAN("notice", "\The [src] is now energised."))
@@ -211,23 +223,26 @@
 	icon_state = "sword0"
 
 /obj/item/melee/energy/sword/one_hand/New()
+	..()
 	var/list/colorparam = list("green" = "#68ff4d", "red" = "#ff5959", "blue" = "#4de4ff", "purple" = "#de4dff")
-	blade_color = pick(colorparam)
-	brightness_color = colorparam[blade_color]
+	if(!blade_color)
+		blade_color = pick(colorparam)
+	if(!brightness_color)
+		brightness_color = colorparam[blade_color]
 
-/obj/item/melee/energy/sword/one_hand/green/New()
+/obj/item/melee/energy/sword/one_hand/green
 	blade_color = "green"
 	brightness_color = "#68ff4d"
 
-/obj/item/melee/energy/sword/one_hand/red/New()
+/obj/item/melee/energy/sword/one_hand/red
 	blade_color = "red"
 	brightness_color = "#ff5959"
 
-/obj/item/melee/energy/sword/one_hand/blue/New()
+/obj/item/melee/energy/sword/one_hand/blue
 	blade_color = "blue"
 	brightness_color = "#4de4ff"
 
-/obj/item/melee/energy/sword/one_hand/purple/New()
+/obj/item/melee/energy/sword/one_hand/purple
 	blade_color = "purple"
 	brightness_color = "#de4dff"
 
@@ -276,23 +291,26 @@
 	active_outer_range = 1.8
 
 /obj/item/melee/energy/sword/dualsaber/New()
+	..()
 	var/list/colorparam = list("green" = "#68ff4d", "red" = "#ff5959", "blue" = "#4de4ff", "purple" = "#de4dff")
-	blade_color = pick(colorparam)
-	brightness_color = colorparam[blade_color]
+	if(!blade_color)
+		blade_color = pick(colorparam)
+	if(!brightness_color)
+		brightness_color = colorparam[blade_color]
 
-/obj/item/melee/energy/sword/dualsaber/green/New()
+/obj/item/melee/energy/sword/dualsaber/green
 	blade_color = "green"
 	brightness_color = "#68ff4d"
 
-/obj/item/melee/energy/sword/dualsaber/red/New()
+/obj/item/melee/energy/sword/dualsaber/red
 	blade_color = "red"
 	brightness_color = "#ff5959"
 
-/obj/item/melee/energy/sword/dualsaber/blue/New()
+/obj/item/melee/energy/sword/dualsaber/blue
 	blade_color = "blue"
 	brightness_color = "#4de4ff"
 
-/obj/item/melee/energy/sword/dualsaber/purple/New()
+/obj/item/melee/energy/sword/dualsaber/purple
 	blade_color = "purple"
 	brightness_color = "#de4dff"
 
@@ -348,11 +366,12 @@
 /obj/item/melee/energy/blade/get_storage_cost()
 	return ITEM_SIZE_NO_CONTAINER
 
-/obj/item/melee/energy/blade/attack_self(mob/user as mob)
+/obj/item/melee/energy/blade/attack_self(mob/user)
 	user.drop(src, force = TRUE)
 	QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/dropped()
+	..()
 	QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/think()

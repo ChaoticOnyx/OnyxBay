@@ -36,7 +36,13 @@
 	var/turf/filler
 	var/tryingToLock = FALSE // for autoclosing
 	// turf animation
-	var/atom/movable/overlay/c_animation = null
+	var/atom/movable/fake_overlay/c_animation = null
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 350 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.5 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
+	)
 
 /obj/machinery/door/attack_generic(mob/user, damage)
 	if(damage >= 10)
@@ -224,7 +230,7 @@
 		else
 			repairing = stack.split(amount_needed, force=TRUE)
 			if(repairing)
-				repairing.loc = src
+				repairing.forceMove(src)
 				transfer = repairing.amount
 				repairing.uses_charge = FALSE //for clean robot door repair - stacks hint immortal if true
 
@@ -238,22 +244,26 @@
 			to_chat(user, "<span class='warning'>\The [src] must be closed before you can repair it.</span>")
 			return
 
-		var/obj/item/weldingtool/welder = I
-		if(welder.remove_fuel(0,user))
-			to_chat(user, "<span class='notice'>You start to fix dents and weld \the [repairing] into place.</span>")
-			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			if(do_after(user, 5 * repairing.amount, src) && welder && welder.isOn())
-				to_chat(user, "<span class='notice'>You finish repairing the damage to \the [src].</span>")
-				health = between(health, health + repairing.amount*DOOR_REPAIR_AMOUNT, maxhealth)
-				update_icon()
-				qdel(repairing)
-				repairing = null
+		var/obj/item/weldingtool/WT = I
+
+		to_chat(user, SPAN_NOTICE("You start to fix dents and weld \the [repairing] into place."))
+		if(!WT.use_tool(src, user, delay = 5 * repairing.amount, amount = 5))
+			return
+
+		if(QDELETED(src) || !user)
+			return
+
+		to_chat(user, SPAN_NOTICE("You finish repairing the damage to \the [src]."))
+		health = between(health, health + repairing.amount*DOOR_REPAIR_AMOUNT, maxhealth)
+		update_icon()
+		qdel(repairing)
+		repairing = null
 		return
 
 	if(repairing && isCrowbar(I))
 		to_chat(user, "<span class='notice'>You remove \the [repairing].</span>")
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
-		repairing.loc = user.loc
+		repairing.dropInto(user.loc)
 		repairing = null
 		return
 
@@ -347,7 +357,7 @@
 	return
 
 
-/obj/machinery/door/update_icon()
+/obj/machinery/door/on_update_icon()
 	if(density)
 		icon_state = "door1"
 	else
@@ -402,7 +412,7 @@
 	operating = FALSE
 
 	if(autoclose)
-		addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, nameof(.proc/close)), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 	return TRUE
 
@@ -411,7 +421,7 @@
 	if(!can_close(forced))
 		if(autoclose)
 			tryingToLock = TRUE
-			addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+			addtimer(CALLBACK(src, nameof(.proc/close)), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 		return FALSE
 	operating = TRUE
 

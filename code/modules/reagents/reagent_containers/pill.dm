@@ -14,6 +14,9 @@
 	volume = 30
 	var/mimic_color = FALSE
 
+	drop_sound = SFX_DROP_FOOD
+	pickup_sound = SFX_PICKUP_FOOD
+
 /obj/item/reagent_containers/pill/Initialize()
 	. = ..()
 	if(!icon_state)
@@ -43,7 +46,7 @@
 		if(!do_mob(user, M))
 			return
 
-		if(user.get_active_hand() != src)
+		if(!isrobot(user) && user.get_active_hand() != src)
 			return
 
 		user.visible_message("<span class='warning'>[user] forces [M] to swallow \the [src].</span>")
@@ -268,3 +271,11 @@
 	icon_state = "sugar_cubes"
 	startswith = list(/datum/reagent/sugar = 5)
 	mimic_color = TRUE
+
+//Not actually a pill, but pills type provide everything needed for this
+/obj/item/reagent_containers/pill/cleanerpod
+	name = "space cleaner pod"
+	desc = "BLAM!-brand non-foaming space cleaner in concentrated form! Use one pod per 100u of water. Should not be consumed, but hey I'm not your mom nor a doctor."
+	icon_state = "cleanerpod"
+	startswith = list(/datum/reagent/space_cleaner/dry = 10)
+	mimic_color = FALSE

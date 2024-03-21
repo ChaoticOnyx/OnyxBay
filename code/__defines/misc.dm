@@ -44,7 +44,6 @@
 #define  STATUS_HUD_OOC 9 // STATUS_HUD without virus DB check for someone being ill.
 #define        LIFE_HUD 10 // STATUS_HUD that only reports dead or alive
 #define        XENO_HUD 11 // Alien embryo status.
-#define       GLAND_HUD 12 // Abductors data hud
 
 // Shuttle moving status.
 #define SHUTTLE_IDLE      0
@@ -160,10 +159,17 @@
 //Of course, this will affect code that checks for blocked < 100, as blocked will be less likely to actually be 100.
 #define ARMOR_BLOCK_CHANCE_MULT 1.0
 
+// Multiplier for projectiles' damage dealt to internal organs
+#define PROJECTILE_INTERNAL_DAMAGE_MULT 1.0
+
+// Projectiles' chance to embed/sever an artery, 25 seems to be fair but one might tweak it if needed
+#define PROJECTILE_EMBED_CHANCE 25
+
 // Special return values from bullet_act(). Positive return values are already used to indicate the blocked level of the projectile.
-#define PROJECTILE_CONTINUE		-1 //if the projectile should continue flying after calling bullet_act()
-#define PROJECTILE_FORCE_MISS	-2 //if the projectile should treat the attack as a miss (suppresses attack and admin logs) - only applies to mobs.
-#define PROJECTILE_FORCE_BLOCK	-3 //if the projectile should treat the attack as blocked (supresses attack, but not admin logs) - only applies to humans and human subtypes.
+#define PROJECTILE_CONTINUE         -1 //if the projectile should continue flying after calling bullet_act()
+#define PROJECTILE_FORCE_MISS       -2 //if the projectile should treat the attack as a miss (suppresses attack and admin logs) - only applies to mobs.
+#define PROJECTILE_FORCE_BLOCK      -3 //if the projectile should treat the attack as blocked (supresses attack, but not admin logs) - only applies to humans and human subtypes.
+#define PROJECTILE_FORCE_ARMORBLOCK -4 //the same as PROJECTILE_FORCE_BLOCK - only used for fancy messages
 
 // These determine how well one can block things with items
 #define BLOCK_TIER_NONE        0
@@ -246,8 +252,8 @@
 #define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
 #define GRAYSCALE list(0.3,0.3,0.3,0,0.59,0.59,0.59,0,0.11,0.11,0.11,0,0,0,0,1,0,0,0,0)
 
-#define ADD_VERB_IN(the_atom,time,verb) addtimer(CALLBACK(the_atom, /atom/proc/add_verb, verb), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
-#define ADD_VERB_IN_IF(the_atom,time,verb,callback) addtimer(CALLBACK(the_atom, /atom/proc/add_verb, verb, callback), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
+#define ADD_VERB_IN(the_atom,time,verb) addtimer(CALLBACK(the_atom, nameof(/atom.proc/add_verb), verb), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
+#define ADD_VERB_IN_IF(the_atom,time,verb,callback) addtimer(CALLBACK(the_atom, nameof(/atom.proc/add_verb), verb, callback), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
 
 //Wiki book styles
 #define WIKI_FULL   1 // This is a standart web page. Beware, navigaton throw the internet is allowed!
@@ -289,6 +295,8 @@
 #define NOTIFY_JUMP "jump"
 #define NOTIFY_ATTACK "attack"
 #define NOTIFY_FOLLOW "follow"
+#define NOTIFY_POSSES "posses"
+#define NOTIFY_VOTE "vote"
 
 // Atmospherics vents
 #define VENT_UNDAMAGED 0
@@ -301,3 +309,17 @@
 #define LOW_VOLUME  1
 #define MID_VOLUME  2
 #define HIGH_VOLUME 3
+
+//Lawgiver gun
+#define LAWGIVER_MAX_AMMO 5
+
+// Bitflags for magic resistance types
+/// Default magic resistance that blocks normal magic (wizard, spells, magical staff projectiles)
+#define MAGIC_RESISTANCE (1<<0)
+/// Tinfoil hat magic resistance that blocks mental magic (telepathy / mind links, mind curses)
+#define MAGIC_RESISTANCE_MIND (1<<1)
+/// Holy magic resistance that blocks unholy magic (vampire)
+#define MAGIC_RESISTANCE_HOLY (1<<2)
+
+// Shortcut for image_repository.overlay_image(...)
+#define OVERLAY(args...) image_repository.overlay_image(args)

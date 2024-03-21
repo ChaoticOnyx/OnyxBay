@@ -85,17 +85,17 @@ GLOBAL_LIST_EMPTY(music_players)
 	if(broken)
 		. += "\n[SPAN_WARNING("It's broken.")]"
 
-/obj/item/music_player/update_icon()
-	overlays.Cut()
+/obj/item/music_player/on_update_icon()
+	ClearOverlays()
 
 	if(mode == PLAYER_STATE_PLAY)
-		overlays += image(icon, "[icon_state]_play")
+		AddOverlays(image(icon, "[icon_state]_play"))
 
 	if(panel == PANEL_OPENED)
-		overlays += image(icon, "[icon_state]_panel-open")
+		AddOverlays(image(icon, "[icon_state]_panel-open"))
 
 		if(cell)
-			overlays += image(icon, "[icon_state]_panel-cell")
+			AddOverlays(image(icon, "[icon_state]_panel-cell"))
 
 /obj/item/music_player/think()
 	if(!get_cell() || !cell.checked_use(power_usage * CELLRATE))
@@ -385,7 +385,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	qdel(src)
 
 /obj/item/music_player/proc/break_act()
-	audible_message(SPAN_WARNING("\The [src]'s speakers pop with a sharp crack!"))
+	audible_message(SPAN_WARNING("\The [src]'s speakers pop with a sharp crack!"), splash_override = "*CRACK*")
 	playsound(src, 'sound/effects/snap.ogg', 100, 1)
 	StopPlaying()
 	broken = TRUE

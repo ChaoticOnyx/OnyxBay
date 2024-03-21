@@ -28,14 +28,14 @@
 	. = ..()
 	update_icon()
 
-/obj/structure/dispenser/update_icon()
-	overlays.Cut()
+/obj/structure/dispenser/on_update_icon()
+	ClearOverlays()
 	switch(oxygentanks)
-		if(1 to 3)	overlays += "oxygen-[oxygentanks]"
-		if(4 to INFINITY) overlays += "oxygen-4"
+		if(1 to 3)	AddOverlays("oxygen-[oxygentanks]")
+		if(4 to INFINITY) AddOverlays("oxygen-4")
 	switch(plasmatanks)
-		if(1 to 4)	overlays += "plasma-[plasmatanks]"
-		if(5 to INFINITY) overlays += "plasma-5"
+		if(1 to 4)	AddOverlays("plasma-[plasmatanks]")
+		if(5 to INFINITY) AddOverlays("plasma-5")
 
 /obj/structure/dispenser/attack_ai(mob/user)
 	if(user.Adjacent(src))
@@ -112,7 +112,7 @@
 			oxytanks.Remove(O)
 		else
 			O = new /obj/item/tank/oxygen(loc)
-		O.loc = loc
+		O.dropInto(loc)
 		to_chat(user, "<span class='notice'>You take [O] out of [src].</span>")
 		oxygentanks--
 		update_icon()
@@ -125,7 +125,7 @@
 			platanks.Remove(P)
 		else
 			P = new /obj/item/tank/plasma(loc)
-		P.loc = loc
+		P.dropInto(loc)
 		to_chat(user, "<span class='notice'>You take [P] out of [src].</span>")
 		plasmatanks--
 		update_icon()

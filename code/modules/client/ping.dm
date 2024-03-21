@@ -7,6 +7,6 @@
 	to_chat(src, "<span class='notice'>Round trip ping took [round(pingfromtime(time),1)]ms</span>")
 
 /client/verb/ping()
-	set name = "Ping"
+	set name = "Show ping"
 	set category = "OOC"
 	winset(src, null, "command=.display_ping+[world.time+world.tick_lag*TICK_USAGE/100]")

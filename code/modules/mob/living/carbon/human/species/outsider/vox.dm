@@ -2,7 +2,6 @@
 	name = SPECIES_VOX
 	name_plural = SPECIES_VOX
 	icobase = 'icons/mob/human_races/r_vox.dmi'
-	deform = 'icons/mob/human_races/r_def_vox.dmi'
 	hair_key = SPECIES_VOX
 	default_language = "Vox-pidgin"
 	language = LANGUAGE_GALCOM
@@ -17,6 +16,7 @@
 	dealing with their traders and merchants; those that do rarely enjoy the experience."
 
 	taste_sensitivity = TASTE_DULL
+	troublesome_sexual_dimorphism = TRUE
 
 	speech_sounds = list('sound/voice/shriek1.ogg')
 	speech_chance = 20
@@ -40,10 +40,11 @@
 
 	species_flags = SPECIES_FLAG_NO_SCAN
 	spawn_flags = SPECIES_IS_RESTRICTED
-	appearance_flags = HAS_EYE_COLOR | HAS_HAIR_COLOR
+	species_appearance_flags = HAS_HAIR_COLOR
 
 	blood_color = "#2299fc"
 	flesh_color = "#808d11"
+	default_eye_color = "#ffffff"
 	organs_icon = 'icons/mob/human_races/organs/vox.dmi'
 
 	reagent_tag = IS_VOX
@@ -75,7 +76,7 @@
 		BP_LUNGS =    /obj/item/organ/internal/lungs/vox,
 		BP_LIVER =    /obj/item/organ/internal/liver/vox,
 		BP_KIDNEYS =  /obj/item/organ/internal/kidneys/vox,
-		BP_BRAIN =    /obj/item/organ/internal/brain,
+		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain,
 		BP_EYES =     /obj/item/organ/internal/eyes,
 		BP_STACK =    /obj/item/organ/internal/stack/vox
 		)

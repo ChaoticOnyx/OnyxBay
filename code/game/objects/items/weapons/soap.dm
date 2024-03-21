@@ -80,10 +80,10 @@
 		return
 	..()
 
-/obj/item/soap/update_icon()
-	overlays.Cut()
+/obj/item/soap/on_update_icon()
+	ClearOverlays()
 	if(key_data)
-		overlays += image('icons/obj/items.dmi', icon_state = "soap_key_overlay")
+		AddOverlays(image('icons/obj/items.dmi', icon_state = "soap_key_overlay"))
 
 /obj/item/soap/nanotrasen
 	desc = "A NanoTrasen-brand bar of soap. Smells of plasma."

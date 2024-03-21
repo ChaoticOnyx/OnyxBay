@@ -11,10 +11,10 @@
 			return say_dead(message)
 
 		if(copytext(message,1,2) == "*")
-			return emote(copytext(message,2))
+			return emote(copytext(message, 2), intentional = TRUE)
 
 		if(copytext(message,1,2) == ";")
-			var/datum/language/L = all_languages["Drone Talk"]
+			var/datum/language/L = all_languages[LANGUAGE_DRONE]
 			if(istype(L))
 				return L.broadcast(src,trim(copytext(message,2)))
 

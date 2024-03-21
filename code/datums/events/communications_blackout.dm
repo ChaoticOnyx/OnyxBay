@@ -28,8 +28,8 @@
 			to_chat(A, "<span class='warning'><b>[alert]</b></span>")
 			to_chat(A, "<br>")
 
-	if(prob(80))	//Announce most of the time, just not always to give some wiggle room for possible sabotages.
-		command_announcement.Announce(alert, new_sound = sound('sound/AI/blackoutstart.ogg'), zlevels = affecting_z)
+	if(prob(80)) //Announce most of the time, just not always to give some wiggle room for possible sabotages.
+		SSannounce.play_station_announce(/datum/announce/communications_blackout, alert)
 
 /datum/event/communications_blackout/on_fire()
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)

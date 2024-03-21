@@ -6,7 +6,7 @@
 
 /obj/item/storage
 	name = "storage"
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	w_class = ITEM_SIZE_NORMAL
 	var/list/can_hold = new /list() //List of objects which this item can store (if set, it can't store anything else)
 	var/list/cant_hold = new /list() //List of objects which this item can't store (in effect only if can_hold isn't set)
@@ -16,9 +16,12 @@
 	var/storage_slots = null //The number of storage slots in this container.
 	var/list/override_w_class // List of items that can bypass the max_w_class restriction
 
-	var/use_to_pickup	//Set this to make it possible to use this item in an inverse way, so you can have the item in your hand and click items on the floor to pick them up.
-	var/allow_quick_empty	//Set this variable to allow the object to have the 'empty' verb, which dumps all the contents on the floor.
-	var/allow_quick_gather	//Set this variable to allow the object to have the 'toggle mode' verb, which quickly collects all items from a tile.
+	// Allows to pick up items from a tile by clicking with the object on the floor.
+	var/use_to_pickup = FALSE
+	/// Allows to dump all the contents of the object on the floor.
+	var/allow_quick_empty = FALSE
+	/// Allows to quickly collect all items from a tile .
+	var/allow_quick_gather = FALSE
 	var/collection_mode = 1;  //0 = pick one at a time, 1 = pick all on tile
 	var/use_sound = SFX_SEARCH_CASE	//sound played when used. null for no sound.
 
@@ -26,6 +29,50 @@
 	//the assoc value can either be the quantity, or a list whose first value is the quantity and the rest are args.
 	var/list/startswith
 	var/datum/storage_ui/storage_ui = /datum/storage_ui/default
+
+	/// FALSE = no overlay, TRUE = uses 'icon_state + "-open"', string = lets the thing's update_icon() deal with its own shit. Easy.
+	var/inspect_state = FALSE
+	var/being_inspected = FALSE
+
+/obj/item/storage/Initialize()
+	. = ..()
+	if(allow_quick_empty)
+		verbs += /obj/item/storage/verb/quick_empty
+	else
+		verbs -= /obj/item/storage/verb/quick_empty
+
+	if(allow_quick_gather)
+		verbs += /obj/item/storage/verb/toggle_gathering_mode
+	else
+		verbs -= /obj/item/storage/verb/toggle_gathering_mode
+
+	if(isnull(max_storage_space) && !isnull(storage_slots))
+		max_storage_space = storage_slots * base_storage_cost(max_w_class)
+
+	storage_ui = new storage_ui(src)
+	prepare_ui()
+
+	if(inspect_state)
+		if(!base_icon_state)
+			base_icon_state = icon_state // It'll save us later
+		if(!item_state)
+			item_state = icon_state // I wish that dumb feature never was a thing at all
+		register_signal(src, SIGNAL_STORAGE_OPENED, nameof(.proc/on_storage_opened))
+		register_signal(src, SIGNAL_STORAGE_CLOSED, nameof(.proc/on_storage_closed))
+
+	if(startswith)
+		for(var/item_path in startswith)
+			var/list/data = startswith[item_path]
+			if(islist(data))
+				var/qty = data[1]
+				var/list/argsl = data.Copy()
+				argsl[1] = src
+				for(var/i in 1 to qty)
+					new item_path(arglist(argsl))
+			else
+				for(var/i in 1 to (isnull(data)? 1 : data))
+					new item_path(src)
+		update_icon()
 
 /obj/item/storage/Destroy()
 	QDEL_NULL(storage_ui)
@@ -35,13 +82,13 @@
 	if(!canremove)
 		return
 
-	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated())
+	if(((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !islarva(usr)))  && !usr.incapacitated())
 		if(over_object == usr && Adjacent(usr)) // this must come before the screen objects only block
 			src.add_fingerprint(usr)
 			src.open(usr)
 			return TRUE
 
-		if(!(istype(over_object, /obj/screen)))
+		if(!(istype(over_object, /atom/movable/screen)))
 			return ..()
 
 		//makes sure that the storage is equipped, so that we can't drag it into our hand from miles away.
@@ -63,9 +110,12 @@
 	if(!canremove)
 		return
 
-	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated() && Adjacent(usr))
+	if((((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !islarva(usr))) && !usr.incapacitated() && Adjacent(usr)))
 		add_fingerprint(usr)
-		open(usr)
+		if(usr.s_active == src)
+			close(usr)
+		else
+			open(usr)
 		return TRUE
 
 /obj/item/storage/proc/return_inv()
@@ -102,6 +152,8 @@
 		storage_ui.on_open(user)
 		storage_ui.show_to(user)
 
+	SEND_SIGNAL(src, SIGNAL_STORAGE_OPENED, src, user)
+
 /obj/item/storage/proc/prepare_ui()
 	if(storage_ui)
 		storage_ui.prepare_ui()
@@ -113,6 +165,8 @@
 
 	if(src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
+
+	SEND_SIGNAL(src, SIGNAL_STORAGE_CLOSED, src, user)
 
 /obj/item/storage/proc/close_all()
 	if(storage_ui)
@@ -312,6 +366,11 @@
 	W.add_fingerprint(user)
 	return handle_item_insertion(W)
 
+/obj/item/storage/throw_at(atom/target, range, speed = throw_speed, atom/thrower, thrown_with, target_zone, launched_div)
+	if(ismob(thrower))
+		close(thrower)
+	return ..()
+
 /obj/item/storage/allow_drop()
 	return TRUE
 
@@ -383,38 +442,6 @@
 		remove_from_storage(I, T, 1)
 	finish_bulk_removal()
 
-/obj/item/storage/Initialize()
-	. = ..()
-	if(allow_quick_empty)
-		verbs += /obj/item/storage/verb/quick_empty
-	else
-		verbs -= /obj/item/storage/verb/quick_empty
-
-	if(allow_quick_gather)
-		verbs += /obj/item/storage/verb/toggle_gathering_mode
-	else
-		verbs -= /obj/item/storage/verb/toggle_gathering_mode
-
-	if(isnull(max_storage_space) && !isnull(storage_slots))
-		max_storage_space = storage_slots * base_storage_cost(max_w_class)
-
-	storage_ui = new storage_ui(src)
-	prepare_ui()
-
-	if(startswith)
-		for(var/item_path in startswith)
-			var/list/data = startswith[item_path]
-			if(islist(data))
-				var/qty = data[1]
-				var/list/argsl = data.Copy()
-				argsl[1] = src
-				for(var/i in 1 to qty)
-					new item_path(arglist(argsl))
-			else
-				for(var/i in 1 to (isnull(data)? 1 : data))
-					new item_path(src)
-		update_icon()
-
 /obj/item/storage/emp_act(severity)
 	if(!istype(src.loc, /mob/living))
 		for(var/obj/O in contents)
@@ -438,6 +465,18 @@
 		can_hold[I.type]++
 		max_w_class = max(I.w_class, max_w_class)
 		max_storage_space += I.get_storage_cost()
+
+/obj/item/storage/proc/on_storage_opened(obj/item/storage/source, mob/user)
+	being_inspected = TRUE
+	if(inspect_state == TRUE)
+		icon_state = base_icon_state + "-open"
+	update_icon()
+
+/obj/item/storage/proc/on_storage_closed(obj/item/storage/source, mob/user)
+	being_inspected = FALSE
+	if(inspect_state == TRUE)
+		icon_state = base_icon_state
+	update_icon()
 
 //Returns the storage depth of an atom. This is the number of storage items the atom is contained in before reaching toplevel (the area).
 //Returns -1 if the atom was not found on container.

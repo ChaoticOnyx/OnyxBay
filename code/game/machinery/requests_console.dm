@@ -52,32 +52,34 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	var/recipient = ""; //the department which will be receiving the message
 	var/priority = -1 ; //Priority of the message being sent
 	light_outer_range = 0
-	var/datum/announcement/announcement = new
+	var/announce_title
+	var/announce_do_newscast = TRUE
+	var/announce_sender
 
-/obj/machinery/requests_console/update_icon()
+/obj/machinery/requests_console/on_update_icon()
+	ClearOverlays()
 	if(stat & NOPOWER)
-		if(icon_state != "req_comp_off")
-			icon_state = "req_comp_off"
+		icon_state = "req_comp_off"
 		set_light(0)
-	else
-		if(icon_state == "req_comp_off")
-			icon_state = "req_comp[newmessagepriority]"
-		set_light(0.35, 0.1, 1, 2, COLOR_LIME)
+		return
+	icon_state = "req_comp[newmessagepriority]"
+	set_light(1.0, 0.5, 1, 1.5, "#16974D")
+	AddOverlays(emissive_appearance(icon, "req_comp_ea"))
 
-/obj/machinery/requests_console/New()
-	..()
+/obj/machinery/requests_console/Initialize()
+	. = ..()
 
-	announcement.title = "[department] announcement"
-	announcement.newscast = 1
+	announce_title = "[department] announcement"
 
 	name = "[department] Requests Console"
 	allConsoles += src
-	if (departmentType & RC_ASSIST)
+	if(departmentType & RC_ASSIST)
 		req_console_assistance |= department
-	if (departmentType & RC_SUPPLY)
+	if(departmentType & RC_SUPPLY)
 		req_console_supplies |= department
-	if (departmentType & RC_INFO)
+	if(departmentType & RC_INFO)
 		req_console_information |= department
+	icon_state = "" // So icons update correctly
 	update_icon()
 
 /obj/machinery/requests_console/Destroy()
@@ -155,7 +157,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 
 	if(href_list["sendAnnouncement"])
 		if(!announcementConsole)	return
-		announcement.Announce(message, msg_sanitized = 1)
+		SSannounce.play_station_announce(/datum/announce/request_console_announce, message, announce_title, announce_sender, do_newscast = announce_do_newscast, msg_sanitized = TRUE)
 		reset_message(1)
 
 	if( href_list["department"] && message )
@@ -170,7 +172,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 			screen = RCS_SENTPASS
 			message_log += "<B>Message sent to [recipient]</B><BR>[message]"
 		else
-			audible_message(text("\icon[src] *The Requests Console beeps: 'NOTICE: No server detected!'"),,4)
+			audible_message(text("\icon[src] *The Requests Console beeps: 'NOTICE: No server detected!'"),,4, splash_override = "NOTICE: No server detected!")
 
 	//Handle screen switching
 	if(href_list["setScreen"])
@@ -227,7 +229,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 			var/obj/item/card/id/ID = O
 			if (access_RC_announce in ID.GetAccess())
 				announceAuth = 1
-				announcement.announcer = ID.assignment ? "[ID.assignment] [ID.registered_name]" : ID.registered_name
+				announce_sender = ID.assignment ? "[ID.assignment] [ID.registered_name]" : ID.registered_name
 			else
 				reset_message()
 				to_chat(user, "<span class='warning'>You are not authorized to send announcements.</span>")
@@ -247,6 +249,6 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	msgVerified = ""
 	msgStamped = ""
 	announceAuth = 0
-	announcement.announcer = ""
+	announce_sender = ""
 	if(mainmenu)
 		screen = RCS_MAINMENU

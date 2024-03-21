@@ -29,16 +29,16 @@
 
 
 	var/frequency = 0
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 /obj/machinery/atmospherics/trinary/filter/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
+		radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 
-/obj/machinery/atmospherics/trinary/filter/New()
-	..()
+/obj/machinery/atmospherics/trinary/filter/Initialize()
+	. = ..()
 	switch(filter_type)
 		if(0) //removing hydrocarbons
 			filtered_out = list("plasma")
@@ -56,8 +56,9 @@
 	air1.volume = ATMOS_DEFAULT_VOLUME_FILTER
 	air2.volume = ATMOS_DEFAULT_VOLUME_FILTER
 	air3.volume = ATMOS_DEFAULT_VOLUME_FILTER
+	set_frequency(frequency)
 
-/obj/machinery/atmospherics/trinary/filter/update_icon()
+/obj/machinery/atmospherics/trinary/filter/on_update_icon()
 	if(istype(src, /obj/machinery/atmospherics/trinary/filter/m_filter))
 		icon_state = "m"
 	else
@@ -120,10 +121,6 @@
 		use_power_oneoff(power_draw)
 
 	return 1
-
-/obj/machinery/atmospherics/trinary/filter/Initialize()
-	set_frequency(frequency)
-	. = ..()
 
 /obj/machinery/atmospherics/trinary/filter/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
@@ -239,8 +236,8 @@
 	dir = SOUTH
 	initialize_directions = SOUTH|NORTH|EAST
 
-/obj/machinery/atmospherics/trinary/filter/m_filter/New()
-	..()
+/obj/machinery/atmospherics/trinary/filter/m_filter/Initialize()
+	. = ..()
 	switch(dir)
 		if(NORTH)
 			initialize_directions = WEST|NORTH|SOUTH
@@ -250,9 +247,6 @@
 			initialize_directions = EAST|WEST|NORTH
 		if(WEST)
 			initialize_directions = WEST|SOUTH|EAST
-
-/obj/machinery/atmospherics/trinary/filter/m_filter/Initialize()
-	. = ..()
 	set_frequency(frequency)
 
 /obj/machinery/atmospherics/trinary/filter/m_filter/atmos_init()

@@ -5,6 +5,9 @@
 	icon_state = "folder"
 	w_class = ITEM_SIZE_SMALL
 
+	drop_sound = SFX_DROP_PAPER
+	pickup_sound = SFX_PICKUP_PAPER
+
 /obj/item/folder/blue
 	desc = "A blue folder."
 	icon_state = "folder_blue"
@@ -25,10 +28,10 @@
 	desc = "A NanoTrasen folder."
 	icon_state = "folder_nt"
 
-/obj/item/folder/update_icon()
-	overlays.Cut()
+/obj/item/folder/on_update_icon()
+	ClearOverlays()
 	if(contents.len)
-		overlays += "folder_paper"
+		AddOverlays("folder_paper")
 	return
 
 /obj/item/folder/attackby(obj/item/W, mob/user)
@@ -113,7 +116,7 @@
 	icon_state = "envelope_sealed"
 	var/sealed = 1
 
-/obj/item/folder/envelope/update_icon()
+/obj/item/folder/envelope/on_update_icon()
 	if(sealed)
 		icon_state = "envelope_sealed"
 	else

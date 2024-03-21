@@ -83,6 +83,14 @@
 	build_path = /obj/item/reagent_containers/vessel/beaker/noreact
 	sort_string = "MCAAB"
 
+/datum/design/item/spray/noreact
+	desc = "A cryostasis spray that allows for chemical storage without reactions. Can hold up to 250 units."
+	id = "spraynoreact"
+	req_tech = list(TECH_BLUESPACE = 4, TECH_MATERIAL = 6)
+	materials = list(MATERIAL_STEEL = 3000, MATERIAL_PLASMA = 3000)
+	build_path = /obj/item/reagent_containers/spray/noreact
+	sort_string = "MCABA"
+
 /datum/design/item/beaker/bluespace
 	desc = "A bluespace beaker, powered by experimental bluespace technology and Element Cuban combined with the Compound Pete. Can hold up to 300 units."
 	id = "bluespacebeaker"

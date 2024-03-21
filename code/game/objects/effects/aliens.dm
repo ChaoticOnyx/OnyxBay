@@ -28,7 +28,7 @@
 	pixel_x = target.pixel_x
 	pixel_y = target.pixel_y
 	set_next_think(world.time)
-	register_signal(target, SIGNAL_QDELETING, /obj/effect/acid/proc/onTargetDeleted)
+	register_signal(target, SIGNAL_QDELETING, nameof(.proc/onTargetDeleted))
 
 /obj/effect/acid/Destroy()
 	target = null
@@ -58,6 +58,36 @@
 			visible_message(SPAN("alium", "The acid melts \the [src] away into nothing!"))
 			. = TRUE
 			qdel(src)
+			return
+	acid_melted++
+
+/turf/simulated/wall/acid_melt()
+	. = FALSE
+	switch(acid_melted)
+		if(0)
+			visible_message(SPAN("alium", "Acid splats all over \the [src] with a sizzle!"))
+		if(1 to 3)
+			visible_message(SPAN("alium", "The acid eats through \the [src]!"))
+		if(4)
+			visible_message(SPAN("alium", "The acid melts \the [src] away into nothing!"))
+			. = TRUE
+			dismantle_wall()
+			return
+	acid_melted++
+	return
+
+/turf/simulated/floor/acid_melt()
+	. = FALSE
+	switch(acid_melted)
+		if(0)
+			visible_message(SPAN("alium", "Acid splats all over \the [src] with a sizzle!"))
+		if(1 to 3)
+			visible_message(SPAN("alium", "The acid eats through \the [src]!"))
+		if(4)
+			visible_message(SPAN("alium", "The acid melts \the [src] away into nothing!"))
+			. = TRUE
+			dismantle_floor()
+			return
 	acid_melted++
 
 /*
@@ -114,7 +144,7 @@
 			else
 				. += "\nIt's ready to hatch!"
 
-/obj/structure/alien/egg/update_icon()
+/obj/structure/alien/egg/on_update_icon()
 	if(progress == -1)
 		icon_state = "egg_opened"
 	else if(progress < progress_max)
@@ -144,7 +174,7 @@
 
 	anchored = 1
 	density = 0
-	plane = FLOOR_PLANE
+
 	layer = ABOVE_TILE_LAYER
 	var/obj/effect/alien/weeds/node/linked_node = null
 
@@ -223,9 +253,11 @@
 
 	if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
-		if(WT.remove_fuel(0, user))
-			qdel(src)
-			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
+
+		if(!WT.use_tool(src, user, amount = 1))
+			return
+
+		qdel_self()
 
 	else
 		if(prob(50))

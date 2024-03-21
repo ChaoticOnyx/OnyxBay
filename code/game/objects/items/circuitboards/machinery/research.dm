@@ -70,3 +70,14 @@
 	origin_tech = list(TECH_DATA = 4)
 	req_components = list(
 							/obj/item/stack/cable_coil = 15)
+
+/obj/item/circuitboard/stock_parts_processor
+	name = T_BOARD("stock parts processor")
+	build_path = /obj/machinery/stock_parts_processor
+	board_type = "machine"
+	origin_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+	req_components = list(
+							/obj/item/stock_parts/manipulator = 4,
+							/obj/item/stock_parts/scanning_module = 1,
+							/obj/item/stock_parts/console_screen = 1,
+							/obj/item/stock_parts/matter_bin = 1)

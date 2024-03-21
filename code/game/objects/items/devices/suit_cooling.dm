@@ -1,8 +1,8 @@
 /obj/item/device/suit_cooling_unit
 	name = "portable cooling unit"
 	desc = "A large portable heat sink with liquid cooled radiator packaged into a modified backpack."
-	description_info = "You may wear this instead of your packpack to cool yourself down. It is commonly used by IPCs, \
-	as it allows them to go into low pressure environments for more than few seconds without overheating. It runs off energy provided by an internal power cell. \
+	description_info = "You may wear this instead of your packpack to cool yourself down. \
+	It allows them to go into low pressure environments for more than few seconds without overheating. It runs off energy provided by an internal power cell. \
 	Remember to turn it on by clicking it when it's your in your hand before you put it on."
 	description_fluff = "Before the advent of ultra-heat-resistant fibers and flexible alloyed shielding, portable coolers were most commonly used to keep technicians from roasting alive in their suits. Nowadays they have been repurposed to keep IPCs from overheating in vacuum environments."
 
@@ -145,8 +145,8 @@
 
 	return ..()
 
-/obj/item/device/suit_cooling_unit/update_icon()
-	overlays.Cut()
+/obj/item/device/suit_cooling_unit/on_update_icon()
+	ClearOverlays()
 	if (cover_open)
 		if (cell)
 			icon_state = "suitcooler1"
@@ -159,19 +159,19 @@
 	if(!cell || !on)
 		return
 
-	switch(round(cell.percent()))
+	switch(round(CELL_PERCENT(cell)))
 		if(86 to INFINITY)
-			overlays.Add("battery-0")
+			AddOverlays("battery-0")
 		if(69 to 85)
-			overlays.Add("battery-1")
+			AddOverlays("battery-1")
 		if(52 to 68)
-			overlays.Add("battery-2")
+			AddOverlays("battery-2")
 		if(35 to 51)
-			overlays.Add("battery-3")
+			AddOverlays("battery-3")
 		if(18 to 34)
-			overlays.Add("battery-4")
+			AddOverlays("battery-4")
 		if(-INFINITY to 17)
-			overlays.Add("battery-5")
+			AddOverlays("battery-5")
 
 
 /obj/item/device/suit_cooling_unit/_examine_text(mob/user)
@@ -188,4 +188,4 @@
 		. += "\nThe panel is open."
 
 	if (cell)
-		. += "\nThe charge meter reads [round(cell.percent())]%."
+		. += "\nThe charge meter reads [round(CELL_PERCENT(cell))]%."

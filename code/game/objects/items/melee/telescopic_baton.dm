@@ -11,7 +11,10 @@
 	mod_weight = 1.0
 	mod_reach = 0.5
 	mod_handy = 1.0
+	armor_penetration = 20
 	var/on = FALSE
+	drop_sound = SFX_DROP_CROWBAR
+	pickup_sound = SFX_PICKUP_CROWBAR
 
 /obj/item/melee/telebaton/attack_self(mob/user as mob)
 	on = !on
@@ -41,20 +44,21 @@
 	update_icon()
 	update_held_icon()
 
-/obj/item/melee/telebaton/update_icon()
+/obj/item/melee/telebaton/on_update_icon()
 	if(on)
 		icon_state = "telebaton_1"
 		item_state = "telebaton_1"
 	else
 		icon_state = "telebaton_0"
 		item_state = "telebaton_0"
-	if(length(blood_DNA))
-		generate_blood_overlay(TRUE) // Force recheck.
-		overlays.Cut()
-		overlays += blood_overlay
+	update_blood_overlay()
 
 /obj/item/melee/telebaton/attack(mob/target as mob, mob/living/user as mob)
 	if(on)
+		if(is_pacifist(user))
+			to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+			return
+
 		if ((MUTATION_CLUMSY in user.mutations) && prob(50))
 			to_chat(user, "<span class='warning'>You club yourself over the head.</span>")
 			user.Weaken(3 * force)

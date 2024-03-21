@@ -14,12 +14,12 @@
 	var/current_time = world.timeofday
 
 	// Depower the supermatter, as it would quickly blow up once we remove all gases from the pipes.
-	for(var/obj/machinery/power/supermatter/S in GLOB.machines)
+	for(var/obj/machinery/power/supermatter/S in SSmachines.machinery)
 		S.power = 0
 	to_chat(usr, "\[1/5\] - Supermatter depowered")
 
 	// Remove all gases from all pipenets
-	for(var/net in GLOB.machines)
+	for(var/net in SSmachines.machinery)
 		var/datum/pipe_network/PN = net
 		for(var/datum/gas_mixture/G in PN.gases)
 			G.gas = list()
@@ -39,7 +39,7 @@
 
 	for(var/turf/simulated/T in world)
 		T.air = null
-		T.overlays.Remove(unsorted_overlays)
+		T.CutOverlays(unsorted_overlays)
 		T.zone = null
 
 	to_chat(usr, "\[4/5\] - All turfs reset to roundstart values.")

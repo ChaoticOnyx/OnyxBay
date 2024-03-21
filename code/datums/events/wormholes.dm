@@ -15,8 +15,8 @@
 /datum/event/wormholes/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/wormholes/get_conditions_description()
 	. = "<em>Wormholes</em> should not be <em>running</em>.<br>"
@@ -62,7 +62,7 @@
 		set_next_think(world.time + shift_frequency)
 
 /datum/event/wormholes/proc/announce()
-	GLOB.using_map.space_time_anomaly_detected_annoncement()
+	SSannounce.play_station_announce(/datum/announce/space_time_anomaly)
 
 /datum/event/wormholes/proc/end()
 	SSevents.evars["wormholes_running"] = FALSE

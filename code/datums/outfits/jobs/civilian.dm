@@ -123,7 +123,8 @@
 	l_pocket = /obj/item/bikehorn
 	backpack_contents = list(/obj/item/reagent_containers/food/pie = 1,
 							 /obj/item/bananapeel = 1,
-							 /obj/item/reagent_containers/spray/waterflower = 1)
+							 /obj/item/reagent_containers/spray/waterflower = 1,
+							 /obj/item/balloon_box = 1)
 
 /decl/hierarchy/outfit/job/clown/New()
 	..()
@@ -141,4 +142,5 @@
 	gloves = /obj/item/clothing/gloves/white
 	backpack_contents = list(/obj/item/reagent_containers/vessel/bottle/bottleofnothing = 1,
 							 /obj/item/clothing/accessory/suspenders = 1,
-							 /obj/item/reagent_containers/food/baguette = 1)
+							 /obj/item/reagent_containers/food/baguette = 1,
+							 /obj/item/balloon_box = 1)

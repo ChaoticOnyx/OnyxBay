@@ -33,9 +33,8 @@
 	if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
 
-		if(WT.remove_fuel(0, user))
+		if(WT.use_tool(src, user, amount = 1))
 			damage = 15
-			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
 
 	health -= damage
 	healthcheck()
@@ -60,7 +59,7 @@
 	var/sealed = FALSE
 
 /obj/structure/spider/stickyweb/Initialize()
-	..()
+	. = ..()
 	if(prob(50))
 		icon_state = "stickyweb2"
 
@@ -82,10 +81,6 @@
             healthcheck ()
             return
     return ..()
-
-/obj/structure/spider/stickyweb/sealed/Initialize()
-	..()
-	icon_state = "sealedweb"
 
 /obj/structure/spider/stickyweb/CanPass(atom/movable/mover, turf/target)
 	if(sealed)
@@ -126,6 +121,7 @@
 	var/shift_range = 6
 
 /obj/structure/spider/spiderling/Initialize(mapload, atom/parent)
+	. = ..()
 	pixel_x = rand(-shift_range, shift_range)
 	pixel_y = rand(-shift_range, shift_range)
 
@@ -134,12 +130,11 @@
 		dormant = FALSE
 
 	if(dormant)
-		register_signal(src, SIGNAL_MOVED, /obj/structure/spider/spiderling/proc/disturbed)
+		register_signal(src, SIGNAL_MOVED, nameof(.proc/disturbed))
 	else
 		set_next_think(world.time)
 
 	get_light_and_color(parent)
-	. = ..()
 
 /obj/structure/spider/spiderling/hunter
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/hunter
@@ -191,7 +186,7 @@
 
 /obj/structure/spider/spiderling/Bump(atom/user)
 	if(istype(user, /obj/structure/table))
-		src.loc = user.loc
+		forceMove(user.loc)
 	else
 		..()
 
@@ -226,12 +221,12 @@
 					src.visible_message("<B>[src] scrambles into the ventillation ducts!</B>")*/
 
 				spawn(rand(20,60))
-					loc = exit_vent
+					forceMove(exit_vent)
 					var/travel_time = round(get_dist(loc, exit_vent.loc) / 2)
 					spawn(travel_time)
 
 						if(!exit_vent || exit_vent.welded)
-							loc = entry_vent
+							forceMove(entry_vent)
 							entry_vent = null
 							set_next_think(world.time + 1 SECOND)
 							return
@@ -242,11 +237,11 @@
 						sleep(travel_time)
 
 						if(!exit_vent || exit_vent.welded)
-							loc = entry_vent
+							forceMove(entry_vent)
 							entry_vent = null
 							set_next_think(world.time + 1 SECOND)
 							return
-						loc = exit_vent.loc
+						forceMove(exit_vent.loc)
 						entry_vent = null
 						var/area/new_area = get_area(loc)
 						if(new_area)
@@ -279,7 +274,7 @@
 				else
 					greater_form = pick(/mob/living/simple_animal/hostile/giant_spider, /mob/living/simple_animal/hostile/giant_spider/hunter, /mob/living/simple_animal/hostile/giant_spider/nurse)
 			var/mob/living/simple_animal/hostile/giant_spider/S = new greater_form(src.loc)
-			notify_ghosts("[capitalize(S.name)] is now available to possess!", source = S, action = NOTIFY_FOLLOW, posses_mob = TRUE)
+			notify_ghosts("[capitalize(S.name)] is now available to possess!", source = S, action = NOTIFY_POSSES, posses_mob = TRUE)
 
 			S.faction = faction
 			S.directive = directive
@@ -293,8 +288,8 @@
 		if(!O.owner || O.owner.is_ic_dead() || amount_grown > 80)
 			amount_grown = 20 //reset amount_grown so that people have some time to react to spiderlings before they grow big
 			O.implants -= src
-			src.loc = O.owner ? O.owner.loc : O.loc
-			src.visible_message("<span class='warning'>\A [src] emerges from inside [O.owner ? "[O.owner]'s [O.name]" : "\the [O]"]!</span>")
+			forceMove(O.owner ? O.owner.loc : O.loc)
+			visible_message("<span class='warning'>\A [src] emerges from inside [O.owner ? "[O.owner]'s [O.name]" : "\the [O]"]!</span>")
 			if(O.owner)
 				O.owner.apply_damage(1, BRUTE, O.organ_tag)
 		else if(prob(1))
@@ -324,9 +319,9 @@
 	icon_state = "cocoon1"
 	health = 60
 
-/obj/structure/spider/cocoon/Initialize(mapload)
-	icon_state = pick("cocoon1","cocoon2","cocoon3")
+/obj/structure/spider/cocoon/Initialize()
 	. = ..()
+	icon_state = pick("cocoon1", "cocoon2", "cocoon3")
 
 /obj/structure/spider/cocoon/proc/mob_breakout(mob/living/user)// For God's sake, don't make it a closet
 	var/breakout_time = 600

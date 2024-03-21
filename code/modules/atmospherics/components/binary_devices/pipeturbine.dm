@@ -34,8 +34,6 @@
 				initialize_directions = NORTH|SOUTH
 
 	Destroy()
-		loc = null
-
 		if(node1)
 			node1.disconnect(src)
 			QDEL_NULL(network1)
@@ -73,15 +71,15 @@
 			network2.update = 1
 
 	update_icon()
-		overlays.Cut()
+		ClearOverlays()
 		if (dP > 10)
-			overlays += image('icons/obj/pipeturbine.dmi', "moto-turb")
+			AddOverlays(image('icons/obj/pipeturbine.dmi', "moto-turb"))
 		if (kin_energy > 100000)
-			overlays += image('icons/obj/pipeturbine.dmi', "low-turb")
+			AddOverlays(image('icons/obj/pipeturbine.dmi', "low-turb"))
 		if (kin_energy > 500000)
-			overlays += image('icons/obj/pipeturbine.dmi', "med-turb")
+			AddOverlays(image('icons/obj/pipeturbine.dmi', "med-turb"))
 		if (kin_energy > 1000000)
-			overlays += image('icons/obj/pipeturbine.dmi', "hi-turb")
+			AddOverlays(image('icons/obj/pipeturbine.dmi', "hi-turb"))
 
 	attackby(obj/item/W as obj, mob/user as mob)
 		if(isWrench(W))

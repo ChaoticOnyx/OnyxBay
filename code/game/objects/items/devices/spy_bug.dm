@@ -19,8 +19,8 @@
 	var/obj/item/device/radio/spy/radio
 	var/obj/machinery/camera/spy/camera
 
-/obj/item/device/spy_bug/New()
-	..()
+/obj/item/device/spy_bug/Initialize()
+	. = ..()
 	radio = new(src)
 	camera = new(src)
 	GLOB.listening_objects += src
@@ -56,14 +56,20 @@
 /obj/item/device/spy_bug/proc/unpair()
 	paired_with = null
 
-/obj/item/device/spy_bug/Move()
+/obj/item/device/spy_bug/Move(newloc, direct)
 	. = ..()
-	if(. && paired_with)
+	if(!.)
+		return
+
+	if(paired_with)
 		paired_with.bug_moved()
 
 /obj/item/device/spy_bug/forceMove()
 	. = ..()
-	if(. && paired_with)
+	if(!.)
+		return
+
+	if(paired_with)
 		paired_with.bug_moved()
 
 /obj/item/device/spy_monitor
@@ -89,13 +95,19 @@
 	var/list/obj/item/device/spy_bug/bugs = list()
 	var/list/obj/machinery/camera/spy/cameras = list()
 
-/obj/item/device/spy_monitor/New()
-	..()
+	var/weakref/camera_user
+
+/obj/item/device/spy_monitor/Initialize()
+	. = ..()
 	radio = new(src)
 	GLOB.listening_objects += src
 
 /obj/item/device/spy_monitor/Destroy()
 	GLOB.listening_objects -= src
+	var/mob/user = camera_user.resolve()
+	if(istype(user))
+		unregister_signal(user, SIGNAL_MOVED)
+	camera_user = null
 	return ..()
 
 /obj/item/device/spy_monitor/_examine_text(mob/user)
@@ -113,7 +125,7 @@
 	timer = null
 
 /obj/item/device/spy_monitor/proc/start()
-	timer = addtimer(CALLBACK(src, .proc/finish), 10 MINUTES, TIMER_STOPPABLE)
+	timer = addtimer(CALLBACK(src, nameof(.proc/finish)), 10 MINUTES, TIMER_STOPPABLE)
 
 /obj/item/device/spy_monitor/proc/finish()
 	if(length(active_recon_areas_list) && !finish)
@@ -172,7 +184,7 @@
 			to_chat(usr, SPAN_NOTICE("Data collection initiated."))
 			start()
 			if(uplink?.uplink_owner == usr.mind)
-				var/area/A = get_area_name(area_name)
+				var/area/A = get_area_by_name(area_name)
 				active_recon_areas_list += A
 				for(var/datum/antag_contract/recon/C in GLOB.all_contracts)
 					if(C.completed)
@@ -214,30 +226,48 @@
 	if(!can_use_cam(user))
 		return
 
-	selected_camera = cameras[1]
+	if(selected_camera)
+		selected_camera = null
+		user.reset_view()
+		user.unset_machine()
+		return
+
+	selected_camera = tgui_input_list(user, "Select camera bug to view", "Spy Monitor", cameras)
+	register_signal(user, SIGNAL_MOVED, nameof(.proc/user_moved))
+	camera_user = weakref(user)
 	view_camera(user)
 
-	operating = 1
-	while(selected_camera && Adjacent(user))
-		selected_camera = input("Select camera bug to view.") as null|anything in cameras
-	selected_camera = null
-	operating = 0
-
 /obj/item/device/spy_monitor/proc/view_camera(mob/user)
-	spawn(0)
-		while(selected_camera && Adjacent(user))
-			var/turf/T = get_turf(selected_camera)
-			if(!T || !is_on_same_plane_or_station(T.z, user.z) || !selected_camera.can_use())
-				user.unset_machine()
-				user.reset_view(null)
-				to_chat(user, "<span class='notice'>[selected_camera] unavailable.</span>")
-				sleep(90)
-			else
-				user.set_machine(selected_camera)
-				user.reset_view(selected_camera)
-			sleep(10)
+	user.machine = src
+	user.reset_view(selected_camera)
+	while(selected_camera && CanPhysicallyInteract(user))
+		check_eye(user)
+		selected_camera = tgui_input_list(user, "Select camera bug to view", "Spy Monitor", cameras)
+		register_signal(user, SIGNAL_MOVED, nameof(.proc/user_moved), override = TRUE)
+		view_camera(user)
+
+/obj/item/device/spy_monitor/proc/user_moved(mob/moved_user)
+	moved_user.unset_machine()
+	unregister_signal(moved_user, SIGNAL_MOVED)
+	camera_user = null
+
+/obj/item/device/spy_monitor/check_eye(mob/user)
+	if(!selected_camera || QDELETED(selected_camera))
 		user.unset_machine()
-		user.reset_view(null)
+		camera_user = null
+		return
+
+	if(!CanPhysicallyInteract(user))
+		user.unset_machine()
+		camera_user = null
+		return
+
+	var/turf/T = get_turf(selected_camera)
+	if(!T || !is_on_same_plane_or_station(T.z, user.z))
+		user.unset_machine()
+		selected_camera = null
+		camera_user = null
+		return
 
 /obj/item/device/spy_monitor/proc/can_use_cam(mob/user)
 	if(operating)
@@ -258,8 +288,8 @@
 	// These cheap toys are accessible from the syndicate camera console as well
 	network = list(NETWORK_SYNDICATE)
 
-/obj/machinery/camera/spy/New()
-	..()
+/obj/machinery/camera/spy/Initialize()
+	. = ..()
 	name = "DV-136ZB #[random_id(/obj/machinery/camera/spy, 1000,9999)]"
 	c_tag = name
 

@@ -31,11 +31,9 @@
 		return null
 
 	Destroy()
-		loc = null
-
 		if(node)
 			node.disconnect(src)
-			qdel(network)
+			QDEL_NULL(network)
 
 		node = null
 

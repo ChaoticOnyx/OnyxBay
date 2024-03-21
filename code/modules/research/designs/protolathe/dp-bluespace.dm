@@ -7,7 +7,7 @@
 	id = "beacon"
 	req_tech = list(TECH_BLUESPACE = 1)
 	materials = list (MATERIAL_STEEL = 20, MATERIAL_GLASS = 10)
-	build_path = /obj/item/device/radio/beacon
+	build_path = /obj/item/device/bluespace_beacon
 	sort_string = "VADAA"
 
 /datum/design/item/bluespace/gps
@@ -36,6 +36,15 @@
 	materials = list(MATERIAL_GOLD = 3000, MATERIAL_DIAMOND = 1500, MATERIAL_URANIUM = 250)
 	build_path = /obj/item/storage/backpack/holding
 	sort_string = "VAFAA"
+
+/datum/design/item/bluespace/bluespace_shaker
+	name = "Bluespace Shaker"
+	desc = "A newly-developed high-capacity shaker, powered by experimental bluespace technology. Can hold up to 360 units."
+	id = "bluespaceshaker"
+	req_tech = list(TECH_BLUESPACE = 4, TECH_MATERIAL = 6)
+	materials = list(MATERIAL_DIAMOND = 250, MATERIAL_STEEL = 5000, MATERIAL_GLASS = 500, MATERIAL_URANIUM = 200)
+	build_path = /obj/item/reagent_containers/vessel/shaker/bluespace
+	sort_string = "VAFAB"
 
 /datum/design/item/weapon/vortex_manipulator
 	id = "timelord_vortex"

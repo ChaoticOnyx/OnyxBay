@@ -147,7 +147,7 @@
 		to_chat(usr, "<span class='notice'>There's no tape!</span>")
 		return
 	if(mytape.ruined || emagged)
-		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
+		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>", splash_override = "*schtsch*")
 		return
 	if(recording)
 		to_chat(usr, "<span class='notice'>You're already recording!</span>")
@@ -217,7 +217,7 @@
 	if(usr.incapacitated())
 		return
 	if(emagged || mytape.ruined)
-		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
+		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>", splash_override = "*schtsch*")
 		return
 	if(recording || playing)
 		to_chat(usr, "<span class='notice'>You can't wipe the tape while playing or recording!</span>")
@@ -242,7 +242,7 @@
 		to_chat(usr, "<span class='notice'>There's no tape!</span>")
 		return
 	if(mytape.ruined)
-		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
+		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>", splash_override = "*schtsch*")
 		return
 	if(recording)
 		to_chat(usr, "<span class='notice'>You can't playback when recording!</span>")
@@ -265,13 +265,13 @@
 		var/playedmessage = mytape.storedinfo[i]
 		if (findtextEx(playedmessage,"*",1,2)) //remove marker for action sounds
 			playedmessage = copytext(playedmessage,2)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: [playedmessage]</font>")
+		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: [playedmessage]</font>", splash_override = "<font color=Maroon>[playedmessage]</font>")
 
 		if(mytape.storedinfo.len < i+1)
 			playsleepseconds = 1
 			sleep(10)
 			T = get_turf(src)
-			T.audible_message("<font color=Maroon><B>Tape Recorder</B>: End of recording.</font>")
+			T.audible_message("<font color=Maroon><B>Tape Recorder</B>: End of recording.</font>", splash_override = "<font color=Maroon>End of recording</font>")
 			break
 		else
 			playsleepseconds = mytape.timestamp[i+1] - mytape.timestamp[i]
@@ -279,7 +279,7 @@
 		if(playsleepseconds > 14)
 			sleep(10)
 			T = get_turf(src)
-			T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Skipping [playsleepseconds] seconds of silence</font>")
+			T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Skipping [playsleepseconds] seconds of silence</font>", splash_override = "<font color=Maroon>Skipping [playsleepseconds] seconds</font>")
 			playsleepseconds = 1
 		sleep(10 * playsleepseconds)
 
@@ -289,19 +289,19 @@
 
 	if(emagged)
 		var/turf/T = get_turf(src)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: This tape recorder will self-destruct in... Five.</font>")
+		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: This tape recorder will self-destruct in... Five.</font>", splash_override = "<font color=Maroon>Self-destruct in... Five</font>")
 		sleep(10)
 		T = get_turf(src)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Four.</font>")
+		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Four.</font>", splash_override = "<font color=Maroon>Four</font>")
 		sleep(10)
 		T = get_turf(src)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Three.</font>")
+		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Three.</font>", splash_override = "<font color=Maroon>Three</font>")
 		sleep(10)
 		T = get_turf(src)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Two.</font>")
+		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Two.</font>", splash_override = "<font color=Maroon>Two</font>")
 		sleep(10)
 		T = get_turf(src)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: One.</font>")
+		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: One.</font>", splash_override = "<font color=Maroon>One</font>")
 		sleep(10)
 		explode()
 
@@ -316,7 +316,7 @@
 		to_chat(usr, "<span class='notice'>There's no tape!</span>")
 		return
 	if(mytape.ruined || emagged)
-		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
+		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>", splash_override = "*schtsch*")
 		return
 	if(!canprint)
 		to_chat(usr, "<span class='notice'>The recorder can't print that fast!</span>")
@@ -346,7 +346,7 @@
 		record()
 
 
-/obj/item/device/taperecorder/update_icon()
+/obj/item/device/taperecorder/on_update_icon()
 	if(!mytape)
 		icon_state = "[initial(icon_state)]_empty"
 	else if(recording)
@@ -372,10 +372,10 @@
 	var/ruined = 0
 
 
-/obj/item/device/tape/update_icon()
-	overlays.Cut()
+/obj/item/device/tape/on_update_icon()
+	ClearOverlays()
 	if(ruined)
-		overlays += "ribbonoverlay"
+		AddOverlays("ribbonoverlay")
 
 
 /obj/item/device/tape/fire_act()
@@ -432,4 +432,5 @@
 
 //Random colour tapes
 /obj/item/device/tape/random/New()
+	..()
 	icon_state = "tape_[pick("white", "blue", "red", "yellow", "purple")]"

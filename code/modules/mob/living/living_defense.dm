@@ -10,23 +10,17 @@
 	Returns
 	a blocked amount between 0 - 100, representing the success of the armor check.
 */
-/mob/living/proc/run_armor_check(def_zone = null, attack_flag = "melee", armour_pen = 0, absorb_text = null, soften_text = null)
-	if(armour_pen >= 100)
-		return 0 //might as well just skip the processing
+/mob/living/proc/run_armor_check(def_zone = null, attack_flag = "melee", armor_pen = 0, absorb_text = null, soften_text = null)
+	var/armor = get_flat_armor(def_zone, attack_flag)
 
-	var/armor = getarmor(def_zone, attack_flag)
-
-	if(armour_pen >= armor)
+	if(armor_pen >= armor)
 		return 0 //effective_armor is going to be 0, fullblock is going to be 0, blocked is going to 0, let's save ourselves the trouble
 
-	var/effective_armor = (armor - armour_pen)/100
-	var/fullblock = (effective_armor*effective_armor) * ARMOR_BLOCK_CHANCE_MULT
+	var/effective_armor = (armor - armor_pen) / 100
+	var/fullblock = (effective_armor * effective_armor) * ARMOR_BLOCK_CHANCE_MULT
 
-	if(fullblock >= 1 || prob(fullblock*100))
-		if(absorb_text)
-			show_message("<span class='warning'>[absorb_text]</span>")
-		else
-			show_message("<span class='warning'>Your armor absorbs the blow!</span>")
+	if(fullblock >= 1 || prob(fullblock * 100))
+		show_message(SPAN("warning", absorb_text ? absorb_text : "Your armor absorbs the blow!"))
 		return 100
 
 	//this makes it so that X armour blocks X% damage, when including the chance of hard block.
@@ -34,14 +28,11 @@
 	//will always result in higher (non-fullblock) damage absorption too, which is also a nice property
 	//In particular, blocked will increase from 0 to 50 as effective_armor increases from 0 to 0.999 (if it is 1 then we never get here because ofc)
 	//and the average damage absorption = (blocked/100)*(1-fullblock) + 1.0*(fullblock) = effective_armor
-	var/blocked = (effective_armor - fullblock)/(1 - fullblock)*100
+	var/blocked = (effective_armor - fullblock) / (1 - fullblock) * 100
 
 	if(blocked > 20)
 		//Should we show this every single time?
-		if(soften_text)
-			show_message("<span class='warning'>[soften_text]</span>")
-		else
-			show_message("<span class='warning'>Your armor softens the blow!</span>")
+		show_message(SPAN("warning", soften_text ? soften_text : "Your armor softens the blow!"))
 
 	return round(blocked, 1)
 
@@ -55,10 +46,15 @@
 	var/protection_b = 1/(blocked_mult(armor_b)) - 1
 	return 100 - 1/(protection_a + protection_b + 1)*100
 
-//if null is passed for def_zone, then this should return something appropriate for all zones (e.g. area effect damage)
-/mob/living/proc/getarmor(def_zone, type)
+// Returns "flattened" armor value of a bodypart (or the whole body if def_zone = null)
+// Basically just combines all the layers, and thus is used everywhere except direct combat
+/mob/living/proc/get_flat_armor(def_zone, type)
 	return 0
 
+// Returns a list of armor values, from the outer layer (suit accessories) to the inner (undies)
+// Unlike in get_flat_armor(), def_zone MUST be specified, since it would make no sense otherwise
+/mob/living/proc/get_layered_armor(def_zone, type)
+	return null
 
 /mob/living/bullet_act(obj/item/projectile/P, def_zone)
 
@@ -73,15 +69,27 @@
 	var/damage = P.damage
 	var/flags = P.damage_flags()
 	var/absorb = run_armor_check(def_zone, P.check_armour, P.armor_penetration)
-	if(absorb >= damage)
+
+	// Turning bullets blunt and dissipating lasers
+	// Having any positive absorb means the armor's actually workedm one way or another, no need to check for value
+	if(absorb)
 		if(flags & DAM_LASER)
 			//the armour causes the heat energy to spread out, which reduces the damage (and the blood loss)
 			//this is mostly so that armour doesn't cause people to lose MORE fluid from lasers than they would otherwise
 			damage *= FLUIDLOSS_CONC_BURN/FLUIDLOSS_WIDE_BURN
 		flags &= ~(DAM_SHARP|DAM_EDGE)
 
+	// Species-specific bullet_act aka The Platinum Snowflake; seriously what the fuck
+	if(iscarbon(src))
+		var/mob/living/carbon/C = src
+		if(!C.species?.bullet_act(P, C))
+			return
+
+	// Applying damage
 	if(!P.nodamage)
 		apply_damage(damage, P.damage_type, def_zone, absorb, flags, P)
+
+	// Applying projectile-specific stuff
 	P.on_hit(src, absorb, def_zone)
 
 	return absorb
@@ -163,9 +171,13 @@
 	if(!effective_force || blocked >= 100)
 		return 0
 
-	//Hulk modifier
+	// Hulk modifier
 	if(MUTATION_HULK in user.mutations)
 		effective_force *= 2
+
+	// STRONG modifier
+	if(MUTATION_STRONG in user.mutations)
+		effective_force *= 2 // Strong hulks are crazy ngl
 
 	//Apply weapon damage
 	var/damage_flags = I.damage_flags()
@@ -239,7 +251,7 @@
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)
-					src.loc = T
+					forceMove(T)
 					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
 					anchored = 1
 					pinned += O
@@ -263,7 +275,7 @@
 	playsound(src, sound_to_play, sound_loudness, 1)
 
 /mob/living/proc/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
-	O.loc = src
+	O.forceMove(src)
 	src.embedded += O
 	src.verbs += /mob/proc/yank_out_object
 
@@ -387,13 +399,13 @@
 	if(!hud_used) return
 	if(!client) return
 
-	if(hud_used.hud_shown != 1)	//Hud toggled to minimal
-		return
-
 	client.screen -= hud_used.hide_actions_toggle
 	for(var/datum/action/A in actions)
 		if(A.button)
 			client.screen -= A.button
+
+	if(!hud_used.hud_shown)
+		return
 
 	if(hud_used.action_buttons_hidden)
 		if(!hud_used.hide_actions_toggle)
@@ -409,13 +421,16 @@
 
 	var/button_number = 0
 	for(var/datum/action/A in actions)
+		if(QDELETED(A))
+			continue
+
 		button_number++
 		if(A.button == null)
-			var/obj/screen/movable/action_button/N = new(hud_used)
+			var/atom/movable/screen/movable/action_button/N = new(hud_used)
 			N.owner = A
 			A.button = N
 
-		var/obj/screen/movable/action_button/B = A.button
+		var/atom/movable/screen/movable/action_button/B = A.button
 
 		B.UpdateIcon()
 

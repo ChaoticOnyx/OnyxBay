@@ -1,9 +1,16 @@
 /obj/item/clothing
 	name = "clothing"
 	siemens_coefficient = 0.9
+
+	/// How much of a bodypart we cover
+	/// Can be either a number (a common coverage rate for every bodypart we use)
+	/// or a dictionary (i.e. list(UPPER_TORSO = 1.0, LOWER_TORSO = 0.5))
+	var/coverage = 1.0
+
 	var/flash_protection = FLASH_PROTECTION_NONE	// Sets the item's level of flash protection.
 	var/tint = TINT_NONE							// Sets the item's level of visual impairment tint.
-	var/list/species_restricted = list("exclude", SPECIES_NABBER) //Only these species can wear this kit.
+	/// Only these species can wear this kit.
+	var/list/species_restricted = null
 	var/gunshot_residue //Used by forensics.
 
 	var/list/accessories = list()
@@ -45,26 +52,27 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
-		if(blood_overlay_type && blood_DNA && user_human.body_build.blood_icon)
+		if(blood_overlay_type && is_bloodied && user_human.body_build.blood_icon)
 			var/mob_state = get_icon_state(slot)
 			var/mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
 			var/cache_index = "[mob_icon]/[mob_state]/[blood_color]"
 			if(!GLOB.clothing_blood_icons[cache_index])
-				var/image/bloodover = image(icon = user_human.body_build.blood_icon, icon_state = blood_overlay_type)
-				bloodover.color = blood_color
+				var/mutable_appearance/bloodover = mutable_appearance(user_human.body_build.blood_icon, blood_overlay_type, color = blood_color, flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR)
 				bloodover.filters += filter(type = "alpha", icon = icon(mob_icon, mob_state))
 				GLOB.clothing_blood_icons[cache_index] = bloodover
-			ret.overlays |= GLOB.clothing_blood_icons[cache_index]
+
+			ret.AddOverlays(GLOB.clothing_blood_icons[cache_index])
 
 	if(length(accessories))
 		for(var/obj/item/clothing/accessory/A in accessories)
-			ret.overlays |= A.get_mob_overlay(user_mob, slot_tie_str)
+			ret.AddOverlays(A.get_mob_overlay(user_mob, slot_tie_str))
 	return ret
 
 // Aurora forensics port.
 /obj/item/clothing/clean_blood()
 	. = ..()
-	gunshot_residue = null
+	if(.)
+		gunshot_residue = null
 
 /obj/item/clothing/proc/get_fibers()
 	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
@@ -117,12 +125,23 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 				return 0
 	return 1
 
-/obj/item/clothing/equipped(mob/user)
-	playsound(src, SFX_USE_OUTFIT, 75, 1)
-
+/obj/item/clothing/equipped(mob/user, slot)
+	SHOULD_CALL_PARENT(TRUE)
+	for(var/obj/item/clothing/accessory/accessory in accessories)
+		accessory.equipped(user)
 	if(needs_vision_update())
 		update_vision()
 	return ..()
+
+/obj/item/clothing/play_handling_sound(slot)
+	if(!pickup_sound)
+		return
+
+	if(slot == slot_l_hand || slot == slot_r_hand)
+		var/volume = clamp(rand(5,15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
+		playsound(src, pickup_sound, volume, TRUE, extrarange = -5)
+	else
+		playsound(src, SFX_USE_OUTFIT, 75, TRUE, extrarange = -5)
 
 /obj/item/clothing/proc/refit_for_species(target_species)
 	if(!species_restricted)
@@ -131,7 +150,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	//Set species_restricted list
 	switch(target_species)
 		if(SPECIES_HUMAN, SPECIES_SKRELL)	//humanoid bodytypes
-			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC) //skrell/humans/machines can wear each other's suits
+			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL) //skrell/humans can wear each other's suits
 		else
 			species_restricted = list(target_species)
 
@@ -147,9 +166,9 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	//Set species_restricted list
 	switch(target_species)
 		if(SPECIES_SKRELL)
-			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC) //skrell helmets fit humans too
+			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL) //skrell helmets fit humans too
 		if(SPECIES_HUMAN)
-			species_restricted = list(SPECIES_HUMAN, SPECIES_IPC) //human helmets fit IPCs too
+			species_restricted = list(SPECIES_HUMAN)
 		else
 			species_restricted = list(target_species)
 
@@ -185,751 +204,27 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 			to_chat(user, "Attached to \the [src] are [english_list(ties)].")
 		return TOPIC_HANDLED
 
-///////////////////////////////////////////////////////////////////////
-// Ears: headsets, earmuffs and tiny objects
-/obj/item/clothing/ears
-	name = "ears"
-	w_class = ITEM_SIZE_TINY
-	throwforce = 2
-	slot_flags = SLOT_EARS
-	blood_overlay_type = null // These are small anyways
-
-/obj/item/clothing/ears/update_clothing_icon()
-	if (ismob(src.loc))
-		var/mob/M = src.loc
-		M.update_inv_ears()
-
-///////////////////////////////////////////////////////////////////////
-//Glasses
-/*
-SEE_SELF  // can see self, no matter what
-SEE_MOBS  // can see all mobs, no matter what
-SEE_OBJS  // can see all objs, no matter what
-SEE_TURFS // can see all turfs (and areas), no matter what
-SEE_PIXELS// if an object is located on an unlit area, but some of its pixels are
-	      // in a lit area (via pixel_x, y or smooth movement), can see those pixels
-BLIND     // can't see anything
-*/
-/obj/item/clothing/glasses
-	name = "glasses"
-	icon = 'icons/obj/clothing/glasses.dmi'
-	w_class = ITEM_SIZE_SMALL
-	body_parts_covered = EYES
-	slot_flags = SLOT_EYES
-	var/vision_flags = 0
-	var/darkness_view = 0//Base human is 2
-	var/see_invisible = -1
-	var/light_protection = 0
-	blood_overlay_type = null // These are too small to bother, no need to waste CPU time
-
-/obj/item/clothing/glasses/update_clothing_icon()
-	if(ismob(src.loc))
-		var/mob/M = src.loc
-		M.update_inv_glasses()
-
-///////////////////////////////////////////////////////////////////////
-//Gloves
-/obj/item/clothing/gloves
-	name = "gloves"
-	gender = PLURAL //Carn: for grammarically correct text-parsing
-	w_class = ITEM_SIZE_SMALL
-	icon = 'icons/obj/clothing/gloves.dmi'
-	siemens_coefficient = 0.75
-	var/wired = FALSE
-	var/wire_color
-	var/clipped = FALSE
-	var/weakref/ring = null            // Covered ring (obj/item/clothing/ring)
-	var/weakref/wearer = null          // Used for covered rings when dropping (mob/living/carbon/human)
-	var/unarmed_damage_override = null // Overrides unarmed attack damage if not null
-	body_parts_covered = HANDS
-	slot_flags = SLOT_GLOVES
-	attack_verb = list("challenged")
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
-	blood_overlay_type = "bloodyhands"
-
-/obj/item/clothing/gloves/Initialize()
-	if(item_flags & ITEM_FLAG_PREMODIFIED)
-		cut_fingertops()
-	. = ..()
-
-/obj/item/clothing/gloves/Destroy()
-	var/mob/living/carbon/human/H = wearer?.resolve()
-	var/obj/item/clothing/ring/R = ring?.resolve()
-	if(istype(H) && istype(R)) //Put the ring back on if the check fails.
-		H.equip_to_slot_if_possible(R, slot_gloves)
-		ring = null
-	QDEL_NULL(ring)
-	wearer = null
-	return ..()
-
-/obj/item/clothing/gloves/update_clothing_icon()
-	if(ismob(src.loc))
-		var/mob/M = src.loc
-		M.update_inv_gloves()
-
-/obj/item/clothing/gloves/update_icon(needs_updating=FALSE)
-	if(!needs_updating)
-		return ..()
-
-	overlays.Cut()
-
-	if(wired)
-		overlays += image(icon, "gloves_wire")
-
-/obj/item/clothing/gloves/get_fibers()
-	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
-
-	return "material from a pair of [name] ([fiber_id])"
-
-// Called just before an attack_hand(), in mob/UnarmedAttack()
-/obj/item/clothing/gloves/proc/Touch(atom/A, proximity)
-	return FALSE // return TRUE to cancel attack_hand()
-
-/obj/item/clothing/gloves/attackby(obj/item/W, mob/user)
-	if(isWirecutter(W) || istype(W, /obj/item/scalpel))
-		if(wired)
-			wired = FALSE
-			update_icon(TRUE)
-			new /obj/item/stack/cable_coil(user.loc, 15, wire_color)
-			playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
-			to_chat(user, SPAN("notice", "You remove the wires from \the [src]."))
-			return
-
-		if(clipped)
-			to_chat(user, SPAN("notice", "\The [src] have already been modified!"))
-			update_icon()
-			return
-
-		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
-		user.visible_message(SPAN("warning", "\The [user] modifies \the [src] with \the [W]."), SPAN("warning", "You modify \the [src] with \the [W]."))
-
-		cut_fingertops() // apply change, so relevant xenos can wear these
+/obj/item/clothing/proc/get_armor_coverage(def_zone, type, mob/living/carbon/human/H)
+	if(!coverage)
 		return
 
-	if(isCoil(W) && !wired)
-		if(istype(src, /obj/item/clothing/gloves/rig))
-			to_chat(user, SPAN("notice", "That definitely won't work."))
-			return
-		var/obj/item/stack/cable_coil/C = W
-		if(C.use(15))
-			wired = TRUE
-			wire_color = C.color
-			update_icon(TRUE)
-			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [src]."), SPAN("notice", "You attach some wires to \the [src]."))
-			return
-
-	if(istype(W, /obj/item/tape_roll) && wired && user.drop(src))
-		user.visible_message(SPAN("warning", "\The [user] secures the wires on \the [src] with \the [W]."), SPAN("notice", "You secure the wires on \the [src] with \the [W]."))
-		new /obj/item/clothing/gloves/stun(loc, src)
+	if(!type || !def_zone)
 		return
 
-// Applies "clipped" and removes relevant restricted species from the list,
-// making them wearable by the specified species, does nothing if already cut
-/obj/item/clothing/gloves/proc/cut_fingertops()
-	if(clipped)
+	var/obj/item/organ/external/affecting = isorgan(def_zone) ? def_zone : H?.get_organ(check_zone(def_zone))
+
+	if(!affecting)
 		return
 
-	clipped = TRUE
-	name = "modified [name]"
-	desc = "[desc]<br>They have been modified to accommodate a different shape."
-	if("exclude" in species_restricted)
-		species_restricted -= SPECIES_UNATHI
-		species_restricted -= SPECIES_TAJARA
+	// If a BP is specified (or nonspecified) in 'coverage' but not in 'body_parts_covered'
+	// i.e. something like pauldrons providing protection for arms without actually covering them for non-combat logic
+	// then the former takes priority
+	if(islist(coverage))
+		for(var/entry in coverage)
+			if(entry & affecting.body_part)
+				return list(armor[type], coverage[entry])
+
+	else if(body_parts_covered & affecting.body_part)
+		return list(armor[type], coverage)
+
 	return
-
-/obj/item/clothing/gloves/mob_can_equip(mob/user)
-	var/mob/living/carbon/human/H = user
-
-	if(istype(H.gloves, /obj/item/clothing/ring))
-		var/obj/item/clothing/ring/R = H.gloves
-		ring = weakref(R)
-		if(!R.undergloves)
-			to_chat(user, "You are unable to wear \the [src] as \the [R] are in the way.")
-			ring = null
-			return FALSE
-		H.drop(R, src, TRUE) // Remove the ring (or other under-glove item in the hand slot?) so you can put on the gloves.
-
-	if(!..())
-		var/obj/item/clothing/ring/R = ring?.resolve()
-		if(istype(R)) //Put the ring back on if the check fails.
-			if(H.equip_to_slot_if_possible(R, slot_gloves))
-				ring = null
-		return FALSE
-
-	var/obj/item/clothing/ring/R = ring?.resolve()
-	if(istype(R))
-		to_chat(user, "You slip \the [src] on over \the [R].")
-	wearer = weakref(H)
-	return TRUE
-
-/obj/item/clothing/gloves/dropped()
-	..()
-	var/mob/living/carbon/human/H = wearer?.resolve()
-	var/obj/item/clothing/ring/R = ring?.resolve()
-	if(istype(R) && istype(H))
-		if(!H.equip_to_slot_if_possible(R, slot_gloves))
-			R.forceMove(get_turf(src))
-	ring = null
-	wearer = null
-
-///////////////////////////////////////////////////////////////////////
-//Head
-/obj/item/clothing/head
-	name = "head"
-	icon = 'icons/obj/clothing/hats.dmi'
-	item_icons = list(
-		slot_l_hand_str = 'icons/mob/onmob/items/lefthand_hats.dmi',
-		slot_r_hand_str = 'icons/mob/onmob/items/righthand_hats.dmi',
-		)
-	body_parts_covered = HEAD
-	slot_flags = SLOT_HEAD
-	w_class = ITEM_SIZE_SMALL
-
-	var/light_overlay = "helmet_light"
-	var/light_applied
-	var/brightness_on
-	var/on = 0
-
-	blood_overlay_type = "helmetblood"
-
-/obj/item/clothing/head/get_mob_overlay(mob/user_mob, slot)
-	var/image/ret = ..()
-	var/species_name = "Default"
-	if(ishuman(user_mob))
-		var/mob/living/carbon/human/user_human = user_mob
-		species_name = user_human.species.name
-	var/cache_key = "[light_overlay]_[species_name]"
-	if(on && light_overlay_cache[cache_key] && slot == slot_head_str)
-		ret.overlays |= light_overlay_cache[cache_key]
-	return ret
-
-/obj/item/clothing/head/attack_self(mob/user)
-	if(brightness_on)
-		if(!isturf(user.loc))
-			to_chat(user, "You cannot turn the light on while in this [user.loc]")
-			return
-		on = !on
-		to_chat(user, "You [on ? "enable" : "disable"] the helmet light.")
-		update_flashlight(user)
-	else
-		return ..(user)
-
-/obj/item/clothing/head/proc/update_flashlight(mob/user = null)
-	if(on && !light_applied)
-		set_light(0.5, 1, 3)
-		light_applied = 1
-	else if(!on && light_applied)
-		set_light(0)
-		light_applied = 0
-	update_icon(user)
-	user.update_action_buttons()
-
-/obj/item/clothing/head/attack_ai(mob/user)
-	if(!mob_wear_hat(user))
-		return ..()
-
-/obj/item/clothing/head/attack_generic(mob/user)
-	if(!istype(user) || !mob_wear_hat(user))
-		return ..()
-
-/obj/item/clothing/head/proc/mob_wear_hat(mob/user)
-	if(!Adjacent(user))
-		return 0
-	var/success
-	if(istype(user, /mob/living/silicon/robot/drone))
-		var/mob/living/silicon/robot/drone/D = user
-		if(D.hat)
-			success = 2
-		else
-			D.wear_hat(src)
-			success = 1
-	else if(istype(user, /mob/living/carbon/alien/diona))
-		var/mob/living/carbon/alien/diona/D = user
-		if(D.hat)
-			success = 2
-		else
-			D.wear_hat(src)
-			success = 1
-
-	if(!success)
-		return 0
-	else if(success == 2)
-		to_chat(user, "<span class='warning'>You are already wearing a hat.</span>")
-	else if(success == 1)
-		to_chat(user, "<span class='notice'>You crawl under \the [src].</span>")
-	return 1
-
-/obj/item/clothing/head/update_icon(mob/user)
-
-	overlays.Cut()
-	var/mob/living/carbon/human/H
-	if(istype(user,/mob/living/carbon/human))
-		H = user
-
-	if(on)
-
-		// Generate object icon.
-		if(!light_overlay_cache["[light_overlay]_icon"])
-			light_overlay_cache["[light_overlay]_icon"] = image("icon" = 'icons/obj/light_overlays.dmi', "icon_state" = "[light_overlay]")
-		overlays |= light_overlay_cache["[light_overlay]_icon"]
-
-		// Generate and cache the on-mob icon, which is used in update_inv_head().
-		var/cache_key = "[light_overlay][H ? "_[H.species.name]" : ""]"
-		if(!light_overlay_cache[cache_key])
-			var/use_icon = 'icons/mob/light_overlays.dmi'
-			light_overlay_cache[cache_key] = image("icon" = use_icon, "icon_state" = "[light_overlay]")
-
-	if(H)
-		H.update_inv_head()
-
-/obj/item/clothing/head/update_clothing_icon()
-	if (ismob(src.loc))
-		var/mob/M = src.loc
-		M.update_inv_head()
-
-///////////////////////////////////////////////////////////////////////
-//Mask
-/obj/item/clothing/mask
-	name = "mask"
-	icon = 'icons/obj/clothing/masks.dmi'
-	slot_flags = SLOT_MASK
-	body_parts_covered = FACE|EYES
-
-	var/voicechange = 0
-	var/list/say_messages
-	var/list/say_verbs
-	var/down_gas_transfer_coefficient = 0
-	var/down_body_parts_covered = NO_BODYPARTS
-	var/down_icon_state = 0
-	var/down_item_flags = 0
-	var/down_flags_inv = 0
-	var/pull_mask = 0
-	var/hanging = 0
-	var/obj/screen/overlay = null
-	blood_overlay_type = "maskblood"
-
-/obj/item/clothing/mask/New()
-	if(pull_mask)
-		action_button_name = "Adjust Mask"
-		verbs += /obj/item/clothing/mask/proc/adjust_mask
-	..()
-
-/obj/item/clothing/mask/needs_vision_update()
-	return ..() || overlay
-
-/obj/item/clothing/mask/update_clothing_icon()
-	if (ismob(src.loc))
-		var/mob/M = src.loc
-		M.update_inv_wear_mask()
-
-/obj/item/clothing/mask/proc/filter_air(datum/gas_mixture/air)
-	return
-
-/obj/item/clothing/mask/proc/adjust_mask(mob/user)
-	set category = "Object"
-	set name = "Adjust mask"
-	set src in usr
-
-	if(!user.incapacitated(INCAPACITATION_DISABLED))
-		if(!pull_mask)
-			to_chat(usr, "<span class ='notice'>You cannot pull down your [src.name].</span>")
-			return
-		else
-			src.hanging = !src.hanging
-			if (src.hanging)
-				gas_transfer_coefficient = down_gas_transfer_coefficient
-				body_parts_covered = down_body_parts_covered
-				icon_state = down_icon_state
-				item_state = down_icon_state
-				item_flags = down_item_flags
-				flags_inv = down_flags_inv
-				to_chat(usr, "You pull [src] below your chin.")
-			else
-				gas_transfer_coefficient = initial(gas_transfer_coefficient)
-				body_parts_covered = initial(body_parts_covered)
-				icon_state = initial(icon_state)
-				item_state = initial(icon_state)
-				item_flags = initial(item_flags)
-				flags_inv = initial(flags_inv)
-				to_chat(usr, "You pull [src] up to cover your face.")
-			update_clothing_icon()
-			user.update_action_buttons()
-
-/obj/item/clothing/mask/attack_self(mob/user)
-	if(pull_mask)
-		adjust_mask(user)
-
-///////////////////////////////////////////////////////////////////////
-//Shoes
-/obj/item/clothing/shoes
-	name = "shoes"
-	icon = 'icons/obj/clothing/shoes.dmi'
-	desc = "Comfortable-looking shoes."
-	gender = PLURAL //Carn: for grammarically correct text-parsing
-	siemens_coefficient = 0.7
-	body_parts_covered = FEET
-	slot_flags = SLOT_FEET
-
-	var/can_hold_knife
-	var/obj/item/holding
-
-	permeability_coefficient = 0.50
-	force = 2
-	var/overshoes = 0
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
-	blood_overlay_type = "shoeblood"
-
-	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
-
-/obj/item/clothing/shoes/Destroy()
-	if(holding)
-		holding.forceMove(get_turf(src))
-		holding = null
-	QDEL_NULL(holding)
-	return ..()
-
-/obj/item/clothing/shoes/proc/draw_knife()
-	set name = "Draw Boot Knife"
-	set desc = "Pull out your boot knife."
-	set category = "IC"
-	set src in usr
-
-	if(usr.stat || usr.restrained() || usr.incapacitated())
-		return
-
-	holding.forceMove(get_turf(usr))
-
-	if(usr.put_in_hands(holding))
-		usr.visible_message("<span class='warning'>\The [usr] pulls \the [holding] out of \the [src]!</span>", range = 1)
-		holding = null
-	else
-		to_chat(usr, "<span class='warning'>Your need an empty, unbroken hand to do that.</span>")
-		holding.forceMove(src)
-
-	if(!holding)
-		verbs -= /obj/item/clothing/shoes/proc/draw_knife
-
-	update_icon()
-	return
-
-/obj/item/clothing/shoes/attack_hand(mob/living/M)
-	if(can_hold_knife && holding && src.loc == M)
-		draw_knife()
-		return
-	..()
-
-/obj/item/clothing/shoes/attackby(obj/item/I, mob/user)
-	if(can_hold_knife && is_type_in_list(I, list(/obj/item/material/shard, /obj/item/material/butterfly, /obj/item/material/kitchen/utensil, /obj/item/material/hatchet/tacknife, /obj/item/material/knife/shiv)))
-		if(holding)
-			to_chat(user, "<span class='warning'>\The [src] is already holding \a [holding].</span>")
-			return
-		if(!user.drop(I, src))
-			return
-		holding = I
-		user.visible_message("<span class='notice'>\The [user] shoves \the [I] into \the [src].</span>", range = 1)
-		verbs |= /obj/item/clothing/shoes/proc/draw_knife
-		update_icon()
-	else if(istype(I, /obj/item/flame/match))
-		var/obj/item/flame/match/M = I
-		M.light_by_shoes(user)
-	else
-		return ..()
-
-/obj/item/clothing/shoes/update_icon()
-	overlays.Cut()
-	if(holding)
-		overlays += image(icon, "[icon_state]_knife")
-	return ..()
-
-/obj/item/clothing/shoes/proc/handle_movement(turf/walking, running)
-	return
-
-/obj/item/clothing/shoes/update_clothing_icon()
-	if (ismob(src.loc))
-		var/mob/M = src.loc
-		M.update_inv_shoes()
-
-///////////////////////////////////////////////////////////////////////
-//Suit
-/obj/item/clothing/suit
-	icon = 'icons/obj/clothing/suits.dmi'
-	name = "suit"
-	var/fire_resist = 100 CELSIUS
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
-	allowed = list(/obj/item/tank/emergency)
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
-	slot_flags = SLOT_OCLOTHING
-	blood_overlay_type = "suitblood"
-	siemens_coefficient = 0.9
-	w_class = ITEM_SIZE_NORMAL
-
-/obj/item/clothing/suit/update_clothing_icon()
-	if (ismob(src.loc))
-		var/mob/M = src.loc
-		M.update_inv_wear_suit()
-
-/obj/item/clothing/suit/get_mob_overlay(mob/user_mob, slot)
-	var/image/ret = ..()
-	if(item_state_slots && item_state_slots[slot])
-		ret.icon_state = item_state_slots[slot]
-	else
-		ret.icon_state = icon_state
-	return ret
-
-/obj/item/clothing/suit/proc/get_collar()
-	var/icon/C = new('icons/mob/collar.dmi')
-	if(icon_state in C.IconStates())
-		var/image/I = image(C, icon_state)
-		I.color = color
-		return I
-///////////////////////////////////////////////////////////////////////
-//Under clothing
-/obj/item/clothing/under
-	icon = 'icons/obj/clothing/uniforms.dmi'
-	item_icons = list(
-		slot_l_hand_str = 'icons/inv_slots/uniforms/hand_l_default.dmi',
-		slot_r_hand_str = 'icons/inv_slots/uniforms/hand_r_default.dmi',
-		)
-	name = "under"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
-	permeability_coefficient = 0.90
-	slot_flags = SLOT_ICLOTHING
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
-	w_class = ITEM_SIZE_NORMAL
-	force = 0
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_MONKEY)
-	var/has_sensor = SUIT_HAS_SENSORS //For the crew computer 2 = unable to change mode
-	var/sensor_mode = 0
-		/*
-		1 = Report living/dead
-		2 = Report detailed damages
-		3 = Report location
-		*/
-	var/displays_id = 1
-	var/rolled_down = -1 //0 = unrolled, 1 = rolled, -1 = cannot be toggled
-	var/rolled_sleeves = -1 //0 = unrolled, 1 = rolled, -1 = cannot be toggled
-
-	//convenience var for defining the icon state for the overlay used when the clothing is worn.
-	//Also used by rolling/unrolling.
-	var/worn_state = null
-	valid_accessory_slots = list(ACCESSORY_SLOT_UTILITY,ACCESSORY_SLOT_HOLSTER,ACCESSORY_SLOT_ARMBAND,ACCESSORY_SLOT_RANK,ACCESSORY_SLOT_DEPT,ACCESSORY_SLOT_DECOR,ACCESSORY_SLOT_MEDAL,ACCESSORY_SLOT_INSIGNIA)
-	restricted_accessory_slots = list(ACCESSORY_SLOT_UTILITY,ACCESSORY_SLOT_HOLSTER,ACCESSORY_SLOT_ARMBAND,ACCESSORY_SLOT_RANK,ACCESSORY_SLOT_DEPT)
-
-/obj/item/clothing/under/New()
-	..()
-	if(worn_state)
-		if(!item_state_slots)
-			item_state_slots = list()
-		item_state_slots[slot_w_uniform_str] = worn_state
-	else
-		if(item_state)
-			worn_state = item_state
-		else
-			worn_state = icon_state
-
-	//autodetect rollability
-	update_rolldown_status()
-	update_rollsleeves_status()
-	if(rolled_down == -1)
-		verbs -= /obj/item/clothing/under/verb/rollsuit
-	if(rolled_sleeves == -1)
-		verbs -= /obj/item/clothing/under/verb/rollsleeves
-
-/obj/item/clothing/under/attack_hand(mob/user)
-	if(accessories && accessories.len)
-		..()
-	if ((ishuman(usr) || issmall(usr)) && src.loc == user)
-		return
-	..()
-
-/obj/item/clothing/under/proc/update_rolldown_status()
-	var/mob/living/carbon/human/H
-	if(istype(src.loc, /mob/living/carbon/human))
-		H = src.loc
-
-	var/icon/under_icon
-	if(icon_override)
-		under_icon = icon_override
-	else if(item_icons && item_icons[slot_w_uniform_str])
-		under_icon = item_icons[slot_w_uniform_str]
-	else
-		under_icon = default_onmob_icons[slot_w_uniform_str]
-
-	// The _s is because the icon update procs append it.
-	if(("[worn_state]_d") in icon_states(under_icon))
-		if(rolled_down != 1)
-			rolled_down = 0
-	else
-		rolled_down = -1
-	if(H)
-		update_clothing_icon()
-
-/obj/item/clothing/under/proc/update_rollsleeves_status()
-	var/mob/living/carbon/human/H
-	if(istype(src.loc, /mob/living/carbon/human))
-		H = src.loc
-
-	var/icon/under_icon
-	if(icon_override)
-		under_icon = icon_override
-	else if(item_icons && item_icons[slot_w_uniform_str])
-		under_icon = item_icons[slot_w_uniform_str]
-	else
-		under_icon = default_onmob_icons[slot_w_uniform_str]
-
-	// The _s is because the icon update procs append it.
-	if(("[worn_state]_r") in icon_states(under_icon))
-		if(rolled_sleeves != 1)
-			rolled_sleeves = 0
-	else
-		rolled_sleeves = -1
-	if(H)
-		update_clothing_icon()
-
-/obj/item/clothing/under/update_clothing_icon()
-	if(ismob(src.loc))
-		var/mob/M = src.loc
-		M.update_inv_w_uniform(0)
-		M.update_inv_wear_id()
-
-
-/obj/item/clothing/under/_examine_text(mob/user)
-	. = ..()
-	switch(src.sensor_mode)
-		if(0)
-			. += "\nIts sensors appear to be disabled."
-		if(1)
-			. += "\nIts binary life sensors appear to be enabled."
-		if(2)
-			. += "\nIts vital tracker appears to be enabled."
-		if(3)
-			. += "\nIts vital tracker and tracking beacon appear to be enabled."
-
-/obj/item/clothing/under/proc/set_sensors(mob/user as mob)
-	var/mob/M = user
-	if(isobserver(M))
-		return
-	if(user.incapacitated())
-		return
-	if(has_sensor >= SUIT_LOCKED_SENSORS)
-		to_chat(user, "The controls are locked.")
-		return 0
-	if(has_sensor <= SUIT_NO_SENSORS)
-		to_chat(user, "This suit does not have any sensors.")
-		return 0
-
-	var/list/modes = list("Off", "Binary sensors", "Vitals tracker", "Tracking beacon")
-	var/switchMode = input("Select a sensor mode:", "Suit Sensor Mode", modes[sensor_mode + 1]) in modes
-	if(get_dist(user, src) > 1)
-		to_chat(user, "You have moved too far away.")
-		return
-	sensor_mode = modes.Find(switchMode) - 1
-
-	if(src.loc == user)
-		switch(sensor_mode)
-			if(0)
-				user.visible_message("[user] adjusts the tracking sensor on \his [src.name].", "You disable your suit's remote sensing equipment.")
-			if(1)
-				user.visible_message("[user] adjusts the tracking sensor on \his [src.name].", "Your suit will now report whether you are live or dead.")
-			if(2)
-				user.visible_message("[user] adjusts the tracking sensor on \his [src.name].", "Your suit will now report your vital lifesigns.")
-			if(3)
-				user.visible_message("[user] adjusts the tracking sensor on \his [src.name].", "Your suit will now report your vital lifesigns as well as your coordinate position.")
-
-	else if(ismob(src.loc))
-		if(sensor_mode == 0)
-			user.visible_message("<span class='warning'>[user] disables [src.loc]'s remote sensing equipment.</span>", "You disable [src.loc]'s remote sensing equipment.")
-		else
-			user.visible_message("[user] adjusts the tracking sensor on [src.loc]'s [src.name].", "You adjust [src.loc]'s sensors.")
-	else
-		user.visible_message("[user] adjusts the tracking sensor on [src]", "You adjust the sensor on [src].")
-
-/obj/item/clothing/under/emp_act(severity)
-	..()
-	var/new_mode
-	switch(severity)
-		if(1)
-			new_mode = pick(75;SUIT_SENSOR_OFF, 15;SUIT_SENSOR_BINARY, 10;SUIT_SENSOR_VITAL)
-		if(2)
-			new_mode = pick(50;SUIT_SENSOR_OFF, 25;SUIT_SENSOR_BINARY, 20;SUIT_SENSOR_VITAL, 5;SUIT_SENSOR_TRACKING)
-		else
-			new_mode = pick(25;SUIT_SENSOR_OFF, 35;SUIT_SENSOR_BINARY, 30;SUIT_SENSOR_VITAL, 10;SUIT_SENSOR_TRACKING)
-
-	sensor_mode = new_mode
-
-/obj/item/clothing/under/verb/toggle()
-	set name = "Toggle Suit Sensors"
-	set category = "Object"
-	set src in usr
-	set_sensors(usr)
-
-/obj/item/clothing/under/verb/rollsuit()
-	set name = "Roll Down Jumpsuit"
-	set category = "Object"
-	set src in usr
-
-	if(!istype(usr, /mob/living))
-		return
-	if(usr.stat)
-		return
-
-	update_rolldown_status()
-	if(rolled_down == -1)
-		to_chat(usr, "<span class='notice'>You cannot roll down [src]!</span>")
-	if((rolled_sleeves == 1) && !(rolled_down))
-		rolled_sleeves = 0
-
-	rolled_down = !rolled_down
-	if(rolled_down)
-		body_parts_covered &= LOWER_TORSO|LEGS|FEET
-		item_state_slots[slot_w_uniform_str] = "[worn_state]_d"
-	else
-		body_parts_covered = initial(body_parts_covered)
-		item_state_slots[slot_w_uniform_str] = "[worn_state]"
-	update_clothing_icon()
-
-/obj/item/clothing/under/verb/rollsleeves()
-	set name = "Roll Up Sleeves"
-	set category = "Object"
-	set src in usr
-
-	if(!istype(usr, /mob/living))
-		return
-	if(usr.stat)
-		return
-
-	update_rollsleeves_status()
-	if(rolled_sleeves == -1)
-		to_chat(usr, "<span class='notice'>You cannot roll up your [src]'s sleeves!</span>")
-		return
-	if(rolled_down == 1)
-		to_chat(usr, "<span class='notice'>You must roll up your [src] first!</span>")
-		return
-
-	rolled_sleeves = !rolled_sleeves
-	if(rolled_sleeves)
-		body_parts_covered &= ~(ARMS|HANDS)
-		item_state_slots[slot_w_uniform_str] = "[worn_state]_r"
-		to_chat(usr, "<span class='notice'>You roll up your [src]'s sleeves.</span>")
-	else
-		body_parts_covered = initial(body_parts_covered)
-		item_state_slots[slot_w_uniform_str] = "[worn_state]"
-		to_chat(usr, "<span class='notice'>You roll down your [src]'s sleeves.</span>")
-	update_clothing_icon()
-
-/obj/item/clothing/under/rank/New()
-	sensor_mode = pick(0,1,2,3)
-	..()
-
-///////////////////////////////////////////////////////////////////////
-//Rings
-
-/obj/item/clothing/ring
-	name = "ring"
-	w_class = ITEM_SIZE_TINY
-	icon = 'icons/obj/clothing/rings.dmi'
-	slot_flags = SLOT_GLOVES
-	gender = NEUTER
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA)
-	var/undergloves = 1
-	blood_overlay_type = null

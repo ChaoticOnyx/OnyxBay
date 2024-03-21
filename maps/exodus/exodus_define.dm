@@ -34,20 +34,25 @@
 		new /datum/space_level/exodus_2,
 		new /datum/space_level/exodus_3,
 		new /datum/space_level/exodus_4,
-		new /datum/space_level/exodus_5,
-		new /datum/space_level/exodus_6,
 		new /datum/space_level/null_space,
-		new /datum/space_level/telecomms,
+		new /datum/space_level/telecomms
+	)
+
+	derelict_levels = list(
 		new /datum/space_level/construction_site,
 		new /datum/space_level/snow_asteroid,
 		new /datum/space_level/derelict,
-		new /datum/space_level/bearcat_1,
-		new /datum/space_level/bearcat_2,
 		new /datum/space_level/jungle_level,
 		new /datum/space_level/old_restaurant,
 		new /datum/space_level/sensor_array,
+		list(
+		new /datum/space_level/bearcat_1,
+		new /datum/space_level/bearcat_2
+		),
+		list(
 		new /datum/space_level/science_ship_1,
 		new /datum/space_level/science_ship_2
+		)
 	)
 
 	station_name  = "NSS Exodus"
@@ -58,11 +63,6 @@
 	company_name  = "Nanotrasen"
 	company_short = "NT"
 	system_name   = "Nyx"
-
-	shuttle_docked_message = "The scheduled Crew Transfer Shuttle to %Dock_name% has docked with the station. It will depart in approximately %ETD%"
-	shuttle_leaving_dock = "The Crew Transfer Shuttle has left the station. Estimate %ETA% until the shuttle docks at %dock_name%."
-	shuttle_called_message = "A crew transfer to %Dock_name% has been scheduled. The shuttle has been called. It will arrive in approximately %ETA%"
-	shuttle_recall_message = "The scheduled crew transfer has been cancelled."
 
 	evac_controller_type = /datum/evacuation_controller/shuttle
 

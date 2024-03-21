@@ -61,8 +61,8 @@
 /mob/living/airlock_crush(crush_damage)
 	. = ..()
 
-	//using getarmor() instead of run_armor_check() to reflect the fact that this is "slow" damage and not high-impact damage
-	var/protection = blocked_mult(getarmor(null, "melee"))
+	//using get_flat_armor() instead of run_armor_check() to reflect the fact that this is "slow" damage and not high-impact damage
+	var/protection = blocked_mult(get_flat_armor(null, "melee"))
 	crush_damage *= protection
 
 	for(var/i in 1 to round(crush_damage/AIRLOCK_CRUSH_INCREMENT, 1))

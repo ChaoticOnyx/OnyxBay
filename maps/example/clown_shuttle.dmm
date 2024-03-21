@@ -6,7 +6,7 @@
 "B" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall/corner/merchant/sw,/area/space)
 "L" = (/turf/simulated/mineral,/area/space)
 "M" = (/obj/machinery/door/unpowered/shuttle,/turf/simulated/floor/shuttle/purple,/area/space)
-"Z" = (/turf/simulated/shuttle/wall{icon_state = "pwall"; dir = 1},/area/space)
+"Z" = (/turf/simulated/shuttle/wall/merchant{icon_state = "merchwall_straight"},/area/space)
 
 (1,1,1) = {"
 zox

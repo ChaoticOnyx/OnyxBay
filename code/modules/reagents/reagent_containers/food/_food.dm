@@ -123,7 +123,7 @@
 			admin_attack_log(user, M, "Fed the victim with [name] (Reagents: [contained])", "Was fed [src] (Reagents: [contained])", "used [src] (Reagents: [contained]) to feed")
 			user.visible_message(SPAN("danger", "[user] feeds [M] [src]."))
 
-		if(reagents)								//Handle ingestion of the reagent.
+		if(reagents && !(atom_flags & ATOM_FLAG_HOLOGRAM))								//Handle ingestion of the reagent.
 			playsound(M.loc, SFX_EAT, rand(45, 60), FALSE)
 			if(reagents.total_volume)
 				if(reagents.total_volume > bitesize)
@@ -198,11 +198,11 @@
 
 			bitecount++
 			// TODO: Replace with U.update_icon()
-			U.overlays.Cut()
+			U.ClearOverlays()
 			U.loaded = "[src]"
 			var/image/I = new(U.icon, "loadedfood")
 			I.color = src.filling_color
-			U.overlays += I
+			U.AddOverlays(I)
 			// /TODO
 
 			if(!reagents)

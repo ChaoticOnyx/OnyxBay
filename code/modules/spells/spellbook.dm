@@ -12,7 +12,10 @@ var/list/artefact_feedback = list(
 	/obj/item/teleportation_scroll     = "TS",
 	/obj/item/gun/energy/staff         = "ST",
 	/obj/item/gun/energy/staff/animate = "SA",
-	/obj/item/dice/d20/cursed          = "DW"
+	/obj/item/dice/d20/cursed          = "DW",
+	/obj/item/gun/whip_of_torment = "WOT",
+	/obj/item/staff/plague_bell           = "PB",
+	/obj/item/device/ghost_gramophone     = "GG"
 )
 
 /obj/item/spellbook
@@ -199,7 +202,7 @@ var/list/artefact_feedback = list(
 
 	user.mind.wizard.set_class(path)
 	feedback_add_details("wizard_class_choose", user.mind.wizard.class.feedback_tag)
-	to_chat(user, SPAN("notice", "You are now \a [user.mind.wizard.class.name]!"))
+	user.mind.wizard.class.on_class_chosen(user, src)
 
 /obj/item/spellbook/proc/buy_artifact(mob/user, obj/path)
 	var/datum/wizard/W = user.mind.wizard

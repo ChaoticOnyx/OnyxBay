@@ -4,7 +4,7 @@
 /mob/Stat()
 	. = ..()
 	if(. && ability_master?.spell_objects)
-		for(var/obj/screen/ability/spell/screen in ability_master.spell_objects)
+		for(var/atom/movable/screen/ability/spell/screen in ability_master.spell_objects)
 			var/datum/spell/S = screen.spell
 			if((!S.connected_button) || !statpanel(S.panel))
 				continue //Not showing the noclothes spell
@@ -15,17 +15,6 @@
 					statpanel(S.panel, "[S.charge_counter]/[S.charge_max]", S.connected_button)
 				if(SP_HOLDVAR)
 					statpanel(S.panel, "[S.holder_var_type] [S.holder_var_amount]", S.connected_button)
-
-//A fix for when a spell is created before a mob is created
-/mob/Login()
-	. = ..()
-	if(!mind)
-		return
-
-	if(ability_master?.spell_objects)
-		for(var/obj/screen/ability/spell/screen in ability_master.spell_objects)
-			var/datum/spell/S = screen.spell
-			mind.learned_spells |= S
 
 /proc/restore_spells(mob/H)
 	if(!H.mind?.learned_spells)
@@ -52,6 +41,7 @@
 			mind.learned_spells = list()
 		mind.learned_spells |= spell_to_add
 	ability_master.add_spell(spell_to_add, spell_base)
+	SEND_SIGNAL(spell_to_add, SIGNAL_MOB_SPELL_LEARNED, src)
 	return 1
 
 /mob/proc/remove_spell(datum/spell/spell_to_remove)

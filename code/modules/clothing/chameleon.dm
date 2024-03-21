@@ -41,8 +41,11 @@
 
 	return copy //for inheritance
 
-/proc/generate_chameleon_choices(basetype, blacklist=list())
+/proc/generate_chameleon_choices(basetype, blacklist = list(), blacklist_cat = list())
 	. = list()
+
+	for(var/blacklisted_category in blacklist_cat)
+		blacklist |= typesof(blacklisted_category)
 
 	var/i = 1 //in case there is a collision with both name AND icon_state
 	for(var/typepath in typesof(basetype) - blacklist)
@@ -73,8 +76,20 @@
 /obj/item/clothing/under/chameleon/New()
 	..()
 	if(!clothing_choices)
-		var/blocked = list(src.type, /obj/item/clothing/under/gimmick)//Prevent infinite loops and bad jumpsuits.
-		clothing_choices = generate_chameleon_choices(/obj/item/clothing/under, blocked)
+		var/blocked = list( //Prevent infinite loops and bad jumpsuits.
+			type,
+			/obj/item/clothing/under/rank,
+			/obj/item/clothing/under/pj,
+			/obj/item/clothing/under/stripper,
+			/obj/item/clothing/under/swimsuit,
+			/obj/item/clothing/under/wedding
+		)
+		var/blocked_cat = list(
+			/obj/item/clothing/under/monkey,
+			/obj/item/clothing/under/gimmick,
+			/obj/item/clothing/under/vox
+		)
+		clothing_choices = generate_chameleon_choices(/obj/item/clothing/under, blocked, blocked_cat)
 
 /obj/item/clothing/under/chameleon/emp_act(severity)
 	name = "psychedelic"
@@ -113,8 +128,20 @@
 /obj/item/clothing/head/chameleon/New()
 	..()
 	if(!clothing_choices)
-		var/blocked = list(src.type, /obj/item/clothing/head/justice,)//Prevent infinite loops and bad hats.
-		clothing_choices = generate_chameleon_choices(/obj/item/clothing/head, blocked)
+		var/blocked = list( // Prevent infinite loops and bad hats.
+			type,
+			/obj/item/clothing/head/goatcapehood,
+			/obj/item/clothing/head/hoodiehood,
+			/obj/item/clothing/head/winterhood,
+			/obj/item/clothing/head/collectable,
+			/obj/item/clothing/head/helmet/space/skrell,
+			/obj/item/clothing/head/helmet/space/vox
+		)
+		var/blocked_cat = list(
+			/obj/item/clothing/head/lightrig,
+			/obj/item/clothing/head/helmet/space/rig
+		)
+		clothing_choices = generate_chameleon_choices(/obj/item/clothing/head, blocked, blocked_cat)
 
 /obj/item/clothing/head/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
 	SetName(initial(name))
@@ -153,8 +180,30 @@
 /obj/item/clothing/suit/chameleon/New()
 	..()
 	if(!clothing_choices)
-		var/blocked = list(src.type, /obj/item/clothing/suit/justice, /obj/item/clothing/suit/greatcoat)
-		clothing_choices = generate_chameleon_choices(/obj/item/clothing/suit, blocked)
+		var/blocked = list( // Prevent infinite loops and bad hats.
+			type,
+			/obj/item/clothing/suit/armor,
+			/obj/item/clothing/suit/armor/tdome,
+			/obj/item/clothing/suit/greatcoat,
+			/obj/item/clothing/suit/unathi,
+			/obj/item/clothing/suit/tajaran,
+			/obj/item/clothing/suit/poncho,
+			/obj/item/clothing/suit/poncho/roles,
+			/obj/item/clothing/suit/security,
+			/obj/item/clothing/suit/stripper,
+			/obj/item/clothing/suit/storage,
+			/obj/item/clothing/suit/storage/hooded,
+			/obj/item/clothing/suit/storage/toggle,
+			/obj/item/clothing/suit/storage/toggle/forensics,
+			/obj/item/clothing/suit/storage/vest,
+			/obj/item/clothing/suit/space/skrell,
+			/obj/item/clothing/suit/space/vox,
+		)
+		var/blocked_cat = list(
+			/obj/item/clothing/suit/space/rig,
+			/obj/item/clothing/suit/lightrig
+		)
+		clothing_choices = generate_chameleon_choices(/obj/item/clothing/suit, blocked, blocked_cat)
 
 /obj/item/clothing/suit/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
 	SetName(initial(name))
@@ -193,8 +242,17 @@
 /obj/item/clothing/shoes/chameleon/New()
 	..()
 	if(!clothing_choices)
-		var/blocked = list(src.type, /obj/item/clothing/shoes/syndigaloshes, /obj/item/clothing/shoes/cyborg)//prevent infinite loops and bad shoes.
-		clothing_choices = generate_chameleon_choices(/obj/item/clothing/shoes, blocked)
+		var/blocked = list( // Prevent infinite loops and bad hats.
+			type,
+			/obj/item/clothing/shoes/syndigaloshes,
+			/obj/item/clothing/shoes/cyborg,
+			/obj/item/clothing/shoes/black/bluespace_tech
+		)
+		var/blocked_cat = list(
+			/obj/item/clothing/shoes/lightrig,
+			/obj/item/clothing/shoes/magboots/rig
+		)
+		clothing_choices = generate_chameleon_choices(/obj/item/clothing/shoes, blocked, blocked_cat)
 
 /obj/item/clothing/shoes/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
 	SetName(initial(name))
@@ -222,6 +280,7 @@
 	name = "backpack"
 	icon_state = "backpack"
 	item_state = "backpack"
+	inspect_state = FALSE // TODO: Ughhh make it work or something, chameleon clothes are pain in the ass tbh
 	desc = "A backpack outfitted with cloaking tech. It seems to have a small dial inside, kept away from the storage."
 	origin_tech = list(TECH_ILLEGAL = 3)
 	var/global/list/clothing_choices
@@ -229,8 +288,18 @@
 /obj/item/storage/backpack/chameleon/New()
 	..()
 	if(!clothing_choices)
-		var/blocked = list(src.type, /obj/item/storage/backpack/satchel/grey/withwallet)
-		clothing_choices = generate_chameleon_choices(/obj/item/storage/backpack, blocked)
+		var/blocked = list( // Prevent infinite loops and bad hats.
+			type,
+			/obj/item/storage/backpack/chameleon/sydie_kit,
+			/obj/item/storage/backpack/satchel/grey/withwallet,
+			/obj/item/storage/backpack/santabag,
+			/obj/item/storage/backpack/holding/bluespace_tech
+		)
+		var/blocked_cat = list(
+			/obj/item/storage/backpack/dufflebag/syndie_kit,
+			/obj/item/storage/backpack/satchel/syndie_kit
+		)
+		clothing_choices = generate_chameleon_choices(/obj/item/storage/backpack, blocked, blocked_cat)
 
 /obj/item/storage/backpack/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
 	SetName(initial(name))
@@ -279,7 +348,25 @@
 /obj/item/clothing/gloves/chameleon/New()
 	..()
 	if(!clothing_choices)
-		clothing_choices = generate_chameleon_choices(/obj/item/clothing/gloves, list(src.type))
+		var/blocked = list( // Prevent infinite loops and bad hats.
+			type,
+			/obj/item/clothing/gloves/chameleon/robust,
+			/obj/item/clothing/gloves/color/white/bluespace_tech,
+			/obj/item/clothing/gloves/color/white/modified,
+			/obj/item/clothing/gloves/color/modified,
+			/obj/item/clothing/gloves/duty/modified,
+			/obj/item/clothing/gloves/latex/modified,
+			/obj/item/clothing/gloves/latex/nitrile/modified,
+			/obj/item/clothing/gloves/rainbow/modified,
+			/obj/item/clothing/gloves/thick/botany/modified,
+			/obj/item/clothing/gloves/vox,
+			/obj/item/clothing/gloves/stun
+		)
+		var/blocked_cat = list(
+			/obj/item/clothing/gloves/lightrig,
+			/obj/item/clothing/gloves/rig
+		)
+		clothing_choices = generate_chameleon_choices(/obj/item/clothing/gloves, blocked, blocked_cat)
 
 /obj/item/clothing/gloves/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
 	SetName(initial(name))
@@ -333,7 +420,19 @@
 /obj/item/clothing/mask/chameleon/New()
 	..()
 	if(!clothing_choices)
-		clothing_choices = generate_chameleon_choices(/obj/item/clothing/mask, list(src.type))
+		var/blocked = list( // Prevent infinite loops and bad hats.
+			type,
+			/obj/item/clothing/mask/animal_mask,
+			/obj/item/clothing/mask/gas/vox,
+			/obj/item/clothing/mask/gas/poltergeist,
+			/obj/item/clothing/mask/smokable,
+			/obj/item/clothing/mask/smokable/cigarette/syndi_cigs,
+			/obj/item/clothing/mask/smokable/ecig
+		)
+		var/blocked_cat = list(
+			/obj/item/clothing/mask/chameleon
+		)
+		clothing_choices = generate_chameleon_choices(/obj/item/clothing/mask, blocked, blocked_cat)
 
 /obj/item/clothing/mask/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
 	SetName(initial(name))
@@ -373,7 +472,19 @@
 /obj/item/clothing/glasses/chameleon/New()
 	..()
 	if(!clothing_choices)
-		clothing_choices = generate_chameleon_choices(/obj/item/clothing/glasses, list(src.type))
+		var/blocked = list( // Prevent infinite loops and bad hats.
+			type,
+			/obj/item/clothing/mask/animal_mask,
+			/obj/item/clothing/mask/gas/vox,
+			/obj/item/clothing/mask/gas/poltergeist,
+			/obj/item/clothing/mask/smokable,
+			/obj/item/clothing/mask/smokable/cigarette/syndi_cigs,
+			/obj/item/clothing/mask/smokable/ecig
+		)
+		var/blocked_cat = list(
+			/obj/item/clothing/glasses/hud
+		)
+		clothing_choices = generate_chameleon_choices(/obj/item/clothing/glasses, blocked, blocked_cat)
 
 /obj/item/clothing/glasses/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
 	SetName(initial(name))
@@ -410,7 +521,7 @@
 	charge_meter = 0
 	charge_cost = 20 //uses next to no power, since it's just holograms
 	max_shots = 50
-
+	has_safety = FALSE
 	var/obj/item/projectile/copy_projectile
 	var/global/list/gun_choices
 
@@ -432,7 +543,6 @@
 		P.icon_state = initial(copy_projectile.icon_state)
 		P.pass_flags = initial(copy_projectile.pass_flags)
 		P.hitscan = initial(copy_projectile.hitscan)
-		P.step_delay = initial(copy_projectile.step_delay)
 		P.muzzle_type = initial(copy_projectile.muzzle_type)
 		P.tracer_type = initial(copy_projectile.tracer_type)
 		P.impact_type = initial(copy_projectile.impact_type)

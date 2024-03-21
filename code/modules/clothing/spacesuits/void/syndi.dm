@@ -4,9 +4,9 @@
 	desc = "An advanced helmet designed for work in special operations. Property of Gorlex Marauders."
 	icon_state = "rig0-syndie"
 	item_state = "syndie_helm"
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 35, bio = 100)
+	armor = list(melee = 80, bullet = 100, laser = 120, energy = 35, bomb = 30, bio = 100)
 	siemens_coefficient = 0.3
-	species_restricted = list(SPECIES_HUMAN, SPECIES_IPC)
+	species_restricted = list(SPECIES_HUMAN)
 	camera = /obj/machinery/camera/network/syndicate
 	light_overlay = "helmet_light_green" //todo: species-specific light overlays
 	rad_resist = list(
@@ -24,10 +24,10 @@
 		slot_r_hand_str = "syndie_voidsuit",
 	)
 	w_class = ITEM_SIZE_LARGE //normally voidsuits are bulky but the syndi voidsuit is 'advanced' or something
-	armor = list(melee = 60, bullet = 50, laser = 50, energy = 15, bomb = 35, bio = 100)
+	armor = list(melee = 80, bullet = 100, laser = 120, energy = 35, bomb = 30, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword/one_hand,/obj/item/handcuffs)
 	siemens_coefficient = 0.3
-	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC)
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL)
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,

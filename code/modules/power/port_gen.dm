@@ -6,6 +6,7 @@
 	icon_state = "portgen0"
 	density = 1
 	anchored = 0
+	turf_height_offset = 19
 
 	var/active = 0
 	var/power_gen = 5000
@@ -39,7 +40,7 @@
 		handleInactive()
 	update_icon()
 
-/obj/machinery/power/port_gen/update_icon()
+/obj/machinery/power/port_gen/on_update_icon()
 	if(!active)
 		icon_state = initial(icon_state)
 		return 1
@@ -410,16 +411,16 @@
 		rad_source.schedule_decay(5 SECONDS)
 	..()
 
-/obj/machinery/power/port_gen/pacman/super/update_icon()
+/obj/machinery/power/port_gen/pacman/super/on_update_icon()
 	if(..())
 		set_light(0)
 		return 1
-	overlays.Cut()
+	ClearOverlays()
 	if(power_output >= max_safe_output)
 		var/image/I = image(icon,"[initial(icon_state)]rad")
 		I.blend_mode = BLEND_ADD
 		I.alpha = round(255*power_output/max_power_output)
-		overlays += I
+		AddOverlays(I)
 		set_light(0.7, 0.1, rad_power + power_output - max_safe_output, 2, "#3b97ca")
 	else
 		set_light(0)
@@ -463,13 +464,13 @@
 		temperature_gain = 60
 		reagents.remove_any(1)
 		if(prob(2))
-			audible_message("<span class='notice'>[src] churns happily</span>")
+			audible_message("<span class='notice'>[src] churns happily</span>", splash_override = "*churn*")
 	else
 		rad_power = initial(rad_power)
 		temperature_gain = initial(temperature_gain)
 	..()
 
-/obj/machinery/power/port_gen/pacman/super/potato/update_icon()
+/obj/machinery/power/port_gen/pacman/super/potato/on_update_icon()
 	if(..())
 		return 1
 	if(power_output > max_safe_output)
@@ -480,10 +481,10 @@
 		var/obj/item/reagent_containers/R = O
 		if(R.standard_pour_into(src,user))
 			if(reagents.has_reagent("vodka"))
-				audible_message("<span class='notice'>[src] blips happily</span>")
+				audible_message("<span class='notice'>[src] blips happily</span>", splash_override = "*blip!*")
 				playsound(src,'sound/machines/synth_yes.ogg', 50, 0)
 			else
-				audible_message("<span class='warning'>[src] blips in disappointment</span>")
+				audible_message("<span class='warning'>[src] blips in disappointment</span>", splash_override = "*blip...*")
 				playsound(src, 'sound/machines/synth_no.ogg', 50, 0)
 		return
 	..()

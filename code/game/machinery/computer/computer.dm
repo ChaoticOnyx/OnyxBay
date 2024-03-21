@@ -6,21 +6,21 @@
 	anchored = 1.0
 	idle_power_usage = 300 WATTS
 	active_power_usage = 300 WATTS
-	var/circuit = null //The path to the circuit board type. If circuit==null, the computer can't be disassembled.
+
+	/// Typepath of the circuit board. If `null` computer can't be disassembled.
+	var/circuit = null
 	var/processing = 0
 
 	var/icon_keyboard = "generic_key"
 	var/icon_screen = "generic"
-	var/light_max_bright_on = 0.4
+	var/light_max_bright_on = 1.0
 	var/light_inner_range_on = 0.5
-	var/light_outer_range_on = 1
-	var/overlay_layer
+	var/light_outer_range_on = 4
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	turf_height_offset = 12
 	clicksound = 'sound/effects/using/console/press10.ogg'
 
-/obj/machinery/computer/New()
-	overlay_layer = layer
-	..()
+	var/static/list/computer_overlays = list()
 
 /obj/machinery/computer/Initialize()
 	. = ..()
@@ -30,7 +30,7 @@
 
 /obj/machinery/computer/Destroy()
 	GLOB.computer_list -= src
-	
+
 	return ..()
 
 /obj/machinery/computer/emp_act(severity)
@@ -70,23 +70,34 @@
 		set_broken(TRUE)
 	..()
 
-/obj/machinery/computer/update_icon()
-	overlays.Cut()
+/obj/machinery/computer/on_update_icon()
+	ClearOverlays()
 	if(stat & NOPOWER)
-		set_light(0)
 		if(icon_keyboard)
-			overlays += image(icon,"[icon_keyboard]_off", overlay_layer)
+			AddOverlays(OVERLAY(icon, "[icon_keyboard]_off"))
+		set_light(0)
 		return
-	else
-		set_light(light_max_bright_on, light_inner_range_on, light_outer_range_on, 3.5, light_color)
 
 	if(stat & BROKEN)
-		overlays += image(icon, "[icon_state]_broken", overlay_layer)
+		AddOverlays(OVERLAY(icon, "[icon_state]_broken"))
 	else
-		overlays += image(icon, icon_screen, overlay_layer)
+		AddOverlays(OVERLAY(icon, icon_screen))
+		if(icon_keyboard)
+			AddOverlays(OVERLAY(icon, icon_keyboard))
 
-	if(icon_keyboard)
-		overlays += image(icon, icon_keyboard, overlay_layer)
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, icon_screen))
+		if(icon_keyboard)
+			AddOverlays(emissive_appearance(icon, icon_keyboard))
+
+/obj/machinery/computer/proc/update_glow()
+	if(stat & (NOPOWER | BROKEN))
+		set_light(0)
+		return FALSE
+	else
+		set_light(light_max_bright_on, light_inner_range_on, light_outer_range_on, 3.5, light_color)
+		return TRUE
 
 /obj/machinery/computer/proc/decode(text)
 	// Adds line breaks
@@ -119,3 +130,6 @@
 
 /obj/machinery/computer/attack_ghost(mob/ghost)
 	attack_hand(ghost)
+
+/obj/machinery/computer/proc/locate_unit(unit_type)
+	return locate(unit_type) in orange(2, src)

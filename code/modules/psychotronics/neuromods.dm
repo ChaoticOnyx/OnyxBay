@@ -44,42 +44,6 @@
 		user.adjustBruteLoss(-(rand(1, 4) / 10))
 		user.adjustFireLoss(-(rand(1, 4) / 10))
 
-/* -- REMOVE VIEW -- */
-/datum/neuromod/remoteview
-	name = "Remote View"
-	desc = "The neuromod expands mind's possibilities in sight."
-	chance = 1
-
-/datum/neuromod/remoteview/Handle(mob/living/user)
-	if (/mob/living/carbon/human/proc/remoteobserve in user.verbs)
-		return
-
-	user.verbs += /mob/living/carbon/human/proc/remoteobserve
-	user.mutations.Add(mRemote)
-
-/* -- INCREASE SPEED -- */
-/datum/neuromod/increase_speed
-	name = "Powerful Legs"
-	desc = "The neuromod strengths a legs and increases moving speed."
-	chance = 5
-
-/datum/neuromod/increase_speed/Handle(mob/living/user)
-	if (!user.additional_speed)
-		user.additional_speed = 1
-		user.mutations.Add(mRun)
-
-/* Morph */
-/datum/neuromod/morph
-	name = "Morph"
-	desc = "The neuromod makes possible to change appearance."
-
-/datum/neuromod/morph/Handle(mob/living/user)
-	if (/mob/living/carbon/human/proc/morph in user.verbs)
-		return
-
-	user.verbs += /mob/living/carbon/human/proc/morph
-	user.mutations.Add(mMorph)
-
 /* -- TELEPATHY -- */
 /datum/neuromod/telepathy
 	name = "Telepathy"
@@ -91,7 +55,7 @@
 		return
 
 	user.verbs += /mob/living/carbon/human/proc/remotesay
-	user.mutations.Add(mRemotetalk)
+	user.add_mutation(mRemotetalk)
 
 /* - LANGUAGES - */
 

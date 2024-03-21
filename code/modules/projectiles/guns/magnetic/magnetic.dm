@@ -3,7 +3,7 @@
 	desc = "A coilgun hastily thrown together out of a basic frame and advanced power storage components. Is it safe for it to be duct-taped together like that?"
 	icon_state = "coilgun"
 	item_state = "coilgun"
-	icon = 'icons/obj/railgun.dmi'
+	icon = 'icons/obj/guns/railgun.dmi'
 	one_hand_penalty = 1
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 4, TECH_ILLEGAL = 2, TECH_MAGNET = 4)
 	w_class = ITEM_SIZE_LARGE
@@ -25,6 +25,7 @@
 
 	var/power_cost = 950                                       // Cost per fire, should consume almost an entire basic cell.
 	var/power_per_tick                                         // Capacitor charge per think(). Updated based on capacitor rating.
+	has_safety = FALSE
 
 /obj/item/gun/magnetic/Initialize()
 	set_next_think(world.time)
@@ -52,7 +53,7 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/gun/magnetic/update_icon()
+/obj/item/gun/magnetic/on_update_icon()
 	var/list/overlays_to_add = list()
 	if(removable_components)
 		if(cell)
@@ -68,7 +69,7 @@
 	if(loaded)
 		overlays_to_add += image(icon, "[icon_state]_loaded")
 
-	overlays = overlays_to_add
+	SetOverlays(overlays_to_add)
 	..()
 
 /obj/item/gun/magnetic/proc/show_ammo()

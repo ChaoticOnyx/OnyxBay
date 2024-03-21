@@ -5,6 +5,7 @@
 	program_icon_state = "supply"
 	program_key_state = "rd_key"
 	program_menu_icon = "cart"
+	program_light_color = "#B88B2E"
 	extended_desc = "A management tool that allows for ordering of various supplies through the facility's cargo system. Some features may require additional access."
 	size = 21
 	category = PROG_SUPPLY
@@ -159,14 +160,11 @@
 				shuttle.launch(user)
 		else
 			shuttle.launch(user)
-			var/datum/radio_frequency/frequency = radio_controller.return_frequency(1435)
+			var/datum/frequency/frequency = SSradio.return_frequency(1435)
 			if(!frequency)
 				return
 
-			var/datum/signal/status_signal = new
-			status_signal.source = src
-			status_signal.transmission_method = 1
-			status_signal.data["command"] = "supply"
+			var/datum/signal/status_signal = new(list("command" = "supply"))
 			frequency.post_signal(src, status_signal)
 		return 1
 

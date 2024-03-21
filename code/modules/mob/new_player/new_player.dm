@@ -30,6 +30,12 @@
 	verbs += /mob/proc/join_as_actor
 	verbs += /mob/proc/join_response_team
 
+	return INITIALIZE_HINT_NORMAL
+
+/mob/new_player/Destroy()
+	QDEL_NULL(panel)
+	return ..()
+
 /mob/new_player/proc/new_player_panel(forced = FALSE)
 	if(!SScharacter_setup.initialized && !forced)
 		return // Not ready yet.
@@ -42,6 +48,7 @@
 	output += "<p><a href='byond://?src=\ref[src];show_settings=1'>Settings</a></p>"
 
 	if(GAME_STATE <= RUNLEVEL_LOBBY)
+		output += "<a href='byond://?src=\ref[src];predict_manifest=1'>View Crew Manifest Prediction</A><br><br>"
 		if(ready)
 			output += "<p>\[ <span class='linkOn'><b>Ready</b></span> | <a href='byond://?src=\ref[src];ready=0'>Not Ready</a> \]</p>"
 		else
@@ -167,7 +174,7 @@
 			if(!client.holder && !config.ghost.allow_antag_hud)           // For new ghosts we remove the verb from even showing up if it's not allowed.
 				observer.verbs -= /mob/observer/ghost/verb/toggle_antagHUD        // Poor guys, don't know what they are missing!
 			observer.key = key
-			var/obj/screen/splash/S = new(observer.client, TRUE)
+			var/atom/movable/screen/splash/S = new(observer.client, TRUE)
 			S.Fade(TRUE, TRUE)
 			QDEL_NULL(mind)
 			qdel(src)
@@ -199,6 +206,9 @@
 
 	if(href_list["manifest"])
 		ViewManifest()
+
+	if(href_list["predict_manifest"])
+		ViewManifestPrediction()
 
 	if(href_list["SelectedJob"])
 		var/datum/job/job = job_master.GetJob(href_list["SelectedJob"])
@@ -406,7 +416,7 @@
 		var/mob/living/silicon/ai/A = character
 		A.on_mob_init()
 
-		AnnounceArrival(character.real_name, job)
+		SSannounce.announce_arrival(character.real_name, job)
 		SSticker.mode.handle_latejoin(character)
 
 		qdel(C)
@@ -420,7 +430,7 @@
 			CreateModularRecord(character)
 			SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
 
-		AnnounceArrival(character.real_name, job, spawnpoint)
+		SSannounce.announce_arrival(character.real_name, job, spawnpoint)
 
 		matchmaker.do_matchmaking()
 	log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
@@ -501,7 +511,7 @@
 			return null
 		new_character = new(spawn_turf, chosen_species.name)
 		/*if(chosen_species.has_organ[BP_POSIBRAIN] && client && client.prefs.is_shackled)
-			var/obj/item/organ/internal/posibrain/B = new_character.internal_organs_by_name[BP_POSIBRAIN]
+			var/obj/item/organ/internal/cerebrum/posibrain/B = new_character.internal_organs_by_name[BP_POSIBRAIN]
 			if(B)
 				B.shackle(client.prefs.get_lawset())*/ // Removed until we get those cyberdummies working
 
@@ -546,6 +556,7 @@
 			mind.gen_relations_info = client.prefs.relations_info["general"]
 		mind.traits = client.prefs.traits.Copy()
 		mind.transfer_to(new_character)					//won't transfer key since the mind is not active
+		mind = null
 
 	new_character.apply_traits()
 	new_character.SetName(real_name)
@@ -554,7 +565,6 @@
 	new_character.sync_organ_dna()
 	if(client.prefs.disabilities)
 		// Set defer to 1 if you add more crap here so it only recalculates struc_enzymes once. - N3X
-		new_character.dna.SetSEState(GLOB.GLASSESBLOCK,1,0)
 		new_character.disabilities |= NEARSIGHTED
 
 	// Do the initial caching of the player's body icons.
@@ -563,12 +573,15 @@
 	new_character.regenerate_icons()
 
 	new_character.key = key		//Manually transfer the key to log them in
-	var/obj/screen/splash/S = new(new_character.client, TRUE)
+	var/atom/movable/screen/splash/S = new(new_character.client, TRUE)
 	S.Fade(TRUE, TRUE)
 
 	// Give them their cortical stack if we're using them.
 	if(config && config.revival.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
 		new_character.create_stack()
+
+	if(new_character.isSynthetic())
+		new_character.add_synth_emotes()
 
 	return new_character
 
@@ -577,6 +590,16 @@
 	dat += html_crew_manifest(OOC = 1)
 	//show_browser(src, dat, "window=manifest;size=370x420;can_close=1")
 	var/datum/browser/popup = new(src, "Crew Manifest", "Crew Manifest", 370, 420, src)
+	popup.set_content(dat)
+	popup.open()
+
+/mob/new_player/proc/ViewManifestPrediction()
+	if(SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
+		to_chat(src, SPAN("notice", "Please, wait for the game to initialize!"))
+		return
+	var/dat = "<div align='center'>"
+	dat += manifest_prediction()
+	var/datum/browser/popup = new(src, "Crew Manifest Prediction", "Crew Manifest Prediction", 370, 420, src)
 	popup.set_content(dat)
 	popup.open()
 
@@ -622,7 +645,7 @@
 /mob/new_player/is_ready()
 	return ready && ..()
 
-/mob/new_player/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null)
+/mob/new_player/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
 	return
 
 /mob/new_player/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0)

@@ -28,7 +28,7 @@
 		ASSERT(energy > 0)
 
 		src.energy = energy
-	
+
 	switch(radiation_type)
 		if(RADIATION_ALPHA_PARTICLE)
 			src.quality_factor = 20
@@ -39,15 +39,17 @@
 
 	specific_activity = activity
 
-/datum/radiation/proc/copy()
-	var/datum/radiation/R = new(activity, radiation_type, energy)
+/datum/radiation/proc/copy(datum/radiation/target)
+	target.activity = activity
+	target.radiation_type = radiation_type
+	target.energy = energy
+	target.specific_activity = specific_activity
+	target.quality_factor = quality_factor
 
-	R.specific_activity = specific_activity
-
-	return R
+	return target
 
 /datum/radiation/proc/is_ionizing()
-	return energy >= (10 ELECTRONVOLT)
+	return energy >= RADIATION_MIN_IONIZATION
 
 /datum/radiation/proc/travel(atom/source, atom/target)
 	var/atom/current_point = source
@@ -58,10 +60,15 @@
 
 	if(isobj(current_point))
 		var/obj/current_obj = current_point
-		energy = max(energy - current_obj.calc_rad_resistance(src), 0)
+		energy = max(energy - RADIATION_CALC_OBJ_RESIST(src, current_obj), 0)
 		current_point = current_point.loc
-	
-	energy = max(energy / (get_dist(get_turf(source), get_turf(target)) ** 2), 0)
+
+	var/dst = get_dist(get_turf(source), get_turf(target))
+
+	if (dst > MAX_RADIATION_DIST)
+		return FALSE
+
+	energy /= RADIATION_DISTANCE_MULT(dst)
 
 	if(!is_ionizing())
 		return FALSE
@@ -73,11 +80,11 @@
 			continue
 
 		var/obj/current_obj = current_point
-		energy = max(energy - current_obj.calc_rad_resistance(src), 0)
+		energy = max(energy - RADIATION_CALC_OBJ_RESIST(src, current_obj), 0)
 
 		if(!is_ionizing())
 			return FALSE
-		
+
 		current_point = current_point.loc
 
 	// Example of traverse: [turf] -> [turf] -> [closet] -> [human]
@@ -97,11 +104,11 @@
 					target_parent = target_parent.loc
 					continue
 
-				energy = max(energy - target_parent.calc_rad_resistance(src), 0)
+				energy = max(energy - RADIATION_CALC_OBJ_RESIST(src, target_parent), 0)
 
 				if(!is_ionizing())
 					return FALSE
-				
+
 				target_parent = target_parent.loc
 
 			return TRUE
@@ -117,7 +124,7 @@
 			if(source_turf != current_turf)
 				for(var/obj/O in current_turf)
 					if(O.density)
-						energy = max(energy - O.calc_rad_resistance(src), 0)
+						energy = max(energy - RADIATION_CALC_OBJ_RESIST(src, O), 0)
 						break
 
 			current_point = get_step_towards(current_turf, target)
@@ -147,14 +154,6 @@
 
 	return Clamp(resist, 0.0, 1.0)
 
-/obj/proc/calc_rad_resistance(datum/radiation/info)
-	var/resist = rad_resist[info.radiation_type]
-
-	if(atom_flags & ATOM_FLAG_OPEN_CONTAINER)
-		return 0
-
-	return resist
-
 /// This is used when radiation is exposed from the outside.
 ///
 /// When something is exposing radiation inside of the mob - use `radiation` variable directly.
@@ -182,6 +181,10 @@
 	radiation += R.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
 
 /mob/living/carbon/human/rad_act(datum/radiation_source/rad_source)
+
+	if(HAS_TRAIT(src, TRAIT_RADIMMUNE))
+		return
+
 	// `body_coverage` with clothing which coats all parts of the body with 100% resistance to a certain radiation should not give more than 1.0
 	var/static/list/slots_info = list(
 		list(HEAD, 0.02),

@@ -9,25 +9,26 @@
 	w_class = ITEM_SIZE_SMALL
 	pull_sound = SFX_PULL_BODY
 
-	attack_self(mob/user)
-		var/obj/structure/closet/body_bag/R = new /obj/structure/closet/body_bag(user.loc)
-		R.add_fingerprint(user)
-		qdel(src)
+/obj/item/bodybag/attack_self(mob/user)
+	var/obj/structure/closet/body_bag/R = new /obj/structure/closet/body_bag(user.loc)
+	R.add_fingerprint(user)
+	qdel(src)
 
 
 /obj/item/storage/box/bodybags
 	name = "body bags"
 	desc = "This box contains body bags."
 	icon_state = "bodybags"
-	New()
-		..()
-		new /obj/item/bodybag(src)
-		new /obj/item/bodybag(src)
-		new /obj/item/bodybag(src)
-		new /obj/item/bodybag(src)
-		new /obj/item/bodybag(src)
-		new /obj/item/bodybag(src)
-		new /obj/item/bodybag(src)
+
+/obj/item/storage/box/bodybags/Initialize()
+	. = ..()
+	new /obj/item/bodybag(src)
+	new /obj/item/bodybag(src)
+	new /obj/item/bodybag(src)
+	new /obj/item/bodybag(src)
+	new /obj/item/bodybag(src)
+	new /obj/item/bodybag(src)
+	new /obj/item/bodybag(src)
 
 
 /obj/structure/closet/body_bag
@@ -46,26 +47,30 @@
 	var/contains_body = 0
 	dremovable = 0
 	open_delay = 6
+	var/obj/structure/bed/roller/roller_buckled //the roller bed this bodybag is attached to.
+	var/buckle_offset = 5
+	layer = ABOVE_OBJ_LAYER
+	intact_closet = FALSE
 
 /obj/structure/closet/body_bag/attackby(obj/item/W, mob/user)
-	if (istype(W, /obj/item/pen))
-		var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
-		if (user.get_active_hand() != W)
+	if(istype(W, /obj/item/pen))
+		var/t = input(user, "What would you like the label to be?", text("[]", name), null)  as text
+		if(user.get_active_hand() != W)
 			return
-		if (!in_range(src, user) && src.loc != user)
+		if(!in_range(src, user) && loc != user)
 			return
 		t = sanitizeSafe(t, MAX_NAME_LEN)
-		if (t)
-			src.SetName("body bag - ")
-			src.name += t
-			src.overlays += image(src.icon, "bodybag_label")
+		if(t)
+			SetName("body bag - ")
+			name += t
+			AddOverlays(image(icon, "bodybag_label"))
 		else
-			src.SetName("body bag")
+			SetName("body bag")
 	//..() //Doesn't need to run the parent. Since when can fucking bodybags be welded shut? -Agouri
 		return
 	else if(isWirecutter(W))
-		src.SetName("body bag")
-		src.overlays.Cut()
+		SetName("body bag")
+		ClearOverlays()
 		to_chat(user, "You cut the tag off \the [src].")
 		return
 	else if(istype(W, /obj/item/device/healthanalyzer/) && !opened)
@@ -84,13 +89,16 @@
 /obj/structure/closet/body_bag/close()
 	if(..())
 		set_density(0)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /obj/structure/closet/body_bag/proc/fold(user)
-	if(!ishuman(user))	return 0
-	if(opened)	return 0
-	if(contents.len)	return 0
+	if(!ishuman(user))
+		return
+	if(opened)
+		return
+	if(contents.len)
+		return
 	visible_message("[user] folds up the [name]")
 	. = new item_path(get_turf(src))
 	qdel(src)
@@ -100,7 +108,7 @@
 	if((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
 		fold(usr)
 
-/obj/structure/closet/body_bag/update_icon()
+/obj/structure/closet/body_bag/on_update_icon()
 	if(opened)
 		icon_state = icon_opened
 	else

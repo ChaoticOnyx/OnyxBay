@@ -13,11 +13,10 @@
 #define LANGUAGE_CULT "Cult"
 #define LANGUAGE_SIGN "Sign Language"
 #define LANGUAGE_INDEPENDENT "Independent"
-#define LANGUAGE_NABBER "Serpentid"
 #define LANGUAGE_SPACER "Spacer"
 #define LANGUAGE_ROBOT "Robot Talk"
+#define LANGUAGE_DRONE "Drone Talk"
 #define LANGUAGE_LING "Changeling"
-#define LANGUAGE_ABDUCTOR "Mother Ship Mental Interface"
 #define LANGUAGE_SPIDER "Spider"
 
 // Language flags.

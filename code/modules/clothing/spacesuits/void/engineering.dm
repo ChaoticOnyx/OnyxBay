@@ -9,7 +9,13 @@
 		slot_l_hand_str = "eng_helm",
 		slot_r_hand_str = "eng_helm",
 		)
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100)
+	siemens_coefficient = 0.3
+	armor = list(melee = 60, bullet = 50, laser = 60, energy = 45, bomb = 35, bio = 100)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/suit/space/void/engineering
 	name = "engineering voidsuit"
@@ -19,8 +25,14 @@
 		slot_l_hand_str = "eng_voidsuit",
 		slot_r_hand_str = "eng_voidsuit",
 	)
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100)
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+	siemens_coefficient = 0.3
+	armor = list(melee = 60, bullet = 50, laser = 60, energy = 45, bomb = 35, bio = 100)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/construction/rcd)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/suit/space/void/engineering/New()
 	..()
@@ -36,14 +48,14 @@
 	desc = "A heavy, radiation-shielded voidsuit helmet with a surprisingly comfortable interior."
 	icon_state = "rig0-engineeringalt"
 	item_state = "engalt_helm"
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 45, bio = 100)
+	armor = list(melee = 80, bullet = 70, laser = 60, energy = 65, bomb = 35, bio = 100)
 	light_overlay = "helmet_light_dual_low"
 
 /obj/item/clothing/suit/space/void/engineering/alt
 	name = "engineering hardsuit"
 	desc = "A bulky industrial voidsuit. It's a few generations old, but a reliable design and radiation shielding make up for the lack of climate control."
 	icon_state = "rig-engineeringalt"
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 45, bio = 100)
+	armor = list(melee = 80, bullet = 70, laser = 60, energy = 65, bomb = 35, bio = 100)
 
 /obj/item/clothing/suit/space/void/engineering/alt/New()
 	..()

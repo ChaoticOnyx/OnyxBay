@@ -69,7 +69,7 @@ var/list/name_to_material
 	var/display_name                      // Prettier name for display.
 	var/adjective_name
 	var/use_name
-	var/flags = 0                         // Various status modifiers.
+	var/material_flags = 0                         // Various status modifiers.
 	var/sheet_singular_name = "sheet"
 	var/sheet_plural_name = "sheets"
 	var/is_fusion_fuel
@@ -233,7 +233,7 @@ var/list/name_to_material
 
 // Used by walls and weapons to determine if they break or not.
 /material/proc/is_brittle()
-	return !!(flags & MATERIAL_BRITTLE)
+	return !!(material_flags & MATERIAL_BRITTLE)
 
 /material/proc/combustion_effect(turf/T, temperature)
 	return
@@ -256,7 +256,7 @@ var/list/name_to_material
 /material/diamond
 	name = MATERIAL_DIAMOND
 	stack_type = /obj/item/stack/material/diamond
-	flags = MATERIAL_UNMELTABLE
+	material_flags = MATERIAL_UNMELTABLE
 	integrity = 250
 	cut_delay = 60
 	icon_colour = "#cefff6"
@@ -439,6 +439,7 @@ var/list/name_to_material
 
 /material/plasteel/titanium
 	name = MATERIAL_TITANIUM
+	stack_type = /obj/item/stack/material/plasteel/titanium
 	brute_armor = 10
 	burn_armor = 8
 	integrity = 200
@@ -471,7 +472,7 @@ var/list/name_to_material
 /material/glass
 	name = MATERIAL_GLASS
 	stack_type = /obj/item/stack/material/glass
-	flags = MATERIAL_BRITTLE
+	material_flags = MATERIAL_BRITTLE
 	icon_colour = "#b5edff"
 	opacity = 0.3
 	integrity = 50
@@ -583,7 +584,7 @@ var/list/name_to_material
 	name = MATERIAL_REINFORCED_GLASS
 	display_name = "reinforced glass"
 	stack_type = /obj/item/stack/material/glass/reinforced
-	flags = MATERIAL_BRITTLE
+	material_flags = MATERIAL_BRITTLE
 	icon_colour = "#97d3e5"
 	window_icon_base = "rwindow"
 	opacity = 0.3
@@ -607,7 +608,7 @@ var/list/name_to_material
 	name = MATERIAL_PLASS
 	display_name = "plass"
 	stack_type = /obj/item/stack/material/glass/plass
-	flags = MATERIAL_BRITTLE
+	material_flags = MATERIAL_BRITTLE
 	integrity = 70
 	brute_armor = 2
 	burn_armor = 5
@@ -677,7 +678,7 @@ var/list/name_to_material
 /material/plastic
 	name = MATERIAL_PLASTIC
 	stack_type = /obj/item/stack/material/plastic
-	flags = MATERIAL_BRITTLE
+	material_flags = MATERIAL_BRITTLE
 	icon_base = "solid"
 	icon_reinf = "reinf_over"
 	icon_colour = "#cccccc"
@@ -779,7 +780,7 @@ var/list/name_to_material
 /material/darkwood
 	name = MATERIAL_DARKWOOD
 	adjective_name = "darkwooden"
-	stack_type = /obj/item/stack/material/wood
+	stack_type = /obj/item/stack/material/darkwood
 	icon_colour = "#892929"
 	integrity = 50
 	icon_base = "solid"
@@ -842,7 +843,7 @@ var/list/name_to_material
 /material/cardboard
 	name = MATERIAL_CARDBOARD
 	stack_type = /obj/item/stack/material/cardboard
-	flags = MATERIAL_BRITTLE
+	material_flags = MATERIAL_BRITTLE
 	integrity = 10
 	icon_base = "solid"
 	icon_reinf = "reinf_over"
@@ -865,7 +866,7 @@ var/list/name_to_material
 	door_icon_base = "wood"
 	ignition_point = 232 CELSIUS
 	melting_point = 300 CELSIUS
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	brute_armor = 1
 	conductive = 0
 	craft_tool = 1
@@ -936,7 +937,7 @@ var/list/name_to_material
 	name = MATERIAL_LEATHER
 	icon_colour = "#5c4831"
 	stack_origin_tech = list(TECH_MATERIAL = 2)
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 300 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0
@@ -947,7 +948,7 @@ var/list/name_to_material
 	display_name = "comfy"
 	use_name = "red upholstery"
 	icon_colour = "#da020a"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 232 CELSIUS
 	melting_point = 300 CELSIUS
 	sheet_singular_name = "tile"
@@ -959,7 +960,7 @@ var/list/name_to_material
 	name = MATERIAL_COTTON
 	display_name ="cotton"
 	icon_colour = "#ffffff"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 232 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0
@@ -970,7 +971,7 @@ var/list/name_to_material
 	display_name ="teal"
 	use_name = "teal cloth"
 	icon_colour = "#00eafa"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 232 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0
@@ -980,7 +981,7 @@ var/list/name_to_material
 	display_name = "black"
 	use_name = "black cloth"
 	icon_colour = "#505050"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 232 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0
@@ -990,7 +991,7 @@ var/list/name_to_material
 	display_name = "green"
 	use_name = "green cloth"
 	icon_colour = "#01c608"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 232 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0
@@ -1000,7 +1001,7 @@ var/list/name_to_material
 	display_name = "purple"
 	use_name = "purple cloth"
 	icon_colour = "#9c56c4"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 232 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0
@@ -1010,7 +1011,7 @@ var/list/name_to_material
 	display_name = "blue"
 	use_name = "blue cloth"
 	icon_colour = "#6b6fe3"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 232 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0
@@ -1020,7 +1021,7 @@ var/list/name_to_material
 	display_name = "beige"
 	use_name = "beige cloth"
 	icon_colour = "#e8e7c8"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 232 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0
@@ -1030,7 +1031,7 @@ var/list/name_to_material
 	display_name = "lime"
 	use_name = "lime cloth"
 	icon_colour = "#62e36c"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 232 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0
@@ -1041,7 +1042,7 @@ var/list/name_to_material
 	stack_type = /obj/item/stack/material/animalhide/goat
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	icon_colour = "#e8e7c8"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 300 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0
@@ -1053,7 +1054,7 @@ var/list/name_to_material
 	stack_type = /obj/item/stack/material/hairlesshide
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	icon_colour = "#e8e7c8"
-	flags = MATERIAL_PADDING
+	material_flags = MATERIAL_PADDING
 	ignition_point = 300 CELSIUS
 	melting_point = 300 CELSIUS
 	conductive = 0

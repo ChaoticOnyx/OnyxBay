@@ -12,6 +12,7 @@
 	use_power = POWER_USE_OFF
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_sound = SFX_PULL_MACHINE
+	turf_height_offset = 12
 	var/state = STAGE_CABLE
 	var/obj/item/vending_cartridge/cartridge
 
@@ -23,7 +24,7 @@
 		D = "It is [name]. It has no vending cartridge inside."
 	desc = D
 
-/obj/machinery/vending_frame/update_icon()
+/obj/machinery/vending_frame/on_update_icon()
 	switch(state)
 		if(STAGE_CABLE)
 			icon_state = "vbox_0"
@@ -65,15 +66,15 @@
 				create_vendomat()
 
 /obj/machinery/vending_frame/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user)
-	if(!WT.remove_fuel(0, user))
-		to_chat(user, "The welding tool must be on to complete this task.")
+	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
 		return
-	playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-	if(do_after(user, 20, src))
-		if(!src || !WT.isOn()) return
-		to_chat(user, "<span class='notice'>You deconstruct the frame.</span>")
-		new /obj/item/stack/material/steel(src.loc, 5)
-		qdel(src)
+
+	if(QDELETED(src) || !user)
+		return
+
+	to_chat(user, SPAN_NOTICE("You deconstruct the frame."))
+	new /obj/item/stack/material/steel(src.loc, 5)
+	qdel(src)
 
 /obj/machinery/vending_frame/proc/wrench_frame(mob/user)
 	playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)

@@ -210,21 +210,6 @@
 	"ko","ne","en","po","ra","li","on","byl","cto","eni","ost","ol","ego","ver","stv","pro")
 	shorthand = "IN"
 
-/datum/language/nabber
-	name = LANGUAGE_NABBER
-	desc = "A strange language that can be understood both by the sounds made and by the movement needed to create those sounds."
-	signlang_verb = list("chitters", "grinds its mouthparts", "chitters and grinds its mouthparts")
-	key = "n"
-	flags = RESTRICTED | SIGNLANG | NO_STUTTER | NONVERBAL
-	colour = ".nabber_lang"
-	shorthand = "SD"
-
-/datum/language/nabber/get_random_name(gender)
-	if(gender == FEMALE)
-		return capitalize(pick(GLOB.first_names_female))
-	else
-		return capitalize(pick(GLOB.first_names_male))
-
 /datum/language/spacer
 	name = LANGUAGE_SPACER
 	desc = "A pidgin language spoken by haulers, merchants, traders, travellers, and cocky fly-boys across the galaxy."

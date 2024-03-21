@@ -35,10 +35,6 @@ var/datum/evacuation_controller/evacuation_controller
 
 	var/list/evacuation_options = list()
 
-	var/datum/announcement/priority/evac_waiting =  new(0)
-	var/datum/announcement/priority/evac_called =   new(0)
-	var/datum/announcement/priority/evac_recalled = new(0)
-
 /datum/evacuation_controller/proc/auto_recall(_recall)
 	recall = _recall
 
@@ -91,10 +87,14 @@ var/datum/evacuation_controller/evacuation_controller
 	if(emergency_evacuation)
 		toggle_emergency_light(TRUE)
 		if(!skip_announce)
-			GLOB.using_map.emergency_shuttle_called_announcement()
+			SSannounce.play_announce(
+				/datum/announce/emergency_shuttle_called,
+				"The emergency shuttle begins preparations for departure to [station_name()]. Prepare valuable property, wounded and arrested people for evacuation. Estimate [round(evacuation_controller.get_eta()/60)] minute\s until the shuttle docks at [GLOB.using_map.dock_name].")
 	else
 		if(!skip_announce)
-			priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.shuttle_called_message, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(get_eta()/60)] minute\s"))
+			SSannounce.play_announce(
+				/datum/announce/shuttle_called,
+				"The shuttle begins preparations for departure to [station_name()]. Prepare valuable property, wounded and arrested people for scheduled transfer. Estimate [round(evacuation_controller.get_eta()/60)] minute\s until the shuttle docks at [GLOB.using_map.dock_name].")
 
 	return 1
 
@@ -114,11 +114,11 @@ var/datum/evacuation_controller/evacuation_controller
 	auto_recall_time =  null
 
 	if(emergency_evacuation)
-		evac_recalled.Announce(GLOB.using_map.emergency_shuttle_recall_message)
+		SSannounce.play_announce(/datum/announce/emergency_shuttle_recalled)
 		emergency_evacuation = 0
 		toggle_emergency_light(FALSE)
 	else
-		priority_announcement.Announce(GLOB.using_map.shuttle_recall_message)
+		SSannounce.play_announce(/datum/announce/shuttle_recalled)
 
 	return 1
 
@@ -127,9 +127,9 @@ var/datum/evacuation_controller/evacuation_controller
 
 	var/estimated_time = round(get_eta()/60,1)
 	if (emergency_evacuation)
-		evac_waiting.Announce(replacetext(GLOB.using_map.emergency_shuttle_docked_message, "%ETD%", "[estimated_time] minute\s"), new_sound = sound('sound/effects/Evacuation.ogg', volume = 35))
+		SSannounce.play_announce(/datum/announce/emergency_shuttle_docked, "The Emergency Shuttle has docked with the station. You have approximately [estimated_time] minute\s to board the Emergency Shuttle.")
 	else
-		priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.shuttle_docked_message, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETD%", "[estimated_time] minute\s"))
+		SSannounce.play_announce(/datum/announce/shuttle_docked, "The scheduled Crew Transfer Shuttle to [GLOB.using_map.dock_name] has docked with the station. It will depart in approximately [estimated_time] minute\s")
 	if(config.external.announce_shuttle_dock_to_irc)
 		send2mainirc("The shuttle has docked with the station. It will depart in approximately [estimated_time] minute\s.")
 
@@ -141,10 +141,11 @@ var/datum/evacuation_controller/evacuation_controller
 	state = EVAC_IN_TRANSIT
 
 	if (emergency_evacuation)
-		priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.emergency_shuttle_leaving_dock, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(get_eta()/60,1)] minute\s"))
+		SSannounce.play_announce(/datum/announce/emergency_shuttle_leaving_dock, "The Emergency Shuttle has left the station. Estimate [round(get_eta()/60,1)] minute\s until the shuttle docks at [GLOB.using_map.dock_name].")
 	else
-		priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.shuttle_leaving_dock, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(get_eta()/60,1)] minute\s"))
+		SSannounce.play_announce(/datum/announce/shuttle_leaving_dock, "The Crew Transfer Shuttle has left the station. Estimate [round(get_eta()/60,1)] minute\s until the shuttle docks at [GLOB.using_map.dock_name].")
 
+	launch_map_vote()
 	return 1
 
 /datum/evacuation_controller/proc/finish_evacuation()
@@ -186,3 +187,19 @@ var/datum/evacuation_controller/evacuation_controller
 /datum/evacuation_controller/proc/toggle_emergency_light(state)
 	for(var/area/A in GLOB.hallway)
 		A.set_lighting_mode(LIGHTMODE_EVACUATION, state)
+
+/datum/evacuation_controller/proc/launch_map_vote()
+	if(config.game.map_switching && GLOB.all_maps.len > 1)
+		if (config.game.auto_map_vote)
+			SSvote.initiate_vote(new /datum/vote/map/end_game, forced = TRUE)
+		else if (config.game.auto_map_switching)
+			// Select random map exclude the current
+			var/datum/map/current_map = GLOB.using_map
+			var/datum/map/next_map = current_map
+
+			while (next_map.type == current_map.type)
+				next_map = GLOB.all_maps[pick(GLOB.all_maps)]
+
+			to_world("<span class='notice'>Map has been changed to: <b>[next_map.name]</b></span>")
+			fdel("data/use_map")
+			text2file("[next_map.type]", "data/use_map")

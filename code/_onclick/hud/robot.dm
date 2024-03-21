@@ -1,4 +1,4 @@
-var/obj/screen/robot_inventory
+var/atom/movable/screen/robot_inventory
 
 /mob/living/silicon/robot
 	bubble_icon = "robot"
@@ -10,137 +10,145 @@ var/obj/screen/robot_inventory
 
 	var/mob/living/silicon/robot/R = mymob
 
-	adding = list()
-	other = list()
+	infodisplay = list()
+	static_inventory = list()
 
-	var/obj/screen/using
+	var/atom/movable/screen/using
 
 //Radio
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("radio")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_robot.dmi'
 	using.icon_state = "radio"
 	using.screen_loc = ui_movi
-	adding += using
+	static_inventory += using
 
 //Module select
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("module1")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_robot.dmi'
 	using.icon_state = "inv1"
 	using.screen_loc = ui_inv1
-	adding += using
+	static_inventory += using
 	R.inv1 = using
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("module2")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_robot.dmi'
 	using.icon_state = "inv2"
 	using.screen_loc = ui_inv2
-	adding += using
+	static_inventory += using
 	R.inv2 = using
 
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("module3")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_robot.dmi'
 	using.icon_state = "inv3"
 	using.screen_loc = ui_inv3
-	adding += using
+	static_inventory += using
 	R.inv3 = using
 
 //End of module select
 
 //Intent
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("act_intent")
 	using.set_dir(SOUTHWEST)
 	using.icon = 'icons/hud/mob/screen_robot.dmi'
 	using.icon_state = R.a_intent
 	using.screen_loc = ui_acti
-	adding += using
+	static_inventory += using
 	action_intent = using
 
 //Cell
-	R.cells = new /obj/screen()
+	R.cells = new /atom/movable/screen()
 	R.cells.icon = 'icons/hud/mob/screen_robot.dmi'
 	R.cells.icon_state = "charge-empty"
 	R.cells.SetName("cell")
 	R.cells.screen_loc = ui_toxin
+	infodisplay += R.cells
 
 //Health
-	R.healths = new /obj/screen()
+	R.healths = new /atom/movable/screen()
 	R.healths.icon = 'icons/hud/mob/screen_robot.dmi'
 	R.healths.icon_state = "health0"
 	R.healths.SetName("health")
 	R.healths.screen_loc = ui_borg_health
+	infodisplay += R.healths
 
 //Installed Module
-	R.hands = new /obj/screen()
+	R.hands = new /atom/movable/screen()
 	R.hands.icon = 'icons/hud/mob/screen_robot.dmi'
 	R.hands.icon_state = "nomod"
 	R.hands.SetName("module")
 	R.hands.screen_loc = ui_borg_module
+	static_inventory += R.hands
 
 //Module Panel
-	using = new /obj/screen()
+	using = new /atom/movable/screen()
 	using.SetName("panel")
 	using.icon = 'icons/hud/mob/screen_robot.dmi'
 	using.icon_state = "panel"
 	using.screen_loc = ui_borg_panel
-	adding += using
+	static_inventory += using
 
 //Store
-	R.throw_icon = new /obj/screen()
+	R.throw_icon = new /atom/movable/screen()
 	R.throw_icon.icon = 'icons/hud/mob/screen_robot.dmi'
 	R.throw_icon.icon_state = "store"
 	R.throw_icon.SetName("store")
 	R.throw_icon.screen_loc = ui_borg_store
+	static_inventory += R.throw_icon
 
 //Inventory
-	robot_inventory = new /obj/screen()
+	robot_inventory = new /atom/movable/screen()
 	robot_inventory.SetName("inventory")
 	robot_inventory.icon = 'icons/hud/mob/screen_robot.dmi'
 	robot_inventory.icon_state = "inventory"
 	robot_inventory.screen_loc = ui_borg_inventory
+	static_inventory += robot_inventory
 
 //Temp
-	R.bodytemp = new /obj/screen()
+	R.bodytemp = new /atom/movable/screen()
 	R.bodytemp.icon = 'icons/hud/mob/screen_robot.dmi'
 	R.bodytemp.icon_state = "temp0"
 	R.bodytemp.SetName("temperature")
 	R.bodytemp.screen_loc = ui_fire
+	infodisplay += R.bodytemp
 
-	R.oxygen = new /obj/screen()
+	R.oxygen = new /atom/movable/screen()
 	R.oxygen.icon = 'icons/hud/mob/screen_robot.dmi'
 	R.oxygen.icon_state = "oxy0"
 	R.oxygen.SetName("oxygen")
 	R.oxygen.screen_loc = ui_oxygen
+	infodisplay += R.oxygen
 
-	R.pullin = new /obj/screen()
+	R.pullin = new /atom/movable/screen()
 	R.pullin.icon = 'icons/hud/mob/screen_robot.dmi'
 	R.pullin.icon_state = "pull0"
 	R.pullin.SetName("pull")
 	R.pullin.screen_loc = ui_borg_pull
+	static_inventory += R.pullin
 
-	R.zone_sel = new /obj/screen/zone_sel()
+	R.zone_sel = new /atom/movable/screen/zone_sel()
 	R.zone_sel.icon = 'icons/hud/mob/screen_robot.dmi'
-	R.zone_sel.overlays.Cut()
-	R.zone_sel.overlays += image('icons/hud/common/screen_zone_sel.dmi', "[R.zone_sel.selecting]")
+	R.zone_sel.ClearOverlays()
+	R.zone_sel.AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[R.zone_sel.selecting]"))
+	static_inventory += R.zone_sel
 
 	//Handle the gun settings buttons
-	R.gun_setting_icon = new /obj/screen/gun/mode(null)
-	R.item_use_icon = new /obj/screen/gun/item(null)
-	R.gun_move_icon = new /obj/screen/gun/move(null)
-	R.radio_use_icon = new /obj/screen/gun/radio(null)
+	R.gun_setting_icon = new /atom/movable/screen/gun/mode(null)
+	R.item_use_icon = new /atom/movable/screen/gun/item(null)
+	R.gun_move_icon = new /atom/movable/screen/gun/move(null)
+	R.radio_use_icon = new /atom/movable/screen/gun/radio(null)
 
-	R.client.screen = list()
-	R.client.screen += list(R.throw_icon, R.zone_sel, R.oxygen, R.bodytemp, R.hands, R.healths, R.cells, R.pullin, robot_inventory, R.gun_setting_icon)
-	R.client.screen += src.adding + src.other
+	static_inventory += list(R.gun_setting_icon, R.item_use_icon, R.gun_move_icon, R.radio_use_icon)
+
 
 /datum/hud/proc/toggle_show_robot_modules()
 	if(!isrobot(mymob))
@@ -183,7 +191,7 @@ var/obj/screen/robot_inventory
 		var/x = -4	//Start at CENTER-4,SOUTH+1
 		var/y = 1
 
-		//Unfortunately adding the emag module to the list of modules has to be here. This is because a borg can
+		//Unfortunately static_inventory the emag module to the list of modules has to be here. This is because a borg can
 		//be emagged before they actually select a module. - or some situation can cause them to get a new module
 		// - or some situation might cause them to get de-emagged or something.
 		if(R.emagged)

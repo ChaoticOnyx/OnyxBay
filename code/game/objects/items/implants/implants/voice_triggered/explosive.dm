@@ -8,7 +8,7 @@
 	var/phrase
 	var/code = 13
 	var/frequency = 1443
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 	var/warning_message = "Tampering detected. Tampering detected."
 
 /obj/item/implant/voice_triggered/explosive/get_data()
@@ -86,9 +86,9 @@
 		activate()
 
 /obj/item/implant/voice_triggered/explosive/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = radio_controller.add_object(src, frequency, RADIO_CHAT)
+	radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)
 
 /obj/item/implant/voice_triggered/explosive/hear_talk(mob/M, msg)
 	hear(msg)
@@ -122,7 +122,7 @@
 		message_admins("Explosive implant triggered in [imp_in] ([imp_in.key]). (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[imp_in.x];Y=[imp_in.y];Z=[imp_in.z]'>JMP</a>) ")
 		log_game("Explosive implant triggered in [imp_in] ([imp_in.key]).")
 	else
-		audible_message("<span class='warning'>[src] beeps omniously!</span>")
+		audible_message("<span class='warning'>[src] beeps omniously!</span>", splash_override = "*beeeeeeep*")
 		message_admins("Explosive implant triggered in [T.loc]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>) ")
 		log_game("Explosive implant triggered in [T.loc].")
 

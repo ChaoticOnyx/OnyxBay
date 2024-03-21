@@ -91,7 +91,7 @@
 	"You begin climbing [direction] \the [src]!",
 	"You hear the grunting and clanging of a metal ladder being used.")
 
-	target_ladder.audible_message("<span class='notice'>You hear something coming [direction] \the [src]</span>")
+	target_ladder.audible_message("<span class='notice'>You hear something coming [direction] \the [src]</span>", splash_override = "*crank crank*")
 
 	var/time = dragging ? drag_time : climb_time
 
@@ -158,7 +158,7 @@
 /obj/structure/ladder/CanPass(obj/mover, turf/source, height, airflow)
 	return airflow || !density
 
-/obj/structure/ladder/update_icon()
+/obj/structure/ladder/on_update_icon()
 	icon_state = "ladder[!!(allowed_directions & UP)][!!(allowed_directions & DOWN)]"
 
 /obj/structure/ladder/up
@@ -172,12 +172,48 @@
 /obj/structure/stairs
 	name = "stairs"
 	desc = "Stairs leading to another deck.  Not too useful if the gravity goes out."
-	icon = 'icons/obj/stairs.dmi'
+	icon = 'icons/obj/stairs_long.dmi'
 	icon_state = "stairs"
 	density = 0
 	opacity = 0
 	anchored = 1
 	layer = RUNE_LAYER
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
+
+/obj/structure/up
+	name = "stairs"
+	desc = "Stairs leading to another deck.  Not too useful if the gravity goes out."
+	icon = 'icons/obj/stairs.dmi'
+	icon_state = "stairs"
+	anchored = TRUE
+
+/obj/structure/up/forceMove()
+	return FALSE
+
+/obj/structure/up/Bumped(atom/movable/A)
+	var/turf/below = GetBelow(A)
+	if(below)
+		var/turf/target = get_turf(below)
+		var/turf/source = get_turf(A)
+		if(!(locate(/obj/structure/stairs) in below))
+			show_splash_text(A, "the stairs cut off")
+			return
+
+		A.forceMove(target)
+		if(isliving(A))
+			var/mob/living/L = A
+			if(L.pulling)
+				L.pulling.forceMove(target)
+		if(ishuman(A))
+			playsound(source, SFX_FOOTSTEP_STAIRS, 50)
+			playsound(target, SFX_FOOTSTEP_STAIRS, 50)
+	else
+		show_splash_text(A, "nothing of interest in this direction")
+
+/obj/structure/up/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
+	if(get_dir(loc, target) == turn(dir, 180) && (get_turf(mover) == loc))
+		return FALSE
+	return ..()
 
 /obj/structure/stairs/Initialize()
 	for(var/turf/turf in locs)
@@ -187,6 +223,8 @@
 			return INITIALIZE_HINT_QDEL
 		if(!istype(above))
 			above.ChangeTurf(/turf/simulated/open)
+	var/obj/structure/up/Up = new /obj/structure/up(get_turf(GetAbove(loc)))
+	Up.dir = dir
 	. = ..()
 
 /obj/structure/stairs/Destroy()
@@ -194,18 +232,20 @@
 	return ..()
 
 /obj/structure/stairs/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
-	if(get_dir(loc, target) == dir && upperStep(mover.loc))
+	if(get_dir(loc, target) == dir && (get_turf(mover) == loc))
 		return FALSE
 	return ..()
 
 /obj/structure/stairs/forceMove()
-	return 0
+	return FALSE
 
 /obj/structure/stairs/Bumped(atom/movable/A)
 	var/turf/above = GetAbove(A)
 	if(above)
-		var/turf/target = get_step(above, dir)
-		var/turf/source = A.loc
+		var/turf/target = get_turf(above)
+		var/turf/source = get_turf(A)
+		if(!(locate(/obj/structure/up) in above))
+			show_splash_text(A, "the stairs cut off")
 		if(above.CanZPass(source, UP) && target.Enter(A, src))
 			A.forceMove(target)
 			if(isliving(A))
@@ -213,17 +253,12 @@
 				if(L.pulling)
 					L.pulling.forceMove(target)
 			if(ishuman(A))
-				var/mob/living/carbon/human/H = A
-				if(!H.species.silent_steps)
-					playsound(source, 'sound/effects/stairs_step.ogg', 50)
-					playsound(target, 'sound/effects/stairs_step.ogg', 50)
+				playsound(source, SFX_FOOTSTEP_STAIRS, 50)
+				playsound(target, SFX_FOOTSTEP_STAIRS, 50)
 		else
-			to_chat(A, SPAN("warning", "Something blocks the path."))
+			show_splash_text(A, "something blocks the path")
 	else
-		to_chat(A, SPAN("notice", "There is nothing of interest in this direction."))
-
-/obj/structure/stairs/proc/upperStep(turf/T)
-	return (T == loc)
+		show_splash_text(A, "nothing of interest in this direction")
 
 // type paths to make mapping easier.
 /obj/structure/stairs/north
@@ -247,7 +282,9 @@
 	bound_width = 64
 
 /obj/structure/stairs/short
-	icon_state = "stairs_short"
+	icon = 'icons/obj/stairs.dmi'
+	icon_state = "stairs"
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | TILE_BOUND
 
 /obj/structure/stairs/short/north
 	dir = NORTH
@@ -331,7 +368,8 @@
 	bound_width = 64
 
 /obj/structure/stairs/mining/short
-	icon_state = "stairs_short_mine"
+	icon = 'icons/obj/stairs.dmi'
+	icon_state = "stairs_mine"
 
 /obj/structure/stairs/mining/short/north
 	dir = NORTH

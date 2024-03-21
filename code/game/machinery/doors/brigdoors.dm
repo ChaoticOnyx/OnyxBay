@@ -38,7 +38,7 @@
 		if (M.id == src.id)
 			targets += M
 
-	for(var/obj/machinery/flasher/F in GLOB.machines)
+	for(var/obj/machinery/flasher/F in SSmachines.machinery)
 		if(F.id == src.id)
 			targets += F
 
@@ -225,7 +225,7 @@
 // if NOPOWER, display blank
 // if BROKEN, display blue screen of death icon AI uses
 // if timing=true, run update display function
-/obj/machinery/door_timer/update_icon()
+/obj/machinery/door_timer/on_update_icon()
 	if(stat & (NOPOWER))
 		icon_state = "frame"
 		return
@@ -249,8 +249,8 @@
 // Adds an icon in case the screen is broken/off, stolen from status_display.dm
 /obj/machinery/door_timer/proc/set_picture(state)
 	picture_state = state
-	overlays.Cut()
-	overlays += image('icons/obj/status_display.dmi', icon_state=picture_state)
+	ClearOverlays()
+	AddOverlays(image('icons/obj/status_display.dmi', icon_state=picture_state))
 
 
 // Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display
@@ -274,7 +274,7 @@
 		var/image/ID = image('icons/obj/status_display.dmi', icon_state=char)
 		ID.pixel_x = -(d-1)*5 + px
 		ID.pixel_y = py
-		I.overlays += ID
+		I.AddOverlays(ID)
 	return I
 
 

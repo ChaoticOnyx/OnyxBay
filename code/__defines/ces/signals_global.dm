@@ -15,3 +15,17 @@
 
 /// Called once upon roundstart
 #define SIGNAL_ROUNDSTART "!roundstart"
+
+#define SIGNAL_MOB_RESIST "!mob_resist"
+#define SIGNAL_MOB_GRAB_SET_STATE "!mob_grab_set_state"
+
+/// Called when an atom starts orbiting another atom (/atom)
+#define SIGNAL_ORBIT_BEGIN "orbit_begin"
+/// Called when an atom stops orbiting another atom (/atom)
+#define SIGNAL_ORBIT_STOP "orbit_stop"
+
+// Point of interest signals
+/// Sent from base of /datum/controller/subsystem/points_of_interest/proc/on_poi_element_added : (atom/new_poi)
+#define SIGNAL_ADDED_POI "added_point_of_interest"
+/// Sent from base of /datum/controller/subsystem/points_of_interest/proc/on_poi_element_removed : (atom/old_poi)
+#define SIGNAL_REMOVED_POI "removed_point_of_interest"

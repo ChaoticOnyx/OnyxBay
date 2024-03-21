@@ -23,7 +23,6 @@
 	var/icon_off
 
 	var/welded = FALSE
-	var/large = TRUE
 	var/wall_mounted = FALSE //never solid (You can always pass over it)
 	var/health = 100
 	var/breakout = 0 //if someone is currently breaking out. mutex
@@ -48,10 +47,13 @@
 
 	var/material = /obj/item/stack/material/steel
 
+	var/intact_closet = TRUE // List operations overhead bad
+
 /obj/structure/closet/nodoor
 	nodoor = TRUE
 	opened = TRUE
 	density = FALSE
+	intact_closet = FALSE
 
 /obj/item/shield/closet
 	name = "closet door"
@@ -88,11 +90,44 @@
 
 	var/lockable = FALSE
 
-/obj/structure/closet/Initialize()
+/obj/item/shield/closet/Initialize()
+	. = ..()
+	update_icon()
+
+/obj/item/shield/closet/on_update_icon()
 	..()
+	if(isturf(loc))
+		SetTransform(rotation = 90)
+		pixel_y = -8
+	else
+		SetTransform(rotation = 0)
+		pixel_y = initial(pixel_y)
+
+/obj/item/shield/closet/pickup(mob/user)
+	..()
+	update_icon()
+
+/obj/item/shield/closet/dropped(mob/user)
+	..()
+	update_icon()
+
+/obj/item/shield/closet/attack_hand()
+	..()
+	update_icon()
+
+/obj/item/shield/closet/on_enter_storage(obj/item/storage/S)
+	..()
+	update_icon()
+
+
+/obj/structure/closet/Initialize()
+	. = ..()
 
 	if((setup & CLOSET_HAS_LOCK))
 		verbs += /obj/structure/closet/proc/togglelock_verb
+
+	if(intact_closet && (z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
+		GLOB.intact_station_closets.Add(src)
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -122,10 +157,16 @@
 		if((setup & CLOSET_HAS_LOCK))
 			ndoor.lockable = TRUE
 
-		ndoor.loc = src
+		ndoor.forceMove(src)
 		cdoor = ndoor
 
 	update_icon()
+
+/obj/structure/closet/Destroy()
+	QDEL_NULL(cdoor)
+	if(intact_closet)
+		GLOB.intact_station_closets.Remove(src)
+	return ..()
 
 /obj/structure/closet/proc/WillContain()
 	return null
@@ -190,7 +231,7 @@
 			M.client.perspective = MOB_PERSPECTIVE
 
 	for(var/atom/movable/AM in src)
-		if(!istype(AM, /obj/item/shield/closet))
+		if(AM != cdoor)
 			AM.forceMove(L)
 
 /obj/structure/closet/proc/store_contents()
@@ -203,11 +244,11 @@
 	if(storage_types & CLOSET_STORAGE_STRUCTURES)
 		stored_units += store_structures(stored_units)
 
-/obj/structure/closet/proc/open()
-	if(src.opened)
+/obj/structure/closet/proc/open(force = FALSE)
+	if(opened)
 		return FALSE
 
-	if(!src.can_open())
+	if(!can_open() && !force)
 		return FALSE
 
 	src.dump_contents()
@@ -216,6 +257,11 @@
 	playsound(src.loc, open_sound, 50, 1, -3)
 	density = FALSE
 	update_icon()
+
+	if(intact_closet)
+		intact_closet = FALSE
+		GLOB.intact_station_closets.Remove(src)
+
 	return TRUE
 
 /obj/structure/closet/proc/close()
@@ -245,6 +291,8 @@
 		AD.forceMove(src)
 
 	for(var/obj/item/I in loc)
+		if(QDELETED(I))
+			continue
 		if(istype(I,/obj/item/shield/closet))
 			break
 		if(I.anchored)
@@ -325,18 +373,24 @@
 /obj/structure/closet/ex_act(severity)
 	switch(severity)
 		if(1)
+			destroy_door()
 			for(var/atom/movable/A in src)//pulls everything out of the locker and hits it with an explosion
 				A.forceMove(loc)
 				A.ex_act(severity + 1)
 			qdel(src)
 		if(2)
 			if(prob(50))
-				for (var/atom/movable/A in src)
+				if(prob(50))
+					destroy_door()
+				else
+					remove_door()
+				for(var/atom/movable/A in src)
 					A.forceMove(src.loc)
 					A.ex_act(severity + 1)
 				qdel(src)
 		if(3)
 			if(prob(5))
+				remove_door()
 				for(var/atom/movable/A in src)
 					A.forceMove(loc)
 				qdel(src)
@@ -344,6 +398,7 @@
 /obj/structure/closet/proc/damage(damage)
 	health -= damage
 	if(health <= 0)
+		remove_door()
 		for(var/atom/movable/A in src)
 			A.forceMove(src.loc)
 		qdel(src)
@@ -363,6 +418,7 @@
 
 /obj/structure/closet/blob_act()
 	if(opened)
+		remove_door()
 		qdel(src)
 	else
 		break_open()
@@ -375,11 +431,13 @@
 			return FALSE
 		if(istype(W,/obj/item/tk_grab))
 			return FALSE
+
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
-			if(WT.isOn())
+			if(WT.use_tool(src, user))
 				slice_into_parts(WT, user)
 				return
+
 		if(istype(W, /obj/item/storage/laundry_basket) && W.contents.len)
 			var/obj/item/storage/laundry_basket/LB = W
 			var/turf/T = get_turf(src)
@@ -452,12 +510,9 @@
 		return
 	else if(isWelder(W) && (setup & CLOSET_CAN_BE_WELDED))
 		var/obj/item/weldingtool/WT = W
-		if(!WT.remove_fuel(0,user))
-			if(!WT.isOn())
-				return
-			else
-				to_chat(user, SPAN_NOTICE("You need more welding fuel to complete this task."))
-				return
+		if(!WT.use_tool(src, user))
+			return
+
 		src.welded = !src.welded
 		src.update_icon()
 		user.visible_message(SPAN_WARNING("\The [src] has been [welded?"welded shut":"unwelded"] by \the [user]."), blind_message = "You hear welding.", range = 3)
@@ -486,22 +541,23 @@
 		src.attack_hand(user)
 
 /obj/structure/closet/proc/slice_into_parts(obj/item/weldingtool/WT, mob/user)
-	if(!WT.remove_fuel(0,user))
-		to_chat(user, SPAN_NOTICE("You need more welding fuel to complete this task."))
+	if(!WT.use_tool(src, user, amount = 1))
 		return
+
 	if(material != null)
 		new material(loc)
 	else
 		log_debug("\The [src] doesnt have material, this is bug", loc, type)
 	user.visible_message(SPAN_NOTICE("\The [src] has been cut apart by [user] with \the [WT]."), SPAN_NOTICE("You have cut \the [src] apart with \the [WT]."), "You hear welding.")
+	remove_door()
 	qdel(src)
 
 /obj/structure/closet/MouseDrop_T(atom/movable/O, mob/user)
-	if(istype(O, /obj/screen))	//fix for HUD elements making their way into the world	-Pete
+	if(QDELETED(O))
+		return
+	if(istype(O, /atom/movable/screen))	//fix for HUD elements making their way into the world	-Pete
 		return
 	if(O.loc == user)
-		return
-	if(ismob(O) && src.large)
 		return
 	if(user.restrained() || user.stat || user.weakened || user.stunned || user.paralysis)
 		return
@@ -509,8 +565,8 @@
 		return
 	if(!isturf(user.loc)) // are you in a container/closet/pod/etc?
 		return
-	if(!src.opened)
-		return
+	if(!opened)
+		return ..()
 	if(istype(O, /obj/structure/closet))
 		return
 	step_towards(O, src.loc)
@@ -562,8 +618,8 @@
 	else
 		to_chat(usr, SPAN_WARNING("This mob type can't use this verb."))
 
-/obj/structure/closet/update_icon()//Putting the welded stuff in update_icon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
-	overlays.Cut()
+/obj/structure/closet/on_update_icon()//Putting the welded stuff in update_icon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
+	ClearOverlays()
 
 	if(dremovable)
 		icon_state = "[icon_closed]nodoor"
@@ -571,30 +627,30 @@
 			if(!opened)
 				if(broken && icon_off)
 					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_off]")
-					src.overlays += cdoor_icon
-					src.overlays += icon_broken
+					AddOverlays(cdoor_icon)
+					AddOverlays(icon_broken)
 				else if((setup & CLOSET_HAS_LOCK) && locked && cdoor.icon_locked)
 					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_locked]")
-					src.overlays += cdoor_icon
+					AddOverlays(cdoor_icon)
 				else
 					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_closed]")
-					src.overlays += cdoor_icon
+					AddOverlays(cdoor_icon)
 				if(welded)
-					overlays += "welded"
+					AddOverlays("welded")
 			else
 				var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_opened]")
-				src.overlays += cdoor_icon
+				AddOverlays(cdoor_icon)
 	else
 		if(!opened)
 			if(broken && icon_off)
 				icon_state = icon_off
-				overlays += icon_broken
+				AddOverlays(icon_broken)
 			else if((setup & CLOSET_HAS_LOCK) && locked && icon_locked)
 				icon_state = icon_locked
 			else
 				icon_state = icon_closed
 			if(welded)
-				overlays += "welded"
+				AddOverlays("welded")
 		else
 			icon_state = icon_opened
 
@@ -769,12 +825,11 @@
 		return FALSE
 	if(welded || locked)
 		return FALSE
-	open()
+	open(TRUE)
 	broken = FALSE
 	locked = FALSE
-	cdoor.SetTransform(rotation = 90)
-	cdoor.pixel_y = -8
 	cdoor.forceMove(loc)
+	cdoor.update_icon()
 	cdoor = null
 
 	setup = CLOSET_CAN_BE_WELDED
@@ -788,16 +843,26 @@
 		return FALSE
 	broken = FALSE
 	locked = FALSE
-	C.loc = src
+	C.forceMove(src)
 	cdoor = C
 
 	req_access = cdoor.req_access
 	req_one_access = cdoor.req_one_access
 
-	if(cdoor.lockable) setup = CLOSET_HAS_LOCK
+	if(cdoor.lockable)
+		setup = CLOSET_HAS_LOCK
 
+	cdoor.update_icon()
 	update_icon()
 
+	return TRUE
+
+/obj/structure/closet/proc/destroy_door()
+	if(!cdoor)
+		return FALSE
+	var/obj/item/shield/closet/C = cdoor
+	remove_door()
+	qdel(C)
 	return TRUE
 
 /obj/structure/closet/hides_inside_walls() // Let's just don't

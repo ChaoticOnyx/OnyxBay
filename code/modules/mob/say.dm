@@ -31,9 +31,9 @@
 	message = sanitize(message)
 
 	if(use_me)
-		usr.emote("me",usr.emote_type,message)
+		usr.custom_emote(message_type = emote_type, message = message, intentional = TRUE)
 	else
-		usr.emote(message)
+		usr.custom_emote(message = message, intentional = TRUE)
 
 	client?.spellcheck(message)
 

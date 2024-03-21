@@ -19,10 +19,10 @@ var/list/wrapped_species_by_ref = list()
 /datum/species/shapeshifter/get_valid_shapeshifter_forms(mob/living/carbon/human/H)
 	return valid_transform_species
 
-/datum/species/shapeshifter/get_icobase(mob/living/carbon/human/H, get_deform)
-	if(!H) return ..(null, get_deform)
+/datum/species/shapeshifter/get_icobase(mob/living/carbon/human/H)
+	if(!H) return ..(null)
 	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[H]"]]
-	return S.get_icobase(H, get_deform)
+	return S.get_icobase(H)
 
 /datum/species/shapeshifter/get_race_key(mob/living/carbon/human/H)
 	return "[..()]-[wrapped_species_by_ref["\ref[H]"]]"
@@ -67,6 +67,9 @@ var/list/wrapped_species_by_ref = list()
 		H.r_hair =   H.r_skin
 		H.g_hair =   H.g_skin
 		H.b_hair =   H.b_skin
+		H.r_s_hair = H.r_skin
+		H.g_s_hair = H.g_skin
+		H.b_s_hair = H.b_skin
 		H.r_facial = H.r_skin
 		H.g_facial = H.g_skin
 		H.b_facial = H.b_skin
@@ -169,6 +172,9 @@ var/list/wrapped_species_by_ref = list()
 		r_hair =   r_skin
 		g_hair =   g_skin
 		b_hair =   b_skin
+		r_s_hair = r_skin
+		g_s_hair = g_skin
+		b_s_hair = b_skin
 		r_facial = r_skin
 		g_facial = g_skin
 		b_facial = b_skin
@@ -186,7 +192,7 @@ var/list/wrapped_species_by_ref = list()
 	if(stat)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities while you unconscious."))
 		return
-	
+
 	THROTTLE_SHARED(cooldown, 30, last_special)
 	if(!cooldown)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))
@@ -205,5 +211,5 @@ var/list/wrapped_species_by_ref = list()
 	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[src]"]]
 	var/list/body_builds = S.get_body_build_datum_list(src.gender)
 	if(!(body_build in body_builds))
-		body_build = body_builds[1]
+		change_body_build(body_builds[1])
 		regenerate_icons()

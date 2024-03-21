@@ -23,6 +23,9 @@
 
 	w_class = ITEM_SIZE_NO_CONTAINER
 	throw_range = 3
+
+	drop_sound = null
+	pickup_sound = null
 /*
 	This section is for overrides of existing procs.
 */
@@ -82,7 +85,6 @@
 		assailant.__unequip(src)
 		assailant.client?.screen -= src
 		assailant = null
-		loc = null
 	return ..()
 
 /*
@@ -200,18 +202,26 @@
 		return
 
 	var/datum/grab/upgrab = current_grab.upgrade(src)
-	if(upgrab)
-		current_grab = upgrab
-		last_upgrade = world.time
-		adjust_position()
-		update_icons()
-		current_grab.enter_as_up(src)
+	if(QDELETED(upgrab) || !assailant)
+		delete_self()
+		return
+
+	current_grab = upgrab
+	last_upgrade = world.time
+	adjust_position()
+	update_icons()
+	current_grab.enter_as_up(src)
+	SEND_SIGNAL(assailant, SIGNAL_MOB_GRAB_SET_STATE, assailant, current_grab.state_name, affecting)
 
 /obj/item/grab/proc/downgrade()
 	var/datum/grab/downgrab = current_grab.downgrade()
-	if(downgrab)
-		current_grab = downgrab
-		update_icons()
+	if(QDELETED(downgrab) || !assailant)
+		delete_self()
+		return
+
+	current_grab = downgrab
+	update_icons()
+	SEND_SIGNAL(assailant, SIGNAL_MOB_GRAB_SET_STATE, assailant, current_grab.state_name, affecting)
 
 /obj/item/grab/proc/update_icons()
 	if(!current_grab)

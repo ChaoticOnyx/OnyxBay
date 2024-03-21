@@ -23,7 +23,7 @@
 	spawn(3 + metal * 3)
 		set_next_think(world.time)
 		checkReagents()
-	addtimer(CALLBACK(src, .proc/remove_foam), 12 SECONDS)
+	addtimer(CALLBACK(src, nameof(.proc/remove_foam)), 12 SECONDS)
 
 /obj/effect/effect/foam/proc/remove_foam()
 	set_next_think(0)
@@ -144,7 +144,7 @@
 
 	return ..()
 
-/obj/structure/foamedmetal/update_icon()
+/obj/structure/foamedmetal/on_update_icon()
 	if(metal == 1)
 		icon_state = "metalfoam"
 	else
@@ -158,7 +158,7 @@
 		qdel(src)
 
 /obj/structure/foamedmetal/attack_hand(mob/user)
-	if ((MUTATION_HULK in user.mutations) || (prob(75 - metal * 25)))
+	if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations) || (prob(75 - metal * 25)))
 		user.visible_message("<span class='warning'>[user] smashes through the foamed metal.</span>", "<span class='notice'>You smash through the metal foam wall.</span>")
 		qdel(src)
 	else
@@ -168,7 +168,7 @@
 /obj/structure/foamedmetal/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/grab))
 		var/obj/item/grab/G = I
-		G.affecting.loc = src.loc
+		G.affecting.forceMove(loc)
 		visible_message("<span class='warning'>[G.assailant] smashes [G.affecting] through the foamed metal wall.</span>")
 		qdel(I)
 		qdel(src)

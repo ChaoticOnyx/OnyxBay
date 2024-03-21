@@ -34,7 +34,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/machinery/shieldwallgen/update_icon()
+/obj/machinery/shieldwallgen/on_update_icon()
 //	if(stat & BROKEN) -TODO: Broken icon
 	if(!active)
 		icon_state = "Shield_Gen"
@@ -191,7 +191,7 @@
 		T = get_step(T2, NSEW)
 		T2 = T
 		var/obj/machinery/shieldwall/CF = new /obj/machinery/shieldwall/(src, G) //(ref to this gen, ref to connected gen)
-		CF.loc = T
+		CF.forceMove(T)
 		CF.set_dir(field_dir)
 
 

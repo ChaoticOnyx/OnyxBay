@@ -69,14 +69,30 @@ var/list/ai_status_emotions = list(
 	var/picture_state	// icon_state of ai picture
 
 	var/emotion = "Neutral"
+	var/image/picture = null
+	var/static/icon/static_overlay = null
+	var/static/mutable_appearance/ea_overlay = null
 
-/obj/machinery/ai_status_display/New()
+/obj/machinery/ai_status_display/Initialize()
+	. = ..()
 	GLOB.ai_status_display_list += src
-	..()
+
+	if(!picture)
+		picture = image(icon, icon_state = "blank")
+
+	if(!static_overlay)
+		var/image/SO = image(icon, "static")
+		SO.alpha = 64
+		static_overlay = SO
+
+	if(!ea_overlay)
+		ea_overlay = emissive_appearance(icon, "outline")
 
 /obj/machinery/ai_status_display/Destroy()
 	GLOB.ai_status_display_list -= src
-	..()
+	ClearOverlays()
+	QDEL_NULL(picture)
+	return ..()
 
 /obj/machinery/ai_status_display/attack_ai/(mob/user)
 	var/list/ai_emotions = get_ai_emotions(user.ckey)
@@ -86,14 +102,15 @@ var/list/ai_status_emotions = list(
 /obj/machinery/ai_status_display/Process()
 	return
 
-/obj/machinery/ai_status_display/update_icon()
+/obj/machinery/ai_status_display/on_update_icon()
 	if(stat & (NOPOWER|BROKEN))
-		overlays.Cut()
+		ClearOverlays()
 		return
 
 	switch(mode)
 		if(0) //Blank
-			overlays.Cut()
+			ClearOverlays()
+			picture_state = ""
 		if(1) // AI emoticon
 			var/datum/ai_emotion/ai_emotion = ai_status_emotions[emotion]
 			set_picture(ai_emotion.overlay)
@@ -101,7 +118,19 @@ var/list/ai_status_emotions = list(
 			set_picture("ai_bsod")
 
 /obj/machinery/ai_status_display/proc/set_picture(state)
+	if(picture_state == state)
+		return
+
+	if(state == "ai_off")
+		mode = 0
+		update_icon()
+		return
+
 	picture_state = state
-	if(overlays.len)
-		overlays.Cut()
-	overlays += image('icons/obj/status_display.dmi', icon_state=picture_state)
+	ClearOverlays()
+
+	picture.icon_state = picture_state
+
+	AddOverlays(picture)
+	AddOverlays(static_overlay)
+	AddOverlays(ea_overlay)

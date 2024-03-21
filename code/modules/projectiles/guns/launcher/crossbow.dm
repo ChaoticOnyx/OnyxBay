@@ -37,6 +37,7 @@
 	mod_weight = 0.5
 	mod_reach = 0.8
 	mod_handy = 0.75
+	armor_penetration = 40
 	w_class = ITEM_SIZE_SMALL
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "metal-rod"
@@ -69,7 +70,7 @@
 	if(throwforce == 15) // The rod has been superheated - we don't want it to be useable when removed from the bow.
 		to_chat(user, "[src] shatters into a scattering of overstressed metal shards as it leaves the crossbow.")
 		var/obj/item/material/shard/shrapnel/S = new()
-		S.loc = get_turf(src)
+		S.dropInto(user.loc)
 		qdel(src)
 
 /obj/item/gun/launcher/crossbow
@@ -88,14 +89,17 @@
 	slot_flags = SLOT_BACK
 	one_hand_penalty = 5 // The thing is huge AF
 
+	has_safety = FALSE
+
 	var/obj/item/bolt
 	var/tension = 0                         // Current draw on the bow.
 	var/max_tension = 5                     // Highest possible tension.
+	var/force_multiplier = 2                // Multiplier of release force.
 	var/obj/item/cell/cell = null    // Used for firing superheated rods.
 	var/current_user                        // Used to check if the crossbow has changed hands since being drawn.
 
 /obj/item/gun/launcher/crossbow/update_release_force()
-	release_force = max(1, tension)
+	release_force = tension * force_multiplier
 
 /obj/item/gun/launcher/crossbow/consume_next_projectile(mob/user=null)
 	if(tension <= 0)
@@ -113,7 +117,7 @@
 	if(tension)
 		if(bolt)
 			user.visible_message("[user] relaxes the tension on [src]'s string and removes [bolt].","You relax the tension on [src]'s string and remove [bolt].")
-			bolt.loc = get_turf(src)
+			bolt.dropInto(user.loc)
 			var/obj/item/arrow/A = bolt
 			bolt = null
 			A.removed(user)
@@ -177,7 +181,7 @@
 			if (R.use(1))
 				bolt = new /obj/item/arrow/rod(src)
 				bolt.fingerprintslast = src.fingerprintslast
-				bolt.loc = src
+				bolt.forceMove(src)
 				update_icon()
 				user.visible_message("[user] jams [bolt] into [src].","You jam [bolt] into [src].")
 				superheat_rod(user)
@@ -196,7 +200,7 @@
 	else if(isScrewdriver(W))
 		if(cell)
 			var/obj/item/C = cell
-			C.loc = get_turf(user)
+			C.dropInto(user.loc)
 			to_chat(user, "<span class='notice'>You jimmy [cell] out of [src] with [W].</span>")
 			cell = null
 		else
@@ -216,7 +220,7 @@
 	bolt.icon_state = "metal-rod-superheated"
 	cell.use(500)
 
-/obj/item/gun/launcher/crossbow/update_icon()
+/obj/item/gun/launcher/crossbow/on_update_icon()
 	if(tension > 1)
 		icon_state = "crossbow-drawn"
 	else if(bolt)
@@ -240,7 +244,7 @@
 
 	var/buildstate = 0
 
-/obj/item/crossbowframe/update_icon()
+/obj/item/crossbowframe/on_update_icon()
 	icon_state = "crossbowframe[buildstate]"
 
 /obj/item/crossbowframe/_examine_text(mob/user)
@@ -265,11 +269,11 @@
 			return
 	else if(isWelder(W))
 		if(buildstate == 1)
-			var/obj/item/weldingtool/T = W
-			if(T.remove_fuel(0,user))
-				if(!src || !T.isOn()) return
-				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
-				to_chat(user, "<span class='notice'>You weld the rods into place.</span>")
+			var/obj/item/weldingtool/WT = W
+			if(!WT.use_tool(src, user, amount = 1))
+				return
+
+			to_chat(user, "<span class='notice'>You weld the rods into place.</span>")
 			buildstate++
 			update_icon()
 		return

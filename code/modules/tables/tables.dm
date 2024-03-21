@@ -8,6 +8,7 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	layer = TABLE_LAYER
 	throwpass = 1
+	turf_height_offset = 12
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 0,
@@ -93,7 +94,7 @@
 	update_connections(1) // Update tables around us to ignore us (material=null forces no connections)
 	for(var/obj/structure/table/T in oview(src, 1))
 		T.update_icon()
-	. = ..()
+	return ..()
 
 /obj/structure/table/_examine_text(mob/user)
 	. = ..()
@@ -107,6 +108,8 @@
 				. += "\n<span class='notice'>It has a few scrapes and dents.</span>"
 
 /obj/structure/table/attackby(obj/item/W, mob/user)
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)
+		return ..()
 
 	if(reinforced && isScrewdriver(W))
 		remove_reinforced(W, user)
@@ -151,15 +154,17 @@
 
 	if(health < maxhealth && isWelder(W))
 		var/obj/item/weldingtool/F = W
-		if(F.welding)
-			to_chat(user, "<span class='notice'>You begin reparing damage to \the [src].</span>")
-			playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-			if(!do_after(user, 20, src) || !F.remove_fuel(1, user))
-				return
-			user.visible_message("<span class='notice'>\The [user] repairs some damage to \the [src].</span>",
-			                              "<span class='notice'>You repair some damage to \the [src].</span>")
-			health = max(health+(maxhealth/5), maxhealth) // 20% repair per application
-			return 1
+		to_chat(user, SPAN_NOTICE("You begin reparing damage to \the [src]."))
+		if(!F.use_tool(src, user, delay = 2 SECONDS, amount = 1))
+			return FALSE
+
+		if(QDELETED(src) || !user)
+			return
+
+		user.visible_message(SPAN_NOTICE("\The [user] repairs some damage to \the [src]"),
+										SPAN_NOTICE("You repair some damage to \the [src]."))
+		health = max(health + (maxhealth / 5), maxhealth) // 20% repair per application
+		return TRUE
 
 	if(!material && can_plate && istype(W, /obj/item/stack/material))
 		material = common_material_add(W, user, "plat")
@@ -258,7 +263,12 @@
 	material = common_material_remove(user, material, 20, "plating", "bolts", 'sound/items/Ratchet.ogg')
 
 /obj/structure/table/proc/dismantle(obj/item/wrench/W, mob/user)
-	if(manipulating) return
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)
+		return
+
+	if(manipulating)
+		return
+
 	manipulating = 1
 	user.visible_message("<span class='notice'>\The [user] begins dismantling \the [src].</span>",
 	                              "<span class='notice'>You begin dismantling \the [src].</span>")
@@ -295,6 +305,9 @@
 // is to avoid filling the list with nulls, as place_shard won't place shards of certain materials (holo-wood, holo-steel)
 
 /obj/structure/table/proc/break_to_parts(full_return = 0)
+	if(atom_flags & ATOM_FLAG_HOLOGRAM)
+		return
+
 	var/list/shards = list()
 	var/obj/item/material/shard/S = null
 	if(reinforced)
@@ -320,40 +333,41 @@
 	qdel(src)
 	return shards
 
-/obj/structure/table/update_icon()
+/obj/structure/table/on_update_icon()
 	if(flipped != 1)
 		icon_state = "blank"
-		overlays.Cut()
+		ClearOverlays()
 
 		var/image/I
 
 		// Base frame shape. Mostly done for glass/diamond tables, where this is visible.
 		for(var/i = 1 to 4)
-			I = image(icon, dir = 1<<(i-1), icon_state = connections[i])
-			overlays += I
+			I = OVERLAY(icon, connections[i], dir = 1<<(i-1))
+			AddOverlays(I)
 
 		// Standard table image
 		if(material)
 			for(var/i = 1 to 4)
-				I = image(icon, "[material.table_icon_base]_[connections[i]]", dir = 1<<(i-1))
-				if(material.icon_colour) I.color = material.icon_colour
+				I = OVERLAY(icon, "[material.table_icon_base]_[connections[i]]", dir = 1<<(i-1))
+				if(material.icon_colour)
+					I.color = material.icon_colour
 				I.alpha = 255 * material.opacity
-				overlays += I
+				AddOverlays(I)
 
 		// Reinforcements
 		if(reinforced)
 			for(var/i = 1 to 4)
-				I = image(icon, "[reinforced.table_reinf]_[connections[i]]", dir = 1<<(i-1))
+				I = OVERLAY(icon, "[reinforced.table_reinf]_[connections[i]]", dir = 1<<(i-1))
 				I.color = reinforced.icon_colour
 				I.alpha = 255 * reinforced.opacity
-				overlays += I
+				AddOverlays(I)
 
 		if(carpeted)
 			for(var/i = 1 to 4)
-				I = image(icon, "carpet_[connections[i]]", dir = 1<<(i-1))
-				overlays += I
+				I = OVERLAY(icon, "carpet_[connections[i]]", dir = 1<<(i-1))
+				AddOverlays(I)
 	else
-		overlays.Cut()
+		ClearOverlays()
 		var/type = 0
 		var/tabledirs = 0
 		for(var/direction in list(turn(dir,90), turn(dir,-90)) )
@@ -371,22 +385,22 @@
 
 		icon_state = "flip[type]"
 		if(material)
-			var/image/I = image(icon, "[material.table_icon_base]_flip[type]")
+			var/image/I = OVERLAY(icon, "[material.table_icon_base]_flip[type]", dir = dir)
 			I.color = material.icon_colour
 			I.alpha = 255 * material.opacity
-			overlays += I
+			AddOverlays(I)
 			name = "[material.display_name] table"
 		else
 			name = "table frame"
 
 		if(reinforced)
-			var/image/I = image(icon, "[reinforced.table_reinf]_flip[type]")
+			var/image/I = OVERLAY(icon, "[reinforced.table_reinf]_flip[type]", dir = dir)
 			I.color = reinforced.icon_colour
 			I.alpha = 255 * reinforced.opacity
-			overlays += I
+			AddOverlays(I)
 
 		if(carpeted)
-			overlays += "carpet_flip[type]"
+			AddOverlays(OVERLAY(icon, "carpet_flip[type]", dir = dir))
 
 /obj/structure/table/proc/can_connect()
 	return TRUE
@@ -403,7 +417,7 @@
 
 	var/list/blocked_dirs = list()
 	for(var/obj/structure/window/W in get_turf(src))
-		if(W.is_fulltile())
+		if(W.is_full_window)
 			connections = list("0", "0", "0", "0")
 			return
 		blocked_dirs |= W.dir
@@ -411,7 +425,7 @@
 	for(var/D in list(NORTH, SOUTH, EAST, WEST) - blocked_dirs)
 		var/turf/T = get_step(src, D)
 		for(var/obj/structure/window/W in T)
-			if(W.is_fulltile() || W.dir == GLOB.reverse_dir[D])
+			if(W.is_full_window || W.dir == GLOB.reverse_dir[D])
 				blocked_dirs |= D
 				break
 			else
@@ -422,7 +436,7 @@
 		var/turf/T = get_step(src, D)
 
 		for(var/obj/structure/window/W in T)
-			if(W.is_fulltile() || (W.dir & GLOB.reverse_dir[D]))
+			if(W.is_full_window || (W.dir & GLOB.reverse_dir[D]))
 				blocked_dirs |= D
 				break
 

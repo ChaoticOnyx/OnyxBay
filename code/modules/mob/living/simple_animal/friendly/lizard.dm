@@ -172,8 +172,8 @@
 
 /mob/living/simple_animal/lizard/death(gibbed, deathmessage, show_dead_message)
 	. = ..()
-	overlays -= face
-	overlays += blood
+	CutOverlays(face)
+	AddOverlays(blood)
 
 /mob/living/simple_animal/lizard/Initialize()
 	. = ..()
@@ -182,7 +182,7 @@
 	blood.color = null	//We don't want to paint it
 	face = image(icon, icon_state = icon_face, layer = FLOAT_LAYER+1)
 	face.color = null	//We don't want to paint it
-	overlays += face
+	AddOverlays(face)
 
 /mob/living/simple_animal/lizard/Life()
 	. = ..()

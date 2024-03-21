@@ -12,7 +12,7 @@
 	mod_handy = 1.0
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BACK
-	caliber = "shotgun"
+	caliber = "12g"
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 2)
 	load_method = SINGLE_CASING
 	ammo_type = /obj/item/ammo_casing/shotgun/beanbag
@@ -23,7 +23,7 @@
 
 /obj/item/gun/projectile/shotgun/pump/consume_next_projectile()
 	if(chambered)
-		return chambered.BB
+		return chambered.expend()
 	return null
 
 /obj/item/gun/projectile/shotgun/pump/attack_self(mob/living/user as mob)
@@ -31,15 +31,15 @@
 		recentpump = world.time
 		pump(user)
 
-/obj/item/gun/projectile/shotgun/pump/proc/pump(mob/M as mob)
-	playsound(M, SFX_SHOTGUN_PUMP_IN, rand(45, 60), FALSE)
+/obj/item/gun/projectile/shotgun/pump/proc/pump(atom/movable/user)
+	playsound(user, SFX_SHOTGUN_PUMP_IN, rand(45, 60), FALSE)
 
 	if(chambered)//We have a shell in the chamber
 		ejectCasing()
 		chambered = null
 
 	sleep(5)
-	playsound(M, SFX_SHOTGUN_PUMP_OUT, rand(45, 60), FALSE)
+	playsound(user, SFX_SHOTGUN_PUMP_OUT, rand(45, 60), FALSE)
 
 	if(loaded.len)
 		var/obj/item/ammo_casing/AC = loaded[1] //load next casing.
@@ -76,12 +76,13 @@
 	mod_weight = 1.0
 	mod_reach = 0.75
 	mod_handy = 0.75
+	has_safety = FALSE
 
 // Zip gun construction.
 /obj/item/boomstickframe
 	name = "modified welding tool"
 	desc = "A half-finished... gun?"
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "boomstick0"
 	item_state = "welder"
 	force = 5.0
@@ -93,7 +94,7 @@
 	mod_handy = 0.75
 	var/buildstate = 0
 
-/obj/item/boomstickframe/update_icon()
+/obj/item/boomstickframe/on_update_icon()
 	icon_state = "boomstick[buildstate]"
 
 /obj/item/boomstickframe/_examine_text(mob/user)
@@ -108,11 +109,13 @@
 /obj/item/boomstickframe/attackby(obj/item/W, mob/user)
 	if(isWelder(W) && buildstate == 0)
 		var/obj/item/weldingtool/WT = W
-		if(WT.remove_fuel(0, user))
-			user.visible_message("<span class='notice'>\The [user] secures \the [src]'s barrel.</span>")
-			add_fingerprint(user)
-			buildstate++
-			update_icon()
+		if(!WT.use_tool(src, user, amount = 1))
+			return
+
+		user.visible_message("<span class='notice'>\The [user] secures \the [src]'s barrel.</span>")
+		add_fingerprint(user)
+		buildstate++
+		update_icon()
 		return
 	else if(istype(W,/obj/item/stack/rods) && buildstate == 1)
 		var/obj/item/stack/rods/R = W
@@ -169,7 +172,7 @@
 	mod_handy = 1.0
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BACK
-	caliber = "shotgun"
+	caliber = "12g"
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 1)
 	ammo_type = /obj/item/ammo_casing/shotgun/beanbag
 	one_hand_penalty = 2

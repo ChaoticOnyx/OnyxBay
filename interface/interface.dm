@@ -50,14 +50,11 @@
 	return
 
 /client/verb/bugreport()
-	set name = "Bug Report"
+	set name = "Report Bug"
 	set desc = "Create bug report to developers."
 	set hidden = 1
-	if( config.link.github )
-		send_link(src, "[config.link.github]/issues")
-	else
-		to_chat(src, "<span class='warning'>The Github URL is not set in the server configuration.</span>")
-	return
+
+	mob?.report_bug() // As per byond documentation verbs are slower than procs, so we execute minimal amount of code here.
 
 /client/verb/hotkeys_help()
 	set name = "Hotkeys Help"

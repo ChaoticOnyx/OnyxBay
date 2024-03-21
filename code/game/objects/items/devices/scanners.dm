@@ -90,15 +90,14 @@ REAGENT SCANNER
 	var/brain_data = list()
 	var/brain_result = "normal"
 
-	var/obj/item/organ/internal/brain/brain
-	if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/brain))
+	var/obj/item/organ/internal/cerebrum/brain/brain
+	if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/cerebrum/brain))
 		brain = H.internal_organs_by_name[BP_BRAIN]
-	else if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/mmi_holder))
-		var/obj/item/organ/internal/mmi_holder/MMI = H.internal_organs_by_name[BP_BRAIN]
-		brain = MMI.stored_mmi?.brainobj
+	else if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/cerebrum/mmi))
+		brain = H.internal_organs_by_name[BP_BRAIN]?.brainobj
 
 	if(H.should_have_organ(BP_BRAIN))
-		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/posibrain))
+		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/cerebrum/posibrain))
 			brain_result = SPAN("danger", "ERROR - No organic tissue found")
 		else if(!brain || H.is_ic_dead() || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			brain_result = SPAN("danger", "none, patient is braindead")
@@ -531,7 +530,7 @@ REAGENT SCANNER
 /obj/item/device/mass_spectrometer/on_reagent_change()
 	update_icon()
 
-/obj/item/device/mass_spectrometer/update_icon()
+/obj/item/device/mass_spectrometer/on_update_icon()
 	icon_state = initial(icon_state)
 	if(reagents.total_volume)
 		icon_state += "_s"
@@ -643,7 +642,7 @@ REAGENT SCANNER
 	throw_range = 3
 	matter = list(MATERIAL_STEEL = 25, MATERIAL_GLASS = 25)
 
-/obj/item/device/price_scanner/afterattack(atom/movable/target, mob/user as mob, proximity)
+/obj/item/device/price_scanner/afterattack(atom/movable/target, mob/user, proximity)
 	if(!proximity)
 		return
 
@@ -662,20 +661,23 @@ REAGENT SCANNER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
-/obj/item/device/metroid_scanner/proc/list_gases(gases)
+/obj/item/device/metroid_scanner/afterattack(mob/target, mob/user, proximity)
+	metroid_scan(src, target, user, proximity)
+
+proc/list_gases(gases)
 	. = list()
 	for(var/g in gases)
 		. += "[gas_data.name[g]] ([gases[g]]%)"
 	return english_list(.)
 
-/obj/item/device/metroid_scanner/afterattack(mob/target, mob/user, proximity)
+proc/metroid_scan(source, mob/target, mob/user, proximity)
 	if(!proximity)
 		return
 
 	if(!istype(target))
 		return
 
-	user.visible_message("\The [user] scans \the [target] with \the [src]")
+	user.visible_message("\The [user] scans \the [target] with \the [source]")
 	if(istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target
 		user.show_message("<span class='notice'>Data for [H]:</span>")

@@ -16,6 +16,7 @@ cfg/
 config/*
 !config/names/
 !config/example/
+!config/translation/
 !config/warnings_templates/
 !config/schema/
 build_log.txt

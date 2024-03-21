@@ -1,7 +1,6 @@
 /obj/structure/closet/wizard
 	name = "artifact closet"
 	desc = "a special lead lined closet used to hold artifacts of immense power."
-	icon = 'icons/obj/storage.dmi'
 	icon = 'icons/obj/closet.dmi'
 	icon_state = "acloset"
 	icon_closed = "acloset"
@@ -27,6 +26,15 @@
 	new /obj/item/clothing/head/helmet/space/void/wizard(src)
 	new /obj/item/tank/oxygen(src)
 
+/obj/structure/closet/wizard/necrorobe
+	name = "Robes of the Necromancer"
+	desc = "An appropriate clothing for who want to command dead."
+
+/obj/structure/closet/wizard/necrorobe/New()
+	..()
+	new /obj/item/clothing/suit/necrorobe(src)
+	new /obj/item/clothing/head/necro_hood(src)
+
 /obj/structure/closet/wizard/scrying
 	name = "Scrying Orb"
 	desc = "An incandescent orb of crackling energy, using it will allow you to ghost while alive, allowing you to reconnoiter with ease. In addition, buying it will permanently grant you x-ray vision."
@@ -44,3 +52,11 @@
 	..()
 	new /obj/item/contract/boon/wizard/artificer(src)
 	new /obj/item/storage/belt/soulstone/full(src)
+
+/obj/structure/closet/wizard/lich_garbs
+	name = "Lich garbs"
+	desc = "Clothes for the lich"
+
+/obj/structure/closet/wizard/lich_garbs/New()
+	..()
+	return

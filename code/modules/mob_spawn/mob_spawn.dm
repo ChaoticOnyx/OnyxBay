@@ -51,11 +51,11 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 		if(hairstyle)
 			spawned_human.change_hair(hairstyle)
 		else
-			spawned_human.change_hair(random_hair_style(spawned_human.gender, spawned_human.species))
+			spawned_human.change_hair(random_hair_style(spawned_human.gender, spawned_human.species.name))
 		if(facial_hairstyle)
 			spawned_human.change_facial_hair(facial_hairstyle)
 		else
-			spawned_human.change_facial_hair(random_facial_hair_style(spawned_human.gender, spawned_human.species))
+			spawned_human.change_facial_hair(random_facial_hair_style(spawned_human.gender, spawned_human.species.name))
 		if(haircolor)
 			spawned_human.change_hair_color(hex2rgb_r(haircolor),hex2rgb_g(haircolor),hex2rgb_b(haircolor))
 		else
@@ -83,7 +83,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	if(!chosen_name)
 		return
 	//not using an old name doesn't update records- but ghost roles don't have records so who cares
-	spawned_mob.fully_replace_character_name(null, chosen_name)
+	spawned_mob.fully_replace_character_name(chosen_name)
 
 /obj/effect/mob_spawn/proc/equip(mob/living/spawned_mob)
 	if(!istype(spawned_mob, /mob/living/carbon/human))
@@ -132,13 +132,10 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 
 /obj/effect/mob_spawn/ghost_role/Initialize(mapload)
 	. = ..()
-	LAZYADD(GLOB.mob_spawners[name], src)
+	GLOB.mob_spawners["\ref[src]"] = src
 
 /obj/effect/mob_spawn/Destroy()
-	var/list/spawners = GLOB.mob_spawners[name]
-	LAZYREMOVE(spawners, src)
-	if(!LAZYLEN(spawners))
-		GLOB.mob_spawners -= name
+	GLOB.mob_spawners -= "\ref[src]"
 	return ..()
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
@@ -219,7 +216,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	. = ..()
 	switch(spawn_when)
 		if(CORPSE_INSTANT)
-			INVOKE_ASYNC(src, .proc/create)
+			INVOKE_ASYNC(src, nameof(.proc/create))
 
 /obj/effect/mob_spawn/corpse/special(mob/living/spawned_mob)
 	. = ..()
@@ -239,7 +236,10 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "sleeper_1"
 	mob_type = /mob/living/carbon/human
-	outfit = /decl/hierarchy/outfit/death_command
+	outfit = /decl/hierarchy/outfit
+	name = "Cryo Capsule"
+	prompt_name = "A human"
+	you_are_text = "You are a human."
 
 /obj/effect/mob_spawn/corpse/human
 	icon_state = "corpsehuman"

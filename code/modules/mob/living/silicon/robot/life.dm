@@ -173,7 +173,7 @@
 
 	if(cells)
 		if(cell)
-			var/chargeNum = Clamp(ceil(cell.percent() / 25), 0, 4)	//0-100 maps to 0-4, but give it a paranoid clamp just in case.
+			var/chargeNum = Clamp(ceil(CELL_PERCENT(cell) / 25), 0, 4)	//0-100 maps to 0-4, but give it a paranoid clamp just in case.
 			cells.icon_state = "charge[chargeNum]"
 		else
 			cells.icon_state = "charge-empty"
@@ -218,12 +218,12 @@
 
 	if(!is_ooc_dead())
 		if(blinded)
-			overlay_fullscreen("blind", /obj/screen/fullscreen/blind)
+			overlay_fullscreen("blind", /atom/movable/screen/fullscreen/blind)
 		else
 			clear_fullscreen("blind")
-			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /obj/screen/fullscreen/impaired, 1)
-			set_fullscreen(eye_blurry, "blurry", /obj/screen/fullscreen/blurry)
-			set_fullscreen(druggy, "high", /obj/screen/fullscreen/high)
+			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /atom/movable/screen/fullscreen/impaired, 1)
+			set_renderer_filter(eye_blurry, SCENE_GROUP_RENDERER, EYE_BLURRY_FILTER_NAME, 0, EYE_BLURRY_FILTER(eye_blurry))
+			set_fullscreen(druggy, "high", /atom/movable/screen/fullscreen/high)
 
 		if(machine)
 			if(machine.check_eye(src) < 0)
@@ -266,7 +266,7 @@
 				set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
 				src.client.screen |= GLOB.global_hud.nvg
 			if(FLASH_PROTECTION_VISION)
-				src.set_fullscreen(1, "flash_protection", /obj/screen/fullscreen/impaired, TINT_MODERATE)
+				src.set_fullscreen(1, "flash_protection", /atom/movable/screen/fullscreen/impaired, TINT_MODERATE)
 			else
 				if(!is_ooc_dead())
 					set_sight(sight&(~SEE_TURFS)&(~SEE_MOBS)&(~SEE_OBJS))
@@ -278,7 +278,7 @@
 	if(client)
 		client.screen -= contents
 		for(var/obj/I in contents)
-			if(I && !(istype(I, /obj/item/cell) || istype(I, /obj/item/device/radio)  || istype(I, /obj/machinery/camera) || istype(I, /obj/item/device/mmi)))
+			if(I && !(istype(I, /obj/item/cell) || istype(I, /obj/item/device/radio)  || istype(I, /obj/machinery/camera) || istype(I, /obj/item/organ/internal/cerebrum/mmi)))
 				client.screen += I
 	if(module_state_1)
 		module_state_1:screen_loc = ui_inv1
@@ -308,9 +308,9 @@
 			weaponlock_time = 120
 
 /mob/living/silicon/robot/update_fire()
-	overlays -= image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing")
+	CutOverlays(image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing"))
 	if(on_fire)
-		overlays += image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing")
+		AddOverlays(image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing"))
 
 /mob/living/silicon/robot/fire_act()
 	if(!on_fire) //Silicons don't gain stacks from hotspots, but hotspots can ignite them

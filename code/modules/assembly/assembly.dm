@@ -22,6 +22,9 @@
 	var/const/WIRE_RADIO_RECEIVE = 8  //Allows Pulsed(1) to call Activate()
 	var/const/WIRE_RADIO_PULSE = 16   //Allows Pulse(1) to send a radio message
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/device/assembly/Destroy()
 	holder = null
 	return ..()
@@ -31,7 +34,7 @@
 	if(!secured || cooldown > 0)
 		return FALSE
 	cooldown = 2
-	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 	return TRUE
 
 //Called when another assembly acts on this one, var/radio will determine where it came from for wire calcs
@@ -71,7 +74,7 @@
 	cooldown--
 	if(cooldown <= 0)
 		return 0
-	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 	return 1
 
 //Called when the holder is moved
@@ -137,9 +140,9 @@
 			unregister_signal(loc, SIGNAL_MOVED)
 	if(istype(new_loc, /atom/movable))
 		if(istype(new_loc, /obj/item/gripper) && isrobot(new_loc.loc))
-			register_signal(new_loc.loc, SIGNAL_MOVED, /obj/item/device/assembly/proc/retransmit_moved)
+			register_signal(new_loc.loc, SIGNAL_MOVED, nameof(.proc/retransmit_moved))
 		else
-			register_signal(new_loc, SIGNAL_MOVED, /obj/item/device/assembly/proc/retransmit_moved)
+			register_signal(new_loc, SIGNAL_MOVED, nameof(.proc/retransmit_moved))
 	..()
 
 /obj/item/device/assembly/proc/retransmit_moved(mover, old_loc, new_loc)

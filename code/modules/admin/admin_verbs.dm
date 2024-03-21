@@ -180,7 +180,8 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/toggle_alien_eggs,
 	/datum/admins/proc/toggle_space_ninja,
 	/client/proc/check_customitem_activity,
-	/client/proc/nanomapgen_DumpImage
+	/client/proc/nanomapgen_DumpImage,
+	/client/proc/cmd_set_station_date
 	)
 
 var/list/admin_verbs_debug = list(
@@ -838,10 +839,16 @@ var/list/admin_verbs_mentor = list(
 		M.b_facial = hex2num(copytext(new_facial, 6, 8))
 
 	var/new_hair = input("Please select hair color.", "Character Generation") as color
-	if(new_facial)
+	if(new_hair)
 		M.r_hair = hex2num(copytext(new_hair, 2, 4))
 		M.g_hair = hex2num(copytext(new_hair, 4, 6))
 		M.b_hair = hex2num(copytext(new_hair, 6, 8))
+
+	var/new_s_hair = input("Please select secondary hair color.", "Character Generation") as color
+	if(new_s_hair)
+		M.r_s_hair = hex2num(copytext(new_s_hair, 2, 4))
+		M.g_s_hair = hex2num(copytext(new_s_hair, 4, 6))
+		M.b_s_hair = hex2num(copytext(new_s_hair, 6, 8))
 
 	var/new_eyes = input("Please select eye color.", "Character Generation") as color
 	if(new_eyes)
@@ -937,16 +944,20 @@ var/list/admin_verbs_mentor = list(
 			to_chat(src, "<b>Enabled maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has enabled maint drones.", 1)
 
-/client/proc/man_up(datum/follow_holder/fh in get_follow_targets(mobs_only = TRUE))
+/client/proc/man_up()
 	set category = "Fun"
 	set name = "Man Up"
 	set desc = "Tells mob to man up and deal with it."
 
-	var/mob/T = fh.followed_instance
-	to_chat(T, "<span class='notice'><b><font size=3>Man up and deal with it.</font></b></span>")
-	to_chat(T, "<span class='notice'>Move on.</span>")
+	var/mob/mob = tgui_input_list(usr, "Select a client", "Man up", GLOB.player_list)
 
-	log_and_message_admins("told [key_name(T)] to man up and deal with it.")
+	if(!istype(mob))
+		return
+
+	to_chat(mob, "<span class='notice'><b><font size=3>Man up and deal with it.</font></b></span>")
+	to_chat(mob, "<span class='notice'>Move on.</span>")
+
+	log_and_message_admins("told [key_name(mob)] to man up and deal with it.")
 
 /client/proc/global_man_up()
 	set category = "Fun"

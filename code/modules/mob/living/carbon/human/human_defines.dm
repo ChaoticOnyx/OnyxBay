@@ -1,11 +1,15 @@
 /mob/living/carbon/human
 	layer = BASE_HUMAN_LAYER
+	blocks_emissive = EMISSIVE_BLOCK_NONE //Humans need to decide per bodypart if they block or not, therefore we ignore baseline functionality
 
-	//Hair colour and style
+	//Hair color, secondary color and style
 	var/r_hair = 0
 	var/g_hair = 0
 	var/b_hair = 0
 	var/h_style = "Bald"
+	var/r_s_hair = 0
+	var/g_s_hair = 0
+	var/b_s_hair = 0
 
 	//Facial hair colour and style
 	var/r_facial = 0
@@ -80,7 +84,6 @@
 	var/mob/remoteview_target = null
 	var/hand_blood_color
 
-	var/list/flavor_texts = list()
 	var/gunshot_residue
 	var/pulling_punches    // Are you trying not to hurt your opponent?
 	var/full_prosthetic    // We are a robutt.
@@ -99,6 +102,7 @@
 	var/equipment_prescription				// Eye prescription granted by equipped items
 	var/equipment_light_protection
 	var/list/equipment_overlays = list()	// Extra overlays from equipped items
+	var/list/limb_render_keys = list()
 
 	var/med_record = ""
 	var/sec_record = ""
@@ -118,5 +122,6 @@
 	var/skin_state = SKIN_NORMAL
 	var/no_pain = 0
 	var/full_pain = 0 // Cheaper to actually store this than iterate over all the organs for every single check
+	var/full_pain_lasttick = 0
 
 	var/debug = 0

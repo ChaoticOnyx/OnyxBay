@@ -88,7 +88,7 @@
 		blinded = 1
 		silent = 0
 	else				//ALIVE. LIGHTS ARE ON
-		if( !container && (health < config.health.health_threshold_dead || ((world.time - timeofhostdeath) > config.revival.revival_brain_life)) )
+		if(!container && ((health < config.health.health_threshold_dead) || (world.time - timeofhostdeath > config.revival.revival_brain_life) && (config.revival.revival_brain_life >= 0)))
 			death()
 			blinded = 1
 			silent = 0
@@ -96,7 +96,7 @@
 
 		//Handling EMP effect in the Life(), it's made VERY simply, and has some additional effects handled elsewhere
 		if(emp_damage)			//This is pretty much a damage type only used by MMIs, dished out by the emp_act
-			if(!(container && istype(container, /obj/item/device/mmi)))
+			if(!(container && istype(container, /obj/item/organ/internal/cerebrum/mmi)))
 				emp_damage = 0
 			else
 				emp_damage = round(emp_damage,1)//Let's have some nice numbers to work with
@@ -154,12 +154,12 @@
 
 	if(!is_ooc_dead())
 		if(blinded)
-			overlay_fullscreen("blind", /obj/screen/fullscreen/blind)
+			overlay_fullscreen("blind", /atom/movable/screen/fullscreen/blind)
 		else
 			clear_fullscreen("blind")
-			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /obj/screen/fullscreen/impaired, 1)
-			set_fullscreen(eye_blurry, "blurry", /obj/screen/fullscreen/blurry)
-			set_fullscreen(druggy, "high", /obj/screen/fullscreen/high)
+			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /atom/movable/screen/fullscreen/impaired, 1)
+			set_renderer_filter(eye_blurry, SCENE_GROUP_RENDERER, EYE_BLURRY_FILTER_NAME, 0, EYE_BLURRY_FILTER(eye_blurry))
+			set_fullscreen(druggy, "high", /atom/movable/screen/fullscreen/high)
 		if (machine)
 			if (!( machine.check_eye(src) ))
 				reset_view(null)

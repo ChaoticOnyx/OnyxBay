@@ -49,11 +49,11 @@
 	max_ammo = 3
 	ammo = 3
 	release_force = 1
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "spikethrower3"
 	item_state = "spikethrower"
 	fire_sound_text = "a strange noise"
 	fire_sound = 'sound/weapons/bladeslice.ogg'
 
-/obj/item/gun/launcher/alien/spikethrower/update_icon()
+/obj/item/gun/launcher/alien/spikethrower/on_update_icon()
 	icon_state = "spikethrower[ammo]"

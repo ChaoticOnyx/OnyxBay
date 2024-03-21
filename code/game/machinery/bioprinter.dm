@@ -48,12 +48,12 @@
 		return
 	return ..()
 
-/obj/machinery/organ_printer/update_icon()
-	overlays.Cut()
+/obj/machinery/organ_printer/on_update_icon()
+	ClearOverlays()
 	if(panel_open)
-		overlays += "bioprinter_panel_open"
+		AddOverlays("bioprinter_panel_open")
 	if(printing)
-		overlays += "bioprinter_working"
+		AddOverlays("bioprinter_working")
 
 /obj/machinery/organ_printer/New()
 	..()
@@ -163,6 +163,21 @@
 	var/matter_amount_per_sheet = 10
 	var/matter_type = MATERIAL_STEEL
 
+	var/company = "NanoTrasen"
+
+/obj/machinery/organ_printer/robot/verb/selected_company()
+	set name = "Select Company"
+	set category = "Object"
+	set src in oview(1)
+
+	if(!CanPhysicallyInteract(usr))
+		return
+
+	var/choice = tgui_input_list(usr, "Select a company for the prosthetic.", "Selection", GLOB.all_robolimbs)
+	if(isnull(choice))
+		return
+	company = choice
+
 /obj/machinery/organ_printer/robot/mapped/Initialize()
 	. = ..()
 	stored_matter = max_stored_matter
@@ -180,15 +195,15 @@
 
 /obj/machinery/organ_printer/robot/print_organ(choice)
 	var/obj/item/organ/O = ..()
-	var/obj/item/organ/external/externalOrgan = O
-	if(istype(externalOrgan))
-		externalOrgan.robotize("NanoTrasen", just_printed = TRUE)
-		// TODO [V] Add other companies and ability to choose from input
+	var/obj/item/organ/external/E = O
+	if(istype(E))
+		E.robotize(company)
 	else
 		O.robotize()
-		O.status |= ORGAN_CUT_AWAY // Default robotize() resets status to ORGAN_ROBOTIC only
+	O.status |= ORGAN_CUT_AWAY // Default robotize() resets status to ORGAN_ROBOTIC only
 
 	visible_message("<span class='info'>\The [src] churns for a moment, then spits out \a [O].</span>")
+	O.update_icon()
 	return O
 
 /obj/machinery/organ_printer/robot/attackby(obj/item/W, mob/user)

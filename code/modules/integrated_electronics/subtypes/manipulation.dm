@@ -99,8 +99,8 @@
 			dt = Clamp(detonation_time.data, 1, 12)*10
 		else
 			dt = 15
-		addtimer(CALLBACK(attached_grenade, /obj/item/grenade.proc/activate), dt)
-		addtimer(CALLBACK(src, .proc/before_activation_action), dt - 1)
+		addtimer(CALLBACK(attached_grenade, nameof(/obj/item/grenade.proc/activate)), dt)
+		addtimer(CALLBACK(src, nameof(.proc/before_activation_action)), dt - 1)
 		grenade_activated = TRUE
 		var/atom/holder = loc
 		var/atom/A = get_object()
@@ -356,9 +356,9 @@
 					set_pin_data(IC_OUTPUT, 1, TRUE)
 					pulling = to_pull
 					acting_object.visible_message("\The [acting_object] starts pulling \the [to_pull] around.")
-					register_signal(to_pull, SIGNAL_MOVED, .proc/check_pull) // Whenever the target moves, make sure we can still pull it!
-					register_signal(to_pull, SIGNAL_QDELETING, .proc/stop_pulling) // Stop pulling if it gets destroyed.
-					register_signal(acting_object, SIGNAL_MOVED, .proc/pull) // Make sure we actually pull it.
+					register_signal(to_pull, SIGNAL_MOVED, nameof(.proc/check_pull)) // Whenever the target moves, make sure we can still pull it!
+					register_signal(to_pull, SIGNAL_QDELETING, nameof(.proc/stop_pulling)) // Stop pulling if it gets destroyed.
+					register_signal(acting_object, SIGNAL_MOVED, nameof(.proc/pull)) // Make sure we actually pull it.
 					var/atom/A = get_object()
 					A.investigate_log("started pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 			push_data()
@@ -515,11 +515,6 @@
 	var/turf/rift_location = get_turf(src)
 
 	if(!rift_location || !isPlayerLevel(rift_location.z))
-		playsound(src, GET_SFX(SFX_SPARK), 50, 1)
-		return
-
-	// Sorry for no-fly weather!
-	if(GLOB.using_map.level_has_trait(rift_location.z, ZTRAIT_SNOWSTORM) || GLOB.using_map.level_has_trait(rift_location.z, ZTRAIT_SNOWFALL))
 		playsound(src, GET_SFX(SFX_SPARK), 50, 1)
 		return
 

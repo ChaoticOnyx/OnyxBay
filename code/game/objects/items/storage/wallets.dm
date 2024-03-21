@@ -42,6 +42,9 @@
 
 	var/obj/item/card/id/front_id = null
 
+	drop_sound = SFX_DROP_LEATHER
+	pickup_sound = SFX_PICKUP_LEATHER
+
 /obj/item/storage/wallet/leather
 	color = COLOR_SEDONA
 
@@ -67,15 +70,15 @@
 			SetName("[name] ([front_id])")
 			update_icon()
 
-/obj/item/storage/wallet/update_icon()
-	overlays.Cut()
+/obj/item/storage/wallet/on_update_icon()
+	ClearOverlays()
 	if(front_id)
 		var/tiny_state = "id-generic"
 		if(("id-"+front_id.icon_state) in icon_states(icon))
 			tiny_state = "id-"+front_id.icon_state
 		var/image/tiny_image = new /image(icon, icon_state = tiny_state)
 		tiny_image.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
-		overlays += tiny_image
+		AddOverlays(tiny_image)
 
 /obj/item/storage/wallet/get_id_card()
 	return front_id

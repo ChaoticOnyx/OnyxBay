@@ -10,7 +10,7 @@
 /obj/machinery/atmospherics/unary/vent_pump
 	icon = 'icons/atmos/vent_pump.dmi'
 	icon_state = "map_vent"
-	plane = FLOOR_PLANE
+	plane = TURF_PLANE
 
 	name = "Air Vent"
 	desc = "Has a valve and pump attached to it."
@@ -45,7 +45,7 @@
 	var/broken = VENT_UNDAMAGED
 
 	var/frequency = 1439
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 	var/radio_filter_out
 	var/radio_filter_in
@@ -71,16 +71,17 @@
 	pressure_checks = 2
 	pressure_checks_default = 2
 
-/obj/machinery/atmospherics/unary/vent_pump/New()
-	..()
+/obj/machinery/atmospherics/unary/vent_pump/Initialize()
+	. = ..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP
 	icon = null
 
 /obj/machinery/atmospherics/unary/vent_pump/Destroy()
-	unregister_radio(src, frequency)
+	SSradio.remove_object(src, frequency)
 	if(initial_loc)
 		initial_loc.air_vent_info -= id_tag
 		initial_loc.air_vent_names -= id_tag
+		initial_loc = null
 	. = ..()
 
 /obj/machinery/atmospherics/unary/vent_pump/high_volume
@@ -88,8 +89,8 @@
 	power_channel = STATIC_EQUIP
 	power_rating = 15000	//15 kW ~ 20 HP
 
-/obj/machinery/atmospherics/unary/vent_pump/high_volume/New()
-	..()
+/obj/machinery/atmospherics/unary/vent_pump/high_volume/Initialize()
+	. = ..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 650
 
 /obj/machinery/atmospherics/unary/vent_pump/engine
@@ -97,17 +98,17 @@
 	power_channel = STATIC_EQUIP
 	power_rating = 30000	//15 kW ~ 20 HP
 
-/obj/machinery/atmospherics/unary/vent_pump/engine/New()
-	..()
+/obj/machinery/atmospherics/unary/vent_pump/engine/Initialize()
+	. = ..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 350 //meant to match air injector
 
-/obj/machinery/atmospherics/unary/vent_pump/update_icon(safety = 0)
+/obj/machinery/atmospherics/unary/vent_pump/on_update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 	if (!node)
 		update_use_power(POWER_USE_OFF)
 
-	overlays.Cut()
+	ClearOverlays()
 
 	var/vent_icon = "vent"
 
@@ -136,7 +137,7 @@
 	else
 		vent_icon += "[use_power ? "[pump_direction ? "out" : "in"]" : "off"]"
 
-	overlays += icon_manager.get_atmos_icon("device", , , vent_icon)
+	AddOverlays(icon_manager.get_atmos_icon("device", , , vent_icon))
 
 /obj/machinery/atmospherics/unary/vent_pump/update_underlays()
 	if(..())
@@ -233,11 +234,7 @@
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
-	signal.source = src
-
-	signal.data = list(
+	var/list/data = list(
 		"area" = src.area_uid,
 		"tag" = src.id_tag,
 		"device" = "AVP",
@@ -256,8 +253,10 @@
 		var/new_name = "[initial_loc.name] Vent Pump #[initial_loc.air_vent_names.len+1]"
 		initial_loc.air_vent_names[id_tag] = new_name
 		src.SetName(new_name)
-	initial_loc.air_vent_info[id_tag] = signal.data
 
+	initial_loc.air_vent_info[id_tag] = data
+
+	var/datum/signal/signal = new(data)
 	radio_connection.post_signal(src, signal, radio_filter_out)
 
 	return 1
@@ -274,7 +273,7 @@
 	radio_filter_in = frequency==1439?(RADIO_FROM_AIRALARM):null
 	radio_filter_out = frequency==1439?(RADIO_TO_AIRALARM):null
 	if(frequency)
-		radio_connection = register_radio(src, frequency, frequency, radio_filter_in)
+		radio_connection = SSradio.add_object(src, frequency, radio_filter_in)
 		src.broadcast_status()
 
 /obj/machinery/atmospherics/unary/vent_pump/receive_signal(datum/signal/signal)
@@ -351,26 +350,17 @@
 
 		var/obj/item/weldingtool/WT = W
 
-		if(!WT.isOn())
-			to_chat(user, "<span class='notice'>The welding tool needs to be on to start this task.</span>")
-			return 1
+		if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
+			return
 
-		if(!WT.remove_fuel(0,user))
-			to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
-			return 1
+		if(QDELETED(src) || !user)
+			return
 
 		if(broken)
 			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 			user.visible_message(SPAN_NOTICE("\The [user] repairing \the [src]."), \
 				SPAN_NOTICE("Now repairing \the [src]."), \
 				"You hear welding.")
-
-			if(!do_after(user, 10, src))
-				to_chat(user, SPAN_NOTICE("You must remain still to finish this task!"))
-				return 1
-			if(!WT.isOn())
-				to_chat(user, SPAN_NOTICE("The welding tool needs to be on to finish this task."))
-				return 1
 
 			switch(broken)
 				if(VENT_DAMAGED_STAGE_ONE)
@@ -387,18 +377,12 @@
 			return
 
 		to_chat(user, "<span class='notice'>Now welding \the [src].</span>")
-		playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 
-		if(!do_after(user, 20, src))
-			to_chat(user, "<span class='notice'>You must remain close to finish this task.</span>")
-			return 1
+		if(!W.use_tool(src, user, delay = 2 SECONDS, amount = 5))
+			return
 
-		if(!src)
-			return 1
-
-		if(!WT.isOn())
-			to_chat(user, "<span class='notice'>The welding tool needs to be on to finish this task.</span>")
-			return 1
+		if(QDELETED(src) || !user)
+			return
 
 		welded = !welded
 		update_icon()

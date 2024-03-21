@@ -20,23 +20,23 @@
 		to_chat(user, SPAN("notice", "\The [src] doesn't look like it can be disassembled. Breaking it up is the only way to get rid of it."))
 	else if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
-		if(!WT.isOn())
-			return
 		if(health == max_health)
 			to_chat(user, SPAN("notice", "\The [src] is undamaged."))
 			return
-		if(!WT.remove_fuel(0,user))
-			to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
-			return
+
 		user.visible_message(SPAN("notice", "[user] is repairing the damage to \the [src]..."), \
-				             SPAN("notice", "You start repairing the damage to \the [src]..."))
-		playsound(src, 'sound/items/Welder.ogg', 100, 1)
-		if(!do_after(user, max(5, health / 3), src) && WT && WT.isOn())
+				            	SPAN("notice", "You start repairing the damage to \the [src]..."))
+		if(!WT.use_tool(src, user, delay = max(5, health / 3), amount = 5))
 			return
+
+		if(QDELETED(src) || !user)
+			return
+
 		health = max_health
 		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
 				             SPAN("notice", "You repair \the [src]."))
 		update_icon()
+
 	else if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		var/mob/living/affecting = G.affecting
@@ -69,7 +69,7 @@
 	update_icon()
 	return ..()
 
-/obj/structure/bed/couch/update_icon()
+/obj/structure/bed/couch/on_update_icon()
 	..()
 
 	var/cache_key = "[base_icon]-[material.name]-over"
@@ -79,7 +79,7 @@
 			I.color = material.icon_colour
 		I.layer = ABOVE_HUMAN_LAYER
 		stool_cache[cache_key] = I
-	overlays |= stool_cache[cache_key]
+	AddOverlays(stool_cache[cache_key])
 	if(buckled_mob)
 		cache_key = "[base_icon]_armrest"
 		var/image/I = image('icons/obj/furniture.dmi', "[base_icon]_armrest")
@@ -87,12 +87,12 @@
 		if(material_alteration & MATERIAL_ALTERATION_COLOR)
 			I.color = padding_material.icon_colour
 		stool_cache[cache_key] = I
-		overlays |= stool_cache[cache_key]
+		AddOverlays(stool_cache[cache_key])
 
 	if(health <= max_health*0.33)
-		overlays += icon('icons/obj/furniture.dmi', "couch-tear")
+		AddOverlays(image('icons/obj/furniture.dmi', "couch-tear"))
 	else if (health <= max_health*0.67)
-		overlays += icon('icons/obj/furniture.dmi', "couch-rip")
+		AddOverlays(image('icons/obj/furniture.dmi', "couch-rip"))
 
 /obj/structure/bed/couch/set_dir()
 	..()

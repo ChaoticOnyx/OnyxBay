@@ -112,9 +112,10 @@
 	desc = "A 12 gauge slug."
 	icon_state = "slshell"
 	spent_icon = "slshell-spent"
-	caliber = "shotgun"
+	caliber = "12g"
 	projectile_type = /obj/item/projectile/bullet/shotgun
 	matter = list(MATERIAL_STEEL = 360)
+	fall_sounds = list('sound/effects/weapons/gun/shell_fall.ogg')
 
 /obj/item/ammo_casing/shotgun/pellet
 	name = "shotgun shell"
@@ -160,7 +161,8 @@
 	matter = list(MATERIAL_STEEL = 360, MATERIAL_GLASS = 720)
 
 /obj/item/ammo_casing/shotgun/stunshell/emp_act(severity)
-	if(prob(100/severity)) BB = null
+	if(prob(100/severity))
+		is_spent = TRUE
 	update_icon()
 
 //Does not stun, only blinds, but has area of effect.
@@ -203,6 +205,13 @@
 /obj/item/ammo_casing/a762/practice
 	desc = "A 7.62mm practice bullet casing."
 	projectile_type = /obj/item/projectile/bullet/rifle/a762/practice
+
+/obj/item/ammo_casing/a792
+	desc = "A 7.92mm bullet casing."
+	caliber = "7.92"
+	projectile_type = /obj/item/projectile/bullet/rifle/a792
+	icon_state = "rifle-casing"
+	spent_icon = "rifle-casing-spent"
 
 /obj/item/ammo_casing/rocket
 	name = "rocket shell"
@@ -248,3 +257,14 @@
 	spent_icon = "empshell-spent"
 	projectile_type  = /obj/item/projectile/ion
 	matter = list(MATERIAL_STEEL = 260, MATERIAL_URANIUM = 200)
+
+/obj/item/ammo_casing/shotgun/Initialize()
+	. = ..()
+	register_signal(src, SIGNAL_MOVED, nameof(/atom.proc/update_icon))
+
+/obj/item/ammo_casing/shotgun/on_update_icon()
+	if(spent_icon && is_spent)
+		icon_state = spent_icon
+	else
+		icon_state = initial(icon_state)
+	icon_state = "[icon_state][isturf(loc)? "-world" : ""]"

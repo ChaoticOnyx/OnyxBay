@@ -10,17 +10,17 @@
 
 /obj/item/clothing/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/clothing/accessory))
-
 		if(!valid_accessory_slots || !valid_accessory_slots.len)
-			to_chat(usr, "<span class='warning'>You cannot attach accessories of any kind to \the [src].</span>")
+			to_chat(usr, SPAN("warning", "You cannot attach accessories of any kind to \the [src]."))
 			return
 
 		var/obj/item/clothing/accessory/A = I
-		if(can_attach_accessory(A) && user.drop(A))
+		if(can_attach_accessory(A))
+			user.drop(A, force = TRUE)
 			attach_accessory(user, A)
 			return
 		else
-			to_chat(user, "<span class='warning'>You cannot attach more accessories of this type to [src].</span>")
+			to_chat(user, SPAN("warning", "You cannot attach more accessories of this type to [src]."))
 		return
 
 	for(var/obj/item/clothing/accessory/A in accessories)
@@ -46,7 +46,7 @@
 	if(usr.incapacitated())
 		return
 
-	if(!usr.drop(src))
+	if(!usr.drop(src, changing_slots = TRUE))
 		return
 
 	switch(over_object.name)
@@ -65,6 +65,9 @@
 	slowdown_accessory = 0
 	for(var/obj/item/clothing/accessory/A in accessories)
 		slowdown_accessory += A.slowdown
+	if(ismob(loc))
+		var/mob/M = loc
+		M.update_equipment_slowdown()
 
 /**
  *  Attach accessory A to src
@@ -97,7 +100,7 @@
 	if(!accessories.len) return
 	var/obj/item/clothing/accessory/A
 	if(accessories.len > 1)
-		A = input("Select an accessory to remove from [src]") as null|anything in accessories
+		A = show_radial_menu(usr, usr, make_item_radial_menu_choices(accessories), radius = 42)
 	else
 		A = accessories[1]
 	src.remove_accessory(usr,A)

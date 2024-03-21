@@ -1,3 +1,6 @@
+/// How many times bot will try to find a path from the same X,Y before becoming inactive
+#define MAX_SAMEPOS_COUNT 15
+
 /mob/living/bot
 	name = "Bot"
 	health = 20
@@ -36,6 +39,10 @@
 	var/target_patience = 5
 	var/frustration = 0
 	var/max_frustration = 0
+	var/x_last
+	var/y_last
+	/// Times this bot tried pathfinding from the same X,Y coordinates
+	var/same_pos_count
 
 /mob/living/bot/New()
 	..()
@@ -234,6 +241,7 @@
 
 	if(client)
 		return
+
 	if(length(ignore_list))
 		for(var/atom/A in ignore_list)
 			if(!A || !A.loc || prob(1))
@@ -250,6 +258,9 @@
 				stepToTarget()
 		if(max_frustration && frustration > max_frustration * target_speed)
 			handleFrustrated(1)
+	else if(!inaction_check())
+		return
+
 	else
 		resetTarget()
 		lookForTargets()
@@ -376,6 +387,7 @@
 	resetTarget()
 	patrol_path = list()
 	ignore_list = list()
+	same_pos_count = 0
 	return 1
 
 /mob/living/bot/proc/turn_off()
@@ -388,6 +400,20 @@
 
 /mob/living/bot/on_ghost_possess()
 	resetTarget()
+
+/mob/living/bot/proc/inaction_check()
+	if((will_patrol && !pulledby && !target) && (x_last == x && y_last == y))
+		same_pos_count++
+		if(same_pos_count >= MAX_SAMEPOS_COUNT)
+			turn_off()
+			return FALSE
+	else
+		same_pos_count = 0
+
+	x_last = x
+	y_last = y
+
+	return TRUE
 
 /******************************************************************/
 // Navigation procs

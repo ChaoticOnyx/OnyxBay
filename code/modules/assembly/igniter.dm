@@ -8,6 +8,9 @@
 	secured = 1
 	wires = WIRE_RECEIVE
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 	activate()
 		if(!..())	return 0//Cooldown check
 

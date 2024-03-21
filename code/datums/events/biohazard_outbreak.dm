@@ -10,7 +10,7 @@
 /datum/event/biohazard_outbreak/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(null, /proc/level_seven_announcement), 0)
+	add_think_ctx("announce", CALLBACK(null, nameof(.proc/announce)), 0)
 
 /datum/event/biohazard_outbreak/get_mtth()
 	. = ..()
@@ -34,3 +34,6 @@
 	log_and_message_admins("Blob spawned in \the [get_area(T)]", location = T.loc)
 
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
+
+/datum/event/biohazard_outbreak/proc/announce()
+	SSannounce.play_station_announce(/datum/announce/level_7_biohazard)

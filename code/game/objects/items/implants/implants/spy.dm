@@ -12,7 +12,7 @@
 		C.check(src)
 
 /obj/item/implant/spy/implanted(mob/source)
-	timer = addtimer(CALLBACK(src, .proc/check_compilation), 1 MINUTES, TIMER_STOPPABLE)
+	timer = addtimer(CALLBACK(src, nameof(.proc/check_compilation)), 1 MINUTES, TIMER_STOPPABLE)
 	return TRUE
 
 /obj/item/implant/spy/removed()

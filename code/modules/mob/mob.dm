@@ -8,23 +8,35 @@
 	remove_from_dead_mob_list()
 	remove_from_living_mob_list()
 	GLOB.player_list.Remove(src)
+	SSmobs.mob_list.Remove(src)
 
 	unset_machine()
+	//SStgui.force_close_all_windows(src) Needs further investigating
+
 	QDEL_NULL(hud_used)
 	QDEL_NULL(show_inventory)
+	QDEL_NULL(skybox)
+	QDEL_NULL(ability_master)
+	QDEL_NULL(shadow)
+	QDEL_NULL(bugreporter)
 
 	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
+	grabbed_by.Cut()
 
 	clear_fullscreen()
 	if(ability_master)
 		QDEL_NULL(ability_master)
 
+	if(click_handlers)
+		click_handlers.QdelClear()
+		QDEL_NULL(click_handlers)
+
 	remove_screen_obj_references()
 	if(client)
 		for(var/atom/movable/AM in client.screen)
-			var/obj/screen/screenobj = AM
+			var/atom/movable/screen/screenobj = AM
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
@@ -69,13 +81,19 @@
 	. = ..()
 	if(species_language)
 		add_language(species_language)
-	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	/mob/proc/set_blackness)
-	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	/mob/proc/set_blackness)
-	register_signal(src, SIGNAL_SIGHT_SET,			/mob/proc/set_blackness)
+	update_move_intent_slowdown()
+	if(ignore_pull_slowdown)
+		add_movespeed_mod_immunities(src, /datum/movespeed_modifier/pull_slowdown)
+	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	nameof(.proc/set_blackness))
+	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	nameof(.proc/set_blackness))
+	register_signal(src, SIGNAL_SIGHT_SET,			nameof(.proc/set_blackness))
 	START_PROCESSING(SSmobs, src)
 
 /mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 	if(!client)	return
+
+	if(is_blind() && is_deaf())
+		return // We're both blind & deaf, nothing to do here
 
 	//spaghetti code
 	if(type)
@@ -157,6 +175,8 @@
 		var/mob/M = m
 		if(self_message && M == src)
 			M.show_message(self_message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
+		else if(isghost(M))
+			M.show_message(message + " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)", AUDIBLE_MESSAGE)
 		else if(M.see_invisible >= invisibility || narrate) // Cannot view the invisible
 			M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 		else
@@ -169,37 +189,10 @@
 	return 0
 
 /mob/proc/movement_delay()
-	. = 0
-	if(istype(loc, /turf))
-		var/turf/T = loc
-		. += T.movement_delay
+	if(istype(loc, /turf/space))
+		return cached_slowdown_space
 
-	switch(m_intent)
-		if(M_RUN)
-			if(drowsyness > 0)
-				. += config.movement.walk_speed
-			else
-				. += config.movement.run_speed
-		if(M_WALK)
-			. += config.movement.walk_speed
-
-	if(lying) //Crawling, it's slower
-		. += 10 + (weakened * 2)
-
-	if(pulling && !ignore_pull_slowdown)
-		var/area/A = get_area(src)
-		if(A.has_gravity)
-			if(istype(pulling, /obj))
-				var/obj/O = pulling
-				if(O.pull_slowdown == PULL_SLOWDOWN_WEIGHT)
-					. += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
-				else
-					. += O.pull_slowdown
-			else if(istype(pulling, /mob))
-				var/mob/M = pulling
-				. += max(0, M.mob_size) / MOB_MEDIUM * (M.lying ? 2 : 0.5)
-			else
-				. += 1
+	return cached_slowdown
 
 /mob/proc/Life()
 //	if(organStructure)
@@ -417,9 +410,9 @@
 	if (flavor_text && flavor_text != "")
 		var/msg = replacetext(flavor_text, "\n", " ")
 		if(length(msg) <= 40)
-			return "<span class='notice'>[msg]</span>"
+			. += "<span class='notice'>[msg]</span>"
 		else
-			return "<span class='notice'>[copytext_preserve_html(msg, 1, 37)]... <a href='byond://?src=\ref[src];flavor_more=1'>More...</a></span>"
+			. += "<span class='notice'>[copytext_preserve_html(msg, 1, 37)]... <a href='byond://?src=\ref[src];flavor_more=1'>More...</a></span>"
 
 /*
 /mob/verb/help()
@@ -565,16 +558,22 @@
 	show_inv(usr)
 	usr.show_inventory?.open()
 
-/mob/verb/stop_pulling()
-
+/mob/verb/stop_pulling_verb()
 	set name = "Stop Pulling"
 	set category = "IC"
 
+	stop_pulling() // Verbs are less CPU time efficient than procs.
+
+/mob/proc/stop_pulling()
 	if(pulling)
+		unregister_signal(pulling, SIGNAL_QDELETING)
 		pulling.pulledby = null
 		pulling = null
-		if(pullin)
-			pullin.icon_state = "pull0"
+
+	if(pullin)
+		pullin.icon_state = "pull0"
+
+	remove_movespeed_modifier(/datum/movespeed_modifier/pull_slowdown)
 
 /mob/proc/start_pulling(atom/movable/AM)
 	if ( !AM || !usr || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
@@ -627,6 +626,9 @@
 
 	if(pullin)
 		pullin.icon_state = "pull1"
+
+	register_signal(AM, SIGNAL_QDELETING, nameof(.proc/stop_pulling))
+	update_pull_slowdown(AM)
 
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
@@ -753,11 +755,14 @@
 		if(G.force_stand())
 			lying = 0
 
-	if(!prevent_update_icons && lying_old != lying)
-		update_icons()
+	if(lying_old != lying)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/lying, slowdown = (lying ? 10 + (weakened * 2) : 0))
+		if(!prevent_update_icons)
+			update_icons()
 
 /mob/proc/reset_layer()
 	if(lying)
+		plane = DEFAULT_PLANE
 		layer = LYING_MOB_LAYER
 	else
 		reset_plane_and_layer()
@@ -948,7 +953,7 @@
 
 		affected.implants -= selection
 		for(var/datum/wound/wound in affected.wounds)
-			wound.embedded_objects -= selection
+			LAZYREMOVE(wound.embedded_objects, selection)
 
 		H.shock_stage+=20
 		affected.take_external_damage((selection.w_class * 3), 0, DAM_EDGE, "Embedded object extraction")
@@ -991,7 +996,7 @@
 
 	return 0
 
-/mob/update_icon()
+/mob/on_update_icon()
 	return update_icons()
 
 // /mob/verb/face_direction()
@@ -1091,7 +1096,7 @@
 	return (!alpha || !mouse_opacity || viewer.see_invisible < invisibility)
 
 /client/proc/check_has_body_select()
-	return mob && mob.hud_used && istype(mob.zone_sel, /obj/screen/zone_sel)
+	return mob && mob.hud_used && istype(mob.zone_sel, /atom/movable/screen/zone_sel)
 
 /client/verb/body_toggle_head()
 	set name = "body-toggle-head"
@@ -1131,7 +1136,7 @@
 /client/proc/toggle_zone_sel(list/zones)
 	if(!check_has_body_select())
 		return
-	var/obj/screen/zone_sel/selector = mob.zone_sel
+	var/atom/movable/screen/zone_sel/selector = mob.zone_sel
 	selector.set_selected_zone(next_in_list(mob.zone_sel.selecting,zones))
 
 /mob/proc/has_chem_effect(chem, threshold)

@@ -3,6 +3,7 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "med_key"
 	icon_screen = "crew"
+	light_color = "#5284E7"
 	component_types = list(
 		/obj/item/stock_parts/micro_laser = 2,
 		/obj/item/stock_parts/scanning_module,
@@ -112,19 +113,22 @@
 		return
 
 	if(scanning)
-		scanning -= 1*speed
+		scanning -= 1 * speed
+		scanning = max(scanning, 0)
 		if(scanning <= 0)
 			ping("\The [src] pings, \"Analysis complete.\"")
 			SSnano.update_uis(src)
 
 	if(splicing)
-		splicing -= 1*speed
+		splicing -= 1 * speed
+		splicing = max(splicing, 0)
 		if(splicing <= 0)
 			ping("\The [src] pings, \"Splicing operation complete.\"")
 			SSnano.update_uis(src)
 
 	if(burning)
-		burning -= 1*speed
+		burning -= 1 * speed
+		burning = max(burning, 0)
 		if(burning <= 0)
 			var/obj/item/diseasedisk/d = new /obj/item/diseasedisk(src.loc)
 			d.analysed = analysed

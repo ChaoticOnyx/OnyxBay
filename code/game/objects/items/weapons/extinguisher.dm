@@ -25,6 +25,9 @@
 	var/ff_reagent = /datum/reagent/water/firefoam
 	var/external_source = FALSE
 
+	drop_sound = SFX_DROP_GASCAN
+	pickup_sound = SFX_PICKUP_GASCAN
+
 /obj/item/extinguisher/mini
 	name = "fire extinguisher"
 	desc = "A light and compact fibreglass-framed model fire extinguisher."
@@ -36,6 +39,7 @@
 	mod_handy = 0.7
 	mod_weight = 0.65
 	mod_reach = 0.6
+	armor_penetration = 5
 	w_class = ITEM_SIZE_SMALL
 	spray_amount = 80
 	max_volume = 1000

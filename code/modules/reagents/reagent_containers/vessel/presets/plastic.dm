@@ -6,13 +6,14 @@
 	name = "Lime Juice"
 	desc = "Sweet-sour goodness."
 	icon_state = "limejuice"
+	item_state = "limejuice"
 	startswith = list(/datum/reagent/drink/juice/lime)
 
 /obj/item/reagent_containers/vessel/plastic/milk
 	name = "milk bottle"
 	desc = "It's milk. White and nutritious goodness!"
 	icon_state = "milk"
-	item_state = "carton"
+	item_state = "milk"
 	center_of_mass = "x=16;y=9"
 	startswith = list(/datum/reagent/drink/milk)
 
@@ -20,7 +21,7 @@
 	name = "soymilk bottle"
 	desc = "It's soy milk. White and nutritious... goodness?"
 	icon_state = "soymilk"
-	item_state = "carton"
+	item_state = "soymilk"
 	center_of_mass = "x=16;y=9"
 	startswith = list(/datum/reagent/drink/milk/soymilk)
 
@@ -28,7 +29,7 @@
 	name = "bottled water"
 	desc = "Pure drinking water, imported from the Martian poles."
 	icon_state = "waterbottle"
-	item_state = "bottle"
+	item_state = "waterbottle"
 	center_of_mass = "x=15;y=8"
 	startswith = list(/datum/reagent/water)
 
@@ -36,4 +37,5 @@
 	name = "\improper FI4I water"
 	desc = "Said to be NanoTrasen's finest water. In fact, it's just an expensive water container."
 	icon_state = "fi4i"
+	item_state = "waterbottle"
 	center_of_mass = "x=17;y=9"

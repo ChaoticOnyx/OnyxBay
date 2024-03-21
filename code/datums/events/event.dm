@@ -47,7 +47,9 @@
 	if(time == 0)
 		return 0
 
-	return (1 - 2 ** (-_mtth_passed / time))
+	var/tick_chance = 1 - (2.718 ** (log(0.5) / mtth))
+
+	return 1 - (2.718 ** (_mtth_passed * log(1 - tick_chance)))
 
 /datum/event/proc/get_mtth()
 	return mtth * abs(SSstoryteller.character.rarity_ratio)
@@ -59,13 +61,19 @@
 	return
 
 /datum/event/proc/ai_choose()
+	if(!length(options))
+		_waiting_option = 0
+		return
+
 	var/list/options_weight = list()
 
 	for(var/datum/event_option/O in options)
-		options_weight[O] = O.get_weight()
+		var/o_weight = round(O.get_weight())
+		if(o_weight > 0)
+			options_weight[O] = o_weight
 
 	var/datum/event_option/O = util_pick_weight(options_weight)
-	log_and_message_admins("AI choosed the option '[O.name]' ([O.id]) for the event '[name]' ([id])")
+	log_and_message_admins("AI has chosen the option '[O.name]' ([O.id]) for the event '[name]' ([id])")
 	_waiting_option = 0
 	O.choose()
 

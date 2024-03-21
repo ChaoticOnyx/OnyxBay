@@ -8,7 +8,7 @@
 	density = 1
 	var/wired = 0
 
-/obj/structure/firedoor_assembly/update_icon()
+/obj/structure/firedoor_assembly/on_update_icon()
 	if(anchored)
 		icon_state = "door_anchored"
 	else
@@ -54,16 +54,40 @@
 		update_icon()
 	else if(!anchored && isWelder(C))
 		var/obj/item/weldingtool/WT = C
-		if(WT.remove_fuel(0, user))
-			user.visible_message("<span class='warning'>[user] dissassembles \the [src].</span>",
+		user.visible_message("<span class='warning'>[user] dissassembles \the [src].</span>",
 			"You start to dissassemble \the [src].")
-			if(do_after(user, 40, src))
-				if(!src || !WT.isOn()) return
-				user.visible_message("<span class='warning'>[user] has dissassembled \the [src].</span>",
-									"You have dissassembled \the [src].")
-				new /obj/item/stack/material/steel(src.loc, 2)
-				qdel(src)
-		else
-			to_chat(user, "<span class='notice'>You need more welding fuel.</span>")
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 1))
+			return
+
+		if(QDELETED(src) || !user)
+			return
+
+		user.visible_message("<span class='warning'>[user] has dissassembled \the [src].</span>",
+								"You have dissassembled \the [src].")
+		new /obj/item/stack/material/steel(src.loc, 2)
+		qdel(src)
 	else
 		..(C, user)
+
+/obj/structure/firelock_frame/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("delay" = 5 SECONDS, "cost" = 16)
+
+	else if(the_rcd.upgrade & RCD_UPGRADE_SIMPLE_CIRCUITS)
+		return list("delay" = 2 SECONDS, "cost" = 1)
+
+	return FALSE
+
+/obj/structure/firelock_frame/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	switch(rcd_data["[RCD_DESIGN_MODE]"])
+		if(RCD_UPGRADE_SIMPLE_CIRCUITS)
+			show_splash_text(user, "circuit installed")
+			new /obj/machinery/door/firedoor(get_turf(src))
+			qdel_self()
+			return TRUE
+
+		if(RCD_DECONSTRUCT)
+			qdel_self()
+			return TRUE
+
+	return FALSE

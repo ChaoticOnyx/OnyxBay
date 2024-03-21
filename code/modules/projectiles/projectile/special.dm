@@ -72,6 +72,7 @@
 	nodamage = 1
 	check_armour = "bullet"
 	blockable = FALSE
+	poisedamage = 255 // slammy jammy
 
 /obj/item/projectile/meteor/Bump(atom/A, forced = FALSE)
 	if(A == firer)
@@ -115,16 +116,8 @@
 				H.Stun(5)
 				for (var/mob/V in viewers(src))
 					V.show_message(SPAN_WARNING("[M] writhes in pain as \his vacuoles boil."), 3, SPAN_WARNING("You hear the crunching of leaves."), 2)
-			if(prob(35))
-				if(prob(80))
-					randmutb(M)
-					domutcheck(M,null)
-				else
-					randmutg(M)
-					domutcheck(M,null)
-			else
-				M.adjustFireLoss(rand(5,15))
-				M.show_message(SPAN_DANGER("The radiation beam singes you!"))
+			M.adjustFireLoss(rand(5,15))
+			M.show_message(SPAN_DANGER("The radiation beam singes you!"))
 	else if(istype(target, /mob/living/carbon))
 		M.show_message(SPAN_NOTICE("The radiation beam dissipates harmlessly through your body."))
 	else
@@ -158,7 +151,7 @@
 	if(ishuman(target)) //These rays make plantmen fat.
 		var/mob/living/carbon/human/H = M
 		if((H.species.species_flags & SPECIES_FLAG_IS_PLANT) && (H.nutrition < 500))
-			H.nutrition += 30
+			H.add_nutrition(30)
 	else if (istype(target, /mob/living/carbon))
 		M.show_message(SPAN_NOTICE("The radiation beam dissipates harmlessly through your body."))
 	else
@@ -172,6 +165,7 @@
 	if(ishuman(target))
 		var/mob/living/carbon/human/M = target
 		M.confused += rand(5,8)
+
 /obj/item/projectile/chameleon
 	name = "bullet"
 	icon_state = "bullet"
@@ -179,7 +173,7 @@
 	embed = 0 // nope
 	nodamage = 1
 	damage_type = PAIN
-	muzzle_type = /obj/effect/projectile/bullet/muzzle
+	muzzle_type = /obj/effect/projectile/muzzle/bullet
 
 /obj/item/projectile/energy/laser
 	name = "laser bolt"
@@ -201,38 +195,38 @@
 /obj/item/projectile/energy/laser/small // Pistol level
 	name = "small laser bolt"
 	icon_state = "laser_small"
-	damage = 35
-	armor_penetration = 10
+	damage = 27.5
+	armor_penetration = 0
 	projectile_inner_range = 0.15
 
 /obj/item/projectile/energy/laser/lesser // Carbine level
 	icon_state = "laser_lesser"
-	damage = 45
+	damage = 35
 	agony = 5
-	armor_penetration = 12.5
+	armor_penetration = 5
 	projectile_inner_range = 0.2
 
 /obj/item/projectile/energy/laser/mid // Rifle level
 	icon_state = "laser"
-	damage = 55
+	damage = 45
 	agony = 10
-	armor_penetration = 15.0
+	armor_penetration = 10
 
 /obj/item/projectile/energy/laser/greater // Advanced laser rifle or something
 	name = "large laser bolt"
 	icon_state = "laser_greater"
-	damage = 65
+	damage = 55
 	agony = 15
-	armor_penetration = 17.5
+	armor_penetration = 20
 	projectile_inner_range = 0.35
 	projectile_outer_range = 1.75
 
 /obj/item/projectile/energy/laser/heavy // Cannon level
 	name = "heavy laser bolt"
 	icon_state = "laser_heavy"
-	damage = 75
+	damage = 70
 	agony = 20
-	armor_penetration = 20
+	armor_penetration = 40
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
 	projectile_inner_range = 0.4
 	projectile_outer_range = 2.0
@@ -250,15 +244,18 @@
 	var/mob/living/simple_animal/hostile/facehugger/holder = null
 
 /obj/item/projectile/facehugger_proj/Bump(atom/A, forced = FALSE)
+	if(A == src)
+		return FALSE // no idea how this could ever happen but let's ensure
+
 	if(A == firer)
 		loc = A.loc
-		return
+		return FALSE
 
 	if(!holder)
-		return
+		return FALSE
 
 	if(bumped)
-		return
+		return FALSE
 	bumped = TRUE
 
 	if(istype(A, /mob/living/carbon/human))
@@ -289,6 +286,17 @@
 					W.take_damage(10)
 				else
 					continue
+			if(istype(O, /obj/structure/inflatable/door/panel)) // Those fuckers require different processing as well
+				var/obj/structure/inflatable/door/panel/P = O
+				if(get_turf(P) == starting)
+					if(!P.CheckDiagonalExit(src, get_turf(original)))
+						P.take_damage(5)
+					else
+						continue
+				else if(!P.CanDiagonalPass(src, previous_loc))
+					P.take_damage(5)
+				else
+					continue
 			else if(O.CanZASPass(previous_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
 				continue
 			holder.forceMove(previous_loc) // Otherwise we failed to pass
@@ -308,6 +316,9 @@
 	Bump(A)
 
 /obj/item/projectile/facehugger_proj/Destroy()
+	if(!holder)
+		return ..()
+
 	if(kill_count)
 		QDEL_NULL(holder)
 	else
@@ -315,7 +326,8 @@
 		if(T)
 			holder.forceMove(T)
 			holder = null
-
+		else
+			QDEL_NULL(holder)
 	return ..()
 
 /obj/item/projectile/portal

@@ -1,7 +1,9 @@
 /turf/simulated/floor
 	name = "plating"
+
 	icon = 'icons/turf/flooring/plating.dmi'
 	icon_state = "plating"
+	base_icon_state = "plating"
 
 	// Damage to flooring.
 	var/broken
@@ -11,7 +13,6 @@
 	var/base_name = "plating"
 	var/base_desc = "The naked hull."
 	var/base_icon = 'icons/turf/flooring/plating.dmi'
-	var/base_icon_state = "plating"
 	var/base_color = null
 
 	// Flooring data.
@@ -23,6 +24,9 @@
 	thermal_conductivity = 0.040
 	heat_capacity = 10000
 	var/lava = 0
+
+	/// Determines if you can deconstruct this with a RCD
+	var/rcd_proof = FALSE
 
 /turf/simulated/floor/proc/dismantle_floor()
 	ChangeTurf(get_base_turf_by_area(src))
@@ -50,7 +54,7 @@
 //This proc auto corrects the grass tiles' siding.
 /turf/simulated/floor/proc/make_plating(place_product, defer_icon_update)
 
-	overlays.Cut()
+	ClearOverlays()
 
 	SetName(base_name)
 	desc = base_desc
@@ -70,7 +74,7 @@
 				T.stored_decals = src.decals
 				src.decals = null
 				if(T.stored_decals)
-					F.overlays += icon("icons/obj/tiles.dmi", "decal_state")
+					F.AddOverlays(image("icons/obj/tiles.dmi", "decal_state"))
 		flooring = null
 
 	if (base_color)

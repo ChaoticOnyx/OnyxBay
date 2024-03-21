@@ -1,3 +1,5 @@
+
+/// Items
 /obj/item/inflatable
 	name = "inflatable"
 	w_class = ITEM_SIZE_NORMAL
@@ -8,18 +10,20 @@
 /obj/item/inflatable/attack_self(mob/user)
 	if(!deploy_path)
 		return
+	if(!isturf(user.loc))
+		return
 	user.visible_message("[user] starts inflating \the [src].", "You start inflating \the [src].")
 	if(!do_after(user, 1 SECOND, src))
 		return
 	playsound(loc, 'sound/items/zip.ogg', 75, 1)
 	user.visible_message(SPAN("notice", "[user] inflates \the [src]."), SPAN("notice", "You inflate \the [src]."))
 	var/obj/structure/inflatable/R = new deploy_path(user.loc)
+	R.dir = user.dir
 	transfer_fingerprints_to(R)
 	R.add_fingerprint(user)
 	if(inflatable_health)
 		R.health = inflatable_health
 	qdel(src)
-
 
 /obj/item/inflatable/wall
 	name = "inflatable wall"
@@ -33,30 +37,59 @@
 	icon_state = "folded_door"
 	deploy_path = /obj/structure/inflatable/door
 
+/obj/item/inflatable/panel
+	name = "inflatable panel"
+	desc = "A folded membrane which rapidly expands into a thin door on activation."
+	icon_state = "folded_panel"
+	deploy_path = /obj/structure/inflatable/door/panel
+
+/obj/item/inflatable/torn
+	name = "torn inflatable wall"
+	desc = "A folded membrane which rapidly expands into a large cubical shape on activation. It is too torn to be usable."
+	icon_state = "folded_wall_torn"
+
+/obj/item/inflatable/torn/attack_self(mob/user)
+	to_chat(user, SPAN("notice", "The inflatable wall is too torn to be inflated!"))
+	add_fingerprint(user)
+
+/obj/item/inflatable/door/torn
+	name = "torn inflatable door"
+	desc = "A folded membrane which rapidly expands into a simple door on activation. It is too torn to be usable."
+	icon_state = "folded_door_torn"
+
+/obj/item/inflatable/door/torn/attack_self(mob/user)
+	to_chat(user, SPAN("notice", "The inflatable door is too torn to be inflated!"))
+	add_fingerprint(user)
+
+/obj/item/inflatable/panel/torn
+	name = "torn inflatable panel"
+	desc = "A folded membrane which rapidly expands into a thin door on activation. It is too torn to be usable."
+	icon_state = "folded_panel_torn"
+
+/obj/item/inflatable/panel/torn/attack_self(mob/user)
+	to_chat(user, SPAN("notice", "The inflatable panel is too torn to be inflated!"))
+	add_fingerprint(user)
+
+/// Structures
 /obj/structure/inflatable
 	name = "inflatable"
 	desc = "An inflated membrane. Do not puncture."
-	density = 1
-	anchored = 1
-	opacity = 0
+	density = TRUE
+	anchored = TRUE
+	opacity = FALSE
 	icon = 'icons/obj/inflatable.dmi'
-	icon_state = "wall"
+	icon_state = null
 	can_atmos_pass = ATMOS_PASS_DENSITY
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 
+	var/icon_key = "wall"
 	var/undeploy_path = null
+	var/torn_path = null
 	var/health = 10
 	var/taped
 
 	var/max_pressure_diff = HAZARD_HIGH_PRESSURE + 150
 	var/max_temp = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
-
-/obj/structure/inflatable/proc/take_damage(damage)
-	return
-
-/obj/structure/inflatable/wall
-	name = "inflatable wall"
-	undeploy_path = /obj/item/inflatable/wall
 
 /obj/structure/inflatable/New(location)
 	..()
@@ -64,6 +97,10 @@
 
 /obj/structure/inflatable/Initialize()
 	. = ..()
+	if(!undeploy_path || !torn_path)
+		util_crash_with("Found improper inflatable at '[log_info_line(loc)]'")
+		return INITIALIZE_HINT_QDEL
+	add_think_ctx("post_deflate", CALLBACK(src, nameof(.proc/post_deflate)), 0)
 	set_next_think(world.time)
 
 /obj/structure/inflatable/Destroy()
@@ -82,7 +119,9 @@
 
 	for(var/check_dir in GLOB.cardinal)
 		var/turf/T = get_step(get_turf(src), check_dir)
-		var/datum/gas_mixture/env = T.return_air()
+		var/datum/gas_mixture/env = T?.return_air()
+		if(!env)
+			continue
 		var/pressure = env.return_pressure()
 		min_pressure = min(min_pressure, pressure)
 		max_pressure = max(max_pressure, pressure)
@@ -98,13 +137,13 @@
 /obj/structure/inflatable/_examine_text(mob/user)
 	. = ..()
 	if(health >= initial(health))
-		. += "\n[SPAN_NOTICE("It's undamaged.")]"
+		. += "\n[SPAN("notice", "It's undamaged.")]"
 	else if(health >= 0.5 * initial(health))
-		. += "\n[SPAN_WARNING("It's showing signs of damage.")]"
+		. += "\n[SPAN("warning", "It's showing signs of damage.")]"
 	else if(health >= 0)
-		. += "\n[SPAN_DANGER("It's heavily damaged!")]"
+		. += "\n[SPAN("danger", "It's heavily damaged!")]"
 	if(taped)
-		. += "\n[SPAN_NOTICE("It's been duct taped in few places.")]"
+		. += "\n[SPAN("notice", "It's been duct taped in few places.")]"
 
 /obj/structure/inflatable/bullet_act(obj/item/projectile/Proj)
 	take_damage(Proj.get_structure_damage())
@@ -117,11 +156,11 @@
 			qdel(src)
 			return
 		if(2.0)
-			deflate(1)
+			deflate(TRUE)
 			return
 		if(3.0)
 			if(prob(50))
-				deflate(1)
+				deflate(TRUE)
 				return
 
 /obj/structure/inflatable/attack_hand(mob/user)
@@ -152,30 +191,35 @@
 		playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 75, 1)
 	return health <= 0
 
-/obj/structure/inflatable/take_damage(damage)
+
+/obj/structure/inflatable/proc/take_damage(damage)
 	health = max(0, health - damage)
 	if(health <= 0)
-		deflate(1)
+		deflate(TRUE)
 
 /obj/structure/inflatable/CtrlClick()
 	return hand_deflate()
 
-/obj/structure/inflatable/proc/deflate(violent=0)
+/obj/structure/inflatable/proc/deflate(violent = FALSE)
 	playsound(loc, 'sound/machines/hiss.ogg', 75, 1)
 	if(violent)
 		visible_message("[src] rapidly deflates!")
-		var/obj/item/inflatable/torn/R = new /obj/item/inflatable/torn(loc)
+		var/obj/item/inflatable/torn/R = new torn_path(loc)
 		transfer_fingerprints_to(R)
 		qdel(src)
 	else
 		if(!undeploy_path)
 			return
 		visible_message("\The [src] slowly deflates.")
-		spawn(50)
-			var/obj/item/inflatable/R = new undeploy_path(src.loc)
-			transfer_fingerprints_to(R)
-			R.inflatable_health = health
-			qdel(src)
+		set_next_think_ctx("post_deflate", world.time + (5 SECONDS))
+
+/obj/structure/inflatable/proc/post_deflate()
+	if(QDELETED(src))
+		return
+	var/obj/item/inflatable/R = new undeploy_path(loc)
+	transfer_fingerprints_to(R)
+	R.inflatable_health = health
+	qdel(src)
 
 /obj/structure/inflatable/verb/hand_deflate()
 	set name = "Deflate"
@@ -194,24 +238,41 @@
 	attack_animation(user)
 	if(health <= 0)
 		user.visible_message(SPAN("danger", "[user] [attack_verb] open the [src]!"))
-		spawn(1)
-			deflate(1)
+		INVOKE_ASYNC(src, nameof(.proc/deflate), TRUE)
 	else
 		user.visible_message(SPAN("danger", "[user] [attack_verb] at [src]!"))
 	return 1
 
+// Walls
+/obj/structure/inflatable/wall
+	name = "inflatable wall"
+	icon_state = "wall"
+	icon_key = "wall"
 
+	undeploy_path = /obj/item/inflatable/wall
+	torn_path = /obj/item/inflatable/torn
+
+// Doors
 /obj/structure/inflatable/door //Based on mineral door code
 	name = "inflatable door"
-	density = 1
-	anchored = 1
-	opacity = 0
-
 	icon_state = "door_closed"
+	icon_key = "door"
+
+	density = TRUE
+	anchored = TRUE
+	opacity = FALSE
+	layer = CLOSED_DOOR_LAYER
+
 	undeploy_path = /obj/item/inflatable/door
+	torn_path = /obj/item/inflatable/door/torn
 
 	var/state = 0 //closed, 1 == open
-	var/isSwitchingStates = 0
+	var/isSwitchingStates = FALSE
+
+/obj/structure/inflatable/door/Initialize()
+	. = ..()
+	add_think_ctx("post_open", CALLBACK(src, nameof(.proc/post_open)), 0)
+	add_think_ctx("post_close", CALLBACK(src, nameof(.proc/post_close)), 0)
 
 /obj/structure/inflatable/door/attack_ai(mob/user) //those aren't machinery, they're just big fucking balloons
 	if(isAI(user)) //so the AI can't open it
@@ -243,73 +304,128 @@
 
 /obj/structure/inflatable/door/proc/SwitchState()
 	if(state)
-		Close()
+		close()
 	else
-		Open()
+		open()
 	update_nearby_tiles()
 
-/obj/structure/inflatable/door/proc/Open()
-	isSwitchingStates = 1
-	flick("door_opening", src)
-	sleep(10)
-	set_density(0)
-	set_opacity(0)
+/obj/structure/inflatable/door/proc/open()
+	isSwitchingStates = TRUE
+	flick("[icon_key]_opening", src)
+	set_next_think_ctx("post_open", world.time + (1 SECOND))
+
+/obj/structure/inflatable/door/proc/post_open()
+	if(QDELETED(src))
+		return
+	set_density(FALSE)
+	set_opacity(FALSE)
 	state = 1
 	update_icon()
-	isSwitchingStates = 0
+	isSwitchingStates = FALSE
 	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
+	layer = ABOVE_HUMAN_LAYER
 
-/obj/structure/inflatable/door/proc/Close()
-	isSwitchingStates = 1
-	flick("door_closing", src)
-	sleep(10)
-	set_density(1)
-	set_opacity(0)
+/obj/structure/inflatable/door/proc/close()
+	isSwitchingStates = TRUE
+	flick("[icon_key]_closing", src)
+	set_next_think_ctx("post_close", world.time + (1 SECOND))
+
+/obj/structure/inflatable/door/proc/post_close()
+	if(QDELETED(src))
+		return
+	set_density(TRUE)
+	set_opacity(FALSE)
 	state = 0
 	update_icon()
-	isSwitchingStates = 0
+	isSwitchingStates = FALSE
 	atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
+	layer = CLOSED_DOOR_LAYER
 
-/obj/structure/inflatable/door/update_icon()
+/obj/structure/inflatable/door/on_update_icon()
 	if(state)
-		icon_state = "door_open"
+		icon_state = "[icon_key]_open"
 	else
-		icon_state = "door_closed"
+		icon_state = "[icon_key]_closed"
 
-/obj/structure/inflatable/door/deflate(violent = 0)
-	playsound(loc, 'sound/machines/hiss.ogg', 75, 1)
-	if(violent)
-		visible_message("[src] rapidly deflates!")
-		var/obj/item/inflatable/door/torn/R = new /obj/item/inflatable/door/torn(loc)
-		transfer_fingerprints_to(R)
-		qdel(src)
-	else
-		visible_message("[src] slowly deflates.")
-		spawn(50)
-			var/obj/item/inflatable/door/R = new /obj/item/inflatable/door(loc)
-			transfer_fingerprints_to(R)
-			qdel(src)
+// Panels
+/obj/structure/inflatable/door/panel //Based on mineral door code
+	name = "inflatable panel"
+	icon_state = "panel_closed"
+	icon_key = "panel"
 
+	density = TRUE
+	anchored = TRUE
+	opacity = FALSE
 
-/obj/item/inflatable/torn
-	name = "torn inflatable wall"
-	desc = "A folded membrane which rapidly expands into a large cubical shape on activation. It is too torn to be usable."
-	icon = 'icons/obj/inflatable.dmi'
-	icon_state = "folded_wall_torn"
+	atom_flags = ATOM_FLAG_CHECKS_BORDER
+	can_atmos_pass = ATMOS_PASS_PROC
+	undeploy_path = /obj/item/inflatable/panel
+	torn_path = /obj/item/inflatable/panel/torn
 
-/obj/item/inflatable/torn/attack_self(mob/user)
-		to_chat(user, SPAN("notice", "The inflatable wall is too torn to be inflated!"))
-		add_fingerprint(user)
+/obj/structure/inflatable/door/panel/open()
+	isSwitchingStates = TRUE
+	flick("[icon_key]_opening", src)
+	set_next_think_ctx("post_open", world.time + (0.6 SECONDS))
 
-/obj/item/inflatable/door/torn
-	name = "torn inflatable door"
-	desc = "A folded membrane which rapidly expands into a simple door on activation. It is too torn to be usable."
-	icon = 'icons/obj/inflatable.dmi'
-	icon_state = "folded_door_torn"
+/obj/structure/inflatable/door/panel/post_open()
+	if(QDELETED(src))
+		return
+	set_density(FALSE)
+	set_opacity(FALSE)
+	state = 1
+	update_icon()
+	isSwitchingStates = FALSE
+	layer = ABOVE_HUMAN_LAYER
 
-/obj/item/inflatable/door/torn/attack_self(mob/user)
-	to_chat(user, SPAN("notice", "The inflatable door is too torn to be inflated!"))
-	add_fingerprint(user)
+/obj/structure/inflatable/door/panel/close()
+	isSwitchingStates = TRUE
+	flick("[icon_key]_closing", src)
+	set_next_think_ctx("post_close", world.time + (0.6 SECONDS))
+
+/obj/structure/inflatable/door/panel/post_close()
+	if(QDELETED(src))
+		return
+	set_density(TRUE)
+	set_opacity(FALSE)
+	state = 0
+	update_icon()
+	isSwitchingStates = FALSE
+	layer = CLOSED_DOOR_LAYER
+
+/obj/structure/inflatable/door/panel/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
+		return TRUE
+	if(get_dir(loc, target) & dir)
+		return !density
+	return TRUE
+
+/obj/structure/inflatable/door/panel/CanZASPass(turf/T, is_zone)
+	if(get_dir(T, loc) == turn(dir, 180)) // Make sure we're handling the border correctly.
+		return state
+	return TRUE
+
+/obj/structure/inflatable/door/panel/proc/CanDiagonalPass(atom/movable/mover, turf/target)
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
+		return TRUE
+	var/mover_dir = get_dir(loc, target)
+	if((mover_dir & dir) || (mover_dir & turn(dir, -45)) || (mover_dir & turn(dir, 45)))
+		return !density
+	return TRUE
+
+/obj/structure/inflatable/door/panel/CheckExit(atom/movable/O, turf/target)
+	if(istype(O) && O.pass_flags & PASS_FLAG_GLASS)
+		return TRUE
+	if(get_dir(O.loc, target) == dir)
+		return state
+	return TRUE
+
+/obj/structure/inflatable/door/panel/proc/CheckDiagonalExit(atom/movable/mover, turf/target)
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
+		return TRUE
+	var/mover_dir = get_dir(mover.loc, target)
+	if((mover_dir & dir) || (turn(mover_dir, -45) & dir) || (turn(mover_dir, 45) & dir))
+		return FALSE
+	return TRUE
 
 
 /obj/item/storage/briefcase/inflatable
@@ -319,7 +435,7 @@
 	item_state = "case"
 	w_class = ITEM_SIZE_LARGE
 	max_storage_space = null
-	storage_slots = 6
+	storage_slots = 8
 	max_w_class = ITEM_SIZE_NORMAL
 	can_hold = list(/obj/item/inflatable)
-	startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 4)
+	startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 4, /obj/item/inflatable/panel = 2)

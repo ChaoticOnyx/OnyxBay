@@ -6,7 +6,7 @@
 	icon_state = "ling_transform"
 	required_chems = 10
 	required_dna = 1
-	max_genetic_damage = 0
+	max_genome_damage = 0
 
 /datum/changeling_power/transform/activate()
 	if(!..())
@@ -25,7 +25,7 @@
 		return
 
 	use_chems()
-	changeling.geneticdamage += 30
+	changeling.apply_genome_damage(30)
 
 	var/S_name = chosen_dna.speciesName
 	var/datum/species/S_dat = all_species[S_name]
@@ -71,5 +71,4 @@
 		H.b_type = chosen_dna.dna.b_type
 		H.sync_organ_dna()
 		H.make_changeling()
-	domutcheck(my_mob, null)
 	my_mob.UpdateAppearance()

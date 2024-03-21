@@ -35,7 +35,7 @@
 		return
 	..()
 
-/obj/structure/pit/update_icon()
+/obj/structure/pit/on_update_icon()
 	icon_state = "pit[open]"
 
 /obj/structure/pit/proc/open()

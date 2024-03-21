@@ -420,6 +420,31 @@
 	filled = TRUE
 
 ////////////////////////
+/obj/item/reagent_containers/food/sliceable/metroidcake
+	name = "Metroid Cake"
+	desc = "A cake with some slimy filling."
+	icon_state = "metroidcake"
+	slice_path = /obj/item/reagent_containers/food/slice/metroidcake
+	slices_num = 5
+	filling_color = "#D3D3D3"
+	center_of_mass = "x=16;y=10"
+	nutriment_desc = list("cake" = 10, "sweetness" = 10, "goo" = 15)
+	nutriment_amt = 15
+
+/obj/item/reagent_containers/food/slice/metroidcake
+	name = "Metroid Cake slice"
+	desc = "Just a slice of cake, it is enough for everyone."
+	icon_state = "metroidcake_slice"
+	trash = /obj/item/trash/dish/plate
+	filling_color = "#D3D3D3"
+	bitesize = 2
+	center_of_mass = "x=16;y=14"
+	whole_path = /obj/item/reagent_containers/food/sliceable/metroidcake
+
+/obj/item/reagent_containers/food/slice/chocolatecake/filled
+	filled = TRUE
+
+////////////////////////
 /obj/item/reagent_containers/food/sliceable/cheesewheel
 	name = "Cheese wheel"
 	desc = "A big wheel of delcious Cheddar."
@@ -762,9 +787,9 @@
 	var/list/boxes = list() // If the boxes are stacked, they come here
 	var/boxtag = ""
 
-/obj/item/pizzabox/update_icon()
+/obj/item/pizzabox/on_update_icon()
 
-	overlays = list()
+	ClearOverlays()
 
 	// Set appropriate description
 	if( open && pizza )
@@ -792,7 +817,7 @@
 		if( pizza )
 			var/image/pizzaimg = image("food.dmi", icon_state = pizza.icon_state)
 			pizzaimg.pixel_y = -3
-			overlays += pizzaimg
+			AddOverlays(pizzaimg)
 
 		return
 	else
@@ -809,7 +834,7 @@
 		if( doimgtag )
 			var/image/tagimg = image("food.dmi", icon_state = "pizzabox_tag")
 			tagimg.pixel_y = boxes.len * 3
-			overlays += tagimg
+			AddOverlays(tagimg)
 
 	icon_state = "pizzabox[boxes.len+1]"
 
@@ -905,18 +930,22 @@
 		return
 	..()
 
-/obj/item/pizzabox/margherita/New()
+/obj/item/pizzabox/margherita/Initialize()
+	. = ..()
 	pizza = new /obj/item/reagent_containers/food/sliceable/pizza/margherita(src)
 	boxtag = "Margherita Deluxe"
 
-/obj/item/pizzabox/vegetable/New()
+/obj/item/pizzabox/vegetable/Initialize()
+	. = ..()
 	pizza = new /obj/item/reagent_containers/food/sliceable/pizza/vegetablepizza(src)
 	boxtag = "Gourmet Vegatable"
 
-/obj/item/pizzabox/mushroom/New()
+/obj/item/pizzabox/mushroom/Initialize()
+	. = ..()
 	pizza = new /obj/item/reagent_containers/food/sliceable/pizza/mushroompizza(src)
 	boxtag = "Mushroom Special"
 
-/obj/item/pizzabox/meat/New()
+/obj/item/pizzabox/meat/Initialize()
+	. = ..()
 	pizza = new /obj/item/reagent_containers/food/sliceable/pizza/meatpizza(src)
 	boxtag = "Meatlover's Supreme"

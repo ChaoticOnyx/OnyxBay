@@ -41,8 +41,11 @@
 /obj/machinery/power/supermatter
 	name = "Supermatter"
 	desc = "A strangely translucent and iridescent crystal. <span class='danger'>You get headaches just from looking at it.</span>"
+
 	icon = 'icons/obj/engine.dmi'
 	icon_state = "darkmatter"
+	base_icon_state = "darkmatter"
+
 	density = 1
 	anchored = 0
 	light_outer_range = 4
@@ -50,9 +53,6 @@
 	layer = ABOVE_OBJ_LAYER
 
 	var/gasefficency = 0.25
-
-	var/base_icon_state = "darkmatter"
-
 	var/damage = 0
 	var/damage_archived = 0
 	var/safe_alert = "Crystaline hyperstructure returning to safe operating levels."
@@ -105,6 +105,8 @@
 	var/aw_EPR = FALSE
 
 	var/datum/radiation_source/rad_source = null
+
+	is_poi = TRUE
 
 /obj/machinery/power/supermatter/Initialize()
 	. = ..()
@@ -245,7 +247,7 @@
 			S.grounding = 0
 	// Effect 3: Break solar arrays
 
-	for(var/obj/machinery/power/solar/S in GLOB.machines)
+	for(var/obj/machinery/power/solar/S in SSmachines.machinery)
 		if(!(S.z in affected_z))
 			continue
 		if(prob(DETONATION_SOLAR_BREAK_CHANCE))

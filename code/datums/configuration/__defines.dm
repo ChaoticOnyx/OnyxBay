@@ -39,3 +39,8 @@
 	if(islist(input)) {\
 		target = input\
 	}
+
+#define CONFIG_LOAD_LIST_NUM(target, input) \
+	if(islist(input)) {\
+		target += text2num(input)\
+	}

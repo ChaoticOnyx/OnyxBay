@@ -151,7 +151,7 @@ var/global/list/rad_collectors = list()
 		var/turf/T = get_turf(src)
 		if(T)
 			T.assume_air(P.return_air())
-			audible_message(SPAN_DANGER("\The [P] detonates, sending shrapnel flying!"))
+			audible_message(SPAN_DANGER("\The [P] detonates, sending shrapnel flying!"), splash_override = "*KA-BOOM*")
 			fragmentate(T, 2, 4, list(/obj/item/projectile/bullet/pellet/fragment/tank/small = 3, /obj/item/projectile/bullet/pellet/fragment/tank = 1))
 			explosion(T, -1, -1, 0)
 			QDEL_NULL(P)
@@ -201,20 +201,20 @@ var/global/list/rad_collectors = list()
 
 	return
 
-/obj/machinery/power/rad_collector/update_icon()
+/obj/machinery/power/rad_collector/on_update_icon()
 	if(melted)
 		icon_state = "ca_melt"
 	else if(active)
 		icon_state = "ca_on"
 	else
 		icon_state = "ca"
-	overlays.Cut()
+	ClearOverlays()
 	if(P)
-		overlays += image('icons/obj/singularity.dmi', "ptank")
+		AddOverlays(image('icons/obj/singularity.dmi', "ptank"))
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(active)
-		overlays += image('icons/obj/singularity.dmi', "on")
+		AddOverlays(image('icons/obj/singularity.dmi', "on"))
 
 
 /obj/machinery/power/rad_collector/proc/toggle_power()

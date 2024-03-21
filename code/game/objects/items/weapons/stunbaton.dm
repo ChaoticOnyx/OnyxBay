@@ -47,7 +47,7 @@
 			return 0
 	return null
 
-/obj/item/melee/baton/update_icon()
+/obj/item/melee/baton/on_update_icon()
 	if(status)
 		icon_state = "[initial(name)]_active"
 	else if(!bcell)
@@ -70,7 +70,7 @@
 // Addition made by Techhead0, thanks for fullfilling the todo!
 /obj/item/melee/baton/proc/examine_cell()
 	if(bcell)
-		return "<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>"
+		return "<span class='notice'>The baton is [round(CELL_PERCENT(bcell))]% charged.</span>"
 	else
 		return "<span class='warning'>The baton does not have a power source installed.</span>"
 
@@ -119,6 +119,9 @@
 		update_icon()
 
 /obj/item/melee/baton/attack(mob/M, mob/user)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
 	if(status && (MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, "<span class='danger'>You accidentally hit yourself with the [src]!</span>")
 		user.Weaken(30)
@@ -245,7 +248,7 @@
 	icon = 'icons/obj/device.dmi'
 	icon_state = "electrified_arm"
 
-/obj/item/melee/baton/robot/electrified_arm/update_icon()
+/obj/item/melee/baton/robot/electrified_arm/on_update_icon()
 	if(status)
 		icon_state = "electrified_arm_active"
 		set_light(0.4, 0.1, 1, 2, "#006aff")

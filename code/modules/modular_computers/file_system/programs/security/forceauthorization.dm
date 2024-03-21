@@ -6,6 +6,7 @@
 	category = PROG_SEC
 	program_icon_state = "security"
 	program_menu_icon = "locked"
+	program_light_color = "#C00E0E"
 	requires_ntnet = 1
 	available_on_ntnet = 1
 	required_access = access_armory

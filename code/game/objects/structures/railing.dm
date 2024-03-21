@@ -1,8 +1,8 @@
 /obj/structure/railing
 	name = "railing"
-	desc = "A standart steel railing. Prevents from human stupidity."
+	desc = "A standard railing. Prevents human stupidity."
 	icon = 'icons/obj/railing.dmi'
-	icon_state = "railing0"
+	icon_state = "railing_full"
 	density = 1
 	anchored = 1
 	atom_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
@@ -13,12 +13,12 @@
 	var/health = 40
 	var/maxhealth = 40
 	var/check = 0
-/obj/structure/railing/constructed // a cheap trick to spawn unanchored railings for construction
-	anchored = 0
+	var/material = ""
+	var/material_path = "/obj/item/stack/rods"
 
 /obj/structure/railing/Initialize()
 	. = ..()
-	if(src.anchored)
+	if(anchored)
 		update_icon(0)
 
 /obj/structure/railing/Destroy()
@@ -39,22 +39,20 @@
 	if(health < maxhealth)
 		switch(health / maxhealth)
 			if(0.0 to 0.25)
-				. += "\n<span class='warning'>It looks severely damaged!</span>" // Just like me ;)
+				. += "\n<span class='warning'>It looks severely damaged!</span>"
 			if(0.25 to 0.5)
 				. += "\n<span class='warning'>It looks damaged!</span>"
 			if(0.5 to 1.0)
 				. += "\n<span class='notice'>It has a few scrapes and dents.</span>"
 
-// Owwie, ouch, oof
 /obj/structure/railing/proc/take_damage(amount)
 	health -= amount
 	if(health <= 0)
 		visible_message("<span class='warning'>\The [src] breaks down!</span>")
 		playsound(loc, 'sound/effects/grillehit.ogg', 50, 1)
-		new /obj/item/stack/rods(get_turf(src))
+		new material_path(get_turf(src))
 		qdel(src)
 
-// Meet the neighbors
 /obj/structure/railing/proc/NeighborsCheck(UpdateNeighbors = 1)
 	check = 0
 	var/Rturn = turn(src.dir, -90)
@@ -93,31 +91,30 @@
 				R.update_icon(0)
 
 // Greet the neighbors
-/obj/structure/railing/update_icon(UpdateNeighgors = 1)
+/obj/structure/railing/on_update_icon(UpdateNeighgors = 1)
 	NeighborsCheck(UpdateNeighgors)
-	overlays.Cut()
+	ClearOverlays()
 	if (!check || !anchored)
-		icon_state = "railing0"
+		icon_state = "[material]railing"
 	else
-		icon_state = "railing1"
+		icon_state = "[material]railing_full"
 		if (check & 32)
-			overlays += image ('icons/obj/railing.dmi', src, "corneroverlay")
+			AddOverlays(image('icons/obj/railing.dmi', "[material]corneroverlay"))
 		if ((check & 16) || !(check & 32) || (check & 64))
-			overlays += image ('icons/obj/railing.dmi', src, "frontoverlay_l")
+			AddOverlays(image('icons/obj/railing.dmi', "[material]frontoverlay_l"))
 		if (!(check & 2) || (check & 1) || (check & 4))
-			overlays += image ('icons/obj/railing.dmi', src, "frontoverlay_r")
+			AddOverlays(image('icons/obj/railing.dmi', "[material]frontoverlay_r"))
 			if(check & 4)
 				switch (src.dir)
 					if (NORTH)
-						overlays += image ('icons/obj/railing.dmi', src, "mcorneroverlay", pixel_x = 32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_x = 32))
 					if (SOUTH)
-						overlays += image ('icons/obj/railing.dmi', src, "mcorneroverlay", pixel_x = -32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_x = -32))
 					if (EAST)
-						overlays += image ('icons/obj/railing.dmi', src, "mcorneroverlay", pixel_y = -32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = -32))
 					if (WEST)
-						overlays += image ('icons/obj/railing.dmi', src, "mcorneroverlay", pixel_y = 32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = 32))
 
-// You spin me right round baby right round, like a record baby
 /obj/structure/railing/verb/rotate()
 	set name = "Rotate Counter-Clockwise"
 	set category = "Object"
@@ -175,7 +172,7 @@
 		to_chat(usr, "You can't flip the [src] because something blocking it.")
 		return 0
 
-	src.loc = get_step(src, src.dir)
+	forceMove(get_step(src, dir))
 	set_dir(turn(dir, 180))
 	update_icon()
 	return
@@ -208,19 +205,22 @@
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		if(do_after(user, 20, src))
 			user.visible_message("<span class='notice'>\The [user] dismantles \the [src].</span>", "<span class='notice'>You dismantle \the [src].</span>")
-			new /obj/item/stack/material/steel(get_turf(usr), 2)
+			new material_path(get_turf(usr), 2)
 			qdel(src)
 			return
 
 	// Repair
 	if(health < maxhealth && isWelder(W))
 		var/obj/item/weldingtool/F = W
-		if(F.welding)
-			playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-			if(do_after(user, 20, src))
-				user.visible_message("<span class='notice'>\The [user] repairs some damage to \the [src].</span>", "<span class='notice'>You repair some damage to \the [src].</span>")
-				health = min(health+(maxhealth/4), maxhealth) // 25% repair per application
-				return
+		if(!F.use_tool(src, user, delay = 2 SECONDS, amount = 5))
+			return
+
+		if(QDELETED(src) || !user)
+			return
+
+		user.visible_message(SPAN_NOTICE("\The [user] repairs some damage to \the [src]."), SPAN_NOTICE("You repair some damage to \the [src]."))
+		health = min(health + (maxhealth / 4), maxhealth) // 25% repair per application
+		return
 
 	// (Un)Anchor
 	if(isScrewdriver(W))
@@ -251,6 +251,7 @@
 			qdel(src)
 			return
 	return
+
 /obj/structure/railing/proc/check_tile(mob/living/user, turf/T)
 	if(T.density == 1)
 		to_chat(user, SPAN_DANGER("There is \a [T] in the way."))
@@ -273,6 +274,7 @@
 			to_chat(user, SPAN_DANGER("There is \a [O] in the way."))
 			return 0
 	return 1
+
 /obj/structure/railing/can_climb(mob/living/user, post_climb_check = 0)
 	var/turf/OT = get_step(src, src.dir)//opposite turf of railing
 	var/turf/T = get_turf(src)//current turf of railing
@@ -320,28 +322,19 @@
 	climbers -= user
 
 /obj/structure/railing/steel
-	icon_state = "newrailing0"
+	icon_state = "steel_railing_full"
+	material = "steel_"
+	desc = "A steel railing. Prevents human stupidity."
+	material_path = "/obj/item/stack/material/steel"
 
-/obj/structure/railing/steel/update_icon(UpdateNeighgors = 1)
-	NeighborsCheck(UpdateNeighgors)
-	overlays.Cut()
-	if (!check || !anchored)
-		icon_state = "newrailing0"
-	else
-		icon_state = "newrailing1"
-		if (check & 32)
-			overlays += image ('icons/obj/railing.dmi', src, "newcorneroverlay")
-		if ((check & 16) || !(check & 32) || (check & 64))
-			overlays += image ('icons/obj/railing.dmi', src, "newfrontoverlay_l")
-		if (!(check & 2) || (check & 1) || (check & 4))
-			overlays += image ('icons/obj/railing.dmi', src, "newfrontoverlay_r")
-			if(check & 4)
-				switch (src.dir)
-					if (NORTH)
-						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_x = 32)
-					if (SOUTH)
-						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_x = -32)
-					if (EAST)
-						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_y = -32)
-					if (WEST)
-						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_y = 32)
+/obj/structure/railing/wood
+	icon_state = "wood_railing_full"
+	material = "wood_"
+	desc = "A wooden railing. Prevents human stupidity."
+	material_path = "/obj/item/stack/material/wood"
+
+/obj/structure/railing/darkwood
+	icon_state = "darkwood_railing_full"
+	material = "darkwood_"
+	desc = "A darkwood railing. Prevents human stupidity."
+	material_path = "/obj/item/stack/material/darkwood"

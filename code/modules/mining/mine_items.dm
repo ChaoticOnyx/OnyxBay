@@ -10,13 +10,13 @@
 	icon_off = "miningsecoff"
 	req_access = list(access_mining)
 
-/obj/structure/closet/secure_closet/miner/New()
-	..()
-	sleep(2)
+/obj/structure/closet/secure_closet/miner/Initialize()
+	. = ..()
 	if(prob(50))
 		new /obj/item/storage/backpack/industrial(src)
 	else
 		new /obj/item/storage/backpack/satchel/eng(src)
+
 	new /obj/item/device/radio/headset/headset_cargo(src)
 	new /obj/item/clothing/under/rank/miner(src)
 	new /obj/item/clothing/gloves/thick(src)
@@ -38,9 +38,10 @@
 	slot_flags = SLOT_BELT
 	force = 14.5
 	throwforce = 10.0
-	mod_weight = 1.35
+	mod_weight = 1.4
 	mod_reach = 1.25
-	mod_handy = 0.9
+	mod_handy = 0.7
+	armor_penetration = 70
 	icon_state = "pickaxe"
 	item_state = "pickaxe"
 	w_class = ITEM_SIZE_HUGE
@@ -90,7 +91,8 @@
 	force = 17.5
 	mod_weight = 1.5
 	mod_reach = 1.35
-	mod_handy = 0.9
+	mod_handy = 0.8
+	armor_penetration = 90
 	power = 50 //faster than drill, but cannot dig
 	origin_tech = list(TECH_MATERIAL = 3, TECH_POWER = 2, TECH_ENGINEERING = 2)
 	desc = "Cracks rocks with sonic blasts, perfect for killing cave lizards."
@@ -125,7 +127,7 @@
 
 /obj/item/pickaxe/drill/borgdrill
 	name = "cyborg mining drill"
-	icon_state = "pickaxe"
+	icon_state = "borgdrill"
 	item_state = "jackhammer"
 	digspeed = 10
 	desc = ""
@@ -144,6 +146,7 @@
 	mod_weight = 1.5
 	mod_reach = 1.0
 	mod_handy = 0.4
+	armor_penetration = 100 // It crushes walls
 	drill_verb = "hammering"
 	power = 50
 	var/wielded = 0
@@ -165,7 +168,7 @@
 	update_icon()
 	..()
 
-/obj/item/pickaxe/sledgehammer/update_icon()
+/obj/item/pickaxe/sledgehammer/on_update_icon()
 	var/new_state = "[icon_state][wielded]"
 	item_state_slots[slot_l_hand_str] = new_state
 	item_state_slots[slot_r_hand_str] = new_state
@@ -184,6 +187,7 @@
 	mod_weight = 1.25
 	mod_reach = 1.5
 	mod_handy = 0.9
+	armor_penetration = 20
 	item_state = "shovel"
 	w_class = ITEM_SIZE_HUGE
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
@@ -191,6 +195,9 @@
 	attack_verb = list("bashed", "bludgeoned", "thrashed", "whacked")
 	sharp = 0
 	edge = 1
+
+	drop_sound = SFX_DROP_SHOVEL
+	pickup_sound = SFX_PICKUP_SHOVEL
 
 /obj/item/shovel/spade
 	name = "spade"
@@ -202,6 +209,7 @@
 	mod_weight = 0.7
 	mod_reach = 0.7
 	mod_handy = 0.9
+	armor_penetration = 10
 	w_class = ITEM_SIZE_SMALL
 
 /**********************Flags**************************/
@@ -289,8 +297,7 @@
 		set_light(0.2, 0.1, 1) // Very dim so the rest of the flag is barely visible - if the turf is completely dark, you can't see anything on it, no matter what
 		var/image/addon = image(icon = src.icon, icon_state = fringe) // Bright fringe
 		addon.layer = ABOVE_LIGHTING_LAYER
-		addon.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-		overlays += addon
+		AddOverlays(addon)
 
 /obj/item/stack/flag/proc/knock_down()
 	pixel_x = rand(-randpixel, randpixel)
@@ -298,7 +305,7 @@
 	upright = 0
 	anchored = 0
 	icon_state = initial(icon_state)
-	overlays.Cut()
+	ClearOverlays()
 	set_light(0)
 
 /**********************Mining car (Crate like thing, not the rail car)**************************/
@@ -306,12 +313,14 @@
 /obj/structure/closet/crate/miningcar
 	desc = "A mining car. This one doesn't work on rails, but has to be dragged."
 	name = "Mining car (not for rails)"
-	icon = 'icons/obj/storage.dmi'
 	icon_state = "miningcar"
 	density = 1
 	icon_opened = "miningcaropen"
 	icon_closed = "miningcar"
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
+
+	turf_height_offset = 15
+	opened_turf_height_offset = 3
 
 /**********************Pinpointer**********************/
 
@@ -423,17 +432,12 @@
 			to_chat(user, "<span class='info'>[src] is only effective on lesser beings.</span>")
 			return
 
-/obj/item/lazarus_injector/attackby(obj/item/I, mob/living/user)
-	if(istype(I, /obj/item/card/emag) && !emagged)
-		var/obj/item/card/emag/emag_card = I
-		if(!emag_card.uses)
-			return
-		emagged = TRUE
-		emag_card.uses -= 1
-		to_chat(user, SPAN_WARNING("You overload \the [src]'s injection matrix."))
+/obj/item/lazarus_injector/emag_act(remaining_charges, mob/user)
+	if(emagged)
 		return
-
-	return ..()
+	emagged = TRUE
+	to_chat(user, SPAN_WARNING("You overload \the [src]'s injection matrix."))
+	return 1
 
 /obj/item/lazarus_injector/emp_act()
 	if(!malfunctioning)
@@ -482,6 +486,7 @@
 	mod_weight = 1.5
 	mod_reach = 1.25
 	mod_handy = 0.9
+	armor_penetration = 60
 	throwforce = 10
 	var/burst_time = 50
 	var/fieldlimit = 4
@@ -550,7 +555,7 @@
 		name = "strong resonance field"
 		resonance_damage = 30
 
-	addtimer(CALLBACK(src, .proc/burst, loc), timetoburst)
+	addtimer(CALLBACK(src, nameof(.proc/burst), loc), timetoburst)
 
 /obj/effect/resonance/Destroy()
 	if(res)

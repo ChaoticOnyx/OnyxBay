@@ -91,8 +91,8 @@
 /datum/event/prison_break/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
-	add_think_ctx("release", CALLBACK(src, .proc/release), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
+	add_think_ctx("release", CALLBACK(src, nameof(.proc/release)), 0)
 
 /datum/event/prison_break/on_fire()
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
@@ -135,9 +135,7 @@
 
 /datum/event/prison_break/proc/announce()
 	if(areas && areas.len > 0)
-		command_announcement.Announce(
+		SSannounce.play_station_announce(/datum/announce/prison_break,
 			"[pick("Gr3y.T1d3 virus","Malignant trojan")] detected in [station_name()] [(eventDept == "Security")? "imprisonment":"containment"] subroutines. Secure any compromised areas immediately. [station_name()] AI involvement is recommended.",
 			"[eventDept] Alert",
-			zlevels = affecting_z,
-			new_sound = 'sound/AI/prisonbreakstart.ogg'
 		)

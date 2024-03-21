@@ -16,6 +16,9 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	slot_flags = SLOT_BELT
 
+	drop_sound = SFX_DROP_GUN
+	pickup_sound = SFX_PICKUP_GUN
+
 /obj/item/reagent_containers/hypospray/do_surgery(mob/living/carbon/M, mob/living/user)
 	if(user.a_intent != I_HELP) //in case it is ever used as a surgery tool
 		return ..()
@@ -128,7 +131,7 @@
 	update_icon()
 	return
 
-/obj/item/reagent_containers/hypospray/autoinjector/update_icon()
+/obj/item/reagent_containers/hypospray/autoinjector/on_update_icon()
 	if(reagents.total_volume > 0)
 		icon_state = "[base_state]1"
 	else

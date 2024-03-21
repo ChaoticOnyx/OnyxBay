@@ -140,3 +140,76 @@
 	desc = "Changes the audibility depending on the volume of the music"
 
 	var/volume_status = LOW_VOLUME
+
+/datum/modifier/trait/pacifism
+	name = "Pacifism"
+	desc = "You can't attack!"
+
+/datum/modifier/trait/pacifism/on_applied()
+	holder.a_intent_change(I_HELP)
+
+/datum/modifier/trait/cold_resist
+	name = "Cold Resistance"
+	desc = "You don't feel cold!"
+
+/datum/modifier/trait/cold_resist/on_applied()
+	holder.add_mutation(MUTATION_COLD_RESISTANCE)
+
+/datum/modifier/trait/cold_resist/on_expire()
+	holder.remove_mutation(MUTATION_COLD_RESISTANCE)
+
+/datum/modifier/trait/noslip
+	name = "No Slip"
+	desc = "You can't slip!"
+
+/datum/modifier/trait/toxinlover
+	incoming_tox_damage_percent = -0.2
+
+/datum/modifier/trait/resist_heat_hands
+	incoming_fire_damage_percent = 0.2
+
+/datum/modifier/trait/blooddeficiency
+	name = "Blood Deficiency"
+	desc = "Your body can't produce enough blood to sustain itself."
+	var/min_blood = BLOOD_VOLUME_BAD // just barely survivable without treatment
+
+
+/datum/modifier/trait/blooddeficiency/on_applied()
+	if(!ishuman(holder))
+		return
+
+	// for making sure the roundstart species has the right blood pack sent to them
+	var/mob/living/carbon/human/carbon_target = holder
+	carbon_target.dna.b_type = "O-"
+
+/datum/modifier/trait/blooddeficiency/proc/lose_blood()
+	if(holder.stat == DEAD)
+		return
+
+	if(!ishuman(holder))
+		return
+
+	var/mob/living/carbon/human/carbon_target = holder
+	if(carbon_target.species.species_flags & SPECIES_FLAG_NO_BLOOD) //can't lose blood if your species doesn't have any
+		return
+
+	if (carbon_target.get_blood_volume() == min_blood)
+		return
+
+	if (carbon_target.get_blood_volume() < min_blood)
+		carbon_target.regenerate_blood(carbon_target.species.blood_volume*min_blood - carbon_target.get_blood_volume_abs())
+		return
+	// Ensures that we don't reduce total blood volume below min_blood.
+	carbon_target.remove_blood(1.525 * 0.1)
+
+/datum/modifier/trait/radimmune
+	name = "Radiation Immunity"
+	desc = "You're immune to radiation"
+
+/datum/modifier/trait/holy
+	name = "Holy"
+	desc = "You're immune to cult magic and evil spirits"
+
+/datum/modifier/trait/magicimmune
+	name = "Magic Immunity"
+	desc = "You're immune to magic"

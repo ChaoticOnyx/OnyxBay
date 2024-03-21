@@ -180,7 +180,7 @@
 	color = color_rotation(rand(-11,12)*15)
 
 /obj/item/clothing/accessory/toggleable/flannel
-	name = "flannel shirt"
+	name = "comfy flannel shirt"
 	desc = "A comfy, plaid flannel shirt."
 	icon_state = "flannel"
 	var/rolled = 0
@@ -252,7 +252,7 @@
 	H.update_icon()
 	update_clothing_icon()
 
-/obj/item/clothing/accessory/toggleable/flannel/update_icon()
+/obj/item/clothing/accessory/toggleable/flannel/on_update_icon()
 	icon_state = initial(icon_state)
 	if(rolled)
 		icon_state += "r"
@@ -261,6 +261,11 @@
 	if(buttoned)
 		icon_state += "b"
 	update_clothing_icon()
+
+/obj/item/clothing/accessory/toggleable/flannel/alt
+	name = "soft flannel shirt"
+	desc = "A soft, plaid flannel shirt."
+	icon_state = "flannel_alt"
 
 /obj/item/clothing/accessory/tangzhuang
 	name = "tangzhuang jacket"

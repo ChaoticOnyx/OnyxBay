@@ -23,9 +23,9 @@
 /obj/item/tray/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	// Drop all the things. All of them.
-	overlays.Cut()
+	ClearOverlays()
 	for(var/obj/item/I in carrying)
-		I.loc = M.loc
+		I.dropInto(M.loc)
 		carrying.Remove(I)
 		if(isturf(I.loc))
 			spawn()
@@ -34,7 +34,9 @@
 						step(I, pick(NORTH,SOUTH,EAST,WEST))
 						sleep(rand(2,4))
 
-
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))              //What if he's a clown?
 		to_chat(M, "<span class='warning'>You accidentally slam yourself with the [src]!</span>")
 		M.Weaken(1)
@@ -171,9 +173,9 @@
 			if(calc_carry() + add >= max_carry)
 				break
 
-			I.loc = src
+			I.forceMove(src)
 			carrying.Add(I)
-			overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer, "pixel_x" = I.pixel_x, "pixel_y" = I.pixel_y)
+			AddOverlays(image(I.icon, I.icon_state, layer = (30 + I.layer)))
 
 /obj/item/tray/dropped(mob/user)
 	..()
@@ -186,10 +188,10 @@
 			foundtable = 1
 			break
 
-		overlays.Cut()
+		ClearOverlays()
 
 		for(var/obj/item/I in carrying)
-			I.loc = loc
+			I.dropInto(loc)
 			carrying.Remove(I)
 			if(!foundtable && isturf(loc))
 			// if no table, presume that the person just shittily dropped the tray on the ground and made a mess everywhere!

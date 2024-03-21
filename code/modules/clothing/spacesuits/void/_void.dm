@@ -5,12 +5,12 @@
 	icon_state = "void"
 
 	heat_protection = HEAD
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100)
+	armor = list(melee = 40, bullet = 20, laser = 35,energy = 15, bomb = 35, bio = 100)
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.4
 
 	//Species-specific stuff.
-	species_restricted = list(SPECIES_HUMAN, SPECIES_IPC)
+	species_restricted = list(SPECIES_HUMAN)
 
 	sprite_sheets_obj = list(
 		SPECIES_UNATHI = 'icons/obj/clothing/species/unathi/hats.dmi',
@@ -31,13 +31,13 @@
 	//item_state = "syndie_hardsuit"
 	w_class = ITEM_SIZE_HUGE//bulky item
 	desc = "A high-tech dark red space suit. Used for AI satellite maintenance."
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100)
+	armor = list(melee = 40, bullet = 20, laser = 35,energy = 15, bomb = 35, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit)
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.4
 
-	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC)
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL)
 
 	sprite_sheets_obj = list(
 		SPECIES_UNATHI = 'icons/obj/clothing/species/unathi/suits.dmi',

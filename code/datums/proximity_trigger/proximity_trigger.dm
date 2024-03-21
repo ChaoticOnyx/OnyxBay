@@ -24,6 +24,8 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	var/on_turfs_changed
 
 	var/range_
+	var/l_angle_
+	var/r_angle_
 
 	var/list/turfs_in_range
 	var/list/seen_turfs_
@@ -41,7 +43,10 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 /datum/proximity_trigger/square
 	turf_selection = /decl/turf_selection/square
 
-/datum/proximity_trigger/New(holder, on_turf_entered, on_turfs_changed, range = 2, proximity_flags = 0, proc_owner)
+/datum/proximity_trigger/angle
+	turf_selection = /decl/turf_selection/angle
+
+/datum/proximity_trigger/New(holder, on_turf_entered, on_turfs_changed, range = 2, proximity_flags = 0, proc_owner, l_angle = 0, r_angle = 0)
 	..()
 
 	if(!ispath(turf_selection, /decl/turf_selection))
@@ -54,20 +59,22 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	range_ = range
 	src.proximity_flags = proximity_flags
 	src.proc_owner = proc_owner || holder
+	l_angle_ = l_angle
+	r_angle_ = r_angle
 
 	turfs_in_range = list()
 	seen_turfs_ = list()
 
 	if(ismovable(holder))
-		register_signal(holder, SIGNAL_MOVED, /datum/proximity_trigger/proc/on_holder_moved)
+		register_signal(holder, SIGNAL_MOVED, nameof(.proc/on_holder_moved))
 
-	register_signal(holder, SIGNAL_DIR_SET, /datum/proximity_trigger/proc/register_turfs) // Changing direction might alter the relevant turfs.
+	register_signal(holder, SIGNAL_DIR_SET, nameof(.proc/register_turfs)) // Changing direction might alter the relevant turfs.
 
 /datum/proximity_trigger/Destroy()
 	if(ismovable(holder))
 		unregister_signal(holder, SIGNAL_MOVED)
 
-	unregister_signal(holder, SIGNAL_DIR_SET, /datum/proximity_trigger/proc/register_turfs)
+	unregister_signal(holder, SIGNAL_DIR_SET, nameof(.proc/register_turfs))
 
 	unregister_turfs()
 
@@ -94,7 +101,7 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	for(var/t in (turfs_in_range - new_turfs))
 		unregister_signal(t, SIGNAL_OPACITY_SET)
 	for(var/t in (new_turfs - turfs_in_range))
-		register_signal(t, SIGNAL_OPACITY_SET, /datum/proximity_trigger/proc/on_turf_visibility_changed)
+		register_signal(t, SIGNAL_OPACITY_SET, nameof(.proc/on_turf_visibility_changed))
 
 	turfs_in_range = new_turfs
 	on_turf_visibility_changed()
@@ -120,7 +127,7 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	for(var/t in (seen_turfs_ - new_seen_turfs_))
 		unregister_signal(t, SIGNAL_ENTERED)
 	for(var/t in (new_seen_turfs_ - seen_turfs_))
-		register_signal(t, SIGNAL_ENTERED, /datum/proximity_trigger/proc/on_turf_entered)
+		register_signal(t, SIGNAL_ENTERED, nameof(.proc/on_turf_entered))
 
 	seen_turfs_ = new_seen_turfs_
 
@@ -150,7 +157,7 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 			. += T
 
 /datum/proximity_trigger/proc/acquire_relevant_turfs()
-	. = turf_selection.get_turfs(holder, range_)
+	. = turf_selection.get_turfs(holder, range_, l_angle_, r_angle_)
 	if(proximity_flags & PROXIMITY_EXCLUDE_HOLDER_TURF)
 		. -= get_turf(holder)
 
@@ -176,6 +183,6 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 
 /obj/item/proxy_debug/proc/update_turfs(list/old_turfs, list/new_turfs)
 	for(var/turf/T in old_turfs)
-		T.overlays -= overlay
+		T.CutOverlays(overlay)
 	for(var/turf/T in new_turfs)
-		T.overlays += overlay
+		T.AddOverlays(overlay)

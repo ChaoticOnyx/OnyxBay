@@ -15,20 +15,20 @@
 		/obj/item/stock_parts/capacitor
 	)
 
-/obj/machinery/cell_charger/update_icon()
+/obj/machinery/cell_charger/on_update_icon()
 	icon_state = "ccharger[charging ? 1 : 0]"
 	if(charging)
-		overlays.Cut()
+		ClearOverlays()
 		if(charging.icon == icon)
-			overlays += charging.icon_state
+			AddOverlays(charging.icon_state)
 		else
-			overlays += "cell"
-		overlays += "ccharger-wires"
+			AddOverlays("cell")
+		AddOverlays("ccharger-wires")
 		if(!(stat & (BROKEN|NOPOWER)))
-			chargelevel = round(charging.percent() * 4.0 / 99)
-			overlays += "ccharger-o[chargelevel]"
+			chargelevel = round(CELL_PERCENT(charging) * 4.0 / 99)
+			AddOverlays("ccharger-o[chargelevel]")
 	else
-		overlays.Cut()
+		ClearOverlays()
 
 /obj/machinery/cell_charger/_examine_text(mob/user)
 	. = ..()
@@ -90,10 +90,10 @@
 
 /obj/machinery/cell_charger/attack_ai(mob/user)
 	if(istype(user, /mob/living/silicon/robot) && Adjacent(user)) // Borgs can remove the cell if they are near enough
-		if(!src.charging)
+		if(!charging)
 			return
 
-		charging.loc = src.loc
+		charging.forceMove(loc)
 		charging.update_icon()
 		charging = null
 		user.visible_message("[user] removes the cell from the charger.", "You remove the cell from the charger.")

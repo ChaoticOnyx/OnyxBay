@@ -24,6 +24,9 @@
 
 	var/list/files = list(  )
 
+	drop_sound = SFX_DROP_DISK
+	pickup_sound = SFX_PICKUP_DISK
+
 /obj/item/card/data
 	name = "data disk"
 	desc = "A disk of data."
@@ -71,7 +74,7 @@ var/const/NO_EMAG_ACT = -50
 		return ..(A, user)
 
 	uses -= used_uses
-	uses = max(uses, 0)
+	uses = max(uses, -1)
 	A.add_fingerprint(user)
 	if(used_uses)
 		log_and_message_admins("emagged \an [A].")
@@ -149,7 +152,18 @@ var/const/NO_EMAG_ACT = -50
 	if(in_range(user, src))
 		show(user)
 		return desc
+
+	if(isghost(user))
+		return desc
+
 	return SPAN("warning", "It is too far away.")
+
+/obj/item/card/id/get_examine_line(examine_distance = 10)
+	var/visible_name = examine_distance < 3 ? name : "ID Card"
+	if(is_bloodied)
+		. = SPAN("warning", "\icon[src] a [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[visible_name]</em>")]")
+	else
+		. = "\icon[src] \a [SPAN("info", "<em>[visible_name]</em>")]"
 
 /obj/item/card/id/proc/prevent_tracking()
 	return 0
@@ -172,8 +186,9 @@ var/const/NO_EMAG_ACT = -50
 	SetName(final_name)
 
 /obj/item/card/id/proc/set_id_photo(mob/M)
-	front = getFlatIcon(M, SOUTH, always_use_defdir = TRUE)
-	side = getFlatIcon(M, WEST, always_use_defdir = TRUE)
+	M.ImmediateOverlayUpdate()
+	front = M.get_flat_icon(M, SOUTH)
+	side = M.get_flat_icon(M, WEST)
 
 /mob/proc/set_id_info(obj/item/card/id/id_card)
 	id_card.age = 0

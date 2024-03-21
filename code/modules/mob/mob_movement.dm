@@ -27,7 +27,9 @@
 
 /mob/forceMove(atom/destination, unbuckle_mob = TRUE)
 	. = ..()
-	if(. && unbuckle_mob)
+	if(!.)
+		return
+	if(unbuckle_mob)
 		buckled?.unbuckle_mob()
 
 /client/Northeast()
@@ -124,16 +126,22 @@
 	else
 		glide_size = max(min, glide_size_override)
 
-	for (var/atom/movable/AM in contents)
-		AM.set_glide_size(glide_size, min, max)
 	if(istype(src, /obj))
 		var/obj/O = src
 		if(O.buckled_mob)
 			O.buckled_mob.set_glide_size(glide_size, min, max)
 
+	SEND_SIGNAL(src, SIGNAL_UPDATE_GLIDE_SIZE, glide_size)
+
 //This proc should never be overridden elsewhere at /atom/movable to keep directions sane.
 /atom/movable/Move(newloc, direct)
 	var/old_loc = loc
+
+	var/turf/old_turf = get_turf(old_loc)
+	var/turf/new_turf = get_turf(newloc)
+
+	if(old_turf?.z != new_turf?.z)
+		SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, old_turf, new_turf)
 
 	if (direct & (direct - 1))
 		if (direct & 1)
@@ -286,3 +294,6 @@
 	DO_MOVE(WEST)
 
 #undef DO_MOVE
+
+/mob/proc/update_move_intent_slowdown()
+	add_movespeed_modifier((m_intent == M_WALK) ? /datum/movespeed_modifier/walk : /datum/movespeed_modifier/run)

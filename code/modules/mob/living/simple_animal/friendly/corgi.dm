@@ -40,8 +40,11 @@
 	response_disarm = "bops"
 	response_harm   = "kicks"
 
-/mob/living/simple_animal/corgi/Move(a, b, flag)
+/mob/living/simple_animal/corgi/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	update_hat()
 
 /mob/living/simple_animal/corgi/Life()
@@ -155,9 +158,9 @@
 			switch(remove_from)
 				if("hat")
 					if(hat)
-						hat.loc = loc
+						hat.dropInto(loc)
 						hat = null
-						overlays.Cut()
+						ClearOverlays()
 					else
 						to_chat(usr, SPAN_WARNING("There is nothing to remove from [name]"))
 						return
@@ -251,7 +254,7 @@
 	if(!hat)
 		return
 	if(is_ic_dead())
-		overlays.Cut()
+		ClearOverlays()
 		hat.dropInto(loc)
 		hat = null
 		return
@@ -266,8 +269,8 @@
 	else if(dir == 8)
 		hat_offset_x = -8
 		hat_offset_y = -8
-	overlays.Cut()
-	overlays |= get_hat_icon(hat, hat_offset_x, hat_offset_y)
+	ClearOverlays()
+	AddOverlays(get_hat_icon(hat, hat_offset_x, hat_offset_y))
 ///////////////////////
 // END OF HAT STUFF //
 /////////////////////

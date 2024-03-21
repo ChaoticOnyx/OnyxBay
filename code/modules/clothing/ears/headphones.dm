@@ -40,7 +40,7 @@
 
 	return ..()
 
-/obj/item/clothing/ears/headphones/update_icon()
+/obj/item/clothing/ears/headphones/on_update_icon()
 	if(!playing && !tape)
 		icon_state = "headphones_empty"
 		item_state = "headphones_off"

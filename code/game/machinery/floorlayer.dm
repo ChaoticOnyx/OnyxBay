@@ -13,10 +13,16 @@
 	T = new /obj/item/stack/tile/floor(src)
 	..()
 
-/obj/machinery/floorlayer/Move(new_turf,M_Dir)
+/obj/machinery/floorlayer/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
 
-	if(on)
+	var/turf/new_turf
+	if(isturf(loc))
+		new_turf = loc
+
+	if(on && istype(old_turf))
 		if(mode["dismantle"])
 			dismantleFloor(old_turf)
 
@@ -26,8 +32,8 @@
 		if(mode["collect"])
 			CollectTiles(old_turf)
 
-
-	old_turf = new_turf
+	if(istype(new_turf))
+		old_turf = newloc
 
 /obj/machinery/floorlayer/attack_hand(mob/user as mob)
 	on=!on
@@ -55,7 +61,7 @@
 			var/obj/item/stack/tile/E = input("Choose remove tile type.", "Tiles") as null|anything in contents
 			if(E)
 				to_chat(user, "<span class='notice'>You remove the [E] from \the [src].</span>")
-				E.loc = src.loc
+				E.dropInto(loc)
 				T = null
 		return
 
@@ -103,7 +109,7 @@
 
 /obj/machinery/floorlayer/proc/TakeTile(obj/item/stack/tile/tile)
 	if(!T)	T = tile
-	tile.loc = src
+	tile.forceMove(src)
 
 	SortStacks()
 

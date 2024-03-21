@@ -23,7 +23,7 @@
 		return "This subject is too far away..."
 	if (issilicon(M))
 		return "This subject does not have an edible life energy..."
-	if (M.getarmor(null, "bio") >= 100)
+	if (M.get_flat_armor(null, "bio") >= 100)
 		return "This subject is protected..."
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -52,7 +52,7 @@
 		if(Adjacent(M))
 			UpdateFeed()
 
-			var/hazmat = blocked_mult(M.getarmor(null, "bio")) //scale feeding rate by overall bio protection
+			var/hazmat = blocked_mult(M.get_flat_armor(null, "bio")) //scale feeding rate by overall bio protection
 			if(istype(M, /mob/living/carbon))
 				Victim.adjustCloneLoss(5 * hazmat)
 				Victim.adjustToxLoss(1 * hazmat)

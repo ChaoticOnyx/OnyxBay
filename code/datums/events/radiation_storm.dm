@@ -9,7 +9,7 @@
 	fire_only_once = TRUE
 	mtth = 2 HOURS
 	difficulty = 70
-	blacklisted_maps = list(/datum/map/polar)
+
 
 	var/list/affecting_z = list()
 	var/target_energy = 0
@@ -19,9 +19,9 @@
 /datum/event/radiation_storm/New()
 	. = ..()
 
-	add_think_ctx("enter", CALLBACK(src, .proc/enter_belt), 0)
-	add_think_ctx("exit", CALLBACK(src, .proc/exit_belt), 0)
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("enter", CALLBACK(src, nameof(.proc/enter_belt)), 0)
+	add_think_ctx("exit", CALLBACK(src, nameof(.proc/exit_belt)), 0)
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/radiation_storm/get_conditions_description()
 	. = "<em>Radiation Storm</em> should not be <em>running</em>.<br>"
@@ -37,7 +37,7 @@
 /datum/event/radiation_storm/on_fire()
 	SSevents.evars["radiation_storm_running"] = TRUE
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
-	command_announcement.Announce("High levels of beta rays detected in proximity of the [station_name()]. Please evacuate into one of the shielded maintenance tunnels.", "[station_name()] Sensor Array", new_sound = GLOB.using_map.radiation_detected_sound, zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/radiation_detected)
 	make_maint_all_access()
 
 	for(var/area/A in GLOB.hallway)
@@ -47,7 +47,7 @@
 	set_next_think_ctx("enter", world.time + (30 SECONDS))
 
 /datum/event/radiation_storm/proc/enter_belt()
-	command_announcement.Announce("The [station_name()] has entered the beta rays belt. Please remain in a sheltered area until we have passed the belt.", "[station_name()] Sensor Array", zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/radiation_start)
 	radiate()
 	state = STATE_ENTERED_BELT
 
@@ -55,7 +55,7 @@
 	set_next_think(world.time)
 
 /datum/event/radiation_storm/proc/exit_belt()
-	command_announcement.Announce("The [station_name()] has passed the beta rays belt. Please allow for up to one minute while radiation levels dissipate, and report to the infirmary if you experience any unusual symptoms. Maintenance will lose all access again shortly.", "[station_name()] Sensor Array", zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/radiation_end)
 
 	for(var/area/A in GLOB.hallway)
 		A.set_lighting_mode(LIGHTMODE_RADSTORM, FALSE)

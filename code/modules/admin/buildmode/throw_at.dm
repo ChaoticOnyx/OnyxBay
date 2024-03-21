@@ -33,14 +33,14 @@
 	ClearThrowable()
 
 	to_throw = new_throwable
-	register_signal(to_throw, SIGNAL_QDELETING, /datum/build_mode/throw_at/proc/ClearThrowable)
+	register_signal(to_throw, SIGNAL_QDELETING, nameof(.proc/ClearThrowable))
 	to_chat(user, "<span class='notice'>Will now be throwing \the [to_throw].</span>")
 
 /datum/build_mode/throw_at/proc/ClearThrowable(feedback)
 	if(!to_throw)
 		return
 
-	unregister_signal(to_throw, SIGNAL_QDELETING, /datum/build_mode/throw_at/proc/ClearThrowable)
+	unregister_signal(to_throw, SIGNAL_QDELETING, nameof(.proc/ClearThrowable))
 	to_throw = null
 	if(feedback)
 		Warn("The selected throwing object was deleted.")

@@ -48,7 +48,7 @@
 	bluespaced += M
 	if(M.client)
 		to_chat(M,"<span class='notice'>You feel oddly light, and somewhat disoriented as everything around you shimmers and warps ever so slightly.</span>")
-		M.overlay_fullscreen("bluespace", /obj/screen/fullscreen/bluespace_overlay)
+		M.overlay_fullscreen("bluespace", /atom/movable/screen/fullscreen/bluespace_overlay)
 	M.confused = 20
 	bluegoasts += new /obj/effect/bluegoast/(get_turf(M),M)
 
@@ -81,9 +81,9 @@
 	daddy = ndaddy
 	set_dir(daddy.dir)
 	appearance = daddy.appearance
-	register_signal(daddy, SIGNAL_MOVED, /obj/effect/bluegoast/proc/mirror)
-	register_signal(daddy, SIGNAL_DIR_SET, /obj/effect/bluegoast/proc/mirror_dir)
-	register_signal(daddy, SIGNAL_QDELETING, /datum/proc/qdel_self)
+	register_signal(daddy, SIGNAL_MOVED, nameof(.proc/mirror))
+	register_signal(daddy, SIGNAL_DIR_SET, nameof(.proc/mirror_dir))
+	register_signal(daddy, SIGNAL_QDELETING, nameof(/datum.proc/qdel_self))
 
 /obj/effect/bluegoast/Destroy()
 	unregister_signal(daddy, SIGNAL_QDELETING)
@@ -128,11 +128,10 @@
 	daddy.dust()
 	qdel(src)
 
-/obj/screen/fullscreen/bluespace_overlay
+/atom/movable/screen/fullscreen/bluespace_overlay
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "mfoam"
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
-	color = "#ff9900"
-	alpha = 100
-	blend_mode = BLEND_SUBTRACT
-	layer = FULLSCREEN_LAYER
+	alpha = 80
+	color = "#000050"
+	blend_mode = BLEND_ADD

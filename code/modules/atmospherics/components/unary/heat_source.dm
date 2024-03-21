@@ -20,8 +20,8 @@
 	var/set_temperature = 20 CELSIUS //thermostat
 	var/heating = 0 //mainly for icon updates
 
-/obj/machinery/atmospherics/unary/heater/New()
-	..()
+/obj/machinery/atmospherics/unary/heater/Initialize()
+	. = ..()
 	initialize_directions = dir
 
 	component_parts = list()
@@ -56,7 +56,7 @@
 	update_icon()
 
 
-/obj/machinery/atmospherics/unary/heater/update_icon()
+/obj/machinery/atmospherics/unary/heater/on_update_icon()
 	if(node)
 		if(use_power && heating)
 			icon_state = "heater_1"

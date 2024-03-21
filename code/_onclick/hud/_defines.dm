@@ -1,3 +1,12 @@
+/// Full HUD shown
+#define HUD_STYLE_STANDART 1
+/// Only static elements are shown
+#define HUD_STYLE_REDUCED  2
+/// No HUD shown
+#define HUD_STYLE_NONE     3
+/// Total amount of HUD styles, keep this up-to-date
+#define HUD_STYLE_TOTAL    3
+
 /*
 	These defines specificy screen locations.  For more information, see the byond documentation on the screen_loc var.
 
@@ -128,13 +137,6 @@
 #define ui_block "EAST-4:24,SOUTH:5"
 #define ui_blockswitch "EAST-4:24,SOUTH:5"
 
-//Vrhuman
-#define ui_vrhuman_shop "WEST+2:-2,SOUTH+4:20"
-#define ui_vrhuman_exit "WEST+1:-2,SOUTH+4:20"
-#define ui_vrhuman_main "WEST:-2,SOUTH+4:20"
-#define ui_vrhuman_cleanup "WEST+3:-2,SOUTH+4:20"
-#define ui_vrhuman_dienow "WEST+4:-2,SOUTH+4:20"
-
 // AI
 #define ui_ai_core "SOUTH:6,WEST"
 #define ui_ai_core_display "SOUTH:6,WEST+1"
@@ -171,9 +173,19 @@
 #define ui_ai_view_images "SOUTH:6+1,WEST+13"
 #define ui_ai_del_picture "SOUTH:6+1,WEST+14"
 
+// Ghost
+#define ui_ghost_spawners_menu "SOUTH:6,CENTER-2:24"
+#define ui_ghost_follow "SOUTH:6,CENTER-1:24"
+#define ui_ghost_reenter_corpse "SOUTH:6,CENTER:24"
+#define ui_ghost_teleport "SOUTH:6,CENTER+1:24"
+#define ui_ghost_move_up "SOUTH+1:6,EAST-1:28"
+#define ui_ghost_move_down "SOUTH:6,EAST-1:28"
+
 //Upper-middle right (alerts)
 #define ui_alert1 "EAST-1:28,CENTER+5:27"
 #define ui_alert2 "EAST-1:28,CENTER+4:25"
 #define ui_alert3 "EAST-1:28,CENTER+3:23"
 #define ui_alert4 "EAST-1:28,CENTER+2:21"
 #define ui_alert5 "EAST-1:28,CENTER+1:19"
+
+#define ui_holomap "SOUTH,WEST"

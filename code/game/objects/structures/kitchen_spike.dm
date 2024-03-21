@@ -216,7 +216,7 @@
 			SPAN("italics", "You hear a squishy wet noise.</span>"))
 		if (H.can_feel_pain())
 			H.emote("scream")
-		H.nutrition -= slab_nutrition
+		H.remove_nutrition(slab_nutrition)
 		var/obj/item/reagent_containers/food/meat/new_meat = new slab_type(get_turf(src), rand(3,8))
 		if (istype(new_meat))
 			new_meat.SetName("[slab_name] [new_meat.name]")

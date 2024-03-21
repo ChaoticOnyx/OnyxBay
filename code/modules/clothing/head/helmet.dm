@@ -6,11 +6,11 @@
 		slot_l_hand_str = "helmet",
 		slot_r_hand_str = "helmet",
 		)
-	valid_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
-	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
+	valid_accessory_slots = list(ACCESSORY_SLOT_HELM_C, ACCESSORY_SLOT_HELM_H)
+	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C, ACCESSORY_SLOT_HELM_H)
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	body_parts_covered = HEAD|EYES
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 0)
+	armor = list(melee = 70, bullet = 90, laser = 70, energy = 25, bomb = 35, bio = 0)
 	flags_inv = HIDEEARS|BLOCKHEADHAIR
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -25,6 +25,10 @@
 		RADIATION_BETA_PARTICLE = 5 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+	drop_sound = SFX_DROP_HELMET
+	pickup_sound = SFX_PICKUP_HELMET
+	coverage = 0.8
 
 /obj/item/clothing/head/helmet/attack_self(mob/user)
 	if(visor_body_parts_covered)
@@ -54,9 +58,10 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|FACE|EYES //face shield
 	visor_body_parts_covered = FACE|EYES
-	armor = list(melee = 85, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 5)
+	armor = list(melee = 140, bullet = 55, laser = 50, energy = 25, bomb = 35, bio = 5)
 	siemens_coefficient = 0.5
 	action_button_name = "Toggle Visor"
+	coverage = 1.0
 
 /obj/item/clothing/head/helmet/ablative
 	name = "ablative helmet"
@@ -65,8 +70,9 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = EYES
-	armor = list(melee = 50, bullet = 50, laser = 90, energy = 60, bomb = 35, bio = 2)
+	armor = list(melee = 55, bullet = 50, laser = 160, energy = 60, bomb = 35, bio = 2)
 	siemens_coefficient = 0
+	coverage = 0.9
 
 /obj/item/clothing/head/helmet/ballistic
 	name = "ballistic helmet"
@@ -75,8 +81,9 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = EYES
-	armor = list(melee = 50, bullet = 90, laser = 50, energy = 5, bomb = 35, bio = 2)
+	armor = list(melee = 60, bullet = 160, laser = 40, energy = 5, bomb = 35, bio = 2)
 	siemens_coefficient = 0.6
+	coverage = 0.9
 
 /obj/item/clothing/head/helmet/gladiator
 	name = "gladiator helmet"
@@ -87,6 +94,7 @@
 	body_parts_covered = HEAD|FACE
 	visor_body_parts_covered = NO_BODYPARTS
 	siemens_coefficient = 1
+	coverage = 1.0
 
 /obj/item/clothing/head/helmet/captain
 	name = "captain's helmet"
@@ -96,8 +104,9 @@
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = NO_BODYPARTS
 	flags_inv = HIDEFACE|BLOCKHAIR
-	armor = list(melee = 65, bullet = 65, laser = 65,energy = 35, bomb = 45, bio = 10)
+	armor = list(melee = 110, bullet = 140, laser = 130, energy = 25, bomb = 35, bio = 0)
 	siemens_coefficient = 0.5
+	coverage = 1.0
 
 //Non-powersuit ERT helmets.
 //Commander
@@ -112,8 +121,9 @@
 		slot_l_hand_str = "syndicate-helm-green",
 		slot_r_hand_str = "syndicate-helm-green",
 		)
-	armor = list(melee = 62, bullet = 50, laser = 50,energy = 35, bomb = 10, bio = 2)
+	armor = list(melee = 100, bullet = 130, laser = 120, energy = 40, bomb = 20, bio = 0)
 	siemens_coefficient = 0.5
+	coverage = 0.9
 
 //Security
 /obj/item/clothing/head/helmet/ert/security
@@ -140,10 +150,11 @@
 	icon_state = "swat"
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 85, bullet = 85, laser = 85,energy = 55, bomb = 50, bio = 50)
+	armor = list(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 50)
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.3
+	coverage = 1.0
 
 /obj/item/clothing/head/helmet/augment
 	name = "Augment Array"
@@ -164,8 +175,9 @@
 	icon_state = "helmet_merc"
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = EYES
-	armor = list(melee = 75, bullet = 75, laser = 75, energy = 50, bomb = 50, bio = 50)
 	siemens_coefficient = 0.4
+	armor = list(melee = 100, bullet = 130, laser = 120, energy = 50, bomb = 50, bio = 50)
+	coverage = 0.95
 
 /obj/item/clothing/head/helmet/thunderdome
 	name = "\improper Thunderdome helmet"

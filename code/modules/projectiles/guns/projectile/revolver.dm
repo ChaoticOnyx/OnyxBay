@@ -15,6 +15,7 @@
 	var/chamber_offset = 0 //how many empty chambers in the cylinder until you hit a round
 	fire_sound = 'sound/effects/weapons/gun/fire2.ogg'
 	mag_insert_sound = 'sound/effects/weapons/gun/spin_cylinder1.ogg'
+	has_safety = FALSE
 
 /obj/item/gun/projectile/revolver/coltpython
 	name = "Colt Python"
@@ -110,7 +111,7 @@
 /obj/item/gun/projectile/revolver/deckard/emp
 	ammo_type = /obj/item/ammo_casing/c38/emp
 
-/obj/item/gun/projectile/revolver/deckard/update_icon()
+/obj/item/gun/projectile/revolver/deckard/on_update_icon()
 	..()
 	if(loaded.len)
 		icon_state = "deckard-loaded"
@@ -168,9 +169,13 @@
 	var/obj/item/cell/bcell
 
 /obj/item/gun/projectile/revolver/m2019/detective/Initialize()
+	. = ..()
 	bcell = new /obj/item/cell/device/high(src)
 	update_icon()
-	..()
+
+/obj/item/gun/projectile/revolver/m2019/detective/Destroy()
+	QDEL_NULL(bcell)
+	return ..()
 
 /*obj/item/gun/projectile/revolver/m2019/detective/proc/deductcharge(chrgdeductamt)
 	if(bcell)
@@ -188,7 +193,7 @@
 	if(!bcell)
 		. += "\n\The [src] has no power cell installed."
 	else
-		. += "\n\The [src] is [round(bcell.percent())]% charged."
+		. += "\n\The [src] is [round(CELL_PERCENT(bcell))]% charged."
 
 /obj/item/gun/projectile/revolver/m2019/detective/consume_next_projectile()
 	if(chamber_offset)
@@ -215,7 +220,7 @@
 						chambered = new /obj/item/ammo_casing/c38/chem/lethal(src)
 
 	if(chambered)
-		return chambered.BB
+		return chambered.expend()
 	return null
 
 /obj/item/gun/projectile/revolver/m2019/detective/attack_self(mob/living/user as mob)
@@ -235,14 +240,20 @@
 		return ..()
 	insert_cell(C, user)
 	return 1
+
 /obj/item/gun/projectile/revolver/m2019/detective/proc/usecharge(UC)
-	if(bcell && chambered?.BB)
-		if(bcell.checked_use(UC))
-			return 1
-		else
-			update_icon()
-			return 0
-	return null
+	if(!bcell)
+		return
+
+	if(!chambered)
+		return
+
+	if(!chambered.projectile_type || chambered.is_spent)
+		return
+
+	if(bcell.checked_use(UC))
+		update_icon()
+		return TRUE
 
 /obj/item/gun/projectile/revolver/m2019/detective/proc/insert_cell(obj/item/cell/B, mob/user)
 	if(bcell)
@@ -272,7 +283,7 @@
 	if(CanPhysicallyInteract(usr))
 		unload_ammo(usr)
 
-/obj/item/gun/projectile/revolver/m2019/detective/update_icon()
+/obj/item/gun/projectile/revolver/m2019/detective/on_update_icon()
 	..()
 	if(loaded.len)
 		icon_state = "[src.base_icon]-loaded"

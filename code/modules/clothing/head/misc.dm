@@ -273,7 +273,7 @@
 	desc = "Fuzzy."
 	icon_state = "bearpelt"
 	siemens_coefficient = 0.7
-	armor = list(melee = 15, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 30, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/xenos
 	name = "xenos helmet"
@@ -287,7 +287,7 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
 	siemens_coefficient = 2.0
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 20, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/philosopher_wig
 	name = "natural philosopher's wig"
@@ -344,7 +344,7 @@
 	icon_state = "tank"
 	flags_inv = BLOCKHEADHAIR
 	color = "#5f5f5f"
-	armor = list(melee = 25, bullet = 10, laser = 10,energy = 5, bomb = 10, bio = 0)
+	armor = list(melee = 35, bullet = 10, laser = 10, energy = 5, bomb = 30, bio = 0)
 
 /obj/item/clothing/head/tank/olive
 	color = "#727c58"
@@ -374,7 +374,7 @@
 	icon_state = "sombrero"
 	item_state = "sombrero"
 	desc = "You can practically taste the fiesta."
-	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 30, bio = 0)
+	armor = list(melee = 10, bullet = 10, laser = 5, energy = 0, bomb = 40, bio = 0)
 
 /obj/item/clothing/head/samura_hat
 	name = "samurai hat"
@@ -414,3 +414,14 @@
 	icon_state = "vpp_cap"
 	item_state = "vpp_cap"
 	desc = "Green cap of unknown design. The emblem proudly bears the abbreviation V.P.P."
+
+/obj/item/clothing/head/necro_hood
+	name = "Necromancer hood"
+	icon_state = "necro_hood"
+	item_state = ""
+	desc = "A strange hood that reeks of dread."
+	armor = list(melee = 30, bullet = 30, laser = 30, energy = 30, bomb = 15, bio = 40)
+	siemens_coefficient = 0.8
+	wizard_garb = TRUE
+	flags_inv = HIDEEARS|BLOCKHEADHAIR
+	body_parts_covered = HEAD|EYES

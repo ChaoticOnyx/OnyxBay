@@ -3,6 +3,7 @@
 	desc = "It's made of AUTHENTIC faux-leather and has a price-tag still attached. Its owner must be a real professional."
 	icon_state = "briefcase"
 	item_state = "briefcase"
+	inspect_state = TRUE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 8.0
 	throw_range = 4
@@ -68,7 +69,7 @@
 
 /obj/item/storage/briefcase/std/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	if(!authentication_complete)
-		audible_message("\The [src] blinks red.")
+		audible_message("\The [src] blinks red.", splash_override = "*blink*")
 		return
 	var/list/data = ui_data(user)
 

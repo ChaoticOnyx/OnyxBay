@@ -11,6 +11,8 @@
 	var/amount = 30					//How much paper is in the bin.
 	var/list/papers = new /list()	//List of papers put in the bin for reference.
 
+	drop_sound = SFX_DROP_CARDBOARD
+	pickup_sound = SFX_PICKUP_CARDBOARD
 
 /obj/item/paper_bin/MouseDrop(mob/user)
 	if((user == usr && (!( usr.restrained() ) && (!( usr.stat ) && (usr.contents.Find(src) || in_range(src, usr))))))
@@ -115,7 +117,7 @@
 	return
 
 
-/obj/item/paper_bin/update_icon()
+/obj/item/paper_bin/on_update_icon()
 	if(amount < 1)
 		icon_state = "paper_bin0"
 	else

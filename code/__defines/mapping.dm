@@ -20,12 +20,6 @@
 #define ZTRAIT_EMPTY    "Empty"
 /// This level has radio.
 #define ZTRAIT_CONTACT  "Contact"
-/// Used for `/datum/component/polar_weather`.
-#define ZTRAIT_POLAR_WEATHER "Weather"
-/// Some bluespace equipment works unstable, radio has noise.
-#define ZTRAIT_SNOWFALL "snowfall"
-/// All the bluespace equipment can't work at all.
-#define ZTRAIT_SNOWSTORM "snowstorm"
 
 // Engines
 #define MAP_ENG_RANDOM      "random"
@@ -47,3 +41,6 @@
 #define MAP_BAR_CLASSIC "classic"
 #define MAP_BAR_MODERN  "modern"
 #define MAP_BAR_SALOON  "saloon"
+
+// Derelicts amount
+#define MAP_DERELICTS_AMOUNT  2

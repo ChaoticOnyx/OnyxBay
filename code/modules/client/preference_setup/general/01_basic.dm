@@ -12,7 +12,7 @@
 	sort_order = 1
 
 /datum/category_item/player_setup_item/general/proc/has_flag(datum/species/mob_species, flag)
-	return mob_species && (mob_species.appearance_flags & flag)
+	return mob_species && (mob_species.species_appearance_flags & flag)
 
 /datum/category_item/player_setup_item/general/basic/load_character(datum/pref_record_reader/R)
 	pref.real_name =      R.read("real_name")

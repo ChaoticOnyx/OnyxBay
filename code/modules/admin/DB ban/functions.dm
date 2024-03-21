@@ -117,6 +117,21 @@
 		to_chat(usr, "<span class='notice'>Ban saved to database.</span>")
 		setter = key_name_admin(usr)
 	message_admins("[setter] has added a [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
+
+	if(config.indigo_bot.ban_webhook)
+		var/webhook_str = "BAN ADDED\n"
+		webhook_str += "**Type:** [bantype_str]\n"
+
+		if(job)
+			webhook_str += "**Job:** [job]\n"
+
+		webhook_str += "**Admin:** [a_ckey]\n"
+		webhook_str += "**Player:** [ckey]\n"
+		webhook_str += "**Reason:** [reason]\n"
+		webhook_str += "**Duration:** [(duration > 0) ? "[duration] minutes" : "PERMANENT"]"
+
+		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ban_webhook, webhook_str)
+
 	if(ismob(banned_mob) && banned_mob.client)
 		var/rendered_text = uppertext("You have been [(duration > 0) ? "temporarily ([duration] minutes)" : "permanently"] banned with the reason: ")
 		rendered_text = rendered_text + "\n\"[reason]\"."
@@ -195,6 +210,18 @@
 	if(!isnum(ban_id))
 		to_chat(usr, "<span class='warning'>Database update failed due to a ban ID mismatch. Contact the database admin.</span>")
 		return
+
+
+	if(config.indigo_bot.ban_webhook)
+		var/webhook_str = "BAN LIFTED\n"
+		webhook_str += "**Type:** [bantype_str]\n"
+
+		if(job)
+			webhook_str += "**Job:** [job]\n"
+
+		webhook_str += "**Player:** [ckey]"
+
+		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ban_webhook, webhook_str)
 
 	DB_ban_unban_by_id(ban_id)
 
@@ -371,7 +398,7 @@
 
 	output += "<table width='100%'><tr><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddtype\">Ban type</label><select name='dbbanaddtype' class=\"form-control form-control-sm\" id=\"dbbanaddtype\"><option value=''>--</option><option value='1'>PERMABAN</option><option value='2'>TEMPBAN</option><option value='3'>JOB PERMABAN</option><option value='4'>JOB TEMPBAN</option></select></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddckey\">Ckey</label><input type='text' name='dbbanaddckey'class=\"form-control form-control-sm\" id=\"dbbanaddckey\"></div></td></tr><tr><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddip\">IP</label><input type='text' name='dbbanaddip'class=\"form-control form-control-sm\" id=\"dbbanaddip\"></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddcid\">CID</label><input type='text' name='dbbanaddcid'class=\"form-control form-control-sm\" id=\"dbbanaddcid\"></div></td></tr><tr><td width='50%'><div class=\"form-group\"><label for=\"dbbaddduration\">Duration</label><input type='text'name='dbbaddduration' class=\"form-control form-control-sm\" id=\"dbbaddduration\"></div></td><td width='50%'><div class=\"form-group\"><label for=\"dbbanaddjob\">Ban job</label><select name='dbbanaddjob'class=\"form-control form-control-sm\" id=\"dbbanaddjob\"><option value=''>--</option>"
 
-	for(var/j in list("OOC", "LOOC", "AHelp", "Species", "Male", "Female", "Appearance", "Name")) // new bans
+	for(var/j in list("OOC", "LOOC", "AHelp", "Species", "Male", "Female", "Appearance", "Name", "Bug reporting")) // new bans
 		output += "<option value='[j]'>[j]</option>"
 	for(var/j in get_all_jobs())
 		output += "<option value='[j]'>[j]</option>"

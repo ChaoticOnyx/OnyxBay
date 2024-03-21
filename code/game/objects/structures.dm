@@ -8,20 +8,23 @@
 	var/parts
 
 /obj/structure/Destroy()
-	if(parts)
+	var/turf/T = get_turf(src)
+	if(T && parts)
 		new parts(loc)
-	. = ..()
+	return ..()
 
 /obj/structure/attack_hand(mob/user)
 	..()
 	if(breakable)
 		if(MUTATION_HULK in user.mutations)
 			user.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ))
-			attack_generic(user,1,"smashes")
+			attack_generic(user, 1, "smashes")
+		else if(MUTATION_STRONG in user.mutations)
+			attack_generic(user, 1, "smashes")
 		else if(istype(user,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = user
 			if(H.species.can_shred(user))
-				attack_generic(user,1,"slices")
+				attack_generic(user, 1, "slices")
 	return ..()
 
 /obj/structure/attack_tk()

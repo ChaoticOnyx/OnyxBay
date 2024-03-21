@@ -18,7 +18,7 @@
 /obj/item/clipboard/MouseDrop(obj/over_object as obj) //Quick clipboard fix. -Agouri
 	if(ishuman(usr))
 		var/mob/M = usr
-		if(!(istype(over_object, /obj/screen) ))
+		if(!(istype(over_object, /atom/movable/screen) ))
 			return ..()
 
 		if(!M.restrained() && !M.stat)
@@ -33,14 +33,14 @@
 			add_fingerprint(usr)
 			return
 
-/obj/item/clipboard/update_icon()
-	overlays.Cut()
+/obj/item/clipboard/on_update_icon()
+	ClearOverlays()
 	if(toppaper)
-		overlays += toppaper.icon_state
-		overlays += toppaper.overlays
+		AddOverlays(toppaper.icon_state)
+		AddOverlays(toppaper.overlays)
 	if(haspen)
-		overlays += "clipboard_pen"
-	overlays += "clipboard_over"
+		AddOverlays("clipboard_pen")
+	AddOverlays("clipboard_over")
 	return
 
 /obj/item/clipboard/attackby(obj/item/W, mob/user)

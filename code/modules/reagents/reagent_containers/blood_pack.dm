@@ -1,7 +1,7 @@
 /obj/item/storage/box/bloodpacks
 	name = "blood packs box"
 	desc = "This box contains blood packs."
-	icon_state = "sterile"
+	icon_state = "bloodbags"
 	startswith = list(/obj/item/reagent_containers/ivbag = 7)
 
 /obj/item/reagent_containers/ivbag
@@ -17,6 +17,9 @@
 	var/being_feed = FALSE
 	var/vampire_marks = null
 	var/mob/living/carbon/human/attached
+
+	drop_sound = SFX_DROP_FOOD
+	pickup_sound = SFX_PICKUP_FOOD
 
 /obj/item/reagent_containers/ivbag/Destroy()
 	attached = null
@@ -66,16 +69,16 @@
 
 /obj/item/reagent_containers/attackby(obj/item/W as obj, mob/user as mob)
 
-/obj/item/reagent_containers/ivbag/update_icon()
-	overlays.Cut()
+/obj/item/reagent_containers/ivbag/on_update_icon()
+	ClearOverlays()
 	var/percent = round(reagents.total_volume / volume * 100)
 	if(reagents.total_volume)
 		var/image/filling = image('icons/obj/bloodpack.dmi', "[round(percent,25)]")
 		filling.color = reagents.get_color()
-		overlays += filling
-	overlays += image('icons/obj/bloodpack.dmi', "top")
+		AddOverlays(filling)
+	AddOverlays(image('icons/obj/bloodpack.dmi', "top"))
 	if(attached)
-		overlays += image('icons/obj/bloodpack.dmi', "dongle")
+		AddOverlays(image('icons/obj/bloodpack.dmi', "dongle"))
 
 /obj/item/reagent_containers/ivbag/MouseDrop(over_object, src_location, over_location)
 	if(!CanMouseDrop(over_object))
@@ -118,6 +121,9 @@
 	reagents.trans_to_mob(attached, amount_per_transfer_from_this, CHEM_BLOOD)
 	update_icon()
 	set_next_think(world.time + 1 SECOND)
+
+/obj/item/reagent_containers/ivbag/nanoblood
+	name = "nanoblood pack"
 
 /obj/item/reagent_containers/ivbag/nanoblood/Initialize()
 	. = ..()

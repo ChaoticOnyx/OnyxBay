@@ -1,5 +1,6 @@
 /datum/map
 	var/load_legacy_saves = FALSE
+	var/can_be_voted = TRUE
 
 /datum/map/proc/preferences_key()
 	// Must be a filename-safe string. In future if map paths get funky, do some sanitization here.

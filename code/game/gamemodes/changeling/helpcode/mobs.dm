@@ -294,7 +294,7 @@
 	else if(istype(src, /mob/living/simple_animal/hostile/little_changeling/head_chan))
 		if(!target.has_limb(BP_HEAD))
 			target.restore_limb(BP_HEAD)
-			target.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/brain(target)
+			target.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/cerebrum/brain(target, target)
 			target.internal_organs_by_name[BP_EYES] = new /obj/item/organ/internal/eyes(target)
 
 	target.sync_organ_dna()
@@ -387,7 +387,7 @@
 	icon_dead = "headcrab_dead"
 
 
-/mob/living/simple_animal/hostile/little_changeling/headcrab/update_icon()
+/mob/living/simple_animal/hostile/little_changeling/headcrab/on_update_icon()
 	if(cloaked)
 		alpha = 25
 		set_light(0)

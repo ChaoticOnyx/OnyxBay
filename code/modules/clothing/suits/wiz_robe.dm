@@ -153,3 +153,22 @@
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 1.0
 	wizard_garb = 0
+
+/obj/item/clothing/suit/necrorobe
+	name = "Necromancer robe"
+	desc = "Yes, death!"
+	icon_state = "necro_robe"
+	item_state = "necro_robe"
+	body_parts_covered = HEAD | UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS
+	flags_inv = HIDESHOES | HIDEJUMPSUIT | HIDETAIL
+	armor = list(melee = 30, bullet = 30, laser = 30, energy = 30, bomb = 15, bio = 40)
+	allowed = list(/obj/item/teleportation_scroll)
+	siemens_coefficient = 0.8
+	wizard_garb = TRUE
+
+/obj/item/clothing/suit/musclemancer
+	name = "scholar robe"
+	desc = "Some sort of a plain, dark navy robe. Looks kinda old-fashioned, but doesn't appear to be special in any way."
+	icon_state = "muscle_robe"
+	item_state = "muscle_robe"
+	body_parts_covered = UPPER_TORSO|ARMS

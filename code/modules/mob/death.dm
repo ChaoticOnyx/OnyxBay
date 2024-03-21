@@ -1,6 +1,6 @@
 //This is the proc for gibbing a mob. Cannot gib ghosts.
 //added different sort of gibs and animations. N
-/mob/proc/gib(anim = "gibbed-m", do_gibs)
+/mob/proc/gib(anim = "gibbed-m", do_gibs = FALSE)
 	if(status_flags & GODMODE)
 		return
 	death(1)
@@ -10,7 +10,7 @@
 	update_canmove()
 	remove_from_dead_mob_list()
 
-	var/atom/movable/overlay/animation = null
+	var/atom/movable/fake_overlay/animation = null
 	animation = new(loc)
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
@@ -21,9 +21,9 @@
 	if(do_gibs)
 		gibs(loc, dna)
 
-	addtimer(CALLBACK(src, .proc/check_delete, animation), 15)
+	addtimer(CALLBACK(src, nameof(.proc/check_delete), animation), 15)
 
-/mob/proc/check_delete(atom/movable/overlay/animation)
+/mob/proc/check_delete(atom/movable/fake_overlay/animation)
 	if(animation)
 		qdel(animation)
 	if(src)
@@ -36,7 +36,7 @@
 	if(status_flags & GODMODE)
 		return
 	death(1)
-	var/atom/movable/overlay/animation = null
+	var/atom/movable/fake_overlay/animation = null
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
@@ -50,7 +50,7 @@
 	new remains(loc)
 
 	remove_from_dead_mob_list()
-	addtimer(CALLBACK(src, .proc/check_delete, animation), 15)
+	addtimer(CALLBACK(src, nameof(.proc/check_delete), animation), 15)
 
 
 /mob/proc/death(gibbed, deathmessage = "seizes up and falls limp...", show_dead_message = "You have died.")

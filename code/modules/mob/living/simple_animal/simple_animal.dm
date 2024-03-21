@@ -89,6 +89,8 @@
 	if(bodyparts)
 		bodyparts = decls_repository.get_decl(bodyparts)
 
+	add_movespeed_modifier(/datum/movespeed_modifier/simple_animal)
+
 /mob/living/simple_animal/Destroy()
 	mob_ai.holder = null
 	QDEL_NULL(mob_ai)
@@ -179,17 +181,18 @@
 /mob/living/simple_animal/proc/handle_supernatural()
 	if(purge)
 		purge -= 1
+		update_purge_movespeed()
 
-/mob/living/simple_animal/gib()
-	..(icon_gib,1)
+/mob/living/simple_animal/gib(anim, do_gibs = TRUE)
+	..(icon_gib, do_gibs)
 
 /mob/living/simple_animal/bullet_act(obj/item/projectile/Proj)
-	if(!Proj || Proj.nodamage)
+	if(!Proj)
 		return
 
 	var/damage = Proj.damage * ((100 - armor_projectile) / 100)
-	if(Proj.damtype == STUN)
-		damage = (Proj.damage / 8)
+	if(Proj.damtype == STUN || Proj.damtype == PAIN)
+		damage = (Proj.damage / 8) + (Proj.agony / 8)
 
 	adjustBruteLoss(damage)
 	return 0
@@ -259,20 +262,16 @@
 	if(supernatural && istype(O,/obj/item/nullrod))
 		damage *= 2
 		purge = 3
+		update_purge_movespeed()
 	adjustBruteLoss(damage)
 
 	return 0
 
-/mob/living/simple_animal/movement_delay()
-	var/tally = ..() //Incase I need to add stuff other than "speed" later
-
-	tally += speed
-	if(purge)//Purged creatures will move more slowly. The more time before their purge stops, the slower they'll move.
-		if(tally <= 0)
-			tally = 1
-		tally *= purge
-
-	return tally + config.movement.animal_delay
+/mob/living/simple_animal/proc/update_purge_movespeed()
+	if(purge > 0)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/purge_slowdown, slowdown = cached_slowdown * purge)
+	else
+		remove_movespeed_modifier(/datum/movespeed_modifier/purge_slowdown)
 
 /mob/living/simple_animal/Stat()
 	. = ..()
@@ -312,7 +311,7 @@
 	switch(severity)
 		if(1.0)
 			damage = 500
-			if(!prob(getarmor(null, "bomb")))
+			if(!prob(get_flat_armor(null, "bomb")))
 				gib()
 		if(2.0)
 			damage = 120
@@ -320,7 +319,7 @@
 		if(3.0)
 			damage = 30
 
-	adjustBruteLoss(damage * blocked_mult(getarmor(null, "bomb")))
+	adjustBruteLoss(damage * blocked_mult(get_flat_armor(null, "bomb")))
 
 /mob/living/simple_animal/adjustBruteLoss(damage)
 	..()
@@ -362,7 +361,7 @@
 	return verb
 
 /mob/living/simple_animal/put_in_hands(obj/item/W) // No hands.
-	W.loc = get_turf(src)
+	W.forceMove(get_turf(src))
 	return 1
 
 // Harvest an animal's delicious byproducts

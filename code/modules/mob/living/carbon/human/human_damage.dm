@@ -1,12 +1,17 @@
 //Updates the mob's health from organs and mob damage variables
 /mob/living/carbon/human/updatehealth()
-
+	var/previous_health = health
 	if(status_flags & GODMODE)
 		health = maxHealth
 		set_stat(CONSCIOUS)
+		if(health != previous_health)
+			update_health_slowdown()
 		return
 
 	health = maxHealth - getBrainLoss()
+
+	if(health != previous_health)
+		update_health_slowdown()
 
 	//TODO: fix husking
 	if(((maxHealth - getFireLoss()) < config.health.health_threshold_dead) && is_ic_dead())
@@ -29,7 +34,7 @@
 			for(var/datum/modifier/M in modifiers)
 				if(!isnull(M.incoming_healing_percent))
 					amount *= M.incoming_healing_percent
-		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			sponge.take_internal_damage(amount)
 
@@ -37,7 +42,7 @@
 	if(status_flags & GODMODE)
 		return 0
 	if(should_have_organ(BP_BRAIN))
-		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			sponge.damage = min(max(amount, 0),sponge.species.total_health)
 			updatehealth()
@@ -46,7 +51,7 @@
 	if(status_flags & GODMODE)
 		return 0
 	if(should_have_organ(BP_BRAIN))
-		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			if(sponge.status & ORGAN_DEAD)
 				return sponge.species.total_health
@@ -135,18 +140,23 @@
 	BITSET(hud_updateflag, HEALTH_HUD)
 
 /mob/living/carbon/human/Stun(amount)
-	if(MUTATION_HULK in mutations)	return
+	if((MUTATION_HULK in mutations) || (MUTATION_STRONG in mutations))
+		return
 	..()
 
 /mob/living/carbon/human/Weaken(amount)
-	if(MUTATION_HULK in mutations)	return
+	if((MUTATION_HULK in mutations) || (MUTATION_STRONG in mutations))
+		return
 	..()
 
 /mob/living/carbon/human/Paralyse(amount)
-	if(MUTATION_HULK in mutations)	return
+	if((MUTATION_HULK in mutations) || (MUTATION_STRONG in mutations))
+		return
+
 	// Notify our AI if they can now control the suit.
 	if(wearing_rig && !stat && paralysis < amount) //We are passing out right this second.
 		wearing_rig.notify_ai("<span class='danger'>Warning: user consciousness failure. Mobility control passed to integrated intelligence system.</span>")
+
 	..()
 
 /mob/living/carbon/human/getCloneLoss()
@@ -210,6 +220,8 @@
 				amount *= M.incoming_damage_percent
 			if(!isnull(M.incoming_tox_damage_percent))
 				amount *= M.incoming_tox_damage_percent
+				heal = istype(M, TRAIT_TOXINLOVER)
+
 	else if(amount < 0)
 		for(var/datum/modifier/M in modifiers)
 			if(!isnull(M.incoming_healing_percent))
@@ -240,7 +252,7 @@
 	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic() || isundead(src))
 		return
 
-	var/heal = amount < 0
+	var/heal = amount < 0 || HAS_TRAIT(src, TRAIT_TOXINLOVER)
 	amount = abs(amount)
 
 	if(!heal && (CE_ANTITOX in chem_effects))
@@ -265,7 +277,7 @@
 
 	// Move the brain to the very end since damage to it is vastly more dangerous
 	// (and isn't technically counted as toxloss) than general organ damage.
-	var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
+	var/obj/item/organ/internal/cerebrum/brain/brain = internal_organs_by_name[BP_BRAIN]
 	if(brain)
 		pick_organs -= brain
 		pick_organs += brain
@@ -281,6 +293,7 @@
 				amount *= M.incoming_damage_percent
 			if(!isnull(M.incoming_tox_damage_percent))
 				amount *= M.incoming_tox_damage_percent
+
 		if(heal)
 			if(I.damage < amount)
 				amount -= I.damage
@@ -376,6 +389,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 //Heal MANY external organs, in random order
 /mob/living/carbon/human/heal_overall_damage(brute, burn)
 	var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
+	var/should_update_damage_icon = FALSE
 
 	while(parts.len && (brute>0 || burn>0) )
 		var/obj/item/organ/external/picked = pick(parts)
@@ -383,13 +397,17 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 		var/brute_was = picked.brute_dam
 		var/burn_was = picked.burn_dam
 
-		picked.heal_damage(brute,burn)
+		if(picked.heal_damage(brute,burn, update_damage_icon = FALSE))
+			should_update_damage_icon = TRUE
 
 		brute -= (brute_was-picked.brute_dam)
 		burn -= (burn_was-picked.burn_dam)
 
 		parts -= picked
 	updatehealth()
+	if(should_update_damage_icon)
+		UpdateDamageIcon()
+
 	BITSET(hud_updateflag, HEALTH_HUD)
 
 // damage MANY external organs, in random order
@@ -403,7 +421,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 	var/burn_avg = burn / parts.len
 	for(var/obj/item/organ/external/E in parts)
 		if(brute_avg)
-			apply_damage(damage = brute_avg, damagetype = BRUTE, blocked = getarmor_organ(E, "melee"), damage_flags = dam_flags, used_weapon = used_weapon, given_organ = E)
+			apply_damage(damage = brute_avg, damagetype = BRUTE, blocked = get_organ_armor(E, "melee"), damage_flags = dam_flags, used_weapon = used_weapon, given_organ = E)
 		if(burn_avg)
 			apply_damage(damage = burn_avg, damagetype = BURN, damage_flags = dam_flags, used_weapon = used_weapon, given_organ = E)
 
@@ -430,8 +448,11 @@ This function restores all organs.
 		var/obj/item/organ/external/current_organ = organs_by_name[bodypart]
 		if(istype(current_organ))
 			current_organ.rejuvenate(ignore_prosthetic_prefs)
-	if (src.mind?.vampire)
-		src.replace_vampiric_organs()
+	if(mind?.vampire)
+		var/datum/vampire/V = mind.vampire
+		V.set_up_organs()
+
+	update_organ_movespeed()
 
 /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
 	var/obj/item/organ/external/E = get_organ(zone)
@@ -470,11 +491,16 @@ This function restores all organs.
 	if(blocked >= 100)	return 0
 	if(blocked) damage *= blocked_mult(blocked)
 
-	if(damage > 15 && prob(damage*4))
-		make_adrenaline(round(damage/10))
-
 	var/datum/wound/created_wound
 	damageoverlaytemp = 20
+	if(getHalLoss() < last_body_response_to_pain)
+		last_body_response_to_pain = getHalLoss()
+	if(can_feel_pain() && damage > 5)
+		make_adrenaline(round(damage)/10)
+		last_body_response_to_pain = getHalLoss()
+	else if(can_feel_pain() && getHalLoss() - last_body_response_to_pain > 5)
+		make_adrenaline(round(getHalLoss() - last_body_response_to_pain)/10)
+		last_body_response_to_pain = getHalLoss()
 
 	switch(damagetype)
 		if(BRUTE)
@@ -505,6 +531,7 @@ This function restores all organs.
 
 	// Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
 	updatehealth()
+	species.handle_damage(src)
 	BITSET(hud_updateflag, HEALTH_HUD)
 	return created_wound
 

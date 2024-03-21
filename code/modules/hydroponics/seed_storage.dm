@@ -20,7 +20,7 @@
 /obj/machinery/seed_storage
 	name = "Seed storage"
 	desc = "It stores, sorts, and dispenses seeds."
-	icon = 'icons/obj/vending.dmi'
+	icon = 'icons/obj/machines/vending.dmi'
 	icon_state = "seeds"
 	layer = BELOW_OBJ_LAYER
 	density = 1
@@ -337,7 +337,7 @@
 					if (N.amount <= 0 || N.seeds.len <= 0)
 						piles -= N
 						qdel(N)
-					O.loc = src.loc
+					O.dropInto(loc)
 				else
 					piles -= N
 					qdel(N)
@@ -378,7 +378,7 @@
 		var/obj/item/storage/S = O.loc
 		S.remove_from_storage(O, src)
 
-	O.loc = src
+	O.forceMove(src)
 	var/newID = 0
 
 	for (var/datum/seed_pile/N in piles)

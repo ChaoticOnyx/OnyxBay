@@ -1,9 +1,3 @@
-#define MODIFIER_STACK_FORBID	1	// Disallows stacking entirely.
-#define MODIFIER_STACK_EXTEND	2	// Disallows a second instance, but will extend the first instance if possible.
-#define MODIFIER_STACK_ALLOWED	3	// Multiple instances are allowed.
-
-#define MODIFIER_GENETIC	1	// Modifiers with this flag will be copied to mobs who get cloned.
-
 
 // This is a datum that tells the mob that something is affecting them.
 // The advantage of using this datum verses just setting a variable on the mob directly, is that there is no risk of two different procs overwriting
@@ -33,6 +27,7 @@
 	var/max_health_flat                 // Adjusts max health by a flat (e.g. +20) amount.  Note this is added to base health.
 	var/max_health_percent              // Adjusts max health by a percentage (e.g. -30%).
 	var/disable_duration_percent        // Adjusts duration of 'disables' (stun, weaken, paralyze, confusion, sleep, halloss, etc)  Setting to 0 will grant immunity.
+	var/siemens_coefficient=1
 	var/incoming_damage_percent         // Adjusts all incoming damage.
 	var/incoming_brute_damage_percent   // Only affects bruteloss.
 	var/incoming_fire_damage_percent    // Only affects fireloss.
@@ -42,8 +37,8 @@
 	var/incoming_hal_damage_percent     // Only affects halloss.
 	var/incoming_healing_percent        // Adjusts amount of healing received.
 	var/outgoing_melee_damage_percent   // Adjusts melee damage inflicted by holder by a percentage.  Affects attacks by melee weapons and hand-to-hand.
-	var/slowdown                        // Negative numbers speed up, positive numbers slow down movement.
-	var/haste                           // If set to 1, the mob will be 'hasted', which makes it ignore slowdown and go really fast.
+	/// Path to the movespeed modifier added to mob
+	var/movespeed_modifier_path
 	var/evasion                         // Positive numbers reduce the odds of being hit. Negative numbers increase the odds.
 	var/bleeding_rate_percent           // Adjusts amount of blood lost when bleeding.
 	var/accuracy                        // Positive numbers makes hitting things with guns easier, negatives make it harder.
@@ -76,6 +71,11 @@
 /datum/modifier/proc/expire(silent = FALSE)
 	if(on_expired_text && !silent)
 		to_chat(holder, on_expired_text)
+
+	if(pain_immunity && ishuman(holder))
+		var/mob/living/carbon/human/human_user = holder
+		human_user.no_pain = TRUE
+
 	on_expire()
 	holder.modifiers.Remove(src)
 	if(mob_overlay_state) // We do this after removing ourselves from the list so that the overlay won't remain.
@@ -94,6 +94,9 @@
 
 // Called every Life() tick.  Override for special behaviour.
 /datum/modifier/proc/tick()
+	return
+
+/datum/modifier/proc/_examine_text()
 	return
 
 /mob/living
@@ -142,6 +145,10 @@
 	if(mod.on_created_text)
 		to_chat(src, mod.on_created_text)
 	modifiers.Add(mod)
+	if(mod.pain_immunity && ishuman(src))
+		var/mob/living/carbon/human/human_user = src
+		human_user.no_pain = TRUE
+
 	mod.on_applied()
 	if(mod.mob_overlay_state)
 		update_modifier_visuals()
@@ -213,12 +220,6 @@
 		effects += "Damage you do with melee weapons and unarmed combat is [multipler_to_percentage(outgoing_melee_damage_percent, TRUE)] \
 		[outgoing_melee_damage_percent > 1.0 ? "higher" : "lower"]."
 
-	if(!isnull(slowdown))
-		effects += "[slowdown > 0 ? "lose" : "gain"] [slowdown] slowdown."
-
-	if(!isnull(haste))
-		effects += "You move at maximum speed, and cannot be slowed by any means."
-
 	if(!isnull(evasion))
 		effects += "You are [abs(evasion)]% [evasion > 0 ? "harder" : "easier"] to hit with weapons."
 
@@ -247,4 +248,3 @@
 	if(abs)
 		return "[abs( ((multi - 1) * 100) )]%"
 	return "[((multi - 1) * 100)]%"
-

@@ -6,6 +6,7 @@
 	icon_state = "chefhat"
 	item_state = "chefhat"
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	coverage = 0.5
 
 //Captain
 /obj/item/clothing/head/caphat
@@ -17,6 +18,7 @@
 		slot_r_hand_str = "caphat",
 		)
 	armor = list(melee = 15, bullet = 10, laser = 10,energy = 5, bomb = 0, bio = 0)
+	coverage = 0.5
 
 /obj/item/clothing/head/caphat/cap
 	name = "captain's cap"
@@ -46,6 +48,7 @@
 	flags_inv = BLOCKHAIR
 	body_parts_covered = HEAD
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	coverage = 0.7
 
 //Chaplain
 /obj/item/clothing/head/nun_hood
@@ -55,6 +58,7 @@
 	flags_inv = BLOCKHAIR
 	body_parts_covered = HEAD
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	coverage = 0.8
 
 //Medical
 /obj/item/clothing/head/surgery
@@ -62,7 +66,8 @@
 	desc = "A cap surgeons wear during operations. Keeps their hair from tickling your internal organs."
 	icon_state = "surgcap"
 	flags_inv = BLOCKHEADHAIR
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 40)
+	coverage = 0.4
 
 /obj/item/clothing/head/surgery/purple
 	name = "purple surgical cap"
@@ -103,6 +108,7 @@
 	icon_state = "beret"
 	body_parts_covered = NO_BODYPARTS
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	coverage = 0.4
 
 /obj/item/clothing/head/beret/sec
 	name = "corporate security beret"
@@ -164,8 +170,9 @@
 	name = "Death Squad beret"
 	desc = "An armored red beret adorned with the crest of NanoTrasen's infamous Death Squad. Doesn't sacrifice style or safety."
 	icon_state = "beret_corporate_red"
-	armor = list(melee = 55, bullet = 55, laser = 35,energy = 20, bomb = 30, bio = 30)
+	armor = list(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 50)
 	siemens_coefficient = 0.9
+	coverage = 1.0
 
 /obj/item/clothing/head/beret/guard
 	name = "corporate security beret"
@@ -183,6 +190,12 @@
 	desc = "For artists only!"
 	icon_state = "beret_classique"
 
+//iogacool 's custom item
+/obj/item/clothing/head/beret/sec/tactical
+	name = "tactical beret"
+	desc = "A green beret with an officer's rank emblem."
+	icon_state = "beret_tactical"
+
 //Some retard put these in /under/jobs/security.dm. What a shame.
 /obj/item/clothing/head/det
 	name = "fedora"
@@ -192,8 +205,9 @@
 		slot_l_hand_str = "det_hat",
 		slot_r_hand_str = "det_hat",
 		)
-	armor = list(melee = 30, bullet = 25, laser = 25,energy = 10, bomb = 0, bio = 0)
+	armor = list(melee = 50, bullet = 30, laser = 20, energy = 20, bomb = 25, bio = 0)
 	siemens_coefficient = 0.9
+	coverage = 0.7
 
 /obj/item/clothing/head/det/attack_self(mob/user)
 	flags_inv ^= BLOCKHEADHAIR
@@ -213,19 +227,21 @@
 	desc = "The hat of the Head of Security, reinforced with a plasteel plate. For showing the officers who's in charge."
 	icon_state = "hoscap"
 	body_parts_covered = HEAD
-	armor = list(melee = 60, bullet = 60, laser = 60,energy = 35, bomb = 45, bio = 0)
+	armor = list(melee = 90, bullet = 130, laser = 120, energy = 35, bomb = 55, bio = 20)
 	siemens_coefficient = 0.6
+	coverage = 1.0 // Magic of coolness
 
 /obj/item/clothing/head/HoS/dermal
 	name = "Dermal Armour Patch"
 	desc = "You're not quite sure how you manage to take it on and off, but it implants nicely in your head."
 	icon_state = "dermal"
 
-/obj/item/clothing/head/warden 							// TODO: move all head clothing to /head
+/obj/item/clothing/head/warden
 	name = "warden's hat"
 	desc = "It's a special helmet issued to the Warden of a securiy force."
 	icon_state = "policehelm"
 	body_parts_covered = NO_BODYPARTS
+	coverage = 0.7
 
 /obj/item/clothing/head/warden/drill
 	name = "warden's drill hat"

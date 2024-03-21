@@ -14,6 +14,9 @@
 	var/perunit = SHEET_MATERIAL_AMOUNT
 	var/apply_colour //temp pending icon rewrite
 
+	drop_sound = SFX_DROP_AXE
+	pickup_sound = SFX_PICKUP_AXE
+
 /obj/item/stack/material/Initialize()
 	. = ..()
 	if(!default_type)
@@ -260,15 +263,41 @@
 /obj/item/stack/material/plasteel/fifty
 	amount = 50
 
+/obj/item/stack/material/plasteel/titanium
+	name = "titanium"
+	icon_state = "metal"
+	item_state = "metal"
+	default_type = MATERIAL_TITANIUM
+	apply_colour = 1
+
+/obj/item/stack/material/plasteel/titanium/ten
+	amount = 10
+
+/obj/item/stack/material/plasteel/titanium/fifty
+	amount = 50
+
 /obj/item/stack/material/wood
 	name = "wooden plank"
 	icon_state = "wood"
 	default_type = MATERIAL_WOOD
+	drop_sound = SFX_DROP_WOODEN
+	pickup_sound = SFX_PICKUP_WOODEN
 
 /obj/item/stack/material/wood/ten
 	amount = 10
 
 /obj/item/stack/material/wood/fifty
+	amount = 50
+
+/obj/item/stack/material/darkwood
+	name = "darkwood plank"
+	icon_state = "darkwood"
+	default_type = MATERIAL_DARKWOOD
+
+/obj/item/stack/material/darkwood/ten
+	amount = 10
+
+/obj/item/stack/material/darkwood/fifty
 	amount = 50
 
 /obj/item/stack/material/cloth
@@ -293,10 +322,15 @@
 	icon_state = "leather"
 	default_type = MATERIAL_LEATHER
 
+	drop_sound = SFX_DROP_LEATHER
+	pickup_sound = SFX_PICKUP_LEATHER
+
 /obj/item/stack/material/glass
 	name = "glass"
 	icon_state = "glass"
 	default_type = MATERIAL_GLASS
+	drop_sound = SFX_DROP_GLASS
+	pickup_sound = SFX_PICKUP_GLASS
 
 /obj/item/stack/material/glass/ten
 	amount = 10

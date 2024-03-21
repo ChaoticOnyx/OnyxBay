@@ -22,6 +22,9 @@
 	var/brightness_color = "#fff3b2" // color of light when on
 	var/light_overlay = TRUE
 
+	drop_sound = SFX_DROP_ACCESSORY
+	pickup_sound = SFX_PICKUP_ACCESSORY
+
 /obj/item/device/flashlight/Initialize()
 	. = ..()
 	if(on)
@@ -30,20 +33,22 @@
 /obj/item/device/flashlight/Destroy()
 	activation_sound = null
 	switch_light(FALSE)
+	ClearOverlays()
 	return ..()
 
-/obj/item/device/flashlight/update_icon()
-	overlays.Cut()
+/obj/item/device/flashlight/on_update_icon()
+	ClearOverlays()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		if(light_overlay)
-			var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay", flags=RESET_COLOR)
-			LO.color = brightness_color
-			LO.layer = ABOVE_LIGHTING_LAYER
-			LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-			overlays += LO
+			var/image/I = image(icon, "[initial(icon_state)]-overlay")
+			I.color = brightness_color
+			AddOverlays(I)
+			AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
+			em_block_state = "[initial(icon_state)]-eb"
 	else
 		icon_state = "[initial(icon_state)]"
+		em_block_state = null
 
 /obj/item/device/flashlight/proc/switch_light(state = FALSE)
 	on = state
@@ -78,6 +83,10 @@
 /obj/item/device/flashlight/attack(mob/living/M, mob/living/user)
 	add_fingerprint(user)
 	if(on && user.zone_sel.selecting == BP_EYES)
+
+		if(is_pacifist(user))
+			to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+			return
 
 		if((MUTATION_CLUMSY in user.mutations) && prob(50))	//too dumb to use flashlight properly
 			return ..()	//just hit them in the head
@@ -131,7 +140,7 @@
 			to_chat(user, SPAN("notice", "There's visible lag between left and right pupils' reactions."))
 		if(H.get_blood_volume() <= 60)
 			to_chat(user, SPAN("notice", "\The [H]'s eyelids look pale."))
-		if(length(H.virus2)) 
+		if(length(H.virus2))
 			to_chat(user, SPAN("notice", "\The [H]'s eyes look red."))
 		else if(H.should_have_organ(BP_LIVER)) // Yea we probably do not want yellow and red eyes at the same time.
 			var/obj/item/organ/internal/liver/L = H.internal_organs_by_name[BP_LIVER]
@@ -243,10 +252,10 @@
 	force = 5.0
 	attack_verb = list ("smacked", "bashed", "enlightened")
 
-	flashlight_max_bright = 0.3
+	flashlight_max_bright = 0.55
 	flashlight_inner_range = 2
 	flashlight_outer_range = 4
-	flashlight_falloff_curve = 4.0
+	flashlight_falloff_curve = 4.5
 	on = 1
 
 // green-shaded desk lamp
@@ -302,16 +311,16 @@
 	fuel = rand(800, 1000) // Sorry for changing this so much but I keep under-estimating how long X number of ticks last in seconds.
 	..()
 
-/obj/item/device/flashlight/flare/update_icon()
-	overlays.Cut()
+/obj/item/device/flashlight/flare/on_update_icon()
+	ClearOverlays()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
-		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay", flags=RESET_COLOR)
-		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-		overlays += LO
+		AddOverlays(image(icon, "[initial(icon_state)]-overlay"))
+		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
+		em_block_state = "[initial(icon_state)]-eb"
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"
+		em_block_state = null
 
 /obj/item/device/flashlight/flare/think()
 	var/turf/pos = get_turf(src)
@@ -382,20 +391,25 @@
 	on = 0
 	update_icon()
 
-/obj/item/device/flashlight/glowstick/update_icon()
+/obj/item/device/flashlight/glowstick/on_update_icon()
 	item_state = "glowstick"
-	overlays.Cut()
+	ClearOverlays()
 	if(!fuel)
 		icon_state = "glowstick-empty"
 		set_light(0)
-	else if (on)
-		var/image/I = overlay_image(icon, "glowstick-on", brightness_color)
-		I.blend_mode = BLEND_ADD
-		overlays += I
+	else if(on)
+		icon_state = "[initial(icon_state)]-on"
+		em_block_state = "[initial(icon_state)]-eb"
+		var/image/I = image(icon, "[initial(icon_state)]-overlay")
+		I.color = brightness_color
+		AddOverlays(I)
+		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
 		item_state = "glowstick-on"
 		set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 	else
 		icon_state = "glowstick"
+		em_block_state = null
+
 	var/mob/M = loc
 	if(istype(M))
 		if(M.l_hand == src)
@@ -456,13 +470,15 @@
 	flashlight_outer_range = 4
 	brightness_color = "#ffff00"
 	light_overlay = FALSE
-	on = 1 //Bio-luminesence has one setting, on.
+	on = TRUE //Bio-luminesence has one setting, on.
+	blocks_emissive = EMISSIVE_BLOCK_NONE
 
-/obj/item/device/flashlight/metroid/New()
-	..()
+/obj/item/device/flashlight/metroid/Initialize()
+	. = ..()
 	set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
+	AddOverlays(emissive_appearance(icon, "slime-ea"))
 
-/obj/item/device/flashlight/metroid/update_icon()
+/obj/item/device/flashlight/metroid/on_update_icon()
 	return
 
 /obj/item/device/flashlight/metroid/attack_self(mob/user)

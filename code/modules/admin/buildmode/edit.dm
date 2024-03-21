@@ -62,7 +62,7 @@
 		return
 	ClearValue()
 	value_to_set = new_value
-	register_signal(value_to_set, SIGNAL_QDELETING, /datum/build_mode/edit/proc/ClearValue)
+	register_signal(value_to_set, SIGNAL_QDELETING, nameof(.proc/ClearValue))
 
 /datum/build_mode/edit/proc/ClearValue(feedback)
 	if(!istype(value_to_set, /datum))

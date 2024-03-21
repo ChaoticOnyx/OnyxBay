@@ -19,33 +19,34 @@
 
 	var/id
 	var/mode = MODE_TELEPORT
-	var/calibrating = FALSE
 	var/list/linked_consoles
 	var/weakref/target_ref
 	var/obj/machinery/teleporter_gate/gate
 
-/obj/machinery/computer/teleporter/update_icon()
-	overlays.Cut()
+/obj/machinery/computer/teleporter/on_update_icon()
+	ClearOverlays()
+
 	if(gate && (get_dir(gate, src) == WEST))
-		LAZYADD(overlays, image(icon, src, "tele_console_wiring"))
+		AddOverlays(OVERLAY(icon, "tele_console_wiring"))
 
 	icon_state = initial(icon_state)
-	if(stat & (BROKEN | NOPOWER))
-		set_light(0)
-		return
-
 	if(target_ref)
-		flick(image(icon, "tele_console_boot"), src)
-		set_light(0.25, 0.1, 2, 3.5, light_color)
-	else
-		set_light(0.1, 0.1, 2, 3.5, light_color)
+		flick("tele_console_boot", src)
+		icon_state = "[icon_state]_on"
 
-	var/image/screen_overlay = image(icon, src, "tele_console_over-[target_ref ? 1 : 0]", EYE_GLOW_LAYER)
-	screen_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-	screen_overlay.alpha = 150
-	LAZYADD(overlays, screen_overlay)
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "tele_console_ea-[target_ref ? 1 : 0]"))
 
 	return
+
+/obj/machinery/computer/teleporter/update_glow()
+	. = ..()
+
+	if(. && !target_ref)
+		set_light(0.1, 0.1, 2, 3.5, light_color)
+
+	return .
 
 /obj/machinery/computer/teleporter/proc/link_gate()
 	if(gate)
@@ -55,7 +56,7 @@
 		if(gate)
 			gate.link_console()
 			break
-	update_icon()
+	queue_icon_update()
 
 /obj/machinery/computer/teleporter/Initialize()
 	. = ..()
@@ -65,14 +66,14 @@
 /obj/machinery/computer/teleporter/Destroy()
 	if(gate)
 		gate.console = null
-		gate.update_icon()
+		gate.queue_icon_update()
 		gate = null
 	return ..()
 
 /obj/machinery/computer/teleporter/dismantle()
 	if(gate)
 		gate.console = null
-		gate.update_icon()
+		gate.queue_icon_update()
 		gate = null
 	return ..()
 
@@ -123,9 +124,9 @@
 		target_ref = null
 
 	var/list/data = list()
+	data["id"] = id
 	data["gate"] = gate ? TRUE : FALSE
 	data["panel"] = panel_open
-	data["calibrating"] = calibrating
 	data["target"] = !target ? "None" : "[get_area(target)]"
 
 	switch(mode)
@@ -141,33 +142,11 @@
 	else
 		data["engaged"] = FALSE
 
-	if(gate?.calibrated)
-		data["calibrated"] = TRUE
-	else
-		data["calibrated"] = FALSE
-
 	return data
 
 /obj/machinery/computer/teleporter/proc/change_mode()
 	mode = mode + 1 > 2 ? 0 : mode + 1
 	set_teleport_target(null)
-
-/obj/machinery/computer/teleporter/proc/finish_calibrating()
-	calibrating = FALSE
-	if(!gate)
-		audible_message(SPAN_WARNING("Failure: Unable to detect gate."))
-		return
-	audible_message("Calibration complete.")
-	gate.calibrated = TRUE
-	gate.set_state(TRUE)
-	update_icon()
-
-/obj/machinery/computer/teleporter/proc/start_calibrating(auto = FALSE)
-	if(auto && gate?.accuracy + gate?.calc_acceleration < MIN_MAX_GATE_LEVEL)
-		return
-	calibrating = TRUE
-	audible_message("Processing hub calibration to target...")
-	addtimer(CALLBACK(src, .proc/finish_calibrating), 2 SECONDS * (4 - gate.calc_acceleration))
 
 /obj/machinery/computer/teleporter/tgui_act(action, params)
 	. = ..()
@@ -178,26 +157,24 @@
 	switch(action)
 		if("toggle")
 			if(!target_ref)
-				return
+				return TRUE
+
 			gate.set_state(!gate.engaged)
 		if("togglemaint")
 			panel_open = !panel_open
 			to_chat(usr, "\The [src]'s maintanence panel is now [panel_open ? "opened" : "closed"].")
+		if("idset")
+			var/new_id = sanitize(params["value"], MAX_NAME_LEN)
+			if(!length(new_id))
+				return TRUE
+
+			id = new_id
 		if("modeset")
 			gate.set_state(FALSE)
-			gate.calibrated = FALSE
 			change_mode()
 		if("targetset")
 			gate.set_state(FALSE)
-			gate.calibrated = FALSE
 			set_target(usr)
-		if("calibrate")
-			if(!target_ref)
-				audible_message("Error: No target set to calibrate to.")
-				return
-			if(gate.calibrated)
-				audible_message("Error: Hub is already calibrated!")
-			start_calibrating()
 
 	return TRUE
 
@@ -213,7 +190,7 @@
 	if(target_ref == new_target_ref)
 		return
 	target_ref = new_target_ref
-	update_icon()
+	queue_icon_update()
 
 /obj/machinery/computer/teleporter/proc/get_targets()
 	var/list/targets = list()
@@ -221,12 +198,12 @@
 
 	switch(mode)
 		if(MODE_TELEPORT)
-			// TO-DO: refactor beacons to use their own global list.
-			for(var/obj/item/device/radio/beacon/beacon in world)
+			for(var/obj/item/device/bluespace_beacon/beacon as anything in GLOB.bluespace_beacons)
 				var/turf/T = get_turf(beacon)
 				if(!is_suitable(T))
 					continue
-				LAZYADDASSOC(targets, avoid_assoc_duplicate_keys(T.loc.name, areaindex), beacon)
+
+				LAZYSET(targets, avoid_assoc_duplicate_keys(T.loc.name, areaindex), beacon)
 		if(MODE_TARGET)
 			// TO-DO: refactor implants to use their own global list.
 			for(var/obj/item/implant/tracking/implant in world)
@@ -239,13 +216,13 @@
 				var/turf/T = get_turf(M)
 				if(!is_suitable(T))
 					continue
-				LAZYADDASSOC(targets, avoid_assoc_duplicate_keys(M.name, areaindex), implant)
+				LAZYSET(targets, avoid_assoc_duplicate_keys(M.name, areaindex), implant)
 		if(MODE_GATEWAY)
 			for(var/obj/machinery/computer/teleporter/console as anything in linked_consoles)
 				var/turf/T = get_turf(console)
 				if(!is_suitable(T) || !console.gate)
 					continue
-				LAZYADDASSOC(targets, avoid_assoc_duplicate_keys(T.loc.name, areaindex), console)
+				LAZYSET(targets, avoid_assoc_duplicate_keys(T.loc.name, areaindex), console)
 
 	return targets
 

@@ -3,11 +3,13 @@
 /obj/item/evidencebag
 	name = "evidence bag"
 	desc = "An empty evidence bag."
-	icon = 'icons/obj/storage.dmi'
+
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "evidenceobj"
-	item_state = ""
+	base_icon_state = "evidence"
+
 	w_class = ITEM_SIZE_SMALL
-	var/base_icon_state = "evidence"
+
 	var/obj/item/stored_item = null
 
 /obj/item/evidencebag/attackby(obj/item/I, mob/user)
@@ -79,7 +81,8 @@
 	img.SetTransform(scale = 0.7)
 	I.pixel_x = item_x		//and then return it
 	I.pixel_y = item_y
-	overlays.Add(img, base_icon_state)	//should look nicer for transparent stuff. not really that important, but hey.
+	AddOverlays(img) // should look nicer for transparent stuff. not really that important, but hey.
+	AddOverlays(base_icon_state)
 
 	desc = "\A [initial(name)] containing [I]."
 	stored_item = I
@@ -92,7 +95,7 @@
 		var/obj/item/I = contents[1]
 		user.visible_message("[user] takes [I] out of [src]", "You take [I] out of [src].",\
 		"You hear someone rustle around in a plastic bag, and remove something.")
-		overlays.Cut()	//remove the overlays
+		ClearOverlays()	//remove the overlays
 
 		user.pick_or_drop(I)
 		stored_item = null

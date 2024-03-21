@@ -15,10 +15,9 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	src.maximum_volume = maximum_volume
 
 /datum/reagents/Destroy()
-	. = ..()
-
 	QDEL_NULL_LIST(reagent_list)
 	my_atom = null
+	return ..()
 
 /datum/reagents/think()
 	if(!my_atom?.loc)
@@ -197,6 +196,13 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 			else
 				return 0
 	return 0
+
+/datum/reagents/proc/has_reagent_or_subtypes(reagent_type)
+	for(var/datum/reagent/current in reagent_list)
+		if(istype(current, reagent_type))
+			return TRUE
+
+	return FALSE
 
 /datum/reagents/proc/has_all_reagents(list/check_reagents)
 	//this only works if check_reagents has no duplicate entries... hopefully okay since it expects an associative list

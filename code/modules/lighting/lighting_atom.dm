@@ -12,29 +12,29 @@
 #define NONSENSICAL_VALUE -99999
 #define DEFAULT_FALLOFF_CURVE (2)
 /atom/proc/set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve = NONSENSICAL_VALUE, l_color = NONSENSICAL_VALUE)
-	. = 0 //make it less costly if nothing's changed
+	. = FALSE // don't update if nothing changed
 
 	if(l_max_bright != null && l_max_bright != light_max_bright)
 		light_max_bright = l_max_bright
-		. = 1
+		. = TRUE
 	if(l_outer_range != null && l_outer_range != light_outer_range)
 		light_outer_range = l_outer_range
-		. = 1
+		. = TRUE
 	if(l_inner_range != null && l_inner_range != light_inner_range)
 		if(light_inner_range >= light_outer_range)
 			light_inner_range = light_outer_range / 4
 		else
 			light_inner_range = l_inner_range
-		. = 1
+		. = TRUE
 	if(l_falloff_curve != NONSENSICAL_VALUE)
 		if(!l_falloff_curve || l_falloff_curve <= 0)
 			light_falloff_curve = DEFAULT_FALLOFF_CURVE
 		if(l_falloff_curve != light_falloff_curve)
 			light_falloff_curve = l_falloff_curve
-			. = 1
+			. = TRUE
 	if(l_color != NONSENSICAL_VALUE && l_color != light_color)
 		light_color = l_color
-		. = 1
+		. = TRUE
 
 	if(.)
 		update_light()
@@ -62,7 +62,7 @@
 			light.update(.)
 		else
 			light = new /datum/light_source(src, .)
-	
+
 	SEND_SIGNAL(src, SIGNAL_LIGHT_UPDATED, src)
 	SEND_GLOBAL_SIGNAL(SIGNAL_LIGHT_UPDATED, src)
 
@@ -90,7 +90,7 @@ if(loc != old_loc) {\
 	}\
 }
 
-/atom/movable/Move()
+/atom/movable/Move(newloc, direct)
 	LIGHT_MOVE_UPDATE
 
 /atom/movable/forceMove()
@@ -104,9 +104,6 @@ if(loc != old_loc) {\
 
 /obj/item/pickup()
 	. = ..()
-
-	if (pickup_sound)
-		playsound(src, pickup_sound, rand(50, 75), TRUE)
 
 	update_light()
 

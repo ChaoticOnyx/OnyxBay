@@ -133,7 +133,7 @@
 
 	//Override will make checks from different location used for prediction
 	if(location_override)
-		if(locate(/obj/structure/lattice, location_override) || locate(/obj/structure/catwalk, location_override))
+		if(locate(/obj/structure/lattice, location_override) || locate(/obj/structure/catwalk, location_override) || locate(/obj/structure/up, location_override))
 			return FALSE
 
 		var/turf/below = GetBelow(location_override)
@@ -172,10 +172,11 @@
 /atom/movable/proc/handle_fall(turf/landing)
 	SEND_SIGNAL(src, SIGNAL_ATOM_FALL)
 	forceMove(landing)
+
 	if(locate(/obj/structure/stairs) in landing)
-		return 1
-	else
-		handle_fall_effect(landing)
+		return
+
+	handle_fall_effect(landing)
 
 /atom/movable/proc/handle_fall_effect(turf/landing)
 	if(istype(landing, /turf/simulated/open))
@@ -188,7 +189,7 @@
 				M.take_overall_damage(fall_damage())
 
 /atom/movable/proc/fall_damage()
-	return 0
+	return FALSE
 
 /obj/fall_damage()
 	if(w_class == ITEM_SIZE_TINY)
@@ -204,14 +205,14 @@
 	var/old_stat = stat
 
 	..()
-	var/damage = 10
+	var/damage = 25
 	apply_damage(rand(0, damage), BRUTE, BP_HEAD)
 	apply_damage(rand(0, damage), BRUTE, BP_CHEST)
 	apply_damage(rand(0, damage), BRUTE, BP_L_LEG)
 	apply_damage(rand(0, damage), BRUTE, BP_R_LEG)
 	apply_damage(rand(0, damage), BRUTE, BP_L_ARM)
 	apply_damage(rand(0, damage), BRUTE, BP_R_ARM)
-	weakened = max(weakened,2)
+	weakened = max(weakened, 10)
 	updatehealth()
 
 	if (old_stat != CONSCIOUS)

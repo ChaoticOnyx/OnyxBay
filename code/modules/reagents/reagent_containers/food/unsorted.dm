@@ -453,7 +453,7 @@
 
 /obj/item/reagent_containers/food/donkpocket/proc/cooltime()
 	if(warm)
-		addtimer(CALLBACK(src, .proc/cooling, warm), 4200)
+		addtimer(CALLBACK(src, nameof(.proc/cooling), warm), 4200)
 	return
 
 /obj/item/reagent_containers/food/donkpocket/proc/cooling(warm)
@@ -477,7 +477,7 @@
 		return
 	has_been_heated = 1
 	user.visible_message("<span class='notice'>[user] crushes \the [src] package.</span>", "You crush \the [src] package and feel a comfortable heat build up.")
-	addtimer(CALLBACK(src, .proc/heat, user), 200)
+	addtimer(CALLBACK(src, nameof(.proc/heat), user), 200)
 
 /obj/item/reagent_containers/food/donkpocket/sinpocket/heat(user)
 	if(user)
@@ -1215,13 +1215,16 @@
 	if(wrapped)
 		Unwrap(user)
 
-/obj/item/reagent_containers/food/monkeycube/proc/Expand()
+/obj/item/reagent_containers/food/monkeycube/proc/Expand(atom/location)
 	if(!growing)
 		growing = 1
 		src.visible_message("<span class='notice'>\The [src] expands!</span>")
 		var/mob/monkey = new monkey_type
-		monkey.dropInto(src.loc)
-		qdel(src)
+		if(location)
+			monkey.dropInto(location)
+		else
+			monkey.dropInto(get_turf(src))
+		qdel_self()
 
 /obj/item/reagent_containers/food/monkeycube/proc/Unwrap(mob/user)
 	icon_state = "monkeycube"
@@ -1232,12 +1235,17 @@
 	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 
 /obj/item/reagent_containers/food/monkeycube/On_Consume(mob/M)
+	Expand(get_turf(M))
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		H.visible_message("<span class='warning'>A screeching creature bursts out of [M]'s chest!</span>")
+		H.visible_message(SPAN("warning", "A screeching creature bursts out of [H]'s chest!"))
 		var/obj/item/organ/external/organ = H.get_organ(BP_CHEST)
 		organ.take_external_damage(50, 0, 0, "Animal escaping the ribcage")
-	Expand()
+	else
+		M.visible_message(\
+			SPAN("warning", "A screeching creature bursts out of [M]!"),\
+			SPAN("warning", "You feel like your body is being torn apart from the inside!"))
+		M.gib()
 
 /obj/item/reagent_containers/food/monkeycube/on_reagent_change()
 	if(reagents.has_reagent(/datum/reagent/water))
@@ -2251,3 +2259,12 @@
 		/datum/reagent/nutriment/protein = 4,
 		/datum/reagent/drink/juice/tomato = 5)
 	bitesize = 4
+
+/obj/item/reagent_containers/food/cream_puff
+	name = "Cream Puff"
+	desc = "Goes well before a workout. Goes even better after a workout. And most importantly, it's highkey perfect DURING a workout."
+	icon_state = "cream_puff"
+	filling_color = "#FFE6A3"
+	center_of_mass = "x=17;y=14"
+	startswith = list(/datum/reagent/nutriment/magical_custard = 6)
+	bitesize = 2

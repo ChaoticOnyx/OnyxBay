@@ -21,8 +21,8 @@
 	can_buckle = 1
 	buckle_lying = 1
 
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/New()
-	..()
+/obj/machinery/atmospherics/pipe/simple/heat_exchanging/Initialize()
+	. = ..()
 	initialize_directions_he = initialize_directions	// The auto-detection from /pipe is good enough for a simple HE pipe
 	color = "#404040" //we don't make use of the fancy overlay system for colours, use this to set the default.
 
@@ -113,8 +113,8 @@
 	connect_types = CONNECT_TYPE_REGULAR|CONNECT_TYPE_HE
 
 // Doubling up on initialize_directions is necessary to allow HE pipes to connect
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/New()
-	.. ()
+/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/Initialize()
+	. = .. ()
 	switch (dir)
 		if (SOUTH)
 			initialize_directions_he = SOUTH
@@ -149,115 +149,3 @@
 		return
 
 	update_icon()
-
-/* WALL RADIATORS */
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/proc/set_wall_radiator_dirs()
-	return is_wall_radiator
-
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/wall_radiator
-	color = null
-	icon='icons/atmos/wall_radiator.dmi'
-	pipe_icon = "hewall"
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/wall_radiator/New()
-	..()
-	set_wall_radiator_dirs()
-	color=null
-	plane = DEFAULT_PLANE
-	is_wall_radiator = TRUE
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/set_wall_radiator_dirs()
-	.=..()
-	if(!.)
-		return
-
-	switch (dir)
-		if (SOUTH)
-			initialize_directions_he = WEST
-			initialize_directions = EAST|WEST
-			pixel_y=-13
-		if (NORTH)
-			initialize_directions_he = WEST
-			initialize_directions = EAST|WEST
-			pixel_y=13
-		if (EAST)
-			initialize_directions_he = SOUTH
-			initialize_directions = SOUTH|NORTH
-			pixel_x=2
-		if (WEST)
-			initialize_directions_he = SOUTH
-			initialize_directions = SOUTH|NORTH
-			pixel_x=-2
-
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/left
-	icon='icons/atmos/wall_radiator_junction_left.dmi'
-	pipe_icon = "hewalljunction_left"
-	color=null
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/left/New()
-	.. ()
-	set_wall_radiator_dirs()
-	color=null
-	plane = DEFAULT_PLANE
-	is_wall_radiator = TRUE
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/left/set_wall_radiator_dirs()
-	.=..()
-	if(!.)
-		return
-
-	switch (dir)
-		if (SOUTH)
-			initialize_directions_he = WEST
-			initialize_directions = EAST|WEST
-			pixel_y=-13
-		if (NORTH)
-			initialize_directions_he = WEST
-			initialize_directions = EAST|WEST
-			pixel_y=13
-		if (EAST)
-			initialize_directions_he = NORTH
-			initialize_directions = SOUTH|NORTH
-			pixel_x=2
-		if (WEST)
-			initialize_directions_he = SOUTH
-			initialize_directions = SOUTH|NORTH
-			pixel_x=-2
-
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/right
-	icon='icons/atmos/wall_radiator_junction_right.dmi'
-	pipe_icon = "hewalljunction_right"
-	color=null
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/right/New()
-	.. ()
-	set_wall_radiator_dirs()
-	color=null
-	plane = DEFAULT_PLANE
-	is_wall_radiator = TRUE
-
-/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/right/set_wall_radiator_dirs()
-	.=..()
-	if(!.)
-		return
-
-	switch (dir)
-		if (SOUTH)
-			initialize_directions_he = EAST
-			initialize_directions = EAST|WEST
-			pixel_y=-13
-		if (NORTH)
-			initialize_directions_he = EAST
-			initialize_directions = EAST|WEST
-			pixel_y=13
-		if (EAST)
-			initialize_directions_he = SOUTH
-			initialize_directions = SOUTH|NORTH
-			pixel_x=2
-		if (WEST)
-			initialize_directions_he = NORTH
-			initialize_directions = SOUTH|NORTH
-			pixel_x=-2

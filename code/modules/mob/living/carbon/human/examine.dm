@@ -1,19 +1,16 @@
 /mob/living/carbon/human/_examine_text(mob/user)
-
-	if(istype(wear_suit, /obj/item/clothing/suit/armor/abductor/vest))
-		var/obj/item/clothing/suit/armor/abductor/vest/abd_vest = wear_suit
-		if(abd_vest.stealth_active)
-			return abd_vest.disguise.examine
-
-	var/skipgloves = 0
-	var/skipsuitstorage = 0
-	var/skipjumpsuit = 0
-	var/skipshoes = 0
-	var/skipmask = 0
-	var/skipears = 0
-	var/skipeyes = 0
-	var/skipface = 0
+	var/skipgloves      = FALSE
+	var/skipsuitstorage = FALSE
+	var/skipjumpsuit    = FALSE
+	var/skipshoes       = FALSE
+	var/skipmask        = FALSE
+	var/skipears        = FALSE
+	var/skipeyes        = FALSE
+	var/skipface        = FALSE
 	var/skipjumpsuitaccessories = FALSE
+
+	var/visible_sexybits = FALSE // Can we get the gender right even w/ ambiguous bodybuilds?
+	var/examine_distance = isliving(user) ? get_dist(user, src) : 0 // Ghosts shall not be bothered by the eyesight issues
 
 	// exosuits and helmets obscure our view and stuff.
 	if(wear_suit)
@@ -22,6 +19,8 @@
 		skipjumpsuit = wear_suit.flags_inv & HIDEJUMPSUIT
 		skipshoes = wear_suit.flags_inv & HIDESHOES
 		skipjumpsuitaccessories = wear_suit.flags_inv & HIDEJUMPSUITACCESSORIES
+	else if(!w_uniform)
+		visible_sexybits = TRUE
 
 	if(head)
 		skipmask = head.flags_inv & HIDEMASK
@@ -32,18 +31,28 @@
 	if(wear_mask)
 		skipface |= wear_mask.flags_inv & HIDEFACE
 
-	// no accuately spotting headsets from across the room.
-	if(get_dist(user, src) > 3)
-		skipears = 1
+	// no accurately spotting headsets from across the room.
+	if(examine_distance > 3)
+		skipears = TRUE
 
 	var/list/msg = list("This is ")
 
 	var/datum/gender/T = gender_datums[get_gender()]
+
 	if(skipjumpsuit && skipface) // big suits/masks/helmets make it hard to tell their gender
 		T = gender_datums[PLURAL]
 	else
+		if(!visible_sexybits && body_build?.ambiguous_gender && (T.key != "male" || f_style == "Shaved"))
+			T = gender_datums[PLURAL]
+		else if(ishuman(user))
+			var/mob/living/carbon/human/HU = user
+			if(species.troublesome_sexual_dimorphism && (HU.species != species))
+				T = gender_datums[PLURAL]
+
 		if(icon)
 			msg += "[icon2html(icon, user)] " // fucking BYOND: this should stop dreamseeker crashing if we -somehow- examine somebody before their icon is generated
+		else
+			msg += "[icon2html(get_flat_icon(src, SOUTH), user)]"
 
 	if(!T)
 		// Just in case someone VVs the gender to something strange. It'll runtime anyway when it hits usages, better to CRASH() now with a helpful message.
@@ -53,11 +62,9 @@
 
 	var/is_synth = isSynthetic()
 	if(!(skipjumpsuit && skipface))
-		var/species_name = "\improper "
-		if(is_synth && species.type != /datum/species/machine)
-			species_name += "Cyborg "
-		species_name += "[species.name]"
+		var/species_name = "\improper [is_synth ? "Cyborg" : species.name]"
 		msg += ", <b><font color='[species.get_flesh_colour(src)]'> \a [species_name]!</font></b>"
+
 	var/extra_species_text = species.get_additional_examine_text(src)
 	if(extra_species_text)
 		msg += "[extra_species_text]<br>"
@@ -85,26 +92,26 @@
 
 	// left hand
 	if(l_hand)
-		msg += "[T.He] [T.is] holding [l_hand.get_examine_line()] in [T.his] left hand.\n"
+		msg += "[T.He] [T.is] holding [l_hand.get_examine_line(examine_distance)] in [T.his] left hand.\n"
 
 	// right hand
 	if(r_hand)
-		msg += "[T.He] [T.is] holding [r_hand.get_examine_line()] in [T.his] right hand.\n"
+		msg += "[T.He] [T.is] holding [r_hand.get_examine_line(examine_distance)] in [T.his] right hand.\n"
 
 	// gloves
 	if(gloves && !skipgloves)
 		msg += "[T.He] [T.has] [gloves.get_examine_line()] on [T.his] hands.\n"
-	else if(blood_DNA)
+	else if(is_bloodied)
 		msg += SPAN("warning", "[T.He] [T.has] [(hand_blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained hands!\n")
 
 	// belt
 	if(belt)
-		msg += "[T.He] [T.has] [belt.get_examine_line()] about [T.his] waist.\n"
+		msg += "[T.He] [T.has] [belt.get_examine_line(examine_distance)] about [T.his] waist.\n"
 
 	// shoes
 	if(shoes && !skipshoes)
 		msg += "[T.He] [T.is] wearing [shoes.get_examine_line()] on [T.his] feet.\n"
-	else if(feet_blood_DNA)
+	else if(feet_blood_color)
 		msg += SPAN("warning", "[T.He] [T.has] [(feet_blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained feet!\n")
 
 	// mask
@@ -113,7 +120,7 @@
 		if(istype(wear_mask, /obj/item/grenade))
 			descriptor = "in [T.his] mouth"
 
-		if(wear_mask.blood_DNA)
+		if(wear_mask.is_bloodied)
 			msg += SPAN("warning", "[T.He] [T.has] \icon[wear_mask] [wear_mask.gender==PLURAL?"some":"a"] [(wear_mask.blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [wear_mask.name] [descriptor]!\n")
 		else
 			msg += "[T.He] [T.has] \icon[wear_mask] \a [wear_mask] [descriptor].\n"
@@ -132,7 +139,7 @@
 
 	// ID
 	if(wear_id)
-		msg += "[T.He] [T.is] wearing [wear_id.get_examine_line()].\n"
+		msg += "[T.He] [T.is] wearing [wear_id.get_examine_line(examine_distance)].\n"
 
 	// handcuffed?
 	if(handcuffed)
@@ -171,9 +178,6 @@
 		if(o && o.splinted && o.splinted.loc == o)
 			msg += SPAN("warning", "[T.He] [T.has] \a [o.splinted] on [T.his] [o.name]!\n")
 
-	if(mSmallsize in mutations)
-		msg += "[T.He] [T.is] small halfling!\n"
-
 	var/distance = 0
 	if(isghost(user) || user?.is_ooc_dead()) // ghosts can see anything
 		distance = 1
@@ -196,6 +200,11 @@
 		msg += "[T.He] looks flammable.\n"
 	if(on_fire)
 		msg += SPAN("warning", "[T.He] [T.is] on fire!.\n")
+
+	for(var/datum/modifier/M in modifiers)
+		var/modifier_txt = M._examine_text()
+		if(!isnull(modifier_txt))
+			msg += "[]\n"
 
 	var/ssd_msg = species.get_ssd(src)
 	if(ssd_msg && (!should_have_organ(BP_BRAIN) || has_brain()) && !is_ic_dead())
@@ -240,7 +249,7 @@
 		else
 			if(E.is_stump())
 				wound_flavor_text[E.name] += "<b>[T.He] [T.has] a stump where [T.his] [organ_descriptor] should be.</b>\n"
-				if(E.wounds.len && E.parent)
+				if(LAZYLEN(E.wounds) && E.parent)
 					wound_flavor_text[E.name] += "[T.He] [T.has] [E.get_wounds_desc()] on [T.his] [E.parent.name].<br>"
 			else
 				if(!is_synth && BP_IS_ROBOTIC(E) && (E.parent && !BP_IS_ROBOTIC(E.parent) && !BP_IS_ASSISTED(E.parent)))
@@ -256,7 +265,7 @@
 
 		for(var/datum/wound/wound in E.wounds)
 			var/list/embedlist = wound.embedded_objects
-			if(embedlist.len)
+			if(LAZYLEN(embedlist))
 				shown_objects += embedlist
 				var/parsedembed[0]
 				for(var/obj/embedded in embedlist)

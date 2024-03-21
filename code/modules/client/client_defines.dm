@@ -10,7 +10,7 @@
 	var/watchlist_warn = null
 
 	// * Other things *
-	var/static/obj/screen/click_catcher/void
+	var/static/atom/movable/screen/click_catcher/void
 	var/datum/click_handler/click_handler
 
 	var/datum/preferences/prefs = null

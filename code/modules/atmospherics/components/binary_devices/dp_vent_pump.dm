@@ -34,15 +34,15 @@
 
 	var/frequency = 0
 	var/id = null
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 	var/pressure_checks = PRESSURE_CHECK_EXTERNAL
 	//1: Do not pass external_pressure_bound
 	//2: Do not pass input_pressure_min
 	//4: Do not pass output_pressure_max
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/New()
-	..()
+/obj/machinery/atmospherics/binary/dp_vent_pump/Initialize()
+	. = ..()
 	air1.volume = ATMOS_DEFAULT_VOLUME_PUMP
 	air2.volume = ATMOS_DEFAULT_VOLUME_PUMP
 	icon = null
@@ -50,16 +50,16 @@
 /obj/machinery/atmospherics/binary/dp_vent_pump/high_volume
 	name = "Large Dual Port Air Vent"
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/high_volume/New()
-	..()
+/obj/machinery/atmospherics/binary/dp_vent_pump/high_volume/Initialize()
+	. = ..()
 	air1.volume = ATMOS_DEFAULT_VOLUME_PUMP + 800
 	air2.volume = ATMOS_DEFAULT_VOLUME_PUMP + 800
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/update_icon(safety = 0)
+/obj/machinery/atmospherics/binary/dp_vent_pump/on_update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 
 	var/vent_icon = "vent"
 
@@ -75,7 +75,7 @@
 	else
 		vent_icon += "[use_power ? "[pump_direction ? "out" : "in"]" : "off"]"
 
-	overlays += icon_manager.get_atmos_icon("device", , , vent_icon)
+	AddOverlays(icon_manager.get_atmos_icon("device", , , vent_icon))
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/update_underlays()
 	if(..())
@@ -161,20 +161,16 @@
 //Radio remote control
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/proc/broadcast_status()
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
-	signal.source = src
-
-	signal.data = list(
+	var/list/data = list(
 		"tag" = id,
 		"device" = "ADVP",
 		"power" = use_power,
@@ -185,6 +181,8 @@
 		"external" = external_pressure_bound,
 		"sigtype" = "status"
 	)
+
+	var/datum/signal/signal = new(data)
 	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
 	return 1

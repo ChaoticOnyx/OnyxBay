@@ -18,7 +18,7 @@
 			return
 
 	if (copytext(message, 1, 2) == "*")
-		return emote(copytext(message, 2))
+		return emote(copytext(message, 2), intentional = TRUE)
 
 	var/datum/language/L = parse_language(message)
 	if(!L)
@@ -35,6 +35,7 @@
 	to_chat(src, "You drop words into [host]'s mind: \"[message]\"")
 	to_chat(host, "Your own thoughts speak: \"[message]\"")
 
+	log_say("\[BORER\] [name]([key])->[host.name]([host.key]): \"[message]\"")
 	for (var/mob/M in GLOB.player_list)
 		if (istype(M, /mob/new_player))
 			continue

@@ -366,10 +366,16 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 /obj/item/device/pda/MouseDrop(obj/over_object as obj, src_location, over_location)
 	var/mob/M = usr
-	if((!istype(over_object, /obj/screen)) && can_use())
+	if((!istype(over_object, /atom/movable/screen)) && can_use())
 		return attack_self(M)
 	return
 
+/obj/item/device/pda/get_examine_line(examine_distance = 10)
+	var/visible_name = examine_distance < 3 ? name : initial(name)
+	if(is_bloodied)
+		. = SPAN("warning", "\icon[src] a [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[visible_name]</em>")]")
+	else
+		. = "\icon[src] \a [SPAN("info", "<em>[visible_name]</em>")]"
 
 /obj/item/device/pda/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	ui_tick++
@@ -862,7 +868,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 						if("2")		// Eject pAI device
 							var/turf/T = get_turf_or_move(src.loc)
 							if(T)
-								pai.loc = T
+								pai.dropInto(T)
 								pai = null
 
 		else
@@ -886,12 +892,12 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 	return 1 // return 1 tells it to refresh the UI in NanoUI
 
-/obj/item/device/pda/update_icon()
+/obj/item/device/pda/on_update_icon()
 	..()
 
-	overlays.Cut()
+	ClearOverlays()
 	if(new_message || new_news)
-		overlays += image('icons/obj/pda.dmi', "pda-r")
+		AddOverlays(image('icons/obj/pda.dmi', "pda-r"))
 
 /obj/item/device/pda/proc/detonate_act(obj/item/device/pda/P)
 	//TODO: sometimes these attacks show up on the message server
@@ -1025,7 +1031,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		P.tnote.Add(list(list("sent" = 0, "owner" = "[owner]", "job" = "[ownjob]", "message" = "[utf_message]", "timestamp" = stationtime2text(), "target" = "\ref[src]")))
 
 		for(var/mob/M in GLOB.player_list)
-			if(M.is_ooc_dead() && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH) // src.client is so that ghosts don't have to listen to mice
+			if(M.is_ooc_dead() && M.get_preference_value(/datum/client_preference/ghost_radio) == GLOB.PREF_ALL_CHATTER) // src.client is so that ghosts don't have to listen to mice
 				if(istype(M, /mob/new_player))
 					continue
 				M.show_message("<span class='game say'>PDA Message - <span class='name'>[owner]</span> -> <span class='name'>[P.owner]</span>: <span class='message'>[message]</span></span>")
@@ -1414,8 +1420,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 /obj/item/storage/box/PDAs
 	name = "box of spare PDAs"
 	desc = "A box of spare PDA microcomputers."
-	icon = 'icons/obj/pda.dmi'
-	icon_state = "pdabox"
+	icon_state = "pda"
 
 	New()
 		..()

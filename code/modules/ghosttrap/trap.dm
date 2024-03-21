@@ -15,17 +15,17 @@ var/list/ghost_traps
 
 /proc/populate_ghost_traps()
 	ghost_traps = list()
-	for(var/traptype in typesof(/datum/ghosttrap))
+	for(var/traptype in subtypesof(/datum/ghosttrap))
 		var/datum/ghosttrap/G = new traptype
 		ghost_traps[G.object] = G
 
 /datum/ghosttrap
-	var/object = "positronic brain"
+	var/object = "trap"
 	var/minutes_since_death = 0     // If non-zero the ghost must have been dead for this many minutes to be allowed to spawn
-	var/list/ban_checks = list("Cyborg")
-	var/pref_check = BE_SYNTH
-	var/ghost_trap_message = "They are occupying a positronic brain now."
-	var/ghost_trap_role = "Positronic Brain"
+	var/list/ban_checks = list()
+	var/pref_check
+	var/ghost_trap_message = "They are occupying something now."
+	var/ghost_trap_role
 	var/can_set_own_name = TRUE
 	var/list_as_special_role = TRUE	// If true, this entry will be listed as a special role in the character setup
 
@@ -51,7 +51,7 @@ var/list/ghost_traps
 /datum/ghosttrap/proc/request_player(mob/target, request_string, request_timeout)
 	if(request_timeout)
 		request_timeouts[target] = world.time + request_timeout
-		register_signal(target, SIGNAL_QDELETING, /datum/ghosttrap/proc/unregister_target)
+		register_signal(target, SIGNAL_QDELETING, nameof(.proc/unregister_target), override = TRUE)
 	else
 		unregister_target(target)
 
@@ -100,29 +100,18 @@ var/list/ghost_traps
 	set_new_name(target)
 	return 1
 
-// Fluff!
+/// Override to add some extra logic on successful posses
 /datum/ghosttrap/proc/welcome_candidate(mob/target)
-	to_chat(target, "<b>You are a positronic brain, brought into existence on [station_name()].</b>")
-	to_chat(target, "<b>As a synthetic intelligence, you answer to all crewmembers, as well as the AI.</b>")
-	to_chat(target, "<b>Remember, the purpose of your existence is to serve the crew and the [station_name()]. Above all else, do no harm.</b>")
-	to_chat(target, "<b>Use say [target.get_language_prefix()]b to speak to other artificial intelligences.</b>")
-	var/turf/T = get_turf(target)
-	var/obj/item/organ/internal/posibrain/P = target.loc
-	T.visible_message("<span class='notice'>\The [P] chimes quietly.</span>")
-	if(!istype(P)) //wat
-		return
-	P.searching = 0
-	P.SetName("positronic brain ([P.brainmob.name])")
-	P.update_icon()
+	return
 
-// Allows people to set their own name. May or may not need to be removed for posibrains if people are dumbasses.
+// Allows people to set their own name.
 /datum/ghosttrap/proc/set_new_name(mob/target)
 	if(!can_set_own_name)
 		return
 
-	var/newname = sanitizeSafe(input(target,"Enter a name, or leave blank for the default name.", "Name change",target.real_name) as text, MAX_NAME_LEN)
-	if (newname && newname != "")
-		target.real_name = newname
+	var/new_name = tgui_input_text(target, "Enter a name, or leave blank for the default name.", "Name Change", target.real_name, MAX_NAME_LEN)
+	if (length(new_name) > 0)
+		target.real_name = new_name
 		target.SetName(target.real_name)
 
 /***********************************
@@ -210,6 +199,65 @@ var/list/ghost_traps
 
 /datum/ghosttrap/familiar/welcome_candidate(mob/target)
 	return 0
+
+/datum/ghosttrap/undead
+	object = "undead"
+	pref_check = BE_UNDEAD
+	ghost_trap_message = "They are now occupying an undead body."
+	ghost_trap_role = "Undead"
+	ban_checks = list(MODE_WIZARD)
+	var/necromancer
+	var/lichify
+
+/datum/ghosttrap/undead/request_player(mob/target, request_string, request_timeout, mob/living/caster, should_lichify = FALSE)
+	necromancer = caster
+	lichify = should_lichify
+
+	if(request_timeout)
+		request_timeouts[target] = world.time + request_timeout
+		register_signal(target, SIGNAL_QDELETING, nameof(.proc/unregister_target), override = TRUE)
+	else
+		unregister_target(target)
+
+	for(var/mob/observer/ghost/O in GLOB.player_list)
+		if(!O.client)
+			continue
+
+		if(pref_check && !O.client.wishes_to_be_role(pref_check))
+			continue
+
+		INVOKE_ASYNC(src, nameof(.proc/send_request), target, O, request_timeout)
+
+/datum/ghosttrap/undead/proc/send_request(mob/target, mob/observer/ghost, request_timeout)
+	var/player_choice = tgui_alert(ghost, "A necromancer is requesting a soul to animate an undead body.", "Would you like to become undead?", list("Yes", "No"), request_timeout)
+	if(player_choice == "Yes")
+		if(target.key)
+			to_chat(ghost, SPAN_WARNING("Target is already occupied!"))
+			return
+
+		transfer_personality(ghost, target)
+
+/datum/ghosttrap/undead/transfer_personality(mob/candidate, mob/target)
+	target.ckey = candidate.ckey
+	if(target.mind)
+		target.mind.assigned_role = "[ghost_trap_role]"
+	announce_ghost_joinleave(candidate, 0, "[ghost_trap_message]")
+
+	target.mind = candidate.mind
+
+	welcome_candidate(target)
+
+/datum/ghosttrap/undead/welcome_candidate(mob/target)
+	ASSERT(ishuman(target))
+	var/mob/living/carbon/human/new_undead = target
+	new_undead.make_undead(necromancer, lichify)
+
+/datum/ghosttrap/undead/assess_candidate(mob/observer/ghost/candidate, mob/target, feedback = TRUE)
+	return TRUE
+
+/datum/ghosttrap/undead/Destroy()
+	necromancer = null
+	return ..()
 
 /datum/ghosttrap/cult
 	object = "cultist"

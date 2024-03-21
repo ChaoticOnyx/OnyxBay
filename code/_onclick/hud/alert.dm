@@ -17,7 +17,7 @@
 	if(!category || QDELETED(src))
 		return
 
-	var/obj/screen/movable/alert/thealert
+	var/atom/movable/screen/movable/alert/thealert
 	if(alerts[category])
 		thealert = alerts[category]
 		if(thealert.override_alerts)
@@ -50,7 +50,7 @@
 		var/old_plane = new_master.plane
 		new_master.layer = FLOAT_LAYER
 		new_master.plane = FLOAT_PLANE
-		thealert.overlays += new_master
+		thealert.AddOverlays(new_master)
 		new_master.layer = old_layer
 		new_master.plane = old_plane
 		thealert.icon_state = "template" // We'll set the icon to the client's ui pref in reorganize_alerts()
@@ -66,17 +66,17 @@
 	animate(thealert, transform = matrix(), time = 2.5, easing = CUBIC_EASING)
 
 	if(thealert.timeout)
-		addtimer(CALLBACK(src, .proc/alert_timeout, thealert, category), thealert.timeout)
+		addtimer(CALLBACK(src, nameof(.proc/alert_timeout), thealert, category), thealert.timeout)
 		thealert.timeout = world.time + thealert.timeout - world.tick_lag
 	return thealert
 
-/mob/proc/alert_timeout(obj/screen/movable/alert/alert, category)
+/mob/proc/alert_timeout(atom/movable/screen/movable/alert/alert, category)
 	if(alert.timeout && alerts[category] == alert && world.time >= alert.timeout)
 		clear_alert(category)
 
 // Proc to clear an existing alert.
 /mob/proc/clear_alert(category, clear_override = FALSE)
-	var/obj/screen/movable/alert/alert = alerts[category]
+	var/atom/movable/screen/movable/alert/alert = alerts[category]
 	if(!alert)
 		return 0
 	if(alert.override_alerts && !clear_override)
@@ -93,7 +93,7 @@
 	return !isnull(alerts[category])
 
 
-/obj/screen/movable/alert
+/atom/movable/screen/movable/alert
 	icon = 'icons/hud/style/midnight.dmi'
 	icon_state = "template"
 	name = "Alert"
@@ -108,16 +108,18 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
+/atom/movable/screen/movable/alert/status_effect
+	icon = 'icons/hud/status_effects.dmi'
 
 // Notify for ghosts
-/obj/screen/movable/alert/notify_action
+/atom/movable/screen/movable/alert/notify_action
 	name = "Body created"
 	icon_state = "template"
 	timeout = 300
 	var/atom/target = null
 	var/action = NOTIFY_JUMP
 
-/obj/screen/movable/alert/notify_action/Click()
+/atom/movable/screen/movable/alert/notify_action/Click()
 	. = ..()
 	if(!.)
 		return
@@ -135,3 +137,18 @@
 				ghost_owner.forceMove(target_turf)
 		if(NOTIFY_FOLLOW)
 			ghost_owner.ManualFollow(target)
+
+		if(NOTIFY_POSSES)
+			ghost_owner.ManualFollow(target)
+
+			if(istype(target, /obj/effect/mob_spawn/ghost_role))
+				target.attack_ghost(ghost_owner)
+				return
+			if(!("\ref[target]" in GLOB.available_mobs_for_possess))
+				to_chat(ghost_owner, SPAN_NOTICE("Unnable to posses mob!"))
+				return
+			if(tgui_alert(ghost_owner, "Become [target.name]?","Possesing mob",list("Yes","No")) == "Yes")
+				ghost_owner.try_to_occupy(target)
+
+		if(NOTIFY_VOTE)
+			ghost_owner.vote()

@@ -8,18 +8,21 @@ meteor_act
 /mob/living/carbon/human/bullet_act(obj/item/projectile/P, def_zone)
 	if(status_flags & GODMODE)
 		return 0
+
+	// Checking for hit zone; may result in a miss
 	def_zone = check_zone(def_zone)
 	if(!has_organ(def_zone))
 		return PROJECTILE_FORCE_MISS //if they don't have the organ in question then the projectile just passes by.
 
-	//Marauder Shields
+	// Checking for shields as they obviously have greater priority than armor
 	var/shield_check = check_shields(P.damage, P, null, def_zone, "the [P.name]")
 	if(shield_check)
 		return shield_check
 
 	var/obj/item/organ/external/organ = get_organ(def_zone)
 
-	var/disarm_slot // Shooting peoples' hands may get them disarmed
+	// Shooting peoples' hands may get them disarmed
+	var/disarm_slot
 	switch(def_zone)
 		if(BP_L_HAND)
 			disarm_slot = slot_l_hand
@@ -39,43 +42,53 @@ meteor_act
 	// Unobviously, the external damage applies here
 	var/blocked = ..(P, def_zone) // <------------'
 
-	//Internal damage
-	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - blocked
-	var/internal_damage_prob = 70 + max(penetrating_damage, -30) // The minimal chance to deal internal damage is 40%, armor is more about blocking damage itself
+	// Fullblock, only poise damage required
+	if(blocked >= 100)
+		projectile_affect_poise(P, P.poisedamage / 3, def_zone)
+		return PROJECTILE_FORCE_ARMORBLOCK
 
-	var/overkill_value = 1
-	if(organ.damage > organ.max_damage) // Overkill stuff; if our bodypart is a pile of shredded meat then it doesn't protect organs well
-		overkill_value *= organ.damage / organ.max_damage * 2
+	// Internal damage
+	// Some day we should make internals deal with blunt and sharp damage differently, but for now it's like this, if 'blocked' is non-zero, then the projectile's already lost its SHARP/EDGE flags and thus we cut the damage accordingly
+	if(length(organ.internal_organs))
+		var/internal_damage_prob = 70 * blocked_mult(blocked) // 70% for a naked dude/armor fail, 35% if one armor layer's succeeded, etc.
 
-	if(length(organ.internal_organs) && prob(internal_damage_prob * overkill_value))
-		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 1.5) //So we don't factor in armor_penetration as additional damage
-		if(blocked >= P.damage) // Armor has absorbed the penetrational power
-			damage_amt = sqrt(damage_amt)
-		if(organ.encased && !(organ.status & ORGAN_BROKEN)) //ribs and skulls somewhat protect
-			overkill_value *= 0.75
-		damage_amt *= overkill_value
-		if(damage_amt > 0)
+		// If our bodypart is a pile of shredded meat then it doesn't protect organs well
+		if(organ.damage > organ.max_damage)
+			internal_damage_prob *= organ.damage / organ.max_damage * 2
+
+		if(prob(internal_damage_prob))
+			var/penetrating_damage = P.damage * P.penetration_modifier * PROJECTILE_INTERNAL_DAMAGE_MULT * blocked_mult(blocked)
+			if(organ.encased && !(organ.status & ORGAN_BROKEN))
+				penetrating_damage *= 0.75 // Ribs and skulls somewhat protect
+
 			var/list/victims = list()
 			var/list/possible_victims = shuffle(organ.internal_organs.Copy())
+
 			for(var/obj/item/organ/internal/I in possible_victims)
 				if(I.damage < I.max_damage && (prob((sqrt(I.relative_size) * 10) * (1 / max(1, victims.len)))))
 					victims += I
-			if(victims.len)
+
+			if(length(victims))
 				for(var/obj/item/organ/internal/victim in victims)
-					victim.take_internal_damage(damage_amt / victims.len)
+					victim.take_internal_damage(penetrating_damage / victims.len)
 
-	//Embed or sever artery
-	if((blocked < P.damage) && P.can_embed() && !(species.species_flags & SPECIES_FLAG_NO_EMBED))
-		if(prob(22.5 + max(penetrating_damage, -20)))
-			if(prob(50))
-				organ.sever_artery()
-			else
-				var/obj/item/material/shard/shrapnel/SP = new()
-				SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
-				SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
-				SP.loc = organ
-				organ.embed(SP)
+	// Embed or sever artery, only happens if the projectile's successfully bypassed armor
+	if(!blocked && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(PROJECTILE_EMBED_CHANCE) && P.can_embed())
+		// Lower cal. bullets tend to embed, while higher cal. bullets are more likely to make things bloody
+		var/embed_odds = P.damage * 1.3
 
+		if(prob(embed_odds))
+			var/obj/item/material/shard/shrapnel/SP = new()
+			SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
+			SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
+			SP.forceMove(organ)
+			organ.embed(SP)
+		else
+			organ.sever_artery()
+
+	// Poise damage, the last actual harmful thing to happen
+	projectile_affect_poise(P, P.poisedamage * blocked_mult(blocked), def_zone)
+	// Spawning blood if necessary
 	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
 
 	return blocked
@@ -128,53 +141,78 @@ meteor_act
 ///		ARMOR	//////
 //////////////////////
 
-//Tis but a placeholder for now. Gonna change it later. Much later. Mucho later. Muchacho later. ~Toby
-/mob/living/carbon/human/run_armor_check(def_zone = null, attack_flag = "melee", armor_pen = 0, absorb_text = null, soften_text = null, aforce = 0)
-	var/effective_armor = getarmor(def_zone, attack_flag) - armor_pen
+// This one should be used for calculating armorblocks in case of "high-impact" damage, such as getting hit/shot, stepping into a beartrap, touching a force field, etc.
+// Things that cause "slow" damage (getting chewed by an airlock) and/or use =unusual= damtypes (i.e. "bio", "bomb") should use get_flat_armor() instead
+// Not specifying 'def_zone' (aka using the whole-body check) will call for parent 'run_armor_check' which uses get_flat_armor() as well
+/mob/living/carbon/human/run_armor_check(def_zone = null, attack_flag = "melee", armor_pen = 0, absorb_text = null, soften_text = null)
+	if(!def_zone)
+		return ..() // Edgecase stuff, going back to the legacy armorcheck
 
-	if(effective_armor <= 0)
-		return 0
+	var/damage_ratio = 1.0
+	var/list/armor = get_layered_armor(def_zone, attack_flag)
 
-	return effective_armor
+	if(!islist(armor) || !length(armor))
+		return 0 // 404 no armor found
 
-/mob/living/carbon/human/getarmor(def_zone, type)
+	for(var/i = 1, i <= length(armor) / 2, i++)
+		// Completely ignoring this layer due to ineffective coverage %
+		var/current_layer = i * 2 - 1 // Armor value is armor[current_layer] and its coverage is armor[current_layer+1]
+		if(!prob(armor[current_layer+1] * 100))
+			continue
+
+		var/effective_armor = armor[current_layer] - armor_pen
+
+		var/dice_roll = rand(0, 100)
+		if(dice_roll > effective_armor)
+			// Ineffective block
+			armor_pen /= 2
+			continue
+		else if(dice_roll > effective_armor / 2)
+			// Semi-successful block, halving the damage
+			damage_ratio /= 2
+			armor_pen /= 2
+		else
+			// Successful block, ignoring the damage
+			damage_ratio = 0
+			break
+
+	if(!damage_ratio)
+		if(absorb_text)
+			to_chat(src, SPAN("notice", "<b>[absorb_text]</b>"))
+		else
+			to_chat(src, SPAN("notice", "<b>Your armor absorbs the blow!</b>"))
+	else if(damage_ratio < 1.0)
+		if(soften_text)
+			to_chat(src, SPAN("notice", "<b>[soften_text]</b>"))
+		else
+			to_chat(src, SPAN("notice", "<b>Your armor softens the blow!</b>"))
+
+	return round((1.0 - damage_ratio) * 100)
+
+/mob/living/carbon/human/get_flat_armor(def_zone, type)
 	var/armorval = 0
 	var/total = 0
 
 	if(def_zone)
 		if(isorgan(def_zone))
-			return getarmor_organ(def_zone, type)
+			return get_organ_armor(def_zone, type)
 		var/obj/item/organ/external/affecting = get_organ(def_zone)
 		if(affecting)
-			return getarmor_organ(affecting, type)
+			return get_organ_armor(affecting, type)
 		//If a specific bodypart is targetted, check how that bodypart is protected and return the value.
 
 	//If you don't specify a bodypart, it checks ALL your bodyparts for protection, and averages out the values
 	for(var/organ_name in organs_by_name)
-		if (organ_name in organ_rel_size)
+		if(organ_name in organ_rel_size)
 			var/obj/item/organ/external/organ = organs_by_name[organ_name]
 			if(organ)
 				var/weight = organ_rel_size[organ_name]
-				armorval += (getarmor_organ(organ, type) * weight) //use plain addition here because we are calculating an average
+				armorval += (get_organ_armor(organ, type) * weight) //use plain addition here because we are calculating an average
 				total += weight
 	return (armorval/max(total, 1))
 
-//this proc returns the Siemens coefficient of electrical resistivity for a particular external organ.
-/mob/living/carbon/human/proc/get_siemens_coefficient_organ(obj/item/organ/external/def_zone)
-	if (!def_zone)
-		return 1.0
-
-	var/siemens_coefficient = max(species.siemens_coefficient,0)
-
-	var/list/clothing_items = list(head, wear_mask, wear_suit, w_uniform, gloves, shoes) // What all are we checking?
-	for(var/obj/item/clothing/C in clothing_items)
-		if(istype(C) && (C.body_parts_covered & def_zone.body_part)) // Is that body part being targeted covered?
-			siemens_coefficient *= C.siemens_coefficient
-
-	return siemens_coefficient
-
-//this proc returns the armour value for a particular external organ.
-/mob/living/carbon/human/proc/getarmor_organ(obj/item/organ/external/def_zone, type)
+// Returns the armour value of a particular external organ.
+/mob/living/carbon/human/proc/get_organ_armor(obj/item/organ/external/def_zone, type, layered = FALSE)
 	if(!type || !def_zone) return 0
 	if(!istype(def_zone))
 		def_zone = get_organ(check_zone(def_zone))
@@ -190,6 +228,48 @@ meteor_act
 				if(bling.body_parts_covered & def_zone.body_part)
 					protection = add_armor(protection, bling.armor[type])
 	return protection
+
+/mob/living/carbon/human/get_layered_armor(def_zone, type)
+	if(!def_zone || !type)
+		return null
+
+	var/obj/item/organ/external/affecting = isorgan(def_zone) ? def_zone : get_organ(def_zone)
+	if(!istype(affecting))
+		return null
+
+	. = list()
+
+	var/list/armor_layer
+	var/list/protective_gear = list(head, wear_mask, wear_suit, w_uniform, gloves, shoes)
+
+	// Unlike in get_flat_armor, here we iterate over everything since a piece
+	// of clothing may have a bodypart coverage w/out having it in 'body_parts_covered'
+	for(var/obj/item/clothing/C in protective_gear)
+		if(length(C.accessories))
+			for(var/obj/item/clothing/accessory/CA in C.accessories)
+				armor_layer = CA.get_armor_coverage(affecting, type, src)
+				if(islist(armor_layer))
+					. += armor_layer
+
+		armor_layer = C.get_armor_coverage(affecting, type, src)
+		if(islist(armor_layer))
+			. += armor_layer
+
+//this proc returns the Siemens coefficient of electrical resistivity for a particular external organ.
+/mob/living/carbon/human/proc/get_siemens_coefficient_organ(obj/item/organ/external/def_zone)
+	if (!def_zone)
+		return 1.0
+
+	var/siemens_coefficient = max(species.siemens_coefficient,0)
+
+	var/list/clothing_items = list(head, wear_mask, wear_suit, w_uniform, gloves, shoes) // What all are we checking?
+	for(var/obj/item/clothing/C in clothing_items)
+		if(istype(C) && (C.body_parts_covered & def_zone.body_part)) // Is that body part being targeted covered?
+			siemens_coefficient *= C.siemens_coefficient
+
+	for(var/datum/modifier/M in modifiers)
+		siemens_coefficient *= M.siemens_coefficient
+	return siemens_coefficient
 
 /mob/living/carbon/human/proc/check_head_coverage()
 
@@ -213,6 +293,10 @@ meteor_act
 /mob/living/carbon/human/proc/check_shields(damage = 0, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	var/obj/item/shield = null
 	var/shield_mod_shield = 0
+	if(istype(buckled, /obj/effect/dummy/immaterial_form))
+		if(prob(80))
+			return PROJECTILE_CONTINUE
+
 	for(var/obj/item/I in list(l_hand, r_hand, wear_suit))
 		if(!I) continue
 		if(I.mod_shield > shield_mod_shield)
@@ -327,12 +411,13 @@ meteor_act
 	//visible_message("Debug \[HIT\]: [src] lost [poise_damage] poise ([src.poise]/[src.poise_pool])") // Debug Message
 
 	////////// Here goes the REAL armor processing.
-	effective_force -= blocked*0.05 // Flat armor (i.e. reduces damage by 2.5 if armor=50)
-
 	if(MUTATION_HULK in user.mutations)
 		effective_force *= 2
 
-	if(src.lying)
+	if(MUTATION_STRONG in user.mutations)
+		effective_force *= 2
+
+	if(lying)
 		effective_force *= 1.5 // Well it's easier to beat a lying dude to death right?
 
 	if(istype(user,/mob/living/carbon/human))
@@ -340,11 +425,11 @@ meteor_act
 		if((A.body_build.name == "Slim" || A.body_build.name == "Slim Alt") && !I.sharp)
 			effective_force *= 0.75 // It's kinda hard to club people when you're two times thinner than a regular person.
 
-	effective_force *= round((100-blocked)/100, 0.01)
+	effective_force *= round((100-blocked)/100, 0.1)
 
 	//Apply weapon damage
 	var/damage_flags = I.damage_flags()
-	if(prob(blocked)) //armour provides a chance to turn sharp/edge weapon attacks into blunt ones
+	if(prob(blocked + 25)) // successful armorblock greatly reduces the cutties, but doesn't prevent them completely
 		damage_flags &= ~(DAM_SHARP|DAM_EDGE)
 
 	//Oh you've run outta poise? I see... You're wrecked, my boy.
@@ -376,9 +461,8 @@ meteor_act
 
 		//Apply blood
 		attack_bloody(I, user, effective_force, hit_zone)
-	//visible_message("Debug \[HIT\]: effective_force = [effective_force] | armor = [blocked] | flat_defence = [blocked*0.05]") // Debug Message
+
 	if(effective_force <= 0)
-		show_message(SPAN("warning", "Your armor absorbs the blow!"))
 		return 0
 
 	apply_damage(effective_force, I.damtype, hit_zone, blocked, damage_flags, used_weapon=I)
@@ -421,14 +505,19 @@ meteor_act
 
 	if(MUTATION_HULK in user.mutations)
 		effective_force *= 2
+
+	if(MUTATION_STRONG in user.mutations)
+		effective_force *= 2
+
 	if(src.lying)
 		effective_force *= 1.5 // Well it's easier to beat all the shit outta lying dudes right?
+
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		if(A.body_build.name == "Slim" || A.body_build.name == "Slim Alt")
 			effective_force *= 0.8
 
-	effective_force *= round((100-blocked)/60, 0.01)
+	effective_force *= round((100-blocked)/100, 0.01)
 
 	if(poise <= poise_pool*0.7)
 		switch(hit_zone) // strong punches can have effects depending on where they hit
@@ -478,9 +567,8 @@ meteor_act
 				if(poise <= effective_force*I.mod_reach)
 					visible_message(SPAN("danger", "[user] takes [src] down with their [I.name]!"))
 					apply_effect((I.mod_reach*5), WEAKEN, blocked)
-	//visible_message("Debug \[BASH\]: effective_force = [effective_force] | armor = [blocked] | poise_damage = [poise_damage]") // Debug Message
+
 	if(effective_force <= 0)
-		show_message(SPAN("warning", "Your armor absorbs the blow!"))
 		return 0
 
 	apply_damage(effective_force*0.5, PAIN, hit_zone, blocked, damage_flags, used_weapon=I)
@@ -499,8 +587,9 @@ meteor_act
 	if(!affecting)
 		return //should be prevented by attacked_with_item() but for sanity.
 
-	var/blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
+	var/blocked = 0
 
+	// Getting hit by a humanoid
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		if(parrying)
@@ -510,6 +599,7 @@ meteor_act
 			if(handle_block_weapon(A, I))
 				return
 		if(!atype)
+			blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 			standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		else
 			// We only check disarm attacks for melee armor since they are dealt w/ blunt parts/handles/etc.
@@ -517,6 +607,8 @@ meteor_act
 			alt_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		return blocked
 
+	// Getting hit by a non-humanoid
+	blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 	standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 
 	return blocked
@@ -746,6 +838,30 @@ meteor_act
 			if(BP_CHEST)
 				bloody_body(src)
 
+/mob/living/carbon/human/proc/projectile_affect_poise(obj/item/projectile/P, poisedamage, hit_zone)
+	if(!poisedamage)
+		return 0 //save a couple of nanoseconds
+
+	if(status_flags & GODMODE)
+		return 0 //godmode
+
+	var/pd_mult = 1.0
+	switch(hit_zone)
+		if(BP_HEAD)
+			pd_mult = 1.35
+		if(BP_CHEST)
+			pd_mult = 1.0
+		if(BP_GROIN)
+			pd_mult = 1.15
+		else
+			pd_mult = 0.75
+
+	damage_poise(poisedamage * pd_mult)
+	if(poise <= 25 && !prob(poise * 3))
+		apply_effect(max(3, (poisedamage * pd_mult / 4)), WEAKEN)
+		if(!lying)
+			visible_message(SPAN("danger", "[src] goes down under the impact of \the [P]!"))
+
 /mob/living/carbon/human/proc/attack_joint(obj/item/organ/external/organ, obj/item/W, effective_force, dislocate_mult, blocked)
 	if(!organ || (organ.dislocated == 2) || (organ.dislocated == -1) || blocked >= 100)
 		return 0
@@ -889,7 +1005,7 @@ meteor_act
 		if(istype(O, /obj/item))
 			var/obj/item/I = O
 			mass = I.w_class / THROWNOBJ_KNOCKBACK_DIVISOR
-		var/momentum = speed * mass
+		var/momentum = (1 / speed) * mass
 
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
@@ -908,7 +1024,7 @@ meteor_act
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)
-					loc = T
+					forceMove(T)
 					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
 					anchored = 1
 					pinned += O

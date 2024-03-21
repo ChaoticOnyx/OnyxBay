@@ -72,7 +72,6 @@
 
 /obj/item/storage/excavation
 	name = "excavation pick set"
-	icon = 'icons/obj/storage.dmi'
 	icon_state = "excavation"
 	desc = "A set of picks for excavation."
 	item_state = "syringe_kit"
@@ -108,7 +107,7 @@
 	var/list/obj/item/pickaxe/picksToSort = list()
 	for(var/obj/item/pickaxe/P in src)
 		picksToSort += P
-		P.loc = null
+		P.forceMove(null)
 	while(picksToSort.len)
 		var/min = 200 // No pick is bigger than 200
 		var/selected = 0
@@ -118,6 +117,6 @@
 				selected = i
 				min = current.excavation_amount
 		var/obj/item/pickaxe/smallest = picksToSort[selected]
-		smallest.loc = src
+		smallest.forceMove(src)
 		picksToSort -= smallest
 	prepare_ui()

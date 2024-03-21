@@ -4,7 +4,9 @@ the HUD updates properly! */
 
 // hud overlay image type, used for clearing client.images precisely
 /image/hud_overlay
-	appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR|RESET_TRANSFORM|KEEP_APART
+	appearance_flags = RESET_COLOR|RESET_TRANSFORM|KEEP_APART
+	layer = ABOVE_HUMAN_LAYER
+	plane = DEFAULT_PLANE
 
 //Medical HUD outputs. Called by the Life() proc of the mob using it, usually.
 /proc/process_med_hud(mob/M, local_scanner, mob/Alt)
@@ -55,18 +57,6 @@ the HUD updates properly! */
 			continue
 
 		P.Client.images += victim.hud_list[XENO_HUD]
-
-/proc/process_gland_hud(mob/M, mob/Alt)
-	if(!can_process_hud(M))
-		return
-
-	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, GLOB.gland_hud_users)
-	for(var/mob/living/carbon/human/victim in P.Mob.in_view(P.Turf))
-
-		if(victim.is_invisible_to(P.Mob))
-			continue
-
-		P.Client.images += victim.hud_list[GLAND_HUD]
 
 /datum/arranged_hud_process
 	var/client/Client

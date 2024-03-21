@@ -8,7 +8,7 @@
 	if(istype(H) && H.species.get_virus_immune(H))
 		return 0
 
-	var/protection = M.getarmor(null, "bio")	//gets the full body bio armour value, weighted by body part coverage.
+	var/protection = M.get_flat_armor(null, "bio")	//gets the full body bio armour value, weighted by body part coverage.
 	var/score = round(0.06*protection) 			//scales 100% protection to 6.
 
 	switch(vector)
@@ -48,12 +48,12 @@
 /proc/infection_spreading_check(mob/living/carbon/M, vector = "Airborne")
 	ASSERT(istype(M))
 
-	var/protection = M.getarmor(null, "bio")	//gets the full body bio armour value, weighted by body part coverage.
+	var/protection = M.get_flat_armor(null, "bio")	//gets the full body bio armour value, weighted by body part coverage.
 
 	if(vector == "Airborne")	//for airborne infections face-covering items give non-weighted protection value.
 		if(M.internal)
 			return 1
-		protection = max(protection, M.getarmor(FACE, "bio"))
+		protection = max(protection, M.get_flat_armor(FACE, "bio"))
 
 	return prob(protection + 15*M.chem_effects[CE_ANTIVIRAL])
 

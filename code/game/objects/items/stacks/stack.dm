@@ -49,11 +49,11 @@
 	if(get_dist(src, user) <= 1)
 		if(!uses_charge)
 			if(plural_name)
-				. += "\nThere [amount == 1 ? "is" : "are"] [amount] [amount == 1 ? "[singular_name]" : "[plural_name]"] in the stack."
+				. += "\nThere [amount == 1 ? "is" : "are"] <b>[amount] [amount == 1 ? "[singular_name]" : "[plural_name]"]</b> in the stack."
 			else
-				. += "\nThere [amount == 1 ? "is" : "are"] [amount] [singular_name]\s in the stack."
+				. += "\nThere [amount == 1 ? "is" : "are"] <b>[amount] [singular_name]\s</b> in the stack."
 		else
-			. += "\nThere is enough charge for [get_amount()]."
+			. += "\nThere is enough charge for <b>[get_amount()]</b>."
 	if(color)
 		. += "\nIt's painted."
 	if (istype(src,/obj/item/stack/tile))
@@ -163,35 +163,41 @@
 			to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
 			return
 
-	if((WT && WT.remove_fuel(0, user)) || uses_charge || craft_tool == 1)
+	to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
+	if(craft_tool == 2 && WT?.use_tool(src, user, delay = recipe.time, amount = 5))
+		finalize_recipe_production(recipe, required, produced, user)
+		return
 
-		if (recipe.time)
-			to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
-			if (!do_after(user, recipe.time))
-				return
+	else if(do_after(user, recipe.time))
+		finalize_recipe_production(recipe, required, produced, user)
+		return
 
-		if (use(required))
-			var/atom/O
-			if(recipe.use_material)
-				if(istype(src.loc,/turf))
-					O = new recipe.result_type(src.loc, recipe.use_material)
-				else
-					O = new recipe.result_type(user.loc, recipe.use_material)
+/obj/item/stack/proc/finalize_recipe_production(datum/stack_recipe/recipe, required, produced, mob/user)
+	if(QDELETED(src)) // This proc is called after do_after(), some checks are therefore needed
+		return
+
+	if(use(required))
+		var/atom/O
+		if(recipe.use_material)
+			if(istype(src.loc,/turf))
+				O = new recipe.result_type(src.loc, recipe.use_material)
 			else
-				if(istype(src.loc,/turf))
-					O = new recipe.result_type(src.loc)
-				else
-					O = new recipe.result_type(user.loc)
-			O.set_dir(user.dir)
-			O.add_fingerprint(user)
+				O = new recipe.result_type(user.loc, recipe.use_material)
+		else
+			if(istype(src.loc,/turf))
+				O = new recipe.result_type(src.loc)
+			else
+				O = new recipe.result_type(user.loc)
+		O.set_dir(user.dir)
+		O.add_fingerprint(user)
 
-			if (recipe.goes_in_hands && !recipe.on_floor)
-				user.pick_or_drop(O)
+		if(recipe.goes_in_hands && !recipe.on_floor)
+			user.pick_or_drop(O)
 
-			if (istype(O, /obj/item/stack))
-				var/obj/item/stack/S = O
-				S.amount = produced
-				S.add_to_stacks(user, recipe.goes_in_hands)
+		if(istype(O, /obj/item/stack))
+			var/obj/item/stack/S = O
+			S.amount = produced
+			S.add_to_stacks(user, recipe.goes_in_hands)
 
 /obj/item/stack/Topic(href, href_list)
 	..()
@@ -282,7 +288,7 @@
 			FT.stored_decals = null
 		if (F.stored_decals)
 			F.stored_decals = null
-		S.overlays.Cut()	//cuts off decal status icon applied in /turf/simulated/floor/proc/make_plating()
+		S.ClearOverlays()	//cuts off decal status icon applied in /turf/simulated/floor/proc/make_plating()
 
 	var/transfer = max(min(tamount, src.get_amount(), (S.get_max_amount() - S.get_amount())), 0)
 
@@ -291,6 +297,8 @@
 		S.add(transfer)
 		if (prob(transfer/orig_amount * 100))
 			transfer_fingerprints_to(S)
+			if(is_bloodied)
+				S.add_blood(blood_color)
 			if(blood_DNA)
 				S.blood_DNA |= blood_DNA
 		return transfer
@@ -311,6 +319,8 @@
 		newstack.color = color
 		if (prob(transfer/orig_amount * 100))
 			transfer_fingerprints_to(newstack)
+			if(is_bloodied)
+				newstack.add_blood(blood_color)
 			if(blood_DNA)
 				newstack.blood_DNA |= blood_DNA
 		return newstack

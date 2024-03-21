@@ -79,11 +79,6 @@
 	if(istype(L))
 		L.adjust_fire_stacks(amount / fire_mult)
 
-/datum/reagent/toxin/plasma/affect_blood(mob/living/carbon/M, alien, removed)
-	if(alien == IS_NABBER)
-		return
-	..()
-
 /datum/reagent/toxin/plasma/affect_touch(mob/living/carbon/M, alien, removed)
 	M.take_organ_damage(0, removed * 0.1) //being splashed directly with plasma causes minor chemical burns
 	if(prob(10 * fire_mult))
@@ -321,11 +316,6 @@
 	if(M.dna)
 		if(prob(removed * mutation_potency)) // Approx. one mutation per 10 injected/20 ingested/30 touching units
 			randmuti(M)
-			if(prob(98))
-				randmutb(M)
-			else
-				randmutg(M)
-			domutcheck(M, null)
 			M.UpdateAppearance()
 	M.radiation += (0.05 SIEVERT) * removed
 
@@ -631,7 +621,7 @@
 	to_chat(M, "<span class='danger'>Your flesh rapidly mutates!</span>")
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(M)
 	M.icon = null
-	M.overlays.Cut()
+	M.ClearOverlays()
 	M.set_invisibility(101)
 	for(var/obj/item/I in M)
 		if(istype(I, /obj/item/implant)) //TODO: Carn. give implants a dropped() or something

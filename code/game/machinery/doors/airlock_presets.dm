@@ -66,9 +66,6 @@
 	locked = 1
 	opacity = 0
 
-/obj/machinery/door/airlock/external/snow
-	icon = 'icons/obj/doors/doorextsnow.dmi'
-
 //////////////////////////////////////////
 /obj/machinery/door/airlock/glass
 	name = "Glass Airlock"
@@ -150,6 +147,8 @@
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_com
 	glass = 1
+	open_sound_powered = 'sound/machines/airlock/glass_open1.ogg'
+	close_sound_powered = 'sound/machines/airlock/glass_close1.ogg'
 
 /obj/machinery/door/airlock/glass_command/Initialize()
 	. = ..()
@@ -193,6 +192,8 @@
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_eng
 	glass = 1
+	open_sound_powered = 'sound/machines/airlock/glass_open1.ogg'
+	close_sound_powered = 'sound/machines/airlock/glass_close1.ogg'
 
 /obj/machinery/door/airlock/glass_engineering/Initialize()
 	. = ..()
@@ -208,6 +209,8 @@
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_sec
 	glass = 1
+	open_sound_powered = 'sound/machines/airlock/glass_open1.ogg'
+	close_sound_powered = 'sound/machines/airlock/glass_close1.ogg'
 
 /obj/machinery/door/airlock/glass_security/Initialize()
 	. = ..()
@@ -223,6 +226,8 @@
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_med
 	glass = 1
+	open_sound_powered = 'sound/machines/airlock/glass_open1.ogg'
+	close_sound_powered = 'sound/machines/airlock/glass_close1.ogg'
 
 /obj/machinery/door/airlock/glass_medical/Initialize()
 	. = ..()
@@ -238,6 +243,8 @@
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_viro
 	glass = 1
+	open_sound_powered = 'sound/machines/airlock/glass_open1.ogg'
+	close_sound_powered = 'sound/machines/airlock/glass_close1.ogg'
 
 /obj/machinery/door/airlock/glass_virology/Initialize()
 	. = ..()
@@ -302,6 +309,8 @@
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_atmo
 	glass = 1
+	open_sound_powered = 'sound/machines/airlock/glass_open1.ogg'
+	close_sound_powered = 'sound/machines/airlock/glass_close1.ogg'
 
 /obj/machinery/door/airlock/glass_atmos/Initialize()
 	. = ..()

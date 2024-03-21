@@ -43,7 +43,7 @@
 	if(href_list["skin_tone"])
 		if(can_change_skin_tone())
 			var/new_s_tone = input(usr, "Choose your character's skin-tone:\n1 (lighter) - [owner.species.max_skin_tone()] (darker)", "Skin Tone", -owner.s_tone + 35) as num|null
-			if(isnum(new_s_tone) && can_still_topic(state) && owner.species.appearance_flags & HAS_SKIN_TONE_NORMAL)
+			if(isnum(new_s_tone) && can_still_topic(state) && owner.species.species_appearance_flags & HAS_SKIN_TONE_NORMAL)
 				new_s_tone = 35 - max(min(round(new_s_tone), owner.species.max_skin_tone()), 1)
 				return owner.change_skin_tone(new_s_tone)
 	if(href_list["skin_color"])
@@ -69,6 +69,16 @@
 				var/g_hair = hex2num(copytext(new_hair, 4, 6))
 				var/b_hair = hex2num(copytext(new_hair, 6, 8))
 				if(owner.change_hair_color(r_hair, g_hair, b_hair))
+					update_dna()
+					return 1
+	if(href_list["hair_s_color"])
+		if(can_change(APPEARANCE_HAIR_COLOR))
+			var/new_hair = input("Please select secoundary hair color.", "Secondary Hair Color", rgb(owner.r_hair, owner.g_hair, owner.b_hair)) as color|null
+			if(new_hair && can_still_topic(state))
+				var/r_hair = hex2num(copytext(new_hair, 2, 4))
+				var/g_hair = hex2num(copytext(new_hair, 4, 6))
+				var/b_hair = hex2num(copytext(new_hair, 6, 8))
+				if(owner.change_s_hair_color(r_hair, g_hair, b_hair))
 					update_dna()
 					return 1
 	if(href_list["facial_hair"])
@@ -159,10 +169,10 @@
 	return owner && (flags & flag)
 
 /datum/nano_module/appearance_changer/proc/can_change_skin_tone()
-	return owner && (flags & APPEARANCE_SKIN) && owner.species.appearance_flags & HAS_A_SKIN_TONE
+	return owner && (flags & APPEARANCE_SKIN) && owner.species.species_appearance_flags & HAS_A_SKIN_TONE
 
 /datum/nano_module/appearance_changer/proc/can_change_skin_color()
-	return owner && (flags & APPEARANCE_SKIN) && owner.species.appearance_flags & HAS_SKIN_COLOR
+	return owner && (flags & APPEARANCE_SKIN) && owner.species.species_appearance_flags & HAS_SKIN_COLOR
 
 /datum/nano_module/appearance_changer/proc/cut_and_generate_data()
 	// Making the assumption that the available species remain constant

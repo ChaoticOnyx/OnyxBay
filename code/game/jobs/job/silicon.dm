@@ -15,6 +15,10 @@
 	hud_icon = "hudblank"
 	preview_override = list("Default", 'icons/mob/hologram.dmi')
 
+/datum/job/ai/set_positions()
+	. = ..()
+	total_positions = 0
+
 /datum/job/ai/equip(mob/living/carbon/human/H)
 	if(!H)	return 0
 	return 1
@@ -31,7 +35,7 @@
 	supervisors = "your laws and the AI"	//Nodrak
 	selection_color = "#254c25"
 	minimal_player_age = 14
-	alt_titles = list("Android", "Robot")
+	alt_titles = list("Android")
 	account_allowed = 0
 	economic_modifier = 0
 	loadout_allowed = FALSE

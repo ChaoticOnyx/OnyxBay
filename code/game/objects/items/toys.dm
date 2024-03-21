@@ -30,6 +30,8 @@
 	mod_weight = 0.25
 	mod_reach = 0.25
 	mod_handy = 0.25
+	drop_sound = SFX_DROP_GLOVES
+	pickup_sound = SFX_PICKUP_GLOVES
 
 /obj/item/toy/proc/speak(message)
 	if (!message)
@@ -47,7 +49,7 @@
 	desc = "A translucent balloon. There's nothing in it."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "waterballoon-e"
-	item_state = "balloon-empty"
+	item_state = "water_balloon-empty"
 	w_class = ITEM_SIZE_TINY
 
 /obj/item/toy/water_balloon/New()
@@ -97,13 +99,13 @@
 				qdel(src)
 	return
 
-/obj/item/toy/water_balloon/update_icon()
+/obj/item/toy/water_balloon/on_update_icon()
 	if(src.reagents.total_volume >= 1)
 		icon_state = "waterballoon"
-		item_state = "balloon"
+		item_state = "water_balloon"
 	else
 		icon_state = "waterballoon-e"
-		item_state = "balloon-empty"
+		item_state = "water_balloon-empty"
 
 /obj/item/toy/balloon
 	name = "\improper 'criminal' balloon"
@@ -116,6 +118,9 @@
 	icon_state = "syndballoon"
 	item_state = "syndballoon"
 	w_class = ITEM_SIZE_HUGE
+
+	drop_sound = SFX_DROP_RUBBER
+	pickup_sound = SFX_PICKUP_RUBBER
 
 /obj/item/toy/balloon/New()
 	..()
@@ -139,7 +144,7 @@
 /obj/item/toy/blink
 	name = "electronic blink toy game"
 	desc = "Blink.  Blink.  Blink. Ages 8 and up."
-	icon = 'icons/obj/radio.dmi'
+	icon = 'icons/obj/device.dmi'
 	icon_state = "beacon"
 	item_state = "signaler"
 
@@ -159,7 +164,7 @@
 /obj/item/toy/crossbow
 	name = "foam dart crossbow"
 	desc = "A weapon favored by many overactive children. Ages 8 and up."
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "crossbow"
 	item_state = "crossbow"
 	item_icons = list(
@@ -495,7 +500,7 @@
 /obj/item/toy/figure/gardener
 	name = "Gardener action figure"
 	desc = "A \"Space Life\" brand Gardener action figure."
-	icon_state = "botanist"
+	icon_state = "gardener"
 
 /obj/item/toy/figure/captain
 	name = "Captain action figure"

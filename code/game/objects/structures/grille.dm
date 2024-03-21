@@ -16,7 +16,7 @@
 /obj/structure/grille/ex_act(severity)
 	qdel(src)
 
-/obj/structure/grille/update_icon()
+/obj/structure/grille/on_update_icon()
 	if(destroyed)
 		icon_state = "[initial(icon_state)]-b"
 	else
@@ -31,7 +31,7 @@
 	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
 	user.do_attack_animation(src)
 
-	var/damage_dealt = 1
+	var/damage_dealt = 2
 	var/attack_message = "kicks"
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
@@ -44,8 +44,9 @@
 
 	if(MUTATION_HULK in user.mutations)
 		damage_dealt += 5
-	else
-		damage_dealt += 1
+
+	if(MUTATION_STRONG in user.mutations)
+		damage_dealt += 5
 
 	attack_generic(user,damage_dealt,attack_message)
 

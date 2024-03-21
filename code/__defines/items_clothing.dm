@@ -34,6 +34,7 @@
 #define ACCESSORY_SLOT_ARMOR_S  "Armor storage"
 #define ACCESSORY_SLOT_ARMOR_M  "Misc armor"
 #define ACCESSORY_SLOT_HELM_C	"Helmet cover"
+#define ACCESSORY_SLOT_HELM_H   "Helmet holochip"
 
 // Bitmasks for the flags_inv variable. These determine when a piece of clothing hides another, i.e. a helmet hiding glasses.
 // WARNING: The following flags apply only to the external suit!
@@ -168,6 +169,7 @@
 #define  SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE 5000  // These need better heat protect, but not as good heat protect as firesuits.
 #define    FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE 30000 // What max_heat_protection_temperature is set to for firesuit quality headwear. MUST NOT BE 0.
 #define FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE 30000 // For fire-helmet quality items. (Red and white hardhats)
+#define  ATMOS_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE 40000 // Even better than the firesuits
 #define      HELMET_MAX_HEAT_PROTECTION_TEMPERATURE 600   // For normal helmets.
 #define       ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE 600   // For armor.
 #define      GLOVES_MAX_HEAT_PROTECTION_TEMPERATURE 1500  // For some gloves.

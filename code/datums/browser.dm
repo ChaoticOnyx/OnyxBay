@@ -18,7 +18,7 @@
 
 /datum/browser/New(nuser, nwindow_id, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null)
 	user = nuser
-	register_signal(user, SIGNAL_QDELETING, /datum/browser/proc/user_deleted)
+	register_signal(user, SIGNAL_QDELETING, nameof(.proc/user_deleted))
 	window_id = nwindow_id
 	if(ntitle)
 		title = format_text(ntitle)
@@ -224,3 +224,78 @@
 	if(src?.mob)
 		src.mob.unset_machine()
 	return
+
+/proc/listpicker(mob/User,Message, Title, Button1="Ok", Button2, Button3, list/values, inputtype = "checkbox", width, height, slidecolor)
+	if(!istype(User))
+		if(istype(User, /client/))
+			var/client/C = User
+			User = C.mob
+		else
+			return
+
+	var/datum/browser/listpicker/A = new(User, Message, Title, Button1, Button2, Button3, values, inputtype, width, height, slidecolor)
+	A.open()
+	A.wait()
+
+	if(A.selectedbutton)
+		return list("button" = A.selectedbutton, "values" = A.valueslist)
+
+/datum/browser/listpicker
+	var/valueslist = list()
+	var/opentime = 0
+	var/selectedbutton = 0
+
+/datum/browser/listpicker/New(User,Message,Title,Button1="Ok",Button2,Button3,list/values,inputtype="checkbox", width, height, slidecolor)
+	if (!User)
+		return
+
+	var/output = {"<form><input type="hidden" name="src" value="[ref(src)]"><ul class="sparse">"}
+	if (inputtype == "checkbox" || inputtype == "radio")
+		for (var/i in values)
+			var/div_slider = slidecolor
+			if(!i["allowed_edit"])
+				div_slider = "locked"
+			output += {"<li>
+						<label class="switch">
+							<input type="[inputtype]" value="1" name="[i["name"]]"[i["checked"] ? " checked" : ""][i["allowed_edit"] ? "" : " onclick='return false' onkeydown='return false'"]>
+								<div class="slider [div_slider ? "[div_slider]" : ""]"></div>
+									<span>[i["name"]]</span>
+						</label>
+						</li>"}
+	else
+		for (var/i in values)
+			output += {"<li><input id="name="[i["name"]]"" style="width: 50px" type="[type]" name="[i["name"]]" value="[i["value"]]">
+			<label for="[i["name"]]">[i["name"]]</label></li>"}
+	output += {"</ul><div style="text-align:center">
+		<button type="submit" name="button" value="1" style="font-size:large;float:[( Button2 ? "left" : "right" )]">[Button1]</button>"}
+
+	if (Button2)
+		output += {"<button type="submit" name="button" value="2" style="font-size:large;[( Button3 ? "" : "float:right" )]">[Button2]</button>"}
+
+	if (Button3)
+		output += {"<button type="submit" name="button" value="3" style="font-size:large;float:right">[Button3]</button>"}
+
+	output += {"</form></div>"}
+	..(User, ckey("[User]-[Message]-[Title]-[world.time]-[rand(1,10000)]"), Title, width, height, src)
+	set_content(output)
+
+/datum/browser/listpicker/Topic(href,href_list)
+	if (href_list["close"] || !user || !user.client)
+		opentime = 0
+		return
+	if (href_list["button"])
+		var/button = text2num(href_list["button"])
+		if (button <= 3 && button >= 1)
+			selectedbutton = button
+	for (var/item in href_list)
+		switch(item)
+			if ("close", "button", "src")
+				continue
+			else
+				valueslist[item] = href_list[item]
+	opentime = 0
+	close()
+
+/datum/browser/listpicker/proc/wait()
+	while(opentime && selectedbutton <= 0)
+		stoplag(1)

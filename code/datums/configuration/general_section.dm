@@ -18,8 +18,10 @@
 	var/second_topic_limit = null
 	var/wait_for_sigusr1 = FALSE
 
-	var/client_min_major_version = 514
-	var/client_min_minor_version = 1572
+	var/client_min_major_version = 515
+	var/client_min_minor_version = 1609
+	var/client_recommended_minor_version = 1630
+	var/list/client_blacklisted_minor_versions = list(1631, 1632)
 
 /datum/configuration_section/general/load_data(list/data)
 	CONFIG_LOAD_STR(server_name, data["server_name"])
@@ -34,6 +36,8 @@
 
 	CONFIG_LOAD_NUM(client_min_major_version, data["client_min_major_version"])
 	CONFIG_LOAD_NUM(client_min_minor_version, data["client_min_minor_version"])
+	CONFIG_LOAD_NUM(client_recommended_minor_version, data["client_recommended_minor_version"])
+	CONFIG_LOAD_LIST(client_blacklisted_minor_versions, data["blacklisted_builds"])
 
 	if(ticklag)
 		fps = 10 / ticklag

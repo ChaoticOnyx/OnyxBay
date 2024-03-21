@@ -1,10 +1,6 @@
 /mob/proc/jumpTo(location)
 	forceMove(location)
 
-/mob/observer/ghost/jumpTo()
-	stop_following()
-	..()
-
 /client/proc/Jump(selected_area in area_repository.get_areas_by_z_level())
 	set name = "Jump to Area"
 	set desc = "Area to jump to"
@@ -51,11 +47,14 @@
 	else
 		alert("Admin jumping disabled")
 
-/client/proc/jumptomob_verb(datum/follow_holder/fh in get_follow_targets(mobs_only = TRUE))
+/client/proc/jumptomob_verb()
 	set category = "Admin"
 	set name = "Jump to Mob"
 
-	jumptomob(fh.followed_instance)
+	var/mob/mob = tgui_input_list(usr, "Select a mob", "Jump to mob", GLOB.living_mob_list_ + GLOB.dead_mob_list_ + GLOB.ghost_mob_list)
+
+	if(istype(mob))
+		jumptomob(mob)
 
 /client/proc/jumptocoord(tx as num, ty as num, tz as num)
 	set category = "Admin"
@@ -113,11 +112,14 @@
 	else
 		alert("Admin jumping disabled")
 
-/client/proc/Getmob_verb(datum/follow_holder/fh in get_follow_targets(mobs_only = TRUE))
+/client/proc/Getmob_verb()
 	set category = "Admin"
 	set name = "Get mob"
 
-	Getmob(fh.followed_instance)
+	var/mob/mob = tgui_input_list(usr, "Select a mob", "Get mob", GLOB.living_mob_list_ + GLOB.dead_mob_list_ + GLOB.ghost_mob_list)
+
+	if(istype(mob))
+		Getmob(mob)
 
 /client/proc/Getkey()
 	set category = "Admin"

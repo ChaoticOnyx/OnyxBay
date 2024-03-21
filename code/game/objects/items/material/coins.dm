@@ -20,6 +20,9 @@
 	var/string_color = COLOR_RED
 	var/sides = 2
 
+	drop_sound = SFX_DROP_RING
+	pickup_sound = SFX_PICKUP_RING
+
 /obj/item/material/coin/set_material(new_material)
 	. = ..()
 	if(material.name in icon_states(icon))
@@ -36,9 +39,9 @@
 			return
 		var/new_string_color = CC.color
 		if(CC.use(1))
-			var/image/string_overlay = image(icon,"coin_string_overlay")
+			var/image/string_overlay = image(icon, "coin_string_overlay")
 			string_overlay.color = new_string_color
-			overlays += string_overlay
+			AddOverlays(string_overlay)
 			string_attached = TRUE
 			string_color = new_string_color
 			to_chat(user, SPAN("notice", "You attach a string to the coin."))
@@ -54,7 +57,7 @@
 		CC.amount = 1
 		CC.color = string_color
 		CC.update_icon()
-		overlays.Cut()
+		ClearOverlays()
 		string_attached = null
 		to_chat(user, SPAN("notice", "You detach the string from the coin."))
 	else ..()
@@ -68,6 +71,7 @@
 		comment = "heads"
 	user.visible_message(SPAN("notice", "[user] has thrown \the [src]. It lands on [comment]!"), \
 						 SPAN("notice", "You throw \the [src]. It lands on [comment]!"))
+	playsound(src, 'sound/items/coinflip.ogg', 50, TRUE)
 
 
 /obj/item/material/coin/gold

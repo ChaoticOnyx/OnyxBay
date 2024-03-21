@@ -215,7 +215,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		set_light(0)
 
 		T.fire = null
-		loc = null
+		forceMove(null)
 	SSair.active_hotspots.Remove(src)
 
 

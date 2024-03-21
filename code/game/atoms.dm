@@ -3,6 +3,7 @@
 	var/atom_flags
 	var/effect_flags
 	var/list/blood_DNA
+	var/is_bloodied
 	var/was_bloodied
 	var/blood_color
 	var/last_bumped = 0
@@ -40,6 +41,18 @@
 	/// Last color calculated for the the chatmessage overlays. Used for caching.
 	var/chat_color
 	var/chat_color_darkened
+
+	/// Icon state's name that can be used during icon generation as a base without impacting appearance of atom in mapping tools.
+	var/base_icon_state
+
+	/// This atom's cache of non-protected overlays, used for normal icon additions. Do not manipulate directly- See SSoverlays.
+	var/list/atom_overlay_cache
+
+	/// This atom's cache of overlays that can only be removed explicitly, like C4. Do not manipulate directly- See SSoverlays.
+	var/list/atom_protected_overlay_cache
+
+	/// This defines whether this atom will be added to SSpoi, set TRUE if you want it to be shown in follow panel
+	var/is_poi = FALSE
 
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
@@ -88,11 +101,14 @@
 		if(istype(T))
 			T.RecalculateOpacity()
 
+	if(is_poi)
+		SSpoints_of_interest.make_point_of_interest(src)
+
 	return INITIALIZE_HINT_NORMAL
 
 //called if Initialize returns INITIALIZE_HINT_LATELOAD
 /atom/proc/LateInitialize()
-	return
+	set waitfor = FALSE
 
 /atom/proc/drop_location()
 	var/atom/L = loc
@@ -113,7 +129,8 @@
 /atom/Destroy()
 	QDEL_NULL(reagents)
 	QDEL_NULL(proximity_monitor)
-
+	ClearOverlays()
+	underlays.Cut()
 	return ..()
 
 /atom/proc/reveal_blood()
@@ -163,7 +180,7 @@
 	return FALSE
 
 /atom/proc/CheckExit()
-	return 1
+	return TRUE
 
 // If you want to use this, the atom must have the PROXMOVE flag, and the moving
 // atom must also have the PROXMOVE flag currently to help with lag. ~ ComicIronic
@@ -289,7 +306,7 @@ its easier to just keep the beam vertical.
 /atom/proc/_examine_text(mob/user, infix = "", suffix = "")
 	// This reformat names to get a/an properly working on item descriptions when they are bloody
 	var/f_name = "\a [SPAN("info", "<em>[src][infix]</em>")]."
-	if(src.blood_DNA && !istype(src, /obj/effect/decal))
+	if(is_bloodied && !istype(src, /obj/effect/decal))
 		if(gender == PLURAL)
 			f_name = "some "
 		else
@@ -335,7 +352,12 @@ its easier to just keep the beam vertical.
 	update_icon()
 
 /atom/proc/update_icon()
-	CAN_BE_REDEFINED(TRUE)
+	if(QDELETED(src))
+		return
+	on_update_icon(arglist(args))
+	return
+
+/atom/proc/on_update_icon()
 	return
 
 /atom/proc/blob_act(damage)
@@ -380,24 +402,30 @@ its easier to just keep the beam vertical.
 	playsound(src, hitby_sound, sound_loudness, 1)
 
 
-//returns 1 if made bloody, returns 0 otherwise
-/atom/proc/add_blood(mob/living/carbon/human/M as mob)
+// returns TRUE if made bloody, returns FALSE otherwise
+// accepts either a human or a hex color
+/atom/proc/add_blood(source)
 	if(atom_flags & ATOM_FLAG_NO_BLOOD)
-		return 0
+		return FALSE
 
-	if(!blood_DNA || !istype(blood_DNA, /list))	//if our list of DNA doesn't exist yet (or isn't a list) initialise it.
+	if(!islist(blood_DNA)) // if our list of DNA doesn't exist yet (or isn't a list) initialise it.
 		blood_DNA = list()
 
-	was_bloodied = 1
-	blood_color = COLOR_BLOOD_HUMAN
-	if(istype(M))
-		if (!istype(M.dna, /datum/dna))
+	is_bloodied = TRUE
+	was_bloodied = TRUE
+
+	if(ishuman(source))
+		var/mob/living/carbon/human/M = source
+		if(!istype(M.dna, /datum/dna))
 			M.dna = new /datum/dna(null)
 			M.dna.real_name = M.real_name
 		M.check_dna()
 		blood_color = M.species.get_blood_colour(M)
-	. = 1
-	return 1
+	else if(istext(source))
+		blood_color = source
+	else
+		blood_color = COLOR_BLOOD_HUMAN
+	return TRUE
 
 /atom/proc/add_vomit_floor(mob/living/carbon/M, toxvomit = 0, datum/reagents/inject_reagents)
 	if(istype(src, /turf/simulated))
@@ -411,12 +439,14 @@ its easier to just keep the beam vertical.
 
 /atom/proc/clean_blood()
 	if(!simulated)
-		return
+		return FALSE
+	is_bloodied = FALSE
 	fluorescent = 0
-	src.germ_level = 0
-	if(istype(blood_DNA, /list))
-		blood_DNA = null
-		return 1
+	germ_level = 0
+	if(islist(blood_DNA))
+		blood_DNA.Cut()
+	blood_color = null
+	return TRUE
 
 /atom/proc/get_global_map_pos()
 	if(!islist(GLOB.global_map) || isemptylist(GLOB.global_map)) return
@@ -463,7 +493,8 @@ its easier to just keep the beam vertical.
 // message is the message output to anyone who can hear.
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
-/atom/proc/audible_message(message, deaf_message, hearing_distance = world.view, checkghosts = null)
+// spash_override replaces the runechatted message if provided. i.e. you can make the atom go "*beep*" instead of "The Machine states, "Bee ..."
+/atom/proc/audible_message(message, deaf_message, hearing_distance = world.view, checkghosts = null, splash_override = null)
 	var/list/hearing_mobs = list()
 	var/list/hearing_objs = list()
 	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
@@ -475,8 +506,8 @@ its easier to just keep the beam vertical.
 	for(var/m in hearing_mobs)
 		var/mob/M = m
 		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
-		if(M.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES)
-			M.create_chat_message(src, message)
+		if(M.get_preference_value("CHAT_RUNECHAT") == GLOB.PREF_YES)
+			M.create_chat_message(src, splash_override ? splash_override : message)
 
 /atom/movable/proc/dropInto(atom/destination)
 	while(istype(destination))
@@ -613,7 +644,7 @@ its easier to just keep the beam vertical.
 			H.updatehealth()
 	return
 
-/atom/MouseDrop_T(mob/target, mob/user)
+/atom/MouseDrop_T(atom/movable/target, mob/user)
 	var/mob/living/H = user
 	if(istype(H) && can_climb(H) && target == user)
 		do_climb(target)
@@ -777,3 +808,12 @@ its easier to just keep the beam vertical.
 		offset_y = tf_offset_y,
 		others = others
 	)
+
+
+/// Respond to an RCD acting on our item
+/atom/proc/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	return FALSE
+
+///Return the values you get when an RCD eats you?
+/atom/proc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	return FALSE

@@ -97,14 +97,28 @@ var/server_name = "OnyxBay"
 
 	return match
 
+/world/proc/__init_tracy()
+#ifdef TRACY_PROFILER
+	var/tracy_lib
+
+	if(world.system_type == MS_WINDOWS)
+		tracy_lib = "prof.dll"
+	else
+		tracy_lib = "./libprof.so"
+
+	var/tracy_init = call_ext(tracy_lib, "init")()
+
+	if(tracy_init != "0")
+		CRASH("[tracy_lib] init error: [tracy_init]")
+#else
+	return
+#endif
+
 #define RECOMMENDED_VERSION 514
 /world/New()
+	__init_tracy()
+	__detect_rust_g()
 	SetupLogs()
-
-	if(world.system_type == UNIX)
-		GLOB.converter_dll = "./libconverter.so"
-	else
-		GLOB.converter_dll = "converter.dll"
 
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
@@ -372,25 +386,22 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		var/client_key = input["ckey"]
-		var/client_ckey = ckey(client_key)
-		var/message
-		if(!input["isadmin"])  // le costil, remove when discord-bot will be fixed ~HonkyDonky
-			message = html_encode(input["ooc"])
-		else
-			message = "<font color='#39034f'>" + strip_html_properly(input["ooc"]) + "</font>"
-		if(!client_ckey||!message)
-			return
-		if(!config.misc.ooc_allowed && !input["isadmin"])
+		var/username = input["username"]
+		var/message = sanitize(input["message"])
+
+		if(!message)
+			return "missing message"
+		if(!username)
+			return "missing username"
+		if(!config.misc.ooc_allowed)
 			return "globally muted"
-		if(jobban_keylist.Find("[client_ckey] - OOC"))
-			return "banned from ooc"
-		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[client_key]:</EM> <span class='message linkify'>[message]</span>"
+
+		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ooc_webhook, "DOOC: **[username]:** [message]")
+
+		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[username]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
 				continue //sanity
-			if(target.is_key_ignored(client_ckey) && !input["isadmin"]) // If we're ignored by this person, then do nothing.
-				continue //if it shouldn't see then it doesn't
 			to_chat(target, "<span class='ooc dooc'><span class='everyone'>[sent_message]</span></span>", type = MESSAGE_TYPE_DOOC)
 
 	else if ("asay" in input)

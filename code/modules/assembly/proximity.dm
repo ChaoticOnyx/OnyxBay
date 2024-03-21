@@ -14,6 +14,9 @@
 
 	var/range = 2
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/device/assembly/prox_sensor/Initialize()
 	. = ..()
 	proximity_monitor = new(src, range, FALSE)
@@ -59,7 +62,7 @@
 		mainloc.visible_message(SPAN("danger" ,"\icon[src] *beep* *beep*"), SPAN("danger" ,"*beep* *beep*"))
 	playsound(mainloc, 'sound/signals/warning8.ogg', 35)
 	cooldown = 2
-	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 
 /obj/item/device/assembly/prox_sensor/think()
 	if(!timing)
@@ -85,14 +88,14 @@
 	scanning = !scanning
 	update_icon()
 
-/obj/item/device/assembly/prox_sensor/update_icon()
-	overlays.Cut()
+/obj/item/device/assembly/prox_sensor/on_update_icon()
+	ClearOverlays()
 	attached_overlays = list()
 	if(timing)
-		overlays += "prox_timing"
+		AddOverlays("prox_timing")
 		attached_overlays += "prox_timing"
 	if(scanning)
-		overlays += "prox_scanning"
+		AddOverlays("prox_scanning")
 		attached_overlays += "prox_scanning"
 	if(holder)
 		holder.update_icon()
@@ -102,8 +105,11 @@
 	return
 
 
-/obj/item/device/assembly/prox_sensor/Move()
+/obj/item/device/assembly/prox_sensor/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	sense()
 
 

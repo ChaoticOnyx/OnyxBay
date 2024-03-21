@@ -24,6 +24,10 @@
 
 	var/build_path = util_pick_weight(spawn_choices())
 
+	if(isnull(build_path))
+		util_crash_with("Improper random object spawner found on the map! (at [loc.x], [loc.y], [loc.z], of type [type])")
+		return
+
 	var/atom/A = new build_path(src.loc)
 	if(pixel_x || pixel_y)
 		A.pixel_x = pixel_x
@@ -194,8 +198,7 @@
 	spawn_nothing_percentage = 66
 
 /obj/random/contraband/spawn_choices()
-	return list(/obj/item/haircomb = 4,
-				/obj/item/storage/pill_bottle/tramadol = 3,
+	return list(/obj/item/storage/pill_bottle/tramadol = 3,
 				/obj/item/storage/pill_bottle/happy = 2,
 				/obj/item/storage/pill_bottle/zoom = 2,
 				/obj/item/reagent_containers/vessel/beaker/vial/random/toxin = 1,
@@ -215,7 +218,10 @@
 				/obj/item/clothing/under/syndicate = 2,
 				/obj/item/reagent_containers/syringe = 3,
 				/obj/item/reagent_containers/syringe/steroid/packaged = 2,
-				/obj/item/reagent_containers/syringe/drugs = 1)
+				/obj/item/reagent_containers/syringe/drugs = 1,
+				/obj/item/melee/baton/cattleprod = 2,
+				/obj/item/gun/projectile/pistol/holdout = 1,
+				/obj/item/material/brass_knuckle = 3)
 
 /obj/random/drinkbottle
 	name = "random drink"
@@ -438,6 +444,7 @@
 				/obj/structure/closet/boxinggloves = 2,
 				/obj/structure/largecrate = 5,
 				/obj/structure/largecrate/animal/goat = 1,
+				/obj/structure/largecrate/animal/pig = 1,
 				/obj/structure/closet/wardrobe/grey = 5,
 				/obj/structure/closet/wardrobe/xenos = 2,
 				/obj/structure/closet/wardrobe/mixed = 3,
@@ -562,7 +569,7 @@
 	spawn_nothing_percentage = 25
 
 /obj/random/obstruction/spawn_choices()
-	return list(/obj/structure/barricade,
+	return list(/obj/structure/barricade/material,
 				/obj/structure/girder,
 				/obj/structure/window_frame/grille,
 				/obj/structure/window_frame/broken,
@@ -641,7 +648,7 @@
 				/obj/item/device/healthanalyzer = 2,
 				/obj/item/device/paicard = 2,
 				/obj/item/device/destTagger = 2,
-				/obj/item/device/mmi = 1,
+				/obj/item/organ/internal/cerebrum/mmi = 1,
 				/obj/item/beartrap = 2,
 				/obj/item/handcuffs = 1,
 				/obj/item/camera_assembly = 5,
@@ -758,10 +765,10 @@
 	return list(/obj/item/clothing/under/syndicate/tacticool = 2,
 				/obj/item/clothing/under/syndicate/combat = 1,
 				/obj/item/clothing/under/hazard = 2,
-				/obj/item/clothing/under/sterile = 2,
 				/obj/item/clothing/under/casual_pants/camo = 2,
 				/obj/item/clothing/under/casual_pants/classicjeans = 2,
 				/obj/item/clothing/under/track_pants = 2,
+				/obj/item/clothing/under/rank/medical = 2,
 				/obj/item/clothing/under/rank/medical/paramedic = 2,
 				/obj/item/clothing/under/overalls = 2,
 				/obj/item/clothing/ears/earmuffs = 2,
@@ -1013,6 +1020,7 @@ something, make sure it's not in one of the other lists.
 				/obj/random/clothing/gloves = 10,
 				/obj/random/clothing/suit = 20,
 				/obj/random/clothing/accessory = 20,
+				/obj/item/storage/box/cleanerpods = 3,
 
 				/obj/random/cash = 10)
 
@@ -1172,6 +1180,7 @@ something, make sure it's not in one of the other lists.
 				/obj/item/music_tape_box/classic = 30,
 				/obj/item/music_tape_box/frontier = 5,
 				/obj/item/music_tape_box/exodus = 5,
+				/obj/item/music_tape_box/retrojazz = 5,
 				/obj/item/music_tape_box/valhalla = 3)
 
 // Selects one spawn point out of a group of points with the same ID and asks it to generate its items

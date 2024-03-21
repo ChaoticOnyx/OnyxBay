@@ -65,25 +65,28 @@
 /obj/structure/table/MouseDrop_T(obj/O, mob/user, params)
 	if(!istype(O, /obj/item))
 		return ..()
+
 	var/turf/T = get_turf(O)
 	var/table_found = FALSE
 	for(var/obj/item in T.contents)
 		if(istype(item, /obj/structure/table))
 			table_found = TRUE
 			break
+
+	var/do_slide = FALSE
 	if(O.loc == loc)
-		auto_align(O, params)
+		do_slide = TRUE // Sliding on the same time
+	else if(ishuman(user) && O == user.get_active_hand() && user.drop(O))
+		do_slide = TRUE // Dropping from the inventory
+	else if(table_found && T.Adjacent(src, user))
+		do_slide = TRUE // Sliding across tables
+
+	if(do_slide)
 		O.forceMove(loc)
+		auto_align(O, params)
 		return
-	else if(user.get_active_hand() != O && !(T.Adjacent(src, user) && table_found))
-		return ..()
-	if(isrobot(user))
-		return
-	if(!user.drop(O) && (!T && !T.Adjacent(src, user)))
-		return
-	O.forceMove(loc)
-	auto_align(O, params)
-	return
+
+	return ..()
 
 /obj/structure/table/attack_hand(mob/user as mob)
 	if(ishuman(user))
@@ -123,9 +126,14 @@
 				G.assailant.next_move = world.time + 13 //also should prevent user from triggering this repeatedly
 				visible_message("<span class='warning'>[G.assailant] starts putting [G.affecting] on \the [src].</span>")
 				if(!do_after(G.assailant, 13))
-					return 0
+					return FALSE
+
 				if(!G) //check that we still have a grab
-					return 0
+					return FALSE
+
+				if(QDELETED(src))
+					return FALSE
+
 				G.affecting.forceMove(src.loc)
 				G.affecting.Weaken(rand(1,4))
 				G.affecting.Stun(1)
@@ -239,3 +247,16 @@ Note: This proc can be overwritten to allow for different types of auto-alignmen
 
 /obj/structure/table/attack_tk() // no telehulk sorry
 	return
+
+/obj/structure/table/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("delay" = 2.4 SECONDS, "cost" = 16)
+
+	return FALSE
+
+/obj/structure/table/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_DECONSTRUCT)
+		qdel_self()
+		return TRUE
+
+	return FALSE

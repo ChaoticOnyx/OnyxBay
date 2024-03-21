@@ -316,10 +316,10 @@
 // Proc: update_icon()
 // Parameters: None
 // Description: Allows us to use special icon overlay for critical SMESs
-/obj/machinery/power/smes/buildable/update_icon()
+/obj/machinery/power/smes/buildable/on_update_icon()
 	if (failing)
-		overlays.Cut()
-		overlays += image('icons/obj/power.dmi', "smes-crit")
+		ClearOverlays()
+		AddOverlays(image('icons/obj/power.dmi', "smes-crit"))
 	else
 		..()
 

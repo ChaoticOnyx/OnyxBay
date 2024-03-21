@@ -1,5 +1,5 @@
-/mob/living/silicon/gib()
-	..("gibbed-r")
+/mob/living/silicon/gib(anim, do_gibs)
+	..("gibbed-r", FALSE)
 	gibs(loc, null, /obj/effect/gibspawner/robot)
 
 /mob/living/silicon/dust()

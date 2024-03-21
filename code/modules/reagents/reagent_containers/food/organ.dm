@@ -17,5 +17,5 @@
 /obj/item/reagent_containers/food/organ/brain
 	name = "brain"
 	desc = "Kuru is real."
-	icon_state = "brain2"
+	icon_state = "brain"
 	startswith = list(/datum/reagent/alkysine = 4)

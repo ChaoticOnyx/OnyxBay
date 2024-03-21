@@ -7,7 +7,6 @@
 
 	throw_range = 4
 
-	var/equipment_slowdown = -1
 	var/list/hud_list[12]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
@@ -20,6 +19,7 @@
 
 	var/list/stance_limbs
 	var/list/grasp_limbs
+	var/last_body_response_to_pain = 0
 
 /mob/living/carbon/human/New(new_loc, new_species = null)
 
@@ -53,7 +53,6 @@
 	hud_list[SPECIALROLE_HUD]  = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 	hud_list[STATUS_HUD_OOC]   = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
 	hud_list[XENO_HUD]         = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
-	hud_list[GLAND_HUD]        = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 
 	GLOB.human_mob_list |= src
 	..()
@@ -135,7 +134,12 @@
 
 			if(mind.changeling)
 				stat("Chemical Storage: ", mind.changeling.chem_charges)
-				stat("Genetic Damage Time: ", mind.changeling.geneticdamage)
+				stat("Genetic Damage Time: ", mind.changeling.genome_damage)
+
+			if(mind.special_role == "Borer Husk")
+				var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
+				stat("Chemicals: ", B?.chemicals)
+
 
 /mob/living/carbon/human/ex_act(severity)
 	if(!blinded)
@@ -147,7 +151,7 @@
 		if(1.0)
 			b_loss = 400
 			f_loss = 100
-			if(!prob(getarmor(null, "bomb")))
+			if(!prob(get_flat_armor(null, "bomb")))
 				gib()
 				return
 			else
@@ -176,7 +180,7 @@
 				Paralyse(10)
 
 	// factor in armour
-	var/protection = blocked_mult(getarmor(null, "bomb"))
+	var/protection = blocked_mult(get_flat_armor(null, "bomb"))
 	b_loss *= protection
 	f_loss *= protection
 
@@ -670,7 +674,7 @@
 		return FLASH_PROTECTION_MAJOR
 	return total_protection
 
-/mob/living/carbon/human/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
+/mob/living/carbon/human/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /atom/movable/screen/fullscreen/flash, effect_duration = 25)
 	if(internal_organs_by_name[BP_EYES]) // Eyes are fucked, not a 'weak point'.
 		var/obj/item/organ/internal/eyes/I = internal_organs_by_name[BP_EYES]
 		I.additional_flash_effects(intensity)
@@ -697,7 +701,7 @@
 	return 1
 
 /mob/living/carbon/human/IsAdvancedToolUser(silent)
-	if(species.has_fine_manipulation && !nabbing)
+	if(species.has_fine_manipulation)
 		return 1
 	if(!silent)
 		to_chat(src, FEEDBACK_YOU_LACK_DEXTERITY)
@@ -773,91 +777,9 @@
 					var/turf/location = loc
 					if(istype(location, /turf/simulated))
 						location.add_vomit_floor(src, toxvomit, stomach.ingested)
-					nutrition -= 30
+					remove_nutrition(30)
 		sleep(350)	//wait 35 seconds before next volley
 		lastpuke = 0
-
-/mob/living/carbon/human/proc/morph()
-	set name = "Morph"
-	set category = "Superpower"
-
-	if(stat!=CONSCIOUS)
-		reset_view(0)
-		remoteview_target = null
-		return
-
-	if(!(mMorph in mutations))
-		src.verbs -= /mob/living/carbon/human/proc/morph
-		return
-
-	var/new_facial = input("Please select facial hair color.", "Character Generation",rgb(r_facial,g_facial,b_facial)) as color
-	if(new_facial)
-		r_facial = hex2num(copytext(new_facial, 2, 4))
-		g_facial = hex2num(copytext(new_facial, 4, 6))
-		b_facial = hex2num(copytext(new_facial, 6, 8))
-
-	var/new_hair = input("Please select hair color.", "Character Generation",rgb(r_hair,g_hair,b_hair)) as color
-	if(new_facial)
-		r_hair = hex2num(copytext(new_hair, 2, 4))
-		g_hair = hex2num(copytext(new_hair, 4, 6))
-		b_hair = hex2num(copytext(new_hair, 6, 8))
-
-	var/new_eyes = input("Please select eye color.", "Character Generation",rgb(r_eyes,g_eyes,b_eyes)) as color
-	if(new_eyes)
-		r_eyes = hex2num(copytext(new_eyes, 2, 4))
-		g_eyes = hex2num(copytext(new_eyes, 4, 6))
-		b_eyes = hex2num(copytext(new_eyes, 6, 8))
-		update_eyes()
-
-	var/new_tone = input("Please select skin tone level: 1-220 (1=albino, 35=caucasian, 150=black, 220='very' black)", "Character Generation", "[35-s_tone]")  as text
-
-	if (!new_tone)
-		new_tone = 35
-	s_tone = max(min(round(text2num(new_tone)), 220), 1)
-	s_tone =  -s_tone + 35
-
-	// hair
-	var/list/all_hairs = typesof(/datum/sprite_accessory/hair) - /datum/sprite_accessory/hair
-	var/list/hairs = list()
-
-	// loop through potential hairs
-	for(var/x in all_hairs)
-		var/datum/sprite_accessory/hair/H = new x // create new hair datum based on type x
-		hairs.Add(H.name) // add hair name to hairs
-		qdel(H) // delete the hair after it's all done
-
-	var/new_style = input("Please select hair style", "Character Generation",h_style)  as null|anything in hairs
-
-	// if new style selected (not cancel)
-	if (new_style)
-		h_style = new_style
-
-	// facial hair
-	var/list/all_fhairs = typesof(/datum/sprite_accessory/facial_hair) - /datum/sprite_accessory/facial_hair
-	var/list/fhairs = list()
-
-	for(var/x in all_fhairs)
-		var/datum/sprite_accessory/facial_hair/H = new x
-		fhairs.Add(H.name)
-		qdel(H)
-
-	new_style = input("Please select facial style", "Character Generation",f_style)  as null|anything in fhairs
-
-	if(new_style)
-		f_style = new_style
-
-	var/new_gender = alert(usr, "Please select gender.", "Character Generation", "Male", "Female", "Neutral")
-	if (new_gender)
-		if(new_gender == "Male")
-			gender = MALE
-		else if(new_gender == "Female")
-			gender = FEMALE
-		else
-			gender = NEUTER
-	regenerate_icons()
-	check_dna()
-
-	visible_message("<span class='notice'>\The [src] morphs and changes [get_visible_gender() == MALE ? "his" : get_visible_gender() == FEMALE ? "her" : "their"] appearance!</span>", "<span class='notice'>You change your appearance!</span>", "<span class='warning'>Oh, god!  What the hell was that?  It sounded like flesh getting squished and bone ground into a different shape!</span>")
 
 /mob/living/carbon/human/proc/remotesay()
 	set name = "Project mind"
@@ -888,43 +810,6 @@
 	for(var/mob/observer/ghost/G in world)
 		G.show_message("<i>Telepathic message from <b>[src]</b> to <b>[target]</b>: [say]</i>")
 
-/mob/living/carbon/human/proc/remoteobserve()
-	set name = "Remote View"
-	set category = "Superpower"
-
-	if(stat!=CONSCIOUS)
-		remoteview_target = null
-		reset_view(0)
-		return
-
-	if(!(mRemote in src.mutations))
-		remoteview_target = null
-		reset_view(0)
-		src.verbs -= /mob/living/carbon/human/proc/remoteobserve
-		return
-
-	if(client.eye != client.mob)
-		remoteview_target = null
-		reset_view(0)
-		return
-
-	var/list/mob/creatures = list()
-
-	for(var/mob/living/carbon/h in world)
-		var/turf/temp_turf = get_turf(h)
-		if((temp_turf.z != 1 && temp_turf.z != 5) || h.stat!=CONSCIOUS) //Not on mining or the station. Or dead
-			continue
-		creatures += h
-
-	var/mob/target = input ("Who do you want to project your mind to ?") as mob in creatures
-
-	if (target)
-		remoteview_target = target
-		reset_view(target)
-	else
-		remoteview_target = null
-		reset_view(0)
-
 /atom/proc/get_visible_gender()
 	return gender
 
@@ -947,7 +832,7 @@
 	species.create_organs(src) // Reset our organs/limbs.
 
 	if(!client || !key) //Don't boot out anyone already in the mob.
-		for(var/obj/item/organ/internal/brain/H in world)
+		for(var/obj/item/organ/internal/cerebrum/brain/H in world)
 			if(H.brainmob)
 				if(H.brainmob.real_name == real_name)
 					if(H.brainmob.mind)
@@ -966,26 +851,43 @@
 	var/obj/item/organ/internal/lungs/L = internal_organs_by_name[BP_LUNGS]
 	return L && L.is_bruised()
 
-/mob/living/carbon/human/add_blood(mob/living/carbon/human/M as mob)
-	if (!..())
-		return 0
+/mob/living/carbon/human/add_blood(source)
+	. = ..()
+	if(!.)
+		return
+
 	//if this blood isn't already in the list, add it
-	if(istype(M))
+	if(ishuman(source))
+		var/mob/living/carbon/human/M = source
 		if(!blood_DNA[M.dna.unique_enzymes])
 			blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 	hand_blood_color = blood_color
-	src.update_inv_gloves()	//handles bloody hands overlays and updating
+	update_inv_gloves(1) // handles bloody hands overlays and updating
 	verbs += /mob/living/carbon/human/proc/bloody_doodle
-	return 1 //we applied blood to the item
 
 /mob/living/carbon/human/clean_blood(clean_feet)
-	.=..()
+	. =..()
+	if(!.)
+		return
+
 	gunshot_residue = null
+
 	if(clean_feet && !shoes)
+		track_blood = 0
 		feet_blood_color = null
 		feet_blood_DNA = null
 		update_inv_shoes(1)
-		return 1
+
+	if(gloves)
+		if(gloves.clean_blood())
+			update_inv_gloves(0)
+		gloves.germ_level = 0
+	else
+		if(!isnull(bloody_hands))
+			bloody_hands = null
+			update_inv_gloves(0)
+		germ_level = 0
+	update_icons()	//apply the now updated overlays to the mob
 
 /mob/living/carbon/human/get_visible_implants(class = 0)
 	var/list/visible_implants = ..()
@@ -1118,7 +1020,7 @@
 		for(var/datum/language/L in species.assisted_langs)
 			remove_language(L)
 		// Clear out their species abilities.
-		species.remove_inherent_verbs(src)
+		species.on_species_loss(src)
 		holder_type = null
 
 	species = all_species[new_species]
@@ -1149,9 +1051,13 @@
 		g_skin = 0
 		b_skin = 0
 
+	if(default_colour || !(species.species_appearance_flags & HAS_EYE_COLOR))
+		r_eyes = hex2num(copytext(species.default_eye_color, 2, 4))
+		g_eyes = hex2num(copytext(species.default_eye_color, 4, 6))
+		b_eyes = hex2num(copytext(species.default_eye_color, 6, 8))
+
 	if(species.holder_type)
 		holder_type = species.holder_type
-
 
 	if(!(gender in species.genders))
 		gender = species.genders[1]
@@ -1200,7 +1106,7 @@
 		return 1
 	for(var/datum/body_build/BB in species.body_builds)
 		if(gender in BB.genders)
-			body_build = BB
+			change_body_build(BB)
 			return 1
 	to_world_log("Can't find possible body_build. Gender = [gender], Species = [species]")
 	return 0
@@ -1283,38 +1189,57 @@
 
 
 /mob/living/carbon/human/print_flavor_text(shrink = 1)
-	var/list/equipment = list(src.head,src.wear_mask,src.glasses,src.w_uniform,src.wear_suit,src.gloves,src.shoes)
-	var/head_exposed = 1
-	var/face_exposed = 1
-	var/eyes_exposed = 1
-	var/torso_exposed = 1
-	var/arms_exposed = 1
-	var/legs_exposed = 1
-	var/hands_exposed = 1
-	var/feet_exposed = 1
+	var/list/equipment = list(head, wear_mask, glasses, w_uniform, wear_suit, gloves, shoes)
+	var/head_exposed = TRUE
+	var/face_exposed = TRUE
+	var/eyes_exposed = TRUE
+	var/torso_exposed = TRUE
+	var/arms_exposed = TRUE
+	var/legs_exposed = TRUE
+	var/hands_exposed = TRUE
+	var/feet_exposed = TRUE
+
+	if(!has_intact_limb(BP_L_ARM) && !has_intact_limb(BP_R_ARM))
+		arms_exposed = FALSE
+		hands_exposed = FALSE //No need to check for hands if it has no arms
+
+	if(hands_exposed && !has_intact_limb(BP_L_HAND) && !has_intact_limb(BP_R_HAND))
+		hands_exposed = FALSE
+
+	if(!has_intact_limb(BP_L_LEG) && !has_intact_limb(BP_R_LEG))
+		legs_exposed = FALSE
+		feet_exposed = FALSE
+
+	if(feet_exposed && !has_intact_limb(BP_L_FOOT) && !has_intact_limb(BP_R_FOOT))
+		feet_exposed = FALSE
+
+	if(!has_intact_limb(BP_HEAD))
+		head_exposed = FALSE
+		face_exposed = FALSE
+		eyes_exposed = FALSE
 
 	for(var/obj/item/clothing/C in equipment)
 		if(C.body_parts_covered & HEAD)
-			head_exposed = 0
+			head_exposed = FALSE
 		if(C.body_parts_covered & FACE)
-			face_exposed = 0
+			face_exposed = FALSE
 		if(C.body_parts_covered & EYES)
-			eyes_exposed = 0
+			eyes_exposed = FALSE
 		if(C.body_parts_covered & UPPER_TORSO)
-			torso_exposed = 0
-		if(C.body_parts_covered & ARMS)
-			arms_exposed = 0
-		if(C.body_parts_covered & HANDS)
-			hands_exposed = 0
-		if(C.body_parts_covered & LEGS)
-			legs_exposed = 0
-		if(C.body_parts_covered & FEET)
-			feet_exposed = 0
+			torso_exposed = FALSE
+		if(arms_exposed && C.body_parts_covered & ARMS)
+			arms_exposed = FALSE
+		if(hands_exposed && C.body_parts_covered & HANDS)
+			hands_exposed = FALSE
+		if(legs_exposed && C.body_parts_covered & LEGS)
+			legs_exposed = FALSE
+		if(feet_exposed && C.body_parts_covered & FEET)
+			feet_exposed = FALSE
 
 	flavor_text = ""
 	for (var/T in flavor_texts)
 		if(flavor_texts[T] && flavor_texts[T] != "")
-			if((T == "general") || (T == "head" && head_exposed) || (T == "face" && face_exposed) || (T == "eyes" && eyes_exposed) || (T == "torso" && torso_exposed) || (T == "arms" && arms_exposed) || (T == "hands" && hands_exposed) || (T == "legs" && legs_exposed) || (T == "feet" && feet_exposed))
+			if((T == "general") || (T == "head" && head_exposed) || (T == "face" && face_exposed) || (T == "eyes" && eyes_exposed) || (T == "torso" && torso_exposed) || (T == "arms" && arms_exposed) || (T == "hands" && hands_exposed) || (T == "legs" && legs_exposed) || (T == "feet" && feet_exposed) || (T == "action" && !is_ic_dead()))
 				flavor_text += flavor_texts[T]
 				flavor_text += "\n\n"
 	if(!shrink)
@@ -1338,7 +1263,7 @@
 
 /mob/living/carbon/human/has_brain()
 	if(internal_organs_by_name[BP_BRAIN])
-		var/obj/item/organ/internal/brain = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain = internal_organs_by_name[BP_BRAIN]
 		if(brain && istype(brain))
 			return 1
 	return 0
@@ -1407,7 +1332,7 @@
 		to_chat(S, "<span class='danger'>[U] pops your [current_limb.joint] back in!</span>")
 	current_limb.undislocate()
 
-/mob/living/carbon/human/drop(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/human/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
 	if(W in organs)
 		return
 	. = ..()
@@ -1554,6 +1479,20 @@
 		else return 1
 	return 0
 
+/// Basically the same as before, but also checks whether limb is FUBAR
+/mob/living/carbon/human/proc/has_intact_limb(limb_check)
+	if(limb_check == BP_CHEST || limb_check == BP_GROIN)
+		return
+
+	var/obj/item/organ/external/limb
+	limb = organs_by_name[limb_check]
+
+	if(limb && !limb.is_stump() && !(limb.status & ORGAN_DISFIGURED))
+		if(BP_IS_ROBOTIC(limb))
+			return 2
+		else return 1
+	return 0
+
 /mob/living/carbon/human/can_feel_pain(obj/item/organ/check_organ)
 	if(no_pain)
 		return 0
@@ -1694,11 +1633,13 @@
 /mob/living/carbon/human/proc/useblock_off()
 	src.setClickCooldown(3)
 	src.blocking = 0
+	remove_movespeed_modifier(/datum/movespeed_modifier/blocking)
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
 		src.block_icon.icon_state = "act_block0"
 
 /mob/living/carbon/human/proc/useblock_on()
 	src.blocking = 1
+	add_movespeed_modifier(/datum/movespeed_modifier/blocking)
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
 		src.block_icon.icon_state = "act_block1"
 
@@ -1723,7 +1664,7 @@
 	set hidden = 1
 
 	if(internal_organs_by_name[BP_BRAIN])
-		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/brain = internal_organs_by_name[BP_BRAIN]
 		if(!brain.is_broken() || stat != UNCONSCIOUS)
 			return
 

@@ -3,7 +3,7 @@
 	name = "Water"
 	description = "A ubiquitous chemical substance that is composed of hydrogen and oxygen."
 	reagent_state = LIQUID
-	color = "#0064c877"
+	color = "#3073b6"
 	metabolism = REM * 10
 	taste_description = "water"
 	glass_name = "water"
@@ -56,6 +56,19 @@
 		var/obj/item/reagent_containers/food/monkeycube/cube = O
 		if(!cube.wrapped)
 			cube.Expand()
+	else if(istype(O, /obj/item/clothing/mask/smokable))
+		var/obj/item/clothing/mask/smokable/smokable = O
+		smokable.die(FALSE, TRUE)
+	else if(istype(O, /obj/item/flame/lighter))
+		var/obj/item/flame/lighter/lighter = O
+		lighter.shutoff(silent = TRUE)
+	else if(istype(O, /obj/item/flame/candle))
+		var/obj/item/flame/candle/candle = O
+		candle.lit = FALSE
+		candle.update_icon()
+	else if(istype(O, /obj/item/flame/match))
+		var/obj/item/flame/match/match = O
+		match.burn_out()
 
 /datum/reagent/water/touch_mob(mob/living/L, amount)
 	if(istype(L))
@@ -91,8 +104,6 @@
 	metabolism = REM * 0.2
 
 /datum/reagent/acetone/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
-	if(alien == IS_NABBER)
-		return
 	M.adjustToxLoss(removed * 3)
 	if(affecting_dose > 5.0)
 		M.adjustBrainLoss(removed * 12.5) // Acetone causes nerve tissue damage, don't chug on it
@@ -423,7 +434,7 @@
 	glass_icon = DRINK_ICON_NOISY
 
 /datum/reagent/sugar/affect_blood(mob/living/carbon/M, alien, removed)
-	M.nutrition += removed * 3
+	M.add_nutrition(removed * 3)
 
 	if(alien == IS_UNATHI)
 		if(M.chem_doses[type] < 2)

@@ -655,7 +655,7 @@ datum
 
 
 			RCD
-				steal_target = /obj/item/rcd
+				steal_target = /obj/item/construction/rcd
 				explanation_text = "Steal a rapid construction device."
 				weight = 20
 
@@ -1376,7 +1376,7 @@ datum
 				if(!owner.current||owner.current.stat==2)//If you're otherwise dead.
 					return 0
 				var/list/all_items = owner.current.get_contents()
-				for(var/obj/item/device/mmi/mmi in all_items)
+				for(var/obj/item/organ/internal/cerebrum/mmi/mmi in all_items)
 					if(mmi.brainmob&&mmi.brainmob.mind==target)	return 1
 				for(var/obj/item/organ/brain/brain in all_items)
 					if(brain.brainmob&&brain.brainmob.mind==target)	return 1
