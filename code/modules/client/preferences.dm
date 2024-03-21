@@ -475,9 +475,8 @@ datum/preferences/proc/clear_character_previews()
 
 	client.apply_fps(clientfps)
 
-	var/datum/client_preference/zoom_pref = get_client_preference_by_key("PIXEL_SIZE")
 	var/zoom = client.get_preference_value("PIXEL_SIZE")
-	winset(client, "mapwindow.map", "zoom=[max(0, zoom_pref.options.Find(zoom) - 1)]")
+	winset(client, "mapwindow.map", "zoom=[zoom_pref2value(zoom)]")
 
 	var/zoom_mode = client.get_preference_value("SCALING_METHOD")
 	winset(client, "mapwindow.map", "zoom-mode=[lowertext(zoom_mode)]")
