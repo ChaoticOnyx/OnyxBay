@@ -10,6 +10,7 @@
 	icon_state = "emitter"
 	anchored = 0
 	density = 1
+	rotatable = TRUE
 	req_access = list(access_engine_equip)
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 0,
@@ -40,19 +41,13 @@
 	anchored = 1
 	state = 2
 
-/obj/machinery/power/emitter/verb/rotate()
-	set name = "Rotate"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
+/obj/machinery/power/emitter/rotate(mob/user)
+	if(anchored)
+		show_splash_text(user, "unfasten first!")
 		return
 
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor!")
-		return 0
-	set_dir(turn(dir, 90))
-	return 1
+	else
+		..()
 
 /obj/machinery/power/emitter/Initialize()
 	. = ..()

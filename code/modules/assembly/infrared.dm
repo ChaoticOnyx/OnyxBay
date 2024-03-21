@@ -11,6 +11,8 @@
 
 	secured = FALSE
 
+	rotatable = TRUE
+
 	var/on = FALSE
 	var/visible = FALSE
 
@@ -104,13 +106,6 @@
 		attack_self(user)
 
 	return TOPIC_REFRESH
-
-/obj/item/device/assembly/infra/verb/rotate()//This could likely be better
-	set name = "Rotate Infrared Laser"
-	set category = "Object"
-	set src in usr
-
-	set_dir(turn(dir, 90))
 
 /obj/item/device/assembly/infra/retransmit_moved(mover, old_loc, new_loc)
 	if(on)

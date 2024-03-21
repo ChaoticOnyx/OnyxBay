@@ -125,15 +125,12 @@
 
 /obj/AltClick(mob/user)
 	if(rotatable)
-		rotatet()
+		rotate(user)
 	else
 		. = ..()
 
-/obj/proc/rotatet()
-	if(!usr || !Adjacent(usr))
+/obj/proc/rotate(mob/user)
+	if(!user)
 		return
 
-	else if(usr.incapacitated())
-		return
-
-	src.set_dir(turn(src.dir, 90))
+	set_dir(turn(dir, -90)) // rotating clockwise

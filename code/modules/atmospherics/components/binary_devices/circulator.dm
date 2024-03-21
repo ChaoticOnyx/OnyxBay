@@ -21,6 +21,7 @@
 	var/stored_energy = 0
 
 	density = 1
+	rotatable = TRUE
 
 /obj/machinery/atmospherics/binary/circulator/Initialize()
 	. = ..()
@@ -121,25 +122,11 @@
 	else
 		..()
 
-/obj/machinery/atmospherics/binary/circulator/verb/rotate_clockwise()
-	set category = "Object"
-	set name = "Rotate Circulator (Clockwise)"
-	set src in view(1)
-
-	if (usr.stat || usr.restrained() || anchored)
+/obj/machinery/atmospherics/binary/circulator/rotate(mob/user)
+	if(anchored)
+		show_splash_text(user, "unfasten first!")
 		return
 
-	src.set_dir(turn(src.dir, 90))
-	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
-
-
-/obj/machinery/atmospherics/binary/circulator/verb/rotate_anticlockwise()
-	set category = "Object"
-	set name = "Rotate Circulator (Counterclockwise)"
-	set src in view(1)
-
-	if (usr.stat || usr.restrained() || anchored)
-		return
-
-	src.set_dir(turn(src.dir, -90))
-	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
+	else
+		..()
+		desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."

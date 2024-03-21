@@ -15,6 +15,7 @@
 	var/check = 0
 	var/material = ""
 	var/material_path = "/obj/item/stack/rods"
+	rotatable = TRUE
 
 /obj/structure/railing/Initialize()
 	. = ..()
@@ -115,43 +116,13 @@
 					if (WEST)
 						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = 32))
 
-/obj/structure/railing/verb/rotate()
-	set name = "Rotate Counter-Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return 0
-
-	if (!can_touch(usr) || ismouse(usr))
+/obj/structure/railing/rotate(mob/user)
+	if(anchored)
+		show_splash_text(user, "unfasten first!")
 		return
 
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
-		return 0
-
-	set_dir(turn(dir, 90))
-	update_icon()
-	return
-
-/obj/structure/railing/verb/revrotate()
-	set name = "Rotate Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return 0
-
-	if (!can_touch(usr) || ismouse(usr))
-		return
-
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
-		return 0
-
-	set_dir(turn(dir, -90))
-	update_icon()
-	return
+	else
+		..()
 
 /obj/structure/railing/verb/flip() // This will help push railing to remote places, such as open space turfs
 	set name = "Flip Railing"

@@ -12,6 +12,7 @@
 	var/obj/item/card/id/auth_card
 	var/locked = TRUE
 	var/obj/effect/suspension_field/suspension_field
+	rotatable = TRUE
 
 /obj/machinery/suspension_gen/New()
 	..()
@@ -236,25 +237,13 @@
 	deactivate()
 	return ..()
 
-/obj/machinery/suspension_gen/verb/rotate_ccw()
-	set src in view(1)
-	set name = "Rotate suspension gen (counter-clockwise)"
-	set category = "Object"
-
+/obj/machinery/suspension_gen/rotate(mob/user)
 	if(anchored)
-		to_chat(usr, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
-	else
-		set_dir(turn(dir, 90))
+		show_splash_text(user, "unfasten first!")
+		return
 
-/obj/machinery/suspension_gen/verb/rotate_cw()
-	set src in view(1)
-	set name = "Rotate suspension gen (clockwise)"
-	set category = "Object"
-
-	if(anchored)
-		to_chat(usr, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
 	else
-		set_dir(turn(dir, -90))
+		..()
 
 /obj/effect/suspension_field
 	name = "energy field"

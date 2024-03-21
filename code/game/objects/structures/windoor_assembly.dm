@@ -17,6 +17,7 @@
 	density = 0
 	dir = NORTH
 	w_class = ITEM_SIZE_NORMAL
+	rotatable = TRUE
 	var/material_used = MATERIAL_REINFORCED_GLASS
 	var/created_windoor = /obj/machinery/door/window
 	var/created_windoor_secure = /obj/machinery/door/window/brigdoor
@@ -266,20 +267,17 @@
 
 
 //Rotates the windoor assembly clockwise
-/obj/structure/windoor_assembly/verb/revrotate()
-	set name = "Rotate Windoor Assembly"
-	set category = "Object"
-	set src in oview(1)
+/obj/structure/windoor_assembly/rotate(mob/user)
+	if(anchored)
+		show_splash_text(user, "unfasten first!")
+		return
 
-	if (src.anchored)
-		to_chat(usr, "It is fastened to the floor; therefore, you can't rotate it!")
-		return 0
-	if(src.state != "01")
+	if(state != "01")
 		update_nearby_tiles(need_rebuild=1) //Compel updates before
 
-	src.set_dir(turn(src.dir, 270))
+	..()
 
-	if(src.state != "01")
+	if(state != "01")
 		update_nearby_tiles(need_rebuild=1)
 
 	update_icon()

@@ -17,6 +17,7 @@
 	var/subtype = 0
 	var/dpdir = 0	// directions as disposalpipe
 	var/base_state = "pipe-s"
+	rotatable = TRUE
 
 /obj/structure/disposalconstruct/Initialize()
 	update_verbs()
@@ -24,10 +25,8 @@
 
 /obj/structure/disposalconstruct/proc/update_verbs()
 	if(anchored)
-		verbs -= /obj/structure/disposalconstruct/proc/rotate
 		verbs -= /obj/structure/disposalconstruct/proc/flip
 	else
-		verbs += /obj/structure/disposalconstruct/proc/rotate
 		verbs += /obj/structure/disposalconstruct/proc/flip
 
 // update iconstate and dpdir due to dir and type
@@ -116,20 +115,13 @@
 
 
 // flip and rotate verbs
-/obj/structure/disposalconstruct/proc/rotate()
-	set category = "Object"
-	set name = "Rotate Pipe"
-	set src in view(1)
-
-	if(usr.incapacitated())
-		return
-
+/obj/structure/disposalconstruct/rotate(mob/user)
 	if(anchored)
-		to_chat(usr, "You must unfasten the pipe before rotating it.")
+		show_splash_text(user, "unfasten first!")
 		return
 
-	set_dir(turn(dir, -90))
-	update()
+	else
+		..()
 
 /obj/structure/disposalconstruct/proc/flip()
 	set category = "Object"

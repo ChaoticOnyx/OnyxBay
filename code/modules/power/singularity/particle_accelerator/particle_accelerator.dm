@@ -65,6 +65,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	icon_state = "none"
 	anchored = 0
 	density = 1
+	rotatable = TRUE
 	var/obj/machinery/particle_accelerator/control_box/master = null
 	var/construction_state = 0
 	var/reference = null
@@ -89,27 +90,13 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	return
 
 
-/obj/structure/particle_accelerator/verb/rotate()
-	set name = "Rotate Clockwise"
-	set category = "Object"
-	set src in oview(1)
+/obj/structure/particle_accelerator/rotate(mob/user)
+	if(anchored)
+		show_splash_text(user, "unfasten first!")
+		return
 
-	if (src.anchored || usr:stat)
-		to_chat(usr, "It is fastened to the floor!")
-		return 0
-	src.set_dir(turn(src.dir, 270))
-	return 1
-
-/obj/structure/particle_accelerator/verb/rotateccw()
-	set name = "Rotate Counter Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if (src.anchored || usr:stat)
-		to_chat(usr, "It is fastened to the floor!")
-		return 0
-	src.set_dir(turn(src.dir, 90))
-	return 1
+	else
+		. = ..()
 
 /obj/structure/particle_accelerator/_examine_text(mob/user)
 	switch(src.construction_state)
@@ -255,6 +242,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	icon_state = "none"
 	anchored = 0
 	density = 1
+	rotatable = TRUE
 	use_power = POWER_USE_OFF
 	idle_power_usage = 0 WATTS
 	active_power_usage = 0 WATTS
@@ -266,27 +254,14 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	var/desc_holder = null
 
 
-/obj/machinery/particle_accelerator/verb/rotate()
-	set name = "Rotate Clockwise"
-	set category = "Object"
-	set src in oview(1)
+/obj/machinery/particle_accelerator/rotate(mob/user)
+	if(anchored)
+		show_splash_text(user, "unfasten first!")
+		return
 
-	if (src.anchored || usr:stat)
-		to_chat(usr, "It is fastened to the floor!")
-		return 0
-	src.set_dir(turn(src.dir, 270))
-	return 1
+	else
+		..()
 
-/obj/machinery/particle_accelerator/verb/rotateccw()
-	set name = "Rotate Counter-Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if (src.anchored || usr:stat)
-		to_chat(usr, "It is fastened to the floor!")
-		return 0
-	src.set_dir(turn(src.dir, 90))
-	return 1
 
 /obj/machinery/particle_accelerator/on_update_icon()
 	return

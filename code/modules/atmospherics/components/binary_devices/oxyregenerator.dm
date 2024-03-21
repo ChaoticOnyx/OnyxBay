@@ -8,6 +8,7 @@
 	use_power = POWER_USE_OFF
 	idle_power_usage = 200 WATTS		//internal circuitry, friction losses and stuff
 	power_rating = 10000
+	rotatable = TRUE
 	var/target_pressure = 10*ONE_ATMOSPHERE
 	var/id = null
 	var/power_setting = 1 //power consumption setting, 1 through five
@@ -81,25 +82,13 @@
 			node1 = null
 			node2 = null
 
-/obj/machinery/atmospherics/binary/oxyregenerator/verb/rotate_clockwise()
-	set category = "Object"
-	set name = "Rotate  (Clockwise)"
-	set src in view(1)
-
-	if (usr.incapacitated() || anchored)
+/obj/machinery/atmospherics/binary/oxyregenerator/rotate(mob/user)
+	if(anchored)
+		show_splash_text(user, "unfasten first!")
 		return
 
-	src.set_dir(turn(src.dir, -90))
-
-/obj/machinery/atmospherics/binary/oxyregenerator/verb/rotate_anticlockwise()
-	set category = "Object"
-	set name = "Rotate (Counterclockwise)"
-	set src in view(1)
-
-	if (usr.incapacitated() || anchored)
-		return
-
-	src.set_dir(turn(src.dir, 90))
+	else
+		..()
 
 /obj/machinery/atmospherics/binary/oxyregenerator/Process(delay)
 	if((stat & (NOPOWER|BROKEN)) || !use_power)

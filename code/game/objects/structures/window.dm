@@ -9,6 +9,7 @@
 	layer = SIDE_WINDOW_LAYER
 	anchored = 1.0
 	atom_flags = ATOM_FLAG_CHECKS_BORDER
+	rotatable = TRUE
 	var/maxhealth = 14.0
 	var/maximal_heat = 100 CELSIUS 		// Maximal heat before this window begins taking damage from fire
 	var/damage_per_fire_tick = 2.0 		// Amount of damage per fire tick. Regular windows are not fireproof so they might as well break quickly.
@@ -292,7 +293,6 @@
 			if(health <= 7)
 				set_anchored(FALSE)
 				step(src, get_dir(user, src))
-				update_verbs()
 		else
 			visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
 			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
@@ -304,48 +304,19 @@
 	return
 
 
-/obj/structure/window/proc/rotate()
-	set name = "Rotate Window Counter-Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return 0
-
+/obj/structure/window/rotate(mob/user)
 	if(is_full_window) // No point in rotating a window if it is full
-		return 0
+		return
 
 	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
-		return 0
+		show_splash_text(user, "unfasten first!")
+		return
 
-	update_nearby_tiles(need_rebuild=1) //Compel updates before
-	set_dir(turn(dir, 90))
-	updateSilicate()
-	update_nearby_tiles(need_rebuild=1)
-	return
-
-
-/obj/structure/window/proc/revrotate()
-	set name = "Rotate Window Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return 0
-
-	if(is_full_window) // No point in rotating a window if it is full
-		return 0
-
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
-		return 0
-
-	update_nearby_tiles(need_rebuild=1) //Compel updates before
-	set_dir(turn(dir, 270))
-	updateSilicate()
-	update_nearby_tiles(need_rebuild=1)
-	return
+	else
+		..()
+		update_nearby_tiles(need_rebuild=1) //Compel updates before
+		updateSilicate()
+		update_nearby_tiles(need_rebuild=1)
 
 /obj/structure/window/New(Loc, start_dir=null, constructed=0)
 	..()
@@ -388,7 +359,6 @@
 	if(anchored == new_anchored)
 		return
 	anchored = new_anchored
-	update_verbs()
 	update_nearby_icons()
 
 //This proc is used to update the icons of nearby windows. It should not be confused with update_nearby_tiles(), which is an atmos proc!
@@ -396,15 +366,6 @@
 	update_icon()
 	for(var/obj/structure/window/W in orange(src, 1))
 		W.update_icon()
-
-//Updates the availabiliy of the rotation verbs
-/obj/structure/window/proc/update_verbs()
-	if(anchored)
-		verbs -= /obj/structure/window/proc/rotate
-		verbs -= /obj/structure/window/proc/revrotate
-	else
-		verbs += /obj/structure/window/proc/rotate
-		verbs += /obj/structure/window/proc/revrotate
 
 //merges adjacent full-tile windows into one (blatant ripoff from game/smoothwall.dm)
 /obj/structure/window/on_update_icon()

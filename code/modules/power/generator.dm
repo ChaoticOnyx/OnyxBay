@@ -4,6 +4,7 @@
 	icon_state = "teg"
 	density = 1
 	anchored = 0
+	rotatable = TRUE
 
 	use_power = POWER_USE_IDLE
 	idle_power_usage = 100 WATTS // Just enough to do the computer and display things.
@@ -217,22 +218,10 @@
 		// auto update every Master Controller tick
 		ui.set_auto_update(1)
 
-/obj/machinery/power/generator/verb/rotate_clock()
-	set category = "Object"
-	set name = "Rotate Generator (Clockwise)"
-	set src in view(1)
-
-	if (usr.stat || usr.restrained()  || anchored)
+/obj/machinery/power/generator/rotate(mob/user)
+	if(anchored)
+		show_splash_text(user, "unfasten first!")
 		return
 
-	src.set_dir(turn(src.dir, 90))
-
-/obj/machinery/power/generator/verb/rotate_anticlock()
-	set category = "Object"
-	set name = "Rotate Generator (Counterclockwise)"
-	set src in view(1)
-
-	if (usr.stat || usr.restrained()  || anchored)
-		return
-
-	src.set_dir(turn(src.dir, -90))
+	else
+		..()

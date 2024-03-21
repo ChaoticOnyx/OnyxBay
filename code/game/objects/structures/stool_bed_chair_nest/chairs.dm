@@ -78,30 +78,6 @@
 	if(buckled_mob)
 		buckled_mob.set_dir(dir)
 
-/obj/structure/bed/chair/AltClick(mob/living/L)
-	if(L.is_ventcrawling)
-		return
-	rotate()
-
-/obj/structure/bed/chair/verb/rotate()
-	set name = "Rotate Chair"
-	set category = "Object"
-	set src in oview(1)
-
-	if(!usr || !Adjacent(usr))
-		return
-
-	if(usr.is_ic_dead() && config.ghost.ghost_interaction)
-		var/area/A = get_area(src)
-		if(A?.holy)
-			to_chat(usr, SPAN("warning", "\The [src] is on sacred ground, you cannot turn it."))
-			return
-	else if(usr.incapacitated())
-		return
-
-	src.set_dir(turn(src.dir, 90))
-	return
-
 /* ======================================================= */
 /* -------------------- Folded Chairs -------------------- */
 /* ======================================================= */

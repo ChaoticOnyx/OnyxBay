@@ -34,6 +34,14 @@
 		if(STATE_SIGNALLER)
 			icon_state = "[base_icon]_st2"
 
+/obj/structure/secure_door_assembly/rotate(mob/user)
+	if(anchored)
+		show_splash_text(user, "unfasten first!")
+		return
+
+	else
+		..()
+
 /obj/structure/secure_door_assembly/attackby(obj/item/W, mob/user)
 	switch(state)
 		if(STATE_UNANCHORED)

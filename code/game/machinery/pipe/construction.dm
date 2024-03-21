@@ -17,6 +17,7 @@ Buildable meters
 	item_state = "buildpipe"
 	w_class = ITEM_SIZE_NORMAL
 	level = 2
+	rotatable = TRUE
 
 /obj/item/pipe/New(loc, pipe_type as num, dir as num, obj/machinery/atmospherics/make_from = null)
 	..()
@@ -314,17 +315,8 @@ Buildable meters
 	else
 		return ..()
 
-// rotate the pipe item clockwise
-
-/obj/item/pipe/verb/rotate()
-	set category = "Object"
-	set name = "Rotate Pipe"
-	set src in view(1)
-
-	if ( usr.stat || usr.restrained() )
-		return
-
-	src.set_dir(turn(src.dir, -90))
+/obj/item/pipe/rotate(mob/user)
+	..()
 
 	if (pipe_type in list (PIPE_SIMPLE_STRAIGHT, PIPE_SUPPLY_STRAIGHT, PIPE_SCRUBBERS_STRAIGHT, PIPE_UNIVERSAL, PIPE_HE_STRAIGHT, PIPE_MVALVE, PIPE_DVALVE, PIPE_SVALVE, PIPE_FUEL_STRAIGHT))
 		if(dir==2)
