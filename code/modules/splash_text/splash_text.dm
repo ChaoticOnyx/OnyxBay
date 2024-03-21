@@ -13,9 +13,7 @@
 
 /// Creates text that will float from the atom upwards to the viewers in range.
 /atom/proc/show_splash_text_to_viewers(message, self_message, vision_distance = 7, list/mob/ignored_mobs)
-	var/list/hearers = list()
-	var/list/garbage_obj = list() // TO-DO: add more helpers to exclude searching objects.
-	get_mobs_and_objs_in_view_fast(get_turf(src), vision_distance, hearers, garbage_obj)
+	var/list/hearers = get_hearers_in_view(vision_distance, src)
 	hearers -= ignored_mobs
 
 	for(var/hearer in hearers)

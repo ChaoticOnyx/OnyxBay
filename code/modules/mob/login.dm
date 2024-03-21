@@ -103,5 +103,7 @@
 				var/datum/spell/S = screen.spell
 				mind.learned_spells |= S
 
+	enable_client_mobs_in_contents(client)
+
 	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_IN, src)
 	SEND_SIGNAL(src, SIGNAL_LOGGED_IN, src)

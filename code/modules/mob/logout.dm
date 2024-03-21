@@ -10,6 +10,8 @@
 	hide_client_images()
 	..()
 
+	clear_important_client_contents()
+
 	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_OUT, src, client)
 	SEND_SIGNAL(src, SIGNAL_LOGGED_OUT, src, client)
 

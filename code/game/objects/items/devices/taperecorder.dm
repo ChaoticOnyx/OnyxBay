@@ -8,7 +8,8 @@
 	matter = list(MATERIAL_STEEL = 60, MATERIAL_GLASS = 30)
 
 	var/emagged = 0.0
-	var/recording = 0.0
+	/// Whether the radio taperecorder actually listens
+	VAR_PRIVATE/recording = FALSE
 	var/playing = 0.0
 	var/playsleepseconds = 0.0
 	var/obj/item/device/tape/mytape = /obj/item/device/tape/random
@@ -18,24 +19,36 @@
 	throwforce = 2
 	throw_range = 20
 
-/obj/item/device/taperecorder/New()
-	..()
+/obj/item/device/taperecorder/Initialize()
+	. = ..()
 
 	if(ispath(mytape))
 		mytape = new mytape(src)
 
-	GLOB.listening_objects += src
 	update_icon()
+
+	if(recording)
+		become_hearing_sensitive()
 
 /obj/item/device/taperecorder/empty
 	mytape = null
 
 /obj/item/device/taperecorder/Destroy()
-	GLOB.listening_objects -= src
 	if(mytape)
 		qdel(mytape)
 		mytape = null
 	return ..()
+
+/obj/item/device/taperecorder/proc/get_recording()
+	return recording
+
+/obj/item/device/taperecorder/proc/set_recording(new_recording)
+	recording = new_recording
+
+	if(recording) //we dont need hearing sensitivity if we arent broadcasting, because talk_into doesnt care about hearing
+		become_hearing_sensitive()
+	else
+		lose_hearing_sensitivity()
 
 
 /obj/item/device/taperecorder/attackby(obj/item/I, mob/user, params)
@@ -86,17 +99,14 @@
 	mytape = null
 	update_icon()
 
-
-/obj/item/device/taperecorder/hear_talk(mob/living/M as mob, msg, verb="says", datum/language/speaking=null)
+/obj/item/device/taperecorder/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(mytape && recording)
-
-		if(speaking)
-			if(!speaking.machine_understands)
-				msg = speaking.scramble(msg)
-			mytape.record_speech("[M.GetVoice()] [speaking.format_message_plain(msg, verb)]")
+		if(language)
+			if(!language.machine_understands)
+				message = language.scramble(message)
+			mytape.record_speech("[speaker.GetVoice()] [language.format_message_plain(message, verb)]")
 		else
-			mytape.record_speech("[M.GetVoice()] [verb], \"[msg]\"")
-
+			mytape.record_speech("[speaker.GetVoice()] [verb], \"[message]\"")
 
 /obj/item/device/taperecorder/see_emote(mob/M as mob, text, emote_type)
 	if(emote_type != AUDIBLE_MESSAGE) //only hearable emotes
@@ -119,7 +129,7 @@
 /obj/item/device/taperecorder/emag_act(remaining_charges, mob/user)
 	if(emagged == 0)
 		emagged = 1
-		recording = 0
+		set_recording(FALSE)
 		to_chat(user, "<span class='warning'>PZZTTPFFFT</span>")
 		update_icon()
 		return 1
@@ -158,7 +168,7 @@
 	if(mytape.used_capacity < mytape.max_capacity)
 		playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
 		to_chat(usr, "<span class='notice'>Recording started.</span>")
-		recording = 1
+		set_recording(TRUE)
 		update_icon()
 
 		mytape.record_speech("Recording started.")
@@ -182,7 +192,7 @@
 
 /obj/item/device/taperecorder/proc/stop_recording()
 	//Sanity checks skipped, should not be called unless actually recording
-	recording = 0
+	set_recording(FALSE)
 	update_icon()
 	mytape.record_speech("Recording stopped.")
 	if(ismob(loc))

@@ -158,16 +158,6 @@
 		default_language = null
 	return ..()
 
-// Can we speak this language, as opposed to just understanding it?
-/mob/proc/can_speak(datum/language/speaking)
-	if(!speaking)
-		return 0
-
-	if (only_species_language && speaking != all_languages[species_language])
-		return 0
-
-	return (speaking.can_speak_special(src) && (universal_speak || (speaking && speaking.flags & INNATE) || (speaking in src.languages)))
-
 /mob/proc/get_language_prefix()
 	return get_prefix_key(/decl/prefix/language)
 

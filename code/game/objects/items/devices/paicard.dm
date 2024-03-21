@@ -173,7 +173,7 @@
 				<table class="request">
 					<tr>
 						<td class="radio">Transmit:</td>
-						<td><a href='byond://?src=\ref[src];wires=4'>[radio.broadcasting ? "<font color=#55ff55>En" : "<font color=#ff5555>Dis" ]abled</font></a>
+						<td><a href='byond://?src=\ref[src];wires=4'>[radio.get_broadcasting() ? "<font color=#55ff55>En" : "<font color=#ff5555>Dis" ]abled</font></a>
 
 						</td>
 					</tr>
@@ -265,7 +265,7 @@
 		var/t1 = text2num(href_list["wires"])
 		switch(t1)
 			if(4)
-				radio.ToggleBroadcast()
+				radio.set_broadcasting(!radio.get_broadcasting())
 			if(2)
 				radio.ToggleReception()
 	if(href_list["setlaws"])

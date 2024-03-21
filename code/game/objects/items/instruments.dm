@@ -529,10 +529,10 @@
 			if("Gn6") soundfile = 'sound/recorder/Gn6.mid'
 	else	return
 
-	for(var/mob/M in hearers(15, get_turf(src)))
+	for(var/mob/M in get_hearers_in_view(15, src))
 		if(M.get_preference_value(/datum/client_preference/play_instruments) != GLOB.PREF_YES)
 			continue
-		
+
 		sound_to(M, sound(soundfile))
 
 /obj/item/instrument/proc/playsong()

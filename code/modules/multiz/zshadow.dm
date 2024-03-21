@@ -32,7 +32,7 @@
 	. = ..()
 
 // Relay some stuff they hear
-/mob/zshadow/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
+/mob/zshadow/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, atom/movable/speaker = null, sound/speech_sound, sound_vol)
 	if(speaker && speaker.z != src.z)
 		return // Only relay speech on our actual z, otherwise we might relay sounds that were themselves relayed up! Though this will only transmit message to adjacent z-levels
 	return owner.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)

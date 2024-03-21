@@ -474,16 +474,12 @@ its easier to just keep the beam vertical.
 // message is output to anyone who can see, e.g. "The [src] does something!"
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
 /atom/proc/visible_message(message, blind_message, range = world.view, checkghosts = null)
-	var/list/seeing_mobs = list()
-	var/list/seeing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
+	var/list/hearers = get_hearers_in_view(range, src)
 
-	for(var/o in seeing_objs)
-		var/obj/O = o
+	for(var/obj/O in hearers)
 		O.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 
-	for(var/m in seeing_mobs)
-		var/mob/M = m
+	for(var/mob/M in hearers)
 		if(M.see_invisible >= invisibility)
 			M.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 		else if(blind_message)
@@ -496,16 +492,12 @@ its easier to just keep the beam vertical.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
 // spash_override replaces the runechatted message if provided. i.e. you can make the atom go "*beep*" instead of "The Machine states, "Bee ..."
 /atom/proc/audible_message(message, deaf_message, hearing_distance = world.view, checkghosts = null, splash_override = null)
-	var/list/hearing_mobs = list()
-	var/list/hearing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
+	var/list/hearers = get_hearers_in_view(hearing_distance, src)
 
-	for(var/o in hearing_objs)
-		var/obj/O = o
+	for(var/obj/O in hearers)
 		O.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 
-	for(var/m in hearing_mobs)
-		var/mob/M = m
+	for(var/mob/M in hearers)
 		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 		if(M.get_preference_value("CHAT_RUNECHAT") == GLOB.PREF_YES)
 			M.create_chat_message(src, splash_override ? splash_override : message)

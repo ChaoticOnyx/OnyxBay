@@ -209,7 +209,7 @@
 //	sound_to(hearers(15, src), sound(soundfile))
 
 	var/turf/source = get_turf(src)
-	for(var/mob/M in hearers(15, source))
+	for(var/mob/M in get_hearers_in_view(15, source))
 		M.playsound_local(source, file(soundfile), 100, falloff = 5)
 
 

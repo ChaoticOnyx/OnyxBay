@@ -5,7 +5,6 @@ GLOBAL_LIST_EMPTY(xeno_hud_users)
 GLOBAL_LIST_EMPTY(gland_hud_users)
 GLOBAL_LIST_EMPTY(hud_icon_reference)
 
-GLOBAL_LIST_EMPTY(listening_objects) // List of objects that need to be able to hear, used to avoid recursive searching through contents.
 GLOBAL_LIST_EMPTY(golems_resonator)
 GLOBAL_LIST_EMPTY(global_mutations) // List of hidden mutation things.
 

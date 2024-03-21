@@ -38,16 +38,3 @@
 	to_chat(L, "<span class='warning'>You no longer feel intuned to \the [src].</span>")
 	intuned -= L
 	unregister_signal(L, SIGNAL_QDELETING)
-
-
-/obj/structure/deity/pylon/hear_talk(mob/M as mob, text, verb, datum/language/speaking)
-	if(!linked_god)
-		return
-	if(linked_god.pylon != src)
-		if(!(M in intuned))
-			return
-		for(var/obj/structure/deity/pylon/P in linked_god.structures)
-			if(P == src || linked_god.pylon == P)
-				continue
-			P.audible_message("<b>\The [P]</b> resonates, \"[text]\"")
-	to_chat(linked_god, "\icon[src] <span class='game say'><span class='name'>[M]</span> (<A href='?src=\ref[linked_god];jump=\ref[src];'>P</A>) [verb], [linked_god.pylon == src ? "<b>" : ""]<span class='message'><span class='body'>\"[text]\"</span></span>[linked_god.pylon == src ? "</b>" : ""]</span>")

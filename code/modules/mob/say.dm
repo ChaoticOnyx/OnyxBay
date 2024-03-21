@@ -1,6 +1,3 @@
-/mob/proc/say()
-	return
-
 /mob/verb/whisper()
 	set name = "Whisper"
 	set category = "IC"
@@ -43,8 +40,7 @@
 /mob/proc/say_dead(message)
 	communicate(/decl/communication_channel/dsay, client, message)
 
-/mob/proc/say_understands(mob/other,datum/language/language = null)
-
+/mob/say_understands(mob/other,datum/language/language = null)
 	if(src.is_ooc_dead())
 		return TRUE
 
@@ -73,19 +69,6 @@
 			return TRUE
 
 	return FALSE
-
-/mob/proc/say_quote(message, datum/language/language = null)
-	var/ending = copytext(message, length(message))
-	if(language)
-		return language.get_spoken_verb(ending)
-
-	var/verb = pick(speak_emote)
-	if(verb == "says") // a little bit of a hack, but we can't let speak_emote default to an empty list without breaking other things
-		if(ending == "!")
-			verb = pick("exclaims","shouts","yells")
-		else if(ending == "?")
-			verb ="asks"
-	return verb
 
 /mob/proc/get_ear()
 	// returns an atom representing a location on the map from which this
@@ -118,7 +101,7 @@
 
 // parses the language code (e.g. :j) from text, such as that supplied to say.
 // returns the language object only if the code corresponds to a language that src can speak, otherwise null.
-/mob/proc/parse_language(message)
+/mob/parse_language(message)
 	var/prefix = copytext_char(message,1,2)
 	if(length_char(message) >= 1 && prefix == get_prefix_key(/decl/prefix/audible_emote))
 		return all_languages["Noise"]

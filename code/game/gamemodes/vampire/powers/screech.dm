@@ -16,7 +16,7 @@
 
 	var/list/victims = list()
 
-	for(var/mob/living/carbon/human/T in hearers(4, my_mob))
+	for(var/mob/living/carbon/human/T in get_hearers_in_view(4, my_mob))
 		if(T == my_mob)
 			continue
 		if(T.get_ear_protection() > 2)

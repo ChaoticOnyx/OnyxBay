@@ -188,7 +188,25 @@
 		if ((A != src.loc && A && A.z == src.z))
 			src.last_move = get_dir(A, src.loc)
 
+	Moved(old_turf, new_turf, direct)
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
+
+/// Called after a successful Move(). By this point, we've already moved.
+/atom/movable/proc/Moved(turf/old_turf, turf/new_turf)
+	if(HAS_SPATIAL_GRID_CONTENTS(src))
+		if(old_turf && new_turf && (old_turf.z != new_turf.z \
+			|| GET_SPATIAL_INDEX(old_turf.x) != GET_SPATIAL_INDEX(new_turf.x) \
+			|| GET_SPATIAL_INDEX(old_turf.y) != GET_SPATIAL_INDEX(new_turf.y)))
+
+
+			SSspatial_grid.exit_cell(src, old_turf)
+			SSspatial_grid.enter_cell(src, new_turf)
+
+		else if(old_turf && !new_turf)
+			SSspatial_grid.exit_cell(src, old_turf)
+
+		else if(new_turf && !old_turf)
+			SSspatial_grid.enter_cell(src, new_turf)
 
 /proc/step_glide(atom/movable/am, dir, glide_size_override)
 	am.set_glide_size(glide_size_override)

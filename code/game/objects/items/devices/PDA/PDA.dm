@@ -1059,7 +1059,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 /obj/item/device/pda/proc/new_info(beep_silent, message_tone, reception_message)
 	if (!beep_silent)
 		playsound(loc, 'sound/signals/ping5.ogg', 50, 0)
-		for (var/mob/O in hearers(2, loc))
+		for (var/mob/O in get_hearers_in_view(2, loc))
 			O.show_message(text("\icon[src] *[message_tone]*"))
 	//Search for holder of the PDA.
 	var/mob/living/L = null

@@ -13,14 +13,6 @@
 	var/obj/item/device/assembly/a_right = null
 	var/obj/special_assembly = null
 
-/obj/item/device/assembly_holder/New()
-	..()
-	GLOB.listening_objects += src
-
-/obj/item/device/assembly_holder/Destroy()
-	GLOB.listening_objects -= src
-	return ..()
-
 /obj/item/device/assembly_holder/proc/detached()
 	return
 
@@ -206,12 +198,11 @@
 		master.receive_signal()
 	return 1
 
-/obj/item/device/assembly_holder/hear_talk(mob/living/M, msg, verb, datum/language/language)
+/obj/item/device/assembly_holder/hear_say(message, verb, datum/language/language, alt_name, italics, atom/movable/speaker, sound/speech_sound, sound_vol)
 	if(a_right)
-		a_right.hear_talk(M,msg, verb, language)
+		a_right.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 	if(a_left)
-		a_left.hear_talk(M,msg, verb, language)
-
+		a_left.hear_say(message, verb, language, alt_name, italics, speaker, speech_sound, sound_vol)
 
 /obj/item/device/assembly_holder/timer_igniter
 	name = "timer-igniter assembly"

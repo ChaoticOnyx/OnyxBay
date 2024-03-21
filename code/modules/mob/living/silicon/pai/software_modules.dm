@@ -90,7 +90,7 @@
 	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui = null, force_open = 1)
 		var/data[0]
 
-		data["listening"] = user.silicon_radio.broadcasting
+		data["listening"] = user.silicon_radio.get_broadcasting()
 		data["frequency"] = format_frequency(user.silicon_radio.frequency)
 
 		var/channels[0]
@@ -400,7 +400,7 @@
 
 		if(href_list["send"])
 			P.sradio.send_signal("ACTIVATE")
-			for(var/mob/O in hearers(1, P.loc))
+			for(var/mob/O in get_hearers_in_LOS(1, src))
 				O.show_message(text("\icon[] *beep* *beep*", P), 3, "*beep* *beep*", 2)
 			return 1
 
