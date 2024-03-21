@@ -127,7 +127,7 @@
 	if(rotatable)
 		rotate(user)
 	else
-		. = ..()
+		..()
 
 /obj/proc/rotate(mob/user)
 	if(!user || user.incapacitated() || !Adjacent(user))
