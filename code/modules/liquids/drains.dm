@@ -5,7 +5,7 @@
 	icon_state = "drain"
 	desc = "Drainage inlet embedded in the floor to prevent flooding."
 	density = FALSE
-	plane = FLOOR_PLANE
+	plane = TURF_PLANE
 	layer = EXPOSED_PIPE_LAYER
 	anchored = TRUE
 	var/processing = FALSE
@@ -27,8 +27,7 @@
 		welder_act(user, O)
 
 /obj/structure/drain/proc/welder_act(mob/living/user, obj/item/weldingtool/WT)
-	if(!WT.isOn()) return
-	if (WT.get_fuel() < 5) // uses up 5 fuel.
+	if(!WT.use_tool(src, user, delay= 4 SECONDS, amount = 5))
 		return
 
 	playsound(src, 'sound/items/welder2.ogg', 50, TRUE)

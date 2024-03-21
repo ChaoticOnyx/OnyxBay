@@ -21,8 +21,6 @@
 			/obj/effect = "EFFECT",
 			/obj = "O",
 			/datum = "D",
-			/turf/open = "OPEN",
-			/turf/closed = "CLOSED",
 			/turf = "T",
 			/mob/living/carbon = "CARBON",
 			/mob/living/simple_animal = "SIMPLE",

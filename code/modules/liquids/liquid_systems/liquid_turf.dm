@@ -2,7 +2,6 @@
 	var/datum/liquid_group/lgroup
 	var/obj/effect/abstract/liquid_turf/liquids
 	var/liquid_height = 0
-	var/turf_height = 0
 
 /turf/proc/convert_immutable_liquids()
 	if(!liquids || !liquids.immutable)
@@ -236,14 +235,6 @@
 			T.add_liquid_list(liquids.reagent_list, TRUE, liquids.temp)
 	if(!any_share)
 		SSliquids.active_immutables -= src
-
-
-/*
-*	OPEN TURFS
-*/
-/turf/open
-	/// Pollution stored on this turf
-	var/datum/pollution/pollution
 
 //Consider making all of these behaviours a smart component/element? Something that's only applied wherever it needs to be
 //Could probably have the variables on the turf level, and the behaviours being activated/deactived on the component level as the vars are updated

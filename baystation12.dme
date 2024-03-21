@@ -176,6 +176,7 @@
 #include "code\_helpers\time.dm"
 #include "code\_helpers\turfs.dm"
 #include "code\_helpers\type2type.dm"
+#include "code\_helpers\type_processing.dm"
 #include "code\_helpers\unsorted.dm"
 #include "code\_helpers\vector.dm"
 #include "code\_helpers\warnings.dm"

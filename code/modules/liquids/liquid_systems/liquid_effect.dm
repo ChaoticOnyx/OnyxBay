@@ -3,7 +3,7 @@
 	icon = 'icons/effects/liquid.dmi'
 	icon_state = "water-0"
 	anchored = TRUE
-	plane = FLOOR_PLANE
+	plane = TURF_PLANE
 	layer = SHALLOW_FLUID_LAYER
 	color = "#DDF"
 
@@ -247,7 +247,7 @@
 		if(LIQUID_FIRE_STATE_INFERNO)
 			fire_icon_state = "fire_big"
 
-	src.overlays += mutable_appearance(icon, fire_icon_state, appearance_flags = RESET_COLOR|RESET_ALPHA)
+	src.overlays += mutable_appearance(icon, fire_icon_state, flags = RESET_COLOR|RESET_ALPHA)
 
 //Takes a flat of our reagents and returns it, possibly qdeling our liquids
 /obj/effect/abstract/liquid_turf/proc/take_reagents_flat(flat_amount)
