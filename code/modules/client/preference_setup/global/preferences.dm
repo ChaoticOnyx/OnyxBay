@@ -10,6 +10,15 @@ GLOBAL_VAR_CONST(PREF_SHOW, "Show")
 GLOBAL_VAR_CONST(PREF_HIDE, "Hide")
 GLOBAL_VAR_CONST(PREF_FANCY, "Fancy")
 GLOBAL_VAR_CONST(PREF_PLAIN, "Plain")
+GLOBAL_VAR_CONST(PREF_STRETCH, "Stretch to Fit")
+GLOBAL_VAR_CONST(PREF_X1, "x1")
+GLOBAL_VAR_CONST(PREF_X15, "x1.5")
+GLOBAL_VAR_CONST(PREF_X2, "x2")
+GLOBAL_VAR_CONST(PREF_X25, "x2.5")
+GLOBAL_VAR_CONST(PREF_X3, "x3")
+GLOBAL_VAR_CONST(PREF_NORMAL, "Normal")
+GLOBAL_VAR_CONST(PREF_DISTORT, "Distort")
+GLOBAL_VAR_CONST(PREF_BLUR, "Blur")
 GLOBAL_VAR_CONST(PREF_PRIMARY, "Primary")
 GLOBAL_VAR_CONST(PREF_ALL, "All")
 GLOBAL_VAR_CONST(PREF_OFF, "Off")
@@ -305,6 +314,26 @@ var/global/list/_client_preferences_by_type
 		var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
 		R.GraphicsUpdate()
 
+/datum/client_preference/pixel_size
+	description = "Pixel Size"
+	key = "PIXEL_SIZE"
+	category = PREF_CATEGORY_GRAPHICS
+	options = list(GLOB.PREF_STRETCH, GLOB.PREF_X1, GLOB.PREF_X15, GLOB.PREF_X2, GLOB.PREF_X25, GLOB.PREF_X3)
+	default_value = GLOB.PREF_STRETCH
+
+/datum/client_preference/pixel_size/changed(mob/preference_mob, new_value)
+	winset(preference_mob, "mapwindow.map", "zoom=[max(0, options.Find(new_value) - 1)]")
+
+/datum/client_preference/scaling_method
+	description = "Scaling Method"
+	key = "SCALING_METHOD"
+	category = PREF_CATEGORY_GRAPHICS
+	options = list(GLOB.PREF_NORMAL, GLOB.PREF_DISTORT, GLOB.PREF_BLUR)
+	default_value = GLOB.PREF_NORMAL
+
+/datum/client_preference/scaling_method/changed(mob/preference_mob, new_value)
+	winset(preference_mob, "mapwindow.map", "zoom-mode=[lowertext(new_value)]")
+
 /datum/client_preference/fullscreen_mode
 	description = "Fullscreen Mode"
 	key = "FULLSCREEN"
@@ -316,15 +345,14 @@ var/global/list/_client_preferences_by_type
 	if(preference_mob.client)
 		preference_mob.client.toggle_fullscreen(new_value)
 
-/datum/client_preference/chat_position
-	description = "Use Alternative Chat Position"
-	key = "CHAT_ALT"
+/datum/client_preference/statusbar
+	description = "Show Statusbar"
+	key = "STATUSBAR"
 	category = PREF_CATEGORY_UI
-	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
-/datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
-	if(preference_mob.client)
-		preference_mob.client.update_chat_position()
+/datum/client_preference/statusbar/changed(mob/preference_mob, new_value)
+	winset(preference_mob, "statusbar", "is-visible=[new_value == GLOB.PREF_YES]")
 
 /datum/client_preference/cinema_credits
 	description = "Show Cinema-like Credits At Round-end"

@@ -902,58 +902,18 @@ menu "menu"
 		category = "&File"
 		saved-params = "is-checked"
 	elem
-		name = "&Icons"
+		name = "&Preferences"
 		command = ""
 		saved-params = "is-checked"
-	elem "stretch"
-		name = "&Stretch to fit"
-		command = ".winset \"mapwindow.map.icon-size=0\""
-		category = "&Icons"
-		is-checked = true
-		can-check = true
-		group = "size"
+	elem
+		name = "&Game Settings"
+		command = "settings"
+		category = "&Preferences"
 		saved-params = "is-checked"
-	elem "icon128"
-		name = "&128x128"
-		command = ".winset \"mapwindow.map.icon-size=128\""
-		category = "&Icons"
-		can-check = true
-		group = "size"
-		saved-params = "is-checked"
-	elem "icon96"
-		name = "&96x96"
-		command = ".winset \"mapwindow.map.icon-size=96\""
-		category = "&Icons"
-		can-check = true
-		group = "size"
-		saved-params = "is-checked"
-	elem "icon64"
-		name = "&64x64"
-		command = ".winset \"mapwindow.map.icon-size=64\""
-		category = "&Icons"
-		can-check = true
-		group = "size"
-		saved-params = "is-checked"
-	elem "icon48"
-		name = "&48x48"
-		command = ".winset \"mapwindow.map.icon-size=48\""
-		category = "&Icons"
-		can-check = true
-		group = "size"
-		saved-params = "is-checked"
-	elem "icon32"
-		name = "&32x32"
-		command = ".winset \"mapwindow.map.icon-size=32\""
-		category = "&Icons"
-		can-check = true
-		group = "size"
-		saved-params = "is-checked"
-	elem "zoommode"
-		name = "&Smooth scaling"
-		command = ".winset \"zoommode.is-checked=true?map.zoom-mode=normal:map.zoom-mode=distort\""
-		category = "&Icons"
-		is-checked = true
-		can-check = true
+	elem
+		name = "&Character Setup"
+		command = "character-setup"
+		category = "&Preferences"
 		saved-params = "is-checked"
 	elem
 		name = "&Help"
@@ -975,7 +935,7 @@ window "mainwindow"
 	elem "mainwindow"
 		type = MAIN
 		pos = 281,0
-		size = 640x440
+		size = 640x420
 		anchor1 = -1,-1
 		anchor2 = -1,-1
 		is-default = true
@@ -1001,39 +961,6 @@ window "mainwindow"
 		saved-params = "splitter"
 		right = "infowindow"
 		is-vert = true
-	elem "input"
-		type = INPUT
-		pos = 3,420
-		size = 517x20
-		anchor1 = 0,100
-		anchor2 = 100,100
-		background-color = #d3b5b5
-		is-default = true
-		border = sunken
-		saved-params = "command"
-		on-focus = ".add_speech_bubble"
-		on-blur = ".remove_speech_bubble"
-	elem "saybutton"
-		type = BUTTON
-		pos = 520,420
-		size = 40x20
-		anchor1 = 100,100
-		anchor2 = -1,-1
-		saved-params = "is-checked"
-		text = "Chat"
-		command = ".winset \"saybutton.is-checked=true?input.command=\"!Say \\\"\" macrobutton.is-checked=false:input.command=\""
-		button-type = pushbox
-	elem "hotkey_toggle"
-		type = BUTTON
-		pos = 560,420
-		size = 80x20
-		anchor1 = 100,100
-		anchor2 = -1,-1
-		saved-params = ""
-		text = "Hotkey Toggle"
-		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
-		button-type = pushbox
-
 
 window "mapwindow"
 	elem "mapwindow"
@@ -1076,10 +1003,11 @@ window "mapwindow"
 window "outputwindow"
 	elem "outputwindow"
 		type = MAIN
-		pos = 281,0
+		pos = 291,13
 		size = 640x480
-		anchor1 = none
-		anchor2 = none
+		anchor1 = -1,-1
+		anchor2 = -1,-1
+		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		titlebar = false
 		statusbar = false
@@ -1090,7 +1018,7 @@ window "outputwindow"
 	elem "browseroutput"
 		type = BROWSER
 		pos = 0,0
-		size = 640x480
+		size = 640x451
 		anchor1 = 0,0
 		anchor2 = 100,100
 		background-color = #ffffff
@@ -1099,47 +1027,44 @@ window "outputwindow"
 	elem "output"
 		type = OUTPUT
 		pos = 0,0
-		size = 640x480
+		size = 640x451
 		anchor1 = 0,0
 		anchor2 = 100,100
 		is-default = true
 		saved-params = ""
-	elem "saybutton_alt"
-		type = BUTTON
-		pos = 519,460
-		size = 40x20
-		anchor1 = 100,100
-		anchor2 = -1,-1
-		is-visible = false
-		is-disabled = true
-		saved-params = "is-checked"
-		text = "Chat"
-		command = ".winset \"saybutton_alt.is-checked=true?input_alt.command=\"!say \\\"\" macrobutton.is-checked=false:input_alt.command=\""
-		button-type = pushbox
-	elem "input_alt"
+	elem "input"
 		type = INPUT
-		pos = 1,460
-		size = 517x20
+		pos = 2,455
+		size = 514x20
 		anchor1 = 0,100
 		anchor2 = 100,100
 		background-color = #d3b5b5
-		is-visible = false
-		is-disabled = true
+		is-default = true
 		border = sunken
 		saved-params = "command"
 		on-focus = ".add_speech_bubble"
 		on-blur = ".remove_speech_bubble"
-	elem "hotkey_toggle_alt"
+	elem "saybutton"
 		type = BUTTON
-		pos = 560,460
-		size = 80x20
+		pos = 518,455
+		size = 40x20
 		anchor1 = 100,100
 		anchor2 = -1,-1
-		is-visible = false
-		is-disabled = true
+		background-color = none
+		saved-params = "is-checked"
+		text = "Chat"
+		command = ".winset \"saybutton.is-checked=true?input.command=\"!say \\\"\" macrobutton.is-checked=false:input.command=\""
+		button-type = pushbox
+	elem "hotkey_toggle"
+		type = BUTTON
+		pos = 560,455
+		size = 78x20
+		anchor1 = 100,100
+		anchor2 = -1,-1
+		background-color = none
 		saved-params = ""
 		text = "Hotkey Toggle"
-		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle_alt.is-checked=false input_alt.focus=true : mainwindow.macro=hotkeymode hotkey_toggle_alt.is-checked=true mapwindow.map.focus=true\""
+		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
 		button-type = pushbox
 
 
@@ -1246,8 +1171,8 @@ window "infowindow"
 		anchor1 = 56,0
 		anchor2 = 67,0
 		saved-params = "is-checked"
-		text = "In-Game Bug Report"
-		command = "bug-report"
+		text = "Report Bug"
+		command = "report-bug"
 		group = "rpanemode"
 	elem "changelog"
 		type = BUTTON
