@@ -436,8 +436,7 @@
 
 				qdel(tempr)
 				falling_carbon.adjustOxyLoss(5)
-				//C.emote("cough")
-				INVOKE_ASYNC(falling_carbon, /mob/proc/emote, "cough")
+				falling_carbon.emote("cough")
 				to_chat(falling_carbon, SPAN_DANGER("You fall in and swallow some [reagents_to_text()]!"))
 		else
 			to_chat(M, SPAN_DANGER("You fall in the [reagents_to_text()]!"))
