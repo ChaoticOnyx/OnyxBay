@@ -18,9 +18,15 @@
 	var/dpdir = 0	// directions as disposalpipe
 	var/base_state = "pipe-s"
 
-/obj/structure/disposalconstruct/Initialize()
-	update_verbs()
+/obj/structure/disposalconstruct/Initialize(mapload, pipe_type, pipe_subtype)
 	. = ..()
+	if(pipe_type)
+		ptype = pipe_type
+
+	if(pipe_subtype)
+		subtype = pipe_subtype
+
+	update_verbs()
 
 /obj/structure/disposalconstruct/proc/update_verbs()
 	if(anchored)
@@ -55,16 +61,19 @@
 		if(5)
 			base_state = "pipe-t"
 			dpdir = dir
+			set_density(TRUE)
 		 // disposal bin has only one dir, thus we don't need to care about setting it
 		if(6)
 			if(anchored)
 				base_state = "disposal"
 			else
 				base_state = "condisposal"
+			set_density(TRUE)
 
 		if(7)
 			base_state = "outlet"
 			dpdir = dir
+			set_density(TRUE)
 
 		if(8)
 			base_state = "intake"
