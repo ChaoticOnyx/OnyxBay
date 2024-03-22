@@ -1,12 +1,5 @@
 import { useBackend } from "../backend";
-import {
-  Button,
-  LabeledList,
-  ProgressBar,
-  Section,
-  Stack,
-  LabeledControls,
-} from "../components";
+import { Button, NoticeBox, Section, Stack } from "../components";
 import { Window } from "../layouts";
 
 interface GunData {
@@ -15,6 +8,7 @@ interface GunData {
 }
 
 interface Data {
+  title: string;
   chosenGun: string;
   chosenGunDesc: string;
   gunSpawned: boolean;
@@ -27,48 +21,50 @@ export const Guncase = (props: any, context: any) => {
   return (
     <Window width={300} height={345}>
       <Window.Content>
-        <Section title="The security hardcase">
-          <Stack fill vertical>
-            <Stack.Item>
+        <Stack fill vertical>
+          <Stack.Item>
+            <NoticeBox success>
               It can be locked and unlocked by swiping your ID card across the
               lock.
-            </Stack.Item>
-            <Stack.Item>
+            </NoticeBox>
+            <NoticeBox>
               Be careful! Once you chose your weapon and unlock the gun case,
               you won't be able to change it.
-            </Stack.Item>
-          </Stack>
-        </Section>
-        <Stack>
-          <Stack.Item>
-            <Section minHeight="100%" width={window.innerWidth - 220 + "px"}>
-              <Stack vertical>
-                {data.possibleGuns.map((gun) => (
-                  <Stack.Item>
-                    <Button
-                      fluid
-                      tooltip={gun.gunDesc}
-                      onClick={() => act("chooseGun", { gunName: gun.gunName })}
-                      color={
-                        data.chosenGun === gun.gunName ? "good" : "default"
-                      }
-                      disabled={data.gunSpawned}
-                    >
-                      {gun.gunName}
-                    </Button>
-                  </Stack.Item>
-                ))}
-              </Stack>
-            </Section>
+            </NoticeBox>
           </Stack.Item>
-          <Stack ml="10px">
-            <Stack.Item>
-              <Section title="Chosen gun:">
-                {data.chosenGun ? data.chosenGun : "N/A"}
-                <Stack.Item>{data.chosenGunDesc}</Stack.Item>
-              </Section>
-            </Stack.Item>
-          </Stack>
+          <Stack.Item grow>
+            <Stack fill>
+              <Stack.Item>
+                <Section fill>
+                  <Stack vertical>
+                    {data.possibleGuns.map((gun) => (
+                      <Stack.Item>
+                        <Button
+                          textAlign="center"
+                          fluid
+                          tooltip={gun.gunDesc}
+                          onClick={() =>
+                            act("chooseGun", { gunName: gun.gunName })
+                          }
+                          color={
+                            data.chosenGun === gun.gunName ? "good" : "default"
+                          }
+                          disabled={data.gunSpawned}
+                        >
+                          {gun.gunName}
+                        </Button>
+                      </Stack.Item>
+                    ))}
+                  </Stack>
+                </Section>
+              </Stack.Item>
+              <Stack.Item grow>
+                <Section title={data.chosenGun ? data.chosenGun : "N/A"}>
+                  <Stack.Item>{data.chosenGunDesc}</Stack.Item>
+                </Section>
+              </Stack.Item>
+            </Stack>
+          </Stack.Item>
         </Stack>
       </Window.Content>
     </Window>

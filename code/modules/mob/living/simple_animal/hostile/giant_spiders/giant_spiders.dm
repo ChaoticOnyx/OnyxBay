@@ -5,7 +5,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	desc = "A strange language that can be understood both by the sounds made and by the movement needed to create those sounds."
 	signlang_verb = list("chitters", "grinds its mouthparts", "chitters and grinds its mouthparts")
 	key = "p"
-	flags = RESTRICTED | SIGNLANG | NO_STUTTER | NONVERBAL
+	language_flags = RESTRICTED | SIGNLANG | NO_STUTTER | NONVERBAL
 	colour = ".spider"
 	shorthand = "SR"
 
