@@ -26,8 +26,10 @@
 	var/list/data = list(
 		"defaultLanguage" = owner.default_language?.name,
 		"adminMode" = check_rights(R_ADMIN, FALSE, user.client),
-		"languages" = list()
+		"languages" = list(),
+		"isSilicon" = issilicon(owner)
 	)
+
 
 	for(var/datum/language/L in owner.languages)
 		var/list/lang_data = list(
@@ -38,6 +40,10 @@
 			"desc" = L.desc,
 			"can_speak" = owner.can_speak(L)
 		)
+		if(issilicon(owner))
+			var/mob/living/silicon/silicon = owner
+			lang_data["synthesizer"] = (L in silicon.speech_synthesizer_langs)
+
 		data["languages"] += list(lang_data)
 
 	return data

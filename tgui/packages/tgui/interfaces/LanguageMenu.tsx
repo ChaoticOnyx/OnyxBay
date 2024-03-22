@@ -9,11 +9,13 @@ interface Language {
   key: string;
   desc: string;
   can_speak: boolean;
+  synthesizer: boolean;
 }
 
 interface InputData {
   adminMode: string;
   defaultLanguage: string;
+  isSilicon: boolean;
   languages: Language[];
 }
 
@@ -42,7 +44,11 @@ export const LanguageMenu = (props: any, context: any) => {
                     onClick={() =>
                       act("choose_language", { language: language.name })
                     }
-                  ></Button>
+                  >
+                    {data.isSilicon && !language.synthesizer
+                      ? " NOT SUPPORTED!"
+                      : ""}
+                  </Button>
                 </Stack.Item>
                 <Stack.Item>
                   {data.adminMode ? (
