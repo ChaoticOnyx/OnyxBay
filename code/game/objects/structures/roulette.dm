@@ -20,7 +20,7 @@
 
 /obj/structure/casino/roulette/attack_hand(mob/user)
 	if(spinning)
-		show_splash_text(user, "already spinning!")
+		show_splash_text(user, "already spinning!", "The roulette is already spinning!")
 		return
 
 	visible_message(SPAN("notice", "[user] spins \the [src] and throws a little ball inside!"))

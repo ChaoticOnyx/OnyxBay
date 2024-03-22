@@ -114,7 +114,7 @@
 	if(emagged)
 		return NO_EMAG_ACT
 
-	show_splash_text(user, "cabinet emagged!")
+	show_splash_text(user, "cabinet emagged!", "You hack \the [src] reagent fabricator!")
 	emagged = TRUE
 	return TRUE
 

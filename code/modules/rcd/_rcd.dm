@@ -64,10 +64,10 @@
 /// Installs an upgrade into the RCD checking if it is already installed, or if it is a banned upgrade
 /obj/item/construction/proc/install_upgrade(obj/item/rcd_upgrade/design_disk, mob/user)
 	if(design_disk.upgrade & upgrade)
-		show_splash_text(user, "already installed!")
+		show_splash_text(user, "already installed!", SPAN("warning", "\The [src] already has this upgrade!"))
 		return FALSE
 	if(design_disk.upgrade & banned_upgrades)
-		show_splash_text(user, "cannot install upgrade!")
+		show_splash_text(user, "cannot install upgrade!", SPAN("warning", "\The [src] cannot have this upgrade!"))
 		return FALSE
 	upgrade |= design_disk.upgrade
 	playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
@@ -85,7 +85,7 @@
 		var/load = min(ammo.ammoamt, max_matter - local_matter)
 		load = round(load / MATTER_REDUCTION_COEFFICIENT)
 		if(load <= 0)
-			show_splash_text(user, "storage full!")
+			show_splash_text(user, "storage full!", SPAN("warning", "\The [src] is full!"))
 			return FALSE
 		ammo.ammoamt -= load
 		if(ammo.ammoamt <= 0)
@@ -101,7 +101,7 @@
 
 /obj/item/construction/proc/loadwithsheets(obj/item/stack/the_stack, mob/user)
 	if(the_stack.amount <= 0)
-		show_splash_text(user, "invalid sheets!")
+		show_splash_text(user, "invalid sheets!", SPAN("warning", "\The [src] refuses to accept this."))
 		return FALSE
 
 	var/sheet_amt_to_matter = round(the_stack.amount / MATTER_REDUCTION_COEFFICIENT)
@@ -113,7 +113,7 @@
 		playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
 		return TRUE
 
-	show_splash_text(user, "storage full!")
+	show_splash_text(user, "storage full!", SPAN("warning", "\The [src] is full!"))
 	return FALSE
 
 /obj/item/construction/proc/activate()
@@ -134,7 +134,7 @@
 /obj/item/construction/proc/useResource(amount, mob/user)
 	if(local_matter < amount)
 		if(user)
-			show_splash_text(user, "not enough local_matter!")
+			show_splash_text(user, "not enough local_matter!", SPAN("warning", "Not enough local_matter!"))
 		return FALSE
 
 	local_matter -= amount
@@ -172,7 +172,7 @@
 	. = local_matter >= amount
 
 	if(!. && user)
-		show_splash_text(user, "low ammo!")
+		show_splash_text(user, "low ammo!", SPAN("warning", "Not enough matter!"))
 		if(has_ammobar)
 			flick("[icon_state]_empty", src) //somewhat hacky thing to make RCDs with ammo counters actually have a blinking yellow light
 
@@ -182,7 +182,7 @@
 	if(target.z != user.z)
 		return
 	if(!(target in dview(7, get_turf(user))))
-		show_splash_text(user, "out of range!")
+		show_splash_text(user, "out of range!", SPAN("warning", "Out of range!"))
 		flick("[icon_state]_empty", src)
 		return FALSE
 	else

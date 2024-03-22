@@ -43,6 +43,9 @@ GLOBAL_VAR_CONST(PREF_DARKNESS_VISIBLE, "Fully visible")
 GLOBAL_VAR_CONST(PREF_DARKNESS_MOSTLY_VISIBLE, "Mostly visible")
 GLOBAL_VAR_CONST(PREF_DARKNESS_BARELY_VISIBLE, "Barely visible")
 GLOBAL_VAR_CONST(PREF_DARKNESS_INVISIBLE, "Invisible")
+GLOBAL_VAR_CONST(PREF_SPLASH_MAPTEXT, "Maptext only")
+GLOBAL_VAR_CONST(PREF_SPLASH_CHAT, "Chat only")
+GLOBAL_VAR_CONST(PREF_SPLASH_BOTH, "Maptext and chat")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -124,8 +127,8 @@ var/global/list/_client_preferences_by_type
 /datum/client_preference/splashes
 	description = "Show Splashes (Runechat-Like-Popups)"
 	key = "CHAT_SPLASHES"
-	default_value = GLOB.PREF_YES
-	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+	default_value = GLOB.PREF_SPLASH_BOTH
+	options = list(GLOB.PREF_SPLASH_BOTH, GLOB.PREF_SPLASH_MAPTEXT, GLOB.PREF_SPLASH_CHAT)
 
 /datum/client_preference/play_admin_midis
 	description ="Play admin midis"

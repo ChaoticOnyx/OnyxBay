@@ -35,7 +35,7 @@
 
 	if(cistern && !lid_open)
 		if(!contents.len)
-			show_splash_text(user, "the cistern is empty!")
+			show_splash_text(user, "the cistern is empty!", SPAN("notice", "The cistern is empty."))
 			return
 		else
 			var/obj/item/I = pick(contents)
@@ -55,7 +55,7 @@
 
 /obj/structure/toilet/attackby(obj/item/I, mob/living/user)
 	if(isCrowbar(I))
-		show_splash_text(user, "[cistern? "replacing the lid" : "lifting the lid"]")
+		show_splash_text(user, "[cistern? "replacing the lid" : "lifting the lid"]", SPAN("notice", "You start to [cistern ? "replace the lid on the cistern" : "lift the lid off the cistern"]."))
 		playsound(loc, 'sound/effects/stonedoor_openclose.ogg', 50, 1)
 		if(!do_after(user, 3 SECONDS, src))
 			return
@@ -76,11 +76,11 @@
 			return
 
 		if(G.current_grab.state_name == NORM_PASSIVE)
-			show_splash_text(user, "tighter grip is needed!")
+			show_splash_text(user, "tighter grip is needed!", SPAN("warning", "You need a tigher grip!"))
 			return
 
 		if(get_turf(G.affecting) != get_turf(src))
-			show_splash_text(user, "victim needs to be on the toilet!")
+			show_splash_text(user, "victim needs to be on the toilet!", SPAN("warning", "The vicim must be held right above the toilet!"))
 
 		if(lid_open && !swirlie)
 			user.visible_message(SPAN_DANGER("[user] starts to give [G.affecting.name] a swirlie!"), \
@@ -110,17 +110,17 @@
 
 	if(cistern && !istype(user, /mob/living/silicon/robot)) //STOP PUTTING YOUR MODULES IN THE TOILET.
 		if(I.w_class > ITEM_SIZE_NORMAL)
-			show_splash_text(user, "won't fit!")
+			show_splash_text(user, "won't fit!", SPAN("notice", "\The [I] does not fit."))
 			return
 
 		if(w_items + I.w_class > 5)
-			show_splash_text(user, "cistern is full!")
+			show_splash_text(user, "cistern is full!", SPAN("notice", "The cistern is full."))
 			return
 
 		if(!user.drop(I, src))
 			return
 		w_items += I.w_class
-		show_splash_text(user, "item placed into the cistern")
+		show_splash_text(user, "item placed into the cistern", "You carefully place \the [I] into the cistern.")
 		return
 
 	return ..()
