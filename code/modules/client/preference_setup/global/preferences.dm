@@ -325,7 +325,7 @@ var/global/list/_client_preferences_by_type
 	default_value = GLOB.PREF_STRETCH
 
 /datum/client_preference/pixel_size/changed(mob/preference_mob, new_value)
-	winset(preference_mob, "mapwindow.map", "zoom=[max(0, options.Find(new_value) - 1)]")
+	winset(preference_mob, "mapwindow.map", "zoom=[zoom_pref2value(new_value)]")
 
 /datum/client_preference/scaling_method
 	description = "Scaling Method"
