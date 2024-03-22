@@ -106,7 +106,7 @@
 			//check if we can build our window on the grill
 			if(is_blocked_turf(target_turf, caller = null, exclude_mobs = FALSE, ignore_atoms = structures_to_ignore))
 				playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
-				show_splash_text(user, "something is blocking the turf")
+				show_splash_text(user, "something is blocking the turf", SPAN("warning", "There's something blocking the turf!"))
 				return FALSE
 
 		/**
@@ -117,7 +117,7 @@
 			//if a player builds a wallgirder on top of himself manually with iron sheets he can't finish the wall if he is still on the girder. Exclude the girder itself when checking for other dense objects on the turf
 			if(istype(target, /obj/structure/girder) && is_blocked_turf(target_turf))
 				playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
-				show_splash_text(user, "something is on the girder!")
+				show_splash_text(user, "something is on the girder!", SPAN("warning", "There's something blocking the girder!"))
 				return FALSE
 
 		//check if turf is blocked in for dense structures
@@ -146,7 +146,7 @@
 			//check if the structure can fit on this turf
 			if(is_blocked_turf(target_turf))
 				playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
-				show_splash_text(user, "something is on the tile!")
+				show_splash_text(user, "something is on the tile!", SPAN("warning", "There's something blocking the tile!"))
 				return FALSE
 
 	return TRUE

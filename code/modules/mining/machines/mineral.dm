@@ -30,7 +30,7 @@
 
 /obj/machinery/mineral/attackby(obj/item/W, mob/user)
 	if(!(stat & POWEROFF))
-		show_splash_text(user, "turn off first!")
+		show_splash_text(user, "turn off first!", "You have to turn \the [src] off first!")
 		return
 
 	if(default_deconstruction_screwdriver(user, W))
@@ -104,7 +104,7 @@
 	if(istype(hhelper))
 		qdel(hhelper)
 
-	show_splash_text(usr, "holo-projector enabled.")
+	show_splash_text(usr, "holo-projector enabled.", "You toggle the holo-projector!")
 	holohelper = weakref(new holodir_helper_path(loc, src))
 
 /obj/machinery/mineral/power_change()

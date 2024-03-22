@@ -222,7 +222,7 @@
 
 /obj/structure/windoor_assembly/proc/finish_door(mob/user)
 	set_density(TRUE)
-	show_splash_text(user, "Door finished!")
+	show_splash_text(user, "Door finished!", SPAN("notice", "You have finished assembling the door!"))
 
 	if(secure)
 		var/obj/machinery/door/window/brigdoor/windoor = new created_windoor_secure(get_turf(loc))

@@ -81,7 +81,7 @@
 /obj/structure/firelock_frame/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
 	switch(rcd_data["[RCD_DESIGN_MODE]"])
 		if(RCD_UPGRADE_SIMPLE_CIRCUITS)
-			show_splash_text(user, "circuit installed")
+			show_splash_text(user, "circuit installed", SPAN("notice", "You install the circuit into \the [src]!"))
 			new /obj/machinery/door/firedoor(get_turf(src))
 			qdel_self()
 			return TRUE

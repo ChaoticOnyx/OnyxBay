@@ -28,24 +28,24 @@
 /obj/machinery/secsmith/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/gun/energy/security))
 		if(taser)
-			show_splash_text(user, "already contains a taser!")
+			show_splash_text(user, "already contains a taser!", "[src] already contains a taser!")
 			return
 
 		if(!user.drop(I, src))
 			return
 
-		show_splash_text(user, "taser inserted!")
+		show_splash_text(user, "taser inserted!", "You insert \the [I] into [src].")
 		taser = I
 		update_icon()
 		tgui_update()
 		return
 
 	else if(istype(I, /obj/item/gun/energy/classictaser))
-		show_splash_text(user, "taser not supported!")
+		show_splash_text(user, "taser not supported!", "\The [I]'s model is outdated, and not supported by [src].")
 		return
 
 	else if(istype(I, /obj/item/gun))
-		show_splash_text(user, "gun not supported!")
+		show_splash_text(user, "gun not supported!", "[src] is not suited for this type of weapon.")
 		return
 
 	..()

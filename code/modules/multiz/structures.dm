@@ -196,7 +196,7 @@
 		var/turf/target = get_turf(below)
 		var/turf/source = get_turf(A)
 		if(!(locate(/obj/structure/stairs) in below))
-			show_splash_text(A, "the stairs cut off")
+			show_splash_text(A, "the stairs cut off", "There stairs appear to be cut off!")
 			return
 
 		A.forceMove(target)
@@ -208,7 +208,7 @@
 			playsound(source, SFX_FOOTSTEP_STAIRS, 50)
 			playsound(target, SFX_FOOTSTEP_STAIRS, 50)
 	else
-		show_splash_text(A, "nothing of interest in this direction")
+		show_splash_text(A, "nothing of interest in this direction", "There's nothing of interest in this direction.")
 
 /obj/structure/up/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
 	if(get_dir(loc, target) == turn(dir, 180) && (get_turf(mover) == loc))
@@ -245,7 +245,7 @@
 		var/turf/target = get_turf(above)
 		var/turf/source = get_turf(A)
 		if(!(locate(/obj/structure/up) in above))
-			show_splash_text(A, "the stairs cut off")
+			show_splash_text(A, "the stairs cut off", "There stairs appear to be cut off!")
 		if(above.CanZPass(source, UP) && target.Enter(A, src))
 			A.forceMove(target)
 			if(isliving(A))
@@ -256,9 +256,9 @@
 				playsound(source, SFX_FOOTSTEP_STAIRS, 50)
 				playsound(target, SFX_FOOTSTEP_STAIRS, 50)
 		else
-			show_splash_text(A, "something blocks the path")
+			show_splash_text(A, "something blocks the path", "There's something blocking the path.")
 	else
-		show_splash_text(A, "nothing of interest in this direction")
+		show_splash_text(A, "nothing of interest in this direction", "There's nothing of interest in this direction.")
 
 // type paths to make mapping easier.
 /obj/structure/stairs/north

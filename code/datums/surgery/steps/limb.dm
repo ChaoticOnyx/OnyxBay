@@ -35,11 +35,11 @@
 
 	var/obj/item/organ/external/P = target.get_organ(E.parent_organ)
 	if(isnull(P) || P.is_stump())
-		target.show_splash_text(user, "limb is already present!")
+		target.show_splash_text(user, "limb is already present!", "There's already a limb present!")
 		return SURGERY_FAILURE
 
 	if(BP_IS_ROBOTIC(P) && !BP_IS_ROBOTIC(E))
-		target.show_splash_text(user, "organic limb can't be connected to a robotic body!")
+		target.show_splash_text(user, "organic limb can't be connected to a robotic body!", "An organic limb can't be connected to a robotic body!")
 		return SURGERY_FAILURE
 
 	return !isnull(target.species.has_limbs["[E.organ_tag]"])
@@ -216,7 +216,7 @@
 		return
 
 	if(parent_organ.open())
-		target.show_splash_text(user, "can't get a clean cut due to present incisions!")
+		target.show_splash_text(user, "can't get a clean cut due to present incisions!", "You can't get a clean cut due to present incisions!")
 		return SURGERY_FAILURE
 
 	return parent_organ.limb_flags & ORGAN_FLAG_CAN_AMPUTATE

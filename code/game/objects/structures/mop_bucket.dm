@@ -26,12 +26,12 @@
 /obj/structure/mopbucket/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/mop))
 		if(reagents.total_volume < 1)
-			show_splash_text(user, "no water!")
+			show_splash_text(user, "no water!", SPAN("warning", "\The [src] is empty!"))
 			return
 
 		else
 			reagents.trans_to_obj(I, 5)
-			show_splash_text(user, "you wet the mop!")
+			show_splash_text(user, "you wet the mop!", SPAN("notice", "You wet \the [I] in \the [src]."))
 			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 			return
 
@@ -46,7 +46,7 @@
 			return
 
 		if(reagents.total_volume < 1)
-			show_splash_text(user, "no water!")
+			show_splash_text(user, "no water!", SPAN("warning", "\The [src] is empty!"))
 			return
 
 		user.visible_message(SPAN_DANGER("[user] starts to put [G.affecting.name]'s head into \the [src]!"), \
@@ -60,7 +60,7 @@
 		if(QDELETED(src) || !G?.affecting)
 			return
 
-		
+
 		user.visible_message(SPAN_DANGER("[user] finally raises [G.affecting.name]'s head out of \the [src]!"), \
 								SPAN_DANGER("You raise [G.affecting.name]'s head out of \the [src]!"))
 		reagents.trans_to(G.affecting, min(reagents.total_volume, 5))
