@@ -31,7 +31,7 @@ interface Recipe {
   pipe_icon: string;
 }
 
-const PipeTypeSection = (props: any, context: any) => {
+export const PipeDispenser = (props: any, context: any) => {
   const { act, data } = useBackend<StaticData>(context);
   const { categories = [] } = data;
   const [categoryName, setCategoryName] = useLocalState(
@@ -42,57 +42,61 @@ const PipeTypeSection = (props: any, context: any) => {
   const shownCategory =
     categories.find((category) => category.cat_name === categoryName) ||
     categories[0];
+
   return (
-    <Section fill fitted scrollable>
-      <Stack width="100%" justify="center" mb={"6px"} mt={"6px"} m={"4px"}>
-        {categories.map((category, i) => (
+    <Window width={360} height={650}>
+      <Window.Content scrollable>
+        <Stack>
           <Stack.Item>
-            <Button
-              as="span"
-              color="transparent"
-              icon={ICON_BY_CATEGORY_NAME[category.cat_name]}
-              key={category.cat_name}
-              selected={category.cat_name === shownCategory.cat_name}
-              onClick={() => setCategoryName(category.cat_name)}
-              textAlign="center"
-              lineHeight={3}
-              bold={true}
-            >
-              {category.cat_name}
-            </Button>
+            <Section fill>
+              <Stack vertical>
+                {categories.map((category, i) => (
+                  <Stack.Item>
+                    <Button
+                      as="span"
+                      color="transparent"
+                      icon={ICON_BY_CATEGORY_NAME[category.cat_name]}
+                      key={category.cat_name}
+                      selected={category.cat_name === shownCategory.cat_name}
+                      onClick={() => setCategoryName(category.cat_name)}
+                      textAlign="center"
+                      lineHeight={3}
+                      bold={true}
+                    >
+                      {category.cat_name}
+                    </Button>
+                  </Stack.Item>
+                ))}
+              </Stack>
+            </Section>
           </Stack.Item>
-        ))}
-      </Stack>
+          <Stack.Item grow>
+            <Stack vertical>
+              {shownCategory?.recipes.map((recipe) => (
+                <Stack.Item>
+                  <Button
+                    key={recipe.pipe_index}
+                    fluid
+                    ellipsis
+                    tooltip={recipe.pipe_name}
+                    onClick={() =>
+                      act("spawn_pipe", {
+                        pipe_index: recipe.pipe_index,
+                        category: shownCategory.cat_name,
+                      })
+                    }
+                  >
+                    <Box inline verticalAlign="middle" mr="10px">
+                      {<GameIcon html={recipe.pipe_icon} />}
+                    </Box>
 
-      {shownCategory?.recipes.map((recipe) => (
-        <Button
-          key={recipe.pipe_index}
-          fluid
-          ellipsis
-          tooltip={recipe.pipe_name}
-          onClick={() =>
-            act("spawn_pipe", {
-              pipe_index: recipe.pipe_index,
-              category: shownCategory.cat_name,
-            })
-          }
-        >
-          <Box inline verticalAlign="middle" mr="10px">
-            {<GameIcon html={recipe.pipe_icon} />}
-          </Box>
-
-          {recipe.pipe_name}
-        </Button>
-      ))}
-    </Section>
-  );
-};
-
-export const PipeDispenser = () => {
-  return (
-    <Window width={710} height={530}>
-      <Window.Content>
-        <PipeTypeSection />
+                    {recipe.pipe_name}
+                  </Button>
+                </Stack.Item>
+              ))}
+            </Stack>
+          </Stack.Item>
+        </Stack>
       </Window.Content>
     </Window>
   );

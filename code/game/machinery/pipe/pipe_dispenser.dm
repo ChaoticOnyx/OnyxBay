@@ -44,15 +44,22 @@
 		var/list/pipes = list()
 		for(var/pipe_design in GLOB.pipe_dispenser_recipes[category]) // Fuck the guy who coded pipes.
 			var/pipe_index = GLOB.pipe_dispenser_recipes[category][pipe_design]
-			var/pipe_dir = 1 // Fuck the guy who coded pipes.
+			var/pipe_dir = SOUTH // Fuck the guy who coded pipes.
 			if(pipe_index == 1 || pipe_index == 30 || pipe_index == 32 || pipe_index == 46 || pipe_index == 3)
 				pipe_dir = 5
 
 			if(!designs_icons[category][pipe_design])
-				if(category != "Disposal Pipes")
+				if(category == "Devices" && pipe_index == 1)
+					var/obj/item/pipe_meter/meter = new (src)
+					designs_icons[category][pipe_design] = icon(icon = meter.icon, icon_state = meter.icon_state, dir = SOUTH, frame = 1)
+					qdel(meter)
+
+				else if(category != "Disposal Pipes")
 					var/obj/item/pipe/P = new (src, pipe_index, pipe_dir)
 					P.update()
-					designs_icons[category][pipe_design] = icon(icon = P.icon, icon_state = P.icon_state, dir = pipe_dir, frame = 1)
+					var/icon/pipe_icon = icon(icon = P.icon, icon_state = P.icon_state, dir = pipe_dir, frame = 1)
+					pipe_icon.Blend(P.color, ICON_MULTIPLY)
+					designs_icons[category][pipe_design] = pipe_icon
 					qdel(P)
 
 				else if(GLOB.pipe_dispenser_recipes[category][pipe_design] == 15)
@@ -61,9 +68,15 @@
 					qdel(d_switch)
 
 				else
-					var/obj/structure/disposalconstruct/C = new (src, GLOB.pipe_dispenser_recipes[category][pipe_design], pipe_dir)
+					var/subtype = null
+					if(pipe_index == 9) // Fuck the guy who coded pipes.
+						subtype = 1
+					else if(pipe_index == 10)
+						subtype = 2
+
+					var/obj/structure/disposalconstruct/C = new (src, GLOB.pipe_dispenser_recipes[category][pipe_design], subtype)
 					C.update()
-					designs_icons[category][pipe_design] = icon(icon = C.icon, icon_state = C.icon_state, dir = pipe_dir, frame = 1)
+					designs_icons[category][pipe_design] = icon(icon = C.icon, icon_state = C.icon_state, dir = SOUTH, frame = 1)
 					qdel(C)
 
 			pipes += list(list("pipe_name" = pipe_design, "pipe_index" = GLOB.pipe_dispenser_recipes[category][pipe_design], "pipe_icon" = icon2base64html(designs_icons[category][pipe_design])))
@@ -94,7 +107,13 @@
 					dispense_pipe(usr, get_turf(src), new /obj/machinery/disposal_switch (src))
 					return TRUE
 				else
-					var/obj/structure/disposalconstruct/C = new (src, pipe_index, pipe_dir)
+					var/subtype = null
+					if(pipe_index == 9) // Fuck the guy who coded pipes.
+						subtype = 1
+					else if(pipe_index == 10)
+						subtype = 2
+
+					var/obj/structure/disposalconstruct/C = new (src, pipe_index, subtype)
 					C.update()
 					dispense_pipe(usr, get_turf(src), C)
 					return TRUE
