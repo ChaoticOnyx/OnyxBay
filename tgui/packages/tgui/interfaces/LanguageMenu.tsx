@@ -20,8 +20,8 @@ interface InputData {
 export const LanguageMenu = (props: any, context: any) => {
   const { act, data, getTheme } = useBackend<InputData>(context);
   return (
-    <Window title="Language Menu" width={300} height={300}>
-      <Window.Content>
+    <Window title="Language Menu" width={300} height={250}>
+      <Window.Content scrollable>
         <Section fitted title="Known Languages" />
         <Stack vertical>
           {data.languages?.map((language) => (
