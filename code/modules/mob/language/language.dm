@@ -14,7 +14,7 @@
 	var/signlang_verb = list("signs", "gestures") // list of emotes that might be displayed if this language has NONVERBAL or SIGNLANG flags
 	var/colour = "body"               // CSS style to use for strings in this language.
 	var/key = "x"                     // Character used to speak in language eg. :o for Unathi.
-	var/flags = 0                     // Various language flags.
+	var/language_flags = 0            // Various language flags.
 	var/native                        // If set, non-native speakers will have trouble speaking.
 	var/list/syllables                // Used when scrambling text for a non-speaker.
 	var/list/space_chance = 55        // Likelihood of getting a space in the random scramble string
@@ -166,7 +166,7 @@
 	if (only_species_language && speaking != all_languages[species_language])
 		return 0
 
-	return (speaking.can_speak_special(src) && (universal_speak || (speaking && speaking.flags & INNATE) || (speaking in src.languages)))
+	return (speaking.can_speak_special(src) && (universal_speak || (speaking && speaking.language_flags & INNATE) || (speaking in src.languages)))
 
 /mob/proc/get_language_prefix()
 	return get_prefix_key(/decl/prefix/language)
@@ -180,53 +180,11 @@
 	set category = "IC"
 	set src = usr
 
-	var/dat = "<meta charset=\"utf-8\"><b><font size = 5>Known Languages</font></b><br/><br/>"
-
-	for(var/datum/language/L in languages)
-		if(!(L.flags & NONGLOBAL))
-			dat += "<b>[L.name]([L.shorthand]) ([get_language_prefix()][L.key])</b><br/>[L.desc]<br/><br/>"
-
-	show_browser(src, dat, "window=checklanguage")
-	return
-
-/mob/living/check_languages()
-	var/dat = "<meta charset=\"utf-8\"><b><font size = 5>Known Languages</font></b><br/><br/>"
-
-	if(default_language)
-		dat += "Current default language: [default_language] - <a href='byond://?src=\ref[src];default_lang=reset'>reset</a><br/><br/>"
-
-	for(var/datum/language/L in languages)
-		if(!(L.flags & NONGLOBAL))
-			if(L == default_language)
-				dat += "<b>[L.name]([L.shorthand]) ([get_language_prefix()][L.key])</b> - default - <a href='byond://?src=\ref[src];default_lang=reset'>reset</a><br/>[L.desc]<br/><br/>"
-			else if (can_speak(L))
-				dat += "<b>[L.name]([L.shorthand]) ([get_language_prefix()][L.key])</b> - <a href='byond://?src=\ref[src];default_lang=\ref[L]'>set default</a><br/>[L.desc]<br/><br/>"
-			else
-				dat += "<b>[L.name]([L.shorthand]) ([get_language_prefix()][L.key])</b> - cannot speak!<br/>[L.desc]<br/><br/>"
-
-	show_browser(src, dat, "window=checklanguage")
-
-/mob/living/Topic(href, href_list)
-	if(href_list["default_lang"])
-		if(href_list["default_lang"] == "reset")
-
-			if (species_language)
-				set_default_language(all_languages[species_language])
-			else
-				set_default_language(null)
-
-		else
-			var/datum/language/L = locate(href_list["default_lang"])
-			if(L && (L in languages))
-				set_default_language(L)
-		check_languages()
-		return 1
-	else
-		return ..()
+	language_menu.tgui_interact(usr)
 
 /proc/transfer_languages(mob/source, mob/target, except_flags)
 	for(var/datum/language/L in source.languages)
-		if(L.flags & except_flags)
+		if(L.language_flags & except_flags)
 			continue
 		target.add_language(L.name)
 

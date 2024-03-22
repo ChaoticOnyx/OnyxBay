@@ -69,7 +69,7 @@ var/list/whitelist = list()
 
 	if(istype(species,/datum/language))
 		var/datum/language/L = species
-		if(!(L.flags & (WHITELISTED|RESTRICTED)))
+		if(!(L.language_flags & (WHITELISTED|RESTRICTED)))
 			return 1
 		return whitelist_lookup(L.name, M.ckey)
 
