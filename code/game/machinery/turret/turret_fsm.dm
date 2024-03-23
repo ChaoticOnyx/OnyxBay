@@ -30,12 +30,6 @@
 		sound_played_last = world.time
 		playsound(turret, switched_from_sound, 40, TRUE)
 
-/datum/state/turret/get_open_transitions(obj/machinery/turret/turret)
-	if(turret.currently_raising)
-		return FALSE
-
-	return ..()
-
 /datum/state/turret/idle
 	ray_color = "#ffffffff"
 	ray_alpha = 0
@@ -43,8 +37,7 @@
 	transitions = list(
 		/datum/state_transition/turret/lost_power,
 		/datum/state_transition/turret/reload,
-		/datum/state_transition/turret/shoot,
-		/datum/state_transition/turret/turn_to_bearing
+		/datum/state_transition/turret/pop_up,
 		)
 
 /datum/state/turret/idle/entered_state(obj/machinery/turret/turret, datum/state/turret/previous_state)
@@ -57,12 +50,6 @@
 /datum/state/turret/idle/exited_state(obj/machinery/turret/turret)
 	. = ..()
 	turret.set_next_think_ctx("process_idle", 0)
-
-/datum/state/turret/idle/get_open_transitions(obj/machinery/turret/turret)
-	if(turret.raised)
-		return FALSE
-
-	return ..()
 
 /datum/state/turret/turning
 	ray_color = "#ffff00ff"
@@ -146,8 +133,23 @@
 		/datum/state_transition/turret/reload,
 		/datum/state_transition/turret/shoot,
 		/datum/state_transition/turret/turn_to_bearing,
-		/datum/state_transition/turret/no_enemies
+		/datum/state_transition/turret/no_enemies,
+		/datum/state_transition/turret/pop_up
 		)
+
+/datum/state/turret/no_power/entered_state(obj/machinery/turret/turret, datum/state/turret/previous_state)
+	. = ..()
+	turret.set_next_think_ctx("process_reloading", 0)
+	turret.set_next_think_ctx("process_shooting", 0)
+	turret.set_next_think_ctx("process_idle", 0)
+	turret.set_next_think_ctx("process_turning", 0)
+
+/datum/state_transition/turret/pop_up
+	target = /datum/state/turret/turning
+
+/datum/state_transition/turret/pop_up/is_open(obj/machinery/turret/turret)
+	. = ..()
+	return . && !turret.currently_raising && !turret.raised && turret.find_target()
 
 /datum/state_transition/turret/is_open(obj/machinery/turret/turret)
 	return turret.operable() && turret.enabled
@@ -157,21 +159,21 @@
 
 /datum/state_transition/turret/turn_to_bearing/is_open(obj/machinery/turret/turret)
 	. = ..()
-	return . && !turret.within_bearing()
+	return . && !turret.within_bearing() && !turret.currently_raising && turret.raised
 
 /datum/state_transition/turret/shoot
 	target = /datum/state/turret/engaging
 
 /datum/state_transition/turret/shoot/is_open(obj/machinery/turret/turret)
 	. = ..()
-	return . && turret.find_target() && turret.within_bearing()
+	return . && turret.find_target() && turret.within_bearing() && !turret.currently_raising && turret.raised
 
 /datum/state_transition/turret/reload
 	target = /datum/state/turret/reloading
 
 /datum/state_transition/turret/reload/is_open(obj/machinery/turret/turret)
 	. = ..()
-	return . && turret.should_reload()
+	return . && turret.should_reload() && !turret.currently_raising && turret.raised
 
 /datum/state_transition/turret/no_enemies
 	target = /datum/state/turret/idle
