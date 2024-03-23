@@ -264,6 +264,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 // State machine processing steps, called by looping timer
 /obj/machinery/turret/proc/process_turning()
 	if(!enabled || inoperable())
+		state_machine.evaluate()
 		return
 
 	var/distance_from_target_bearing = get_distance_from_target_bearing()
@@ -276,6 +277,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		distance_this_step = 0
 
 	set_bearing(current_bearing + distance_this_step)
+	set_next_think_ctx("process_turning", world.time + TURRET_WAIT)
 	state_machine.evaluate()
 
 /obj/machinery/turret/proc/process_shooting()
@@ -286,6 +288,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 				fire_weapon(resolved_target)
 		else
 			target = null
+
+	set_next_think_ctx("process_shooting", world.time + TURRET_WAIT)
 	state_machine.evaluate()
 
 /obj/machinery/turret/proc/fire_weapon(atom/resolved_target)
@@ -314,12 +318,14 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 				break
 
+	state_machine.evaluate()
 	reloading = FALSE
 
 /obj/machinery/turret/proc/process_idle()
 	if(!isnull(default_bearing) && (target_bearing != default_bearing) && angle_within_traverse(default_bearing))
 		target_bearing = default_bearing
 
+		set_next_think_ctx("process_idle", world.time + TURRET_WAIT)
 		state_machine.evaluate()
 
 // Calculates the turret's leftmost and rightmost angles from the turret's direction and traverse.
