@@ -716,6 +716,7 @@
 
 	var/list/lighting_modes = list()
 	var/sound_on
+	var/sound_on_volume
 	var/random_tone = FALSE
 	var/tone_overlay = TRUE
 	var/list/random_tone_options = list(
