@@ -30,6 +30,12 @@
 		sound_played_last = world.time
 		playsound(turret, switched_from_sound, 40, TRUE)
 
+/datum/state/turret/get_open_transitions(obj/machinery/turret/turret)
+	if(turret.currently_raising)
+		return FALSE
+
+	return ..()
+
 /datum/state/turret/idle
 	ray_color = "#ffffffff"
 	ray_alpha = 0
@@ -51,6 +57,12 @@
 /datum/state/turret/idle/exited_state(obj/machinery/turret/turret)
 	. = ..()
 	turret.set_next_think_ctx("process_idle", 0)
+
+/datum/state/turret/idle/get_open_transitions(obj/machinery/turret/turret)
+	if(turret.raised)
+		return FALSE
+
+	return ..()
 
 /datum/state/turret/turning
 	ray_color = "#ffff00ff"

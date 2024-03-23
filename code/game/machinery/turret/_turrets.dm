@@ -72,6 +72,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/datum/hostility/hostility
 	/// Determines whether this turret is raised or not
 	var/raised = FALSE
+	/// Whether this turret is moving its cover at the moment. No state transitions until it finishes moving.
+	var/currently_raising = FALSE
 	/// Boolean to prevent FSM spamming state switching.
 	var/reloading = FALSE
 	/// Firewall that prevents AI and synth from interacting with it directly.
@@ -595,6 +597,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	update_icon()
 	sleep(10)
 	qdel(flick_holder)
+	currently_raising = FALSE
 
 /// Plays closing animation
 /obj/machinery/turret/proc/popdown()
@@ -608,9 +611,15 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	qdel(flick_holder)
 	raised = FALSE
 	update_icon()
+	currently_raising = FALSE
 
 /// Pops turret down or up according to the var 'state'.
 /obj/machinery/turret/proc/change_raised(state)
+	if(currently_raising)
+		return FALSE
+
+	currently_raising = TRUE
+
 	if(state)
 		INVOKE_ASYNC(src, nameof(.proc/popup))
 	else
