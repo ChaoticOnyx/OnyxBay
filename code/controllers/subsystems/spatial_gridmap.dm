@@ -46,11 +46,11 @@
 	atmos_contents = dummy_list
 
 /datum/spatial_grid_cell/Destroy(force)
-	if(force) //the response to someone trying to qdel this is a right proper fuck you
+	if(force)//the response to someone trying to qdel this is a right proper fuck you
 		util_crash_with("dont try to destroy spatial grid cells without a good reason. if you need to do it use force")
 		return
 
-	return ..()
+	. = ..()
 
 /**
  * # Spatial Grid
@@ -110,7 +110,7 @@ SUBSYSTEM_DEF(spatial_grid)
 	// enter_cell only runs if 'initialized'
 	initialized = TRUE
 
-	for(var/datum/space_level/z_level in GLOB.using_map.map_levels)
+	for(var/z_level in 1 to world.maxz)
 		propogate_spatial_grid_to_new_z(null, z_level)
 		CHECK_TICK
 
@@ -126,6 +126,8 @@ SUBSYSTEM_DEF(spatial_grid)
 
 	pregenerate_more_oranges_ears(NUMBER_OF_PREGENERATED_ORANGES_EARS)
 
+	//RegisterSignal(SSdcs, COMSIG_GLOB_NEW_Z, PROC_REF(propogate_spatial_grid_to_new_z))
+	//RegisterSignal(SSdcs, COMSIG_GLOB_EXPANDED_WORLD_BOUNDS, PROC_REF(after_world_bounds_expanded))
 	return ..()
 
 ///add a movable to the pre init queue for whichever type is specified so that when the subsystem initializes they get added to the grid
@@ -159,7 +161,7 @@ SUBSYSTEM_DEF(spatial_grid)
 	remove_from_pre_init_queue(movable_being_deleted, null)
 
 ///creates the spatial grid for a new z level
-/datum/controller/subsystem/spatial_grid/proc/propogate_spatial_grid_to_new_z(datum/controller/subsystem/fucking_dcs, datum/space_level/z_level)
+/datum/controller/subsystem/spatial_grid/proc/propogate_spatial_grid_to_new_z(datum/controller/subsystem/fucking_dcs, z_level)
 	SIGNAL_HANDLER
 
 	var/list/new_cell_grid = list()
@@ -169,9 +171,8 @@ SUBSYSTEM_DEF(spatial_grid)
 	for(var/y in 1 to cells_on_y_axis)
 		new_cell_grid += list(list())
 		for(var/x in 1 to cells_on_x_axis)
-			var/datum/spatial_grid_cell/cell = new(x, y, z_level.z_value)
+			var/datum/spatial_grid_cell/cell = new(x, y, z_level)
 			new_cell_grid[y] += cell
-
 
 ///adds cells to the grid for every z level when world.maxx or world.maxy is expanded after this subsystem is initialized. hopefully this is never needed.
 ///because i never tested this.
@@ -199,6 +200,9 @@ SUBSYSTEM_DEF(spatial_grid)
 				if(grid_cell_for_expanded_x_axis > old_x_axis)
 					var/datum/spatial_grid_cell/new_cell_inserted = new(grid_cell_for_expanded_x_axis, cell_row_for_expanded_y_axis, z_level)
 					cell_row += new_cell_inserted
+					continue
+
+				if(!length(cell_row))
 					continue
 
 				//now we know the cell index we're at contains an already existing cell that needs its x and y values updated
@@ -353,9 +357,6 @@ SUBSYSTEM_DEF(spatial_grid)
 	if(!initialized)
 		return
 
-	if(!istype(target_turf))
-		target_turf = get_turf(target_turf)
-
 	if(QDELETED(new_target))
 		CRASH("qdeleted or null target trying to enter the spatial grid!")
 
@@ -387,6 +388,7 @@ SUBSYSTEM_DEF(spatial_grid)
 /datum/controller/subsystem/spatial_grid/proc/add_single_type(atom/movable/new_target, turf/target_turf, exclusive_type)
 	if(!initialized)
 		return
+
 	if(QDELETED(new_target))
 		CRASH("qdeleted or null target trying to enter the spatial grid!")
 
@@ -426,9 +428,6 @@ SUBSYSTEM_DEF(spatial_grid)
 /datum/controller/subsystem/spatial_grid/proc/exit_cell(atom/movable/old_target, turf/target_turf, exclusive_type)
 	if(!initialized)
 		return
-
-	if(!istype(target_turf))
-		target_turf = get_turf(target_turf)
 
 	if(!target_turf || !old_target.spatial_grid_key)
 		util_crash_with("/datum/controller/subsystem/spatial_grid/proc/exit_cell() was given null arguments or a old_target that doesn't use the spatial grid!")

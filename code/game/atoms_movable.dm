@@ -416,10 +416,44 @@
 /atom/movable/Entered(atom/movable/am, atom/old_loc)
 	. = ..()
 
+	if(!LAZYLEN(am.important_recursive_contents))
+		return
+
+	var/list/nested_locs = get_nested_locs(src) + src
+	for(var/channel in am.important_recursive_contents)
+		for(var/atom/movable/location as anything in nested_locs)
+			LAZYINITLIST(location.important_recursive_contents)
+			var/list/recursive_contents = location.important_recursive_contents // blue hedgehog velocity
+			LAZYINITLIST(recursive_contents[channel])
+			switch(channel)
+				if(RECURSIVE_CONTENTS_CLIENT_MOBS, RECURSIVE_CONTENTS_HEARING_SENSITIVE)
+					if(!length(recursive_contents[channel]))
+						SSspatial_grid.add_grid_awareness(location, channel)
+			recursive_contents[channel] |= am.important_recursive_contents[channel]
+
 	am.register_signal(src, SIGNAL_DIR_SET, nameof(.proc/recursive_dir_set), TRUE)
 
 /atom/movable/Exited(atom/movable/am, atom/old_loc)
 	. = ..()
+
+	if(!LAZYLEN(am.important_recursive_contents))
+		return
+
+	var/list/nested_locs = get_nested_locs(src) + src
+	for(var/channel in am.important_recursive_contents)
+		for(var/atom/movable/location as anything in nested_locs)
+			LAZYINITLIST(location.important_recursive_contents)
+			var/list/recursive_contents = location.important_recursive_contents // blue hedgehog velocity
+			LAZYINITLIST(recursive_contents[channel])
+			recursive_contents[channel] -= am.important_recursive_contents[channel]
+			switch(channel)
+				if(RECURSIVE_CONTENTS_CLIENT_MOBS, RECURSIVE_CONTENTS_HEARING_SENSITIVE)
+					if(!length(recursive_contents[channel]))
+						// This relies on a nice property of the linked recursive and gridmap types
+						// They're defined in relation to each other, so they have the same value
+						SSspatial_grid.remove_grid_awareness(location, channel)
+			ASSOC_UNSETEMPTY(recursive_contents, channel)
+			UNSETEMPTY(location.important_recursive_contents)
 
 	am.unregister_signal(src, SIGNAL_DIR_SET)
 
