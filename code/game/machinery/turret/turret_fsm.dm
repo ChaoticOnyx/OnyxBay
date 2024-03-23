@@ -10,9 +10,6 @@
 	var/sound_played_last
 	var/sound_cd = 1 SECOND
 
-	var/timer_proc = null
-	var/timer_wait = TURRET_WAIT
-
 	/// Determines whether turret should be raised or not when in this state.
 	var/turret_raised = FALSE
 
@@ -36,9 +33,6 @@
 /datum/state/turret/idle
 	ray_color = "#ffffffff"
 	ray_alpha = 0
-	// Timer for returning to default bearing.
-	timer_proc = /obj/machinery/turret/proc/process_idle
-	timer_wait = 5 SECONDS
 
 	transitions = list(
 		/datum/state_transition/turret/lost_power,
@@ -50,6 +44,9 @@
 /datum/state/turret/idle/entered_state(obj/machinery/turret/turret, datum/state/turret/previous_state)
 	. = ..()
 	turret.set_next_think_ctx("process_idle", world.time + TURRET_WAIT)
+	turret.set_next_think_ctx("process_reloading", 0)
+	turret.set_next_think_ctx("process_turning", 0)
+	turret.set_next_think_ctx("process_shooting", 0)
 
 /datum/state/turret/idle/exited_state(obj/machinery/turret/turret)
 	. = ..()
@@ -69,6 +66,9 @@
 /datum/state/turret/turning/entered_state(obj/machinery/turret/turret, datum/state/turret/previous_state)
 	. = ..()
 	turret.set_next_think_ctx("process_turning", world.time + TURRET_WAIT)
+	turret.set_next_think_ctx("process_reloading", 0)
+	turret.set_next_think_ctx("process_idle", 0)
+	turret.set_next_think_ctx("process_shooting", 0)
 
 /datum/state/turret/turning/exited_state(obj/machinery/turret/turret)
 	. = ..()
@@ -87,6 +87,9 @@
 /datum/state/turret/engaging/entered_state(obj/machinery/turret/turret, datum/state/turret/previous_state)
 	. = ..()
 	turret.set_next_think_ctx("process_shooting", world.time + TURRET_WAIT)
+	turret.set_next_think_ctx("process_reloading", 0)
+	turret.set_next_think_ctx("process_idle", 0)
+	turret.set_next_think_ctx("process_turning", 0)
 
 /datum/state/turret/engaging/exited_state(obj/machinery/turret/turret)
 	. = ..()
@@ -96,7 +99,6 @@
 	ray_color = "#ffa600ff"
 	switched_to_sound = 'sound/effects/weapons/gun/interaction/rifle_load.ogg'
 	turret_raised = TRUE
-	timer_proc = /obj/machinery/turret/proc/process_reloading
 	transitions = list(
 		/datum/state_transition/turret/lost_power,
 		/datum/state_transition/turret/shoot,
@@ -107,6 +109,9 @@
 /datum/state/turret/reloading/entered_state(obj/machinery/turret/turret, datum/state/turret/previous_state)
 	. = ..()
 	turret.set_next_think_ctx("process_reloading", world.time + TURRET_WAIT)
+	turret.set_next_think_ctx("process_shooting", 0)
+	turret.set_next_think_ctx("process_idle", 0)
+	turret.set_next_think_ctx("process_turning", 0)
 
 /datum/state/turret/reloading/exited_state(obj/machinery/turret/turret)
 	. = ..()
