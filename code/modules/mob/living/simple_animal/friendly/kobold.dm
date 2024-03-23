@@ -29,9 +29,12 @@
 /mob/living/simple_animal/kobold/Life()
 	..()
 	if(prob(15) && turns_since_move && !stat)
-		flick("kobold_act",src)
+		flick("kobold_act", src)
 
-/mob/living/simple_animal/kobold/Move(dir)
+/mob/living/simple_animal/kobold/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	if(!stat)
 		flick("kobold_walk",src)

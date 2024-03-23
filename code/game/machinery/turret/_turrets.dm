@@ -69,10 +69,11 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/datum/state_machine/turret/state_machine = null
 	var/weakref/target = null
 	var/list/potential_targets = list()
-	var/timer_id = null
 	var/datum/hostility/hostility
 	/// Determines whether this turret is raised or not
 	var/raised = FALSE
+	/// Whether this turret is moving its cover at the moment. No state transitions until it finishes moving.
+	var/currently_raising = FALSE
 	/// Boolean to prevent FSM spamming state switching.
 	var/reloading = FALSE
 	/// Firewall that prevents AI and synth from interacting with it directly.
@@ -109,6 +110,11 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		installed_gun = new installed_gun(src)
 		setup_gun()
 
+	add_think_ctx("process_reloading", CALLBACK(src, nameof(.proc/process_reloading)), 0)
+	add_think_ctx("process_idle", CALLBACK(src, nameof(.proc/process_idle)), 0)
+	add_think_ctx("process_turning", CALLBACK(src, nameof(.proc/process_turning)), 0)
+	add_think_ctx("process_shooting", CALLBACK(src, nameof(.proc/process_shooting)), 0)
+
 	state_machine = add_state_machine(src, /datum/state_machine/turret)
 
 	target_bearing = dir2angle(dir)
@@ -139,7 +145,6 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 /obj/machinery/turret/Destroy()
 	remove_state_machine(src, /datum/state_machine/turret)
-	deltimer(timer_id)
 
 	QDEL_NULL(state_machine)
 	QDEL_NULL(proximity)
@@ -232,16 +237,11 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 	if(isWelder(I))
 		var/obj/item/weldingtool/WT = I
-		if(!WT.isOn())
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 			return
 
-		if(WT.get_fuel() < 5)
-			show_splash_text(user, "Not enough fuel!")
-
-		playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
-		if(do_after(user, 30 SECONDS, src))
-			if(QDELETED(src) || !WT.remove_fuel(5, user))
-				return
+		if(QDELETED(src) || !user)
+			return
 
 		show_splash_text(user, "External armor removed!")
 
@@ -263,7 +263,9 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 // State machine processing steps, called by looping timer
 /obj/machinery/turret/proc/process_turning()
+	to_chat(world, "TURNING! Currently raising:[currently_raising]")
 	if(!enabled || inoperable())
+		state_machine.evaluate()
 		return
 
 	var/distance_from_target_bearing = get_distance_from_target_bearing()
@@ -276,9 +278,11 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		distance_this_step = 0
 
 	set_bearing(current_bearing + distance_this_step)
+	set_next_think_ctx("process_turning", world.time + TURRET_WAIT)
 	state_machine.evaluate()
 
 /obj/machinery/turret/proc/process_shooting()
+	to_chat(world, "SHOOTING! Currently raising:[currently_raising]")
 	if(operable())
 		if(installed_gun && is_valid_target(target?.resolve()))
 			var/atom/resolved_target = target.resolve()
@@ -286,12 +290,15 @@ GLOBAL_LIST_EMPTY(all_turrets)
 				fire_weapon(resolved_target)
 		else
 			target = null
+
+	set_next_think_ctx("process_shooting", world.time + TURRET_WAIT)
 	state_machine.evaluate()
 
 /obj/machinery/turret/proc/fire_weapon(atom/resolved_target)
 	installed_gun?.Fire(resolved_target, src)
 
 /obj/machinery/turret/proc/process_reloading()
+	to_chat(world, "RELOADING! Currently raising:[currently_raising]")
 	if(istype(installed_gun, /obj/item/gun/projectile))
 		var/obj/item/gun/projectile/proj_gun = installed_gun
 
@@ -314,12 +321,14 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 				break
 
+	state_machine.evaluate()
 	reloading = FALSE
 
 /obj/machinery/turret/proc/process_idle()
 	if(!isnull(default_bearing) && (target_bearing != default_bearing) && angle_within_traverse(default_bearing))
 		target_bearing = default_bearing
 
+		set_next_think_ctx("process_idle", world.time + TURRET_WAIT)
 		state_machine.evaluate()
 
 // Calculates the turret's leftmost and rightmost angles from the turret's direction and traverse.
@@ -597,6 +606,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	update_icon()
 	sleep(10)
 	qdel(flick_holder)
+	currently_raising = FALSE
 
 /// Plays closing animation
 /obj/machinery/turret/proc/popdown()
@@ -610,9 +620,15 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	qdel(flick_holder)
 	raised = FALSE
 	update_icon()
+	currently_raising = FALSE
 
 /// Pops turret down or up according to the var 'state'.
 /obj/machinery/turret/proc/change_raised(state)
+	if(currently_raising)
+		return FALSE
+
+	currently_raising = TRUE
+
 	if(state)
 		INVOKE_ASYNC(src, nameof(.proc/popup))
 	else

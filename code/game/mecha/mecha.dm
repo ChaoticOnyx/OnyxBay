@@ -374,10 +374,12 @@
 ////////  Movement procs  ////////
 //////////////////////////////////
 
-/obj/mecha/Move()
+/obj/mecha/Move(newloc, direct)
 	. = ..()
-	if(.)
-		events.fireEvent("onMove",get_turf(src))
+	if(!.)
+		return
+
+	events.fireEvent("onMove", get_turf(src))
 
 /obj/mecha/relaymove(mob/user,direction)
 	if(user != src.occupant) //While not "realistic", this piece is player friendly.
@@ -861,19 +863,23 @@
 
 	else if(isWelder(W) && user.a_intent != I_HURT)
 		var/obj/item/weldingtool/WT = W
-		if (WT.remove_fuel(0,user))
-			if (hasInternalDamage(MECHA_INT_TANK_BREACH))
-				clearInternalDamage(MECHA_INT_TANK_BREACH)
-				to_chat(user, "<span class='notice'>You repair the damaged gas tank.</span>")
-				user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		else
+
+		if(!WT.use_tool(src, user, amount = 1))
 			return
-		if(src.health<initial(src.health))
-			to_chat(user, "<span class='notice'>You repair some damage to [src.name].</span>")
+
+		if(!hasInternalDamage(MECHA_INT_TANK_BREACH))
+			return
+
+		clearInternalDamage(MECHA_INT_TANK_BREACH)
+		to_chat(user, SPAN_NOTICE("You repair the damaged gas tank."))
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+
+		if(health < initial(health))
+			to_chat(user, SPAN_NOTICE("You repair some damage to [src.name]."))
 			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			src.health += min(10, initial(src.health)-src.health)
+			src.health += min(10, initial(health) - health)
 		else
-			to_chat(user, "The [src.name] is at full integrity")
+			to_chat(user, "\The [name] is at full integrity")
 		return
 
 	else if(istype(W, /obj/item/mecha_parts/mecha_tracking))

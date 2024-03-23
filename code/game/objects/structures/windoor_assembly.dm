@@ -72,23 +72,21 @@
 		if("01")
 			if(isWelder(W) && !anchored )
 				var/obj/item/weldingtool/WT = W
-				if (WT.remove_fuel(0,user))
-					user.visible_message("[user] dissassembles the windoor assembly.", "You start to dissassemble the windoor assembly.")
-					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
-
-					if(do_after(user, 40,src))
-						if(!src || !WT.isOn()) return
-						to_chat(user, "<span class='notice'>You dissasembled the windoor assembly!</span>")
-						if(material_used == MATERIAL_REINFORCED_PLASS)
-							new /obj/item/stack/material/glass/rplass(get_turf(src), 5)
-						else
-							new /obj/item/stack/material/glass/reinforced(get_turf(src), 5)
-						if(secure)
-							new /obj/item/stack/rods(get_turf(src), 4)
-						qdel(src)
-				else
-					to_chat(user, "<span class='notice'>You need more welding fuel to dissassemble the windoor assembly.</span>")
+				user.visible_message("[user] dissassembles the windoor assembly.", "You start to dissassemble the windoor assembly.")
+				if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 					return
+
+				if(QDELETED(src)|| !user)
+					return
+
+				to_chat(user, SPAN_NOTICE("You dissasembled the windoor assembly!"))
+				if(material_used == MATERIAL_REINFORCED_PLASS)
+					new /obj/item/stack/material/glass/rplass(get_turf(src), 5)
+				else
+					new /obj/item/stack/material/glass/reinforced(get_turf(src), 5)
+				if(secure)
+					new /obj/item/stack/rods(get_turf(src), 4)
+				qdel(src)
 
 			//Wrenching an unsecure assembly anchors it in place. Step 4 complete
 			if(isWrench(W) && !anchored)
@@ -224,7 +222,7 @@
 
 /obj/structure/windoor_assembly/proc/finish_door(mob/user)
 	set_density(TRUE)
-	show_splash_text(user, "Door finished!")
+	show_splash_text(user, "Door finished!", SPAN("notice", "You have finished assembling the door!"))
 
 	if(secure)
 		var/obj/machinery/door/window/brigdoor/windoor = new created_windoor_secure(get_turf(loc))

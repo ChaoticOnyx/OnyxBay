@@ -90,7 +90,7 @@ if(loc != old_loc) {\
 	}\
 }
 
-/atom/movable/Move()
+/atom/movable/Move(newloc, direct)
 	LIGHT_MOVE_UPDATE
 
 /atom/movable/forceMove()

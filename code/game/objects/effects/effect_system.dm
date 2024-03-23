@@ -113,9 +113,9 @@ steam.start() -- spawns the effect
 	anchored = 1.0
 	mouse_opacity = 0
 
-/obj/effect/sparks/Initialize()
+/obj/effect/sparks/Initialize(mapload, volume)
 	. = ..()
-	playsound(src.loc, SFX_SPARK, 100, 1)
+	playsound(src.loc, SFX_SPARK, volume, 1)
 	var/turf/T = loc
 	if(istype(T, /turf))
 		T.hotspot_expose(1000, 100)
@@ -127,13 +127,23 @@ steam.start() -- spawns the effect
 		T.hotspot_expose(1000, 100)
 	return ..()
 
-/obj/effect/sparks/Move()
+/obj/effect/sparks/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	var/turf/T = loc
-	if (istype(T, /turf))
+	if(isturf(T))
 		T.hotspot_expose(1000, 100)
 
 /datum/effect/effect/system/spark_spread
+	var/sparks_volume = 100
+
+/datum/effect/effect/system/spark_spread/New(volume = null)
+	if(!isnull(volume))
+		sparks_volume = volume
+
+	return ..()
 
 /datum/effect/effect/system/spark_spread/set_up(n = 3, c = 0, loca)
 	if(n > 10)
@@ -153,7 +163,7 @@ steam.start() -- spawns the effect
 	set waitfor = 0
 	if(holder)
 		src.location = get_turf(holder)
-	var/obj/effect/sparks/sparks = new /obj/effect/sparks(location)
+	var/obj/effect/sparks/sparks = new /obj/effect/sparks(location, sparks_volume)
 	var/direction
 	if(src.cardinals)
 		direction = pick(GLOB.cardinal)
@@ -236,8 +246,11 @@ steam.start() -- spawns the effect
 /obj/effect/effect/smoke/bad
 	time_to_live = 200
 
-/obj/effect/effect/smoke/bad/Move()
+/obj/effect/effect/smoke/bad/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	for(var/mob/living/carbon/M in get_turf(src))
 		affect(M)
 
@@ -267,8 +280,11 @@ steam.start() -- spawns the effect
 
 /obj/effect/effect/smoke/sleepy
 
-/obj/effect/effect/smoke/sleepy/Move()
+/obj/effect/effect/smoke/sleepy/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	for(var/mob/living/carbon/M in get_turf(src))
 		affect(M)
 
@@ -295,8 +311,11 @@ steam.start() -- spawns the effect
 	name = "mustard gas"
 	icon_state = "mustard"
 
-/obj/effect/effect/smoke/mustard/Move()
+/obj/effect/effect/smoke/mustard/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	for(var/mob/living/carbon/human/R in get_turf(src))
 		affect(R)
 

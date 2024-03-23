@@ -86,24 +86,17 @@
 
 
 /obj/machinery/floor_light/proc/_repair_damage(mob/user, obj/item/weldingtool/WT)
-	if(istype(WT))
+	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
 		return
 
-	if(!WT.remove_fuel(0, user))
-		to_chat(user, "\The [WT] must be on to complete this task.")
+	if(QDELETED(src) || !user)
 		return
 
-	playsound(loc, 'sound/items/Welder.ogg', 50, 1)
-	if(do_after(user, 20, src))
-		if(!WT.isOn())
-			return
-
-		visible_message(SPAN("notice", "\The [user] has repaired \the [src]"))
-		set_broken(FALSE)
-		damagekey = 0
-		damage = 0
-		update_icon()
-
+	visible_message(SPAN("notice", "\The [user] has repaired \the [src]"))
+	set_broken(FALSE)
+	damagekey = 0
+	damage = 0
+	update_icon()
 
 /obj/machinery/floor_light/proc/_open_settings(mob/user)
 	if(!length(settings))
@@ -115,7 +108,7 @@
 			var/new_color = show_radial_menu(user, src, colors, require_near = TRUE)
 			if(new_color)
 				colour = new_color
-				show_splash_text_to_viewers("color changed")
+				show_splash_text_to_viewers("color changed", force_skip_chat = TRUE)
 				update_icon()
 		if("paste")
 			var/obj/item/I = user.get_active_item()
@@ -128,7 +121,7 @@
 				show_splash_text(user, "settings copied")
 		if("invert")
 			inverted = !inverted
-			show_splash_text_to_viewers("lights inverted")
+			show_splash_text_to_viewers("lights inverted", force_skip_chat = TRUE)
 			update_icon()
 		if("slow")
 			glow_mode = GLOW_SLOW
@@ -164,7 +157,7 @@
 	colour = FL.colour
 	inverted = FL.inverted
 	glow_mode = FL.glow_mode
-	show_splash_text_to_viewers("new settings applied.")
+	show_splash_text_to_viewers("new settings applied", force_skip_chat = TRUE)
 
 
 /obj/machinery/floor_light/attack_hand(mob/user)
@@ -178,17 +171,16 @@
 
 /obj/machinery/floor_light/proc/toggle(mob/user)
 	if(!anchored)
-		show_splash_text(user, "must be screwed down first!")
+		show_splash_text(user, "must be screwed down first!", "\The [src] must be screwed down first!")
 		return
 
 	if(stat & BROKEN)
-		show_splash_text(user, "too damaged to be used!")
+		show_splash_text(user, "too damaged to be used!", "\The [src] is too damaged to be used!")
 		return
 
 	on = !on
 	update_icon()
 	update_use_power(on ? POWER_USE_ACTIVE : POWER_USE_OFF)
-	show_splash_text_to_viewers("turned [on ? "on" : "off"]")
 
 
 /obj/machinery/floor_light/ex_act(severity)

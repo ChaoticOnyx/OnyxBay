@@ -63,7 +63,7 @@
 	var/list/design = GLOB.rcd_designs[root_category][design_category][1]
 
 	rcd_design_path = design["[RCD_DESIGN_PATH]"]
-	design_title = initial(rcd_design_path.name)
+	design_title = initial(rcd_design_path.type)
 	mode = design["[RCD_DESIGN_MODE]"]
 	construction_mode = mode
 
@@ -106,7 +106,7 @@
 			//check if we can build our window on the grill
 			if(is_blocked_turf(target_turf, caller = null, exclude_mobs = FALSE, ignore_atoms = structures_to_ignore))
 				playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
-				show_splash_text(user, "something is blocking the turf")
+				show_splash_text(user, "something is blocking the turf", SPAN("warning", "There's something blocking the turf!"))
 				return FALSE
 
 		/**
@@ -117,7 +117,7 @@
 			//if a player builds a wallgirder on top of himself manually with iron sheets he can't finish the wall if he is still on the girder. Exclude the girder itself when checking for other dense objects on the turf
 			if(istype(target, /obj/structure/girder) && is_blocked_turf(target_turf))
 				playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
-				show_splash_text(user, "something is on the girder!")
+				show_splash_text(user, "something is on the girder!", SPAN("warning", "There's something blocking the girder!"))
 				return FALSE
 
 		//check if turf is blocked in for dense structures
@@ -146,7 +146,7 @@
 			//check if the structure can fit on this turf
 			if(is_blocked_turf(target_turf))
 				playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
-				show_splash_text(user, "something is on the tile!")
+				show_splash_text(user, "something is on the tile!", SPAN("warning", "There's something blocking the tile!"))
 				return FALSE
 
 	return TRUE
@@ -257,23 +257,15 @@
 			var/atom/design_path = design[RCD_DESIGN_PATH]
 			var/icon/design_icon
 
-			// Ad hoc cases. Very ugly indeed.
 			var/design_name = initial(design_path.name)
-			if(ispath(design_path, /obj/structure/window_frame/rglass))
-				design_name = design_name + " reinforced"
-			else if(ispath(design_path, /obj/structure/window_frame/grille/rglass))
-				design_name = design_name + " reinforced"
-			else if(ispath(design_path, /obj/structure/window/reinforced/full))
-				design_name = design_name + " full"
-			else if(ispath(design_path, /obj/structure/table/reinforced))
-				design_name = design_name + " reinforced"
+			var/design_type = initial(design_path.type)
 
 			if(isnull(designs_icons[design_path]))
 				designs_icons[design_path] = icon(icon = initial(design_path.icon), icon_state = initial(design_path.icon_state), dir = SOUTH, frame = 1)
 
 			design_icon = designs_icons[design_path]
 
-			designs += list(list("title" = design_name, "icon" = icon2base64html(design_icon)))
+			designs += list(list("title" = design_name, "type" = design_type, "icon" = icon2base64html(design_icon)))
 		data["categories"] += list(list("cat_name" = sub_category, "designs" = designs))
 
 	return data
@@ -333,17 +325,7 @@
 			mode = design["[RCD_DESIGN_MODE]"]
 			construction_mode = mode
 			rcd_design_path = design["[RCD_DESIGN_PATH]"]
-			design_title = initial(rcd_design_path.name)
-
-			// Ad hoc cases. Very ugly indeed.
-			if(ispath(rcd_design_path, /obj/structure/window_frame/rglass))
-				design_title = design_title + " reinforced"
-			else if(ispath(rcd_design_path, /obj/structure/window_frame/grille/rglass))
-				design_title = design_title + " reinforced"
-			else if(ispath(rcd_design_path, /obj/structure/window/reinforced/full))
-				design_title = design_title + " full"
-			else if(ispath(rcd_design_path, /obj/structure/table/reinforced))
-				design_title = design_title + " reinforced"
+			design_title = initial(rcd_design_path.type)
 
 		else
 			airlock_electronics.handle_act(action, params)

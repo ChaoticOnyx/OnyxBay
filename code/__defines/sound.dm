@@ -122,6 +122,7 @@
 #define SFX_AMBIENT_ATMOSPHERICS        "ambient_atmospherics"
 #define SFX_AMBIENT_MORGUE              "ambient_morgue"
 #define SFX_AMBIENT_JUNGLE              "ambient_jungle"
+#define SFX_AMBIENT_DESERT              "ambient_desert"
 
 // AMBIENT MUSIC
 #define SFX_AMBIENT_MUSIC_NORMAL       "ambient_music_normal"
@@ -129,6 +130,9 @@
 #define SFX_AMBIENT_MUSIC_SPACE        "ambient_music_space"
 #define SFX_AMBIENT_MUSIC_SPACE_TRAVEL "ambient_music_space_travel"
 #define SFX_AMBIENT_MUSIC_CENTCOMM     "ambient_music_centcomm"
+#define SFX_AMBIENT_MUSIC_THUNDERDOME  "ambient_music_court"
+#define SFX_AMBIENT_MUSIC_PICNIC       "ambient_music_picnic"
+#define SFX_AMBIENT_MUSIC_COURT        "ambient_music_court"
 
 // ITEMS USING
 #define SFX_USE_HANDCUFFS           "use_handcuffs"
@@ -318,6 +322,9 @@
 #define SFX_GEIGER_MODERATE         "geiger_moderate"
 #define SFX_GEIGER_HIGH             "geiger_high"
 #define SFX_GEIGER_VERY_HIGH        "geiger_very_high"
+#define SFX_WELDING                 "welding_sound"
+#define SFX_WELDER_ACTIVATE         "welder_activate"
+#define SFX_WELDER_DEACTIVATE       "welder_deactivate"
 
 // MISC
 #define SFX_VENT                    "vent"

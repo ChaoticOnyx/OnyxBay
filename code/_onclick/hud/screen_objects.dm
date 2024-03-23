@@ -67,18 +67,37 @@
 /atom/movable/screen/storage
 	name = "storage"
 
-/atom/movable/screen/storage/Click()
+/atom/movable/screen/storage/Click(location, control, params)
 	if(!usr.canClick())
-		return 1
+		return TRUE
+
 	if(usr.stat || usr.paralysis || usr.stunned || usr.weakened)
-		return 1
+		return TRUE
+
 	if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
-		return 1
+		return TRUE
 	if(master)
 		var/obj/item/I = usr.get_active_hand()
 		if(I)
 			usr.ClickOn(master)
-	return 1
+
+		var/obj/item/storage/S = master
+		if(!S?.storage_ui)
+			return
+
+		// Tries to find items by their border overlay.
+		var/list/PM = params2list(params)
+		var/list/screen_loc_params = splittext(PM["screen-loc"], ",")
+		var/list/screen_loc_X = splittext(screen_loc_params[1], ":")
+		var/click_x = text2num(screen_loc_X[1]) * WORLD_ICON_SIZE + text2num(screen_loc_X[2]) - 144
+
+		for(var/i = 1, i <= S.storage_ui.click_border_start.len, i++)
+			if(S.storage_ui.click_border_start[i] <= click_x && click_x <= S.storage_ui.click_border_end[i] && i <= S.contents.len)
+				I = S.contents[i]
+				I?.Click(location, control, params)
+				return
+
+	return TRUE
 
 /atom/movable/screen/stored
 	name = "stored"

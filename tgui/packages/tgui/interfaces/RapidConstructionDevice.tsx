@@ -33,6 +33,7 @@ type Category = {
 
 type Design = {
   title: string;
+  type: string;
   icon: string;
 };
 
@@ -109,7 +110,7 @@ const DesignSection = (props: any, context: any) => {
           height="32px"
           color="transparent"
           selected={
-            design.title === selected_design &&
+            design.type === selected_design &&
             shownCategory.cat_name === selected_category
           }
           onClick={() =>

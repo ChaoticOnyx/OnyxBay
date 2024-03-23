@@ -24,7 +24,7 @@ GLOBAL_LIST_INIT(rcd_designs, list(
 			list(RCD_DESIGN_MODE = RCD_WALLFRAME, RCD_DESIGN_PATH = /obj/machinery/alarm),
 			list(RCD_DESIGN_MODE = RCD_WALLFRAME, RCD_DESIGN_PATH = /obj/item/device/radio/intercom),
 			list(RCD_DESIGN_MODE = RCD_STRUCTURE, RCD_DESIGN_PATH = /obj/structure/computerframe),
-			list(RCD_DESIGN_MODE = RCD_STRUCTURE, RCD_DESIGN_PATH = /obj/machinery/constructable_frame),
+			list(RCD_DESIGN_MODE = RCD_STRUCTURE, RCD_DESIGN_PATH = /obj/machinery/constructable_frame/machine_frame),
 			list(RCD_DESIGN_MODE = RCD_STRUCTURE, RCD_DESIGN_PATH = /obj/machinery/vending_frame),
 		),
 

@@ -3,129 +3,180 @@
 	icon_state = "landmark_outfit"
 	delete_after = TRUE
 
-// Costume spawner, selects a random subclass and disappears
-/obj/effect/landmark/costume/New()
-	var/list/options = typesof(/obj/effect/landmark/costume)
-	var/PICK = options[rand(1, length(options))]
-	new PICK(loc)
+	/// Associative list of typepath | list(typepath) -> value. If value is `null` or `100` atom has 100% chance of spawn.
+	var/list/spawn_paths
 
-// SUBCLASSES. Spawn a bunch of items and disappear likewise.
-/obj/effect/landmark/costume/chameleon/New()
-	new /obj/item/clothing/mask/chameleon(loc)
-	new /obj/item/clothing/under/chameleon(loc)
-	new /obj/item/clothing/glasses/chameleon(loc)
-	new /obj/item/clothing/shoes/chameleon(loc)
-	new /obj/item/clothing/gloves/chameleon(loc)
-	new /obj/item/clothing/suit/chameleon(loc)
-	new /obj/item/clothing/head/chameleon(loc)
-	new /obj/item/storage/backpack/chameleon(loc)
+/obj/effect/landmark/costume/Initialize()
+	. = ..()
 
-/obj/effect/landmark/costume/gladiator/New()
-	new /obj/item/clothing/under/gladiator(loc)
-	new /obj/item/clothing/head/helmet/gladiator(loc)
+	for(var/typepath as anything in spawn_paths)
+		var/chance = LAZYACCESS(spawn_paths, typepath)
 
-/obj/effect/landmark/costume/madscientist/New()
-	new /obj/item/clothing/under/gimmick/rank/captain/suit(loc)
-	new /obj/item/clothing/head/flatcap(loc)
-	new /obj/item/clothing/suit/storage/toggle/labcoat/mad(loc)
-	new /obj/item/clothing/glasses/gglasses(loc)
+		if(!isnull(chance) && !prob(chance))
+			continue
 
-/obj/effect/landmark/costume/elpresidente/New()
-	new /obj/item/clothing/under/gimmick/rank/captain/suit(loc)
-	new /obj/item/clothing/head/flatcap(loc)
-	new /obj/item/clothing/mask/smokable/cigarette/cigar/havana(loc)
-	new /obj/item/clothing/shoes/jackboots(loc)
+		if(islist(typepath))
+			typepath = pick(typepath)
 
-/obj/effect/landmark/costume/nyangirl/New()
-	new /obj/item/clothing/under/schoolgirl(loc)
-	new /obj/item/clothing/head/kitty(loc)
+		new typepath(loc)
 
-/obj/effect/landmark/costume/maid/New()
-	new /obj/item/clothing/under/blackskirt(loc)
-	new /obj/item/clothing/glasses/sunglasses/blindfold(loc)
+/obj/effect/landmark/costume/chameleon
+	spawn_paths = list(
+		/obj/item/clothing/mask/chameleon,
+		/obj/item/clothing/under/chameleon,
+		/obj/item/clothing/glasses/chameleon,
+		/obj/item/clothing/shoes/chameleon,
+		/obj/item/clothing/gloves/chameleon,
+		/obj/item/clothing/suit/chameleon,
+		/obj/item/clothing/head/chameleon,
+		/obj/item/storage/backpack/chameleon,
+	)
 
-	var/CHOICE = pick(/obj/item/clothing/head/beret, /obj/item/clothing/head/rabbitears)
-	new CHOICE(loc)
+/obj/effect/landmark/costume/gladiator
+	spawn_paths = list(
+		/obj/item/clothing/under/gladiator,
+		/obj/item/clothing/head/helmet/gladiator,
+	)
 
-/obj/effect/landmark/costume/butler/New()
-	new /obj/item/clothing/accessory/wcoat(loc)
-	new /obj/item/clothing/under/suit_jacket(loc)
-	new /obj/item/clothing/head/that(loc)
+/obj/effect/landmark/costume/madscientist
+	spawn_paths = list(
+		/obj/item/clothing/under/gimmick/rank/captain/suit,
+		/obj/item/clothing/head/flatcap,
+		/obj/item/clothing/suit/storage/toggle/labcoat/mad,
+		/obj/item/clothing/glasses/gglasses,
+	)
 
-/obj/effect/landmark/costume/scratch/New()
-	new /obj/item/clothing/gloves/white(loc)
-	new /obj/item/clothing/shoes/white(loc)
-	new /obj/item/clothing/under/scratch(loc)
+/obj/effect/landmark/costume/elpresidente
+	spawn_paths = list(
+		/obj/item/clothing/under/gimmick/rank/captain/suit,
+		/obj/item/clothing/head/flatcap,
+		/obj/item/clothing/mask/smokable/cigarette/cigar/havana,
+		/obj/item/clothing/shoes/jackboots,
+	)
 
-	if(prob(30))
-		new /obj/item/clothing/head/cueball(loc)
+/obj/effect/landmark/costume/nyangirl
+	spawn_paths = list(
+		/obj/item/clothing/under/schoolgirl,
+		/obj/item/clothing/head/kitty,
+	)
 
-/obj/effect/landmark/costume/prig/New()
-	new /obj/item/clothing/accessory/wcoat(loc)
-	new /obj/item/clothing/glasses/monocle(loc)
-	new /obj/item/clothing/shoes/black(loc)
-	new /obj/item/cane(loc)
-	new /obj/item/clothing/under/sl_suit(loc)
-	new /obj/item/clothing/mask/fakemoustache(loc)
+/obj/effect/landmark/costume/maid
+	spawn_paths = list(
+		/obj/item/clothing/under/blackskirt,
+		/obj/item/clothing/glasses/sunglasses/blindfold,
+		list(/obj/item/clothing/head/beret, /obj/item/clothing/head/rabbitears),
+	)
 
-	var/CHOICE = pick(/obj/item/clothing/head/bowler, /obj/item/clothing/head/that)
-	new CHOICE(loc)
+/obj/effect/landmark/costume/butler
+	spawn_paths = list(
+		/obj/item/clothing/accessory/wcoat,
+		/obj/item/clothing/under/suit_jacket,
+		/obj/item/clothing/head/that,
+	)
 
-/obj/effect/landmark/costume/plaguedoctor/New()
-	new /obj/item/clothing/suit/bio_suit/plaguedoctorsuit(loc)
-	new /obj/item/clothing/head/plaguedoctorhat(loc)
+/obj/effect/landmark/costume/scratch
+	spawn_paths = list(
+		/obj/item/clothing/gloves/white,
+		/obj/item/clothing/shoes/white,
+		/obj/item/clothing/under/scratch,
+		/obj/item/clothing/head/cueball = 30,
+	)
 
-/obj/effect/landmark/costume/nightowl/New()
-	new /obj/item/clothing/under/owl(loc)
-	new /obj/item/clothing/mask/gas/owl_mask(loc)
+/obj/effect/landmark/costume/prig
+	spawn_paths = list(
+		/obj/item/clothing/accessory/wcoat,
+		/obj/item/clothing/glasses/monocle,
+		/obj/item/clothing/shoes/black,
+		/obj/item/cane,
+		/obj/item/clothing/under/sl_suit,
+		/obj/item/clothing/mask/fakemoustache,
+		list(/obj/item/clothing/head/bowler, /obj/item/clothing/head/that),
+	)
 
-/obj/effect/landmark/costume/waiter/New()
-	new /obj/item/clothing/under/waiter(loc)
-	new /obj/item/clothing/suit/apron(loc)
+/obj/effect/landmark/costume/plaguedoctor
+	spawn_paths = list(
+		/obj/item/clothing/suit/bio_suit/plaguedoctorsuit,
+		/obj/item/clothing/head/plaguedoctorhat,
+	)
 
-	var/CHOICE = pick(/obj/item/clothing/head/kitty, /obj/item/clothing/head/rabbitears)
-	new CHOICE(loc)
+/obj/effect/landmark/costume/nightowl
+	spawn_paths = list(
+		/obj/item/clothing/under/owl,
+		/obj/item/clothing/mask/gas/owl_mask,
+	)
 
-/obj/effect/landmark/costume/pirate/New()
-	new /obj/item/clothing/under/pirate(loc)
-	new /obj/item/clothing/suit/pirate(loc)
-	new /obj/item/clothing/glasses/eyepatch(loc)
+/obj/effect/landmark/costume/waiter
+	spawn_paths = list(
+		/obj/item/clothing/under/waiter,
+		/obj/item/clothing/suit/apron,
+		list(/obj/item/clothing/head/kitty, /obj/item/clothing/head/rabbitears),
+	)
 
-	var/CHOICE = pick(/obj/item/clothing/head/pirate , /obj/item/clothing/mask/bandana/red)
-	new CHOICE(loc)
 
-/obj/effect/landmark/costume/commie/New()
-	new /obj/item/clothing/under/soviet(loc)
-	new /obj/item/clothing/head/ushanka(loc)
+/obj/effect/landmark/costume/pirate
+	spawn_paths = list(
+		/obj/item/clothing/under/pirate,
+		/obj/item/clothing/suit/pirate,
+		/obj/item/clothing/glasses/eyepatch,
+		list(/obj/item/clothing/head/pirate , /obj/item/clothing/mask/bandana/red),
+	)
 
-/obj/effect/landmark/costume/imperium_monk/New()
-	new /obj/item/clothing/suit/imperium_monk(loc)
 
-	if(prob(25))
-		new /obj/item/clothing/mask/gas/cyborg(loc)
+/obj/effect/landmark/costume/commie
+	spawn_paths = list(
+		/obj/item/clothing/under/soviet,
+		/obj/item/clothing/head/ushanka,
+	)
 
-/obj/effect/landmark/costume/holiday_priest/New()
-	new /obj/item/clothing/suit/holidaypriest(loc)
+/obj/effect/landmark/costume/imperium_monk
+	spawn_paths = list(
+		/obj/item/clothing/suit/imperium_monk,
+		/obj/item/clothing/mask/gas/cyborg = 25,
+	)
 
-/obj/effect/landmark/costume/marisawizard/fake/New()
-	new /obj/item/clothing/head/wizard/marisa/fake(loc)
-	new /obj/item/clothing/suit/wizrobe/marisa/fake(loc)
+/obj/effect/landmark/costume/holiday_priest
+	spawn_paths = list(
+		/obj/item/clothing/suit/holidaypriest,
+	)
 
-/obj/effect/landmark/costume/cutewitch/New()
-	new /obj/item/clothing/under/sundress(loc)
-	new /obj/item/clothing/head/witchwig(loc)
-	new /obj/item/staff/broom(loc)
+/obj/effect/landmark/costume/marisawizard/fake
+	spawn_paths = list(
+		/obj/item/clothing/head/wizard/marisa/fake,
+		/obj/item/clothing/suit/wizrobe/marisa/fake,
+	)
 
-/obj/effect/landmark/costume/fakewizard/New()
-	new /obj/item/clothing/suit/wizrobe/fake(loc)
-	new /obj/item/clothing/head/wizard/fake(loc)
-	new /obj/item/staff/(loc)
+/obj/effect/landmark/costume/cutewitch
+	spawn_paths = list(
+		/obj/item/clothing/under/sundress,
+		/obj/item/clothing/head/witchwig,
+		/obj/item/staff/broom,
+	)
 
-/obj/effect/landmark/costume/sexyclown/New()
-	new /obj/item/clothing/mask/gas/sexyclown(loc)
-	new /obj/item/clothing/under/sexyclown(loc)
+/obj/effect/landmark/costume/fakewizard
+	spawn_paths = list(
+		/obj/item/clothing/suit/wizrobe/fake,
+		/obj/item/clothing/head/wizard/fake,
+		/obj/item/staff,
+	)
 
-/obj/effect/landmark/costume/sexymime/New()
-	new /obj/item/clothing/mask/gas/sexymime(loc)
-	new /obj/item/clothing/under/sexymime(loc)
+/obj/effect/landmark/costume/sexyclown
+	spawn_paths = list(
+		/obj/item/clothing/mask/gas/sexyclown,
+		/obj/item/clothing/under/sexyclown,
+	)
 
+/obj/effect/landmark/costume/sexymime
+	spawn_paths = list(
+		/obj/item/clothing/mask/gas/sexymime,
+		/obj/item/clothing/under/sexymime,
+	)
+
+/obj/effect/landmark/costume/random
+	icon_state = "landmark_outfitrand"
+
+/obj/effect/landmark/costume/random/Initialize()
+	. = ..()
+
+	var/list/paths = subtypesof(/obj/effect/landmark/costume) - /obj/effect/landmark/costume/random
+	var/chosen_path = pick(paths)
+	new chosen_path(loc)

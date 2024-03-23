@@ -51,7 +51,7 @@
 		return .
 
 	if(!parent_organ.get_incision(TRUE))
-		target.show_splash_text(user, "no incisions that can be closed cleanly!")
+		target.show_splash_text(user, "no incisions that can be closed cleanly!", "There are no incisions that can be closed cleanly!")
 		return SURGERY_FAILURE
 
 	if(parent_organ.is_stump())

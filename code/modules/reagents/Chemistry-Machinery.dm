@@ -530,11 +530,14 @@
 		if("grind")
 			grind()
 		if("dump")
-			show_splash_text(user, "contents dumped.")
+			show_splash_text(user, "contents dumped", SPAN("notice", "You dump the contents of \the [src]."))
 			eject()
 		if("detach")
-			show_splash_text(user, beaker ? "beaker detached." : "no beaker present!")
-			detach()
+			if(beaker)
+				show_splash_text(user, "beaker detached", SPAN("notice", "You detach \the [beaker] from \the [src]."))
+				detach()
+			else
+				show_splash_text(user, "no beaker present!", SPAN("notice", "There's no beaker in \the [src]."))
 
 /obj/machinery/reagentgrinder/proc/_generate_buttons()
 	LAZYINITLIST(choices)

@@ -6,7 +6,9 @@
 	anchored = 1.0
 	idle_power_usage = 300 WATTS
 	active_power_usage = 300 WATTS
-	var/circuit = null //The path to the circuit board type. If circuit==null, the computer can't be disassembled.
+
+	/// Typepath of the circuit board. If `null` computer can't be disassembled.
+	var/circuit = null
 	var/processing = 0
 
 	var/icon_keyboard = "generic_key"

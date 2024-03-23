@@ -17,7 +17,7 @@
 		if(do_after(usr, TIME_CUT))
 			playsound(user, 'sound/weapons/chainsaw_attack1.ogg', 25, 1)
 			to_chat(user, SPAN_WARNING("You cut down \the [src] with \the [W]."))
-			if(!istype(get_turf(loc), /turf/simulated/floor/holofloor))
+			if(!(atom_flags & ATOM_FLAG_HOLOGRAM))
 				new /obj/item/stack/material/wood/ten(loc)
 			qdel(src)
 			return
@@ -28,7 +28,7 @@
 		to_chat(user, SPAN_WARNING("You chop \the [src] with \the [W]."))
 		playsound(src, 'sound/effects/fighting/chop3.ogg', 25, 1)
 		if(cut_hits <= 0)
-			if(!istype(get_turf(loc), /turf/simulated/floor/holofloor))
+			if(!(atom_flags & ATOM_FLAG_HOLOGRAM))
 				new /obj/item/stack/material/wood/ten(loc)
 			qdel(src)
 		return

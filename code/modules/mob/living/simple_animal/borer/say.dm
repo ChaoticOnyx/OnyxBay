@@ -23,7 +23,7 @@
 	var/datum/language/L = parse_language(message)
 	if(!L)
 		L = get_default_language()
-	if(L && L.flags & HIVEMIND)
+	if(L && L.language_flags & HIVEMIND)
 		L.broadcast(src,trim(copytext(message,3)),src.truename)
 		return
 

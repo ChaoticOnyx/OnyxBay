@@ -166,7 +166,7 @@
 				for(var/obj/machinery/door/door in src)
 					if(istype(door, /obj/machinery/door/window))
 						continue
-					show_splash_text(user, "there's already a door!")
+					show_splash_text(user, "there's already a door!", "\icon[src] There's already a door!")
 					return FALSE
 
 				var/obj/structure/windoor_assembly/assembly = new (src, user.dir)
@@ -176,7 +176,7 @@
 				return TRUE
 
 			for(var/obj/machinery/door/door in src)
-				show_splash_text(user, "there's already a door!")
+				show_splash_text(user, "there's already a door!", "\icon[src] There's already a door!")
 				return FALSE
 
 			//create the assembly and let it finish itself
@@ -205,7 +205,7 @@
 
 		if(RCD_DECONSTRUCT)
 			if(rcd_proof)
-				show_splash_text(user, "it's too thick!")
+				show_splash_text(user, "it's too thick!", "\icon[src] It's too thick!")
 				return FALSE
 
 			dismantle_floor()

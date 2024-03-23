@@ -90,70 +90,66 @@
 
 /obj/item/intercom_assembly/proc/add_cable(obj/item/stack/cable_coil/C, mob/user)
 	if(C.get_amount() < 1)
-		show_splash_text(user, "need more coil!")
+		show_splash_text(user, "need more coil!", SPAN("warning", "You need more cable to wire \the [src]!"))
 		return
 
-	show_splash_text(user, "wiring...")
+	show_splash_text(user, "wiring...", "Now wiring \the [src]...")
 	if(do_after(user, 40, src))
 		if(C.use(1))
-			show_splash_text(user, "wired!")
+			show_splash_text(user, "wired!", SPAN("notice", "You have wired \the [src]!"))
 			buildstage = INTERCOM_WIRED
 			update_icon()
 
 /obj/item/intercom_assembly/proc/remove_cable(mob/user)
 	playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
-	show_splash_text(user, "cutting cable...")
+	show_splash_text(user, "cutting cable...", "Now cutting cable out of \the [src]...")
 
 	if(do_after(user, 40, src))
-		show_splash_text(user, "cut out!")
+		show_splash_text(user, "cut out!", SPAN("notice", "You have cut the cable out of \the [src]!"))
 		new /obj/item/stack/cable_coil(loc, 1)
 		buildstage = INTERCOM_EMPTY
 		update_icon()
 
 /obj/item/intercom_assembly/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user)
-	if(WT.remove_fuel(0, user))
-		playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
-		show_splash_text(user, "dissasembling...")
-		if(do_after(user, 40, src))
-			if(!WT.isOn())
-				return
-
-			new /obj/item/stack/material/steel(loc, 3)
-			qdel(src)
-	else
-		show_splash_text(user, "turn \the [WT] on first!")
+	show_splash_text(user, "dissasembling...", "Now dissasembling \the [src]...")
+	if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 		return
 
+	if(QDELETED(src) || !user)
+		return
+
+	new /obj/item/stack/material/steel(loc, 3)
+	qdel(src)
 
 /obj/item/intercom_assembly/proc/add_radio(obj/item/device/radio/R, mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
-	show_splash_text(user, "installing radio...")
+	show_splash_text(user, "installing radio...", "Now installing the radio into \the [src]...")
 
 	if(do_after(user, 40, src))
 		if(!user.drop(R, src))
 			return
 
-		show_splash_text(user, "installed!")
+		show_splash_text(user, "installed!", SPAN("notice", "You have installed the radio into \the [src]!"))
 		qdel(R)
 		buildstage = INTERCOM_RADIO
 		update_icon()
 
 /obj/item/intercom_assembly/proc/eject_radio(mob/user)
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
-	show_splash_text(user, "removing radio...")
+	show_splash_text(user, "removing radio...", "Now removing the radio from \the [src]...")
 
 	if(do_after(user, 40, src))
-		show_splash_text(user, "removed radio!")
+		show_splash_text(user, "removed radio!", SPAN("notice", "You have removed the radio from \the [src]!"))
 		new /obj/item/device/radio(user.loc, 1)
 		buildstage = INTERCOM_WIRED
 		update_icon()
 
 /obj/item/intercom_assembly/proc/finish_frame(mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
-	show_splash_text(user, "finishing \the [src]...")
+	show_splash_text(user, "finishing \the [src]...", "Now finishing \the [src]...")
 
 	if(do_after(user, 40, src))
-		show_splash_text(user, "finished \the [src]!")
+		show_splash_text(user, "finished \the [src]!", SPAN("notice", "You have finished assembing \the [src]!"))
 		new /obj/item/device/radio/intercom(loc, dir)
 		qdel(src)
 

@@ -23,7 +23,7 @@
 
 	. = borgy.cell.use(amount * energyfactor) //borgs get 1.3x the use of their RCDs
 	if(!. && user)
-		show_splash_text(user, "insufficient charge!")
+		show_splash_text(user, "insufficient charge!", SPAN("warning", "\The [src] is out of charge!"))
 	return .
 
 /obj/item/construction/rcd/borg/checkResource(amount, mob/user)
@@ -36,5 +36,5 @@
 
 	. = borgy.cell.charge >= (amount * energyfactor)
 	if(!. && user)
-		show_splash_text(user, "insufficient charge!")
+		show_splash_text(user, "insufficient charge!", SPAN("warning", "\The [src] is out of charge!"))
 	return .

@@ -335,16 +335,20 @@
 
 	if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
-		if(!WT.isOn())
-			to_chat(user, "Turn on \the [WT] first!")
-			return 0
 		if(!damage)
 			to_chat(user, "\The [src] is already fully repaired.")
-			return 0
-		if(WT.remove_fuel(0,user) && do_after(user, damage, src))
-			to_chat(user, "You repair all structural damage to \the [src]")
-			damage = 0
-		return 0
+			return
+
+		if(!WT.use_tool(src, user, delay = damage, amount = 5))
+			return
+
+		if(QDELETED(src) || !user)
+			return
+
+		to_chat(user, "You repair all structural damage to \the [src]")
+		damage = 0
+		return
+
 	else if(isWirecutter(W) && !building_terminal)
 		building_terminal = 1
 		var/obj/machinery/power/terminal/term

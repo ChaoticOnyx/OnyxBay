@@ -186,6 +186,6 @@
 /obj/effect/beam/ir_beam
 	name = "ir beam"
 	icon = 'icons/obj/projectiles.dmi'
-	icon_state = "ibeam"
+	icon_state = "infrared"
 	anchored = TRUE
 	simulated = FALSE

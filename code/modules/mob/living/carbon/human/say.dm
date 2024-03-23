@@ -19,7 +19,7 @@
 
 	message = sanitize(message)
 	var/obj/item/organ/internal/voicebox/vox = locate() in internal_organs
-	var/snowflake_speak = (language?.flags & (NONVERBAL|SIGNLANG)) || (vox?.is_usable() && (language in vox.assists_languages))
+	var/snowflake_speak = (language?.language_flags & (NONVERBAL|SIGNLANG)) || (vox?.is_usable() && (language in vox.assists_languages))
 
 	if(stat == CONSCIOUS && !full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
@@ -152,7 +152,7 @@
 		. = TRUE
 	else if(wear_mask)
 		var/obj/item/clothing/mask/M = wear_mask
-		if(is_muzzled() && !(message_data["language"]?.flags & (NONVERBAL|SIGNLANG)))
+		if(is_muzzled() && !(message_data["language"]?.language_flags & (NONVERBAL|SIGNLANG)))
 			if(istype(M, /obj/item/clothing/mask))
 				if(M.say_messages)
 					message_data["message"] = pick(M.say_messages)

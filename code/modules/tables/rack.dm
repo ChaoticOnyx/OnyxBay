@@ -28,10 +28,6 @@
 /obj/structure/table/rack/can_connect()
 	return FALSE
 
-/obj/structure/table/rack/holorack/dismantle(obj/item/wrench/W, mob/user)
-	to_chat(user, "<span class='warning'>You cannot dismantle \the [src].</span>")
-	return
-
 /obj/structure/table/rack/bograck
 	name = "strange rack"
 	desc ="Must be the color."

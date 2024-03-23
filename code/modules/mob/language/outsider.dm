@@ -6,7 +6,7 @@
 	ask_verb = "hisses"
 	exclaim_verb = "hisses"
 	key = "4"
-	flags = RESTRICTED
+	language_flags = RESTRICTED
 	syllables = list("sss","sSs","SSS")
 	machine_understands = 0
 	shorthand = "Xeno"
@@ -19,7 +19,7 @@
 	exclaim_verb = "hisses"
 	colour = "alien"
 	key = "a"
-	flags = RESTRICTED | HIVEMIND
+	language_flags = RESTRICTED | HIVEMIND
 	shorthand = "N/A"
 
 /datum/language/xenos/check_special_condition(mob/other)
@@ -38,7 +38,7 @@
 	speech_verb = "says"
 	colour = "changeling"
 	key = "g"
-	flags = RESTRICTED | HIVEMIND
+	language_flags = RESTRICTED | HIVEMIND
 	shorthand = "N/A"
 
 /datum/language/ling/broadcast(mob/living/speaker,message,speaker_mask)
@@ -56,7 +56,7 @@
 	exclaim_verb = "sings"
 	colour = "alien"
 	key = "x"
-	flags = RESTRICTED | HIVEMIND
+	language_flags = RESTRICTED | HIVEMIND
 	shorthand = "N/A"
 
 /datum/language/corticalborer/broadcast(mob/living/speaker,message,speaker_mask)
@@ -81,7 +81,7 @@
 	exclaim_verb = "SHRIEKS"
 	colour = "vox"
 	key = "5"
-	flags = WHITELISTED
+	language_flags = WHITELISTED
 	syllables = list("ti","ti","ti","hi","hi","ki","ki","ki","ki","ya","ta","ha","ka","ya","chi","cha","kah", \
 	"SKRE","AHK","EHK","RAWK","KRA","AAA","EEE","KI","II","KRI","KA")
 	machine_understands = 0
@@ -98,7 +98,7 @@
 	exclaim_verb = "chants"
 	colour = "cult"
 	key = "f"
-	flags = RESTRICTED
+	language_flags = RESTRICTED
 	space_chance = 100
 	syllables = list("ire","ego","nahlizet","certum","veri","jatkaa","mgar","balaq", "karazet", "geeri", \
 		"orkan", "allaq", "sas'so", "c'arta", "forbici", "tarem", "n'ath", "reth", "sh'yro", "eth", "d'raggathnor", \
@@ -118,5 +118,5 @@
 	exclaim_verb = "chants"
 	colour = "cult"
 	key = "y"
-	flags = RESTRICTED | HIVEMIND
+	language_flags = RESTRICTED | HIVEMIND
 	shorthand = "N/A"
