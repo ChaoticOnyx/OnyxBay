@@ -747,7 +747,7 @@
 
 	random_tone = TRUE
 	sound_on = SFX_LIGHT_TUBE_ON
-	sound_on_volume = 60
+	sound_on_volume = 50
 
 /obj/item/light/tube/large
 	w_class = ITEM_SIZE_SMALL
