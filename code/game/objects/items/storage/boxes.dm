@@ -705,7 +705,6 @@
 		new /obj/item/reagent_containers/food/chocolatebar(src)
 
 /obj/item/storage/box/coffee_condi_display/on_update_icon()
-	. = ..()
 	if(is_path_in_list(/obj/item/reagent_containers/vessel/condiment/pack/sugar, contents))
 		AddOverlays(sugar_overlay)
 	else
