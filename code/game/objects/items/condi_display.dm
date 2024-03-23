@@ -4,10 +4,10 @@
 	icon_state = "condi_display"
 	obj_flags = OBJ_FLAG_ANCHORABLE
 
-	var/static/image/sugar_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "condi_display_sugar")
-	var/static/image/creamer_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "condi_display_creamer")
-	var/static/image/astrotame_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "condi_display_astrotame")
-	var/static/image/chocolate_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "condi_display_chocolate")
+	var/static/image/sugar_overlay = image(icon = 'icons/obj/items.dmi', icon_state = "condi_display_sugar")
+	var/static/image/creamer_overlay = image(icon = 'icons/obj/items.dmi', icon_state = "condi_display_creamer")
+	var/static/image/astrotame_overlay = image(icon = 'icons/obj/items.dmi', icon_state = "condi_display_astrotame")
+	var/static/image/chocolate_overlay = image(icon = 'icons/obj/items.dmi', icon_state = "condi_display_chocolate")
 
 	var/static/radial_take_sugar = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_sugar")
 	var/static/radial_take_sweetener = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_sweetener")
@@ -26,7 +26,7 @@
 /obj/item/coffee_condi_display/Initialize()
 	. = ..()
 	update_icon()
-	for(var/i in 1 to 4)
+	for(var/i in 1 to 8)
 		new /obj/item/reagent_containers/vessel/condiment/pack/sugar(src)
 		new /obj/item/reagent_containers/vessel/condiment/pack/creamer(src)
 		new /obj/item/reagent_containers/vessel/condiment/pack/astrotame(src)
@@ -37,6 +37,7 @@
 
 	if(!anchored)
 		show_splash_text(user, "anchor it first!")
+		return
 
 	var/list/radial_options = list()
 
