@@ -19,6 +19,8 @@ GLOBAL_VAR_CONST(PREF_X3, "x3")
 GLOBAL_VAR_CONST(PREF_NORMAL, "Normal")
 GLOBAL_VAR_CONST(PREF_DISTORT, "Distort")
 GLOBAL_VAR_CONST(PREF_BLUR, "Blur")
+GLOBAL_VAR_CONST(PREF_MODERN, "Modern")
+GLOBAL_VAR_CONST(PREF_LEGACY, "Legacy")
 GLOBAL_VAR_CONST(PREF_PRIMARY, "Primary")
 GLOBAL_VAR_CONST(PREF_ALL, "All")
 GLOBAL_VAR_CONST(PREF_OFF, "Off")
@@ -356,6 +358,16 @@ var/global/list/_client_preferences_by_type
 
 /datum/client_preference/statusbar/changed(mob/preference_mob, new_value)
 	winset(preference_mob, "statusbar", "is-visible=[new_value == GLOB.PREF_YES]")
+
+/datum/client_preference/legacy_input
+	description = "Oldschool™ Input Position"
+	key = "INPUT_POSITION"
+	category = PREF_CATEGORY_UI
+	options = list(GLOB.PREF_MODERN, GLOB.PREF_LEGACY)
+	default_value = GLOB.PREF_MODERN
+
+/datum/client_preference/legacy_input/changed(mob/preference_mob, new_value)
+	preference_mob?.client?.update_chat_position(new_value)
 
 /datum/client_preference/cinema_credits
 	description = "Show Cinema-like Credits At Round-end"

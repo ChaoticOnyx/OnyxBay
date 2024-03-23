@@ -475,6 +475,8 @@ datum/preferences/proc/clear_character_previews()
 
 	client.apply_fps(clientfps)
 
+	client.update_chat_position(client.get_preference_value("INPUT_POSITION"))
+
 	var/zoom = client.get_preference_value("PIXEL_SIZE")
 	winset(client, "mapwindow.map", "zoom=[zoom_pref2value(zoom)]")
 

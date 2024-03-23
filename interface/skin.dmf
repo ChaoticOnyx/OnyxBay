@@ -961,6 +961,44 @@ window "mainwindow"
 		saved-params = "splitter"
 		right = "infowindow"
 		is-vert = true
+	elem "input_alt"
+		type = INPUT
+		pos = 2,396
+		size = 514x20
+		anchor1 = 0,100
+		anchor2 = 100,100
+		background-color = #d3b5b5
+		is-visible = false
+		border = line
+		saved-params = "command"
+	elem "saybutton_alt"
+		type = BUTTON
+		pos = 518,396
+		size = 40x20
+		anchor1 = 100,100
+		anchor2 = -1,-1
+		background-color = none
+		is-visible = false
+		border = line
+		saved-params = "is-checked"
+		text = "Chat"
+		command = ".winset \"saybutton_alt.is-checked=true?input_alt.command=\"!Say \\\"\" macrobutton.is-checked=false:input_alt.command=\""
+		is-flat = true
+		button-type = pushbox
+	elem "hotkey_toggle_alt"
+		type = BUTTON
+		pos = 560,396
+		size = 78x20
+		anchor1 = 100,100
+		anchor2 = -1,-1
+		background-color = none
+		is-visible = false
+		border = line
+		saved-params = ""
+		text = "Hotkey Toggle"
+		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle_alt.is-checked=false input_alt.focus=true : mainwindow.macro=hotkeymode hotkey_toggle_alt.is-checked=true mapwindow.map.focus=true\""
+		is-flat = true
+		button-type = pushbox
 
 window "mapwindow"
 	elem "mapwindow"
@@ -994,11 +1032,11 @@ window "mapwindow"
 		pos = 0,464
 		size = 280x16
 		anchor1 = 0,100
-		is-visible = true
+		anchor2 = -1,-1
+		border = line
+		saved-params = ""
 		text = ""
 		align = left
-		border = line
-
 
 window "outputwindow"
 	elem "outputwindow"
@@ -1040,7 +1078,7 @@ window "outputwindow"
 		anchor2 = 100,100
 		background-color = #d3b5b5
 		is-default = true
-		border = sunken
+		border = line
 		saved-params = "command"
 		on-focus = ".add_speech_bubble"
 		on-blur = ".remove_speech_bubble"
@@ -1050,10 +1088,11 @@ window "outputwindow"
 		size = 40x20
 		anchor1 = 100,100
 		anchor2 = -1,-1
-		background-color = none
+		border = line
 		saved-params = "is-checked"
 		text = "Chat"
 		command = ".winset \"saybutton.is-checked=true?input.command=\"!say \\\"\" macrobutton.is-checked=false:input.command=\""
+		is-flat = true
 		button-type = pushbox
 	elem "hotkey_toggle"
 		type = BUTTON
@@ -1061,10 +1100,11 @@ window "outputwindow"
 		size = 78x20
 		anchor1 = 100,100
 		anchor2 = -1,-1
-		background-color = none
+		border = line
 		saved-params = ""
 		text = "Hotkey Toggle"
 		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
+		is-flat = true
 		button-type = pushbox
 
 
