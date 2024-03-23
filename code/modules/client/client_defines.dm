@@ -45,9 +45,6 @@
 	var/datum/eams_info/eams_info = new
 	var/list/topiclimiter
 
-	// comment out the line below when debugging locally to enable the options & messages menu
-	// control_freak = 1
-
 	// * Database related things *
 
 	// So admins know why it isn't working - Used to determine how old the account is - in days.

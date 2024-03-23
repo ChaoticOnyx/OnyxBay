@@ -268,9 +268,6 @@
 		qdel(src)
 		return
 
-/*	if(holder)
-		src.control_freak = 0 // Devs need 0 for profiler access
-*/
 	//////////////
 	//DISCONNECT//
 	//////////////
