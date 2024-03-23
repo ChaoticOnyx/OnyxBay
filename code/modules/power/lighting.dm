@@ -743,8 +743,9 @@
 		LIGHTMODE_ALARM      = list(l_max_bright = 1.0, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#ff3333"),
 		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#8A9929")
 		)
-	sound_on = 'sound/machines/lightson.ogg'
+
 	random_tone = TRUE
+	sound_on = SFX_LIGHT_TUBE_ON
 
 /obj/item/light/tube/large
 	w_class = ITEM_SIZE_SMALL
@@ -793,6 +794,7 @@
 		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.7, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#8A9929")
 		)
 	random_tone = TRUE
+	sound_on = SFX_LIGHT_BULB_ON
 
 /obj/item/light/bulb/he
 	name = "high efficiency light bulb"
@@ -948,9 +950,9 @@
 		status = LIGHT_BROKEN
 	else if(prob(min(60, switchcount*switchcount*0.01)))
 		status = LIGHT_BURNED
-		playsound(src, 'sound/machines/lightsburnout.ogg', 100, TRUE)
+		playsound(src, GET_SFX(SFX_LIGHT_BURNOUT), 100, TRUE)
 	else if(sound_on)
-		playsound(src, sound_on, 100)
+		playsound(src, GET_SFX(sound_on), 100)
 	return status
 
 /proc/flicker_all_lights()
