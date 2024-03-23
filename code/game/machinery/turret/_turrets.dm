@@ -69,7 +69,6 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/datum/state_machine/turret/state_machine = null
 	var/weakref/target = null
 	var/list/potential_targets = list()
-	var/timer_id = null
 	var/datum/hostility/hostility
 	/// Determines whether this turret is raised or not
 	var/raised = FALSE
@@ -109,6 +108,11 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		installed_gun = new installed_gun(src)
 		setup_gun()
 
+	add_think_ctx("process_reloading", CALLBACK(src, nameof(.proc/process_reloading)), 0)
+	add_think_ctx("process_idle", CALLBACK(src, nameof(.proc/process_idle)), 0)
+	add_think_ctx("process_turning", CALLBACK(src, nameof(.proc/process_turning)), 0)
+	add_think_ctx("process_shooting", CALLBACK(src, nameof(.proc/process_shooting)), 0)
+
 	state_machine = add_state_machine(src, /datum/state_machine/turret)
 
 	target_bearing = dir2angle(dir)
@@ -139,7 +143,6 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 /obj/machinery/turret/Destroy()
 	remove_state_machine(src, /datum/state_machine/turret)
-	deltimer(timer_id)
 
 	QDEL_NULL(state_machine)
 	QDEL_NULL(proximity)

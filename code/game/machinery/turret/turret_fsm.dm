@@ -28,17 +28,10 @@
 		sound_played_last = world.time
 		playsound(turret, switched_to_sound, 40, TRUE)
 
-	if(timer_proc)
-		turret.timer_id = addtimer(CALLBACK(turret, timer_proc), timer_wait, TIMER_UNIQUE | TIMER_STOPPABLE | TIMER_LOOP | TIMER_OVERRIDE)
-
 /datum/state/turret/exited_state(obj/machinery/turret/turret)
 	if(switched_from_sound && world.time + sound_cd >= sound_played_last)
 		sound_played_last = world.time
 		playsound(turret, switched_from_sound, 40, TRUE)
-
-	if(timer_proc && turret.timer_id)
-		deltimer(turret.timer_id)
-		turret.timer_id = null
 
 /datum/state/turret/idle
 	ray_color = "#ffffffff"
@@ -54,10 +47,17 @@
 		/datum/state_transition/turret/turn_to_bearing
 		)
 
+/datum/state/turret/idle/entered_state(obj/machinery/turret/turret, datum/state/turret/previous_state)
+	. = ..()
+	turret.set_next_think_ctx("process_idle", world.time + TURRET_WAIT)
+
+/datum/state/turret/idle/exited_state(obj/machinery/turret/turret)
+	. = ..()
+	turret.set_next_think_ctx("process_idle", 0)
+
 /datum/state/turret/turning
 	ray_color = "#ffff00ff"
 	switched_to_sound = SFX_TURRET_ROTATE
-	timer_proc = /obj/machinery/turret/proc/process_turning
 	turret_raised = TRUE
 	transitions = list(
 		/datum/state_transition/turret/lost_power,
@@ -66,16 +66,31 @@
 		/datum/state_transition/turret/no_enemies
 		)
 
+/datum/state/turret/turning/entered_state(obj/machinery/turret/turret, datum/state/turret/previous_state)
+	. = ..()
+	turret.set_next_think_ctx("process_turning", world.time + TURRET_WAIT)
+
+/datum/state/turret/turning/exited_state(obj/machinery/turret/turret)
+	. = ..()
+	turret.set_next_think_ctx("process_turning", 0)
+
 /datum/state/turret/engaging
 	ray_color = "#ff0000ff"
 	turret_raised = TRUE
-	timer_proc = /obj/machinery/turret/proc/process_shooting
 	transitions = list(
 		/datum/state_transition/turret/lost_power,
 		/datum/state_transition/turret/reload,
 		/datum/state_transition/turret/turn_to_bearing,
 		/datum/state_transition/turret/no_enemies
 		)
+
+/datum/state/turret/engaging/entered_state(obj/machinery/turret/turret, datum/state/turret/previous_state)
+	. = ..()
+	turret.set_next_think_ctx("process_shooting", world.time + TURRET_WAIT)
+
+/datum/state/turret/engaging/exited_state(obj/machinery/turret/turret)
+	. = ..()
+	turret.set_next_think_ctx("process_shooting", 0)
 
 /datum/state/turret/reloading
 	ray_color = "#ffa600ff"
@@ -88,6 +103,14 @@
 		/datum/state_transition/turret/turn_to_bearing,
 		/datum/state_transition/turret/no_enemies
 	)
+
+/datum/state/turret/reloading/entered_state(obj/machinery/turret/turret, datum/state/turret/previous_state)
+	. = ..()
+	turret.set_next_think_ctx("process_reloading", world.time + TURRET_WAIT)
+
+/datum/state/turret/reloading/exited_state(obj/machinery/turret/turret)
+	. = ..()
+	turret.set_next_think_ctx("process_reloading", 0)
 
 /datum/state/turret/reloading/get_open_transitions(obj/machinery/turret/turret)
 	if(turret.reloading) // We do not exit this state until reload is finished.
