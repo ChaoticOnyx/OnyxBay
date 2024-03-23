@@ -108,7 +108,13 @@
 /obj/item/reagent_containers/chem_disp_cartridge/lemon
 	spawn_reagent = /datum/reagent/drink/juice/lemon
 
-	// Bar, hot chocolate and milk
+	// Bar, coffee
+/obj/item/reagent_containers/chem_disp_cartridge/coffee
+	spawn_reagent = /datum/reagent/drink/coffee
+/obj/item/reagent_containers/chem_disp_cartridge/cafe_latte
+	spawn_reagent = /datum/reagent/drink/coffee/cafe_latte
+/obj/item/reagent_containers/chem_disp_cartridge/soy_latte
+	spawn_reagent = /datum/reagent/drink/coffee/soy_latte
 /obj/item/reagent_containers/chem_disp_cartridge/hot_coco
 	spawn_reagent = /datum/reagent/drink/hot_coco
 /obj/item/reagent_containers/chem_disp_cartridge/milk
