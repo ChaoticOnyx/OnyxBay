@@ -2,7 +2,6 @@
 	name = "coffee condiments display"
 	desc = "A neat small box, holding all your favorite coffee condiments."
 	icon_state = "condi_display"
-	icon = 'icons/obj/storage/boxes.dmi'
 	obj_flags = OBJ_FLAG_ANCHORABLE
 
 	var/static/image/sugar_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "condi_display_sugar")
