@@ -13,23 +13,24 @@
 	var/brew_time = 8 SECONDS
 	var/speed = 1
 	/// The number of cups left
-	var/coffee_cups = 15
+	var/coffee_cups = 0
 	var/max_coffee_cups = 15
 	/// The amount of sugar packets left
-	var/sugar_packs = 10
+	var/sugar_packs = 0
 	var/max_sugar_packs = 10
 	/// The amount of sweetener packets left
-	var/sweetener_packs = 10
+	var/sweetener_packs = 0
 	var/max_sweetener_packs = 10
 	/// The amount of creamer packets left
-	var/creamer_packs = 10
+	var/creamer_packs = 0
 	var/max_creamer_packs = 10
 	/// Current amount of coffee beans stored
 	var/coffee_amount = 0
 	/// List of coffee bean objects are stored
 	var/list/coffee = list()
 
-	var/static/image/coffepot_empty = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_full")
+	var/static/image/coffeepot_empty = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_full")
+	var/static/image/coffeepot_halffull = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_halffull")
 	var/static/image/coffeepot_full = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_empty")
 	var/static/image/cups_1 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_1")
 	var/static/image/cups_2 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_2")
@@ -52,6 +53,10 @@
 	. = ..()
 	if(mapload)
 		coffeepot = new /obj/item/reagent_containers/vessel/coffeepot(src)
+		coffee_cups = max_coffee_cups
+		sugar_packs = max_sugar_packs
+		sweetener_packs = max_sweetener_packs
+		creamer_packs = max_creamer_packs
 
 	update_icon()
 
@@ -121,13 +126,16 @@
 /obj/machinery/coffeemaker/on_update_icon()
 	. = ..()
 
-	CutOverlays(coffepot_empty)
+	CutOverlays(coffeepot_empty)
 	CutOverlays(coffeepot_full)
+	CutOverlays(coffeepot_halffull)
 	if(coffeepot)
-		if(coffeepot.reagents.total_volume > 0)
+		if(coffeepot.reagents.total_volume > 0 && coffeepot.reagents.total_volume < coffeepot.reagents.maximum_volume)
+			AddOverlays(coffeepot_halffull)
+		else if(coffeepot.reagents.total_volume > 0)
 			AddOverlays(coffeepot_full)
 		else
-			AddOverlays(coffepot_empty)
+			AddOverlays(coffeepot_empty)
 
 	CutOverlays(cups_1)
 	CutOverlays(cups_2)

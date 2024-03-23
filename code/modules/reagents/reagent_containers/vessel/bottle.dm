@@ -285,7 +285,9 @@
 		var/transfer_amount = min(amount_per_transfer_from_this, free_amount)
 		reagents.trans_to(W, transfer_amount)
 
+		CutOverlays()
 		flick("syrup_anim", src)
+		update_icon()
 		return
 
 	return ..()

@@ -23,15 +23,17 @@
 	/// Amount of chocolate bars stored
 	var/chocolatebars = 8
 
-/obj/structure/coffee_condi_display/Initialize()
+/obj/structure/coffee_condi_display/Initialize(mapload)
 	. = ..()
-	update_icon()
-	for(var/i in 1 to 8)
-		new /obj/item/reagent_containers/vessel/condiment/pack/sugar(src)
-		new /obj/item/reagent_containers/vessel/condiment/pack/creamer(src)
-		new /obj/item/reagent_containers/vessel/condiment/pack/astrotame(src)
-		new /obj/item/reagent_containers/food/chocolatebar(src)
+	if(mapload)
+		anchored = TRUE
+		for(var/i in 1 to 8)
+			new /obj/item/reagent_containers/vessel/condiment/pack/sugar(src)
+			new /obj/item/reagent_containers/vessel/condiment/pack/creamer(src)
+			new /obj/item/reagent_containers/vessel/condiment/pack/astrotame(src)
+			new /obj/item/reagent_containers/food/chocolatebar(src)
 
+	update_icon()
 /obj/structure/coffee_condi_display/attack_hand(mob/user)
 	. = ..()
 
