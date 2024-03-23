@@ -12,6 +12,9 @@
 #define LIGHT_BULB_TEMPERATURE 400 //K - used value for a 60W bulb
 #define LIGHTING_POWER_FACTOR 5		//5W per luminosity * range
 
+#define LIGHT_ON_DELAY_UPPER 3 SECONDS
+#define LIGHT_ON_DELAY_LOWER 1 SECONDS
+
 /obj/machinery/light_construct
 	name = "light fixture frame"
 	desc = "A light fixture under construction."
@@ -159,6 +162,9 @@
 	var/current_mode = null
 
 	var/static/list/light_eas
+
+	/// Whether this light fixture is currently turning on
+	VAR_PRIVATE/turning_on = FALSE
 
 /obj/machinery/light/vox
 	name = "alien light"
@@ -499,13 +505,32 @@
 			on = FALSE
 
 	if(on)
+		if(turning_on)
+			return
+
 		change_power_consumption((light_outer_range * light_max_bright) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 		update_use_power(POWER_USE_ACTIVE)
-		lightbulb.switch_on()
+		turning_on = TRUE
+		set_next_think(world.time + rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
+		return
 	else
 		update_use_power(POWER_USE_IDLE)
 
 	update_icon()
+
+/obj/machinery/light/think()
+	if(!on || QDELETED(src) || QDELETED(lightbulb))
+		turning_on = FALSE
+		return
+
+	switch(get_status())
+		if(LIGHT_BROKEN, LIGHT_BURNED, LIGHT_EMPTY)
+			turning_on = FALSE
+			return
+
+	turning_on = FALSE
+	update_icon()
+	lightbulb.switch_on()
 
 /obj/machinery/light/proc/flicker(amount = rand(10, 20))
 	set waitfor = FALSE
@@ -923,6 +948,17 @@
 		status = LIGHT_BROKEN
 	else if(prob(min(60, switchcount*switchcount*0.01)))
 		status = LIGHT_BURNED
+		playsound(src, 'sound/machines/lightsburnout.ogg', 100, TRUE)
 	else if(sound_on)
-		playsound(src, sound_on, 75)
+		playsound(src, sound_on, 100)
 	return status
+
+/proc/flicker_all_lights()
+	for(var/obj/machinery/light/L in SSmachines.machinery)
+		if(!(L.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
+			continue
+
+		if(!prob(95))
+			continue
+
+		L.flicker(rand(2, 5))
