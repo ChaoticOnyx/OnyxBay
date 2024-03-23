@@ -199,7 +199,7 @@
 		return TRUE
 
 	if(istype(attack_item, /obj/item/reagent_containers/vessel/takeaway) && attack_item.is_open_container())
-		var/obj/item/reagent_containers/vessel/takeaway/new_cup = attack_item
+		var/obj/item/reagent_containers/vessel/takeaway/new_cup = attack_item //different type of cup
 		if(new_cup.reagents.total_volume > 0 )
 			show_splash_text(user, "the cup must be empty!")
 			return
@@ -391,7 +391,10 @@
 		return
 
 	var/obj/item/reagent_containers/vessel/takeaway/new_cup = new(get_turf(src))
-	user.put_in_hands(new_cup)
+	if(Adjacent(user))
+		user.put_in_hands(new_cup)
+	else
+		new_cup.dropInto(get_turf(src))
 	coffee_cups--
 	update_icon()
 
@@ -400,8 +403,11 @@
 		show_splash_text(user, "no sugar left!")
 		return
 
-	var/obj/item/reagent_containers/vessel/condiment/sugar/new_pack = new(get_turf(src))
-	user.put_in_hands(new_pack)
+	var/obj/item/reagent_containers/vessel/condiment/pack/sugar/new_pack = new(get_turf(src))
+	if(Adjacent(user))
+		user.put_in_hands(new_pack)
+	else
+		new_pack.dropInto(get_turf(src))
 	sugar_packs--
 	update_icon()
 
@@ -410,8 +416,11 @@
 		show_splash_text(user, "no sweetener left!")
 		return
 
-	var/obj/item/reagent_containers/vessel/condiment/astrotame/new_pack = new(get_turf(src))
-	user.put_in_hands(new_pack)
+	var/obj/item/reagent_containers/vessel/condiment/pack/astrotame/new_pack = new(get_turf(src))
+	if(Adjacent(user))
+		user.put_in_hands(new_pack)
+	else
+		new_pack.dropInto(get_turf(src))
 	sweetener_packs--
 	update_icon()
 
@@ -420,8 +429,11 @@
 		show_splash_text(user, "no creamer left!")
 		return
 
-	var/obj/item/reagent_containers/vessel/condiment/creamer/new_pack = new(drop_location())
-	user.put_in_hands(new_pack)
+	var/obj/item/reagent_containers/vessel/condiment/pack/creamer/new_pack = new(drop_location())
+	if(Adjacent(user))
+		user.put_in_hands(new_pack)
+	else
+		new_pack.dropInto(get_turf(src))
 	creamer_packs--
 	update_icon()
 
