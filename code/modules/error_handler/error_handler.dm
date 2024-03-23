@@ -118,7 +118,7 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 			$body)"},
 			dbcon_don,
 			list(
-				game_id = game_id,
+				game_id = GLOB.round_id,
 				revision = revdata.revision,
 				file = E.file,
 				line = E.line,

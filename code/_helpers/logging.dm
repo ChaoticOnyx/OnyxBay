@@ -20,7 +20,7 @@
 	var/turf/T = get_turf(location)
 	var/loc = T && location ? "([T.x],[T.y],[T.z])" : ""
 
-	WRITE_FILE(GLOB.world_story_log, "\[[time_stamp()]] [game_id] [type]: [message] [loc][log_end]")
+	WRITE_FILE(GLOB.world_story_log, "\[[time_stamp()]] [GLOB.round_id] [type]: [message] [loc][log_end]")
 
 /proc/log_to_dd(text)
 	to_world_log(text)
@@ -54,11 +54,11 @@
 	var/turf/T = get_turf(location)
 	if(location && T)
 		if(log_to_common)
-			WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message] ([T.x],[T.y],[T.z])[log_end]")
+			WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [GLOB.round_id] [type]: [message] ([T.x],[T.y],[T.z])[log_end]")
 		if(notify_admin)
 			message += " (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)"
 	else if(log_to_common)
-		WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message][log_end]")
+		WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [GLOB.round_id] [type]: [message][log_end]")
 
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">[type] LOG:</span> <span class=\"message\">[message]</span></span>"
 	if(notify_admin && SScharacter_setup.initialized) // Checking SScharacter_setup early so won't cycle through all the admins
@@ -128,7 +128,7 @@
 	log_generic("DATABASE", text, notify_admin = notify_admin)
 
 /proc/game_log(category, text)
-	WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]\] [game_id] [category]: [text][log_end]")
+	WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]\] [GLOB.round_id] [category]: [text][log_end]")
 
 /proc/log_qdel(text)
 	WRITE_FILE(GLOB.world_qdel_log, "\[[time_stamp()]]QDEL: [text]")
