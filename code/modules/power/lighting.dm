@@ -746,6 +746,7 @@
 
 	random_tone = TRUE
 	sound_on = SFX_LIGHT_TUBE_ON
+	sound_on_volume = 60
 
 /obj/item/light/tube/large
 	w_class = ITEM_SIZE_SMALL
@@ -795,6 +796,7 @@
 		)
 	random_tone = TRUE
 	sound_on = SFX_LIGHT_BULB_ON
+	sound_on_volume = 75
 
 /obj/item/light/bulb/he
 	name = "high efficiency light bulb"
@@ -950,9 +952,9 @@
 		status = LIGHT_BROKEN
 	else if(prob(min(60, switchcount*switchcount*0.01)))
 		status = LIGHT_BURNED
-		playsound(src, GET_SFX(SFX_LIGHT_BURNOUT), 100, TRUE)
+		playsound(src, GET_SFX(SFX_LIGHT_BURNOUT), 80, TRUE)
 	else if(sound_on)
-		playsound(src, GET_SFX(sound_on), 100)
+		playsound(src, GET_SFX(sound_on), sound_on_volume)
 	return status
 
 /proc/flicker_all_lights()
