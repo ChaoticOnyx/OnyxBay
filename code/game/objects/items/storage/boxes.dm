@@ -685,11 +685,10 @@
 	desc = "A neat small box, holding all your favorite coffee condiments."
 	icon_state = "condi_display"
 
-	var/static/image/sugar_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "[icon_state]_sugar")
-	var/static/image/creamer_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "[icon_state]_creamer")
-	var/static/image/astrotame_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "[icon_state]_astrotame")
-	var/static/image/chocolate_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "[icon_state]_chocolate")
-
+	var/static/image/sugar_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "condi_display_sugar")
+	var/static/image/creamer_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "condi_display_creamer")
+	var/static/image/astrotame_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "condi_display_astrotame")
+	var/static/image/chocolate_overlay = image(icon = 'icons/obj/storage/boxes.dmi', icon_state = "condi_display_chocolate")
 
 	can_hold = list(/obj/item/reagent_containers/vessel/condiment/pack/sugar,
 					/obj/item/reagent_containers/vessel/condiment/pack/creamer,
