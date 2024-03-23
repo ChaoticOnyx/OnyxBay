@@ -168,7 +168,7 @@
 		finalize_recipe_production(recipe, required, produced, user)
 		return
 
-	else if(do_after(user, recipe.time))
+	else if(craft_tool != 2 && do_after(user, recipe.time))
 		finalize_recipe_production(recipe, required, produced, user)
 		return
 
