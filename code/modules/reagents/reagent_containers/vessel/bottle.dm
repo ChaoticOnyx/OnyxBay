@@ -267,14 +267,17 @@
 	icon_state = "syrup"
 	possible_transfer_amounts = list(5, 10)
 	amount_per_transfer_from_this = 5
-	lid_type = /datum/vessel_lid/pump_cap
+	lid_type = null
+	/// Whether this syrup's pump is toggled or not
+	var/pump_cap = TRUE
 
 /obj/item/reagent_containers/vessel/bottle/syrup_bottle/_examine_text(mob/user)
 	. = ..()
+	. += SPAN_NOTICE("It's pump is [pump_cap ? "on" : "removed"].\n")
 	. += SPAN_NOTICE("Alt-click to toggle the pump cap. \n")
 
 /obj/item/reagent_containers/vessel/bottle/syrup_bottle/attackby(obj/item/W, mob/user)
-	if(lid.state == LID_CLOSED && W.is_open_container())
+	if(!pump_cap && W.is_open_container())
 		if(!reagents.total_volume)
 			show_splash_text(user, "bottle empty!")
 
@@ -293,7 +296,13 @@
 	return ..()
 
 /obj/item/reagent_containers/vessel/bottle/syrup_bottle/AltClick(mob/user)
-	lid.toggle(user)
+	pump_cap = !pump_cap
+	if(pump_cap)
+		show_splash_text(user, "put pump cap on")
+		icon_state = "syrup"
+	else
+		show_splash_text(user, "removed pump cap")
+		icon_state = "syrup_open"
 
 //types of syrups
 /obj/item/reagent_containers/vessel/bottle/syrup_bottle/caramel
