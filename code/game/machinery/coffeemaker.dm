@@ -130,10 +130,10 @@
 	CutOverlays(coffeepot_full)
 	CutOverlays(coffeepot_halffull)
 	if(coffeepot)
-		if(coffeepot.reagents.total_volume > 0 && coffeepot.reagents.total_volume < coffeepot.reagents.maximum_volume)
-			AddOverlays(coffeepot_halffull)
-		else if(coffeepot.reagents.total_volume > 0)
+		if(coffeepot.reagents.total_volume >= 70)
 			AddOverlays(coffeepot_full)
+		else if(coffeepot.reagents.total_volume > 0)
+			AddOverlays(coffeepot_halffull)
 		else
 			AddOverlays(coffeepot_empty)
 
