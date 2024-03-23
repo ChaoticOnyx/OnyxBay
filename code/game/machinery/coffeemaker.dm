@@ -6,6 +6,7 @@
 	icon = 'icons/obj/machines/coffeemaker.dmi'
 	icon_state = "coffeemaker_impressa"
 	base_icon_state = "coffeemaker_impressa"
+	obj_flags = OBJ_FLAG_ANCHORABLE
 	density = TRUE
 	var/obj/item/reagent_containers/vessel/coffeepot/coffeepot = null
 	var/brewing = FALSE
@@ -28,16 +29,16 @@
 	/// List of coffee bean objects are stored
 	var/list/coffee = list()
 
-	var/static/coffepot_empty = image(icon = 'icons/hud/radial.dmi', icon_state = "pot_full")
-	var/static/coffeepot_full = image(icon = 'icons/hud/radial.dmi', icon_state = "pot_empty")
-	var/static/cups_1 = image(icon = 'icons/hud/radial.dmi', icon_state = "cups_1")
-	var/static/cups_2 = image(icon = 'icons/hud/radial.dmi', icon_state = "cups_2")
-	var/static/cups_3 = image(icon = 'icons/hud/radial.dmi', icon_state = "cups_3")
-	var/static/sugar_packs_overlay = image(icon = 'icons/hud/radial.dmi', icon_state = "extras_1")
-	var/static/creamer_packs_overlay = image(icon = 'icons/hud/radial.dmi', icon_state = "extras_1")
-	var/static/sweetener_packs_overlay = image(icon = 'icons/hud/radial.dmi', icon_state = "extras_1")
-	var/static/grinder_half = image(icon = 'icons/hud/radial.dmi', icon_state = "grinder_half")
-	var/static/grinder_full = image(icon = 'icons/hud/radial.dmi', icon_state = "grinder_full")
+	var/static/coffepot_empty = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_full")
+	var/static/coffeepot_full = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_empty")
+	var/static/cups_1 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_1")
+	var/static/cups_2 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_2")
+	var/static/cups_3 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_3")
+	var/static/sugar_packs_overlay = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "extras_1")
+	var/static/creamer_packs_overlay = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "extras_1")
+	var/static/sweetener_packs_overlay = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "extras_1")
+	var/static/grinder_half = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "grinder_half")
+	var/static/grinder_full = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "grinder_full")
 
 	var/static/radial_examine = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_examine")
 	var/static/radial_brew = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_brew")
@@ -66,9 +67,6 @@
 		coffee -= gone
 
 	update_icon()
-
-//obj/machinery/coffeemaker/RefreshParts()
-// . = ..()
 
 /obj/machinery/coffeemaker/_examine_text(mob/user)
 	. = ..()
@@ -200,8 +198,8 @@
 		update_icon()
 		return TRUE
 
-	if(istype(attack_item, /obj/item/reagent_containers/glass/coffee_cup) && attack_item.is_open_container())
-		var/obj/item/reagent_containers/glass/coffee_cup/new_cup = attack_item //different type of cup
+	if(istype(attack_item, /obj/item/reagent_containers/vessel/takeaway) && attack_item.is_open_container())
+		var/obj/item/reagent_containers/vessel/takeaway/new_cup = attack_item
 		if(new_cup.reagents.total_volume > 0 )
 			show_splash_text(user, "the cup must be empty!")
 			return
@@ -299,7 +297,7 @@
 					return
 
 	update_icon()
-	return TRUE
+	return ..()
 
 /obj/machinery/coffeemaker/proc/try_brew()
 	if(coffee_amount <= 0)
