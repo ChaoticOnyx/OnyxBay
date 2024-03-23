@@ -108,6 +108,16 @@
 /datum/emote/clap/get_sfx_volume()
 	return rand(25, 35)
 
+/datum/emote/clap/do_emote(mob/user, emote_key, intentional, target, additional_params)
+	. = ..()
+	if(!.)
+		return
+
+	var/area/A = get_area(user)
+	if(istype(A))
+		if(rand(0, 10000) == 0)
+			A.set_lightswitch(!A.lightswitch)
+
 /mob/proc/clap_emote()
 	set name = "Clap"
 	set category = "Emotes"
