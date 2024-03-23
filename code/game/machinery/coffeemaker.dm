@@ -29,24 +29,24 @@
 	/// List of coffee bean objects are stored
 	var/list/coffee = list()
 
-	var/static/coffepot_empty = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_full")
-	var/static/coffeepot_full = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_empty")
-	var/static/cups_1 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_1")
-	var/static/cups_2 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_2")
-	var/static/cups_3 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_3")
-	var/static/sugar_packs_overlay = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "extras_1")
-	var/static/creamer_packs_overlay = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "extras_1")
-	var/static/sweetener_packs_overlay = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "extras_1")
-	var/static/grinder_half = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "grinder_half")
-	var/static/grinder_full = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "grinder_full")
+	var/static/image/coffepot_empty = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_full")
+	var/static/image/coffeepot_full = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_empty")
+	var/static/image/cups_1 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_1")
+	var/static/image/cups_2 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_2")
+	var/static/image/cups_3 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_3")
+	var/static/image/sugar_packs_overlay = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "extras_1")
+	var/static/image/creamer_packs_overlay = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "extras_1")
+	var/static/image/sweetener_packs_overlay = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "extras_1")
+	var/static/image/grinder_half = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "grinder_half")
+	var/static/image/grinder_full = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "grinder_full")
 
-	var/static/radial_examine = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_examine")
-	var/static/radial_brew = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_brew")
-	var/static/radial_eject_pot = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_eject_pot")
-	var/static/radial_take_cup = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_cup")
-	var/static/radial_take_sugar = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_sugar")
-	var/static/radial_take_sweetener = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_sweetener")
-	var/static/radial_take_creamer = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_creamer")
+	var/static/image/radial_examine = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_examine")
+	var/static/image/radial_brew = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_brew")
+	var/static/image/radial_eject_pot = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_eject_pot")
+	var/static/image/radial_take_cup = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_cup")
+	var/static/image/radial_take_sugar = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_sugar")
+	var/static/image/radial_take_sweetener = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_sweetener")
+	var/static/image/radial_take_creamer = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_creamer")
 
 /obj/machinery/coffeemaker/Initialize(mapload)
 	. = ..()
@@ -121,8 +121,8 @@
 /obj/machinery/coffeemaker/on_update_icon()
 	. = ..()
 
-	ClearOverlays(coffepot_empty)
-	ClearOverlays(coffeepot_full)
+	CutOverlays(coffepot_empty)
+	CutOverlays(coffeepot_full)
 	if(coffeepot)
 		if(coffeepot.reagents.total_volume > 0)
 			AddOverlays(coffeepot_full)
@@ -171,11 +171,12 @@
 
 	if(coffeepot)
 		user.pick_or_drop(coffeepot, get_turf(src))
+		show_splash_text(user, "ejected pot")
 
 	if(new_coffeepot)
 		coffeepot = new_coffeepot
+		show_splash_text(user, "instered pot")
 
-	show_splash_text(user, "replaced pot")
 	update_icon()
 	return TRUE
 

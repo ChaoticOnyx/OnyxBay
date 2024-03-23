@@ -1,4 +1,4 @@
-/obj/item/coffee_condi_display
+/obj/structure/coffee_condi_display
 	name = "coffee condiments display"
 	desc = "A neat small box, holding all your favorite coffee condiments."
 	icon_state = "condi_display"
@@ -9,10 +9,10 @@
 	var/static/image/astrotame_overlay = image(icon = 'icons/obj/items.dmi', icon_state = "condi_display_astrotame")
 	var/static/image/chocolate_overlay = image(icon = 'icons/obj/items.dmi', icon_state = "condi_display_chocolate")
 
-	var/static/radial_take_sugar = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_sugar")
-	var/static/radial_take_sweetener = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_sweetener")
-	var/static/radial_take_creamer = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_creamer")
-	var/static/radial_take_chocolate = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_choco")
+	var/static/image/radial_take_sugar = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_sugar")
+	var/static/image/radial_take_sweetener = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_sweetener")
+	var/static/image/radial_take_creamer = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_creamer")
+	var/static/image/radial_take_chocolate = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_choco")
 
 	/// Amount of sugar packs stored
 	var/sugar_packs = 8
@@ -23,7 +23,7 @@
 	/// Amount of chocolate bars stored
 	var/chocolatebars = 8
 
-/obj/item/coffee_condi_display/Initialize()
+/obj/structure/coffee_condi_display/Initialize()
 	. = ..()
 	update_icon()
 	for(var/i in 1 to 8)
@@ -32,7 +32,7 @@
 		new /obj/item/reagent_containers/vessel/condiment/pack/astrotame(src)
 		new /obj/item/reagent_containers/food/chocolatebar(src)
 
-/obj/item/coffee_condi_display/attack_hand(mob/user)
+/obj/structure/coffee_condi_display/attack_hand(mob/user)
 	. = ..()
 
 	if(!anchored)
@@ -73,7 +73,7 @@
 		if("Take Chocolate")
 			take_chocolate(user)
 
-/obj/item/coffee_condi_display/proc/take_sugar(mob/user)
+/obj/structure/coffee_condi_display/proc/take_sugar(mob/user)
 	if(creamer_packs <= 0)
 		show_splash_text(user, "no creamer left!")
 		return
@@ -86,7 +86,7 @@
 	creamer_packs--
 	update_icon()
 
-/obj/item/coffee_condi_display/proc/take_sweetener(mob/user)
+/obj/structure/coffee_condi_display/proc/take_sweetener(mob/user)
 	if(astrotame_packs <= 0)
 		show_splash_text(user, "no sweetener left!")
 		return
@@ -99,7 +99,7 @@
 	astrotame_packs--
 	update_icon()
 
-/obj/item/coffee_condi_display/proc/take_creamer(mob/user)
+/obj/structure/coffee_condi_display/proc/take_creamer(mob/user)
 	if(creamer_packs <= 0)
 		show_splash_text(user, "no creamer left!")
 		return
@@ -112,7 +112,7 @@
 	creamer_packs--
 	update_icon()
 
-/obj/item/coffee_condi_display/proc/take_chocolate(mob/user)
+/obj/structure/coffee_condi_display/proc/take_chocolate(mob/user)
 	if(chocolatebars <= 0)
 		show_splash_text(user, "no chocolate left!")
 		return
@@ -125,7 +125,7 @@
 	chocolatebars--
 	update_icon()
 
-/obj/item/coffee_condi_display/attackby(obj/item/I, mob/living/user)
+/obj/structure/coffee_condi_display/attackby(obj/item/I, mob/living/user)
 	if(istype(I, /obj/item/reagent_containers/vessel/condiment/pack/sugar))
 		if(!user.drop(I, src))
 			return
@@ -161,7 +161,7 @@
 	else
 		return ..()
 
-/obj/item/coffee_condi_display/on_update_icon()
+/obj/structure/coffee_condi_display/on_update_icon()
 	if(sugar_packs > 0)
 		AddOverlays(sugar_overlay)
 	else
