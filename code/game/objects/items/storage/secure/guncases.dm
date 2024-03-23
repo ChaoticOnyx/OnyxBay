@@ -157,7 +157,7 @@
 /obj/item/storage/secure/guncase/detective/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "DetectiveGuncase")
+		ui = new(user, src, "DetectiveGuncase", name)
 		ui.open()
 
 /obj/item/storage/secure/guncase/detective/open(mob/user)
@@ -249,7 +249,7 @@
 /obj/item/storage/secure/guncase/security/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "Guncase")
+		ui = new(user, src, "Guncase", name)
 		ui.open()
 
 /obj/item/storage/secure/guncase/security/hos

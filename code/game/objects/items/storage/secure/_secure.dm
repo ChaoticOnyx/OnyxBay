@@ -118,7 +118,7 @@
 /obj/item/storage/secure/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "LockedSafe")
+		ui = new(user, src, "LockedSafe", name)
 		ui.open()
 
 /obj/item/storage/secure/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
