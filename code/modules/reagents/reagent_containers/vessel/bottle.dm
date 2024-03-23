@@ -270,6 +270,7 @@
 	lid_type = null
 	/// Whether this syrup's pump is toggled or not
 	var/pump_cap = TRUE
+	brittle = FALSE
 
 /obj/item/reagent_containers/vessel/bottle/syrup_bottle/_examine_text(mob/user)
 	. = ..()
@@ -277,7 +278,7 @@
 	. += SPAN_NOTICE("Alt-click to toggle the pump cap. \n")
 
 /obj/item/reagent_containers/vessel/bottle/syrup_bottle/attackby(obj/item/W, mob/user)
-	if(!pump_cap && W.is_open_container())
+	if(pump_cap && W.is_open_container())
 		if(!reagents.total_volume)
 			show_splash_text(user, "bottle empty!")
 
