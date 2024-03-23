@@ -29,9 +29,9 @@
 	/// List of coffee bean objects are stored
 	var/list/coffee = list()
 
-	var/static/image/coffeepot_empty = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_full")
+	var/static/image/coffeepot_empty = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_empty")
 	var/static/image/coffeepot_halffull = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_halffull")
-	var/static/image/coffeepot_full = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_empty")
+	var/static/image/coffeepot_full = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "pot_full")
 	var/static/image/cups_1 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_1")
 	var/static/image/cups_2 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_2")
 	var/static/image/cups_3 = image(icon = 'icons/obj/machines/coffeemaker.dmi', icon_state = "cups_3")
