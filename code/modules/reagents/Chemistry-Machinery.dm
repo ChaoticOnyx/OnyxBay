@@ -384,7 +384,7 @@
 			dat +=        "<A href='?src=\ref[src];createbottle=1'>Create normal bottle | 60 units max | Glass: 2000</A><BR>"
 			dat +=    "<A href='?src=\ref[src];createbottle_big=1'>Create big bottle    | 90 units max | Glass: 3000</A>"
 		else
-			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle | 50 units max | Glass: 2000</A>"
+			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle | 50 units max | Glass: 2000</A><BR>"
 			dat += "<A href='?src=\ref[src];condiment_pack=1'>Create condiment pack | 10 units max | Glass: 50</A>"
 	if(!condi)
 		show_browser(user, "<meta charset=\"utf-8\"><TITLE>Chemmaster 3000</TITLE>Chemmaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")

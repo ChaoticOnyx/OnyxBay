@@ -10,7 +10,7 @@
 	density = TRUE
 	var/obj/item/reagent_containers/vessel/coffeepot/coffeepot = null
 	var/brewing = FALSE
-	var/brew_time = 10 SECONDS
+	var/brew_time = 8 SECONDS
 	var/speed = 1
 	/// The number of cups left
 	var/coffee_cups = 15
@@ -52,6 +52,8 @@
 	. = ..()
 	if(mapload)
 		coffeepot = new /obj/item/reagent_containers/vessel/coffeepot(src)
+
+	update_icon()
 
 /obj/machinery/coffeemaker/Destroy()
 	QDEL_NULL(coffeepot)
@@ -119,28 +121,26 @@
 /obj/machinery/coffeemaker/on_update_icon()
 	. = ..()
 
+	ClearOverlays(coffepot_empty)
+	ClearOverlays(coffeepot_full)
 	if(coffeepot)
 		if(coffeepot.reagents.total_volume > 0)
 			AddOverlays(coffeepot_full)
-			ClearOverlays(coffepot_empty)
 		else
 			AddOverlays(coffepot_empty)
-			ClearOverlays(coffeepot_full)
+
+	CutOverlays(cups_1)
+	CutOverlays(cups_2)
+	CutOverlays(cups_3)
 
 	if(coffee_cups > 0)
 		if(coffee_cups >= max_coffee_cups / 3)
 			if(coffee_cups > max_coffee_cups / 1.5)
 				AddOverlays(cups_3)
-				CutOverlays(cups_1)
-				CutOverlays(cups_2)
 			else
 				AddOverlays(cups_2)
-				CutOverlays(cups_1)
-				CutOverlays(cups_3)
 		else
 			AddOverlays(cups_1)
-			CutOverlays(cups_2)
-			CutOverlays(cups_3)
 
 	if(sugar_packs)
 		AddOverlays(sugar_packs_overlay)
@@ -157,9 +157,9 @@
 	else
 		CutOverlays(sweetener_packs_overlay)
 
+	CutOverlays(grinder_full)
+	CutOverlays(grinder_half)
 	if(coffee_amount)
-		CutOverlays(grinder_full)
-		CutOverlays(grinder_half)
 		if(coffee_amount < 0.7 * BEAN_CAPACITY)
 			AddOverlays(grinder_half)
 		else
@@ -187,18 +187,18 @@
 		return
 
 	if(panel_open) //Can't insert objects when its screwed open
-		return TRUE
+		return
 
 	if(istype(attack_item, /obj/item/reagent_containers/vessel/coffeepot) && attack_item.is_open_container())
 		var/obj/item/reagent_containers/vessel/coffeepot/new_pot = attack_item
 		if(!user.drop(new_pot, src))
-			return TRUE
+			return
 
 		replace_pot(user, new_pot)
 		update_icon()
-		return TRUE
+		return
 
-	if(istype(attack_item, /obj/item/reagent_containers/vessel/takeaway) && attack_item.is_open_container())
+	if(istype(attack_item, /obj/item/reagent_containers/vessel/takeaway))
 		var/obj/item/reagent_containers/vessel/takeaway/new_cup = attack_item //different type of cup
 		if(new_cup.reagents.total_volume > 0 )
 			show_splash_text(user, "the cup must be empty!")
@@ -213,9 +213,9 @@
 
 		coffee_cups++
 		update_icon()
-		return TRUE
+		return
 
-	if(istype(attack_item, /obj/item/reagent_containers/vessel/condiment/sugar))
+	if(istype(attack_item, /obj/item/reagent_containers/vessel/condiment/pack/sugar))
 		var/obj/item/reagent_containers/vessel/condiment/pack/sugar/new_pack = attack_item
 		if(new_pack.reagents.total_volume < new_pack.reagents.maximum_volume)
 			show_splash_text(user, "the pack must be full!")
@@ -230,7 +230,7 @@
 
 		sugar_packs++
 		update_icon()
-		return TRUE
+		return
 
 	if(istype(attack_item, /obj/item/reagent_containers/vessel/condiment/pack/creamer))
 		var/obj/item/reagent_containers/vessel/condiment/pack/creamer/new_pack = attack_item
@@ -247,7 +247,7 @@
 
 		creamer_packs++
 		update_icon()
-		return TRUE
+		return
 
 	if(istype(attack_item, /obj/item/reagent_containers/vessel/condiment/pack/astrotame))
 		var/obj/item/reagent_containers/vessel/condiment/pack/astrotame/new_pack = attack_item
@@ -264,7 +264,7 @@
 
 		sweetener_packs++
 		update_icon()
-		return TRUE
+		return
 
 	if(istype(attack_item, /obj/item/reagent_containers/food/grown/coffee))
 		if(coffee_amount >= BEAN_CAPACITY)
@@ -278,6 +278,7 @@
 		coffee += new_coffee
 		coffee_amount++
 		show_splash_text(user, "added coffee")
+		return
 
 	if(istype(attack_item, /obj/item/storage/box/coffeepack))
 		if(coffee_amount >= BEAN_CAPACITY)
@@ -293,7 +294,6 @@
 					new_coffee.forceMove(src)
 					show_splash_text(user, "added coffee")
 					update_icon()
-				else
 					return
 
 	update_icon()
