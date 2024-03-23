@@ -197,14 +197,14 @@
 	return tank ? tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
 
 //Removes fuel from the welding tool. If a mob is passed, it will perform an eyecheck on the mob. This should probably be renamed to use()
-/obj/item/weldingtool/proc/remove_fuel(amount = 1, mob/M = null)
+/obj/item/weldingtool/proc/remove_fuel(amount = 1, mob/M)
 	if(!welding)
 		return 0
 	if(get_fuel() >= amount)
 		burn_fuel(amount)
-		if(M)
+		if(ismob(M))
 			eyecheck(M)
-			playsound(M.loc, 'sound/items/Welder.ogg', 20, 1)
+			playsound(get_turf(M), 'sound/items/Welder.ogg', 20, 1)
 		return 1
 	else
 		if(M)
@@ -354,6 +354,7 @@
 		show_splash_text(user, "Not enough fuel!", "\icon[src] Not enough fuel!")
 		return
 
+	eyecheck(user)
 	playsound(loc, 'sound/items/Welder.ogg', 100, 1)
 	var/atom/movable/fake_overlay/welding_overlay/effect = new(get_turf(target))
 	var/datum/callback/checks = CALLBACK(src, nameof(.proc/check_active_and_extra), extra_checks)
