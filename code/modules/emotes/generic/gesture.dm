@@ -110,10 +110,8 @@
 
 /datum/emote/clap/do_emote(mob/user, emote_key, intentional, target, additional_params)
 	. = ..()
-	if(!.)
-		return
 
-	if(!rand(0, 5000))
+	if(rand(0, 5000))
 		return
 
 	var/area/A = get_area(user)
