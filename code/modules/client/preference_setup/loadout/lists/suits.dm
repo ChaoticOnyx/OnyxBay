@@ -117,6 +117,101 @@
 	display_name = "winter coat"
 	path = /obj/item/clothing/suit/storage/hooded/wintercoat
 
+/datum/gear/suit/captain_wintercoat
+	display_name = "winter coat, captain"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/captain
+	allowed_roles = list(/datum/job/captain)
+
+/datum/gear/suit/security_wintercoat
+	display_name = "winter coat, security"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/security
+	allowed_roles = SECURITY_ROLES
+
+/datum/gear/suit/ce_wintercoat
+	display_name = "winter coat, chief engineer"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/ce
+	allowed_roles = list(/datum/job/chief_engineer)
+
+/datum/gear/suit/engineering_wintercoat
+	display_name = "winter coat, engineer"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/engineering
+	allowed_roles = ENGINEERING_ROLES
+
+/datum/gear/suit/atmos_wintercoat
+	display_name = "winter coat, atmospheric"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/engineering/atmos
+	allowed_roles = ENGINEERING_ROLES
+
+/datum/gear/suit/hop_wintercoat
+	display_name = "winter coat, head of personal"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/hop
+	allowed_roles = list(/datum/job/hop)
+
+/datum/gear/suit/qm_wintercoat
+	display_name = "winter coat, quartermaster"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/qm
+	allowed_roles = list(/datum/job/qm)
+
+/datum/gear/suit/cargotech_wintercoat
+	display_name = "winter coat, cargo"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/cargo
+	allowed_roles = SUPPLY_ROLES
+
+/datum/gear/suit/mining_wintercoat
+	display_name = "winter coat, miner"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/miner
+	allowed_roles = list(/datum/job/mining, /datum/job/qm)
+
+/datum/gear/suit/janitor_wintercoat
+	display_name = "winter coat, janitor"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/janitor
+	allowed_roles = list(/datum/job/janitor)
+
+/datum/gear/suit/botanist_wintercoat
+	display_name = "winter coat, botanist"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/hydro
+	allowed_roles = list(/datum/job/hydro, /datum/job/xenobiologist)
+
+/datum/gear/suit/cmo_wintercoat
+	display_name = "winter coat, chier medical officer"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/cmo
+	allowed_roles = list(/datum/job/cmo)
+
+/datum/gear/suit/medical_wintercoat
+	display_name = "winter coat, medical"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/medical
+	allowed_roles = MEDICAL_ROLES
+
+/datum/gear/suit/chemist_wintercoat
+	display_name = "winter coat, chemist"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/chemistry
+	allowed_roles = list(/datum/job/chemist, /datum/job/cmo)
+
+/datum/gear/suit/virologist_wintercoat
+	display_name = "winter coat, virologist"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/viro
+	allowed_roles = list(/datum/job/virologist, /datum/job/cmo)
+
+/datum/gear/suit/paramedic_wintercoat
+	display_name = "winter coat, paramedic"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/paramed
+	allowed_roles = MEDICAL_ROLES
+
+/datum/gear/suit/rd_wintercoat
+	display_name = "winter coat, research director"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/rd
+	allowed_roles = list(/datum/job/rd)
+
+/datum/gear/suit/science_wintercoat
+	display_name = "winter coat, scientist"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/science
+	allowed_roles = RESEARCH_ROLES
+
+/datum/gear/suit/roboticist_wintercoat
+	display_name = "winter coat, roboticist"
+	path = /obj/item/clothing/suit/storage/hooded/wintercoat/robotics
+	allowed_roles = list(/datum/job/roboticist, /datum/job/rd)
+
 /datum/gear/suit/track
 	display_name = "track jacket selection"
 	path = /obj/item/clothing/suit/storage/toggle/track
