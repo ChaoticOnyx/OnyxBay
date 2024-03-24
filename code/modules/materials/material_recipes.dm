@@ -162,6 +162,7 @@
 	recipes += new /datum/stack_recipe("cardborg suit", /obj/item/clothing/suit/cardborg, 3)
 	recipes += new /datum/stack_recipe("cardborg helmet", /obj/item/clothing/head/cardborg)
 	recipes += new /datum/stack_recipe("pizza box", /obj/item/pizzabox)
+	recipes += new /datum/stack_recipe("takeaway cups", /obj/item/reagent_containers/vessel/takeaway, 1, 4)
 	recipes += new /datum/stack_recipe_list("folders",list( \
 		new /datum/stack_recipe("blue folder", /obj/item/folder/blue), \
 		new /datum/stack_recipe("grey folder", /obj/item/folder), \
