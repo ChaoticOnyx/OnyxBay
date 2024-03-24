@@ -8,44 +8,64 @@ PROCESSING_SUBSYSTEM_DEF(plants)
 
 	process_proc = /obj/machinery/portable_atmospherics/hydroponics/Process
 
-	var/list/product_descs = list()         // Stores generated fruit descs.
-	var/list/seeds = list()                 // All seed data stored here.
-	var/list/gene_tag_masks = list()        // Gene obfuscation for delicious trial and error goodness.
-	var/list/plant_icon_cache = list()      // Stores images of growth, fruits and seeds.
-	var/list/plant_sprites = list()         // List of all harvested product sprites.
-	var/list/plant_product_sprites = list() // List of all growth sprites plus number of growth stages.
-	var/list/gene_masked_list = list()		// Stored gene masked list, rather than recreating it when needed.
-	var/list/plant_gene_datums = list()		// Stored datum versions of the gene masked list.
+	var/list/product_descs = list()           // Stores generated fruit descs.
+	var/list/seeds = list()                   // All seed data stored here.
+	var/list/gene_tag_masks = list()          // Gene obfuscation for delicious trial and error goodness.
+	var/list/plant_icon_cache = list()        // Stores images of growth, fruits and seeds.
+	var/list/plant_sprites = list()           // List of all harvested product sprites.
+	var/list/plant_product_sprites = list()   // List of all growth sprites plus number of growth stages.
+	var/list/gene_masked_list = list()        // Stored gene masked list, rather than recreating it when needed.
+	var/list/plant_gene_datums = list()       // Stored datum versions of the gene masked list.
+	var/list/canonical_plants = list()        // Validation keys for canonical icons usage.
+	var/list/canonical_plant_sprites = list() // The same as plant_sprites, but for the canonical ones.
+	var/list/canonical_plant_icon_cache = list()
 
 /datum/controller/subsystem/processing/plants/Initialize()
 	// Build the icon lists.
 	for(var/icostate in icon_states('icons/obj/hydroponics_growing.dmi'))
-		var/split = findtext(icostate,"-")
+		var/split = findtext(icostate, "-")
 		if(!split)
 			// invalid icon_state
 			continue
 
-		var/ikey = copytext(icostate,(split+1))
+		var/ikey = copytext(icostate, (split + 1))
 		if(ikey == "dead")
 			// don't count dead icons
 			continue
 		ikey = text2num(ikey)
-		var/base = copytext(icostate,1,split)
+		var/base = copytext(icostate, 1, split)
 
 		if(!(plant_sprites[base]) || (plant_sprites[base]<ikey))
 			plant_sprites[base] = ikey
 
 	for(var/icostate in icon_states('icons/obj/hydroponics_products.dmi'))
-		var/split = findtext(icostate,"-")
+		var/split = findtext(icostate, "-")
 		if(split)
-			plant_product_sprites |= copytext(icostate,1,split)
+			plant_product_sprites |= copytext(icostate, 1, split)
+
+	for(var/icostate in icon_states('icons/obj/hydroponics_growing_canonical.dmi'))
+		var/split = findtext(icostate, "-")
+		if(!split)
+			continue
+
+		var/ikey = copytext(icostate, (split + 1))
+		if(ikey == "dead" || ikey == "harvest")
+			continue
+
+		ikey = text2num(ikey)
+		var/base = copytext(icostate, 1, split)
+
+		if(!canonical_plant_sprites[base] || (canonical_plant_sprites[base] < ikey))
+			canonical_plant_sprites[base] = ikey
 
 	// Populate the global seed datum list.
-	for(var/type in typesof(/datum/seed)-/datum/seed)
+	for(var/type in typesof(/datum/seed) - /datum/seed)
 		var/datum/seed/S = new type
+		if(S.canonical_icon)
+			canonical_plants[S.canonical_icon] = S.get_canonical_key()
 		S.update_growth_stages()
 		seeds[S.name] = S
-		S.roundstart = 1
+		S.roundstart = TRUE
 
 	// Make sure any seed packets that were mapped in are updated
 	// correctly (since the seed datums did not exist a tick ago).

@@ -112,3 +112,15 @@
 	plantname = "flamechili"
 	name = "flamechili"
 	icon_state = "flamechili-product"
+
+/obj/item/reagent_containers/food/grown/coffee
+	plantname = "coffeea"
+	name = "coffee arabica beans"
+	desc = "Dry them out to make coffee."
+	icon_state = "arabica_beans"
+
+/obj/item/reagent_containers/food/grown/coffee/robusta
+	plantname = "coffeea_robusta"
+	name = "coffee robusta beans"
+	desc = "Dry them out to make coffee. Increases your robustness!"
+	icon_state = "robusta_beans"

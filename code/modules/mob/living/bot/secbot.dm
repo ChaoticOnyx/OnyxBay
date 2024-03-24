@@ -372,10 +372,12 @@
 	..()
 	if(isWelder(O) && !build_step)
 		var/obj/item/weldingtool/WT = O
-		if(WT.remove_fuel(0, user))
-			build_step = 1
-			AddOverlays(image('icons/obj/aibots.dmi', "hs_hole"))
-			to_chat(user, "You weld a hole in \the [src].")
+		if(!WT.use_tool(src, user, amount = 1))
+			return
+
+		build_step = 1
+		AddOverlays(image('icons/obj/aibots.dmi', "hs_hole"))
+		to_chat(user, "You weld a hole in \the [src].")
 
 	else if(isprox(O) && (build_step == 1))
 		if(!user.drop(O))

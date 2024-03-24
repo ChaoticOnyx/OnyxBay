@@ -70,7 +70,7 @@
 	my_mob.forceMove(T)
 
 	for(var/obj/item/grab/G in my_mob.contents)
-		if(G.affecting && (status & VAMP_FULLPOWER))
+		if(G.affecting && (vamp_status & VAMP_FULLPOWER))
 			phase_out(get_turf(G.affecting), G.affecting)
 			phase_in(get_turf(G.affecting), G.affecting)
 			G.affecting.forceMove(locate(T.x + rand(-1,1), T.y + rand(-1,1), T.z))

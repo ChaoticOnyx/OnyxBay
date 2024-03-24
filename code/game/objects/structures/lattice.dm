@@ -56,11 +56,13 @@
 		return
 	if(isWelder(C))
 		var/obj/item/weldingtool/WT = C
-		if(!WT.remove_fuel(0, user))
+		if(!WT.use_tool(src, user, amount = 1))
 			return
-		to_chat(user, "<span class='notice'>Slicing lattice joints ...</span>")
+
+		to_chat(user, SPAN_NOTICE("Slicing lattice joints."))
 		new /obj/item/stack/rods(loc)
 		qdel(src)
+
 	if (istype(C, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = C
 		if(R.use(2))
@@ -93,3 +95,26 @@
 
 		icon_state = "lattice[dir_sum]"
 		return
+
+/obj/structure/lattice/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_TURF)
+		return list("delay" = 0, "cost" = the_rcd.rcd_design_path == /obj/structure/catwalk ? 2 : 1)
+
+	return FALSE
+
+/obj/structure/lattice/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_TURF)
+		var/design_structure = rcd_data["[RCD_DESIGN_PATH]"]
+		if(design_structure == /turf/simulated/floor/plating)
+			var/turf/T = get_turf(src)
+			T.ChangeTurf(/turf/simulated/floor/plating)
+			qdel_self()
+			return TRUE
+
+		if(design_structure == /obj/structure/catwalk)
+			var/turf/turf = loc
+			qdel_self()
+			new /obj/structure/catwalk(turf)
+			return TRUE
+
+	return FALSE

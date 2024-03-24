@@ -524,7 +524,7 @@
 		var/datum/language/chosen_language = all_languages[lang]
 		if(chosen_language)
 			var/is_species_lang = (chosen_language.name in new_character.species.secondary_langs)
-			if(is_species_lang || ((!(chosen_language.flags & RESTRICTED) || has_admin_rights()) && is_alien_whitelisted(src, chosen_language)))
+			if(is_species_lang || ((!(chosen_language.language_flags & RESTRICTED) || has_admin_rights()) && is_alien_whitelisted(src, chosen_language)))
 				new_character.add_language(lang)
 
 	if(GLOB.random_players)

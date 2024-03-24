@@ -43,7 +43,7 @@
 	if(href_list["skin_tone"])
 		if(can_change_skin_tone())
 			var/new_s_tone = input(usr, "Choose your character's skin-tone:\n1 (lighter) - [owner.species.max_skin_tone()] (darker)", "Skin Tone", -owner.s_tone + 35) as num|null
-			if(isnum(new_s_tone) && can_still_topic(state) && owner.species.appearance_flags & HAS_SKIN_TONE_NORMAL)
+			if(isnum(new_s_tone) && can_still_topic(state) && owner.species.species_appearance_flags & HAS_SKIN_TONE_NORMAL)
 				new_s_tone = 35 - max(min(round(new_s_tone), owner.species.max_skin_tone()), 1)
 				return owner.change_skin_tone(new_s_tone)
 	if(href_list["skin_color"])
@@ -169,10 +169,10 @@
 	return owner && (flags & flag)
 
 /datum/nano_module/appearance_changer/proc/can_change_skin_tone()
-	return owner && (flags & APPEARANCE_SKIN) && owner.species.appearance_flags & HAS_A_SKIN_TONE
+	return owner && (flags & APPEARANCE_SKIN) && owner.species.species_appearance_flags & HAS_A_SKIN_TONE
 
 /datum/nano_module/appearance_changer/proc/can_change_skin_color()
-	return owner && (flags & APPEARANCE_SKIN) && owner.species.appearance_flags & HAS_SKIN_COLOR
+	return owner && (flags & APPEARANCE_SKIN) && owner.species.species_appearance_flags & HAS_SKIN_COLOR
 
 /datum/nano_module/appearance_changer/proc/cut_and_generate_data()
 	// Making the assumption that the available species remain constant

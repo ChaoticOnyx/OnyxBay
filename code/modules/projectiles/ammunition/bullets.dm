@@ -206,6 +206,13 @@
 	desc = "A 7.62mm practice bullet casing."
 	projectile_type = /obj/item/projectile/bullet/rifle/a762/practice
 
+/obj/item/ammo_casing/a792
+	desc = "A 7.92mm bullet casing."
+	caliber = "7.92"
+	projectile_type = /obj/item/projectile/bullet/rifle/a792
+	icon_state = "rifle-casing"
+	spent_icon = "rifle-casing-spent"
+
 /obj/item/ammo_casing/rocket
 	name = "rocket shell"
 	desc = "A high explosive designed to be fired from a launcher."

@@ -7,11 +7,9 @@
 	if(!istype(I))
 		return 0
 	if(isWelder(I))
-		var/obj/item/weldingtool/W = I
-		if (W.remove_fuel(0, user))
-			playsound(holder, 'sound/items/Welder2.ogg', 50, 1)
-		else
-			return 0
+		var/obj/item/weldingtool/WT = I
+		WT.use_tool(src, user, amount = 1)
+
 	else if(isWrench(I))
 		playsound(holder, 'sound/items/Ratchet.ogg', 50, 1)
 
@@ -40,13 +38,12 @@
 /datum/construction/reversible/mecha/custom_action(index, diff, atom/used_atom, mob/user)
 	var/obj/item/I = used_atom
 	if(!istype(I))
-		return 0
+		return FALSE
+
 	if(isWelder(I))
 		var/obj/item/weldingtool/W = I
-		if (W.remove_fuel(0, user))
-			playsound(holder, 'sound/items/Welder2.ogg', 50, 1)
-		else
-			return 0
+		W.use_tool(src, user, amount = 1)
+
 	else if(isWrench(I))
 		playsound(holder, 'sound/items/Ratchet.ogg', 50, 1)
 

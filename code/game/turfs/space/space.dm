@@ -86,7 +86,8 @@
 			return
 		else
 			to_chat(user, "<span class='warning'>The plating is going to need some support.</span>")
-	return
+
+	return ..()
 
 
 // Ported from unstable r355
@@ -212,6 +213,23 @@
 
 /turf/space/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	return ..(N, tell_universe, TRUE)
+
+/turf/space/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_TURF && the_rcd.rcd_design_path == /turf/simulated/floor/plating)
+		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
+		if(L)
+			return list("delay" = 0, "cost" = 1)
+		else
+			return list("delay" = 0, "cost" = 3)
+
+	return FALSE
+
+/turf/space/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_TURF)
+		ChangeTurf(/turf/simulated/floor/plating/airless)
+		return TRUE
+
+	return FALSE
 
 //Bluespace turfs for shuttles and possible future transit use
 /turf/bluespace

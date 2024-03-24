@@ -172,8 +172,8 @@
 		return
 
 	if(isWelder(tool))
-		var/obj/item/weldingtool/W = tool
-		if(!W.isOn() || !W.remove_fuel(1, user))
+		var/obj/item/weldingtool/WT = tool
+		if(!WT.use_tool(target, user, amount = 1))
 			return FALSE
 
 	if(parent_organ.hatch_state != HATCH_OPENED)
@@ -229,7 +229,7 @@
 		return FALSE
 
 	if(!C.use(3))
-		target.show_splash_text(user, "not enough coil length!")
+		target.show_splash_text(user, "not enough coil length!", "Not enought coil length to repair!")
 		return SURGERY_FAILURE
 
 	return TRUE

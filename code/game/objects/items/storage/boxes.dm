@@ -667,3 +667,22 @@
 	desc = "A box full of tasty, colorful space cleaner pods."
 	icon_state = "cleanerpods"
 	startswith = list(/obj/item/reagent_containers/pill/cleanerpod = 14)
+
+/obj/item/storage/box/coffeepack
+	name = "arabica beans"
+	desc = "A bag containing fresh, dry coffee arabica beans. Ethically sourced and packaged by Waffle Corp."
+	startswith = list(/obj/item/reagent_containers/food/grown/coffee = 5)
+
+/obj/item/storage/box/coffeepack/robusta
+	icon_state = "robusta_beans"
+	name = "robusta beans"
+	desc = "A bag containing fresh, dry coffee robusta beans. Ethically sourced and packaged by Waffle Corp."
+	startswith = list(/obj/item/reagent_containers/food/grown/coffee/robusta = 5)
+
+/obj/item/storage/box/coffeemaking_kit
+	name = "coffeemaking kit"
+	desc = "A box containing coffee beans and a coffeepot."
+	startswith = list(/obj/item/reagent_containers/food/grown/coffee = 3,
+						/obj/item/reagent_containers/food/grown/coffee/robusta = 2,
+						/obj/item/reagent_containers/vessel/coffeepot
+						)

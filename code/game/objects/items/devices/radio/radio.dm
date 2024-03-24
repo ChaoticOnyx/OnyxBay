@@ -248,7 +248,7 @@
 	//  Fix for permacell radios, but kinda eh about actually fixing them.
 	if(!M || !message) return 0
 
-	if(speaking && (speaking.flags & (NONVERBAL|SIGNLANG))) return 0
+	if(speaking && (speaking.language_flags & (NONVERBAL|SIGNLANG))) return 0
 
 	var/mob/living/carbon/C = M
 	if((istype(C)) && (C.chem_effects[CE_SEDATE]))

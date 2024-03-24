@@ -298,7 +298,7 @@
 	M.randomize_hair_style()
 	M.randomize_facial_hair_style()
 
-	if(!(M.species.appearance_flags & HAS_EYE_COLOR))
+	if(!(M.species.species_appearance_flags & HAS_EYE_COLOR))
 		M.change_eye_color(arglist(GetHexColors(M.species.default_eye_color)))
 	else
 		M.randomize_eye_color()

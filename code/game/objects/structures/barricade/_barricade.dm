@@ -5,6 +5,8 @@
 	anchored = TRUE
 	density = TRUE
 
+	layer = ABOVE_WINDOW_LAYER
+
 	/// Amount of points taken by an object.
 	var/damage = 0
 	/// Maximum amount of object's damage points till it breaks apart.

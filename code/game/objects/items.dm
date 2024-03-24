@@ -100,6 +100,12 @@
 
 	var/tool_behaviour = 0
 
+	/// Multipler of this tool's speed
+	var/toolspeed = 1
+
+	/// Sound played when this tool is used. Can be a list too.
+	var/tool_sound
+
 /obj/item/New()
 	..()
 	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y

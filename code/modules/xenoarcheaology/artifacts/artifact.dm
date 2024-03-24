@@ -231,10 +231,14 @@
 				secondary_effect.ToggleActivate()
 	return
 
-/obj/machinery/artifact/Move()
+/obj/machinery/artifact/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	if(main_effect)
 		main_effect.UpdateMove()
+
 	if(secondary_effect)
 		secondary_effect.UpdateMove()
 

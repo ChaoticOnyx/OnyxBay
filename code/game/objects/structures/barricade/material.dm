@@ -57,15 +57,15 @@
 
 
 /obj/structure/barricade/material/proc/_deconstruct(mob/user)
-	show_splash_text(user, "starting deconstruction.")
+	show_splash_text(user, "starting deconstruction.", "You begin deconstructing <b>\the [src]</b>!")
 	if(do_after(user, 20, src))
-		show_splash_text(user, "barricade deconstucted.")
+		show_splash_text(user, "barricade deconstucted.", "You deconstruct <b>\the [src]</b>!")
 		playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 
 		_dismantle()
 		return
 
-	show_splash_text(user, "action interrupted!")
+	show_splash_text(user, "action interrupted!", "You must remain still while deconstructing!")
 
 
 /obj/structure/barricade/material/proc/_repair_damage(obj/item/stack/S, mob/user)
@@ -73,18 +73,18 @@
 		return
 
 	if(S.get_amount() < 1)
-		show_splash_text(user, "not enough material!")
+		show_splash_text(user, "not enough material!", "There's not enough [S] to repair <b>\the [src]</b>!")
 		return
 
-	show_splash_text(user, "starting repair.")
+	show_splash_text(user, "starting repair.", "You begin to repair <b>\the [src]</b>.")
 	if(do_after(user, 20, src) && damage != 0)
 		if(S.use(1))
 			damage = 0
 
-			show_splash_text(user, "repair finished.")
+			show_splash_text(user, "repair finished.", "You have repaired <b>\the [src]!</b>")
 			return
 
-	show_splash_text(user, "action interrupted!")
+	show_splash_text(user, "action interrupted!", "You must remain still while repairing!")
 
 
 /obj/structure/barricade/material/Break()

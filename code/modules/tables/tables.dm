@@ -108,6 +108,8 @@
 				. += "\n<span class='notice'>It has a few scrapes and dents.</span>"
 
 /obj/structure/table/attackby(obj/item/W, mob/user)
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)
+		return ..()
 
 	if(reinforced && isScrewdriver(W))
 		remove_reinforced(W, user)
@@ -152,15 +154,17 @@
 
 	if(health < maxhealth && isWelder(W))
 		var/obj/item/weldingtool/F = W
-		if(F.welding)
-			to_chat(user, "<span class='notice'>You begin reparing damage to \the [src].</span>")
-			playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-			if(!do_after(user, 20, src) || !F.remove_fuel(1, user))
-				return
-			user.visible_message("<span class='notice'>\The [user] repairs some damage to \the [src].</span>",
-			                              "<span class='notice'>You repair some damage to \the [src].</span>")
-			health = max(health+(maxhealth/5), maxhealth) // 20% repair per application
-			return 1
+		to_chat(user, SPAN_NOTICE("You begin reparing damage to \the [src]."))
+		if(!F.use_tool(src, user, delay = 2 SECONDS, amount = 1))
+			return FALSE
+
+		if(QDELETED(src) || !user)
+			return
+
+		user.visible_message(SPAN_NOTICE("\The [user] repairs some damage to \the [src]"),
+										SPAN_NOTICE("You repair some damage to \the [src]."))
+		health = max(health + (maxhealth / 5), maxhealth) // 20% repair per application
+		return TRUE
 
 	if(!material && can_plate && istype(W, /obj/item/stack/material))
 		material = common_material_add(W, user, "plat")
@@ -259,7 +263,12 @@
 	material = common_material_remove(user, material, 20, "plating", "bolts", 'sound/items/Ratchet.ogg')
 
 /obj/structure/table/proc/dismantle(obj/item/wrench/W, mob/user)
-	if(manipulating) return
+	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)
+		return
+
+	if(manipulating)
+		return
+
 	manipulating = 1
 	user.visible_message("<span class='notice'>\The [user] begins dismantling \the [src].</span>",
 	                              "<span class='notice'>You begin dismantling \the [src].</span>")
@@ -296,6 +305,9 @@
 // is to avoid filling the list with nulls, as place_shard won't place shards of certain materials (holo-wood, holo-steel)
 
 /obj/structure/table/proc/break_to_parts(full_return = 0)
+	if(atom_flags & ATOM_FLAG_HOLOGRAM)
+		return
+
 	var/list/shards = list()
 	var/obj/item/material/shard/S = null
 	if(reinforced)

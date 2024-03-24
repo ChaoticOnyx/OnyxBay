@@ -34,19 +34,21 @@
 		if(salvage_num <= 0)
 			to_chat(user, "You don't see anything that can be cut with [W].")
 			return
-		if (!isemptylist(welder_salvage) && WT.remove_fuel(0,user))
-			var/type = prob(70)?pick(welder_salvage):null
-			if(type)
-				var/N = new type(get_turf(user))
-				user.visible_message("[user] cuts [N] from [src]", "You cut [N] from [src]", "You hear a sound of welder nearby")
-				if(istype(N, /obj/item/mecha_parts/part))
-					welder_salvage -= type
-				salvage_num--
-			else
-				to_chat(user, "You failed to salvage anything valuable from [src].")
-		else
-			to_chat(user, "<span class='notice'>You need more welding fuel to complete this task.</span>")
+
+		if(!WT.use_tool(src, user, amount = 1) )
 			return
+
+		if(isemptylist(welder_salvage))
+			to_chat(user, "You failed to salvage anything valuable from [src].")
+
+		var/type = prob(70) ? pick(welder_salvage) : null
+		if(type)
+			var/N = new type(get_turf(user))
+			user.visible_message("[user] cuts [N] from [src]", "You cut [N] from [src]", "You hear a sound of welder nearby")
+			if(istype(N, /obj/item/mecha_parts/part))
+				welder_salvage -= type
+			salvage_num--
+
 	if(isWirecutter(W))
 		if(salvage_num <= 0)
 			to_chat(user, "You don't see anything that can be cut with [W].")

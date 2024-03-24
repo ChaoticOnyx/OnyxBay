@@ -401,24 +401,14 @@
 	return null
 
 /obj/machinery/camera/proc/weld(obj/item/weldingtool/WT, mob/user)
-
-	if(busy)
-		return 0
-	if(!WT.isOn())
-		return 0
-
-	// Do after stuff here
 	to_chat(user, "<span class='notice'>You start to weld the [src]..</span>")
-	playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-	WT.eyecheck(user)
-	busy = 1
-	if(do_after(user, 100, src))
-		busy = 0
-		if(!WT.isOn())
-			return 0
-		return 1
-	busy = 0
-	return 0
+	if(!WT.use_tool(src, user, delay = 5 SECONDS, amount = 5))
+		return FALSE
+
+	if(QDELETED(src))
+		return FALSE
+
+	return TRUE
 
 /obj/machinery/camera/interact(mob/living/user as mob)
 	if(!panel_open || istype(user, /mob/living/silicon/ai))

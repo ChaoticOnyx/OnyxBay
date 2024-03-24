@@ -650,9 +650,6 @@
 /obj/item/device/electronic_assembly/proc/welder_act(mob/living/user, obj/item/weldingtool/I)
 	var/type_to_use
 
-	if(!I.isOn())
-		return
-
 	if(!sealed)
 		type_to_use = input("What would you like to do?","[src] type setting") as null|anything in list("repair", "seal")
 	else
@@ -670,10 +667,12 @@
 
 		if("seal")
 			if(!opened)
-				if(I.remove_fuel(3,user))
-					sealed = TRUE
-					to_chat(user,SPAN_NOTICE("You seal the assembly, making it impossible to be opened."))
-					return TRUE
+				if(!I.use_tool(src, user, amount = 3))
+					return
+
+				sealed = TRUE
+				to_chat(user,SPAN_NOTICE("You seal the assembly, making it impossible to be opened."))
+				return TRUE
 
 			else
 				to_chat(user,SPAN_NOTICE("You need to close the assembly first before sealing it indefinitely!"))
@@ -681,14 +680,16 @@
 
 		if("unseal")
 			to_chat(user,SPAN_NOTICE("You start unsealing the assembly carefully..."))
-			if(I.remove_fuel(3,user))
-				for(var/obj/item/integrated_circuit/IC in assembly_components)
-					if(prob(50))
-						IC.disconnect_all()
+			if(!I.use_tool(src, user, amount = 3))
+				return
 
-				to_chat(user,SPAN_NOTICE("You unsealed the assembly."))
-				sealed = FALSE
-				return TRUE
+			for(var/obj/item/integrated_circuit/IC in assembly_components)
+				if(prob(50))
+					IC.disconnect_all()
+
+			to_chat(user,SPAN_NOTICE("You unsealed the assembly."))
+			sealed = FALSE
+			return TRUE
 
 /obj/item/device/electronic_assembly/proc/default_unfasten_wrench(mob/user, obj/item/I, time = 20)
 	if(isWrench(I) && istype(loc, /turf) && can_anchor)

@@ -71,30 +71,24 @@
 	anchored = locked
 
 	update_icon()
-	show_splash_text(user, "bolts [locked ? "dropped" : "lifted"].")
+	show_splash_text(user, "bolts [locked ? "dropped" : "lifted"].", "You [locked ? "drop" : "lift"] \the [src] bolts.")
 
 
 /obj/structure/barricade/security/proc/_repair_damage(mob/user, obj/item/weldingtool/WT)
 	if(istype(WT))
 		return
 
-	if(!WT.remove_fuel(0, user))
-		to_chat(user, "\The [WT] must be on to complete this task.")
+
+	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 3))
 		return
 
-	playsound(loc, 'sound/items/Welder.ogg', 50, 1)
-	if(do_after(user, 20, src))
-		if(!WT.isOn())
-			return
-
-		visible_message(SPAN("notice", "\The [user] has repaired \the [src]"))
-		damage = 0
-		update_icon()
-
+	visible_message(SPAN("notice", "\The [user] has repaired \the [src]"))
+	damage = 0
+	update_icon()
 
 /obj/structure/barricade/security/wrench_floor_bolts(mob/user, delay)
 	if(locked)
-		show_splash_text(user, "bolts prevent wrenching!")
+		show_splash_text(user, "bolts prevent wrenching!", "\The [src] bolts prevent wrenching!")
 		return
 
 	return ..()
@@ -122,7 +116,7 @@
 	s.start()
 
 	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
-	show_splash_text(user, "bolt locks broken!")
+	show_splash_text(user, "bolt locks broken!", "You burn out \the [src] bolt locks!")
 
 	return TRUE
 

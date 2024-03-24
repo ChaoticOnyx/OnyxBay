@@ -247,3 +247,16 @@ Note: This proc can be overwritten to allow for different types of auto-alignmen
 
 /obj/structure/table/attack_tk() // no telehulk sorry
 	return
+
+/obj/structure/table/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("delay" = 2.4 SECONDS, "cost" = 16)
+
+	return FALSE
+
+/obj/structure/table/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_DECONSTRUCT)
+		qdel_self()
+		return TRUE
+
+	return FALSE

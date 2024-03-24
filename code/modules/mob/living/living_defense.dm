@@ -182,9 +182,13 @@
 	if(!effective_force || blocked >= 100)
 		return 0
 
-	//Hulk modifier
+	// Hulk modifier
 	if(MUTATION_HULK in user.mutations)
 		effective_force *= 2
+
+	// STRONG modifier
+	if(MUTATION_STRONG in user.mutations)
+		effective_force *= 2 // Strong hulks are crazy ngl
 
 	//Apply weapon damage
 	var/damage_flags = I.damage_flags()

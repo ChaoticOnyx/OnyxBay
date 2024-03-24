@@ -79,7 +79,7 @@
 
 		load_part(I, user)
 
-		updateUsrDialog()
+		tgui_update()
 		return
 
 	if(istype(I, /obj/item/storage/part_replacer/mini))
@@ -95,7 +95,7 @@
 		qdel(I)
 
 		matter_storage = min(matter_storage_max, matter_storage + SHEET_MATERIAL_AMOUNT)
-		updateUsrDialog()
+		tgui_update()
 		return
 
 	else if(istype(I, /obj/item/stack/material) && I.get_material_name() == matter_type)
@@ -114,7 +114,7 @@
 		matter_storage = min(matter_storage_max, matter_storage + (sheets_to_take * SHEET_MATERIAL_AMOUNT))
 		to_chat(user, SPAN("info", "\The [src] processes \the [I]. Levels of stored matter now: [matter_storage]/[matter_storage_max]"))
 		S.use(sheets_to_take)
-		updateUsrDialog()
+		tgui_update()
 		return
 
 	return ..()
@@ -126,107 +126,112 @@
 		if("[path]" == t)
 			return path
 
-/obj/machinery/stock_parts_processor/Topic(href, href_list, state)
-	if(..())
-		return 1
-
-	else if(href_list["part_eject"])
-		var/thing = get_part_type(href_list["part_eject"])
-		if(thing in stored_parts)
-			new thing(loc)
-			stored_parts[thing]--
-			if(stored_parts[thing] < 1)
-				stored_parts.Remove(thing)
-
-	else if(href_list["part_prepare"])
-		var/thing = get_part_type(href_list["part_prepare"])
-		if(thing in prepared_parts)
-			prepared_parts[thing]++
-		else
-			prepared_parts[thing] = 1
-
-	else if(href_list["part_unprepare"])
-		var/thing = get_part_type(href_list["part_unprepare"])
-		if(thing in prepared_parts)
-			prepared_parts[thing]--
-			if(prepared_parts[thing] < 1)
-				prepared_parts.Remove(thing)
-
-	else if(href_list["part_unprepare_all"])
-		var/thing = get_part_type(href_list["part_unprepare_all"])
-		if(thing in prepared_parts)
-			prepared_parts.Remove(thing)
-
-	else if(href_list["assemble_rmuk"])
-		var/parts_to_spawn = list()
-		for(var/thing in prepared_parts)
-			if(!(thing in stored_parts) || stored_parts[thing] < prepared_parts[thing])
-				to_chat(usr, "\icon[src]<b>\The [src]</b> pings sadly as it lacks stored parts to complete the task.")
-				updateUsrDialog()
-				return
-			parts_to_spawn[thing] = prepared_parts[thing]
-
-		if(length(parts_to_spawn))
-			matter_storage -= SHEET_MATERIAL_AMOUNT
-			var/obj/item/storage/part_replacer/mini/RMUK = new /obj/item/storage/part_replacer/mini(loc)
-			create_objects_in_loc(RMUK, parts_to_spawn)
-			for(var/thing in parts_to_spawn)
-				stored_parts[thing] -= parts_to_spawn[thing]
-				if(stored_parts[thing] < 1)
-					stored_parts.Remove(thing)
-
-	if(href_list["clear"])
-		prepared_parts.Cut()
-
-	else if(href_list["close"])
-		close_browser(usr, "window=stock_parts_processor")
-		usr.unset_machine()
-		return
-
-	updateUsrDialog()
-	return
+/obj/machinery/stock_parts_processor/tgui_state(mob/user)
+	return GLOB.tgui_machinery_noaccess_state
 
 /obj/machinery/stock_parts_processor/attack_hand(mob/user)
 	if(inoperable())
 		return
 
-	user.set_machine(src)
+	tgui_interact(user)
 
-	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>NT-63-RAA Stock Parts Processor</TITLE></HEAD>"
-	dat += "Welcome to <b>NT-63-RAA</b><BR> Stock parts processing system"
-	dat += "<BR><FONT SIZE=1>Property of NanoTransen</FONT>"
+/obj/machinery/stock_parts_processor/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "StockPartsProcessor", "Stock Parts Processor")
+		ui.open()
 
-	dat += "<br><hr>Stored steel: [matter_storage / SHEET_MATERIAL_AMOUNT]/[matter_storage_max / SHEET_MATERIAL_AMOUNT]"
-	dat += "<br><hr><b>Stored stock parts</b>:"
+/obj/machinery/stock_parts_processor/tgui_data(mob/user)
+	var/list/data = list("storedSteel" = matter_storage,
+						"maxStoredSteel" = (matter_storage_max / SHEET_MATERIAL_AMOUNT),
+						"sheetMaterialAmount" = SHEET_MATERIAL_AMOUNT,
+						"storedStockParts" = list(),
+						"preparedParts" = list()
+						)
 
-	if(!length(stored_parts))
-		dat += "<br>No parts found!"
-	else
-		for(var/thing in stored_parts)
-			dat += "<br>"
-			dat += "<A href='?src=\ref[src];part_prepare=[thing]'>\[prepare\]</a>"
-			dat += "<A href='?src=\ref[src];part_eject=[thing]'> \[eject\]</a>"
-			dat += " | [part_names[thing]]: x[stored_parts[thing]]"
+	for(var/thing in stored_parts)
+		var/list/part_data = list()
+		var/atom/typecasted_thing = thing
+		part_data["name"] = initial(typecasted_thing.name)
+		part_data["amount"] = stored_parts[thing]
+		part_data["type"] = thing
+		data["storedStockParts"] += list(part_data)
 
-	dat += "<br><hr><b>Prepared stock parts:</b> "
-	dat += "<A href='?src=\ref[src];clear=1'>\[clear\]</a>"
+	for(var/thing in prepared_parts)
+		var/list/part_data = list()
+		var/atom/typecasted_thing = thing
+		part_data["name"] = initial(typecasted_thing.name)
+		part_data["amount"] = prepared_parts[thing]
+		part_data["type"] = thing
+		data["preparedParts"] += list(part_data)
 
-	if(!length(stored_parts))
-		dat += "<br>N/A"
-	else
-		for(var/thing in prepared_parts)
-			dat += "<br>"
-			dat += "<A href='?src=\ref[src];part_prepare=[thing]'>\[ + \]</a>"
-			dat += "<A href='?src=\ref[src];part_unprepare=[thing]'> \[ - \]</a>"
-			dat += "<A href='?src=\ref[src];part_unprepare_all=[thing]'> \[clear\]</a>"
-			dat += " | [part_names[thing]]: x[prepared_parts[thing]]"
+	return data
 
-	dat += "<br>Assemble RMUK: "
-	if(matter_storage < SHEET_MATERIAL_AMOUNT)
-		dat += "<font color='red'>Not Enough Steel!</font>"
-	else
-		dat += "<A href='?src=\ref[src];assemble_rmuk=1'>\[press\]</a>"
+/obj/machinery/stock_parts_processor/tgui_act(action, params)
+	. = ..()
 
-	show_browser(user, dat, "window=stock_parts_processor")
-	onclose(user, "stock_parts_processor")
-	return
+	if(.)
+		return TRUE
+
+	switch(action)
+		if("part_eject")
+			var/thing = get_part_type(params["part_eject"])
+			if(thing in stored_parts)
+				new thing(loc)
+				stored_parts[thing]--
+				if(stored_parts[thing] < 1)
+					stored_parts.Remove(thing)
+			tgui_update()
+			return TRUE
+
+		if("part_prepare")
+			var/thing = get_part_type(params["part_prepare"])
+			if(thing in prepared_parts)
+				prepared_parts[thing]++
+			else
+				prepared_parts[thing] = 1
+			tgui_update()
+			return TRUE
+
+		if("part_unprepare")
+			var/thing = get_part_type(params["part_unprepare"])
+			if(thing in prepared_parts)
+				prepared_parts[thing]--
+				if(prepared_parts[thing] < 1)
+					prepared_parts.Remove(thing)
+			tgui_update()
+			return TRUE
+
+		if("clear_prepared")
+			var/thing = get_part_type(params["clear_prepared"])
+			if(thing in prepared_parts)
+				prepared_parts.Remove(thing)
+			tgui_update()
+			return TRUE
+
+		if("assemble_rmuk")
+			var/parts_to_spawn = list()
+			for(var/thing in prepared_parts)
+				if(!(thing in stored_parts) || stored_parts[thing] < prepared_parts[thing])
+					to_chat(usr, "\icon[src]<b>\The [src]</b> pings sadly as it lacks stored parts to complete the task.")
+					return TRUE
+
+				parts_to_spawn[thing] = prepared_parts[thing]
+
+			if(length(parts_to_spawn))
+				matter_storage -= SHEET_MATERIAL_AMOUNT
+				var/obj/item/storage/part_replacer/mini/RMUK = new /obj/item/storage/part_replacer/mini(loc)
+				create_objects_in_loc(RMUK, parts_to_spawn)
+				for(var/thing in parts_to_spawn)
+					stored_parts[thing] -= parts_to_spawn[thing]
+					if(stored_parts[thing] < 1)
+						stored_parts.Remove(thing)
+			tgui_update()
+			return TRUE
+
+		if("clear")
+			prepared_parts.Cut()
+			tgui_update()
+			return TRUE
+
+	return FALSE

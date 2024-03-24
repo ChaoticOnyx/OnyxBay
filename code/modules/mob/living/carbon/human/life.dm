@@ -210,14 +210,14 @@
 
 	// Okay, let's imagine that there is no radiation
 	if(radiation <= SAFE_RADIATION_DOSE)
-		if(species.appearance_flags & RADIATION_GLOWS)
+		if(species.species_appearance_flags & RADIATION_GLOWS)
 			set_light(0)
 	else
 		if(radiation >= (100 SIEVERT))
 			dust()
 			return
 
-		if(species.appearance_flags & RADIATION_GLOWS)
+		if(species.species_appearance_flags & RADIATION_GLOWS)
 			set_light(0.3, 0.1, max(1,min(20, radiation * 25)), 2, species.get_flesh_colour(src))
 
 		var/obj/item/organ/internal/diona/nutrients/rad_organ = locate() in internal_organs

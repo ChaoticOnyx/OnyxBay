@@ -2259,3 +2259,12 @@
 		/datum/reagent/nutriment/protein = 4,
 		/datum/reagent/drink/juice/tomato = 5)
 	bitesize = 4
+
+/obj/item/reagent_containers/food/cream_puff
+	name = "Cream Puff"
+	desc = "Goes well before a workout. Goes even better after a workout. And most importantly, it's highkey perfect DURING a workout."
+	icon_state = "cream_puff"
+	filling_color = "#FFE6A3"
+	center_of_mass = "x=17;y=14"
+	startswith = list(/datum/reagent/nutriment/magical_custard = 6)
+	bitesize = 2
