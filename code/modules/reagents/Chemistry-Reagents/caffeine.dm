@@ -51,7 +51,6 @@
 	M.add_chemical_effect(CE_PULSE, 2)
 	M.adjustToxLoss(removed) // Probably not a good idea; not very deadly though
 
-
 /datum/reagent/caffeine/overdose(mob/living/carbon/M, alien)
 	if(alien == IS_DIONA)
 		return
