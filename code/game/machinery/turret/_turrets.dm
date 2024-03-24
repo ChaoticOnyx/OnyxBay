@@ -263,7 +263,6 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 // State machine processing steps, called by looping timer
 /obj/machinery/turret/proc/process_turning()
-	to_chat(world, "TURNING! Currently raising:[currently_raising]")
 	if(!enabled || inoperable())
 		state_machine.evaluate()
 		return
@@ -282,7 +281,6 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	state_machine.evaluate()
 
 /obj/machinery/turret/proc/process_shooting()
-	to_chat(world, "SHOOTING! Currently raising:[currently_raising]")
 	if(operable())
 		if(installed_gun && is_valid_target(target?.resolve()))
 			var/atom/resolved_target = target.resolve()
@@ -298,7 +296,6 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	installed_gun?.Fire(resolved_target, src)
 
 /obj/machinery/turret/proc/process_reloading()
-	to_chat(world, "RELOADING! Currently raising:[currently_raising]")
 	if(istype(installed_gun, /obj/item/gun/projectile))
 		var/obj/item/gun/projectile/proj_gun = installed_gun
 
