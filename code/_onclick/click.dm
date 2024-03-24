@@ -299,14 +299,15 @@
 	A.AltClick(src)
 
 /atom/proc/AltClick(mob/user)
-	var/turf/T = get_turf(src)
-	if(T && user.TurfAdjacent(T))
-		if(user.listed_turf == T)
-			user.listed_turf = null
+	var/turf/clicked_turf = get_turf(src)
+
+	if(clicked_turf && user.TurfAdjacent(clicked_turf))
+		if(user.listed_turf == clicked_turf)
+			user.set_listed_turf(null)
 		else
-			user.listed_turf = T
-			user.client.statpanel = "Turf"
-	return 1
+			user.set_listed_turf(clicked_turf)
+
+	return TRUE
 
 /mob/proc/TurfAdjacent(turf/T)
 	return T.AdjacentQuick(src)

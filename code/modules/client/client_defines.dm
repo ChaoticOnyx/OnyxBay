@@ -62,6 +62,9 @@
 	// For tracking shift key (world.time)
 	var/shift_released_at = 0
 
+	/// Stores info about and handles behavior for the object tab.
+	var/datum/object_window_info/obj_window
+
 	/// Settings window.
 	var/datum/player_settings/settings = null
 
