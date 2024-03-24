@@ -4299,7 +4299,7 @@
 "bSr" = (/obj/structure/table/woodentable,/obj/machinery/light/small{dir = 1},/obj/item/toy/plushie/spider,/turf/simulated/floor/trim/carpet/purple,/area/crew_quarters/sleep/cabin2)
 "bSs" = (/turf/simulated/wall,/area/maintenance/chapel/south)
 "bSt" = (/obj/structure/flora/ausbushes/fullgrass{pixel_y = -18},/turf/simulated/floor/natural/sand/darksand,/area/crew_quarters/sleep/cave)
-"bSu" = (/obj/structure/table/woodentable,/obj/machinery/chemical_dispenser/bar_coffee/full,/obj/item/device/radio/intercom{pixel_y = 22},/obj/machinery/alarm{dir = 4; pixel_x = -24},/obj/effect/decal/cleanable/cobweb2{icon_state = "cobweb1"},/turf/simulated/floor/trim/wood{icon_state = "wood_broken5"},/area/crew_quarters/underdorm/theater/actor)
+"bSu" = (/obj/structure/table/woodentable,/obj/item/device/radio/intercom{pixel_y = 22},/obj/machinery/alarm{dir = 4; pixel_x = -24},/obj/effect/decal/cleanable/cobweb2{icon_state = "cobweb1"},/turf/simulated/floor/trim/wood{icon_state = "wood_broken5"},/area/crew_quarters/underdorm/theater/actor)
 "bSv" = (/obj/machinery/camera/network/civilian_east{c_tag = "Underground Theater"},/obj/structure/table/woodentable,/obj/item/storage/box/glasses/square,/obj/machinery/light/small{dir = 1},/obj/structure/sign/poster{pixel_y = 32},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/crew_quarters/underdorm/theater/actor)
 "bSw" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/door/unpowered/simple/wood,/turf/simulated/floor/trim/wood,/area/crew_quarters/underdorm/theater/actor)
 "bSx" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/natural/sand/darksand,/area/crew_quarters/underdorm/theater/actor)

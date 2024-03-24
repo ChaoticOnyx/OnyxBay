@@ -2512,7 +2512,7 @@
 "aZb" = (/obj/machinery/firealarm{pixel_y = 26},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/trim/wood,/area/merchant_station)
 "aZc" = (/obj/machinery/disposal,/obj/structure/disposalpipe/trunk{dir = 8},/turf/simulated/floor/trim/wood,/area/merchant_station)
 "aZd" = (/obj/machinery/computer/arcade,/turf/simulated/floor/trim/wood,/area/merchant_station)
-"aZe" = (/obj/structure/table/woodentable,/obj/structure/window/reinforced{dir = 8},/obj/machinery/chemical_dispenser/bar_coffee,/obj/machinery/light{dir = 1},/turf/simulated/floor/trim/carpet,/area/merchant_station)
+"aZe" = (/obj/structure/table/woodentable,/obj/structure/window/reinforced{dir = 8},/obj/machinery/light{dir = 1},/turf/simulated/floor/trim/carpet,/area/merchant_station)
 "aZf" = (/obj/structure/bed/chair/comfy/brown,/turf/simulated/floor/trim/carpet,/area/merchant_station)
 "aZg" = (/obj/structure/table/woodentable,/obj/machinery/chemical_dispenser/bar_soft,/turf/simulated/floor/trim/carpet,/area/merchant_station)
 "aZh" = (/obj/machinery/power/terminal{dir = 4},/obj/structure/cable/blue,/turf/simulated/floor/plating,/area/merchant_station)

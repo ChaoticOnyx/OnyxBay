@@ -108,12 +108,6 @@
 /datum/reagent/drink/milk/cream
 	value = 0.12
 
-/datum/reagent/drink/coffee
-	value = 0.12
-
-/datum/reagent/drink/coffee/soy_latte
-	value = 0.13
-
 /datum/reagent/drink/hot_coco
 	value = 0.11
 
@@ -153,7 +147,7 @@
 /datum/reagent/ethanol/gin
 	value = 0.1
 
-/datum/reagent/ethanol/coffee/kahlua
+/datum/reagent/ethanol/kahlua
 	value = 0.14
 
 /datum/reagent/ethanol/melonliquor

@@ -2157,7 +2157,7 @@
 "aYr" = (/obj/machinery/door/airlock/glass{name = "Restroom"},/obj/machinery/door/firedoor,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled,/area/merchant_station)
 "aYs" = (/obj/machinery/firealarm{pixel_y = 26},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/trim/wood,/area/merchant_station)
 "aYu" = (/obj/machinery/computer/arcade,/turf/simulated/floor/trim/wood,/area/merchant_station)
-"aYv" = (/obj/structure/table/woodentable,/obj/structure/window/reinforced{dir = 8},/obj/machinery/light{dir = 1},/obj/machinery/chemical_dispenser/bar_coffee/full,/turf/simulated/floor/trim/carpet,/area/merchant_station)
+"aYv" = (/obj/structure/table/woodentable,/obj/structure/window/reinforced{dir = 8},/obj/machinery/light{dir = 1},/turf/simulated/floor/trim/carpet,/area/merchant_station)
 "aYw" = (/obj/structure/bed/chair/comfy/brown,/turf/simulated/floor/trim/carpet,/area/merchant_station)
 "aYx" = (/obj/structure/table/woodentable,/obj/machinery/chemical_dispenser/bar_soft/full,/obj/structure/sign/christmas/minigarland,/turf/simulated/floor/trim/carpet,/area/merchant_station)
 "aYy" = (/obj/structure/cable/blue{icon_state = "2-4"; d2 = 4; d1 = 2},/turf/simulated/floor/plating/airless,/area/merchant_station)
