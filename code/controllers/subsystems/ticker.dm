@@ -396,7 +396,7 @@ Helpers
 	display_report()
 	GLOB.indigo_bot.round_end_webhook(
 		config.indigo_bot.round_end_webhook,
-		GLOB.round_id,
+		game_id,
 		"[mode.name] *([SSstoryteller.character.name])*",
 		length(GLOB.clients),
 		roundduration2text()

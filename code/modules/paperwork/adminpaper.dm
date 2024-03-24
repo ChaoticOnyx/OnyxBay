@@ -41,7 +41,7 @@
 
 /obj/item/paper/admin/proc/generateHeader()
 	var/originhash = md5("[origin]")
-	var/challengehash = copytext(md5("[GLOB.round_id]"),1,10) // changed to a hash of the game ID so it's more consistant but changes every round.
+	var/challengehash = copytext(md5("[game_id]"),1,10) // changed to a hash of the game ID so it's more consistant but changes every round.
 	var/text = null
 	//TODO change logo based on who you're contacting.
 	text = "<center><img src = [logo]></br>"

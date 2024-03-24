@@ -3,22 +3,23 @@
 
 var/server_name = "OnyxBay"
 
+/var/game_id = null
 /hook/global_init/proc/generate_gameid()
-	if(GLOB.round_id != null)
+	if(game_id != null)
 		return
-	GLOB.round_id = ""
+	game_id = ""
 
 	var/list/c = list("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
 	var/l = c.len
 
 	var/t = world.timeofday
 	for(var/_ = 1 to 4)
-		GLOB.round_id = "[c[(t % l) + 1]][GLOB.round_id]"
+		game_id = "[c[(t % l) + 1]][game_id]"
 		t = round(t / l)
-	GLOB.round_id = "-[GLOB.round_id]"
+	game_id = "-[game_id]"
 	t = round(world.realtime / (10 * 60 * 60 * 24))
 	for(var/_ = 1 to 3)
-		GLOB.round_id = "[c[(t % l) + 1]][GLOB.round_id]"
+		game_id = "[c[(t % l) + 1]][game_id]"
 		t = round(t / l)
 	return 1
 
@@ -242,7 +243,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	else if(T == "revision")
 		var/list/L = list()
-		L["gameid"] = GLOB.round_id
+		L["gameid"] = game_id
 		L["dm_version"] = DM_VERSION // DreamMaker version compiled in
 		L["dd_version"] = world.byond_version // DreamDaemon version running on
 
@@ -664,13 +665,13 @@ var/world_topic_spam_protect_time = world.timeofday
 	if (src.status != s)
 		src.status = s
 
-#define WORLD_LOG_START(X) WRITE_FILE(GLOB.world_##X##_log, "\n\nStarting up round ID [GLOB.round_id]. [time2text(world.realtime, "DD.MM.YY hh:mm")]\n---------------------")
+#define WORLD_LOG_START(X) WRITE_FILE(GLOB.world_##X##_log, "\n\nStarting up round ID [game_id]. [time2text(world.realtime, "DD.MM.YY hh:mm")]\n---------------------")
 #define WORLD_SETUP_LOG(X) GLOB.world_##X##_log = file("[log_directory]/[log_prefix][#X].log") ; WORLD_LOG_START(X)
 #define WORLD_SETUP_LOG_DETAILED(X) GLOB.world_##X##_log = file("[log_directory_detailed]/[log_prefix_detailed][#X].log") ; WORLD_LOG_START(X)
 
 /world/proc/SetupLogs()
-	if (!GLOB.round_id)
-		util_crash_with("Unknown GLOB.round_id!")
+	if (!game_id)
+		util_crash_with("Unknown game_id!")
 
 	var/log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]"
 	var/log_prefix = "[time2text(world.realtime, "DD.MM.YY")]_"
@@ -678,7 +679,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	GLOB.log_directory = log_directory // TODO: remove GLOB.log_directory, check initialize.log
 
 	var/log_directory_detailed = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]/[time2text(world.realtime, "DD.MM.YY")]_detailed"
-	var/log_prefix_detailed = "[time2text(world.realtime, "DD.MM.YY_hh.mm")]_[GLOB.round_id]_"
+	var/log_prefix_detailed = "[time2text(world.realtime, "DD.MM.YY_hh.mm")]_[game_id]_"
 
 	WORLD_SETUP_LOG_DETAILED(runtime)
 	WORLD_SETUP_LOG_DETAILED(qdel)

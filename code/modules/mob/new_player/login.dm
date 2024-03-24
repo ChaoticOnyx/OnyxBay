@@ -43,7 +43,7 @@
 	if(join_motd)
 		to_chat(src, "<div class=\"motd\">[join_motd]</div>")
 	client.show_regular_announcement()
-	to_chat(src, "<div class='info'>Game ID: <div class='danger'>[GLOB.round_id]</div></div>")
+	to_chat(src, "<div class='info'>Game ID: <div class='danger'>[game_id]</div></div>")
 
 	if(!mind)
 		mind = new /datum/mind(key)
