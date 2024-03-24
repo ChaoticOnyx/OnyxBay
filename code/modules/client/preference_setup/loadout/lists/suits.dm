@@ -173,7 +173,7 @@
 	allowed_roles = list(/datum/job/hydro, /datum/job/xenobiologist)
 
 /datum/gear/suit/cmo_wintercoat
-	display_name = "winter coat, chier medical officer"
+	display_name = "winter coat, chief medical officer"
 	path = /obj/item/clothing/suit/storage/hooded/wintercoat/cmo
 	allowed_roles = list(/datum/job/cmo)
 
