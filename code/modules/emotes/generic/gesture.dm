@@ -113,12 +113,14 @@
 	if(!.)
 		return
 
+	if(!rand(0, 5000))
+		return
+
 	var/area/A = get_area(user)
 	if(!istype(A))
 		return
 
-	if(rand(0, 5000) == 0)
-		A.set_lightswitch(!A.lightswitch)
+	A.set_lightswitch(!A.lightswitch)
 
 /mob/proc/clap_emote()
 	set name = "Clap"
