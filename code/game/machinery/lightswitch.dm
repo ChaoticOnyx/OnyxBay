@@ -26,9 +26,6 @@
 	connected_area.set_lightswitch(on)
 	update_icon()
 
-/obj/machinery/light_switch/LateInitialize()
-	set_state(FALSE)
-
 /obj/machinery/light_switch/Destroy()
 	connected_area = null
 	other_area = null
