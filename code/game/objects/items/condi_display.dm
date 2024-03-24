@@ -15,13 +15,17 @@
 	var/static/image/radial_take_chocolate = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_take_choco")
 
 	/// Amount of sugar packs stored
-	var/sugar_packs = 8
+	var/sugar_packs = 0
+	var/max_sugar_packs = 8
 	/// Amount of creamer packs stored
-	var/creamer_packs = 8
+	var/creamer_packs = 0
+	var/max_creamer_packs = 8
 	/// Amount of astrtotame packs stored
-	var/astrotame_packs = 8
+	var/astrotame_packs = 0
+	var/max_astrotame_packs = 8
 	/// Amount of chocolate bars stored
-	var/chocolatebars = 8
+	var/chocolatebars = 0
+	var/max_chocolatebars = 8
 
 /obj/structure/coffee_condi_display/Initialize(mapload)
 	. = ..()
@@ -32,6 +36,10 @@
 			new /obj/item/reagent_containers/vessel/condiment/pack/creamer(src)
 			new /obj/item/reagent_containers/vessel/condiment/pack/astrotame(src)
 			new /obj/item/reagent_containers/food/chocolatebar(src)
+		sugar_packs = max_sugar_packs
+		creamer_packs = max_creamer_packs
+		astrotame_packs = max_astrotame_packs
+		chocolatebars = max_chocolatebars
 
 	update_icon()
 /obj/structure/coffee_condi_display/attack_hand(mob/user)
@@ -129,6 +137,10 @@
 
 /obj/structure/coffee_condi_display/attackby(obj/item/I, mob/living/user)
 	if(istype(I, /obj/item/reagent_containers/vessel/condiment/pack/sugar))
+		if(sugar_packs >= max_sugar_packs)
+			show_splash_text(user, "can't hold more!")
+			return
+
 		if(!user.drop(I, src))
 			return
 
@@ -137,6 +149,10 @@
 		return
 
 	else if(istype(I, /obj/item/reagent_containers/vessel/condiment/pack/astrotame))
+		if(astrotame_packs >= max_astrotame_packs)
+			show_splash_text(user, "can't hold more!")
+			return
+
 		if(!user.drop(I, src))
 			return
 
@@ -145,6 +161,10 @@
 		return
 
 	else if(istype(I, /obj/item/reagent_containers/vessel/condiment/pack/creamer))
+		if(creamer_packs >= max_creamer_packs)
+			show_splash_text(user, "can't hold more!")
+			return
+
 		if(!user.drop(I, src))
 			return
 
@@ -153,6 +173,10 @@
 		return
 
 	else if(istype(I, /obj/item/reagent_containers/food/chocolatebar))
+		if(chocolatebars >= max_chocolatebars)
+			show_splash_text(user, "can't hold more!")
+			return
+
 		if(!user.drop(I, src))
 			return
 
