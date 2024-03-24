@@ -179,11 +179,11 @@
 
 	if(coffeepot)
 		user.pick_or_drop(coffeepot, get_turf(src))
-		show_splash_text(user, "ejected pot")
+		show_splash_text(user, "ejected pot", "Ejected \the [coffeepot] from \the [src].")
 
 	if(new_coffeepot)
 		coffeepot = new_coffeepot
-		show_splash_text(user, "instered pot")
+		show_splash_text(user, "instered pot", "Inserted \the [coffeepot] in \the [src].")
 
 	update_icon()
 	return TRUE
@@ -210,11 +210,11 @@
 	if(istype(attack_item, /obj/item/reagent_containers/vessel/takeaway))
 		var/obj/item/reagent_containers/vessel/takeaway/new_cup = attack_item //different type of cup
 		if(new_cup.reagents.total_volume > 0 )
-			show_splash_text(user, "the cup must be empty!")
+			show_splash_text(user, "the cup must be empty!", "\The [new_cup] must be empty!")
 			return
 
 		if(coffee_cups >= max_coffee_cups)
-			show_splash_text(user, "the cup holder is full!")
+			show_splash_text(user, "the cup holder is full!", "\The [src]'s cup holder is full!")
 			return
 
 		if(!user.drop(attack_item, src))
@@ -227,11 +227,11 @@
 	if(istype(attack_item, /obj/item/reagent_containers/vessel/condiment/pack/sugar))
 		var/obj/item/reagent_containers/vessel/condiment/pack/sugar/new_pack = attack_item
 		if(new_pack.reagents.total_volume < new_pack.reagents.maximum_volume)
-			show_splash_text(user, "the pack must be full!")
+			show_splash_text(user, "the pack must be full!", "\The [new_pack] must be full!")
 			return
 
 		if(sugar_packs >= max_sugar_packs)
-			show_splash_text(user, "the sugar compartment is full!")
+			show_splash_text(user, "the sugar compartment is full!", "\The [src]'s sugar compartment is full!")
 			return
 
 		if(!user.drop(attack_item, src))
@@ -244,11 +244,11 @@
 	if(istype(attack_item, /obj/item/reagent_containers/vessel/condiment/pack/creamer))
 		var/obj/item/reagent_containers/vessel/condiment/pack/creamer/new_pack = attack_item
 		if(new_pack.reagents.total_volume < new_pack.reagents.maximum_volume)
-			show_splash_text(user, "the pack must be full!")
+			show_splash_text(user, "the pack must be full!", "\The [new_pack] must be full!")
 			return
 
 		if(creamer_packs >= max_creamer_packs)
-			show_splash_text(user, "the creamer compartment is full!")
+			show_splash_text(user, "the creamer compartment is full!", "\The [src]'s creamer compartment is full!")
 			return
 
 		if(!user.drop(attack_item, src))
@@ -261,11 +261,11 @@
 	if(istype(attack_item, /obj/item/reagent_containers/vessel/condiment/pack/astrotame))
 		var/obj/item/reagent_containers/vessel/condiment/pack/astrotame/new_pack = attack_item
 		if(new_pack.reagents.total_volume < new_pack.reagents.maximum_volume)
-			show_splash_text(user, "the pack must be full!")
+			show_splash_text(user, "the pack must be full!", "\The [src]'s sugar compartment is full!")
 			return
 
 		if(sweetener_packs >= max_sweetener_packs)
-			show_splash_text(user, "the sweetener compartment is full!")
+			show_splash_text(user, "the sweetener compartment is full!", "\The [src]'s sweetener compartment is full!")
 			return
 
 		if(!user.drop(attack_item, src))
@@ -277,7 +277,7 @@
 
 	if(istype(attack_item, /obj/item/reagent_containers/food/grown/coffee))
 		if(coffee_amount >= BEAN_CAPACITY)
-			show_splash_text(user, "the coffee container is full!")
+			show_splash_text(user, "the coffee container is full!", "\The [src]'s coffee container is full!")
 			return
 
 		var/obj/item/reagent_containers/food/grown/coffee/new_coffee = attack_item
@@ -286,12 +286,12 @@
 
 		coffee += new_coffee
 		coffee_amount++
-		show_splash_text(user, "added coffee")
+		show_splash_text(user, "added coffee", "Added coffee in \the [src].")
 		return
 
 	if(istype(attack_item, /obj/item/storage/box/coffeepack))
 		if(coffee_amount >= BEAN_CAPACITY)
-			show_splash_text(user, "the coffee container is full!")
+			show_splash_text(user, "the coffee container is full!", "\The [src]'s coffee container is full!")
 			return
 
 		var/obj/item/storage/box/coffeepack/new_coffee_pack = attack_item
@@ -301,7 +301,7 @@
 					coffee += new_coffee
 					coffee_amount++
 					new_coffee.forceMove(src)
-					show_splash_text(user, "added coffee")
+					show_splash_text(user, "added coffee", "Added coffee in \the [src].")
 					update_icon()
 					return
 
@@ -310,19 +310,19 @@
 
 /obj/machinery/coffeemaker/proc/try_brew()
 	if(coffee_amount <= 0)
-		show_splash_text(usr, "no coffee beans added!")
+		show_splash_text(usr, "no coffee beans added!", "\The [src] has no coffee beans!")
 		return FALSE
 
 	if(!coffeepot)
-		show_splash_text(usr, "no coffeepot inside!")
+		show_splash_text(usr, "no coffeepot inside!", "\The [src] has no coffeepot!")
 		return FALSE
 
 	if(stat & (NOPOWER|BROKEN) )
-		show_splash_text(usr, "machine unpowered!")
+		show_splash_text(usr, "machine unpowered!", "\The [src] has no power!")
 		return FALSE
 
 	if(coffeepot.reagents.total_volume >= coffeepot.reagents.maximum_volume)
-		show_splash_text(usr, "the coffeepot is already full!")
+		show_splash_text(usr, "the coffeepot is already full!", "\The [src]'s [coffeepot] is already full!")
 		return FALSE
 
 	return TRUE
@@ -396,7 +396,7 @@
 
 /obj/machinery/coffeemaker/proc/take_cup(mob/user)
 	if(!coffee_cups) //shouldn't happen, but we all know how stuff manages to break
-		show_splash_text(user, "no cups left!")
+		show_splash_text(user, "no cups left!", "\The [src] has no cups!")
 		return
 
 	var/obj/item/reagent_containers/vessel/takeaway/new_cup = new(get_turf(src))
@@ -409,7 +409,7 @@
 
 /obj/machinery/coffeemaker/proc/take_sugar(mob/user)
 	if(!sugar_packs)
-		show_splash_text(user, "no sugar left!")
+		show_splash_text(user, "no sugar left!", "\The [src] has no sugar packs!")
 		return
 
 	var/obj/item/reagent_containers/vessel/condiment/pack/sugar/new_pack = new(get_turf(src))
@@ -422,7 +422,7 @@
 
 /obj/machinery/coffeemaker/proc/take_sweetener(mob/user)
 	if(!sweetener_packs)
-		show_splash_text(user, "no sweetener left!")
+		show_splash_text(user, "no sweetener left!", "\The [src] has no sweetener packs!")
 		return
 
 	var/obj/item/reagent_containers/vessel/condiment/pack/astrotame/new_pack = new(get_turf(src))
@@ -435,7 +435,7 @@
 
 /obj/machinery/coffeemaker/proc/take_creamer(mob/user)
 	if(!creamer_packs)
-		show_splash_text(user, "no creamer left!")
+		show_splash_text(user, "no creamer left!", "\The [src] has no creamer packs!")
 		return
 
 	var/obj/item/reagent_containers/vessel/condiment/pack/creamer/new_pack = new(drop_location())

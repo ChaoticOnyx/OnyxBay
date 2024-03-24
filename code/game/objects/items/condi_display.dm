@@ -46,7 +46,7 @@
 	. = ..()
 
 	if(!anchored)
-		show_splash_text(user, "anchor it first!")
+		show_splash_text(user, "anchor it first!", "\The [src] should be anchored!")
 		return
 
 	var/list/radial_options = list()
@@ -85,7 +85,7 @@
 
 /obj/structure/coffee_condi_display/proc/take_sugar(mob/user)
 	if(creamer_packs <= 0)
-		show_splash_text(user, "no creamer left!")
+		show_splash_text(user, "no creamer left!", "\The [src] has no creamer packs left!")
 		return
 
 	var/obj/item/reagent_containers/vessel/condiment/pack/creamer/new_pack = new(drop_location())
@@ -98,7 +98,7 @@
 
 /obj/structure/coffee_condi_display/proc/take_sweetener(mob/user)
 	if(astrotame_packs <= 0)
-		show_splash_text(user, "no sweetener left!")
+		show_splash_text(user, "no sweetener left!", "\The [src] has no sweetener packs left!")
 		return
 
 	var/obj/item/reagent_containers/vessel/condiment/pack/astrotame/new_pack = new(get_turf(src))
@@ -111,7 +111,7 @@
 
 /obj/structure/coffee_condi_display/proc/take_creamer(mob/user)
 	if(creamer_packs <= 0)
-		show_splash_text(user, "no creamer left!")
+		show_splash_text(user, "no creamer left!", "\The [src] has no creamer packs left!")
 		return
 
 	var/obj/item/reagent_containers/vessel/condiment/pack/creamer/new_pack = new(drop_location())
@@ -124,7 +124,7 @@
 
 /obj/structure/coffee_condi_display/proc/take_chocolate(mob/user)
 	if(chocolatebars <= 0)
-		show_splash_text(user, "no chocolate left!")
+		show_splash_text(user, "no chocolate left!", "\The [src] has no chocolate bars left!")
 		return
 
 	var/obj/item/reagent_containers/food/chocolatebar/new_bar = new(drop_location())
@@ -138,7 +138,7 @@
 /obj/structure/coffee_condi_display/attackby(obj/item/I, mob/living/user)
 	if(istype(I, /obj/item/reagent_containers/vessel/condiment/pack/sugar))
 		if(sugar_packs >= max_sugar_packs)
-			show_splash_text(user, "can't hold more!")
+			show_splash_text(user, "already full!", "\The [src] can't hold more sugar packs!")
 			return
 
 		if(!user.drop(I, src))
@@ -150,7 +150,7 @@
 
 	else if(istype(I, /obj/item/reagent_containers/vessel/condiment/pack/astrotame))
 		if(astrotame_packs >= max_astrotame_packs)
-			show_splash_text(user, "can't hold more!")
+			show_splash_text(user, "already full!", "\The [src] can't hold more astrotame packs!")
 			return
 
 		if(!user.drop(I, src))
@@ -162,7 +162,7 @@
 
 	else if(istype(I, /obj/item/reagent_containers/vessel/condiment/pack/creamer))
 		if(creamer_packs >= max_creamer_packs)
-			show_splash_text(user, "can't hold more!")
+			show_splash_text(user, "already full!", "\The [src] can't hold more creamer packs!")
 			return
 
 		if(!user.drop(I, src))
@@ -174,7 +174,7 @@
 
 	else if(istype(I, /obj/item/reagent_containers/food/chocolatebar))
 		if(chocolatebars >= max_chocolatebars)
-			show_splash_text(user, "can't hold more!")
+			show_splash_text(user, "already full!", "\The [src] can't hold more chocolate bars!")
 			return
 
 		if(!user.drop(I, src))
