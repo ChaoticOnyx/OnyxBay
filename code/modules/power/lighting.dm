@@ -12,8 +12,8 @@
 #define LIGHT_BULB_TEMPERATURE 400 //K - used value for a 60W bulb
 #define LIGHTING_POWER_FACTOR 5		//5W per luminosity * range
 
-#define LIGHT_ON_DELAY_UPPER 3 SECONDS
-#define LIGHT_ON_DELAY_LOWER 1 SECONDS
+#define LIGHT_ON_DELAY_UPPER 1 SECONDS
+#define LIGHT_ON_DELAY_LOWER 0.5 SECONDS
 
 /obj/machinery/light_construct
 	name = "light fixture frame"
@@ -531,6 +531,8 @@
 	turning_on = FALSE
 	update_icon()
 	lightbulb.switch_on()
+	if(prob(15))
+		flicker(rand(1, 3))
 
 /obj/machinery/light/proc/flicker(amount = rand(10, 20))
 	set waitfor = FALSE
@@ -958,12 +960,5 @@
 		playsound(src, GET_SFX(sound_on), sound_on_volume)
 	return status
 
-/proc/flicker_all_lights()
-	for(var/obj/machinery/light/L in SSmachines.machinery)
-		if(!(L.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
-			continue
-
-		if(!prob(95))
-			continue
-
-		L.flicker(rand(2, 5))
+#undef LIGHT_ON_DELAY_UPPER
+#undef LIGHT_ON_DELAY_LOWER
