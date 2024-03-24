@@ -7,6 +7,8 @@
 	/// Type expected
 	var/expected_type
 	var/power_path
+	var/icon
+	var/icon_state
 
 /datum/deity_power/proc/manifest(atom/target, mob/living/deity/D)
 	if(can_manifest(target, D) && pay_costs(D))
@@ -45,9 +47,17 @@
 	return cost
 
 /datum/deity_power/proc/_get_image()
-	var/atom/A = power_path
-	return image(icon = initial(A.icon), icon_state = initial(A.icon_state))
+	if(!isnull(icon) && !isnull(icon_state))
+		return image(icon = icon, icon_state = icon_state)
+
+	else
+		var/atom/A = power_path
+		return image(icon = initial(A.icon), icon_state = initial(A.icon_state))
 
 /datum/deity_power/proc/_get_name()
-	var/atom/A = power_path
-	return initial(A.name)
+	if(!isnull(name))
+		return name
+
+	else
+		var/atom/A = power_path
+		return initial(A.name)

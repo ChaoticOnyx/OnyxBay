@@ -48,8 +48,6 @@ GLOBAL_LIST_INIT(deity_forms, list(); for(var/form in subtypesof(/datum/god_form
 	QDEL_NULL(radial_menu)
 	QDEL_NULL(form)
 	followers.Cut()
-	eyeobj.release(src)
-	QDEL_NULL(eyeobj)
 	QDEL_NULL(deity_net)
 	return ..()
 

@@ -17,6 +17,7 @@
 #define BANE_TOOLBOX /datum/modifier/bane_toolbox
 #define DEVIL_BANES list(/datum/modifier/bane_salt, /datum/modifier/bane_iron, /datum/modifier/bane_silver, /datum/modifier/bane_toolbox)
 
-#define DEITY_ETIER_1 1
-#define DEITY_ETIER_2 2
-#define DEITY_ETIER_3 3
+#define DEITY_ETIER_ROOT 0
+#define DEITY_ETIER_1    1
+#define DEITY_ETIER_2    2
+#define DEITY_ETIER_3    3

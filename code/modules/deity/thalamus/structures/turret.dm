@@ -23,3 +23,5 @@
 		return FALSE
 
 	return TRUE
+
+/obj/machinery/turret/thalamus/enhanced

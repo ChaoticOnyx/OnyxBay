@@ -37,7 +37,7 @@
 		/datum/deity_resource/tower/favor
 	)
 
-	evolution_packages = list(
+	evolution_categories = list(
 		/datum/evolution_package/tower/basic,
 		/datum/evolution_package/tower/basic_altar,
 		/datum/evolution_package/tower/basic_statue

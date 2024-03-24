@@ -1,3 +1,15 @@
+/datum/evolution_category
+	var/name
+	var/list/items = list()
+
+/datum/evolution_category/New()
+	for(var/path in items)
+		var/datum/evolution_package/pack = new path()
+		items -= path
+		items += pack
+
+	return ..()
+
 /datum/evolution_package
 	var/name
 	var/desc

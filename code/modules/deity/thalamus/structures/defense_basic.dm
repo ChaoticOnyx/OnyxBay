@@ -11,3 +11,5 @@
 	desc = ""
 	icon_state = "tendril"
 	var/damage = 14
+
+/datum/deity_power/structure/thalamus/tendril_enhanced

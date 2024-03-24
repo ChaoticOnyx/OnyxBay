@@ -41,6 +41,21 @@
 	if(a)
 		. = get_dist(A, a)
 
+/mob/living/deity/proc/get_dist_to_nearest_building_type(target, type)
+	var/list/eligible_buildings = list()
+	for(var/obj/structure/deity/struct in buildings)
+		if(!istype(struct, type))
+			continue
+
+		eligible_buildings += struct
+
+	if(!eligible_buildings.len)
+		return -1
+
+	var/atom/closest = get_atom_closest_to_atom(target, eligible_buildings)
+
+	return get_dist(target, closest)
+
 /mob/living/deity/Life()
 	. = ..()
 	if(.)

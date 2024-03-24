@@ -10,7 +10,7 @@
 	var/list/phenomena_radial = list()
 	var/list/boons_radial = list()
 
-	var/list/evolution_packages = list()
+	var/list/evolution_categories = list()
 
 	var/join_message
 	var/leave_message
@@ -21,7 +21,7 @@
 
 /datum/god_form/proc/setup_form(mob/living/deity/D)
 	deity = D
-	D.icon_state = form_state
+	//D.icon_state = form_state
 	D.desc = desc
 	D.invisibility = 0
 	D.density = TRUE
@@ -47,10 +47,10 @@
 		boons += power
 		boons[power] = power._get_image()
 
-	for(var/path in evolution_packages)
-		var/datum/evolution_package/evo = new path
-		evolution_packages -= path
-		evolution_packages += evo
+	for(var/path in evolution_categories)
+		var/datum/evolution_package/evo = new path()
+		evolution_categories -= path
+		evolution_categories += evo
 
 /// Followers can take charge using this proc, usually it damages them.
 /datum/god_form/proc/take_charge(mob/living/user, charge)

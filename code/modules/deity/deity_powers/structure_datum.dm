@@ -3,6 +3,8 @@
 	var/unique = FALSE
 	/// Must be built within this amount of turfs to another deity building. 0 == infinite distance
 	var/build_distance = 2
+	/// Cannot be built within the specified amount of turfs to another TYPE of deity building. 'building' = 'min_distance'
+	var/list/build_type_distance = list()
 	/// Determines how fast it will be built
 	var/build_time = 0
 	/// Maximum health of the building
@@ -35,7 +37,15 @@
 		var/r = D.get_dist_to_nearest_building(target) <= build_distance
 		if(!r)
 			to_chat(D, SPAN_WARNING("You must build that closer to another deity building!"))
-		return r
+			return FALSE
+
+	if(build_type_distance.len)
+		for(var/type in build_type_distance)
+			var/distance = D.get_dist_to_nearest_building_type(target, type)
+			var/in_range = distance > build_type_distance[type]
+			if(!in_range && distance != -1)
+				to_chat(D, SPAN_WARNING("You must build this farther from another building of [type]"))
+				return FALSE
 
 	return TRUE
 

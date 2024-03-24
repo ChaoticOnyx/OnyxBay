@@ -51,14 +51,24 @@
 		data["items"] += list(building_data)
 
 	data["evolutionItems"] = list()
-	for(var/datum/evolution_package/evo in form?.evolution_packages)
-		var/list/evo_data = list(
-			"name" = evo.name,
-			"desc" = evo.desc,
-			"icon" = evo.icon,
-			"depth" = evo.tier,
-			"unlocked" = evo.unlocked
+	for(var/datum/evolution_category/cat in form?.evolution_categories)
+		var/list/cat_data = list(
+			"name" = cat.name
+			//"desc" = cat.desc,
+			//"icon" = cat.icon,
 		)
+
+		for(var/datum/evolution_package/pack in cat.items)
+			var/list/pack_data = list(
+				"name" = pack.name,
+				"desc" = pack.desc,
+				"icon" = pack.icon,
+				"tier" = pack.tier,
+				"unlocked" = pack.unlocked
+			)
+			cat_data["packages"] += list(pack_data)
+
+		data["evolutionItems"] += list(cat_data)
 
 	return data
 
