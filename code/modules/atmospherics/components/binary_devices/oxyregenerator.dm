@@ -29,6 +29,8 @@
 	component_parts += new /obj/item/stock_parts/matter_bin(src)//Stores carbon
 	RefreshParts()
 
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/machinery/atmospherics/binary/oxyregenerator/RefreshParts()
 	for(var/obj/item/stock_parts/P in component_parts)
 		if(istype(P, /obj/item/stock_parts/matter_bin))
@@ -83,11 +85,17 @@
 
 /obj/machinery/atmospherics/binary/oxyregenerator/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
+	..()
+
+/obj/machinery/atmospherics/binary/oxyregenerator/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()
 
 /obj/machinery/atmospherics/binary/oxyregenerator/Process(delay)
 	if((stat & (NOPOWER|BROKEN)) || !use_power)

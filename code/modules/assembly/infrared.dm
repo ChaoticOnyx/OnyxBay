@@ -27,6 +27,8 @@
 	seen_turfs = list()
 	proximity_trigger = new(src, /obj/item/device/assembly/infra/proc/on_beam_entered, /obj/item/device/assembly/infra/proc/on_visibility_change, world.view, PROXIMITY_EXCLUDE_HOLDER_TURF)
 
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/item/device/assembly/infra/Destroy()
 	qdel(proximity_trigger)
 	proximity_trigger = null

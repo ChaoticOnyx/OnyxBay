@@ -29,14 +29,14 @@
 		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	. = ..()
+	..()
 
 /obj/structure/secure_door_assembly/rotate_counter(mob/user)
 	if(anchored)
 		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	. = ..()
+	..()
 
 /obj/structure/secure_door_assembly/proc/make_just_dismantled()
 	anchored = TRUE
@@ -51,14 +51,6 @@
 			icon_state = "[base_icon]_st1"
 		if(STATE_SIGNALLER)
 			icon_state = "[base_icon]_st2"
-
-/obj/structure/secure_door_assembly/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "unfasten it first!")
-		return
-
-	else
-		..()
 
 /obj/structure/secure_door_assembly/attackby(obj/item/W, mob/user)
 	switch(state)

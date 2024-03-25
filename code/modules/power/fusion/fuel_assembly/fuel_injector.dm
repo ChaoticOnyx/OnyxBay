@@ -20,6 +20,8 @@ var/list/fuel_injectors = list()
 	fuel_injectors += src
 	tag = null
 
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/machinery/fusion_fuel_injector/Destroy()
 	if(cur_assembly)
 		cur_assembly.forceMove(get_turf(src))
@@ -132,8 +134,14 @@ var/list/fuel_injectors = list()
 
 /obj/machinery/fusion_fuel_injector/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
+	..()
+
+/obj/machinery/fusion_fuel_injector/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()

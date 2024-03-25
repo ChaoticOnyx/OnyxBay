@@ -22,6 +22,8 @@
 	update_verbs()
 	. = ..()
 
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/structure/disposalconstruct/proc/update_verbs()
 	if(anchored)
 		verbs -= /obj/structure/disposalconstruct/proc/flip
@@ -116,11 +118,17 @@
 // flip and rotate verbs
 /obj/structure/disposalconstruct/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
+	..()
+
+/obj/structure/disposalconstruct/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()
 
 /obj/structure/disposalconstruct/proc/flip()
 	set category = "Object"

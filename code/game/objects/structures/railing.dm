@@ -21,6 +21,8 @@
 	if(anchored)
 		update_icon(0)
 
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/structure/railing/Destroy()
 	var/turf/location = loc
 	. = ..()
@@ -117,11 +119,10 @@
 
 /obj/structure/railing/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
+	..()
 
 /obj/structure/railing/verb/flip() // This will help push railing to remote places, such as open space turfs
 	set name = "Flip Railing"

@@ -42,11 +42,17 @@
 
 /obj/machinery/power/emitter/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
+	..()
+
+/obj/machinery/power/emitter/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()
 
 /obj/machinery/power/emitter/Initialize()
 	. = ..()
@@ -54,6 +60,8 @@
 		connect_to_network()
 		if(_wifi_id)
 			wifi_receiver = new(_wifi_id, src)
+
+	AddElement(/datum/element/alt_click_rotation)
 
 /obj/machinery/power/emitter/Destroy()
 	log_and_message_admins("deleted \the [src]")

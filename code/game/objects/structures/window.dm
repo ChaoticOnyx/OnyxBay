@@ -308,14 +308,26 @@
 		return
 
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
-		update_nearby_tiles(need_rebuild=1) //Compel updates before
-		updateSilicate()
-		update_nearby_tiles(need_rebuild=1)
+	..()
+	update_nearby_tiles(need_rebuild=1) //Compel updates before
+	updateSilicate()
+	update_nearby_tiles(need_rebuild=1)
+
+/obj/structure/window/rotate_counter(mob/user)
+	if(is_full_window) // No point in rotating a window if it is full
+		return
+
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()
+	update_nearby_tiles(need_rebuild=1) //Compel updates before
+	updateSilicate()
+	update_nearby_tiles(need_rebuild=1)
 
 /obj/structure/window/New(Loc, start_dir=null, constructed=0)
 	..()
@@ -464,6 +476,8 @@
 	// windows only block while reinforced and fulltile, so we'll use the proc
 	real_explosion_block = explosion_block
 	explosion_block = EXPLOSION_BLOCK_PROC
+
+	AddElement(/datum/element/alt_click_rotation)
 
 /obj/structure/window/reinforced/full
 	dir = 5

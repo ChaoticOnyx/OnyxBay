@@ -53,6 +53,8 @@
 
 	RefreshParts()
 
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/machinery/mining/drill/Process()
 
 	if(need_player_check)
@@ -291,6 +293,8 @@
 	component_parts = list()
 	component_parts += new /obj/item/circuitboard/miningdrillbrace(src)
 
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/machinery/mining/brace/attackby(obj/item/W as obj, mob/user as mob)
 	if(connected && connected.active)
 		to_chat(user, "<span class='notice'>You can't work with the brace of a running drill!</span>")
@@ -350,8 +354,14 @@
 
 /obj/machinery/mining/brace/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
+	..()
+
+/obj/machinery/mining/brace/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()

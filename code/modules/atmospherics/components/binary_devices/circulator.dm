@@ -27,6 +27,8 @@
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
 	air1.volume = 400
 
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/machinery/atmospherics/binary/circulator/proc/return_transfer_air()
 	var/datum/gas_mixture/removed
 	if(anchored && !(stat&BROKEN) && network1)
@@ -123,9 +125,16 @@
 
 /obj/machinery/atmospherics/binary/circulator/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
-		desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
+	..()
+	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
+
+/obj/machinery/atmospherics/binary/circulator/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()
+	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."

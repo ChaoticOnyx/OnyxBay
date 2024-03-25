@@ -17,6 +17,8 @@
 	..()
 	src.cell = new /obj/item/cell/high(src)
 
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/machinery/suspension_gen/Process()
 	set background = 1
 	if(suspension_field)
@@ -238,11 +240,17 @@
 
 /obj/machinery/suspension_gen/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
+	..()
+
+/obj/machinery/suspension_gen/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()
 
 /obj/effect/suspension_field
 	name = "energy field"

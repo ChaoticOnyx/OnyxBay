@@ -30,6 +30,9 @@
 
 /obj/structure/windoor_assembly/New(Loc, start_dir=NORTH, constructed=0)
 	..()
+
+	AddElement(/datum/element/alt_click_rotation)
+
 	if(constructed)
 		state = "01"
 		anchored = 0
@@ -268,7 +271,23 @@
 //Rotates the windoor assembly clockwise
 /obj/structure/windoor_assembly/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	if(state != "01")
+		update_nearby_tiles(need_rebuild=1) //Compel updates before
+
+	..()
+
+	if(state != "01")
+		update_nearby_tiles(need_rebuild=1)
+
+	update_icon()
+	return
+
+/obj/structure/windoor_assembly/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
 	if(state != "01")

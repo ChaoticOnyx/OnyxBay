@@ -72,6 +72,11 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	var/strength = null
 	var/desc_holder = null
 
+/obj/structure/particle_accelerator/Initialize()
+	..()
+
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/structure/particle_accelerator/Destroy()
 	construction_state = 0
 	if(master)
@@ -91,11 +96,17 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 
 /obj/structure/particle_accelerator/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		. = ..()
+	..()
+
+/obj/structure/particle_accelerator/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()
 
 /obj/structure/particle_accelerator/_examine_text(mob/user)
 	switch(src.construction_state)
@@ -251,15 +262,24 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	var/strength = 0
 	var/desc_holder = null
 
+/obj/machinery/particle_accelerator/Initialize()
+	..()
+
+	AddElement(/datum/element/alt_click_rotation)
 
 /obj/machinery/particle_accelerator/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
+	..()
 
+/obj/machinery/particle_accelerator/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()
 
 /obj/machinery/particle_accelerator/on_update_icon()
 	return

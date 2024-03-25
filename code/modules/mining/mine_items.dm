@@ -660,13 +660,24 @@
 	var/times_carved = 0
 	var/last_struck = 0
 
+/obj/structure/sculpting_block/Initialize()
+	..()
+
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/structure/sculpting_block/rotate(mob/user)
 	if(anchored)
-		show_splash_text(user, "unfasten it first!")
+		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
-	else
-		..()
+	..()
+
+/obj/structure/sculpting_block/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	..()
 
 /obj/structure/sculpting_block/attackby(obj/item/C as obj, mob/user as mob)
 
