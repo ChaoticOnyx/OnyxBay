@@ -86,7 +86,7 @@
 
 		return TRUE
 
-	return ..()
+	return ..(user)
 
 /obj/structure/bed/chair/set_dir()
 	..()
