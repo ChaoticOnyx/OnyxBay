@@ -16,18 +16,18 @@
 	if(health < -35 || emagged)
 		to_chat(user, "<span class='notice'><b>WARNING:</b> connection timed out.</span>")
 		return
-	
+
 	assume_control(user)
 
 /mob/living/silicon/robot/drone/proc/assume_control(mob/living/silicon/ai/user)
 	user.controlling_drone = src
 	controlling_ai = user
-	verbs += /mob/living/silicon/robot/drone/proc/release_ai_control_verb
-	verbs -= /mob/living/proc/ghost
+	add_verb(src, /mob/living/silicon/robot/drone/proc/release_ai_control_verb)
+	remove_verb(src, /mob/living/proc/ghost)
 	local_transmit = FALSE
 	languages = controlling_ai.languages.Copy()
 	add_language("Robot Talk", 1)
-	
+
 	default_language = all_languages[LANGUAGE_GALCOM]
 
 	stat = CONSCIOUS
@@ -99,8 +99,9 @@
 		controlling_ai.controlling_drone = null
 		controlling_ai = null
 
-	verbs -= /mob/living/silicon/robot/drone/proc/release_ai_control_verb
-	verbs += /mob/living/proc/ghost
+	remove_verb(src, /mob/living/silicon/robot/drone/proc/release_ai_control_verb)
+	add_verb(src, /mob/living/proc/ghost)
+
 	full_law_reset()
 	updatename()
 	death()

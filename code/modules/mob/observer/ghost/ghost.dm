@@ -52,9 +52,12 @@
 
 /mob/observer/ghost/Initialize()
 	see_in_dark = 100
-	verbs += /mob/proc/toggle_antag_pool
-	verbs += /mob/proc/join_as_actor
-	verbs += /mob/proc/join_response_team
+
+	add_verb(src, list(
+		/mob/proc/toggle_antag_pool,
+		/mob/proc/join_as_actor,
+		/mob/proc/join_response_team,
+	))
 
 	var/turf/T
 	if(ismob(loc))
@@ -210,7 +213,7 @@ Works together with spawning an observer, noted above.
 	ghost.timeofdeath = is_ooc_dead() ? src.timeofdeath : world.time
 
 	if(!ghost.client?.holder && !config.ghost.allow_antag_hud)
-		ghost.verbs -= /mob/observer/ghost/verb/toggle_antagHUD
+		remove_verb(ghost, /mob/observer/ghost/verb/toggle_antagHUD)
 
 	if(ghost.client)
 		ghost.updateghostprefs()

@@ -104,10 +104,12 @@
 
 	parrot_sleep_dur = parrot_sleep_max //In case someone decides to change the max without changing the duration var
 
-	verbs.Add(/mob/living/simple_animal/parrot/proc/steal_from_ground, \
-			  /mob/living/simple_animal/parrot/proc/steal_from_mob, \
-			  /mob/living/simple_animal/parrot/verb/drop_held_item_player, \
-			  /mob/living/simple_animal/parrot/proc/perch_player)
+	add_verb(src, list(
+		/mob/living/simple_animal/parrot/proc/steal_from_ground,
+		/mob/living/simple_animal/parrot/proc/steal_from_mob,
+		/mob/living/simple_animal/parrot/verb/drop_held_item_player,
+		/mob/living/simple_animal/parrot/proc/perch_player,
+	))
 
 /mob/living/simple_animal/parrot/Destroy()
 	drop_held_item()

@@ -10,9 +10,11 @@
 	hacked_apcs = list()
 	recalc_cpu()
 
-	verbs += /datum/game_mode/malfunction/verb/ai_select_hardware
-	verbs += /datum/game_mode/malfunction/verb/ai_select_research
-	verbs += /datum/game_mode/malfunction/verb/ai_help
+	add_verb(src, list(
+		/datum/game_mode/malfunction/verb/ai_select_hardware,
+		/datum/game_mode/malfunction/verb/ai_select_research,
+		/datum/game_mode/malfunction/verb/ai_help,
+	))
 
 	log_ability_use(src, "became malfunctioning AI")
 	// And greet user with some OOC info.
@@ -118,7 +120,7 @@
 	if(!src.stat)
 		stat("Hardware integrity", "[hardware_integrity()]%")
 		stat("Internal capacitor", "[backup_capacitor()]%")
-		
+
 		if(eyeobj)
 			var/turf/T = get_turf(eyeobj)
 			stat("Current location", "([T.x]:[T.y]:[T.z])")
