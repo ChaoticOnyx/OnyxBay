@@ -10,7 +10,6 @@
 	icon_state = "emitter"
 	anchored = 0
 	density = 1
-	rotatable = TRUE
 	req_access = list(access_engine_equip)
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 0,

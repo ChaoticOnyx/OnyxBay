@@ -15,7 +15,6 @@
 	var/check = 0
 	var/material = ""
 	var/material_path = "/obj/item/stack/rods"
-	rotatable = TRUE
 
 /obj/structure/railing/Initialize()
 	. = ..()

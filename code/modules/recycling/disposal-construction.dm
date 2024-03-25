@@ -17,7 +17,6 @@
 	var/subtype = 0
 	var/dpdir = 0	// directions as disposalpipe
 	var/base_state = "pipe-s"
-	rotatable = TRUE
 
 /obj/structure/disposalconstruct/Initialize()
 	update_verbs()

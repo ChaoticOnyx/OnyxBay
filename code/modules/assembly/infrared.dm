@@ -11,8 +11,6 @@
 
 	secured = FALSE
 
-	rotatable = TRUE
-
 	var/on = FALSE
 	var/visible = FALSE
 

@@ -12,7 +12,6 @@
 	var/obj/item/card/id/auth_card
 	var/locked = TRUE
 	var/obj/effect/suspension_field/suspension_field
-	rotatable = TRUE
 
 /obj/machinery/suspension_gen/New()
 	..()

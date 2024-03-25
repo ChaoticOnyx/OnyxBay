@@ -655,7 +655,6 @@
 	density = 1
 	opacity = 1
 	anchored = 0
-	rotatable = TRUE
 	var/sculpted = 0
 	var/mob/living/T
 	var/times_carved = 0

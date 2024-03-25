@@ -65,7 +65,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	icon_state = "none"
 	anchored = 0
 	density = 1
-	rotatable = TRUE
 	var/obj/machinery/particle_accelerator/control_box/master = null
 	var/construction_state = 0
 	var/reference = null
@@ -242,7 +241,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	icon_state = "none"
 	anchored = 0
 	density = 1
-	rotatable = TRUE
 	use_power = POWER_USE_OFF
 	idle_power_usage = 0 WATTS
 	active_power_usage = 0 WATTS

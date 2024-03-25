@@ -283,7 +283,6 @@
 	name = "mining drill brace"
 	desc = "A machinery brace for an industrial drill. It looks easily two feet thick."
 	icon_state = "mining_brace"
-	rotatable = TRUE
 	var/obj/machinery/mining/drill/connected
 
 /obj/machinery/mining/brace/New()

@@ -17,7 +17,6 @@ Buildable meters
 	item_state = "buildpipe"
 	w_class = ITEM_SIZE_NORMAL
 	level = 2
-	rotatable = TRUE
 
 /obj/item/pipe/New(loc, pipe_type as num, dir as num, obj/machinery/atmospherics/make_from = null)
 	..()

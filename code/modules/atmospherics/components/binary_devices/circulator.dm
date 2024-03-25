@@ -21,7 +21,6 @@
 	var/stored_energy = 0
 
 	density = 1
-	rotatable = TRUE
 
 /obj/machinery/atmospherics/binary/circulator/Initialize()
 	. = ..()

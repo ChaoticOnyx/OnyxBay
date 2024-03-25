@@ -4,7 +4,6 @@
 	icon_state = "teg"
 	density = 1
 	anchored = 0
-	rotatable = TRUE
 
 	use_power = POWER_USE_IDLE
 	idle_power_usage = 100 WATTS // Just enough to do the computer and display things.

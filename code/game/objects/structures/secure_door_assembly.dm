@@ -15,9 +15,28 @@
 	var/material_path = null
 	var/door_path = null
 
+/obj/structure/secure_door_assembly/Initialize()
+	..()
+
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/structure/secure_door_assembly/Destroy()
 	QDEL_NULL(signaler)
 	return ..()
+
+/obj/structure/secure_door_assembly/rotate(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	. = ..()
+
+/obj/structure/secure_door_assembly/rotate_counter(mob/user)
+	if(anchored)
+		show_splash_text(user, "\The [src] is firmly secured!")
+		return
+
+	. = ..()
 
 /obj/structure/secure_door_assembly/proc/make_just_dismantled()
 	anchored = TRUE

@@ -9,7 +9,6 @@
 	layer = SIDE_WINDOW_LAYER
 	anchored = 1.0
 	atom_flags = ATOM_FLAG_CHECKS_BORDER
-	rotatable = TRUE
 	var/maxhealth = 14.0
 	var/maximal_heat = 100 CELSIUS 		// Maximal heat before this window begins taking damage from fire
 	var/damage_per_fire_tick = 2.0 		// Amount of damage per fire tick. Regular windows are not fireproof so they might as well break quickly.

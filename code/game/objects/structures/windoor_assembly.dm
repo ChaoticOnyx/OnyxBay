@@ -17,7 +17,6 @@
 	density = 0
 	dir = NORTH
 	w_class = ITEM_SIZE_NORMAL
-	rotatable = TRUE
 	var/material_used = MATERIAL_REINFORCED_GLASS
 	var/created_windoor = /obj/machinery/door/window
 	var/created_windoor_secure = /obj/machinery/door/window/brigdoor

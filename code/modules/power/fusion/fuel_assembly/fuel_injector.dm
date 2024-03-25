@@ -6,7 +6,6 @@ var/list/fuel_injectors = list()
 	icon_state = "injector0"
 	density = 1
 	anchored = 0
-	rotatable = TRUE
 	req_access = list(access_engine)
 	idle_power_usage = 10 WATTS
 	active_power_usage = 500 WATTS
