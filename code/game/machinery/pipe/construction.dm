@@ -18,7 +18,6 @@ Buildable meters
 	w_class = ITEM_SIZE_NORMAL
 	level = 2
 
-
 /obj/item/pipe/Initialize(mapload, pipe_type, dir, obj/machinery/atmospherics/make_from = null)
 	. = ..()
   
