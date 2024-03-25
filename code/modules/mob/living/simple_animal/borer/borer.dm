@@ -108,11 +108,6 @@
 	. = ..()
 	statpanel("Status")
 
-	if(evacuation_controller)
-		var/eta_status = evacuation_controller.get_status_panel_eta()
-		if(eta_status)
-			stat(null, eta_status)
-
 	if (client.statpanel == "Status")
 		stat("Chemicals", chemicals)
 

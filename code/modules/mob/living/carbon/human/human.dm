@@ -100,11 +100,6 @@
 		stat("Poise:", "[round(100/poise_pool*poise)]%")
 		stat("Special Ability:", "[active_ability]")
 
-		if(evacuation_controller)
-			var/eta_status = evacuation_controller.get_status_panel_eta()
-			if(eta_status)
-				stat(null, eta_status)
-
 		if (istype(internal))
 			if (!internal.air_contents)
 				qdel(internal)
