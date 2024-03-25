@@ -339,7 +339,6 @@ Buildable meters
 			set_dir(4)
 	else if (pipe_type in list (PIPE_MANIFOLD4W, PIPE_SUPPLY_MANIFOLD4W, PIPE_SCRUBBERS_MANIFOLD4W, PIPE_FUEL_MANIFOLD4W))
 		set_dir(2)
-	//src.pipe_set_dir(get_pipe_dir())
 	return
 
 /obj/item/pipe/Move()

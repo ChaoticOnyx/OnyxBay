@@ -82,6 +82,7 @@
 	if(isobserver(user) && config.ghost.ghost_interaction && Adjacent(user))
 		var/area/A = get_area(src)
 		if(A?.holy)
+			show_splash_text(user, "you cannot turn it there!", "\The [src] is on sacred ground, you cannot turn in.")
 			return FALSE
 
 		return TRUE
