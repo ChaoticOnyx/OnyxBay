@@ -663,7 +663,7 @@
 /obj/structure/sculpting_block/Initialize()
 	..()
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/sculpting_block/rotate(mob/user)
 	if(anchored)

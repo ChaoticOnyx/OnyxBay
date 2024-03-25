@@ -17,7 +17,7 @@
 	..()
 	src.cell = new /obj/item/cell/high(src)
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/suspension_gen/Process()
 	set background = 1

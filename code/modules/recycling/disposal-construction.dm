@@ -28,7 +28,7 @@
 
 	update_verbs()
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/disposalconstruct/proc/update_verbs()
 	if(anchored)

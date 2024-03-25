@@ -27,7 +27,7 @@
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
 	air1.volume = 400
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/atmospherics/binary/circulator/proc/return_transfer_air()
 	var/datum/gas_mixture/removed

@@ -61,7 +61,7 @@
 		if(_wifi_id)
 			wifi_receiver = new(_wifi_id, src)
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/power/emitter/Destroy()
 	log_and_message_admins("deleted \the [src]")

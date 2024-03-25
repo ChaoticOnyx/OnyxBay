@@ -1,7 +1,7 @@
-/datum/element/alt_click_rotation
+/datum/element/simple_rotation
 	element_flags = ELEMENT_DETACH
 
-/datum/element/alt_click_rotation/attach(datum/target)
+/datum/element/simple_rotation/attach(datum/target)
 	. = ..()
 
 	var/atom/target_atom = target
@@ -14,7 +14,7 @@
 	target_atom.verbs |= /atom/proc/rotate
 	target_atom.verbs |= /atom/proc/rotate_counter
 
-/datum/element/alt_click_rotation/detach(datum/source, ...)
+/datum/element/simple_rotation/detach(datum/source, ...)
 	unregister_signal(source, SIGNAL_ALT_CLICKED)
 	unregister_signal(source, SIGNAL_CTRL_ALT_CLICKED)
 
@@ -25,17 +25,28 @@
 
 	return ..()
 
-/datum/element/alt_click_rotation/proc/on_alt_click(atom/clicked, mob/user)
+/datum/element/simple_rotation/proc/on_alt_click(atom/clicked, mob/user)
 	clicked.rotate(user)
 
-/datum/element/alt_click_rotation/proc/on_ctrl_alt_click(atom/clicked, mob/user)
+/datum/element/simple_rotation/proc/on_ctrl_alt_click(atom/clicked, mob/user)
 	clicked.rotate_counter(user)
+
+/atom/proc/can_rotate(mob/user)
+	if(!user || user.incapacitated() || !Adjacent(user))
+		return FALSE
+
+/obj/can_rotate(mob/user)
+	if(anchored && (obj_flags & OBJ_FLAG_ANCHOR_BLOCKS_ROTATION))
+		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor therefore you can't rotate it!")
+		return FALSE
+
+	return ..(user)
 
 /atom/proc/rotate(mob/user)
 	set name = "Rotate Clockwise"
 	set hidden = TRUE
 
-	if(!user || user.incapacitated() || !Adjacent(user))
+	if(!can_rotate(user))
 		return
 
 	set_dir(turn(dir, -90))
@@ -44,7 +55,7 @@
 	set name = "Rotate Counterclockwise"
 	set hidden = TRUE
 
-	if(!user || user.incapacitated() || !Adjacent(user))
+	if(!can_rotate(user))
 		return
 
 	set_dir(turn(dir, 90))

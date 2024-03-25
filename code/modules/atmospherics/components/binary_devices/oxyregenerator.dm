@@ -29,7 +29,7 @@
 	component_parts += new /obj/item/stock_parts/matter_bin(src)//Stores carbon
 	RefreshParts()
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/atmospherics/binary/oxyregenerator/RefreshParts()
 	for(var/obj/item/stock_parts/P in component_parts)

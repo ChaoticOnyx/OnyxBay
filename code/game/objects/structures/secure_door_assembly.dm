@@ -8,7 +8,7 @@
 	icon = 'icons/obj/doors/secure_door_assembly.dmi'
 	anchored = FALSE
 	density = TRUE
-	obj_flags = OBJ_FLAG_ANCHORABLE
+	obj_flags = OBJ_FLAG_ANCHORABLE | OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	var/state = STATE_UNANCHORED
 	var/obj/item/device/assembly/signaler/signaler = null
 	var/base_icon = null
@@ -18,25 +18,11 @@
 /obj/structure/secure_door_assembly/Initialize()
 	..()
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/secure_door_assembly/Destroy()
 	QDEL_NULL(signaler)
 	return ..()
-
-/obj/structure/secure_door_assembly/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/structure/secure_door_assembly/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
 
 /obj/structure/secure_door_assembly/proc/make_just_dismantled()
 	anchored = TRUE

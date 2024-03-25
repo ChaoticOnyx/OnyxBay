@@ -16,7 +16,7 @@
 /obj/structure/bed/chair/Initialize()
 	..()
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/bed/chair/attackby(obj/item/W as obj, mob/user as mob)
 	..()

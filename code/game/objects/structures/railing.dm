@@ -21,7 +21,7 @@
 	if(anchored)
 		update_icon(0)
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/railing/Destroy()
 	var/turf/location = loc

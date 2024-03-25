@@ -31,7 +31,7 @@
 /obj/structure/windoor_assembly/New(Loc, start_dir=NORTH, constructed=0)
 	..()
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 	if(constructed)
 		state = "01"

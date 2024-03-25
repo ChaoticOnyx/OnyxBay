@@ -75,7 +75,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 /obj/structure/particle_accelerator/Initialize()
 	..()
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/particle_accelerator/Destroy()
 	construction_state = 0
@@ -265,7 +265,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 /obj/machinery/particle_accelerator/Initialize()
 	..()
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/particle_accelerator/rotate(mob/user)
 	if(anchored)

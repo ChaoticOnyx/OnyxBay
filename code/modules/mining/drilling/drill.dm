@@ -53,7 +53,7 @@
 
 	RefreshParts()
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/mining/drill/Process()
 
@@ -293,7 +293,7 @@
 	component_parts = list()
 	component_parts += new /obj/item/circuitboard/miningdrillbrace(src)
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/mining/brace/attackby(obj/item/W as obj, mob/user as mob)
 	if(connected && connected.active)

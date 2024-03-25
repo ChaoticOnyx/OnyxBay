@@ -20,9 +20,9 @@ Buildable meters
 
 /obj/item/pipe/Initialize(mapload, pipe_type, dir, obj/machinery/atmospherics/make_from = null)
 	. = ..()
-  
-  AddElement(/datum/element/alt_click_rotation)
-  
+
+	AddElement(/datum/element/simple_rotation)
+
 	if(make_from)
 		src.set_dir(make_from.dir)
 		src.pipename = make_from.name

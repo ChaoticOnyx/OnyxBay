@@ -20,7 +20,7 @@ var/list/fuel_injectors = list()
 	fuel_injectors += src
 	tag = null
 
-	AddElement(/datum/element/alt_click_rotation)
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/fusion_fuel_injector/Destroy()
 	if(cur_assembly)
