@@ -26,7 +26,7 @@
 		slot_r_hand_str = "mining_voidsuit",
 	)
 	armor = list(melee = 110, bullet = 75, laser = 45, energy = 5, bomb = 55, bio = 100)
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/stack/flag,/obj/item/device/suit_cooling_unit,/obj/item/storage/ore,/obj/item/device/t_scanner,/obj/item/pickaxe, /obj/item/rcd)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/stack/flag,/obj/item/device/suit_cooling_unit,/obj/item/storage/ore,/obj/item/device/t_scanner,/obj/item/pickaxe, /obj/item/construction/rcd)
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,

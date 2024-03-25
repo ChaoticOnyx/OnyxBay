@@ -32,7 +32,7 @@
 	if(response  == "Yes" && Adjacent(user))
 		var/obj/machinery/mineral/stacking_machine/s_machine = locate_unit(/obj/machinery/mineral/stacking_machine)
 		if(!s_machine)
-			show_splash_text(user, "no ore stacking units found!")
+			show_splash_text(user, "no ore stacking units found!", SPAN("warning", "\The [src] has failed to detect any ore stacking units!"))
 			return
 
 		machine_ref = weakref(s_machine)
@@ -137,6 +137,9 @@
 		unload_item(incoming_stack.type, stack_amt)
 
 /obj/machinery/mineral/stacking_machine/unload_item(type, amount)
+	if(amount <= 0)
+		return
+
 	var/obj/item/stack/material/out = new type()
 	out.amount = amount
 	machine_storage[type] -= amount

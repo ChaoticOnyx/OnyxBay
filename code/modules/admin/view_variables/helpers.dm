@@ -203,3 +203,28 @@
 		/obj/machinery/blackbox_recorder,	//Prevents people messing with feedback gathering,
 		/datum/feedback_variable			//Prevents people messing with feedback gathering
 	)
+
+/proc/input_bitfield(mob/User, title, bitfield, current_value, nwidth = 350, nheight = 350, nslidecolor, allowed_edit_list = null)
+	if(!User || !(bitfield in GLOB.bitfields))
+		return
+
+	var/list/pickerlist = list()
+	for(var/i in GLOB.bitfields[bitfield])
+		var/can_edit = 1
+		if(!isnull(allowed_edit_list) && !(allowed_edit_list & GLOB.bitfields[bitfield][i]))
+			can_edit = 0
+		if (current_value & GLOB.bitfields[bitfield][i])
+			pickerlist += list(list("checked" = 1, "value" = GLOB.bitfields[bitfield][i], "name" = i, "allowed_edit" = can_edit))
+		else
+			pickerlist += list(list("checked" = 0, "value" = GLOB.bitfields[bitfield][i], "name" = i, "allowed_edit" = can_edit))
+
+	var/list/result = listpicker(User, "", title, Button1="Save", Button2 = "Cancel", values = pickerlist, width = nwidth, height = nheight, slidecolor = nslidecolor)
+
+	if(islist(result))
+		if (result["button"] == 2) // If the user pressed the cancel button
+			return
+		. = 0
+		for (var/flag in result["values"])
+			. |= GLOB.bitfields[bitfield][flag]
+	else
+		return

@@ -31,7 +31,7 @@
 	icon_state = "[base_state][on]"
 
 /obj/item/device/t_scanner/emp_act()
-	audible_message(src, "<span class = 'notice'> \The [src] buzzes oddly.</span>")
+	audible_message(src, "<span class = 'notice'> \The [src] buzzes oddly.</span>", splash_override = "*buzz-z-z*")
 	set_active(FALSE)
 
 /obj/item/device/t_scanner/attack_self(mob/user)
@@ -104,7 +104,7 @@
 		if(ismob(scanned))
 			if(ishuman(scanned))
 				var/mob/living/carbon/human/H = scanned
-				if(H.species.appearance_flags & HAS_SKIN_COLOR)
+				if(H.species.species_appearance_flags & HAS_SKIN_COLOR)
 					I.color = rgb(H.r_skin, H.g_skin, H.b_skin)
 			var/mob/M = scanned
 			I.color = M.color

@@ -22,7 +22,7 @@
 	var/glasstype = null // Set this in subtypes. Null is assumed strange or otherwise impossible to dismantle, such as for shuttle glass.
 	var/silicate = 0 // number of units of silicate
 	var/real_explosion_block // ignore this, just use explosion_block
-	var/is_full_window = FALSE
+	var/is_full_window = FALSE //TODO: Make full windows a separate type of window.
 
 	hitby_sound = SFX_GLASS_HIT
 	hitby_loudness_multiplier = 2.0
@@ -103,8 +103,11 @@
 	if(display_message)
 		visible_message("[src] shatters!")
 
-	cast_new(shardtype, is_full_window ? 4 : 1, loc)
-	if(reinf) cast_new(/obj/item/stack/rods, is_full_window ? 4 : 1, loc)
+	if(!(atom_flags & ATOM_FLAG_HOLOGRAM))
+		cast_new(shardtype, is_full_window ? 4 : 1, loc)
+		if(reinf)
+			cast_new(/obj/item/stack/rods, is_full_window ? 4 : 1, loc)
+
 	qdel(src)
 	return
 
@@ -203,6 +206,11 @@
 	if(MUTATION_HULK in user.mutations)
 		user.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!"))
 		user.visible_message("<span class='danger'>[user] smashes through [src]!</span>")
+		user.do_attack_animation(src)
+		shatter()
+
+	else if(MUTATION_STRONG in user.mutations)
+		user.visible_message(SPAN("danger", "[user] smashes through [src]!"))
 		user.do_attack_animation(src)
 		shatter()
 
@@ -359,7 +367,7 @@
 		W.update_icon()
 
 
-/obj/structure/window/Move()
+/obj/structure/window/Move(newloc, direct)
 	var/ini_dir = dir
 	update_nearby_tiles(need_rebuild=1)
 	. = ..()
@@ -408,7 +416,18 @@
 		hit(damage_per_fire_tick, 0)
 	..()
 
+/obj/structure/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("delay" = 2 SECONDS, "cost" = 5)
 
+	return FALSE
+
+/obj/structure/window/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_DECONSTRUCT)
+		qdel_self()
+		return TRUE
+
+	return FALSE
 
 /obj/structure/window/basic
 	name = "glass panel"
@@ -489,7 +508,12 @@
 	desc = "It looks rather strong and opaque. Might take a few good hits to shatter it."
 	icon_state = "twindow"
 	basestate = "twindow"
-	opacity = 1
+	opacity = TRUE
+
+/obj/structure/window/reinforced/tinted/full
+	icon_state = "rblackwindow_preview"
+	basestate = "rblackwindow"
+	is_full_window = TRUE
 
 /obj/structure/window/reinforced/tinted/frosted
 	name = "frosted window"

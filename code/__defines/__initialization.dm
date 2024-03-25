@@ -8,7 +8,7 @@
 #define INITIALIZE_HINT_QDEL     2  //Call qdel on the atom
 #define INITIALIZE_HINT_QDEL_FORCE 3// Call qdel with a force of TRUE after initialization
 
-#define ATOM_FLAG_INITIALIZED 0x0001 // The atom has been initialized. Also see flags.dm
+#define ATOM_FLAG_INITIALIZED (1<<0) // The atom has been initialized. Also see flags.dm
 
 //type and all subtypes should always call Initialize in New()
 #define INITIALIZE_IMMEDIATE(X) ##X/New(loc, ...){\

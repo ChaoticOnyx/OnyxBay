@@ -40,8 +40,11 @@
 	response_disarm = "bops"
 	response_harm   = "kicks"
 
-/mob/living/simple_animal/corgi/Move(a, b, flag)
+/mob/living/simple_animal/corgi/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	update_hat()
 
 /mob/living/simple_animal/corgi/Life()

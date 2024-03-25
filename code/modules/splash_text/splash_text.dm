@@ -8,11 +8,11 @@
 #define SPLASH_TEXT_LIFETIME_INCREASE_MIN (10)
 
 /// Creates text that will float from the atom upwards to the viewer.
-/atom/proc/show_splash_text(mob/viewer, text)
-	INVOKE_ASYNC(src, nameof(.proc/animate_splash_text), viewer, text)
+/atom/proc/show_splash_text(mob/viewer, text, chat_text, force_skip_chat = FALSE)
+	INVOKE_ASYNC(src, nameof(.proc/animate_splash_text), viewer, text, chat_text)
 
 /// Creates text that will float from the atom upwards to the viewers in range.
-/atom/proc/show_splash_text_to_viewers(message, self_message, vision_distance = 7, list/mob/ignored_mobs)
+/atom/proc/show_splash_text_to_viewers(message, self_message, vision_distance = 7, list/mob/ignored_mobs, force_skip_chat = FALSE)
 	var/list/hearers = list()
 	var/list/garbage_obj = list() // TO-DO: add more helpers to exclude searching objects.
 	get_mobs_and_objs_in_view_fast(get_turf(src), vision_distance, hearers, garbage_obj)
@@ -21,15 +21,27 @@
 	for(var/hearer in hearers)
 		if(is_blind(hearer))
 			continue
-		show_splash_text(hearer, (hearer == src && self_message) || message)
+		var/res_message = message
+		if(hearer == src && self_message)
+			res_message = self_message
+		show_splash_text(hearer, res_message, res_message, force_skip_chat)
 
 /// Private proc, use 'show_splash_text' or 'show_splash_text_to_viewers' instead.
-/atom/proc/animate_splash_text(mob/viewer, text)
+/atom/proc/animate_splash_text(mob/viewer, text, chat_text, force_skip_chat)
 	var/client/viewer_client = viewer?.client
 	if(!viewer_client)
 		return
 
-	if(viewer_client.get_preference_value(/datum/client_preference/splashes) != GLOB.PREF_YES)
+	var/pref_value = viewer_client.get_preference_value(/datum/client_preference/splashes)
+
+	if(pref_value != GLOB.PREF_SPLASH_MAPTEXT && !force_skip_chat)
+		if(!chat_text)
+			// Ugly, but still better than skipping the message completely
+			chat_text = "\icon[src] [text]"
+		to_chat(viewer, chat_text)
+
+	// Chat only, no need to draw maptexties
+	if(pref_value == GLOB.PREF_SPLASH_CHAT)
 		return
 
 	var/bounds_width = world.icon_size

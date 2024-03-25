@@ -31,7 +31,7 @@
 	return ..()
 
 /obj/structure/alien/resin/attack_hand(mob/user)
-	if (MUTATION_HULK in user.mutations)
+	if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
 		visible_message("<span class='danger'>\The [user] destroys \the [name]!</span>")
 		health = 0
 	else

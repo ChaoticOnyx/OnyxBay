@@ -93,23 +93,23 @@
 		message_bio = "Biomass is near maximum capacity!"
 	else
 		message_bio = "Biomass is full!"
-	src.audible_message("<b>\The [src]</b> states, \"[message_bio]\"")
+	src.audible_message("<b>\The [src]</b> states, \"[message_bio]\"", splash_override = "[message_bio]")
 
 /obj/machinery/food_replicator/proc/state_menu()
-	src.audible_message("<b>\The [src]</b> states, \"Greetings! I serve the following dishes: [english_list(menu)]\"")
+	src.audible_message("<b>\The [src]</b> states, \"Greetings! I serve the following dishes: [english_list(menu)]\"", splash_override = "Greetings! I serve the following dishes: [english_list(menu)]")
 
 /obj/machinery/food_replicator/proc/dispense_food(text)
 	var/type = menu[text]
 	if(!type)
-		src.audible_message("<b>\The [src]</b> states, \"Error! I cannot find the recipe for that item.\"")
+		src.audible_message("<b>\The [src]</b> states, \"Error! I cannot find the recipe for that item.\"", splash_override = "Error! I cannot find the recipe for that item.")
 		return 0
 
 	if(biomass < biomass_per)
-		src.audible_message("<b>\The [src]</b> states, \"Error! I do not have enough biomass to serve any more dishes.\"")
+		src.audible_message("<b>\The [src]</b> states, \"Error! I do not have enough biomass to serve any more dishes.\"", splash_override = "Error! I do not have enough biomass to serve any more dishes.")
 		queued_dishes.Cut()
 		return 0
 	biomass -= biomass_per
-	src.audible_message("<b>\The [src]</b> states, \"Your [text] is ready!\"")
+	src.audible_message("<b>\The [src]</b> states, \"Your [text] is ready!\"", splash_override = "Your [text] is ready!")
 	playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
 	var/atom/A = new type(src.loc)
 	A.SetName(text)
@@ -144,7 +144,7 @@
 /obj/machinery/food_replicator/Process()
 	if(queued_dishes && queued_dishes.len)
 		if(start_making) //want to do this first so that the first dish won't instantly come out
-			src.audible_message("<b>\The [src]</b> rumbles and vibrates.")
+			src.audible_message("<b>\The [src]</b> rumbles and vibrates.", splash_override = "*brzhrzhrzh*")
 			playsound(src.loc, 'sound/machines/juicer.ogg', 50, 1)
 			make_time = world.time + rand(100, 300)
 			start_making = 0

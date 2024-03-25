@@ -70,8 +70,8 @@
 		drop(handcuffed, force = TRUE)
 
 /mob/living/carbon/proc/can_break_cuffs()
-	if(MUTATION_HULK in mutations)
-		return 1
+	if((MUTATION_HULK in mutations) || (MUTATION_STRONG in mutations))
+		return TRUE
 
 /mob/living/carbon/proc/break_handcuffs()
 	visible_message(

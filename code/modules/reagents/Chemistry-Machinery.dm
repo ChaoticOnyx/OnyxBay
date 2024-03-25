@@ -274,6 +274,18 @@
 			dat += "</table>"
 			show_browser(usr, dat, "window=chem_master")
 			return
+
+		else if(href_list["condiment_pack"])
+			if(!condi)
+				return
+
+			if(!spend_material(50, usr))
+				return
+
+			var/obj/item/reagent_containers/vessel/condiment/pack/P = new /obj/item/reagent_containers/vessel/condiment/pack(get_turf(loc))
+			reagents.trans_to_obj(P, 10)
+			return
+
 		else if(href_list["pill_sprite"])
 			pillsprite = href_list["pill_sprite"]
 		else if(href_list["bottle_sprite"])
@@ -372,7 +384,8 @@
 			dat +=        "<A href='?src=\ref[src];createbottle=1'>Create normal bottle | 60 units max | Glass: 2000</A><BR>"
 			dat +=    "<A href='?src=\ref[src];createbottle_big=1'>Create big bottle    | 90 units max | Glass: 3000</A>"
 		else
-			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle | 50 units max | Glass: 2000</A>"
+			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle | 50 units max | Glass: 2000</A><BR>"
+			dat += "<A href='?src=\ref[src];condiment_pack=1'>Create condiment pack | 10 units max | Glass: 50</A>"
 	if(!condi)
 		show_browser(user, "<meta charset=\"utf-8\"><TITLE>Chemmaster 3000</TITLE>Chemmaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")
 	else
@@ -517,11 +530,14 @@
 		if("grind")
 			grind()
 		if("dump")
-			show_splash_text(user, "contents dumped.")
+			show_splash_text(user, "contents dumped", SPAN("notice", "You dump the contents of \the [src]."))
 			eject()
 		if("detach")
-			show_splash_text(user, beaker ? "beaker detached." : "no beaker present!")
-			detach()
+			if(beaker)
+				show_splash_text(user, "beaker detached", SPAN("notice", "You detach \the [beaker] from \the [src]."))
+				detach()
+			else
+				show_splash_text(user, "no beaker present!", SPAN("notice", "There's no beaker in \the [src]."))
 
 /obj/machinery/reagentgrinder/proc/_generate_buttons()
 	LAZYINITLIST(choices)
@@ -555,7 +571,7 @@
 		return
 
 	if(!(beaker.atom_flags & ATOM_FLAG_OPEN_CONTAINER))
-		audible_message(SPAN("warning", "<b>The [src]</b> states, \"The beaker is closed, reagent processing is impossible.\""))
+		audible_message(SPAN("warning", "<b>The [src]</b> states, \"The beaker is closed, reagent processing is impossible.\""), splash_override = "The beaker is closed, reagent processing is impossible.")
 		playsound(src.loc, 'sound/signals/error28.ogg', 50, 1)
 		return
 

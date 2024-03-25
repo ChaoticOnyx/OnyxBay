@@ -36,7 +36,7 @@
 	burn_mod = 1.5
 
 	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
-	appearance_flags = HAS_LIPS | HAS_EYE_COLOR
+	species_appearance_flags = HAS_LIPS | HAS_EYE_COLOR
 
 	default_eye_color = "#000099"
 
@@ -160,7 +160,7 @@
 	icobase = 'icons/mob/human_races/monkeys/r_neaera.dmi'
 	has_eyes_icon = FALSE
 
-	appearance_flags = 0
+	species_appearance_flags = 0
 
 	default_eye_color = "#ffffff"
 	greater_form = SPECIES_SKRELL
@@ -177,7 +177,7 @@
 
 	icobase = 'icons/mob/human_races/monkeys/r_stok.dmi'
 
-	appearance_flags = HAS_EYE_COLOR
+	species_appearance_flags = HAS_EYE_COLOR
 
 	tail = "stoktail"
 	greater_form = SPECIES_UNATHI

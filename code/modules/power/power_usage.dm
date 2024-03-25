@@ -73,9 +73,12 @@ This is /obj/machinery level code to properly manage power usage from the area.
 
 	return ..()
 
-/obj/machinery/Move(NewLoc)
+/obj/machinery/Move(newloc, direct)
 	var/atom/OldLoc = loc
 	. = ..()
+	if(!.)
+		return
+
 	update_power_on_move(OldLoc, loc)
 
 /obj/machinery/proc/update_power_on_move(atom/old_loc, atom/new_loc)

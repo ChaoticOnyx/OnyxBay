@@ -244,17 +244,18 @@
 		if(CHANISAW_WELDING_CASE)
 			if(!isWelder(W))
 				return ..()
-			var/obj/item/weldingtool/weldtool = W
-			if(weldtool.remove_fuel(5, user))
-				playsound(user, 'sound/effects/flare.ogg', 50, 5, 7)
-				visible_message(SPAN("notice", "[usr] welded a case of \the [src]!"))
-				var/inhandy = (loc == user) && ishuman(user)
-				var/obj/item/material/twohanded/chainsaw/C = new /obj/item/material/twohanded/chainsaw(user.loc)
-				if(inhandy)
-					user.drop(src)
-					user.put_in_hands(C)
-				C.add_fingerprint(user)
-				qdel(src)
+			var/obj/item/weldingtool/WT = W
+			if(!WT.use_tool(src, user, amount = 5))
+				return
+
+			visible_message(SPAN("notice", "[usr] welded a case of \the [src]!"))
+			var/inhandy = (loc == user) && ishuman(user)
+			var/obj/item/material/twohanded/chainsaw/C = new /obj/item/material/twohanded/chainsaw(user.loc)
+			if(inhandy)
+				user.drop(src)
+				user.put_in_hands(C)
+			C.add_fingerprint(user)
+			qdel(src)
 
 	..()
 

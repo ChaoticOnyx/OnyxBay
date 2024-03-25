@@ -22,13 +22,13 @@ var/list/limb_icon_cache = list()
 			return
 	if(species && human.species && species.name != human.species.name)
 		return
-	if(!isnull(human.s_tone) && (human.species.appearance_flags & HAS_A_SKIN_TONE))
+	if(!isnull(human.s_tone) && (human.species.species_appearance_flags & HAS_A_SKIN_TONE))
 		s_tone = human.s_tone
-		if(human.species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+		if(human.species.species_appearance_flags & SECONDARY_HAIR_IS_SKIN)
 			h_s_col = list(s_tone, s_tone, s_tone)
-	if(human.species.appearance_flags & HAS_SKIN_COLOR)
+	if(human.species.species_appearance_flags & HAS_SKIN_COLOR)
 		s_col = list(human.r_skin, human.g_skin, human.b_skin)
-		if(human.species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+		if(human.species.species_appearance_flags & SECONDARY_HAIR_IS_SKIN)
 			h_s_col = s_col
 
 /obj/item/organ/external/proc/sync_colour_to_dna()
@@ -41,13 +41,13 @@ var/list/limb_icon_cache = list()
 		var/datum/robolimb/franchise = GLOB.all_robolimbs[model]
 		if(!(franchise && franchise.skintone))
 			return
-	if(!isnull(dna.GetUIValue(DNA_UI_SKIN_TONE)) && (species.appearance_flags & HAS_A_SKIN_TONE))
+	if(!isnull(dna.GetUIValue(DNA_UI_SKIN_TONE)) && (species.species_appearance_flags & HAS_A_SKIN_TONE))
 		s_tone = dna.GetUIValue(DNA_UI_SKIN_TONE)
-		if(species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+		if(species.species_appearance_flags & SECONDARY_HAIR_IS_SKIN)
 			h_s_col = list(s_tone, s_tone, s_tone)
-	if(species.appearance_flags & HAS_SKIN_COLOR)
+	if(species.species_appearance_flags & HAS_SKIN_COLOR)
 		s_col = list(dna.GetUIValue(DNA_UI_SKIN_R), dna.GetUIValue(DNA_UI_SKIN_G), dna.GetUIValue(DNA_UI_SKIN_B))
-		if(species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+		if(species.species_appearance_flags & SECONDARY_HAIR_IS_SKIN)
 			h_s_col = s_col
 
 /obj/item/organ/external/head/sync_colour_to_human(mob/living/carbon/human/human)
@@ -110,7 +110,7 @@ var/list/limb_icon_cache = list()
 	if(s_tone)
 		. += "_tone_[s_tone]"
 
-	if(species && species.appearance_flags & HAS_SKIN_COLOR)
+	if(species && species.species_appearance_flags & HAS_SKIN_COLOR)
 		if(s_col && length(s_col) >= 3)
 			. += "_color_[s_col[1]]_[s_col[2]]_[s_col[3]]_[s_col_blend]"
 
@@ -307,7 +307,7 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 			applying.Blend(rgb(s_tone, s_tone, s_tone), ICON_ADD)
 		else
 			applying.Blend(rgb(-s_tone,  -s_tone,  -s_tone), ICON_SUBTRACT)
-	if(species && species.appearance_flags & HAS_SKIN_COLOR)
+	if(species && species.species_appearance_flags & HAS_SKIN_COLOR)
 		if(s_col && s_col.len >= 3)
 			applying.Blend(rgb(s_col[1], s_col[2], s_col[3]), s_col_blend)
 

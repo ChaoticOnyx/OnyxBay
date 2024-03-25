@@ -183,12 +183,15 @@
 	// Repair
 	if(health < maxhealth && isWelder(W))
 		var/obj/item/weldingtool/F = W
-		if(F.welding)
-			playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-			if(do_after(user, 20, src))
-				user.visible_message("<span class='notice'>\The [user] repairs some damage to \the [src].</span>", "<span class='notice'>You repair some damage to \the [src].</span>")
-				health = min(health+(maxhealth/4), maxhealth) // 25% repair per application
-				return
+		if(!F.use_tool(src, user, delay = 2 SECONDS, amount = 5))
+			return
+
+		if(QDELETED(src) || !user)
+			return
+
+		user.visible_message(SPAN_NOTICE("\The [user] repairs some damage to \the [src]."), SPAN_NOTICE("You repair some damage to \the [src]."))
+		health = min(health + (maxhealth / 4), maxhealth) // 25% repair per application
+		return
 
 	// (Un)Anchor
 	if(isScrewdriver(W))

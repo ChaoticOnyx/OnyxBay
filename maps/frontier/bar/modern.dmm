@@ -1,7 +1,7 @@
 "aa" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor/trim/darkwood,/area/crew_quarters/barbackroom)
 "ab" = (/obj/machinery/firealarm{dir = 8; pixel_x = -24; pixel_y = -2},/obj/machinery/slot_machine,/turf/simulated/floor/tiled/dark/mono,/area/crew_quarters/bar)
 "ac" = (/obj/machinery/vending/cigars,/obj/effect/floor_decal/corner/black/diagonal,/obj/effect/floor_decal/corner/red/diagonal{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/bar)
-"ad" = (/obj/structure/table/darkwood_reinforced,/obj/structure/extinguisher_cabinet{pixel_x = -27; pixel_y = 1},/obj/effect/floor_decal/corner/black/diagonal,/obj/machinery/newscaster{pixel_y = -28},/obj/effect/floor_decal/corner/red/diagonal{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/bar)
+"ad" = (/obj/structure/table/darkwood_reinforced,/obj/structure/extinguisher_cabinet{pixel_x = -27; pixel_y = 1},/obj/effect/floor_decal/corner/black/diagonal,/obj/machinery/newscaster{pixel_y = -28},/obj/effect/floor_decal/corner/red/diagonal{dir = 8},/obj/structure/coffee_condi_display,/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/bar)
 "ah" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/trim/wood,/area/crew_quarters/sleep/lobby)
 "ak" = (/obj/structure/cable/white{icon_state = "1-8"},/obj/structure/cable/white{icon_state = "4-8"},/obj/effect/floor_decal/corner/green{dir = 1},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/disposalpipe/segment{dir = 4},/obj/effect/floor_decal/spline/fancy/wood{dir = 1},/turf/simulated/floor/tiled/rough,/area/crew_quarters/sleep/lobby)
 "ao" = (/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/structure/cable/white{icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/kitchen)
@@ -23,9 +23,9 @@
 "da" = (/obj/item/device/radio/intercom{pixel_y = 22},/obj/machinery/chem_master/condimaster{name = "CondiMaster Neo"; pixel_x = -5},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/kitchen)
 "db" = (/obj/structure/table/marble,/obj/machinery/cooker/candy,/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/turf/simulated/floor/trim/lino,/area/crew_quarters/kitchen)
 "dn" = (/obj/effect/floor_decal/spline/plain/black,/obj/machinery/door/window/southleft,/turf/simulated/floor/tiled/freezer,/area/crew_quarters/kitchen)
-"ds" = (/obj/structure/table/steel,/obj/item/clothing/head/that{pixel_x = 4; pixel_y = 6},/obj/item/screwdriver,/obj/item/book/wiki/barman_recipes,/obj/item/reagent_containers/rag,/obj/machinery/camera/network/civilian_east{c_tag = "Bar East"},/obj/item/music_tape_box/frontier,/obj/effect/landmark/roundstart/monkeyportrait{pixel_x = 4; pixel_y = 28},/obj/effect/floor_decal/corner/red{dir = 6},/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/bar)
+"ds" = (/obj/structure/table/steel,/obj/machinery/camera/network/civilian_east{c_tag = "Bar East"},/obj/effect/landmark/roundstart/monkeyportrait{pixel_x = 4; pixel_y = 28},/obj/effect/floor_decal/corner/red{dir = 6},/obj/machinery/coffeemaker,/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/bar)
 "dL" = (/obj/structure/plasticflaps{opacity = 1},/obj/machinery/navbeacon/delivery/Bar,/obj/machinery/door/window/southleft{name = "Bar Delivery"; req_access = list(25)},/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/barbackroom)
-"dM" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/obj/machinery/alarm{dir = 4; pixel_x = -24},/obj/structure/closet/secure_closet/bar,/obj/item/gun/projectile/shotgun/doublebarrel,/obj/item/storage/box/shotgun/beanbags,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/barbackroom)
+"dM" = (/obj/structure/closet/secure_closet/bar,/obj/item/gun/projectile/shotgun/doublebarrel,/obj/item/storage/box/shotgun/beanbags,/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/obj/machinery/alarm{dir = 4; pixel_x = -24},/obj/item/storage/box/coffeemaking_kit,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/barbackroom)
 "dT" = (/obj/machinery/firealarm{dir = 8; pixel_x = -24},/turf/simulated/floor/trim/lino,/area/crew_quarters/kitchen)
 "en" = (/obj/machinery/disposal,/obj/structure/disposalpipe/trunk{dir = 8},/obj/effect/floor_decal/corner/red{dir = 6},/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/bar)
 "eK" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/door/firedoor/multi_tile{dir = 2},/obj/machinery/door/airlock/multi_tile/glass{id_tag = "MedbayFoyerStar"; dir = 2; name = "Bar"},/turf/simulated/floor/tiled/dark/mono,/area/crew_quarters/bar)
@@ -167,7 +167,7 @@
 "FW" = (/obj/effect/floor_decal/corner/red/diagonal{dir = 8},/obj/effect/floor_decal/corner/black/diagonal,/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/obj/structure/bed/couch/left/sofa{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/bar)
 "Gj" = (/obj/machinery/navbeacon/frontier/CRYO,/obj/item/device/radio/intercom{dir = 8; pixel_x = 22},/turf/simulated/floor/tiled/rough,/area/crew_quarters/sleep)
 "Gn" = (/obj/machinery/door/airlock/maintenance,/obj/machinery/door/firedoor/border_only,/obj/structure/disposalpipe/segment,/obj/structure/cable/white{icon_state = "1-2"},/turf/simulated/floor/plating,/area/crew_quarters/sleep)
-"Gs" = (/obj/structure/table/woodentable,/obj/machinery/camera/network/civilian_east{c_tag = "Bar Backroom"},/obj/item/reagent_containers/rag,/obj/item/hand_labeler,/obj/machinery/button/window_frame_tint{pixel_x = 10; pixel_y = 24},/obj/random/music_tape,/obj/effect/landmark/roundstart/puncube,/obj/item/paper/exodus_bartender,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/barbackroom)
+"Gs" = (/obj/structure/table/woodentable,/obj/machinery/camera/network/civilian_east{c_tag = "Bar Backroom"},/obj/item/reagent_containers/rag,/obj/item/paper/exodus_bartender,/obj/item/hand_labeler,/obj/machinery/button/window_frame_tint{pixel_x = 10; pixel_y = -24},/obj/random/music_tape,/obj/effect/landmark/roundstart/puncube,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/barbackroom)
 "GN" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/effect/floor_decal/spline/fancy{dir = 4},/turf/simulated/floor/tiled/dark/mono,/area/crew_quarters/bar)
 "GT" = (/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/effect/floor_decal/spline/fancy{dir = 1},/turf/simulated/floor/tiled/dark/mono,/area/crew_quarters/bar)
 "GY" = (/obj/effect/floor_decal/corner/black/diagonal,/obj/structure/synthesized_instrument/synthesizer/piano,/obj/effect/floor_decal/corner/red/diagonal{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/bar)
@@ -228,6 +228,7 @@
 "QN" = (/obj/machinery/door/airlock{name = "Unit 2"},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/bar)
 "QW" = (/obj/machinery/camera/network/civilian_east{c_tag = "Kitchen"},/obj/machinery/atmospherics/unary/vent_pump/on{layer = 2.4; level = 2},/obj/machinery/light{dir = 1},/obj/machinery/gibber,/obj/effect/floor_decal/spline/plain/black{dir = 4},/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/kitchen)
 "Ra" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/central_east)
+"Ri" = (/obj/item/music_tape_box/frontier,/obj/item/reagent_containers/rag,/obj/item/book/wiki/barman_recipes,/obj/item/screwdriver,/obj/item/clothing/head/that{pixel_x = 4; pixel_y = 6},/obj/structure/table/woodentable,/obj/item/reagent_containers/vessel/bottle/syrup_bottle/liqueur,/obj/item/reagent_containers/vessel/bottle/syrup_bottle/caramel,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/barbackroom)
 "Rl" = (/turf/space,/area/space)
 "Rr" = (/obj/structure/table/marble,/obj/item/reagent_containers/vessel/condiment/small/peppermill{pixel_x = -3; pixel_y = 2},/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/storage/pill_bottle/sugar_cubes,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "kitchen_shutters"; name = "Kitchen Shutters"; opacity = 0},/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/corner/black/diagonal,/obj/effect/floor_decal/corner/red/diagonal{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/kitchen)
 "RC" = (/obj/structure/toilet{dir = 4},/obj/machinery/newscaster{layer = 3.3; pixel_y = -27},/obj/machinery/light/small{dir = 8},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/bar)
@@ -280,9 +281,9 @@ KPkJQzjZVPHGYFTUJVmvXwLVLDHoKzRlRlRlRlRlRlRl
 WrktWdZQZQZQZQZQZQZQwmmfmfZQZQZQRlRlRlRlRlRl
 WrtWbMTjlkpWdaNjQWJsTCCHqmHhMHZQRlRlRlRlRlRl
 WrVbpmAFaoIiQpIiwgobEUnTfUyogmZQzOvXzOdLzOzO
-tgawGjZQbRdnonKOpBRYIRWvweUGwOZQdMCUPfxRGsxS
+tgawGjZQbRdnonKOpBRYIRWvweUGwOZQdMCUPfxRiBxS
 HOwDHJELbPFSUFdbZQRYRYRYRYRYaFZQPLlFDZaaVlxS
-WraYZhELDrFSrPvpZQroRrfJRrjnFJZQckTdBwxRiBxS
+WraYZhELDrFSrPvpZQroRrfJRrjnFJZQckTdBwGsRixS
 WrlGHJZQdTFSFSFSZQQcpNpNpNpNpgMDzOLkzOzOzOzO
 ZmndmZZQCfOiOikIZQeQAntOtOtOtOXfmPbFdsMDRlRl
 RlMZuFQiASRSRSRQOEUtAXBRBRBRBRfoFKLlqSMDRlRl

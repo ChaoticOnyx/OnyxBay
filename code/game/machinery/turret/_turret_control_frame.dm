@@ -81,24 +81,20 @@
 		if(BUILDSTAGE_ARMOR_WELD)
 			if(isWelder(I))
 				var/obj/item/weldingtool/WT = I
-				if(!WT.isOn())
+
+				if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
+					return FALSE
+
+				if(QDELETED(src) || !user)
 					return
 
-				if(WT.get_fuel() < 5)
-					show_splash_text(user, "Not enough fuel!")
+				show_splash_text(user, "External armor welded")
 
-				playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
-				if(do_after(user, 30, src))
-					if(QDELETED(src) || !WT.remove_fuel(5, user))
-						return
+				//The final step: create a full turret control panel
+				var/obj/machinery/turret_control_panel/tcp = new target_type(get_turf(src), signaler)
+				tcp.enabled = FALSE
 
-					show_splash_text(user, "External armor welded")
-
-					//The final step: create a full turret control panel
-					var/obj/machinery/turret_control_panel/tcp = new target_type(get_turf(src), signaler)
-					tcp.enabled = FALSE
-
-					qdel_self()
+				qdel_self()
 
 			else if(isCrowbar(I))
 				playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)

@@ -136,7 +136,7 @@
 		max_volume -= O.get_storage_cost()
 
 	if(tool.get_storage_cost() > max_volume || parent_organ.cavity_max_w_class < tool.w_class)
-		target.show_splash_text(user, "tool is too big!")
+		target.show_splash_text(user, "tool is too big!", "\The [tool] is too big to fit inside!")
 		return SURGERY_FAILURE
 
 	var/total_volume = tool.get_storage_cost()
@@ -147,7 +147,7 @@
 		total_volume += I.get_storage_cost()
 
 	if(total_volume > max_volume)
-		target.show_splash_text(user, "not enough space!")
+		target.show_splash_text(user, "not enough space!", "There's not enough space!")
 		return FALSE
 
 	return TRUE

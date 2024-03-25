@@ -468,63 +468,71 @@
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
 		fps = client_fps
 
-/client/proc/update_chat_position(use_alternative)
-	var/input_height = 0
-	var/mode = get_preference_value(/datum/client_preference/chat_position)
-	var/currently_alternative = (winget(src, "input", "is-default") == "false") ? TRUE : FALSE
+#define VERTICAL_INPUT_MARGIN 9
 
-	// Hell
-	if(mode == GLOB.PREF_YES && !currently_alternative)
-		input_height = winget(src, "input", "size")
-		input_height = text2num(splittext(input_height, "x")[2])
+/**
+ * Manages `input` and `input_alt` visibility, due to skin limitations this proc is extreely
+ * snowflake, thus be sure to change `VERTICAL_INPUT_MARGIN` when moving it's elements
+ * inside `skin.dmf`.
+ *
+ * Known bugs:
+ * - Doesn't mount instantly due to user prefs loading.
+ * - Doesn't display typing indicator 'cause code copypasta is bad.
+ */
+/client/proc/update_chat_position(new_position)
+	var/alternate = winget(src, "input", "is-default") == "false"
+
+	if(!alternate && new_position == GLOB.PREF_LEGACY)
+		var/list/game_size = splittext(winget(src, "mainvsplit", "size"), "x")
+		var/list/input_size = splittext(winget(src, "input_alt", "size"), "x")
+
+		winset(src, "mainvsplit", "size=[game_size[1]]x[text2num(game_size[2]) - text2num(input_size[2]) - VERTICAL_INPUT_MARGIN]")
+
+		var/list/chat_size = splittext(winget(src, "outputwindow", "size"), "x")
+
+		winset(src, "browseroutput", "size=[chat_size[1]]x[chat_size[2]]")
+		winset(src, "output", "size=[chat_size[1]]x[chat_size[2]]")
 
 		winset(src, "input_alt", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton_alt", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
 
 		winset(src, "input", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "hotkey_toggle", "is-visible=false;is-disabled=true;is-default=false")
 
-		var/current_size = splittext(winget(src, "outputwindow.output", "size"), "x")
-		var/new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
-		winset(src, "outputwindow.output", "size=[new_size]")
-		winset(src, "outputwindow.browseroutput", "size=[new_size]")
+	else if(alternate && new_position == GLOB.PREF_MODERN)
+		var/list/game_size = splittext(winget(src, "mainvsplit", "size"), "x")
+		var/list/alt_input_size = splittext(winget(src, "input_alt", "size"), "x")
 
-		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
-		new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
-		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
-	else if(mode == GLOB.PREF_NO && currently_alternative)
-		input_height = winget(src, "input_alt", "size")
-		input_height = text2num(splittext(input_height, "x")[2])
+		winset(src, "mainvsplit", "size=[game_size[1]]x[text2num(game_size[2]) + text2num(alt_input_size[2]) + 9]")
+
+		var/list/chat_size = splittext(winget(src, "outputwindow", "size"), "x")
+		var/list/input_size = splittext(winget(src, "input", "size"), "x")
+
+		var/output_height = text2num(chat_size[2]) - text2num(input_size[2]) - VERTICAL_INPUT_MARGIN
+
+		winset(src, "browseroutput", "size=[chat_size[1]]x[output_height]")
+		winset(src, "output", "size=[chat_size[1]]x[output_height]")
 
 		winset(src, "input_alt", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton_alt", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
 
 		winset(src, "input", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "hotkey_toggle", "is-visible=true;is-disabled=false;is-default=true")
 
-		var/current_size = splittext(winget(src, "outputwindow.output", "size"), "x")
-		var/new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
-		winset(src, "outputwindow.output", "size=[new_size]")
-		winset(src, "outputwindow.browseroutput", "size=[new_size]")
-
-		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
-		new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
-		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
+#undef VERTICAL_INPUT_MARGIN
 
 /client/proc/toggle_fullscreen(new_value)
 	if((new_value == GLOB.PREF_BASIC) || (new_value == GLOB.PREF_FULL))
 		winset(src, "mainwindow", "is-maximized=false;can-resize=false;titlebar=false")
 		if(new_value == GLOB.PREF_FULL)
-			winset(src, "mainwindow", "menu=null;statusbar=false")
-		winset(src, "mainwindow.mainvsplit", "pos=0x0")
+			winset(src, "mainwindow", "menu=null;")
 	else
 		winset(src, "mainwindow", "is-maximized=false;can-resize=true;titlebar=true")
-		winset(src, "mainwindow", "menu=menu;statusbar=true")
-		winset(src, "mainwindow.mainvsplit", "pos=3x0")
+		winset(src, "mainwindow", "menu=menu;")
 	winset(src, "mainwindow", "is-maximized=true")
 
 /client/verb/fit_viewport()

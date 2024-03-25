@@ -239,27 +239,27 @@
 		return FALSE
 
 	if(BP_IS_ROBOTIC(parent_organ) && !BP_IS_ROBOTIC(target_organ))
-		target.show_splash_text(user, "organic organ can't be connected to a robotic body!")
+		target.show_splash_text(user, "organic organ can't be connected to a robotic body!", "An organic organ can't be connected to a robotic body!")
 		return SURGERY_FAILURE
 
 	if(!target.species)
 		CRASH("Target ([target]) of surgery [type] has no species!")
 
 	if(target_organ.organ_tag == BP_POSIBRAIN && !target.species.has_organ[BP_POSIBRAIN])
-		target.show_splash_text(user, "this type of body isn't supported!")
+		target.show_splash_text(user, "this type of body isn't supported!", "This type of body isn't supported!")
 		return SURGERY_FAILURE
 
 	if(target_organ.damage > (target_organ.max_damage * 0.75))
-		target.show_splash_text(user, "organ is too damaged!")
+		target.show_splash_text(user, "organ is too damaged!", "The organ is too damaged!")
 		return SURGERY_FAILURE
 
 	if(target_organ.w_class > parent_organ.cavity_max_w_class)
-		target.show_splash_text(user, "organ won't fit inside!")
+		target.show_splash_text(user, "organ won't fit inside!", "The organ won't fit inside!")
 		return SURGERY_FAILURE
 
 	var/obj/item/organ/internal/O = target.internal_organs_by_name[target_organ.organ_tag]
 	if(O && (O.parent_organ == parent_organ.organ_tag || istype(target_organ, /obj/item/organ/internal/stack)))
-		target.show_splash_text(user, "stack is already present!")
+		target.show_splash_text(user, "stack is already present!", "There's already a stack present!")
 		return SURGERY_FAILURE
 
 	var/used_volume = 0
@@ -271,7 +271,7 @@
 	for(var/obj/item/I in parent_organ.internal_organs)
 		used_volume += I.get_storage_cost()
 	if((base_storage_capacity(parent_organ.cavity_max_w_class) + parent_organ.internal_organs_size) < used_volume + target_organ.get_storage_cost())
-		target.show_splash_text(user, "not enough space!")
+		target.show_splash_text(user, "not enough space!", "There's not enough space!")
 		return SURGERY_FAILURE
 
 	return TRUE
@@ -369,7 +369,7 @@
 		return FALSE
 
 	if(!target_organ.can_recover())
-		target.show_splash_text(user, "organ is damaged beyond recover!")
+		target.show_splash_text(user, "organ is damaged beyond recover!", "The organ is damaged beyond recover!")
 		return SURGERY_FAILURE
 
 	return !!target_organ.damage
@@ -394,11 +394,11 @@
 		return FALSE
 
 	if(!. && !organ_fixer.emagged)
-		target.show_splash_text(user, "organ doesn't require any healing!")
+		target.show_splash_text(user, "organ doesn't require any healing!", "The organ doesn't require any healing!!")
 		return SURGERY_FAILURE
 
 	if(organ_fixer.gel_amt == 0)
-		target.show_splash_text(user, "not enough gel!")
+		target.show_splash_text(user, "not enough gel!", "There's not enough somatic gel!")
 		return SURGERY_FAILURE
 
 	return TRUE
@@ -491,7 +491,7 @@
 
 	var/obj/item/stack/medical/M = tool
 	if(M.amount < 1)
-		target.show_splash_text(user, "not enough medicine to complete this step!")
+		target.show_splash_text(user, "not enough medicine to complete this step!", "There's not enough medicine to complete this step!")
 		return SURGERY_FAILURE
 
 	return TRUE
@@ -574,7 +574,7 @@
 		return FALSE
 
 	if(organ_fixer.gel_amt == 0)
-		target.show_splash_text(user, "not enough gel!")
+		target.show_splash_text(user, "not enough gel!", "There's not enough somatic gel!")
 		return SURGERY_FAILURE
 
 	for(var/obj/item/organ/internal/I in parent_organ.internal_organs)
@@ -720,7 +720,7 @@
 		return FALSE
 
 	if(!target_organ.can_recover() && istype(target_organ, /obj/item/organ/internal/cerebrum/brain))
-		target.show_splash_text(user, "organ is damaged beyond recover!")
+		target.show_splash_text(user, "organ is damaged beyond recover!", "The organ is damaged beyond recover!")
 		return SURGERY_FAILURE
 
 	return TRUE

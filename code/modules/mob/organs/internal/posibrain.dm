@@ -47,7 +47,7 @@
 /obj/item/organ/internal/cerebrum/posibrain/proc/reset_search()
 	if(!searching || brainmob?.key)
 		return
-	else show_splash_text_to_viewers("no suitable intelligence found!")
+	else show_splash_text_to_viewers("no suitable intelligence found!", "<b>\The [src]</b> couldn't find a suitable intelligence.")
 
 	searching = FALSE
 	brainmob.controllable = TRUE
@@ -69,7 +69,7 @@
 	brainmob.controllable = TRUE
 	GLOB.available_mobs_for_possess["\ref[brainmob]"] |= brainmob
 
-	show_splash_text(user, "started search of suitable intelligence.")
+	show_splash_text(user, "started search of suitable intelligence.", "<b>\The [src]</b> has started searching for a suitable intelligence.")
 	update_icon()
 
 /obj/item/organ/internal/cerebrum/posibrain/attack_ghost(mob/observer/ghost/user)

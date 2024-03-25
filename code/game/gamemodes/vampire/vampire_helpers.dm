@@ -10,7 +10,7 @@
 	if(!mind.vampire)
 		mind.vampire = new /datum/vampire(H)
 	// No powers to thralls. Ew.
-	else if(mind.vampire.status & VAMP_ISTHRALL)
+	else if(mind.vampire.vamp_status & VAMP_ISTHRALL)
 		return
 
 	verbs += /datum/game_mode/vampire/verb/vampire_help
@@ -25,7 +25,7 @@
 	var/mob/living/carbon/human/H = src
 
 	if(mind?.vampire)
-		if(mind.vampire.status & VAMP_FRENZIED)
+		if(mind.vampire.vamp_status & VAMP_FRENZIED)
 			mind.vampire.stop_frenzy(TRUE)
 		mind.vampire.unset_organs()
 		mind.vampire.remove_powers()
@@ -84,7 +84,7 @@
 	if(!can_affect(T, TRUE, TRUE))
 		return
 
-	if(!(status & VAMP_FULLPOWER))
+	if(!(vamp_status & VAMP_FULLPOWER))
 		to_chat(my_mob, SPAN("notice", "You begin peering into [T]'s mind, looking for a way to gain control."))
 
 		if(!do_mob(my_mob, T, 50, incapacitation_flags = INCAPACITATION_DISABLED))

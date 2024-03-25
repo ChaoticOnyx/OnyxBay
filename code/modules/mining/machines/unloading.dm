@@ -38,7 +38,7 @@
 		return
 
 	toggle()
-	show_splash_text(user, "you toggle \the [src] [!(stat & POWEROFF) ? "on" : "off"].")
+	show_splash_text(user, "you toggle \the [src] [!(stat & POWEROFF) ? "on" : "off"].", "You toggle <b>\the [src]</b> [!(stat & POWEROFF) ? "on" : "off"].")
 
 /obj/machinery/mineral/unloading_machine/attackby(obj/item/W, mob/user)
 	..()

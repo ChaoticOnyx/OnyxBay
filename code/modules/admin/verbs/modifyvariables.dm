@@ -363,6 +363,11 @@
 				to_chat(usr, "Unable to determine variable type.")
 				class = null
 				autodetect_class = null
+
+			else if(variable in GLOB.bitfields)
+				to_chat(usr, "Variable appears to be <b>BITFIELD</b>.")
+				class = "bitfield"
+
 			else if(isnum(var_value))
 				to_chat(usr, "Variable appears to be <b>NUM</b>.")
 				class = "num"
@@ -418,6 +423,11 @@
 		var/default
 		if(isnull(var_value))
 			to_chat(usr, "Unable to determine variable type.")
+
+		else if(variable in GLOB.bitfields)
+			to_chat(usr, "Variable appears to be <b>BITFIELD</b>.")
+			class = "bitfield"
+
 		else if(isnum(var_value))
 			to_chat(usr, "Variable appears to be <b>NUM</b>.")
 			default = "num"
@@ -497,6 +507,9 @@
 		class = "marked datum"
 
 	switch(class)
+
+		if("bitfield")
+			var_value = input_bitfield(usr, "Editing bitfield: [variable]", variable, var_value)
 
 		if("list")
 			mod_list(O.get_variable_value(variable), O, original_name, variable)

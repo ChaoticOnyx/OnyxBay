@@ -10,7 +10,6 @@
 	var/last_enabled
 	var/toggle_cooldown = 2 SECONDS
 
-	var/lethal = FALSE
 	var/locked = TRUE
 
 	var/list/area/control_area //can be area name, path or nothing.
@@ -32,7 +31,9 @@
 		signaler = _signaler
 		signaler.forceMove(src)
 
-	targeting_settings = new (targeting_settings)
+	targeting_settings = new targeting_settings()
+
+	update_icon()
 
 	return INITIALIZE_HINT_LATELOAD
 
@@ -50,6 +51,8 @@
 		T.signaler?.frequency = signaler.frequency
 		T.signaler?.code = signaler.code
 		T.master_controller = weakref(src)
+
+	update_turrets()
 
 /obj/machinery/turret_control_panel/Destroy()
 	QDEL_NULL(signaler)
@@ -102,16 +105,8 @@
 
 	if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
-		if(!WT.isOn())
-			return
-
-		if(WT.get_fuel() < 5)
-			show_splash_text(user, "Not enough fuel!")
-
-		playsound(loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
-		if(do_after(user, 30 SECONDS, src))
-			if(QDELETED(src) || !WT.remove_fuel(5, user))
-				return
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
+			return FALSE
 
 		show_splash_text(user, "External armor removed!")
 
@@ -182,6 +177,7 @@
 						last_enabled = world.time
 						enabled = !enabled
 						update_turrets()
+						update_icon()
 					else
 						show_splash_text(usr, "Turrets recalibrating!")
 					return TRUE
@@ -189,6 +185,7 @@
 				if("mode")
 					targeting_settings.lethal_mode = !targeting_settings.lethal_mode
 					update_turrets()
+					update_icon()
 					return TRUE
 
 				if("synth")
@@ -245,17 +242,21 @@
 		T.lethal_nonlethal_switch()
 
 /obj/machinery/turret_control_panel/on_update_icon()
-	..()
+	ClearOverlays()
+
 	if(stat & NOPOWER)
 		icon_state = "control_off"
 		set_light(0)
-	else if (enabled)
-		if (lethal)
+	else if(enabled)
+		if(targeting_settings.lethal_mode)
 			icon_state = "control_kill"
+			AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
 			set_light(0.5, 0.5, 2, 2, "#990000")
 		else
 			icon_state = "control_stun"
+			AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
 			set_light(0.5, 0.5, 2, 2, "#ff9900")
 	else
 		icon_state = "control_standby"
+		AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
 		set_light(0.5, 0.5, 2, 2, "#003300")

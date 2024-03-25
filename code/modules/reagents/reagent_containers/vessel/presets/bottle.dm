@@ -101,7 +101,7 @@
 	icon_state = "kahluabottle"
 	item_state = "kahluabottle"
 	center_of_mass = "x=17;y=3"
-	startswith = list(/datum/reagent/ethanol/coffee/kahlua)
+	startswith = list(/datum/reagent/ethanol/kahlua)
 	rag_underlay = "rag_tall"
 
 /obj/item/reagent_containers/vessel/bottle/goldschlager

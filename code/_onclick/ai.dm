@@ -177,7 +177,14 @@
 	if(usr.incapacitated())
 		return
 
-	enabled = !enabled
+	if(world.time >= last_enabled + toggle_cooldown)
+		last_enabled = world.time
+		enabled = !enabled
+		update_turrets()
+		update_icon()
+	else
+		show_splash_text(usr, "Turrets recalibrating!")
+
 	return TRUE
 
 /atom/proc/AIAltClick(atom/A)
@@ -187,7 +194,8 @@
 	if(usr.incapacitated())
 		return
 
-	lethal = !lethal
+	targeting_settings?.lethal_mode = !targeting_settings?.lethal_mode
+	update_turrets()
 	return TRUE
 
 /obj/machinery/atmospherics/binary/pump/AIAltClick()

@@ -428,7 +428,7 @@
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco/liquid, 5)
 	reagents.add_reagent(/datum/reagent/glycerol, 10)
-	reagents.add_reagent(/datum/reagent/drink/coffee, 5)
+	reagents.add_reagent(/datum/reagent/caffeine/coffee, 5)
 
 
 // Disposables

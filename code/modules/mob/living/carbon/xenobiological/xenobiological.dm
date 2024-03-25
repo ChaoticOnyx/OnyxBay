@@ -258,7 +258,7 @@
 
 			attacked += 10
 			if (prob(90))
-				if (MUTATION_HULK in H.mutations)
+				if((MUTATION_HULK in H.mutations) || (MUTATION_STRONG in H.mutations))
 					damage += 5
 					if(Victim || Target)
 						Feedstop()

@@ -69,7 +69,7 @@
 
 /obj/item/storage/briefcase/std/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	if(!authentication_complete)
-		audible_message("\The [src] blinks red.")
+		audible_message("\The [src] blinks red.", splash_override = "*blink*")
 		return
 	var/list/data = ui_data(user)
 

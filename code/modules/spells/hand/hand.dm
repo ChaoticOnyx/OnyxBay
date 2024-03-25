@@ -5,8 +5,10 @@
 	var/move_delay
 	var/click_delay
 	var/hand_state = "spell"
+	var/hand_name_override
 	var/show_message
 	var/spell_cast_delay
+
 /datum/spell/hand/choose_targets(mob/user = usr)
 	return list(user)
 
