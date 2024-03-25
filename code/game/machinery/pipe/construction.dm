@@ -18,17 +18,18 @@ Buildable meters
 	w_class = ITEM_SIZE_NORMAL
 	level = 2
 
-/obj/item/pipe/New(loc, pipe_type as num, dir as num, obj/machinery/atmospherics/make_from = null)
-	..()
 
-	AddElement(/datum/element/alt_click_rotation)
-
-	if (make_from)
+/obj/item/pipe/Initialize(mapload, pipe_type, dir, obj/machinery/atmospherics/make_from = null)
+	. = ..()
+  
+  AddElement(/datum/element/alt_click_rotation)
+  
+	if(make_from)
 		src.set_dir(make_from.dir)
 		src.pipename = make_from.name
 		color = make_from.pipe_color
 		var/is_bent
-		if  (make_from.initialize_directions in list(NORTH|SOUTH, WEST|EAST))
+		if(make_from.initialize_directions in list(NORTH|SOUTH, WEST|EAST))
 			is_bent = 0
 		else
 			is_bent = 1

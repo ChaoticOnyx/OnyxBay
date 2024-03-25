@@ -39,18 +39,18 @@
 /obj/item/gun/magnetic/railgun/show_ammo(mob/user)
 	var/obj/item/rcd_ammo/ammo = loaded
 	if (ammo)
-		return "<span class='notice'>There are [ammo.remaining] shot\s remaining in \the [loaded].</span>"
+		return "<span class='notice'>There are [ammo.ammoamt] shot\s remaining in \the [loaded].</span>"
 	else
 		return "<span class='notice'>There is nothing loaded.</span>"
 
 /obj/item/gun/magnetic/railgun/check_ammo()
 	var/obj/item/rcd_ammo/ammo = loaded
-	return ammo && ammo.remaining
+	return ammo && ammo.ammoamt
 
 /obj/item/gun/magnetic/railgun/use_ammo()
 	var/obj/item/rcd_ammo/ammo = loaded
-	ammo.remaining--
-	if(ammo.remaining <= 0)
+	ammo.ammoamt--
+	if(ammo.ammoamt <= 0)
 		spawn(3)
 			playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
 		out_of_ammo()

@@ -262,7 +262,7 @@
 "PT" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/sensor_array/maintenance)
 "Qc" = (/obj/machinery/door/airlock/external{icon_state = "door_locked"; locked = 1; frequency = 9978; id_tag = "s_arr_exterior"},/turf/simulated/floor/tiled,/area/turret_protected/sensor_array_foyer)
 "QD" = (/obj/machinery/door/airlock/external,/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating/airless,/area/sensor_array/solars)
-"QI" = (/obj/machinery/turret/network/station{dir = 6},/obj/structure/catwalk,/obj/structure/railing/steel{dir = 4},/obj/structure/railing/steel{dir = 8},/obj/structure/railing/steel{dir = 1},/obj/structure/cable{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating,/area/turret_protected/sensor_array_foyer)
+"QI" = (/obj/machinery/turret/network/station,/obj/structure/catwalk,/obj/structure/railing/steel{dir = 4},/obj/structure/railing/steel{dir = 8},/obj/structure/railing/steel{dir = 1},/obj/structure/cable{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating,/area/turret_protected/sensor_array_foyer)
 "QO" = (/obj/structure/table/reinforced,/obj/random/contraband,/turf/simulated/floor/tiled,/area/sensor_array/security_holding_cell)
 "QP" = (/obj/machinery/door/airlock/security,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/sensor_array/security_storage)
 "QR" = (/obj/machinery/atmospherics/pipe/manifold/hidden{dir = 8},/obj/structure/catwalk,/turf/simulated/floor/plating,/area/sensor_array/maintenance)

@@ -524,11 +524,9 @@ About the new airlock wires panel:
 
 	if(isWelder(item))
 		var/obj/item/weldingtool/WT = item
-		if(!WT.isOn())
-			return 0
-		if(!WT.remove_fuel(0,user))
-			to_chat(user, "<span class='notice'>You need more welding fuel to complete this task.</span>")
-			return 0
+		if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
+			return
+
 		cut_verb = "cutting"
 		cut_sound = 'sound/items/Welder.ogg'
 
@@ -635,16 +633,14 @@ About the new airlock wires panel:
 
 	if(!repairing && isWelder(C) && !(operating > 0) && density)
 		var/obj/item/weldingtool/W = C
-		if(W.remove_fuel(0, user))
-			if(!welded)
-				welded = TRUE
-			else
-				src.welded = null
-			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			update_icon()
+		if(!W.use_tool(src, user, amount = 1))
 			return
+
+		if(!welded)
+			welded = TRUE
 		else
-			return
+			welded = null
+		update_icon()
 
 	else if(isScrewdriver(C))
 		if(p_open)
@@ -840,7 +836,7 @@ About the new airlock wires panel:
 
 	locked = TRUE
 	playsound(src, bolts_dropping, 30, 0, -6)
-	audible_message("You hear a click from the bottom of the door.", hearing_distance = 1)
+	audible_message("You hear a click from the bottom of the door.", hearing_distance = 1, splash_override = "*click*")
 	update_icon()
 	return 1
 
@@ -853,7 +849,7 @@ About the new airlock wires panel:
 
 	locked = FALSE
 	playsound(src, bolts_rising, 30, 0, -6)
-	audible_message("You hear a click from the bottom of the door.", hearing_distance = 1)
+	audible_message("You hear a click from the bottom of the door.", hearing_distance = 1, splash_override = "*click*")
 	update_icon()
 	return 1
 
@@ -999,3 +995,18 @@ About the new airlock wires panel:
 	var/area/A = get_area(src)
 	name = A.name
 	..()
+
+/obj/machinery/door/airlock/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	switch(the_rcd.mode)
+		if(RCD_DECONSTRUCT)
+			return list("delay" = 5 SECONDS, "cost" = 32)
+
+	return FALSE
+
+/obj/machinery/door/airlock/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	switch(rcd_data["[RCD_DESIGN_MODE]"])
+		if(RCD_DECONSTRUCT)
+			qdel_self()
+			return TRUE
+
+	return FALSE

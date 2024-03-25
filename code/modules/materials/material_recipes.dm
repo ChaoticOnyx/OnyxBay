@@ -155,12 +155,14 @@
 	recipes += new /datum/stack_recipe("large box", /obj/item/storage/box/large, 2)
 	recipes += new /datum/stack_recipe("donut box", /obj/item/storage/box/donut/empty)
 	recipes += new /datum/stack_recipe("egg box", /obj/item/storage/fancy/egg_box/empty)
+	recipes += new /datum/stack_recipe("condiments display", /obj/structure/coffee_condi_display)
 	recipes += new /datum/stack_recipe("light tubes box", /obj/item/storage/box/lights/tubes/empty)
 	recipes += new /datum/stack_recipe("light bulbs box", /obj/item/storage/box/lights/bulbs/empty)
 	recipes += new /datum/stack_recipe("mouse traps box", /obj/item/storage/box/mousetraps/empty)
 	recipes += new /datum/stack_recipe("cardborg suit", /obj/item/clothing/suit/cardborg, 3)
 	recipes += new /datum/stack_recipe("cardborg helmet", /obj/item/clothing/head/cardborg)
 	recipes += new /datum/stack_recipe("pizza box", /obj/item/pizzabox)
+	recipes += new /datum/stack_recipe("takeaway cups", /obj/item/reagent_containers/vessel/takeaway, 1, 4)
 	recipes += new /datum/stack_recipe_list("folders",list( \
 		new /datum/stack_recipe("blue folder", /obj/item/folder/blue), \
 		new /datum/stack_recipe("grey folder", /obj/item/folder), \

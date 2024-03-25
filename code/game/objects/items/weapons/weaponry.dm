@@ -154,8 +154,10 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/effect/energy_net/Move()
+/obj/effect/energy_net/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
 
 	if(buckled_mob)
 		buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
@@ -211,7 +213,7 @@
 		else
 			health -= rand(1,3)
 
-	else if (MUTATION_HULK in user.mutations)
+	else if((MUTATION_HULK in user.mutations) || (MUTATION_STRONG in user.mutations))
 		health = 0
 	else
 		health -= rand(5,8)

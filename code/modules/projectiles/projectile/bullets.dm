@@ -265,6 +265,10 @@
 	damage = 35
 	armor_penetration = 50
 
+/obj/item/projectile/bullet/rifle/a792
+	damage = 35
+	armor_penetration = 50
+
 /obj/item/projectile/bullet/rifle/a145
 	damage = 80
 	stun = 3

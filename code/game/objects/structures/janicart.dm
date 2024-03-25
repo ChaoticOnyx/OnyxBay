@@ -232,11 +232,13 @@
 		to_chat(user, "<span class='notice'>You'll need the keys in one of your hands to drive this [callme].</span>")
 
 
-/obj/structure/bed/chair/janicart/Move()
+/obj/structure/bed/chair/janicart/Move(newloc, direct)
 	. = ..()
-	if(buckled_mob)
-		if(buckled_mob.buckled == src)
-			buckled_mob.forceMove(loc)
+	if(!.)
+		return
+
+	if(buckled_mob?.buckled == src)
+		buckled_mob.forceMove(loc)
 
 
 /obj/structure/bed/chair/janicart/post_buckle_mob(mob/living/M)

@@ -249,8 +249,12 @@ GLOBAL_VAR(station_gravity_generator)
 
 				playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 				var/obj/item/weldingtool/WT = I
-				if(!do_after(user, 15 SECONDS, middle) || !WT.remove_fuel(1, user) || broken_state != GRAV_NEEDS_WELDING)
+				if(!WT.use_tool(src, user, delay = 15 SECONDS, amount = 5))
 					return
+
+				if(QDELETED(src) || !user || broken_state != GRAV_NEEDS_WELDING)
+					return
+
 				health += 250
 				user.visible_message(SPAN_NOTICE("[user] fixed the damaged parts."),
 									SPAN_NOTICE("You fixed the damaged parts."))

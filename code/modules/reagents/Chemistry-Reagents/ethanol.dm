@@ -241,7 +241,7 @@
 		M.apply_effect(3, STUTTER)
 	M.make_jittery(5)
 
-/datum/reagent/ethanol/coffee/kahlua
+/datum/reagent/ethanol/kahlua
 	name = "Kahlua"
 	description = "A widely known, Mexican coffee-flavoured liqueur. In production since 1936!"
 	taste_description = "spiked latte"

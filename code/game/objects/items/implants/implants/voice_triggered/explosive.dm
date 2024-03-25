@@ -122,7 +122,7 @@
 		message_admins("Explosive implant triggered in [imp_in] ([imp_in.key]). (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[imp_in.x];Y=[imp_in.y];Z=[imp_in.z]'>JMP</a>) ")
 		log_game("Explosive implant triggered in [imp_in] ([imp_in.key]).")
 	else
-		audible_message("<span class='warning'>[src] beeps omniously!</span>")
+		audible_message("<span class='warning'>[src] beeps omniously!</span>", splash_override = "*beeeeeeep*")
 		message_admins("Explosive implant triggered in [T.loc]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>) ")
 		log_game("Explosive implant triggered in [T.loc].")
 

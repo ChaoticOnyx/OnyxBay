@@ -6,6 +6,7 @@
 	name = "fire alarm"
 	desc = "<i>\"In case of emergency press HERE\"</i>. Or shoot."
 	icon = 'icons/obj/monitors.dmi'
+	base_icon_state = "fire"
 	icon_state = "fire"
 	var/activated = FALSE
 	var/detecting = TRUE
@@ -314,3 +315,19 @@ Just a object used in constructing fire alarms
 	desc = "A circuit. It has a label on it, it says \"Can handle heat levels up to 40 degrees celsius!\"."
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
+
+/obj/machinery/firealarm/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if((buildstage == FIREALARM_NOCIRCUIT) && (the_rcd.upgrade & RCD_UPGRADE_SIMPLE_CIRCUITS))
+		return list("delay" = 2 SECONDS, "cost" = 1)
+
+	return FALSE
+
+/obj/machinery/firealarm/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	switch(rcd_data["[RCD_DESIGN_MODE]"])
+		if(RCD_WALLFRAME)
+			show_splash_text(user, "circuit installed", SPAN("notice", "You install the circuit into \the [src]!"))
+			buildstage = FIREALARM_NOWIRES
+			update_icon()
+			return TRUE
+
+	return FALSE

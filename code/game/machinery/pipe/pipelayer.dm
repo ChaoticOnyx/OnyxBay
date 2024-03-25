@@ -129,7 +129,7 @@
 		p_type=0+P_type
 		p_dir=M_Dir
 
-	var/obj/item/pipe/P = new (w_turf, pipe_type=p_type, dir=p_dir)
+	var/obj/item/pipe/P = new (w_turf, p_type, p_dir)
 	P.attackby(W , src)
 
 	return 1

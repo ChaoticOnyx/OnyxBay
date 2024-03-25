@@ -15,7 +15,7 @@
 		else
 			var/damage = rand(1, 9)
 			if (prob(90))
-				if (MUTATION_HULK in M.mutations)
+				if((MUTATION_HULK in M.mutations) || (MUTATION_STRONG in M.mutations))
 					damage += 5
 					spawn(0)
 						Paralyse(1)

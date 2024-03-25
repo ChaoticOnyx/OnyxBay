@@ -105,8 +105,11 @@
 	return
 
 
-/obj/item/device/assembly/prox_sensor/Move()
+/obj/item/device/assembly/prox_sensor/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	sense()
 
 

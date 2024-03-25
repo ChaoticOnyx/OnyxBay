@@ -17,6 +17,10 @@
 	var/list/spells = list()
 	var/list/artifacts = list()
 
+/datum/wizard_class/proc/on_class_chosen(mob/user, obj/item/spellbook)
+	to_chat(user, SPAN("notice", "You are now \a [name]!"))
+	return
+
 /datum/wizard_class/proc/get_spell_data(datum/spell/path)
 	for(var/S in spells)
 		if(S["path"] == path)

@@ -407,3 +407,22 @@
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Security biohazard gear crate"
 	access = access_security
+
+/decl/hierarchy/supply_pack/security/surplusfirearms
+	name = "Weapons - Surplus firearms"
+	contains = list(/obj/item/gun/projectile/bolt_action = 2,
+					/obj/item/gun/projectile/bolt_action/mauser = 2,
+					/obj/item/ammo_magazine/c792 = 4
+					)
+	cost = 40
+	containertype = /obj/structure/closet/crate/secure
+	containername = "\improper Surplus Firearms"
+	access = access_security
+
+/decl/hierarchy/supply_pack/security/surplusammo
+	name = "Misc - Surplus ammo"
+	contains = list(/obj/item/ammo_magazine/c792 = 8)
+	cost = 10
+	containertype = /obj/structure/closet/crate/secure
+	containername = "\improper Surplus Ammo"
+	access = access_security

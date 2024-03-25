@@ -52,6 +52,11 @@ var/list/organ_cache = list()
 		owner = null
 	dna = null
 	QDEL_NULL(food_organ)
+
+	if(ismob(loc))
+		var/mob/M = loc
+		M.drop(src, force = TRUE, changing_slots = TRUE) // Changing_slots prevents drop_sound from playing
+
 	return ..()
 
 /obj/item/organ/proc/update_health()

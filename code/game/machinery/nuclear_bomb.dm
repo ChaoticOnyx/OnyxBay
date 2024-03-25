@@ -87,17 +87,15 @@ var/bomb_set
 			if(0)
 				if(isWelder(O))
 					var/obj/item/weldingtool/WT = O
-					if(!WT.isOn()) return
-					if(WT.get_fuel() < 5) // uses up 5 fuel.
-						to_chat(user, "<span class='warning'>You need more fuel to complete this task.</span>")
-						return
-
 					user.visible_message("[user] starts cutting loose the anchoring bolt covers on [src].", "You start cutting loose the anchoring bolt covers with [O]...")
+					if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
+						return FALSE
 
-					if(do_after(user,40, src))
-						if(!src || !user || !WT.remove_fuel(5, user)) return
-						user.visible_message("\The [user] cuts through the bolt covers on \the [src].", "You cut through the bolt cover.")
-						removal_stage = 1
+					if(QDELETED(src) || !user )
+						return FALSE
+
+					user.visible_message("\The [user] cuts through the bolt covers on \the [src].", "You cut through the bolt cover.")
+					removal_stage = 1
 				return
 
 			if(1)
@@ -113,17 +111,15 @@ var/bomb_set
 			if(2)
 				if(isWelder(O))
 					var/obj/item/weldingtool/WT = O
-					if(!WT.isOn()) return
-					if (WT.get_fuel() < 5) // uses up 5 fuel.
-						to_chat(user, "<span class='warning'>You need more fuel to complete this task.</span>")
-						return
-
 					user.visible_message("[user] starts cutting apart the anchoring system sealant on [src].", "You start cutting apart the anchoring system's sealant with [O]...")
+					if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
+						return FALSE
 
-					if(do_after(user, 40, src))
-						if(!src || !user || !WT.remove_fuel(5, user)) return
-						user.visible_message("\The [user] cuts apart the anchoring system sealant on \the [src].", "You cut apart the anchoring system's sealant.")
-						removal_stage = 3
+					if(QDELETED(src) || !user)
+						return FALSE
+
+					user.visible_message("\The [user] cuts apart the anchoring system sealant on \the [src].", "You cut apart the anchoring system's sealant.")
+					removal_stage = 3
 				return
 
 			if(3)

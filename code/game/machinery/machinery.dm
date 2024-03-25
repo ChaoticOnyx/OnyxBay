@@ -393,7 +393,7 @@ Class Procs:
 	for(var/obj/I in component_parts)
 		if(!QDELETED(I))
 			I.forceMove(get_turf(src))
-	component_parts.Cut()
+	LAZYCLEARLIST(component_parts)
 	qdel(src)
 	return 1
 

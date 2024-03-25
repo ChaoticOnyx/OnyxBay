@@ -152,6 +152,10 @@ var/const/NO_EMAG_ACT = -50
 	if(in_range(user, src))
 		show(user)
 		return desc
+
+	if(isghost(user))
+		return desc
+
 	return SPAN("warning", "It is too far away.")
 
 /obj/item/card/id/get_examine_line(examine_distance = 10)
