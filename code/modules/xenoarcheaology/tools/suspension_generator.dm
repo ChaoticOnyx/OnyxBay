@@ -4,6 +4,7 @@
 	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "suspension2"
 	density = 1
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	req_access = list(access_research)
 	use_power = 0
 	active_power_usage = 5 KILO WATTS
@@ -237,20 +238,6 @@
 /obj/machinery/suspension_gen/Destroy()
 	deactivate()
 	return ..()
-
-/obj/machinery/suspension_gen/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/machinery/suspension_gen/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
 
 /obj/effect/suspension_field
 	name = "energy field"

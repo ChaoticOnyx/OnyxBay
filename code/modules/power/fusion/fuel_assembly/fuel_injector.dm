@@ -6,6 +6,7 @@ var/list/fuel_injectors = list()
 	icon_state = "injector0"
 	density = 1
 	anchored = 0
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	req_access = list(access_engine)
 	idle_power_usage = 10 WATTS
 	active_power_usage = 500 WATTS
@@ -131,17 +132,3 @@ var/list/fuel_injectors = list()
 		flick("injector-emitting",src)
 	else
 		StopInjecting()
-
-/obj/machinery/fusion_fuel_injector/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/machinery/fusion_fuel_injector/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()

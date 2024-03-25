@@ -10,6 +10,7 @@
 	icon_state = "emitter"
 	anchored = 0
 	density = 1
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	req_access = list(access_engine_equip)
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 0,
@@ -39,20 +40,6 @@
 /obj/machinery/power/emitter/anchored
 	anchored = 1
 	state = 2
-
-/obj/machinery/power/emitter/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/machinery/power/emitter/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
 
 /obj/machinery/power/emitter/Initialize()
 	. = ..()

@@ -7,6 +7,7 @@
 	icon = 'icons/obj/pipes.dmi'
 	icon_state = "circ-off"
 	anchored = 0
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 
 	var/kinetic_efficiency = 0.04 //combined kinetic and kinetic-to-electric efficiency
 	var/volume_ratio = 0.2
@@ -124,17 +125,11 @@
 		..()
 
 /obj/machinery/atmospherics/binary/circulator/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
 	..()
+
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
 
 /obj/machinery/atmospherics/binary/circulator/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
 	..()
+
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."

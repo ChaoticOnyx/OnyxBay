@@ -268,10 +268,6 @@
 
 //Rotates the windoor assembly clockwise
 /obj/structure/windoor_assembly/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
 	if(state != "01")
 		update_nearby_tiles(need_rebuild=1) //Compel updates before
 
@@ -284,10 +280,6 @@
 	return
 
 /obj/structure/windoor_assembly/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
 	if(state != "01")
 		update_nearby_tiles(need_rebuild=1) //Compel updates before
 

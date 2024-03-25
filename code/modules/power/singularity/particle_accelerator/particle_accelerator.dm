@@ -252,6 +252,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	icon_state = "none"
 	anchored = 0
 	density = 1
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	use_power = POWER_USE_OFF
 	idle_power_usage = 0 WATTS
 	active_power_usage = 0 WATTS
@@ -266,20 +267,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	..()
 
 	AddElement(/datum/element/simple_rotation)
-
-/obj/machinery/particle_accelerator/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/machinery/particle_accelerator/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
 
 /obj/machinery/particle_accelerator/on_update_icon()
 	return

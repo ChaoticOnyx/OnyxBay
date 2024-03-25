@@ -8,6 +8,7 @@
 	use_power = POWER_USE_OFF
 	idle_power_usage = 200 WATTS		//internal circuitry, friction losses and stuff
 	power_rating = 10000
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	var/target_pressure = 10*ONE_ATMOSPHERE
 	var/id = null
 	var/power_setting = 1 //power consumption setting, 1 through five
@@ -82,20 +83,6 @@
 
 			node1 = null
 			node2 = null
-
-/obj/machinery/atmospherics/binary/oxyregenerator/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/machinery/atmospherics/binary/oxyregenerator/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
 
 /obj/machinery/atmospherics/binary/oxyregenerator/Process(delay)
 	if((stat & (NOPOWER|BROKEN)) || !use_power)

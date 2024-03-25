@@ -6,6 +6,7 @@
 	density = 1
 	anchored = 1
 	atom_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	layer = 5.2 // Just above doors
 	throwpass = 1
 	can_buckle = 1
@@ -116,13 +117,6 @@
 						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = -32))
 					if (WEST)
 						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = 32))
-
-/obj/structure/railing/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
 
 /obj/structure/railing/verb/flip() // This will help push railing to remote places, such as open space turfs
 	set name = "Flip Railing"

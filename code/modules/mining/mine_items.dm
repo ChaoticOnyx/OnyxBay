@@ -652,6 +652,7 @@
 	desc = "A finely chiselled sculpting block, it is ready to be your canvas."
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "sculpting_block"
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	density = 1
 	opacity = 1
 	anchored = 0
@@ -664,20 +665,6 @@
 	..()
 
 	AddElement(/datum/element/simple_rotation)
-
-/obj/structure/sculpting_block/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/structure/sculpting_block/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
 
 /obj/structure/sculpting_block/attackby(obj/item/C as obj, mob/user as mob)
 

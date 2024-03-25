@@ -32,8 +32,7 @@
 	clicked.rotate_counter(user)
 
 /atom/proc/can_rotate(mob/user)
-	if(!user || user.incapacitated() || !Adjacent(user))
-		return FALSE
+	return !(!user || user.incapacitated() || !Adjacent(user))
 
 /obj/can_rotate(mob/user)
 	if(anchored && (obj_flags & OBJ_FLAG_ANCHOR_BLOCKS_ROTATION))

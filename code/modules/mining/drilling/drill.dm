@@ -285,6 +285,7 @@
 	name = "mining drill brace"
 	desc = "A machinery brace for an industrial drill. It looks easily two feet thick."
 	icon_state = "mining_brace"
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	var/obj/machinery/mining/drill/connected
 
 /obj/machinery/mining/brace/New()
@@ -351,17 +352,3 @@
 	connected.supports -= src
 	connected.check_supports()
 	connected = null
-
-/obj/machinery/mining/brace/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/machinery/mining/brace/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()

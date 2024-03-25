@@ -4,6 +4,7 @@
 	icon_state = "teg"
 	density = 1
 	anchored = 0
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 
 	use_power = POWER_USE_IDLE
 	idle_power_usage = 100 WATTS // Just enough to do the computer and display things.
@@ -218,17 +219,3 @@
 		ui.open()
 		// auto update every Master Controller tick
 		ui.set_auto_update(1)
-
-/obj/machinery/power/generator/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/machinery/power/generator/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()

@@ -9,6 +9,7 @@
 	icon_state = "conpipe-s"
 	anchored = 0
 	density = 0
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	matter = list(MATERIAL_STEEL = 1850)
 	level = 2
 	var/sortType = ""
@@ -122,22 +123,6 @@
 /obj/structure/disposalconstruct/hide(intact)
 	set_invisibility((intact && level==1) ? 101: 0)	// hide if floor is intact
 	update()
-
-
-// flip and rotate verbs
-/obj/structure/disposalconstruct/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/structure/disposalconstruct/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
 
 /obj/structure/disposalconstruct/proc/flip()
 	set category = "Object"

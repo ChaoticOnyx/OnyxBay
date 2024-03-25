@@ -9,6 +9,7 @@
 	layer = SIDE_WINDOW_LAYER
 	anchored = 1.0
 	atom_flags = ATOM_FLAG_CHECKS_BORDER
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	var/maxhealth = 14.0
 	var/maximal_heat = 100 CELSIUS 		// Maximal heat before this window begins taking damage from fire
 	var/damage_per_fire_tick = 2.0 		// Amount of damage per fire tick. Regular windows are not fireproof so they might as well break quickly.
@@ -315,10 +316,6 @@
 	if(is_full_window) // No point in rotating a window if it is full
 		return
 
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
 	..()
 	update_nearby_tiles(need_rebuild=1) //Compel updates before
 	updateSilicate()
@@ -326,10 +323,6 @@
 
 /obj/structure/window/rotate_counter(mob/user)
 	if(is_full_window) // No point in rotating a window if it is full
-		return
-
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
 		return
 
 	..()
