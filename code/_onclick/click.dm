@@ -302,10 +302,7 @@
 	var/turf/clicked_turf = get_turf(src)
 
 	if(clicked_turf && user.TurfAdjacent(clicked_turf))
-		if(user.listed_turf == clicked_turf)
-			user.set_listed_turf(null)
-		else
-			user.set_listed_turf(clicked_turf)
+		user.set_listed_turf(clicked_turf)
 
 	return TRUE
 
