@@ -67,8 +67,8 @@
 		stop_turf_tracking()
 
 	var/static/list/connections = list(
-		COMSIG_MOVABLE_MOVED = nameof(.proc/on_mob_move),
-		COMSIG_MOB_LOGOUT = nameof(.proc/on_mob_logout),
+		SIGNAL_MOVED = nameof(.proc/on_mob_move),
+		SIGNAL_LOGGED_OUT = nameof(.proc/on_mob_logout),
 	)
 
 	AddComponent(/datum/component/connect_mob_behalf, parent, connections)
