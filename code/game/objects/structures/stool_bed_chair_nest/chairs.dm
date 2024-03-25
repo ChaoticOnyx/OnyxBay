@@ -78,6 +78,19 @@
 			stool_cache[cache_key] = I
 		AddOverlays(stool_cache[cache_key])
 
+/obj/structure/bed/chair/can_rotate(mob/user)
+	if(!user || !Adjacent(usr))
+		return FALSE
+
+	if(user.is_ic_dead() && config.ghost.ghost_interaction)
+		var/area/A = get_area(src)
+		if(A?.holy)
+			to_chat(user, SPAN("warning", "\The [src] is on sacred ground, you cannot turn it."))
+			return FALSE
+
+	else if(user.incapacitated())
+		return FALSE
+
 /obj/structure/bed/chair/set_dir()
 	..()
 	if(buckled_mob)
