@@ -13,6 +13,11 @@
 	var/propelled = 0 // Check for fire-extinguisher-driven chairs
 	var/foldable = TRUE
 
+/obj/structure/bed/chair/Initialize()
+	..()
+
+	AddElement(/datum/element/alt_click_rotation)
+
 /obj/structure/bed/chair/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	if(!padding_material && istype(W, /obj/item/assembly/shock_kit))
