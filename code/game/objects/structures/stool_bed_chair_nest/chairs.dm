@@ -91,6 +91,8 @@
 	else if(user.incapacitated())
 		return FALSE
 
+	return TRUE
+
 /obj/structure/bed/chair/set_dir()
 	..()
 	if(buckled_mob)
