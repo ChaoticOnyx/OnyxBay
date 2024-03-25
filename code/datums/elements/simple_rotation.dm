@@ -34,16 +34,19 @@
 /atom/proc/can_rotate(mob/user)
 	return !(!user || user.incapacitated() || !Adjacent(user))
 
-/obj/can_rotate(mob/user)
-	if(anchored && (obj_flags & OBJ_FLAG_ANCHOR_BLOCKS_ROTATION))
-		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor therefore you can't rotate it!")
-		return FALSE
+/atom/proc/is_rotatable(mob/user)
+	return
 
-	return ..(user)
+/obj/is_rotatable()
+	return !(anchored && (obj_flags & OBJ_FLAG_ANCHOR_BLOCKS_ROTATION))
 
 /atom/proc/rotate(mob/user)
 	set name = "Rotate Clockwise"
 	set hidden = TRUE
+
+	if(!is_rotatable())
+		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor therefore you can't rotate it!")
+		return
 
 	if(!can_rotate(user))
 		return
@@ -53,6 +56,10 @@
 /atom/proc/rotate_counter(mob/user)
 	set name = "Rotate Counterclockwise"
 	set hidden = TRUE
+
+	if(!is_rotatable())
+		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor therefore you can't rotate it!")
+		return
 
 	if(!can_rotate(user))
 		return

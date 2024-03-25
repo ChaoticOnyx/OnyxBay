@@ -79,7 +79,7 @@
 		AddOverlays(stool_cache[cache_key])
 
 /obj/structure/bed/chair/can_rotate(mob/user)
-	if(isobserver(user) && config.ghost.ghost_interaction)
+	if(isobserver(user) && config.ghost.ghost_interaction && Adjacent(user))
 		var/area/A = get_area(src)
 		if(A?.holy)
 			to_chat(user, SPAN("warning", "\The [src] is on sacred ground, you cannot turn it."))
