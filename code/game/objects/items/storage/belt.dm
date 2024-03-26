@@ -32,7 +32,13 @@
 
 
 /obj/item/storage/belt/get_mob_overlay(mob/user_mob, slot)
-	var/image/ret = ..()
+	. = ..()
+
+	if(slot == slot_l_hand_str || slot == slot_r_hand_str)
+		return
+
+	var/image/ret = .
+
 	if(slot == slot_belt_str && length(contents))
 		for(var/obj/item/I in contents)
 			ret.AddOverlays(image('icons/inv_slots/belts/mob.dmi', "[I.item_state ? I.item_state : I.icon_state]"))

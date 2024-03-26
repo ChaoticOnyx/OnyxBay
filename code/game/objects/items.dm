@@ -52,6 +52,8 @@
 	//It should be used purely for appearance. For gameplay effects caused by items covering body parts, use body_parts_covered.
 	var/flags_inv = 0
 	var/body_parts_covered = NO_BODYPARTS //see code/__defines/items_clothing.dm for appropriate bit flags
+	/// If TRUE, the held icon will appear in front of the wielder regardless of their dir.
+	var/improper_held_icon = FALSE
 
 	var/item_flags = 0 //Miscellaneous flags pertaining to equippable objects.
 
@@ -931,26 +933,80 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		else
 			return
 
-	var/image/ret_overlay = overlay_image(mob_icon, mob_state, color, RESET_COLOR)
+	var/image/ret_overlay
 
-	if(length(user_human?.species?.equip_adjust))
-		var/list/equip_adjusts = user_human.species.equip_adjust
+	var/list/ret_list
+	if(!improper_held_icon && (slot == slot_l_hand_str || slot == slot_r_hand_str))
+		ret_list = list()
+		var/icon/main_icon = new(mob_icon, mob_state)
+		var/icon/back_icon = new('icons/effects/blank.dmi')
+
+		if(slot == slot_l_hand_str)
+			main_icon.Insert('icons/effects/blank.dmi', dir = EAST)
+			back_icon.Insert(mob_icon, mob_state, dir = EAST)
+		if(slot == slot_r_hand_str)
+			main_icon.Insert('icons/effects/blank.dmi', dir = WEST)
+			back_icon.Insert(mob_icon, mob_state, dir = WEST)
+
+		ret_list = list(overlay_image(main_icon, color, flags = RESET_COLOR), overlay_image(back_icon, color, flags = RESET_COLOR))
+	else
+		ret_overlay = overlay_image(mob_icon, mob_state, color, RESET_COLOR)
+
+	if(length(user_human?.body_build?.equip_adjust))
+		var/list/equip_adjusts = user_human.body_build.equip_adjust
 		if(equip_adjusts[slot])
-			var/image_key = "[user_human.species] [user_human.body_build.name] [mob_icon] [mob_state] [color]"
-			ret_overlay = user_human.species.equip_overlays[image_key]
-			if(!ret_overlay)
-				var/icon/final_I = new(mob_icon, icon_state = mob_state)
-				var/list/shifts = equip_adjusts[slot]
-				if(length(shifts))
-					var/shift_facing
-					for(shift_facing in shifts)
-						var/list/facing_list = shifts[shift_facing]
-						final_I = dir_shift(final_I, text2dir(shift_facing), facing_list["x"], facing_list["y"])
-				ret_overlay = overlay_image(final_I, color, flags = RESET_COLOR)
+			if(!ret_list)
+				var/image_key = "[user_human.body_build.name]-[mob_icon]-[mob_state]-[color]"
+				ret_overlay = user_human.body_build.equip_overlays[image_key]
+				if(!ret_overlay)
+					var/icon/final_I = new(mob_icon, icon_state = mob_state)
+					var/list/shifts = equip_adjusts[slot]
+					if(length(shifts))
+						var/shift_facing
+						for(shift_facing in shifts)
+							var/list/facing_list = shifts[shift_facing]
+							final_I = dir_shift(final_I, text2dir(shift_facing), facing_list["x"], facing_list["y"])
+					ret_overlay = overlay_image(final_I, color, flags = RESET_COLOR)
 
-				user_human.species.equip_overlays[image_key] = ret_overlay
+					user_human.body_build.equip_overlays[image_key] = ret_overlay
+			else
+				var/image_key
 
-	return ret_overlay
+				ret_overlay = ret_list[1]
+				image_key = "[user_human.body_build.name]-[mob_icon]-[mob_state]-[color]-main"
+				ret_overlay = user_human.body_build.equip_overlays[image_key]
+				if(!ret_overlay)
+					var/icon/final_I = new(mob_icon, icon_state = mob_state)
+					var/list/shifts = equip_adjusts[slot]
+					if(length(shifts))
+						var/shift_facing
+						for(shift_facing in shifts)
+							var/list/facing_list = shifts[shift_facing]
+							final_I = dir_shift(final_I, text2dir(shift_facing), facing_list["x"], facing_list["y"])
+					ret_overlay = overlay_image(final_I, color, flags = RESET_COLOR)
+
+					user_human.body_build.equip_overlays[image_key] = ret_overlay
+				ret_list += ret_overlay
+
+				ret_overlay = ret_list[2]
+				image_key = "[user_human.body_build.name]-[mob_icon]-[mob_state]-[color]-back"
+				ret_overlay = user_human.body_build.equip_overlays[image_key]
+				if(!ret_overlay)
+					var/icon/final_I = new(mob_icon, icon_state = mob_state)
+					var/list/shifts = equip_adjusts[slot]
+					if(length(shifts))
+						var/shift_facing
+						for(shift_facing in shifts)
+							var/list/facing_list = shifts[shift_facing]
+							final_I = dir_shift(final_I, text2dir(shift_facing), facing_list["x"], facing_list["y"])
+					ret_overlay = overlay_image(final_I, color, flags = RESET_COLOR)
+
+					user_human.body_build.equip_overlays[image_key] = ret_overlay
+				ret_list += ret_overlay
+
+				ret_list.Cut(1, 3)
+
+	return ret_list ? ret_list : ret_overlay
 
 /obj/item/proc/get_examine_line()
 	if(is_bloodied)

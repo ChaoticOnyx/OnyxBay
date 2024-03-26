@@ -84,6 +84,8 @@
 	desc = "It`s time to rip and tear... The trees. Right?"
 	icon_state = "chainsaw"
 	base_icon = "chainsaw"
+	improper_held_icon = TRUE
+
 	sharp = FALSE // Hard to cut with a not working chainsaw
 	edge = FALSE
 	w_class = ITEM_SIZE_LARGE
