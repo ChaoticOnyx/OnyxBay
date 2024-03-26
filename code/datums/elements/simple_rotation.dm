@@ -45,7 +45,7 @@
 	set hidden = TRUE
 
 	if(!is_rotatable())
-		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor therefore you can't rotate it!")
+		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor and can't be rotated!")
 		return
 
 	if(!can_rotate(user))
@@ -58,7 +58,7 @@
 	set hidden = TRUE
 
 	if(!is_rotatable())
-		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor therefore you can't rotate it!")
+		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor and can't be rotated!")
 		return
 
 	if(!can_rotate(user))

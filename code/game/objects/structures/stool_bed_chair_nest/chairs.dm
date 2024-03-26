@@ -14,7 +14,7 @@
 	var/foldable = TRUE
 
 /obj/structure/bed/chair/Initialize()
-	..()
+	. = ..()
 
 	AddElement(/datum/element/simple_rotation)
 

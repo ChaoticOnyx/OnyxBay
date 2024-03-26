@@ -269,12 +269,12 @@
 //Rotates the windoor assembly clockwise
 /obj/structure/windoor_assembly/rotate(mob/user)
 	if(state != "01")
-		update_nearby_tiles(need_rebuild=1) //Compel updates before
+		update_nearby_tiles(need_rebuild = TRUE) //Compel updates before
 
 	..()
 
 	if(state != "01")
-		update_nearby_tiles(need_rebuild=1)
+		update_nearby_tiles(need_rebuild = TRUE)
 
 	update_icon()
 	return

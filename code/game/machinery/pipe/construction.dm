@@ -321,24 +321,24 @@ Buildable meters
 	..()
 
 	if (pipe_type in list (PIPE_SIMPLE_STRAIGHT, PIPE_SUPPLY_STRAIGHT, PIPE_SCRUBBERS_STRAIGHT, PIPE_UNIVERSAL, PIPE_HE_STRAIGHT, PIPE_MVALVE, PIPE_DVALVE, PIPE_SVALVE, PIPE_FUEL_STRAIGHT))
-		if(dir==2)
-			set_dir(1)
-		else if(dir==8)
-			set_dir(4)
+		if(dir == SOUTH)
+			set_dir(NORTH)
+		else if(dir == WEST)
+			set_dir(EAST)
 	else if (pipe_type in list (PIPE_MANIFOLD4W, PIPE_SUPPLY_MANIFOLD4W, PIPE_SCRUBBERS_MANIFOLD4W, PIPE_FUEL_MANIFOLD4W))
-		set_dir(2)
+		set_dir(SOUTH)
 	return
 
 /obj/item/pipe/rotate_counter(mob/user)
 	..()
 
 	if (pipe_type in list (PIPE_SIMPLE_STRAIGHT, PIPE_SUPPLY_STRAIGHT, PIPE_SCRUBBERS_STRAIGHT, PIPE_UNIVERSAL, PIPE_HE_STRAIGHT, PIPE_MVALVE, PIPE_DVALVE, PIPE_SVALVE, PIPE_FUEL_STRAIGHT))
-		if(dir==2)
-			set_dir(1)
-		else if(dir==8)
-			set_dir(4)
+		if(dir == SOUTH)
+			set_dir(NORTH)
+		else if(dir == WEST)
+			set_dir(EAST)
 	else if (pipe_type in list (PIPE_MANIFOLD4W, PIPE_SUPPLY_MANIFOLD4W, PIPE_SCRUBBERS_MANIFOLD4W, PIPE_FUEL_MANIFOLD4W))
-		set_dir(2)
+		set_dir(SOUTH)
 	return
 
 /obj/item/pipe/Move()

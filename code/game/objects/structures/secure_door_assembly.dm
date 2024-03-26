@@ -16,7 +16,7 @@
 	var/door_path = null
 
 /obj/structure/secure_door_assembly/Initialize()
-	..()
+	. = ..()
 
 	AddElement(/datum/element/simple_rotation)
 

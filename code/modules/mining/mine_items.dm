@@ -662,7 +662,7 @@
 	var/last_struck = 0
 
 /obj/structure/sculpting_block/Initialize()
-	..()
+	. = ..()
 
 	AddElement(/datum/element/simple_rotation)
 
