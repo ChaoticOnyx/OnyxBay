@@ -13,7 +13,7 @@
 		return
 
 	if(!adult_form)
-		remove_verb(src, /mob/living/carbon/alien/verb/evolve)
+		revoke_verb(src, /mob/living/carbon/alien/verb/evolve)
 		return
 
 	if(handcuffed)

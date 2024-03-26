@@ -22,8 +22,8 @@
 /mob/living/silicon/robot/drone/proc/assume_control(mob/living/silicon/ai/user)
 	user.controlling_drone = src
 	controlling_ai = user
-	add_verb(src, /mob/living/silicon/robot/drone/proc/release_ai_control_verb)
-	remove_verb(src, /mob/living/proc/ghost)
+	grant_verb(src, /mob/living/silicon/robot/drone/proc/release_ai_control_verb)
+	revoke_verb(src, /mob/living/proc/ghost)
 	local_transmit = FALSE
 	languages = controlling_ai.languages.Copy()
 	add_language("Robot Talk", 1)
@@ -99,8 +99,8 @@
 		controlling_ai.controlling_drone = null
 		controlling_ai = null
 
-	remove_verb(src, /mob/living/silicon/robot/drone/proc/release_ai_control_verb)
-	add_verb(src, /mob/living/proc/ghost)
+	revoke_verb(src, /mob/living/silicon/robot/drone/proc/release_ai_control_verb)
+	grant_verb(src, /mob/living/proc/ghost)
 
 	full_law_reset()
 	updatename()

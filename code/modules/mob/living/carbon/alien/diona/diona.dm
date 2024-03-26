@@ -39,7 +39,7 @@
 	if(W == hat)
 		hat = null
 		update_icons()
-		remove_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
+		revoke_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
 	else if(W == holding_item)
 		holding_item = null
 
@@ -52,7 +52,7 @@
 	add_language(LANGUAGE_ROOTGLOBAL)
 	add_language(LANGUAGE_GALCOM)
 
-	add_verb(src, list(
+	grant_verb(src, list(
 		/mob/living/carbon/alien/diona/proc/merge,
 		/mob/living/carbon/alien/diona/proc/drop_holding_item,
 	))
@@ -70,7 +70,7 @@
 	hat = new_hat
 	new_hat.forceMove(src)
 	update_icons()
-	add_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
+	grant_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
 	return TRUE
 
 /mob/living/carbon/alien/diona/proc/handle_npc(mob/living/carbon/alien/diona/D)
@@ -145,7 +145,7 @@
 		src.hat.forceMove(get_turf(src))
 		src.hat = null
 		update_icons()
-		remove_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
+		revoke_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
 
 /mob/living/carbon/alien/diona/drop_active_hand()
 	if(holding_item)

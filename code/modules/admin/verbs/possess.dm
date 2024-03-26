@@ -47,7 +47,7 @@
 	set desc = "Give this guy possess/release verbs"
 	set category = "Debug"
 	set name = "Give Possessing Verbs"
-	add_verb(M, list(
+	grant_verb(M, list(
 		/proc/possess,
 		/proc/release,
 	))

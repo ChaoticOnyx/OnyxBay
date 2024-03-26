@@ -91,7 +91,7 @@
 	//As a human made device, we'll understand sol common without the need of the translator
 	add_language(LANGUAGE_SOL_COMMON, 1)
 
-	add_verb(src, list(
+	grant_verb(src, list(
 		/mob/living/silicon/pai/proc/choose_chassis,
 		/mob/living/silicon/pai/proc/choose_verbs,
 	))
@@ -303,8 +303,8 @@
 
 	chassis = possible_chassis[choice]
 
-	remove_verb(src, /mob/living/silicon/pai/proc/choose_chassis)
-	add_verb(src, /mob/living/proc/hide)
+	revoke_verb(src, /mob/living/silicon/pai/proc/choose_chassis)
+	grant_verb(src, /mob/living/proc/hide)
 
 /mob/living/silicon/pai/proc/choose_verbs()
 	set category = "pAI Commands"
@@ -318,7 +318,7 @@
 	speak_exclamation = sayverbs[(sayverbs.len>1 ? 2 : sayverbs.len)]
 	speak_query = sayverbs[(sayverbs.len>2 ? 3 : sayverbs.len)]
 
-	remove_verb(src, /mob/living/silicon/pai/proc/choose_verbs)
+	revoke_verb(src, /mob/living/silicon/pai/proc/choose_verbs)
 
 /mob/living/silicon/pai/lay_down()
 	set name = "Rest"

@@ -26,7 +26,7 @@
 		util_crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
-	add_verb(src, list(
+	grant_verb(src, list(
 		/mob/proc/toggle_antag_pool,
 		/mob/proc/join_as_actor,
 		/mob/proc/join_response_team,
@@ -174,7 +174,7 @@
 			observer.real_name = client.prefs.real_name
 			observer.SetName(observer.real_name)
 			if(!client.holder && !config.ghost.allow_antag_hud)
-				remove_verb(observer, /mob/observer/ghost/verb/toggle_antagHUD )
+				revoke_verb(observer, /mob/observer/ghost/verb/toggle_antagHUD )
 			observer.key = key
 			var/atom/movable/screen/splash/S = new(observer.client, TRUE)
 			S.Fade(TRUE, TRUE)

@@ -16,4 +16,4 @@
 	if(!user)
 		return
 	if(ability)
-		add_verb(user.verbs, ability)
+		grant_verb(user.verbs, ability)

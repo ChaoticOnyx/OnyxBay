@@ -108,10 +108,10 @@ var/list/ai_verbs_default = list(
 	give_ghost_proc_at_initialize = FALSE
 
 /mob/living/silicon/ai/proc/add_ai_verbs()
-	add_verb(src, ai_verbs_default)
+	grant_verb(src, ai_verbs_default)
 
 /mob/living/silicon/ai/proc/remove_ai_verbs()
-	remove_verb(src, ai_verbs_default)
+	revoke_verb(src, ai_verbs_default)
 
 /mob/living/silicon/ai/New(loc, datum/ai_laws/L,  obj/item/organ/internal/cerebrum/mmi/B, safety = 0)
 	var/list/possibleNames = GLOB.ai_names

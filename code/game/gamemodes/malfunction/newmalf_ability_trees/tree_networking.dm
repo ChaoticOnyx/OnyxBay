@@ -207,4 +207,4 @@
 
 	user.hack_can_fail = 0
 	user.system_override = 2
-	add_verb(user, /datum/game_mode/malfunction/verb/ai_destroy_station)
+	grant_verb(user, /datum/game_mode/malfunction/verb/ai_destroy_station)

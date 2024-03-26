@@ -18,7 +18,7 @@
 	. = ..()
 	add_language("Xenomorph") //Bonus language.
 	internal_organs |= new /obj/item/organ/internal/xenos/hivenode(src)
-	add_verb(src, /mob/living/carbon/proc/toggle_darksight)
+	grant_verb(src, /mob/living/carbon/proc/toggle_darksight)
 
 /obj/structure/alien/egg/CanUseTopic(mob/user)
 	return isghost(user) ? STATUS_INTERACTIVE : STATUS_CLOSE

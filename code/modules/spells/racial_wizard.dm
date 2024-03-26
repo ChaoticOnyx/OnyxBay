@@ -247,11 +247,11 @@
 	vision.possess(L)
 	register_signal(L, SIGNAL_QDELETING, nameof(.proc/release))
 	register_signal(L, SIGNAL_LOGGED_OUT, nameof(.proc/release))
-	add_verb(L, /mob/living/proc/release_eye)
+	grant_verb(L, /mob/living/proc/release_eye)
 
 /datum/spell/camera_connection/proc/release(mob/living/L)
 	vision.release(L)
-	remove_verb(L, /mob/living/proc/release_eye)
+	revoke_verb(L, /mob/living/proc/release_eye)
 	unregister_signal(L, SIGNAL_QDELETING)
 	unregister_signal(L, SIGNAL_LOGGED_OUT)
 
@@ -267,7 +267,7 @@
 	set desc = "Return your sight to your body."
 	set category = "Abilities"
 
-	remove_verb(src, /mob/living/proc/release_eye)
+	revoke_verb(src, /mob/living/proc/release_eye)
 
 	if(!eyeobj)
 		return

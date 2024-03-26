@@ -6,9 +6,9 @@
  * * target - who the verb is being added to, `/client` or `/mob`.
  * * verb - typepath of a verb, or a list of typepaths, supports nesting.
  */
-/proc/add_verb(client/target, verb_or_list_to_add)
+/proc/grant_verb(client/target, verb_or_list_to_add)
 	if(!target)
-		CRASH("add_verb called without a target")
+		CRASH("grant_verb called without a target")
 
 	var/mob/mob_target = null
 
@@ -16,7 +16,7 @@
 		mob_target = target
 		target = mob_target.client
 	else if(!istype(target, /client))
-		CRASH("add_verb called on a non-mob and non-client")
+		CRASH("grant_verb called on a non-mob and non-client")
 
 	var/list/verbs_list = list()
 
@@ -55,14 +55,14 @@
  * * target - who the verb is being removed from, `/client` or `/mob`.
  * * verb - typepath of a verb, or a list of typepaths, supports nesting.
  */
-/proc/remove_verb(client/target, verb_or_list_to_remove)
+/proc/revoke_verb(client/target, verb_or_list_to_remove)
 	var/mob/mob_target = null
 
 	if(ismob(target))
 		mob_target = target
 		target = mob_target.client
 	else if(!istype(target, /client))
-		CRASH("remove_verb called on a non-mob and non-client")
+		CRASH("revoke_verb called on a non-mob and non-client")
 
 	var/list/verbs_list = list()
 	if(!islist(verb_or_list_to_remove))

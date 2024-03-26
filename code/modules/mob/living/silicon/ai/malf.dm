@@ -10,7 +10,7 @@
 	hacked_apcs = list()
 	recalc_cpu()
 
-	add_verb(src, list(
+	grant_verb(src, list(
 		/datum/game_mode/malfunction/verb/ai_select_hardware,
 		/datum/game_mode/malfunction/verb/ai_select_research,
 		/datum/game_mode/malfunction/verb/ai_help,

@@ -25,7 +25,7 @@
 
 	time_of_birth = world.time
 
-	add_verb(src, list(
+	grant_verb(src, list(
 		/mob/living/proc/ventcrawl,
 		/mob/living/proc/hide,
 	))

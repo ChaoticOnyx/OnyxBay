@@ -786,7 +786,7 @@
 		return
 
 	if(!(mRemotetalk in src.mutations))
-		remove_verb(src, /mob/living/carbon/human/proc/remotesay)
+		revoke_verb(src, /mob/living/carbon/human/proc/remotesay)
 		return
 	var/list/creatures = list()
 	for(var/mob/living/carbon/h in world)
@@ -859,7 +859,7 @@
 	hand_blood_color = blood_color
 	update_inv_gloves(1) // handles bloody hands overlays and updating
 
-	add_verb(src, /mob/living/carbon/human/proc/bloody_doodle)
+	grant_verb(src, /mob/living/carbon/human/proc/bloody_doodle)
 
 /mob/living/carbon/human/clean_blood(clean_feet)
 	. =..()
@@ -1119,7 +1119,7 @@
 		return 0 //something is terribly wrong
 
 	if (!bloody_hands)
-		remove_verb(src, /mob/living/carbon/human/proc/bloody_doodle)
+		revoke_verb(src, /mob/living/carbon/human/proc/bloody_doodle)
 
 	if (src.gloves)
 		to_chat(src, "<span class='warning'>Your [src.gloves] are getting in the way.</span>")

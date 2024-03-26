@@ -69,7 +69,7 @@
 	adjustToxLoss(amount-getToxLoss())
 
 /mob/living/carbon/metroid/New(location, colour = "green")
-	add_verb(src, /mob/living/proc/ventcrawl)
+	grant_verb(src, /mob/living/proc/ventcrawl)
 
 	src.colour = colour
 	number = random_id(/mob/living/carbon/metroid, 1, 1000)

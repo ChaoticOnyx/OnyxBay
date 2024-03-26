@@ -53,7 +53,7 @@
 /mob/observer/ghost/Initialize()
 	see_in_dark = 100
 
-	add_verb(src, list(
+	grant_verb(src, list(
 		/mob/proc/toggle_antag_pool,
 		/mob/proc/join_as_actor,
 		/mob/proc/join_response_team,
@@ -213,7 +213,7 @@ Works together with spawning an observer, noted above.
 	ghost.timeofdeath = is_ooc_dead() ? src.timeofdeath : world.time
 
 	if(!ghost.client?.holder && !config.ghost.allow_antag_hud)
-		remove_verb(ghost, /mob/observer/ghost/verb/toggle_antagHUD)
+		revoke_verb(ghost, /mob/observer/ghost/verb/toggle_antagHUD)
 
 	if(ghost.client)
 		ghost.updateghostprefs()

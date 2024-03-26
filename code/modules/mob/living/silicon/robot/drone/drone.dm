@@ -133,7 +133,7 @@ var/list/mob_hat_cache = list()
 
 	..()
 
-	add_verb(src, /mob/living/proc/hide)
+	grant_verb(src, /mob/living/proc/hide)
 
 	remove_language(LANGUAGE_ROBOT)
 	add_language(LANGUAGE_ROBOT, FALSE)
@@ -147,7 +147,7 @@ var/list/mob_hat_cache = list()
 		var/datum/robot_component/C = components[V]
 		C.max_damage = 10
 
-	remove_verb(src, /mob/living/silicon/robot/verb/Namepick)
+	revoke_verb(src, /mob/living/silicon/robot/verb/Namepick)
 	update_icon()
 
 /mob/living/silicon/robot/drone/init()

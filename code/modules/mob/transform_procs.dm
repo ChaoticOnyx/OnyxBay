@@ -332,7 +332,7 @@
 			organ.min_broken_damage = Floor(organ.max_damage * 0.75)
 	src.no_pain = TRUE
 	src.does_not_breathe = TRUE
-	add_verb(src, list(
+	grant_verb(src, list(
 		/mob/living/carbon/human/proc/breath_death,
 		/mob/living/carbon/human/proc/consume,
 	))

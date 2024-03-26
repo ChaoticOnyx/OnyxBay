@@ -281,18 +281,18 @@
 
 /datum/hallucination/telepahy/start()
 	to_chat(holder,"<span class = 'notice'>You expand your mind outwards.</span>")
-	add_verb(holder, /mob/living/carbon/human/proc/fakeremotesay)
+	grant_verb(holder, /mob/living/carbon/human/proc/fakeremotesay)
 
 /datum/hallucination/telepahy/end()
 	if(holder)
-		remove_verb(holder, /mob/living/carbon/human/proc/fakeremotesay)
+		revoke_verb(holder, /mob/living/carbon/human/proc/fakeremotesay)
 
 /mob/living/carbon/human/proc/fakeremotesay()
 	set name = "Telepathic Message"
 	set category = "Superpower"
 
 	if(!hallucination_power)
-		remove_verb(src, /mob/living/carbon/human/proc/fakeremotesay)
+		revoke_verb(src, /mob/living/carbon/human/proc/fakeremotesay)
 		return
 
 	if(stat)

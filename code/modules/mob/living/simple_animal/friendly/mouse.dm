@@ -68,7 +68,7 @@
 /mob/living/simple_animal/mouse/Initialize()
 	. = ..()
 
-	add_verb(src, list(
+	grant_verb(src, list(
 		/mob/living/proc/ventcrawl,
 		/mob/living/proc/hide,
 	))

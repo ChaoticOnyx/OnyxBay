@@ -199,9 +199,9 @@ BORER_STATUS_HUSK = list(\
 	H.add_language("Cortical Link")
 
 	if(host.is_ooc_dead())
-		add_verb(H, /mob/living/carbon/human/proc/jumpstart)
+		grant_verb(H, /mob/living/carbon/human/proc/jumpstart)
 
-	add_verb(H, BORER_ALL_ABILITIES[BORER_STATUS_HUSK])
+	grant_verb(H, BORER_ALL_ABILITIES[BORER_STATUS_HUSK])
 
 	if(H.client)
 		H.ghostize(0)
@@ -429,7 +429,7 @@ BORER_STATUS_HUSK = list(\
 	set name = "Revive Host"
 	set desc = "Send a jolt of electricity through your host, reviving them."
 
-	remove_verb(src, /mob/living/carbon/human/proc/jumpstart)
+	revoke_verb(src, /mob/living/carbon/human/proc/jumpstart)
 
 	if(!is_ic_dead())
 		to_chat(usr, "Your host is already alive.")
@@ -483,9 +483,9 @@ BORER_STATUS_HUSK = list(\
 	clear_abilities()
 
 	if(host && controlling)
-		add_verb(host, BORER_ALL_ABILITIES[BORER_STATUS_CONTROLLING])
+		grant_verb(host, BORER_ALL_ABILITIES[BORER_STATUS_CONTROLLING])
 
-	add_verb(src, list(
+	grant_verb(src, list(
 		BORER_ALL_ABILITIES[BORER_STATUS_NOT_CONTROLLING],
 		BORER_ALL_ABILITIES[BORER_STATUS_IN_HOST],
 		BORER_ALL_ABILITIES[BORER_STATUS_OUT_HOST],
@@ -493,9 +493,9 @@ BORER_STATUS_HUSK = list(\
 
 /mob/living/simple_animal/borer/proc/clear_abilities()
 	for(var/abilities_type in BORER_ALL_ABILITIES)
-		remove_verb(src, BORER_ALL_ABILITIES[abilities_type])
+		revoke_verb(src, BORER_ALL_ABILITIES[abilities_type])
 		if(host)
-			remove_verb(host, BORER_ALL_ABILITIES[abilities_type])
+			revoke_verb(host, BORER_ALL_ABILITIES[abilities_type])
 
 /mob/living/simple_animal/borer/proc/on_mob_death()
 	GLOB.borers.remove_antagonist(host.mind)

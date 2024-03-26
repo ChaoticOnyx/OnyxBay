@@ -923,7 +923,7 @@
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
 		else
 			to_chat(U, "[src] has nothing stuck in their wounds that is large enough to remove.")
-		remove_verb(src, /mob/proc/yank_out_object)
+		revoke_verb(src, /mob/proc/yank_out_object)
 		return
 
 	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
@@ -983,7 +983,7 @@
 
 	valid_objects = get_visible_implants(0)
 	if(!valid_objects.len)
-		remove_verb(src, /mob/proc/yank_out_object)
+		revoke_verb(src, /mob/proc/yank_out_object)
 
 	return 1
 
