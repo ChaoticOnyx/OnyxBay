@@ -159,12 +159,14 @@
 		mod_handy = 1.2
 		mod_weight = 2.0
 		mod_reach = 1.5
+		improper_held_icon = TRUE
 	else
 		wielded = FALSE
 		force = 17.5
 		mod_weight = 1.5
 		mod_reach = 1.0
 		mod_handy = 0.4
+		improper_held_icon = FALSE
 	update_icon()
 	..()
 
