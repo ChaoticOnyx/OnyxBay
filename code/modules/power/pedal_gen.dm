@@ -119,7 +119,20 @@
 /obj/structure/bed/chair/pedalgen/post_buckle_mob(mob/user)
 	update_mob(user, 1)
 
-/obj/structure/bed/chair/pedalgen/rotate()
+/obj/structure/bed/chair/pedalgen/rotate(mob/user)
+	..()
+	if(dir == SOUTH)
+		layer = FLY_LAYER
+	else
+		layer = OBJ_LAYER
+
+	if(buckled_mob)
+		if(buckled_mob.loc != loc)
+			buckled_mob.buckled = null //Temporary, so Move() succeeds.
+			buckled_mob.buckled = src //Restoring
+		update_mob(buckled_mob)
+
+/obj/structure/bed/chair/pedalgen/rotate_counter(mob/user)
 	..()
 	if(dir == SOUTH)
 		layer = FLY_LAYER
