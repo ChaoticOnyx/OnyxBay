@@ -93,21 +93,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	..()
 	return
 
-
-/obj/structure/particle_accelerator/rotate(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
-/obj/structure/particle_accelerator/rotate_counter(mob/user)
-	if(anchored)
-		show_splash_text(user, "\The [src] is firmly secured!")
-		return
-
-	..()
-
 /obj/structure/particle_accelerator/_examine_text(mob/user)
 	switch(src.construction_state)
 		if(0)
