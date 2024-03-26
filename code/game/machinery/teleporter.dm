@@ -6,7 +6,7 @@
 	desc = "It's the hub of a teleporting machine."
 	icon_state = "tele_gate_off"
 	icon = 'icons/obj/machines/teleporter.dmi'
-	density = FALSE
+	density = TRUE
 	anchored = TRUE
 	idle_power_usage = 10 WATTS
 	active_power_usage = 2 KILO WATTS
@@ -109,9 +109,11 @@
 		do_teleport(A, target)
 	return
 
-/obj/machinery/teleporter_gate/Crossed(A)
+/obj/machinery/teleporter_gate/Bumped(AM)
+	. = ..()
+
 	if(is_ready())
-		teleport(A)
+		teleport(AM)
 
 /obj/machinery/teleporter_gate/power_change()
 	. = ..()
