@@ -957,7 +957,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	else
 		ret_overlay = overlay_image(mob_icon, mob_state, color, RESET_COLOR)
 
-	if(length(user_human?.body_build?.equip_adjust))
+	if(!improper_held_icon && length(user_human?.body_build?.equip_adjust))
 		var/list/equip_adjusts = user_human.body_build.equip_adjust
 		if(equip_adjusts[slot])
 			if(!use_list)

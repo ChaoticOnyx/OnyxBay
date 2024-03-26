@@ -3,6 +3,7 @@
 	desc = "The NT Mk60 EW Halicon is a man portable anti-armor weapon designed to disable mechanical threats, produced by NT. Not the best of its type."
 	icon_state = "ionrifle"
 	item_state = "ionrifle"
+	improper_held_icon = TRUE
 	origin_tech = list(TECH_COMBAT = 2, TECH_MAGNET = 4)
 	w_class = ITEM_SIZE_HUGE
 	force = 12.5
@@ -27,6 +28,7 @@
 	desc = "The NT Mk72 EW Preston is a personal defense weapon designed to disable mechanical threats."
 	icon_state = "ionpistolonyx"
 	item_state = "ionpistolonyx"
+	improper_held_icon = FALSE
 	origin_tech = list(TECH_COMBAT = 2, TECH_MAGNET = 4)
 	w_class = ITEM_SIZE_NORMAL
 	force = 8.5
