@@ -42,7 +42,6 @@
 
 /atom/proc/rotate(mob/user)
 	set name = "Rotate Clockwise"
-	set hidden = TRUE
 
 	if(!is_rotatable())
 		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor and can't be rotated!")
@@ -55,7 +54,6 @@
 
 /atom/proc/rotate_counter(mob/user)
 	set name = "Rotate Counterclockwise"
-	set hidden = TRUE
 
 	if(!is_rotatable())
 		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor and can't be rotated!")
