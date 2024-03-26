@@ -39,7 +39,7 @@ var/global/datum/body_build/default_body_build = new
 	var/stomach_capacity   = STOMACH_CAPACITY_NORMAL
 	var/ambiguous_gender   = FALSE // If TRUE, both females and females will be PLURAL if there's no beard and their groin is covered
 
-	var/list/equip_adjust = list()
+	var/list/equip_adjust
 	var/list/equip_overlays = list()
 
 /datum/body_build/proc/get_mob_icon(slot, icon_state)
@@ -91,9 +91,17 @@ var/global/datum/body_build/default_body_build = new
 	poise_pool         = HUMAN_LOW_POISE
 
 	equip_adjust = list(
-		slot_l_hand_str = list(EAST = list("x" = -1, "y" = 0), WEST = list("x" = 1, "y" = 0)),
-		slot_r_hand_str = list(EAST = list("x" = -1, "y" = 0), WEST = list("x" = 1, "y" = 0))
-	)
+		"slot_l_hand" = list(
+			"SOUTH" = list("x" = -1, "y" = 0),
+			"NORTH" = list("x" =  1, "y" = 0),
+			"EAST"  = list("x" = -2, "y" = 0)
+			),
+		"slot_r_hand" = list(
+			"SOUTH" = list("x" =  1, "y" = 0),
+			"NORTH" = list("x" = -1, "y" = 0),
+			"WEST"  = list("x" =  2, "y" = 0)
+			)
+		)
 
 /datum/body_build/slim/alt
 	name                 = "Slim Alt"

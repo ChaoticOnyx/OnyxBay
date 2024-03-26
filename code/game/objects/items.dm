@@ -936,77 +936,82 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	var/image/ret_overlay
 
 	var/list/ret_list
+	var/icon/main_icon
+	var/icon/back_icon
+	var/use_list = FALSE
+
 	if(!improper_held_icon && (slot == slot_l_hand_str || slot == slot_r_hand_str))
 		ret_list = list()
-		var/icon/main_icon = new(mob_icon, mob_state)
-		var/icon/back_icon = new('icons/effects/blank.dmi')
+		use_list = TRUE
+
+		main_icon = new(mob_icon, mob_state)
+		back_icon = new('icons/effects/blank.dmi')
 
 		if(slot == slot_l_hand_str)
 			main_icon.Insert('icons/effects/blank.dmi', dir = EAST)
-			back_icon.Insert(mob_icon, mob_state, dir = EAST)
+			back_icon.Insert(icon(mob_icon, mob_state, EAST), dir = EAST)
 		if(slot == slot_r_hand_str)
 			main_icon.Insert('icons/effects/blank.dmi', dir = WEST)
-			back_icon.Insert(mob_icon, mob_state, dir = WEST)
+			back_icon.Insert(icon(mob_icon, mob_state, WEST), dir = WEST)
 
-		ret_list = list(overlay_image(main_icon, color, flags = RESET_COLOR), overlay_image(back_icon, color, flags = RESET_COLOR))
 	else
 		ret_overlay = overlay_image(mob_icon, mob_state, color, RESET_COLOR)
 
 	if(length(user_human?.body_build?.equip_adjust))
 		var/list/equip_adjusts = user_human.body_build.equip_adjust
 		if(equip_adjusts[slot])
-			if(!ret_list)
+			if(!use_list)
 				var/image_key = "[user_human.body_build.name]-[mob_icon]-[mob_state]-[color]"
 				ret_overlay = user_human.body_build.equip_overlays[image_key]
+
 				if(!ret_overlay)
 					var/icon/final_I = new(mob_icon, icon_state = mob_state)
 					var/list/shifts = equip_adjusts[slot]
 					if(length(shifts))
-						var/shift_facing
-						for(shift_facing in shifts)
+						for(var/shift_facing in shifts)
 							var/list/facing_list = shifts[shift_facing]
 							final_I = dir_shift(final_I, text2dir(shift_facing), facing_list["x"], facing_list["y"])
 					ret_overlay = overlay_image(final_I, color, flags = RESET_COLOR)
 
 					user_human.body_build.equip_overlays[image_key] = ret_overlay
+
 			else
 				var/image_key
 
-				ret_overlay = ret_list[1]
 				image_key = "[user_human.body_build.name]-[mob_icon]-[mob_state]-[color]-main"
 				ret_overlay = user_human.body_build.equip_overlays[image_key]
+
 				if(!ret_overlay)
-					var/icon/final_I = new(mob_icon, icon_state = mob_state)
 					var/list/shifts = equip_adjusts[slot]
 					if(length(shifts))
-						var/shift_facing
-						for(shift_facing in shifts)
+						for(var/shift_facing in shifts)
 							var/list/facing_list = shifts[shift_facing]
-							final_I = dir_shift(final_I, text2dir(shift_facing), facing_list["x"], facing_list["y"])
-					ret_overlay = overlay_image(final_I, color, flags = RESET_COLOR)
+							main_icon = dir_shift(main_icon, text2dir(shift_facing), facing_list["x"], facing_list["y"])
+					ret_overlay = overlay_image(main_icon, color, flags = RESET_COLOR)
 
 					user_human.body_build.equip_overlays[image_key] = ret_overlay
+
 				ret_list += ret_overlay
 
-				ret_overlay = ret_list[2]
 				image_key = "[user_human.body_build.name]-[mob_icon]-[mob_state]-[color]-back"
 				ret_overlay = user_human.body_build.equip_overlays[image_key]
+
 				if(!ret_overlay)
-					var/icon/final_I = new(mob_icon, icon_state = mob_state)
 					var/list/shifts = equip_adjusts[slot]
 					if(length(shifts))
-						var/shift_facing
-						for(shift_facing in shifts)
+						for(var/shift_facing in shifts)
 							var/list/facing_list = shifts[shift_facing]
-							final_I = dir_shift(final_I, text2dir(shift_facing), facing_list["x"], facing_list["y"])
-					ret_overlay = overlay_image(final_I, color, flags = RESET_COLOR)
+							back_icon = dir_shift(back_icon, text2dir(shift_facing), facing_list["x"], facing_list["y"])
+					ret_overlay = overlay_image(back_icon, color, flags = RESET_COLOR)
 
 					user_human.body_build.equip_overlays[image_key] = ret_overlay
+
 				ret_list += ret_overlay
 
-				ret_list.Cut(1, 3)
+	if(use_list && !length(ret_list))
+		ret_list = list(overlay_image(main_icon, color, flags = RESET_COLOR), overlay_image(back_icon, color, flags = RESET_COLOR))
 
-	return ret_list ? ret_list : ret_overlay
+	return use_list ? ret_list : ret_overlay
 
 /obj/item/proc/get_examine_line()
 	if(is_bloodied)

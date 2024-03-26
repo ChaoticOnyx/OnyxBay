@@ -119,9 +119,9 @@ Please contact me on #coderbus IRC. ~Carn x
 */
 
 //Human Overlays Indexes/////////
-#define HO_BODY_LAYER              1
-#define HO_L_HAND_LOW_LAYER        2
-#define HO_R_HAND_LOW_LAYER        3
+#define HO_L_HAND_LOW_LAYER        1
+#define HO_R_HAND_LOW_LAYER        2
+#define HO_BODY_LAYER              3
 #define HO_MUTATIONS_LAYER         4
 #define HO_SKIN_LAYER              5
 #define HO_DAMAGE_LAYER            6
@@ -635,6 +635,7 @@ var/global/list/damage_icon_parts = list()
 		if (handcuffed) drop_r_hand() //this should be moved out of icon code
 	else
 		overlays_standing[HO_R_HAND_LAYER] = null
+		overlays_standing[HO_R_HAND_LOW_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 
@@ -667,6 +668,7 @@ var/global/list/damage_icon_parts = list()
 		if (handcuffed) drop_l_hand() //This probably should not be here
 	else
 		overlays_standing[HO_L_HAND_LAYER] = null
+		overlays_standing[HO_L_HAND_LOW_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 
