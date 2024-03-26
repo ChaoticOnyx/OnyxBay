@@ -37,7 +37,7 @@
 	name = "pulse pistol"
 	desc = "A weapon that uses advanced pulse-based beam generation technology to emit powerful laser blasts. Even smaller than the carbine."
 	icon_state = "pulse_pistol"
-	improper_held_icon = FALS
+	improper_held_icon = FALSE
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	force = 8.5
 	projectile_type = /obj/item/projectile/beam/pulse
