@@ -34,7 +34,7 @@
 /atom/proc/can_rotate(mob/user)
 	return !(!user || user.incapacitated() || !Adjacent(user))
 
-/atom/proc/is_rotatable(mob/user)
+/atom/proc/is_rotatable()
 	return
 
 /obj/is_rotatable()
