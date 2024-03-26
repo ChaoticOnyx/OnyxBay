@@ -8,7 +8,7 @@
 /obj/structure/deity/thalamus/nerve_cluster
 	name = "nerve cluster"
 	desc = "A cluster of nerve endings sprouting from the floor"
-	icon_state = "nerves"
+	icon_state = "nerve_cluster"
 
 	var/expanding = TRUE
 	var/max_expansion_range = 4

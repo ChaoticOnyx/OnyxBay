@@ -11,3 +11,4 @@
 	name = "parasite adapter"
 	desc = "An odd tentacle with a disgusting looking claw at the end"
 	icon_state = "converter"
+	icon = 'icons/obj/thalamus.dmi'

@@ -1,4 +1,4 @@
-/datum/god_form/thalamus
+/datum/deity_form/thalamus
 	name = "Thalamus"
 	desc = "The fuck am i doing?"
 	form_state = "thalamus"
@@ -31,7 +31,7 @@
 	var/list/spawn_options = list()
 	var/spawn_points = 200
 
-/datum/god_form/thalamus/setup_form(mob/living/deity/D)
+/datum/deity_form/thalamus/setup_form(mob/living/deity/D)
 	. = ..()
 
 	for(var/path in subtypesof(/datum/thalamus_start/spawn_loc))

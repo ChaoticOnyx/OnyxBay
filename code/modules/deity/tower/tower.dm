@@ -1,4 +1,4 @@
-/datum/god_form/starlight
+/datum/deity_form/starlight
 	name = "Starlight Herald"
 	desc = "The bringer of life, and all that entails."
 	form_state = "starlight"
@@ -43,7 +43,7 @@
 		/datum/evolution_package/tower/basic_statue
 	)
 
-/datum/god_form/starlight/take_charge(mob/living/user, charge)
+/datum/deity_form/starlight/take_charge(mob/living/user, charge)
 	charge = max(5, charge/100)
 	if(prob(charge))
 		to_chat(user, SPAN_DANGER("Your body burns!"))

@@ -1,4 +1,4 @@
-/datum/god_form
+/datum/deity_form
 	var/name = "God form"
 	var/desc = "God form desc"
 	var/form_state = ""
@@ -19,7 +19,7 @@
 
 	var/mob/living/deity/deity
 
-/datum/god_form/proc/setup_form(mob/living/deity/D)
+/datum/deity_form/proc/setup_form(mob/living/deity/D)
 	deity = D
 	//D.icon_state = form_state
 	D.desc = desc
@@ -53,5 +53,5 @@
 		evolution_categories += evo
 
 /// Followers can take charge using this proc, usually it damages them.
-/datum/god_form/proc/take_charge(mob/living/user, charge)
+/datum/deity_form/proc/take_charge(mob/living/user, charge)
 	return

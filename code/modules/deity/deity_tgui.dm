@@ -16,7 +16,7 @@
 	data["page"] = page
 
 	data["forms"] = list()
-	for(var/datum/god_form/form in GLOB.deity_forms)
+	for(var/datum/deity_form/form in GLOB.deity_forms)
 		var/icon/form_icon = new /icon("icon" = 'icons/mob/deity.dmi', "icon_state" = form.form_state)
 		var/list/form_data = list(
 			"name" = form.name,

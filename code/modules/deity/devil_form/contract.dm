@@ -14,7 +14,7 @@
 	ASSERT(convert_spell)
 
 	if(convert_spell.manifest(user, owner))
-		var/datum/god_form/devil/devil_form = owner.form
+		var/datum/deity_form/devil/devil_form = owner.form
 		user.add_modifier(/datum/modifier/noattack, origin = owner, additional_params = devil_form.current_devil_shell)
 		switch(contract_type)
 			if(SIN_LUST)

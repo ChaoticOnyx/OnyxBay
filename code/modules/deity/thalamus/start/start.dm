@@ -17,11 +17,11 @@
 	var/choice = tgui_alert(D, "Is this the correct turf?", "Think twice", list("Yes", "No"))
 	if(choice == "Yes")
 		new /datum/random_map/droppod/thalamus(null, target.x-1, target.y-1, target.z, do_not_announce = TRUE)
-		addtimer(CALLBACK(D.form, nameof(/datum/god_form/thalamus/proc/spawn_thalamus)), target, 1 SECOND)
+		addtimer(CALLBACK(D.form, nameof(/datum/deity_form/thalamus/proc/spawn_thalamus)), target, 1 SECOND)
 	else
 		return FALSE
 
-/datum/god_form/thalamus/proc/spawn_thalamus(turf/target)
+/datum/deity_form/thalamus/proc/spawn_thalamus(turf/target)
 	deity.forceMove(target)
 	pass()
 
@@ -31,4 +31,4 @@
 
 	wall_type = /turf/simulated/wall/thalamus
 	door_type = /obj/structure/deity/thalamus/door
-	floor_type = /turf/simulated/floor/misc/thalamus
+	floor_type = /turf/simulated/floor/tiled/thalamus

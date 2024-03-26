@@ -1,10 +1,10 @@
-/datum/god_form/thalamus/tgui_interact(mob/user, datum/tgui/ui)
+/datum/deity_form/thalamus/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ThalamusStart", "Start Menu")
 		ui.open()
 
-/datum/god_form/thalamus/tgui_data(mob/user)
+/datum/deity_form/thalamus/tgui_data(mob/user)
 	var/list/data = list(
 		points = 200
 	)
@@ -39,10 +39,10 @@
 
 	return data
 
-/datum/god_form/thalamus/tgui_state()
+/datum/deity_form/thalamus/tgui_state()
 	return GLOB.tgui_always_state
 
-/datum/god_form/thalamus/tgui_act(action, params)
+/datum/deity_form/thalamus/tgui_act(action, params)
 	. = ..()
 	if(.)
 		return

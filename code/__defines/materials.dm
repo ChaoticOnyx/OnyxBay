@@ -24,6 +24,7 @@
 #define MATERIAL_REINFORCED_BLACK_GLASS  "rbglass"
 #define MATERIAL_MARBLE                  "marble"
 #define MATERIAL_RESIN                   "resin"
+#define MATERIAL_THALAMUS                "thalamus"
 #define MATERIAL_CULT                    "cult"
 #define MATERIAL_REINFORCED_CULT         "cult2"
 #define MATERIAL_VOX                     "voxalloy"

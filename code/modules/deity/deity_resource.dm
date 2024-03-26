@@ -1,24 +1,24 @@
-/datum/god_form
+/datum/deity_form
 	var/list/resources = list()
 
-/datum/god_form/New()
+/datum/deity_form/New()
 	for(var/path in resources)
 		resources.Remove(path)
 		resources.Add(new path(src))
 	return ..()
 
-/datum/god_form/Destroy()
+/datum/deity_form/Destroy()
 	QDEL_NULL_LIST(resources)
 	return ..()
 
-/datum/god_form/proc/get_resource(path)
+/datum/deity_form/proc/get_resource(path)
 	for(var/r in resources)
 		if(istype(r, path))
 			return r
 
 	return null
 
-/datum/god_form/proc/has_enough_resource(path, amt)
+/datum/deity_form/proc/has_enough_resource(path, amt)
 	if(amt == 0)
 		return TRUE
 
@@ -28,7 +28,7 @@
 
 	return FALSE
 
-/datum/god_form/proc/use_resource(path, amt)
+/datum/deity_form/proc/use_resource(path, amt)
 	if(amt == 0)
 		return TRUE
 
@@ -39,7 +39,7 @@
 
 	return FALSE
 
-/datum/god_form/proc/add_to_resource(path, amt)
+/datum/deity_form/proc/add_to_resource(path, amt)
 	if(amt == 0)
 		return TRUE
 

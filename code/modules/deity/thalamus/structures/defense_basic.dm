@@ -9,7 +9,7 @@
 /obj/structure/deity/thalamus/tendril
 	name = "tendril"
 	desc = ""
-	icon_state = "tendril"
+	icon_state = "tendril_pulling"
 	var/damage = 14
 
 /datum/deity_power/structure/thalamus/tendril_enhanced

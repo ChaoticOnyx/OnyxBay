@@ -17,10 +17,7 @@
 		bite(O)
 
 /obj/structure/deity/thalamus/trap/proc/is_valid_target(mob/living/victim)
-	if(!victim)
-		return FALSE
-
-	if(!isliving(victim))
+	if(!istype(victim))
 		return FALSE
 
 	return TRUE

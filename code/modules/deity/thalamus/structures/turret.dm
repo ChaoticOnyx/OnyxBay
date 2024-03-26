@@ -4,6 +4,8 @@
 	traverse = 120
 	hostility = /datum/hostility/thalamus
 	installed_gun = /obj/item/gun/energy/mindflayer
+	icon = 'icons/obj/thalamus.dmi'
+	icon_state = "turret"
 
 /obj/machinery/turret/thalamus/fire_weapon(atom/resolved_target)
 	installed_gun?.Fire(resolved_target, src)

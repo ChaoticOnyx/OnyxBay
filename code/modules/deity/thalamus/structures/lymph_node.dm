@@ -3,20 +3,20 @@
 #define NODE_COOLDOWN 15 SECONDS
 
 /datum/deity_power/structure/thalamus/lymph_node
-	name = "lymp_node"
-	desc = "lymp_node"
+	name = "lymph_node"
+	desc = "lymph_node"
 	power_path = /obj/structure/deity/thalamus/lymph_node
 	resource_cost = list(
 		/datum/deity_resource/thalamus/nutrients = 10
 	)
 
 /obj/structure/deity/thalamus/lymph_node
-	name = "tendril"
+	name = "lymph node"
 	desc = ""
-	icon_state = "lymp_hode"
+	icon_state = "lymph_node"
 	var/damage = 14
 
-	var/datum/proximity_trigger/proximity
+	var/datum/proximity_trigger/square/proximity
 	var/datum/hostility/hostility = /datum/hostility/lymph_node
 	var/vision_range = 7
 	var/last_lymph_spawn
@@ -27,8 +27,8 @@
 	. = ..()
 	proximity = new(
 		src,
-		/obj/machinery/turret/proc/on_proximity,
-		/obj/machinery/turret/proc/on_changed_turf_visibility,
+		/obj/structure/deity/thalamus/lymph_node/proc/on_proximity,
+		/obj/structure/deity/thalamus/lymph_node/proc/on_changed_turf_visibility,
 		vision_range,
 		PROXIMITY_EXCLUDE_HOLDER_TURF,
 		src
@@ -55,6 +55,7 @@
 /obj/structure/deity/thalamus/lymph_node/proc/spawn_cells(mob/intruder)
 	last_lymph_spawn = world.time
 	for(var/i = 0 to rand(LYMPHOCYTES_PER_INTRUDER_MIN, LYMPHOCYTES_PER_INTRUDER_MAX))
+		flick("lymph_node_flick", src)
 		var/mob/living/simple_animal/hostile/lymphocyte/lymph = new lymphocyte_type(get_turf(src))
 		lymph.set_target_mob(intruder)
 

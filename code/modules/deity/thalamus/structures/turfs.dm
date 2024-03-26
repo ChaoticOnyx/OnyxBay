@@ -1,13 +1,21 @@
+/material/thalamus
+	name = MATERIAL_THALAMUS
+	display_name = "THALAMSU"
+	icon_base = "thalamus"
+	icon_reinf = "reinf_cult"
+	shard_type = SHARD_SHARD
+	resilience = 16
+	sheet_singular_name = "layer"
+	sheet_plural_name = "layer"
+	conductive = TRUE
+
 /turf/simulated/wall/thalamus
 	icon_state = "thalamus"
 	var/previous_type = /turf/simulated/wall
+	icon = 'icons/turf/wall_masks.dmi'
 
-/turf/simulated/floor/misc/thalamus
-	name = "thalamus floor"
-	icon = 'icons/turf/flooring/plating.dmi'
-	icon_state = "no name"
-	//initial_flooring = /decl/flooring/reinforced/cult
-	var/previous_type = /turf/simulated/floor
+/turf/simulated/wall/thalamus/Initialize(mapload, reinforce)
+	. = ..(mapload, MATERIAL_THALAMUS)
 
 /turf/proc/thalamify()
 	SEND_SIGNAL(src, SIGNAL_TURF_THALAMIFIED, src)
@@ -27,28 +35,27 @@
 /turf/simulated/floor/proc/thalamify_floor()
 	var/turf/simulated/floor/floor = src
 	var/old_type = floor.type
-	var/turf/simulated/floor/misc/cult/cult_floor = src
-	ChangeTurf(/turf/simulated/floor/misc/thalamus)
-	cult_floor.previous_type = old_type
+	ChangeTurf(/turf/simulated/floor/tiled/thalamus)
+	var/turf/simulated/floor/tiled/thalamus/t_floor = src
+	t_floor.previous_type = old_type
 
-/turf/simulated/floor/misc/thalamus/proc/dethalamify_floor()
+/turf/simulated/floor/tiled/thalamus/proc/dethalamify_floor()
 	SEND_SIGNAL(src, SIGNAL_TURF_DETHALAMIFIED, src)
 	ChangeTurf(previous_type)
 
 /turf/proc/thalamify_wall()
 	var/turf/simulated/wall/wall = src
 	var/old_type = wall.type
-	var/turf/simulated/wall/thalamus/cult_wall = src
+	var/turf/simulated/wall/thalamus/t_wall = src
 	if(!istype(wall))
 		return
 
 	if(wall.reinf_material)
 		ChangeTurf(/turf/simulated/wall/thalamus)
-		cult_wall.previous_type = old_type
+		t_wall.previous_type = old_type
 	else
 		ChangeTurf(/turf/simulated/wall/thalamus)
-		cult_wall.previous_type = old_type
-	GLOB.cult.add_cultiness(CULTINESS_PER_TURF)
+		t_wall.previous_type = old_type
 
 /turf/simulated/wall/thalamus/proc/dethalamify_wall()
 	SEND_SIGNAL(src, SIGNAL_TURF_DETHALAMIFIED, src)

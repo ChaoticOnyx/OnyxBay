@@ -24,7 +24,7 @@
 /datum/thalamus_start/spawn_loc/random/deploy(mob/living/deity/deity)
 	var/turf/target = get_safe_random_station_turf(GLOB.station_areas)
 	new /datum/random_map/droppod/thalamus(null, target.x, target.y, target.z, do_not_announce = TRUE)
-	addtimer(CALLBACK(deity.form, nameof(/datum/god_form/thalamus/proc/spawn_thalamus)), target, 1 SECOND)
+	addtimer(CALLBACK(deity.form, nameof(/datum/deity_form/thalamus/proc/spawn_thalamus)), target, 1 SECOND)
 
 /datum/thalamus_start/spawn_loc/meteor
 	name = "Meteor start"

@@ -1,4 +1,4 @@
-GLOBAL_LIST_INIT(deity_forms, list(); for(var/form in subtypesof(/datum/god_form)) deity_forms.Add(new form))
+GLOBAL_LIST_INIT(deity_forms, list(); for(var/form in subtypesof(/datum/deity_form)) deity_forms.Add(new form))
 
 /mob/living/deity
 	name = "Deity"
@@ -30,7 +30,7 @@ GLOBAL_LIST_INIT(deity_forms, list(); for(var/form in subtypesof(/datum/god_form
 
 	var/datum/radial_menu/radial_menu
 
-	var/datum/god_form/form
+	var/datum/deity_form/form
 
 /mob/living/deity/Initialize()
 	. = ..()
@@ -122,7 +122,7 @@ GLOBAL_LIST_INIT(deity_forms, list(); for(var/form in subtypesof(/datum/god_form
 	if(form)
 		return FALSE
 
-	for(var/datum/god_form/form_ in GLOB.deity_forms)
+	for(var/datum/deity_form/form_ in GLOB.deity_forms)
 		if(form_.name != new_form)
 			continue
 

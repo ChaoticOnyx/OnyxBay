@@ -1,5 +1,5 @@
 /datum/deity_resource/thalamus/nutrients
-	name = "Base resource"
+	name = "Nutrients"
 	name_color = COLOR_NT_RED
 	amount = 0
 
