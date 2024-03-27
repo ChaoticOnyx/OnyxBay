@@ -117,30 +117,31 @@
 
 // Shows capacitor charge and hardware integrity information to the AI in Status tab.
 /mob/living/silicon/ai/show_system_integrity()
-	if(!src.stat)
-		stat("Hardware integrity", "[hardware_integrity()]%")
-		stat("Internal capacitor", "[backup_capacitor()]%")
+	. = list()
 
-		if(eyeobj)
-			var/turf/T = get_turf(eyeobj)
-			stat("Current location", "([T.x]:[T.y]:[T.z])")
+	if(!stat)
+		. += "Hardware integrity: [hardware_integrity()]%"
+		. += "Internal capacitor: [backup_capacitor()]%"
+
 	else
-		stat("Systems nonfunctional")
+		. += "Systems nonfunctional"
 
 // Shows AI Malfunction related information to the AI.
 /mob/living/silicon/ai/show_malf_ai()
+	. = ..()
+
 	if(src.is_malf())
 		if(src.hacked_apcs)
-			stat("Hacked APCs", "[src.hacked_apcs.len]")
-		stat("System Status", "[src.hacking ? "Busy" : "Stand-By"]")
+			. += "Hacked APCs: [src.hacked_apcs.len]"
+		. += "System Status: [src.hacking ? "Busy" : "Stand-By"]"
 		if(src.research)
-			stat("Available CPU", "[src.research.stored_cpu] TFlops")
-			stat("Maximal CPU", "[src.research.max_cpu] TFlops")
-			stat("CPU generation rate", "[src.research.cpu_increase_per_tick * 10] TFlops/s")
-			stat("Current research focus", "[src.research.focus ? src.research.focus.name : "None"]")
+			. += "Available CPU: [src.research.stored_cpu] TFlops"
+			. += "Maximal CPU: [src.research.max_cpu] TFlops"
+			. += "CPU generation rate: [src.research.cpu_increase_per_tick * 10] TFlops/s"
+			. += "Current research focus: [src.research.focus ? src.research.focus.name : "None"]"
 			if(src.research.focus)
-				stat("Research completed", "[round(src.research.focus.invested, 0.1)]/[round(src.research.focus.price)]")
+				. += "Research completed: [round(src.research.focus.invested, 0.1)]/[round(src.research.focus.price)]"
 			if(system_override == 1)
-				stat("SYSTEM OVERRIDE INITIATED")
+				. += "SYSTEM OVERRIDE INITIATED"
 			else if(system_override == 2)
-				stat("SYSTEM OVERRIDE COMPLETED")
+				. += "SYSTEM OVERRIDE COMPLETED"

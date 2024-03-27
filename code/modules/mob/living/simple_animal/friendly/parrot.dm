@@ -126,9 +126,10 @@
 	walk(src, 0)
 	..(gibbed, deathmessage, show_dead_message)
 
-/mob/living/simple_animal/parrot/Stat()
+/mob/living/simple_animal/parrot/get_status_tab_items()
 	. = ..()
-	stat("Held Item", held_item)
+
+	. += "Held Item: [held_item]"
 
 // These two are used often AF, it's easier to handle them this way than resolve weakrefs everywhere.
 /mob/living/simple_animal/parrot/proc/set_interest(atom/movable/AM)

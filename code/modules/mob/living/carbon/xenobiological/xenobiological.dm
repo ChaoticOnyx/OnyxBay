@@ -143,22 +143,21 @@
 /mob/living/carbon/metroid/Allow_Spacemove()
 	return 1
 
-/mob/living/carbon/metroid/Stat()
+/mob/living/carbon/metroid/get_status_tab_items()
 	. = ..()
 
-	statpanel("Status")
-	stat(null, "Health: [round((health / maxHealth) * 100)]%")
-	stat(null, "Intent: [a_intent]")
+	. += "Health: [round((health / maxHealth) * 100)]%"
+	. += "Intent: [a_intent]"
 
-	if (client.statpanel == "Status")
-		stat(null, "Nutrition: [nutrition]/[get_max_nutrition()]")
-		if(amount_grown >= 10)
-			if(is_adult)
-				stat(null, "You can reproduce!")
-			else
-				stat(null, "You can evolve!")
+	. += "Nutrition: [nutrition]/[get_max_nutrition()]"
 
-		stat(null,"Power Level: [powerlevel]")
+	if(amount_grown >= 10)
+		if(is_adult)
+			. += "You can reproduce!"
+		else
+			. += "You can evolve!"
+
+	. += "Power Level: [powerlevel]"
 
 /mob/living/carbon/metroid/adjustFireLoss(amount)
 	..(-abs(amount)) // Heals them
