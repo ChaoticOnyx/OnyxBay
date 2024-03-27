@@ -916,21 +916,30 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		user_human = user_mob
 
 	var/mob_state = get_icon_state(slot)
+	if(isnull(mob_state))
+		// No way to get a mob_state whatsoever, most likely the item has no base icon and is entirely made of overlays (i.e. bodyparts).
+		return
 
 	var/mob_icon
 
 	if(icon_override)
 		mob_icon = icon_override
-		if(slot == 	slot_l_hand_str || slot == slot_l_ear_str)
+
+		if(slot == slot_l_hand_str || slot == slot_l_ear_str)
 			mob_state = "[mob_state]_l"
-		if(slot == 	slot_r_hand_str || slot == slot_r_ear_str)
+
+		if(slot == slot_r_hand_str || slot == slot_r_ear_str)
 			mob_state = "[mob_state]_r"
+
 	else
 		if(item_icons && item_icons[slot])
 			mob_icon = item_icons[slot]
+
 		else if(user_human?.body_build)
 			mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
+
 		else
+			// Couldn't find no icon to use, aborting.
 			return
 
 	var/image/ret_overlay

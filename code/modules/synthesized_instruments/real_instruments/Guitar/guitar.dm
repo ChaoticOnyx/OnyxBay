@@ -3,6 +3,7 @@
 	desc = "A wooden musical instrument with six strings. This one looks like it may actually work."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "guitar"
+	improper_held_icon = TRUE
 	force = 6
 	sound_player = /datum/sound_player/synthesizer
 	path = /datum/instrument/guitar/clean_crisis
