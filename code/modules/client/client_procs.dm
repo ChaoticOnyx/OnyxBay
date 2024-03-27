@@ -72,7 +72,7 @@
 			to_chat(src, SPAN("danger", "[msg]"))
 			return
 
-	if(config.general.second_topic_limit)
+	if(config.general.second_topic_limit && href_list["window_id"] != "statbrowser")
 		var/second = round(world.time, 10)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -90,6 +90,9 @@
 	// Tgui Topic middleware
 	if(tgui_Topic(href_list))
 		return
+
+	if(href_list["reload_statbrowser"])
+		stat_panel.reinitialize()
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
 	if(asset_cache_job && (asset_cache_job in completed_asset_jobs))
@@ -177,6 +180,10 @@
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
+	// Instantiate tgui stat panel
+	stat_panel = new(src, "statbrowser")
+	stat_panel.subscribe(src, nameof(.proc/on_stat_panel_message))
+
 	// Instantiate tgui panel
 	tgui_panel = new(src)
 
@@ -254,6 +261,13 @@
 		prefs.apply_post_login_preferences(src)
 
 	settings = new(src)
+
+	stat_panel.initialize(
+		inline_html = file("html/statbrowser/statbrowser.html"),
+		inline_css = file("html/statbrowser/statbrowser.css"),
+		inline_js = file("html/statbrowser/statbrowser.js")
+	)
+	addtimer(CALLBACK(src, nameof(.proc/check_panel_loaded)), 30 SECONDS)
 
 	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.multiaccount.panic_server_address && TopicData != "redirect")
@@ -374,19 +388,6 @@
 	var/seconds = inactivity/10
 	return "[round(seconds / 60)] minute\s, [seconds % 60] second\s"
 
-// Byond seemingly calls stat, each tick.
-// Calling things each tick can get expensive real quick.
-// So we slow this down a little.
-// See: http://www.byond.com/docs/ref/info.html#/client/proc/Stat
-/client/Stat()
-	if(!usr)
-		return
-	// Add always-visible stat panel calls here, to define a consistent display order.
-	statpanel("Status")
-
-	. = ..()
-	stoplag(1)
-
 // send resources to the client. It's here in its own proc so we can move it around easiliy if need be
 /client/proc/send_resources()
 
@@ -460,6 +461,29 @@
 	set category = "OOC"
 	if(prefs)
 		prefs.open_setup_window(usr)
+
+/client/proc/check_panel_loaded()
+	if(stat_panel.is_ready())
+		return
+
+	to_chat(src, SPAN_DANGER(FONT_HUGE("Statpanel failed to load, click <a href='?src=[ref(src)];reload_statbrowser=1'>here</a> to reload the panel.")))
+
+/**
+ * Handles incoming messages from the stat-panel TGUI.
+ */
+/client/proc/on_stat_panel_message(type, list/payload, list/href_list)
+	switch(type)
+		if("Update-Verbs")
+			init_verbs()
+		if("Remove-Tabs")
+			panel_tabs -= payload["tab"]
+		if("Send-Tabs")
+			panel_tabs |= payload["tab"]
+		if("Reset-Tabs")
+			panel_tabs = list()
+		if("Set-Tab")
+			stat_tab = payload["tab"]
+			SSstatpanels.immediate_send_stat_data(src)
 
 /client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
