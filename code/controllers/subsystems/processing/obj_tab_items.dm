@@ -22,5 +22,5 @@ PROCESSING_SUBSYSTEM_DEF(obj_tab_items)
 			// fully stop so that a future START_PROCESSING will work
 			STOP_PROCESSING(src, thing)
 
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			return
