@@ -45,7 +45,7 @@
 		var/procpath/verb_to_add = thing
 		output_list[++output_list.len] = list(verb_to_add.category, verb_to_add.name)
 
-	//target.stat_panel.send_message("add_verb_list", output_list)
+	target.stat_panel.send_message("add_verb_list", output_list)
 
 /**
  * Wrapper around basic verb removal operation, allows to perform batch addition via nested lists,
@@ -90,4 +90,4 @@
 		var/procpath/verb_to_remove = thing
 		output_list[++output_list.len] = list(verb_to_remove.category, verb_to_remove.name)
 
-	//target.stat_panel.send_message("remove_verb_list", output_list)
+	target.stat_panel.send_message("remove_verb_list", output_list)

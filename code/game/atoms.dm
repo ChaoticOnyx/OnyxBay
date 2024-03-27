@@ -898,7 +898,7 @@ its easier to just keep the beam vertical.
 	if(isnull(target_or_list))
 		return
 
-	// _remove_verb_from_stat(target_or_list, verb_or_list_to_remove)
+	_remove_verb_from_stat(target_or_list, verb_or_list_to_remove)
 
 /// Advanced-use proc only! Handles verb removal from targets stat panel without tempering source's verbs.
 /atom/proc/_remove_verb_from_stat(target_or_list, verb_or_list_to_remove)
@@ -919,4 +919,4 @@ its easier to just keep the beam vertical.
 		if(!istype(target_client))
 			return
 
-//		target_client.stat_panel.send_message("remove_verb_list", output_list)
+		target_client.stat_panel.send_message("remove_verb_list", output_list)
