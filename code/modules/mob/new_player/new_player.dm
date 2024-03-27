@@ -188,7 +188,10 @@
 			observer.SetName(observer.real_name)
 			if(!client.holder && !config.ghost.allow_antag_hud)
 				revoke_verb(observer, /mob/observer/ghost/verb/toggle_antagHUD )
+
 			observer.key = key
+			observer.client?.init_verbs()
+
 			var/atom/movable/screen/splash/S = new(observer.client, TRUE)
 			S.Fade(TRUE, TRUE)
 			QDEL_NULL(mind)
@@ -588,6 +591,8 @@
 	new_character.regenerate_icons()
 
 	new_character.key = key		//Manually transfer the key to log them in
+	new_character.client?.init_verbs()
+
 	var/atom/movable/screen/splash/S = new(new_character.client, TRUE)
 	S.Fade(TRUE, TRUE)
 

@@ -35,6 +35,8 @@
 		user.mind.transfer_to(src)
 	else
 		key = user.key
+		client?.init_verbs()
+
 	updatename()
 	qdel(silicon_radio)
 	silicon_radio = new /obj/item/device/radio/headset/heads/ai_integrated(src)
@@ -95,6 +97,8 @@
 			mind.transfer_to(controlling_ai)
 		else
 			controlling_ai.key = key
+			controlling_ai.client?.init_verbs()
+
 		to_chat(controlling_ai, "<span class='notice'>[message]</span>")
 		controlling_ai.controlling_drone = null
 		controlling_ai = null

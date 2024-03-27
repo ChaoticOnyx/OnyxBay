@@ -209,6 +209,7 @@ Works together with spawning an observer, noted above.
 
 	hide_fullscreens()
 	ghost.key = key
+	ghost.client?.init_verbs()
 	ghost.can_reenter_corpse = can_reenter_corpse
 	ghost.timeofdeath = is_ooc_dead() ? src.timeofdeath : world.time
 
@@ -296,6 +297,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	mind.current.key = key
 	mind.current.teleop = null
 	mind.current.reload_fullscreen()
+	mind.current.client?.init_verbs()
 	if(isliving(mind.current))
 		var/mob/living/L = mind.current
 		L.handle_regular_hud_updates() // So we see a proper health icon and stuff
@@ -714,6 +716,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	client.screen.Cut()
 	var/mob/new_player/M = new /mob/new_player()
 	M.key = key
+	M.client?.init_verbs()
 	log_and_message_admins("has respawned.", M)
 
 /mob/observer/ghost/update_height_offset()
