@@ -17,6 +17,11 @@
 	drop_sound = SFX_DROP_RUBBER
 	pickup_sound = SFX_PICKUP_RUBBER
 
+	item_state_slots = list(
+		slot_l_hand_str = "ygloves",
+		slot_r_hand_str = "ygloves",
+		)
+
 /obj/item/clothing/gloves/insulated/cheap                             //Cheap Chinese Crap
 	desc = "These gloves are cheap copies of the coveted gloves, no way this can end badly."
 	name = "budget insulated gloves"
