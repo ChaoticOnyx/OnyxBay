@@ -18,7 +18,6 @@ if (!String.prototype.trim) {
 var status_tab_parts = ["Loading..."];
 var current_tab = null;
 var mc_tab_parts = [["Loading...", ""]];
-var href_token = null;
 var spells = [];
 var spell_tabs = [];
 var verb_tabs = [];
@@ -773,11 +772,7 @@ Byond.subscribeTo("create_listedturf", function (TN) {
 });
 
 Byond.subscribeTo("remove_admin_tabs", function () {
-  href_token = null;
   remove_mc();
-  remove_tickets();
-  remove_sdql2();
-  remove_interviews();
 });
 
 Byond.subscribeTo("update_listedturf", function (TC) {
