@@ -44,7 +44,7 @@
 	if(security_state.current_security_level == security_state.severe_security_level)
 		security_state.decrease_security_level(TRUE)
 	// Reset our verbs
-	src.verbs.Cut()
+	revoke_verb(src, verbs)
 	add_ai_verbs()
 	// Let them know.
 	if(loud)

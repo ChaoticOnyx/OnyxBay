@@ -235,7 +235,7 @@
 	loc.verbs += /obj/item/device/assembly_holder/timer_igniter/verb/configure
 
 /obj/item/device/assembly_holder/timer_igniter/detached()
-	loc.verbs -= /obj/item/device/assembly_holder/timer_igniter/verb/configure
+	remove_verb(loc.loc, /obj/item/device/assembly_holder/timer_igniter/verb/configure)
 	..()
 
 /obj/item/device/assembly_holder/timer_igniter/verb/configure()

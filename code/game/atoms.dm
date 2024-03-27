@@ -818,3 +818,65 @@ its easier to just keep the beam vertical.
 ///Return the values you get when an RCD eats you?
 /atom/proc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	return FALSE
+
+/**
+ * Adds a verb to the source object, updates mob/s stat panels if given any.
+ *
+ * Please, note that this proc is **DEPRECATED** and most functionality must be implemented
+ * without interacting with stat panel AKA using action buttons or hotkeys.
+ */
+/atom/proc/add_verb(list/mob/targets, list/procpath/verbs_to_add)
+	verbs += verbs_to_add
+
+	if(isnull(targets))
+		return
+
+	var/list/output_list = list()
+
+	if(!islist(verbs_to_add))
+		verbs_to_add = list(verbs_to_add)
+
+	for(var/procpath/verb_to_add as anything in verbs_to_add)
+		output_list[++output_list.len] = list(verb_to_add.category, verb_to_add.name)
+
+	if(!islist(targets))
+		targets = list(targets)
+
+	for(var/mob/target_mob in targets)
+		var/client/target_client = target_mob?.client
+
+		if(!istype(target_client))
+			return
+
+//		target_client.stat_panel.send_message("add_verb_list", output_list)
+
+/**
+ * Removes verb from the source object, updates mob stat panels if given any.
+ *
+ * Please, note that this proc is **DEPRECATED** and most functionality must be implemented
+ * without interacting with stat panel AKA using action buttons or hotkeys.
+ */
+/atom/proc/remove_verb(list/mob/targets, list/procpath/verbs_to_remove)
+	verbs -= verbs_to_remove
+
+	if(isnull(targets))
+		return
+
+	var/list/output_list = list()
+
+	if(!islist(verbs_to_remove))
+		verbs_to_remove = list(verbs_to_remove)
+
+	for(var/procpath/verb_to_remove as anything in verbs_to_remove)
+		output_list[++output_list.len] = list(verb_to_remove.category, verb_to_remove.name)
+
+	if(!islist(targets))
+		targets = list(targets)
+
+	for(var/mob/target_mob in targets)
+		var/client/target_client = target_mob?.client
+
+		if(!istype(target_client))
+			return
+
+//		target_client.stat_panel.send_message("remove_verb_list", output_list)
