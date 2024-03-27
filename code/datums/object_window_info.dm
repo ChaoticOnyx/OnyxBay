@@ -30,7 +30,7 @@
 
 /**
  * Takes an objects list, attempts to generate images and and notify client. Processes
- * untill all entries were handled.
+ * until all entries were handled.
  */
 /datum/object_window_info/Process()
 	// Cache the datum access for sonic speed
@@ -103,8 +103,8 @@
 		client.obj_window = new(client)
 
 	if(listed_turf)
-		//client.stat_panel.send_message("create_listedturf", listed_turf.name)
+		client.stat_panel.send_message("create_listedturf", listed_turf.name)
 		client.obj_window.start_turf_tracking()
 	else
-		//client.stat_panel.send_message("remove_listedturf")
+		client.stat_panel.send_message("remove_listedturf")
 		client.obj_window.stop_turf_tracking()
