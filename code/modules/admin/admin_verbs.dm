@@ -352,28 +352,47 @@ var/list/admin_verbs_mentor = list(
 	)
 
 /client/proc/add_admin_verbs()
-	if(holder)
-		verbs += admin_verbs_default
-		if(holder.rights & R_BUILDMODE)		verbs += /client/proc/togglebuildmodeself
-		if(holder.rights & R_ADMIN)			verbs += admin_verbs_admin
-		if(holder.rights & R_BAN)			verbs += admin_verbs_ban
-		if(holder.rights & R_FUN)			verbs += admin_verbs_fun
-		if(holder.rights & R_SERVER)		verbs += admin_verbs_server
-		if(holder.rights & R_DEBUG)
-			verbs += admin_verbs_debug
-			if(config.admin.debug_paranoid && !(holder.rights & R_ADMIN))
-				verbs.Remove(admin_verbs_paranoid_debug)			//Right now it's just callproc but we can easily add others later on.
-		if(holder.rights & R_POSSESS)		verbs += admin_verbs_possess
-		if(holder.rights & R_PERMISSIONS)	verbs += admin_verbs_permissions
-		if(holder.rights & R_STEALTH)		verbs += /client/proc/stealth
-		if(holder.rights & R_REJUVINATE)	verbs += admin_verbs_rejuv
-		if(holder.rights & R_SOUNDS)		verbs += admin_verbs_sounds
-		if(holder.rights & R_SPAWN)			verbs += admin_verbs_spawn
-		if(holder.rights & R_MOD)			verbs += admin_verbs_mod
-		if(holder.rights & R_MENTOR)		verbs += admin_verbs_mentor
+	if(isnull(holder))
+		return
+
+	var/list/verbs_to_add = list()
+
+	verbs_to_add += admin_verbs_default
+	if(holder.rights & R_BUILDMODE)
+		verbs_to_add += /client/proc/togglebuildmodeself
+	if(holder.rights & R_ADMIN)
+		verbs_to_add += admin_verbs_admin
+	if(holder.rights & R_BAN)
+		verbs_to_add += admin_verbs_ban
+	if(holder.rights & R_FUN)
+		verbs_to_add += admin_verbs_fun
+	if(holder.rights & R_SERVER)
+		verbs_to_add += admin_verbs_server
+	if(holder.rights & R_DEBUG)
+		verbs_to_add += admin_verbs_debug
+		if(config.admin.debug_paranoid && !(holder.rights & R_ADMIN))
+			verbs_to_add.Remove(admin_verbs_paranoid_debug)
+	if(holder.rights & R_POSSESS)
+		verbs_to_add += admin_verbs_possess
+	if(holder.rights & R_PERMISSIONS)
+		verbs_to_add += admin_verbs_permissions
+	if(holder.rights & R_STEALTH)
+		verbs_to_add += /client/proc/stealth
+	if(holder.rights & R_REJUVINATE)
+		verbs_to_add += admin_verbs_rejuv
+	if(holder.rights & R_SOUNDS)
+		verbs_to_add += admin_verbs_sounds
+	if(holder.rights & R_SPAWN)
+		verbs_to_add += admin_verbs_spawn
+	if(holder.rights & R_MOD)
+		verbs_to_add += admin_verbs_mod
+	if(holder.rights & R_MENTOR)
+		verbs_to_add += admin_verbs_mentor
+
+	grant_verb(src, verbs_to_add)
 
 /client/proc/remove_admin_verbs()
-	verbs.Remove(
+	revoke_verb(src, list(
 		admin_verbs_default,
 		/client/proc/togglebuildmodeself,
 		admin_verbs_admin,
@@ -387,15 +406,18 @@ var/list/admin_verbs_mentor = list(
 		admin_verbs_rejuv,
 		admin_verbs_sounds,
 		admin_verbs_spawn,
-		debug_verbs
-		)
+		debug_verbs,
+	))
 
 /client/proc/hide_most_verbs()//Allows you to keep some functionality while hiding some verbs
 	set name = "Adminverbs - Hide Most"
 	set category = "Admin"
 
-	verbs.Remove(/client/proc/hide_most_verbs, admin_verbs_hideable)
-	verbs += /client/proc/show_verbs
+	revoke_verb(src, list(
+		/client/proc/hide_most_verbs,
+		admin_verbs_hideable,
+	))
+	grant_verb(src, /client/proc/show_verbs)
 
 	to_chat(src, "<span class='interface'>Most of your adminverbs have been hidden.</span>")
 	feedback_add_details("admin_verb","HMV") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -406,7 +428,7 @@ var/list/admin_verbs_mentor = list(
 	set category = "Admin"
 
 	remove_admin_verbs()
-	verbs += /client/proc/show_verbs
+	grant_verb(src, /client/proc/show_verbs)
 
 	to_chat(src, "<span class='interface'>Almost all of your adminverbs have been hidden.</span>")
 	feedback_add_details("admin_verb","TAVVH") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -416,15 +438,11 @@ var/list/admin_verbs_mentor = list(
 	set name = "Adminverbs - Show"
 	set category = "Admin"
 
-	verbs -= /client/proc/show_verbs
+	revoke_verb(src, /client/proc/show_verbs)
 	add_admin_verbs()
 
 	to_chat(src, "<span class='interface'>All of your adminverbs are now visible.</span>")
 	feedback_add_details("admin_verb","TAVVS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-
-
-
 
 /client/proc/admin_ghost()
 	set category = "Admin"
