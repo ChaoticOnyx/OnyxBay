@@ -1127,7 +1127,8 @@
 	. = FALSE
 	ASSERT(H.client)
 
-	// TODO: add verbs direcrtly to the stat panel here
+	_add_verb_to_stat(H, verbs)
+
 	H.reset_view(src)
 	H.stop_pulling()
 	H.forceMove(src)
@@ -1276,7 +1277,7 @@
 /obj/mecha/proc/go_out()
 	if(!src.occupant) return
 
-	// TODO: remove verbs directly from stat panel here
+	_remove_verb_from_stat(occupant, verbs)
 
 	var/atom/movable/mob_container
 	var/list/onmob_items //prevents duplication of objects with which the human interacted in the mech

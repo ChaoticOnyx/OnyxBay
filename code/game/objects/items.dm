@@ -303,6 +303,7 @@
 		return
 
 	pickup(user, changing_slots)
+	_add_verb_to_stat(user, verbs)
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
@@ -356,6 +357,8 @@
 
 	if(!changing_slots && !istype(loc, /obj/item/clothing/accessory))
 		play_drop_sound()
+
+	_remove_verb_from_stat(user, verbs)
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
 
