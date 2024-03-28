@@ -16,18 +16,18 @@
 	if(health < -35 || emagged)
 		to_chat(user, "<span class='notice'><b>WARNING:</b> connection timed out.</span>")
 		return
-	
+
 	assume_control(user)
 
 /mob/living/silicon/robot/drone/proc/assume_control(mob/living/silicon/ai/user)
 	user.controlling_drone = src
 	controlling_ai = user
-	verbs += /mob/living/silicon/robot/drone/proc/release_ai_control_verb
-	verbs -= /mob/living/proc/ghost
+	grant_verb(src, /mob/living/silicon/robot/drone/proc/release_ai_control_verb)
+	revoke_verb(src, /mob/living/proc/ghost)
 	local_transmit = FALSE
 	languages = controlling_ai.languages.Copy()
 	add_language("Robot Talk", 1)
-	
+
 	default_language = all_languages[LANGUAGE_GALCOM]
 
 	stat = CONSCIOUS
@@ -35,6 +35,8 @@
 		user.mind.transfer_to(src)
 	else
 		key = user.key
+		client?.init_verbs()
+
 	updatename()
 	qdel(silicon_radio)
 	silicon_radio = new /obj/item/device/radio/headset/heads/ai_integrated(src)
@@ -95,12 +97,15 @@
 			mind.transfer_to(controlling_ai)
 		else
 			controlling_ai.key = key
+			controlling_ai.client?.init_verbs()
+
 		to_chat(controlling_ai, "<span class='notice'>[message]</span>")
 		controlling_ai.controlling_drone = null
 		controlling_ai = null
 
-	verbs -= /mob/living/silicon/robot/drone/proc/release_ai_control_verb
-	verbs += /mob/living/proc/ghost
+	revoke_verb(src, /mob/living/silicon/robot/drone/proc/release_ai_control_verb)
+	grant_verb(src, /mob/living/proc/ghost)
+
 	full_law_reset()
 	updatename()
 	death()

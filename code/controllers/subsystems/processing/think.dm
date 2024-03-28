@@ -12,20 +12,20 @@ SUBSYSTEM_DEF(think)
 	var/last_group = 1
 	var/next_possible_run = 0
 
-/datum/controller/subsystem/think/stat_entry()
-	var/msg = "G:("
+/datum/controller/subsystem/think/stat_entry(msg)
+	msg = "G:("
 
 	for(var/grp in contexts_groups)
 		msg += "[length(grp)],"
-	
+
 	msg += "), NR:("
 
 	for(var/next_run in next_group_run)
 		msg += "[next_run],"
-	
+
 	msg += ")"
 
-	..(msg)
+	return ..()
 
 /datum/controller/subsystem/think/fire(resumed = 0)
 	if(!resumed)
@@ -71,7 +71,7 @@ SUBSYSTEM_DEF(think)
 
 		if (MC_TICK_CHECK)
 			return
-	
+
 	if(next_possible_run != 0)
 		if(next_group_run[last_group] == 0)
 			next_group_run[last_group] = next_possible_run

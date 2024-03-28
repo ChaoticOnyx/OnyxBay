@@ -42,11 +42,11 @@ var/list/admin_datums = list()
 		owner.holder = src
 		owner.add_admin_verbs()	//TODO
 		GLOB.admins |= C
-		
+
 /datum/admins/proc/disassociate()
 	if(owner)
 		GLOB.admins -= owner
-		GLOB.deadmined_list |= src 
+		GLOB.deadmined_list |= src
 		owner.remove_admin_verbs()
 		owner.deadmin_holder = owner.holder
 		owner.holder = null
@@ -54,7 +54,7 @@ var/list/admin_datums = list()
 /datum/admins/proc/reassociate()
 	if(owner)
 		GLOB.admins += owner
-		GLOB.deadmined_list -= src 
+		GLOB.deadmined_list -= src
 		owner.holder = src
 		owner.deadmin_holder = null
 		owner.add_admin_verbs()
@@ -111,14 +111,11 @@ NOTE: It checks usr by default. Supply the "user" argument if you wish to check 
 		//qdel(holder)
 	return 1
 
-/mob/Stat()
+/mob/get_status_tab_items()
 	. = ..()
-	if(!client)
-		return
 
-	var/stealth_status = client.is_stealthed()
-	if(stealth_status && statpanel("Status"))
-		stat("Stealth", "Engaged [client.holder.stealthy_ == STEALTH_AUTO ? "(Auto)" : "(Manual)"]")
+	if(client?.is_stealthed())
+		. += "Stealth: Engaged [client.holder.stealthy_ == STEALTH_AUTO ? "(Auto)" : "(Manual)"]"
 
 /client/proc/is_stealthed()
 	if(!holder)

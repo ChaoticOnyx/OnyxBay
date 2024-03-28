@@ -2,19 +2,27 @@
 
 /datum/antagonist/cultist/proc/add_ghost_magic(mob/observer/ghost/M)
 	if(max_cult_rating >= CULT_GHOSTS_1)
-		M.verbs += /mob/observer/ghost/proc/flick_lights
-		M.verbs += /mob/observer/ghost/proc/bloody_doodle
-		M.verbs += /mob/observer/ghost/proc/shatter_glass
-		M.verbs += /mob/observer/ghost/proc/slice
-		if(max_cult_rating >= CULT_GHOSTS_2)
-			M.verbs += /mob/observer/ghost/proc/move_item
-			M.verbs += /mob/observer/ghost/proc/whisper_to_cultist
-			M.verbs += /mob/observer/ghost/proc/bite_someone
-			M.verbs += /mob/observer/ghost/proc/chill_someone
-			if(max_cult_rating >= CULT_GHOSTS_3)
-				M.verbs += /mob/observer/ghost/proc/whisper_to_anyone
-				M.verbs += /mob/observer/ghost/proc/bloodless_doodle
-				M.verbs += /mob/observer/ghost/proc/toggle_visiblity
+		grant_verb(M, list(
+			/mob/observer/ghost/proc/flick_lights,
+			/mob/observer/ghost/proc/bloody_doodle,
+			/mob/observer/ghost/proc/shatter_glass,
+			/mob/observer/ghost/proc/slice,
+		))
+
+	if(max_cult_rating >= CULT_GHOSTS_2)
+		grant_verb(M, list(
+			/mob/observer/ghost/proc/move_item,
+			/mob/observer/ghost/proc/whisper_to_cultist,
+			/mob/observer/ghost/proc/bite_someone,
+			/mob/observer/ghost/proc/chill_someone,
+		))
+
+	if(max_cult_rating >= CULT_GHOSTS_3)
+		grant_verb(M, list(
+			/mob/observer/ghost/proc/whisper_to_anyone,
+			/mob/observer/ghost/proc/bloodless_doodle,
+			/mob/observer/ghost/proc/toggle_visiblity,
+		))
 
 /mob/observer/ghost/proc/ghost_ability_check()
 	var/turf/T = get_turf(src)
@@ -146,7 +154,7 @@
 	for(var/obj/item/I in range(1))
 		if(I.w_class <= 2)
 			choices += I
-	
+
 	choices -= ghost_multitool
 	if(!choices.len)
 		to_chat(src, "<span class='warning'>There are no suitable items nearby.</span>")

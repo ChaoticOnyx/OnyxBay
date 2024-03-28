@@ -1,7 +1,6 @@
 #define PROGRESSBAR_ICON_HEIGHT 7
 
-/client
-	var/list/progressbars = list()
+/client/var/list/progressbars = list()
 
 /datum/progressbar
 	var/goal = 1

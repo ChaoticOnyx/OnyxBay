@@ -93,14 +93,14 @@
 	html = replacetextEx(html, "<!-- tgui:assets -->\n", assets_str)
 	// Inject inline HTML
 	if (inline_html)
-		html = replacetextEx(html, "<!-- tgui:inline-html -->", inline_html)
+		html = replacetextEx(html, "<!-- tgui:inline-html -->", isfile(inline_html) ? file2text(inline_html) : inline_html)
 	// Inject inline JS
 	if (inline_js)
-		inline_js = "<script>\n[inline_js]\n</script>"
+		inline_js = "<script>\n'use strict';\n[isfile(inline_js) ? file2text(inline_js) : inline_js]\n</script>"
 		html = replacetextEx(html, "<!-- tgui:inline-js -->", inline_js)
 	// Inject inline CSS
 	if (inline_css)
-		inline_css = "<style>\n[inline_css]\n</style>"
+		inline_css = "<style>\n[isfile(inline_css) ? file2text(inline_css) : inline_css]\n</style>"
 		html = replacetextEx(html, "<!-- tgui:inline-css -->", inline_css)
 	// Open the window
 	client << browse(html, "window=[id];[options]")
@@ -109,6 +109,23 @@
 	// Instruct the client to signal UI when the window is closed.
 	if(!is_browser)
 		winset(client, id, "on-close=\"tguiclose [id]\"")
+
+/**
+ * public
+ *
+ * Reinitializes the panel with previous data used for initialization.
+ */
+/datum/tgui_window/proc/reinitialize()
+	initialize(
+		fancy = initial_fancy,
+		assets = initial_assets,
+		inline_html = initial_inline_html,
+		inline_js = initial_inline_js,
+		inline_css = initial_inline_css
+		)
+	// Resend the assets
+	for(var/asset in sent_assets)
+		send_asset(asset)
 
 /**
  * public
@@ -327,13 +344,4 @@
 		if("openLink")
 			client << link(href_list["url"])
 		if("cacheReloaded")
-			// Reinitialize
-			initialize(
-				fancy = initial_fancy,
-				assets = initial_assets,
-				inline_html = initial_inline_html,
-				inline_js = initial_inline_js,
-				inline_css = initial_inline_css)
-			// Resend the assets
-			for(var/asset in sent_assets)
-				send_asset(asset)
+			reinitialize()

@@ -160,8 +160,10 @@
 /mob/living/simple_animal/familiar/pet/mouse/New()
 	..()
 
-	verbs += /mob/living/proc/ventcrawl
-	verbs += /mob/living/proc/hide
+	grant_verb(src, list(
+		/mob/living/proc/ventcrawl,
+		/mob/living/proc/hide,
+	))
 
 /mob/living/simple_animal/familiar/pet/cat
 	name = "black cat"

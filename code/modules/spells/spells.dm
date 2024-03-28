@@ -1,20 +1,31 @@
 /datum/mind
 	var/list/learned_spells = list()
 
-/mob/Stat()
+/mob/get_actions_for_statpanel()
 	. = ..()
-	if(. && ability_master?.spell_objects)
+
+	if(ability_master?.spell_objects)
 		for(var/atom/movable/screen/ability/spell/screen in ability_master.spell_objects)
 			var/datum/spell/S = screen.spell
-			if((!S.connected_button) || !statpanel(S.panel))
-				continue //Not showing the noclothes spell
+
+			if(!S.connected_button)
+				continue
+
+			var/displayed_name
 			switch(S.charge_type)
 				if(SP_RECHARGE)
-					statpanel(S.panel, "[S.charge_counter/10.0]/[S.charge_max/10]", S.connected_button)
+					displayed_name = "[S.name] [S.charge_counter/10.0]/[S.charge_max/10]"
 				if(SP_CHARGES)
-					statpanel(S.panel, "[S.charge_counter]/[S.charge_max]", S.connected_button)
+					displayed_name = "[S.name] [S.charge_counter]/[S.charge_max]"
 				if(SP_HOLDVAR)
-					statpanel(S.panel, "[S.holder_var_type] [S.holder_var_amount]", S.connected_button)
+					displayed_name = "[S.name] [S.holder_var_type] [S.holder_var_amount]"
+
+			. += list(list(
+				S.panel,
+				"",
+				displayed_name,
+				ref(S.connected_button),
+			))
 
 /proc/restore_spells(mob/H)
 	if(!H.mind?.learned_spells)

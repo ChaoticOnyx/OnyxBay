@@ -243,8 +243,6 @@
 			return global.chemical_reactions_list;
 		if("church_name")
 			return global.church_name;
-		if("client_preference_stats_")
-			return global.client_preference_stats_;
 		if("client_repository")
 			return global.client_repository;
 		if("combatlog")
@@ -1056,8 +1054,6 @@
 			global.chemical_reactions_list=newval;
 		if("church_name")
 			global.church_name=newval;
-		if("client_preference_stats_")
-			global.client_preference_stats_=newval;
 		if("client_repository")
 			global.client_repository=newval;
 		if("combatlog")
@@ -1759,7 +1755,6 @@
 	"chemical_reactions_list",
 	"chicken_count",
 	"church_name",
-	"client_preference_stats_",
 	"client_repository",
 	"combatlog",
 	"comm_message_listeners",

@@ -52,9 +52,12 @@
 
 /mob/observer/ghost/Initialize()
 	see_in_dark = 100
-	verbs += /mob/proc/toggle_antag_pool
-	verbs += /mob/proc/join_as_actor
-	verbs += /mob/proc/join_response_team
+
+	grant_verb(src, list(
+		/mob/proc/toggle_antag_pool,
+		/mob/proc/join_as_actor,
+		/mob/proc/join_response_team,
+	))
 
 	var/turf/T
 	if(ismob(loc))
@@ -206,11 +209,12 @@ Works together with spawning an observer, noted above.
 
 	hide_fullscreens()
 	ghost.key = key
+	ghost.client?.init_verbs()
 	ghost.can_reenter_corpse = can_reenter_corpse
 	ghost.timeofdeath = is_ooc_dead() ? src.timeofdeath : world.time
 
 	if(!ghost.client?.holder && !config.ghost.allow_antag_hud)
-		ghost.verbs -= /mob/observer/ghost/verb/toggle_antagHUD
+		revoke_verb(ghost, /mob/observer/ghost/verb/toggle_antagHUD)
 
 	if(ghost.client)
 		ghost.updateghostprefs()
@@ -278,14 +282,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/is_active()
 	return 0
 
-/mob/observer/ghost/Stat()
-	. = ..()
-	if(statpanel("Status"))
-		if(evacuation_controller)
-			var/eta_status = evacuation_controller.get_status_panel_eta()
-			if(eta_status)
-				stat(null, eta_status)
-
 /mob/observer/ghost/verb/reenter_corpse()
 	set category = "Ghost"
 	set name = "Re-enter Corpse"
@@ -301,6 +297,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	mind.current.key = key
 	mind.current.teleop = null
 	mind.current.reload_fullscreen()
+	mind.current.client?.init_verbs()
 	if(isliving(mind.current))
 		var/mob/living/L = mind.current
 		L.handle_regular_hud_updates() // So we see a proper health icon and stuff
@@ -719,6 +716,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	client.screen.Cut()
 	var/mob/new_player/M = new /mob/new_player()
 	M.key = key
+	M.client?.init_verbs()
 	log_and_message_admins("has respawned.", M)
 
 /mob/observer/ghost/update_height_offset()
