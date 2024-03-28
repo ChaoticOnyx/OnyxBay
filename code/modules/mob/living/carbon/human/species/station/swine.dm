@@ -69,3 +69,15 @@
 	if(H.nutrition < 50)
 		H.adjustToxLoss(2, 0)
 		return
+
+/datum/species/swine/handle_damage(mob/living/carbon/human/H, damage_flags, obj/used_weapon, obj/item/organ/external/organ)
+	if(H.is_ic_dead() || !organ.can_feel_pain())
+		return
+
+	var/obj/item/organ/internal/lungs/L = H.internal_organs_by_name[H.species.breathing_organ]
+	if(L.is_broken() || L.breath_fail_ratio > 0.9)
+		return
+
+	if(!damage_flags && used_weapon != "Low Pressure")
+		H.audible_emote("grunts!")
+		playsound(H.loc, GET_SFX(SFX_TROTTINE_GRUNT), 100, TRUE)
