@@ -127,9 +127,6 @@
 		layer = OBJ_LAYER
 
 	if(buckled_mob)
-		if(buckled_mob.loc != loc)
-			buckled_mob.buckled = null //Temporary, so Move() succeeds.
-			buckled_mob.buckled = src //Restoring
 		update_mob(buckled_mob)
 
 /obj/structure/bed/chair/pedalgen/rotate_counter(mob/user)
@@ -140,9 +137,6 @@
 		layer = OBJ_LAYER
 
 	if(buckled_mob)
-		if(buckled_mob.loc != loc)
-			buckled_mob.buckled = null //Temporary, so Move() succeeds.
-			buckled_mob.buckled = src //Restoring
 		update_mob(buckled_mob)
 
 /obj/structure/bed/chair/pedalgen/on_update_icon()
