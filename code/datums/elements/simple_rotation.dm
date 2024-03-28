@@ -42,6 +42,8 @@
 
 /atom/proc/rotate(mob/user)
 	set name = "Rotate Clockwise"
+	set category = "Object"
+	set src in oview(1)
 
 	if(!is_rotatable())
 		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor and can't be rotated!")
@@ -54,6 +56,8 @@
 
 /atom/proc/rotate_counter(mob/user)
 	set name = "Rotate Counterclockwise"
+	set category = "Object"
+	set src in oview(1)
 
 	if(!is_rotatable())
 		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor and can't be rotated!")
