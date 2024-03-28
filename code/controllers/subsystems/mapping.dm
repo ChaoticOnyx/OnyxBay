@@ -6,6 +6,9 @@ SUBSYSTEM_DEF(mapping)
 	var/list/map_templates = list()
 	var/list/holodeck_templates = list()
 
+	///All possible biomes in assoc list as type || instance
+	var/list/biomes = list()
+
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	preloadTemplates()
 	preloadHolodeckTemplates()

@@ -25,6 +25,9 @@
 /// From base of atom/proc/Initialize(): sent any time a new atom is created in this atom
 #define SIGNAL_ATOM_INITIALIZED_ON "atom_initialized_on"
 
+/// Called on `/atom/movable/proc/handle_fall` (turf)
+#define SIGNAL_ATOM_FALL "atom_fall"
+
 /// Called on 'atom/Move' (/atom, old_turf, new_turf)
 #define SIGNAL_Z_CHANGED "movable_z_changed"
 

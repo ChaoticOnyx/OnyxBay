@@ -73,7 +73,7 @@
 	for (var/i in turfs)
 		var/turf/T = i
 		T.post_change()
-		if(template_flags & TEMPLATE_FLAG_NO_RUINS)
+		if(template_flags & TEMPLATE_FLAG_TURF_FLAG_NORUINS)
 			T.turf_flags |= TURF_FLAG_NORUINS
 
 /datum/map_template/proc/init_shuttles()

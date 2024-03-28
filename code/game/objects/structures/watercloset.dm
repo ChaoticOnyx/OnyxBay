@@ -478,6 +478,19 @@
 	for(var/mob/V in viewers(src, null))
 		V.show_message("<span class='notice'>[user] washes their hands using \the [src].</span>")
 
+/obj/structure/sink/ShiftClick(mob/user)
+	. = ..()
+	var/obj/O = user.get_active_hand()
+	if(istype(O, /obj/item/mop))
+		if(O.reagents.total_volume == 0)
+			to_chat(user, "<span class='warning'>[O] is dry, you can't squeeze anything out!</span>")
+			return
+		if(reagents.total_volume == reagents.maximum_volume)
+			to_chat(user, "<span class='warning'>[src] is full!</span>")
+			return
+		O.reagents.remove_any(O.reagents.total_volume * SQUEEZING_DISPERSAL_RATIO)
+		O.reagents.trans_to(src, O.reagents.total_volume)
+		to_chat(user, "<span class='notice'>You squeeze the liquids from [O] to [src].</span>")
 
 /obj/structure/sink/attackby(obj/item/O as obj, mob/living/user as mob)
 	if(busy)

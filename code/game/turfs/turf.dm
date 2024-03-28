@@ -38,6 +38,8 @@
 	var/changing_turf
 
 	var/footstep_sound = SFX_FOOTSTEP_PLATING
+	///list of turfs adjacent to us that air can flow onto
+	var/list/atmos_adjacent_turfs
 
 	var/turf_height = 0 // "Vertical" offset. Mostly used for mobs and dropped items.
 
@@ -57,6 +59,7 @@
 		luminosity = 1
 
 	RecalculateOpacity()
+	get_atmos_adjacent_turfs()
 
 /turf/Destroy()
 	if(!changing_turf)

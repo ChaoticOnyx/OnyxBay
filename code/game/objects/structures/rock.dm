@@ -9,18 +9,20 @@
 	var/list/iconlist = list("asteroid_bigstone1","asteroid_bigstone2","asteroid_bigstone3","asteroid_bigstone4")
 	var/health = 40
 	var/last_act = 0
+	var/harvest_amount_low = 2
+	var/harvest_amount_high = 6
+	var/mineralSpawnChanceList = list(uranium = 10, osmium = 10, iron = 20, coal = 20, diamond = 2, gold = 10, silver = 10, plasma = 20)
 
 /obj/structure/rock/New()
 	..()
 	icon_state = pick(iconlist)
 
 /obj/structure/rock/Destroy()
-	var/mineralSpawnChanceList = list(uranium = 10, osmium = 10, iron = 20, coal = 20, diamond = 2, gold = 10, silver = 10, plasma = 20)
 	if(prob(20))
 		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
 		var/ore = text2path("/obj/item/ore/[mineral_name]")
-		for(var/i=1,i <= rand(2,6),i++)
+		for(var/i=1,i <= rand(harvest_amount_low, harvest_amount_high),i++)
 			new ore(get_turf(src))
 	return ..()
 
