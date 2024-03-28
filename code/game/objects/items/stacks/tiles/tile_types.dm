@@ -11,6 +11,7 @@
 	name = "tile"
 	singular_name = "tile"
 	desc = "A non-descript floor tile."
+	item_state = "tile"
 	randpixel = 7
 	w_class = ITEM_SIZE_NORMAL
 	max_amount = 100
@@ -34,6 +35,7 @@
 	singular_name = "grass floor tile"
 	desc = "A patch of grass like they often use on golf courses."
 	icon_state = "tile_grass"
+	item_state = "tile_grass"
 	origin_tech = list(TECH_BIO = 1)
 
 	drop_sound = SFX_DROP_HERB
@@ -47,6 +49,7 @@
 	singular_name = "wood floor tile"
 	desc = "An easy to fit wooden floor tile."
 	icon_state = "tile-wood"
+	item_state = "tile_wood"
 
 	drop_sound = SFX_DROP_WOODEN
 	pickup_sound = SFX_PICKUP_WOODEN
@@ -64,6 +67,7 @@
 	singular_name = "darkwood floor tile"
 	desc = "An easy to fit darkwood floor tile."
 	icon_state = "tile-darkwood"
+	item_state = "tile_wood"
 	stacktype = /obj/item/stack/tile/darkwood
 	build_type = /obj/item/stack/tile/darkwood
 

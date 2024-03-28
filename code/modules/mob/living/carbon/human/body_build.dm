@@ -44,17 +44,20 @@ var/global/datum/body_build/default_body_build = new
 
 /datum/body_build/proc/get_mob_icon(slot, icon_state)
 	var/icon/I
+
 	if(!(slot in default_onmob_slots))
 		to_world_log("##ERROR. Wrong sprite group for mob icon \"[slot]\"")
 		return I // Nonexistent slot, just give 'em an empty icon
+
 	for(var/datum/body_build/BB in list(src, default_body_build))
-		switch(slot)
-			if(slot_handcuffed_str, slot_legcuffed_str)
-				I = BB.misk_icon
-			else
-				I = BB.clothing_icons[slot]
+		if(slot == slot_handcuffed_str || slot == slot_legcuffed_str)
+			I = BB.misk_icon
+		else
+			I = BB.clothing_icons[slot]
+
 		if(icon_state in GLOB.bb_clothing_icon_states[BB.type][slot])
 			break
+
 	return I
 
 /datum/body_build/slim

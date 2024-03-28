@@ -916,21 +916,30 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		user_human = user_mob
 
 	var/mob_state = get_icon_state(slot)
+	if(isnull(mob_state))
+		// No way to get a mob_state whatsoever, most likely the item has no base icon and is entirely made of overlays (i.e. bodyparts).
+		return
 
 	var/mob_icon
 
 	if(icon_override)
 		mob_icon = icon_override
-		if(slot == 	slot_l_hand_str || slot == slot_l_ear_str)
+
+		if(slot == slot_l_hand_str || slot == slot_l_ear_str)
 			mob_state = "[mob_state]_l"
-		if(slot == 	slot_r_hand_str || slot == slot_r_ear_str)
+
+		if(slot == slot_r_hand_str || slot == slot_r_ear_str)
 			mob_state = "[mob_state]_r"
+
 	else
 		if(item_icons && item_icons[slot])
 			mob_icon = item_icons[slot]
+
 		else if(user_human?.body_build)
 			mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
+
 		else
+			// Couldn't find no icon to use, aborting.
 			return
 
 	var/image/ret_overlay
@@ -971,8 +980,8 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 						for(var/shift_facing in shifts)
 							var/list/facing_list = shifts[shift_facing]
 							final_I = dir_shift(final_I, text2dir(shift_facing), facing_list["x"], facing_list["y"])
-					ret_overlay = overlay_image(final_I, color, flags = RESET_COLOR)
 
+					ret_overlay = overlay_image(final_I, null, color, flags = RESET_COLOR)
 					user_human.body_build.equip_overlays[image_key] = ret_overlay
 
 			else
@@ -987,8 +996,8 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 						for(var/shift_facing in shifts)
 							var/list/facing_list = shifts[shift_facing]
 							main_icon = dir_shift(main_icon, text2dir(shift_facing), facing_list["x"], facing_list["y"])
-					ret_overlay = overlay_image(main_icon, color, flags = RESET_COLOR)
 
+					ret_overlay = overlay_image(main_icon, null, color, flags = RESET_COLOR)
 					user_human.body_build.equip_overlays[image_key] = ret_overlay
 
 				ret_list += ret_overlay
@@ -1002,14 +1011,14 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 						for(var/shift_facing in shifts)
 							var/list/facing_list = shifts[shift_facing]
 							back_icon = dir_shift(back_icon, text2dir(shift_facing), facing_list["x"], facing_list["y"])
-					ret_overlay = overlay_image(back_icon, color, flags = RESET_COLOR)
 
+					ret_overlay = overlay_image(back_icon, null, color, flags = RESET_COLOR)
 					user_human.body_build.equip_overlays[image_key] = ret_overlay
 
 				ret_list += ret_overlay
 
 	if(use_list && !length(ret_list))
-		ret_list = list(overlay_image(main_icon, color, flags = RESET_COLOR), overlay_image(back_icon, color, flags = RESET_COLOR))
+		ret_list = list(overlay_image(main_icon, null, color, flags = RESET_COLOR), overlay_image(back_icon, null, color, flags = RESET_COLOR))
 
 	return use_list ? ret_list : ret_overlay
 
