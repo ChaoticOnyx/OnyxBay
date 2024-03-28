@@ -297,6 +297,10 @@
 	return
 
 /mob/living/carbon/throw_item(atom/target)
+	THROTTLE(cooldown, 0.2 SECONDS)
+	if(!cooldown)
+		return
+
 	throw_mode_off()
 	if(!isturf(loc))
 		return
