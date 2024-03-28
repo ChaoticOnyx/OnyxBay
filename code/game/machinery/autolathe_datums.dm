@@ -88,6 +88,11 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	path = /obj/item/glass_jar
 	category = "General"
 
+/datum/autolathe/recipe/coffeepot
+	name = "coffeepot"
+	path = /obj/item/reagent_containers/vessel/coffeepot
+	category = "General"
+
 /datum/autolathe/recipe/crowbar
 	name = "crowbar"
 	path = /obj/item/crowbar
@@ -611,7 +616,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 
 /datum/autolathe/recipe/rcd
 	name = "rapid construction device"
-	path = /obj/item/rcd
+	path = /obj/item/construction/rcd
 	hidden = 1
 	category = "Engineering"
 

@@ -18,9 +18,15 @@
 	var/dpdir = 0	// directions as disposalpipe
 	var/base_state = "pipe-s"
 
-/obj/structure/disposalconstruct/Initialize()
-	update_verbs()
+/obj/structure/disposalconstruct/Initialize(mapload, pipe_type, pipe_subtype)
 	. = ..()
+	if(pipe_type)
+		ptype = pipe_type
+
+	if(pipe_subtype)
+		subtype = pipe_subtype
+
+	update_verbs()
 
 /obj/structure/disposalconstruct/proc/update_verbs()
 	if(anchored)
@@ -55,16 +61,19 @@
 		if(5)
 			base_state = "pipe-t"
 			dpdir = dir
+			set_density(TRUE)
 		 // disposal bin has only one dir, thus we don't need to care about setting it
 		if(6)
 			if(anchored)
 				base_state = "disposal"
 			else
 				base_state = "condisposal"
+			set_density(TRUE)
 
 		if(7)
 			base_state = "outlet"
 			dpdir = dir
+			set_density(TRUE)
 
 		if(8)
 			base_state = "intake"
@@ -283,58 +292,57 @@
 
 	else if(isWelder(I))
 		if(anchored)
-			var/obj/item/weldingtool/W = I
-			if(W.remove_fuel(0,user))
-				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
-				to_chat(user, "Welding the [nicetype] in place.")
-				if(do_after(user, 20, src))
-					if(!src || !W.isOn()) return
-					to_chat(user, "The [nicetype] has been welded in place!")
-					update() // TODO: Make this neat
-					if(ispipe) // Pipe
-
-						var/pipetype = dpipetype()
-						var/obj/structure/disposalpipe/P = new pipetype(src.loc)
-						src.transfer_fingerprints_to(P)
-						P.base_icon_state = base_state
-						P.set_dir(dir)
-						P.dpdir = dpdir
-						P.update_icon()
-
-						//Needs some special treatment ;)
-						if(ptype == 5)
-							var/obj/structure/disposalpipe/trunk/TrunkP = P
-							TrunkP.getlinked()
-						else if(ptype == 9 || ptype == 10)
-							var/obj/structure/disposalpipe/sortjunction/SortP = P
-							SortP.sortType = sortType
-							SortP.updatedir()
-							SortP.updatedesc()
-							SortP.updatename()
-
-					else if(ptype==6) // Disposal bin
-						var/obj/machinery/disposal/P = new /obj/machinery/disposal(src.loc)
-						src.transfer_fingerprints_to(P)
-
-					else if(ptype==7) // Disposal outlet
-
-						var/obj/structure/disposaloutlet/P = new /obj/structure/disposaloutlet(src.loc)
-						src.transfer_fingerprints_to(P)
-						P.set_dir(dir)
-						var/obj/structure/disposalpipe/trunk/Trunk = CP
-						Trunk.linked = P
-
-					else if(ptype==8) // Disposal outlet
-
-						var/obj/machinery/disposal/deliveryChute/P = new /obj/machinery/disposal/deliveryChute(src.loc)
-						src.transfer_fingerprints_to(P)
-						P.set_dir(dir)
-
-					qdel(src)
-					return
-			else
-				to_chat(user, "You need more welding fuel to complete this task.")
+			var/obj/item/weldingtool/WT = I
+			to_chat(user, "Welding the [nicetype] in place.")
+			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 				return
+
+			if(QDELETED(src) || !user)
+				return
+
+			to_chat(user, "The [nicetype] has been welded in place!")
+			update() // TODO: Make this neat
+			if(ispipe) // Pipe
+				var/pipetype = dpipetype()
+				var/obj/structure/disposalpipe/P = new pipetype(src.loc)
+				src.transfer_fingerprints_to(P)
+				P.base_icon_state = base_state
+				P.set_dir(dir)
+				P.dpdir = dpdir
+				P.update_icon()
+
+				//Needs some special treatment ;)
+				if(ptype == 5)
+					var/obj/structure/disposalpipe/trunk/TrunkP = P
+					TrunkP.getlinked()
+				else if(ptype == 9 || ptype == 10)
+					var/obj/structure/disposalpipe/sortjunction/SortP = P
+					SortP.sortType = sortType
+					SortP.updatedir()
+					SortP.updatedesc()
+					SortP.updatename()
+
+			else if(ptype==6) // Disposal bin
+				var/obj/machinery/disposal/P = new /obj/machinery/disposal(src.loc)
+				src.transfer_fingerprints_to(P)
+
+			else if(ptype==7) // Disposal outlet
+
+				var/obj/structure/disposaloutlet/P = new /obj/structure/disposaloutlet(src.loc)
+				src.transfer_fingerprints_to(P)
+				P.set_dir(dir)
+				var/obj/structure/disposalpipe/trunk/Trunk = CP
+				Trunk.linked = P
+
+			else if(ptype==8) // Disposal outlet
+
+				var/obj/machinery/disposal/deliveryChute/P = new /obj/machinery/disposal/deliveryChute(src.loc)
+				src.transfer_fingerprints_to(P)
+				P.set_dir(dir)
+
+			qdel(src)
+			return
+
 		else
 			to_chat(user, "You need to attach it to the plating first!")
 			return

@@ -197,7 +197,7 @@
 		return
 	if(!L.mind)
 		return
-	if((L.mind.vampire && !(L.mind.vampire.status & VAMP_ISTHRALL)) || is_species(L, /datum/species/golem/runic))
+	if((L.mind.vampire && !(L.mind.vampire.vamp_status & VAMP_ISTHRALL)) || is_species(L, /datum/species/golem/runic))
 		L.adjust_fire_stacks(amount / 15)
 		L.IgniteMob()
 

@@ -66,6 +66,15 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/weapons/gun/casing_drop6.ogg',
 		'sound/effects/weapons/gun/casing_drop7.ogg'
 	),
+	SFX_792_FIRE = list(
+		'sound/effects/weapons/gun/fire_792.ogg'
+	),
+	SFX_792_BOLT_BACK = list(
+		'sound/effects/weapons/gun/bolt_back_2.ogg'
+	),
+	SFX_792_BOLT_FORWARD = list(
+		'sound/effects/weapons/gun/bolt_forward_2.ogg'
+	),
 	// FEMALE EMOTES
 	SFX_FEMALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/f_internalb1.ogg'
@@ -516,6 +525,14 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/jungle/junglethunder2.ogg',
 		'sound/ambient/jungle/junglethunder1.ogg',
 	),
+	SFX_AMBIENT_DESERT = list(
+		'sound/effects/wind/wind_2_1.ogg',
+		'sound/effects/wind/wind_2_2.ogg',
+		'sound/effects/wind/wind_3_1.ogg',
+		'sound/effects/wind/wind_4_1.ogg',
+		'sound/effects/wind/wind_4_2.ogg',
+		'sound/effects/wind/wind_5_1.ogg'
+	),
 	// AMBIENT MUSIC
 	SFX_AMBIENT_MUSIC_NORMAL = list(
 		'sound/ambient_music/normal_1.ogg',
@@ -601,6 +618,15 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_AMBIENT_MUSIC_CENTCOMM = list(
 		'sound/ambient_music/centcomm_1.ogg',
+	),
+	SFX_AMBIENT_MUSIC_THUNDERDOME = list(
+		'sound/music/THUNDERDOME.ogg'
+	),
+	SFX_AMBIENT_MUSIC_PICNIC = list(
+		'sound/music/classic/title2.ogg'
+	),
+	SFX_AMBIENT_MUSIC_COURT = list(
+		'sound/music/classic/traitor.ogg'
 	),
 	// ITEMS USING
 	SFX_USE_HANDCUFFS = list(
@@ -1629,6 +1655,16 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/geiger/geiger_very_high_1.ogg',
 		'sound/effects/geiger/geiger_very_high_2.ogg'
 	),
+	SFX_WELDING = list(
+		'sound/items/Welder.ogg',
+		'sound/items/Welder2.ogg'
+	),
+	SFX_WELDER_ACTIVATE = list(
+		'sound/effects/welderactivate.ogg'
+	),
+	SFX_WELDER_DEACTIVATE = list(
+		'sound/effects/welderdeactivate.ogg'
+	),
 	// FOOTSTEPS
 	SFX_DISTANT_MOVEMENT = list(
 		'sound/effects/footstep/distant/distant1.ogg',
@@ -1745,5 +1781,14 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_VENDING_GENERIC = list(
 		'sound/effects/using/disposal/drop2.ogg'
-	)
+	),
+	SFX_LIGHT_TUBE_ON = list(
+		'sound/machines/sound_effects_light_on.ogg'
+	),
+	SFX_LIGHT_BULB_ON = list(
+		'sound/machines/lightson.ogg'
+	),
+	SFX_LIGHT_BURNOUT = list(
+		'sound/machines/lightsburnout.ogg'
+	),
 ))

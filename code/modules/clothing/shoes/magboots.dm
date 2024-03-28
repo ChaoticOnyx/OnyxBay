@@ -27,6 +27,11 @@
 	drop_sound = SFX_DROP_BOOTS
 	pickup_sound = SFX_PICKUP_BOOTS
 
+	item_state_slots = list(
+		slot_l_hand_str = "magboots",
+		slot_r_hand_str = "magboots",
+		)
+
 /obj/item/clothing/shoes/magboots/proc/set_slowdown()
 	slowdown_per_slot[slot_shoes] = shoes? max(0, shoes.slowdown_per_slot[slot_shoes]): 0	//So you can't put on magboots to make you walk faster.
 	if (magpulse)

@@ -20,15 +20,6 @@
 	name = "Carp Pack"
 	icon_state = "landmark_carp"
 
-/obj/effect/landmark/event/other/holodeck/atmos
-	name = "Atmospheric Test Start"
-
-/obj/effect/landmark/event/other/holodeck/carps
-	name = "Holocarp Spawn"
-
-/obj/effect/landmark/event/other/holodeck/randcarps
-	name ="Holocarp Spawn Random"
-
 // Centcom teleports
 /obj/effect/landmark/event/centcom/enter
 	name = "Marauder Entry"

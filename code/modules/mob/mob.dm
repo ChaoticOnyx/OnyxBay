@@ -19,6 +19,7 @@
 	QDEL_NULL(ability_master)
 	QDEL_NULL(shadow)
 	QDEL_NULL(bugreporter)
+	QDEL_NULL(language_menu)
 
 	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
@@ -81,6 +82,7 @@
 	. = ..()
 	if(species_language)
 		add_language(species_language)
+	language_menu = new (src)
 	update_move_intent_slowdown()
 	if(ignore_pull_slowdown)
 		add_movespeed_mod_immunities(src, /datum/movespeed_modifier/pull_slowdown)

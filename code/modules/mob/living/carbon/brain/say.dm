@@ -27,7 +27,7 @@
 			else
 				message = Gibberish(message, (emp_damage*6))//scrambles the message, gets worse when emp_damage is higher
 
-		if(speaking && speaking.flags & HIVEMIND)
+		if(speaking && speaking.language_flags & HIVEMIND)
 			speaking.broadcast(src,trim(message))
 			return
 

@@ -90,7 +90,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	switch(action)
 		if("idInteract")
 			if(inserted_id)
-				if(ishuman(usr))
+				if(ishuman(usr) && Adjacent(usr, src))
 					usr.pick_or_drop(inserted_id, loc)
 					inserted_id = null
 				else
@@ -102,7 +102,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 					inserted_id = I
 			return TRUE
 		if("paperInteract")
-			if(copyitem)
+			if(copyitem && Adjacent(usr, src))
 				usr.pick_or_drop(copyitem, loc)
 				to_chat(usr, SPAN_NOTICE("You take \the [copyitem] out of \the [src]."))
 				copyitem = null
@@ -124,7 +124,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 
 			playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 			var/id = IAAJ_generate_fake_id()
-			new /obj/item/complaint_folder(src.loc, id)
+			new /obj/item/complaint_folder(get_turf(loc), id)
 			print_cooldown = world.time + FAX_PRINT_COOLDOWN
 			return TRUE
 		if("send")
@@ -151,9 +151,9 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 			continue
 
 		if(F.recievefax(copyitem))
-			show_splash_text(usr, "nessage transmitted successfully")
+			show_splash_text(usr, "message transmitted successfully", SPAN("notice", "\The [src] has transmitted the message successfully."))
 
-	show_splash_text(usr, "error transmitting message")
+	show_splash_text(usr, "error transmitting message", SPAN("warning", "\The [src] cannot transmit the message!"))
 
 /obj/machinery/photocopier/faxmachine/proc/recievefax(obj/item/incoming)
 	if(stat & (BROKEN|NOPOWER))
@@ -200,11 +200,11 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		var/obj/item/complaint_folder/CF = copyitem
 		var/fail_reason = CF.prevalidate()
 		if (fail_reason)
-			show_splash_text(usr, "error transmitting message")
+			show_splash_text(usr, "error transmitting message", SPAN("warning", "\The [src] cannot transmit the message!"))
 			return
 		rcvdcopy = complaintcopy(copyitem, 0)
 	else
-		show_splash_text(usr, "error transmitting message")
+		show_splash_text(usr, "error transmitting message", SPAN("warning", "\The [src] cannot transmit the message!"))
 		return
 
 	rcvdcopy.forceMove(null) //hopefully this shouldn't cause trouble
@@ -238,7 +238,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 				message_admins("Complaint postvalidation failed: [fail_reason]. Check received fax to manually correct it.")
 
 	sleep(50)
-	show_splash_text(usr, "message transmitted successfully")
+	show_splash_text(usr, "message transmitted successfully", SPAN("notice", "\The [src] has transmitted the message successfully."))
 
 /obj/machinery/photocopier/faxmachine/proc/fax_message_admins(mob/sender, faxname, obj/item/sent, reply_type, font_colour="#006100")
 	var/msg = "<span class='notice'><b><font color='[font_colour]'>[faxname]: </font>[get_options_bar(sender, 2,1,1)]"

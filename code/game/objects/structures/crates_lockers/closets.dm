@@ -431,11 +431,13 @@
 			return FALSE
 		if(istype(W,/obj/item/tk_grab))
 			return FALSE
+
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
-			if(WT.isOn())
+			if(WT.use_tool(src, user))
 				slice_into_parts(WT, user)
 				return
+
 		if(istype(W, /obj/item/storage/laundry_basket) && W.contents.len)
 			var/obj/item/storage/laundry_basket/LB = W
 			var/turf/T = get_turf(src)
@@ -508,12 +510,9 @@
 		return
 	else if(isWelder(W) && (setup & CLOSET_CAN_BE_WELDED))
 		var/obj/item/weldingtool/WT = W
-		if(!WT.remove_fuel(0,user))
-			if(!WT.isOn())
-				return
-			else
-				to_chat(user, SPAN_NOTICE("You need more welding fuel to complete this task."))
-				return
+		if(!WT.use_tool(src, user))
+			return
+
 		src.welded = !src.welded
 		src.update_icon()
 		user.visible_message(SPAN_WARNING("\The [src] has been [welded?"welded shut":"unwelded"] by \the [user]."), blind_message = "You hear welding.", range = 3)
@@ -542,9 +541,9 @@
 		src.attack_hand(user)
 
 /obj/structure/closet/proc/slice_into_parts(obj/item/weldingtool/WT, mob/user)
-	if(!WT.remove_fuel(0,user))
-		to_chat(user, SPAN_NOTICE("You need more welding fuel to complete this task."))
+	if(!WT.use_tool(src, user, amount = 1))
 		return
+
 	if(material != null)
 		new material(loc)
 	else

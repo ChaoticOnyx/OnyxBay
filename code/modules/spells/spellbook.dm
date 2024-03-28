@@ -202,7 +202,7 @@ var/list/artefact_feedback = list(
 
 	user.mind.wizard.set_class(path)
 	feedback_add_details("wizard_class_choose", user.mind.wizard.class.feedback_tag)
-	to_chat(user, SPAN("notice", "You are now \a [user.mind.wizard.class.name]!"))
+	user.mind.wizard.class.on_class_chosen(user, src)
 
 /obj/item/spellbook/proc/buy_artifact(mob/user, obj/path)
 	var/datum/wizard/W = user.mind.wizard

@@ -113,13 +113,20 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	if(prob(95))
 		user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src]."))
 	else
-		to_chat(user, SPAN("warning", "You burn yourself while lighting the lighter."))
-		if(user.l_hand == src)
-			user.apply_damage(2, BURN,BP_L_HAND)
-		else
-			user.apply_damage(2, BURN,BP_R_HAND)
-		user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src], they however burn their finger in the process."))
+		try_burn(user, (user.l_hand == src ? BP_L_HAND : BP_R_HAND), 2)
+
 	playsound(src.loc, SFX_USE_LIGHTER, 100, 1, -4)
+
+/obj/item/flame/lighter/proc/try_burn(mob/living/carbon/user, burned_limb, damage_amount)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(BP_IS_ROBOTIC(H.get_organ(burned_limb)))
+			user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src]."))
+			return
+
+	user.apply_damage(damage_amount, BURN, burned_limb)
+	to_chat(user, SPAN("warning", "You burn yourself[damage_amount > 5 ? " badly " : " "]while lighting the lighter."))
+	user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src], they however burn their finger[damage_amount > 5 ? " badly " : " "]in the process."))
 
 /obj/item/flame/lighter/proc/shutoff(mob/user, silent = FALSE)
 	lit = 0
@@ -392,12 +399,8 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	if(user.mind?.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
 		user.visible_message(SPAN("rose", "Without even breaking stride, [user] flips open and lights [src] in one smooth movement."))
 	else
-		to_chat(user, SPAN("warning", "You burn yourself badly while lighting [src]!"))
-		if(user.l_hand == src)
-			user.apply_damage(15, BURN, BP_L_HAND)
-		else
-			user.apply_damage(15, BURN, BP_R_HAND)
-		user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src], they however badly burn their hand in the process."))
+		try_burn(user, (user.l_hand == src ? BP_L_HAND : BP_R_HAND), 15)
+
 	playsound(src.loc, 'sound/items/zippo_open.ogg', 100, 1, -4)
 
 /obj/item/flame/lighter/zippo/syndie/shutoff_effects(mob/living/carbon/user)

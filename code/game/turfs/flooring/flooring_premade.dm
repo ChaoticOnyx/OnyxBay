@@ -113,6 +113,7 @@
 	icon = 'icons/turf/flooring/tiles.dmi'
 	icon_state = "reinforced"
 	initial_flooring = /decl/flooring/reinforced
+	holodeck_compatible = TRUE
 
 /turf/simulated/floor/reinforced/airless
 	initial_gas = null

@@ -53,12 +53,13 @@
 /obj/item/storage/part_replacer/mini/attackby(obj/item/I, mob/user)
 	if(isWelder(I))
 		var/obj/item/weldingtool/WT = I
-		if(WT.remove_fuel(0, user))
-			salvage()
-			new /obj/item/stack/material/steel(get_turf(src))
-			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
-			qdel(src)
-			return
+		if(!WT.use_tool(src, user, amount = 1))
+			return FALSE
+
+		salvage()
+		new /obj/item/stack/material/steel(get_turf(src))
+		qdel(src)
+		return
 
 	if(isCrowbar(I))
 		if(wasted)

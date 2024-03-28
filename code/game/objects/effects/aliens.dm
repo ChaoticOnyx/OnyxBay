@@ -253,9 +253,11 @@
 
 	if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
-		if(WT.remove_fuel(0, user))
-			qdel(src)
-			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
+
+		if(!WT.use_tool(src, user, amount = 1))
+			return
+
+		qdel_self()
 
 	else
 		if(prob(50))

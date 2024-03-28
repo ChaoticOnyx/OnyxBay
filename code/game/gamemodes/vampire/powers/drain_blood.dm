@@ -34,7 +34,7 @@
 		to_chat(my_mob, SPAN("warning", "\The [blocked] is in the way of your fangs!"))
 		return
 
-	if(vampire.status & VAMP_DRAINING)
+	if(vampire.vamp_status & VAMP_DRAINING)
 		to_chat(my_mob, SPAN("warning", "Your fangs are already sunk into a victim's neck!"))
 		return
 
@@ -49,7 +49,7 @@
 	var/blood_usable = 0
 	var/blood_drained = 0
 
-	vampire.status |= VAMP_DRAINING
+	vampire.vamp_status |= VAMP_DRAINING
 
 	my_mob.visible_message(SPAN("danger", "[my_mob] bites [T]'s neck!"),\
 						   SPAN("danger", "You bite [T]'s neck and begin to drain their blood."),\
@@ -132,7 +132,7 @@
 		vampire.update_powers()
 		T.vessel.remove_reagent(/datum/reagent/blood, 15)
 
-	vampire.status &= ~VAMP_DRAINING
+	vampire.vamp_status &= ~VAMP_DRAINING
 
 	var/endsuckmsg = "You extract your fangs from [T.name]'s neck and stop draining them of blood."
 	if(vampire.stealth)

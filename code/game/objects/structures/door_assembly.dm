@@ -154,33 +154,35 @@
 
 	if(isWelder(W) && ( (istext(glass)) || (glass == 1) || (!anchored) ))
 		var/obj/item/weldingtool/WT = W
-		if (WT.remove_fuel(0, user))
-			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
-			if(istext(glass))
-				user.visible_message("[user] welds the [glass] plating off the airlock assembly.", "You start to weld the [glass] plating off the airlock assembly.")
-				if(do_after(user, 40,src))
-					if(!src || !WT.isOn()) return
-					to_chat(user, "<span class='notice'>You welded the [glass] plating off!</span>")
-					var/M = text2path("/obj/item/stack/material/[glass]")
-					new M(src.loc, 2)
-					glass = 0
-			else if(glass == 1)
-				user.visible_message("[user] welds the glass panel out of the airlock assembly.", "You start to weld the glass panel out of the airlock assembly.")
-				if(do_after(user, 40,src))
-					if(!src || !WT.isOn()) return
-					to_chat(user, "<span class='notice'>You welded the glass panel out!</span>")
-					new /obj/item/stack/material/glass/reinforced(src.loc)
-					glass = 0
-			else if(!anchored)
-				user.visible_message("[user] dissassembles the airlock assembly.", "You start to dissassemble the airlock assembly.")
-				if(do_after(user, 40,src))
-					if(!src || !WT.isOn()) return
-					to_chat(user, "<span class='notice'>You dissasembled the airlock assembly!</span>")
-					new /obj/item/stack/material/steel(src.loc, 4)
-					qdel (src)
-		else
-			to_chat(user, "<span class='notice'>You need more welding fuel.</span>")
+
+		if(istext(glass))
+			user.visible_message("[user] welds the [glass] plating off the airlock assembly.", "You start to weld the [glass] plating off the airlock assembly.")
+		else if(glass == 1)
+			user.visible_message("[user] welds the glass panel out of the airlock assembly.", "You start to weld the glass panel out of the airlock assembly.")
+		else if(!anchored)
+			user.visible_message("[user] dissassembles the airlock assembly.", "You start to dissassemble the airlock assembly.")
+
+
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 			return
+
+		if(QDELETED(src) || !user)
+			return
+
+		if(istext(glass))
+			to_chat(user, SPAN_NOTICE("You welded the [glass] plating off!"))
+			var/M = text2path("/obj/item/stack/material/[glass]")
+			new M(src.loc, 2)
+			glass = 0
+		else if(glass == 1)
+			to_chat(user, SPAN_NOTICE("You welded the glass panel out!"))
+			new /obj/item/stack/material/glass/reinforced(src.loc)
+			glass = 0
+		else if(!anchored)
+			to_chat(user, SPAN_NOTICE("You dissasembled the airlock assembly!"))
+			new /obj/item/stack/material/steel(src.loc, 4)
+			qdel_self()
+
 
 	else if(isWrench(W) && state == 0)
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
@@ -281,21 +283,38 @@
 		to_chat(user, "<span class='notice'>Now finishing the airlock.</span>")
 
 		if(do_after(user, 40,src))
-			if(!src) return
-			to_chat(user, "<span class='notice'>You finish the airlock!</span>")
-			var/path
-			if(istext(glass))
-				path = text2path("/obj/machinery/door/airlock/[glass]")
-			else if (glass == 1)
-				path = text2path("/obj/machinery/door/airlock[glass_type]")
-			else
-				path = text2path("/obj/machinery/door/airlock[airlock_type]")
+			if(QDELETED(src))
+				return
 
-			new path(src.loc, src)
-			qdel(src)
+			finish_door(user)
+
 	else
 		..()
 	update_state()
+
+/obj/structure/door_assembly/proc/finish_door(user)
+	show_splash_text(user, "Door finished!", SPAN("notice", "You have finished assembling the door!"))
+	var/path = get_finished_type()
+
+	if(!isnull(path))
+		new path(get_turf(loc), src)
+		qdel_self()
+
+/obj/structure/door_assembly/proc/get_finished_type()
+	if(ispath(glass_type))
+		return glass_type
+
+	else if(ispath(airlock_type))
+		return airlock_type
+
+	if(istext(glass))
+		return text2path("/obj/machinery/door/airlock/[glass]")
+
+	else if(glass == 1)
+		return text2path("/obj/machinery/door/airlock[glass_type]")
+
+	else
+		return text2path("/obj/machinery/door/airlock[airlock_type]")
 
 /obj/structure/door_assembly/proc/update_state()
 	icon_state = "door_as_[glass == 1 ? "g" : ""][istext(glass) ? glass : base_icon_state][state]"
@@ -310,3 +329,16 @@
 			final_name = "Near Finished "
 	final_name += "[glass == 1 ? "Window " : ""][istext(glass) ? "[glass] Airlock" : base_name] Assembly"
 	SetName(final_name)
+
+/obj/structure/door_assembly/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("delay" = 5 SECONDS, "cost" = 16)
+
+	return FALSE
+
+/obj/structure/door_assembly/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_DECONSTRUCT)
+		qdel_self()
+		return TRUE
+
+	return FALSE

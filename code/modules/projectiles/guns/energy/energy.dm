@@ -228,6 +228,7 @@
 	icon_state = "eriflestun"
 	item_state = "erifle"
 	modifystate = "eriflestun"
+	improper_held_icon = TRUE
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 	force = 12.5
@@ -264,9 +265,11 @@
 		if(M.can_wield_item(src) && is_held_twohanded(M))
 			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]-wielded"
 			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]-wielded"
+			improper_held_icon = TRUE
 		else
 			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]"
 			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]"
+			improper_held_icon = FALSE
 	update_held_icon()
 
 /obj/item/gun/energy/rifle/cheap

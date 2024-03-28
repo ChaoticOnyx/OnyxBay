@@ -493,6 +493,11 @@
 			user.do_attack_animation(src)
 			affected.shatter()
 
+		else if(MUTATION_STRONG in user.mutations)
+			user.visible_message(SPAN("danger", "[user] smashes through \the [src]!"))
+			user.do_attack_animation(src)
+			affected.shatter()
+
 		else if(user.a_intent == I_HURT)
 			if(ishuman(user))
 				var/mob/living/carbon/human/H = user
@@ -515,7 +520,7 @@
 	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
 	user.do_attack_animation(src)
 
-	var/damage_dealt = 1
+	var/damage_dealt = 2
 	var/attack_message = "kicks"
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
@@ -528,8 +533,9 @@
 
 	if(MUTATION_HULK in user.mutations)
 		damage_dealt += 5
-	else
-		damage_dealt += 1
+
+	if(MUTATION_STRONG in user.mutations)
+		damage_dealt += 5
 
 	attack_generic(user, damage_dealt, attack_message)
 

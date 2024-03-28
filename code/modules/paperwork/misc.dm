@@ -82,6 +82,11 @@
 	readonly = TRUE
 	info = "\[center]\[b]\[large]Work Visa of the Sol Central Government\[/large]\[/b]\[/center]\[br]\[center]\[solcrest]\[br]\[br]\[i]\[small]Issued on behalf of the Secretary-General.\[/small]\[/i]\[/center]\[hr]\[br]This paper hereby permits the carrier to travel unhindered through Sol territories, colonies, and space for the purpose of work and labor."
 
+/obj/item/paper/immovable_wand_note
+	name = "note"
+	readonly = TRUE
+	info = "\[i]We have no idea who's placed this cursed thing here. Moreover, we don't even know HOW. But there's one thing we know for sure: \[b]THIS. IS. NOT. FUNNY.\[/b]\[/i]"
+
 /* Message from CC */
 /obj/item/paper/psychoscope
 	name = "paper - 'Psychoscope'"

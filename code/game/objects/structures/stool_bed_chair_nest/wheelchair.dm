@@ -96,8 +96,11 @@
 		create_track()
 	driving = 0
 
-/obj/structure/bed/chair/wheelchair/Move()
+/obj/structure/bed/chair/wheelchair/Move(newloc, direct)
 	. = ..()
+	if(!.)
+		return
+
 	if(buckled_mob)
 		var/mob/living/occupant = buckled_mob
 		if(!driving)

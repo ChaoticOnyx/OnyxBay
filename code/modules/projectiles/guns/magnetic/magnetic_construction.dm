@@ -33,18 +33,11 @@
 		return
 
 	if(isWelder(thing) && construction_stage == 4)
-		var/obj/item/weldingtool/welder = thing
-
-		if(!welder.isOn())
-			to_chat(user, "<span class='warning'>Turn it on first!</span>")
-			return
-
-		if(!welder.remove_fuel(0,user))
-			to_chat(user, "<span class='warning'>You need more fuel!</span>")
+		var/obj/item/weldingtool/WT = thing
+		if(!WT.use_tool(src, user, amount = 1))
 			return
 
 		user.visible_message("<span class='notice'>\The [user] welds the barrel of \the [src] into place.</span>")
-		playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 		increment_construction_stage()
 		return
 

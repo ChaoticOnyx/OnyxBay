@@ -118,7 +118,7 @@
 		return
 
 	if(inoperable(MAINT))
-		show_splash_text(usr, "no power!")
+		show_splash_text(usr, "no power!", "\The [src] is unpowered!")
 		return
 
 	var/mob/living/carbon/human/patient = victim_ref?.resolve()
@@ -210,11 +210,11 @@
 /obj/machinery/optable/proc/check_table(mob/living/carbon/patient)
 	var/mob/living/carbon/human/occupant = victim_ref?.resolve()
 	if(istype(occupant) && get_turf(occupant) == get_turf(src) && occupant.lying)
-		show_splash_text(usr, "already occupied!")
+		show_splash_text(usr, "already occupied!", "\The [src] is already occupied!")
 		return FALSE
 
 	if(patient.buckled)
-		show_splash_text(usr, "unbuckle the patient first!")
+		show_splash_text(usr, "unbuckle the patient first!", "You must unbuckle [patient] first!")
 		return FALSE
 
 	return TRUE

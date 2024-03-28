@@ -27,23 +27,25 @@
 	if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
 
-		if(WT.remove_fuel(0,user))
-			var/obj/item/stack/material/steel/new_item
-			if(istype(src.loc,/turf))
-				new_item = new(src.loc)
-			else
-				new_item = new(usr.loc)
-			new_item.add_fingerprint(user)
-			new_item.add_to_stacks(usr)
-			for (var/mob/M in viewers(src))
-				M.show_message(SPAN_NOTICE("[src] is shaped into metal by [user.name] with the weldingtool."), 3, SPAN_NOTICE("You hear welding."), 2)
-			var/obj/item/stack/gassembly/R = src
-			src = null
-			var/replace = (user.get_inactive_hand()==R)
-			R.use(1)
-			if (!R && replace)
-				user.pick_or_drop(new_item)
-		return
+		if(!WT.use_tool(src, user, amount = 1))
+			return
+
+		var/obj/item/stack/material/steel/new_item
+		if(istype(src.loc,/turf))
+			new_item = new(src.loc)
+		else
+			new_item = new(usr.loc)
+		new_item.add_fingerprint(user)
+		new_item.add_to_stacks(usr)
+		for (var/mob/M in viewers(src))
+			M.show_message(SPAN_NOTICE("[src] is shaped into metal by [user.name] with the weldingtool."), 3, SPAN_NOTICE("You hear welding."), 2)
+		var/obj/item/stack/gassembly/R = src
+		src = null
+		var/replace = (user.get_inactive_hand()==R)
+		R.use(1)
+		if (!R && replace)
+			user.pick_or_drop(new_item)
+
 
 	if(isWrench(W) && !in_use)
 

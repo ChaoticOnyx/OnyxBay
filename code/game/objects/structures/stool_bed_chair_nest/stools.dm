@@ -48,7 +48,7 @@ var/global/list/stool_cache = list() //haha stool
 /obj/item/stool/bar_new
 	name = "wooden bar stool"
 	icon_state = "barstool_new_preview" //set for the map
-	item_state = "barstool_new"
+	item_state = "bar_stool"
 	base_icon = "barstool_new"
 
 /obj/item/stool/bar_new/padded
@@ -161,7 +161,7 @@ var/global/list/stool_cache = list() //haha stool
 			padding_type = MATERIAL_CARPET
 		else if(istype(W,/obj/item/stack/material))
 			var/obj/item/stack/material/M = W
-			if(M.material && (M.material.flags & MATERIAL_PADDING))
+			if(M.material && (M.material.material_flags & MATERIAL_PADDING))
 				padding_type = "[M.material.name]"
 		if(!padding_type)
 			to_chat(user, "You cannot pad \the [src] with that.")

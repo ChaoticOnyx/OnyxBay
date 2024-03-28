@@ -202,15 +202,16 @@
 	if(operating)
 		return//Already doing something.
 	if(isWelder(C) && !repairing)
-		var/obj/item/weldingtool/W = C
-		if(W.remove_fuel(0, user))
-			blocked = !blocked
-			user.visible_message("<span class='danger'>\The [user] [blocked ? "welds" : "unwelds"] \the [src] with \a [W].</span>",\
-			"You [blocked ? "weld" : "unweld"] \the [src] with \the [W].",\
-			"You hear something being welded.")
-			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			update_icon()
-			return
+		var/obj/item/weldingtool/WT = C
+		if(!WT.use_tool(src, user, amount = 1))
+			return FALSE
+
+		blocked = !blocked
+		user.visible_message(SPAN_DANGER("\The [user] [blocked ? "welds" : "unwelds"] \the [src] with \a [WT]."),\
+		"You [blocked ? "weld" : "unweld"] \the [src] with \the [WT].",\
+		"You hear something being welded.")
+		update_icon()
+		return
 
 	if(density && isScrewdriver(C))
 		hatch_open = !hatch_open

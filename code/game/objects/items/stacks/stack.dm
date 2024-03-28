@@ -163,35 +163,41 @@
 			to_chat(user, "<span class='warning'>\The [recipe.title] must be constructed on the floor!</span>")
 			return
 
-	if((WT && WT.remove_fuel(0, user)) || uses_charge || craft_tool == 1)
+	to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
+	if(craft_tool == 2 && WT?.use_tool(src, user, delay = recipe.time, amount = 5))
+		finalize_recipe_production(recipe, required, produced, user)
+		return
 
-		if (recipe.time)
-			to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
-			if (!do_after(user, recipe.time))
-				return
+	else if(craft_tool != 2 && do_after(user, recipe.time))
+		finalize_recipe_production(recipe, required, produced, user)
+		return
 
-		if (use(required))
-			var/atom/O
-			if(recipe.use_material)
-				if(istype(src.loc,/turf))
-					O = new recipe.result_type(src.loc, recipe.use_material)
-				else
-					O = new recipe.result_type(user.loc, recipe.use_material)
+/obj/item/stack/proc/finalize_recipe_production(datum/stack_recipe/recipe, required, produced, mob/user)
+	if(QDELETED(src)) // This proc is called after do_after(), some checks are therefore needed
+		return
+
+	if(use(required))
+		var/atom/O
+		if(recipe.use_material)
+			if(istype(src.loc,/turf))
+				O = new recipe.result_type(src.loc, recipe.use_material)
 			else
-				if(istype(src.loc,/turf))
-					O = new recipe.result_type(src.loc)
-				else
-					O = new recipe.result_type(user.loc)
-			O.set_dir(user.dir)
-			O.add_fingerprint(user)
+				O = new recipe.result_type(user.loc, recipe.use_material)
+		else
+			if(istype(src.loc,/turf))
+				O = new recipe.result_type(src.loc)
+			else
+				O = new recipe.result_type(user.loc)
+		O.set_dir(user.dir)
+		O.add_fingerprint(user)
 
-			if (recipe.goes_in_hands && !recipe.on_floor)
-				user.pick_or_drop(O)
+		if(recipe.goes_in_hands && !recipe.on_floor)
+			user.pick_or_drop(O)
 
-			if (istype(O, /obj/item/stack))
-				var/obj/item/stack/S = O
-				S.amount = produced
-				S.add_to_stacks(user, recipe.goes_in_hands)
+		if(istype(O, /obj/item/stack))
+			var/obj/item/stack/S = O
+			S.amount = produced
+			S.add_to_stacks(user, recipe.goes_in_hands)
 
 /obj/item/stack/Topic(href, href_list)
 	..()

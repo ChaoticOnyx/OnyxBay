@@ -202,6 +202,7 @@
 	icon = 'icons/obj/defibrillator.dmi'
 	icon_state = "defibpaddles"
 	item_state = "defibpaddles"
+	improper_held_icon = TRUE
 	gender = PLURAL
 	force = 2
 	throwforce = 6
@@ -397,7 +398,7 @@
 		return
 
 	playsound(src, 'sound/machines/defib_charge.ogg', 50, 0)
-	audible_message("<span class='warning'>\The [src] lets out a steadily rising hum...</span>")
+	audible_message("<span class='warning'>\The [src] lets out a steadily rising hum...</span>", splash_override = "*hummm*")
 
 	if(!do_after(user, chargetime, H))
 		return
@@ -448,7 +449,7 @@
 	H.setBrainLoss(brain_damage)
 
 /obj/item/shockpaddles/proc/make_announcement(message, msg_class)
-	audible_message("<b>\The [src]</b> [message]", "\The [src] vibrates slightly.")
+	audible_message("<b>\The [src]</b> [message]", "\The [src] vibrates slightly.", splash_override = "[message]")
 
 /obj/item/shockpaddles/emag_act(uses, mob/user, obj/item/defibrillator/base)
 	if(istype(src, /obj/item/shockpaddles/linked))
@@ -534,7 +535,7 @@
 	return (base_unit.bcell && base_unit.bcell.checked_use(charge_amt))
 
 /obj/item/shockpaddles/linked/make_announcement(message, msg_class)
-	base_unit.audible_message("<b>\The [base_unit]</b> [message]", "\The [base_unit] vibrates slightly.")
+	base_unit.audible_message("<b>\The [base_unit]</b> [message]", "\The [base_unit] vibrates slightly.", splash_override = "[message]")
 
 /*
 	Standalone Shockpaddles

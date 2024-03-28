@@ -45,7 +45,7 @@
 	heat_level_3 = 1100 //Default 1000
 
 	spawn_flags = SPECIES_CAN_JOIN | SPECIES_IS_WHITELISTED
-	appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR | HAS_EYE_COLOR
+	species_appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR | HAS_EYE_COLOR
 
 	flesh_color = "#333300"
 	default_eye_color = "#FFCB00"

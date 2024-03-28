@@ -125,7 +125,7 @@
 		slot_r_hand_str = "eng_voidsuit",
 	)
 	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100)
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/construction/rcd)
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
@@ -154,7 +154,7 @@
 	item_state = "rig-pilot"
 	armor = list(melee = 40, bullet = 10, laser = 35,energy = 15, bomb = 0, bio = 100)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/construction/rcd)
 
 /obj/item/clothing/suit/space/void/pilot/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/pilot
@@ -234,100 +234,6 @@
 	cloak = FALSE
 
 	animate(H,alpha = 85, alpha = 255, time = 10)
-
-// Rmc(Only)
-/obj/item/clothing/head/helmet/space/void/rmc_red
-	name = "rmc red helmet"
-	desc = "An atmos resistant helmet for space and planet exploration."
-	icon_state = "rig0_rmc_red"
-	item_state = "rmc_red_helm"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
-	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
-	light_overlay = "helmet_light_dual"
-
-/obj/item/clothing/suit/space/void/rmc_red
-	name = "rmc red voidsuit"
-	desc = "An atmos resistant voidsuit for space and planet exploration."
-	icon_state = "rmc_red"
-	item_state = "rmc_red"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
-	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
-
-/obj/item/clothing/suit/space/void/rmc_red/prepared
-	helmet = /obj/item/clothing/head/helmet/space/void/rmc_red
-	boots = /obj/item/clothing/shoes/magboots
-
-/obj/item/clothing/head/helmet/space/void/rmc_green
-	name = "rmc red helmet"
-	desc = "An atmos resistant helmet for space and planet exploration."
-	icon_state = "rig0_rmc_green"
-	item_state = "rmc_green_helm"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
-	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
-	light_overlay = "helmet_light_dual"
-
-/obj/item/clothing/suit/space/void/rmc_green
-	name = "rmc green voidsuit"
-	desc = "An atmos resistant voidsuit for space and planet exploration."
-	icon_state = "rmc_green"
-	item_state = "rmc_green"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
-	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
-
-/obj/item/clothing/suit/space/void/rmc_green/prepared
-	helmet = /obj/item/clothing/head/helmet/space/void/rmc_green
-	boots = /obj/item/clothing/shoes/magboots
-
-/obj/item/clothing/head/helmet/space/void/rmc_royal
-	name = "rmc royal helmet"
-	desc = "An atmos resistant helmet for space and planet exploration."
-	icon_state = "rig0_rmc_royal"
-	item_state = "rmc_royal_helm"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
-	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
-	light_overlay = "helmet_light_dual"
-
-/obj/item/clothing/suit/space/void/rmc_royal
-	name = "rmc royal voidsuit"
-	desc = "An atmos resistant voidsuit for space and planet exploration."
-	icon_state = "rmc_royal"
-	item_state = "rmc_royal"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
-	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
-
-/obj/item/clothing/suit/space/void/rmc_royal/prepared
-	helmet = /obj/item/clothing/head/helmet/space/void/rmc_royal
-	boots = /obj/item/clothing/shoes/magboots
-
-/obj/item/clothing/suit/space/void/engsuit_spc
-	name = "engineer spc voidsuit"
-	desc = "An atmos resistant voidsuit for space and planet exploration."
-	icon_state = "engsuit_spc"
-	item_state = "engsuit_spc"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
-	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
-
-/obj/item/clothing/suit/space/void/secsuit_spc
-	name = "security spc voidsuit"
-	desc = "An atmos resistant voidsuit for space and planet exploration."
-	icon_state = "secsuit_spc"
-	item_state = "secsuit_spc"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
-	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
-
-/obj/item/clothing/head/helmet/space/void/pilot_spc
-	name = "pilot spc helmet"
-	desc = "An atmos resistant helmet for space and planet exploration."
-	icon_state = "pilot_spc"
-	item_state = "pilot_spc"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
-	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
-	light_overlay = "helmet_light_dual"
 
 /obj/item/clothing/head/helmet/space/void/templar
 	name = "templar helmet"

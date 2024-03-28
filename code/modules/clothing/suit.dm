@@ -24,7 +24,13 @@
 		M.update_inv_wear_suit()
 
 /obj/item/clothing/suit/get_mob_overlay(mob/user_mob, slot)
-	var/image/ret = ..()
+	. = ..()
+
+	if(slot == slot_l_hand_str || slot == slot_r_hand_str)
+		return
+
+	var/image/ret = .
+
 	if(item_state_slots && item_state_slots[slot])
 		ret.icon_state = item_state_slots[slot]
 	else

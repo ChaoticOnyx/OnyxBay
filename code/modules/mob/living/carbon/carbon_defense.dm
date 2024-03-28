@@ -7,6 +7,9 @@
 	if(MUTATION_HULK in user.mutations)
 		effective_force *= 2
 
+	if(MUTATION_STRONG in user.mutations)
+		effective_force *= 2
+
 	//Apply weapon damage
 	var/damage_flags = I.damage_flags()
 	if(prob(blocked)) //armour provides a chance to turn sharp/edge weapon attacks into blunt ones

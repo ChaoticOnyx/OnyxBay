@@ -13,49 +13,79 @@
 	var/new_overlays = list()
 	// Updates the plant overlay.
 	if(seed)
+		var/is_canonical = seed.is_canonical()
 		if(dead)
-			var/ikey = "[seed.get_trait(TRAIT_PLANT_ICON)]-dead"
-			var/image/dead_overlay = SSplants.plant_icon_cache[ikey]
+			var/ikey
+			var/image/dead_overlay
 
-			if(!dead_overlay)
-				dead_overlay = image('icons/obj/hydroponics_growing.dmi', "[ikey]")
-				dead_overlay.color = DEAD_PLANT_COLOUR
-				SSplants.plant_icon_cache[ikey] = dead_overlay
+			if(is_canonical)
+				ikey = "[seed.canonical_icon]-dead"
+				dead_overlay = SSplants.canonical_plant_icon_cache[ikey]
+				if(!dead_overlay)
+					dead_overlay = image('icons/obj/hydroponics_growing_canonical.dmi', "[ikey]")
+					SSplants.canonical_plant_icon_cache[ikey] = dead_overlay
+			else
+				ikey = "[seed.get_trait(TRAIT_PLANT_ICON)]-dead"
+				dead_overlay = SSplants.plant_icon_cache[ikey]
+				if(!dead_overlay)
+					dead_overlay = image('icons/obj/hydroponics_growing.dmi', "[ikey]")
+					dead_overlay.color = DEAD_PLANT_COLOUR
+					SSplants.plant_icon_cache[ikey] = dead_overlay
 
 			dead_overlay.pixel_y = vertical_shift
 			new_overlays += dead_overlay
+
 		else
 			if(!seed.growth_stages)
 				seed.update_growth_stages()
 
 			if(!seed.growth_stages)
-				log_error("<span class='danger'>Seed type [seed.get_trait(TRAIT_PLANT_ICON)] cannot find a growth stage value.</span>")
+				var/type_description = is_canonical ? "[seed.canonical_icon] (canonical)" : "[seed.get_trait(TRAIT_PLANT_ICON)]"
+				log_error("<span class='danger'>Seed type [type_description] cannot find a growth stage value.</span>")
 				return
 
 			var/overlay_stage = get_overlay_stage()
 
-			var/ikey = "\ref[seed]-plant-[overlay_stage]"
-			var/image/plant_overlay = SSplants.plant_icon_cache[ikey]
+			var/ikey
+			var/image/plant_overlay
 
-			if(!plant_overlay)
-				plant_overlay = seed.get_icon(overlay_stage)
-				SSplants.plant_icon_cache[ikey] = plant_overlay
+			// "Canonical" plants have dedicated harvest-stage sprites
+			if(is_canonical)
+				if(harvest && overlay_stage == seed.growth_stages)
+					ikey = "[seed.canonical_icon]-harvest"
+				else
+					ikey = "[seed.canonical_icon]-[overlay_stage]"
+				plant_overlay = SSplants.canonical_plant_icon_cache[ikey]
+				if(!plant_overlay)
+					plant_overlay = image('icons/obj/hydroponics_growing_canonical.dmi', "[ikey]")
+					SSplants.canonical_plant_icon_cache[ikey] = plant_overlay
 
-			plant_overlay.pixel_y = vertical_shift
-			new_overlays += plant_overlay
+				plant_overlay.pixel_y = vertical_shift
+				new_overlays += plant_overlay
 
-			if(harvest && overlay_stage == seed.growth_stages)
-				ikey = "product-[seed.get_trait(TRAIT_PRODUCT_ICON)]" + (seed.customsprite ? "" : "-[seed.get_trait(TRAIT_PLANT_COLOUR)]")
-				var/image/harvest_overlay = SSplants.plant_icon_cache[ikey]
+			// "Non-canonical" plants use separate sprites for the plant itself and its harvest
+			else
+				ikey = "\ref[seed]-plant-[overlay_stage]"
+				plant_overlay = SSplants.plant_icon_cache[ikey]
+				if(!plant_overlay)
+					plant_overlay = seed.get_icon(overlay_stage)
+					SSplants.plant_icon_cache[ikey] = plant_overlay
 
-				if(!harvest_overlay)
-					harvest_overlay = image('icons/obj/hydroponics_products.dmi', "[seed.get_trait(TRAIT_PRODUCT_ICON)]")
-					if(!seed.customsprite)
-						harvest_overlay.color = seed.get_trait(TRAIT_PRODUCT_COLOUR)
-					SSplants.plant_icon_cache[ikey] = harvest_overlay
+				plant_overlay.pixel_y = vertical_shift
+				new_overlays += plant_overlay
 
-				harvest_overlay.pixel_y = vertical_shift
-				new_overlays += harvest_overlay
+				if(harvest && overlay_stage == seed.growth_stages)
+					ikey = "product-[seed.get_trait(TRAIT_PRODUCT_ICON)]" + (seed.customsprite ? "" : "-[seed.get_trait(TRAIT_PRODUCT_COLOUR)]")
+					var/image/harvest_overlay = SSplants.plant_icon_cache[ikey]
+
+					if(!harvest_overlay)
+						harvest_overlay = image('icons/obj/hydroponics_products.dmi', "[seed.get_trait(TRAIT_PRODUCT_ICON)]")
+						if(!seed.customsprite)
+							harvest_overlay.color = seed.get_trait(TRAIT_PRODUCT_COLOUR)
+						SSplants.plant_icon_cache[ikey] = harvest_overlay
+
+					harvest_overlay.pixel_y = vertical_shift
+					new_overlays += harvest_overlay
 
 	//Updated the various alert icons.
 	if(mechanical)

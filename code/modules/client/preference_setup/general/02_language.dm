@@ -71,7 +71,7 @@
 	var/datum/species/S = all_species[pref.species] || all_species[SPECIES_HUMAN]
 	if(lang.name in S.secondary_langs)
 		return TRUE
-	if(!(lang.flags & RESTRICTED) && is_alien_whitelisted(user, lang))
+	if(!(lang.language_flags & RESTRICTED) && is_alien_whitelisted(user, lang))
 		return TRUE
 	return FALSE
 
