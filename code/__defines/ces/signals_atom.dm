@@ -30,3 +30,9 @@
 
 /// Called on `/atom/movable/set_glide_size` (new_glide_size)
 #define SIGNAL_UPDATE_GLIDE_SIZE "movable_glide_size"
+
+/// Called on `/atom/AltClick` (/atom)
+#define SIGNAL_ALT_CLICKED "atom_alt_click"
+
+/// Called on `/atom/CtrlAltClick` (/atom)
+#define SIGNAL_CTRL_ALT_CLICKED "atom_ctrl_alt_click"

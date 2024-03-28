@@ -9,6 +9,7 @@
 	icon_state = "conpipe-s"
 	anchored = 0
 	density = 0
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	matter = list(MATERIAL_STEEL = 1850)
 	level = 2
 	var/sortType = ""
@@ -28,12 +29,12 @@
 
 	update_verbs()
 
+	AddElement(/datum/element/simple_rotation)
+
 /obj/structure/disposalconstruct/proc/update_verbs()
 	if(anchored)
-		verbs -= /obj/structure/disposalconstruct/proc/rotate
 		verbs -= /obj/structure/disposalconstruct/proc/flip
 	else
-		verbs += /obj/structure/disposalconstruct/proc/rotate
 		verbs += /obj/structure/disposalconstruct/proc/flip
 
 // update iconstate and dpdir due to dir and type
@@ -121,23 +122,6 @@
 // change visibility status and force update of icon
 /obj/structure/disposalconstruct/hide(intact)
 	set_invisibility((intact && level==1) ? 101: 0)	// hide if floor is intact
-	update()
-
-
-// flip and rotate verbs
-/obj/structure/disposalconstruct/proc/rotate()
-	set category = "Object"
-	set name = "Rotate Pipe"
-	set src in view(1)
-
-	if(usr.incapacitated())
-		return
-
-	if(anchored)
-		to_chat(usr, "You must unfasten the pipe before rotating it.")
-		return
-
-	set_dir(turn(dir, -90))
 	update()
 
 /obj/structure/disposalconstruct/proc/flip()

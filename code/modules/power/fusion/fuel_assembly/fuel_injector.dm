@@ -6,6 +6,7 @@ var/list/fuel_injectors = list()
 	icon_state = "injector0"
 	density = 1
 	anchored = 0
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	req_access = list(access_engine)
 	idle_power_usage = 10 WATTS
 	active_power_usage = 500 WATTS
@@ -19,6 +20,8 @@ var/list/fuel_injectors = list()
 	..()
 	fuel_injectors += src
 	tag = null
+
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/fusion_fuel_injector/Destroy()
 	if(cur_assembly)
@@ -129,23 +132,3 @@ var/list/fuel_injectors = list()
 		flick("injector-emitting",src)
 	else
 		StopInjecting()
-
-/obj/machinery/fusion_fuel_injector/verb/rotate_clock()
-	set category = "Object"
-	set name = "Rotate Generator (Clockwise)"
-	set src in view(1)
-
-	if (usr.incapacitated() || usr.restrained()  || anchored)
-		return
-
-	src.dir = turn(src.dir, -90)
-
-/obj/machinery/fusion_fuel_injector/verb/rotate_anticlock()
-	set category = "Object"
-	set name = "Rotate Generator (Counter-clockwise)"
-	set src in view(1)
-
-	if (usr.incapacitated() || usr.restrained()  || anchored)
-		return
-
-	src.dir = turn(src.dir, 90)
