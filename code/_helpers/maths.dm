@@ -144,6 +144,18 @@
 /proc/RoundUpToPowerOfTwo(val)
 	return 2 ** -round(-log(2,val))
 
+/// Angle between two arbitrary points and horizontal line.
+/proc/get_angle_raw(start_x, start_y, start_pixel_x, start_pixel_y, end_x, end_y, end_pixel_x, end_pixel_y)
+	var/dy = (32 * end_y + end_pixel_y) - (32 * start_y + start_pixel_y)
+	var/dx = (32 * end_x + end_pixel_x) - (32 * start_x + start_pixel_x)
+	if(!dy)
+		return (dx >= 0) ? 90 : 270
+	. = arctan(dx/dy)
+	if(dy < 0)
+		. += 180
+	else if(dx < 0)
+		. += 360
+
 //Finds the shortest angle that angle A has to change to get to angle B. Aka, whether to move clock or counterclockwise.
 /proc/closer_angle_difference(a, b)
 	if(!isnum(a) || !isnum(b))

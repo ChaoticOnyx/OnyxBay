@@ -42,3 +42,15 @@
 		turfs -= get_turf(src)
 	if(length(turfs))
 		throw_at(pick(turfs), maxrange, speed, src)
+
+/proc/get_atom_closest_to_atom(atom/a, list/possibilities)
+	if(!possibilities || !possibilities.len)
+		return null
+
+	var/closest_distance = get_dist(a, possibilities[1])
+	. = possibilities[1]
+	for(var/p in (possibilities - possibilities[1]))
+		var/dist = get_dist(a, p)
+		if(dist < closest_distance)
+			closest_distance = dist
+			. = p

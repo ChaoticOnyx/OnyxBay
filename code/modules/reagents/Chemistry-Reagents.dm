@@ -90,14 +90,22 @@
 	return
 
 /datum/reagent/proc/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
-	return
+	run_modifier_check(M, affecting_dose)
 
 /datum/reagent/proc/affect_ingest(mob/living/carbon/M, alien, removed, affecting_dose)
 	affect_blood(M, alien, removed * absorbability, affecting_dose)
 	return
 
 /datum/reagent/proc/affect_touch(mob/living/carbon/M, alien, removed, affecting_dose)
-	return
+	run_modifier_check(M, affecting_dose)
+
+/datum/reagent/proc/run_modifier_check(mob/living/carbon/M, amount)
+	for(var/datum/modifier/mod in M.modifiers)
+		if(!mod.affected_chemicals.len)
+			continue
+
+		if(type in mod.affected_chemicals)
+			mod.trigger_chem_effect(M, amount, src)
 
 /datum/reagent/proc/overdose(mob/living/carbon/M, alien) // Overdose effect. Doesn't happen instantly.
 	M.add_chemical_effect(CE_TOXIN, 1)

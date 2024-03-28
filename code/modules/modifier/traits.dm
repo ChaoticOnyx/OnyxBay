@@ -213,3 +213,7 @@
 /datum/modifier/trait/magicimmune
 	name = "Magic Immunity"
 	desc = "You're immune to magic"
+
+/datum/modifier/fake_full_health
+	name = "Fake Full Health"
+	hidden = TRUE

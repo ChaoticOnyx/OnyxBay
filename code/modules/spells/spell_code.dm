@@ -391,10 +391,6 @@
 
 	return do_after(user,delay, incapacitation_flags = incap_flags)
 
-/datum/spell/proc/set_connected_god(mob/living/deity/god)
-	connected_god = god
-	return
-
 /datum/spell/proc/to_list()
 	var/list/data = list(
 		"name"        = name,

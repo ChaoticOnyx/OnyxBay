@@ -1,0 +1,70 @@
+"a" = (/turf/space,/area/devilslair)
+"b" = (/turf/unsimulated/wall/cult,/area/devilslair)
+"c" = (/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"d" = (/obj/structure/bed/chair/wood{dir = 4},/turf/simulated/floor/trim/carpet/red,/area/devilslair)
+"e" = (/obj/structure/bed/chair/wood{dir = 4},/obj/effect/decal/remains,/turf/simulated/floor/trim/carpet/red,/area/devilslair)
+"f" = (/obj/effect/landmark/devil_spawn,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"g" = (/mob/living/simple_animal/hostile/retaliate/clown,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"h" = (/obj/structure/window/reinforced{dir = 8},/turf/simulated/floor/natural/lava,/area/devilslair)
+"i" = (/obj/structure/table/steel,/obj/item/clothing/suit/chef/classic,/obj/item/material/knife/butch,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"l" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/sliceable/tofubread,/turf/simulated/floor/trim/carpet/red,/area/devilslair)
+"m" = (/obj/structure/table/steel,/obj/item/scalpel,/obj/item/circular_saw,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"n" = (/obj/machinery/acting/changer/devilschanger,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"o" = (/obj/structure/bed/chair/wood{dir = 8},/turf/simulated/floor/trim/carpet/red,/area/devilslair)
+"p" = (/obj/structure/bed,/obj/item/bedsheet/red,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"q" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/vessel/bottle/pwine,/obj/item/reagent_containers/vessel/glass/wine{pixel_x = 9},/obj/item/reagent_containers/vessel/glass/wine{pixel_x = 9},/obj/item/reagent_containers/vessel/glass/wine{pixel_x = -9},/turf/simulated/floor/trim/carpet/red,/area/devilslair)
+"r" = (/obj/structure/window/reinforced,/turf/simulated/floor/natural/lava,/area/devilslair)
+"s" = (/turf/simulated/floor/natural/lava,/area/devilslair)
+"t" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/vessel/skullgoblet/gold,/turf/simulated/floor/trim/carpet/red,/area/devilslair)
+"u" = (/obj/structure/bed/chair{dir = 4},/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"v" = (/turf/unsimulated/wall,/area/devilslair)
+"w" = (/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"x" = (/obj/effect/decal/remains,/turf/simulated/floor/natural/lava,/area/devilslair)
+"y" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/enchiladas,/turf/simulated/floor/trim/carpet/red,/area/devilslair)
+"z" = (/obj/structure/window/reinforced{dir = 1},/turf/simulated/floor/natural/lava,/area/devilslair)
+"A" = (/turf/simulated/floor/trim/carpet/red,/area/devilslair)
+"D" = (/obj/structure/grille/cult,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"F" = (/obj/structure/table/steel,/obj/item/material/hatchet,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"G" = (/obj/structure/bed/chair/wood/wings,/turf/simulated/floor/trim/carpet/red,/area/devilslair)
+"H" = (/obj/structure/window/reinforced,/obj/effect/decal/remains,/turf/simulated/floor/natural/lava,/area/devilslair)
+"I" = (/mob/living/simple_animal/pig,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"K" = (/obj/structure/closet/secure_closet/personal/cabinet,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"M" = (/obj/effect/decal/remains,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"N" = (/obj/structure/kitchenspike,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"P" = (/obj/structure/bed/chair/wood{dir = 8},/obj/effect/decal/remains,/turf/simulated/floor/trim/carpet/red,/area/devilslair)
+"Q" = (/obj/effect/devilsportal,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"S" = (/obj/structure/flora/pottedplant/autumn,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"T" = (/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/natural/lava,/area/devilslair)
+"U" = (/obj/structure/table/woodentable,/obj/item/mirror,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"V" = (/obj/structure/flora/pottedplant/eye,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"W" = (/obj/machinery/acting/changer/mirror{pixel_y = 0; pixel_x = -32},/obj/structure/bed/chair/comfy/red{dir = 8},/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"X" = (/obj/effect/decal/remains,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"Y" = (/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
+"Z" = (/obj/machinery/door/unpowered/simple/wood,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+
+(1,1,1) = {"
+vvvvvvvvvvvvvvvvvvvvvvvv
+vaaaaaaaaaaaaaaaaaaaaaav
+vaaaaaaaaaaaaaaaaaaaaaav
+vaaaaaaaaaaaaaaaaaaaaaav
+vaaaaaaaaaaaaaaabbbbbbav
+vabbbbbbbbbbbbbbbxsssbav
+vabIDXDgbbsssssbbrrrHbav
+vabDDDDDbbsssssbbUccnbav
+vabwYYYYbbbrrrbbbWccpbav
+vabuYYYYbScccccSbVcccbav
+vabwwYYYZcccfMccZcccKbav
+vabNNFmibQcAGAccbbbbbbav
+vabbbbbbbccetoccbbbaaaav
+vaaaaabsbccdloccbxbaaaav
+vaaaaabsTccdyocchsbaaaav
+vaaaaabsbccdqPccbsbaaaav
+vaaaaabxTcMAAAcchsbaaaav
+vaaaaabsbScccccSbsbaaaav
+vaaaaabsbbzbzbzbbsbaaaav
+vaaaaabssssssssssxbaaaav
+vaaaaabbbbbbbbbbbbbaaaav
+vaaaaaaaaaaaaaaaaaaaaaav
+vaaaaaaaaaaaaaaaaaaaaaav
+vvvvvvvvvvvvvvvvvvvvvvvv
+"}
