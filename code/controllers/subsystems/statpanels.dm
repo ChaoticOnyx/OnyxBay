@@ -198,7 +198,7 @@ SUBSYSTEM_DEF(statpanels)
 		list("Instances:", "[num2text(world.contents.len, 10)]"),
 		list("World Time:", "[world.time]"),
 		list("Globals:", GLOB.stat_entry(), ref(GLOB)),
-		list("Byond:", "Byond:", "(FPS:[world.fps]) (TickCount:[world.time/world.tick_lag]) (TickDrift:[round(Master.tickdrift,1)]([round((Master.tickdrift/(world.time/world.tick_lag))*100,0.1)]%))"),
+		list("Byond:", "(FPS:[world.fps]) (TickCount:[world.time/world.tick_lag]) (TickDrift:[round(Master.tickdrift,1)]([round((Master.tickdrift/(world.time/world.tick_lag))*100,0.1)]%))"),
 		list("Master Controller:", Master?.stat_entry() || "ERROR", ref(Master)),
 		list("Failsafe Controller:", Failsafe?.stat_entry() || "ERROR", ref(Failsafe)),
 		list("","")

@@ -490,6 +490,7 @@ function draw_spells(cat) {
     } else {
       td2.textContent = part[2];
     }
+    tr.appendChild(td1);
     tr.appendChild(td2);
     table.appendChild(tr);
   }

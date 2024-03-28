@@ -187,7 +187,7 @@
 			observer.real_name = client.prefs.real_name
 			observer.SetName(observer.real_name)
 			if(!client.holder && !config.ghost.allow_antag_hud)
-				revoke_verb(observer, /mob/observer/ghost/verb/toggle_antagHUD )
+				revoke_verb(observer, /mob/observer/ghost/verb/toggle_antagHUD)
 
 			observer.key = key
 			observer.client?.init_verbs()
