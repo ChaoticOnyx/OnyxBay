@@ -11,7 +11,7 @@
 
 /datum/species/promethean/stargazer/handle_post_spawn(mob/living/carbon/H)
 	. = ..()
-	H.AddComponent(/datum/component/mind_linker, network_name = "Slime Link")
+	H.AddComponent(/datum/component/mind_linker, network_name = "Stargazer Link")
 	spawn(1)
 		H.update_action_buttons()
 

@@ -258,7 +258,7 @@
 
 /datum/action/innate/link_minds
 	name = "Link Minds"
-	//desc = "Link someone's mind to your Slime Link, allowing them to communicate telepathically with other linked minds."
+	//desc = "Link someone's mind to your Stargazer Link, allowing them to communicate telepathically with other linked minds."
 	button_icon_state = "mindlink"
 	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
