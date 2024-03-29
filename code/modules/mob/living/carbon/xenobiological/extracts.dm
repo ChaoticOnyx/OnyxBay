@@ -506,8 +506,7 @@
 /obj/item/metroid_extract/pyrite/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			var/chosen = pick(difflist(subtypesof(/obj/item/pen/crayon)))
-			var/obj/item/O = new chosen(null)
+			var/obj/item/O = new /obj/item/pen/crayon/random
 			if(!user.put_in_active_hand(O))
 				O.forceMove(user.drop_location())
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
