@@ -393,12 +393,22 @@
 			return 100
 
 		if(METROID_ACTIVATE_MAJOR)
-			/*TODO - SHADOWLING
 			to_chat(user, SPAN_WARNING("You feel your own light turning dark..."))
 			if(do_after(user, 120, target = user))
-				to_chat(user, SPAN_WARNING("You feel a longing for darkness."))
-				user.set_species(pick(/datum/species/shadow))
-				return*/
+				if(!player_is_antag(user.mind))
+					to_chat(user, SPAN_WARNING("You feel a longing for darkness."))
+					user.set_species(pick(
+						SPECIES_HUMAN,
+						SPECIES_GRAVWORLDER,
+						SPECIES_SPACER,
+						SPECIES_VATGROWN,
+						SPECIES_TAJARA,
+						SPECIES_UNATHI,
+						SPECIES_SKRELL,
+						SPECIES_SWINE,
+					))
+					user.make_vampire()
+					return
 			to_chat(user, SPAN_NOTICE("You don't fell linkage with darkness"))
 
 /obj/item/metroid_extract/oil
