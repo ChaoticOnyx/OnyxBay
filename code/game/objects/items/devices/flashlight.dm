@@ -235,6 +235,7 @@
 	name = "lantern"
 	icon_state = "lantern"
 	item_state = "lantern"
+	item_state_on = "lantern-on"
 	desc = "A mining lantern."
 
 	flashlight_max_bright = 0.75
