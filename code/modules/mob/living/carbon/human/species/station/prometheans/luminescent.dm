@@ -14,11 +14,11 @@
 	for(var/datum/action/A in luminescent_actions)
 		A.Remove(parent)
 
-/datum/species/promethean/luminescent
+/datum/species/luminescent
 	name = SPECIES_LUMINESCENT
 	icobase = 'icons/mob/human_races/prometheans/r_luminescent.dmi'
 
-/datum/species/promethean/luminescent/handle_post_spawn(mob/living/carbon/human/new_jellyperson)
+/datum/species/luminescent/handle_post_spawn(mob/living/carbon/human/new_jellyperson)
 	. = ..()
 
 	var/datum/component/extract_eater/extract_eater_comp = new_jellyperson.AddComponent(/datum/component/extract_eater)
@@ -39,7 +39,7 @@
 	spawn(5)
 		new_jellyperson.update_action_buttons()
 
-/datum/species/promethean/luminescent/on_species_loss(mob/living/carbon/human/H)
+/datum/species/luminescent/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	var/datum/component/extract_eater/extract_eater_comp = H.get_component(/datum/component/extract_eater)
 
@@ -52,7 +52,7 @@
 	qdel(extract_eater_comp)
 
 /// Updates the glow of our internal glow thing.
-/datum/species/promethean/luminescent/proc/update_glow(mob/living/carbon/C, intensity)
+/datum/species/luminescent/proc/update_glow(mob/living/carbon/C, intensity)
 	var/datum/component/extract_eater/extract_eater_comp = C.get_component(/datum/component/extract_eater)
 	if(!extract_eater_comp)
 		return

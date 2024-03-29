@@ -750,7 +750,7 @@ var/list/name_to_material
 	weight = 27
 	resilience = 16
 	reflectance = 20
-	stack_origin_tech = list(TECH_MATERIAL = 6)
+	stack_origin_tech = list(TECH_MATERIAL = 6, TECH_ARCANE = 1)
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
 

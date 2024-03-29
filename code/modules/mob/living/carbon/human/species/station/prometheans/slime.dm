@@ -1,9 +1,10 @@
 #define BLOOD_VOLUME_SLIME_SPLIT 45
+#define MAX_BODY_COUNT 5
 //Slime people are able to split like slimes, retaining a single mind that can swap between bodies at will, even after death.
 
 /datum/component/body_swapper
 	var/list/mob/living/carbon/bodies
-	var/datum/action/innate/split_body/slime_split
+	var/datum/action/cooldown/split_body/slime_split
 	var/datum/action/innate/swap_body/swap_body
 
 /datum/species/promethean/slime
@@ -66,27 +67,33 @@
 
 	..()
 
-/datum/action/innate/split_body
+/datum/action/cooldown/split_body
 	name = "Split Body"
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "slimesplit"
 	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
+	cooldown_time = 5 MINUTES
 
-/datum/action/innate/split_body/IsAvailable(feedback = FALSE)
+/datum/action/cooldown/split_body/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return
 	var/mob/living/carbon/human/H = owner
+
+	var/datum/component/body_swapper/BS = H.get_component(/datum/component/body_swapper)
+
+	if(LAZYLEN(BS.bodies)>=MAX_BODY_COUNT)
+		return FALSE
+
+
 	var/obj/item/organ/internal/promethean/metroid_jelly_vessel/jelly_vessel = H.internal_organs_by_name[BP_METROID]
 	var/jelly_amount = jelly_vessel.stored_jelly
 	var/jelly_volume = round((jelly_amount/H.species.blood_volume)*100)
 
-	if(jelly_volume >= BLOOD_VOLUME_SLIME_SPLIT)
-		return TRUE
-	return FALSE
+	return jelly_volume >= BLOOD_VOLUME_SLIME_SPLIT
 
-/datum/action/innate/split_body/Activate()
+/datum/action/cooldown/split_body/Activate()
 	var/mob/living/carbon/human/H = owner
 	if(!(H.dna?.species))
 		return
@@ -108,10 +115,14 @@
 			make_dupe()
 		else
 			to_chat(H, SPAN_WARNING("...but there is not enough of you to go around! You must attain more mass to split!"))
+			return
 	else
 		to_chat(H, SPAN_WARNING("...but fail to stand perfectly still!"))
+		return
 
-/datum/action/innate/split_body/proc/make_dupe()
+	StartCooldown()
+
+/datum/action/cooldown/split_body/proc/make_dupe()
 	var/mob/living/carbon/human/H = owner
 
 	if(!(H.dna?.species))
@@ -119,6 +130,7 @@
 
 	var/obj/item/organ/internal/promethean/metroid_jelly_vessel/jelly_vessel = H.internal_organs_by_name[BP_METROID]
 	var/mob/living/carbon/human/spare = new /mob/living/carbon/human/slimeperson(H.loc)
+	var/obj/item/organ/internal/promethean/metroid_jelly_vessel/spare_jelly_vessel = spare.internal_organs_by_name[BP_METROID]
 
 	spare.dna = H.dna.Clone()
 	spare.dna.mcolor = "#[pick("7F", "FF")][pick("7F", "FF")][pick("7F", "FF")]"
@@ -129,6 +141,7 @@
 	spare.AddComponent(/datum/component/body_swapper)
 
 	jelly_vessel.remove_jelly(H.species.blood_volume*(BLOOD_VOLUME_SLIME_SPLIT/100))
+	spare_jelly_vessel.remove_jelly(H.species.blood_volume*(BLOOD_VOLUME_SLIME_SPLIT/100))
 
 	var/datum/component/body_swapper/BS_original = H.get_component(/datum/component/body_swapper)
 	BS_original.bodies |= spare
@@ -291,3 +304,6 @@
 		around.</span>",
 		SPAN_NOTICE("...and move this one instead."))
 	dupe.update_action_buttons()
+
+#undef MAX_BODY_COUNT
+#undef BLOOD_VOLUME_SLIME_SPLIT
