@@ -1,3 +1,4 @@
+
  /**
   * StonedMC
   *
@@ -162,6 +163,13 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 /datum/controller/master/Initialize(delay, init_sss)
 	set waitfor = 0
 
+	rustg_prom_counter_register(PROM_MASTER_ITERATIONS, "How many times have we ran")
+	rustg_prom_gauge_float_register(PROM_MASTER_TICK_DRIFT, "Tick drift")
+	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_COST, "Average time to execute")
+	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_TICKS, "How many ticks does this subsystem take to run on avg")
+	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_TICK_USAGE, "Average tick usage")
+	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_TICK_OVERRUN, "Average tick overrun")
+
 	if(delay)
 		sleep(delay)
 
@@ -287,7 +295,12 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/list/subsystems_to_check
 	//the actual loop.
 	while (1)
+		rustg_prom_counter_inc(PROM_MASTER_ITERATIONS, null)
+
 		tickdrift = max(0, MC_AVERAGE_FAST(tickdrift, (((REALTIMEOFDAY - init_timeofday) - (world.time - init_time)) / world.tick_lag)))
+
+		rustg_prom_gauge_float_set(PROM_MASTER_TICK_DRIFT, (tickdrift / (world.time / world.tick_lag)) * 100, null)
+
 		var/starting_tick_usage = TICK_USAGE
 		if (processing <= 0)
 			current_ticklimit = TICK_LIMIT_RUNNING
@@ -495,6 +508,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			if (tick_usage < 0)
 				tick_usage = 0
 			queue_node.tick_overrun = max(0, MC_AVG_FAST_UP_SLOW_DOWN(queue_node.tick_overrun, tick_usage-tick_precentage))
+			rustg_prom_gauge_float_set(PROM_SUBSYSTEM_TICK_OVERRUN, queue_node.tick_overrun, list("name" = queue_node.name))
+
 			queue_node.state = state
 
 			if (state == SS_PAUSED)
@@ -504,11 +519,16 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 				continue
 
 			queue_node.ticks = MC_AVERAGE(queue_node.ticks, queue_node.paused_ticks)
+			rustg_prom_gauge_float_set(PROM_SUBSYSTEM_TICKS, queue_node.ticks, list("name" = queue_node.name))
+
 			tick_usage += queue_node.paused_tick_usage
 
 			queue_node.tick_usage = MC_AVERAGE_FAST(queue_node.tick_usage, tick_usage)
+			rustg_prom_gauge_float_set(PROM_SUBSYSTEM_TICK_USAGE, queue_node.tick_usage, list("name" = queue_node.name))
 
 			queue_node.cost = MC_AVERAGE_FAST(queue_node.cost, TICK_DELTA_TO_MS(tick_usage))
+			rustg_prom_gauge_float_set(PROM_SUBSYSTEM_COST, queue_node.cost / 1000, list("name" = queue_node.name))
+
 			queue_node.paused_ticks = 0
 			queue_node.paused_tick_usage = 0
 
