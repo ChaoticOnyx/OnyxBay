@@ -531,9 +531,20 @@
 /obj/item/metroid_extract/cerulean/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			user.reagents.add_reagent(/datum/reagent/inaprovaline,15)
-			to_chat(user, SPAN_NOTICE("You feel like you don't need to breathe!"))
-			return 150
+			if(!istype(user.get_active_hand(), /obj/item/tank))
+				to_chat(user, SPAN_NOTICE("You need to hold something capable to hold gases!"))
+				return 0
+
+			var/obj/item/tank/tank = user.get_active_hand()
+			visible_message("<span class='notice'>\The [user] started to blow into \the [tank].</span>", "<span class='notice'>You started to blow into \the [tank].</span>")
+			if(!do_after(user, 25, target = user))
+				return
+
+			var/datum/gas_mixture/GM
+			GM.adjust_gas("oxygen", (ONE_ATMOSPHERE*GM.volume/(R_IDEAL_GAS_EQUATION*(20 CELSIUS))))
+			tank.assume_air(GM)
+			to_chat(user, SPAN_NOTICE("You're feeling some dizziness, and decided to stop!"))
+			return 250
 
 		if(METROID_ACTIVATE_MAJOR)
 			var/turf/T = get_turf(user)
