@@ -275,7 +275,7 @@
 /obj/item/device/flashlight/lamp/green
 	desc = "A classic green-shaded desk lamp."
 	icon_state = "lampgreen"
-
+	item_state = "lampgreen"
 	flashlight_inner_range = 1.5
 	flashlight_outer_range = 3
 	brightness_color = "#efac75"
@@ -283,7 +283,7 @@
 /obj/item/device/flashlight/lamp/brown
 	desc = "A classic brown-shaded desk lamp."
 	icon_state = "lampbrown"
-	item_state = "lampbrown"
+	item_state = "lampgreen"
 
 	flashlight_inner_range = 1.5
 	flashlight_outer_range = 3
@@ -327,12 +327,15 @@
 /obj/item/device/flashlight/flare/on_update_icon()
 	ClearOverlays()
 	if(on)
+		if(item_state_on)
+			item_state = item_state_on
 		icon_state = "[initial(icon_state)]-on"
 		AddOverlays(image(icon, "[initial(icon_state)]-overlay"))
 		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
 		em_block_state = "[initial(icon_state)]-eb"
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"
+		item_state = initial(item_state)
 		em_block_state = null
 
 /obj/item/device/flashlight/flare/think()
