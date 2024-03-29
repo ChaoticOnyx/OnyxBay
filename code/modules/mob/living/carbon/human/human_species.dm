@@ -114,11 +114,11 @@
 /mob/living/carbon/human/promethean/New(new_loc)
 	..(new_loc, SPECIES_PROMETHEAN)
 
-/mob/living/carbon/human/slimeperson/New(new_loc)
+/mob/living/carbon/human/promethean/slimeperson/New(new_loc)
 	..(new_loc, SPECIES_SLIMEPERSON)
 
-/mob/living/carbon/human/stargazer/New(new_loc)
+/mob/living/carbon/human/promethean/stargazer/New(new_loc)
 	..(new_loc, SPECIES_STARGAZER)
 
-/mob/living/carbon/human/luminescent/New(new_loc)
+/mob/living/carbon/human/promethean/luminescent/New(new_loc)
 	..(new_loc, SPECIES_LUMINESCENT)
