@@ -85,6 +85,7 @@
 		MATERIAL_LEATHER                    = icon(MATERIALS_ICON, "leather"),
 		MATERIAL_IRON                       = icon(MATERIALS_ICON, "iron"),
 		MATERIAL_PLATINUM                   = icon(MATERIALS_ICON, "adamantine"),
+		MATERIAL_ADAMANTINE					= icon(MATERIALS_ICON, "adamantine"),
 		MATERIAL_BRONZE                     = icon(MATERIALS_ICON, "bronze"),
 		MATERIAL_REINFORCED_GLASS           = icon(MATERIALS_ICON, "rglass"),
 		MATERIAL_PLASS                      = icon(MATERIALS_ICON, "plass"),

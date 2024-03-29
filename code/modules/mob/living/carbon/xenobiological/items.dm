@@ -234,7 +234,13 @@
 		/obj/item/stack/material/mhydrogen = SPECIES_GOLEM_HYDROGEN,
 	)
 
-	if(!LAZYLEN(GLOB.golems_resonator))
+	if(istype(I,/obj/item/stack/material/adamantine))
+		var/obj/item/stack/stuff_stack = I
+
+		if(!stuff_stack.use(2))
+			to_chat(user, SPAN_WARNING("You need at least two ingots to finish a golem!"))
+			return
+
 		qdel(I)
 		to_chat(user, SPAN_NOTICE("You feel some magic pulse from shell."))
 		to_chat(user, SPAN_NOTICE("You finish up the golem shell with adamantine?!"))

@@ -200,6 +200,7 @@
 	name = "adamantine"
 	icon_state = "adamantine"
 	default_type = MATERIAL_ADAMANTINE
+	apply_colour = 1
 
 //Fuel for MRSPACMAN generator.
 /obj/item/stack/material/tritium
