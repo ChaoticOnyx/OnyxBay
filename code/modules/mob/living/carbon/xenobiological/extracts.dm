@@ -233,13 +233,15 @@
 /obj/item/metroid_extract/yellow/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
+			var/datum/species/promethean/luminescent/species = user.species
 			if(extract_eater_comp.glow_intensity != LUMINESCENT_DEFAULT_GLOW)
 				to_chat(user, SPAN_WARNING("Your glow is already enhanced!"))
 				return
-			var/datum/species/promethean/luminescent/species = user.species
-			species.update_glow(user, 5)
-			addtimer(CALLBACK(species, nameof(/datum/species/promethean/luminescent.proc/update_glow), user, LUMINESCENT_DEFAULT_GLOW), 600)
+
+			species.update_glow(user, LUMINESCENT_ENHANCED_GLOW)
+			addtimer(CALLBACK(species, nameof(/datum/species/promethean/luminescent.proc/update_glow), user, LUMINESCENT_DEFAULT_GLOW), 400)
 			to_chat(user, SPAN_NOTICE("You start glowing brighter."))
+			return 600
 
 		if(METROID_ACTIVATE_MAJOR)
 			user.visible_message(SPAN_WARNING("[user]'s skin starts flashing intermittently..."), SPAN_WARNING("Your skin starts flashing intermittently..."))

@@ -60,7 +60,7 @@
 		extract_eater_comp.glow_intensity = intensity
 	else
 		extract_eater_comp.glow_intensity = LUMINESCENT_DEFAULT_GLOW
-	C.set_light(1, 0.5, extract_eater_comp.glow_intensity, 2, C.dna.mcolor)
+	C.set_light(1, 0.5, extract_eater_comp.glow_intensity, extract_eater_comp.glow_intensity, C.dna.mcolor)
 
 /datum/action/innate/integrate_extract
 	name = "Integrate Extract"
