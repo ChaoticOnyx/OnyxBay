@@ -17,16 +17,10 @@
 /datum/space_level/exodus_3
 	path = 'exodus-3.dmm'
 	travel_chance = 0
-	traits = list(
-		ZTRAIT_CONTACT
-	)
 
 /datum/space_level/exodus_4
 	path = 'exodus-4.dmm'
 	travel_chance = 0
-	traits = list(
-		ZTRAIT_CONTACT
-	)
 
 /datum/space_level/exodus_5
 	path = 'exodus-5.dmm'
