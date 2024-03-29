@@ -257,7 +257,7 @@
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_NOTICE("You activate [src]. You start feeling fast!"))
-			user.reagents.add_reagent(/datum/reagent/inaprovaline,5)
+			user.reagents.add_reagent(/datum/reagent/hyperzine,5)
 			return 450
 
 		if(METROID_ACTIVATE_MAJOR)
