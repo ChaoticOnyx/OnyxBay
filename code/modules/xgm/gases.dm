@@ -157,3 +157,9 @@
 
 	specific_heat = 30	// J/(mol*K)
 	molar_mass = 0.020	// kg/mol
+
+/decl/xgm_gas/heat
+	id = "heat"
+	name = "heat"
+
+	tile_overlay = "heat"

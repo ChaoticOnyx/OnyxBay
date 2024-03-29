@@ -51,3 +51,27 @@
 		gas_data.burn_product[gas.id] = gas.burn_product
 
 	return 1
+
+/atom/movable/temp_overlay
+	icon = 'icons/effects/temp_effects.dmi'
+	icon_state = "generic"
+	layer = FIRE_LAYER
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	var/effect_type
+
+/atom/movable/temp_overlay/Initialize(mapload, effect)
+	. = ..()
+	effect_type = effect
+
+/atom/movable/temp_overlay/proc/update_alpha_animation(new_alpha)
+	animate(src, alpha = new_alpha)
+	alpha = new_alpha
+	animate(src, alpha = 0.8 * new_alpha, time = 10, easing = SINE_EASING | EASE_OUT, loop = -1)
+	animate(alpha = new_alpha, time = 10, easing = SINE_EASING | EASE_IN, loop = -1)
+
+/atom/movable/temp_overlay/heat
+	plane = TEMPERATURE_EFFECT_PLANE
+	render_source = HEAT_EFFECT_TARGET
+	icon = null
+	icon_state = null
