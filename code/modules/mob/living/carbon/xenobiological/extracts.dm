@@ -272,7 +272,7 @@
 	icon_state = "blue metroid extract"
 	effectmod = "stabilized"
 
-/obj/item/metroid_extract/blue/obj/item/metroid_extract/blue/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
+/obj/item/metroid_extract/blue/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_NOTICE("You activate [src]. Your genome feels more stable!"))
@@ -280,10 +280,12 @@
 			return 250
 
 		if(METROID_ACTIVATE_MAJOR)
-			/*FIXME
-			user.reagents.create_foam(/datum/effect_system/fluid_spread/foam, 20, log = TRUE)
+			var/datum/effect/effect/system/foam_spread/FS = new
+			FS.set_up(20 , get_turf(user), user.reagents)
+			user.reagents.remove_any(user.reagents.total_volume)
+			FS.start()
+			log_admin("[user]([user.ckey]) started foam spread", get_turf(user), TRUE)
 			user.visible_message(SPAN_DANGER("Foam spews out from [user]'s skin!"), SPAN_WARNING("You activate [src], and foam bursts out of your skin!"))
-			*/
 			return 600
 
 /obj/item/metroid_extract/darkblue
