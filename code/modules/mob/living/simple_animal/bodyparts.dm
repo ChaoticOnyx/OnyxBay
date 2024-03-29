@@ -16,3 +16,6 @@
 
 /decl/simple_animal_bodyparts/legless
 	hit_zones = list("head", "body", "right arm", "right hand", "left arm", "left hand")
+
+/decl/simple_animal_bodyparts/worm
+	hit_zones = list("head", "torso", "tail")

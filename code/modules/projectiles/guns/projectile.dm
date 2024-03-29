@@ -47,10 +47,12 @@
 	. = ..()
 	if (starts_loaded)
 		if(ispath(ammo_type) && (load_method & (SINGLE_CASING|SPEEDLOADER)))
-			for(var/i in 1 to max_shells)
+			for(var/i in 1 to (rand_amout_ammo ? rand(0, max_shells) : max_shells))
 				loaded += new ammo_type(src)
 		if(ispath(magazine_type) && (load_method & MAGAZINE))
 			ammo_magazine = new magazine_type(src)
+			if(rand_amout_ammo)
+				ammo_magazine.set_rand_ammo()
 	update_icon()
 
 /obj/item/gun/projectile/Destroy()

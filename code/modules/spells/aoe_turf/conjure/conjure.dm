@@ -8,7 +8,7 @@ How they spawn stuff is decided by behaviour vars, which are explained below
 	desc = "This spell conjures objs of the specified types in range."
 
 	school = "conjuration" //funny, that
-
+	var/is_notify_ghosts = FALSE
 	var/list/summon_type = list() //determines what exactly will be summoned
 	//should NOT be text, like list(/obj/machinery/bot/ed209)
 
@@ -51,6 +51,8 @@ How they spawn stuff is decided by behaviour vars, which are explained below
 			summoned_object = spawn_place
 		else
 			summoned_object = new summoned_object_type(spawn_place)
+			if(is_notify_ghosts)
+				notify_ghosts("A new creature has been born!", null, source = summoned_object, action = NOTIFY_POSSES, posses_mob = TRUE)
 		var/atom/movable/fake_overlay/animation = new /atom/movable/fake_overlay(spawn_place)
 		animation.SetName("conjure")
 		animation.set_density(0)

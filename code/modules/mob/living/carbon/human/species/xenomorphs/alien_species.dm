@@ -300,25 +300,32 @@
 	tail = "xenos_hunter_feral_tail"
 	movespeed_modifier = /datum/movespeed_modifier/xenos_feral
 
+/datum/species/xenos/sentinel/alpha
+	name = SPECIES_XENO_ALPHA
+	tail = null
+	icobase = 'icons/mob/human_races/xenos/r_xenos_alpha.dmi'
+	total_health = 1500
+
 /datum/species/xenos/sentinel
 	name = SPECIES_XENO_SENTINEL
 	weeds_plasma_rate = 10
 	caste_name = "sentinel"
 	movespeed_modifier = /datum/movespeed_modifier/xenos
-	total_health = 150
-	weeds_heal_rate = 15
-	tail = "xenos_sentinel_tail"
+	total_health = 1500
+	weeds_heal_rate = 30
+	tail = null
 	strength = STR_VHIGH
 	brute_mod = 0.65
-	burn_mod  = 1.4
+	burn_mod  = 1.1
 
-	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
+	icobase = 'icons/mob/human_races/xenos/r_xenos_alpha.dmi'
 
 	has_organ = list(
 		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain/xeno,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/sentinel,
 		BP_ACID =     /obj/item/organ/internal/xenos/acidgland,
 		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
+		BP_RESIN =    /obj/item/organ/internal/xenos/resinspinner,
 		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
 		BP_GANGLION = /obj/item/organ/internal/xenos/ganglion
 		)
@@ -334,7 +341,10 @@
 		/mob/living/carbon/human/proc/spit,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/transfer_plasma,
-		/mob/living/carbon/human/proc/corrosive_acid
+		/mob/living/carbon/human/proc/corrosive_acid,
+		/mob/living/carbon/human/proc/psychic_whisper,
+		/mob/living/carbon/human/proc/regurgitate,
+		/mob/living/carbon/human/proc/alpha_plant
 		)
 
 /datum/species/xenos/sentinel/primal

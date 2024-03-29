@@ -121,6 +121,44 @@
 	if(istype(mob))
 		Getmob(mob)
 
+/client/proc/UpAllUsers()
+	set category = "Admin"
+	set name = "GO FUTURE!"
+	set desc = "Teleport all users without job='event' in future"
+
+	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
+		return
+	for(var/mob/M in GLOB.player_list)
+		if(istype(M, /mob/living/carbon/human/xenos))
+			continue
+		if(M.z < 3)
+			if(ishuman(M))
+				var/mob/living/carbon/human/H = M
+				if (H.job != "event")
+					do_time_teleport(M)
+			else if (isghost(M))
+				M.z = M.z + 2
+	log_and_message_admins("All teleported to future.")
+
+/client/proc/DownAllUsers()
+	set category = "Admin"
+	set name = "GO POST!"
+	set desc = "Teleport all users without job='event' in post"
+
+	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
+		return
+	for(var/mob/M in GLOB.player_list)
+		if(istype(M, /mob/living/carbon/human/xenos))
+			continue
+		if(M.z > 2)
+			if(ishuman(M))
+				var/mob/living/carbon/human/H = M
+				if (H.job != "event")
+					do_time_teleport(M)
+			else if (isghost(M))
+				M.z = M.z - 2
+	log_and_message_admins("All teleported to post.")
+
 /client/proc/Getkey()
 	set category = "Admin"
 	set name = "Get Key"

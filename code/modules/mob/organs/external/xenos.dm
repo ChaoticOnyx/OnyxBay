@@ -39,7 +39,7 @@
 
 /obj/item/organ/internal/xenos/plasmavessel/sentinel
 	stored_plasma = 100
-	max_plasma = 250
+	max_plasma = 850
 
 /obj/item/organ/internal/xenos/plasmavessel/hunter
 	name = "tiny plasma vessel"

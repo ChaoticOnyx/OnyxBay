@@ -102,6 +102,12 @@
 	icon_opened = "secopen"
 	icon_off = "secoff"
 
+/obj/structure/closet/secure_closet/security/empty
+	icon_state = "secopen"
+
+/obj/structure/closet/secure_closet/security/empty/WillContain()
+	return null
+
 /obj/structure/closet/secure_closet/security/WillContain()
 	return list(
 		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/security, /obj/item/storage/backpack/satchel/sec)),

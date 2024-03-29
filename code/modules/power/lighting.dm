@@ -236,6 +236,9 @@
 		set_dir(construct.dir)
 	else
 		lightbulb = new light_type(src)
+		var/turf/T = get_turf(src)
+		if(T.z == 3 || T.z == 4)
+			lightbulb.broken_chance = lightbulb.broken_chance * 45
 		if(prob(lightbulb.broken_chance))
 			broken(1)
 

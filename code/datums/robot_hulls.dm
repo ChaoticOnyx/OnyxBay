@@ -123,6 +123,9 @@
 /datum/robot_hull/flying
 	footstep_sound = null
 
+/datum/robot_hull/flying/qualified_doctor
+	icon_state = "qualified_doctor"
+
 /datum/robot_hull/flying/drone_standard
 	icon_state = "drone-standard"
 

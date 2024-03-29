@@ -156,6 +156,12 @@
 	return ..()
 
 /mob/living/simple_animal/mouse/Crossed(AM as mob|obj)
+	if(istype(holding_item, /obj/item/potato) && prob(80) && ishuman(AM))
+		playsound(loc, 'sound/effects/splat.ogg', 20, 1)
+		explosion(loc, 0, 0, 1, 0)
+		new /obj/effect/decal/cleanable/blood/gibs(src.loc)
+		qdel(src)
+		return
 	if(!client && ishuman(AM) && !stat)
 		var/mob/M = AM
 		to_chat(M, SPAN("warning", "\icon[src] Squeek!"))
@@ -179,7 +185,7 @@
 		return ..()
 
 /mob/living/simple_animal/mouse/attackby(obj/item/O, mob/user)
-	if(!holding_item && user.a_intent == I_HELP && istype(user.get_inactive_hand(), /obj/item/tape_roll) && O.w_class == ITEM_SIZE_TINY)
+	if(!holding_item && user.a_intent == I_HELP && (istype(O, /obj/item/potato)) || (istype(user.get_inactive_hand(), /obj/item/tape_roll) && O.w_class == ITEM_SIZE_TINY))
 		user.visible_message(SPAN_NOTICE("[user] is trying to attach \a [O] with duct tape to \the [name]."),
 							SPAN_NOTICE("You are trying to attach \a [O] with duct tape to \the [name]."))
 		if(do_after(user, 3 SECONDS, src))
@@ -197,12 +203,19 @@
 
 /mob/living/simple_animal/mouse/on_update_icon()
 	ClearOverlays()
-	if(holding_item)
+	if(istype(holding_item, /obj/item/potato))
+		AddOverlays("holding_item_potato[stat ? is_ic_dead() ? "_dead" : "_lay" : ""]")
+	else if(holding_item)
 		AddOverlays("holding_item[stat ? is_ic_dead() ? "_dead" : "_lay" : ""]")
 
 /*
  * Mouse types
  */
+
+/mob/living/simple_animal/mouse/potato/Initialize()
+	. = ..()
+	holding_item = new /obj/item/potato()
+	on_update_icon()
 
 /mob/living/simple_animal/mouse/white
 	body_color = "white"

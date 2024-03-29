@@ -285,6 +285,16 @@
 	armor_penetration = 175
 	penetration_modifier = 1.5
 
+/obj/item/projectile/bullet/needle
+	damage = 20
+	penetrating = 6
+	armor_penetration = 30
+	penetration_modifier = 1.1
+	name = "needle"
+	icon_state = "SpearFlight"
+	fire_sound = 'sound/effects/slap.ogg'
+	muzzle_type = null
+
 /* Miscellaneous */
 
 /obj/item/projectile/bullet/suffocationbullet//How does this even work?

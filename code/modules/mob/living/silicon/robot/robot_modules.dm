@@ -957,6 +957,40 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	src.emag = new /obj/item/gun/energy/lasercannon/mounted(src)
 	..()
 
+/obj/item/robot_module/medical/qualified_doctor
+	name = "qualified doctor robot module"
+	hide_on_manifest = 1
+	hulls = list(
+		"Qualified Doctor" = new /datum/robot_hull/flying/qualified_doctor
+	)
+
+/obj/item/robot_module/medical/qualified_doctor/New()
+	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(25000)
+	synths += medicine
+
+	src.modules += new /obj/item/crowbar(src)
+	src.modules += new /obj/item/device/healthanalyzer(src)
+	src.modules += new /obj/item/reagent_containers/borghypo/crisis(src)
+	var/obj/item/stack/medical/advanced/ointment/O = new /obj/item/stack/medical/advanced/ointment(src)
+	var/obj/item/stack/medical/advanced/bruise_pack/B = new /obj/item/stack/medical/advanced/bruise_pack(src)
+	var/obj/item/stack/medical/splint/S = new /obj/item/stack/medical/splint(src)
+	O.uses_charge = 1
+	O.charge_costs = list(1000)
+	O.synths = list(medicine)
+	B.uses_charge = 1
+	B.charge_costs = list(1000)
+	B.synths = list(medicine)
+	S.uses_charge = 1
+	S.charge_costs = list(1000)
+	S.synths = list(medicine)
+	src.modules += O
+	src.modules += B
+	src.modules += S
+	src.modules += new /obj/item/reagent_containers/syringe/borg(src)
+	src.modules += new /obj/item/surgical_selector(src)
+	src.modules += new /obj/item/gripper/medical(src)
+	..()
+
 /obj/item/robot_module/drone
 	name = "drone module"
 	hide_on_manifest = 1

@@ -78,6 +78,26 @@
 
 #define TICKS_TO_RESTORE_GLITCH 3
 
+/obj/structure/psychic_rift/teleport
+	rift_state = 0
+
+/obj/structure/psychic_rift/teleport/Initialize()
+	. = ..()
+	visible_message(SPAN("danger", "Something feels very wrong..."))
+	icon_state = "rift1"
+	set_next_think(world.time + 4)
+
+/obj/structure/psychic_rift/teleport/check_rift_state()
+	if(rift_state == 5)
+		visible_message(SPAN("danger", "The reality's wounds seems to be mended for now. All you can do is to hope it wasn't scarred too deep."))
+		qdel(src)
+		return FALSE
+
+	rift_state++
+	update_icon()
+
+	return TRUE
+
 /obj/structure/psychic_rift
 	name = "wounded reality"
 	desc = "A crack in... Reality? <span class='danger'>You feel your sanity slipping away just by looking at it.</span>"
@@ -154,5 +174,16 @@
 		restoration_ticks = TICKS_TO_RESTORE_GLITCH
 
 	set_next_think(world.time + 3 SECONDS)
+
+/obj/structure/psychic_rift/teleport/think()
+	if(!rift_active)
+		playsound(loc, 'sound/effects/breaking/window/break4.ogg', 50, 1)
+		visible_message(SPAN("danger", "Something pierces through the space-time, wounding the reality itself!"))
+		rift_active = TRUE
+
+	if(!check_rift_state())
+		return
+
+	set_next_think(world.time + 1)
 
 #undef TICKS_TO_RESTORE_GLITCH

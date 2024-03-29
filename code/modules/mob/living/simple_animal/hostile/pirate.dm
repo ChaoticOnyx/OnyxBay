@@ -35,6 +35,8 @@
 	icon_dead = "piratemelee_dead"
 	projectilesound = 'sound/effects/weapons/energy/Laser.ogg'
 	ranged = 1
+	minimum_distance = 6
+	retreat_distance = 2
 	rapid = 1
 	projectiletype = /obj/item/projectile/beam/laser/lesser
 	corpse = /obj/effect/landmark/corpse/pirate/ranged

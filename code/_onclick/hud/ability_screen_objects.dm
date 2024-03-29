@@ -185,6 +185,13 @@
 			return S
 	return null
 
+/atom/movable/screen/movable/ability_master/proc/get_ability_by_spell_name(name)
+	for(var/screen in spell_objects)
+		var/atom/movable/screen/ability/spell/S = screen
+		if(S.spell.name == name)
+			return S.spell
+	return null
+
 /atom/movable/screen/movable/ability_master/proc/get_ability_by_changeling_power(datum/changeling_power/cp)
 	for(var/screen in changeling_power_objects)
 		var/atom/movable/screen/ability/changeling_power/CP = screen

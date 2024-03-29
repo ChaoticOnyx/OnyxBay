@@ -151,6 +151,16 @@
 		new /obj/effect/alien/weeds/node(loc)
 	return
 
+/mob/living/carbon/human/proc/alpha_plant()
+	set name = "Plant Weeds (50)"
+	set desc = "Plants some alien weeds"
+	set category = "Abilities"
+
+	if(check_alien_ability(50, BP_RESIN, TRUE))
+		visible_message(SPAN("alium", "<B>[src] has planted some alien weeds!</B>"))
+		new /obj/effect/alien/weeds/node/alpha(loc)
+	return
+
 /mob/living/carbon/human/proc/toggle_spit()
 	set category = "Abilities"
 	set name = "Set Spit"

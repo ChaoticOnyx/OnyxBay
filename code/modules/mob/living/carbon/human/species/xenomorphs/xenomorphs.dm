@@ -23,6 +23,13 @@
 /mob/living/carbon/human/xenos/sentinel/New(new_loc)
 	..(new_loc, SPECIES_XENO_SENTINEL)
 
+/mob/living/carbon/human/xenos/sentinel/alpha/New(new_loc)
+	..(new_loc, SPECIES_XENO_ALPHA)
+	src.SetTransform(0.9)
+	default_pixel_x = -16
+	pixel_x = -16
+	faction = "event"
+
 /mob/living/carbon/human/xenos/hunter/New(new_loc)
 	..(new_loc, SPECIES_XENO_HUNTER)
 

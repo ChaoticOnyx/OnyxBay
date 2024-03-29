@@ -37,6 +37,12 @@
 /datum/windowpane/black/preset_material = MATERIAL_BLACK_GLASS
 /datum/windowpane/rblack/preset_material = MATERIAL_REINFORCED_BLACK_GLASS
 
+/datum/windowpane/rglass/half
+	health = 10
+
+/datum/windowpane/rglass/quarter
+	health = 5
+
 /datum/windowpane/New(obj/structure/window_frame/WF, material/M, inner = FALSE)
 	..()
 	my_frame = WF
@@ -1123,6 +1129,12 @@
 		RADIATION_HAWKING = 0.2 ELECTRONVOLT
 	)
 
+/obj/structure/window_frame/rglass/half
+	preset_outer_pane = /datum/windowpane/rglass/half
+
+/obj/structure/window_frame/rglass/quarter
+	preset_outer_pane = /datum/windowpane/rglass/quarter
+
 /obj/structure/window_frame/black
 	name = "window"
 	icon_state = "winframe-black"
@@ -1164,6 +1176,13 @@
 		RADIATION_BETA_PARTICLE = 0.8 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 0.4 ELECTRONVOLT
 	)
+
+/obj/structure/window_frame/reinforced/hull/half
+	preset_outer_pane = /datum/windowpane/rglass/quarter
+
+/obj/structure/window_frame/reinforced/hull/quarter
+	preset_outer_pane = null
+	preset_inner_pane = /datum/windowpane/rglass/half
 
 // Reinforced window with two reinforced plass panes. Totally the best choice to constrain extremely high temperatures (combustion chamber/engine/etc.)
 /obj/structure/window_frame/reinforced/thermal
@@ -1210,6 +1229,12 @@
 		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 0.2 ELECTRONVOLT
 	)
+
+/obj/structure/window_frame/grille/rglass/half
+	preset_outer_pane = /datum/windowpane/rglass/half
+
+/obj/structure/window_frame/grille/rglass/quarter
+	preset_outer_pane = /datum/windowpane/rglass/quarter
 
 /obj/structure/window_frame/electric/glass
 	name = "electrochromic window"

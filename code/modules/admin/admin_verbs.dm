@@ -40,6 +40,8 @@ var/list/admin_verbs_admin = list(
 	/client/proc/Getmob,				//teleports a mob to our location,
 	/client/proc/Getmob_verb,			//allows to choose a mob to teleport to you,
 	/client/proc/Getkey,				//teleports a mob with a certain ckey to our location,
+	/client/proc/UpAllUsers,
+	/client/proc/DownAllUsers,
 //	/client/proc/sendmob,				//sends a mob somewhere, -Removed due to it needing two sorting procs to work, which were executed every time an admin right-clicked. ~Errorage,
 	/client/proc/Jump,
 	/client/proc/jumptokey,				//allows us to jump to the location of a mob with a certain ckey,

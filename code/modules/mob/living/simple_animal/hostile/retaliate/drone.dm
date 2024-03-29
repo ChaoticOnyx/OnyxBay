@@ -7,6 +7,8 @@
 	icon_living = "drone"
 	icon_dead = "drone_dead"
 	ranged = 1
+	retreat_distance = 5
+	minimum_distance = 6
 	rapid = 1
 	speak_chance = 5
 	turns_per_move = 3

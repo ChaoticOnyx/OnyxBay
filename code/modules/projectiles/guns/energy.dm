@@ -42,6 +42,8 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 		power_supply = new cell_type(src)
 	else
 		power_supply = new /obj/item/cell/device/variable(src, max_shots*charge_cost)
+		if (rand_amout_ammo)
+			power_supply.charge = rand(0, max_shots)*charge_cost
 	if(self_recharge)
 		set_next_think(world.time)
 	update_icon()

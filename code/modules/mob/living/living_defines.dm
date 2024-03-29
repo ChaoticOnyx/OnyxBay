@@ -60,3 +60,4 @@
 	var/controllable = FALSE // If ghosts can possess a mob without permissions
 
 	var/give_ghost_proc_at_initialize = TRUE
+	var/seeThermal = FALSE

@@ -14,6 +14,28 @@
 	pitch_toggle = 0
 	custom_sprite = FALSE // presets robots must not have custom sprites.
 
+/mob/living/silicon/robot/qualified_doctor
+	lawupdate = 0
+	scrambledcodes = 1
+	icon_state = "qualified_doctor"
+	bubble_icon = "syndibot"
+	modtype = "Medical"
+	lawchannel = "State"
+	laws = /datum/ai_laws/qualified_doctor
+	module = /obj/item/robot_module/medical/qualified_doctor
+	spawn_sound = 'sound/mecha/nominalnano.ogg'
+	cell = /obj/item/cell/super
+	pitch_toggle = 0
+	custom_sprite = FALSE // presets robots must not have custom sprites.
+
+	var/list/wizardy_spells = list(/datum/spell/targeted/say/standart_medbot, /datum/spell/targeted/say/target_medbot, /datum/spell/targeted/say/after_heal_medbot, /datum/spell/targeted/say/dead_pacient_medbot)
+
+
+/mob/living/silicon/robot/qualified_doctor/Initialize(mapload, ...)
+	. = ..()
+	for(var/spell in wizardy_spells)
+		src.add_spell(new spell, "const_spell_ready")
+
 /mob/living/silicon/robot/combat
 	lawupdate = 0
 	scrambledcodes = 1

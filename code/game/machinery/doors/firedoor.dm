@@ -477,6 +477,11 @@
 		if(istype(destination)) air_master.tiles_to_update += destination
 		return 1
 */
+/obj/machinery/door/firedoor/border_only/welded
+	blocked = TRUE
+	icon_state = "door_closed"
+	opacity = 1
+	density = 1
 
 /obj/machinery/door/firedoor/multi_tile
 	icon = 'icons/obj/doors/doorhazard2x1.dmi'

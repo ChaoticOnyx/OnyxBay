@@ -117,6 +117,12 @@ proc/explosion_rec(turf/epicenter, power, shaped)
 /turf/simulated/shuttle/wall
 	explosion_resistance = 10
 
+/turf/simulated/wall/half
+	damage = 50
+
+/turf/simulated/wall/quarter
+	damage = 150
+
 /turf/simulated/wall
 	plane = DEFAULT_PLANE
 	explosion_resistance = 10

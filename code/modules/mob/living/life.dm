@@ -221,9 +221,15 @@
 		update_living_sight()
 
 /mob/living/proc/update_living_sight()
+	client.screen.Remove(GLOB.global_hud.nvg, GLOB.global_hud.thermal, GLOB.global_hud.meson, GLOB.global_hud.science, GLOB.global_hud.material)
 	set_sight(sight&(~(SEE_TURFS|SEE_MOBS|SEE_OBJS)))
 	set_see_in_dark(initial(see_in_dark))
 	set_see_invisible(initial(see_invisible))
+	if(seeThermal)
+		set_sight(sight|SEE_MOBS)
+		set_see_in_dark(8)
+		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+		src.client.screen |= GLOB.global_hud.thermal
 
 /mob/living/proc/update_dead_sight()
 	set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)

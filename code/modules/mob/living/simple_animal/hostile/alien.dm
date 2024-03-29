@@ -67,6 +67,8 @@
 	melee_damage_lower = 15
 	melee_damage_upper = 15
 	ranged = 1
+	retreat_distance = 2
+	minimum_distance = 6
 	move_to_delay = 3
 	projectiletype = /obj/item/projectile/neurotox
 	projectilesound = 'sound/weapons/pierce.ogg'

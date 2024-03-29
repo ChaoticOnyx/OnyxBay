@@ -178,12 +178,20 @@
 	layer = ABOVE_TILE_LAYER
 	var/obj/effect/alien/weeds/node/linked_node = null
 
+/obj/effect/alien/weeds/alpha
+	icon = 'icons/mob/biocraps.dmi'
+	icon_state = "flesh"
+
 /obj/effect/alien/weeds/node
 	icon_state = "weednode"
 	name = "purple sac"
 	desc = "Weird purple octopus-like thing."
 	layer = ABOVE_TILE_LAYER + 0.01
 	var/node_range = 3
+
+/obj/effect/alien/weeds/node/alpha
+	icon = 'icons/mob/biocraps.dmi'
+	icon_state = "fleshnode"
 
 /obj/effect/alien/weeds/node/New()
 	..(src.loc, src)
@@ -196,6 +204,8 @@
 	linked_node = node
 	if(icon_state == "weeds")
 		icon_state = pick("weeds", "weeds1", "weeds2")
+	if(icon_state == "flesh")
+		icon_state = pick("flesh", "flesh1", "flesh2")
 	spawn(rand(150, 200))
 		if(src)
 			Life()
@@ -230,7 +240,10 @@
 				break
 
 		if(turf_eligible)
-			new /obj/effect/alien/weeds(T, linked_node)
+			if (istype(linked_node, /obj/effect/alien/weeds/node/alpha))
+				new /obj/effect/alien/weeds/alpha(T, linked_node)
+			else
+				new /obj/effect/alien/weeds(T, linked_node)
 
 
 /obj/effect/alien/weeds/ex_act(severity)

@@ -143,6 +143,13 @@
 			stored_ammo += new ammo_type(src)
 	update_icon()
 
+/obj/item/ammo_magazine/proc/set_rand_ammo()
+	QDEL_LIST(stored_ammo)
+	ammo_states = list()
+	for(var/i in 1 to (rand(1, max_ammo)))
+		stored_ammo += new ammo_type(src)
+	update_icon()
+
 /obj/item/ammo_magazine/Destroy()
 	QDEL_NULL_LIST(stored_ammo)
 	return ..()

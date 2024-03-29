@@ -18,6 +18,12 @@
 	toggled ? activate() : deactivate()
 	update_screen_button()
 
+/datum/spell/toggled/proc/off(list/targets, mob/user)
+	if(toggled)
+		toggled = !toggled
+		deactivate()
+		update_screen_button()
+
 /datum/spell/toggled/proc/activate()
 	if(mana_drain_per_tick && (mana_current - mana_drain_per_tick <= 0))
 		toggled = FALSE

@@ -25,10 +25,12 @@
 	var/aggro_vision_range = 7 //If a mob is aggro, we search in this radius. Defaults to 7 to keep in line with original simple mob aggro radius
 	var/idle_vision_range = 7 //If a mob is just idling around, it's vision range is limited to this. Defaults to 7 to keep in line with original simple mob aggro radius
 	var/retreat_distance = null //If our mob runs from players when they're too close, set in tile distance. By default, mobs do not retreat.
-	var/minimum_distance = 1 //Minimum approach distance, so ranged mobs chase targets down, but still keep their distance set in tiles to the target, set higher to make mobs keep distance
+	var/minimum_distance = 0 //Minimum approach distance, so ranged mobs chase targets down, but still keep their distance set in tiles to the target, set higher to make mobs keep distance
 	var/ranged_message = "fires" //Fluff text for ranged mobs
 	var/ranged_cooldown = 0 //What the starting cooldown is on ranged attacks
 	var/ranged_cooldown_cap = 3 //What ranged attacks, after being used are set to, to go back on cooldown, defaults to 3 life() ticks
+
+	var/achieved_admin_goals
 
 /mob/living/simple_animal/hostile/Destroy()
 	set_target_mob(null)
@@ -113,18 +115,18 @@
 	if(target_mob in ListTargets(10))
 		var/target_distance = get_dist(src, target_mob)
 		if(ranged)
-			if(target_distance >= (pointblank_shooter ? 0 : 2) && ranged_cooldown <= 0)
+			if(target_distance >= (pointblank_shooter ? 0 : 1) && ranged_cooldown <= 0)
 				OpenFire(target_mob)
 		if(retreat_distance != null)//If we have a retreat distance, check if we need to run from our target
 			if(target_distance <= retreat_distance)//If target's closer than our retreat distance, run
 				walk_away(src, target_mob, retreat_distance, move_to_delay)
+				stance = HOSTILE_STANCE_ATTACKING
+				return
 			else
 				Goto(target_mob, move_to_delay, minimum_distance)//Otherwise, get to our minimum distance so we chase them
 		else
 			stance = HOSTILE_STANCE_ATTACKING
 			Goto(target_mob, move_to_delay, minimum_distance)
-	if(target_mob?.loc != null && get_dist(src, target_mob.loc) <= vision_range)//We can't see our target, but he's in our vision range still
-		Goto(target_mob, move_to_delay, minimum_distance)
 
 /mob/living/simple_animal/hostile/proc/Goto(target_mob, delay, minimum_distance)
 	walk_to(src, target_mob, minimum_distance, delay)
@@ -197,6 +199,26 @@
 
 	return L
 
+/mob/living/simple_animal/hostile/proc/findAdminTargets()
+	var/mob/observer/eye/target_hunt/min_target
+	for (var/mob/observer/eye/target_hunt/T in viewers(vision_range, src))
+		if (achieved_admin_goals < T.number_target)
+			if(min_target == null)
+				min_target = T
+			else if (min_target.number_target < T.number_target)
+				min_target = T
+	return min_target
+
+/mob/living/simple_animal/hostile/proc/subordination_to_admin()
+	var/mob/observer/eye/target_hunt/T = findAdminTargets()
+	if (T != null)
+		if (get_dist(src, T) < 2)
+			achieved_admin_goals = T.number_target
+		else
+			Goto(T, move_to_delay, 1)
+			return TRUE
+	return FALSE
+
 /mob/living/simple_animal/hostile/death(gibbed, deathmessage, show_dead_message)
 	. = ..()
 	if(.)
@@ -211,6 +233,8 @@
 	if(client)
 		return 0
 	if(isturf(loc) && !buckled)
+		if(subordination_to_admin())
+			return
 		if(!stat)
 			switch(stance)
 				if(HOSTILE_STANCE_IDLE)
@@ -309,3 +333,17 @@
 
 /mob/living/simple_animal/hostile/on_ghost_possess()
 	LoseTarget()
+
+/mob/observer/eye/target_hunt
+	name = "Target"
+	icon_state = "target-eye"
+	var/number_target
+
+/mob/observer/eye/target_hunt/New()
+	..()
+	number_target = world.time
+	set_next_think(world.time + 70)
+
+/mob/observer/eye/target_hunt/think()
+	..()
+	Destroy()

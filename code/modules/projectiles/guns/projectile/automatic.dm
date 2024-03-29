@@ -99,6 +99,10 @@
 		list(mode_name = "full auto",      burst = 1, fire_delay = 0, one_hand_penalty = 6, burst_accuracy = list(0,-1,-2),				dispersion=list(0.4, 0.8, 1.2), burst_delay = 2, autofire_enabled = 1),
 		)
 
+/obj/item/gun/projectile/automatic/wt550/lethal
+	ammo_type = /obj/item/ammo_casing/c9mm
+	magazine_type = /obj/item/ammo_magazine/mc9mmt
+
 /obj/item/gun/projectile/automatic/wt550/on_update_icon()
 	icon_state = (ammo_magazine)? "wt550-[round(ammo_magazine.stored_ammo.len, 4)]" : "wt550"
 	item_state = (ammo_magazine?.stored_ammo?.len) ? "wt550" : "wt550-empty"

@@ -24,6 +24,19 @@
 
 	icon_state = "wiz_carp"
 
+/datum/spell/aoe_turf/conjure/slug
+	name = "Born slug"
+	desc = "This spell conjures a simple slug."
+
+	charge_max = 1
+	charge_type = SP_CHARGES
+	is_notify_ghosts = TRUE
+	range = 1
+
+	summon_type = list(/mob/living/simple_animal/hostile/slug)
+
+	icon_state = "ling_division"
+
 /datum/spell/aoe_turf/conjure/creature
 	name = "Summon Creature Swarm"
 	desc = "This spell tears the fabric of reality, allowing horrific daemons to spill forth"

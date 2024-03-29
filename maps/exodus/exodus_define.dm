@@ -34,25 +34,12 @@
 		new /datum/space_level/exodus_2,
 		new /datum/space_level/exodus_3,
 		new /datum/space_level/exodus_4,
+		new /datum/space_level/exodus_5,
 		new /datum/space_level/null_space,
 		new /datum/space_level/telecomms
 	)
 
 	derelict_levels = list(
-		new /datum/space_level/construction_site,
-		new /datum/space_level/snow_asteroid,
-		new /datum/space_level/derelict,
-		new /datum/space_level/jungle_level,
-		new /datum/space_level/old_restaurant,
-		new /datum/space_level/sensor_array,
-		list(
-		new /datum/space_level/bearcat_1,
-		new /datum/space_level/bearcat_2
-		),
-		list(
-		new /datum/space_level/science_ship_1,
-		new /datum/space_level/science_ship_2
-		)
 	)
 
 	station_name  = "NSS Exodus"

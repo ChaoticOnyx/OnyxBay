@@ -70,3 +70,15 @@
 /proc/do_teleport(atom/movable/target, atom/destination, precision = 0, type = /decl/teleport/sparks)
 	var/decl/teleport/tele = decls_repository.get_decl(type)
 	tele.teleport(target, destination, precision)
+
+proc/do_time_teleport(mob/M)
+	playsound(get_turf(M), GET_SFX(SFX_SPARK_MEDIUM), 50, TRUE)
+	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
+	s.set_up(3, 1, M)
+	s.start()
+	var/new_z = M.z > 2 ? M.z - 2 : M.z + 2
+	var/obj/structure/psychic_rift/teleport/T = new /obj/structure/psychic_rift/teleport(get_turf(M))
+	T.set_dir(M.dir)
+	T.z = new_z
+	spawn(4)
+	M.z = new_z

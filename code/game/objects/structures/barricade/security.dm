@@ -19,6 +19,11 @@
 	var/emagged = FALSE
 	var/locked = FALSE
 
+/obj/structure/barricade/security/lock
+	icon_state = "barrier1"
+	anchored = TRUE
+	locked = TRUE
+
 
 /obj/structure/barricade/security/on_update_icon()
 	icon_state = "barrier[locked]"

@@ -107,6 +107,10 @@
 		amount += O.burn_dam
 	return amount
 
+/mob/living/carbon/human/proc/bullet_rand_act(obj/item/projectile/P)
+	for (var/i in 1 to rand(5, 30))
+		bullet_act(new P(), pick(BP_ALL_LIMBS))
+
 /mob/living/carbon/human/adjustBruteLoss(amount)
 	amount = amount*species.brute_mod
 	if(amount > 0)
