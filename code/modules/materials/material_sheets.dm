@@ -137,6 +137,7 @@
 /obj/item/stack/material/uranium
 	name = MATERIAL_URANIUM
 	icon_state = "uranium"
+	item_state = "sheet-uranium"
 	default_type = MATERIAL_URANIUM
 
 /obj/item/stack/material/uranium/ten

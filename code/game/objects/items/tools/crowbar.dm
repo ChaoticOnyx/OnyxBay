@@ -84,6 +84,7 @@
 	name = "maintenance jack"
 	desc = "A special crowbar that can be used to safely remove airlock braces from airlocks."
 	icon_state = "maintenance_jack"
+	item_state = "maintenance_jack"
 	force = 13
 	mod_weight = 1.25
 	armor_penetration = 30 // A poor man's lucerne

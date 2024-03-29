@@ -105,6 +105,11 @@
 	drop_sound = SFX_DROP_RUBBER
 	pickup_sound = SFX_PICKUP_RUBBER
 
+	item_state_slots = list(
+		slot_l_hand_str = "lgloves",
+		slot_r_hand_str = "lgloves",
+		)
+
 /obj/item/clothing/gloves/latex/modified
 	item_flags = ITEM_FLAG_PREMODIFIED
 
