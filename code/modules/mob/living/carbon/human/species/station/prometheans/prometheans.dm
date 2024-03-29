@@ -151,13 +151,22 @@
 		var/obj/item/organ/external/E = H.organs_by_name[limb_type]
 		if(!E)
 			missing_limbs+=limb_type
-	var/list/limbs_to_consume = list(BP_R_ARM, BP_L_ARM, BP_R_LEG, BP_L_LEG) - missing_limbs
+	var/list/limbs_to_consume = list(BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG, BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM) - missing_limbs
+
 	var/obj/item/organ/external/consumed_limb
 	if(!length(limbs_to_consume))
 		H.losebreath++
 		return
-	if(H.has_organ(BP_L_LEG)||H.has_organ(BP_R_LEG)) //Legs go before arms
-		limbs_to_consume -= list(BP_R_ARM, BP_L_ARM)
+
+	if(H.has_organ(BP_L_FOOT)||H.has_organ(BP_R_FOOT)) //Feets go before legs
+		limbs_to_consume -= list(BP_L_LEG, BP_R_LEG)
+
+	if(H.has_organ(BP_L_LEG)||H.has_organ(BP_R_LEG)) //Legs go before Hands
+		limbs_to_consume -= list(BP_L_HAND, BP_R_HAND)
+
+	if(H.has_organ(BP_L_HAND)||H.has_organ(BP_R_HAND)) //Hands go before arms
+		limbs_to_consume -= list(BP_L_ARM, BP_R_ARM)
+
 	consumed_limb = H.get_organ(pick(limbs_to_consume))
 	consumed_limb.droplimb()
 	to_chat(H, SPAN_DANGER("Your [consumed_limb] is drawn back into your body, unable to maintain its shape!"))
@@ -205,7 +214,7 @@
 		jelly_vessel.remove_jelly(H.species.blood_volume*BLOOD_LOSE_PER_LIMB*length(limbs_to_heal)) //FIXME fuck baymed with their BLOOD
 		to_chat(H, SPAN_NOTICE("...and after a moment you finish reforming!"))
 		return
-	else if(jelly_volume > BLOOD_VOLUME_BAD)//We can partially heal some limbs
+	else if(jelly_volume > BLOOD_VOLUME_BAD+20)//We can partially heal some limbs
 		while(jelly_volume >= BLOOD_VOLUME_BAD+20)
 			var/healed_limb = pick(limbs_to_heal)
 			H.restore_limb(healed_limb)
