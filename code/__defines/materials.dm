@@ -31,6 +31,7 @@
 #define MATERIAL_OSMIUM_CARBIDE_PLASTEEL "osmium-carbide plasteel"
 #define MATERIAL_OSMIUM                  "osmium"
 #define MATERIAL_HYDROGEN                "hydrogen"
+#define MATERIAL_ADAMANTINE				 "adamantine"
 #define MATERIAL_WASTE                   "waste"
 #define MATERIAL_ELEVATORIUM             "elevatorium"
 #define MATERIAL_ALIUMIUM                "aliumium"

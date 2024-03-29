@@ -195,6 +195,12 @@
 /obj/item/stack/material/mhydrogen/ten
 	amount = 10
 
+//God tier resource, cargo can sell it.
+/obj/item/stack/material/adamantine
+	name = "adamantine"
+	icon_state = "adamantine"
+	default_type = MATERIAL_ADAMANTINE
+
 //Fuel for MRSPACMAN generator.
 /obj/item/stack/material/tritium
 	name = "tritium"

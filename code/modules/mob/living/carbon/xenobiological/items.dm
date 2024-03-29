@@ -210,6 +210,7 @@
 /obj/item/golem_shell/attackby(obj/item/I, mob/user, params)
 	. = ..()
 	var/static/list/golem_shell_species_types = list(
+		/obj/item/stack/material/adamantine = SPECIES_GOLEM_ADAMANTINE,
 		/obj/item/stack/material/iron = SPECIES_GOLEM,
 		/obj/item/stack/material/steel = SPECIES_GOLEM,
 		/obj/item/stack/material/glass = SPECIES_GOLEM_GLASS,
