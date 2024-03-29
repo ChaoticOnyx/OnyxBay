@@ -219,7 +219,7 @@
 
 	if(telepath.stat == DEAD)
 		return
-	if(!is_species(telepath, /datum/species/stargazer))
+	if(!is_species(telepath, /datum/species/promethean/stargazer))
 		return
 
 	var/list/recipient_options = list()
@@ -263,7 +263,7 @@
 	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
 	/// The species required to use this ability. Typepath.
-	var/req_species = /datum/species/stargazer
+	var/req_species = /datum/species/promethean/stargazer
 	/// Whether we're currently linking to someone.
 	var/currently_linking = FALSE
 
