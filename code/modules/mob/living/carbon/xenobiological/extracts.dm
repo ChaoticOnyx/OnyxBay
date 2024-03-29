@@ -352,7 +352,7 @@
 		if(METROID_ACTIVATE_MAJOR)
 			to_chat(user, SPAN_NOTICE("Your [name] starts pulsing..."))
 			if(do_after(user, 40, target = user))
-				var/mob/living/carbon/metroid/S = new(get_turf(user), "grey")
+				var/mob/living/carbon/metroid/S = new(get_turf(user), "green")
 				playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
 				to_chat(user, SPAN_NOTICE("You spit out [S]."))
 				return 350
