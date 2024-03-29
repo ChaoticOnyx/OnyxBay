@@ -541,14 +541,15 @@
 
 			var/obj/item/tank/tank = user.get_active_hand()
 			visible_message("<span class='notice'>\The [user] started to blow into \the [tank].</span>", "<span class='notice'>You started to blow into \the [tank].</span>")
-			if(!do_after(user, 25, target = user))
+			if(!do_after(user, 30 SECONDS, target = user))
 				return
 
-			var/datum/gas_mixture/GM
-			GM.adjust_gas("oxygen", (ONE_ATMOSPHERE*GM.volume/(R_IDEAL_GAS_EQUATION*(20 CELSIUS))))
-			tank.assume_air(GM)
+			var/datum/gas_mixture/GM = new
+			GM.adjust_gas("oxygen", (ONE_ATMOSPHERE*GM.volume/(R_IDEAL_GAS_EQUATION*(30 CELSIUS))))
+			var/datum/gas_mixture/tank_GM = tank.return_air()
+			tank_GM.add(GM)
 			to_chat(user, SPAN_NOTICE("You're feeling some dizziness, and decided to stop!"))
-			return 250
+			return 300
 
 		if(METROID_ACTIVATE_MAJOR)
 			var/turf/T = get_turf(user)
