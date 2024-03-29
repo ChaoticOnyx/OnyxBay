@@ -63,6 +63,9 @@ minute_topic_limit = 100
 ## Set to true to make Dream Daemon refuse to reboot for any reason other than `SIGUSR1`.
 wait_for_sigusr1 = false
 
+## Uncomment to start a metrics endpoint for prometheus.
+#prometheus_port = "9080"
+
 [lobby]
 splashes = ["icons/splashes/onyx_new.png"]
 

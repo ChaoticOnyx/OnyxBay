@@ -114,6 +114,9 @@ var/server_name = "OnyxBay"
 	return
 #endif
 
+/world/proc/__init_prometheus(port)
+	rustg_prom_init(port)
+
 #define RECOMMENDED_VERSION 514
 /world/New()
 	__init_tracy()
@@ -129,6 +132,11 @@ var/server_name = "OnyxBay"
 
 	// Load up the base config.toml
 	config.load_configuration()
+
+	if(config.general.prometheus_port)
+		to_world_log("Enabled metrics endpoint on [config.general.prometheus_port]")
+
+		__init_prometheus(config.general.prometheus_port)
 
 	if(config.general.server_port)
 		var/port = OpenPort(config.general.server_port)

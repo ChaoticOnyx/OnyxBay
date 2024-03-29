@@ -1,0 +1,6 @@
+#define PROM_MASTER_ITERATIONS      "master_iterations"
+#define PROM_MASTER_TICK_DRIFT      "master_tick_drift_ratio"
+#define PROM_SUBSYSTEM_COST         "subsystem_cost_seconds"
+#define PROM_SUBSYSTEM_TICKS        "subsystem_ticks_ratio"
+#define PROM_SUBSYSTEM_TICK_USAGE   "subsystem_tick_usage_ratio"
+#define PROM_SUBSYSTEM_TICK_OVERRUN "subsystem_tick_overrun_ratio"
