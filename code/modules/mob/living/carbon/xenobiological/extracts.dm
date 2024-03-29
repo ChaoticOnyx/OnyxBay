@@ -175,7 +175,7 @@
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			user.nutrition+=50
-			user.regenerate_blood(50)
+			user.reagents.add_reagent(/datum/reagent/metroidjelly, 50)
 			to_chat(user, SPAN_NOTICE("You activate [src], and your body is refilled with fresh metroid jelly!"))
 			return 150
 
