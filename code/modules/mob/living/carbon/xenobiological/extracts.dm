@@ -53,7 +53,7 @@
 			to_chat(user, SPAN_WARNING("You feel yourself reverting to human form..."))
 			if(do_after(user, 120, target = user))
 				to_chat(user, SPAN_WARNING("You feel human again!"))
-				user.set_species(/datum/species/human)
+				user.set_species(SPECIES_HUMAN)
 				return
 			to_chat(user, SPAN_NOTICE("You stop the transformation."))
 
@@ -61,7 +61,7 @@
 			to_chat(user, SPAN_WARNING("You feel yourself radically changing your metroid type..."))
 			if(do_after(user, 120, target = user))
 				to_chat(user, SPAN_WARNING("You feel different!"))
-				user.set_species(pick(/datum/species/promethean/slime, /datum/species/promethean/stargazer))
+				user.set_species(pick(SPECIES_SLIMEPERSON, SPECIES_STARGAZER))
 				return
 			to_chat(user, SPAN_NOTICE("You stop the transformation."))
 
@@ -445,7 +445,7 @@
 			to_chat(user, SPAN_WARNING("You feel your body rapidly crystallizing..."))
 			if(do_after(user, 120, target = user))
 				to_chat(user, SPAN_WARNING("You feel solid."))
-				user.set_species(/datum/species/golem/adamantine)
+				user.set_species(SPECIES_GOLEM_ADAMANTINE)
 				return
 			to_chat(user, SPAN_NOTICE("You stop feeding [src], and your body returns to its metroidlike state."))
 
