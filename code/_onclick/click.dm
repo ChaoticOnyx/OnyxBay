@@ -299,7 +299,7 @@
 	A.AltClick(src)
 
 /atom/proc/AltClick(mob/user)
-  SEND_SIGNAL(src, SIGNAL_ALT_CLICKED, src, user)
+	SEND_SIGNAL(src, SIGNAL_ALT_CLICKED, src, user)
 
 	var/turf/clicked_turf = get_turf(src)
 
