@@ -78,9 +78,9 @@
 		return
 	..()
 
-/obj/machinery/pipelayer/_examine_text(mob/user)
+/obj/machinery/pipelayer/examine(mob/user, infix)
 	. = ..()
-	. += "\n\The [src] has [metal] sheet\s, is set to produce [P_type_t], and auto-dismantling is [!a_dis?"de":""]activated."
+	. += "\The [src] has [metal] sheet\s, is set to produce [P_type_t], and auto-dismantling is [!a_dis?"de":""]activated."
 
 /obj/machinery/pipelayer/proc/reset()
 	on=0

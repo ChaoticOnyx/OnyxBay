@@ -58,15 +58,16 @@
 	if(. && closed_turf_height_offset)
 		set_turf_height_offset(closed_turf_height_offset)
 
-/obj/structure/closet/crate/_examine_text(mob/user)
+/obj/structure/closet/crate/examine(mob/user, infix)
 	. = ..()
+
 	if(rigged && opened)
 		var/list/devices = list()
 		for(var/obj/item/device/assembly_holder/H in src)
 			devices += H
 		for(var/obj/item/device/assembly/A in src)
 			devices += A
-		. += "\nThere are some wires attached to the lid, connected to [english_list(devices)]."
+		. += "There are some wires attached to the lid, connected to [english_list(devices)]."
 
 /obj/structure/closet/crate/attackby(obj/item/W, mob/user)
 	if(opened)

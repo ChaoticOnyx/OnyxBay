@@ -175,16 +175,19 @@
 	else
 		SetName("[base_name] ([label_text])")
 
-/obj/item/reagent_containers/vessel/_examine_text(mob/user)
+/obj/item/reagent_containers/vessel/examine(mob/user, infix)
 	. = ..()
-	. += "\nCan hold up to <b>[volume]</b> units."
+
+	. += "Can hold up to <b>[volume]</b> units."
+
 	if(get_dist(src, user) > 2)
 		return
+
 	if(precise_measurement)
 		if(reagents?.reagent_list.len)
-			. += SPAN("notice", "\nIt contains <b>[reagents.total_volume]</b> units of liquid.")
+			. += SPAN_NOTICE("It contains <b>[reagents.total_volume]</b> units of liquid.")
 		else
-			. += SPAN("notice", "\nIt is empty.")
+			. += SPAN_NOTICE("It is empty.")
 	else
 		var/ratio = 0
 		if(reagents?.total_volume)
@@ -201,7 +204,7 @@
 				ratio_text = "almost full"
 			else
 				ratio_text = "full"
-		. += SPAN("notice", "\n\The [src] is <b>[ratio_text]</b>!")
+		. += SPAN_NOTICE("\The [src] is <b>[ratio_text]</b>!")
 
 	if(lid)
 		. += "\n[lid.get_examine_hint()]"

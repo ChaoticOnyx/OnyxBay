@@ -59,8 +59,9 @@ Self-sustaining extracts:
 	if(secondary)
 		extract.reagents.add_reagent(secondary,amount)
 
-/obj/item/autometroid/_examine_text(mob/user)
+/obj/item/autometroid/examine(mob/user, infix)
 	. = ..()
+
 	if(effect_desc)
 		. += SPAN_NOTICE("[effect_desc]")
 

@@ -86,21 +86,23 @@
 	var/datum/wires/rig/wires
 	var/datum/effect/effect/system/spark_spread/spark_system
 
-/obj/item/rig/_examine_text(mob/user)
+/obj/item/rig/examine(mob/user, infix)
 	. = ..()
+
 	if(wearer)
 		for(var/obj/item/piece in list(helmet,gloves,chest,boots))
 			if(!piece || piece.loc != wearer)
 				continue
-			. += "\n\icon[piece] \The [piece] [piece.gender == PLURAL ? "are" : "is"] deployed."
+
+			. += "\icon[piece] \The [piece] [piece.gender == PLURAL ? "are" : "is"] deployed."
 
 	if(src.loc == usr)
-		. += "\nThe access panel is [locked? "locked" : "unlocked"]."
-		. += "\nThe maintenance panel is [open ? "open" : "closed"]."
-		. += "\nPowersuit systems are [offline ? "<font color='red'>offline</font>" : "<font color='green'>online</font>"]."
+		. += "The access panel is [locked? "locked" : "unlocked"]."
+		. += "The maintenance panel is [open ? "open" : "closed"]."
+		. += "Powersuit systems are [offline ? "<font color='red'>offline</font>" : "<font color='green'>online</font>"]."
 
 		if(open)
-			. += "\nIt's equipped with [english_list(installed_modules)]."
+			. += "It's equipped with [english_list(installed_modules)]."
 
 /obj/item/rig/Initialize()
 	. = ..()

@@ -392,9 +392,9 @@
 	unarmed_damage_override = 10
 	origin_tech = list(TECH_ILLEGAL = 5)
 
-/obj/item/clothing/gloves/chameleon/robust/_examine_text(mob/user)
+/obj/item/clothing/gloves/chameleon/robust/examine(mob/user, infix)
 	. = ..()
-	. += "\nThese look extra robust."
+	. += "These look extra robust."
 
 //******************
 //**Chameleon Mask**

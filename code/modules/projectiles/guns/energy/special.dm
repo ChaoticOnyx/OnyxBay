@@ -231,9 +231,9 @@
 	. = ..()
 	switch_firemodes()
 
-/obj/item/gun/energy/plasmacutter/_examine_text(mob/user)
+/obj/item/gun/energy/plasmacutter/examine(mob/user, infix)
 	. = ..()
-	to_chat(user, "It has a recharge port with a capital letter P.")
+	. += "It has a recharge port with a capital letter P."
 
 /obj/item/gun/energy/plasmacutter/attackby(obj/item/stack/material/plasma/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)

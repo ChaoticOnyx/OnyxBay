@@ -144,13 +144,14 @@
 	else if(fail_counter > 15)
 		to_chat(loc, SPAN("warning", "\The [src] feels pleasantly warm."))
 
-/obj/item/gun/energy/gun/nuclear/_examine_text(mob/user)
+/obj/item/gun/energy/gun/nuclear/examine(mob/user, infix)
 	. = ..()
+
 	if(. && user.Adjacent(src))
 		if(fail_counter > 30)
-			. += "\n[SPAN("danger", "It feels burning hot!")]"
+			. += SPAN("danger", "It feels burning hot!")
 		else if(fail_counter > 15)
-			. += "\n[SPAN("warning", "It feels pleasantly warm.")]"
+			. += SPAN("warning", "It feels pleasantly warm.")
 
 /obj/item/gun/energy/gun/nuclear/proc/get_charge_overlay()
 	var/ratio = CELL_PERCENT(power_supply)

@@ -34,13 +34,16 @@
 
 	return TRUE
 
-/obj/item/device/emag/_examine_text(mob/user)
+/obj/item/device/emag/examine(mob/user, infix)
 	. = ..()
-	if(get_dist(src, user) <= 1)
-		if(revealed)
-			. += "\nThe number [round(CELL_PERCENT(my_cell))]% is displayed in the corner of the screen."
-		else
-			. += "\nThe time [stationtime2text()] is displayed in the corner of the screen."
+
+	if(get_dist(src, user) > 1)
+		return
+
+	if(revealed)
+		. += "The number [round(CELL_PERCENT(my_cell))]% is displayed in the corner of the screen."
+	else
+		. += "The time [stationtime2text()] is displayed in the corner of the screen."
 
 /obj/item/device/emag/attack_self(mob/user)
 	add_fingerprint(user)

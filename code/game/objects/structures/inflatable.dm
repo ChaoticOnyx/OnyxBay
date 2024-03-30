@@ -134,16 +134,18 @@
 		if(health == round(0.3 * initial(health)))
 			visible_message(SPAN("warning", "\The [src] is barely holding up!"))
 
-/obj/structure/inflatable/_examine_text(mob/user)
+/obj/structure/inflatable/examine(mob/user, infix)
 	. = ..()
+
 	if(health >= initial(health))
-		. += "\n[SPAN("notice", "It's undamaged.")]"
+		. += SPAN("notice", "It's undamaged.")
 	else if(health >= 0.5 * initial(health))
-		. += "\n[SPAN("warning", "It's showing signs of damage.")]"
+		. += SPAN("warning", "It's showing signs of damage.")
 	else if(health >= 0)
-		. += "\n[SPAN("danger", "It's heavily damaged!")]"
+		. += SPAN("danger", "It's heavily damaged!")
+
 	if(taped)
-		. += "\n[SPAN("notice", "It's been duct taped in few places.")]"
+		. += SPAN("notice", "It's been duct taped in few places.")
 
 /obj/structure/inflatable/bullet_act(obj/item/projectile/Proj)
 	take_damage(Proj.get_structure_damage())

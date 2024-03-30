@@ -105,13 +105,14 @@
 	return PROCESS_KILL
 
 
-/obj/item/device/assembly/_examine_text(mob/user)
+/obj/item/device/assembly/examine(mob/user, infix)
 	. = ..()
+
 	if((in_range(src, user) || loc == user))
 		if(secured)
-			. += "\n\The [src] is ready!"
+			. += "\The [src] is ready!"
 		else
-			. += "\n\The [src] can be attached!"
+			. += "\The [src] can be attached!"
 
 /obj/item/device/assembly/attack_self(mob/user)
 	if(!user)	return 0

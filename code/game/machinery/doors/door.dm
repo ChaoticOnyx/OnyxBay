@@ -323,14 +323,15 @@
 	return
 
 
-/obj/machinery/door/_examine_text(mob/user)
+/obj/machinery/door/examine(mob/user, infix)
 	. = ..()
-	if(src.health < src.maxhealth / 4)
-		. += "\n\The [src] looks like it's about to break!"
+
+	if(health < maxhealth / 4)
+		. += "\The [src] looks like it's about to break!"
 	else if(src.health < src.maxhealth / 2)
-		. += "\n\The [src] looks seriously damaged!"
+		. += "\The [src] looks seriously damaged!"
 	else if(src.health < src.maxhealth * 3/4)
-		. += "\n\The [src] shows signs of damage!"
+		. += "\The [src] shows signs of damage!"
 
 
 /obj/machinery/door/set_broken(new_state)

@@ -165,20 +165,22 @@
 			return 1
 	return 0
 
-/obj/machinery/status_display/_examine_text(mob/user)
+/obj/machinery/status_display/examine(mob/user, infix)
 	. = ..()
+
 	switch(mode)
 		if(STATUS_DISPLAY_BLANK)
 			return
+
 		if(STATUS_DISPLAY_ALERT)
 			var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
-			. += "\nThe current alert level is [security_state.current_security_level.name]."
+			. += "The current alert level is [security_state.current_security_level.name]."
 		if(STATUS_DISPLAY_TRANSFER_SHUTTLE_TIME)
-			. += "\nTime until the shuttle arives: [get_evac_shuttle_timer()]."
+			. += "Time until the shuttle arives: [get_evac_shuttle_timer()]."
 		if(STATUS_DISPLAY_IMAGE)
-			. += "\nThere is a picture on the display."
+			. += "There is a picture on the display."
 		else
-			. += "\nThe display says:<br>\t[sanitize(message1)]<br>\t[sanitize(message2)]"
+			. += "The display says:<br>\t[sanitize(message1)]<br>\t[sanitize(message2)]"
 
 /obj/machinery/status_display/proc/set_message(m1, m2)
 	if(m1)

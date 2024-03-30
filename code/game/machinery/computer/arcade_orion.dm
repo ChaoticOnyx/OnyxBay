@@ -486,14 +486,18 @@
 	icon_state = "ship"
 	w_class = ITEM_SIZE_SMALL
 	var/active = 0 //if the ship is on
-/obj/item/orion_ship/_examine_text(mob/user)
+
+/obj/item/orion_ship/examine(mob/user, infix)
 	. = ..()
+
 	if(!(in_range(user, src)))
 		return
+
 	if(!active)
-		. += "\n<span class='notice'>There's a little switch on the bottom. It's flipped down.</span>"
+		. += SPAN_NOTICE("There's a little switch on the bottom. It's flipped down.")
 	else
-		. += "\n<span class='notice'>There's a little switch on the bottom. It's flipped up.</span>"
+		. += SPAN_NOTICE("There's a little switch on the bottom. It's flipped up.")
+
 /obj/item/orion_ship/attack_self(mob/user)
 	if(active)
 		return

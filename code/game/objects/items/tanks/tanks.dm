@@ -83,36 +83,38 @@ var/list/global/tank_gauge_cache = list()
 
 	. = ..()
 
-/obj/item/tank/_examine_text(mob/user)
+/obj/item/tank/examine(mob/user, infix)
 	. = ..()
-	if(get_dist(src, user) <= 0)
-		var/descriptive
-		if(air_contents.total_moles == 0)
-			descriptive = "empty"
-		else
-			var/celsius_temperature = CONV_KELVIN_CELSIUS(air_contents.temperature)
-			switch(celsius_temperature)
-				if(300 to INFINITY)
-					descriptive = "furiously hot"
-				if(100 to 300)
-					descriptive = "hot"
-				if(80 to 100)
-					descriptive = "warm"
-				if(40 to 80)
-					descriptive = "lukewarm"
-				if(20 to 40)
-					descriptive = "room temperature"
-				if(-20 to 20)
-					descriptive = "cold"
-				else
-					descriptive = "bitterly cold"
-		. += "\n<span class='notice'>\The [src] feels [descriptive].</span>"
+
+	if(get_dist(src, user) > 0)
+		return
+
+	var/descriptive
+	if(air_contents.total_moles == 0)
+		descriptive = "empty"
+	else
+		var/celsius_temperature = CONV_KELVIN_CELSIUS(air_contents.temperature)
+		switch(celsius_temperature)
+			if(300 to INFINITY)
+				descriptive = "furiously hot"
+			if(100 to 300)
+				descriptive = "hot"
+			if(80 to 100)
+				descriptive = "warm"
+			if(40 to 80)
+				descriptive = "lukewarm"
+			if(20 to 40)
+				descriptive = "room temperature"
+			if(-20 to 20)
+				descriptive = "cold"
+			else
+				descriptive = "bitterly cold"
+	. += SPAN_NOTICE("\The [src] feels [descriptive].")
 
 	if(proxyassembly.assembly || wired)
-		. += "\n<span class='warning'>It seems to have [wired? "some wires ": ""][wired && proxyassembly.assembly? "and ":""][proxyassembly.assembly ? "some sort of assembly ":""]attached to it.</span>"
+		. += SPAN_WARNING("It seems to have [wired? "some wires ": ""][wired && proxyassembly.assembly? "and ":""][proxyassembly.assembly ? "some sort of assembly ":""]attached to it.")
 	if(valve_welded)
-		. += "\n<span class='warning'>\The [src] emergency relief valve has been welded shut!</span>"
-
+		. += SPAN_WARNING("\The [src] emergency relief valve has been welded shut!")
 
 /obj/item/tank/attackby(obj/item/W as obj, mob/user as mob)
 	..()

@@ -44,15 +44,16 @@
 		if(2) icon_state = "tube-construct-stage2"
 		if(3) icon_state = "tube-empty"
 
-/obj/machinery/light_construct/_examine_text(mob/user)
+/obj/machinery/light_construct/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 2)
 		return
 
 	switch(src.stage)
-		if(1) . += "\nIt's an empty frame."
-		if(2) . += "\nIt's wired."
-		if(3) . += "\nThe casing is closed."
+		if(1) . += "It's an empty frame."
+		if(2) . += "It's wired."
+		if(3) . += "The casing is closed."
 
 /obj/machinery/light_construct/attackby(obj/item/W, mob/user)
 	src.add_fingerprint(user)
@@ -353,18 +354,19 @@
 	update(FALSE)
 
 // examine verb
-/obj/machinery/light/_examine_text(mob/user)
+/obj/machinery/light/examine(mob/user, infix)
 	. = ..()
+
 	var/fitting = get_fitting_name()
 	switch(get_status())
 		if(LIGHT_OK)
-			. += "\nIt is turned [on ? "on" : "off"]."
+			. += "It is turned [on ? "on" : "off"]."
 		if(LIGHT_EMPTY)
-			. += "\nThe [fitting] has been removed."
+			. += "The [fitting] has been removed."
 		if(LIGHT_BURNED)
-			. += "\nThe [fitting] is burnt out."
+			. += "The [fitting] is burnt out."
 		if(LIGHT_BROKEN)
-			. += "\nThe [fitting] has been smashed."
+			. += "The [fitting] has been smashed."
 
 /obj/machinery/light/proc/get_fitting_name()
 	var/obj/item/light/L = light_type
@@ -843,13 +845,14 @@
 			L.update(FALSE)
 	return ..()
 
-/obj/item/light/_examine_text(mob/user)
+/obj/item/light/examine(mob/user, infix)
 	. = ..()
+
 	switch(status)
 		if(LIGHT_BURNED)
-			. += "\nIt appears to be burnt-out."
+			. += "It appears to be burnt-out."
 		if(LIGHT_BROKEN)
-			. += "\nIt's broken."
+			. += "It's broken."
 
 // update the icon state and description of the light
 /obj/item/light/on_update_icon()

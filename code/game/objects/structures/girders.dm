@@ -16,12 +16,13 @@
 	icon_state = "displaced"
 	anchored = 0
 
-/obj/structure/girder/_examine_text(mob/user)
+/obj/structure/girder/examine(mob/user, infix)
 	. = ..()
+
 	if(health <= 0.4 * max_health)
-		. += "\n[SPAN("warning", "It's heavily damaged!")]"
+		. += SPAN("warning", "It's heavily damaged!")
 	else if(health < max_health)
-		. += "\n[SPAN("warning", "It's showing signs of damage.")]"
+		. += SPAN("warning", "It's showing signs of damage.")
 
 /obj/structure/girder/attack_generic(mob/user, damage, attack_message = "smashes apart", wallbreaker)
 	if(!damage || !wallbreaker)

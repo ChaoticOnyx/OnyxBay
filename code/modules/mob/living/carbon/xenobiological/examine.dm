@@ -1,8 +1,9 @@
-/mob/living/carbon/metroid/_examine_text(mob/user)
+/mob/living/carbon/metroid/examinate(atom/to_axamine)
 	. = ..()
+
 	var/msg = ""
 	if (src.is_ooc_dead())
-		msg += "<span class='deadsay'>It is limp and unresponsive.</span>\n"
+		msg += SPAN_DEADSAY("It is limp and unresponsive.")
 	else
 		if (src.getBruteLoss())
 			msg += "<span class='warning'>"

@@ -114,8 +114,9 @@
 
 	set_next_think(world.time + 1 SECONDS)
 
-/obj/item/staff/plague_bell/_examine_text(mob/user)
+/obj/item/staff/plague_bell/examine(mob/user, infix)
 	. = ..()
+
 	if(user != master)
 		return
 

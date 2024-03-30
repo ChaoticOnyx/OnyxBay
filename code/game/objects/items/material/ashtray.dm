@@ -20,14 +20,17 @@
 		qdel(O)
 	return ..()
 
-/obj/item/material/ashtray/_examine_text(mob/user)
+/obj/item/material/ashtray/examine(mob/user, infix)
 	. = ..()
+
 	if(material)
-		. += "\nIt's made of [material.display_name]."
-	if(contents.len >= max_butts)
-		. += "\nIt's full."
-	else if(contents.len)
-		. += "\nIt has [contents.len] cig butts in it."
+		. += "It's made of [material.display_name]."
+
+	if(length(contents) >= max_butts)
+		. += "It's full."
+
+	else if(length(contents))
+		. += "It has [contents.len] cig butts in it."
 
 /obj/item/material/ashtray/on_update_icon()
 	ClearOverlays()

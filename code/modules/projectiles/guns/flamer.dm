@@ -38,30 +38,30 @@
 	QDEL_NULL_LIST(attached_electronics)
 	. = ..()
 
-/obj/item/gun/flamer/_examine_text(mob/user)
+/obj/item/gun/flamer/examine(mob/user, infix)
 	. = ..()
 
 	if(igniter)
-		. += "\nIt's turned [lit? "on" : "off"]."
+		. += "It's turned [lit? "on" : "off"]."
 	else
-		. += "\n[SPAN_WARNING("Igniter not installed in [src]!")]"
+		. += SPAN_WARNING("Igniter not installed in [src]!")
 
 	if(pressure_tank)
-		. += "\nThe pressure tank wrenched into the [src]."
+		. += "The pressure tank wrenched into the [src]."
 
 	if(gauge)
 		if(fuel_tank)
-			. += "\nThe fuel tank contains [round(get_fuel())]/[fuel_tank.max_fuel] units of fuel."
+			. += "The fuel tank contains [round(get_fuel())]/[fuel_tank.max_fuel] units of fuel."
 		else
-			. += "\n[SPAN_WARNING("There's no fuel tank in [src]!")]"
+			. += SPAN_WARNING("There's no fuel tank in [src]!")
 
 		if(pressure_tank)
-			. += "\nThe pressure gauge shows the current tank is [pressure_tank.air_contents.return_pressure()]."
+			. += "The pressure gauge shows the current tank is [pressure_tank.air_contents.return_pressure()]."
 		else
-			. += "\n[SPAN_WARNING("There's no pressure tank in [src]!")]"
+			. += SPAN_WARNING("There's no pressure tank in [src]!")
 
 	else
-		. += "\n[SPAN_WARNING("Gauge not installed, you have no idea how much fuel left in [src]!")]"
+		. += SPAN_WARNING("Gauge not installed, you have no idea how much fuel left in [src]!")
 
 /obj/item/gun/flamer/on_update_icon()
 	ClearOverlays()

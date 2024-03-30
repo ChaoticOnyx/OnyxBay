@@ -41,11 +41,11 @@
 	if(!isturf(loc))
 		user.put_in_active_hand(SK)
 
-/obj/item/organ/external/head/_examine_text(mob/user)
+/obj/item/organ/external/head/examine(mob/user, infix)
 	. = ..()
 
 	if(forehead_graffiti && graffiti_style)
-		. += "\n<span class='notice'>It has \"[forehead_graffiti]\" written on it in [graffiti_style]!</span>"
+		. += SPAN_NOTICE("It has \"[forehead_graffiti]\" written on it in [graffiti_style]!")
 
 /obj/item/organ/external/head/proc/write_on(mob/penman, style)
 	var/head_name = name

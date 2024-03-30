@@ -220,20 +220,22 @@
 		return //no eating the limb until everything's been removed
 	return ..()
 
-/obj/item/organ/external/_examine_text(mob/user)
+/obj/item/organ/external/examine(mob/user, infix)
 	. = ..()
+
 	if(in_range(user, src) || isghost(user))
 		for(var/obj/item/I in contents)
 			if(istype(I, /obj/item/organ))
 				continue
+
 			if(I == return_item())
 				continue
-			. += SPAN_DANGER("\nThere is \a [I] sticking out of it.")
+
+			. += SPAN_DANGER("There is \a [I] sticking out of it.")
+
 		var/ouchies = get_wounds_desc()
 		if(ouchies != "nothing")
-			. += SPAN_NOTICE("\nThere is [ouchies] visible on it.")
-
-	return
+			. += SPAN_NOTICE("There is [ouchies] visible on it.")
 
 /obj/item/organ/external/show_decay_status(mob/user)
 	..(user)

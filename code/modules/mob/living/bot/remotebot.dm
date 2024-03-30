@@ -14,10 +14,11 @@
 	. = ..()
 	add_movespeed_modifier(/datum/movespeed_modifier/remotebot)
 
-/mob/living/bot/remotebot/_examine_text(mob/user)
+/mob/living/bot/remotebot/examinate(atom/to_axamine)
 	. = ..()
+
 	if(holding)
-		. += "\n<span class='notice'>It is holding \the \icon[holding] [holding].</span>"
+		. += SPAN_NOTICE("It is holding \the \icon[holding] [holding].")
 
 /mob/living/bot/remotebot/explode()
 	on = 0

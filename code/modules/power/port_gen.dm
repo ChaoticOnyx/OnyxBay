@@ -54,14 +54,16 @@
 		to_chat(user, SPAN_WARNING("The generator needs to be secured first."))
 		return
 
-/obj/machinery/power/port_gen/_examine_text(mob/user)
+/obj/machinery/power/port_gen/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 1)
 		return
+
 	if(active)
-		. += "\n[SPAN_NOTICE("\The [src] is on.")]"
+		. += SPAN_NOTICE("\The [src] is on.")
 	else
-		. += "\n[SPAN_NOTICE("\The [src] is off.")]"
+		. += SPAN_NOTICE("\The [src] is off.")
 
 /obj/machinery/power/port_gen/emp_act(severity)
 	if(!active)
@@ -154,14 +156,17 @@
 
 	power_gen = round(initial(power_gen) * (max(2, temp_rating) / 2))
 
-/obj/machinery/power/port_gen/pacman/_examine_text(mob/user)
+/obj/machinery/power/port_gen/pacman/examine(mob/user, infix)
 	. = ..()
-	. += "\n\The [src] appears to be producing [power_gen*power_output] W."
-	. += "\nThere [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper."
+
+	. += "\The [src] appears to be producing [power_gen*power_output] W."
+	. += "There [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper."
+
 	if(IsBroken())
-		. += "\n[SPAN_WARNING("\The [src] seems to have broken down.")]"
+		. += SPAN_WARNING("\The [src] seems to have broken down.")
+
 	if(overheating)
-		. += "\n[SPAN_DANGER("\The [src] is overheating!")]"
+		. += SPAN_DANGER("\The [src] is overheating!")
 
 /obj/machinery/power/port_gen/pacman/HasFuel()
 	var/needed_sheets = power_output / time_per_sheet
@@ -454,9 +459,9 @@
 	create_reagents(120)
 	..()
 
-/obj/machinery/power/port_gen/pacman/super/potato/_examine_text(mob/user)
+/obj/machinery/power/port_gen/pacman/super/potato/examine(mob/user, infix)
 	. = ..()
-	. += "\nAuxilary tank shows [reagents.total_volume]u of liquid in it."
+	. += "Auxilary tank shows [reagents.total_volume]u of liquid in it."
 
 /obj/machinery/power/port_gen/pacman/super/potato/UseFuel()
 	if(reagents.has_reagent("vodka"))

@@ -305,11 +305,14 @@
 	find_control_computer()
 	announce = new /obj/item/device/radio/intercom(src)
 
-/obj/machinery/cryopod/_examine_text(mob/user)
+/obj/machinery/cryopod/examine(mob/user, infix)
 	. = ..()
-	if (user.Adjacent(src))
-		if(occupant)
-			. += "\n[occupant._examine_text(user)]"
+
+	if(!user.Adjacent(src))
+		return
+
+	if(occupant)
+		. += occupant.examine(user)
 
 /obj/machinery/cryopod/emag_act(remaining_charges, mob/user)
 	if(!emagged)

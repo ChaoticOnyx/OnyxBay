@@ -177,7 +177,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	else
 		icon = initial(icon)
 
-/obj/item/clothing/examine(mob/user)
+/obj/item/clothing/examine(mob/user, infix)
 	. = ..()
 
 	. += "<a href='?src=[ref(src)];examine_protection=1'>Show protection classes.</a>"

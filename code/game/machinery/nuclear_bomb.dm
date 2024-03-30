@@ -418,9 +418,9 @@ var/bomb_set
 		/obj/item/modular_computer/laptop/preset/custom_loadout/cheap/
 	)
 
-/obj/item/storage/secure/briefcase/nukedisk/_examine_text(user)
+/obj/item/storage/secure/briefcase/nukedisk/examine(mob/user, infix)
 	. = ..()
-	. += "\nOn closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it."
+	. += "On closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it."
 
 /obj/item/folder/envelope/nuke_instructions
 	name = "instructions envelope"

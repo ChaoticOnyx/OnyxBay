@@ -565,31 +565,30 @@
 	else if(dead)
 		remove_dead(user)
 
-/obj/machinery/portable_atmospherics/hydroponics/_examine_text(mob/user)
-
+/obj/machinery/portable_atmospherics/hydroponics/examine(mob/user, infix)
 	. = ..()
 
 	if(!seed)
-		. += "\n[src] is empty."
+		. += "[src] is empty."
 		return
 
-	. += "\n<span class='notice'>[seed.display_name] are growing here.</span>"
+	. += SPAN_NOTICE("[seed.display_name] are growing here.")
 
 	if(!Adjacent(usr))
 		return
 
-	. += "\nWater: [round(waterlevel,0.1)]/100"
-	. += "\nNutrient: [round(nutrilevel,0.1)]/10"
+	. += "Water: [round(waterlevel,0.1)]/100"
+	. += "Nutrient: [round(nutrilevel,0.1)]/10"
 
 	if(weedlevel >= 5)
-		. += "\n\The [src] is <span class='danger'>infested with weeds</span>!"
+		. += "\The [src] is <span class='danger'>infested with weeds</span>!"
 	if(pestlevel >= 5)
-		. += "\n\The [src] is <span class='danger'>infested with tiny worms</span>!"
+		. += "\The [src] is <span class='danger'>infested with tiny worms</span>!"
 
 	if(dead)
-		. += "\n<span class='danger'>The plant is dead.</span>"
+		. += SPAN_DANGER("The plant is dead.")
 	else if(health <= (seed.get_trait(TRAIT_ENDURANCE)/ 2))
-		. += "\nThe plant looks <span class='danger'>unhealthy</span>."
+		. += "The plant looks [SPAN_DANGER("unhealthy")]."
 
 	if(mechanical)
 		var/turf/T = loc
@@ -612,7 +611,7 @@
 			var/light_available = T.get_lumcount() * 5
 			light_string = "a light level of [light_available] lumens"
 
-		. += "\nThe tray's sensor suite is reporting [light_string] and a temperature of [environment.temperature]K."
+		. += "The tray's sensor suite is reporting [light_string] and a temperature of [environment.temperature]K."
 
 /obj/machinery/portable_atmospherics/hydroponics/verb/close_lid_verb()
 	set name = "Toggle Tray Lid"

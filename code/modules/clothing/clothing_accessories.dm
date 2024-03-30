@@ -56,10 +56,10 @@
 			usr.put_in_l_hand(src)
 	add_fingerprint(usr)
 
-/obj/item/clothing/_examine_text(mob/user)
+/obj/item/clothing/examine(mob/user, infix)
 	. = ..()
 	for(var/obj/item/clothing/accessory/A in accessories)
-		. += "\n\icon[A] \A [A] is attached to it."
+		. += "\icon[A] \A [A] is attached to it."
 
 /obj/item/clothing/proc/update_accessory_slowdown()
 	slowdown_accessory = 0

@@ -232,12 +232,13 @@
 	icon_state = "cheap_off"
 	base_icon = "cheap"
 
-/obj/item/clothing/mask/smokable/ecig/simple/_examine_text(mob/user)
+/obj/item/clothing/mask/smokable/ecig/simple/examine(mob/user, infix)
 	. = ..()
+
 	if(ec_cartridge)
-		. += SPAN("notice", "\nThere is roughly [round((ec_cartridge.reagents.total_volume / ec_cartridge.volume) * 100, 25)]% of liquid remaining.")
+		. += SPAN("notice", "There is roughly [round((ec_cartridge.reagents.total_volume / ec_cartridge.volume) * 100, 25)]% of liquid remaining.")
 	else
-		. += SPAN("notice", "\nThere is no cartridge connected.")
+		. += SPAN("notice", "There is no cartridge connected.")
 
 /obj/item/clothing/mask/smokable/ecig/util
 	name = "electronic cigarette"
@@ -254,15 +255,16 @@
 	if(active)
 		icon_state = "[base_icon]_on_[led_colors[current_color]]"
 
-/obj/item/clothing/mask/smokable/ecig/util/_examine_text(mob/user)
+/obj/item/clothing/mask/smokable/ecig/util/examine(mob/user, infix)
 	. = ..()
+
 	if(ec_cartridge)
-		. += SPAN("notice", "\nThere are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.")
+		. += SPAN("notice", "There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.")
 	else
-		. += SPAN("notice", "\nThere is no cartridge connected.")
-	. += SPAN("notice", "\nGauge shows about [round(CELL_PERCENT(cigcell), 25)]% energy remaining.")
-	var/_led = led_descs[current_color]
-	. += SPAN("notice", "\nLEDs are set to \"[_led]\" mode.")
+		. += SPAN("notice", "There is no cartridge connected.")
+
+	. += SPAN("notice", "Gauge shows about [round(CELL_PERCENT(cigcell), 25)]% energy remaining.")
+	. += SPAN("notice", "LEDs are set to \"[led_descs[current_color]]\" mode.")
 
 /obj/item/clothing/mask/smokable/ecig/util/verb/change_LED_mode()
 	set name = "Change LEDs mode"
@@ -284,13 +286,15 @@
 	item_state = "pipeoff"
 	cell_type = /obj/item/cell/device/high // Enough for four catridges
 
-/obj/item/clothing/mask/smokable/ecig/deluxe/_examine_text(mob/user)
+/obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user, infix)
 	. = ..()
+
 	if(ec_cartridge)
-		. += SPAN("notice", "\nThere are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.")
+		. += SPAN("notice", "There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.")
 	else
-		. += SPAN("notice", "\nThere is no cartridge connected.")
-	. += SPAN("notice", "\nGauge shows [round(CELL_PERCENT(cigcell), 1)]% energy remaining.")
+		. += SPAN("notice", "There is no cartridge connected.")
+
+	. += SPAN("notice", "Gauge shows [round(CELL_PERCENT(cigcell), 1)]% energy remaining.")
 
 
 /// Cartridges
@@ -306,9 +310,9 @@
 	var/flavor = "flavorless"
 	var/label_color = "#ffffff"
 
-/obj/item/reagent_containers/ecig_cartridge/_examine_text(mob/user)//to see how much left
+/obj/item/reagent_containers/ecig_cartridge/examine(mob/user, infix)
 	. = ..()
-	. += "\nThe cartridge has [reagents.total_volume] units of liquid remaining."
+	. += "The cartridge has [reagents.total_volume] units of liquid remaining."
 
 /obj/item/reagent_containers/ecig_cartridge/Initialize()
 	. = ..()

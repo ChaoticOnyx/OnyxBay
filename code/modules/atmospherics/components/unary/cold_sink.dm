@@ -183,7 +183,8 @@
 
 	..()
 
-/obj/machinery/atmospherics/unary/freezer/_examine_text(mob/user)
+/obj/machinery/atmospherics/unary/freezer/examine(mob/user, infix)
 	. = ..()
+
 	if(panel_open)
-		. += "\nThe maintenance hatch is open."
+		. += "The maintenance hatch is open."

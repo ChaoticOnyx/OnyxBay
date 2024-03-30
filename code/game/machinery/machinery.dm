@@ -428,10 +428,11 @@ Class Procs:
 	for(var/obj/item/C in component_parts)
 		. += "\n<span class='notice'>	[C.name]</span>"
 
-/obj/machinery/_examine_text(mob/user)
+/obj/machinery/examine(mob/user, infix)
 	. = ..()
+
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
-		. += "\n[get_parts_infotext()]"
+		. += "[get_parts_infotext()]"
 
 /obj/machinery/proc/update_power_use()
 	set_power_use(use_power)

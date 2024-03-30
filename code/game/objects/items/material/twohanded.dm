@@ -145,14 +145,16 @@
 /obj/item/material/twohanded/chainsaw/proc/get_fuel()
 	return tank ? tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
 
-/obj/item/material/twohanded/chainsaw/_examine_text(mob/user)
+/obj/item/material/twohanded/chainsaw/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 0)
 		return
+
 	if(tank)
-		. += "\n\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
+		. += "\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
 	else
-		. += "\nThere is no tank attached."
+		. += "There is no tank attached."
 
 /obj/item/material/twohanded/chainsaw/attack_self(mob/user)
 	if(active)

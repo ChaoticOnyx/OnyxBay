@@ -621,13 +621,15 @@
 	accuracy = initial(accuracy)
 	screen_shake = initial(screen_shake)
 
-/obj/item/gun/_examine_text(mob/user)
+/obj/item/gun/examine(mob/user, infix)
 	. = ..()
+
 	if(firemodes.len > 1)
 		var/datum/firemode/current_mode = firemodes[sel_mode]
-		. += "\nThe fire selector is set to [current_mode.name]."
+		. += "The fire selector is set to [current_mode.name]."
+
 	if(config.misc.toogle_gun_safety && has_safety)
-		. += "\nThe safety is [safety() ? "on" : "off"]"
+		. += "The safety is [safety() ? "on" : "off"]"
 
 // (re)Setting firemodes from the given list
 /obj/item/gun/proc/set_firemodes(list/_firemodes = null)

@@ -1,5 +1,6 @@
-/mob/living/silicon/ai/_examine_text(mob/user)
+/mob/living/silicon/ai/examine(mob/user, infix)
 	. = ..()
+
 	var/msg = ""
 	if (is_ic_dead())
 		msg += "<span class='deadsay'>It appears to be powered-down.</span>\n"
@@ -30,7 +31,7 @@
 	if(hardware && (hardware.owner == src))
 		msg += "<br>"
 		msg += hardware.get_examine_desc()
-	. += "\n[msg]"
+	. += msg
 	user.showLaws(src)
 	return
 

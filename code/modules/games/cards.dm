@@ -229,12 +229,13 @@
 	update_icon()
 	user.visible_message("\The [user] [concealed ? "conceals" : "reveals"] their hand.")
 
-/obj/item/hand/_examine_text(mob/user)
+/obj/item/hand/examine(mob/user, infix)
 	. = ..()
+
 	if((!concealed || src.loc == user) && cards.len)
-		. += "\nIt contains: "
+		. += "It contains: "
 		for(var/datum/playingcard/P in cards)
-			. += "\nThe [P.name]."
+			. += "The [P.name]."
 
 /obj/item/hand/on_update_icon(direction = 0)
 

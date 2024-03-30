@@ -394,24 +394,27 @@
 	else
 		..()
 
-/obj/machinery/atmospherics/unary/vent_pump/_examine_text(mob/user)
+/obj/machinery/atmospherics/unary/vent_pump/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1)
-		. += "\nA small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W"
+		. += "A small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W"
 	else
-		. += "\nYou are too far away to read the gauge."
+		. += "You are too far away to read the gauge."
+
 	if(welded)
-		. += "\nIt seems welded shut."
+		. += "It seems welded shut."
+
 	if(broken)
 		switch(broken)
 			if(VENT_DAMAGED_STAGE_ONE)
-				. += "\nIt seems slightly damaged."
+				. += "It seems slightly damaged."
 			if(VENT_DAMAGED_STAGE_TWO)
-				. += "\nIt seems pretty damaged."
+				. += "It seems pretty damaged."
 			if(VENT_DAMAGED_STAGE_THREE)
-				. += "\nIt seems heavily damaged."
+				. += "It seems heavily damaged."
 			if(VENT_BROKEN)
-				. += "\nIt seems absolutely destroyed."
+				. += "It seems absolutely destroyed."
 
 /obj/machinery/atmospherics/unary/vent_pump/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))

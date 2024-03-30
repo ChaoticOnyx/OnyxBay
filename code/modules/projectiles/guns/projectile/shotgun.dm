@@ -97,14 +97,15 @@
 /obj/item/boomstickframe/on_update_icon()
 	icon_state = "boomstick[buildstate]"
 
-/obj/item/boomstickframe/_examine_text(mob/user)
+/obj/item/boomstickframe/examine(mob/user, infix)
 	. = ..()
+
 	switch(buildstate)
-		if(0) . += "\nIt has a pipe loosely fitted to the welding tool."
-		if(1) . += "\nIt has a pipe welded to the welding tool."
-		if(2) . += "\nIt has a bent metal rod attached to it."
-		if(3) . += "\nIt has a spring inside."
-		if(4) . += "\nIt is all covered with duct tape."
+		if(0) . += "It has a pipe loosely fitted to the welding tool."
+		if(1) . += "It has a pipe welded to the welding tool."
+		if(2) . += "It has a bent metal rod attached to it."
+		if(3) . += "It has a spring inside."
+		if(4) . += "It is all covered with duct tape."
 
 /obj/item/boomstickframe/attackby(obj/item/W, mob/user)
 	if(isWelder(W) && buildstate == 0)

@@ -9,11 +9,12 @@
 	var/board = list()
 	var/selected = -1
 
-/obj/item/board/_examine_text(mob/user)
+/obj/item/board/examine(mob/user, infix)
 	if(in_range(user,src))
 		user.set_machine(src)
 		interact(user)
 		return
+
 	. = ..()
 
 /obj/item/board/attack_hand(mob/living/carbon/human/M)

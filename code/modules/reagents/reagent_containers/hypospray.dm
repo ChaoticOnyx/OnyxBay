@@ -137,12 +137,13 @@
 	else
 		icon_state = "[base_state]0"
 
-/obj/item/reagent_containers/hypospray/autoinjector/_examine_text(mob/user)
+/obj/item/reagent_containers/hypospray/autoinjector/examine(mob/user, infix)
 	. = ..()
+
 	if(reagents && reagents.reagent_list.len)
-		. += "\n<span class='notice'>It is currently loaded.</span>"
+		. += SPAN_NOTICE("It is currently loaded.")
 	else
-		. += "\n<span class='notice'>It is spent.</span>"
+		. += SPAN_NOTICE("It is spent.")
 
 /obj/item/reagent_containers/hypospray/autoinjector/detox
 	icon_state = "green1"

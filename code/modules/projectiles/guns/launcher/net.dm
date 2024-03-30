@@ -14,10 +14,11 @@
 	icon = 'icons/obj/ammo.dmi'
 	icon_state = "netshell"
 
-/obj/item/gun/launcher/net/_examine_text(mob/user)
+/obj/item/gun/launcher/net/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 2 && chambered)
-		. += "\n\A [chambered] is chambered."
+		. += "\A [chambered] is chambered."
 
 /obj/item/gun/launcher/net/proc/load(obj/item/net_shell/S, mob/user)
 	if(chambered)

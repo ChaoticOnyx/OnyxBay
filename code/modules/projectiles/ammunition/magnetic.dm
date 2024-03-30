@@ -8,6 +8,6 @@
 	origin_tech = list(TECH_COMBAT = 1)
 	var/remaining = 9
 
-/obj/item/magnetic_ammo/_examine_text(mob/user)
+/obj/item/magnetic_ammo/ex_act(severity)
 	. = ..()
-	. += "\nThere [(remaining == 1)? "is" : "are"] [remaining] flechette\s left!"
+	. += "There [(remaining == 1)? "is" : "are"] [remaining] flechette\s left!"

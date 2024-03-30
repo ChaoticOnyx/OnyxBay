@@ -198,7 +198,7 @@
 
 	src.loc = T
 
-/obj/item/examine(mob/user)
+/obj/item/examine(mob/user, infix)
 	. = ..()
 
 	var/size
