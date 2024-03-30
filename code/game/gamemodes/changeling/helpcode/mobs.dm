@@ -102,8 +102,11 @@
 
 
 /mob/living/simple_animal/hostile/little_changeling/New()
-	verbs += /mob/living/proc/ventcrawl
-	verbs += /mob/living/proc/hide
+	grant_verb(src, list(
+		/mob/living/proc/ventcrawl,
+		/mob/living/proc/hide,
+	))
+
 	pixel_z = 6
 	..()
 

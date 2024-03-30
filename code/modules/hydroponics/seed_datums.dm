@@ -28,7 +28,7 @@
 	mutants = null
 	chems = list(/datum/reagent/frostoil = list(3,5), /datum/reagent/nutriment = list(1,50))
 	kitchen_tag = "icechili"
-	canonical_icon = "icechili"
+	canonical_icon = "chiliice"
 
 /datum/seed/chili/ice/New()
 	..()
@@ -44,7 +44,7 @@
 	chems = list(/datum/reagent/fuel = list(5,10))
 	kitchen_tag = "flamechili"
 	fun_level = 1
-	canonical_icon = "chili"
+	canonical_icon = null
 
 /datum/seed/chili/flame/New()
 	..()

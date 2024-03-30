@@ -78,6 +78,7 @@ var/list/worths = list(
 					/obj/item/stack/material/silver = -45,
 					/obj/item/stack/material/platinum = -95,
 					/obj/item/stack/material/mhydrogen = -110,
+					/obj/item/stack/material/adamantine = -125,
 					/obj/item/stack/material/tritium = -100,
 					/obj/item/stack/material/osmium = -100,
 					/obj/item/stack/material/plasteel = -40,

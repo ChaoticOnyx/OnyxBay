@@ -2,6 +2,7 @@
 	desc = "Rubber boots."
 	name = "galoshes"
 	icon_state = "galoshes"
+	item_state_slots = null
 	permeability_coefficient = 0.05
 	item_flags = ITEM_FLAG_NOSLIP
 	can_hold_knife = 1
@@ -21,6 +22,7 @@
 	name = "jackboots"
 	desc = "Tall synthleather boots with an artificial shine."
 	icon_state = "jackboots"
+	item_state_slots = null
 	force = 3
 	armor = list(melee = 70, bullet = 70, laser = 60, energy = 25, bomb = 20, bio = 30)
 	siemens_coefficient = 0.5
@@ -55,6 +57,11 @@
 
 	drop_sound = SFX_DROP_BOOTS
 	pickup_sound = SFX_PICKUP_BOOTS
+
+	item_state_slots = list(
+		slot_l_hand_str = "jackboots",
+		slot_r_hand_str = "jackboots",
+		)
 
 /obj/item/clothing/shoes/workboots/toeless
 	name = "toe-less workboots"

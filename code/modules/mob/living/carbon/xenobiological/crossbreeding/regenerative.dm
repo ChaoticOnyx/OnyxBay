@@ -165,7 +165,7 @@ Regenerative extracts:
 	effect_desc = "Fully heals the target and makes a second regenerative core with no special effects."
 
 /obj/item/metroidcross/regenerative/cerulean/core_effect(mob/living/target, mob/user)
-	var/obj/item/metroidcross/X = new /obj/item/metroidcross/regenerative(user.loc)
+	var/obj/item/metroidcross/X = new /obj/item/metroidcross/regenerative/green(user.loc)
 	user.put_in_active_hand(X)
 	to_chat(user, SPAN_NOTICE("Some of the milky goo congeals in your hand!"))
 

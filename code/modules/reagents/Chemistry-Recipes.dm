@@ -1299,6 +1299,17 @@
 	..()
 	new /obj/item/golem_shell(get_turf(holder.my_atom))
 
+/datum/chemical_reaction/metroid/adamantine
+	name = "Adamantine"
+	result = null
+	required_reagents = list(/datum/reagent/blood = 5)
+	result_amount = 1
+	required = /obj/item/metroid_extract/adamantine
+
+/datum/chemical_reaction/metroid/adamantine/on_reaction(datum/reagents/holder)
+	..()
+	new /obj/item/stack/material/adamantine(get_turf(holder.my_atom))
+
 //Sepia
 /datum/chemical_reaction/metroid/film
 	name = "Metroid Film"
