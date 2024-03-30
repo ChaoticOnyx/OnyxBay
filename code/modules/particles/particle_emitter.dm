@@ -1,7 +1,8 @@
-/* /atom/movable/ can hold only one instance of particles.
-Therefore, we can use particle emitter to bypass this limitation and
-create complex effects by combining different emitters */
-
+/**
+ * /atom/movable/ can hold only one instance of particles.
+ * Therefore, we can use particle emitter to bypass this limitation and
+ * create complex effects by combining different emitters
+*/
 /atom/movable/particle_emitter
 	name = ""
 	anchored = TRUE
