@@ -2534,6 +2534,7 @@
 #include "code\modules\paperwork\photography.dm"
 #include "code\modules\paperwork\silicon_photography.dm"
 #include "code\modules\paperwork\stamps.dm"
+#include "code\modules\particles\particle_emitter.dm"
 #include "code\modules\particles\particles.dm"
 #include "code\modules\power\apc.dm"
 #include "code\modules\power\batteryrack.dm"
