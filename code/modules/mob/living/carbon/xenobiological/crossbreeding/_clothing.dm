@@ -112,6 +112,7 @@
 			return
 		to_chat(owner, SPAN_NOTICE("You channel nearby light into a glowing, ethereal prism."))
 		new /obj/structure/light_prism(get_turf(owner), glasses.glasses_color)
+
 #define FLOWER_COOLDOWN 30 SECONDS
 /obj/item/clothing/head/hairflower/peaceflower
 	name = "heroine bud"
