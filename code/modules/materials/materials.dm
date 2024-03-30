@@ -743,6 +743,17 @@ var/list/name_to_material
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
 
+/material/adamantine
+	name = MATERIAL_ADAMANTINE
+	stack_type = /obj/item/stack/material/adamantine
+	icon_colour = "#b2ffe8"
+	weight = 27
+	resilience = 16
+	reflectance = 20
+	stack_origin_tech = list(TECH_MATERIAL = 6)
+	sheet_singular_name = "ingot"
+	sheet_plural_name = "ingots"
+
 /material/iron
 	name = MATERIAL_IRON
 	stack_type = /obj/item/stack/material/iron

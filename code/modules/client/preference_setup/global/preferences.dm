@@ -319,6 +319,20 @@ var/global/list/_client_preferences_by_type
 		var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
 		R.GraphicsUpdate()
 
+/datum/client_preference/graphics_quality
+	description = "Graphics Quality (quality of effects)"
+	key = "GRAPHICS_QUALITY"
+	options = list(GLOB.PREF_LOW, GLOB.PREF_MED, GLOB.PREF_HIGH)
+	category = PREF_CATEGORY_GRAPHICS
+	default_value = GLOB.PREF_HIGH
+
+/datum/client_preference/graphics_quality/changed(mob/preference_mob, new_value)
+	if(isnull(preference_mob.client))
+		return
+
+	var/atom/movable/renderer/R = preference_mob.renderers[TEMPERATURE_EFFECT_RENDERER]
+	R.GraphicsUpdate()
+
 /datum/client_preference/pixel_size
 	description = "Pixel Size"
 	key = "PIXEL_SIZE"
@@ -528,4 +542,18 @@ var/global/list/_client_preferences_by_type
 	description = "Play Pray Sound"
 	key = "SOUND_PRAY"
 	category = PREF_CATEGORY_STAFF
+	flags = R_PERMISSIONS
+
+/datum/client_preference/staff/fast_mc_refresh
+	description = "Fast MC Refresh"
+	key = "FAST_REFRESH"
+	category = PREF_CATEGORY_STAFF
+	default_value = GLOB.PREF_NO
+	flags = R_DEBUG
+
+/datum/client_preference/staff/split_admin_tabs
+	description = "Split Admin Tabs"
+	key = "SPLIT_TABS"
+	category = PREF_CATEGORY_STAFF
+	default_value = GLOB.PREF_NO
 	flags = R_PERMISSIONS

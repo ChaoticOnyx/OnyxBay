@@ -1299,6 +1299,17 @@
 	..()
 	new /obj/item/golem_shell(get_turf(holder.my_atom))
 
+/datum/chemical_reaction/metroid/adamantine
+	name = "Adamantine"
+	result = null
+	required_reagents = list(/datum/reagent/blood = 5)
+	result_amount = 1
+	required = /obj/item/metroid_extract/adamantine
+
+/datum/chemical_reaction/metroid/adamantine/on_reaction(datum/reagents/holder)
+	..()
+	new /obj/item/stack/material/adamantine(get_turf(holder.my_atom))
+
 //Sepia
 /datum/chemical_reaction/metroid/film
 	name = "Metroid Film"
@@ -1603,8 +1614,8 @@
 
 /datum/chemical_reaction/icecoffee
 	name = "Iced Coffee"
-	result = /datum/reagent/drink/coffee/icecoffee
-	required_reagents = list(/datum/reagent/drink/ice = 1, /datum/reagent/drink/coffee = 2)
+	result = /datum/reagent/caffeine/coffee/icecoffee
+	required_reagents = list(/datum/reagent/drink/ice = 1, /datum/reagent/caffeine/coffee = 2)
 	result_amount = 3
 
 /datum/chemical_reaction/nuka_cola
@@ -1678,8 +1689,8 @@
 
 /datum/chemical_reaction/kahlua
 	name = "Kahlua"
-	result = /datum/reagent/ethanol/coffee/kahlua
-	required_reagents = list(/datum/reagent/drink/coffee = 5, /datum/reagent/sugar = 5)
+	result = /datum/reagent/ethanol/kahlua
+	required_reagents = list(/datum/reagent/caffeine/coffee = 5, /datum/reagent/sugar = 5)
 	catalysts = list(/datum/reagent/enzyme = 5)
 	result_amount = 5
 
@@ -1766,7 +1777,7 @@
 /datum/chemical_reaction/brave_bull
 	name = "Brave Bull"
 	result = /datum/reagent/ethanol/coffee/brave_bull
-	required_reagents = list(/datum/reagent/ethanol/tequilla = 2, /datum/reagent/ethanol/coffee/kahlua = 1)
+	required_reagents = list(/datum/reagent/ethanol/tequilla = 2, /datum/reagent/ethanol/kahlua = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/tequilla_sunrise
@@ -1814,13 +1825,13 @@
 /datum/chemical_reaction/irish_coffee
 	name = "Irish Coffee"
 	result = /datum/reagent/ethanol/coffee/irishcoffee
-	required_reagents = list(/datum/reagent/ethanol/irish_cream = 1, /datum/reagent/drink/coffee = 1)
+	required_reagents = list(/datum/reagent/ethanol/irish_cream = 1, /datum/reagent/caffeine/coffee = 1)
 	result_amount = 2
 
 /datum/chemical_reaction/b52
 	name = "B-52"
 	result = /datum/reagent/ethanol/coffee/b52
-	required_reagents = list(/datum/reagent/ethanol/irish_cream = 1, /datum/reagent/ethanol/coffee/kahlua = 1, /datum/reagent/ethanol/cognac = 1)
+	required_reagents = list(/datum/reagent/ethanol/irish_cream = 1, /datum/reagent/ethanol/kahlua = 1, /datum/reagent/ethanol/cognac = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/atomicbomb
@@ -1856,7 +1867,7 @@
 /datum/chemical_reaction/black_russian
 	name = "Black Russian"
 	result = /datum/reagent/ethanol/black_russian
-	required_reagents = list(/datum/reagent/ethanol/vodka = 2, /datum/reagent/ethanol/coffee/kahlua = 1)
+	required_reagents = list(/datum/reagent/ethanol/vodka = 2, /datum/reagent/ethanol/kahlua = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/manhattan
@@ -1970,20 +1981,20 @@
 
 /datum/chemical_reaction/soy_latte
 	name = "Soy Latte"
-	result = /datum/reagent/drink/coffee/soy_latte
-	required_reagents = list(/datum/reagent/drink/coffee = 1, /datum/reagent/drink/milk/soymilk = 1)
+	result = /datum/reagent/caffeine/coffee/soy_latte
+	required_reagents = list(/datum/reagent/caffeine/coffee = 1, /datum/reagent/drink/milk/soymilk = 1)
 	result_amount = 2
 
 /datum/chemical_reaction/cafe_latte
 	name = "Cafe Latte"
-	result = /datum/reagent/drink/coffee/cafe_latte
-	required_reagents = list(/datum/reagent/drink/coffee = 1, /datum/reagent/drink/milk = 1)
+	result = /datum/reagent/caffeine/coffee/cafe_latte
+	required_reagents = list(/datum/reagent/caffeine/coffee = 1, /datum/reagent/drink/milk = 1)
 	result_amount = 2
 
 /datum/chemical_reaction/cappuccino
 	name = "Cappuccino"
-	result = /datum/reagent/drink/coffee/cappuccino
-	required_reagents = list(/datum/reagent/drink/coffee = 2, /datum/reagent/drink/milk/cream = 1)
+	result = /datum/reagent/caffeine/coffee/cappuccino
+	required_reagents = list(/datum/reagent/caffeine/coffee = 2, /datum/reagent/drink/milk/cream = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/acidspit
@@ -2049,7 +2060,7 @@
 /datum/chemical_reaction/devilskiss
 	name = "Devils Kiss"
 	result = /datum/reagent/ethanol/devilskiss
-	required_reagents = list(/datum/reagent/blood = 1, /datum/reagent/ethanol/coffee/kahlua = 1, /datum/reagent/ethanol/rum = 1)
+	required_reagents = list(/datum/reagent/blood = 1, /datum/reagent/ethanol/kahlua = 1, /datum/reagent/ethanol/rum = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/hippiesdelight
@@ -2103,7 +2114,7 @@
 /datum/chemical_reaction/rewriter
 	name = "Rewriter"
 	result = /datum/reagent/drink/rewriter
-	required_reagents = list(/datum/reagent/drink/spacemountainwind = 1, /datum/reagent/drink/coffee = 1)
+	required_reagents = list(/datum/reagent/drink/spacemountainwind = 1, /datum/reagent/caffeine/coffee = 1)
 	result_amount = 2
 
 /datum/chemical_reaction/suidream
@@ -2242,7 +2253,7 @@
 /datum/chemical_reaction/espressomartini
 	name = "Espresso Martini"
 	result = /datum/reagent/ethanol/coffee/espressomartini
-	required_reagents = list(/datum/reagent/ethanol/black_russian = 3, /datum/reagent/drink/coffee = 1, /datum/reagent/sugar = 1)
+	required_reagents = list(/datum/reagent/ethanol/black_russian = 3, /datum/reagent/caffeine/coffee = 1, /datum/reagent/sugar = 1)
 	result_amount = 5
 
 /datum/chemical_reaction/shroombeer

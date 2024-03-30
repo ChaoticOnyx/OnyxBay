@@ -194,7 +194,13 @@
 	return ..()
 
 /obj/item/rig/get_mob_overlay(mob/user_mob, slot)
-	var/image/ret = ..()
+	. = ..()
+
+	if(slot == slot_l_hand_str || slot == slot_r_hand_str)
+		return
+
+	var/image/ret = .
+
 	if(icon_override)
 		ret.icon = icon_override
 	else if(slot == slot_back_str)
@@ -587,7 +593,13 @@
 	return
 
 /obj/item/rig/get_mob_overlay(mob/user_mob, slot)
-	var/image/ret = ..()
+	. = ..()
+
+	if(slot == slot_l_hand_str || slot == slot_r_hand_str)
+		return
+
+	var/image/ret = .
+
 	if(slot != slot_back_str || offline)
 		return ret
 

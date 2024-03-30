@@ -22,3 +22,9 @@
 	)
 	build_path = /obj/machinery/gibber/industrial
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_POWER = 3, TECH_BLUESPACE = 3)
+
+/obj/item/circuitboard/coffeemaker
+	name = T_BOARD("Coffeemaker")
+	board_type = "machine"
+	build_path = /obj/machinery/coffeemaker
+	origin_tech = list(TECH_ENGINEERING = 2, TECH_POWER = 1)

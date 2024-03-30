@@ -12,6 +12,9 @@
 #define LIGHT_BULB_TEMPERATURE 400 //K - used value for a 60W bulb
 #define LIGHTING_POWER_FACTOR 5		//5W per luminosity * range
 
+#define LIGHT_ON_DELAY_UPPER 1 SECONDS
+#define LIGHT_ON_DELAY_LOWER 0.5 SECONDS
+
 /obj/machinery/light_construct
 	name = "light fixture frame"
 	desc = "A light fixture under construction."
@@ -160,6 +163,9 @@
 	var/current_mode = null
 
 	var/static/list/light_eas
+
+	/// Whether this light fixture is currently turning on
+	VAR_PRIVATE/turning_on = FALSE
 
 /obj/machinery/light/vox
 	name = "alien light"
@@ -501,13 +507,34 @@
 			on = FALSE
 
 	if(on)
+		if(turning_on)
+			return
+
 		change_power_consumption((light_outer_range * light_max_bright) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 		update_use_power(POWER_USE_ACTIVE)
-		lightbulb.switch_on()
+		turning_on = TRUE
+		set_next_think(world.time + rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
+		return
 	else
 		update_use_power(POWER_USE_IDLE)
 
 	update_icon()
+
+/obj/machinery/light/think()
+	if(!on || QDELETED(src) || QDELETED(lightbulb))
+		turning_on = FALSE
+		return
+
+	switch(get_status())
+		if(LIGHT_BROKEN, LIGHT_BURNED, LIGHT_EMPTY)
+			turning_on = FALSE
+			return
+
+	turning_on = FALSE
+	update_icon()
+	lightbulb.switch_on()
+	if(prob(15))
+		flicker(rand(1, 3))
 
 /obj/machinery/light/proc/flicker(amount = rand(10, 20))
 	set waitfor = FALSE
@@ -693,6 +720,7 @@
 
 	var/list/lighting_modes = list()
 	var/sound_on
+	var/sound_on_volume
 	var/random_tone = FALSE
 	var/tone_overlay = TRUE
 	var/list/random_tone_options = list(
@@ -720,8 +748,10 @@
 		LIGHTMODE_ALARM      = list(l_max_bright = 1.0, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#ff3333"),
 		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#8A9929")
 		)
-	sound_on = 'sound/machines/lightson.ogg'
+
 	random_tone = TRUE
+	sound_on = SFX_LIGHT_TUBE_ON
+	sound_on_volume = 50
 
 /obj/item/light/tube/large
 	w_class = ITEM_SIZE_SMALL
@@ -770,6 +800,8 @@
 		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.7, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#8A9929")
 		)
 	random_tone = TRUE
+	sound_on = SFX_LIGHT_BULB_ON
+	sound_on_volume = 75
 
 /obj/item/light/bulb/he
 	name = "high efficiency light bulb"
@@ -926,6 +958,10 @@
 		status = LIGHT_BROKEN
 	else if(prob(min(60, switchcount*switchcount*0.01)))
 		status = LIGHT_BURNED
+		playsound(src, GET_SFX(SFX_LIGHT_BURNOUT), 80, TRUE)
 	else if(sound_on)
-		playsound(src, sound_on, 75)
+		playsound(src, GET_SFX(sound_on), sound_on_volume)
 	return status
+
+#undef LIGHT_ON_DELAY_UPPER
+#undef LIGHT_ON_DELAY_LOWER

@@ -812,8 +812,6 @@
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
 		originalDNA = H.dna.Clone()
-		originalname = H.real_name
-		H.real_name = H.species.get_random_name(H.gender)
 		for(var/i=1 to H.dna.UI.len)
 			H.dna.SetUIValue(i,rand(1,4095))
 

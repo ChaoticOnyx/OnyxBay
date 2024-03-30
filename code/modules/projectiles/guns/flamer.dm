@@ -6,6 +6,7 @@
 	icon = 'icons/obj/flamer.dmi'
 	icon_state = "flamer"
 	item_state = "flamer"
+	improper_held_icon = TRUE
 	wielded_item_state = "flamer-wielded"
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_HUGE

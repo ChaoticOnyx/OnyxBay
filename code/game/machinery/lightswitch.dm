@@ -13,7 +13,7 @@
 	var/area/connected_area = null
 	var/other_area = null
 
-/obj/machinery/light_switch/Initialize()
+/obj/machinery/light_switch/Initialize(mapload)
 	. = ..()
 	if(other_area)
 		src.connected_area = locate(other_area)

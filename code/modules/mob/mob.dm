@@ -249,6 +249,24 @@
 #undef PARTIALLY_BUCKLED
 #undef FULLY_BUCKLED
 
+/**
+ * Assembles one-dimensional array of strings to display inside "Status" stat panel tab.
+ */
+/mob/proc/get_status_tab_items()
+	SHOULD_CALL_PARENT(TRUE)
+	CAN_BE_REDEFINED(TRUE)
+	return list()
+
+/**
+ * Assembles two-dimensional array of objects representing action entry inside stat panel. Objects must
+ * look like `list([action_category], [unclickable_action_string], [action_string], [action_holder_ref])`,
+ * not passing ref makes stat entry unclickable.
+ */
+/mob/proc/get_actions_for_statpanel()
+	SHOULD_CALL_PARENT(TRUE)
+	CAN_BE_REDEFINED(TRUE)
+	return list()
+
 /mob/proc/restrained()
 	return
 
@@ -688,54 +706,6 @@
 	for(var/mob/M in viewers())
 		M.see(message)
 
-/mob/Stat()
-	..()
-	. = (is_client_active(10 MINUTES))
-	if(!.)
-		return
-
-	if(statpanel("Status"))
-		if(GAME_STATE >= RUNLEVEL_LOBBY)
-			stat("Local Time", stationtime2text())
-			stat("Local Date", stationdate2text())
-			stat("Round Duration", roundduration2text())
-		if(client.holder || isghost(client.mob))
-			stat("Location:", "([x], [y], [z]) [loc]")
-
-	if(client.holder)
-		if(statpanel("MC"))
-			stat("CPU:","[world.cpu]")
-			stat("Instances:","[world.contents.len]")
-			stat(null)
-			if(Master)
-				Master.stat_entry()
-			else
-				stat("Master Controller:", "ERROR")
-			if(Failsafe)
-				Failsafe.stat_entry()
-			else
-				stat("Failsafe Controller:", "ERROR")
-			if(Master)
-				stat(null)
-				for(var/datum/controller/subsystem/SS in Master.subsystems)
-					SS.stat_entry()
-
-	if(listed_turf && client)
-		if(!TurfAdjacent(listed_turf))
-			listed_turf = null
-		else
-			if(statpanel("Turf"))
-				stat(listed_turf)
-				for(var/atom/A in listed_turf)
-					if(!A.mouse_opacity)
-						continue
-					if(A.invisibility > see_invisible)
-						continue
-					if(is_type_in_list(A, shouldnt_see))
-						continue
-					stat(A)
-
-
 // facing verbs
 /mob/proc/canface()
 	return !incapacitated()
@@ -943,7 +913,7 @@
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
 		else
 			to_chat(U, "[src] has nothing stuck in their wounds that is large enough to remove.")
-		src.verbs -= /mob/proc/yank_out_object
+		revoke_verb(src, /mob/proc/yank_out_object)
 		return
 
 	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
@@ -1003,7 +973,7 @@
 
 	valid_objects = get_visible_implants(0)
 	if(!valid_objects.len)
-		src.verbs -= /mob/proc/yank_out_object
+		revoke_verb(src, /mob/proc/yank_out_object)
 
 	return 1
 

@@ -24,10 +24,10 @@
 	desc = "It's just an ordinary box."
 	icon = 'icons/obj/storage/boxes.dmi'
 	icon_state = "box"
-	item_state = "syringe_kit"
+	item_state = "box"
 	inspect_state = "box-open"
 	max_storage_space = DEFAULT_BOX_STORAGE
-	var/obj/item/foldable = /obj/item/stack/material/cardboard	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
+	var/obj/item/foldable = /obj/item/stack/material/cardboard // BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
 	use_sound = SFX_SEARCH_CLOTHES
 
 	drop_sound = SFX_DROP_CARDBOARD
@@ -87,6 +87,7 @@
 	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and white stripe indicate this one contains oxygen. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survival"
 	inspect_state = "survival-open"
+	item_state = "box_survival"
 	foldable = /obj/item/crowbar/emergency
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/tank/emergency/oxygen = 1,
@@ -100,6 +101,7 @@
 	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and black stripe indicate this one contains nitrogen. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survivalvox"
 	inspect_state = "survival-open"
+	item_state = "box_survival"
 	foldable = /obj/item/crowbar/emergency/vox
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/tank/emergency/nitrogen = 1,
@@ -112,6 +114,7 @@
 	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and orange stripe indicate this one as the engineering variant. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survivaleng"
 	inspect_state = "survival-open"
+	item_state = "box_survival"
 	foldable = /obj/item/crowbar/emergency/eng
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/tank/emergency/oxygen/engi = 1,
@@ -126,6 +129,7 @@
 	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and red & black stripe indicate this one as the security variant. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survivalsec"
 	inspect_state = "survival-open"
+	item_state = "box_survival"
 	foldable = /obj/item/crowbar/emergency/sec
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/tank/emergency/oxygen = 1,
@@ -667,3 +671,22 @@
 	desc = "A box full of tasty, colorful space cleaner pods."
 	icon_state = "cleanerpods"
 	startswith = list(/obj/item/reagent_containers/pill/cleanerpod = 14)
+
+/obj/item/storage/box/coffeepack
+	name = "arabica beans"
+	desc = "A bag containing fresh, dry coffee arabica beans. Ethically sourced and packaged by Waffle Corp."
+	startswith = list(/obj/item/reagent_containers/food/grown/coffee = 5)
+
+/obj/item/storage/box/coffeepack/robusta
+	icon_state = "robusta_beans"
+	name = "robusta beans"
+	desc = "A bag containing fresh, dry coffee robusta beans. Ethically sourced and packaged by Waffle Corp."
+	startswith = list(/obj/item/reagent_containers/food/grown/coffee/robusta = 5)
+
+/obj/item/storage/box/coffeemaking_kit
+	name = "coffeemaking kit"
+	desc = "A box containing coffee beans and a coffeepot."
+	startswith = list(/obj/item/reagent_containers/food/grown/coffee = 3,
+						/obj/item/reagent_containers/food/grown/coffee/robusta = 2,
+						/obj/item/reagent_containers/vessel/coffeepot
+						)

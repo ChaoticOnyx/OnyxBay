@@ -72,6 +72,7 @@
 		O.mind.original_mob = weakref(O)
 	else
 		O.key = key
+		O.client?.init_verbs()
 
 	if(move)
 		var/obj/loc_landmark
@@ -131,6 +132,7 @@
 			O.mind.store_memory("In case you look at this after being borged, the objectives are only here until I find a way to make them not show up for you, as I can't simply delete them without screwing up round-end reporting. --NeoFite")
 	else
 		O.key = key
+		O.client?.init_verbs()
 
 	O.forceMove(loc)
 	O.job = "Cyborg"
@@ -180,7 +182,9 @@
 		new_metroid = new /mob/living/carbon/metroid(loc)
 		if(adult)
 			new_metroid.is_adult = 1
+
 	new_metroid.key = key
+	new_metroid.client?.init_verbs()
 
 	to_chat(new_metroid, "<B>You are now a metroid. Skreee!</B>")
 	qdel(src)
@@ -200,7 +204,9 @@
 
 	var/mob/living/simple_animal/corgi/new_corgi = new /mob/living/simple_animal/corgi (loc)
 	new_corgi.a_intent = I_HURT
+
 	new_corgi.key = key
+	new_corgi.client?.init_verbs()
 
 	to_chat(new_corgi, "<B>You are now a Corgi. Yap Yap!</B>")
 	qdel(src)
@@ -229,10 +235,10 @@
 		qdel(t)
 
 	var/mob/new_mob = new mobpath(src.loc)
-
-	new_mob.key = key
 	new_mob.a_intent = I_HURT
 
+	new_mob.key = key
+	new_mob.client?.init_verbs()
 
 	to_chat(new_mob, "You suddenly feel more... animalistic.")
 	spawn()
@@ -251,6 +257,8 @@
 	var/mob/new_mob = new mobpath(src.loc)
 
 	new_mob.key = key
+	new_mob.client?.init_verbs()
+
 	new_mob.a_intent = I_HURT
 	to_chat(new_mob, "You feel more... animalistic")
 
@@ -332,7 +340,9 @@
 			organ.min_broken_damage = Floor(organ.max_damage * 0.75)
 	src.no_pain = TRUE
 	src.does_not_breathe = TRUE
-	verbs += /mob/living/carbon/human/proc/breath_death
-	verbs += /mob/living/carbon/human/proc/consume
+	grant_verb(src, list(
+		/mob/living/carbon/human/proc/breath_death,
+		/mob/living/carbon/human/proc/consume,
+	))
 	remove_language(LANGUAGE_GALCOM)
 	playsound(src, 'sound/hallucinations/wail.ogg', 20, 1)

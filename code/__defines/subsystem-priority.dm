@@ -7,6 +7,7 @@
 
 // SS_TICKER
 #define SS_PRIORITY_CHAT           100
+#define SS_PRIORITY_STATPANELS     95
 #define SS_PRIORITY_THINK          90    // Datums thinking.
 #define SS_PRIORITY_OVERLAYS       20
 #define SS_PRIORITY_ICON_UPDATE    10 // Queued icon updates. Mostly used by APCs and tables.
@@ -33,6 +34,7 @@
 #define SS_PRIORITY_SUPPLY         10    // Supply point accumulation.
 #define SS_PRIORITY_TRADE          10    // Adds/removes traders.
 #define SS_PRIORITY_PROJECTILES    10    // Projectile processing.
+#define SS_PRIORITY_PROMETHEUS     5
 
 // SS_BACKGROUND
 #define SS_PRIORITY_OBJECTS       60    // processing_objects processing.

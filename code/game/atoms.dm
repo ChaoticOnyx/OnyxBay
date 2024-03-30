@@ -61,6 +61,38 @@
 	/// This defines whether this atom will be added to SSpoi, set TRUE if you want it to be shown in follow panel
 	var/is_poi = FALSE
 
+/// Passes Stat Browser Panel clicks to the game and calls client click on an atom.
+/atom/Topic(href, list/href_list)
+	. = ..()
+
+	if(!usr?.client)
+		return
+
+	var/client/usr_client = usr.client
+	var/list/paramslist = list()
+
+	if(href_list["statpanel_item_click"])
+		switch(href_list["statpanel_item_click"])
+			if("left")
+				paramslist["left"] = "1"
+			if("right")
+				paramslist["right"] = "1"
+			if("middle")
+				paramslist["middle"] = "1"
+			else
+				return
+
+		if(href_list["statpanel_item_shiftclick"])
+			paramslist["shift"] = "1"
+		if(href_list["statpanel_item_ctrlclick"])
+			paramslist["ctrl"] = "1"
+		if(href_list["statpanel_item_altclick"])
+			paramslist["alt"] = "1"
+
+		var/mouseparams = list2params(paramslist)
+		usr_client.Click(src, loc, null, mouseparams)
+		return TRUE
+
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
@@ -796,3 +828,73 @@ its easier to just keep the beam vertical.
 ///Return the values you get when an RCD eats you?
 /atom/proc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	return FALSE
+
+/**
+ * Adds a verb to the source object, updates mob/s stat panels if given any.
+ *
+ * Please, note that this proc is **DEPRECATED** and most functionality must be implemented
+ * without interacting with stat panel AKA using action buttons or hotkeys.
+ */
+/atom/proc/add_verb(target_or_list, verb_or_list_to_add)
+	verbs += verb_or_list_to_add
+
+	if(isnull(target_or_list))
+		return
+
+	_add_verb_to_stat(target_or_list, verb_or_list_to_add)
+
+/// Advanced-use proc only! Handles verb addition to targets stat panel without tempering with source's verbs.
+/atom/proc/_add_verb_to_stat(target_or_list, verb_or_list_to_add)
+	var/list/output_list = list()
+
+	if(!islist(verb_or_list_to_add))
+		verb_or_list_to_add = list(verb_or_list_to_add)
+
+	for(var/procpath/verb_to_add as anything in verb_or_list_to_add)
+		output_list[++output_list.len] = list(verb_to_add.category, verb_to_add.name)
+
+	if(!islist(target_or_list))
+		target_or_list = list(target_or_list)
+
+	for(var/mob/target_mob in target_or_list)
+		var/client/target_client = target_mob?.client
+
+		if(!istype(target_client))
+			return
+
+		target_client.stat_panel.send_message("add_verb_list", output_list)
+
+/**
+ * Removes verb from the source object, updates mob stat panels if given any.
+ *
+ * Please, note that this proc is **DEPRECATED** and most functionality must be implemented
+ * without interacting with stat panel AKA using action buttons or hotkeys.
+ */
+/atom/proc/remove_verb(target_or_list, verb_or_list_to_remove)
+	verbs -= verb_or_list_to_remove
+
+	if(isnull(target_or_list))
+		return
+
+	_remove_verb_from_stat(target_or_list, verb_or_list_to_remove)
+
+/// Advanced-use proc only! Handles verb removal from targets stat panel without tempering with source's verbs.
+/atom/proc/_remove_verb_from_stat(target_or_list, verb_or_list_to_remove)
+	var/list/output_list = list()
+
+	if(!islist(verb_or_list_to_remove))
+		verb_or_list_to_remove = list(verb_or_list_to_remove)
+
+	for(var/procpath/verb_to_remove as anything in verb_or_list_to_remove)
+		output_list[++output_list.len] = list(verb_to_remove.category, verb_to_remove.name)
+
+	if(!islist(target_or_list))
+		target_or_list = list(target_or_list)
+
+	for(var/mob/target_mob in target_or_list)
+		var/client/target_client = target_mob?.client
+
+		if(!istype(target_client))
+			return
+
+		target_client.stat_panel.send_message("remove_verb_list", output_list)

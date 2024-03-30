@@ -10,7 +10,7 @@ subserver_name = "Chaotic"
 ## Server id. This is used, when you have more than one server connected to single DB.
 ## NOTE! You should migrate your DB to schema with server_id applied to each ban record
 ## to actually support this option. Leave this commented, if you have just one server.
-# server_id = ""
+server_id = "onyxbay"
 
 # Set to true to generate numeric suffix after server name based on server port.
 server_suffix = false
@@ -62,6 +62,9 @@ minute_topic_limit = 100
 
 ## Set to true to make Dream Daemon refuse to reboot for any reason other than `SIGUSR1`.
 wait_for_sigusr1 = false
+
+## Uncomment to start a metrics endpoint for prometheus.
+#prometheus_port = "9080"
 
 [lobby]
 splashes = ["icons/splashes/onyx_new.png"]

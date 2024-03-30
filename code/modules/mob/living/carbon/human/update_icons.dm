@@ -119,38 +119,40 @@ Please contact me on #coderbus IRC. ~Carn x
 */
 
 //Human Overlays Indexes/////////
-#define HO_BODY_LAYER              1
-#define HO_MUTATIONS_LAYER         2
-#define HO_SKIN_LAYER              3
-#define HO_DAMAGE_LAYER            4
-#define HO_SURGERY_LAYER           5
-#define HO_UNDERWEAR_LAYER         6
-#define HO_UNIFORM_LAYER           7
-#define HO_BANDAGE_LAYER           8
-#define HO_ID_LAYER                9
-#define HO_SHOES_LAYER            10
-#define HO_GLOVES_LAYER           11
-#define HO_BELT_LAYER             12
-#define HO_SUIT_LAYER             13
-#define HO_TAIL_LAYER             14		//bs12 specific. this hack is probably gonna come back to haunt me
-#define HO_GLASSES_LAYER          15
-#define HO_BELT_LAYER_ALT         16
-#define HO_SUIT_STORE_LAYER       17
-#define HO_BACK_LAYER             18
-#define HO_DEFORM_LAYER           19
-#define HO_HAIR_LAYER             20
-#define HO_GOGGLES_LAYER          21
-#define HO_EARS_LAYER             22
-#define HO_FACEMASK_LAYER         23
-#define HO_HEAD_LAYER             24
-#define HO_COLLAR_LAYER           25
-#define HO_HANDCUFF_LAYER         26
-#define HO_L_HAND_LAYER           27
-#define HO_R_HAND_LAYER           28
-#define HO_FIRE_LAYER             29		//If you're on fire
-#define HO_MODIFIER_EFFECTS_LAYER 30
-#define HO_TARGETED_LAYER         31		//BS12: Layer for the target overlay from weapon targeting system
-#define HO_TOTAL_LAYERS           31
+#define HO_L_HAND_LOW_LAYER        1
+#define HO_R_HAND_LOW_LAYER        2
+#define HO_BODY_LAYER              3
+#define HO_MUTATIONS_LAYER         4
+#define HO_SKIN_LAYER              5
+#define HO_DAMAGE_LAYER            6
+#define HO_SURGERY_LAYER           7
+#define HO_UNDERWEAR_LAYER         8
+#define HO_UNIFORM_LAYER           9
+#define HO_BANDAGE_LAYER          10
+#define HO_ID_LAYER               11
+#define HO_SHOES_LAYER            12
+#define HO_GLOVES_LAYER           13
+#define HO_BELT_LAYER             14
+#define HO_SUIT_LAYER             15
+#define HO_TAIL_LAYER             16		//bs12 specific. this hack is probably gonna come back to haunt me
+#define HO_GLASSES_LAYER          17
+#define HO_BELT_LAYER_ALT         18
+#define HO_SUIT_STORE_LAYER       19
+#define HO_BACK_LAYER             20
+#define HO_DEFORM_LAYER           21
+#define HO_HAIR_LAYER             22
+#define HO_GOGGLES_LAYER          23
+#define HO_EARS_LAYER             24
+#define HO_FACEMASK_LAYER         25
+#define HO_HEAD_LAYER             26
+#define HO_COLLAR_LAYER           27
+#define HO_HANDCUFF_LAYER         28
+#define HO_L_HAND_LAYER           29
+#define HO_R_HAND_LAYER           30
+#define HO_FIRE_LAYER             31		//If you're on fire
+#define HO_MODIFIER_EFFECTS_LAYER 32
+#define HO_TARGETED_LAYER         33		//BS12: Layer for the target overlay from weapon targeting system
+#define HO_TOTAL_LAYERS           33
 //////////////////////////////////
 
 /mob/living/carbon/human
@@ -607,30 +609,66 @@ var/global/list/damage_icon_parts = list()
 // Right Hand
 /mob/living/carbon/human/update_inv_r_hand(update_icons=1)
 	if(r_hand)
-		var/image/standing = r_hand.get_mob_overlay(src, slot_r_hand_str)
-		if(standing)
-			standing.appearance_flags |= RESET_ALPHA
-			standing.appearance_flags |= PIXEL_SCALE
-		overlays_standing[HO_R_HAND_LAYER] = standing
+		. = r_hand.get_mob_overlay(src, slot_r_hand_str)
+		if(.)
+			if(islist(.))
+				var/image/main = .[1]
+				main.appearance_flags |= RESET_ALPHA
+				main.appearance_flags |= PIXEL_SCALE
+				overlays_standing[HO_R_HAND_LAYER] = main
+
+				var/image/back = .[2]
+				back.appearance_flags |= RESET_ALPHA
+				back.appearance_flags |= PIXEL_SCALE
+				overlays_standing[HO_R_HAND_LOW_LAYER] = back
+			else
+				var/image/standing = .
+				standing.appearance_flags |= RESET_ALPHA
+				standing.appearance_flags |= PIXEL_SCALE
+				overlays_standing[HO_R_HAND_LAYER] = standing
+				overlays_standing[HO_R_HAND_LOW_LAYER] = null
+
+		else
+			overlays_standing[HO_R_HAND_LAYER] = null
+			overlays_standing[HO_R_HAND_LOW_LAYER] = null
 
 		if (handcuffed) drop_r_hand() //this should be moved out of icon code
 	else
 		overlays_standing[HO_R_HAND_LAYER] = null
+		overlays_standing[HO_R_HAND_LOW_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 
 // Left Hand
 /mob/living/carbon/human/update_inv_l_hand(update_icons=1)
 	if(l_hand)
-		var/image/standing = l_hand.get_mob_overlay(src, slot_l_hand_str)
-		if(standing)
-			standing.appearance_flags |= RESET_ALPHA
-			standing.appearance_flags |= PIXEL_SCALE
-		overlays_standing[HO_L_HAND_LAYER] = standing
+		. = l_hand.get_mob_overlay(src, slot_l_hand_str)
+		if(.)
+			if(islist(.))
+				var/image/main = .[1]
+				main.appearance_flags |= RESET_ALPHA
+				main.appearance_flags |= PIXEL_SCALE
+				overlays_standing[HO_L_HAND_LAYER] = main
+
+				var/image/back = .[2]
+				back.appearance_flags |= RESET_ALPHA
+				back.appearance_flags |= PIXEL_SCALE
+				overlays_standing[HO_L_HAND_LOW_LAYER] = back
+			else
+				var/image/standing = .
+				standing.appearance_flags |= RESET_ALPHA
+				standing.appearance_flags |= PIXEL_SCALE
+				overlays_standing[HO_L_HAND_LAYER] = standing
+				overlays_standing[HO_L_HAND_LOW_LAYER] = null
+
+		else
+			overlays_standing[HO_L_HAND_LAYER] = null
+			overlays_standing[HO_L_HAND_LOW_LAYER] = null
 
 		if (handcuffed) drop_l_hand() //This probably should not be here
 	else
 		overlays_standing[HO_L_HAND_LAYER] = null
+		overlays_standing[HO_L_HAND_LOW_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 

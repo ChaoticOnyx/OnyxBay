@@ -220,11 +220,13 @@
 		update_icon()
 
 /obj/machinery/portable_atmospherics/hydroponics/proc/die()
-	dead = 1
+	dead = TRUE
 	mutation_level = 0
 	harvest = 0
 	weedlevel += 1 * HYDRO_SPEED_MULTIPLIER
 	pestlevel = 0
+
+	update_icon() // Explicitly calling update_icons here since our processing is an entangled mess.
 
 //Process reagents being input into the tray.
 /obj/machinery/portable_atmospherics/hydroponics/proc/process_reagents()

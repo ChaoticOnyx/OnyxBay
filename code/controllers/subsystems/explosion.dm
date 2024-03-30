@@ -33,8 +33,7 @@ SUBSYSTEM_DEF(explosions)
 
 	var/currentpart = SSEXPLOSIONS_TURFS
 
-/datum/controller/subsystem/explosions/stat_entry()
-	var/msg = ""
+/datum/controller/subsystem/explosions/stat_entry(msg)
 	msg += "C:{"
 	msg += "LT:[round(cost_lowturf,1)]|"
 	msg += "MT:[round(cost_medturf,1)]|"
@@ -60,7 +59,8 @@ SUBSYSTEM_DEF(explosions)
 	msg += "TO:[throwturf.len]"
 
 	msg += "} "
-	..(msg)
+
+	return ..()
 
 #define SSEX_TURF "turf"
 #define SSEX_OBJ "obj"
@@ -323,6 +323,9 @@ SUBSYSTEM_DEF(explosions)
 			creaking = TRUE // prob over 100 always returns true
 		else
 			creaking = FALSE
+
+	if(creaking)
+		SSmachines.flicker_all_lights()
 
 	for(var/mob/listener as anything in GLOB.player_list)
 		var/turf/listener_turf = get_turf(listener)
