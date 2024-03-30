@@ -270,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `runtimes` (
   `date` datetime NOT NULL,
   `game_id` varchar(50) NOT NULL,
   `build_version` varchar(50) NOT NULL,
-  `file` varchar(50) NOT NULL,
+  `file` varchar(255) NOT NULL,
   `line` int(11) NOT NULL,
   `body` text NOT NULL,
   PRIMARY KEY (`id`)
