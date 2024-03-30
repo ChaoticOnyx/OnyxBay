@@ -374,13 +374,12 @@
 	var/atom/movable/temp_overlay/heat_overlay = get_temperature_overlay(TEMPERATURE_OVERLAY_HEAT)
 	//If it's hot add something
 	if(temperature >= CARBON_LIFEFORM_FIRE_RESISTANCE)
-		if(!(heat_overlay in graphic))
+		if(!LAZYISIN(graphic, heat_overlay))
 			graphic_add += heat_overlay
 	else if(heat_overlay in graphic)
 		graphic_remove += heat_overlay
 	var/new_alpha = clamp(max(125, 255 * ((temperature - CARBON_LIFEFORM_FIRE_RESISTANCE) / CARBON_LIFEFORM_FIRE_RESISTANCE * 4)), 125, 255)
-	if(new_alpha != heat_overlay.alpha)
-		heat_overlay.update_alpha_animation(new_alpha)
+	heat_overlay.update_alpha_animation(new_alpha)
 
 	. = 0
 	//Apply changes
