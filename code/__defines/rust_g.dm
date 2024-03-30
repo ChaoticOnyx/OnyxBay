@@ -232,6 +232,8 @@
 
 #define rustg_prom_init(port) RUSTG_CALL(RUST_G, "prom_init")(istext(port) ? port : num2text(port))
 
+#define rustg_prom_set_labels(labels) RUSTG_CALL(RUST_G, "prom_set_labels")(json_encode(labels))
+
 // Counters
 
 #define rustg_prom_counter_register(id, desc) RUSTG_CALL(RUST_G, "prom_counter_register")(id, desc)
