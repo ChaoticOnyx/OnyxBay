@@ -377,6 +377,7 @@
 			graphic_add += heat_overlay
 	else if(heat_overlay in graphic)
 		graphic_remove += heat_overlay
+
 	var/new_alpha = clamp(max(125, 255 * ((temperature - CARBON_LIFEFORM_FIRE_RESISTANCE) / CARBON_LIFEFORM_FIRE_RESISTANCE * 4)), 125, 255)
 	heat_overlay.update_alpha_animation(new_alpha)
 
