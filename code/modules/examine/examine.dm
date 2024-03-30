@@ -9,7 +9,6 @@
 
 /// Called when `user` examines this atom.
 /atom/proc/examine(mob/user, infix)
-	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 
 	var/examine_string = get_examine_string(user, infix)
@@ -26,7 +25,6 @@
 
 /// Called when `user` examines this atom multiple times in ~1 second window.
 /atom/proc/examine_more(mob/user)
-	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
 
 	. = list()
