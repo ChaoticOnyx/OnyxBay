@@ -64,7 +64,6 @@
 
 /datum/action/innate/integrate_extract
 	name = "Integrate Extract"
-	//desc = "Eat a metroid extract to use its properties."
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "metroidconsume"
 	button_icon = 'icons/hud/actions.dmi'
@@ -87,12 +86,10 @@
 		name = "Integrate Extract"
 		button_icon_state = "metroidconsume"
 		button.UpdateIcon()
-		//desc = "Eat a metroid extract to use its properties."
 	else
 		name = "Eject Extract"
 		button_icon_state = "metroideject"
 		button.AddOverlays(image(extract_eater_comp.current_extract.icon, icon_state = extract_eater_comp.current_extract.icon_state))
-		//desc = "Eject your current metroid extract."
 
 
 /datum/action/innate/integrate_extract/Activate()
@@ -126,7 +123,6 @@
 
 /datum/action/cooldown/use_extract
 	name = "Extract Minor Activation"
-	//desc = "Pulse the metroid extract with energized jelly to activate it."
 	action_type = AB_INNATE
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "metroiduse1"
@@ -170,7 +166,6 @@
 
 /datum/action/cooldown/use_extract/major
 	name = "Extract Major Activation"
-	//desc = "Pulse the metroid extract with plasma jelly to activate it."
 	button_icon_state = "metroiduse2"
 	activation_type = METROID_ACTIVATE_MAJOR
 	shared_cooldown = TRUE
