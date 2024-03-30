@@ -161,7 +161,6 @@
 
 /datum/action/innate/linked_speech
 	name = "Mind Link Speech"
-	//desc = "Send a psychic message to everyone connected to your Link."
 	button_icon_state = "link_speech"
 	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
@@ -175,7 +174,6 @@
 
 	var/datum/component/mind_linker/linker = Target
 	name = "[linker.network_name] Speech"
-	//desc = "Send a psychic message to everyone connected to your [linker.network_name]."
 	button_icon = linker.speech_action_icon
 	button_icon_state = linker.speech_action_icon_state
 	background_icon_state = linker.speech_action_background_icon_state
@@ -208,7 +206,6 @@
 
 /datum/action/innate/project_thought
 	name = "Send Thought"
-	//desc = "Send a private psychic message to someone you can see."
 	button_icon_state = "send_mind"
 	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
@@ -258,7 +255,6 @@
 
 /datum/action/innate/link_minds
 	name = "Link Minds"
-	//desc = "Link someone's mind to your Stargazer Link, allowing them to communicate telepathically with other linked minds."
 	button_icon_state = "mindlink"
 	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
