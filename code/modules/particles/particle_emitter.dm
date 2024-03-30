@@ -4,18 +4,17 @@
  * create complex effects by combining different emitters
 */
 /atom/movable/particle_emitter
-	name = ""
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	appearance_flags = PIXEL_SCALE | TILE_BOUND
 
-/atom/movable/particle_emitter/Initialize(mapload, time, _color)
+/atom/movable/particle_emitter/Initialize(mapload, time, color)
 	. = ..()
 
 	if(time > 0)
 		QDEL_IN(src, time)
 
-	color = _color
+	src.color = color
 
 /atom/movable/particle_emitter/proc/enable(on)
 	if(on)

@@ -39,7 +39,7 @@
 			toggled = FALSE
 			deactivate()
 	else if(mana_current < mana_max)
-		mana_current = min(mana_max, mana_current + mana_regen_per_tick)
+		mana_curreznt = min(mana_max, mana_current + mana_regen_per_tick)
 
 	update_screen_button()
 

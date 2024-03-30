@@ -327,9 +327,11 @@ var/global/list/_client_preferences_by_type
 	default_value = GLOB.PREF_HIGH
 
 /datum/client_preference/graphics_quality/changed(mob/preference_mob, new_value)
-	if(preference_mob?.client)
-		var/atom/movable/renderer/R = preference_mob.renderers[TEMPERATURE_EFFECT_RENDERER]
-		R.GraphicsUpdate()
+	if(isnull(preference_mob.client))
+		return
+
+	var/atom/movable/renderer/R = preference_mob.renderers[TEMPERATURE_EFFECT_RENDERER]
+	R.GraphicsUpdate()
 
 /datum/client_preference/pixel_size
 	description = "Pixel Size"
