@@ -318,12 +318,12 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 
 	var/quality = owner.get_preference_value(/datum/client_preference/graphics_quality)
 
-	if(quality == GLOB.PREF_LOW)
-		gas_heat_object = new /atom/movable/heat_effect(null)
-	else
-		if(quality == GLOB.PREF_MED)
+	switch(quality)
+		if(GLOB.PREF_LOW)
+			gas_heat_object = new /atom/movable/heat_effect(null)
+		if(GLOB.PREF_MED)
 			gas_heat_object = new /atom/movable/particle_emitter/heat(null)
-		else if(quality == GLOB.PREF_HIGH)
+		else
 			gas_heat_object = new /atom/movable/particle_emitter/heat/high(null)
 
 	vis_contents += gas_heat_object
