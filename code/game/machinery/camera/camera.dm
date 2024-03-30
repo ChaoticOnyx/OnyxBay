@@ -402,7 +402,10 @@
 
 /obj/machinery/camera/proc/weld(obj/item/weldingtool/WT, mob/user)
 	to_chat(user, "<span class='notice'>You start to weld the [src]..</span>")
-	if(WT.use_tool(src, user, delay = 10 SECONDS, amount = 5))
+	if(!WT.use_tool(src, user, delay = 5 SECONDS, amount = 5))
+		return FALSE
+
+	if(QDELETED(src))
 		return FALSE
 
 	return TRUE

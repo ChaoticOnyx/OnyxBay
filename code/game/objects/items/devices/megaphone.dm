@@ -34,7 +34,7 @@ GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphon
 
 
 /obj/item/device/megaphone/attack_self(mob/living/user)
-	show_splash_text(user, "toggled [active ? "off" : "on"]")
+	show_splash_text(user, "toggled [active ? "off" : "on"]", "You toggle \the [src] [active ? "off" : "on"].")
 	active = !active
 	update_icon()
 
@@ -47,7 +47,7 @@ GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphon
 		return
 
 	if(world.time <= last_use + MEGAPHONE_COOLDOWN)
-		show_splash_text(loc, "needs to recharge!")
+		show_splash_text(loc, "needs to recharge!", "\The [src] needs to recharge!")
 		return
 
 	_speak(M, capitalize(text), speaking)
@@ -73,7 +73,7 @@ GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphon
 	if(emagged)
 		return FALSE
 
-	show_splash_text(user, "overload voice synthesizer!")
+	show_splash_text(user, "overload voice synthesizer!", "You overload the voice synthesizer, setting the loudness setting way above the safe levels.")
 	emagged = TRUE
 	return TRUE
 

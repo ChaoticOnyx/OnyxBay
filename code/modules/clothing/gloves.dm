@@ -16,6 +16,11 @@
 	drop_sound = SFX_DROP_GLOVES
 	pickup_sound = SFX_PICKUP_GLOVES
 
+	item_state_slots = list(
+		slot_l_hand_str = "bgloves",
+		slot_r_hand_str = "bgloves",
+		)
+
 	var/transfer_blood = 0
 	var/mob/living/carbon/human/bloody_hands_mob
 

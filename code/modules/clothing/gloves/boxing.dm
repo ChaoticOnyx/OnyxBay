@@ -23,7 +23,8 @@
 
 /obj/item/clothing/gloves/boxing/Initialize()
 	. = ..()
-	attack = new attack()
+	if(ispath(attack))
+		attack = new attack()
 
 /obj/item/clothing/gloves/boxing/attackby(obj/item/W, mob/user)
 	if(isWirecutter(W) || istype(W, /obj/item/scalpel) || isCoil(W))
@@ -44,6 +45,11 @@
 	name = "white gloves"
 	desc = "These look pretty fancy."
 	icon_state = "white"
+
+	item_state_slots = list(
+		slot_l_hand_str = "lgloves",
+		slot_r_hand_str = "lgloves",
+		)
 
 /datum/unarmed_attack/punch/boxing
 	attack_verb = list("punched")

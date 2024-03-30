@@ -365,4 +365,10 @@
 #define SFX_VENDING_DROP            "vending_drop"
 #define SFX_VENDING_GENERIC         "vending_generic"
 
+
+// Lighting
+#define SFX_LIGHT_TUBE_ON           "light_tube_on"
+#define SFX_LIGHT_BULB_ON           "light_bulb_on"
+#define SFX_LIGHT_BURNOUT           "light_burnout"
+
 #define GET_SFX(name) pick(GLOB.sfx_list[name])

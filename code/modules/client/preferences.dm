@@ -474,7 +474,14 @@ datum/preferences/proc/clear_character_previews()
 	ASSERT(client)
 
 	client.apply_fps(clientfps)
-	client.update_chat_position(client.get_preference_value(/datum/client_preference/chat_position))
+
+	client.update_chat_position(client.get_preference_value("INPUT_POSITION"))
+
+	var/zoom = client.get_preference_value("PIXEL_SIZE")
+	winset(client, "mapwindow.map", "zoom=[zoom_pref2value(zoom)]")
+
+	var/zoom_mode = client.get_preference_value("SCALING_METHOD")
+	winset(client, "mapwindow.map", "zoom-mode=[lowertext(zoom_mode)]")
 
 	if(client.get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		client.toggle_fullscreen(client.get_preference_value(/datum/client_preference/fullscreen_mode))
@@ -484,3 +491,6 @@ datum/preferences/proc/clear_character_previews()
 		winset(client, "browseroutput", "is-disabled=1;is-visible=0")
 	else
 		client.tgui_panel.initialize()
+
+	if(client.get_preference_value("STATUSBAR") != GLOB.PREF_YES)
+		winset(client, "statusbar", "is-visible=0")

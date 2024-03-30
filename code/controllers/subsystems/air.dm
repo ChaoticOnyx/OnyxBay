@@ -117,7 +117,7 @@ SUBSYSTEM_DEF(air)
 	next_fire = world.time + wait
 	can_fire = TRUE
 
-/datum/controller/subsystem/air/stat_entry()
+/datum/controller/subsystem/air/stat_entry(msg)
 	var/list/out = list(
 		"TtU:[tiles_to_update.len] ",
 		"ZtU:[zones_to_update.len] ",
@@ -125,7 +125,10 @@ SUBSYSTEM_DEF(air)
 		"AH:[active_hotspots.len] ",
 		"AE:[active_edges.len]"
 	)
-	..(out.Join())
+
+	msg = out.Join()
+
+	return ..()
 
 /datum/controller/subsystem/air/Initialize(timeofday, simulate = TRUE)
 

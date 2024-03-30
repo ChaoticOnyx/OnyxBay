@@ -72,7 +72,7 @@
 			to_chat(src, SPAN("danger", "[msg]"))
 			return
 
-	if(config.general.second_topic_limit)
+	if(config.general.second_topic_limit && href_list["window_id"] != "statbrowser")
 		var/second = round(world.time, 10)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -90,6 +90,9 @@
 	// Tgui Topic middleware
 	if(tgui_Topic(href_list))
 		return
+
+	if(href_list["reload_statbrowser"])
+		stat_panel.reinitialize()
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
 	if(asset_cache_job && (asset_cache_job in completed_asset_jobs))
@@ -177,6 +180,10 @@
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
+	// Instantiate tgui stat panel
+	stat_panel = new(src, "statbrowser")
+	stat_panel.subscribe(src, nameof(.proc/on_stat_panel_message))
+
 	// Instantiate tgui panel
 	tgui_panel = new(src)
 
@@ -255,6 +262,13 @@
 
 	settings = new(src)
 
+	stat_panel.initialize(
+		inline_html = file("html/statbrowser/statbrowser.html"),
+		inline_css = file("html/statbrowser/statbrowser.css"),
+		inline_js = file("html/statbrowser/statbrowser.js")
+	)
+	addtimer(CALLBACK(src, nameof(.proc/check_panel_loaded)), 30 SECONDS)
+
 	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.multiaccount.panic_server_address && TopicData != "redirect")
 			DIRECT_OUTPUT(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections. Sending you to [config.multiaccount.panic_server_name ? config.multiaccount.panic_server_name : config.multiaccount.panic_server_address]</h1>"))
@@ -268,9 +282,6 @@
 		qdel(src)
 		return
 
-/*	if(holder)
-		src.control_freak = 0 // Devs need 0 for profiler access
-*/
 	//////////////
 	//DISCONNECT//
 	//////////////
@@ -377,19 +388,6 @@
 	var/seconds = inactivity/10
 	return "[round(seconds / 60)] minute\s, [seconds % 60] second\s"
 
-// Byond seemingly calls stat, each tick.
-// Calling things each tick can get expensive real quick.
-// So we slow this down a little.
-// See: http://www.byond.com/docs/ref/info.html#/client/proc/Stat
-/client/Stat()
-	if(!usr)
-		return
-	// Add always-visible stat panel calls here, to define a consistent display order.
-	statpanel("Status")
-
-	. = ..()
-	stoplag(1)
-
 // send resources to the client. It's here in its own proc so we can move it around easiliy if need be
 /client/proc/send_resources()
 
@@ -464,67 +462,122 @@
 	if(prefs)
 		prefs.open_setup_window(usr)
 
+/client/proc/check_panel_loaded()
+	if(stat_panel.is_ready())
+		return
+
+	to_chat(src, SPAN_DANGER(FONT_HUGE("Statpanel failed to load, click <a href='?src=[ref(src)];reload_statbrowser=1'>here</a> to reload the panel.")))
+
+/// Compiles a full list of verbs and sends it to the stat panel browser.
+/client/proc/init_verbs()
+	var/list/verblist = list()
+	var/list/verbstoprocess = verbs.Copy()
+
+	if(mob)
+		verbstoprocess += mob.verbs
+		for(var/atom/movable/thing as anything in mob.contents)
+			verbstoprocess += thing.verbs
+
+	panel_tabs.Cut() // panel_tabs get reset in init_verbs on JS side anyway
+
+	for(var/procpath/verb_to_init as anything in verbstoprocess)
+		if(!verb_to_init)
+			continue
+		if(verb_to_init.hidden)
+			continue
+		if(!istext(verb_to_init.category))
+			continue
+		panel_tabs |= verb_to_init.category
+		verblist[++verblist.len] = list(verb_to_init.category, verb_to_init.name)
+
+	stat_panel.send_message("init_verbs", list(panel_tabs = panel_tabs, verblist = verblist))
+
+/**
+ * Handles incoming messages from the stat-panel TGUI.
+ */
+/client/proc/on_stat_panel_message(type, list/payload, list/href_list)
+	switch(type)
+		if("Update-Verbs")
+			init_verbs()
+		if("Remove-Tabs")
+			panel_tabs -= payload["tab"]
+		if("Send-Tabs")
+			panel_tabs |= payload["tab"]
+		if("Reset-Tabs")
+			panel_tabs = list()
+		if("Set-Tab")
+			stat_tab = payload["tab"]
+			SSstatpanels.immediate_send_stat_data(src)
+
 /client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
 		fps = client_fps
 
-/client/proc/update_chat_position(use_alternative)
-	var/input_height = 0
-	var/mode = get_preference_value(/datum/client_preference/chat_position)
-	var/currently_alternative = (winget(src, "input", "is-default") == "false") ? TRUE : FALSE
+#define VERTICAL_INPUT_MARGIN 9
 
-	// Hell
-	if(mode == GLOB.PREF_YES && !currently_alternative)
-		input_height = winget(src, "input", "size")
-		input_height = text2num(splittext(input_height, "x")[2])
+/**
+ * Manages `input` and `input_alt` visibility, due to skin limitations this proc is extreely
+ * snowflake, thus be sure to change `VERTICAL_INPUT_MARGIN` when moving it's elements
+ * inside `skin.dmf`.
+ *
+ * Known bugs:
+ * - Doesn't mount instantly due to user prefs loading.
+ * - Doesn't display typing indicator 'cause code copypasta is bad.
+ */
+/client/proc/update_chat_position(new_position)
+	var/alternate = winget(src, "input", "is-default") == "false"
+
+	if(!alternate && new_position == GLOB.PREF_LEGACY)
+		var/list/game_size = splittext(winget(src, "mainvsplit", "size"), "x")
+		var/list/input_size = splittext(winget(src, "input_alt", "size"), "x")
+
+		winset(src, "mainvsplit", "size=[game_size[1]]x[text2num(game_size[2]) - text2num(input_size[2]) - VERTICAL_INPUT_MARGIN]")
+
+		var/list/chat_size = splittext(winget(src, "outputwindow", "size"), "x")
+
+		winset(src, "browseroutput", "size=[chat_size[1]]x[chat_size[2]]")
+		winset(src, "output", "size=[chat_size[1]]x[chat_size[2]]")
 
 		winset(src, "input_alt", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton_alt", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
 
 		winset(src, "input", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "hotkey_toggle", "is-visible=false;is-disabled=true;is-default=false")
 
-		var/current_size = splittext(winget(src, "outputwindow.output", "size"), "x")
-		var/new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
-		winset(src, "outputwindow.output", "size=[new_size]")
-		winset(src, "outputwindow.browseroutput", "size=[new_size]")
+	else if(alternate && new_position == GLOB.PREF_MODERN)
+		var/list/game_size = splittext(winget(src, "mainvsplit", "size"), "x")
+		var/list/alt_input_size = splittext(winget(src, "input_alt", "size"), "x")
 
-		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
-		new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
-		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
-	else if(mode == GLOB.PREF_NO && currently_alternative)
-		input_height = winget(src, "input_alt", "size")
-		input_height = text2num(splittext(input_height, "x")[2])
+		winset(src, "mainvsplit", "size=[game_size[1]]x[text2num(game_size[2]) + text2num(alt_input_size[2]) + 9]")
+
+		var/list/chat_size = splittext(winget(src, "outputwindow", "size"), "x")
+		var/list/input_size = splittext(winget(src, "input", "size"), "x")
+
+		var/output_height = text2num(chat_size[2]) - text2num(input_size[2]) - VERTICAL_INPUT_MARGIN
+
+		winset(src, "browseroutput", "size=[chat_size[1]]x[output_height]")
+		winset(src, "output", "size=[chat_size[1]]x[output_height]")
 
 		winset(src, "input_alt", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton_alt", "is-visible=false;is-disabled=true;is-default=false")
+		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
 
 		winset(src, "input", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton", "is-visible=true;is-disabled=false;is-default=true")
+		winset(src, "hotkey_toggle", "is-visible=true;is-disabled=false;is-default=true")
 
-		var/current_size = splittext(winget(src, "outputwindow.output", "size"), "x")
-		var/new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
-		winset(src, "outputwindow.output", "size=[new_size]")
-		winset(src, "outputwindow.browseroutput", "size=[new_size]")
-
-		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
-		new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
-		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
+#undef VERTICAL_INPUT_MARGIN
 
 /client/proc/toggle_fullscreen(new_value)
 	if((new_value == GLOB.PREF_BASIC) || (new_value == GLOB.PREF_FULL))
 		winset(src, "mainwindow", "is-maximized=false;can-resize=false;titlebar=false")
 		if(new_value == GLOB.PREF_FULL)
-			winset(src, "mainwindow", "menu=null;statusbar=false")
-		winset(src, "mainwindow.mainvsplit", "pos=0x0")
+			winset(src, "mainwindow", "menu=null;")
 	else
 		winset(src, "mainwindow", "is-maximized=false;can-resize=true;titlebar=true")
-		winset(src, "mainwindow", "menu=menu;statusbar=true")
-		winset(src, "mainwindow.mainvsplit", "pos=3x0")
+		winset(src, "mainwindow", "menu=menu;")
 	winset(src, "mainwindow", "is-maximized=true")
 
 /client/verb/fit_viewport()

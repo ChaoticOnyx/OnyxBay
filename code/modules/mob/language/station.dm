@@ -6,7 +6,7 @@
 	exclaim_verb = "rustles"
 	colour = "soghun"
 	key = "q"
-	flags = RESTRICTED
+	language_flags = RESTRICTED
 	syllables = list("hs","zt","kr","st","sh")
 	shorthand = "RT"
 
@@ -19,7 +19,7 @@
 	name = LANGUAGE_ROOTGLOBAL
 	desc = "A complex language known instinctively by Dionaea, 'spoken' by emitting modulated radio waves. This version uses low frequency waves for slow communication at long ranges."
 	key = "w"
-	flags = RESTRICTED | HIVEMIND
+	language_flags = RESTRICTED | HIVEMIND
 	shorthand = "N/A"
 
 /datum/language/unathi
@@ -30,7 +30,7 @@
 	exclaim_verb = "roars"
 	colour = "soghun"
 	key = "o"
-	flags = WHITELISTED
+	language_flags = WHITELISTED
 	space_chance = 40
 	syllables = list(
 		"za", "az", "ze", "ez", "zi", "iz", "zo", "oz", "zu", "uz", "zs", "sz",
@@ -51,7 +51,7 @@
 	exclaim_verb = "yowls"
 	colour = "tajaran"
 	key = "j"
-	flags = WHITELISTED
+	language_flags = WHITELISTED
 	syllables = list("mrr","rr","tajr","kir","raj","kii","mir","kra","ahk","nal","vah","khaz","jri","ran","darr",
 	"mi","jri","dynh","manq","rhe","zar","rrhaz","kal","chur","eech","thaa","dra","jurl","mah","sanu","dra","ii'r",
 	"ka","aasi","far","wa","baq","ara","qara","zir","sam","mak","hrar","nja","rir","khan","jun","dar","rik","kah",
@@ -75,7 +75,7 @@
 	exclaim_verb = "warbles"
 	colour = "skrell"
 	key = "k"
-	flags = WHITELISTED
+	language_flags = WHITELISTED
 	syllables = list("qr","qrr","xuq","qil","quum","xuqm","vol","xrim","zaoo","qu-uu","qix","qoo","zix","*","!")
 	shorthand = "SK"
 
@@ -86,7 +86,7 @@
 	whisper_verb = "whispers"
 	colour = "solcom"
 	key = "1"
-	flags = WHITELISTED
+	language_flags = WHITELISTED
 	shorthand = "Sol"
 
 	//syllables are at the bottom of the file
@@ -116,7 +116,7 @@
 	exclaim_verb = "whistles loudly"
 	colour = "changeling"
 	key = "6"
-	flags = NO_STUTTER
+	language_flags = NO_STUTTER
 	syllables = list("beep","beep","beep","beep","beep","boop","boop","boop","bop","bop","dee","dee","doo","doo","hiss","hss","buzz","buzz","bzz","ksssh","keey","wurr","wahh","tzzz")
 	space_chance = 10
 	shorthand = "EAL"
@@ -196,7 +196,7 @@
 	signlang_verb = list("uses their tail to convey", "gestures with their tail", "gestures with their tail elaborately")
 	colour = "tajaran"
 	key = "l"
-	flags = WHITELISTED | SIGNLANG | NO_STUTTER | NONVERBAL
+	language_flags = WHITELISTED | SIGNLANG | NO_STUTTER | NONVERBAL
 	shorthand = "TS"
 
 /datum/language/confederate

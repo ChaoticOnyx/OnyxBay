@@ -3,7 +3,7 @@
 	name = "Noise"
 	desc = "Noises"
 	key = ""
-	flags = RESTRICTED|NONGLOBAL|INNATE|NO_TALK_MSG|NO_STUTTER
+	language_flags = RESTRICTED|NONGLOBAL|INNATE|NO_TALK_MSG|NO_STUTTER
 
 /datum/language/noise/format_message(message, verb)
 	return "<span class='message'><span class='[colour]'>[message]</span></span>"
@@ -25,7 +25,7 @@
 	speech_verb = "says"
 	whisper_verb = "whispers"
 	key = "0"
-	flags = RESTRICTED
+	language_flags = RESTRICTED
 	syllables = list("blah","blah","blah","bleh","meh","neh","nah","wah")
 	shorthand = "GC"
 
@@ -72,5 +72,5 @@
 	signlang_verb = list("gestures")
 	colour = "say_quote"
 	key = "s"
-	flags = SIGNLANG | NO_STUTTER | NONVERBAL
+	language_flags = SIGNLANG | NO_STUTTER | NONVERBAL
 	shorthand = "HS"

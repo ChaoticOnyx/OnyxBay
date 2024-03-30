@@ -1782,4 +1782,13 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_VENDING_GENERIC = list(
 		'sound/effects/using/disposal/drop2.ogg'
 	),
+	SFX_LIGHT_TUBE_ON = list(
+		'sound/machines/sound_effects_light_on.ogg'
+	),
+	SFX_LIGHT_BULB_ON = list(
+		'sound/machines/lightson.ogg'
+	),
+	SFX_LIGHT_BURNOUT = list(
+		'sound/machines/lightsburnout.ogg'
+	),
 ))

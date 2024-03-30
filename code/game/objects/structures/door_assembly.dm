@@ -293,7 +293,7 @@
 	update_state()
 
 /obj/structure/door_assembly/proc/finish_door(user)
-	show_splash_text(user, "Door finished!")
+	show_splash_text(user, "Door finished!", SPAN("notice", "You have finished assembling the door!"))
 	var/path = get_finished_type()
 
 	if(!isnull(path))

@@ -14,6 +14,7 @@
 	var/on = 0
 	var/activation_sound = 'sound/effects/flashlight.ogg'
 	var/spam_flag = FALSE // spamming can possibly overload lighting SS
+	var/item_state_on = "flashlight-on"
 
 	var/flashlight_max_bright    = 0.5 // brightness of light when on, must be no greater than 1.
 	var/flashlight_inner_range   = 1   // inner range of light when on, can be negative
@@ -40,6 +41,8 @@
 	ClearOverlays()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
+		if(item_state_on)
+			item_state = item_state_on
 		if(light_overlay)
 			var/image/I = image(icon, "[initial(icon_state)]-overlay")
 			I.color = brightness_color
@@ -48,6 +51,7 @@
 			em_block_state = "[initial(icon_state)]-eb"
 	else
 		icon_state = "[initial(icon_state)]"
+		item_state = initial(item_state)
 		em_block_state = null
 
 /obj/item/device/flashlight/proc/switch_light(state = FALSE)
@@ -59,7 +63,9 @@
 
 	if(activation_sound)
 		playsound(src.loc, activation_sound, 50, 1)
+
 	update_icon()
+	update_held_icon()
 
 /obj/item/device/flashlight/attack_self(mob/user)
 	if(!isturf(user.loc))
@@ -164,6 +170,7 @@
 	desc = "An energy efficient flashlight."
 	icon_state = "biglight"
 	item_state = "biglight"
+	item_state_on = "biglight-on"
 
 	flashlight_max_bright = 0.75
 	flashlight_outer_range = 5
@@ -175,6 +182,7 @@
 	desc = "A strange device manufactured with mysterious elements that somehow emits darkness. Or maybe it just sucks in light? Nobody knows for sure."
 	icon_state = "flashdark"
 	item_state = "flashdark"
+	item_state_on = null
 	w_class = ITEM_SIZE_NORMAL
 
 	flashlight_max_bright = -3
@@ -187,7 +195,8 @@
 	name = "penlight"
 	desc = "A pen-sized light, used by medical staff."
 	icon_state = "penlight"
-	item_state = ""
+	item_state = "pen"
+	item_state_on = null
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_EARS
 	w_class = ITEM_SIZE_TINY
@@ -201,6 +210,7 @@
 	desc = "A very, very heavy duty flashlight."
 	icon_state = "maglight"
 	item_state = "maglight"
+	item_state_on = "maglight-on"
 	force = 10
 	attack_verb = list ("smacked", "thwacked", "thunked")
 	matter = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 50)
@@ -212,7 +222,8 @@
 	name = "low-power flashlight"
 	desc = "A miniature lamp, that might be used by small robots."
 	icon_state = "penlight"
-	item_state = ""
+	item_state = "pen"
+	item_state_on = null
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	w_class = ITEM_SIZE_TINY
 
@@ -224,6 +235,7 @@
 	name = "lantern"
 	icon_state = "lantern"
 	item_state = "lantern"
+	item_state_on = "lantern-on"
 	desc = "A mining lantern."
 
 	flashlight_max_bright = 0.75
@@ -247,6 +259,7 @@
 	desc = "A desk lamp with an adjustable mount."
 	icon_state = "lamp"
 	item_state = "lamp"
+	item_state_on = null
 	w_class = ITEM_SIZE_LARGE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 5.0
@@ -263,7 +276,6 @@
 	desc = "A classic green-shaded desk lamp."
 	icon_state = "lampgreen"
 	item_state = "lampgreen"
-
 	flashlight_inner_range = 1.5
 	flashlight_outer_range = 3
 	brightness_color = "#efac75"
@@ -271,7 +283,7 @@
 /obj/item/device/flashlight/lamp/brown
 	desc = "A classic brown-shaded desk lamp."
 	icon_state = "lampbrown"
-	item_state = "lampbrown"
+	item_state = "lampgreen"
 
 	flashlight_inner_range = 1.5
 	flashlight_outer_range = 3
@@ -294,6 +306,7 @@
 	w_class = ITEM_SIZE_TINY
 	icon_state = "flare"
 	item_state = "flare"
+	item_state_on = "flare-on"
 
 	flashlight_max_bright = 0.8
 	flashlight_inner_range = 2
@@ -314,12 +327,15 @@
 /obj/item/device/flashlight/flare/on_update_icon()
 	ClearOverlays()
 	if(on)
+		if(item_state_on)
+			item_state = item_state_on
 		icon_state = "[initial(icon_state)]-on"
 		AddOverlays(image(icon, "[initial(icon_state)]-overlay"))
 		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
 		em_block_state = "[initial(icon_state)]-eb"
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"
+		item_state = initial(item_state)
 		em_block_state = null
 
 /obj/item/device/flashlight/flare/think()
@@ -362,6 +378,7 @@
 	w_class = 2.0
 	icon_state = "glowstick"
 	item_state = "glowstick"
+	item_state_on = null
 	randpixel = 12
 	var/fuel = 0
 	activation_sound = null
@@ -462,7 +479,8 @@
 	desc = "A glowing ball of what appears to be amber."
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "slime-on"
-	item_state = "slime"
+	item_state = "egg5"
+	item_state_on = null
 	w_class = ITEM_SIZE_TINY
 
 	flashlight_max_bright = 1

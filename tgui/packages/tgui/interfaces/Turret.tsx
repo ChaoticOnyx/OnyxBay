@@ -175,7 +175,7 @@ export const TurretSettings = (props: TurretSettingsProps, context: any) => {
       <LabeledList.Item label="Default bearing">
         <Button
           icon="pen"
-          content={bearing !== 0 ? `${bearing}\u00B0` : "not set"}
+          content={bearing >= 0 ? `${bearing}\u00B0` : "not set"}
           onClick={() => onBearingClick()}
         />
       </LabeledList.Item>

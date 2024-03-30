@@ -127,10 +127,13 @@ Stabilized extracts:
 	var/mob_name = "Familiar"
 
 /obj/item/metroidcross/stabilized/gold/proc/generate_mobtype()
-	var/static/list/mob_spawn_pets = list()
-	if(!length(mob_spawn_pets))
-		mob_spawn_pets = subtypesof(/mob/living/simple_animal)-subtypesof(/mob/living/simple_animal/hostile)
-	mob_type = pick(mob_spawn_pets)
+	mob_type = pick(/mob/living/simple_animal/cat,
+					/mob/living/simple_animal/cat/kitten,
+					/mob/living/simple_animal/corgi,
+					/mob/living/simple_animal/corgi/puppy,
+					/mob/living/simple_animal/cow,
+					/mob/living/simple_animal/chick,
+					/mob/living/simple_animal/chicken)
 
 /obj/item/metroidcross/stabilized/gold/Initialize(mapload)
 	. = ..()
@@ -146,6 +149,7 @@ Stabilized extracts:
 		var/mob/living/L = user
 		if(L.has_modifier_of_type(/datum/modifier/status_effect/stabilized/gold))
 			L.remove_a_modifier_of_type(/datum/modifier/status_effect/stabilized/gold)
+
 	if(choice == "Familiar Location")
 		to_chat(user, SPAN_NOTICE("You prod [src], and it shudders slightly."))
 		var/datum/modifier/status_effect/stabilized/gold/G = linked_effect

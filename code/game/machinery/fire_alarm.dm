@@ -325,7 +325,7 @@ Just a object used in constructing fire alarms
 /obj/machinery/firealarm/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
 	switch(rcd_data["[RCD_DESIGN_MODE]"])
 		if(RCD_WALLFRAME)
-			show_splash_text(user, "circuit installed")
+			show_splash_text(user, "circuit installed", SPAN("notice", "You install the circuit into \the [src]!"))
 			buildstage = FIREALARM_NOWIRES
 			update_icon()
 			return TRUE

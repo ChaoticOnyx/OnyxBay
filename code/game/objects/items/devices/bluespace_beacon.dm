@@ -3,7 +3,7 @@
 	desc = "A device that draws power from bluespace and creates a permanent bluespace anchor."
 
 	icon_state = "beacon"
-	item_state = "signaler"
+	item_state = "beacon"
 
 	matter = list(MATERIAL_STEEL = 20, MATERIAL_GLASS = 10)
 

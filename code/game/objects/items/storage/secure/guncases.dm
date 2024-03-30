@@ -25,7 +25,7 @@
 
 /obj/item/storage/secure/guncase/attack_hand(mob/user)
 	if(loc == user && locked == 1)
-		show_splash_text(user, "locked!")
+		show_splash_text(user, "locked!", SPAN("warning", "\The [src] is locked!"))
 
 	else if(loc == user && !locked)
 		open(usr)
@@ -157,12 +157,12 @@
 /obj/item/storage/secure/guncase/detective/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "DetectiveGuncase")
+		ui = new(user, src, "DetectiveGuncase", name)
 		ui.open()
 
 /obj/item/storage/secure/guncase/detective/open(mob/user)
 	if(!guntype)
-		show_splash_text(user, "no gun selected!")
+		show_splash_text(user, "no gun selected!", SPAN("warning", "You must select a gun first!"))
 		return
 
 	if(!gunspawned)
@@ -211,11 +211,11 @@
 	var/obj/item/card/id/I = W.get_id_card()
 	if(istype(I))
 		if(!allowed(user))
-			show_splash_text(user, "access denied!")
+			show_splash_text(user, "access denied!", SPAN("warning", "\icon[src] Access Denied!"))
 			return
 
 		if(!guntype)
-			show_splash_text(user, "no gun selected!")
+			show_splash_text(user, "no gun selected!", SPAN("warning", "You must select a gun first!"))
 			return
 
 		if(!gunspawned)
@@ -224,7 +224,7 @@
 			for(var/obj/item/gun/energy/security/gun in contents)
 				gun.owner = I.registered_name
 
-		show_splash_text(user, "[locked ? "un" : ""]locked")
+		show_splash_text(user, "[locked ? "un" : ""]locked", SPAN("notice", "You [locked ? "un" : ""]lock \the [src]."))
 		locked = !locked
 		update_icon()
 		return
@@ -249,7 +249,7 @@
 /obj/item/storage/secure/guncase/security/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "Guncase")
+		ui = new(user, src, "Guncase", name)
 		ui.open()
 
 /obj/item/storage/secure/guncase/security/hos

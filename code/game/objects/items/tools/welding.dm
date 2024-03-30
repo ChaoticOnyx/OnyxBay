@@ -197,14 +197,14 @@
 	return tank ? tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
 
 //Removes fuel from the welding tool. If a mob is passed, it will perform an eyecheck on the mob. This should probably be renamed to use()
-/obj/item/weldingtool/proc/remove_fuel(amount = 1, mob/M = null)
+/obj/item/weldingtool/proc/remove_fuel(amount = 1, mob/M)
 	if(!welding)
 		return 0
 	if(get_fuel() >= amount)
 		burn_fuel(amount)
-		if(M)
+		if(ismob(M))
 			eyecheck(M)
-			playsound(M.loc, 'sound/items/Welder.ogg', 20, 1)
+			playsound(get_turf(M), 'sound/items/Welder.ogg', 20, 1)
 		return 1
 	else
 		if(M)
@@ -347,13 +347,14 @@
 
 /obj/item/weldingtool/use_tool(atom/target, mob/living/user, delay = 0, amount = 0, volume = 0, can_move = FALSE, datum/callback/extra_checks)
 	if(!is_tool_on())
-		show_splash_text(user, "Welder must be turned on!")
+		show_splash_text(user, "Welder must be turned on!", "\The [src] must be turned on!")
 		return
 
 	if(amount > get_fuel())
-		show_splash_text(user, "Not enough fuel!")
+		show_splash_text(user, "Not enough fuel!", "\icon[src] Not enough fuel!")
 		return
 
+	eyecheck(user)
 	playsound(loc, 'sound/items/Welder.ogg', 100, 1)
 	var/atom/movable/fake_overlay/welding_overlay/effect = new(get_turf(target))
 	var/datum/callback/checks = CALLBACK(src, nameof(.proc/check_active_and_extra), extra_checks)
@@ -365,7 +366,7 @@
 /obj/item/weldingtool/use_tool_resources(amount, mob)
 	. = remove_fuel(amount, mob)
 	if(!.)
-		show_splash_text(mob, "Not enough fuel!")
+		show_splash_text(mob, "Not enough fuel!", "\icon[src] Not enough fuel!")
 
 /obj/item/weldingtool/proc/start_welding(atom/target) // Process of welding something
 	var/datum/effect/effect/system/spark_spread/spark = new /datum/effect/effect/system/spark_spread(volume = 10)

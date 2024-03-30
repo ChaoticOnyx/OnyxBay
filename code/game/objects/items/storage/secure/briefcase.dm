@@ -15,7 +15,7 @@
 
 /obj/item/storage/secure/briefcase/attack_hand(mob/user)
 	if(loc == user && locked)
-		show_splash_text(user, "locked!")
+		show_splash_text(user, "locked!", SPAN("warning", "\The [src] is locked!"))
 
 	else if(loc == user && !locked)
 		open(user)

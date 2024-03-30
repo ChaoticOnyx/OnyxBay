@@ -107,6 +107,8 @@
 	var/unacidable = 0
 	var/list/pinned = list()            // List of things pinning this creature to walls (see living_defense.dm)
 	var/list/embedded = list()          // Embedded items, since simple mobs don't have organs.
+	/// Handles displaying the language menu UI.
+	var/datum/language_menu/language_menu = /datum/language_menu
 	var/list/languages = list()         // For speaking/listening.
 	var/species_language = null			// For species who want reset to use a specified default.
 	var/only_species_language  = 0		// For species who can only speak their default and no other languages. Does not effect understanding.
@@ -191,8 +193,8 @@
 	//so don't treat them as being SSD even though their client var is null.
 	var/mob/teleop = null
 
-	var/turf/listed_turf = null  	//the current turf being examined in the stat panel
-	var/list/shouldnt_see = list()	//list of objects that this mob shouldn't see in the stat panel. this silliness is needed because of AI alt+click and cult blood runes
+	/// Reference to the turf currently being examined in the stat panel.
+	var/turf/listed_turf
 
 	var/mob_size = MOB_MEDIUM
 	var/throw_multiplier = 1

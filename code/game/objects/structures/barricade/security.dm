@@ -76,7 +76,7 @@
 	anchored = locked
 
 	update_icon()
-	show_splash_text(user, "bolts [locked ? "dropped" : "lifted"].")
+	show_splash_text(user, "bolts [locked ? "dropped" : "lifted"].", "You [locked ? "drop" : "lift"] \the [src] bolts.")
 
 
 /obj/structure/barricade/security/proc/_repair_damage(mob/user, obj/item/weldingtool/WT)
@@ -93,7 +93,7 @@
 
 /obj/structure/barricade/security/wrench_floor_bolts(mob/user, delay)
 	if(locked)
-		show_splash_text(user, "bolts prevent wrenching!")
+		show_splash_text(user, "bolts prevent wrenching!", "\The [src] bolts prevent wrenching!")
 		return
 
 	return ..()
@@ -121,7 +121,7 @@
 	s.start()
 
 	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
-	show_splash_text(user, "bolt locks broken!")
+	show_splash_text(user, "bolt locks broken!", "You burn out \the [src] bolt locks!")
 
 	return TRUE
 

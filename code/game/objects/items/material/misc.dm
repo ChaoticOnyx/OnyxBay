@@ -31,7 +31,7 @@
 	edge = 1
 	origin_tech = list(TECH_MATERIAL = 2, TECH_COMBAT = 1)
 	attack_verb = list("chopped", "torn", "cut")
-	applies_material_colour = 0
+	applies_material_colour = FALSE
 	hitsound = SFX_CHOP
 	material_amount = 3
 
@@ -91,6 +91,7 @@
 	mod_reach = 0.5
 	mod_handy = 1.0
 	attack_verb = list("slashed", "sliced", "cut", "clawed")
+	applies_material_colour = FALSE
 	material_amount = 2
 
 /obj/item/material/scythe
@@ -112,6 +113,7 @@
 	slot_flags = SLOT_BACK
 	origin_tech = list(TECH_MATERIAL = 2, TECH_COMBAT = 2)
 	attack_verb = list("chopped", "sliced", "cut", "reaped")
+	applies_material_colour = FALSE
 	material_amount = 5
 
 	drop_sound = SFX_DROP_SWORD
