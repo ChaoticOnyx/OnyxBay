@@ -18,6 +18,12 @@
 		RADIATION_BETA_PARTICLE = 2.6 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+	item_state_slots = list(
+		slot_l_hand_str = "breathmask",
+		slot_r_hand_str = "breathmask",
+		)
+
 /obj/item/clothing/mask/breath/medical
 	desc = "A close-fitting sterile mask that can be manually connected to an air supply for treatment."
 	name = "medical mask"
@@ -26,12 +32,22 @@
 	permeability_coefficient = 0.01
 	armor = list(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 35)
 
+	item_state_slots = list(
+		slot_l_hand_str = "m_mask",
+		slot_r_hand_str = "m_mask",
+		)
+
 /obj/item/clothing/mask/breath/anesthetic
 	desc = "A close-fitting sterile mask that is used by the anesthetic wallmounted pump."
 	name = "anesthetic mask"
 	icon_state = "medical"
 	item_state = "medical"
 	permeability_coefficient = 0.01
+
+	item_state_slots = list(
+		slot_l_hand_str = "m_mask",
+		slot_r_hand_str = "m_mask",
+		)
 
 /obj/item/clothing/mask/breath/emergency
 	desc = "A close-fitting  mask that is used by the wallmounted emergency oxygen pump."

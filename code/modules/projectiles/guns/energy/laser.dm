@@ -3,6 +3,7 @@
 	desc = "A NanoTrasen G40E rifle, designed to kill with concentrated energy blasts."
 	icon_state = "laser"
 	item_state = "laserrifle"
+	improper_held_icon = TRUE
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_HUGE
 	force = 12.5
@@ -54,6 +55,7 @@
 	desc = "A NanoTrasen LP \"Arclight\", a combat laser pistol. Not as powerful as a laser rifle, it is much smaller and capable of shooting much more rapidly."
 	icon_state = "laser_pistol"
 	item_state = "laser"
+	improper_held_icon = FALSE
 	w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	one_hand_penalty = 0
@@ -141,6 +143,7 @@
 	desc = "With the laser cannon, the lasing medium is enclosed in a tube lined with uranium-235 and subjected to high neutron flux in a nuclear reactor core. This incredible technology may help YOU achieve high excitation rates with small laser volumes!"
 	icon_state = "lasercannon"
 	item_state = null
+	improper_held_icon = TRUE
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 3, TECH_POWER = 3)
 	slot_flags = SLOT_BACK
 	one_hand_penalty = 6 //large and heavy
@@ -175,6 +178,7 @@
 	desc = "A high-power laser gun capable of emitting concentrated x-ray blasts, that are able to penetrate laser-resistant armor much more readily than standard photonic beams."
 	icon_state = "xray"
 	item_state = "xray"
+	improper_held_icon = TRUE
 	slot_flags = SLOT_BACK
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 3, TECH_MAGNET = 2, TECH_ILLEGAL = 2)
 	projectile_type = /obj/item/projectile/beam/xray/midlaser
@@ -193,6 +197,7 @@
 	name = "x-ray laser gun"
 	icon_state = "oldxray"
 	item_state = "oldxray"
+	improper_held_icon = FALSE
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 3, TECH_MAGNET = 2, TECH_ILLEGAL = 2)
 	projectile_type = /obj/item/projectile/beam/xray
@@ -210,6 +215,7 @@
 	desc = "The HI DMR 9E is an older design of Hephaestus Industries. A designated marksman rifle capable of shooting powerful ionized beams, this is a weapon to kill from a distance."
 	icon_state = "sniper"
 	item_state = "laser"
+	improper_held_icon = TRUE
 	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 5, TECH_POWER = 4)
 	projectile_type = /obj/item/projectile/beam/sniper
 	one_hand_penalty = 5 // The weapon itself is heavy, and the long barrel makes it hard to hold steady with just one hand.

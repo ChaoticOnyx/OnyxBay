@@ -75,7 +75,7 @@
 				new_overlays += plant_overlay
 
 				if(harvest && overlay_stage == seed.growth_stages)
-					ikey = "product-[seed.get_trait(TRAIT_PRODUCT_ICON)]" + (seed.customsprite ? "" : "-[seed.get_trait(TRAIT_PLANT_COLOUR)]")
+					ikey = "product-[seed.get_trait(TRAIT_PRODUCT_ICON)]" + (seed.customsprite ? "" : "-[seed.get_trait(TRAIT_PRODUCT_COLOUR)]")
 					var/image/harvest_overlay = SSplants.plant_icon_cache[ikey]
 
 					if(!harvest_overlay)

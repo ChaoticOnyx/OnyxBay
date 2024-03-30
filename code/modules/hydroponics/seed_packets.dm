@@ -329,3 +329,6 @@ var/global/list/plant_seed_sprites = list()
 
 /obj/item/seeds/cowcownutseed
 	seed_type = "cowcownut"
+
+/obj/item/seeds/coffeea
+	seed_type = "coffeea"

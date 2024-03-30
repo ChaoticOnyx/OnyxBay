@@ -2,6 +2,7 @@
 	name = "meat"
 	desc = "A slab of meat."
 	icon_state = "meat"
+	item_state = "meat"
 	health = 180
 	filling_color = "#ff1c1c"
 	center_of_mass = "x=16;y=14"
@@ -52,6 +53,7 @@
 	name = "xenomeat"
 	desc = "A slab of green meat. Smells like acid."
 	icon_state = "xenomeat"
+	item_state = "xenomeat"
 	filling_color = "#43de18"
 	startswith = list(
 		/datum/reagent/nutriment/protein = 9,

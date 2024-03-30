@@ -20,6 +20,11 @@
 	drop_sound = SFX_DROP_SHOES
 	pickup_sound = SFX_PICKUP_SHOES
 
+	item_state_slots = list(
+		slot_l_hand_str = "shoes",
+		slot_r_hand_str = "shoes",
+		)
+
 	var/overshoes = 0
 	var/can_hold_knife
 	var/obj/item/holding

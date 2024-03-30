@@ -79,9 +79,9 @@
 		message += "."
 
 	if(findtext(message, "^"))
-		message = "<i>[capitalize(replacetext(message, regex(@"\^+", "g"), user_name))]</i>"
+		message = "[capitalize(replacetext(message, regex(@"\^+", "g"), user_name))]"
 	else
-		message = "[user_name] <i>[message]</i>"
+		message = "[user_name] [message]"
 
 	if(message_type & VISIBLE_MESSAGE)
 		visible_message(message, checkghosts = /datum/client_preference/ghost_sight)

@@ -385,7 +385,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/assassinate
 	name = "Assassinate"
-	reward = 2 // This is how expensive your life is, fellow NT employee
+	reward = 4 // This is how expensive your life is, fellow NT employee
 	intent = CONTRACT_IMPACT_MILITARY
 	var/target_real_name
 	var/detected_less_tc = FALSE
@@ -394,6 +394,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/weakref/target // obj/item/organ
 	var/weakref/alternative_target // obj/item
 	var/weakref/H // mob/living/carbon/human
+	var/full_reward_mod = 1.5
 
 /datum/antag_contract/item/assassinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	organization = contract_organization
@@ -465,7 +466,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	target = weakref(_target)
 
 	var/datum/gender/T = gender_datums[_H.get_gender()]
-	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [_target.name]</b> for double pay via STD (found in <b>Contracts Equipment</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
+	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [_target.name]</b> for an increased pay via STD (found in <b>Contracts Equipment</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
 
 /datum/antag_contract/item/assassinate/can_place()
 	return ..() && target && !QDELETED(target_mind) && !QDELETED(target_mind.current)
@@ -495,7 +496,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return
 	if(!detected_less_tc)
-		reward = reward * 2
+		reward = round(reward * full_reward_mod)
 	..(close_uplink)
 
 /datum/antag_contract/item/assassinate/on_mob_despawned(datum/mind/M)

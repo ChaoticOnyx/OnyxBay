@@ -155,8 +155,10 @@
 	var/mob/living/M = loc
 	if(istype(M) && M.can_wield_item(src) && is_held_twohanded(M))
 		wielded = TRUE
+		improper_held_icon = TRUE
 	else
 		wielded = FALSE
+		improper_held_icon = FALSE
 	update_icon()
 	..()
 

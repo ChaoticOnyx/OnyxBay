@@ -28,7 +28,7 @@
 	mutants = null
 	chems = list(/datum/reagent/frostoil = list(3,5), /datum/reagent/nutriment = list(1,50))
 	kitchen_tag = "icechili"
-	canonical_icon = "icechili"
+	canonical_icon = "chiliice"
 
 /datum/seed/chili/ice/New()
 	..()
@@ -44,7 +44,7 @@
 	chems = list(/datum/reagent/fuel = list(5,10))
 	kitchen_tag = "flamechili"
 	fun_level = 1
-	canonical_icon = "chili"
+	canonical_icon = null
 
 /datum/seed/chili/flame/New()
 	..()
@@ -1561,3 +1561,35 @@
 	set_trait(TRAIT_PLANT_COLOUR,"#4c7f28")
 	set_trait(TRAIT_WATER_CONSUMPTION, 10)
 	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.25)
+
+/datum/seed/coffeea
+	name = "coffeea"
+	seed_name = "coffeea"
+	display_name = "coffee arabica bush"
+	mutants = list("coffeea_robusta")
+	kitchen_tag = "coffeebean"
+	canonical_icon = "coffeea"
+	has_custom_product = /obj/item/reagent_containers/food/grown/coffee
+
+/datum/seed/coffeea/New()
+	..()
+	set_trait(TRAIT_HARVEST_REPEAT, 1)
+	set_trait(TRAIT_MATURATION, 5)
+	set_trait(TRAIT_YIELD, 5)
+	set_trait(TRAIT_POTENCY, 3)
+	set_trait(TRAIT_PRODUCTION, 3)
+	set_trait(TRAIT_IDEAL_LIGHT, 6)
+	set_trait(TRAIT_PRODUCT_ICON, "arabica_beans")
+	set_trait(TRAIT_PLANT_ICON, "coffeea")
+	set_trait(TRAIT_WATER_CONSUMPTION, 10)
+	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.3)
+
+/datum/seed/coffeea/robusta
+	name = "coffeea_robusta"
+	display_name = "coffee robusta bush"
+	seed_name = "coffeea-robusta"
+	has_custom_product = /obj/item/reagent_containers/food/grown/coffee/robusta
+
+/datum/seed/coffeea/robusta/New()
+	..()
+	set_trait(TRAIT_PRODUCT_ICON, "robusta_beans")

@@ -324,6 +324,9 @@ SUBSYSTEM_DEF(explosions)
 		else
 			creaking = FALSE
 
+	if(creaking)
+		SSmachines.flicker_all_lights()
+
 	for(var/mob/listener as anything in GLOB.player_list)
 		var/turf/listener_turf = get_turf(listener)
 		if(!listener_turf || listener_turf.z != blast_z)
