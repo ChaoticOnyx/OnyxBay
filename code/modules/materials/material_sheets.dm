@@ -104,7 +104,7 @@
 	icon_state = "silver"
 	item_state = "sheet-silver"
 	default_type = MATERIAL_IRON
-	apply_colour = 1
+	apply_colour = TRUE
 
 /obj/item/stack/material/sandstone
 	name = "sandstone brick"
@@ -205,13 +205,20 @@
 /obj/item/stack/material/mhydrogen/ten
 	amount = 10
 
+//God tier resource, cargo can sell it.
+/obj/item/stack/material/adamantine
+	name = "adamantine"
+	icon_state = "adamantine"
+	default_type = MATERIAL_ADAMANTINE
+	apply_colour = TRUE
+
 //Fuel for MRSPACMAN generator.
 /obj/item/stack/material/tritium
 	name = "tritium"
 	icon_state = "silver"
 	item_state = "sheet-silver"
 	default_type = MATERIAL_TRITIUM
-	apply_colour = 1
+	apply_colour = TRUE
 
 /obj/item/stack/material/tritium/ten
 	amount = 10
@@ -224,7 +231,7 @@
 	icon_state = "silver"
 	item_state = "sheet-silver"
 	default_type = MATERIAL_OSMIUM
-	apply_colour = 1
+	apply_colour = TRUE
 
 /obj/item/stack/material/osmium/ten
 	amount = 10
@@ -234,7 +241,7 @@
 	icon_state = "plasteel"
 	item_state = "sheet-plasteel"
 	default_type = MATERIAL_OSMIUM_CARBIDE_PLASTEEL
-	apply_colour = 1
+	apply_colour = TRUE
 
 /obj/item/stack/material/ocp/ten
 	amount = 10
@@ -248,7 +255,7 @@
 	icon_state = "silver"
 	item_state = "sheet-silver"
 	default_type = MATERIAL_DEUTERIUM
-	apply_colour = 1
+	apply_colour = TRUE
 
 /obj/item/stack/material/deuterium/fifty
 	amount = 50
@@ -282,7 +289,7 @@
 	icon_state = "metal"
 	item_state = "sheet-titanium"
 	default_type = MATERIAL_TITANIUM
-	apply_colour = 1
+	apply_colour = TRUE
 
 /obj/item/stack/material/plasteel/titanium/ten
 	amount = 10
