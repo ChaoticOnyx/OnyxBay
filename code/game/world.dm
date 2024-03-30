@@ -118,6 +118,17 @@ var/server_name = "OnyxBay"
 	rustg_prom_set_labels(list("server" = server_name))
 	rustg_prom_init(port)
 
+	// Register all the metrics here
+
+	rustg_prom_counter_register(PROM_MASTER_ITERATIONS, "How many times have we ran")
+	rustg_prom_gauge_float_register(PROM_MASTER_TICK_DRIFT, "Tick drift")
+	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_COST, "Average time to execute")
+	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_TICKS_TO_RUN, "How many ticks does this subsystem take to run on avg")
+	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_TICK_USAGE, "Average tick usage")
+	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_TICK_OVERRUN, "Average tick overrun")
+	rustg_prom_counter_register(PROM_RUNTIMES, "Total count of runtimes")
+	rustg_prom_gauge_int_register(PROM_TOTAL_PLAYERS, "Total count of players")
+
 #define RECOMMENDED_VERSION 514
 /world/New()
 	__init_tracy()

@@ -34,6 +34,7 @@
 #define SS_PRIORITY_SUPPLY         10    // Supply point accumulation.
 #define SS_PRIORITY_TRADE          10    // Adds/removes traders.
 #define SS_PRIORITY_PROJECTILES    10    // Projectile processing.
+#define SS_PRIORITY_PROMETHEUS     5
 
 // SS_BACKGROUND
 #define SS_PRIORITY_OBJECTS       60    // processing_objects processing.

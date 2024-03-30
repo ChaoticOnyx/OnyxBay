@@ -257,6 +257,7 @@
 #include "code\controllers\subsystems\overlays.dm"
 #include "code\controllers\subsystems\plants.dm"
 #include "code\controllers\subsystems\points_of_interest.dm"
+#include "code\controllers\subsystems\prometheus.dm"
 #include "code\controllers\subsystems\radiation.dm"
 #include "code\controllers\subsystems\radio.dm"
 #include "code\controllers\subsystems\shuttle.dm"
