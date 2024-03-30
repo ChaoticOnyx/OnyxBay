@@ -46,6 +46,11 @@
 	desc = "These look pretty fancy."
 	icon_state = "white"
 
+	item_state_slots = list(
+		slot_l_hand_str = "lgloves",
+		slot_r_hand_str = "lgloves",
+		)
+
 /datum/unarmed_attack/punch/boxing
 	attack_verb = list("punched")
 	attack_noun = list("fist")

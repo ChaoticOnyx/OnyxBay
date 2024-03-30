@@ -48,7 +48,7 @@ var/global/list/stool_cache = list() //haha stool
 /obj/item/stool/bar_new
 	name = "wooden bar stool"
 	icon_state = "barstool_new_preview" //set for the map
-	item_state = "barstool_new"
+	item_state = "bar_stool"
 	base_icon = "barstool_new"
 
 /obj/item/stool/bar_new/padded

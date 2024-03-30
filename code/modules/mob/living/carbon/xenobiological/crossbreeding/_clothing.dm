@@ -113,6 +113,8 @@
 		to_chat(owner, SPAN_NOTICE("You channel nearby light into a glowing, ethereal prism."))
 		new /obj/structure/light_prism(get_turf(owner), glasses.glasses_color)
 
+#define FLOWER_COOLDOWN 30 SECONDS
+
 /obj/item/clothing/head/hairflower/peaceflower
 	name = "heroine bud"
 	desc = "An extremely addictive flower, full of peace magic."
@@ -120,17 +122,16 @@
 	icon_state = "peaceflower"
 	body_parts_covered = 0
 
-
 /obj/item/clothing/head/hairflower/peaceflower/equipped(mob/user)
 	. = ..()
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(istype(H.head, src.type))
 			ADD_TRAIT(H, TRAIT_PACIFISM)
-			set_next_think(world.time+10 SECOND)
+			set_next_think(world.time + FLOWER_COOLDOWN)
 
 /obj/item/clothing/head/hairflower/peaceflower/can_be_unequipped_by(mob/M, slot, disable_warning)
-	if(M==loc && slot==slot_head)
+	if(M == loc && slot == slot_head)
 		to_chat(M, SPAN_WARNING("You feel at peace. <b style='color:pink'>Why would you want anything else?</b>"))
 		return FALSE
 	return ..()
@@ -145,9 +146,11 @@
 /obj/item/clothing/head/hairflower/peaceflower/think()
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
-		H.reagents.add_reagent(/datum/reagent/space_drugs, 2)
+		H.reagents.add_reagent(/datum/reagent/space_drugs, 1)
 
-	set_next_think(world.time+10 SECOND)
+	set_next_think(world.time + FLOWER_COOLDOWN)
+
+#undef FLOWER_COOLDOWN
 
 /obj/item/clothing/suit/armor/heavy/adamantine
 	name = "adamantine armor"

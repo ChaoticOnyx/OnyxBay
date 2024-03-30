@@ -234,13 +234,20 @@
 	return item_state
 
 /obj/item/clothing/mask/smokable/cigarette/get_mob_overlay(mob/user_mob, slot)
-	var/image/res = ..()
+	. = ..()
+	var/image/ret
+
+	if(slot == slot_l_hand_str || slot == slot_r_hand_str)
+		ret = .[1]
+	else
+		ret = .
+
 	if(lit == 1)
-		var/image/ember = overlay_image(res.icon, "cigember", flags=RESET_COLOR)
+		var/image/ember = overlay_image(ret.icon, "cigember", flags = RESET_COLOR)
 		ember.layer = ABOVE_LIGHTING_LAYER
 		ember.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		res.AddOverlays(ember)
-	return res
+		ret.AddOverlays(ember)
+	return ret
 
 
 /obj/item/cigbutt
