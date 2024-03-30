@@ -865,7 +865,7 @@ its easier to just keep the beam vertical.
 
 	_add_verb_to_stat(target_or_list, verb_or_list_to_add)
 
-/// Advanced-use proc only! Handles verb addition to targets stat panel without tempering source's verbs.
+/// Advanced-use proc only! Handles verb addition to targets stat panel without tempering with source's verbs.
 /atom/proc/_add_verb_to_stat(target_or_list, verb_or_list_to_add)
 	var/list/output_list = list()
 
@@ -900,7 +900,7 @@ its easier to just keep the beam vertical.
 
 	_remove_verb_from_stat(target_or_list, verb_or_list_to_remove)
 
-/// Advanced-use proc only! Handles verb removal from targets stat panel without tempering source's verbs.
+/// Advanced-use proc only! Handles verb removal from targets stat panel without tempering with source's verbs.
 /atom/proc/_remove_verb_from_stat(target_or_list, verb_or_list_to_remove)
 	var/list/output_list = list()
 
