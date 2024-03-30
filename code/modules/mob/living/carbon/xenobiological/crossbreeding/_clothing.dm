@@ -127,7 +127,7 @@
 		var/mob/living/carbon/human/H = user
 		if(istype(H.head, src.type))
 			ADD_TRAIT(H, TRAIT_PACIFISM)
-			set_next_think(world.time+cooldown)
+			set_next_think(world.time + cooldown)
 
 /obj/item/clothing/head/hairflower/peaceflower/can_be_unequipped_by(mob/M, slot, disable_warning)
 	if(M == loc && slot == slot_head)
@@ -147,7 +147,7 @@
 		var/mob/living/carbon/human/H = loc
 		H.reagents.add_reagent(/datum/reagent/space_drugs, 1)
 
-	set_next_think(world.time+cooldown)
+	set_next_think(world.time + cooldown)
 
 /obj/item/clothing/suit/armor/heavy/adamantine
 	name = "adamantine armor"

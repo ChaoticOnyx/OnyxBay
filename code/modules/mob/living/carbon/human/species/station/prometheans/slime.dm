@@ -83,7 +83,7 @@
 
 	var/datum/component/body_swapper/BS = H.get_component(/datum/component/body_swapper)
 
-	if(LAZYLEN(BS.bodies)>=MAX_BODY_COUNT)
+	if(LAZYLEN(BS.bodies) >= MAX_BODY_COUNT)
 		return FALSE
 
 
@@ -140,8 +140,8 @@
 	spare.Move(get_step(H.loc, pick(NORTH,SOUTH,EAST,WEST)))
 	spare.AddComponent(/datum/component/body_swapper)
 
-	jelly_vessel.remove_jelly(H.species.blood_volume*(BLOOD_VOLUME_SLIME_SPLIT/100))
-	spare_jelly_vessel.remove_jelly(H.species.blood_volume*(BLOOD_VOLUME_SLIME_SPLIT/100))
+	jelly_vessel.remove_jelly(H.species.blood_volume * (BLOOD_VOLUME_SLIME_SPLIT / 100))
+	spare_jelly_vessel.remove_jelly(H.species.blood_volume * (BLOOD_VOLUME_SLIME_SPLIT / 100))
 
 	var/datum/component/body_swapper/BS_original = H.get_component(/datum/component/body_swapper)
 	BS_original.bodies |= spare

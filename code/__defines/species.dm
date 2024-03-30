@@ -1,18 +1,18 @@
 // Species flags.
-#define SPECIES_FLAG_NO_MINOR_CUT        (1<<1) // Can step on broken glass with no ill-effects. Either thick skin (diona/vox), cut resistant (metroids) or incorporeal (shadows)
-#define SPECIES_FLAG_IS_PLANT            (1<<2) // Is a treeperson.
-#define SPECIES_FLAG_NO_SCAN             (1<<3) // Cannot be scanned in a DNA machine/genome-stolen.
-#define SPECIES_FLAG_NO_PAIN             (1<<4) // Cannot suffer halloss/recieves deceptive health indicator.
-#define SPECIES_FLAG_NO_SLIP             (1<<5) // Cannot fall over.
-#define SPECIES_FLAG_NO_POISON           (1<<6) // Cannot not suffer toxloss.
-#define SPECIES_FLAG_NO_EMBED            (1<<7) // Can step on broken glass with no ill-effects and cannot have shrapnel embedded in it.
-#define SPECIES_FLAG_CAN_NAB             (1<<8) // Uses the special set of grab rules.
-#define SPECIES_FLAG_NO_BLOCK            (1<<9) // Unable to block or defend itself from attackers.
-#define SPECIES_FLAG_NEED_DIRECT_ABSORB  (1<<10)  // This species can only have their DNA taken by direct absorption.
-#define SPECIES_FLAG_NO_TANGLE           (1<<11)  // This species wont get tangled up in weeds
-#define SPECIES_FLAG_NO_BLOOD            (1<<12)  // Cannot be drained by vampire, machine, diona, golem.
-#define SPECIES_FLAG_NO_ANTAG_TARGET     (1<<13)  // Cannot be randomly chosen as a target for antag objectives or traitor contracts (i.e. assassination).
-#define SPECIES_FLAG_NO_FIRE			 (1<<14)  // Cannot be ignited
+#define SPECIES_FLAG_NO_MINOR_CUT        (1<<1)  /// Can step on broken glass with no ill-effects. Either thick skin (diona/vox), cut resistant (metroids) or incorporeal (shadows)
+#define SPECIES_FLAG_IS_PLANT            (1<<2)  /// Is a treeperson.
+#define SPECIES_FLAG_NO_SCAN             (1<<3)  /// Cannot be scanned in a DNA machine/genome-stolen.
+#define SPECIES_FLAG_NO_PAIN             (1<<4)  /// Cannot suffer halloss/recieves deceptive health indicator.
+#define SPECIES_FLAG_NO_SLIP             (1<<5)  /// Cannot fall over.
+#define SPECIES_FLAG_NO_POISON           (1<<6)  /// Cannot not suffer toxloss.
+#define SPECIES_FLAG_NO_EMBED            (1<<7)  /// Can step on broken glass with no ill-effects and cannot have shrapnel embedded in it.
+#define SPECIES_FLAG_CAN_NAB             (1<<8)  /// Uses the special set of grab rules.
+#define SPECIES_FLAG_NO_BLOCK            (1<<9)  /// Unable to block or defend itself from attackers.
+#define SPECIES_FLAG_NEED_DIRECT_ABSORB  (1<<10) /// This species can only have their DNA taken by direct absorption.
+#define SPECIES_FLAG_NO_TANGLE           (1<<11) /// This species wont get tangled up in weeds
+#define SPECIES_FLAG_NO_BLOOD            (1<<12) /// Cannot be drained by vampire, machine, diona, golem.
+#define SPECIES_FLAG_NO_ANTAG_TARGET     (1<<13) /// Cannot be randomly chosen as a target for antag objectives or traitor contracts (i.e. assassination).
+#define SPECIES_FLAG_NO_FIRE			 (1<<14) /// Cannot be ignited
 // unused: 0x8000 - higher than this will overflow
 
 // Species spawn flags
