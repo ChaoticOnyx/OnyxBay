@@ -45,8 +45,11 @@
 	..()
 	add_language(LANGUAGE_GALCOM)
 	default_language = all_languages[LANGUAGE_GALCOM]
-	verbs |= /mob/living/proc/ventcrawl
-	verbs |= /mob/living/proc/hide
+
+	grant_verb(src, list(
+		/mob/living/proc/ventcrawl,
+		/mob/living/proc/hide,
+	))
 
 /mob/living/simple_animal/spiderbot/attackby(obj/item/O as obj, mob/user as mob)
 

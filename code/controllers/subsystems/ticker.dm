@@ -173,30 +173,32 @@ SUBSYSTEM_DEF(ticker)
 			log_error("Ticker arrived at round end in an unexpected endgame state.")
 
 
-/datum/controller/subsystem/ticker/stat_entry()
+/datum/controller/subsystem/ticker/stat_entry(msg)
 	switch(GAME_STATE)
 		if(RUNLEVEL_LOBBY)
-			..("[round_progressing ? "START:[round(pregame_timeleft/10)]s" : "(PAUSED)"]")
+			msg = "[round_progressing ? "START:[round(pregame_timeleft/10)]s" : "(PAUSED)"]"
 		if(RUNLEVEL_SETUP)
-			..("SETUP")
+			msg = "SETUP"
 		if(RUNLEVEL_GAME)
-			..("GAME")
+			msg = "GAME"
 		if(RUNLEVEL_POSTGAME)
 			switch(end_game_state)
 				if(END_GAME_NOT_OVER)
-					..("ENDGAME ERROR")
+					msg = "ENDGAME ERROR"
 				if(END_GAME_AWAITING_MAP)
-					..("MAP VOTE")
+					msg = "MAP VOTE"
 				if(END_GAME_MODE_FINISH_DONE)
-					..("MODE OVER, WAITING")
+					msg = "MODE OVER, WAITING"
 				if(END_GAME_READY_TO_END)
-					..("ENDGAME PROCESSING")
+					msg = "ENDGAME PROCESSING"
 				if(END_GAME_DELAYED)
-					..("PAUSED")
+					msg = "PAUSED"
 				if(END_GAME_AWAITING_TICKETS)
-					..("AWAITING TICKETS")
+					msg = "AWAITING TICKETS"
 				if(END_GAME_ENDING)
-					..("END IN [round(restart_timeout/10)]s")
+					msg = "END IN [round(restart_timeout/10)]s"
+
+	return ..()
 
 /datum/controller/subsystem/ticker/Recover()
 	pregame_timeleft = SSticker.pregame_timeleft
