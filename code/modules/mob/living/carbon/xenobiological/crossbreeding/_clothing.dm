@@ -114,6 +114,7 @@
 		new /obj/structure/light_prism(get_turf(owner), glasses.glasses_color)
 
 #define FLOWER_COOLDOWN 30 SECONDS
+
 /obj/item/clothing/head/hairflower/peaceflower
 	name = "heroine bud"
 	desc = "An extremely addictive flower, full of peace magic."
