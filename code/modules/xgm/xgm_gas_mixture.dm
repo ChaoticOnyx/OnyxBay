@@ -392,10 +392,15 @@
 		. = 1
 
 /datum/gas_mixture/proc/get_temperature_overlay(overlay_type)
-	if(!LAZYACCESS(temp_overlay_cache, overlay_type))
-		if(overlay_type == TEMPERATURE_OVERLAY_HEAT)
-			LAZYSET(temp_overlay_cache, overlay_type, new /atom/movable/temp_overlay/heat(null, TEMPERATURE_OVERLAY_HEAT))
-	return temp_overlay_cache[overlay_type]
+	var/atom/movable/temp_overlay/overlay = LAZYACCESS(temp_overlay_cache, overlay_type)
+	if(!isnull(overlay))
+		return overlay
+
+	if(overlay_type == TEMPERATURE_OVERLAY_HEAT)
+		overlay = new /atom/movable/temp_overlay/heat(null, TEMPERATURE_OVERLAY_HEAT)
+		LAZYSET(temp_overlay_cache, overlay_type, overlay)
+
+	return overlay
 
 //Simpler version of merge(), adjusts gas amounts directly and doesn't account for temperature or group_multiplier.
 /datum/gas_mixture/proc/add(datum/gas_mixture/right_side)
