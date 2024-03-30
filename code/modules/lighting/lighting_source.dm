@@ -60,7 +60,7 @@
 	affecting_turfs = list()
 
 	update()
-
+	source_atom.update_bloom()
 
 	return ..()
 
@@ -99,6 +99,8 @@
 				top_atom.light_sources = list()
 
 			top_atom.light_sources += src // Add ourselves to the light sources of our new top atom.
+
+	source_atom.update_bloom()
 
 	effect_update(null)
 

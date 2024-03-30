@@ -183,6 +183,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 		 1,  1,  1,  1  // Mapping
 	)
 	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	render_target_name = LIGHTING_RENDER_TARGET
 
 /atom/movable/renderer/lighting/Initialize(mapload, mob/owner)
 	. = ..()
@@ -198,7 +199,111 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	name  = ABOVE_LIGHTING_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	alpha = 0
 
+/// For BLOOOOM
+
+/atom/movable/renderer/lighting_lamps_renderer
+	name = LIGHTING_LAMPS_RENDERER
+	group = RENDER_GROUP_SCENE
+	plane = LIGHTING_LAMPS_PLANE
+	relay_blend_mode = BLEND_OVERLAY
+	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
+
+/atom/movable/renderer/lighting_lamps_renderer/Initialize(mapload, mob/owner)
+	. = ..()
+	GraphicsUpdate()
+
+/atom/movable/renderer/lighting_lamps_renderer/GraphicsUpdate()
+	. = ..()
+	remove_filter("lamps_glow")
+	remove_filter("lamps_glare")
+
+	if(owner?.client)
+		var/level = owner.get_preference_value("LAMP_GLOW")
+		var/bloomsize = 0
+		var/bloomoffset = 0
+		switch(level)
+			if(GLOB.PREF_LOW)
+				bloomsize = 1
+				bloomoffset = 1
+			if(GLOB.PREF_MED)
+				bloomsize = 2
+				bloomoffset = 2
+			if(GLOB.PREF_HIGH)
+				bloomsize = 3
+				bloomoffset = 3
+
+		add_filter("lamps_glow", 1, bloom_filter(threshold = "#aaaaaa", size = bloomsize, offset = bloomoffset, alpha = 100))
+
+	if(owner?.client && owner.get_preference_value("LAMP_GLARE") == GLOB.PREF_ENABLED)
+		add_filter("lamps_glare", 2, radial_blur_filter(size = 0.05))
+
+
+/atom/movable/renderer/additive_lighting
+	name  = ADDITIVE_LIGHTING_RENDERER
+	group = RENDER_GROUP_SCENE
+	plane = LIGHTING_EXPOSURE_PLANE
+	relay_blend_mode = BLEND_ADD
+
+/atom/movable/renderer/additive_lighting/Initialize(mapload, mob/owner)
+	. = ..()
+	GraphicsUpdate()
+
+/atom/movable/renderer/additive_lighting/GraphicsUpdate()
+	. = ..()
+
+	remove_filter("blur_exposure")
+	alpha = 0
+
+	if(owner?.client && owner.get_preference_value("LAMP_EXPOSURE") == GLOB.PREF_ENABLED)
+		alpha = 255
+		owner.overlay_fullscreen("lighting_backdrop", /atom/movable/screen/fullscreen/lighting_backdrop)
+		add_filter("blur_exposure", 1, gauss_blur_filter(20))
+
+/proc/gauss_blur_filter(size)
+	. = list("type" = "blur")
+	if(!isnull(size))
+		.["size"] = size
+
+/proc/radial_blur_filter(size, x, y)
+	. = list("type" = "radial_blur")
+	if(!isnull(size))
+		.["size"] = size
+	if(!isnull(x))
+		.["x"] = x
+	if(!isnull(y))
+		.["y"] = y
+
+/proc/layering_filter(icon, render_source, x, y, flags, color, transform, blend_mode)
+	. = list("type" = "layer")
+	if(!isnull(icon))
+		.["icon"] = icon
+	if(!isnull(render_source))
+		.["render_source"] = render_source
+	if(!isnull(x))
+		.["x"] = x
+	if(!isnull(y))
+		.["y"] = y
+	if(!isnull(color))
+		.["color"] = color
+	if(!isnull(flags))
+		.["flags"] = flags
+	if(!isnull(transform))
+		.["transform"] = transform
+	if(!isnull(blend_mode))
+		.["blend_mode"] = blend_mode
+
+/proc/bloom_filter(threshold, size, offset, alpha)
+	. = list("type" = "bloom")
+	if(!isnull(threshold))
+		.["threshold"] = threshold
+	if(!isnull(size))
+		.["size"] = size
+	if(!isnull(offset))
+		.["offset"] = offset
+	if(!isnull(alpha))
+		.["alpha"] = alpha
 
 /// Draws full screen visual effects, like pain and bluespace.
 /atom/movable/renderer/screen_effects
@@ -242,6 +347,26 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	group = RENDER_GROUP_FINAL
 	plane = RENDER_GROUP_SCENE
 	mouse_opacity = MOUSE_OPACITY_NORMAL
+	var/renderer_contrast = FALSE
+	var/val1 = 1
+	var/val2 = -0.05
+
+/atom/movable/renderer/scene_group/Initialize()
+	. = ..()
+	GraphicsUpdate()
+
+/atom/movable/renderer/scene_group/GraphicsUpdate()
+	if(!renderer_contrast)
+		remove_filter("fov_matrix")
+		return
+
+	add_filter("fov_matrix", 3, color_matrix_filter(list(val1,val2,val2,0, val2,val1,val2,0, val2,val2,val1,0, 0,0,0,1, 0,0,0,0)))
+
+/proc/color_matrix_filter(matrix/in_matrix, space)
+	. = list("type" = "color")
+	.["color"] = in_matrix
+	if(!isnull(space))
+		.["space"] = space
 
 /// Render group for stuff OUTSIDE the typical game context - UI, full screen effects, etc.
 /atom/movable/renderer/screen_group
@@ -378,3 +503,5 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 		type = "color",
 		color = GLOB.em_mask_matrix
 	)
+	//add_filter("lamps_selfglow_bloom", 1, bloom_filter(threshold = "#aaaaaa", size = 5, offset = 3, alpha = 100))
+	//add_filter("lamps_glare", 1, radial_blur_filter(size = 0.05))

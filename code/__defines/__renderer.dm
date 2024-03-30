@@ -143,15 +143,23 @@
 	#define LIGHTING_LAYER         1
 	#define ABOVE_LIGHTING_LAYER   2
 
-#define EFFECTS_ABOVE_LIGHTING_PLANE   4 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
+#define LIGHTING_EXPOSURE_PLANE    4
+
+#define LIGHTING_LAMPS_PLANE       6
+
+#define LIGHTING_EMISSIVE_BLOOM_PLANE 7
+
+#define LIGHTING_RENDER_TARGET "*LIGHTING_RENDER_TARGET"
+
+#define EFFECTS_ABOVE_LIGHTING_PLANE   8 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
 	#define EYE_GLOW_LAYER         1
 	#define BEAM_PROJECTILE_LAYER  2
 	#define SUPERMATTER_WALL_LAYER 3
 	#define SPLASH_TEXT_LAYER      4
 
-#define OBFUSCATION_PLANE				5 // AI
+#define OBFUSCATION_PLANE				9 // AI
 
-#define FULLSCREEN_PLANE                6 // for fullscreen overlays that do not cover the hud.
+#define FULLSCREEN_PLANE                10 // for fullscreen overlays that do not cover the hud.
 
 	#define FULLSCREEN_LAYER    0
 	#define DAMAGE_LAYER        1
@@ -159,7 +167,7 @@
 	#define BLIND_LAYER         3
 	#define CRIT_LAYER          4
 
-#define HUD_PLANE                    7
+#define HUD_PLANE                    11
 	#define UNDER_HUD_LAYER              0
 	#define HUD_BASE_LAYER               1
 	#define HUD_CLICKABLE_LAYER          2
@@ -168,11 +176,11 @@
 	#define HUD_HOLOMARKER_LAYER         5
 	#define HUD_HOLOMARKER_SELF_LAYER    6
 
-#define ABOVE_HUD_PLANE              8
+#define ABOVE_HUD_PLANE              12
 	#define ABOVE_HUD_LAYER              5
 
 /// This plane masks out lighting, to create an "emissive" effect for e.g glowing screens in otherwise dark areas.
-#define EMISSIVE_PLANE 10
+#define EMISSIVE_PLANE 13
 #define EMISSIVE_TARGET "*emissive"
 	/// The layer you should use when you -really- don't want an emissive overlay to be blocked.
 	#define EMISSIVE_LAYER_UNBLOCKABLE 9999
@@ -189,7 +197,9 @@
 #define TURF_RENDERER 				 "TURF"
 #define GAME_RENDERER 				 "GAME"
 #define OBSERVERS_RENDERER 			 "OBSERVERS"
-#define LIGHTING_RENDERER 			 "LIGHTING"
+#define LIGHTING_RENDERER 			"LIGHTING"
+#define ADDITIVE_LIGHTING_RENDERER  "LIGHTING_ADDITIVE"
+#define LIGHTING_LAMPS_RENDERER     "LIGHTING_LAMPS_RENDERER"
 #define ABOVE_LIGHTING_RENDERER 	 "ABOVE_LIGHTING"
 #define SCREEN_EFFECTS_RENDERER 	 "SCREEN_EFFECTS"
 #define INTERFACE_RENDERER 			 "INTERFACE"
@@ -201,7 +211,6 @@
 #define STEAM_EFFECT_TARGET          "*steam"
 #define STEAM_COMPOSITE_TARGET       "*steamc"
 #define OBFUSCATION_RENDERER 		 "OBFUSCATION"
-
 #define SCENE_GROUP_RENDERER 		 "SCENE_GROUP"
 #define SCREEN_GROUP_RENDERER 		 "SCREEN_GROUP"
 #define FINAL_GROUP_RENDERER 		 "FINAL_GROUP"
