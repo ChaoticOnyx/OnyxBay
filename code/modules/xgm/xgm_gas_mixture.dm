@@ -372,7 +372,6 @@
 	. = 0
 
 	var/atom/movable/temp_overlay/heat_overlay = get_temperature_overlay(TEMPERATURE_OVERLAY_HEAT)
-	//If it's hot add something
 	if(temperature >= CARBON_LIFEFORM_FIRE_RESISTANCE)
 		if(!LAZYISIN(graphic, heat_overlay))
 			graphic_add += heat_overlay
