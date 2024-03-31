@@ -36,3 +36,9 @@
 
 /// Called on `/atom/proc/examine` (mob/user, list/examine_result)
 #define SIGNAL_EXAMINED_MORE "examined_more"
+
+/// Called on `/atom/AltClick` (/atom)
+#define SIGNAL_ALT_CLICKED "atom_alt_click"
+
+/// Called on `/atom/CtrlAltClick` (/atom)
+#define SIGNAL_CTRL_ALT_CLICKED "atom_ctrl_alt_click"

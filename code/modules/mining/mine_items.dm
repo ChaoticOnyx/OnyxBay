@@ -655,6 +655,7 @@
 	desc = "A finely chiselled sculpting block, it is ready to be your canvas."
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "sculpting_block"
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	density = 1
 	opacity = 1
 	anchored = 0
@@ -663,16 +664,10 @@
 	var/times_carved = 0
 	var/last_struck = 0
 
-/obj/structure/sculpting_block/verb/rotate()
-	set name = "Rotate"
-	set category = "Object"
-	set src in oview(1)
+/obj/structure/sculpting_block/Initialize()
+	. = ..()
 
-	if (src.anchored || usr:stat)
-		to_chat(usr, "It is fastened to the floor!")
-		return 0
-	src.set_dir(turn(src.dir, 90))
-	return 1
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/sculpting_block/attackby(obj/item/C as obj, mob/user as mob)
 

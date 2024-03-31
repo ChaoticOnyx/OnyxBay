@@ -30,6 +30,9 @@
 
 /obj/structure/windoor_assembly/New(Loc, start_dir=NORTH, constructed=0)
 	..()
+
+	AddElement(/datum/element/simple_rotation)
+
 	if(constructed)
 		state = "01"
 		anchored = 0
@@ -264,20 +267,25 @@
 	qdel_self()
 
 //Rotates the windoor assembly clockwise
-/obj/structure/windoor_assembly/verb/revrotate()
-	set name = "Rotate Windoor Assembly"
-	set category = "Object"
-	set src in oview(1)
+/obj/structure/windoor_assembly/rotate(mob/user)
+	if(state != "01")
+		update_nearby_tiles(need_rebuild = TRUE) //Compel updates before
 
-	if (src.anchored)
-		to_chat(usr, "It is fastened to the floor; therefore, you can't rotate it!")
-		return 0
-	if(src.state != "01")
+	..()
+
+	if(state != "01")
+		update_nearby_tiles(need_rebuild = TRUE)
+
+	update_icon()
+	return
+
+/obj/structure/windoor_assembly/rotate_counter(mob/user)
+	if(state != "01")
 		update_nearby_tiles(need_rebuild=1) //Compel updates before
 
-	src.set_dir(turn(src.dir, 270))
+	..()
 
-	if(src.state != "01")
+	if(state != "01")
 		update_nearby_tiles(need_rebuild=1)
 
 	update_icon()

@@ -362,6 +362,7 @@
 #include "code\datums\configuration\server_configuration.dm"
 #include "code\datums\configuration\vote_section.dm"
 #include "code\datums\elements\_element.dm"
+#include "code\datums\elements\simple_rotation.dm"
 #include "code\datums\elements\connect_loc.dm"
 #include "code\datums\elements\last_words.dm"
 #include "code\datums\elements\point_of_interest.dm"

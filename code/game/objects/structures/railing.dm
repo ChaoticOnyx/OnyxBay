@@ -6,6 +6,7 @@
 	density = 1
 	anchored = 1
 	atom_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	layer = 5.2 // Just above doors
 	throwpass = 1
 	can_buckle = 1
@@ -20,6 +21,8 @@
 	. = ..()
 	if(anchored)
 		update_icon(0)
+
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/railing/Destroy()
 	var/turf/location = loc
@@ -114,44 +117,6 @@
 						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = -32))
 					if (WEST)
 						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = 32))
-
-/obj/structure/railing/verb/rotate()
-	set name = "Rotate Counter-Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return 0
-
-	if (!can_touch(usr) || ismouse(usr))
-		return
-
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
-		return 0
-
-	set_dir(turn(dir, 90))
-	update_icon()
-	return
-
-/obj/structure/railing/verb/revrotate()
-	set name = "Rotate Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return 0
-
-	if (!can_touch(usr) || ismouse(usr))
-		return
-
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
-		return 0
-
-	set_dir(turn(dir, -90))
-	update_icon()
-	return
 
 /obj/structure/railing/verb/flip() // This will help push railing to remote places, such as open space turfs
 	set name = "Flip Railing"
