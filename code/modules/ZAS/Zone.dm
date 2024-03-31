@@ -135,6 +135,7 @@ Class Procs:
 			continue //don't need to rebuild this edge
 		for(var/turf/T in E.connecting_turfs)
 			SSair.mark_for_update(T)
+			T.liquid_update_turf()
 
 /zone/proc/c_invalidate()
 	invalid = 1
@@ -152,6 +153,7 @@ Class Procs:
 		//T.dbg(invalid_zone)
 		T.needs_air_update = 0 //Reset the marker so that it will be added to the list.
 		SSair.mark_for_update(T)
+		T.liquid_update_turf()
 
 /zone/proc/add_tile_air(datum/gas_mixture/tile_air)
 	//air.volume += CELL_VOLUME

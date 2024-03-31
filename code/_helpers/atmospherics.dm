@@ -54,3 +54,35 @@
 			return
 
 	. += SPAN_WARNING("\The [target] has no gases!")
+
+/turf/proc/get_atmos_adjacent_turfs()
+	var/list/atmos_adjacent_turfs = list()
+	var/canpass = CanZASPass(src)
+	for(var/direction in GLOB.cardinalz)
+		var/turf/current_turf
+		if(direction != UP && direction != DOWN)
+			current_turf = get_step(src, direction)
+		if(direction == UP)
+			current_turf = GetAbove(src)
+			current_turf = istype(current_turf, /turf/simulated/open) ? current_turf : null
+
+		if(direction == DOWN)
+			current_turf = istype(src, /turf/simulated/open) ? GetBelow(src) : null
+
+		if(!istype(current_turf, /turf/simulated)) // not interested in you brother
+			continue
+
+		if(canpass && CanZASPass(current_turf) && !(blocks_air || current_turf.blocks_air))
+			LAZYINITLIST(current_turf.atmos_adjacent_turfs)
+			LAZYINITLIST(atmos_adjacent_turfs)
+			atmos_adjacent_turfs[current_turf] = TRUE
+			current_turf.atmos_adjacent_turfs[src] = TRUE
+		else
+			LAZYREMOVE(atmos_adjacent_turfs, current_turf)
+			if (current_turf.atmos_adjacent_turfs)
+				LAZYREMOVE(current_turf.atmos_adjacent_turfs, src)
+			UNSETEMPTY(current_turf.atmos_adjacent_turfs)
+
+	UNSETEMPTY(atmos_adjacent_turfs)
+	src.atmos_adjacent_turfs = atmos_adjacent_turfs
+	return atmos_adjacent_turfs

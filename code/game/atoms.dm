@@ -355,7 +355,6 @@ its easier to just keep the beam vertical.
 
 /atom/proc/examine(...)
 	SHOULD_NOT_OVERRIDE(TRUE)
-
 	var/content = "<div class='Examine'>"
 
 	content += _examine_text(arglist(args))

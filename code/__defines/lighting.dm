@@ -30,3 +30,9 @@
 #define LIGHTMODE_ALARM "alarm"
 #define LIGHTMODE_READY "ready"
 #define LIGHTMODE_RADSTORM "radiation_storm"
+
+///How many tiles standard fires glow.
+#define LIGHT_RANGE_FIRE 3
+#define LIGHT_FIRE_BLOSSOM 2.1
+#define LIGHT_RANGE_FIRE_BLOSSOM_HARVESTED 2.7
+#define LIGHT_POWER_FIRE_BLOSSOM_HARVESTED 1.5

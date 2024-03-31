@@ -1,1 +1,2 @@
 GLOBAL_LIST_EMPTY(ruin_landmarks)
+GLOBAL_LIST_EMPTY(areas)

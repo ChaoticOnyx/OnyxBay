@@ -94,7 +94,7 @@
 		GLOB.universe.OnTurfChange(W)
 
 	SSair.mark_for_update(src) //handle the addition of the new turf.
-
+	liquid_update_turf()
 	for(var/turf/space/S in range(W,1))
 		S.update_starlight()
 

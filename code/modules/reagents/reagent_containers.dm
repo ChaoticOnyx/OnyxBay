@@ -34,13 +34,23 @@
 /obj/item/reagent_containers/attack_self(mob/user)
 	return
 
-/obj/item/reagent_containers/afterattack(obj/target, mob/user, flag)
+/obj/item/reagent_containers/afterattack(atom/A, mob/user, proximity)
+	if(!proximity)
+		return
+
+	var/turf/turf_to_clean = A
+
+	// Disable normal cleaning if there are liquids.
+	if(isturf(A) && turf_to_clean.liquids)
+		SEND_SIGNAL(src, SIGNAL_CLEAN_LIQUIDS, turf_to_clean, user)
+		return FALSE
+
 	if(can_be_splashed && user.a_intent != I_HELP)
-		if(standard_splash_mob(user,target))
+		if(standard_splash_mob(user,A))
 			return
 		if(reagents && reagents.total_volume)
-			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [target].")) // They are not on help intent, aka wanting to spill it.
-			reagents.splash(target, reagents.total_volume)
+			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [A].")) // They are not on help intent, aka wanting to spill it.
+			reagents.splash(A, reagents.total_volume)
 			return
 
 /obj/item/reagent_containers/proc/reagentlist() // For attack logs

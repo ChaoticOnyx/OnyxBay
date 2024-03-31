@@ -348,6 +348,9 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 		amount -= spill
 	if(spill)
 		splash(target.loc, spill, multiplier, copy, min_spill, max_spill)
+	if(isturf(target))
+		var/turf/T = target
+		T.add_liquid_from_reagents(src)
 
 	trans_to(target, amount, multiplier, copy)
 

@@ -18,6 +18,7 @@
 		set_opacity(0)
 		for(var/turf/simulated/turf in loc)
 			SSair.mark_for_update(turf)
+			turf.liquid_update_turf()
 	else
 		can_open = WALL_OPENING
 		//flick("[material.icon_base]fwall_closing", src)
@@ -33,6 +34,7 @@
 		shove_everything()
 		for(var/turf/simulated/turf in loc)
 			SSair.mark_for_update(turf)
+			turf.liquid_update_turf()
 
 	can_open = WALL_CAN_OPEN
 	update_icon()
@@ -44,6 +46,7 @@
 	for(var/turf/simulated/turf in loc)
 		update_thermal(turf)
 		SSair.mark_for_update(turf)
+		turf.liquid_update_turf()
 
 
 /turf/simulated/wall/proc/update_thermal(turf/simulated/source)

@@ -34,6 +34,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		igniting = 1
 
 		create_fire(exposed_temperature)
+	liquids?.fire_act()
 	return igniting
 
 /zone/proc/process_fire()

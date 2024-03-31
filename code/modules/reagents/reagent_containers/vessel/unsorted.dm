@@ -42,7 +42,21 @@
 /obj/item/reagent_containers/vessel/bucket/full
 	startswith = list(/datum/reagent/water)
 
-/obj/item/reagent_containers/vessel/bucket/attackby(obj/D, mob/user)
+/obj/item/reagent_containers/vessel/bucket/ShiftClick(mob/user)
+	. = ..()
+	var/obj/O = user.get_active_hand()
+	if(istype(O, /obj/item/mop))
+		if(O.reagents.total_volume == 0)
+			to_chat(user, "<span class='warning'>[O] is dry, you can't squeeze anything out!</span>")
+			return
+		if(reagents.total_volume == reagents.maximum_volume)
+			to_chat(user, "<span class='warning'>[src] is full!</span>")
+			return
+		O.reagents.remove_any(O.reagents.total_volume * SQUEEZING_DISPERSAL_RATIO)
+		O.reagents.trans_to(src, O.reagents.total_volume)
+		to_chat(user, "<span class='notice'>You squeeze the liquids from [O] to [src].</span>")
+
+/obj/item/reagent_containers/vessel/bucket/attackby(obj/D, mob/user, click_params)
 	if(isprox(D))
 		to_chat(user, "You add [D] to [src].")
 		qdel(D)
