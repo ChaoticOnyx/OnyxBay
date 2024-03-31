@@ -523,19 +523,20 @@ About the new airlock wires panel:
 	var/cut_sound
 
 	if(isWelder(item))
-		var/obj/item/weldingtool/WT = item
-		if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
-			return
-
+		cut_sound = null
 		cut_verb = "cutting"
-		cut_sound = 'sound/items/Welder.ogg'
 
 	else if(istype(item,/obj/item/gun/energy/plasmacutter)) //They could probably just shoot them out, but who cares!
 		cut_verb = "cutting"
 		cut_sound = 'sound/items/Welder.ogg'
 		cut_delay *= 0.66
 
-	else if(istype(item,/obj/item/melee/energy/blade) || istype(item,/obj/item/melee/energy/sword))
+	else if(istype(item, /obj/item/melee/energy/blade) || istype(item, /obj/item/melee/energy/sword))
+		var/obj/item/melee/energy/E = item
+		if(!E.active)
+			show_splash_text(user, "blade must be on!", "\The [item] must be activated!")
+			return FALSE
+
 		cut_verb = "slicing"
 		cut_sound = "spark"
 		cut_delay *= 0.66
@@ -570,8 +571,13 @@ About the new airlock wires panel:
 			"<span class='notice'>You begin [cut_verb] through the bolt cover.</span>"
 			)
 
-		playsound(src, cut_sound, 100, 1)
-		if(do_after(user, cut_delay, src))
+		if(!isnull(cut_sound))
+			playsound(src, cut_sound, 100, 1)
+		var/obj/item/weldingtool/WT = item
+		if((!istype(WT) && do_after(user, cut_delay, src)) || (istype(WT) && WT.use_tool(src, user, delay = cut_delay, amount = 5)))
+			if(QDELETED(src))
+				return
+
 			user.visible_message(
 				"<span class='notice'>\The [user] removes the bolt cover from [src]</span>",
 				"<span class='notice'>You remove the cover and expose the door bolts.</span>"
@@ -584,8 +590,10 @@ About the new airlock wires panel:
 			"<span class='notice'>\The [user] begins [cut_verb] through [src]'s bolts.</span>",
 			"<span class='notice'>You begin [cut_verb] through the door bolts.</span>"
 			)
-		playsound(src, cut_sound, 100, 1)
-		if(do_after(user, cut_delay, src))
+		if(!isnull(cut_sound))
+			playsound(src, cut_sound, 100, 1)
+		var/obj/item/weldingtool/WT = item
+		if((!istype(WT) && do_after(user, cut_delay, src)) || (istype(WT) && WT.use_tool(src, user, delay = cut_delay, amount = 5)))
 			user.visible_message(
 				"<span class='notice'>\The [user] severs the door bolts, unlocking [src].</span>",
 				"<span class='notice'>You sever the door bolts, unlocking the door.</span>"
