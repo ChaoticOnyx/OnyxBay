@@ -91,11 +91,11 @@
 			playsound(get_turf(src), GET_SFX(SFX_USE_KNOB), 45, TRUE)
 		if("Increase Temperature")
 			target_temperature = min(max_temperature, target_temperature + TEMPERATURE_INCREMENT)
-			show_splash_text(user, "temperature increased", "You increase \the [src]'s target temperature to [CONV_KELVIN_CELSIUS] celsius.")
+			show_splash_text(user, "temperature increased", "You increase \the [src]'s target temperature to [CONV_KELVIN_CELSIUS(target_temperature)] celsius.")
 			playsound(get_turf(src), GET_SFX(SFX_USE_KNOB), 45, TRUE)
 		if("Decrease Temperature")
 			target_temperature = max(min_temperature, target_temperature - TEMPERATURE_INCREMENT)
-			show_splash_text(user, "temperature decreased", "You decrease \the [src]'s target temperature to [CONV_KELVIN_CELSIUS] celsius.")
+			show_splash_text(user, "temperature decreased", "You decrease \the [src]'s target temperature to [CONV_KELVIN_CELSIUS(target_temperature)] celsius.")
 			playsound(get_turf(src), GET_SFX(SFX_USE_KNOB), 45, TRUE)
 
 /obj/machinery/sauna/attackby(obj/item/attack_item, mob/living/user, params)
@@ -241,7 +241,7 @@
 	if(should_glow)
 		AddOverlays(emissive)
 
-/obj/machinery/floor_light/proc/update_glow()
+/obj/machinery/sauna/proc/update_glow()
 	if(!(stat & (BROKEN | NOPOWER | POWEROFF)))
 		set_light(0)
 		return FALSE
@@ -251,15 +251,16 @@
 	else
 		set_light(0.15, 0.1, 1, 2, "#f86060")
 
-/obj/machinery/sauna/_examine_text(mob/user)
+/obj/machinery/sauna/examine(mob/user, infix)
 	. = ..()
+
 	if(container)
 		if(container.reagents && container.reagents.total_volume)
-			. += SPAN_NOTICE("\n\The [src] has \a [container] loaded. It contains [container.reagents.total_volume]u of reagents.\n")
+			. += SPAN_NOTICE("\The [src] has \a [container] loaded. It contains [container.reagents.total_volume]u of reagents.")
 		else
-			. += SPAN_NOTICE("\n\The [src] has \a [container] loaded. It is empty.\n")
+			. += SPAN_NOTICE("\The [src] has \a [container] loaded. It is empty.")
 
-	. += SPAN_NOTICE("\nIts temperature is set at [CONV_KELVIN_CELSIUS(target_temperature)] celsius.\n")
+	. += SPAN_NOTICE("Its temperature is set at [CONV_KELVIN_CELSIUS(target_temperature)] celsius.")
 
 /atom/movable/steam_controller
 	anchored = TRUE
