@@ -529,21 +529,24 @@
 		if(3)
 			take_damage(rand(50, 100))
 
-/obj/machinery/power/smes/_examine_text(mob/user)
+/obj/machinery/power/smes/examine(mob/user, infix)
 	. = ..()
-	. += "\nThe service hatch is [panel_open ? "open" : "closed"]."
+
+	. += "The service hatch is [panel_open ? "open" : "closed"]."
+
 	if(!damage)
 		return
+
 	var/damage_percentage = round((damage / maxdamage) * 100)
 	switch(damage_percentage)
 		if(75 to INFINITY)
-			. += "\n<span class='danger'>It's casing is severely damaged, and sparking circuitry may be seen through the holes!</span>"
+			. += SPAN_DANGER("It's casing is severely damaged, and sparking circuitry may be seen through the holes!")
 		if(50 to 74)
-			. += "\n<span class='notice'>It's casing is considerably damaged, and some of the internal circuits appear to be exposed!</span>"
+			. += SPAN_NOTICE("It's casing is considerably damaged, and some of the internal circuits appear to be exposed!")
 		if(25 to 49)
-			. += "\n<span class='notice'>It's casing is quite seriously damaged.</span>"
+			. += SPAN_NOTICE("It's casing is quite seriously damaged.")
 		if(0 to 24)
-			. += "\nIt's casing has some minor damage."
+			. += "It's casing has some minor damage."
 
 #define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=128; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
 /obj/machinery/power/smes/proc/generate_overlays()

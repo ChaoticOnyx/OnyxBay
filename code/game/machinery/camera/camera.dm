@@ -37,10 +37,11 @@
 
 	var/affected_by_emp_until = 0
 
-/obj/machinery/camera/_examine_text(mob/user)
+/obj/machinery/camera/examine(mob/user, infix)
 	. = ..()
+
 	if(stat & BROKEN)
-		. += "\n<span class='warning'>It is completely demolished.</span>"
+		. += "<span class='warning'>It is completely demolished.</span>"
 
 /obj/machinery/camera/malf_upgrade(mob/living/silicon/ai/user)
 	..()

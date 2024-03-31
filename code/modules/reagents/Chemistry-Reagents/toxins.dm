@@ -743,6 +743,7 @@
 	M.h_style = "Sick"
 	M.f_style = "Great Beard"
 	M.update_hair()
+	M.update_facial_hair()
 	to_chat(M, SPAN_WARNING("You feel a chill, your skin feels heavier..."))
 
 /datum/reagent/toxin/zombie

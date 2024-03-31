@@ -174,18 +174,19 @@
 			AddOverlays("battery-5")
 
 
-/obj/item/device/suit_cooling_unit/_examine_text(mob/user)
+/obj/item/device/suit_cooling_unit/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 1)
 		return
 
-	if (on)
-		. += "\nIt's switched on and running."
+	if(on)
+		. += "It's switched on and running."
 	else
-		. += "\nIt is switched off."
+		. += "It is switched off."
 
-	if (cover_open)
-		. += "\nThe panel is open."
+	if(cover_open)
+		. += "The panel is open."
 
-	if (cell)
-		. += "\nThe charge meter reads [round(CELL_PERCENT(cell))]%."
+	if(cell)
+		. += "The charge meter reads [round(CELL_PERCENT(cell))]%."

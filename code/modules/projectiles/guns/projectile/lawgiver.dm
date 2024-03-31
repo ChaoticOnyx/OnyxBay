@@ -253,9 +253,11 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	//added every char from speechcheker just for sure
 	return replace_characters(phrase, replacechars)
 
-/obj/item/gun/projectile/lawgiver/_examine_text(mob/user)
+/obj/item/gun/projectile/lawgiver/examine(mob/user, infix)
 	. = ..()
+
 	var/obj/item/ammo_magazine/lawgiver/M = ammo_magazine
 	if(!M)
 		return
+
 	. += M.generate_description()

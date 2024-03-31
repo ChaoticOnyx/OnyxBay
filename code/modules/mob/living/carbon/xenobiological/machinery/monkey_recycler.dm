@@ -49,8 +49,9 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 	for(var/obj/item/stock_parts/matter_bin/matter_bin in component_parts)
 		cube_production += matter_bin.rating * 0.1
 
-/obj/machinery/monkey_recycler/_examine_text(mob/user)
+/obj/machinery/monkey_recycler/examine(mob/user, infix)
 	. = ..()
+
 	if(in_range(user, src) || isobserver(user))
 		. += SPAN_NOTICE("The status display reads: Producing <b>[cube_production]</b> cubes for every monkey inserted.")
 

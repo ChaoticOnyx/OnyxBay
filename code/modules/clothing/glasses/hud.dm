@@ -218,12 +218,13 @@
 	var/sec_hud = FALSE
 	var/med_hud = FALSE
 
-/obj/item/clothing/glasses/hud/_examine_text(mob/user)
+/obj/item/clothing/glasses/hud/examine(mob/user, infix)
 	. = ..()
+
 	if(matrix)
-		. += "\nIt has a [matrix.matrix_type] optical matrix installed."
+		. += "It has a [matrix.matrix_type] optical matrix installed."
 	if(lenses)
-		. += "\nIt has [lenses] installed."
+		. += "It has [lenses] installed."
 
 /obj/item/clothing/glasses/hud/Initialize()
 	. = ..()

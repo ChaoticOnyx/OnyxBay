@@ -9,10 +9,11 @@
 	drop_sound = SFX_DROP_COMPONENT
 	pickup_sound = SFX_PICKUP_COMPONENT
 
-	_examine_text(mob/user)
-		. = ..(user)
+	examine(mob/user)
+		. = ..()
+
 		if(armed)
-			to_chat(user, "It looks like it's armed.")
+			. += "It looks like it's armed."
 
 	update_icon()
 		if(armed)

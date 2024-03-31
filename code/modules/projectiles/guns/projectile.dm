@@ -263,15 +263,17 @@
 		ammo_magazine = null
 		update_icon() //make sure to do this after unsetting ammo_magazine
 
-/obj/item/gun/projectile/_examine_text(mob/user)
+/obj/item/gun/projectile/examine(mob/user, infix)
 	. = ..()
+
 	if(is_jammed)
-		. += "\n<span class='warning'>It looks jammed.</span>"
+		. += SPAN_WARNING("It looks jammed.")
+
 	if(ammo_magazine)
-		. += "\nIt has \a [ammo_magazine] loaded."
+		. += "It has \a [ammo_magazine] loaded."
+
 	if(getAmmo() != AMMO_NO_DISPLAY)
-		. += "\nHas [getAmmo()] round\s remaining."
-	return
+		. += "Has [getAmmo()] round\s remaining."
 
 /obj/item/gun/projectile/proc/getAmmo()
 	var/bullets = 0

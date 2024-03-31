@@ -26,12 +26,13 @@
 		else
 			to_chat(user, "\The [src] seems full of illegible scribbles. Is this a joke?")
 
-/obj/item/book/tome/_examine_text(mob/user as mob)
+/obj/item/book/tome/examine(mob/user, infix)
 	. = ..()
+
 	if(!iscultist(user))
-		. += "\nAn old, dusty tome with frayed edges and a sinister looking cover."
+		. += "An old, dusty tome with frayed edges and a sinister looking cover."
 	else
-		. += "\nThe scriptures of Nar-Sie, The One Who Sees, The Geometer of Blood. Contains the details of every ritual his followers could think of. Most of these are useless, though."
+		. += "The scriptures of Nar-Sie, The One Who Sees, The Geometer of Blood. Contains the details of every ritual his followers could think of. Most of these are useless, though."
 
 /obj/item/book/tome/afterattack(atom/A, mob/user, proximity)
 	if(!proximity || !iscultist(user))

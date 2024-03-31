@@ -43,7 +43,7 @@
 
 	AddOverlays(lock_overlay)
 
-/obj/item/storage/secure/_examine_text(mob/user)
+/obj/item/storage/secure/examine(mob/user, infix)
 	. = ..()
 	. += "The service panel is [open ? "open" : "closed"]."
 

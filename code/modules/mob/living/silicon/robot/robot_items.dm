@@ -100,17 +100,17 @@
 		flick("portable_analyzer_load", src)
 		icon_state = "portable_analyzer_full"
 
-/obj/item/portable_destructive_analyzer/_examine_text(mob/user)
+/obj/item/portable_destructive_analyzer/examine(mob/user, infix)
 	. = ..()
-	. += "\n<span class='notice'><b>Current science levels:</b></span>"
+
+	. += SPAN_NOTICE("<b>Current science levels:</b>")
 	for(var/i = 1, i <= files.known_tech.len, i++)
 		if(files.known_tech[i].name == "ILLEGAL" || files.known_tech[i].name == "Arcane")
 			if(files.known_tech[i].level > 0)
-				. += "\n<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>"
+				. += SPAN_NOTICE("[files.known_tech[i].name] - [files.known_tech[i].level]")
 		else
-			. += "\n<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>"
+			. += SPAN_NOTICE("[files.known_tech[i].name] - [files.known_tech[i].level]")
 
-	//This is used to unlock other borg covers.
 /obj/item/card/robot //This is not a child of id cards, as to avoid dumb typechecks on computers.
 	name = "access code transmission device"
 	icon_state = "id-robot"
@@ -174,9 +174,9 @@
 	for(var/path in surgery_item_paths)
 		surgery_items.Add(new path(src))
 
-/obj/item/surgical_selector/_examine_text(mob/user)
+/obj/item/surgical_selector/examine(mob/user, infix)
 	. = ..()
-	. += "\nThe selected tool is [selected_tool ? selected_tool : "nothing"]!"
+	. += "The selected tool is [selected_tool ? selected_tool : "nothing"]!"
 
 /obj/item/surgical_selector/attack_self(mob/user)
 	select_tool(user)
@@ -430,12 +430,10 @@
 	max_doors = 5
 	max_panels = 4
 
-/obj/item/inflatable_dispenser/_examine_text(mob/user)
+/obj/item/inflatable_dispenser/examine(mob/user, infix)
 	. = ..()
-	if(!.)
-		return
-	. += "\nIt has [stored_walls] wall segment\s, [stored_doors] door segment\s and [stored_panels] panel segment\s stored."
-	. += "\nIt is set to deploy [INFLATABLE_MODES[mode]]."
+	. += "It has [stored_walls] wall segment\s, [stored_doors] door segment\s and [stored_panels] panel segment\s stored."
+	. += "It is set to deploy [INFLATABLE_MODES[mode]]."
 
 /obj/item/inflatable_dispenser/attack_self()
 	mode++
@@ -582,14 +580,15 @@
 			if(R && istype(R.loc,/turf))
 				R.throw_at(get_edge_target_turf(R.loc, pick(GLOB.alldirs)), rand(1, 3), 1)
 
-/obj/item/robot_rack/_examine_text(mob/user)
+/obj/item/robot_rack/examine(mob/user, infix)
 	. = ..()
-	. += "\nIt can hold up to [capacity] item[capacity == 1 ? "" : "s"]."
-	if (length(held))
+	. += "It can hold up to [capacity] item[capacity == 1 ? "" : "s"]."
+
+	if(length(held))
 		var/text = "| "
 		for (var/obj/O in held)
 			text += "[O] | "
-		. += "\nContains: [text]"
+		. += "Contains: [text]"
 
 /obj/item/robot_rack/Initialize(mapload, starting_objects = 0)
 	. = ..()
@@ -822,9 +821,9 @@
 	..(name,type,delay,energy)
 	pipe_type = p_type
 
-/obj/item/robot_item_dispenser/_examine_text(mob/user)
+/obj/item/robot_item_dispenser/examine(mob/user, infix)
 	. = ..()
-	. += "\n[selected.name] is chosen to be produced."
+	. += "[selected.name] is chosen to be produced."
 
 
 /obj/item/robot_item_dispenser/New()

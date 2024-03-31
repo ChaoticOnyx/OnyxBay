@@ -32,13 +32,14 @@
 	set_state(1)
 	. = ..()
 
-/obj/machinery/power/breakerbox/_examine_text(mob/user)
+/obj/machinery/power/breakerbox/examine(mob/user, infix)
 	. = ..()
-	. += "\nLarge machine with heavy duty switching circuits used for advanced grid control"
+
+	. += "Large machine with heavy duty switching circuits used for advanced grid control"
 	if(on)
-		. += "\n<span class='good'>It seems to be online.</span>"
+		. += "<span class='good'>It seems to be online.</span>"
 	else
-		. += "\n<span class='warning'>It seems to be offline.</span>"
+		. += SPAN_WARNING("It seems to be offline.")
 
 /obj/machinery/power/breakerbox/attack_ai(mob/user)
 	if(update_locked)

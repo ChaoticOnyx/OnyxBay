@@ -65,8 +65,9 @@
 		return
 	return ..()
 
-/mob/living/simple_animal/construct/_examine_text(mob/user)
+/mob/living/simple_animal/construct/examinate(atom/to_axamine)
 	. = ..()
+
 	var/msg = "<span cass='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n"
 	if (src.health < src.maxHealth)
 		msg += "<span class='warning'>"
@@ -77,7 +78,7 @@
 		msg += "</span>"
 	msg += "*---------*</span>"
 
-	. += "\n[msg]"
+	. += msg
 
 /obj/item/ectoplasm
 	name = "ectoplasm"

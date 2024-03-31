@@ -563,17 +563,18 @@ var/list/possible_cable_coil_colours
 	else
 		w_class = ITEM_SIZE_SMALL
 
-/obj/item/stack/cable_coil/_examine_text(mob/user)
+/obj/item/stack/cable_coil/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 1)
 		return
 
 	if(get_amount() == 1)
-		. += "\nA short piece of power cable."
+		. += "A short piece of power cable."
 	else if(get_amount() == 2)
-		. += "\nA piece of power cable."
+		. += "A piece of power cable."
 	else
-		. += "\nA coil of power cable. There are [get_amount()] lengths of cable in the coil."
+		. += "A coil of power cable. There are [get_amount()] lengths of cable in the coil."
 
 
 /obj/item/stack/cable_coil/verb/make_restraint()

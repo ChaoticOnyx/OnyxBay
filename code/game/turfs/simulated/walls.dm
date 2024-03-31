@@ -276,22 +276,21 @@
 	return ..()
 
 //Appearance
-/turf/simulated/wall/_examine_text(mob/user)
+/turf/simulated/wall/examine(mob/user, infix)
 	. = ..()
-
 	if(!damage)
-		. += "\n<span class='notice'>It looks fully intact.</span>"
+		. += SPAN_NOTICE("It looks fully intact.")
 	else
 		var/dam = damage / material.integrity
 		if(dam <= 0.3)
-			. += "\n<span class='warning'>It looks slightly damaged.</span>"
+			. += SPAN_WARNING("It looks slightly damaged.")
 		else if(dam <= 0.6)
-			. += "\n<span class='warning'>It looks moderately damaged.</span>"
+			. += SPAN_WARNING("It looks moderately damaged.")
 		else
-			. += "\n<span class='danger'>It looks heavily damaged.</span>"
+			. += SPAN_WARNING("It looks heavily damaged.")
 
 	if(locate(/obj/effect/overlay/wallrot) in src)
-		. += "\n<span class='warning'>There is fungus growing on [src].</span>"
+		. += SPAN_WARNING("There is fungus growing on [src].")
 
 //Damage
 

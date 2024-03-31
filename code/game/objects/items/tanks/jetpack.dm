@@ -27,10 +27,11 @@
 	QDEL_NULL(ion_trail)
 	return ..()
 
-/obj/item/tank/jetpack/_examine_text(mob/living/user)
+/obj/item/tank/jetpack/examine(mob/user, infix)
 	. = ..()
+
 	if(air_contents.total_moles < 5)
-		. += "\n<span class='danger'>The meter on \the [src] indicates you are almost out of gas!</span>"
+		. += SPAN_DANGER("The meter on \the [src] indicates you are almost out of gas!")
 
 /obj/item/tank/jetpack/verb/toggle_rockets()
 	set name = "Toggle Jetpack Stabilization"
@@ -105,10 +106,9 @@
 	name = "jetpack"
 	var/obj/item/rig/holder
 
-/obj/item/tank/jetpack/rig/_examine_text(mob/user)
+/obj/item/tank/jetpack/rig/examine(mob/user, infix)
 	. = ..()
-	. += "\nIt's a jetpack. If you can see this, report it on the bug tracker."
-	return 0
+	. += "It's a jetpack. If you can see this, report it on the bug tracker."
 
 /obj/item/tank/jetpack/rig/allow_thrust(num, mob/living/user as mob)
 

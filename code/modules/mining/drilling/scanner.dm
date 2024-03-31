@@ -10,9 +10,9 @@
 	matter = list(MATERIAL_STEEL = 150)
 	var/survey_data = 0
 
-/obj/item/mining_scanner/_examine_text(mob/user)
+/obj/item/mining_scanner/examine(mob/user, infix)
 	. = ..()
-	. += "\nTiny indicator shows it holds [survey_data] Good Explorer Points worth of data."
+	. += "Tiny indicator shows it holds [survey_data] Good Explorer Points worth of data."
 
 /obj/item/mining_scanner/attack_self(mob/user as mob)
 	to_chat(user, "You begin sweeping \the [src] about, scanning for metal deposits.")
@@ -99,9 +99,9 @@
 	icon_state = "nucleardisk"
 	var/data
 
-/obj/item/disk/survey/_examine_text(mob/user)
+/obj/item/disk/survey/examine(mob/user, infix)
 	. = ..()
-	. += "\nTiny indicator shows it holds [data] Good Explorer Points of data."
+	. += "Tiny indicator shows it holds [data] Good Explorer Points of data."
 
 /obj/item/disk/survey/Value()
 	if(data < 10000)

@@ -42,10 +42,10 @@
 	if(start_grab_name)
 		current_grab = all_grabstates[start_grab_name]
 
-/obj/item/grab/_examine_text(user)
+/obj/item/grab/examine(mob/user, infix)
 	. = ..()
 	var/obj/item/O = get_targeted_organ()
-	. += "\nA grab on \the [affecting]'s [O.name]."
+	. += "A grab on \the [affecting]'s [O.name]."
 
 /obj/item/grab/think()
 	current_grab.process(src)

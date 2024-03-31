@@ -13,9 +13,9 @@
 	var/loaded = 1
 	var/mode = "completely"
 
-/obj/item/device/dociler/_examine_text(mob/user)
+/obj/item/device/dociler/examine(mob/user, infix)
 	. = ..()
-	. += "\n<span class='notice'>It is currently set to [mode] docile mode.</span>"
+	. += SPAN_NOTICE("It is currently set to [mode] docile mode.")
 
 /obj/item/device/dociler/attack_self(mob/user)
 	if(mode == "somewhat")

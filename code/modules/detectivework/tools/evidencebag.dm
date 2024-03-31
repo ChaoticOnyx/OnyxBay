@@ -108,11 +108,13 @@
 		icon_state = "[base_icon_state]obj"
 	return
 
-/obj/item/evidencebag/_examine_text(mob/user)
+/obj/item/evidencebag/examine(mob/user, infix)
 	. = ..()
-	if (!stored_item)
+
+	if(!stored_item)
 		return
-	. += "\n[stored_item._examine_text(user)]"
+
+	. += user.run_examinate(stored_item)
 
 /obj/item/evidencebag/cyborg
 	name = "integrated evidence bag dispenser"

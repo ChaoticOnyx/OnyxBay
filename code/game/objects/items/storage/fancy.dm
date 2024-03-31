@@ -41,17 +41,18 @@
 
 	. = ..()
 
-/obj/item/storage/fancy/_examine_text(mob/user)
+/obj/item/storage/fancy/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 1)
 		return
 
 	var/key_name = initial(key_type.name)
 	if(!contents.len)
-		. += "\nThere are no [key_name]s left in the box."
+		. += "There are no [key_name]s left in the box."
 	else
 		var/key_count = count_by_type(contents, key_type)
-		. += "\nThere [key_count == 1? "is" : "are"] [key_count] [key_name]\s in the box."
+		. += "There [key_count == 1? "is" : "are"] [key_count] [key_name]\s in the box."
 
 /*
  * Egg Box

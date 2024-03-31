@@ -149,12 +149,13 @@
 	if(istype(W, /obj/item/tank) && !stat)
 		to_chat(user, "<span class='warning'>Please open the maintenance hatch first.</span>")
 
-/obj/machinery/oxygen_pump/_examine_text(mob/user)
+/obj/machinery/oxygen_pump/examine(mob/user, infix)
 	. = ..()
+
 	if(tank)
-		. += "\nThe meter shows [round(tank.air_contents.return_pressure())]"
+		. += "The meter shows [round(tank.air_contents.return_pressure())]"
 	else
-		. += "\n<span class='warning'>It is missing a tank!</span>"
+		. += "<span class='warning'>It is missing a tank!</span>"
 
 /obj/machinery/oxygen_pump/Process()
 	if(breather)

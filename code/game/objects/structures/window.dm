@@ -33,28 +33,29 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
-/obj/structure/window/_examine_text(mob/user)
+/obj/structure/window/examine(mob/user, infix)
 	. = ..()
 
 	if(health == maxhealth)
-		. += "\n<span class='notice'>It looks fully intact.</span>"
+		. += SPAN_NOTICE("It looks fully intact.")
 	else
 		var/perc = health / maxhealth
 		if(perc > 0.75)
-			. += "\n<span class='notice'>It has a few cracks.</span>"
+			. += SPAN_NOTICE("It has a few cracks.")
 		else if(perc > 0.5)
-			. += "\n<span class='warning'>It looks slightly damaged.</span>"
+			. += SPAN_NOTICE("It looks slightly damaged.")
 		else if(perc > 0.25)
-			. += "\n<span class='warning'>It looks moderately damaged.</span>"
+			. += SPAN_NOTICE("It looks moderately damaged.")
 		else
-			. += "\n<span class='danger'>It looks heavily damaged.</span>"
+			. += SPAN_DANGER("It looks heavily damaged.")
+
 	if(silicate)
 		if (silicate < 30)
-			. += "\n<span class='notice'>It has a thin layer of silicate.</span>"
+			. += SPAN_NOTICE("It has a thin layer of silicate.")
 		else if (silicate < 70)
-			. += "\n<span class='notice'>It is covered in silicate.</span>"
+			. += SPAN_NOTICE("It is covered in silicate.")
 		else
-			. += "\n<span class='notice'>There is a thick layer of silicate covering it.</span>"
+			. += SPAN_NOTICE("There is a thick layer of silicate covering it.")
 
 /obj/structure/window/GetExplosionBlock()
 	return reinf && (state == 5) ? real_explosion_block : 0

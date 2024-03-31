@@ -23,11 +23,13 @@
 	var/max_rockets = 1
 	var/list/rockets = new /list()
 
-/obj/item/gun/launcher/rocket/_examine_text(mob/user)
+/obj/item/gun/launcher/rocket/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 2)
 		return
-	. += "\n<span class='notice'>[rockets.len] / [max_rockets] rockets.</span>"
+
+	. += SPAN_NOTICE("[rockets.len] / [max_rockets] rockets.")
 
 /obj/item/gun/launcher/rocket/attackby(obj/item/I as obj, mob/user as mob)
 	if(istype(I, /obj/item/ammo_casing/rocket))

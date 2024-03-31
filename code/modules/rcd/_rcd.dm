@@ -45,7 +45,7 @@
 /obj/item/construction/proc/get_matter(mob/user)
 	return local_matter
 
-/obj/item/construction/_examine_text(mob/user)
+/obj/item/construction/examine(mob/user, infix)
 	. = ..()
 	. += "It currently holds [get_matter(user)]/[max_matter] local_matter-units."
 

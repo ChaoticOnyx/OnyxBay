@@ -287,10 +287,9 @@
 
 	return TRUE
 
-/atom/movable/screen/movable/alert/_examine_text(mob/user, infix, suffix)
-	.="[name]"
-	.+=" - [SPAN("info", desc)]"
-	return FALSE
+/atom/movable/screen/movable/alert/examine(mob/user, infix)
+	. = "[name]"
+	. += " - [SPAN("info", desc)]"
 
 /atom/movable/screen/movable/alert/Destroy()
 	. = ..()

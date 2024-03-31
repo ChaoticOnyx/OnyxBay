@@ -85,6 +85,7 @@ There are several things that need to be remembered:
 		update_body()	//Handles updating your mob's icon to reflect their gender/race/complexion etc
 		update_hair()	//Handles updating your hair overlay (used to be update_face, but mouth and
 																			...eyes were merged into update_body)
+		update_facial_hair() // Handles updating your facial hair overlay. Used to be a part of update_hair(), but was forked because of the mask alt layer.
 		update_deformities() //handles updating your mob's deformities overlay.		e.g missing eyes, glasgow smile
 		update_targeted() // Updates the target overlay when someone points a gun at you
 
@@ -135,24 +136,26 @@ Please contact me on #coderbus IRC. ~Carn x
 #define HO_BELT_LAYER             14
 #define HO_SUIT_LAYER             15
 #define HO_TAIL_LAYER             16		//bs12 specific. this hack is probably gonna come back to haunt me
-#define HO_GLASSES_LAYER          17
-#define HO_BELT_LAYER_ALT         18
-#define HO_SUIT_STORE_LAYER       19
-#define HO_BACK_LAYER             20
-#define HO_DEFORM_LAYER           21
-#define HO_HAIR_LAYER             22
-#define HO_GOGGLES_LAYER          23
-#define HO_EARS_LAYER             24
-#define HO_FACEMASK_LAYER         25
-#define HO_HEAD_LAYER             26
-#define HO_COLLAR_LAYER           27
-#define HO_HANDCUFF_LAYER         28
-#define HO_L_HAND_LAYER           29
-#define HO_R_HAND_LAYER           30
-#define HO_FIRE_LAYER             31		//If you're on fire
-#define HO_MODIFIER_EFFECTS_LAYER 32
-#define HO_TARGETED_LAYER         33		//BS12: Layer for the target overlay from weapon targeting system
-#define HO_TOTAL_LAYERS           33
+#define HO_FACIAL_HAIR_LAYER      17
+#define HO_FACEMASK_ALT_LAYER     18
+#define HO_GLASSES_LAYER          19
+#define HO_BELT_LAYER_ALT         20
+#define HO_SUIT_STORE_LAYER       21
+#define HO_BACK_LAYER             22
+#define HO_DEFORM_LAYER           23
+#define HO_HAIR_LAYER             24
+#define HO_GOGGLES_LAYER          25
+#define HO_EARS_LAYER             26
+#define HO_FACEMASK_LAYER         27
+#define HO_HEAD_LAYER             28
+#define HO_COLLAR_LAYER           29
+#define HO_HANDCUFF_LAYER         30
+#define HO_L_HAND_LAYER           31
+#define HO_R_HAND_LAYER           32
+#define HO_FIRE_LAYER             33		//If you're on fire
+#define HO_MODIFIER_EFFECTS_LAYER 34
+#define HO_TARGETED_LAYER         35		//BS12: Layer for the target overlay from weapon targeting system
+#define HO_TOTAL_LAYERS           35
 //////////////////////////////////
 
 /mob/living/carbon/human
@@ -346,6 +349,32 @@ var/global/list/damage_icon_parts = list()
 
 	if(update_icons) queue_icon_update()
 
+/// BEARD OVERLAY
+/mob/living/carbon/human/proc/update_facial_hair(update_icons=1)
+
+	if(!src)
+		return
+
+	//Reset our hair
+	overlays_standing[HO_FACIAL_HAIR_LAYER] = null
+
+	var/obj/item/organ/external/head/head_organ = get_organ(BP_HEAD)
+	if(!head_organ || head_organ.is_stump())
+		if(update_icons)
+			queue_icon_update()
+		return
+
+	//masks and helmets can obscure our hair.
+	if((head && (head.flags_inv & BLOCKHAIR)) || (wear_mask && (wear_mask.flags_inv & BLOCKHAIR)))
+		if(update_icons)
+			queue_icon_update()
+		return
+
+	overlays_standing[HO_FACIAL_HAIR_LAYER]= head_organ.get_facial_hair_icon()
+
+	if(update_icons)
+		queue_icon_update()
+
 /mob/living/carbon/human/proc/update_skin(update_icons=1)
 	overlays_standing[HO_SKIN_LAYER] = species.update_skin(src)
 
@@ -410,6 +439,7 @@ var/global/list/damage_icon_parts = list()
 	update_skin(0)
 	update_underwear(0)
 	update_hair(0)
+	update_facial_hair(0)
 	update_deformities(0)
 	update_inv_w_uniform(0)
 	update_inv_wear_id(0)
@@ -574,10 +604,12 @@ var/global/list/damage_icon_parts = list()
 
 // Mask
 /mob/living/carbon/human/update_inv_wear_mask(update_icons=1)
-	if( wear_mask && ( istype(wear_mask, /obj/item/clothing/mask) || istype(wear_mask, /obj/item/clothing/accessory) || istype(wear_mask, /obj/item/grenade) || istype(wear_mask, /obj/item/holder)) && !(head && head.flags_inv & HIDEMASK))
-		overlays_standing[HO_FACEMASK_LAYER] = wear_mask.get_mob_overlay(src,slot_wear_mask_str)
+	if(wear_mask && !(head && head.flags_inv & HIDEMASK))
+		overlays_standing[wear_mask.use_alt_layer ? HO_FACEMASK_ALT_LAYER : HO_FACEMASK_LAYER] = wear_mask.get_mob_overlay(src, slot_wear_mask_str)
+		overlays_standing[wear_mask.use_alt_layer ? HO_FACEMASK_LAYER : HO_FACEMASK_ALT_LAYER] = null
 	else
 		overlays_standing[HO_FACEMASK_LAYER] = null
+		overlays_standing[HO_FACEMASK_ALT_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 

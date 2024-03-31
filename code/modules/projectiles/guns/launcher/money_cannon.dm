@@ -133,18 +133,19 @@
 	else
 		to_chat(user, SPAN("warning", "That's not going to fit in there."))
 
-/obj/item/gun/launcher/money/_examine_text(mob/user)
+/obj/item/gun/launcher/money/examine(mob/user, infix)
 	. = ..()
-	. += "\nIt is configured to dispense [dispensing] credits at a time."
+
+	. += "It is configured to dispense [dispensing] credits at a time."
 
 	if(receptacle_value >= 1)
-		. += "\nThe receptacle is loaded with [receptacle_value] credits."
+		. += "The receptacle is loaded with [receptacle_value] credits."
 
 	else
-		. += "\nThe receptacle is empty."
+		. += "The receptacle is empty."
 
 	if(emagged)
-		. += "\n[SPAN("notice", "Its motors are severely overloaded.")]"
+		. += SPAN("notice", "Its motors are severely overloaded.")
 
 /obj/item/gun/launcher/money/handle_suicide(mob/living/user)
 	if(!ishuman(user))

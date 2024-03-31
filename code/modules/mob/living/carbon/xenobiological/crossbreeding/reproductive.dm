@@ -14,9 +14,9 @@
 
 	var/last_meal = 0
 
-/obj/item/metroidcross/reproductive/_examine_text(mob/user)
+/obj/item/metroidcross/reproductive/examine(mob/user, infix)
 	. = ..()
-	. += SPAN("notice", "\nIt looks like it has space for [meals_left] more cubes.")
+	. += SPAN("notice", "It looks like it has space for [meals_left] more cubes.")
 
 /obj/item/metroidcross/reproductive/attackby(obj/item/O, mob/user)
 	if((last_meal + DIGESTION_COOLDOWN) > world.time)

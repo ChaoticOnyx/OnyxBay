@@ -15,6 +15,13 @@
 	var/simulated = 1 //filter for actions - used by lighting overlays
 	var/fluorescent // Shows up under a UV light.
 
+	/// Helpful blue text, can be used to describe usage caveats and etc.
+	var/description_info
+	/// Green text containing the atom's fluff, if any exists.
+	var/description_fluff
+	/// Malicious red text, can be viewed by antags.
+	var/description_antag
+
 	///Value used to increment ex_act() if reactionary_explosions is on
 	var/explosion_block = 0
 
@@ -333,35 +340,6 @@ its easier to just keep the beam vertical.
 		sleep(3)	//Changing this to a lower value will cause the beam to follow more smoothly with movement, but it will also be more laggy.
 					//I've found that 3 ticks provided a nice balance for my use.
 	for(var/obj/effect/overlay/beam/O in orange(10,src)) if(O.BeamSource==src) qdel(O)
-
-
-/atom/proc/_examine_text(mob/user, infix = "", suffix = "")
-	// This reformat names to get a/an properly working on item descriptions when they are bloody
-	var/f_name = "\a [SPAN("info", "<em>[src][infix]</em>")]."
-	if(is_bloodied && !istype(src, /obj/effect/decal))
-		if(gender == PLURAL)
-			f_name = "some "
-		else
-			f_name = "a "
-		if(blood_color != SYNTH_BLOOD_COLOUR)
-			f_name += "<span class='danger'>blood-stained</span> [SPAN("info", "<em>[name][infix]</em>")]!"
-		else
-			f_name += "oil-stained [name][infix]."
-
-	. = "\icon[src] That's [f_name] [suffix]"
-	. += "\n[desc]"
-
-	return
-
-/atom/proc/examine(...)
-	SHOULD_NOT_OVERRIDE(TRUE)
-
-	var/content = "<div class='Examine'>"
-
-	content += _examine_text(arglist(args))
-	content += "</div>"
-
-	return content
 
 // called by mobs when e.g. having the atom as their machine, pulledby, loc (AKA mob being inside the atom) or buckled var set.
 // see code/modules/mob/mob_movement.dm for more.

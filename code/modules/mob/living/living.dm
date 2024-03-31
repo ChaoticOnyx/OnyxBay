@@ -16,6 +16,12 @@
 
 	update_transform() // Some mobs may start bigger or smaller than normal.
 
+/mob/living/get_description_fluff()
+	if(flavor_text)
+		return flavor_text
+
+	return ..()
+
 //mob verbs are faster than object verbs. See mob/verb/examine.
 /mob/living/verb/pulled(atom/movable/AM as mob|obj in oview(1))
 	set name = "Pull"

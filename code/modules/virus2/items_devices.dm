@@ -68,10 +68,11 @@
 					infect_virus2(target, src.virus2)
 		qdel(src)
 
-/obj/item/virusdish/_examine_text(mob/user)
+/obj/item/virusdish/examine(mob/user, infix)
 	. = ..()
+
 	if(basic_info)
-		. += "\n[basic_info] : <a href='?src=\ref[src];info=1'>More Information</a>"
+		. += "[basic_info] : <a href='?src=\ref[src];info=1'>More Information</a>"
 
 /obj/item/virusdish/OnTopic(user, href_list)
 	if(href_list["info"])

@@ -504,7 +504,7 @@
 
 	return ..()
 
-/datum/modifier/status_effect/stabilized/purple/_examine_text()
+/datum/modifier/status_effect/stabilized/purple/examine()
 	if(healed_last_tick)
 		return SPAN_WARNING("[holder] [holder] regenerating slowly, purplish goo filling in small injuries!")
 
@@ -560,7 +560,7 @@
 	var/cooldown = 10
 	var/max_cooldown = 10
 
-/datum/modifier/status_effect/stabilized/yellow/_examine_text()
+/datum/modifier/status_effect/stabilized/yellow/examine()
 	return SPAN_WARNING("Nearby electronics seem just a little more charged wherever [holder] go[holder].")
 
 /datum/modifier/status_effect/stabilized/yellow/on_applied()
@@ -613,7 +613,7 @@
 		item.attackby(fire, holder)
 	return ..()
 
-/datum/modifier/status_effect/stabilized/darkpurple/_examine_text()
+/datum/modifier/status_effect/stabilized/darkpurple/examine()
 	return SPAN_NOTICE("[holder] fingertips burn brightly!")
 
 /datum/modifier/status_effect/stabilized/darkblue
@@ -820,7 +820,7 @@
 	return ..()
 
 // Only occasionally give examiners a warning.
-/datum/modifier/status_effect/stabilized/grey/_examine_text()
+/datum/modifier/status_effect/stabilized/grey/examine()
 	if(prob(50))
 		return SPAN_WARNING("[holder] look[holder] a bit grey and gooey...")
 	return null
@@ -867,7 +867,7 @@
 		explosion(holder, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 4)
 	return ..()
 
-/datum/modifier/status_effect/stabilized/oil/_examine_text()
+/datum/modifier/status_effect/stabilized/oil/examine()
 	return SPAN_WARNING("[holder] smell[holder] of sulfer and oil!")
 
 /// How much damage is dealt per healing done for the stabilized back.
@@ -906,7 +906,7 @@
 	to_chat(holder, SPAN_NOTICE(FONT_LARGE("You feel your hands melt around [draining]'s neck as you start to drain [draining] of [draining] life!")))
 	to_chat(draining, SPAN_DANGER(FONT_LARGE("[holder]'s hands melt around your neck as you can feel your life starting to drain away!")))
 
-/datum/modifier/status_effect/stabilized/black/_examine_text()
+/datum/modifier/status_effect/stabilized/black/examine()
 	var/mob/living/draining = draining_ref?.resolve()
 	if(!draining)
 		return null
@@ -1009,7 +1009,7 @@
 	colour = "adamantine"
 	incoming_brute_damage_percent = 0.75
 
-/datum/modifier/status_effect/stabilized/adamantine/_examine_text()
+/datum/modifier/status_effect/stabilized/adamantine/examine()
 	return SPAN_WARNING("[holder] have strange metallic coating on [holder] skin.")
 
 /datum/modifier/status_effect/stabilized/rainbow

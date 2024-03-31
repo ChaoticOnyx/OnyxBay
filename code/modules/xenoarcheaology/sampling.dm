@@ -90,10 +90,11 @@
 	var/num_stored_bags = 10
 	var/obj/item/evidencebag/filled_bag
 
-/obj/item/device/core_sampler/_examine_text(mob/user)
+/obj/item/device/core_sampler/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 2)
-		. += "\n<span class='notice'>Used to extract geological core samples - this one is [sampled_turf ? "full" : "empty"], and has [num_stored_bags] bag[num_stored_bags != 1 ? "s" : ""] remaining.</span>"
+		. += SPAN_NOTICE("Used to extract geological core samples - this one is [sampled_turf ? "full" : "empty"], and has [num_stored_bags] bag[num_stored_bags != 1 ? "s" : ""] remaining.")
 
 /obj/item/device/core_sampler/attackby(obj/item/I, mob/living/user)
 	if(istype(I, /obj/item/evidencebag))

@@ -81,13 +81,14 @@
 
 
 
-/turf/simulated/open/_examine_text(mob/user, infix, suffix)
+/turf/simulated/open/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 2)
 		var/depth = 1
 		for(var/T = GetBelow(src); isopenspace(T); T = GetBelow(T))
 			depth += 1
-		. += "\nIt is about [depth] level\s deep."
+		. += "It is about [depth] level\s deep."
 
 
 

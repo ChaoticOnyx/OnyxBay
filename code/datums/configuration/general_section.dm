@@ -3,7 +3,7 @@
 
 	var/server_name = null
 	var/subserver_name = null
-	var/server_id = null
+	var/server_id = "onyxbay"
 	var/server_suffix = FALSE
 	var/server_port = null
 	var/hosted_by = null
