@@ -84,16 +84,16 @@
 			take_chocolate(user)
 
 /obj/structure/coffee_condi_display/proc/take_sugar(mob/user)
-	if(creamer_packs <= 0)
+	if(sugar_packs <= 0)
 		show_splash_text(user, "no creamer left!", "\The [src] has no creamer packs left!")
 		return
 
-	var/obj/item/reagent_containers/vessel/condiment/pack/creamer/new_pack = new(drop_location())
+	var/obj/item/reagent_containers/vessel/condiment/pack/sugar/new_pack = new(drop_location())
 	if(Adjacent(user))
 		user.put_in_hands(new_pack)
 	else
 		new_pack.dropInto(get_turf(src))
-	creamer_packs--
+	sugar_packs--
 	update_icon()
 
 /obj/structure/coffee_condi_display/proc/take_sweetener(mob/user)

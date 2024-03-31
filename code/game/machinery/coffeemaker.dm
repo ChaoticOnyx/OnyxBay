@@ -1,4 +1,4 @@
-#define BEAN_CAPACITY 10 //amount of coffee beans that can fit inside the impressa coffeemaker
+#define BEAN_CAPACITY 5 //amount of coffee beans that can fit inside the impressa coffeemaker
 
 /obj/machinery/coffeemaker
 	name = "coffeemaker"
@@ -57,6 +57,7 @@
 		sugar_packs = max_sugar_packs
 		sweetener_packs = max_sweetener_packs
 		creamer_packs = max_creamer_packs
+		anchored = TRUE
 
 	update_icon()
 
@@ -288,6 +289,7 @@
 		coffee += new_coffee
 		coffee_amount++
 		show_splash_text(user, "added coffee", "Added coffee in \the [src].")
+		update_icon()
 		return
 
 	if(istype(attack_item, /obj/item/storage/box/coffeepack))
