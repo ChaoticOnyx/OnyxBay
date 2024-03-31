@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(prometheus)
 	name = "Prometheus"
-	wait = 5 SECONDS
+	wait = 10 SECONDS
 	priority = SS_PRIORITY_PROMETHEUS
 	flags = SS_NO_INIT
 	runlevels = RUNLEVELS_ALL
@@ -26,3 +26,9 @@ SUBSYSTEM_DEF(prometheus)
 		total_gc += length(L)
 
 	rustg_prom_gauge_int_set(PROM_GC_QUEUED, total_gc, null)
+
+	// Mobs
+	rustg_prom_gauge_int_set(PROM_MOBS_TOTAL, length(SSmobs.mob_list), null)
+
+	for(var/K in SSmobs.mob_types)
+		rustg_prom_gauge_int_set(PROM_MOBS_INSTANCE_TOTAL, SSmobs.mob_types[K], list("name" = K))

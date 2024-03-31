@@ -12,3 +12,5 @@
 #define PROM_GC_ITEM_QDELS            "gc_item_qdels"
 #define PROM_GC_ITEM_FAILURES         "gc_item_failures"
 #define PROM_GC_ITEM_HARD_DELETES     "gc_item_hard_deletes"
+#define PROM_MOBS_TOTAL               "mobs_total"
+#define PROM_MOBS_INSTANCE_TOTAL      "mobs_instance_total"
