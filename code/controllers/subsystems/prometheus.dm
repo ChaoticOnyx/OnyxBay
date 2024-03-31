@@ -6,6 +6,9 @@ SUBSYSTEM_DEF(prometheus)
 	runlevels = RUNLEVELS_ALL
 
 /datum/controller/subsystem/prometheus/fire(resumed = 0)
+	if(!config.general.prometheus_port)
+		return
+
 	// Master
 	rustg_prom_gauge_float_set(PROM_MASTER_TICK_DRIFT, (Master.tickdrift / (world.time / world.tick_lag)) * 100, null)
 
