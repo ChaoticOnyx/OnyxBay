@@ -220,7 +220,7 @@
 	update_icon()
 
 /obj/machinery/sauna/on_update_icon()
-	icon_state = "[base_icon_state][(stat & (NOPOWER | POWEROFF)) ? "" : "_on"]"
+	icon_state = "[base_icon_state][(stat & (BROKEN | NOPOWER | POWEROFF)) ? "" : "_on"]"
 
 	CutOverlays(container_overlay)
 	if(!isnull(container))
@@ -228,9 +228,7 @@
 
 	CutOverlays(on_bad)
 	CutOverlays(on_good)
-	CutOverlays(emissive)
-	set_light(0)
-	if(!(stat & (NOPOWER | POWEROFF)))
+	if(!(stat & (BROKEN | NOPOWER | POWEROFF)))
 		if(istype(container) && container?.reagents.get_reagent_amount(/datum/reagent/water))
 			AddOverlays(on_good)
 			set_light(0.15, 0.1, 1, 2, "#82ff4c" )
@@ -238,7 +236,20 @@
 			AddOverlays(on_bad)
 			set_light(0.15, 0.1, 1, 2, "#f86060")
 
+	CutOverlays(emissive)
+	var/should_glow = update_glow()
+	if(should_glow)
 		AddOverlays(emissive)
+
+/obj/machinery/floor_light/proc/update_glow()
+	if(!(stat & (BROKEN | NOPOWER | POWEROFF)))
+		set_light(0)
+		return FALSE
+
+	if(istype(container) && container?.reagents.get_reagent_amount(/datum/reagent/water))
+		set_light(0.15, 0.1, 1, 2, "#82ff4c")
+	else
+		set_light(0.15, 0.1, 1, 2, "#f86060")
 
 /obj/machinery/sauna/_examine_text(mob/user)
 	. = ..()
