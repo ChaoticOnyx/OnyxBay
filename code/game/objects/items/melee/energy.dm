@@ -196,6 +196,7 @@
 	sharp = 0
 	edge = 1
 	hitsound = 'sound/effects/fighting/energy1.ogg'
+	active_max_bright = 0.75
 	var/blade_color
 
 	drop_sound = SFX_DROP_DEVICE
@@ -286,9 +287,10 @@
 	mod_handy_a = 2.0
 	mod_shield_a = 2.75
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
-	var/base_block_chance = 50
-	active_max_bright = 0.5
+	active_max_bright = 0.9
 	active_outer_range = 1.8
+
+	var/wielded = FALSE
 
 /obj/item/melee/energy/sword/dualsaber/New()
 	..()
@@ -297,6 +299,22 @@
 		blade_color = pick(colorparam)
 	if(!brightness_color)
 		brightness_color = colorparam[blade_color]
+
+/obj/item/melee/energy/sword/dualsaber/update_twohanding()
+	var/mob/living/M = loc
+	wielded = (istype(M) && M.can_wield_item(src) && is_held_twohanded(M))
+	update_icon()
+	..()
+
+/obj/item/melee/energy/sword/dualsaber/on_update_icon()
+	icon_state = active ? "dualsaber[blade_color]" : initial(icon_state)
+
+	var/new_item_state = icon_state
+	if(active && wielded)
+		new_item_state += "-wielded"
+
+	item_state_slots[slot_l_hand_str] = new_item_state
+	item_state_slots[slot_r_hand_str] = new_item_state
 
 /obj/item/melee/energy/sword/dualsaber/green
 	blade_color = "green"
@@ -316,7 +334,11 @@
 
 /obj/item/melee/energy/sword/dualsaber/activate(mob/living/user)
 	..()
-	icon_state = "dualsaber[blade_color]"
+	update_icon()
+
+/obj/item/melee/energy/sword/dualsaber/deactivate(mob/living/user)
+	..()
+	update_icon()
 
 /*
  *Energy Blade
@@ -346,6 +368,8 @@
 	force_drop = TRUE
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	hitsound = 'sound/effects/fighting/energy1.ogg'
+	active_max_bright = 0.75
+	brightness_color = "#68ff4d"
 	var/weakref/creator
 	var/datum/effect/effect/system/spark_spread/spark_system
 

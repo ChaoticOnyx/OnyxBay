@@ -18,12 +18,15 @@
 	var/down_flags_inv = 0
 	var/pull_mask = 0
 	var/hanging = 0
+	var/can_use_alt_layer = FALSE
 	var/atom/movable/screen/overlay = null
 
 /obj/item/clothing/mask/New()
 	if(pull_mask)
 		action_button_name = "Adjust Mask"
 		verbs += /obj/item/clothing/mask/proc/adjust_mask
+	if(can_use_alt_layer)
+		verbs += /obj/item/clothing/mask/proc/toggle_layer
 	..()
 
 /obj/item/clothing/mask/Destroy()
@@ -70,6 +73,24 @@
 				to_chat(usr, "You pull [src] up to cover your face.")
 			update_clothing_icon()
 			user.update_action_buttons()
+
+
+/obj/item/clothing/mask/proc/toggle_layer()
+	set name = "Switch Mask Layer"
+	set category = "Object"
+	set src in usr
+
+	if(!isliving(usr))
+		return
+
+	if(usr.stat)
+		return
+
+	if(!can_use_alt_layer)
+		return
+
+	use_alt_layer = !use_alt_layer
+	update_clothing_icon()
 
 /obj/item/clothing/mask/attack_self(mob/user)
 	if(pull_mask)
