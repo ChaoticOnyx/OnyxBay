@@ -76,6 +76,9 @@
 	//still_recharging_msg = "<span class='notice'>[name] is still recharging.</span>"
 	charge_counter = charge_max
 
+/datum/spell/proc/spell_learned(mob/user)
+	return
+
 /datum/spell/proc/process()
 	if(processing)
 		return
