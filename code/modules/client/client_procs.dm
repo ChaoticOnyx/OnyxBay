@@ -192,7 +192,7 @@
 	if(admin_datum)
 		if(admin_datum in GLOB.deadmined_list)
 			deadmin_holder = admin_datum
-			verbs |= /client/proc/readmin_self
+			grant_verb(src, /client/proc/readmin_self)
 		else
 			holder = admin_datum
 			GLOB.admins += src
