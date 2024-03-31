@@ -53,8 +53,6 @@
 
 	RefreshParts()
 
-	AddElement(/datum/element/simple_rotation)
-
 /obj/machinery/mining/drill/Process()
 
 	if(need_player_check)

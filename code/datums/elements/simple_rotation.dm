@@ -27,9 +27,11 @@
 
 /datum/element/simple_rotation/proc/on_alt_click(atom/clicked, mob/user)
 	clicked.rotate(user)
+	return TRUE
 
 /datum/element/simple_rotation/proc/on_ctrl_alt_click(atom/clicked, mob/user)
 	clicked.rotate_counter(user)
+	return TRUE
 
 /atom/proc/can_rotate(mob/user)
 	return !(!user || user.incapacitated() || !Adjacent(user))
