@@ -122,9 +122,9 @@
 	else
 		icon_state = "envelope[contents.len > 0]"
 
-/obj/item/folder/envelope/_examine_text(user)
+/obj/item/folder/envelope/examine(mob/user, infix)
 	. = ..()
-	. += "\nThe seal is [sealed ? "intact" : "broken"]."
+	. += "The seal is [sealed ? "intact" : "broken"]."
 
 /obj/item/folder/envelope/proc/sealcheck(user)
 	var/ripperoni = alert("Are you sure you want to break the seal on \the [src]?", "Confirmation","Yes", "No")

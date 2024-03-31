@@ -5,7 +5,7 @@
 	w_class = ITEM_SIZE_SMALL
 	var/cover_desc = "This one looks exactly like a standard welding mask - what's the point?"
 
-/obj/item/welding_cover/_examine_text(mob/user)
+/obj/item/welding_cover/examine(mob/user, infix)
 	. = ..()
 	. += " [cover_desc]"
 

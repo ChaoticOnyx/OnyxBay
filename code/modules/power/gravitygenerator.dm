@@ -124,10 +124,12 @@ GLOBAL_VAR(station_gravity_generator)
 	connected_areas = null
 	return ..()
 
-/obj/machinery/gravity_generator/main/_examine_text(mob/user)
+/obj/machinery/gravity_generator/main/examine(mob/user, infix)
 	. = ..()
+
 	if(panel_open)
-		. += "\nThe maintenance hatch is open."
+		. += "The maintenance hatch is open."
+
 	. += "[show_broken_info()]"
 
 /obj/machinery/gravity_generator/main/show_broken_info()
@@ -566,7 +568,7 @@ GLOBAL_VAR(station_gravity_generator)
 		QDEL_NULL(main_part)
 	return ..()
 
-/obj/machinery/gravity_generator/part/_examine_text(mob/user)
+/obj/machinery/gravity_generator/part/examine(mob/user, infix)
 	. = ..()
 	. += "[main_part.show_broken_info()]"
 

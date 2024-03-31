@@ -31,22 +31,27 @@
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 	new_timing(30)
 
-/obj/item/grenade/_examine_text(mob/user)
+/obj/item/grenade/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 0)
 		if(!QDELETED(safety_pin) && has_pin)
-			. += "\nThe safety pin is in place."
+			. += "The safety pin is in place."
 		else
-			. += "\nThere is no safety pin in place."
+			. += "There is no safety pin in place."
+
 		if(QDELETED(detonator))
-			. += "\nThere is no detonator in place."
+			. += "There is no detonator in place."
 			return
+
 		if(det_time > 1)
-			. += "\nThe timer is set to [det_time/10] seconds."
+			. += "The timer is set to [det_time/10] seconds."
 			return
+
 		if(det_time == null)
 			return
-		. += "\n\The [src] is set for instant detonation."
+
+		. += "\The [src] is set for instant detonation."
 
 /obj/item/grenade/attack_self(mob/user)
 	if(!active)

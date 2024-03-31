@@ -76,7 +76,7 @@
 
 	f_style = facial_hair_style
 
-	update_hair()
+	update_facial_hair()
 	return 1
 
 /mob/living/carbon/human/proc/reset_hair()
@@ -96,6 +96,7 @@
 		f_style = "Shaved"
 
 	update_hair()
+	update_facial_hair()
 
 /mob/living/carbon/human/proc/change_eye_color(red, green, blue)
 	if(red == r_eyes && green == g_eyes && blue == b_eyes)
@@ -143,7 +144,7 @@
 	g_facial = green
 	b_facial = blue
 
-	update_hair()
+	update_facial_hair()
 	return 1
 
 /mob/living/carbon/human/proc/change_skin_color(red, green, blue)

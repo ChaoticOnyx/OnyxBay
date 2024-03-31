@@ -107,15 +107,16 @@
 	return
 
 
-/obj/item/paper_bin/_examine_text(mob/user)
+/obj/item/paper_bin/examine(mob/user, infix)
 	. = ..()
-	if(get_dist(src, user) <= 1)
-		if(amount)
-			. += "\n<span class='notice'>There " + (amount > 1 ? "are [amount] papers" : "is one paper") + " in the bin.</span>"
-		else
-			. += "\n<span class='notice'>There are no papers in the bin.</span>"
-	return
 
+	if(get_dist(src, user) > 1)
+		return
+
+	if(amount)
+		. += SPAN_NOTICE("There [amount > 1 ? "are [amount] papers" : "is one paper"] in the bin.")
+	else
+		. += SPAN_NOTICE("There are no papers in the bin.")
 
 /obj/item/paper_bin/on_update_icon()
 	if(amount < 1)

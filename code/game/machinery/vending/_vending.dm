@@ -116,16 +116,16 @@
 		cartridge.extra = products
 		cartridge.build_inventory(gen_rand_amount)
 
-/obj/machinery/vending/_examine_text(mob/user)
+/obj/machinery/vending/examine(mob/user, infix)
 	. = ..()
-	if(.)
-		if(stat & BROKEN)
-			to_chat(user, SPAN("warning", "It's broken."))
-		else
-			if(health <= 0.4 * max_health)
-				to_chat(user, SPAN("warning", "It's heavily damaged!"))
-			else if(health < max_health)
-				to_chat(user, SPAN("warning", "It's showing signs of damage."))
+
+	if(stat & BROKEN)
+		. += SPAN("warning", "It's broken.")
+	else
+		if(health <= 0.4 * max_health)
+			. += SPAN("warning", "It's heavily damaged!")
+		else if(health < max_health)
+			. += SPAN("warning", "It's showing signs of damage.")
 
 /obj/machinery/vending/proc/take_damage(force)
 	if(health > 0)

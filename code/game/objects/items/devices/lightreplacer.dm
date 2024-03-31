@@ -78,12 +78,16 @@
 	failmsg = "The [name]'s refill light blinks red."
 	..()
 
-/obj/item/device/lightreplacer/_examine_text(mob/user)
+/obj/item/device/lightreplacer/examine(mob/user, infix)
 	. = ..()
-	if(get_dist(src, user) <= 2)
-		. += "\nIt has [uses] light\s remaining."
-		if (store_broken)
-			. += "\nIt is storing [stored()]/[max_stored] broken light\s."
+
+	if(get_dist(src, user) > 2)
+		return
+
+	. += "It has [uses] light\s remaining."
+
+	if (store_broken)
+		. += "It is storing [stored()]/[max_stored] broken light\s."
 
 /obj/item/device/lightreplacer/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/stack/material) && W.get_material_name() == MATERIAL_GLASS)

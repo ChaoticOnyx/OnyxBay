@@ -101,10 +101,10 @@
 	update_icon()
 	return amount_used
 
-/obj/item/cell/_examine_text(mob/user)
+/obj/item/cell/examine(mob/user, infix)
 	. = ..()
-	. += "\nThe label states it's capacity is <b>[maxcharge] Wh</b>."
-	. += "\nThe charge meter reads <b>[round(CELL_PERCENT(src), 0.1)]%<b>."
+	. += "The label states it's capacity is <b>[maxcharge] Wh</b>."
+	. += "The charge meter reads <b>[round(CELL_PERCENT(src), 0.1)]%<b>."
 
 /obj/item/cell/emp_act(severity)
 	//remove this once emp changes on dev are merged in
@@ -310,11 +310,13 @@
 	. = ..()
 	quantum_id = rand(10000, 99999)
 
-/obj/item/cell/quantum/_examine_text(mob/user)
+/obj/item/cell/quantum/examine(mob/user, infix)
 	. = ..()
-	. += "\nIts quantum ID is: #[quantum_id]"
+
+	. += "Its quantum ID is: #[quantum_id]"
+
 	if(partner)
-		. += "\nIt is recursively bound with the bluespace cell #[partner.quantum_id]"
+		. += "It is recursively bound with the bluespace cell #[partner.quantum_id]"
 
 /obj/item/cell/quantum/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/cell/quantum))

@@ -272,10 +272,10 @@
 	var/pump_cap = TRUE
 	brittle = FALSE
 
-/obj/item/reagent_containers/vessel/bottle/syrup_bottle/_examine_text(mob/user)
+/obj/item/reagent_containers/vessel/bottle/syrup_bottle/examine(mob/user, infix)
 	. = ..()
-	. += SPAN_NOTICE("It's pump is [pump_cap ? "on" : "removed"].\n")
-	. += SPAN_NOTICE("Alt-click to toggle the pump cap. \n")
+	. += SPAN_NOTICE("It's pump is [pump_cap ? "on" : "removed"].")
+	. += SPAN_NOTICE("Alt-click to toggle the pump cap.")
 
 /obj/item/reagent_containers/vessel/bottle/syrup_bottle/attackby(obj/item/W, mob/user)
 	if(pump_cap && W.is_open_container())

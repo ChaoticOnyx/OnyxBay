@@ -60,12 +60,13 @@
 	else
 		set_light(0)
 
-/obj/item/melee/baton/_examine_text(mob/user)
+/obj/item/melee/baton/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 1)
 		return
-	. += "\n[examine_cell()]"
-	return
+
+	. += "[examine_cell()]"
 
 // Addition made by Techhead0, thanks for fullfilling the todo!
 /obj/item/melee/baton/proc/examine_cell()

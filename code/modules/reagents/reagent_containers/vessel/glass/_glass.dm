@@ -29,22 +29,22 @@
 	drop_sound = SFX_DROP_GLASS
 	pickup_sound = SFX_PICKUP_GLASS
 
-/obj/item/reagent_containers/vessel/glass/_examine_text(mob/M)
+/obj/item/reagent_containers/vessel/glass/examine(mob/user, infix)
 	. = ..()
 
 	for(var/I in extras)
 		if(istype(I, /obj/item/glass_extra))
-			. += "\nThere is \a [I] in \the [src]."
+			. += "There is \a [I] in \the [src]."
 		else if(istype(I, /obj/item/reagent_containers/food/fruit_slice))
-			. += "\nThere is \a [I] on the rim."
+			. += "There is \a [I] on the rim."
 		else
-			. += "\nThere is \a [I] somewhere on the glass. Somehow."
+			. += "There is \a [I] somewhere on the glass. Somehow."
 
 	if(has_ice())
-		. += "\nThere is some ice floating in the drink."
+		. += "There is some ice floating in the drink."
 
 	if(has_fizz())
-		. += "\nIt is fizzing slightly."
+		. += "It is fizzing slightly."
 
 /obj/item/reagent_containers/vessel/glass/proc/has_ice()
 	if(reagents?.reagent_list.len > 0)

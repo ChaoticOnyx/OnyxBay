@@ -18,9 +18,9 @@
 	combustion = 0
 
 
-/obj/item/gun/energy/temperature/_examine_text(mob/user)
+/obj/item/gun/energy/temperature/examine(mob/user, infix)
 	. = ..()
-	. += "\nThe temperature sensor shows: [round(CONV_KELVIN_CELSIUS(temperature))]&deg;C"
+	. += "The temperature sensor shows: [round(CONV_KELVIN_CELSIUS(temperature))]&deg;C"
 
 /obj/item/gun/energy/temperature/Initialize()
 	. = ..()

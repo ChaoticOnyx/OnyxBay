@@ -179,16 +179,17 @@
 			add_fingerprint(user)
 			update_icon()
 
-/obj/structure/gas_stand/_examine_text(mob/user)
+/obj/structure/gas_stand/examine(mob/user, infix)
 	. = ..()
+
 	if(tank)
-		if (!is_loosen)
-			. += "\n\The [tank] connected to it."
-		. += "\nThe meter shows [round(tank.air_contents.return_pressure())]. The valve is [valve_opened == TRUE ? "open" : "closed"]."
-		if (tank.distribute_pressure == 0)
-			. += "\nUse wrench to replace tank."
+		if(!is_loosen)
+			. += "\The [tank] connected to it."
+		. += "The meter shows [round(tank.air_contents.return_pressure())]. The valve is [valve_opened == TRUE ? "open" : "closed"]."
+		if(tank.distribute_pressure == 0)
+			. += "Use wrench to replace tank."
 	else
-		. += "\n<span class='warning'>It is missing a tank!</span>"
+		. += SPAN_WARNING("It is missing a tank!")
 
 /obj/structure/gas_stand/think()
 	if(breather)

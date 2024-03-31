@@ -37,14 +37,15 @@
 /obj/structure/skele_stand/Bumped(atom/thing)
 	rattle_bones(null, thing)
 
-/obj/structure/skele_stand/_examine_text(mob/user)
+/obj/structure/skele_stand/examine(mob/user, infix)
 	. = ..()
+
 	if(swag.len)
 		var/list/swagnames = list()
 		for(var/slot in swag)
 			var/obj/item/clothing/C = swag[slot]
 			swagnames += C.get_examine_line()
-		. += "\n[gender == MALE ? "He" : "She"] is wearing [english_list(swagnames)]."
+		. += "[gender == MALE ? "He" : "She"] is wearing [english_list(swagnames)]."
 
 /obj/structure/skele_stand/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/pen))

@@ -27,12 +27,13 @@
 	var/mob/living/carbon/alien/diona/next_nymph
 	var/mob/living/carbon/alien/diona/last_nymph
 
-/mob/living/carbon/alien/diona/_examine_text(mob/user)
+/mob/living/carbon/alien/diona/examinate(atom/to_axamine)
 	. = ..()
+
 	if(holding_item)
-		to_chat(user, SPAN("notice", "It is holding \icon[holding_item] \a [holding_item]."))
+		. += SPAN("notice", "It is holding \icon[holding_item] \a [holding_item].")
 	if(hat)
-		to_chat(user, SPAN("notice", "It is wearing \icon[hat] \a [hat]."))
+		. += SPAN("notice", "It is wearing \icon[hat] \a [hat].")
 
 /mob/living/carbon/alien/diona/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
 	. = ..()

@@ -108,6 +108,12 @@
 	/// Sound played when this tool is used. Can be a list too.
 	var/tool_sound
 
+/obj/item/Topic(href, href_list, datum/topic_state/state)
+	. = ..()
+
+	if(href_list["examine_combat"])
+		to_chat(usr, EXAMINE_BLOCK(SPAN_NOTICE(get_combat_stats().Join("\n"))))
+
 /obj/item/New()
 	..()
 	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y
@@ -194,7 +200,9 @@
 
 	src.loc = T
 
-/obj/item/_examine_text(mob/user)
+/obj/item/examine(mob/user, infix)
+	. = ..()
+
 	var/size
 	switch(src.w_class)
 		if(ITEM_SIZE_TINY)
@@ -209,8 +217,8 @@
 			size = "bulky"
 		if(ITEM_SIZE_HUGE + 1 to INFINITY)
 			size = "huge"
-	var/desc_comp = "" //For "description composite"
-	desc_comp += "It is a [size] item."
+
+	. += "It is a [size] item."
 
 	if(force)
 		var/desc_weight
@@ -234,31 +242,97 @@
 		else if(src.mod_handy < 1.25) desc_handy = "handy"
 		else if(src.mod_handy < 1.65) desc_handy = "really handy"
 		else desc_handy = "outstandingly handy"
-		desc_comp += "<BR>It makes [desc_weight], [desc_reach], and [desc_handy] weapon."
+
+		. += "<BR>It makes [desc_weight], [desc_reach], and [desc_handy] weapon."
 
 	if(hasHUD(user, HUD_SCIENCE)) //Mob has a research scanner active.
-		desc_comp += "<BR>*--------* <BR>"
+		. += "<BR>*--------* <BR>"
 
 		if(origin_tech)
-			desc_comp += SPAN("notice", "Testing potentials:<BR>")
+			. += SPAN("notice", "Testing potentials:<BR>")
 			//var/list/techlvls = params2list(origin_tech)
 			for(var/T in origin_tech)
-				desc_comp += "Tech: Level [origin_tech[T]] [CallTechName(T)] <BR>"
+				. += "Tech: Level [origin_tech[T]] [CallTechName(T)] <BR>"
 		else
-			desc_comp += "No tech origins detected.<BR>"
+			. += "No tech origins detected.<BR>"
 
 		if(LAZYLEN(matter))
-			desc_comp += SPAN("notice", "Extractable materials:<BR>")
+			. += SPAN("notice", "Extractable materials:<BR>")
 			for(var/mat in matter)
-				desc_comp += "[get_material_by_name(mat)]<BR>"
+				. += "[get_material_by_name(mat)]<BR>"
 		else
-			desc_comp += SPAN("danger", "No extractable materials detected.<BR>")
-		desc_comp += "*--------*"
+			. += SPAN("danger", "No extractable materials detected.<BR>")
 
-	//if(weapon_desc)
-	//	desc_comp += handle_weapon_desc()
+	if(force || block_tier == BLOCK_TIER_ADVANCED || mod_shield == BLOCK_TIER_PROJECTILE)
+		. += "<a href='?src=[ref(src)];examine_combat=1'>Show combat information.</a>"
 
-	return ..(user, "", desc_comp)
+/// Generates and returns a list of combat-related stats.
+/obj/item/proc/get_combat_stats()
+	RETURN_TYPE(/list)
+
+	. = list()
+
+	if(force)
+		switch(mod_weight)
+			if(0 to 0.4)
+				. += "It's very light."
+			if(0.4 to 0.8)
+				. += "It's light."
+			if(0.8 to 1.25)
+				. += "It has moderate weight."
+			if(1.25 to 1.65)
+				. += "It's heavy."
+			else
+				. += "It's very heavy"
+
+		switch(mod_reach)
+			if(0 to 0.4)
+				. += "It's reach is very short."
+			if(0.4 to 0.8)
+				. += "It's reach is short."
+			if(0.8 to 1.25)
+				. += "It's reach is average."
+			if(1.25 to 1.65)
+				. += "It's reach is long."
+			else
+				. += "It's reach is very long."
+
+		switch(mod_handy)
+			if(0 to 0.4)
+				. += "It's unhandy."
+			if(0.4 to 0.8)
+				. += "It's not that handy."
+			if(0.8 to 1.25)
+				. += "It's handy."
+			if(1.25 to 1.65)
+				. += "It's really handy."
+			else
+				. += "It's outstandingly handy."
+
+		if(armor_penetration)
+			switch(armor_penetration)
+				if(1 to 19)
+					. += "It's good for penetrating light armor."
+				if(20 to 39)
+					. += "It's good for penetrating medium armor."
+				if(40 to 59)
+					. += "It's good for penetrating above-average armor."
+				if(60 to 79)
+					. += "It's good for penetrating heavy armor."
+				if(80 to 99)
+					. += "It's exceptionally good for penetrating most armor."
+				if(100 to INFINITY)
+					. += "It goes through most armor as a hot knife through butter."
+		else
+			. += "It's not that good at penetrating armor."
+
+		. += "It's attack cooldown is about [round((attack_cooldown + DEFAULT_WEAPON_COOLDOWN * (mod_weight / mod_handy)) * mod_speed * 0.1, 0.1)] seconds."
+		. += "It has pary window of [round(mod_handy * 12 * 0.1, 0.1)] seconds."
+
+	if(block_tier == BLOCK_TIER_ADVANCED)
+		. += "It may block or reflect projectiles really well."
+	else if(mod_shield == BLOCK_TIER_PROJECTILE)
+		. += "It may block projectiles."
 
 /obj/item/attack_hand(mob/user)
 	if(!user)

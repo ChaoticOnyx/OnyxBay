@@ -71,13 +71,16 @@
 			node = target
 			break
 
-/obj/machinery/atmospherics/unary/cryo_cell/_examine_text(mob/user)
+/obj/machinery/atmospherics/unary/cryo_cell/examine(mob/user, infix)
 	. = ..()
-	if(user.Adjacent(src))
-		if(beaker)
-			. += "\nIt is loaded with a beaker."
-		if(emagged)
-			. += "\nThe panel is loose and the circuitry is charred."
+
+	if(!user.Adjacent(src))
+		return
+
+	if(beaker)
+		. += "It is loaded with a beaker."
+	if(emagged)
+		. += "The panel is loose and the circuitry is charred."
 
 /obj/machinery/atmospherics/unary/cryo_cell/Process()
 	if(stat & (BROKEN|NOPOWER))

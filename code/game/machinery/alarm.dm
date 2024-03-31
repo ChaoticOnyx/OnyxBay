@@ -849,12 +849,13 @@
 
 	return ..()
 
-/obj/machinery/alarm/_examine_text(mob/user)
-	. = ..(user)
-	if (buildstage < 2)
-		. += "\nIt is not wired."
-	if (buildstage < 1)
-		. += "\nThe circuit is missing."
+/obj/machinery/alarm/examine(mob/user, infix)
+	. = ..()
+
+	if(buildstage < 2)
+		. += "It is not wired."
+	if(buildstage < 1)
+		. += "The circuit is missing."
 /*
 AIR ALARM CIRCUIT
 Just a object used in constructing air alarms

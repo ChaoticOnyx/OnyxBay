@@ -476,7 +476,8 @@
 		magpulse = 0
 		canremove = 1
 
-/obj/item/clothing/shoes/magboots/vox/_examine_text(mob/user)
+/obj/item/clothing/shoes/magboots/vox/examine(mob/user, infix)
 	. = ..()
-	if (magpulse)
-		. += "\nIt would be hard to take these off without relaxing your grip first."//theoretically this message should only be seen by the wearer when the claws are equipped.
+
+	if(magpulse)
+		. += "It would be hard to take these off without relaxing your grip first."//theoretically this message should only be seen by the wearer when the claws are equipped.

@@ -96,7 +96,7 @@
 /datum/modifier/proc/tick()
 	return
 
-/datum/modifier/proc/_examine_text()
+/datum/modifier/proc/examine()
 	return
 
 /mob/living

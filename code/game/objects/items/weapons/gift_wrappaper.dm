@@ -188,10 +188,11 @@
 	return
 
 
-/obj/item/wrapping_paper/_examine_text(mob/user)
+/obj/item/wrapping_paper/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1)
-		. += "\n[text("There is about [] square units of paper left!", src.amount)]"
+		. += "[text("There is about [] square units of paper left!", src.amount)]"
 
 /obj/item/wrapping_paper/attack(mob/target as mob, mob/user as mob)
 	if (!istype(target, /mob/living/carbon/human)) return

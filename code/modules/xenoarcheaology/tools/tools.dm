@@ -12,10 +12,11 @@
 	var/turf/T = get_turf(src)
 	to_chat(user, "<span class='notice'>\icon[src] \The [src] flashes <i>[T.x]:[T.y]:[T.z]</i>.</span>")
 
-/obj/item/device/gps/_examine_text(mob/user)
+/obj/item/device/gps/examine(mob/user, infix)
 	. = ..()
+
 	var/turf/T = get_turf(src)
-	. += "\n<span class='notice'>\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.</span>"
+	. += SPAN_NOTICE("\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.")
 
 /obj/item/device/measuring_tape
 	name = "measuring tape"

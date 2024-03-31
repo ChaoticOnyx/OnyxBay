@@ -41,11 +41,11 @@
 	if(!isturf(loc))
 		user.put_in_active_hand(SK)
 
-/obj/item/organ/external/head/_examine_text(mob/user)
+/obj/item/organ/external/head/examine(mob/user, infix)
 	. = ..()
 
 	if(forehead_graffiti && graffiti_style)
-		. += "\n<span class='notice'>It has \"[forehead_graffiti]\" written on it in [graffiti_style]!</span>"
+		. += SPAN_NOTICE("It has \"[forehead_graffiti]\" written on it in [graffiti_style]!")
 
 /obj/item/organ/external/head/proc/write_on(mob/penman, style)
 	var/head_name = name
@@ -152,23 +152,12 @@
 	SetOverlays(mob_overlays)
 
 	AddOverlays(get_hair_icon()) // Hair is handled separately for mob icon so we do not add it to mob_overlays Maybe this should change sometime
+	AddOverlays(get_facial_hair_icon()) // Hair is handled separately for mob icon so we do not add it to mob_overlays Maybe this should change sometime
 
 /obj/item/organ/external/head/proc/get_hair_icon()
 	var/image/res = image(species.icon_template,"")
 	if(!owner)
 		return res
-
-	if(owner.f_style)
-		var/datum/sprite_accessory/FH = GLOB.facial_hair_styles_list[owner.f_style]
-		if(FH?.species_allowed && species.facial_hair_key && (species.name in FH.species_allowed))
-			var/icon/FHI
-			if(istype(owner.body_build,/datum/body_build/slim))
-				FHI = icon(GLOB.facial_hair_icons["slim"][species.hair_key], FH.icon_state)
-			else
-				FHI = icon(GLOB.facial_hair_icons["default"][species.hair_key], FH.icon_state)
-			if(FH.do_coloration)
-				FHI.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), FH.blend)
-			res.AddOverlays(FHI)
 
 	if(owner.h_style)
 		var/icon/HI
@@ -234,8 +223,29 @@
 			else
 				I.Blend(color, ICON_ADD)
 			ADD_SORTED(sorted_head_markings, list(list(M.draw_order, I)), /proc/cmp_marking_order)
+
 	for(var/entry in sorted_head_markings)
 		res.AddOverlays(entry[2])
+
+	return res
+
+/obj/item/organ/external/head/proc/get_facial_hair_icon()
+	var/image/res = image(species.icon_template, "")
+	if(!owner)
+		return res
+
+	if(owner.f_style)
+		var/datum/sprite_accessory/FH = GLOB.facial_hair_styles_list[owner.f_style]
+		if(FH?.species_allowed && species.facial_hair_key && (species.name in FH.species_allowed))
+			var/icon/FHI
+			if(istype(owner.body_build,/datum/body_build/slim))
+				FHI = icon(GLOB.facial_hair_icons["slim"][species.hair_key], FH.icon_state)
+			else
+				FHI = icon(GLOB.facial_hair_icons["default"][species.hair_key], FH.icon_state)
+			if(FH.do_coloration)
+				FHI.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), FH.blend)
+			res.AddOverlays(FHI)
+
 	return res
 
 /obj/item/organ/external/head/update_icon_drop(mob/living/carbon/human/powner)
@@ -243,6 +253,7 @@
 		return
 	owner = powner // This is kinda hackly ngl
 	get_hair_icon()
+	get_facial_hair_icon()
 	update_icon()
 	owner = null
 

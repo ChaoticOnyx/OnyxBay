@@ -12,11 +12,11 @@
 
 	var/ammoamt = 40
 
-/obj/item/rcd_ammo/_examine_text(mob/user)
+/obj/item/rcd_ammo/examine(mob/user, infix)
 	. = ..()
 
 	if(get_dist(src, user) <= 1)
-		. += "\n" + SPAN("notice", "It has [ammoamt] unit\s of matter left.")
+		. += SPAN("notice", "It has [ammoamt] unit\s of matter left.")
 
 /obj/item/rcd_ammo/large
 	name = "high-capacity matter cartridge"

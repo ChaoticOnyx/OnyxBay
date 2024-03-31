@@ -52,11 +52,12 @@
 	QDEL_NULL(seclevel_overlay)
 	return ..()
 
-/obj/machinery/firealarm/_examine_text(mob/user)
+/obj/machinery/firealarm/examine(mob/user, infix)
 	. = ..()
+
 	if(detecting && !wiresexposed)
 		var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
-		. += "\nThe current alert level is <span style='color:[security_state.current_security_level.light_color_alarm];'>[security_state.current_security_level.name]</span>."
+		. += "The current alert level is <span style='color:[security_state.current_security_level.light_color_alarm];'>[security_state.current_security_level.name]</span>."
 
 /obj/machinery/firealarm/on_update_icon()
 	if(!status_overlays)

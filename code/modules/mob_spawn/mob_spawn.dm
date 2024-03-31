@@ -69,6 +69,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 		else
 			spawned_human.change_skin_tone(random_skin_tone(spawned_human.species))
 		spawned_human.update_hair()
+		spawned_human.update_facial_hair()
 		spawned_human.update_body()
 
 /obj/effect/mob_spawn/proc/name_mob(mob/living/spawned_mob, forced_name)

@@ -171,23 +171,24 @@
 /obj/structure/closet/proc/WillContain()
 	return null
 
-/obj/structure/closet/_examine_text(mob/user)
+/obj/structure/closet/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1 && !opened)
 		var/content_size = 0
 		for(var/atom/movable/AM in src.contents)
 			if(!AM.anchored)
 				content_size += content_size(AM)
 		if(!content_size)
-			. += "\nIt is empty."
+			. += "It is empty."
 		else if(storage_capacity > content_size*4)
-			. += "\nIt is barely filled."
+			. += "It is barely filled."
 		else if(storage_capacity > content_size*2)
-			. += "\nIt is less than half full."
+			. += "It is less than half full."
 		else if(storage_capacity > content_size)
-			. += "\nThere is still some free space."
+			. += "There is still some free space."
 		else
-			. += "\nIt is full."
+			. += "It is full."
 
 	if(isghost(user))
 		var/mob/observer/ghost/G = user
@@ -197,7 +198,7 @@
 		if(src.opened)
 			return
 
-		. += "\nIt contains: [items_english_list(contents)]."
+		. += "It contains: [items_english_list(contents)]."
 
 /obj/structure/closet/CanPass(atom/movable/mover, turf/target)
 	if(wall_mounted)

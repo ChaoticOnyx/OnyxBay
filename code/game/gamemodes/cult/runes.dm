@@ -119,8 +119,9 @@
 		else
 			animate(src)
 
-/obj/effect/rune/_examine_text(mob/user)
-	. = ..(user)
+/obj/effect/rune/examine(mob/user, infix)
+	. = ..()
+
 	if(iscultist(user) || isghost(user))
 		. += "This is \a [cultname] rune."
 
@@ -288,10 +289,11 @@
 		A.forceMove(T)
 	return ..()
 
-/obj/effect/rune/teleport/_examine_text(mob/user)
-	. = ..(user)
+/obj/effect/rune/teleport/examine(mob/user, infix)
+	. = ..()
+
 	if(iscultist(user))
-		. += "<br>Its name is [destination]."
+		. += "It's name is [destination]."
 
 /obj/effect/rune/teleport/cast(mob/living/user)
 	if(user.loc == src)
@@ -413,15 +415,16 @@
 		rune = null
 	return ..()
 
-/obj/effect/cultwall/_examine_text(mob/user)
-	. = ..(user)
+/obj/effect/cultwall/examine(mob/user, infix)
+	. = ..()
+
 	if(iscultist(user))
 		if(health == max_health)
-			. += "<br>It is fully intact."
+			. += "It is fully intact."
 		else if(health > max_health * 0.5)
-			. += "<br>It is damaged."
+			. += "It is damaged."
 		else
-			. += "<br>It is about to dissipate."
+			. += "It is about to dissipate."
 
 /obj/effect/cultwall/attack_hand(mob/living/user)
 	if(iscultist(user))

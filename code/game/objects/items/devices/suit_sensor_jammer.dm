@@ -98,16 +98,20 @@
 	var/new_range = range + (rand(0,6) / severity) - (rand(0,3) / severity)
 	set_range(new_range)
 
-/obj/item/device/suit_sensor_jammer/_examine_text(user)
+/obj/item/device/suit_sensor_jammer/examine(mob/user, infix)
 	. = ..()
-	if(get_dist(src, user) <= 3)
-		var/list/message = list()
-		message += "This device appears to be [active ? "" : "in"]active and "
-		if(bcell)
-			message += "displays a charge level of [CELL_PERCENT(bcell)]%."
-		else
-			message += "is lacking a cell."
-		. += "\n[jointext(message, " ")]"
+
+	if(get_dist(src, user) > 3)
+		return
+
+	var/list/message = list()
+	message += "This device appears to be [active ? "" : "in"]active and "
+	if(bcell)
+		message += "displays a charge level of [CELL_PERCENT(bcell)]%."
+	else
+		message += "is lacking a cell."
+
+	. += jointext(message, " ")
 
 /obj/item/device/suit_sensor_jammer/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

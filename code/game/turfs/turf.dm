@@ -304,16 +304,14 @@ var/const/enterloopsanity = 100
 /turf/allow_drop()
 	return TRUE
 
-/turf/_examine_text(mob/user, infix, suffix)
+/turf/examine(mob/user, infix)
 	. = ..()
 
 	if(hasHUD(user, HUD_SCIENCE))
-		. += "\nStopping Power:"
+		. += "Stopping Power:"
 
-		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
-		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
-
-	return .
+		. += "α-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
+		. += "β-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
 
 /turf/proc/get_footstep_sound()
 	if(footstep_sound)

@@ -17,12 +17,13 @@
 	else
 		return temp_access
 
-/obj/item/card/id/guest/_examine_text(mob/user)
+/obj/item/card/id/guest/examine(mob/user, infix)
 	. = ..()
-	if (world.time < expiration_time)
-		. += "\n<span class='notice'>This pass expires at [worldtime2stationtime(expiration_time)].</span>"
+
+	if(world.time < expiration_time)
+		. += SPAN_NOTICE("This pass expires at [worldtime2stationtime(expiration_time)].")
 	else
-		. += "\n<span class='warning'>It expired at [worldtime2stationtime(expiration_time)].</span>"
+		. += SPAN_NOTICE("It expired at [worldtime2stationtime(expiration_time)].")
 
 /obj/item/card/id/guest/read()
 	if (world.time > expiration_time)

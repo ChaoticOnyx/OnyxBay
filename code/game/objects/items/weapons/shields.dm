@@ -223,12 +223,13 @@
 	else
 		set_light(0)
 
-/obj/item/shield/barrier/_examine_text(mob/user)
+/obj/item/shield/barrier/examine(mob/user, infix)
 	. = ..()
+
 	if(cell)
-		. += SPAN("notice", "\nHas <b>[CELL_PERCENT(cell)]%</b> charge left.")
+		. += SPAN("notice", "Has <b>[CELL_PERCENT(cell)]%</b> charge left.")
 	else
-		. += "\n<b>Has no battery installed.</b>"
+		. += "<b>Has no battery installed.</b>"
 
 /obj/item/shield/barrier/attackby(obj/item/I, mob/user)
 	if(isScrewdriver(I))
