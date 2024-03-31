@@ -158,6 +158,7 @@
 		H.update_body()
 		H.update_eyes()
 		H.update_hair()
+		H.update_facial_hair()
 
 		return 1
 	else
