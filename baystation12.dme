@@ -1851,7 +1851,6 @@
 #include "code\modules\examine\descriptions\atmospherics.dm"
 #include "code\modules\examine\descriptions\drink_containers.dm"
 #include "code\modules\examine\descriptions\engineering.dm"
-#include "code\modules\examine\descriptions\item.dm"
 #include "code\modules\examine\descriptions\machinery.dm"
 #include "code\modules\examine\descriptions\medical.dm"
 #include "code\modules\examine\descriptions\mobs.dm"
