@@ -126,14 +126,16 @@ var/server_name = "OnyxBay"
 	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_TICKS_TO_RUN, "How many ticks does this subsystem take to run on avg")
 	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_TICK_USAGE, "Average tick usage")
 	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_TICK_OVERRUN, "Average tick overrun")
-	rustg_prom_counter_register(PROM_RUNTIMES, "Total count of runtimes")
-	rustg_prom_gauge_int_register(PROM_TOTAL_PLAYERS, "Total count of players")
+	rustg_prom_counter_register(PROM_RUNTIMES, "Total amount of runtimes")
+	rustg_prom_gauge_int_register(PROM_TOTAL_PLAYERS, "Total amount of players")
 	rustg_prom_gauge_int_register(PROM_GC_QUEUED, "Count of queued datums to be deleted")
 	rustg_prom_counter_register(PROM_GC_HARD_DELS, "Count of hard deleted datums")
 	rustg_prom_counter_register(PROM_GC_COLLECTED, "Count of garbage collected datums")
 	rustg_prom_counter_register(PROM_GC_ITEM_QDELS, "Total number of times it's passed thru qdel")
 	rustg_prom_counter_register(PROM_GC_ITEM_FAILURES, "Times it was queued for soft deletion but failed to soft delete.")
 	rustg_prom_counter_register(PROM_GC_ITEM_HARD_DELETES, "Different from failures because it also includes QDEL_HINT_HARDDEL deletions")
+	rustg_prom_gauge_int_register(PROM_MOBS_TOTAL, "Total amount of mobs")
+	rustg_prom_gauge_int_register(PROM_MOBS_INSTANCE_TOTAL, "Total amount of mob's instances")
 
 #define RECOMMENDED_VERSION 514
 /world/New()
