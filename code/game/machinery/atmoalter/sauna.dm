@@ -91,11 +91,11 @@
 			playsound(get_turf(src), GET_SFX(SFX_USE_KNOB), 45, TRUE)
 		if("Increase Temperature")
 			target_temperature = min(max_temperature, target_temperature + TEMPERATURE_INCREMENT)
-			show_splash_text(user, "temperature increased")
+			show_splash_text(user, "temperature increased", "You increase \the [src]'s target temperature to [CONV_KELVIN_CELSIUS] celsius.")
 			playsound(get_turf(src), GET_SFX(SFX_USE_KNOB), 45, TRUE)
 		if("Decrease Temperature")
 			target_temperature = max(min_temperature, target_temperature - TEMPERATURE_INCREMENT)
-			show_splash_text(user, "temperature decreased")
+			show_splash_text(user, "temperature decreased", "You decrease \the [src]'s target temperature to [CONV_KELVIN_CELSIUS] celsius.")
 			playsound(get_turf(src), GET_SFX(SFX_USE_KNOB), 45, TRUE)
 
 /obj/machinery/sauna/attackby(obj/item/attack_item, mob/living/user, params)
