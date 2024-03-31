@@ -135,24 +135,25 @@ Please contact me on #coderbus IRC. ~Carn x
 #define HO_BELT_LAYER             14
 #define HO_SUIT_LAYER             15
 #define HO_TAIL_LAYER             16		//bs12 specific. this hack is probably gonna come back to haunt me
-#define HO_GLASSES_LAYER          17
-#define HO_BELT_LAYER_ALT         18
-#define HO_SUIT_STORE_LAYER       19
-#define HO_BACK_LAYER             20
-#define HO_DEFORM_LAYER           21
-#define HO_HAIR_LAYER             22
-#define HO_GOGGLES_LAYER          23
-#define HO_EARS_LAYER             24
-#define HO_FACEMASK_LAYER         25
-#define HO_HEAD_LAYER             26
-#define HO_COLLAR_LAYER           27
-#define HO_HANDCUFF_LAYER         28
-#define HO_L_HAND_LAYER           29
-#define HO_R_HAND_LAYER           30
-#define HO_FIRE_LAYER             31		//If you're on fire
-#define HO_MODIFIER_EFFECTS_LAYER 32
-#define HO_TARGETED_LAYER         33		//BS12: Layer for the target overlay from weapon targeting system
-#define HO_TOTAL_LAYERS           33
+#define HO_FACEMASK_ALT_LAYER     17
+#define HO_GLASSES_LAYER          18
+#define HO_BELT_LAYER_ALT         19
+#define HO_SUIT_STORE_LAYER       20
+#define HO_BACK_LAYER             21
+#define HO_DEFORM_LAYER           22
+#define HO_HAIR_LAYER             23
+#define HO_GOGGLES_LAYER          24
+#define HO_EARS_LAYER             25
+#define HO_FACEMASK_LAYER         26
+#define HO_HEAD_LAYER             27
+#define HO_COLLAR_LAYER           28
+#define HO_HANDCUFF_LAYER         29
+#define HO_L_HAND_LAYER           30
+#define HO_R_HAND_LAYER           31
+#define HO_FIRE_LAYER             32		//If you're on fire
+#define HO_MODIFIER_EFFECTS_LAYER 33
+#define HO_TARGETED_LAYER         34		//BS12: Layer for the target overlay from weapon targeting system
+#define HO_TOTAL_LAYERS           34
 //////////////////////////////////
 
 /mob/living/carbon/human
@@ -574,10 +575,12 @@ var/global/list/damage_icon_parts = list()
 
 // Mask
 /mob/living/carbon/human/update_inv_wear_mask(update_icons=1)
-	if( wear_mask && ( istype(wear_mask, /obj/item/clothing/mask) || istype(wear_mask, /obj/item/clothing/accessory) || istype(wear_mask, /obj/item/grenade) || istype(wear_mask, /obj/item/holder)) && !(head && head.flags_inv & HIDEMASK))
-		overlays_standing[HO_FACEMASK_LAYER] = wear_mask.get_mob_overlay(src,slot_wear_mask_str)
+	if(wear_mask && !(head && head.flags_inv & HIDEMASK))
+		overlays_standing[wear_mask.use_alt_layer ? HO_FACEMASK_ALT_LAYER : HO_FACEMASK_LAYER] = wear_mask.get_mob_overlay(src, slot_wear_mask_str)
+		overlays_standing[wear_mask.use_alt_layer ? HO_FACEMASK_LAYER : HO_FACEMASK_ALT_LAYER] = null
 	else
 		overlays_standing[HO_FACEMASK_LAYER] = null
+		overlays_standing[HO_FACEMASK_ALT_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 

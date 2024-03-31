@@ -23,6 +23,8 @@
 		slot_l_hand_str = "breathmask",
 		slot_r_hand_str = "breathmask",
 		)
+	use_alt_layer = TRUE
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/breath/medical
 	desc = "A close-fitting sterile mask that can be manually connected to an air supply for treatment."
@@ -36,6 +38,8 @@
 		slot_l_hand_str = "m_mask",
 		slot_r_hand_str = "m_mask",
 		)
+	use_alt_layer = FALSE
+	can_use_alt_layer = FALSE
 
 /obj/item/clothing/mask/breath/anesthetic
 	desc = "A close-fitting sterile mask that is used by the anesthetic wallmounted pump."
@@ -48,6 +52,8 @@
 		slot_l_hand_str = "m_mask",
 		slot_r_hand_str = "m_mask",
 		)
+	use_alt_layer = FALSE
+	can_use_alt_layer = FALSE
 
 /obj/item/clothing/mask/breath/emergency
 	desc = "A close-fitting  mask that is used by the wallmounted emergency oxygen pump."

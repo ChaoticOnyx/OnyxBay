@@ -15,13 +15,14 @@
 	icon_state = "tape_cross"
 	item_state = null
 	w_class = ITEM_SIZE_TINY
-
+	use_alt_layer = TRUE
 
 /obj/item/clothing/mask/muzzle/ballgag
 	name = "Ballgag"
 	desc = "For when Master wants silence."
 	icon_state = "ballgag"
 	item_state = "ballgag"
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/muzzle/Initialize()
 	. = ..()
@@ -54,6 +55,7 @@
 		RADIATION_BETA_PARTICLE = 2.2 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+	use_alt_layer = TRUE
 
 /obj/item/clothing/mask/fakemoustache
 	name = "fake moustache"
@@ -62,6 +64,7 @@
 	flags_inv = HIDEFACE
 	body_parts_covered = NO_BODYPARTS
 	visible_name = "Scoundrel"
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/snorkel
 	name = "Snorkel"
@@ -78,6 +81,7 @@
 	body_parts_covered = NO_BODYPARTS
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/uwu
 	name = "UwU mask"
@@ -87,6 +91,7 @@
 	body_parts_covered = NO_BODYPARTS
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
+	use_alt_layer = TRUE
 
 /obj/item/clothing/mask/redwscarf
 	name = "red white scarf"
@@ -96,6 +101,7 @@
 	body_parts_covered = NO_BODYPARTS
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/greenscarf
 	name = "green scarf"
@@ -104,6 +110,7 @@
 	item_state = "green_scarf"
 	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/ninjascarf
 	name = "ninja scarf"
@@ -112,6 +119,7 @@
 	item_state = "ninja_scarf"
 	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/sbluescarf
 	name = "stripped blue scarf"
@@ -120,6 +128,7 @@
 	item_state = "sblue_scarf"
 	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/sgreenscarf
 	name = "stripped green scarf"
@@ -128,6 +137,7 @@
 	item_state = "sgreen_scarf"
 	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/sredscarf
 	name = "stripped red scarf"
@@ -136,6 +146,7 @@
 	item_state = "sred_scarf"
 	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/redscarf
 	name = "red scarf"
@@ -144,6 +155,7 @@
 	item_state = "red_scarf"
 	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/ai
 	name = "camera MIU"
@@ -155,6 +167,9 @@
 	action_button_name = "Toggle MUI"
 	origin_tech = list(TECH_DATA = 5, TECH_ENGINEERING = 5)
 	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0) //Well it's made of some sort of plastic.
+	use_alt_layer = TRUE
+	can_use_alt_layer = TRUE
+
 	var/active = FALSE
 	var/mob/observer/eye/cameranet/eye
 
@@ -299,6 +314,8 @@
 		RADIATION_BETA_PARTICLE = 2.18 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+	use_alt_layer = TRUE
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/bandana/equipped(mob/user, slot)
 	switch(slot)
@@ -381,6 +398,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.8
+	can_use_alt_layer = TRUE
 
 /obj/item/clothing/mask/plasticbag
 	name = "plastic bag"
