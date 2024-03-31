@@ -51,3 +51,9 @@
 		to_chat(src, "<b>Current Storyteller:</b> N/A")
 	else
 		to_chat(src, "<b>Current Storyteller:</b> [SSstoryteller.character.name] - [SSstoryteller.character.desc]")
+
+/client/verb/fix_stat_panel()
+	set name = "Fix Stat Panel"
+	set hidden = TRUE
+
+	init_verbs()
