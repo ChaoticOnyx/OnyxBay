@@ -43,3 +43,12 @@
 	req_components = list(
 							/obj/item/stock_parts/micro_laser = 3,
 							/obj/item/stock_parts/manipulator = 1)
+
+/obj/item/circuitboard/microwave
+	name = T_BOARD("sauna")
+	build_path = /obj/machinery/sauna
+	board_type = "machine"
+	origin_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 2)
+	req_components = list(
+							/obj/item/reagent_containers/vessel/beaker/large = 1,
+							/obj/item/stock_parts/capacitor = 1)

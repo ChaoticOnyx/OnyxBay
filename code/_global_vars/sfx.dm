@@ -694,6 +694,11 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/machines/button3.ogg',
 		'sound/machines/button4.ogg'
 	),
+	SFX_USE_KNOB = list(
+		'sound/machines/knob1.ogg',
+		'sound/machines/knob2.ogg',
+		'sound/machines/knob3.ogg'
+	),
 	SFX_USE_LIGHTER = list(
 		'sound/items/lighter1.ogg',
 		'sound/items/lighter2.ogg',

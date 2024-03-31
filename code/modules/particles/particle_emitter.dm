@@ -33,3 +33,32 @@
 
 /atom/movable/particle_emitter/heat/high
 	particles = new /particles/heat/high()
+
+/atom/movable/particle_emitter/steam
+	plane = DUST_PLANE
+	particles = new /particles/mist()
+	layer = ABOVE_PROJECTILE_LAYER
+	render_target = STEAM_EFFECT_TARGET
+	alpha = 127
+	invisibility = INVISIBILITY_LIGHTING
+
+/atom/movable/particle_emitter/steam/Initialize(mapload, time, color)
+	. = ..()
+	filters += filter(type = "blur", size = 2)
+	filters += filter(type = "wave", x = 0, y = 0, size = rand() * 2.5 + 0.5)
+
+/atom/movable/particle_emitter/fire_smoke
+	anchored = TRUE
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	appearance_flags = PIXEL_SCALE | TILE_BOUND
+	plane = DEFAULT_PLANE
+	layer = FIRE_LAYER
+	particles = new /particles/fire_smoke()
+
+/atom/movable/particle_emitter/smoke_steam
+	anchored = TRUE
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	appearance_flags = PIXEL_SCALE | TILE_BOUND
+	plane = DEFAULT_PLANE
+	layer = FIRE_LAYER
+	particles = new /particles/smoke/steam()

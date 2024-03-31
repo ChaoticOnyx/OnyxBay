@@ -299,6 +299,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
 
 	var/obj/gas_heat_object = null
+	var/obj/steam_object = null
 
 /atom/movable/renderer/heat/Initialize(mapload, mob/owner)
 	. = ..()
@@ -313,6 +314,10 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 		vis_contents -= gas_heat_object
 		QDEL_NULL(gas_heat_object)
 
+	if(steam_object)
+		vis_contents -= steam_object
+		QDEL_NULL(steam_object)
+
 	if(!owner?.client)
 		return
 
@@ -323,10 +328,13 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 			gas_heat_object = new /atom/movable/heat_effect(null)
 		if(GLOB.PREF_MED)
 			gas_heat_object = new /atom/movable/particle_emitter/heat(null)
+			steam_object = new /atom/movable/particle_emitter/steam(null)
 		else
 			gas_heat_object = new /atom/movable/particle_emitter/heat/high(null)
+			steam_object = new /atom/movable/particle_emitter/steam(null)
 
 	vis_contents += gas_heat_object
+	vis_contents += steam_object
 
 /atom/movable/heat_effect
 	icon = 'icons/effects/fire.dmi'
