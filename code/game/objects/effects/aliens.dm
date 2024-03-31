@@ -134,15 +134,18 @@
 		to_chat(M, "<span class='alium'>You caress \the [src] as it hatches at your command.</alium>")
 	hatch()
 
-/obj/structure/alien/egg/_examine_text(mob/user)
+/obj/structure/alien/egg/examine(mob/user, infix)
 	. = ..()
-	if(isliving(user))
-		var/mob/living/M = user
-		if(M.faction == "xenomorph")
-			if(progress < progress_max)
-				. += "\nIt's not ready to hatch yet..."
-			else
-				. += "\nIt's ready to hatch!"
+
+	if(!isliving(user))
+		return
+
+	var/mob/living/M = user
+	if(M.faction == "xenomorph")
+		if(progress < progress_max)
+			. += "It's not ready to hatch yet..."
+		else
+			. += "It's ready to hatch!"
 
 /obj/structure/alien/egg/on_update_icon()
 	if(progress == -1)

@@ -1,11 +1,11 @@
-/mob/living/silicon/robot/_examine_text(mob/user)
+/mob/living/silicon/robot/examine(mob/user, infix)
 	var/custom_infix = custom_name ? ", [modtype] [braintype]" : ""
 	. = ..(user, infix = custom_infix)
 
 	var/msg = ""
 	msg += "\n"
 	msg += examine_all_modules()
-	
+
 	msg += "<span class='warning'>"
 	if (getBruteLoss())
 		if (getBruteLoss() < 75)
@@ -58,6 +58,6 @@
 			msg += "<b><span class='notice'>Supported visors:</b></span>\n"
 			msg += visors
 
-	. += "\n[msg]"
+	. += msg
 	user.showLaws(src)
 	return

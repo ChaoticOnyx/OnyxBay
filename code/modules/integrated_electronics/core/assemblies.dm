@@ -74,8 +74,9 @@
 /obj/item/device/electronic_assembly/GetAccess()
 	return access_card ? access_card.GetAccess() : list()
 
-/obj/item/device/electronic_assembly/_examine_text(mob/user)
+/obj/item/device/electronic_assembly/examine(mob/user, infix)
 	. = ..()
+
 	if(can_anchor)
 		to_chat(user, SPAN_NOTICE("The anchoring bolts [anchored ? "are" : "can be"] <b>wrenched</b> in place and the maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place."))
 	else
@@ -86,6 +87,7 @@
 
 	for(var/obj/item/integrated_circuit/I in assembly_components)
 		I.external_examine(user)
+
 	interact(user)
 
 /obj/item/device/electronic_assembly/proc/check_interactivity(mob/user, datum/topic = GLOB.physical_state)

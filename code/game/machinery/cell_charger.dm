@@ -30,14 +30,16 @@
 	else
 		ClearOverlays()
 
-/obj/machinery/cell_charger/_examine_text(mob/user)
+/obj/machinery/cell_charger/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 5)
 		return
 
-	. += "\nThere's [charging ? "a" : "no"] cell in the charger."
+	. += "There's [charging ? "a" : "no"] cell in the charger."
+
 	if(charging)
-		. += "\nCurrent charge: [charging.charge]"
+		. += "Current charge: [charging.charge]"
 
 /obj/machinery/cell_charger/attackby(obj/item/W, mob/user)
 	if(stat & BROKEN)

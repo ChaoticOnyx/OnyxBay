@@ -60,13 +60,14 @@
 
 	return ..()
 
-/obj/item/weldingtool/_examine_text(mob/user)
+/obj/item/weldingtool/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 0)
 		if(tank)
-			. += "\n\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
+			. += "\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
 		else
-			. += "\nThere is no tank attached."
+			. += "There is no tank attached."
 
 /obj/item/weldingtool/attack(mob/living/M, mob/living/user, target_zone)
 	if(ishuman(M))

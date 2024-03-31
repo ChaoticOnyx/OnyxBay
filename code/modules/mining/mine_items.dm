@@ -445,12 +445,13 @@
 	if(!malfunctioning)
 		malfunctioning = TRUE
 
-/obj/item/lazarus_injector/_examine_text(mob/user)
+/obj/item/lazarus_injector/examine(mob/user, infix)
 	. = ..()
+
 	if(!loaded)
-		. += "\n<span class='info'>[src] is empty.</span>"
+		. += SPAN_INFO("[src] is empty.")
 	if(malfunctioning || emagged)
-		. += "\n<span class='info'>The display on [src] seems to be flickering.</span>"
+		. += SPAN_INFO("The display on [src] seems to be flickering.")
 
 /**********************Point Transfer Card**********************/
 
@@ -471,9 +472,9 @@
 			to_chat(user, "<span class='info'>There's no points left on [src].</span>")
 	..()
 
-/obj/item/card/mining_point_card/_examine_text(mob/user)
+/obj/item/card/mining_point_card/examine(mob/user, infix)
 	. = ..()
-	. += "\nThere's [points] point\s on the card."
+	. += "There's [points] point\s on the card."
 
 /**********************Resonator**********************/
 

@@ -54,8 +54,9 @@
 	play_sound()
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/device/geiger/_examine_text(mob/user)
+/obj/item/device/geiger/examine(mob/user, infix)
 	. = ..()
+
 	var/msg = "Dose: [fmt_siunit(radiation_dose, "Gy/s", 3)].<br>"
 
 	msg += "Average Activity: [fmt_siunit(CONV_BECQUEREL_QURIE(average_activity), "Ci", 3)].<br>"
@@ -74,13 +75,13 @@
 				msg += "β-particle<br>"
 			if(RADIATION_HAWKING)
 				msg += "Hawking ray<br>"
-		
+
 		printed_rays += ray
 
 	if(radiation_dose > 0)
-		. += "\n<span class='warning'>[msg]</span>"
+		. += SPAN_WARNING(msg)
 	else
-		. += "\n<span class='notice'>[msg]</span>"
+		. += SPAN_NOTICE(msg)
 
 /obj/item/device/geiger/attack_self(mob/user)
 	scanning = !scanning

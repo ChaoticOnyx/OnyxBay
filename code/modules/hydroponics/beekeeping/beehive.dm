@@ -34,10 +34,11 @@
 			if(81 to 100)
 				AddOverlays("bees3")
 
-/obj/machinery/beehive/_examine_text(mob/user)
+/obj/machinery/beehive/examine(mob/user, infix)
 	. = ..()
+
 	if(!closed)
-		. += "\nThe lid is open."
+		. += "The lid is open."
 
 /obj/machinery/beehive/attackby(obj/item/I, mob/user)
 	if(isCrowbar(I))

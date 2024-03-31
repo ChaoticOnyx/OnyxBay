@@ -34,16 +34,16 @@
 		return !density
 	return TRUE
 
-/obj/structure/railing/_examine_text(mob/user)
+/obj/structure/railing/examine(mob/user, infix)
 	. = ..()
 	if(health < maxhealth)
 		switch(health / maxhealth)
 			if(0.0 to 0.25)
-				. += "\n<span class='warning'>It looks severely damaged!</span>"
+				. += SPAN_WARNING("It looks severely damaged!")
 			if(0.25 to 0.5)
-				. += "\n<span class='warning'>It looks damaged!</span>"
+				. += SPAN_WARNING("It looks damaged!")
 			if(0.5 to 1.0)
-				. += "\n<span class='notice'>It has a few scrapes and dents.</span>"
+				. += SPAN_WARNING("It has a few scrapes and dents.")
 
 /obj/structure/railing/proc/take_damage(amount)
 	health -= amount

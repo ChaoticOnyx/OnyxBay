@@ -116,11 +116,12 @@
 	spray_size = next_in_list(spray_size, spray_sizes)
 	to_chat(user, "<span class='notice'>You adjusted the pressure nozzle. You'll now use [amount_per_transfer_from_this] units per spray.</span>")
 
-/obj/item/reagent_containers/spray/_examine_text(mob/user)
+/obj/item/reagent_containers/spray/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 0 && loc == user)
-		. += "\n[round(external_container ? external_container.reagents.total_volume : reagents.total_volume)] unit\s left."
-	return
+		. += "[round(external_container ? external_container.reagents.total_volume : reagents.total_volume)] unit\s left."
+
 
 /obj/item/reagent_containers/spray/verb/empty()
 
@@ -168,10 +169,11 @@
 	step_delay = 1
 	startswith = list(/datum/reagent/capsaicin/condensed)
 
-/obj/item/reagent_containers/spray/pepper/_examine_text(mob/user)
+/obj/item/reagent_containers/spray/pepper/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1)
-		. += "\nThe safety is [safety ? "on" : "off"]."
+		. += "The safety is [safety ? "on" : "off"]."
 
 /obj/item/reagent_containers/spray/pepper/attack_self(mob/user)
 	safety = !safety

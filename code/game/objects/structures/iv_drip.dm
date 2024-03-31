@@ -155,21 +155,21 @@
 	mode = !mode
 	to_chat(usr, "The IV drip is now [mode ? "injecting" : "taking blood"].")
 
-/obj/structure/iv_drip/_examine_text(mob/user)
+/obj/structure/iv_drip/examine(mob/user, infix)
 	. = ..()
 
-	if (get_dist(src, user) > 2)
+	if(get_dist(src, user) > 2)
 		return
 
-	. += "\nThe IV drip is [mode ? "injecting" : "taking blood"]."
-	. += "\nIt is set to transfer [transfer_amount]u of chemicals per cycle."
+	. += "The IV drip is [mode ? "injecting" : "taking blood"]."
+	. += "It is set to transfer [transfer_amount]u of chemicals per cycle."
 
 	if(beaker)
 		if(beaker.reagents && beaker.reagents.total_volume)
-			. += "\n<span class='notice'>Attached is \a [beaker] with [beaker.reagents.total_volume] units of liquid.</span>"
+			. += "<span class='notice'>Attached is \a [beaker] with [beaker.reagents.total_volume] units of liquid.</span>"
 		else
-			. += "\n<span class='notice'>Attached is an empty [beaker].</span>"
+			. += "<span class='notice'>Attached is an empty [beaker].</span>"
 	else
-		. += "\n<span class='notice'>No chemicals are attached.</span>"
+		. += "<span class='notice'>No chemicals are attached.</span>"
 
-	. += "\n<span class='notice'>[attached ? attached : "No one"] is hooked up to it.</span>"
+	. += "<span class='notice'>[attached ? attached : "No one"] is hooked up to it.</span>"

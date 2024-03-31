@@ -280,9 +280,11 @@
 	to_chat(src, "<span class='warning'>There is nothing of interest to take.</span>")
 	return 0
 
-/mob/living/simple_animal/spiderbot/_examine_text(mob/user)
+/mob/living/simple_animal/spiderbot/examinate(atom/to_axamine)
 	. = ..()
+
 	if(src.held_item)
-		. += "\nIt is carrying \icon[src.held_item] \a [src.held_item]."
+		. += "It is carrying \icon[src.held_item] \a [src.held_item]."
+
 /mob/living/simple_animal/spiderbot/binarycheck()
 	return positronic

@@ -186,10 +186,13 @@
 	desc = "A card that holds an amount of money."
 	var/owner_name = "" //So the ATM can set it so the EFTPOS can put a valid name on transactions.
 
-/obj/item/spacecash/ewallet/_examine_text(mob/user)
+/obj/item/spacecash/ewallet/examine(mob/user, infix)
 	. = ..()
-	if (!(user in view(2)) && user!=src.loc) return
-	. += "\n<span class='notice'>Charge card's owner: [src.owner_name]. Credits remaining: [src.worth].</span>"
+
+	if(!(user in view(2)) && user != loc)
+		return
+
+	. += SPAN_NOTICE("Charge card's owner: [src.owner_name]. Credits remaining: [src.worth].")
 
 /obj/item/spacecash/ewallet/lotto
 	name = "space lottery card"

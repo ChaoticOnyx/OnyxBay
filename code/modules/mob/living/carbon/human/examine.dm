@@ -1,4 +1,6 @@
-/mob/living/carbon/human/_examine_text(mob/user)
+/mob/living/carbon/human/examine(mob/user, infix)
+	. = ..()
+
 	var/skipgloves      = FALSE
 	var/skipsuitstorage = FALSE
 	var/skipjumpsuit    = FALSE
@@ -202,7 +204,7 @@
 		msg += SPAN("warning", "[T.He] [T.is] on fire!.\n")
 
 	for(var/datum/modifier/M in modifiers)
-		var/modifier_txt = M._examine_text()
+		var/modifier_txt = M.examine()
 		if(!isnull(modifier_txt))
 			msg += "[]\n"
 
@@ -345,9 +347,9 @@
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.
 		msg += "[T.He] [pose]"
 
-	return jointext(msg, null)
+	. = list(jointext(msg, null))
 
-// Helper procedure. Called by /mob/living/carbon/human/_examine_text() and /mob/living/carbon/human/Topic() to determine HUD access to security and medical records.
+// Helper procedure. Called by /mob/living/carbon/human/examine() and /mob/living/carbon/human/Topic() to determine HUD access to security and medical records.
 /proc/hasHUD(mob/M as mob, hudtype)
 	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M

@@ -1,9 +1,10 @@
-/obj/item/modular_computer/_examine_text(mob/user)
+/obj/item/modular_computer/examine(mob/user, infix)
 	. = ..()
+
 	if(damage > broken_damage)
-		. += "\n<span class='danger'>It is heavily damaged!</span>"
+		. += SPAN_DANGER("It is heavily damaged!")
 	else if(damage)
-		. += "\nIt is damaged."
+		. += "It is damaged."
 
 /obj/item/modular_computer/proc/break_apart()
 	visible_message("\The [src] breaks apart!")

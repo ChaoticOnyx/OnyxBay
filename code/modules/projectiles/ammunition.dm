@@ -86,12 +86,14 @@
 	if(spent_icon && is_spent)
 		icon_state = spent_icon
 
-/obj/item/ammo_casing/_examine_text(mob/user)
+/obj/item/ammo_casing/examine(mob/user, infix)
 	. = ..()
+
 	if(caliber)
-		. += "\nIts caliber is [caliber]."
+		. += "Its caliber is [caliber]."
+
 	if(is_spent)
-		. += "\nThis one is spent."
+		. += "This one is spent."
 
 //Gun loading types
 #define SINGLE_CASING 	1	//The gun only accepts ammo_casings. ammo_magazines should never have this as their mag_type.
@@ -203,10 +205,11 @@
 				break
 		icon_state = (new_state)? new_state : initial(icon_state)
 
-/obj/item/ammo_magazine/_examine_text(mob/user)
+/obj/item/ammo_magazine/examine(mob/user, infix)
 	. = ..()
+
 	if(display_default_ammo_left)
-		. += "\nThere [(stored_ammo.len == 1)? "is" : "are"] [stored_ammo.len] round\s left!"
+		. += "There [(stored_ammo.len == 1)? "is" : "are"] [stored_ammo.len] round\s left!"
 
 //magazine icon state caching
 /var/global/list/magazine_icondata_keys = list()

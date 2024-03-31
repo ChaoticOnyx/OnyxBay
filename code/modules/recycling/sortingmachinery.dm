@@ -112,14 +112,17 @@
 			I.pixel_y = -3
 		AddOverlays(I)
 
-/obj/structure/bigDelivery/_examine_text(mob/user)
+/obj/structure/bigDelivery/examine(mob/user, infix)
 	. = ..()
-	if(get_dist(src, user) <= 4)
-		if(sortTag)
-			. += "\n<span class='notice'>It is labeled \"[sortTag]\"</span>"
-		if(examtext)
-			. += "\n<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>"
-	return
+
+	if(get_dist(src, user) > 4)
+		return
+
+	if(sortTag)
+		. += SPAN_NOTICE("It is labeled \"[sortTag]\"")
+	if(examtext)
+		. += SPAN_NOTICE("It has a note attached which reads, \"[examtext]\"")
+
 
 /obj/structure/bigDelivery/Destroy()
 	if(wrapped) //sometimes items can disappear. For example, bombs. --rastaf0
@@ -256,14 +259,17 @@
 				I.pixel_y = 1
 		AddOverlays(I)
 
-/obj/item/smallDelivery/_examine_text(mob/user)
+/obj/item/smallDelivery/examine(mob/user, infix)
 	. = ..()
-	if(get_dist(src, user) <= 4)
-		if(sortTag)
-			. += "\n<span class='notice'>It is labeled \"[sortTag]\"</span>"
-		if(examtext)
-			. += "\n<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>"
-	return
+
+	if(get_dist(src, user) > 4)
+		return
+
+	if(sortTag)
+		. += SPAN_NOTICE("It is labeled \"[sortTag]\".")
+	if(examtext)
+		. += SPAN_NOTICE("It has a note attached which reads, \"[examtext]\".")
+
 
 /obj/item/packageWrap
 	name = "package wrapper"
@@ -387,11 +393,11 @@
 		return
 	return
 
-/obj/item/packageWrap/_examine_text(mob/user)
+/obj/item/packageWrap/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 0)
-		. += "\n<span class='notice'>There are [amount] units of package wrap left!</span>"
-	return
+		. += SPAN_NOTICE("There are [amount] units of package wrap left!")
 
 /obj/item/device/destTagger
 	name = "destination tagger"

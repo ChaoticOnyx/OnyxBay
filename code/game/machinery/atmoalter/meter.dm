@@ -125,23 +125,23 @@
 	last_light = meter_light
 
 
-/obj/machinery/meter/_examine_text(mob/user)
+/obj/machinery/meter/examine(mob/user, infix)
 	. = ..()
 
 	if(get_dist(user, src) > 3 && !(istype(user, /mob/living/silicon/ai) || isghost(user)))
-		. += "\n<span class='warning'>You are too far away to read it.</span>"
+		. += SPAN_WARNING("You are too far away to read it.")
 
 	else if(stat & (NOPOWER|BROKEN))
-		. += "\n<span class='warning'>The display is off.</span>"
+		. += SPAN_WARNING("The display is off.")
 
 	else if(src.target)
 		var/datum/gas_mixture/environment = target.return_air()
 		if(environment)
-			. += "\nThe pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]K ([round(CONV_KELVIN_CELSIUS(environment.temperature), 0.01)]&deg;C)"
+			. += "The pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]K ([round(CONV_KELVIN_CELSIUS(environment.temperature), 0.01)]&deg;C)"
 		else
-			. += "\nThe sensor error light is blinking."
+			. += "The sensor error light is blinking."
 	else
-		. += "\nThe connect error light is blinking."
+		. += "The connect error light is blinking."
 
 
 /obj/machinery/meter/Click()

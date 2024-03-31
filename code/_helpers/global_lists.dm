@@ -72,6 +72,16 @@ var/global/list/rune_list = new()
 
 var/global/list/syndicate_access = list(access_maint_tunnels, access_syndicate, access_external_airlocks)
 
+/// Associative list of string -> string, where key is armor class and value is an attack type it protects against.
+GLOBAL_LIST_INIT(descriptive_attack_types, list(
+	"melee" = "blunt force",
+	"bullet" = "ballistics",
+	"laser" = "lasers",
+	"energy" = "energy",
+	"bomb" = "explosions",
+	"bio" = "biohazards",
+))
+
 // Strings which corraspond to bodypart covering flags, useful for outputting what something covers.
 var/global/list/string_part_flags = list(
 	"head" = HEAD,

@@ -14,10 +14,11 @@
 	..()
 	color_selection = pick(possible_cable_coil_colours)
 
-/obj/item/device/cable_painter/_examine_text(user)
+/obj/item/device/cable_painter/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1)
-		. += "\nThe color is currently set to [lowertext(color_selection)]."
+		. += "The color is currently set to [lowertext(color_selection)]."
 
 /obj/item/device/cable_painter/attack_self(mob/user)
 	var/new_color_selection = input("What color would you like to use?", "Choose a Color", color_selection) as null|anything in possible_cable_coil_colours

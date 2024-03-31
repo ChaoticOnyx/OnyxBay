@@ -18,10 +18,11 @@
 	. = ..()
 	create_reagents(180)
 
-/obj/structure/mopbucket/_examine_text(mob/user)
+/obj/structure/mopbucket/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1)
-		. += "\n[src] \icon[src] contains [reagents.total_volume] unit\s of water!"
+		. += "[src] \icon[src] contains [reagents.total_volume] unit\s of water!"
 
 /obj/structure/mopbucket/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/mop))

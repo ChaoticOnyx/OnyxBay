@@ -42,11 +42,13 @@
 	base_icon = "bone_axe"
 	var/stored_power = 0
 
-/obj/item/material/twohanded/fireaxe/cult/_examine_text(mob/user)
+/obj/item/material/twohanded/fireaxe/cult/examine(mob/user, infix)
 	. = ..()
-	if(!. || !stored_power)
+
+	if(!stored_power)
 		return
-	. += "\n<span class='notice'>It exudes a death-like smell.</span>"
+
+	. += SPAN_NOTICE("It exudes a death-like smell.")
 
 /obj/item/material/twohanded/fireaxe/cult/resolve_attackby(atom/a, mob/user, click_params)
 	if(istype(a, /obj/structure/deity/altar))

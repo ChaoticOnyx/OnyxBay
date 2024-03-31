@@ -6,13 +6,13 @@
 	var/signed_ckey
 	var/signed_name
 
-/obj/item/paper/complaint_form/_examine_text(mob/user)
+/obj/item/paper/complaint_form/examine(mob/user, infix)
 	. = ..()
-	if (signed)
-		. += "\n[SPAN_NOTICE("It appears to be signed. It can't be modified.")]"
-	else
-		. += "\n[SPAN_NOTICE("It appears to be unsigned and ready for modifications.")]"
 
+	if (signed)
+		. += SPAN_NOTICE("It appears to be signed. It can't be modified.")
+	else
+		. += SPAN_NOTICE("It appears to be unsigned and ready for modifications.")
 
 /obj/item/paper/complaint_form/get_signature(obj/item/pen/P, mob/user, signfield)
 	. = ..()
@@ -111,15 +111,16 @@
 	name = "Complaint #[id]"
 	main_form = new(src, id)
 
-/obj/item/complaint_folder/_examine_text(mob/user)
+/obj/item/complaint_folder/examine(mob/user, infix)
 	. = ..()
+
 	if (main_form.signed)
-		. += "\n[SPAN_NOTICE("It is signed by [main_form.signed_name]")]"
+		. += SPAN_NOTICE("It is signed by [main_form.signed_name]")
 		if (length(contents) > 1)
 			var/counter = 0
 			for (var/obj/item/paper/complaint_form/F in contents)
 				counter++
-			. += "\n[SPAN_NOTICE("It has [counter - 1] complaint forms attached")]"
+			. += SPAN_NOTICE("It has [counter - 1] complaint forms attached")
 
 /obj/item/complaint_folder/proc/check_signed()
 	if (signed)

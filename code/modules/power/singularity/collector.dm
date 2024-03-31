@@ -129,16 +129,21 @@ var/global/list/rad_collectors = list()
 		return 1
 	return ..()
 
-/obj/machinery/power/rad_collector/_examine_text(mob/user, distance)
+/obj/machinery/power/rad_collector/examine(mob/user, infix)
 	. = ..()
-	if (distance <= 3 && !(stat & BROKEN))
-		. += "\nSensor readings:"
-		. += "\nPower rate: [fmt_siunit(last_power, "W/s", 3)]"
-		if(P?.air_contents)
-			. += "\nTank temperature: [P.air_contents.temperature]K"
-		else
-			. += "\nTank temperature: N/A"
-		. += "\nEntropy drift: [last_temp_dif] K/s"
+
+	if(get_dist(user, src) > 3 || (stat & BROKEN))
+		return
+
+	. += "Sensor readings:"
+	. += "Power rate: [fmt_siunit(last_power, "W/s", 3)]"
+
+	if(P?.air_contents)
+		. += "Tank temperature: [P.air_contents.temperature]K"
+	else
+		. += "Tank temperature: N/A"
+
+	. += "Entropy drift: [last_temp_dif] K/s"
 
 /obj/machinery/power/rad_collector/ex_act(severity)
 	switch(severity)

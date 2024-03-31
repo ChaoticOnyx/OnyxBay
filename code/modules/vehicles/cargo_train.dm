@@ -203,16 +203,17 @@
 	else
 		return ..()
 
-/obj/vehicle/train/cargo/engine/_examine_text(mob/user)
+/obj/vehicle/train/cargo/engine/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 1)
 		return
 
-	if(!istype(usr, /mob/living/carbon/human))
+	if(!ishuman(user))
 		return
 
-	. += "\nThe power light is [on ? "on" : "off"].\nThere are[key ? "" : " no"] keys in the ignition."
-	. += "\nThe charge meter reads [cell? round(CELL_PERCENT(cell), 0.01) : 0]%"
+	. += "The power light is [on ? "on" : "off"].\nThere are[key ? "" : " no"] keys in the ignition."
+	. += "The charge meter reads [cell? round(CELL_PERCENT(cell), 0.01) : 0]%"
 
 /obj/vehicle/train/cargo/engine/verb/start_engine()
 	set name = "Start engine"

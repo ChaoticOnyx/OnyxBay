@@ -119,12 +119,13 @@
 		holstered.emp_act(severity)
 	..()
 
-/obj/item/clothing/accessory/holster/_examine_text(mob/user)
+/obj/item/clothing/accessory/holster/examine(mob/user, infix)
 	. = ..()
-	if (holstered)
-		. += "\nA [holstered] is holstered here."
+
+	if(holstered)
+		. += "A [holstered] is holstered here."
 	else
-		. += "\nIt is empty."
+		. += "It is empty."
 
 /obj/item/clothing/accessory/holster/on_attached(obj/item/clothing/under/S, mob/user)
 	..()

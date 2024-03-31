@@ -19,9 +19,9 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/gun/launcher/alien/_examine_text(mob/user)
+/obj/item/gun/launcher/alien/examine(mob/user, infix)
 	. = ..()
-	. += "\nIt has [ammo] [ammo_name]\s remaining."
+	. += "It has [ammo] [ammo_name]\s remaining."
 
 /obj/item/gun/launcher/alien/consume_next_projectile()
 	if(ammo < 1) return null

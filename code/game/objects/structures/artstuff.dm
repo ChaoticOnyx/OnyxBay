@@ -128,18 +128,20 @@
 	.["name"] = painting_name
 	.["finalized"] = finalized
 
-/obj/item/canvas/_examine_text(mob/user)
+/obj/item/canvas/examine(mob/user, infix)
 	. = ..()
+
 	tgui_interact(user)
 	if(!user.mind || !is_propaganda)
 		return
+
 	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_LOYALIST]
 	var/is_loyalist_user = antag.is_antagonist(user.mind) || (user.mind.assigned_role in GLOB.command_positions) || (user.mind.assigned_role in GLOB.security_positions)
 	antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
 	var/is_revolutionary_user = antag.is_antagonist(user.mind)
 	var/message = SPAN_DANGER("You hate \the [src]. You want to burn it down!")
 	if((is_revolutionary && is_loyalist_user) || (is_revolutionary_user && !is_revolutionary))
-		. += "\n" + message
+		. += message
 
 /obj/item/canvas/tgui_act(action, params)
 	. = ..()

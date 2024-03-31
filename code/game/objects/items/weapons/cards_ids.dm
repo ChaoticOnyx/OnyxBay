@@ -109,9 +109,9 @@ var/const/NO_EMAG_ACT = -50
 		user.visible_message("<span class='warning'>\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent.</span>")
 	return 1
 
-/obj/item/card/emag/robot/_examine_text(mob/user)
+/obj/item/card/emag/robot/examine(mob/user, infix)
 	. = ..()
-	. += "\n<span class='notice'>It has [uses] uses left.</span>"
+	. += SPAN_NOTICE("It has [uses] uses left.")
 
 /obj/item/card/id
 	name = "identification card"
@@ -148,15 +148,19 @@ var/const/NO_EMAG_ACT = -50
 			assignment = rank
 			access |= j.get_access()
 
-/obj/item/card/id/_examine_text(mob/user)
+/obj/item/card/id/examine(mob/user, infix)
+	. = ..()
+
 	if(in_range(user, src))
 		show(user)
-		return desc
+		. += desc
+		return
 
 	if(isghost(user))
-		return desc
+		. += desc
+		return
 
-	return SPAN("warning", "It is too far away.")
+	. += SPAN("warning", "It is too far away.")
 
 /obj/item/card/id/get_examine_line(examine_distance = 10)
 	var/visible_name = examine_distance < 3 ? name : "ID Card"

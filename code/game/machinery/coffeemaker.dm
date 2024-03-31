@@ -75,53 +75,54 @@
 
 	update_icon()
 
-/obj/machinery/coffeemaker/_examine_text(mob/user)
+/obj/machinery/coffeemaker/examine(mob/user, infix)
 	. = ..()
+
 	if(!in_range(user, src) && !issilicon(user) && !isobserver(user))
-		. += SPAN_WARNING("You're too far away to examine [src]'s contents and display! \n")
+		. += SPAN_WARNING("You're too far away to examine [src]'s contents and display!")
 		return
 
 	if(brewing)
-		. += SPAN_WARNING("\The [src] is brewing. \n")
+		. += SPAN_WARNING("\The [src] is brewing.")
 		return
 
 	if(panel_open)
-		. += SPAN_NOTICE("[src]'s maintenance hatch is open! \n")
+		. += SPAN_NOTICE("[src]'s maintenance hatch is open!")
 		return
 
 	if(coffeepot)
-		. += SPAN_NOTICE("\The [src] contains: \n")
-		. += SPAN_NOTICE("- \A [coffeepot]. \n")
+		. += SPAN_NOTICE("\The [src] contains:")
+		. += SPAN_NOTICE("- \A [coffeepot].")
 
 	if(!(stat & (NOPOWER|BROKEN)))
-		. += "[SPAN_NOTICE("The status display reads:")]\n"+\
-		SPAN_NOTICE("- Brewing coffee at <b>[speed*100]%</b>.\n")
+		. += "[SPAN_NOTICE("The status display reads:")]"+\
+		SPAN_NOTICE("- Brewing coffee at <b>[speed*100]%</b>.")
 		if(coffeepot)
 			for(var/datum/reagent/drink/cawfee as anything in coffeepot.reagents.reagent_list)
-				. += SPAN_NOTICE("- [cawfee.volume] units of coffee in pot.\n")
+				. += SPAN_NOTICE("- [cawfee.volume] units of coffee in pot.")
 
 	if(coffee_cups >= 1)
-		. += SPAN_NOTICE("There [coffee_cups == 1 ? "is" : "are"] [coffee_cups] coffee cup[coffee_cups != 1 && "s"] left.\n")
+		. += SPAN_NOTICE("There [coffee_cups == 1 ? "is" : "are"] [coffee_cups] coffee cup[coffee_cups != 1 && "s"] left.")
 	else
-		. += SPAN_NOTICE("There are no cups left.\n")
+		. += SPAN_NOTICE("There are no cups left.")
 
 	if(sugar_packs >= 1)
-		. += SPAN_NOTICE("There [sugar_packs == 1 ? "is" : "are"] [sugar_packs] packet[sugar_packs != 1 && "s"] of sugar left.\n")
+		. += SPAN_NOTICE("There [sugar_packs == 1 ? "is" : "are"] [sugar_packs] packet[sugar_packs != 1 && "s"] of sugar left.")
 	else
-		. += SPAN_NOTICE("There is no sugar left.\n")
+		. += SPAN_NOTICE("There is no sugar left.")
 
 	if(sweetener_packs >= 1)
-		. += SPAN_NOTICE("There [sweetener_packs == 1 ? "is" : "are"] [sweetener_packs] packet[sweetener_packs != 1 && "s"] of sweetener left.\n")
+		. += SPAN_NOTICE("There [sweetener_packs == 1 ? "is" : "are"] [sweetener_packs] packet[sweetener_packs != 1 && "s"] of sweetener left.")
 	else
-		. += SPAN_NOTICE("There is no sweetener left.\n")
+		. += SPAN_NOTICE("There is no sweetener left.")
 
 	if(creamer_packs > 1)
-		. += SPAN_NOTICE("There [creamer_packs == 1 ? "is" : "are"] [creamer_packs] packet[creamer_packs != 1 && "s"] of creamer left.\n")
+		. += SPAN_NOTICE("There [creamer_packs == 1 ? "is" : "are"] [creamer_packs] packet[creamer_packs != 1 && "s"] of creamer left.")
 	else
-		. += SPAN_NOTICE("There is no creamer left.\n")
+		. += SPAN_NOTICE("There is no creamer left.")
 
 	if(coffee)
-		. += SPAN_NOTICE("The internal grinder contains [coffee.len] scoop\s of coffee beans\n")
+		. += SPAN_NOTICE("The internal grinder contains [coffee.len] scoop\s of coffee beans.")
 
 /obj/machinery/coffeemaker/on_update_icon()
 	. = ..()

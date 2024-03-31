@@ -325,7 +325,7 @@
         dat += "It has [ammo_left] [mode["mode_name"]] charge[ammo_left != 1 ? "s" : ""] left.\n"
     return SPAN("info", dat)
 
-/obj/item/ammo_magazine/lawgiver/_examine_text(mob/user)
+/obj/item/ammo_magazine/lawgiver/examine(mob/user, infix)
 	. = ..()
 	. += generate_description()
 

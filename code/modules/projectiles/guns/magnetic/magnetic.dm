@@ -76,31 +76,32 @@
 	if(loaded)
 		return "<span class='notice'>It has \a [loaded] loaded.</span>"
 
-/obj/item/gun/magnetic/_examine_text(mob/user)
+/obj/item/gun/magnetic/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 2)
 		var/ret = show_ammo()
 		if (ret)
-			. += "\n[ret]"
+			. += "[ret]"
 
 		if(cell)
-			. += "\n<span class='notice'>The installed [cell.name] has a charge level of [round((cell.charge/cell.maxcharge)*100)]%.</span>"
+			. += SPAN_NOTICE("The installed [cell.name] has a charge level of [round((cell.charge/cell.maxcharge)*100)]%.")
 		if(capacitor)
-			. += "\n<span class='notice'>The installed [capacitor.name] has a charge level of [round((capacitor.charge/capacitor.max_charge)*100)]%.</span>"
+			. += SPAN_NOTICE("The installed [capacitor.name] has a charge level of [round((capacitor.charge/capacitor.max_charge)*100)]%.")
 
 		if(!cell || !capacitor)
-			. += "\n<span class='notice'>The capacitor charge indicator is blinking <font color ='[COLOR_RED]'>red</font>. Maybe you should check the cell or capacitor.</span>"
+			. += SPAN_NOTICE("The capacitor charge indicator is blinking <font color ='[COLOR_RED]'>red</font>. Maybe you should check the cell or capacitor.")
 		else
 			if(capacitor.charge < power_cost)
-				. += "\n<span class='notice'>The capacitor charge indicator is <font color ='[COLOR_ORANGE]'>amber</font>.</span>"
+				. += SPAN_NOTICE("The capacitor charge indicator is <font color ='[COLOR_ORANGE]'>amber</font>.")
 			else
-				. += "\n<span class='notice'>The capacitor charge indicator is <font color ='[COLOR_GREEN]'>green</font>.</span>"
+				. += SPAN_NOTICE("The capacitor charge indicator is <font color ='[COLOR_GREEN]'>green</font>.")
 
 		if(able_to_overheat && heat_level > 15)
 			if(heat_level < 25)
-				. += "\n<span class='warning'>\The [src]'s wiring glows faintly.</span>"
+				. += SPAN_WARNING("\The [src]'s wiring glows faintly.")
 			else
-				. += "\n<span class='danger'>\The [src]'s wiring is glowing brightly!</span>"
+				. += SPAN_WARNING("\The [src]'s wiring is glowing brightly!")
 
 		return
 

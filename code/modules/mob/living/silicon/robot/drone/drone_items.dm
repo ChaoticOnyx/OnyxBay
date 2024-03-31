@@ -246,12 +246,13 @@
 		/obj/item/stack/material
 		)
 
-/obj/item/gripper/_examine_text(mob/user)
+/obj/item/gripper/examine(mob/user, infix)
 	. = ..()
+
 	if(wrapped)
-		. += "\nIt is holding \a [wrapped]."
+		. += "It is holding \a [wrapped]."
 	else if (length(storage_type))
-		. += "\n[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers."
+		. += "[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers."
 
 /obj/item/gripper/attack_self(mob/user)
 	if(wrapped)

@@ -298,6 +298,6 @@
 			P.throw_at_random(0, round((int_air.return_pressure()-env_air.return_pressure()) / 100), 30)
 		qdel(src)
 
-/obj/machinery/atmospherics/valve/_examine_text(mob/user)
+/obj/machinery/atmospherics/valve/examine(mob/user, infix)
 	. = ..()
-	. += "\nIt is [open ? "open" : "closed"]."
+	. += "It is [open ? "open" : "closed"]."

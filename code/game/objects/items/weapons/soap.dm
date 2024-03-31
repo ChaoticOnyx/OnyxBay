@@ -15,13 +15,14 @@
 	create_reagents(30)
 	wet()
 
-/obj/item/soap/_examine_text(mob/user)
+/obj/item/soap/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 1)
 		return
+
 	if(reagents.total_volume <= 0)
-		. += "\nIt's dry!"
-	return
+		. += "It's dry!"
 
 /obj/item/soap/proc/wet()
 	reagents.add_reagent(/datum/reagent/space_cleaner, 15)

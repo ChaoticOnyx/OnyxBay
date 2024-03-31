@@ -247,14 +247,15 @@
 /obj/item/crossbowframe/on_update_icon()
 	icon_state = "crossbowframe[buildstate]"
 
-/obj/item/crossbowframe/_examine_text(mob/user)
+/obj/item/crossbowframe/examine(mob/user, infix)
 	. = ..()
+
 	switch(buildstate)
-		if(1) . += "\nIt has a loose rod frame in place."
-		if(2) . += "\nIt has a steel backbone welded in place."
-		if(3) . += "\nIt has a steel backbone and a cell mount installed."
-		if(4) . += "\nIt has a steel backbone, plastic lath and a cell mount installed."
-		if(5) . += "\nIt has a steel cable loosely strung across the lath."
+		if(1) . += "It has a loose rod frame in place."
+		if(2) . += "It has a steel backbone welded in place."
+		if(3) . += "It has a steel backbone and a cell mount installed."
+		if(4) . += "It has a steel backbone, plastic lath and a cell mount installed."
+		if(5) . += "It has a steel cable loosely strung across the lath."
 
 /obj/item/crossbowframe/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack/rods))

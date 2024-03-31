@@ -251,26 +251,26 @@
 	else
 		return 0
 
-/obj/mecha/_examine_text(mob/user)
+/obj/mecha/examine(mob/user, infix)
 	. = ..()
+
 	var/integrity = health/initial(health)*100
 	switch(integrity)
 		if(85 to 100)
-			. += "\nIt's fully intact."
+			. += "It's fully intact."
 		if(65 to 85)
-			. += "\nIt's slightly damaged."
+			. += "It's slightly damaged."
 		if(45 to 65)
-			. += "\nIt's badly damaged."
+			. += "It's badly damaged."
 		if(25 to 45)
-			. += "\nIt's heavily damaged."
+			. += "It's heavily damaged."
 		else
-			. += "\nIt's falling apart."
-	if(equipment && equipment.len)
-		. += "\nIt's equipped with:"
-		for(var/obj/item/mecha_parts/mecha_equipment/ME in equipment)
-			. += "\n\icon[ME] [ME]"
-	return
+			. += "It's falling apart."
 
+	if(equipment && equipment.len)
+		. += "It's equipped with:"
+		for(var/obj/item/mecha_parts/mecha_equipment/ME in equipment)
+			. += "\icon[ME] [ME]"
 
 /obj/mecha/proc/drop_item()//Derpfix, but may be useful in future for engineering exosuits.
 	return

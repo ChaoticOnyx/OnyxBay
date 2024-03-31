@@ -174,14 +174,14 @@
 	else
 		audible_emote("shakes his head, visibly confused!") // Feedback for players
 
-
-
-/mob/living/simple_animal/hostile/commanded/bear/_examine_text(mob/user)
+/mob/living/simple_animal/hostile/commanded/bear/examine(mob/user, infix)
 	. = ..()
+
 	if(is_ic_dead())
-		. += SPAN("deadsay", "It appears to be dead.\n")
+		. += SPAN("deadsay", "It appears to be dead.")
 	else if(health < maxHealth)
-		. += SPAN("warning", "It looks [health >= maxHealth / 2 ? "slightly" : "<b>severely</b>"] beaten!\n")
+		. += SPAN("warning", "It looks [health >= maxHealth / 2 ? "slightly" : "<b>severely</b>"] beaten!")
+
 	switch(stance)
 		if(HOSTILE_STANCE_IDLE)
 			. += SPAN("warning", "[src] wanders aimlessly.")
@@ -195,7 +195,6 @@
 			. += SPAN("warning", "[src] looks severly tired!")
 		if(COMMANDED_STOP)
 			. += SPAN("warning", "[src] sits patiently, waiting for its master!")
-	return
 
 /mob/living/simple_animal/hostile/commanded/bear/stay_command()
 	..()

@@ -50,14 +50,15 @@
 	register_signal(shade, SIGNAL_QDELETING, nameof(.proc/onShadeDeath))
 
 
-/obj/item/device/soulstone/_examine_text(mob/user)
+/obj/item/device/soulstone/examine(mob/user, infix)
 	. = ..()
+
 	if(full == SOULSTONE_EMPTY)
-		. += "\nThe shard still flickers with a fraction of the full artifact's power, but it needs to be filled with the essence of someone's life before it can be used."
+		. += "The shard still flickers with a fraction of the full artifact's power, but it needs to be filled with the essence of someone's life before it can be used."
 	if(full == SOULSTONE_ESSENCE)
-		. += "\nThe shard has gone transparent, a seeming window into a dimension of unspeakable horror."
+		. += "The shard has gone transparent, a seeming window into a dimension of unspeakable horror."
 	if(full == SOULSTONE_CRACKED)
-		. += "\nThis one is cracked and useless."
+		. += "This one is cracked and useless."
 
 /obj/item/device/soulstone/on_update_icon()
 	if(full == SOULSTONE_EMPTY)

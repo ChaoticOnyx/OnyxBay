@@ -524,12 +524,13 @@
 		claimant = user.real_name
 	..()
 
-/obj/item/sign/medipolma/_examine_text(mob/user)
+/obj/item/sign/medipolma/examine(mob/user, infix)
 	. = ..()
+
 	if(claimant)
-		. += "\nThis one belongs to Dr.[claimant], MD."
+		. += "This one belongs to Dr.[claimant], MD."
 	else
-		. += "\nThe name is left blank for some reason."
+		. += "The name is left blank for some reason."
 
 /obj/structure/sign/flag
 	name = "large flag"

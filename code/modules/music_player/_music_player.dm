@@ -71,19 +71,20 @@ GLOBAL_LIST_EMPTY(music_players)
 	GLOB.music_players -= src
 	. = ..()
 
-/obj/item/music_player/_examine_text(mob/user)
+/obj/item/music_player/examine(mob/user, infix)
 	. = ..()
+
 	if(tape)
-		. += "\n[SPAN_NOTICE("You can see \a [tape] inside it.")]"
+		. += SPAN_NOTICE("You can see \a [tape] inside it.")
 
 	switch(panel)
 		if(PANEL_OPENED)
-			. += "\nThe front panel is unhinged."
+			. += "The front panel is unhinged."
 		if(PANEL_UNSCREWED)
-			. += "\nThe front panel is unscrewed."
+			. += "The front panel is unscrewed."
 
 	if(broken)
-		. += "\n[SPAN_WARNING("It's broken.")]"
+		. += SPAN_WARNING("It's broken.")
 
 /obj/item/music_player/on_update_icon()
 	ClearOverlays()
