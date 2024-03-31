@@ -41,7 +41,7 @@
 	/// Sauna esssentialy can't act as a freezer
 	var/min_temperature = 40 CELSIUS
 	/// Reference to the steam object that handles visual effects and transfer of reagents
-	var/atom/movable/steam_controller/steam = /atom/movable/steam_controller
+	var/atom/movable/steam_controller/steam
 	/// world.time of the last Process() with water.
 	var/last_tick_with_water
 	/// To prevent dublication of steam particles and sounds
@@ -166,7 +166,7 @@
 		if(container?.reagents?.total_volume <= total_water_required)
 			return
 
-		steam = new steam(get_turf(src))
+		steam = new /atom/movable/steam_controller(get_turf(src))
 		steam_effect()
 		container.reagents.trans_to_holder(steam.reagents, container.reagents.total_volume)
 
