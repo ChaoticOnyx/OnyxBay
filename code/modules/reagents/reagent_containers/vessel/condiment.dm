@@ -297,6 +297,12 @@
 				icon_state = "condi_astrotame"
 				item_state = "condi_astrotame"
 				center_of_mass = "x=16;y=6"
+			if(/datum/reagent/drink/milk/cream)
+				name = "Creamer pack"
+				desc = "The sweetness of a thousand sugars but none of the calories!"
+				icon_state = "condi_creamer"
+				item_state = "condi_creamer"
+				center_of_mass = "x=16;y=6"
 			else
 				name = "Misc Condiment Pack"
 				if (reagents.reagent_list.len==1)
