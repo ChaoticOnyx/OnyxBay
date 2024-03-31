@@ -415,6 +415,7 @@ datum/preferences/proc/clear_character_previews()
 	character.update_body(0)
 	character.update_underwear(0)
 	character.update_hair(0)
+	character.update_facial_hair(0)
 	character.update_deformities(0)
 	character.update_icons()
 

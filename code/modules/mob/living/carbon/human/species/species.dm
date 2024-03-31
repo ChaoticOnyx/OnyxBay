@@ -608,6 +608,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	H.h_style = H.species.default_h_style
 	H.f_style = H.species.default_f_style
 	H.update_hair()
+	H.update_facial_hair()
 
 /datum/species/proc/get_blood_name()
 	return "blood"

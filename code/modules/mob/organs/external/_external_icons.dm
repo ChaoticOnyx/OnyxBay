@@ -65,6 +65,7 @@ var/list/limb_icon_cache = list()
 	..()
 	update_icon_drop(victim)
 	victim.update_hair()
+	victim.update_facial_hair()
 
 /obj/item/organ/external/proc/get_icon_key()
 	. = list()

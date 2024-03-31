@@ -251,6 +251,7 @@
 						h_style = species.default_h_style
 						f_style = species.default_f_style
 						update_hair()
+						update_facial_hair()
 
 		if(radiation > (2 SIEVERT))
 			if(!full_prosthetic && !isundead(src))
