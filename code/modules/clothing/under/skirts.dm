@@ -16,7 +16,7 @@
 	icon_state = "skirt_short"
 	worn_state = "skirt_short"
 	body_parts_covered = LOWER_TORSO
-	coverage = 0.7	// discreet skirts, dont cover upper/arms etc
+	coverage = 0.7
 
 /obj/item/clothing/under/skirt_c/casual
 	name = "casual skirt"
