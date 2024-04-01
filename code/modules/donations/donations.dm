@@ -50,13 +50,13 @@ SUBSYSTEM_DEF(donations)
 	var/was_donator = player.donator_info.donator
 
 	var/DBQuery/query = sql_query({"
-		SELECT 
+		SELECT
 			patron_types.type
-		FROM 
+		FROM
 			players
-		JOIN 
+		JOIN
 			patron_types ON players.patron_type = patron_types.id
-		WHERE 
+		WHERE
 			ckey = $ckey
 		LIMIT 0,1
 	"}, dbcon_don, list(ckey = player.ckey))
@@ -65,13 +65,13 @@ SUBSYSTEM_DEF(donations)
 		player.donator_info.patron_type = query.item[1]
 
 	query = sql_query({"
-		SELECT 
+		SELECT
 			`change`
-		FROM 
+		FROM
 			points_transactions
-		JOIN 
+		JOIN
 			players ON players.id = points_transactions.player
-		WHERE 
+		WHERE
 			ckey = $ckey
 	"}, dbcon_don, list(ckey = player.ckey))
 
@@ -94,11 +94,11 @@ SUBSYSTEM_DEF(donations)
 		return FALSE
 
 	var/DBQuery/query = sql_query({"
-		SELECT 
+		SELECT
 			item_path
-		FROM 
+		FROM
 			store_players_items
-		WHERE 
+		WHERE
 			player = (SELECT id FROM players WHERE ckey = $ckey)
 	"}, dbcon_don, list(ckey = player.ckey))
 
@@ -134,16 +134,16 @@ SUBSYSTEM_DEF(donations)
 
 	var/transaction_id
 	var/DBQuery/query = sql_query({"
-		SELECT 
+		SELECT
 			id
-		FROM 
+		FROM
 			points_transactions
 		WHERE
-			player = (SELECT id FROM players WHERE ckey = $ckey) 
+			player = (SELECT id FROM players WHERE ckey = $ckey)
 			AND
 			comment = $comment
-		ORDER BY 
-			id 
+		ORDER BY
+			id
 			DESC
 	"}, dbcon_don, list(ckey = player.ckey, comment = comment))
 
@@ -218,7 +218,7 @@ SUBSYSTEM_DEF(donations)
 		var/old_record_player_id = query.item[1]
 
 		//Update donations to old format record
-		query = sql_query("SELECT id FROM points_transactions WHERE player=$player_id", dbcon_don, list(player_id = old_record_player_id))
+		query = sql_query("SELECT id FROM points_transactions WHERE player=$old_record_player_id", dbcon_don, list(old_record_player_id = old_record_player_id))
 		if(query.NextRow())
 			sql_query("UPDATE points_transactions SET player=$new_record_player_id WHERE player=$old_record_player_id", dbcon_don, list(new_record_player_id = new_record_player_id, old_record_player_id = old_record_player_id))
 
