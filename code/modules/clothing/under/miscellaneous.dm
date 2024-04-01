@@ -377,30 +377,6 @@
 	icon_state = "huresource"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
-/obj/item/clothing/under/dress/plaid_blue
-	name = "blue plaid skirt"
-	desc = "A preppy blue skirt with a white blouse."
-	icon_state = "plaid_blue"
-	item_state_slots = list(
-		slot_hand_str = "dress_white"
-		)
-
-/obj/item/clothing/under/dress/plaid_red
-	name = "red plaid skirt"
-	desc = "A preppy red skirt with a white blouse."
-	icon_state = "plaid_red"
-	item_state_slots = list(
-		slot_hand_str = "dress_white"
-		)
-
-/obj/item/clothing/under/dress/plaid_purple
-	name = "blue purple skirt"
-	desc = "A preppy purple skirt with a white blouse."
-	icon_state = "plaid_purple"
-	item_state_slots = list(
-		slot_hand_str = "dress_white"
-		)
-
 /obj/item/clothing/under/dress/black_tango
 	name = "tango dress"
 	desc = "Por una cabeza..."
