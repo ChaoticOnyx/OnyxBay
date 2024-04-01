@@ -7,7 +7,7 @@
 
 /obj/structure/turret_control_frame
 	name = "Turret control panel frame"
-	anchored = TRUE
+	anchored = FALSE
 	icon = 'icons/obj/machines/turret_control.dmi'
 	icon_state = "control_assembly"
 
@@ -49,7 +49,7 @@
 				buildstage = BUILDSTAGE_SIGNALER
 
 		if(BUILDSTAGE_SIGNALER)
-			if(issignaler(I) && user.drop(I))
+			if(issignaler(I) && user.drop(I, src))
 				show_splash_text(user, "Signaler installed")
 				signaler = I
 				buildstage = BUILDSTAGE_HATCH

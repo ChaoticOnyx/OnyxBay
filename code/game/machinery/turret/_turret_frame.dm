@@ -153,6 +153,7 @@
 	switch(buildstage)
 		if(BUILDSTAGE_HATCH)
 			if(!signaler)
+				buildstage = BUILDSTAGE_PROX
 				return
 
 			if(user.pick_or_drop(signaler))

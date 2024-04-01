@@ -153,7 +153,7 @@
 		catch_fire()
 		return
 
-	if(istype(steam))
+	if(istype(steam) && !QDELETED(steam))
 		container?.reagents.trans_to_holder(steam.reagents, 15)
 		steam_effect()
 
@@ -166,7 +166,7 @@
 		if(container?.reagents?.total_volume <= total_water_required)
 			return
 
-		steam = new /atom/movable/steam_controller(get_turf(src))
+		steam = new /atom/movable/steam_controller(get_turf(src), src)
 		steam_effect()
 		container.reagents.trans_to_holder(steam.reagents, container.reagents.total_volume)
 
@@ -304,6 +304,9 @@
 	if(env.temperature <= 40 CELSIUS)
 		condense(turfs)
 		return
+
+	if(isnull(reagents))
+		create_reagents(1000)
 
 	if(turfs?.len * WATER_UNIT_PER_TILE > reagents?.get_reagent_amount(/datum/reagent/water))
 		disappear()
