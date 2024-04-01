@@ -74,26 +74,12 @@
 	item_state = "skirt_pencil"
 	worn_state = "skirt_pencil"
 
-/obj/item/clothing/under/skirt_c/puffy
-	name = "puffy skirt"
-	desc = "A short, puffy skirt."
-	icon_state = "skirt_puffy"
-	item_state = "skirt_puffy"
-	worn_state = "skirt_puffy"
-
 /obj/item/clothing/under/skirt_c/plaid
 	name = "plaid skirt"
 	desc = "A preppy plaid skirt."
 	icon_state = "skirt_plaid"
 	item_state = "skirt_plaid"
 	worn_state = "skirt_plaid"
-
-/obj/item/clothing/under/skirt_c/pleated
-	name = "pleated skirt"
-	desc = "A sharp-looking knife-pleated skirt."
-	icon_state = "skirt_pleated"
-	item_state = "skirt_pleated"
-	worn_state = "skirt_pleated"
 
 /obj/item/clothing/under/skirt_c/skater
 	name = "skater skirt"
@@ -108,13 +94,6 @@
 	icon_state = "skirt_tube"
 	item_state = "skirt_tube"
 	worn_state = "skirt_tube"
-
-/obj/item/clothing/under/skirt_c/straightlong
-	name = "straight long skirt"
-	desc = "A skirt that goes all the way down to the ankles."
-	icon_state = "skirt_straightlong"
-	item_state = "skirt_straightlong"
-	worn_state = "skirt_straightlong"
 
 // dresses
 /obj/item/clothing/under/skirt_c/dress
