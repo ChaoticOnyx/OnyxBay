@@ -207,7 +207,23 @@ SUBSYSTEM_DEF(donations)
 
 	var/discord_id = query.item[2]
 
-	sql_query("UPDATE players SET discord = $discord_id WHERE ckey = $ckey", dbcon_don, list(discord_id = discord_id, ckey = player.ckey))
+	//Checking if we have new donation format record
+	query = sql_query("SELECT id FROM players WHERE discord=$discord_id AND ckey IS NULL", dbcon_don, list(discord_id = discord_id))
+	if(!query.NextRow()) //We don't have that, use an old method
+		sql_query("UPDATE players SET discord = $discord_id WHERE ckey = $ckey", dbcon_don, list(discord_id = discord_id, ckey = player.ckey))
+	else
+
+		var/new_record_player_id = query.item[1]
+		query = sql_query("SELECT id FROM players WHERE ckey=$discord_id AND discord IS NULL", dbcon_don, list(ckey = player.ckey))
+		var/old_record_player_id = query.item[1]
+
+		//Update donations to old format record
+		query = sql_query("SELECT id FROM points_transactions WHERE player=$player_id", dbcon_don, list(player_id = old_record_player_id))
+		if(query.NextRow())
+			sql_query("UPDATE points_transactions SET player=$new_record_player_id WHERE player=$old_record_player_id", dbcon_don, list(new_record_player_id = new_record_player_id, old_record_player_id = old_record_player_id))
+
+		sql_query("DELETE FROM players WHERE id = $old_record_player_id", dbcon_don, list(old_record_player_id = old_record_player_id))
+		sql_query("UPDATE players SET ckey = $ckey WHERE discord = $discord_id", dbcon_don, list(ckey = player.ckey, discord_id = discord_id))
 
 	sql_query("DELETE FROM tokens WHERE token = $token", dbcon_don, list(token = token))
 
