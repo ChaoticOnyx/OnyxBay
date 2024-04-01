@@ -29,14 +29,6 @@
 /datum/space_level/entrepot_3
 	path = 'entrepot-3.dmm'
 	traits = list(
-		ZTRAIT_STATION,
-		ZTRAIT_CONTACT
-	)
-	travel_chance = 10
-
-/datum/space_level/entrepot_4
-	path = 'entrepot-4.dmm'
-	traits = list(
 		ZTRAIT_CENTCOM,
 		ZTRAIT_CONTACT,
 		ZTRAIT_SEALED

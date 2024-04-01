@@ -594,3 +594,26 @@
 	OVERLIGHT_IMAGE(overlight_overlays_outputting[2], "overlight_smes-op1")
 	OVERLIGHT_IMAGE(overlight_overlays_outputting[3], "overlight_smes-op2")
 #undef OVERLIGHT_IMAGE
+
+/obj/machinery/power/smes/magical
+	name = "quantum power unit"
+	desc = "An archotech power relay, tuned to recieve energy from some distand source."
+	should_be_mapped = TRUE
+
+/obj/machinery/power/smes/magical/Initialize()
+	. = ..()
+	charge = capacity
+	input_attempt = TRUE
+	output_attempt = TRUE
+	input_level = input_level_max
+	output_level = output_level_max
+
+// Magic
+/obj/machinery/power/smes/magical/add_charge(amount)
+	charge = capacity
+
+/obj/machinery/power/smes/magical/remove_charge(amount)
+	charge = capacity
+
+/obj/machinery/power/smes/magical/emp_act(severity)
+	return FALSE

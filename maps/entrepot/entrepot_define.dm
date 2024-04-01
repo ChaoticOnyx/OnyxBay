@@ -24,10 +24,9 @@
 	)
 
 	map_levels = list(
-		new /datum/space_level/entrepot_1, // Basement
-		new /datum/space_level/entrepot_2, // Ground level
-		new /datum/space_level/entrepot_3, // 2F
-		new /datum/space_level/entrepot_4, // Exodus-shaped CentCom
+		new /datum/space_level/entrepot_1,
+		new /datum/space_level/entrepot_2,
+		new /datum/space_level/entrepot_3, // Exodus-shaped CentCom
 		new /datum/space_level/null_space,
 		new /datum/space_level/telecomms,
 		new /datum/space_level/derelict
