@@ -214,7 +214,7 @@ SUBSYSTEM_DEF(donations)
 	else
 
 		var/new_record_player_id = query.item[1]
-		query = sql_query("SELECT id FROM players WHERE ckey=$discord_id AND discord IS NULL", dbcon_don, list(ckey = player.ckey))
+		query = sql_query("SELECT id FROM players WHERE ckey=$ckey", dbcon_don, list(ckey = player.ckey))
 		var/old_record_player_id = query.item[1]
 
 		//Update donations to old format record
