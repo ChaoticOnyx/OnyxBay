@@ -29,13 +29,6 @@
 	worn_state = "plaid_purple"
 
 // discreet skirts, dont cover upper/arms etc
-/obj/item/clothing/under/skirt/khaki
-	name = "khaki skirt"
-	desc = "A khaki skirt with a flare at the hem."
-	icon_state = "skirt_khaki"
-	worn_state = "skirt_khaki"
-	body_parts_covered = LOWER_TORSO
-	coverage = 0.7
 
 // colour selection, needs to be different for loadout type selection
 
