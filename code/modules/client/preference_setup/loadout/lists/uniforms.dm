@@ -70,9 +70,8 @@
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(dresses)
 
 /datum/gear/uniform/skirt
-	display_name = "skirt selection"
+	display_name = "black skirt"
 	path = /obj/item/clothing/under/skirt
-	flags = GEAR_HAS_TYPE_SELECTION
 
 /datum/gear/uniform/skirt_c
 	display_name = "skirt selection, colour select"
@@ -93,12 +92,9 @@
 	skirts_colorable += /obj/item/clothing/under/skirt_c/high
 	skirts_colorable += /obj/item/clothing/under/skirt_c/long
 	skirts_colorable += /obj/item/clothing/under/skirt_c/swept
-	skirts_colorable += /obj/item/clothing/under/skirt_c/puffy
 	skirts_colorable += /obj/item/clothing/under/skirt_c/plaid
-	skirts_colorable += /obj/item/clothing/under/skirt_c/pleated
 	skirts_colorable += /obj/item/clothing/under/skirt_c/skater
 	skirts_colorable += /obj/item/clothing/under/skirt_c/tube
-	skirts_colorable += /obj/item/clothing/under/skirt_c/straightlong
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(skirts_colorable)
 
 /datum/gear/uniform/casual_pants
