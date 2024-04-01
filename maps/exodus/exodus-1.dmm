@@ -644,7 +644,7 @@
 "amt" = (/obj/structure/cable{icon_state = "4-8"; d2 = 8; d1 = 4},/obj/effect/decal/cleanable/dirt,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/trim/darkwood,/area/crew_quarters/ubarbackroom)
 "amu" = (/turf/simulated/floor,/area/maintenance/underground/atmospherics)
 "amv" = (/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_dockhall)
-"amw" = (/obj/machinery/shower{dir = 8},/obj/structure/window/reinforced{dir = 1},/obj/structure/curtain/open/shower,/turf/simulated/floor/tiled/freezer,/area/crew_quarters/underdorm/sauna)
+"amw" = (/obj/machinery/shower{dir = 8},/obj/structure/curtain/open/shower,/obj/structure/window/reinforced{dir = 8},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/underdorm/sauna)
 "amx" = (/obj/machinery/door/firedoor,/obj/machinery/door/airlock{name = "Clown's Bedroom"; req_one_access = list(43,57)},/obj/structure/cable{icon_state = "1-2"; d2 = 2; d1 = 1},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/underdorm/theater/clown)
 "amy" = (/obj/structure/closet,/obj/effect/decal/cleanable/cobweb{dir = 4},/obj/random/maintenance,/turf/simulated/floor/plating,/area/maintenance/underground/central_two)
 "amz" = (/obj/effect/floor_decal/spline/fancy{dir = 4},/turf/simulated/floor/tiled/rough,/area/hydroponics/lower)
