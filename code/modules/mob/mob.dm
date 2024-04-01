@@ -297,7 +297,7 @@
 
 /// Runs examine proc chain, generates styled description and prints it to mob's client chat.
 /mob/proc/run_examinate(atom/to_axamine)
-	if(is_ic_dead(src) || is_blind(src))
+	if((isliving(src) && is_ic_dead(src)) || is_blind(src))
 		to_chat(src, SPAN_NOTICE("Something is there but you can't see it."))
 		return
 
