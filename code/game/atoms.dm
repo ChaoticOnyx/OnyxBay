@@ -830,71 +830,63 @@ its easier to just keep the beam vertical.
 	return FALSE
 
 /**
- * Adds a verb to the source object, updates mob/s stat panels if given any.
+ * Adds a verb to the source object, updates mob/s stat panel if given.
  *
  * Please, note that this proc is **DEPRECATED** and most functionality must be implemented
  * without interacting with stat panel AKA using action buttons or hotkeys.
  */
-/atom/proc/add_verb(target_or_list, verb_or_list_to_add)
+/atom/proc/add_verb(mob/target, verb_or_list_to_add)
 	verbs += verb_or_list_to_add
 
-	if(isnull(target_or_list))
+	if(!istype(target))
 		return
 
-	_add_verb_to_stat(target_or_list, verb_or_list_to_add)
+	_add_verb_to_stat(target, verb_or_list_to_add)
 
-/// Advanced-use proc only! Handles verb addition to targets stat panel without tempering with source's verbs.
-/atom/proc/_add_verb_to_stat(target_or_list, verb_or_list_to_add)
-	var/list/output_list = list()
-
+/// Advanced-use proc only! Handles verb addition to target's stat panel without tempering with source's verbs.
+/atom/proc/_add_verb_to_stat(mob/target, verb_or_list_to_add)
 	if(!islist(verb_or_list_to_add))
 		verb_or_list_to_add = list(verb_or_list_to_add)
 
-	for(var/procpath/verb_to_add as anything in verb_or_list_to_add)
-		output_list[++output_list.len] = list(verb_to_add.category, verb_to_add.name)
+	var/list/verbs_to_add = list()
+	for(var/procpath as anything in verb_or_list_to_add)
+		var/list/proc_sources = LAZYACCESS(target.atom_verbs, procpath) || list()
 
-	if(!islist(target_or_list))
-		target_or_list = list(target_or_list)
+		if(!length(proc_sources))
+			LAZYSET(target.atom_verbs, procpath, proc_sources)
+			verbs_to_add += procpath
 
-	for(var/mob/target_mob in target_or_list)
-		var/client/target_client = target_mob?.client
+		LAZYDISTINCTADD(proc_sources, src)
 
-		if(!istype(target_client))
-			return
-
-		target_client.stat_panel.send_message("add_verb_list", output_list)
+	grant_verb(target, verbs_to_add)
 
 /**
- * Removes verb from the source object, updates mob stat panels if given any.
+ * Removes verb from the source object, updates mob stat panel if given.
  *
  * Please, note that this proc is **DEPRECATED** and most functionality must be implemented
  * without interacting with stat panel AKA using action buttons or hotkeys.
  */
-/atom/proc/remove_verb(target_or_list, verb_or_list_to_remove)
+/atom/proc/remove_verb(mob/target, verb_or_list_to_remove)
 	verbs -= verb_or_list_to_remove
 
-	if(isnull(target_or_list))
+	if(!istype(target))
 		return
 
-	_remove_verb_from_stat(target_or_list, verb_or_list_to_remove)
+	_remove_verb_from_stat(target, verb_or_list_to_remove)
 
-/// Advanced-use proc only! Handles verb removal from targets stat panel without tempering with source's verbs.
-/atom/proc/_remove_verb_from_stat(target_or_list, verb_or_list_to_remove)
-	var/list/output_list = list()
-
+/// Advanced-use proc only! Handles verb removal from target's stat panel without tempering with source's verbs.
+/atom/proc/_remove_verb_from_stat(mob/target, verb_or_list_to_remove)
 	if(!islist(verb_or_list_to_remove))
 		verb_or_list_to_remove = list(verb_or_list_to_remove)
 
-	for(var/procpath/verb_to_remove as anything in verb_or_list_to_remove)
-		output_list[++output_list.len] = list(verb_to_remove.category, verb_to_remove.name)
+	var/list/verbs_to_remove = list()
+	for(var/procpath as anything in verb_or_list_to_remove)
+		var/list/proc_sources = LAZYACCESS(target.atom_verbs, procpath)
 
-	if(!islist(target_or_list))
-		target_or_list = list(target_or_list)
+		if(src in proc_sources)
+			LAZYREMOVEASSOC(target.atom_verbs, procpath, src)
 
-	for(var/mob/target_mob in target_or_list)
-		var/client/target_client = target_mob?.client
+		if(!length(proc_sources))
+			verbs_to_remove += procpath
 
-		if(!istype(target_client))
-			return
-
-		target_client.stat_panel.send_message("remove_verb_list", output_list)
+	revoke_verb(target, verbs_to_remove)
