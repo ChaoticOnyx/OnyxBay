@@ -147,9 +147,9 @@
 		KA.receive_request(src, initial_card)
 
 	if(confirm_delay)
-		addtimer(CALLBACK(src, nameof(.proc/broadcast_check)), confirm_delay)
+		set_next_think(world.time + confirm_delay)
 
-/obj/machinery/keycard_auth/proc/broadcast_check()
+/obj/machinery/keycard_auth/think()
 	if(confirmed)
 		confirmed = 0
 		trigger_event(event)
