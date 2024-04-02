@@ -34,7 +34,7 @@
 	if(!secured || cooldown > 0)
 		return FALSE
 	cooldown = 2
-	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
+	set_next_think(world.time + 1 SECOND)
 	return TRUE
 
 //Called when another assembly acts on this one, var/radio will determine where it came from for wire calcs
@@ -69,13 +69,13 @@
 		return 1
 	return 0
 
-//Called via spawn(10) to have it count down the cooldown var
-/obj/item/device/assembly/proc/process_cooldown()
+/obj/item/device/assembly/think()
 	cooldown--
 	if(cooldown <= 0)
-		return 0
-	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
-	return 1
+		set_next_think(0)
+		return FALSE
+
+	set_next_think(world.time + 1 SECOND)
 
 //Called when the holder is moved
 /obj/item/device/assembly/proc/holder_movement()
