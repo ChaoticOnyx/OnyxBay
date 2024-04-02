@@ -29,8 +29,8 @@
 /*
 	This section is for overrides of existing procs.
 */
-/obj/item/grab/New(mob/living/carbon/human/attacker, mob/living/carbon/human/victim)
-	..()
+/obj/item/grab/Initialize(mapload, mob/living/carbon/human/attacker, mob/living/carbon/human/victim)
+	. = ..()
 
 	assailant = attacker
 	affecting = victim
@@ -38,6 +38,8 @@
 	var/obj/item/O = get_targeted_organ()
 
 	SetName("[name] ([O.name])")
+
+	add_think_ctx("handle_resist", CALLBACK(src, nameof(.proc/handle_resist)), 0)
 
 	if(start_grab_name)
 		current_grab = all_grabstates[start_grab_name]
