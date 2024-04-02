@@ -196,7 +196,10 @@ steam.start() -- spawns the effect
 
 /obj/effect/effect/smoke/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, nameof(.proc/fade_out)), time_to_live)
+	set_next_think(world.time + time_to_live)
+
+/obj/effect/effect/smoke/think()
+	fade_out()
 
 /obj/effect/effect/smoke/Crossed(mob/living/carbon/M as mob)
 	..()
