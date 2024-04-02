@@ -219,6 +219,8 @@ var/list/admin_verbs_debug = list(
 	/datum/admins/proc/view_runtimes,
 	/client/proc/cmd_analyse_health_context,
 	/client/proc/cmd_analyse_health_panel,
+	/client/proc/cmd_view_language_context,
+	/client/proc/cmd_view_language_panel,
 	/client/proc/visualpower,
 	/client/proc/visualpower_remove,
 	/client/proc/hard_del,
