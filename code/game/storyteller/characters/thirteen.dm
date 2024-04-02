@@ -11,12 +11,12 @@
 
 /datum/storyteller_character/thirteen/New()
 	..()
-	addtimer(CALLBACK(src, nameof(.proc/letthefunbegin)), 10 MINUTES)
+	set_next_think(world.time + 10 MINUTES)
 
-/datum/storyteller_character/thirteen/proc/letthefunbegin()
+/datum/storyteller_character/thirteen/think()
 	difficulty_hard_cap += difficulty_increment
 	if(difficulty_hard_cap > 100)
 		simultaneous_event_fire = TRUE
 	if(difficulty_hard_cap - difficulty_soft_cap > 75)
 		difficulty_soft_cap += difficulty_increment
-	addtimer(CALLBACK(src, nameof(.proc/letthefunbegin)), 3 MINUTES)
+	set_next_think(world.time + 3 MINUTES)
