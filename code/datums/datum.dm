@@ -49,11 +49,9 @@
 	if(dc)
 		var/all_components = dc[/datum/component]
 		if(length(all_components))
-			for(var/datum/component/component as anything in all_components)
-				qdel(component, FALSE, TRUE)
+			QDEL_NULL_LIST(all_components)
 		else
-			var/datum/component/C = all_components
-			qdel(C, FALSE, TRUE)
+			QDEL_NULL(all_components)
 		dc.Cut()
 
 	if(extensions)
