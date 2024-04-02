@@ -228,10 +228,7 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/gold/do_effect(mob/user)
 	user.visible_message(SPAN_WARNING("[src] starts shuddering violently!"))
-	addtimer(CALLBACK(src, nameof(.proc/startTimer)), 50)
-
-/obj/item/metroidcross/charged/gold/proc/startTimer()
-	set_next_think(world.time + 1 SECONDS)
+	set_next_think(world.time + 6 SECONDS)
 
 /obj/item/metroidcross/charged/gold/think()
 	visible_message(SPAN_WARNING("[src] lets off a spark, and produces a living creature!"))
