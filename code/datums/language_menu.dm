@@ -79,9 +79,6 @@
 			if(chosen_language.language_flags & NONGLOBAL)
 				return
 
-			if(!owner.can_speak(chosen_language))
-				return
-
 			if(owner.default_language == chosen_language)
 				owner.set_default_language(null) // Resetting language
 			else
