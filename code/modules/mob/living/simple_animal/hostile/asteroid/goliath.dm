@@ -90,7 +90,10 @@
 	if(istype(turftype, /turf/simulated/mineral))
 		var/turf/simulated/mineral/M = turftype
 		M.GetDrilled()
-	addtimer(CALLBACK(src, nameof(.proc/Trip)), 20)
+	set_next_think(world.time + 2 SECONDS)
+
+/obj/effect/goliath_tentacle/think()
+	Trip()
 
 /obj/effect/goliath_tentacle/original
 
