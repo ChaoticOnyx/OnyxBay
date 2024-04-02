@@ -33,6 +33,7 @@ SUBSYSTEM_DEF(statpanels)
 			"Round Time: [roundduration2text()]",
 			"Station Time: [stationtime2text()]",
 			"Station Date: [stationdate2text()]",
+			"",
 		)
 
 		if(evacuation_controller.has_eta())

@@ -499,23 +499,21 @@
 		return (locate(/obj/item/tank/jetpack) in module.modules)
 	return 0
 
-// update the status screen display
 /mob/living/silicon/robot/get_status_tab_items()
 	. = ..()
 
-	if(cell)
-		. += "Charge Left: [round(CELL_PERCENT(cell))]%"
-		. += "Cell Rating: [round(cell.maxcharge)]"
-		. += "Power Cell Load: [round(used_power_this_tick)]W"
-	else
-		. += "No Cell Inserted!"
+	. += list(
+		"Cell Charge: [isnull(cell) ? "NO CELL" : "[round(cell.charge)]/[round(cell.maxcharge)]W"]",
+		"Cell Load: [round(used_power_this_tick)]W",
+		"",
+	)
 
 	var/obj/item/tank/jetpack/current_jetpack = installed_jetpack()
-	if(current_jetpack)
-		. += "Internal Atmosphere Info: [current_jetpack]"
-		. += "Tank Pressure [current_jetpack.air_contents.return_pressure()]"
-
-	. += "Lights: [lights_on ? "ON" : "OFF"]"
+	if(!isnull(current_jetpack))
+		. += list(
+			"[current_jetpack]: [current_jetpack.air_contents.return_pressure()]kPa",
+			"",
+		)
 
 	for(var/datum/matter_synth/ms in module?.synths)
 		. += "[ms.name]: [ms.energy]/[ms.max_energy_multiplied]"

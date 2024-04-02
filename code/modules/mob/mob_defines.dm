@@ -235,5 +235,9 @@
 	var/list/feet_blood_DNA
 	var/track_blood_type
 	var/feet_blood_color
+
 	/// Holder for a bugreporter datum.
 	var/datum/bugreporter/bugreporter
+
+	/// Associative list of procpath -> list/atom, where atom is a source a procpath comes from.
+	var/list/atom_verbs
