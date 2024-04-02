@@ -295,8 +295,22 @@
 	sort_string = "KCAAG"
 
 /datum/design/circuit/unloading_machine
-	name = "unloading_machine"
+	name = "unloading machine"
 	id = "unloading_machine"
 	req_tech = list(TECH_ENGINEERING = 1)
 	build_path = /obj/item/circuitboard/unloading_machine
 	sort_string = "KCAAH"
+
+/datum/design/circuit/coffeemaker
+	name = "coffeemaker"
+	id = "coffeemaker"
+	req_tech = list(TECH_ENGINEERING = 2, TECH_POWER = 1)
+	build_path = /obj/item/circuitboard/coffeemaker
+	sort_string = "KCAAI"
+
+/datum/design/circuit/sauna
+	name = "sauna"
+	id = "sauna"
+	req_tech = list(TECH_ENGINEERING = 2, TECH_POWER = 2)
+	build_path = /obj/item/circuitboard/sauna
+	sort_string = "KCAAJ"

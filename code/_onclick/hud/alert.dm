@@ -43,7 +43,7 @@
 			thealert.timeout = null
 
 	thealert.owner = src
-	thealert.register_signal(thealert.owner, SIGNAL_QDELETING, /datum/proc/qdel_self)
+	thealert.register_signal(thealert.owner, SIGNAL_QDELETING, nameof(/datum.proc/qdel_self))
 
 	if(new_master)
 		var/old_layer = new_master.layer

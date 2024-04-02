@@ -214,14 +214,16 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	null_sound = null_sound || new(channel = sound.channel)
 	sound_to(listener, null_sound)
 	unregister_signal(listener, SIGNAL_MOVED)
-	unregister_signal(listener, SIGNAL_QDELETING, /datum/sound_token/proc/PrivRemoveListener)
+	unregister_signal(listener, SIGNAL_QDELETING, nameof(/datum/sound_token.proc/PrivRemoveListener))
 	listeners -= listener
 
 /datum/sound_token/proc/PrivUpdateListenerLoc(atom/listener, update_sound = TRUE)
 	var/turf/source_turf = get_turf(source)
 	var/turf/listener_turf = get_turf(listener)
 
-	ASSERT(istype(source_turf) && istype(listener_turf))
+	if(!istype(source_turf) || !istype(listener_turf)) // Oh look somebody's got nullspace'd
+		PrivRemoveListener(listener)
+		return
 
 	var/distance = get_dist(source_turf, listener_turf)
 	if(!listener_turf || (distance > range) || !(listener_turf in can_be_heard_from))
