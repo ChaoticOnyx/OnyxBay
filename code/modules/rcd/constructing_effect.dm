@@ -57,14 +57,14 @@
 	else
 		mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 		icon_state = "rcd_end"
-		addtimer(CALLBACK(src, nameof(.proc/end)), 15)
+		set_next_think(world.time + 1.5 SECONDS)
 
-/obj/effect/constructing_effect/proc/end()
+/obj/effect/constructing_effect/think()
 	qdel_self()
 
 /obj/effect/constructing_effect/proc/attacked(mob/user)
 	playsound(loc, 'sound/weapons/egloves.ogg', vol = 80, vary = TRUE)
-	end()
+	qdel_self()
 
 /obj/effect/constructing_effect/attackby(obj/item/weapon, mob/user, params)
 	attacked(user)
