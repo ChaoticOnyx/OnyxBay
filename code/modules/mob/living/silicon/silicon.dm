@@ -65,7 +65,7 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 		AH.unregister_alarm(src)
 
 	if(istype(idcard))
-		QDEL_NULL(idcard))
+		QDEL_NULL(idcard)
 
 	queued_alarms.Cut()
 
