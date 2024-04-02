@@ -276,9 +276,9 @@
 		return FALSE
 
 	if(istype(container) && container?.reagents.get_reagent_amount(/datum/reagent/water))
-		set_light(0.15, 0.1, 1, 2, "#82ff4c")
+		set_light(0.15, 1, 2, 3.5, "#82ff4c")
 	else
-		set_light(0.15, 0.1, 1, 2, "#f86060")
+		set_light(0.15, 1, 2, 3.5, "#f86060")
 	return TRUE
 
 /obj/machinery/sauna/examine(mob/user, infix)
