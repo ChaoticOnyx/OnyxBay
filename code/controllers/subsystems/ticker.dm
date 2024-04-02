@@ -27,6 +27,11 @@ SUBSYSTEM_DEF(ticker)
 	var/list/antag_pool = list()
 	var/looking_for_antags = 0
 
+	/// Amount of new players in lobby during roundstart, used in stat panel.
+	var/total_players
+	/// Amount of ready new players in lobby during roundstart, used in stat panel.
+	var/total_players_ready
+
 	var/pregame_timeleft
 	var/restart_timeout
 
@@ -50,8 +55,18 @@ SUBSYSTEM_DEF(ticker)
 			post_game_tick()
 
 /datum/controller/subsystem/ticker/proc/pregame_tick()
+	total_players = 0
+	total_players_ready = 0
+
+	for(var/mob/new_player/player in GLOB.player_list)
+		total_players++
+
+		if(player.ready)
+			total_players_ready++
+
 	if(round_progressing && last_fire)
 		pregame_timeleft -= world.time - last_fire
+
 	if(pregame_timeleft <= 0 || auto_start)
 		pregame_timeleft = 0
 		Master.SetRunLevel(RUNLEVEL_SETUP)
