@@ -253,9 +253,13 @@ Charged extracts:
 	colour = "oil"
 	effect_desc = "Creates an explosion after a few seconds."
 
+/obj/item/metroidcross/charged/oil/Initialize(mapload)
+	. = ..()
+	add_think_ctx("think_boom", CALLBACK(src, nameof(.proc/boom)), 0)
+
 /obj/item/metroidcross/charged/oil/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] begins to shake with rapidly increasing force!"))
-	addtimer(CALLBACK(src, nameof(.proc/boom)), 50)
+	set_next_think_ctx("think_boom", world.time + 5 SECONDS)
 
 /obj/item/metroidcross/charged/oil/proc/boom()
 	explosion(src, devastation_range = 2, heavy_impact_range = 3, light_impact_range = 4) //Much smaller effect than normal oils, but devastatingly strong where it does hit.
