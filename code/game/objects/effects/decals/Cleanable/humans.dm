@@ -53,7 +53,14 @@ var/global/list/image/splatter_cache=list()
 						blood_DNA |= B.blood_DNA.Copy()
 					qdel(B)
 	var/drytime = DRYING_TIME * (max(1, amount))
-	addtimer(CALLBACK(src, nameof(.proc/dry)), drytime)
+	set_next_think(world.time + drytime)
+
+/obj/effect/decal/cleanable/blood/think()
+	name = dryname
+	desc = drydesc
+	color = adjust_brightness(color, -50)
+	amount = 0
+	virus2.Cut()
 
 /obj/effect/decal/cleanable/blood/on_update_icon()
 	if(basecolor == "rainbow") basecolor = get_random_colour(1)
@@ -97,13 +104,6 @@ var/global/list/image/splatter_cache=list()
 
 	H.update_inv_shoes(1)
 	amount--
-
-/obj/effect/decal/cleanable/blood/proc/dry()
-	name = dryname
-	desc = drydesc
-	color = adjust_brightness(color, -50)
-	amount = 0
-	virus2.Cut()
 
 /obj/effect/decal/cleanable/blood/attack_hand(mob/living/carbon/human/user)
 	..()
