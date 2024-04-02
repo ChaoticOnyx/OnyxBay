@@ -218,11 +218,12 @@ var/list/ai_verbs_default = list(
 	ai_list -= src
 	ai_radio = null
 
-	QDEL_NULL(eyeobj)
 	QDEL_NULL(psupply)
 	QDEL_NULL(aiPDA)
 	QDEL_NULL(aiMulti)
 	hack = null
+
+	destroy_eyeobj()
 
 	. = ..()
 

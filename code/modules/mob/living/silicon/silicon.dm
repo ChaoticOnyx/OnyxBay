@@ -57,10 +57,18 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 
 /mob/living/silicon/Destroy()
 	GLOB.silicon_mob_list -= src
+
 	QDEL_NULL(silicon_radio)
 	QDEL_NULL(silicon_camera)
+
 	for(var/datum/alarm_handler/AH in SSalarm.all_handlers)
 		AH.unregister_alarm(src)
+
+	if(istype(idcard))
+		QDEL_NULL(idcard))
+
+	queued_alarms.Cut()
+
 	return ..()
 
 /mob/living/silicon/mind_initialize()
