@@ -221,7 +221,9 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	var/turf/source_turf = get_turf(source)
 	var/turf/listener_turf = get_turf(listener)
 
-	ASSERT(istype(source_turf) && istype(listener_turf))
+	if(!istype(source_turf) && !istype(listener_turf)) // Oh look somebody's got nullspace'd
+		PrivRemoveListener(listener)
+		return
 
 	var/distance = get_dist(source_turf, listener_turf)
 	if(!listener_turf || (distance > range) || !(listener_turf in can_be_heard_from))
