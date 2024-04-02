@@ -466,9 +466,9 @@
 
 	toggle_steam()
 	use_power_oneoff(active_power_usage * time * 0.1) // .1 needed here to convert time (in deciseconds) to seconds such that watts * seconds = joules
-	addtimer(CALLBACK(src, nameof(.proc/stop_operating)), time / speed)
+	set_next_think(world.time + (time/speed))
 
-/obj/machinery/coffeemaker/proc/stop_operating()
+/obj/machinery/coffeemaker/think()
 	brewing = FALSE
 	toggle_steam()
 
