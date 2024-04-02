@@ -50,7 +50,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	if(slot == slot_l_hand_str || slot == slot_r_hand_str)
 		return
 
-	var/image/ret = .
+	var/image/ret = . ? . : image('icons/effects/blank.dmi')
 
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
