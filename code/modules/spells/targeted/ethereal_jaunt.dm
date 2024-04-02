@@ -131,9 +131,9 @@
 	else
 		to_chat(user, SPAN_WARNING("Some strange aura is blocking the way!"))
 	canmove = FALSE
-	addtimer(CALLBACK(src, nameof(.proc/allow_move)), 2)
+	set_next_think(world.time + 2)
 
-/obj/effect/dummy/spell_jaunt/proc/allow_move()
+/obj/effect/dummy/spell_jaunt/think()
 	canmove = TRUE
 
 /obj/effect/dummy/spell_jaunt/ex_act(blah)
