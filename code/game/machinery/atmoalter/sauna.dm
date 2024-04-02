@@ -9,17 +9,20 @@
 	icon = 'icons/obj/machines/sauna.dmi'
 	icon_state = "sauna"
 	base_icon_state = "sauna"
+	obj_flags = OBJ_FLAG_ANCHORABLE
 	use_power = POWER_USE_IDLE
 	density = TRUE
 	anchored = TRUE
 	stat = POWEROFF // Disabled at roundstart
 
+	component_types = list(
+		/obj/item/circuitboard/sauna,
+		/obj/item/reagent_containers/vessel/beaker/large = 1,
+		/obj/item/stock_parts/capacitor = 1
+	)
+
 	/// Container storing reagents for steam
 	var/obj/item/reagent_containers/container
-
-	var/list/reagent_whitelist
-
-	reagent_whitelist = list(/datum/reagent/water)
 
 	var/static/image/container_overlay = image(icon = 'icons/obj/machines/sauna.dmi', icon_state = "container")
 	var/static/image/on_bad = image(icon = 'icons/obj/machines/sauna.dmi', icon_state = "on_bad")
@@ -55,6 +58,10 @@
 	. = ..()
 
 	if(issilicon(user))
+		return
+
+	if(!anchored)
+		show_splash_text(user, "anchor it first!", "\The [src] must be anchored to the floor!")
 		return
 
 	var/list/options = list()
@@ -99,10 +106,10 @@
 			playsound(get_turf(src), GET_SFX(SFX_USE_KNOB), 45, TRUE)
 
 /obj/machinery/sauna/attackby(obj/item/attack_item, mob/living/user, params)
-	if(!container && default_deconstruction_screwdriver(user, icon_state, icon_state, attack_item))
+	if(!container && default_deconstruction_screwdriver(user, attack_item))
 		return
 
-	if(default_deconstruction_crowbar(attack_item))
+	if(default_deconstruction_crowbar(user, attack_item))
 		return
 
 	if(istype(attack_item, /obj/item/reagent_containers/vessel) && attack_item.is_open_container())
@@ -114,6 +121,20 @@
 		return
 
 	return ..()
+
+/obj/machinery/sauna/wrench_floor_bolts(mob/user)
+	if(!(stat & (NOPOWER | BROKEN | POWEROFF)))
+		show_splash_text(user, "turn off first!", "\The [src] must be turned off first!")
+		return
+
+	. = ..()
+	if(!.)
+		return
+
+	if(!anchored)
+		stat |= POWEROFF
+		STOP_PROCESSING(SSmachines, src)
+		update_icon()
 
 /obj/machinery/sauna/Process()
 	if(stat & (NOPOWER | BROKEN | POWEROFF))
@@ -191,6 +212,14 @@
 
 /// Generic toggle proc. Nothing special.
 /obj/machinery/sauna/proc/toggle(mob/user)
+	if(stat & NOPOWER)
+		show_splash_text(user, "no power!", "\The [src] is not powered!")
+		return
+
+	if(stat & BROKEN)
+		show_splash_text(user, "broken!", "\The [src] is broken!")
+		return
+
 	if(stat & POWEROFF)
 		stat &= ~POWEROFF
 		show_splash_text(user, "enabled", "You turn on \the [src]")
@@ -242,7 +271,7 @@
 		AddOverlays(emissive)
 
 /obj/machinery/sauna/proc/update_glow()
-	if(!(stat & (BROKEN | NOPOWER | POWEROFF)))
+	if(stat & (BROKEN | NOPOWER | POWEROFF))
 		set_light(0)
 		return FALSE
 
@@ -261,6 +290,9 @@
 			. += SPAN_NOTICE("\The [src] has \a [container] loaded. It is empty.")
 
 	. += SPAN_NOTICE("Its temperature is set at [CONV_KELVIN_CELSIUS(target_temperature)] celsius.")
+
+	if(panel_open)
+		. += SPAN_NOTICE("[src]'s maintenance hatch is open!")
 
 /atom/movable/steam_controller
 	anchored = TRUE
@@ -287,6 +319,8 @@
 	for(var/turf/turf in turfs)
 		turf.vis_contents.Remove(overlay)
 
+	QDEL_NULL(overlay)
+
 	var/obj/machinery/sauna/sauna = sauna_ref.resolve()
 	if(istype(sauna))
 		sauna.steam = null
@@ -305,11 +339,9 @@
 		condense(turfs)
 		return
 
-	if(isnull(reagents))
-		create_reagents(1000)
-
 	if(turfs?.len * WATER_UNIT_PER_TILE > reagents?.get_reagent_amount(/datum/reagent/water))
 		disappear()
+		return
 
 	if(turfs?.len * WATER_UNIT_PER_TILE < reagents?.get_reagent_amount(/datum/reagent/water))
 		reagents?.remove_reagent(/datum/reagent/water, turfs?.len * WATER_UNIT_PER_TILE)
