@@ -568,7 +568,7 @@
 		H.forceMove(src)
 		cloth_golem = H
 		to_chat(cloth_golem, SPAN_NOTICE("You start gathering your life energy, preparing to rise again..."))
-		addtimer(CALLBACK(src, nameof(.proc/revive)), revive_time)
+		set_next_think(world.time + revive_time)
 	else
 		return INITIALIZE_HINT_QDEL
 
@@ -577,10 +577,7 @@
 		QDEL_NULL(cloth_golem)
 	return ..()
 
-/obj/structure/cloth_pile/proc/revive()
-	if(QDELETED(src) || QDELETED(cloth_golem)) //QDELETED also checks for null, so if no cloth golem is set this won't runtime
-		return
-
+/obj/structure/cloth_pile/think()
 	invisibility = INVISIBILITY_MAXIMUM //disappear before the animation
 	new /obj/effect/mummy_animation(get_turf(src))
 	cloth_golem.revive()
@@ -589,7 +586,6 @@
 	cloth_golem.visible_message(SPAN_DANGER("[src] rises and reforms into [cloth_golem]!"),SPAN_DANGER("You reform into yourself!"))
 	cloth_golem = null
 	qdel(src)
-
 
 /obj/structure/cloth_pile/proc/update_name()
 	if(on_fire)
