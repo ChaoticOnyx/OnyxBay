@@ -156,6 +156,14 @@ var/list/ai_verbs_default = list(
 	add_language(LANGUAGE_INDEPENDENT, 1)
 	add_language(LANGUAGE_SPACER, 1)
 
+	default_silicon_subsystems.Cut()
+
+	for(var/datum/nano_module/subsystem_type as anything in subtypesof(/datum/nano_module))
+		if(!subsystem_type::available_to_ai)
+			continue
+
+		default_silicon_subsystems += subsystem_type
+
 	if(!safety)//Only used by AIize() to successfully spawn an AI.
 		if (!B)//If there is no player/brain inside.
 			empty_playable_ai_cores += new /obj/structure/AIcore/deactivated(loc)//New empty terminal.

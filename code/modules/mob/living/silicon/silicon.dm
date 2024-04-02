@@ -31,6 +31,17 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 	var/list/avaliable_huds
 	var/active_hud
 
+	/// List of subsystems to initialize when silicon is spawned.
+	var/list/default_silicon_subsystems = list(
+		/datum/nano_module/alarm_monitor/all,
+		/datum/nano_module/law_manager,
+		/datum/nano_module/records/ai
+	)
+	/// List of all created and managed subsystems.
+	var/list/datum/nano_module/silicon_subsystems
+	/// Asociative list typepath -> `datum/ui_state`, where typepath is subsystem's type.
+	var/list/silicon_subsystems_states
+
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 41.7 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 23.9 MEGA ELECTRONVOLT,
@@ -57,10 +68,16 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 
 /mob/living/silicon/Destroy()
 	GLOB.silicon_mob_list -= src
+
 	QDEL_NULL(silicon_radio)
 	QDEL_NULL(silicon_camera)
+
+	for(var/datum/nano_module/subsystem in silicon_subsystems)
+		remove_subsystem(subsystem.type)
+
 	for(var/datum/alarm_handler/AH in SSalarm.all_handlers)
 		AH.unregister_alarm(src)
+
 	return ..()
 
 /mob/living/silicon/mind_initialize()
