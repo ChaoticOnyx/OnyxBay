@@ -214,7 +214,7 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	null_sound = null_sound || new(channel = sound.channel)
 	sound_to(listener, null_sound)
 	unregister_signal(listener, SIGNAL_MOVED)
-	unregister_signal(listener, SIGNAL_QDELETING, /datum/sound_token/proc/PrivRemoveListener)
+	unregister_signal(listener, SIGNAL_QDELETING, nameof(/datum/sound_token.proc/PrivRemoveListener))
 	listeners -= listener
 
 /datum/sound_token/proc/PrivUpdateListenerLoc(atom/listener, update_sound = TRUE)
