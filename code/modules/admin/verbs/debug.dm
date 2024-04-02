@@ -400,7 +400,7 @@
 	if(isnull(chosen_one))
 		return
 
-	cmd_analyse_health(chosen_one)
+	cmd_view_language(chosen_one)
 
 /client/proc/cmd_view_language_context(mob/target_mob as mob in GLOB.living_mob_list_)
 	set name = "Check Mob Languages"
