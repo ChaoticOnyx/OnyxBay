@@ -50,6 +50,7 @@
 	AddElement(/datum/element/last_words)
 	add_think_ctx("remove_deaf", CALLBACK(src, nameof(.proc/remove_deaf)), 0)
 	add_think_ctx("remove_nearsighted", CALLBACK(src, nameof(.proc/remove_nearsighted)), 0)
+	add_think_ctx("delayed_hallucinations", CALLBACK(src, nameof(.proc/delayed_hallucinations)), 0)
 
 /mob/living/carbon/human/Life()
 	set invisibility = 0
