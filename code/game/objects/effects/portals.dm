@@ -22,7 +22,10 @@
 /obj/effect/portal/Initialize(mapload, end, delete_after = 300, failure_rate)
 	. = ..()
 	setup_portal(end, delete_after, failure_rate)
-	addtimer(CALLBACK(src, nameof(.proc/move_all_objects)), 1.5 SECONDS)
+	set_next_think(world.time + 1.5 SECONDS)
+
+/obj/effect/portal/think()
+	move_all_objects()
 
 /obj/effect/portal/Destroy()
 	target = null
