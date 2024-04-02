@@ -26,6 +26,7 @@
 
 /obj/item/grenade/Initialize()
 	. = ..()
+	add_think_ctx("think_detonate", CALLBACK(src, nameof(.proc/detonate)), 0)
 	if(has_pin)
 		safety_pin = new /obj/item/safety_pin
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
