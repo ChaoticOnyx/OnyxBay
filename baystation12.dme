@@ -9,6 +9,7 @@
 // END_FILE_DIR
 // BEGIN_PREFERENCES
 #define DEBUG
+#define TESTING
 // END_PREFERENCES
 // BEGIN_INCLUDE
 #include "code\__spaceman_dmm.dm"
