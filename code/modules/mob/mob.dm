@@ -86,6 +86,7 @@
 	update_move_intent_slowdown()
 	if(ignore_pull_slowdown)
 		add_movespeed_mod_immunities(src, /datum/movespeed_modifier/pull_slowdown)
+	add_think_ctx("dust", CALLBACK(src, nameof(.proc/dust)), 0)
 	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	nameof(.proc/set_blackness))
 	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	nameof(.proc/set_blackness))
 	register_signal(src, SIGNAL_SIGHT_SET,			nameof(.proc/set_blackness))

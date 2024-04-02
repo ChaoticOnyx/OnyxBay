@@ -267,7 +267,7 @@ Regenerative extracts:
 		D.adjustFireLoss(target.getFireLoss())
 		D.adjustToxLoss(target.getToxLoss())
 		D.death()
-		addtimer(CALLBACK(D, nameof(/mob.proc/dust)), 300)
+		D.set_next_think_ctx("dust", world.time + 30 SECONDS)
 		return
 
 	var/mob/living/dummy = new target.type(target.loc)
@@ -275,7 +275,7 @@ Regenerative extracts:
 	dummy.adjustFireLoss(target.getFireLoss())
 	dummy.adjustToxLoss(target.getToxLoss())
 	dummy.death()
-	addtimer(CALLBACK(dummy, nameof(/mob.proc/dust)), 300)
+	dummy.set_next_think_ctx("dust", world.time + 30 SECONDS)
 
 /obj/item/metroidcross/regenerative/lightpink
 	colour = "light pink"
