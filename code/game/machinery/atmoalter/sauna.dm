@@ -49,10 +49,18 @@
 	var/last_tick_with_water
 	/// To prevent dublication of steam particles and sounds
 	var/currently_steaming = FALSE
+	/// Ref to steam particles for further qdel
+	var/atom/movable/particle_emitter/smoke_steam/steam_particles
 
 /obj/machinery/sauna/Initialize(mapload)
 	. = ..()
 	emissive = emissive_appearance(icon, "sauna_ea")
+
+/obj/machinery/sauna/Destroy()
+	steam = null // Steam object deletes itself on depletion of reagents
+	QDEL_NULL(steam_particles)
+	QDEL_NULL(emissive)
+	return ..()
 
 /obj/machinery/sauna/attack_hand(mob/user)
 	. = ..()
@@ -197,11 +205,11 @@
 
 	currently_steaming = TRUE
 	playsound(get_turf(src), 'sound/effects/water_sizzle.ogg', 15)
-	var/atom/movable/particle_emitter/smoke_steam/steam_particles = new /atom/movable/particle_emitter/smoke_steam(get_turf(src))
-	QDEL_IN(steam_particles, 30 SECONDS)
-	addtimer(CALLBACK(src, nameof(.proc/stop_steaming)), 30 SECONDS)
+	steam_particles = new /atom/movable/particle_emitter/smoke_steam(get_turf(src))
+	set_next_think(world.time + 30 SECONDS)
 
-/obj/machinery/sauna/proc/stop_steaming()
+/obj/machinery/sauna/think()
+	QDEL_NULL(steam_particles)
 	currently_steaming = FALSE
 
 /obj/machinery/sauna/proc/catch_fire()
