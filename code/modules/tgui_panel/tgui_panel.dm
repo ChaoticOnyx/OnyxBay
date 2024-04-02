@@ -49,14 +49,13 @@
 	))
 	// Other setup
 	request_telemetry()
-	addtimer(CALLBACK(src, nameof(.proc/on_initialize_timed_out)), 30 SECONDS)
+	set_next_think(world.time + 30 SECONDS)
 
 /**
- * private
- *
  * Called when initialization has timed out.
  */
-/datum/tgui_panel/proc/on_initialize_timed_out()
+
+/datum/tgui_panel/think()
 	// Currently does nothing but sending a message to old chat.
 	DIRECT_OUTPUT(client, SPAN("danger", "Chat's loading is in progress. If the chat does not load in a minute - use 'Fix Chat'."))
 
