@@ -221,7 +221,7 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	var/turf/source_turf = get_turf(source)
 	var/turf/listener_turf = get_turf(listener)
 
-	if(!istype(source_turf) && !istype(listener_turf)) // Oh look somebody's got nullspace'd
+	if(!istype(source_turf) || !istype(listener_turf)) // Oh look somebody's got nullspace'd
 		PrivRemoveListener(listener)
 		return
 
