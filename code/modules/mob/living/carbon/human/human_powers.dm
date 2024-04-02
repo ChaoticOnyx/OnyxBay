@@ -100,7 +100,7 @@
 
 	B.chemicals -= 100
 
-	addtimer(CALLBACK(src, nameof(.proc/host_pain_disable)), 30 SECONDS)
+	set_next_think_ctx("host_pain_disable", world.time + 30 SECONDS)
 
 /mob/living/carbon/human/proc/host_pain_disable()
 	if(no_pain)

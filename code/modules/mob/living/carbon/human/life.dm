@@ -52,6 +52,7 @@
 	add_think_ctx("remove_nearsighted", CALLBACK(src, nameof(.proc/remove_nearsighted)), 0)
 	add_think_ctx("delayed_hallucinations", CALLBACK(src, nameof(.proc/delayed_hallucinations)), 0)
 	add_think_ctx("host_pain_enable", CALLBACK(src, nameof(.proc/host_pain_enable)), 0)
+	add_think_ctx("host_pain_disable", CALLBACK(src, nameof(.proc/host_pain_disable)), 0)
 
 /mob/living/carbon/human/Life()
 	set invisibility = 0
