@@ -29,6 +29,8 @@
 	SetRange(current_range,TRUE)
 
 /datum/proximity_monitor/Destroy()
+	if(!isnull(host))
+		unregister_signal(host, SIGNAL_MOVED)
 	host = null
 	last_host_loc = null
 	hasprox_receiver = null
