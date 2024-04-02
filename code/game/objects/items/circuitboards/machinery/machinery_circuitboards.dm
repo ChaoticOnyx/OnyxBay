@@ -44,7 +44,7 @@
 							/obj/item/stock_parts/micro_laser = 3,
 							/obj/item/stock_parts/manipulator = 1)
 
-/obj/item/circuitboard/microwave
+/obj/item/circuitboard/sauna
 	name = T_BOARD("sauna")
 	build_path = /obj/machinery/sauna
 	board_type = "machine"
