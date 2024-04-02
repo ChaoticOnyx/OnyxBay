@@ -192,8 +192,11 @@
 	if(density && operable())
 		operating = -1
 		flick("[base_state]spark", src)
-		addtimer(CALLBACK(src, nameof(.proc/open)), 10)
+		set_next_think(world.time + 1 SECOND)
 		return 1
+
+/obj/machinery/door/window/think()
+	open()
 
 /obj/machinery/door/emp_act(severity)
 	if(prob(60 / severity))
