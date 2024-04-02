@@ -48,6 +48,8 @@
 
 	add_movespeed_modifier(/datum/movespeed_modifier/human_delay)
 	AddElement(/datum/element/last_words)
+	add_think_ctx("remove_deaf", CALLBACK(src, nameof(.proc/remove_deaf)), 0)
+	add_think_ctx("remove_nearsighted", CALLBACK(src, nameof(.proc/remove_nearsighted)), 0)
 
 /mob/living/carbon/human/Life()
 	set invisibility = 0
