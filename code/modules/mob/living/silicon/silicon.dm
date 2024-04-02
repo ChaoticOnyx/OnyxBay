@@ -82,6 +82,7 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 		QDEL_NULL(idcard)
 
 	queued_alarms.Cut()
+	silicon_subsystems_states.Cut() // Just in case...
 
 	return ..()
 
