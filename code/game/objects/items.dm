@@ -327,7 +327,7 @@
 			. += "It's not that good at penetrating armor."
 
 		. += "It's attack cooldown is about [round((attack_cooldown + DEFAULT_WEAPON_COOLDOWN * (mod_weight / mod_handy)) * mod_speed * 0.1, 0.1)] seconds."
-		. += "It has pary window of [round(mod_handy * 12 * 0.1, 0.1)] seconds."
+		. += "It has parry window of [round(mod_handy * 12 * 0.1, 0.1)] seconds."
 
 	if(block_tier == BLOCK_TIER_ADVANCED)
 		. += "It may block or reflect projectiles really well."
