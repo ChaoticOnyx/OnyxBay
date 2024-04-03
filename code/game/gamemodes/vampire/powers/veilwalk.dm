@@ -79,7 +79,7 @@
 	if(vampire.my_mob.stat)
 		if(vampire.my_mob.stat == 1)
 			to_chat(vampire.my_mob, SPAN("warning", "You cannot maintain this form while unconcious."))
-			set_next_think("kick_unconscious", world.time + 1 SECOND)
+			set_next_think_ctx("kick_unconscious", world.time + 1 SECOND)
 		else
 			deactivate()
 			return

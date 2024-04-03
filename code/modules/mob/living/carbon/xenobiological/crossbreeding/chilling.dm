@@ -282,7 +282,7 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/oil/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] begins to shake with muted intensity!"))
-	set_next_think("boom", world.time + 5 SECONDS)
+	set_next_think_ctx("boom", world.time + 5 SECONDS)
 
 /obj/item/metroidcross/chilling/oil/proc/boom()
 	explosion(src, devastation_range = -1, heavy_impact_range = -1, light_impact_range = 10) //Large radius, but mostly light damage, and no flash.
