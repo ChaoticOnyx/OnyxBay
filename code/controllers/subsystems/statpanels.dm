@@ -33,6 +33,7 @@ SUBSYSTEM_DEF(statpanels)
 			"Round Time: [roundduration2text()]",
 			"Station Time: [stationtime2text()]",
 			"Station Date: [stationdate2text()]",
+			"",
 		)
 
 		if(evacuation_controller.has_eta())
@@ -186,7 +187,7 @@ SUBSYSTEM_DEF(statpanels)
 		// Now, we're gonna queue image generation out of those refs
 		to_make += turf_item
 		already_seen[turf_item] = OBJ_IMAGE_LOADING
-		obj_window.register_signal(turf_item, SIGNAL_QDELETING, nameof(/datum/object_window_info/proc/viewing_atom_deleted)) // we reset cache if anything in it gets deleted
+		obj_window.register_signal(turf_item, SIGNAL_QDELETING, nameof(/datum/object_window_info.proc/viewing_atom_deleted)) // we reset cache if anything in it gets deleted
 
 	return turf_items
 

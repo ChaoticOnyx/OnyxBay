@@ -60,7 +60,7 @@
 	if(ismob(a))
 		var/mob/M = a
 		if(!M.is_ooc_dead())
-			register_signal(M, SIGNAL_MOB_DEATH, /obj/item/material/twohanded/fireaxe/cult/proc/gain_power)
+			register_signal(M, SIGNAL_MOB_DEATH, nameof(/obj/item/material/twohanded/fireaxe/cult.proc/gain_power))
 		spawn(30)
 			unregister_signal(M, SIGNAL_MOB_DEATH)
 	return ..()

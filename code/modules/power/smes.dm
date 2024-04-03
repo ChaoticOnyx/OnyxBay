@@ -128,7 +128,7 @@
 		set_light(0)
 		return
 
-	var/clevel = chargedisplay()
+	var/clevel = min(chargedisplay(), 5)
 	if(clevel)
 		AddOverlays(status_overlays_charge[clevel])
 		AddOverlays(overlight_overlays_charge[clevel])

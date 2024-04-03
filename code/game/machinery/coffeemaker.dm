@@ -8,6 +8,9 @@
 	base_icon_state = "coffeemaker_impressa"
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	density = TRUE
+
+	component_types = list(/obj/item/circuitboard/coffeemaker)
+
 	var/obj/item/reagent_containers/vessel/coffeepot/coffeepot = null
 	var/brewing = FALSE
 	var/brew_time = 8 SECONDS
@@ -191,10 +194,10 @@
 	return TRUE
 
 /obj/machinery/coffeemaker/attackby(obj/item/attack_item, mob/living/user, params)
-	if(!coffeepot && default_deconstruction_screwdriver(user, icon_state, icon_state, attack_item))
+	if(!coffeepot && default_deconstruction_screwdriver(user, attack_item))
 		return
 
-	if(default_deconstruction_crowbar(attack_item))
+	if(default_deconstruction_crowbar(user, attack_item))
 		return
 
 	if(panel_open) //Can't insert objects when its screwed open

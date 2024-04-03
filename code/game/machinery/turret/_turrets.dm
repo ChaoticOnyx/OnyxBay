@@ -506,7 +506,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		to_chat(user, SPAN_WARNING("You short out \the [src]'s threat assessment circuits."))
 		visible_message("\The [src] hums oddly...")
 		enabled = FALSE
-		addtimer(CALLBACK(src, .proc/emagged_targeting), 6 SECONDS)
+		addtimer(CALLBACK(src, nameof(.proc/emagged_targeting)), 6 SECONDS)
 		state_machine.evaluate()
 
 /obj/machinery/turret/proc/emagged_targeting()

@@ -239,3 +239,5 @@
 
 	/// UI holder for a language menu.
 	var/datum/language_menu/language_menu
+	/// Associative list of procpath -> list/atom, where atom is a source a procpath comes from.
+	var/list/atom_verbs

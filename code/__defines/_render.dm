@@ -326,6 +326,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	switch(quality)
 		if(GLOB.PREF_LOW)
 			gas_heat_object = new /atom/movable/heat_effect(null)
+			steam_object = new /atom/movable/steam_effect(null)
 		if(GLOB.PREF_MED)
 			gas_heat_object = new /atom/movable/particle_emitter/heat(null)
 			steam_object = new /atom/movable/particle_emitter/steam(null)
@@ -343,6 +344,12 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	render_target = HEAT_EFFECT_TARGET
 	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
 
+/atom/movable/steam_effect
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "smoke"
+	appearance_flags = PIXEL_SCALE | NO_CLIENT_COLOR
+	render_target = STEAM_EFFECT_TARGET
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
 
 /* *
  * This system works by exploiting BYONDs color matrix filter to use layers to handle emissive blockers.

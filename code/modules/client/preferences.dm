@@ -391,7 +391,7 @@ datum/preferences/proc/clear_character_previews()
 			var/metadata = all_underwear_metadata[underwear_category_name]
 			var/obj/item/underwear/UW = UWD.create_underwear(metadata)
 			if(UW)
-				UW.ForceEquipUnderwear(character, FALSE)
+				UW.ForceEquipUnderwear(character, null, FALSE)
 		else
 			all_underwear -= underwear_category_name
 

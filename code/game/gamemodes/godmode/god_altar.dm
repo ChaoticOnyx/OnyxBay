@@ -60,9 +60,9 @@
 	set_next_think(world.time + 1 SECOND)
 	target = L
 	update_icon()
-	register_signal(L, SIGNAL_QDELETING, /obj/structure/deity/altar/proc/remove_target)
-	register_signal(L, SIGNAL_MOVED, /obj/structure/deity/altar/proc/remove_target)
-	register_signal(L, SIGNAL_MOB_DEATH, /obj/structure/deity/altar/proc/remove_target)
+	register_signal(L, SIGNAL_QDELETING, nameof(/obj/structure/deity/altar.proc/remove_target))
+	register_signal(L, SIGNAL_MOVED, nameof(/obj/structure/deity/altar.proc/remove_target))
+	register_signal(L, SIGNAL_MOB_DEATH, nameof(/obj/structure/deity/altar.proc/remove_target))
 
 /obj/structure/deity/altar/proc/remove_target()
 	set_next_think(0)
