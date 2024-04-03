@@ -557,17 +557,18 @@ its easier to just keep the beam vertical.
 
 /atom/proc/can_climb(mob/living/user, post_climb_check=0)
 	if (!(atom_flags & ATOM_FLAG_CLIMBABLE) || !can_touch(user) || (!post_climb_check && LAZYISIN(climbers, user)))
-		return 0
+		return FALSE
 
-	if (!user.Adjacent(src))
-		to_chat(user, "<span class='danger'>You can't climb there, the way is blocked.</span>")
-		return 0
+	if(!user.Adjacent(src))
+		show_splash_text(user, "can't climb!", SPAN_DANGER("You can't climb there, the way is blocked."))
+		return FALSE
 
 	var/obj/occupied = turf_is_crowded()
 	if(occupied)
-		to_chat(user, "<span class='danger'>There's \a [occupied] in the way.</span>")
-		return 0
-	return 1
+		show_splash_text(user, "no free space!", SPAN_DANGER("There's \a [occupied] in the way.."))
+		return FALSE
+
+	return TRUE
 
 /atom/proc/can_touch(mob/user)
 	if (!user)
@@ -596,46 +597,45 @@ its easier to just keep the beam vertical.
 	return 0
 
 /atom/proc/do_climb(mob/living/user)
-	if (!can_climb(user))
+	if(!can_climb(user))
 		return
 
-	user.visible_message("<span class='warning'>\The [user] starts climbing onto \the [src]!</span>")
+	user.visible_message(SPAN_WARNING("\The [user] starts climbing onto \the [src]!"))
 	LAZYDISTINCTADD(climbers, user)
 
 	if(!do_after(user,(issmall(user) ? 30 : 50), src))
 		LAZYREMOVE(climbers, user)
 		return
 
-	if (!can_climb(user, post_climb_check=1))
+	if(!can_climb(user, post_climb_check=1))
 		LAZYREMOVE(climbers, user)
 		return
 
 	user.forceMove(get_turf(src))
 
-	if (get_turf(user) == get_turf(src))
-		user.visible_message("<span class='warning'>\The [user] climbs onto \the [src]!</span>")
+	if(get_turf(user) == get_turf(src))
+		user.visible_message(SPAN_WARNING("\The [user] climbs onto \the [src]!"))
+
 	LAZYREMOVE(climbers, user)
 
 /atom/proc/object_shaken()
 	for(var/mob/living/M in climbers)
 		M.Weaken(1)
-		to_chat(M, "<span class='danger'>You topple as you are shaken off \the [src]!</span>")
-		climbers.Cut(1, 2)
-		if(!climbers.len)
-			climbers = null
+		show_splash_text(M, "you are shaken off!", SPAN_DANGER("You topple as you are shaken off \the [src]!"))
+		LAZYREMOVE(climbers, M)
 
 	for(var/mob/living/M in get_turf(src))
-		if(M.lying) return //No spamming this on people.
+		if(M.lying) //No spamming this on people.
+			return
 
 		M.Weaken(3)
-		to_chat(M, "<span class='danger'>You topple as \the [src] moves under you!</span>")
+		show_splash_text(M, "you topple!", SPAN_DANGER("You topple as \the [src] moves under you!"))
 
 		if(prob(25))
-
-			var/damage = rand(15,30)
+			var/damage = rand(15, 30)
 			var/mob/living/carbon/human/H = M
 			if(!istype(H))
-				to_chat(H, "<span class='danger'>You land heavily!</span>")
+				to_chat(H, SPAN_DANGER("You land heavily!"))
 				M.adjustBruteLoss(damage)
 				return
 
@@ -655,7 +655,6 @@ its easier to just keep the beam vertical.
 
 			H.UpdateDamageIcon()
 			H.updatehealth()
-	return
 
 /atom/MouseDrop_T(atom/movable/target, mob/user)
 	var/mob/living/H = user
