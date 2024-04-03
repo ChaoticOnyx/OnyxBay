@@ -37,13 +37,6 @@
 
 	tag = null
 	SSnano && SSnano.close_uis(src)
-	var/list/timers = active_timers
-	active_timers = null
-	for(var/thing in timers)
-		var/datum/timedevent/timer = thing
-		if (timer.spent)
-			continue
-		qdel(timer)
 
 	var/list/dc = datum_components
 	if(dc)

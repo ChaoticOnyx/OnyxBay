@@ -267,7 +267,6 @@
 #include "code\controllers\subsystems\supply.dm"
 #include "code\controllers\subsystems\tgui.dm"
 #include "code\controllers\subsystems\ticker.dm"
-#include "code\controllers\subsystems\timer.dm"
 #include "code\controllers\subsystems\trade.dm"
 #include "code\controllers\subsystems\virus.dm"
 #include "code\controllers\subsystems\vote.dm"
