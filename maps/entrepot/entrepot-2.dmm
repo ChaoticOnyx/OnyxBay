@@ -3,7 +3,7 @@
 "ac" = (/obj/structure/railing/steel,/turf/simulated/floor/tiled/rough,/area/space)
 "ad" = (/obj/structure/railing/steel{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "ae" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/door/firedoor,/turf/simulated/floor/plating,/area/space)
-"af" = (/obj/structure/window_frame/glass,/turf/simulated/floor/plating,/area/space)
+"af" = (/obj/structure/railing/steel,/obj/structure/window_frame/glass,/turf/simulated/floor/tiled/dark/mono,/area/space)
 "ag" = (/turf/simulated/wall/r_wall,/area/space)
 "ah" = (/obj/structure/railing/steel,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "ai" = (/obj/structure/railing/darkwood{dir = 4},/turf/simulated/open,/area/space)
@@ -188,7 +188,7 @@
 "dF" = (/obj/structure/railing/steel{dir = 8},/obj/structure/railing/steel{dir = 1},/turf/simulated/open,/area/space)
 "dG" = (/obj/machinery/gateway,/obj/effect/landmark/joinlate/gate,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "dH" = (/obj/machinery/gateway{dir = 6},/obj/effect/landmark/joinlate/gate,/turf/simulated/floor/tiled/dark/rough,/area/space)
-"dI" = (/obj/structure/flora/pottedplant/unusual,/obj/structure/railing/steel,/turf/simulated/floor/tiled/dark/mono,/area/space)
+"dI" = (/obj/structure/window_frame/glass,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "dJ" = (/obj/structure/closet/emcloset,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "dK" = (/obj/structure/flora/pottedplant/minitree,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "dL" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/space)
@@ -274,13 +274,13 @@
 "fn" = (/obj/structure/bed/couch/right/blue{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fo" = (/obj/structure/bookcase/prefitted/fiction,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fp" = (/obj/structure/reagent_dispensers/water_cooler,/turf/simulated/floor/tiled/dark/rough,/area/space)
-"fq" = (/obj/machinery/door/airlock/glass_security{name = "Detention Room"},/turf/simulated/floor/tiled/dirty,/area/space)
+"fq" = (/obj/machinery/door/airlock{name = "Luxury Cabin"; id_tag = "LuxRoom"},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fr" = (/obj/structure/flora/pottedplant/unusual,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fs" = (/obj/effect/floor_decal/corner/black{dir = 5},/obj/structure/flora/pottedplant/stoutbush,/turf/simulated/floor/tiled/rough,/area/space)
 "ft" = (/obj/structure/table/glass,/obj/item/storage/box/glasses/rocks,/obj/item/reagent_containers/vessel/mug/NT,/obj/item/reagent_containers/vessel/mug/NT,/obj/item/reagent_containers/vessel/mug/NT,/obj/item/reagent_containers/vessel/mug/NT,/obj/item/device/flashlight/lamp,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fu" = (/obj/structure/table/glass,/obj/machinery/chemical_dispenser/bar_coffee/full,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fv" = (/obj/structure/table/woodentable,/obj/item/material/ashtray/bronze,/turf/simulated/floor/trim/darkwood,/area/space)
-"fw" = (/obj/machinery/door/airlock{name = "Cabin 2"},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"fw" = (/obj/machinery/button/remote/airlock{name = "Door Bolts"; dir = 1; pixel_x = 25; pixel_y = -25; id = "Room2"; specialfunctions = 4},/turf/simulated/floor/trim/wood,/area/space)
 "fx" = (/obj/effect/floor_decal/corner/black{dir = 10},/obj/structure/flora/pottedplant/stoutbush,/turf/simulated/floor/tiled/rough,/area/space)
 "fy" = (/obj/structure/table/standard,/turf/simulated/floor/tiled/rough,/area/space)
 "fz" = (/obj/structure/table/standard,/obj/item/blueprints,/obj/random_multi/single_item/captains_spare_id,/turf/simulated/floor/grid/bluegrid,/area/space)
@@ -293,12 +293,12 @@
 "fG" = (/obj/structure/table/reinforced,/turf/simulated/floor/tiled/dirty,/area/space)
 "fH" = (/obj/structure/bed/chair,/turf/simulated/floor/tiled/dirty,/area/space)
 "fI" = (/obj/structure/bed/chair{dir = 1},/turf/simulated/floor/tiled/dirty,/area/space)
-"fJ" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor/tiled/white/rough,/area/space)
+"fJ" = (/obj/machinery/button/remote/airlock{name = "Door Bolts"; dir = 2; pixel_x = -25; pixel_y = 24; id = "RetardRoom"; specialfunctions = 4},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fK" = (/obj/machinery/recharge_station,/turf/simulated/floor/tiled/rough,/area/space)
 "fL" = (/obj/structure/sign/greencross,/turf/simulated/wall/r_wall,/area/space)
 "fM" = (/obj/machinery/door/airlock{name = "Wardroom"},/turf/simulated/floor/tiled/dark/rough,/area/space)
-"fN" = (/obj/machinery/door/airlock{name = "Luxury Cabin"},/turf/simulated/floor/tiled/dark/rough,/area/space)
-"fO" = (/obj/machinery/door/airlock{name = "Cabin 1"},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"fN" = (/obj/machinery/button/remote/airlock{name = "Door Bolts"; dir = 2; pixel_x = -25; pixel_y = 24; id = "LuxRoom"; specialfunctions = 4},/turf/simulated/floor/trim/darkwood,/area/space)
+"fO" = (/obj/machinery/door/airlock{name = "Cabin 2"; id_tag = "Room2"},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fP" = (/obj/machinery/door/airlock{name = "Restroom"},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fQ" = (/obj/machinery/door/airlock/glass{name = "Cryogenic Storage"},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fR" = (/obj/effect/floor_decal/corner/black{dir = 6},/turf/simulated/floor/tiled/rough,/area/space)
@@ -439,7 +439,7 @@
 "iw" = (/obj/effect/floor_decal/industrial/warning{icon_state = "warning"; dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
 "ix" = (/obj/effect/floor_decal/industrial/warning{dir = 6},/turf/simulated/floor/tiled/rough,/area/space)
 "iy" = (/obj/machinery/door/airlock/external/bolted_open,/obj/effect/floor_decal/industrial/box/yellow,/turf/simulated/floor/plating,/area/space)
-"iz" = (/obj/structure/bed/chair{dir = 8},/turf/simulated/floor/tiled/white/rough,/area/space)
+"iz" = (/obj/structure/railing/steel{dir = 8},/obj/structure/railing/steel{dir = 4},/obj/structure/flora/pottedplant/unusual,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "iA" = (/obj/machinery/door/airlock/glass_medical{name = "Medbay"},/turf/simulated/floor/tiled/white/rough,/area/space)
 "iB" = (/obj/machinery/chem_master,/turf/simulated/floor/tiled/white,/area/space)
 "iC" = (/obj/machinery/door/airlock/glass{name = "Pharmacy"},/turf/simulated/floor/tiled/white/rough,/area/space)
@@ -451,7 +451,18 @@
 "iI" = (/obj/effect/floor_decal/corner/red/three_quarters{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/space)
 "iJ" = (/obj/effect/floor_decal/corner/red/three_quarters{dir = 8},/turf/simulated/floor/tiled/white/rough,/area/space)
 "iK" = (/obj/structure/table/glass,/obj/machinery/reagentgrinder{pixel_y = 6},/turf/simulated/floor/tiled/white,/area/space)
+"iL" = (/obj/structure/sign/redcross{name = "Medbay"},/turf/simulated/wall,/area/space)
+"iM" = (/obj/structure/sign/security,/turf/simulated/wall/r_wall,/area/space)
 "iN" = (/obj/structure/cable{icon_state = "4-8"; d2 = 8; d1 = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"iO" = (/obj/structure/sign/crime,/turf/simulated/wall/r_wall,/area/space)
+"iP" = (/obj/machinery/button/remote/airlock{name = "Door Bolts"; dir = 1; pixel_x = 25; pixel_y = -25; id = "Room1"; specialfunctions = 4},/turf/simulated/floor/trim/wood,/area/space)
+"iQ" = (/obj/machinery/door/airlock/glass_security{name = "Detention Room"; id_tag = "RetardRoom"},/turf/simulated/floor/tiled/dirty,/area/space)
+"iR" = (/obj/random/pottedplant,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"iS" = (/obj/effect/floor_decal/spline/fancy,/turf/simulated/open,/area/space)
+"iT" = (/obj/structure/railing/steel{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"iU" = (/obj/effect/floor_decal/spline/fancy{dir = 1},/turf/simulated/open,/area/space)
+"iV" = (/obj/effect/floor_decal/spline/fancy,/obj/structure/cable{icon_state = "1-2"; d2 = 2; d1 = 1},/turf/simulated/floor/plating,/area/space)
+"iW" = (/obj/machinery/door/airlock{name = "Cabin 1"; id_tag = "Room1"},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "jk" = (/obj/structure/cable{icon_state = "1-4"; d2 = 4; d1 = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "jm" = (/obj/structure/cable{icon_state = "4-8"; d2 = 8; d1 = 4},/turf/simulated/floor/tiled/dark/mono,/area/space)
 "jn" = (/obj/structure/cable{icon_state = "1-8"; d2 = 8; d1 = 1},/obj/structure/cable{icon_state = "2-8"},/turf/simulated/floor/tiled/dark/mono,/area/space)
@@ -603,19 +614,19 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaduaaaadubHkhbzbBbAkhbEduaaaadujRjKjTkbjKjVjKjVjKjVjKjVjKjWjSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaduaaaadubHbubzbBbAbpbEduaaaadukcjEjFjIjJjKjKkdjKjKkejKjQjRjSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaduagagagagagaeaecEaeaeagagagagagaaaaaakciHjBjCjDjEjFjDiHjBkfkgaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaeaeaeagagagagaeaeaeaggpgtgsfyfRbbidbbfXfygqgrfKagagagagduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagdvdZecbKeXeNdWehdZelbKbbbbbbbbbbbbaAbbbbbbbbbbbbagfDfCagduduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagemdZeqbKeIdhfPdZdZcLbKfsgbgFbbgJgJgJgJaAbbgGgbfsagagggagaaduduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagaeaeaeagagagagaeaeaeaggpgtgsfydDiSiViSdQfygqgrfKagagagagduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagdvdZecbKeXeNdWehdZelbKbbbbbbbbiTiTiTiTiTbbbbbbbbagfDfCagduduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagemdZeqbKeIdhfPdZdZcLbKfsgbgFbbgJgJgJgJaAbbgGgbfsagiOggagaaduduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagdvdZdZbKbKbKbKdZdZdvagaeaefRadaDdwdxdyaAbbfXaeaeagfHfAagagagduduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadzdudududududubqagfadZdZfPdheJbKeHdZemagaadAfRadaDdBagdCaDaBfXdAaaagfGfAfBfEagkhkhkhkhkhkhdududududududzaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadudzaaaaaaaaaaaabeaggddZehdWeQeYbKecdZdvagaeaefRbbaAdDdEdQaDaBfXaeaeagfIfAfBfEagkhkhkhkhkhkhaaaaaaaaaaaadzduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadududzaaaaaaaaaaaabeagbKfwbKbKbKbKbKbKfObKdXfxgagHbbaAgKgKgKgKbbgIgafxfLagfqagagbKagagaeaekhkhaaaaaaaaaaaadzduduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWaadzaaaaaaaaaaaabeaeePbbbbbbbbbbbbbbbbbbbgbbbbbbbbbbbbaAbbbbbbbbbbbbfJegegizgjgugEgLgVaekhkhaaaaaaaaaaaadzaagWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWdudzdudududududubeaeePbbbbbbbbbbbbbbbbbbbgbbbbbbbbbbbbaAbbbbbbbbbbbbfJegegizgjhhgXgYhaaekhkhdududududududzdugWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWaaduaaaaaaaaaaaabeagbKbKfMbKbKbKbKfNbKbKbKbKbKbKbKbKbbbbbbbKbKbKbKbKbKbKiAbKbKhlhbhdheaekhkhaaaaaaaaaaaaduaagWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWaaduaaaaaaaaaaaabeaefbfcbbbbfobKfeaJcvcwcFeWbKeeeibKafafafbKghgzgigjhjgDeggAbKgjgjhngjbKkhkhaaaaaaaaaaaaduaagWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWdudzdudududududueZaeeVfdbbbbfuagflaJaJaJaJaJaNazeUbKdIbbdIbKgkglgmgnegiDiEegiChohohohqaekhkhdududududududzdugWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWaadzaaaaaaduaaaaduaefhfnbbbbftagfkfjaJaJdUdVbKazejbKaDdYaDbKgygxdhgnegiIiJhigjhohrhohsaekhkhaaaaaaaaaaaadzaagWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadudzaaaaaaaaaaaabeaggdfwehdWeQeYbKeciPdvagaeaefRbbaAdDdEdQaDaBfXaeaeagfIfAfBfEagkhkhkhkhkhkhaaaaaaaaaaaadzduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadududzaaaaaaaaaaaabeagbKfObKbKbKbKbKbKiWbKdXfxgagHbbaAgKgKgKgKbbgIgafxfLagiQiMagagagagaeaekhkhaaaaaaaaaaaadzduduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWaadzaaaaaaaaaaaabeaeePbbbbbbbbbbbbbbbbbbbgbbbbbbbbahahahahahbbbbbbbbbgbbfJcBgjgugEgLgVaekhkhaaaaaaaaaaaadzaagWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWdudzdudududududubeaeePbbbbbbbbbbbbbbbbbbbgbbbbbbbbdwiUiUiUdybbbbbbbbbgbbbbcBgjhhgXgYhaaekhkhdududududududzdugWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWaaduaaaaaaaaaaaabeagbKbKfMbKbKbKbKfqbKbKbKbKbKbKbKbKaDaDaDbKbKbKbKbKbKbKiAiLbKhlhbhdheaekhkhaaaaaaaaaaaaduaagWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWaaduaaaaaaaaaaaabeaefbfcbbbbfobKfefNcvcwcFeWbKeeeibKiRiRiRbKghgzgigjhjgDeggAbKgjgjhngjagkhkhaaaaaaaaaaaaduaagWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWdudzdudududududueZaeeVfdbbbbfuagflaJaJaJaJaJaNazeUbKafdIafbKgkglgmgnegiDiEegiChohohohqaekhkhdududududududzdugWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagWaadzaaaaaaduaaaaduaefhfnbbbbftagfkfjaJaJdUdVbKazejbKaDizaDbKgygxdhgnegiIiJhigjhohrhohsaekhkhaaaaaaaaaaaadzaagWaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadududzaaaaaaduaaaaaaaeaefrbbbbfpagfmfifvffdUfgbKeTekbKaDdYaDbKgohggvgwhfgBgChkaghMhNiBiKaekhkhaaaaaaaaaaaadzduduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadudzaaaaaaduaaaaaaaaaeaeaeaeaeagaeaeaeagagbKbKbKbKbKbbbbbbbKbKbKbKbKbKbKagagagaeaeaeaeaekhkhaaaaaaaaaaaadzduaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadzdudududuaaaaaaaaaaduduaaaaaaaaaaducrageSedeoedbVbbbbePbWbfeteBetetevagkhkhkhkhkhkhkhkhkhdududududududzaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
