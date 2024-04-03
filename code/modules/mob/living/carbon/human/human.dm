@@ -265,7 +265,7 @@
 		dat += "<B>[slot_ref["name"]]:</b> <a href='?src=\ref[src];item=[slot_ref["slot"]]'>[istype(thing_in_slot) ? thing_in_slot : "nothing"]</a>"
 		if(istype(thing_in_slot, /obj/item/clothing))
 			var/obj/item/clothing/C = thing_in_slot
-			if(C.accessories.len)
+			if(LAZYLEN(C.accessories))
 				dat += "<BR><A href='?src=\ref[src];item=tie;holder=\ref[C]'>Remove accessory</A>"
 	dat += "<HR>"
 

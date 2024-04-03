@@ -13,7 +13,7 @@
 	var/list/species_restricted = null
 	var/gunshot_residue //Used by forensics.
 
-	var/list/accessories = list()
+	var/list/accessories
 	var/list/valid_accessory_slots
 	var/list/restricted_accessory_slots
 	var/list/starting_accessories
@@ -65,9 +65,8 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 			ret.AddOverlays(GLOB.clothing_blood_icons[cache_index])
 
-	if(length(accessories))
-		for(var/obj/item/clothing/accessory/A in accessories)
-			ret.AddOverlays(A.get_mob_overlay(user_mob, slot_tie_str))
+	for(var/obj/item/clothing/accessory/A in accessories)
+		ret.AddOverlays(A.get_mob_overlay(user_mob, slot_tie_str))
 	return ret
 
 // Aurora forensics port.
@@ -193,7 +192,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 				ties += "\icon[accessory] \a [accessory]"
 		if(ties.len)
 			.+= " with [english_list(ties)] attached"
-		if(accessories.len > ties.len)
+		if(LAZYLEN(accessories) > ties.len)
 			.+= ". <a href='?src=\ref[src];list_ungabunga=1'>\[See accessories\]</a>"
 
 /obj/item/clothing/Topic(href, href_list, datum/topic_state/state)
@@ -210,7 +209,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 /obj/item/clothing/OnTopic(user, list/href_list, datum/topic_state/state)
 	if(href_list["list_ungabunga"])
-		if(accessories.len)
+		if(LAZYLEN(accessories))
 			var/list/ties = list()
 			for(var/accessory in accessories)
 				ties += "\icon[accessory] \a [accessory]"
