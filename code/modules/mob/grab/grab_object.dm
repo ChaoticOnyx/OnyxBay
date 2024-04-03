@@ -29,8 +29,8 @@
 /*
 	This section is for overrides of existing procs.
 */
-/obj/item/grab/Initialize(mapload, mob/living/carbon/human/attacker, mob/living/carbon/human/victim)
-	. = ..()
+/obj/item/grab/New(mob/living/carbon/human/attacker, mob/living/carbon/human/victim)
+	..()
 
 	assailant = attacker
 	affecting = victim
