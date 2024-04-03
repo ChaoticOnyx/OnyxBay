@@ -230,6 +230,10 @@
 	icon_state = "yellow metroid extract"
 	effectmod = "charged"
 
+/obj/item/metroid_extract/yellow/Initialize()
+	. = ..()
+	add_think_ctx("update_glow", )
+
 /obj/item/metroid_extract/yellow/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
@@ -239,7 +243,7 @@
 				return
 
 			species.update_glow(user, LUMINESCENT_ENHANCED_GLOW)
-			addtimer(CALLBACK(species, nameof(/datum/species/promethean/luminescent.proc/update_glow), user, LUMINESCENT_DEFAULT_GLOW), 400)
+			species.set_next_think_ctx("update_glow", world.time + 40 SECONDS, user, LUMINESCENT_DEFAULT_GLOW)
 			show_splash_text(user, SPAN_NOTICE("You start glowing brighter."))
 			return 600
 

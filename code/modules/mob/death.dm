@@ -21,9 +21,9 @@
 	if(do_gibs)
 		gibs(loc, dna)
 
-	addtimer(CALLBACK(src, nameof(.proc/check_delete), animation), 15)
+	set_next_think_ctx("dust_delete", world.time + 1.5 SECONDS, animation)
 
-/mob/proc/check_delete(atom/movable/fake_overlay/animation)
+/mob/proc/dust_check_delete(atom/movable/fake_overlay/animation)
 	if(animation)
 		qdel(animation)
 	if(src)
@@ -50,8 +50,7 @@
 	new remains(loc)
 
 	remove_from_dead_mob_list()
-	addtimer(CALLBACK(src, nameof(.proc/check_delete), animation), 15)
-
+	set_next_think_ctx("dust_deletion", world.time + 1.5 SECONDS, animation)
 
 /mob/proc/death(gibbed, deathmessage = "seizes up and falls limp...", show_dead_message = "You have died.")
 

@@ -267,7 +267,7 @@
 		inline_css = file("html/statbrowser/statbrowser.css"),
 		inline_js = file("html/statbrowser/statbrowser.js")
 	)
-	addtimer(CALLBACK(src, nameof(.proc/check_panel_loaded)), 30 SECONDS)
+	add_think_ctx("check_panel_loaded", CALLBACK(src, nameof(.proc/check_panel_loaded)), world.time + 30 SECONDS)
 
 	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.multiaccount.panic_server_address && TopicData != "redirect")

@@ -43,6 +43,10 @@
 	var/datum/vampire_power/toggled/veilwalk/my_power = null
 	var/warning_level = 0
 
+/obj/effect/dummy/veil_walk/Initialize(mapload)
+	. = ..()
+	add_think_ctx("kick_unconscious", CALLBACK(null, nameof(.proc/_kick_unconscious)), 0)
+
 /obj/effect/dummy/veil_walk/Destroy()
 	vampire = null
 	my_power = null
@@ -57,7 +61,8 @@
 			M.reset_view(null)
 
 /obj/effect/dummy/veil_walk/relaymove(mob/user, direction)
-	if (!can_move)
+	THROTTLE(can_move_cooldown, 0.2 SECONDS)
+	if(!can_move_cooldown)
 		return
 
 	var/turf/new_loc = get_step(src, direction)
@@ -70,14 +75,11 @@
 	if(!T.contains_dense_objects())
 		last_valid_turf = T
 
-	can_move = FALSE
-	addtimer(CALLBACK(src, nameof(.proc/_unlock_move)), 2, TIMER_UNIQUE)
-
 /obj/effect/dummy/veil_walk/think()
 	if(vampire.my_mob.stat)
 		if(vampire.my_mob.stat == 1)
 			to_chat(vampire.my_mob, SPAN("warning", "You cannot maintain this form while unconcious."))
-			addtimer(CALLBACK(src, nameof(.proc/_kick_unconscious)), 1 SECOND, TIMER_UNIQUE)
+			set_next_think("kick_unconscious", world.time + 1 SECOND)
 		else
 			deactivate()
 			return

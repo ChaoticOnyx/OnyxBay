@@ -23,12 +23,8 @@
 	var/material_used = MATERIAL_REINFORCED_GLASS //For material windoors
 	var/assembly_used = /obj/structure/windoor_assembly //For various windoors
 
-	/// Determines whether this door already has thinkg_close context running or not
-	var/thinking_about_closing = FALSE
-
 /obj/machinery/door/window/Initialize()
 	. = ..()
-	add_think_ctx("think_close", CALLBACK(src, nameof(.proc/close)), 0)
 	update_nearby_tiles()
 	update_icon()
 	hitsound = pick(
@@ -75,8 +71,6 @@
 	shatter()
 
 /obj/machinery/door/window/Destroy()
-	if(timer)
-		deltimer(timer)
 	set_density(0)
 	update_nearby_tiles()
 	return ..()
@@ -141,7 +135,7 @@
 
 	if(autoclose && !thinking_about_closing)
 		thinking_about_closing = TRUE
-		set_next_think_ctx("think_close", world.time + 10 SECONDS)
+		set_next_think_ctx("close_context", world.time + 10 SECONDS)
 
 	flick("[base_state]opening", src)
 	set_density(0)
@@ -160,7 +154,7 @@
 		operating = TRUE
 
 	thinking_about_closing = FALSE
-	set_next_think_ctx("thinking_about_closing", 0)
+	set_next_think_ctx("close_context", 0)
 
 	flick(text("[]closing", base_state), src)
 	set_density(1)

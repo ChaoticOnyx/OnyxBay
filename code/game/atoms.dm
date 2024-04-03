@@ -143,6 +143,8 @@
 	if(is_poi)
 		SSpoints_of_interest.make_point_of_interest(src)
 
+	add_think_ctx("remove_flicked_overlay", CALLBACK(src, nameof(.proc/remove_flicked_overlay)), 0)
+
 	return INITIALIZE_HINT_NORMAL
 
 //called if Initialize returns INITIALIZE_HINT_LATELOAD

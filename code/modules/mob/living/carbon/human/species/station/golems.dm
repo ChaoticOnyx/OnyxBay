@@ -451,8 +451,13 @@
 	var/mob/living/carbon/human/H = owner
 	H.visible_message(SPAN_WARNING("[H] starts vibrating!"), SPAN_DANGER("You start charging your bluespace core..."))
 	playsound(get_turf(H), 'sound/weapons/flash.ogg', 25, TRUE)
-	addtimer(CALLBACK(src, nameof(.proc/teleport), H), 1.5 SECONDS)
+	set_next_think(world.time + 1.5 SECONDS, weakref(H))
 	return TRUE
+
+/datum/action/cooldown/unstable_teleport/think(weakref/ref)
+	var/mob/living/carbon/human/H = ref.resolve()
+	if(istype(H))
+		teleport(H)
 
 /datum/action/cooldown/unstable_teleport/proc/teleport(mob/living/carbon/human/H)
 	StartCooldown()

@@ -18,9 +18,6 @@
 		/obj/item/circuitboard/gibber
 	)
 
-	/// Gibbing Timer ID.
-	var/timer = null
-
 	/// Direction to spit meat and gibs in.
 	var/gib_throw_dir = WEST
 
@@ -62,14 +59,14 @@
 /obj/machinery/gibber/Initialize()
 	. = ..()
 
+	add_think_ctx("finish_processing", CALLBACK(src, nameof(.proc/finish_processing)), 0)
 	update_icon()
 	RefreshParts()
 
 /obj/machinery/gibber/Destroy()
-	if(operating || timer)
+	if(operating)
 		for(var/atom/A in contents - mobs_to_process - component_parts)
 			qdel(A) // No drops for cheaters...
-		deltimer(timer)
 	if(length(mobs_to_process))
 		for(var/mob/M in mobs_to_process)
 			M.forceMove(loc)
@@ -227,7 +224,7 @@
 	for(var/mob/pig in mobs_to_process)
 		create_mob_drop(pig)
 
-	timer = addtimer(CALLBACK(src, nameof(.proc/finish_processing), user), length(mobs_to_process) * gib_time, TIMER_STOPPABLE)
+	set_next_think_ctx("finish_processing", world.time + length(mobs_to_process) * gib_time, user)
 
 /obj/machinery/gibber/proc/create_mob_drop(mob/victim)
 	if(istype(victim, /mob/living/simple_animal/hostile/faithless))
@@ -309,7 +306,6 @@
 		pig.gib(do_gibs = gore)
 		qdel(pig)
 
-	timer = null
 	operating = FALSE
 
 	playsound(loc, 'sound/effects/splat.ogg', 50, 1)

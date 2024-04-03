@@ -16,7 +16,8 @@
 	if(ev_wait <= 0)
 		util_crash_with("ev_wait should be greather than zero")
 
-	addtimer(CALLBACK(src, nameof(.proc/_timer_callback)), ev_wait, TIMER_OVERRIDE | TIMER_UNIQUE)
+	set_next_think(0) // Replicating TIMER_OVERRIDE logic
+	set_next_think(world.time + ev_wait)
 
 	if(ev_once)
 		ev_enabled = FALSE
@@ -25,7 +26,7 @@
 	ev_enabled = !ev_enabled
 	_add_timer()
 
-/obj/map_ent/logic_timer/proc/_timer_callback()
+/obj/map_ent/logic_timer/think()
 	var/obj/map_ent/E = locate(ev_tag)
 
 	if(!istype(E))

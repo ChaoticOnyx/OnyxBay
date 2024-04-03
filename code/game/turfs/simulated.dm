@@ -13,7 +13,9 @@
 	var/max_fire_temperature_sustained = 0 //The max temperature of the fire which it was subjected to
 	var/dirt = 0
 
-	var/timer_id
+/turf/simulated/Initialize(mapload, ...)
+	. = ..()
+	add_think_ctx("unwet_context", CALLBACK(src, nameof(.proc/unwet_floor)), 0 )
 
 /turf/simulated/post_change()
 	..()
@@ -32,12 +34,12 @@
 		wet_overlay = image('icons/effects/water.dmi',src,"wet_floor")
 		AddOverlays(wet_overlay)
 
-	timer_id = addtimer(CALLBACK(src, nameof(.proc/unwet_floor)), 20 SECONDS, TIMER_STOPPABLE|TIMER_UNIQUE|TIMER_NO_HASH_WAIT|TIMER_OVERRIDE)
+	set_next_think_ctx("unwet_context", world.time + 20 SECONDS)
 
 /turf/simulated/proc/unwet_floor(check_very_wet = TRUE)
 	if(check_very_wet && wet >= 2)
 		wet--
-		timer_id = addtimer(CALLBACK(src, nameof(.proc/unwet_floor)), 20 SECONDS, TIMER_STOPPABLE|TIMER_UNIQUE|TIMER_NO_HASH_WAIT|TIMER_OVERRIDE)
+		set_next_think_ctx("unwet_context", world.time + 20 SECONDS)
 		return
 
 	wet = 0

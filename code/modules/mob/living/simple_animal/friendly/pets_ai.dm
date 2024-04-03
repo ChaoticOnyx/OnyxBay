@@ -6,13 +6,10 @@
 	var/current_command
 	var/mob/target_mob
 	var/move_to_delay = 4 //delay for the automated movement.
-	var/timer_to_forget_target
 	var/mob/master = null //undisputed master. Their commands hold ultimate sway and ultimate power.
 	var/static/list/text_to_command = list()
 
 /datum/mob_ai/pet/Destroy()
-	if(timer_to_forget_target)
-		delete_wandering_timer()
 	master = null
 	target_mob = null
 	return ..()
@@ -33,13 +30,15 @@
 				continue
 			text_to_command[command_text] = COMMAND_WANDERING
 
+	add_think_ctx("wandering_context", CALLBACK(src, nameof(.proc/toggle_to_wandering)), 0)
+
 /datum/mob_ai/pet/do_move()
 	..()
 	var/turf/T = get_turf(holder)
 	if(safe_area && T.loc != safe_area) // we are not in safe area, panic!
-		create_wandering_timer()
+		set_next_think_ctx("wandering_context", world.time + 5 SECONDS)
 	else
-		delete_wandering_timer()
+		set_next_think_ctx("wandering_context", 0)
 
 /datum/mob_ai/pet/process_special_actions()
 	switch(current_command)
@@ -71,19 +70,10 @@
 	if(!target_mob)
 		return
 	if(target_mob in ListTargets(holder.vision_range))
-		delete_wandering_timer()
+		set_next_think_ctx("wandering_context", 0)
 		walk_to(holder,target_mob,1,move_to_delay)
 	else
 		create_wandering_timer(5 SECONDS)
-
-/datum/mob_ai/pet/proc/delete_wandering_timer()
-	deltimer(timer_to_forget_target)
-	timer_to_forget_target = null
-
-/datum/mob_ai/pet/proc/create_wandering_timer(duration)
-	if(timer_to_forget_target)
-		return
-	timer_to_forget_target = addtimer(CALLBACK(src, nameof(.proc/toggle_to_wandering)), duration, TIMER_STOPPABLE)
 
 /datum/mob_ai/pet/listen(mob/speaker, text)
 	if(speaker != master)
