@@ -209,16 +209,21 @@ SUBSYSTEM_DEF(donations)
 
 	// Check if we have two distinct records for user's discord and ckey in the players table
 	// If that's true, then we have to merge them
-	query = sql_query("SELECT id FROM players WHERE discord=$discord_id AND ckey IS NULL", dbcon_don, list(discord_id = discord_id))
+	query = sql_query("SELECT id FROM players WHERE discord = $discord_id AND ckey IS NULL", dbcon_don, list(discord_id = discord_id))
 	if(!query.NextRow()) //We don't have that, use an old method
 		sql_query("UPDATE players SET discord = $discord_id WHERE ckey = $ckey", dbcon_don, list(discord_id = discord_id, ckey = player.ckey))
 	else
 		var/discord_player_id = query.item[1]
-		query = sql_query("SELECT id FROM players WHERE ckey=$ckey", dbcon_don, list(ckey = player.ckey))
+		query = sql_query("SELECT id FROM players WHERE ckey = $ckey", dbcon_don, list(ckey = player.ckey))
+
+		if(!query.NextRow())
+			return FALSE
+
 		var/ckey_player_id = query.item[1]
 
 		//Update donations to old record
-		sql_query("UPDATE points_transactions SET player=$discord_player_id WHERE player=$ckey_player_id", dbcon_don, list(discord_player_id = discord_player_id, ckey_player_id = ckey_player_id))
+		sql_query("UPDATE points_transactions SET player = $discord_player_id WHERE player = $ckey_player_id", dbcon_don, list(discord_player_id = discord_player_id, ckey_player_id = ckey_player_id))
+		sql_query("UPDATE money_transactions SET player = $discord_player_id WHERE player = $ckey_player_id", dbcon_don, list(discord_player_id = discord_player_id, ckey_player_id = ckey_player_id))
 
 		sql_query("DELETE FROM players WHERE id = $ckey_player_id", dbcon_don, list(ckey_player_id = ckey_player_id))
 		sql_query("UPDATE players SET ckey = $ckey WHERE discord = $discord_id", dbcon_don, list(ckey = player.ckey, discord_id = discord_id))
