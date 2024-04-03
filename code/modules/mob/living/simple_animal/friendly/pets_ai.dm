@@ -73,7 +73,16 @@
 		set_next_think_ctx("wandering_context", 0)
 		walk_to(holder,target_mob,1,move_to_delay)
 	else
-		set_next_think_ctx("wandering_context", world.time + 5 SECONDS)
+		create_wandering_timer(5 SECONDS)
+
+/datum/mob_ai/pet/proc/delete_wandering_timer()
+	deltimer(timer_to_forget_target)
+	timer_to_forget_target = null
+
+/datum/mob_ai/pet/proc/create_wandering_timer(duration)
+	if(timer_to_forget_target)
+		return
+	timer_to_forget_target = addtimer(CALLBACK(src, nameof(.proc/toggle_to_wandering)), duration, TIMER_STOPPABLE)
 
 /datum/mob_ai/pet/listen(mob/speaker, text)
 	if(speaker != master)
