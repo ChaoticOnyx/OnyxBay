@@ -1,6 +1,6 @@
 /datum/flick_overlay/speech_bubble/New(image/image, list/client/show_to, time_to_live)
 	. = ..()
-	add_think_ctx("fade_bubble", CALLBACK(src, nameof(.proc/fade_bubble)), world.time + duration - 0.5 SECONDS)
+	add_think_ctx("fade_bubble", CALLBACK(src, nameof(.proc/fade_bubble)), world.time + time_to_live - 0.5 SECONDS)
 
 /datum/flick_overlay/speech_bubble/proc/fade_bubble()
 	animate(image, alpha = 0, time = 0.5 SECONDS, easing = EASE_IN)

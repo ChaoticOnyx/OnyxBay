@@ -14,8 +14,6 @@
 	if(controllable)
 		GLOB.available_mobs_for_possess["\ref[src]"] += src
 
-	add_think_ctx("fade_out_speech_bubble", CALLBACK(src, nameof(.proc/fade_out_speech_bubble)), 0)
-
 	update_transform() // Some mobs may start bigger or smaller than normal.
 
 /mob/living/get_description_fluff()
