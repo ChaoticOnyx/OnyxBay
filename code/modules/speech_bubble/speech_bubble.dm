@@ -1,9 +1,18 @@
-/mob/living/proc/fade_out_speech_bubble(image/I, list/remove_from)
-	animate(I, alpha = 0, time = 0.5 SECONDS, easing = EASE_IN)
+/datum/flick_overlay/speech_bubble/New(image/image, list/client/show_to, time_to_live)
+	. = ..()
+	add_think_ctx("fade_bubble", CALLBACK(src, nameof(.proc/fade_bubble)), world.time + duration - 0.5 SECONDS)
+
+/datum/flick_overlay/speech_bubble/proc/fade_bubble()
+	animate(image, alpha = 0, time = 0.5 SECONDS, easing = EASE_IN)
+
+/datum/flick_overlay/Destroy()
+	remove_image_from_clients(image, seeing_clients)
+	QDEL_NULL(image)
+	seeing_clients.Cut()
+	return ..()
 
 /mob/living/proc/animate_speech_bubble(image/I, list/show_to, duration)
 	flick_overlay(I, show_to, duration)
-	set_next_think_ctx("fade_out_speech_bubble", world.time + duration - 0.5 SECONDS, I, show_to)
 
 /// Returns the speech bubble image with an apropriate layer and plane set.
 /mob/living/proc/create_speech_bubble_image(bubble_icon, bubble_icon_state, atom/source)
