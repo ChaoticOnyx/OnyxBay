@@ -111,6 +111,9 @@
 		return
 	QDEL_NULL_LIST(worn_underwear)
 	for(var/obj/item/I in src)
+		if(I.loc != src)
+			continue
+
 		drop(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
