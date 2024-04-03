@@ -61,7 +61,7 @@ SUBSYSTEM_DEF(think)
 
 		if(world.time >= ctx.next_think)
 			var/last_think = world.time
-			ctx.callback.Invoke()
+			ctx.callback.Invoke(arglist(ctx.arguments))
 			ctx.last_think = last_think
 		else
 			if(next_possible_run == 0)
