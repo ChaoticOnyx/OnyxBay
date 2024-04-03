@@ -541,7 +541,7 @@ its easier to just keep the beam vertical.
 
 /atom/attack_hand(mob/user)
 	..()
-	if(LAZYLEN(climbers) && !LAZYISIN(climbers, user))
+	if(!LAZYISIN(climbers, user))
 		user.visible_message("<span class='warning'>[user.name] shakes \the [src].</span>", \
 					"<span class='notice'>You shake \the [src].</span>")
 		object_shaken()
@@ -556,7 +556,7 @@ its easier to just keep the beam vertical.
 	do_climb(usr)
 
 /atom/proc/can_climb(mob/living/user, post_climb_check=0)
-	if (!(atom_flags & ATOM_FLAG_CLIMBABLE) || !can_touch(user) || (!post_climb_check && LAZYISIN(climibers, user)))
+	if (!(atom_flags & ATOM_FLAG_CLIMBABLE) || !can_touch(user) || (!post_climb_check && LAZYISIN(climbers, user)))
 		return 0
 
 	if (!user.Adjacent(src))
