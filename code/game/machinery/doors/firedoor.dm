@@ -183,8 +183,9 @@
 	else
 		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close))
 
-	if(needs_to_close)
-		addtimer(CALLBACK(src, nameof(/obj/machinery/door.proc/close)), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
+	if(needs_to_close && !thinking_about_closing)
+		thinking_about_closing = TRUE
+		set_next_think_ctx("close_context", world.time + 5 SECONDS)
 
 /obj/machinery/door/firedoor/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
@@ -192,8 +193,9 @@
 			if(density)
 				visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
 				INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open), TRUE)
-				if(!(stat & (BROKEN|NOPOWER)))
-					addtimer(CALLBACK(src, nameof(/obj/machinery/door.proc/close)), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
+				if(!(stat & (BROKEN|NOPOWER)) && !thinking_about_closing)
+					thinking_about_closing = TRUE
+					set_next_think_ctx("close_context", world.time + 15 SECONDS)
 			else
 				visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
 				INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close))
@@ -278,8 +280,9 @@
 								 "You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
 		if(density)
 			INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open), TRUE)
-			if(!(stat & (BROKEN|NOPOWER)))
-				addtimer(CALLBACK(src, nameof(/obj/machinery/door.proc/close)), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
+			if(!(stat & (BROKEN|NOPOWER)) && !thinking_about_closing)
+				thinking_about_closing = TRUE
+				set_next_think_ctx("close_context", world.time + 15 SECONDS)
 		else
 			INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close))
 		return

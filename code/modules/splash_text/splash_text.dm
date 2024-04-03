@@ -82,7 +82,7 @@
 		easing = CUBIC_EASING | EASE_IN
 	)
 
-	addtimer(CALLBACK(GLOBAL_PROC, /proc/remove_image_from_client, splash_image, viewer_client), SPLASH_TEXT_TOTAL_LIFETIME(lifetime_mult), TIMER_DELETE_ME)
+	set_next_think_ctx("remove_flicked_overlay", world.time + SPLASH_TEXT_TOTAL_LIFETIME(lifetime_mult), splash_image, viewer_client)
 
 #undef SPLASH_TEXT_WIDTH
 #undef SPLASH_TEXT_SPAWN_TIME

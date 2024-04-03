@@ -385,24 +385,21 @@
 /proc/remove_image_from_client(image/image_to_remove, client/remove_from)
 	LAZYREMOVE(remove_from?.images, image_to_remove)
 
-// Simmilar to `remove_image_from_client`, but will remove the image from a list of clients.
-/proc/remove_image_from_clients(image/image_to_remove, list/hide_from)
-	for(var/client/remove_from as anything in hide_from)
-		remove_image_from_client(image_to_remove, remove_from)
-
-// Adds an image to a list of clients and calls a proc to remove it after duration.
-/proc/flick_overlay_global(image/image_to_show, list/show_to, duration)
-	if(!show_to || !length(show_to) || !image_to_show)
-		return
-	for(var/client/add_to in show_to)
-		LAZYADD(add_to.images, image_to_show)
-	addtimer(CALLBACK(GLOBAL_PROC, /proc/remove_image_from_clients, image_to_show, show_to), duration)
-
 // Flicks a certain overlay onto an atom, handling icon_state strings.
 /atom/proc/flick_overlay(image_to_show, list/show_to, duration, layer)
 	var/image/passed_image = istext(image_to_show) ? image(icon, src, image_to_show, layer) : image_to_show
-	flick_overlay_global(passed_image, show_to, duration)
 
+	if(!show_to || !length(show_to) || !passed_image)
+		return
+
+	for(var/client/add_to in show_to)
+		LAZYADD(add_to.images, passed_image)
+
+	set_next_think_ctx("remove_flicked_overlay", world.time + duration, passed_image, show_to)
+
+/atom/proc/remove_flicked_overlay(image/image_to_remove, list/hide_from)
+	for(var/client/remove_from as anything in hide_from)
+		remove_image_from_client(image_to_remove, remove_from)
 
 // Flicks a certain overlay to anyone who can view this atom.
 /atom/proc/flick_overlay_in_view(image_to_show, duration)

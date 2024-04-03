@@ -16,8 +16,12 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 2
 
+/obj/item/integrated_circuit/time/delay/Initialize()
+	. = ..()
+	add_think_ctx("activate_pin", CALLBACK(src, nameof(.proc/activate_pin)), 0)
+
 /obj/item/integrated_circuit/time/delay/do_work()
-	addtimer(CALLBACK(src, nameof(.proc/activate_pin), 2), delay)
+	set_next_think_ctx("activate_pin", world.time + delay, 2)
 
 /obj/item/integrated_circuit/time/delay/five_sec
 	name = "five-sec delay circuit"

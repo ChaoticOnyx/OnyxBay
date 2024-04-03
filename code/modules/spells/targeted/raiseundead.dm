@@ -21,6 +21,10 @@
 	var/times_failed = 0
 	var/spell_price = 1
 
+/datum/spell/targeted/raiseundead/New()
+	. = ..()
+	add_think_ctx("draft_failure", CALLBACK(src, nameof(.proc/draft_failure)), 0)
+
 /datum/spell/targeted/raiseundead/choose_targets(mob/user = usr)
 	var/list/possible_targets = list()
 
@@ -67,7 +71,7 @@
 	var/mob/living/carbon/human/H = target
 	var/datum/ghosttrap/undead/trap = get_ghost_trap("undead")
 	trap.request_player(H, "A necromancer is requesting a soul to animate an undead body.", RAISE_UNDEAD_TIMEOUT, user, should_lichify)
-	addtimer(CALLBACK(src, nameof(.proc/draft_failure), target, user), RAISE_UNDEAD_TIMEOUT)
+	set_next_think_ctx("draft_failure", world.time + RAISE_UNDEAD_TIMEOUT, target, user)
 
 /datum/spell/targeted/raiseundead/proc/draft_failure(mob/living/carbon/human/target, mob/user)
 	if(target.mind?.wizard && (target.mind?.wizard in user.mind.wizard.thralls))

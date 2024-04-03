@@ -15,18 +15,17 @@
 
 /datum/genetics/side_effect/proc/trigger_side_effect(mob/living/carbon/human/H)
 	if(ishuman(H))
-		addtimer(CALLBACK(src, nameof(.proc/do_side_effect), H), 0)
+		INVOKE_ASYNC(src, nameof(.proc/do_side_effect), H)
 
 /datum/genetics/side_effect/proc/do_side_effect(mob/living/carbon/human/H)
 	var/tp = pick(typesof(/datum/genetics/side_effect) - /datum/genetics/side_effect)
 	var/datum/genetics/side_effect/S = new tp
 
 	S.start(H)
-	addtimer(CALLBACK(H, nameof(/mob.proc/Weaken), rand(0, S.duration / 50)), 20)
+	H.set_next_think_ctx("weaken_context", world.time + rand(0, S.duration / 50), 20)
 	sleep(S.duration)
 	H.SetWeakened(0)
 	S.finish(H)
-
 
 /datum/genetics/side_effect/genetic_burn
 	name = "Genetic Burn"

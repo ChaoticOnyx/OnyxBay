@@ -91,6 +91,10 @@
 	if(ignore_pull_slowdown)
 		add_movespeed_mod_immunities(src, /datum/movespeed_modifier/pull_slowdown)
 	add_think_ctx("dust", CALLBACK(src, nameof(.proc/dust)), 0)
+	add_think_ctx("dust_deletion", CALLBACK(src, nameof(.proc/dust_check_delete)), 0)
+	add_think_ctx("remove_from_examine_context", CALLBACK(src, nameof(.proc/remove_from_recent_examines)), 0)
+	add_think_ctx("weaken_context", CALLBACK(src, nameof(.proc/Weaken)), 0)
+	add_think_ctx("post_close_winset", CALLBACK(src, nameof(.proc/post_close_winset)), 0)
 	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	nameof(.proc/set_blackness))
 	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	nameof(.proc/set_blackness))
 	register_signal(src, SIGNAL_SIGHT_SET,			nameof(.proc/set_blackness))
@@ -322,7 +326,7 @@
 		else
 			examine_result = to_axamine.examine(src)
 			LAZYADD(client.recent_examines, to_examine_ref)
-			addtimer(CALLBACK(src, nameof(.proc/remove_from_recent_examines), to_examine_ref), 1 SECOND)
+			set_next_think_ctx("remove_from_examine_context", world.time + 1 SECOND, to_examine_ref)
 
 	to_chat(usr, EXAMINE_BLOCK(examine_result.Join("\n")))
 

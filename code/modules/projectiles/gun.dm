@@ -91,7 +91,7 @@
 	var/autofire_enabled = FALSE
 	var/atom/autofiring_at
 	var/mob/autofiring_by
-	var/autofiring_timer
+	var/already_autofiring = FALSE
 
 	drop_sound = SFX_DROP_GUN
 	pickup_sound = SFX_PICKUP_GUN
@@ -106,6 +106,8 @@
 
 	if(config.misc.toogle_gun_safety)
 		verbs |= /obj/item/gun/proc/toggle_safety_verb
+
+	add_think_ctx("autofire_context", CALLBACK(src, nameof(.proc/handle_autofire)), 0)
 
 /obj/item/gun/Destroy()
 	// autofire timer is automatically cleaned up
@@ -127,17 +129,17 @@
 	if(.)
 		autofiring_at = fire_at
 		autofiring_by = fire_by
-		if(!autofiring_timer)
-			autofiring_timer = addtimer(CALLBACK(src, nameof(.proc/handle_autofire)), burst_delay, (TIMER_STOPPABLE | TIMER_LOOP | TIMER_UNIQUE | TIMER_OVERRIDE))
+		if(!already_autofiring)
+			already_autofiring = TRUE
+			set_next_think_ctx("autofiring_context", world.time + burst_delay)
 	else
 		clear_autofire()
 
 /obj/item/gun/proc/clear_autofire()
 	autofiring_at = null
 	autofiring_by = null
-	if(autofiring_timer)
-		deltimer(autofiring_timer)
-		autofiring_timer = null
+	already_autofiring = FALSE
+	set_next_think_ctx("autofiring_context", 0)
 
 /obj/item/gun/proc/handle_autofire()
 	set waitfor = FALSE

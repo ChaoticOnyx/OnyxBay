@@ -18,6 +18,10 @@
 	var/metal_max = 25 * SHEET_MATERIAL_AMOUNT
 	var/weakref/idlock = null
 
+/obj/item/device/integrated_circuit_printer/Initialize()
+	. = ..()
+	add_think_ctx("print_context", CALLBACK(src, nameof(.proc/print_program)), 0)
+
 /obj/item/device/integrated_circuit_printer/proc/check_interactivity(mob/user)
 	return CanUseTopic(user) && (get_dist(src, user) < 2)
 
@@ -363,7 +367,7 @@
 					cloning = TRUE
 					to_chat(usr, SPAN_NOTICE("You begin printing a custom assembly. This will take approximately [round(cloning_time/10)] seconds. You can still print off normal parts during this time."))
 					playsound(src, 'sound/items/poster_being_created.ogg', 50, TRUE)
-					addtimer(CALLBACK(src, nameof(.proc/print_program), usr), cloning_time)
+					set_next_think_ctx("print_context", world.time + cloning_time, usr)
 
 			if("cancel")
 				if(!cloning || !program)
