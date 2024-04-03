@@ -617,13 +617,12 @@ its easier to just keep the beam vertical.
 	LAZYREMOVE(climbers, user)
 
 /atom/proc/object_shaken()
-	if(LAZYLEN(climbers))
-		for(var/mob/living/M in climbers)
-			M.Weaken(1)
-			to_chat(M, "<span class='danger'>You topple as you are shaken off \the [src]!</span>")
-			climbers.Cut(1, 2)
-			if(!climbers.len)
-				climbers = null
+	for(var/mob/living/M in climbers)
+		M.Weaken(1)
+		to_chat(M, "<span class='danger'>You topple as you are shaken off \the [src]!</span>")
+		climbers.Cut(1, 2)
+		if(!climbers.len)
+			climbers = null
 
 	for(var/mob/living/M in get_turf(src))
 		if(M.lying) return //No spamming this on people.
