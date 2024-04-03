@@ -31,6 +31,17 @@
     ]
   },
   {
+    "author": "TobyThorne",
+    "date": "2024-04-02T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Стены снова умеют в ambient occlusion (aka затеняют пол).",
+        "pr": 12060
+      }
+    ]
+  },
+  {
     "author": "Filatelele",
     "date": "2024-04-01T00:00:00+03:00",
     "changes": [

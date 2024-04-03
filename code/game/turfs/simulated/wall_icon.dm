@@ -45,18 +45,18 @@
 	var/image/I
 
 	if(!density)
-		I = OVERLAY(masks_icon, "[material.icon_base]fwall_open")
-		I.color = material.icon_colour
-		AddOverlays(I)
+		icon = masks_icon
+		icon_state = "[material.icon_base]fwall_open"
+		color = material.icon_colour
 		return
 
-	I = image(GLOB.bitmask_icon_sheets["wall_[material.icon_base]"], "[wall_connections]")
-	I.color = material.icon_colour
-	AddOverlays(I)
+	icon = GLOB.bitmask_icon_sheets["wall_[material.icon_base]"]
+	icon_state = "[wall_connections]"
+	color = material.icon_colour
 
 	if(reinf_material)
 		if(construction_stage != null && construction_stage < 6)
-			I = OVERLAY(masks_icon, "reinf_construct-[construction_stage]")
+			I = OVERLAY(masks_icon, "reinf_construct-[construction_stage]", appearance_flags = RESET_COLOR)
 			I.color = reinf_material.icon_colour
 			AddOverlays(I)
 		else
@@ -65,10 +65,12 @@
 			if("[reinf_material.icon_reinf]0" in mask_overlay_states[masks_icon])
 				I = image(GLOB.bitmask_icon_sheets["wall_[reinf_material.icon_reinf]"], "[wall_connections]")
 				I.color = reinf_material.icon_colour
+				I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 				AddOverlays(I)
 			else
 				I = OVERLAY(masks_icon, reinf_material.icon_reinf)
 				I.color = reinf_material.icon_colour
+				I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 				AddOverlays(I)
 
 	if(damage != 0)

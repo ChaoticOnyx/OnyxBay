@@ -34,6 +34,10 @@
 		click_handlers.QdelClear()
 		QDEL_NULL(click_handlers)
 
+	if(eyeobj)
+		eyeobj.release(src)
+		QDEL_NULL(eyeobj)
+
 	remove_screen_obj_references()
 	if(client)
 		for(var/atom/movable/AM in client.screen)

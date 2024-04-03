@@ -49,11 +49,9 @@
 	if(dc)
 		var/all_components = dc[/datum/component]
 		if(length(all_components))
-			for(var/datum/component/component as anything in all_components)
-				qdel(component, FALSE, TRUE)
+			QDEL_NULL_LIST(all_components)
 		else
-			var/datum/component/C = all_components
-			qdel(C, FALSE, TRUE)
+			QDEL_NULL(all_components)
 		dc.Cut()
 
 	if(extensions)
@@ -105,19 +103,21 @@
 /// Schedules the next call of the `/datum/proc/think`.
 ///
 /// * `time` - when to call the "think" proc. Falsy value stops from thinking.
-/datum/proc/set_next_think(time)
+/// * `...` - arguments to be passed to the "think" function.
+/datum/proc/set_next_think(time, ...)
 	if(!time)
 		_main_think_ctx?.stop()
 		return
 
 	if(QDELETED(_main_think_ctx))
-		_main_think_ctx = new(time, CALLBACK(src, nameof(.proc/think)))
+		_main_think_ctx = new(time, CALLBACK(src, nameof(.proc/think)), length(args) > 1 ? args.Copy(2) : null)
 		SSthink.contexts_groups[_main_think_ctx.group] += _main_think_ctx
 		CALC_NEXT_GROUP_RUN(_main_think_ctx)
 
 		return
 
 	_main_think_ctx.next_think = time
+	_main_think_ctx.arguments = args.Copy(2)
 
 	if(!_main_think_ctx.group)
 		ASSIGN_THINK_GROUP(_main_think_ctx.group, time)
@@ -138,13 +138,14 @@
 /// * `name` - name of the context.
 /// * `clbk` - a proc which should be called.
 /// * `time` - when to call the context.
-/datum/proc/add_think_ctx(name, datum/callback/clbk, time)
+/// * `...` - arguments to be passed to the "think" function.
+/datum/proc/add_think_ctx(name, datum/callback/clbk, time, ...)
 	LAZYINITLIST(_think_ctxs)
 
 	if(!QDELETED(_think_ctxs[name]))
 		CRASH("Thinking context [name] is exists")
 
-	_think_ctxs[name] = new /datum/think_context(time, clbk)
+	_think_ctxs[name] = new /datum/think_context(time, clbk, length(args) > 3 ? args.Copy(4) : null)
 	var/datum/think_context/ctx = _think_ctxs[name]
 
 	if(time > 0)
@@ -155,7 +156,8 @@
 ///
 /// * `name` - name of the context.
 /// * `time` - when to call the context. Falsy value removes the context.
-/datum/proc/set_next_think_ctx(name, time)
+/// * `...` - arguments to be passed to the "think" function.
+/datum/proc/set_next_think_ctx(name, time, ...)
 	if(!time)
 		_think_ctxs[name].stop()
 
@@ -163,6 +165,7 @@
 
 	var/datum/think_context/ctx = _think_ctxs[name]
 	ctx.next_think = time
+	ctx.arguments = length(args) > 2 ? args.Copy(3) : null
 
 	if(!ctx.group)
 		ASSIGN_THINK_GROUP(ctx.group, time)
