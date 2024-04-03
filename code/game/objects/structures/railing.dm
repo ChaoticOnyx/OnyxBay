@@ -259,14 +259,14 @@
 		return
 
 	user.visible_message("<span class='warning'>\The [user] starts climbing over \the [src]!</span>")
-	climbers |= user
+	LAZYDISTINCTADD(climbers, user)
 
 	if(!do_after(user,(issmall(user) ? 30 : 50), src))
-		climbers -= user
+		LAZYREMOVE(climbers, user)
 		return
 
 	if (!can_climb(user))
-		climbers -= user
+		LAZYREMOVE(climbers, user)
 		return
 
 	if(get_turf(user) == get_turf(src))
@@ -284,7 +284,7 @@
 	else
 		user.visible_message("<span class='warning'>\The [user] climbs over \the [src]!</span>")
 
-	climbers -= user
+	LAZYREMOVE(climbers, user)
 
 /obj/structure/railing/steel
 	icon_state = "steel_railing_full"

@@ -35,7 +35,7 @@
 	// replaced by OPENCONTAINER flags and atom/proc/is_open_container()
 	///Chemistry.
 
-	var/list/climbers = list()
+	var/list/climbers
 
 	var/tf_scale_x  // The atom's base transform scale for width.
 	var/tf_scale_y  // The atom's base transform scale for height.
@@ -541,7 +541,7 @@ its easier to just keep the beam vertical.
 
 /atom/attack_hand(mob/user)
 	..()
-	if(climbers.len && !(user in climbers))
+	if(LAZYLEN(climbers) && !LAZYISIN(climbers, user))
 		user.visible_message("<span class='warning'>[user.name] shakes \the [src].</span>", \
 					"<span class='notice'>You shake \the [src].</span>")
 		object_shaken()
@@ -556,7 +556,7 @@ its easier to just keep the beam vertical.
 	do_climb(usr)
 
 /atom/proc/can_climb(mob/living/user, post_climb_check=0)
-	if (!(atom_flags & ATOM_FLAG_CLIMBABLE) || !can_touch(user) || (!post_climb_check && (user in climbers)))
+	if (!(atom_flags & ATOM_FLAG_CLIMBABLE) || !can_touch(user) || (!post_climb_check && LAZYISIN(climibers, user)))
 		return 0
 
 	if (!user.Adjacent(src))
@@ -600,27 +600,30 @@ its easier to just keep the beam vertical.
 		return
 
 	user.visible_message("<span class='warning'>\The [user] starts climbing onto \the [src]!</span>")
-	climbers |= user
+	LAZYDISTINCTADD(climbers, user)
 
 	if(!do_after(user,(issmall(user) ? 30 : 50), src))
-		climbers -= user
+		LAZYREMOVE(climbers, user)
 		return
 
 	if (!can_climb(user, post_climb_check=1))
-		climbers -= user
+		LAZYREMOVE(climbers, user)
 		return
 
 	user.forceMove(get_turf(src))
 
 	if (get_turf(user) == get_turf(src))
 		user.visible_message("<span class='warning'>\The [user] climbs onto \the [src]!</span>")
-	climbers -= user
+	LAZYREMOVE(climbers, user)
 
 /atom/proc/object_shaken()
-	for(var/mob/living/M in climbers)
-		M.Weaken(1)
-		to_chat(M, "<span class='danger'>You topple as you are shaken off \the [src]!</span>")
-		climbers.Cut(1,2)
+	if(LAZYLEN(climbers))
+		for(var/mob/living/M in climbers)
+			M.Weaken(1)
+			to_chat(M, "<span class='danger'>You topple as you are shaken off \the [src]!</span>")
+			climbers.Cut(1, 2)
+			if(!climbers.len)
+				climbers = null
 
 	for(var/mob/living/M in get_turf(src))
 		if(M.lying) return //No spamming this on people.
