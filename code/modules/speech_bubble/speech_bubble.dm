@@ -1,6 +1,6 @@
 /mob/living/proc/fade_out_speech_bubble(image/I, list/remove_from)
 	animate(I, alpha = 0, time = 0.5 SECONDS, easing = EASE_IN)
-	set_next_think("remove_image_from_clients", world.time + 0.5 SECONDS, I, remove_from)
+	set_next_think("remove_flicked_overlay", world.time + 0.5 SECONDS, I, remove_from)
 
 /mob/living/proc/animate_speech_bubble(image/I, list/show_to, duration)
 	add_image_to_clients(I, show_to)
