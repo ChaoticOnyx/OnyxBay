@@ -193,6 +193,9 @@
 	desc = "Light is almost the same as sunlight."
 	light_type = /obj/item/light/tube/quartz
 
+/obj/machinery/light/nobreak
+	light_type = /obj/item/light/tube/nobreak
+
 // the smaller bulb light fixture
 /obj/machinery/light/small
 	icon_state = "bulb1"
@@ -752,6 +755,10 @@
 	random_tone = TRUE
 	sound_on = SFX_LIGHT_TUBE_ON
 	sound_on_volume = 50
+
+/obj/item/light/tube/nobreak // For mapping's sake
+	desc = "A replacement light tube. This one seems to wield some extra quality."
+	broken_chance = 0
 
 /obj/item/light/tube/large
 	w_class = ITEM_SIZE_SMALL
