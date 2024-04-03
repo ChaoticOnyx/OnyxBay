@@ -81,7 +81,7 @@ steam.start() -- spawns the effect
 
 /datum/effect/effect/system/steam_spread/start()
 	for(var/i = 0, i < src.number, i++)
-		addtimer(CALLBACK(src, nameof(.proc/spread), i), 0)
+		INVOKE_ASYNC(src, nameof(.proc/spread), i)
 
 /datum/effect/effect/system/steam_spread/spread(i)
 	set waitfor = 0
@@ -157,7 +157,7 @@ steam.start() -- spawns the effect
 
 /datum/effect/effect/system/spark_spread/start()
 	for(var/i = 0, i < src.number, i++)
-		addtimer(CALLBACK(src, nameof(.proc/spread), i), 0)
+		INVOKE_ASYNC(src, nameof(.proc/spread), i)
 
 /datum/effect/effect/system/spark_spread/spread(i)
 	set waitfor = 0
@@ -362,7 +362,8 @@ steam.start() -- spawns the effect
 	for(var/i in 0 to src.number - 1)
 		if(src.total_smoke > 20)
 			return
-		addtimer(CALLBACK(src, nameof(.proc/spread), i), 0)
+
+		INVOKE_ASYNC(src, nameof(.proc/spread), i)
 
 /datum/effect/effect/system/smoke_spread/spread(i)
 	if(holder)
