@@ -58,9 +58,9 @@
 	splash_image.maptext_width = SPLASH_TEXT_WIDTH
 	splash_image.maptext_height = WXH_TO_HEIGHT(viewer_client.MeasureText(text, null, SPLASH_TEXT_WIDTH))
 
-	add_image_to_client(splash_image, viewer_client)
-
 	var/lifetime_mult = 1 + max(0, length(strip_html_properly(text)) - SPLASH_TEXT_LIFETIME_INCREASE_MIN) * SPLASH_TEXT_LIFETIME_PER_CHAR_MULT
+
+	flick_overlay(splash_image, viewer_client, SPLASH_TEXT_TOTAL_LIFETIME(lifetime_mult))
 
 	animate(
 		splash_image,
@@ -81,8 +81,6 @@
 		time = SPLASH_TEXT_VISIBILITY_TIME * lifetime_mult,
 		easing = CUBIC_EASING | EASE_IN
 	)
-
-	set_next_think_ctx("remove_flicked_overlay", world.time + SPLASH_TEXT_TOTAL_LIFETIME(lifetime_mult), splash_image, viewer_client)
 
 #undef SPLASH_TEXT_WIDTH
 #undef SPLASH_TEXT_SPAWN_TIME
