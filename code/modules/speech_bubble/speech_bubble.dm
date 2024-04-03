@@ -12,7 +12,7 @@
 	return ..()
 
 /mob/living/proc/animate_speech_bubble(image/I, list/show_to, duration)
-	flick_overlay(I, show_to, duration)
+	new /datum/flick_overlay/speech_bubble(image_to_show, show_to, duration)
 
 /// Returns the speech bubble image with an apropriate layer and plane set.
 /mob/living/proc/create_speech_bubble_image(bubble_icon, bubble_icon_state, atom/source)
