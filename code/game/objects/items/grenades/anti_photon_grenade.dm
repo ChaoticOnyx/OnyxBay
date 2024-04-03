@@ -7,10 +7,6 @@
 	det_time = 20
 	origin_tech = list(TECH_BLUESPACE = 4, TECH_MATERIAL = 4)
 
-/obj/item/grenade/anti_photon/Initialize()
-	. = ..()
-	add_think_ctx("think_qdel", CALLBACK(src, nameof(.proc/think_qdel)), 0)
-
 /obj/item/grenade/anti_photon/detonate()
 	playsound(src.loc, 'sound/effects/phasein.ogg', 50, 1, 5)
 	set_light(-1, 6, 10, 2, "#ffffff")
@@ -19,7 +15,4 @@
 /obj/item/grenade/anti_photon/think()
 	set_light(1, 1, 10, 2, "#[num2hex(rand(64,255))][num2hex(rand(64,255))][num2hex(rand(64,255))]")
 	playsound(loc, 'sound/effects/bang.ogg', 50, 1, 5)
-	set_next_think_ctx("think_qdel", world.time + 1 SECOND)
-
-/obj/item/grenade/anti_photon/proc/think_qdel()
-	qdel_self()
+	QDEL_IN(world.time + 1 SECOND)
