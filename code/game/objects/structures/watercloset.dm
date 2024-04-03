@@ -27,6 +27,10 @@
 
 /obj/structure/toilet/attack_hand(mob/living/user)
 	if(swirlie)
+		//THROTTLE(cooldown, 0.5 SECONDS)
+		//if(!cooldown)
+		//	return
+
 		visible_message(SPAN_DANGER("[user] slams the toilet seat onto [swirlie.name]'s head!"), \
 		"You hear reverberating porcelain.")
 		swirlie.adjustBruteLoss(TOILET_BRUTELOSS_PER_LIDSTOMP)
@@ -79,8 +83,9 @@
 			show_splash_text(user, "tighter grip is needed!", SPAN("warning", "You need a tigher grip!"))
 			return
 
-		if(get_turf(G.affecting) != get_turf(src))
+		if(get_dist(G.affecting, get_turf(src)) > 1)
 			show_splash_text(user, "victim needs to be on the toilet!", SPAN("warning", "The vicim must be held right above the toilet!"))
+			return
 
 		if(lid_open && !swirlie)
 			user.visible_message(SPAN_DANGER("[user] starts to give [G.affecting.name] a swirlie!"), \
