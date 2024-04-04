@@ -186,13 +186,13 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 /obj/item/clothing/get_examine_line(is_visible=TRUE)
 	. = ..()
 	if(is_visible)
-		var/list/ties = list()
+		var/list/ties
 		for(var/obj/item/clothing/accessory/accessory in accessories)
 			if(accessory.high_visibility)
-				ties += "\icon[accessory] \a [accessory]"
-		if(ties.len)
+				LAZYADD(ties, "\icon[accessory] \a [accessory]")
+		if(LAZYLEN(ties))
 			.+= " with [english_list(ties)] attached"
-		if(LAZYLEN(accessories) > ties.len)
+		if(LAZYLEN(accessories) > LAZYLEN(ties))
 			.+= ". <a href='?src=\ref[src];list_ungabunga=1'>\[See accessories\]</a>"
 
 /obj/item/clothing/Topic(href, href_list, datum/topic_state/state)
