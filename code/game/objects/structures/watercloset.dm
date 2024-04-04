@@ -27,9 +27,9 @@
 
 /obj/structure/toilet/attack_hand(mob/living/user)
 	if(swirlie)
-		//THROTTLE(cooldown, 0.5 SECONDS)
-		//if(!cooldown)
-		//	return
+		THROTTLE(cooldown, 0.5 SECONDS)
+		if(!cooldown)
+			return
 
 		visible_message(SPAN_DANGER("[user] slams the toilet seat onto [swirlie.name]'s head!"), \
 		"You hear reverberating porcelain.")
