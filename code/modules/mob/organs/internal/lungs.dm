@@ -275,7 +275,13 @@
 				owner.apply_damage(damage, BURN, BP_HEAD, used_weapon = "Excessive Cold")
 			else
 				src.damage += damage
+
 			owner.fire_alert = 1
+
+			// Breathing into your mask, no particle. We can add fogged up glasses later
+			// Even though breathing via internals TECHNICALLY exhales into the environment, we'll still block it
+			if(!owner.internal && !(owner.head?.body_parts_covered & FACE) && !owner.wear_mask)
+				emit_breath_particle()
 		else if(breath.temperature >= species.heat_level_1)
 			if(prob(20))
 				to_chat(owner, "<span class='danger'>You feel your face burning and a searing heat in your lungs!</span>")
@@ -312,6 +318,41 @@
 		species.get_environment_discomfort(owner,"heat")
 	else if(breath.temperature <= species.cold_discomfort_level)
 		species.get_environment_discomfort(owner,"cold")
+
+/// Creates a particle effect off the mouth of the passed mob.
+/obj/item/organ/internal/lungs/proc/emit_breath_particle()
+	var/atom/movable/particle_emitter/fog/breath/PE = new(get_turf(owner))
+	var/particles/breath_particle = PE.particles
+	var/breath_dir = owner.dir
+
+	var/list/particle_grav = list(0, 0.1, 0)
+	// TODO: Mob height
+	var/list/particle_pos = list(0, 8, 0)
+	if(breath_dir & NORTH)
+		particle_grav[2] = 0.2
+		breath_particle.rotation = pick(-45, 45)
+		// Layer it behind the mob since we're facing away from the camera
+		PE.pixel_w -= 4
+		PE.pixel_y += 4
+	if(breath_dir & WEST)
+		particle_grav[1] = -0.2
+		particle_pos[1] = -5
+		breath_particle.rotation = -45
+	if(breath_dir & EAST)
+		particle_grav[1] = 0.2
+		particle_pos[1] = 5
+		breath_particle.rotation = 45
+	if(breath_dir & SOUTH)
+		particle_grav[2] = 0.2
+		breath_particle.rotation = pick(-45, 45)
+		// Shouldn't be necessary but just for parity
+		PE.pixel_w += 4
+		PE.pixel_y -= 4
+
+	breath_particle.gravity = particle_grav
+	breath_particle.position = particle_pos
+
+	QDEL_IN(PE, breath_particle.lifespan)
 
 /obj/item/organ/internal/lungs/listen()
 	if(owner.failed_last_breath || !active_breathing)

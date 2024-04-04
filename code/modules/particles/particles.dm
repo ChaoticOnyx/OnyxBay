@@ -76,3 +76,16 @@
 	friction = 0.2
 	drift = generator("vector", list(-0.16, -0.2), list(0.16, 0.2))
 	color = "white"
+
+/particles/fog
+	icon = 'icons/effects/particles/smoke.dmi'
+	icon_state = list("chill_1" = 2, "chill_2" = 2, "chill_3" = 1)
+
+/particles/fog/breath
+	count = 1
+	spawning = 1
+	lifespan = 1 SECONDS
+	fade = 0.5 SECONDS
+	grow = 0.05
+	spin = 2
+	color = "#fcffff77"
