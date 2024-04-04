@@ -191,9 +191,11 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 		for(var/obj/item/clothing/accessory/accessory in accessories)
 			if(accessory.high_visibility)
 				ties += "\icon[accessory] \a [accessory]"
-		if(ties.len)
+
+		if(length(ties))
 			.+= " with [english_list(ties)] attached"
-		if(accessories.len > ties.len)
+
+		if(length(accessories) > length(ties))
 			.+= ". <a href='?src=\ref[src];list_ungabunga=1'>\[See accessories\]</a>"
 
 /obj/item/clothing/Topic(href, href_list, datum/topic_state/state)
