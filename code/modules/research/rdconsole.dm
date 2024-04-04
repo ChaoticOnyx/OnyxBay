@@ -93,6 +93,7 @@
 /obj/machinery/computer/rdconsole/Initialize()
 	SyncRDevices()
 	. = ..()
+	add_think_ctx("finish_deconstruct", CALLBACK(src, nameof(.proc/finish_deconstruct)), 0)
 
 /obj/machinery/computer/rdconsole/attackby(obj/item/D, mob/user)
 	// Loading a disk into it.
@@ -609,7 +610,7 @@
 	playsound(loc, 'sound/signals/processing22.ogg', 50)
 	linked_destroy.busy = 1
 	flick("d_analyzer_process", linked_destroy)
-	addtimer(CALLBACK(src, nameof(.proc/finish_deconstruct), weakref(user)), 24)
+	set_next_think_ctx("finish_deconstruct", world.time + 2.4 SECONDS, weakref(user))
 
 /obj/machinery/computer/rdconsole/proc/eject_from_destructor(mob/user)
 	if(linked_destroy.busy)

@@ -15,7 +15,7 @@
 /obj/structure/largecrate/LateInitialize(mapload, ...)
 	. = ..()
 	if(mapload) // if it's the map loading phase, relevant items at the crate's loc are put in the contents
-		addtimer(CALLBACK(src, nameof(.proc/store_contents)), 10, TIMER_UNIQUE|TIMER_OVERRIDE) // It's here for a raisin, trust me
+		add_think_ctx("store_contents_mapload", CALLBACK(src, nameof(.proc/store_contents)), world.time + 1 SECOND)
 
 /obj/structure/largecrate/proc/store_contents()
 	for(var/obj/I in loc)

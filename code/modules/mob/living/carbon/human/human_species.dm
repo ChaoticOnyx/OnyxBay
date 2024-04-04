@@ -35,7 +35,7 @@
 
 /mob/living/carbon/human/gatecrasher/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, nameof(.proc/unpossessed_death_check)), 45 SECONDS)
+	add_think_ctx("unposessed_death_check", CALLBACK(src, nameof(.proc/unpossessed_death_check)), world.time + 45 SECONDS)
 
 /mob/living/carbon/human/gatecrasher/proc/unpossessed_death_check()
 	if(ckey) // Possessed, no euthanasia required

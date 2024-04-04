@@ -114,6 +114,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	add_think_ctx("process_idle", CALLBACK(src, nameof(.proc/process_idle)), 0)
 	add_think_ctx("process_turning", CALLBACK(src, nameof(.proc/process_turning)), 0)
 	add_think_ctx("process_shooting", CALLBACK(src, nameof(.proc/process_shooting)), 0)
+	add_think_ctx("emagged_targetting", CALLBACK(src, nameof(.proc/emagged_targeting)), 0)
 
 	state_machine = add_state_machine(src, /datum/state_machine/turret)
 
@@ -506,7 +507,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		to_chat(user, SPAN_WARNING("You short out \the [src]'s threat assessment circuits."))
 		visible_message("\The [src] hums oddly...")
 		enabled = FALSE
-		addtimer(CALLBACK(src, nameof(.proc/emagged_targeting)), 6 SECONDS)
+		set_next_think_ctx("emagged_targeting", world.time + 6 SECONDS)
 		state_machine.evaluate()
 
 /obj/machinery/turret/proc/emagged_targeting()

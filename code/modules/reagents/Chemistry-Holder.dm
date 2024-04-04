@@ -11,6 +11,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	if(!istype(my_atom))
 		CRASH("Invalid reagents holder: [log_info_line(my_atom)]")
 	..()
+	add_think_ctx("delayed_add_reagent", CALLBACK(src, nameof(.proc/add_reagent)), 0)
 	src.my_atom = my_atom
 	src.maximum_volume = maximum_volume
 

@@ -88,7 +88,6 @@
 
 	var/obj/item/device/uplink/uplink
 	var/cam_spy_active = FALSE
-	var/timer
 	var/list/area/active_recon_areas_list = list()
 	var/finish = FALSE // to protect user anus from picking bugs in finish check tick.
 
@@ -99,6 +98,8 @@
 	var/list/obj/machinery/camera/spy/cameras = list()
 
 	var/weakref/camera_user
+
+	var/already_thinking = FALSE
 
 /obj/item/device/spy_monitor/Initialize()
 	. = ..()
@@ -120,16 +121,22 @@
 		. += "The time '12:00' is blinking in the corner of the screen and \the [src] looks very cheaply made."
 
 /obj/item/device/spy_monitor/proc/bug_moved()
-	if(!timer || !length(cameras) || !length(active_recon_areas_list) || finish)
+	if(!already_thinking || !length(cameras) || !length(active_recon_areas_list) || finish)
 		return
+
 	if(ishuman(uplink?.uplink_owner?.current))
 		to_chat(uplink.uplink_owner.current, SPAN_NOTICE("It looks like there are problems with your spy network in one the following areas:\n[english_list(active_recon_areas_list, and_text = "\n")]\nBugs maintenance required. Your current progress has been zeroed out."))
 	active_recon_areas_list = list()
-	deltimer(timer)
-	timer = null
+	set_next_think(0)
+	already_thinking = FALSE
 
 /obj/item/device/spy_monitor/proc/start()
-	timer = addtimer(CALLBACK(src, nameof(.proc/finish)), 10 MINUTES, TIMER_STOPPABLE)
+	already_thinking = TRUE
+	set_next_think(world.time + 10 MINUTES)
+
+/obj/item/device/spy_monitor/think()
+	already_thinking = FALSE
+	finish()
 
 /obj/item/device/spy_monitor/proc/finish()
 	if(length(active_recon_areas_list) && !finish)
@@ -145,9 +152,10 @@
 	set category = "Object"
 	if(usr.incapacitated() || !Adjacent(usr) || !ishuman(usr))
 		return
-	if(timer)
+	if(already_thinking)
 		to_chat(usr, SPAN_NOTICE("Active spy network detected in the following areas:\n[english_list(active_recon_areas_list, and_text = "\n")]\nYou can deactivate the network by picking up the camera bugs."))
 		return
+
 	var/list/sensor_list = list()
 	if(length(active_recon_areas_list))
 		active_recon_areas_list = list()

@@ -171,7 +171,7 @@
 			to_chat(holder,"<B>[talker.name]</B> points at [holder.name]")
 			to_chat(holder,"<span class='game say'><span class='name'>[talker.name]</span> says something softly.</span>")
 
-		show_bubble_to_client(holder.bubble_icon, holder.say_test(message), talker, holder.client)
+		holder.show_bubble_to_client(holder.bubble_icon, holder.say_test(message), talker, holder.client)
 
 		sanity-- //don't spam them in very populated rooms.
 		if(!sanity)

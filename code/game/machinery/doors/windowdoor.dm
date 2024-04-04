@@ -71,8 +71,6 @@
 	shatter()
 
 /obj/machinery/door/window/Destroy()
-	if(timer)
-		deltimer(timer)
 	set_density(0)
 	update_nearby_tiles()
 	return ..()
@@ -135,8 +133,9 @@
 	else
 		operating = TRUE
 
-	if(autoclose)
-		timer = addtimer(CALLBACK(src, nameof(.proc/close)), 10 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
+	if(autoclose && !thinking_about_closing)
+		thinking_about_closing = TRUE
+		set_next_think_ctx("close_context", world.time + 10 SECONDS)
 
 	flick("[base_state]opening", src)
 	set_density(0)
@@ -154,9 +153,8 @@
 	else
 		operating = TRUE
 
-	if(timer)
-		deltimer(timer)
-		timer = 0
+	thinking_about_closing = FALSE
+	set_next_think_ctx("close_context", 0)
 
 	flick(text("[]closing", base_state), src)
 	set_density(1)
@@ -192,8 +190,11 @@
 	if(density && operable())
 		operating = -1
 		flick("[base_state]spark", src)
-		addtimer(CALLBACK(src, nameof(.proc/open)), 10)
+		set_next_think(world.time + 1 SECOND)
 		return 1
+
+/obj/machinery/door/window/think()
+	open()
 
 /obj/machinery/door/emp_act(severity)
 	if(prob(60 / severity))

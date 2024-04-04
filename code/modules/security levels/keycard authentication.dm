@@ -6,7 +6,6 @@
 	var/active = 0 //This gets set to 1 on all devices except the one where the initial request was made.
 	var/event = ""
 	var/event_additional_info = ""
-	var/ert_timer
 	var/screen = 1
 	var/confirmed = 0 //This variable is set by the device that confirms the request.
 	var/confirm_delay = 3 SECONDS
@@ -21,6 +20,12 @@
 	idle_power_usage = 2 WATTS
 	active_power_usage = 6 WATTS
 	power_channel = STATIC_ENVIRON
+	/// Whether we have active thinking to call ert or not
+	var/ert_context_thinking = FALSE
+
+/obj/machinery/keycard_auth/Initialize()
+	. = ..()
+	add_think_ctx("call_ert_context", CALLBACK(src, nameof(.proc/call_ert)), 0)
 
 /obj/machinery/keycard_auth/attack_ai(mob/user)
 	to_chat(user, SPAN_WARNING("A firewall prevents you from interfacing with this device!"))
@@ -110,17 +115,12 @@
 		. = TOPIC_REFRESH
 
 	if(is_admin(user) && href_list["approve_ert"])
-		if(!ert_timer)
-			// I'm not sure I got the sentence right, please help.
-			to_chat(user, SPAN_NOTICE("There's no ERT timer, notify players to re-create the request."))
-		deltimer(ert_timer)
+		set_next_think_ctx("call_ert_context", 0)
+		ert_context_thinking = FALSE
 		call_ert()
 	if(is_admin(user) && href_list["prohibit_ert"])
-		if(!ert_timer)
-			// I'm not sure I got the sentence right, please help.
-			to_chat(user, SPAN_NOTICE("There's no ERT timer, the ERT may have already been called, next time hurry up with your decision!"))
-		deltimer(ert_timer)
-		ert_timer = null
+		set_next_think_ctx("call_ert_context", 0)
+		ert_context_thinking = FALSE
 		if(!((stat & BROKEN) || (!interact_offline && (stat & NOPOWER))))
 			visible_message(SPAN_DANGER("\The [src] blinks red and displays the message: The request was rejected, contact the corporate supervisors for the reason of the rejection."), range=2)
 
@@ -147,9 +147,9 @@
 		KA.receive_request(src, initial_card)
 
 	if(confirm_delay)
-		addtimer(CALLBACK(src, nameof(.proc/broadcast_check)), confirm_delay)
+		set_next_think(world.time + confirm_delay)
 
-/obj/machinery/keycard_auth/proc/broadcast_check()
+/obj/machinery/keycard_auth/think()
 	if(confirmed)
 		confirmed = 0
 		trigger_event(event)
@@ -189,9 +189,10 @@
 		if("Emergency Response Team")
 			if(ert_call_failure())
 				return
-			if(!ert_timer)
+			if(!ert_context_thinking)
 				visible_message(SPAN_NOTICE("\The [src] displays the message: The request has been created and the process of transferring the request to the emergency response service has been started, the approximate waiting time for processing is 2 minutes."), range=2)
-				ert_timer = addtimer(CALLBACK(src, nameof(.proc/call_ert)), 2 MINUTES, TIMER_STOPPABLE)
+				set_next_think_ctx("call_ert_context", world.time + 2 MINUTES)
+				ert_context_thinking = TRUE
 				message_admins("An ERT call request was created with the reason:\n[event_additional_info].\nThis call will automatically be approved after 2 minutes. <A href='?src=\ref[src];approve_ert=1'>Approve</a>. <A href='?src=\ref[src];prohibit_ert=1'>Reject</a>.")
 		if("Grant Nuclear Authorization Code")
 			var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in world
@@ -212,9 +213,10 @@
 	return FALSE
 
 /obj/machinery/keycard_auth/proc/call_ert()
-	ert_timer = null
+	ert_context_thinking = FALSE
 	if(ert_call_failure())
 		return
+
 	visible_message(SPAN_NOTICE("\The [src] displays the message: The request has been approved, the response team will be on facility shortly."), range=2)
 	trigger_armed_response_team(TRUE, event_additional_info)
 	feedback_inc("alert_keycard_auth_ert",1)

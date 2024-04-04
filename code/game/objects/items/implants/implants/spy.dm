@@ -3,7 +3,10 @@
 	desc = "Used for spying purposes."
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2, TECH_ILLEGAL = 2)
 	var/activated = FALSE
-	var/timer
+
+/obj/item/implant/spy/Initialize()
+	. = ..()
+	add_think_ctx("check_completion", CALLBACK(src, nameof(.proc/check_compilation)), 0)
 
 /obj/item/implant/spy/proc/check_compilation()
 	if(!imp_in)
@@ -12,12 +15,12 @@
 		C.check(src)
 
 /obj/item/implant/spy/implanted(mob/source)
-	timer = addtimer(CALLBACK(src, nameof(.proc/check_compilation)), 1 MINUTES, TIMER_STOPPABLE)
+	set_next_think_ctx("check_completion", world.time + 1 MINUTE)
 	return TRUE
 
 /obj/item/implant/spy/removed()
 	..()
-	deltimer(timer)
+	set_next_think_ctx("check_completion", 0)
 
 /obj/item/implanter/spy
 	name = "implanter (S)"

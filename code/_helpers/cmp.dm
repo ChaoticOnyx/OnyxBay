@@ -52,9 +52,6 @@
 	if (!.)
 		. = B.qdels - A.qdels
 
-/proc/cmp_timer(datum/timedevent/a, datum/timedevent/b)
-	return a.timeToRun - b.timeToRun
-
 /proc/cmp_program(datum/computer_file/program/A, datum/computer_file/program/B)
 	return cmp_text_asc(A.filedesc, B.filedesc)
 

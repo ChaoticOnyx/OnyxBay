@@ -345,9 +345,13 @@ Burning extracts:
 	colour = "oil"
 	effect_desc = "Creates an explosion after a few seconds."
 
+/obj/item/metroidcross/burning/oil/Initialize(mapload)
+	. = ..()
+	add_think_ctx("think_boom", CALLBACK(src, nameof(.proc/boom)), 0)
+
 /obj/item/metroidcross/burning/oil/do_effect(mob/user)
 	user.visible_message(SPAN_WARNING("[user] activates [src]. It's going to explode!"), SPAN_DANGER("You activate [src]. It crackles in anticipation"))
-	addtimer(CALLBACK(src, nameof(.proc/boom)), 50)
+	set_next_think_ctx("think_boom", world.time + 5 SECONDS)
 
 /// Inflicts a blastwave upon every mob within a small radius.
 /obj/item/metroidcross/burning/oil/proc/boom()

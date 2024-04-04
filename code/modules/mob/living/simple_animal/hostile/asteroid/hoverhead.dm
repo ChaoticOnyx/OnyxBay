@@ -95,9 +95,12 @@
 	icon_state = "psychecore"
 	var/inert = 0
 
-/obj/item/asteroid/anomalous_core/New()
+/obj/item/asteroid/anomalous_core/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, nameof(.proc/make_inert)), 1200)
+	set_next_think(world.time + 2 MINUTES)
+
+/obj/item/asteroid/anomalous_core/think()
+	make_inert()
 
 /obj/item/asteroid/anomalous_core/proc/make_inert()
 	inert = 1

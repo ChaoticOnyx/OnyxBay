@@ -545,8 +545,8 @@
 	var/creator
 	var/obj/item/resonator/res
 
-/obj/effect/resonance/New(loc, set_creator, timetoburst, set_resonator)
-	..()
+/obj/effect/resonance/Initialize(mapload, loc, set_creator, timetoburst, set_resonator)
+	. = ..()
 	creator = set_creator
 	res = set_resonator
 	var/turf/proj_turf = get_turf(src)
@@ -558,7 +558,7 @@
 		name = "strong resonance field"
 		resonance_damage = 30
 
-	addtimer(CALLBACK(src, nameof(.proc/burst), loc), timetoburst)
+	add_think_ctx("burst_context", CALLBACK(src, nameof(.proc/burst)), world.time + timetoburst, loc)
 
 /obj/effect/resonance/Destroy()
 	if(res)

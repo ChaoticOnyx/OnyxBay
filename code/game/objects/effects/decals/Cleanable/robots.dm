@@ -9,7 +9,7 @@
 /obj/effect/decal/cleanable/blood/gibs/robot/on_update_icon()
 	color = "#ffffff"
 
-/obj/effect/decal/cleanable/blood/gibs/robot/dry()	//pieces of robots do not dry up like
+/obj/effect/decal/cleanable/blood/gibs/robot/think() //pieces of robots do not dry up like blood
 	return
 
 /obj/effect/decal/cleanable/blood/gibs/robot/streak(list/directions)
@@ -40,7 +40,7 @@
 /obj/effect/decal/cleanable/blood/oil
 	basecolor = SYNTH_BLOOD_COLOUR
 
-/obj/effect/decal/cleanable/blood/oil/dry()
+/obj/effect/decal/cleanable/blood/oil/think()
 	return
 
 /obj/effect/decal/cleanable/blood/oil/streak
