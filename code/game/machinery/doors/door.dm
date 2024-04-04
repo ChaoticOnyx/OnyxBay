@@ -37,12 +37,18 @@
 	var/tryingToLock = FALSE // for autoclosing
 	// turf animation
 	var/atom/movable/fake_overlay/c_animation = null
+	/// Determines whether this door already has thinkg_close context running or not
+	var/thinking_about_closing = FALSE
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 350 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 0.5 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
 	)
+
+/obj/machinery/door/Initialize()
+	. = ..()
+	add_think_ctx("close_context", CALLBACK(src, nameof(.proc/close)), 0)
 
 /obj/machinery/door/attack_generic(mob/user, damage)
 	if(damage >= 10)
@@ -412,8 +418,9 @@
 		filler.set_opacity(opacity)
 	operating = FALSE
 
-	if(autoclose)
-		addtimer(CALLBACK(src, nameof(.proc/close)), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+	if(autoclose && !thinking_about_closing)
+		thinking_about_closing = TRUE
+		set_next_think_ctx("close_context", world.time + wait)
 
 	return TRUE
 
@@ -422,8 +429,10 @@
 	if(!can_close(forced))
 		if(autoclose)
 			tryingToLock = TRUE
-			addtimer(CALLBACK(src, nameof(.proc/close)), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+			set_next_think_ctx("close_context", world.time + wait)
 		return FALSE
+
+	thinking_about_closing = FALSE
 	operating = TRUE
 
 	do_animate("closing")

@@ -18,6 +18,10 @@
 	name = SPECIES_LUMINESCENT
 	icobase = 'icons/mob/human_races/prometheans/r_luminescent.dmi'
 
+/datum/species/promethean/luminescent/New()
+	. = ..()
+	add_think_ctx("update_glow", CALLBACK(src, nameof(.proc/update_glow)), 0)
+
 /datum/species/promethean/luminescent/handle_post_spawn(mob/living/carbon/human/new_jellyperson)
 	. = ..()
 

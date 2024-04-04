@@ -356,9 +356,9 @@
 	audible_message("<span class='danger'><b>[src] begins to vibrate and \
 		buzz loudly!</b></span>","<span class='danger'><b>[src] begins \
 		vibrating violently!</b></span>")
-	addtimer(CALLBACK(src, nameof(.proc/detonate_pulse_explode)), 5 SECONDS)
+	set_next_think(world.time + 5 SECONDS)
 
-/obj/item/construction/rcd/proc/detonate_pulse_explode()
+/obj/item/construction/rcd/think()
 	explosion(src, light_impact_range = 3, flash_range = 1)
 	qdel(src)
 

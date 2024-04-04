@@ -91,9 +91,12 @@
 	log_and_message_admins("has activated the service '[service_label]'", user)
 
 	if(service_duration)
-		addtimer(CALLBACK(src, nameof(.proc/deactivate)), service_duration)
+		set_next_think(world.time + service_duration)
 	else
 		deactivate()
+
+/obj/item/device/uplink_service/think()
+	deactivate()
 
 /obj/item/device/uplink_service/proc/deactivate()
 	if(state != CURRENTLY_ACTIVE)

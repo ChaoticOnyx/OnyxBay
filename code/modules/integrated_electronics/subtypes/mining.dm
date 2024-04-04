@@ -150,8 +150,10 @@
 	usedx = assembly.loc.x
 	usedy = assembly.loc.y
 	playsound(src, 'sound/items/Ratchet.ogg',50,1)
-	addtimer(CALLBACK(src, nameof(.proc/drill)), 50)
+	set_next_think(world.time + 5 SECONDS)
 
+/obj/item/integrated_circuit/mining/mining_drill/think()
+	drill()
 
 /obj/item/integrated_circuit/mining/mining_drill/proc/drill()
 	busy = FALSE

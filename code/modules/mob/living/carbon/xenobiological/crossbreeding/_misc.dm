@@ -50,12 +50,12 @@
 	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "metroidbarrier_thick"
 
-/obj/effect/forcefield/metroidwall/New()
-	addtimer(CALLBACK(src, nameof(.proc/finish_existance)), 300)
+/obj/effect/forcefield/metroidwall/Initialize()
+	. = ..()
+	set_next_think(world.time + 30 SECONDS)
 
-/obj/effect/forcefield/metroidwall/proc/finish_existance()
-	qdel(src)
-	return
+/obj/effect/forcefield/metroidwall/think()
+	qdel_self()
 
 //Rainbow barrier - Chilling Rainbow
 /obj/effect/forcefield/metroidwall/rainbow

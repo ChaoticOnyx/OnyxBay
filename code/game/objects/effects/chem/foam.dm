@@ -15,15 +15,17 @@
 	var/expand = 1
 	var/metal = 0
 
-/obj/effect/effect/foam/New(loc, ismetal = 0)
-	..(loc)
+/obj/effect/effect/foam/Initialize(mapload, loc, ismetal = FALSE)
+	. = ..()
 	icon_state = "[ismetal? "m" : ""]foam"
 	metal = ismetal
 	playsound(src, 'sound/effects/bubbles2.ogg', 80, 1, -3)
-	spawn(3 + metal * 3)
-		set_next_think(world.time)
-		checkReagents()
-	addtimer(CALLBACK(src, nameof(.proc/remove_foam)), 12 SECONDS)
+	add_think_ctx("check_reagents", CALLBACK(src, nameof(.proc/check_reagents)), 0)
+	add_think_ctx("remove_foam", CALLBACK(src, nameof(.proc/remove_foam)), 0)
+
+	set_next_think_ctx("check_reagents", world.time + (3 + metal * 3))
+	set_next_think_ctx("remove_foam", world.time + 12 SECONDS)
+	set_next_think(world.time + (3 + metal * 3))
 
 /obj/effect/effect/foam/proc/remove_foam()
 	set_next_think(0)
@@ -34,7 +36,7 @@
 	flick("[icon_state]-disolve", src)
 	QDEL_IN(src, 5)
 
-/obj/effect/effect/foam/proc/checkReagents() // transfer any reagents to the floor
+/obj/effect/effect/foam/proc/check_reagents() // transfer any reagents to the floor
 	if(!metal && reagents)
 		var/turf/T = get_turf(src)
 		reagents.touch_turf(T)

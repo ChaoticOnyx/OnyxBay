@@ -74,9 +74,9 @@
 /obj/machinery/slot_machine/proc/money_roll()
 	plays = TRUE
 	update_icon()
-	addtimer(CALLBACK(src, nameof(.proc/_money_roll)), 3 SECONDS)
+	set_next_think(world.time + 3 SECONDS)
 
-/obj/machinery/slot_machine/proc/_money_roll()
+/obj/machinery/slot_machine/think()
 	var/roll = rand(1, max_roll)
 	var/exclamation = ""
 	var/amount = 0

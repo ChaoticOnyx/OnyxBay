@@ -441,6 +441,10 @@
 	var/warm = FALSE
 	var/list/heated_reagents = list(/datum/reagent/tricordrazine = 5)
 
+/obj/item/reagent_containers/food/donkpocket/Initialize()
+	. = ..()
+	add_think_ctx("think_cool", CALLBACK(src, nameof(.proc/cooling)), 0)
+
 /obj/item/reagent_containers/food/donkpocket/proc/heat()
 	if(warm)
 		return
@@ -453,12 +457,13 @@
 
 /obj/item/reagent_containers/food/donkpocket/proc/cooltime()
 	if(warm)
-		addtimer(CALLBACK(src, nameof(.proc/cooling), warm), 4200)
+		set_next_think_ctx("think_cool", world.time + 7 MINUTES)
 	return
 
 /obj/item/reagent_containers/food/donkpocket/proc/cooling(warm)
 	if(!warm)
 		return
+
 	warm = FALSE
 	for(var/reagent in heated_reagents)
 		reagents.del_reagent(reagent)
@@ -471,13 +476,17 @@
 	heated_reagents = list(/datum/reagent/tricordrazine = 5, /datum/reagent/drink/doctor_delight = 5, /datum/reagent/hyperzine = 0.75, /datum/reagent/synaptizine = 0.25)
 	var/has_been_heated = 0
 
+/obj/item/reagent_containers/food/donkpocket/sinpocket/Initialize()
+	. = ..()
+	add_think_ctx("think_heat", CALLBACK(src, nameof(.proc/heat)), 0)
+
 /obj/item/reagent_containers/food/donkpocket/sinpocket/attack_self(mob/user)
 	if(has_been_heated)
 		to_chat(user, "<span class='notice'>The heating chemicals have already been spent.</span>")
 		return
 	has_been_heated = 1
 	user.visible_message("<span class='notice'>[user] crushes \the [src] package.</span>", "You crush \the [src] package and feel a comfortable heat build up.")
-	addtimer(CALLBACK(src, nameof(.proc/heat), user), 200)
+	set_next_think_ctx("think_heat", world.time + 20 SECONDS)
 
 /obj/item/reagent_containers/food/donkpocket/sinpocket/heat(user)
 	if(user)

@@ -23,7 +23,7 @@
 	last_think = 0
 	next_think = 0
 	group = null
-	arguments.Cut()
+	arguments?.Cut()
 
 /datum/think_context/Destroy()
 	stop()

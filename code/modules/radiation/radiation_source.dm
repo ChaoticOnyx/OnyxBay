@@ -44,4 +44,4 @@
 /datum/radiation_source/proc/schedule_decay(time)
 	ASSERT(time > 0)
 
-	addtimer(CALLBACK(src, nameof(.proc/Destroy)), time, TIMER_UNIQUE)
+	QDEL_IN(src, time)

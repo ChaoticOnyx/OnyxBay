@@ -87,7 +87,7 @@
 	else
 		return ..()
 
-/obj/item/integrated_circuit/manipulation/grenade/proc/before_activation_action()
+/obj/item/integrated_circuit/manipulation/grenade/think()
 	grenade_activated = FALSE
 	detach_grenade()
 
@@ -99,8 +99,8 @@
 			dt = Clamp(detonation_time.data, 1, 12)*10
 		else
 			dt = 15
-		addtimer(CALLBACK(attached_grenade, nameof(/obj/item/grenade.proc/activate)), dt)
-		addtimer(CALLBACK(src, nameof(.proc/before_activation_action)), dt - 1)
+		attached_grenade.set_next_think_ctx("think_activate", world.time + dt)
+		set_next_think(world.time + dt - 1)
 		grenade_activated = TRUE
 		var/atom/holder = loc
 		var/atom/A = get_object()

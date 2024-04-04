@@ -57,7 +57,7 @@
 		qdel_self()
 		return
 
-	else if(istype(D, /obj/item/mop) || (atom_flags & ATOM_FLAG_OPEN_CONTAINER))
+	else if(istype(D, /obj/item/mop) && (atom_flags & ATOM_FLAG_OPEN_CONTAINER))
 		if(reagents.total_volume < 1)
 			show_splash_text(user, "no water!", SPAN("warning", "\The [src] is empty!"))
 		else

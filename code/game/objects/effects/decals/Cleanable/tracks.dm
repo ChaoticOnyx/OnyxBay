@@ -127,7 +127,7 @@ var/global/list/image/fluidtrack_cache = list()
 	if(updated)
 		update_icon()
 
-/obj/effect/decal/cleanable/blood/tracks/dry()
+/obj/effect/decal/cleanable/blood/tracks/think()
 	..()
 	dried = TRUE
 	update_icon()

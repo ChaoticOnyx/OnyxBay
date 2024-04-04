@@ -107,8 +107,6 @@
 	var/unacidable = 0
 	var/list/pinned = list()            // List of things pinning this creature to walls (see living_defense.dm)
 	var/list/embedded = list()          // Embedded items, since simple mobs don't have organs.
-	/// Handles displaying the language menu UI.
-	var/datum/language_menu/language_menu = /datum/language_menu
 	var/list/languages = list()         // For speaking/listening.
 	var/species_language = null			// For species who want reset to use a specified default.
 	var/only_species_language  = 0		// For species who can only speak their default and no other languages. Does not effect understanding.
@@ -239,5 +237,7 @@
 	/// Holder for a bugreporter datum.
 	var/datum/bugreporter/bugreporter
 
+	/// UI holder for a language menu.
+	var/datum/language_menu/language_menu
 	/// Associative list of procpath -> list/atom, where atom is a source a procpath comes from.
 	var/list/atom_verbs

@@ -125,7 +125,7 @@
 	if(!holder)
 		visible_message("\icon[src] *beep* *beep*")
 	cooldown = 2
-	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/assembly/infra/proc/on_visibility_change(list/old_turfs, list/new_turfs)
 	seen_turfs = new_turfs

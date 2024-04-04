@@ -73,55 +73,6 @@ if(Datum.is_processing) {\
 //	This flag overrides SS_KEEP_TIMING
 #define SS_POST_FIRE_TIMING 64
 
-//! ## Timing subsystem
-/**
- * Don't run if there is an identical unique timer active
- *
- * if the arguments to addtimer are the same as an existing timer, it doesn't create a new timer,
- * and returns the id of the existing timer
- */
-#define TIMER_UNIQUE (1<<0)
-
-/// For unique timers: Replace the old timer rather then not start this one
-#define TIMER_OVERRIDE (1<<1)
-
-/**
- * Timing should be based on how timing progresses on clients, not the server.
- *
- * Tracking this is more expensive,
- * should only be used in conjuction with things that have to progress client side, such as
- * animate() or sound()
- */
-#define TIMER_CLIENT_TIME (1<<2)
-
-/// Timer can be stopped using deltimer()
-#define TIMER_STOPPABLE (1<<3)
-
-/// prevents distinguishing identical timers with the wait variable
-///
-/// To be used with TIMER_UNIQUE
-#define TIMER_NO_HASH_WAIT (1<<4)
-
-/// Loops the timer repeatedly until qdeleted
-///
-/// In most cases you want a subsystem instead, so don't use this unless you have a good reason
-#define TIMER_LOOP (1<<5)
-
-/// Delete the timer on parent datum Destroy() and when deltimer'd
-#define TIMER_DELETE_ME (1<<6)
-
-/// Empty ID define
-#define TIMER_ID_NULL -1
-
-/**
-	Create a new timer and add it to the queue.
-	* Arguments:
-	* * callback the callback to call on timer finish
-	* * wait deciseconds to run the timer for
-	* * flags flags for this timer, see: code\__DEFINES\subsystems.dm
-*/
-#define addtimer(args...) _addtimer(args, file = __FILE__, line = __LINE__)
-
 //SUBSYSTEM STATES
 #define SS_IDLE 0		//aint doing shit.
 #define SS_QUEUED 1		//queued to run

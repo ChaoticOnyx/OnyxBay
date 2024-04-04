@@ -497,7 +497,7 @@
 /mob/living/silicon/robot/proc/installed_jetpack()
 	if(module)
 		return (locate(/obj/item/tank/jetpack) in module.modules)
-	return 0
+	return null
 
 /mob/living/silicon/robot/get_status_tab_items()
 	. = ..()

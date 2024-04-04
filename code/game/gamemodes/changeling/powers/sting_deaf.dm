@@ -12,6 +12,6 @@
 	to_chat(target, SPAN("danger", "Your ears pop and begin ringing loudly!"))
 
 	target.sdisabilities |= DEAF
-	addtimer(CALLBACK(target, nameof(/mob/living/carbon/human.proc/remove_deaf)), 30 SECONDS)
+	target.set_next_think_ctx("remove_deaf", world.time + 30 SECONDS)
 
 	feedback_add_details("changeling_powers", "DS")

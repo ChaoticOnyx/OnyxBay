@@ -83,8 +83,6 @@
 			return global.SStgui;
 		if("SSticker")
 			return global.SSticker;
-		if("SStimer")
-			return global.SStimer;
 		if("SStrade")
 			return global.SStrade;
 		if("SSvines")
@@ -890,8 +888,6 @@
 			global.SStgui=newval;
 		if("SSticker")
 			global.SSticker=newval;
-		if("SStimer")
-			global.SStimer=newval;
 		if("SStrade")
 			global.SStrade=newval;
 		if("SSvines")
