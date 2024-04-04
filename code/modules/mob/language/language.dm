@@ -174,7 +174,6 @@
 /mob/proc/is_language_prefix(prefix)
 	return prefix == get_prefix_key(/decl/prefix/language)
 
-//TBD
 /mob/verb/check_languages()
 	set name = "Check Known Languages"
 	set category = "IC"
