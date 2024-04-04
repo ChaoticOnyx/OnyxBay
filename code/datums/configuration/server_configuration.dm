@@ -6,7 +6,6 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 /// Represents a base configuration datum. Has everything else bundled into it
 /datum/server_configuration
 	var/datum/configuration_section/general/general = new
-	var/datum/configuration_section/lobby/lobby = new
 	var/datum/configuration_section/log/log = new
 	var/datum/configuration_section/multiaccount/multiaccount = new
 	var/datum/configuration_section/gamemode/gamemode = new

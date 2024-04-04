@@ -352,7 +352,6 @@
 #include "code\datums\configuration\health_section.dm"
 #include "code\datums\configuration\indigo_bot_section.dm"
 #include "code\datums\configuration\link_section.dm"
-#include "code\datums\configuration\lobby_section.dm"
 #include "code\datums\configuration\log_section.dm"
 #include "code\datums\configuration\mapping_section.dm"
 #include "code\datums\configuration\misc_section.dm"
