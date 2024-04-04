@@ -541,7 +541,7 @@ its easier to just keep the beam vertical.
 
 /atom/attack_hand(mob/user)
 	..()
-	if(!LAZYISIN(climbers, user))
+	if(LAZYLEN(climbers) && !LAZYISIN(climbers, user))
 		user.visible_message("<span class='warning'>[user.name] shakes \the [src].</span>", \
 					"<span class='notice'>You shake \the [src].</span>")
 		object_shaken()
