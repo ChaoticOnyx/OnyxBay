@@ -806,6 +806,7 @@
 	name = "snail plush"
 	desc = "A plushie of a snail. Still can't figure out where I've seen this before."
 	icon_state = "snailplushie"
+	slot_flags = SLOT_HEAD
 
 //Toy cult sword
 /obj/item/toy/cultsword
