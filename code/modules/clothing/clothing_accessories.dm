@@ -1,16 +1,16 @@
 /obj/item/clothing/proc/can_attach_accessory(obj/item/clothing/accessory/A)
-	if(valid_accessory_slots && istype(A) && (A.slot in valid_accessory_slots))
+	if(istype(A) && LAZYISIN(valid_accessory_slots, A.slot))
 		.=1
 	else
 		return 0
-	if(LAZYLEN(accessories) && restricted_accessory_slots && (A.slot in restricted_accessory_slots))
+	if(LAZYLEN(accessories) && LAZYISIN(restricted_accessory_slots, A.slot))
 		for(var/obj/item/clothing/accessory/AC in accessories)
 			if (AC.slot == A.slot)
 				return 0
 
 /obj/item/clothing/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/clothing/accessory))
-		if(!valid_accessory_slots || !valid_accessory_slots.len)
+		if(!LAZYLEN(valid_accessory_slots))
 			to_chat(usr, SPAN("warning", "You cannot attach accessories of any kind to \the [src]."))
 			return
 
