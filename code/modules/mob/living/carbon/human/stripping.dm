@@ -67,7 +67,7 @@
 				toggle_internals(user)
 			return
 		if("tie")
-			if(!istype(holder) || !holder.accessories.len)
+			if(!istype(holder) || !LAZYLEN(holder.accessories))
 				return
 			var/obj/item/clothing/accessory/A = holder.accessories[1]
 			if(holder.accessories.len > 1)
@@ -83,7 +83,7 @@
 			if(!do_mob(user, src, HUMAN_STRIP_DELAY, can_multitask = TRUE))
 				return
 
-			if(!A || holder.loc != src || !(A in holder.accessories))
+			if(!A || holder.loc != src || !LAZYISIN(holder.accessories, A))
 				return
 
 			admin_attack_log(user, src, "Stripped \an [A] from \the [holder].", "Was stripped of \an [A] from \the [holder].", "stripped \an [A] from \the [holder] of")

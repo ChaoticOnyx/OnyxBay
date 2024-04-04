@@ -58,7 +58,7 @@
 		verbs -= /obj/item/clothing/under/verb/rollsleeves
 
 /obj/item/clothing/under/attack_hand(mob/user)
-	if(accessories && accessories.len)
+	if(LAZYLEN(accessories))
 		..()
 	if ((ishuman(usr) || issmall(usr)) && src.loc == user)
 		return
