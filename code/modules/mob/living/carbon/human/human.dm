@@ -119,11 +119,9 @@
 	if(potato && potato.cell)
 		. += "Battery charge: [potato.get_charge()]/[potato.cell.maxcharge]"
 
-	if(back && istype(back,/obj/item/rig))
+	if(back && istype(back, /obj/item/rig))
 		var/obj/item/rig/suit = back
-		var/cell_status = "ERROR"
-		if(suit.cell) cell_status = "[suit.cell.charge]/[suit.cell.maxcharge]"
-		. += "Suit charge: [cell_status]"
+		. += "RIG Charge: [isnull(suit.cell) ? "ERROR" : "[suit.cell.charge]/[suit.cell.maxcharge]"]"
 
 	if(mind)
 		if(mind.vampire)

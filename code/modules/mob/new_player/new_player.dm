@@ -3,8 +3,6 @@
 /mob/new_player
 	var/ready = 0
 	var/spawning = 0//Referenced when you want to delete the new_player later on in the code.
-	var/totalPlayers = 0		 //Player counts for the Lobby tab
-	var/totalPlayersReady = 0
 	var/datum/browser/panel
 	var/show_invalid_jobs = 0
 	universal_speak = 1
@@ -73,8 +71,6 @@
 /mob/new_player/get_status_tab_items()
 	. = ..()
 
-	. += ""
-
 	if(check_rights(R_INVESTIGATE, 0, src))
 		. += "Game Mode: [SSticker.mode ? SSticker.mode.name : SSticker.master_mode] ([SSticker.master_mode])"
 	else
@@ -85,27 +81,14 @@
 
 	. += ""
 
-	if(GAME_STATE <= RUNLEVEL_LOBBY)
-		. += list(
-			"Time To Start: [round(SSticker.pregame_timeleft/10)][SSticker.round_progressing ? "" : " (DELAYED)"]",
-			"",
-			"Players: [totalPlayers]",
-			"Players Ready: [totalPlayersReady]",
-			"",
-		)
+	if(GAME_STATE > RUNLEVEL_LOBBY)
+		return
 
-		totalPlayers = 0
-		totalPlayersReady = 0
-		for(var/mob/new_player/player in GLOB.player_list)
-			var/highjob
-			if(player.client?.prefs?.job_high)
-				highjob = " as [player.client.prefs.job_high]"
-
-			. += "[player.key] [player.ready ? "(Playing[highjob])" : ""]"
-
-			totalPlayers++
-			if(player.ready)
-				totalPlayersReady++
+	. += list(
+		"Time To Start: [round(SSticker.pregame_timeleft/10)]s[SSticker.round_progressing ? "" : " (DELAYED)"]",
+		"Players: [SSticker.total_players]",
+		"Players Ready: [SSticker.total_players_ready]",
+	)
 
 /mob/new_player/Topic(href, href_list[])
 	if(!client)	return 0
