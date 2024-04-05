@@ -14,7 +14,7 @@
 /obj/item/clothing/accessory/pin/skull
 	name = "skull pin"
 	desc = "A holographic pin to show off your edgy nature."
-	icon_state = "pride_bi"
+	icon_state = "skull"
 
 /obj/item/clothing/accessory/pin/rainbow
 	name = "rainbow pin"
