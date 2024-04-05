@@ -65,6 +65,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/flags = 0
 	var/evac_controller_type = /datum/evacuation_controller
 
+	var/lobby_icon									// The icon which contains the lobby image(s)
+	var/list/lobby_screens = list()                 // The list of lobby screen to pick() from. If left unset the first icon state is always selected.
 	var/lobby_music/lobby_music                     // The track that will play in the lobby screen. Handed in the /setup_map() proc.
 	var/welcome_sound = 'sound/signals/start1.ogg'	// Sound played on roundstart
 

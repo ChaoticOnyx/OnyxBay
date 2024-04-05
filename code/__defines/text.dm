@@ -2,5 +2,3 @@
 #define MAPTEXT(text) "<span class='maptext'>[##text]</span>"
 /// Macro from Lummox used to get height from a MeasureText proc
 #define WXH_TO_HEIGHT(measurement) text2num(copytext(##measurement, findtextEx(##measurement, "x") + 1))
-
-#define LOBBY_CONFIG "config/lobby_art/images/"
