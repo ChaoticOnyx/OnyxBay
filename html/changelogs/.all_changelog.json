@@ -44,6 +44,44 @@
     ]
   },
   {
+    "author": "MemoryDreams",
+    "date": "2024-04-05T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "SpellCheck",
+        "message": "Заметил в контрактах опечатку и исправил её.",
+        "pr": 12121
+      }
+    ]
+  },
+  {
+    "author": "Filatelele",
+    "date": "2024-04-05T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Выбор цвета интерфейса и ООЦ чата снова работает как положено.",
+        "pr": 12122
+      }
+    ]
+  },
+  {
+    "author": "BaraBara & Ilyadobr",
+    "date": "2024-04-05T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Swept skirt теперь можно покрасить в лодауте",
+        "pr": 11939
+      },
+      {
+        "prefix": "RscAdd",
+        "message": "Добавлены новые виды юбок в лодаут",
+        "pr": 11939
+      }
+    ]
+  },
+  {
     "author": "Filatelele",
     "date": "2024-04-04T00:00:00+03:00",
     "changes": [
