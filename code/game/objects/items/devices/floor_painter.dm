@@ -96,7 +96,7 @@
 			return
 
 /obj/item/device/floor_painter/proc/choose_color(color)
-	var/new_colour = input(usr, "Choose a colour.", "Floor painter", paint_colour) as color | null
+	var/new_colour = tgui_color_picker(usr, "Choose a colour.", "Floor painter", paint_colour)
 
 	if(new_colour && new_colour != paint_colour)
 		paint_colour = new_colour
