@@ -26,9 +26,9 @@
 
 /datum/category_item/player_setup_item/player_global/ui/sanitize_preferences()
 	pref.UI_style		= sanitize_inlist(pref.UI_style, GLOB.all_ui_styles, initial(pref.UI_style))
-	pref.UI_style_color	= sanitize_hexcolor(pref.UI_style_color, initial(pref.UI_style_color))
+	pref.UI_style_color	= sanitize_hexcolor(pref.UI_style_color, desired_format = 6, include_crunch = TRUE, default = initial(pref.UI_style_color))
 	pref.UI_style_alpha	= sanitize_integer(pref.UI_style_alpha, 0, 255, initial(pref.UI_style_alpha))
-	pref.ooccolor		= sanitize_hexcolor(pref.ooccolor, initial(pref.ooccolor))
+	pref.ooccolor		= sanitize_hexcolor(pref.ooccolor, desired_format = 6, include_crunch = TRUE, default = initial(pref.ooccolor))
 	pref.clientfps	    = sanitize_integer(pref.clientfps, CLIENT_MIN_FPS, CLIENT_MAX_FPS, initial(pref.clientfps))
 
 /datum/category_item/player_setup_item/player_global/ui/content(mob/user)
