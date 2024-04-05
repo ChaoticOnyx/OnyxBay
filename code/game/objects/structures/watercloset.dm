@@ -83,8 +83,8 @@
 			show_splash_text(user, "tighter grip is needed!", SPAN("warning", "You need a tigher grip!"))
 			return
 
-		if(get_dist(G.affecting, get_turf(src)) <= 1)
-			show_splash_text(user, "victim needs to be on the toilet!", SPAN("warning", "The vicim must be held right above the toilet!"))
+		if(get_dist(G.affecting, get_turf(src)) > 1)
+			show_splash_text(user, "victim needs to be on the toilet!", SPAN("warning", "The victim must be held right above the toilet!"))
 			return
 
 		if(lid_open && !swirlie)
