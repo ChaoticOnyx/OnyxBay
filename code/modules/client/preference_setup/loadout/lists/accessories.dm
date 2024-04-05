@@ -131,3 +131,25 @@
 	dogtag.stored_name = H.real_name
 	dogtag.religion = H.religion
 	dogtag.stored_blood_type = H.b_type
+
+/datum/gear/accessory/pin
+	display_name = "pin selection"
+	description = "A Nanotrasen holographic pin to show off your loyalty to the company, reminding the crew of your unwavering commitment to whatever NanoTrasen's up to!"
+	path = /obj/item/clothing/accessory/pin
+
+/datum/gear/accessory/pride_pin/New()
+	..()
+	var/prides = list()
+	prides["NanoTrasen pin"]        = /obj/item/clothing/accessory/pin
+	prides["pig pin"]               = /obj/item/clothing/accessory/pin/pig
+	prides["skull pin"]             = /obj/item/clothing/accessory/pin/skull
+	prides["rainbow pin"]           = /obj/item/clothing/accessory/pin/rainbow
+	prides["bisexual pride pin"]    = /obj/item/clothing/accessory/pin/bi
+	prides["pansexual pride pin"]   = /obj/item/clothing/accessory/pin/pan
+	prides["asexual pride pin"]     = /obj/item/clothing/accessory/pin/ace
+	prides["non-binary pride pin"]  = /obj/item/clothing/accessory/pin/enby
+	prides["transgender pride pin"] = /obj/item/clothing/accessory/pin/trans
+	prides["intersex pride pin"]    = /obj/item/clothing/accessory/pin/intersex
+	prides["lesbian pride pin"]     = /obj/item/clothing/accessory/pin/lesbian
+
+	gear_tweaks += new /datum/gear_tweak/path(prides)
