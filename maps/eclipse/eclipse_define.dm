@@ -13,6 +13,8 @@
 	company_short = "NT"
 	system_name   = "Pegasus"
 
+	lobby_icon = 'maps/exodus/exodus_lobby.dmi'
+
 	shuttle_types = list(
 		/datum/shuttle/autodock/ferry/escape_pod/escape_pod1,
 		/datum/shuttle/autodock/ferry/escape_pod/escape_pod2,

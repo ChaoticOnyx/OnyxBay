@@ -11,6 +11,8 @@
 	company_short = "NT"
 	system_name   = "Nyx"
 
+	lobby_icon = 'maps/example/example_lobby.dmi'
+
 	shuttle_types = list(
 		/datum/shuttle/autodock/ferry/example
 	)

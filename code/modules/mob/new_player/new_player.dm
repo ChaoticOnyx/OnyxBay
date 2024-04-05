@@ -175,8 +175,8 @@
 			observer.key = key
 			observer.client?.init_verbs()
 
-			new /atom/movable/screen/splash/fake(null, TRUE, observer.client, SSlobby.current_lobby_art)
-
+			var/atom/movable/screen/splash/S = new(observer.client, TRUE)
+			S.Fade(TRUE, TRUE)
 			QDEL_NULL(mind)
 			qdel(src)
 
@@ -576,7 +576,8 @@
 	new_character.key = key		//Manually transfer the key to log them in
 	new_character.client?.init_verbs()
 
-	new /atom/movable/screen/splash/fake(null, TRUE, new_character.client, SSlobby.current_lobby_art)
+	var/atom/movable/screen/splash/S = new(new_character.client, TRUE)
+	S.Fade(TRUE, TRUE)
 
 	// Give them their cortical stack if we're using them.
 	if(config && config.revival.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
