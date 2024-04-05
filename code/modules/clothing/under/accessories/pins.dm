@@ -9,7 +9,7 @@
 /obj/item/clothing/accessory/pin/pig
 	name = "pig pin"
 	desc = "A holographic pin to show off your true nature."
-	icon_state = "pride_bi"
+	icon_state = "pig"
 
 /obj/item/clothing/accessory/pin/skull
 	name = "skull pin"
