@@ -5889,7 +5889,7 @@
 "cjm" = (/obj/structure/shuttle/engine/heater{dir = 8},/obj/structure/window/reinforced,/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/plating/rough/airless,/area/shuttle/research/station)
 "cjn" = (/obj/effect/floor_decal/corner/brown{dir = 5},/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/turf/simulated/floor/tiled/rough,/area/hallway/primary/central_three)
 "cjo" = (/turf/simulated/wall/r_wall,/area/quartermaster/miningdock)
-"cjp" = (/obj/machinery/door/airlock/glass{name = "Central Access"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/central_three)
+"cjp" = (/obj/machinery/door/airlock/glass{name = "Central Access"},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/tiled/rough,/area/hallway/primary/central_three)
 "cjq" = (/obj/effect/floor_decal/corner/brown{dir = 5},/obj/structure/disposalpipe/sortjunction{name = "QM Office"; dir = 8; sortType = "QM Office"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{icon_state = "intact-supply"; dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/central_three)
 "cjr" = (/obj/effect/floor_decal/corner/brown{dir = 5},/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{icon_state = "intact-supply"; dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/central_three)
 "cjs" = (/obj/effect/floor_decal/corner/brown{dir = 1},/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{icon_state = "intact-supply"; dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/central_three)
