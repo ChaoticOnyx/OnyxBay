@@ -1,4 +1,4 @@
-[class^='theme-neutral-'] {
+[class^="theme-neutral-"] {
   .Layout.Window {
     background-image: none;
   }
@@ -68,7 +68,7 @@
       position: relative;
       width: 480px;
       height: 480px;
-      background-image: url('../../assets/settings/preview.png');
+      background-image: url("../../assets/settings/preview.png");
     }
 
     &-Hud {
@@ -83,7 +83,7 @@
       top: 0;
       width: 480px;
       height: 480px;
-      background-image: url('../../assets/settings/items.png');
+      background-image: url("../../assets/settings/items.png");
     }
   }
 

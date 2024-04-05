@@ -115,7 +115,7 @@ Prismatic extracts:
 	colour = "rainbow"
 
 /obj/item/metroidcross/prismatic/rainbow/attack_self(mob/user)
-	var/newcolor = input(user, "Choose the metroid color:", "Color change",paintcolor) as color|null
+	var/newcolor = tgui_color_picker(user, "Choose the metroid color:", "Color change", paintcolor)
 	if(user.incapacitated())
 		return
 	if(!newcolor)

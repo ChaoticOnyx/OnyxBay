@@ -582,7 +582,7 @@ var/list/admin_verbs_mentor = list(
 	if(!holder)	return
 	var/response = alert(src, "Please choose a distinct color that is easy to read and doesn't mix with all the other chat and radio frequency colors.", "Change own OOC color", "Pick new color", "Reset to default", "Cancel")
 	if(response == "Pick new color")
-		prefs.ooccolor = input(src, "Please select your OOC colour.", "OOC colour") as color
+		prefs.ooccolor = tgui_color_picker(src, "Please select your OOC colour.", "OOC colour")
 	else if(response == "Reset to default")
 		prefs.ooccolor = initial(prefs.ooccolor)
 	SScharacter_setup.queue_preferences_save(prefs)
@@ -849,38 +849,38 @@ var/list/admin_verbs_mentor = list(
 	switch(alert("Are you sure you wish to edit this mob's appearance? Skrell, Unathi, Vox and Tajaran can result in unintended consequences.",,"Yes","No"))
 		if("No")
 			return
-	var/new_facial = input("Please select facial hair color.", "Character Generation") as color
+	var/new_facial = tgui_color_picker("Please select facial hair color.", "Character Generation")
 	if(new_facial)
 		M.r_facial = hex2num(copytext(new_facial, 2, 4))
 		M.g_facial = hex2num(copytext(new_facial, 4, 6))
 		M.b_facial = hex2num(copytext(new_facial, 6, 8))
 
-	var/new_hair = input("Please select hair color.", "Character Generation") as color
+	var/new_hair = tgui_color_picker("Please select hair color.", "Character Generation")
 	if(new_hair)
 		M.r_hair = hex2num(copytext(new_hair, 2, 4))
 		M.g_hair = hex2num(copytext(new_hair, 4, 6))
 		M.b_hair = hex2num(copytext(new_hair, 6, 8))
 
-	var/new_s_hair = input("Please select secondary hair color.", "Character Generation") as color
+	var/new_s_hair = tgui_color_picker("Please select secondary hair color.", "Character Generation")
 	if(new_s_hair)
 		M.r_s_hair = hex2num(copytext(new_s_hair, 2, 4))
 		M.g_s_hair = hex2num(copytext(new_s_hair, 4, 6))
 		M.b_s_hair = hex2num(copytext(new_s_hair, 6, 8))
 
-	var/new_eyes = input("Please select eye color.", "Character Generation") as color
+	var/new_eyes = tgui_color_picker("Please select eye color.", "Character Generation")
 	if(new_eyes)
 		M.r_eyes = hex2num(copytext(new_eyes, 2, 4))
 		M.g_eyes = hex2num(copytext(new_eyes, 4, 6))
 		M.b_eyes = hex2num(copytext(new_eyes, 6, 8))
 		M.update_eyes()
 
-	var/new_skin = input("Please select body color. This is for Tajaran, Unathi, and Skrell only!", "Character Generation") as color
+	var/new_skin = tgui_color_picker("Please select body color. This is for Tajaran, Unathi, and Skrell only!", "Character Generation")
 	if(new_skin)
 		M.r_skin = hex2num(copytext(new_skin, 2, 4))
 		M.g_skin = hex2num(copytext(new_skin, 4, 6))
 		M.b_skin = hex2num(copytext(new_skin, 6, 8))
 
-	var/new_tone = input("Please select skin tone level: 1-220 (1=albino, 35=caucasian, 150=black, 220='very' black)", "Character Generation")  as text
+	var/new_tone = input("Please select skin tone level: 1-220 (1=albino, 35=caucasian, 150=black, 220='very' black)", "Character Generation") as text
 
 	if (new_tone)
 		M.s_tone = max(min(round(text2num(new_tone)), 220), 1)

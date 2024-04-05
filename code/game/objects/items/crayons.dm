@@ -87,8 +87,8 @@
 	uses = 0
 
 /obj/item/pen/crayon/rainbow/attack_self(mob/living/user as mob)
-	colour = input(user, "Please select the main colour.", "Crayon colour") as color
-	shadeColour = input(user, "Please select the shade colour.", "Crayon colour") as color
+	colour = tgui_color_picker(user, "Please select the main colour.", "Crayon colour")
+	shadeColour = tgui_color_picker(user, "Please select the shade colour.", "Crayon colour")
 	update_popup(user)
 	return
 

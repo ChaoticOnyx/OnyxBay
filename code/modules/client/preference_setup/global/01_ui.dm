@@ -53,7 +53,7 @@
 		return TOPIC_REFRESH
 
 	else if(href_list["select_color"])
-		var/UI_style_color_new = input(user, "Choose UI color, dark colors are not recommended!", "Global Preference", pref.UI_style_color) as color|null
+		var/UI_style_color_new = tgui_color_picker(user, "Choose UI color, dark colors are not recommended!", "Global Preference", pref.UI_style_color)
 		if(isnull(UI_style_color_new) || !CanUseTopic(user)) return TOPIC_NOACTION
 		pref.UI_style_color = UI_style_color_new
 		return TOPIC_REFRESH
@@ -65,7 +65,7 @@
 		return TOPIC_REFRESH
 
 	else if(href_list["select_ooc_color"])
-		var/new_ooccolor = input(user, "Choose OOC color:", "Global Preference") as color|null
+		var/new_ooccolor = tgui_color_picker(user, "Choose OOC color:", "Global Preference")
 		if(new_ooccolor && can_select_ooc_color(user) && CanUseTopic(user))
 			pref.ooccolor = new_ooccolor
 			return TOPIC_REFRESH
