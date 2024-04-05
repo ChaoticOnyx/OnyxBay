@@ -106,7 +106,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return
 
 /datum/antag_contract/proc/create_explain_text(target_and_task)
-	desc = "My client is [organization.name], [reason]. They have information that the target is located somwhere aboard [GLOB.using_map.station_name]. \
+	desc = "My client is [organization.name], [reason]. They have information that the target is located somewhere aboard [GLOB.using_map.station_name]. \
 	Your mission[prob(25) ? ", should you choose to accept it, is to" : " is to"] [target_and_task] The reward for closing this contract is [reward] TC."
 
 /datum/antag_contract/proc/can_place()
