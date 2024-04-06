@@ -261,7 +261,7 @@ steam.start() -- spawns the effect
 	if (!..())
 		return 0
 	if (M.isSynthetic())
-		return 0
+		return FALSE
 	if(prob(50))
 		M.drop_active_hand()
 	else
