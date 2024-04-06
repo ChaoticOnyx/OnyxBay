@@ -217,16 +217,17 @@ steam.start() -- spawns the effect
 
 /obj/effect/effect/smoke/proc/affect(mob/living/carbon/M)
 	if (!istype(M))
-		return 0
+		return FALSE
+
 	if (M.internal != null)
 		if(M.wear_mask && (M.wear_mask.item_flags & ITEM_FLAG_AIRTIGHT))
-			return 0
+			return FALSE
 		if(istype(M,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
 			if(H.head && (H.head.item_flags & ITEM_FLAG_AIRTIGHT))
-				return 0
-		return 0
-	return 1
+				return FALSE
+		return FALSE
+	return TRUE
 
 /////////////////////////////////////////////
 // Illumination
@@ -258,8 +259,12 @@ steam.start() -- spawns the effect
 		affect(M)
 
 /obj/effect/effect/smoke/bad/affect(mob/living/carbon/M)
-	if (!..())
-		return 0
+	if(!..())
+		return FALSE
+
+	if(M.isSynthetic())
+		return FALSE
+
 	if(prob(50))
 		M.drop_active_hand()
 	else
@@ -276,7 +281,7 @@ steam.start() -- spawns the effect
 	if(istype(mover, /obj/item/projectile/beam))
 		var/obj/item/projectile/beam/B = mover
 		B.damage = (B.damage/2)
-	return 1
+	return TRUE
 /////////////////////////////////////////////
 // Sleep smoke
 /////////////////////////////////////////////
@@ -293,7 +298,7 @@ steam.start() -- spawns the effect
 
 /obj/effect/effect/smoke/sleepy/affect(mob/living/carbon/M as mob )
 	if (!..())
-		return 0
+		return FALSE
 
 	if(prob(50))
 		M.drop_active_hand()
@@ -324,9 +329,9 @@ steam.start() -- spawns the effect
 
 /obj/effect/effect/smoke/mustard/affect(mob/living/carbon/human/R)
 	if (!..())
-		return 0
+		return FALSE
 	if (R.wear_suit != null)
-		return 0
+		return FALSE
 
 	R.burn_skin(0.75)
 	if (R.coughedtime != 1)
