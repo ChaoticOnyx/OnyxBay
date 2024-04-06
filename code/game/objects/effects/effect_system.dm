@@ -260,6 +260,8 @@ steam.start() -- spawns the effect
 /obj/effect/effect/smoke/bad/affect(mob/living/carbon/M)
 	if (!..())
 		return 0
+	if (M.isSynthetic())
+		return 0
 	if(prob(50))
 		M.drop_active_hand()
 	else
