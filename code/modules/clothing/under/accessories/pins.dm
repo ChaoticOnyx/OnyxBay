@@ -19,7 +19,7 @@
 /obj/item/clothing/accessory/pin/rainbow
 	name = "rainbow pin"
 	desc = "A Nanotrasen Diversity & Inclusion Center-sponsored holographic pin to show off your pride, reminding the crew of their unwavering commitment to equity, diversity, and inclusion!"
-	icon_state = "pride_bi"
+	icon_state = "pride"
 
 /obj/item/clothing/accessory/pin/bi
 	name = "bisexual pride pin"
