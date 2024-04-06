@@ -36,7 +36,7 @@
 /obj/item/clothing/accessory/pin/pride/Initialize()
 	. = ..()
 	for(var/i = 1 to length(prides))
-		if(findtext(prides, icon_state))
+		if(findtext(prides[i], icon_state))
 			pride = i
 			break
 
