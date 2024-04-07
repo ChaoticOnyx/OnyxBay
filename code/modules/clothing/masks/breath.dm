@@ -13,18 +13,19 @@
 	down_item_flags = ITEM_FLAG_THICKMATERIAL
 	down_icon_state = "breathdown"
 	pull_mask = 1
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 16.8 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 2.6 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
 	item_state_slots = list(
 		slot_l_hand_str = "breathmask",
 		slot_r_hand_str = "breathmask",
 		)
 	use_alt_layer = TRUE
 	can_use_alt_layer = TRUE
+
+	rad_resist_type = /datum/rad_resist/mask_breath
+
+/datum/rad_resist/mask_breath
+	alpha_particle_resist = 16 MEGA ELECTRONVOLT
+	beta_particle_resist = 2.6 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/mask/breath/medical
 	desc = "A close-fitting sterile mask that can be manually connected to an air supply for treatment."

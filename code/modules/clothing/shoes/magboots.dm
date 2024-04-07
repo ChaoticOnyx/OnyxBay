@@ -18,11 +18,6 @@
 
 	armor = list(melee = 90, bullet = 90, laser = 100, energy = 45, bomb = 50, bio = 10)
 	siemens_coefficient = 0.3
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 33.8 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 6.42 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
 
 	drop_sound = SFX_DROP_BOOTS
 	pickup_sound = SFX_PICKUP_BOOTS
@@ -31,6 +26,13 @@
 		slot_l_hand_str = "magboots",
 		slot_r_hand_str = "magboots",
 		)
+
+	rad_resist_type = /datum/rad_resist/magboots
+
+/datum/rad_resist/magboots
+	alpha_particle_resist = 33.8 MEGA ELECTRONVOLT
+	beta_particle_resist = 6.42 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/shoes/magboots/proc/set_slowdown()
 	slowdown_per_slot[slot_shoes] = shoes? max(0, shoes.slowdown_per_slot[slot_shoes]): 0	//So you can't put on magboots to make you walk faster.

@@ -6,11 +6,7 @@
 	density = 1
 	plane = DEFAULT_PLANE
 	explosion_block = 1
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 20.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 10 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/wall
 
 /turf/unsimulated/wall/fakeglass
 	name = "window"

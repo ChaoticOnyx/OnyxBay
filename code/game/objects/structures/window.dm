@@ -28,11 +28,6 @@
 	hitby_sound = SFX_GLASS_HIT
 	hitby_loudness_multiplier = 2.0
 	pull_sound = SFX_PULL_STONE
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 664 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 4.8 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
 
 /obj/structure/window/examine(mob/user, infix)
 	. = ..()
@@ -57,6 +52,13 @@
 			. += SPAN_NOTICE("It is covered in silicate.")
 		else
 			. += SPAN_NOTICE("There is a thick layer of silicate covering it.")
+
+	rad_resist_type = /datum/rad_resist/window
+
+/datum/rad_resist/window
+	alpha_particle_resist = 664 MEGA ELECTRONVOLT
+	beta_particle_resist = 4.8 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/structure/window/GetExplosionBlock()
 	return reinf && (state == 5) ? real_explosion_block : 0

@@ -5,11 +5,7 @@
 	armor = list(melee = 20, bullet = 20, laser = 50,energy = 50, bomb = 50, bio = 100)
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SPECIES_SKRELL,SPECIES_HUMAN)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 40.2 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_vox
 
 /obj/item/clothing/head/helmet/space/skrell/white
 	icon_state = "skrell_helmet_white"
@@ -25,11 +21,7 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SPECIES_SKRELL,SPECIES_HUMAN)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 40.2 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_vox
 
 /obj/item/clothing/suit/space/skrell/white
 	icon_state = "skrell_suit_white"
@@ -47,11 +39,12 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SPECIES_VOX)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 40.2 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_vox
+
+/datum/rad_resist/space_vox
+	alpha_particle_resist = 40 MEGA ELECTRONVOLT
+	beta_particle_resist = 8.9 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/suit/space/vox/New()
 	..()
@@ -62,11 +55,7 @@
 	siemens_coefficient = 0.6
 	flags_inv = 0
 	species_restricted = list(SPECIES_VOX)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 40.2 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_vox
 
 /obj/item/clothing/head/helmet/space/vox/pressure
 	name = "alien helmet"

@@ -305,6 +305,7 @@
 #include "code\datums\object_window_info.dm"
 #include "code\datums\position_point_vector.dm"
 #include "code\datums\progressbar.dm"
+#include "code\datums\radiation.dm"
 #include "code\datums\recipe.dm"
 #include "code\datums\robot_hulls.dm"
 #include "code\datums\security_state.dm"

@@ -13,11 +13,7 @@
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	body_parts_covered = HEAD|FACE|EYES
 	siemens_coefficient = 0.9
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 25.5 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 7.7 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/suit_bio
 
 /obj/item/clothing/suit/bio_suit
 	name = "bio suit"
@@ -36,11 +32,12 @@
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	siemens_coefficient = 0.9
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 25.5 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 7.7 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/suit_bio
+
+/datum/rad_resist/suit_bio
+	alpha_particle_resist = 25.5 MEGA ELECTRONVOLT
+	beta_particle_resist = 7.7 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/suit/bio_suit/New()
 	..()

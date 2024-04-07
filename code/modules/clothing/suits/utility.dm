@@ -66,13 +66,15 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
 	siemens_coefficient = 0
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 19.2 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
 	flash_protection = FLASH_PROTECTION_MAJOR
 	tint = TINT_HEAVY
+
+	rad_resist_type = /datum/rad_resist/bomb_hood
+
+/datum/rad_resist/bomb_hood
+	alpha_particle_resist = 19.2 MEGA ELECTRONVOLT
+	beta_particle_resist = 8.9 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/suit/bomb_suit
 	name = "bomb suit"
@@ -110,11 +112,7 @@
 	flags_inv = BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
 	armor = list(melee = 20, bullet = 0, laser = 20, energy = 10, bomb = 0, bio = 60)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 800 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 600 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/suit_radiation
 
 /obj/item/clothing/suit/radiation
 	name = "Radiation suit"
@@ -132,11 +130,12 @@
 	armor = list(melee = 20, bullet = 0, laser = 20, energy = 10, bomb = 0, bio = 60)
 	flags_inv = HIDEJUMPSUIT|HIDETAIL|HIDEGLOVES|HIDESHOES
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 800 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 600 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/suit_radiation
+
+/datum/rad_resist/suit_radiation
+	alpha_particle_resist = 800 MEGA ELECTRONVOLT
+	beta_particle_resist = 600 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/suit/radiation/New()
 	..()

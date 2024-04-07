@@ -5,12 +5,6 @@
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 35 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 6 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
 	var/image/blood_overlay = null //this saves our blood splatter overlay, which will be processed not to go over the edges of the sprite
 	var/randpixel = 6
 	var/r_speed = 1.0
@@ -107,6 +101,13 @@
 
 	/// Sound played when this tool is used. Can be a list too.
 	var/tool_sound
+
+	rad_resist_type = /datum/rad_resist/item
+
+/datum/rad_resist/item
+	alpha_particle_resist = 35 MEGA ELECTRONVOLT
+	beta_particle_resist = 6 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/Topic(href, href_list, datum/topic_state/state)
 	. = ..()

@@ -39,12 +39,12 @@
 	var/atom/movable/fake_overlay/c_animation = null
 	/// Determines whether this door already has thinkg_close context running or not
 	var/thinking_about_closing = FALSE
+	rad_resist_type = /datum/rad_resist/door
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 350 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.5 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
-	)
+/datum/rad_resist/door
+	alpha_particle_resist = 350 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.5 MEGA ELECTRONVOLT
+	hawking_resist = 81 MILLI ELECTRONVOLT
 
 /obj/machinery/door/Initialize()
 	. = ..()

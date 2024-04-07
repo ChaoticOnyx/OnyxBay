@@ -9,12 +9,6 @@
 	w_class = ITEM_SIZE_NO_CONTAINER
 	layer = STRUCTURE_LAYER
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 41 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 3.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
 	var/icon_closed = "closed"
 	var/icon_opened = "open"
 
@@ -48,6 +42,13 @@
 	var/material = /obj/item/stack/material/steel
 
 	var/intact_closet = TRUE // List operations overhead bad
+
+	rad_resist_type = /datum/rad_resist/closet
+
+/datum/rad_resist/closet
+	alpha_particle_resist = 41 MEGA ELECTRONVOLT
+	beta_particle_resist = 3.4 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/structure/closet/nodoor
 	nodoor = TRUE

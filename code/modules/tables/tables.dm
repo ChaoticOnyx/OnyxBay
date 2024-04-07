@@ -10,11 +10,7 @@
 	throwpass = 1
 	turf_height_offset = 12
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0,
-		RADIATION_BETA_PARTICLE = 0,
-		RADIATION_HAWKING = 0
-	)
+	rad_resist_type = /datum/rad_resist/none
 
 	var/flipped = 0
 	var/maxhealth = 10

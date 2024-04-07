@@ -23,12 +23,6 @@
 	anchor_fall = TRUE
 	w_class = ITEM_SIZE_NO_CONTAINER
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 250 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 10 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
 	var/initial_icon = null //Mech type for resetting icon. Only used for reskinning kits (see custom items)
 	var/base_color = null // Mecha padding color. Used to paint visible equipment in special color.
 	var/can_move = 1
@@ -90,6 +84,13 @@
 	var/datum/legacy_events/events
 
 	var/strafe = FALSE
+
+	rad_resist_type = /datum/rad_resist/mecha
+
+/datum/rad_resist/mecha
+	alpha_particle_resist = 250 MEGA ELECTRONVOLT
+	beta_particle_resist = 10 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/mecha/drain_power(drain_check)
 

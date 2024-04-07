@@ -14,11 +14,12 @@
 	var/list/filtered_gases = list("plasma", "sleeping_agent")
 	var/istinted = 0
 	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 75)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 23 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 6.6 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/mask_syrgical
+
+/datum/rad_resist/mask_syrgical
+	alpha_particle_resist = 23 MEGA ELECTRONVOLT
+	beta_particle_resist = 6.6 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/mask/gas/Initialize()
 	. = ..()

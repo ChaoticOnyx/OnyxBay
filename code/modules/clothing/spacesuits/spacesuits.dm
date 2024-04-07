@@ -32,11 +32,8 @@
 	light_overlay = "helmet_light"
 	brightness_on = 4
 	on = 0
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_gear
+
 
 /obj/item/clothing/head/helmet/space/Destroy()
 	if(camera && !ispath(camera))

@@ -10,11 +10,7 @@
 		slot_r_hand_str = "medical_helm",
 		)
 	armor = list(melee = 40, bullet = 20, laser = 40, energy = 15, bomb = 0, bio = 100)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 266 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 200 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/void_med
 
 /obj/item/clothing/suit/space/void/medical
 	icon_state = "rig-medical"
@@ -26,11 +22,12 @@
 	)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/firstaid,/obj/item/device/healthanalyzer,/obj/item/stack/medical,/obj/item/device/antibody_scanner)
 	armor = list(melee = 40, bullet = 20, laser = 40, energy = 15, bomb = 0, bio = 100)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 266 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 200 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/void_med
+
+/datum/rad_resist/void_med
+	alpha_particle_resist = 266 MEGA ELECTRONVOLT
+	beta_particle_resist = 200 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/suit/space/void/medical/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/medical

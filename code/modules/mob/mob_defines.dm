@@ -152,11 +152,7 @@
 
 	/// Total radiation dose. Sv.
 	var/radiation = SPACE_RADIATION
-	var/list/rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 6 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.1 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	var/rad_resist_type = /datum/rad_resist/mob
 
 	var/voice_name = "unidentifiable voice"
 
@@ -241,3 +237,8 @@
 	var/datum/language_menu/language_menu
 	/// Associative list of procpath -> list/atom, where atom is a source a procpath comes from.
 	var/list/atom_verbs
+
+/datum/rad_resist/mob
+	alpha_particle_resist = 6 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.1 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT

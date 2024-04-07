@@ -50,12 +50,14 @@
 	down_body_parts_covered = null
 	down_icon_state = "steriledown"
 	pull_mask = 1
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 13.5 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 2.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
 	use_alt_layer = TRUE
+
+	rad_resist_type = /datum/rad_resist/mask_syrgical
+
+/datum/rad_resist/mask_syrgical
+	alpha_particle_resist = 13.5 MEGA ELECTRONVOLT
+	beta_particle_resist = 2.2 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/mask/fakemoustache
 	name = "fake moustache"
@@ -228,11 +230,12 @@
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 16 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 3.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/mask_rubber
+
+/datum/rad_resist/mask_rubber
+	alpha_particle_resist = 16 MEGA ELECTRONVOLT
+	beta_particle_resist = 3.4 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/mask/rubber/trasen
 	name = "Jack Trasen mask"
@@ -309,13 +312,15 @@
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
 	armor = list(melee = 5, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 15)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 12 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 2.18 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
 	use_alt_layer = TRUE
 	can_use_alt_layer = TRUE
+
+	rad_resist_type = /datum/rad_resist/bandana
+
+/datum/rad_resist/bandana
+	alpha_particle_resist = 12 MEGA ELECTRONVOLT
+	beta_particle_resist = 2.18 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/mask/bandana/equipped(mob/user, slot)
 	switch(slot)
@@ -376,11 +381,12 @@
 	desc = "A fine black bandana with nanotech lining and a skull emblem. Can be worn on the head or face."
 	icon_state = "bandskull"
 	item_state = "bandskull"
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 12 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 2.18 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/bandana
+
+/datum/rad_resist/bandana
+	alpha_particle_resist = 12 MEGA ELECTRONVOLT
+	beta_particle_resist = 2.18 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/mask/bandana/customwhite //Custom item
 	name = "white bandana"

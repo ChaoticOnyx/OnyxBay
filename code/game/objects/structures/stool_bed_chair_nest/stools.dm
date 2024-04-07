@@ -16,11 +16,7 @@ var/global/list/stool_cache = list() //haha stool
 	throwforce = 10
 	w_class = ITEM_SIZE_HUGE
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0,
-		RADIATION_BETA_PARTICLE = 0,
-		RADIATION_HAWKING = 0
-	)
+	rad_resist_type = /datum/rad_resist/none
 
 	var/base_icon = "stool"
 	var/material/material

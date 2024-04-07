@@ -12,11 +12,7 @@
 	hitby_sound = 'sound/effects/metalhit2.ogg'
 	explosion_block = 1
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 20.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/wall
 
 	var/damage = 0
 	var/damage_overlay = 0
@@ -33,6 +29,11 @@
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
 	var/masks_icon = 'icons/turf/wall_masks.dmi'
 	var/static/list/mask_overlay_states = list()
+
+/datum/rad_resist/wall
+	alpha_particle_resist = 100 MEGA ELECTRONVOLT
+	beta_particle_resist = 20.2 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /turf/simulated/wall/Initialize(mapload, materialtype, rmaterialtype)
 	. = ..(mapload)
