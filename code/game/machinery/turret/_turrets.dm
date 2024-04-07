@@ -98,6 +98,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/debug_mode = FALSE
 
 /obj/machinery/turret/Initialize(mapload, _signaler)
+	. = ..()
+
 	hostility = new hostility()
 
 	if(!_signaler && mapload)
@@ -141,8 +143,6 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	update_icon()
 
 	GLOB.all_turrets.Add(src)
-
-	return ..()
 
 /obj/machinery/turret/Destroy()
 	remove_state_machine(src, /datum/state_machine/turret)
