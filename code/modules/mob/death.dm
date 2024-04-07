@@ -21,7 +21,7 @@
 	if(do_gibs)
 		gibs(loc, dna)
 
-	set_next_think_ctx("dust_delete", world.time + 1.5 SECONDS, animation)
+	set_next_think_ctx("dust_deletion", world.time + 1.5 SECONDS, animation)
 
 /mob/proc/dust_check_delete(atom/movable/fake_overlay/animation)
 	if(animation)

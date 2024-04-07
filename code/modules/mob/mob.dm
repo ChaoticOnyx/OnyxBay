@@ -325,18 +325,27 @@
 				examine_result += SPAN_NOTICE("<i>You examine [to_axamine] closer, but find nothing of interest...</i>")
 		else
 			examine_result = to_axamine.examine(src)
-			LAZYADD(client.recent_examines, to_examine_ref)
-			set_next_think_ctx("remove_from_examine_context", world.time + 1 SECOND, to_examine_ref)
+			LAZYINITLIST(client.recent_examines)
+			client.recent_examines[to_examine_ref] = world.time + 1 SECOND
+
+		set_next_think_ctx("remove_from_examine_context", world.time + 1 SECOND)
 
 	to_chat(usr, EXAMINE_BLOCK(examine_result.Join("\n")))
 
-/mob/proc/remove_from_recent_examines(ref_to_remove)
+/mob/proc/remove_from_recent_examines()
 	SIGNAL_HANDLER
 
 	if(isnull(client))
 		return
 
-	LAZYREMOVE(client.recent_examines, ref_to_remove)
+	for(var/ref in client.recent_examines)
+		if(client.recent_examines[ref] > world.time)
+			continue
+
+		LAZYREMOVE(client.recent_examines, ref)
+
+	if(client.recent_examines)
+		set_next_think_ctx("remove_from_examine_context", world.time + 1 SECOND)
 
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
 	set name = "Point To"
