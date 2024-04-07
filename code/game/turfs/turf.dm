@@ -27,11 +27,8 @@
 	var/icon_old = null
 	var/pathweight = 1          // How much does it cost to pathfind over this turf?
 	var/blessed = 0             // Has the turf been blessed?
-	var/list/rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 38 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 50 KILO ELECTRONVOLT,
-		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
-	)
+
+	var/rad_resist_type = /datum/rad_resist/turf
 
 	var/list/decals
 
@@ -48,6 +45,11 @@
 	/// but is now destroyed, this will preserve the value.
 	/// See __DEFINES/construction.dm for RCD_MEMORY_*.
 	var/rcd_memory
+
+/datum/rad_resist/turf
+	alpha_particle_resist = 38 MEGA ELECTRONVOLT
+	beta_particle_resist = 50 KILO ELECTRONVOLT
+	hawking_resist = 81 MILLI ELECTRONVOLT
 
 /turf/Initialize(mapload, ...)
 	. = ..()
@@ -310,8 +312,8 @@ var/const/enterloopsanity = 100
 	if(hasHUD(user, HUD_SCIENCE))
 		. += "Stopping Power:"
 
-		. += "α-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
-		. += "β-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
+		. += "α-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(get_rad_resist_value(rad_resist_type, RADIATION_ALPHA_PARTICLE)), "eV", 3)]"
+		. += "β-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(get_rad_resist_value(rad_resist_type, RADIATION_BETA_PARTICLE)), "eV", 3)]"
 
 /turf/proc/get_footstep_sound()
 	if(footstep_sound)

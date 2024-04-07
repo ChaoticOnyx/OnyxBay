@@ -19,11 +19,7 @@
 	)
 
 	light_overlay = "helmet_light"
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/void
 
 /obj/item/clothing/suit/space/void
 	name = "voidsuit"
@@ -45,11 +41,7 @@
 		SPECIES_SKRELL = 'icons/obj/clothing/species/skrell/suits.dmi'
 	)
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/void
 
 	//Breach thresholds, should ideally be inherited by most (if not all) voidsuits.
 	//With 0.2 resiliance, will reach 10 breach damage after 3 laser carbine blasts or 8 smg hits.
@@ -70,6 +62,11 @@ if(ispath(##equipment_var, ##expected_path )){\
 else if(##equipment_var) {\
 	CRASH("[log_info_line(src)] has an invalid [#equipment_var] type: [log_info_line(##equipment_var)]");\
 }
+
+/datum/rad_resist/void
+	alpha_particle_resist = 59.4 MEGA ELECTRONVOLT
+	beta_particle_resist = 13.2 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/suit/space/void/Initialize()
 	. = ..()

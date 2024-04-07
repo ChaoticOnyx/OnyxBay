@@ -9,11 +9,7 @@
 	armor = list(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 100)
 	flags_inv = HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 0.6
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/deathsquad
 
 /obj/item/clothing/suit/space/void/swat/New()
 	..()
@@ -31,12 +27,12 @@
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL
 	flags_inv = BLOCKHAIR
 	siemens_coefficient = 0.6
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/deathsquad
 
+/datum/rad_resist/deathsquad
+	alpha_particle_resist = 59.4 MEGA ELECTRONVOLT
+	beta_particle_resist = 13.2 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 // Captain
 /obj/item/clothing/head/helmet/space/void/captain
@@ -76,11 +72,7 @@
 	item_state = "helm_explorer"
 	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100)
 	light_overlay = "explorer_light"
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/void_engi_salvage
 
 /obj/item/clothing/suit/space/void/exploration
 	name = "exploration voidsuit"
@@ -88,11 +80,7 @@
 	icon_state = "void_explorer"
 	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/device/healthanalyzer,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/bluespace_beacon,/obj/item/material/hatchet/machete,/obj/item/shovel)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/void_engi_salvage
 
 /obj/item/clothing/suit/space/void/exploration/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/exploration
@@ -110,11 +98,7 @@
 		slot_r_hand_str = "eng_helm",
 		)
 	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/void_engi_salvage
 
 /obj/item/clothing/suit/space/void/engineering/salvage
 	name = "salvage voidsuit"
@@ -126,11 +110,12 @@
 	)
 	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/construction/rcd)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/void_engi_salvage
+
+/datum/rad_resist/void_engi_salvage
+	alpha_particle_resist = 400 MEGA ELECTRONVOLT
+	beta_particle_resist = 300 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/suit/space/void/engineering/salvage/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/engineering/salvage

@@ -18,11 +18,6 @@
 	label_icon = FALSE
 	overlay_icon = FALSE
 	lid_type = null
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 11.8 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.8 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
 	volume = 60
 
 	var/obj/item/hookah_coal/HC = null
@@ -32,6 +27,13 @@
 	var/has_second_hose = TRUE
 	var/lit = FALSE
 	var/hose_color = null
+
+	rad_resist_type = /datum/rad_resist/hookah
+
+/datum/rad_resist/hookah
+	alpha_particle_resist = 11.8 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.8 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/reagent_containers/vessel/hookah/Initialize()
 	. = ..()

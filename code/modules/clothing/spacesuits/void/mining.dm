@@ -11,11 +11,7 @@
 		)
 	armor = list(melee = 110, bullet = 75, laser = 45, energy = 5, bomb = 55, bio = 100)
 	light_overlay = "helmet_light_dual_low"
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/deathsquad
 
 /obj/item/clothing/suit/space/void/mining
 	icon_state = "rig-mining"
@@ -27,11 +23,7 @@
 	)
 	armor = list(melee = 110, bullet = 75, laser = 45, energy = 5, bomb = 55, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/stack/flag,/obj/item/device/suit_cooling_unit,/obj/item/storage/ore,/obj/item/device/t_scanner,/obj/item/pickaxe, /obj/item/construction/rcd)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/deathsquad
 
 /obj/item/clothing/suit/space/void/mining/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/mining

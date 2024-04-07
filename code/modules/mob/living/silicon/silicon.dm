@@ -42,11 +42,12 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 	/// Asociative list typepath -> `datum/ui_state`, where typepath is subsystem's type.
 	var/list/silicon_subsystems_states
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 41.7 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 23.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/mob_silicon
+
+/datum/rad_resist/mob_silicon
+	alpha_particle_resist = 41.7 MEGA ELECTRONVOLT
+	beta_particle_resist = 23.9 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /mob/living/silicon/New()
 	if(playable_mob)

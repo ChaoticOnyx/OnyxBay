@@ -20,15 +20,16 @@
 	w_class = ITEM_SIZE_NORMAL
 	var/visor_body_parts_covered = EYES //body parts covered by visor, switches them if you switch visor
 	ear_protection = 1
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 25 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 5 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
 	drop_sound = SFX_DROP_HELMET
 	pickup_sound = SFX_PICKUP_HELMET
 	coverage = 0.8
+
+	rad_resist_type = /datum/rad_resist/helmet
+
+/datum/rad_resist/helmet
+	alpha_particle_resist = 25 MEGA ELECTRONVOLT
+	beta_particle_resist = 5 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/head/helmet/attack_self(mob/user)
 	if(visor_body_parts_covered)

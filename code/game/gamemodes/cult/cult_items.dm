@@ -103,11 +103,7 @@
 	icon_state = "cult_helmet"
 	armor = list(melee = 60, bullet = 60, laser = 60,energy = 15, bomb = 30, bio = 100) //Real tanky shit.
 	siemens_coefficient = 0.3 //Bone is not very conducive to electricity.
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 1.0,
-		RADIATION_BETA_PARTICLE = 1.0,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_cult
 
 /obj/item/clothing/suit/space/cult
 	name = "cult armour"
@@ -117,11 +113,13 @@
 	armor = list(melee = 60, bullet = 50, laser = 60,energy = 15, bomb = 30, bio = 100)
 	siemens_coefficient = 0.2
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HANDS
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 1.0,
-		RADIATION_BETA_PARTICLE = 1.0,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+
+	rad_resist_type = /datum/rad_resist/space_cult
+
+/datum/rad_resist/space_cult
+	alpha_particle_resist = 1.0
+	beta_particle_resist = 1.0
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/suit/space/cult/New()
 	..()

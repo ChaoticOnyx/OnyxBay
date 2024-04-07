@@ -11,11 +11,7 @@
 		)
 	siemens_coefficient = 0.3
 	armor = list(melee = 60, bullet = 50, laser = 60, energy = 45, bomb = 35, bio = 100)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/void_engi_salvage
 
 /obj/item/clothing/suit/space/void/engineering
 	name = "engineering voidsuit"
@@ -28,11 +24,7 @@
 	siemens_coefficient = 0.3
 	armor = list(melee = 60, bullet = 50, laser = 60, energy = 45, bomb = 35, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/construction/rcd)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 400 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 300 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/void_engi_salvage
 
 /obj/item/clothing/suit/space/void/engineering/New()
 	..()
