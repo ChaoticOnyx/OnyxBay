@@ -868,19 +868,17 @@
 		if(!WT.use_tool(src, user, amount = 1))
 			return
 
-		if(!hasInternalDamage(MECHA_INT_TANK_BREACH))
-			return
-
-		clearInternalDamage(MECHA_INT_TANK_BREACH)
-		to_chat(user, SPAN_NOTICE("You repair the damaged gas tank."))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
+		if(hasInternalDamage(MECHA_INT_TANK_BREACH))
+			clearInternalDamage(MECHA_INT_TANK_BREACH)
+			show_splash_text(user, "gas tank repaired!", SPAN_NOTICE("You repair the damaged gas tank."))
+
 		if(health < initial(health))
-			to_chat(user, SPAN_NOTICE("You repair some damage to [src.name]."))
-			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			src.health += min(10, initial(health) - health)
+			show_splash_text(user, "damage repaired!", SPAN_NOTICE("You repair some damage to \the[src]."))
+			health += min(10, initial(health) - health)
 		else
-			to_chat(user, "\The [name] is at full integrity")
+			show_splash_text(user, "damage fully repaired!", SPAN_NOTICE("\The [src] is at full integrity!"))
 		return
 
 	else if(istype(W, /obj/item/mecha_parts/mecha_tracking))
