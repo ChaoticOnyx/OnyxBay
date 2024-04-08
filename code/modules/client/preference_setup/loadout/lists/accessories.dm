@@ -131,3 +131,18 @@
 	dogtag.stored_name = H.real_name
 	dogtag.religion = H.religion
 	dogtag.stored_blood_type = H.b_type
+
+/datum/gear/accessory/pin
+	display_name = "pin selection"
+	description = "A Nanotrasen holographic pin to show off your loyalty to the company, reminding the crew of your unwavering commitment to whatever NanoTrasen's up to!"
+	path = /obj/item/clothing/accessory/pin
+
+/datum/gear/accessory/pin/New()
+	..()
+	var/pinies = list()
+	pinies["NanoTrasen pin"] = /obj/item/clothing/accessory/pin
+	pinies["pig pin"]        = /obj/item/clothing/accessory/pin/pig
+	pinies["skull pin"]      = /obj/item/clothing/accessory/pin/skull
+	pinies["rainbow pin"]    = /obj/item/clothing/accessory/pin/pride
+
+	gear_tweaks += new /datum/gear_tweak/path(pinies)
