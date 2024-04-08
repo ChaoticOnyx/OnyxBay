@@ -74,17 +74,17 @@
 	path = /obj/item/clothing/under/skirt
 	flags = GEAR_HAS_TYPE_SELECTION
 
-/datum/gear/uniform/skirt_c
-	display_name = "skirt selection, colour select"
-	path = /obj/item/clothing/under/skirt_c
-	flags = GEAR_HAS_COLOR_SELECTION
-
 /datum/gear/uniform/skirt_c/dress
 	display_name = "simple dress, colour select"
 	path = /obj/item/clothing/under/skirt_c/dress
 	flags = GEAR_HAS_COLOR_SELECTION
 
-/datum/gear/uniform/skirt_c/New()
+/datum/gear/uniform/skirts_color
+	display_name = "skirt selection, colour select"
+	path = /obj/item/clothing/under/skirt_c
+	flags = GEAR_HAS_COLOR_SELECTION
+
+/datum/gear/uniform/skirts_color/New()
 	..()
 	var/skirts_colorable = list()
 	skirts_colorable += /obj/item/clothing/under/skirt_c
