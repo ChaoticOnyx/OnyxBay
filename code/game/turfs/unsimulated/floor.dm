@@ -3,6 +3,9 @@
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "plating"
 
+/turf/unsimulated/floor/airless
+	initial_gas = null
+
 /turf/unsimulated/floor/bluespace //non-doomsday version of bluespace for transit and wizden
 	name = "\improper bluespace"
 	icon = 'icons/turf/space.dmi'

@@ -7,6 +7,9 @@
 	layer = PLATING_LAYER
 	var/tile_type = /obj/item/stack/tile/floor
 
+/turf/simulated/floor/airless
+	initial_gas = null
+
 /turf/simulated/floor/plating/rough
 	name = "plating"
 	icon_state = "rough_plating"
