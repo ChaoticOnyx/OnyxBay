@@ -3,7 +3,7 @@
 */
 /obj/machinery/smartfridge
 	name = "\improper SmartFridge"
-	icon = 'icons/obj/machines/vending.dmi'
+	icon = 'icons/obj/machines/vending/smartfridge.dmi'
 	icon_state = "smartfridge"
 	layer = BELOW_OBJ_LAYER
 	density = 1
@@ -51,7 +51,7 @@
 /obj/machinery/smartfridge/seeds
 	name = "\improper MegaSeed Servitor"
 	desc = "When you need seeds fast!"
-	icon = 'icons/obj/machines/vending.dmi'
+	icon = 'icons/obj/machines/vending/seeds.dmi'
 	icon_state = "seeds"
 	icon_on = "seeds"
 	icon_off = "seeds-off"

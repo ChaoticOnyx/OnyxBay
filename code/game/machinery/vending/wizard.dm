@@ -3,6 +3,7 @@
 	name = "MagiVend"
 	desc = "A magic vending machine."
 
+	icon = 'icons/obj/machines/vending/theater.dmi'
 	icon_state = "MagiVend"
 
 	vend_delay = 15

@@ -3,6 +3,7 @@
 	name = "SecTech"
 	desc = "A security equipment vendor."
 
+	icon = 'icons/obj/machines/vending/sec.dmi'
 	icon_state = "sec"
 
 	vend_delay = 20

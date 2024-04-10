@@ -5,6 +5,7 @@
 	desc = "All the tools you need to create your own robot army."
 
 	icon_state = "robotics"
+	icon = 'icons/obj/machines/vending/engi.dmi'
 
 	req_access = list(access_robotics)
 

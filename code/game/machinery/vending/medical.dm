@@ -4,6 +4,8 @@
 	desc = "Medical drug dispenser."
 
 	icon_state = "med"
+	icon = 'icons/obj/machines/vending/med.dmi'
+	light_color = COLOR_RED_LIGHT
 
 	req_access = list(access_medical_equip)
 	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
@@ -49,6 +51,7 @@
 	name = "NanoMed"
 	desc = "A wall-mounted version of the NanoMed."
 
+	icon = 'icons/obj/machines/vending/wallmed.dmi'
 	icon_state = "wallmed"
 
 	density = FALSE
@@ -79,6 +82,7 @@
 	name = "NanoMed Mini"
 	desc = "A wall-mounted version of the NanoMed, containing only vital first aid equipment."
 
+	icon = 'icons/obj/machines/vending/wallmed.dmi'
 	icon_state = "wallmed"
 
 	density = FALSE

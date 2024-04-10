@@ -3,8 +3,8 @@
 	name = "Hot Drinks machine"
 	desc = "A vending machine which dispenses hot drinks."
 
+	icon = 'icons/obj/machines/vending/coffee.dmi'
 	icon_state = "coffee"
-
 
 	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	vend_power_usage = 85 KILO WATTS //85 kJ to heat a 250 mL cup of coffee

@@ -2,6 +2,7 @@
 	name = "Coat Dispenser"
 	desc = "Classy vending machine designed to contribute to your comfort with warm."
 
+	icon = 'icons/obj/machines/vending/theater.dmi'
 	icon_state = "Theater"
 
 	vend_delay = 21

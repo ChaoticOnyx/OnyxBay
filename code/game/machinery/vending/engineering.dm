@@ -3,6 +3,7 @@
 	name = "YouTool"
 	desc = "Tools for tools."
 	icon_state = "tool"
+	icon = 'icons/obj/machines/vending/engi.dmi'
 	use_vend_state = TRUE
 	gen_rand_amount = FALSE
 	vend_delay = 11
@@ -31,6 +32,7 @@
 	name = "Engi-Vend"
 	desc = "Spare tool vending. What? Did you expect some witty description?"
 	icon_state = "engivend"
+	icon = 'icons/obj/machines/vending/engi.dmi'
 	use_vend_state = TRUE
 	vend_delay = 21
 	req_one_access = list(access_atmospherics, access_engine_equip)
@@ -55,6 +57,7 @@
 	name = "Robco Tool Maker"
 	desc = "Everything you need for do-it-yourself repair."
 
+	icon = 'icons/obj/machines/vending/engi.dmi'
 	icon_state = "engi"
 
 	req_one_access = list(access_atmospherics, access_engine_equip)

@@ -4,6 +4,7 @@
 	desc = "For all your cheap knockoff needs."
 
 	icon_state = "Theater"
+	icon = 'icons/obj/machines/vending/theater.dmi'
 
 	vend_delay = 15
 	vend_reply = "Absolutely smashing!"
