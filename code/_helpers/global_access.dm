@@ -231,8 +231,6 @@
 			return global.changelog_hash;
 		if("channel_to_radio_key")
 			return global.channel_to_radio_key;
-		if("chargen_robolimbs")
-			return global.chargen_robolimbs;
 		if("checked_for_inactives")
 			return global.checked_for_inactives;
 		if("chemical_reaction_logs")
@@ -1040,8 +1038,6 @@
 			global.changelog_hash=newval;
 		if("channel_to_radio_key")
 			global.channel_to_radio_key=newval;
-		if("chargen_robolimbs")
-			global.chargen_robolimbs=newval;
 		if("checked_for_inactives")
 			global.checked_for_inactives=newval;
 		if("chemical_reaction_logs")
@@ -1745,7 +1741,6 @@
 	"cargo_supply_packs",
 	"changelog_hash",
 	"channel_to_radio_key",
-	"chargen_robolimbs",
 	"checked_for_inactives",
 	"chemical_reaction_logs",
 	"chemical_reactions_list",

@@ -1,5 +1,5 @@
 GLOBAL_LIST_INIT(all_robolimbs, list())
-var/list/chargen_robolimbs = list()
+GLOBAL_LIST_INIT(chargen_robolimbs, list())
 var/datum/robolimb/basic_robolimb
 
 /proc/populate_robolimb_list()
@@ -8,7 +8,7 @@ var/datum/robolimb/basic_robolimb
 		var/datum/robolimb/R = new limb_type()
 		GLOB.all_robolimbs[R.company] = R
 		if(!R.unavailable_at_chargen)
-			chargen_robolimbs[R.company] = R
+			GLOB.chargen_robolimbs[R.company] = R
 
 /datum/robolimb
 	var/company = "Unbranded"                                                        // Shown when selecting the limb.
