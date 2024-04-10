@@ -45,6 +45,24 @@
 	else
 		AddOverlays("gibber-idle")
 
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
+
+/obj/machinery/gibber/proc/update_glow()
+	if(stat & MAINT)
+		set_light(0)
+		return FALSE
+
+	var/color = COLOR_YELLOW
+	if(operating)
+		color = COLOR_GREEN
+	if(length(mobs_to_process))
+		color = COLOR_NT_RED
+
+	set_light(0.7, 0.1, 1, 2, color)
+	return TRUE
+
 /obj/machinery/gibber/RefreshParts()
 	var/time_modifier = 0
 	for(var/obj/item/stock_parts/micro_laser/ML in component_parts)
@@ -351,7 +369,24 @@
 	else if(length(mobs_to_process))
 		AddOverlays("ind_gibber-jam")
 
-	return
+	var/should_glow = update_glow()
+	if(should_glow)
+		if(operating || length(mobs_to_process))
+			AddOverlays(emissive_appearance(icon, "[icon_state]_usejam_ea"))
+		else
+			AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
+
+/obj/machinery/gibber/industrial/update_glow()
+	if(stat & MAINT)
+		set_light(0)
+		return FALSE
+
+	var/color = COLOR_NT_RED
+	if(operating)
+		color = COLOR_GREEN
+
+	set_light(0.7, 0.1, 1, 2, color)
+	return TRUE
 
 /obj/machinery/gibber/industrial/Initialize()
 	. = ..()
