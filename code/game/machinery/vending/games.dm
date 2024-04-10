@@ -3,6 +3,7 @@
 	name = "Good Clean Fun"
 	desc = "Vends things that the CO and SEA are probably not going to appreciate you fiddling with instead of your job..."
 
+	icon = 'icons/obj/machines/vending/games.dmi'
 	icon_state = "games"
 
 	vend_delay = 15

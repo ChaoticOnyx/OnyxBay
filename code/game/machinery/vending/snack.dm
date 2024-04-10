@@ -3,6 +3,7 @@
 	name = "Getmore Chocolate Corp"
 	desc = "A snack machine courtesy of the Getmore Chocolate Corporation, based out of Mars."
 
+	icon = 'icons/obj/machines/vending/snack.dmi'
 	icon_state = "snack"
 
 	vend_delay = 25
@@ -55,6 +56,7 @@
 
 /obj/machinery/vending/snack/wallsnack
 	name = "Getmore Chocolate Corp"
+
 	icon_state = "snack_wall"
 	use_vend_state = FALSE
 	component_types = list(/obj/item/vending_cartridge/wallsnack)

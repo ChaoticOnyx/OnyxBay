@@ -4,6 +4,7 @@
 	desc = "A kitchen and restaurant equipment vendor."
 
 	icon_state = "dinnerware"
+	icon = 'icons/obj/machines/vending/dinnerware.dmi'
 
 	use_vend_state = TRUE
 	product_ads = "Mm, food stuffs!;Food and food accessories.;Get your plates!;You like forks?;I like forks.;Woo, utensils.;You don't really need these..."

@@ -3,7 +3,9 @@
 	name = "SweatMAX"
 	desc = "An exercise aid and nutrition supplement vendor that preys on your inadequacy."
 
+	icon = 'icons/obj/machines/vending/fitness.dmi'
 	icon_state = "fitness"
+	light_color = COLOR_LIGHT_CYAN
 
 	vend_delay = 6
 	use_vend_state = TRUE

@@ -1,7 +1,7 @@
 /obj/machinery/food_replicator
 	name = "replicator"
 	desc = "like a microwave, except better. It has label \"Voice activation device\""
-	icon = 'icons/obj/machines/vending.dmi'
+	icon = 'icons/obj/machines/vending/soda.dmi'
 	icon_state = "soda"
 	density = 1
 	anchored = 1
@@ -67,6 +67,18 @@
 		icon_state = initial(icon_state)
 	else
 		src.icon_state = "[initial(icon_state)]-off"
+
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "soda_ea"))
+
+/obj/machinery/food_replicator/proc/update_glow()
+	if(stat & MAINT)
+		set_light(0)
+		return FALSE
+
+	set_light(0.15, 1, 2, 3.5, "#f86060")
+	return TRUE
 
 /obj/machinery/food_replicator/hear_talk(mob/M as mob, text, verb, datum/language/speaking)
 	if(!speaking || speaking.machine_understands)

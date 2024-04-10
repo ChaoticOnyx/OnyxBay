@@ -3,7 +3,9 @@
 	name = "Robust Softdrinks"
 	desc = "A softdrink vendor provided by Robust Industries, LLC."
 
+	icon = 'icons/obj/machines/vending/cola.dmi'
 	icon_state = "Cola_Machine"
+	light_color = COLOR_RED_GRAY
 
 	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 

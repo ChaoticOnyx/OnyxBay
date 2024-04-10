@@ -3,7 +3,9 @@
 	name = "BODA"
 	desc = "An old soda vending machine. How could this have got here?"
 
+	icon = 'icons/obj/machines/vending/sovietsoda.dmi'
 	icon_state = "sovietsoda"
+	light_color = COLOR_RED
 
 	vending_sound = SFX_VENDING_GENERIC
 
