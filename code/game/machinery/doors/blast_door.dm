@@ -19,6 +19,8 @@
 	var/icon_state_closed = null
 	var/icon_state_closing = null
 
+	blocks_emissive = EMISSIVE_BLOCK_GENERIC
+
 	explosion_block = 3
 
 	var/open_sound = 'sound/machines/blastdoor_open.ogg'

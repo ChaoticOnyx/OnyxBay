@@ -263,6 +263,8 @@ About the new airlock wires panel:
 	if(density)
 		if(locked && lights && arePowerSystemsOn())
 			icon_state = "door_locked"
+			AddOverlays(OVERLAY(icon, "lights_bolts"))
+			AddOverlays(emissive_appearance(icon, "lights_bolts_ea"))
 			set_light(0.35, 0.9, 1.5, 3, COLOR_RED_LIGHT)
 		else
 			icon_state = "door_closed"
@@ -272,18 +274,24 @@ About the new airlock wires panel:
 			if(!(stat & NOPOWER))
 				if(stat & BROKEN)
 					AddOverlays(OVERLAY(icon, "sparks_broken"))
+					AddOverlays(emissive_appearance(icon, "sparks_broken_ea"))
 				else if(health < maxhealth * 0.75)
 					AddOverlays(OVERLAY(icon, "sparks_damaged"))
+					AddOverlays(emissive_appearance(icon, "sparks_damaged_ea"))
 			if(welded)
 				AddOverlays(OVERLAY(icon, "welded"))
 		else if(health < maxhealth * 0.75 && !(stat & NOPOWER))
 			AddOverlays(OVERLAY(icon, "sparks_damaged"))
+			AddOverlays(emissive_appearance(icon, "sparks_damaged_ea"))
+		if(!p_open)
+			AddOverlays(emissive_appearance(icon, "closed_ea"))
 	else
 		icon_state = "door_open"
 		if(arePowerSystemsOn() && !p_open) // Doors with opened panels have no green lights on their icons
 			set_light(0.30, 0.9, 1.5, 3, COLOR_LIME)
 		if((stat & BROKEN) && !(stat & NOPOWER))
-			AddOverlays(image(icon, "sparks_open"))
+			AddOverlays(OVERLAY(icon, "sparks_open"))
+			AddOverlays(emissive_appearance(icon, "sparks_open_ea"))
 
 	if(brace)
 		brace.update_icon()
@@ -296,10 +304,16 @@ About the new airlock wires panel:
 			if(!p_open)
 				set_light(0.30, 0.9, 1.5, 3, COLOR_LIME)
 			flick("[p_open ? "o_door_opening" : "door_opening"]", src)
+			if(!p_open)
+				AddOverlays(emissive_appearance(icon, "opening_ea"))
+			AddOverlays(emissive_appearance(icon, "lights_opening_ea"))
 			update_icon(1)
 		if("closing")
 			overlays?.Cut()
 			flick("[p_open ? "o_door_closing" : "door_closing"]", src)
+			if(!p_open)
+				AddOverlays(emissive_appearance(icon, "closing_ea"))
+			AddOverlays(emissive_appearance(icon, "lights_closing_ea"))
 			update_icon()
 		if("spark")
 			if(density)
