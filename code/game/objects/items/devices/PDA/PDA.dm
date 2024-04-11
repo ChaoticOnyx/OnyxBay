@@ -581,7 +581,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 	user.set_machine(src)
 
-	if(active_uplink_check(user))
+	var/datum/component/uplink/U = get_component(/datum/component/uplink)
+	if(istype(U) && U.active)
+		U.interact(user)
 		return
 
 	ui_interact(user) //NanoUI requires this proc
@@ -726,11 +728,14 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 		if("Ringtone")
 			var/t = input(U, "Please enter new ringtone", name, ttone) as text
-			if (in_range(src, U) && loc == U)
-				if (t)
-					if(src.hidden_uplink && hidden_uplink.check_trigger(U, lowertext(t), lowertext(lock_code)))
-						to_chat(U, "The PDA softly beeps.")
+			if(Adjacent(src, U) && loc == U)
+				if(t)
+					var/datum/component/uplink/uplink = get_component(/datum/component/uplink)
+					if(uplink?.unlock_code == t)
+						to_chat(U, "\The [src] beeps softly.")
+						uplink.locked = FALSE
 						ui.close()
+						uplink.interact(U)
 					else
 						t = sanitize(t, 20)
 						ttone = t
@@ -832,7 +837,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 							difficulty += P.cartridge.access_engine
 							difficulty += P.cartridge.access_clown
 							difficulty += P.cartridge.access_janitor
-							if(P.hidden_uplink)
+							var/datum/component/uplink/uplink = P.get_component(/datum/component/uplink)
+							if(istype(uplink))
 								difficulty += 3
 
 						if(prob(difficulty))

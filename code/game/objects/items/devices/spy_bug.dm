@@ -86,7 +86,7 @@
 
 	origin_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1, TECH_ILLEGAL = 3)
 
-	var/obj/item/device/uplink/uplink
+	var/datum/component/uplink/uplink
 	var/cam_spy_active = FALSE
 	var/list/area/active_recon_areas_list = list()
 	var/finish = FALSE // to protect user anus from picking bugs in finish check tick.
@@ -124,8 +124,8 @@
 	if(!already_thinking || !length(cameras) || !length(active_recon_areas_list) || finish)
 		return
 
-	if(ishuman(uplink?.uplink_owner?.current))
-		to_chat(uplink.uplink_owner.current, SPAN_NOTICE("It looks like there are problems with your spy network in one the following areas:\n[english_list(active_recon_areas_list, and_text = "\n")]\nBugs maintenance required. Your current progress has been zeroed out."))
+	if(ishuman(uplink?.owner?.current))
+		to_chat(uplink.owner.current, SPAN_NOTICE("It looks like there are problems with your spy network in one the following areas:\n[english_list(active_recon_areas_list, and_text = "\n")]\nBugs maintenance required. Your current progress has been zeroed out."))
 	active_recon_areas_list = list()
 	set_next_think(0)
 	already_thinking = FALSE
@@ -195,7 +195,7 @@
 			sensor_active = TRUE
 			to_chat(usr, SPAN_NOTICE("Data collection initiated."))
 			start()
-			if(uplink?.uplink_owner == usr.mind)
+			if(uplink?.owner == usr.mind)
 				var/area/A = get_area_by_name(area_name)
 				active_recon_areas_list += A
 				for(var/datum/antag_contract/recon/C in GLOB.all_contracts)

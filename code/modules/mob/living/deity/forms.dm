@@ -60,8 +60,6 @@ Each plays slightly different and has different challenges/benefits
 					/obj/structure/deity/pylon
 					)
 
-	starting_feats = list(DEITY_FORM_DARK_ART, DEITY_FORM_BLOOD_SAC, DEITY_FORM_DARK_MINION, DEITY_FORM_BLOOD_FORGE)
-
 /datum/god_form/narsie/take_charge(mob/living/user, charge)
 	charge = min(100, charge * 0.25)
 	if(prob(charge))
@@ -90,7 +88,6 @@ Each plays slightly different and has different challenges/benefits
 					/obj/structure/deity/pylon,
 					/obj/structure/deity/wizard_recharger
 					)
-	starting_feats = list(DEITY_TREE_TRANSMUTATION, DEITY_TREE_CONJURATION)
 
 /datum/god_form/wizard/take_charge(mob/living/user, charge)
 	linked_god.adjust_power(max(round(charge/100), 1),silent = 1)

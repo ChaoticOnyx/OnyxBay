@@ -3,6 +3,11 @@
 	desc = "Used for spying purposes."
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2, TECH_ILLEGAL = 2)
 	var/activated = FALSE
+	var/weakref/uplink_ref
+
+/obj/item/implant/spy/Destroy()
+	uplink_ref = null
+	return ..()
 
 /obj/item/implant/spy/Initialize()
 	. = ..()
@@ -28,8 +33,10 @@
 	imp = /obj/item/implant/spy
 
 /obj/item/implanter/spy/attackby(obj/item/I, mob/user)
-	if(imp && istype(imp, /obj/item/implant/spy) && I.hidden_uplink)
-		imp.hidden_uplink = I.hidden_uplink
+	var/datum/component/uplink/U = I.get_component(/datum/component/uplink)
+	if(imp && istype(imp, /obj/item/implant/spy) && istype(U))
+		var/obj/item/implant/spy/S = imp
+		S.uplink_ref = weakref(U)
 		to_chat(user, SPAN("notice", "You authorize the [src] with \the [I]."))
 
 /obj/item/implantcase/spy

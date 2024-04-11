@@ -8,11 +8,11 @@
 	item_cost = 1
 	path = /obj/item/storage/briefcase/std
 
-/datum/uplink_item/item/contracts_equipment/std/buy(obj/item/device/uplink/U)
+/datum/uplink_item/item/contracts_equipment/std/buy(datum/component/uplink/U)
 	. = ..()
 	if(!.)
 		return
-	if(istype(U.loc, /obj/item/implant/uplink))
+	if(istype(U.parent, /obj/item/implant/uplink))
 		var/obj/item/storage/briefcase/std/STD = .
 		if(istype(STD))
 			STD.uplink = U
@@ -20,7 +20,7 @@
 			STD.visible_message("\The [STD] blinks green!")
 	U.complimentary_std = FALSE
 
-/datum/uplink_item/item/contracts_equipment/std/cost(telecrystals, obj/item/device/uplink/U)
+/datum/uplink_item/item/contracts_equipment/std/cost(telecrystals, datum/component/uplink/U)
 	return (U?.complimentary_std ? 0 : ..())
 
 /datum/uplink_item/item/contracts_equipment/spy
@@ -29,7 +29,7 @@
 	item_cost = 2
 	path = /obj/item/storage/box/syndie_kit/spy
 
-/datum/uplink_item/item/contracts_equipment/spy/buy(obj/item/device/uplink/U)
+/datum/uplink_item/item/contracts_equipment/spy/buy(datum/component/uplink/U)
 	. = ..()
 	if(.)
 		var/obj/item/storage/box/syndie_kit/spy/B = .
