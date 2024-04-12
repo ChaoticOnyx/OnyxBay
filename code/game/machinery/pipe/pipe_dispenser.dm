@@ -58,7 +58,8 @@
 					var/obj/item/pipe/P = new (src, pipe_index, pipe_dir)
 					P.update()
 					var/icon/pipe_icon = icon(icon = P.icon, icon_state = P.icon_state, dir = pipe_dir, frame = 1)
-					pipe_icon.Blend(P.color, ICON_MULTIPLY)
+					if(!isnull(P.color))
+						pipe_icon.Blend(P.color, ICON_MULTIPLY)
 					designs_icons[category][pipe_design] = pipe_icon
 					qdel(P)
 
