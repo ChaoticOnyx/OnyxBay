@@ -31,11 +31,16 @@
 
 //What the device does when turned on
 /obj/item/device/assembly/proc/activate()
-	if(!secured || cooldown > 0)
+	if(!secured)
 		return FALSE
-	cooldown = 2
-	set_next_think(world.time + 1 SECOND)
+
+	THROTTLE(cooldown, 0.2 SECONDS)
+	if(!cooldown)
+		return FALSE
+
 	return TRUE
+
+/obj/item/device/assembly/think()
 
 //Called when another assembly acts on this one, var/radio will determine where it came from for wire calcs
 /obj/item/device/assembly/proc/pulsed(radio = 0)
@@ -68,14 +73,6 @@
 		to_chat(user, SPAN("notice", "You attach \the [A] to \the [src]!"))
 		return 1
 	return 0
-
-/obj/item/device/assembly/think()
-	cooldown--
-	if(cooldown <= 0)
-		set_next_think(0)
-		return FALSE
-
-	set_next_think(world.time + 1 SECOND)
 
 //Called when the holder is moved
 /obj/item/device/assembly/proc/holder_movement()
