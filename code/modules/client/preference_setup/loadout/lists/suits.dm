@@ -113,104 +113,61 @@
 	jackets += /obj/item/clothing/suit/storage/black_jacket_long
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(jackets)
 
-/datum/gear/suit/wintercoat
-	display_name = "winter coat"
+/datum/gear/suit/department_wintercoat
+	display_name = "departmental winter coat"
 	path = /obj/item/clothing/suit/storage/hooded/wintercoat
 
-/datum/gear/suit/captain_wintercoat
-	display_name = "winter coat, captain"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/captain
-	allowed_roles = list(/datum/job/captain)
+/datum/gear/suit/department_wintercoat/New()
+	..()
+	var/list/paths_to_jobs = list(
+	/datum/job = list(/obj/item/clothing/suit/storage/hooded/wintercoat),
+	/datum/job/captain = list(/obj/item/clothing/suit/storage/hooded/wintercoat/captain),
+	/datum/job/hos = list(/obj/item/clothing/suit/storage/hooded/wintercoat/security),
+	/datum/job/warden = list(/obj/item/clothing/suit/storage/hooded/wintercoat/security),
+	/datum/job/detective = list(/obj/item/clothing/suit/storage/hooded/wintercoat/security),
+	/datum/job/officer = list(/obj/item/clothing/suit/storage/hooded/wintercoat/security),
+	/datum/job/chief_engineer = list(/obj/item/clothing/suit/storage/hooded/wintercoat/ce),
+	/datum/job/engineer = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/engineering,
+		/obj/item/clothing/suit/storage/hooded/wintercoat/engineering/atmos),
+	/datum/job/hop = list(/obj/item/clothing/suit/storage/hooded/wintercoat/hop),
+	/datum/job/qm = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/qm,
+		/obj/item/clothing/suit/storage/hooded/wintercoat/cargo),
+	/datum/job/cargo_tech = list(/obj/item/clothing/suit/storage/hooded/wintercoat/cargo),
+	/datum/job/mining = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/miner,
+		/obj/item/clothing/suit/storage/hooded/wintercoat/cargo),
+	/datum/job/janitor = list(/obj/item/clothing/suit/storage/hooded/wintercoat/janitor),
+	/datum/job/hydro = list(/obj/item/clothing/suit/storage/hooded/wintercoat/hydro),
+	/datum/job/cmo = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/cmo,
+		/obj/item/clothing/suit/storage/hooded/wintercoat/medical),
+	/datum/job/doctor = list(/obj/item/clothing/suit/storage/hooded/wintercoat/medical),
+	/datum/job/psychiatrist = list(/obj/item/clothing/suit/storage/hooded/wintercoat/medical),
+	/datum/job/chemist = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/chemistry,
+		/obj/item/clothing/suit/storage/hooded/wintercoat/medical),
+	/datum/job/virologist = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/viro,
+		/obj/item/clothing/suit/storage/hooded/wintercoat/medical),
+	/datum/job/paramedic = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/paramed,
+		/obj/item/clothing/suit/storage/hooded/wintercoat/medical),
+	/datum/job/rd = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/rd,
+		/obj/item/clothing/suit/storage/hooded/wintercoat/science),
+	/datum/job/scientist = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/science),
+	/datum/job/xenobiologist = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/science,
+		/obj/item/clothing/suit/storage/hooded/wintercoat/hydro),
+	/datum/job/roboticist = list(
+		/obj/item/clothing/suit/storage/hooded/wintercoat/robotics,
+		/obj/item/clothing/suit/storage/hooded/wintercoat/science),
+	)
 
-/datum/gear/suit/security_wintercoat
-	display_name = "winter coat, security"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/security
-	allowed_roles = SECURITY_ROLES
-
-/datum/gear/suit/ce_wintercoat
-	display_name = "winter coat, chief engineer"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/ce
-	allowed_roles = list(/datum/job/chief_engineer)
-
-/datum/gear/suit/engineering_wintercoat
-	display_name = "winter coat, engineer"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/engineering
-	allowed_roles = ENGINEERING_ROLES
-
-/datum/gear/suit/atmos_wintercoat
-	display_name = "winter coat, atmospheric"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/engineering/atmos
-	allowed_roles = ENGINEERING_ROLES
-
-/datum/gear/suit/hop_wintercoat
-	display_name = "winter coat, head of personal"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/hop
-	allowed_roles = list(/datum/job/hop)
-
-/datum/gear/suit/qm_wintercoat
-	display_name = "winter coat, quartermaster"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/qm
-	allowed_roles = list(/datum/job/qm)
-
-/datum/gear/suit/cargotech_wintercoat
-	display_name = "winter coat, cargo"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/cargo
-	allowed_roles = SUPPLY_ROLES
-
-/datum/gear/suit/mining_wintercoat
-	display_name = "winter coat, miner"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/miner
-	allowed_roles = list(/datum/job/mining, /datum/job/qm)
-
-/datum/gear/suit/janitor_wintercoat
-	display_name = "winter coat, janitor"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/janitor
-	allowed_roles = list(/datum/job/janitor)
-
-/datum/gear/suit/botanist_wintercoat
-	display_name = "winter coat, botanist"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/hydro
-	allowed_roles = list(/datum/job/hydro, /datum/job/xenobiologist)
-
-/datum/gear/suit/cmo_wintercoat
-	display_name = "winter coat, chief medical officer"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/cmo
-	allowed_roles = list(/datum/job/cmo)
-
-/datum/gear/suit/medical_wintercoat
-	display_name = "winter coat, medical"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/medical
-	allowed_roles = MEDICAL_ROLES
-
-/datum/gear/suit/chemist_wintercoat
-	display_name = "winter coat, chemist"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/chemistry
-	allowed_roles = list(/datum/job/chemist, /datum/job/cmo)
-
-/datum/gear/suit/virologist_wintercoat
-	display_name = "winter coat, virologist"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/viro
-	allowed_roles = list(/datum/job/virologist, /datum/job/cmo)
-
-/datum/gear/suit/paramedic_wintercoat
-	display_name = "winter coat, paramedic"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/paramed
-	allowed_roles = MEDICAL_ROLES
-
-/datum/gear/suit/rd_wintercoat
-	display_name = "winter coat, research director"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/rd
-	allowed_roles = list(/datum/job/rd)
-
-/datum/gear/suit/science_wintercoat
-	display_name = "winter coat, scientist"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/science
-	allowed_roles = RESEARCH_ROLES
-
-/datum/gear/suit/roboticist_wintercoat
-	display_name = "winter coat, roboticist"
-	path = /obj/item/clothing/suit/storage/hooded/wintercoat/robotics
-	allowed_roles = list(/datum/job/roboticist, /datum/job/rd)
+	gear_tweaks += new /datum/gear_tweak/departmental(paths_to_jobs)
 
 /datum/gear/suit/track
 	display_name = "track jacket selection"

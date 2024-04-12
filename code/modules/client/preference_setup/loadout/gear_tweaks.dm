@@ -133,6 +133,74 @@
 	return initial(O.desc) || description
 
 /*
+* Departmental auto-adjustment
+*/
+
+/datum/gear_tweak/departmental
+	var/list/jobs_to_paths
+
+	var/datum/job/current_job
+	var/list/selected_jobs
+
+/datum/gear_tweak/departmental/New(list/jobs_to_paths)
+	src.jobs_to_paths = jobs_to_paths
+
+/datum/gear_tweak/departmental/proc/set_selected_jobs(current_job, selected_jobs)
+	if(current_job && !istype(current_job,/datum/job))
+		CRASH("Expected /datum/job, got [current_job]")
+	if(selected_jobs && !islist(selected_jobs))
+		CRASH("Expected list, got [selected_jobs]")
+	src.current_job = current_job
+	src.selected_jobs = selected_jobs
+
+/datum/gear_tweak/departmental/get_contents(metadata)
+	. = list()
+	LAZYINITLIST(metadata)
+	for(var/datum/job/job in selected_jobs)
+		var/list/choices = jobs_to_paths[job.type]
+		if(!(job.type in jobs_to_paths) || length(choices) < 2)
+			continue
+		var/choice = text2path(metadata["[job.type]"]) || choices[1]
+		.["[job.title]: [get_initial_name(choice)]"] = job.type
+
+/datum/gear_tweak/departmental/get_metadata(user, metadata, subtype)
+	LAZYINITLIST(metadata)
+	ASSERT(istext(subtype))
+	var/job_path = text2path(subtype)
+	if(!job_path || !(job_path in jobs_to_paths))
+		CRASH("Expected subtype to be in the list of jobs to select gear for")
+	var/default = null
+	var/old_choice = text2path(metadata[subtype])
+	if(old_choice)
+		default = get_initial_name(old_choice)
+	var/list/choices = atomtypes2nameassoclist(jobs_to_paths[job_path])
+	var/choice = input(user, "Choose a type.", CHARACTER_PREFERENCE_INPUT_TITLE, default) as null|anything in choices
+	if(choice)
+		metadata[subtype] = "[choices[choice]]"
+	return metadata
+
+/datum/gear_tweak/departmental/tweak_gear_data(metadata, datum/gear_data/gear_data)
+	LAZYINITLIST(metadata)
+	var/datum/job/job = get_valid_current_job()
+	if(!istype(job))
+		return
+	var/text_path = metadata["[job.type]"]
+	gear_data.path = text2path(text_path)
+	if(!gear_data.path)
+		gear_data.path = jobs_to_paths[job.type][1]
+
+/datum/gear_tweak/departmental/proc/get_valid_current_job()
+	if(current_job && (current_job.type in jobs_to_paths))
+		return current_job
+	if(!length(selected_jobs))
+		return
+	for(var/datum/job/job in selected_jobs)
+		if(!istype(job))
+			CRASH("Expected /datum/job, got [job]")
+		if(job.type in jobs_to_paths)
+			return job
+
+/*
 * Content adjustment
 */
 
