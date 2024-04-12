@@ -24,6 +24,13 @@
 	shoes += /obj/item/clothing/shoes/yellow
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(shoes)
 
+/datum/gear/shoes/heels
+	display_name = "heels, colour select"
+	path = /obj/item/clothing/shoes/heels
+	flags = GEAR_HAS_COLOR_SELECTION
+	description = "Cheap, yet elegant, pair of female shoes. These are definitely made for walking tho."
+	allowed_roles = CIVILIAN_ROLES
+
 /datum/gear/shoes/sandal
 	display_name = "sandals selection"
 	path = /obj/item/clothing/shoes/sandal
