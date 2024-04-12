@@ -57,7 +57,7 @@ export const SecSmith = (props: any, context: any) => {
           <Stack fill vertical>
             <Stack fill>
               <Stack.Item grow>
-                <Section minHeight="20%" width={window.innerWidth - 500 + "px"}>
+                <Section>
                   <Stack vertical>
                     <Button onClick={() => setOwnerInputOpen(true)} fluid>
                       Set Owner
@@ -74,7 +74,7 @@ export const SecSmith = (props: any, context: any) => {
                   </Stack>
                 </Section>
               </Stack.Item>
-              <Stack.Item grow={10}>
+              <Stack.Item grow>
                 <Section title="Equipment found:">
                   <LabeledList>
                     <LabeledList.Item label="Model">
