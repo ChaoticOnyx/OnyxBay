@@ -545,7 +545,7 @@
 	var/creator
 	var/obj/item/resonator/res
 
-/obj/effect/resonance/Initialize(mapload, loc, set_creator, timetoburst, set_resonator)
+/obj/effect/resonance/Initialize(mapload, set_creator, timetoburst, set_resonator)
 	. = ..()
 	creator = set_creator
 	res = set_resonator
