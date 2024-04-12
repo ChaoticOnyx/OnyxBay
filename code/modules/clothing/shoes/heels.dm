@@ -24,7 +24,15 @@
 #define TRIP_CHANCE_INCREASE 0.5
 
 /obj/item/clothing/shoes/heels/handle_movement(turf/walking, running)
-	if(!running && !istype(walking, /turf/simulated/floor/plating))
+	var/area/area = get_area(loc)
+	if(!area?.has_gravity)
+		return
+
+	var/mob/wearing = loc
+	if(!istype(wearing))
+		return
+
+	if(wearing.cached_slowdown <= config.movement.walk_speed && !istype(walking, /turf/simulated/floor/plating))
 		return
 
 	trip_chance += TRIP_CHANCE_INCREASE
