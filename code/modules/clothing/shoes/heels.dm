@@ -24,7 +24,7 @@
 #define TRIP_CHANCE_INCREASE 0.5
 
 /obj/item/clothing/shoes/heels/handle_movement(turf/walking, running)
-	if(!running || !istype(walking, /turf/simulated/floor/plating))
+	if(!running && !istype(walking, /turf/simulated/floor/plating))
 		return
 
 	trip_chance += TRIP_CHANCE_INCREASE
