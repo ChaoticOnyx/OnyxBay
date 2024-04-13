@@ -217,7 +217,7 @@
 	for(var/render_holder in char_render_holders)
 		client.screen |= char_render_holders[render_holder]
 
-datum/preferences/proc/clear_character_previews()
+/datum/preferences/proc/clear_character_previews()
 	for(var/index in char_render_holders)
 		var/atom/movable/screen/S = char_render_holders[index]
 		client?.screen -= S
