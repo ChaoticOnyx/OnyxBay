@@ -377,6 +377,7 @@ var/list/hash_to_gear = list()
 						. += " <a href='?src=\ref[src];tweak=\ref[tweak];subtype=[tweak_contents[name]]'>[name]</a>"
 						. += "<br>"
 					continue
+
 				if(tweak_contents)
 					. += " <a href='?src=\ref[src];tweak=\ref[tweak]'>[tweak_contents]</a>"
 					. += "<br>"
@@ -744,6 +745,7 @@ var/list/hash_to_gear = list()
 	for(var/datum/gear_tweak/gt in gear_tweaks)
 		if(istype(gt, /datum/gear_tweak/departmental))
 			return TRUE
+
 	return FALSE
 
 /datum/gear/proc/set_selected_jobs(job_high, selected_jobs)
@@ -754,6 +756,7 @@ var/list/hash_to_gear = list()
 	for(var/datum/gear_tweak/departmental/gt in gear_tweaks)
 		if(!istype(gt, /datum/gear_tweak/departmental))
 			continue
+
 		gt.set_selected_jobs(job_high, selected_jobs)
 
 /datum/gear_data

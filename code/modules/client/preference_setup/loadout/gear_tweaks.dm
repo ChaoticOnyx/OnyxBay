@@ -160,6 +160,7 @@
 		var/list/choices = jobs_to_paths[job.type]
 		if(!(job.type in jobs_to_paths) || length(choices) < 2)
 			continue
+
 		var/choice = text2path(metadata["[job.type]"]) || choices[1]
 		.["[job.title]: [get_initial_name(choice)]"] = job.type
 
@@ -184,6 +185,7 @@
 	var/datum/job/job = get_valid_current_job()
 	if(!istype(job))
 		return
+
 	var/text_path = metadata["[job.type]"]
 	gear_data.path = text2path(text_path)
 	if(!gear_data.path)
@@ -192,8 +194,10 @@
 /datum/gear_tweak/departmental/proc/get_valid_current_job()
 	if(current_job && (current_job.type in jobs_to_paths))
 		return current_job
+
 	if(!length(selected_jobs))
 		return
+
 	for(var/datum/job/job in selected_jobs)
 		if(!istype(job))
 			CRASH("Expected /datum/job, got [job]")
