@@ -14,8 +14,6 @@ PROCESSING_SUBSYSTEM_DEF(obj_tab_items)
 	while(currentrun.len)
 		var/datum/thing = current_run[current_run.len]
 
-		current_run.len--
-
 		if(QDELETED(thing))
 			processing -= thing
 		else if(thing.Process() == PROCESS_KILL)
@@ -24,3 +22,5 @@ PROCESSING_SUBSYSTEM_DEF(obj_tab_items)
 
 		if(MC_TICK_CHECK)
 			return
+
+		current_run.len--
