@@ -66,9 +66,6 @@ wait_for_sigusr1 = false
 ## Uncomment to start a metrics endpoint for prometheus.
 #prometheus_port = "9080"
 
-[lobby]
-splashes = ["icons/splashes/onyx_new.png"]
-
 [log]
 ## Log client say.
 say = true

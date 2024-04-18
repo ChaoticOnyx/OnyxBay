@@ -1516,3 +1516,16 @@ datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 		src = usr.client.holder
 
 	follow_panel.tgui_interact(usr, null)
+
+/datum/admins/proc/change_lobby_art()
+	set name = "Change Lobby Art"
+	set category = "Server"
+
+	if(!check_rights(R_SERVER))
+		return
+
+	var/datum/lobby_art/chosen_one = tgui_input_list(src, "Choose a new lobby art to set.", "Lobby Art", SSlobby.loaded_lobby_arts)
+	if(isnull(chosen_one))
+		return
+
+	SSlobby.change_lobby_art(chosen_one)
