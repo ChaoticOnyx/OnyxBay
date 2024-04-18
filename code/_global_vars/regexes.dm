@@ -11,3 +11,6 @@ GLOBAL_DATUM_INIT(pua, /regex, regex("\[\uE000-\uF8FF]", "g"))
 
 //finds text strings recognized as links on discord. Mainly used to stop embedding.
 GLOBAL_DATUM_INIT(has_discord_embeddable_links, /regex, regex("(https?://\[^\\s|<\]{2,})"))
+
+GLOBAL_DATUM_INIT(is_json, /regex, regex("\\.json$"))
+GLOBAL_DATUM_INIT(is_image, /regex, regex("\\.(png|gif|jpg|dmi)$"))
