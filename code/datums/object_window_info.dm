@@ -58,8 +58,7 @@
 	if(index)
 		to_make.Cut(1, index + 1)
 
-	// Following line of code causes stat panel flickering. Possibly due to slow icon baking, uncomment after SSassets port.
-	// SSstatpanels.refresh_client_obj_view(parent)
+	SSstatpanels.refresh_client_obj_view(parent)
 
 	if(!length(to_make))
 		return PROCESS_KILL
