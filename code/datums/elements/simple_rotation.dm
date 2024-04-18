@@ -42,30 +42,30 @@
 /obj/is_rotatable()
 	return !(anchored && (obj_flags & OBJ_FLAG_ANCHOR_BLOCKS_ROTATION))
 
-/atom/proc/rotate(mob/user)
+/atom/proc/rotate()
 	set name = "Rotate Clockwise"
 	set category = "Object"
 	set src in oview(1)
 
 	if(!is_rotatable())
-		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor and can't be rotated!")
+		show_splash_text(usr, "unfasten it first!", "\The [src] is fastened to the floor and can't be rotated!")
 		return
 
-	if(!can_rotate(user))
+	if(!can_rotate(usr))
 		return
 
 	set_dir(turn(dir, -90))
 
-/atom/proc/rotate_counter(mob/user)
+/atom/proc/rotate_counter()
 	set name = "Rotate Counterclockwise"
 	set category = "Object"
 	set src in oview(1)
 
 	if(!is_rotatable())
-		show_splash_text(user, "unfasten it first!", "\The [src] is fastened to the floor and can't be rotated!")
+		show_splash_text(usr, "unfasten it first!", "\The [src] is fastened to the floor and can't be rotated!")
 		return
 
-	if(!can_rotate(user))
+	if(!can_rotate(usr))
 		return
 
 	set_dir(turn(dir, 90))
