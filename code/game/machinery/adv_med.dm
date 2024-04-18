@@ -54,7 +54,7 @@
 		return
 
 	if(occupant)
-		. += occupant.examine(user)
+		. += "It has [SPAN_NOTICE("[occupant]")] inside."
 
 /obj/machinery/bodyscanner/verb/eject()
 	set src in oview(1)

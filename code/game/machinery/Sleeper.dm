@@ -63,8 +63,9 @@
 
 	if(beaker)
 		. += "It is loaded with a beaker."
+
 	if(occupant)
-		. += "[occupant.examine(user)]"
+		. += "It has [SPAN_NOTICE("[occupant]")] inside."
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))
