@@ -859,7 +859,13 @@ its easier to just keep the beam vertical.
 
 		LAZYDISTINCTADD(proc_sources, src)
 
-	grant_verb(target, verbs_to_add)
+	// We can't use `grant_verb` here 'cause proc is actually an object and it's `src` is being implicitly set to `usr` when added to a /client's verbs.
+	var/list/output_list = list()
+	for(var/thing in verbs_to_add)
+		var/procpath/verb_to_add = thing
+		output_list[++output_list.len] = list(verb_to_add.category, verb_to_add.name)
+
+	target.client?.stat_panel.send_message("add_verb_list", output_list)
 
 /**
  * Removes verb from the source object, updates mob stat panel if given.
@@ -890,4 +896,10 @@ its easier to just keep the beam vertical.
 		if(!length(proc_sources))
 			verbs_to_remove += procpath
 
-	revoke_verb(target, verbs_to_remove)
+	// We can't use `revoke_verb` here 'cause proc is actually an object and it's `src` is being implicitly set to `usr` when added to a /client's verbs.
+	var/list/output_list = list()
+	for(var/thing in verbs_to_remove)
+		var/procpath/verb_to_remove = thing
+		output_list[++output_list.len] = list(verb_to_remove.category, verb_to_remove.name)
+
+	target.client?.stat_panel.send_message("remove_verb_list", output_list)
