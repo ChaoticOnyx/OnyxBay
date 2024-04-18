@@ -865,6 +865,9 @@ its easier to just keep the beam vertical.
 		var/procpath/verb_to_add = thing
 		output_list[++output_list.len] = list(verb_to_add.category, verb_to_add.name)
 
+	if(!LAZYLEN(output_list))
+		return
+
 	target.client?.stat_panel.send_message("add_verb_list", output_list)
 
 /**
