@@ -902,4 +902,7 @@ its easier to just keep the beam vertical.
 		var/procpath/verb_to_remove = thing
 		output_list[++output_list.len] = list(verb_to_remove.category, verb_to_remove.name)
 
+	if(!LAZYLEN(output_list))
+		return
+
 	target.client?.stat_panel.send_message("remove_verb_list", output_list)
