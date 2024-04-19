@@ -193,7 +193,6 @@
 	name = "hoodie"
 	desc = "A warm sweatshirt."
 	icon_state = "hoodie"
-	item_state = "hoodie"
 	min_cold_protection_temperature = -20 CELSIUS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	action_button_name = "Toggle Hood"
@@ -247,8 +246,8 @@
 /obj/item/clothing/suit/storage/hooded/toggle/hoodie
 	name = "zip-up hoodie"
 	desc = "A warm sweatshirt with a zipper."
-	icon_state = "ziphoodie"
-	item_state = "ziphoodie"
+	icon_state = "ziphoodie_open"
+	base_icon_state = "ziphoodie"
 	min_cold_protection_temperature = -20 CELSIUS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	action_button_name = "Toggle Hood"
