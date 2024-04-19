@@ -21,9 +21,7 @@
 /obj/item/clothing/under/rank/atmospheric_technician/dress
 	desc = "It's a jumpsuit worn by atmospheric technicians."
 	name = "atmospheric technician's jumpsuit"
-	icon_state = "atmos"
-	item_state = "atmos_suit"
-	worn_state = "atmos"
+	icon_state = "dress_atmos"
 	armor = list(melee = 20, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
 
 /obj/item/clothing/under/rank/engineer
