@@ -80,6 +80,16 @@
 		)
 	permeability_coefficient = 0.50
 
+/obj/item/clothing/under/rank/hydroponics/dress
+	desc = "It's a jumpsuit designed to protect against minor plant-related hazards."
+	name = "botanist's jumpsuit"
+	icon_state = "hydroponics"
+	item_state_slots = list(
+		slot_hand_str = "green"
+		)
+	permeability_coefficient = 0.50
+	coverage = 0.7
+
 /obj/item/clothing/under/rank/internalaffairs
 	desc = "The plain, professional attire of an Internal Affairs Agent. The collar is <i>immaculately</i> starched."
 	name = "Internal Affairs uniform"
@@ -94,6 +104,13 @@
 	name = "janitor's jumpsuit"
 	icon_state = "janitor"
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+
+/obj/item/clothing/under/rank/janitor/dress
+	desc = "It's the official uniform of the janitor. It has minor protection from biohazards."
+	name = "janitor's jumpsuit"
+	icon_state = "janitor"
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	coverage = 0.7
 
 /obj/item/clothing/under/lawyer
 	desc = "Slick threads."
