@@ -36,6 +36,17 @@
 	permeability_coefficient = 0.50
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
 
+/obj/item/clothing/under/rank/scientist/dress
+	name = "scientist's jumpsuit"
+	desc = "It's made of a special fiber that provides minor protection against biohazards. It has markings that denote the wearer as a scientist."
+	icon_state = "dress_science"
+	item_state_slots = list(
+		slot_hand_str = "white"
+		)
+	permeability_coefficient = 0.50
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 10, bio = 0)
+	coverage = 0.7
+
 /obj/item/clothing/under/rank/chemist
 	desc = "It's made of a special fiber that gives special protection against biohazards. It has a chemist rank stripe on it."
 	name = "chemist's jumpsuit"
@@ -45,6 +56,17 @@
 		)
 	permeability_coefficient = 0.50
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+
+/obj/item/clothing/under/rank/chemist/dress
+	desc = "It's made of a special fiber that gives special protection against biohazards. It has a chemist rank stripe on it."
+	name = "chemist's jumpsuit"
+	icon_state = "dress_chemistry"
+	item_state_slots = list(
+		slot_hand_str = "white"
+		)
+	permeability_coefficient = 0.50
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	coverage = 0.7
 
 /*
  * Medical
@@ -59,6 +81,17 @@
 	permeability_coefficient = 0.50
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 
+/obj/item/clothing/under/rank/chief_medical_officer/dress
+	desc = "It's a jumpsuit worn by those with the experience to be \"Chief Medical Officer\". It provides minor biological protection."
+	name = "chief medical officer's jumpsuit"
+	icon_state = "dress_cmo"
+	item_state_slots = list(
+		slot_hand_str = "white"
+		)
+	permeability_coefficient = 0.50
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	coverage = 0.7
+
 /obj/item/clothing/under/rank/geneticist
 	desc = "It's made of a special fiber that gives special protection against biohazards. It has a genetics rank stripe on it."
 	name = "geneticist's jumpsuit"
@@ -69,6 +102,17 @@
 	permeability_coefficient = 0.50
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
 
+/obj/item/clothing/under/rank/geneticist/dress
+	desc = "It's made of a special fiber that gives special protection against biohazards. It has a genetics rank stripe on it."
+	name = "geneticist's jumpsuit"
+	icon_state = "dress_genetics"
+	item_state_slots = list(
+		slot_hand_str = "white"
+		)
+	permeability_coefficient = 0.50
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	coverage = 0.7
+
 /obj/item/clothing/under/rank/virologist
 	desc = "It's made of a special fiber that gives special protection against biohazards. It has a virologist rank stripe on it."
 	name = "virologist's jumpsuit"
@@ -78,6 +122,17 @@
 		)
 	permeability_coefficient = 0.50
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+
+/obj/item/clothing/under/rank/virologist/dress
+	desc = "It's made of a special fiber that gives special protection against biohazards. It has a virologist rank stripe on it."
+	name = "virologist's jumpsuit"
+	icon_state = "dress_virology"
+	item_state_slots = list(
+		slot_hand_str = "white"
+		)
+	permeability_coefficient = 0.50
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	coverage = 0.7
 
 /obj/item/clothing/under/rank/nursesuit
 	desc = "It's a jumpsuit commonly worn by nursing staff in the medical department."
@@ -107,6 +162,17 @@
 		)
 	permeability_coefficient = 0.5
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 30)
+
+/obj/item/clothing/under/rank/medical/dress
+	desc = "It's made of a special fiber that provides minor protection against biohazards. It has a cross on the chest denoting that the wearer is trained medical personnel."
+	name = "medical doctor's jumpsuit"
+	icon_state = "dress_medical"
+	item_state_slots = list(
+		slot_hand_str = "white"
+		)
+	permeability_coefficient = 0.5
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 30)
+	coverage = 0.7
 
 /obj/item/clothing/under/rank/medical/paramedic
 	name = "short sleeve medical jumpsuit"
@@ -145,6 +211,15 @@
 	item_state_slots = list(
 		slot_hand_str = "white"
 		)
+
+/obj/item/clothing/under/rank/psych/dress
+	desc = "A basic white jumpsuit. It has turqouise markings that denote the wearer as a psychiatrist."
+	name = "psychiatrist's jumpsuit"
+	icon_state = "dress_psych"
+	item_state_slots = list(
+		slot_hand_str = "white"
+		)
+	coverage = 0.7
 
 /obj/item/clothing/under/rank/psych/turtleneck
 	desc = "A turqouise sweater and a pair of dark blue slacks."

@@ -18,11 +18,27 @@
 		slot_hand_str = "cargo"
 		)
 
+/obj/item/clothing/under/rank/cargo/dress
+	name = "quartermaster's jumpsuit"
+	desc = "It's a jumpsuit worn by the quartermaster. It's specially designed to prevent back injuries caused by pushing paper."
+	icon_state = "dress_qm"
+	item_state_slots = list(
+		slot_hand_str = "cargo"
+		)
+	coverage = 0.7
+
 /obj/item/clothing/under/rank/cargotech
 	name = "cargo technician's jumpsuit"
 	desc = "Shooooorts! They're comfy and easy to wear!"
 	icon_state = "cargo"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+
+/obj/item/clothing/under/rank/cargotech/dress
+	name = "cargo technician's jumpsuit"
+	desc = "Shooooorts! They're comfy and easy to wear!"
+	icon_state = "dress_cargo"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	coverage = 0.7
 
 /obj/item/clothing/under/rank/chaplain
 	desc = "It's a black jumpsuit, often worn by religious folk."
