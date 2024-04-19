@@ -34,6 +34,9 @@ GLOBAL_LIST_INIT(uplink_items, subtypesof(/datum/uplink_item))
 
 	for(var/i in 1 to num)
 		var/datum/uplink_item/I = pick_n_take(sale_items)
+		if(!istype(I))
+			continue
+
 		var/datum/uplink_item/A = new I.type
 		if(I.item_cost <= 1)
 			continue
@@ -115,11 +118,9 @@ GLOBAL_LIST_INIT(uplink_items, subtypesof(/datum/uplink_item))
 	return can_view(U)
 
 /datum/uplink_item/proc/can_view(datum/component/uplink/U)
-	// Making the assumption that if no uplink was supplied, then we don't care about antag roles
 	if(!U)
 		return TRUE
 
-	// With no owner, there's no need to check antag status.
 	if(!U.owner)
 		return FALSE
 

@@ -342,7 +342,6 @@
 #include "code\datums\components\movable_physics.dm"
 #include "code\datums\components\movement_detector.dm"
 #include "code\datums\components\orbiter.dm"
-#include "code\datums\components\purchase_log.dm"
 #include "code\datums\components\uplink.dm"
 #include "code\datums\configuration\__defines.dm"
 #include "code\datums\configuration\admin_section.dm"

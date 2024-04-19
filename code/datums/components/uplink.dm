@@ -19,23 +19,16 @@
 	// Can STD be purchased for free
 	var/complimentary_std = TRUE
 
-/datum/component/uplink/Initialize(_owner, _lockable = TRUE, _enabled = FALSE, datum/game_mode/_gamemode, starting_tc = DEFAULT_TELECRYSTAL_AMOUNT)
+/datum/component/uplink/Initialize(owner, lockable = TRUE, active = FALSE, datum/game_mode/gamemode, starting_tc = DEFAULT_TELECRYSTAL_AMOUNT)
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	GLOB.uplinks += src
 
-	if(_owner)
-		owner = _owner
-		LAZYINITLIST(GLOB.uplink_purchase_logs_by_key)
-		if(GLOB.uplink_purchase_logs_by_key[owner])
-			purchase_log = GLOB.uplink_purchase_logs_by_key[owner]
-		else
-			purchase_log = new(owner, src)
-
-	lockable = _lockable
-	active = _enabled
-	gamemode = _gamemode
+	src.owner = owner
+	src.lockable = lockable
+	src.active = active
+	src.gamemode = gamemode
 	telecrystals = starting_tc
 	if(!lockable)
 		active = TRUE
@@ -47,13 +40,10 @@
 	if(!gamemode)
 		gamemode = U.gamemode
 	telecrystals += U.telecrystals
-	if(purchase_log && U.purchase_log)
-		purchase_log.MergeWithAndDel(U.purchase_log)
 
 /datum/component/uplink/Destroy()
 	GLOB.uplinks -= src
 	gamemode = null
-	purchase_log = null
 	return ..()
 
 /datum/component/uplink/proc/LoadTC(mob/user, obj/item/stack/TC, silent = FALSE)
