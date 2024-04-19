@@ -3,7 +3,7 @@
 	name = "color pin"
 
 /datum/integrated_io/color/ask_for_pin_data(mob/user)
-	var/new_data = tgui_color_picker(user, "Please select a color.","[src] color writing")
+	var/new_data = tgui_color_picker("Please select a color.","[src] color writing")
 	if(holder.check_interactivity(user) )
 		to_chat(user, SPAN("notice", "You input a <font color='[new_data]'>new color</font> into the pin."))
 		write_data_to_pin(new_data)

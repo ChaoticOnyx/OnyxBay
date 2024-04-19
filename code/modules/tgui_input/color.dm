@@ -118,8 +118,6 @@
 
 /datum/tgui_color_picker/tgui_static_data(mob/user)
 	. = list()
-	.["swapped_buttons"] = user.get_preference_value(/datum/client_preference/tgui_input_swapped) == GLOB.PREF_YES ? TRUE : FALSE
-	.["large_buttons"] = user.get_preference_value(/datum/client_preference/tgui_input_large) == GLOB.PREF_YES ? TRUE : FALSE
 	.["autofocus"] = autofocus
 	.["title"] = title
 	.["default_color"] = default
