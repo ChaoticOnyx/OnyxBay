@@ -4,19 +4,23 @@
 	initial_closed = TRUE
 	var/obj/item/clothing/head/winterhood/hood
 	var/hoodtype = null //so the chaplain hoodie or other hoodies can override this
-	var/suittoggled = 0
+	var/hood_on = FALSE
 
-/obj/item/clothing/suit/storage/hooded/New()
+/obj/item/clothing/suit/storage/hooded/Initialize()
+	. = ..()
+	if(!base_icon_state)
+		base_icon_state = icon_state
 	MakeHood()
-	..()
 
 /obj/item/clothing/suit/storage/hooded/Destroy()
 	QDEL_NULL(hood)
 	return ..()
 
 /obj/item/clothing/suit/storage/hooded/proc/MakeHood()
-	if(!hood)
-		hood = new hoodtype(src)
+	if(hood || !hoodtype)
+		return
+
+	hood = new hoodtype(src)
 
 /obj/item/clothing/suit/storage/hooded/ui_action_click()
 	ToggleHood()
@@ -29,40 +33,46 @@
 /obj/item/clothing/suit/storage/hooded/proc/RemoveHood()
 	if(!hood)
 		return
-	suittoggled = 0
+
+	hood_on = FALSE
 	update_icon()
+
 	if(ishuman(hood.loc))
 		var/mob/living/carbon/H = hood.loc
 		H.drop(hood, force = TRUE)
 		H.update_inv_wear_suit()
+
 	hood.forceMove(src)
 
 /obj/item/clothing/suit/storage/hooded/dropped()
 	RemoveHood()
 
 /obj/item/clothing/suit/storage/hooded/proc/ToggleHood()
-	if(!suittoggled)
-		if(ishuman(loc))
-			var/mob/living/carbon/human/H = src.loc
-			if(H.wear_suit != src)
-				to_chat(H, "<span class='warning'>You must be wearing \the [src] to put up the hood!</span>")
-				return
-			if(H.head)
-				to_chat(H, "<span class='warning'>You're already wearing something on your head!</span>")
-				return
-			else
-				H.equip_to_slot_if_possible(hood,slot_head,0,0,1)
-				suittoggled = 1
-				update_icon()
-				H.update_inv_wear_suit()
-	else
+	if(hood_on)
 		RemoveHood()
+		return
+
+	if(!ishuman(loc))
+		return
+
+	var/mob/living/carbon/human/H = src.loc
+	if(H.wear_suit != src)
+		to_chat(H, SPAN("warning", "You must be wearing \the [src] to put up the hood!"))
+		return
+
+	if(H.head)
+		to_chat(H, SPAN("warning", "You're already wearing something on your head!"))
+		return
+
+	H.equip_to_slot_if_possible(hood, slot_head, 0, 0, 1)
+	hood_on = TRUE
+	update_icon()
+	H.update_inv_wear_suit()
 
 /obj/item/clothing/suit/storage/hooded/on_update_icon()
-	if(suittoggled)
-		icon_state = "[initial(icon_state)]_t"
-	else
-		icon_state = "[initial(icon_state)]"
+	icon_state = base_icon_state
+	if(hood_on)
+		icon_state += "_t"
 
 
 /obj/item/clothing/suit/storage/hooded/wintercoat
@@ -178,11 +188,11 @@
 	name = "robotics winter coat"
 	icon_state = "coatrobotics"
 
+
 /obj/item/clothing/suit/storage/hooded/hoodie
 	name = "hoodie"
 	desc = "A warm sweatshirt."
 	icon_state = "hoodie"
-	item_state = "hoodie"
 	min_cold_protection_temperature = -20 CELSIUS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	action_button_name = "Toggle Hood"
@@ -196,3 +206,49 @@
 	min_cold_protection_temperature = -20 CELSIUS
 	cold_protection = HEAD
 	flags_inv = HIDEEARS | BLOCKHAIR
+
+
+/obj/item/clothing/suit/storage/hooded/toggle
+	initial_closed = FALSE
+	coverage = 0.8
+
+	var/zipped = FALSE
+
+/obj/item/clothing/suit/storage/hooded/toggle/on_update_icon()
+	icon_state = base_icon_state
+	if(hood_on)
+		icon_state += "_t"
+	if(!zipped)
+		icon_state += "_open"
+
+/obj/item/clothing/suit/storage/hooded/toggle/verb/toggle()
+	set name = "Toggle Zipper"
+	set category = "Object"
+	set src in usr
+
+	if(!CanPhysicallyInteract(usr))
+		return FALSE
+
+	zipped = !zipped
+
+	if(zipped)
+		to_chat(usr, "You zip up \the [src].")
+		flags_inv |= HIDEJUMPSUITACCESSORIES
+		coverage = 1.0
+	else
+		to_chat(usr, "You unzip \the [src].")
+		flags_inv &= HIDEJUMPSUITACCESSORIES
+		coverage = 0.8
+
+	update_icon()
+	update_clothing_icon()
+
+/obj/item/clothing/suit/storage/hooded/toggle/hoodie
+	name = "zip-up hoodie"
+	desc = "A warm sweatshirt with a zipper."
+	icon_state = "ziphoodie_open"
+	base_icon_state = "ziphoodie"
+	min_cold_protection_temperature = -20 CELSIUS
+	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
+	action_button_name = "Toggle Hood"
+	hoodtype = /obj/item/clothing/head/hoodiehood
