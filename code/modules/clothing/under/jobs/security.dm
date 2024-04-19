@@ -18,6 +18,17 @@
 	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.8
 
+/obj/item/clothing/under/rank/warden/dress
+	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for more robust protection. It has the word \"Warden\" written on the shoulders."
+	name = "warden's jumpsuit"
+	icon_state = "dress_warden_red"
+	item_state_slots = list(
+		slot_hand_str = "red"
+		)
+	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	coverage = 0.6
+	siemens_coefficient = 0.8
+
 /obj/item/clothing/under/rank/security
 	name = "security officer's jumpsuit"
 	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for robust protection."
@@ -26,6 +37,17 @@
 		slot_hand_str = "red"
 		)
 	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	siemens_coefficient = 0.8
+
+/obj/item/clothing/under/rank/security/dress
+	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for more robust protection. It has the word \"Warden\" written on the shoulders."
+	name = "warden's jumpsuit"
+	icon_state = "dress_officer_red"
+	item_state_slots = list(
+		slot_hand_str = "red"
+		)
+	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	coverage = 0.6
 	siemens_coefficient = 0.8
 
 /obj/item/clothing/under/rank/security/corp
@@ -96,6 +118,17 @@
 		slot_hand_str = "red"
 		)
 	armor = list(melee = 20, bullet = 25, laser = 25, energy = 0, bomb = 0, bio = 0)
+	siemens_coefficient = 0.7
+
+/obj/item/clothing/under/rank/head_of_security/dress
+	desc = "It's a jumpsuit worn by those few with the dedication to achieve the position of \"Head of Security\". It has additional armor to protect the wearer."
+	name = "head of security's jumpsuit"
+	icon_state = "dress_hos_red"
+	item_state_slots = list(
+		slot_hand_str = "red"
+		)
+	armor = list(melee = 20, bullet = 25, laser = 25, energy = 0, bomb = 0, bio = 0)
+	coverage = 0.7
 	siemens_coefficient = 0.7
 
 /obj/item/clothing/under/rank/head_of_security/corp
