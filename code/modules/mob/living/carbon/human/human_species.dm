@@ -78,6 +78,12 @@
 	h_style = pick("Bald", "Floppy Ears", "Pointy Ears")
 	..(new_loc, SPECIES_SWINE)
 
+/mob/living/carbon/human/swine/small/New(new_loc)
+	..()
+	holder_type = /obj/item/holder/swine
+	mob_size = MOB_SMALL
+	SetTransform(0.8)
+
 /mob/living/carbon/human/vox/New(new_loc)
 	h_style = "Long Vox Quills"
 	..(new_loc, SPECIES_VOX)

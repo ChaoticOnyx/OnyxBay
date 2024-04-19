@@ -69,3 +69,7 @@
 	if(H.nutrition < 50)
 		H.adjustToxLoss(2, 0)
 		return
+
+/datum/species/swine/handle_post_spawn(mob/living/carbon/human/H)
+	..()
+	H.item_state = lowertext(name)

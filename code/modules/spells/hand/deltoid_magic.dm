@@ -36,7 +36,7 @@
 	else
 		throw_dir = turn(get_dir(H, user), 180)
 		user.visible_message(SPAN("danger", "[user] has punched \the [H] so hard, they're sent flying!"))
-		H.apply_damage(rand(20, 40), BRUTE, affecting)
+		H.apply_damage(rand(10, 20), BRUTE, affecting)
 		H.Weaken(8)
 		H.Stun(4)
 		H.damage_poise(30)

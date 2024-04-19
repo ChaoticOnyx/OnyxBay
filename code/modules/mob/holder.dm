@@ -135,6 +135,9 @@ var/list/holder_mob_icon_cache = list()
 	origin_tech = list(TECH_BIO = 2)
 	slot_flags = SLOT_HOLSTER
 
+/obj/item/holder/swine
+	origin_tech = list(TECH_BIO = 7)
+
 /obj/item/holder/attackby(obj/item/W, mob/user)
 	held_mob.attackby(W, user)
 	sync()
