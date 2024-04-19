@@ -208,12 +208,15 @@ var/list/hash_to_gear = list()
 	. += "<td style='white-space: nowrap; width: 40px;' class='block'>"
 	. += "<table>"
 	var/datum/loadout_category/LC = loadout_categories[current_tab]
+	var/datum/job/selected_job_high
 	var/list/selected_jobs = new
 	if(job_master)
-		for(var/job_title in (pref.job_medium|pref.job_low|pref.job_high))
+		selected_job_high = job_master.occupations_by_title[pref.job_high]
+		var/selected_job_titles = (pref.job_high ? list(pref.job_high) : list()) | pref.job_medium | pref.job_low
+		for(var/job_title in selected_job_titles)
 			var/datum/job/J = job_master.occupations_by_title[job_title]
 			if(J)
-				dd_insertObjectList(selected_jobs, J)
+				selected_jobs += J
 
 	var/purchased_gears = ""
 	var/paid_gears = ""
@@ -273,6 +276,9 @@ var/list/hash_to_gear = list()
 
 	if(selected_gear)
 		var/ticked = (selected_gear.display_name in pref.gear_list[pref.gear_slot])
+
+		if(selected_gear.is_departmental())
+			selected_gear.set_selected_jobs(selected_job_high, selected_jobs)
 
 		var/datum/gear_data/gd = new(selected_gear.path)
 		for(var/datum/gear_tweak/gt in selected_gear.gear_tweaks)
@@ -366,9 +372,11 @@ var/list/hash_to_gear = list()
 			. += "<br><b>Options:</b><br>"
 			for(var/datum/gear_tweak/tweak in selected_gear.gear_tweaks)
 				var/tweak_contents = tweak.get_contents(selected_tweaks["[tweak]"])
-				if(tweak_contents)
-					. += " <a href='?src=\ref[src];tweak=\ref[tweak]'>[tweak_contents]</a>"
-					. += "<br>"
+				if(islist(tweak_contents))
+					for(var/name in tweak_contents)
+						. += " <a href='?src=\ref[src];tweak=\ref[tweak];subtype=[tweak_contents[name]]'>[name]</a>"
+						. += "<br>"
+					continue
 
 		. += "<br>"
 
@@ -455,10 +463,11 @@ var/list/hash_to_gear = list()
 			pref.loadout_is_busy = FALSE
 			return TOPIC_NOACTION
 
-		var/metadata = tweak.get_metadata(user, get_tweak_metadata(selected_gear, tweak))
+		var/metadata = tweak.get_metadata(user, get_tweak_metadata(selected_gear, tweak), href_list["subtype"])
 		if(!metadata || !CanUseTopic(user))
 			pref.loadout_is_busy = FALSE
 			return TOPIC_NOACTION
+
 
 		selected_tweaks["[tweak]"] = metadata
 
@@ -777,3 +786,21 @@ var/list/hash_to_gear = list()
 		to_chat(H, "<span class='danger'>Dropping \the [item] on the ground!</span>")
 		item.forceMove(get_turf(H))
 		item.add_fingerprint(H)
+
+/datum/gear/proc/is_departmental()
+	for(var/datum/gear_tweak/gt in gear_tweaks)
+		if(istype(gt, /datum/gear_tweak/departmental))
+			return TRUE
+
+		return FALSE
+
+/datum/gear/proc/set_selected_jobs(job_high, selected_jobs)
+	if(job_high && !istype(job_high,/datum/job))
+		CRASH("Expected /datum/job, got [job_high]")
+	if(selected_jobs && !islist(selected_jobs))
+		CRASH("Expected list, got [selected_jobs]")
+	for(var/datum/gear_tweak/departmental/gt in gear_tweaks)
+		if(!istype(gt, /datum/gear_tweak/departmental))
+			continue
+
+		gt.set_selected_jobs(job_high, selected_jobs)

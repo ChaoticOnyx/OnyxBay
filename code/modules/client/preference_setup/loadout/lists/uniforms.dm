@@ -456,3 +456,33 @@
 	display_name = "fig leaf"
 	path = /obj/item/clothing/under/fig_leaf
 	price = 5
+
+/datum/gear/uniform/departmental_skirt
+	display_name = "job-specific jumpskirts"
+	price = 10
+
+/datum/gear/uniform/departmental_skirt/New()
+	..()
+	var/list/paths_to_jobs = list(
+	/datum/job/hos = list(/obj/item/clothing/under/rank/head_of_security/dress),
+	/datum/job/warden = list(/obj/item/clothing/under/rank/warden/dress),
+	/datum/job/officer = list(/obj/item/clothing/under/rank/security/dress),
+	/datum/job/chief_engineer = list(/obj/item/clothing/suit/storage/hooded/wintercoat/ce),
+	/datum/job/engineer = list(
+		/obj/item/clothing/under/rank/atmospheric_technician/dress,
+		/obj/item/clothing/under/rank/engineer/dress),
+	/datum/job/qm = list(/obj/item/clothing/under/rank/cargo/dress),
+	/datum/job/cargo_tech = list(/obj/item/clothing/under/rank/cargotech/dress),
+	/datum/job/janitor = list(/obj/item/clothing/under/rank/janitor/dress),
+	/datum/job/hydro = list(/obj/item/clothing/under/rank/hydroponics/dress),
+	/datum/job/cmo = list(/obj/item/clothing/under/rank/chief_medical_officer/dress),
+	/datum/job/doctor = list(/obj/item/clothing/under/rank/medical/dress),
+	/datum/job/psychiatrist = list(/obj/item/clothing/under/rank/psych/dress),
+	/datum/job/chemist = list(/obj/item/clothing/under/rank/chemist/dress),
+	/datum/job/virologist = list(/obj/item/clothing/under/rank/virologist/dress),
+	/datum/job/scientist = list(/obj/item/clothing/under/rank/scientist/dress),
+	/datum/job/xenobiologist = list(/obj/item/clothing/under/rank/scientist/dress),
+	///datum/job/roboticist = list(/obj/item/clothing/under/rank/roboticist/dress),
+	)
+
+	gear_tweaks += new /datum/gear_tweak/departmental(paths_to_jobs)
