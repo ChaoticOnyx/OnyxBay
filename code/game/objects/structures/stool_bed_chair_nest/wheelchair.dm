@@ -89,8 +89,7 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 
 	CutOverlays(wheel_overlay)
 	if(!has_cannon)
-		wheel_overlay = image(icon = 'icons/obj/wheelchair.dmi', icon_state = "w_overlay", dir = src.dir)
-		wheel_overlay.layer = ABOVE_HUMAN_LAYER
+		wheel_overlay = image(icon = 'icons/obj/wheelchair.dmi', icon_state = "w_overlay", dir = dir, layer = ABOVE_HUMAN_LAYER)
 		AddOverlays(wheel_overlay)
 	if(buckled_mob)
 		buckled_mob.set_dir(dir)
