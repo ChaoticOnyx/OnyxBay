@@ -124,12 +124,12 @@
 	else
 		..()
 
-/obj/machinery/atmospherics/binary/circulator/rotate(mob/user)
+/obj/machinery/atmospherics/binary/circulator/rotate()
 	..()
 
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
 
-/obj/machinery/atmospherics/binary/circulator/rotate_counter(mob/user)
+/obj/machinery/atmospherics/binary/circulator/rotate_counter()
 	..()
 
 	desc = initial(desc) + " Its outlet port is to the [dir2text(dir)]."
