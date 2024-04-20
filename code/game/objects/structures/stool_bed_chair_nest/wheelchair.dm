@@ -1,6 +1,10 @@
 #define MAX_W_CLASS ITEM_SIZE_NORMAL
 #define MAX_STORAGE_SPACE DEFAULT_LARGEBOX_STORAGE
-#define REAGENTS_VOLUME 100
+#define REAGENTS_MAX_VOLUME 100
+#define BARREL_DAMAGE_NONE 0
+#define BARREL_DAMAGE_MODERATE 1
+#define BARREL_DAMAGE_CRITICAL 2
+#define THROWFORCE_DAMAGE_THRESHOLD 35
 GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datum/reagent/toxin/plasma = 1.2, /datum/reagent/acetone = 0.35))
 /obj/structure/bed/chair/wheelchair
 	name = "wheelchair"
@@ -35,6 +39,8 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	var/mob/living/pulling = null
 	var/bloodiness
 
+	var/barrel_damage = 0
+
 	var/static/image/radial_detach = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_detach")
 	var/static/image/radial_dump = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_dump")
 	var/static/image/radial_eject = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_eject")
@@ -44,6 +50,13 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 
 	if(has_cannon)
 		. += SPAN_NOTICE("It has a pipe mounted!")
+		switch(barrel_damage)
+			if(0)
+				. += SPAN_NOTICE("Its barrel looks intact.")
+			if(1)
+				. += SPAN_NOTICE("Its barrel is moderately damaged.")
+			if(2)
+				. += SPAN_NOTICE("Its barrel is badly damaged.")
 
 	if(has_cannon && Adjacent(user, src))
 		. += SPAN_NOTICE("Its reagent holder has [reagents.total_volume]u of reagents.")
@@ -392,7 +405,7 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	item_storage.max_w_class = MAX_W_CLASS
 	item_storage.max_storage_space = MAX_STORAGE_SPACE
 	item_storage.use_sound = null
-	reagents = new /datum/reagents(REAGENTS_VOLUME, src)
+	reagents = new /datum/reagents(REAGENTS_MAX_VOLUME, src)
 	atom_flags |= ATOM_FLAG_OPEN_CONTAINER | ATOM_FLAG_NO_REACT
 
 /obj/structure/bed/chair/wheelchair/proc/can_shoot()
@@ -433,6 +446,19 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 
 	var/throwforce = calc_throwforce()
 
+	if(throwforce >= THROWFORCE_DAMAGE_THRESHOLD && prob(70))
+		barrel_damage = BARREL_DAMAGE_CRITICAL
+	else if(prob(60))
+		barrel_damage++
+
+	if(barrel_damage > BARREL_DAMAGE_CRITICAL && prob(80))
+		explode()
+		return
+
+	else if(barrel_damage > BARREL_DAMAGE_NONE && barrel_damage <= BARREL_DAMAGE_CRITICAL && prob(5))
+		explode()
+		return
+
 	for(var/obj/item/O in item_storage.contents)
 		item_storage.remove_from_storage(O, loc)
 		O.forceMove(get_turf(src))
@@ -448,6 +474,17 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	Move(recoil_turf)
 	QDEL_IN(particle, 1.5 SECONDS)
 
+/obj/structure/bed/chair/wheelchair/proc/explode()
+	if(reagents.total_volume == REAGENTS_MAX_VOLUME)
+		explosion(get_turf(src), 1, 2, 4, sfx_to_play = SFX_EXPLOSION_FUEL)
+	else if(reagents.total_volume >= REAGENTS_MAX_VOLUME / 2)
+		explosion(get_turf(src), 0, 1, 3, sfx_to_play = SFX_EXPLOSION_FUEL)
+	else
+		explosion(get_turf(src), -1, 1, 2, sfx_to_play = SFX_EXPLOSION_FUEL)
+
+	if(!QDELETED(src))
+		qdel_self()
+
 /obj/structure/bed/chair/wheelchair/proc/calc_throwforce()
 	var/force = 0
 	for(var/reagent in GLOB.wheelcannon_reagents)
@@ -459,3 +496,8 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 
 #undef MAX_W_CLASS
 #undef MAX_STORAGE_SPACE
+#undef REAGENTS_MAX_VOLUME
+#undef BARREL_DAMAGE_NONE
+#undef BARREL_DAMAGE_MODERATE
+#undef BARREL_DAMAGE_CRITICAL
+#undef THROWFORCE_DAMAGE_THRESHOLD
