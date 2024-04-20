@@ -29,7 +29,7 @@
 	clicked.rotate()
 	return TRUE
 
-/datum/element/simple_rotation/proc/on_ctrl_alt_click(atom/clicked)
+/datum/element/simple_rotation/proc/on_ctrl_alt_click(atom/clicked, mob/user)
 	clicked.rotate_counter()
 	return TRUE
 
