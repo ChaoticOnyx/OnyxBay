@@ -73,7 +73,7 @@
 		AddOverlays(emissive_appearance(icon, "soda_ea"))
 
 /obj/machinery/food_replicator/proc/update_glow()
-	if(stat & MAINT)
+	if(inoperable(MAINT))
 		set_light(0)
 		return FALSE
 

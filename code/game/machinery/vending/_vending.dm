@@ -94,7 +94,7 @@
 			AddOverlays(emissive_appearance(icon, "[base_icon]_panel_ea"))
 
 /obj/machinery/vending/proc/update_glow()
-	if(stat & MAINT)
+	if(inoperable(MAINT))
 		set_light(0)
 		return FALSE
 
