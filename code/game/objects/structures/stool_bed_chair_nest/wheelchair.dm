@@ -161,7 +161,7 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 		if("Eject Ammo")
 			var/turf/T = get_turf(src)
 			for(var/obj/item/I in item_storage?.contents)
-				item_storage.remove_f6m_storage(I, T, TRUE)
+				item_storage.remove_from_storage(I, T, TRUE)
 			item_storage.finish_bulk_removal()
 		if("Dump Reagents")
 			reagents?.clear_reagents()
