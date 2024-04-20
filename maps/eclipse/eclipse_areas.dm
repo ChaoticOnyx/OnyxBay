@@ -767,6 +767,10 @@
 	name = "\improper Singularity Engine"
 	icon_state = "engine"
 
+/area/eclipse/engineering/tech/singularity
+	name = "\improper Singularity"
+	icon_state = "engine"
+
 /area/eclipse/engineering/tech/supermatter_engine
 	name = "\improper Engineering Supermatter Room"
 	icon_state = "engine"

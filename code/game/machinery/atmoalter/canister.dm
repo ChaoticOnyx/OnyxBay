@@ -39,6 +39,9 @@
 /obj/machinery/portable_atmospherics/canister/nitrogen/prechilled
 	name = "\improper Canister: \[N2 (Cooling)\]"
 
+/obj/machinery/portable_atmospherics/canister/nitrogen/airlock
+	start_pressure = 3 * ONE_ATMOSPHERE
+
 /obj/machinery/portable_atmospherics/canister/oxygen
 	name = "\improper Canister: \[O2\]"
 	icon_state = "blue"

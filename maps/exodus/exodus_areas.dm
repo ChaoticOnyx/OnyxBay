@@ -1166,7 +1166,7 @@
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin2
-	name = "\improper Private Bedroomn Two"
+	name = "\improper Private Bedroom Two"
 	icon_state = "PrivDormTwo"
 	sound_env = SMALL_SOFTFLOOR
 
