@@ -13,8 +13,6 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	icon = 'icons/obj/wheelchair.dmi'
 	base_icon_state = "wheelchair"
 	icon_state = "wheelchair"
-	var/description_info_cannon = "Load with items. Fuel with ethanol, plasma or acetone. <br>\
-	<br> Igniter can be also attached. Alt+RightClick to detach it."
 	var/cannon_icon_state = "wheelcannon"
 	anchored = 0
 	buckle_movable = 1
@@ -63,6 +61,11 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 		. += SPAN_NOTICE("Its reagent holder has [reagents.total_volume]u of reagents.")
 		for(var/atom/content in item_storage.contents)
 			. += SPAN_NOTICE("It has [SPAN_NOTICE("[content]")] loaded.")
+
+/obj/structure/bed/chair/wheelchair/examine_more(mob/user)
+	. = ..()
+	. += SPAN_NOTICE("Load with items. Fuel with ethanol, plasma or acetone.")
+	. += SPAN_NOTICE("Igniter can be also attached. Alt + RightClick to detach it")
 
 /obj/structure/bed/chair/wheelchair/Destroy()
 	pulling = null
@@ -114,7 +117,7 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 		W.reagents.trans_to(src, transfer_amount)
 		return
 
-	if(istype(W, /obj/item/device/assembly_holder) && !istype(assembly))
+	if(isassembly(W) && !istype(assembly))
 		attach_assembly(W, user)
 		return
 
@@ -158,7 +161,7 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 		if("Eject Ammo")
 			var/turf/T = get_turf(src)
 			for(var/obj/item/I in item_storage?.contents)
-				item_storage.remove_from_storage(I, T, TRUE)
+				item_storage.remove_f6m_storage(I, T, TRUE)
 			item_storage.finish_bulk_removal()
 		if("Dump Reagents")
 			reagents?.clear_reagents()
@@ -167,7 +170,6 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	if(!user.drop(assembly, src))
 		return
 
-	description_info = description_info_cannon
 	src.assembly = assembly
 	assembly_overlay = null // Will be regenerated in on_update_icon()
 	show_splash_text(user, "assembly attached", "Assembly attached to \the [src].")
@@ -181,7 +183,6 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	else
 		assembly.forceMove(current_turf)
 
-	description_info = initial(description_info)
 	assembly = null
 	assembly_overlay = null // Will be regenerated in on_update_icon()
 	show_splash_text(user, "assembly removed", "Removed assembly from \the [src].")
