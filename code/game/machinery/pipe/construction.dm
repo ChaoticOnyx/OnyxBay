@@ -317,7 +317,7 @@ Buildable meters
 	else
 		return ..()
 
-/obj/item/pipe/rotate(mob/user)
+/obj/item/pipe/rotate()
 	..()
 
 	if (pipe_type in list (PIPE_SIMPLE_STRAIGHT, PIPE_SUPPLY_STRAIGHT, PIPE_SCRUBBERS_STRAIGHT, PIPE_UNIVERSAL, PIPE_HE_STRAIGHT, PIPE_MVALVE, PIPE_DVALVE, PIPE_SVALVE, PIPE_FUEL_STRAIGHT))
@@ -329,7 +329,7 @@ Buildable meters
 		set_dir(SOUTH)
 	return
 
-/obj/item/pipe/rotate_counter(mob/user)
+/obj/item/pipe/rotate_counter()
 	..()
 
 	if (pipe_type in list (PIPE_SIMPLE_STRAIGHT, PIPE_SUPPLY_STRAIGHT, PIPE_SCRUBBERS_STRAIGHT, PIPE_UNIVERSAL, PIPE_HE_STRAIGHT, PIPE_MVALVE, PIPE_DVALVE, PIPE_SVALVE, PIPE_FUEL_STRAIGHT))
@@ -432,7 +432,7 @@ Buildable meters
 			return 0
 
 /obj/item/pipe/attack_self(mob/user)
-	return rotate(user)
+	return rotate()
 
 /obj/item/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	..()
