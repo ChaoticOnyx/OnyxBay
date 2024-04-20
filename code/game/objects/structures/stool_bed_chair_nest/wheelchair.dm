@@ -1,14 +1,15 @@
-#define MAX_W_CLASS ITEM_SIZE_LARGE
-#define MAX_STORAGE_SPACE DEFAULT_BACKPACK_STORAGE
+#define MAX_W_CLASS ITEM_SIZE_NORMAL
+#define MAX_STORAGE_SPACE DEFAULT_LARGEBOX_STORAGE
 #define REAGENTS_VOLUME 100
 GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datum/reagent/toxin/plasma = 1.2, /datum/reagent/acetone = 0.35))
-
 /obj/structure/bed/chair/wheelchair
 	name = "wheelchair"
 	desc = "You sit in this. Either by will or force."
 	icon = 'icons/obj/wheelchair.dmi'
 	base_icon_state = "wheelchair"
 	icon_state = "wheelchair"
+	var/description_info_cannon = "Load with items. Fuel with ethanol, plasma or acetone. <br>\
+	<br> Igniter can be also attached. Alt+RightClick to detach it."
 	var/cannon_icon_state = "wheelcannon"
 	anchored = 0
 	buckle_movable = 1
@@ -34,6 +35,10 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	var/mob/living/pulling = null
 	var/bloodiness
 
+	var/static/image/radial_detach = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_detach")
+	var/static/image/radial_dump = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_dump")
+	var/static/image/radial_eject = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_eject")
+
 /obj/structure/bed/chair/wheelchair/examine(mob/user, infix)
 	. = ..()
 
@@ -42,8 +47,8 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 
 	if(has_cannon && Adjacent(user, src))
 		. += SPAN_NOTICE("Its reagent holder has [reagents.total_volume]u of reagents.")
-		if(LAZYLEN(item_storage.contents))
-			. += SPAN_NOTICE("It has [SPAN_NOTICE("[item_storage.contents]")] loaded.")
+		for(var/atom/content in item_storage.contents)
+			. += SPAN_NOTICE("It has [SPAN_NOTICE("[content]")] loaded.")
 
 /obj/structure/bed/chair/wheelchair/Destroy()
 	pulling = null
@@ -61,8 +66,11 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 
 	CutOverlays(assembly_overlay)
 	if(istype(assembly))
-		assembly_overlay = new(assembly)
-		assembly_overlay.SetTransform(0.25)
+		if(isnull(assembly_overlay))
+			assembly_overlay = new(assembly)
+			assembly_overlay.SetTransform(0.2)
+			assembly_overlay.layer = ABOVE_HUMAN_LAYER
+			assembly_overlay.appearance_flags |= KEEP_APART
 		AddOverlays(assembly_overlay)
 
 	CutOverlays(wheel_overlay)
@@ -86,7 +94,7 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 
 		var/free_amount = reagents?.get_free_space()
 		if(free_amount <= 0)
-			show_splash_text(user, "container is full!")
+			show_splash_text(user, "container is full!", "\The [src] can't hold more reagents!")
 			return
 
 		var/transfer_amount = min(container.amount_per_transfer_from_this, free_amount)
@@ -94,11 +102,7 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 		return
 
 	if(istype(W, /obj/item/device/assembly_holder) && !istype(assembly))
-		if(!user.drop(W, src))
-			return
-
-		assembly = W
-		show_splash_text(user, "assembly attached")
+		attach_assembly(W, user)
 		return
 
 	if(item_storage?.can_be_inserted(W, user))
@@ -110,6 +114,64 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 
 	..()
 
+/obj/structure/bed/chair/wheelchair/AltRightClick(mob/user)
+	if(!has_cannon)
+		return
+
+	var/list/options = list()
+
+	if(assembly)
+		options["Detach Assembly"] = radial_detach
+
+	if(LAZYLEN(item_storage.contents))
+		options["Eject Ammo"] = radial_eject
+
+	if(reagents?.total_volume)
+		options["Dump Reagents"] = radial_dump
+
+	var/choice
+
+	if(length(options) < 1)
+		return
+
+	if(length(options) == 1)
+		choice = options[1]
+	else
+		choice = show_radial_menu(user, src, options, require_near = TRUE)
+
+	switch(choice)
+		if("Detach Assembly")
+			detach_assembly(user)
+		if("Eject Ammo")
+			var/turf/T = get_turf(src)
+			for(var/obj/item/I in item_storage?.contents)
+				item_storage.remove_from_storage(I, T, TRUE)
+			item_storage.finish_bulk_removal()
+		if("Dump Reagents")
+			reagents?.clear_reagents()
+
+/obj/structure/bed/chair/wheelchair/proc/attach_assembly(obj/item/device/assembly_holder/assembly, mob/user)
+	if(!user.drop(assembly, src))
+		return
+
+	description_info = description_info_cannon
+	src.assembly = assembly
+	assembly_overlay = null // Will be regenerated in on_update_icon()
+	show_splash_text(user, "assembly attached", "Assembly attached to \the [src].")
+
+/obj/structure/bed/chair/wheelchair/proc/detach_assembly(mob/user)
+	var/turf/current_turf = get_turf(src)
+
+	if(user?.Adjacent(current_turf))
+		user.pick_or_drop(assembly, current_turf)
+	else
+		assembly.forceMove(current_turf)
+
+	description_info = initial(description_info)
+	assembly = null
+	assembly_overlay = null // Will be regenerated in on_update_icon()
+	show_splash_text(user, "assembly removed", "Removed assembly from \the [src].")
+
 /obj/structure/bed/chair/wheelchair/attack_hand(mob/living/user)
 	shoot()
 
@@ -117,6 +179,14 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 
 /obj/structure/bed/chair/wheelchair/MouseDrop_T(atom/movable/dropping, mob/living/user)
 	if(istype(dropping, /obj/structure/disposalconstruct))
+		show_splash_text(user, "attaching...", "You start attaching \the [dropping] to \the [src]...")
+		if(!do_after(user, 10 SECONDS, src, TRUE))
+			return
+
+		if(QDELETED(src) || QDELETED(dropping) || QDELETED(user))
+			return
+
+		show_splash_text(user, "pipe attached!", "Attached \the [dropping] to \the [src]!")
 		qdel(dropping)
 		init_item_storage()
 		has_cannon = TRUE
