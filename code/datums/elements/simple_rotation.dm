@@ -25,7 +25,7 @@
 
 	return ..()
 
-/datum/element/simple_rotation/proc/on_alt_click(atom/clicked)
+/datum/element/simple_rotation/proc/on_alt_click(atom/clicked, mob/user)
 	clicked.rotate()
 	return TRUE
 
