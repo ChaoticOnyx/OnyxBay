@@ -12,8 +12,9 @@
 	pickup_sound = SFX_PICKUP_COMPONENT
 
 /obj/item/device/assembly/igniter/activate()
-	if(!..())
-		return FALSE //Cooldown check
+	. = ..()
+	if(!.)
+		return
 
 	if(holder && istype(holder.loc,/obj/item/grenade))
 		var/obj/item/grenade/grenade = holder.loc
@@ -41,4 +42,3 @@
 /obj/item/device/assembly/igniter/attack_self(mob/user)
 	activate()
 	add_fingerprint(user)
-	return
