@@ -6,6 +6,7 @@
 #define BARREL_DAMAGE_CRITICAL 2
 #define THROWFORCE_DAMAGE_THRESHOLD 35
 GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datum/reagent/toxin/plasma = 1.2, /datum/reagent/acetone = 0.35))
+
 /obj/structure/bed/chair/wheelchair
 	name = "wheelchair"
 	desc = "You sit in this. Either by will or force."
@@ -171,6 +172,7 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	src.assembly = assembly
 	assembly_overlay = null // Will be regenerated in on_update_icon()
 	show_splash_text(user, "assembly attached", "Assembly attached to \the [src].")
+	log_and_message_admins("has attached [assembly] to \the [src]", user, get_turf(src))
 
 /obj/structure/bed/chair/wheelchair/proc/detach_assembly(mob/user)
 	var/turf/current_turf = get_turf(src)
@@ -424,6 +426,14 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	if(!can_shoot())
 		return
 
+	if(barrel_damage > BARREL_DAMAGE_CRITICAL && prob(80))
+		explode()
+		return
+
+	else if(barrel_damage > BARREL_DAMAGE_NONE && barrel_damage <= BARREL_DAMAGE_CRITICAL && prob(5))
+		explode()
+		return
+
 	var/turf/center_target = get_turf(src)
 
 	for(var/i = 1 to world.view)
@@ -451,21 +461,13 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	else if(prob(60))
 		barrel_damage++
 
-	if(barrel_damage > BARREL_DAMAGE_CRITICAL && prob(80))
-		explode()
-		return
-
-	else if(barrel_damage > BARREL_DAMAGE_NONE && barrel_damage <= BARREL_DAMAGE_CRITICAL && prob(5))
-		explode()
-		return
-
 	for(var/obj/item/O in item_storage.contents)
 		item_storage.remove_from_storage(O, loc)
 		O.forceMove(get_turf(src))
 		O.dir = dir // It's dumb, but it works. Kinda.
 		var/turf/target = pick(target_turfs)
 		var/atom/target_atom = safepick(target.contents)
-		O.throw_at(istype(target_atom) ? target_atom : target, world.view, 1, src, src, pick(BP_ALL_LIMBS), throwforce)
+		O.throw_at(istype(target_atom) ? target_atom : target, world.view, 1, usr ? usr : src, src, pick(BP_ALL_LIMBS), throwforce)
 
 	var/turf/recoil_turf = get_step(get_turf(src), GLOB.flip_dir[dir])
 	if(!istype(recoil_turf))
