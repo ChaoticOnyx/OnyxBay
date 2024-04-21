@@ -236,7 +236,7 @@
 	if((incapacitation_flags & INCAPACITATION_STUNNED) && stunned)
 		return 1
 
-	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (weakened || resting || pinned.len))
+	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (weakened || resting || LAZYLEN(pinned)))
 		return 1
 
 	if((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (stat || paralysis || sleeping || (status_flags & FAKEDEATH)))
@@ -985,7 +985,7 @@
 	for(var/obj/item/O in pinned)
 		if(O == selection)
 			pinned -= O
-		if(!pinned.len)
+		if(!LAZYLEN(pinned))
 			anchored = 0
 
 	valid_objects = get_visible_implants(0)
