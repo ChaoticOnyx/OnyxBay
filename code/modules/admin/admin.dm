@@ -676,8 +676,8 @@ var/global/floorIsLava = 0
 	if(!result)
 		return
 
-	var/failsafe = tgui_alert(usr, "Are you absolutely sure you want to reboot with the following method: [result]?", "WORLD REBOOT. THINK TWICE!!!", list("Yes", "No"), autofocus = FALSE)
-	if(failsafe != "Yes")
+	var/failsafe = tgui_input_text(usr, "To confirm, type ["Server Restart"] in the box below", "WORLD REBOOT. THINK TWICE!!!")
+	if(failsafe != "Server Restart")
 		return
 
 	feedback_set_details("end_error","admin reboot - by [key_name(usr)]")
