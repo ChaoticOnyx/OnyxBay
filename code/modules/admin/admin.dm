@@ -676,7 +676,7 @@ var/global/floorIsLava = 0
 	if(!result)
 		return
 
-	var/failsafe = tgui_input_text(usr, "To confirm, type ["Server Restart"] in the box below", "WORLD REBOOT. THINK TWICE!!!")
+	var/failsafe = tgui_input_text(usr, "To confirm, type \"Server Restart\" in the box below", "WORLD REBOOT. THINK TWICE!!!")
 	if(failsafe != "Server Restart")
 		return
 
