@@ -5,7 +5,12 @@
 #define BARREL_DAMAGE_MODERATE 1
 #define BARREL_DAMAGE_CRITICAL 2
 #define THROWFORCE_DAMAGE_THRESHOLD 35
-GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datum/reagent/toxin/plasma = 1.2, /datum/reagent/acetone = 0.35))
+GLOBAL_LIST_INIT(wheelcannon_reagents, list(
+	/datum/reagent/ethanol = 0.35,
+	/datum/reagent/toxin/plasma = 1.2,
+	/datum/reagent/acetone = 0.4,
+	/datum/reagent/fuel = 0.3
+))
 
 /obj/structure/bed/chair/wheelchair
 	name = "wheelchair"
@@ -102,6 +107,14 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	update_icon()
 
 /obj/structure/bed/chair/wheelchair/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/flame) && has_cannon)
+		var/obj/item/flame/flame = W
+		if(!flame.lit)
+			return
+
+		shoot()
+		return
+
 	if(!isnull(reagents) && istype(W, /obj/item/reagent_containers) && W.is_open_container())
 		var/obj/item/reagent_containers/container = W
 		if(!W.reagents?.total_volume)
@@ -495,6 +508,13 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(/datum/reagent/ethanol = 0.35, /datu
 	reagents.clear_reagents()
 
 	return force
+
+/obj/structure/bed/chair/wheelchair/fire_act()
+	if(!has_cannon)
+		return ..()
+
+	shoot()
+	return ..()
 
 #undef MAX_W_CLASS
 #undef MAX_STORAGE_SPACE
