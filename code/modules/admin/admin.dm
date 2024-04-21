@@ -672,24 +672,30 @@ var/global/floorIsLava = 0
 
 	var/list/options = list("Regular Restart", "Hard Restart (Skip MC Shutdown)", "Hardest Restart (Direct world.Reboot) \[Dangerous\]")
 
-	var/result = input(usr, "Select reboot method", "World Reboot", options[1]) as null|anything in options
-	if(result)
-		feedback_set_details("end_error","admin reboot - by [key_name(usr)]")
-		feedback_add_details("admin_verb","R") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-		var/init_by = "<span class='notice'>Initiated by [key_name(usr)].</span>"
-		switch(result)
-			if("Regular Restart")
-				to_world("<span class='danger'>Restarting world!</span> [init_by]")
-				log_admin("[key_name(usr)] initiated a reboot.")
-				world.Reboot()
-			if("Hard Restart (Skip MC Shutdown)")
-				to_world("<span class='boldannounce'>Hard world restart.</span> [init_by]")
-				log_admin("[key_name(usr)] initiated a hard reboot.")
-				world.Reboot(reboot_hardness = REBOOT_HARD)
-			if("Hardest Restart (Direct world.Reboot) \[Dangerous\]")
-				to_world("<span class='boldannounce'>Hardest world restart.</span> [init_by]")
-				log_admin("[key_name(usr)] initiated a hardest reboot.")
-				world.Reboot(reboot_hardness = REBOOT_REALLY_HARD)
+	var/result = tgui_input_list(usr, "Select reboot method", "World Reboot", options)
+	if(!result)
+		return
+
+	var/failsafe = tgui_alert(usr, "Are you absolutely sure you want to reboot with the following method: [result]?", "WORLD REBOOT. THINK TWICE!!!", list("Yes", "No"), autofocus = FALSE)
+	if(failsafe != "Yes")
+		return
+
+	feedback_set_details("end_error","admin reboot - by [key_name(usr)]")
+	feedback_add_details("admin_verb","R") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	var/init_by = "<span class='notice'>Initiated by [key_name(usr)].</span>"
+	switch(result)
+		if("Regular Restart")
+			to_world("<span class='danger'>Restarting world!</span> [init_by]")
+			log_admin("[key_name(usr)] initiated a reboot.")
+			world.Reboot()
+		if("Hard Restart (Skip MC Shutdown)")
+			to_world("<span class='boldannounce'>Hard world restart.</span> [init_by]")
+			log_admin("[key_name(usr)] initiated a hard reboot.")
+			world.Reboot(reboot_hardness = REBOOT_HARD)
+		if("Hardest Restart (Direct world.Reboot) \[Dangerous\]")
+			to_world("<span class='boldannounce'>Hardest world restart.</span> [init_by]")
+			log_admin("[key_name(usr)] initiated a hardest reboot.")
+			world.Reboot(reboot_hardness = REBOOT_REALLY_HARD)
 
 /datum/admins/proc/end_round()
 	set category = "Server"
