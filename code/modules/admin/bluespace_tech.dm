@@ -74,7 +74,11 @@
 	bst.add_language(LANGUAGE_SPACER)
 	bst.add_language(LANGUAGE_ROBOT)
 
-	add_think_ctx("bluespace_tech_post_spawn", CALLBACK(src, nameof(.proc/bluespace_tech_post_spawn)), world.time + 1 SECOND, bst)
+	if(!QDELETED(_think_ctxs["bluespace_tech_post_spawn"]))
+		set_next_think_ctx("bluespace_tech_post_spawn", world.time + 1 SECOND, bst)
+	else
+		add_think_ctx("bluespace_tech_post_spawn", CALLBACK(src, nameof(.proc/bluespace_tech_post_spawn)), world.time + 1 SECOND, bst)
+
 	log_debug("Bluespace Tech Spawned: X:[bst.x] Y:[bst.y] Z:[bst.z] User:[src]")
 
 /client/proc/bluespace_tech_post_spawn(mob/living/carbon/human/bluespace_tech/bst)
