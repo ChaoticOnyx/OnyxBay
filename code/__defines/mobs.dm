@@ -262,7 +262,7 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 	BP_R_LEG  = "right leg", BP_L_ARM = "left arm",
 	BP_R_ARM = "right arm", BP_L_HAND = "left hand",
 	BP_R_HAND = "right hand", BP_L_FOOT = "left foot",
-	BP_R_FOOT = "right food"))
+	BP_R_FOOT = "right foot"))
 
 #define SYNTH_BLOOD_COLOUR "#030303"
 #define SYNTH_FLESH_COLOUR "#575757"
