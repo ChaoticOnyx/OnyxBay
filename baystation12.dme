@@ -183,6 +183,7 @@
 #include "code\_helpers\unsorted.dm"
 #include "code\_helpers\vector.dm"
 #include "code\_helpers\verbs.dm"
+#include "code\_helpers\view.dm"
 #include "code\_helpers\warnings.dm"
 #include "code\_helpers\weakref.dm"
 #include "code\_helpers\sorts\__main.dm"
