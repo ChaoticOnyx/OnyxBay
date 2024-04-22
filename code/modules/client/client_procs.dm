@@ -269,6 +269,8 @@
 	)
 	add_think_ctx("check_panel_loaded", CALLBACK(src, nameof(.proc/check_panel_loaded)), world.time + 30 SECONDS)
 
+	view_size = new(src, get_screen_size(get_preference_value("WIDESCREEN") == GLOB.PREF_YES))
+
 	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.multiaccount.panic_server_address && TopicData != "redirect")
 			DIRECT_OUTPUT(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections. Sending you to [config.multiaccount.panic_server_name ? config.multiaccount.panic_server_name : config.multiaccount.panic_server_address]</h1>"))
@@ -672,6 +674,13 @@
 			return TRUE
 
 	return FALSE
+
+/client/proc/change_view(view)
+	if(isnull(view))
+		CRASH("change_view was called without an argument")
+
+	src.view = view
+	mob.reload_fullscreen()
 
 /client/MouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
 	. = ..()

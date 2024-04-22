@@ -2,6 +2,9 @@
 	// * Black magic things *
 	parent_type = /datum
 
+	/// Client's view wrapper, use this instead of direct `view` modifications.
+	var/datum/view/view_size
+
 	// * Admin things *
 	var/datum/admins/holder = null
 	var/datum/admins/deadmin_holder = null

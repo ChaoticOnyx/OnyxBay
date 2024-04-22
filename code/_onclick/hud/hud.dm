@@ -173,7 +173,7 @@
 	if(!client)
 		return
 
-	if(client.view != world.view)
+	if(client.view_size.is_zooming())
 		return
 
 	if(!hud_used)
@@ -297,7 +297,6 @@
 	master = null
 	owner = null
 	screen_loc = ""
-
 
 /mob/proc/add_click_catcher()
 	if(!client.void)
