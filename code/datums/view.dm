@@ -32,9 +32,6 @@
 		set_zoom()
 
 /datum/view/proc/get_view()
-	if(disabled)
-		return -1
-
 	var/list/temp = get_view_size(default)
 
 	if(supressed)
