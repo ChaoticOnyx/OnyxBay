@@ -22,4 +22,4 @@
 		if(T)
 			T.Click(location, control, params)
 
-	. = 1
+	. = TRUE
