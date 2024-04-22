@@ -266,7 +266,7 @@
 				set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
 				src.client.screen |= GLOB.global_hud.nvg
 			if(FLASH_PROTECTION_VISION)
-				src.set_fullscreen(1, "flash_protection", /atom/movable/screen/fullscreen/impaired, TINT_MODERATE)
+				overlay_fullscreen("flash_protection", /atom/movable/screen/fullscreen/impaired, TINT_MODERATE)
 			else
 				if(!is_ooc_dead())
 					set_sight(sight&(~SEE_TURFS)&(~SEE_MOBS)&(~SEE_OBJS))

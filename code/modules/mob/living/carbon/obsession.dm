@@ -3,7 +3,7 @@
 
 	Sleeping(5)
 	spawn(3 SECOND)
-		set_fullscreen(TRUE, "red", /atom/movable/screen/fullscreen/red)
+		overlay_fullscreen("red", /atom/movable/screen/fullscreen/red)
 		sleep(2 SECONDS)
 
 		var/list/images = list()
