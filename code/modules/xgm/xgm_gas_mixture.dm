@@ -17,9 +17,6 @@
 	//List of active tile overlays for this gas_mixture.  Updated by check_tile_graphic()
 	var/list/graphic = list()
 
-	/// Cache of temperature overlays
-	var/list/temp_overlay_cache = list()
-
 /datum/gas_mixture/New(_volume = CELL_VOLUME, _temperature = 0, _group_multiplier = 1)
 	volume = _volume
 	temperature = _temperature
@@ -371,15 +368,12 @@
 				graphic_add += gas_data.tile_overlay[g]
 	. = 0
 
-	var/atom/movable/temp_overlay/heat_overlay = get_temperature_overlay(TEMPERATURE_OVERLAY_HEAT)
+	var/atom/movable/gas_overlay/temp_overlay/heat/heat_overlay = get_temperature_overlay(TEMPERATURE_OVERLAY_HEAT)
 	if(temperature >= CARBON_LIFEFORM_FIRE_RESISTANCE)
 		if(!LAZYISIN(graphic, heat_overlay))
 			graphic_add += heat_overlay
 	else if(heat_overlay in graphic)
 		graphic_remove += heat_overlay
-
-	var/new_alpha = clamp(max(125, 255 * ((temperature - CARBON_LIFEFORM_FIRE_RESISTANCE) / CARBON_LIFEFORM_FIRE_RESISTANCE * 4)), 125, 255)
-	heat_overlay.update_alpha_animation(new_alpha)
 
 	. = 0
 	//Apply changes
@@ -391,13 +385,13 @@
 		. = 1
 
 /datum/gas_mixture/proc/get_temperature_overlay(overlay_type)
-	var/atom/movable/temp_overlay/overlay = LAZYACCESS(temp_overlay_cache, overlay_type)
+	var/atom/movable/gas_overlay/temp_overlay/heat/overlay = LAZYACCESS(gas_data.temp_overlay_cache, overlay_type)
 	if(!isnull(overlay))
 		return overlay
 
 	if(overlay_type == TEMPERATURE_OVERLAY_HEAT)
-		overlay = new /atom/movable/temp_overlay/heat(null, TEMPERATURE_OVERLAY_HEAT)
-		LAZYSET(temp_overlay_cache, overlay_type, overlay)
+		overlay = new /atom/movable/gas_overlay/temp_overlay/heat(null, TEMPERATURE_OVERLAY_HEAT)
+		LAZYSET(gas_data.temp_overlay_cache, overlay_type, overlay)
 
 	return overlay
 
