@@ -32,16 +32,9 @@
 	if(QDELETED(owner) || !owner.client)
 		qdel(src)
 	else
-		var/view_size = owner.client.view
-		var/view_maxx
-		var/view_maxy
-
-		if(istext(view_size))
-			var/splitted = splittext(view_size, "x")
-			view_maxx = text2num(splitted[1]) + 1
-			view_maxy = text2num(splitted[2]) + 1
-		else
-			view_maxx = view_maxy = view_size + 1
+		var/list/view_sizes = get_view_size(owner.client.view)
+		var/view_maxx = ceil(view_sizes[1] / 2)
+		var/view_maxy = ceil(view_sizes[2] / 2)
 
 		var/atom/position = owner.client.eye
 		var/normalized_x = (position.x - TRANSITION_EDGE) / (world.maxx - (TRANSITION_EDGE * 2))

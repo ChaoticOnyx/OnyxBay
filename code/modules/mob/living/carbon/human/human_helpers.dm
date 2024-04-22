@@ -90,9 +90,6 @@
 
 	// Removes zoom effect
 	if (client && machine_visual)
-		if (client.view != world.view)
-			client.view = world.view
-
 		if (client.pixel_x != 0 || client.pixel_y != 0)
 			shift_view(0, 0)
 

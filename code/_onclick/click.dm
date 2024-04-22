@@ -447,36 +447,6 @@
 	if(direction != dir)
 		facedir(direction)
 
-/atom/movable/screen/click_catcher
-	icon = 'icons/hud/screen_gen.dmi'
-	icon_state = "catcher"
-	plane = CLICKCATCHER_PLANE
-	mouse_opacity = 2
-	screen_loc = "CENTER-7,CENTER-7"
-
-/atom/movable/screen/click_catcher/Destroy()
-	..()
-	return QDEL_HINT_LETMELIVE
-
-/proc/create_click_catcher()
-	. = list()
-	for(var/i = 0, i<15, i++)
-		for(var/j = 0, j<15, j++)
-			var/atom/movable/screen/click_catcher/CC = new()
-			CC.screen_loc = "NORTH-[i],EAST-[j]"
-			. += CC
-
-/atom/movable/screen/click_catcher/Click(location, control, params)
-	var/list/modifiers = params2list(params)
-	if(modifiers["middle"] && istype(usr, /mob/living/carbon))
-		var/mob/living/carbon/C = usr
-		C.swap_hand()
-	else
-		var/turf/T = screen_loc2turf(screen_loc, get_turf(usr))
-		if(T)
-			T.Click(location, control, params)
-	. = 1
-
 /*
 	Custom click handling
 */

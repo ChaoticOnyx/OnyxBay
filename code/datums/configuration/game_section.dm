@@ -1,6 +1,9 @@
 /datum/configuration_section/game
 	name = "game"
 
+	var/default_view = "15x15"
+	var/default_view_wide = "19x15"
+
 	var/events_preset = ""
 	var/map_switching = FALSE
 	var/auto_map_switching = FALSE
@@ -52,6 +55,9 @@
 	var/restart_timeout = 600
 
 /datum/configuration_section/game/load_data(list/data)
+	CONFIG_LOAD_STR(default_view, data["default_view"])
+	CONFIG_LOAD_STR(default_view_wide, data["default_view_wide"])
+
 	CONFIG_LOAD_STR(events_preset, data["events_preset"])
 	CONFIG_LOAD_BOOL(map_switching, data["map_switching"])
 	CONFIG_LOAD_BOOL(auto_map_switching, data["auto_map_switching"])

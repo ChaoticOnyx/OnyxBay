@@ -734,18 +734,20 @@ Ccomp's first proc.
 /client/proc/toggle_view_range()
 	set category = "Special Verbs"
 	set name = "Change View Range"
-	set desc = "switches between 1x and custom views"
 
-	if(view == world.view)
-		view = input("Select view range:", "FUCK YE", 7) in list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,128)
+	if(view_size.is_zooming())
+		view_size.reset_to_default()
 	else
-		view = world.view
+		var/choice = tgui_input_list(src, "Select view range.", "FUCK YE", list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,128))
+		if(isnull(choice))
+			return
+
+		view_size.set_default(choice)
 
 	log_and_message_admins("changed their view range to [view].")
-	feedback_add_details("admin_verb","CVRA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb", "CVRA")
 
 /client/proc/admin_call_shuttle()
-
 	set category = "Admin"
 	set name = "Call Evacuation"
 

@@ -33,3 +33,13 @@
 		LAZYREMOVE(filter_data, filter_name)
 		filters -= thing
 		update_filters()
+
+// TODO: Find a better place to store this and above procs.
+/mob/proc/set_renderer_filter(condition, renderer_name = SCENE_GROUP_RENDERER, filter_name, priority, list/params)
+	if(isnull(renderers))
+		return FALSE
+
+	if(!(renderer_name in renderers))
+		return FALSE
+
+	condition?renderers[renderer_name].add_filter(filter_name, priority, params) : renderers[renderer_name].remove_filter(filter_name)

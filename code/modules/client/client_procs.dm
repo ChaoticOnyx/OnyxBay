@@ -269,6 +269,8 @@
 	)
 	add_think_ctx("check_panel_loaded", CALLBACK(src, nameof(.proc/check_panel_loaded)), world.time + 30 SECONDS)
 
+	view_size = new(src, get_screen_size(get_preference_value("WIDESCREEN") == GLOB.PREF_YES))
+
 	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.multiaccount.panic_server_address && TopicData != "redirect")
 			DIRECT_OUTPUT(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections. Sending you to [config.multiaccount.panic_server_name ? config.multiaccount.panic_server_name : config.multiaccount.panic_server_address]</h1>"))
@@ -580,13 +582,19 @@
 		winset(src, "mainwindow", "menu=menu;")
 	winset(src, "mainwindow", "is-maximized=true")
 
+/client/proc/attempt_fit_viewport()
+	if(get_preference_value("AUTOFIT") != GLOB.PREF_YES)
+		return
+
+	fit_viewport()
+
 /client/verb/fit_viewport()
 	set name = "Fit Viewport"
 	set category = "OOC"
 	set desc = "Fit the width of the map window to match the viewport"
 
 	// Fetch aspect ratio
-	var/view_size = getviewsize(view)
+	var/view_size = get_view_size(view)
 	var/aspect_ratio = view_size[1] / view_size[2]
 
 	// Calculate desired pixel width using window size and aspect ratio
@@ -666,6 +674,14 @@
 			return TRUE
 
 	return FALSE
+
+/client/proc/change_view(new_view)
+	if(isnull(new_view))
+		CRASH("change_view was called without an argument")
+
+	view = new_view
+	attempt_fit_viewport()
+	mob.reload_fullscreen()
 
 /client/MouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
 	. = ..()
