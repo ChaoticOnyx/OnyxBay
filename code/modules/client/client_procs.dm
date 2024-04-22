@@ -675,11 +675,12 @@
 
 	return FALSE
 
-/client/proc/change_view(view)
-	if(isnull(view))
+/client/proc/change_view(new_view)
+	if(isnull(new_view))
 		CRASH("change_view was called without an argument")
 
-	src.view = view
+	view = new_view
+	attempt_fit_viewport()
 	mob.reload_fullscreen()
 
 /client/MouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
