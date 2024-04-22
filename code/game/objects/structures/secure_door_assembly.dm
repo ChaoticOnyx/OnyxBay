@@ -80,6 +80,9 @@
 	qdel(src)
 
 /obj/structure/secure_door_assembly/wrench_floor_bolts(mob/user, delay = 40)
+	if(!(state == STATE_EMPTY || state == STATE_UNANCHORED))
+		return
+
 	. = ..()
 
 	if(anchored)
