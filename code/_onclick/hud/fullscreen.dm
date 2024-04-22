@@ -139,33 +139,26 @@
 	screen_loc = ui_entire_screen
 	alpha = 127
 
-/atom/movable/screen/fullscreen/fadeout
-	icon = 'icons/hud/screen.dmi'
-	icon_state = "black"
-	screen_loc = ui_entire_screen
-	alpha = 0
-	allstate = 1
-
-/atom/movable/screen/fullscreen/fadeout/Initialize()
-	. = ..()
-	animate(src, alpha = 255, time = 10)
-
 /atom/movable/screen/fullscreen/scanline
-	icon = 'icons/effects/static.dmi'
-	icon_state = "scanlines"
+	icon = 'icons/hud/screen.dmi'
 	screen_loc = ui_entire_screen
+	icon_state = "scanlines"
+	allstate = TRUE
 	alpha = 50
-	blend_mode = BLEND_DEFAULT
 
 /atom/movable/screen/fullscreen/cam_corners
-	icon = 'icons/hud/screen_full.dmi'
 	icon_state = "cam_corners"
-	allstate = 1
-	blend_mode = BLEND_OVERLAY
+	allstate = TRUE
+
+/atom/movable/screen/fullscreen/rec
+	icon = 'icons/effects/effects.dmi'
+	screen_loc = "TOP-2,WEST+2"
+	icon_state = "rec"
+	allstate = TRUE
 
 /atom/movable/screen/fullscreen/fishbed
 	icon_state = "fishbed"
-	allstate = 1
+	allstate = TRUE
 
 /atom/movable/screen/fullscreen/pain
 	icon_state = "brutedamageoverlay6"
