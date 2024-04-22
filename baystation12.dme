@@ -318,6 +318,7 @@
 #include "code\datums\suit_sensor_jammer_method.dm"
 #include "code\datums\sun.dm"
 #include "code\datums\think_context.dm"
+#include "code\datums\view.dm"
 #include "code\datums\weakref.dm"
 #include "code\datums\ai\ai.dm"
 #include "code\datums\ai\ai_holo.dm"
