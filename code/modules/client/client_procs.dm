@@ -580,6 +580,12 @@
 		winset(src, "mainwindow", "menu=menu;")
 	winset(src, "mainwindow", "is-maximized=true")
 
+/client/proc/attempt_fit_viewport()
+	if(get_preference_value("AUTOFIT") != GLOB.PREF_YES)
+		return
+
+	fit_viewport()
+
 /client/verb/fit_viewport()
 	set name = "Fit Viewport"
 	set category = "OOC"

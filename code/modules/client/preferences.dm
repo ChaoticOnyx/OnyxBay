@@ -483,6 +483,7 @@
 
 	var/zoom_mode = client.get_preference_value("SCALING_METHOD")
 	winset(client, "mapwindow.map", "zoom-mode=[lowertext(zoom_mode)]")
+	client.attempt_fit_viewport()
 
 	if(client.get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		client.toggle_fullscreen(client.get_preference_value(/datum/client_preference/fullscreen_mode))
