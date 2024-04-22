@@ -742,7 +742,7 @@ Ccomp's first proc.
 		if(isnull(choice))
 			return
 
-		view_size.set_both(choice, choice)
+		view_size.set_default(choice)
 
 	log_and_message_admins("changed their view range to [view].")
 	feedback_add_details("admin_verb", "CVRA")
