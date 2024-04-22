@@ -10,6 +10,10 @@
 	if(!is_view_shifted)
 		if(!isturf(src.loc))
 			return
+
+		if(isnull(client))
+			return
+
 		if(stat)
 			return
 
@@ -17,8 +21,10 @@
 		var/delta_x = T.x - position.x
 		var/delta_y = T.y - position.y
 
-		if(abs(delta_x) > 7 || abs(delta_y) > 7)
+		var/list/view_sizes = get_view_size(client.view)
+		if(abs(delta_x) > view_sizes[1] || abs(delta_y) > view_sizes[2])
 			return
+
 		if(delta_x == 0 && delta_y == 0)
 			return
 
