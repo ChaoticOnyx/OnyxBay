@@ -216,6 +216,7 @@
 	SSeams.CollectDataForClient(src)
 
 	setup_preferences()
+	view_size = new(src, get_screen_size(TRUE))
 
 	. = ..()	// calls mob.Login()
 
@@ -256,8 +257,6 @@
 
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
 		to_chat(src, SPAN("warning", "Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you."))
-
-	view_size = new(src, get_screen_size(TRUE))
 
 	if(prefs && !istype(mob, world.mob))
 		prefs.apply_post_login_preferences(src)
@@ -681,7 +680,11 @@
 
 	view = new_view
 	attempt_fit_viewport()
-	mob.reload_fullscreen()
+	/**
+	 * We create view in 'client/New()' BEFORE client is actually logged in his mob
+	 * Otherwise apply_post_login_preferences() crashes due to view being not initialized.
+	 */
+	mob?.reload_fullscreen()
 
 /client/MouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
 	. = ..()
