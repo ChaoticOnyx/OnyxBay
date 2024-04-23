@@ -221,7 +221,7 @@ SUBSYSTEM_DEF(donations)
 			//Update donations to old record
 			sql_query("UPDATE points_transactions SET player = $discord_player_id WHERE player = $ckey_player_id", dbcon_don, list(discord_player_id = discord_player_id, ckey_player_id = ckey_player_id))
 			sql_query("UPDATE money_transactions SET player = $discord_player_id WHERE player = $ckey_player_id", dbcon_don, list(discord_player_id = discord_player_id, ckey_player_id = ckey_player_id))
-
+			sql_query("UPDATE store_players_items SET player = $discord_player_id WHERE player = $ckey_player_id", dbcon_don, list(discord_player_id = discord_player_id, ckey_player_id = ckey_player_id))
 			sql_query("DELETE FROM players WHERE id = $ckey_player_id", dbcon_don, list(ckey_player_id = ckey_player_id))
 
 		sql_query("UPDATE players SET ckey = $ckey WHERE discord = $discord_id", dbcon_don, list(ckey = player.ckey, discord_id = discord_id))
