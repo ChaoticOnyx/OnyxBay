@@ -5,7 +5,7 @@
 
 	icon = 'icons/obj/machines/vending/cola.dmi'
 	icon_state = "Cola_Machine"
-	light_color = "#D85252"
+	light_color = "#EC2F2F"
 
 	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 
