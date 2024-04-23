@@ -5,6 +5,7 @@
 
 	icon = 'icons/obj/machines/vending/sec.dmi'
 	icon_state = "sec"
+	light_color = "#F75D5D"
 
 	vend_delay = 20
 	use_alt_icons = TRUE

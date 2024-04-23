@@ -5,7 +5,7 @@
 
 	icon = 'icons/obj/machines/vending/cigs.dmi'
 	icon_state = "cigs"
-	light_color = COLOR_RED
+	light_color = "#E0E0E0"
 
 	vend_delay = 30
 	use_alt_icons = TRUE
