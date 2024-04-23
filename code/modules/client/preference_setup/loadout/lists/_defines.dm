@@ -32,3 +32,6 @@
 
 //For jobs that spawn with armor in their lockers
 #define ARMORED_ROLES list(/datum/job/captain, /datum/job/hop, /datum/job/rd, /datum/job/cmo, /datum/job/chief_engineer, /datum/job/hos, /datum/job/qm, /datum/job/officer, /datum/job/warden, /datum/job/detective, /datum/job/merchant)
+
+//For jobs that are allowed to give zero fucks about uniforms.
+#define CIVILIAN_ROLES list(/datum/job/captain, /datum/job/hop, /datum/job/assistant, /datum/job/bartender, /datum/job/chef, /datum/job/hydro, /datum/job/qm, /datum/job/cargo_tech, /datum/job/mining, /datum/job/janitor, /datum/job/librarian, /datum/job/lawyer, /datum/job/iaa, /datum/job/clown, /datum/job/mime, /datum/job/chaplain, /datum/job/merchant, /datum/job/psychiatrist, /datum/job/scientist)
