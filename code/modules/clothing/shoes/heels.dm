@@ -43,11 +43,11 @@
 
 	trip_chance = 0
 
-	var/mob/wearer = loc
+	var/mob/living/wearer = loc
+	if(!istype(wearer))
+		return
 
-	wearer.Stun(1)
-	wearer.Weaken(2)
-
+	wearer.stun_effect_act(2, rand(10, 15), pick(BP_FEET), src)
 	visible_message("<b>[wearer]</b> trips!", SPAN_WARNING("You trip!"))
 
 #undef TRIP_CHANCE_INCREASE
@@ -64,7 +64,9 @@
 		return FALSE
 
 	var/turf/walking = get_turf(loc)
-	if(wearing.cached_slowdown >= config.movement.walk_speed && !istype(walking, /turf/simulated/floor/plating))
+	var/datum/species/wearing_species = all_species[wearing.get_species()]
+
+	if(wearing?.cached_slowdown >= wearing_species.walk_speed_perc * config.movement.walk_speed && !istype(walking, /turf/simulated/floor/plating))
 		return FALSE
 
 	return TRUE
