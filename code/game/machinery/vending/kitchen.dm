@@ -5,6 +5,7 @@
 
 	icon_state = "dinnerware"
 	icon = 'icons/obj/machines/vending/dinnerware.dmi'
+	light_color = "#D6F1FF"
 
 	use_vend_state = TRUE
 	product_ads = "Mm, food stuffs!;Food and food accessories.;Get your plates!;You like forks?;I like forks.;Woo, utensils.;You don't really need these..."

@@ -5,7 +5,7 @@
 
 	icon_state = "med"
 	icon = 'icons/obj/machines/vending/med.dmi'
-	light_color = COLOR_RED_LIGHT
+	light_color = "#EABBBB"
 
 	req_access = list(access_medical_equip)
 	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
@@ -53,6 +53,7 @@
 
 	icon = 'icons/obj/machines/vending/wallmed.dmi'
 	icon_state = "wallmed"
+	light_color = "#EABBBB"
 
 	density = FALSE
 
@@ -84,6 +85,7 @@
 
 	icon = 'icons/obj/machines/vending/wallmed.dmi'
 	icon_state = "wallmed"
+	light_color = "#EABBBB"
 
 	density = FALSE
 
