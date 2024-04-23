@@ -39,8 +39,18 @@
 		var/atom/position = owner.client.eye
 		var/normalized_x = (position.x - TRANSITION_EDGE) / (world.maxx - (TRANSITION_EDGE * 2))
 		var/normalized_y = (position.y - TRANSITION_EDGE) / (world.maxy - (TRANSITION_EDGE * 2))
+
 		var/result_x = round(view_maxx * WORLD_ICON_SIZE * normalized_x)
 		var/result_y = round(view_maxy * WORLD_ICON_SIZE * normalized_y)
+
+		var/max_offset = abs(view_sizes[1] - view_sizes[2]) * WORLD_ICON_SIZE
+
+		if(view_maxx > view_maxy)
+			result_x = min(max_offset, result_x)
+
+		if(view_maxy > view_maxx)
+			result_y = min(max_offset, result_y)
+
 		screen_loc = "BOTTOM:[-result_y],LEFT:[-result_x]"
 
 /obj/skybox/proc/DoRotate()
