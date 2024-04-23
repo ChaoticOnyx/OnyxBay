@@ -257,6 +257,8 @@
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
 		to_chat(src, SPAN("warning", "Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you."))
 
+	view_size = new(src, get_screen_size(TRUE))
+
 	if(prefs && !istype(mob, world.mob))
 		prefs.apply_post_login_preferences(src)
 
@@ -268,8 +270,6 @@
 		inline_js = file("html/statbrowser/statbrowser.js")
 	)
 	add_think_ctx("check_panel_loaded", CALLBACK(src, nameof(.proc/check_panel_loaded)), world.time + 30 SECONDS)
-
-	view_size = new(src, get_screen_size(get_preference_value("WIDESCREEN") == GLOB.PREF_YES))
 
 	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.multiaccount.panic_server_address && TopicData != "redirect")
