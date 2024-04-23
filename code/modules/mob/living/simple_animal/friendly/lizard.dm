@@ -1,7 +1,7 @@
 #define COURAGE_MODIFIER 5 //More = More chance to start attacking
 #define MAX_ALLIES 8	//We don't need all legions of lizards to attack one person, that will be limit
 #define POISON_AMOUNT 3	//How much poison will one lizard inject per one bite
-#define BREEDING_COOLDOWN 10 MINUTES	//How long will lizard be unable to breed after breeding or birth
+#define BREEDING_COOLDOWN (10 MINUTES)	//How long will lizard be unable to breed after breeding or birth
 
 /mob/living/simple_animal/lizard
 	name = "lizard"
