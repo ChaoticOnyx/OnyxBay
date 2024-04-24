@@ -189,11 +189,13 @@
 	return 1
 
 /obj/item/rig_module/chem_dispenser/engage(atom/target)
-
 	if(!..())
-		return 0
+		return FALSE
 
 	var/mob/living/carbon/human/H = holder.wearer
+
+	if(!Adjacent(H, target))
+		return FALSE
 
 	if(!charge_selected)
 		to_chat(H, "<span class='danger'>You have not selected a chemical type.</span>")
