@@ -4,6 +4,7 @@
 /datum/uplink_item/item/telecrystal
 	category = /datum/uplink_category/telecrystals
 	desc = "Acquire the uplink crystals in pure form."
+	path = /obj/item/stack/telecrystal
 
 /datum/uplink_item/item/telecrystal/get_goods(datum/component/uplink/U, loc)
 	return new /obj/item/stack/telecrystal(loc, cost(U.telecrystals, U))
