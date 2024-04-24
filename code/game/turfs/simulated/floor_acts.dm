@@ -180,7 +180,9 @@
 				return FALSE
 
 			//create the assembly and let it finish itself
-			var/obj/structure/door_assembly/assembly = new (src)
+			var/obj/machinery/door/airlock/airlock = airlock_type
+			var/assembly_path = airlock::assembly_type
+			var/obj/structure/door_assembly/assembly = new assembly_path(src)
 			if(initial(airlock_type.glass))
 				assembly.glass = TRUE
 				assembly.glass_type = airlock_type
