@@ -1,5 +1,48 @@
 [
   {
+    "author": "Filatelele",
+    "date": "2024-04-24T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Добавлено визуальное сообщение при открытии канистры.",
+        "pr": 12297
+      },
+      {
+        "prefix": "RscAdd",
+        "message": "Обновленный TGUI для аплинка.",
+        "pr": 12203
+      }
+    ]
+  },
+  {
+    "author": "Code by Filatelele, sprites by MemoryDreams",
+    "date": "2024-04-24T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Добавлена осадная пушка из инвалидной коляски и мусоропроводной трубы.",
+        "pr": 12223
+      }
+    ]
+  },
+  {
+    "author": "intercepti0n",
+    "date": "2024-04-24T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Интерфейс stock parts processor обновлен и теперь использует РнД тему с поддержкой темного режима.",
+        "pr": 12296
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Ящерицы больше бесконечно не размножаются.",
+        "pr": 12294
+      }
+    ]
+  },
+  {
     "author": "intercepti0n",
     "date": "2024-04-23T00:00:00+03:00",
     "changes": [
