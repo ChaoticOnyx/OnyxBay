@@ -459,8 +459,7 @@
 /datum/mind/proc/find_syndicate_uplink()
 	var/datum/component/uplink/uplink
 	var/list/L = current.get_contents()
-	for(var/i in L)
-		var/atom/movable/I = i
+	for(var/atom/movable/I in L)
 		uplink = I.get_component(/datum/component/uplink)
 		if(istype(uplink))
 			return uplink

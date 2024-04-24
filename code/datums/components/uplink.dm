@@ -85,7 +85,7 @@
 		"selectedExploitUID" = exploit_uid,
 	)
 
-	data["exploitData"] = list()
+	data["exploitData"] = isnull(exploit_uid) ? null : list()
 	if(!isnull(exploit_uid))
 		for(var/datum/computer_file/crew_record/L in GLOB.all_crew_records)
 			if(L.uid != exploit_uid)
@@ -130,7 +130,7 @@
 	for(var/category in GLOB.contract_categories)
 		data["contractCategories"] += list(list(
 			"name" = category,
-			"contracts" = all_contracts[category],
+			"contracts" = LAZYCOPY(all_contracts[category]),
 		))
 
 	uplink_items = get_uplink_items(src, allow_sales = TRUE)

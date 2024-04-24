@@ -9,6 +9,7 @@ import {
   NoticeBox,
   LabeledList,
   Table,
+  Divider,
 } from "../components";
 import { formatMoney } from "../format";
 import { Window } from "../layouts";
@@ -250,7 +251,7 @@ const UplinkMenu = (props: UplinkMenuProps, context: any) => {
   return (
     <>
       {searchText.length === 0 && (
-        <Stack.Item mr="12px">
+        <Stack.Item mr={1.5}>
           <Tabs vertical>
             {categories?.map((category) => (
               <>
@@ -270,7 +271,7 @@ const UplinkMenu = (props: UplinkMenuProps, context: any) => {
           </Tabs>
         </Stack.Item>
       )}
-      {items.length === 0 && (
+      {items?.length === 0 && (
         <NoticeBox>
           {searchText.length === 0
             ? "No items in this category."
@@ -390,11 +391,11 @@ const ContractsMenu = (props: ContractMenuProps, context: any) => {
   } = props;
   return (
     <Stack>
-      <Stack.Item vertical mr="12px">
+      <Stack.Item vertical mr={1.5}>
         <Tabs vertical>
           {contractCategories?.map((category) => (
             <>
-              {category.contracts.length ? (
+              {category.contracts?.length ? (
                 <Tabs.Tab
                   key={category.name}
                   selected={category.name === selectedContractCategory}
@@ -437,65 +438,62 @@ const ExploitableMenu = (props: ExploitableMenuProps, context: any) => {
   const { act } = useBackend<InputData>(context);
   const { exploits, selectedExploit } = props;
   return (
-    <Stack vertical>
+    <Stack vertical fill>
       <Stack.Item>
-        <Section>
-          {exploits?.map((exploit) => (
-            <Stack.Item>
-              <Button
-                onClick={() =>
-                  act("select_exploit", {
-                    uid: exploit.uid,
-                  })
-                }
-              >
-                {exploit.name}
-              </Button>
-            </Stack.Item>
-          ))}
-        </Section>
+        {exploits?.map((exploit) => (
+          <Stack.Item>
+            <Button
+              onClick={() =>
+                act("select_exploit", {
+                  uid: exploit.uid,
+                })
+              }
+            >
+              {exploit.name}
+            </Button>
+          </Stack.Item>
+        ))}
       </Stack.Item>
       {selectedExploit ? (
         <Stack.Item>
-          <Section title={`Information`}>
-            <LabeledList>
-              <LabeledList.Item label="Name">
-                {selectedExploit.Name}
-              </LabeledList.Item>
+          <h1>Information</h1>
+          <LabeledList>
+            <LabeledList.Item label="Name">
+              {selectedExploit.Name}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Sex">
-                {selectedExploit.Sex}
-              </LabeledList.Item>
+            <LabeledList.Item label="Sex">
+              {selectedExploit.Sex}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Age">
-                {selectedExploit.Age}
-              </LabeledList.Item>
+            <LabeledList.Item label="Age">
+              {selectedExploit.Age}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Species">
-                {selectedExploit.Species}
-              </LabeledList.Item>
+            <LabeledList.Item label="Species">
+              {selectedExploit.Species}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Home System">
-                {selectedExploit["Home System"]}
-              </LabeledList.Item>
+            <LabeledList.Item label="Home System">
+              {selectedExploit["Home System"]}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Background">
-                {selectedExploit.Background}
-              </LabeledList.Item>
+            <LabeledList.Item label="Background">
+              {selectedExploit.Background}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Religion">
-                {selectedExploit.Religion}
-              </LabeledList.Item>
+            <LabeledList.Item label="Religion">
+              {selectedExploit.Religion}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Fingerprint">
-                {selectedExploit.Fingerprint}
-              </LabeledList.Item>
+            <LabeledList.Item label="Fingerprint">
+              {selectedExploit.Fingerprint}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Exploitable information">
-                {selectedExploit["Exploitable Information"] || "N/A"}
-              </LabeledList.Item>
-            </LabeledList>
-          </Section>
+            <LabeledList.Item label="Exploitable information">
+              {selectedExploit["Exploitable Information"] || "N/A"}
+            </LabeledList.Item>
+          </LabeledList>
         </Stack.Item>
       ) : (
         <></>
