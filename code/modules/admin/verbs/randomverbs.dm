@@ -736,7 +736,7 @@ Ccomp's first proc.
 	set name = "Change View Range"
 
 	if(view_size.is_zooming())
-		view_size.reset_to_default()
+		view_size.set_default(get_screen_size(get_preference_value("WIDESCREEN") == GLOB.PREF_YES))
 	else
 		var/choice = tgui_input_list(src, "Select view range.", "FUCK YE", list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,128))
 		if(isnull(choice))
