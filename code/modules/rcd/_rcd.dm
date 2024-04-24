@@ -42,12 +42,12 @@
 	spark_system.attach(src)
 
 ///returns local local_matter units available. overriden by rcd borg to return power units available
-/obj/item/construction/proc/get_matter(mob/user)
+/obj/item/construction/proc/get_matter()
 	return local_matter
 
 /obj/item/construction/examine(mob/user, infix)
 	. = ..()
-	. += "It currently holds [get_matter(user)]/[max_matter] local_matter-units."
+	. += "It currently holds [get_matter()]/[max_matter] matter-units."
 
 /obj/item/construction/Destroy()
 	QDEL_NULL(spark_system)
