@@ -119,7 +119,12 @@
 
 	var/list/all_contracts = list()
 	for(var/datum/antag_contract/AC in GLOB.traitors.fixer.return_contracts(user?.mind))
-		all_contracts[AC.category] += list(list("name" = AC.name, "category" = AC.category, "desc" = AC.desc, "reward" = AC.reward))
+		all_contracts[AC.category] += list(list(
+			"name" = AC.name,
+			"category" = AC.category,
+			"desc" = AC.desc,
+			"reward" = AC.reward,
+			))
 
 	data["contractCategories"] = list()
 	for(var/category in GLOB.contract_categories)
