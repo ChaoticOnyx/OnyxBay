@@ -1,7 +1,5 @@
 var/datum/uplink/uplink = new()
 
-GLOBAL_LIST_INIT(uplink_items, subtypesof(/datum/uplink_item))
-
 /proc/get_uplink_items(datum/component/uplink/U, allow_sales = FALSE)
 	var/list/filtered_uplink_items = list()
 	var/list/sale_items = list()
