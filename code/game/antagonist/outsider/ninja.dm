@@ -124,12 +124,10 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 
 	var/obj/item/device/pda/ninja/U = new(get_turf(player))
 	var/pda_pass = "[rand(100,999)] [pick("Alpha","Bravo","Delta","Omega")]"
-	var/obj/item/device/uplink/T = new(U, player.mind)
-	U.hidden_uplink = T
+	U.AddComponent(/datum/component/uplink, player.mind, FALSE, TRUE, null, 0)
 	U.lock_code = pda_pass
 	to_chat(player, "A portable information relay has been installed in your [U]. Simply enter the code \"[pda_pass]\" into the ringtone select to unlock its hidden features.")
 	player.mind.store_memory("<B>Uplink Passcode:</B> [pda_pass].")
-	U.hidden_uplink.uses = 0
 	player.pick_or_drop(U)
 
 	spawn(10)
