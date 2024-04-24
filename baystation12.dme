@@ -1405,6 +1405,7 @@
 #include "code\game\objects\structures\stool_bed_chair_nest\chairs.dm"
 #include "code\game\objects\structures\stool_bed_chair_nest\couches.dm"
 #include "code\game\objects\structures\stool_bed_chair_nest\stools.dm"
+#include "code\game\objects\structures\stool_bed_chair_nest\wheelcannon.dm"
 #include "code\game\objects\structures\stool_bed_chair_nest\wheelchair.dm"
 #include "code\game\storyteller\_defines.dm"
 #include "code\game\storyteller\storyteller.dm"
