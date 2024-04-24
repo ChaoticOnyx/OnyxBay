@@ -136,8 +136,7 @@
 	data["itemCategories"] = list()
 	for(var/category in uplink_items)
 		var/list/cat = list(
-			"name" = capitalize(replacetext(replacetext("[category]", "/datum/uplink_category/", ""), "_", " ")),
-			"items" = list()
+			"name" = capitalize(replacetext(replacetext("[category]", "/datum/uplink_category/", ""), "_", " "))
 		)
 
 		for(var/item in uplink_items[category])
@@ -161,7 +160,10 @@
 
 	data["crewRecords"] = list()
 	for(var/datum/computer_file/crew_record/L in GLOB.all_crew_records)
-		data["crewRecords"] += list(list("name" = L.get_name(), "uid" = L.uid))
+		data["crewRecords"] += list(list(
+			"name" = L.get_name(),
+			"uid" = L.uid,
+		))
 
 	return data
 
