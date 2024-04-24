@@ -176,6 +176,9 @@
 				return TRUE
 
 			for(var/obj/machinery/door/door in src)
+				if(istype(door, /obj/machinery/door/firedoor))
+					continue
+
 				show_splash_text(user, "there's already a door!", "\icon[src] There's already a door!")
 				return FALSE
 
