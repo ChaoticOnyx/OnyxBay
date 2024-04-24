@@ -123,13 +123,10 @@
 
 	data["contractCategories"] = list()
 	for(var/category in GLOB.contract_categories)
-		var/list/cat = list(
+		data["contractCategories"] += list(list(
 			"name" = category,
-		)
-
-		cat["contracts"] += LAZYCOPY(all_contracts[category])
-
-		data["contractCategories"] += list(cat)
+			"contracts" = all_contracts[category],
+		))
 
 	uplink_items = get_uplink_items(src, allow_sales = TRUE)
 
