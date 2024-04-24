@@ -12,8 +12,14 @@ GLOBAL_DATUM_INIT(default_state, /datum/topic_state/default, new)
 /mob/observer/ghost/default_can_use_topic(src_object)
 	if(can_admin_interact())
 		return STATUS_INTERACTIVE							// Admins are more equal
-	if(!client || get_dist(src_object, src)	> client.view)	// Preventing ghosts from having a million windows open by limiting to objects in range
+
+	if(isnull(client))
 		return STATUS_CLOSE
+
+	var/list/view_sizes = get_view_size(client.view)
+	if(get_dist(src_object, src) >= max(view_sizes[1], view_sizes[2]))	// Preventing ghosts from having a million windows open by limiting to objects in range
+		return STATUS_CLOSE
+
 	return STATUS_UPDATE									// Ghosts can view updates
 
 /mob/living/silicon/pai/default_can_use_topic(src_object)
@@ -28,7 +34,8 @@ GLOBAL_DATUM_INIT(default_state, /datum/topic_state/default, new)
 		return
 
 	// robots can interact with things they can see within their view range
-	if((src_object in view(src)) && get_dist(src_object, src) <= src.client.view)
+	var/list/view_sizes = get_view_size(client.view)
+	if((src_object in view(src)) && get_dist(src_object, src) <= max(view_sizes[1], view_sizes[2]))
 		return STATUS_INTERACTIVE	// interactive (green visibility)
 	return STATUS_DISABLED			// no updates, completely disabled (red visibility)
 
@@ -53,8 +60,10 @@ GLOBAL_DATUM_INIT(default_state, /datum/topic_state/default, new)
 		if(cameranet && !cameranet.is_turf_visible(get_turf(src_object)))
 			return STATUS_CLOSE
 		return STATUS_INTERACTIVE
-	else if(get_dist(src_object, src) <= client.view)	// View does not return what one would expect while installed in an inteliCard
-		return STATUS_INTERACTIVE
+	else
+		var/list/view_sizes = get_view_size(client.view)
+		if(get_dist(src_object, src) <= max(view_sizes[1], view_sizes[2]))	// View does not return what one would expect while installed in an inteliCard
+			return STATUS_INTERACTIVE
 
 	return STATUS_CLOSE
 
