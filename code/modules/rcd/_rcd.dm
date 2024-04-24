@@ -47,7 +47,7 @@
 
 /obj/item/construction/examine(mob/user, infix)
 	. = ..()
-	. += "It currently holds [get_matter()]/[max_matter] matter-units."
+	. += "It currently holds [get_matter(user)]/[max_matter] matter-units."
 
 /obj/item/construction/Destroy()
 	QDEL_NULL(spark_system)
