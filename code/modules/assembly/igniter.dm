@@ -16,11 +16,11 @@
 	if(!.)
 		return
 
-	if(holder && istype(holder.loc,/obj/item/grenade))
+	if(istype(holder?.loc,/obj/item/grenade))
 		var/obj/item/grenade/grenade = holder.loc
 		if(grenade.active)
 			grenade.detonate()
-	else if(istype(holder.loc, /obj/structure/wheelcannon))
+	else if(istype(holder?.loc, /obj/structure/wheelcannon))
 		var/obj/structure/wheelcannon/wheelcannon = holder.loc
 		wheelcannon.shoot()
 	else
