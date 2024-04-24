@@ -314,19 +314,26 @@ update_flag
 		ui.open()
 		ui.set_auto_update(1)
 
+#define VISIBLE_MSG_RANGE 4
 /obj/machinery/portable_atmospherics/canister/OnTopic(mob/user, href_list, state)
 	if(href_list["toggle"])
-		if (valve_open)
-			if (holding)
-				release_log += "Valve was <b>closed</b> by [user] ([user.ckey]), stopping the transfer into the [holding]<br>"
+		var/msg_log
+		var/msg_vis
+		if(valve_open)
+			if(holding)
+				msg_log = "Valve was <b>closed</b> by [user] ([user.ckey]), stopping the transfer into the [holding]<br>"
 			else
-				release_log += "Valve was <b>closed</b> by [user] ([user.ckey]), stopping the transfer into the <font color='red'><b>air</b></font><br>"
+				msg_log = "Valve was <b>closed</b> by [user] ([user.ckey]), stopping the transfer into the <font color='red'><b>air</b></font><br>"
+			msg_vis = "\The [user] closed \the [src]'s valve, stopping the transfer into [holding ? "\the [holding]" : "the <font color='red'><b>air</b></font>"]."
 		else
-			if (holding)
-				release_log += "Valve was <b>opened</b> by [user] ([user.ckey]), starting the transfer into the [holding]<br>"
+			if(holding)
+				msg_log = "Valve was <b>opened</b> by [user] ([user.ckey]), starting the transfer into the [holding]<br>"
 			else
-				release_log += "Valve was <b>opened</b> by [user] ([user.ckey]), starting the transfer into the <font color='red'><b>air</b></font><br>"
+				msg_log = "Valve was <b>opened</b> by [user] ([user.ckey]), starting the transfer into the <font color='red'><b>air</b></font><br>"
 				log_open()
+			msg_vis = "\The [user] opened \the [src]'s valve, starting the transfer into [holding ? "\the [holding]" : "the <font color='red'><b>air</b></font>"]."
+		release_log += msg_log
+		visible_message(msg_vis, "You hear the sound of a moving valve.", VISIBLE_MSG_RANGE)
 		valve_open = !valve_open
 		. = TOPIC_REFRESH
 
@@ -371,6 +378,8 @@ update_flag
 			SetName("\improper Canister: [label]")
 		update_icon()
 		. = TOPIC_REFRESH
+
+#undef VISIBLE_MSG_RANGE
 
 /obj/machinery/portable_atmospherics/canister/CanUseTopic(mob/user)
 	if(destroyed)
