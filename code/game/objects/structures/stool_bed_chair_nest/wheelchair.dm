@@ -146,6 +146,22 @@
 			pulling = null
 		return
 
+/obj/structure/bed/chair/wheelchair/MouseDrop_T(atom/movable/dropping, mob/living/user)
+	if(istype(dropping, /obj/structure/disposalconstruct) && !buckled_mob)
+		show_splash_text(user, "attaching...", "You start attaching \the [dropping] to \the [src]...")
+		if(!do_after(user, 10 SECONDS, src, TRUE))
+			return
+
+		if(QDELETED(src) || QDELETED(dropping) || QDELETED(user) || buckled_mob)
+			return
+
+		new /obj/structure/wheelcannon(get_turf(src))
+		qdel_self()
+		qdel(dropping)
+		return
+
+	return ..()
+
 /obj/structure/bed/chair/wheelchair/Bump(atom/A)
 	..()
 	if(!buckled_mob)	return

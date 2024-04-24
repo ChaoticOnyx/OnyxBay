@@ -599,12 +599,6 @@
 				usr.update_inv_r_hand(0)
 	return 1
 
-/atom/movable/screen/rec
-	icon = 'icons/effects/effects.dmi'
-	icon_state = "rec"
-	screen_loc = "TOP-2,WEST+2"
-	layer = FULLSCREEN_LAYER
-
 /atom/movable/screen/holomap
 	icon = 'icons/480x480.dmi'
 	icon_state = "blank"

@@ -63,7 +63,7 @@
 				return 1
 	if(href_list["hair_color"])
 		if(can_change(APPEARANCE_HAIR_COLOR))
-			var/new_hair = tgui_color_picker("Please select hair color.", "Hair Color", rgb(owner.r_hair, owner.g_hair, owner.b_hair))
+			var/new_hair = tgui_color_picker(usr, "Please select hair color.", "Hair Color", rgb(owner.r_hair, owner.g_hair, owner.b_hair))
 			if(new_hair && can_still_topic(state))
 				var/r_hair = hex2num(copytext(new_hair, 2, 4))
 				var/g_hair = hex2num(copytext(new_hair, 4, 6))
@@ -73,7 +73,7 @@
 					return 1
 	if(href_list["hair_s_color"])
 		if(can_change(APPEARANCE_HAIR_COLOR))
-			var/new_hair = tgui_color_picker("Please select secoundary hair color.", "Secondary Hair Color", rgb(owner.r_hair, owner.g_hair, owner.b_hair))
+			var/new_hair = tgui_color_picker(usr, "Please select secoundary hair color.", "Secondary Hair Color", rgb(owner.r_hair, owner.g_hair, owner.b_hair))
 			if(new_hair && can_still_topic(state))
 				var/r_hair = hex2num(copytext(new_hair, 2, 4))
 				var/g_hair = hex2num(copytext(new_hair, 4, 6))
@@ -88,7 +88,7 @@
 				return 1
 	if(href_list["facial_hair_color"])
 		if(can_change(APPEARANCE_FACIAL_HAIR_COLOR))
-			var/new_facial = tgui_color_picker("Please select facial hair color.", "Facial Hair Color", rgb(owner.r_facial, owner.g_facial, owner.b_facial))
+			var/new_facial = tgui_color_picker(usr, "Please select facial hair color.", "Facial Hair Color", rgb(owner.r_facial, owner.g_facial, owner.b_facial))
 			if(new_facial && can_still_topic(state))
 				var/r_facial = hex2num(copytext(new_facial, 2, 4))
 				var/g_facial = hex2num(copytext(new_facial, 4, 6))
@@ -98,7 +98,7 @@
 					return 1
 	if(href_list["eye_color"])
 		if(can_change(APPEARANCE_EYE_COLOR))
-			var/new_eyes = tgui_color_picker("Please select eye color.", "Eye Color", rgb(owner.r_eyes, owner.g_eyes, owner.b_eyes))
+			var/new_eyes = tgui_color_picker(usr, "Please select eye color.", "Eye Color", rgb(owner.r_eyes, owner.g_eyes, owner.b_eyes))
 			if(new_eyes && can_still_topic(state))
 				var/r_eyes = hex2num(copytext(new_eyes, 2, 4))
 				var/g_eyes = hex2num(copytext(new_eyes, 4, 6))

@@ -55,6 +55,14 @@
 	layer = FIRE_LAYER
 	particles = new /particles/fire_smoke()
 
+/atom/movable/particle_emitter/fire_smoke/light
+	anchored = TRUE
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	appearance_flags = PIXEL_SCALE | TILE_BOUND
+	plane = DEFAULT_PLANE
+	layer = FIRE_LAYER
+	particles = new /particles/smoke/burning/small()
+
 /atom/movable/particle_emitter/smoke_steam
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT

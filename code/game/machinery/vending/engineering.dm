@@ -2,8 +2,11 @@
 /obj/machinery/vending/tool
 	name = "YouTool"
 	desc = "Tools for tools."
+
 	icon_state = "tool"
 	icon = 'icons/obj/machines/vending/engi.dmi'
+	light_color = COLOR_GREEN_GRAY
+
 	use_vend_state = TRUE
 	gen_rand_amount = FALSE
 	vend_delay = 11
@@ -31,8 +34,11 @@
 /obj/machinery/vending/engivend
 	name = "Engi-Vend"
 	desc = "Spare tool vending. What? Did you expect some witty description?"
+
 	icon_state = "engivend"
 	icon = 'icons/obj/machines/vending/engi.dmi'
+	light_color = "#6DBBBC"
+
 	use_vend_state = TRUE
 	vend_delay = 21
 	req_one_access = list(access_atmospherics, access_engine_equip)
@@ -59,6 +65,7 @@
 
 	icon = 'icons/obj/machines/vending/engi.dmi'
 	icon_state = "engi"
+	light_color = COLOR_GREEN_GRAY
 
 	req_one_access = list(access_atmospherics, access_engine_equip)
 

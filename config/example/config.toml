@@ -252,6 +252,11 @@ mod_tempban_max = 1440
 mod_job_tempban_max = 1440
 
 [game]
+## Default view size, in tiles. Should always be square and preferably equal to world's view.
+default_view = "15x15"
+## Widescreen view size, in tiles.
+default_view_wide = "19x15"
+
 ## Preset name from file 'event_presets.toml', leave empty to not use a preset.
 events_preset = ""
 ## Set to true to enable map voting; you'll need to use the script at tools/server.sh or an equivalent for it to take effect

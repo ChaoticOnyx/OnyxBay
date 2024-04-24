@@ -1,57 +1,39 @@
-
-/mob
-	var/list/screens = list()
+/// Associative list of string -> object, where object is instance of `atom/movable/screen/fullscreen`.
+/mob/var/list/screens = list()
 
 /mob/proc/set_fullscreen(condition, screen_name, screen_type, arg)
 	condition ? overlay_fullscreen(screen_name, screen_type, arg) : clear_fullscreen(screen_name)
 
-/mob/proc/set_renderer_filter(condition, renderer_name = SCENE_GROUP_RENDERER, filter_name, priority, list/params)
-	if(isnull(renderers))
-		return FALSE
-
-	if(!(renderer_name in renderers))
-		return FALSE
-
-	condition?renderers[renderer_name].add_filter(filter_name, priority, params) : renderers[renderer_name].remove_filter(filter_name)
-
 /mob/proc/overlay_fullscreen(category, type, severity)
 	var/atom/movable/screen/fullscreen/screen = screens[category]
-
-	if(screen)
-		if(screen.type != type)
-			clear_fullscreen(category, FALSE)
-			screen = null
-		else if(!severity || severity == screen.severity)
-			return null
-
-	if(!screen)
-		screen = new type()
+	if(isnull(screen) || screen.type != type)
+		clear_fullscreen(category, FALSE)
+		screens[category] = screen = new type()
+	else if((screen?.severity == severity) || (screen?.screen_loc != ui_fullscreen) || (client?.view == screen?.view))
+		return
 
 	screen.icon_state = "[initial(screen.icon_state)][severity]"
 	screen.severity = severity
 
-	screens[category] = screen
-	if(client && (!is_ooc_dead() || screen.allstate))
+	if(client && screen.should_show_to(src))
+		screen.stretch_to_view(client.view)
 		client.screen += screen
-	return screen
 
-/mob/proc/clear_fullscreen(category, animated = 10)
+/mob/proc/clear_fullscreen(category, animate = 10)
 	var/atom/movable/screen/fullscreen/screen = screens[category]
-	if(!screen)
+	if(isnull(screen))
 		return
 
 	screens -= category
 
-	if(animated)
-		spawn(0)
-			animate(screen, alpha = 0, time = animated)
-			sleep(animated)
-			if(client)
-				client.screen -= screen
+	if(!QDELETED(src) && animate)
+		animate(screen, alpha = 0, time = animate)
+
+		spawn(animate)
+			client?.screen -= screen
 			qdel(screen)
 	else
-		if(client)
-			client.screen -= screen
+		client?.screen -= screen
 		qdel(screen)
 
 /mob/proc/clear_fullscreens()
@@ -59,14 +41,25 @@
 		clear_fullscreen(category)
 
 /mob/proc/hide_fullscreens()
-	if(client)
-		for(var/category in screens)
-			client.screen -= screens[category]
+	if(isnull(client))
+		return
+
+	for(var/category in screens)
+		client.screen -= screens[category]
 
 /mob/proc/reload_fullscreen()
-	if(client)
-		for(var/category in screens)
-			client.screen |= screens[category]
+	if(isnull(client))
+		return
+
+	var/atom/movable/screen/fullscreen/screen
+	for(var/category in screens)
+		screen = screens[category]
+
+		if(screen.should_show_to(src))
+			screen.stretch_to_view(client.view)
+			client.screen |= screen
+		else
+			client.screen -= screen
 
 //this is used for changing color of lighting backdrop
 /mob/proc/set_fullscreen_color(category, new_color)
@@ -79,16 +72,28 @@
 /atom/movable/screen/fullscreen
 	icon = 'icons/hud/screen_full.dmi'
 	icon_state = "default"
-	screen_loc = "CENTER-7,CENTER-7"
+	screen_loc = ui_fullscreen
 	plane = FULLSCREEN_PLANE
 	layer = FULLSCREEN_LAYER
-	mouse_opacity = 0
-	var/severity = 0
-	var/allstate = 0 //shows if it should show up for dead people too
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
 
-/atom/movable/screen/fullscreen/Destroy()
-	severity = 0
-	return ..()
+	var/severity = 0
+	/// String representing client's view its fitted for.
+	var/view
+	/// Whether it should always be visible regardless of mob's condition.
+	var/allstate = FALSE
+
+/atom/movable/screen/fullscreen/proc/should_show_to(mob/viewer)
+	return allstate || !viewer.is_ooc_dead()
+
+/atom/movable/screen/fullscreen/proc/stretch_to_view(view)
+	if(screen_loc != ui_fullscreen)
+		return
+
+	var/list/temp = get_view_size(view)
+
+	src.view = view
+	transform = matrix(temp[1] / DEFAULT_FULLSCREEN_WIDTH, temp[2] / DEFAULT_FULLSCREEN_HEIGHT, MATRIX_SCALE)
 
 /atom/movable/screen/fullscreen/brute
 	icon_state = "brutedamageoverlay"
@@ -109,72 +114,51 @@
 /atom/movable/screen/fullscreen/blackout
 	icon = 'icons/hud/screen.dmi'
 	icon_state = "black"
-	screen_loc = "WEST,SOUTH to EAST,NORTH"
+	screen_loc = ui_entire_screen
 	layer = BLIND_LAYER
 
 /atom/movable/screen/fullscreen/impaired
 	icon_state = "impairedoverlay"
 	layer = IMPAIRED_LAYER
 
-/atom/movable/screen/fullscreen/blurry
-	icon = 'icons/hud/screen.dmi'
-	screen_loc = "WEST,SOUTH to EAST,NORTH"
-	icon_state = "blurry"
-
 /atom/movable/screen/fullscreen/flash
 	icon = 'icons/hud/screen.dmi'
-	screen_loc = "WEST,SOUTH to EAST,NORTH"
+	screen_loc = ui_entire_screen
 	icon_state = "flash"
-
-/atom/movable/screen/fullscreen/flash/noise
-	icon_state = "noise"
 
 /atom/movable/screen/fullscreen/flash/persistent
 	icon_state = "flash_const"
 
 /atom/movable/screen/fullscreen/red
 	icon = 'icons/hud/screen.dmi'
-	screen_loc = "WEST,SOUTH to EAST,NORTH"
+	screen_loc = ui_entire_screen
 	icon_state = "red"
 
 /atom/movable/screen/fullscreen/high
 	icon = 'icons/hud/screen.dmi'
-	screen_loc = "WEST,SOUTH to EAST,NORTH"
+	screen_loc = ui_entire_screen
 	icon_state = "druggy"
 
-/atom/movable/screen/fullscreen/noise
-	icon = 'icons/effects/static.dmi'
-	icon_state = "1 light"
-	screen_loc = ui_entire_screen
-	alpha = 127
-
-/atom/movable/screen/fullscreen/fadeout
-	icon = 'icons/hud/screen.dmi'
-	icon_state = "black"
-	screen_loc = ui_entire_screen
-	alpha = 0
-	allstate = 1
-
-/atom/movable/screen/fullscreen/fadeout/Initialize()
-	. = ..()
-	animate(src, alpha = 255, time = 10)
-
 /atom/movable/screen/fullscreen/scanline
-	icon = 'icons/effects/static.dmi'
-	icon_state = "scanlines"
+	icon = 'icons/hud/screen.dmi'
 	screen_loc = ui_entire_screen
+	icon_state = "scanlines"
+	allstate = TRUE
 	alpha = 50
-	blend_mode = BLEND_DEFAULT
 
 /atom/movable/screen/fullscreen/cam_corners
-	icon = 'icons/hud/screen_full.dmi'
 	icon_state = "cam_corners"
-	allstate = 1
-	blend_mode = BLEND_OVERLAY
+	allstate = TRUE
+
+/atom/movable/screen/fullscreen/rec
+	icon = 'icons/effects/effects.dmi'
+	screen_loc = "TOP-2,WEST+2"
+	icon_state = "rec"
+	allstate = TRUE
 
 /atom/movable/screen/fullscreen/fishbed
 	icon_state = "fishbed"
-	allstate = 1
+	allstate = TRUE
 
 /atom/movable/screen/fullscreen/pain
 	icon_state = "brutedamageoverlay6"
@@ -186,7 +170,6 @@
 	icon_state = LIGHTING_ICON_STATE_DARK
 	plane = LIGHTING_PLANE
 	layer = LIGHTING_LAYER
-	transform = matrix(200, 0, 0, 0, 200, 0)
 	blend_mode = BLEND_MULTIPLY
 	color = "#ffffff" //Lighting plane colors are negative, so this is actually black.
 	allstate = TRUE

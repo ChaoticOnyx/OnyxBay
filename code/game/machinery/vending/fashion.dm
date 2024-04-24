@@ -5,6 +5,7 @@
 
 	icon_state = "Theater"
 	icon = 'icons/obj/machines/vending/theater.dmi'
+	light_color = "#CA7732"
 
 	vend_delay = 15
 	vend_reply = "Absolutely smashing!"

@@ -281,6 +281,7 @@ var/const/NO_EMAG_ACT = -50
 	item_state = "gold_id"
 	registered_name = "Captain"
 	assignment = "Captain"
+	is_poi = TRUE
 
 /obj/item/card/id/captains_spare/New()
 	access = get_all_station_access()

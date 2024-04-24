@@ -5,6 +5,7 @@
 
 	icon = 'icons/obj/machines/vending/boozeomat.dmi'
 	icon_state = "boozeomat"
+	light_color = "#69A6C6"
 
 	req_access = list(access_bar)
 

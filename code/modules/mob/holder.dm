@@ -144,7 +144,7 @@ var/list/holder_mob_icon_cache = list()
 
 /mob/living/proc/get_scooped(mob/living/carbon/human/grabber, self_grab)
 
-	if(!holder_type || buckled || pinned.len)
+	if(!holder_type || buckled || LAZYLEN(pinned))
 		return
 
 	if(self_grab)
