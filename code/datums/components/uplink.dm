@@ -79,12 +79,13 @@
 	if(!user.mind)
 		return
 
-	var/list/data = list("telecrystals" = telecrystals,
-						"lockable" = lockable,
-						"selectedExploitUID" = exploit_uid,
-						"exploitData" = null,
-						)
+	var/list/data = list(
+		"telecrystals" = telecrystals,
+		"lockable" = lockable,
+		"selectedExploitUID" = exploit_uid,
+	)
 
+	data["exploitData"] = list()
 	if(!isnull(exploit_uid))
 		for(var/datum/computer_file/crew_record/L in GLOB.all_crew_records)
 			if(L.uid != exploit_uid)
@@ -114,20 +115,16 @@
 	return data
 
 /datum/component/uplink/tgui_static_data(mob/user)
-	var/list/data = list(
-		"itemCategories" = list(),
-		"contractCategories" = list(),
-		"crewRecords" = list()
-	)
+	var/list/data = list()
 
 	var/list/all_contracts = list()
 	for(var/datum/antag_contract/AC in GLOB.traitors.fixer.return_contracts(user?.mind))
 		all_contracts[AC.category] += list(list("name" = AC.name, "category" = AC.category, "desc" = AC.desc, "reward" = AC.reward))
 
+	data["contractCategories"] = list()
 	for(var/category in GLOB.contract_categories)
 		var/list/cat = list(
 			"name" = category,
-			"contracts" = list()
 		)
 
 		cat["contracts"] += LAZYCOPY(all_contracts[category])
@@ -136,6 +133,7 @@
 
 	uplink_items = get_uplink_items(src, allow_sales = TRUE)
 
+	data["itemCategories"] = list()
 	for(var/category in uplink_items)
 		var/list/cat = list(
 			"name" = capitalize(replacetext(replacetext("[category]", "/datum/uplink_category/", ""), "_", " ")),
@@ -161,6 +159,7 @@
 
 		data["itemCategories"] += list(cat)
 
+	data["crewRecords"] = list()
 	for(var/datum/computer_file/crew_record/L in GLOB.all_crew_records)
 		data["crewRecords"] += list(list("name" = L.get_name(), "uid" = L.uid))
 
