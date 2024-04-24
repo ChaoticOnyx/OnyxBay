@@ -11,7 +11,7 @@
 	active_power_usage = 200 WATTS
 	clicksound = SFX_USE_BUTTON
 	clickvol = 20
-	interact_offline = 1
+	interact_offline = TRUE
 
 	component_types = list(
 		/obj/item/circuitboard/stock_parts_processor,
@@ -61,7 +61,7 @@
 	part_names[SP.type] = initial(SP.name)
 
 	if(user)
-		to_chat(user, "You load \the [SP] into \the [src]!")
+		show_splash_text(user, "part loaded", "You load \the [SP] into \the [src]!")
 
 	qdel(SP)
 	return
@@ -89,9 +89,10 @@
 		for(var/atom/A in I.contents)
 			if(!istype(A, /obj/item/stock_parts))
 				continue // Should not happen
+
 			load_part(A)
 
-		to_chat(user, "You recycle \the [I]!")
+		show_splash_text(user, "parts recycled", "You recycle \the [I]!")
 		qdel(I)
 
 		matter_storage = min(matter_storage_max, matter_storage + SHEET_MATERIAL_AMOUNT)
@@ -100,7 +101,7 @@
 
 	else if(istype(I, /obj/item/stack/material) && I.get_material_name() == matter_type)
 		if((matter_storage_max - matter_storage) < SHEET_MATERIAL_AMOUNT)
-			to_chat(user, SPAN("warning", "\The [src] is too full."))
+			show_splash_text(user, "too full!", SPAN_WARNING("\The [src] is too full."))
 			return
 
 		var/obj/item/stack/S = I
@@ -108,11 +109,11 @@
 		var/sheets_to_take = min(S.amount, Floor(space_left / SHEET_MATERIAL_AMOUNT))
 
 		if(sheets_to_take <= 0)
-			to_chat(user, SPAN("warning", "\The [src] is too full."))
+			show_splash_text(user, "too full!", SPAN_WARNING("\The [src] is too full."))
 			return
 
 		matter_storage = min(matter_storage_max, matter_storage + (sheets_to_take * SHEET_MATERIAL_AMOUNT))
-		to_chat(user, SPAN("info", "\The [src] processes \the [I]. Levels of stored matter now: [matter_storage]/[matter_storage_max]"))
+		show_splash_text(user, "matter loaded", SPAN_INFO("\The [src] processes \the [I]. Levels of stored matter now: [matter_storage]/[matter_storage_max]"))
 		S.use(sheets_to_take)
 		tgui_update()
 		return
@@ -126,44 +127,38 @@
 		if("[path]" == t)
 			return path
 
-/obj/machinery/stock_parts_processor/tgui_state(mob/user)
-	return GLOB.tgui_machinery_noaccess_state
-
 /obj/machinery/stock_parts_processor/attack_hand(mob/user)
-	if(inoperable())
-		return
+	. = ..()
 
 	tgui_interact(user)
 
 /obj/machinery/stock_parts_processor/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "StockPartsProcessor", "Stock Parts Processor")
+		ui = new(user, src, "StockPartsProcessor")
 		ui.open()
 
 /obj/machinery/stock_parts_processor/tgui_data(mob/user)
-	var/list/data = list("storedSteel" = matter_storage,
-						"maxStoredSteel" = (matter_storage_max / SHEET_MATERIAL_AMOUNT),
-						"sheetMaterialAmount" = SHEET_MATERIAL_AMOUNT,
-						"storedStockParts" = list(),
-						"preparedParts" = list()
-						)
+	var/list/data = list(
+		"storedSteel" = matter_storage / SHEET_MATERIAL_AMOUNT,
+		"maxStoredSteel" = matter_storage_max / SHEET_MATERIAL_AMOUNT,
+	)
 
-	for(var/thing in stored_parts)
-		var/list/part_data = list()
-		var/atom/typecasted_thing = thing
-		part_data["name"] = initial(typecasted_thing.name)
-		part_data["amount"] = stored_parts[thing]
-		part_data["type"] = thing
-		data["storedStockParts"] += list(part_data)
+	data["storedStockParts"] = list()
+	for(var/atom/thing as anything in stored_parts)
+		data["storedStockParts"] += list(list(
+			"name" = thing::name,
+			"amount" = stored_parts[thing],
+			"type" = thing::type,
+		))
 
-	for(var/thing in prepared_parts)
-		var/list/part_data = list()
-		var/atom/typecasted_thing = thing
-		part_data["name"] = initial(typecasted_thing.name)
-		part_data["amount"] = prepared_parts[thing]
-		part_data["type"] = thing
-		data["preparedParts"] += list(part_data)
+	data["preparedParts"] = list()
+	for(var/atom/thing as anything in prepared_parts)
+		data["preparedParts"] += list(list(
+			"name" = thing::name,
+			"amount" = prepared_parts[thing],
+			"type" = thing::type,
+		))
 
 	return data
 
@@ -174,42 +169,44 @@
 		return TRUE
 
 	switch(action)
-		if("part_eject")
-			var/thing = get_part_type(params["part_eject"])
+		if("eject")
+			var/thing = get_part_type(params["value"])
 			if(thing in stored_parts)
 				new thing(loc)
 				stored_parts[thing]--
 				if(stored_parts[thing] < 1)
 					stored_parts.Remove(thing)
-			tgui_update()
 			return TRUE
 
-		if("part_prepare")
-			var/thing = get_part_type(params["part_prepare"])
+		if("clear")
+			var/thing = get_part_type(params["value"])
+
+			if(isnull(thing))
+				prepared_parts.Cut()
+				return TRUE
+
+			if(thing in prepared_parts)
+				prepared_parts.Remove(thing)
+
+			return TRUE
+
+		if("prepare")
+			var/thing = get_part_type(params["value"])
 			if(thing in prepared_parts)
 				prepared_parts[thing]++
 			else
 				prepared_parts[thing] = 1
-			tgui_update()
 			return TRUE
 
-		if("part_unprepare")
-			var/thing = get_part_type(params["part_unprepare"])
+		if("unprepare")
+			var/thing = get_part_type(params["value"])
 			if(thing in prepared_parts)
 				prepared_parts[thing]--
 				if(prepared_parts[thing] < 1)
 					prepared_parts.Remove(thing)
-			tgui_update()
 			return TRUE
 
-		if("clear_prepared")
-			var/thing = get_part_type(params["clear_prepared"])
-			if(thing in prepared_parts)
-				prepared_parts.Remove(thing)
-			tgui_update()
-			return TRUE
-
-		if("assemble_rmuk")
+		if("assemble")
 			var/parts_to_spawn = list()
 			for(var/thing in prepared_parts)
 				if(!(thing in stored_parts) || stored_parts[thing] < prepared_parts[thing])
@@ -226,12 +223,6 @@
 					stored_parts[thing] -= parts_to_spawn[thing]
 					if(stored_parts[thing] < 1)
 						stored_parts.Remove(thing)
-			tgui_update()
-			return TRUE
-
-		if("clear")
-			prepared_parts.Cut()
-			tgui_update()
 			return TRUE
 
 	return FALSE
