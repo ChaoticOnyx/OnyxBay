@@ -212,7 +212,7 @@ type StockPartRowProps = {
   children?: InfernoNode;
 };
 
-// Here I do a bit of IE9 magic to make ellipsis and other stuf to actually work...
+// Here I do a bit of IE9 magic to make ellipsis and other stuff to actually work...
 const StockPartRow = (props: StockPartRowProps, context: any) => {
   const { name, amount, children } = props;
 
