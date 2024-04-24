@@ -14,6 +14,15 @@
 	gravity = list(0, 0.95)
 	grow = 0.05
 
+/particles/smoke/burning
+	position = list(0, 0, 0)
+
+/particles/smoke/burning/small
+	count = 150
+	spawning = 50
+	scale = list(0.8, 0.8)
+	velocity = list(0, 0.4, 0)
+
 /particles/smoke/steam/mild
 	spawning = 1
 	velocity = list(0, 0.3, 0)
