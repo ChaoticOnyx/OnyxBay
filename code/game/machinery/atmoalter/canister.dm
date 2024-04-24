@@ -314,7 +314,6 @@ update_flag
 		ui.open()
 		ui.set_auto_update(1)
 
-#define VISIBLE_MSG_RANGE 4
 /obj/machinery/portable_atmospherics/canister/OnTopic(mob/user, href_list, state)
 	if(href_list["toggle"])
 		var/msg_log
@@ -333,7 +332,7 @@ update_flag
 				log_open()
 			msg_vis = "\The [user] opened \the [src]'s valve, starting the transfer into [holding ? "\the [holding]" : "the <font color='red'><b>air</b></font>"]."
 		release_log += msg_log
-		visible_message(msg_vis, "You hear the sound of a moving valve.", VISIBLE_MSG_RANGE)
+		visible_message(msg_vis, "You hear the sound of a moving valve.", 4)
 		valve_open = !valve_open
 		. = TOPIC_REFRESH
 
@@ -378,8 +377,6 @@ update_flag
 			SetName("\improper Canister: [label]")
 		update_icon()
 		. = TOPIC_REFRESH
-
-#undef VISIBLE_MSG_RANGE
 
 /obj/machinery/portable_atmospherics/canister/CanUseTopic(mob/user)
 	if(destroyed)
