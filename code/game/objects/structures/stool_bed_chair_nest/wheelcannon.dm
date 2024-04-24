@@ -68,17 +68,19 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(
 /obj/structure/wheelcannon/examine_more(mob/user)
 	. = ..()
 	. += SPAN_NOTICE("Load with items. Fuel with ethanol, plasma or acetone.")
-	. += SPAN_NOTICE("Igniter can be also attached. Alt + RightClick to detach it")
+	. += SPAN_NOTICE("Igniter can be also attached. Ctrl + Click to detach it.")
 
 /obj/structure/wheelcannon/on_update_icon()
 	CutOverlays(assembly_overlay)
-	if(istype(assembly))
-		if(isnull(assembly_overlay))
-			assembly_overlay = new(assembly)
-			assembly_overlay.SetTransform(0.2)
-			assembly_overlay.layer = ABOVE_HUMAN_LAYER
-			assembly_overlay.appearance_flags |= KEEP_APART
-		AddOverlays(assembly_overlay)
+	if(!istype(assembly))
+		return
+
+	if(isnull(assembly_overlay))
+		assembly_overlay = new(assembly)
+		assembly_overlay.SetTransform(0.2)
+		assembly_overlay.layer = ABOVE_HUMAN_LAYER
+		assembly_overlay.appearance_flags |= KEEP_APART
+	AddOverlays(assembly_overlay)
 
 /obj/structure/wheelcannon/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/flame))
@@ -91,12 +93,14 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(
 		attach_assembly(W, user)
 		return
 
+	if((W.atom_flags & ATOM_FLAG_OPEN_CONTAINER))
+		return
+
 	if(item_storage?.can_be_inserted(W, user))
 		item_storage.handle_item_insertion(W)
 		return
 
 	return ..()
-
 
 /obj/structure/wheelcannon/CtrlClick(mob/user)
 	. = ..()
@@ -152,11 +156,6 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(
 	assembly = null
 	assembly_overlay = null // Will be regenerated in on_update_icon()
 	show_splash_text(user, "assembly removed", "Removed assembly from \the [src].")
-
-/obj/structure/wheelcannon/attack_hand(mob/living/user)
-	shoot()
-
-	return ..()
 
 /obj/structure/wheelcannon/proc/shoot()
 	if(!reagents.has_any_reagent(GLOB.wheelcannon_reagents))
