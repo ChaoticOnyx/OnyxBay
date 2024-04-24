@@ -2,7 +2,7 @@
 /obj/machinery/stock_parts_processor
 	name = "stock parts processor"
 	desc = "It stores and vends various stock parts."
-	icon = 'icons/obj/stationobjs.dmi'
+	icon = 'icons/obj/machines/research.dmi'
 	icon_state = "stock_parts_processor"
 	layer = BELOW_OBJ_LAYER
 	anchored = TRUE
