@@ -141,7 +141,7 @@
 
 		for(var/item in uplink_items[category])
 			var/datum/uplink_item/I = uplink_items[category][item]
-			if(I.job_specific.len)
+			if(LAZYLEN(I.job_specific))
 				var/is_inaccessible = TRUE
 				for(var/R in I.job_specific)
 					if(R == user.mind.assigned_role || debug)
