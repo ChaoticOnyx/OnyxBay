@@ -142,6 +142,7 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(
 
 	src.assembly = assembly
 	assembly_overlay = null // Will be regenerated in on_update_icon()
+	update_icon()
 	show_splash_text(user, "assembly attached", "Assembly attached to \the [src].")
 	log_and_message_admins("has attached [assembly] to \the [src]", user, get_turf(src))
 
@@ -155,6 +156,7 @@ GLOBAL_LIST_INIT(wheelcannon_reagents, list(
 
 	assembly = null
 	assembly_overlay = null // Will be regenerated in on_update_icon()
+	update_icon()
 	show_splash_text(user, "assembly removed", "Removed assembly from \the [src].")
 
 /obj/structure/wheelcannon/proc/shoot()
