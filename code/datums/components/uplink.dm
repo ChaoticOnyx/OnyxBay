@@ -85,7 +85,7 @@
 		"selectedExploitUID" = exploit_uid,
 	)
 
-	data["exploitData"] = isnull(exploit_uid) ? null : list()
+	data["exploitData"] = list()
 	if(!isnull(exploit_uid))
 		for(var/datum/computer_file/crew_record/L in GLOB.all_crew_records)
 			if(L.uid != exploit_uid)

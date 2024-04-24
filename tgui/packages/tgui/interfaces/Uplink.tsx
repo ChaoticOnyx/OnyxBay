@@ -454,7 +454,7 @@ const ExploitableMenu = (props: ExploitableMenuProps, context: any) => {
           </Stack.Item>
         ))}
       </Stack.Item>
-      {selectedExploit ? (
+      {selectedExploit?.Name ? (
         <Stack.Item>
           <h1>Information</h1>
           <LabeledList>
