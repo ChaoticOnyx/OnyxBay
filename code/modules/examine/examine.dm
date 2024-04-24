@@ -45,19 +45,20 @@
 	SEND_SIGNAL(user, SIGNAL_MOB_EXAMINED_MORE, src, .)
 
 /// Generates fancy object's name including article and dirty status.
-/atom/proc/get_examine_name(mob/user)
-	var/examine_name = "\a [SPAN_INFO("<em>[src]</em>")]."
+/atom/proc/get_examine_name(mob/user, infix)
+	var/infix_string = isnull(infix) ? "" : " [infix]"
+	var/examine_name = "\a [SPAN_INFO("<em>[name][infix_string]</em>")]."
 
 	if(is_bloodied)
-		examine_name = gender == PLURAL ? "some " : "a "
+		examine_name = gender == PLURAL ? "some " : "a"
 
 		if(blood_color != SYNTH_BLOOD_COLOUR)
-			examine_name += "[SPAN_DANGER("blood-stained")] [SPAN_INFO("<em>[name]</em>")]!"
+			examine_name += "[SPAN_DANGER("blood-stained")] [SPAN_INFO("<em>[name][infix_string]</em>")]!"
 		else
-			examine_name += "oil-stained [name]."
+			examine_name += "oil-stained [name][infix_string]"
 
 	return examine_name
 
 /// Generates leading examine line containing object's name and icon.
 /atom/proc/get_examine_string(mob/user, infix)
-	return "\icon[src] That's [get_examine_name(user)][isnull(infix) ? "" : " [infix]"]."
+	return "\icon[src] That's [get_examine_name(user, infix)]"
