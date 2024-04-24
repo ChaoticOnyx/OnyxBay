@@ -314,7 +314,9 @@
 /mob/observer/ghost/TurfAdjacent(turf/T)
 	if(!isturf(loc) || !client)
 		return FALSE
-	return z == T.z && (get_dist(loc, T) <= client.view)
+
+	var/list/view_sizes = get_view_size(client.view)
+	return z == T.z && (get_dist(loc, T) <= max(view_sizes[1], view_sizes[2]))
 
 /*
 	Control+Shift click
