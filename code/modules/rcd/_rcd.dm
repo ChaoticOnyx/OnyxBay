@@ -42,7 +42,7 @@
 	spark_system.attach(src)
 
 ///returns local local_matter units available. overriden by rcd borg to return power units available
-/obj/item/construction/proc/get_matter()
+/obj/item/construction/proc/get_matter(mob/user)
 	return local_matter
 
 /obj/item/construction/examine(mob/user, infix)
