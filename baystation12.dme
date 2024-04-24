@@ -136,6 +136,7 @@
 #include "code\_global_vars\lists\pipe_dispenser.dm"
 #include "code\_global_vars\lists\rcd.dm"
 #include "code\_global_vars\lists\russian.dm"
+#include "code\_global_vars\lists\wheelcannon.dm"
 #include "code\_global_vars\monikers\_animal_moniker.dm"
 #include "code\_global_vars\monikers\moniker.dm"
 #include "code\_helpers\_global_objects.dm"
