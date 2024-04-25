@@ -372,4 +372,10 @@
 #define SFX_LIGHT_BULB_ON           "light_bulb_on"
 #define SFX_LIGHT_BURNOUT           "light_burnout"
 
+// Arcade (minesweeper)
+#define SFX_MINESWEEPER_CLICK       "minesweeper_click"
+#define SFX_MINESWEEPER_LOSE        "minesweeper_lose"
+#define SFX_MINESWEEPER_START       "minesweeper_start"
+#define SFX_MINESWEEPER_WIN         "minesweeper_win"
+
 #define GET_SFX(name) pick(GLOB.sfx_list[name])
