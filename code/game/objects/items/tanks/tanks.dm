@@ -200,14 +200,15 @@ var/list/global/tank_gauge_cache = list()
 				to_chat(user, SPAN_DANGER("You accidentally rake \the [W] across \the [src]!"))
 				maxintegrity -= rand(2,6)
 				integrity = min(integrity,maxintegrity)
+			return
 
 		if(QDELETED(src) || !user)
 			return
 
 		to_chat(user, SPAN_NOTICE("You carefully weld \the [src] emergency pressure relief valve shut."))
 		to_chat(user, SPAN_WARNING("\The [src] may now rupture under pressure!"))
-		valve_welded = 1
-		leaking = 0
+		valve_welded = TRUE
+		leaking = FALSE
 
 		if(air_contents)
 			var/const/welder_temperature = 1893.15
