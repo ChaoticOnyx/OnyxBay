@@ -42,6 +42,13 @@
 
 	if(mind?.wizard?.lich)
 		mind.wizard.escape_to_lich(mind)
+	var/datum/deity_form/devil/devil = mind?.deity?.form
+	if(istype(devil))
+		devil.on_shell_death(mind)
+	var/datum/deity_form/devil/devil_form = mind?.godcultist?.linked_deity.form
+	to_chat(world, "[devil_form.type]")
+	if(istype(devil_form))
+		devil_form.quasit_ressurection(mind)
 
 	BITSET(hud_updateflag, HEALTH_HUD)
 	BITSET(hud_updateflag, STATUS_HUD)

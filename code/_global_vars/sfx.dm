@@ -1796,4 +1796,16 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_LIGHT_BURNOUT = list(
 		'sound/machines/lightsburnout.ogg'
 	),
+	SFX_THALAMUS_TENDRIL = list(
+		'sound/effects/weapons/misc/thalamus_tendril.ogg'
+	),
+	SFX_THALAMUS_BITE = list(
+		'sound/effects/thalamus/thalamus_bite1.ogg',
+		'sound/effects/thalamus/thalamus_bite2.ogg',
+		'sound/effects/thalamus/thalamus_bite3.ogg',
+		'sound/effects/thalamus/thalamus_bite4.ogg',
+		'sound/effects/thalamus/thalamus_bite5.ogg',
+		'sound/effects/thalamus/thalamus_bite6.ogg',
+		'sound/effects/thalamus/thalamus_bite7.ogg'
+	)
 ))

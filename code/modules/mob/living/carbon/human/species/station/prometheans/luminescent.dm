@@ -89,7 +89,7 @@
 	if(!istype(extract_eater_comp) || !extract_eater_comp.current_extract)
 		name = "Integrate Extract"
 		button_icon_state = "metroidconsume"
-		button.UpdateIcon()
+		button.update_icon()
 	else
 		name = "Eject Extract"
 		button_icon_state = "metroideject"
@@ -123,7 +123,7 @@
 		to_chat(human_owner, SPAN_NOTICE("[to_integrate.name] consumed"))
 
 	for(var/datum/action/to_update as anything in extract_eater_comp.luminescent_actions)
-		to_update.button.UpdateIcon()
+		to_update.button.update_icon()
 
 /datum/action/cooldown/use_extract
 	name = "Extract Minor Activation"

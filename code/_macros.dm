@@ -37,7 +37,9 @@
 #define ishuman(A) istype(A, /mob/living/carbon/human)
 
 #define ispromethean(A) (is_species(A, /datum/species/promethean))
+
 #define isgolem(A) (is_species(A, /datum/species/golem))
+
 #define isitem(A) istype(A, /obj/item)
 
 #define islist(A) istype(A, /list)
@@ -115,6 +117,8 @@
 #define ismech(A) istype(A, /obj/mecha)
 
 #define iseffect(A) istype(A, /obj/effect)
+
+#define isdeity(A) istype(A, /mob/living/deity)
 
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 

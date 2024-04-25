@@ -10,9 +10,7 @@
 	QDEL_NULL(visualnet)
 	return ..()
 
-/mob/observer/eye/cult/EyeMove()
-	if(owner && istype(owner, /mob/living/deity))
-		var/mob/living/deity/D = owner
-		if(D.following)
-			D.stop_follow()
-	return ..()
+/mob/observer/eye/cult/MouseDrop_T(atom/movable/target, mob/user)
+	. = ..()
+	if(istype(owner, /mob/living/deity) && user.client.holder)
+		user.client.holder.cmd_ghost_drag(target, owner)

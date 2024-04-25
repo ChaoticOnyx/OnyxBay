@@ -18,7 +18,7 @@
 	turret.ray_alpha = ray_alpha
 	turret.update_icon()
 
-	if(istype(previous_state) && previous_state.turret_raised != turret_raised)
+	if(istype(previous_state) && turret.should_raise && previous_state.turret_raised != turret_raised)
 		turret.change_raised(turret_raised)
 
 	if(switched_to_sound && world.time + sound_cd >= sound_played_last)

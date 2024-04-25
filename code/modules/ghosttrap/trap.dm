@@ -284,3 +284,10 @@ var/list/ghost_traps
 	ghost_trap_role = "Shade"
 	pref_check = BE_SHADE
 	list_as_special_role = TRUE
+
+/datum/ghosttrap/quasit
+	object = "quasit"
+	ghost_trap_message = "They are occupying a quasit body now."
+	ghost_trap_role = "Quasit"
+	pref_check = MODE_GODCULTIST
+	list_as_special_role = TRUE

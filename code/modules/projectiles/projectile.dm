@@ -140,6 +140,17 @@
 		return 0
 
 	var/mob/living/L = target
+	var/mob/living/living_firer = firer
+
+	if(istype(living_firer)) // Sry for this awful, cursed ladder, but projectile's firer can be a non-living mob or an atom.
+		for(var/datum/modifier/noattack/noamod in living_firer.modifiers)
+			var/mob/living/modifier_target = noamod.atom_target.resolve()
+			if(!istype(modifier_target))
+				continue
+
+			if(modifier_target == target)
+				to_chat(living_firer, SPAN_DANGER("Are you daft? You can't attack them!"))
+				return FALSE
 
 	L.apply_effects(0, weaken, paralyze, 0, stutter, eyeblur, drowsy, 0, blocked)
 	if(ishuman(L) && tasing)

@@ -1,0 +1,16 @@
+"a" = (/turf/simulated/floor/tiled/thalamus,/area/space)
+"c" = (/obj/structure/deity/thalamus/nutrient_syphon,/turf/simulated/floor/tiled/thalamus,/area/space)
+"n" = (/turf/simulated/wall/thalamus,/area/space)
+"C" = (/obj/structure/deity/thalamus/tendril,/turf/simulated/floor/tiled/thalamus,/area/space)
+"N" = (/obj/structure/deity/thalamus/sight_organ,/turf/simulated/floor/tiled/thalamus,/area/space)
+"Y" = (/obj/structure/deity/thalamus/nerve_cluster,/turf/simulated/floor/tiled/thalamus,/area/space)
+
+(1,1,1) = {"
+NaCaaaN
+annnnna
+anaaanC
+anaaana
+CnYcana
+annnnna
+NaaaCaN
+"}

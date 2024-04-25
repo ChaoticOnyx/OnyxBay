@@ -18,6 +18,7 @@
 #define LANGUAGE_DRONE "Drone Talk"
 #define LANGUAGE_LING "Changeling"
 #define LANGUAGE_SPIDER "Spider"
+#define LANGUAGE_INFERNAL "Infernal"
 
 // Language flags.
 /// Language is available if the speaker is whitelisted

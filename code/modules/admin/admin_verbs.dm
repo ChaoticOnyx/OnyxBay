@@ -1001,6 +1001,23 @@ var/list/admin_verbs_mentor = list(
 	feedback_add_details("admin_verb","GS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_and_message_admins("gave [key_name(T)] the spell [S].")
 
+/client/proc/grant_action(mob/living/target in GLOB.living_mob_list_)
+	var/action = tgui_input_list(src, "Choose the spell to give to that guy", "ABRAKADABRA", subtypesof(/datum/action))
+	if(isnull(action))
+		return
+
+	var/datum/action/new_action = new action(target)
+	new_action.Grant(target)
+	log_and_message_admins("gave [key_name(target)] the action [action].")
+
+/client/proc/remove_action(mob/living/target in GLOB.living_mob_list_)
+	var/datum/action/action = tgui_input_list(src, "Choose the spell to give to that guy", "ABRAKADABRA", target.actions)
+	if(!istype(action))
+		return
+
+	action.Remove(target)
+	log_and_message_admins("removed the action [action] from  [key_name(target)].")
+
 /client/proc/projectile_basketball()
 	set category = "Fun"
 	set desc="Globally Toggles the ability to catch bullets with your hands"

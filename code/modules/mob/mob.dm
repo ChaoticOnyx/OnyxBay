@@ -21,6 +21,8 @@
 	QDEL_NULL(bugreporter)
 	QDEL_NULL(language_menu)
 
+	click_intercept = null
+
 	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
@@ -1198,3 +1200,10 @@
 		set_sight(sight&(~SEE_BLACKNESS))
 	else
 		set_sight(sight|SEE_BLACKNESS)
+
+///Update the mouse pointer of the attached client in this mob
+/mob/proc/update_mouse_pointer()
+	client?.mouse_pointer_icon = initial(client?.mouse_pointer_icon)
+
+	if(mouse_override_icon)
+		client?.mouse_pointer_icon = mouse_override_icon

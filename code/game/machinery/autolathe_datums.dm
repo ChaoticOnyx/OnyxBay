@@ -9,7 +9,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	//Create global autolathe recipe list if it hasn't been made already.
 	autolathe_recipes = list()
 	autolathe_categories = list()
-	for(var/R in typesof(/datum/autolathe/recipe)-/datum/autolathe/recipe)
+	for(var/R in subtypesof(/datum/autolathe/recipe))
 		var/datum/autolathe/recipe/recipe = new R
 		autolathe_recipes += recipe
 		autolathe_categories |= recipe.category
@@ -19,12 +19,15 @@ var/const/EXTRA_COST_FACTOR = 1.25
 			recipe.resources = list()
 			for(var/material in I.matter)
 				recipe.resources[material] = I.matter[material] * EXTRA_COST_FACTOR
+				recipe.cost += I.matter[material] * 1
 		qdel(I)
 
 /datum/autolathe/recipe
 	var/name = "object"
 	var/path
 	var/list/resources
+	/// Used for infernal lathe
+	var/cost
 	var/hidden
 	var/category
 	var/power_use = 0
@@ -92,6 +95,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "coffeepot"
 	path = /obj/item/reagent_containers/vessel/coffeepot
 	category = "General"
+	cost = 100
 
 /datum/autolathe/recipe/crowbar
 	name = "crowbar"
@@ -107,11 +111,13 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "integrated circuit wirer"
 	path = /obj/item/device/integrated_electronics/wirer
 	category = "Tools"
+	cost = 2000
 
 /datum/autolathe/recipe/int_debugger
 	name = "integrated circuit debugger"
 	path = /obj/item/device/integrated_electronics/debugger
 	category = "Tools"
+	cost = 2000
 
 /datum/autolathe/recipe/int_analyzer
 	name = "integrated circuit analyzer"
@@ -336,6 +342,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	hidden = 1
 	category = "Arms and Ammunition"
 	resources = list(MATERIAL_STEEL = 74000)
+	cost = 6000
 
 /datum/autolathe/recipe/shotgun_blanks
 	name = "ammunition (shotgun, blank)"
@@ -511,6 +518,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	hidden = 1
 	category = "Arms and Ammunition"
 	resources = list(MATERIAL_STEEL = 74000)
+	cost = 6000
 
 /datum/autolathe/recipe/magazine_revolver_1
 	name = "ammunition (.357)"

@@ -187,3 +187,20 @@
 	blood_color = COLOR_BLOOD_UNATHI
 	base_color = "#066000"
 	reagent_tag = IS_UNATHI
+
+/datum/species/monkey/quasit
+	name = "Imp"
+	name_plural = "Imps"
+
+	icobase = 'icons/mob/human_races/monkeys/r_quasit.dmi'
+	y_shift = 0
+
+	species_appearance_flags = HAS_EYE_COLOR
+
+	greater_form = SPECIES_HUMAN
+	default_language = LANGUAGE_INFERNAL
+	flesh_color = "#34af10"
+	default_eye_color = "#FFF200"
+	blood_color = COLOR_BLOOD_HUMAN
+	base_color = "#066000"
+	tail = null

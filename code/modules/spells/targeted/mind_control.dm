@@ -88,8 +88,9 @@
 	else
 		msg = "<span class='notice'>Something tried to crawl into you mind, but you protected yourself!</span><br>"
 		to_chat(H, msg)
-		Destroy()
+		qdel_self()
 		return FALSE
+
 	for(var/thing in instructions)
 		msg += "- [thing]<br>"
 	to_chat(target, msg)

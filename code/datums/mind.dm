@@ -58,6 +58,10 @@
 	var/datum/changeling/changeling		// Changeling holder
 	var/datum/vampire/vampire 			// Vampire holder
 	var/datum/wizard/wizard				// Wizard holder
+	/// Deity holder
+	var/mob/living/deity/deity
+	/// Deity follower's holder
+	var/datum/godcultist/godcultist
 	var/weakref/enslaved_to
 	var/rev_cooldown = 0
 

@@ -61,6 +61,8 @@
 		<option value='?_src_=vars;remverb=\ref[src]'>Remove Verb</option>
 		<option value='?_src_=vars;addmodifier=\ref[src]'>Add Modifier</option>
 		<option value='?_src_=vars;remmodifier=\ref[src]'>Remove Modifier</option>
+		<option value='?_src_=vars;grant_action=\ref[src]'>Grant Action</option>
+		<option value='?_src_=vars;remove_action=\ref[src]'>Remove Action</option>
 		<option>---</option>
 		<option value='?_src_=vars;gib=\ref[src]'>Gib</option>
 		<option value='?_src_=vars;explode=\ref[src]'>Trigger explosion</option>

@@ -303,9 +303,9 @@ meteor_act
 			shield = I
 			shield_mod_shield = I.mod_shield
 	if(QDELETED(shield))
-		return 0
+		return SEND_SIGNAL(src, SIGNAL_HUMAN_CHECK_SHIELDS, damage, damage_source, attacker, def_zone, attack_text)
 	. = shield.handle_shield(src, damage, damage_source, attacker, def_zone, attack_text)
-	return
+	return SEND_SIGNAL(src, SIGNAL_HUMAN_CHECK_SHIELDS, damage, damage_source, attacker, def_zone, attack_text)
 
 ///////////////////////
 ///		ATTACKS		///

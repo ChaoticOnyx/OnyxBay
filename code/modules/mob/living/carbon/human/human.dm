@@ -1000,7 +1000,7 @@
 		to_chat(src, "<span class='notice'>You can't look up right now.</span>")
 	return
 
-/mob/living/carbon/human/set_species(new_species, default_colour)
+/mob/living/carbon/human/set_species(new_species, default_colour, saved_dna)
 	if(!dna)
 		if(!new_species)
 			new_species = SPECIES_HUMAN
@@ -1103,7 +1103,7 @@
 	//recheck species-restricted clothing
 	for(var/slot in slot_first to slot_last)
 		var/obj/item/C = get_equipped_item(slot)
-		if(istype(C) && !C.mob_can_equip(src, slot, 1))
+		if(istype(C) && !C.mob_can_equip(src, slot, TRUE, TRUE))
 			drop(C, force = TRUE)
 
 	return 1

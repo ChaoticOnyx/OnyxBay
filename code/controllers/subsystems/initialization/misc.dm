@@ -42,6 +42,7 @@ SUBSYSTEM_DEF(misc)
 	GLOB.bitmask_icon_sheets["wall_curvy"] = _bake_overlays(masks_icon, "curvy")
 	GLOB.bitmask_icon_sheets["wall_brick"] = _bake_overlays(masks_icon, "brick")
 	GLOB.bitmask_icon_sheets["wall_jaggy"] = _bake_overlays(masks_icon, "jaggy")
+	GLOB.bitmask_icon_sheets["wall_thalamus"] = _bake_overlays(masks_icon, "thalamus")
 
 	GLOB.bitmask_icon_sheets["wall_reinf_over"]  = _bake_overlays(masks_icon, "reinf_over")
 	GLOB.bitmask_icon_sheets["wall_reinf_stone"] = _bake_overlays(masks_icon, "reinf_stone")

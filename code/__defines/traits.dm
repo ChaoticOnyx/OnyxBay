@@ -10,6 +10,7 @@
 #define TRAIT_HOLY 				/datum/modifier/trait/holy
 #define TRAIT_ANTIMAGIC 		/datum/modifier/trait/magicimmune
 #define TRAIT_GHOSTATTACKABLE 	/datum/modifier/status_effect/ghostattackable  //Used for wizard's spell "No remorse" which allows ghosts to attack target
+#define TRAIT_FAKEFULLHEALTH    /datum/modifier/fake_full_health
 
 #define ADD_TRAIT(holder,trait_type) 	holder.add_modifier(trait_type)
 #define REMOVE_TRAIT(holder,trait_type) holder.remove_modifiers_of_type(trait_type)

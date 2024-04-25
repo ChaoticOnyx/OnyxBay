@@ -30,3 +30,6 @@
 
 /// Called on `/atom/proc/examine` (mob/user, list/examine_result)
 #define SIGNAL_MOB_EXAMINED_MORE "mob_examined_more"
+
+/// Called on `/mob/living/carbon/human/proc/check_shields` (damage, atom/damage_source, mob/attacker, def_zone, attack_text)
+#define SIGNAL_HUMAN_CHECK_SHIELDS "check_shields"

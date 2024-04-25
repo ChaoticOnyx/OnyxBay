@@ -372,4 +372,8 @@
 #define SFX_LIGHT_BULB_ON           "light_bulb_on"
 #define SFX_LIGHT_BURNOUT           "light_burnout"
 
+// Thalamus
+#define SFX_THALAMUS_BITE           "thalamus_bite"
+#define SFX_THALAMUS_TENDRIL        "thalamus_tendril"
+
 #define GET_SFX(name) pick(GLOB.sfx_list[name])

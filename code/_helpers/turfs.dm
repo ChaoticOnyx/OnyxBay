@@ -159,3 +159,28 @@
 		M.forceMove(target, unbuckle_mob = FALSE)
 
 	return target
+///Returns a random turf on the station, excludes dense turfs (like walls) and areas that are exposed to space
+/proc/get_safe_random_station_turf(list/areas_to_pick_from = GLOB.station_areas)
+	for(var/i in 1 to 5)
+		var/list/turf_list = get_area_turfs(pick(areas_to_pick_from))
+		var/turf/target
+
+		while(turf_list.len && !target)
+			var/I = rand(1, turf_list.len)
+			var/turf/checked_turf = turf_list[I]
+			var/area/turf_area = get_area(checked_turf)
+
+			if(!checked_turf.density && !(turf_area.area_flags & AREA_FLAG_EXTERNAL))
+				var/clear = TRUE
+				for(var/obj/checked_object in checked_turf)
+					if(checked_object.density)
+						clear = FALSE
+						break
+
+				if(clear)
+					target = checked_turf
+			if (!target)
+				turf_list.Cut(I, I + 1)
+
+		if(target)
+			return target

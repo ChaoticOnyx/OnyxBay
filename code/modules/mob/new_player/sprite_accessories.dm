@@ -29,7 +29,7 @@
 	var/gender = NEUTER
 
 	// Restrict some styles to specific species
-	var/list/species_allowed = list(SPECIES_HUMAN)
+	var/list/species_allowed = list(SPECIES_HUMAN, SPECIES_DEVIL)
 
 	// Whether or not the accessory can be affected by colouration
 	var/do_coloration = TRUE
@@ -53,7 +53,7 @@
 	name = "Bald"
 	icon_state = "bald"
 	gender = MALE
-	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_VOX, SPECIES_SWINE)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_VOX, SPECIES_SWINE, SPECIES_DEVIL)
 	flags = VERY_SHORT
 	has_secondary = TRUE
 
@@ -206,7 +206,7 @@
 	name = "Bob"
 	icon_state = "bob"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_DEVIL)
 
 /datum/sprite_accessory/hair/bob2
 	name = "Bob 2"

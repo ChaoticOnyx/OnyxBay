@@ -63,6 +63,13 @@
 	if(old_self.mind)
 		if(old_self.mind.wizard?.lich) // Snowflakey
 			old_self.mind.wizard.escape_to_lich(old_self.mind)
+		else if(istype(old_self.mind.deity?.form, /datum/deity_form/devil))
+			var/datum/deity_form/devil/devil = old_self.mind.deity.form
+			devil.on_shell_death(old_self.mind)
+		else if(istype(old_self?.mind?.godcultist?.linked_deity))
+			var/datum/deity_form/devil/devil_form = old_self.mind.godcultist.linked_deity.form
+			if(!istype(devil_form) || !devil_form.quasit_ressurection(old_self.mind))
+				old_self.mind.transfer_to(brainmob)
 		else
 			old_self.mind.transfer_to(brainmob)
 

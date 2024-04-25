@@ -505,6 +505,26 @@
 		to_chat(usr, "Removed [rem_modifier] from [M].")
 		M.remove_specific_modifier(rem_modifier)
 
+	else if(href_list["grant_action"])
+		if(!check_rights(R_SPAWN))
+			return
+
+		var/mob/living/target = locate(href_list["grant_action"])
+		if(!istype(target))
+			return
+
+		grant_action(target)
+
+	else if(href_list["remove_action"])
+		if(!check_rights(R_SPAWN))
+			return
+
+		var/mob/living/target = locate(href_list["remove_action"])
+		if(!istype(target))
+			return
+
+		remove_action(target)
+
 	else if(href_list["fix_nano"])
 		if(!check_rights(R_DEBUG)) return
 

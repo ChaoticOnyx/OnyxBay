@@ -395,6 +395,15 @@ var/list/flooring_types
 	build_type = /obj/item/stack/tile/floor
 	can_paint = FALSE
 
+/decl/flooring/tiling/thalamus
+	name = "thalamus floor"
+	desc = "thalamus floor"
+	icon_base = "thalamus"
+	has_damage_range = 4
+	damage_temperature = 1400 CELSIUS
+	flags = TURF_CAN_BREAK | TURF_CAN_BURN
+	can_paint = FALSE
+
 /turf/simulated/floor/tiled/vox
 	name = "old floor"
 	desc = "A strange old floor."
@@ -418,3 +427,10 @@ var/list/flooring_types
 	desc = "A strange old floor."
 	icon_state = "vox4"
 	initial_flooring = /decl/flooring/tiling/vox4
+
+/turf/simulated/floor/tiled/thalamus
+	name = "thalamus floor"
+	desc = "thalamus floor"
+	icon_state = "thalamus"
+	initial_flooring = /decl/flooring/tiling/thalamus
+	var/previous_type

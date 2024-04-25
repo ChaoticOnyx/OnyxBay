@@ -78,6 +78,8 @@
 	refresh_client_images()
 	reload_fullscreen() // Reload any fullscreen overlays this mob has.
 
+	update_mouse_pointer()
+
 	client.add_click_catcher()
 
 	update_client_color()

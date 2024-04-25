@@ -8,6 +8,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	name = "abstract turret"
 	icon = 'icons/obj/turrets.dmi'
 	icon_state = "turretCover"
+	var/icon_state_raised = "grey_target_prism"
+	var/icon_state_lowered = "turretCover"
 	anchored = TRUE
 	density = TRUE
 	idle_power_usage = 50 WATTS
@@ -67,6 +69,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 	// Logic
 	var/datum/state_machine/turret/state_machine = null
+	var/state_machine_path = /datum/state_machine/turret
 	var/weakref/target = null
 	var/list/potential_targets = list()
 	var/datum/hostility/hostility
@@ -80,6 +83,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	var/ailock = TRUE
 	/// Whether this turret is locked or not, used for removing guns and disassembly.
 	var/locked = TRUE
+	var/should_raise = TRUE
 
 	// Integrity
 	var/integrity = 80
@@ -123,7 +127,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	add_think_ctx("process_shooting", CALLBACK(src, nameof(.proc/process_shooting)), 0)
 	add_think_ctx("emagged_targetting", CALLBACK(src, nameof(.proc/emagged_targeting)), 0)
 
-	state_machine = add_state_machine(src, /datum/state_machine/turret)
+	state_machine = add_state_machine(src, state_machine_path)
 
 	target_bearing = dir2angle(dir)
 	set_bearing(target_bearing)
@@ -596,10 +600,11 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		transverse_right.transform = M
 		AddOverlays(transverse_right)
 
-	if(raised)
-		icon_state = "grey_target_prism"
-	else
-		icon_state = "turretCover"
+	if(should_raise)
+		if(raised)
+			icon_state = icon_state_raised
+		else
+			icon_state = icon_state_lowered
 
 	// Changes the ray color based on state.
 	if(debug_mode)

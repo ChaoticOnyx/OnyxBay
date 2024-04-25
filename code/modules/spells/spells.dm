@@ -43,7 +43,7 @@
 
 	H.ability_master.update_abilities(0, H)
 
-/mob/proc/add_spell(datum/spell/spell_to_add, spell_base = "wiz_spell_ready")
+/mob/proc/add_spell(datum/spell/spell_to_add, spell_base = "wiz_spell_ready", mob/living/deity/deity = null)
 	if(!ability_master)
 		ability_master = new()
 	spell_to_add.holder = src
@@ -53,6 +53,8 @@
 		mind.learned_spells |= spell_to_add
 	ability_master.add_spell(spell_to_add, spell_base)
 	spell_to_add.spell_learned(src)
+	if(deity)
+		spell_to_add.connected_god = deity
 	return 1
 
 /mob/proc/remove_spell(datum/spell/spell_to_remove)

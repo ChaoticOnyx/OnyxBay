@@ -15,12 +15,19 @@
 /obj/item/underwear/proc/CanEquipUnderwear(mob/user, mob/living/carbon/human/H)
 	if(!CanAdjustUnderwear(user, H, "put on"))
 		return FALSE
+
 	if(!(H.species && (H.species.species_appearance_flags & HAS_UNDERWEAR)))
 		to_chat(user, "<span class='warning'>\The [H]'s species cannot wear underwear of this nature.</span>")
 		return FALSE
+
 	if(is_path_in_list(type, H.worn_underwear))
 		to_chat(user, "<span class='warning'>\The [H] is already wearing underwear of this nature.</span>")
 		return FALSE
+
+	for(var/datum/modifier/mod in H.modifiers)
+		if(mod.blocks_underwear)
+			return FALSE
+
 	return TRUE
 
 /obj/item/underwear/proc/CanRemoveUnderwear(mob/user, mob/living/carbon/human/H)

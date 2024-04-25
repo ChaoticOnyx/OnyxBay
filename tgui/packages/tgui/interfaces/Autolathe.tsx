@@ -54,7 +54,7 @@ const paginator = (recipes: Recipe[], context: any) => {
     "currentPage",
     1
   );
-  const totalPages = Math.ceil(recipes.length / MAX_PER_PAGE);
+  const totalPages = Math.ceil(recipes?.length / MAX_PER_PAGE);
 
   return (
     <Stack width="100%" justify="space-between">
@@ -143,7 +143,7 @@ export const Autolathe = (props: any, context: any) => {
           <Divider />
           <Flex bold wrap justify="flex-start" align="center">
             Filters:
-            {data.category.total.map((category, i) => {
+            {data.category.total?.map((category, i) => {
               return (
                 <Flex.Item key={i}>
                   <Button.Label

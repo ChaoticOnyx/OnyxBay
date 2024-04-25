@@ -882,6 +882,14 @@
 		healths.icon_state = "dead"
 		return
 
+	var/list/health_images = list()
+
+	if(HAS_TRAIT(src, TRAIT_FAKEFULLHEALTH))
+		healths.icon_state = "blank"
+		health_images += image(healths.icon, "fullhealth")
+		healths.AddOverlays(health_images)
+		return
+
 	var/painkiller_mult = chem_effects[CE_PAINKILLER] / 100
 	if(painkiller_mult > 1)
 		healths.icon_state = "numb"
@@ -896,7 +904,6 @@
 
 	// Collect and apply the images all at once to avoid appearance churn.
 	var/no_damage = TRUE
-	var/list/health_images = list()
 	for(var/obj/item/organ/external/E in organs)
 		if(no_damage && (E.brute_dam || E.burn_dam))
 			no_damage = FALSE

@@ -24,6 +24,15 @@
 			to_chat(H, "<span class='warning'>You can't use your hand.</span>")
 			return
 
+	for(var/datum/modifier/noattack/noamod in modifiers)
+		var/mob/living/modifier_target = noamod.atom_target.resolve()
+		if(!istype(modifier_target))
+			continue
+
+		if(modifier_target == M)
+			to_chat(src, SPAN_DANGER("Are you daft? You can't attack them!"))
+			return FALSE
+
 	..()
 
 	// Should this all be in Touch()?

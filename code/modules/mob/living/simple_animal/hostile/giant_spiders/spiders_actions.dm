@@ -60,7 +60,7 @@
 	if(active)
 		to_chat(user, SPAN_NOTICE("You no longer prepare to wrap something in a cocoon."))
 		user.PopClickHandler()
-		button.UpdateIcon()
+		button.update_icon()
 		active = FALSE
 		return FALSE
 	else
@@ -206,4 +206,3 @@
 /datum/action/cooldown/charge/basic_charge/spider
 	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_ALIVE
 	cooldown_time = 30 SECONDS
-	click_handler = /datum/click_handler/spiders/charge

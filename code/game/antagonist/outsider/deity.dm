@@ -17,6 +17,12 @@ GLOBAL_DATUM_INIT(deity, /datum/antagonist/deity, new)
 
 	station_crew_involved = FALSE
 
+/datum/antagonist/deity/New()
+	GLOB.all_antag_types_[id] = src
+	GLOB.all_antag_spawnpoints_[landmark_id] = list()
+	GLOB.antag_names_to_ids_[role_text] = id
+	..()
+
 /datum/antagonist/deity/Initialize()
 	. = ..()
 	if(config.game.deity_min_age)

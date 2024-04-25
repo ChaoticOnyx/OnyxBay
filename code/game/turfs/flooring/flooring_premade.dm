@@ -462,6 +462,10 @@
 		var/mob/living/M = O
 		M.IgniteMob()
 
+/turf/simulated/floor/natural/lava/lit/Initialize(mapload)
+	. = ..()
+	set_light(1, 1, 6, 3, "#FFB27F")
+
 /turf/simulated/floor/natural/snow/New()
 	icon_state = pick("snow[rand(1,12)]","snow0")
 	..()

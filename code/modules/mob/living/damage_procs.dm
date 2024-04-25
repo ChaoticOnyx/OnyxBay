@@ -10,8 +10,21 @@
 */
 /mob/living/proc/apply_damage(damage = 0,damagetype = BRUTE, def_zone = null, blocked = 0, damage_flags = 0, used_weapon = null)
 	if(status_flags & GODMODE)
-		return 0
-	if(!damage || (blocked >= 100))	return 0
+		return TRUE
+
+	if(!damage || (blocked >= 100))
+		return FALSE
+
+	if(!damage || (blocked >= 100))
+		return FALSE
+
+	for(var/datum/modifier/M in modifiers)
+		if(!M.affected_items.len)
+			continue
+
+		if(used_weapon in M.affected_items)
+			damage += M.run_item_damage(damage, damagetype, def_zone, blocked, damage_flags, used_weapon)
+
 	switch(damagetype)
 		if(BRUTE)
 			adjustBruteLoss(damage * blocked_mult(blocked))

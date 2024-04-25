@@ -237,6 +237,8 @@
 	var/datum/language_menu/language_menu
 	/// Associative list of procpath -> list/atom, where atom is a source a procpath comes from.
 	var/list/atom_verbs
+	///used to override the mouse cursor so it doesnt get reset
+	var/mouse_override_icon = null
 
 /datum/rad_resist/mob
 	alpha_particle_resist = 6 MEGA ELECTRONVOLT

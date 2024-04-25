@@ -51,7 +51,7 @@
 
 	if(active)
 		to_chat(usr, SPAN_NOTICE("You no longer prepare to charge."))
-		button.UpdateIcon()
+		button.update_icon()
 		active = FALSE
 		return FALSE
 	else

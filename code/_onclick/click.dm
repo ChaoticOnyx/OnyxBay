@@ -6,6 +6,9 @@
 // 1 decisecond click delay (above and beyond mob/next_move)
 /mob/var/next_click = 0
 
+/// Allows a datum to intercept all click calls this mob is doing
+/mob/var/datum/click_intercept
+
 /*
 	Before anything else, defer these calls to a per-mobtype handler.  This allows us to
 	remove istype() spaghetti code, but requires the addition of other handler procs to simplify it.
@@ -43,6 +46,9 @@
 		return
 
 	next_click = world.time + 1
+
+	if(check_click_intercept(A, params))
+		return
 
 	var/list/modifiers = params2list(params)
 	var/dragged = modifiers["drag"]
@@ -404,6 +410,13 @@
 
 /atom/proc/ShiftAltRightClick(mob/user)
 	return
+
+/mob/proc/check_click_intercept(atom/A, params)
+	//Mob level intercept
+	if(click_intercept && (call(click_intercept, "InterceptClickOn")(src, A, params)))
+		return TRUE
+
+	return FALSE
 
 /*
 	Misc helpers
