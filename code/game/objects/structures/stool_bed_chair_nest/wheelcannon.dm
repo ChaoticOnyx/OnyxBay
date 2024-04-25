@@ -83,7 +83,7 @@
 			shoot()
 			return
 
-	if(isassembly(W) && !istype(assembly))
+	if(W.IsAssemblyHolder() && !assembly)
 		attach_assembly(W, user)
 		return
 
