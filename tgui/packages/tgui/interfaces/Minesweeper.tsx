@@ -1,4 +1,4 @@
-import { useBackend } from "../backend";
+import { useBackend, useLocalState } from "../backend";
 import {
   Box,
   Button,
@@ -24,11 +24,14 @@ interface MinesweeperData {
   grid: MinesweeperGrid[];
   mines: string;
   difficulty: boolean;
+  emagged: boolean;
+  timeLeft: string;
 }
 
 export const Minesweeper = (props: MinesweeperData, context) => {
   const { act, data } = useBackend<MinesweeperData>(context);
-  const { width, height, grid, mines, difficulty } = data;
+  const { width, height, grid, mines, difficulty, emagged, timeLeft } = data;
+
   const num_to_color = {
     " ": "#ffffff",
     "1": "#0092cc",
@@ -44,7 +47,7 @@ export const Minesweeper = (props: MinesweeperData, context) => {
     <Window
       width={width}
       height={height + 32}
-      title={mines}
+      title={emagged ? `${mines} Time left: ${timeLeft}` : mines}
       className="Minesweeper__Window"
     >
       <Window.Content fitted height={height + 32}>
@@ -80,9 +83,19 @@ export const Minesweeper = (props: MinesweeperData, context) => {
       </Window.Content>
       {!difficulty && (
         <Dimmer>
-          <Stack fill>
+          <Stack vertical fontSize={1.2} textAlign="center" fill>
+            {emagged ? (
+              <Stack.Item fontSize={1.5} color="bad">
+                Do not run. <br /> Do not move.
+                <br /> Do not panic. <br />
+                Do not think <br />
+                Just play. Or die.
+              </Stack.Item>
+            ) : (
+              <></>
+            )}
             <Stack.Item grow>
-              <Section title="Select difficulty" textAlign="center">
+              <Section title={"Select difficulty"} textAlign="center">
                 <Button
                   onClick={() =>
                     act("set_difficulty", { difficulty: "beginner" })

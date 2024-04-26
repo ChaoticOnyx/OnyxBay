@@ -2,9 +2,47 @@
 #define STATE_BLANK "blank"
 #define STATE_MINE "mine"
 /// Grid X, Grid Y, number of mines
-#define DIFFICULTY_BEGINNER list(9, 9, 10)
-#define DIFFICULTY_INTERMEDIATE list(16, 16, 40)
-#define DIFFICULTY_EXPERT list(30, 16, 99)
+#define DIFFICULTY_BEGINNER list("grid_x" = 9, "grid_y" = 9, "mines" = 10, "time_limit" = 2)
+#define DIFFICULTY_INTERMEDIATE list("grid_x" = 16, "grid_y" = 16, "mines" = 40, "time_limit" = 3)
+#define DIFFICULTY_EXPERT list("grid_x" = 30, "grid_y" = 16, "mines" = 99, "time_limit" = 5)
+/// List of prizes. 'amount of mines' -> list(prizes)
+GLOBAL_LIST_INIT(minesweeper_arcade_prizes, list(
+	"10" = list(
+		/obj/item/toy/blink                            = 2,
+		/obj/item/clothing/under/syndicate/tacticool   = 2,
+		/obj/item/toy/sword                            = 2,
+		/obj/item/gun/projectile/revolver/capgun       = 2,
+		/obj/item/toy/crossbow                         = 2,
+		/obj/item/toy/plushie/snail                    = 4,
+		/obj/item/reagent_containers/spray/waterflower = 1,
+		/obj/item/spacecash/bundle/c50                 = 2,
+	),
+	"40" = list(
+		/obj/item/clothing/mask/uwu                    = 3,
+		/obj/item/bikehorn                             = 3,
+		/obj/item/spacecash/bundle/c200                = 3,
+		/obj/item/clothing/gloves/insulated            = 1,
+		/obj/item/storage/pill_bottle/happy            = 1,
+		/obj/item/pickaxe/diamond                      = 1,
+		/obj/item/soap/gold                            = 1,
+	),
+	"99" = list(
+		/obj/item/plastique                            = 1,
+		/obj/item/storage/toolbox/syndicate            = 2,
+		/obj/item/spacecash/bundle/c1000               = 2,
+		/obj/random/voidsuit                           = 1,
+		/obj/item/clothing/gloves/insulated            = 6,
+		/obj/item/melee/telebaton                      = 1,
+	),
+	"emagged" = list(
+		/obj/item/plastique                            = 3,
+		/obj/item/pen/energy_dagger                    = 3,
+		/obj/item/melee/energy/sword/pirate            = 1,
+		/obj/item/melee/energy/sword/one_hand/red      = 1,
+		/obj/item/melee/energy/sword/one_hand/purple   = 1,
+		/obj/item/gun/energy/crossbow                  = 1,
+	),
+))
 
 /obj/machinery/computer/arcade/minesweeper
 	name = "arcade machine"
@@ -25,6 +63,17 @@
 		list(-1, 0), list(1, 0),
 		list(-1, 1), list(0, 1), list(1, 1)
 		)
+	/// If emagged - used to calculate time left
+	var/explode_time
+	/// If emagged - holds weakref to a player
+	var/weakref/player_weakref = null
+
+/obj/machinery/computer/arcade/minesweeper/Destroy()
+	var/mob/player = player_weakref?.resolve()
+	if(istype(player))
+		unregister_signal(player, SIGNAL_MOVED)
+	player_weakref = null
+	return ..()
 
 /obj/machinery/computer/arcade/minesweeper/attack_hand(mob/user)
 	. = ..()
@@ -37,17 +86,28 @@
 	ui = SStgui.try_update_ui(user, src, ui)
 
 	if(!ui)
-		ui = new(user, src, "Minesweeper", src.name)
+		ui = new(user, src, "Minesweeper")
 		ui.open()
+		ui.set_autoupdate(TRUE)
+
+	if(emagged && isnull(player_weakref))
+		player_weakref = weakref(user)
+		register_signal(user, SIGNAL_MOVED, nameof(.proc/game_over))
 
 /obj/machinery/computer/arcade/minesweeper/tgui_data(mob/user)
-	var/list/data = list()
+	var/list/data = list(
+		"grid" = grid,
+		"width" = grid_x * 30,
+		"height" = grid_y * 30,
+		"mines" = "[num2text(grid_mines)] mines.",
+		"difficulty" = isnull(difficulty) ? FALSE : TRUE,
+		"emagged" = emagged,
+		"timeLeft" = 0,
+	)
 
-	data["grid"] = grid
-	data["width"] = grid_x * 30
-	data["height"] = grid_y * 30
-	data["mines"] = "[num2text(grid_mines)] mines."
-	data["difficulty"] = isnull(difficulty) ? FALSE : TRUE
+	if(emagged && !isnull(difficulty))
+		var/timeleft = (explode_time - world.time) / 10
+		data["timeLeft"] = "[add_zero(num2text((timeleft / 60) % 60),2)]:[add_zero(num2text(timeleft % 60), 2)]"
 
 	return data
 
@@ -77,43 +137,55 @@
 			button_flag(text2num(params["choice_y"]), text2num(params["choice_x"]))
 			return TRUE
 
+/obj/machinery/computer/arcade/minesweeper/emag_act(remaining_charges, mob/user, emag_source)
+	if(emagged)
+		return
+
+	playsound(get_turf(src), 'sound/effects/computer_emag.ogg', 25, FALSE, -1)
+	emagged = TRUE
+	if(game_set_up || !isnull(difficulty))
+		won()
+	return 1
+
+/obj/machinery/computer/arcade/minesweeper/proc/explode_player(mob/player)
+	explosion(get_turf(src), -1, -1, 2, 3)
+	explosion(get_turf(player), 0, 1, 3, 6)
+	switch(rustg_rand_range_i32(0, 100))
+		if(0 to 60)
+			return
+		else
+			player.gib()
+
+	if(!QDELETED(src))
+		qdel_self()
+
 /obj/machinery/computer/arcade/minesweeper/proc/won()
 	playsound(get_turf(src), GET_SFX(SFX_MINESWEEPER_WIN), 100, FALSE, -1)
+	var/atom/movable/prize = null
+	if(!emagged)
+		prize = util_pick_weight(GLOB.minesweeper_arcade_prizes[num2text(difficulty["mines"])])
+	else
+		prize = util_pick_weight(GLOB.minesweeper_arcade_prizes["emagged"])
+	prize = new prize(get_turf(src))
+	clear_variables()
 
-	switch(difficulty[3])
-		if(40)
-			contents += new /obj/item/clothing/mask/uwu(src)
+/obj/machinery/computer/arcade/minesweeper/proc/game_over(mob/player)
+	playsound(get_turf(src), GET_SFX(SFX_MINESWEEPER_LOSE), 100, FALSE, -1)
+	for(var/mob/living/M in viewers(src, 2))
+		M.flash_eyes()
+	clear_variables()
 
-		if(99)
-			contents += new /obj/item/plastique(src) // Will be picked from contents in prizevend()
-
-	prizevend()
-
+/obj/machinery/computer/arcade/minesweeper/proc/clear_variables()
 	game_set_up = FALSE
 	difficulty = null
 	SStgui.close_uis(src)
 
-/obj/machinery/computer/arcade/minesweeper/proc/game_over()
-	playsound(get_turf(src), GET_SFX(SFX_MINESWEEPER_LOSE), 100, FALSE, -1)
-	game_set_up = FALSE
-	difficulty = null
-	for(var/mob/living/carbon/C in viewers(src, 2))
-		C.flash_eyes()
-
-/obj/machinery/computer/arcade/minesweeper/proc/SpawnGoodLoot()
-	//playsound(src, 'sound/misc/mining_reward_3.ogg', 100, 100, FALSE)
-
-/obj/machinery/computer/arcade/minesweeper/proc/SpawnMediumLoot()
-	//playsound(src, 'sound/misc/mining_reward_2.ogg', 100, 100, FALSE)
-
-/obj/machinery/computer/arcade/minesweeper/proc/SpawnBadLoot()
-	//playsound(src, 'sound/misc/mining_reward_1.ogg', 100, 100, FALSE)
-	//switch(rand(1, 3))
-
-/obj/machinery/computer/arcade/minesweeper/proc/SpawnDeathLoot()
-	//playsound(src, 'sound/misc/mining_reward_0.ogg', 100, 100, FALSE)
-	//new /mob/living/simple_animal/hostile/mimic/crate(loc)
-	qdel(src)
+	var/mob/player = player_weakref?.resolve()
+	if(istype(player))
+		unregister_signal(player, SIGNAL_MOVED)
+	player_weakref = null
+	if(emagged)
+		explode_player(player)
 
 /obj/machinery/computer/arcade/minesweeper/proc/button_press(y, x)
 	if(grid[y][x]["flag"])
@@ -123,7 +195,7 @@
 		game_over()
 		return
 
-	reveal_button(x,y)
+	reveal_button(x, y)
 
 /obj/machinery/computer/arcade/minesweeper/proc/button_flag(y, x)
 	var/list/L = grid[y][x]
@@ -132,11 +204,14 @@
 
 /obj/machinery/computer/arcade/minesweeper/proc/setup_grid()
 	playsound(get_turf(src), GET_SFX(SFX_MINESWEEPER_START), 100, FALSE, -1)
+	if(emagged)
+		explode_time = world.time + (difficulty["time_limit"] MINUTES)
+		set_next_think(world.time + (difficulty["time_limit"] MINUTES))
 
-	grid_x = difficulty[1]
-	grid_y = difficulty[2]
+	grid_x = difficulty["grid_x"]
+	grid_y = difficulty["grid_y"]
 
-	grid_mines = difficulty[3]
+	grid_mines = difficulty["mines"]
 
 	grid = new /list(grid_y, grid_x)
 
@@ -162,6 +237,11 @@
 				L["state"] = STATE_MINE
 				grid_blanks--
 				break
+
+			if(TICK_CHECK)
+				game_set_up = FALSE
+				SStgui.close_uis(src)
+				return
 
 	game_set_up = TRUE
 
@@ -201,6 +281,9 @@
 
 /obj/machinery/computer/arcade/minesweeper/proc/check_complete()
 	return grid_pressed == grid_blanks
+
+/obj/machinery/computer/arcade/minesweeper/think()
+	game_over()
 
 #undef STATE_EMPTY
 #undef STATE_BLANK
