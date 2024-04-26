@@ -1348,7 +1348,6 @@
 #include "code\game\objects\structures\railing.dm"
 #include "code\game\objects\structures\rock.dm"
 #include "code\game\objects\structures\roulette.dm"
-#include "code\game\objects\structures\rubble.dm"
 #include "code\game\objects\structures\safe.dm"
 #include "code\game\objects\structures\secure_door_assembly.dm"
 #include "code\game\objects\structures\showcase.dm"
