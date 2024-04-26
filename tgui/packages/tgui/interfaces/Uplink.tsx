@@ -457,48 +457,46 @@ const ExploitableMenu = (props: ExploitableMenuProps, context: any) => {
         ))}
       </Stack.Item>
       {selectedExploit?.Name ? (
-        <>
-          <Stack.Item>
-            <h1>Information</h1>
-            <LabeledList>
-              <LabeledList.Item label="Name">
-                {selectedExploit.Name}
-              </LabeledList.Item>
+        <Stack.Item>
+          <h1>Information</h1>
+          <LabeledList>
+            <LabeledList.Item label="Name">
+              {selectedExploit.Name}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Sex">
-                {selectedExploit.Sex}
-              </LabeledList.Item>
+            <LabeledList.Item label="Sex">
+              {selectedExploit.Sex}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Age">
-                {selectedExploit.Age}
-              </LabeledList.Item>
+            <LabeledList.Item label="Age">
+              {selectedExploit.Age}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Species">
-                {selectedExploit.Species}
-              </LabeledList.Item>
+            <LabeledList.Item label="Species">
+              {selectedExploit.Species}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Home System">
-                {selectedExploit["Home System"]}
-              </LabeledList.Item>
+            <LabeledList.Item label="Home System">
+              {selectedExploit["Home System"]}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Background">
-                {selectedExploit.Background}
-              </LabeledList.Item>
+            <LabeledList.Item label="Background">
+              {selectedExploit.Background}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Religion">
-                {selectedExploit.Religion}
-              </LabeledList.Item>
+            <LabeledList.Item label="Religion">
+              {selectedExploit.Religion}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Fingerprint">
-                {selectedExploit.Fingerprint}
-              </LabeledList.Item>
+            <LabeledList.Item label="Fingerprint">
+              {selectedExploit.Fingerprint}
+            </LabeledList.Item>
 
-              <LabeledList.Item label="Exploitable information">
-                {selectedExploit["Exploitable Information"] || "N/A"}
-              </LabeledList.Item>
-            </LabeledList>
-          </Stack.Item>
-        </>
+            <LabeledList.Item label="Exploitable information">
+              {selectedExploit["Exploitable Information"] || "N/A"}
+            </LabeledList.Item>
+          </LabeledList>
+        </Stack.Item>
       ) : (
         <></>
       )}
