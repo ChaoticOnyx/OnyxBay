@@ -456,8 +456,7 @@
 */
 
 // Creates a single icon from a given /atom or /image.  Only the first argument is required.
-/proc/getFlatIcon(image/appearance, defdir, deficon, defstate, defblend, start = TRUE, no_anim = FALSE, always_use_defdir = FALSE, call_count = 1)
-	ICON_CRASH_LOG("getFlatIcon called with [appearance.type][call_count > 1 ? " Recursion: [call_count]" : ""]")
+/proc/getFlatIcon(image/appearance, defdir, deficon, defstate, defblend, start = TRUE, no_anim = FALSE, always_use_defdir = FALSE)
 	// Loop through the underlays, then overlays, sorting them into the layers list
 	#define PROCESS_OVERLAYS_OR_UNDERLAYS(flat, process, base_layer) \
 		for (var/i in 1 to process.len) { \
@@ -488,7 +487,6 @@
 	var/static/icon/flat_template = icon('icons/effects/blank.dmi')
 
 	if(!appearance || appearance.alpha <= 0)
-		ICON_CRASH_LOG_TRACELESS("Recusion level [call_count] returned gracefully.")
 		return icon(flat_template)
 
 	if(start)
@@ -572,7 +570,7 @@
 				curblend = BLEND_OVERLAY
 				add = icon(layer_image.icon, layer_image.icon_state, base_icon_dir)
 			else // 'I' is an appearance object.
-				add = getFlatIcon(image(layer_image), curdir, curicon, curstate, curblend, FALSE, no_anim, always_use_defdir, call_count = call_count++)
+				add = getFlatIcon(image(layer_image), curdir, curicon, curstate, curblend, FALSE, no_anim, always_use_defdir)
 			if(!add)
 				continue
 
@@ -617,10 +615,8 @@
 			//Clean up repeated frames
 			var/icon/cleaned = new /icon()
 			cleaned.Insert(flat, "", SOUTH, 1, 0)
-			ICON_CRASH_LOG_TRACELESS("Recusion level [call_count] returned gracefully.")
 			return cleaned
 		else
-			ICON_CRASH_LOG_TRACELESS("Recusion level [call_count] returned gracefully.")
 			return icon(flat, "", SOUTH)
 	else if (render_icon) // There's no overlays.
 		var/icon/final_icon = icon(icon(curicon, curstate, base_icon_dir), "", SOUTH, no_anim ? TRUE : null)
@@ -634,7 +630,6 @@
 			else
 				final_icon.Blend(appearance.color, ICON_MULTIPLY)
 
-		ICON_CRASH_LOG_TRACELESS("Recusion level [call_count] returned gracefully.")
 		return final_icon
 
 	#undef PROCESS_OVERLAYS_OR_UNDERLAYS
