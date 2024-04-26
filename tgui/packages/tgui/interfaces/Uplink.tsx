@@ -188,38 +188,40 @@ export const GenericUplink = (props: any, context: any) => {
         </>
       }
     >
-      <Stack>
-        {currentPage === MenuPage.UplinkMenu && (
-          <UplinkMenu
-            categories={data.itemCategories}
-            searchText={searchText}
-            selectedItemCategory={selectedItemCategory}
-            currencyAmount={currencyAmount}
-            currencySymbol={currencySymbol}
-            compactMode={compactMode}
-            items={items}
-            onItemCategorySelect={(category: string) =>
-              setSelectedItemCategory(category)
-            }
-          />
-        )}
-        {currentPage === MenuPage.ContractMenu && (
-          <ContractsMenu
-            contractCategories={data.contractCategories}
-            selectedContractCategory={selectedContractCategory}
-            currencySymbol={currencySymbol}
-            contracts={contracts}
-            onContractCatgorySelect={(category: string) =>
-              setSelectedContractCategory(category)
-            }
-          />
-        )}
-        {currentPage === MenuPage.ExploitableMenu && (
-          <ExploitableMenu
-            exploits={data.crewRecords}
-            selectedExploit={data.exploitData}
-          />
-        )}
+      <Stack fill>
+        <Stack.Item grow basis={0}>
+          {currentPage === MenuPage.UplinkMenu && (
+            <UplinkMenu
+              categories={data.itemCategories}
+              searchText={searchText}
+              selectedItemCategory={selectedItemCategory}
+              currencyAmount={currencyAmount}
+              currencySymbol={currencySymbol}
+              compactMode={compactMode}
+              items={items}
+              onItemCategorySelect={(category: string) =>
+                setSelectedItemCategory(category)
+              }
+            />
+          )}
+          {currentPage === MenuPage.ContractMenu && (
+            <ContractsMenu
+              contractCategories={data.contractCategories}
+              selectedContractCategory={selectedContractCategory}
+              currencySymbol={currencySymbol}
+              contracts={contracts}
+              onContractCatgorySelect={(category: string) =>
+                setSelectedContractCategory(category)
+              }
+            />
+          )}
+          {currentPage === MenuPage.ExploitableMenu && (
+            <ExploitableMenu
+              exploits={data.crewRecords}
+              selectedExploit={data.exploitData}
+            />
+          )}
+        </Stack.Item>
       </Stack>
     </Section>
   );
@@ -249,7 +251,7 @@ const UplinkMenu = (props: UplinkMenuProps, context: any) => {
   } = props;
 
   return (
-    <>
+    <Stack fill>
       {searchText.length === 0 && (
         <Stack.Item mr={1.5}>
           <Tabs vertical>
@@ -278,7 +280,7 @@ const UplinkMenu = (props: UplinkMenuProps, context: any) => {
             : "No results found."}
         </NoticeBox>
       )}
-      <Stack.Item grow>
+      <Stack.Item grow basis={0}>
         <ItemList
           compactMode={searchText.length > 0 || compactMode}
           currencyAmount={currencyAmount}
@@ -286,7 +288,7 @@ const UplinkMenu = (props: UplinkMenuProps, context: any) => {
           currentItems={items}
         />
       </Stack.Item>
-    </>
+    </Stack>
   );
 };
 
@@ -390,8 +392,8 @@ const ContractsMenu = (props: ContractMenuProps, context: any) => {
     onContractCatgorySelect,
   } = props;
   return (
-    <Stack>
-      <Stack.Item vertical mr={1.5}>
+    <Stack fill>
+      <Stack.Item mr={1.5}>
         <Tabs vertical>
           {contractCategories?.map((category) => (
             <>
@@ -455,46 +457,48 @@ const ExploitableMenu = (props: ExploitableMenuProps, context: any) => {
         ))}
       </Stack.Item>
       {selectedExploit?.Name ? (
-        <Stack.Item>
-          <h1>Information</h1>
-          <LabeledList>
-            <LabeledList.Item label="Name">
-              {selectedExploit.Name}
-            </LabeledList.Item>
+        <>
+          <Stack.Item>
+            <h1>Information</h1>
+            <LabeledList>
+              <LabeledList.Item label="Name">
+                {selectedExploit.Name}
+              </LabeledList.Item>
 
-            <LabeledList.Item label="Sex">
-              {selectedExploit.Sex}
-            </LabeledList.Item>
+              <LabeledList.Item label="Sex">
+                {selectedExploit.Sex}
+              </LabeledList.Item>
 
-            <LabeledList.Item label="Age">
-              {selectedExploit.Age}
-            </LabeledList.Item>
+              <LabeledList.Item label="Age">
+                {selectedExploit.Age}
+              </LabeledList.Item>
 
-            <LabeledList.Item label="Species">
-              {selectedExploit.Species}
-            </LabeledList.Item>
+              <LabeledList.Item label="Species">
+                {selectedExploit.Species}
+              </LabeledList.Item>
 
-            <LabeledList.Item label="Home System">
-              {selectedExploit["Home System"]}
-            </LabeledList.Item>
+              <LabeledList.Item label="Home System">
+                {selectedExploit["Home System"]}
+              </LabeledList.Item>
 
-            <LabeledList.Item label="Background">
-              {selectedExploit.Background}
-            </LabeledList.Item>
+              <LabeledList.Item label="Background">
+                {selectedExploit.Background}
+              </LabeledList.Item>
 
-            <LabeledList.Item label="Religion">
-              {selectedExploit.Religion}
-            </LabeledList.Item>
+              <LabeledList.Item label="Religion">
+                {selectedExploit.Religion}
+              </LabeledList.Item>
 
-            <LabeledList.Item label="Fingerprint">
-              {selectedExploit.Fingerprint}
-            </LabeledList.Item>
+              <LabeledList.Item label="Fingerprint">
+                {selectedExploit.Fingerprint}
+              </LabeledList.Item>
 
-            <LabeledList.Item label="Exploitable information">
-              {selectedExploit["Exploitable Information"] || "N/A"}
-            </LabeledList.Item>
-          </LabeledList>
-        </Stack.Item>
+              <LabeledList.Item label="Exploitable information">
+                {selectedExploit["Exploitable Information"] || "N/A"}
+              </LabeledList.Item>
+            </LabeledList>
+          </Stack.Item>
+        </>
       ) : (
         <></>
       )}
