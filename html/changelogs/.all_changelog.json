@@ -1,6 +1,33 @@
 [
   {
     "author": "Filatelele",
+    "date": "2024-04-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Исправлена низкая скорость дронов.",
+        "pr": 12321
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Исправлена съехавшая разметка в аплинке.",
+        "pr": 12324
+      }
+    ]
+  },
+  {
+    "author": "TobyThorne",
+    "date": "2024-04-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Обновлены иконки газовых канистр.",
+        "pr": 12327
+      }
+    ]
+  },
+  {
+    "author": "Filatelele",
     "date": "2024-04-25T00:00:00+03:00",
     "changes": [
       {
