@@ -940,7 +940,7 @@ window "mainwindow"
 		anchor2 = -1,-1
 		is-default = true
 		saved-params = "pos;size;is-minimized;is-maximized"
-		icon = 'icons\\onyxlogo132x32.png'
+		icon = 'icons\\onyxlogo32x32.png'
 		statusbar = false
 		macro = "macro"
 		menu = "menu"
