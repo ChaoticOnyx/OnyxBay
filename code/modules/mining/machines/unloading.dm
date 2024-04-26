@@ -14,11 +14,11 @@
 
 	var/corner_turn_dir = 0
 
-/obj/machinery/mineral/unload_item/examine(mob/user, infix)
+/obj/machinery/mineral/unloading_machine/examine(mob/user, infix)
 	. = ..()
 	. += SPAN_NOTICE("It is currently turned [(stat & POWEROFF) ? "off" : "on"].")
 
-/obj/machinery/mineral/unload_item/examine_more(mob/user)
+/obj/machinery/mineral/unloading_machine/examine_more(mob/user)
 	. = ..()
 	. += SPAN_NOTICE("This machine must be manually turned on. Click on it with an empty hand to activate/deactivate.")
 
