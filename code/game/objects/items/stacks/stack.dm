@@ -203,6 +203,14 @@
 			S.amount = produced
 			S.add_to_stacks(user, recipe.goes_in_hands)
 
+		if(istype(O, /obj/structure/sign))
+			var/obj/item/sign/S = new(O.loc)
+			S.SetName(O.name)
+			S.desc = O.desc
+			S.icon_state = O.icon_state
+			S.sign_state = O.icon_state
+			qdel(O)
+
 /obj/item/stack/Topic(href, href_list)
 	..()
 	if (usr.restrained() || usr.stat || !in_range(usr, src))

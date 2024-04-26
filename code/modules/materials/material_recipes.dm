@@ -104,6 +104,19 @@
 		new /datum/stack_recipe("modular laptop frame", /obj/item/modular_computer/laptop, 10),\
 		new /datum/stack_recipe("modular tablet frame", /obj/item/modular_computer/tablet, 5),\
 	))
+	recipes += new /datum/stack_recipe_list("sign", list( \
+		new /datum/stack_recipe("high voltage", /obj/structure/sign/warning/high_voltage, 1, time = 5), \
+		new /datum/stack_recipe("warning", /obj/structure/sign/warning, 1, time = 5), \
+		new /datum/stack_recipe("no xenos", /obj/structure/sign/noxenos, 1, time = 5), \
+		new /datum/stack_recipe("turrets", /obj/structure/sign/warning/lethal_turrets, 1, time = 5), \
+		new /datum/stack_recipe("secure area", /obj/structure/sign/warning/detailed, 1, time = 5), \
+		new /datum/stack_recipe("medbay", /obj/structure/sign/redcross, 1, time = 5), \
+		new /datum/stack_recipe("out of service", /obj/structure/sign/warning/out_of_service, 1, time = 5), \
+		new /datum/stack_recipe("no smoking", /obj/structure/sign/warning/nosmoking_1, 1, time = 5), \
+		new /datum/stack_recipe("smoking", /obj/structure/sign/warning/smoking, 1, time = 5), \
+		new /datum/stack_recipe("cctv", /obj/structure/sign/warning/secure_area/cctv, 1, time = 5), \
+		))
+
 /material/plasteel/generate_recipes()
 	..()
 	recipes += new /datum/stack_recipe("AI core", /obj/structure/AIcore, 8, time = 50, one_per_turf = 1)

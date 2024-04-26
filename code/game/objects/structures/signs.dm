@@ -137,6 +137,10 @@
 	name = "\improper WARNING"
 	icon_state = "securearea"
 
+/obj/structure/sign/noxenos
+	name = "\improper NO XENOS"
+	icon_state = "noxenos"
+
 /obj/structure/sign/warning/detailed
 	icon_state = "securearea2"
 
