@@ -735,7 +735,6 @@ var/list/worths = list(
 					/obj/machinery/computer/mecha = -1000,
 					/obj/machinery/shower = -300,
 					/obj/machinery/acting/changer = -3000,
-					/obj/machinery/artillerycontrol = -1400,
 					/obj/machinery/dnaforensics = -1200,
 					/obj/machinery/microscope = -550,
 					/obj/machinery/computer/account_database = -3000,
