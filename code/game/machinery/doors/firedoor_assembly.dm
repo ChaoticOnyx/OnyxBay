@@ -69,7 +69,7 @@
 	else
 		..(C, user)
 
-/obj/structure/firelock_frame/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+/obj/structure/firedoor_assembly/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if(the_rcd.mode == RCD_DECONSTRUCT)
 		return list("delay" = 5 SECONDS, "cost" = 16)
 
@@ -78,7 +78,7 @@
 
 	return FALSE
 
-/obj/structure/firelock_frame/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+/obj/structure/firedoor_assembly/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
 	switch(rcd_data["[RCD_DESIGN_MODE]"])
 		if(RCD_UPGRADE_SIMPLE_CIRCUITS)
 			show_splash_text(user, "circuit installed", SPAN("notice", "You install the circuit into \the [src]!"))

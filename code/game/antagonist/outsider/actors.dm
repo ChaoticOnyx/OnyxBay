@@ -60,6 +60,9 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 	if(alert("Are you sure you'd like to join as an actor?", "Confirmation", "Yes", "No") == "No")
 		return
 
+	if(!SSeams.CheckForAccess(client))
+		return
+
 	if(isghost(src) || isnewplayer(src))
 		if(GLOB.actor.current_antagonists.len >= GLOB.actor.hard_cap)
 			to_chat(src, SPAN_WARNING("No more actors may spawn at the current time."))

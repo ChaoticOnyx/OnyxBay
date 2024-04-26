@@ -45,6 +45,8 @@
 
 	var/static/list/designs_icons = list()
 
+	matter = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 10000)
+
 /obj/effect/rcd_hologram
 	name = "hologram"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
