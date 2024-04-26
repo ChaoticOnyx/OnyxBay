@@ -249,9 +249,9 @@ SUBSYSTEM_DEF(donations)
 	var/mob/user = usr
 
 	switch(href_list["action"])
-		if("go_to_patreon")
-			log_debug("\[Donations] patreon link used by '[user]'")
-			send_link(user, config.link.patreon)
+		if("go_to_boosty")
+			log_debug("\[Donations] boosty link used by '[user]'")
+			send_link(user, config.link.boosty)
 			return 1
 		if("go_to_discord")
 			log_debug("\[Donations] discord link used by '[user]'")
