@@ -299,9 +299,3 @@
 /proc/report_progress(progress_message)
 	admin_notice("<span class='boldannounce'>[progress_message]</span>", R_DEBUG)
 	log_to_dd(progress_message)
-
-/proc/log_crash(log, file, line, trace = TRUE)
-	var/static/log_num = 0
-	log_num++
-	log = "CRASH LOG #[log_num]: [file] Ln [line][log ? " [log]": ""]. [trace ? "CALLSTACK: [jointext(util_crash_with("Icon Crashed!"), "\n")]" : ""]"
-	WRITE_FILE(GLOB.world_icons_log, log)
