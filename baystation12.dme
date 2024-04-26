@@ -1346,7 +1346,6 @@
 #include "code\game\objects\structures\pit.dm"
 #include "code\game\objects\structures\plasticflaps.dm"
 #include "code\game\objects\structures\railing.dm"
-#include "code\game\objects\structures\rails.dm"
 #include "code\game\objects\structures\rock.dm"
 #include "code\game\objects\structures\roulette.dm"
 #include "code\game\objects\structures\rubble.dm"
