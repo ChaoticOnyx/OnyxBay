@@ -55,13 +55,17 @@
 
 /obj/item/device/assembly/prox_sensor/proc/sense()
 	var/turf/mainloc = get_turf(src)
-	if((!holder && !secured) || !scanning || cooldown > 0)
-		return 0
+	if((!holder && !secured) || !scanning)
+		return FALSE
+
+	THROTTLE(sense_cooldown, 0.2 SECONDS)
+	if(!sense_cooldown)
+		return FALSE
+
 	pulse(0)
 	if(!holder)
 		mainloc.visible_message(SPAN("danger" ,"\icon[src] *beep* *beep*"), SPAN("danger" ,"*beep* *beep*"))
 	playsound(mainloc, 'sound/signals/warning8.ogg', 35)
-	cooldown = 2
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/assembly/prox_sensor/think()
