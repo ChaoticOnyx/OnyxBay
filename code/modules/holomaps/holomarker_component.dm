@@ -44,6 +44,8 @@
 	var/list/holomap_images = list()
 
 /datum/component/holomarker/toggleable/Destroy()
+	GLOB.holomarkers -= src
+
 	if(istype(activator))
 		unregister_signal(activator, SIGNAL_Z_CHANGED)
 		activator?.client?.images -= holomap_images
