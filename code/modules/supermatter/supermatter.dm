@@ -290,19 +290,19 @@
 	else
 		alert_msg = null
 	if(alert_msg)
-		GLOB.global_announcer.autosay(alert_msg, get_announcement_computer("Supermatter Monitor"), "Engineering")
+		GLOB.global_announcer.autosay(alert_msg, "Supermatter Monitor", "Engineering")
 		//Public alerts
 		if((damage > emergency_point) && !public_alert)
-			GLOB.global_announcer.autosay("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", get_announcement_computer("Supermatter Monitor"))
+			GLOB.global_announcer.autosay("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", "Supermatter Monitor")
 			if(power >= 1400)
-				GLOB.global_announcer.autosay("WARNING: AN EXTREMELY POWERFUL EXPLOSION EXPECTED!", get_announcement_computer("Supermatter Monitor"))
+				GLOB.global_announcer.autosay("WARNING: AN EXTREMELY POWERFUL EXPLOSION EXPECTED!", "Supermatter Monitor")
 			public_alert = 1
 			for(var/mob/M in GLOB.player_list)
 				var/turf/T = get_turf(M)
 				if(T && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)) && !istype(M,/mob/new_player) && !isdeaf(M))
 					sound_to(M, sound('sound/signals/alarm1.ogg'))
 		else if(safe_warned && public_alert)
-			GLOB.global_announcer.autosay(alert_msg, get_announcement_computer("Supermatter Monitor"))
+			GLOB.global_announcer.autosay(alert_msg, "Supermatter Monitor")
 			public_alert = 0
 
 
