@@ -170,6 +170,10 @@
 	icon_state = LIGHTING_ICON_STATE_DARK
 	plane = LIGHTING_PLANE
 	layer = LIGHTING_LAYER
+	transform = matrix(200, 0, 0, 0, 200, 0)
 	blend_mode = BLEND_MULTIPLY
 	color = "#ffffff" //Lighting plane colors are negative, so this is actually black.
 	allstate = TRUE
+
+/atom/movable/screen/fullscreen/lighting_backdrop/stretch_to_view(view)
+	return // Special snowflake
