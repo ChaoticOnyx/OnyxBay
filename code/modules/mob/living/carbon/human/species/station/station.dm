@@ -92,7 +92,7 @@
 	facial_hair_key = SPECIES_TAJARA
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
 	generic_attack_mod = 2.0
-	darksight_range = 10
+	darksight_range = 8
 	darksight_tint = DARKTINT_GOOD
 	movespeed_modifier = /datum/movespeed_modifier/tajaran
 	brute_mod = 1.15
