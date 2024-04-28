@@ -498,7 +498,7 @@
 
 	if(href_list["refresh"])
 		if(Adjacent(src, usr))
-			show_inv(usr, href_list["underwear_only"])
+			show_inv(usr, text2num(href_list["underwear_only"]))
 
 	if(href_list["inv_close"])
 		if(usr.show_inventory)
