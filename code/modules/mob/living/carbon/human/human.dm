@@ -253,7 +253,6 @@
 	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
 	if(!user.IsAdvancedToolUser(TRUE))
 		dat += underwear_only ? "" : show_inv_get_slots_reduced()
-		dat += underwear_only ? "" : show_inv_get_ending()
 	else
 		dat += underwear_only ? "" : show_inv_get_slots()
 		dat += show_inv_get_underwear()
