@@ -221,13 +221,11 @@
 		return
 	var/mob/living/silicon/ai/A
 	if(istext(from))
-		A = new /mob/living/silicon/ai(src, null, null, 1)
+		A = isnull(GLOB.global_ai_announcer) ? (GLOB.global_ai_announcer = new(src, null, null, TRUE)) : GLOB.global_ai_announcer
 		A.fully_replace_character_name(from)
 	else
 		A = from
 	talk_into(A, message, channel, say_verb, speaking)
-	if(istext(from))
-		qdel(A)
 
 // Interprets the message mode when talking into a radio, possibly returning a connection datum
 /obj/item/device/radio/proc/handle_message_mode(mob/living/M as mob, message, message_mode)
