@@ -294,6 +294,13 @@
 				client.eye = loc
 	return
 
+/**
+ * This proc creates content for nano inventory.
+ * Returns TRUE if there is content to show.
+ * In case there's nothing to show - returns FALSE.
+ * This is done to prevent UI from showing last opened inventory.
+ * Do not forget to check what this proc has returned before actually opening UI!
+ */
 /mob/proc/show_inv(mob/user)
 	return FALSE
 
