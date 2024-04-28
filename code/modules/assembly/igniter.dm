@@ -23,6 +23,9 @@
 	else if(istype(holder?.loc, /obj/structure/wheelcannon))
 		var/obj/structure/wheelcannon/wheelcannon = holder.loc
 		wheelcannon.shoot()
+	else if(istype(holder?.loc, /obj/item/tank))
+		var/obj/item/tank/tank = holder.loc
+		tank.ignite()
 	else
 		var/turf/location = get_turf(loc)
 		if(location)
