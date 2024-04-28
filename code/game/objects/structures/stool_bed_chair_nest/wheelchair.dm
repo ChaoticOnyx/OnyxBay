@@ -18,6 +18,11 @@
 	var/mob/living/pulling = null
 	var/bloodiness
 
+/obj/structure/bed/chair/wheelchair/Destroy()
+	pulling?.pulledby = null
+	pulling = null
+	return ..()
+
 /obj/structure/bed/chair/wheelchair/on_update_icon()
 	return
 
