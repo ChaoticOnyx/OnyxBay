@@ -107,7 +107,7 @@
 
 	return dist
 
-/// Returns false if atoms are on different zlevels
+/// Unlike 'get_dist()' takes Z level into account.
 /proc/get_dist_zlevel_aware(atom/atom1, atom/atom2)
 	var/dx = atom1.x - atom2.x
 	var/dy = atom1.y - atom2.y
