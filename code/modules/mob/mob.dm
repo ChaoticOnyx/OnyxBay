@@ -295,7 +295,7 @@
 	return
 
 /mob/proc/show_inv(mob/user)
-	return
+	return FALSE
 
 // Mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
 /mob/verb/examinate(atom/to_axamine as mob|obj|turf in view(client.eye))
@@ -610,7 +610,10 @@
 		return
 	if(istype(M,/mob/living/silicon/ai))
 		return
-	show_inv(usr)
+
+	if(!show_inv(usr))
+		return
+
 	usr.show_inventory?.open()
 
 /mob/verb/stop_pulling_verb()
