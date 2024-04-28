@@ -72,7 +72,9 @@ var/list/holder_mob_icon_cache = list()
 	return I ? I.GetAccess() : ..()
 
 /obj/item/holder/attack_self()
-	held_mob.show_inv(usr)
+	if(!held_mob.show_inv(usr))
+		return
+
 	usr.show_inventory?.open()
 
 /obj/item/holder/attack(mob/target, mob/user)

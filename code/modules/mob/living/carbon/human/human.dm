@@ -243,59 +243,21 @@
 /mob/living/carbon/human/var/co2overloadtime = null
 /mob/living/carbon/human/var/temperature_resistance = 75 CELSIUS
 
-/mob/living/carbon/human/show_inv(mob/user)
+/mob/living/carbon/human/show_inv(mob/user, underwear_only = FALSE)
 	if(user.incapacitated())
-		return
+		return FALSE
+
 	if(!(user.Adjacent(src) || (istype(loc, /obj/item/holder) && loc.loc == user)))
-		return
-	if(!user.IsAdvancedToolUser(TRUE))
-		show_inv_reduced(user)
-		return
+		return FALSE
+
 	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
-	var/firstline = TRUE
-	for(var/entry in species.hud.gear)
-		var/list/slot_ref = species.hud.gear[entry]
-		if((slot_ref["slot"] in list(slot_l_store, slot_r_store)))
-			continue
-		var/obj/item/thing_in_slot = get_equipped_item(slot_ref["slot"])
-		if(firstline)
-			firstline = FALSE
-		else
-			dat += "<BR>"
-		dat += "<B>[slot_ref["name"]]:</b> <a href='?src=\ref[src];item=[slot_ref["slot"]]'>[istype(thing_in_slot) ? thing_in_slot : "nothing"]</a>"
-		if(istype(thing_in_slot, /obj/item/clothing))
-			var/obj/item/clothing/C = thing_in_slot
-			if(LAZYLEN(C.accessories))
-				dat += "<BR><A href='?src=\ref[src];item=tie;holder=\ref[C]'>Remove accessory</A>"
-	dat += "<HR>"
+	if(!user.IsAdvancedToolUser(TRUE))
+		dat += underwear_only ? "" : show_inv_get_slots_reduced()
+	else
+		dat += underwear_only ? "" : show_inv_get_slots()
+		dat += show_inv_get_underwear()
 
-	if(species.hud.has_hands)
-		dat += "<b>Left hand:</b> <A href='?src=\ref[src];item=[slot_l_hand]'>[istype(l_hand) ? l_hand : "nothing"]</A>"
-		dat += "<BR><b>Right hand:</b> <A href='?src=\ref[src];item=[slot_r_hand]'>[istype(r_hand) ? r_hand : "nothing"]</A>"
-
-	// Do they get an option to set internals?
-	if(istype(wear_mask, /obj/item/clothing/mask) || istype(head, /obj/item/clothing/head/helmet/space))
-		if(istype(back, /obj/item/tank) || istype(belt, /obj/item/tank) || istype(s_store, /obj/item/tank))
-			dat += "<BR><A href='?src=\ref[src];item=internals'>Toggle internals.</A>"
-
-	var/obj/item/clothing/under/suit = w_uniform
-	// Other incidentals.
-	if(istype(suit))
-		dat += "<BR><b>Pockets:</b> <A href='?src=\ref[src];item=pockets'>Empty or Place Item</A>"
-		if(suit.rolled_down != -1)
-			dat += "<BR><A href='?src=\ref[src];item=rolldown'>Roll Down Jumpsuit</A>"
-		if(suit.has_sensor == 1)
-			dat += "<BR><A href='?src=\ref[src];item=sensors'>Set sensors</A>"
-	if(handcuffed)
-		dat += "<BR><A href='?src=\ref[src];item=[slot_handcuffed]'>Handcuffed</A>"
-
-	for(var/entry in worn_underwear)
-		var/obj/item/underwear/UW = entry
-		dat += "<BR><a href='?src=\ref[src];item=\ref[UW]'>Remove \the [UW]</a>"
-
-	dat += "<BR><A href='?src=\ref[src];item=splints'>Remove splints</A>"
-	dat += "<HR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
-	dat += "<BR><A href='?src=\ref[user];inv_close=1'>Close</A>"
+	dat += show_inv_get_ending(user, underwear_only)
 
 	if(!user.show_inventory || user.show_inventory.user != user)
 		user.show_inventory = new /datum/browser(user, "mob[name]", "Inventory", 340, 560)
@@ -303,15 +265,12 @@
 	else
 		user.show_inventory.set_content(dat)
 		user.show_inventory.update()
-	return
 
-// Used when the user is not an advanced tool user (i.e. xenomorph)
-/mob/living/carbon/human/proc/show_inv_reduced(mob/user) // aka show_inv_to_a_moron
-	if(user.incapacitated())
-		return
-	if(!(user.Adjacent(src) || (istype(loc, /obj/item/holder) && loc.loc == user)))
-		return
-	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
+	return TRUE
+
+/mob/living/carbon/human/proc/show_inv_get_slots_reduced()
+	var/data
+
 	var/firstline = TRUE
 	for(var/entry in species.hud.gear)
 		var/list/slot_ref = species.hud.gear[entry]
@@ -321,24 +280,76 @@
 		if(firstline)
 			firstline = FALSE
 		else
-			dat += "<BR>"
-		dat += "<B>[slot_ref["name"]]:</b> <a href='?src=\ref[src];item=[slot_ref["slot"]]'>[istype(thing_in_slot) ? thing_in_slot : "nothing"]</a>"
-	dat += "<HR>"
+			data += "<BR>"
+		data += "<B>[slot_ref["name"]]:</b> <a href='?src=\ref[src];item=[slot_ref["slot"]]'>[istype(thing_in_slot) ? thing_in_slot : "nothing"]</a>"
+	data += "<HR>"
 
 	if(species.hud.has_hands)
-		dat += "<b>Left hand:</b> <A href='?src=\ref[src];item=[slot_l_hand]'>[istype(l_hand) ? l_hand : "nothing"]</A>"
-		dat += "<BR><b>Right hand:</b> <A href='?src=\ref[src];item=[slot_r_hand]'>[istype(r_hand) ? r_hand : "nothing"]</A>"
+		data += "<b>Left hand:</b> <A href='?src=\ref[src];item=[slot_l_hand]'>[istype(l_hand) ? l_hand : "nothing"]</A>"
+		data += "<BR><b>Right hand:</b> <A href='?src=\ref[src];item=[slot_r_hand]'>[istype(r_hand) ? r_hand : "nothing"]</A>"
 
-	dat += "<HR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
-	dat += "<BR><A href='?src=\ref[user];inv_close=1'>Close</A>"
+	return data
 
-	if(!user.show_inventory || user.show_inventory.user != user)
-		user.show_inventory = new /datum/browser(user, "mob[name]", "Inventory", 340, 560)
-		user.show_inventory.set_content(dat)
-	else
-		user.show_inventory.set_content(dat)
-		user.show_inventory.update()
-	return
+/mob/living/carbon/human/proc/show_inv_get_slots()
+	var/data
+
+	var/firstline = TRUE
+	for(var/entry in species.hud.gear)
+		var/list/slot_ref = species.hud.gear[entry]
+		if((slot_ref["slot"] in list(slot_l_store, slot_r_store)))
+			continue
+		var/obj/item/thing_in_slot = get_equipped_item(slot_ref["slot"])
+		if(firstline)
+			firstline = FALSE
+		else
+			data += "<BR>"
+		data += "<B>[slot_ref["name"]]:</b> <a href='?src=\ref[src];item=[slot_ref["slot"]]'>[istype(thing_in_slot) ? thing_in_slot : "nothing"]</a>"
+		if(istype(thing_in_slot, /obj/item/clothing))
+			var/obj/item/clothing/C = thing_in_slot
+			if(LAZYLEN(C.accessories))
+				data += "<BR><A href='?src=\ref[src];item=tie;holder=\ref[C]'>Remove accessory</A>"
+	data += "<HR>"
+
+	if(species.hud.has_hands)
+		data += "<b>Left hand:</b> <A href='?src=\ref[src];item=[slot_l_hand]'>[istype(l_hand) ? l_hand : "nothing"]</A>"
+		data += "<BR><b>Right hand:</b> <A href='?src=\ref[src];item=[slot_r_hand]'>[istype(r_hand) ? r_hand : "nothing"]</A>"
+
+	// Do they get an option to set internals?
+	if(istype(wear_mask, /obj/item/clothing/mask) || istype(head, /obj/item/clothing/head/helmet/space))
+		if(istype(back, /obj/item/tank) || istype(belt, /obj/item/tank) || istype(s_store, /obj/item/tank))
+			data += "<BR><A href='?src=\ref[src];item=internals'>Toggle internals.</A>"
+
+	var/obj/item/clothing/under/suit = w_uniform
+	// Other incidentals.
+	if(istype(suit))
+		data += "<BR><b>Pockets:</b> <A href='?src=\ref[src];item=pockets'>Empty or Place Item</A>"
+		if(suit.rolled_down != -1)
+			data += "<BR><A href='?src=\ref[src];item=rolldown'>Roll Down Jumpsuit</A>"
+		if(suit.has_sensor == 1)
+			data += "<BR><A href='?src=\ref[src];item=sensors'>Set sensors</A>"
+	if(handcuffed)
+		data += "<BR><A href='?src=\ref[src];item=[slot_handcuffed]'>Handcuffed</A>"
+
+	return data
+
+/mob/living/carbon/human/proc/show_inv_get_underwear()
+	var/data
+
+	for(var/entry in worn_underwear)
+		var/obj/item/underwear/UW = entry
+		data += "<BR><a href='?src=\ref[src];item=\ref[UW]'>Remove \the [UW]</a>"
+
+	return data
+
+/mob/living/carbon/human/proc/show_inv_get_ending(mob/user, underwear_only = FALSE)
+	var/data
+
+	if(!underwear_only && user.IsAdvancedToolUser(TRUE))
+		data += "<BR><A href='?src=\ref[src];item=splints'>Remove splints</A>"
+	data += "<HR><A href='?src=\ref[src];refresh=1;underwear_only=[underwear_only]'>Refresh</A>"
+	data += "<BR><A href='?src=\ref[user];inv_close=1'>Close</A>"
+
+	return data
 
 // called when something steps onto a human
 // this handles mulebots and vehicles
@@ -487,7 +498,7 @@
 
 	if(href_list["refresh"])
 		if(Adjacent(src, usr))
-			show_inv(usr)
+			show_inv(usr, text2num(href_list["underwear_only"]))
 
 	if(href_list["inv_close"])
 		if(usr.show_inventory)
@@ -1668,6 +1679,15 @@
 		log_and_message_admins("has succumbed")
 		adjustBrainLoss(brain.max_damage)
 		updatehealth()
+
+/mob/living/carbon/human/verb/remove_underwear()
+	set name = "Remove Underwear"
+	set category = "IC"
+
+	if(!show_inv(src, TRUE))
+		return
+
+	usr.show_inventory?.open()
 
 /mob/living/carbon/human/get_runechat_color()
 	return species.get_species_runechat_color(src)
