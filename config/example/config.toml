@@ -617,8 +617,8 @@ default_no_vote = true
 ## Ban appeals URL - usually for a forum or wherever people should go to contact your admins.
 # banappeals = "http://example.com"
 
-## Patreon URL
-# patreon = "http://example.com"
+## Boosty URL
+# boosty = "http://example.com"
 
 [donations]
 ## Set to true to enable donations subsystem. Server must be connected to proper database.
