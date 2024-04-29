@@ -6,7 +6,7 @@
 	var/health = 100.0
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	w_class = ITEM_SIZE_GARGANTUAN
-	turf_height_offset = 16
+	turf_height_offset = 21
 
 	var/valve_open = 0
 	var/release_pressure = ONE_ATMOSPHERE
@@ -38,6 +38,9 @@
 
 /obj/machinery/portable_atmospherics/canister/nitrogen/prechilled
 	name = "\improper Canister: \[N2 (Cooling)\]"
+
+/obj/machinery/portable_atmospherics/canister/nitrogen/airlock
+	start_pressure = 3 * ONE_ATMOSPHERE
 
 /obj/machinery/portable_atmospherics/canister/oxygen
 	name = "\improper Canister: \[O2\]"
@@ -313,17 +316,23 @@ update_flag
 
 /obj/machinery/portable_atmospherics/canister/OnTopic(mob/user, href_list, state)
 	if(href_list["toggle"])
-		if (valve_open)
-			if (holding)
-				release_log += "Valve was <b>closed</b> by [user] ([user.ckey]), stopping the transfer into the [holding]<br>"
+		var/msg_log
+		var/msg_vis
+		if(valve_open)
+			if(holding)
+				msg_log = "Valve was <b>closed</b> by [user] ([user.ckey]), stopping the transfer into the [holding]<br>"
 			else
-				release_log += "Valve was <b>closed</b> by [user] ([user.ckey]), stopping the transfer into the <font color='red'><b>air</b></font><br>"
+				msg_log = "Valve was <b>closed</b> by [user] ([user.ckey]), stopping the transfer into the <font color='red'><b>air</b></font><br>"
+			msg_vis = "\The [user] closed \the [src]'s valve, stopping the transfer into [holding ? "\the [holding]" : "the <font color='red'><b>air</b></font>"]."
 		else
-			if (holding)
-				release_log += "Valve was <b>opened</b> by [user] ([user.ckey]), starting the transfer into the [holding]<br>"
+			if(holding)
+				msg_log = "Valve was <b>opened</b> by [user] ([user.ckey]), starting the transfer into the [holding]<br>"
 			else
-				release_log += "Valve was <b>opened</b> by [user] ([user.ckey]), starting the transfer into the <font color='red'><b>air</b></font><br>"
+				msg_log = "Valve was <b>opened</b> by [user] ([user.ckey]), starting the transfer into the <font color='red'><b>air</b></font><br>"
 				log_open()
+			msg_vis = "\The [user] opened \the [src]'s valve, starting the transfer into [holding ? "\the [holding]" : "the <font color='red'><b>air</b></font>"]."
+		release_log += msg_log
+		visible_message(msg_vis, "You hear the sound of a moving valve.", 4)
 		valve_open = !valve_open
 		. = TOPIC_REFRESH
 

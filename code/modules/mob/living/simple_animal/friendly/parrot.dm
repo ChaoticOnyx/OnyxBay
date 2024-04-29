@@ -77,7 +77,7 @@
 	//These vars store their preffered perch and if they dont have one, what they can use as a perch
 	var/obj/parrot_perch = null
 	var/obj/desired_perches = list(/obj/structure/computerframe, 		/obj/structure/displaycase, \
-									/obj/structure/filingcabinet,		/obj/machinery/teleport, \
+									/obj/structure/filingcabinet,		/obj/machinery/teleporter_gate, \
 									/obj/machinery/computer,			/obj/machinery/telecomms, \
 									/obj/machinery/nuclearbomb,			/obj/machinery/particle_accelerator, \
 									/obj/machinery/recharge_station,	/obj/machinery/smartfridge, \
@@ -158,7 +158,8 @@
  */
 /mob/living/simple_animal/parrot/show_inv(mob/user as mob)
 	user.set_machine(src)
-	if(user.stat) return
+	if(user.stat)
+		return FALSE
 
 	var/dat = 	"<meta charset=\"utf-8\"><div align='center'><b>Inventory of [name]</b></div><p>"
 	if(ears)
@@ -173,7 +174,7 @@
 
 	show_browser(user, dat, text("window=mob[];size=325x500", name))
 	onclose(user, "mob[real_name]")
-	return
+	return TRUE
 
 /mob/living/simple_animal/parrot/Topic(href, href_list)
 

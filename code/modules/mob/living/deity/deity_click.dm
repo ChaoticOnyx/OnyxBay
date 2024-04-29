@@ -7,9 +7,6 @@
 		return
 	var/list/modifiers = params2list(params)
 	if(modifiers["shift"] || modifiers["ctrl"])
-		var/datum/phenomena/phenomena = get_phenomena(modifiers["shift"], modifiers["ctrl"])
-		if(phenomena)
-			phenomena.Click(A)
 		return
 	if(current_boon && is_follower(A))
 		grant_boon(A)

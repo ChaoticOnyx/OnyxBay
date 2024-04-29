@@ -107,6 +107,16 @@
 
 	return dist
 
+/// Unlike 'get_dist()' takes Z level into account.
+/proc/get_dist_zlevel_aware(atom/atom1, atom/atom2)
+	var/dx = atom1.x - atom2.x
+	var/dy = atom1.y - atom2.y
+	var/dz = atom1.z - atom2.z
+
+	var/dist = sqrt(dx ** 2 + dy ** 2 + dz ** 2)
+
+	return dist
+
 /proc/circlerangeturfs(center = usr, radius = 3)
 
 	var/turf/centerturf = get_turf(center)
@@ -628,16 +638,3 @@
 
 /proc/round_is_spooky(spookiness_threshold = config.ghost.req_cult_ghostwriter)
 	return (GLOB.cult.current_antagonists.len > spookiness_threshold)
-
-/proc/getviewsize(view)
-	var/viewX
-	var/viewY
-	if(isnum(view))
-		var/totalviewrange = 1 + 2 * view
-		viewX = totalviewrange
-		viewY = totalviewrange
-	else
-		var/list/viewrangelist = splittext(view,"x")
-		viewX = text2num(viewrangelist[1])
-		viewY = text2num(viewrangelist[2])
-	return list(viewX, viewY)

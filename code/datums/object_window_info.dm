@@ -87,7 +87,7 @@
 
 /datum/object_window_info/proc/on_mob_logout(mob/source)
 	// Sleepy in `Entered`, so no `SIGNAL_HANDLER`, bozo.
-	on_mob_move(parent.mob)
+	on_mob_move(source)
 
 /datum/object_window_info/proc/viewing_atom_deleted(atom/deleted)
 	SIGNAL_HANDLER

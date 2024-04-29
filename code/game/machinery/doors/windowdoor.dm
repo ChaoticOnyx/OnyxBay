@@ -268,10 +268,8 @@
 	add_fingerprint(user, 0, I)
 
 	if(allowed(user))
-		if(density)
-			open()
-		else
-			close()
+		density ? open() : close()
+		return
 
 	else if(density)
 		flick(text("[]deny", base_state), src)

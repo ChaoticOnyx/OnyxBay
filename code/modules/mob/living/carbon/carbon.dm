@@ -479,7 +479,7 @@
 	<BR>"}
 	show_browser(user, dat, text("window=mob[];size=325x500", name))
 	onclose(user, "mob[name]")
-	return
+	return TRUE
 
 /**
  *  Return FALSE if victim can't be devoured, DEVOUR_FAST if they can be devoured quickly, DEVOUR_SLOW for slow devour

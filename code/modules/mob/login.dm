@@ -77,9 +77,10 @@
 
 	refresh_client_images()
 	reload_fullscreen() // Reload any fullscreen overlays this mob has.
-	add_click_catcher()
 
-	client.mob.update_client_color()
+	client.add_click_catcher()
+
+	update_client_color()
 
 	//set macro to normal incase it was overriden (like cyborg currently does)
 	var/hotkey_mode = client.get_preference_value("DEFAULT_HOTKEY_MODE")

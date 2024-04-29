@@ -876,7 +876,7 @@
 "auT" = (/obj/machinery/optable,/turf/simulated/floor/shuttle/white,/area/syndicate_station/start)
 "auU" = (/obj/structure/table/standard,/obj/item/stack/medical/advanced/bruise_pack,/obj/item/retractor,/obj/item/device/radio/intercom/syndicate{dir = 8; pixel_x = 22},/turf/simulated/floor/shuttle/white,/area/syndicate_station/start)
 "auV" = (/obj/structure/shuttle/engine/heater,/obj/structure/window/reinforced/crescent{dir = 1},/turf/simulated/floor/plating/airless,/area/syndicate_station/start)
-"auX" = (/obj/machinery/teleport/hub,/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
+"auX" = (/obj/machinery/teleporter_gate,/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
 "auY" = (/obj/structure/closet,/obj/item/device/flashlight/flare,/obj/item/device/flashlight/flare,/obj/item/device/flashlight/flare,/obj/item/device/flashlight/flare,/obj/item/device/flashlight/flare,/obj/item/device/flashlight/flare,/obj/item/device/flashlight,/obj/item/device/flashlight,/obj/item/device/flashlight,/obj/item/device/flashlight,/obj/item/device/flashlight,/obj/item/device/flashlight,/turf/simulated/floor/shuttle/black,/area/rescue_base/start)
 "auZ" = (/obj/item/device/radio/intercom/specops{dir = 8; pixel_x = 22},/obj/structure/closet/l3closet,/turf/simulated/floor/shuttle/black,/area/rescue_base/start)
 "ava" = (/obj/structure/table/rack,/obj/item/tank/emergency/oxygen/double,/obj/item/tank/emergency/oxygen/double,/obj/item/tank/emergency/oxygen/double,/obj/item/tank/emergency/oxygen/double,/obj/item/tank/emergency/oxygen/double,/obj/item/tank/emergency/oxygen/double,/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall_t"; dir = 4},/area/rescue_base/start)

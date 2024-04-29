@@ -151,7 +151,6 @@ export const SettingsGeneral = (props, context) => {
             maxValue={32}
             value={fontSize}
             unit="px"
-            format={(value) => toFixed(value)}
             onChange={(e, value) =>
               dispatch(
                 updateSettings({

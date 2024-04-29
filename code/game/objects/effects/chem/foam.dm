@@ -15,7 +15,7 @@
 	var/expand = 1
 	var/metal = 0
 
-/obj/effect/effect/foam/Initialize(mapload, loc, ismetal = FALSE)
+/obj/effect/effect/foam/Initialize(mapload, ismetal = FALSE)
 	. = ..()
 	icon_state = "[ismetal? "m" : ""]foam"
 	metal = ismetal

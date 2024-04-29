@@ -162,7 +162,7 @@ var/list/hash_to_gear = list()
 	if(!patron_tier)
 		. += "<b>You are not a Patron yet.</b><br>"
 	else
-		. += "<b>Your Patreon tier is [patron_tier]</b><br>"
+		. += "<b>Your Boosty tier is [patron_tier]</b><br>"
 	var/current_opyxes = round(user.client.donator_info.opyxes)
 	. += "<b>You have <font color='#e67300'>[current_opyxes]</font> opyx[current_opyxes != 1 ? "es" : ""].</b><br>"
 	. += "<a class='gold' href='?src=\ref[src];get_opyxes=1'><b>Get opyxes</b></a><br>"

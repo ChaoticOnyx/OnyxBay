@@ -40,7 +40,7 @@ var/global/list/all_grabstates[0]
 var/global/list/all_grabobjects[0]
 
 // Uplinks
-var/list/obj/item/device/uplink/world_uplinks = list()
+GLOBAL_LIST_EMPTY(uplinks)
 
 // Surgery steps
 GLOBAL_LIST_EMPTY(surgery_steps)

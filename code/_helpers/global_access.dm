@@ -791,8 +791,6 @@
 			return global.wireColours;
 		if("world_topic_spam_protect_time")
 			return global.world_topic_spam_protect_time;
-		if("world_uplinks")
-			return global.world_uplinks;
 		if("worths")
 			return global.worths;
 		if("wrapped_species_by_ref")
@@ -1596,8 +1594,6 @@
 			global.wireColours=newval;
 		if("world_topic_spam_protect_time")
 			global.world_topic_spam_protect_time=newval;
-		if("world_uplinks")
-			global.world_uplinks=newval;
 		if("worths")
 			global.worths=newval;
 		if("wrapped_species_by_ref")
@@ -2065,7 +2061,6 @@
 	"whitelisted_species",
 	"wireColours",
 	"world_topic_spam_protect_time",
-	"world_uplinks",
 	"worths",
 	"wrapped_species_by_ref",
 	"z_levels",

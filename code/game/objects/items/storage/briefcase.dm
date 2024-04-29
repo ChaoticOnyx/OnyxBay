@@ -27,14 +27,15 @@
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
 	storage_slots = 10
 	override_w_class = list(/obj/item/gun/projectile/shotgun/pump)
-	var/obj/item/device/uplink/uplink
+	var/datum/component/uplink/uplink
 	var/authentication_complete = FALSE
 	var/del_on_send = TRUE
 
 /obj/item/storage/briefcase/std/attackby(obj/item/I, mob/user)
-	if(I.hidden_uplink)
+	var/datum/component/uplink/U = I.get_component(/datum/component/uplink)
+	if(istype(U))
 		visible_message("\The [src] blinks green!")
-		uplink = I.hidden_uplink
+		uplink = U
 		authentication_complete = TRUE
 	..()
 
@@ -52,8 +53,8 @@
 
 	data["can_launch"] = can_launch()
 	data["fixer"] = GLOB.traitors.fixer.name
-	data["owner"] = uplink.uplink_owner ? uplink.uplink_owner.name : "Unknown"
-	data["is_owner"] = uplink.uplink_owner && (uplink.uplink_owner == user.mind)
+	data["owner"] = uplink.owner ? uplink.owner.name : "Unknown"
+	data["is_owner"] = uplink.owner && (uplink.owner == user.mind)
 	data["contracts"] = list()
 
 	for(var/datum/antag_contract/item/C in GLOB.traitors.fixer.return_contracts())
@@ -95,9 +96,11 @@
 				continue
 			C.on_container(src)
 		for(var/obj/item/I in contents)
-			if(I.hidden_uplink == uplink)
+			var/datum/component/uplink/U = I.get_component(/datum/component/uplink)
+			if(istype(U) && U == uplink)
 				remove_from_storage(I, get_turf(src))
 				continue
+
 			qdel(I)
 		contents = list()
 		if(del_on_send)

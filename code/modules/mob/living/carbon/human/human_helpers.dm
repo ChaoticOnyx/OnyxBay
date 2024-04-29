@@ -90,9 +90,6 @@
 
 	// Removes zoom effect
 	if (client && machine_visual)
-		if (client.view != world.view)
-			client.view = world.view
-
 		if (client.pixel_x != 0 || client.pixel_y != 0)
 			shift_view(0, 0)
 
@@ -208,7 +205,8 @@
 	next_sonar_ping += 10 SECONDS
 	var/heard_something = FALSE
 	to_chat(src, "<span class='notice'>You take a moment to listen in to your environment...</span>")
-	for(var/mob/living/L in range(client.view, src))
+	var/list/view_sizes = get_view_size(client.view)
+	for(var/mob/living/L in range(max(view_sizes[1], view_sizes[2]), src))
 		var/turf/T = get_turf(L)
 		if(!T || L == src || L.is_ic_dead() || is_below_sound_pressure(T))
 			continue

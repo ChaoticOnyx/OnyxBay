@@ -28,7 +28,9 @@ var/list/global/tank_gauge_cache = list()
 	var/integrity = 20
 	var/maxintegrity = 20
 	var/valve_welded = 0
-	var/obj/item/device/tankassemblyproxy/proxyassembly
+	var/obj/item/device/assembly_holder/assembly = null
+	var/static/image/bomb_assembly = image(icon = 'icons/obj/tank.dmi', icon_state = "bomb_assembly")
+	var/image/assembly_overlay = null
 
 	var/volume = 70
 	var/manipulated_by = null		//Used by _onclick/hud/screen_objects.dm internals to determine if someone has messed with our tank or not.
@@ -58,9 +60,6 @@ var/list/global/tank_gauge_cache = list()
 
 /obj/item/tank/Initialize()
 	. = ..()
-	proxyassembly = new /obj/item/device/tankassemblyproxy(src)
-	proxyassembly.tank = src
-
 	air_contents = new /datum/gas_mixture(volume, 20 CELSIUS)
 	for(var/gas in starting_pressure)
 		air_contents.adjust_gas(gas, starting_pressure[gas]*volume/(R_IDEAL_GAS_EQUATION*(20 CELSIUS)), 0)
@@ -71,9 +70,10 @@ var/list/global/tank_gauge_cache = list()
 
 /obj/item/tank/Destroy()
 	manipulated_by = null
+	assembly_overlay = null
 
 	QDEL_NULL(air_contents)
-	QDEL_NULL(proxyassembly)
+	QDEL_NULL(assembly)
 
 	if(istype(loc, /obj/item/device/transfer_valve))
 		var/obj/item/device/transfer_valve/TTV = loc
@@ -81,7 +81,7 @@ var/list/global/tank_gauge_cache = list()
 		if(!QDELETED(TTV))
 			qdel(TTV)
 
-	. = ..()
+	return ..()
 
 /obj/item/tank/examine(mob/user, infix)
 	. = ..()
@@ -111,8 +111,8 @@ var/list/global/tank_gauge_cache = list()
 				descriptive = "bitterly cold"
 	. += SPAN_NOTICE("\The [src] feels [descriptive].")
 
-	if(proxyassembly.assembly || wired)
-		. += SPAN_WARNING("It seems to have [wired? "some wires ": ""][wired && proxyassembly.assembly? "and ":""][proxyassembly.assembly ? "some sort of assembly ":""]attached to it.")
+	if(istype(assembly) || wired)
+		. += SPAN_WARNING("It seems to have [wired? "some wires ": ""][wired && istype(assembly) ? "and ":""][assembly ? "some sort of assembly ":""]attached to it.")
 	if(valve_welded)
 		. += SPAN_WARNING("\The [src] emergency relief valve has been welded shut!")
 
@@ -137,37 +137,32 @@ var/list/global/tank_gauge_cache = list()
 			update_icon(TRUE)
 
 	if(isWirecutter(W))
-		if(wired && proxyassembly.assembly)
+		if(wired && istype(assembly))
 
 			to_chat(user, "<span class='notice'>You carefully begin clipping the wires that attach to the tank.</span>")
 			if(do_after(user, 100,src))
-				wired = 0
+				wired = FALSE
 				to_chat(user, "<span class='notice'>You cut the wire and remove the device.</span>")
-
-				var/obj/item/device/assembly_holder/assy = proxyassembly.assembly
-				if(assy.a_left && assy.a_right)
-					assy.dropInto(usr.loc)
-					assy.master = null
-					proxyassembly.assembly = null
-				else
-					if(!proxyassembly.assembly.a_left)
-						assy.a_right.dropInto(usr.loc)
-						assy.a_right.holder = null
-						assy.a_right = null
-						proxyassembly.assembly = null
-						qdel(assy)
-				update_icon(TRUE)
+				assembly.master = null
+				assembly.dropInto(get_turf(usr))
+				assembly = null
+				update_icon()
 
 			else
 				to_chat(user, "<span class='danger'>You slip and bump the igniter!</span>")
 				if(prob(85))
-					proxyassembly.receive_signal()
+					assembly.process_activation(src)
 
 		else if(wired)
-			if(do_after(user, 10, src))
-				to_chat(user, "<span class='notice'>You quickly clip the wire from the tank.</span>")
-				wired = 0
-				update_icon(TRUE)
+			if(!do_after(user, 10, src))
+				return
+
+			if(QDELETED(src))
+				return
+
+			to_chat(user, "<span class='notice'>You quickly clip the wire from the tank.</span>")
+			wired = FALSE
+			update_icon(TRUE)
 
 		else
 			to_chat(user, "<span class='notice'>There are no wires to cut!</span>")
@@ -200,14 +195,15 @@ var/list/global/tank_gauge_cache = list()
 				to_chat(user, SPAN_DANGER("You accidentally rake \the [W] across \the [src]!"))
 				maxintegrity -= rand(2,6)
 				integrity = min(integrity,maxintegrity)
+			return
 
 		if(QDELETED(src) || !user)
 			return
 
 		to_chat(user, SPAN_NOTICE("You carefully weld \the [src] emergency pressure relief valve shut."))
 		to_chat(user, SPAN_WARNING("\The [src] may now rupture under pressure!"))
-		valve_welded = 1
-		leaking = 0
+		valve_welded = TRUE
+		leaking = FALSE
 
 		if(air_contents)
 			var/const/welder_temperature = 1893.15
@@ -233,10 +229,8 @@ var/list/global/tank_gauge_cache = list()
 		return
 	ui_interact(user)
 
-// There's GOT to be a better way to do this
-	if (proxyassembly.assembly)
-		proxyassembly.assembly.attack_self(user)
-
+	// There's GOT to be a better way to do this
+	assembly?.attack_self(user)
 
 /obj/item/tank/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	var/mob/living/carbon/location = null
@@ -401,24 +395,26 @@ var/list/global/tank_gauge_cache = list()
 			gauge_pressure = -1
 		else
 			gauge_pressure = round((gauge_pressure/TANK_IDEAL_PRESSURE)*gauge_cap)
-	if (previous_gauge_pressure != gauge_pressure)
+
+	CutOverlays(bomb_assembly)
+	CutOverlays(assembly_overlay)
+	if(wired)
+		AddOverlays(bomb_assembly)
+		if(istype(assembly))
+			assembly_overlay = image(assembly.icon, assembly.icon_state)
+			assembly_overlay.CopyOverlays(assembly)
+			assembly_overlay.pixel_y = -1
+			assembly_overlay.pixel_x = -3
+			AddOverlays(assembly_overlay)
+
+	if(previous_gauge_pressure != gauge_pressure)
 		needs_updating = 1
 
 	previous_gauge_pressure = gauge_pressure
-	if (!needs_updating)
+	if(!needs_updating)
 		return
 
-
 	ClearOverlays() // Each time you modify this, the object is redrawn. Cunts.
-
-	if(proxyassembly.assembly || wired)
-		AddOverlays(image(icon, "bomb_assembly"))
-		if(proxyassembly.assembly)
-			var/image/bombthing = image(proxyassembly.assembly.icon, proxyassembly.assembly.icon_state)
-			bombthing.CopyOverlays(proxyassembly.assembly)
-			bombthing.pixel_y = -1
-			bombthing.pixel_x = -3
-			AddOverlays(bombthing)
 
 	if(!gauge_icon)
 		return
@@ -557,11 +553,6 @@ var/list/global/tank_gauge_cache = list()
 
 	wired = 1
 
-	var/obj/item/device/assembly_holder/H = new(src)
-	proxyassembly.assembly = H
-	H.master = proxyassembly
-
-	H.update_icon(TRUE)
 	update_icon(TRUE)
 
 /obj/item/tank/plasma/onetankbomb/Initialize()
@@ -572,44 +563,24 @@ var/list/global/tank_gauge_cache = list()
 	. = ..()
 	onetankbomb()
 
-/////////////////////////////////
-///Pulled from rewritten bomb.dm
-/////////////////////////////////
-
-/obj/item/device/tankassemblyproxy
-	name = "Tank assembly proxy"
-	desc = "Used as a stand in to trigger single tank assemblies... but you shouldn't see this."
-	var/obj/item/tank/tank = null
-	var/obj/item/device/assembly_holder/assembly = null
-
-/obj/item/device/tankassemblyproxy/Destroy()
-	tank = null
-	assembly = null
-	return ..()
-
-/obj/item/device/tankassemblyproxy/receive_signal()	//This is mainly called by the sensor through sense() to the holder, and from the holder to here.
-	tank.ignite()	//boom (or not boom if you made shijwtty mix)
-
-/obj/item/tank/proc/assemble_bomb(W,user)	//Bomb assembly proc. This turns assembly+tank into a bomb
-	var/obj/item/device/assembly_holder/S = W
-	var/mob/M = user
-	if(!S.secured)										//Check if the assembly is secured
-		return
-	if(isigniter(S.a_left) == isigniter(S.a_right))		//Check if either part of the assembly has an igniter, but if both parts are igniters, then fuck it
+/// This turns assembly + tank into a bomb.
+/obj/item/tank/proc/assemble_bomb(obj/item/device/assembly_holder/S, mob/user)
+	ASSERT(S && user)
+	if(!S.secured)
 		return
 
-	M.drop_active_hand() // Remove the assembly from your hands
-	M.drop(src)          // Remove the tank from your character,in case you were holding it
-	M.pick_or_drop(src)  // Equips the bomb if possible, or puts it on the floor.
+	user.drop_active_hand()
+	S.forceMove(src)
+	assembly = S
+	assembly.master = src
 
-	proxyassembly.assembly = S	//Tell the bomb about its assembly part
-	S.master = proxyassembly	//Tell the assembly about its new owner
-	S.forceMove(src)			//Move the assembly
+	if(user.get_active_item() != src && Adjacent(user, src))
+		user.pick_or_drop(src)  // Equips the bomb if possible, or puts it on the floor.
 
-	update_icon(TRUE)
+	update_icon()
 
 /obj/item/tank/proc/ignite()	//This happens when a bomb is told to explode
-	if (!air_contents)
+	if(!air_contents)
 		return
 
 	var/const/igniter_temperature = 6000
@@ -625,12 +596,38 @@ var/list/global/tank_gauge_cache = list()
 	air_contents.temperature = new_temperature
 	set_next_think(world.time)
 
-/obj/item/device/tankassemblyproxy/on_update_icon()
-	tank.update_icon()
+/obj/item/tank/HasProximity(atom/movable/AM)
+	assembly?.a_left?.HasProximity(AM)
+	assembly?.a_right?.HasProximity(AM)
+	assembly?.special_assembly?.HasProximity(AM)
 
-/obj/item/device/tankassemblyproxy/HasProximity(atom/movable/AM as mob|obj)
-	if(assembly)
-		assembly.HasProximity(AM)
+/obj/item/tank/Crossed(atom/movable/AM)
+	assembly?.a_left?.Crossed(AM)
+	assembly?.a_right?.Crossed(AM)
+	assembly?.special_assembly?.Crossed(AM)
+
+/obj/item/tank/on_found(mob/finder)
+	assembly?.a_left?.on_found(finder)
+	assembly?.a_right?.on_found(finder)
+	if(isitem(assembly?.special_assembly))
+		var/obj/item/S = assembly.special_assembly
+		S.on_found(finder)
+
+/obj/item/tank/forceMove(atom/new_loc)
+	if(istype(loc, /atom/movable))
+		if(istype(loc, /obj/item/gripper) && isrobot(loc.loc))
+			unregister_signal(loc.loc, SIGNAL_MOVED)
+		else
+			unregister_signal(loc, SIGNAL_MOVED)
+	if(istype(new_loc, /atom/movable))
+		if(istype(new_loc, /obj/item/gripper) && isrobot(new_loc.loc))
+			register_signal(new_loc.loc, SIGNAL_MOVED, nameof(.proc/retransmit_moved))
+		else
+			register_signal(new_loc, SIGNAL_MOVED, nameof(.proc/retransmit_moved))
+	return ..()
+
+/obj/item/tank/proc/retransmit_moved(mover, old_loc, new_loc)
+	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, new_loc)
 
 //Fragmentation projectiles
 

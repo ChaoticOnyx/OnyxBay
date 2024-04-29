@@ -40,8 +40,6 @@
 
 	return TRUE
 
-/obj/item/device/assembly/think()
-
 //Called when another assembly acts on this one, var/radio will determine where it came from for wire calcs
 /obj/item/device/assembly/proc/pulsed(radio = 0)
 	if(holder && (wires & WIRE_RECEIVE))

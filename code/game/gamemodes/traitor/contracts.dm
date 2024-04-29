@@ -46,6 +46,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract
 	var/name
 	var/desc
+	var/category
 	var/reward = 0
 	var/completed = FALSE
 	var/datum/mind/completed_by
@@ -130,12 +131,12 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/proc/on_mob_despawned(datum/mind/M)
 	return
 
-/datum/antag_contract/proc/complete(obj/item/device/uplink/close_uplink)
+/datum/antag_contract/proc/complete(datum/component/uplink/close_uplink)
 	if(!istype(close_uplink))
 		return
 	if(completed)
 		warning("Contract completed twice: [name] [desc]")
-	var/datum/mind/M = close_uplink.uplink_owner
+	var/datum/mind/M = close_uplink.owner
 	completed = TRUE
 	completed_by = M
 
@@ -144,11 +145,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		if(M.current)
 			to_chat(M.current, SPAN("notice", "Contract completed: [name] ([reward] TC). [pick("Nice work", "Good job", "Great job", "Well done", "Nicely done")], [M.current]."))
 
-	close_uplink.uses += reward
-
+	close_uplink.telecrystals += reward
 
 // A contract to steal a specific item - allows you to check all contents (recursively) for the target item
 /datum/antag_contract/item
+	category = CONTRACT_CATEGORY_STEAL
 
 /datum/antag_contract/item/proc/on_container(obj/item/storage/briefcase/std/container)
 	if(check(container))
@@ -164,6 +165,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/implant
 	name = "Implant"
+	category = CONTRACT_CATEGORY_IMPLANT
 	reward = 4
 	intent = CONTRACT_IMPACT_MILITARY
 
@@ -230,7 +232,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(completed)
 		return
 	if(implant.imp_in && implant.imp_in.mind == target_mind)
-		complete(implant.hidden_uplink)
+		var/datum/component/uplink/U = implant.uplink_ref?.resolve()
+		if(istype(U))
+			complete(U)
 
 /datum/antag_contract/implant/on_mob_despawned(datum/mind/M)
 	if(M == target_mind)
@@ -385,6 +389,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/assassinate
 	name = "Assassinate"
+	category = CONTRACT_CATEGORY_IMPLANT
 	reward = 4 // This is how expensive your life is, fellow NT employee
 	intent = CONTRACT_IMPACT_MILITARY
 	var/target_real_name
@@ -487,8 +492,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 	return ((_target in contents) || (MMI in contents) || (_alternative_target in contents) || (_brain in contents))
 
-/datum/antag_contract/item/assassinate/complete(obj/item/device/uplink/close_uplink)
-	var/datum/mind/M = close_uplink.uplink_owner
+/datum/antag_contract/item/assassinate/complete(datum/component/uplink/close_uplink)
+	var/datum/mind/M = close_uplink.owner
 	var/obj/item/organ/internal/cerebrum/brain/_brain = brain?.resolve()
 	var/mob/living/carbon/human/_H = H?.resolve()
 	if((istype(_H) && !_H.stat && _H.mind) || (istype(_brain?.loc, /obj/item/organ/internal/cerebrum/mmi) && !target_detected_in_STD))
@@ -505,6 +510,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/dump
 	name = "Dump"
+	category = CONTRACT_CATEGORY_DUMP
 	unique = TRUE
 	reward = 5
 	intent = CONTRACT_STEAL_OPERATION
@@ -593,6 +599,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/recon
 	name = "Recon"
+	category = CONTRACT_CATEGORY_RECON
 	reward = 3 // One 2 TC kit is enough to complete two of these.
 	intent = CONTRACT_STEAL_OPERATION
 	var/list/area/targets = list()

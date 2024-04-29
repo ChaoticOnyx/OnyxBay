@@ -176,11 +176,16 @@
 				return TRUE
 
 			for(var/obj/machinery/door/door in src)
-				show_splash_text(user, "there's already a door!", "\icon[src] There's already a door!")
+				if(istype(door, /obj/machinery/door/firedoor))
+					continue
+
+				show_splash_text(user, "there's already a door!", "There's already a door!")
 				return FALSE
 
 			//create the assembly and let it finish itself
-			var/obj/structure/door_assembly/assembly = new (src)
+			var/obj/machinery/door/airlock/airlock = airlock_type
+			var/assembly_path = airlock::assembly_type
+			var/obj/structure/door_assembly/assembly = new assembly_path(src)
 			if(initial(airlock_type.glass))
 				assembly.glass = TRUE
 				assembly.glass_type = airlock_type

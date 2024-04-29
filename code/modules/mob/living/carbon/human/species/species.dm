@@ -157,8 +157,12 @@
 	var/species_flags = 0              // Various specific features.
 	var/species_appearance_flags = 0           // Appearance/display related features.
 	var/spawn_flags = 0                // Flags that specify who can spawn as this species
+
 	/// Movespeed modifier. Defined in movespeed_species.dm
 	var/movespeed_modifier = /datum/movespeed_modifier/species
+	/// Allows to calculate value representing `cached_slowdown` that can be interpreted as walking.
+	var/walk_speed_perc = 0.5
+
 	var/primitive_form                 // Lesser form, if any (ie. monkey for humans)
 	var/greater_form                   // Greater form, if any, ie. human for monkeys.
 	var/holder_type

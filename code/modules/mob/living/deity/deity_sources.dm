@@ -85,9 +85,3 @@
 		if(get_dist(T, s) <= 3)
 			return 1
 	return 0
-
-/mob/living/deity/proc/take_cost(amount)
-	if(amount)
-		SSnano.update_uis(mob_uplink)
-		mob_uplink.uses -= amount
-		mob_uplink.used_TC += amount

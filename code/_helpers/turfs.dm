@@ -47,18 +47,21 @@
 	if(turfs.len)
 		return pick(turfs)
 
-/proc/screen_loc2turf(text, turf/origin)
+/proc/parse_caught_click_modifiers(list/modifiers, client/viewer, turf/origin)
 	if(!origin)
 		return null
-	var/tZ = splittext(text, ",")
-	var/tX = splittext(tZ[1], "-")
-	var/tY = text2num(tX[2])
-	tX = splittext(tZ[2], "-")
-	tX = text2num(tX[2])
-	tZ = origin.z
-	tX = max(1, min(origin.x + 7 - tX, world.maxx))
-	tY = max(1, min(origin.y + 7 - tY, world.maxy))
-	return locate(tX, tY, tZ)
+
+	var/list/actual_view = get_view_size(isnull(viewer) ? world.view : viewer.view)
+
+	var/list/screen_loc = splittext(modifiers["screen-loc"], ",")
+	var/list/click_params_x = splittext(screen_loc[1], ":")
+	var/list/click_params_y = splittext(screen_loc[2], ":")
+
+	var/turf_x = clamp(origin.x + text2num(click_params_x[1]) - ceil(actual_view[1] / 2), 1, world.maxx)
+	var/turf_y = clamp(origin.y + text2num(click_params_y[1]) - ceil(actual_view[2] / 2), 1, world.maxy)
+	var/turf_z = origin.z
+
+	return locate(turf_x, turf_y, turf_z)
 
 /*
 	Predicate helpers

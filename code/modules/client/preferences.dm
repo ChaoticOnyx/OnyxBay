@@ -478,11 +478,11 @@
 
 	client.update_chat_position(client.get_preference_value("INPUT_POSITION"))
 
-	var/zoom = client.get_preference_value("PIXEL_SIZE")
-	winset(client, "mapwindow.map", "zoom=[zoom_pref2value(zoom)]")
+	client.view_size.set_zoom()
+	client.view_size.set_zoom_mode()
+	client.view_size.set_default(get_screen_size(client.get_preference_value("WIDESCREEN") == GLOB.PREF_YES))
 
-	var/zoom_mode = client.get_preference_value("SCALING_METHOD")
-	winset(client, "mapwindow.map", "zoom-mode=[lowertext(zoom_mode)]")
+	client.attempt_fit_viewport()
 
 	if(client.get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		client.toggle_fullscreen(client.get_preference_value(/datum/client_preference/fullscreen_mode))

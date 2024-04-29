@@ -57,13 +57,15 @@
 // And here are some good things for free:
 // Now you can click through portals, wormholes, gateways, and teleporters while observing. -Sayu
 
-/obj/machinery/teleport/hub/attack_ghost(mob/user)
-	var/atom/l = loc
-	var/obj/machinery/computer/teleporter/cons = locate(/obj/machinery/computer/teleporter, locate(l.x - 2, l.y, l.z))
-	if(cons?.gate?.is_ready())
-		if(!cons.target_ref)
-			return
-		user.forceMove(get_turf(cons.target_ref.resolve()))
+/obj/machinery/teleporter_gate/attack_ghost(mob/user)
+	if(isnull(console))
+		return
+
+	var/atom/target_atom = console.target_ref.resolve()
+	if(isnull(target_atom))
+		return
+
+	user.forceMove(get_turf(target_atom))
 
 /obj/effect/portal/attack_ghost(mob/user)
 	if(target)

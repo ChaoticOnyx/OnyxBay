@@ -47,7 +47,7 @@
 
 /obj/item/construction/examine(mob/user, infix)
 	. = ..()
-	. += "It currently holds [get_matter(user)]/[max_matter] local_matter-units."
+	. += "It currently holds [get_matter(user)]/[max_matter] matter-units."
 
 /obj/item/construction/Destroy()
 	QDEL_NULL(spark_system)
@@ -83,7 +83,6 @@
 	if(istype(item, /obj/item/rcd_ammo))
 		var/obj/item/rcd_ammo/ammo = item
 		var/load = min(ammo.ammoamt, max_matter - local_matter)
-		load = round(load / MATTER_REDUCTION_COEFFICIENT)
 		if(load <= 0)
 			show_splash_text(user, "storage full!", SPAN("warning", "\The [src] is full!"))
 			return FALSE

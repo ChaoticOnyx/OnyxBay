@@ -38,6 +38,15 @@
 	var/safetieson = 1
 	var/cycletime_left = 0
 
+	var/static/image/radial_eject = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_eject")
+	var/static/image/radial_open = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_open")
+	var/static/image/radial_close = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_close")
+	var/static/image/radial_disinfect = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_disinfect")
+	var/static/image/radial_lock = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_lock")
+	var/static/image/radial_unlock = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_unlock")
+	var/static/image/radial_uv = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_uv")
+	var/static/image/radial_safety = image(icon = 'icons/hud/radial.dmi', icon_state = "toggle_safety")
+
 //The units themselves/////////////////
 
 /obj/machinery/suit_storage_unit/standard_unit
@@ -203,115 +212,101 @@
 			return
 
 
-/obj/machinery/suit_storage_unit/attack_hand(mob/user as mob)
-	..()
-	var/dat = "<meta charset=\"utf-8\">"
-	if(!user.IsAdvancedToolUser())
-		return 0
-	if(panelopen) //The maintenance panel is open. Time for some shady stuff
-		dat+= "<HEAD><TITLE>Suit storage unit: Maintenance panel</TITLE></HEAD>"
-		dat+= "<Font color ='black'><B>Maintenance panel controls</B></font><HR>"
-		dat+= "<font color ='grey'>The panel is ridden with controls, button and meters, labeled in strange signs and symbols that <BR>you cannot understand. Probably the manufactoring world's language.<BR> Among other things, a few controls catch your eye.</font><BR><BR>"
-		dat+= text("<font color ='black'>A small dial with a small lambda symbol on it. It's pointing towards a gauge that reads []</font>.<BR> <span class='info'><A href='?src=\ref[];toggleUV=1'> Turn towards []</A></span><BR>",(issuperUV ? "15nm" : "185nm"),src,(issuperUV ? "185nm" : "15nm") )
-		dat+= text("<font color ='black'>A thick old-style button, with 2 grimy LED lights next to it. The [] LED is on.</font><BR><font color ='blue'><A href='?src=\ref[];togglesafeties=1'>Press button</a></font>",(safetieson? "<font color='green'><B>GREEN</B></font>" : "<font color='red'><B>RED</B></font>"),src)
-		dat+= text("<HR><BR><A href='?src=\ref[];mach_close=suit_storage_unit'>Close panel</A>", user)
-	else if(isUV) //The thing is running its cauterisation cycle. You have to wait.
-		dat += "<HEAD><TITLE>Suit storage unit</TITLE></HEAD>"
-		dat+= "<font color ='red'><B>Unit is cauterising contents with selected UV ray intensity. Please wait.</font></B><BR>"
-		dat+= "<font colr='black'><B>Cycle end in: [cycletime_left] seconds. </font></B>"
+/obj/machinery/suit_storage_unit/attack_hand(mob/user)
+	if(..() || inoperable(MAINT))
+		return
+
+	interact(user)
+
+/obj/machinery/suit_storage_unit/interact(mob/user)
+	var/list/choices = list()
+
+	if(panelopen)
+		choices["toggle_uv"] = radial_uv
+		choices["toggle_safety"] = radial_safety
+
+	if(islocked)
+		choices["unlock"] = radial_unlock
+	else if(isopen && !isbroken)
+		choices["close"] = radial_close
+		if(istype(suit))
+			choices["suit"] = icon(suit.icon, suit.icon_state)
+
+		if(istype(helmet))
+			choices["helmet"] = icon(helmet.icon, helmet.icon_state)
+
+		if(istype(boots))
+			choices["boots"] = icon(boots.icon, boots.icon_state)
+
+		if(istype(tank))
+			choices["tank"] = icon(tank.icon, tank.icon_state)
+
+		if(istype(mask))
+			choices["mask"] = icon(mask.icon, mask.icon_state)
+
+		if(istype(occupant))
+			choices["eject"] = radial_eject
 
 	else
-		if(!isbroken)
-			dat+= "<HEAD><TITLE>Suit storage unit</TITLE></HEAD>"
-			dat+= "<span class='info'><font size = 4><B>U-Stor-It Suit Storage Unit, model DS1900</B></FONT><BR>"
-			dat+= "<B>Welcome to the Unit control panel.</B></span><HR>"
-			dat+= text("<font color='black'>Helmet storage compartment: <B>[]</B></font><BR>",(helmet  ? helmet.name : "</font><font color ='grey'>No helmet detected.") )
-			if(helmet  && isopen)
-				dat+=text("<A href='?src=\ref[];dispense_helmet=1'>Dispense helmet</A><BR>",src)
-			dat+= text("<font color='black'>Suit storage compartment: <B>[]</B></font><BR>",(suit ? suit.name : "</font><font color ='grey'>No suit detected.") )
-			if(suit && isopen)
-				dat+=text("<A href='?src=\ref[];dispense_suit=1'>Dispense suit</A><BR>",src)
-			dat+= text("<font color='black'>Footwear storage compartment: <B>[]</B></font><BR>",(boots ? boots.name : "</font><font color ='grey'>No footwear detected.") )
-			if(boots && isopen)
-				dat+=text("<A href='?src=\ref[];dispense_boots=1'>Dispense footwear</A><BR>",src)
-			dat+= text("<font color='black'>Tank storage compartment: <B>[]</B></font><BR>",(tank ? tank.name : "</font><font color ='grey'>No air tank detected.") )
-			if(tank && isopen)
-				dat+=text("<A href='?src=\ref[];dispense_tank=1'>Dispense air tank</A><BR>",src)
-			dat+= text("<font color='black'>Breathmask storage compartment: <B>[]</B></font><BR>",(mask ? mask.name : "</font><font color ='grey'>No breathmask detected.") )
-			if(mask && isopen)
-				dat+=text("<A href='?src=\ref[];dispense_mask=1'>Dispense mask</A><BR>",src)
-			if(occupant)
-				dat+= "<HR><B><font color ='red'>WARNING: Biological entity detected inside the Unit's storage. Please remove.</B></font><BR>"
-				dat+= "<A href='?src=\ref[src];eject_guy=1'>Eject extra load</A>"
-			dat+= text("<HR><font color='black'>Unit is: [] - <A href='?src=\ref[];toggle_open=1'>[] Unit</A></font> ",(isopen ? "Open" : "Closed"),src,(isopen ? "Close" : "Open"))
+		choices["open"] = radial_open
+		choices["disinfect"] = radial_disinfect
+		choices["lock"] = radial_lock
+
+	if(length(choices) < 1)
+		return
+
+	var/choice = show_radial_menu(user, src, choices, require_near = !issilicon(user))
+	if(!choice)
+		return
+
+	switch(choice)
+		if("open")
 			if(isopen)
-				dat+="<HR>"
-			else
-				dat+= text(" - <A href='?src=\ref[];toggle_lock=1'><font color ='orange'>[] Unit</A></font><HR>",src,(islocked ? "Unlock" : "Lock") )
-			dat+= text("Unit status: []",(islocked? "<font color ='red'><B>LOCKED</B></font><BR>" : "<font color ='green'><B>UNLOCKED</B></font><BR>") )
-			dat+= text("<A href='?src=\ref[];start_UV=1'>Start Disinfection cycle</A><BR>",src)
-			dat += text("<BR><BR><A href='?src=\ref[];mach_close=suit_storage_unit'>Close control panel</A>", user)
-		else //Ohhhh shit it's dirty or broken! Let's inform the guy.
-			dat+= "<HEAD><TITLE>Suit storage unit</TITLE></HEAD>"
-			dat+= "<font color='maroon'><B>Unit chamber is too contaminated to continue usage. Please call for a qualified individual to perform maintenance.</font></B><BR><BR>"
-			dat+= text("<HR><A href='?src=\ref[];mach_close=suit_storage_unit'>Close control panel</A>", user)
+				return
 
-	show_browser(user, dat, "window=suit_storage_unit;size=400x500")
-	onclose(user, "suit_storage_unit")
-	return
+			toggle_open(usr)
 
-/obj/machinery/suit_storage_unit/Topic(href, href_list) //I fucking HATE this proc
-	. = ..()
-	if(.)
-		usr.set_machine(src)
+		if("close")
+			if(!isopen)
+				return
 
-/obj/machinery/suit_storage_unit/OnTopic(href, href_list) //I fucking HATE this proc
-	if (href_list["toggleUV"])
-		toggleUV(usr)
-		updateUsrDialog()
-		update_icon()
-	if (href_list["togglesafeties"])
-		togglesafeties(usr)
-		updateUsrDialog()
-		update_icon()
-	if (href_list["dispense_helmet"])
-		dispense_helmet(usr)
-		updateUsrDialog()
-		update_icon()
-	if (href_list["dispense_suit"])
-		dispense_suit(usr)
-		updateUsrDialog()
-		update_icon()
-	if (href_list["dispense_boots"])
-		dispense_boots(usr)
-		updateUsrDialog()
-		update_icon()
-	if (href_list["dispense_tank"])
-		dispense_tank(usr)
-		updateUsrDialog()
-		update_icon()
-	if (href_list["dispense_mask"])
-		dispense_mask(usr)
-		updateUsrDialog()
-		update_icon()
-	if (href_list["toggle_open"])
-		toggle_open(usr)
-		updateUsrDialog()
-		update_icon()
-	if (href_list["toggle_lock"])
-		toggle_lock(usr)
-		updateUsrDialog()
-		update_icon()
-	if (href_list["start_UV"])
-		start_UV(usr)
-		updateUsrDialog()
-		update_icon()
-	if (href_list["eject_guy"])
-		eject_occupant(usr)
-		updateUsrDialog()
-		update_icon()
-	return
+			toggle_open(usr)
 
+		if("lock", "unlock")
+			if(isopen)
+				show_splash_text(user, "close first!", "\The [src] must be closed.")
+
+			toggle_lock(user)
+
+		if("disinfect")
+			start_UV(user)
+
+		if("toggle_uv")
+			toggleUV(user)
+
+		if("toggle_safety")
+			togglesafeties(user)
+
+		if("suit")
+			dispense_suit(user)
+
+		if("helmet")
+			dispense_helmet(user)
+
+		if("boots")
+			dispense_boots(user)
+
+		if("tank")
+			dispense_tank(user)
+
+		if("mask")
+			dispense_mask(user)
+
+		if("eject")
+			eject_occupant(user)
+
+	update_icon()
+	interact(user)
 
 /obj/machinery/suit_storage_unit/proc/toggleUV(mob/user as mob)
 	if(!panelopen)
@@ -524,6 +519,9 @@
 		return
 	visible_message("\The [usr] starts squeezing into the suit storage unit!")
 	if(do_after(usr, 10, src))
+		if(QDELETED(src))
+			return
+
 		usr.stop_pulling()
 		usr.client.perspective = EYE_PERSPECTIVE
 		usr.client.eye = src

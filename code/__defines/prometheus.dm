@@ -6,6 +6,8 @@
 #define PROM_SUBSYSTEM_TICK_OVERRUN   "subsystem_tick_overrun_ratio"
 #define PROM_RUNTIMES                 "runtimes"
 #define PROM_TOTAL_PLAYERS            "players_total"
+#define PROM_TOTAL_LIVING             "players_living_total"
+#define PROM_WIDESCREEN_PLAYERS       "players_with_widescreen"
 #define PROM_GC_QUEUED                "gc_queued_total"
 #define PROM_GC_HARD_DELS             "gc_hard_dels"
 #define PROM_GC_COLLECTED             "gc_collected"

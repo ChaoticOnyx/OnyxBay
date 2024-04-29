@@ -9,7 +9,6 @@
 	var/on = 1 // 0 for off
 	var/last_transmission
 	var/frequency = PUB_FREQ //common chat
-	var/traitor_frequency = 0 //tune to frequency to unlock traitor supplies
 	var/canhear_range = 3 // the range which mobs can hear this radio from
 	var/datum/wires/radio/wires = null
 	var/b_stat = 0
@@ -33,10 +32,13 @@
 	var/datum/frequency/radio_connection
 	var/list/datum/frequency/secure_radio_connections = new
 
-	proc/set_frequency(new_frequency)
-		SSradio.remove_object(src, frequency)
-		frequency = new_frequency
-		radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)
+/obj/item/device/radio/proc/set_frequency(new_frequency)
+	SSradio.remove_object(src, frequency)
+	frequency = new_frequency
+	radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)
+	var/datum/component/uplink/uplink = get_component(/datum/component/uplink)
+	if(uplink?.traitor_frequency == frequency)
+		uplink.interact(usr)
 
 /obj/item/device/radio/Initialize()
 	. = ..()
@@ -65,10 +67,14 @@
 
 /obj/item/device/radio/interact(mob/user)
 	if(!user)
-		return 0
+		return FALSE
 
 	if(b_stat)
 		wires.Interact(user)
+
+	var/datum/component/uplink/uplink = get_component(/datum/component/uplink)
+	if(uplink?.traitor_frequency == frequency)
+		uplink.interact(user)
 
 	return ui_interact(user)
 
@@ -176,9 +182,6 @@
 		if ((new_frequency < PUBLIC_LOW_FREQ || new_frequency > PUBLIC_HIGH_FREQ))
 			new_frequency = sanitize_frequency(new_frequency)
 		set_frequency(new_frequency)
-		if(hidden_uplink)
-			if(hidden_uplink.check_trigger(usr, frequency, traitor_frequency))
-				close_browser(usr, "window=radio")
 		. = 1
 	else if (href_list["talk"])
 		ToggleBroadcast()
@@ -218,13 +221,11 @@
 		return
 	var/mob/living/silicon/ai/A
 	if(istext(from))
-		A = new /mob/living/silicon/ai(src, null, null, 1)
+		A = isnull(GLOB.global_ai_announcer) ? (GLOB.global_ai_announcer = new(src, null, null, TRUE)) : GLOB.global_ai_announcer
 		A.fully_replace_character_name(from)
 	else
 		A = from
 	talk_into(A, message, channel, say_verb, speaking)
-	if(istext(from))
-		qdel(A)
 
 // Interprets the message mode when talking into a radio, possibly returning a connection datum
 /obj/item/device/radio/proc/handle_message_mode(mob/living/M as mob, message, message_mode)

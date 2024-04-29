@@ -14,6 +14,16 @@ SUBSYSTEM_DEF(prometheus)
 
 	// Players
 	rustg_prom_gauge_int_set(PROM_TOTAL_PLAYERS, length(GLOB.player_list), null)
+	var/living_counter = 0
+	var/widescreen_counter = 0
+	for(var/client/client in GLOB.clients)
+		if(client.get_preference_value("WIDESCREEN") == GLOB.PREF_YES)
+			widescreen_counter++
+		if(!client.mob?.is_ooc_dead())
+			living_counter++
+
+	rustg_prom_gauge_int_set(PROM_TOTAL_LIVING, living_counter, null)
+	rustg_prom_gauge_int_set(PROM_WIDESCREEN_PLAYERS, widescreen_counter, null)
 
 	// Subsystems
 	for(var/datum/controller/subsystem/S in Master.subsystems)
