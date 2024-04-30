@@ -208,7 +208,7 @@
 	if(!user || user.incapacitated())
 		return
 
-	if(telecrystals < U.item_cost)
+	if(telecrystals < U.cost(telecrystals, src))
 		return
 
 	U.buy(src, user)
