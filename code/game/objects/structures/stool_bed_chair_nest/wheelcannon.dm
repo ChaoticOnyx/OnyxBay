@@ -65,7 +65,7 @@
 /obj/structure/bed/chair/wheelchair/wheelcannon/examine_more(mob/user)
 	. = ..()
 	. += SPAN_NOTICE("Load with items. Fuel with ethanol, plasma or acetone.")
-	. += SPAN_NOTICE("Igniter can be also attached. Ctrl + Click to detach it.")
+	. += SPAN_NOTICE("Igniter can be also attached. Ctrl + Shitf + Click to detach it.")
 
 /obj/structure/bed/chair/wheelchair/wheelcannon/on_update_icon()
 	CutOverlays(assembly_overlay)
@@ -99,7 +99,7 @@
 
 	return ..()
 
-/obj/structure/bed/chair/wheelchair/wheelcannon/CtrlClick(mob/user)
+/obj/structure/bed/chair/wheelchair/wheelcannon/CtrlShiftClick(mob/user)
 	. = ..()
 	var/list/options = list()
 
@@ -206,6 +206,12 @@
 	var/turf/recoil_turf = get_step(get_turf(src), GLOB.flip_dir[dir])
 	if(!istype(recoil_turf))
 		return
+
+	if(pulling)
+		var/turf/pulling_recoil_turf = get_step(recoil_turf, GLOB.flip_dir[dir])
+		pulling.throw_at(istype(pulling_recoil_turf) ? pulling_recoil_turf : recoil_turf, world.view, 1, src, src)
+		pulling.pulledby = null
+		pulling = null
 
 	Move(recoil_turf)
 	QDEL_IN(particle, 1.5 SECONDS)
