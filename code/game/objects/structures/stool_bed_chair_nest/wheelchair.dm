@@ -160,7 +160,7 @@
 		if(QDELETED(src) || QDELETED(dropping) || QDELETED(user) || buckled_mob)
 			return
 
-		new /obj/structure/wheelcannon(get_turf(src))
+		new /obj/structure/bed/chair/wheelchair/wheelcannon(get_turf(src))
 		qdel_self()
 		qdel(dropping)
 		return
