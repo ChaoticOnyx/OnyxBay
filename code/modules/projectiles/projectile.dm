@@ -456,6 +456,9 @@
 		var/matrix/M = new
 		M.Turn(Angle)
 		transform = M
+	trajectory_ignore_forcemove = TRUE
+	forceMove(starting)
+	trajectory_ignore_forcemove = FALSE
 	trajectory = new(starting.x, starting.y, starting.z, 0, 0, Angle, pixel_speed)
 	last_projectile_move = world.time
 	fired = TRUE
@@ -463,15 +466,15 @@
 		return process_hitscan()
 
 	if(muzzle_type)
-		var/atom/movable/thing = new muzzle_type
-		update_effect(thing)
-		thing.forceMove(starting)
-		thing.pixel_x = trajectory.return_px() + (trajectory.mpx * 0.5)
-		thing.pixel_y = trajectory.return_py() + (trajectory.mpy * 0.5)
+		var/atom/movable/muzzle = new muzzle_type
+		update_effect(muzzle)
+		muzzle.forceMove(starting)
+		muzzle.pixel_x = trajectory.return_px() + (trajectory.mpx * 0.5)
+		muzzle.pixel_y = trajectory.return_py() + (trajectory.mpy * 0.5)
 		var/matrix/M = new
 		M.Turn(Angle)
-		thing.transform = M
-		QDEL_IN(thing, 3)
+		muzzle.transform = M
+		QDEL_IN(muzzle, 3)
 
 	if(!is_processing)
 		START_PROCESSING(SSprojectiles, src)
@@ -480,8 +483,12 @@
 /obj/item/projectile/proc/preparePixelProjectile(atom/target, atom/source, params, Angle_offset = 0)
 	var/turf/curloc = get_turf(source)
 	var/turf/targloc = get_turf(target)
+	trajectory_ignore_forcemove = TRUE
 	forceMove(curloc)
+	trajectory_ignore_forcemove = FALSE
 	starting = curloc
+	pixel_x = source.pixel_x
+	pixel_y = source.pixel_y
 	original = target
 
 	var/list/calculated = list(null,null,null)

@@ -110,7 +110,7 @@
 
 		spawn()
 			if(brainchan)
-				if(istype(loc, /obj/item/organ/external))
+				if(istype(loc, /obj/item/organ/external) || brainchan.loc == src)
 					grant_verb(brainchan, /mob/living/carbon/brain/proc/transform_into_little_changeling)
 				else
 					revoke_verb(brainchan, /mob/living/carbon/brain/proc/headcrab_runaway)

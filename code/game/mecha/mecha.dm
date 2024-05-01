@@ -875,7 +875,7 @@
 			show_splash_text(user, "gas tank repaired!", SPAN_NOTICE("You repair the damaged gas tank."))
 
 		if(health < initial(health))
-			show_splash_text(user, "damage repaired!", SPAN_NOTICE("You repair some damage to \the[src]."))
+			show_splash_text(user, "damage repaired!", SPAN_NOTICE("You repair some damage to \the [src]."))
 			health += min(10, initial(health) - health)
 		else
 			show_splash_text(user, "damage fully repaired!", SPAN_NOTICE("\The [src] is at full integrity!"))

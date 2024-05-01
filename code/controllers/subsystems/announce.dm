@@ -128,7 +128,7 @@ SUBSYSTEM_DEF(announce)
 		__announce_arrival_simple(name, rank, spawnpoint.msg, announce_freq)
 
 /datum/controller/subsystem/announce/proc/__announce_arrival_simple(name, rank = "visitor", join_message = "has arrived on the [station_name()]", frequency)
-	GLOB.global_announcer.autosay("[name], [rank], [join_message].", get_announcement_computer(), frequency)
+	GLOB.global_announcer.autosay("[name], [rank], [join_message].", "Arrivals Announcement Computer", frequency)
 
 /datum/controller/subsystem/announce/proc/__announce(announce_type, text, title, sender, sound_override, msg_sanitized, do_newscast, zlevels)
 	var/message = null

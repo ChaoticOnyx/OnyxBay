@@ -158,7 +158,8 @@
  */
 /mob/living/simple_animal/parrot/show_inv(mob/user as mob)
 	user.set_machine(src)
-	if(user.stat) return
+	if(user.stat)
+		return FALSE
 
 	var/dat = 	"<meta charset=\"utf-8\"><div align='center'><b>Inventory of [name]</b></div><p>"
 	if(ears)
@@ -173,7 +174,7 @@
 
 	show_browser(user, dat, text("window=mob[];size=325x500", name))
 	onclose(user, "mob[real_name]")
-	return
+	return TRUE
 
 /mob/living/simple_animal/parrot/Topic(href, href_list)
 

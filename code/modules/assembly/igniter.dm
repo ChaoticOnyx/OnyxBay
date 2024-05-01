@@ -20,9 +20,12 @@
 		var/obj/item/grenade/grenade = holder.loc
 		if(grenade.active)
 			grenade.detonate()
-	else if(istype(holder?.loc, /obj/structure/wheelcannon))
-		var/obj/structure/wheelcannon/wheelcannon = holder.loc
+	else if(istype(holder?.loc, /obj/structure/bed/chair/wheelchair/wheelcannon))
+		var/obj/structure/bed/chair/wheelchair/wheelcannon/wheelcannon = holder.loc
 		wheelcannon.shoot()
+	else if(istype(holder?.loc, /obj/item/tank))
+		var/obj/item/tank/tank = holder.loc
+		tank.ignite()
 	else
 		var/turf/location = get_turf(loc)
 		if(location)

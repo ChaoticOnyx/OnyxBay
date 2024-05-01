@@ -547,25 +547,9 @@ Ccomp's first proc.
 	if(!holder)
 		to_chat(src, "Only administrators may use this command.")
 		return
-	var/input = sanitize(input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
-	var/customname = sanitize(input(usr, "Pick a title for the report.", "Title") as text|null, encode = 0)
-	if(!input)
-		return
-	if(!customname)
-		customname = "[command_name()] Update"
 
-	//New message handling
-	post_comm_message(customname, replacetext(input, "\n", "<br/>"))
-
-	switch(alert("Should this be announced to the general population?",,"Yes","No"))
-		if("Yes")
-			SSannounce.play_station_announce(/datum/announce/command_report, input, customname, msg_sanitized = TRUE)
-		if("No")
-			SSannounce.play_station_announce(/datum/announce/command_report, "New [GLOB.using_map.company_name] Update available at all communication consoles.", msg_sanitized = TRUE)
-
-	log_admin("[key_name(src)] has created a command report: [input]")
-	message_admins("[key_name_admin(src)] has created a command report", 1)
-	feedback_add_details("admin_verb","CCR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	var/datum/command_report_menu/ui = new /datum/command_report_menu(src.mob)
+	ui.tgui_interact(src.mob)
 
 /client/proc/cmd_admin_delete(atom/O as obj|mob|turf in range(world.view))
 	set category = "Admin"
