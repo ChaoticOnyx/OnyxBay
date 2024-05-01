@@ -43,6 +43,22 @@
 	var/image/holomap_base
 	var/list/holomap_images = list()
 
+/datum/component/holomarker/toggleable/Destroy()
+	GLOB.holomarkers -= src
+
+	if(istype(activator))
+		unregister_signal(activator, SIGNAL_Z_CHANGED)
+		activator?.client?.images -= holomap_images
+		activator?.client?.images -= holomap_base
+
+	if(istype(parent))
+		unregister_signal(parent, SIGNAL_ITEM_UNEQUIPPED)
+
+	activator = null
+	holomap_base = null
+	holomap_images.Cut()
+	return ..()
+
 /datum/component/holomarker/toggleable/Initialize(marker_id_, marker_filter_)
 	. = ..()
 	set_next_think(world.time + 1 SECOND)
