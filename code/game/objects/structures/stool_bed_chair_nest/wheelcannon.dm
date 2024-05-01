@@ -65,7 +65,7 @@
 /obj/structure/bed/chair/wheelchair/wheelcannon/examine_more(mob/user)
 	. = ..()
 	. += SPAN_NOTICE("Load with items. Fuel with ethanol, plasma or acetone.")
-	. += SPAN_NOTICE("Igniter can be also attached. Ctrl + Shitf + Click to detach it.")
+	. += SPAN_NOTICE("Igniter can be also attached. Ctrl + Shift + Click to detach it.")
 
 /obj/structure/bed/chair/wheelchair/wheelcannon/on_update_icon()
 	CutOverlays(assembly_overlay)
