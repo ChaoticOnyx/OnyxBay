@@ -58,6 +58,7 @@ GLOBAL_LIST_INIT(minesweeper_arcade_prizes, list(
 	var/grid_mines = 0
 	var/grid_blanks = 0
 	var/grid_pressed = 0
+	var/grid_flags = 0
 	var/list/nearest_mask = list(
 		list(-1, -1), list(0, -1), list(1, -1),
 		list(-1, 0), list(1, 0),
@@ -99,7 +100,8 @@ GLOBAL_LIST_INIT(minesweeper_arcade_prizes, list(
 		"grid" = grid,
 		"width" = grid_x * 30,
 		"height" = grid_y * 30,
-		"mines" = "[num2text(grid_mines)] mines.",
+		"mines" = "[num2text(grid_mines)] mines",
+		"flags" = "[num2text(grid_flags)] flags",
 		"difficulty" = isnull(difficulty) ? FALSE : TRUE,
 		"emagged" = emagged,
 		"timeLeft" = 0,
@@ -201,6 +203,7 @@ GLOBAL_LIST_INIT(minesweeper_arcade_prizes, list(
 	var/list/L = grid[y][x]
 	if(L["state"] != STATE_EMPTY)
 		L["flag"] = !L["flag"]
+		grid_flags += L["flag"] ? 1 : -1
 
 /obj/machinery/computer/arcade/minesweeper/proc/setup_grid()
 	playsound(get_turf(src), GET_SFX(SFX_MINESWEEPER_START), 100, FALSE, -1)

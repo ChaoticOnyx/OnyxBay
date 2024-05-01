@@ -23,6 +23,7 @@ interface MinesweeperData {
   height: number;
   grid: MinesweeperGrid[];
   mines: string;
+  flags: string;
   difficulty: boolean;
   emagged: boolean;
   timeLeft: string;
@@ -30,7 +31,8 @@ interface MinesweeperData {
 
 export const Minesweeper = (props: MinesweeperData, context) => {
   const { act, data } = useBackend<MinesweeperData>(context);
-  const { width, height, grid, mines, difficulty, emagged, timeLeft } = data;
+  const { width, height, grid, mines, flags, difficulty, emagged, timeLeft } =
+    data;
 
   const num_to_color = {
     " ": "#ffffff",
@@ -47,7 +49,11 @@ export const Minesweeper = (props: MinesweeperData, context) => {
     <Window
       width={width}
       height={height + 32}
-      title={emagged ? `${mines} Time left: ${timeLeft}` : mines}
+      title={
+        emagged
+          ? `${mines}, ${flags}. Time left: ${timeLeft}`
+          : `${mines}, ${flags}.`
+      }
       className="Minesweeper__Window"
     >
       <Window.Content fitted height={height + 32}>
