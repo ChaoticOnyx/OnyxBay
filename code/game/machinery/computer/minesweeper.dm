@@ -260,6 +260,7 @@ GLOBAL_LIST_INIT(minesweeper_arcade_prizes, list(
 		setup_mines(x, y)
 
 	if(check_complete())
+		won()
 		return
 
 	var/mi = check_mines(x,y)
