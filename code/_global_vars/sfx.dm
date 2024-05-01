@@ -1796,4 +1796,16 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_LIGHT_BURNOUT = list(
 		'sound/machines/lightsburnout.ogg'
 	),
+	SFX_MINESWEEPER_CLICK = list(
+		'sound/machines/arcade/minesweeper_click.ogg'
+	),
+	SFX_MINESWEEPER_LOSE = list(
+		'sound/machines/arcade/minesweeper_lose.ogg'
+	),
+	SFX_MINESWEEPER_START = list(
+		'sound/machines/arcade/minesweeper_start.ogg'
+	),
+	SFX_MINESWEEPER_WIN = list(
+		'sound/machines/arcade/minesweeper_win.ogg'
+	)
 ))
