@@ -40,7 +40,8 @@
 		obj_flags &= (~OBJ_FLAG_CONDUCTIBLE)
 
 	matter = material.get_matter()
-	craft_tool = material.craft_tool
+	if(!uses_charge)
+		craft_tool = material.craft_tool
 	update_strings()
 
 	if(material.reagent_path)
