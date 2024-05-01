@@ -6,7 +6,7 @@
 #define BARREL_DAMAGE_CRITICAL 2
 #define THROWFORCE_DAMAGE_THRESHOLD 35
 
-/obj/structure/wheelcannon
+/obj/structure/bed/chair/wheelchair/wheelcannon
 	name = "wheelcannon"
 	desc = "You sit in this. Either by will or force."
 	icon = 'icons/obj/wheelchair.dmi'
@@ -28,7 +28,7 @@
 	var/static/image/radial_dump = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_dump")
 	var/static/image/radial_eject = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_eject")
 
-/obj/structure/wheelcannon/Initialize()
+/obj/structure/bed/chair/wheelchair/wheelcannon/Initialize()
 	. = ..()
 	item_storage = new(src)
 	item_storage.max_w_class = MAX_W_CLASS
@@ -36,13 +36,16 @@
 	item_storage.use_sound = null
 	reagents = new /datum/reagents(REAGENTS_MAX_VOLUME, src)
 
-/obj/structure/wheelcannon/Destroy()
+/obj/structure/bed/chair/wheelchair/wheelcannon/Destroy()
 	QDEL_NULL(item_storage)
 	QDEL_NULL(assembly)
 	assembly_overlay = null
 	return ..()
 
-/obj/structure/wheelcannon/examine(mob/user, infix)
+/obj/structure/bed/chair/wheelchair/wheelcannon/buckle_mob()
+	return
+
+/obj/structure/bed/chair/wheelchair/wheelcannon/examine(mob/user, infix)
 	. = ..()
 
 	. += SPAN_NOTICE("It has a pipe mounted!")
@@ -59,12 +62,12 @@
 		for(var/atom/content in item_storage.contents)
 			. += SPAN_NOTICE("It has [SPAN_NOTICE("[content]")] loaded.")
 
-/obj/structure/wheelcannon/examine_more(mob/user)
+/obj/structure/bed/chair/wheelchair/wheelcannon/examine_more(mob/user)
 	. = ..()
 	. += SPAN_NOTICE("Load with items. Fuel with ethanol, plasma or acetone.")
-	. += SPAN_NOTICE("Igniter can be also attached. Ctrl + Click to detach it.")
+	. += SPAN_NOTICE("Igniter can be also attached. Ctrl + Shift + Click to detach it.")
 
-/obj/structure/wheelcannon/on_update_icon()
+/obj/structure/bed/chair/wheelchair/wheelcannon/on_update_icon()
 	CutOverlays(assembly_overlay)
 	if(!istype(assembly))
 		return
@@ -76,7 +79,7 @@
 		assembly_overlay.appearance_flags |= KEEP_APART
 	AddOverlays(assembly_overlay)
 
-/obj/structure/wheelcannon/attackby(obj/item/W, mob/user)
+/obj/structure/bed/chair/wheelchair/wheelcannon/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/flame))
 		var/obj/item/flame/flame = W
 		if(flame.lit)
@@ -96,7 +99,7 @@
 
 	return ..()
 
-/obj/structure/wheelcannon/CtrlClick(mob/user)
+/obj/structure/bed/chair/wheelchair/wheelcannon/CtrlShiftClick(mob/user)
 	. = ..()
 	var/list/options = list()
 
@@ -130,7 +133,7 @@
 		if("Dump Reagents")
 			reagents?.clear_reagents()
 
-/obj/structure/wheelcannon/proc/attach_assembly(obj/item/device/assembly_holder/assembly, mob/user)
+/obj/structure/bed/chair/wheelchair/wheelcannon/proc/attach_assembly(obj/item/device/assembly_holder/assembly, mob/user)
 	if(!user.drop(assembly, src))
 		return
 
@@ -140,7 +143,7 @@
 	show_splash_text(user, "assembly attached", "Assembly attached to \the [src].")
 	log_and_message_admins("has attached [assembly] to \the [src]", user, get_turf(src))
 
-/obj/structure/wheelcannon/proc/detach_assembly(mob/user)
+/obj/structure/bed/chair/wheelchair/wheelcannon/proc/detach_assembly(mob/user)
 	var/turf/current_turf = get_turf(src)
 
 	if(user?.Adjacent(current_turf))
@@ -153,7 +156,7 @@
 	update_icon()
 	show_splash_text(user, "assembly removed", "Removed assembly from \the [src].")
 
-/obj/structure/wheelcannon/proc/shoot()
+/obj/structure/bed/chair/wheelchair/wheelcannon/proc/shoot()
 	if(!reagents.has_any_reagent(GLOB.wheelcannon_reagents))
 		return FALSE
 
@@ -204,10 +207,16 @@
 	if(!istype(recoil_turf))
 		return
 
+	if(pulling)
+		var/turf/pulling_recoil_turf = get_step(recoil_turf, GLOB.flip_dir[dir])
+		pulling.throw_at(istype(pulling_recoil_turf) ? pulling_recoil_turf : recoil_turf, world.view, 1, src, src)
+		pulling.pulledby = null
+		pulling = null
+
 	Move(recoil_turf)
 	QDEL_IN(particle, 1.5 SECONDS)
 
-/obj/structure/wheelcannon/proc/explode()
+/obj/structure/bed/chair/wheelchair/wheelcannon/proc/explode()
 	if(reagents.total_volume == REAGENTS_MAX_VOLUME)
 		explosion(get_turf(src), 1, 2, 4, sfx_to_play = SFX_EXPLOSION_FUEL)
 	else if(reagents.total_volume >= REAGENTS_MAX_VOLUME / 2)
@@ -218,7 +227,7 @@
 	if(!QDELETED(src))
 		qdel_self()
 
-/obj/structure/wheelcannon/proc/calc_throwforce()
+/obj/structure/bed/chair/wheelchair/wheelcannon/proc/calc_throwforce()
 	var/force = 0
 	for(var/reagent in GLOB.wheelcannon_reagents)
 		force += reagents.get_reagent_amount(reagent) * GLOB.wheelcannon_reagents[reagent]
@@ -227,7 +236,7 @@
 
 	return force
 
-/obj/structure/wheelcannon/fire_act()
+/obj/structure/bed/chair/wheelchair/wheelcannon/fire_act()
 	shoot()
 	return ..()
 
