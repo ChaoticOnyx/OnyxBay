@@ -111,14 +111,10 @@
 		new /datum/stack_recipe("turrets", /obj/structure/sign/warning/lethal_turrets, 1, time = 5), \
 		new /datum/stack_recipe("secure area", /obj/structure/sign/warning/detailed, 1, time = 5), \
 		new /datum/stack_recipe("out of service", /obj/structure/sign/warning/out_of_service, 1, time = 5), \
-		new /datum/stack_recipe("no smoking", /obj/structure/sign/warning/nosmoking_1, 1, time = 5), \
-		new /datum/stack_recipe("smoking", /obj/structure/sign/warning/smoking, 1, time = 5), \
 		new /datum/stack_recipe("cctv", /obj/structure/sign/warning/secure_area/cctv, 1, time = 5), \
 		new /datum/stack_recipe("high explosive", /obj/structure/sign/highexplosive, 1, time = 5), \
 		))
 	recipes += new /datum/stack_recipe_list("sign - departments", list( \
-		new /datum/stack_recipe("medbay red cross", /obj/structure/sign/redcross, 1, time = 5), \
-		new /datum/stack_recipe("medbay  blue cross", /obj/structure/sign/bluecross_1, 1, time = 5), \
 		new /datum/stack_recipe("chemistry", /obj/structure/sign/chemistry, 1, time = 5), \
 		new /datum/stack_recipe("exam room", /obj/structure/sign/directions/examroom, 1, time = 5), \
 		new /datum/stack_recipe("research 1", /obj/structure/sign/science_1, 1, time = 5), \
@@ -136,11 +132,15 @@
 		new /datum/stack_recipe("disposal", /obj/structure/sign/warning/deathsposal, 1, time = 5),
 		))
 	recipes += new /datum/stack_recipe_list("sign - decals", list( \
-		new /datum/stack_recipe("deck-b", /obj/structure/sign/deck/bridge, 1, time = 5), 
+		new /datum/stack_recipe("deck-b", /obj/structure/sign/deck/bridge, 1, time = 5),
 		new /datum/stack_recipe("deck-1", /obj/structure/sign/deck/first, 1, time = 5),
 		new /datum/stack_recipe("deck-2", /obj/structure/sign/deck/second, 1, time = 5),
 		new /datum/stack_recipe("deck-3", /obj/structure/sign/deck/third, 1, time = 5),
 		new /datum/stack_recipe("deck-4", /obj/structure/sign/deck/fourth, 1, time = 5),
+		new /datum/stack_recipe("no smoking", /obj/structure/sign/warning/nosmoking_1, 1, time = 5), \
+		new /datum/stack_recipe("smoking", /obj/structure/sign/warning/smoking, 1, time = 5), \
+		new /datum/stack_recipe("medbay red cross", /obj/structure/sign/redcross, 1, time = 5), \
+		new /datum/stack_recipe("medbay  blue cross", /obj/structure/sign/bluecross_1, 1, time = 5), \
 		))
 
 /material/plasteel/generate_recipes()
