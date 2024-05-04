@@ -1,5 +1,16 @@
 [
   {
+    "author": "ArmolitskiyCarpoeb",
+    "date": "2024-05-04T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "ImageAdd",
+        "message": "3 новых МУЖСКИХ причёски",
+        "pr": 12371
+      }
+    ]
+  },
+  {
     "author": "BaraBara",
     "date": "2024-05-01T00:00:00+03:00",
     "changes": [
