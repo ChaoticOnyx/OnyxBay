@@ -75,8 +75,6 @@
 
 	/// Stat panel window.
 	var/datum/tgui_window/stat_panel
-	/// Stores info about and handles behavior for the object tab.
-	var/datum/object_window_info/obj_window
 
 	/// Settings window.
 	var/datum/player_settings/settings = null

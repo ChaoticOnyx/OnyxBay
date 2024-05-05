@@ -304,9 +304,19 @@
 		return
 
 	var/turf/clicked_turf = get_turf(src)
+	user.set_listed_turf(clicked_turf)
 
-	if(clicked_turf && user.TurfAdjacent(clicked_turf))
-		user.set_listed_turf(clicked_turf)
+/mob/proc/set_listed_turf(turf/turf_to_list)
+	if(isnull(client))
+		return
+
+	if(!istype(turf_to_list))
+		return
+
+	if(!TurfAdjacent(turf_to_list))
+		return
+
+	client.turf_examine.set_turf(turf_to_list)
 
 /mob/proc/TurfAdjacent(turf/T)
 	return T.AdjacentQuick(src)
