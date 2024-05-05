@@ -108,6 +108,8 @@
 			var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation/preset/uranium_238(fail_counter))
 			rad_source.schedule_decay(10 SECONDS)
 
+	set_next_think_ctx("fail_thinker", world.time + 5 SECONDS)
+
 /obj/item/gun/energy/gun/nuclear/emp_act(severity)
 	..()
 	switch(severity)
