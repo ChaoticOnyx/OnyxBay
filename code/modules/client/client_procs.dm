@@ -261,6 +261,8 @@
 	if(prefs && !istype(mob, world.mob))
 		prefs.apply_post_login_preferences(src)
 
+	turf_examine = new(src)
+
 	settings = new(src)
 
 	stat_panel.initialize(
