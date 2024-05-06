@@ -74,7 +74,7 @@
 			fastening = 0
 	if(isWrench(W))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-		new /obj/item/stack/material/steel( get_turf(src.loc), 1 )
+		new /obj/item/stack/material/steel(get_turf(loc), 1)
 		qdel(src)
 	else
 		..()
