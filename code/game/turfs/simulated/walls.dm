@@ -355,6 +355,7 @@
 	register_signal(src, SIGNAL_MOVED, nameof(.proc/stop_leaning))
 
 /mob/living/proc/stop_leaning()
+	unregister_signal(src, SIGNAL_MOVED)
 	density = TRUE
 	leaning = FALSE
 	update_transform()
