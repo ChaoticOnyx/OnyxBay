@@ -184,6 +184,10 @@
 			return
 		. = max(., G.grab_slowdown())
 
+/datum/movement_handler/mob/delay/proc/InstantUpdateGlideSize()
+	var/supposed_delay = max(1, mob.movement_delay() + GetGrabSlowdown())
+	host.set_glide_size(DELAY2GLIDESIZE(supposed_delay))
+
 // Stop effect
 /datum/movement_handler/mob/stop_effect/DoMove()
 	if(MayMove() == MOVEMENT_STOP)

@@ -631,9 +631,14 @@
 
 /mob/proc/stop_pulling()
 	if(pulling)
+		pulling.set_glide_size(8)
 		unregister_signal(pulling, SIGNAL_QDELETING)
 		pulling.pulledby = null
 		pulling = null
+
+		var/datum/movement_handler/mob/delay/delay = GetMovementHandler(/datum/movement_handler/mob/delay)
+		if(delay)
+			delay.InstantUpdateGlideSize()
 
 	if(pullin)
 		pullin.icon_state = "pull0"
@@ -694,6 +699,10 @@
 
 	register_signal(AM, SIGNAL_QDELETING, nameof(.proc/stop_pulling))
 	update_pull_slowdown(AM)
+	var/datum/movement_handler/mob/delay/delay = GetMovementHandler(/datum/movement_handler/mob/delay)
+	if(delay)
+		delay.InstantUpdateGlideSize()
+	AM.set_glide_size(glide_size)
 
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
