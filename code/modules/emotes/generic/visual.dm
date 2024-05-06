@@ -86,6 +86,15 @@
 	set category = "Emotes"
 	emote("shiver", intentional = TRUE)
 
+#define SHIVER_LOOP_DURATION (1 SECONDS)
+/datum/emote/shiver/do_emote(mob/user, emote_key, intentional, target, additional_params)
+	. = ..()
+	animate(user, pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
+	for(var/i in 1 to SHIVER_LOOP_DURATION / (0.2 SECONDS))
+		animate(pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
+		animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
+	animate(pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
+#undef SHIVER_LOOP_DURATION
 
 /datum/emote/drool
 	key = "drool"
@@ -180,6 +189,13 @@
 	set category = "Emotes"
 	emote("twitch", intentional = TRUE)
 
+/datum/emote/twitch/do_emote(mob/user, emote_key, intentional, target, additional_params)
+	. = ..()
+	animate(user, pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
+	animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
+	animate(time = 0.1 SECONDS)
+	animate(pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
+	animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
 
 /datum/emote/twitch_violently
 	key = "twitch_v"
@@ -198,6 +214,10 @@
 	set category = "Emotes"
 	emote("twitch_v", intentional = TRUE)
 
+/datum/emote/twitch_violently/do_emote(mob/user, emote_key, intentional, target, additional_params)
+	. = ..()
+	animate(user, pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
+	animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
 
 /datum/emote/tremble
 	key = "tremble"
@@ -216,6 +236,15 @@
 	set category = "Emotes"
 	emote("tremble", intentional = TRUE)
 
+#define TREMBLE_LOOP_DURATION (4.4 SECONDS)
+/datum/emote/tremble/do_emote(mob/user, emote_key, intentional, target, additional_params)
+	. = ..()
+	animate(user, pixel_x = user.pixel_x + 2, time = 0.2 SECONDS)
+	for(var/i in 1 to TREMBLE_LOOP_DURATION / (0.4 SECONDS))
+		animate(pixel_x = user.pixel_x - 2, time = 0.2 SECONDS)
+		animate(pixel_x = user.pixel_x + 2, time = 0.2 SECONDS)
+	animate(pixel_x = user.pixel_x - 2, time = 0.2 SECONDS)
+#undef TREMBLE_LOOP_DURATION
 
 /datum/emote/collapse
 	key = "collapse"
@@ -570,6 +599,14 @@
 	set name = "Sway"
 	set category = "Emotes"
 	emote("sway", intentional = TRUE)
+
+/datum/emote/sway/do_emote(mob/user, emote_key, intentional, target, additional_params)
+	. = ..()
+	animate(user, pixel_x = user.pixel_x + 2, time = 0.5 SECONDS)
+	for(var/i in 1 to 2)
+		animate(pixel_x = user.pixel_x - 4, time = 1.0 SECONDS)
+		animate(pixel_x = user.pixel_x + 4, time = 1.0 SECONDS)
+	animate(pixel_x = user.pixel_x - 2, time = 0.5 SECONDS)
 
 /datum/emote/sulk
 	key = "sulk"
