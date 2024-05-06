@@ -36,6 +36,9 @@
 		affecting.Weaken(2)
 		affecting.Stun(2)
 
+	if(affecting.leaning)
+		affecting.Stun(2)
+
 /datum/grab/normal/aggressive/can_upgrade(obj/item/grab/G)
 	if(!(G.target_zone in list(BP_CHEST, BP_HEAD)))
 		to_chat(G.assailant, "<span class='warning'>You need to be grabbing their torso or head for this!</span>")

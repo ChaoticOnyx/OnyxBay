@@ -29,6 +29,8 @@
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
 	var/masks_icon = 'icons/turf/wall_masks.dmi'
 	var/static/list/mask_overlay_states = list()
+	/// Pixel shift of a leaning mob
+	var/leaning_offset = 12
 
 /datum/rad_resist/wall
 	alpha_particle_resist = 100 MEGA ELECTRONVOLT
@@ -292,6 +294,71 @@
 
 	if(locate(/obj/effect/overlay/wallrot) in src)
 		. += SPAN_WARNING("There is fungus growing on [src].")
+
+/turf/simulated/wall/Bumped(AM)
+	. = ..()
+	if(isliving(AM))
+		var/mob/living/living_mob = AM
+		if(LAZYLEN(living_mob.grabbed_by))
+			if(!living_mob.incapacitated(INCAPACITATION_BUCKLED_FULLY | INCAPACITATION_STUNNED | INCAPACITATION_FORCELYING | INCAPACITATION_KNOCKOUT) && living_mob.density)
+				living_mob.stop_pulling()
+				living_mob.start_leaning(src)
+
+/turf/simulated/wall/MouseDrop_T(atom/movable/target, mob/user)
+	. = ..()
+	if(user != target)
+		return
+
+	if(!isliving(target))
+		return
+
+	var/mob/living/leaner = target
+	if(leaner.incapacitated(INCAPACITATION_BUCKLED_FULLY | INCAPACITATION_STUNNED | INCAPACITATION_FORCELYING | INCAPACITATION_KNOCKOUT))
+		return
+
+	if(!leaner.density)
+		return
+
+	leaner.stop_pulling()
+
+	leaner.start_leaning(src)
+
+/// Used by grab stunning
+/mob/living/var/leaning = FALSE
+
+/mob/living/proc/start_leaning(turf/simulated/wall/wall)
+	var/new_y
+	var/new_x
+
+	switch(get_dir(src, wall))
+		if(SOUTH)
+			set_dir(NORTH)
+			new_y -= wall.leaning_offset
+		if(NORTH)
+			set_dir(SOUTH)
+			new_y += wall.leaning_offset
+		if(WEST)
+			set_dir(EAST)
+			new_x -= wall.leaning_offset
+		if(EAST)
+			set_dir(WEST)
+			new_x += wall.leaning_offset
+
+	animate(src, 0.2 SECONDS, pixel_x = new_x, pixel_y = new_y)
+	density = FALSE
+	leaning = TRUE
+	update_transform()
+	visible_message(
+		SPAN_NOTICE("[src] leans against \the [wall]."),
+		SPAN_NOTICE("You lean against \the [wall]."),
+	)
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/stop_leaning))
+
+/mob/living/proc/stop_leaning()
+	density = TRUE
+	leaning = FALSE
+	update_transform()
+	animate(src, 0.2 SECONDS, pixel_x = 0, pixel_y = 0)
 
 //Damage
 
