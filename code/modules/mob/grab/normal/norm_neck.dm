@@ -31,7 +31,7 @@
 	if(affecting.can_unequip(affecting.r_hand))
 		affecting.drop_r_hand()
 
-	if(affecting.lying)
+	if(affecting.lying || affecting.leaning)
 		affecting.Weaken(2)
 		affecting.Stun(2)
 

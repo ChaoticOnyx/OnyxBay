@@ -298,11 +298,18 @@
 /turf/simulated/wall/Bumped(AM)
 	. = ..()
 	if(isliving(AM))
-		var/mob/living/living_mob = AM
-		if(LAZYLEN(living_mob.grabbed_by))
-			if(!living_mob.incapacitated(INCAPACITATION_BUCKLED_FULLY | INCAPACITATION_STUNNED | INCAPACITATION_FORCELYING | INCAPACITATION_KNOCKOUT) && living_mob.density)
-				living_mob.stop_pulling()
-				living_mob.start_leaning(src)
+		try_bump_leaning(AM)
+
+/turf/simulated/wall/proc/try_bump_leaning(mob/living/bumped)
+	if(!bumped.incapacitated(INCAPACITATION_BUCKLED_FULLY | INCAPACITATION_STUNNED | INCAPACITATION_FORCELYING | INCAPACITATION_KNOCKOUT) && bumped.density)
+		return
+
+	for(var/obj/item/grab/grab in bumped.grabbed_by)
+		if(grab.current_grab.state_name == NORM_PASSIVE)
+			continue
+
+		bumped.stop_pulling()
+		bumped.start_leaning(src)
 
 /turf/simulated/wall/MouseDrop_T(atom/movable/target, mob/user)
 	. = ..()
