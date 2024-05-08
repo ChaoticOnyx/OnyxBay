@@ -65,7 +65,7 @@
 /datum/movespeed_modifier/drone_movement
 	flags = MOVESPEED_FLAG_SPACEMOVEMENT
 
-/datum/movespeed_modifier/robot_movement/New()
+/datum/movespeed_modifier/drone_movement/New()
 	. = ..()
 	slowdown = config.movement.drone_delay
 
