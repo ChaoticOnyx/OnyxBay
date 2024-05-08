@@ -1,3 +1,5 @@
+GLOBAL_LIST_EMPTY(mecha_tracker_list)
+
 /obj/machinery/computer/mecha
 	name = "Exosuit Control"
 	icon = 'icons/obj/computer.dmi'
@@ -6,63 +8,63 @@
 	light_color = "#a97faa"
 	req_access = list(access_robotics)
 	circuit = /obj/item/circuitboard/mecha_control
-	var/list/located = list()
+	var/list/located
 	var/screen = 0
-	var/stored_data
 
-	attack_ai(mob/user as mob)
-		return src.attack_hand(user)
-
-	attack_hand(mob/user as mob)
-		if(..())
-			return
-		user.set_machine(src)
-		var/dat = "<html><meta charset=\"utf-8\"><head><title>[src.name]</title><style>h3 {margin: 0px; padding: 0px;}</style></head><body>"
-		if(screen == 0)
-			dat += "<h3>Tracking beacons data</h3>"
-			for(var/obj/item/mecha_parts/mecha_tracking/TR in world)
-				var/answer = TR.get_mecha_info()
-				if(answer)
-					dat += {"<hr>[answer]<br/>
-							  <a href='?src=\ref[src];send_message=\ref[TR]'>Send message</a><br/>
-							  <a href='?src=\ref[src];get_log=\ref[TR]'>Show exosuit log</a> | <a style='color: #f00;' href='?src=\ref[src];shock=\ref[TR]'>(EMP pulse)</a><br>"}
-
-		if(screen==1)
-			dat += "<h3>Log contents</h3>"
-			dat += "<a href='?src=\ref[src];return=1'>Return</a><hr>"
-			dat += "[stored_data]"
-
-		dat += "<A href='?src=\ref[src];refresh=1'>(Refresh)</A><BR>"
-		dat += "</body></html>"
-
-		show_browser(user, dat, "window=computer;size=400x500")
-		onclose(user, "computer")
+/obj/machinery/computer/mecha/attack_hand(mob/user)
+	. = ..()
+	if(.)
 		return
 
-	Topic(href, href_list)
-		if(..())
-			return
-		var/datum/topic_input/F = new /datum/topic_input(href,href_list)
-		if(href_list["send_message"])
-			var/obj/item/mecha_parts/mecha_tracking/MT = F.getObj("send_message")
-			var/message = sanitize(input(usr,"Input message","Transmit message") as text)
-			var/obj/mecha/M = MT.in_mecha()
-			if(message && M)
-				M.occupant_message(message)
-			return
-		if(href_list["shock"])
-			var/obj/item/mecha_parts/mecha_tracking/MT = F.getObj("shock")
+	tgui_interact(user)
+
+/obj/machinery/computer/mecha/tgui_state(mob/user)
+	return GLOB.default_state
+
+/obj/machinery/computer/mecha/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "MechaControlConsole", name)
+		ui.open()
+
+/obj/machinery/computer/mecha/tgui_data(mob/user)
+	var/list/data = list(
+		"beacons" = list()
+	)
+
+	for(var/thing in GLOB.mecha_tracker_list)
+		var/obj/item/mecha_parts/mecha_tracking/TR = thing
+		var/list/tr_data = TR.get_mecha_info()
+		if(tr_data)
+			data["beacons"] += list(tr_data)
+
+	return data
+
+/obj/machinery/computer/mecha/tgui_act(action, params)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("send_message")
+			var/obj/item/mecha_parts/mecha_tracking/MT = locate(params["mt_ref"]) in GLOB.mecha_tracker_list
+			if(istype(MT))
+				var/message = tgui_input_text(usr, "Input message", "Transmit message")
+				if(!message || !trim(message))
+					return
+
+				var/obj/mecha/M = MT.in_mecha()
+				if(M)
+					M.occupant_message(message)
+			return TRUE
+
+		if("shock")
+			var/obj/item/mecha_parts/mecha_tracking/MT = locate(params["mt_ref"]) in GLOB.mecha_tracker_list
+			if(!istype(MT))
+				return
+
 			MT.shock()
-		if(href_list["get_log"])
-			var/obj/item/mecha_parts/mecha_tracking/MT = F.getObj("get_log")
-			stored_data = MT.get_mecha_log()
-			screen = 1
-		if(href_list["return"])
-			screen = 0
-		src.updateUsrDialog()
-		return
-
-
+			return TRUE
 
 /obj/item/mecha_parts/mecha_tracking
 	name = "Exosuit tracking beacon"
@@ -71,49 +73,56 @@
 	icon_state = "motion2"
 	origin_tech = list(TECH_DATA = 2, TECH_MAGNET = 2)
 
-	proc/get_mecha_info()
-		if(!in_mecha())
-			return 0
-		var/obj/mecha/M = src.loc
-		var/cell_charge = M.get_charge()
-		var/answer = {"<b>Name:</b> [M.name]<br>
-							<b>Integrity:</b> [M.health/initial(M.health)*100]%<br>
-							<b>Cell charge:</b> [isnull(cell_charge)?"Not found":"[CELL_PERCENT(M.cell)]%"]<br>
-							<b>Airtank:</b> [M.return_pressure()]kPa<br>
-							<b>Pilot:</b> [M.occupant||"None"]<br>
-							<b>Location:</b> [get_area(M)||"Unknown"]<br>
-							<b>Active equipment:</b> [M.selected||"None"]"}
-		if(istype(M, /obj/mecha/working/ripley))
-			var/obj/mecha/working/ripley/RM = M
-			answer += "<br><b>Used cargo space:</b> [length(RM.cargo)/RM.cargo_capacity*100]%<br>"
+/obj/item/mecha_parts/mecha_tracking/Initialize()
+	. = ..()
+	GLOB.mecha_tracker_list += src
 
-		return answer
+/obj/item/mecha_parts/mecha_tracking/Destroy()
+	GLOB.mecha_tracker_list -= src
+	return ..()
 
-	emp_act()
-		qdel(src)
-		return
+/obj/item/mecha_parts/mecha_tracking/proc/get_mecha_info()
+	var/obj/mecha/M = in_mecha()
+	if(!istype(M))
+		return FALSE
 
-	ex_act()
-		qdel(src)
-		return
+	var/list/data = list(
+		"name" = M.name,
+		"cellCharge" = M.get_charge(),
+		"integrity" = M.health,
+		"integrityMax" = initial(M.health),
+		"airtank" = M.return_pressure(),
+		"pilot" = M.occupant,
+		"location" = get_area(M),
+		"equipment" = M.selected,
+		"ref" = any2ref(src),
+		"logs" = M.get_mecha_log(),
+	)
 
-	proc/in_mecha()
-		if(istype(src.loc, /obj/mecha))
-			return src.loc
-		return 0
+	if(istype(M, /obj/mecha/working/ripley))
+		var/obj/mecha/working/ripley/RM = M
+		data["cargo"] = length(RM.cargo)
+		data["cargoCapacity"] = RM.cargo_capacity
 
-	proc/shock()
-		var/obj/mecha/M = in_mecha()
-		if(M)
-			M.emp_act(2)
-		qdel(src)
+	return data
 
-	proc/get_mecha_log()
-		if(!src.in_mecha())
-			return 0
-		var/obj/mecha/M = src.loc
-		return M.get_log_html()
+/obj/item/mecha_parts/mecha_tracking/emp_act()
+	qdel_self()
 
+/obj/item/mecha_parts/mecha_tracking/ex_act()
+	qdel_self()
+
+/obj/item/mecha_parts/mecha_tracking/proc/in_mecha()
+	if(ismech(loc))
+		return loc
+
+	return FALSE
+
+/obj/item/mecha_parts/mecha_tracking/proc/shock()
+	var/obj/mecha/M = in_mecha()
+	if(M)
+		M.emp_act(2)
+	qdel_self()
 
 /obj/structure/closet/crate/mechabeacons
 	name = "exosuit tracking beacons crate"
