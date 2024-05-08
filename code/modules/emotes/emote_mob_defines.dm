@@ -80,6 +80,7 @@
 		/datum/emote/giggle,
 		/datum/emote/whistle,
 		/datum/emote/signal,
+		/datum/emote/sway,
 	)
 
 /mob/living/carbon/metroid/load_default_emotes()
