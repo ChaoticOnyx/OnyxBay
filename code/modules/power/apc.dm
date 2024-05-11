@@ -250,29 +250,31 @@
 	area.apc = src
 	update_icon()
 
-/obj/machinery/power/apc/_examine_text(mob/user)
+/obj/machinery/power/apc/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1)
 		if(stat & BROKEN)
-			. += "\nLooks broken."
+			. += "Looks broken."
 			return
+
 		if(opened)
 			if(has_electronics && terminal)
-				. += "\nThe cover is [opened==2?"removed":"open"] and the power cell is [ cell ? "installed" : "missing"]."
+				. += "The cover is [opened==2?"removed":"open"] and the power cell is [ cell ? "installed" : "missing"]."
 			else if (!has_electronics && terminal)
-				. += "\nThere are some wires but no any electronics."
+				. += "There are some wires but no any electronics."
 			else if (has_electronics && !terminal)
-				. += "\nElectronics installed but not wired."
+				. += "Electronics installed but not wired."
 			else /* if (!has_electronics && !terminal) */
-				. += "\nThere is no electronics nor connected wires."
+				. += "There is no electronics nor connected wires."
 
 		else
 			if (stat & MAINT)
-				. += "\nThe cover is closed. Something wrong with it: it doesn't work."
+				. += "The cover is closed. Something wrong with it: it doesn't work."
 			else if (hacker && !hacker.hacked_apcs_hidden)
-				. += "\nThe cover is locked."
+				. += "The cover is locked."
 			else
-				. += "\nThe cover is closed."
+				. += "The cover is closed."
 
 // update the APC icon to show the three base states
 // also add overlays for indicator lights

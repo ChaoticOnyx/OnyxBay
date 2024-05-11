@@ -229,7 +229,7 @@
 		return FALSE
 
 	if(!C.use(3))
-		target.show_splash_text(user, "not enough coil length!")
+		target.show_splash_text(user, "not enough coil length!", "Not enought coil length to repair!")
 		return SURGERY_FAILURE
 
 	return TRUE

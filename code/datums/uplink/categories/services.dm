@@ -62,10 +62,12 @@
 		deactivate()
 	. = ..()
 
-/obj/item/device/uplink_service/_examine_text(user)
+/obj/item/device/uplink_service/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 1)
 		return
+
 	var/msg
 	switch(state)
 		if(AWAITING_ACTIVATION)
@@ -74,7 +76,8 @@
 			msg = "It is labeled '[service_label]' and appears to be active."
 		if(HAS_BEEN_ACTIVATED)
 			msg = "It is labeled '[service_label]' and appears to be permanently disabled."
-	. += "\n[msg]"
+
+	. += "[msg]"
 
 /obj/item/device/uplink_service/attack_self(mob/user)
 	if(state != AWAITING_ACTIVATION)
@@ -88,9 +91,12 @@
 	log_and_message_admins("has activated the service '[service_label]'", user)
 
 	if(service_duration)
-		addtimer(CALLBACK(src, nameof(.proc/deactivate)), service_duration)
+		set_next_think(world.time + service_duration)
 	else
 		deactivate()
+
+/obj/item/device/uplink_service/think()
+	deactivate()
 
 /obj/item/device/uplink_service/proc/deactivate()
 	if(state != CURRENTLY_ACTIVE)

@@ -233,7 +233,7 @@
 	clear_projections()
 
 	var/offline_template = SSmapping.holodeck_templates[offline_program]
-	INVOKE_ASYNC(CALLBACK(offline_template, nameof(/datum/map_template/proc/load), bottom_left))
+	INVOKE_ASYNC(CALLBACK(offline_template, nameof(/datum/map_template.proc/load), bottom_left))
 
 /obj/machinery/computer/holodeck/Process()
 	if(!active)

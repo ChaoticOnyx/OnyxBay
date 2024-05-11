@@ -1,7 +1,7 @@
 
-//reserved file just for golems since they're such a big thing, available on lavaland and from the station
+//reserved file just for golems since they're such a big thing, available from the station
 
-//Golem shells: Spawns in Free Golem ships in lavaland. Ghosts become mineral golems and are advised to spread personal freedom.
+//Golem shells: Ghosts become mineral golems and are advised to spread personal freedom.
 /obj/effect/mob_spawn/ghost_role/human/golem
 	name = "inert free golem shell"
 	desc = "A humanoid shape, empty, lifeless, and full of potential."
@@ -49,10 +49,7 @@
 
 	spawned_mob.fully_replace_character_name(forced_name)
 	return
-/obj/effect/mob_spawn/ghost_role/human/golem/create(mob/mob_possessor, newname)
-	if(!LAZYLEN(GLOB.golems_resonator))
-		mob_species = SPECIES_GOLEM_ADAMANTINE
-	..()
+
 
 /obj/effect/mob_spawn/ghost_role/human/golem/special(mob/living/new_spawn, mob/mob_possessor)
 	. = ..()

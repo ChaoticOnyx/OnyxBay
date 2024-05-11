@@ -11,14 +11,16 @@
 	var/datum/computer_file/data/warrant/active
 
 //look at it
-/obj/item/device/holowarrant/_examine_text(mob/user)
+/obj/item/device/holowarrant/examine(mob/user, infix)
 	. = ..()
+
 	if(active)
-		. += "\nIt's a holographic warrant for '[active.fields["namewarrant"]]'."
+		. += "It's a holographic warrant for '[active.fields["namewarrant"]]'."
+
 	if(in_range(user, src) || isghost(user))
 		show_content(user)
 	else
-		. += "\n<span class='notice'>You have to be closer if you want to read it.</span>"
+		. += SPAN_NOTICE("You have to be closer if you want to read it.")
 
 //hit yourself with it
 /obj/item/device/holowarrant/attack_self(mob/living/user as mob)

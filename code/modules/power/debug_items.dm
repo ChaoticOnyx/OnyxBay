@@ -5,12 +5,13 @@
 	density = 1
 	var/show_extended_information = 1	// Set to 0 to disable extra information on examining (for example, when used on admin events)
 
-/obj/machinery/power/debug_items/_examine_text(mob/user)
+/obj/machinery/power/debug_items/examine(mob/user, infix)
 	. = ..()
+
 	if(!show_extended_information)
 		return
-	. += "\n[show_info(user)]"
 
+	. += "[show_info(user)]"
 
 /obj/machinery/power/debug_items/proc/show_info(mob/user)
 	. = ""

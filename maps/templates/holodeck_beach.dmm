@@ -20,7 +20,7 @@
 "D" = (/obj/item/clothing/head/collectable/paper,/obj/item/clothing/head/collectable/paper{pixel_y = -8; pixel_x = 10},/obj/item/clothing/head/collectable/paper{pixel_y = -12; pixel_x = -5},/turf/simulated/floor/natural/jungle/water,/area/template_noop)
 "F" = (/obj/item/inflatable_duck,/turf/simulated/floor/natural/jungle/water,/area/template_noop)
 "H" = (/turf/simulated/floor/natural/jungle/water,/area/template_noop)
-"I" = (/obj/item/clothing/under/skirt/khaki,/turf/simulated/floor/natural/jungle/sandgrasscorner1{dir = 8},/area/template_noop)
+"I" = (/turf/simulated/floor/natural/jungle/sandgrasscorner1{dir = 8},/area/template_noop)
 "J" = (/obj/structure/bed/chair/lime{dir = 4},/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
 "K" = (/obj/item/clothing/glasses/sunglasses,/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
 "M" = (/obj/item/beach_ball,/turf/simulated/floor/natural/jungle/sand,/area/template_noop)

@@ -124,6 +124,8 @@
 	if(active)
 		new_character.key = key		//now transfer the key to link the client to our new body
 
+	new_character.client?.init_verbs()
+
 	return TRUE
 
 /datum/mind/proc/store_memory(new_text)
@@ -435,14 +437,15 @@
 				memory = null//Remove any memory they may have had.
 			if("crystals")
 				if (usr.client.holder.rights & R_FUN)
-					var/obj/item/device/uplink/suplink = find_syndicate_uplink()
+					var/datum/component/uplink/suplink = find_syndicate_uplink()
 					if(!suplink)
-						to_chat(usr, "<span class='warning'>Failed to find an uplink.</span>")
+						to_chat(usr, SPAN_WARNING("Failed to find an uplink."))
 						return
-					var/crystals = suplink.uses
-					crystals = input("Amount of telecrystals for [key]","Operative uplink", crystals) as null|num
-					if (!isnull(crystals) && !QDELETED(suplink))
-						suplink.uses = crystals
+
+					var/crystals = suplink.telecrystals
+					crystals = tgui_input_number(usr, "Amount of telecrystals for [key]", "Operative uplink", crystals, min_value = 0)
+					if(!isnull(crystals) && !QDELETED(suplink))
+						suplink.telecrystals = crystals
 						log_and_message_admins("set the telecrystals for [key] to [crystals]")
 
 	else if (href_list["obj_announce"])
@@ -454,17 +457,15 @@
 	edit_memory()
 
 /datum/mind/proc/find_syndicate_uplink()
+	var/datum/component/uplink/uplink
 	var/list/L = current.get_contents()
-	for (var/obj/item/I in L)
-		if (I.hidden_uplink)
-			return I.hidden_uplink
-	return null
+	for(var/atom/movable/I in L)
+		uplink = I.get_component(/datum/component/uplink)
+		if(istype(uplink))
+			return uplink
 
 /datum/mind/proc/take_uplink()
-	var/obj/item/device/uplink/H = find_syndicate_uplink()
-	if(H)
-		qdel(H)
-
+	qdel(find_syndicate_uplink())
 
 // check whether this mind's mob has been brigged for the given duration
 // have to call this periodically for the duration to work properly

@@ -156,9 +156,10 @@ var/list/wrapped_species_by_ref = list()
 		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))
 		return
 
-	var/new_skin = input("Please select a new body color.", "Shapeshifter Colour") as color
+	var/new_skin = tgui_color_picker(usr, "Please select a new body color.", "Shapeshifter Colour")
 	if(!new_skin)
 		return
+
 	shapeshifter_set_colour(new_skin)
 
 /mob/living/carbon/human/proc/shapeshifter_set_colour(new_skin) // something is wrong with colours on humans. TODO: fix

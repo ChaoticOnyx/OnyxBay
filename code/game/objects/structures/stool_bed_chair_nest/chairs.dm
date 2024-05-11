@@ -13,6 +13,11 @@
 	var/propelled = 0 // Check for fire-extinguisher-driven chairs
 	var/foldable = TRUE
 
+/obj/structure/bed/chair/Initialize()
+	. = ..()
+
+	AddElement(/datum/element/simple_rotation)
+
 /obj/structure/bed/chair/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	if(!padding_material && istype(W, /obj/item/assembly/shock_kit))
@@ -73,34 +78,21 @@
 			stool_cache[cache_key] = I
 		AddOverlays(stool_cache[cache_key])
 
+/obj/structure/bed/chair/can_rotate(mob/user)
+	if(isobserver(user) && config.ghost.ghost_interaction && Adjacent(user))
+		var/area/A = get_area(src)
+		if(A?.holy)
+			show_splash_text(user, "you cannot turn it there!", "\The [src] is on sacred ground, you cannot turn in.")
+			return FALSE
+
+		return TRUE
+
+	return ..(user)
+
 /obj/structure/bed/chair/set_dir()
 	..()
 	if(buckled_mob)
 		buckled_mob.set_dir(dir)
-
-/obj/structure/bed/chair/AltClick(mob/living/L)
-	if(L.is_ventcrawling)
-		return
-	rotate()
-
-/obj/structure/bed/chair/verb/rotate()
-	set name = "Rotate Chair"
-	set category = "Object"
-	set src in oview(1)
-
-	if(!usr || !Adjacent(usr))
-		return
-
-	if(usr.is_ic_dead() && config.ghost.ghost_interaction)
-		var/area/A = get_area(src)
-		if(A?.holy)
-			to_chat(usr, SPAN("warning", "\The [src] is on sacred ground, you cannot turn it."))
-			return
-	else if(usr.incapacitated())
-		return
-
-	src.set_dir(turn(src.dir, 90))
-	return
 
 /* ======================================================= */
 /* -------------------- Folded Chairs -------------------- */

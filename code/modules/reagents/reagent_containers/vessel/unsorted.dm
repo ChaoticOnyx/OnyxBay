@@ -14,6 +14,8 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	lid_type = null
 
+#define OXYLOS_PER_HEAD_DIP 10
+
 /obj/item/reagent_containers/vessel/bucket
 	desc = "It's a bucket."
 	name = "bucket"
@@ -47,22 +49,62 @@
 		user.pick_or_drop(new /obj/item/bucket_sensor)
 		qdel(src)
 		return
+
 	else if(istype(D, /obj/item/pipe))
 		to_chat(user, "You put \the [D] into \the [src].")
 		new /obj/item/hookah_construction(get_turf(src))
 		qdel(D)
 		qdel_self()
 		return
-	else if(istype(D, /obj/item/mop) || (atom_flags & ATOM_FLAG_OPEN_CONTAINER))
+
+	else if(istype(D, /obj/item/mop) && (atom_flags & ATOM_FLAG_OPEN_CONTAINER))
 		if(reagents.total_volume < 1)
-			to_chat(user, SPAN("warning", "\The [src] is empty!"))
+			show_splash_text(user, "no water!", SPAN("warning", "\The [src] is empty!"))
 		else
 			reagents.trans_to_obj(D, 5)
-			to_chat(user, SPAN("notice", "You wet \the [D] in \the [src]."))
+			show_splash_text(user, "you wet the mop!", SPAN("notice", "You wet \the [D] in \the [src]."))
 			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 		return
+
+	else if(istype(D, /obj/item/grab))
+		var/obj/item/grab/G = D
+
+		if(!isliving(G.affecting))
+			return
+
+		if(G.current_grab.state_name == NORM_PASSIVE)
+			to_chat(user, SPAN_NOTICE("You need a tighter grip!"))
+			return
+
+		if(reagents.total_volume < 1)
+			show_splash_text(user, "no water!", SPAN("warning", "\The [src] is empty!"))
+			return
+
+		user.visible_message(SPAN_DANGER("[user] starts to put [G.affecting.name]'s head into \the [src]!"), \
+						SPAN_DANGER("You start to put [G.affecting.name]'s head into \the [src]!"))
+		playsound(get_turf(src), GET_SFX(SFX_FOOTSTEP_WATER), 100, TRUE)
+		reagents.trans_to(G.affecting, min(reagents.total_volume, 10))
+
+		if(!do_after(user, 3 SECONDS, src, TRUE))
+			return
+
+		if(QDELETED(src) || !G?.affecting)
+			return
+
+
+		user.visible_message(SPAN_DANGER("[user] finally raises [G.affecting.name]'s head out of \the [src]!"), \
+								SPAN_DANGER("You raise [G.affecting.name]'s head out of \the [src]!"))
+		reagents.trans_to(G.affecting, min(reagents.total_volume, 5))
+		playsound(get_turf(src), GET_SFX(SFX_FOOTSTEP_WATER), 100, TRUE)
+		if(!G?.affecting?.internal && !G.affecting.isSynthetic())
+			G.affecting.adjustOxyLoss(OXYLOS_PER_HEAD_DIP)
+			G.affecting.emote("gasp")
+		return
+
 	else
 		return ..()
+
+#undef OXYLOS_PER_HEAD_DIP
 
 /obj/item/reagent_containers/vessel/coffee
 	name = "\improper Robust Coffee"
@@ -70,7 +112,7 @@
 	icon_state = "coffee"
 	item_state = "coffee"
 	center_of_mass = "x=15;y=10"
-	startswith = list(/datum/reagent/drink/coffee = 30)
+	startswith = list(/datum/reagent/caffeine/coffee = 30)
 	lid_type = null
 	unacidable = FALSE
 
@@ -301,6 +343,23 @@
 	filling_states = "15;30;50;70;85;100"
 	lid_type = null
 	precise_measurement = TRUE
+
+/obj/item/reagent_containers/vessel/coffeepot
+	name = "coffeepot"
+	desc = "A large pot for dispensing that ambrosia of corporate life known to mortals only as coffee. Contains 4 standard cups."
+	icon_state = "coffeepot"
+	volume = 120
+	amount_per_transfer_from_this = 10
+	center_of_mass = "x=16;y=9"
+	filling_states = "1;30;60;100"
+	lid_type = null
+	precise_measurement = TRUE
+
+/obj/item/reagent_containers/vessel/coffeepot/bluespace
+	name = "bluespace coffeepot"
+	desc = "The most advanced coffeepot the eggheads could cook up: sleek design; graduated lines; connection to a pocket dimension for coffee containment; yep, it's got it all. Contains 8 standard cups."
+	volume = 240
+	icon_state = "coffeepot_bluespace"
 
 /obj/item/reagent_containers/vessel/skullgoblet
 	name = "skull goblet"

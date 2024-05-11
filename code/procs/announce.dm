@@ -14,16 +14,6 @@
 	// Format currently matches that of newscaster feeds: Registered Name (Assigned Rank)
 	return I.assignment ? "[I.registered_name] ([I.assignment])" : I.registered_name
 
-/proc/get_announcement_computer(announcer = "Arrivals Announcement Computer")
-	if(length(ai_list))
-		var/list/mob/living/silicon/ai/valid_AIs = list()
-		for(var/mob/living/silicon/ai/AI in ai_list)
-			if(!AI.is_ic_dead())
-				valid_AIs.Add(AI)
-		if(length(valid_AIs))
-			announcer = pick(valid_AIs)
-	return announcer
-
 /proc/get_announcement_frequency(datum/job/job)
 	// During red alert all jobs are announced on main frequency.
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)

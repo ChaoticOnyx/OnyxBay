@@ -3,6 +3,7 @@
 	name = "prop dispenser"
 	desc = "All the props an actor could need. Probably."
 
+	icon = 'icons/obj/machines/vending/theater.dmi'
 	icon_state = "Theater"
 
 	vending_sound = SFX_VENDING_DROP
@@ -28,6 +29,7 @@
 	name = "container dispenser"
 	desc = "A container that dispenses containers."
 
+	icon = 'icons/obj/machines/vending/engi.dmi'
 	icon_state = "robotics"
 
 	component_types = list(

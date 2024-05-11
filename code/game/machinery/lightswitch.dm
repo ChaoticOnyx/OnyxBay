@@ -13,7 +13,7 @@
 	var/area/connected_area = null
 	var/other_area = null
 
-/obj/machinery/light_switch/Initialize()
+/obj/machinery/light_switch/Initialize(mapload)
 	. = ..()
 	if(other_area)
 		src.connected_area = locate(other_area)
@@ -42,10 +42,11 @@
 		AddOverlays(emissive_appearance(icon, "light-ea"))
 		set_light(0.15, 0.1, 1, 2, (on ? "#82ff4c" : "#f86060"))
 
-/obj/machinery/light_switch/_examine_text(mob/user)
+/obj/machinery/light_switch/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1)
-		. += "\nA light switch. It is [on? "on" : "off"]."
+		. += "A light switch. It is [on? "on" : "off"]."
 
 /obj/machinery/light_switch/proc/set_state(newstate)
 	if(on != newstate)

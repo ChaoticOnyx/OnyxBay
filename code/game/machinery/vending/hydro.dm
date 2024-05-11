@@ -4,7 +4,11 @@
 	desc = "A plant nutrients vendor."
 	product_slogans = "Aren't you glad you don't have to fertilize the natural way?;Now with 50% less stink!;Plants are people too!"
 	product_ads = "We like plants!;Don't you want some?;The greenest thumbs ever.;We like big plants.;Soft soil..."
+
 	icon_state = "nutri"
+	icon = 'icons/obj/machines/vending/nutri.dmi'
+	light_color = "#6DBBBC"
+
 	use_vend_state = TRUE
 	gen_rand_amount = FALSE
 	vend_delay = 26
@@ -31,6 +35,8 @@
 	desc = "When you need seeds fast!"
 
 	icon_state = "seeds"
+	icon = 'icons/obj/machines/vending/seeds.dmi'
+	light_color = "#7BB491"
 
 	vend_delay = 13
 	use_vend_state = TRUE

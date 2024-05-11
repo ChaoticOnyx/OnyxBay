@@ -204,10 +204,11 @@
 			break
 	return !length(strip_html_properly(info)) && !is_visible_html_tag
 
-/obj/item/paper/_examine_text(mob/user)
+/obj/item/paper/examine(mob/user, infix)
 	. = ..()
+
 	if(name != "sheet of paper")
-		. += "\nIt's titled '[name]'."
+		. += "It's titled '[name]'."
 		. += stamps
 
 	if(length(stamped))
@@ -222,7 +223,7 @@
 	if(user && (in_range(user, src) || isghost(user)))
 		show_content(user)
 	else
-		. += "\n[SPAN_NOTICE("You have to go closer if you want to read it.")]"
+		. += SPAN_NOTICE("You have to go closer if you want to read it.")
 
 /obj/item/paper/proc/show_content(mob/user, forceshow)
 	var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon)) || forceshow

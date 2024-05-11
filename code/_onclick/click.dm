@@ -299,14 +299,24 @@
 	A.AltClick(src)
 
 /atom/proc/AltClick(mob/user)
-	var/turf/T = get_turf(src)
-	if(T && user.TurfAdjacent(T))
-		if(user.listed_turf == T)
-			user.listed_turf = null
-		else
-			user.listed_turf = T
-			user.client.statpanel = "Turf"
-	return 1
+	var/cancel = SEND_SIGNAL(src, SIGNAL_ALT_CLICKED, src, user)
+	if(cancel)
+		return
+
+	var/turf/clicked_turf = get_turf(src)
+	user.set_listed_turf(clicked_turf)
+
+/mob/proc/set_listed_turf(turf/turf_to_list)
+	if(isnull(client))
+		return
+
+	if(!istype(turf_to_list))
+		return
+
+	if(!TurfAdjacent(turf_to_list))
+		return
+
+	client.turf_examine.set_turf(turf_to_list)
 
 /mob/proc/TurfAdjacent(turf/T)
 	return T.AdjacentQuick(src)
@@ -314,7 +324,9 @@
 /mob/observer/ghost/TurfAdjacent(turf/T)
 	if(!isturf(loc) || !client)
 		return FALSE
-	return z == T.z && (get_dist(loc, T) <= client.view)
+
+	var/list/view_sizes = get_view_size(client.view)
+	return z == T.z && (get_dist(loc, T) <= max(view_sizes[1], view_sizes[2]))
 
 /*
 	Control+Shift click
@@ -335,9 +347,9 @@
 	return
 
 /atom/proc/CtrlAltClick(mob/user)
-	return
-
-
+	var/cancel = SEND_SIGNAL(src, SIGNAL_CTRL_ALT_CLICKED, src, user)
+	if(cancel)
+		return
 
 /*
 	Rclick.
@@ -447,36 +459,6 @@
 	if(direction != dir)
 		facedir(direction)
 
-/atom/movable/screen/click_catcher
-	icon = 'icons/hud/screen_gen.dmi'
-	icon_state = "catcher"
-	plane = CLICKCATCHER_PLANE
-	mouse_opacity = 2
-	screen_loc = "CENTER-7,CENTER-7"
-
-/atom/movable/screen/click_catcher/Destroy()
-	..()
-	return QDEL_HINT_LETMELIVE
-
-/proc/create_click_catcher()
-	. = list()
-	for(var/i = 0, i<15, i++)
-		for(var/j = 0, j<15, j++)
-			var/atom/movable/screen/click_catcher/CC = new()
-			CC.screen_loc = "NORTH-[i],EAST-[j]"
-			. += CC
-
-/atom/movable/screen/click_catcher/Click(location, control, params)
-	var/list/modifiers = params2list(params)
-	if(modifiers["middle"] && istype(usr, /mob/living/carbon))
-		var/mob/living/carbon/C = usr
-		C.swap_hand()
-	else
-		var/turf/T = screen_loc2turf(screen_loc, get_turf(usr))
-		if(T)
-			T.Click(location, control, params)
-	. = 1
-
 /*
 	Custom click handling
 */
@@ -500,11 +482,11 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	..()
 	src.user = user
 	if(flags & (CLICK_HANDLER_REMOVE_ON_MOB_LOGOUT))
-		register_signal(user, SIGNAL_LOGGED_OUT, /datum/click_handler/proc/OnMobLogout)
+		register_signal(user, SIGNAL_LOGGED_OUT, nameof(/datum/click_handler.proc/OnMobLogout))
 
 /datum/click_handler/Destroy()
 	if(flags & (CLICK_HANDLER_REMOVE_ON_MOB_LOGOUT))
-		unregister_signal(user, SIGNAL_LOGGED_OUT, /datum/click_handler/proc/OnMobLogout)
+		unregister_signal(user, SIGNAL_LOGGED_OUT, nameof(/datum/click_handler.proc/OnMobLogout))
 	user = null
 	. = ..()
 

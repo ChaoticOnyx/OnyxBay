@@ -6,7 +6,8 @@ SUBSYSTEM_DEF(radio)
 	var/list/frequencies = list()
 
 /datum/controller/subsystem/radio/stat_entry(msg)
-	..("F:[length(frequencies)]")
+	msg = "F:[length(frequencies)]"
+	return ..()
 
 /**
  * Adds an object to the specified frequency with a specified filter.

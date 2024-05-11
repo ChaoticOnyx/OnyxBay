@@ -53,7 +53,14 @@ var/global/list/image/splatter_cache=list()
 						blood_DNA |= B.blood_DNA.Copy()
 					qdel(B)
 	var/drytime = DRYING_TIME * (max(1, amount))
-	addtimer(CALLBACK(src, nameof(.proc/dry)), drytime)
+	set_next_think(world.time + drytime)
+
+/obj/effect/decal/cleanable/blood/think()
+	name = dryname
+	desc = drydesc
+	color = adjust_brightness(color, -50)
+	amount = 0
+	virus2.Cut()
 
 /obj/effect/decal/cleanable/blood/on_update_icon()
 	if(basecolor == "rainbow") basecolor = get_random_colour(1)
@@ -98,13 +105,6 @@ var/global/list/image/splatter_cache=list()
 	H.update_inv_shoes(1)
 	amount--
 
-/obj/effect/decal/cleanable/blood/proc/dry()
-	name = dryname
-	desc = drydesc
-	color = adjust_brightness(color, -50)
-	amount = 0
-	virus2.Cut()
-
 /obj/effect/decal/cleanable/blood/attack_hand(mob/living/carbon/human/user)
 	..()
 
@@ -117,7 +117,7 @@ var/global/list/image/splatter_cache=list()
 	user.add_blood(basecolor)
 	user.blood_DNA |= blood_DNA.Copy()
 	user.bloody_hands = taken
-	user.verbs += /mob/living/carbon/human/proc/bloody_doodle
+	grant_verb(user, /mob/living/carbon/human/proc/bloody_doodle)
 
 /obj/effect/decal/cleanable/blood/splatter
 	random_icon_states = list("mfloor3", "mfloor7", "mgibbl1", "mgibbl2", "mgibbl3", "mgibbl4", "mgibbl5")
@@ -158,9 +158,9 @@ var/global/list/image/splatter_cache=list()
 	else
 		icon_state = "writing1"
 
-/obj/effect/decal/cleanable/blood/writing/_examine_text(mob/user)
+/obj/effect/decal/cleanable/blood/writing/examine(mob/user, infix)
 	. = ..()
-	. += "\nIt reads: <font color='[basecolor]'>\"[message]\"</font>"
+	. += "It reads: <font color='[basecolor]'>\"[message]\"</font>"
 
 /obj/effect/decal/cleanable/blood/gibs
 	name = "gibs"
@@ -226,7 +226,7 @@ var/global/list/image/splatter_cache=list()
 
 	var/list/datum/disease2/disease/virus2 = list()
 	var/dried = FALSE
-	var/dry_timer_id
+	var/thinking = FALSE
 
 /obj/effect/decal/cleanable/mucus/Initialize()
 	. = ..()
@@ -245,12 +245,20 @@ var/global/list/image/splatter_cache=list()
 
 /obj/effect/decal/cleanable/mucus/proc/update_stats(list/viruses = list())
 	var/drytime = DRYING_TIME * (rand(20, 30) / 10) // 10 to 15 minutes
-	if(dry_timer_id)
-		deltimer(dry_timer_id)
+	if(thinking)
+		set_next_think(0)
+		thinking = FALSE
+
 	if(overlays.len <= 20) // We don't want to scare kids with a snotty monster.
 		var/image/mucus_overlay = image(icon = 'icons/effects/blood.dmi', icon_state = "mucus", pixel_x = rand(-8, 8), pixel_y = rand(-8, 8))
 		mucus_overlay.layer = FLOAT_LAYER
 		mucus_overlay.transform = turn(src.transform, rand(0, 359))
 		AddOverlays(mucus_overlay)
-	dry_timer_id = addtimer(CALLBACK(src, nameof(.proc/dry)), drytime, TIMER_STOPPABLE)
+
+	set_next_think(world.time + drytime)
+	thinking = TRUE
 	virus2 |= viruses
+
+/obj/effect/decal/cleanable/mucus/think()
+	thinking = FALSE
+	dry()

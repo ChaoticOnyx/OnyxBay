@@ -27,6 +27,8 @@
 	seen_turfs = list()
 	proximity_trigger = new(src, /obj/item/device/assembly/infra/proc/on_beam_entered, /obj/item/device/assembly/infra/proc/on_visibility_change, world.view, PROXIMITY_EXCLUDE_HOLDER_TURF)
 
+	AddElement(/datum/element/simple_rotation)
+
 /obj/item/device/assembly/infra/Destroy()
 	qdel(proximity_trigger)
 	proximity_trigger = null
@@ -105,13 +107,6 @@
 
 	return TOPIC_REFRESH
 
-/obj/item/device/assembly/infra/verb/rotate()//This could likely be better
-	set name = "Rotate Infrared Laser"
-	set category = "Object"
-	set src in usr
-
-	set_dir(turn(dir, 90))
-
 /obj/item/device/assembly/infra/retransmit_moved(mover, old_loc, new_loc)
 	if(on)
 		..()
@@ -130,7 +125,7 @@
 	if(!holder)
 		visible_message("\icon[src] *beep* *beep*")
 	cooldown = 2
-	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/assembly/infra/proc/on_visibility_change(list/old_turfs, list/new_turfs)
 	seen_turfs = new_turfs

@@ -47,11 +47,14 @@
 	go_out()
 	return
 
-/obj/machinery/bodyscanner/_examine_text(mob/user)
+/obj/machinery/bodyscanner/examine(mob/user, infix)
 	. = ..()
-	if(user.Adjacent(src))
-		if(occupant)
-			. += "\n[occupant._examine_text(user)]"
+
+	if(!user.Adjacent(src))
+		return
+
+	if(occupant)
+		. += "It has [SPAN_NOTICE("[occupant]")] inside."
 
 /obj/machinery/bodyscanner/verb/eject()
 	set src in oview(1)

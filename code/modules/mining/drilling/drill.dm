@@ -283,6 +283,7 @@
 	name = "mining drill brace"
 	desc = "A machinery brace for an industrial drill. It looks easily two feet thick."
 	icon_state = "mining_brace"
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	var/obj/machinery/mining/drill/connected
 
 /obj/machinery/mining/brace/New()
@@ -290,6 +291,8 @@
 
 	component_parts = list()
 	component_parts += new /obj/item/circuitboard/miningdrillbrace(src)
+
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/mining/brace/attackby(obj/item/W as obj, mob/user as mob)
 	if(connected && connected.active)
@@ -347,17 +350,3 @@
 	connected.supports -= src
 	connected.check_supports()
 	connected = null
-
-/obj/machinery/mining/brace/verb/rotate()
-	set name = "Rotate"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.stat) return
-
-	if (src.anchored)
-		to_chat(usr, "It is anchored in place!")
-		return 0
-
-	src.set_dir(turn(src.dir, 90))
-	return 1

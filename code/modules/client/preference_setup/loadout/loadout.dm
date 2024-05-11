@@ -162,7 +162,7 @@ var/list/hash_to_gear = list()
 	if(!patron_tier)
 		. += "<b>You are not a Patron yet.</b><br>"
 	else
-		. += "<b>Your Patreon tier is [patron_tier]</b><br>"
+		. += "<b>Your Boosty tier is [patron_tier]</b><br>"
 	var/current_opyxes = round(user.client.donator_info.opyxes)
 	. += "<b>You have <font color='#e67300'>[current_opyxes]</font> opyx[current_opyxes != 1 ? "es" : ""].</b><br>"
 	. += "<a class='gold' href='?src=\ref[src];get_opyxes=1'><b>Get opyxes</b></a><br>"
@@ -413,49 +413,65 @@ var/list/hash_to_gear = list()
 	var/list/metadata = get_gear_metadata(G)
 	metadata["[tweak]"] = new_metadata
 
+#define IS_GEAR_TICKED (selected_gear && (selected_gear.display_name in pref.gear_list[pref.gear_slot]))
+
 /datum/category_item/player_setup_item/loadout/OnTopic(href, href_list, mob/user)
 	ASSERT(istype(user))
 	if(pref.loadout_is_busy)
 		return TOPIC_NOACTION
+
 	if(href_list["select_gear"])
 		pref.loadout_is_busy = TRUE
+
 		selected_gear = hash_to_gear[href_list["select_gear"]]
 		selected_tweaks = pref.gear_list[pref.gear_slot][selected_gear.display_name]
+
 		if(!selected_tweaks)
 			selected_tweaks = new
 			for(var/datum/gear_tweak/tweak in selected_gear.gear_tweaks)
 				selected_tweaks["[tweak]"] = tweak.get_default()
+
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	if(href_list["toggle_gear"])
 		pref.loadout_is_busy = TRUE
+
 		var/datum/gear/TG = hash_to_gear[href_list["toggle_gear"]]
 
 		toggle_gear(TG, user)
 
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	if(href_list["tweak"])
 		pref.loadout_is_busy = TRUE
+
 		var/datum/gear_tweak/tweak = locate(href_list["tweak"])
 		if(!tweak || !istype(selected_gear) || !(tweak in selected_gear.gear_tweaks))
 			pref.loadout_is_busy = FALSE
 			return TOPIC_NOACTION
+
 		var/metadata = tweak.get_metadata(user, get_tweak_metadata(selected_gear, tweak))
 		if(!metadata || !CanUseTopic(user))
 			pref.loadout_is_busy = FALSE
 			return TOPIC_NOACTION
+
 		selected_tweaks["[tweak]"] = metadata
-		var/ticked = (selected_gear.display_name in pref.gear_list[pref.gear_slot])
-		if(ticked)
+
+		if(IS_GEAR_TICKED)
 			set_tweak_metadata(selected_gear, tweak, metadata)
+
 		var/trying_on = (selected_gear.display_name == pref.trying_on_gear)
 		if(trying_on)
 			pref.trying_on_tweaks["[tweak]"] = metadata
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	if(href_list["buy_gear"])
 		var/datum/gear/G = locate(href_list["buy_gear"])
 		ASSERT(G.price)
@@ -464,6 +480,7 @@ var/list/hash_to_gear = list()
 		var/comment = "Donation store purchase: [G.type]"
 		var/adjusted_price = G.discount ? G.price * G.discount : G.price
 		var/transaction = SSdonations.create_transaction(user.client, -adjusted_price, DONATIONS_TRANSACTION_TYPE_PURCHASE, comment)
+
 		if(transaction)
 			if(SSdonations.give_item(user.client, G.type, transaction))
 				pref.trying_on_gear = null
@@ -472,80 +489,125 @@ var/list/hash_to_gear = list()
 				return TOPIC_REFRESH_UPDATE_PREVIEW
 			else
 				SSdonations.remove_transaction(user.client, transaction)
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_NOACTION
+
 	if(href_list["try_on"])
 		if(!istype(selected_gear))
 			return TOPIC_NOACTION
+
 		pref.loadout_is_busy = TRUE
+
 		if(selected_gear.display_name == pref.trying_on_gear)
 			pref.trying_on_gear = null
 			pref.trying_on_tweaks.Cut()
 		else
 			pref.trying_on_gear = selected_gear.display_name
 			pref.trying_on_tweaks = selected_tweaks.Copy()
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	if(href_list["next_slot"])
 		pref.loadout_is_busy = TRUE
+
 		pref.gear_slot = pref.gear_slot+1
 		if(pref.gear_slot > config.character_setup.loadout_slots)
 			pref.gear_slot = 1
+
+		if(IS_GEAR_TICKED)
+			selected_tweaks = null
+		else if(selected_tweaks)
+			selected_tweaks.Cut()
 		selected_gear = null
-		selected_tweaks.Cut()
+
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	if(href_list["prev_slot"])
 		pref.loadout_is_busy = TRUE
+
 		pref.gear_slot = pref.gear_slot-1
 		if(pref.gear_slot < 1)
 			pref.gear_slot = config.character_setup.loadout_slots
+
+		if(IS_GEAR_TICKED)
+			selected_tweaks = null
+		else if(selected_tweaks)
+			selected_tweaks.Cut()
 		selected_gear = null
-		selected_tweaks.Cut()
+
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	if(href_list["select_category"])
 		pref.loadout_is_busy = TRUE
+
 		current_tab = href_list["select_category"]
+
+		if(IS_GEAR_TICKED)
+			selected_tweaks = null
+		else if(selected_tweaks)
+			selected_tweaks.Cut()
 		selected_gear = null
-		selected_tweaks.Cut()
+
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	if(href_list["clear_loadout"])
 		pref.loadout_is_busy = TRUE
+
 		var/list/gear = pref.gear_list[pref.gear_slot]
 		gear.Cut()
 		selected_gear = null
 		selected_tweaks.Cut()
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	if(href_list["random_loadout"])
 		pref.loadout_is_busy = TRUE
+
 		randomize(user)
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	if(href_list["toggle_hiding"])
 		pref.loadout_is_busy = TRUE
+
 		hide_unavailable_gear = !hide_unavailable_gear
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH
+
 	if(href_list["toggle_donate"])
 		pref.loadout_is_busy = TRUE
+
 		hide_donate_gear = !hide_donate_gear
+
 		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH
+
 	if(href_list["get_opyxes"])
 		SSdonations.show_donations_info(user)
 		return TOPIC_NOACTION
+
 	return ..()
+
+#undef IS_GEAR_TICKED
 
 /datum/category_item/player_setup_item/loadout/proc/randomize(mob/user)
 	ASSERT(user)

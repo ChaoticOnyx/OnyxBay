@@ -11,31 +11,37 @@
 	drop_sound = SFX_DROP_COMPONENT
 	pickup_sound = SFX_PICKUP_COMPONENT
 
-	activate()
-		if(!..())	return 0//Cooldown check
-
-		if(holder && istype(holder.loc,/obj/item/grenade))
-			var/obj/item/grenade/grenade = holder.loc
-			if(grenade.active)
-				grenade.detonate()
-		else
-			var/turf/location = get_turf(loc)
-			if(location)
-				location.hotspot_expose(1000,1000)
-			if (istype(src.loc,/obj/item/device/assembly_holder))
-				if (istype(src.loc.loc, /obj/structure/reagent_dispensers/fueltank/))
-					var/obj/structure/reagent_dispensers/fueltank/tank = src.loc.loc
-					if (tank && tank.modded)
-						tank.explode()
-
-			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-			s.set_up(3, 1, src)
-			s.start()
-
-		return 1
-
-
-	attack_self(mob/user)
-		activate()
-		add_fingerprint(user)
+/obj/item/device/assembly/igniter/activate()
+	. = ..()
+	if(!.)
 		return
+
+	if(istype(holder?.loc,/obj/item/grenade))
+		var/obj/item/grenade/grenade = holder.loc
+		if(grenade.active)
+			grenade.detonate()
+	else if(istype(holder?.loc, /obj/structure/bed/chair/wheelchair/wheelcannon))
+		var/obj/structure/bed/chair/wheelchair/wheelcannon/wheelcannon = holder.loc
+		wheelcannon.shoot()
+	else if(istype(holder?.loc, /obj/item/tank))
+		var/obj/item/tank/tank = holder.loc
+		tank.ignite()
+	else
+		var/turf/location = get_turf(loc)
+		if(location)
+			location.hotspot_expose(1000,1000)
+		if (istype(src.loc,/obj/item/device/assembly_holder))
+			if (istype(src.loc.loc, /obj/structure/reagent_dispensers/fueltank/))
+				var/obj/structure/reagent_dispensers/fueltank/tank = src.loc.loc
+				if (tank && tank.modded)
+					tank.explode()
+
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+		s.set_up(3, 1, src)
+		s.start()
+
+	return TRUE
+
+/obj/item/device/assembly/igniter/attack_self(mob/user)
+	activate()
+	add_fingerprint(user)

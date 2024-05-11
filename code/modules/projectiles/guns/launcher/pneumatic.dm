@@ -102,15 +102,17 @@
 	item_storage.remove_from_storage(launched, src)
 	return launched
 
-/obj/item/gun/launcher/pneumatic/_examine_text(mob/user)
+/obj/item/gun/launcher/pneumatic/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 2)
 		return
-	. += "\nThe valve is dialed to [pressure_setting]%."
+
+	. += "The valve is dialed to [pressure_setting]%."
 	if(tank)
-		. += "\nThe tank dial reads [tank.air_contents.return_pressure()] kPa."
+		. += "The tank dial reads [tank.air_contents.return_pressure()] kPa."
 	else
-		. += "\nNothing is attached to the tank valve!"
+		. += "Nothing is attached to the tank valve!"
 
 /obj/item/gun/launcher/pneumatic/update_release_force(obj/item/projectile)
 	if(tank)
@@ -152,14 +154,15 @@
 /obj/item/cannonframe/on_update_icon()
 	icon_state = "pneumatic[buildstate]"
 
-/obj/item/cannonframe/_examine_text(mob/user)
+/obj/item/cannonframe/examine(mob/user, infix)
 	. = ..()
+
 	switch(buildstate)
-		if(1) . += "\nIt has a pipe segment installed."
-		if(2) . += "\nIt has a pipe segment welded in place."
-		if(3) . += "\nIt has an outer chassis installed."
-		if(4) . += "\nIt has an outer chassis welded in place."
-		if(5) . += "\nIt has a transfer valve installed."
+		if(1) . += "It has a pipe segment installed."
+		if(2) . += "It has a pipe segment welded in place."
+		if(3) . += "It has an outer chassis installed."
+		if(4) . += "It has an outer chassis welded in place."
+		if(5) . += "It has a transfer valve installed."
 
 /obj/item/cannonframe/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/pipe))

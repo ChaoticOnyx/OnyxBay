@@ -91,7 +91,7 @@
 	var/autofire_enabled = FALSE
 	var/atom/autofiring_at
 	var/mob/autofiring_by
-	var/autofiring_timer
+	var/already_autofiring = FALSE
 
 	drop_sound = SFX_DROP_GUN
 	pickup_sound = SFX_PICKUP_GUN
@@ -106,6 +106,8 @@
 
 	if(config.misc.toogle_gun_safety)
 		verbs |= /obj/item/gun/proc/toggle_safety_verb
+
+	add_think_ctx("autofire_context", CALLBACK(src, nameof(.proc/handle_autofire)), 0)
 
 /obj/item/gun/Destroy()
 	// autofire timer is automatically cleaned up
@@ -127,17 +129,17 @@
 	if(.)
 		autofiring_at = fire_at
 		autofiring_by = fire_by
-		if(!autofiring_timer)
-			autofiring_timer = addtimer(CALLBACK(src, nameof(.proc/handle_autofire)), burst_delay, (TIMER_STOPPABLE | TIMER_LOOP | TIMER_UNIQUE | TIMER_OVERRIDE))
+		if(!already_autofiring)
+			already_autofiring = TRUE
+			set_next_think_ctx("autofire_context", world.time + burst_delay)
 	else
 		clear_autofire()
 
 /obj/item/gun/proc/clear_autofire()
 	autofiring_at = null
 	autofiring_by = null
-	if(autofiring_timer)
-		deltimer(autofiring_timer)
-		autofiring_timer = null
+	already_autofiring = FALSE
+	set_next_think_ctx("autofire_context", 0)
 
 /obj/item/gun/proc/handle_autofire()
 	set waitfor = FALSE
@@ -153,6 +155,7 @@
 	else if(can_autofire())
 		autofiring_by.set_dir(get_dir(src, autofiring_at))
 		Fire(autofiring_at, autofiring_by, null, (get_dist(autofiring_at, autofiring_by) <= 1), FALSE, FALSE, target_zone = autofiring_by.zone_sel?.selecting)
+		set_next_think_ctx("autofire_context", world.time + burst_delay)
 
 /obj/item/gun/update_twohanding()
 	if(one_hand_penalty)
@@ -166,9 +169,11 @@
 			if(M.can_wield_item(src) && is_held_twohanded(M))
 				item_state_slots[slot_l_hand_str] = wielded_item_state
 				item_state_slots[slot_r_hand_str] = wielded_item_state
+				improper_held_icon = TRUE
 			else
 				item_state_slots[slot_l_hand_str] = initial(item_state)
 				item_state_slots[slot_r_hand_str] = initial(item_state)
+				improper_held_icon = FALSE
 	update_held_icon()
 
 /obj/item/gun/equipped(mob/living/user, slot)
@@ -602,14 +607,13 @@
 	//looking through a scope limits your periphereal vision
 	//still, increase the view size by a tiny amount so that sniping isn't too restricted to NSEW
 	var/zoom_offset = round(world.view * zoom_amount)
-	var/view_size = round(world.view + zoom_amount)
 	var/scoped_accuracy_mod = zoom_offset
 
 	if(zoom)
 		unzoom(user)
 		return
 
-	zoom(user, zoom_offset, view_size)
+	zoom(user, zoom_offset, zoom_amount)
 	if(zoom)
 		accuracy = scoped_accuracy + scoped_accuracy_mod
 		if(screen_shake)
@@ -621,13 +625,15 @@
 	accuracy = initial(accuracy)
 	screen_shake = initial(screen_shake)
 
-/obj/item/gun/_examine_text(mob/user)
+/obj/item/gun/examine(mob/user, infix)
 	. = ..()
+
 	if(firemodes.len > 1)
 		var/datum/firemode/current_mode = firemodes[sel_mode]
-		. += "\nThe fire selector is set to [current_mode.name]."
+		. += "The fire selector is set to [current_mode.name]."
+
 	if(config.misc.toogle_gun_safety && has_safety)
-		. += "\nThe safety is [safety() ? "on" : "off"]"
+		. += "The safety is [safety() ? "on" : "off"]"
 
 // (re)Setting firemodes from the given list
 /obj/item/gun/proc/set_firemodes(list/_firemodes = null)

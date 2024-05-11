@@ -104,6 +104,11 @@
 	var/transfer_amount = 10
 	var/busy = FALSE
 
+/obj/item/integrated_circuit/reagent/injector/Initialize()
+	. = ..()
+	add_think_ctx("inject_after", CALLBACK(src, nameof(.proc/inject_after)), 0)
+	add_think_ctx("draw_after", CALLBACK(src, nameof(.proc/draw_after)), 0)
+
 /obj/item/integrated_circuit/reagent/injector/on_reagent_change(changetype)
 	push_vol()
 
@@ -188,7 +193,7 @@
 			L.visible_message(SPAN("danger", "[acting_object] is trying to inject [L]!"), \
 								SPAN("danger", "[acting_object] is trying to inject you!"))
 			busy = TRUE
-			addtimer(CALLBACK(src, nameof(.proc/inject_after), weakref(L)), injection_status * 3 SECONDS)
+			set_next_think_ctx("inject_after", world.time + injection_status * 3 SECONDS, weakref(L))
 			return
 		else
 			if(!AM.is_open_container())
@@ -215,7 +220,7 @@
 			C.visible_message(SPAN("danger", "[acting_object] takes a blood sample from [C]!"), \
 			SPAN("danger", "[acting_object] takes a blood sample from you!"))
 			busy = TRUE
-			addtimer(CALLBACK(src, nameof(.proc/draw_after), weakref(C), tramount), injection_status * 3 SECONDS)
+			set_next_think_ctx("draw_after", world.time + injection_status * 3 SECONDS, weakref(C), tramount)
 			return
 
 		else

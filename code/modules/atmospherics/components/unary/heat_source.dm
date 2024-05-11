@@ -171,7 +171,8 @@
 
 	..()
 
-/obj/machinery/atmospherics/unary/heater/_examine_text(mob/user)
+/obj/machinery/atmospherics/unary/heater/examine(mob/user, infix)
 	. = ..()
+
 	if(panel_open)
-		. += "\nThe maintenance hatch is open."
+		. += "The maintenance hatch is open."

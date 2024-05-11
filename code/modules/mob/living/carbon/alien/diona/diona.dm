@@ -27,19 +27,20 @@
 	var/mob/living/carbon/alien/diona/next_nymph
 	var/mob/living/carbon/alien/diona/last_nymph
 
-/mob/living/carbon/alien/diona/_examine_text(mob/user)
+/mob/living/carbon/alien/diona/examinate(atom/to_axamine)
 	. = ..()
+
 	if(holding_item)
-		to_chat(user, SPAN("notice", "It is holding \icon[holding_item] \a [holding_item]."))
+		. += SPAN("notice", "It is holding \icon[holding_item] \a [holding_item].")
 	if(hat)
-		to_chat(user, SPAN("notice", "It is wearing \icon[hat] \a [hat]."))
+		. += SPAN("notice", "It is wearing \icon[hat] \a [hat].")
 
 /mob/living/carbon/alien/diona/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
 	. = ..()
 	if(W == hat)
 		hat = null
 		update_icons()
-		verbs -= /mob/living/carbon/alien/diona/proc/drop_hat
+		revoke_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
 	else if(W == holding_item)
 		holding_item = null
 
@@ -51,8 +52,11 @@
 	species = all_species[SPECIES_DIONA]
 	add_language(LANGUAGE_ROOTGLOBAL)
 	add_language(LANGUAGE_GALCOM)
-	verbs += /mob/living/carbon/alien/diona/proc/merge
-	verbs += /mob/living/carbon/alien/diona/proc/drop_holding_item
+
+	grant_verb(src, list(
+		/mob/living/carbon/alien/diona/proc/merge,
+		/mob/living/carbon/alien/diona/proc/drop_holding_item,
+	))
 
 /mob/living/carbon/alien/diona/put_in_hands(obj/item/W) // No hands. Use mouth.
 	if(can_collect(W))
@@ -67,7 +71,7 @@
 	hat = new_hat
 	new_hat.forceMove(src)
 	update_icons()
-	verbs += /mob/living/carbon/alien/diona/proc/drop_hat
+	grant_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
 	return TRUE
 
 /mob/living/carbon/alien/diona/proc/handle_npc(mob/living/carbon/alien/diona/D)
@@ -142,7 +146,7 @@
 		src.hat.forceMove(get_turf(src))
 		src.hat = null
 		update_icons()
-		verbs -= /mob/living/carbon/alien/diona/proc/drop_hat
+		revoke_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
 
 /mob/living/carbon/alien/diona/drop_active_hand()
 	if(holding_item)

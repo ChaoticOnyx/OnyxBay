@@ -5,11 +5,7 @@
 	armor = list(melee = 20, bullet = 20, laser = 50,energy = 50, bomb = 50, bio = 100)
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SPECIES_SKRELL,SPECIES_HUMAN)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 40.2 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_vox
 
 /obj/item/clothing/head/helmet/space/skrell/white
 	icon_state = "skrell_helmet_white"
@@ -25,11 +21,7 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SPECIES_SKRELL,SPECIES_HUMAN)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 40.2 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_vox
 
 /obj/item/clothing/suit/space/skrell/white
 	icon_state = "skrell_suit_white"
@@ -47,11 +39,12 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SPECIES_VOX)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 40.2 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_vox
+
+/datum/rad_resist/space_vox
+	alpha_particle_resist = 40 MEGA ELECTRONVOLT
+	beta_particle_resist = 8.9 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/suit/space/vox/New()
 	..()
@@ -62,11 +55,7 @@
 	siemens_coefficient = 0.6
 	flags_inv = 0
 	species_restricted = list(SPECIES_VOX)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 40.2 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_vox
 
 /obj/item/clothing/head/helmet/space/vox/pressure
 	name = "alien helmet"
@@ -228,6 +217,9 @@
 	icon_state = "vox-carapace"
 	desc = "A glowing visor, perhaps stolen from a depressed Cylon."
 
+#define DEFAULT_SLOWDOWN 2
+#define PROTECTION_SLOWDOWN 20
+
 /obj/item/clothing/suit/space/vox/carapace
 	name = "alien carapace armour"
 	icon_state = "vox-carapace"
@@ -253,8 +245,9 @@
 			H.head.armor = list(melee = 60, bullet = 50, laser = 40, energy = 40, bomb = 60, bio = 100)
 			H.head.siemens_coefficient = 0.6
 			H.head.item_state = "vox-carapace"
-		slowdown_per_slot[slot_wear_suit] = 3
+		slowdown_per_slot[slot_wear_suit] = DEFAULT_SLOWDOWN
 		item_state = "vox-carapace"
+		H.update_equipment_slowdown()
 	else
 		to_chat(H, "<span class='notice'>You activate the protection mode.</span>")
 		armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 100)
@@ -263,8 +256,9 @@
 			H.head.armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 100)
 			H.head.siemens_coefficient = 0.2
 			H.head.item_state = "vox-carapace-active"
-		slowdown_per_slot[slot_wear_suit] = 20
+		slowdown_per_slot[slot_wear_suit] = PROTECTION_SLOWDOWN
 		item_state = "vox-carapace-active"
+		H.update_equipment_slowdown()
 	protection = !protection
 
 /obj/item/clothing/head/helmet/space/vox/stealth
@@ -476,7 +470,8 @@
 		magpulse = 0
 		canremove = 1
 
-/obj/item/clothing/shoes/magboots/vox/_examine_text(mob/user)
+/obj/item/clothing/shoes/magboots/vox/examine(mob/user, infix)
 	. = ..()
-	if (magpulse)
-		. += "\nIt would be hard to take these off without relaxing your grip first."//theoretically this message should only be seen by the wearer when the claws are equipped.
+
+	if(magpulse)
+		. += "It would be hard to take these off without relaxing your grip first."//theoretically this message should only be seen by the wearer when the claws are equipped.

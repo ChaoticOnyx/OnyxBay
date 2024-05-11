@@ -39,7 +39,7 @@
 	if(response  == "Yes" && Adjacent(user))
 		var/obj/machinery/mineral/processing_unit/p_unit = locate_unit(/obj/machinery/mineral/processing_unit)
 		if(!p_unit)
-			show_splash_text(user, "no ore processing unit found!")
+			show_splash_text(user, "no ore processing unit found!", SPAN("warning", "\The [src] has failed to detect any ore stacking units!"))
 			return
 
 		p_unit.console_ref = weakref(src)

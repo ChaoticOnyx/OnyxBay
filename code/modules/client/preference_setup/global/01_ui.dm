@@ -26,9 +26,9 @@
 
 /datum/category_item/player_setup_item/player_global/ui/sanitize_preferences()
 	pref.UI_style		= sanitize_inlist(pref.UI_style, GLOB.all_ui_styles, initial(pref.UI_style))
-	pref.UI_style_color	= sanitize_hexcolor(pref.UI_style_color, initial(pref.UI_style_color))
+	pref.UI_style_color	= sanitize_hexcolor(pref.UI_style_color, desired_format = 6, include_crunch = TRUE, default = initial(pref.UI_style_color))
 	pref.UI_style_alpha	= sanitize_integer(pref.UI_style_alpha, 0, 255, initial(pref.UI_style_alpha))
-	pref.ooccolor		= sanitize_hexcolor(pref.ooccolor, initial(pref.ooccolor))
+	pref.ooccolor		= sanitize_hexcolor(pref.ooccolor, desired_format = 6, include_crunch = TRUE, default = initial(pref.ooccolor))
 	pref.clientfps	    = sanitize_integer(pref.clientfps, CLIENT_MIN_FPS, CLIENT_MAX_FPS, initial(pref.clientfps))
 
 /datum/category_item/player_setup_item/player_global/ui/content(mob/user)
@@ -53,7 +53,7 @@
 		return TOPIC_REFRESH
 
 	else if(href_list["select_color"])
-		var/UI_style_color_new = input(user, "Choose UI color, dark colors are not recommended!", "Global Preference", pref.UI_style_color) as color|null
+		var/UI_style_color_new = tgui_color_picker(user, "Choose UI color, dark colors are not recommended!", "Global Preference", pref.UI_style_color)
 		if(isnull(UI_style_color_new) || !CanUseTopic(user)) return TOPIC_NOACTION
 		pref.UI_style_color = UI_style_color_new
 		return TOPIC_REFRESH
@@ -65,7 +65,7 @@
 		return TOPIC_REFRESH
 
 	else if(href_list["select_ooc_color"])
-		var/new_ooccolor = input(user, "Choose OOC color:", "Global Preference") as color|null
+		var/new_ooccolor = tgui_color_picker(user, "Choose OOC color:", "Global Preference")
 		if(new_ooccolor && can_select_ooc_color(user) && CanUseTopic(user))
 			pref.ooccolor = new_ooccolor
 			return TOPIC_REFRESH

@@ -147,13 +147,13 @@
 	. = ..()
 	QDEL_NULL(bcell)
 
-/obj/item/backwear/powered/_examine_text(mob/user)
+/obj/item/backwear/powered/examine(mob/user, infix)
 	. = ..()
 	if(bcell)
-		. += "\nIt has \the [bcell] installed."
-		. += "\nThe charge meter reads [round(CELL_PERCENT(bcell), 0.1)]%"
+		. += "It has \the [bcell] installed."
+		. += "The charge meter reads [round(CELL_PERCENT(bcell), 0.1)]%"
 	else
-		. += "\nIt has no power cell installed!"
+		. += "It has no power cell installed!"
 
 /obj/item/backwear/powered/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/cell))
@@ -196,16 +196,16 @@
 	if(!possible_transfer_amounts)
 		src.verbs -= /obj/item/backwear/reagent/verb/set_APTFT
 
-/obj/item/backwear/reagent/_examine_text(mob/user)
+/obj/item/backwear/reagent/examine(mob/user, infix)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
-	. += "\n<span class='notice'>It contains:</span>"
+	. += "<span class='notice'>It contains:</span>"
 	if(reagents.reagent_list.len) // OOP be cool
 		for(var/datum/reagent/R in reagents.reagent_list)
-			. += "\n<span class='notice'>[R.volume] units of [R.name]</span>"
+			. += "<span class='notice'>[R.volume] units of [R.name]</span>"
 	else
-		. += "\n<span class='notice'>Nothing.</span>"
+		. += "<span class='notice'>Nothing.</span>"
 
 /obj/item/backwear/reagent/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"

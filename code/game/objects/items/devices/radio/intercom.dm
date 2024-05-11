@@ -175,10 +175,10 @@
 
 /obj/item/device/radio/intercom/proc/unscrew_frame(mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
-	show_splash_text(user, "unscrewing...")
+	show_splash_text(user, "unscrewing...", "Now unscrewing \the [src]...")
 
 	if(do_after(user, 40, src))
-		show_splash_text(user, "unscrewed!")
+		show_splash_text(user, "unscrewed!", SPAN("notice", "You have unscrewed \the [src]!"))
 		new /obj/item/intercom_assembly(loc, dir, src)
 		qdel(src)
 

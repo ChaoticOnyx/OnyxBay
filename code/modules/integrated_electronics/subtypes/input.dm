@@ -141,7 +141,7 @@
 	radial_menu_icon = "colorpad"
 
 /obj/item/integrated_circuit/input/colorpad/ask_for_input(mob/user)
-	var/new_color = input(user, "Enter a color, please.", "Color", "#ffffff") as color|null
+	var/new_color = tgui_color_picker(user, "Enter a color, please.", "Color", "#ffffff")
 	if(new_color && user.IsAdvancedToolUser())
 		set_pin_data(IC_OUTPUT, 1, new_color)
 		push_data()
@@ -152,7 +152,7 @@
 
 /obj/item/integrated_circuit/input/colorpad/OnICTopic(href_list, mob/user)
 	if(href_list["enter_color"])
-		var/new_color = input(user, "Enter a color, please.", "Color", "#ffffff") as color|null
+		var/new_color = tgui_color_picker(user, "Enter a color, please.", "Color", "#ffffff")
 		if(new_color && user.IsAdvancedToolUser())
 			set_pin_data(IC_OUTPUT, 1, new_color)
 			push_data()
@@ -355,7 +355,7 @@
 
 		if(istype(H, /mob/living/carbon/human))
 			var/mob/living/carbon/human/M = H
-			var/msg = M._examine_text()
+			var/msg = M.run_examinate(src)
 			if(msg)
 				set_pin_data(IC_OUTPUT, 2, msg)
 

@@ -237,8 +237,9 @@
 
 	..()
 
-/obj/item/clothing/suit/space/_examine_text(mob/user)
+/obj/item/clothing/suit/space/examine(mob/user, infix)
 	. = ..()
+
 	if(can_breach && breaches && breaches.len)
 		for(var/datum/breach/B in breaches)
-			. += "\n<span class='danger'>It has \a [B.descriptor].</span>"
+			. += SPAN_DANGER("It has \a [B.descriptor].")

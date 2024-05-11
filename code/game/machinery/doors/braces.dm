@@ -12,9 +12,9 @@
 	var/obj/item/airlock_electronics/brace/electronics
 
 
-/obj/item/airlock_brace/_examine_text(mob/user)
+/obj/item/airlock_brace/examine(mob/user, infix)
 	. = ..()
-	. += "\n[examine_health()]"
+	. += "[examine_health()]"
 
 
 // This is also called from airlock's examine, so it's a different proc to prevent code copypaste.

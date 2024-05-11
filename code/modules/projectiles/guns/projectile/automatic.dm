@@ -251,12 +251,13 @@
 		icon_state = "carbine"
 	..()
 
-/obj/item/gun/projectile/automatic/z8/_examine_text(mob/user)
+/obj/item/gun/projectile/automatic/z8/examine(mob/user, infix)
 	. = ..()
+
 	if(launcher.chambered)
-		. += "\n\The [launcher] has \a [launcher.chambered] loaded."
+		. += "\The [launcher] has \a [launcher.chambered] loaded."
 	else
-		. += "\n\The [launcher] is empty."
+		. += "\The [launcher] is empty."
 
 
 /obj/item/gun/projectile/automatic/l6_saw

@@ -13,12 +13,13 @@
 	var/gel_type = "unknown"
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
-/obj/structure/geltank/_examine_text(mob/user)
+/obj/structure/geltank/examine(mob/user, infix)
 	. = ..()
+
 	if(capacity >= 0)
-		. += "\nIt contains [capacity]/[capacity_max] units of gel."
+		. += "It contains [capacity]/[capacity_max] units of gel."
 	else
-		. += "\nIt's empty."
+		. += "It's empty."
 
 /obj/structure/geltank/proc/use(amt = 1)
 	capacity -= amt

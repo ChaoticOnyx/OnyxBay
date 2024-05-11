@@ -14,7 +14,8 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	clicksound = SFX_USE_LARGE_SWITCH
 	turf_height_offset = 16
-
+	var/min_temperature = 0 CELSIUS
+	var/max_temperature = 90 CELSIUS
 
 /obj/machinery/space_heater/New()
 	..()
@@ -36,14 +37,14 @@
 		if(panel_open)
 			AddOverlays("sheater-open")
 
-/obj/machinery/space_heater/_examine_text(mob/user)
+/obj/machinery/space_heater/examine(mob/user, infix)
 	. = ..()
 
-	. += "\nThe heater is [on ? "on" : "off"] and the hatch is [panel_open ? "open" : "closed"]."
+	. += "The heater is [on ? "on" : "off"] and the hatch is [panel_open ? "open" : "closed"]."
 	if(panel_open)
-		. += "\nThe power cell is [cell ? "installed" : "missing"]."
+		. += "The power cell is [cell ? "installed" : "missing"]."
 	else
-		. += "\nThe charge meter reads [cell ? round(CELL_PERCENT(cell),1) : 0]%"
+		. += "The charge meter reads [cell ? round(CELL_PERCENT(cell),1) : 0]%"
 	return
 
 /obj/machinery/space_heater/emp_act(severity)
@@ -85,75 +86,67 @@
 			shake_animation(stime = 4)
 	return
 
-/obj/machinery/space_heater/attack_hand(mob/user as mob)
-	..()
-	interact(user)
-
-/obj/machinery/space_heater/interact(mob/user as mob)
-
+/obj/machinery/space_heater/attack_hand(mob/user)
+	. = ..()
 	if(panel_open)
-
-		var/list/dat = list()
-		dat += "Power cell: "
-		if(cell)
-			dat += "<A href='byond://?src=\ref[src];op=cellremove'>Installed</A><BR>"
-		else
-			dat += "<A href='byond://?src=\ref[src];op=cellinstall'>Removed</A><BR>"
-
-		dat += "Power Level: [cell ? round(CELL_PERCENT(cell),1) : 0]%<BR><BR>"
-
-		dat += "Set Temperature: "
-
-		dat += "<A href='?src=\ref[src];op=temp;val=-5'>-</A>"
-
-		dat += " [set_temperature]K ([CONV_KELVIN_CELSIUS(set_temperature)]&deg;C)"
-		dat += "<A href='?src=\ref[src];op=temp;val=5'>+</A><BR>"
-
-		var/datum/browser/popup = new(usr, "spaceheater", "Space Heater Control Panel")
-		popup.set_content(jointext(dat, null))
-		popup.set_title_image(usr.browse_rsc_icon(src.icon, "sheater-standby"))
-		popup.open()
+		tgui_interact(user)
 	else
 		on = !on
-		user.visible_message("<span class='notice'>[user] switches [on ? "on" : "off"] the [src].</span>","<span class='notice'>You switch [on ? "on" : "off"] the [src].</span>")
+		user.visible_message(SPAN_NOTICE("[user] switches [on ? "on" : "off"] \the [src]."), \
+			SPAN_NOTICE("You switch [on ? "on" : "off"] \the [src]."))
 		update_icon()
-	return
 
+/obj/machinery/space_heater/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
 
-/obj/machinery/space_heater/Topic(href, href_list, state = GLOB.physical_state)
-	if (..())
-		close_browser(usr, "window=spaceheater")
-		usr.unset_machine()
-		return 1
+	if(!ui)
+		ui = new(user, src, "SpaceHeater", src)
+		ui.open()
 
-	switch(href_list["op"])
+/obj/machinery/space_heater/tgui_data(mob/user)
+	var/list/data = list(
+		"cell" = istype(cell),
+		"charge" = istype(cell) ? round(cell.percent(), 1) : 0,
+		"temperature" = set_temperature,
+		"minTemperature" = min_temperature,
+		"maxTemperature" = max_temperature,
+	)
+	return data
 
-		if("temp")
-			var/value = text2num(href_list["val"])
+/obj/machinery/space_heater/tgui_act(action, params)
+	. = ..()
+	if(.)
+		return
 
-			// limit to 0-90 degC
-			set_temperature = dd_range(0 CELSIUS, 90 CELSIUS, set_temperature + value)
+	switch(action)
+		if("changeTemperature")
+			var/new_temperature = params["useKelvin"] ? text2num(params["newTemp"]) : CONV_CELSIUS_KELVIN(text2num(params["newTemp"]))
+			set_temperature = dd_range(min_temperature, max_temperature, new_temperature)
+			return TRUE
 
-		if("cellremove")
-			if(panel_open && cell && !usr.get_active_hand())
-				usr.visible_message("<span class='notice'>\The usr] removes \the [cell] from \the [src].</span>", "<span class='notice'>You remove \the [cell] from \the [src].</span>")
-				cell.update_icon()
-				usr.pick_or_drop(cell)
-				cell.add_fingerprint(usr)
-				cell = null
-				power_change()
+		if("cell")
+			if(!panel_open)
+				return
 
-		if("cellinstall")
-			if(panel_open && !cell)
-				var/obj/item/cell/C = usr.get_active_hand()
-				if(usr.drop(C, src))
-					cell = C
+			switch(istype(cell))
+				if(TRUE)
+					cell.update_icon()
+					usr.pick_or_drop(cell, usr.loc)
+					cell.add_fingerprint(usr)
+					usr.visible_message(SPAN_NOTICE("[usr] removes \the [cell] from  \the [src]."), SPAN_NOTICE("You remove \the [cell] from \the [src]."))
+					cell = null
+
+				if(FALSE)
+					var/obj/item/cell/C = usr.get_active_hand()
+					if(!istype(C))
+						return
+
 					C.add_fingerprint(usr)
-					power_change()
-					usr.visible_message("<span class='notice'>[usr] inserts \the [C] into \the [src].</span>", "<span class='notice'>You insert \the [C] into \the [src].</span>")
+					usr.drop(C, src)
+					cell = C
+					usr.visible_message(SPAN_NOTICE("[usr] inserts \a [cell] into \the [src]."), SPAN_NOTICE("You insert \the [cell] into \the [src]."))
 
-	updateDialog()
-	return TOPIC_REFRESH
+			return TRUE
 
 /obj/machinery/space_heater/Process()
 	if(on)

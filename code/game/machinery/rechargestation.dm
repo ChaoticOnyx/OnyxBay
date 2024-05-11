@@ -112,9 +112,9 @@
 		target.give(charge_used)
 
 
-/obj/machinery/recharge_station/_examine_text(mob/user)
+/obj/machinery/recharge_station/examine(mob/user, infix)
 	. = ..()
-	. += "\nThe charge meter reads: [round(chargepercentage())]%"
+	. += "The charge meter reads: [round(chargepercentage())]%"
 
 /obj/machinery/recharge_station/proc/chargepercentage()
 	if(!cell)

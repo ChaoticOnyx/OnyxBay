@@ -64,12 +64,13 @@ var/global/photo_count = 0
 			scribble = txt
 	..()
 
-/obj/item/photo/_examine_text(mob/user)
+/obj/item/photo/examine(mob/user, infix)
+	. = ..()
+
 	if(in_range(user, src))
 		show(user)
-		. += "\n[desc]"
 	else
-		. += "\n<span class='notice'>It is too far away.</span>"
+		. += SPAN_NOTICE("It is too far away.")
 
 /obj/item/photo/proc/show(mob/user as mob)
 	send_rsc(user, img, "tmp_photo_[id].png")
@@ -139,7 +140,7 @@ var/global/photo_count = 0
 	icon = 'icons/obj/items.dmi'
 	desc = "A polaroid camera."
 	icon_state = "camera"
-	item_state = "electropack"
+	item_state = "camera"
 	w_class = ITEM_SIZE_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
@@ -236,10 +237,9 @@ var/global/photo_count = 0
 
 	update_icon()
 
-/obj/item/device/camera/_examine_text(mob/user)
+/obj/item/device/camera/examine(mob/user, infix)
 	. = ..()
-
-	. += "\nIt has [pictures_left] photo\s left."
+	. += "It has [pictures_left] photo\s left."
 
 /mob/living/proc/can_capture_turf(turf/T)
 	return (T in view(src))

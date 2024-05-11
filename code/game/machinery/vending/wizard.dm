@@ -3,7 +3,9 @@
 	name = "MagiVend"
 	desc = "A magic vending machine."
 
+	icon = 'icons/obj/machines/vending/theater.dmi'
 	icon_state = "MagiVend"
+	light_color = "#FDC145"
 
 	vend_delay = 15
 	vend_reply = "Have an enchanted evening!"

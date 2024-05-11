@@ -96,7 +96,7 @@
 			return
 
 /obj/item/device/floor_painter/proc/choose_color(color)
-	var/new_colour = input(usr, "Choose a colour.", "Floor painter", paint_colour) as color | null
+	var/new_colour = tgui_color_picker(usr, "Choose a colour.", "Floor painter", paint_colour)
 
 	if(new_colour && new_colour != paint_colour)
 		paint_colour = new_colour
@@ -182,9 +182,9 @@
 	. = ..()
 	tgui_interact(user)
 
-/obj/item/device/floor_painter/_examine_text(mob/user)
+/obj/item/device/floor_painter/examine(mob/user, infix)
 	. = ..()
-	. += "\nIt is configured to produce the '[decal]' decal with a direction of '[paint_dir]' using [paint_colour] paint."
+	. += "It is configured to produce the '[decal]' decal with a direction of '[paint_dir]' using [paint_colour] paint."
 
 
 #undef GET_DECAL_DATA

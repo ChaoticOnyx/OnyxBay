@@ -170,16 +170,18 @@ LINEN BINS
 	var/obj/item/hidden = null
 
 
-/obj/structure/bedsheetbin/_examine_text(mob/user)
+/obj/structure/bedsheetbin/examine(mob/user, infix)
 	. = ..()
 
 	if(amount < 1)
-		. += "\nThere are no bed sheets in the bin."
+		. += "There are no bed sheets in the bin."
 		return
+
 	if(amount == 1)
-		. += "\nThere is one bed sheet in the bin."
+		. += "There is one bed sheet in the bin."
 		return
-	. += "\nThere are [amount] bed sheets in the bin."
+
+	. += "There are [amount] bed sheets in the bin."
 
 
 /obj/structure/bedsheetbin/on_update_icon()

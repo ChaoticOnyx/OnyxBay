@@ -43,7 +43,7 @@
 			thealert.timeout = null
 
 	thealert.owner = src
-	thealert.register_signal(thealert.owner, SIGNAL_QDELETING, /datum/proc/qdel_self)
+	thealert.register_signal(thealert.owner, SIGNAL_QDELETING, nameof(/datum.proc/qdel_self))
 
 	if(new_master)
 		var/old_layer = new_master.layer
@@ -66,13 +66,9 @@
 	animate(thealert, transform = matrix(), time = 2.5, easing = CUBIC_EASING)
 
 	if(thealert.timeout)
-		addtimer(CALLBACK(src, nameof(.proc/alert_timeout), thealert, category), thealert.timeout)
-		thealert.timeout = world.time + thealert.timeout - world.tick_lag
+		thealert.category = category
+		thealert.set_next_think(world.time + thealert.timeout)
 	return thealert
-
-/mob/proc/alert_timeout(atom/movable/screen/movable/alert/alert, category)
-	if(alert.timeout && alerts[category] == alert && world.time >= alert.timeout)
-		clear_alert(category)
 
 // Proc to clear an existing alert.
 /mob/proc/clear_alert(category, clear_override = FALSE)
@@ -104,9 +100,14 @@
 	var/alerttooltipstyle = ""
 	var/override_alerts = FALSE //If it is overriding other alerts of the same type
 	var/mob/owner //Alert owner
+	/// Alert category for sorting in owner's screen. Used in clearing alert after click()
+	var/category
 
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
+
+/atom/movable/screen/movable/alert/think()
+	owner?.clear_alert(category)
 
 /atom/movable/screen/movable/alert/status_effect
 	icon = 'icons/hud/status_effects.dmi'

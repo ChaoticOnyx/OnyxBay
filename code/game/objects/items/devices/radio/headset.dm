@@ -30,22 +30,21 @@
 	recalculateChannels(1)
 
 /obj/item/device/radio/headset/Destroy()
-	qdel(keyslot1)
-	qdel(keyslot2)
-	keyslot1 = null
-	keyslot2 = null
+	QDEL_NULL(keyslot1)
+	QDEL_NULL(keyslot2)
 	return ..()
 
 /obj/item/device/radio/headset/list_channels(mob/user)
 	return list_secure_channels()
 
-/obj/item/device/radio/headset/_examine_text(mob/user)
+/obj/item/device/radio/headset/examine(mob/user, infix)
 	. = ..()
+
 	if(!(get_dist(src, user) <= 1 && radio_desc))
 		return
 
-	. += "\nThe following channels are available:"
-	. += "\n[radio_desc]"
+	. += "The following channels are available:"
+	. += "[radio_desc]"
 
 /obj/item/device/radio/headset/handle_message_mode(mob/living/M as mob, message, channel)
 	if (channel == "special")

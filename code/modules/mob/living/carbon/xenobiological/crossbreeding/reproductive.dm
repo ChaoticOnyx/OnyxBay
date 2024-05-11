@@ -14,24 +14,24 @@
 
 	var/last_meal = 0
 
-/obj/item/metroidcross/reproductive/_examine_text(mob/user)
+/obj/item/metroidcross/reproductive/examine(mob/user, infix)
 	. = ..()
-	. += SPAN("notice", "\nIt looks like it has space for [meals_left] more cubes.")
+	. += SPAN("notice", "It looks like it has space for [meals_left] more cubes.")
 
 /obj/item/metroidcross/reproductive/attackby(obj/item/O, mob/user)
 	if((last_meal + DIGESTION_COOLDOWN) > world.time)
-		show_splash_text(user, "still digesting!")
+		show_splash_text(user, "still digesting!", "\The [src] is still digesting!")
 		return
 
 	if(istype(O, /obj/item/reagent_containers/food/monkeycube))
 		if(!_feed_extract(O))
 			return
-		show_splash_text(user, "cube was successfuly fed.")
+		show_splash_text(user, "cube was successfuly fed.", "You feed \the [src] with \the [O].")
 
 	if(istype(O, /obj/item/storage/xenobag))
 		if(!_feed_extracts_from_bag(O, user))
 			return
-		show_splash_text(user, "extract was successfuly fed from bag.")
+		show_splash_text(user, "extract was successfuly fed from bag.", "You feed \the [src] from \the [O].")
 
 	_reproduce()
 
@@ -72,7 +72,7 @@
 	if(meals_left > 0)
 		return
 
-	show_splash_text_to_viewers("starts to swell!")
+	show_splash_text_to_viewers("starts to swell!", "\The [src] starts to swell!")
 	meals_left = REPRODUCTIVE_EXTRACT_VOLUME
 	last_meal = world.time
 

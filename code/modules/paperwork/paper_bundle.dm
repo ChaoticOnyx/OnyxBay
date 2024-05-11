@@ -97,13 +97,13 @@
 			else
 				to_chat(user, SPAN_WARNING("You must hold \the [P] steady to burn \the [src]."))
 
-/obj/item/paper_bundle/_examine_text(mob/user)
+/obj/item/paper_bundle/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1 && user)
 		src.show_content(user)
 	else
-		. += "\n[SPAN_NOTICE("It is too far away.")]"
-	return
+		. += SPAN_NOTICE("It is too far away.")
 
 /obj/item/paper_bundle/proc/show_content(mob/user as mob)
 	var/dat = "<meta charset=\"utf-8\">"

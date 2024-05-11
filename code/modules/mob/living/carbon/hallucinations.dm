@@ -171,7 +171,7 @@
 			to_chat(holder,"<B>[talker.name]</B> points at [holder.name]")
 			to_chat(holder,"<span class='game say'><span class='name'>[talker.name]</span> says something softly.</span>")
 
-		show_bubble_to_client(holder.bubble_icon, holder.say_test(message), talker, holder.client)
+		holder.show_bubble_to_client(holder.bubble_icon, holder.say_test(message), talker, holder.client)
 
 		sanity-- //don't spam them in very populated rooms.
 		if(!sanity)
@@ -281,18 +281,18 @@
 
 /datum/hallucination/telepahy/start()
 	to_chat(holder,"<span class = 'notice'>You expand your mind outwards.</span>")
-	holder.verbs += /mob/living/carbon/human/proc/fakeremotesay
+	grant_verb(holder, /mob/living/carbon/human/proc/fakeremotesay)
 
 /datum/hallucination/telepahy/end()
 	if(holder)
-		holder.verbs -= /mob/living/carbon/human/proc/fakeremotesay
+		revoke_verb(holder, /mob/living/carbon/human/proc/fakeremotesay)
 
 /mob/living/carbon/human/proc/fakeremotesay()
 	set name = "Telepathic Message"
 	set category = "Superpower"
 
 	if(!hallucination_power)
-		src.verbs -= /mob/living/carbon/human/proc/fakeremotesay
+		revoke_verb(src, /mob/living/carbon/human/proc/fakeremotesay)
 		return
 
 	if(stat)
@@ -420,6 +420,10 @@
 	if(fake.lying)
 		fake_look.SetTransform(others = fake.transform, rotation = -90)
 	holder.client.images |= fake_look
+
+	register_signal(holder, SIGNAL_MOB_EXAMINED, nameof(.proc/on_mob_examined))
+	register_signal(holder, SIGNAL_MOB_EXAMINED_MORE, nameof(.proc/on_mob_examined_more))
+
 	log_misc("[holder.name] is hallucinating that [origin.name] is the [fake.name]")
 
 /datum/hallucination/fake_appearance/proc/get_living_sublist(list/subtypes, list/exclude)
@@ -442,13 +446,24 @@
 	holder.hallucinations -= src
 	if(!fake_look)
 		return // No ASSERT is needed, ending is correct
+
 	if(holder.client)
 		holder.client.images -= fake_look
+
+	unregister_signal(holder, SIGNAL_EXAMINED)
+	unregister_signal(holder, SIGNAL_EXAMINED_MORE)
+
 	QDEL_NULL(fake_look)
 
 /datum/hallucination/fake_appearance/Destroy()
 	end()
 	. = ..()
+
+/datum/hallucination/fake_appearance/proc/on_mob_examined(datum/source, mob/user, list/examine_result)
+	examine_result = fake.examine(user)
+
+/datum/hallucination/fake_appearance/proc/on_mob_examined_more(datum/source, mob/user, list/examine_result)
+	examine_result = fake.examine_more(user)
 
 /mob/living/carbon/proc/get_fake_appearance(mob/M)
 	for(var/datum/hallucination/fake_appearance/hallutination in hallucinations)

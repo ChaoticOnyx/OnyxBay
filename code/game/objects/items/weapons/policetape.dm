@@ -1,7 +1,7 @@
 //Define all tape types in policetape.dm
 /obj/item/taperoll
 	name = "tape roll"
-	icon = 'icons/policetape.dmi'
+	icon = 'icons/obj/policetape.dmi'
 	icon_state = "tape"
 	w_class = ITEM_SIZE_SMALL
 	var/turf/start
@@ -28,7 +28,7 @@ var/list/tape_roll_applications = list()
 
 /obj/item/tape
 	name = "tape"
-	icon = 'icons/policetape.dmi'
+	icon = 'icons/obj/policetape.dmi'
 	icon_state = "tape"
 	layer = ABOVE_DOOR_LAYER
 	randpixel = 0

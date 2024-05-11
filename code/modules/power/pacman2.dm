@@ -50,9 +50,9 @@
 				temp_rating += SP.rating
 		power_gen = round(initial(power_gen) * (max(2, temp_rating) / 2))
 
-	_examine_text(mob/user)
-		. = ..(user)
-		to_chat(user, SPAN_NOTICE("\The [src] has [P.air_contents.plasma] units of fuel left, producing [power_gen] per cycle."))
+	examine(mob/user)
+		. = ..()
+		. += SPAN_NOTICE("\The [src] has [P.air_contents.plasma] units of fuel left, producing [power_gen] per cycle.")
 	handleInactive()
 		heat -= 2
 		if (heat < 0)

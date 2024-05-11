@@ -10,6 +10,17 @@ GLOBAL_VAR_CONST(PREF_SHOW, "Show")
 GLOBAL_VAR_CONST(PREF_HIDE, "Hide")
 GLOBAL_VAR_CONST(PREF_FANCY, "Fancy")
 GLOBAL_VAR_CONST(PREF_PLAIN, "Plain")
+GLOBAL_VAR_CONST(PREF_STRETCH, "Stretch to Fit")
+GLOBAL_VAR_CONST(PREF_X1, "x1")
+GLOBAL_VAR_CONST(PREF_X15, "x1.5")
+GLOBAL_VAR_CONST(PREF_X2, "x2")
+GLOBAL_VAR_CONST(PREF_X25, "x2.5")
+GLOBAL_VAR_CONST(PREF_X3, "x3")
+GLOBAL_VAR_CONST(PREF_NORMAL, "Normal")
+GLOBAL_VAR_CONST(PREF_DISTORT, "Distort")
+GLOBAL_VAR_CONST(PREF_BLUR, "Blur")
+GLOBAL_VAR_CONST(PREF_MODERN, "Modern")
+GLOBAL_VAR_CONST(PREF_LEGACY, "Legacy")
 GLOBAL_VAR_CONST(PREF_PRIMARY, "Primary")
 GLOBAL_VAR_CONST(PREF_ALL, "All")
 GLOBAL_VAR_CONST(PREF_OFF, "Off")
@@ -34,6 +45,9 @@ GLOBAL_VAR_CONST(PREF_DARKNESS_VISIBLE, "Fully visible")
 GLOBAL_VAR_CONST(PREF_DARKNESS_MOSTLY_VISIBLE, "Mostly visible")
 GLOBAL_VAR_CONST(PREF_DARKNESS_BARELY_VISIBLE, "Barely visible")
 GLOBAL_VAR_CONST(PREF_DARKNESS_INVISIBLE, "Invisible")
+GLOBAL_VAR_CONST(PREF_SPLASH_MAPTEXT, "Maptext only")
+GLOBAL_VAR_CONST(PREF_SPLASH_CHAT, "Chat only")
+GLOBAL_VAR_CONST(PREF_SPLASH_BOTH, "Maptext and chat")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -115,8 +129,8 @@ var/global/list/_client_preferences_by_type
 /datum/client_preference/splashes
 	description = "Show Splashes (Runechat-Like-Popups)"
 	key = "CHAT_SPLASHES"
-	default_value = GLOB.PREF_YES
-	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+	default_value = GLOB.PREF_SPLASH_BOTH
+	options = list(GLOB.PREF_SPLASH_BOTH, GLOB.PREF_SPLASH_MAPTEXT, GLOB.PREF_SPLASH_CHAT)
 
 /datum/client_preference/play_admin_midis
 	description ="Play admin midis"
@@ -305,6 +319,58 @@ var/global/list/_client_preferences_by_type
 		var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
 		R.GraphicsUpdate()
 
+/datum/client_preference/graphics_quality
+	description = "Effects Quality"
+	key = "GRAPHICS_QUALITY"
+	options = list(GLOB.PREF_LOW, GLOB.PREF_MED, GLOB.PREF_HIGH)
+	category = PREF_CATEGORY_GRAPHICS
+	default_value = GLOB.PREF_HIGH
+
+/datum/client_preference/graphics_quality/changed(mob/preference_mob, new_value)
+	if(isnull(preference_mob.client))
+		return
+
+	var/atom/movable/renderer/R = preference_mob.renderers[TEMPERATURE_EFFECT_RENDERER]
+	R.GraphicsUpdate()
+
+/datum/client_preference/pixel_size
+	description = "Pixel Size"
+	key = "PIXEL_SIZE"
+	category = PREF_CATEGORY_GRAPHICS
+	options = list(GLOB.PREF_STRETCH, GLOB.PREF_X1, GLOB.PREF_X15, GLOB.PREF_X2, GLOB.PREF_X25, GLOB.PREF_X3)
+	default_value = GLOB.PREF_STRETCH
+
+/datum/client_preference/pixel_size/changed(mob/preference_mob, new_value)
+	preference_mob?.client.view_size.set_zoom()
+
+/datum/client_preference/scaling_method
+	description = "Scaling Method"
+	key = "SCALING_METHOD"
+	category = PREF_CATEGORY_GRAPHICS
+	options = list(GLOB.PREF_NORMAL, GLOB.PREF_DISTORT, GLOB.PREF_BLUR)
+	default_value = GLOB.PREF_NORMAL
+
+/datum/client_preference/scaling_method/changed(mob/preference_mob, new_value)
+	preference_mob?.client.view_size.set_zoom_mode()
+
+/datum/client_preference/auto_fit
+	description = "Auto-fit Viewport"
+	key = "AUTOFIT"
+	category = PREF_CATEGORY_UI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/auto_fit/changed(mob/preference_mob, new_value)
+	preference_mob?.client.attempt_fit_viewport()
+
+/datum/client_preference/widescreen
+	description = "Widescreen"
+	key = "WIDESCREEN"
+	category = PREF_CATEGORY_UI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/widescreen/changed(mob/preference_mob, new_value)
+	preference_mob?.client.view_size.set_default(get_screen_size(new_value == GLOB.PREF_YES))
+
 /datum/client_preference/fullscreen_mode
 	description = "Fullscreen Mode"
 	key = "FULLSCREEN"
@@ -316,15 +382,24 @@ var/global/list/_client_preferences_by_type
 	if(preference_mob.client)
 		preference_mob.client.toggle_fullscreen(new_value)
 
-/datum/client_preference/chat_position
-	description = "Use Alternative Chat Position"
-	key = "CHAT_ALT"
+/datum/client_preference/statusbar
+	description = "Show Statusbar"
+	key = "STATUSBAR"
 	category = PREF_CATEGORY_UI
-	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
-/datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
-	if(preference_mob.client)
-		preference_mob.client.update_chat_position()
+/datum/client_preference/statusbar/changed(mob/preference_mob, new_value)
+	winset(preference_mob, "statusbar", "is-visible=[new_value == GLOB.PREF_YES]")
+
+/datum/client_preference/legacy_input
+	description = "Oldschool™ Input Position"
+	key = "INPUT_POSITION"
+	category = PREF_CATEGORY_UI
+	options = list(GLOB.PREF_MODERN, GLOB.PREF_LEGACY)
+	default_value = GLOB.PREF_MODERN
+
+/datum/client_preference/legacy_input/changed(mob/preference_mob, new_value)
+	preference_mob?.client?.update_chat_position(new_value)
 
 /datum/client_preference/cinema_credits
 	description = "Show Cinema-like Credits At Round-end"
@@ -485,4 +560,18 @@ var/global/list/_client_preferences_by_type
 	description = "Play Pray Sound"
 	key = "SOUND_PRAY"
 	category = PREF_CATEGORY_STAFF
+	flags = R_PERMISSIONS
+
+/datum/client_preference/staff/fast_mc_refresh
+	description = "Fast MC Refresh"
+	key = "FAST_REFRESH"
+	category = PREF_CATEGORY_STAFF
+	default_value = GLOB.PREF_NO
+	flags = R_DEBUG
+
+/datum/client_preference/staff/split_admin_tabs
+	description = "Split Admin Tabs"
+	key = "SPLIT_TABS"
+	category = PREF_CATEGORY_STAFF
+	default_value = GLOB.PREF_NO
 	flags = R_PERMISSIONS

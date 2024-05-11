@@ -4,6 +4,7 @@
 	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "suspension2"
 	density = 1
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	req_access = list(access_research)
 	use_power = 0
 	active_power_usage = 5 KILO WATTS
@@ -16,6 +17,8 @@
 /obj/machinery/suspension_gen/New()
 	..()
 	src.cell = new /obj/item/cell/high(src)
+
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/suspension_gen/Process()
 	set background = 1
@@ -235,26 +238,6 @@
 /obj/machinery/suspension_gen/Destroy()
 	deactivate()
 	return ..()
-
-/obj/machinery/suspension_gen/verb/rotate_ccw()
-	set src in view(1)
-	set name = "Rotate suspension gen (counter-clockwise)"
-	set category = "Object"
-
-	if(anchored)
-		to_chat(usr, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
-	else
-		set_dir(turn(dir, 90))
-
-/obj/machinery/suspension_gen/verb/rotate_cw()
-	set src in view(1)
-	set name = "Rotate suspension gen (clockwise)"
-	set category = "Object"
-
-	if(anchored)
-		to_chat(usr, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
-	else
-		set_dir(turn(dir, -90))
 
 /obj/effect/suspension_field
 	name = "energy field"

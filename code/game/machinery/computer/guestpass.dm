@@ -17,12 +17,13 @@
 	else
 		return temp_access
 
-/obj/item/card/id/guest/_examine_text(mob/user)
+/obj/item/card/id/guest/examine(mob/user, infix)
 	. = ..()
-	if (world.time < expiration_time)
-		. += "\n<span class='notice'>This pass expires at [worldtime2stationtime(expiration_time)].</span>"
+
+	if(world.time < expiration_time)
+		. += SPAN_NOTICE("This pass expires at [worldtime2stationtime(expiration_time)].")
 	else
-		. += "\n<span class='warning'>It expired at [worldtime2stationtime(expiration_time)].</span>"
+		. += SPAN_NOTICE("It expired at [worldtime2stationtime(expiration_time)].")
 
 /obj/item/card/id/guest/read()
 	if (world.time > expiration_time)
@@ -69,7 +70,6 @@
 	if(istype(O, /obj/item/card/id))
 		if(!giver && user.drop(O, src))
 			giver = O
-			updateUsrDialog()
 		else if(giver)
 			to_chat(user, "<span class='warning'>There is already ID card inside.</span>")
 		return
@@ -78,114 +78,162 @@
 /obj/machinery/computer/guestpass/attack_ai(mob/user as mob)
 	return attack_hand(user)
 
-/obj/machinery/computer/guestpass/attack_hand(mob/user as mob)
-	if(..())
+/obj/machinery/computer/guestpass/attack_hand(mob/user)
+	. = ..()
+
+	tgui_interact(user)
+
+/obj/machinery/computer/guestpass/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
+	if (!ui)
+		ui = new(user, src, "Guestpass", src)
+		ui.open()
+
+/obj/machinery/computer/guestpass/tgui_data(mob/user)
+	var/list/data = list(
+		"scanName" = giver?.registered_name,
+		"areas",
+		"issueLog" = list(internal_log),
+	)
+
+	var/list/regions = list()
+	for(var/i in ACCESS_REGION_SECURITY to ACCESS_REGION_SUPPLY) // code/game/jobs/_access_defs.dm
+		var/list/region = list(
+			"name" = get_region_accesses_name(i),
+			"id" = i,
+		)
+		var/list/accessess_data = list()
+		for(var/j in get_region_accesses(i))
+			var/list/access = list()
+			access["name"] = get_access_desc(j)
+			access["id"] = j
+			access["req"] = (j in accesses) ? TRUE : FALSE
+			accessess_data[++accessess_data.len] = access
+
+		region["accesses"] = accessess_data
+		regions[++regions.len] = region
+
+	data["regions"] = regions
+
+	return data
+
+/obj/machinery/computer/guestpass/tgui_act(action, params)
+	. = ..()
+	if(.)
 		return
 
-	user.set_machine(src)
-	var/dat = "<meta charset=\"utf-8\">"
+	switch(action)
+		if("select_access")
+			if(isnull(params["area"]))
+				return
 
-	if (mode == 1) //Logs
-		dat += "<h3>Activity log</h3><br>"
-		for (var/entry in internal_log)
-			dat += "[entry]<br><hr>"
-		dat += "<a href='?src=\ref[src];action=print'>Print</a><br>"
-		dat += "<a href='?src=\ref[src];mode=0'>Back</a><br>"
-	else
-		dat += "<h3>Guest pass terminal #[uid]</h3><br>"
-		dat += "<a href='?src=\ref[src];mode=1'>View activity log</a><br><br>"
-		dat += "Issuing ID: <a href='?src=\ref[src];action=id'>[giver]</a><br>"
-		dat += "Issued to: <a href='?src=\ref[src];choice=giv_name'>[giv_name]</a><br>"
-		dat += "Reason:  <a href='?src=\ref[src];choice=reason'>[reason]</a><br>"
-		dat += "Duration (minutes):  <a href='?src=\ref[src];choice=duration'>[duration] m</a><br>"
-		dat += "Access to areas:<br>"
-		if (giver && giver.access)
-			for (var/A in giver.access)
-				var/area = get_access_desc(A)
-				if (A in accesses)
-					area = "<b>[area]</b>"
-				dat += "<a href='?src=\ref[src];choice=access;access=[A]'>[area]</a><br>"
-		dat += "<br><a href='?src=\ref[src];action=issue'>Issue pass</a><br>"
+			if(LAZYISIN(accesses, text2num(params["area"])))
+				accesses -= text2num(params["area"])
+			else
+				accesses |= text2num(params["area"])
+			return TRUE
 
-	show_browser(user, dat, "window=guestpass;size=400x520")
-	onclose(user, "guestpass")
-
-
-/obj/machinery/computer/guestpass/OnTopic(mob/user, href_list, state)
-	if (href_list["mode"])
-		mode = text2num(href_list["mode"])
-		. = TOPIC_REFRESH
-
-	else if (href_list["choice"])
-		switch(href_list["choice"])
-			if ("giv_name")
-				var/nam = sanitize(input(user, "Person pass is issued to", "Name", giv_name) as text|null)
-				if (nam && CanUseTopic(user, state))
-					giv_name = nam
-			if ("reason")
-				var/reas = sanitize(input(user, "Reason why pass is issued", "Reason", reason) as text|null)
-				if(reas && CanUseTopic(user, state))
-					reason = reas
-			if ("duration")
-				var/dur = input(user, "Duration (in minutes) during which pass is valid (up to 30 minutes).", "Duration") as num|null
-				if (dur && CanUseTopic(user, state))
-					if (dur > 0 && dur <= 30)
-						duration = dur
-					else
-						to_chat(user, "<span class='warning'>Invalid duration.</span>")
-			if ("access")
-				var/A = text2num(href_list["access"])
-				if (A in accesses)
-					accesses.Remove(A)
-				else if(giver && (A in giver.access))
-					accesses.Add(A)
-		. = TOPIC_REFRESH
-	else if (href_list["action"])
-		switch(href_list["action"])
-			if ("id")
-				if (giver)
-					giver.dropInto(user.loc)
-					if(ishuman(user))
-						user.pick_or_drop(giver)
+		if("scan")
+			if(giver)
+				if(ishuman(usr))
+					usr.pick_or_drop(giver, get_turf(usr))
 					giver = null
-					accesses.Cut()
 				else
-					var/obj/item/I = user.get_active_hand()
-					if(istype(I, /obj/item/card/id) && user.drop(I, src))
+					giver.forceMove(get_turf(src))
+					giver = null
+				accesses.Cut()
+			else
+				var/obj/item/I = usr.get_active_hand()
+				if(istype(I, /obj/item/card/id))
+					if(usr.drop(I, src))
 						giver = I
-				. = TOPIC_REFRESH
-			if ("print")
-				var/dat = "<h3>Activity log of guest pass terminal #[uid]</h3><br>"
-				for (var/entry in internal_log)
-					dat += "[entry]<br><hr>"
-				var/obj/item/paper/P = new /obj/item/paper(loc)
-				P.set_content(dat, "activity log", TRUE)
-				. = TOPIC_REFRESH
+			return TRUE
 
-			if ("issue")
-				if (giver && accesses.len)
-					var/number = add_zero(random_id("guestpass_id_number",1000,9999), 4)
-					var/entry = "\[[stationtime2text()]\] Pass #[number] issued by [giver.registered_name] ([giver.assignment]) to [giv_name]. Reason: [reason]. Granted access to following areas: "
-					var/list/access_descriptors = list()
-					for (var/A in accesses)
-						if (A in giver.access)
-							access_descriptors += get_access_desc(A)
-					entry += english_list(access_descriptors, and_text = ", ")
-					entry += ". Expires at [worldtime2stationtime(world.time + duration MINUTES)]."
-					internal_log.Add(entry)
+		if("deselect_region")
+			var/region = text2num(params["region"])
+			if(isnull(region))
+				return
 
-					var/obj/item/card/id/guest/pass = new(src.loc)
-					pass.temp_access = accesses.Copy()
-					pass.registered_name = giv_name
-					pass.expiration_time = world.time + duration MINUTES
-					pass.reason = reason
-					pass.SetName("guest pass #[number]")
-					pass.assignment = "Guest"
-					playsound(src.loc, 'sound/machines/ping.ogg', 25, 0)
-					. = TOPIC_REFRESH
-				else if(!giver)
-					to_chat(user, "<span class='warning'>Cannot issue pass without issuing ID.</span>")
-				else if(!accesses.len)
-					to_chat(user, "<span class='warning'>Cannot issue pass without at least one granted access permission.</span>")
-	if(.)
-		attack_hand(user)
+			accesses -= get_region_accesses(region)
+			return TRUE
+
+		if("select_region")
+			var/region = text2num(params["region"])
+			if(isnull(region))
+				return
+
+			var/list/new_accesses = get_region_accesses(region)
+			for(var/A in new_accesses)
+				if(A in giver.access)
+					accesses |= A
+			return TRUE
+
+		if("print")
+			var/obj/item/paper/P = new /obj/item/paper(src)
+			var/dat = "<h3>Activity log of guest pass terminal #[any2ref(src)]</h3><br>"
+			for(var/entry in internal_log)
+				dat += "[entry]<br><hr>"
+			P.name = "activity log"
+			P.info = dat
+			usr.pick_or_drop(P, get_turf(usr))
+			return TRUE
+
+		if("select_access")
+			var/access = text2num(params["access"])
+			if(isnull(access))
+				return
+
+			accesses |= access
+			return TRUE
+
+		if("select_region")
+			var/region = text2num(params["region"])
+			if(isnull(region))
+				return
+
+			var/list/new_accesses = get_region_accesses(region)
+			for(var/A in new_accesses)
+				if(A in giver.access)
+					accesses.Add(A)
+			return TRUE
+
+		if("deselect_region")
+			var/region = text2num(params["region"])
+			if(isnull(region))
+				return
+			accesses -= get_region_accesses(region)
+			return TRUE
+
+		if("deselect_all")
+			accesses = list()
+			return TRUE
+
+		if("select_all")
+			for(var/A in get_all_accesses())
+				if(A in giver.access)
+					accesses += A
+			return TRUE
+
+		if("issue")
+			if(!giver || !LAZYLEN(accesses))
+				return
+
+			var/number = add_zero(random_id("guestpass_id_number", 1000, 9999), 4)
+			var/entry = "\[[stationtime2text()]\] Pass #[number] issued by [giver.registered_name] ([giver.assignment]) to [giv_name]. Reason: [reason]. Granted access to following areas: "
+			var/list/access_descriptors = list()
+			for(var/A in accesses)
+				if(A in giver.access)
+					access_descriptors += get_access_desc(A)
+			entry += english_list(access_descriptors, and_text = ", ")
+			entry += ". Expires at [worldtime2stationtime(world.time + duration MINUTES)]."
+			internal_log.Add(entry)
+
+			var/obj/item/card/id/guest/pass = new(loc)
+			pass.temp_access = accesses.Copy()
+			pass.registered_name = giv_name
+			pass.expiration_time = world.time + duration MINUTES
+			pass.reason = reason
+			pass.SetName("guest pass #[number]")
+			pass.assignment = "Guest"
+			playsound(get_turf(src), 'sound/machines/ping.ogg', 25, 0)

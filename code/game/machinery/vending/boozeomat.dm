@@ -3,7 +3,9 @@
 	name = "Booze-O-Mat"
 	desc = "A refrigerated vending unit for alcoholic beverages and alcoholic beverage accessories."
 
+	icon = 'icons/obj/machines/vending/boozeomat.dmi'
 	icon_state = "boozeomat"
+	light_color = "#69A6C6"
 
 	req_access = list(access_bar)
 

@@ -10,12 +10,9 @@
 	icon_state = "emitter"
 	anchored = 0
 	density = 1
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	req_access = list(access_engine_equip)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0,
-		RADIATION_BETA_PARTICLE = 0,
-		RADIATION_HAWKING = 0
-	)
+	rad_resist_type = /datum/rad_resist/none
 
 	var/id = null
 
@@ -40,26 +37,14 @@
 	anchored = 1
 	state = 2
 
-/obj/machinery/power/emitter/verb/rotate()
-	set name = "Rotate"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return
-
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor!")
-		return 0
-	set_dir(turn(dir, 90))
-	return 1
-
 /obj/machinery/power/emitter/Initialize()
 	. = ..()
 	if(state == 2 && anchored)
 		connect_to_network()
 		if(_wifi_id)
 			wifi_receiver = new(_wifi_id, src)
+
+	AddElement(/datum/element/simple_rotation)
 
 /obj/machinery/power/emitter/Destroy()
 	log_and_message_admins("deleted \the [src]")

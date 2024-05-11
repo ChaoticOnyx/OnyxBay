@@ -33,7 +33,7 @@
 
 /obj/item/clothing/accessory/holster/Destroy()
 	if(has_suit)
-		has_suit.verbs -= /obj/item/clothing/accessory/holster/verb/holster_verb
+		has_suit.remove_verb(has_suit.loc, /obj/item/clothing/accessory/holster/verb/holster_verb)
 	QDEL_NULL(holstered)
 	QDEL_NULL(holster_action)
 	return ..()
@@ -119,20 +119,21 @@
 		holstered.emp_act(severity)
 	..()
 
-/obj/item/clothing/accessory/holster/_examine_text(mob/user)
+/obj/item/clothing/accessory/holster/examine(mob/user, infix)
 	. = ..()
-	if (holstered)
-		. += "\nA [holstered] is holstered here."
+
+	if(holstered)
+		. += "A [holstered] is holstered here."
 	else
-		. += "\nIt is empty."
+		. += "It is empty."
 
 /obj/item/clothing/accessory/holster/on_attached(obj/item/clothing/under/S, mob/user)
 	..()
-	has_suit.verbs += /obj/item/clothing/accessory/holster/verb/holster_verb
+	has_suit.add_verb(has_suit.loc, /obj/item/clothing/accessory/holster/verb/holster_verb)
 
 /obj/item/clothing/accessory/holster/on_removed(mob/user)
 	if(has_suit)
-		has_suit.verbs -= /obj/item/clothing/accessory/holster/verb/holster_verb
+		has_suit.remove_verb(has_suit.loc, /obj/item/clothing/accessory/holster/verb/holster_verb)
 	..()
 
 //For the holster hotkey
@@ -153,7 +154,7 @@
 		H = src
 	else if (istype(src, /obj/item/clothing/under))
 		var/obj/item/clothing/under/S = src
-		if (S.accessories.len)
+		if(LAZYLEN(S.accessories))
 			H = locate() in S.accessories
 
 	if (!H)

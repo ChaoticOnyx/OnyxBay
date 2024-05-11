@@ -57,10 +57,11 @@ var/global/list/plant_seed_sprites = list()
 		src.SetName("sample of [seed.seed_name] [seed.seed_noun]")
 		src.desc = "It's labelled as coming from [seed.display_name]."
 
-/obj/item/seeds/_examine_text(mob/user)
-	. = ..(user)
+/obj/item/seeds/examine(mob/user, infix)
+	. = ..()
+
 	if(seed && !seed.roundstart)
-		. += "\nIt's tagged as variety #[seed.uid]."
+		. += "It's tagged as variety #[seed.uid]."
 
 /obj/item/seeds/cutting
 	name = "cuttings"
@@ -329,3 +330,6 @@ var/global/list/plant_seed_sprites = list()
 
 /obj/item/seeds/cowcownutseed
 	seed_type = "cowcownut"
+
+/obj/item/seeds/coffeea
+	seed_type = "coffeea"

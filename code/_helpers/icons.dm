@@ -779,7 +779,7 @@
 
 	return cap
 
-/proc/icon2html(thing, target, icon_state, dir, frame = 1, moving = FALSE, realsize = FALSE, class = null)
+/proc/icon2html(thing, target, icon_state, dir, frame = 1, moving = FALSE, realsize = FALSE, sourceonly = FALSE, class = null)
 	if (!thing)
 		return
 
@@ -809,6 +809,10 @@
 						continue
 					thing2 = M.client
 				send_asset(thing2, key, FALSE)
+
+			if(sourceonly)
+				return url_encode(key)
+
 			return "<img class='icon icon-misc [class]' src=\"[url_encode(name)]\">"
 		var/atom/A = thing
 		if (isnull(dir))
@@ -840,6 +844,9 @@
 			thing2 = M.client
 		send_asset(thing2, key, FALSE)
 
+	if(sourceonly)
+		return url_encode(key)
+
 	if(realsize)
 		return "<img class='icon icon-[icon_state] [class]' style='width:[I.Width()]px;height:[I.Height()]px;min-height:[I.Height()]px' src=\"[url_encode(key)]\">"
 
@@ -860,9 +867,27 @@
 		composite.Blend(new /icon(I.icon, I.icon_state), ICON_OVERLAY)
 	return composite
 
+/// Costlier version of icon2html() that uses getFlatIcon() to account for overlays, underlays, etc. Use with extreme moderation, ESPECIALLY on mobs.
+/proc/costly_icon2html(thing, target, sourceonly = FALSE)
+	if(isnull(thing))
+		return
+
+	if(isicon(thing))
+		return icon2html(thing, target)
+
+	var/icon/I
+	if(!isnull(target))
+		var/atom/thing_atom = thing
+		I = thing_atom.get_flat_icon(target)
+	else
+		I = getFlatIcon(thing)
+
+	return icon2html(I, target, sourceonly = sourceonly)
+
 /proc/path2icon(path, dir = SOUTH, frame = 1, moving = FALSE)
 	var/atom/A = path
 	return icon(initial(A.icon), initial(A.icon_state), dir, frame, moving)
+
 /*
  *	Converts an icon to base64. Operates by putting the icon in the iconCache savefile,
  *	exporting it as text, and then parsing the base64 from that.
@@ -949,7 +974,9 @@
 // I'm not completely sure how ethical the 'allow_ratty_rendering' usage is, since it's basically lowkey cryptomining, but who fucking cares?
 /atom/proc/get_flat_icon(mob/caller, dir, force_appearance_flags, allow_ratty_rendering = TRUE)
 	var/client/rendering_client
-	if(caller?.client)
+	if(isclient(caller))
+		rendering_client = caller
+	else if(caller?.client)
 		rendering_client = caller.client // We are good, let the caller deal with their own stuff.
 	else if(allow_ratty_rendering)
 		for(var/mob/prey in shuffle(GLOB.player_list)) // We are not that good, randomly choosing a poor being to deal with rendering.

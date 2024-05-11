@@ -17,14 +17,15 @@
 	label_icon = TRUE
 	overlay_icon = TRUE
 	lid_type = /datum/vessel_lid/lid
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 11.8 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.8 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
 	drop_sound = SFX_DROP_HELMET
 	pickup_sound = SFX_PICKUP_HELMET
+
+	rad_resist_type = /datum/rad_resist/beaker_large
+
+/datum/rad_resist/beaker_large
+	alpha_particle_resist = 11.8 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.8 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/reagent_containers/vessel/beaker/large
 	name = "large beaker"
@@ -50,11 +51,12 @@
 	icon_state = "plass_beaker"
 	matter = list(MATERIAL_PLASS = 2500)
 	brittle = FALSE // Plass be strong
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 48 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 22.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/beaker_plass
+
+/datum/rad_resist/beaker_plass
+	alpha_particle_resist = 48 MEGA ELECTRONVOLT
+	beta_particle_resist = 22.2 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/reagent_containers/vessel/beaker/noreact
 	name = "cryostasis beaker"

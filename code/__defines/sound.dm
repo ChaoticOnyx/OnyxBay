@@ -145,6 +145,7 @@
 #define SFX_USE_LIGHTER             "use_lighter"
 #define SFX_USE_CHISEL              "use_chisel"
 #define SFX_KEYBOARD                "use_keyboard"
+#define SFX_USE_KNOB                "use_knob"
 
 // PULLING
 #define SFX_PULL_BODY               "pull_body"
@@ -364,5 +365,17 @@
 #define SFX_VENDING_COFFEE          "vending_coffee"
 #define SFX_VENDING_DROP            "vending_drop"
 #define SFX_VENDING_GENERIC         "vending_generic"
+
+
+// Lighting
+#define SFX_LIGHT_TUBE_ON           "light_tube_on"
+#define SFX_LIGHT_BULB_ON           "light_bulb_on"
+#define SFX_LIGHT_BURNOUT           "light_burnout"
+
+// Arcade (minesweeper)
+#define SFX_MINESWEEPER_CLICK       "minesweeper_click"
+#define SFX_MINESWEEPER_LOSE        "minesweeper_lose"
+#define SFX_MINESWEEPER_START       "minesweeper_start"
+#define SFX_MINESWEEPER_WIN         "minesweeper_win"
 
 #define GET_SFX(name) pick(GLOB.sfx_list[name])

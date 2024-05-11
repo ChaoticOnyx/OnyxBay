@@ -124,10 +124,12 @@ GLOBAL_VAR(station_gravity_generator)
 	connected_areas = null
 	return ..()
 
-/obj/machinery/gravity_generator/main/_examine_text(mob/user)
+/obj/machinery/gravity_generator/main/examine(mob/user, infix)
 	. = ..()
+
 	if(panel_open)
-		. += "\nThe maintenance hatch is open."
+		. += "The maintenance hatch is open."
+
 	. += "[show_broken_info()]"
 
 /obj/machinery/gravity_generator/main/show_broken_info()
@@ -404,7 +406,7 @@ GLOBAL_VAR(station_gravity_generator)
 	update_icon()
 
 	if(announcer)
-		GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", get_announcement_computer("Gravity Generator Alert System"))
+		GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", "Gravity Generator Alert System")
 
 	var/datum/radiation_source/temp_source = SSradiation.radiate(src, new /datum/radiation/preset/gravitaty_generator(2))
 	temp_source.schedule_decay(2 MINUTES)
@@ -515,7 +517,7 @@ GLOBAL_VAR(station_gravity_generator)
 				update_gravity_status()
 				playsound(loc, 'sound/effects/alert.ogg', 50, 1)
 				if(announcer)
-					GLOB.global_announcer.autosay("Gravitational Generator has been fully charged. Gravitation is enabled!", get_announcement_computer("Gravity Generator Alert System"))
+					GLOB.global_announcer.autosay("Gravitational Generator has been fully charged. Gravitation is enabled!", "Gravity Generator Alert System")
 
 		if(POWER_DOWN)
 			charge_count = max(0, charge_count - 2)
@@ -527,9 +529,9 @@ GLOBAL_VAR(station_gravity_generator)
 				update_gravity_status()
 				playsound(loc, 'sound/effects/alert.ogg', 50, 1)
 				if(announcer)
-					GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", get_announcement_computer("Gravity Generator Alert System"))
+					GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", "Gravity Generator Alert System")
 			else if(announcer && charge_count <= 50 && charge_count % 5 == 0)
-				GLOB.global_announcer.autosay("Danger! Gravitational Generator discharges detected! Charge status at [charge_count]%", get_announcement_computer("Gravity Generator Alert System"), "Engineering")
+				GLOB.global_announcer.autosay("Danger! Gravitational Generator discharges detected! Charge status at [charge_count]%", "Gravity Generator Alert System", "Engineering")
 
 
 /obj/machinery/gravity_generator/main/proc/update_gravity_status()
@@ -566,7 +568,7 @@ GLOBAL_VAR(station_gravity_generator)
 		QDEL_NULL(main_part)
 	return ..()
 
-/obj/machinery/gravity_generator/part/_examine_text(mob/user)
+/obj/machinery/gravity_generator/part/examine(mob/user, infix)
 	. = ..()
 	. += "[main_part.show_broken_info()]"
 

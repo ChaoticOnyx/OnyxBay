@@ -58,15 +58,16 @@
 	if(. && closed_turf_height_offset)
 		set_turf_height_offset(closed_turf_height_offset)
 
-/obj/structure/closet/crate/_examine_text(mob/user)
+/obj/structure/closet/crate/examine(mob/user, infix)
 	. = ..()
+
 	if(rigged && opened)
 		var/list/devices = list()
 		for(var/obj/item/device/assembly_holder/H in src)
 			devices += H
 		for(var/obj/item/device/assembly/A in src)
 			devices += A
-		. += "\nThere are some wires attached to the lid, connected to [english_list(devices)]."
+		. += "There are some wires attached to the lid, connected to [english_list(devices)]."
 
 /obj/structure/closet/crate/attackby(obj/item/W, mob/user)
 	if(opened)
@@ -250,11 +251,12 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 808 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 24 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/crate_radiation
+
+/datum/rad_resist/crate_radiation
+	alpha_particle_resist = 808 MEGA ELECTRONVOLT
+	beta_particle_resist = 24 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/structure/closet/crate/science
 	name = "science crate"

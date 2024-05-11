@@ -3,8 +3,6 @@
 /mob/new_player
 	var/ready = 0
 	var/spawning = 0//Referenced when you want to delete the new_player later on in the code.
-	var/totalPlayers = 0		 //Player counts for the Lobby tab
-	var/totalPlayersReady = 0
 	var/datum/browser/panel
 	var/show_invalid_jobs = 0
 	universal_speak = 1
@@ -26,9 +24,11 @@
 		util_crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
-	verbs += /mob/proc/toggle_antag_pool
-	verbs += /mob/proc/join_as_actor
-	verbs += /mob/proc/join_response_team
+	grant_verb(src, list(
+		/mob/proc/toggle_antag_pool,
+		/mob/proc/join_as_actor,
+		/mob/proc/join_response_team,
+	))
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -68,29 +68,27 @@
 	panel.open()
 	return
 
-/mob/new_player/Stat()
+/mob/new_player/get_status_tab_items()
 	. = ..()
 
-	if(statpanel("Lobby"))
-		if(check_rights(R_INVESTIGATE, 0, src))
-			stat("Game Mode:", "[SSticker.mode ? SSticker.mode.name : SSticker.master_mode] ([SSticker.master_mode])")
-		else
-			stat("Game Mode:", PUBLIC_GAME_MODE)
-		var/extra_antags = list2params(additional_antag_types)
-		stat("Added Antagonists:", extra_antags ? extra_antags : "None")
+	if(check_rights(R_INVESTIGATE, 0, src))
+		. += "Game Mode: [SSticker.mode ? SSticker.mode.name : SSticker.master_mode] ([SSticker.master_mode])"
+	else
+		. += "Game Mode: [PUBLIC_GAME_MODE]"
 
-		if(GAME_STATE <= RUNLEVEL_LOBBY)
-			stat("Time To Start:", "[round(SSticker.pregame_timeleft/10)][SSticker.round_progressing ? "" : " (DELAYED)"]")
-			stat("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
-			totalPlayers = 0
-			totalPlayersReady = 0
-			for(var/mob/new_player/player in GLOB.player_list)
-				var/highjob
-				if(player.client?.prefs?.job_high)
-					highjob = " as [player.client.prefs.job_high]"
-				stat("[player.key]", (player.ready)?("(Playing[highjob])"):(null))
-				totalPlayers++
-				if(player.ready)totalPlayersReady++
+	var/extra_antags = list2params(additional_antag_types)
+	. += "Added Antagonists: [extra_antags ? extra_antags : "None"]"
+
+	. += ""
+
+	if(GAME_STATE > RUNLEVEL_LOBBY)
+		return
+
+	. += list(
+		"Time To Start: [round(SSticker.pregame_timeleft/10)]s[SSticker.round_progressing ? "" : " (DELAYED)"]",
+		"Players: [SSticker.total_players]",
+		"Players Ready: [SSticker.total_players_ready]",
+	)
 
 /mob/new_player/Topic(href, href_list[])
 	if(!client)	return 0
@@ -171,11 +169,14 @@
 				client.prefs.real_name = random_name(client.prefs.gender)
 			observer.real_name = client.prefs.real_name
 			observer.SetName(observer.real_name)
-			if(!client.holder && !config.ghost.allow_antag_hud)           // For new ghosts we remove the verb from even showing up if it's not allowed.
-				observer.verbs -= /mob/observer/ghost/verb/toggle_antagHUD        // Poor guys, don't know what they are missing!
+			if(!client.holder && !config.ghost.allow_antag_hud)
+				revoke_verb(observer, /mob/observer/ghost/verb/toggle_antagHUD)
+
 			observer.key = key
-			var/atom/movable/screen/splash/S = new(observer.client, TRUE)
-			S.Fade(TRUE, TRUE)
+			observer.client?.init_verbs()
+
+			new /atom/movable/screen/splash/fake(null, TRUE, observer.client, SSlobby.current_lobby_art)
+
 			QDEL_NULL(mind)
 			qdel(src)
 
@@ -441,7 +442,7 @@
 		if(character.mind.role_alt_title)
 			rank = character.mind.role_alt_title
 		// can't use their name here, since cyborg namepicking is done post-spawn, so we'll just say "A new Cyborg has arrived"/"A new Android has arrived"/etc.
-		GLOB.global_announcer.autosay("A new[rank ? " [rank]" : " visitor" ] [join_message ? join_message : "has arrived"].", get_announcement_computer())
+		GLOB.global_announcer.autosay("A new[rank ? " [rank]" : " visitor" ] [join_message ? join_message : "has arrived"].", "Arrivals Announcement Computer")
 		log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 
 /mob/new_player/proc/LateChoices()
@@ -524,7 +525,7 @@
 		var/datum/language/chosen_language = all_languages[lang]
 		if(chosen_language)
 			var/is_species_lang = (chosen_language.name in new_character.species.secondary_langs)
-			if(is_species_lang || ((!(chosen_language.flags & RESTRICTED) || has_admin_rights()) && is_alien_whitelisted(src, chosen_language)))
+			if(is_species_lang || ((!(chosen_language.language_flags & RESTRICTED) || has_admin_rights()) && is_alien_whitelisted(src, chosen_language)))
 				new_character.add_language(lang)
 
 	if(GLOB.random_players)
@@ -573,8 +574,9 @@
 	new_character.regenerate_icons()
 
 	new_character.key = key		//Manually transfer the key to log them in
-	var/atom/movable/screen/splash/S = new(new_character.client, TRUE)
-	S.Fade(TRUE, TRUE)
+	new_character.client?.init_verbs()
+
+	new /atom/movable/screen/splash/fake(null, TRUE, new_character.client, SSlobby.current_lobby_art)
 
 	// Give them their cortical stack if we're using them.
 	if(config && config.revival.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)

@@ -44,12 +44,14 @@
 		mod_handy = mod_handy_w
 		mod_weight = mod_weight_w
 		mod_reach = mod_reach_w
+		improper_held_icon = TRUE
 	else
 		wielded = 0
 		force = force_unwielded
 		mod_handy = mod_handy_u
 		mod_weight = mod_weight_u
 		mod_reach = mod_reach_u
+		improper_held_icon = FALSE
 	update_icon()
 	..()
 
@@ -84,6 +86,8 @@
 	desc = "It`s time to rip and tear... The trees. Right?"
 	icon_state = "chainsaw"
 	base_icon = "chainsaw"
+	improper_held_icon = TRUE
+
 	sharp = FALSE // Hard to cut with a not working chainsaw
 	edge = FALSE
 	w_class = ITEM_SIZE_LARGE
@@ -145,14 +149,16 @@
 /obj/item/material/twohanded/chainsaw/proc/get_fuel()
 	return tank ? tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
 
-/obj/item/material/twohanded/chainsaw/_examine_text(mob/user)
+/obj/item/material/twohanded/chainsaw/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 0)
 		return
+
 	if(tank)
-		. += "\n\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
+		. += "\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
 	else
-		. += "\nThere is no tank attached."
+		. += "There is no tank attached."
 
 /obj/item/material/twohanded/chainsaw/attack_self(mob/user)
 	if(active)

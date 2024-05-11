@@ -164,34 +164,24 @@
 		)
 
 /obj/item/clothing/suit/space/rig/ce
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 533 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 400 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/rig_ce
 
 /obj/item/clothing/head/helmet/space/rig/ce
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 533 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 400 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/rig_ce
 	camera = /obj/machinery/camera/network/engineering
 
 /obj/item/clothing/gloves/rig/ce
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 533 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 400 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/rig_ce
 	siemens_coefficient = 0
 
 /obj/item/clothing/shoes/magboots/rig/ce
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 533 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 400 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/rig_ce
+
+/datum/rad_resist/rig_ce
+	alpha_particle_resist = 533 MEGA ELECTRONVOLT
+	beta_particle_resist = 400 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
+
 
 /obj/item/rig/hazmat
 	name = "AMI control module"

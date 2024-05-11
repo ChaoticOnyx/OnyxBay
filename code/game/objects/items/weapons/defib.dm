@@ -202,6 +202,7 @@
 	icon = 'icons/obj/defibrillator.dmi'
 	icon_state = "defibpaddles"
 	item_state = "defibpaddles"
+	improper_held_icon = TRUE
 	gender = PLURAL
 	force = 2
 	throwforce = 6

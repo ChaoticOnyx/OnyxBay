@@ -62,7 +62,7 @@
 	name = "Telecoms lethal turret control"
 
 	control_area = list(
-		/area/tcommsat/chamber
+		/area/turret_protected/tcomsat/port
 	)
 	req_access = list(access_tcomsat)
 
@@ -81,7 +81,7 @@
 	name = "Telecoms Foyer turret control"
 
 	control_area = list(
-		/area/turret_protected/tcomsat/port
+		/area/turret_protected/tcomfoyer
 	)
 	req_access = list(access_tcomsat)
 

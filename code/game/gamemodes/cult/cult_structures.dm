@@ -111,12 +111,11 @@
 		/mob/living/simple_animal/hostile/faithless/cult
 	)
 
-/obj/effect/gateway/active/New()
-	..()
-	addtimer(CALLBACK(src, nameof(.proc/create_and_delete)), rand(30,60) SECONDS)
+/obj/effect/gateway/active/Initialize()
+	. = ..()
+	set_next_think(world.time + (rand(30, 60) SECONDS))
 
-
-/obj/effect/gateway/active/proc/create_and_delete()
+/obj/effect/gateway/active/think()
 	var/t = pick(spawnable)
 	new t(src.loc)
 	qdel(src)

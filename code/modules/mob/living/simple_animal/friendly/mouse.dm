@@ -68,8 +68,10 @@
 /mob/living/simple_animal/mouse/Initialize()
 	. = ..()
 
-	verbs += /mob/living/proc/ventcrawl
-	verbs += /mob/living/proc/hide
+	grant_verb(src, list(
+		/mob/living/proc/ventcrawl,
+		/mob/living/proc/hide,
+	))
 
 	if(name == initial(name))
 		name = "[name] ([sequential_id(/mob/living/simple_animal/mouse)])"
@@ -109,10 +111,11 @@
 		QDEL_NULL(holding_item)
 	return ..()
 
-/mob/living/simple_animal/mouse/_examine_text(mob/user)
+/mob/living/simple_animal/mouse/examinate(atom/to_axamine)
 	. = ..()
+
 	if(holding_item)
-		. += "\n[SPAN_NOTICE("You may notice that she has \a [holding_item] glued with tape.")]"
+		. += SPAN_NOTICE("You may notice that she has \a [holding_item] glued with tape.")
 
 /mob/living/simple_animal/mouse/proc/splat()
 	icon_dead = "mouse_[body_color]_splat"

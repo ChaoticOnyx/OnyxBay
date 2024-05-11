@@ -64,9 +64,9 @@
 	component_parts += new /obj/item/stock_parts/manipulator(src)
 	RefreshParts()
 
-/obj/machinery/organ_printer/_examine_text(mob/user)
+/obj/machinery/organ_printer/examine(mob/user, infix)
 	. = ..()
-	. += "\n<span class='notice'>It is loaded with [stored_matter]/[max_stored_matter] matter units.</span>"
+	. += SPAN_NOTICE("It is loaded with [stored_matter]/[max_stored_matter] matter units.")
 
 /obj/machinery/organ_printer/RefreshParts()
 	print_delay = initial(print_delay)

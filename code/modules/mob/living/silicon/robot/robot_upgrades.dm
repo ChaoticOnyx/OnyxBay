@@ -696,8 +696,8 @@
 	var/obj/item/robot_module/CH = host.module
 	for(var/channel in CH.channels)
 		if (channel != "Science")
-			GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), channel)
-	GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), "Science")
+			GLOB.global_headset.autosay(death_message, ("[host]'s Death Alarm"), channel)
+	GLOB.global_headset.autosay(death_message, ("[host]'s Death Alarm"), "Science")
 
 /obj/item/borg/upgrade/death_alarm/think()
 	if (!installed) return

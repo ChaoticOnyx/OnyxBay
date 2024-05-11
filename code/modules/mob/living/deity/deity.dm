@@ -13,7 +13,6 @@
 	var/list/minions = list() //Minds of those who follow him
 	var/list/structures = list() //The objs that this dude controls.
 	var/list/feats = list() //These are the deities 'skills' that they unlocked. Which can unlock abilities, new categories, etc. What this list actually IS is the names of the feats and whatever data they need,
-	var/obj/item/device/uplink/contained/mob_uplink
 	var/datum/god_form/form
 	var/datum/current_boon
 	var/mob/living/following
@@ -24,13 +23,6 @@
 		eyeobj = new eye_type(src)
 		eyeobj.possess(src)
 		eyeobj.visualnet.add_source(src)
-	mob_uplink = new(src, telecrystals = 0)
-
-/mob/living/deity/Life()
-	. = ..()
-	if(. && mob_uplink.uses < power_min)
-		mob_uplink.uses += 1 + (!feats[DEITY_POWER_BONUS] ? 0 : feats[DEITY_POWER_BONUS])
-		SSnano.update_uis(mob_uplink)
 
 /mob/living/deity/death()
 	. = ..()
@@ -66,10 +58,6 @@
 	if(!form)
 		to_chat(src, "<span class='warning'>Choose a form first!</span>")
 		return
-	if(!src.mob_uplink.uplink_owner)
-		src.mob_uplink.uplink_owner = src.mind
-	mob_uplink.update_nano_data()
-	src.mob_uplink.trigger(src)
 
 /mob/living/deity/verb/choose_form()
 	set name = "Choose Form"
@@ -106,7 +94,7 @@
 		var/newname = sanitize(input(src, "Choose a name for your new form.", "Name change", form.name) as text, MAX_NAME_LEN)
 		if(newname)
 			fully_replace_character_name(newname)
-	src.verbs -= /mob/living/deity/verb/choose_form
+	revoke_verb(src, /mob/living/deity/verb/choose_form)
 	show_browser(src, null, "window=godform")
 	for(var/m in minions)
 		var/datum/mind/mind = m

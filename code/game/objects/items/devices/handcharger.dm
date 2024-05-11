@@ -46,14 +46,15 @@
 
 	return TRUE
 
-/obj/item/device/handcharger/_examine_text(mob/user)
+/obj/item/device/handcharger/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 2)
 		return
 
-	. += "\nThere's [my_cell ? "a" : "no"] power cell in \the [src]."
+	. += "There's [my_cell ? "a" : "no"] power cell in \the [src]."
 	if(my_cell)
-		. += "\nCurrent charge: [my_cell.charge]"
+		. += "Current charge: [my_cell.charge]"
 
 /obj/item/device/handcharger/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/cell))

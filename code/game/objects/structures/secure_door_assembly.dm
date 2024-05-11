@@ -8,12 +8,17 @@
 	icon = 'icons/obj/doors/secure_door_assembly.dmi'
 	anchored = FALSE
 	density = TRUE
-	obj_flags = OBJ_FLAG_ANCHORABLE
+	obj_flags = OBJ_FLAG_ANCHORABLE | OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	var/state = STATE_UNANCHORED
 	var/obj/item/device/assembly/signaler/signaler = null
 	var/base_icon = null
 	var/material_path = null
 	var/door_path = null
+
+/obj/structure/secure_door_assembly/Initialize()
+	. = ..()
+
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/secure_door_assembly/Destroy()
 	QDEL_NULL(signaler)
@@ -75,6 +80,9 @@
 	qdel(src)
 
 /obj/structure/secure_door_assembly/wrench_floor_bolts(mob/user, delay = 40)
+	if(state > STATE_UNANCHORED)
+		return
+
 	. = ..()
 
 	if(anchored)

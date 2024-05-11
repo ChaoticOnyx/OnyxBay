@@ -12,7 +12,7 @@ Industrial extracts:
 	var/plasmaabsorbed = 0 //Units of plasma aborbed by the extract already. Absorbs at a rate of 2u/obj per every 3 seconds.
 	var/itemamount = 1 //How many items to spawn
 
-/obj/item/metroidcross/industrial/_examine_text(mob/user)
+/obj/item/metroidcross/industrial/examine(mob/user, infix)
 	. = ..()
 	. += "It currently has [plasmaabsorbed] units of plasma floating inside the outer shell, out of [plasmarequired] units."
 

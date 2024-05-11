@@ -45,6 +45,8 @@
 
 	var/static/list/designs_icons = list()
 
+	matter = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 10000)
+
 /obj/effect/rcd_hologram
 	name = "hologram"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
@@ -106,7 +108,7 @@
 			//check if we can build our window on the grill
 			if(is_blocked_turf(target_turf, caller = null, exclude_mobs = FALSE, ignore_atoms = structures_to_ignore))
 				playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
-				show_splash_text(user, "something is blocking the turf")
+				show_splash_text(user, "something is blocking the turf", SPAN("warning", "There's something blocking the turf!"))
 				return FALSE
 
 		/**
@@ -117,7 +119,7 @@
 			//if a player builds a wallgirder on top of himself manually with iron sheets he can't finish the wall if he is still on the girder. Exclude the girder itself when checking for other dense objects on the turf
 			if(istype(target, /obj/structure/girder) && is_blocked_turf(target_turf))
 				playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
-				show_splash_text(user, "something is on the girder!")
+				show_splash_text(user, "something is on the girder!", SPAN("warning", "There's something blocking the girder!"))
 				return FALSE
 
 		//check if turf is blocked in for dense structures
@@ -146,7 +148,7 @@
 			//check if the structure can fit on this turf
 			if(is_blocked_turf(target_turf))
 				playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
-				show_splash_text(user, "something is on the tile!")
+				show_splash_text(user, "something is on the tile!", SPAN("warning", "There's something blocking the tile!"))
 				return FALSE
 
 	return TRUE
@@ -356,9 +358,9 @@
 	audible_message("<span class='danger'><b>[src] begins to vibrate and \
 		buzz loudly!</b></span>","<span class='danger'><b>[src] begins \
 		vibrating violently!</b></span>")
-	addtimer(CALLBACK(src, nameof(.proc/detonate_pulse_explode)), 5 SECONDS)
+	set_next_think(world.time + 5 SECONDS)
 
-/obj/item/construction/rcd/proc/detonate_pulse_explode()
+/obj/item/construction/rcd/think()
 	explosion(src, light_impact_range = 3, flash_range = 1)
 	qdel(src)
 

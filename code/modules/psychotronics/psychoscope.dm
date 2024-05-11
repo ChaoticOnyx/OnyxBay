@@ -636,10 +636,9 @@
 
 /* OVERRIDES */
 
-/obj/item/clothing/glasses/psychoscope/_examine_text(mob/user)
+/obj/item/clothing/glasses/psychoscope/examine(mob/user, infix)
 	. = ..()
-
-	. += "\nThe battery panel is [cell_panel_opened ? "opened" : "closed"]."
+	. += "The battery panel is [cell_panel_opened ? "opened" : "closed"]."
 
 /obj/item/clothing/glasses/psychoscope/attack_hand(mob/user)
 	if(cell_panel_opened && bcell)

@@ -9,6 +9,7 @@
 	layer = SIDE_WINDOW_LAYER
 	anchored = 1.0
 	atom_flags = ATOM_FLAG_CHECKS_BORDER
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	var/maxhealth = 14.0
 	var/maximal_heat = 100 CELSIUS 		// Maximal heat before this window begins taking damage from fire
 	var/damage_per_fire_tick = 2.0 		// Amount of damage per fire tick. Regular windows are not fireproof so they might as well break quickly.
@@ -27,34 +28,37 @@
 	hitby_sound = SFX_GLASS_HIT
 	hitby_loudness_multiplier = 2.0
 	pull_sound = SFX_PULL_STONE
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 664 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 4.8 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
 
-/obj/structure/window/_examine_text(mob/user)
+/obj/structure/window/examine(mob/user, infix)
 	. = ..()
 
 	if(health == maxhealth)
-		. += "\n<span class='notice'>It looks fully intact.</span>"
+		. += SPAN_NOTICE("It looks fully intact.")
 	else
 		var/perc = health / maxhealth
 		if(perc > 0.75)
-			. += "\n<span class='notice'>It has a few cracks.</span>"
+			. += SPAN_NOTICE("It has a few cracks.")
 		else if(perc > 0.5)
-			. += "\n<span class='warning'>It looks slightly damaged.</span>"
+			. += SPAN_NOTICE("It looks slightly damaged.")
 		else if(perc > 0.25)
-			. += "\n<span class='warning'>It looks moderately damaged.</span>"
+			. += SPAN_NOTICE("It looks moderately damaged.")
 		else
-			. += "\n<span class='danger'>It looks heavily damaged.</span>"
+			. += SPAN_DANGER("It looks heavily damaged.")
+
 	if(silicate)
 		if (silicate < 30)
-			. += "\n<span class='notice'>It has a thin layer of silicate.</span>"
+			. += SPAN_NOTICE("It has a thin layer of silicate.")
 		else if (silicate < 70)
-			. += "\n<span class='notice'>It is covered in silicate.</span>"
+			. += SPAN_NOTICE("It is covered in silicate.")
 		else
-			. += "\n<span class='notice'>There is a thick layer of silicate covering it.</span>"
+			. += SPAN_NOTICE("There is a thick layer of silicate covering it.")
+
+	rad_resist_type = /datum/rad_resist/window
+
+/datum/rad_resist/window
+	alpha_particle_resist = 664 MEGA ELECTRONVOLT
+	beta_particle_resist = 4.8 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/structure/window/GetExplosionBlock()
 	return reinf && (state == 5) ? real_explosion_block : 0
@@ -300,7 +304,6 @@
 			if(health <= 7)
 				set_anchored(FALSE)
 				step(src, get_dir(user, src))
-				update_verbs()
 		else
 			visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
 			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
@@ -312,48 +315,23 @@
 	return
 
 
-/obj/structure/window/proc/rotate()
-	set name = "Rotate Window Counter-Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return 0
-
+/obj/structure/window/rotate(mob/user)
 	if(is_full_window) // No point in rotating a window if it is full
-		return 0
+		return
 
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
-		return 0
-
+	..()
 	update_nearby_tiles(need_rebuild=1) //Compel updates before
-	set_dir(turn(dir, 90))
 	updateSilicate()
 	update_nearby_tiles(need_rebuild=1)
-	return
 
-
-/obj/structure/window/proc/revrotate()
-	set name = "Rotate Window Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return 0
-
+/obj/structure/window/rotate_counter(mob/user)
 	if(is_full_window) // No point in rotating a window if it is full
-		return 0
+		return
 
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
-		return 0
-
+	..()
 	update_nearby_tiles(need_rebuild=1) //Compel updates before
-	set_dir(turn(dir, 270))
 	updateSilicate()
 	update_nearby_tiles(need_rebuild=1)
-	return
 
 /obj/structure/window/New(Loc, start_dir=null, constructed=0)
 	..()
@@ -396,7 +374,6 @@
 	if(anchored == new_anchored)
 		return
 	anchored = new_anchored
-	update_verbs()
 	update_nearby_icons()
 
 //This proc is used to update the icons of nearby windows. It should not be confused with update_nearby_tiles(), which is an atmos proc!
@@ -404,15 +381,6 @@
 	update_icon()
 	for(var/obj/structure/window/W in orange(src, 1))
 		W.update_icon()
-
-//Updates the availabiliy of the rotation verbs
-/obj/structure/window/proc/update_verbs()
-	if(anchored)
-		verbs -= /obj/structure/window/proc/rotate
-		verbs -= /obj/structure/window/proc/revrotate
-	else
-		verbs += /obj/structure/window/proc/rotate
-		verbs += /obj/structure/window/proc/revrotate
 
 //merges adjacent full-tile windows into one (blatant ripoff from game/smoothwall.dm)
 /obj/structure/window/on_update_icon()
@@ -523,6 +491,8 @@
 	// windows only block while reinforced and fulltile, so we'll use the proc
 	real_explosion_block = explosion_block
 	explosion_block = EXPLOSION_BLOCK_PROC
+
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/window/reinforced/full
 	dir = 5

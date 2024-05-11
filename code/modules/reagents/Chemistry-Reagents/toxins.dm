@@ -584,7 +584,7 @@
 			to_chat(H, "<span class='danger'>Your flesh rapidly mutates!</span>")
 			H.set_species(SPECIES_PROMETHEAN)
 			H.shapeshifter_set_colour("#05ff9b")
-			H.verbs -= /mob/living/carbon/human/proc/shapeshifter_select_colour
+			revoke_verb(H, /mob/living/carbon/human/proc/shapeshifter_select_colour)
 		return
 	var/obj/item/organ/external/O = pick(meatchunks)
 	to_chat(H, "<span class='danger'>Your [O.name]'s flesh mutates rapidly!</span>")
@@ -743,6 +743,7 @@
 	M.h_style = "Sick"
 	M.f_style = "Great Beard"
 	M.update_hair()
+	M.update_facial_hair()
 	to_chat(M, SPAN_WARNING("You feel a chill, your skin feels heavier..."))
 
 /datum/reagent/toxin/zombie

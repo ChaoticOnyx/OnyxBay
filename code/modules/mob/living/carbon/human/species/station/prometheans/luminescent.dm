@@ -18,6 +18,10 @@
 	name = SPECIES_LUMINESCENT
 	icobase = 'icons/mob/human_races/prometheans/r_luminescent.dmi'
 
+/datum/species/promethean/luminescent/New()
+	. = ..()
+	add_think_ctx("update_glow", CALLBACK(src, nameof(.proc/update_glow)), 0)
+
 /datum/species/promethean/luminescent/handle_post_spawn(mob/living/carbon/human/new_jellyperson)
 	. = ..()
 
@@ -60,11 +64,10 @@
 		extract_eater_comp.glow_intensity = intensity
 	else
 		extract_eater_comp.glow_intensity = LUMINESCENT_DEFAULT_GLOW
-	C.set_light(1, 0.5, extract_eater_comp.glow_intensity, 2, C.dna.mcolor)
+	C.set_light(1, 0.5, extract_eater_comp.glow_intensity, extract_eater_comp.glow_intensity, C.dna.mcolor)
 
 /datum/action/innate/integrate_extract
 	name = "Integrate Extract"
-	//desc = "Eat a metroid extract to use its properties."
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "metroidconsume"
 	button_icon = 'icons/hud/actions.dmi'
@@ -87,12 +90,10 @@
 		name = "Integrate Extract"
 		button_icon_state = "metroidconsume"
 		button.UpdateIcon()
-		//desc = "Eat a metroid extract to use its properties."
 	else
 		name = "Eject Extract"
 		button_icon_state = "metroideject"
 		button.AddOverlays(image(extract_eater_comp.current_extract.icon, icon_state = extract_eater_comp.current_extract.icon_state))
-		//desc = "Eject your current metroid extract."
 
 
 /datum/action/innate/integrate_extract/Activate()
@@ -126,7 +127,6 @@
 
 /datum/action/cooldown/use_extract
 	name = "Extract Minor Activation"
-	//desc = "Pulse the metroid extract with energized jelly to activate it."
 	action_type = AB_INNATE
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "metroiduse1"
@@ -170,7 +170,6 @@
 
 /datum/action/cooldown/use_extract/major
 	name = "Extract Major Activation"
-	//desc = "Pulse the metroid extract with plasma jelly to activate it."
 	button_icon_state = "metroiduse2"
 	activation_type = METROID_ACTIVATE_MAJOR
 	shared_cooldown = TRUE

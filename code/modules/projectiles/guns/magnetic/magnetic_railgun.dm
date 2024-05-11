@@ -80,10 +80,11 @@
 		list(mode_name="long bursts",  burst=6, fire_delay=null, move_delay=10,    one_hand_penalty=2, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
 		)
 
-/obj/item/gun/magnetic/railgun/automatic/_examine_text(mob/user)
+/obj/item/gun/magnetic/railgun/automatic/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1)
-		. += "\n<span class='notice'>Someone has scratched <i>Ultima Ratio Regum</i> onto the side of the barrel.</span>"
+		. += SPAN_NOTICE("Someone has scratched <i>Ultima Ratio Regum</i> onto the side of the barrel.")
 
 /obj/item/gun/magnetic/railgun/flechette
 	name = "flechette gun"

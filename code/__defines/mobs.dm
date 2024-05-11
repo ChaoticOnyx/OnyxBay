@@ -226,6 +226,8 @@
 #define BP_ADAMANTINE_VOCAL_CORDS "adamantine vocal cords"
 #define BP_METROID 	"metroid jelly vessel"
 
+#define BP_INTERNAL_ORGANS list(BP_BRAIN, BP_HEART, BP_EYES, BP_LUNGS, BP_LIVER, BP_KIDNEYS)
+
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
 #define BP_VOICE		"vocal synthesiser"
@@ -253,6 +255,14 @@
 // Prosthetic helpers.
 #define BP_IS_ROBOTIC(org)  (org.status & ORGAN_ROBOTIC)
 #define BP_IS_ASSISTED(org) (org.status & ORGAN_ASSISTED)
+
+GLOBAL_LIST_INIT(organ_tag_to_name, list(
+	BP_HEAD  = "head", BP_CHEST = "full body",
+	BP_GROIN = "lower body", BP_L_LEG = "left leg",
+	BP_R_LEG  = "right leg", BP_L_ARM = "left arm",
+	BP_R_ARM = "right arm", BP_L_HAND = "left hand",
+	BP_R_HAND = "right hand", BP_L_FOOT = "left foot",
+	BP_R_FOOT = "right foot"))
 
 #define SYNTH_BLOOD_COLOUR "#030303"
 #define SYNTH_FLESH_COLOUR "#575757"

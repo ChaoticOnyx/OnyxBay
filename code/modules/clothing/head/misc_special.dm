@@ -36,8 +36,9 @@
 	pickup_sound = SFX_PICKUP_HELMET
 	drop_sound = SFX_DROP_HELMET
 
-/obj/item/clothing/head/welding/_examine_text(mob/user)
+/obj/item/clothing/head/welding/examine(mob/user, infix)
 	. = ..()
+
 	if(cover)
 		. += " [cover.cover_desc]"
 
@@ -274,11 +275,12 @@
 	icon_state = "foilhat"
 	body_parts_covered = NO_BODYPARTS
 	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 30 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 6 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/tinfoil
+
+/datum/rad_resist/tinfoil
+	alpha_particle_resist = 30 MEGA ELECTRONVOLT
+	beta_particle_resist = 6 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 //ilyadobr's custom item
 

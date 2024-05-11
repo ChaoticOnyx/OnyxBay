@@ -18,9 +18,13 @@
 
 	var/spinning = FALSE
 
+/obj/structure/casino/roulette/Initialize()
+	. = ..()
+	add_think_ctx("spin_context", CALLBACK(src, nameof(.proc/finish_spin)), 0)
+
 /obj/structure/casino/roulette/attack_hand(mob/user)
 	if(spinning)
-		show_splash_text(user, "already spinning!")
+		show_splash_text(user, "already spinning!", "The roulette is already spinning!")
 		return
 
 	visible_message(SPAN("notice", "[user] spins \the [src] and throws a little ball inside!"))
@@ -43,7 +47,7 @@
 	else
 		color = "red"
 
-	addtimer(CALLBACK(src, nameof(.proc/finish_spin), n, color), 5 SECONDS, TIMER_DELETE_ME)
+	set_next_think_ctx("spin_context", world.time + 5 SECONDS, n, color)
 
 /obj/structure/casino/roulette/proc/finish_spin(number, color)
 	visible_message(SPAN("notice", "\The [src] stops spinning, the ball landing on [number], [color]."))

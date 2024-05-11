@@ -86,24 +86,28 @@
 	var/datum/wires/rig/wires
 	var/datum/effect/effect/system/spark_spread/spark_system
 
-/obj/item/rig/_examine_text(mob/user)
+/obj/item/rig/examine(mob/user, infix)
 	. = ..()
+
 	if(wearer)
 		for(var/obj/item/piece in list(helmet,gloves,chest,boots))
 			if(!piece || piece.loc != wearer)
 				continue
-			. += "\n\icon[piece] \The [piece] [piece.gender == PLURAL ? "are" : "is"] deployed."
+
+			. += "\icon[piece] \The [piece] [piece.gender == PLURAL ? "are" : "is"] deployed."
 
 	if(src.loc == usr)
-		. += "\nThe access panel is [locked? "locked" : "unlocked"]."
-		. += "\nThe maintenance panel is [open ? "open" : "closed"]."
-		. += "\nPowersuit systems are [offline ? "<font color='red'>offline</font>" : "<font color='green'>online</font>"]."
+		. += "The access panel is [locked? "locked" : "unlocked"]."
+		. += "The maintenance panel is [open ? "open" : "closed"]."
+		. += "Powersuit systems are [offline ? "<font color='red'>offline</font>" : "<font color='green'>online</font>"]."
 
 		if(open)
-			. += "\nIt's equipped with [english_list(installed_modules)]."
+			. += "It's equipped with [english_list(installed_modules)]."
 
 /obj/item/rig/Initialize()
 	. = ..()
+
+	add_think_ctx("booting_context", CALLBACK(src, nameof(.proc/r_booting_done)), 0)
 
 	item_state = icon_state
 	wires = new(src)
@@ -192,7 +196,13 @@
 	return ..()
 
 /obj/item/rig/get_mob_overlay(mob/user_mob, slot)
-	var/image/ret = ..()
+	. = ..()
+
+	if(slot == slot_l_hand_str || slot == slot_r_hand_str)
+		return
+
+	var/image/ret = .
+
 	if(icon_override)
 		ret.icon = icon_override
 	else if(slot == slot_back_str)
@@ -349,7 +359,7 @@
 	to_chat(wearer, "<span class='info'><b>Your entire suit [canremove ? "loosens as the components relax" : "tightens around you as the components lock into place"].</b></span>")
 	if(wearer.client)
 		wearer.client.screen -= booting_L
-		addtimer(CALLBACK(src, nameof(.proc/r_booting_done), wearer.client, booting_R), 80)
+		set_next_think_ctx("booting_context", world.time + 8 SECONDS, wearer.client, booting_R)
 	qdel(booting_L)
 	booting_R.icon_state = "boot_done"
 
@@ -585,7 +595,13 @@
 	return
 
 /obj/item/rig/get_mob_overlay(mob/user_mob, slot)
-	var/image/ret = ..()
+	. = ..()
+
+	if(slot == slot_l_hand_str || slot == slot_r_hand_str)
+		return
+
+	var/image/ret = .
+
 	if(slot != slot_back_str || offline)
 		return ret
 

@@ -117,8 +117,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	if(!dna_profile)
 		dna_profile = H.dna.unique_enzymes
 		to_chat(usr, SPAN("notice", "You submit a DNA sample to \the [src]."))
-		verbs += /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
-		verbs -= /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
+		add_verb(loc, /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample)
+		remove_verb(loc, /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample)
 		update_icon()
 		return 1
 
@@ -146,6 +146,9 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	say("No DNA profile found.", language = null, verb = "reports")
 	verbs += /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
 	verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
+	audible_message("<b>\The [src]</b> reports, \"No DNA profile found.\"", splash_override = "No DNA profile found.")
+	add_verb(loc, /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample)
+	remove_verb(loc, /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample)
 	update_icon()
 
 /obj/item/gun/projectile/lawgiver/emp_act(severity)
@@ -257,9 +260,11 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	//added every char from speechcheker just for sure
 	return replace_characters(phrase, replacechars)
 
-/obj/item/gun/projectile/lawgiver/_examine_text(mob/user)
+/obj/item/gun/projectile/lawgiver/examine(mob/user, infix)
 	. = ..()
+
 	var/obj/item/ammo_magazine/lawgiver/M = ammo_magazine
 	if(!M)
 		return
+
 	. += M.generate_description()

@@ -174,11 +174,7 @@
 	layer = WINDOW_FRAME_LAYER
 	explosion_resistance = 1
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.1 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window
 
 	var/max_health = 8
 	var/health = 8
@@ -205,6 +201,11 @@
 		/mob/living/simple_animal/mouse,
 		/mob/living/silicon/robot/drone
 		)
+
+/datum/rad_resist/window
+	alpha_particle_resist = 100 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.1 MEGA ELECTRONVOLT
+	hawking_resist = 0.1 ELECTRONVOLT
 
 /obj/structure/window_frame/Initialize()
 	. = ..()
@@ -426,18 +427,20 @@
 	for(var/obj/structure/window_frame/W in orange(src, 1))
 		W.update_icon()
 
-/obj/structure/window_frame/_examine_text(mob/user)
+/obj/structure/window_frame/examine(mob/user, infix)
 	. = ..()
+
 	if(outer_pane)
 		if(frame_state == FRAME_REINFORCED)
-			. += "\nIt has an outer [outer_pane.name] installed. [outer_pane.get_damage_desc()]"
+			. += "It has an outer [outer_pane.name] installed. [outer_pane.get_damage_desc()]"
 		else
-			. += "\nIt has a [outer_pane.name] installed. [outer_pane.get_damage_desc()]"
+			. += "It has a [outer_pane.name] installed. [outer_pane.get_damage_desc()]"
+
 	if(inner_pane)
-		. += "\nIt has an inner [inner_pane.name] installed. [inner_pane.get_damage_desc()]"
+		. += "It has an inner [inner_pane.name] installed. [inner_pane.get_damage_desc()]"
 
 	if(signaler)
-		. += "\n There is a signaler attached to the wiring."
+		. += "There is a signaler attached to the wiring."
 
 /obj/structure/window_frame/Bumped(atom/user)
 	if(ismob(user))
@@ -1015,11 +1018,7 @@
 	max_health = 10
 	pane_melee_mult = 0.9
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/none
 
 // Pretty much the same as the old grille, but smarter.
 /obj/structure/window_frame/grille
@@ -1034,11 +1033,12 @@
 	max_health = 12
 	pane_melee_mult = 0.7
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_grille
+
+/datum/rad_resist/window_frame_grille
+	alpha_particle_resist = 100 MEGA ELECTRONVOLT
+	beta_particle_resist = 0 MEGA ELECTRONVOLT
+	hawking_resist = 0 ELECTRONVOLT
 
 /obj/structure/window_frame/broken
 	frame_state = FRAME_DESTROYED
@@ -1051,11 +1051,7 @@
 	density = FALSE
 	max_health = 6
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/none
 
 /obj/structure/window_frame/broken/Initialize()
 	. = ..()
@@ -1071,11 +1067,7 @@
 	icon_border = "winborder"
 	density = FALSE
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/none
 
 /obj/structure/window_frame/relectric
 	frame_state = FRAME_RELECTRIC
@@ -1089,11 +1081,7 @@
 	max_health = 10
 	pane_melee_mult = 0.9
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/none
 
 // The simpliest window to exist. To be used in totally-no-safety-required areas.
 /obj/structure/window_frame/glass
@@ -1103,11 +1091,12 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_glass
+
+/datum/rad_resist/window_frame_glass
+	alpha_particle_resist = 100 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.2 MEGA ELECTRONVOLT
+	hawking_resist = 0 ELECTRONVOLT
 
 // Regular window with reinforced glass. Default window for most occasions.
 /obj/structure/window_frame/rglass
@@ -1117,11 +1106,12 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.2 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_rglass
+
+/datum/rad_resist/window_frame_rglass
+	alpha_particle_resist = 120 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.4 MEGA ELECTRONVOLT
+	hawking_resist = 0.2 ELECTRONVOLT
 
 /obj/structure/window_frame/black
 	name = "window"
@@ -1131,11 +1121,12 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/black
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.2 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_black
+
+/datum/rad_resist/window_frame_black
+	alpha_particle_resist = 100 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.2 MEGA ELECTRONVOLT
+	hawking_resist = 0.2 ELECTRONVOLT
 
 /obj/structure/window_frame/rblack
 	name = "window"
@@ -1145,11 +1136,12 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rblack
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.2 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_rblack
+
+/datum/rad_resist/window_frame_rblack
+	alpha_particle_resist = 100 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.4 MEGA ELECTRONVOLT
+	hawking_resist = 0.2 ELECTRONVOLT
 
 // Reinforced window with two reinforced glass panes. Mostly used for hulls.
 /obj/structure/window_frame/reinforced/hull
@@ -1159,11 +1151,12 @@
 	preset_outer_pane = /datum/windowpane/rglass
 	preset_inner_pane = /datum/windowpane/rglass
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 200 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.8 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.4 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_rhull
+
+/datum/rad_resist/window_frame_rhull
+	alpha_particle_resist = 200 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.8 MEGA ELECTRONVOLT
+	hawking_resist = 0.4 ELECTRONVOLT
 
 // Reinforced window with two reinforced plass panes. Totally the best choice to constrain extremely high temperatures (combustion chamber/engine/etc.)
 /obj/structure/window_frame/reinforced/thermal
@@ -1173,11 +1166,12 @@
 	preset_outer_pane = /datum/windowpane/rplass
 	preset_inner_pane = /datum/windowpane/rplass
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 250 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 1 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_rthermal
+
+/datum/rad_resist/window_frame_rthermal
+	alpha_particle_resist = 250 MEGA ELECTRONVOLT
+	beta_particle_resist = 1 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/structure/window_frame/reinforced/unfinished
 	name = "unfinished reinforced window"
@@ -1192,11 +1186,12 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_gglass
+
+/datum/rad_resist/window_frame_gglass
+	alpha_particle_resist = 100 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.2 MEGA ELECTRONVOLT
+	hawking_resist = 0.1 ELECTRONVOLT
 
 // Can't hold the second windowpane, but can be used to shock people.
 /obj/structure/window_frame/grille/rglass
@@ -1205,11 +1200,12 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.2 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_grglass
+
+/datum/rad_resist/window_frame_grglass
+	alpha_particle_resist = 120 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.4 MEGA ELECTRONVOLT
+	hawking_resist = 0.2 ELECTRONVOLT
 
 /obj/structure/window_frame/electric/glass
 	name = "electrochromic window"
@@ -1218,11 +1214,7 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_gglass
 
 /obj/structure/window_frame/electric/rglass
 	name = "electrochromic window"
@@ -1231,11 +1223,7 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.2 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_grglass
 
 /obj/structure/window_frame/relectric/glass
 	name = "reinforced electrochromic window"
@@ -1243,11 +1231,7 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_gglass
 
 /obj/structure/window_frame/relectric/rglass
 	name = "reinforced electrochromic window"
@@ -1255,11 +1239,7 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 0.2 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/window_frame_grglass
 
 /obj/structure/window_frame/indestructible
 	name = "window"

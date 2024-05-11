@@ -3,6 +3,11 @@
 	icon_state = "white"
 	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 
+	item_state_slots = list(
+		slot_l_hand_str = "lgloves",
+		slot_r_hand_str = "lgloves",
+		)
+
 /obj/item/clothing/gloves/color/modified
 	item_flags = ITEM_FLAG_PREMODIFIED
 

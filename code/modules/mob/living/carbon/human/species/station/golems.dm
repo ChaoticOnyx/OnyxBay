@@ -153,7 +153,6 @@
 
 /datum/action/innate/ignite
 	name = "Ignite"
-	//desc = "Set yourself aflame, bringing yourself closer to exploding!"
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "sacredflame"
 
@@ -452,8 +451,13 @@
 	var/mob/living/carbon/human/H = owner
 	H.visible_message(SPAN_WARNING("[H] starts vibrating!"), SPAN_DANGER("You start charging your bluespace core..."))
 	playsound(get_turf(H), 'sound/weapons/flash.ogg', 25, TRUE)
-	addtimer(CALLBACK(src, nameof(.proc/teleport), H), 1.5 SECONDS)
+	set_next_think(world.time + 1.5 SECONDS, weakref(H))
 	return TRUE
+
+/datum/action/cooldown/unstable_teleport/think(weakref/ref)
+	var/mob/living/carbon/human/H = ref.resolve()
+	if(istype(H))
+		teleport(H)
 
 /datum/action/cooldown/unstable_teleport/proc/teleport(mob/living/carbon/human/H)
 	StartCooldown()
@@ -569,7 +573,7 @@
 		H.forceMove(src)
 		cloth_golem = H
 		to_chat(cloth_golem, SPAN_NOTICE("You start gathering your life energy, preparing to rise again..."))
-		addtimer(CALLBACK(src, nameof(.proc/revive)), revive_time)
+		set_next_think(world.time + revive_time)
 	else
 		return INITIALIZE_HINT_QDEL
 
@@ -578,10 +582,7 @@
 		QDEL_NULL(cloth_golem)
 	return ..()
 
-/obj/structure/cloth_pile/proc/revive()
-	if(QDELETED(src) || QDELETED(cloth_golem)) //QDELETED also checks for null, so if no cloth golem is set this won't runtime
-		return
-
+/obj/structure/cloth_pile/think()
 	invisibility = INVISIBILITY_MAXIMUM //disappear before the animation
 	new /obj/effect/mummy_animation(get_turf(src))
 	cloth_golem.revive()
@@ -590,7 +591,6 @@
 	cloth_golem.visible_message(SPAN_DANGER("[src] rises and reforms into [cloth_golem]!"),SPAN_DANGER("You reform into yourself!"))
 	cloth_golem = null
 	qdel(src)
-
 
 /obj/structure/cloth_pile/proc/update_name()
 	if(on_fire)

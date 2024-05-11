@@ -9,6 +9,6 @@
 	if(!..())
 		return FALSE
 
-	addtimer(CALLBACK(target, nameof(/mob/living/carbon/human.proc/delayed_hallucinations)), rand(30, 60) SECONDS)
+	target.set_next_think_ctx("delayed_hallucinations", (rand(30, 60) SECONDS))
 
 	feedback_add_details("changeling_powers", "HS")

@@ -67,6 +67,7 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone/New()
 	..()
 
+	add_movespeed_modifier(/datum/movespeed_modifier/drone_movement)
 	register_signal(src, SIGNAL_MOVED, nameof(.proc/on_moved))
 
 /mob/living/silicon/robot/drone/Destroy()
@@ -133,7 +134,8 @@ var/list/mob_hat_cache = list()
 
 	..()
 
-	verbs += /mob/living/proc/hide
+	grant_verb(src, /mob/living/proc/hide)
+
 	remove_language(LANGUAGE_ROBOT)
 	add_language(LANGUAGE_ROBOT, FALSE)
 	add_language(LANGUAGE_DRONE, TRUE)
@@ -146,7 +148,7 @@ var/list/mob_hat_cache = list()
 		var/datum/robot_component/C = components[V]
 		C.max_damage = 10
 
-	verbs -= /mob/living/silicon/robot/verb/Namepick
+	revoke_verb(src, /mob/living/silicon/robot/verb/Namepick)
 	update_icon()
 
 /mob/living/silicon/robot/drone/init()

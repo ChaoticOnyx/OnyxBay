@@ -63,19 +63,19 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 		return
 
 	if(brainobj || brainmob?.key)
-		show_splash_text(user, "already has a brain inside!")
+		show_splash_text(user, "already has a brain inside!", "\The [src] already has a brain inside!")
 		return
 
 	if(new_brain.damage >= new_brain.max_damage)
-		show_splash_text(user, "brain is truly dead!")
+		show_splash_text(user, "brain is truly dead!", "The brain is truly dead!")
 		return
 
 	if(!new_brain.brainmob || !(new_brain.species?.name in GLOB.whitelisted_mmi_species))
-		show_splash_text(user, "won't fit into device!")
+		show_splash_text(user, "won't fit into device!", "The brain won't fit into \the [src]!")
 		return
 
 	_add_brain(new_brain, user)
-	show_splash_text(user, "brain inserted into device.")
+	show_splash_text(user, "brain inserted into device.", "You have inserted a brain into \the [src]!")
 	feedback_inc("cyborg_mmis_filled", 1)
 
 /obj/item/organ/internal/cerebrum/mmi/proc/try_access(mob/user)
@@ -83,11 +83,11 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 		return
 
 	if(!allowed(user))
-		show_splash_text(user, "access denied!")
+		show_splash_text(user, "access denied!", "\icon[src] Access Denied!")
 		return
 
 	if(isnull(brainobj))
-		show_splash_text(user, "no suitable brain to lock!")
+		show_splash_text(user, "no suitable brain to lock!", "There's no suitable brain to lock in \the [src]!")
 		return
 
 	locked = !locked
@@ -96,11 +96,11 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 
 /obj/item/organ/internal/cerebrum/mmi/attack_self(mob/user)
 	if(isnull(brainobj))
-		show_splash_text(user, "no brain detected!")
+		show_splash_text(user, "no brain detected!", "No brain detected in \the [src]!")
 		return
 
 	if(locked)
-		show_splash_text(user, "brain is clamped into place!")
+		show_splash_text(user, "brain is clamped into place!", "The brain is clamped into place!")
 		return
 
 	_remove_brain()

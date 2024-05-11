@@ -173,7 +173,7 @@ var/list/channel_to_radio_key = new
 
 	// This is broadcast to all mobs with the language,
 	// irrespective of distance or anything else.
-	if(message_data["language"]?.flags & HIVEMIND)
+	if(message_data["language"]?.language_flags & HIVEMIND)
 		message_data["language"].broadcast(src, message_data["message"])
 		return TRUE
 
@@ -185,7 +185,7 @@ var/list/channel_to_radio_key = new
 
 	message_data["message"] = handle_autohiss(message_data["message"], message_data["language"])
 
-	if(!(message_data["language"]?.flags & NO_STUTTER))
+	if(!(message_data["language"]?.language_flags & NO_STUTTER))
 		handle_speech_problems(message_data)
 
 	if(!message_data["message"] || message_data["message"] == "")
@@ -272,10 +272,10 @@ var/list/channel_to_radio_key = new
 	if(message_data["language"])
 		var/verb = pick(message_data["language"].signlang_verb)
 
-		if(message_data["language"].flags & NONVERBAL && prob(30))
+		if(message_data["language"].language_flags & NONVERBAL && prob(30))
 			src.custom_emote(VISIBLE_MESSAGE, "[verb].")
 
-		if(message_data["language"].flags & SIGNLANG)
+		if(message_data["language"].language_flags & SIGNLANG)
 			if(message_data["log_message"])
 				log_say("[name]/[key]: SIGN: [message_data["message"]]")
 				log_message(message_data["message"], INDIVIDUAL_SAY_LOG)
@@ -306,7 +306,7 @@ var/list/channel_to_radio_key = new
 		if(message_data["language"])
 			message_data["message_range"] = message_data["language"].get_talkinto_msg_range(message_data["message"])
 
-		if(!(message_data["language"]?.flags & NO_TALK_MSG))
+		if(!(message_data["language"]?.language_flags & NO_TALK_MSG))
 			var/msg = SPAN("notice", "\The [src] talks into \the [used_radios[1]]")
 			for(var/mob/living/M in hearers(5, src))
 				if(M != src)

@@ -12,6 +12,11 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_ARMBAND)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_ARMBAND)
 
+	item_state_slots = list(
+		slot_l_hand_str = "labcoat",
+		slot_r_hand_str = "labcoat",
+		)
+
 /obj/item/clothing/suit/storage/toggle/labcoat/cmo
 	name = "chief medical officer's labcoat"
 	desc = "Bluer than the standard model."

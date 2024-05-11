@@ -30,16 +30,18 @@
 
 	..()
 
-/obj/structure/reagent_dispensers/_examine_text(mob/user)
+/obj/structure/reagent_dispensers/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 2)
 		return
-	. += "\n<span class='notice'>It contains:</span>"
+
+	. += SPAN_NOTICE("It contains:")
 	if(reagents && reagents.reagent_list.len)
 		for(var/datum/reagent/R in reagents.reagent_list)
-			. += "\n<span class='notice'>[R.volume] units of [R.name]</span>"
+			. += SPAN_NOTICE("[R.volume] units of [R.name]")
 	else
-		. += "\n<span class='notice'>Nothing.</span>"
+		. += SPAN_NOTICE("Nothing.")
 
 /obj/structure/reagent_dispensers/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
@@ -117,14 +119,16 @@
 	QDEL_NULL(rig)
 	return ..()
 
-/obj/structure/reagent_dispensers/fueltank/_examine_text(mob/user)
+/obj/structure/reagent_dispensers/fueltank/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 2)
 		return
+
 	if(modded)
-		. += "\n" + SPAN("warning", "Fuel faucet is wrenched open, leaking the fuel!")
+		. += SPAN("warning", "Fuel faucet is wrenched open, leaking the fuel!")
 	if(rig)
-		. += "\n" + SPAN("notice", "There is some kind of device rigged to the tank.")
+		. += SPAN("notice", "There is some kind of device rigged to the tank.")
 
 /obj/structure/reagent_dispensers/fueltank/attack_hand(mob/user)
 	if(rig)
@@ -278,6 +282,7 @@
 	name = "Water-Cooler"
 	desc = "A machine that dispenses water to drink."
 	amount_per_transfer_from_this = 5
+	icon = 'icons/obj/water_cooler.dmi'
 	icon_state = "water_cooler"
 	possible_transfer_amounts = null
 	anchored = 1

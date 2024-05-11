@@ -22,11 +22,11 @@
 		return
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
-	if (language?.flags & NONVERBAL)
+	if (language?.language_flags & NONVERBAL)
 		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !near)
 			message = stars(message)
 
-	if(!(language && (language.flags & INNATE))) // skip understanding checks for INNATE languages
+	if(!(language && (language.language_flags & INNATE))) // skip understanding checks for INNATE languages
 		if(!say_understands(speaker,language))
 			if(istype(speaker,/mob/living/simple_animal))
 				var/understand_animals = FALSE
@@ -75,7 +75,7 @@
 			message = "<b>[message]</b>"
 
 	if(is_deaf())
-		if(!language || !(language.flags & INNATE)) // INNATE is the flag for audible-emote-language, so we don't want to show an "x talks but you cannot hear them" message if it's set
+		if(!language || !(language.language_flags & INNATE)) // INNATE is the flag for audible-emote-language, so we don't want to show an "x talks but you cannot hear them" message if it's set
 			if(speaker == src)
 				to_chat(src, SPAN("warning", "You cannot hear yourself speak!"))
 			else if(!is_blind())
@@ -141,11 +141,11 @@
 	var/track = null
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
-	if (language?.flags & NONVERBAL)
+	if (language?.language_flags & NONVERBAL)
 		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !(speaker in view(src)))
 			message = stars(message)
 
-	if(!(language?.flags & INNATE)) // skip understanding checks for INNATE languages
+	if(!(language?.language_flags & INNATE)) // skip understanding checks for INNATE languages
 		if(!say_understands(speaker, language))
 			if(istype(speaker,/mob/living/simple_animal))
 				var/mob/living/simple_animal/S = speaker

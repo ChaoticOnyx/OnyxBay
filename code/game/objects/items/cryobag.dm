@@ -105,13 +105,15 @@
 		return airtank
 	..()
 
-/obj/structure/closet/body_bag/cryobag/_examine_text(mob/user)
+/obj/structure/closet/body_bag/cryobag/examine(mob/user, infix)
 	. = ..()
-	. += "\nThe stasis meter shows '[stasis_power]x'."
+
+	. += "The stasis meter shows '[stasis_power]x'."
+
 	if(Adjacent(user)) //The bag's rather thick and opaque from a distance.
-		. += "\n<span class='info'>You peer into \the [src].</span>"
+		. += SPAN_INFO("You peer into \the [src].")
 		for(var/mob/living/L in contents)
-			L._examine_text(user)
+			L.run_examinate(user)
 
 /obj/item/usedcryobag
 	name = "used stasis bag"

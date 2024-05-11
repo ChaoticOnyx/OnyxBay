@@ -246,12 +246,13 @@
 		/obj/item/stack/material
 		)
 
-/obj/item/gripper/_examine_text(mob/user)
+/obj/item/gripper/examine(mob/user, infix)
 	. = ..()
+
 	if(wrapped)
-		. += "\nIt is holding \a [wrapped]."
+		. += "It is holding \a [wrapped]."
 	else if (length(storage_type))
-		. += "\n[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers."
+		. += "[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers."
 
 /obj/item/gripper/attack_self(mob/user)
 	if(wrapped)
@@ -335,8 +336,9 @@
 
 
 		//If resolve_attackby forces waiting before taking wrapped, we need to let it finish before doing the rest.
-		addtimer(CALLBACK(src, nameof(.proc/finish_using), target, user, params, force_holder, resolved), 0)
+		INVOKE_ASYNC(src, nameof(.proc/finish_using), target, user, params, force_holder, resolved)
 		return
+
 	for(var/type in storage_type)//Check that we're pocketing a certain container.
 		if(istype(target,type))
 			var/obj/item/storage/S = target

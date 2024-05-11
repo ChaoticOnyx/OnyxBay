@@ -6,7 +6,7 @@
 	icon_state = "mirror"
 	density = 0
 	anchored = 1
-	var/shattered = 0
+	var/shattered = FALSE
 	var/list/ui_users = list()
 
 	/// Visual object for handling the viscontents
@@ -19,6 +19,10 @@
 	var/obj/effect/reflection/reflection = new(src.loc)
 	reflection.setup_visuals(src)
 	ref = weakref(reflection)
+	if(shattered)
+		shattered = FALSE
+		shatter()
+
 /obj/structure/mirror/attack_hand(mob/user as mob)
 
 	if(shattered)	return
@@ -37,7 +41,7 @@
 
 /obj/structure/mirror/proc/shatter()
 	if(shattered)	return
-	shattered = 1
+	shattered = TRUE
 	icon_state = "mirror_broke"
 	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	desc = "Oh no, seven years of bad luck!"

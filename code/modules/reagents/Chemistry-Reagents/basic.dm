@@ -340,6 +340,7 @@
 				qdel(H.head)
 				H.update_inv_head(1)
 				H.update_hair(1)
+				H.update_facial_hair(1)
 				removed -= meltdose
 		if(removed <= 0)
 			return
@@ -354,6 +355,7 @@
 				qdel(H.wear_mask)
 				H.update_inv_wear_mask(1)
 				H.update_hair(1)
+				H.update_facial_hair(1)
 				removed -= meltdose
 		if(removed <= 0)
 			return

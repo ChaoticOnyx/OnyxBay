@@ -220,20 +220,22 @@
 		return //no eating the limb until everything's been removed
 	return ..()
 
-/obj/item/organ/external/_examine_text(mob/user)
+/obj/item/organ/external/examine(mob/user, infix)
 	. = ..()
+
 	if(in_range(user, src) || isghost(user))
 		for(var/obj/item/I in contents)
 			if(istype(I, /obj/item/organ))
 				continue
+
 			if(I == return_item())
 				continue
-			. += SPAN_DANGER("\nThere is \a [I] sticking out of it.")
+
+			. += SPAN_DANGER("There is \a [I] sticking out of it.")
+
 		var/ouchies = get_wounds_desc()
 		if(ouchies != "nothing")
-			. += SPAN_NOTICE("\nThere is [ouchies] visible on it.")
-
-	return
+			. += SPAN_NOTICE("There is [ouchies] visible on it.")
 
 /obj/item/organ/external/show_decay_status(mob/user)
 	..(user)
@@ -342,7 +344,7 @@
 
 	dislocated = 1
 	if(owner)
-		owner.verbs |= /mob/living/carbon/human/proc/undislocate
+		grant_verb(owner, /mob/living/carbon/human/proc/undislocate)
 
 /obj/item/organ/external/proc/undislocate()
 	if(dislocated == -1)
@@ -356,7 +358,8 @@
 		for(var/obj/item/organ/external/limb in owner.organs)
 			if(limb.dislocated == 1)
 				return
-		owner.verbs -= /mob/living/carbon/human/proc/undislocate
+
+		revoke_verb(owner, /mob/living/carbon/human/proc/undislocate)
 
 /obj/item/organ/external/update_health()
 	damage = min(max_damage, (brute_dam + burn_dam))
@@ -1057,7 +1060,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	else if(status & ORGAN_BROKEN)
 		movement_tally += broken_tally * damage_multiplier
 
-	owner.update_organ_movespeed()
+	owner?.update_organ_movespeed()
 
 /obj/item/organ/external/proc/fracture()
 	if(!config.health.bones_can_break)
@@ -1224,7 +1227,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	LAZYADD(supplied_wound.embedded_objects, W)
 	implants += W
 	owner.embedded_flag = 1
-	owner.verbs += /mob/proc/yank_out_object
+	grant_verb(owner, /mob/proc/yank_out_object)
 	W.add_blood(owner)
 	if(ismob(W.loc))
 		var/mob/living/H = W.loc

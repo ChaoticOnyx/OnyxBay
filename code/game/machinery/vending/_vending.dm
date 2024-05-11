@@ -5,7 +5,7 @@
 /obj/machinery/vending
 	name = "Vendomat"
 	desc = "A generic vending machine."
-	icon = 'icons/obj/machines/vending.dmi'
+	icon = 'icons/obj/machines/vending/generic.dmi'
 	icon_state = "generic"
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
@@ -74,6 +74,7 @@
 	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
 
 	var/vending_sound = SFX_VENDING_DROP
+	light_color = COLOR_GREEN_GRAY
 
 /obj/machinery/vending/on_update_icon()
 	ClearOverlays()
@@ -85,6 +86,20 @@
 		icon_state = "[base_icon]-off"
 	if(panel_open)
 		AddOverlays(image(icon, "[base_icon]-panel"))
+
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "[base_icon]_ea"))
+		if(!panel_open)
+			AddOverlays(emissive_appearance(icon, "[base_icon]_panel_ea"))
+
+/obj/machinery/vending/proc/update_glow()
+	if(inoperable(MAINT))
+		set_light(0)
+		return FALSE
+
+	set_light(1, 0.5, 2, 3.5, light_color)
+	return TRUE
 
 /obj/machinery/vending/Initialize(mapload)
 	. = ..()
@@ -103,6 +118,7 @@
 	setup_cartridge()
 	power_change()
 	setup_icon_states()
+	update_icon()
 
 /obj/machinery/vending/proc/refresh_cartridge()
 	cartridge = locate() in component_parts
@@ -116,16 +132,16 @@
 		cartridge.extra = products
 		cartridge.build_inventory(gen_rand_amount)
 
-/obj/machinery/vending/_examine_text(mob/user)
+/obj/machinery/vending/examine(mob/user, infix)
 	. = ..()
-	if(.)
-		if(stat & BROKEN)
-			to_chat(user, SPAN("warning", "It's broken."))
-		else
-			if(health <= 0.4 * max_health)
-				to_chat(user, SPAN("warning", "It's heavily damaged!"))
-			else if(health < max_health)
-				to_chat(user, SPAN("warning", "It's showing signs of damage."))
+
+	if(stat & BROKEN)
+		. += SPAN("warning", "It's broken.")
+	else
+		if(health <= 0.4 * max_health)
+			. += SPAN("warning", "It's heavily damaged!")
+		else if(health < max_health)
+			. += SPAN("warning", "It's showing signs of damage.")
 
 /obj/machinery/vending/proc/take_damage(force)
 	if(health > 0)
@@ -694,7 +710,6 @@
 /obj/machinery/vending/proc/setup_icon_states()
 	if(use_alt_icons)
 		base_icon = pick(alt_icons)
-		update_icon()
 	else
 		base_icon = icon_state
 

@@ -47,7 +47,7 @@
 	..()
 	create_reagents(500)
 	coolant_reagents_purity[/datum/reagent/water] = 0.5
-	coolant_reagents_purity[/datum/reagent/drink/coffee/icecoffee] = 0.6
+	coolant_reagents_purity[/datum/reagent/caffeine/coffee/icecoffee] = 0.6
 	coolant_reagents_purity[/datum/reagent/drink/tea/icetea] = 0.6
 	coolant_reagents_purity[/datum/reagent/drink/milkshake] = 0.6
 	coolant_reagents_purity[/datum/reagent/leporazine] = 0.7

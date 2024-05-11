@@ -43,7 +43,7 @@
 
 	AddOverlays(lock_overlay)
 
-/obj/item/storage/secure/_examine_text(mob/user)
+/obj/item/storage/secure/examine(mob/user, infix)
 	. = ..()
 	. += "The service panel is [open ? "open" : "closed"]."
 
@@ -66,11 +66,11 @@
 				return
 
 			open = !open
-			show_splash_text(user, "service panel [open ? "opened" : "closed"]")
+			show_splash_text(user, "service panel [open ? "opened" : "closed"]", "You [open ? "open" : "close"] \the [src] service panel.")
 			return
 
 		if(isMultitool(W) && open && !hacking)
-			show_splash_text(user, "resetting internal memory...")
+			show_splash_text(user, "resetting internal memory...", "You begin resetting \the [src] internal memory...")
 			hacking = TRUE
 			if(!do_after(usr, 100, src))
 				return
@@ -80,13 +80,13 @@
 
 			if(prob(40))
 				lock_setshort = TRUE
-				show_splash_text(user, "internal memory reset!")
+				show_splash_text(user, "internal memory reset!", SPAN("notice", "You reset \the [src] internal memory!"))
 				sleep(80)
 				lock_setshort = FALSE
 				hacking = FALSE
 				lock_code = null
 			else
-				show_splash_text(user, "unable to reset internal memory!")
+				show_splash_text(user, "unable to reset internal memory!", SPAN("warning", "You have failed to reset \the [src] internal memory!"))
 				hacking = FALSE
 				hacking = FALSE
 
@@ -118,7 +118,7 @@
 /obj/item/storage/secure/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "LockedSafe")
+		ui = new(user, src, "LockedSafe", name)
 		ui.open()
 
 /obj/item/storage/secure/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)

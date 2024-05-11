@@ -18,7 +18,7 @@
 				. = module.holder.cell.use(amount)
 
 	if(!. && user)
-		show_splash_text(user, "insufficient charge!")
+		show_splash_text(user, "insufficient charge!", SPAN("warning", "\The [src] is out of charge!"))
 	return .
 
 /obj/item/construction/rcd/mounted/checkResource(amount, mob/user)
@@ -31,7 +31,7 @@
 				. = module.holder.cell.charge >= amount
 
 	if(!. && user)
-		show_splash_text(user, "insufficient charge!")
+		show_splash_text(user, "insufficient charge!", SPAN("warning", "\The [src] is out of charge!"))
 	return .
 
 /obj/item/construction/rcd/mounted/tgui_state(mob/user)

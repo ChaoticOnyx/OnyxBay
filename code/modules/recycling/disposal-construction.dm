@@ -9,6 +9,7 @@
 	icon_state = "conpipe-s"
 	anchored = 0
 	density = 0
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	matter = list(MATERIAL_STEEL = 1850)
 	level = 2
 	var/sortType = ""
@@ -18,16 +19,22 @@
 	var/dpdir = 0	// directions as disposalpipe
 	var/base_state = "pipe-s"
 
-/obj/structure/disposalconstruct/Initialize()
-	update_verbs()
+/obj/structure/disposalconstruct/Initialize(mapload, pipe_type, pipe_subtype)
 	. = ..()
+	if(pipe_type)
+		ptype = pipe_type
+
+	if(pipe_subtype)
+		subtype = pipe_subtype
+
+	update_verbs()
+
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/disposalconstruct/proc/update_verbs()
 	if(anchored)
-		verbs -= /obj/structure/disposalconstruct/proc/rotate
 		verbs -= /obj/structure/disposalconstruct/proc/flip
 	else
-		verbs += /obj/structure/disposalconstruct/proc/rotate
 		verbs += /obj/structure/disposalconstruct/proc/flip
 
 // update iconstate and dpdir due to dir and type
@@ -55,16 +62,19 @@
 		if(5)
 			base_state = "pipe-t"
 			dpdir = dir
+			set_density(TRUE)
 		 // disposal bin has only one dir, thus we don't need to care about setting it
 		if(6)
 			if(anchored)
 				base_state = "disposal"
 			else
 				base_state = "condisposal"
+			set_density(TRUE)
 
 		if(7)
 			base_state = "outlet"
 			dpdir = dir
+			set_density(TRUE)
 
 		if(8)
 			base_state = "intake"
@@ -112,23 +122,6 @@
 // change visibility status and force update of icon
 /obj/structure/disposalconstruct/hide(intact)
 	set_invisibility((intact && level==1) ? 101: 0)	// hide if floor is intact
-	update()
-
-
-// flip and rotate verbs
-/obj/structure/disposalconstruct/proc/rotate()
-	set category = "Object"
-	set name = "Rotate Pipe"
-	set src in view(1)
-
-	if(usr.incapacitated())
-		return
-
-	if(anchored)
-		to_chat(usr, "You must unfasten the pipe before rotating it.")
-		return
-
-	set_dir(turn(dir, -90))
 	update()
 
 /obj/structure/disposalconstruct/proc/flip()

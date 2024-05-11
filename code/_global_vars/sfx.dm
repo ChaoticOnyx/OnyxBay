@@ -694,6 +694,11 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/machines/button3.ogg',
 		'sound/machines/button4.ogg'
 	),
+	SFX_USE_KNOB = list(
+		'sound/machines/knob1.ogg',
+		'sound/machines/knob2.ogg',
+		'sound/machines/knob3.ogg'
+	),
 	SFX_USE_LIGHTER = list(
 		'sound/items/lighter1.ogg',
 		'sound/items/lighter2.ogg',
@@ -1782,4 +1787,25 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_VENDING_GENERIC = list(
 		'sound/effects/using/disposal/drop2.ogg'
 	),
+	SFX_LIGHT_TUBE_ON = list(
+		'sound/machines/sound_effects_light_on.ogg'
+	),
+	SFX_LIGHT_BULB_ON = list(
+		'sound/machines/lightson.ogg'
+	),
+	SFX_LIGHT_BURNOUT = list(
+		'sound/machines/lightsburnout.ogg'
+	),
+	SFX_MINESWEEPER_CLICK = list(
+		'sound/machines/arcade/minesweeper_click.ogg'
+	),
+	SFX_MINESWEEPER_LOSE = list(
+		'sound/machines/arcade/minesweeper_lose.ogg'
+	),
+	SFX_MINESWEEPER_START = list(
+		'sound/machines/arcade/minesweeper_start.ogg'
+	),
+	SFX_MINESWEEPER_WIN = list(
+		'sound/machines/arcade/minesweeper_win.ogg'
+	)
 ))

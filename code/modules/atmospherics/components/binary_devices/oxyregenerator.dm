@@ -8,6 +8,7 @@
 	use_power = POWER_USE_OFF
 	idle_power_usage = 200 WATTS		//internal circuitry, friction losses and stuff
 	power_rating = 10000
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	var/target_pressure = 10*ONE_ATMOSPHERE
 	var/id = null
 	var/power_setting = 1 //power consumption setting, 1 through five
@@ -29,6 +30,8 @@
 	component_parts += new /obj/item/stock_parts/matter_bin(src)//Stores carbon
 	RefreshParts()
 
+	AddElement(/datum/element/simple_rotation)
+
 /obj/machinery/atmospherics/binary/oxyregenerator/RefreshParts()
 	for(var/obj/item/stock_parts/P in component_parts)
 		if(istype(P, /obj/item/stock_parts/matter_bin))
@@ -38,9 +41,9 @@
 		if(istype(P, /obj/item/stock_parts/micro_laser))
 			power_rating -= power_rating * 0.05 * (P.rating-1) //5% better power efficiency per stock item rank
 
-/obj/machinery/atmospherics/binary/oxyregenerator/_examine_text(user)
+/obj/machinery/atmospherics/binary/oxyregenerator/examine(mob/user, infix)
 	. = ..()
-	. += "\nIts outlet port is to the [dir2text(dir)]"
+	. += "Its outlet port is to the [dir2text(dir)]"
 
 /obj/machinery/atmospherics/binary/oxyregenerator/attackby(obj/item/O as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, O))
@@ -80,26 +83,6 @@
 
 			node1 = null
 			node2 = null
-
-/obj/machinery/atmospherics/binary/oxyregenerator/verb/rotate_clockwise()
-	set category = "Object"
-	set name = "Rotate  (Clockwise)"
-	set src in view(1)
-
-	if (usr.incapacitated() || anchored)
-		return
-
-	src.set_dir(turn(src.dir, -90))
-
-/obj/machinery/atmospherics/binary/oxyregenerator/verb/rotate_anticlockwise()
-	set category = "Object"
-	set name = "Rotate (Counterclockwise)"
-	set src in view(1)
-
-	if (usr.incapacitated() || anchored)
-		return
-
-	src.set_dir(turn(src.dir, 90))
 
 /obj/machinery/atmospherics/binary/oxyregenerator/Process(delay)
 	if((stat & (NOPOWER|BROKEN)) || !use_power)

@@ -52,6 +52,7 @@
 
 	if(standard_dispenser_refill(user, target))
 		return
+
 	if(standard_pour_into(user, target))
 		return
 
@@ -132,6 +133,8 @@
 			if(/datum/reagent/sugar)
 				name = "Sugar"
 				desc = "Tastey space sugar!"
+				icon_state = "sugar"
+				item_state = "sugar"
 				center_of_mass = "x=16;y=6"
 			else
 				name = "Misc Condiment Bottle"
@@ -206,3 +209,140 @@
 
 /obj/item/reagent_containers/vessel/condiment/flour/on_reagent_change()
 	return
+
+/obj/item/reagent_containers/vessel/condiment/astrotame
+	name = "astrotame pack"
+	startswith = list(/datum/reagent/astrotame)
+
+/obj/item/reagent_containers/vessel/condiment/creamer
+	name = "creamer"
+	startswith = list(/datum/reagent/drink/milk/cream)
+
+//Condiment packs. Packed sauces and sugar.
+
+/obj/item/reagent_containers/vessel/condiment/pack
+	name = "condiment pack"
+	desc = "A small plastic pack with condiments to put on your food."
+	icon_state = "condi_empty"
+	volume = 10
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = list()
+
+/obj/item/reagent_containers/vessel/condiment/pack/on_reagent_change()
+	if(reagents.reagent_list.len > 0)
+		switch(reagents.get_master_reagent_type())
+			if(/datum/reagent/nutriment/ketchup)
+				name = "Ketchup"
+				desc = "You feel more American already."
+				icon_state = "condi_ketchup"
+				icon_state = "condi_ketchup"
+				center_of_mass = "x=16;y=6"
+			if(/datum/reagent/nutriment/barbecue)
+				name = "Barbecue Sauce"
+				desc = "Barbecue sauce, it's labeled 'sweet and spicy'"
+				icon_state = "condi_bbq"
+				icon_state = "condi_bbq"
+				center_of_mass = "x=16;y=6"
+			if(/datum/reagent/capsaicin)
+				name = "Hotsauce"
+				desc = "You can almost TASTE the stomach ulcers now!"
+				icon_state = "condi_hotsauce"
+				item_state = "condi_hotsauce"
+				center_of_mass = "x=16;y=6"
+			if(/datum/reagent/enzyme)
+				name = "Universal Enzyme"
+				desc = "Used in cooking various dishes."
+				icon_state = "condi_greygoo"
+				item_state = "condi_greygoo"
+				center_of_mass = "x=16;y=6"
+			if(/datum/reagent/nutriment/soysauce)
+				name = "Soy Sauce"
+				desc = "A salty soy-based flavoring."
+				icon_state = "condi_soysauce"
+				item_state = "condi_soysauce"
+				center_of_mass = "x=16;y=6"
+			if(/datum/reagent/frostoil)
+				name = "Coldsauce"
+				desc = "Leaves the tongue numb in its passage."
+				icon_state = "condi_frostoil"
+				item_state = "condi_frostoil"
+				center_of_mass = "x=16;y=6"
+			if(/datum/reagent/sodiumchloride)
+				name = "Salt Shaker"
+				desc = "Salt. From space oceans, presumably."
+				icon_state = "condi_salt"
+				item_state = "condi_salt"
+				center_of_mass = "x=16;y=10"
+			if(/datum/reagent/blackpepper)
+				name = "Pepper Mill"
+				desc = "Often used to flavor food or make people sneeze."
+				icon_state = "condi_pepper"
+				item_state = "condi_pepper"
+				center_of_mass = "x=16;y=10"
+			if(/datum/reagent/nutriment/cornoil)
+				name = "Corn Oil"
+				desc = "A delicious oil used in cooking. Made from corn."
+				icon_state = "condi_cornoil"
+				item_state = "condi_cornoil"
+				center_of_mass = "x=16;y=6"
+			if(/datum/reagent/sugar)
+				name = "Sugar"
+				desc = "Tastey space sugar!"
+				icon_state = "condi_sugar"
+				item_state = "condi_sugar"
+				center_of_mass = "x=16;y=6"
+			if(/datum/reagent/astrotame)
+				name = "Astrotame pack"
+				desc = "The sweetness of a thousand sugars but none of the calories!"
+				icon_state = "condi_astrotame"
+				item_state = "condi_astrotame"
+				center_of_mass = "x=16;y=6"
+			if(/datum/reagent/drink/milk/cream)
+				name = "Creamer pack"
+				desc = "The sweetness of a thousand sugars but none of the calories!"
+				icon_state = "condi_creamer"
+				item_state = "condi_creamer"
+				center_of_mass = "x=16;y=6"
+			else
+				name = "Misc Condiment Pack"
+				if (reagents.reagent_list.len==1)
+					desc = "Looks like it is [reagents.get_master_reagent_name()], but you are not sure."
+				else
+					desc = "A mixture of various condiments. [reagents.get_master_reagent_name()] is one of them."
+				icon_state = "condi_mixed"
+				item_state = "condi_mixed"
+				center_of_mass = "x=16;y=6"
+	else
+		icon_state = "condi_empty"
+		name = "Condiment Pack"
+		desc = "An empty condiment pack."
+		center_of_mass = "x=16;y=6"
+	if(label_text)
+		name = addtext(name," ([label_text])")
+
+/obj/item/reagent_containers/vessel/condiment/pack/attack(mob/M, mob/user, def_zone)
+	return // Well you can't really eat it
+
+/obj/item/reagent_containers/vessel/condiment/pack/ketchup
+	name = "ketchup pack"
+	startswith = list(/datum/reagent/nutriment/ketchup)
+
+/obj/item/reagent_containers/vessel/condiment/pack/hotsauce
+	name = "hotsauce pack"
+	startswith = list(/datum/reagent/capsaicin)
+
+/obj/item/reagent_containers/vessel/condiment/pack/astrotame
+	name = "astrotame pack"
+	startswith = list(/datum/reagent/astrotame)
+
+/obj/item/reagent_containers/vessel/condiment/pack/bbqsauce
+	name = "bbq sauce pack"
+	startswith = list(/datum/reagent/nutriment/barbecue)
+
+/obj/item/reagent_containers/vessel/condiment/pack/sugar
+	name = "sugar pack"
+	startswith = list(/datum/reagent/sugar)
+
+/obj/item/reagent_containers/vessel/condiment/pack/creamer
+	name = "creamer"
+	startswith = list(/datum/reagent/drink/milk/cream)

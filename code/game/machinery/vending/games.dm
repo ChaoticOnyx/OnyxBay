@@ -3,7 +3,9 @@
 	name = "Good Clean Fun"
 	desc = "Vends things that the CO and SEA are probably not going to appreciate you fiddling with instead of your job..."
 
+	icon = 'icons/obj/machines/vending/games.dmi'
 	icon_state = "games"
+	light_color = "#57FFE4"
 
 	vend_delay = 15
 	product_slogans = "Escape to a fantasy world!;Fuel your gambling addiction!;Ruin your friendships!"

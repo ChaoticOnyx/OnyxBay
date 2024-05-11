@@ -31,6 +31,6 @@
 #define QDEL_NULL(x) if(x) { qdel(x) ; x = null }
 #define QDEL_LIST(L) if(L) { for(var/I in L) qdel(I); L.Cut(); }
 #define QDEL_NULL_LIST(x) if(x) { for(var/y in x) { qdel(y) } ; x = null }
-#define QDEL_IN(item, time) addtimer(CALLBACK(GLOBAL_PROC, /proc/qdel, time > GC_FILTER_QUEUE ? weakref(item) : item), time, TIMER_STOPPABLE)
+#define QDEL_IN(item, ttl) spawn(ttl) {qdel(item)}
 #define QDEL_LIST_ASSOC(L) if(L) { for(var/I in L) { qdel(L[I]); qdel(I); } L.Cut(); }
 #define QDEL_LIST_ASSOC_VAL(L) if(L) { for(var/I in L) qdel(L[I]); L.Cut(); }

@@ -78,6 +78,9 @@
 
 			entry += " (<A HREF='?_src_=holder;adminmoreinfo=\ref[C.mob]'>?</A>)"
 
+			if(config.external.sql_enabled && watchlist.Check(C.ckey))
+				entry += " (<A HREF='?_src_=holder;adminmoreinfo=\ref[C.mob]'>IN WATCHLIST!</A>)"
+
 			lines += entry
 	else if(rights)
 		for(var/client/C in GLOB.clients)

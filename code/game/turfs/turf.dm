@@ -29,11 +29,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/icon_old = null
 	var/pathweight = 1          // How much does it cost to pathfind over this turf?
 	var/blessed = 0             // Has the turf been blessed?
-	var/list/rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 38 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 50 KILO ELECTRONVOLT,
-		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
-	)
+
+	var/rad_resist_type = /datum/rad_resist/turf
 
 	var/list/decals
 
@@ -54,6 +51,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	///what /mob/oranges_ear instance is already assigned to us as there should only ever be one.
 	///used for guaranteeing there is only one oranges_ear per turf when assigned, speeds up view() iteration
 	var/mob/oranges_ear/assigned_oranges_ear
+
+/datum/rad_resist/turf
+	alpha_particle_resist = 38 MEGA ELECTRONVOLT
+	beta_particle_resist = 50 KILO ELECTRONVOLT
+	hawking_resist = 81 MILLI ELECTRONVOLT
 
 /turf/Initialize(mapload, ...)
 	. = ..()
@@ -314,16 +316,14 @@ var/const/enterloopsanity = 100
 /turf/allow_drop()
 	return TRUE
 
-/turf/_examine_text(mob/user, infix, suffix)
+/turf/examine(mob/user, infix)
 	. = ..()
 
 	if(hasHUD(user, HUD_SCIENCE))
-		. += "\nStopping Power:"
+		. += "Stopping Power:"
 
-		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
-		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
-
-	return .
+		. += "α-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(get_rad_resist_value(rad_resist_type, RADIATION_ALPHA_PARTICLE)), "eV", 3)]"
+		. += "β-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(get_rad_resist_value(rad_resist_type, RADIATION_BETA_PARTICLE)), "eV", 3)]"
 
 /turf/proc/get_footstep_sound()
 	if(footstep_sound)

@@ -143,14 +143,14 @@
 	if(!density && length(return_air().gas) == 0)
 		return 0
 
-	var/resist = rad_resist[info.radiation_type]
+	var/resist = get_rad_resist_value(rad_resist_type, info.radiation_type)
 
 	if(resist == 1.0)
 		return resist
 
 	for(var/obj/O in src)
 		if(O.density)
-			resist += O.rad_resist[info.radiation_type]
+			resist += get_rad_resist_value(O.rad_resist_type, info.radiation_type)
 
 	return Clamp(resist, 0.0, 1.0)
 
@@ -172,7 +172,7 @@
 		return
 
 	// 3. Calculate energy resistance from skin.
-	R.energy -= rad_resist[R.radiation_type]
+	R.energy -= get_rad_resist_value(rad_resist_type, R.radiation_type)
 
 	if(!R.is_ionizing())
 		return
@@ -223,7 +223,7 @@
 			var/resist = 0
 
 			if(C.body_parts_covered & slot)
-				resist = C.rad_resist[R.radiation_type]
+				resist = get_rad_resist_value(C.rad_resist_type, R.radiation_type)
 
 			if(slots_resist["[slot]"] == null)
 				slots_resist["[slot]"] = resist
@@ -242,7 +242,7 @@
 		slot_energy -= slot_resist
 
 		// 5. Calculate energy resistance from skin.
-		var/skin_resist = rad_resist[R.radiation_type]
+		var/skin_resist = get_rad_resist_value(rad_resist_type, R.radiation_type)
 
 		if(slot == FACE && slot_resist == 0.0)
 			skin_resist *= 0.2

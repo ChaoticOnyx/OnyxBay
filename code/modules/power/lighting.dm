@@ -12,6 +12,9 @@
 #define LIGHT_BULB_TEMPERATURE 400 //K - used value for a 60W bulb
 #define LIGHTING_POWER_FACTOR 5		//5W per luminosity * range
 
+#define LIGHT_ON_DELAY_UPPER 1 SECONDS
+#define LIGHT_ON_DELAY_LOWER 0.5 SECONDS
+
 /obj/machinery/light_construct
 	name = "light fixture frame"
 	desc = "A light fixture under construction."
@@ -44,15 +47,16 @@
 		if(2) icon_state = "tube-construct-stage2"
 		if(3) icon_state = "tube-empty"
 
-/obj/machinery/light_construct/_examine_text(mob/user)
+/obj/machinery/light_construct/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 2)
 		return
 
 	switch(src.stage)
-		if(1) . += "\nIt's an empty frame."
-		if(2) . += "\nIt's wired."
-		if(3) . += "\nThe casing is closed."
+		if(1) . += "It's an empty frame."
+		if(2) . += "It's wired."
+		if(3) . += "The casing is closed."
 
 /obj/machinery/light_construct/attackby(obj/item/W, mob/user)
 	src.add_fingerprint(user)
@@ -160,6 +164,9 @@
 
 	var/static/list/light_eas
 
+	/// Whether this light fixture is currently turning on
+	VAR_PRIVATE/turning_on = FALSE
+
 /obj/machinery/light/vox
 	name = "alien light"
 	icon_state = "voxlight"
@@ -185,6 +192,9 @@
 	base_state = "qtube"
 	desc = "Light is almost the same as sunlight."
 	light_type = /obj/item/light/tube/quartz
+
+/obj/machinery/light/nobreak
+	light_type = /obj/item/light/tube/nobreak
 
 // the smaller bulb light fixture
 /obj/machinery/light/small
@@ -353,18 +363,19 @@
 	update(FALSE)
 
 // examine verb
-/obj/machinery/light/_examine_text(mob/user)
+/obj/machinery/light/examine(mob/user, infix)
 	. = ..()
+
 	var/fitting = get_fitting_name()
 	switch(get_status())
 		if(LIGHT_OK)
-			. += "\nIt is turned [on ? "on" : "off"]."
+			. += "It is turned [on ? "on" : "off"]."
 		if(LIGHT_EMPTY)
-			. += "\nThe [fitting] has been removed."
+			. += "The [fitting] has been removed."
 		if(LIGHT_BURNED)
-			. += "\nThe [fitting] is burnt out."
+			. += "The [fitting] is burnt out."
 		if(LIGHT_BROKEN)
-			. += "\nThe [fitting] has been smashed."
+			. += "The [fitting] has been smashed."
 
 /obj/machinery/light/proc/get_fitting_name()
 	var/obj/item/light/L = light_type
@@ -499,13 +510,34 @@
 			on = FALSE
 
 	if(on)
+		if(turning_on)
+			return
+
 		change_power_consumption((light_outer_range * light_max_bright) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 		update_use_power(POWER_USE_ACTIVE)
-		lightbulb.switch_on()
+		turning_on = TRUE
+		set_next_think(world.time + rand(LIGHT_ON_DELAY_LOWER, LIGHT_ON_DELAY_UPPER))
+		return
 	else
 		update_use_power(POWER_USE_IDLE)
 
 	update_icon()
+
+/obj/machinery/light/think()
+	if(!on || QDELETED(src) || QDELETED(lightbulb))
+		turning_on = FALSE
+		return
+
+	switch(get_status())
+		if(LIGHT_BROKEN, LIGHT_BURNED, LIGHT_EMPTY)
+			turning_on = FALSE
+			return
+
+	turning_on = FALSE
+	update_icon()
+	lightbulb.switch_on()
+	if(prob(15))
+		flicker(rand(1, 3))
 
 /obj/machinery/light/proc/flicker(amount = rand(10, 20))
 	set waitfor = FALSE
@@ -691,6 +723,7 @@
 
 	var/list/lighting_modes = list()
 	var/sound_on
+	var/sound_on_volume
 	var/random_tone = FALSE
 	var/tone_overlay = TRUE
 	var/list/random_tone_options = list(
@@ -718,8 +751,14 @@
 		LIGHTMODE_ALARM      = list(l_max_bright = 1.0, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#ff3333"),
 		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#8A9929")
 		)
-	sound_on = 'sound/machines/lightson.ogg'
+
 	random_tone = TRUE
+	sound_on = SFX_LIGHT_TUBE_ON
+	sound_on_volume = 50
+
+/obj/item/light/tube/nobreak // For mapping's sake
+	desc = "A replacement light tube. This one seems to wield some extra quality."
+	broken_chance = 0
 
 /obj/item/light/tube/large
 	w_class = ITEM_SIZE_SMALL
@@ -768,6 +807,8 @@
 		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.7, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#8A9929")
 		)
 	random_tone = TRUE
+	sound_on = SFX_LIGHT_BULB_ON
+	sound_on_volume = 75
 
 /obj/item/light/bulb/he
 	name = "high efficiency light bulb"
@@ -843,13 +884,14 @@
 			L.update(FALSE)
 	return ..()
 
-/obj/item/light/_examine_text(mob/user)
+/obj/item/light/examine(mob/user, infix)
 	. = ..()
+
 	switch(status)
 		if(LIGHT_BURNED)
-			. += "\nIt appears to be burnt-out."
+			. += "It appears to be burnt-out."
 		if(LIGHT_BROKEN)
-			. += "\nIt's broken."
+			. += "It's broken."
 
 // update the icon state and description of the light
 /obj/item/light/on_update_icon()
@@ -923,6 +965,10 @@
 		status = LIGHT_BROKEN
 	else if(prob(min(60, switchcount*switchcount*0.01)))
 		status = LIGHT_BURNED
+		playsound(src, GET_SFX(SFX_LIGHT_BURNOUT), 80, TRUE)
 	else if(sound_on)
-		playsound(src, sound_on, 75)
+		playsound(src, GET_SFX(sound_on), sound_on_volume)
 	return status
+
+#undef LIGHT_ON_DELAY_UPPER
+#undef LIGHT_ON_DELAY_LOWER

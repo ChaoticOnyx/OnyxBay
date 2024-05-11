@@ -82,7 +82,6 @@ var/global/floorIsLava = 0
 
 	if(M.client)
 		body += "| <A HREF='?src=\ref[src];sendtoprison=\ref[M]'>Prison</A> | "
-		body += "| <A HREF='?src=\ref[src];blind=\ref[M]'>Blind</A> | "
 		var/muted = M.client.prefs.muted
 		body += {"<br><b>Mute: </b>
 			\[<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_IC]'><font color='[(muted & MUTE_IC)?"red":"blue"]'>IC</font></a> |
@@ -200,7 +199,7 @@ var/global/floorIsLava = 0
 	var/f = 1
 	for(var/k in all_languages)
 		var/datum/language/L = all_languages[k]
-		if(!(L.flags & INNATE))
+		if(!(L.language_flags & INNATE))
 			if(!f) body += " | "
 			else f = 0
 			if(L in M.languages)
@@ -672,24 +671,30 @@ var/global/floorIsLava = 0
 
 	var/list/options = list("Regular Restart", "Hard Restart (Skip MC Shutdown)", "Hardest Restart (Direct world.Reboot) \[Dangerous\]")
 
-	var/result = input(usr, "Select reboot method", "World Reboot", options[1]) as null|anything in options
-	if(result)
-		feedback_set_details("end_error","admin reboot - by [key_name(usr)]")
-		feedback_add_details("admin_verb","R") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-		var/init_by = "<span class='notice'>Initiated by [key_name(usr)].</span>"
-		switch(result)
-			if("Regular Restart")
-				to_world("<span class='danger'>Restarting world!</span> [init_by]")
-				log_admin("[key_name(usr)] initiated a reboot.")
-				world.Reboot()
-			if("Hard Restart (Skip MC Shutdown)")
-				to_world("<span class='boldannounce'>Hard world restart.</span> [init_by]")
-				log_admin("[key_name(usr)] initiated a hard reboot.")
-				world.Reboot(reboot_hardness = REBOOT_HARD)
-			if("Hardest Restart (Direct world.Reboot) \[Dangerous\]")
-				to_world("<span class='boldannounce'>Hardest world restart.</span> [init_by]")
-				log_admin("[key_name(usr)] initiated a hardest reboot.")
-				world.Reboot(reboot_hardness = REBOOT_REALLY_HARD)
+	var/result = tgui_input_list(usr, "Select reboot method", "World Reboot", options)
+	if(!result)
+		return
+
+	var/failsafe = tgui_input_text(usr, "To confirm, type \"Server Restart\" in the box below", "WORLD REBOOT. THINK TWICE!!!")
+	if(failsafe != "Server Restart")
+		return
+
+	feedback_set_details("end_error","admin reboot - by [key_name(usr)]")
+	feedback_add_details("admin_verb","R") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	var/init_by = "<span class='notice'>Initiated by [key_name(usr)].</span>"
+	switch(result)
+		if("Regular Restart")
+			to_world("<span class='danger'>Restarting world!</span> [init_by]")
+			log_admin("[key_name(usr)] initiated a reboot.")
+			world.Reboot()
+		if("Hard Restart (Skip MC Shutdown)")
+			to_world("<span class='boldannounce'>Hard world restart.</span> [init_by]")
+			log_admin("[key_name(usr)] initiated a hard reboot.")
+			world.Reboot(reboot_hardness = REBOOT_HARD)
+		if("Hardest Restart (Direct world.Reboot) \[Dangerous\]")
+			to_world("<span class='boldannounce'>Hardest world restart.</span> [init_by]")
+			log_admin("[key_name(usr)] initiated a hardest reboot.")
+			world.Reboot(reboot_hardness = REBOOT_REALLY_HARD)
 
 /datum/admins/proc/end_round()
 	set category = "Server"
@@ -1516,3 +1521,16 @@ datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 		src = usr.client.holder
 
 	follow_panel.tgui_interact(usr, null)
+
+/datum/admins/proc/change_lobby_art()
+	set name = "Change Lobby Art"
+	set category = "Server"
+
+	if(!check_rights(R_SERVER))
+		return
+
+	var/datum/lobby_art/chosen_one = tgui_input_list(src, "Choose a new lobby art to set.", "Lobby Art", SSlobby.loaded_lobby_arts)
+	if(isnull(chosen_one))
+		return
+
+	SSlobby.change_lobby_art(chosen_one)

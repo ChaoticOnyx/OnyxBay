@@ -9,12 +9,6 @@
 	w_class = ITEM_SIZE_NO_CONTAINER
 	layer = STRUCTURE_LAYER
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 41 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 3.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
 	var/icon_closed = "closed"
 	var/icon_opened = "open"
 
@@ -48,6 +42,13 @@
 	var/material = /obj/item/stack/material/steel
 
 	var/intact_closet = TRUE // List operations overhead bad
+
+	rad_resist_type = /datum/rad_resist/closet
+
+/datum/rad_resist/closet
+	alpha_particle_resist = 41 MEGA ELECTRONVOLT
+	beta_particle_resist = 3.4 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/structure/closet/nodoor
 	nodoor = TRUE
@@ -171,23 +172,24 @@
 /obj/structure/closet/proc/WillContain()
 	return null
 
-/obj/structure/closet/_examine_text(mob/user)
+/obj/structure/closet/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1 && !opened)
 		var/content_size = 0
 		for(var/atom/movable/AM in src.contents)
 			if(!AM.anchored)
 				content_size += content_size(AM)
 		if(!content_size)
-			. += "\nIt is empty."
+			. += "It is empty."
 		else if(storage_capacity > content_size*4)
-			. += "\nIt is barely filled."
+			. += "It is barely filled."
 		else if(storage_capacity > content_size*2)
-			. += "\nIt is less than half full."
+			. += "It is less than half full."
 		else if(storage_capacity > content_size)
-			. += "\nThere is still some free space."
+			. += "There is still some free space."
 		else
-			. += "\nIt is full."
+			. += "It is full."
 
 	if(isghost(user))
 		var/mob/observer/ghost/G = user
@@ -197,7 +199,7 @@
 		if(src.opened)
 			return
 
-		. += "\nIt contains: [items_english_list(contents)]."
+		. += "It contains: [items_english_list(contents)]."
 
 /obj/structure/closet/CanPass(atom/movable/mover, turf/target)
 	if(wall_mounted)
@@ -309,7 +311,7 @@
 /obj/structure/closet/proc/store_mobs(stored_units)
 	. = 0
 	for(var/mob/living/M in loc)
-		if(M.buckled || M.pinned.len || M.anchored)
+		if(M.buckled || LAZYLEN(M.pinned) || M.anchored)
 			continue
 		var/mob_size = content_size(M)
 		if(CLOSET_CHECK_TOO_BIG(mob_size))

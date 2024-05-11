@@ -223,7 +223,7 @@ meteor_act
 	for(var/obj/item/clothing/gear in protective_gear)
 		if(gear.body_parts_covered & def_zone.body_part)
 			protection = add_armor(protection, gear.armor[type])
-		if(gear.accessories.len)
+		if(LAZYLEN(gear.accessories))
 			for(var/obj/item/clothing/accessory/bling in gear.accessories)
 				if(bling.body_parts_covered & def_zone.body_part)
 					protection = add_armor(protection, bling.armor[type])
@@ -245,7 +245,7 @@ meteor_act
 	// Unlike in get_flat_armor, here we iterate over everything since a piece
 	// of clothing may have a bodypart coverage w/out having it in 'body_parts_covered'
 	for(var/obj/item/clothing/C in protective_gear)
-		if(length(C.accessories))
+		if(LAZYLEN(C.accessories))
 			for(var/obj/item/clothing/accessory/CA in C.accessories)
 				armor_layer = CA.get_armor_coverage(affecting, type, src)
 				if(islist(armor_layer))

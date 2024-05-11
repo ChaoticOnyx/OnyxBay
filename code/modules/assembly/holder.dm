@@ -66,15 +66,14 @@
 	if(master)
 		master.update_icon()
 
-/obj/item/device/assembly_holder/_examine_text(mob/user)
+/obj/item/device/assembly_holder/examine(mob/user, infix)
 	. = ..()
-	if ((in_range(src, user) || src.loc == user))
-		if (src.secured)
-			. += "\n\The [src] is ready!"
-		else
-			. += "\n\The [src] can be attached!"
-	return
 
+	if((in_range(src, user) || src.loc == user))
+		if(src.secured)
+			. += "\The [src] is ready!"
+		else
+			. += "\The [src] can be attached!"
 
 /obj/item/device/assembly_holder/HasProximity(atom/movable/AM)
 	if(a_left)
@@ -226,7 +225,7 @@
 	loc.verbs += /obj/item/device/assembly_holder/timer_igniter/verb/configure
 
 /obj/item/device/assembly_holder/timer_igniter/detached()
-	loc.verbs -= /obj/item/device/assembly_holder/timer_igniter/verb/configure
+	loc.remove_verb(loc.loc, /obj/item/device/assembly_holder/timer_igniter/verb/configure)
 	..()
 
 /obj/item/device/assembly_holder/timer_igniter/verb/configure()

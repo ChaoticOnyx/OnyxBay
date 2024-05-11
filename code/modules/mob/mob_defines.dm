@@ -146,11 +146,7 @@
 
 	/// Total radiation dose. Sv.
 	var/radiation = SPACE_RADIATION
-	var/list/rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 6 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.1 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	var/rad_resist_type = /datum/rad_resist/mob
 
 	var/voice_name = "unidentifiable voice"
 
@@ -180,9 +176,6 @@
 	//If set, indicates that the client "belonging" to this (clientless) mob is currently controlling some other mob
 	//so don't treat them as being SSD even though their client var is null.
 	var/mob/teleop = null
-
-	var/turf/listed_turf = null  	//the current turf being examined in the stat panel
-	var/list/shouldnt_see = list()	//list of objects that this mob shouldn't see in the stat panel. this silliness is needed because of AI alt+click and cult blood runes
 
 	var/mob_size = MOB_MEDIUM
 	var/throw_multiplier = 1
@@ -223,5 +216,16 @@
 	var/list/feet_blood_DNA
 	var/track_blood_type
 	var/feet_blood_color
+
 	/// Holder for a bugreporter datum.
 	var/datum/bugreporter/bugreporter
+
+	/// UI holder for a language menu.
+	var/datum/language_menu/language_menu
+	/// Associative list of procpath -> list/atom, where atom is a source a procpath comes from.
+	var/list/atom_verbs
+
+/datum/rad_resist/mob
+	alpha_particle_resist = 6 MEGA ELECTRONVOLT
+	beta_particle_resist = 0.1 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT

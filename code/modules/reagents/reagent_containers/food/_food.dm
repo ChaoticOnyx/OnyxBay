@@ -150,12 +150,13 @@
 			return SPAN("notice", "\n\The [src] was bitten multiple times!")
 
 
-/obj/item/reagent_containers/food/_examine_text(mob/user)
+/obj/item/reagent_containers/food/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) > 1)
 		return
-	. += get_bitecount()
 
+	. += get_bitecount()
 
 /obj/item/reagent_containers/food/throw_impact(atom/hit_atom, speed, thrown_with, target_zone)
 	var/mob/living/carbon/human/H = hit_atom

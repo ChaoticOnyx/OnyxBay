@@ -279,6 +279,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 /atom/movable/renderer/scene_group/Initialize()
 	. = ..()
 	add_filter(WARP_EFFECT_RENDERER,0,list(type = "displace", render_source = "*warp", size = 5))
+	add_filter(TEMPERATURE_EFFECT_RENDERER, 0, list(type = "displace", render_source = TEMPERATURE_COMPOSITE_TARGET, size = 2.5))
 
 /// Example of a warp filter for /renderer use
 /obj/effect/effect/warp
@@ -289,6 +290,66 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	pixel_x = -176
 	pixel_y = -176
 
+/// Renders temperature effects from cold/hot air
+/atom/movable/renderer/heat
+	name = TEMPERATURE_EFFECT_RENDERER
+	group = RENDER_GROUP_NONE
+	plane = TEMPERATURE_EFFECT_PLANE
+	render_target_name = TEMPERATURE_COMPOSITE_TARGET
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+
+	var/obj/gas_heat_object = null
+	var/obj/steam_object = null
+
+/atom/movable/renderer/heat/Initialize(mapload, mob/owner)
+	. = ..()
+	Setup()
+
+/atom/movable/renderer/heat/GraphicsUpdate()
+	. = ..()
+	Setup()
+
+/atom/movable/renderer/heat/proc/Setup()
+	if(gas_heat_object)
+		vis_contents -= gas_heat_object
+		QDEL_NULL(gas_heat_object)
+
+	if(steam_object)
+		vis_contents -= steam_object
+		QDEL_NULL(steam_object)
+
+	if(!owner?.client)
+		return
+
+	var/quality = owner.get_preference_value(/datum/client_preference/graphics_quality)
+
+	switch(quality)
+		if(GLOB.PREF_LOW)
+			gas_heat_object = new /atom/movable/heat_effect(null)
+			steam_object = new /atom/movable/steam_effect(null)
+		if(GLOB.PREF_MED)
+			gas_heat_object = new /atom/movable/particle_emitter/heat(null)
+			steam_object = new /atom/movable/particle_emitter/steam(null)
+		else
+			gas_heat_object = new /atom/movable/particle_emitter/heat/high(null)
+			steam_object = new /atom/movable/particle_emitter/steam(null)
+
+	vis_contents += gas_heat_object
+	vis_contents += steam_object
+
+/atom/movable/heat_effect
+	icon = 'icons/effects/fire.dmi'
+	icon_state = "3"
+	appearance_flags = PIXEL_SCALE | NO_CLIENT_COLOR
+	render_target = HEAT_EFFECT_TARGET
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+
+/atom/movable/steam_effect
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "smoke"
+	appearance_flags = PIXEL_SCALE | NO_CLIENT_COLOR
+	render_target = STEAM_EFFECT_TARGET
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
 
 /* *
  * This system works by exploiting BYONDs color matrix filter to use layers to handle emissive blockers.

@@ -3,8 +3,9 @@
 /obj/machinery/lapvend
 	name = "computer vendor"
 	desc = "A vending machine with a built-in microfabricator, capable of dispensing various NT-branded computers."
-	icon = 'icons/obj/machines/vending.dmi'
+	icon = 'icons/obj/machines/vending/engi.dmi'
 	icon_state = "robotics"
+	base_icon_state = "robotics"
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
@@ -314,3 +315,28 @@
 		var/datum/transaction/T = new("Computer Manufacturer (via [src.name])", "Purchase of [(devtype == 1) ? "laptop computer" : "tablet microcomputer"].", -total_price, src.name)
 		customer_account.do_transaction(T)
 		return 1
+
+/obj/machinery/lapvend/on_update_icon()
+	ClearOverlays()
+	if(stat & BROKEN)
+		icon_state = "[base_icon_state]-broken"
+	else if(!(stat & (NOPOWER | POWEROFF)))
+		icon_state = base_icon_state
+	else
+		icon_state = "[base_icon_state]-off"
+	if(panel_open)
+		AddOverlays(image(icon, "[base_icon_state]-panel"))
+
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "[base_icon_state]_ea"))
+		if(!panel_open)
+			AddOverlays(emissive_appearance(icon, "[base_icon_state]_panel_ea"))
+
+/obj/machinery/lapvend/proc/update_glow()
+	if(inoperable(MAINT))
+		set_light(0)
+		return FALSE
+
+	set_light(0.65, 0.1, 1, 2, light_color)
+	return TRUE

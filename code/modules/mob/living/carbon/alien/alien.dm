@@ -25,8 +25,10 @@
 
 	time_of_birth = world.time
 
-	verbs += /mob/living/proc/ventcrawl
-	verbs += /mob/living/proc/hide
+	grant_verb(src, list(
+		/mob/living/proc/ventcrawl,
+		/mob/living/proc/hide,
+	))
 
 	instance_num = rand(1, 1000)
 	name = "[initial(name)] ([instance_num])"
@@ -43,11 +45,8 @@
 /mob/living/carbon/alien/__unequip(obj/W)
 	return
 
-/mob/living/carbon/alien/Stat()
-	. = ..()
-
 /mob/living/carbon/alien/restrained()
 	return 0
 
 /mob/living/carbon/alien/show_inv(mob/user)
-	return //Consider adding cuffs and hats to this, for the sake of fun.
+	return FALSE//Consider adding cuffs and hats to this, for the sake of fun.

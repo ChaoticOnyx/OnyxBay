@@ -35,7 +35,7 @@
 			if((M in view) && M.client)
 				to_chat(M, "<span class='cult'>Your attention is eerily drawn to \the [a].</span>")
 				M.client.images += arrow
-				register_signal(M, SIGNAL_LOGGED_OUT, /datum/phenomena/point/proc/remove_image)
+				register_signal(M, SIGNAL_LOGGED_OUT, nameof(/datum/phenomena/point.proc/remove_image))
 				spawn(20)
 					if(M.client)
 						remove_image(M)
@@ -55,11 +55,7 @@
 	var/pain = input(linked, "Choose their punishment.", "Punishment") as anything in punishment_list
 	if(!pain)
 		return
-	if(linked.mob_uplink.uses < punishment_list[pain])
-		to_chat(linked, "<span class='warning'>[pain] costs too much power for you to use on \the [L]</span>")
-		return
 	..()
-	linked.take_cost(punishment_list[pain])
 	switch(pain)
 		if("Pain (0)")
 			L.adjustHalLoss(15)

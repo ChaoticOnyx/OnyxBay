@@ -40,7 +40,7 @@
 		else
 			stored_ore[O.name] = 1
 
-/obj/structure/ore_box/_examine_text(mob/user)
+/obj/structure/ore_box/examine(mob/user, infix)
 	. = ..()
 
 	// Borgs can now check contents too.
@@ -53,18 +53,16 @@
 	add_fingerprint(user)
 
 	if(!contents.len)
-		. += "\nIt is empty."
+		. += "It is empty."
 		return
 
 	if(world.time > last_update + 10)
 		update_ore_count()
 		last_update = world.time
 
-	. += "\nIt holds:"
+	. += "It holds:"
 	for(var/ore in stored_ore)
-		. += "\n- [stored_ore[ore]] [ore]"
-	return
-
+		. += "- [stored_ore[ore]] [ore]"
 
 /obj/structure/ore_box/verb/empty_box()
 	set name = "Empty Ore Box"

@@ -42,8 +42,6 @@
 			world.Export("[config.external.login_export_addr]?[list2params(params)]", null, 1)
 
 /mob/Login()
-	CAN_BE_REDEFINED(TRUE)
-	SHOULD_CALL_PARENT(TRUE)
 	if(!client)
 		return
 
@@ -79,9 +77,10 @@
 
 	refresh_client_images()
 	reload_fullscreen() // Reload any fullscreen overlays this mob has.
-	add_click_catcher()
 
-	client.mob.update_client_color()
+	client.add_click_catcher()
+
+	update_client_color()
 
 	//set macro to normal incase it was overriden (like cyborg currently does)
 	var/hotkey_mode = client.get_preference_value("DEFAULT_HOTKEY_MODE")
@@ -107,3 +106,5 @@
 
 	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_IN, src)
 	SEND_SIGNAL(src, SIGNAL_LOGGED_IN, src)
+
+	client.init_verbs()

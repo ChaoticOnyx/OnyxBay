@@ -32,7 +32,7 @@
 	if(response  == "Yes" && Adjacent(user))
 		var/obj/machinery/mineral/stacking_machine/s_machine = locate_unit(/obj/machinery/mineral/stacking_machine)
 		if(!s_machine)
-			show_splash_text(user, "no ore stacking units found!")
+			show_splash_text(user, "no ore stacking units found!", SPAN("warning", "\The [src] has failed to detect any ore stacking units!"))
 			return
 
 		machine_ref = weakref(s_machine)
@@ -119,8 +119,7 @@
 		return
 
 	if(istype(target, /obj/item/stack/material))
-		var/obj/item/stack/material/stack = target
-		load_item(stack)
+		load_item(target)
 	else
 		var/turf/unload_turf = get_step(src, dir)
 		if(unload_turf)
@@ -131,12 +130,16 @@
 		return
 
 	machine_storage[incoming_stack.stacktype] += incoming_stack.amount
-	qdel(incoming_stack)
 
 	while(machine_storage[incoming_stack.stacktype] >= stack_amt)
-		unload_item(incoming_stack.type, stack_amt)
+		unload_item(incoming_stack.stacktype, stack_amt)
+
+	qdel(incoming_stack)
 
 /obj/machinery/mineral/stacking_machine/unload_item(type, amount)
+	if(amount <= 0)
+		return
+
 	var/obj/item/stack/material/out = new type()
 	out.amount = amount
 	machine_storage[type] -= amount

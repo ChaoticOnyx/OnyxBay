@@ -36,12 +36,13 @@
 		generator.forceMove(loc)
 		generator.connect_to_network()
 
-/obj/structure/bed/chair/pedalgen/_examine_text(mob/user)
+/obj/structure/bed/chair/pedalgen/examine(mob/user, infix)
 	. = ..()
+
 	if(generator.raw_power > 0)
-		. += "\nIt has [generator.raw_power] raw power stored, it generates [generator.raw_power > 10 ? "20" : "10" ]kW!"
+		. += "It has [generator.raw_power] raw power stored, it generates [generator.raw_power > 10 ? "20" : "10" ]kW!"
 	else
-		. += "\nGenerator stands still. Someone need to pedal that thing."
+		. += "Generator stands still. Someone need to pedal that thing."
 
 /obj/structure/bed/chair/pedalgen/attackby(obj/item/W, mob/user)
 	if(isWrench(W))
@@ -127,9 +128,16 @@
 		layer = OBJ_LAYER
 
 	if(buckled_mob)
-		if(buckled_mob.loc != loc)
-			buckled_mob.buckled = null //Temporary, so Move() succeeds.
-			buckled_mob.buckled = src //Restoring
+		update_mob(buckled_mob)
+
+/obj/structure/bed/chair/pedalgen/rotate_counter()
+	..()
+	if(dir == SOUTH)
+		layer = FLY_LAYER
+	else
+		layer = OBJ_LAYER
+
+	if(buckled_mob)
 		update_mob(buckled_mob)
 
 /obj/structure/bed/chair/pedalgen/on_update_icon()

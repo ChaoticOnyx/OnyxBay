@@ -58,7 +58,7 @@
 		verbs -= /obj/item/clothing/under/verb/rollsleeves
 
 /obj/item/clothing/under/attack_hand(mob/user)
-	if(accessories && accessories.len)
+	if(LAZYLEN(accessories))
 		..()
 	if ((ishuman(usr) || issmall(usr)) && src.loc == user)
 		return
@@ -115,17 +115,18 @@
 		M.update_inv_wear_id()
 
 
-/obj/item/clothing/under/_examine_text(mob/user)
+/obj/item/clothing/under/examine(mob/user, infix)
 	. = ..()
-	switch(src.sensor_mode)
+
+	switch(sensor_mode)
 		if(0)
-			. += "\nIts sensors appear to be disabled."
+			. += "It's sensors appear to be disabled."
 		if(1)
-			. += "\nIts binary life sensors appear to be enabled."
+			. += "It's binary life sensors appear to be enabled."
 		if(2)
-			. += "\nIts vital tracker appears to be enabled."
+			. += "It's vital tracker appears to be enabled."
 		if(3)
-			. += "\nIts vital tracker and tracking beacon appear to be enabled."
+			. += "It's vital tracker and tracking beacon appear to be enabled."
 
 /obj/item/clothing/under/proc/set_sensors(mob/user as mob)
 	var/mob/M = user

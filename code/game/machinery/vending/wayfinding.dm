@@ -2,6 +2,7 @@
 	name = "wayfinding pinpointer vending machine"
 	desc = "A machine given the thankless job of trying to give wayfinding pinpointers. They point to common locations."
 
+	icon = 'icons/obj/machines/vending/cart.dmi'
 	icon_state = "cart"
 
 	use_vend_state = TRUE

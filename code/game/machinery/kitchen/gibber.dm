@@ -18,9 +18,6 @@
 		/obj/item/circuitboard/gibber
 	)
 
-	/// Gibbing Timer ID.
-	var/timer = null
-
 	/// Direction to spit meat and gibs in.
 	var/gib_throw_dir = WEST
 
@@ -48,6 +45,24 @@
 	else
 		AddOverlays("gibber-idle")
 
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
+
+/obj/machinery/gibber/proc/update_glow()
+	if(inoperable(MAINT))
+		set_light(0)
+		return FALSE
+
+	var/color = COLOR_YELLOW
+	if(operating)
+		color = COLOR_GREEN
+	if(length(mobs_to_process))
+		color = COLOR_NT_RED
+
+	set_light(0.7, 0.1, 1, 2, color)
+	return TRUE
+
 /obj/machinery/gibber/RefreshParts()
 	var/time_modifier = 0
 	for(var/obj/item/stock_parts/micro_laser/ML in component_parts)
@@ -62,14 +77,14 @@
 /obj/machinery/gibber/Initialize()
 	. = ..()
 
+	add_think_ctx("finish_processing", CALLBACK(src, nameof(.proc/finish_processing)), 0)
 	update_icon()
 	RefreshParts()
 
 /obj/machinery/gibber/Destroy()
-	if(operating || timer)
+	if(operating)
 		for(var/atom/A in contents - mobs_to_process - component_parts)
 			qdel(A) // No drops for cheaters...
-		deltimer(timer)
 	if(length(mobs_to_process))
 		for(var/mob/M in mobs_to_process)
 			M.forceMove(loc)
@@ -227,7 +242,7 @@
 	for(var/mob/pig in mobs_to_process)
 		create_mob_drop(pig)
 
-	timer = addtimer(CALLBACK(src, nameof(.proc/finish_processing), user), length(mobs_to_process) * gib_time, TIMER_STOPPABLE)
+	set_next_think_ctx("finish_processing", world.time + length(mobs_to_process) * gib_time, user)
 
 /obj/machinery/gibber/proc/create_mob_drop(mob/victim)
 	if(istype(victim, /mob/living/simple_animal/hostile/faithless))
@@ -309,7 +324,6 @@
 		pig.gib(do_gibs = gore)
 		qdel(pig)
 
-	timer = null
 	operating = FALSE
 
 	playsound(loc, 'sound/effects/splat.ogg', 50, 1)
@@ -355,7 +369,24 @@
 	else if(length(mobs_to_process))
 		AddOverlays("ind_gibber-jam")
 
-	return
+	var/should_glow = update_glow()
+	if(should_glow)
+		if(operating || length(mobs_to_process))
+			AddOverlays(emissive_appearance(icon, "[icon_state]_usejam_ea"))
+		else
+			AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
+
+/obj/machinery/gibber/industrial/update_glow()
+	if(stat & MAINT)
+		set_light(0)
+		return FALSE
+
+	var/color = COLOR_NT_RED
+	if(operating)
+		color = COLOR_GREEN
+
+	set_light(0.7, 0.1, 1, 2, color)
+	return TRUE
 
 /obj/machinery/gibber/industrial/Initialize()
 	. = ..()

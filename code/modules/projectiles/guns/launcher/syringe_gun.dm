@@ -169,7 +169,8 @@
 	throw_distance = 7
 	release_force = 7
 
-/obj/item/gun/launcher/syringe/disguised/_examine_text(mob/user)
+/obj/item/gun/launcher/syringe/disguised/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 0)
-		. += "\nThe button is a little stiff."
+		. += "The button is a little stiff."

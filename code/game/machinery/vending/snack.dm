@@ -3,7 +3,9 @@
 	name = "Getmore Chocolate Corp"
 	desc = "A snack machine courtesy of the Getmore Chocolate Corporation, based out of Mars."
 
+	icon = 'icons/obj/machines/vending/snack.dmi'
 	icon_state = "snack"
+	light_color = "#FF9900"
 
 	vend_delay = 25
 	use_vend_state = TRUE
@@ -55,6 +57,7 @@
 
 /obj/machinery/vending/snack/wallsnack
 	name = "Getmore Chocolate Corp"
+
 	icon_state = "snack_wall"
 	use_vend_state = FALSE
 	component_types = list(/obj/item/vending_cartridge/wallsnack)
@@ -94,8 +97,11 @@
 	desc = "A snack machine manufactured by Getmore Chocolate Corporation, specifically for hospitals."
 	product_slogans = "Try our new Hema-2-Gen bar!;Twice the health for half the price!"
 	product_ads = "The healthiest!;Award-winning chocolate bars!;Mmm! So good!;Oh my god it's so juicy!;Have a snack.;Snacks are good for you!;Have some more Getmore!;Best quality snacks straight from mars.;We love chocolate!;Try our new jerky!"
+
 	icon_state = "snackmed"
 	use_vend_state = TRUE
+	light_color = "#B8D4CB"
+
 	vend_delay = 25
 	component_types = list(/obj/item/vending_cartridge/medbay)
 	legal = list(	/obj/item/reagent_containers/food/grown/apple = 10,

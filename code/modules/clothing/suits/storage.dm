@@ -10,7 +10,7 @@
 
 /obj/item/clothing/suit/storage/Destroy()
 	QDEL_NULL(pockets)
-	. = ..()
+	return ..()
 
 /obj/item/clothing/suit/storage/attack_hand(mob/user as mob)
 	if (pockets.handle_attack_hand(user))
@@ -22,7 +22,7 @@
 
 /obj/item/clothing/suit/storage/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(!(W in accessories))		//Make sure that an accessory wasn't successfully attached to suit.
+	if(!LAZYISIN(accessories, W))		//Make sure that an accessory wasn't successfully attached to suit.
 		pockets.attackby(W, user)
 
 /obj/item/clothing/suit/storage/emp_act(severity)

@@ -225,7 +225,7 @@ var/list/solars_list = list()
 
 /obj/item/solar_assembly/attackby(obj/item/W, mob/user)
 	if(!tracker)
-		if(istype(W, /obj/item/tracker_electronics) && user.drop(W))
+		if(istype(W, /obj/item/tracker_electronics) && user.drop(W, src))
 			tracker = 1
 			user.visible_message("<span class='notice'>[user] inserts the electronics into the solar assembly.</span>")
 			return 1
@@ -533,7 +533,11 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar_control/autostart/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, nameof(.proc/autoconnect)), 0)
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/power/solar_control/autostart/LateInitialize()
+	. = ..()
+	autoconnect()
 
 /obj/machinery/power/solar_control/autostart/proc/autoconnect()
 	search_for_connected()

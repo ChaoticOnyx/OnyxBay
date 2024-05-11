@@ -59,9 +59,26 @@
 
 	my_mob.death(0) // So our body ~actually~ dies until revived
 
-	addtimer(CALLBACK(src, nameof(.proc/revive_ready)), revive_time)
+	set_next_think(world.time + revive_time)
 
 	update_screen_button()
+
+/datum/changeling_power/toggled/stasis/think()
+	if(QDELETED(src))
+		return
+
+	if(!changeling.my_mob)
+		return
+
+	is_ready = TRUE
+	to_chat(my_mob, SPAN("changeling", "<font size='5'>We are ready to rise. Use the <b>Revive</b> ability to get back up.</font>"))
+
+	name = "Revive"
+	desc = "We will rise again from death."
+
+	update_screen_button()
+
+	feedback_add_details("changeling_powers", "FD")
 
 // Reviving ourselves
 /datum/changeling_power/toggled/stasis/deactivate()
@@ -90,19 +107,3 @@
 	L.revive(ignore_prosthetic_prefs = TRUE) // Complete regeneration
 	L.status_flags &= ~(FAKEDEATH)
 	L.update_canmove()
-
-/datum/changeling_power/toggled/stasis/proc/revive_ready()
-	if(QDELETED(src))
-		return
-	if(!changeling.my_mob)
-		return
-
-	is_ready = TRUE
-	to_chat(my_mob, SPAN("changeling", "<font size='5'>We are ready to rise. Use the <b>Revive</b> ability to get back up.</font>"))
-
-	name = "Revive"
-	desc = "We will rise again from death."
-
-	update_screen_button()
-
-	feedback_add_details("changeling_powers", "FD")

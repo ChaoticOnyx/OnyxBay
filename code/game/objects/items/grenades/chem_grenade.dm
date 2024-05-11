@@ -132,10 +132,11 @@
 			else
 				to_chat(user, SPAN("warning", "\The [W] is empty."))
 
-/obj/item/grenade/chem_grenade/_examine_text(mob/user)
-	. = ..(user)
+/obj/item/grenade/chem_grenade/examine(mob/user, infix)
+	. = ..()
+
 	if(detonator)
-		to_chat(user, "With attached [detonator.name]")
+		. += "It has \the [detonator] atached."
 
 /obj/item/grenade/chem_grenade/detonate()
 	if(stage != STAGE_READY) return

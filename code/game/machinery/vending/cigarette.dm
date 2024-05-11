@@ -3,7 +3,9 @@
 	name = "Cigarette machine" // OCD had to be uppercase to look nice with the new formating
 	desc = "A specialized vending machine designed to contribute to your slow and uncomfortable death."
 
+	icon = 'icons/obj/machines/vending/cigs.dmi'
 	icon_state = "cigs"
+	light_color = "#54A496"
 
 	vend_delay = 30
 	use_alt_icons = TRUE
@@ -121,7 +123,9 @@
 	name = "Cigars midcentury machine" //OCD had to be uppercase to look nice with the new formating
 	desc = "Classy vending machine designed to contribute to your slow and uncomfortable death with style."
 
+	icon = 'icons/obj/machines/vending/cigs.dmi'
 	icon_state = "cigars"
+	light_color = COLOR_PALE_BLUE_GRAY
 
 	vend_delay = 21
 	use_vend_state = TRUE

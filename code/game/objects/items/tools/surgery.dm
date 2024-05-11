@@ -400,14 +400,17 @@
 	else
 		..()
 
-/obj/item/organfixer/_examine_text(mob/user)
+/obj/item/organfixer/examine(mob/user, infix)
 	. = ..()
-	if(. && user.Adjacent(src))
-		if(gel_amt_max > 0)
-			if(gel_amt == 0)
-				to_chat(user, "It's empty.")
-			else
-				to_chat(user, "It has [gel_amt] doses of gel left.")
+
+	if(!user.Adjacent(src))
+		return
+
+	if(gel_amt_max > 0)
+		if(gel_amt == 0)
+			. += "It's empty."
+		else
+			. += "It has [gel_amt] doses of gel left."
 
 /obj/item/organfixer/emag_act(remaining_charges, mob/user)
 	if(emagged)

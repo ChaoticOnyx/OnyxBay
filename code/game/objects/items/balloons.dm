@@ -155,8 +155,10 @@
 	var/mob/living/M = loc
 	if(istype(M) && M.can_wield_item(src) && is_held_twohanded(M))
 		wielded = TRUE
+		improper_held_icon = TRUE
 	else
 		wielded = FALSE
+		improper_held_icon = FALSE
 	update_icon()
 	..()
 
@@ -201,7 +203,7 @@
 	if(isobserver(usr) || usr.restrained() || !usr.Adjacent(src) || !isturf(loc))
 		return FALSE
 
-	verbs -= /obj/item/balloon/verb/deflate
+	remove_verb(loc, /obj/item/balloon/verb/deflate)
 	playsound(loc, 'sound/machines/hiss.ogg', 50, 1)
 	var/obj/item/balloon_flat/BF = new /obj/item/balloon_flat(loc)
 	BF.color = color

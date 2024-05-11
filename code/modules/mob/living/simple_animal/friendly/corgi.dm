@@ -134,7 +134,8 @@
 
 /mob/living/simple_animal/corgi/show_inv(mob/user)
 	user.set_machine(src)
-	if(user.stat) return
+	if(user.stat)
+		return FALSE
 
 	var/dat = 	"<meta charset=\"utf-8\"><div align='center'><b>Inventory of [name]</b></div><p>"
 	if(hat)
@@ -143,7 +144,7 @@
 		dat +=	"<br><b>Head:</b> <a href='?src=\ref[src];add_inv=hat'>Nothing</a>"
 	show_browser(user, dat, text("window=mob[];size=325x325", name))
 	onclose(user, "mob[real_name]")
-	return
+	return TRUE
 
 /mob/living/simple_animal/corgi/Topic(href, href_list)
 	//Can the usr physically do this?

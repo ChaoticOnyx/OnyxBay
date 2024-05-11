@@ -310,12 +310,13 @@
 /obj/item/zipgunframe/on_update_icon()
 	icon_state = "zipgun[buildstate]"
 
-/obj/item/zipgunframe/_examine_text(mob/user)
+/obj/item/zipgunframe/examine(mob/user, infix)
 	. = ..()
+
 	switch(buildstate)
-		if(1) . += "\nIt has a barrel loosely fitted to the stock."
-		if(2) . += "\nIt has a barrel that has been secured to the stock with tape."
-		if(3) . += "\nIt has a trigger and firing pin assembly loosely fitted into place."
+		if(1) . += "It has a barrel loosely fitted to the stock."
+		if(2) . += "It has a barrel that has been secured to the stock with tape."
+		if(3) . += "It has a trigger and firing pin assembly loosely fitted into place."
 
 /obj/item/zipgunframe/attackby(obj/item/thing, mob/user)
 	if(istype(thing,/obj/item/pipe) && buildstate == 0)

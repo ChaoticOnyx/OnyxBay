@@ -83,8 +83,6 @@
 			return global.SStgui;
 		if("SSticker")
 			return global.SSticker;
-		if("SStimer")
-			return global.SStimer;
 		if("SStrade")
 			return global.SStrade;
 		if("SSvines")
@@ -233,8 +231,6 @@
 			return global.changelog_hash;
 		if("channel_to_radio_key")
 			return global.channel_to_radio_key;
-		if("chargen_robolimbs")
-			return global.chargen_robolimbs;
 		if("checked_for_inactives")
 			return global.checked_for_inactives;
 		if("chemical_reaction_logs")
@@ -243,8 +239,6 @@
 			return global.chemical_reactions_list;
 		if("church_name")
 			return global.church_name;
-		if("client_preference_stats_")
-			return global.client_preference_stats_;
 		if("client_repository")
 			return global.client_repository;
 		if("combatlog")
@@ -797,8 +791,6 @@
 			return global.wireColours;
 		if("world_topic_spam_protect_time")
 			return global.world_topic_spam_protect_time;
-		if("world_uplinks")
-			return global.world_uplinks;
 		if("worths")
 			return global.worths;
 		if("wrapped_species_by_ref")
@@ -892,8 +884,6 @@
 			global.SStgui=newval;
 		if("SSticker")
 			global.SSticker=newval;
-		if("SStimer")
-			global.SStimer=newval;
 		if("SStrade")
 			global.SStrade=newval;
 		if("SSvines")
@@ -1046,8 +1036,6 @@
 			global.changelog_hash=newval;
 		if("channel_to_radio_key")
 			global.channel_to_radio_key=newval;
-		if("chargen_robolimbs")
-			global.chargen_robolimbs=newval;
 		if("checked_for_inactives")
 			global.checked_for_inactives=newval;
 		if("chemical_reaction_logs")
@@ -1056,8 +1044,6 @@
 			global.chemical_reactions_list=newval;
 		if("church_name")
 			global.church_name=newval;
-		if("client_preference_stats_")
-			global.client_preference_stats_=newval;
 		if("client_repository")
 			global.client_repository=newval;
 		if("combatlog")
@@ -1608,8 +1594,6 @@
 			global.wireColours=newval;
 		if("world_topic_spam_protect_time")
 			global.world_topic_spam_protect_time=newval;
-		if("world_uplinks")
-			global.world_uplinks=newval;
 		if("worths")
 			global.worths=newval;
 		if("wrapped_species_by_ref")
@@ -1753,13 +1737,11 @@
 	"cargo_supply_packs",
 	"changelog_hash",
 	"channel_to_radio_key",
-	"chargen_robolimbs",
 	"checked_for_inactives",
 	"chemical_reaction_logs",
 	"chemical_reactions_list",
 	"chicken_count",
 	"church_name",
-	"client_preference_stats_",
 	"client_repository",
 	"combatlog",
 	"comm_message_listeners",
@@ -2079,7 +2061,6 @@
 	"whitelisted_species",
 	"wireColours",
 	"world_topic_spam_protect_time",
-	"world_uplinks",
 	"worths",
 	"wrapped_species_by_ref",
 	"z_levels",

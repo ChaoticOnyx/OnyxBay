@@ -87,10 +87,11 @@ To add a crossbreed:
 	throw_range = 6
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
-/obj/item/metroidcross/_examine_text(mob/user)
+/obj/item/metroidcross/examine(mob/user, infix)
 	. = ..()
+
 	if(effect_desc)
-		. += SPAN_NOTICE("\n[effect_desc]")
+		. += SPAN_NOTICE("[effect_desc]")
 
 /obj/item/metroidcross/Initialize(mapload)
 	. = ..()

@@ -37,8 +37,9 @@
 	if(bcell)
 		AddOverlays(image(icon, "gloves_cell"))
 
-/obj/item/clothing/gloves/stun/_examine_text()
+/obj/item/clothing/gloves/stun/examine(mob/user, infix)
 	. = ..()
+
 	if(!bcell)
 		. += "<br>\The [src] have no power cell installed."
 	else

@@ -3,7 +3,7 @@
 	desc = "Looks unstable. Best to test it with the clown."
 	icon = 'icons/obj/portals.dmi'
 	icon_state = "portal"
-	density = FALSE
+	density = TRUE
 	unacidable = TRUE // Can't destroy energy portals.
 	var/atom/target = null
 	var/creator = null
@@ -12,7 +12,8 @@
 	var/failchance = 0
 	var/teleport_type = /decl/teleport/sparks
 
-/obj/effect/portal/Crossed(AM)
+/obj/effect/portal/Bumped(AM)
+	. = ..()
 	teleport(AM)
 
 /obj/effect/portal/attack_hand(mob/user)
@@ -21,7 +22,10 @@
 /obj/effect/portal/Initialize(mapload, end, delete_after = 300, failure_rate)
 	. = ..()
 	setup_portal(end, delete_after, failure_rate)
-	addtimer(CALLBACK(src, nameof(.proc/move_all_objects)), 1.5 SECONDS)
+	set_next_think(world.time + 1.5 SECONDS)
+
+/obj/effect/portal/think()
+	move_all_objects()
 
 /obj/effect/portal/Destroy()
 	target = null

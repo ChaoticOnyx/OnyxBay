@@ -392,9 +392,9 @@
 	unarmed_damage_override = 10
 	origin_tech = list(TECH_ILLEGAL = 5)
 
-/obj/item/clothing/gloves/chameleon/robust/_examine_text(mob/user)
+/obj/item/clothing/gloves/chameleon/robust/examine(mob/user, infix)
 	. = ..()
-	. += "\nThese look extra robust."
+	. += "These look extra robust."
 
 //******************
 //**Chameleon Mask**
@@ -411,11 +411,12 @@
 	desc = "It looks like a plain gask mask, but on closer inspection, it seems to have a small dial inside."
 	origin_tech = list(TECH_ILLEGAL = 3)
 	var/global/list/clothing_choices
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 23 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 6.6 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/mask_chameleon
+
+/datum/rad_resist/mask_chameleon
+	alpha_particle_resist = 23 MEGA ELECTRONVOLT
+	beta_particle_resist = 6.6 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/mask/chameleon/New()
 	..()

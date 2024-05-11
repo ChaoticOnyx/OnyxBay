@@ -10,11 +10,7 @@
 	throwpass = 1
 	turf_height_offset = 12
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0,
-		RADIATION_BETA_PARTICLE = 0,
-		RADIATION_HAWKING = 0
-	)
+	rad_resist_type = /datum/rad_resist/none
 
 	var/flipped = 0
 	var/maxhealth = 10
@@ -96,16 +92,17 @@
 		T.update_icon()
 	return ..()
 
-/obj/structure/table/_examine_text(mob/user)
+/obj/structure/table/examine(mob/user, infix)
 	. = ..()
+
 	if(health < maxhealth)
 		switch(health / maxhealth)
 			if(0.0 to 0.5)
-				. += "\n<span class='warning'>It looks severely damaged!</span>"
+				. += SPAN_WARNING("It looks severely damaged!")
 			if(0.25 to 0.5)
-				. += "\n<span class='warning'>It looks damaged!</span>"
+				. += SPAN_WARNING("It looks damaged!")
 			if(0.5 to 1.0)
-				. += "\n<span class='notice'>It has a few scrapes and dents.</span>"
+				. += SPAN_WARNING("It has a few scrapes and dents.")
 
 /obj/structure/table/attackby(obj/item/W, mob/user)
 	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)

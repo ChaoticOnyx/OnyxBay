@@ -10,7 +10,7 @@ subserver_name = "Chaotic"
 ## Server id. This is used, when you have more than one server connected to single DB.
 ## NOTE! You should migrate your DB to schema with server_id applied to each ban record
 ## to actually support this option. Leave this commented, if you have just one server.
-# server_id = ""
+server_id = "onyxbay"
 
 # Set to true to generate numeric suffix after server name based on server port.
 server_suffix = false
@@ -58,13 +58,13 @@ tick_limit_mc_init = 100
 ## Hitting the minute limit notifies admins.
 ## Set to 0 or comment out to disable.
 second_topic_limit = 10
-minute_topic_limit = 100
+minute_topic_limit = 200
 
 ## Set to true to make Dream Daemon refuse to reboot for any reason other than `SIGUSR1`.
 wait_for_sigusr1 = false
 
-[lobby]
-splashes = ["icons/splashes/onyx_new.png"]
+## Uncomment to start a metrics endpoint for prometheus.
+#prometheus_port = "9080"
 
 [log]
 ## Log client say.
@@ -252,6 +252,11 @@ mod_tempban_max = 1440
 mod_job_tempban_max = 1440
 
 [game]
+## Default view size, in tiles. Should always be square and preferably equal to world's view.
+default_view = "15x15"
+## Widescreen view size, in tiles.
+default_view_wide = "19x15"
+
 ## Preset name from file 'event_presets.toml', leave empty to not use a preset.
 events_preset = ""
 ## Set to true to enable map voting; you'll need to use the script at tools/server.sh or an equivalent for it to take effect
@@ -612,8 +617,8 @@ default_no_vote = true
 ## Ban appeals URL - usually for a forum or wherever people should go to contact your admins.
 # banappeals = "http://example.com"
 
-## Patreon URL
-# patreon = "http://example.com"
+## Boosty URL
+# boosty = "http://example.com"
 
 [donations]
 ## Set to true to enable donations subsystem. Server must be connected to proper database.

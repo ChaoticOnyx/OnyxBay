@@ -1,7 +1,7 @@
 /obj/machinery/food_replicator
 	name = "replicator"
 	desc = "like a microwave, except better. It has label \"Voice activation device\""
-	icon = 'icons/obj/machines/vending.dmi'
+	icon = 'icons/obj/machines/vending/soda.dmi'
 	icon_state = "soda"
 	density = 1
 	anchored = 1
@@ -80,6 +80,17 @@
 			state_status()
 		else if(findtext(true_text, "menu") || findtext(true_text, "меню"))
 			state_menu()
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "soda_ea"))
+
+/obj/machinery/food_replicator/proc/update_glow()
+	if(inoperable(MAINT))
+		set_light(0)
+		return FALSE
+
+	set_light(0.15, 1, 2, 3.5, "#f86060")
+	return TRUE
 
 /obj/machinery/food_replicator/proc/state_status()
 	var/message_bio = "boop beep"
@@ -155,7 +166,8 @@
 				start_making = 1
 	..()
 
-/obj/machinery/food_replicator/_examine_text(mob/user)
+/obj/machinery/food_replicator/examine(mob/user, infix)
 	. = ..()
+
 	if(panel_open)
-		. += "\nThe maintenance hatch is open."
+		. += "The maintenance hatch is open."

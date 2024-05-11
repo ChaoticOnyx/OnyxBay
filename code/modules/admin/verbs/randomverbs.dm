@@ -350,7 +350,7 @@ Ccomp's first proc.
 	if(config.ghost.allow_antag_hud)
 		for(var/mob/observer/ghost/g in get_ghosts())
 			if(!g.client.holder)						//Remove the verb from non-admin ghosts
-				g.verbs -= /mob/observer/ghost/verb/toggle_antagHUD
+				revoke_verb(g, /mob/observer/ghost/verb/toggle_antagHUD)
 			if(g.antagHUD)
 				g.antagHUD = 0						// Disable it on those that have it enabled
 				g.has_enabled_antagHUD = 2				// We'll allow them to respawn
@@ -361,7 +361,7 @@ Ccomp's first proc.
 	else
 		for(var/mob/observer/ghost/g in get_ghosts())
 			if(!g.client.holder)						// Add the verb back for all non-admin ghosts
-				g.verbs += /mob/observer/ghost/verb/toggle_antagHUD
+				grant_verb(g, /mob/observer/ghost/verb/toggle_antagHUD)
 				to_chat(g, "<span class='notice'><B>The Administrator has enabled AntagHUD </B></span>")// Notify all observers they can now use AntagHUD
 
 		config.ghost.allow_antag_hud = 1
@@ -547,25 +547,9 @@ Ccomp's first proc.
 	if(!holder)
 		to_chat(src, "Only administrators may use this command.")
 		return
-	var/input = sanitize(input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
-	var/customname = sanitize(input(usr, "Pick a title for the report.", "Title") as text|null, encode = 0)
-	if(!input)
-		return
-	if(!customname)
-		customname = "[command_name()] Update"
 
-	//New message handling
-	post_comm_message(customname, replacetext(input, "\n", "<br/>"))
-
-	switch(alert("Should this be announced to the general population?",,"Yes","No"))
-		if("Yes")
-			SSannounce.play_station_announce(/datum/announce/command_report, input, customname, msg_sanitized = TRUE)
-		if("No")
-			SSannounce.play_station_announce(/datum/announce/command_report, "New [GLOB.using_map.company_name] Update available at all communication consoles.", msg_sanitized = TRUE)
-
-	log_admin("[key_name(src)] has created a command report: [input]")
-	message_admins("[key_name_admin(src)] has created a command report", 1)
-	feedback_add_details("admin_verb","CCR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	var/datum/command_report_menu/ui = new /datum/command_report_menu(src.mob)
+	ui.tgui_interact(src.mob)
 
 /client/proc/cmd_admin_delete(atom/O as obj|mob|turf in range(world.view))
 	set category = "Admin"
@@ -734,18 +718,20 @@ Ccomp's first proc.
 /client/proc/toggle_view_range()
 	set category = "Special Verbs"
 	set name = "Change View Range"
-	set desc = "switches between 1x and custom views"
 
-	if(view == world.view)
-		view = input("Select view range:", "FUCK YE", 7) in list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,128)
+	if(view_size.is_zooming())
+		view_size.set_default(get_screen_size(get_preference_value("WIDESCREEN") == GLOB.PREF_YES))
 	else
-		view = world.view
+		var/choice = tgui_input_list(src, "Select view range.", "FUCK YE", list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,128))
+		if(isnull(choice))
+			return
+
+		view_size.set_default(choice)
 
 	log_and_message_admins("changed their view range to [view].")
-	feedback_add_details("admin_verb","CVRA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb", "CVRA")
 
 /client/proc/admin_call_shuttle()
-
 	set category = "Admin"
 	set name = "Call Evacuation"
 

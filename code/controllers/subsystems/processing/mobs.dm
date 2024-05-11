@@ -8,12 +8,15 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 	// List of Z levels where player are
 	var/static/list/player_levels = list()
 	var/static/list/mob_list = list()
+	/// Count of mobs per type
+	var/static/list/mob_types = list()
 
 /datum/controller/subsystem/processing/mobs/PreInit()
 	mob_list = processing // Simply setups a more recognizable var name than "processing"
 
 /datum/controller/subsystem/processing/mobs/fire(resumed = 0)
 	if(!resumed)
+		mob_types.Cut()
 		current_run = processing.Copy()
 		player_levels.Cut()
 		for(var/P in GLOB.player_list)
@@ -30,6 +33,12 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 		if(QDELETED(thing))
 			processing -= thing
 			continue
+
+		var/ty = "[thing.type]"
+		if(!mob_types[ty])
+			mob_types[ty] = 1
+		else
+			mob_types[ty] += 1
 
 		var/turf/T = get_turf(thing)
 		if(thing.client || (istype(T) && (T.z in player_levels)) || thing.teleop)

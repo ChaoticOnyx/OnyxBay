@@ -263,6 +263,8 @@ About the new airlock wires panel:
 	if(density)
 		if(locked && lights && arePowerSystemsOn())
 			icon_state = "door_locked"
+			AddOverlays(OVERLAY(icon, "lights_bolts"))
+			AddOverlays(emissive_appearance(icon, "lights_bolts_ea"))
 			set_light(0.35, 0.9, 1.5, 3, COLOR_RED_LIGHT)
 		else
 			icon_state = "door_closed"
@@ -272,18 +274,24 @@ About the new airlock wires panel:
 			if(!(stat & NOPOWER))
 				if(stat & BROKEN)
 					AddOverlays(OVERLAY(icon, "sparks_broken"))
+					AddOverlays(emissive_appearance(icon, "sparks_broken_ea"))
 				else if(health < maxhealth * 0.75)
 					AddOverlays(OVERLAY(icon, "sparks_damaged"))
+					AddOverlays(emissive_appearance(icon, "sparks_damaged_ea"))
 			if(welded)
 				AddOverlays(OVERLAY(icon, "welded"))
 		else if(health < maxhealth * 0.75 && !(stat & NOPOWER))
 			AddOverlays(OVERLAY(icon, "sparks_damaged"))
+			AddOverlays(emissive_appearance(icon, "sparks_damaged_ea"))
+		if(!p_open)
+			AddOverlays(emissive_appearance(icon, "closed_ea"))
 	else
 		icon_state = "door_open"
 		if(arePowerSystemsOn() && !p_open) // Doors with opened panels have no green lights on their icons
 			set_light(0.30, 0.9, 1.5, 3, COLOR_LIME)
 		if((stat & BROKEN) && !(stat & NOPOWER))
-			AddOverlays(image(icon, "sparks_open"))
+			AddOverlays(OVERLAY(icon, "sparks_open"))
+			AddOverlays(emissive_appearance(icon, "sparks_open_ea"))
 
 	if(brace)
 		brace.update_icon()
@@ -296,10 +304,16 @@ About the new airlock wires panel:
 			if(!p_open)
 				set_light(0.30, 0.9, 1.5, 3, COLOR_LIME)
 			flick("[p_open ? "o_door_opening" : "door_opening"]", src)
+			if(!p_open)
+				AddOverlays(emissive_appearance(icon, "opening_ea"))
+			AddOverlays(emissive_appearance(icon, "lights_opening_ea"))
 			update_icon(1)
 		if("closing")
 			overlays?.Cut()
 			flick("[p_open ? "o_door_closing" : "door_closing"]", src)
+			if(!p_open)
+				AddOverlays(emissive_appearance(icon, "closing_ea"))
+			AddOverlays(emissive_appearance(icon, "lights_closing_ea"))
 			update_icon()
 		if("spark")
 			if(density)
@@ -523,19 +537,20 @@ About the new airlock wires panel:
 	var/cut_sound
 
 	if(isWelder(item))
-		var/obj/item/weldingtool/WT = item
-		if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
-			return
-
+		cut_sound = null
 		cut_verb = "cutting"
-		cut_sound = 'sound/items/Welder.ogg'
 
 	else if(istype(item,/obj/item/gun/energy/plasmacutter)) //They could probably just shoot them out, but who cares!
 		cut_verb = "cutting"
 		cut_sound = 'sound/items/Welder.ogg'
 		cut_delay *= 0.66
 
-	else if(istype(item,/obj/item/melee/energy/blade) || istype(item,/obj/item/melee/energy/sword))
+	else if(istype(item, /obj/item/melee/energy/blade) || istype(item, /obj/item/melee/energy/sword))
+		var/obj/item/melee/energy/E = item
+		if(!E.active)
+			show_splash_text(user, "blade must be on!", "\The [item] must be activated!")
+			return FALSE
+
 		cut_verb = "slicing"
 		cut_sound = "spark"
 		cut_delay *= 0.66
@@ -570,8 +585,13 @@ About the new airlock wires panel:
 			"<span class='notice'>You begin [cut_verb] through the bolt cover.</span>"
 			)
 
-		playsound(src, cut_sound, 100, 1)
-		if(do_after(user, cut_delay, src))
+		if(!isnull(cut_sound))
+			playsound(src, cut_sound, 100, 1)
+		var/obj/item/weldingtool/WT = item
+		if((!istype(WT) && do_after(user, cut_delay, src)) || (istype(WT) && WT.use_tool(src, user, delay = cut_delay, amount = 5)))
+			if(QDELETED(src))
+				return
+
 			user.visible_message(
 				"<span class='notice'>\The [user] removes the bolt cover from [src]</span>",
 				"<span class='notice'>You remove the cover and expose the door bolts.</span>"
@@ -584,8 +604,10 @@ About the new airlock wires panel:
 			"<span class='notice'>\The [user] begins [cut_verb] through [src]'s bolts.</span>",
 			"<span class='notice'>You begin [cut_verb] through the door bolts.</span>"
 			)
-		playsound(src, cut_sound, 100, 1)
-		if(do_after(user, cut_delay, src))
+		if(!isnull(cut_sound))
+			playsound(src, cut_sound, 100, 1)
+		var/obj/item/weldingtool/WT = item
+		if((!istype(WT) && do_after(user, cut_delay, src)) || (istype(WT) && WT.use_tool(src, user, delay = cut_delay, amount = 5)))
 			user.visible_message(
 				"<span class='notice'>\The [user] severs the door bolts, unlocking [src].</span>",
 				"<span class='notice'>You sever the door bolts, unlocking the door.</span>"
@@ -976,15 +998,16 @@ About the new airlock wires panel:
 	else
 		..(amount)
 
-/obj/machinery/door/airlock/_examine_text(mob/user)
+/obj/machinery/door/airlock/examine(mob/user, infix)
 	. = ..()
+
 	if(lock_cut_state == BOLTS_EXPOSED)
-		. += "\nThe bolt cover has been cut open."
+		. += "The bolt cover has been cut open."
 	if(lock_cut_state == BOLTS_CUT)
-		. += "\nThe door bolts have been cut."
+		. += "The door bolts have been cut."
 	if(brace)
-		. += "\n\The [brace] is installed on \the [src], preventing it from opening."
-		. += "\n[brace.examine_health()]"
+		. += "\The [brace] is installed on \the [src], preventing it from opening."
+		. += "[brace.examine_health()]"
 
 /obj/machinery/door/airlock/autoname
 	name = "hatch"

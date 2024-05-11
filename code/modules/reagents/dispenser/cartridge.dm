@@ -22,15 +22,18 @@
 		var/datum/reagent/R = spawn_reagent
 		setLabel(initial(R.name))
 
-/obj/item/reagent_containers/chem_disp_cartridge/_examine_text(mob/user)
+/obj/item/reagent_containers/chem_disp_cartridge/examine(mob/user, infix)
 	. = ..()
-	. += "\nIt has a capacity of [volume] units."
+
+	. += "It has a capacity of [volume] units."
+
 	if(reagents.total_volume <= 0)
-		. += "\nIt is empty."
+		. += "It is empty."
 	else
-		. += "\nIt contains [reagents.total_volume] units of liquid."
+		. += "It contains [reagents.total_volume] units of liquid."
+
 	if(!is_open_container())
-		. += "\nThe cap is sealed."
+		. += "The cap is sealed."
 
 /obj/item/reagent_containers/chem_disp_cartridge/verb/verb_set_label()
 	set name = "Set Cartridge Label"

@@ -13,7 +13,7 @@
 	status = rcd_status
 	delay = rcd_delay
 	if(status == RCD_DECONSTRUCT)
-		addtimer(CALLBACK(src, nameof(/atom.proc/update_icon)), 1.1 SECONDS)
+		add_think_ctx("think_update_icon", CALLBACK(src, nameof(/atom.proc/update_icon)), 1.1 SECONDS)
 		delay -= 11
 		icon_state = "rcd_end_reverse"
 	else
@@ -57,14 +57,14 @@
 	else
 		mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 		icon_state = "rcd_end"
-		addtimer(CALLBACK(src, nameof(.proc/end)), 15)
+		set_next_think(world.time + 1.5 SECONDS)
 
-/obj/effect/constructing_effect/proc/end()
+/obj/effect/constructing_effect/think()
 	qdel_self()
 
 /obj/effect/constructing_effect/proc/attacked(mob/user)
 	playsound(loc, 'sound/weapons/egloves.ogg', vol = 80, vary = TRUE)
-	end()
+	qdel_self()
 
 /obj/effect/constructing_effect/attackby(obj/item/weapon, mob/user, params)
 	attacked(user)

@@ -159,12 +159,14 @@
 		mod_handy = 1.2
 		mod_weight = 2.0
 		mod_reach = 1.5
+		improper_held_icon = TRUE
 	else
 		wielded = FALSE
 		force = 17.5
 		mod_weight = 1.5
 		mod_reach = 1.0
 		mod_handy = 0.4
+		improper_held_icon = FALSE
 	update_icon()
 	..()
 
@@ -443,12 +445,13 @@
 	if(!malfunctioning)
 		malfunctioning = TRUE
 
-/obj/item/lazarus_injector/_examine_text(mob/user)
+/obj/item/lazarus_injector/examine(mob/user, infix)
 	. = ..()
+
 	if(!loaded)
-		. += "\n<span class='info'>[src] is empty.</span>"
+		. += SPAN_INFO("[src] is empty.")
 	if(malfunctioning || emagged)
-		. += "\n<span class='info'>The display on [src] seems to be flickering.</span>"
+		. += SPAN_INFO("The display on [src] seems to be flickering.")
 
 /**********************Point Transfer Card**********************/
 
@@ -469,9 +472,9 @@
 			to_chat(user, "<span class='info'>There's no points left on [src].</span>")
 	..()
 
-/obj/item/card/mining_point_card/_examine_text(mob/user)
+/obj/item/card/mining_point_card/examine(mob/user, infix)
 	. = ..()
-	. += "\nThere's [points] point\s on the card."
+	. += "There's [points] point\s on the card."
 
 /**********************Resonator**********************/
 
@@ -542,8 +545,8 @@
 	var/creator
 	var/obj/item/resonator/res
 
-/obj/effect/resonance/New(loc, set_creator, timetoburst, set_resonator)
-	..()
+/obj/effect/resonance/Initialize(mapload, set_creator, timetoburst, set_resonator)
+	. = ..()
 	creator = set_creator
 	res = set_resonator
 	var/turf/proj_turf = get_turf(src)
@@ -555,7 +558,7 @@
 		name = "strong resonance field"
 		resonance_damage = 30
 
-	addtimer(CALLBACK(src, nameof(.proc/burst), loc), timetoburst)
+	add_think_ctx("burst_context", CALLBACK(src, nameof(.proc/burst)), world.time + timetoburst, loc)
 
 /obj/effect/resonance/Destroy()
 	if(res)
@@ -652,6 +655,7 @@
 	desc = "A finely chiselled sculpting block, it is ready to be your canvas."
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "sculpting_block"
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	density = 1
 	opacity = 1
 	anchored = 0
@@ -660,16 +664,10 @@
 	var/times_carved = 0
 	var/last_struck = 0
 
-/obj/structure/sculpting_block/verb/rotate()
-	set name = "Rotate"
-	set category = "Object"
-	set src in oview(1)
+/obj/structure/sculpting_block/Initialize()
+	. = ..()
 
-	if (src.anchored || usr:stat)
-		to_chat(usr, "It is fastened to the floor!")
-		return 0
-	src.set_dir(turn(src.dir, 90))
-	return 1
+	AddElement(/datum/element/simple_rotation)
 
 /obj/structure/sculpting_block/attackby(obj/item/C as obj, mob/user as mob)
 

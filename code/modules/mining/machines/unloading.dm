@@ -14,6 +14,14 @@
 
 	var/corner_turn_dir = 0
 
+/obj/machinery/mineral/unloading_machine/examine(mob/user, infix)
+	. = ..()
+	. += SPAN_NOTICE("It is currently turned [(stat & POWEROFF) ? "off" : "on"].")
+
+/obj/machinery/mineral/unloading_machine/examine_more(mob/user)
+	. = ..()
+	. += SPAN_NOTICE("This machine must be manually turned on. Click on it with an empty hand to activate/deactivate.")
+
 /obj/machinery/mineral/unloading_machine/pickup_item(datum/source, atom/movable/target, atom/old_loc)
 	if(!..())
 		return
@@ -38,7 +46,7 @@
 		return
 
 	toggle()
-	show_splash_text(user, "you toggle \the [src] [!(stat & POWEROFF) ? "on" : "off"].")
+	show_splash_text(user, "you toggle \the [src] [!(stat & POWEROFF) ? "on" : "off"].", "You toggle <b>\the [src]</b> [!(stat & POWEROFF) ? "on" : "off"].")
 
 /obj/machinery/mineral/unloading_machine/attackby(obj/item/W, mob/user)
 	..()

@@ -35,8 +35,7 @@ They sell generic supplies and ask for generic supplies.
 								/obj/item/device/encryptionkey/syndicate					= TRADER_BLACKLIST,
 								/obj/item/tank/plasma/onetankbomb					= TRADER_BLACKLIST,
 								/obj/item/device/radio										= TRADER_BLACKLIST_ALL,
-								/obj/item/device/pda										= TRADER_BLACKLIST_SUB,
-								/obj/item/device/uplink										= TRADER_BLACKLIST
+								/obj/item/device/pda										= TRADER_BLACKLIST_SUB
 								)
 
 	possible_trading_items = list(/obj/item/storage/bag								= TRADER_SUBTYPES_ONLY,

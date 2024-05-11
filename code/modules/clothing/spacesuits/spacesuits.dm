@@ -32,11 +32,8 @@
 	light_overlay = "helmet_light"
 	brightness_on = 4
 	on = 0
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/space_gear
+
 
 /obj/item/clothing/head/helmet/space/Destroy()
 	if(camera && !ispath(camera))
@@ -65,10 +62,11 @@
 		else
 			to_chat(usr, "<span class='notice'>Camera deactivated.</span>")
 
-/obj/item/clothing/head/helmet/space/_examine_text(mob/user)
+/obj/item/clothing/head/helmet/space/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 1 && camera)
-		. += "\nThis helmet has a built-in camera. Its [!ispath(camera) && camera.status ? "" : "in"]active."
+		. += "This helmet has a built-in camera. Its [!ispath(camera) && camera.status ? "" : "in"]active."
 
 /obj/item/clothing/suit/space
 	name = "Space suit"

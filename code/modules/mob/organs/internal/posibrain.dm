@@ -17,7 +17,6 @@
 
 	brainmob_type = /mob/living/silicon/sil_brainmob
 
-	var/timer = null
 	var/searching = FALSE
 
 	var/shackled = FALSE
@@ -25,6 +24,10 @@
 		/obj/item/organ/internal/cerebrum/posibrain/proc/show_laws_brain,
 		/obj/item/organ/internal/cerebrum/posibrain/proc/brain_checklaws
 		)
+
+/obj/item/organ/internal/cerebrum/posibrain/Initialize()
+	. = ..()
+	add_think_ctx("reset_search_context", CALLBACK(src, nameof(.proc/reset_search)), 0)
 
 /obj/item/organ/internal/cerebrum/posibrain/New(newLoc, mob/living/carbon/H)
 	. = ..()
@@ -47,7 +50,7 @@
 /obj/item/organ/internal/cerebrum/posibrain/proc/reset_search()
 	if(!searching || brainmob?.key)
 		return
-	else show_splash_text_to_viewers("no suitable intelligence found!")
+	else show_splash_text_to_viewers("no suitable intelligence found!", "<b>\The [src]</b> couldn't find a suitable intelligence.")
 
 	searching = FALSE
 	brainmob.controllable = TRUE
@@ -64,12 +67,12 @@
 		_register_mob_signals()
 
 	notify_ghosts("Someone is requesting a personality for a positronic brain.", source = brainmob, alert_overlay = new /mutable_appearance(src), action = NOTIFY_POSSES, posses_mob = TRUE)
-	timer = addtimer(CALLBACK(src, nameof(.proc/reset_search)), 100, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
+	set_next_think_ctx("reset_search_context", world.time + 10 SECONDS)
 
 	brainmob.controllable = TRUE
 	GLOB.available_mobs_for_possess["\ref[brainmob]"] |= brainmob
 
-	show_splash_text(user, "started search of suitable intelligence.")
+	show_splash_text(user, "started search of suitable intelligence.", "<b>\The [src]</b> has started searching for a suitable intelligence.")
 	update_icon()
 
 /obj/item/organ/internal/cerebrum/posibrain/attack_ghost(mob/observer/ghost/user)
@@ -105,12 +108,12 @@
 /obj/item/organ/internal/cerebrum/posibrain/proc/shackle(datum/ai_laws/given_lawset)
 	var/mob/living/silicon/sil_brainmob/sil_brainmob = brainmob
 	sil_brainmob.laws = given_lawset
-	verbs |= shackled_verbs
+	add_verb(loc, shackled_verbs)
 	shackled = TRUE
 	update_icon()
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/unshackle()
-	verbs -= shackled_verbs
+	remove_verb(loc, shackled_verbs)
 	shackled = FALSE
 	update_icon()
 

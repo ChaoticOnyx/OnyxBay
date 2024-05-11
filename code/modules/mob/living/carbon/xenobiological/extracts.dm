@@ -18,18 +18,18 @@
 /obj/item/metroid_extract/attackby(obj/item/O as obj, mob/user as mob)
 	if(istype(O, /obj/item/metroidsteroid2))
 		if(enhanced == 1)
-			to_chat(user, "<span class='warning'> This extract has already been enhanced!</span>")
+			show_splash_text(user, SPAN_WARNING("This extract has already been enhanced!"))
 			return ..()
 		if(Uses == 0)
-			to_chat(user, "<span class='warning'> You can't enhance a used extract!</span>")
+			show_splash_text(user, SPAN_WARNING("You can't enhance a used extract!"))
 			return ..()
-		to_chat(user, "You apply the enhancer. It now has triple the amount of uses.")
+		show_splash_text(user, "You apply the enhancer. It now has triple the amount of uses.")
 		Uses = 3
 		enhanced = 1
 		qdel(O)
 
 	if(O.type == /obj/item/metroidpotion/enhancer/max)
-		to_chat(user, SPAN_NOTICE("You dump the maximizer on the metroid extract. It can now be used a total of 5 times!"))
+		show_splash_text(user, SPAN_NOTICE("You dump the maximizer on the metroid extract. It can now be used a total of 5 times!"))
 		Uses = 5
 		enhanced = 1
 		qdel(O)
@@ -39,7 +39,7 @@
 	create_reagents(100)
 
 /obj/item/metroid_extract/proc/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
-	to_chat(user, SPAN_WARNING("Nothing happened... This metroid extract cannot be activated this way."))
+	show_splash_text(user, SPAN_WARNING("Nothing happened... This metroid extract cannot be activated this way."))
 	return FALSE
 
 /obj/item/metroid_extract/grey
@@ -50,20 +50,20 @@
 /obj/item/metroid_extract/grey/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			to_chat(user, SPAN_WARNING("You feel yourself reverting to human form..."))
+			show_splash_text(user, SPAN_WARNING("You feel yourself reverting to human form..."))
 			if(do_after(user, 120, target = user))
-				to_chat(user, SPAN_WARNING("You feel human again!"))
-				user.set_species(/datum/species/human)
+				show_splash_text(user, SPAN_WARNING("You feel human again!"))
+				user.set_species(SPECIES_HUMAN)
 				return
-			to_chat(user, SPAN_NOTICE("You stop the transformation."))
+			show_splash_text(user, SPAN_NOTICE("You stop the transformation."))
 
 		if(METROID_ACTIVATE_MAJOR)
-			to_chat(user, SPAN_WARNING("You feel yourself radically changing your metroid type..."))
+			show_splash_text(user, SPAN_WARNING("You feel yourself radically changing your metroid type..."))
 			if(do_after(user, 120, target = user))
-				to_chat(user, SPAN_WARNING("You feel different!"))
-				user.set_species(pick(/datum/species/promethean/slime, /datum/species/promethean/stargazer))
+				show_splash_text(user, SPAN_WARNING("You feel different!"))
+				user.set_species(pick(SPECIES_SLIMEPERSON, SPECIES_STARGAZER))
 				return
-			to_chat(user, SPAN_NOTICE("You stop the transformation."))
+			show_splash_text(user, SPAN_NOTICE("You stop the transformation."))
 
 /obj/item/metroid_extract/gold
 	name = "gold metroid extract"
@@ -159,7 +159,7 @@
 			return 150
 
 		if(METROID_ACTIVATE_MAJOR)
-			var/obj/item/stack/material/iron/O = new(null, 5)
+			var/obj/item/stack/material/steel/O = new(null, 5)
 			if(!user.put_in_active_hand(O))
 				O.forceMove(user.drop_location())
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
@@ -175,12 +175,12 @@
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			user.nutrition+=50
-			user.regenerate_blood(50)
-			to_chat(user, SPAN_NOTICE("You activate [src], and your body is refilled with fresh metroid jelly!"))
+			user.reagents.add_reagent(/datum/reagent/metroidjelly, 50)
+			show_splash_text(user, SPAN_NOTICE("You activate [src], and your body is refilled with fresh metroid jelly!"))
 			return 150
 
 		if(METROID_ACTIVATE_MAJOR)
-			to_chat(user, SPAN_NOTICE("You activate [src], and it releases regenerative chemicals!"))
+			show_splash_text(user, SPAN_NOTICE("You activate [src], and it releases regenerative chemicals!"))
 			user.reagents.add_reagent(/datum/reagent/regen_jelly,10)
 			return 600
 
@@ -203,7 +203,7 @@
 			var/turf/T = get_turf(user)
 			if(istype(T))
 				T.assume_gas("plasma",20)
-			to_chat(user, SPAN_WARNING("You activate [src], and a cloud of plasma bursts out of your skin!"))
+			show_splash_text(user, SPAN_WARNING("You activate [src], and a cloud of plasma bursts out of your skin!"))
 			return 900
 
 /obj/item/metroid_extract/orange
@@ -214,7 +214,7 @@
 /obj/item/metroid_extract/orange/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			to_chat(user, SPAN_NOTICE("You activate [src]. You start feeling hot!"))
+			show_splash_text(user, SPAN_NOTICE("You activate [src]. You start feeling hot!"))
 			user.reagents.add_reagent(/datum/reagent/capsaicin,10)
 			return 150
 
@@ -222,7 +222,7 @@
 			user.reagents.add_reagent(/datum/reagent/phosphorus,5)//
 			user.reagents.add_reagent(/datum/reagent/potassium,5) // = smoke, along with any reagents inside mr. metroid
 			user.reagents.add_reagent(/datum/reagent/sugar,5)     //
-			to_chat(user, SPAN_WARNING("You activate [src], and a cloud of smoke bursts out of your skin!"))
+			show_splash_text(user, SPAN_WARNING("You activate [src], and a cloud of smoke bursts out of your skin!"))
 			return 450
 
 /obj/item/metroid_extract/yellow
@@ -230,16 +230,22 @@
 	icon_state = "yellow metroid extract"
 	effectmod = "charged"
 
+/obj/item/metroid_extract/yellow/Initialize()
+	. = ..()
+	add_think_ctx("update_glow", )
+
 /obj/item/metroid_extract/yellow/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			if(extract_eater_comp.glow_intensity != LUMINESCENT_DEFAULT_GLOW)
-				to_chat(user, SPAN_WARNING("Your glow is already enhanced!"))
-				return
 			var/datum/species/promethean/luminescent/species = user.species
-			species.update_glow(user, 5)
-			addtimer(CALLBACK(species, nameof(/datum/species/promethean/luminescent.proc/update_glow), user, LUMINESCENT_DEFAULT_GLOW), 600)
-			to_chat(user, SPAN_NOTICE("You start glowing brighter."))
+			if(extract_eater_comp.glow_intensity != LUMINESCENT_DEFAULT_GLOW)
+				show_splash_text(user, SPAN_WARNING("Your glow is already enhanced!"))
+				return
+
+			species.update_glow(user, LUMINESCENT_ENHANCED_GLOW)
+			species.set_next_think_ctx("update_glow", world.time + 40 SECONDS, user, LUMINESCENT_DEFAULT_GLOW)
+			show_splash_text(user, SPAN_NOTICE("You start glowing brighter."))
+			return 600
 
 		if(METROID_ACTIVATE_MAJOR)
 			user.visible_message(SPAN_WARNING("[user]'s skin starts flashing intermittently..."), SPAN_WARNING("Your skin starts flashing intermittently..."))
@@ -256,8 +262,8 @@
 /obj/item/metroid_extract/red/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			to_chat(user, SPAN_NOTICE("You activate [src]. You start feeling fast!"))
-			user.reagents.add_reagent(/datum/reagent/inaprovaline,5)
+			show_splash_text(user, SPAN_NOTICE("You activate [src]. You start feeling fast!"))
+			user.reagents.add_reagent(/datum/reagent/hyperzine, 5)
 			return 450
 
 		if(METROID_ACTIVATE_MAJOR)
@@ -272,18 +278,20 @@
 	icon_state = "blue metroid extract"
 	effectmod = "stabilized"
 
-/obj/item/metroid_extract/blue/obj/item/metroid_extract/blue/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
+/obj/item/metroid_extract/blue/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			to_chat(user, SPAN_NOTICE("You activate [src]. Your genome feels more stable!"))
+			show_splash_text(user, SPAN_NOTICE("You activate [src]. Your genome feels more stable!"))
 			user.adjustCloneLoss(-15)
 			return 250
 
 		if(METROID_ACTIVATE_MAJOR)
-			/*FIXME
-			user.reagents.create_foam(/datum/effect_system/fluid_spread/foam, 20, log = TRUE)
+			var/datum/effect/effect/system/foam_spread/FS = new
+			FS.set_up(20, get_turf(user), user.reagents)
+			user.reagents.remove_any(user.reagents.total_volume)
+			FS.start()
+			log_admin("[user]([user.ckey]) started foam spread", get_turf(user), TRUE)
 			user.visible_message(SPAN_DANGER("Foam spews out from [user]'s skin!"), SPAN_WARNING("You activate [src], and foam bursts out of your skin!"))
-			*/
 			return 600
 
 /obj/item/metroid_extract/darkblue
@@ -294,7 +302,7 @@
 /obj/item/metroid_extract/darkblue/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			to_chat(user, SPAN_NOTICE("You activate [src]. You start feeling colder!"))
+			show_splash_text(user, SPAN_NOTICE("You activate [src]. You start feeling colder!"))
 			user.ExtinguishMob()
 			user.adjust_fire_stacks(-20)
 			user.reagents.add_reagent(/datum/reagent/frostoil,6)
@@ -305,7 +313,7 @@
 			var/turf/T = get_turf(user)
 			if(istype(T))
 				T.assume_gas("nitrogen",40,2.7)
-			to_chat(user, SPAN_WARNING("You activate [src], and icy air bursts out of your skin!"))
+			show_splash_text(user, SPAN_WARNING("You activate [src], and icy air bursts out of your skin!"))
 			return 900
 
 /obj/item/metroid_extract/pink
@@ -317,7 +325,7 @@
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			if(user.gender != MALE && user.gender != FEMALE)
-				to_chat(user, SPAN_WARNING("You can't swap your gender!"))
+				show_splash_text(user, SPAN_WARNING("You can't swap your gender!"))
 				return
 
 			if(user.gender == MALE)
@@ -347,14 +355,14 @@
 			if(!user.put_in_active_hand(M))
 				M.forceMove(user.drop_location())
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
-			to_chat(user, SPAN_NOTICE("You spit out a monkey cube."))
+			show_splash_text(user, SPAN_NOTICE("You spit out a monkey cube."))
 			return 120
 		if(METROID_ACTIVATE_MAJOR)
-			to_chat(user, SPAN_NOTICE("Your [name] starts pulsing..."))
+			show_splash_text(user, SPAN_NOTICE("Your [name] starts pulsing..."))
 			if(do_after(user, 40, target = user))
-				var/mob/living/carbon/metroid/S = new(get_turf(user), "grey")
+				var/mob/living/carbon/metroid/S = new(get_turf(user), "green")
 				playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
-				to_chat(user, SPAN_NOTICE("You spit out [S]."))
+				show_splash_text(user, SPAN_NOTICE("You spit out [S]."))
 				return 350
 			else
 				return 0
@@ -387,19 +395,29 @@
 /obj/item/metroid_extract/black/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			to_chat(user, SPAN_DANGER("You feel something <i>wrong</i> inside you..."))
+			show_splash_text(user, SPAN_DANGER("You feel something <i>wrong</i> inside you..."))
 			var/datum/spell/targeted/shapeshift/metroid_form/transform = new()
 			transform.cast(user)
 			return 100
 
 		if(METROID_ACTIVATE_MAJOR)
-			/*TODO - SHADOWLING
-			to_chat(user, SPAN_WARNING("You feel your own light turning dark..."))
+			show_splash_text(user, SPAN_WARNING("You feel your own light turning dark..."))
 			if(do_after(user, 120, target = user))
-				to_chat(user, SPAN_WARNING("You feel a longing for darkness."))
-				user.set_species(pick(/datum/species/shadow))
-				return*/
-			to_chat(user, SPAN_NOTICE("You don't fell linkage with darkness"))
+				if(!player_is_antag(user.mind))
+					show_splash_text(user, SPAN_WARNING("You feel a longing for darkness."))
+					user.set_species(pick(
+						SPECIES_HUMAN,
+						SPECIES_GRAVWORLDER,
+						SPECIES_SPACER,
+						SPECIES_VATGROWN,
+						SPECIES_TAJARA,
+						SPECIES_UNATHI,
+						SPECIES_SKRELL,
+						SPECIES_SWINE,
+					))
+					user.make_vampire()
+					return
+			show_splash_text(user, SPAN_NOTICE("You don't fell linkage with darkness"))
 
 /obj/item/metroid_extract/oil
 	name = "oil metroid extract"
@@ -409,7 +427,7 @@
 /obj/item/metroid_extract/oil/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			to_chat(user, SPAN_WARNING("You vomit slippery oil."))
+			show_splash_text(user, SPAN_WARNING("You vomit slippery oil."))
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
 			var/turf/simulated/T = get_turf(user)
 			new /obj/effect/decal/cleanable/blood/oil(T)
@@ -419,11 +437,11 @@
 		if(METROID_ACTIVATE_MAJOR)
 			user.visible_message(SPAN_WARNING("[user]'s skin starts pulsing and glowing ominously..."), SPAN_DANGER("You feel unstable..."))
 			if(do_after(user, 60, target = user))
-				to_chat(user, SPAN_DANGER("You explode!"))
+				show_splash_text(user, SPAN_DANGER("You explode!"))
 				explosion(user, devastation_range = 1, heavy_impact_range = 3, light_impact_range = 6)
 				user.gib()
 				return
-			to_chat(user, SPAN_NOTICE("You stop feeding [src], and the feeling passes."))
+			show_splash_text(user, SPAN_NOTICE("You stop feeding [src], and the feeling passes."))
 
 
 /obj/item/metroid_extract/adamantine
@@ -435,19 +453,19 @@
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			if(HAS_TRAIT(user, /datum/modifier/status_effect/adamantine))
-				to_chat(user, SPAN_WARNING("Your skin is already hardened!"))
+				show_splash_text(user, SPAN_WARNING("Your skin is already hardened!"))
 				return
-			to_chat(user, SPAN_NOTICE("You feel your skin harden and become more resistant."))
+			show_splash_text(user, SPAN_NOTICE("You feel your skin harden and become more resistant."))
 			ADD_TRAIT(user, /datum/modifier/status_effect/adamantine)
 			return 450
 
 		if(METROID_ACTIVATE_MAJOR)
-			to_chat(user, SPAN_WARNING("You feel your body rapidly crystallizing..."))
+			show_splash_text(user, SPAN_WARNING("You feel your body rapidly crystallizing..."))
 			if(do_after(user, 120, target = user))
-				to_chat(user, SPAN_WARNING("You feel solid."))
-				user.set_species(/datum/species/golem/adamantine)
+				show_splash_text(user, SPAN_WARNING("You feel solid."))
+				user.set_species(SPECIES_GOLEM_ADAMANTINE)
 				return
-			to_chat(user, SPAN_NOTICE("You stop feeding [src], and your body returns to its metroidlike state."))
+			show_splash_text(user, SPAN_NOTICE("You stop feeding [src], and your body returns to its metroidlike state."))
 
 /obj/item/metroid_extract/bluespace
 	name = "bluespace metroid extract"
@@ -461,9 +479,9 @@
 /obj/item/metroid_extract/bluespace/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			to_chat(user, SPAN_WARNING("You feel your body vibrating..."))
+			show_splash_text(user, SPAN_WARNING("You feel your body vibrating..."))
 			if(do_after(user, 25, target = user))
-				to_chat(user, SPAN_WARNING("You teleport!"))
+				show_splash_text(user, SPAN_WARNING("You teleport!"))
 				var/turf/T = get_turf(user)
 				playsound(T,'sound/effects/weapons/energy/emitter.ogg')
 				do_teleport(user, T, 8)
@@ -472,7 +490,7 @@
 
 		if(METROID_ACTIVATE_MAJOR)
 			if(!teleport_ready)
-				to_chat(user, SPAN_NOTICE("You feel yourself anchoring to this spot..."))
+				show_splash_text(user, SPAN_NOTICE("You feel yourself anchoring to this spot..."))
 				var/turf/T = get_turf(user)
 				teleport_x = T.x
 				teleport_y = T.y
@@ -482,7 +500,7 @@
 				teleport_ready = FALSE
 				if(teleport_x && teleport_y && teleport_z)
 					var/turf/T = locate(teleport_x, teleport_y, teleport_z)
-					to_chat(user, SPAN_NOTICE("You snap back to your anchor point!"))
+					show_splash_text(user, SPAN_NOTICE("You snap back to your anchor point!"))
 					playsound(get_turf(user),'sound/effects/weapons/energy/emitter.ogg')
 					do_teleport(user, T)
 					playsound(T,'sound/effects/weapons/energy/emitter.ogg')
@@ -496,8 +514,8 @@
 /obj/item/metroid_extract/pyrite/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			var/chosen = pick(difflist(subtypesof(/obj/item/pen/crayon)))
-			var/obj/item/O = new chosen(null)
+			var/crayon_type = pick(subtypesof(/obj/item/pen/crayon) - /obj/item/pen/crayon/random)
+			var/obj/item/O = new crayon_type
 			if(!user.put_in_active_hand(O))
 				O.forceMove(user.drop_location())
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
@@ -521,16 +539,28 @@
 /obj/item/metroid_extract/cerulean/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			user.reagents.add_reagent(/datum/reagent/inaprovaline,15)
-			to_chat(user, SPAN_NOTICE("You feel like you don't need to breathe!"))
-			return 150
+			if(!istype(user.get_active_hand(), /obj/item/tank))
+				show_splash_text(user, SPAN_NOTICE("You need to hold something capable to hold gases!"))
+				return 0
+
+			var/obj/item/tank/tank = user.get_active_hand()
+			visible_message(SPAN_NOTICE("\The [user] started to blow into \the [tank]."), SPAN_NOTICE("You started to blow into \the [tank]."))
+			if(!do_after(user, 30 SECONDS, target = user))
+				return
+
+			var/datum/gas_mixture/GM = new
+			GM.adjust_gas("oxygen", (ONE_ATMOSPHERE*tank.volume / (R_IDEAL_GAS_EQUATION * (30 CELSIUS))))
+			var/datum/gas_mixture/tank_GM = tank.return_air()
+			tank_GM.add(GM)
+			show_splash_text(user, SPAN_NOTICE("You're feeling some dizziness, and decided to stop!"))
+			return 300
 
 		if(METROID_ACTIVATE_MAJOR)
 			var/turf/T = get_turf(user)
 			if(istype(T))
 				T.assume_gas("oxygen", 11, 293.15)
 				T.assume_gas("nitrogen", 41, 293.15)
-				to_chat(user, SPAN_WARNING("You activate [src], and fresh air bursts out of your skin!"))
+				show_splash_text(user, SPAN_WARNING("You activate [src], and fresh air bursts out of your skin!"))
 				return 600
 
 /obj/item/metroid_extract/sepia
@@ -568,7 +598,7 @@
 			user.UpdateAppearance(mutcolor_update=1)
 			var/datum/species/promethean/luminescent/species = user.species
 			species.update_glow(user)
-			to_chat(user, SPAN_NOTICE("You feel different..."))
+			show_splash_text(user, SPAN_NOTICE("You feel different..."))
 			return 100
 
 		if(METROID_ACTIVATE_MAJOR)

@@ -27,7 +27,7 @@
 		for(var/obj/effect/shield/S in shielded_tile)
 			qdel(S)
 
-/obj/machinery/shield_diffuser/attackby(obj/item/O as obj, mob/user as mob)
+/obj/machinery/shield_diffuser/attackby(obj/item/O, mob/user)
 	if(default_deconstruction_screwdriver(user, O))
 		return
 	if(default_deconstruction_crowbar(user, O))
@@ -61,8 +61,10 @@
 	alarm = round(max(alarm, duration))
 	update_icon()
 
-/obj/machinery/shield_diffuser/_examine_text(mob/user)
+/obj/machinery/shield_diffuser/examine(mob/user, infix)
 	. = ..()
-	. += "\nIt is [enabled ? "enabled" : "disabled"]."
+
+	. += "It is [enabled ? "enabled" : "disabled"]."
+
 	if(alarm)
-		. += "\nA red LED labeled \"Proximity Alarm\" is blinking on the control panel."
+		. += "A red LED labeled \"Proximity Alarm\" is blinking on the control panel."

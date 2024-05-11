@@ -96,15 +96,19 @@
 
 	var/fail_counter = 0
 
+/obj/item/gun/energy/gun/nuclear/Initialize(mapload)
+	. = ..()
+	add_think_ctx("fail_thinker", CALLBACK(src, nameof(.proc/fail_thinker)), world.time + 5 SECONDS)
+
 //override for failcheck behaviour
-/obj/item/gun/energy/gun/nuclear/Process()
+/obj/item/gun/energy/gun/nuclear/proc/fail_thinker()
 	if(fail_counter > 0)
 		fail_counter--
 		if(fail_counter > 20)
 			var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation/preset/uranium_238(fail_counter))
 			rad_source.schedule_decay(10 SECONDS)
 
-	return ..()
+	set_next_think_ctx("fail_thinker", world.time + 5 SECONDS)
 
 /obj/item/gun/energy/gun/nuclear/emp_act(severity)
 	..()
@@ -144,13 +148,14 @@
 	else if(fail_counter > 15)
 		to_chat(loc, SPAN("warning", "\The [src] feels pleasantly warm."))
 
-/obj/item/gun/energy/gun/nuclear/_examine_text(mob/user)
+/obj/item/gun/energy/gun/nuclear/examine(mob/user, infix)
 	. = ..()
+
 	if(. && user.Adjacent(src))
 		if(fail_counter > 30)
-			. += "\n[SPAN("danger", "It feels burning hot!")]"
+			. += SPAN("danger", "It feels burning hot!")
 		else if(fail_counter > 15)
-			. += "\n[SPAN("warning", "It feels pleasantly warm.")]"
+			. += SPAN("warning", "It feels pleasantly warm.")
 
 /obj/item/gun/energy/gun/nuclear/proc/get_charge_overlay()
 	var/ratio = CELL_PERCENT(power_supply)
@@ -228,6 +233,7 @@
 	icon_state = "eriflestun"
 	item_state = "erifle"
 	modifystate = "eriflestun"
+	improper_held_icon = TRUE
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 	force = 12.5
@@ -264,9 +270,11 @@
 		if(M.can_wield_item(src) && is_held_twohanded(M))
 			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]-wielded"
 			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]-wielded"
+			improper_held_icon = TRUE
 		else
 			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]"
 			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]"
+			improper_held_icon = FALSE
 	update_held_icon()
 
 /obj/item/gun/energy/rifle/cheap

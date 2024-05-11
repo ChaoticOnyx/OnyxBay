@@ -1,4 +1,7 @@
 /mob/Logout()
+	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_OUT, src, client)
+	SEND_SIGNAL(src, SIGNAL_LOGGED_OUT, src, client)
+
 	SSnano.user_logout(src) // this is used to clean up (remove) this user's Nano UIs
 	SStgui && SStgui.on_logout(src)
 	GLOB.player_list -= src
@@ -8,12 +11,12 @@
 		my_client.screen -= l_general
 	RemoveRenderers()
 	hide_client_images()
-	..()
 
 	clear_important_client_contents()
 
 	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_OUT, src, client)
 	SEND_SIGNAL(src, SIGNAL_LOGGED_OUT, src, client)
+	..()
 
 	my_client = null
 	return 1

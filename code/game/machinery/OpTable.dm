@@ -23,6 +23,7 @@
 		/obj/item/stock_parts/manipulator = 4
 	)
 
+	var/static/image/emissive_overlay
 	beepsounds = SFX_BEEP_MEDICAL
 
 /obj/machinery/optable/Initialize()
@@ -39,18 +40,33 @@
 		register_signal(turf_to_listen, SIGNAL_EXITED, nameof(.proc/atom_exited))
 
 	RefreshParts()
+
+	emissive_overlay = emissive_appearance(icon, "surgery_table_ea")
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/optable/LateInitialize()
 	update_icon()
 
 /obj/machinery/optable/on_update_icon()
+	CutOverlays(emissive_overlay)
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_overlay)
+
 	if(stat & (BROKEN | NOPOWER) || isnull(victim_ref))
 		icon_state = "[base_icon_state]-idle"
 		return
 
 	var/mob/living/carbon/human/victim = victim_ref?.resolve()
 	icon_state = "[base_icon_state][victim?.pulse() ? "-active" : "-idle"]"
+
+/obj/machinery/optable/proc/update_glow()
+	if(inoperable(MAINT))
+		set_light(0)
+		return FALSE
+
+	set_light(0.5, 0.1, 1, 3.5, COLOR_PALE_GREEN_GRAY)
+	return TRUE
 
 /obj/machinery/optable/proc/on_moved()
 	var/turf/turf_to_listen = get_turf(src)
@@ -118,7 +134,7 @@
 		return
 
 	if(inoperable(MAINT))
-		show_splash_text(usr, "no power!")
+		show_splash_text(usr, "no power!", "\The [src] is unpowered!")
 		return
 
 	var/mob/living/carbon/human/patient = victim_ref?.resolve()
@@ -210,11 +226,11 @@
 /obj/machinery/optable/proc/check_table(mob/living/carbon/patient)
 	var/mob/living/carbon/human/occupant = victim_ref?.resolve()
 	if(istype(occupant) && get_turf(occupant) == get_turf(src) && occupant.lying)
-		show_splash_text(usr, "already occupied!")
+		show_splash_text(usr, "already occupied!", "\The [src] is already occupied!")
 		return FALSE
 
 	if(patient.buckled)
-		show_splash_text(usr, "unbuckle the patient first!")
+		show_splash_text(usr, "unbuckle the patient first!", "You must unbuckle [patient] first!")
 		return FALSE
 
 	return TRUE

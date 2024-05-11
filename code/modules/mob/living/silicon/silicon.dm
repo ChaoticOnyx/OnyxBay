@@ -31,11 +31,23 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 	var/list/avaliable_huds
 	var/active_hud
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 41.7 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 23.9 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+	/// List of subsystems to initialize when silicon is spawned.
+	var/list/default_silicon_subsystems = list(
+		/datum/nano_module/alarm_monitor/all,
+		/datum/nano_module/law_manager,
+		/datum/nano_module/records/ai
 	)
+	/// List of all created and managed subsystems.
+	var/list/datum/nano_module/silicon_subsystems
+	/// Asociative list typepath -> `datum/ui_state`, where typepath is subsystem's type.
+	var/list/silicon_subsystems_states
+
+	rad_resist_type = /datum/rad_resist/mob_silicon
+
+/datum/rad_resist/mob_silicon
+	alpha_particle_resist = 41.7 MEGA ELECTRONVOLT
+	beta_particle_resist = 23.9 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /mob/living/silicon/New()
 	if(playable_mob)
@@ -57,10 +69,22 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 
 /mob/living/silicon/Destroy()
 	GLOB.silicon_mob_list -= src
+
 	QDEL_NULL(silicon_radio)
 	QDEL_NULL(silicon_camera)
+
+	for(var/datum/nano_module/subsystem in silicon_subsystems)
+		remove_subsystem(subsystem.type)
+
 	for(var/datum/alarm_handler/AH in SSalarm.all_handlers)
 		AH.unregister_alarm(src)
+
+	if(istype(idcard))
+		QDEL_NULL(idcard)
+
+	queued_alarms.Cut()
+	silicon_subsystems_states?.Cut() // Just in case...
+
 	return ..()
 
 /mob/living/silicon/mind_initialize()
@@ -159,31 +183,26 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 
 // this function shows the health of the AI in the Status panel
 /mob/living/silicon/proc/show_system_integrity()
+	. = list()
+
 	if(!src.stat)
-		stat(null, text("System integrity: [round((health/maxHealth)*100)]%"))
+		. += "System integrity: [round((health/maxHealth)*100)]%"
 	else
-		stat(null, text("Systems nonfunctional"))
+		. += "Systems nonfunctional"
 
 
 // This is a pure virtual function, it should be overwritten by all subclasses
-/mob/living/silicon/proc/show_malf_ai()
-	return 0
-
-// this function displays the shuttles ETA in the status panel if the shuttle has been called
-/mob/living/silicon/proc/show_emergency_shuttle_eta()
-	if(evacuation_controller)
-		var/eta_status = evacuation_controller.get_status_panel_eta()
-		if(eta_status)
-			stat(null, eta_status)
+/mob/living/silicon/proc/show_malf_ai(list/stats)
+	return list()
 
 
 // This adds the basic clock, shuttle recall timer, and malf_ai info to all silicon lifeforms
-/mob/living/silicon/Stat()
-	if(statpanel("Status"))
-		show_emergency_shuttle_eta()
-		show_system_integrity()
-		show_malf_ai()
+/mob/living/silicon/get_status_tab_items()
 	. = ..()
+
+	. += show_system_integrity()
+	. += show_malf_ai()
+
 
 // this function displays the stations manifest in a separate window
 /mob/living/silicon/proc/show_station_manifest()
@@ -222,30 +241,6 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 
 	..(rem_language)
 	speech_synthesizer_langs -= removed_language
-
-/mob/living/silicon/check_languages()
-	set name = "Check Known Languages"
-	set category = "IC"
-	set src = usr
-
-	var/dat = "<meta charset=\"utf-8\"><b><font size = 5>Known Languages</font></b><br/><br/>"
-
-	if(default_language)
-		dat += "Current default language: [default_language] - <a href='byond://?src=\ref[src];default_lang=reset'>reset</a><br/><br/>"
-
-	for(var/datum/language/L in languages)
-		if(!(L.flags & NONGLOBAL))
-			var/default_str
-			if(L == default_language)
-				default_str = " - default - <a href='byond://?src=\ref[src];default_lang=reset'>reset</a>"
-			else
-				default_str = " - <a href='byond://?src=\ref[src];default_lang=\ref[L]'>set default</a>"
-
-			var/synth = (L in speech_synthesizer_langs)
-			dat += "<b>[L.name] ([get_language_prefix()][L.key])</b>[synth ? default_str : null]<br/>Speech Synthesizer: <i>[synth ? "YES" : "NOT SUPPORTED"]</i><br/>[L.desc]<br/><br/>"
-
-	show_browser(src, dat, "window=checklanguage")
-	return
 
 /mob/living/silicon/proc/toggle_sensor_mode()
 	active_hud = null

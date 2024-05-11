@@ -29,6 +29,9 @@ GLOBAL_LIST_EMPTY(all_holopad_devices)
 	voice = "Holopad [id]"
 	GLOB.all_holopad_devices += src
 	become_hearing_sensitive()
+	add_think_ctx("think_ring", CALLBACK(src, nameof(.proc/think_ring)), 0)
+	add_think_ctx("think_holo_pos", CALLBACK(src, nameof(.proc/think_holo_pos)), 0)
+	. = ..()
 
 /obj/item/device/holopad/Destroy()
 	abonent = null
@@ -57,14 +60,19 @@ GLOBAL_LIST_EMPTY(all_holopad_devices)
 	call_state = CALL_RINGING
 	icon_state = "holopad_ringing"
 	desc = "[initial(desc)] Incoming call from [caller.getName()]."
-	INVOKE_ASYNC(src, nameof(.proc/ring))
+	set_next_think_ctx("think_ring", world.time + 0.1 SECONDS)
 	return TRUE
 
-/obj/item/device/holopad/proc/ring()
+/obj/item/device/holopad/proc/think_ring()
 	if(call_state != CALL_RINGING)
+		set_next_think_ctx("think_ring", 0)
 		return
+
 	audible_message(SPAN_WARNING("Something vibrates.."), hearing_distance = 4, splash_override = "*buzz*")
-	addtimer(CALLBACK(src, nameof(.proc/ring)), 50)
+	set_next_think_ctx("think_ring", world.time + 5 SECONDS)
+
+/obj/item/device/holopad/think()
+	update_holo()
 
 /obj/item/device/holopad/proc/placeCall(mob/user)
 	var/list/Targets = list()
@@ -94,7 +102,7 @@ GLOBAL_LIST_EMPTY(all_holopad_devices)
 			abonent.acceptCall()
 			call_state = CALL_IN_CALL
 			icon_state = "holopad_in_call"
-			addtimer(CALLBACK(src, nameof(.proc/update_holo)), 1)
+			set_next_think(world.time + 1)
 
 			say("Connection established!", language = null, verb = "transmits")
 		else
@@ -106,7 +114,7 @@ GLOBAL_LIST_EMPTY(all_holopad_devices)
 	else if(call_state == CALL_CALLING)
 		call_state = CALL_IN_CALL
 		icon_state = "holopad_in_call"
-		addtimer(CALLBACK(src, nameof(.proc/update_holo)), 1)
+		set_next_think(world.time + 1)
 
 		say("Connection established", language = null, verb = "transmits")
 
@@ -141,13 +149,15 @@ GLOBAL_LIST_EMPTY(all_holopad_devices)
 		else
 			abonent.hologram.icon = icon('icons/effects/effects.dmi', "icon_state"="nothing")
 		if(!abonent.updatingPos)
-			abonent.update_holo_pos()
+			abonent.set_next_think_ctx("think_holo_pos", world.time + 2)
 
-/obj/item/device/holopad/proc/update_holo_pos()
+/obj/item/device/holopad/proc/think_holo_pos()
 	if(call_state != CALL_IN_CALL)
-		updatingPos = 0
+		updatingPos = FALSE
+		set_next_think_ctx("think_holo_pos", 0)
 		return
-	updatingPos = 1
+
+	updatingPos = TRUE
 	if(isliving(loc))
 		var/mob/living/L = loc
 		hologram.dir = turn(L.dir,180)
@@ -161,8 +171,8 @@ GLOBAL_LIST_EMPTY(all_holopad_devices)
 		hologram.pixel_y = 0
 	else
 		hangUp()
-	addtimer(CALLBACK(src, nameof(.proc/update_holo_pos)), 2)
 
+	set_next_think_ctx("think_holo_pos", world.time + 2)
 
 /obj/item/device/holopad/attack_self(mob/user)
 	switch(call_state)

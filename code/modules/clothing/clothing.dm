@@ -13,7 +13,7 @@
 	var/list/species_restricted = null
 	var/gunshot_residue //Used by forensics.
 
-	var/list/accessories = list()
+	var/list/accessories
 	var/list/valid_accessory_slots
 	var/list/restricted_accessory_slots
 	var/list/starting_accessories
@@ -22,11 +22,12 @@
 
 	/// How much of rays this clothing can save.
 	/// Value should be in range between 0 and 1.
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 17 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 3 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	rad_resist_type = /datum/rad_resist/clothing
+
+/datum/rad_resist/clothing
+	alpha_particle_resist = 17 MEGA ELECTRONVOLT
+	beta_particle_resist = 3 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 // Updates the icons of the mob wearing the clothing item, if any.
 /obj/item/clothing/proc/update_clothing_icon()
@@ -45,10 +46,12 @@
 GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 /obj/item/clothing/get_mob_overlay(mob/user_mob, slot)
-	var/image/ret = ..()
+	. = ..()
 
 	if(slot == slot_l_hand_str || slot == slot_r_hand_str)
-		return ret
+		return
+
+	var/image/ret = . ? . : image('icons/effects/blank.dmi')
 
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
@@ -63,9 +66,8 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 			ret.AddOverlays(GLOB.clothing_blood_icons[cache_index])
 
-	if(length(accessories))
-		for(var/obj/item/clothing/accessory/A in accessories)
-			ret.AddOverlays(A.get_mob_overlay(user_mob, slot_tie_str))
+	for(var/obj/item/clothing/accessory/A in accessories)
+		ret.AddOverlays(A.get_mob_overlay(user_mob, slot_tie_str))
 	return ret
 
 // Aurora forensics port.
@@ -177,17 +179,28 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	else
 		icon = initial(icon)
 
+/obj/item/clothing/examine(mob/user, infix)
+	. = ..()
+
+	. += "<a href='?src=[ref(src)];examine_protection=1'>Show protection classes.</a>"
+
 /obj/item/clothing/get_examine_line(is_visible=TRUE)
 	. = ..()
 	if(is_visible)
-		var/list/ties = list()
+		var/list/ties
 		for(var/obj/item/clothing/accessory/accessory in accessories)
 			if(accessory.high_visibility)
-				ties += "\icon[accessory] \a [accessory]"
-		if(ties.len)
+				LAZYADD(ties, "\icon[accessory] \a [accessory]")
+		if(LAZYLEN(ties))
 			.+= " with [english_list(ties)] attached"
-		if(accessories.len > ties.len)
+		if(LAZYLEN(accessories) > LAZYLEN(ties))
 			.+= ". <a href='?src=\ref[src];list_ungabunga=1'>\[See accessories\]</a>"
+
+/obj/item/clothing/Topic(href, href_list, datum/topic_state/state)
+	. = ..()
+
+	if(href_list["examine_protection"])
+		to_chat(usr, EXAMINE_BLOCK(get_protection_stats().Join("\n")))
 
 /obj/item/clothing/CanUseTopic(mob/user, datum/topic_state/state, href_list)
 	if(href_list && href_list["list_ungabunga"] && (user in view(get_turf(src)))) //))))))
@@ -197,7 +210,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 /obj/item/clothing/OnTopic(user, list/href_list, datum/topic_state/state)
 	if(href_list["list_ungabunga"])
-		if(accessories.len)
+		if(LAZYLEN(accessories))
 			var/list/ties = list()
 			for(var/accessory in accessories)
 				ties += "\icon[accessory] \a [accessory]"
@@ -228,3 +241,70 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 		return list(armor[type], coverage)
 
 	return
+
+/obj/item/clothing/proc/get_protection_stats(mob/user)
+	RETURN_TYPE(/list)
+
+	. = list()
+
+	for(var/armor_type in armor)
+		var/armor_value = armor[armor_type]
+
+		if(armor_value == 0)
+			continue
+
+		. += _describe_armor(armor_type, GLOB.descriptive_attack_types[armor_type])
+
+	. += ""
+
+	if(item_flags & ITEM_FLAG_AIRTIGHT)
+		. += "It is airtight."
+
+	if(item_flags & ITEM_FLAG_STOPPRESSUREDAMAGE)
+		. += "Wearing this will protect you from the vacuum of space."
+
+	if(item_flags & ITEM_FLAG_THICKMATERIAL)
+		. += "The material is exceptionally thick."
+
+	if(max_heat_protection_temperature >= FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE)
+		. += "It provides very good protection against fire and heat."
+
+	if(min_cold_protection_temperature == SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE)
+		. += "It provides very good protection against very cold temperatures."
+
+	var/list/covers
+	for(var/name in string_part_flags)
+		if(body_parts_covered & string_part_flags[name])
+			LAZYADD(covers, name)
+
+	var/list/slots
+	for(var/name in string_slot_flags)
+		if(slot_flags & string_slot_flags[name])
+			LAZYADD(slots, name)
+
+	if(length(covers))
+		. += "It grants [round(coverage * 100)]% protection of the [english_list(covers)]."
+
+	if(length(slots))
+		. += "It can be worn on your [english_list(slots)]."
+
+/obj/item/clothing/proc/_describe_armor(armor_type, descriptive_attack_type)
+	switch(armor[armor_type])
+		if(1 to 9)
+			return "It barely protects against [descriptive_attack_type]."
+		if(10 to 19)
+			return "It provides a very small defense against [descriptive_attack_type]."
+		if(20 to 39)
+			return "It offers a small amount of protection against [descriptive_attack_type]."
+		if(40 to 59)
+			return "It offers a moderate defense against [descriptive_attack_type]."
+		if(60 to 79)
+			return "It provides a strong defense against [descriptive_attack_type]."
+		if(80 to 99)
+			return "It is very strong against [descriptive_attack_type]."
+		if(100 to 124)
+			return "This gives a very robust defense against [descriptive_attack_type]."
+		if(125 to 149)
+			return "Wearing this would make you nigh-invulerable against [descriptive_attack_type]."
+		if(150 to INFINITY)
+			return "You would be practically immune to [descriptive_attack_type] if you wore this."

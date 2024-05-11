@@ -29,10 +29,11 @@
 	if(ruined)
 		AddOverlays("ribbonoverlay")
 
-/obj/item/music_tape/_examine_text(mob/user)
+/obj/item/music_tape/examine(mob/user, infix)
 	. = ..()
+
 	if(track?.title)
-		. += "\n[SPAN_NOTICE("It's labeled as \"[track.title]\".")]"
+		. += SPAN_NOTICE("It's labeled as \"[track.title]\".")
 
 /obj/item/music_tape/attack_self(mob/user)
 	if(!ruined)

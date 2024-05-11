@@ -60,7 +60,7 @@
 			return TRUE
 		return FALSE
 
-	if(language.flags & INNATE)
+	if(language.language_flags & INNATE)
 		return TRUE
 
 	//Language check.

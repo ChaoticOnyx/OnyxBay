@@ -46,6 +46,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract
 	var/name
 	var/desc
+	var/category
 	var/reward = 0
 	var/completed = FALSE
 	var/datum/mind/completed_by
@@ -106,7 +107,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return
 
 /datum/antag_contract/proc/create_explain_text(target_and_task)
-	desc = "My client is [organization.name], [reason]. They have information that the target is located somwhere aboard [GLOB.using_map.station_name]. \
+	desc = "My client is [organization.name], [reason]. They have information that the target is located somewhere aboard [GLOB.using_map.station_name]. \
 	Your mission[prob(25) ? ", should you choose to accept it, is to" : " is to"] [target_and_task] The reward for closing this contract is [reward] TC."
 
 /datum/antag_contract/proc/can_place()
@@ -130,12 +131,12 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/proc/on_mob_despawned(datum/mind/M)
 	return
 
-/datum/antag_contract/proc/complete(obj/item/device/uplink/close_uplink)
+/datum/antag_contract/proc/complete(datum/component/uplink/close_uplink)
 	if(!istype(close_uplink))
 		return
 	if(completed)
 		warning("Contract completed twice: [name] [desc]")
-	var/datum/mind/M = close_uplink.uplink_owner
+	var/datum/mind/M = close_uplink.owner
 	completed = TRUE
 	completed_by = M
 
@@ -144,11 +145,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		if(M.current)
 			to_chat(M.current, SPAN("notice", "Contract completed: [name] ([reward] TC). [pick("Nice work", "Good job", "Great job", "Well done", "Nicely done")], [M.current]."))
 
-	close_uplink.uses += reward
-
+	close_uplink.telecrystals += reward
 
 // A contract to steal a specific item - allows you to check all contents (recursively) for the target item
 /datum/antag_contract/item
+	category = CONTRACT_CATEGORY_STEAL
 
 /datum/antag_contract/item/proc/on_container(obj/item/storage/briefcase/std/container)
 	if(check(container))
@@ -164,6 +165,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/implant
 	name = "Implant"
+	category = CONTRACT_CATEGORY_IMPLANT
 	reward = 4
 	intent = CONTRACT_IMPACT_MILITARY
 
@@ -230,7 +232,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(completed)
 		return
 	if(implant.imp_in && implant.imp_in.mind == target_mind)
-		complete(implant.hidden_uplink)
+		var/datum/component/uplink/U = implant.uplink_ref?.resolve()
+		if(istype(U))
+			complete(U)
 
 /datum/antag_contract/implant/on_mob_despawned(datum/mind/M)
 	if(M == target_mind)
@@ -385,7 +389,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/assassinate
 	name = "Assassinate"
-	reward = 2 // This is how expensive your life is, fellow NT employee
+	category = CONTRACT_CATEGORY_IMPLANT
+	reward = 4 // This is how expensive your life is, fellow NT employee
 	intent = CONTRACT_IMPACT_MILITARY
 	var/target_real_name
 	var/detected_less_tc = FALSE
@@ -394,6 +399,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/weakref/target // obj/item/organ
 	var/weakref/alternative_target // obj/item
 	var/weakref/H // mob/living/carbon/human
+	var/full_reward_mod = 1.5
 
 /datum/antag_contract/item/assassinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	organization = contract_organization
@@ -465,7 +471,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	target = weakref(_target)
 
 	var/datum/gender/T = gender_datums[_H.get_gender()]
-	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [_target.name]</b> for double pay via STD (found in <b>Contracts Equipment</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
+	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [_target.name]</b> for an increased pay via STD (found in <b>Contracts Equipment</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
 
 /datum/antag_contract/item/assassinate/can_place()
 	return ..() && target && !QDELETED(target_mind) && !QDELETED(target_mind.current)
@@ -486,8 +492,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 	return ((_target in contents) || (MMI in contents) || (_alternative_target in contents) || (_brain in contents))
 
-/datum/antag_contract/item/assassinate/complete(obj/item/device/uplink/close_uplink)
-	var/datum/mind/M = close_uplink.uplink_owner
+/datum/antag_contract/item/assassinate/complete(datum/component/uplink/close_uplink)
+	var/datum/mind/M = close_uplink.owner
 	var/obj/item/organ/internal/cerebrum/brain/_brain = brain?.resolve()
 	var/mob/living/carbon/human/_H = H?.resolve()
 	if((istype(_H) && !_H.stat && _H.mind) || (istype(_brain?.loc, /obj/item/organ/internal/cerebrum/mmi) && !target_detected_in_STD))
@@ -495,7 +501,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return
 	if(!detected_less_tc)
-		reward = reward * 2
+		reward = round(reward * full_reward_mod)
 	..(close_uplink)
 
 /datum/antag_contract/item/assassinate/on_mob_despawned(datum/mind/M)
@@ -504,6 +510,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/dump
 	name = "Dump"
+	category = CONTRACT_CATEGORY_DUMP
 	unique = TRUE
 	reward = 5
 	intent = CONTRACT_STEAL_OPERATION
@@ -592,6 +599,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/recon
 	name = "Recon"
+	category = CONTRACT_CATEGORY_RECON
 	reward = 3 // One 2 TC kit is enough to complete two of these.
 	intent = CONTRACT_STEAL_OPERATION
 	var/list/area/targets = list()

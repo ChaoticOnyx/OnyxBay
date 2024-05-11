@@ -17,17 +17,20 @@
 	var/reappear_duration = 5 //equal to number of animation frames
 	var/obj/effect/dummy/spell_jaunt/jaunt_holder
 	var/atom/movable/fake_overlay/animation
-	var/start_reappear_timer
+
+/datum/spell/targeted/ethereal_jaunt/New()
+	. = ..()
+	add_think_ctx("start_reappear_context", CALLBACK(src, nameof(.proc/start_reappear)), 0)
+	add_think_ctx("reappear_context", CALLBACK(src, nameof(.proc/reappear)), 0)
 
 /datum/spell/targeted/ethereal_jaunt/cast(list/targets, mob/user) //magnets, so mostly hardcoded
 	for(var/mob/living/target in targets)
 		if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(target))
 			continue
 		if(target in jaunt_holder?.contents)
-			if(start_reappear_timer)
-				deltimer(start_reappear_timer)
-			start_reappear_timer = addtimer(CALLBACK(src, nameof(.proc/start_reappear), target), duration, TIMER_STOPPABLE)
+			set_next_think_ctx("start_reappear_context", world.time + duration)
 			break
+
 		if(target.buckled)
 			target.buckled.unbuckle_mob()
 		if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
@@ -49,7 +52,7 @@
 			target.can_use_hands = FALSE
 			jaunt_steam(mobloc)
 			target.forceMove(jaunt_holder)
-			start_reappear_timer = addtimer(CALLBACK(src, nameof(.proc/start_reappear), target), duration, TIMER_STOPPABLE)
+			set_next_think_ctx("start_reappear_context", world.time + duration, target)
 
 /datum/spell/targeted/ethereal_jaunt/proc/start_reappear(mob/living/target)
 	var/mob_loc = jaunt_holder.last_valid_turf
@@ -57,7 +60,7 @@
 	jaunt_steam(mob_loc)
 	jaunt_reappear(animation, target)
 	animation.forceMove(mob_loc)
-	addtimer(CALLBACK(src, nameof(.proc/reappear), mob_loc, target), reappear_duration)
+	set_next_think_ctx("reappear_context", world.time + reappear_duration, mob_loc, target)
 
 /datum/spell/targeted/ethereal_jaunt/proc/reappear(mob_loc, mob/living/target)
 	if(!target.forceMove(mob_loc))
@@ -131,9 +134,9 @@
 	else
 		to_chat(user, SPAN_WARNING("Some strange aura is blocking the way!"))
 	canmove = FALSE
-	addtimer(CALLBACK(src, nameof(.proc/allow_move)), 2)
+	set_next_think(world.time + 2)
 
-/obj/effect/dummy/spell_jaunt/proc/allow_move()
+/obj/effect/dummy/spell_jaunt/think()
 	canmove = TRUE
 
 /obj/effect/dummy/spell_jaunt/ex_act(blah)

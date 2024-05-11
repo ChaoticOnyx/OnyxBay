@@ -6,6 +6,7 @@
 	density = 1
 	anchored = 1
 	atom_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
+	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	layer = 5.2 // Just above doors
 	throwpass = 1
 	can_buckle = 1
@@ -21,6 +22,8 @@
 	if(anchored)
 		update_icon(0)
 
+	AddElement(/datum/element/simple_rotation)
+
 /obj/structure/railing/Destroy()
 	var/turf/location = loc
 	. = ..()
@@ -34,16 +37,16 @@
 		return !density
 	return TRUE
 
-/obj/structure/railing/_examine_text(mob/user)
+/obj/structure/railing/examine(mob/user, infix)
 	. = ..()
 	if(health < maxhealth)
 		switch(health / maxhealth)
 			if(0.0 to 0.25)
-				. += "\n<span class='warning'>It looks severely damaged!</span>"
+				. += SPAN_WARNING("It looks severely damaged!")
 			if(0.25 to 0.5)
-				. += "\n<span class='warning'>It looks damaged!</span>"
+				. += SPAN_WARNING("It looks damaged!")
 			if(0.5 to 1.0)
-				. += "\n<span class='notice'>It has a few scrapes and dents.</span>"
+				. += SPAN_WARNING("It has a few scrapes and dents.")
 
 /obj/structure/railing/proc/take_damage(amount)
 	health -= amount
@@ -114,44 +117,6 @@
 						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = -32))
 					if (WEST)
 						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = 32))
-
-/obj/structure/railing/verb/rotate()
-	set name = "Rotate Counter-Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return 0
-
-	if (!can_touch(usr) || ismouse(usr))
-		return
-
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
-		return 0
-
-	set_dir(turn(dir, 90))
-	update_icon()
-	return
-
-/obj/structure/railing/verb/revrotate()
-	set name = "Rotate Clockwise"
-	set category = "Object"
-	set src in oview(1)
-
-	if(usr.incapacitated())
-		return 0
-
-	if (!can_touch(usr) || ismouse(usr))
-		return
-
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
-		return 0
-
-	set_dir(turn(dir, -90))
-	update_icon()
-	return
 
 /obj/structure/railing/verb/flip() // This will help push railing to remote places, such as open space turfs
 	set name = "Flip Railing"
@@ -294,14 +259,14 @@
 		return
 
 	user.visible_message("<span class='warning'>\The [user] starts climbing over \the [src]!</span>")
-	climbers |= user
+	LAZYDISTINCTADD(climbers, user)
 
 	if(!do_after(user,(issmall(user) ? 30 : 50), src))
-		climbers -= user
+		LAZYREMOVE(climbers, user)
 		return
 
 	if (!can_climb(user))
-		climbers -= user
+		LAZYREMOVE(climbers, user)
 		return
 
 	if(get_turf(user) == get_turf(src))
@@ -319,7 +284,7 @@
 	else
 		user.visible_message("<span class='warning'>\The [user] climbs over \the [src]!</span>")
 
-	climbers -= user
+	LAZYREMOVE(climbers, user)
 
 /obj/structure/railing/steel
 	icon_state = "steel_railing_full"

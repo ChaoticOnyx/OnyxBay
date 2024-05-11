@@ -26,27 +26,34 @@
 
 /obj/item/grenade/Initialize()
 	. = ..()
+	add_think_ctx("think_detonate", CALLBACK(src, nameof(.proc/detonate)), 0)
+	add_think_ctx("think_activate", CALLBACK(src, nameof(.proc/activate)), 0)
 	if(has_pin)
 		safety_pin = new /obj/item/safety_pin
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 	new_timing(30)
 
-/obj/item/grenade/_examine_text(mob/user)
+/obj/item/grenade/examine(mob/user, infix)
 	. = ..()
+
 	if(get_dist(src, user) <= 0)
 		if(!QDELETED(safety_pin) && has_pin)
-			. += "\nThe safety pin is in place."
+			. += "The safety pin is in place."
 		else
-			. += "\nThere is no safety pin in place."
+			. += "There is no safety pin in place."
+
 		if(QDELETED(detonator))
-			. += "\nThere is no detonator in place."
+			. += "There is no detonator in place."
 			return
+
 		if(det_time > 1)
-			. += "\nThe timer is set to [det_time/10] seconds."
+			. += "The timer is set to [det_time/10] seconds."
 			return
+
 		if(det_time == null)
 			return
-		. += "\n\The [src] is set for instant detonation."
+
+		. += "\The [src] is set for instant detonation."
 
 /obj/item/grenade/attack_self(mob/user)
 	if(!active)
@@ -74,10 +81,12 @@
 		return
 
 	if(!isigniter(detonator.a_left))
-		detonator.a_left.activate()
+		if(!istype(detonator.a_left, /obj/item/device/assembly/voice))
+			detonator.a_left.activate()
 		active = TRUE
 	if(!isigniter(detonator.a_right))
-		detonator.a_right.activate()
+		if(!istype(detonator.a_right, /obj/item/device/assembly/voice))
+			detonator.a_right.activate()
 		active = TRUE
 
 	broken = TRUE

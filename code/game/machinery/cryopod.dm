@@ -305,11 +305,14 @@
 	find_control_computer()
 	announce = new /obj/item/device/radio/intercom(src)
 
-/obj/machinery/cryopod/_examine_text(mob/user)
+/obj/machinery/cryopod/examine(mob/user, infix)
 	. = ..()
-	if (user.Adjacent(src))
-		if(occupant)
-			. += "\n[occupant._examine_text(user)]"
+
+	if(!user.Adjacent(src))
+		return
+
+	if(occupant)
+		. += "It has [SPAN_NOTICE("[occupant]")] inside."
 
 /obj/machinery/cryopod/emag_act(remaining_charges, mob/user)
 	if(!emagged)
@@ -476,7 +479,7 @@
 		control_computer._admin_logs += "[key_name(occupant)] ([role_alt_title]) at [stationtime2text()]"
 	log_and_message_admins("[key_name(occupant)] ([role_alt_title]) entered cryostorage.")
 
-	announce.autosay("[occupant.real_name], [role_alt_title], [on_store_message]", get_announcement_computer("[on_store_name]"))
+	announce.autosay("[occupant.real_name], [role_alt_title], [on_store_message]", "[on_store_name]")
 	visible_message("<span class='notice'>\The [initial(name)] hums and hisses as it moves [occupant.real_name] into storage.</span>")
 
 	//This should guarantee that ghosts don't spawn.
@@ -565,7 +568,7 @@
 		var/area/t = get_area(M)
 		var/location = t.name
 		for(var/channel in list("Security", "Medical"))
-			GLOB.global_headset.autosay("Someone is trying to store a dead body in [name] at [location]!", get_announcement_computer("[name] warning"), channel)
+			GLOB.global_headset.autosay("Someone is trying to store a dead body in [name] at [location]!", ("[name] warning"), channel)
 		return
 	if(M == user)
 		visible_message("\The [user] starts climbing into \the [src].")

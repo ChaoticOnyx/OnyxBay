@@ -86,12 +86,6 @@ Class Procs:
 	pull_sound = SFX_PULL_MACHINE
 	layer = BELOW_OBJ_LAYER
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 160 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 26.6 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
 	var/stat = 0
 	var/emagged = 0
 	var/malf_upgraded = 0
@@ -129,6 +123,13 @@ Class Procs:
 
 	var/current_power_usage = 0 WATTS // How much power are we currently using, dont change by hand, change power_usage vars and then use set_power_use
 	var/area/current_power_area // What area are we powering currently
+
+	rad_resist_type = /datum/rad_resist/machinery
+
+/datum/rad_resist/machinery
+	alpha_particle_resist = 160 MEGA ELECTRONVOLT
+	beta_particle_resist = 26.6 MEGA ELECTRONVOLT
+	hawking_resist = 1 ELECTRONVOLT
 
 /obj/machinery/Initialize(mapload, d=0, populate_components = TRUE)
 	. = ..()
@@ -393,7 +394,7 @@ Class Procs:
 	for(var/obj/I in component_parts)
 		if(!QDELETED(I))
 			I.forceMove(get_turf(src))
-	component_parts.Cut()
+	LAZYCLEARLIST(component_parts)
 	qdel(src)
 	return 1
 
@@ -428,10 +429,11 @@ Class Procs:
 	for(var/obj/item/C in component_parts)
 		. += "\n<span class='notice'>	[C.name]</span>"
 
-/obj/machinery/_examine_text(mob/user)
+/obj/machinery/examine(mob/user, infix)
 	. = ..()
+
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
-		. += "\n[get_parts_infotext()]"
+		. += "[get_parts_infotext()]"
 
 /obj/machinery/proc/update_power_use()
 	set_power_use(use_power)
