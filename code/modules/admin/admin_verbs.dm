@@ -226,7 +226,11 @@ var/list/admin_verbs_debug = list(
 	/client/proc/visualpower_remove,
 	/client/proc/hard_del,
 	/client/proc/enable_profiler,
-	/client/proc/bluespace_tech
+	/client/proc/bluespace_tech,
+	/client/proc/test_pt_mark_start,
+	/client/proc/test_pt_mark_goal,
+	/client/proc/test_pt_clear,
+	/client/proc/test_pt_vis,
 	)
 
 var/list/admin_verbs_paranoid_debug = list(
@@ -317,6 +321,10 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/toggle_possess_mode,
 	/client/proc/enable_profiler,
 	/client/proc/bluespace_tech,
+	/client/proc/test_pt_mark_start,
+	/client/proc/test_pt_mark_goal,
+	/client/proc/test_pt_clear,
+	/client/proc/test_pt_vis,
 	/client/proc/delbook,
 	/client/proc/debug_glob_variables
 	)
