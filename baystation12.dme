@@ -23,6 +23,7 @@
 #include "code\__defines\__renderer.dm"
 #include "code\__defines\_compile_options.dm"
 #include "code\__defines\_economy_defines.dm"
+#include "code\__defines\_pathfinding.dm"
 #include "code\__defines\_render.dm"
 #include "code\__defines\_symbols.dm"
 #include "code\__defines\_tick.dm"
