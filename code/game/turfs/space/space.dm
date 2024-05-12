@@ -45,6 +45,11 @@
 /turf/space/is_solid_structure()
 	return locate(/obj/structure/lattice, src) //counts as solid structure if it has a lattice
 
+/turf/space/__get_astar_node_mask()
+	. = ..()
+
+	. |= NODE_SPACE_BIT
+
 /turf/space/proc/update_starlight()
 	if(!config.misc.starlight)
 		return
