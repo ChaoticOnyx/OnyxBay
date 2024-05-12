@@ -98,7 +98,8 @@
 	canremove = FALSE
 	force_drop = TRUE
 
-/obj/item/finger_lockpick/New()
+/obj/item/finger_lockpick/Initialize()
+	. = ..()
 	if(ismob(loc))
 		to_chat(loc, SPAN("changeling", "We shape our finger to fit inside electronics, and are ready to force them open."))
 
