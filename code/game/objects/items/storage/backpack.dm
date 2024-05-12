@@ -75,13 +75,16 @@
 
 /obj/item/storage/backpack/holding/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/storage/backpack/holding))
-		investigate_log("has become a singularity. Caused by [user.key]", "singulo")
+		investigate_log("has triggered a wormhole event. Caused by [user.key]")
 		to_chat(usr, "\red The Bluespace interfaces of the two devices catastrophically malfunction!")
-		qdel(W)
-		new /obj/singularity(get_turf(src), 300)
 		log_and_message_admins("detonated a bag of holding", user, src.loc)
-		qdel(src)
+		explosion(get_turf(src), 0, 1, 3, 3)
+		var/datum/event/E = SSevents.total_events["wormholes"]
+		E.fire()
+		qdel(W)
+		qdel_self()
 		return
+
 	..()
 
 /obj/item/storage/backpack/santabag
