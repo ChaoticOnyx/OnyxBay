@@ -214,17 +214,17 @@
 /obj/item/underwear/wrist/watch/nerdy
 	desc = "It's a GENUINE Spy-Tech Invisi-watch! <b>WARNING</b> : Does not actually make you invisible."
 	icon_state = "nerdy"
-	item_state = "nerdy"
+	item_state = "watch_leather"
 
 /obj/item/underwear/wrist/watch/magnitka
 	desc = "It's a GENUINE Spy-Tech Invisi-watch! <b>WARNING</b> : Does not actually make you invisible."
 	icon_state = "magnitka"
-	item_state = "magnitka"
+	item_state = "elite-true"
 
 /obj/item/underwear/wrist/watch/normal
 	desc = "It's a GENUINE Spy-Tech Invisi-watch! <b>WARNING</b> : Does not actually make you invisible."
 	icon_state = "normal"
-	item_state = "normal"
+	item_state = "watch"
 
 /obj/item/underwear/wrist/watch/elite
 	desc = "It's a GENUINE Spy-Tech Invisi-watch! <b>WARNING</b> : Does not actually make you invisible."
@@ -237,7 +237,7 @@
 
 /obj/item/underwear/wrist/watch/elite/true
 	icon_state = "elite-true"
-	item_state = "true"
+	item_state = "elite-true"
 
 /obj/item/underwear/wrist/bracelet
 	name = "bracelet"
