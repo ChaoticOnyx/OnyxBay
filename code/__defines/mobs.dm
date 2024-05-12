@@ -434,3 +434,44 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 		if(HUMAN_HEIGHT_LARGE) return "Tall"
 		if(HUMAN_HEIGHT_HUGE) return "Towering"
 	return "Unusual"
+
+// Human Overlays Indexes
+#define HO_L_HAND_LOW_LAYER        1
+#define HO_R_HAND_LOW_LAYER        2
+#define HO_BODY_LAYER              3
+#define HO_MUTATIONS_LAYER         4
+#define HO_SKIN_LAYER              5
+#define HO_DAMAGE_LAYER            6
+#define HO_SURGERY_LAYER           7
+#define HO_UNDERWEAR_LAYER         8
+#define HO_WRISTS_UNDER_LAYER      9
+#define HO_UNIFORM_LAYER          10
+#define HO_BANDAGE_LAYER          11
+#define HO_ID_LAYER               12
+#define HO_SHOES_LAYER            13
+#define HO_GLOVES_LAYER           14
+#define HO_BELT_LAYER             15
+#define HO_WRIST_UNIFORM_LAYER    16
+#define HO_SUIT_LAYER             17
+#define HO_TAIL_LAYER             18
+#define HO_FACIAL_HAIR_LAYER      19
+#define HO_FACEMASK_ALT_LAYER     20
+#define HO_GLASSES_LAYER          21
+#define HO_BELT_LAYER_ALT         22
+#define HO_SUIT_STORE_LAYER       23
+#define HO_BACK_LAYER             24
+#define HO_DEFORM_LAYER           25
+#define HO_HAIR_LAYER             26
+#define HO_GOGGLES_LAYER          27
+#define HO_EARS_LAYER             28
+#define HO_FACEMASK_LAYER         29
+#define HO_HEAD_LAYER             30
+#define HO_COLLAR_LAYER           31
+#define HO_WRISTS_OVER_LAYER      32
+#define HO_HANDCUFF_LAYER         33
+#define HO_L_HAND_LAYER           34
+#define HO_R_HAND_LAYER           35
+#define HO_FIRE_LAYER             36
+#define HO_MODIFIER_EFFECTS_LAYER 37
+#define HO_TARGETED_LAYER         38
+#define HO_TOTAL_LAYERS           39

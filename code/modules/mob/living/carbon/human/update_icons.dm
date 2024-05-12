@@ -119,45 +119,6 @@ If you have any questions/constructive-comments/bugs-to-report/or have a massivl
 Please contact me on #coderbus IRC. ~Carn x
 */
 
-//Human Overlays Indexes/////////
-#define HO_L_HAND_LOW_LAYER        1
-#define HO_R_HAND_LOW_LAYER        2
-#define HO_BODY_LAYER              3
-#define HO_MUTATIONS_LAYER         4
-#define HO_SKIN_LAYER              5
-#define HO_DAMAGE_LAYER            6
-#define HO_SURGERY_LAYER           7
-#define HO_UNDERWEAR_LAYER         8
-#define HO_UNIFORM_LAYER           9
-#define HO_BANDAGE_LAYER          10
-#define HO_ID_LAYER               11
-#define HO_SHOES_LAYER            12
-#define HO_GLOVES_LAYER           13
-#define HO_BELT_LAYER             14
-#define HO_SUIT_LAYER             15
-#define HO_TAIL_LAYER             16		//bs12 specific. this hack is probably gonna come back to haunt me
-#define HO_FACIAL_HAIR_LAYER      17
-#define HO_FACEMASK_ALT_LAYER     18
-#define HO_GLASSES_LAYER          19
-#define HO_BELT_LAYER_ALT         20
-#define HO_SUIT_STORE_LAYER       21
-#define HO_BACK_LAYER             22
-#define HO_DEFORM_LAYER           23
-#define HO_HAIR_LAYER             24
-#define HO_GOGGLES_LAYER          25
-#define HO_EARS_LAYER             26
-#define HO_FACEMASK_LAYER         27
-#define HO_HEAD_LAYER             28
-#define HO_COLLAR_LAYER           29
-#define HO_HANDCUFF_LAYER         30
-#define HO_L_HAND_LAYER           31
-#define HO_R_HAND_LAYER           32
-#define HO_FIRE_LAYER             33		//If you're on fire
-#define HO_MODIFIER_EFFECTS_LAYER 34
-#define HO_TARGETED_LAYER         35		//BS12: Layer for the target overlay from weapon targeting system
-#define HO_TOTAL_LAYERS           35
-//////////////////////////////////
-
 /mob/living/carbon/human
 	var/list/overlays_standing[HO_TOTAL_LAYERS]
 	var/previous_damage_appearance // store what the body last looked like, so we only have to update it if something changed
@@ -319,14 +280,24 @@ var/global/list/damage_icon_parts = list()
 
 /mob/living/carbon/human/proc/update_underwear(update_icons=1)
 	overlays_standing[HO_UNDERWEAR_LAYER] = list()
+
+	overlays_standing[HO_WRISTS_UNDER_LAYER] = list()
+	overlays_standing[HO_WRIST_UNIFORM_LAYER] = list()
+	overlays_standing[HO_WRISTS_OVER_LAYER] = list()
+
 	for(var/obj/item/underwear/UW in worn_underwear)
 		var/image/I = image(body_build.get_mob_icon(slot_hidden_str, UW.icon_state), UW.icon_state)
 		I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		I.color = UW.color
+		if(istype(UW, /obj/item/underwear/wrist))
+			var/obj/item/underwear/wrist/W = UW
+			overlays_standing[W.mob_wear_layer] += I
 
-		overlays_standing[HO_UNDERWEAR_LAYER] += I
+		else
+			overlays_standing[HO_UNDERWEAR_LAYER] += I
 
-	if(update_icons) queue_icon_update()
+	if(update_icons)
+		queue_icon_update()
 
 //HAIR OVERLAY
 /mob/living/carbon/human/proc/update_hair(update_icons=1)
