@@ -11,6 +11,8 @@
 	var/list/signal_procs = list()
 	/// Used to avoid unnecessary refstring creation in Destroy().
 	var/has_state_machine = FALSE
+	/// Status traits attached to this datum. associative list of the form: list(trait name (string) = list(source1, source2, source3,...))
+	var/list/_status_traits
 
 	// Thinking
 	var/list/_think_ctxs
