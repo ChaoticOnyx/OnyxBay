@@ -1656,7 +1656,7 @@
 "aLa" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall_straight"; dir = 8},/area/shuttle/administration/centcom)
 "aLc" = (/obj/machinery/body_scanconsole{dir = 8},/turf/unsimulated/floor{icon_state = "white"},/area/centcom/holding)
 "aLd" = (/obj/structure/table/standard,/obj/item/storage/firstaid/regular{pixel_x = 2; pixel_y = 6},/obj/item/storage/firstaid/regular{pixel_x = -2; pixel_y = 4},/obj/item/storage/firstaid/adv{pixel_x = 2; pixel_y = 2},/obj/item/storage/firstaid/adv{pixel_x = -2},/turf/unsimulated/floor{icon_state = "white"},/area/centcom/holding)
-"aLe" = (/obj/structure/table/standard,/obj/item/storage/firstaid/o2{layer = 2.8; pixel_x = 4; pixel_y = 6},/obj/item/storage/firstaid/toxin,/obj/item/storage/firstaid/fire{layer = 2.9; pixel_x = 2; pixel_y = 3},/turf/unsimulated/floor{icon_state = "white"},/area/centcom/holding)
+"aLe" = (/obj/structure/table/standard,/obj/item/storage/firstaid/o2{layer = 2.8; pixel_x = 4; pixel_y = 6},/obj/item/storage/firstaid/toxin,/obj/item/storage/firstaid/fire{layer = 2.9; pixel_x = 2; pixel_y = 3},/obj/item/storage/firstaid/antirad{pixel_x = -4; pixel_y = -5},/turf/unsimulated/floor{icon_state = "white"},/area/centcom/holding)
 "aLf" = (/obj/structure/table/standard,/obj/item/clothing/glasses/hud/health,/obj/item/clothing/glasses/hud/health,/obj/item/reagent_containers/spray/cleaner,/turf/unsimulated/floor{icon_state = "white"},/area/centcom/holding)
 "aLg" = (/obj/structure/closet/hydrant{pixel_x = -30},/turf/simulated/floor/shuttle/blue,/area/shuttle/escape/centcom)
 "aLh" = (/obj/machinery/status_display{pixel_x = -32},/obj/structure/bed/chair/shuttle/red{dir = 4},/turf/simulated/floor/shuttle/blue,/area/shuttle/escape/centcom)
