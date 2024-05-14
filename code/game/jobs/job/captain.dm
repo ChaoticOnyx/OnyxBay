@@ -58,3 +58,20 @@
 			            access_hop, access_RC_announce, access_keycard_auth, access_gateway, access_lawyer)
 
 	outfit_type = /decl/hierarchy/outfit/job/hop
+
+
+/datum/job/hop/nanotrasen_quartermaster
+	title = "NanoTrasen Quartermaster"
+	department = "Command"
+	department_flag = COM
+	total_positions = 0
+	spawn_positions = 0
+
+	supervisors = "company officials and Corporate Regulations"
+	economic_modifier = 20
+	latejoin_at_spawnpoints = TRUE
+	announced = FALSE
+	can_be_hired = FALSE
+	off_station = TRUE
+
+	outfit_type = /decl/hierarchy/outfit/nanotrasen/quartermaster

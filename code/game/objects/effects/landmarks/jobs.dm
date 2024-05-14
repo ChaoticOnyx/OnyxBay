@@ -17,6 +17,10 @@
 	name = "Head of Personnel"
 	icon_state = "landmark_hop"
 
+/obj/effect/landmark/start/crew/nanotrasen_quartermaster
+	name = "NanoTrasen Quartermaster"
+	icon_state = "landmark_nt_qm"
+
 // Silicon
 /obj/effect/landmark/start/crew/ai
 	name = "AI"

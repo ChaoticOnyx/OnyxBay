@@ -16,6 +16,12 @@
 	belt = /obj/item/clipboard
 	id_pda_assignment = "NanoTrasen Navy Representative"
 
+/decl/hierarchy/outfit/nanotrasen/quartermaster
+	name = "NanoTrasen Quartermaster"
+	belt = /obj/item/clipboard
+	l_ear = null
+	id_pda_assignment = "NanoTrasen Quartermaster"
+
 /decl/hierarchy/outfit/nanotrasen/officer
 	name = "NanoTrasen Officer"
 	head = /obj/item/clothing/head/beret/centcom/officer

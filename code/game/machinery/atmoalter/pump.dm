@@ -22,6 +22,15 @@
 /obj/machinery/portable_atmospherics/powered/pump/filled
 	start_pressure = 90 * ONE_ATMOSPHERE
 
+/obj/machinery/portable_atmospherics/powered/pump/filled/mega
+	name = "portable air MEGA pump"
+	start_pressure = 210 * ONE_ATMOSPHERE
+	maximum_pressure = 210 * ONE_ATMOSPHERE
+
+/obj/machinery/portable_atmospherics/powered/pump/filled/mega/New()
+	..()
+	SetTransform(1.2)
+
 /obj/machinery/portable_atmospherics/powered/pump/New()
 	..()
 	cell = new /obj/item/cell/apc(src)

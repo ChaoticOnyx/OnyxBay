@@ -13,6 +13,7 @@
 	a_intent = "harm"
 	var/throw_message = "bounces off of"
 	var/icon_aggro = null // for swapping to when we get aggressive
+	max_gas = list("plasma" = 10, "carbon_dioxide" = 50)
 
 /mob/living/simple_animal/hostile/asteroid/Aggro()
 	. = ..()
@@ -42,4 +43,3 @@
 			visible_message("<span class='notice'>The [T.name] [src.throw_message] [src.name]!</span>")
 			return
 	..()
-

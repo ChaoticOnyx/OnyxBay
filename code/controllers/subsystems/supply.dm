@@ -106,6 +106,10 @@ SUBSYSTEM_DEF(supply)
 							find_slip = 0
 						continue
 
+					if(istype(A, /obj/item/spacecash/bundle))
+						var/obj/item/spacecash/bundle/money = A
+						add_points_from_source(round(money.worth * 0.1), "cash")
+
 					// Sell materials
 					if(istype(A, /obj/item/stack))
 						var/obj/item/stack/P = A
