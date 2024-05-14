@@ -189,7 +189,8 @@
 				/obj/item/storage/firstaid/adv = 3,
 				/obj/item/storage/firstaid/combat = 1,
 				/obj/item/storage/firstaid = 6,
-				/obj/item/storage/firstaid/fire = 6)
+				/obj/item/storage/firstaid/fire = 6,
+				/obj/item/storage/firstaid/antirad = 2)
 
 /obj/random/contraband
 	name = "random illegal item"
