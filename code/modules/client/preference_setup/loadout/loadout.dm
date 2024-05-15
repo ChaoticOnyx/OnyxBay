@@ -749,8 +749,13 @@ var/list/hash_to_gear = list()
 /datum/gear/proc/spawn_on_mob(mob/living/carbon/human/H, metadata)
 	var/obj/item/item = spawn_item(H, metadata)
 
+	if(isunderwear(item))
+		var/obj/item/underwear/UW = item
+		UW.ForceEquipUnderwear(H)
+		to_chat(H, SPAN_NOTICE("Equipping you with \the [item]!"))
+
 	if(H.equip_to_slot_if_possible(item, slot, del_on_fail = 1, force = 1))
-		to_chat(H, "<span class='notice'>Equipping you with \the [item]!</span>")
+		to_chat(H, SPAN_NOTICE("Equipping you with \the [item]!"))
 		return TRUE
 
 	return FALSE

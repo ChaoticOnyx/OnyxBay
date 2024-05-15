@@ -32,7 +32,7 @@ var/datum/uplink/uplink = new()
 
 	for(var/i in 1 to num)
 		var/datum/uplink_item/I = pick_n_take(sale_items)
-		if(!istype(I))
+		if(!istype(I) || istype(I, /datum/uplink_item/item/telecrystal))
 			continue
 
 		var/datum/uplink_item/A = new I.type

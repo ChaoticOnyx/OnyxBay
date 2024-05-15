@@ -186,6 +186,66 @@
 #define rustg_http_request_async(method, url, body, headers, options) RUSTG_CALL(RUST_G, "http_request_async")(method, url, body, headers, options)
 #define rustg_http_check_request(req_id) RUSTG_CALL(RUST_G, "http_check_request")(req_id)
 
+/// Generates a spritesheet at: [file_path][spritesheet_name]_[size_id].png
+/// The resulting spritesheet arranges icons in a random order, with the position being denoted in the "sprites" return value.
+/// All icons have the same y coordinate, and their x coordinate is equal to `icon_width * position`.
+///
+/// hash_icons is a boolean (0 or 1), and determines if the generator will spend time creating hashes for the output field dmi_hashes.
+/// These hashes can be heplful for 'smart' caching (see rustg_iconforge_cache_valid), but require extra computation.
+///
+/// Spritesheet will contain all sprites listed within "sprites".
+/// "sprites" format:
+/// list(
+///     "sprite_name" = list( // <--- this list is a [SPRITE_OBJECT]
+///         icon_file = 'icons/path_to/an_icon.dmi',
+///         icon_state = "some_icon_state",
+///         dir = SOUTH,
+///         frame = 1,
+///         transform = list([TRANSFORM_OBJECT], ...)
+///     ),
+///     ...,
+/// )
+/// TRANSFORM_OBJECT format:
+/// list("type" = RUSTG_ICONFORGE_BLEND_COLOR, "color" = "#ff0000", "blend_mode" = ICON_MULTIPLY)
+/// list("type" = RUSTG_ICONFORGE_BLEND_ICON, "icon" = [SPRITE_OBJECT], "blend_mode" = ICON_OVERLAY)
+/// list("type" = RUSTG_ICONFORGE_SCALE, "width" = 32, "height" = 32)
+/// list("type" = RUSTG_ICONFORGE_CROP, "x1" = 1, "y1" = 1, "x2" = 32, "y2" = 32) // (BYOND icons index from 1,1 to the upper bound, inclusive)
+///
+/// Returns a SpritesheetResult as JSON, containing fields:
+/// list(
+///     "sizes" = list("32x32", "64x64", ...),
+///     "sprites" = list("sprite_name" = list("size_id" = "32x32", "position" = 0), ...),
+///     "dmi_hashes" = list("icons/path_to/an_icon.dmi" = "d6325c5b4304fb03", ...),
+///     "sprites_hash" = "a2015e5ff403fb5c", // This is the xxh64 hash of the INPUT field "sprites".
+///     "error" = "[A string, empty if there were no errors.]"
+/// )
+/// In the case of an unrecoverable panic from within Rust, this function ONLY returns a string containing the error.
+#define rustg_iconforge_generate(file_path, spritesheet_name, sprites, hash_icons) RUSTG_CALL(RUST_G, "iconforge_generate")(file_path, spritesheet_name, sprites, "[hash_icons]")
+/// Returns a job_id for use with rustg_iconforge_check()
+#define rustg_iconforge_generate_async(file_path, spritesheet_name, sprites, hash_icons) RUSTG_CALL(RUST_G, "iconforge_generate_async")(file_path, spritesheet_name, sprites, "[hash_icons]")
+/// Returns the status of an async job_id, or its result if it is completed. See RUSTG_JOB DEFINEs.
+#define rustg_iconforge_check(job_id) RUSTG_CALL(RUST_G, "iconforge_check")("[job_id]")
+/// Clears all cached DMIs and images, freeing up memory.
+/// This should be used after spritesheets are done being generated.
+#define rustg_iconforge_cleanup RUSTG_CALL(RUST_G, "iconforge_cleanup")
+/// Takes in a set of hashes, generate inputs, and DMI filepaths, and compares them to determine cache validity.
+/// input_hash: xxh64 hash of "sprites" from the cache.
+/// dmi_hashes: xxh64 hashes of the DMIs in a spritesheet, given by `rustg_iconforge_generate` with `hash_icons` enabled. From the cache.
+/// sprites: The new input that will be passed to rustg_iconforge_generate().
+/// Returns a CacheResult with the following structure: list(
+///     "result": "1" (if cache is valid) or "0" (if cache is invalid)
+///     "fail_reason": "" (emtpy string if valid, otherwise a string containing the invalidation reason or an error with ERROR: prefixed.)
+/// )
+/// In the case of an unrecoverable panic from within Rust, this function ONLY returns a string containing the error.
+#define rustg_iconforge_cache_valid(input_hash, dmi_hashes, sprites) RUSTG_CALL(RUST_G, "iconforge_cache_valid")(input_hash, dmi_hashes, sprites)
+/// Returns a job_id for use with rustg_iconforge_check()
+#define rustg_iconforge_cache_valid_async(input_hash, dmi_hashes, sprites) RUSTG_CALL(RUST_G, "iconforge_cache_valid_async")(input_hash, dmi_hashes, sprites)
+
+#define RUSTG_ICONFORGE_BLEND_COLOR "BlendColor"
+#define RUSTG_ICONFORGE_BLEND_ICON "BlendIcon"
+#define RUSTG_ICONFORGE_CROP "Crop"
+#define RUSTG_ICONFORGE_SCALE "Scale"
+
 #define RUSTG_JOB_NO_RESULTS_YET "NO RESULTS YET"
 #define RUSTG_JOB_NO_SUCH_JOB "NO SUCH JOB"
 #define RUSTG_JOB_ERROR "JOB PANICKED"
@@ -197,38 +257,20 @@
 
 #define rustg_noise_get_at_coordinates(seed, x, y) RUSTG_CALL(RUST_G, "noise_get_at_coordinates")(seed, x, y)
 
-/**
- * Register a list of nodes into a rust library. This list of nodes must have been serialized in a json.
- * Node {// Index of this node in the list of nodes
- *  	  unique_id: usize,
- *  	  // Position of the node in byond
- *  	  x: usize,
- *  	  y: usize,
- *  	  z: usize,
- *  	  // Indexes of nodes connected to this one
- *  	  connected_nodes_id: Vec<usize>}
- * It is important that the node with the unique_id 0 is the first in the json, unique_id 1 right after that, etc.
- * It is also important that all unique ids follow. {0, 1, 2, 4} is not a correct list and the registering will fail
- * Nodes should not link across z levels.
- * A node cannot link twice to the same node and shouldn't link itself either
- */
-#define rustg_register_nodes_astar(json) RUSTG_CALL(RUST_G, "register_nodes_astar")(json)
+/// Register a list of nodes into a rust library. This list of nodes must have been serialized in a json.
+/// {
+///		"position": { x: 0, y: 0, z: 0 },
+///		"mask": 0,
+///		"links": [{x: 0, y: 0, z: 1}]
+/// }
+/// A node cannot link twice to the same node and shouldn't link itself either.
+#define rustg_update_nodes_astar(json) RUSTG_CALL(RUST_G, "update_nodes_astar")(json)
 
-/**
- * Add a new node to the static list of nodes. Same rule as registering_nodes applies.
- * This node unique_id must be equal to the current length of the static list of nodes
- */
-#define rustg_add_node_astar(json) RUSTG_CALL(RUST_G, "add_node_astar")(json)
+/// Remove the node with node position.
+#define rustg_remove_node_astar(node_pos) RUSTG_CALL(RUST_G, "remove_node_astar")(node_pos)
 
-/**
- * Remove every link to the node with unique_id. Replace that node by null
- */
-#define rustg_remove_node_astar(unique_id) RUSTG_CALL(RUST_G, "remove_node_astar")("[unique_id]")
-
-/**
- * Compute the shortest path between start_node and goal_node using A*. Heuristic used is simple geometric distance
- */
-#define rustg_generate_path_astar(start_node_id, goal_node_id) RUSTG_CALL(RUST_G, "generate_path_astar")("[start_node_id]", "[goal_node_id]")
+/// Compute the shortest path between start_node and goal_node using A*.
+#define rustg_generate_path_astar(strat_node_pos, goal_node_pos, pass_bit, deny_bit, costs) RUSTG_CALL(RUST_G, "generate_path_astar")(strat_node_pos, goal_node_pos, istext(pass_bit) ? pass_bit : num2text(pass_bit), istext(deny_bit) ? deny_bit : num2text(deny_bit), isnull(costs) ? "null" : costs)
 
 #define rustg_prom_init(port) RUSTG_CALL(RUST_G, "prom_init")(istext(port) ? port : num2text(port))
 
@@ -546,3 +588,5 @@
  */
 #define rustg_worley_generate(region_size, threshold, node_per_region_chance, size, node_min, node_max) \
 	RUSTG_CALL(RUST_G, "worley_generate")(region_size, threshold, node_per_region_chance, size, node_min, node_max)
+
+

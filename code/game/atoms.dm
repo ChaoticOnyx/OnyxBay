@@ -71,8 +71,8 @@
 	var/client/usr_client = usr.client
 	var/list/paramslist = list()
 
-	if(href_list["statpanel_item_click"])
-		switch(href_list["statpanel_item_click"])
+	if(href_list["panel_click"])
+		switch(href_list["panel_click"])
 			if("left")
 				paramslist["left"] = "1"
 			if("right")
@@ -82,15 +82,14 @@
 			else
 				return
 
-		if(href_list["statpanel_item_shiftclick"])
+		if(href_list["panel_shiftclick"])
 			paramslist["shift"] = "1"
-		if(href_list["statpanel_item_ctrlclick"])
+		if(href_list["panel_ctrlclick"])
 			paramslist["ctrl"] = "1"
-		if(href_list["statpanel_item_altclick"])
+		if(href_list["panel_altclick"])
 			paramslist["alt"] = "1"
 
-		var/mouseparams = list2params(paramslist)
-		usr_client.Click(src, loc, null, mouseparams)
+		usr_client.Click(src, loc, null, list2params(paramslist))
 		return TRUE
 
 /atom/New(loc, ...)

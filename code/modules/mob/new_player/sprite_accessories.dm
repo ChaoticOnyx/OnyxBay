@@ -1085,6 +1085,19 @@ May God have mercy.
     name = "From Mars"
     icon_state = "bowie"
 
+/datum/sprite_accessory/hair/solid
+	name = "Solid Hair"
+	icon_state = "solid"
+
+/datum/sprite_accessory/hair/lynch_short
+	name = "Lynch Short"
+	icon_state = "lynch_short"
+
+/datum/sprite_accessory/hair/lynch_long
+	name = "Lynch Long"
+	icon_state = "lynch_long"
+
+
 /*
 ///////////////////////////////////
 /  =---------------------------=  /

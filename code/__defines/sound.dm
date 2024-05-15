@@ -376,4 +376,10 @@
 #define SFX_THALAMUS_BITE           "thalamus_bite"
 #define SFX_THALAMUS_TENDRIL        "thalamus_tendril"
 
+// Arcade (minesweeper)
+#define SFX_MINESWEEPER_CLICK       "minesweeper_click"
+#define SFX_MINESWEEPER_LOSE        "minesweeper_lose"
+#define SFX_MINESWEEPER_START       "minesweeper_start"
+#define SFX_MINESWEEPER_WIN         "minesweeper_win"
+
 #define GET_SFX(name) pick(GLOB.sfx_list[name])

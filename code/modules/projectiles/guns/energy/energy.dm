@@ -96,15 +96,19 @@
 
 	var/fail_counter = 0
 
+/obj/item/gun/energy/gun/nuclear/Initialize(mapload)
+	. = ..()
+	add_think_ctx("fail_thinker", CALLBACK(src, nameof(.proc/fail_thinker)), world.time + 5 SECONDS)
+
 //override for failcheck behaviour
-/obj/item/gun/energy/gun/nuclear/Process()
+/obj/item/gun/energy/gun/nuclear/proc/fail_thinker()
 	if(fail_counter > 0)
 		fail_counter--
 		if(fail_counter > 20)
 			var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation/preset/uranium_238(fail_counter))
 			rad_source.schedule_decay(10 SECONDS)
 
-	return ..()
+	set_next_think_ctx("fail_thinker", world.time + 5 SECONDS)
 
 /obj/item/gun/energy/gun/nuclear/emp_act(severity)
 	..()
