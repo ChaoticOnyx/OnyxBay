@@ -1806,7 +1806,8 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/thalamus/thalamus_bite4.ogg',
 		'sound/effects/thalamus/thalamus_bite5.ogg',
 		'sound/effects/thalamus/thalamus_bite6.ogg',
-		'sound/effects/thalamus/thalamus_bite7.ogg'
+		'sound/effects/thalamus/thalamus_bite7.ogg',
+	),
 	SFX_MINESWEEPER_CLICK = list(
 		'sound/machines/arcade/minesweeper_click.ogg'
 	),
