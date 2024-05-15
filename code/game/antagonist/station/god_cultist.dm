@@ -40,27 +40,6 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 
 	return TRUE
 
-/datum/antagonist/godcultist/post_spawn()
-	if(!GLOB.deity || !GLOB.deity.current_antagonists.len)
-		return
-
-	var/count = 1
-	var/deity_count = 1
-	while(count <= current_antagonists.len)
-		if(deity_count > GLOB.deity.current_antagonists.len)
-			deity_count = 1
-		var/datum/mind/deity_mind = GLOB.deity.current_antagonists[deity_count]
-		var/datum/mind/mind = current_antagonists[count]
-		//add_cultist(mind, deity_mind.current)
-		count++
-		deity_count++
-
-/datum/antagonist/godcultist/remove_antagonist(datum/mind/player, show_message, implanted)
-	if(!..())
-		return FALSE
-	//remove_cultist(player)
-	return TRUE
-
 /datum/antagonist/godcultist/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[src];selectgod=\ref[player]'>\[Select Deity\]</a>"
 
@@ -80,8 +59,6 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 			var/mob/living/deity/D = input(usr, "Select a deity for this cultist.") in null|god_list
 			if(D)
 				var/datum/mind/player = locate(href_list["selectgod"])
-				//remove_cultist(player) //Remove him from any current deity.
-				//add_cultist(player, D)
 				log_and_message_admins("has set [key_name(player.current)] to be a minion of [key_name(D)]")
 		else
 			to_chat(usr, "<span class='warning'>There are no deities to be linked to.</span>")
