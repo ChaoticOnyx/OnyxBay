@@ -168,7 +168,7 @@ export const Deity = (props: any, context: any) => {
               act("punish_follower", { ref: follower_ref })
             }
             onRewardClick={(follower_ref: string) =>
-              act("punish_follower", { ref: follower_ref })
+              act("reward_follower", { ref: follower_ref })
             }
           />
         )}
