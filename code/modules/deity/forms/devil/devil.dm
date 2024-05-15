@@ -49,12 +49,12 @@ GLOBAL_LIST_INIT(devil_default_spells, list(
 		ascend()
 
 /datum/deity_form/devil/proc/ascend()
-	if(istype(current_devil_shell))
-		current_devil_shell.mind?.transfer_to(deity)
-		current_devil_shell.forceMove(deity)
+	if(!istype(current_devil_shell))
+		create_devils_shell()
 
-	deity.forceMove(get_turf(current_devil_shell))
-	deity.invisibility = 0
+	var/mob/living/simple_animal/hostile/devil/D = new /mob/living/simple_animal/hostile/devil(get_turf(current_devil_shell), current_devil_shell)
+	current_devil_shell.forceMove(D)
+	current_devil_shell.mind.transfer_to(D)
 	SetUniversalState(/datum/universal_state/averno)
 
 /datum/deity_form/devil/proc/create_devils_shell(mob/living/deity/D, turf = null)
@@ -92,7 +92,8 @@ GLOBAL_LIST_INIT(devil_default_spells, list(
 /datum/deity_form/devil/proc/devil_nde()
 	deity.say("Your master is mortally wounded. Conduct a ritual of ressurection, or they will die. Make haste, time is of the essence!")
 	for(var/datum/mind/M in deity.followers)
-		continue
+		var/datum/action/cooldown/spell/ressurection_ritual/ra = new /datum/action/cooldown/spell/ressurection_ritual()
+		ra.Grant(M.current)
 
 /datum/deity_form/devil/proc/quasit_ressurection(datum/mind/M)
 	var/datum/evolution_package/devil/second_life/SL = locate(/datum/evolution_package/devil/second_life) in evo_holder.evolution_categories
