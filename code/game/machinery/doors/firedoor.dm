@@ -129,7 +129,7 @@
 			var/mob/M = mecha.occupant
 			if(world.time - M.last_bumped <= 10) return //Can bump-open one airlock per second. This is to prevent popup message spam.
 			M.last_bumped = world.time
-			trigger_open_close(M)
+			trigger_open_close(M, TRUE)
 	return FALSE
 
 /obj/machinery/door/firedoor/attack_hand(mob/user)
@@ -189,9 +189,9 @@
 		return
 
 	if(density)
-		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open), forced)
+		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open), user, forced)
 	else
-		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close), forced)
+		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close), user, forced)
 
 /obj/machinery/door/firedoor/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
@@ -327,7 +327,7 @@
 		return FALSE
 	return ..()
 
-/obj/machinery/door/firedoor/open(forced = 0)
+/obj/machinery/door/firedoor/open(mob/user, forced = 0)
 	lockdown = FALSE
 
 	if(hatch_open)
@@ -339,7 +339,7 @@
 		use_power_oneoff(360)
 	else
 		var/area/A = get_area(src)
-		log_admin("[usr]([usr.ckey]) has forced open an emergency shutter at X:[x], Y:[y], Z:[z] Area: [A.name].")
+		log_admin("[user]([user.ckey]) has forced open an emergency shutter at X:[x], Y:[y], Z:[z] Area: [A.name].")
 
 	playsound(loc, open_sound, 50, TRUE)
 	return ..()
