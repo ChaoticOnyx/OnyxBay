@@ -36,7 +36,7 @@
 	modifiers = list(
 		/datum/action/cooldown/spell/edible_shield
 	)
-	unlocked_by = (/datum/evolution_package/edible_shield)
+	unlocked_by = list(/datum/evolution_package/gluttony_heal)
 
 /datum/modifier/sin/gluttony
 	name = "Gluttony"
