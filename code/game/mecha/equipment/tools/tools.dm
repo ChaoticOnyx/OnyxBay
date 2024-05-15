@@ -776,7 +776,7 @@
 					break
 
 			if(pow_chan)
-				var/delta = min(12, (ER.chassis.cell.maxcharge / CELLRATE) - cur_charge)
+				var/delta = min(1200, (ER.chassis.cell.maxcharge / CELLRATE) - cur_charge)
 				ER.chassis.give_power(delta)
 				A.use_power_oneoff(delta*ER.coeff, pow_chan)
 	return
