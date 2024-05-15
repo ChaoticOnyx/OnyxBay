@@ -1,4 +1,4 @@
-/turf/simulated/floor/attackby(obj/item/C as obj, mob/user as mob)
+/turf/floor/attackby(obj/item/C as obj, mob/user as mob)
 	if(atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)
 		return
 
@@ -111,13 +111,13 @@
 				playsound(src, 'sound/items/Crowbar.ogg', 80, 1)
 				visible_message(SPAN("notice", "[user] has begun prying off the damaged plating."))
 				if(do_after(user, 10 SECONDS))
-					if(!istype(src, /turf/simulated/floor))
+					if(!istype(src, /turf/floor))
 						return
 					if(!broken && !burnt || !is_plating())
 						return
 					visible_message(SPAN("warning", "[user] has pried off the damaged plating."))
-					if(istype(src, /turf/simulated/floor/plating))
-						var/turf/simulated/floor/plating/P = src
+					if(istype(src, /turf/floor/plating))
+						var/turf/floor/plating/P = src
 						new P.tile_type(src)
 					else
 						new /obj/item/stack/tile/floor(src)
@@ -153,7 +153,7 @@
 
 	return ..()
 
-/turf/simulated/floor/acid_melt()
+/turf/floor/acid_melt()
 	. = FALSE
 	var/turf/T = GetBelow(src)
 
@@ -190,7 +190,7 @@
 	else
 		return TRUE
 
-/turf/simulated/floor/can_build_cable(mob/user)
+/turf/floor/can_build_cable(mob/user)
 	if(!is_plating() || flooring)
 		to_chat(user, "<span class='warning'>Removing the tiling first.</span>")
 		return 0

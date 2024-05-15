@@ -43,7 +43,7 @@
 /obj/item/plastique/afterattack(atom/movable/target, mob/user, flag)
 	if (!flag)
 		return
-	if (istype(target, /turf/unsimulated) || istype(target, /turf/simulated/shuttle) || istype(target, /obj/item/storage/) || istype(target, /obj/item/clothing/accessory/storage/) || istype(target, /obj/item/clothing/under))
+	if (istype(target, /turf) || istype(target, /turf/shuttle) || istype(target, /obj/item/storage/) || istype(target, /obj/item/clothing/accessory/storage/) || istype(target, /obj/item/clothing/under))
 		return
 	to_chat(user, "Planting explosives...")
 	user.do_attack_animation(target)
@@ -75,9 +75,9 @@
 		explosion(location, -1, 1, 2, 5)
 
 	if(target)
-		if (istype(target, /turf/simulated/wall))
-			var/turf/simulated/wall/W = target
-			W.ChangeTurf(/turf/simulated/floor/plating)
+		if (istype(target, /turf/wall))
+			var/turf/wall/W = target
+			W.ChangeTurf(/turf/floor/plating)
 		else
 			target.ex_act(1)
 	if(target)

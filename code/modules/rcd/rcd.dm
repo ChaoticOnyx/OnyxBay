@@ -115,7 +115,7 @@
 		 * if we are trying to create plating on turf which is not a proper floor then dont check for objects on top of the turf just allow that turf to be converted into plating. e.g. create plating beneath a player or underneath a machine frame/any dense object
 		 * if we are trying to finish a wall girder then let it finish then make sure no one/nothing is stuck in the girder
 		 */
-		else if(rcd_mode == RCD_TURF && rcd_structure == /turf/simulated/floor/plating  && (!istype(target_turf, /turf/simulated/floor) || istype(target, /obj/structure/girder)))
+		else if(rcd_mode == RCD_TURF && rcd_structure == /turf/floor/plating  && (!istype(target_turf, /turf/floor) || istype(target, /obj/structure/girder)))
 			//if a player builds a wallgirder on top of himself manually with iron sheets he can't finish the wall if he is still on the girder. Exclude the girder itself when checking for other dense objects on the turf
 			if(istype(target, /obj/structure/girder) && is_blocked_turf(target_turf))
 				playsound(loc, 'sound/machines/click.ogg', 50, TRUE)

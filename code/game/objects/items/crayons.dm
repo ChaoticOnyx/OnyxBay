@@ -132,7 +132,7 @@
 
 /obj/item/pen/crayon/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity) return
-	if(istype(target,/turf/simulated/floor) || istype(target,/turf/simulated/wall))
+	if(istype(target,/turf/floor) || istype(target,/turf/wall))
 		last_target = target
 		update_popup(user)
 		popup.open()

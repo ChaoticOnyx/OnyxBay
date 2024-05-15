@@ -9,12 +9,12 @@
 	//Allows liquid fuels to sometimes flow into other tiles.
 	if(amount < 15)
 		return //lets suppose welder fuel is fairly thick and sticky. For something like water, 5 or less would be more appropriate.
-	var/turf/simulated/S = loc
+	var/turf/S = loc
 	if(!istype(S))
 		return
 	for(var/d in GLOB.cardinal)
-		var/turf/simulated/target = get_step(src, d)
-		var/turf/simulated/origin = get_turf(src)
+		var/turf/target = get_step(src, d)
+		var/turf/origin = get_turf(src)
 		if(origin.CanPass(src, target) && target.CanPass(src, origin))
 			var/obj/effect/decal/cleanable/liquid_fuel/other_fuel = locate() in target
 			if(other_fuel)
@@ -37,12 +37,12 @@
 	//The spread for flamethrower fuel is much more precise, to create a wide fire pattern.
 	if(amount < 0.1)
 		return
-	var/turf/simulated/S = loc
+	var/turf/S = loc
 	if(!istype(S))
 		return
 
 	for(var/d in list(turn(dir, 90), turn(dir, -90), dir))
-		var/turf/simulated/O = get_step(S, d)
+		var/turf/O = get_step(S, d)
 		if(locate(/obj/effect/decal/cleanable/liquid_fuel/flamethrower_fuel) in O)
 			continue
 		if(O.CanPass(src, S) && S.CanPass(src, O))

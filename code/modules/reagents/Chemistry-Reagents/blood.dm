@@ -78,7 +78,7 @@
 		t["antibodies"] = v.Copy()
 	return t
 
-/datum/reagent/blood/touch_turf(turf/simulated/T)
+/datum/reagent/blood/touch_turf(turf/T)
 	if(!istype(T) || volume < 3)
 		return
 

@@ -778,7 +778,7 @@
 		update_icon()
 		return
 
-	if((isScrewdriver(W)) && (istype(loc, /turf/simulated) || anchored))
+	if((isScrewdriver(W)) && (istype(loc, /turf) || anchored))
 		if(shock(user, 90))
 			to_chat(user, SPAN("danger", "You try to [anchored ? "unfasten" : "fasten"] \the [src] and get electrocuted!"))
 			return

@@ -16,11 +16,11 @@
 
 /area/shuttle/supply/elevator/upper
 	name = "Cargo Elevator Upper Deck"
-	base_turf = /turf/simulated/open
+	base_turf = /turf/open
 
 /area/shuttle/supply/elevator/lower
 	name = "Cargo Elevator Lower Deck"
-	base_turf = /turf/simulated/floor/plating
+	base_turf = /turf/floor/plating
 
 /area/shuttle/merchant
 	icon_state = "shuttlegrn"
@@ -89,7 +89,7 @@
 
 /area/shuttle/mining/outpost
 	icon_state = "shuttle"
-	base_turf = /turf/simulated/floor/asteroid
+	base_turf = /turf/floor/asteroid
 
 /area/shuttle/mining/station
 	icon_state = "shuttle2"
@@ -103,7 +103,7 @@
 
 /area/shuttle/security/outpost
 	icon_state = "shuttle"
-	base_turf = /turf/simulated/floor/asteroid
+	base_turf = /turf/floor/asteroid
 
 /area/shuttle/security/station
 	icon_state = "shuttle2"
@@ -233,7 +233,7 @@
 
 /area/shuttle/research/outpost
 	icon_state = "shuttle"
-	base_turf = /turf/simulated/floor/asteroid
+	base_turf = /turf/floor/asteroid
 
 /area/shuttle/research/transit
 	name = "Research Shuttle Transit"
@@ -411,7 +411,7 @@
 /area/skipjack_station/base
 	name = "Raider Base"
 	icon_state = "yellow"
-	base_turf = /turf/simulated/floor/asteroid
+	base_turf = /turf/floor/asteroid
 
 /area/skipjack_station/start
 	name = "\improper Skipjack"
@@ -1859,7 +1859,7 @@
 
 /area/shuttle/constructionsite/site
 	name = "\improper Construction Site Shuttle"
-	base_turf = /turf/simulated/floor/asteroid
+	base_turf = /turf/floor/asteroid
 
 // AI
 

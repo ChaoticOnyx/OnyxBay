@@ -1,4 +1,4 @@
-/turf/simulated/floor
+/turf/floor
 	name = "plating"
 
 	icon = 'icons/turf/flooring/plating.dmi'
@@ -28,23 +28,23 @@
 	/// Determines if you can deconstruct this with a RCD
 	var/rcd_proof = FALSE
 
-/turf/simulated/floor/proc/dismantle_floor()
+/turf/floor/proc/dismantle_floor()
 	ChangeTurf(get_base_turf_by_area(src))
 
-/turf/simulated/floor/is_plating()
+/turf/floor/is_plating()
 	return flooring == null
 
-/turf/simulated/floor/protects_atom(atom/A)
+/turf/floor/protects_atom(atom/A)
 	return (A.level <= 1 && !is_plating()) || ..()
 
-/turf/simulated/floor/New(newloc, floortype)
+/turf/floor/New(newloc, floortype)
 	..(newloc)
 	if(!floortype && initial_flooring)
 		floortype = initial_flooring
 	if(floortype)
 		set_flooring(get_flooring_data(floortype))
 
-/turf/simulated/floor/proc/set_flooring(decl/flooring/newflooring)
+/turf/floor/proc/set_flooring(decl/flooring/newflooring)
 	make_plating(defer_icon_update = 1)
 	flooring = newflooring
 	update_icon(1)
@@ -52,7 +52,7 @@
 
 //This proc will set floor_type to null and the update_icon() proc will then change the icon_state of the turf
 //This proc auto corrects the grass tiles' siding.
-/turf/simulated/floor/proc/make_plating(place_product, defer_icon_update)
+/turf/floor/proc/make_plating(place_product, defer_icon_update)
 
 	ClearOverlays()
 
@@ -89,7 +89,7 @@
 	if(!defer_icon_update)
 		update_icon(1)
 
-/turf/simulated/floor/levelupdate()
+/turf/floor/levelupdate()
 	for(var/obj/O in src)
 		O.hide(O.hides_under_flooring() && src.flooring)
 

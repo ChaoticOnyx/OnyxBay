@@ -116,7 +116,7 @@
 	nutriment_factor = 1
 	color = "#ffffff"
 
-/datum/reagent/nutriment/flour/touch_turf(turf/simulated/T)
+/datum/reagent/nutriment/flour/touch_turf(turf/T)
 	if(!istype(T, /turf/space))
 		new /obj/effect/decal/cleanable/flour(T)
 		if(T.wet > 1)
@@ -193,7 +193,7 @@
 	nutriment_factor = 20
 	color = "#302000"
 
-/datum/reagent/nutriment/cornoil/touch_turf(turf/simulated/T)
+/datum/reagent/nutriment/cornoil/touch_turf(turf/T)
 	if(!istype(T))
 		return
 

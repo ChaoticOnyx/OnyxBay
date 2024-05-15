@@ -24,8 +24,8 @@
 	var/ore/mineral
 
 /obj/item/integrated_circuit/mining/ore_analyzer/do_work()
-	var/turf/simulated/mineral/rock = get_pin_data(IC_INPUT, 1)
-	if(!istype(rock,/turf/simulated/mineral))
+	var/turf/mineral/rock = get_pin_data(IC_INPUT, 1)
+	if(!istype(rock,/turf/mineral))
 		mineral = null
 		set_pin_data(IC_OUTPUT, 1, null)
 		set_pin_data(IC_OUTPUT, 2, null)
@@ -116,14 +116,14 @@
 	var/busy = FALSE
 	var/usedx
 	var/usedy
-	var/turf/simulated/mineral/mineral
+	var/turf/mineral/mineral
 	var/obj/structure/rock/rock
 	var/obj/structure/boulder/boulder
 
 /obj/item/integrated_circuit/mining/mining_drill/do_work()
 	var/atom/movable/AM = get_pin_data(IC_INPUT, 1)
 
-	if(istype(AM, /turf/simulated/mineral))
+	if(istype(AM, /turf/mineral))
 		mineral = AM
 		if(!istype(mineral) || !mineral.Adjacent(assembly))
 			activate_pin(3)

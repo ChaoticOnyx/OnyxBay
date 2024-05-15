@@ -107,7 +107,7 @@ Chilling extracts:
 		to_chat(user, SPAN_WARNING("[src] can't affect such a large area."))
 		return
 	var/filtered = FALSE
-	for(var/turf/simulated/T in A)
+	for(var/turf/T in A)
 		var/datum/gas_mixture/G = T.return_air()
 		if(istype(G))
 			G.gas["plasma"] = 0

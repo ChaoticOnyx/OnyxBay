@@ -218,11 +218,11 @@
 		if(I.unacidable)
 			cannot_melt = 1
 	else
-		if(istype(O, /turf/simulated/wall))
-			var/turf/simulated/wall/W = O
+		if(istype(O, /turf/wall))
+			var/turf/wall/W = O
 			if(W.material.material_flags & MATERIAL_UNMELTABLE)
 				cannot_melt = 1
-		else if(istype(O, /turf/simulated/floor))
+		else if(istype(O, /turf/floor))
 			cannot_melt = 1
 
 	if(cannot_melt)

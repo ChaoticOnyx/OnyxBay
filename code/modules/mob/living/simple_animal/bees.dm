@@ -145,7 +145,7 @@
 				if(src.strength <= 0)
 					qdel(src)
 					return
-				var/turf/simulated/floor/T = get_turf(get_step(src, pick(1,2,4,8)))
+				var/turf/floor/T = get_turf(get_step(src, pick(1,2,4,8)))
 				density = 1
 				if(T.Enter(src, get_turf(src)))
 					forceMove(T)

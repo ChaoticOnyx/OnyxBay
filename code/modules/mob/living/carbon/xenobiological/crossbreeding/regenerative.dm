@@ -59,8 +59,8 @@ Regenerative extracts:
 	effect_desc = "Fully heals the target and makes the floor wet."
 
 /obj/item/metroidcross/regenerative/blue/core_effect(mob/living/target, mob/user)
-	if(istype(target.loc, /turf/simulated))
-		var/turf/simulated/T = target.loc
+	if(istype(target.loc, /turf))
+		var/turf/T = target.loc
 		T.wet_floor(4)
 		target.visible_message(SPAN_WARNING("The milky goo in the extract gets all over the floor!"))
 
@@ -139,7 +139,7 @@ Regenerative extracts:
 /obj/item/metroidcross/regenerative/bluespace
 	colour = "bluespace"
 	effect_desc = "Fully heals the target and teleports them to where this core was created."
-	var/turf/simulated/T
+	var/turf/T
 
 /obj/item/metroidcross/regenerative/bluespace/core_effect(mob/living/target, mob/user)
 	var/turf/old_location = get_turf(target)

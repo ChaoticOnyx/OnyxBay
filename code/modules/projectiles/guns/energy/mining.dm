@@ -105,8 +105,8 @@
 	if(pressure > 50)
 		name = "weakened [name]"
 		damage *= pressure_decrease
-	if(istype(target_turf, /turf/simulated/mineral))
-		var/turf/simulated/mineral/M = target_turf
+	if(istype(target_turf, /turf/mineral))
+		var/turf/mineral/M = target_turf
 		M.GetDrilled(1)
 	var/obj/effect/overlay/temp/kinetic_blast/K = new /obj/effect/overlay/temp/kinetic_blast(target_turf)
 	K.color = color
@@ -114,8 +114,8 @@
 		new type(target_turf)
 	if(turf_aoe)
 		for(var/T in orange(1, target_turf))
-			if(istype(T, /turf/simulated/mineral))
-				var/turf/simulated/mineral/M = T
+			if(istype(T, /turf/mineral))
+				var/turf/mineral/M = T
 				M.GetDrilled(1)
 	if(mob_aoe)
 		for(var/mob/living/L in range(1, target_turf) - firer - target)

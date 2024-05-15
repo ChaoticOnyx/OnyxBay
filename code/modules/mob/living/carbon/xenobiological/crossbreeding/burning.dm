@@ -96,7 +96,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/blue/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] flash-freezes the area!"))
-	for(var/turf/simulated/T in range(3, get_turf(user)))
+	for(var/turf/T in range(3, get_turf(user)))
 		T.wet_floor(4)
 	for(var/mob/living/carbon/M in range(5, get_turf(user)))
 		if(M != user)
@@ -109,7 +109,7 @@ Burning extracts:
 	effect_desc = "Instantly destroys walls around you."
 
 /obj/item/metroidcross/burning/metal/do_effect(mob/user)
-	for(var/turf/simulated/wall/W in range(1,get_turf(user)))
+	for(var/turf/wall/W in range(1,get_turf(user)))
 		W.dismantle_wall(no_product=TRUE)
 		playsound(W, 'sound/effects/break_stone.ogg', 50, TRUE)
 	user.visible_message(SPAN_DANGER("[src] pulses violently, and shatters the walls around it!"))
@@ -187,7 +187,7 @@ Burning extracts:
 /obj/item/metroidcross/burning/silver/do_effect(mob/user)
 	var/amount = rand(3,6)
 	var/list/turfs = list()
-	for(var/turf/simulated/T in range(1,get_turf(user)))
+	for(var/turf/T in range(1,get_turf(user)))
 		turfs += T
 	for(var/i in 1 to amount)
 		var/path = pick(typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food)
@@ -357,7 +357,7 @@ Burning extracts:
 /obj/item/metroidcross/burning/oil/proc/boom()
 	var/turf/T = get_turf(src)
 	playsound(T, 'sound/effects/explosions/explosion2.ogg', 200, TRUE)
-	for(var/turf/simulated/target in range(2, T))
+	for(var/turf/target in range(2, T))
 		new /obj/effect/explosion(target)
 		SSexplosions.med_mov_atom += target
 	qdel(src)

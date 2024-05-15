@@ -14,9 +14,9 @@
 	if(isnull(val)) val = 0
 	switch(val)
 		if(0 to 1)
-			return /turf/simulated/floor/natural/beach/water
+			return /turf/floor/natural/beach/water
 		else
-			return /turf/simulated/floor/natural/beach/sand/desert
+			return /turf/floor/natural/beach/sand/desert
 
 /datum/random_map/noise/desert/get_additional_spawns(value, turf/T)
 	var/val = min(9,max(0,round((value/cell_range)*10)))
@@ -38,4 +38,3 @@
 				new /obj/structure/flora/bush(T)
 			else if(prob(20))
 				new /obj/structure/flora/tree/dead(T)
-

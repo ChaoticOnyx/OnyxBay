@@ -747,8 +747,8 @@
 			return
 
 
-		if(!T.is_plating() && istype(T,/turf/simulated/floor)) //intact floor, pop the tile
-			var/turf/simulated/floor/F = T
+		if(!T.is_plating() && istype(T,/turf/floor)) //intact floor, pop the tile
+			var/turf/floor/F = T
 			F.make_plating(1)
 
 		var/turf/target
@@ -1217,7 +1217,7 @@
 		id_tag = "ds[sequential_id(/obj/item/disposal_switch_construct)]"
 
 /obj/item/disposal_switch_construct/afterattack(atom/A, mob/user, proximity)
-	if(!proximity || !istype(A, /turf/simulated/floor) || istype(A, /area/shuttle) || user.incapacitated() || !id_tag)
+	if(!proximity || !istype(A, /turf/floor) || istype(A, /area/shuttle) || user.incapacitated() || !id_tag)
 		return
 	var/found = 0
 	for(var/obj/structure/disposalpipe/diversion_junction/D in world)

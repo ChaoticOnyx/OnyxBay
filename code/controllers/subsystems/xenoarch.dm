@@ -25,7 +25,7 @@ SUBSYSTEM_DEF(xenoarch)
 		digsite_spawning_turfs = SSxenoarch.digsite_spawning_turfs
 
 /datum/controller/subsystem/xenoarch/proc/SetupXenoarch()
-	for(var/turf/simulated/mineral/M in world)
+	for(var/turf/mineral/M in world)
 		if(!M.density)
 			continue
 
@@ -54,7 +54,7 @@ SUBSYSTEM_DEF(xenoarch)
 
 		var/list/viable_adjacent_turfs = list()
 		if(target_digsite_size > 1)
-			for(var/turf/simulated/mineral/T in orange(2, M))
+			for(var/turf/mineral/T in orange(2, M))
 				if(!T.density)
 					continue
 				if(T.finds)
@@ -69,7 +69,7 @@ SUBSYSTEM_DEF(xenoarch)
 			turfs_to_process += pick_n_take(viable_adjacent_turfs)
 
 		while(turfs_to_process.len)
-			var/turf/simulated/mineral/archeo_turf = pop(turfs_to_process)
+			var/turf/mineral/archeo_turf = pop(turfs_to_process)
 
 			processed_turfs.Add(archeo_turf)
 			if(isnull(archeo_turf.finds))
@@ -103,7 +103,7 @@ SUBSYSTEM_DEF(xenoarch)
 
 	var/list/artifacts_spawnturf_temp = artifact_spawning_turfs.Copy()
 	while(artifacts_spawnturf_temp.len > 0)
-		var/turf/simulated/mineral/artifact_turf = pop(artifacts_spawnturf_temp)
+		var/turf/mineral/artifact_turf = pop(artifacts_spawnturf_temp)
 		artifact_turf.artifact_find = new()
 		CHECK_TICK
 

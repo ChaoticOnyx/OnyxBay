@@ -7,7 +7,7 @@
 	density = 1
 	var/obj/machinery/power/turbine/turbine
 	var/datum/gas_mixture/gas_contained
-	var/turf/simulated/inturf
+	var/turf/inturf
 	var/starter = 0
 	var/rpm = 0
 	var/rpmtarget = 0
@@ -22,7 +22,7 @@
 	anchored = 1
 	density = 1
 	var/obj/machinery/compressor/compressor
-	var/turf/simulated/outturf
+	var/turf/outturf
 	var/lastgen
 
 /obj/machinery/computer/turbine_computer

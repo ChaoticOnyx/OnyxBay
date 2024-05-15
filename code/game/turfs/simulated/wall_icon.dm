@@ -1,4 +1,4 @@
-/turf/simulated/wall/proc/update_material()
+/turf/wall/proc/update_material()
 	if(!material)
 		return
 
@@ -29,12 +29,12 @@
 		create_reagents(2 * REAGENTS_PER_MATERIAL_SHEET)
 		reagents.add_reagent(material.reagent_path, 2 * REAGENTS_PER_MATERIAL_SHEET)
 
-/turf/simulated/wall/proc/set_material(material/newmaterial, material/newrmaterial)
+/turf/wall/proc/set_material(material/newmaterial, material/newrmaterial)
 	material = newmaterial
 	reinf_material = newrmaterial
 	update_material()
 
-/turf/simulated/wall/on_update_icon()
+/turf/wall/on_update_icon()
 	if(!material)
 		return
 
@@ -85,7 +85,7 @@
 		AddOverlays(damage_overlays[overlay])
 	return
 
-/turf/simulated/wall/proc/generate_overlays()
+/turf/wall/proc/generate_overlays()
 	var/alpha_inc = 256 / damage_overlays.len
 
 	for(var/i = 1; i <= damage_overlays.len; i++)
@@ -95,13 +95,13 @@
 		damage_overlays[i] = img
 
 
-/turf/simulated/wall/proc/update_connections(propagate = 0)
+/turf/wall/proc/update_connections(propagate = 0)
 	if(!material)
 		return
 	wall_connections = 0
 
 	for(var/I in GLOB.cardinal)
-		var/turf/simulated/wall/W = get_step(src, I)
+		var/turf/wall/W = get_step(src, I)
 		if(!istype(W))
 			continue
 		if(!W.material)
@@ -112,7 +112,7 @@
 		if(can_join_with(W))
 			wall_connections += get_dir(src, W)
 
-/turf/simulated/wall/proc/can_join_with(turf/simulated/wall/W)
+/turf/wall/proc/can_join_with(turf/wall/W)
 	if(material && W.material && material.icon_base == W.material.icon_base)
 		return 1
 	return 0

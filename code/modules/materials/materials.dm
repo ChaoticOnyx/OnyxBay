@@ -5,7 +5,7 @@
 	self-explanatory but the various object types may have their own documentation. ~Z
 
 	PATHS THAT USE DATUMS
-		turf/simulated/wall
+		turf/wall
 		obj/item/material
 		obj/structure/barricade
 		obj/item/stack/material
@@ -339,7 +339,7 @@ var/list/name_to_material
 	if(temperature < ignition_point)
 		return 0
 	var/totalPlasma = 0
-	for(var/turf/simulated/floor/target_tile in range(2,T))
+	for(var/turf/floor/target_tile in range(2,T))
 		var/plasmaToDeduce = (temperature/30) * effect_multiplier
 		totalPlasma += plasmaToDeduce
 		target_tile.assume_gas("plasma", plasmaToDeduce, 200 CELSIUS)

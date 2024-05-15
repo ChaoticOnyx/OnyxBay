@@ -44,13 +44,13 @@
 	if(!proximity)
 		return
 
-	if(istype(A, /turf/simulated/wall/cult))
-		var/turf/simulated/wall/cult/W = A
+	if(istype(A, /turf/wall/cult))
+		var/turf/wall/cult/W = A
 		user.visible_message(SPAN("notice", "\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."))
 		W.decultify_wall()
 
-	if(istype(A, /turf/simulated/floor/misc/cult))
-		var/turf/simulated/floor/misc/cult/F = A
+	if(istype(A, /turf/floor/misc/cult))
+		var/turf/floor/misc/cult/F = A
 		user.visible_message(SPAN("notice", "\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."))
 		F.decultify_floor()
 		playsound(F, 'sound/effects/fighting/Genhit.ogg', 25, 1)

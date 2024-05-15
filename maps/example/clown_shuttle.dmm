@@ -1,12 +1,12 @@
-"a" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall/corner/merchant/se,/area/space)
-"m" = (/obj/item/bedsheet/clown,/turf/simulated/floor/shuttle/purple,/area/space)
-"o" = (/obj/structure/window_frame/broken,/obj/structure/window/reinforced{dir = 4},/obj/item/stack/rods,/turf/simulated/floor/asteroid,/area/space)
-"x" = (/turf/simulated/shuttle/wall/corner/merchant/ne,/area/space)
-"z" = (/turf/simulated/shuttle/wall/corner/merchant/nw,/area/space)
-"B" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall/corner/merchant/sw,/area/space)
-"L" = (/turf/simulated/mineral,/area/space)
-"M" = (/obj/machinery/door/unpowered/shuttle,/turf/simulated/floor/shuttle/purple,/area/space)
-"Z" = (/turf/simulated/shuttle/wall/merchant{icon_state = "merchwall_straight"},/area/space)
+"a" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/shuttle/wall/corner/merchant/se,/area/space)
+"m" = (/obj/item/bedsheet/clown,/turf/floor/shuttle/purple,/area/space)
+"o" = (/obj/structure/window_frame/broken,/obj/structure/window/reinforced{dir = 4},/obj/item/stack/rods,/turf/floor/asteroid,/area/space)
+"x" = (/turf/shuttle/wall/corner/merchant/ne,/area/space)
+"z" = (/turf/shuttle/wall/corner/merchant/nw,/area/space)
+"B" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/shuttle/wall/corner/merchant/sw,/area/space)
+"L" = (/turf/mineral,/area/space)
+"M" = (/obj/machinery/door/unpowered/shuttle,/turf/floor/shuttle/purple,/area/space)
+"Z" = (/turf/shuttle/wall/merchant{icon_state = "merchwall_straight"},/area/space)
 
 (1,1,1) = {"
 zox

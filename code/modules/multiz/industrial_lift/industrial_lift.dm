@@ -152,14 +152,14 @@
 		var/turf/T = get_step(lift_platform, check_dir)
 		if(!T)//the edges of multi-z maps
 			return FALSE
-		if(check_dir == UP && !istype(T, /turf/simulated/open)) // We don't want to go through the ceiling!
+		if(check_dir == UP && !istype(T, /turf/open)) // We don't want to go through the ceiling!
 			return FALSE
-		if(check_dir == DOWN && !istype(get_turf(lift_platform), /turf/simulated/open)) // No going through the floor!
+		if(check_dir == DOWN && !istype(get_turf(lift_platform), /turf/open)) // No going through the floor!
 			return FALSE
 	return TRUE
 
 //Elevator shaft
-/turf/simulated/open/elevatorshaft
+/turf/open/elevatorshaft
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "elevatorshaft"
 
@@ -290,8 +290,8 @@ GLOBAL_LIST_EMPTY(lifts)
 	else
 		destination = going
 
-	if(istype(destination, /turf/simulated/wall))
-		var/turf/simulated/wall/C = destination
+	if(istype(destination, /turf/wall))
+		var/turf/wall/C = destination
 		var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 		sparks.set_up(2, 0, C)
 		sparks.start()

@@ -14,7 +14,7 @@
 	var/process_state = IDLE_STATE //Used with SHUTTLE_FLAGS_PROCESS, as well as to store current state.
 	var/category = /datum/shuttle
 
-	var/ceiling_type = /turf/unsimulated/floor/shuttle_ceiling
+	var/ceiling_type = /turf/floor/shuttle_ceiling
 
 	var/sound_takeoff = 'sound/effects/shuttle_takeoff.ogg'
 	var/sound_landing = 'sound/effects/shuttle_landing.ogg'
@@ -188,7 +188,7 @@
 		for(var/area/A in shuttle_area)
 			for(var/turf/TD in A.contents)
 				var/turf/TA = GetAbove(TD)
-				if(istype(TA, get_base_turf_by_area(TA)) || istype(TA, /turf/simulated/open))
+				if(istype(TA, get_base_turf_by_area(TA)) || istype(TA, /turf/open))
 					TA.ChangeTurf(ceiling_type, 1, 1)
 
 	// Remove all powernets that were affected, and rebuild them.

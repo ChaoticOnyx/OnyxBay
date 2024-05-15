@@ -2,7 +2,7 @@ var/list/mining_walls = list()
 var/list/mining_floors = list()
 
 /**********************Mineral deposits**************************/
-/turf/unsimulated/mineral
+/turf/mineral
 	name = "impassable rock"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "rock-dark"
@@ -10,7 +10,7 @@ var/list/mining_floors = list()
 	density = 1
 	opacity = 1
 
-/turf/simulated/mineral //Rock piece
+/turf/mineral //Rock piece
 	name = "rock"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "rock"
@@ -19,7 +19,7 @@ var/list/mining_floors = list()
 	density = 1
 	blocks_air = 1
 	temperature = 0 CELSIUS
-	var/mined_turf = /turf/simulated/floor/asteroid
+	var/mined_turf = /turf/floor/asteroid
 	var/ore/mineral
 	var/last_act = 0
 	var/rock_type = ""
@@ -37,35 +37,35 @@ var/list/mining_floors = list()
 	has_resources = 1
 	var/ore_left = 0
 
-/turf/simulated/mineral/medium
+/turf/mineral/medium
 	icon_state = "rock-medium"
 	rock_type = "-medium"
 	durability = 200
 
-/turf/simulated/mineral/hard
+/turf/mineral/hard
 	icon_state = "rock-hard"
 	rock_type = "-hard"
 	durability = 300
 
-/turf/simulated/mineral/Initialize()
+/turf/mineral/Initialize()
 	. = ..()
 	if (!mining_walls["[src.z]"])
 		mining_walls["[src.z]"] = list()
 	mining_walls["[src.z]"] += src
 	update_icon()
 
-/turf/simulated/mineral/Destroy()
+/turf/mineral/Destroy()
 	if (mining_walls["[src.z]"])
 		mining_walls["[src.z]"] -= src
 	return ..()
 
-/turf/simulated/mineral/can_build_cable()
+/turf/mineral/can_build_cable()
 	return !density
 
-/turf/simulated/mineral/is_plating()
+/turf/mineral/is_plating()
 	return 1
 
-/turf/simulated/mineral/on_update_icon(update_neighbors)
+/turf/mineral/on_update_icon(update_neighbors)
 	if(!mineral)
 		SetName(initial(name))
 		icon_state = initial(icon_state)
@@ -76,10 +76,10 @@ var/list/mining_floors = list()
 
 	for(var/direction in GLOB.cardinal)
 		var/turf/turf_to_check = get_step(src,direction)
-		if(update_neighbors && istype(turf_to_check, /turf/simulated/floor/asteroid))
-			var/turf/simulated/floor/asteroid/T = turf_to_check
+		if(update_neighbors && istype(turf_to_check, /turf/floor/asteroid))
+			var/turf/floor/asteroid/T = turf_to_check
 			T.updateMineralOverlays()
-		else if(istype(turf_to_check, /turf/space) || istype(turf_to_check, /turf/simulated/floor) || istype(turf_to_check, /turf/simulated/open))
+		else if(istype(turf_to_check, /turf/space) || istype(turf_to_check, /turf/floor) || istype(turf_to_check, /turf/open))
 			var/image/rock_side = image('icons/turf/walls.dmi', "rock_side[rock_type]", dir = turn(direction, 180))
 			rock_side.turf_decal_layerise()
 			switch(direction)
@@ -102,7 +102,7 @@ var/list/mining_floors = list()
 	if(archaeo_overlay)
 		AddOverlays(archaeo_overlay)
 
-/turf/simulated/mineral/ex_act(severity)
+/turf/mineral/ex_act(severity)
 	switch(severity)
 		if(2.0)
 			if(prob(70))
@@ -114,7 +114,7 @@ var/list/mining_floors = list()
 				ore_left -= 2 //Some of the stuff gets blown up
 			GetDrilled()
 
-/turf/simulated/mineral/bullet_act(obj/item/projectile/Proj)
+/turf/mineral/bullet_act(obj/item/projectile/Proj)
 
 	// Emitter blasts
 	if(istype(Proj, /obj/item/projectile/beam/emitter))
@@ -125,7 +125,7 @@ var/list/mining_floors = list()
 				ore_left -= 1
 			GetDrilled()
 
-/turf/simulated/mineral/Bumped(AM)
+/turf/mineral/Bumped(AM)
 	. = ..()
 	if(istype(AM,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = AM
@@ -144,18 +144,18 @@ var/list/mining_floors = list()
 		if(istype(M.selected, /obj/item/mecha_parts/mecha_equipment/tool/drill))
 			M.selected.action(src)
 
-/turf/simulated/mineral/proc/MineralSpread()
+/turf/mineral/proc/MineralSpread()
 	if(mineral && mineral.spread)
 		for(var/trydir in GLOB.cardinal)
 			if(prob(mineral.spread_chance))
-				var/turf/simulated/mineral/target_turf = get_step(src, trydir)
+				var/turf/mineral/target_turf = get_step(src, trydir)
 				if(istype(target_turf) && !target_turf.mineral)
 					target_turf.mineral = mineral
 					target_turf.UpdateMineral()
 					target_turf.MineralSpread()
 
 
-/turf/simulated/mineral/proc/UpdateMineral()
+/turf/mineral/proc/UpdateMineral()
 	clear_ore_effects()
 	ore_overlay = image('icons/obj/mining.dmi', "rock_[mineral.icon_tag]")
 	ore_overlay.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
@@ -166,7 +166,7 @@ var/list/mining_floors = list()
 		explosion_block = 3
 
 //Not even going to touch this pile of spaghetti
-/turf/simulated/mineral/attackby(obj/item/W, mob/user)
+/turf/mineral/attackby(obj/item/W, mob/user)
 	if(!user.IsAdvancedToolUser())
 		to_chat(usr, FEEDBACK_YOU_LACK_DEXTERITY)
 		return
@@ -312,7 +312,7 @@ var/list/mining_floors = list()
 		if(!do_after(user,80))
 			return
 
-		if (!istype(src, /turf/simulated/mineral))
+		if (!istype(src, /turf/mineral))
 			return
 
 		to_chat(user, "<span class='notice'>You finish chiselling [src] into a sculptable block.</span>")
@@ -322,11 +322,11 @@ var/list/mining_floors = list()
 	else
 		return ..()
 
-/turf/simulated/mineral/proc/clear_ore_effects()
+/turf/mineral/proc/clear_ore_effects()
 	CutOverlays(ore_overlay)
 	ore_overlay = null
 
-/turf/simulated/mineral/proc/DropMineral(direction = null)
+/turf/mineral/proc/DropMineral(direction = null)
 	if(!mineral || ore_left <= 0)
 		return
 
@@ -347,7 +347,7 @@ var/list/mining_floors = list()
 		O.geologic_data = geologic_data
 	return O
 
-/turf/simulated/mineral/proc/GetDrilled(artifact_fail = 0)
+/turf/mineral/proc/GetDrilled(artifact_fail = 0)
 	//var/destroyed = 0 //used for breaking strange rocks
 	if(mineral && ore_left)
 
@@ -360,18 +360,18 @@ var/list/mining_floors = list()
 
 	//Add some rubble,  you did just clear out a big chunk of rock.
 
-	var/turf/simulated/floor/asteroid/N = ChangeTurf(mined_turf)
+	var/turf/floor/asteroid/N = ChangeTurf(mined_turf)
 
 	if(istype(N))
 		N.overlay_detail = "asteroid[rand(0,9)]"
 		N.updateMineralOverlays(1)
 
 	for(var/direction in GLOB.cardinal)
-		var/turf/simulated/mineral/T = get_step(src,direction)
+		var/turf/mineral/T = get_step(src,direction)
 		if(istype(T))
 			T.update_icon()
 
-/turf/simulated/mineral/proc/excavate_find(prob_clean = 0, datum/find/F)
+/turf/mineral/proc/excavate_find(prob_clean = 0, datum/find/F)
 
 	//many finds are ancient and thus very delicate - luckily there is a specialised energy suspension field which protects them when they're being extracted
 	if(prob(F.prob_delicate))
@@ -394,7 +394,7 @@ var/list/mining_floors = list()
 	finds.Remove(F)
 
 
-/turf/simulated/mineral/proc/artifact_debris(severity = 0)
+/turf/mineral/proc/artifact_debris(severity = 0)
 	//cael's patented random limited drop componentized loot system!
 	//sky's patented not-fucking-retarded overhaul!
 
@@ -431,7 +431,7 @@ var/list/mining_floors = list()
 				var/obj/item/stack/material/uranium/R = new(src)
 				R.amount = rand(5,25)
 
-/turf/simulated/mineral/random
+/turf/mineral/random
 	name = "Mineral deposit"
 	var/mineralChance = 100 //10 //means 10% chance of this plot changing to a mineral deposit
 	var/mineralSpawnChanceList = list(
@@ -445,7 +445,7 @@ var/list/mining_floors = list()
 		MATERIAL_PLASMA = 10
 		)
 
-/turf/simulated/mineral/random/Initialize()
+/turf/mineral/random/Initialize()
 	. = ..()
 	if(prob(mineralChance) && !mineral)
 		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
@@ -455,7 +455,7 @@ var/list/mining_floors = list()
 			UpdateMineral()
 	MineralSpread()
 
-/turf/simulated/mineral/random/high_chance
+/turf/mineral/random/high_chance
 	mineralChance = 100 //25
 	mineralSpawnChanceList = list(
 		MATERIAL_URANIUM = 10,
@@ -468,7 +468,7 @@ var/list/mining_floors = list()
 		MATERIAL_PLASMA = 20
 		)
 
-/turf/simulated/mineral/frozen //Rock piece
+/turf/mineral/frozen //Rock piece
 	name = "rock"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "rock"
@@ -477,19 +477,19 @@ var/list/mining_floors = list()
 	density = 1
 	blocks_air = 1
 	temperature = 0 CELSIUS
-	mined_turf = /turf/simulated/floor/natural/frozenground/cave
+	mined_turf = /turf/floor/natural/frozenground/cave
 
-/turf/simulated/mineral/frozen/medium
+/turf/mineral/frozen/medium
 	icon_state = "rock-medium"
 	rock_type = "-medium"
 	durability = 200
 
-/turf/simulated/mineral/frozen/hard
+/turf/mineral/frozen/hard
 	icon_state = "rock-hard"
 	rock_type = "-hard"
 	durability = 300
 
-/turf/simulated/mineral/frozen/random
+/turf/mineral/frozen/random
 	name = "Mineral deposit"
 	var/mineralChance = 100 //10 //means 10% chance of this plot changing to a mineral deposit
 	var/mineralSpawnChanceList = list(
@@ -503,7 +503,7 @@ var/list/mining_floors = list()
 		MATERIAL_PLASMA = 10
 		)
 
-/turf/simulated/mineral/frozen/random/Initialize()
+/turf/mineral/frozen/random/Initialize()
 	. = ..()
 	if(prob(mineralChance) && !mineral)
 		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
@@ -513,7 +513,7 @@ var/list/mining_floors = list()
 			UpdateMineral()
 	MineralSpread()
 
-/turf/simulated/mineral/frozen/random/high_chance
+/turf/mineral/frozen/random/high_chance
 	mineralChance = 100 //25
 	mineralSpawnChanceList = list(
 		MATERIAL_URANIUM = 10,
@@ -526,7 +526,7 @@ var/list/mining_floors = list()
 		MATERIAL_PLASMA = 20
 		)
 
-/turf/simulated/mineral/air
+/turf/mineral/air
 	name = "rock"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "rock"
@@ -535,13 +535,13 @@ var/list/mining_floors = list()
 	density = 1
 	blocks_air = 1
 	temperature = 30 CELSIUS
-	mined_turf = /turf/simulated/floor/asteroid/air
+	mined_turf = /turf/floor/asteroid/air
 
 /**********************Asteroid**************************/
 
 // Setting icon/icon_state initially will use these values when the turf is built on/replaced.
 // This means you can put grass on the asteroid etc.
-/turf/simulated/floor/asteroid
+/turf/floor/asteroid
 	name = "sand"
 	desc = "Gritty and unpleasant."
 	icon = 'icons/turf/flooring/asteroid.dmi'
@@ -559,7 +559,7 @@ var/list/mining_floors = list()
 	has_resources = 1
 	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
-/turf/simulated/floor/asteroid/Initialize()
+/turf/floor/asteroid/Initialize()
 	. = ..()
 	if (!mining_floors["[src.z]"])
 		mining_floors["[src.z]"] = list()
@@ -568,12 +568,12 @@ var/list/mining_floors = list()
 		overlay_detail = "asteroid[rand(0,9)]"
 	updateMineralOverlays()
 
-/turf/simulated/floor/asteroid/Destroy()
+/turf/floor/asteroid/Destroy()
 	if (mining_floors["[src.z]"])
 		mining_floors["[src.z]"] -= src
 	return ..()
 
-/turf/simulated/floor/asteroid/ex_act(severity)
+/turf/floor/asteroid/ex_act(severity)
 	switch(severity)
 		if(3.0)
 			return
@@ -584,10 +584,10 @@ var/list/mining_floors = list()
 			gets_dug()
 	return
 
-/turf/simulated/floor/asteroid/is_plating()
+/turf/floor/asteroid/is_plating()
 	return !density
 
-/turf/simulated/floor/asteroid/attackby(obj/item/W as obj, mob/user as mob)
+/turf/floor/asteroid/attackby(obj/item/W as obj, mob/user as mob)
 	if(!W || !user)
 		return 0
 
@@ -637,7 +637,7 @@ var/list/mining_floors = list()
 		..(W,user)
 	return
 
-/turf/simulated/floor/asteroid/proc/gets_dug()
+/turf/floor/asteroid/proc/gets_dug()
 
 	if(dug)
 		return
@@ -649,7 +649,7 @@ var/list/mining_floors = list()
 	icon_state = "asteroid_dug"
 	return
 
-/turf/simulated/floor/asteroid/proc/updateMineralOverlays(update_neighbors)
+/turf/floor/asteroid/proc/updateMineralOverlays(update_neighbors)
 
 	ClearOverlays()
 
@@ -670,12 +670,12 @@ var/list/mining_floors = list()
 	if(update_neighbors)
 		var/list/all_step_directions = list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,SOUTHWEST,WEST,NORTHWEST)
 		for(var/direction in all_step_directions)
-			var/turf/simulated/floor/asteroid/A
-			if(istype(get_step(src, direction), /turf/simulated/floor/asteroid))
+			var/turf/floor/asteroid/A
+			if(istype(get_step(src, direction), /turf/floor/asteroid))
 				A = get_step(src, direction)
 				A.updateMineralOverlays()
 
-/turf/simulated/floor/asteroid/Entered(atom/movable/M as mob|obj)
+/turf/floor/asteroid/Entered(atom/movable/M as mob|obj)
 	..()
 	if(istype(M,/mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = M
@@ -707,10 +707,10 @@ var/list/mining_floors = list()
 						for(var/obj/item/ore/ore in R.loc)
 							ore.Move(OB)
 
-/turf/simulated/floor/asteroid/air
+/turf/floor/asteroid/air
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 
 // Contains extra CO2 for better breathing.
-/turf/simulated/floor/asteroid/air/prison
+/turf/floor/asteroid/air/prison
 	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
 	temperature = 30 CELSIUS

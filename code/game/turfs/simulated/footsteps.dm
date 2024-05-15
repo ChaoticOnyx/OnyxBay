@@ -1,4 +1,4 @@
-/turf/simulated/floor/get_footstep_sound()
+/turf/floor/get_footstep_sound()
 	var/sound = flooring?.footstep_sound || footstep_sound
 
 	return pick(GLOB.sfx_list[sound || SFX_FOOTSTEP_PLATING])

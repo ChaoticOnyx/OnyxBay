@@ -1,47 +1,47 @@
 /turf/proc/cultify()
 	return
 
-/turf/simulated/floor/cultify()
+/turf/floor/cultify()
 	cultify_floor()
 
-/turf/simulated/shuttle/wall/cultify()
+/turf/shuttle/wall/cultify()
 	cultify_wall()
 
-/turf/simulated/wall/cultify()
+/turf/wall/cultify()
 	cultify_wall()
 
-/turf/unsimulated/wall/cultify()
+/turf/wall/cultify()
 	cultify_wall()
 
-turf/simulated/floor/misc/cult/cultify()
+/turf/floor/misc/cult/cultify()
 	return
 
-/turf/simulated/floor/proc/cultify_floor()
-	var/turf/simulated/floor/floor = src
+/turf/floor/proc/cultify_floor()
+	var/turf/floor/floor = src
 	var/old_type = floor.type
-	var/turf/simulated/floor/misc/cult/cult_floor = src
-	ChangeTurf(/turf/simulated/floor/misc/cult)
+	var/turf/floor/misc/cult/cult_floor = src
+	ChangeTurf(/turf/floor/misc/cult)
 	cult_floor.previous_type = old_type
 	GLOB.cult.add_cultiness(CULTINESS_PER_TURF)
 
-/turf/simulated/floor/misc/cult/proc/decultify_floor()
+/turf/floor/misc/cult/proc/decultify_floor()
 	ChangeTurf(previous_type)
 	GLOB.cult.remove_cultiness(CULTINESS_PER_TURF)
 
 /turf/proc/cultify_wall()
-	var/turf/simulated/wall/wall = src
+	var/turf/wall/wall = src
 	var/old_type = wall.type
-	var/turf/simulated/wall/cult/cult_wall = src
+	var/turf/wall/cult/cult_wall = src
 	if(!istype(wall))
 		return
 	if(wall.reinf_material)
-		ChangeTurf(/turf/simulated/wall/cult/reinf)
+		ChangeTurf(/turf/wall/cult/reinf)
 		cult_wall.previous_type = old_type
 	else
-		ChangeTurf(/turf/simulated/wall/cult)
+		ChangeTurf(/turf/wall/cult)
 		cult_wall.previous_type = old_type
 	GLOB.cult.add_cultiness(CULTINESS_PER_TURF)
 
-/turf/simulated/wall/cult/proc/decultify_wall()
+/turf/wall/cult/proc/decultify_wall()
 	ChangeTurf(previous_type)
 	GLOB.cult.remove_cultiness(CULTINESS_PER_TURF)

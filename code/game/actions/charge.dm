@@ -144,7 +144,7 @@
 			if(!isanimal(charger))
 				SSexplosions.medturf += next_turf
 				continue
-			var/turf/simulated/wall/W = next_turf
+			var/turf/wall/W = next_turf
 			W.attack_generic(charger, 40, wallbreaker=1)
 			continue
 		for(var/obj/object in next_turf.contents)

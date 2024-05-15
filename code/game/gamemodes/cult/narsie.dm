@@ -106,14 +106,14 @@ var/global/list/narsie_list = list()
 
 	else if(isturf(A))
 		var/turf/T = A
-		if(istype(T, /turf/simulated/wall/cult))
+		if(istype(T, /turf/wall/cult))
 			return
-		else if(istype(T, /turf/simulated/floor))
+		else if(istype(T, /turf/floor))
 			if(prob(50))
-				T.ChangeTurf(/turf/simulated/floor/misc/cult)
-		else if(istype(T, /turf/simulated/wall))
+				T.ChangeTurf(/turf/floor/misc/cult)
+		else if(istype(T, /turf/wall))
 			if(prob(20))
-				T.ChangeTurf(/turf/simulated/wall/cult)
+				T.ChangeTurf(/turf/wall/cult)
 	return
 
 /obj/singularity/narsie/ex_act(severity) //No throwing bombs at it either. --NEO

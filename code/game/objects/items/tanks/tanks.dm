@@ -446,7 +446,7 @@ var/list/global/tank_gauge_cache = list()
 			var/mult = ((air_contents.volume/140)**(1/2)) * (air_contents.total_moles**2/3)/((29*0.64) **2/3) //tanks appear to be experiencing a reduction on scale of about 0.64 total moles
 			//tanks appear to be experiencing a reduction on scale of about 0.64 total moles
 
-			var/turf/simulated/T = get_turf(src)
+			var/turf/T = get_turf(src)
 			if(!T)
 				return FALSE
 			T.hotspot_expose(air_contents.temperature, 70, 1)
@@ -474,7 +474,7 @@ var/list/global/tank_gauge_cache = list()
 		#endif
 
 		if(integrity <= 0)
-			var/turf/simulated/T = get_turf(src)
+			var/turf/T = get_turf(src)
 			if(!T)
 				return FALSE
 			T.assume_air(air_contents)
@@ -496,7 +496,7 @@ var/list/global/tank_gauge_cache = list()
 			integrity-= 5
 	else if((pressure > TANK_LEAK_PRESSURE) || CONV_KELVIN_CELSIUS(air_contents.temperature) > failure_temp)
 		if((integrity <= 19 || leaking) && !valve_welded)
-			var/turf/simulated/T = get_turf(src)
+			var/turf/T = get_turf(src)
 			if(!T)
 				return FALSE
 			var/datum/gas_mixture/environment = loc.return_air()

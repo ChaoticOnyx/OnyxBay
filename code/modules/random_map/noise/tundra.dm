@@ -36,9 +36,9 @@
 	if(isnull(val)) val = 0
 	switch(val)
 		if(0 to 4)
-			return /turf/simulated/floor/natural/beach/water/ocean
+			return /turf/floor/natural/beach/water/ocean
 		else
-			return /turf/simulated/floor/natural/snow
+			return /turf/floor/natural/snow
 
 /datum/random_map/noise/tundra/get_additional_spawns(value, turf/T)
 	var/val = min(9,max(0,round((value/cell_range)*10)))

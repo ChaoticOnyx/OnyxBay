@@ -20,7 +20,7 @@
 		return
 	M.adjustToxLoss(2 * removed)
 
-/datum/reagent/water/touch_turf(turf/simulated/T)
+/datum/reagent/water/touch_turf(turf/T)
 	if(!istype(T))
 		return
 
@@ -46,7 +46,7 @@
 			T.visible_message(SPAN("warning", "The water sizzles as it lands on \the [T]!"))
 
 	else if(volume >= 10 && slippery)
-		var/turf/simulated/S = T
+		var/turf/S = T
 		S.wet_floor(1, TRUE)
 
 

@@ -61,7 +61,7 @@
 			return
 	acid_melted++
 
-/turf/simulated/wall/acid_melt()
+/turf/wall/acid_melt()
 	. = FALSE
 	switch(acid_melted)
 		if(0)
@@ -76,7 +76,7 @@
 	acid_melted++
 	return
 
-/turf/simulated/floor/acid_melt()
+/turf/floor/acid_melt()
 	. = FALSE
 	switch(acid_melted)
 		if(0)

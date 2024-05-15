@@ -18,7 +18,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 
 
-/turf/simulated/hotspot_expose(exposed_temperature, exposed_volume, soh)
+/turf/hotspot_expose(exposed_temperature, exposed_volume, soh)
 	if(fire_protection > world.time-300)
 		return 0
 	if(locate(/obj/fire) in src)
@@ -52,7 +52,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 				fire_tiles -= T
 				fuel_objs -= fuel
 	else
-		for(var/turf/simulated/T in fire_tiles)
+		for(var/turf/T in fire_tiles)
 			if(istype(T.fire))
 				T.fire.RemoveFire()
 			T.fire = null
@@ -88,7 +88,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /turf/proc/create_fire(fl)
 	return 0
 
-/turf/simulated/create_fire(fl)
+/turf/create_fire(fl)
 	if(fire)
 		fire.firelevel = max(fl, fire.firelevel)
 		return 1
@@ -123,7 +123,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /obj/fire/Process()
 	. = 1
 
-	var/turf/simulated/my_tile = loc
+	var/turf/my_tile = loc
 	if(!istype(my_tile) || !my_tile.zone)
 		if(my_tile && my_tile.fire == src)
 			my_tile.fire = null
@@ -151,7 +151,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	//spread
 	for(var/direction in GLOB.cardinal)
-		var/turf/simulated/enemy_tile = get_step(my_tile, direction)
+		var/turf/enemy_tile = get_step(my_tile, direction)
 
 		if(istype(enemy_tile))
 			if(my_tile.open_directions & direction) //Grab all valid bordering tiles
@@ -218,9 +218,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	SSair.active_hotspots.Remove(src)
 
 
-/turf/simulated/var/fire_protection = 0 //Protects newly extinguished tiles from being overrun again.
+/turf/var/fire_protection = 0 //Protects newly extinguished tiles from being overrun again.
 /turf/proc/apply_fire_protection()
-/turf/simulated/apply_fire_protection()
+/turf/apply_fire_protection()
 	fire_protection = world.time
 
 //Returns the firelevel

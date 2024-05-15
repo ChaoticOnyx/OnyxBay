@@ -395,25 +395,25 @@ var/list/flooring_types
 	build_type = /obj/item/stack/tile/floor
 	can_paint = FALSE
 
-/turf/simulated/floor/tiled/vox
+/turf/floor/tiled/vox
 	name = "old floor"
 	desc = "A strange old floor."
 	icon_state = "vox1"
 	initial_flooring = /decl/flooring/tiling/vox1
 
-/turf/simulated/floor/tiled/vox/vox2
+/turf/floor/tiled/vox/vox2
 	name = "old floor"
 	desc = "A strange old floor."
 	icon_state = "vox2"
 	initial_flooring = /decl/flooring/tiling/vox2
 
-/turf/simulated/floor/tiled/vox/vox3
+/turf/floor/tiled/vox/vox3
 	name = "old floor"
 	desc = "A strange old floor."
 	icon_state = "vox3"
 	initial_flooring = /decl/flooring/tiling/vox3
 
-/turf/simulated/floor/tiled/vox/vox4
+/turf/floor/tiled/vox/vox4
 	name = "old floor"
 	desc = "A strange old floor."
 	icon_state = "vox4"

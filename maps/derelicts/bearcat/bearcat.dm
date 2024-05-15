@@ -42,7 +42,7 @@
 	name = "Lower Deck"
 	landmark_tag = "nav_bearcat_lift_bottom"
 	base_area = /area/ship/scrap/cargo/lower
-	base_turf = /turf/simulated/floor
+	base_turf = /turf/floor
 
 /obj/machinery/power/apc/derelict
 	cell_type = /obj/item/cell/crap/empty
@@ -59,17 +59,17 @@
 /obj/machinery/door/airlock/autoname/engineering
 	req_access = list(access_engine)
 
-/turf/simulated/floor/usedup
+/turf/floor/usedup
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 
-/turf/simulated/floor/wood/usedup
+/turf/floor/wood/usedup
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 
-/turf/simulated/floor/tiled/usedup
+/turf/floor/tiled/usedup
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 
-/turf/simulated/floor/tiled/dark/usedup
+/turf/floor/tiled/dark/usedup
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 
-/turf/simulated/floor/tiled/white/usedup
+/turf/floor/tiled/white/usedup
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)

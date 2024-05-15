@@ -465,12 +465,12 @@
 
 /obj/machinery/door/update_nearby_tiles(need_rebuild)
 	. = ..()
-	for(var/turf/simulated/turf in locs)
+	for(var/turf/turf in locs)
 		update_heat_protection(turf)
 		SSair.mark_for_update(turf)
 	return 1
 
-/obj/machinery/door/proc/update_heat_protection(turf/simulated/source)
+/obj/machinery/door/proc/update_heat_protection(turf/source)
 	if(istype(source))
 		if(src.density && (src.opacity || src.heat_proof))
 			source.thermal_conductivity = DOOR_HEAT_TRANSFER_COEFFICIENT

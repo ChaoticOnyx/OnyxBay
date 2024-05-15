@@ -23,8 +23,8 @@
 		visible_message("\The [src] makes an excited beeping booping sound!")
 
 	if(screwloose && prob(5)) // Make a mess
-		if(istype(loc, /turf/simulated))
-			var/turf/simulated/T = loc
+		if(istype(loc, /turf))
+			var/turf/T = loc
 			T.wet_floor()
 
 	if(oddbutton && prob(5)) // Make a big mess
@@ -68,8 +68,8 @@
 	update_icons()
 	var/cleantime = istype(D, /obj/effect/decal/cleanable/dirt) ? 10 : 50
 	if(do_after(src, cleantime, progress = 0))
-		if(istype(loc, /turf/simulated))
-			var/turf/simulated/f = loc
+		if(istype(loc, /turf))
+			var/turf/f = loc
 			f.dirt = 0
 		if(!D)
 			return

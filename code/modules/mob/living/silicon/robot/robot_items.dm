@@ -652,7 +652,7 @@
 
 /obj/item/robot_rack/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity) return
-	if(istype(A, /obj/structure/table) || istype(A, /turf/simulated/floor))
+	if(istype(A, /obj/structure/table) || istype(A, /turf/floor))
 		deploy(get_turf(A),user)
 
 
@@ -880,7 +880,7 @@
 				to_chat(user, "<span class='notice'>Not enough energy.</span>")
 				return
 
-		if(!istype(A, /obj/structure/table) && !istype(A, /turf/simulated/floor))
+		if(!istype(A, /obj/structure/table) && !istype(A, /turf/floor))
 			return
 		if (!selected.item_type)
 			return

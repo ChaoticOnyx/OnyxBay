@@ -792,7 +792,7 @@ meteor_act
 	//getting the weapon bloodied is easier than getting the target covered in blood, so run prob() again
 	if(prob(33 + W.sharp*10))
 		var/turf/location = loc
-		if(istype(location, /turf/simulated))
+		if(istype(location, /turf))
 			location.add_blood(src)
 		if(ishuman(attacker))
 			var/mob/living/carbon/human/H = attacker
@@ -821,7 +821,7 @@ meteor_act
 		return
 	if(prob(effective_force))
 		var/turf/location = loc
-		if(istype(location, /turf/simulated))
+		if(istype(location, /turf))
 			location.add_blood(src)
 
 		switch(hit_zone)

@@ -173,7 +173,7 @@
 	if((stat & (NOPOWER|BROKEN)) || shorted || buildstage != 2)
 		return
 
-	var/turf/simulated/location = loc
+	var/turf/location = loc
 	if(!istype(location))
 		return PROCESS_KILL // returns if loc is not simulated
 
@@ -266,7 +266,7 @@
 
 // Returns whether this air alarm thinks there is a breach, given the sensors that are available to it.
 /obj/machinery/alarm/proc/breach_detected()
-	var/turf/simulated/location = loc
+	var/turf/location = loc
 
 	if(!istype(location))
 		return 0

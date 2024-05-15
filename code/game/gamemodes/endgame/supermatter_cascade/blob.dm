@@ -1,5 +1,5 @@
 // QUALITY COPYPASTA
-/turf/unsimulated/wall/supermatter
+/turf/wall/supermatter
 	name = "Bluespace"
 	desc = "THE END IS right now actually."
 
@@ -13,14 +13,14 @@
 
 	var/list/avail_dirs = list(NORTH,SOUTH,EAST,WEST,UP,DOWN)
 
-/turf/unsimulated/wall/supermatter/New()
+/turf/wall/supermatter/New()
 	..()
 
 	// Nom.
 	for(var/atom/movable/A in src)
 		Consume(A)
 
-/turf/unsimulated/wall/supermatter/Process(wait, times_fired)
+/turf/wall/supermatter/Process(wait, times_fired)
 	// Only check infrequently.
 	var/how_often = max(round(5 SECONDS/wait), 1)
 	if(times_fired % how_often)
@@ -44,24 +44,24 @@
 				return
 			T.ChangeTurf(type)
 
-/turf/unsimulated/wall/supermatter/attack_generic(mob/user as mob)
+/turf/wall/supermatter/attack_generic(mob/user as mob)
 	if(istype(user))
 		return attack_hand(user)
 
-/turf/unsimulated/wall/supermatter/attack_robot(mob/user as mob)
+/turf/wall/supermatter/attack_robot(mob/user as mob)
 	if(Adjacent(user))
 		return attack_hand(user)
 	else
 		user.examinate(src)
 
 // /vg/: Don't let ghosts fuck with this.
-/turf/unsimulated/wall/supermatter/attack_ghost(mob/user as mob)
+/turf/wall/supermatter/attack_ghost(mob/user as mob)
 	user.examinate(src)
 
-/turf/unsimulated/wall/supermatter/attack_ai(mob/user as mob)
+/turf/wall/supermatter/attack_ai(mob/user as mob)
 	user.examinate(src)
 
-/turf/unsimulated/wall/supermatter/attack_hand(mob/user as mob)
+/turf/wall/supermatter/attack_hand(mob/user as mob)
 	user.visible_message("<span class=\"warning\">\The [user] reaches out and touches \the [src]... And then blinks out of existance.</span>",\
 		"<span class=\"danger\">You reach out and touch \the [src]. Everything immediately goes quiet. Your last thought is \"That was not a wise decision.\"</span>",\
 		"<span class=\"warning\">You hear an unearthly noise.</span>")
@@ -70,7 +70,7 @@
 
 	Consume(user)
 
-/turf/unsimulated/wall/supermatter/attackby(obj/item/W as obj, mob/living/user as mob)
+/turf/wall/supermatter/attackby(obj/item/W as obj, mob/living/user as mob)
 	user.visible_message("<span class=\"warning\">\The [user] touches \a [W] to \the [src] as a silence fills the room...</span>",\
 		"<span class=\"danger\">You touch \the [W] to \the [src] when everything suddenly goes silent.\"</span>\n<span class=\"notice\">\The [W] flashes into dust as you flinch away from \the [src].</span>",\
 		"<span class=\"warning\">Everything suddenly goes silent.</span>")
@@ -82,7 +82,7 @@
 
 #define MayConsume(A) (istype(A) && A.simulated && !isobserver(A))
 
-/turf/unsimulated/wall/supermatter/Bumped(atom/movable/AM)
+/turf/wall/supermatter/Bumped(atom/movable/AM)
 	if(!MayConsume(AM))
 		return
 
@@ -97,10 +97,10 @@
 	playsound(src, 'sound/effects/supermatter.ogg', 50, 1)
 	Consume(AM)
 
-/turf/unsimulated/wall/supermatter/Entered(atom/movable/AM)
+/turf/wall/supermatter/Entered(atom/movable/AM)
 	Bumped(AM)
 
-/turf/unsimulated/wall/supermatter/proc/Consume(atom/movable/AM)
+/turf/wall/supermatter/proc/Consume(atom/movable/AM)
 	if(MayConsume(AM))
 		qdel(AM)
 

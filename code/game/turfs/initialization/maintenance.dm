@@ -14,7 +14,7 @@
 	vermin_probability = 0
 	web_probability = 0
 
-/decl/turf_initializer/maintenance/InitializeTurf(turf/simulated/T)
+/decl/turf_initializer/maintenance/InitializeTurf(turf/T)
 	if(!istype(T))
 		return
 	if(T.density)
@@ -50,13 +50,13 @@
 
 /decl/turf_initializer/maintenance/proc/dirty_neighbors(list/cardinal_turfs)
 	var/how_dirty = 0
-	for(var/turf/simulated/T in cardinal_turfs)
+	for(var/turf/T in cardinal_turfs)
 		// Considered dirty if more than halfway to visible dirt
 		if(T.dirt > 25)
 			how_dirty++
 	return how_dirty
 
-/decl/turf_initializer/maintenance/proc/attempt_web(turf/simulated/T)
+/decl/turf_initializer/maintenance/proc/attempt_web(turf/T)
 	var/turf/north_turf = get_step(T, NORTH)
 	if(!north_turf || !north_turf.density)
 		return

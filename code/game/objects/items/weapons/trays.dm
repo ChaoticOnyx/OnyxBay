@@ -55,7 +55,7 @@
 		if(prob(33))
 			src.add_blood(H)
 			var/turf/location = H.loc
-			if (istype(location, /turf/simulated))
+			if (istype(location, /turf))
 				location.add_blood(H)     ///Plik plik, the sound of blood
 
 		admin_attack_log(user, M, "Attacked using \the [src]", "Was attacked with \a [src]", "used \a [src] to attack")
@@ -95,7 +95,7 @@
 			if (H.glasses && prob(33))
 				H.glasses.add_blood(H)
 			var/turf/location = H.loc
-			if (istype(location, /turf/simulated))     //Addin' blood! At least on the floor and item :v
+			if (istype(location, /turf))     //Addin' blood! At least on the floor and item :v
 				location.add_blood(H)
 
 		if(prob(50))
@@ -119,7 +119,7 @@
 		if(prob(33))
 			src.add_blood(M)
 			var/turf/location = H.loc
-			if (istype(location, /turf/simulated))
+			if (istype(location, /turf))
 				location.add_blood(H)
 
 		if(prob(50))

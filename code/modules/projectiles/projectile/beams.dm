@@ -242,8 +242,8 @@
 	impact_type = /obj/effect/projectile/impact/trilaser
 
 /obj/item/projectile/beam/plasmacutter/on_impact(atom/A)
-	if(istype(A, /turf/simulated/mineral))
-		var/turf/simulated/mineral/M = A
+	if(istype(A, /turf/mineral))
+		var/turf/mineral/M = A
 		if(prob(99))
 			M.GetDrilled(1)
 			return

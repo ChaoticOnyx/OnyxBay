@@ -121,7 +121,7 @@
 		return
 
 	add_fingerprint(user)
-	var/turf/simulated/floor/F = A
+	var/turf/floor/F = A
 
 	if(!istype(F))
 		to_chat(user, SPAN("warning", "\The [src] can only be used on actual flooring."))

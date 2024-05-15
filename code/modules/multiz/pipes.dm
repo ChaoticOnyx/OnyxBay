@@ -44,7 +44,7 @@
 			initialize_directions = SOUTH
 
 /obj/machinery/atmospherics/pipe/zpipe/hide(i)
-	if(istype(loc, /turf/simulated))
+	if(istype(loc, /turf))
 		set_invisibility(i ? 101 : 0)
 	update_icon()
 

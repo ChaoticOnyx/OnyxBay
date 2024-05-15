@@ -63,7 +63,7 @@
 
 	var/turf/destination = get_step(mover, direction)
 
-	if (istype(destination, /turf/simulated/open))
+	if (istype(destination, /turf/open))
 		var/turf/below = get_step(destination, DOWN)
 
 		if (locate(/obj/structure/stairs) in below)

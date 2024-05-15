@@ -7,10 +7,10 @@
 	return mloc
 
 /proc/iswall(turf/T)
-	return (istype(T, /turf/simulated/wall) || istype(T, /turf/unsimulated/wall) || istype(T, /turf/simulated/shuttle/wall))
+	return (istype(T, /turf/wall) || istype(T, /turf/wall) || istype(T, /turf/shuttle/wall))
 
 /proc/isfloor(turf/T)
-	return (istype(T, /turf/simulated/floor) || istype(T, /turf/unsimulated/floor))
+	return (istype(T, /turf/floor) || istype(T, /turf/floor))
 
 /proc/turf_clear(turf/T)
 	for(var/atom/A in T)
@@ -159,3 +159,6 @@
 		M.forceMove(target, unbuckle_mob = FALSE)
 
 	return target
+
+/proc/turf_is_simulated(turf/T)
+	return T.simulated

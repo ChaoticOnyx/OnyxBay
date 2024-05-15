@@ -35,7 +35,7 @@ In short:
 	var/list/areas = area_repository.get_areas_by_z_level(GLOB.is_player_but_not_space_area)
 	for(var/i in areas)
 		var/area/A = areas[i]
-		for(var/turf/simulated/floor/T in A)
+		for(var/turf/floor/T in A)
 			if(!T.holy && prob(1))
 				new /obj/effect/gateway/active/cult(T)
 

@@ -153,7 +153,7 @@
 
 	return network
 
-/datum/pipeline/proc/mingle_with_turf(turf/simulated/target, mingle_volume)
+/datum/pipeline/proc/mingle_with_turf(turf/target, mingle_volume)
 	var/datum/gas_mixture/air_sample = air.remove_ratio(mingle_volume/air.volume)
 	air_sample.volume = mingle_volume
 
@@ -185,8 +185,8 @@
 	var/total_heat_capacity = air.heat_capacity()
 	var/partial_heat_capacity = total_heat_capacity*(share_volume/air.volume)
 
-	if(istype(target, /turf/simulated))
-		var/turf/simulated/modeled_location = target
+	if(istype(target, /turf))
+		var/turf/modeled_location = target
 
 		if(modeled_location.blocks_air)
 

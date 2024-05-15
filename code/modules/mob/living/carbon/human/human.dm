@@ -781,7 +781,7 @@
 					playsound(loc, 'sound/effects/splat.ogg', 50, 1)
 
 					var/turf/location = loc
-					if(istype(location, /turf/simulated))
+					if(istype(location, /turf))
 						location.add_vomit_floor(src, toxvomit, stomach.ingested)
 					remove_nutrition(30)
 		sleep(350)	//wait 35 seconds before next volley
@@ -990,7 +990,7 @@
 			if(client.eye == shadow)
 				reset_view(0)
 				return
-			if(istype(above, /turf/simulated/open))
+			if(istype(above, /turf/open))
 				to_chat(src, "<span class='notice'>You look up.</span>")
 				if(client)
 					reset_view(shadow)
@@ -1136,7 +1136,7 @@
 		to_chat(src, "<span class='warning'>Your [src.gloves] are getting in the way.</span>")
 		return
 
-	var/turf/simulated/T = src.loc
+	var/turf/T = src.loc
 	if (!istype(T)) //to prevent doodling out of mechs and lockers
 		to_chat(src, "<span class='warning'>You cannot reach the floor.</span>")
 		return

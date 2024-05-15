@@ -33,7 +33,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/list/derelict_levels		// List for random derelicts
 
 	var/list/usable_email_tlds = list("freemail.nt")
-	var/base_floor_type = /turf/simulated/floor/plating/airless // The turf type used when generating floors between Z-levels at startup.
+	var/base_floor_type = /turf/floor/plating/airless // The turf type used when generating floors between Z-levels at startup.
 	var/base_floor_area                                 // Replacement area, if a base_floor_type is generated. Leave blank to skip.
 
 	var/list/allowed_jobs          //Job datums to use.
@@ -170,10 +170,10 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	set waitfor = 0
 
 	for(var/thing in mining_walls["[zlevel]"])
-		var/turf/simulated/mineral/M = thing
+		var/turf/mineral/M = thing
 		M.update_icon()
 	for(var/thing in mining_floors["[zlevel]"])
-		var/turf/simulated/floor/asteroid/M = thing
+		var/turf/floor/asteroid/M = thing
 		if(istype(M))
 			M.updateMineralOverlays()
 

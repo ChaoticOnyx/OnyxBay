@@ -19,33 +19,33 @@
 		if(istype(object,/turf/space))
 			var/turf/T = object
 			Log("Upgraded - [log_info_line(object)]")
-			T.ChangeTurf(/turf/simulated/floor)
+			T.ChangeTurf(/turf/floor)
 			return
-		else if(istype(object,/turf/simulated/floor))
+		else if(istype(object,/turf/floor))
 			var/turf/T = object
 			Log("Upgraded - [log_info_line(object)]")
-			T.ChangeTurf(/turf/simulated/wall)
+			T.ChangeTurf(/turf/wall)
 			return
-		else if(istype(object,/turf/simulated/wall))
+		else if(istype(object,/turf/wall))
 			var/turf/T = object
 			Log("Upgraded - [log_info_line(object)]")
-			T.ChangeTurf(/turf/simulated/wall/r_wall)
+			T.ChangeTurf(/turf/wall/r_wall)
 			return
 	else if(pa["right"])
-		if(istype(object,/turf/simulated/wall))
+		if(istype(object,/turf/wall))
 			var/turf/T = object
 			Log("Downgraded - [log_info_line(object)]")
-			T.ChangeTurf(/turf/simulated/floor)
+			T.ChangeTurf(/turf/floor)
 			return
-		else if(istype(object,/turf/simulated/floor))
+		else if(istype(object,/turf/floor))
 			var/turf/T = object
 			Log("Downgraded - [log_info_line(object)]")
 			T.ChangeTurf(/turf/space)
 			return
-		else if(istype(object,/turf/simulated/wall/r_wall))
+		else if(istype(object,/turf/wall/r_wall))
 			var/turf/T = object
 			Log("Downgraded - [log_info_line(object)]")
-			T.ChangeTurf(/turf/simulated/wall)
+			T.ChangeTurf(/turf/wall)
 			return
 		else if(istype(object,/obj))
 			Log("Deleted - [log_info_line(object)]")

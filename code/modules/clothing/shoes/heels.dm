@@ -66,7 +66,7 @@
 	var/turf/walking = get_turf(loc)
 	var/datum/species/wearing_species = all_species[wearing.get_species()]
 
-	if(wearing?.cached_slowdown >= wearing_species.walk_speed_perc * config.movement.walk_speed && !istype(walking, /turf/simulated/floor/plating))
+	if(wearing?.cached_slowdown >= wearing_species.walk_speed_perc * config.movement.walk_speed && !istype(walking, /turf/floor/plating))
 		return FALSE
 
 	return TRUE

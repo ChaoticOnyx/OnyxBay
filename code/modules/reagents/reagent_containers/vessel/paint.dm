@@ -14,7 +14,7 @@
 	lid_type = null
 	var/paint_hex = "#fe191a"
 
-/obj/item/reagent_containers/vessel/paint/afterattack(turf/simulated/target, mob/user, proximity)
+/obj/item/reagent_containers/vessel/paint/afterattack(turf/target, mob/user, proximity)
 	if(!proximity)
 		return
 	if(istype(target) && reagents.total_volume > 5)

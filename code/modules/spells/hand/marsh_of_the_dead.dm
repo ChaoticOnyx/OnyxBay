@@ -22,7 +22,7 @@
 	max_casts = 1
 
 /datum/spell/hand/charges/marsh_of_the_dead/cast_hand(atom/a, mob/user)
-	for(var/turf/simulated/T in view(1,a))
+	for(var/turf/T in view(1,a))
 		new /obj/effect/deadhands(T, damage)
 	return ..()
 

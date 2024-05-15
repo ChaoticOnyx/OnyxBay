@@ -1,6 +1,6 @@
 
 /mob/living/carbon/human/AltClickOn(atom/A)
-	if(mind?.vampire && istype(A , /turf/simulated/floor) && (/datum/vampire/proc/vampire_veilstep in verbs))
+	if(mind?.vampire && istype(A , /turf/floor) && (/datum/vampire/proc/vampire_veilstep in verbs))
 		mind.vampire.vampire_veilstep(A)
 	..()
 
@@ -22,7 +22,7 @@
 
 // This one is different from other vampire powers, as it neither an actual "clickable" verb nor an onscreen ability, rather being used via alt+click on a tile
 // It's pretty much preferable to rewrite it from scratch, but I'm feeling too lazy now
-/datum/vampire/proc/vampire_veilstep(turf/simulated/floor/T in view(7))
+/datum/vampire/proc/vampire_veilstep(turf/floor/T in view(7))
 	set category = null
 	set name = "Veil Step (20)"
 	set desc = "For a moment, move through the Veil and emerge at a shadow of your choice."

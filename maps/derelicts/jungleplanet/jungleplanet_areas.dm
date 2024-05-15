@@ -2,7 +2,7 @@
 	name = "jungle"
 	icon = 'icons/turf/jungleplanet_areas.dmi'
 	icon_state = "jungle"
-	base_turf = /turf/simulated/floor/natural/jungle/dirt
+	base_turf = /turf/floor/natural/jungle/dirt
 
 /area/jungleplanet/jungle
 	name = "Jungle"

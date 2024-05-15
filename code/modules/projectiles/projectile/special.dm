@@ -269,7 +269,7 @@
 	var/turf/previous_loc = get_turf(previous)
 	holder.forceMove(bump_loc)
 
-	if(istype(bump_loc, /turf/simulated/wall) || istype(bump_loc, /turf/simulated/shuttle/wall))
+	if(istype(bump_loc, /turf/wall) || istype(bump_loc, /turf/shuttle/wall))
 		holder.forceMove(previous_loc) // Get us out of the wall
 	else
 		for(var/obj/O in bump_loc)

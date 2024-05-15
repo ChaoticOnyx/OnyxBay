@@ -26,7 +26,7 @@
 		obfuscation.plane = OBFUSCATION_PLANE
 		if(!obfuscation_underlay)
 			// Creating a new icon of a fairly common icon state, adding some random color to prevent address searching, and hoping being static kills memory locality
-			var/turf/floor = /turf/simulated/floor/tiled
+			var/turf/floor = /turf/floor/tiled
 			obfuscation_underlay = icon(initial(floor.icon), initial(floor.icon_state))
 			obfuscation_underlay.Blend(rgb(rand(0,255),rand(0,255),rand(0,255)))
 		obfuscation.underlays += obfuscation_underlay

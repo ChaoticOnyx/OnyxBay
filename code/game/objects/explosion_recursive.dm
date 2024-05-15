@@ -97,7 +97,7 @@ proc/explosion_rec(turf/epicenter, power, shaped)
 	if(T)
 		T.explosion_spread(spread_power, turn(direction,90))
 
-/turf/unsimulated/explosion_spread(power)
+/turf/explosion_spread(power)
 	return //So it doesn't get to the parent proc, which simulates explosions
 
 /atom/var/explosion_resistance
@@ -108,15 +108,15 @@ proc/explosion_rec(turf/epicenter, power, shaped)
 /turf/space
 	explosion_resistance = 3
 
-/turf/simulated/floor
+/turf/floor
 	explosion_resistance = 1
 
-/turf/simulated/mineral
+/turf/mineral
 	explosion_resistance = 2
 
-/turf/simulated/shuttle/wall
+/turf/shuttle/wall
 	explosion_resistance = 10
 
-/turf/simulated/wall
+/turf/wall
 	plane = DEFAULT_PLANE
 	explosion_resistance = 10

@@ -240,8 +240,8 @@
 
 /datum/reagent/thermite/touch_turf(turf/T)
 	if(volume >= 5)
-		if(istype(T, /turf/simulated/wall))
-			var/turf/simulated/wall/W = T
+		if(istype(T, /turf/wall))
+			var/turf/wall/W = T
 			W.thermite = 1
 			W.AddOverlays(image('icons/effects/effects.dmi',icon_state = "#673910"))
 			remove_self(5)
@@ -267,8 +267,8 @@
 
 /datum/reagent/space_cleaner/touch_turf(turf/T)
 	if(volume >= 1)
-		if(istype(T, /turf/simulated))
-			var/turf/simulated/S = T
+		if(istype(T, /turf))
+			var/turf/S = T
 			S.dirt = 0
 			if(S.wet > 1)
 				S.unwet_floor(FALSE)
@@ -332,7 +332,7 @@
 	reagent_state = LIQUID
 	color = "#009ca8"
 
-/datum/reagent/lube/touch_turf(turf/simulated/T)
+/datum/reagent/lube/touch_turf(turf/T)
 	if(!istype(T))
 		return
 	if(volume >= 1)

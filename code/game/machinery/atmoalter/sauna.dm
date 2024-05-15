@@ -190,7 +190,7 @@
 		if(env.temperature <= 40 CELSIUS)
 			return
 
-		var/turf/simulated/T = get_turf(src)
+		var/turf/T = get_turf(src)
 		var/total_water_required = T?.zone?.contents?.len * WATER_UNIT_PER_TILE
 		if(container?.reagents?.total_volume <= total_water_required)
 			return
@@ -323,7 +323,7 @@
 	set_next_think(world.time + 30 SECONDS)
 
 /atom/movable/steam_controller/Destroy()
-	var/turf/simulated/T = get_turf(src)
+	var/turf/T = get_turf(src)
 	var/list/turfs = T?.zone?.contents
 	for(var/turf/turf in turfs)
 		turf.vis_contents.Remove(overlay)
@@ -338,7 +338,7 @@
 	return ..()
 
 /atom/movable/steam_controller/think()
-	var/turf/simulated/T = get_turf(src)
+	var/turf/T = get_turf(src)
 	var/list/turfs = T?.zone?.contents
 	var/datum/gas_mixture/env = loc.return_air()
 
@@ -360,9 +360,9 @@
 
 /// Checks all affected turfs, adds visual effects and transfers reagents to atoms and mobs.
 /atom/movable/steam_controller/proc/handle_turfs()
-	var/turf/simulated/T = get_turf(src)
+	var/turf/T = get_turf(src)
 	var/list/turfs = T?.zone?.contents
-	for(var/turf/simulated/floor/turf in turfs)
+	for(var/turf/floor/turf in turfs)
 		if(!LAZYISIN(turf.vis_contents, overlay))
 			turf.vis_contents.Add(overlay)
 
@@ -382,7 +382,7 @@
 				reagents.touch_obj(A)
 
 /atom/movable/steam_controller/proc/condense(list/turfs)
-	for(var/turf/simulated/T in turfs)
+	for(var/turf/T in turfs)
 		T.wet_floor(1)
 
 	disappear()

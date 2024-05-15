@@ -98,7 +98,7 @@
 
 		var/turf/T = user.loc
 
-		if(!T.is_plating() || !istype(T, /turf/simulated/floor))
+		if(!T.is_plating() || !istype(T, /turf/floor))
 			return
 
 		if(get_dist(src, user) > 1)

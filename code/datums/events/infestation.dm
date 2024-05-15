@@ -77,7 +77,7 @@
 		var/datum/reagent/lizard_poison = pick(POSSIBLE_LIZARD_TOXINS)
 		log_and_message_admins("Vermin infestation spawned ([vermstring] x[num]) in \the [location]", location = pick_area_turf(location))
 		while(vermin_turfs.len && num > 0)
-			var/turf/simulated/floor/T = pick(vermin_turfs)
+			var/turf/floor/T = pick(vermin_turfs)
 			vermin_turfs.Remove(T)
 			num--
 

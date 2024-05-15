@@ -1,4 +1,4 @@
-"a" = (/turf/simulated/floor/reinforced,/area/template_noop)
+"a" = (/turf/floor/reinforced,/area/template_noop)
 
 (1,1,1) = {"
 aaaaaaaaaa

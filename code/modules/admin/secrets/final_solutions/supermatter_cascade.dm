@@ -11,6 +11,6 @@
 		if(!T)
 			return
 		explosion(T, 8, 16, 24, 32, 1)
-		T.ChangeTurf(/turf/unsimulated/wall/supermatter)
+		T.ChangeTurf(/turf/wall/supermatter)
 		SetUniversalState(/datum/universal_state/supermatter_cascade)
 		message_admins("[key_name_admin(user)] has managed to destroy the universe with a supermatter cascade. Good job, [key_name_admin(user)]")

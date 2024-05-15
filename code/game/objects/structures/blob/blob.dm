@@ -114,14 +114,14 @@
 	for(var/dir in list(NORTH, EAST, SOUTH, WEST, UP, DOWN))
 		var/possible_loc = get_step(src, dir)
 		var/loc_is_not_suitable = istype(possible_loc, /turf/space)\
-								|| istype(possible_loc, /turf/simulated/wall)\
-								|| istype(possible_loc, /turf/simulated/mineral)\
+								|| istype(possible_loc, /turf/wall)\
+								|| istype(possible_loc, /turf/mineral)\
 								|| (locate(/obj/structure/blob) in possible_loc)
 
 		if(dir == UP)
-			loc_is_not_suitable = loc_is_not_suitable || !istype(possible_loc, /turf/simulated/open)
+			loc_is_not_suitable = loc_is_not_suitable || !istype(possible_loc, /turf/open)
 		else if(dir == DOWN)
-			loc_is_not_suitable = loc_is_not_suitable || !istype(current_loc, /turf/simulated/open)
+			loc_is_not_suitable = loc_is_not_suitable || !istype(current_loc, /turf/open)
 
 		if(loc_is_not_suitable)
 			continue

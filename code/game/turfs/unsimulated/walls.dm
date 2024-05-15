@@ -1,4 +1,4 @@
-/turf/unsimulated/wall
+/turf/wall
 	name = "wall"
 	icon = 'icons/turf/walls/riveted.dmi'
 	icon_state = "riveted0"
@@ -8,12 +8,12 @@
 	explosion_block = 1
 	rad_resist_type = /datum/rad_resist/wall
 
-/turf/unsimulated/wall/fakeglass
+/turf/wall/fakeglass
 	name = "window"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "fakewindows"
 	opacity = 0
 
-/turf/unsimulated/wall/other
+/turf/wall/other
 	icon = 'icons/turf/wall_masks.dmi'
 	icon_state = "rgeneric"

@@ -67,7 +67,7 @@ obj/machinery/atmospherics/mains_pipe
 		aux.nodes.len = nodes.len
 
 	hide(i)
-		if(level == 1 && istype(loc, /turf/simulated))
+		if(level == 1 && istype(loc, /turf))
 			set_invisibility(i ? 101 : 0)
 		update_icon()
 
@@ -552,7 +552,7 @@ obj/machinery/atmospherics/mains_pipe/valve
 		initialize_mains_directions = dir | turn(dir, 180)
 
 	update_icon(animation)
-		var/turf/simulated/floor = loc
+		var/turf/floor = loc
 		var/hide = istype(floor) ? floor.intact : 0
 		level = 1
 		for(var/obj/machinery/atmospherics/mains_pipe/node in nodes)
@@ -669,7 +669,7 @@ obj/machinery/atmospherics/mains_pipe/valve
 				set_frequency(frequency)
 
 		update_icon(animation)
-			var/turf/simulated/floor = loc
+			var/turf/floor = loc
 			var/hide = istype(floor) ? floor.intact : 0
 			level = 1
 			for(var/obj/machinery/atmospherics/mains_pipe/node in nodes)

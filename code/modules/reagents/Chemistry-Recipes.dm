@@ -585,7 +585,7 @@
 
 /datum/chemical_reaction/napalm/on_reaction(datum/reagents/holder, created_volume)
 	var/turf/location = get_turf(holder.my_atom.loc)
-	for(var/turf/simulated/floor/target_tile in range(0,location))
+	for(var/turf/floor/target_tile in range(0,location))
 		target_tile.assume_gas("plasma", created_volume, 400 CELSIUS)
 		spawn (0) target_tile.hotspot_expose(700, 400)
 	holder.del_reagent("napalm")

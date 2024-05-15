@@ -36,7 +36,7 @@ Class Procs:
 		Called when zones have a direct connection and equivalent pressure and temperature.
 		Merges the zones to create a single zone.
 
-	connect(turf/simulated/A, turf/B)
+	connect(turf/A, turf/B)
 		Called by turf/update_air_properties(). The first argument must be simulated.
 		Creates a connection between A and B.
 
@@ -136,7 +136,7 @@ SUBSYSTEM_DEF(air)
 	report_progress("Processing Geometry...")
 
 	var/simulated_turf_count = 0
-	for(var/turf/simulated/S)
+	for(var/turf/S)
 		simulated_turf_count++
 		S.update_air_properties()
 
@@ -315,7 +315,7 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 		B.c_merge(A)
 		mark_zone_update(A)
 
-/datum/controller/subsystem/air/proc/connect(turf/simulated/A, turf/simulated/B)
+/datum/controller/subsystem/air/proc/connect(turf/A, turf/B)
 	#ifdef ZASDBG
 	ASSERT(istype(A))
 	ASSERT(isturf(B))

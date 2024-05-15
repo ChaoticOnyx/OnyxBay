@@ -233,7 +233,7 @@
 		LAZYADD(T.affecting_lights, src)
 		affecting_turfs += T
 
-		var/turf/simulated/open/O = T
+		var/turf/open/O = T
 		if(istype(O) && O.below)
 			// Consider the turf below us as well. (Z-lights)
 			//Do subprocessing for open turfs
@@ -266,7 +266,7 @@
 	LAZYADD(T.affecting_lights, src)
 	affecting_turfs += T
 
-	var/turf/simulated/open/O = T
+	var/turf/open/O = T
 	if(istype(O) && O.below)
 		return O.below
 	return null
@@ -303,7 +303,7 @@
 		corners |= T.get_corners()
 		turfs   += T
 
-		var/turf/simulated/open/O = T
+		var/turf/open/O = T
 		if(istype(O) && O.below)
 			// Consider the turf below us as well. (Z-lights)
 			for(T = O.below; !isnull(T); T = update_the_turf(T,corners, turfs));
@@ -338,7 +338,7 @@
 	corners |= T.get_corners()
 	turfs   += T
 
-	var/turf/simulated/open/O = T
+	var/turf/open/O = T
 	if(istype(O) && O.below)
 		return O.below
 	return null

@@ -969,8 +969,8 @@
 
 	tile.clean_blood()
 
-	if(istype(tile, /turf/simulated))
-		var/turf/simulated/S = tile
+	if(istype(tile, /turf))
+		var/turf/S = tile
 		S.dirt = 0
 
 	for(var/A in tile)

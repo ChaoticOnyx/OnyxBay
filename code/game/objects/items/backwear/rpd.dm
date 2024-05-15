@@ -134,7 +134,7 @@
 			to_chat(user, SPAN("warning", "Not enough energy."))
 			return
 
-		if(!istype(A, /obj/structure/table) && !istype(A, /turf/simulated/floor))
+		if(!istype(A, /obj/structure/table) && !istype(A, /turf/floor))
 			return
 
 		if (!selected.item_type)

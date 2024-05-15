@@ -3,7 +3,7 @@
 /obj/effect/vine/proc/get_cardinal_neighbors()
 	var/list/cardinal_neighbors = list()
 	for(var/check_dir in GLOB.cardinal)
-		var/turf/simulated/T = get_step(get_turf(src), check_dir)
+		var/turf/T = get_step(get_turf(src), check_dir)
 		if(istype(T))
 			cardinal_neighbors |= T
 	return cardinal_neighbors
@@ -25,7 +25,7 @@
 /obj/effect/vine/proc/get_neighbors()
 	var/list/neighbors = list()
 
-	for(var/turf/simulated/floor in get_cardinal_neighbors())
+	for(var/turf/floor in get_cardinal_neighbors())
 		if(get_dist(parent, floor) > spread_distance)
 			continue
 
@@ -51,7 +51,7 @@
 	return neighbors
 
 /obj/effect/vine/Process()
-	var/turf/simulated/T = get_turf(src)
+	var/turf/T = get_turf(src)
 	if(!istype(T))
 		return
 
@@ -112,7 +112,7 @@
 		STOP_PROCESSING(SSvines, src)
 
 /obj/effect/vine/proc/can_spawn_plant()
-	var/turf/simulated/T = get_turf(src)
+	var/turf/T = get_turf(src)
 	return (plant_spawn_eligible || parent == src) && health == max_health && !plant && istype(T) && !T.CanZPass(src, DOWN)
 
 /obj/effect/vine/proc/should_sleep()
@@ -152,7 +152,7 @@
 
 /obj/effect/vine/proc/wake_neighbors()
 	// This turf is clear now, let our buddies know.
-	for(var/turf/simulated/check_turf in (get_cardinal_neighbors() | get_zlevel_neighbors()))
+	for(var/turf/check_turf in (get_cardinal_neighbors() | get_zlevel_neighbors()))
 		if(!istype(check_turf))
 			continue
 		for(var/obj/effect/vine/neighbor in check_turf.contents)
@@ -160,7 +160,7 @@
 
 /obj/effect/vine/proc/targets_in_range()
 	var/list/mob/targets = list()
-	for(var/turf/simulated/check_turf in (get_cardinal_neighbors() | get_zlevel_neighbors() | list(loc)))
+	for(var/turf/check_turf in (get_cardinal_neighbors() | get_zlevel_neighbors() | list(loc)))
 		if(!istype(check_turf))
 			continue
 		for(var/mob/living/M in check_turf.contents)

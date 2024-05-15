@@ -29,7 +29,7 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
  * WORKING :
  *
  * 1) Makes an associative mapping of model_keys with model
- *		e.g aa = /turf/unsimulated/wall{icon_state = "rock"}
+ *		e.g aa = /turf/wall{icon_state = "rock"}
  * 2) Read the map line by line, parsing the result (using parse_grid)
  *
  */
@@ -203,7 +203,7 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 
 /**
  * Fill a given tile with its area/turf/objects/mobs
- * Variable model is one full map line (e.g /turf/unsimulated/wall{icon_state = "rock"}, /area/mine/explored)
+ * Variable model is one full map line (e.g /turf/wall{icon_state = "rock"}, /area/mine/explored)
  *
  * WORKING :
  *
@@ -239,7 +239,7 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 		same construction as those contained in a .dmm file, and instantiates them.
 	*/
 
-	var/list/members //will contain all members (paths) in model (in our example : /turf/unsimulated/wall and /area/mine/explored)
+	var/list/members //will contain all members (paths) in model (in our example : /turf/wall and /area/mine/explored)
 	var/list/members_attributes //will contain lists filled with corresponding variables, if any (in our example : list(icon_state = "rock") and list())
 	var/list/cached = modelCache[model]
 	var/index
@@ -260,7 +260,7 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 		var/dpos
 
 		do
-			//finding next member (e.g /turf/unsimulated/wall{icon_state = "rock"} or /area/mine/explored)
+			//finding next member (e.g /turf/wall{icon_state = "rock"} or /area/mine/explored)
 			dpos = find_next_delimiter_position(model, old_position, ",", "{", "}") //find next delimiter (comma here) that's not within {...}
 
 			var/full_def = trim_text(copytext(model, old_position, dpos)) //full definition, e.g : /obj/foo/bar{variables=derp}

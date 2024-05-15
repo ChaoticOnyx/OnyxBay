@@ -632,8 +632,8 @@ var/list/possible_cable_coil_colours
 // Cable laying procedures
 //////////////////////////////////////////////
 
-// called when cable_coil is clicked on a turf/simulated/floor
-/obj/item/stack/cable_coil/proc/turf_place(turf/simulated/F, mob/user)
+// called when cable_coil is clicked on a turf/floor
+/obj/item/stack/cable_coil/proc/turf_place(turf/F, mob/user)
 	if(!isturf(user.loc))
 		return
 
@@ -656,7 +656,7 @@ var/list/possible_cable_coil_colours
 		dirn = get_dir(F, user)
 
 	var/end_dir = 0
-	if(istype(F, /turf/simulated/open))
+	if(istype(F, /turf/open))
 		if(!can_use(2))
 			to_chat(user, "You don't have enough cable to do this!")
 			return
@@ -761,7 +761,7 @@ var/list/possible_cable_coil_colours
 		C.denode()// this call may have disconnected some cables that terminated on the centre of the turf, if so split the powernets.
 		return
 
-/obj/item/stack/cable_coil/proc/put_cable(turf/simulated/F, mob/user, d1, d2)
+/obj/item/stack/cable_coil/proc/put_cable(turf/F, mob/user, d1, d2)
 	if(!istype(F))
 		return
 

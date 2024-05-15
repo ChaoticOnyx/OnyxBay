@@ -21,10 +21,10 @@
 	var/source_mineral = "chlorine"
 	var/list/find_presence = list()
 
-/datum/geosample/New(turf/simulated/mineral/container)
+/datum/geosample/New(turf/mineral/container)
 	UpdateTurf(container)
 
-/datum/geosample/proc/UpdateTurf(turf/simulated/mineral/container)
+/datum/geosample/proc/UpdateTurf(turf/mineral/container)
 	if(!istype(container))
 		return
 
@@ -61,7 +61,7 @@
 	for(var/carrier in find_presence)
 		find_presence[carrier] = find_presence[carrier] / total_presence
 
-/datum/geosample/proc/UpdateNearbyArtifactInfo(turf/simulated/mineral/container)
+/datum/geosample/proc/UpdateNearbyArtifactInfo(turf/mineral/container)
 	if(!container || !istype(container))
 		return
 
@@ -69,7 +69,7 @@
 		artifact_distance = rand()
 		artifact_id = container.artifact_find.artifact_id
 	else
-		for(var/turf/simulated/mineral/T in SSxenoarch.artifact_spawning_turfs)
+		for(var/turf/mineral/T in SSxenoarch.artifact_spawning_turfs)
 			if(T.artifact_find)
 				var/cur_dist = get_dist(container, T) * 2
 				if( (artifact_distance < 0 || cur_dist < artifact_distance))
@@ -113,8 +113,8 @@
 /obj/item/device/core_sampler/proc/sample_item(item_to_sample, mob/user)
 	var/datum/geosample/geo_data
 
-	if(istype(item_to_sample, /turf/simulated/mineral))
-		var/turf/simulated/mineral/T = item_to_sample
+	if(istype(item_to_sample, /turf/mineral))
+		var/turf/mineral/T = item_to_sample
 		T.geologic_data.UpdateNearbyArtifactInfo(T)
 		geo_data = T.geologic_data
 	else if(istype(item_to_sample, /obj/item/ore))

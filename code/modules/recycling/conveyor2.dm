@@ -278,7 +278,7 @@
 		id = C.id
 
 /obj/item/conveyor_construct/afterattack(atom/A, mob/user, proximity)
-	if(!proximity || !istype(A, /turf/simulated/floor) || istype(A, /area/shuttle) || user.incapacitated())
+	if(!proximity || !istype(A, /turf/floor) || istype(A, /area/shuttle) || user.incapacitated())
 		return
 	var/cdir = get_dir(A, user)
 	if(!(cdir in GLOB.cardinal) || A == user.loc)
@@ -306,7 +306,7 @@
 	id = rand() //this couldn't possibly go wrong
 
 /obj/item/conveyor_switch_construct/afterattack(atom/A, mob/user, proximity)
-	if(!proximity || !istype(A, /turf/simulated/floor) || istype(A, /area/shuttle) || user.incapacitated())
+	if(!proximity || !istype(A, /turf/floor) || istype(A, /area/shuttle) || user.incapacitated())
 		return
 	var/found = 0
 	for(var/obj/machinery/conveyor/C in view())

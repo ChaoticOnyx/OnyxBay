@@ -429,7 +429,7 @@
 		if(METROID_ACTIVATE_MINOR)
 			show_splash_text(user, SPAN_WARNING("You vomit slippery oil."))
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
-			var/turf/simulated/T = get_turf(user)
+			var/turf/T = get_turf(user)
 			new /obj/effect/decal/cleanable/blood/oil(T)
 			T.wet_floor(2)
 			return 450

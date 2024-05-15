@@ -70,7 +70,7 @@ SUBSYSTEM_DEF(open_space)
 			add_turf(above, recursive)
 	wake()
 
-/turf/simulated/open/Initialize()
+/turf/open/Initialize()
 	. = ..()
 	SSopen_space.add_turf(src)
 

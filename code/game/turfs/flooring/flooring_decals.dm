@@ -20,7 +20,7 @@ var/list/floor_decals = list()
 	SHOULD_CALL_PARENT(FALSE)
 	if(supplied_dir) set_dir(supplied_dir)
 	var/turf/T = get_turf(src)
-	if(istype(T, /turf/simulated/floor) || istype(T, /turf/unsimulated/floor))
+	if(istype(T, /turf/floor) || istype(T, /turf/floor))
 		layer = T.is_plating() ? DECAL_PLATING_LAYER : DECAL_LAYER
 		var/cache_key = "[alpha]-[color]-[dir]-[icon_state]-[plane]-[layer]-[pixel_x]-[pixel_y]"
 		if(!floor_decals[cache_key])

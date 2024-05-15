@@ -103,21 +103,21 @@
 	var/C = target.loc	//why are these backwards? we may never know -Pete
 	if(do_after_cooldown(target))
 		if(T == chassis.loc && src == chassis.selected)
-			if(istype(target, /turf/simulated/wall))
-				var/turf/simulated/wall/W = target
+			if(istype(target, /turf/wall))
+				var/turf/wall/W = target
 				if(W.reinf_material && drillpower < 2)
 					occupant_message(SPAN("warning", "\The [target] is too durable to drill through."))
 					return
 				else
 					log_message("Drilled through \the [target]")
 					target.ex_act(2)
-			else if(istype(target, /turf/simulated/mineral) || istype(target, /turf/simulated/floor/asteroid) || istype(target, /obj/structure/rock))
-				if(istype(target, /turf/simulated/mineral))
-					for(var/turf/simulated/mineral/M in range(chassis, 1))
+			else if(istype(target, /turf/mineral) || istype(target, /turf/floor/asteroid) || istype(target, /obj/structure/rock))
+				if(istype(target, /turf/mineral))
+					for(var/turf/mineral/M in range(chassis, 1))
 						if(get_dir(chassis, M) & chassis.dir)
 							M.GetDrilled()
-				else if(istype(target, /turf/simulated/floor/asteroid))
-					for(var/turf/simulated/floor/asteroid/M in range(chassis, 1))
+				else if(istype(target, /turf/floor/asteroid))
+					for(var/turf/floor/asteroid/M in range(chassis, 1))
 						if(get_dir(chassis, M) & chassis.dir)
 							M.gets_dug()
 				else if(istype(target, /obj/structure/rock))
@@ -268,17 +268,17 @@
 	//meh
 	switch(mode)
 		if(0)
-			if(istype(target, /turf/simulated/wall))
+			if(istype(target, /turf/wall))
 				occupant_message("Deconstructing [target]...")
 				set_ready_state(0)
 				if(do_after_cooldown(target))
 					if(disabled)
 						return
 					chassis.spark_system.start()
-					target:ChangeTurf(/turf/simulated/floor/plating)
+					target:ChangeTurf(/turf/floor/plating)
 					playsound(target, 'sound/items/Deconstruct.ogg', 50, 1)
 					chassis.use_power(energy_drain)
-			else if(istype(target, /turf/simulated/floor))
+			else if(istype(target, /turf/floor))
 				occupant_message("Deconstructing [target]...")
 				set_ready_state(0)
 				if(do_after_cooldown(target))
@@ -305,22 +305,22 @@
 				if(do_after_cooldown(target))
 					if(disabled)
 						return
-					target:ChangeTurf(/turf/simulated/floor/plating)
+					target:ChangeTurf(/turf/floor/plating)
 					playsound(target, 'sound/items/Deconstruct.ogg', 50, 1)
 					chassis.spark_system.start()
 					chassis.use_power(energy_drain*2)
-			else if(istype(target, /turf/simulated/floor))
+			else if(istype(target, /turf/floor))
 				occupant_message("Building Wall...")
 				set_ready_state(0)
 				if(do_after_cooldown(target))
 					if(disabled)
 						return
-					target:ChangeTurf(/turf/simulated/wall)
+					target:ChangeTurf(/turf/wall)
 					playsound(target, 'sound/items/Deconstruct.ogg', 50, 1)
 					chassis.spark_system.start()
 					chassis.use_power(energy_drain*2)
 		if(2)
-			if(istype(target, /turf/simulated/floor))
+			if(istype(target, /turf/floor))
 				occupant_message("Building Airlock...")
 				set_ready_state(0)
 				if(do_after_cooldown(target))
@@ -877,7 +877,7 @@
 
 /obj/item/mecha_parts/mecha_equipment/generator/critfail()
 	..()
-	var/turf/simulated/T = get_turf(src)
+	var/turf/T = get_turf(src)
 	if(!T)
 		return
 
@@ -1275,8 +1275,8 @@
 	last_piece = null
 
 /obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/dismantleFloor(turf/new_turf)
-	if(istype(new_turf, /turf/simulated/floor))
-		var/turf/simulated/floor/T = new_turf
+	if(istype(new_turf, /turf/floor))
+		var/turf/floor/T = new_turf
 		if(!T.is_plating())
 			T.make_plating(!(T.broken || T.burnt))
 	return new_turf.is_plating()

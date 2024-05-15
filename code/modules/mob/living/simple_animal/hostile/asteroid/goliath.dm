@@ -52,9 +52,9 @@
 	var/sturf = get_turf(src)
 	var/tturf = get_turf(target_mob)
 	if(get_dist(src, target_mob) <= 7)//Screen range check, so you can't get tentacle'd offscreen
-		if(istype(sturf, /turf/simulated/floor/asteroid))//Goliath turf check. No floor-breaking tentacles!
+		if(istype(sturf, /turf/floor/asteroid))//Goliath turf check. No floor-breaking tentacles!
 			visible_message("<span class='warning'>The [src.name] tries to dig its huge tentacles under [target_mob.name]!</span>")
-			if(istype(tturf, /turf/simulated/floor/asteroid))//Victim turf check. Again, no floor-breaking tentacles
+			if(istype(tturf, /turf/floor/asteroid))//Victim turf check. Again, no floor-breaking tentacles
 				visible_message("<span class='warning'>The [src.name] successfully digs its tentacles under [target_mob.name]!</span>")
 				new /obj/effect/goliath_tentacle/original(tturf)
 				ranged_cooldown = ranged_cooldown_cap
@@ -87,8 +87,8 @@
 /obj/effect/goliath_tentacle/New()
 	. = ..()
 	var/turftype = get_turf(src)
-	if(istype(turftype, /turf/simulated/mineral))
-		var/turf/simulated/mineral/M = turftype
+	if(istype(turftype, /turf/mineral))
+		var/turf/mineral/M = turftype
 		M.GetDrilled()
 	set_next_think(world.time + 2 SECONDS)
 

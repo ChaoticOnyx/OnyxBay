@@ -36,7 +36,7 @@
 	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
 	for(var/z in affecting_z)
-		for(var/turf/simulated/floor/T in block(locate(1, 1, z), locate(world.maxx, world.maxy, z)))
+		for(var/turf/floor/T in block(locate(1, 1, z), locate(world.maxx, world.maxy, z)))
 			if(turf_contains_dense_objects(T))
 				continue
 			pick_turfs.Add(weakref(T))

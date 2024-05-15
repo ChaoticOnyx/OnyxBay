@@ -1,7 +1,7 @@
-/turf/simulated/wall/diona/New(newloc)
+/turf/wall/diona/New(newloc)
 	..(newloc,"biomass")
 
-/turf/simulated/wall/diona/attack_generic(mob/user, damage, attack_message)
+/turf/wall/diona/attack_generic(mob/user, damage, attack_message)
 	if(istype(user, /mob/living/carbon/alien/diona))
 		if(can_open == WALL_OPENING)
 			return
@@ -62,8 +62,8 @@
 	limit_x = 32
 	limit_y = 32
 
-	wall_type = /turf/simulated/wall/diona
-	floor_type = /turf/simulated/floor/diona
+	wall_type = /turf/wall/diona
+	floor_type = /turf/floor/diona
 
 // This is disgusting.
 /datum/random_map/automata/diona/proc/search_neighbors_for(search_val, x, y)

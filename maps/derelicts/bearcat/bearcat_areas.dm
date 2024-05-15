@@ -162,4 +162,4 @@
 /area/ship/scrap/shuttle/lift
   name = "Cargo Lift"
   icon_state = "shuttle3"
-  base_turf = /turf/simulated/open
+  base_turf = /turf/open

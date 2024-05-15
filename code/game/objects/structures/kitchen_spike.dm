@@ -61,7 +61,7 @@
 	if (istype(C) && C.can_feel_pain())
 		C.emote("scream")
 
-	var/turf/simulated/pos = get_turf(victim)
+	var/turf/pos = get_turf(victim)
 	if(istype(victim, /mob/living/carbon/human))
 		pos.add_blood(victim)
 	else

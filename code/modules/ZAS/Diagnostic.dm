@@ -1,7 +1,7 @@
 /client/proc/Zone_Info(turf/T as null|turf)
 	set category = "Debug"
 	if(T)
-		if(istype(T,/turf/simulated) && T:zone)
+		if(istype(T,/turf) && T:zone)
 			T:zone:dbg_data(src)
 		else
 			to_chat(mob, "No zone here.")
@@ -17,7 +17,7 @@
 
 /client/var/list/zone_debug_images
 
-/client/proc/Test_ZAS_Connection(turf/simulated/T as turf)
+/client/proc/Test_ZAS_Connection(turf/T as turf)
 	set category = "Debug"
 	if(!istype(T))
 		return
@@ -43,7 +43,7 @@
 			to_chat(mob, "No air passage :x")
 		return
 
-	var/turf/simulated/other_turf = get_step(T, direction_list[direction])
+	var/turf/other_turf = get_step(T, direction_list[direction])
 	if(!istype(other_turf))
 		return
 

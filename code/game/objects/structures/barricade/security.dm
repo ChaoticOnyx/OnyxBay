@@ -42,14 +42,13 @@
 		_dismantle_floor(old_loc)
 
 
-/obj/structure/barricade/security/proc/_dismantle_floor(turf/simulated/floor/F)
+/obj/structure/barricade/security/proc/_dismantle_floor(turf/floor/F)
 	if(!istype(F))
 		return
 
 	if(!F.is_plating())
 		F.make_plating(!(F.broken || F.burnt))
 		playsound(src, 'sound/items/jaws_pry.ogg', 50, TRUE)
-
 
 /obj/structure/barricade/security/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/card/id) || istype(W, /obj/item/device/pda) || istype(W, /obj/item/card/robot_sec))

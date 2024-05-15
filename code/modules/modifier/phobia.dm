@@ -202,7 +202,7 @@
 	var/total_tiles = 0
 	var/average_lum = null
 
-	for(var/turf/simulated/T in view(5, get_turf(holder))) // See haemophobia for why this is 5.  This uses get_turf() since darkness makes tiles not visible to holder.
+	for(var/turf/T in view(5, get_turf(holder))) // See haemophobia for why this is 5.  This uses get_turf() since darkness makes tiles not visible to holder.
 		total_lum += T.get_lumcount()
 		total_tiles++
 

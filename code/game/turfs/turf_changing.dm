@@ -13,7 +13,7 @@
 // Called after turf replaces old one
 /turf/proc/post_change()
 	levelupdate()
-	var/turf/simulated/open/T = GetAbove(src)
+	var/turf/open/T = GetAbove(src)
 	if(istype(T))
 		T.update_icon()
 
@@ -25,7 +25,7 @@
 	if(ispath(N, /turf/space))
 		var/turf/below = GetBelow(src)
 		if(istype(below) && !istype(below,/turf/space))
-			N = below.density ? /turf/simulated/floor/plating/airless : /turf/simulated/open
+			N = below.density ? /turf/floor/plating/airless : /turf/open
 
 	var/obj/fire/old_fire = fire
 	var/old_density = density
@@ -43,11 +43,11 @@
 
 	ClearOverlays()
 	underlays.Cut()
-	if(istype(src,/turf/simulated))
+	if(istype(src,/turf))
 		//Yeah, we're just going to rebuild the whole thing.
 		//Despite this being called a bunch during explosions,
 		//the zone will only really do heavy lifting once.
-		var/turf/simulated/S = src
+		var/turf/S = src
 		if(S.zone) S.zone.rebuild()
 
 	// Closest we can do as far as giving sane alerts to listeners. In particular, this calls Exited and moved events in a self-consistent way.
@@ -70,7 +70,7 @@
 	// Run the Destroy() chain.
 	qdel(src)
 
-	var/turf/simulated/W = new N(src)
+	var/turf/W = new N(src)
 
 	comp_lookup = old_lookups
 	datum_components = old_components
@@ -82,10 +82,10 @@
 	W.opaque_counter = old_opaque_counter
 	W.RecalculateOpacity()
 
-	if(ispath(N, /turf/simulated))
+	if(ispath(N, /turf))
 		if(old_fire)
 			fire = old_fire
-		if(istype(W, /turf/simulated/floor))
+		if(istype(W, /turf/floor))
 			W.RemoveLattice()
 	else if(old_fire)
 		old_fire.RemoveFire()
@@ -138,7 +138,7 @@
 	return 1
 
 //I would name this copy_from() but we remove the other turf from their air zone for some reason
-/turf/simulated/transport_properties_from(turf/simulated/other)
+/turf/transport_properties_from(turf/other)
 	if(!..())
 		return 0
 
@@ -151,6 +151,6 @@
 
 
 //No idea why resetting the base appearence from New() isn't enough, but without this it doesn't work
-/turf/simulated/shuttle/wall/corner/transport_properties_from(turf/simulated/other)
+/turf/shuttle/wall/corner/transport_properties_from(turf/other)
 	. = ..()
 	reset_base_appearance()

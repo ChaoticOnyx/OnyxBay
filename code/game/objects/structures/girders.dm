@@ -223,8 +223,8 @@
 
 	shove_everything(shove_objects = FALSE, shove_items = FALSE) // Hiding stuff inside walls is a feature. Probably.
 	var/turf/Tsrc = get_turf(src)
-	Tsrc.ChangeTurf(/turf/simulated/wall)
-	var/turf/simulated/wall/T = get_turf(src)
+	Tsrc.ChangeTurf(/turf/wall)
+	var/turf/wall/T = get_turf(src)
 	T.set_material(M, reinf_material)
 	if(wall_fake)
 		T.can_open = 1
@@ -348,7 +348,7 @@
 	switch(rcd_data["[RCD_DESIGN_MODE]"])
 		if(RCD_TURF)
 			var/turf/T = get_turf(src)
-			T.ChangeTurf(/turf/simulated/wall)
+			T.ChangeTurf(/turf/wall)
 			qdel_self()
 			return TRUE
 

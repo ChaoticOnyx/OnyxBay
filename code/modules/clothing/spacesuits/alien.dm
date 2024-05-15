@@ -134,19 +134,19 @@
 			new /obj/effect/acid(get_turf(A), A)
 			charge--
 		if(2)
-			if(!istype(A, /turf/simulated/floor))
+			if(!istype(A, /turf/floor))
 				var/turf/T = A
-				T.ChangeTurf(/turf/simulated/floor/misc/diona)
+				T.ChangeTurf(/turf/floor/misc/diona)
 				charge--
 			else
-				if(istype(A.loc, /turf/simulated/wall) || istype(A.loc, /obj/machinery/door))
+				if(istype(A.loc, /turf/wall) || istype(A.loc, /obj/machinery/door))
 					return
 				var/turf/T = A
 				new /obj/structure/alien/resin/wall(get_turf(T), T)
 				charge--
 		if(3)
-			if(istype(A, /turf/simulated/floor))
-				if(istype(A.loc, /turf/simulated/wall) || istype(A.loc, /obj/machinery/door))
+			if(istype(A, /turf/floor))
+				if(istype(A.loc, /turf/wall) || istype(A.loc, /obj/machinery/door))
 					return
 				new /obj/machinery/door/unpowered/simple/resin(get_turf(A), A)
 				charge--

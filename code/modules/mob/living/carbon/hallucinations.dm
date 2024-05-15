@@ -221,13 +221,13 @@
 
 /datum/hallucination/mirage/start()
 	var/list/possible_points = list()
-	for(var/turf/simulated/floor/F in view(holder, world.view+1))
+	for(var/turf/floor/F in view(holder, world.view+1))
 		possible_points += F
 	if(possible_points.len)
 		for(var/i = 1 to number)
 			var/image/thing = generate_mirage()
 			things += thing
-			var/turf/simulated/floor/point = pick(possible_points)
+			var/turf/floor/point = pick(possible_points)
 			thing.loc = point
 			if(sound)
 				holder.playsound_local(point, sound, volume)
@@ -529,15 +529,15 @@
 /datum/hallucination/room_effects/can_affect(mob/living/carbon/C)
 	if(!..())
 		return FALSE
-	return istype(get_turf(C), /turf/simulated)
+	return istype(get_turf(C), /turf)
 
 /datum/hallucination/room_effects/start()
-	var/turf/simulated/location = get_turf(holder)
+	var/turf/location = get_turf(holder)
 	ASSERT(istype(location))
 	var/zone/room = location.zone
 	var/list/available_effects = list("icons/effects/tile_effects.dmi" = "plasma", "icons/effects/tile_effects.dmi" = "sleeping_agent", "icons/effects/tile_effects.dmi" = "plasma-purple", "icons/effects/effects.dmi" = "electricity", "icons/effects/fire.dmi" = "real_fire") // Kinda ironic to use real_fire for non-real fire
 	var/chosen = rand(1, available_effects.len)
-	for(var/turf/simulated/T in room.contents)
+	for(var/turf/T in room.contents)
 		effects.Add(image(icon = file(available_effects[chosen]), loc = T, icon_state = available_effects[available_effects[chosen]], layer = FLY_LAYER))
 	holder.client.images |= effects
 

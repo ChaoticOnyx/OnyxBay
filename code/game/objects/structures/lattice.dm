@@ -12,7 +12,7 @@
 /obj/structure/lattice/Initialize()
 	. = ..()
 ///// Z-Level Stuff
-	if(!(istype(src.loc, /turf/space) || istype(src.loc, /turf/simulated/open)))
+	if(!(istype(src.loc, /turf/space) || istype(src.loc, /turf/open)))
 ///// Z-Level Stuff
 		return INITIALIZE_HINT_QDEL
 	for(var/obj/structure/lattice/LAT in loc)
@@ -90,7 +90,7 @@
 			if(locate(/obj/structure/lattice, T) || locate(/obj/structure/catwalk, T))
 				dir_sum += direction
 			else
-				if(!(istype(get_step(src, direction), /turf/space)) && !(istype(get_step(src, direction), /turf/simulated/open)))
+				if(!(istype(get_step(src, direction), /turf/space)) && !(istype(get_step(src, direction), /turf/open)))
 					dir_sum += direction
 
 		icon_state = "lattice[dir_sum]"
@@ -105,9 +105,9 @@
 /obj/structure/lattice/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
 	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_TURF)
 		var/design_structure = rcd_data["[RCD_DESIGN_PATH]"]
-		if(design_structure == /turf/simulated/floor/plating)
+		if(design_structure == /turf/floor/plating)
 			var/turf/T = get_turf(src)
-			T.ChangeTurf(/turf/simulated/floor/plating)
+			T.ChangeTurf(/turf/floor/plating)
 			qdel_self()
 			return TRUE
 

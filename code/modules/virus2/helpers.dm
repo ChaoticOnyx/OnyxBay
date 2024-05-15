@@ -57,7 +57,7 @@
 
 	return prob(protection + 15*M.chem_effects[CE_ANTIVIRAL])
 
-/proc/airborne_can_reach(turf/simulated/source, turf/simulated/target)
+/proc/airborne_can_reach(turf/source, turf/target)
 	//Can't ariborne without air
 	if(is_below_sound_pressure(source) || is_below_sound_pressure(target))
 		return FALSE

@@ -271,7 +271,7 @@
 	return ..()
 
 /datum/modifier/status_effect/watercookie/tick()
-	for(var/turf/simulated/T in range(get_turf(holder),1))
+	for(var/turf/T in range(get_turf(holder),1))
 		T.wet_floor(1)
 
 /datum/modifier/status_effect/watercookie/on_expire()

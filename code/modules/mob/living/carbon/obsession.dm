@@ -9,7 +9,7 @@
 		var/list/images = list()
 
 		var/list/possible_positions = list()
-		for (var/turf/simulated/floor/F in view(src, 3))
+		for (var/turf/floor/F in view(src, 3))
 			possible_positions += F
 
 		for (var/i = 0; i < min(possible_positions.len, 10); i++)

@@ -8,7 +8,6 @@
 	dynamic_lighting = 0
 	temperature = 20 CELSIUS
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
-	var/dirt = 0
 
 	rad_resist_type = /datum/rad_resist/none
 
@@ -53,7 +52,7 @@
 /turf/space/proc/update_starlight()
 	if(!config.misc.starlight)
 		return
-	if(locate(/turf/simulated) in orange(src,1))
+	if(locate(/turf) in orange(src,1))
 		set_light(min(0.1*config.misc.starlight, 1), 1, 2.5, 1.5, "#74dcff")
 	else
 		set_light(0)
@@ -81,9 +80,9 @@
 			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 			S.use(1)
 			if(istype(C, /obj/item/stack/tile/floor_rough))
-				ChangeTurf(/turf/simulated/floor/plating/rough/airless)
+				ChangeTurf(/turf/floor/plating/rough/airless)
 			else
-				ChangeTurf(/turf/simulated/floor/plating/airless)
+				ChangeTurf(/turf/floor/plating/airless)
 			return
 		else
 			to_chat(user, "<span class='warning'>The plating is going to need some support.</span>")
@@ -216,7 +215,7 @@
 	return ..(N, tell_universe, TRUE)
 
 /turf/space/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
-	if(the_rcd.mode == RCD_TURF && the_rcd.rcd_design_path == /turf/simulated/floor/plating)
+	if(the_rcd.mode == RCD_TURF && the_rcd.rcd_design_path == /turf/floor/plating)
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
 			return list("delay" = 0, "cost" = 1)
@@ -227,7 +226,7 @@
 
 /turf/space/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
 	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_TURF)
-		ChangeTurf(/turf/simulated/floor/plating/airless)
+		ChangeTurf(/turf/floor/plating/airless)
 		return TRUE
 
 	return FALSE

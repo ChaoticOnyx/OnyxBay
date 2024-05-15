@@ -42,9 +42,9 @@ How they spawn stuff is decided by behaviour vars, which are explained below
 
 		var/atom/summoned_object
 		if(ispath(summoned_object_type,/turf))
-			if(istype(spawn_place, /turf/simulated/open))
+			if(istype(spawn_place, /turf/open))
 				continue
-			if(istype(get_turf(user),/turf/simulated/shuttle) || istype(spawn_place, /turf/simulated/shuttle))
+			if(istype(get_turf(user),/turf/shuttle) || istype(spawn_place, /turf/shuttle))
 				to_chat(user, "<span class='warning'>You can't build things on shuttles!</span>")
 				continue
 			spawn_place.ChangeTurf(summoned_object_type)

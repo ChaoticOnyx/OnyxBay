@@ -84,7 +84,7 @@
 	if(prob(10 * fire_mult))
 		M.pl_effects()
 
-/datum/reagent/toxin/plasma/touch_turf(turf/simulated/T)
+/datum/reagent/toxin/plasma/touch_turf(turf/T)
 	if(!istype(T))
 		return
 	T.assume_gas("plasma", volume, 20 CELSIUS)
@@ -97,7 +97,7 @@
 	strength = 15
 	fire_mult = 15
 
-/datum/reagent/toxin/plasma/oxygen/touch_turf(turf/simulated/T)
+/datum/reagent/toxin/plasma/oxygen/touch_turf(turf/T)
 	if(!istype(T))
 		return
 	T.assume_gas("oxygen", ceil(volume/2), 20 CELSIUS)
@@ -231,8 +231,8 @@
 	strength = 4
 
 /datum/reagent/toxin/plantbgone/touch_turf(turf/T)
-	if(istype(T, /turf/simulated/wall))
-		var/turf/simulated/wall/W = T
+	if(istype(T, /turf/wall))
+		var/turf/wall/W = T
 		if(locate(/obj/effect/overlay/wallrot) in W)
 			for(var/obj/effect/overlay/wallrot/E in W)
 				qdel(E)

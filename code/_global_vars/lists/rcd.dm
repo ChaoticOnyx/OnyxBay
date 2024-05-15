@@ -4,7 +4,7 @@ GLOBAL_LIST_INIT(rcd_designs, list(
 	"Construction" = list( //Stuff you use to make & decorate areas
 		//Walls & Windows
 		"Structures" = list(
-			list(RCD_DESIGN_MODE = RCD_TURF, RCD_DESIGN_PATH = /turf/simulated/floor/plating/),
+			list(RCD_DESIGN_MODE = RCD_TURF, RCD_DESIGN_PATH = /turf/floor/plating/),
 			list(RCD_DESIGN_MODE = RCD_WINDOWFRAME, RCD_DESIGN_PATH = /obj/structure/window_frame/glass),
 			list(RCD_DESIGN_MODE = RCD_WINDOWFRAME, RCD_DESIGN_PATH = /obj/structure/window_frame/rglass),
 			list(RCD_DESIGN_MODE = RCD_WINDOWFRAME, RCD_DESIGN_PATH = /obj/structure/window_frame/grille/glass),

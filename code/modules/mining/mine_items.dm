@@ -272,7 +272,7 @@
 /obj/item/stack/flag/attack_self(mob/user)
 	var/turf/T = get_turf(src)
 
-	if(istype(T, /turf/space) || istype(T, /turf/simulated/open))
+	if(istype(T, /turf/space) || istype(T, /turf/open))
 		to_chat(user, SPAN_WARNING("There's no solid surface to plant the flag on."))
 		return
 
@@ -284,7 +284,7 @@
 	if(use(1)) // Don't skip use() checks even if you only need one! Stacks with the amount of 0 are possible, e.g. on synthetics!
 		var/obj/item/stack/flag/newflag = new src.type(T, 1)
 		newflag.set_up()
-		if(istype(T, /turf/simulated/floor/asteroid))
+		if(istype(T, /turf/floor/asteroid))
 			user.visible_message("\The [user] plants \the [newflag.singular_name] firmly in the ground.")
 		else
 			user.visible_message("\The [user] attaches \the [newflag.singular_name] firmly to the ground.")
@@ -337,7 +337,7 @@
 	item_state = "electronic"
 	throw_range = 20
 	matter = list(MATERIAL_STEEL = 500)
-	var/turf/simulated/mineral/random/sonar = null
+	var/turf/mineral/random/sonar = null
 	var/active = 0
 
 
@@ -368,7 +368,7 @@
 
 	var/closest = 15
 
-	for(var/turf/simulated/mineral/random/R in orange(14,loc))
+	for(var/turf/mineral/random/R in orange(14,loc))
 		if(!R.mineral)
 			continue
 		var/dist = get_dist(loc, R)
@@ -567,8 +567,8 @@
 
 /obj/effect/resonance/proc/burst(turf/T)
 	playsound(src,'sound/weapons/resonator_blast.ogg',50,1)
-	if(istype(T, /turf/simulated/mineral))
-		var/turf/simulated/mineral/M = T
+	if(istype(T, /turf/mineral))
+		var/turf/mineral/M = T
 		M.GetDrilled(1)
 	for(var/mob/living/L in T)
 		to_chat(L, "<span class='danger'>The [src.name] ruptured with you in it!</span>")

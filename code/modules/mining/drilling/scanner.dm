@@ -1,4 +1,4 @@
-/turf/simulated/var/surveyed
+/turf/var/surveyed
 
 /obj/item/mining_scanner
 	name = "ore detector"
@@ -27,7 +27,7 @@
 		"exotic matter" = 0
 		)
 	var/new_data = 0
-	for(var/turf/simulated/T in range(2, get_turf(user)))
+	for(var/turf/T in range(2, get_turf(user)))
 
 		if(!T.has_resources)
 			continue

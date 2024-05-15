@@ -26,7 +26,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 
 	// Forbid to create a noose in the air
 	// Also sanity check for turf in loc
-	if(istype(above, /turf/simulated/open))
+	if(istype(above, /turf/open))
 		to_chat(usr, SPAN_WARNING("There is no ceiling above you."))
 		return
 

@@ -1,5 +1,5 @@
-"b" = (/turf/simulated/floor/holospace,/area/template_noop)
-"A" = (/obj/effect/holodeck_effect/carp/random,/turf/simulated/floor/holospace,/area/template_noop)
+"b" = (/turf/floor/holospace,/area/template_noop)
+"A" = (/obj/effect/holodeck_effect/carp/random,/turf/floor/holospace,/area/template_noop)
 
 (1,1,1) = {"
 bbbbbbbbbb

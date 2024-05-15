@@ -846,7 +846,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 
 	if(toupdate.len)
-		for(var/turf/simulated/T1 in toupdate)
+		for(var/turf/T1 in toupdate)
 			SSair.mark_for_update(T1)
 
 	return copiedobjs

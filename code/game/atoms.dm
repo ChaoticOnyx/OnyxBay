@@ -438,7 +438,7 @@ its easier to just keep the beam vertical.
 	return TRUE
 
 /atom/proc/add_vomit_floor(mob/living/carbon/M, toxvomit = 0, datum/reagents/inject_reagents)
-	if(istype(src, /turf/simulated))
+	if(istype(src, /turf))
 		var/obj/effect/decal/cleanable/vomit/this = new /obj/effect/decal/cleanable/vomit(src)
 		if(istype(inject_reagents) && inject_reagents.total_volume)
 			inject_reagents.trans_to_obj(this, min(15, inject_reagents.total_volume))

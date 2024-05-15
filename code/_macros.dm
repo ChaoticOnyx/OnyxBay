@@ -84,7 +84,7 @@
 
 #define attack_animation(A) if(istype(A)) A.do_attack_animation(src)
 
-#define isopenspace(A) istype(A, /turf/simulated/open)
+#define isopenspace(A) istype(A, /turf/open)
 
 #define isWrench(A) ((istype(A, /obj/item) && A.tool_behaviour == TOOL_WRENCH) || (istype(A, /obj/item/rpd) && A:interaction_mode == "wrench"))
 

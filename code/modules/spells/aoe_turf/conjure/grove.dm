@@ -12,7 +12,7 @@
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 1)
 
 	summon_amt = 47
-	summon_type = list(/turf/simulated/floor/natural/grass)
+	summon_type = list(/turf/floor/natural/grass)
 	var/spread = 0
 	var/datum/seed/seed
 	var/seed_type = /datum/seed/merlin_tear

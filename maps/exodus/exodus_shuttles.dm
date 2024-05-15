@@ -173,7 +173,7 @@
 	landmark_tag = "nav_creaker_station"
 	docking_controller = "creaker_dock_airlock"
 	base_area = /area/space
-	base_turf = /turf/simulated/floor/asteroid
+	base_turf = /turf/floor/asteroid
 
 /obj/effect/shuttle_landmark/creaker/north
 	name = "northern asteroid field"
@@ -336,7 +336,7 @@
 	landmark_tag = "nav_rescue_start"
 	docking_controller = "rescue_base"
 	base_area = /area/rescue_base/base
-	base_turf = /turf/simulated/open
+	base_turf = /turf/open
 
 /obj/effect/shuttle_landmark/rescue/internim
 	name = "In transit"

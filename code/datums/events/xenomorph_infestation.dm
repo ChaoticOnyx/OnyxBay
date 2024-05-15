@@ -33,7 +33,7 @@
 	spawn()
 		log_and_message_admins("Xenomorph infestation spawned ([spawn_count]) in \the [location].")
 		while(length(xenospawn_turfs) && spawn_count > 0)
-			var/turf/simulated/floor/T = pick(xenospawn_turfs)
+			var/turf/floor/T = pick(xenospawn_turfs)
 			xenospawn_turfs.Remove(T)
 			spawn_count--
 

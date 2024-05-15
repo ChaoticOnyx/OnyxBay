@@ -37,7 +37,7 @@
 	for(var/id in gas_data.tile_overlay)
 		unsorted_overlays |= gas_data.tile_overlay[id]
 
-	for(var/turf/simulated/T in world)
+	for(var/turf/T in world)
 		T.air = null
 		T.CutOverlays(unsorted_overlays)
 		T.zone = null

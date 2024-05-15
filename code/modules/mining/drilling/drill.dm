@@ -76,17 +76,17 @@
 		return
 
 	//Drill through the flooring, if any.
-	if(istype(get_turf(src), /turf/simulated/floor/asteroid))
-		var/turf/simulated/floor/asteroid/T = get_turf(src)
+	if(istype(get_turf(src), /turf/floor/asteroid))
+		var/turf/floor/asteroid/T = get_turf(src)
 		if(!T.dug)
 			T.gets_dug()
-	else if(istype(get_turf(src), /turf/simulated/floor))
-		var/turf/simulated/floor/T = get_turf(src)
+	else if(istype(get_turf(src), /turf/floor))
+		var/turf/floor/T = get_turf(src)
 		T.ex_act(2.0)
 
 	//Dig out the tasty ores.
 	if(resource_field.len)
-		var/turf/simulated/harvesting = pick(resource_field)
+		var/turf/harvesting = pick(resource_field)
 
 		while(resource_field.len && !harvesting.resources)
 			harvesting.has_resources = 0
@@ -253,7 +253,7 @@
 	resource_field = list()
 	need_update_field = 0
 
-	for(var/turf/simulated/S in range(2, src))
+	for(var/turf/S in range(2, src))
 		if(S.has_resources)
 			resource_field += S
 
