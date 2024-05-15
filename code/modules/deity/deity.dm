@@ -228,10 +228,6 @@ GLOBAL_LIST_INIT(deity_forms, list(); for(var/form in subtypesof(/datum/deity_fo
 
 		data["forms"] += list(form_data)
 
-	if(istype(form, /datum/deity_form/thalamus))
-		var/datum/deity_form/thalamus/T = form
-		data += T.spawn_options_data(user)
-
 	data["items"] = list()
 	for(var/datum/deity_power/power in form?.buildables)
 		var/list/building_data = list(
@@ -281,11 +277,6 @@ GLOBAL_LIST_INIT(deity_forms, list(); for(var/form in subtypesof(/datum/deity_fo
 	. = ..()
 	if(.)
 		return
-
-	if(istype(form, /datum/deity_form/thalamus))
-		var/datum/deity_form/thalamus/T = form
-		if(T.tgui_spawn_act(action, params))
-			return TRUE
 
 	switch(action)
 		if("choose_form")

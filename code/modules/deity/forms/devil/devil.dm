@@ -130,5 +130,4 @@ GLOBAL_LIST_INIT(devil_default_spells, list(
 /datum/evolution_holder/devil
 	evolution_categories = list(
 		/datum/evolution_category/devil/followers,
-		/datum/evolution_category/thalamus/conversion
 	)
