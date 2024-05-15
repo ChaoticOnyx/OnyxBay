@@ -33,9 +33,6 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 	if(!..())
 		return FALSE
 
-	/// TODO: REMOVE
-	evo_holder = /datum/evolution_holder/gluttony
-
 	player.godcultist = new /datum/godcultist(player.current, deity, evo_holder)
 
 	return TRUE
