@@ -143,12 +143,6 @@
 	. += SPAN_NOTICE("It exudes a death-like smell.")
 
 /obj/item/material/twohanded/fireaxe/cult/resolve_attackby(atom/a, mob/user, click_params)
-	if(istype(a, /obj/structure/deity/altar))
-		var/obj/structure/deity/altar/altar = a
-		if(stored_power && altar.linked_god)
-			altar.linked_god.adjust_power(stored_power, "from harvested souls.")
-			altar.visible_message("<span class='warning'>\The [altar] absorbs a black mist exuded from \the [src].</span>")
-			return
 	if(ismob(a))
 		var/mob/M = a
 		if(!M.is_ooc_dead())
