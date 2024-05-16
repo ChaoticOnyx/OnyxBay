@@ -1,5 +1,32 @@
 [
   {
+    "author": "intercepti0n",
+    "date": "2024-05-16T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Исправлен баг вследствие которого у людей пропали все сплеши.",
+        "pr": 12443
+      }
+    ]
+  },
+  {
+    "author": "BaraBarax",
+    "date": "2024-05-16T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Tesla relay мехов снова заряжает",
+        "pr": 12441
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Мехи научились открывать аварийные створки",
+        "pr": 12439
+      }
+    ]
+  },
+  {
     "author": "Filatelele & Memory",
     "date": "2024-05-12T00:00:00+03:00",
     "changes": [
