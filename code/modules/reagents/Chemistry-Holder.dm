@@ -155,8 +155,8 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 		warning("[log_info_line(my_atom)] attempted to add a reagent of type '[reagent_type]' which doesn't exist. ([usr])")
 	return 0
 
-/datum/reagents/proc/_delayed_add_reagent(reagent_type, amount, data = null, safety = 0)
-	remove_think_ctx("delayed_add_reagent")
+/datum/reagents/proc/_delayed_add_reagents(reagent_type, amount, data = null, safety = 0)
+	remove_think_ctx("delayed_add_reagents")
 	return add_reagent(reagent_type, amount, data, safety)
 
 /datum/reagents/proc/remove_reagent(reagent_type, amount, safety = 0)
