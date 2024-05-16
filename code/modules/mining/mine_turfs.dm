@@ -714,3 +714,34 @@ var/list/mining_floors = list()
 /turf/simulated/floor/asteroid/air/prison
 	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
 	temperature = 30 CELSIUS
+
+/turf/simulated/floor/asteroid/swamp_dirt
+	name = "sand"
+	desc = "Gritty and unpleasant."
+	icon = 'icons/turf/flooring/swamp.dmi'
+	icon_state = "dirt"
+	base_name = "dirt"
+	base_desc = "Gritty and unpleasant."
+	base_icon = 'icons/turf/flooring/swamp.dmi'
+	base_icon_state = "dirt"
+
+	footstep_sound = SFX_FOOTSTEP_GRASS
+	temperature = 30 CELSIUS
+	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
+
+/turf/simulated/mineral/swamp
+	name = "rock"
+	icon = 'icons/turf/walls.dmi'
+	icon_state = "swamp_rock"
+	temperature = 0 CELSIUS
+	mined_turf = /turf/simulated/floor/asteroid/swamp_dirt
+
+/turf/simulated/floor/asteroid/swamp
+	name = "water"
+	desc = "Smells awfully."
+	icon = 'icons/turf/flooring/swamp.dmi'
+	temperature = 30 CELSIUS
+	icon_state = "swamp"
+	footstep_sound = SFX_FOOTSTEP_WATER
+	temperature = 30 CELSIUS
+	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)

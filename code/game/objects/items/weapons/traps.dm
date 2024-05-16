@@ -13,6 +13,10 @@
 	can_buckle = 0 //disallow manual un/buckling
 	var/deployed = 0
 
+/obj/item/beartrap/deployed
+	deployed = TRUE
+	anchored = TRUE
+
 /obj/item/beartrap/proc/can_use(mob/user)
 	return (user.IsAdvancedToolUser() && !user.stat && !user.restrained())
 

@@ -617,6 +617,14 @@
 	icon_state = "sand_floor"
 	initial_flooring = /decl/flooring/sand_tile
 
+// Swamp
+
+/turf/simulated/floor/natural/swamp_dirt
+	name = "dirt"
+	icon = 'icons/turf/flooring/grass.dmi'
+	icon_state = "grass0"
+	initial_flooring = null
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 //MISCELLANEOUS FLOORING
 
 /turf/simulated/floor/misc

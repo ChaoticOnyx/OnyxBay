@@ -844,7 +844,7 @@
 /area/eclipse/maintenance/tunnel
 	name = "Tunnel"
 	icon_state = "party"
-	area_flags = AREA_FLAG_RAD_SHIELDED
+	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_UNIQUE_AREA
 	sound_env = TUNNEL_ENCLOSED
 	turf_initializer = /decl/turf_initializer/maintenance
 	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
