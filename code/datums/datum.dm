@@ -136,7 +136,7 @@
 	LAZYINITLIST(_think_ctxs)
 
 	if(!QDELETED(_think_ctxs[name]))
-		CRASH("Thinking context [name] is exists")
+		CRASH("Thinking context [name] already exists")
 
 	_think_ctxs[name] = new /datum/think_context(time, clbk, length(args) > 3 ? args.Copy(4) : null)
 	var/datum/think_context/ctx = _think_ctxs[name]
@@ -144,6 +144,38 @@
 	if(time > 0)
 		SSthink.contexts_groups[ctx.group] += ctx
 		CALC_NEXT_GROUP_RUN(ctx)
+
+/// Removes a thinking context.
+///
+/// * `name` - name of the context.
+/datum/proc/remove_think_ctx(name)
+	if(!islist(_think_ctxs))
+		return
+
+	if(QDELETED(_think_ctxs[name]))
+		return
+
+	set_next_think_ctx(name, 0)
+	var/datum/think_context/ctx = _think_ctxs[name]
+	_think_ctxs.Remove(name)
+	qdel(ctx)
+
+	if(!length(_think_ctxs))
+		_think_ctxs = null
+
+/// Tries to create a thinking context, updates its time if it already exists.
+///
+/// * `name` - name of the context.
+/// * `clbk` - a proc which should be called.
+/// * `time` - when to call the context.
+/// * `...` - arguments to be passed to the "think" function.
+/datum/proc/try_add_think_ctx(name, datum/callback/clbk, time, ...)
+	LAZYINITLIST(_think_ctxs)
+
+	if(!QDELETED(_think_ctxs[name]))
+		set_next_think_ctx(name, time)
+	else
+		add_think_ctx(arglist(args))
 
 /// Sets the next time for thinking in a context.
 ///
