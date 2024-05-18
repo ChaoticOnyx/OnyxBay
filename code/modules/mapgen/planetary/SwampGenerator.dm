@@ -12,6 +12,7 @@
 	necessary_ruins = list(
 		/datum/map_template/research_outpost_swamp,
 		/datum/map_template/mining_outpost_swamp,
+		/datum/map_template/prydwen_swamp,
 	)
 
 	edgeturf = /turf/unsimulated/swamp_bedrock

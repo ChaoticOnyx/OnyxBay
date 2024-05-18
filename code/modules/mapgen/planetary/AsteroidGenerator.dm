@@ -16,6 +16,7 @@
 	necessary_ruins = list(
 		/datum/map_template/mining_outpost,
 		/datum/map_template/research_outpost,
+		/datum/map_template/prydwen_asteroid,
 	)
 
 	edgeturf = /turf/space
