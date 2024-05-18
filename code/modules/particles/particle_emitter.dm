@@ -78,3 +78,6 @@
 	plane = DEFAULT_PLANE
 	layer = FIRE_LAYER
 	particles = new /particles/fog()
+
+/atom/movable/particle_emitter/fog/breath
+	particles = new /particles/fog/breath()
