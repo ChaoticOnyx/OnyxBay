@@ -345,6 +345,7 @@
 #define SFX_DISPOSAL                "disposal"
 #define SFX_OINK                    "oink"
 #define SFX_PLANTCROSS              "plantcross"
+#define SFX_THUNDER                 "thunder"
 
 // FOOTSTEPS
 #define SFX_DISTANT_MOVEMENT        "distant_movement"

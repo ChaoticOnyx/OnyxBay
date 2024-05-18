@@ -111,7 +111,6 @@
 "xy" = (/obj/machinery/atmospherics/unary/vent_pump/on,/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "xJ" = (/obj/structure/table/rack,/obj/item/clothing/suit/space/void/mining/prepared,/obj/item/mining_scanner,/turf/simulated/floor/tiled,/area/outpost/mining_main/refinery)
 "xM" = (/obj/machinery/status_display{layer = 4; pixel_x = -32},/obj/machinery/atmospherics/pipe/simple/hidden{dir = 5},/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
-"xP" = (/obj/machinery/door/firedoor/border_only,/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/space)
 "xX" = (/obj/machinery/light{dir = 8},/obj/item/device/radio/intercom{dir = 4; pixel_x = -22},/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
 "yn" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 10},/turf/simulated/floor/trim/carpet,/area/outpost/main_outpost/dorms/proom1)
 "yP" = (/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/obj/structure/cable/blue{d2 = 4; icon_state = "0-4"},/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
@@ -259,10 +258,10 @@ QCffffffffffffQCVBIELomGKupfVBVBVBVBVBVBVBVB
 ibibibibibibibibibsHYKrfofLaZfaWaWFyNfgTXwKn
 tJibibibibibtJibibVBxMGUwvVBVBVBVBEbVBzCVBVB
 hHcXcXcXcXcXhHibibVByPwxKusNCPaWaWaWPtaWFyVB
-ibcXcXcXcXcXibibxPsHKuwpYYVBVBVBVBVBVBsHkPVB
+ibcXcXcXcXcXibibsHsHKuwpYYVBVBVBVBVBVBsHkPVB
 ibcXcXcXcXcXtGsHXVbIKuWuMJocIsTmiGYGhRsHkPVB
 ibcXcXjzcXcXpFemaopmPsYmKuKuKuDbiKgGMBsHkPVB
-ibcXcXcXcXcXxPsHsHfIKuHLKuKuKudPKugGRAahnCVB
+ibcXcXcXcXcXsHsHsHfIKuHLKuKuKudPKugGRAahnCVB
 ibcXcXcXcXcXElibsHRFKuHLKuKuKuUCbCKugGsHkPVB
 hHcXcXcXcXcXhHibVBVBxXBEMJCAEhsHsHsHMdsHkPVB
 mribibibibibmribibLwUlTCKuzSKuiMGTLEMILEeCVB

@@ -1,5 +1,5 @@
 /area/generated/planetoid/swamp
-	area_flags = AREA_FLAG_CAVES_ALLOWED
+	area_flags = AREA_FLAG_CAVES_ALLOWED | AREA_FLAG_ALLOW_WEATHER
 
 /datum/map_generator/planet_generator/swamp
 	perlin_zoom = 65
@@ -14,6 +14,8 @@
 	)
 
 	edgeturf = /turf/unsimulated/swamp_bedrock
+
+	weather_controller_type = /datum/weather_controller/lush
 
 	biome_table = list(
 		BIOME_COLDEST = list(

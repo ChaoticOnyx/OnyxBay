@@ -81,3 +81,31 @@
 
 /atom/movable/particle_emitter/fog/breath
 	particles = new /particles/fog/breath()
+
+/atom/movable/particle_emitter/rain
+	alpha = 255
+	particles = new/particles/rain
+	var/static/list/particles/z_particles
+
+/atom/movable/particle_emitter/dense
+	particles = new/particles/rain/dense
+
+/atom/movable/particle_emitter/sideways
+	particles = new/particles/rain/sideways
+
+/atom/movable/particle_emitter/rain/sideways/tile
+	name = "Rain"
+	particles = null
+
+/atom/movable/particle_emitter/rain/sideways/tile/Initialize(mapload)
+	.=..()
+	LAZYINITLIST(z_particles)
+	var/z_level_str
+	if(!src.z)
+		z_level_str = "\"[2]\""
+	else
+		z_level_str = "\"[src.z]\""
+
+	if(!z_particles[z_level_str])
+		z_particles[z_level_str] = new /particles/rain/sideways/tile
+	particles = z_particles[z_level_str]

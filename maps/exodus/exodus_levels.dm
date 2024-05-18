@@ -28,7 +28,7 @@
 
 /datum/space_level/exodus_3/generate(z)
 	var/planet_type = util_pick_weight(possible_planet_types)
-	var/datum/map_generator/mapgen = new planet_type()
+	var/datum/map_generator/planet_generator/mapgen = new planet_type()
 
 	mapgen.load_necessary_ruins(z)
 
@@ -40,8 +40,8 @@
 	mapgen.generate_edge_turf(z)
 	mapgen.generate_turfs(spawned)
 	mapgen.populate_turfs(spawned)
-
 	new /datum/random_map/automata/cave_system(null, 1, 1, z, 255, 255)
+	mapgen.weather_controller_type = new mapgen.weather_controller_type(z)
 
 /datum/space_level/exodus_4
 	path = 'exodus-4.dmm'

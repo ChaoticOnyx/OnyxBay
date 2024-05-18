@@ -1649,6 +1649,18 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/plantcross3.ogg',
 		'sound/effects/plantcross4.ogg'
 	),
+	SFX_THUNDER = list(
+		'sound/effects/thunder/thunder1.ogg',
+		'sound/effects/thunder/thunder2.ogg',
+		'sound/effects/thunder/thunder3.ogg',
+		'sound/effects/thunder/thunder4.ogg',
+		'sound/effects/thunder/thunder5.ogg',
+		'sound/effects/thunder/thunder6.ogg',
+		'sound/effects/thunder/thunder7.ogg',
+		'sound/effects/thunder/thunder8.ogg',
+		'sound/effects/thunder/thunder9.ogg',
+		'sound/effects/thunder/thunder10.ogg',
+	),
 	// DEVICES
 	SFX_GEIGER_LOW = list(
 		'sound/effects/geiger/geiger_low_1.ogg',
