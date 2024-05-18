@@ -332,7 +332,7 @@
 
 /obj/item/clothing/head/panama
 	name = "panama"
-	desc = "Lightweight hat with short brims that protects from light, which was part of military uniform."
+	desc = "Lightweight hat with short brims that protect from light, usually part of a military uniform."
 	icon_state = "panama"
 	item_state = "panama"
 	body_parts_covered = NO_BODYPARTS
