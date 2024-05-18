@@ -98,13 +98,3 @@
 	grow = 0.05
 	spin = 2
 	color = "#fcffff77"
-
-/particles/rain
-	width = 672
-	height = 480
-	count = 2500    // 2500 particles
-	spawning = 48
-	bound1 = list(-1000, -240, -1000)   // end particles at Y=-240
-	lifespan = 60 SECONDS
-	fade = 35       // fade out over the last 3.5s if still on screen
-	icon = 'icons/effects/particles/weather.dmi'
