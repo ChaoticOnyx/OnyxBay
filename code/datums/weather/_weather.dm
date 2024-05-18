@@ -169,9 +169,6 @@
 		if(foreshadowing_message)
 			to_chat(M, foreshadowing_message)
 
-		//if(telegraph_sound)
-		//	SEND_SOUND(M, sound(telegraph_sound))
-
 	set_next_think_ctx("weather_ctx", world.time + foreshadowing_duration)
 
 	if(sound_active_outside)
@@ -198,8 +195,6 @@
 
 		if(weather_message)
 			to_chat(M, weather_message)
-		//if(weather_sound)
-			//SEND_SOUND(M, sound(weather_sound))
 
 	set_next_think_ctx("weather_ctx", world.time + weather_duration)
 

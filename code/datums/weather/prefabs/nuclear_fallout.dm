@@ -3,8 +3,7 @@
 	desc = "Irradiated dust falls down everywhere."
 
 	foreshadowing_duration = 20 SECONDS
-	эforeshadowing_message = 20 SECONDS
-	foreshadowing_duration = "The air suddenly becomes dusty.."
+	foreshadowing_message = "The air suddenly becomes dusty.."
 	foreshadowing_overlay = "fallout"
 
 	weather_message = "<i>You feel a wave of hot ash fall down on you.</i>"
