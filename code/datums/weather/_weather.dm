@@ -261,7 +261,7 @@
 /// Returns TRUE if the living mob can be affected by weather.
 /datum/weather/proc/can_weather_act(mob/living/L)
 	var/turf/mob_turf = get_turf(L)
-	if(mob_turf.z != !weather_controller.z_level)
+	if(mob_turf.z != weather_controller.z_level)
 		return
 
 	if(!(get_area(L) in impacted_areas))
