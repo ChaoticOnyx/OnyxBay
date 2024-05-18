@@ -731,7 +731,8 @@ var/list/mining_floors = list()
 
 /turf/simulated/floor/asteroid/swamp_dirt/Initialize()
 	. = ..()
-	set_light(0.5, 1, 2.5, 1.5, "#dbbfbf")
+	if(prob(25))
+		set_light(0.25, 1, 2.5, 1.5, "#dbbfbf")
 
 /turf/simulated/mineral/swamp
 	name = "rock"
