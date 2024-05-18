@@ -100,7 +100,6 @@
 	if(sound_weak_inside)
 		sound_weak_inside = new sound_weak_inside(list(), FALSE, TRUE, channel = SOUND_CHANNEL_WEATHER)
 
-	set_next_think(world.time + 5 SECONDS)
 	add_think_ctx("weather_ctx", CALLBACK(src, nameof(.proc/weather_ctx)), world.time + 1)
 
 /datum/weather/Destroy()
@@ -119,6 +118,8 @@
 		var/mob/living/L = i
 		if(can_weather_act(L))
 			weather_act(L)
+
+	set_next_think(world.time + 5 SECONDS)
 
 /datum/weather/proc/weather_ctx()
 	switch(stage)
@@ -196,6 +197,7 @@
 		if(weather_message)
 			to_chat(M, weather_message)
 
+	set_next_think(world.time + 5 SECONDS)
 	set_next_think_ctx("weather_ctx", world.time + weather_duration)
 
 	if(sound_weak_outside)
