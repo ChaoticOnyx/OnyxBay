@@ -97,9 +97,23 @@
 /datum/map_generator/proc/load_necessary_ruins(z_level)
 	for(var/path in necessary_ruins)
 		var/datum/map_template/ruin = new path()
-		var/turf/ruin_turf = locate(
-			rand(0 + world.view, 255 - ruin.height - world.view),
-			rand(0 + world.view, 255 - ruin.width -  world.view),
-			z_level
-		)
+		var/turf/ruin_turf = get_unused_square(z_level, tries = 5, width = ruin.width, height = ruin.height)
+		if(!istype(ruin_turf))
+			continue
+
 		ruin.load(ruin_turf)
+
+/datum/map_generator/proc/get_unused_square(z_level, tries = 5, width = 0, height = 0)
+	var/turf/possible_turf = locate(
+		rand(0 + TRANSITION_EDGE + 1, 255 - width - TRANSITION_EDGE + 1),
+		rand(0 + TRANSITION_EDGE + 1, 255 - height - TRANSITION_EDGE + 1),
+		z_level
+	)
+
+	for(var/i in 1 to tries)
+		if(locate(/atom/movable) in block(locate(possible_turf.x, possible_turf.y, z_level), locate(possible_turf.x + width, possible_turf.y + height, z_level)))
+			continue
+
+		return possible_turf
+
+	return FALSE

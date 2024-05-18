@@ -41,7 +41,7 @@
 "iM" = (/obj/effect/floor_decal/industrial/loading{dir = 8},/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
 "iZ" = (/obj/effect/floor_decal/industrial/warning/dust{dir = 8},/obj/machinery/mining/drill,/obj/structure/railing{dir = 8},/turf/simulated/floor/tiled/airless,/area/space)
 "jg" = (/obj/structure/closet/walllocker/emerglocker/south,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/turf/simulated/floor/trim/wood,/area/outpost/main_outpost/dorms/proom1)
-"ji" = (/obj/structure/sink{dir = 1; pixel_y = 16},/obj/structure/mirror{pixel_y = 30},/obj/effect/floor_decal/oldflood,/obj/machinery/atmospherics/unary/vent_scrubber/on,/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/dorms)
+"ji" = (/obj/structure/sink{dir = 1; pixel_y = 16},/obj/structure/mirror{pixel_y = 30},/obj/effect/floor_decal/oldflood,/obj/machinery/atmospherics/unary/vent_scrubber/on,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/dorms)
 "jl" = (/obj/machinery/vending/cola,/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "jo" = (/obj/structure/cable/blue{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden{dir = 4},/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
 "jr" = (/obj/structure/cable/blue{icon_state = "4-8"; d2 = 8; d1 = 4},/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
@@ -66,9 +66,9 @@
 "of" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/atmospherics/portables_connector{dir = 8},/obj/effect/floor_decal/industrial/outline/yellow,/obj/machinery/atmospherics/pipe/tank/air,/turf/simulated/floor/tiled/dark,/area/outpost/mining_main/west_hall)
 "og" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 10},/turf/simulated/floor/trim/carpet,/area/outpost/main_outpost/dorms/proom2)
 "on" = (/obj/machinery/atmospherics/pipe/manifold/hidden/supply,/obj/structure/cable/blue{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable/blue{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
-"ov" = (/obj/machinery/atmospherics/pipe/simple/hidden{dir = 6},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/cable/blue{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
+"ov" = (/obj/machinery/atmospherics/pipe/simple/hidden{dir = 6},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/cable/blue{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/cable/blue{icon_state = "2-4"; d2 = 4; d1 = 2},/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
 "pd" = (/obj/structure/toilet,/obj/machinery/light/small{dir = 8},/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/dorms/proom1)
-"pf" = (/obj/structure/disposalpipe/segment,/turf/simulated/wall,/area/outpost/mining_main/west_hall)
+"pf" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/tiled,/area/outpost/main_outpost/dorms)
 "pk" = (/obj/machinery/light_switch{pixel_x = 25; pixel_y = -9},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/obj/machinery/status_display{layer = 4; pixel_x = 32; pixel_y = 10},/turf/simulated/floor/tiled,/area/outpost/mining_main/refinery)
 "pm" = (/obj/machinery/access_button{command = "cycle_interior"; frequency = 1380; master_tag = "mining_outpost_airlock"; name = "interior access button"; pixel_x = -30; pixel_y = -25; req_one_access = list(13,48)},/obj/machinery/atmospherics/pipe/simple/hidden{dir = 4},/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
 "po" = (/turf/simulated/floor,/area/outpost/mining_main/refinery)
@@ -99,7 +99,7 @@
 "vt" = (/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/door/airlock{id_tag = "miningdorm1"; name = "Room 1"},/turf/simulated/floor/trim/wood,/area/outpost/main_outpost/dorms/proom1)
 "vz" = (/obj/machinery/light{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "vT" = (/obj/effect/floor_decal/industrial/warning/dust{dir = 5},/obj/machinery/mining/brace,/turf/simulated/floor/tiled/airless,/area/space)
-"wb" = (/obj/structure/toilet{dir = 8},/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/dorms)
+"wb" = (/obj/structure/toilet{dir = 8},/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/dorms)
 "wp" = (/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden,/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
 "wv" = (/obj/machinery/atmospherics/portables_connector{dir = 8},/obj/structure/sign/warning/moving_parts{pixel_x = 32},/obj/effect/floor_decal/industrial/outline/yellow,/obj/machinery/atmospherics/pipe/tank/air,/turf/simulated/floor/tiled/dark,/area/outpost/mining_main/west_hall)
 "wx" = (/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/structure/cable/blue{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden,/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
@@ -187,7 +187,7 @@
 "MI" = (/obj/machinery/mineral/stacking_machine{dir = 8},/turf/simulated/floor,/area/outpost/mining_main/west_hall)
 "MJ" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/tiled,/area/outpost/mining_main/west_hall)
 "MT" = (/turf/simulated/wall,/area/outpost/main_outpost/dorms/proom2)
-"MU" = (/obj/machinery/shower{dir = 8; pixel_x = -5},/obj/random/soap,/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/dorms)
+"MU" = (/obj/machinery/shower{dir = 8; pixel_x = -5},/obj/random/soap,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/dorms)
 "Nb" = (/obj/machinery/atmospherics/pipe/manifold4w/hidden,/turf/simulated/floor,/area/outpost/mining_main/west_hall)
 "Nf" = (/obj/structure/window_frame/rglass,/turf/simulated/floor,/area/outpost/mining_main/west_hall)
 "NB" = (/obj/structure/closet/walllocker/emerglocker/south,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/turf/simulated/floor/trim/wood,/area/outpost/main_outpost/dorms/proom2)
@@ -244,17 +244,17 @@
 MTMTMTMTMTMTMTMTMTExExsZibibibibibibibibibib
 PJGlLdtdsGhTMTGcMTQNscsZibibibibibibibibibib
 PJogBbMpWRLsMTOlMTBSJDsZsZsZsZsZsZtzvTibibib
-MTckGOWkNBVSLMtAeBkgcfsZjiYfgSwbsZiZBNibibib
+MTckGOWkNBVSLMtAeBkgpfsZjiYfgSwbsZiZBNibibib
 GiGiGiGiGiGiGiGiGiBnTjbqHDIAsZsZsZRtBNibibib
 lwqpGPDlbkxnGipdGiVXdgsZtKEMaLMUsZkULnibibib
 lwynBMlgmCALGiODGitlcfsZsZsZsZsZsZrVRRibibib
-GiUhzgrFjgrJfqkhvtRTcfsZBpvkvkvkvkvkvkjEexjJ
+GiUhzgrFjgrJfqkhvtRTpfsZBpvkvkvkvkvkvkjEexjJ
 QCQCQCQCQCQCQCQCVBpRLOVBVBEotWxJxJijvkQBAolG
 QCQCxvjljVHghqQCKuqdHJLLnEEoCxIwwApkvkVBVBVB
 QCdQjVjVZExyWyQCWTonWTetWTHcySySCoLFBcUQNJPZ
 QCBxjVBOVqYivzQCKuKuKuovjobTedMaMaPWlRNbzpuR
 QCEvjrxcxcBsgyQyKuKuOXXjJrftOaXLpopoBcRBGBPZ
-QCffffffffffffQCVBIELomGKupfVBVBVBVBVBVBVBVB
+QCffffffffffffQCVBIELomGKuEovkvkvkvkvkVBVBVB
 ibibibibibibibibibsHYKrfofLaZfaWaWFyNfgTXwKn
 tJibibibibibtJibibVBxMGUwvVBVBVBVBEbVBzCVBVB
 hHcXcXcXcXcXhHibibVByPwxKusNCPaWaWaWPtaWFyVB

@@ -80,7 +80,7 @@
 /obj/structure/flora/swampgrass/Cross(atom/movable/AM)
 	. = ..()
 	playsound(get_turf(src), GET_SFX(SFX_PLANTCROSS), 100, FALSE, -1)
-	if(prob(15))
+	if(prob(3))
 		var/list/victims = list()
 		for(var/mob/living/V in view(5, src))
 			victims |= V
@@ -100,7 +100,7 @@
 			if(!spawnloc)
 				continue
 
-			var/mob/living/simple_animal/hostile/retaliate/bigrat/rat = new /mob/living/simple_animal/hostile/retaliate/bigrat(spawnloc)
+			var/mob/living/simple_animal/hostile/retaliate/bigrat/rat = new /mob/living/simple_animal/hostile/retaliate/bigrat(get_turf(spawnloc))
 			rat.Retaliate()
 
 /obj/structure/flora/swampgrass/bush
