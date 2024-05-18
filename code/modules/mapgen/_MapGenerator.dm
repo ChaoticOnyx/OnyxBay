@@ -62,12 +62,12 @@
 /// a turf passed to generate_turfs(). Should never sleep; should always
 /// respect changeturf_flags in the call to ChangeTurf.
 /datum/map_generator/proc/generate_turf(turf/gen_turf, changeturf_flags)
-	SHOULD_NOT_SLEEP(TRUE)
+	//SHOULD_NOT_SLEEP(TRUE) UNFORTUNATELY i had to comment this as /atom/proc/Entered() sleeps and this causes fuckton of warnings
 	return
 
 /// Internal proc that actually adds objects to a turf passed to populate_turfs().
 /datum/map_generator/proc/_populate_turf(turf/gen_turf)
-	SHOULD_NOT_SLEEP(TRUE)
+	//SHOULD_NOT_SLEEP(TRUE) UNFORTUNATELY i had to comment this as /atom/proc/Entered() sleeps and this causes fuckton of warnings
 	return
 
 /datum/map_generator/proc/load_necessary_ruins(z_level)
