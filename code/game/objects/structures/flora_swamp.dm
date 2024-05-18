@@ -77,6 +77,32 @@
 	. = ..()
 	icon_state = "grass[rand(1, 6)]"
 
+/obj/structure/flora/swampgrass/Cross(atom/movable/AM)
+	. = ..()
+	playsound(get_turf(src), GET_SFX(SFX_PLANTCROSS), 100, FALSE, -1)
+	if(prob(15))
+		var/list/victims = list()
+		for(var/mob/living/V in view(5, src))
+			victims |= V
+
+		if(victims.len > 6)
+			return
+
+		var/list/possible_targets = list()
+		for(var/obj/structure/flora/F in view(5, src))
+			possible_targets |= F
+
+		if(!possible_targets.len)
+			return
+
+		for(var/i in 1 to Clamp(victims.len * 2, 2, 8))
+			var/spawnloc = pick(possible_targets)
+			if(!spawnloc)
+				continue
+
+			var/mob/living/simple_animal/hostile/retaliate/bigrat/rat = new /mob/living/simple_animal/hostile/retaliate/bigrat(spawnloc)
+			rat.Retaliate()
+
 /obj/structure/flora/swampgrass/bush
 	name = "bush"
 	desc = "A bush, I think I can see some spiders crawling in it."

@@ -71,5 +71,6 @@
 
 /datum/weather_controller/lush
 	possible_weathers = list(
-		/datum/weather/rain = 30,
+		/datum/weather/nuclear_fallout = 30,
+		/datum/weather/acid_rain = 50,
 	)
