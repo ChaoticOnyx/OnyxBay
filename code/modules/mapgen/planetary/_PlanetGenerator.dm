@@ -58,9 +58,6 @@
 	// a turf's biome for populating it without having to recalculate (which is impossible, due to drift)
 	var/list/turf_biome_cache
 
-	/// Baseturf that will be used to override all areas' base_turf vars.
-	var/turf/baseturf
-
 /datum/map_generator/planet_generator/New(...)
 	// initialize the perlin seeds
 	height_seed = rand(0, 50000)

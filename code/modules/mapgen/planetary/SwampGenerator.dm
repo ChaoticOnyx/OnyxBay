@@ -13,6 +13,8 @@
 		/datum/map_template/mining_outpost_swamp
 	)
 
+	edgeturf = /turf/unsimulated/swamp_bedrock
+
 	biome_table = list(
 		BIOME_COLDEST = list(
 			BIOME_LOWEST_HUMIDITY = /datum/biome/jungle_wasteland,

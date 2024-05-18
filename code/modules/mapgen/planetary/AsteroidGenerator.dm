@@ -17,6 +17,8 @@
 		/datum/map_template/mining_outpost
 	)
 
+	edgeturf = /turf/space
+
 	biome_table = list(
 		BIOME_COLDEST = list(
 			BIOME_LOWEST_HUMIDITY = /datum/biome/asteroid,

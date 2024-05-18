@@ -6,6 +6,12 @@
 	/// Weighed list of random ruins
 	var/list/random_ruins
 
+	/// Baseturf that will be used to override all areas' base_turf vars.
+	var/turf/baseturf
+
+	/// Turf that will be placed on map's edge (7 turfs border)
+	var/turf/edgeturf
+
 /// Given a list of turfs, asynchronously changes a list of turfs and their areas.
 /// Does not fill them with objects; this should be done with populate_turfs.
 /// This is a wrapper proc for generate_turf(), handling batch processing of turfs.
@@ -57,6 +63,24 @@
 
 	message = "MAPGEN: MAPGEN REF [any2ref(src)] ([type]) HAS FINISHED TURF POPULATION IN [(REALTIMEOFDAY - start_time)/10]s"
 	to_world_log(message)
+
+/// Builds a map's border
+/datum/map_generator/proc/generate_edge_turf(z)
+	var/turf/center = locate(world.maxx / 2, world.maxy / 2, z)
+	if(!center)
+		return
+
+	var/list/turf/turfs = RANGE_TURFS(world.maxx / 2, center)
+	for(var/turf/gen_turf in turfs)
+		if(gen_turf.x <= TRANSITION_EDGE || gen_turf.x >= world.maxx - TRANSITION_EDGE)
+			gen_turf.ChangeTurf(edgeturf)
+			CHECK_TICK
+			continue
+
+		if(gen_turf.y <= TRANSITION_EDGE || gen_turf.y >= world.maxy - TRANSITION_EDGE)
+			gen_turf.ChangeTurf(edgeturf)
+			CHECK_TICK
+			continue
 
 /// Internal proc that actually calls ChangeTurf on and changes the area of
 /// a turf passed to generate_turfs(). Should never sleep; should always

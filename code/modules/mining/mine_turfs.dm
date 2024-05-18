@@ -729,12 +729,21 @@ var/list/mining_floors = list()
 	temperature = 30 CELSIUS
 	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
 
+/turf/simulated/floor/asteroid/swamp_dirt/Initialize()
+	. = ..()
+	set_light(0.5, 1, 2.5, 1.5, "#dbbfbf")
+
 /turf/simulated/mineral/swamp
 	name = "rock"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "swamp_rock"
 	temperature = 0 CELSIUS
 	mined_turf = /turf/simulated/floor/asteroid/swamp_dirt
+
+/turf/unsimulated/swamp_bedrock
+	name = "rock"
+	icon = 'icons/turf/walls.dmi'
+	icon_state = "swamp_rock"
 
 /turf/simulated/floor/asteroid/swamp
 	name = "water"

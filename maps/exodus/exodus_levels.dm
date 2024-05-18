@@ -33,9 +33,11 @@
 	mapgen.load_necessary_ruins(z)
 
 	var/list/spawned = block(
-		locate(0 + world.view, 0 + world.view, z),
-		locate(255 - world.view, 255 - world.view, z)
+		locate(0 + TRANSITION_EDGE, 0 + TRANSITION_EDGE, z),
+		locate(255 - TRANSITION_EDGE, 255 - TRANSITION_EDGE, z)
 	)
+
+	mapgen.generate_edge_turf(z)
 	mapgen.generate_turfs(spawned)
 	mapgen.populate_turfs(spawned)
 
