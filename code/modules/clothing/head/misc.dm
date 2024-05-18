@@ -330,6 +330,14 @@
 	item_state = "cowboy_hat"
 	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
 
+/obj/item/clothing/head/panama
+	name = "panama"
+	desc = "Lightweight hat with short brims that protects from light, which was part of military uniform."
+	icon_state = "panama"
+	item_state = "panama"
+	body_parts_covered = NO_BODYPARTS
+	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+
 /obj/item/clothing/head/taqiyah
 	name = "taqiyah"
 	desc = "A short, rounded skullcap usually worn for religious purposes."
