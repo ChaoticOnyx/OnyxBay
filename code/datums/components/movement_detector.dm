@@ -32,7 +32,7 @@
 		target = target.loc
 
 /// This proc detects movement of the tracked atom/movable recursively
-/datum/movement_detector/proc/move_react(atom/movable/mover, atom/oldloc, direction)
+/datum/movement_detector/proc/move_react(atom/movable/mover, mover, atom/oldloc, atom/newloc)
 	var/turf/newturf = get_turf(tracked)
 
 	if(oldloc && !isturf(oldloc))
@@ -47,4 +47,4 @@
 			register_signal(target, SIGNAL_MOVED, nameof(.proc/move_react), TRUE)
 			target = target.loc
 
-	listener.Invoke(tracked, mover, oldloc, direction)
+	listener.Invoke(tracked, mover, oldloc, newloc)
