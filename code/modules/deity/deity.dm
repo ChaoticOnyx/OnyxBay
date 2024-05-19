@@ -81,7 +81,7 @@ GLOBAL_LIST_INIT(deity_forms, list(); for(var/form in subtypesof(/datum/deity_fo
 /mob/living/deity/proc/add_follower(mob/living/L, evolution_prefab)
 	if(L.mind && !(L.mind in GLOB.godcult.current_antagonists))
 		followers.Add(L.mind)
-		form?.on_follower_add(L.mind)
+		INVOKE_ASYNC(form, (nameof(/datum/deity_form/.proc/on_follower_add)), L.mind)
 		if(form)
 			to_chat(L, SPAN_NOTICE("[form.join_message][src]"))
 		deity_net.add_source(L)
