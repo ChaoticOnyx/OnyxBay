@@ -54,8 +54,7 @@ GLOBAL_LIST_INIT(devilspecies, list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_UNATH
 	if(tgui_alert(user, "Teleport?", "Teleport", list("Yes", "No")) == "No")
 		return
 
-	if(!user.mind.assigned_role)
-		user.mind.assigned_role = "Assistant"
+	user.mind.assigned_role = "Assistant"
 
 	job_master.EquipRank(user, user.mind.assigned_role, TRUE)
 
