@@ -71,9 +71,9 @@ GLOBAL_LIST_INIT(devil_default_spells, list(
 		var/datum/action/new_act = new path()
 		new_act.Grant(devil_new)
 
-	grant_verb(devil_new, /mob/living/carbon/human/verb/deity_tgui_interact)
+	grant_verb(devil_new, /mob/living/carbon/human/proc/deity_tgui_interact)
 
-/mob/living/carbon/human/verb/deity_tgui_interact()
+/mob/living/carbon/human/proc/deity_tgui_interact()
 	set name = "Deity Menu"
 	set category = "Godhood"
 
