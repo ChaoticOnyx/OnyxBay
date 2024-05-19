@@ -100,7 +100,7 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 	var/mob/living/deity/linked_deity
 	var/mob/living/godcultist
 	/// A universal counter to track progress e.t.c.
-	var/points = 0
+	var/points = 1
 	var/spent_points = 0
 	var/datum/evolution_holder/evo_holder
 

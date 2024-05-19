@@ -29,10 +29,11 @@
 		return
 
 	var/turf/target_turf = get_turf(cast_on)
-	var/obj/item/paper/infernal_contract/contract = new /obj/item/paper/infernal_contract(target_turf, deity, prefab)
+	var/obj/item/paper/infernal_contract/contract = new /obj/item/paper/infernal_contract(target_turf, null, "Infernal Contract", TRUE, FALSE, deity, power_prefabs[prefab])
 	cast_on.pick_or_drop(contract, target_turf)
 
 /obj/item/paper/infernal_contract
+	name = "Infernal Contract"
 	var/mob/living/deity/owner
 	var/watchers_name
 	var/prefab
@@ -41,7 +42,7 @@
 	. = ..()
 	watchers_name = user.name
 
-/obj/item/paper/infernal_contract/Initialize(mapload, owner, prefab)
+/obj/item/paper/infernal_contract/Initialize(mapload, text, title, rawhtml, noinit, owner, prefab)
 	. = ..()
 
 	src.owner = owner

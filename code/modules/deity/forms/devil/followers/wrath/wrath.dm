@@ -9,7 +9,6 @@
 	items = list(
 		/datum/evolution_package/devil_arc_lighting,
 		/datum/evolution_package/wrath_modifier,
-		/datum/evolution_package/wrath
 	)
 
 /datum/evolution_package/devil_arc_lighting
