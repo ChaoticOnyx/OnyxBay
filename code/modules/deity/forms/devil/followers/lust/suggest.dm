@@ -7,6 +7,7 @@
 	cooldown_time = 30 SECONDS
 	spell_max_level = 2
 	cast_range = 3
+	var/spell_command
 
 /datum/action/cooldown/spell/suggest/is_valid_target(atom/cast_on)
 	return ..() && ishuman(cast_on)
@@ -30,15 +31,17 @@
 		cast_on.show_splash_text(owner, "cancelled!", "Spell [src] was cancelled!")
 		return FALSE
 
+	spell_command = command
+
 	return TRUE
 
 /datum/action/cooldown/spell/suggest/cast(mob/living/carbon/human/cast_on)
-	owner.say(command)
+	owner.say(spell_command)
 
 	if(cast_on.is_deaf() || !cast_on.say_understands(owner, owner.get_default_language()))
 		cast_on.show_splash_text(owner, "can't understand!", SPAN_WARNING("Target does not understand you!"))
 		return
 
-	tgui_alert(cast_on, "You feel a strong presence enter your mind, silencing your thoughts and compelling to act without hesitation: [command]!", "Dominated!")
-	to_chat(cast_on, SPAN_DANGER("You feel a strong presence enter your mind, silencing your thoughts and compelling to act without hesitation: [command]!"))
+	tgui_alert(cast_on, "You feel a strong presence enter your mind, silencing your thoughts and compelling to act without hesitation: [spell_command]!", "Dominated!")
+	to_chat(cast_on, SPAN_DANGER("You feel a strong presence enter your mind, silencing your thoughts and compelling to act without hesitation: [spell_command]!"))
 	to_chat(owner, SPAN_DANGER("You command [cast_on], and they will obey."))
