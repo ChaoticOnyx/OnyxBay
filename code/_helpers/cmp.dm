@@ -57,3 +57,6 @@
 
 /proc/cmp_marking_order(list/A, list/B)
 	return A[1] - B[1][1]
+
+/proc/cmp_mob_health(mob/living/mob_a, mob/living/mob_b)
+	return mob_b.health - mob_a.health
