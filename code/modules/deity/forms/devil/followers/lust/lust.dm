@@ -1,6 +1,6 @@
 /datum/evolution_holder/lust
 	evolution_categories = list(
-		/datum/evolution_category/greed
+		/datum/evolution_category/lust
 	)
 	default_modifiers = list(/datum/modifier/sin/lust)
 
