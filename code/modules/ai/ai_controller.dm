@@ -230,11 +230,6 @@ multiple modular subtrees with behaviors
 
 	return TRUE
 
-/datum/ai_controller/proc/get_current_turf()
-	var/mob/living/mob_pawn = pawn
-	var/turf/pawn_turf = get_turf(mob_pawn)
-	to_chat(world, "[pawn_turf]")
-
 ///Called when the AI controller pawn changes z levels, we check if there's any clients on the new one and wake up the AI if there is.
 /datum/ai_controller/proc/on_changed_z_level(atom/source, turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
 	SIGNAL_HANDLER

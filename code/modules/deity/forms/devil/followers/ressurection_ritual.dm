@@ -37,6 +37,7 @@
 	icon = 'icons/effects/runes.dmi'
 	icon_state = "ressurection_rune"
 	var/mob/living/deity/linked_deity
+	anchored = TRUE
 
 /obj/effect/ressurection_rune/Initialize(mapload, deity)
 	. = ..()
