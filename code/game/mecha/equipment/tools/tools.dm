@@ -750,6 +750,7 @@
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/get_equip_info()
 	if(!chassis)
 		return
+
 	return "<span style=\"color:[equip_ready?"#0f0":"#f00"];\">*</span>&nbsp;[src.name] - <a href='?src=\ref[src];toggle_relay=1'>[pr_energy_relay.active()?"Dea":"A"]ctivate</a>"
 
 /datum/global_iterator/mecha_energy_relay/process(obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/ER)
@@ -757,13 +758,15 @@
 		stop()
 		ER.set_ready_state(1)
 		return
+
 	var/cur_charge = ER.chassis.get_charge()
 	if(isnull(cur_charge) || !ER.chassis.cell)
 		stop()
 		ER.set_ready_state(1)
 		ER.occupant_message("No powercell detected.")
 		return
-	if(cur_charge<ER.chassis.cell.maxcharge)
+
+	if(cur_charge < (ER.chassis.cell.maxcharge / CELLRATE))
 		var/area/A = get_area(ER.chassis)
 		if(A)
 			var/pow_chan
@@ -771,8 +774,9 @@
 				if(A.powered(c))
 					pow_chan = c
 					break
+
 			if(pow_chan)
-				var/delta = min(12, ER.chassis.cell.maxcharge-cur_charge)
+				var/delta = min(1200, (ER.chassis.cell.maxcharge / CELLRATE) - cur_charge)
 				ER.chassis.give_power(delta)
 				A.use_power_oneoff(delta*ER.coeff, pow_chan)
 	return

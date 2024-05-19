@@ -11,7 +11,6 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	if(!istype(my_atom))
 		CRASH("Invalid reagents holder: [log_info_line(my_atom)]")
 	..()
-	add_think_ctx("delayed_add_reagent", CALLBACK(src, nameof(.proc/add_reagent)), 0)
 	src.my_atom = my_atom
 	src.maximum_volume = maximum_volume
 
@@ -155,6 +154,10 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	else
 		warning("[log_info_line(my_atom)] attempted to add a reagent of type '[reagent_type]' which doesn't exist. ([usr])")
 	return 0
+
+/datum/reagents/proc/_delayed_add_reagents(reagent_type, amount, data = null, safety = 0)
+	remove_think_ctx("delayed_add_reagents")
+	return add_reagent(reagent_type, amount, data, safety)
 
 /datum/reagents/proc/remove_reagent(reagent_type, amount, safety = 0)
 	if(!isnum(amount))
