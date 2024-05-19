@@ -9,8 +9,8 @@
 "bJ" = (/obj/machinery/disposal/deliveryChute{dir = 4},/obj/structure/disposalpipe/trunk{dir = 8},/turf/simulated/floor/plating,/area/outpost/research)
 "bV" = (/turf/template_noop,/area/template_noop)
 "bW" = (/obj/effect/floor_decal/corner/purple{dir = 5},/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/structure/sign/warning/nosmoking_2{pixel_y = 32},/obj/machinery/camera/network/research_outpost{c_tag = "Xenoarchaeology Anomalous Materials"},/obj/structure/cable/blue{icon_state = "4-8"; d2 = 8; d1 = 4},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/lab)
-"bY" = (/obj/structure/cable{icon_state = "1-2"; d2 = 2; d1 = 1},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/tiled/white/rough,/area/outpost/main_outpost/dock)
-"bZ" = (/obj/machinery/light/small{dir = 4},/obj/effect/floor_decal/industrial/warning/cee{dir = 1},/obj/machinery/airlock_sensor{dir = 8; frequency = 1380; id_tag = "research_outpost_sensor"; pixel_x = 25},/obj/machinery/embedded_controller/radio/airlock/docking_port{dir = 4; frequency = 1380; id_tag = "research_outpost_dock"; pixel_x = -30; req_one_access = list(13,47); tag_airpump = "research_outpost_pump"; tag_chamber_sensor = "research_outpost_sensor"; tag_exterior_door = "research_outpost_outer"; tag_interior_door = "research_outpost_inner"},/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 1; frequency = 1379; id_tag = "mining_west_outpost_pump"},/turf/simulated/floor,/area/outpost/main_outpost/dock)
+"bY" = (/obj/structure/cable{icon_state = "1-2"; d2 = 2; d1 = 1},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/floor_decal/industrial/warning,/obj/machinery/access_button{name = "interior access button"; dir = 1; pixel_x = -25; pixel_y = -25; frequency = 1379; req_access = list(11,13); command = "cycle_interior"; master_tag = "solar_xeno_airlock"},/turf/simulated/floor/tiled/white/rough,/area/outpost/main_outpost/dock)
+"bZ" = (/obj/machinery/light/small{dir = 4},/obj/effect/floor_decal/industrial/warning/cee{dir = 1},/obj/machinery/airlock_sensor{dir = 8; frequency = 1380; id_tag = "research_outpost_sensor"; pixel_x = 25},/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 1; frequency = 1379; id_tag = "mining_west_outpost_pump"},/obj/machinery/embedded_controller/radio/airlock/docking_port{dir = 4; frequency = 1380; id_tag = "research_outpost_dock"; pixel_x = -30; req_one_access = list(13,47); tag_airpump = "research_outpost_pump"; tag_chamber_sensor = "research_outpost_sensor"; tag_exterior_door = "research_outpost_outer"; tag_interior_door = "research_outpost_inner"},/turf/simulated/floor,/area/outpost/main_outpost/dock)
 "cd" = (/obj/machinery/artifact_scanpad,/turf/simulated/floor/reinforced,/area/outpost/research/isolation_a)
 "ci" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/structure/cable/blue{icon_state = "1-2"; d2 = 2; d1 = 1},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/isolation_monitoring)
 "cu" = (/turf/simulated/floor/plating,/area/outpost/research/eva)
@@ -42,6 +42,7 @@
 "fD" = (/obj/item/stool/padded,/obj/machinery/firealarm{dir = 8; pixel_x = -24},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/lab)
 "fH" = (/obj/structure/cable/blue{icon_state = "1-8"; d2 = 8; d1 = 1},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/eva)
 "fK" = (/obj/machinery/artifact_harvester,/turf/simulated/floor/grid/bluegrid,/area/outpost/research/anomaly_analysis)
+"fW" = (/obj/machinery/access_button{command = "cycle_exterior"; frequency = 1380; master_tag = "mining_outpost_airlock"; name = "exterior access button"; pixel_x = -8; pixel_y = 25; req_one_access = list(13,48)},/turf/space,/area/shuttle/research/outpost)
 "gg" = (/obj/effect/floor_decal/corner/purple{dir = 9},/obj/effect/floor_decal/spline/fancy{dir = 8},/obj/machinery/light,/turf/simulated/floor/tiled/white/rough,/area/outpost/research/isolation_monitoring)
 "gh" = (/obj/machinery/atmospherics/pipe/simple/visible/yellow{dir = 5},/obj/effect/floor_decal/corner/purple{dir = 10},/obj/effect/floor_decal/spline/fancy,/obj/structure/disposalpipe/segment{dir = 8},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/isolation_monitoring)
 "gl" = (/obj/structure/sign/warning/radioactive{pixel_x = -32},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/cable/blue{icon_state = "1-2"; d2 = 2; d1 = 1},/obj/machinery/light{dir = 8},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/anomaly_storage)
@@ -171,7 +172,7 @@
 "CF" = (/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor/plating,/area/outpost/research/emergency_storage)
 "CG" = (/obj/machinery/portable_atmospherics/canister/carbon_dioxide,/obj/effect/floor_decal/industrial/warning{dir = 9},/turf/simulated/floor/tiled/dark/rough,/area/outpost/research/isolation_monitoring)
 "CJ" = (/obj/effect/floor_decal/industrial/warning{dir = 10},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/outpost/main_outpost/dock)
-"CY" = (/obj/effect/floor_decal/industrial/warning{dir = 5},/turf/simulated/floor/tiled/white/rough,/area/outpost/main_outpost/dock)
+"CY" = (/obj/effect/floor_decal/industrial/warning{dir = 5},/obj/machinery/power/apc{name = "north bump"; dir = 1; pixel_y = 24},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/tiled/white/rough,/area/outpost/main_outpost/dock)
 "Du" = (/obj/machinery/atmospherics/pipe/simple/hidden,/obj/structure/cable/blue{icon_state = "1-2"; d2 = 2; d1 = 1},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/hallway)
 "DC" = (/obj/machinery/atmospherics/unary/vent_scrubber{dir = 1},/turf/simulated/floor/reinforced,/area/outpost/research/isolation_c)
 "DF" = (/obj/machinery/atmospherics/unary/vent_scrubber/on,/turf/simulated/floor/tiled/dark/rough,/area/outpost/research/anomaly_storage)
@@ -179,7 +180,7 @@
 "DX" = (/obj/effect/floor_decal/spline/fancy/corner{dir = 8},/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/research{name = "Anomaly Isolation"; icon = 'icons/obj/doors/doorsci.dmi'; req_access = list(65)},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/cable/blue{icon_state = "1-2"; d2 = 2; d1 = 1},/turf/simulated/floor/tiled/dark/rough,/area/outpost/research/lab)
 "El" = (/obj/machinery/artifact_scanpad,/obj/effect/floor_decal/industrial/hatch/orange,/turf/simulated/floor/tiled/dark/rough,/area/outpost/research/lab)
 "EY" = (/obj/effect/floor_decal/spline/fancy{dir = 8},/obj/structure/cable/blue{icon_state = "4-8"; d2 = 8; d1 = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/obj/structure/cable/blue{icon_state = "1-4"; d2 = 4; d1 = 1},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/lab)
-"Fl" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/structure/cable{icon_state = "4-8"; d2 = 8; d1 = 4},/obj/machinery/camera/network/research_outpost{c_tag = "Xenoarchaeology Access"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 10},/turf/simulated/floor/tiled/white/rough,/area/outpost/main_outpost/dock)
+"Fl" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/structure/cable{icon_state = "4-8"; d2 = 8; d1 = 4},/obj/machinery/camera/network/research_outpost{c_tag = "Xenoarchaeology Access"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 10},/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/white/rough,/area/outpost/main_outpost/dock)
 "Fq" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/external{name = "Research Outpost External Access"; icon_state = "door_locked"; frequency = 1379; locked = 1; req_access = list(10,13); id_tag = "research_outer"},/obj/structure/cable/blue{icon_state = "1-2"; d2 = 2; d1 = 1},/turf/simulated/floor/plating/airless,/area/outpost/research/eva)
 "Ft" = (/obj/structure/cable/blue{icon_state = "0-8"; d2 = 8},/obj/machinery/power/apc{name = "south bump"; pixel_y = -24},/turf/simulated/floor/plating,/area/outpost/research)
 "Fv" = (/obj/machinery/mech_recharger,/turf/simulated/floor/tiled/white/rough,/area/outpost/research/hallway)
@@ -233,7 +234,7 @@
 "Nw" = (/obj/effect/floor_decal/rust,/obj/machinery/power/port_gen/pacman,/turf/simulated/floor/plating,/area/outpost/research/power)
 "Od" = (/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/eva)
 "OJ" = (/obj/structure/table/standard,/obj/machinery/atmospherics/pipe/manifold/visible/yellow{dir = 1},/obj/structure/cable/blue{icon_state = "4-8"; d2 = 8; d1 = 4},/turf/simulated/floor/tiled/dark/rough,/area/outpost/research/isolation_monitoring)
-"Pr" = (/obj/effect/floor_decal/industrial/warning{dir = 6},/turf/simulated/floor/tiled/white/rough,/area/outpost/main_outpost/dock)
+"Pr" = (/obj/effect/floor_decal/industrial/warning{dir = 6},/obj/machinery/computer/shuttle_control/research,/turf/simulated/floor/tiled/white/rough,/area/outpost/main_outpost/dock)
 "Pz" = (/turf/simulated/wall/r_wall,/area/outpost/research/eva)
 "PP" = (/obj/structure/table/rack,/obj/item/stack/flag/yellow,/obj/item/wrench,/obj/item/clothing/suit/space/void/excavation/prepared,/obj/effect/floor_decal/spline/fancy{dir = 4},/obj/item/clothing/shoes/magboots,/turf/simulated/floor/tiled/dark/rough,/area/outpost/research/eva)
 "PT" = (/turf/simulated/wall/r_wall,/area/outpost/research/anomaly_analysis)
@@ -321,11 +322,11 @@ bVbVbVbVbVbVbVbVbVcPBpjNVxcPbvgzyXMYTJcPVFXkKnKnZOvVZOKnbVbV
 bVbVbVbVbVbVbVbVbVcPcPcPcPcPcPcPcPcPcPcPGTGTKnbVVJbZZObVbVbV
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVVJhQZObVbVbV
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVmFbVbVKnCsyCbVbVmF
-bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVYGUFUFUFUFUFUFUFYG
+bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVYGUFUFfWUFUFUFUFYG
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVUFUFUFUFUFUFUFbV
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVUFUFUFwaUFUFUFbV
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVUFUFUFUFUFUFUFbV
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVoSUFUFUFUFUFUFUFoS
-bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVmFbVbVbVbVbVbVbVmF
+bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVmFbVbVbVmFbVbVbVmF
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbV
 "}
