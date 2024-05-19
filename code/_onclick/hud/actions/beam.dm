@@ -53,6 +53,7 @@
 
 /datum/action/cooldown/spell/beam/chained/send_beam(atom/origin, atom/to_beam, bounces = max_beam_bounces)
 	origin.Beam(to_beam, icon_state = "lightning[rand(1,12)]", time = beam_duration)
+	damage_from_beam(to_beam)
 	if(bounces >= 1)
 		playsound(to_beam, beam_sound, 50, vary = TRUE, extrarange = -1)
 		set_next_think_ctx("continue_beam", world.time + beam_duration, to_beam, bounces)
