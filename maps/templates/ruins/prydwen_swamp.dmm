@@ -1,55 +1,61 @@
+"aa" = (/turf/simulated/floor/asteroid/swamp_dirt,/turf/simulated/shuttle/wall/corner/syndi/nw,/area/outpost/prydwen)
+"ab" = (/turf/simulated/floor/asteroid/swamp_dirt,/turf/simulated/shuttle/wall/corner/syndi/ne,/area/outpost/prydwen)
+"ac" = (/turf/simulated/floor/asteroid/swamp_dirt,/turf/simulated/shuttle/wall/corner/syndi/sw,/area/outpost/prydwen)
+"ad" = (/turf/simulated/floor/asteroid/swamp_dirt,/turf/simulated/shuttle/wall/corner/syndi/se,/area/outpost/prydwen)
+"ae" = (/obj/structure/flora/tree/swamp,/turf/simulated/floor/asteroid/swamp_dirt,/area/outpost/prydwen)
+"af" = (/obj/structure/flora/tree/dead/deadtree_3,/turf/simulated/floor/asteroid/swamp_dirt,/area/outpost/prydwen)
+"ag" = (/turf/simulated/mineral/swamp,/area/outpost/prydwen)
+"ah" = (/turf/simulated/floor/asteroid/swamp_dirt,/turf/simulated/floor/asteroid/swamp,/area/outpost/prydwen)
+"ai" = (/obj/structure/swamprock,/turf/simulated/floor/asteroid/swamp_dirt,/turf/simulated/floor/asteroid/swamp,/area/outpost/prydwen)
+"aj" = (/obj/structure/swamprock,/turf/simulated/floor/asteroid/swamp_dirt,/area/outpost/prydwen)
 "bp" = (/obj/effect/decal/cleanable/blood,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "bw" = (/obj/effect/decal/cleanable/blood,/obj/effect/decal/remains,/obj/item/clothing/under/confederacy,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "bz" = (/obj/machinery/sleeper{dir = 4},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "bX" = (/obj/structure/closet/secure_closet/engineering_electrical,/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/plating,/area/outpost/prydwen)
 "dc" = (/turf/simulated/floor/shuttle/black,/turf/simulated/shuttle/wall/corner/syndi/se,/area/outpost/prydwen)
-"dm" = (/turf/simulated/floor/asteroid,/turf/simulated/shuttle/wall/corner/syndi/se,/area/outpost/prydwen)
 "eb" = (/obj/machinery/door/airlock/hatch{name = "Engineering"},/turf/simulated/floor/plating,/area/outpost/prydwen)
-"eG" = (/obj/structure/shuttle/engine/heater{dir = 4},/obj/structure/window/reinforced{dir = 8; health = 1e+006},/turf/simulated/floor/plating/airless,/area/outpost/prydwen)
+"eG" = (/obj/structure/shuttle/engine/heater{dir = 4},/obj/structure/window/reinforced{dir = 8; health = 1e+06},/turf/simulated/floor/plating/airless,/area/outpost/prydwen)
 "fb" = (/obj/effect/floor_decal/industrial/warning/red{dir = 6},/obj/effect/floor_decal/industrial/warning/red/corner,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"fu" = (/turf/simulated/shuttle/wall/syndi{dir = 8; icon_state = "syndiwall"},/area/outpost/prydwen)
+"fu" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall"; dir = 8},/area/outpost/prydwen)
 "fY" = (/obj/structure/table/rack,/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced,/obj/structure/window/reinforced{dir = 1},/obj/item/tank/oxygen,/obj/effect/decal/cleanable/dirt,/obj/item/clothing/suit/space,/obj/item/clothing/head/helmet/space,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "ga" = (/obj/machinery/door/airlock/hatch{name = "Infirmary"},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "gk" = (/obj/structure/table/rack,/obj/item/tank/oxygen,/obj/item/clothing/suit/space/void/pilot/prepared,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "gv" = (/obj/item/trash/liquidfood,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red/corner{dir = 8},/obj/effect/floor_decal/industrial/warning/red/corner{dir = 1},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "gE" = (/obj/effect/decal/cleanable/blood,/obj/effect/decal/remains,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red{dir = 5},/obj/effect/floor_decal/industrial/warning/red/corner{dir = 4},/obj/item/clothing/under/confederacy,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"gK" = (/turf/simulated/shuttle/wall/syndi{dir = 1; icon_state = "syndiwall_t"},/area/outpost/prydwen)
+"gK" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall_t"; dir = 1},/area/outpost/prydwen)
 "gP" = (/obj/random/obstruction,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"gW" = (/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/structure/table/steel,/obj/random/action_figure,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red{dir = 8},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
+"gW" = (/obj/structure/window/reinforced{dir = 8; health = 1e+06},/obj/structure/table/steel,/obj/random/action_figure,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red{dir = 8},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "hF" = (/obj/structure/closet,/obj/random/ammo,/obj/random/ammo,/obj/random/ammo,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"hQ" = (/obj/machinery/power/apc{dir = 4; name = "east bump"; pixel_x = 24},/obj/structure/cable,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating,/area/outpost/prydwen)
+"hQ" = (/obj/machinery/power/apc{name = "east bump"; dir = 4; pixel_x = 24},/obj/structure/cable,/obj/structure/cable{icon_state = "0-2"; d2 = 2},/turf/simulated/floor/plating,/area/outpost/prydwen)
 "hR" = (/obj/structure/closet,/obj/random/clothing/hat,/obj/random/drinkbottle,/obj/random/cash,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "ik" = (/obj/random/coin,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red{dir = 8},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "jl" = (/obj/structure/table/steel,/obj/random/medical,/obj/machinery/light/small{dir = 4},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"kC" = (/turf/simulated/floor/asteroid,/area/outpost/prydwen)
-"kX" = (/turf/simulated/mineral,/area/outpost/prydwen)
 "lm" = (/obj/structure/closet/secure_closet/engineering_welding,/obj/effect/floor_decal/industrial/warning{dir = 6},/obj/machinery/light/small{dir = 8},/turf/simulated/floor/plating,/area/outpost/prydwen)
-"lI" = (/obj/effect/decal/remains,/obj/item/clothing/under/gorka,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid,/area/outpost/prydwen)
+"lI" = (/obj/effect/decal/remains,/obj/item/clothing/under/gorka,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid/swamp_dirt,/area/outpost/prydwen)
 "mS" = (/obj/structure/largecrate,/obj/machinery/light/small,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "np" = (/obj/structure/largecrate,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "nt" = (/obj/structure/closet/crate/secure/loot,/obj/effect/floor_decal/industrial/outline/red,/obj/item/plastique,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"oQ" = (/obj/machinery/door/airlock/hatch{icon_state = "door_locked"; id_tag = "engine_access_hatch"; locked = 1; req_access = list(11)},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
+"oQ" = (/obj/machinery/door/airlock/hatch{icon_state = "door_locked"; locked = 1; req_access = list(11); id_tag = "engine_access_hatch"},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "qf" = (/obj/structure/sign/warning/hot_exhaust{pixel_y = -32},/obj/effect/floor_decal/industrial/warning{dir = 10},/turf/simulated/floor/plating,/area/outpost/prydwen)
 "qy" = (/obj/random/obstruction,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"qD" = (/turf/simulated/floor/asteroid,/turf/simulated/shuttle/wall/corner/syndi/sw,/area/outpost/prydwen)
 "qR" = (/turf/simulated/floor/plating,/area/outpost/prydwen)
 "rs" = (/obj/effect/floor_decal/industrial/warning{dir = 5},/obj/structure/table/steel,/obj/item/storage/toolbox/electrical,/obj/machinery/light/small{dir = 8},/obj/item/clothing/gloves/insulated,/turf/simulated/floor/plating,/area/outpost/prydwen)
 "sl" = (/obj/structure/closet/crate,/obj/random/toy,/obj/random/toy,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "tu" = (/obj/random/obstruction,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"tR" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/structure/cable{d2 = 4; icon_state = "0-4"},/obj/machinery/power/smes/batteryrack,/turf/simulated/floor/plating,/area/outpost/prydwen)
+"tR" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/obj/machinery/power/smes/batteryrack,/turf/simulated/floor/plating,/area/outpost/prydwen)
 "ub" = (/turf/simulated/floor/plating,/turf/simulated/shuttle/wall/corner/syndi/ne,/area/outpost/prydwen)
 "uf" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall_t"},/area/outpost/prydwen)
 "uo" = (/obj/structure/bed/chair/comfy/captain{dir = 8},/obj/machinery/light/small{dir = 1},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"wD" = (/obj/item/clothing/under/gorka,/obj/effect/decal/remains,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid,/area/outpost/prydwen)
-"xi" = (/obj/machinery/power/port_gen/pacman/super,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/effect/floor_decal/industrial/warning/cee{dir = 8},/turf/simulated/floor/plating,/area/outpost/prydwen)
+"wD" = (/obj/item/clothing/under/gorka,/obj/effect/decal/remains,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid/swamp_dirt,/area/outpost/prydwen)
+"xi" = (/obj/machinery/power/port_gen/pacman/super,/obj/structure/cable{icon_state = "0-2"; d2 = 2},/obj/effect/floor_decal/industrial/warning/cee{dir = 8},/turf/simulated/floor/plating,/area/outpost/prydwen)
 "xv" = (/obj/structure/computerframe,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"xM" = (/turf/simulated/shuttle/wall/syndi{dir = 4; icon_state = "syndiwall"},/area/outpost/prydwen)
+"xM" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall"; dir = 4},/area/outpost/prydwen)
 "xP" = (/obj/item/bedsheet/blue,/obj/structure/bed,/obj/random/loot,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "yf" = (/obj/structure/closet/crate,/obj/item/storage/photo_album,/obj/effect/floor_decal/industrial/outline/red,/obj/random_multi/single_item/bookrev,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "yi" = (/obj/random/loot,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "zj" = (/turf/simulated/floor/shuttle/black,/turf/simulated/shuttle/wall/corner/syndi/ne,/area/outpost/prydwen)
-"zx" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/outpost/prydwen)
-"zM" = (/turf/simulated/shuttle/wall/syndi{dir = 9; icon_state = "syndiwall"},/area/outpost/prydwen)
+"zx" = (/obj/structure/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/plating,/area/outpost/prydwen)
+"zM" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall"; dir = 9},/area/outpost/prydwen)
 "zR" = (/obj/item/clothing/under/captainformal,/obj/effect/decal/remains,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "AY" = (/obj/structure/closet/medical_wall/filled{pixel_y = 30},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "Ba" = (/obj/machinery/door/airlock/hatch{name = "Cockpit"},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
@@ -61,39 +67,38 @@
 "DA" = (/turf/simulated/floor/plating,/turf/simulated/shuttle/wall/corner/syndi/nw,/area/outpost/prydwen)
 "DN" = (/obj/effect/floor_decal/industrial/warning{dir = 10},/turf/simulated/floor/plating,/area/outpost/prydwen)
 "DP" = (/obj/effect/decal/cleanable/blood,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"Es" = (/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/structure/table/steel,/obj/item/storage/toolbox/mechanical,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red{dir = 8},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
+"Es" = (/obj/structure/window/reinforced{dir = 8; health = 1e+06},/obj/structure/table/steel,/obj/item/storage/toolbox/mechanical,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red{dir = 8},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "EP" = (/obj/structure/closet/crate,/obj/item/storage/toolbox/syndicate,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "Ff" = (/obj/item/bedsheet/captain,/obj/structure/bed,/obj/random/tech_supply,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "FV" = (/obj/structure/closet/crate/secure/loot,/obj/item/storage/pill_bottle/happy,/obj/item/storage/pill_bottle/happy,/obj/item/storage/pill_bottle/happy,/obj/item/storage/pill_bottle/happy,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "Gd" = (/obj/structure/closet/crate/secure/weapon{name = "secure crate"; req_access = list(50)},/obj/effect/floor_decal/industrial/hatch/red,/obj/item/clothing/suit/armor/reactive,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"GD" = (/turf/simulated/shuttle/wall/syndi{dir = 6; icon_state = "syndiwall"},/area/outpost/prydwen)
+"GD" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall"; dir = 6},/area/outpost/prydwen)
 "GX" = (/obj/structure/closet/crate/internals,/obj/item/tank/oxygen,/obj/item/tank/oxygen,/obj/item/tank/oxygen,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"GZ" = (/turf/simulated/shuttle/wall/syndi{dir = 5; icon_state = "syndiwall"},/area/outpost/prydwen)
+"GZ" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall"; dir = 5},/area/outpost/prydwen)
 "Hr" = (/turf/template_noop,/area/template_noop)
 "Hs" = (/obj/machinery/door/airlock/hatch{name = "Crew Quarters"},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "Hy" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/random/tech_supply,/turf/simulated/floor/plating,/area/outpost/prydwen)
 "HT" = (/obj/effect/floor_decal/industrial/warning/red{dir = 8},/obj/effect/floor_decal/industrial/warning/red{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "II" = (/obj/structure/closet/secure_closet/medical1,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "JN" = (/obj/structure/closet/crate,/obj/item/storage/toolbox/mechanical,/obj/machinery/light/small{dir = 1},/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"KZ" = (/turf/simulated/shuttle/wall/syndi{dir = 1; icon_state = "syndiwall_straight"},/area/outpost/prydwen)
-"LU" = (/turf/simulated/floor/asteroid,/turf/simulated/shuttle/wall/corner/syndi/nw,/area/outpost/prydwen)
+"KH" = (/turf/simulated/floor/asteroid/swamp_dirt,/area/outpost/prydwen)
+"KZ" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall_straight"; dir = 1},/area/outpost/prydwen)
 "My" = (/obj/effect/decal/cleanable/dirt,/obj/random/medical,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "Nt" = (/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "Nx" = (/obj/structure/closet/crate/medical,/obj/random/firstaid,/obj/random/firstaid,/obj/random/firstaid,/obj/random/medical,/obj/random/medical,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "NS" = (/obj/structure/table/steel,/obj/random/firstaid,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "NV" = (/obj/structure/sign/warning/hot_exhaust{pixel_y = 32},/obj/effect/floor_decal/industrial/warning{dir = 9},/turf/simulated/floor/plating,/area/outpost/prydwen)
-"Ov" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/machinery/power/terminal{dir = 8},/obj/random/tech_supply,/turf/simulated/floor/plating,/area/outpost/prydwen)
+"Ov" = (/obj/structure/cable{icon_state = "1-8"; d1 = 1; d2 = 8},/obj/structure/cable{icon_state = "0-8"; d2 = 8},/obj/machinery/power/terminal{dir = 8},/obj/random/tech_supply,/turf/simulated/floor/plating,/area/outpost/prydwen)
 "OD" = (/turf/simulated/floor/plating,/turf/simulated/shuttle/wall/corner/syndi/se,/area/outpost/prydwen)
-"OI" = (/turf/simulated/shuttle/wall/syndi{dir = 4; icon_state = "syndiwall_straight"},/area/outpost/prydwen)
+"OI" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall_straight"; dir = 4},/area/outpost/prydwen)
 "OV" = (/obj/effect/decal/cleanable/dirt,/obj/item/tank/oxygen,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "OY" = (/obj/random/tech_supply,/turf/simulated/floor/plating,/area/outpost/prydwen)
 "PC" = (/turf/simulated/floor/plating,/turf/simulated/shuttle/wall/corner/syndi/sw,/area/outpost/prydwen)
-"Qb" = (/turf/simulated/shuttle/wall/syndi{dir = 10; icon_state = "syndiwall"},/area/outpost/prydwen)
+"Qb" = (/turf/simulated/shuttle/wall/syndi{icon_state = "syndiwall"; dir = 10},/area/outpost/prydwen)
 "QH" = (/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red/corner{dir = 8},/obj/effect/floor_decal/industrial/warning/red/corner{dir = 1},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "Re" = (/obj/effect/floor_decal/industrial/warning/red,/obj/effect/floor_decal/industrial/warning/red{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"RS" = (/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red{dir = 8},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
+"RS" = (/obj/structure/window/reinforced{dir = 8; health = 1e+06},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red{dir = 8},/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "RY" = (/obj/machinery/light/small,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
-"Te" = (/turf/simulated/floor/asteroid,/turf/simulated/shuttle/wall/corner/syndi/ne,/area/outpost/prydwen)
 "TN" = (/obj/machinery/light/small,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 "Ub" = (/obj/structure/shuttle/engine/propulsion/burst{dir = 4},/turf/simulated/floor/plating/airless,/area/outpost/prydwen)
 "Ui" = (/obj/structure/closet/crate/secure/weapon{req_access = list(50)},/obj/random/energy,/obj/random/energy,/obj/effect/floor_decal/industrial/hatch/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
@@ -104,19 +109,19 @@
 "YJ" = (/obj/structure/largecrate/hoverpod,/obj/effect/floor_decal/industrial/outline/red,/turf/simulated/floor/shuttle/black,/area/outpost/prydwen)
 
 (1,1,1) = {"
-HrHrkXkClILUOIOIOITekXkXHrHrHrHrkCLUOIOITe
-HrkXkXkCkCXOxvuogkKZkXkXkCkCkCkCLUODBUeGUb
-HrkXlIkCkCqDQbbwGDdmkXkXkCkCkCLUODqRHyeGUb
-HrkXLUOIOIOIzMBaGZgKOIOIOIgKOIODOYULqfeGUb
-HrLUdcYJJNNxEsqyhFKZNSAYIIKZbXqRqRDAOIOIdm
-LUdcNtnpCQGXgWDjhRKZbzDPjlKZlmqRDAdmkXkCkC
-KZnpslfbReRegvDjOVGZfugaxMzMULqRKZkXkCkCkC
-KZBMnpHTGdUiikDjDjbpTNqyDjebqRxiKZkXkCkCkC
-KZVHFVgEReReQHDjyiGDfuHsxMQbOYhQKZkXkCkCkC
-qDzjNtntyfnpRSMyfYKZBezRViKZrszxPCTekCkCkC
-HrqDzjEPmSYJRStufYKZxPNtFfKZtROvqRPCOIOITe
-HrHrqDOIOIOIQboQGDufOIOIOIufOIubULqRNVeGUb
-HrHrHrHrHrLUzMgPGZTekCkCkXkXkXqDubqRHyeGUb
-HrHrHrHrHroQDPRYNtoQwDkCkCkCkCkCqDubDNeGUb
-HrHrHrHrHrqDOIOIOIdmkCkCkCkCkCkCkCqDOIOIdm
+HrHragKHlIaaOIOIOIabahahHrHrHrHrKHaaOIOIab
+HragagKHKHXOxvuogkKZahaiahahahKHaaODBUeGUb
+HraglIaeKHacQbbwGDadKHahahahKHaaODqRHyeGUb
+HragaaOIOIOIzMBaGZgKOIOIOIgKOIODOYULqfeGUb
+HraadcYJJNNxEsqyhFKZNSAYIIKZbXqRqRDAOIOIad
+aadcNtnpCQGXgWDjhRKZbzDPjlKZlmqRDAadKHKHKH
+KZnpslfbReRegvDjOVGZfugaxMzMULqRKZKHKHKHKH
+KZBMnpHTGdUiikDjDjbpTNqyDjebqRxiKZKHKHKHKH
+KZVHFVgEReReQHDjyiGDfuHsxMQbOYhQKZKHKHKHKH
+aczjNtntyfnpRSMyfYKZBezRViKZrszxPCabKHKHKH
+HraczjEPmSYJRStufYKZxPNtFfKZtROvqRPCOIOIab
+HrHracOIOIOIQboQGDufOIOIOIufOIubULqRNVeGUb
+HrHrHrHrHraazMgPGZabKHKHaeKHKHacubqRHyeGUb
+HrHrHrHrHroQDPRYNtoQwDajKHafKHKHacubDNeGUb
+HrHrHrHrHracOIOIOIadKHKHKHKHKHKHKHacOIOIad
 "}
