@@ -5,6 +5,7 @@
 	icon = 'icons/hud/actions.dmi'
 	icon_state = "statue"
 	manifest_on_select = TRUE
+	anchored = TRUE
 
 /datum/deity_power/phenomena/devils_ressurection/can_manifest(atom/target, mob/living/deity/D)
 	if(!..())
