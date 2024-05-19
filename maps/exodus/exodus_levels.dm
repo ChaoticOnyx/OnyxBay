@@ -22,8 +22,8 @@
 	)
 	lateloading_level = TRUE
 	var/list/possible_planet_types = list(
-		/datum/map_generator/planet_generator/swamp = 10,
-		/datum/map_generator/planet_generator/asteroid = 1,
+		/datum/map_generator/planet_generator/swamp = 1,
+		/datum/map_generator/planet_generator/asteroid = 10,
 	)
 
 /datum/space_level/exodus_3/generate(z)
