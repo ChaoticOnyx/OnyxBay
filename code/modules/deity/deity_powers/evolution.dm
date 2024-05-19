@@ -97,6 +97,7 @@
 		return FALSE
 
 	if(ishuman(M))
+		LAZYDISTINCTADD(M?.mind?.godcultist?.evo_holder.unlocked_packages, src)
 		apply_followers_package(M)
 		purchased = TRUE
 		return TRUE
