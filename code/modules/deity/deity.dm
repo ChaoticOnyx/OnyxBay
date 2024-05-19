@@ -232,7 +232,6 @@ GLOBAL_LIST_INIT(deity_forms, list(); for(var/form in subtypesof(/datum/deity_fo
 	for(var/datum/deity_power/power in form?.buildables)
 		var/list/building_data = list(
 			"name" = power._get_name(),
-			"icon" = icon2base64html(power._get_image()),
 			"desc" = power.desc,
 			"type" = power.type
 		)
