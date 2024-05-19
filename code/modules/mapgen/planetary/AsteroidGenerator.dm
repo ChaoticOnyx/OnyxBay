@@ -1,8 +1,8 @@
 /area/generated/planetoid/asteroid
 
 /datum/map_generator/planet_generator/asteroid
-	mountain_height = 0.65
-	perlin_zoom = 20
+	mountain_height = 0.25
+	perlin_zoom = 55
 
 	initial_closed_chance = 45
 	smoothing_iterations = 20
