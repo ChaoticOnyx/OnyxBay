@@ -123,6 +123,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "integrated circuit analyzer"
 	path = /obj/item/device/integrated_electronics/analyzer
 	category = "Tools"
+	cost = 2000
 
 /datum/autolathe/recipe/multitool
 	name = "multitool"

@@ -41,6 +41,7 @@
 /datum/modifier/sin/greed/New(new_holder, new_origin)
 	. = ..()
 	find_target()
+	add_think_ctx("not_found_ctx", CALLBACK(src, nameof(.proc/not_found_ctx)), 0)
 
 /datum/modifier/sin/greed/Destroy()
 	item_to_find = null
@@ -80,6 +81,7 @@
 
 	if(!seeing_objs.len)
 		set_next_think(world.time + 15 SECONDS)
+		set_next_think_ctx("not_found_ctx", 0)
 		return
 
 	var/obj/item/target = safepick(seeing_objs)
@@ -103,6 +105,7 @@
 	images_to_show += pointer
 
 	holder.client?.images |= images_to_show
+	set_next_think_ctx("not_found_ctx", world.time + 3 MINUTES)
 
 /datum/modifier/sin/greed/proc/forget_target()
 	var/atom/former_target = item_to_find
@@ -122,5 +125,9 @@
 	to_chat(holder, SPAN_DANGER("I found my precious [I.name]!"))
 	item_to_find = null
 	item_points += 3000
-	qdel(I)
+	QDEL_IN(I, 5)
+	set_next_think_ctx("not_found_ctx", 0)
 	set_next_think(world.time + 30 SECONDS)
+
+/datum/modifier/sin/greed/proc/not_found_ctx()
+	forget_target()

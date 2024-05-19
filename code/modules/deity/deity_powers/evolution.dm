@@ -93,7 +93,13 @@
 	if(!istype(deity))
 		return FALSE
 
-	if(!can_evolve(deity) || !pay_costs(deity))
+	if(!can_evolve(deity))
+		return FALSE
+
+	if(isdeity(M) && !pay_costs(M, null))
+		return FALSE
+
+	else if(ishuman(M) && !pay_costs(null, M))
 		return FALSE
 
 	if(ishuman(M))
