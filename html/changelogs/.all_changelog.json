@@ -26,6 +26,28 @@
     ]
   },
   {
+    "author": "GenaTochilo",
+    "date": "2024-05-19T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Добавил в билд песочную военную панаму. Получить можно в loadout -> informal hats.",
+        "pr": 12453
+      }
+    ]
+  },
+  {
+    "author": "Firefroge",
+    "date": "2024-05-19T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "Новые случайные руины для астероида.",
+        "pr": 12456
+      }
+    ]
+  },
+  {
     "author": "intercepti0n",
     "date": "2024-05-16T00:00:00+03:00",
     "changes": [
