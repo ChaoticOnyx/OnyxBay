@@ -9,6 +9,7 @@
 					/obj/item/storage/firstaid/toxin,
 					/obj/item/storage/firstaid/o2,
 					/obj/item/storage/firstaid/adv,
+					/obj/item/storage/firstaid/antirad,
 					/obj/item/reagent_containers/vessel/bottle/chemical/antitoxin,
 					/obj/item/reagent_containers/vessel/bottle/chemical/inaprovaline,
 					/obj/item/reagent_containers/vessel/bottle/chemical/stoxin,
