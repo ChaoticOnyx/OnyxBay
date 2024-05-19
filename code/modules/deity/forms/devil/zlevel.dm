@@ -3,7 +3,7 @@ GLOBAL_LIST_INIT(devilspecies, list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_UNATH
 
 /datum/map_template/devil_level
 	name = "House of hope"
-	mappaths = list("maps/devil_lair.dmm")
+	mappaths = list('maps/devil_lair.dmm')
 
 /obj/effect/landmark/devil_spawn
 	name = "Devil's spawn"
