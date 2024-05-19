@@ -1,0 +1,27 @@
+"a" = (/mob/living/simple_animal/hostile/asteroid/sand_lurker,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"d" = (/obj/effect/decal/cleanable/blood/drip,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"i" = (/obj/effect/decal/cleanable/blood/drip,/obj/effect/decal/cleanable/blood/drip,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"p" = (/obj/effect/decal/cleanable/blood/drip,/obj/effect/decal/cleanable/blood/drip,/obj/item/pickaxe/drill,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"u" = (/turf/simulated/mineral,/area/mine/unexplored/medium)
+"C" = (/obj/effect/decal/cleanable/blood/xeno,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"D" = (/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"F" = (/obj/item/remains/human,/obj/item/clothing/suit/space/void/excavation/prepared,/obj/item/gun/energy/laser/pistol,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"K" = (/obj/item/remains/human,/obj/item/clothing/suit/space/void/mining/reinforced/prepared,/obj/item/material/hatchet/tacknife,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"L" = (/obj/effect/floor_decal/asteroid,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"P" = (/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"Z" = (/mob/living/simple_animal/hostile/asteroid/sand_lurker,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+
+(1,1,1) = {"
+uuuuuuuuuuuu
+uuuDaDuuuDKu
+uauDFCiDDDCu
+DDuuuuZuaDDu
+uuuDDdPuuuDu
+DDuDLDCDuuDu
+DDuLCPDLDDDu
+DuuDuuuDuuuu
+puuduuDLDDDu
+DuuDuaDuuDDu
+DDdauuauuDau
+uuuuuuuuuuuu
+"}

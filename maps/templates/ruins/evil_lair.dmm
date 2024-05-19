@@ -1,0 +1,40 @@
+"a" = (/turf/simulated/floor/natural/frozenground/cave,/area/mine/unexplored/deep)
+"b" = (/obj/structure/window/plasmabasic{dir = 4},/obj/structure/window/plasmabasic,/turf/simulated/floor/natural/frozenground/cave,/area/mine/unexplored/deep)
+"e" = (/obj/structure/window/plasmabasic{dir = 1},/obj/structure/window/plasmabasic{dir = 8},/turf/simulated/floor/natural/frozenground/cave,/area/mine/unexplored/deep)
+"g" = (/obj/structure/window/plasmabasic,/obj/structure/window/plasmabasic{dir = 8},/turf/simulated/floor/natural/frozenground/cave,/area/mine/unexplored/deep)
+"i" = (/turf/simulated/floor/natural/snow,/area/mine/unexplored/deep)
+"j" = (/mob/living/simple_animal/hostile/asteroid/hoverhead,/turf/simulated/floor/natural/jungle,/area/mine/unexplored/deep)
+"m" = (/turf/simulated/mineral,/area/mine/unexplored/deep)
+"n" = (/turf/simulated/floor/natural/lava,/area/mine/unexplored/deep)
+"o" = (/mob/living/simple_animal/hostile/asteroid/hoverhead,/turf/simulated/floor/natural/snow,/area/mine/unexplored/deep)
+"v" = (/obj/structure/window/plasmabasic{dir = 1},/obj/structure/window/plasmabasic{dir = 4},/turf/simulated/floor/natural/frozenground/cave,/area/mine/unexplored/deep)
+"w" = (/turf/simulated/floor/natural/jungle,/area/mine/unexplored/deep)
+"x" = (/obj/structure/window/plasmabasic{dir = 8},/turf/simulated/floor/natural/frozenground/cave,/area/mine/unexplored/deep)
+"z" = (/obj/structure/window/plasmabasic,/turf/simulated/floor/natural/frozenground/cave,/area/mine/unexplored/deep)
+"E" = (/mob/living/simple_animal/hostile/asteroid/shooter/beholder,/turf/simulated/floor/misc/fixed/vox,/area/mine/unexplored/deep)
+"F" = (/obj/structure/window/plasmabasic{dir = 1},/turf/simulated/floor/natural/frozenground/cave,/area/mine/unexplored/deep)
+"H" = (/turf/simulated/floor/misc/cult,/area/mine/unexplored/deep)
+"O" = (/mob/living/simple_animal/hostile/asteroid/hoverhead,/turf/simulated/floor/natural/lava,/area/mine/unexplored/deep)
+"P" = (/turf/simulated/wall/ironplasma,/area/mine/unexplored/deep)
+"S" = (/mob/living/simple_animal/hostile/asteroid/hoverhead,/turf/simulated/floor/natural/frozenground/cave,/area/mine/unexplored/deep)
+"U" = (/mob/living/simple_animal/hostile/asteroid/hoverhead,/turf/simulated/floor/misc/cult,/area/mine/unexplored/deep)
+"W" = (/turf/simulated/floor/misc/concrete,/area/mine/unexplored/deep)
+"X" = (/obj/structure/window/plasmabasic{dir = 4},/turf/simulated/floor/natural/frozenground/cave,/area/mine/unexplored/deep)
+
+(1,1,1) = {"
+mmmmmmmmmmmmmmm
+mPPPPPaSaPPPPPm
+mPnnnWaaaWiiiPm
+mPnOnWaaaWioiPm
+mPnnnWaaaWiiiPm
+mPWWWWaaaWWWWPm
+maaaaaeFvaaaaam
+mSaaaaxEXaaaaSm
+maaaaagzbaaaaam
+mPWWWWaaaWWWWPm
+mPwwwWaaaWHHHPm
+mPwjwWaaaWHUHPm
+mPwwwWaaaWHHHPm
+mPPPPPaSaPPPPPm
+mmmmmmmmmmmmmmm
+"}

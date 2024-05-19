@@ -31,6 +31,7 @@
 	var/datum/map_generator/planet_generator/mapgen = new planet_type()
 
 	mapgen.load_necessary_ruins(z)
+	mapgen.load_random_ruins(z)
 
 	var/list/spawned = block(
 		locate(0 + TRANSITION_EDGE, 0 + TRANSITION_EDGE, z),

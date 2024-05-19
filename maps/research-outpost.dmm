@@ -98,7 +98,7 @@
 "oJ" = (/obj/machinery/vending/engineering{req_one_access = list()},/obj/machinery/light/small,/turf/simulated/floor/plating,/area/outpost/research/emergency_storage)
 "oM" = (/obj/effect/floor_decal/rust,/obj/machinery/suspension_gen,/turf/simulated/floor/plating,/area/outpost/research/eva)
 "oR" = (/obj/effect/floor_decal/rust,/turf/simulated/floor/plating,/area/outpost/research/power)
-"oS" = (/obj/machinery/light,/turf/template_noop,/area/outpost/research)
+"oS" = (/obj/machinery/light,/obj/structure/lattice,/turf/space,/area/outpost/research)
 "pa" = (/obj/machinery/atmospherics/pipe/simple/hidden,/obj/structure/cable/blue{icon_state = "0-2"; d2 = 2},/obj/machinery/power/apc{name = "west bump"; dir = 8; pixel_x = -24},/obj/structure/cable/blue{icon_state = "1-2"; d2 = 2; d1 = 1},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/hallway)
 "pj" = (/obj/structure/bed/chair{dir = 8},/obj/item/device/radio/intercom{pixel_y = 22},/obj/machinery/power/apc{name = "east bump"; dir = 4; pixel_x = 24},/obj/structure/cable/blue{icon_state = "0-8"; d2 = 8},/turf/simulated/floor/reinforced,/area/outpost/research/isolation_c)
 "pk" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/obj/structure/disposalpipe/segment{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/outpost/research/anomaly_storage)
@@ -249,6 +249,7 @@
 "Rw" = (/obj/structure/cable/blue{icon_state = "4-8"; d2 = 8; d1 = 4},/obj/machinery/door/airlock/research{name = "Power Substation & Maintenance"; icon = 'icons/obj/doors/doorsci.dmi'; req_access = list(65)},/obj/machinery/door/firedoor/border_only,/obj/machinery/atmospherics/pipe/simple/hidden{dir = 4},/turf/simulated/floor/plating,/area/outpost/research/power)
 "Ry" = (/obj/structure/table/standard,/obj/item/reagent_containers/vessel/bucket,/obj/machinery/light/small{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/lab)
 "Rz" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/cable/blue{icon_state = "1-4"; d2 = 4; d1 = 1},/obj/structure/disposalpipe/segment{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/outpost/research/anomaly_storage)
+"RY" = (/obj/structure/lattice,/turf/space,/area/outpost/research)
 "Sx" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/research{name = "Long Term Storage"; icon = 'icons/obj/doors/doorsci.dmi'; req_access = list(65)},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/cable/blue{icon_state = "4-8"; d2 = 8; d1 = 4},/obj/structure/disposalpipe/segment{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/outpost/research/anomaly_storage)
 "Sy" = (/obj/machinery/camera/network/research_outpost{dir = 1; c_tag = "Research Outpost Isolation Cell A"},/obj/item/device/radio/intercom{dir = 1; pixel_y = -22},/obj/machinery/power/apc{name = "west bump"; dir = 8; pixel_x = -24},/obj/structure/cable/blue{icon_state = "0-4"; d2 = 4},/turf/simulated/floor/reinforced,/area/outpost/research/isolation_a)
 "SD" = (/obj/structure/table/steel,/obj/item/tank/jetpack/oxygen,/obj/item/tank/jetpack/oxygen,/turf/simulated/floor/tiled/white/rough,/area/outpost/research/eva)
@@ -290,7 +291,7 @@
 "XZ" = (/obj/structure/cable/blue{icon_state = "2-4"; d2 = 4; d1 = 2},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/eva)
 "Ym" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/obj/structure/cable/blue{icon_state = "2-8"; d2 = 8; d1 = 2},/obj/effect/floor_decal/industrial/warning{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/anomaly_analysis)
 "Yn" = (/obj/structure/window_frame/rglass,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/outpost/research/eva)
-"YG" = (/obj/machinery/light{dir = 1},/turf/template_noop,/area/outpost/research)
+"YG" = (/obj/machinery/light{dir = 1},/obj/structure/lattice,/turf/space,/area/outpost/research)
 "YO" = (/obj/machinery/atmospherics/valve/digital/open,/obj/effect/floor_decal/industrial/warning/corner{dir = 4},/obj/machinery/button/remote/blast_door{pixel_x = 36; id = "isolationC"},/obj/machinery/button/remote/airlock{name = "Door Bolt Control"; pixel_x = 25; id = "riso3"; specialfunctions = 4},/obj/machinery/light{dir = 4},/obj/structure/disposalpipe/segment{dir = 2},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/isolation_monitoring)
 "YP" = (/obj/structure/disposalpipe/segment{dir = 2},/turf/simulated/wall/r_wall,/area/outpost/research/isolation_b)
 "Zr" = (/obj/machinery/camera/network/research_outpost{dir = 1; c_tag = "Xenoarchaeology Anomaly Analysis"},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8; layer = 2.4; level = 2},/obj/effect/floor_decal/industrial/warning{dir = 5},/obj/machinery/alarm{dir = 1; pixel_y = -24},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/anomaly_analysis)
@@ -321,12 +322,12 @@ bVbVbVbVbVbVbVbVbVcPZKSOSOkeJSQnDHkqsKcPKrKrKnCJzpbYPrKnbVbV
 bVbVbVbVbVbVbVbVbVcPBpjNVxcPbvgzyXMYTJcPVFXkKnKnZOvVZOKnbVbV
 bVbVbVbVbVbVbVbVbVcPcPcPcPcPcPcPcPcPcPcPGTGTKnbVVJbZZObVbVbV
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVVJhQZObVbVbV
-bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVmFbVbVKnCsyCbVbVmF
+bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVmFRYRYKnCsyCRYRYmF
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVYGUFUFfWUFUFUFUFYG
-bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVUFUFUFUFUFUFUFbV
-bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVUFUFUFwaUFUFUFbV
-bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVUFUFUFUFUFUFUFbV
+bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVRYUFUFUFUFUFUFUFRY
+bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVRYUFUFUFwaUFUFUFRY
+bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVRYUFUFUFUFUFUFUFRY
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVoSUFUFUFUFUFUFUFoS
-bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVmFbVbVbVmFbVbVbVmF
+bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVmFRYRYRYmFRYRYRYmF
 bVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbVbV
 "}

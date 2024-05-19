@@ -19,6 +19,13 @@
 		/datum/map_template/prydwen_asteroid,
 	)
 
+	random_ruins = list(
+		/datum/map_template/scorpion_lair = 1,
+		/datum/map_template/goliath_lair = 1,
+		/datum/map_template/evil_lair = 1,
+		/datum/map_template/lizard_lair = 1,
+	)
+
 	edgeturf = /turf/space
 
 	biome_table = list(

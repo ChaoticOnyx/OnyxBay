@@ -6,6 +6,9 @@
 	/// Weighed list of random ruins
 	var/list/random_ruins
 
+	/// Maximum number of random ruins that will be generated.
+	var/max_random_ruins = 5
+
 	/// Baseturf that will be used to override all areas' base_turf vars.
 	var/turf/baseturf
 
@@ -96,6 +99,20 @@
 
 /datum/map_generator/proc/load_necessary_ruins(z_level)
 	for(var/path in necessary_ruins)
+		var/datum/map_template/ruin = new path()
+		var/turf/ruin_turf = get_unused_square(z_level, tries = 5, width = ruin.width, height = ruin.height)
+		if(!istype(ruin_turf))
+			continue
+
+		ruin.load(ruin_turf)
+
+/datum/map_generator/proc/load_random_ruins(z_level)
+	var/ruin_list = expand_weights(random_ruins)
+	for(var/num = 1 to max_random_ruins)
+		var/path = pick_n_take(ruin_list)
+		if(!path)
+			continue
+
 		var/datum/map_template/ruin = new path()
 		var/turf/ruin_turf = get_unused_square(z_level, tries = 5, width = ruin.width, height = ruin.height)
 		if(!istype(ruin_turf))
