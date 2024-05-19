@@ -7,7 +7,7 @@ SUBSYSTEM_DEF(misc)
 	BakeBitmaskOverlays()
 
 	if(config.game.generate_asteroid)
-		GLOB.using_map.perform_map_generation()
+		GLOB.using_map.perform_map_generation(FALSE)
 
 	// Create robolimbs for chargen.
 	populate_robolimb_list()

@@ -13,10 +13,6 @@
 	var/max_fire_temperature_sustained = 0 //The max temperature of the fire which it was subjected to
 	var/dirt = 0
 
-/turf/simulated/Initialize(mapload, ...)
-	. = ..()
-	add_think_ctx("unwet_context", CALLBACK(src, nameof(.proc/unwet_floor)), 0 )
-
 /turf/simulated/post_change()
 	..()
 	var/turf/T = GetAbove(src)
@@ -34,7 +30,7 @@
 		wet_overlay = image('icons/effects/water.dmi',src,"wet_floor")
 		AddOverlays(wet_overlay)
 
-	set_next_think_ctx("unwet_context", world.time + 20 SECONDS)
+	try_add_think_ctx("unwet_context", CALLBACK(src, nameof(.proc/unwet_floor)), world.time + 20 SECONDS)
 
 /turf/simulated/proc/unwet_floor(check_very_wet = TRUE)
 	if(check_very_wet && wet >= 2)
@@ -46,6 +42,8 @@
 	if(wet_overlay)
 		CutOverlays(wet_overlay)
 		wet_overlay = null
+
+	remove_think_ctx("unwet_context")
 
 /turf/simulated/clean_blood()
 	for(var/obj/effect/decal/cleanable/blood/B in contents)

@@ -237,6 +237,12 @@
 	///used to override the mouse cursor so it doesnt get reset
 	var/mouse_override_icon = null
 
+	///AI controller that controls this atom. type on init, then turned into an instance during runtime
+	var/datum/ai_controller/ai_controller
+
+	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
+	var/list/do_afters
+
 /datum/rad_resist/mob
 	alpha_particle_resist = 6 MEGA ELECTRONVOLT
 	beta_particle_resist = 0.1 MEGA ELECTRONVOLT

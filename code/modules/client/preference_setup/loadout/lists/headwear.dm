@@ -96,6 +96,7 @@
 	..()
 	var/informalhats = list()
 	informalhats["cowboy hat"] = /obj/item/clothing/head/cowboy_hat
+	informalhats["panama"] = /obj/item/clothing/head/panama
 	informalhats["ushanka"] = /obj/item/clothing/head/ushanka
 	informalhats["TCC ushanka"] = /obj/item/clothing/head/ushanka/tcc
 	gear_tweaks += new /datum/gear_tweak/path(informalhats)

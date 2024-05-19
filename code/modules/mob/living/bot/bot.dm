@@ -39,10 +39,6 @@
 	var/target_patience = 5
 	var/frustration = 0
 	var/max_frustration = 0
-	var/x_last
-	var/y_last
-	/// Times this bot tried pathfinding from the same X,Y coordinates
-	var/same_pos_count
 
 /mob/living/bot/New()
 	..()
@@ -258,8 +254,6 @@
 				stepToTarget()
 		if(max_frustration && frustration > max_frustration * target_speed)
 			handleFrustrated(1)
-	else if(!inaction_check())
-		return
 
 	else
 		resetTarget()
@@ -316,17 +310,34 @@
 	return 1
 
 /mob/living/bot/proc/handlePatrol()
-	makeStep(patrol_path)
-	return
+	if(!LAZYLEN(patrol_path))
+		return
+
+	var/list/pos = patrol_path[patrol_path.len - 1 > 1 ? patrol_path.len - 1 : 1]
+	var/turf/next_step = locate(pos["x"], pos["y"], pos["z"])
+	step_towards(src, next_step)
+	if(get_turf(src) == next_step)
+		patrol_path.Cut(patrol_path.len - 1, patrol_path.len)
+	else
+		frustration++
 
 /mob/living/bot/proc/startPatrol()
-	var/turf/T = getPatrolTurf()
-	if(T)
-		patrol_path = AStar(get_turf(loc), T, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, max_patrol_dist, id = botcard, exclude = obstacle)
-		if(!patrol_path)
-			patrol_path = list()
-		obstacle = null
-	return
+	var/turf/target_turf = getPatrolTurf()
+	if(isnull(target_turf))
+		return
+
+	var/result = rustg_generate_path_astar(\
+		json_encode(list("x" = x, "y" = y, "z" = z)),\
+		json_encode(list("x" = target_turf.x, "y" = target_turf.y, "z" = target_turf.z)),\
+		NODE_TURF_BIT,\
+		(NODE_DENSE_BIT | NODE_SPACE_BIT),\
+		null\
+	)
+
+	if(!rustg_json_is_valid(result))
+		CRASH(result)
+
+	patrol_path = json_decode(result)
 
 /mob/living/bot/proc/getPatrolTurf()
 	var/minDist = INFINITY
@@ -336,6 +347,7 @@
 		for(var/obj/machinery/navbeacon/N in navbeacons)
 			if(!N.codes["patrol"])
 				continue
+
 			if(get_dist(src, N) < minDist)
 				minDist = get_dist(src, N)
 				targ = N
@@ -348,6 +360,7 @@
 
 	if(targ)
 		return get_turf(targ)
+
 	return null
 
 /mob/living/bot/proc/handleIdle()
@@ -364,7 +377,8 @@
 
 /mob/living/bot/proc/makeStep(list/path)
 	if(!path.len)
-		return 0
+		return FALSE
+
 	var/turf/T = path[1]
 	if(get_turf(src) == T)
 		path -= T
@@ -387,7 +401,6 @@
 	resetTarget()
 	patrol_path = list()
 	ignore_list = list()
-	same_pos_count = 0
 	return 1
 
 /mob/living/bot/proc/turn_off()
@@ -400,20 +413,6 @@
 
 /mob/living/bot/on_ghost_possess()
 	resetTarget()
-
-/mob/living/bot/proc/inaction_check()
-	if((will_patrol && !pulledby && !target) && (x_last == x && y_last == y))
-		same_pos_count++
-		if(same_pos_count >= MAX_SAMEPOS_COUNT)
-			turn_off()
-			return FALSE
-	else
-		same_pos_count = 0
-
-	x_last = x
-	y_last = y
-
-	return TRUE
 
 /******************************************************************/
 // Navigation procs

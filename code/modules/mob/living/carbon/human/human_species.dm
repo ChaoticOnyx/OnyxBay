@@ -39,6 +39,7 @@
 
 /mob/living/carbon/human/gatecrasher/proc/unpossessed_death_check()
 	if(ckey) // Possessed, no euthanasia required
+		remove_think_ctx("unposessed_death_check")
 		return
 
 	adjustOxyLoss(maxHealth) // Cease life functions.
@@ -46,6 +47,7 @@
 
 	var/obj/item/organ/internal/heart/my_heart = internal_organs_by_name[BP_HEART]
 	my_heart?.pulse = PULSE_NONE
+	remove_think_ctx("unposessed_death_check")
 
 /mob/living/carbon/human/gatecrasher/on_ghost_possess()
 	. = ..()

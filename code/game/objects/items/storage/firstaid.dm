@@ -137,7 +137,13 @@
 	can_hold = list(
 		/obj/item/reagent_containers/pill/,
 		/obj/item/reagent_containers/hypospray/autoinjector/,
-		/obj/item/reagent_containers/syringe/
+		/obj/item/reagent_containers/syringe/,
+		/obj/item/pen/,
+		/obj/item/reagent_containers/dropper/,
+		/obj/item/reagent_containers/vessel/beaker/vial/,
+		/obj/item/scalpel/,
+		/obj/item/hemostat/,
+		/obj/item/clothing/mask/smokable/cigarette/
 		)
 
 /obj/item/storage/firstaid/surgery
