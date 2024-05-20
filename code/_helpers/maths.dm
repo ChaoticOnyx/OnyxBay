@@ -16,6 +16,8 @@
 
 #define PERCENT(a, b) (b ? 100 * a / b : 0)
 
+#define ATAN2(x, y) arctan(x, y)
+
 // round() acts like floor(x, 1) by default but can't handle other values
 #define FLOOR(x, y) (round((x) / (y)) * (y))
 /// Gets the sign of x, returns -1 if negative, 0 if 0, 1 if positive

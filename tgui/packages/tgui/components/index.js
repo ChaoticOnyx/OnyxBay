@@ -43,3 +43,5 @@ export { Tabs } from "./Tabs";
 export { TextArea } from "./TextArea";
 export { TimeDisplay } from "./TimeDisplay";
 export { Tooltip } from "./Tooltip";
+export { StarButton } from "./StarButton";
+export { Map } from "./Map";

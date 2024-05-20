@@ -7,6 +7,14 @@
 	layer = PLATING_LAYER
 	var/tile_type = /obj/item/stack/tile/floor
 
+/turf/simulated/floor/plating/hull
+	icon_state = "outerhull"
+	base_icon_state = "outerhull"
+
+/turf/simulated/floor/plating/hull/edge
+	icon_state = "outerhull_dir"
+	base_icon_state = "outerhull_dir"
+
 /turf/simulated/floor/plating/rough
 	name = "plating"
 	icon_state = "rough_plating"

@@ -10,6 +10,7 @@
 #define MUTATION_SKELETON        9
 #define MUTATION_BARTENDER       10 // You can professionally do miracles with bottles and other vessels
 #define MUTATION_STRONG          11 // Basically hulk, but without greens.
+#define MUTATION_SEASICK         12
 
 // Other Mutations:
 #define mRemotetalk    100 // Remote talking.

@@ -30,3 +30,6 @@
 
 /// Called on `/atom/proc/examine` (mob/user, list/examine_result)
 #define SIGNAL_MOB_EXAMINED_MORE "mob_examined_more"
+
+/// Called on
+#define COMSIG_MOB_OVERMAP_CHANGE "mob_overmap_change"

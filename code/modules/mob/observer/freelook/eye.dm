@@ -23,6 +23,8 @@
 
 	var/datum/visualnet/visualnet
 
+	var/uses_static = TRUE
+
 /mob/observer/eye/Destroy()
 	release(owner)
 	owner = null
@@ -65,7 +67,8 @@
 		owner.client.eye = src
 	if(reset_location)
 		setLoc(owner)
-	visualnet.update_eye_chunks(src, TRUE)
+	if(uses_static)
+		visualnet.update_eye_chunks(src, TRUE)
 
 /mob/observer/eye/proc/release(mob/user)
 	if(owner != user || !user)
@@ -94,7 +97,8 @@
 	if(owner_follows_eye)
 		owner.forceMove(loc)
 
-	visualnet.update_eye_chunks(src)
+	if(uses_static)
+		visualnet.update_eye_chunks(src)
 	return TRUE
 
 /mob/observer/eye/proc/getLoc()

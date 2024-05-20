@@ -13,3 +13,10 @@
 #define SIGNAL_ELEMENT_ATTACH "element_attach"
 /// Fires on the target datum when an element is attached to it (/datum/element).
 #define SIGNAL_ELEMENT_DETACH "element_detach"
+
+/// '/client/MouseDown()' (atom/object, turf/location, control, params)
+#define SIGNAL_MOB_MOUSEDOWN "mob_mousedown"
+/// '/client/MouseUp()' (atom/object, turf/location, control, params)
+#define SIGNAL_MOB_MOUSEUP   "mob_mouseup"
+/// '/client/MouseDrag()' (atom/src_object, atom/over_object, turf/src_location, turf/over_location, src_control, over_control, params)
+#define SIGNAL_MOB_MOUSEDRAG "mob_mousedrag"

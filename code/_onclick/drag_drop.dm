@@ -26,3 +26,17 @@
 // Receive a mouse drop
 /atom/proc/MouseDrop_T(atom/dropping, mob/user, params)
 	return
+
+/client/MouseMove(object,location,control,params)
+	if(mob && LAZYLEN(mob.mousemove_intercept_objects))
+		for(var/datum/D in mob.mousemove_intercept_objects)
+			D.onMouseMove(object, location, control, params)
+	..()
+
+/datum/proc/onMouseMove(object, location, control, params)
+	return
+
+/datum/proc/onMouseDrag(src_object, over_object, src_location, over_location, params, mob)
+	return
+
+/client/var/overmap_zoomout = 0

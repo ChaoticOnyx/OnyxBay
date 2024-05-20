@@ -124,11 +124,21 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		"Atheism"
 		)
 
+	/// Ref to an active overmap avatar
+	var/obj/structure/overmap/overmap
+	/// Avatar type spawned on init
+	var/overmap_type = null
+
+	/// Mapdatum of a ftl mask mask
+	var/ftl_mask
+
 /datum/map/New()
 	if(!allowed_jobs)
 		allowed_jobs = subtypesof(/datum/job)
 	if(!shuttle_types)
 		util_crash_with("[src] has no shuttle_types!")
+	if(!isnull(overmap_type))
+		overmap = new overmap_type()
 
 /datum/map/proc/level_has_trait(z, trait)
 	return map_levels[z].has_trait(trait)
@@ -317,3 +327,19 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			result += level
 
 	return result
+
+/**
+ * THEORETICALLY it would be easier to change all space turfs.
+ * However, I do not want to fuck with cleaning space turfs from excess shit and space stragglers.
+ * That's one bad decision from Filatelele.
+ * One giant problem for our coderbus.
+ */
+/datum/map/proc/apply_ftl_mask()
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+		if(!L.has_trait(ZTRAIT_STATION))
+			continue
+
+		var/datum/map_template/ftl_mask = new L.ftl_mask()
+		var/turf/spawnloc = locate(1, 1, level)
+		ftl_mask.load(spawnloc, clear_contents = TRUE)
