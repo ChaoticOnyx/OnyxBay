@@ -62,12 +62,7 @@
 /mob/living/deity/Life()
 	. = ..()
 	if(.)
-		if(currently_building.len)
-			//var/con_speed = construct_speed / currently_building.len
-			for(var/b in currently_building)
-				continue
-
-		else if(health < maxHealth) // Not building? Heal ourselves
+		if(health < maxHealth) // Not building? Heal ourselves
 			health = min(maxHealth, health + construct_speed)
 
 /obj/structure/deity
@@ -90,6 +85,8 @@
 	if(owner)
 		linked_deity = owner
 		linked_deity.add_building(src)
+
+	src.health = health
 
 /obj/structure/deity/Destroy()
 	linked_deity?.remove_building(src)

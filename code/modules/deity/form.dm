@@ -25,7 +25,6 @@
 	D.icon_state = form_state
 	D.desc = desc
 	D.invisibility = INVISIBILITY_OBSERVER
-	D.density = TRUE
 	var/datum/hud/deity/deityhud = D.hud_used
 	deityhud.update_resources(resources)
 

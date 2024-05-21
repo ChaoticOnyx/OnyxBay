@@ -18,8 +18,12 @@
 	return ..()
 
 /datum/action/cooldown/spell/ressurection_ritual/cast(turf/cast_on)
-	cast_on.show_splash_text(usr, "Drawing...", SPAN_WARNING("You start drawing with your blood..."))
 	var/mob/living/carbon/human/H = usr
+	var/mob/living/deity/deity = H?.mind?.godcultist?.linked_deity
+	if(!istype(deity))
+		return
+
+	cast_on.show_splash_text(H, "Drawing...", SPAN_WARNING("You start drawing with your blood..."))
 	if(H.should_have_organ(BP_HEART))
 		H.vessel.remove_reagent(/datum/reagent/blood, 3)
 
@@ -29,7 +33,7 @@
 	if(H.should_have_organ(BP_HEART))
 		H.vessel.remove_reagent(/datum/reagent/blood, 3)
 
-	var/obj/effect/ressurection_rune/rune = new /obj/effect/ressurection_rune(cast_on)
+	var/obj/effect/ressurection_rune/rune = new /obj/effect/ressurection_rune(cast_on, deity)
 	rune.add_fingerprint(H)
 	rune.add_blood(H)
 
@@ -38,10 +42,11 @@
 	icon_state = "ressurection_rune"
 	var/mob/living/deity/linked_deity
 	anchored = TRUE
+	var/used_for_summon = FALSE
 
-/obj/effect/ressurection_rune/Initialize(mapload, deity)
+/obj/effect/ressurection_rune/Initialize(mapload, linked_deity)
 	. = ..()
-	linked_deity = deity
+	src.linked_deity = linked_deity
 
 /obj/effect/ressurection_rune/Destroy()
 	linked_deity = null
@@ -52,6 +57,9 @@
 	if(.)
 		return
 
+	if(used_for_summon)
+		return
+
 	var/list/cultists = list()
 	for(var/mob/living/carbon/human in range(1, src))
 		var/datum/godcultist/G = human?.mind?.godcultist
@@ -60,7 +68,7 @@
 
 		cultists |= human
 
-	if(LAZYLEN(cultists) <= 1)
+	if(LAZYLEN(cultists) <= 2)
 		for(var/mob/M in cultists)
 			to_chat(M, SPAN_WARNING("You need more cultists!"))
 
@@ -69,6 +77,7 @@
 	for(var/mob/living/carbon/C in GLOB.player_list - cultists)
 		C.hallucination(400, 80)
 
+	used_for_summon = TRUE
 	new /obj/effect/infernal_portal(loc, src, linked_deity)
 
 /obj/effect/infernal_portal
@@ -100,6 +109,7 @@
 
 	devil.create_devils_shell(deity, get_turf(src))
 	playsound(get_turf(src), 'sound/effects/wind/wind_5_1.ogg', 100, FALSE, 1)
+	qdel_self()
 
 /obj/effect/infernal_portal/bullet_act(obj/item/projectile/proj, def_zone)
 	take_damage(proj.damage)

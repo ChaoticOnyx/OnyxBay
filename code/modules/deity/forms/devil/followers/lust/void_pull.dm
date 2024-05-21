@@ -28,7 +28,7 @@
 /datum/action/cooldown/spell/aoe/void_pull/get_things_to_cast_on(atom/center)
 	var/list/things = list()
 	// Default behavior is to get all atoms in range, center and owner not included.
-	for(var/mob/living/nearby_thing in range(aoe_radius, center))
+	for(var/mob/living/nearby_thing in view(aoe_radius, center))
 		if(nearby_thing == owner)
 			continue
 

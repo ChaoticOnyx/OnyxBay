@@ -8,7 +8,6 @@
 "i" = (/obj/structure/table/steel,/obj/item/clothing/suit/chef/classic,/obj/item/material/knife/butch,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
 "l" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/sliceable/tofubread,/turf/simulated/floor/trim/carpet/red,/area/devilslair)
 "m" = (/obj/structure/table/steel,/obj/item/scalpel,/obj/item/circular_saw,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
-"n" = (/obj/machinery/acting/changer/devilschanger,/turf/simulated/floor/trim/darkwood,/area/devilslair)
 "o" = (/obj/structure/bed/chair/wood{dir = 8},/turf/simulated/floor/trim/carpet/red,/area/devilslair)
 "p" = (/obj/structure/bed,/obj/item/bedsheet/red,/turf/simulated/floor/trim/darkwood,/area/devilslair)
 "q" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/vessel/bottle/pwine,/obj/item/reagent_containers/vessel/glass/wine{pixel_x = 9},/obj/item/reagent_containers/vessel/glass/wine{pixel_x = 9},/obj/item/reagent_containers/vessel/glass/wine{pixel_x = -9},/turf/simulated/floor/trim/carpet/red,/area/devilslair)
@@ -34,7 +33,7 @@
 "Q" = (/obj/effect/devilsportal,/turf/simulated/floor/trim/darkwood,/area/devilslair)
 "S" = (/obj/structure/flora/pottedplant/autumn,/turf/simulated/floor/trim/darkwood,/area/devilslair)
 "T" = (/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/natural/lava/lit,/area/devilslair)
-"U" = (/obj/structure/table/woodentable,/obj/item/mirror,/turf/simulated/floor/trim/darkwood,/area/devilslair)
+"U" = (/obj/structure/table/woodentable,/turf/simulated/floor/trim/darkwood,/area/devilslair)
 "V" = (/obj/structure/flora/pottedplant/eye,/turf/simulated/floor/trim/darkwood,/area/devilslair)
 "W" = (/obj/structure/bed/chair/comfy/red{dir = 8},/obj/machinery/acting/changer/devilschanger{pixel_x = -32},/turf/simulated/floor/trim/darkwood,/area/devilslair)
 "X" = (/obj/effect/decal/remains,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/asteroid/air/prison,/area/devilslair)
@@ -49,7 +48,7 @@ vaaaaaaaaaaaaaaaaaaaaaav
 vaaaaaaaaaaaaaaabbbbbbav
 vabbbbbbbbbbbbbbbxsssbav
 vabIDXDgbbsssssbbrrrHbav
-vabDDDDDbbsssssbbUccnbav
+vabDDDDDbbsssssbbUcccbav
 vabwYYYYbbbrrrbbbWccpbav
 vabuYYYYbScccccSbVcccbav
 vabwwYYYZccccMccZcccKbav

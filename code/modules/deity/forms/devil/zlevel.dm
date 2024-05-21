@@ -28,6 +28,9 @@ GLOBAL_LIST_INIT(devilspecies, list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_UNATH
 	if(!istype(user))
 		return
 
+	if(!user?.mind?.deity)
+		return
+
 	var/mob/living/carbon/human/H = user
 	H.change_appearance(APPEARANCE_ALL, H.loc, H, TRUE, GLOB.devilspecies, state = GLOB.z_state)
 	H.rename_self()
@@ -47,23 +50,27 @@ GLOBAL_LIST_INIT(devilspecies, list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_UNATH
 	teleport(user)
 
 /obj/effect/devilsportal/proc/teleport(atom/movable/M, ignore_checks = FALSE)
-	if(isMonkey(M) || !ishuman(M))
+	if(!ishuman(M))
 		return
 
 	var/mob/living/carbon/human/user = M
 	if(tgui_alert(user, "Teleport?", "Teleport", list("Yes", "No")) == "No")
 		return
 
-	user.mind.assigned_role = "Assistant"
+	if(!isMonkey(M))
+		user.mind.assigned_role = "Assistant"
 
-	job_master.EquipRank(user, user.mind.assigned_role, TRUE)
+		job_master.EquipRank(user, user.mind.assigned_role, TRUE)
 
-	var/datum/job/job = job_master.GetJob(user.mind.assigned_role)
+		var/datum/job/job = job_master.GetJob(user.mind.assigned_role)
 
-	var/spawnpoint = pick(GLOB.latejoin)
+		if(tgui_alert(user, "Announce arrival?", "Announce arrival?", list("Yes","No")) == "Yes")
+			INVOKE_ASYNC(src, nameof(.proc/announce_arrival), user, job)
 
-	if(tgui_alert(user, "Announce arrival?", "Announce arrival?", list("Yes","No")) == "Yes")
-		INVOKE_ASYNC(src, nameof(.proc/announce_arrival), user, job)
+	var/spawnpoint = safepick(GLOB.latejoin)
+
+	if(!spawnpoint)
+		return
 
 	user.forceMove(spawnpoint)
 

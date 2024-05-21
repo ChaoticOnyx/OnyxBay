@@ -7,13 +7,10 @@
 	icon_state = "jew"
 	var/destination
 
-/obj/structure/deity/devil_teleport/Initialize()
+/obj/structure/deity/devil_teleport/Initialize(mapload, destination, deity)
 	. = ..()
-	var/area/A = get_area(src)
-	destination = A.name
-
-/obj/structure/deity/devil_teleport/Destroy()
-	return ..()
+	src.destination = destination
+	linked_deity = deity
 
 /obj/structure/deity/devil_teleport/attack_hand(mob/user)
 	if(user.mind?.godcultist?.linked_deity == linked_deity || user.mind?.deity == linked_deity)
@@ -84,4 +81,13 @@
 	if(!istype(deity))
 		return
 
-	new /obj/structure/deity/devil_teleport(target, deity)
+	var/destination = tgui_input_text(usr, "Choose a new teleport name.", "Destination", get_area(target))
+	var/same_destinations = 0
+	for(var/obj/structure/deity/devil_teleport/tp in deity.buildings)
+		if(tp == src)
+			continue
+
+		if(tp.destination == destination)
+			destination = destination + " [same_destinations++]"
+
+	new /obj/structure/deity/devil_teleport(target, deity, destination)

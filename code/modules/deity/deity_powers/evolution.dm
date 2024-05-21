@@ -81,6 +81,12 @@
 			if(!D.form.use_resource(name, resource_cost[name]))
 				return FALSE
 
+
+		if(cost > deity?.form?.knowledge_points)
+			return FALSE
+
+		deity?.form?.knowledge_points -= cost
+
 	if(!isnull(H))
 		var/datum/godcultist/godcultist = H.mind?.godcultist
 		if(!godcultist?.spend_points(cost))

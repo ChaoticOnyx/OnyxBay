@@ -7,7 +7,8 @@
 /datum/evolution_category/sloth
 	name = "Sin of Sloth"
 	items = list(
-		/datum/evolution_package/expand_sight
+		/datum/evolution_package/expand_sight,
+		/datum/evolution_package/teleport,
 	)
 
 /datum/evolution_package/expand_sight
@@ -17,11 +18,11 @@
 		/datum/action/cooldown/expand_sight
 	)
 
-/datum/evolution_package/expand_sight
-	name = "Expand Sight"
-	desc = "Bother fighting your opponents no more, you will see them coming from afar. Forget about using binoculars and other optics."
+/datum/evolution_package/teleport
+	name = "Teleport"
+	desc = "Build statues that allow your fellow sinners to teleport between them."
 	actions = list(
-		/datum/action/cooldown/expand_sight
+		/datum/action/cooldown/spell/devilsteleport
 	)
 
 /datum/modifier/sin/sloth/New()
