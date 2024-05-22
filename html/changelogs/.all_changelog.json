@@ -1,5 +1,43 @@
 [
   {
+    "author": "Devyashka",
+    "date": "2024-05-22T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "Новый шахтерский аванпост.",
+        "pr": 12474
+      }
+    ]
+  },
+  {
+    "author": "Leviathan Weber & BaraBara",
+    "date": "2024-05-22T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Шахтёрский аванпост теперь выглядит лучше и в нём появился бар.",
+        "pr": 12471
+      }
+    ]
+  },
+  {
+    "author": "Filatelele",
+    "date": "2024-05-22T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "Добавлены две дрели на аванпост шахтеров.",
+        "pr": 12460
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "На астероиде теперь меньше космоса.",
+        "pr": 12460
+      }
+    ]
+  },
+  {
     "author": "Filatelele",
     "date": "2024-05-19T00:00:00+03:00",
     "changes": [
