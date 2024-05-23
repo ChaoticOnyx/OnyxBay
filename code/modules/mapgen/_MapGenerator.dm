@@ -128,9 +128,19 @@
 			z_level
 		)
 
-		if(locate(/atom/movable) in block(locate(possible_turf.x, possible_turf.y, z_level), locate(possible_turf.x + width, possible_turf.y + height, z_level)))
+		var/list/block = block(locate(possible_turf.x, possible_turf.y, z_level), locate(possible_turf.x + width, possible_turf.y + height, z_level))
+		if(!is_only_space_turf_list(block))
 			continue
 
 		return possible_turf
 
 	return FALSE
+
+/proc/is_only_space_turf_list(list/L)
+	for(var/atom/A in L)
+		if(isspaceturf(A))
+			continue
+
+		return FALSE
+
+	return TRUE
