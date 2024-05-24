@@ -23,7 +23,8 @@
 	return --duration_of_stay > 0
 
 /datum/trader/ship/unique/what_do_you_want()
-	return get_response(TRADER_WHAT_WANT, "I don't want anything!")
+	var/datum/trade_response/tr = make_response(TRADER_WHAT_WANT, "I don't want anything!")
+	return tr
 
 /datum/trader/ship/unique/severance
 	name = "Unknown"
