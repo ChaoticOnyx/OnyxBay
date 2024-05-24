@@ -174,13 +174,9 @@
 
 	return ..()
 
-/obj/structure/table/MouseDrop_T(obj/item/stack/material/what, mob/living/carbon/human/user)
+/obj/structure/table/MouseDrop_T(obj/item/stack/material/what)
 	if(can_reinforce && isliving(usr) && (!usr.stat) && istype(what) && usr.get_active_hand() == what && Adjacent(usr))
 		reinforce_table(what, usr)
-	if(usr.resting)
-		if(do_after(usr, 50, src, FALSE, incapacitation_flags = INCAPACITATION_NONE))
-			usr.forceMove(get_turf(src))
-			user.hiding = TRUE
 	else
 		return ..()
 
