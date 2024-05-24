@@ -76,11 +76,6 @@ note dizziness decrements automatically in the mob's Life() proc.
 /mob/var/height_offset = 0
 
 /mob/proc/update_height_offset(new_val)
-	if(isliving(src))
-		var/mob/living/C = src
-		if(C.hiding)
-			C.pixel_z = 0
-			return
 	if(height_offset == new_val)
 		return FALSE
 	height_offset = new_val
