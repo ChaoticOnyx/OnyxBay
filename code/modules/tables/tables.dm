@@ -179,8 +179,8 @@
 		reinforce_table(what, usr)
 	if(usr.resting)
 		if(do_after(usr, 50, src, FALSE, incapacitation_flags = INCAPACITATION_NONE))
-			usr.forceMove(get_turf(src))
 			user.hiding = TRUE
+			usr.forceMove(get_turf(src))
 	else
 		return ..()
 
