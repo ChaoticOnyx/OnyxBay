@@ -5,17 +5,7 @@
 
 /datum/trader/ship/unique/New()
 	..()
-	wanted_items = list()
-	for(var/type in possible_wanted_items)
-		var/status = possible_wanted_items[type]
-		if(status & TRADER_THIS_TYPE)
-			wanted_items += type
-		if(status & TRADER_SUBTYPES_ONLY)
-			wanted_items += subtypesof(type)
-		if(status & TRADER_BLACKLIST)
-			wanted_items -= type
-		if(status & TRADER_BLACKLIST_SUB)
-			wanted_items -= subtypesof(type)
+	wanted_items = possible_wanted_items
 
 /datum/trader/ship/unique/tick()
 	if(prob(-disposition) || refuse_comms)
