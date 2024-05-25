@@ -2,6 +2,15 @@
 	var/genetype    // Label used when applying trait.
 	var/list/values // Values to copy into the target seed datum.
 
+	var/source
+	var/source_short
+
+/datum/plantgene/New(datum/seed/sampled_from, gene_name)
+	src.genetype = gene_name
+
+	source = "[gene_name], sampled from [sampled_from.display_name]"
+	source_short = "[copytext(capitalize(gene_name), 1, 3)], #[sampled_from.uid]"
+
 /datum/seed
 	//Tracking.
 	var/uid                        // Unique identifier.
@@ -653,8 +662,7 @@
 	if(!genetype) return 0
 
 	var/list/traits_to_copy
-	var/datum/plantgene/P = new()
-	P.genetype = genetype
+	var/datum/plantgene/P = new(src, genetype)
 	P.values = list()
 
 	switch(genetype)
@@ -841,3 +849,12 @@
 
 /datum/seed/proc/is_canonical()
 	return canonical_icon && (SSplants.canonical_plants[canonical_icon] == get_canonical_key())
+
+/// Checks whether this seed is unique and saves it if necessary.
+/datum/seed/proc/save_seed()
+	if(name != "new line" && isnull(SSplants.seeds[name]))
+		return
+
+	uid = sequential_id(/datum/seed/)
+	name = "[uid]"
+	SSplants.seeds[name] = src
