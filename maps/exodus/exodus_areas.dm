@@ -2113,6 +2113,10 @@
 /area/outpost/research
 	icon_state = "outpost_research"
 
+/area/outpost/research/hor
+	name = "Research Outpost - RD's Office"
+	icon_state = "Sleep"
+
 /area/outpost/research/hallway
 	name = "Research Outpost Hallway"
 
@@ -2163,6 +2167,17 @@
 
 /area/outpost/research/disposal
 	name = "Research Outpost Waste Disposal"
+
+/area/outpost/research/atmospherics
+	name = "Research Outpost Atmospherics"
+
+/area/outpost/research/breakroom
+	name = "Research Outpost Break Room"
+
+/area/outpost/research/engine
+	name = "Research Outpost Engine"
+	icon_state = "engine"
+	sound_env = LARGE_ENCLOSED
 
 /area/outpost/research/brainstorm
 	name = "Research Outpost Brainstorm Room"
