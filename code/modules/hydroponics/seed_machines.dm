@@ -80,11 +80,29 @@
 	density = TRUE
 	anchored = TRUE
 
+	component_types = list(
+		/obj/item/circuitboard/genemod,
+		/obj/item/stock_parts/micro_laser,
+		/obj/item/stock_parts/manipulator,
+		/obj/item/stock_parts/console_screen,
+	)
+
+	/// Determines upper-bound when damage to `degradation` is rolled.
+	var/deviation = 40;
+	/// Represents genome degradation, when 100% is reached `seed_genes` is destroyed.
 	var/degradation = 0
+	/// Refernce to the seed genetic datum.
 	var/datum/seed/seed_genes
 
+	/// Reference to the inserted seed pack.
 	var/obj/item/seeds/loaded_pack
+	/// Reference to the inserted data disk.
 	var/obj/item/disk/botany/loaded_disk
+
+/obj/machinery/genemod/Initialize()
+	. = ..()
+
+	update_icon()
 
 /obj/machinery/genemod/proc/update_glow()
 	if (inoperable())
@@ -169,6 +187,14 @@
 	tgui_update()
 
 	return TRUE
+
+/obj/machinery/genemod/RefreshParts()
+	. = ..()
+
+	var/obj/item/stock_parts/micro_laser/laser = locate() in component_parts
+	var/obj/item/stock_parts/manipulator/manipulator = locate() in component_parts
+
+	deviation = 40 - (laser.rating + manipulator.rating) / 2 * 10
 
 /obj/machinery/genemod/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -283,7 +309,7 @@
 	if (!loaded_disk.store_gene(seed_genes, gene_name))
 		return
 
-	degradation += rand(20, 60)
+	degradation += rand(20, 20 + deviation)
 	if (degradation >= 100)
 		wipe_genes()
 

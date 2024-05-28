@@ -314,3 +314,10 @@
 	req_tech = list(TECH_ENGINEERING = 2, TECH_POWER = 2)
 	build_path = /obj/item/circuitboard/sauna
 	sort_string = "KCAAJ"
+
+/datum/design/circuit/genemod
+	name = "gene forge"
+	id = "gene_forge"
+	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 1)
+	build_path = /obj/item/circuitboard/genemod
+	sort_string = "KCAAK"
