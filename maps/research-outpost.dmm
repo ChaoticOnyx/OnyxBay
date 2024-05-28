@@ -440,7 +440,7 @@
 "Lr" = (/obj/structure/reagent_dispensers/watertank,/obj/structure/railing/wood,/turf/simulated/floor/plating,/area/outpost/research/chemistry)
 "Lw" = (/obj/structure/window_frame/indestructible/hull,/obj/machinery/door/blast/regular/open{id = "SciOutpShutters"; name = "Window Shutters"},/obj/machinery/door/firedoor/border_only,/turf/unsimulated/floor{icon_state = "plating"; name = "plating"},/area/outpost/research/lab)
 "LB" = (/obj/effect/floor_decal/corner/blue{dir = 6},/obj/machinery/atmospherics/pipe/simple/hidden/cyan{dir = 4},/turf/simulated/floor/tiled/white/rough,/area/outpost/research/hallway)
-"LC" = (/obj/structure/sign/warning/docking_area,/turf/simulated/wall/r_wall,/area/template_noop)
+"LC" = (/obj/structure/sign/warning/docking_area,/turf/simulated/wall/r_wall,/area/outpost/research)
 "LD" = (/obj/structure/flora/ausbushes/fullgrass{pixel_x = 31; pixel_y = 6},/obj/structure/flora/ausbushes/sparsegrass{pixel_x = 3; pixel_y = 6},/turf/simulated/floor/natural/grass,/area/outpost/research/hallway)
 "LF" = (/obj/machinery/atmospherics/pipe/manifold/visible/yellow{dir = 4},/obj/effect/floor_decal/industrial/hatch/yellow,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled,/area/outpost/research/isolation_monitoring)
 "LJ" = (/obj/structure/window_frame/indestructible/hull,/obj/machinery/door/blast/regular/open{dir = 8; id = "SciOutpShutters"; name = "Window Shutters"},/obj/machinery/door/firedoor/border_only,/turf/unsimulated/floor{icon_state = "plating"; name = "plating"},/area/outpost/research/brainstorm)
