@@ -2,9 +2,12 @@
 // POWER MACHINERY BASE CLASS
 //////////////////////////////
 
-#define CONNECT_NETWORK_FAIL           0  /// Failed to connect to the network
-#define CONNECT_NETWORK_SUCCESS        1  /// Successfully connected the machinery to the network
-#define CONNECT_NETWORK_DELAYED_PROC   2  /// Successfully connected the machinery to the network, but will run the after_connect_to_network procedure afterward
+/// Failed to connect to the network
+#define CONNECT_NETWORK_FAIL 0
+/// Successfully connected the machinery to the network
+#define CONNECT_NETWORK_SUCCESS 1
+/// Successfully connected the machinery to the network, but will run the after_connect_to_network procedure afterward
+#define CONNECT_NETWORK_DELAYED_PROC 2
 
 /////////////////////////////
 // Definitions
