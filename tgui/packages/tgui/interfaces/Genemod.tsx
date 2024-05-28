@@ -61,9 +61,11 @@ export const Genemod = (props: any, context: any) => {
         <Stack fill vertical>
           <Stack.Item>
             <GeneInfo
-              disabled={!hasPack}
+              scrambleDisabled={!hasPack}
+              wipeDisabled={!hasGenes}
               degradation={degradation}
               onGeneScramble={handleScramble}
+              onGeneWipe={handleWipe}
             />
           </Stack.Item>
           <Stack.Item grow basis={0}>
@@ -84,7 +86,6 @@ export const Genemod = (props: any, context: any) => {
                   disabledApply={!hasPack || !hasDisk}
                   disabledEject={!hasDisk}
                   onApply={handleGeneApply}
-                  onWipe={handleWipe}
                   onApplyAll={handleGeneApplyAll}
                   onEject={handleDiskEject}
                 />
@@ -98,13 +99,21 @@ export const Genemod = (props: any, context: any) => {
 };
 
 type GeneInfo = {
-  disabled: boolean;
+  scrambleDisabled: boolean;
+  wipeDisabled: boolean;
   degradation: number;
   onGeneScramble: () => void;
+  onGeneWipe: () => void;
 };
 
 const GeneInfo = (
-  { disabled, degradation, onGeneScramble }: GeneInfo,
+  {
+    scrambleDisabled,
+    wipeDisabled,
+    degradation,
+    onGeneScramble,
+    onGeneWipe,
+  }: GeneInfo,
   _context: any
 ) => {
   return (
@@ -119,8 +128,18 @@ const GeneInfo = (
             bolds
             textAlign="center"
             tooltip="Scramble Genes"
-            disabled={disabled}
+            disabled={scrambleDisabled}
             onClick={onGeneScramble}
+          />
+        </Stack.Item>
+        <Stack.Item>
+          <Button
+            icon="trash"
+            color="bad"
+            textAlign="center"
+            tooltip="Wipe Genome"
+            disabled={wipeDisabled}
+            onClick={onGeneWipe}
           />
         </Stack.Item>
       </Stack>
@@ -197,7 +216,6 @@ type DiskDisplayProps = {
   onApply: (gene_name: string) => void;
   onApplyAll: () => void;
   onEject: () => void;
-  onWipe: () => void;
 };
 
 const DiskDisplay = (
@@ -209,7 +227,6 @@ const DiskDisplay = (
     onApply,
     onApplyAll,
     onEject,
-    onWipe,
   }: DiskDisplayProps,
   _context: any
 ) => {
@@ -255,31 +272,15 @@ const DiskDisplay = (
               </Table>
             </Stack.Item>
             <Stack.Item>
-              <Stack>
-                <Stack.Item grow>
-                  <Button
-                    fluid
-                    icon="trash"
-                    color="bad"
-                    textAlign="center"
-                    disabled={disabledEject}
-                    onClick={onWipe}
-                  >
-                    Wipe
-                  </Button>
-                </Stack.Item>
-                <Stack.Item grow>
-                  <Button
-                    fluid
-                    icon="upload"
-                    textAlign="center"
-                    disabled={disabledApply}
-                    onClick={onApplyAll}
-                  >
-                    Apply All
-                  </Button>
-                </Stack.Item>
-              </Stack>
+              <Button
+                fluid
+                icon="download"
+                textAlign="center"
+                disabled={disabledApply}
+                onClick={onApplyAll}
+              >
+                Apply All
+              </Button>
             </Stack.Item>
           </Stack>
         </Section>
