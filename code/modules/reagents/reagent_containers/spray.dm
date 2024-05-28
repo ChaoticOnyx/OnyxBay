@@ -216,7 +216,7 @@
 /obj/item/reagent_containers/spray/plantbgone
 	name = "Plant-B-Gone"
 	desc = "Kills those pesky weeds!"
-	icon = 'icons/obj/hydroponics_machines.dmi'
+	icon = 'icons/obj/hydroponics_items.dmi'
 	icon_state = "plantbgone"
 	item_state = "plantbgone"
 	volume = 100
