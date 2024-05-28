@@ -14,8 +14,7 @@ PROCESSING_SUBSYSTEM_DEF(plants)
 	var/list/plant_icon_cache = list()        // Stores images of growth, fruits and seeds.
 	var/list/plant_sprites = list()           // List of all harvested product sprites.
 	var/list/plant_product_sprites = list()   // List of all growth sprites plus number of growth stages.
-	var/list/gene_masked_list = list()        // Stored gene masked list, rather than recreating it when needed.
-	var/list/plant_gene_datums = list()       // Stored datum versions of the gene masked list.
+	var/list/plant_gene_datums = list()       // Stored datum versions of the gene list.
 	var/list/canonical_plants = list()        // Validation keys for canonical icons usage.
 	var/list/canonical_plant_sprites = list() // The same as plant_sprites, but for the canonical ones.
 	var/list/canonical_plant_icon_cache = list()
@@ -72,29 +71,9 @@ PROCESSING_SUBSYSTEM_DEF(plants)
 	for(var/obj/item/seeds/S in world)
 		S.update_seed()
 
-	//Might as well mask the gene types while we're at it.
-	var/list/gene_datums = decls_repository.get_decls_of_subtype(/decl/plantgene)
-	var/list/used_masks = list()
-	var/list/plant_traits = ALL_GENES
-	while(plant_traits && plant_traits.len)
-		var/gene_tag = pick(plant_traits)
-		var/gene_mask = "[uppertext(num2hex(rand(0,255)))]"
+	for (var/decl/plantgene/gene as anything in decls_repository.get_decls_of_subtype(/decl/plantgene))
+		plant_gene_datums[gene.gene_tag] = gene
 
-		while(gene_mask in used_masks)
-			gene_mask = "[uppertext(num2hex(rand(0,255)))]"
-
-		var/decl/plantgene/G
-
-		for(var/D in gene_datums)
-			var/decl/plantgene/P = gene_datums[D]
-			if(gene_tag == P.gene_tag)
-				G = P
-				gene_datums -= D
-		used_masks += gene_mask
-		plant_traits -= gene_tag
-		gene_tag_masks[gene_tag] = gene_mask
-		plant_gene_datums[gene_mask] = G
-		gene_masked_list.Add(list(list("tag" = gene_tag, "mask" = gene_mask)))
 	. = ..()
 
 // Proc for creating a random seed type.
