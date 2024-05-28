@@ -3846,7 +3846,7 @@
 "bBM" = (/obj/machinery/seed_extractor,/turf/simulated/floor/tiled/white,/area/eclipse/research/main/xenoflora)
 "bBN" = (/obj/machinery/smartfridge,/obj/machinery/newscaster{layer = 3.1; pixel_y = 32},/turf/simulated/floor/tiled/white,/area/eclipse/research/main/xenoflora)
 "bBO" = (/obj/structure/sink{dir = 1; pixel_y = 16},/obj/item/reagent_containers/vessel/bucket,/obj/effect/floor_decal/corner/purple{dir = 6},/turf/simulated/floor/tiled/white,/area/eclipse/research/main/xenoflora)
-"bBP" = (/obj/machinery/seed_storage/xenobotany,/obj/machinery/light{dir = 4},/obj/effect/floor_decal/corner/purple,/turf/simulated/floor/tiled/white,/area/eclipse/research/main/xenoflora)
+"bBP" = (/obj/machinery/light{dir = 4},/obj/effect/floor_decal/corner/purple,/turf/simulated/floor/tiled/white,/area/eclipse/research/main/xenoflora)
 "bBQ" = (/obj/machinery/light,/obj/machinery/status_display{pixel_y = -32; name = "status display south"},/obj/effect/floor_decal/corner/red{dir = 10},/turf/simulated/floor/tiled,/area/eclipse/civilian/hallway/bridge_south)
 "bBR" = (/obj/structure/window_frame/grille/rglass,/obj/machinery/door/blast/shutters/open{dir = 2; id = "xeno_bio_cell1"},/turf/simulated/floor/plating,/area/eclipse/research/main/xenofauna)
 "bBS" = (/obj/machinery/door/window/northleft{name = "XenoBio Cell1"; req_access = list(47)},/obj/machinery/door/window/southright{name = "XenoBio Cell1"; req_access = list(47)},/obj/machinery/door/blast/shutters/open{dir = 2; id = "xeno_bio_cell1"},/turf/simulated/floor/reinforced,/area/eclipse/research/main/xenofauna)
