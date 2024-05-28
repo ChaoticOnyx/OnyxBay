@@ -2,7 +2,7 @@
 	name = "flora data disk"
 	desc = "A small disk used for carrying data on plant genetics."
 
-	icon = 'icons/obj/hydroponics_machines.dmi'
+	icon = 'icons/obj/hydroponics_items.dmi'
 	icon_state = "disk"
 
 	w_class = ITEM_SIZE_TINY
@@ -86,6 +86,14 @@
 	var/obj/item/seeds/loaded_pack
 	var/obj/item/disk/botany/loaded_disk
 
+/obj/machinery/genemod/proc/update_glow()
+	if (inoperable())
+		set_light(0)
+		return FALSE
+
+	set_light(0.7, 0.1, 1, 2, COLOR_GREEN)
+	return TRUE
+
 /obj/machinery/genemod/on_update_icon()
 	ClearOverlays()
 
@@ -96,6 +104,10 @@
 
 	if (!isnull(loaded_disk))
 		AddOverlays("[base_icon_state]-disk")
+
+	var/should_glow = update_glow()
+	if (should_glow)
+		AddOverlays(emissive_appearance(icon, "[base_icon_state]_ea"))
 
 /obj/machinery/genemod/attackby(obj/item/O, mob/user)
 	if (default_deconstruction_screwdriver(user, O))
