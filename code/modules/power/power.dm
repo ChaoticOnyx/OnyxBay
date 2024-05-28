@@ -2,9 +2,9 @@
 // POWER MACHINERY BASE CLASS
 //////////////////////////////
 
-#define CONNECT_NETWORK_FAIL           0  // Failed to connect to the network
-#define CONNECT_NETWORK_SUCCESS        1  // Successfully connected the machinery to the network
-#define CONNECT_NETWORK_DELAYED_PROC   2  // Successfully connected the machinery to the network, but will run the after_connect_to_network procedure afterward
+#define CONNECT_NETWORK_FAIL           0  /// Failed to connect to the network
+#define CONNECT_NETWORK_SUCCESS        1  /// Successfully connected the machinery to the network
+#define CONNECT_NETWORK_DELAYED_PROC   2  /// Successfully connected the machinery to the network, but will run the after_connect_to_network procedure afterward
 
 /////////////////////////////
 // Definitions
@@ -225,21 +225,18 @@
 		else
 			continue
 
-	var/list/pending_machinery
-	LAZYINITLIST(pending_machinery)
+	var/list/pending_machinery = list()
 
 	//now that the powernet is set, connect found machines to it
 	for(var/obj/machinery/power/PM in found_machines)
 		var/to_return = PM.connect_to_network()
 		if(to_return == CONNECT_NETWORK_FAIL) //couldn't find a node on its turf...
 			PM.disconnect_from_network() //... so disconnect if already on a powernet
-		if(to_return == CONNECT_NETWORK_DELAYED_PROC) //find a node on its turf, but need start proc in this machinery.powernet
+		else if(to_return == CONNECT_NETWORK_DELAYED_PROC) //need start add proc after connect machinery to powernet
 			pending_machinery += PM
 
-	if(pending_machinery.len)
-		for(var/obj/machinery/power/PM in pending_machinery)
-			PM.after_connect_to_network() //start proc in this machinery.powernet
-		pending_machinery.Cut()
+	for(var/obj/machinery/power/PM in pending_machinery)
+		PM.after_connect_to_network() //start proc in this machinery.powernet
 
 //Merge two powernets, the bigger (in cable length term) absorbing the other
 /proc/merge_powernets(datum/powernet/net1, datum/powernet/net2)

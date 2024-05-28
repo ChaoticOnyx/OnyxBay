@@ -529,7 +529,6 @@ var/list/solars_list = list()
 	return ..() == CONNECT_NETWORK_FAIL ? CONNECT_NETWORK_FAIL : CONNECT_NETWORK_DELAYED_PROC
 
 /obj/machinery/power/solar_control/autostart/after_connect_to_network()
-	..()
 	autoconnect()
 
 /obj/machinery/power/solar_control/autostart/proc/autoconnect()
