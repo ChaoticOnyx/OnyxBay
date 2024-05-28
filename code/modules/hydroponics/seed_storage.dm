@@ -147,64 +147,6 @@
 		/obj/item/seeds/whitebeetseed = 5
 	)
 
-/obj/machinery/seed_storage/xenobotany
-	name = "Xenobotany seed storage"
-	scanner = list("stats", "produce", "soil", "temperature", "light")
-	starting_seeds = list(
-		/obj/item/seeds/appleseed = 5,
-		/obj/item/seeds/greenappleseed = 5,
-		/obj/item/seeds/yellowappleseed = 5,
-		/obj/item/seeds/bananaseed = 10,
-		/obj/item/seeds/berryseed = 10,
-		/obj/item/seeds/blueberryseed = 10,
-		/obj/item/seeds/cabbageseed = 10,
-		/obj/item/seeds/carrotseed = 10,
-		/obj/item/seeds/cannabisseed = 10,
-		/obj/item/seeds/chantermycelium = 10,
-		/obj/item/seeds/cherryseed = 10,
-		/obj/item/seeds/chiliseed = 10,
-		/obj/item/seeds/cocoapodseed = 10,
-		/obj/item/seeds/coconutseed = 10,
-		/obj/item/seeds/cornseed = 10,
-		/obj/item/seeds/peanutseed = 10,
-		/obj/item/seeds/replicapod = 10,
-		/obj/item/seeds/eggplantseed = 10,
-		/obj/item/seeds/amanitamycelium = 10,
-		/obj/item/seeds/glowshroom = 10,
-		/obj/item/seeds/grapeseed = 10,
-		/obj/item/seeds/grassseed = 10,
-		/obj/item/seeds/harebell = 10,
-		/obj/item/seeds/kudzuseed = 10,
-		/obj/item/seeds/lavenderseed = 10,
-		/obj/item/seeds/lemonseed = 10,
-		/obj/item/seeds/libertymycelium = 10,
-		/obj/item/seeds/limeseed = 10,
-		/obj/item/seeds/mtearseed = 10,
-		/obj/item/seeds/nettleseed = 10,
-		/obj/item/seeds/orangeseed = 10,
-		/obj/item/seeds/plastiseed = 10,
-		/obj/item/seeds/plumpmycelium = 10,
-		/obj/item/seeds/poppyseed = 10,
-		/obj/item/seeds/potatoseed = 10,
-		/obj/item/seeds/onionseed = 10,
-		/obj/item/seeds/garlicseed = 10,
-		/obj/item/seeds/pumpkinseed = 10,
-		/obj/item/seeds/reishimycelium = 10,
-		/obj/item/seeds/riceseed = 10,
-		/obj/item/seeds/soyaseed = 10,
-		/obj/item/seeds/peppercornseed = 10,
-		/obj/item/seeds/sugarcaneseed = 10,
-		/obj/item/seeds/sunflowerseed = 10,
-		/obj/item/seeds/shandseed = 10,
-		/obj/item/seeds/tobaccoseed = 10,
-		/obj/item/seeds/tomatoseed = 10,
-		/obj/item/seeds/towermycelium = 10,
-		/obj/item/seeds/watermelonseed = 10,
-		/obj/item/seeds/wheatseed = 10,
-		/obj/item/seeds/whitebeetseed = 10,
-		/obj/item/seeds/random = 10
-	)
-
 /obj/machinery/seed_storage/attack_hand(mob/user as mob)
 	tgui_interact(user)
 

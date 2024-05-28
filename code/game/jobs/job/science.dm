@@ -50,9 +50,8 @@
 	supervisors = "the research director"
 	selection_color = "#633d63"
 	economic_modifier = 7
-	access = list(access_robotics, access_tox, access_tox_storage, access_research, access_xenobiology, access_hydroponics)
-	minimal_access = list(access_research, access_xenobiology, access_hydroponics)
-	alt_titles = list("Xenobotanist")
+	access = list(access_robotics, access_tox, access_tox_storage, access_research, access_xenobiology)
+	minimal_access = list(access_research, access_xenobiology)
 	minimal_player_age = 7
 	outfit_type = /decl/hierarchy/outfit/job/science/xenobiologist
 

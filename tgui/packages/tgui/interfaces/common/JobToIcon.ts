@@ -69,5 +69,4 @@ export const JOB2ICON = {
   Warden: "handcuffs",
   Waiter: "wine-glass-empty",
   Xenobiologist: "dna",
-  Xenobotanist: "dna",
 } as const;

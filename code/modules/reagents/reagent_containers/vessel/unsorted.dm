@@ -42,6 +42,16 @@
 /obj/item/reagent_containers/vessel/bucket/full
 	startswith = list(/datum/reagent/water)
 
+/obj/item/reagent_containers/vessel/bucket/watercan
+	name = "watercan"
+	desc = "Medium-sized vessel made specifically for watering plants the most efficent way possible. Or not..."
+
+	icon = 'icons/obj/reagent_containers/vessels.dmi'
+	icon_state = "watercan"
+
+	filling_states = "100"
+	base_icon = "watercan"
+
 /obj/item/reagent_containers/vessel/bucket/attackby(obj/D, mob/user)
 	if(isprox(D))
 		to_chat(user, "You add [D] to [src].")

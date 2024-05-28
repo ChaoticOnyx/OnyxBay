@@ -31,7 +31,7 @@
 /obj/item/storage/plants
 	name = "botanical satchel"
 	desc = "This bag can be used to store all kinds of plant products and botanical specimen."
-	icon = 'icons/obj/hydroponics_machines.dmi'
+	icon = 'icons/obj/hydroponics_items.dmi'
 	icon_state = "plantbag"
 	slot_flags = SLOT_BELT
 	max_storage_space = 100
