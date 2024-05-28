@@ -24,6 +24,7 @@
 		if(istype(I, /obj/effect) || istype(I, /obj/random))
 			continue
 		I.forceMove(src)
+	remove_think_ctx("store_contents_mapload")
 
 /obj/structure/largecrate/attack_hand(mob/user)
 	to_chat(user, "<span class='notice'>You need a crowbar to pry this open!</span>")

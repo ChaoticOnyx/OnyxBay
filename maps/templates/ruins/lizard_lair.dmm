@@ -1,0 +1,29 @@
+"a" = (/turf/simulated/mineral,/area/mine/unexplored/medium)
+"f" = (/obj/machinery/crystal_static/orange{light_outer_range = 2; light_color = "FF6600"; anchored = 1; density = 1},/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"g" = (/obj/machinery/crystal_static{density = 1},/turf/simulated/mineral,/area/mine/unexplored/medium)
+"k" = (/obj/machinery/crystal_static{density = 1},/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"p" = (/obj/machinery/crystal_static/orange{light_outer_range = 2; light_color = "FF6600"; anchored = 1; density = 1},/turf/simulated/mineral,/area/mine/unexplored/medium)
+"x" = (/obj/item/stack/telecrystal{layer = 1},/turf/simulated/mineral,/area/mine/unexplored/medium)
+"C" = (/obj/machinery/crystal_static/pink{light_outer_range = 4; light_color = "990099"; anchored = 1; density = 1},/turf/simulated/mineral,/area/mine/unexplored/medium)
+"H" = (/mob/living/simple_animal/hostile/asteroid/shooter{health = 100},/obj/effect/floor_decal/asteroid,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"N" = (/mob/living/simple_animal/hostile/asteroid/shooter{health = 100},/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"Q" = (/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"T" = (/obj/effect/floor_decal/asteroid,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"V" = (/obj/machinery/crystal_static/pink{light_outer_range = 4; light_color = "990099"; anchored = 1; density = 1},/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"Y" = (/obj/item/stock_parts/subspace/crystal{layer = 1},/turf/simulated/mineral,/area/mine/unexplored/medium)
+"Z" = (/obj/item/archaeological_find/crystal{layer = 1},/turf/simulated/mineral,/area/mine/unexplored/medium)
+
+(1,1,1) = {"
+aaaaaaaaaaaa
+aZYQQQVQQQaQ
+aaQQQNYQQCaQ
+aQQHQaxaQaaZ
+aQQQQQYQQQZa
+akQQaQQQQQQQ
+aQQapaQfQQTQ
+aQQQaQQQQNQQ
+aQHQQQQTQQQQ
+aQQQYQNQQQaQ
+aYQagaQQQaaa
+aaaaaaaaaaaa
+"}

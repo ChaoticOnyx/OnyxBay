@@ -859,3 +859,61 @@ proc/dd_sortedObjectList(list/incoming)
 
 ///Checks for specific types in specifically structured (Assoc "type" = TRUE|FALSE) lists ('typecaches')
 #define is_type_in_typecache(A, L) (A && length(L) && L[(ispath(A) ? A : A:type)])
+
+/// Takes a weighted list (see above) and expands it into raw entries
+/// This eats more memory, but saves time when actually picking from it
+/proc/expand_weights(list/list_to_pick)
+	var/list/values = list()
+	for(var/item in list_to_pick)
+		var/value = list_to_pick[item]
+		if(!value)
+			continue
+		values += value
+
+	var/gcf = greatest_common_factor(values)
+
+	var/list/output = list()
+	for(var/item in list_to_pick)
+		var/value = list_to_pick[item]
+		if(!value)
+			continue
+		for(var/i in 1 to value / gcf)
+			output += item
+	return output
+
+/// Takes a list of numbers as input, returns the highest value that is cleanly divides them all
+/// Note: this implementation is expensive as heck for large numbers, I only use it because most of my usecase
+/// Is < 10 ints
+/proc/greatest_common_factor(list/values)
+	var/smallest = min(arglist(values))
+	for(var/i in smallest to 1 step -1)
+		var/safe = TRUE
+		for(var/entry in values)
+			if(entry % i != 0)
+				safe = FALSE
+				break
+		if(safe)
+			return i
+// Generic listoflist safe add and removal macros:
+///If value is a list, wrap it in a list so it can be used with list add/remove operations
+#define LIST_VALUE_WRAP_LISTS(value) (islist(value) ? list(value) : value)
+///Add an untyped item to a list, taking care to handle list items by wrapping them in a list to remove the footgun
+#define UNTYPED_LIST_ADD(list, item) (list += LIST_VALUE_WRAP_LISTS(item))
+///Remove an untyped item to a list, taking care to handle list items by wrapping them in a list to remove the footgun
+#define UNTYPED_LIST_REMOVE(list, item) (list -= LIST_VALUE_WRAP_LISTS(item))
+
+///returns a new list with only atoms that are in the typecache list
+/proc/typecache_filter_list(list/atoms, list/typecache)
+	RETURN_TYPE(/list)
+	. = list()
+	for(var/atom/atom_checked as anything in atoms)
+		if (typecache[atom_checked.type])
+			. += atom_checked
+
+///return a new list with atoms that are not in the typecache list
+/proc/typecache_filter_list_reverse(list/atoms, list/typecache)
+	RETURN_TYPE(/list)
+	. = list()
+	for(var/atom/atom_checked as anything in atoms)
+		if(!typecache[atom_checked.type])
+			. += atom_checked

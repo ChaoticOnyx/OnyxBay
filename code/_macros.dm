@@ -44,6 +44,8 @@
 
 #define isliving(A) istype(A, /mob/living)
 
+#define isstructure(A) istype(A, /obj/structure)
+
 #define isbot(A) istype(A, /mob/living/bot)
 
 #define ismouse(A) istype(A, /mob/living/simple_animal/mouse)
@@ -115,6 +117,8 @@
 #define ismech(A) istype(A, /obj/mecha)
 
 #define iseffect(A) istype(A, /obj/effect)
+
+#define ishostile(A) istype(A, /mob/living/simple_animal/hostile)
 
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 

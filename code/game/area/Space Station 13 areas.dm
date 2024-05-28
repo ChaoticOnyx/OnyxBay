@@ -76,7 +76,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_equip = 0
 	power_environ = 0
 	has_gravity = 0
-	area_flags = AREA_FLAG_EXTERNAL
+	area_flags = AREA_FLAG_EXTERNAL | AREA_FLAG_UNIQUE_AREA | AREA_FLAG_CAVES_ALLOWED
 	ambient_music_tags = list(MUSIC_TAG_SPACE)
 	ambience_off = list(SFX_AMBIENT_SPACE)
 	ambience_powered = list(SFX_AMBIENT_SPACE)
@@ -146,7 +146,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "sec_prison"
 
 /area/maintenance
-	area_flags = AREA_FLAG_RAD_SHIELDED
+	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_UNIQUE_AREA
 	sound_env = TUNNEL_ENCLOSED
 	turf_initializer = /decl/turf_initializer/maintenance
 	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
@@ -197,7 +197,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/syndicate_mothership/elite_squad
 	name = "\improper Syndicate Elite Squad"
 	icon_state = "syndie-elite"
-	area_flags = AREA_FLAG_NO_STATION
+	area_flags = AREA_FLAG_NO_STATION | AREA_FLAG_UNIQUE_AREA
 
 ////////////
 //SHUTTLES//
@@ -208,7 +208,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/shuttle
 	requires_power = 0
 	sound_env = SMALL_ENCLOSED
-	area_flags = AREA_FLAG_NO_STATION
+	area_flags = AREA_FLAG_NO_STATION | AREA_FLAG_UNIQUE_AREA
 
 /*
 * Special Areas
@@ -218,7 +218,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "yellow"
 	requires_power = 0
 	dynamic_lighting = 0
-	area_flags = AREA_FLAG_NO_STATION
+	area_flags = AREA_FLAG_NO_STATION | AREA_FLAG_UNIQUE_AREA
 
 /area/beach
 	name = "Keelin's private beach"
@@ -226,7 +226,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
-	area_flags = AREA_FLAG_NO_STATION
+	area_flags = AREA_FLAG_NO_STATION | AREA_FLAG_UNIQUE_AREA
 	var/sound/mysound = null
 
 /area/beach/New()
@@ -281,4 +281,4 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
-	area_flags = AREA_FLAG_NO_STATION
+	area_flags = AREA_FLAG_NO_STATION | AREA_FLAG_UNIQUE_AREA

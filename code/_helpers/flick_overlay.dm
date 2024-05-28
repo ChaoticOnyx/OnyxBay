@@ -31,8 +31,15 @@
 
 // Adds an image to a list of clients
 /proc/flick_overlay_global(image/image_to_show, list/show_to, duration)
-	if(!show_to || !length(show_to) || !image_to_show)
+	if(isnull(show_to) || isnull(image_to_show))
 		return
+
+	if(islist(show_to))
+		if(!length(show_to))
+			return // A bit ugly, but it will do...
+
+	else
+		show_to = list(show_to)
 
 	new /datum/flick_overlay(image_to_show, show_to, duration)
 
