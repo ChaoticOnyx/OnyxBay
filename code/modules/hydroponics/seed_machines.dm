@@ -37,7 +37,7 @@
 	if (!length(stored_genes))
 		return FALSE
 
-	var/choice = tgui_alert(user, "Are you sure you want to wipe the disk?", "Xenobotany Data")
+	var/choice = tgui_alert(user, "Are you sure you want to wipe the disk?", "Genome Data", list("Yes", "No"))
 	if (choice != "Yes" || isnull(src) || isnull(user) || !user.Adjacent(get_turf(src)))
 		return TRUE
 
