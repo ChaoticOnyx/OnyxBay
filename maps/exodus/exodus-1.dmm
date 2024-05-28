@@ -873,7 +873,7 @@
 "ara" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/structure/cable/green{icon_state = "1-2"; d2 = 2; d1 = 1},/obj/structure/cable/green{icon_state = "2-8"; d2 = 8; d1 = 2},/obj/effect/floor_decal/corner/lime{dir = 5},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_main)
 "arb" = (/obj/structure/extinguisher_cabinet{layer = 3.1; pixel_y = 32},/obj/effect/floor_decal/corner/lime{dir = 1},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_main)
 "arc" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/corner/blue{dir = 4},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_main)
-"ard" = (/obj/structure/closet/crate/hydroponics,/turf/simulated/floor/natural/grass,/area/hydroponics/lower)
+"ard" = (/obj/structure/closet/crate/hydroponics/prespawned,/turf/simulated/floor/natural/grass,/area/hydroponics/lower)
 "are" = (/obj/effect/floor_decal/corner/blue{dir = 4},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_main)
 "arf" = (/obj/effect/floor_decal/corner/blue{dir = 4},/obj/effect/floor_decal/oldflood,/obj/machinery/atm{layer = 3.1; pixel_y = 32},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_main)
 "arg" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/obj/structure/disposalpipe/segment{icon_state = "pipe-c"; dir = 1},/obj/effect/floor_decal/corner/blue{dir = 8},/turf/simulated/floor/tiled/rough,/area/maintenance/underground/bar)
