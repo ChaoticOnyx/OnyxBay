@@ -2,6 +2,13 @@
 // POWER MACHINERY BASE CLASS
 //////////////////////////////
 
+/// Failed to connect to the network
+#define CONNECT_NETWORK_FAIL 0
+/// Successfully connected the machinery to the network
+#define CONNECT_NETWORK_SUCCESS 1
+/// Successfully connected the machinery to the network, but will run the after_connect_to_network procedure afterward
+#define CONNECT_NETWORK_DELAYED_PROC 2
+
 /////////////////////////////
 // Definitions
 /////////////////////////////
@@ -17,7 +24,6 @@
 
 /obj/machinery/power/Initialize()
 	. = ..()
-	connect_to_network()
 
 /obj/machinery/power/Destroy()
 	disconnect_from_network()
@@ -72,14 +78,18 @@
 /obj/machinery/power/proc/connect_to_network()
 	var/turf/T = src.loc
 	if(!T || !istype(T))
-		return 0
+		return CONNECT_NETWORK_FAIL
 
 	var/obj/structure/cable/C = T.get_cable_node() //check if we have a node cable on the machine turf, the first found is picked
 	if(!C || !C.powernet)
-		return 0
+		return CONNECT_NETWORK_FAIL
 
 	C.powernet.add_machine(src)
-	return 1
+	return CONNECT_NETWORK_SUCCESS
+
+// start this proc after propagate_network
+/obj/machinery/power/proc/after_connect_to_network()
+	return
 
 // remove and disconnect the machine from its current powernet
 /obj/machinery/power/proc/disconnect_from_network()
@@ -218,11 +228,18 @@
 		else
 			continue
 
+	var/list/pending_machinery = list()
+
 	//now that the powernet is set, connect found machines to it
 	for(var/obj/machinery/power/PM in found_machines)
-		if(!PM.connect_to_network()) //couldn't find a node on its turf...
+		var/to_return = PM.connect_to_network()
+		if(to_return == CONNECT_NETWORK_FAIL) //couldn't find a node on its turf...
 			PM.disconnect_from_network() //... so disconnect if already on a powernet
+		else if(to_return == CONNECT_NETWORK_DELAYED_PROC) //need start add proc after connect machinery to powernet
+			pending_machinery += PM
 
+	for(var/obj/machinery/power/PM in pending_machinery)
+		PM.after_connect_to_network() //start proc in this machinery.powernet
 
 //Merge two powernets, the bigger (in cable length term) absorbing the other
 /proc/merge_powernets(datum/powernet/net1, datum/powernet/net2)
