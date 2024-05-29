@@ -128,4 +128,5 @@
 								/obj/item/gun/projectile/heavysniper/ant 						= TRADER_THIS_TYPE,
 								/obj/item/gun/energy/laser/dogan 								= TRADER_THIS_TYPE,
 								/obj/item/gun/projectile/automatic/machine_pistol/mini_uzi/usi 	= TRADER_THIS_TYPE,
-								/obj/item/clothing/accessory/holster 							= TRADER_ALL)
+								/obj/item/clothing/accessory/holster 							= TRADER_ALL
+								)

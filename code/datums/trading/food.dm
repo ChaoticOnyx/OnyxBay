@@ -171,4 +171,5 @@
 								/obj/item/reagent_containers/food/sliceable/flatdough 			= TRADER_BLACKLIST,
 								/obj/item/reagent_containers/food/sliceable/braincake 			= TRADER_BLACKLIST,
 								/obj/item/reagent_containers/food/pie 							= TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/applepie 						= TRADER_THIS_TYPE)
+								/obj/item/reagent_containers/food/applepie 						= TRADER_THIS_TYPE
+								)
