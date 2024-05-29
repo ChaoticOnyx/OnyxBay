@@ -25,6 +25,12 @@
 		/obj/item/rig_module/cooling_unit
 		)
 
+/obj/item/rig/ert/empty
+	initial_modules = list(
+		/obj/item/rig_module/ai_container,
+		/obj/item/rig_module/cooling_unit,
+		)
+
 /obj/item/clothing/head/helmet/space/rig/ert
 	light_overlay = "helmet_light_dual"
 	camera = /obj/machinery/camera/network/ert
@@ -56,6 +62,12 @@
 		/obj/item/rig_module/cooling_unit
 		)
 
+/obj/item/rig/ert/engineer/empty
+	initial_modules = list(
+		/obj/item/rig_module/ai_container,
+		/obj/item/rig_module/cooling_unit,
+		)
+
 /obj/item/clothing/gloves/rig/ert/engineer
 	siemens_coefficient = 0
 
@@ -75,6 +87,12 @@
 		/obj/item/rig_module/cooling_unit
 		)
 
+/obj/item/rig/ert/janitor/empty
+	initial_modules = list(
+		/obj/item/rig_module/ai_container,
+		/obj/item/rig_module/cooling_unit,
+		)
+
 /obj/item/rig/ert/medical
 	name = "ERT medical powersuit control module"
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has white highlights. Armored and space ready."
@@ -89,6 +107,12 @@
 		/obj/item/rig_module/cooling_unit
 		)
 
+/obj/item/rig/ert/medical/empty
+	initial_modules = list(
+		/obj/item/rig_module/ai_container,
+		/obj/item/rig_module/cooling_unit,
+		)
+
 /obj/item/rig/ert/security
 	name = "ERT security powersuit control module"
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has red highlights. Armored and space ready."
@@ -101,6 +125,12 @@
 		/obj/item/rig_module/grenade_launcher,
 		/obj/item/rig_module/mounted/egun,
 		/obj/item/rig_module/cooling_unit
+		)
+
+/obj/item/rig/ert/security/empty
+	initial_modules = list(
+		/obj/item/rig_module/ai_container,
+		/obj/item/rig_module/cooling_unit,
 		)
 
 /obj/item/rig/ert/assetprotection
@@ -122,6 +152,12 @@
 		/obj/item/rig_module/device/rcd,
 		/obj/item/rig_module/datajack,
 		/obj/item/rig_module/cooling_unit
+		)
+
+/obj/item/rig/ert/assetprotection/empty
+	initial_modules = list(
+		/obj/item/rig_module/ai_container,
+		/obj/item/rig_module/cooling_unit,
 		)
 
 /obj/item/clothing/gloves/rig/ert/assetprotection
