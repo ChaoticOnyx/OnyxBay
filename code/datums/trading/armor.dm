@@ -49,5 +49,5 @@
 								/obj/item/clothing/suit/armor/pcarrier/syndi 			= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/armor/reactive 					= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/armor/riot 						= TRADER_THIS_TYPE,
-								/obj/item/clothing/suit/armor/vest 						= TRADER_ALL,
+								/obj/item/clothing/suit/armor/vest 						= TRADER_ALL
 								)
