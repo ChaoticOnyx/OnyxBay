@@ -229,8 +229,8 @@
 								/obj/item/clothing/ears/earring 						= TRADER_SUBTYPES_ONLY,
 								/obj/item/clothing/ring 								= TRADER_SUBTYPES_ONLY,
 								/obj/item/clothing/ring/seal 							= TRADER_SUBTYPES_ONLY,
-								/obj/item/clothing/ring/reagent 						= TRADER_BLACKLIST_ALL
-								/obj/item/underwear/wrist 								= TRADER_SUBTYPES_ONLY,
+								/obj/item/clothing/ring/reagent 						= TRADER_BLACKLIST_ALL,
+								/obj/item/underwear/wrist 								= TRADER_SUBTYPES_ONLY
 								)
 /*
 Sells devices, odds and ends, and medical stuff
