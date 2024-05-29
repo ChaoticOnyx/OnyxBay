@@ -149,6 +149,15 @@
 /obj/structure/flora/tree/green/tree10
 	icon_state = "tree10"
 
+/obj/structure/flora/tree/green/random
+	icon_state = "tree"
+	var/randomize_icon = TRUE
+
+/obj/structure/flora/tree/green/random/Initialize()
+	. = ..()
+	if(randomize_icon)
+		icon_state = "[icon_state][rand(1, 10)]"
+
 /obj/structure/flora/tree/green/spook1
 	icon_state = "spook1"
 
@@ -512,6 +521,38 @@
 	..()
 	icon_state = "grassb[rand(1, 5)]"
 
+/obj/structure/flora/ausbushes/jungleflora/large
+	icon_state = "bush"
+	icon = 'icons/obj/flora/largejungleflora.dmi'
+	pixel_x = -16
+	pixel_y = -12
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/structure/flora/ausbushes/jungleflora/large/New()
+	. = ..()
+	icon_state = "bush[rand(1, 3)]"
+
+/obj/structure/flora/jungleflora/rock
+	name = "rock"
+	icon_state = "rock"
+	icon = 'icons/obj/flora/jungleflora.dmi'
+	anchored = 1
+	layer = BELOW_DOOR_LAYER
+
+/obj/structure/flora/jungleflora/rock/New()
+	. = ..()
+	icon_state = "rock[rand(1, 5)]"
+
+/obj/structure/flora/jungleflora/rock/large
+	icon_state = "rocks"
+	icon = 'icons/obj/flora/largejungleflora.dmi'
+	pixel_x = -16
+	pixel_y = -16
+
+/obj/structure/flora/jungleflora/rock/large/New()
+	. = ..()
+	icon_state = "rocks[rand(1, 3)]"
+
 /obj/structure/flora/goonbushes
 	name = "shrub"
 	icon = 'icons/obj/flora/goonbushes.dmi'
@@ -578,7 +619,7 @@
 
 /obj/structure/flora/junglevines/light/New()
 	if(rand_state)
-		icon_state = "light[rand(0, 2)]"
+		icon_state = "light[rand(1, 3)]"
 	..()
 
 /obj/structure/flora/junglevines/light/CanPass(atom/movable/mover, turf/target)
@@ -590,8 +631,29 @@
 		return prob(30)
 	return TRUE
 
+/obj/structure/flora/junglevines/medium
+	icon_state = "medium1"
+	desc = "A dense mass of twisted vines."
+	cut_level = PLANT_CUT
+	cut_hits = 6
+	var/rand_state = TRUE
+
+/obj/structure/flora/junglevines/medium/New()
+	if(rand_state)
+		icon_state = "medium[rand(1, 3)]"
+	..()
+
+/obj/structure/flora/junglevines/medium/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover, /mob/living))
+		if(prob(40))
+			to_chat(mover, "<span class='warning'>You get stuck in \the [src] for a moment.</span>")
+			return FALSE
+	else if(istype(mover, /obj/item/projectile))
+		return prob(30)
+	return TRUE
+
 /obj/structure/flora/junglevines/heavy
-	icon_state = "heavy0"
+	icon_state = "heavy1"
 	desc = "A thick, coiled mass of twisted vines."
 	opacity = 1
 	cut_level = PLANT_CUT
@@ -600,7 +662,7 @@
 
 /obj/structure/flora/junglevines/heavy/New()
 	if(rand_state)
-		icon_state = "heavy[rand(0, 5)]"
+		icon_state = "heavy[rand(1, 3)]"
 	..()
 
 /obj/structure/flora/junglevines/heavy/CanPass(atom/movable/mover, turf/target)

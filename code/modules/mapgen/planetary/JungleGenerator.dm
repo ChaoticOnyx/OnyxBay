@@ -81,19 +81,20 @@
 	)
 
 /datum/biome/jungle
-	open_turf_types = list(/turf/open/floor/plating/grass/jungle/lit = 1)
+	open_turf_types = list(/turf/simulated/floor/natural/jungle/ = 1)
 	flora_spawn_list = list(
-		/obj/structure/flora/grass/jungle = 1,
-		/obj/structure/flora/grass/jungle/b = 1,
-		/obj/structure/flora/tree/jungle = 3,
-		/obj/structure/flora/rock/jungle = 1,
-		/obj/structure/flora/junglebush = 1,
-		/obj/structure/flora/junglebush/b = 1,
-		/obj/structure/flora/junglebush/c = 1,
-		/obj/structure/flora/junglebush/large = 1,
-		/obj/structure/spacevine/dense = 5,
-		/obj/structure/spacevine/dense = 2,
-		/obj/structure/flora/ash/garden = 1,
+		/obj/structure/flora/ausbushes/jungleflora = 1,
+		/obj/structure/flora/ausbushes/jungleflora/grassb = 1,
+		/obj/structure/flora/tree/green/random = 3,
+		/obj/structure/flora/jungleflora/rock = 1,
+		/obj/structure/flora/ausbushes/jungleflora/busha = 1,
+		/obj/structure/flora/ausbushes/jungleflora/bushb = 1,
+		/obj/structure/flora/ausbushes/jungleflora/bushc = 1,
+		/obj/structure/flora/ausbushes/jungleflora/large = 1,
+		/obj/structure/flora/junglevines/heavy = 1,
+		/obj/structure/flora/junglevines/medium = 4,
+		/obj/structure/flora/junglevines/light = 3,
+		//obj/structure/flora/ash/garden = 1,
 	)
 	flora_spawn_chance = 90
 	mob_spawn_chance = 0.3
@@ -105,18 +106,20 @@
 
 /datum/biome/jungle/dense
 	flora_spawn_chance = 100
-	open_turf_types = list(/turf/open/floor/plating/grass/jungle/lit = 1, /turf/open/floor/plating/dirt/jungle/dark/lit = 9)
+	open_turf_types = list(/turf/simulated/floor/natural/jungle/ = 1, /turf/simulated/floor/natural/jungle/dirt = 9)
 	flora_spawn_list = list(
-		/obj/structure/flora/grass/jungle = 1,
-		/obj/structure/flora/grass/jungle/b = 1,
-		/obj/structure/flora/tree/jungle = 5,
-		/obj/structure/flora/rock/jungle = 1,
-		/obj/structure/flora/junglebush = 1,
-		/obj/structure/flora/junglebush/b = 1,
-		/obj/structure/flora/junglebush/c = 1,
-		/obj/structure/flora/junglebush/large = 1,
-		/obj/structure/spacevine/dense = 20,
-		/obj/structure/flora/ash/garden = 1,
+		/obj/structure/flora/ausbushes/jungleflora/grassa = 1,
+		/obj/structure/flora/ausbushes/jungleflora/grassb = 1,
+		/obj/structure/flora/tree/green/random = 5,
+		/obj/structure/flora/jungleflora/rock = 1,
+		/obj/structure/flora/ausbushes/jungleflora/busha = 1,
+		/obj/structure/flora/ausbushes/jungleflora/bushb = 1,
+		/obj/structure/flora/ausbushes/jungleflora/bushc = 1,
+		/obj/structure/flora/ausbushes/jungleflora/large = 1,
+		/obj/structure/flora/junglevines/heavy = 5,
+		/obj/structure/flora/junglevines/medium = 8,
+		/obj/structure/flora/junglevines/light = 7,
+		//obj/structure/flora/ash/garden = 1,
 	)
 	mob_spawn_chance = 0.6
 	mob_spawn_list = list(
@@ -127,7 +130,7 @@
 		)
 
 /datum/biome/jungle/plains
-	open_turf_types = list(/turf/open/floor/plating/grass/jungle/lit = 1)
+	open_turf_types = list(/turf/simulated/floor/natural/jungle/ = 1)
 	flora_spawn_chance = 50
 	mob_spawn_chance = 1
 	mob_spawn_list = list(
@@ -136,12 +139,13 @@
 	)
 
 /datum/biome/mudlands
-	open_turf_types = list(/turf/open/floor/plating/dirt/jungle/dark/lit = 1)
+	open_turf_types = list(/turf/simulated/floor/natural/jungle/dirt = 1)
 	flora_spawn_list = list(
-		/obj/structure/flora/grass/jungle = 1,
-		/obj/structure/flora/grass/jungle/b = 1,
-		/obj/structure/flora/rock/jungle = 1,
-		/obj/structure/spacevine = 5,
+		/obj/structure/flora/ausbushes/jungleflora/grassa = 1,
+		/obj/structure/flora/ausbushes/jungleflora/grassb = 1,
+		/obj/structure/flora/jungleflora/rock = 1,
+		/obj/structure/flora/junglevines/medium = 1,
+		/obj/structure/flora/junglevines/light = 4,
 	)
 	flora_spawn_chance = 20
 	mob_spawn_chance = 0.05
@@ -151,7 +155,7 @@
 	open_turf_types = list(/turf/open/floor/plating/dirt/jungle/wasteland/lit = 1)
 
 /datum/biome/jungle/water
-	open_turf_types = list(/turf/open/water/jungle/lit = 1)
+	open_turf_types = list(/turf/simulated/floor/natural/jungle/water = 1)
 	mob_spawn_chance = 1
 	mob_spawn_list = list(/mob/living/simple_animal/hostile/carp = 1)
 	flora_spawn_chance = 1
@@ -165,11 +169,11 @@
 		/obj/structure/flora/rock/jungle = 1,
 		/obj/structure/flora/rock/pile = 1,
 		/obj/structure/flora/rock = 1,
-		/obj/structure/flora/ash/space = 1,
-		/obj/structure/flora/ash/leaf_shroom = 1,
-		/obj/structure/flora/ash/cap_shroom = 1,
-		/obj/structure/flora/ash/stem_shroom = 1,
-		/obj/structure/flora/ash/puce = 1,
+		//obj/structure/flora/ash/space = 1,
+		//obj/structure/flora/ash/leaf_shroom = 1,
+		//obj/structure/flora/ash/cap_shroom = 1,
+		//obj/structure/flora/ash/stem_shroom = 1,
+		//obj/structure/flora/ash/puce = 1,
 	)
 	mob_spawn_chance = 1
 	mob_spawn_list = list(
@@ -187,14 +191,14 @@
 /datum/biome/cave/jungle/dirt
 	open_turf_types = list(/turf/open/floor/plating/dirt/jungle/wasteland = 1)
 	flora_spawn_list = list(
-		/obj/structure/flora/junglebush = 1,
-		/obj/structure/flora/junglebush/b = 1,
-		/obj/structure/flora/junglebush/c = 1,
-		/obj/structure/flora/junglebush/large = 1,
-		/obj/structure/flora/rock/pile/largejungle = 1,
-		/obj/structure/flora/grass/jungle = 1,
-		/obj/structure/flora/grass/jungle/b = 1,
-		/obj/structure/flora/ash/garden = 1,
+		/obj/structure/flora/ausbushes/jungleflora/busha = 1,
+		/obj/structure/flora/ausbushes/jungleflora/bushb = 1,
+		/obj/structure/flora/ausbushes/jungleflora/bushc = 1,
+		/obj/structure/flora/ausbushes/jungleflora/bush/large = 1,
+		/obj/structure/flora/jungleflora/rock/large = 1,
+		/obj/structure/flora/ausbushes/jungleflora/grassa = 1,
+		/obj/structure/flora/ausbushes/jungleflora/grassb = 1,
+		//obj/structure/flora/ash/garden = 1,
 	)
 
 /datum/biome/cave/lush
