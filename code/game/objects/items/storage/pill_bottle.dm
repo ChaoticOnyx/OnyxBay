@@ -200,7 +200,7 @@
 
 /obj/item/storage/pill_bottle/tricordrazine
 	name = "pill bottle (tricordrazine)"
-	desc = "Contains pills of treat a wide range of injuries"
+	desc = "Contains pills of treat a wide range of injuries."
 	label_color = "#8040ff"
 	starting_label = "tricordrazine"
 
@@ -216,7 +216,7 @@
 
 /obj/item/storage/pill_bottle/imidazoline
 	name = "pill bottle (imidazoline)"
-	desc = "Contains pills of heals eye damage"
+	desc = "Contains pills of heals eye damage."
 	label_color = "#c8a5dc"
 	starting_label = "imidazoline"
 
