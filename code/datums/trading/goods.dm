@@ -342,7 +342,7 @@ Sells devices, odds and ends, and medical stuff
 								/mob/living/bot/mulebot 							= TRADER_BLACKLIST,
 								/obj/item/organ/internal/cerebrum/posibrain 		= TRADER_THIS_TYPE,
 								/obj/item/robot_parts 								= TRADER_SUBTYPES_ONLY,
-								/obj/item/stock_parts/manipulator 					= TRADER_THIS_TYPE
+								/obj/item/stock_parts/manipulator 					= TRADER_THIS_TYPE,
 								/obj/item/borg/upgrade 								= TRADER_SUBTYPES_ONLY,
 								/obj/item/borg/upgrade/remodel/advanced 			= TRADER_BLACKLIST_ALL,
 								/obj/item/borg/upgrade/syndicate 					= TRADER_BLACKLIST,
