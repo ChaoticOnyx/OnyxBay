@@ -227,7 +227,7 @@
 		if(!istype(D, /obj/machinery/door/firedoor) && !istype(D, /obj/machinery/door/blast) && D.check_access(botcard))
 			D.open()
 	else
-		..()
+		return ..()
 
 /mob/living/bot/emag_act(remaining_charges, mob/user)
 	return 0
