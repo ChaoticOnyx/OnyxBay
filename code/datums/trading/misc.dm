@@ -53,7 +53,8 @@
 								/obj/item/device/dociler 									= TRADER_THIS_TYPE,
 								/obj/structure/dogbed 										= TRADER_THIS_TYPE,
 								/obj/item/device/metroid_scanner 							= TRADER_THIS_TYPE,
-								/obj/item/lazarus_injector 									= TRADER_THIS_TYPE
+								/obj/item/lazarus_injector 									= TRADER_THIS_TYPE,
+								/obj/item/metroid_cookie 									= TRADER_SUBTYPES_ONLY
 								)
 
 /datum/trader/ship/pet_shop/New()
@@ -110,6 +111,7 @@
 								/obj/item/grenade/spawnergrenade/fake_carp 					= TRADER_THIS_TYPE,
 								/obj/item/clothingbag 										= TRADER_SUBTYPES_ONLY,
 								/obj/item/toy/pig 											= TRADER_THIS_TYPE,
+								/obj/item/balloon_box 										= TRADER_THIS_TYPE,
 								/obj/item/reagent_containers/vessel/paint/random 			= TRADER_THIS_TYPE,
 								/obj/item/reagent_containers/vessel/paint/white 			= TRADER_THIS_TYPE,
 								/obj/item/reagent_containers/vessel/bottle/bottleofnothing 	= TRADER_THIS_TYPE,

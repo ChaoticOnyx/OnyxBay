@@ -184,7 +184,7 @@
 
 /obj/item/storage/pill_bottle/oxycodone
 	name = "pill bottle (oxycodone)"
-	desc = "Contains pills of complex painkiller."
+	desc = "Contains pills of complex painkillers."
 	label_color = "#800080"
 	starting_label = "oxycodone"
 

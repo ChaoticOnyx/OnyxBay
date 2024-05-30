@@ -403,7 +403,7 @@
 	value = 3.1
 
 /datum/reagent/painkiller/tramadol/oxycodone
-	value = 3.3
+	value = 3.6
 
 /datum/reagent/synaptizine
 	value = 1.1

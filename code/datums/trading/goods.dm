@@ -26,7 +26,8 @@
 	)
 
 	possible_wanted_items = list(/obj/item/toy/figure/ert 			= TRADER_THIS_TYPE,
-								/obj/item/toy/prize/honk 			= TRADER_THIS_TYPE
+								/obj/item/toy/prize/honk 			= TRADER_THIS_TYPE,
+								/obj/item/material/coin 			= TRADER_SUBTYPES_ONLY
 								)
 
 	possible_trading_items = list(/obj/item/toy/prize 				= TRADER_SUBTYPES_ONLY,

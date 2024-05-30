@@ -621,6 +621,7 @@ var/list/worths = list(
 					/obj/item/bee_pack = 200,
 					/obj/item/weedkiller = 30,
 					/obj/item/sign/medipolma = 1500,
+					/obj/item/metroid_cookie = 150,
 					/obj/item = 5,
 //STRUCTURES,
 					/obj/structure/dogbed = 15,
