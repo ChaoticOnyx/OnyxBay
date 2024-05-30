@@ -300,6 +300,7 @@ var/list/worths = list(
 					/obj/item/material/scythe = -100,
 					/obj/item/material/twohanded/fireaxe = -150,
 					/obj/item/material/harpoon = -70,
+					/obj/item/material/coin = -50,
 					/obj/item/material = -5,
 //RIGS,
 					/obj/item/rig/unathi/fancy = 5000,
