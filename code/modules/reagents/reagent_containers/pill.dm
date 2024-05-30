@@ -291,7 +291,7 @@
 
 /obj/item/reagent_containers/pill/metazine
 	name = "Metazine (10u)"
-	desc = "A combat painkillers."
+	desc = "A combat painkiller."
 	icon_state = "pill24"
 	startswith = list(/datum/reagent/painkiller = 10)
 	mimic_color = FALSE
