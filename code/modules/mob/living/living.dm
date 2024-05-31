@@ -78,9 +78,10 @@
 	return ..()
 
 /mob/living/Bump(atom/movable/AM, yes)
+	if(now_pushing || !yes || !loc)
+		return FALSE
+
 	spawn(0)
-		if ((!( yes ) || now_pushing) || !loc)
-			return
 		if(!istype(AM, /mob/living/bot/mulebot))
 			now_pushing = 1
 		if (istype(AM, /mob/living))
@@ -211,6 +212,8 @@
 						start_pulling(AM, TRUE)
 
 				now_pushing = 0
+
+	return TRUE
 
 /proc/swap_density_check(mob/swapper, mob/swapee)
 	var/turf/T = get_turf(swapper)
