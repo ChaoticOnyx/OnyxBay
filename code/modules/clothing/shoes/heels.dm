@@ -32,6 +32,10 @@
 #define TRIP_CHANCE_INCREASE 0.5
 
 /obj/item/clothing/shoes/heels/handle_movement(turf/walking, running)
+	if(running)
+		playsound(src, SFX_HEELS, 40, 1)
+	else
+		playsound(src, SFX_HEELS, 20, 1)
 	if(!can_trip())
 		trip_chance = 0
 		return
