@@ -8,29 +8,42 @@ var/list/organ_cache = list()
 	dir = SOUTH
 
 	// Strings.
-	var/organ_tag = "organ"           // Unique identifier.
-	var/parent_organ = BP_CHEST       // Organ holding this object.
+	/// Unique identifier.
+	var/organ_tag = "organ"
+	/// Organ holding this object.
+	var/parent_organ = BP_CHEST
 
 	// Status tracking.
-	var/status = 0                    // Various status flags (such as robotic)
-	var/vital                         // Lose a vital limb, die immediately.
+	/// Various status flags (such as robotic)
+	var/status = 0
+	/// Lose a vital limb, die immediately.
+	var/vital
 
 	// Reference data.
-	var/mob/living/carbon/human/owner // Current mob owning the organ.
-	var/datum/dna/dna                 // Original DNA.
-	var/datum/species/species         // Original species.
+	/// Current mob owning the organ.
+	var/mob/living/carbon/human/owner
+	/// Original DNA.
+	var/datum/dna/dna
+	/// Original species.
+	var/datum/species/species
 
 	// Damage vars.
-	var/damage = 0                    // Current damage to the organ
-	var/min_broken_damage = 30     	  // Damage before becoming broken
-	var/max_damage             	  // Damage cap
-	var/rejecting                     // Is this organ already being rejected?
+	/// Current damage to the organ
+	var/damage = 0
+	/// Damage before becoming broken
+	var/min_broken_damage = 30
+	/// Damage cap
+	var/max_damage
+	/// Is this organ already being rejected?
+	var/rejecting
 
 	var/death_time
 
-	var/food_organ_type				  // path of food made from organ, ex.
+	/// path of food made from organ, ex.
+	var/food_organ_type
 	var/obj/item/reagent_containers/food/food_organ
-	var/disable_food_organ = FALSE // used to override food_organ's creation and using
+	/// used to override food_organ's creation and using
+	var/disable_food_organ = FALSE
 
 	drop_sound = SFX_DROP_FLESH
 	pickup_sound = SFX_PICKUP_FLESH

@@ -14,72 +14,120 @@
 
 	throwforce = 2.5
 	// Strings
-	var/broken_description             // fracture string if any.
-	var/damage_state = "00"            // Modifier used for generating the on-mob damage overlay for this limb.
+	/// fracture string if any.
+	var/broken_description
+	/// Modifier used for generating the on-mob damage overlay for this limb.
+	var/damage_state = "00"
 
 	// Damage vars.
-	var/brute_mod = 1                  // Multiplier for incoming brute damage.
-	var/burn_mod = 1                   // As above for burn.
-	var/brute_dam = 0                  // Actual current brute damage.
-	var/brute_ratio = 0                // Ratio of current brute damage to max damage.
-	var/burn_dam = 0                   // Actual current burn damage.
-	var/burn_ratio = 0                 // Ratio of current burn damage to max damage.
-	var/last_dam = -1                  // used in healing/processing calculations.
-	var/pain = 0                       // How much the limb hurts.
-	var/full_pain = 0                  // Overall pain including damages.
-	var/max_pain = null                // Maximum pain the limb can accumulate. The actual effect's capped at max_damage.
-	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
+	/// Multiplier for incoming brute damage.
+	var/brute_mod = 1
+	/// As above for burn.
+	var/burn_mod = 1
+	/// Actual current brute damage.
+	var/brute_dam = 0
+	/// Ratio of current brute damage to max damage.
+	var/brute_ratio = 0
+	/// Actual current burn damage.
+	var/burn_dam = 0
+	/// Ratio of current burn damage to max damage.
+	var/burn_ratio = 0
+	/// used in healing/processing calculations.
+	var/last_dam = -1
+	/// How much the limb hurts.
+	var/pain = 0
+	/// Overall pain including damages.
+	var/full_pain = 0
+	/// Maximum pain the limb can accumulate. The actual effect's capped at max_damage.
+	var/max_pain = null
+	/// Point at which a limb becomes unusable due to pain.
+	var/pain_disability_threshold
 
 	// Movement delay vars.
-	var/movement_tally    = 0          // Defines movement speed
-	var/damage_multiplier = 0.5        // Default damage multiplier
-	var/stumped_tally     = 8          // 4.0  tally if limb stmuped
-	var/splinted_tally    = 2          // 1.0 tally if limb splinted
-	var/broken_tally      = 3          // 1.5 tally if limb broken
+	/// Defines movement speed
+	var/movement_tally    = 0
+	/// Default damage multiplier
+	var/damage_multiplier = 0.5
+	/// 4.0  tally if limb stmuped
+	var/stumped_tally     = 8
+	/// 1.0 tally if limb splinted
+	var/splinted_tally    = 2
+	/// 1.5 tally if limb broken
+	var/broken_tally      = 3
 
 	// A bitfield for a collection of limb behavior flags.
 	var/limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
 
 	// Appearance vars.
-	var/icon_name = null               // Icon state base.
-	var/body_part = null               // Part flag
-	var/icon_position = 0              // Used in mob overlay layering calculations.
-	var/model                          // Used when caching robolimb icons.
-	var/force_icon                     // Used to force override of species-specific limb icons (for prosthetics).
-	var/list/mob_overlays              // Cached limb overlays
+	/// Icon state base.
+	var/icon_name = null
+	/// Part flag
+	var/body_part = null
+	/// Used in mob overlay layering calculations.
+	var/icon_position = 0
+	/// Used when caching robolimb icons.
+	var/model
+	/// Used to force override of species-specific limb icons (for prosthetics).
+	var/force_icon
+	/// Cached limb overlays
+	var/list/mob_overlays
 	var/body_build = ""
-	var/s_tone                         // Skin tone.
-	var/s_base = ""                    // Skin base.
-	var/list/s_col                     // skin colour
-	var/s_col_blend = ICON_ADD         // How the skin colour is applied.
-	var/list/h_col                     // hair colour
-	var/list/h_s_col                   // Secondary hair color
-	var/list/markings = list()         // Markings (body_markings) to apply to the icon
+	/// Skin tone.
+	var/s_tone
+	/// Skin base.
+	var/s_base = ""
+	/// skin colour
+	var/list/s_col
+	/// How the skin colour is applied.
+	var/s_col_blend = ICON_ADD
+	/// hair colour
+	var/list/h_col
+	/// Secondary hair color
+	var/list/h_s_col
+	/// Markings (body_markings) to apply to the icon
+	var/list/markings = list()
 
 	// Wound and structural data.
-	var/wound_update_accuracy = 2      // how often wounds should be updated, a higher number means less often
-	var/list/wounds                    // wound datum list.
-	var/number_wounds = 0              // number of wounds, which is NOT wounds.len!
-	var/obj/item/organ/external/parent // Master-limb.
-	var/list/children                  // Sub-limbs.
-	var/list/internal_organs = list()  // Internal organs of this body part
-	var/list/implants = list()         // Currently implanted objects.
-	var/base_miss_chance = 20          // Chance of missing.
+	/// how often wounds should be updated, a higher number means less often
+	var/wound_update_accuracy = 2
+	/// wound datum list.
+	var/list/wounds
+	/// number of wounds, which is NOT wounds.len!
+	var/number_wounds = 0
+	/// Master-limb.
+	var/obj/item/organ/external/parent
+	/// Sub-limbs.
+	var/list/children
+	/// Internal organs of this body part
+	var/list/internal_organs = list()
+	/// Currently implanted objects.
+	var/list/implants = list()
+	/// Chance of missing.
+	var/base_miss_chance = 20
 	var/genetic_degradation = 0
 
 	//Forensics stuff
-	var/list/autopsy_data = list()    // Trauma data for forensics.
+	/// Trauma data for forensics.
+	var/list/autopsy_data = list()
 
 	// Joint/state stuff.
-	var/joint = "joint"                // Descriptive string used in dislocation.
-	var/amputation_point               // Descriptive string used in amputation.
-	var/dislocated = 0                 // If you target a joint, you can dislocate the limb, causing temporary damage to the organ.
-	var/encased                        // Needs to be opened with a saw to access the organs.
-	var/artery_name = "artery"         // Flavour text for cartoid artery, aorta, etc.
-	var/arterial_bleed_severity = 1    // Multiplier for bleeding in a limb.
-	var/tendon_name = "tendon"         // Flavour text for Achilles tendon, etc.
+	/// Descriptive string used in dislocation.
+	var/joint = "joint"
+	/// Descriptive string used in amputation.
+	var/amputation_point
+	/// If you target a joint, you can dislocate the limb, causing temporary damage to the organ.
+	var/dislocated = 0
+	/// Needs to be opened with a saw to access the organs.
+	var/encased
+	/// Flavour text for cartoid artery, aorta, etc.
+	var/artery_name = "artery"
+	/// Multiplier for bleeding in a limb.
+	var/arterial_bleed_severity = 1
+	/// Flavour text for Achilles tendon, etc.
+	var/tendon_name = "tendon"
 	var/cavity_name = "cavity"
-	var/deformities = 0				   // Currently used for glasgow smiles. Gonna add chopped-off fingers and torn-off nipples later.
+	/// Currently used for glasgow smiles. Gonna add chopped-off fingers and torn-off nipples later.
+	var/deformities = 0
 
 	// Surgery vars.
 	var/cavity_max_w_class = 0
@@ -88,10 +136,14 @@
 	var/cavity = 0
 	var/atom/movable/applied_pressure
 	var/atom/movable/splinted
-	var/internal_organs_size = 0       // Current size cost of internal organs in this body part
+	/// Current size cost of internal organs in this body part
+	var/internal_organs_size = 0
 
-	// HUD element variable, see organ_icon.dm get_damage_hud_image()
+	/// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
+
+	/// Reference to this organ's module (if any)
+	var/obj/item/organ_module/active/module = null
 
 /obj/item/organ/external/Initialize(mapload, ...)
 	. = ..()
@@ -164,6 +216,9 @@
 		while(null in owner.organs)
 			owner.organs -= null
 		owner.bad_external_organs.Remove(src)
+
+	if(module)
+		QDEL_NULL(module)
 
 	if(autopsy_data)
 		autopsy_data.Cut()
@@ -405,6 +460,8 @@
 				qdel(W)
 				break
 			parent.update_damages()
+
+	module?.organ_installed(src, owner)
 
 //Helper proc used by various tools for repairing robot limbs
 /obj/item/organ/external/proc/robo_repair(repair_amount, damage_type, damage_desc, obj/item/tool, mob/living/user)
@@ -1060,6 +1117,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 	else if(status & ORGAN_BROKEN)
 		movement_tally += broken_tally * damage_multiplier
 
+	if(module)
+		movement_tally += module.organ_tally
+
 	owner?.update_organ_movespeed()
 
 /obj/item/organ/external/proc/fracture()
@@ -1263,6 +1323,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 	..()
 
 	victim.bad_external_organs -= src
+
+	module?.organ_removed(src, owner)
 
 	remove_splint()
 	for(var/atom/movable/implant in implants)
