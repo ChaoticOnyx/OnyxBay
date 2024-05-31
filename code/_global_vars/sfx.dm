@@ -1576,6 +1576,10 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/clownstep1.ogg',
 		'sound/effects/clownstep2.ogg'
 	),
+	SFX_HEELS = list(
+		'sound/effects/heelsstep1.ogg',
+		'sound/effects/heelsstep2.ogg'
+	),
 	SFX_HISS = list(
 		'sound/voice/hiss1.ogg',
 		'sound/voice/hiss2.ogg',
