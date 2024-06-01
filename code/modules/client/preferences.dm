@@ -61,6 +61,7 @@
 	gender = pick(MALE, FEMALE)
 	real_name = random_name(gender,species)
 	b_type = RANDOM_BLOOD_TYPE
+	key_bindings = deepCopyList(GLOB.hotkey_keybinding_list_by_key)
 
 	if(client)
 		if(IsGuestKey(client.key))

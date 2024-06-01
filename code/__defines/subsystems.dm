@@ -15,7 +15,8 @@
 // Subsystems shutdown in the reverse of the order they initialize in
 // The numbers just define the ordering, they are meaningless otherwise.
 
-#define SS_INIT_LOBBY            17
+#define SS_INIT_LOBBY            18
+#define SS_INIT_INPUT            17
 #define SS_INIT_GARBAGE          16
 #define SS_INIT_EAMS             15
 #define SS_INIT_CHAR_SETUP       14

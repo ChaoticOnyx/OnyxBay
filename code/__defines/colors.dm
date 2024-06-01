@@ -95,3 +95,8 @@
 #define COLOR_BLOOD_UNATHI "#f24b2e"
 #define COLOR_BLOOD_TAJARAN "#862a51"
 #define COLOR_BLOOD_SKRELL "#1d2cbf"
+
+// Colors for input/hotkey panel.
+
+#define COLOR_INPUT_DISABLED "#f0f0f0"
+#define COLOR_INPUT_ENABLED "#d3b5b5"
