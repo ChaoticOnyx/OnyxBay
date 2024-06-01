@@ -661,7 +661,6 @@
 	icon = 'icons/turf/flooring/wasteland.dmi'
 	icon_state = "wasteland"
 	//slowdown = 1
-	baseturfs = /turf/open/floor/plating/dirt/jungle/wasteland
 	var/floor_variance = 15
 
 /turf/simulated/floor/natural/jungle/wasteland/Initialize(mapload, inherited_virtual_z)
