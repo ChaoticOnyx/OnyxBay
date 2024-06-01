@@ -48,6 +48,9 @@ GLOBAL_VAR_CONST(PREF_DARKNESS_INVISIBLE, "Invisible")
 GLOBAL_VAR_CONST(PREF_SPLASH_MAPTEXT, "Maptext only")
 GLOBAL_VAR_CONST(PREF_SPLASH_CHAT, "Chat only")
 GLOBAL_VAR_CONST(PREF_SPLASH_BOTH, "Maptext and chat")
+GLOBAL_VAR_CONST(PREF_ENABLED, "Enabled")
+GLOBAL_VAR_CONST(PREF_DISABLED, "Disabled")
+
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -315,9 +318,53 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
 /datum/client_preference/ambient_occlusion/changed(mob/preference_mob, new_value)
-	if(preference_mob?.client)
-		var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
-		R.GraphicsUpdate()
+	if(isnull(preference_mob.client))
+		return
+
+	var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
+	R.GraphicsUpdate()
+
+/datum/client_preference/glow
+	description = "Lighting: Lamp Glow"
+	key = "LAMP_GLOW"
+	category = PREF_CATEGORY_GRAPHICS
+	default_value = GLOB.PREF_MED
+	options = list(GLOB.PREF_OFF, GLOB.PREF_LOW, GLOB.PREF_MED, GLOB.PREF_HIGH)
+
+/datum/client_preference/glow/changed(mob/preference_mob, new_value)
+	if(isnull(preference_mob.client))
+		return
+
+	var/atom/movable/renderer/R = preference_mob.renderers[LIGHTING_LAMPS_RENDERER]
+	R.GraphicsUpdate()
+
+/datum/client_preference/glare
+	description = "Lighting: Lamp Glare"
+	key = "LAMP_GLARE"
+	category = PREF_CATEGORY_GRAPHICS
+	default_value = GLOB.PREF_ENABLED
+	options = list(GLOB.PREF_ENABLED, GLOB.PREF_DISABLED)
+
+/datum/client_preference/glare/changed(mob/preference_mob, new_value)
+	if(isnull(preference_mob.client))
+		return
+
+	var/atom/movable/renderer/R = preference_mob.renderers[LIGHTING_LAMPS_RENDERER]
+	R.GraphicsUpdate()
+
+/datum/client_preference/exposure
+	description = "Lighting: Lamp Exposure"
+	key = "LAMP_EXPOSURE"
+	category = PREF_CATEGORY_GRAPHICS
+	default_value = GLOB.PREF_ENABLED
+	options = list(GLOB.PREF_ENABLED, GLOB.PREF_DISABLED)
+
+/datum/client_preference/exposure/changed(mob/preference_mob, new_value)
+	if(isnull(preference_mob.client))
+		return
+
+	var/atom/movable/renderer/R = preference_mob.renderers[ADDITIVE_LIGHTING_RENDERER]
+	R.GraphicsUpdate()
 
 /datum/client_preference/graphics_quality
 	description = "Effects Quality"
@@ -494,6 +541,7 @@ var/global/list/_client_preferences_by_type
 	description = "Ghost lighting"
 	key = "GHOST_DARKVISION"
 	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_DARKNESS_MOSTLY_VISIBLE
 	options = list(GLOB.PREF_DARKNESS_VISIBLE, GLOB.PREF_DARKNESS_MOSTLY_VISIBLE, GLOB.PREF_DARKNESS_BARELY_VISIBLE, GLOB.PREF_DARKNESS_INVISIBLE)
 
 /********************
