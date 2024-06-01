@@ -99,10 +99,6 @@
 	..()
 	icon_state = "tree_[rand(1, 12)]"
 
-/obj/structure/flora/tree/tall/New()
-	icon_state = "tree_[rand(1,6)]"
-	..()
-
 /obj/structure/flora/tree/pine/old_pinteree
 	name = "xmas tree"
 	desc = "Masha, get rid of this fucking yolka!"
@@ -151,12 +147,10 @@
 
 /obj/structure/flora/tree/green/random
 	icon_state = "tree"
-	var/randomize_icon = TRUE
 
 /obj/structure/flora/tree/green/random/Initialize()
-	. = ..()
-	if(randomize_icon)
-		icon_state = "[icon_state][rand(1, 10)]"
+	..()
+	icon_state = "[icon_state][rand(1, 10)]"
 
 /obj/structure/flora/tree/green/spook1
 	icon_state = "spook1"
@@ -220,6 +214,13 @@
 /obj/structure/flora/tree/green/small/tree6
 	icon_state = "tree6"
 
+/obj/structure/flora/tree/green/small/random
+	icon_state = "tree1"
+
+/obj/structure/flora/tree/green/small/random/Initialize()
+	. = ..()
+	icon_state = "tree[rand(1, 6)]"
+
 //grass
 /obj/structure/flora/grass
 	name = "grass"
@@ -233,7 +234,6 @@
 /obj/structure/flora/grass/brown/New()
 	..()
 	icon_state = "snowgrass[rand(1, 3)]bb"
-
 
 /obj/structure/flora/grass/green
 	icon_state = "snowgrass1gb"
@@ -487,21 +487,21 @@
 /obj/structure/flora/ausbushes/jungleflora/busha
 	icon_state = "busha"
 
-/obj/structure/flora/ausbushes/jungleflora/busha/New()
+/obj/structure/flora/ausbushes/jungleflora/busha/Initialize()
 	..()
 	icon_state = "busha[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/jungleflora/bushb
 	icon_state = "bushb"
 
-/obj/structure/flora/ausbushes/jungleflora/bushb/New()
+/obj/structure/flora/ausbushes/jungleflora/bushb/Initialize()
 	..()
 	icon_state = "bushb[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/jungleflora/bushc
 	icon_state = "bushc"
 
-/obj/structure/flora/ausbushes/jungleflora/bushc/New()
+/obj/structure/flora/ausbushes/jungleflora/bushc/Initialize()
 	..()
 	icon_state = "bushc[rand(1, 3)]"
 
@@ -509,7 +509,7 @@
 	name = "grass"
 	icon_state = "grassa"
 
-/obj/structure/flora/ausbushes/jungleflora/grassa/New()
+/obj/structure/flora/ausbushes/jungleflora/grassa/Initialize()
 	..()
 	icon_state = "grassa[rand(1, 5)]"
 
@@ -517,7 +517,7 @@
 	name = "grass"
 	icon_state = "grassb"
 
-/obj/structure/flora/ausbushes/jungleflora/grassb/New()
+/obj/structure/flora/ausbushes/jungleflora/grassb/Initialize()
 	..()
 	icon_state = "grassb[rand(1, 5)]"
 
@@ -528,8 +528,8 @@
 	pixel_y = -12
 	layer = ABOVE_HUMAN_LAYER
 
-/obj/structure/flora/ausbushes/jungleflora/large/New()
-	. = ..()
+/obj/structure/flora/ausbushes/jungleflora/large/Initialize()
+	..()
 	icon_state = "bush[rand(1, 3)]"
 
 /obj/structure/flora/jungleflora/rock
@@ -539,8 +539,8 @@
 	anchored = 1
 	layer = BELOW_DOOR_LAYER
 
-/obj/structure/flora/jungleflora/rock/New()
-	. = ..()
+/obj/structure/flora/jungleflora/rock/Initialize()
+	..()
 	icon_state = "rock[rand(1, 5)]"
 
 /obj/structure/flora/jungleflora/rock/large
@@ -549,8 +549,8 @@
 	pixel_x = -16
 	pixel_y = -16
 
-/obj/structure/flora/jungleflora/rock/large/New()
-	. = ..()
+/obj/structure/flora/jungleflora/rock/large/Initialize()
+	..()
 	icon_state = "rocks[rand(1, 3)]"
 
 /obj/structure/flora/goonbushes

@@ -10,9 +10,9 @@
 	var/health = 40
 	var/last_act = 0
 
-/obj/structure/rock/New()
+/obj/structure/rock/Initialize()
 	..()
-	icon_state = pick(iconlist)
+	icon_state = "asteroid_bigstone[rand(1, 4)]"
 
 /obj/structure/rock/Destroy()
 	var/mineralSpawnChanceList = list(uranium = 10, osmium = 10, iron = 20, coal = 20, diamond = 2, gold = 10, silver = 10, plasma = 20)
@@ -64,3 +64,17 @@
 		var/obj/mecha/M = AM
 		if(istype(M.selected,/obj/item/mecha_parts/mecha_equipment/tool/drill))
 			M.selected.action(src)
+
+/obj/structure/rock/basalt
+	icon_state = "asteroid_bigstone_basalt1"
+
+/obj/structure/rock/basalt/Initialize()
+	..()
+	icon_state = "asteroid_bigstone_basalt[rand(1, 3)]"
+
+/obj/structure/rock/lavarocks
+	icon_state = "asteroid_bigstone_lavarocks1"
+
+/obj/structure/rock/lavarocks/Initialize()
+	..()
+	icon_state = "asteroid_bigstone_lavarocks[rand(1, 3)]"

@@ -654,3 +654,17 @@
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
 		M.slip(src, 4)
+
+/turf/simulated/floor/natural/jungle/wasteland
+	name = "cracked earth"
+	desc = "Looks a bit dry."
+	icon = 'icons/turf/flooring/wasteland.dmi'
+	icon_state = "wasteland"
+	//slowdown = 1
+	baseturfs = /turf/open/floor/plating/dirt/jungle/wasteland
+	var/floor_variance = 15
+
+/turf/simulated/floor/natural/jungle/wasteland/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "[initial(icon_state)][rand(1, 13)]"

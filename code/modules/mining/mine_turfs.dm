@@ -755,3 +755,5 @@ var/list/mining_floors = list()
 	footstep_sound = SFX_FOOTSTEP_WATER
 	temperature = 30 CELSIUS
 	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
+
+/turf/simulated/floor/asteroid/
