@@ -386,7 +386,7 @@ window "saywindow"
 		border = line
 		saved-params = ""
 		text = "OK"
-		command = "say [[saywindow-input.text]]"
+		command = "say_verb [[saywindow-input.text]]"
 	elem "saywindow-input"
 		type = INPUT
 		pos = 8,16
@@ -396,7 +396,6 @@ window "saywindow"
 		is-default = false
 		border = sunken
 		saved-params = ""
-		command = "Say "
 		on-focus = ".add_speech_bubble 1"
 		on-blur = ".remove_speech_bubble"
 
