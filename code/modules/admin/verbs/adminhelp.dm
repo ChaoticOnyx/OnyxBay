@@ -83,7 +83,7 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 
 	// clean the input msg
 	if(!msg)
-		return
+		msg = input(src, "Adminhelp", "F1")
 	msg = sanitize(msg)
 	if(!msg)
 		return
