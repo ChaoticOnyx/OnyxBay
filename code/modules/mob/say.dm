@@ -24,12 +24,6 @@
 
 	winset(usr, null, "saywindow.is-visible=true;saywindow-input.focus=true;")
 
-/mob/verb/me_verb(message as text)
-	set name = "Me"
-	set category = "IC"
-
-	me_emote(message)
-
 /mob/proc/me_emote(message)
 	message = sanitize(message)
 
