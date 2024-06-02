@@ -6,10 +6,7 @@
 	set category = "IC"
 	return
 
-/mob/verb/say_verb(message as text|null)
-	set name = "Say"
-	set hidden = TRUE
-
+/mob/verb/saywrapper(message as text)
 	ASSERT(client && (usr == src || usr == client))
 
 	client.close_saywindow()
