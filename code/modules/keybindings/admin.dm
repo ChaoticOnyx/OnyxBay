@@ -11,7 +11,7 @@
 	description = "Talk with other admins."
 
 /datum/keybinding/admin/modchat/down(client/user)
-	user.cmd_mod_say()
+	user.get_mod_say()
 	return TRUE
 
 /datum/keybinding/admin/list_players
@@ -51,7 +51,7 @@
 	description = "Secret chat for admins."
 
 /datum/keybinding/admin/asay/down(client/user)
-	user.cmd_admin_say()
+	user.get_admin_say()
 	return TRUE
 
 /datum/keybinding/admin/aghost
@@ -98,6 +98,6 @@
 	var/msg = input(src, null, "asay \"text\"") as text|null
 	cmd_admin_say(msg)
 
-/client/proc/get_dead_say()
-	var/msg = input(src, null, "dsay \"text\"") as text
-	dsay(msg)
+/client/proc/get_mod_say()
+	var/msg = input(src, null, "msay \"text\"") as text
+	get_mod_say(msg)

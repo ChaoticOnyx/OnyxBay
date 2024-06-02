@@ -100,5 +100,10 @@
 	** These next two vars are to apply movement for keypresses and releases made while move delayed.
 	** Because discarding that input makes the game less responsive.
 	*/
+	/// On next move, add this dir to the move that would otherwise be done
+	var/next_move_dir_add
+	/// On next move, subtract this dir from the move that would otherwise be done
+	var/next_move_dir_sub
+
 	/// Movement dir of the most recently pressed movement key. Used in cardinal-only movement mode.
 	var/last_move_dir_pressed

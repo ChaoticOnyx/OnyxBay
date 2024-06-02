@@ -2,6 +2,8 @@ macro "default"
 	elem ".winset :map.right-click=false"
 		name = "SHIFT+Shift"
 	elem "Shift"
+		name = ""
+
 
 menu "menu"
 	elem
@@ -66,7 +68,7 @@ menu "menu"
 window "mainwindow"
 	elem "mainwindow"
 		type = MAIN
-		pos = 281,0
+		pos = 291,0
 		size = 640x420
 		anchor1 = -1,-1
 		anchor2 = -1,-1
@@ -76,6 +78,11 @@ window "mainwindow"
 		statusbar = false
 		macro = "default"
 		menu = "menu"
+		outer-size = 656x479
+		outer-pos = 291,0
+		inner-size = 640x420
+		inner-pos = 8,51
+		screen-size = 2560x1400
 	elem "asset_cache_browser"
 		type = BROWSER
 		pos = 0,0
@@ -96,7 +103,7 @@ window "mainwindow"
 	elem "input_alt"
 		type = INPUT
 		pos = 2,396
-		size = 514x20
+		size = 591x20
 		anchor1 = 0,100
 		anchor2 = 100,100
 		background-color = #d3b5b5
@@ -105,7 +112,7 @@ window "mainwindow"
 		saved-params = "command"
 	elem "saybutton_alt"
 		type = BUTTON
-		pos = 518,396
+		pos = 596,396
 		size = 40x20
 		anchor1 = 100,100
 		anchor2 = -1,-1
@@ -115,20 +122,6 @@ window "mainwindow"
 		saved-params = "is-checked"
 		text = "Chat"
 		command = ".winset \"saybutton_alt.is-checked=true?input_alt.command=\"!Say \\\"\" macrobutton.is-checked=false:input_alt.command=\""
-		is-flat = true
-		button-type = pushbox
-	elem "hotkey_toggle_alt"
-		type = BUTTON
-		pos = 560,396
-		size = 78x20
-		anchor1 = 100,100
-		anchor2 = -1,-1
-		background-color = none
-		is-visible = false
-		border = line
-		saved-params = ""
-		text = "Hotkey Toggle"
-		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle_alt.is-checked=false input_alt.focus=true : mainwindow.macro=hotkeymode hotkey_toggle_alt.is-checked=true mapwindow.map.focus=true\""
 		is-flat = true
 		button-type = pushbox
 
@@ -174,7 +167,7 @@ window "mapwindow"
 window "outputwindow"
 	elem "outputwindow"
 		type = MAIN
-		pos = 291,13
+		pos = 291,0
 		size = 640x480
 		anchor1 = -1,-1
 		anchor2 = -1,-1
@@ -186,6 +179,10 @@ window "outputwindow"
 		can-minimize = false
 		can-resize = false
 		is-pane = true
+		outer-size = 654x494
+		outer-pos = 291,0
+		inner-pos = 7,7
+		screen-size = 2560x1400
 	elem "browseroutput"
 		type = BROWSER
 		pos = 0,0
@@ -206,7 +203,7 @@ window "outputwindow"
 	elem "input"
 		type = INPUT
 		pos = 2,455
-		size = 514x20
+		size = 591x20
 		anchor1 = 0,100
 		anchor2 = 100,100
 		background-color = #d3b5b5
@@ -217,7 +214,7 @@ window "outputwindow"
 		on-blur = ".remove_speech_bubble"
 	elem "saybutton"
 		type = BUTTON
-		pos = 518,455
+		pos = 596,455
 		size = 40x20
 		anchor1 = 100,100
 		anchor2 = -1,-1
@@ -227,19 +224,6 @@ window "outputwindow"
 		command = ".winset \"saybutton.is-checked=true?input.command=\"!say \\\"\" macrobutton.is-checked=false:input.command=\""
 		is-flat = true
 		button-type = pushbox
-	elem "hotkey_toggle"
-		type = BUTTON
-		pos = 560,455
-		size = 78x20
-		anchor1 = 100,100
-		anchor2 = -1,-1
-		border = line
-		saved-params = ""
-		text = "Hotkey Toggle"
-		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
-		is-flat = true
-		button-type = pushbox
-
 
 window "browserwindow"
 	elem "browserwindow"

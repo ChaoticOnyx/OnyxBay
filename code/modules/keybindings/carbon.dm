@@ -65,3 +65,20 @@
 	var/mob/living/carbon/C = user.mob
 	C.swap_hand()
 	return TRUE
+
+
+/datum/keybinding/carbon/holster
+	hotkey_keys = list("H")
+	name = "holster"
+	full_name = "Holster"
+	description = ""
+
+/datum/keybinding/carbon/holster/down(client/user)
+	var/mob/living/carbon/C = user.mob
+	var/obj/item/clothing/cloth = C.get_equipped_item(slot_w_uniform)
+	if(istype(cloth))
+		var/obj/item/clothing/accessory/holster/H = locate() in cloth.accessories
+		if(istype(H))
+			H.holster_verb()
+
+	return TRUE

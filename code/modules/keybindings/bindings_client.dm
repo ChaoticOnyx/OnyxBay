@@ -30,10 +30,12 @@
 	if(length(keys_held) >= HELD_KEY_BUFFER_LENGTH && !keys_held[_key])
 		keyUp(keys_held[1]) //We are going over the number of possible held keys, so let's remove the first one.
 
-	//the time a key was pressed isn't actually used anywhere (as of 2019-9-10) but this allows easier access usage/checking
 	keys_held[_key] = world.time
 	if(!movement_locked)
 		var/movement = movement_keys[_key]
+		if(!(next_move_dir_sub & movement))
+			next_move_dir_add |= movement
+
 		if(movement)
 			last_move_dir_pressed = movement
 
@@ -78,6 +80,11 @@
 		return
 
 	keys_held -= _key
+
+	if(!movement_locked)
+		var/movement = movement_keys[_key]
+		if(!(next_move_dir_add & movement))
+			next_move_dir_sub |= movement
 
 	// We don't do full key for release, because for mod keys you
 	// can hold different keys and releasing any should be handled by the key binding specifically
