@@ -63,7 +63,6 @@
 	W.write("key_bindings", pref.key_bindings)
 
 /datum/category_item/player_setup_item/controls/keybindings/content(mob/user)
-	. = list()
 	// Create an inverted list of keybindings -> key
 	var/list/user_binds = list()
 	for (var/key in pref.key_bindings)
@@ -115,8 +114,6 @@
 	. += "<br><br>"
 	. += "<a href ='?src=\ref[src];preference=keybindings_reset'>Reset to default</a>"
 	. += "</center>"
-
-	return jointext(., null)
 
 /datum/category_item/player_setup_item/controls/keybindings/proc/capture_keybinding(mob/user, datum/keybinding/kb, old_key)
 	var/HTML = {"

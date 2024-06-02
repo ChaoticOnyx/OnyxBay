@@ -10,7 +10,7 @@
 	set name = "Say"
 	set hidden = TRUE
 
-	ASSERT(client && usr == src)
+	ASSERT(client && (usr == src || usr == client))
 
 	client.close_saywindow()
 
@@ -20,7 +20,7 @@
 	set name = "Say Verb"
 	set category = "IC"
 
-	ASSERT(client && usr == src)
+	ASSERT(client && (usr == src || usr == client))
 
 	winset(usr, null, "saywindow.is-visible=true;saywindow-input.focus=true;")
 
@@ -28,6 +28,9 @@
 	set name = "Me"
 	set category = "IC"
 
+	me_emote(message)
+
+/mob/proc/me_emote(message)
 	message = sanitize(message)
 
 	if(use_me)
