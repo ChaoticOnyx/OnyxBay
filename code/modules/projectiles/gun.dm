@@ -362,9 +362,8 @@
 	playsound(src, 'sound/effects/weapons/misc/gun_overheat.ogg', 25, 1, 5)
 	/// overheat gives either you a bonus or penalty depending on gun, by default it is +10% time.
 	var/overheat_time = ((heat_amount / cool_amount * overheat_multiplier) SECONDS)
-	var/atom/movable/particle_emitter/attachable/overheat_smoke/overheat_smoke = new(src, overheat_time)
+	new /atom/movable/particle_emitter/attachable/overheat_smoke(src, overheat_time)
 	set_next_think_ctx("overheat_context", world.time + overheat_time)
-	//heat_meter.animate_change(0, overheat_time)
 
 /obj/item/gun/proc/end_overheat()
 	on_overheat = FALSE

@@ -115,3 +115,54 @@
 	gravity = list(0, 0.95)
 	scale = list(0.5, 0.5)
 	grow = 0.05
+
+GLOBAL_LIST_EMPTY(blood_particles)
+/particles/splatter
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "smoke"
+	width = 500
+	height = 500
+	count = 20
+	spawning = 20
+	lifespan = 0.5 SECONDS
+	fade = 0.7 SECONDS
+	grow = 0.1
+	scale = 0.2
+	spin = generator("num", -20, 20)
+	velocity = list(50, 0)
+	friction = generator("num", 0.1, 0.5)
+	position = generator("circle", 6, 6)
+
+/particles/splatter/New(set_color)
+	..()
+	if(set_color != "red") // we're already red colored by default
+		color = set_color
+
+/particles/debris
+	icon = 'icons/effects/particles/generic_particles.dmi'
+	width = 500
+	height = 500
+	count = 10
+	spawning = 10
+	lifespan = 0.7 SECONDS
+	fade = 0.4 SECONDS
+	drift = generator("circle", 0, 7)
+	scale = 0.7
+	velocity = list(50, 0)
+	friction = generator("num", 0.1, 0.15)
+	spin = generator("num", -20, 20)
+
+/particles/impact_smoke
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "smoke"
+	width = 500
+	height = 500
+	count = 20
+	spawning = 20
+	lifespan = 0.7 SECONDS
+	fade = 8 SECONDS
+	grow = 0.1
+	scale = 0.2
+	spin = generator("num", -20, 20)
+	velocity = list(50, 0)
+	friction = generator("num", 0.1, 0.5)

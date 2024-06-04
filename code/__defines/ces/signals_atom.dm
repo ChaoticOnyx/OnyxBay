@@ -42,3 +42,6 @@
 
 /// Called on `/atom/CtrlAltClick` (/atom)
 #define SIGNAL_CTRL_ALT_CLICKED "atom_ctrl_alt_click"
+
+/// Called on 'atom/bullet_act' (/atom, obj/item/projectile)
+#define SIGNAL_BULLET_ACT "atom_bullet_act"

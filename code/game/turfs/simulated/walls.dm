@@ -47,6 +47,7 @@
 		reinf_material = get_material_by_name(rmaterialtype)
 	update_material()
 	hitsound = material.hitsound
+	add_debris_element()
 
 // Walls always hide the stuff below them.
 /turf/simulated/wall/levelupdate()
@@ -244,7 +245,7 @@
 	var/damage = min(proj_damage, 100)
 
 	take_damage(damage)
-	return
+	return ..()
 
 /turf/simulated/wall/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR, nomsg = FALSE)
 	..()
@@ -461,3 +462,6 @@
 			return TRUE
 
 	return FALSE
+
+/turf/simulated/wall/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_SPARKS, -15, 8, 1)

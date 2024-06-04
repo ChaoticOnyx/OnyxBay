@@ -152,3 +152,9 @@
 	plane = DEFAULT_PLANE
 	layer = FIRE_LAYER
 	particles = new /particles/overheat_smoke()
+
+/atom/movable/particle_emitter/debris_visuals
+	particles = new /particles/debris()
+
+/atom/movable/particle_emitter/smoke_visuals
+	particles = new /particles/impact_smoke()
