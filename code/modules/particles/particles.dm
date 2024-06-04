@@ -98,3 +98,20 @@
 	grow = 0.05
 	spin = 2
 	color = "#fcffff77"
+
+/particles/overheat_smoke
+	icon = 'icons/effects/particles/smoke.dmi'
+	icon_state = list("smoke_1" = 1, "smoke_2" = 1, "smoke_3" = 2)
+	width = 25
+	height = 60
+	count = 1000
+	spawning = 3
+	lifespan = 1.5 SECONDS
+	fade = 1 SECONDS
+	velocity = list(0, 0.3, 0)
+	position = list(8, 8)
+	drift = generator("sphere", 0, 1, NORMAL_RAND)
+	friction = 0.2
+	gravity = list(0, 0.95)
+	scale = list(0.5, 0.5)
+	grow = 0.05
