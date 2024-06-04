@@ -30,6 +30,18 @@
 	var/masks_icon = 'icons/turf/wall_masks.dmi'
 	var/static/list/mask_overlay_states = list()
 
+	///The current number of bulletholes in this turf
+	var/current_bulletholes = 0
+	///A reference to the current bullethole overlay image, this is added and deleted as needed
+	var/image/bullethole_overlay
+	/**
+	 * The variation set we're using
+	 * There are 10 sets and it gets picked randomly the first time a wall is shot
+	 * It corresponds to the first number in the icon_state (bhole_[**bullethole_variation**]_[current_bulletholes])
+	 * Gets reset to 0 if the wall reaches maximum health, so a new variation is picked when the wall gets shot again
+	 */
+	var/bullethole_variation = 0
+
 /datum/rad_resist/wall
 	alpha_particle_resist = 100 MEGA ELECTRONVOLT
 	beta_particle_resist = 20.2 MEGA ELECTRONVOLT
@@ -48,6 +60,10 @@
 	update_material()
 	hitsound = material.hitsound
 	add_debris_element()
+
+/turf/simulated/wall/Destroy()
+	QDEL_NULL(bullethole_overlay)
+	return ..()
 
 // Walls always hide the stuff below them.
 /turf/simulated/wall/levelupdate()
@@ -243,6 +259,9 @@
 
 	//cap the amount of damage, so that things like emitters can't destroy walls in one hit.
 	var/damage = min(proj_damage, 100)
+
+	if(Proj.check_armour != ENERGY && Proj.check_armour != LASER)
+		current_bulletholes++
 
 	take_damage(damage)
 	return ..()
