@@ -406,3 +406,11 @@
 /// Called on `/mob/proc/start_pulling`.
 /atom/movable/proc/on_pulling_try(mob/user)
 	return
+
+/**
+* A wrapper for setDir that should only be able to fail by living mobs.
+*
+* Called from '/atom/movable/proc/keyLoop', this exists to be overwritten by living mobs with a check to see if we're actually alive enough to change directions
+*/
+/atom/movable/proc/keybind_face_direction(direction)
+	return

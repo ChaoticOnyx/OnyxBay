@@ -100,7 +100,7 @@
 	var/message = input("","me (text)") as text
 	remove_all_indicators()
 	if(message)
-		me_verb(message)
+		me_emote(message)
 
 /mob/proc/start_typing()
 	remove_thinking_indicator()
