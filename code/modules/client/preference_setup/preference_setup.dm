@@ -44,9 +44,14 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 	sort_order = 7
 	category_item_type = /datum/category_item/player_setup_item/relations
 
+/datum/category_group/player_setup_category/controls
+	name = "Controls"
+	sort_order = 8
+	category_item_type = /datum/category_item/player_setup_item/controls
+
 /datum/category_group/player_setup_category/global_preferences
 	name = "<b>Settings</b>"
-	sort_order = 8
+	sort_order = 9
 	category_item_type = /datum/category_item/player_setup_item/player_global
 
 

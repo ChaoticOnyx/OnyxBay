@@ -261,6 +261,9 @@
 	if(prefs && !istype(mob, world.mob))
 		prefs.apply_post_login_preferences(src)
 
+	if(SSinput.initialized)
+		set_macros()
+
 	turf_examine = new(src)
 
 	settings = new(src)
@@ -705,3 +708,60 @@
 	var/mob/living/M = mob
 	if(istype(M) && !M.in_throw_mode)
 		M.OnMouseDown(object, location, control, params)
+
+/client/Click(atom/A)
+	//if(!user_acted(src))
+	//	return
+
+	if(holder && holder.callproc && holder.callproc.waiting_for_click)
+		if(alert("Do you want to select \the [A] as the [holder.callproc.arguments.len+1]\th argument?",, "Yes", "No") == "Yes")
+			holder.callproc.arguments += A
+
+		holder.callproc.waiting_for_click = 0
+		verbs -= /client/proc/cancel_callproc_select
+		holder.callproc.do_args()
+		return
+
+	return ..()
+
+/**
+ * Updates the keybinds for special keys
+ *
+ * Handles adding macros for the keys that need it
+ * And adding movement keys to the clients movement_keys list
+ * At the time of writing this, communication(OOC, Say, IC) require macros
+ * Arguments:
+ * * direct_prefs - the preference we're going to get keybinds from
+ */
+/client/proc/update_special_keybinds(datum/preferences/direct_prefs)
+	var/datum/preferences/D = prefs || direct_prefs
+	if(!D?.key_bindings)
+		return
+	movement_keys = list()
+	var/list/communication_hotkeys = list()
+	for(var/key in D.key_bindings)
+		for(var/kb_name in D.key_bindings[key])
+			switch(kb_name)
+				if("North")
+					movement_keys[key] = NORTH
+				if("East")
+					movement_keys[key] = EAST
+				if("West")
+					movement_keys[key] = WEST
+				if("South")
+					movement_keys[key] = SOUTH
+				if("Say")
+					winset(src, "default-\ref[key]", "parent=default;name=[key];command=say")
+					communication_hotkeys += key
+				if("OOC")
+					winset(src, "default-\ref[key]", "parent=default;name=[key];command=ooc")
+					communication_hotkeys += key
+				if("Me")
+					winset(src, "default-\ref[key]", "parent=default;name=[key];command=me")
+					communication_hotkeys += key
+
+	// winget() does not work for F1 and F2
+	for(var/key in communication_hotkeys)
+		if(!(key in list("F1","F2")) && !winget(src, "default-\ref[key]", "command"))
+			to_chat(src, "You probably entered the game with a different keyboard layout.\n<a href='?src=\ref[src];reset_macros=1'>Please switch to the English layout and click here to fix the communication hotkeys.</a>")
+			break

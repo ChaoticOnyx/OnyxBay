@@ -6,11 +6,8 @@
 	set category = "IC"
 	return
 
-/mob/verb/say_verb(message as text|null)
-	set name = "Say"
-	set hidden = TRUE
-
-	ASSERT(client && usr == src)
+/mob/verb/saywrapper(message as text)
+	ASSERT(client && (usr == src || usr == client))
 
 	client.close_saywindow()
 
@@ -20,14 +17,11 @@
 	set name = "Say Verb"
 	set category = "IC"
 
-	ASSERT(client && usr == src)
+	ASSERT(client && (usr == src || usr == client))
 
 	winset(usr, null, "saywindow.is-visible=true;saywindow-input.focus=true;")
 
-/mob/verb/me_verb(message as text)
-	set name = "Me"
-	set category = "IC"
-
+/mob/proc/me_emote(message)
 	message = sanitize(message)
 
 	if(use_me)

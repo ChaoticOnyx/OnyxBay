@@ -29,6 +29,7 @@
 #define SS_PRIORITY_EXPLOSION      666   // Processing explosion stuff, abnormal number for abnormal stuff
 #define SS_PRIORITY_VIRUSES        20    // Processing viruses life.
 #define SS_PRIORITY_OPEN_SPACE     20    // Open turf updates.
+#define SS_PRIORITY_INPUT          20    // Input sybsystem.
 #define SS_PRIORITY_AIRFLOW        15    // Object movement from ZAS airflow.
 #define SS_PRIORITY_VOTE           10    // Vote management.
 #define SS_PRIORITY_INACTIVITY     10    // Idle kicking.

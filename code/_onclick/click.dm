@@ -77,6 +77,8 @@
 	if(modifiers["middle"])
 		if(modifiers["shift"])
 			ShiftMiddleClickOn(A)
+		else if(modifiers["alt"])
+			AltMiddleClickOn(A)
 		else
 			MiddleClickOn(A)
 		return 1
@@ -255,6 +257,9 @@
 	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_SHIFT_MIDDLE_CLICK)
 		if(pointed(A))
 			return
+
+/mob/proc/AltMiddleClickOn(atom/A)
+	pointed(A)
 
 /atom/proc/MiddleClick(mob/M)
 	return

@@ -241,6 +241,9 @@
 	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
 	var/list/do_afters
 
+	/// Cursor icon used when holding shift over things.
+	var/examine_cursor_icon = 'icons/hud/mouse_pointers/examine_pointer.dmi'
+
 /datum/rad_resist/mob
 	alpha_particle_resist = 6 MEGA ELECTRONVOLT
 	beta_particle_resist = 0.1 MEGA ELECTRONVOLT
