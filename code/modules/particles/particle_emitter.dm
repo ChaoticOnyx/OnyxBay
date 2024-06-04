@@ -158,3 +158,18 @@
 
 /atom/movable/particle_emitter/smoke_visuals
 	particles = new /particles/impact_smoke()
+
+/atom/movable/particle_emitter/firing_smoke
+	particles = new /particles/firing_smoke()
+
+/atom/movable/particle_emitter/firing_smoke/Initialize(mapload, time, color)
+	. = ..()
+	add_think_ctx("remove_count", CALLBACK(src, nameof(.proc/remove_count)), world.time + 5)
+	add_think_ctx("remove_drift", CALLBACK(src, nameof(.proc/remove_drift)), world.time + 3)
+
+/atom/movable/particle_emitter/firing_smoke/proc/remove_count()
+	particles.count = 0
+	QDEL_IN(src, 0.1 SECONDS)
+
+/atom/movable/particle_emitter/firing_smoke/proc/remove_drift()
+	particles.drift = 0

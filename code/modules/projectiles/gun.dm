@@ -113,6 +113,8 @@
 	///image we create to keep track of heat
 	var/image/heat_bar/heat_meter
 
+	/// Whether this gun has smoke particles
+	var/has_smoke_particles = FALSE
 
 /obj/item/gun/Initialize()
 	. = ..()
@@ -447,6 +449,13 @@
 
 		if(screen_shake)
 			INVOKE_ASYNC(GLOBAL_PROC, /proc/directional_recoil, user, screen_shake+1, Get_Angle(user, target))
+
+	if(has_smoke_particles)
+		var/firing_angle = Get_Angle(firer, target)
+		var/x_component = sin(firing_angle) * 40
+		var/y_component = cos(firing_angle) * 40
+		var/atom/movable/particle_emitter/firing_smoke/firing_smoke = new(get_turf(src))
+		firing_smoke.particles.velocity = list(x_component, y_component)
 
 	if(combustion)
 		var/turf/curloc = get_turf(src)
