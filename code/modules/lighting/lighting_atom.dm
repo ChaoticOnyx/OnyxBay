@@ -143,6 +143,9 @@ if(loc != old_loc) {\
 
 		glow_overlay.plane = LIGHTING_LAMPS_PLANE
 		glow_overlay.blend_mode = BLEND_OVERLAY
+		glow_overlay.appearance_flags |= RESET_ALPHA | RESET_COLOR | KEEP_APART
+		glow_overlay.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
 		if(glow_colored)
 			var/datum/ColorMatrix/MATRIX = new(light_color, GLOW_CONTRAST_BASE + GLOW_CONTRAST_POWER * light_max_bright, GLOW_BRIGHTNESS_BASE + GLOW_BRIGHTNESS_POWER * light_max_bright)
 			glow_overlay.color = MATRIX.Get()
@@ -156,6 +159,7 @@ if(loc != old_loc) {\
 		exposure_overlay.plane = LIGHTING_EXPOSURE_PLANE
 		exposure_overlay.blend_mode = BLEND_ADD
 		exposure_overlay.appearance_flags = RESET_ALPHA | RESET_COLOR | KEEP_APART
+		exposure_overlay.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 		var/datum/ColorMatrix/MATRIX = new(1, EXPOSURE_CONTRAST_BASE + EXPOSURE_CONTRAST_POWER * light_max_bright, EXPOSURE_BRIGHTNESS_BASE + EXPOSURE_BRIGHTNESS_POWER * light_max_bright)
 		if(exposure_colored)
