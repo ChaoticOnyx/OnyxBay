@@ -199,7 +199,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	name  = ABOVE_LIGHTING_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = EFFECTS_ABOVE_LIGHTING_PLANE
-	alpha = 0
 
 /// For BLOOOOM
 
@@ -245,6 +244,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	group = RENDER_GROUP_SCENE
 	plane = LIGHTING_EXPOSURE_PLANE
 	relay_blend_mode = BLEND_ADD
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
 
 /atom/movable/renderer/additive_lighting/Initialize(mapload, mob/owner)
 	. = ..()

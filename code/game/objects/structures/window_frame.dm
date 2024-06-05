@@ -220,6 +220,10 @@
 	update_nearby_tiles(need_rebuild = TRUE)
 	update_nearby_icons()
 
+/obj/structure/window_frame/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_GLASS, -10, 5)
+
+
 /obj/structure/window_frame/GetExplosionBlock()
 	. += outer_pane?.explosion_block
 	. += inner_pane?.explosion_block

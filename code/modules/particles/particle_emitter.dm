@@ -16,6 +16,72 @@
 
 	src.color = color
 
+
+/atom/movable/particle_emitter/attachable
+	/// typepath of the last location we're in, if it's different when moved then we need to update vis contents
+	var/last_attached_location_type
+	/// the main item we're attached to at the moment, particle holders hold particles for something
+	var/weakref/weak_attached
+	/// besides the item we're also sometimes attached to other stuff! (items held emitting particles on a mob)
+	var/weakref/weak_additional
+
+/atom/movable/particle_emitter/attachable/Initialize(mapload, time, color)
+	. = ..()
+
+	if(!loc)
+		util_crash_with("particle holder was created with no loc!")
+		return INITIALIZE_HINT_QDEL
+
+	if(ismovable(loc))
+		register_signal(loc, SIGNAL_MOVED, nameof(.proc/on_move))
+
+	register_signal(loc, SIGNAL_QDELETING, nameof(.proc/on_qdel))
+	weak_attached = weakref(loc)
+	update_visual_contents(loc)
+
+/atom/movable/particle_emitter/attachable/Destroy(force)
+	var/atom/movable/attached = weak_attached.resolve()
+	var/atom/movable/additional_attached
+	if(weak_additional)
+		additional_attached = weak_additional.resolve()
+	if(attached)
+		attached.vis_contents -= src
+		unregister_signal(loc, list(SIGNAL_MOVED, SIGNAL_QDELETING))
+	if(additional_attached)
+		additional_attached.vis_contents -= src
+	QDEL_NULL(particles)
+	return ..()
+
+///signal called when parent is moved
+/atom/movable/particle_emitter/attachable/proc/on_move(atom/movable/attached, atom/oldloc, direction)
+	SIGNAL_HANDLER
+	if(attached.loc.type != last_attached_location_type)
+		update_visual_contents(attached)
+
+///signal called when parent is deleted
+/atom/movable/particle_emitter/attachable/proc/on_qdel(atom/movable/attached, force)
+	//SIGNAL_HANDLER FUCK YOU, 'proc/send_asset()'
+	qdel_self()
+
+/**
+ * logic proc for particle holders, aka where they move.
+ * subtypes of particle holders can override this for particles that should always be turf level or do special things when repositioning.
+ * this base subtype has some logic for items, as the loc of items becomes mobs very often hiding the particles
+ */
+/atom/movable/particle_emitter/attachable/proc/update_visual_contents(atom/movable/attached_to)
+	if(weak_additional)
+		var/atom/movable/resolved_location = weak_additional.resolve()
+		if(resolved_location)
+			resolved_location.vis_contents -= src
+
+	if(isitem(attached_to) && ismob(attached_to.loc))
+		var/mob/particle_mob = attached_to.loc
+		last_attached_location_type = attached_to.loc
+		weak_additional = weakref(particle_mob)
+		particle_mob.vis_contents += src
+
+	attached_to.vis_contents |= src
+
 /atom/movable/particle_emitter/proc/enable(on)
 	if(on)
 		particles.spawning = initial(particles.spawning)
@@ -81,3 +147,29 @@
 
 /atom/movable/particle_emitter/fog/breath
 	particles = new /particles/fog/breath()
+
+/atom/movable/particle_emitter/attachable/overheat_smoke
+	plane = DEFAULT_PLANE
+	layer = FIRE_LAYER
+	particles = new /particles/overheat_smoke()
+
+/atom/movable/particle_emitter/debris_visuals
+	particles = new /particles/debris()
+
+/atom/movable/particle_emitter/smoke_visuals
+	particles = new /particles/impact_smoke()
+
+/atom/movable/particle_emitter/firing_smoke
+	particles = new /particles/firing_smoke()
+
+/atom/movable/particle_emitter/firing_smoke/Initialize(mapload, time, color)
+	. = ..()
+	add_think_ctx("remove_count", CALLBACK(src, nameof(.proc/remove_count)), world.time + 5)
+	add_think_ctx("remove_drift", CALLBACK(src, nameof(.proc/remove_drift)), world.time + 3)
+
+/atom/movable/particle_emitter/firing_smoke/proc/remove_count()
+	particles.count = 0
+	QDEL_IN(src, 0.1 SECONDS)
+
+/atom/movable/particle_emitter/firing_smoke/proc/remove_drift()
+	particles.drift = 0

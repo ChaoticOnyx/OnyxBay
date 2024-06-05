@@ -1,3 +1,8 @@
+/// How many variations of bullethole patterns there are
+#define BULLETHOLE_STATES 10
+/// Maximum possible bullet holes in a closed turf
+#define BULLETHOLE_MAX 24
+
 /turf/simulated/wall/proc/update_material()
 	if(!material)
 		return
@@ -73,6 +78,7 @@
 				I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 				AddOverlays(I)
 
+	CutOverlays(bullethole_overlay)
 	if(damage != 0)
 		var/integrity = material.integrity
 		if(reinf_material)
@@ -83,6 +89,15 @@
 			overlay = damage_overlays.len
 
 		AddOverlays(damage_overlays[overlay])
+		if(current_bulletholes && current_bulletholes <= BULLETHOLE_MAX)
+			if(!bullethole_variation)
+				bullethole_variation = rand(1, BULLETHOLE_STATES)
+			bullethole_overlay = image('icons/effects/bulletholes.dmi', src, "bhole_[bullethole_variation]_[current_bulletholes]")
+			AddOverlays(bullethole_overlay)
+
+	else
+		QDEL_NULL(bullethole_overlay)
+
 	return
 
 /turf/simulated/wall/proc/generate_overlays()
@@ -116,3 +131,6 @@
 	if(material && W.material && material.icon_base == W.material.icon_base)
 		return 1
 	return 0
+
+#undef BULLETHOLE_STATES
+#undef BULLETHOLE_MAX

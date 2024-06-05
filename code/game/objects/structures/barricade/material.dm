@@ -24,6 +24,11 @@
 
 	_apply_material(material)
 
+/obj/structure/barricade/material/add_debris_element()
+	if(material.name == MATERIAL_WOOD)
+		AddElement(/datum/element/debris, DEBRIS_WOOD, -10, 5)
+	else
+		AddElement(/datum/element/debris, DEBRIS_SPARKS, -15, 8, 1)
 
 /obj/structure/barricade/material/proc/_apply_material(material/new_material)
 	material = new_material
