@@ -81,7 +81,7 @@
 	)
 
 /datum/biome/jungle
-	open_turf_types = list(/turf/simulated/floor/natural/jungle = 1)
+	open_turf_types = list(/turf/simulated/floor/asteroid/jungle = 1)
 	flora_spawn_list = list(
 		/obj/structure/flora/ausbushes/jungleflora = 1,
 		/obj/structure/flora/ausbushes/jungleflora/grassb = 1,
@@ -106,7 +106,7 @@
 
 /datum/biome/jungle/dense
 	flora_spawn_chance = 100
-	open_turf_types = list(/turf/simulated/floor/natural/jungle = 1, /turf/simulated/floor/natural/jungle/dirt = 9)
+	open_turf_types = list(/turf/simulated/floor/asteroid/jungle = 1, /turf/simulated/floor/asteroid/jungle/dirt = 9)
 	flora_spawn_list = list(
 		/obj/structure/flora/ausbushes/jungleflora/grassa = 1,
 		/obj/structure/flora/ausbushes/jungleflora/grassb = 1,
@@ -130,7 +130,7 @@
 		)
 
 /datum/biome/jungle/plains
-	open_turf_types = list(/turf/simulated/floor/natural/jungle/ = 1)
+	open_turf_types = list(/turf/simulated/floor/asteroid/jungle/ = 1)
 	flora_spawn_chance = 50
 	mob_spawn_chance = 1
 	mob_spawn_list = list(
@@ -139,7 +139,7 @@
 	)
 
 /datum/biome/mudlands
-	open_turf_types = list(/turf/simulated/floor/natural/jungle/dirt = 1)
+	open_turf_types = list(/turf/simulated/floor/asteroid/jungle/dirt = 1)
 	flora_spawn_list = list(
 		/obj/structure/flora/ausbushes/jungleflora/grassa = 1,
 		/obj/structure/flora/ausbushes/jungleflora/grassb = 1,
@@ -152,17 +152,17 @@
 	mob_spawn_list = list(/mob/living/simple_animal/hostile/poison/giant_spider/tarantula = 1)
 
 /datum/biome/jungle_wasteland
-	open_turf_types = list(/turf/simulated/floor/natural/jungle/wasteland = 1)
+	open_turf_types = list(/turf/simulated/floor/asteroid/jungle/wasteland = 1)
 
 /datum/biome/jungle/water
-	open_turf_types = list(/turf/simulated/floor/natural/jungle/water = 1)
+	open_turf_types = list(/turf/simulated/floor/asteroid/jungle/water = 1)
 	mob_spawn_chance = 1
 	mob_spawn_list = list(/mob/living/simple_animal/hostile/carp = 1)
 	flora_spawn_chance = 1
 	flora_spawn_list = list(/obj/structure/rock/basalt = 1)
 
 /datum/biome/cave/jungle
-	open_turf_types = list(/turf/simulated/floor/natural/jungle = 10, /turf/simulated/floor/natural/jungle/dirt = 10)
+	open_turf_types = list(/turf/simulated/floor/asteroid/jungle = 10, /turf/simulated/floor/asteroid/jungle/dirt = 10)
 	closed_turf_types = list(/turf/unsimulated/mask = 1)
 	flora_spawn_chance = 5
 	flora_spawn_list = list(
@@ -189,7 +189,7 @@
 	)
 
 /datum/biome/cave/jungle/dirt
-	open_turf_types = list(/turf/simulated/floor/natural/jungle/wasteland = 1)
+	open_turf_types = list(/turf/simulated/floor/asteroid/jungle/wasteland = 1)
 	flora_spawn_list = list(
 		/obj/structure/flora/ausbushes/jungleflora/busha = 1,
 		/obj/structure/flora/ausbushes/jungleflora/bushb = 1,
@@ -202,7 +202,7 @@
 	)
 
 /datum/biome/cave/lush
-	open_turf_types = list(/turf/simulated/floor/natural/jungle = 1)
+	open_turf_types = list(/turf/simulated/floor/asteroid/jungle = 1)
 	closed_turf_types = list(/turf/unsimulated/mask = 1)
 	flora_spawn_chance = 50
 	flora_spawn_list = list(
@@ -238,7 +238,7 @@
 	)
 
 /datum/biome/cave/lush/bright
-	open_turf_types = list(/turf/simulated/floor/natural/jungle = 12, /turf/simulated/floor/natural/jungle/water = 1)
+	open_turf_types = list(/turf/simulated/floor/asteroid/jungle = 12, /turf/simulated/floor/asteroid/jungle/water = 1)
 	flora_spawn_chance = 40
 	mob_spawn_chance = 1
 	mob_spawn_list = list(

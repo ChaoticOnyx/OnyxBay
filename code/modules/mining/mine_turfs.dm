@@ -756,4 +756,77 @@ var/list/mining_floors = list()
 	temperature = 30 CELSIUS
 	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
 
-/turf/simulated/floor/asteroid/
+/turf/simulated/floor/asteroid/jungle
+	name = "grass"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "grass1"
+	footstep_sound = SFX_FOOTSTEP_GRASS
+
+/turf/simulated/floor/asteroid/jungle/dirt
+	name = "dirt"
+	desc = "Looks dirty."
+	icon_state = "dirt"
+
+/turf/simulated/floor/asteroid/jungle/water
+	name = "water"
+	desc = "Looks wet."
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "seashallow"
+	footstep_sound = SFX_FOOTSTEP_WATER
+	var/overlay = TRUE
+
+/turf/simulated/floor/asteroid/jungle/water/New()
+	..()
+	if(overlay)
+		AddOverlays(image("icon"='icons/misc/beach.dmi',"icon_state"="riverwater","layer"=MOB_LAYER+1))
+
+/turf/simulated/floor/asteroid/jungle/wasteland
+	name = "cracked earth"
+	desc = "Looks a bit dry."
+	icon = 'icons/turf/flooring/wasteland.dmi'
+	icon_state = "wasteland1"
+	//slowdown = 1 //<add that shet, i am too stupid and lazy to do it myself
+	var/floor_variance = 15
+
+/turf/simulated/floor/asteroid/jungle/wasteland/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "wasteland[rand(1, 13)]"
+
+/turf/simulated/floor/asteroid/rockplanet
+	name = "iron sand"
+	icon = 'icons/turf/flooring/sand.dmi'
+	icon_state = "dry_soft1"
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
+	var/floor_variance = 100
+
+/turf/simulated/floor/asteroid/rockplanet/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "dry_soft[rand(1, 8)]"
+
+/turf/simulated/floor/asteroid/rockplanet/cracked
+	name = "iron cracked sand"
+	icon_state = "dry_cracked1"
+
+/turf/simulated/floor/asteroid/rockplanet/cracked/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "dry_cracked[rand(1, 8)]"
+
+/turf/simulated/floor/asteroid/rockplanet/wet
+	icon_state = "wet_soft1"
+
+/turf/simulated/floor/asteroid/rockplanet/wet/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "wet_soft[rand(1, 8)]"
+
+/turf/simulated/floor/asteroid/rockplanet/wet/cracked
+	name = "iron cracked sand"
+	icon_state = "wet_cracked1"
+
+/turf/simulated/floor/asteroid/rockplanet/wet/cracked/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "wet_cracked[rand(1, 8)]"
