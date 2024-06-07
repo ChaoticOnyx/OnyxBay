@@ -334,6 +334,7 @@
 #define SFX_GLASS_KNOCK             "glass_knock"
 #define SFX_GIB                     "gib"
 #define SFX_CLOWN                   "clown"
+#define SFX_HEELS                   "heels"
 #define SFX_HISS                    "hiss"
 #define SFX_WHISTLE                 "whistle"
 #define SFX_SNORE                   "snore"

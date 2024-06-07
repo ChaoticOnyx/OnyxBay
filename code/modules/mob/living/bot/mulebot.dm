@@ -200,11 +200,11 @@
 	..()
 
 /mob/living/bot/mulebot/Bump(mob/living/carbon/human/M)
-	if(!safety && istype(M))
+	. = ..()
+	if(. && !safety && istype(M))
 		visible_message("<span class='warning'>[src] knocks over [M]!</span>")
 		M.Stun(8)
 		M.Weaken(5)
-	..()
 
 /mob/living/bot/mulebot/proc/runOver(mob/living/carbon/human/H)
 	if(istype(H)) // No safety checks - WILL run over lying humans. Stop ERPing in the maint!
