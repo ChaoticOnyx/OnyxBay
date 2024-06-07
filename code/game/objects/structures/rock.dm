@@ -66,15 +66,47 @@
 			M.selected.action(src)
 
 /obj/structure/rock/basalt
+	name = "basalt"
+	desc = "Huge chunk of volcanic rock that contain various minerals."
 	icon_state = "asteroid_bigstone_basalt1"
 
 /obj/structure/rock/basalt/Initialize()
-	..()
+	. = ..()
 	icon_state = "asteroid_bigstone_basalt[rand(1, 3)]"
 
 /obj/structure/rock/lavarocks
-	icon_state = "asteroid_bigstone_lavarocks1"
+	name = "lava rocks"
+	desc = "Small pile of volcanic rocks that contain various minerals."
+	icon_state = "asteroid_lavarocks1"
 
 /obj/structure/rock/lavarocks/Initialize()
-	..()
-	icon_state = "asteroid_bigstone_lavarocks[rand(1, 3)]"
+	. = ..()
+	icon_state = "asteroid_lavarocks[rand(1, 3)]"
+
+/obj/structure/rock/rockplanet
+	name = "russet stone"
+	desc = "A raised knurl of red rock."
+	icon_state = "asteroid_bigstone_redrock1"
+
+/obj/structure/rock/rockplanet/Initialize()
+	. = ..()
+	icon_state = "asteroid_bigstone_redrock[rand(1, 3)]"
+
+/obj/structure/rock/rockplanet/Destroy()
+	var/mineralSpawnChanceList = list(glass = 10)
+	if(prob(20))
+		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
+		mineral_name = lowertext(mineral_name)
+		var/ore = text2path("/obj/item/ore/[mineral_name]")
+		for(var/i=1,i <= rand(2,6),i++)
+			new ore(get_turf(src))
+	return ..()
+
+/obj/structure/rock/rockplanet/pile
+	name = "russet stones"
+	desc = "A pile of rust-red rocks."
+	icon_state = "asteroid_redrocks1"
+
+/obj/structure/rock/rockplanet/pile/Initialize()
+	. = ..()
+	icon_state = "asteroid_redrocks[rand(1, 3)]"

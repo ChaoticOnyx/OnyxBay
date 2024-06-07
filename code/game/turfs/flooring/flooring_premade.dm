@@ -655,15 +655,54 @@
 		var/mob/living/M = AM
 		M.slip(src, 4)
 
+///PLANETOID FLOORING
+
 /turf/simulated/floor/natural/jungle/wasteland
 	name = "cracked earth"
 	desc = "Looks a bit dry."
 	icon = 'icons/turf/flooring/wasteland.dmi'
-	icon_state = "wasteland"
-	//slowdown = 1
+	icon_state = "wasteland1"
+	//slowdown = 1 //<add that shet, i am too stupid and lazy to do it myself
 	var/floor_variance = 15
 
 /turf/simulated/floor/natural/jungle/wasteland/Initialize(mapload, inherited_virtual_z)
 	. = ..()
 	if(prob(floor_variance))
-		icon_state = "[initial(icon_state)][rand(1, 13)]"
+		icon_state = "wasteland[rand(1, 13)]"
+
+/turf/simulated/floor/natural/rockplanet
+	name = "iron sand"
+	icon = 'icons/turf/flooring/sand.dmi'
+	icon_state = "dry_soft1"
+	var/floor_variance = 100
+
+/turf/simulated/floor/natural/rockplanet/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "dry_soft[rand(1, 8)]"
+
+/turf/simulated/floor/natural/rockplanet/cracked
+	name = "iron cracked sand"
+	icon_state = "dry_cracked1"
+
+/turf/simulated/floor/natural/rockplanet/cracked/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "dry_cracked[rand(1, 8)]"
+
+/turf/simulated/floor/natural/rockplanet/wet
+	icon_state = "wet_soft1"
+
+/turf/simulated/floor/natural/rockplanet/wet/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "wet_soft[rand(1, 8)]"
+
+/turf/simulated/floor/natural/rockplanet/wet/cracked
+	name = "iron cracked sand"
+	icon_state = "wet_cracked1"
+
+/turf/simulated/floor/natural/rockplanet/wet/cracked/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "wet_cracked[rand(1, 8)]"

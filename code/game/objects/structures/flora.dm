@@ -221,6 +221,17 @@
 	. = ..()
 	icon_state = "tree[rand(1, 6)]"
 
+/obj/structure/flora/tree/cactus
+	pixel_x = -16
+	pixel_y = 0
+	icon = 'icons/obj/flora/aridtrees.dmi'
+	icon_state = "cactus1"
+	cut_hits = 10
+
+/obj/structure/flora/tree/cactus/Initialize()
+	. = ..()
+	icon_state = "cactus[rand(1, 4)]"
+
 //grass
 /obj/structure/flora/grass
 	name = "grass"
@@ -249,6 +260,24 @@
 	..()
 	icon_state = "snowgrassall[rand(1, 3)]"
 
+/obj/structure/flora/grass/rockplanet
+	name = "cottongrass"
+	desc= "A variety of cold-loving prarie grass. This variety seems to thrive the frigid rockworld enviroment, so long as water can be found nearby."
+	icon = 'icons/obj/flora/grasssticks.dmi'
+	icon_state = "tall_grass_1"
+
+/obj/structure/flora/grass/rockplanet/Initialize()
+	. = ..()
+	icon_state = "tall_grass_[rand(1, 2)]"
+
+/obj/structure/flora/grass/rockplanet/dead
+	name = "dry cottongrass"
+	desc= "This patch seems to have run dry on life-giving water."
+	icon_state = "dry_grass_1"
+
+/obj/structure/flora/grass/rockplanet/dead/Initialize()
+	. = ..()
+	icon_state = "dry_grass_[rand(1, 2)]"
 
 //bushes
 /obj/structure/flora/bush
@@ -488,21 +517,21 @@
 	icon_state = "busha"
 
 /obj/structure/flora/ausbushes/jungleflora/busha/Initialize()
-	..()
+	. = ..()
 	icon_state = "busha[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/jungleflora/bushb
 	icon_state = "bushb"
 
 /obj/structure/flora/ausbushes/jungleflora/bushb/Initialize()
-	..()
+	. = ..()
 	icon_state = "bushb[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/jungleflora/bushc
 	icon_state = "bushc"
 
 /obj/structure/flora/ausbushes/jungleflora/bushc/Initialize()
-	..()
+	. = ..()
 	icon_state = "bushc[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/jungleflora/grassa
@@ -510,7 +539,7 @@
 	icon_state = "grassa"
 
 /obj/structure/flora/ausbushes/jungleflora/grassa/Initialize()
-	..()
+	. = ..()
 	icon_state = "grassa[rand(1, 5)]"
 
 /obj/structure/flora/ausbushes/jungleflora/grassb
@@ -518,7 +547,7 @@
 	icon_state = "grassb"
 
 /obj/structure/flora/ausbushes/jungleflora/grassb/Initialize()
-	..()
+	. = ..()
 	icon_state = "grassb[rand(1, 5)]"
 
 /obj/structure/flora/ausbushes/jungleflora/large
@@ -528,8 +557,17 @@
 	pixel_y = -12
 	layer = ABOVE_HUMAN_LAYER
 
+/obj/structure/flora/ausbushes/jungleflora/large/bush1
+	icon_state = "bush1"
+
+/obj/structure/flora/ausbushes/jungleflora/large/bush2
+	icon_state = "bush2"
+
+/obj/structure/flora/ausbushes/jungleflora/large/bush3
+	icon_state = "bush3"
+
 /obj/structure/flora/ausbushes/jungleflora/large/Initialize()
-	..()
+	. = ..()
 	icon_state = "bush[rand(1, 3)]"
 
 /obj/structure/flora/jungleflora/rock
@@ -540,7 +578,7 @@
 	layer = BELOW_DOOR_LAYER
 
 /obj/structure/flora/jungleflora/rock/Initialize()
-	..()
+	. = ..()
 	icon_state = "rock[rand(1, 5)]"
 
 /obj/structure/flora/jungleflora/rock/large
@@ -550,7 +588,7 @@
 	pixel_y = -16
 
 /obj/structure/flora/jungleflora/rock/large/Initialize()
-	..()
+	. = ..()
 	icon_state = "rocks[rand(1, 3)]"
 
 /obj/structure/flora/goonbushes
@@ -723,25 +761,6 @@
 /obj/structure/flora/jungleplants/junglebush3
 	name = "bush"
 	icon_state = "junglebush3"
-
-/obj/structure/flora/jungleplants/junglebushlarge
-	name = "bush"
-	icon = 'icons/obj/flora/junglebushlarge.dmi'
-	icon_state = "bush1"
-	pixel_x = -16
-	pixel_y = -8
-
-/obj/structure/flora/jungleplants/junglebushlarge/bush1
-	icon_state = "bush1"
-
-/obj/structure/flora/jungleplants/junglebushlarge/bush2
-	icon_state = "bush2"
-
-/obj/structure/flora/jungleplants/junglebushlarge/bush3
-	icon_state = "bush3"
-
-/obj/structure/flora/jungleplants/junglebushlarge/bush4
-	icon_state = "bush4"
 
 /obj/structure/flora/jungleplants/alienplant1
 	name = "alien plant"

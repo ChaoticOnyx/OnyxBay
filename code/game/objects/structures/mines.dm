@@ -1,4 +1,4 @@
-/obj/effect/mine
+/obj/structure/landmine
 	name = "Mine"
 	desc = "I Better stay away from that thing."
 	density = 1
@@ -9,13 +9,13 @@
 	var/triggerproc = "explode" //name of the proc thats called when the mine is triggered
 	var/triggered = 0
 
-/obj/effect/mine/New()
+/obj/structure/landmine/New()
 	icon_state = "uglyminearmed"
 
-/obj/effect/mine/Crossed(AM as mob|obj)
+/obj/structure/landmine/Crossed(AM as mob|obj)
 	Bumped(AM)
 
-/obj/effect/mine/Bumped(mob/M as mob|obj)
+/obj/structure/landmine/Bumped(mob/M as mob|obj)
 
 	if(triggered) return
 
@@ -25,7 +25,7 @@
 		triggered = 1
 		call(src,triggerproc)(M)
 
-/obj/effect/mine/proc/triggerrad(obj)
+/obj/structure/landmine/proc/triggerrad(obj)
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
 	s.set_up(3, 1, src)
 	s.start()
@@ -33,7 +33,7 @@
 	spawn(0)
 		qdel(src)
 
-/obj/effect/mine/proc/triggerstun(obj)
+/obj/structure/landmine/proc/triggerstun(obj)
 	if(ismob(obj))
 		var/mob/M = obj
 		M.Stun(30)
@@ -43,7 +43,7 @@
 	spawn(0)
 		qdel(src)
 
-/obj/effect/mine/proc/triggern2o(obj)
+/obj/structure/landmine/proc/triggern2o(obj)
 	//example: n2o triggerproc
 	//note: im lazy
 
@@ -54,7 +54,7 @@
 	spawn(0)
 		qdel(src)
 
-/obj/effect/mine/proc/triggerplasma(obj)
+/obj/structure/landmine/proc/triggerplasma(obj)
 	for (var/turf/simulated/floor/target in range(1,src))
 		if(!target.blocks_air)
 			target.assume_gas("plasma", 30)
@@ -64,7 +64,7 @@
 	spawn(0)
 		qdel(src)
 
-/obj/effect/mine/proc/triggerkick(obj)
+/obj/structure/landmine/proc/triggerkick(obj)
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
 	s.set_up(3, 1, src)
 	s.start()
@@ -72,32 +72,32 @@
 	spawn(0)
 		qdel(src)
 
-/obj/effect/mine/proc/explode(obj)
+/obj/structure/landmine/proc/explode(obj)
 	explosion(loc, 1, 2, 3, 4)
 	spawn(0)
 		qdel(src)
 
-/obj/effect/mine/dnascramble
+/obj/structure/landmine/dnascramble
 	name = "Radiation Mine"
 	icon_state = "uglymine"
 	triggerproc = "triggerrad"
 
-/obj/effect/mine/plasma
+/obj/structure/landmine/plasma
 	name = "Plasma Mine"
 	icon_state = "uglymine"
 	triggerproc = "triggerplasma"
 
-/obj/effect/mine/kick
+/obj/structure/landmine/kick
 	name = "Kick Mine"
 	icon_state = "uglymine"
 	triggerproc = "triggerkick"
 
-/obj/effect/mine/n2o
+/obj/structure/landmine/n2o
 	name = "N2O Mine"
 	icon_state = "uglymine"
 	triggerproc = "triggern2o"
 
-/obj/effect/mine/stun
+/obj/structure/landmine/stun
 	name = "Stun Mine"
 	icon_state = "uglymine"
 	triggerproc = "triggerstun"
