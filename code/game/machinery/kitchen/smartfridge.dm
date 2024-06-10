@@ -8,6 +8,8 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
+	obj_flags = OBJ_FLAG_ANCHORABLE
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	idle_power_usage = 5 WATTS
 	active_power_usage = 100 WATTS
 	atom_flags = ATOM_FLAG_NO_REACT
@@ -262,6 +264,11 @@
 	if(isMultitool(O) || isWirecutter(O))
 		if(panel_open)
 			attack_hand(user)
+		return
+
+	if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(O))
+		if(wrench_floor_bolts(user))
+			power_change()
 		return
 
 	if(stat & NOPOWER)

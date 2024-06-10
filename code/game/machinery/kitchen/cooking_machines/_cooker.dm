@@ -19,6 +19,8 @@
 	density = 1
 	anchored = 1
 	idle_power_usage = 5 WATTS
+	obj_flags = OBJ_FLAG_ANCHORABLE
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 
 	var/on_icon						// Icon state used when cooking.
 	var/off_icon					// Icon state used when not cooking.
@@ -78,6 +80,11 @@
 	if(product_status() != NO_PRODUCT)
 		to_chat(user, SPAN_WARNING("There is no more space in \the [src]. \A [thing_inside] is already there!"))
 		return 0
+
+	if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(I)) //TODO
+		if(wrench_floor_bolts(user))
+			power_change()
+		return
 
 	var/mob/living/inserted_mob
 	var/obj/item/reagent_containers/food/check
