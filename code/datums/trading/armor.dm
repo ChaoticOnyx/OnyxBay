@@ -29,6 +29,7 @@
 								/obj/item/clothing/head/helmet/nt 						= TRADER_ALL,
 								/obj/item/clothing/head/helmet/riot 					= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/helmet/swat 					= TRADER_THIS_TYPE,
+								/obj/item/clothing/head/helmet/captain 					= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/helmet/ert 						= TRADER_ALL,
 								/obj/item/clothing/accessory/armguards 					= TRADER_ALL,
 								/obj/item/clothing/accessory/armor/helmcover 			= TRADER_SUBTYPES_ONLY,

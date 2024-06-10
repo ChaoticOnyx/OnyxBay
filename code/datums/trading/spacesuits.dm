@@ -68,6 +68,7 @@
 								/obj/item/rig/industrial 										= TRADER_THIS_TYPE,
 								/obj/item/rig/mining 											= TRADER_THIS_TYPE,
 								/obj/item/rig/syndi/empty 										= TRADER_THIS_TYPE,
+								/obj/item/rig/syndi/heavy/empty 								= TRADER_THIS_TYPE,
 								/obj/item/rig/unathi 											= TRADER_ALL,
 								/obj/item/rig/ert/empty 										= TRADER_THIS_TYPE,
 								/obj/item/rig/ert/engineer/empty 								= TRADER_THIS_TYPE,

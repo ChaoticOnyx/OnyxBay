@@ -58,6 +58,7 @@
 								/obj/item/remains 										= TRADER_ALL,
 								/obj/item/disk/nuclear_fake 							= TRADER_THIS_TYPE,
 								/obj/item/disk/secret_project 							= TRADER_ALL,
+								/obj/item/card/emag_broken 								= TRADER_THIS_TYPE,
 								/obj/item/clothing/accessory 							= TRADER_SUBTYPES_ONLY,
 								/obj/item/robot_parts 									= TRADER_SUBTYPES_ONLY,
 								/obj/item/robot_parts/robot_component 					= TRADER_BLACKLIST
