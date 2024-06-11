@@ -51,6 +51,8 @@
 	var/atom/movable/screen/pains = null
 	var/atom/movable/screen/throw_icon = null
 	var/atom/movable/screen/block_icon = null
+	var/atom/movable/screen/bite_icon = null
+	var/atom/movable/screen/jump_icon = null
 	var/atom/movable/screen/blockswitch_icon = null
 	var/atom/movable/screen/nutrition_icon = null
 	var/atom/movable/screen/pressure = null
@@ -129,6 +131,7 @@
 	var/a_intent = I_HELP//Living
 	var/m_intent = M_RUN//Living
 	var/obj/buckled = null//Living
+	var/mmb_intents = null
 	var/obj/item/l_hand = null//Living
 	var/obj/item/r_hand = null//Living
 	var/obj/item/back = null//Human/Monkey

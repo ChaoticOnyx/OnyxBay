@@ -17,6 +17,8 @@
 	var/has_internals = TRUE   // Set to draw the internals toggle button.
 	var/has_rest = TRUE        // Set to draw the rest button.
 	var/has_poise = TRUE       // Set to draw the poise meter.
+	var/has_bite = TRUE
+	var/has_jump = TRUE
 	var/list/equip_slots = list() // Checked by mob_can_equip().
 
 	// Contains information on the position and tag for all inventory slots

@@ -139,9 +139,11 @@
 #define ui_spell_master "EAST-1:16,NORTH-1:16"
 #define ui_genetic_master "EAST-1:16,NORTH-3:16"
 
-//Blocking and dashing
-#define ui_block "EAST-4:24,SOUTH:5"
+//Blocking and and other special attacks
+#define ui_block       "EAST-4:24,SOUTH:5"
 #define ui_blockswitch "EAST-4:24,SOUTH:5"
+#define ui_jump        "EAST-5:24,SOUTH:5"
+#define ui_bite        "EAST-5:24,SOUTH:5"
 
 // AI
 #define ui_ai_core "SOUTH:6,WEST"

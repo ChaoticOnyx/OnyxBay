@@ -20,6 +20,7 @@
 // Grab Types
 #define GRAB_NORMAL			"normal"
 #define GRAB_QUICKCHOKE     "choke"
+#define GRAB_BITE           "bite"
 
 // Grab levels.
 #define NORM_PASSIVE    "normal passive"
@@ -73,6 +74,9 @@
 // Movement flags. For fuck's sake, we were using "run"s and "walk"s till 2021
 #define M_RUN  "run"
 #define M_WALK "walk"
+
+#define MMB_BITE "bite"
+#define MMB_JUMP "jump"
 
 //These are used Bump() code for living mobs, in the mob_bump_flag, mob_swap_flags, and mob_push_flags vars to determine whom can bump/swap with whom.
 #define HUMAN 1
