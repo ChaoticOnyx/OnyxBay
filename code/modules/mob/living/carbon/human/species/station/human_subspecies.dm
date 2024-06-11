@@ -63,7 +63,8 @@
 		BP_KIDNEYS =  /obj/item/organ/internal/kidneys,
 		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain,
 		BP_EYES =     /obj/item/organ/internal/eyes,
-		BP_STOMACH =  /obj/item/organ/internal/stomach
+		BP_STOMACH =  /obj/item/organ/internal/stomach,
+		BP_JAW =      /obj/item/organ/internal/jaw,
 		)
 	spawn_flags = SPECIES_IS_RESTRICTED
 

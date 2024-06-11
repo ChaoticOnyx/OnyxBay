@@ -78,7 +78,8 @@
 		BP_KIDNEYS =  /obj/item/organ/internal/kidneys/vox,
 		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain,
 		BP_EYES =     /obj/item/organ/internal/eyes,
-		BP_STACK =    /obj/item/organ/internal/stack/vox
+		BP_STACK =    /obj/item/organ/internal/stack/vox,
+		BP_JAW =      /obj/item/organ/internal/jaw,
 		)
 
 	genders = list(NEUTER)

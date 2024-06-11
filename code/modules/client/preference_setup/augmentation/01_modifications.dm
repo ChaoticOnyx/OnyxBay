@@ -227,6 +227,20 @@
 				modifications += "<div style = 'padding:2px' onclick=\"set('body_modification', '[organ] ["assisted"]');\" class='block[class]'><b>\tRetinal overlayed</b><br></div>"
 			if(BP_BRAIN)
 				modifications += "<div style = 'padding:2px' onclick=\"set('body_modification', '[organ] ["assisted"]');\" class='block[class]'><b>\tMachine-interface</b><br></div>"
+			if(BP_JAW)
+				var/tmp_species = pref.species ? pref.species : SPECIES_HUMAN
+				for(var/company in GLOB.chargen_robolimbs)
+					var/datum/robolimb/M = GLOB.chargen_robolimbs[company]
+					if(tmp_species in M.species_cannot_use)
+						continue
+
+					if(M.restricted_to.len && !(tmp_species in M.restricted_to))
+						continue
+
+					if(M.applies_to_part.len && !(organ in M.applies_to_part))
+						continue
+
+					modifications += "<div style = 'padding:2px' onclick=\"set('body_modification', '[organ] [M.company]');\" class='block[class]'><b>[M.company]</b><br>[M.desc]</div>"
 			else
 				modifications += "<div style = 'padding:2px' onclick=\"set('body_modification', '[organ] ["assisted"]');\" class='block[class]'><b>\tMechanically assisted</b><br></div>"
 

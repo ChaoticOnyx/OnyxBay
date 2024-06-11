@@ -198,6 +198,7 @@
 // Organs.
 #define BP_MOUTH    "mouth"
 #define BP_EYES     "eyes"
+#define BP_JAW      "jaw"
 #define BP_HEART    "heart"
 #define BP_LUNGS    "lungs"
 #define BP_TRACH	"tracheae"
@@ -226,7 +227,7 @@
 #define BP_ADAMANTINE_VOCAL_CORDS "adamantine vocal cords"
 #define BP_METROID 	"metroid jelly vessel"
 
-#define BP_INTERNAL_ORGANS list(BP_BRAIN, BP_HEART, BP_EYES, BP_LUNGS, BP_LIVER, BP_KIDNEYS)
+#define BP_INTERNAL_ORGANS list(BP_BRAIN, BP_HEART, BP_EYES, BP_LUNGS, BP_LIVER, BP_KIDNEYS, BP_JAW)
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"

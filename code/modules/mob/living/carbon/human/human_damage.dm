@@ -511,6 +511,13 @@ This function restores all organs.
 				if(!isnull(M.incoming_brute_damage_percent))
 					damage *= M.incoming_brute_damage_percent
 			created_wound = organ.take_external_damage(damage, 0, damage_flags, used_weapon)
+			if(damage >= 6 && def_zone == BP_MOUTH && prob(30))
+				var/obj/item/organ/external/head/head = organ
+				head.knock_teeth(damage, rand(1, 2))
+			else if(damage >= 10 && istype(organ, /obj/item/organ/external/head) && prob(10))
+				var/obj/item/organ/external/head/head = get_organ(BP_HEAD)
+				if(istype(head))
+					head.knock_teeth(damage, rand(1, 3))
 		if(BURN)
 			damage = damage*species.burn_mod
 			for(var/datum/modifier/M in modifiers)

@@ -26,6 +26,8 @@
 	var/graffiti_style
 
 	var/skull_path = /obj/item/skull
+	var/max_teeth_count = 32
+	var/teeth_count = 32
 
 /obj/item/organ/external/head/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
 	if(BP_IS_ROBOTIC(src) && disintegrate == DROPLIMB_BURN)
@@ -94,10 +96,25 @@
 
 /obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags, used_weapon = null)
 	. = ..()
-	if ((brute_dam > 40) && prob(50))
+	if((brute_dam > 40) && prob(50))
 		disfigure("brute")
-	if (burn_dam > 40)
+	if(burn_dam > 40)
 		disfigure("burn")
+
+/obj/item/organ/external/head/proc/knock_teeth(brute, num_to_kick)
+	num_to_kick = Clamp(num_to_kick, 1, max_teeth_count)
+	if(teeth_count <= 0)
+		return
+
+	playsound(get_turf(src), pick('sound/effects/gore1.ogg', 'sound/effects/gore2.ogg', 'sound/effects/gore3.ogg'), 75, FALSE, -1)
+
+	for(var/i = 1 to num_to_kick)
+		var/obj/item/tooth/tooth = new (get_turf(src))
+		tooth.add_blood(owner)
+		tooth.throw_at_random(FALSE, 2, 1)
+		teeth_count--
+		if(teeth_count <= 0)
+			return
 
 /obj/item/organ/external/head/get_icon_key()
 	. = ..()
@@ -123,6 +140,11 @@
 			else if(owner.should_have_organ(BP_EYES))
 				. += "eyeless"
 
+		var/obj/item/organ/internal/jaw/jaw = owner.internal_organs_by_name[BP_JAW]
+		if(istype(jaw))
+			var/datum/robolimb/R = GLOB.all_robolimbs[jaw.model]
+			var/datum/body_build/BB = owner.body_build
+			. += "jaw_[owner.gender]_[BB.index]_[R?.icon]"
 
 /obj/item/organ/external/head/on_update_icon()
 	..()
@@ -148,6 +170,11 @@
 
 		if(owner.lip_style && !BP_IS_ROBOTIC(src) && species && (species.species_appearance_flags & HAS_LIPS))
 			mob_overlays |= mutable_appearance(S.icobase, "lips[BB.index]", color = owner.lip_style, flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR|RESET_ALPHA)
+
+		var/obj/item/organ/internal/jaw/jaw = owner.internal_organs_by_name[BP_JAW]
+		if(istype(jaw))
+			var/datum/robolimb/R = GLOB.all_robolimbs[jaw.model]
+			mob_overlays |= mutable_appearance(istype(R) ? R.icon : S.icobase, "jaw_[owner.gender]_[BB.index]", flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR|RESET_ALPHA)
 
 	SetOverlays(mob_overlays)
 
