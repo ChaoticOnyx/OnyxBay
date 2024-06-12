@@ -82,6 +82,7 @@
 		/datum/emote/signal,
 		/datum/emote/sway,
 		/datum/emote/choke,
+		/datum/emote/clearthroat,
 	)
 
 /mob/living/carbon/metroid/load_default_emotes()

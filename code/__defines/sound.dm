@@ -93,6 +93,7 @@
 #define SFX_FEMALE_SIGH             "female_sigh"
 #define SFX_FEMALE_WHIMPER          "female_whimper"
 #define SFX_FEMALE_CHOKE            "female_choke"
+#define SFX_FEMALE_CLEARHTROAT      "female_clearthroat"
 
 // MALE EMOTES
 #define SFX_MALE_INTERNAL_BREATH    "male_internal_breath"
@@ -109,6 +110,7 @@
 #define SFX_MALE_SIGH               "male_sigh"
 #define SFX_MALE_WHIMPER            "male_whimper"
 #define SFX_MALE_CHOKE              "male_choke"
+#define SFX_MALE_CLEARHTROAT        "male_clearthroat"
 
 // AMBIENT
 #define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"

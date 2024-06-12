@@ -133,6 +133,38 @@
 	emote("choke", intentional = TRUE)
 
 
+/datum/emote/clearthroat
+	key = "clearthroat"
+
+	message_1p = "You clear your throat."
+	message_3p = "clears their throat."
+
+	message_impaired_production = "makes a muffled noise."
+
+	message_miming = "clears throat."
+	message_muzzled = "makes a muffled noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	sound_human_female = SFX_FEMALE_CLEARHTROAT
+	sound_human_male = SFX_MALE_CLEARHTROAT
+
+	statpanel_proc = /mob/proc/clearthroat_emote
+
+/datum/emote/clearthroat/get_impaired_msg(mob/user)
+	return "makes a muffled noise!"
+
+/datum/emote/clearthroat/get_sfx_volume()
+	return rand(25, 45)
+
+/mob/proc/clearthroat_emote()
+	set name = "Clearthroat"
+	set category = "Noises"
+	emote("clearthroat", intentional = TRUE)
+
+
 /datum/emote/chuckle
 	key = "chuckle"
 
