@@ -292,7 +292,7 @@
 			attack.apply_effects(H, src, armour, attack_damage, hit_zone, specmod)
 
 			// Finally, apply damage to target
-			apply_damage(real_damage, (attack.deal_halloss ? PAIN : BRUTE), hit_zone, armour, damage_flags = attack.damage_flags())
+			apply_damage(real_damage, (attack.deal_halloss ? PAIN : BRUTE), hit_zone, armour, damage_flags = attack.damage_flags(), user = H)
 
 		if(I_DISARM)
 			if(H.species)
@@ -319,7 +319,7 @@
 	var/armor_block = run_armor_check(affecting, armorcheck)
 	visible_message(SPAN("danger", "[user] has [attack_message] [src]!"))
 	admin_attack_log(user, src, "Attacked their victim", "Was attacked", "has [attack_message]")
-	apply_damage(damage, damtype, affecting, armor_block)
+	apply_damage(damage, damtype, affecting, armor_block, user = user)
 	updatehealth()
 	return 1
 

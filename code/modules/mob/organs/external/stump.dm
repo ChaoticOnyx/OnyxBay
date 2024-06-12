@@ -14,8 +14,8 @@
 		joint = limb.joint
 		parent_organ = limb.parent_organ
 		icon_position = limb.icon_position
-		if(limb.limb_flags & ORGAN_FLAG_GENDERED_ICON)
-			limb_flags |= ORGAN_FLAG_GENDERED_ICON
+		if(limb.organ_flags & ORGAN_FLAG_GENDERED_ICON)
+			organ_flags |= ORGAN_FLAG_GENDERED_ICON
 	..(holder)
 	if(istype(limb))
 		max_damage = limb.max_damage
@@ -55,7 +55,7 @@
 
 	/////
 	var/gender = "_m"
-	if(!(limb_flags & ORGAN_FLAG_GENDERED_ICON))
+	if(!(organ_flags & ORGAN_FLAG_GENDERED_ICON))
 		gender = null
 	else if (dna && dna.GetUIState(DNA_UI_GENDER))
 		gender = "_f"

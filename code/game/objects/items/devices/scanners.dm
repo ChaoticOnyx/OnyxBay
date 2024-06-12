@@ -203,10 +203,10 @@ REAGENT SCANNER
 				continue
 			if(E.brute_dam > 0)
 				limb_damaged = TRUE
-				limb_result = "[limb_result] \[<span class='scanner_red'><b>[get_wound_severity(E.brute_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL))] physical trauma</b></span>\]"
+				limb_result = "[limb_result] \[<span class='scanner_red'><b>[get_wound_severity(E.brute_ratio, (E.organ_flags & ORGAN_FLAG_HEALS_OVERKILL))] physical trauma</b></span>\]"
 			if(E.burn_dam > 0)
 				limb_damaged = TRUE
-				limb_result = "[limb_result] \[<span class='scanner_yellow'><b>[get_wound_severity(E.burn_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL))] burns</b></span>\]"
+				limb_result = "[limb_result] \[<span class='scanner_yellow'><b>[get_wound_severity(E.burn_ratio, (E.organ_flags & ORGAN_FLAG_HEALS_OVERKILL))] burns</b></span>\]"
 			if(E.status & ORGAN_BLEEDING)
 				limb_damaged = TRUE
 				limb_result = "[limb_result] \[<span class='scanner_red'>bleeding</span>\]"

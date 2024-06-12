@@ -309,7 +309,7 @@
 		return
 
 	for(var/obj/item/organ/external/E in grasp_limbs)
-		if(!E || !(E.limb_flags & ORGAN_FLAG_CAN_GRASP))
+		if(!E || !(E.organ_flags & ORGAN_FLAG_CAN_GRASP))
 			continue
 		if(((E.is_broken() || E.is_dislocated()) && !E.splinted) || E.is_malfunctioning())
 			grasp_damage_disarm(E)

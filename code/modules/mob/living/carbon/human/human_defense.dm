@@ -465,7 +465,7 @@ meteor_act
 	if(effective_force <= 0)
 		return 0
 
-	apply_damage(effective_force, I.damtype, hit_zone, blocked, damage_flags, used_weapon=I)
+	apply_damage(effective_force, I.damtype, hit_zone, blocked, damage_flags, used_weapon=I, user = user)
 
 	//////////
 
@@ -571,8 +571,8 @@ meteor_act
 	if(effective_force <= 0)
 		return 0
 
-	apply_damage(effective_force*0.5, PAIN, hit_zone, blocked, damage_flags, used_weapon=I)
-	apply_damage(effective_force*0.2, BRUTE, hit_zone, blocked, damage_flags, used_weapon=I)
+	apply_damage(effective_force*0.5, PAIN, hit_zone, blocked, damage_flags, used_weapon=I, user = user)
+	apply_damage(effective_force*0.2, BRUTE, hit_zone, blocked, damage_flags, used_weapon=I, user = user)
 
 	//////////
 

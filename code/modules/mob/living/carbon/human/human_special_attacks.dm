@@ -3,7 +3,7 @@
 	switch(mmb_intents)
 		if(MMB_BITE)
 			bite(A)
-		if(MMB_JUMP)s
+		if(MMB_JUMP)
 			INVOKE_ASYNC(src, nameof(.proc/jump), A)
 
 /mob/living/carbon/human/proc/mmb_switch(intent)
@@ -68,7 +68,7 @@
 
 	var/damage = 3 + ((species.strength + 1) * 4)
 	var/blocked_dam = victim.run_armor_check(zone, "melee")
-	victim.apply_damage(damage, BRUTE, zone, blocked_dam)
+	victim.apply_damage(damage, BRUTE, zone, blocked_dam, user = src)
 	damage_poise(5)
 	victim.damage_poise(round(10 * damage * 0.5 * (100 - victim.get_flat_armor(zone, "brute")), 0.1))
 	make_grab(src, victim, GRAB_BITE)
