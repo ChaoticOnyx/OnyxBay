@@ -189,6 +189,12 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/f_whimper1.ogg',
 		'sound/effects/emotes/f_whimper2.ogg',
 		'sound/effects/emotes/f_whimper3.ogg',
+	),
+	SFX_FEMALE_CHOKE = list(
+		'sound/effects/emotes/f_choke1.ogg',
+		'sound/effects/emotes/f_choke2.ogg',
+		'sound/effects/emotes/f_choke3.ogg',
+	),
 	// MALE EMOTES
 	SFX_MALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/m_internal1.ogg',
@@ -319,6 +325,9 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/m_whimper1.ogg',
 		'sound/effects/emotes/m_whimper2.ogg',
 		'sound/effects/emotes/m_whimper3.ogg',
+	),
+	SFX_MALE_CHOKE = list(
+		'sound/effects/emotes/m_choke.ogg',
 	),
 	// AMBIENT
 	SFX_AMBIENT_POWERED_GLOBAL = list(

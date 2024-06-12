@@ -116,8 +116,8 @@
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
-	sound_human_female = SFX_FEMALE_HEAVY_BREATH
-	sound_human_male = SFX_MALE_HEAVY_BREATH
+	sound_human_female = SFX_FEMALE_CHOKE
+	sound_human_male = SFX_MALE_CHOKE
 
 	statpanel_proc = /mob/proc/choke_emote
 
@@ -129,7 +129,7 @@
 
 /mob/proc/choke_emote()
 	set name = "Choke"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("choke", intentional = TRUE)
 
 
