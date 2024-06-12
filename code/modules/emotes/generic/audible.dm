@@ -553,6 +553,31 @@
 	set category = "Noises"
 	emote("hiccup", intentional = TRUE)
 
+/datum/emote/hum
+	key = "hum"
+
+	message_1p = "You hum."
+	message_3p = "hums."
+
+	message_impaired_production = "makes a noise."
+
+	message_miming = "hums."
+	message_muzzled = "makes a noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound_human_female = SFX_FEMALE_HUM
+	sound_human_male = SFX_MALE_HUM
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/hum_emote
+
+/mob/proc/hum_emote()
+	set name = "Hum"
+	set category = "Noises"
+	emote("hum", intentional = TRUE)
+
 /datum/emote/snore
 	key = "snore"
 
