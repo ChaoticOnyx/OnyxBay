@@ -253,6 +253,16 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/f_gag2.ogg',
 		'sound/effects/emotes/f_gag3.ogg',
 	),
+	SFX_FEMALE_PAINMOAN = list(
+		'sound/effects/emotes/f_painmoan1.ogg',
+		'sound/effects/emotes/f_painmoan2.ogg',
+		'sound/effects/emotes/f_painmoan3.ogg',
+		'sound/effects/emotes/f_painmoan4.ogg',
+		'sound/effects/emotes/f_painmoan5.ogg',
+		'sound/effects/emotes/f_painmoan6.ogg',
+		'sound/effects/emotes/f_painmoan7.ogg',
+		'sound/effects/emotes/f_painmoan8.ogg',
+	),
 	// MALE EMOTES
 	SFX_MALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/m_internal1.ogg',
@@ -434,6 +444,16 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/m_gag1.ogg',
 		'sound/effects/emotes/m_gag2.ogg',
 		'sound/effects/emotes/m_gag3.ogg',
+	),
+	SFX_MALE_PAINMOAN = list(
+		'sound/effects/emotes/m_painmoan1.ogg',
+		'sound/effects/emotes/m_painmoan2.ogg',
+		'sound/effects/emotes/m_painmoan3.ogg',
+		'sound/effects/emotes/m_painmoan4.ogg',
+		'sound/effects/emotes/m_painmoan5.ogg',
+		'sound/effects/emotes/m_painmoan6.ogg',
+		'sound/effects/emotes/m_painmoan7.ogg',
+		'sound/effects/emotes/m_painmoan8.ogg',
 	),
 	// AMBIENT
 	SFX_AMBIENT_POWERED_GLOBAL = list(

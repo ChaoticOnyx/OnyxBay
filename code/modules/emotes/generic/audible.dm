@@ -271,6 +271,32 @@
 	emote("moan", intentional = TRUE)
 
 
+/datum/emote/painmoan
+	key = "painmoan"
+
+	message_1p = "You moan in pain!"
+	message_3p = "moans in pain!"
+
+	message_impaired_production = "moans in pain, silently."
+
+	sound_human_female = SFX_FEMALE_PAINMOAN
+	sound_human_male = SFX_MALE_PAINMOAN
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/painmoan_emote
+
+/datum/emote/moan/get_impaired_msg(mob/user)
+	return "makes a muffled sound"
+
+/mob/proc/painmoan_emote()
+	set name = "Moan (pain)"
+	set category = "Emotes"
+	emote("painmoan", intentional = TRUE)
+
+
 /datum/emote/cough
 	key = "cough"
 

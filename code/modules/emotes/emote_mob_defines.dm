@@ -92,6 +92,7 @@
 		/datum/emote/fatigue,
 		/datum/emote/gag,
 		/datum/emote/psst,
+		/datum/emote/painmoan,
 	)
 
 /mob/living/carbon/metroid/load_default_emotes()
