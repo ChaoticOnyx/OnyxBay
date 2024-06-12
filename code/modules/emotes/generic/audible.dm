@@ -13,12 +13,14 @@
 	message_type = AUDIBLE_MESSAGE
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
+	sound_human_female = SFX_FEMALE_WHIMPER
+	sound_human_male = SFX_MALE_WHIMPER
 
 	statpanel_proc = /mob/proc/whimper_emote
 
 /mob/proc/whimper_emote()
 	set name = "Whimper"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("whimper", intentional = TRUE)
 
 

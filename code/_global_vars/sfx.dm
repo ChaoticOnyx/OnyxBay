@@ -185,6 +185,10 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_FEMALE_SIGH = list(
 		'sound/effects/emotes/f_sigh.ogg'
 	),
+	SFX_FEMALE_WHIMPER = list(
+		'sound/effects/emotes/f_whimper1.ogg',
+		'sound/effects/emotes/f_whimper2.ogg',
+		'sound/effects/emotes/f_whimper3.ogg',
 	// MALE EMOTES
 	SFX_MALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/m_internal1.ogg',
@@ -310,6 +314,11 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_MALE_SIGH = list(
 		'sound/effects/emotes/m_sigh.ogg'
+	),
+	SFX_MALE_WHIMPER = list(
+		'sound/effects/emotes/m_whimper1.ogg',
+		'sound/effects/emotes/m_whimper2.ogg',
+		'sound/effects/emotes/m_whimper3.ogg',
 	),
 	// AMBIENT
 	SFX_AMBIENT_POWERED_GLOBAL = list(
