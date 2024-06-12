@@ -228,6 +228,14 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/f_giggle1.ogg',
 		'sound/effects/emotes/f_giggle2.ogg',
 	),
+	SFX_FEMALE_GROAN = list(
+		'sound/effects/emotes/f_groan1.ogg',
+		'sound/effects/emotes/f_groan2.ogg',
+		'sound/effects/emotes/f_groan3.ogg',
+		'sound/effects/emotes/f_groan4.ogg',
+		'sound/effects/emotes/f_groan5.ogg',
+		'sound/effects/emotes/f_groan6.ogg',
+	)
 	// MALE EMOTES
 	SFX_MALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/m_internal1.ogg',
@@ -389,6 +397,14 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_MALE_CHUCKLE = list(
 		'sound/effects/emotes/m_chuckle.ogg',
 	),
+	SFX_MALE_GROAN = list(
+		'sound/effects/emotes/m_groan1.ogg',
+		'sound/effects/emotes/m_groan2.ogg',
+		'sound/effects/emotes/m_groan3.ogg',
+		'sound/effects/emotes/m_groan4.ogg',
+		'sound/effects/emotes/m_groan5.ogg',
+		'sound/effects/emotes/m_groan6.ogg',
+	)
 	// AMBIENT
 	SFX_AMBIENT_POWERED_GLOBAL = list(
 		'sound/ambient/global/amb2.ogg',

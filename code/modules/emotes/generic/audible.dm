@@ -510,8 +510,8 @@
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
-	sound_human_female = SFX_FEMALE_PAIN
-	sound_human_male = SFX_MALE_PAIN
+	sound_human_female = SFX_FEMALE_GROAN
+	sound_human_male = SFX_MALE_GROAN
 
 	statpanel_proc = /mob/proc/groan_emote
 
