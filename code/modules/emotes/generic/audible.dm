@@ -554,6 +554,30 @@
 	set category = "Emotes"
 	emote("snore", intentional = TRUE)
 
+/datum/emote/shh
+	key = "shh"
+
+	message_1p = "You shhs."
+	message_3p = "shhs."
+
+	message_impaired_production = "makes a weak noise."
+
+	message_miming = "shooshes."
+	message_muzzled = "makes a weak noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	sound_human_female = SFX_FEMALE_SHH
+	sound_human_male = SFX_MALE_SHH
+
+	statpanel_proc = /mob/proc/shh_emote
+
+/mob/proc/shh_emote()
+	set name = "Shh"
+	set category = "Noises"
+	emote("shh", intentional = TRUE)
 
 /datum/emote/sniff
 	key = "sniff"

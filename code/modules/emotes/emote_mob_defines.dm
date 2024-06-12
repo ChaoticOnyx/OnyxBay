@@ -84,6 +84,7 @@
 		/datum/emote/choke,
 		/datum/emote/burp,
 		/datum/emote/clearthroat,
+		/datum/emote/shh,
 	)
 
 /mob/living/carbon/metroid/load_default_emotes()
