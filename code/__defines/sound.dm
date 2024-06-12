@@ -97,6 +97,7 @@
 #define SFX_FEMALE_BURP             "female_burp"
 #define SFX_FEMALE_SHH              "female_shh"
 #define SFX_FEMALE_HUM              "female_hum"
+#define SFX_FEMALE_CHUCKLE          "female_chuckle"
 
 // MALE EMOTES
 #define SFX_MALE_INTERNAL_BREATH    "male_internal_breath"
@@ -117,6 +118,7 @@
 #define SFX_MALE_BURP               "male_burp"
 #define SFX_MALE_SHH                "male_shh"
 #define SFX_MALE_HUM                "male_hum"
+#define SFX_MALE_CHUCKLE            "male_chuckle"
 
 // AMBIENT
 #define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"

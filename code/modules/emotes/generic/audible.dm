@@ -209,8 +209,8 @@
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
-	sound_human_female = SFX_FEMALE_LAUGH
-	sound_human_male = SFX_MALE_LAUGH
+	sound_human_female = SFX_FEMALE_CHUCKLE
+	sound_human_male = SFX_MALE_CHUCKLE
 
 	statpanel_proc = /mob/proc/chuckle_emote
 
