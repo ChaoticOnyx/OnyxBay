@@ -9,9 +9,9 @@
 
 	override_organic_icon = FALSE
 
-	vital = FALSE
+	vital = TRUE
 	organ_tag = BP_POSIBRAIN
-	parent_organ = BP_CHEST
+	parent_organ = BP_HEAD
 
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 4, TECH_BLUESPACE = 2, TECH_DATA = 4)
 
