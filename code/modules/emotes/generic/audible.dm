@@ -78,6 +78,25 @@
 	set category = "Noises"
 	emote("gasp", intentional = TRUE)
 
+
+/datum/emote/gag
+	key = "gag"
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	sound_human_female = SFX_FEMALE_GAG
+	sound_human_male = SFX_MALE_GAG
+
+	statpanel_proc = /mob/proc/gag_emote
+
+/mob/proc/gag_emote()
+	set name = "Gag"
+	set category = "Noises"
+	emote("gag", intentional = TRUE)
+
+
 /datum/emote/sneeze
 	key = "sneeze"
 

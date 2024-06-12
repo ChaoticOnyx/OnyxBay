@@ -90,6 +90,7 @@
 		/datum/emote/huh,
 		/datum/emote/hmm,
 		/datum/emote/fatigue,
+		/datum/emote/gag,
 	)
 
 /mob/living/carbon/metroid/load_default_emotes()
