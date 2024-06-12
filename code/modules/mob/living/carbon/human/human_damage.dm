@@ -467,7 +467,7 @@ This function restores all organs.
 /mob/living/carbon/human/proc/get_organ(zone)
 	return organs_by_name[check_zone(zone)]
 
-/mob/living/carbon/human/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, blocked = 0, damage_flags = 0, obj/used_weapon = null, obj/item/organ/external/given_organ = null)
+/mob/living/carbon/human/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, blocked = 0, damage_flags = 0, obj/used_weapon = null, obj/item/organ/external/given_organ = null, mob/user = null)
 	if(status_flags & GODMODE)
 		return 0
 	var/obj/item/organ/external/organ = given_organ
@@ -511,13 +511,18 @@ This function restores all organs.
 				if(!isnull(M.incoming_brute_damage_percent))
 					damage *= M.incoming_brute_damage_percent
 			created_wound = organ.take_external_damage(damage, 0, damage_flags, used_weapon)
-			if(damage >= 6 && def_zone == BP_MOUTH && prob(30))
-				var/obj/item/organ/external/head/head = organ
-				head.knock_teeth(damage, rand(1, 2))
-			else if(damage >= 10 && istype(organ, /obj/item/organ/external/head) && prob(10))
-				var/obj/item/organ/external/head/head = get_organ(BP_HEAD)
-				if(istype(head))
-					head.knock_teeth(damage, rand(1, 3))
+			if(damage >= 6 && user?.zone_sel?.selecting == BP_MOUTH && prob(30))
+				var/obj/item/organ/internal/jaw/jaw = internal_organs_by_name[BP_JAW]
+				if(jaw?.model && prob(50)) // Prosthetic jaws provide more protection.
+					jaw?.knock_teeth(rand(1, 2))
+				else if(!jaw?.model)
+					jaw?.knock_teeth(rand(1, 2))
+			else if(damage >= 10 && istype(organ, /obj/item/organ/external/head) && prob(50))
+				var/obj/item/organ/internal/jaw/jaw = internal_organs_by_name[BP_JAW]
+				if(jaw?.model && prob(50)) // Prosthetic jaws provide more protection.
+					jaw?.knock_teeth(rand(1, 2))
+				else if(!jaw?.model)
+					jaw?.knock_teeth(rand(1, 2))
 		if(BURN)
 			damage = damage*species.burn_mod
 			for(var/datum/modifier/M in modifiers)

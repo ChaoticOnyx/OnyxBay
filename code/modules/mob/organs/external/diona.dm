@@ -3,7 +3,7 @@
 	amputation_point = "branch"
 	joint = "structural ligament"
 	dislocated = -1
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE
+	organ_flags = ORGAN_FLAG_CAN_AMPUTATE
 
 /obj/item/organ/external/diona/chest
 	name = "core trunk"
@@ -15,7 +15,7 @@
 	body_part = UPPER_TORSO
 	vital = 1
 	parent_organ = null
-	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
+	organ_flags = ORGAN_FLAG_HEALS_OVERKILL
 
 /obj/item/organ/external/diona/groin
 	name = "fork"
@@ -36,7 +36,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	body_part = ARM_LEFT
 	parent_organ = BP_CHEST
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
+	organ_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
 
 /obj/item/organ/external/diona/arm/right
 	name = "right upper tendril"
@@ -54,7 +54,7 @@
 	body_part = LEG_LEFT
 	icon_position = LEFT
 	parent_organ = BP_GROIN
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
+	organ_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
 
 /obj/item/organ/external/diona/leg/right
 	name = "right lower tendril"
@@ -73,7 +73,7 @@
 	body_part = FOOT_LEFT
 	icon_position = LEFT
 	parent_organ = BP_L_LEG
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
+	organ_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
 
 /obj/item/organ/external/diona/foot/right
 	name = "right foot"
@@ -94,7 +94,7 @@
 	w_class = ITEM_SIZE_SMALL
 	body_part = HAND_LEFT
 	parent_organ = BP_L_ARM
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
+	organ_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
 
 /obj/item/organ/external/diona/hand/right
 	name = "right grasper"
@@ -120,7 +120,7 @@
 	can_intake_reagents = 0
 	max_damage = 50
 	min_broken_damage = 25
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
+	organ_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
 	skull_path = null
 
 /obj/item/organ/external/head/diona/removed()

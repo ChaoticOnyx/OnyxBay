@@ -3,7 +3,7 @@
 	switch(mmb_intents)
 		if(MMB_BITE)
 			bite(A)
-		if(MMB_JUMP)s
+		if(MMB_JUMP)
 			INVOKE_ASYNC(src, nameof(.proc/jump), A)
 
 /mob/living/carbon/human/proc/mmb_switch(intent)
@@ -45,7 +45,15 @@
 		return
 
 	if(head && (head.item_flags & ITEM_FLAG_AIRTIGHT))
-		to_chat(src, SPAN("warning", "headgear is blocking your mouth!"))
+		to_chat(src, SPAN_WARNING("Headgear is blocking your mouth!"))
+		return
+
+	var/obj/item/organ/internal/jaw/jaw = internal_organs_by_name[BP_JAW]
+	if(!istype(jaw))
+		return
+
+	if(jaw.get_teeth_count() < jaw.max_teeth_count && prob(80))
+		to_chat(src, SPAN_WARNING("Biting without teeth proved difficult!"))
 		return
 
 	var/obj/item/blocked = check_mouth_coverage()
@@ -66,15 +74,17 @@
 		to_chat(src, SPAN_WARNING("Nothing to bite!"))
 		return
 
-	var/damage = 3 + ((species.strength + 1) * 4)
+	var/damage = 4
+	if(jaw.teeth_types[/obj/item/tooth/unathi] > jaw.max_teeth_count / 2)
+		pass()
+	else if(jaw.teeth_types[/obj/item/tooth/robotic] > jaw.max_teeth_count / 2)
+		pass()
+
 	var/blocked_dam = victim.run_armor_check(zone, "melee")
-	victim.apply_damage(damage, BRUTE, zone, blocked_dam)
+	victim.apply_damage(damage, BRUTE, zone, blocked_dam, user = src)
 	damage_poise(5)
 	victim.damage_poise(round(10 * damage * 0.5 * (100 - victim.get_flat_armor(zone, "brute")), 0.1))
 	make_grab(src, victim, GRAB_BITE)
-
-/// Godafwul shit, indeed.
-/atom/movable/var/jumped = FALSE
 
 /mob/living/carbon/human/proc/jump(atom/A)
 	if(!A || QDELETED(A) || !A.loc)

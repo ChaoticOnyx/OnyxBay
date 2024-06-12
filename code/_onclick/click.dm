@@ -250,7 +250,6 @@
 	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_MIDDLE_CLICK)
 		if(pointed(A))
 			return
-	swap_hand()
 	return
 
 /mob/proc/ShiftMiddleClickOn(atom/A)

@@ -219,7 +219,7 @@
 		target.show_splash_text(user, "can't get a clean cut due to present incisions!", "You can't get a clean cut due to present incisions!")
 		return SURGERY_FAILURE
 
-	return parent_organ.limb_flags & ORGAN_FLAG_CAN_AMPUTATE
+	return parent_organ.organ_flags & ORGAN_FLAG_CAN_AMPUTATE
 
 /datum/surgery_step/amputate/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,

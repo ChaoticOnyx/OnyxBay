@@ -14,7 +14,7 @@
 	encased = "skull"
 	artery_name = "carotid artery"
 	cavity_name = "cranial"
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
+	organ_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
 
 	internal_organs_size = 3
 
@@ -26,8 +26,6 @@
 	var/graffiti_style
 
 	var/skull_path = /obj/item/skull
-	var/max_teeth_count = 32
-	var/teeth_count = 32
 
 /obj/item/organ/external/head/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
 	if(BP_IS_ROBOTIC(src) && disintegrate == DROPLIMB_BURN)
@@ -101,21 +99,6 @@
 	if(burn_dam > 40)
 		disfigure("burn")
 
-/obj/item/organ/external/head/proc/knock_teeth(brute, num_to_kick)
-	num_to_kick = Clamp(num_to_kick, 1, max_teeth_count)
-	if(teeth_count <= 0)
-		return
-
-	playsound(get_turf(src), pick('sound/effects/gore1.ogg', 'sound/effects/gore2.ogg', 'sound/effects/gore3.ogg'), 75, FALSE, -1)
-
-	for(var/i = 1 to num_to_kick)
-		var/obj/item/tooth/tooth = new (get_turf(src))
-		tooth.add_blood(owner)
-		tooth.throw_at_random(FALSE, 2, 1)
-		teeth_count--
-		if(teeth_count <= 0)
-			return
-
 /obj/item/organ/external/head/get_icon_key()
 	. = ..()
 	if(owner?.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.species_appearance_flags & HAS_LIPS)))
@@ -143,8 +126,7 @@
 		var/obj/item/organ/internal/jaw/jaw = owner.internal_organs_by_name[BP_JAW]
 		if(istype(jaw))
 			var/datum/robolimb/R = GLOB.all_robolimbs[jaw.model]
-			var/datum/body_build/BB = owner.body_build
-			. += "jaw_[owner.gender]_[BB.index]_[R?.icon]"
+			. += R?.icon ? "jaw_[R.icon]" : "jaw_s"
 
 /obj/item/organ/external/head/on_update_icon()
 	..()
@@ -174,7 +156,7 @@
 		var/obj/item/organ/internal/jaw/jaw = owner.internal_organs_by_name[BP_JAW]
 		if(istype(jaw))
 			var/datum/robolimb/R = GLOB.all_robolimbs[jaw.model]
-			mob_overlays |= mutable_appearance(istype(R) ? R.icon : S.icobase, "jaw_[owner.gender]_[BB.index]", flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR|RESET_ALPHA)
+			mob_overlays |= mutable_appearance(istype(R) ? R.icon : S.icobase, "jaw[BB.index]", flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR|RESET_ALPHA)
 
 	SetOverlays(mob_overlays)
 
