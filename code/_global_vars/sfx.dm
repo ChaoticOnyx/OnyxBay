@@ -1716,6 +1716,9 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/whistle3.ogg',
 		'sound/effects/emotes/whistle4.ogg'
 	),
+	SFX_PSST = list(
+		'sound/effects/emotes/psst.ogg',
+	),
 	SFX_SNORE = list(
 		'sound/effects/emotes/snore1.ogg',
 		'sound/effects/emotes/snore2.ogg',

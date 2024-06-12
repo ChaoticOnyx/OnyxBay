@@ -948,3 +948,20 @@
 	set name = "Fatigue"
 	set category = "Noises"
 	emote("fatigue")
+
+
+/datum/emote/psst
+	key = "psst"
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound = SFX_PSST
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/psst_emote
+
+/mob/proc/psst_emote()
+	set name = "Psst"
+	set category = "Noises"
+	emote("psst")

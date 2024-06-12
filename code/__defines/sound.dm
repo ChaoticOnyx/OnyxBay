@@ -374,6 +374,7 @@
 #define SFX_OINK                    "oink"
 #define SFX_PLANTCROSS              "plantcross"
 #define SFX_THUNDER                 "thunder"
+#define SFX_PSST                    "psst"
 
 // FOOTSTEPS
 #define SFX_DISTANT_MOVEMENT        "distant_movement"
