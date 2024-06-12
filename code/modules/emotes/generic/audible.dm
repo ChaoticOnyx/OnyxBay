@@ -605,6 +605,32 @@
 	emote("huh", intentional = TRUE)
 
 
+/datum/emote/hmm
+	key = "hmm"
+
+	message_1p = "You hmm."
+	message_3p = "hmms."
+
+	message_impaired_production = "makes a noise."
+
+	message_miming = "hmms."
+	message_muzzled = "makes a noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound_human_female = SFX_FEMALE_HMM
+	sound_human_male = SFX_MALE_HMM
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/hmm_emote
+
+/mob/proc/hmm_emote()
+	set name = "Hmm"
+	set category = "Noises"
+	emote("hmm", intentional = TRUE)
+
+
 /datum/emote/snore
 	key = "snore"
 

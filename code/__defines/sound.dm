@@ -100,7 +100,7 @@
 #define SFX_FEMALE_CHUCKLE          "female_chuckle"
 #define SFX_FEMALE_GIGGLE           "female_giggle"
 #define SFX_FEMALE_HUH              "female_huh"
-
+#define SFX_FEMALE_HMM              "female_hmm"
 
 // MALE EMOTES
 #define SFX_MALE_INTERNAL_BREATH    "male_internal_breath"
@@ -123,6 +123,7 @@
 #define SFX_MALE_HUM                "male_hum"
 #define SFX_MALE_CHUCKLE            "male_chuckle"
 #define SFX_MALE_HUH                "male_huh"
+#define SFX_MALE_HMM                "male_hmm"
 
 // AMBIENT
 #define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"
