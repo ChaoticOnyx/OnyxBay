@@ -908,3 +908,24 @@
 	set name = "Attnwhistle"
 	set category = "Noises"
 	emote("attnwhistle")
+
+
+/datum/emote/fatigue
+	key = "fatigue"
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound_human_female = SFX_FEMALE_FATIGUE
+	sound_human_male = SFX_MALE_FATIGUE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	cooldown = 2.5 SECONDS
+	audio_cooldown = 3 SECONDS
+
+	statpanel_proc = /mob/proc/fatigue_emote
+
+/mob/proc/fatigue_emote()
+	set name = "Fatigue"
+	set category = "Noises"
+	emote("fatigue")
