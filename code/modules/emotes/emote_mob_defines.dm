@@ -86,6 +86,8 @@
 		/datum/emote/clearthroat,
 		/datum/emote/shh,
 		/datum/emote/hum,
+		/datum/emote/huh,
+		/datum/emote/hmm,
 	)
 
 /mob/living/carbon/metroid/load_default_emotes()

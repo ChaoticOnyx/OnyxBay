@@ -210,6 +210,11 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/f_hum2.ogg',
 		'sound/effects/emotes/f_hum3.ogg',
 	),
+	SFX_FEMALE_HUH = list(
+		'sound/effects/emotes/f_huh1.ogg',
+		'sound/effects/emotes/f_huh2.ogg',
+		'sound/effects/emotes/f_huh3.ogg',
+	),
 	SFX_FEMALE_CHUCKLE = list(
 		'sound/effects/emotes/f_chuckle1.ogg',
 		'sound/effects/emotes/f_chuckle2.ogg',
@@ -368,6 +373,11 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/m_hum1.ogg',
 		'sound/effects/emotes/m_hum2.ogg',
 		'sound/effects/emotes/m_hum3.ogg',
+	),
+	SFX_MALE_HUH = list(
+		'sound/effects/emotes/m_huh1.ogg',
+		'sound/effects/emotes/m_huh2.ogg',
+		'sound/effects/emotes/m_huh3.ogg',
 	),
 	SFX_MALE_CHUCKLE = list(
 		'sound/effects/emotes/m_chuckle.ogg',

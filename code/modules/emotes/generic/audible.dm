@@ -578,6 +578,33 @@
 	set category = "Noises"
 	emote("hum", intentional = TRUE)
 
+
+/datum/emote/huh
+	key = "huh"
+
+	message_1p = "You huh."
+	message_3p = "huhs."
+
+	message_impaired_production = "makes a noise."
+
+	message_miming = "huhs."
+	message_muzzled = "makes a noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound_human_female = SFX_FEMALE_HUH
+	sound_human_male = SFX_MALE_HUH
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/huh_emote
+
+/mob/proc/huh_emote()
+	set name = "Huh"
+	set category = "Noises"
+	emote("huh", intentional = TRUE)
+
+
 /datum/emote/snore
 	key = "snore"
 
