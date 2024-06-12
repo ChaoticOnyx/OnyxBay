@@ -868,6 +868,8 @@
 	message_type = AUDIBLE_MESSAGE
 
 	sound = SFX_WHISTLE
+	sound_human_female = SFX_FEMALE_WHISTLE
+	sound_human_male = SFX_MALE_WHISTLE
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 

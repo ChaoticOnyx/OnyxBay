@@ -235,7 +235,14 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/f_groan4.ogg',
 		'sound/effects/emotes/f_groan5.ogg',
 		'sound/effects/emotes/f_groan6.ogg',
-	)
+	),
+	SFX_FEMALE_WHISTLE = list(
+		'sound/effects/emotes/f_whistle1.ogg',
+		'sound/effects/emotes/f_whistle2.ogg',
+		'sound/effects/emotes/f_whistle3.ogg',
+		'sound/effects/emotes/f_whistle4.ogg',
+		'sound/effects/emotes/f_whistle5.ogg',
+	),
 	// MALE EMOTES
 	SFX_MALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/m_internal1.ogg',
@@ -404,7 +411,12 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/m_groan4.ogg',
 		'sound/effects/emotes/m_groan5.ogg',
 		'sound/effects/emotes/m_groan6.ogg',
-	)
+	),
+	SFX_MALE_WHISTLE = list(
+		'sound/effects/emotes/m_whistle1.ogg',
+		'sound/effects/emotes/m_whistle2.ogg',
+		'sound/effects/emotes/m_whistle3.ogg',
+	),
 	// AMBIENT
 	SFX_AMBIENT_POWERED_GLOBAL = list(
 		'sound/ambient/global/amb2.ogg',
