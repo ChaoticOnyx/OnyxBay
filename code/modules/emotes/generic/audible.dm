@@ -873,6 +873,9 @@
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
+	cooldown = 5 SECONDS
+	audio_cooldown = 5 SECONDS
+
 	statpanel_proc = /mob/proc/whistle_emote
 
 /datum/emote/whistle/get_sfx_volume()
@@ -882,3 +885,26 @@
 	set name = "Whistle"
 	set category = "Noises"
 	emote("whistle")
+
+
+/datum/emote/attnwhistle
+	key = "attnwhistle"
+
+	message_1p = "You whistle."
+	message_3p = "whistles!"
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound = SFX_WHISTLE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/attnwhistle_emote
+
+/datum/emote/whistle/get_sfx_volume()
+	return 40
+
+/mob/proc/attnwhistle_emote()
+	set name = "Attnwhistle"
+	set category = "Noises"
+	emote("attnwhistle")

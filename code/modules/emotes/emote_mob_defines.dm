@@ -79,6 +79,7 @@
 		/datum/emote/vomit,
 		/datum/emote/giggle,
 		/datum/emote/whistle,
+		/datum/emote/attnwhistle,
 		/datum/emote/signal,
 		/datum/emote/sway,
 		/datum/emote/choke,
