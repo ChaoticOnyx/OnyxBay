@@ -446,8 +446,8 @@
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
-	sound_human_female = SFX_FEMALE_LAUGH
-	sound_human_male = SFX_MALE_LAUGH
+	sound_human_female = SFX_FEMALE_GIGGLE
+	sound_human_male = SFX_MALE_LAUGH // Sadly, I had to leave it as is. Hopefully someone will find the right SFX. ~Filatelele.
 
 	statpanel_proc = /mob/proc/giggle_emote
 

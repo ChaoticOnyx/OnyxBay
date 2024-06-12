@@ -215,6 +215,10 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/f_chuckle2.ogg',
 		'sound/effects/emotes/f_chuckle3.ogg',
 	),
+	SFX_FEMALE_GIGGLE = list(
+		'sound/effects/emotes/f_giggle1.ogg',
+		'sound/effects/emotes/f_giggle2.ogg',
+	),
 	// MALE EMOTES
 	SFX_MALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/m_internal1.ogg',
