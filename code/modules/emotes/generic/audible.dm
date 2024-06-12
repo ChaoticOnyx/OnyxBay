@@ -23,7 +23,6 @@
 	set category = "Noises"
 	emote("whimper", intentional = TRUE)
 
-
 /datum/emote/roar
 	key = "roar"
 
@@ -76,9 +75,8 @@
 
 /mob/proc/gasp_emote()
 	set name = "Gasp"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("gasp", intentional = TRUE)
-
 
 /datum/emote/sneeze
 	key = "sneeze"
@@ -97,9 +95,40 @@
 
 /mob/proc/sneeze_emote()
 	set name = "Sneeze"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("sneeze", intentional = TRUE)
 
+
+/datum/emote/burp
+	key = "burp"
+
+	message_1p = "You burp."
+	message_3p = "burps."
+
+	message_impaired_production = "makes a noise."
+
+	message_miming = "burps."
+	message_muzzled = "makes a noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	sound_human_female = SFX_FEMALE_BURP
+	sound_human_male = SFX_MALE_BURP
+
+	statpanel_proc = /mob/proc/burp_emote
+
+/datum/emote/burp/get_impaired_msg(mob/user)
+	return "makes a noise!"
+
+/datum/emote/burp/get_sfx_volume()
+	return rand(25, 45)
+
+/mob/proc/burp_emote()
+	set name = "Burp"
+	set category = "Noises"
+	emote("burp", intentional = TRUE)
 
 /datum/emote/choke
 	key = "choke"
@@ -193,7 +222,7 @@
 
 /mob/proc/chuckle_emote()
 	set name = "Chuckle"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("chuckle", intentional = TRUE)
 
 
@@ -249,7 +278,7 @@
 
 /mob/proc/cough_emote()
 	set name = "Cough"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("cough", intentional = TRUE)
 
 
@@ -278,7 +307,7 @@
 
 /mob/proc/cry_emote()
 	set name = "Cry"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("cry", intentional = TRUE)
 
 
@@ -310,7 +339,7 @@
 
 /mob/proc/scream_emote()
 	set name = "Scream"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("scream", intentional = TRUE)
 
 
@@ -337,7 +366,7 @@
 
 /mob/proc/scream_long_emote()
 	set name = "Scream (long)"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("scream_long", intentional = TRUE)
 
 
@@ -364,7 +393,7 @@
 
 /mob/proc/oink_emote()
 	set name = "Oink"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("oink", intentional = TRUE)
 
 
@@ -398,7 +427,7 @@
 
 /mob/proc/laugh_emote()
 	set name = "Laugh"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("laugh", intentional = TRUE)
 
 
@@ -430,7 +459,7 @@
 
 /mob/proc/giggle_emote()
 	set name = "Giggle"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("giggle", intentional = TRUE)
 
 
@@ -462,7 +491,7 @@
 
 /mob/proc/grunt_emote()
 	set name = "Grunt"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("grunt", intentional = TRUE)
 
 
@@ -494,7 +523,7 @@
 
 /mob/proc/groan_emote()
 	set name = "Groan"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("groan", intentional = TRUE)
 
 /datum/emote/hiccup
@@ -521,7 +550,7 @@
 
 /mob/proc/hiccup_emote()
 	set name = "Hiccup"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("hiccup", intentional = TRUE)
 
 /datum/emote/snore
@@ -551,7 +580,7 @@
 
 /mob/proc/snore_emote()
 	set name = "Snore"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("snore", intentional = TRUE)
 
 /datum/emote/shh
@@ -631,7 +660,7 @@
 
 /mob/proc/sigh_emote()
 	set name = "Sigh"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("sigh", intentional = TRUE)
 
 
@@ -730,7 +759,7 @@
 
 /mob/proc/yawn_emote()
 	set name = "Yawn"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("yawn")
 
 /datum/emote/chirp
@@ -771,5 +800,5 @@
 
 /mob/proc/whistle_emote()
 	set name = "Whistle"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("whistle")
