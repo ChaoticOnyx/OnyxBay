@@ -91,6 +91,9 @@
 
 	statpanel_proc = /mob/proc/gag_emote
 
+/datum/emote/gag/get_sfx_volume()
+	return rand(40, 50)
+
 /mob/proc/gag_emote()
 	set name = "Gag"
 	set category = "Noises"
@@ -348,7 +351,7 @@
 	statpanel_proc = /mob/proc/cry_emote
 
 /datum/emote/cry/get_sfx_volume()
-	return rand(25, 45)
+	return rand(40, 55)
 
 /mob/proc/cry_emote()
 	set name = "Cry"
@@ -407,7 +410,7 @@
 	statpanel_proc = /mob/proc/scream_long_emote
 
 /datum/emote/scream_long/get_sfx_volume()
-	return rand(40, 60)
+	return rand(50, 70)
 
 /mob/proc/scream_long_emote()
 	set name = "Scream (long)"
@@ -618,6 +621,9 @@
 
 	statpanel_proc = /mob/proc/hum_emote
 
+/datum/emote/hum/get_sfx_volume()
+	return rand(40, 50)
+
 /mob/proc/hum_emote()
 	set name = "Hum"
 	set category = "Noises"
@@ -643,6 +649,9 @@
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/huh_emote
+
+/datum/emote/huh/get_sfx_volume()
+	return rand(40, 50)
 
 /mob/proc/huh_emote()
 	set name = "Huh"
@@ -969,6 +978,9 @@
 	audio_cooldown = 3 SECONDS
 
 	statpanel_proc = /mob/proc/fatigue_emote
+
+/datum/emote/fatigue/get_sfx_volume()
+	return rand(40, 50)
 
 /mob/proc/fatigue_emote()
 	set name = "Fatigue"
