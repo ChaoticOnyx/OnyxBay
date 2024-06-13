@@ -45,7 +45,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	if(owner && loc == owner)
 		owner.updatehealth() //droplimb will call updatehealth() again if it does end up being called
-		if(!is_stump() && (limb_flags & ORGAN_FLAG_CAN_AMPUTATE) && config.health.limbs_can_break)
+		if(!is_stump() && (organ_flags & ORGAN_FLAG_CAN_AMPUTATE) && config.health.limbs_can_break)
 			if((brute_dam + burn_dam + brute + burn + spillover) >= (max_damage * config.health.organ_health_multiplier))
 				var/force_droplimb = 0
 				if((brute_dam + burn_dam + brute + burn + spillover) >= (max_damage * config.health.organ_health_multiplier * 4))
@@ -182,9 +182,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 			break
 
 		// heal brute damage
-		if(W.damage_type == BURN && (burn_ratio < 1 || vital || (limb_flags & ORGAN_FLAG_HEALS_OVERKILL)))
+		if(W.damage_type == BURN && (burn_ratio < 1 || vital || (organ_flags & ORGAN_FLAG_HEALS_OVERKILL)))
 			burn = W.heal_damage(burn)
-		else if(brute_ratio < 1 || vital || (limb_flags & ORGAN_FLAG_HEALS_OVERKILL))
+		else if(brute_ratio < 1 || vital || (organ_flags & ORGAN_FLAG_HEALS_OVERKILL))
 			brute = W.heal_damage(brute)
 
 	if(internal)
@@ -310,10 +310,10 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		return 0
 	if(agony_amount > 5 && owner)
 
-		if((limb_flags & ORGAN_FLAG_CAN_GRASP) && prob(25))
+		if((organ_flags & ORGAN_FLAG_CAN_GRASP) && prob(25))
 			owner.grasp_damage_disarm(src)
 
-		if((limb_flags & ORGAN_FLAG_CAN_STAND) && prob(min(agony_amount * ((body_part == LEG_LEFT || body_part == LEG_RIGHT)? 1 : 2), 70)))
+		if((organ_flags & ORGAN_FLAG_CAN_STAND) && prob(min(agony_amount * ((body_part == LEG_LEFT || body_part == LEG_RIGHT)? 1 : 2), 70)))
 			owner.stance_damage_prone(src)
 
 		if(vital && full_pain > 0.5 * max_damage)
@@ -338,7 +338,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	return FALSE
 
 /obj/item/organ/external/proc/sever_tendon()
-	if((limb_flags & ORGAN_FLAG_HAS_TENDON) && !BP_IS_ROBOTIC(src) && !(status & ORGAN_TENDON_CUT))
+	if((organ_flags & ORGAN_FLAG_HAS_TENDON) && !BP_IS_ROBOTIC(src) && !(status & ORGAN_TENDON_CUT))
 		status |= ORGAN_TENDON_CUT
 		return TRUE
 	return FALSE

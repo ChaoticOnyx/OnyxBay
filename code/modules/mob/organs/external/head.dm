@@ -14,7 +14,7 @@
 	encased = "skull"
 	artery_name = "carotid artery"
 	cavity_name = "cranial"
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
+	organ_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
 
 	internal_organs_size = 3
 
@@ -94,9 +94,9 @@
 
 /obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags, used_weapon = null)
 	. = ..()
-	if ((brute_dam > 40) && prob(50))
+	if((brute_dam > 40) && prob(50))
 		disfigure("brute")
-	if (burn_dam > 40)
+	if(burn_dam > 40)
 		disfigure("burn")
 
 /obj/item/organ/external/head/get_icon_key()
@@ -123,6 +123,10 @@
 			else if(owner.should_have_organ(BP_EYES))
 				. += "eyeless"
 
+		var/obj/item/organ/internal/jaw/jaw = owner.internal_organs_by_name[BP_JAW]
+		if(istype(jaw))
+			var/datum/robolimb/R = GLOB.all_robolimbs[jaw.model]
+			. += R?.icon ? "jaw_[R.icon]" : "jaw_s"
 
 /obj/item/organ/external/head/on_update_icon()
 	..()
@@ -148,6 +152,11 @@
 
 		if(owner.lip_style && !BP_IS_ROBOTIC(src) && species && (species.species_appearance_flags & HAS_LIPS))
 			mob_overlays |= mutable_appearance(S.icobase, "lips[BB.index]", color = owner.lip_style, flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR|RESET_ALPHA)
+
+		var/obj/item/organ/internal/jaw/jaw = owner.internal_organs_by_name[BP_JAW]
+		if(istype(jaw))
+			var/datum/robolimb/R = GLOB.all_robolimbs[jaw.model]
+			mob_overlays |= mutable_appearance(istype(R) ? R.icon : S.icobase, "jaw[BB.index]", flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR|RESET_ALPHA)
 
 	SetOverlays(mob_overlays)
 

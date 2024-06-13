@@ -55,37 +55,7 @@
 	/// 1.5 tally if limb broken
 	var/broken_tally      = 3
 
-	// A bitfield for a collection of limb behavior flags.
-	var/limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
-
-	// Appearance vars.
-	/// Icon state base.
-	var/icon_name = null
-	/// Part flag
-	var/body_part = null
-	/// Used in mob overlay layering calculations.
-	var/icon_position = 0
-	/// Used when caching robolimb icons.
-	var/model
-	/// Used to force override of species-specific limb icons (for prosthetics).
-	var/force_icon
-	/// Cached limb overlays
-	var/list/mob_overlays
-	var/body_build = ""
-	/// Skin tone.
-	var/s_tone
-	/// Skin base.
-	var/s_base = ""
-	/// skin colour
-	var/list/s_col
-	/// How the skin colour is applied.
-	var/s_col_blend = ICON_ADD
-	/// hair colour
-	var/list/h_col
-	/// Secondary hair color
-	var/list/h_s_col
-	/// Markings (body_markings) to apply to the icon
-	var/list/markings = list()
+	organ_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
 
 	// Wound and structural data.
 	/// how often wounds should be updated, a higher number means less often
@@ -152,7 +122,7 @@
 
 /obj/item/organ/external/proc/get_fingerprint()
 
-	if((limb_flags & ORGAN_FLAG_FINGERPRINT) && dna && !is_stump() && !BP_IS_ROBOTIC(src))
+	if((organ_flags & ORGAN_FLAG_FINGERPRINT) && dna && !is_stump() && !BP_IS_ROBOTIC(src))
 		return md5(dna.uni_identity)
 
 	for(var/obj/item/organ/external/E in children)
@@ -208,8 +178,8 @@
 		QDEL_NULL(splinted)
 
 	if(owner)
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
-		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
+		if(organ_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
+		if(organ_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
 		owner.organs -= src
 		owner.organs_by_name.Remove(organ_tag)
 		owner.organs_by_name -= organ_tag
@@ -426,9 +396,9 @@
 
 	if(!QDELETED(owner))
 
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP && length(owner.grasp_limbs))
+		if(organ_flags & ORGAN_FLAG_CAN_GRASP && length(owner.grasp_limbs))
 			owner.grasp_limbs[src] = TRUE
-		if(limb_flags & ORGAN_FLAG_CAN_STAND && length(owner.stance_limbs))
+		if(organ_flags & ORGAN_FLAG_CAN_STAND && length(owner.stance_limbs))
 			owner.stance_limbs[src] = TRUE
 		owner.organs_by_name[organ_tag] = src
 		owner.organs |= src
@@ -917,7 +887,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 //Handles dismemberment
 /obj/item/organ/external/proc/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
 
-	if(!(limb_flags & ORGAN_FLAG_CAN_AMPUTATE) || !owner)
+	if(!(organ_flags & ORGAN_FLAG_CAN_AMPUTATE) || !owner)
 		return
 
 	if(disintegrate == DROPLIMB_EDGE && species.limbs_are_nonsolid)
@@ -1127,7 +1097,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		return
 	if(BP_IS_ROBOTIC(src))
 		return	//ORGAN_BROKEN doesn't have the same meaning for robot limbs
-	if((status & ORGAN_BROKEN) || !(limb_flags & ORGAN_FLAG_CAN_BREAK))
+	if((status & ORGAN_BROKEN) || !(organ_flags & ORGAN_FLAG_CAN_BREAK))
 		return
 
 	if(owner)
@@ -1144,7 +1114,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	update_tally()
 
 	//Kinda difficult to keep standing when your leg's gettin' wrecked, eh?
-	if(limb_flags & ORGAN_FLAG_CAN_STAND)
+	if(organ_flags & ORGAN_FLAG_CAN_STAND)
 		if(prob(67))
 			owner.Weaken(3)
 			owner.Stun(2)
@@ -1202,18 +1172,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	if(just_printed)
 		status |= ORGAN_CUT_AWAY
-
-	if(company)
-		var/datum/robolimb/R = GLOB.all_robolimbs[company]
-		if(!R || (species && (species.name in R.species_cannot_use)) || \
-		 (R.restricted_to.len && !(species.name in R.restricted_to)) || \
-		 (R.applies_to_part.len && !(organ_tag in R.applies_to_part)))
-			R = basic_robolimb
-		else
-			model = company
-			force_icon = R.icon
-			name = "robotic [initial(name)]"
-			desc = "[R.desc] It looks like it was produced by [R.company]."
 
 	dislocated = -1
 	remove_splint()
@@ -1299,8 +1257,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(!owner)
 		return
 
-	if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
-	if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
+	if(organ_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
+	if(organ_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
 
 	switch(body_part)
 		if(FOOT_LEFT, FOOT_RIGHT)
@@ -1388,7 +1346,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 /obj/item/organ/external/head/proc/disfigure(type = "brute")
 	if(status & ORGAN_DISFIGURED)
 		return
-	if(!(limb_flags & ORGAN_FLAG_CAN_BREAK)) // No need to disfigure xenomorphs and dionaea, right?
+	if(!(organ_flags & ORGAN_FLAG_CAN_BREAK)) // No need to disfigure xenomorphs and dionaea, right?
 		return
 	if(owner)
 		if(type == "brute")

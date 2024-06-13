@@ -173,6 +173,15 @@
 					attack_damage = GL.unarmed_damage_override
 				//FINALIZE_UNARMED(damage, maximize)
 
+			if(M.zone_sel.selecting == BP_MOUTH) // Synthetic jaws provide more protection.
+				var/obj/item/organ/internal/jaw/jaw = internal_organs_by_name[BP_JAW]
+				if(!isnull(jaw?.model))
+					to_chat(H, SPAN_WARNING("You slam your fist painfully into the synthetic jaw of your opponent!"))
+					if(M.get_active_hand() == l_hand)
+						M.apply_damage(5, BRUTE, BP_L_HAND)
+					else
+						M.apply_damage(5, BRUTE, BP_R_HAND)
+
 			if(M.grabbed_by.len)
 				// Someone got a good grip on them, they won't be able to do much damage
 				attack_damage = max(2, attack_damage - 2)
@@ -292,7 +301,7 @@
 			attack.apply_effects(H, src, armour, attack_damage, hit_zone, specmod)
 
 			// Finally, apply damage to target
-			apply_damage(real_damage, (attack.deal_halloss ? PAIN : BRUTE), hit_zone, armour, damage_flags = attack.damage_flags())
+			apply_damage(real_damage, (attack.deal_halloss ? PAIN : BRUTE), hit_zone, armour, damage_flags = attack.damage_flags(), user = H)
 
 		if(I_DISARM)
 			if(H.species)
@@ -319,7 +328,7 @@
 	var/armor_block = run_armor_check(affecting, armorcheck)
 	visible_message(SPAN("danger", "[user] has [attack_message] [src]!"))
 	admin_attack_log(user, src, "Attacked their victim", "Was attacked", "has [attack_message]")
-	apply_damage(damage, damtype, affecting, armor_block)
+	apply_damage(damage, damtype, affecting, armor_block, user = user)
 	updatehealth()
 	return 1
 

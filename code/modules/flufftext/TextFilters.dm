@@ -190,16 +190,17 @@ english_only - whether to use traditional english letters only (for use in NanoU
 	return html_encode(new_phrase)
 
 // This is prolonged effect, often toggled by prefences
-/proc/lisp(phrase)
+/proc/lisp(phrase, intensity = 100)
 	phrase = html_decode(phrase)
 	var/list/hissing = list("ж", "ч", "ш", "щ")
 	var/new_phrase = ""
 	for(var/i = 1, i <= length_char(phrase), i++)
 		var/letter = copytext_char(phrase, i, i + 1)
-		if(lowertext(letter) in hissing)
-			if(lowertext(letter) == letter)
-				letter = "ф"
-			else
-				letter = "Ф"
+		if(prob(intensity))
+			if(lowertext(letter) in hissing)
+				if(lowertext(letter) == letter)
+					letter = "ф"
+				else
+					letter = "Ф"
 		new_phrase += letter
 	return html_encode(new_phrase)

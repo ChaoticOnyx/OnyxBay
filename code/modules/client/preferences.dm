@@ -369,17 +369,18 @@
 			O.desc = initial(O.desc)
 	//For species that don't care about your silly prefs
 	character.species.handle_limbs_setup(character)
-	if(!is_preview_copy)
-		for(var/name in list(BP_HEART,BP_EYES,BP_BRAIN,BP_LUNGS,BP_LIVER,BP_KIDNEYS,BP_STOMACH))
-			var/status = organ_data[name]
-			if(!status)
-				continue
-			var/obj/item/organ/I = character.internal_organs_by_name[name]
-			if(I)
-				if(status == "assisted")
-					I.mechassist()
-				else if(status == "mechanical")
-					I.robotize()
+	for(var/name in list(BP_HEART,BP_EYES,BP_BRAIN,BP_LUNGS,BP_LIVER,BP_KIDNEYS,BP_STOMACH,BP_JAW))
+		var/status = organ_data[name]
+		var/obj/item/organ/I = character.internal_organs_by_name[name]
+		I.status = 0
+		I.model = null
+		if(I)
+			if(status == "assisted")
+				I.mechassist()
+			else if(status == "mechanical")
+				I.robotize()
+			else if(status == "cyborg")
+				I.robotize(rlimb_data[name])
 
 	QDEL_NULL_LIST(character.worn_underwear)
 	character.worn_underwear = list()

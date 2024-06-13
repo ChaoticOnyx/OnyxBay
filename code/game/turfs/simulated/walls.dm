@@ -41,6 +41,8 @@
 	 * Gets reset to 0 if the wall reaches maximum health, so a new variation is picked when the wall gets shot again
 	 */
 	var/bullethole_variation = 0
+	/// Pixel shift of a leaning mob
+	var/leaning_offset = 12
 
 /datum/rad_resist/wall
 	alpha_particle_resist = 100 MEGA ELECTRONVOLT
@@ -295,6 +297,79 @@
 /turf/simulated/wall/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	clear_plants()
 	return ..()
+
+/turf/simulated/wall/Bumped(AM)
+	. = ..()
+	if(isliving(AM))
+		try_bump_leaning(AM)
+
+/turf/simulated/wall/proc/try_bump_leaning(mob/living/bumped)
+	if(bumped.incapacitated(INCAPACITATION_BUCKLED_FULLY | INCAPACITATION_STUNNED | INCAPACITATION_FORCELYING | INCAPACITATION_KNOCKOUT))
+		return
+
+	for(var/obj/item/grab/grab in bumped.grabbed_by)
+		if(grab.current_grab.state_name == NORM_PASSIVE)
+			continue
+
+		bumped.stop_pulling()
+		bumped.start_leaning(src)
+
+/turf/simulated/wall/MouseDrop_T(atom/movable/target, mob/user)
+	. = ..()
+	if(user != target)
+		return
+
+	if(!isliving(target))
+		return
+
+	var/mob/living/leaner = target
+	if(leaner.incapacitated(INCAPACITATION_BUCKLED_FULLY | INCAPACITATION_STUNNED | INCAPACITATION_FORCELYING | INCAPACITATION_KNOCKOUT))
+		return
+
+	if(!leaner.density)
+		return
+
+	leaner.stop_pulling()
+
+	leaner.start_leaning(src)
+
+/// Used by grab stunning
+/mob/living/var/leaning = FALSE
+
+/mob/living/proc/start_leaning(turf/simulated/wall/wall)
+	var/new_y
+	var/new_x
+
+	switch(get_dir(src, wall))
+		if(SOUTH)
+			set_dir(NORTH)
+			new_y -= wall.leaning_offset
+		if(NORTH)
+			set_dir(SOUTH)
+			new_y += wall.leaning_offset
+		if(WEST)
+			set_dir(EAST)
+			new_x -= wall.leaning_offset
+		if(EAST)
+			set_dir(WEST)
+			new_x += wall.leaning_offset
+
+	animate(src, 0.2 SECONDS, pixel_x = new_x, pixel_y = new_y)
+	density = FALSE
+	leaning = TRUE
+	update_transform()
+	visible_message(
+		SPAN_NOTICE("[src] leans against \the [wall]."),
+		SPAN_NOTICE("You lean against \the [wall]."),
+	)
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/stop_leaning))
+
+/mob/living/proc/stop_leaning()
+	unregister_signal(src, SIGNAL_MOVED)
+	density = TRUE
+	leaning = FALSE
+	update_transform()
+	animate(src, 0.2 SECONDS, pixel_x = 0, pixel_y = 0)
 
 //Appearance
 /turf/simulated/wall/examine(mob/user, infix)

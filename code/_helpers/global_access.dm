@@ -535,8 +535,6 @@
 			return global.nuke_disks;
 		if("num_financial_terminals")
 			return global.num_financial_terminals;
-		if("organ_cache")
-			return global.organ_cache;
 		if("organ_rel_size")
 			return global.organ_rel_size;
 		if("outfits_decls_")
@@ -1340,8 +1338,6 @@
 			global.nuke_disks=newval;
 		if("num_financial_terminals")
 			global.num_financial_terminals=newval;
-		if("organ_cache")
-			global.organ_cache=newval;
 		if("organ_rel_size")
 			global.organ_rel_size=newval;
 		if("outfits_decls_")
@@ -1908,7 +1904,6 @@
 	"nttransfer_uid",
 	"nuke_disks",
 	"num_financial_terminals",
-	"organ_cache",
 	"organ_rel_size",
 	"outfits_decls_",
 	"outfits_decls_by_type_",

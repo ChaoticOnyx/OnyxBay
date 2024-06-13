@@ -204,7 +204,7 @@
  * Calls `success` or `failure` proc based on success chance.
  *
  */
-/datum/surgery_step/proc/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/proc/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user, additional_args)
 	if(can_infect)
 		spread_germs_to_organ(user, target_organ)
 
@@ -221,13 +221,13 @@
 	play_preop_sound(user, target, target_organ, tool)
 
 	var/success_chance = calc_success_chance(user, target, tool)
-	var/surgery_duration = SURGERY_DURATION_DELTA * duration * tool.surgery_speed
+	var/surgery_duration = calc_duration(user, target, tool, additional_args)
 	if(prob(success_chance) && do_mob(user, target, surgery_duration, can_multitask = TRUE))
 		play_success_sound(user, target, target_organ, tool)
-		success(parent_organ, target_organ, target, tool, user)
+		success(parent_organ, target_organ, target, tool, user, additional_args)
 	else
 		play_failure_sound(user, target, target_organ, tool)
-		failure(parent_organ, target_organ, target, tool, user)
+		failure(parent_organ, target_organ, target, tool, user, additional_args)
 
 /// Spreads germs to organ if no gloves is present.
 /datum/surgery_step/proc/spread_germs_to_organ(mob/living/carbon/human/user, obj/item/organ/external/target_organ)
@@ -272,6 +272,10 @@
 			. -= 10
 
 	. = max(., 0)
+
+/// Override to add variable op duration.
+/datum/surgery_step/proc/calc_duration(mob/living/user, mob/living/carbon/human/target, obj/item/tool, additional_args)
+	return SURGERY_DURATION_DELTA * duration * tool.surgery_speed
 
 /**
  * Called on step success, override to apply effects on target and print out

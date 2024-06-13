@@ -598,7 +598,7 @@
 		E.s_col_blend = ICON_ADD
 		E.mend_fracture()
 		E.status |= ORGAN_MUTATED
-		E.limb_flags &= ~ORGAN_FLAG_CAN_BREAK
+		E.organ_flags &= ~ORGAN_FLAG_CAN_BREAK
 		E.dislocated = -1
 		E.max_damage = 5
 		E.update_icon(1)

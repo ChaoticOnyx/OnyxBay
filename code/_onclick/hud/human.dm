@@ -188,6 +188,26 @@
 		mymob.block_icon.alpha = ui_alpha
 		static_inventory += mymob.block_icon
 
+	if(hud_data.has_bite)
+		mymob.bite_icon = new /atom/movable/screen()
+		mymob.bite_icon.icon = ui_style
+		mymob.bite_icon.icon_state = "act_bite0"
+		mymob.bite_icon.SetName("bite")
+		mymob.bite_icon.screen_loc = ui_bite
+		mymob.bite_icon.color = ui_color
+		mymob.bite_icon.alpha = ui_alpha
+		static_inventory += mymob.bite_icon
+
+	if(hud_data.has_jump)
+		mymob.jump_icon = new /atom/movable/screen()
+		mymob.jump_icon.icon = ui_style
+		mymob.jump_icon.icon_state = "act_jump0"
+		mymob.jump_icon.SetName("jump")
+		mymob.jump_icon.screen_loc = ui_jump
+		mymob.jump_icon.color = ui_color
+		mymob.jump_icon.alpha = ui_alpha
+		static_inventory += mymob.jump_icon
+
 	if(hud_data.has_blockswitch)
 		mymob.blockswitch_icon = new /atom/movable/screen()
 		mymob.blockswitch_icon.icon = ui_style

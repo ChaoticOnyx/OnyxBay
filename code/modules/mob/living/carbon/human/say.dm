@@ -147,6 +147,19 @@
 	return verb
 
 /mob/living/carbon/human/handle_speech_problems(list/message_data)
+	var/obj/item/organ/internal/jaw/jaw = internal_organs_by_name[BP_JAW]
+	if(!istype(jaw))
+		message_data["message"] = lisp(message_data["message"], 100)
+		message_data["verb"] = pick("lisps", "croups")
+	else if(jaw?.get_teeth_count() < jaw?.max_teeth_count)
+		var/lisp_intensity = 0
+		if(jaw.get_teeth_count() <= 0)
+			lisp_intensity = 100
+		else
+			lisp_intensity = Clamp(((1 - (jaw.get_teeth_count() / jaw.max_teeth_count)) * 100), 30, 100)
+		message_data["message"] = lisp(message_data["message"], lisp_intensity)
+		message_data["verb"] = pick("lisps", "croups")
+
 	if(silent || (sdisabilities & MUTE))
 		message_data["message"] = ""
 		. = TRUE

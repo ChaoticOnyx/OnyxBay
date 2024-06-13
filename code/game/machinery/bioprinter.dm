@@ -35,7 +35,7 @@
 		BP_L_LEG   = list("Left Leg",   /obj/item/organ/external/leg,        65),
 		BP_L_FOOT  = list("Left Foot",  /obj/item/organ/external/foot,       40),
 		BP_R_LEG   = list("Right Leg",  /obj/item/organ/external/leg/right,  65),
-		BP_R_FOOT  = list("Right Foot", /obj/item/organ/external/foot/right, 40)
+		BP_R_FOOT  = list("Right Foot", /obj/item/organ/external/foot/right, 40),
 		)
 
 /obj/machinery/organ_printer/attackby(obj/item/O, mob/user)
@@ -191,15 +191,12 @@
 	. = ..()
 	products.Add(BP_CELL)
 	products[BP_CELL] = list("Microbattery", /obj/item/organ/internal/cell, 25)
+	products[BP_JAW] = list("Artificial Jaw", /obj/item/organ/internal/jaw, 50)
 	component_parts += new /obj/item/circuitboard/roboprinter
 
 /obj/machinery/organ_printer/robot/print_organ(choice)
 	var/obj/item/organ/O = ..()
-	var/obj/item/organ/external/E = O
-	if(istype(E))
-		E.robotize(company)
-	else
-		O.robotize()
+	O.robotize(company)
 	O.status |= ORGAN_CUT_AWAY // Default robotize() resets status to ORGAN_ROBOTIC only
 
 	visible_message("<span class='info'>\The [src] churns for a moment, then spits out \a [O].</span>")

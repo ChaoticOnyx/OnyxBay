@@ -96,9 +96,9 @@
 		var/spaceposition = findtext_char(href_list["body_modification"], " ")
 		var/organ = copytext_char(href_list["body_modification"], 1, spaceposition)
 		var/action = copytext_char(href_list["body_modification"], spaceposition + 1)
-		if(organ in BP_INTERNAL_ORGANS)
+		if(organ in (BP_INTERNAL_ORGANS - BP_JAW)) // Kolhoz incorporated by Filatelele.
 			update_internal_organ(organ, action)
-		else if(organ in BP_ALL_LIMBS)
+		else if(organ in BP_ALL_LIMBS + BP_JAW)
 			update_external_organ(organ, action)
 
 		return TOPIC_REFRESH_UPDATE_PREVIEW
@@ -181,13 +181,17 @@
 				pref.organ_data[third_limb] = null
 
 			if(organ == BP_CHEST)
-				for(var/other_limb in BP_ALL_LIMBS - BP_CHEST)
+				for(var/other_limb in BP_ALL_LIMBS + BP_JAW - BP_CHEST)
 					pref.organ_data[other_limb] = "cyborg"
 					pref.rlimb_data[other_limb] = action
 				if(!pref.organ_data[BP_BRAIN])
 					pref.organ_data[BP_BRAIN] = "assisted"
 				for(var/internal_organ in list(BP_HEART,BP_EYES,BP_LUNGS,BP_LIVER,BP_KIDNEYS))
 					pref.organ_data[internal_organ] = "mechanical"
+
+			if(organ == BP_HEAD)
+				pref.organ_data[BP_JAW] = "cyborg"
+				pref.rlimb_data[BP_JAW] = action
 
 /datum/category_item/player_setup_item/augmentation/proc/reset_limbs()
 	pref.organ_data.Cut()
@@ -200,7 +204,7 @@
 	var/list/removable_limbs = BP_LIMBS_LOCOMOTION + BP_LIMBS_ARM_LOCOMOTION
 	if(organ in removable_limbs)
 		modifications += "<div style = 'padding:2px' onclick=\"set('body_modification','[organ] ["removed"]');\" class='block[class]'><b>Amputated</b><br>Organ was removed.</div>"
-	if(organ in BP_ALL_LIMBS)
+	if(organ in BP_ALL_LIMBS + BP_JAW)
 		var/tmp_species = pref.species ? pref.species : SPECIES_HUMAN
 		for(var/company in GLOB.chargen_robolimbs)
 			var/datum/robolimb/M = GLOB.chargen_robolimbs[company]
@@ -214,7 +218,7 @@
 				continue
 
 			modifications += "<div style = 'padding:2px' onclick=\"set('body_modification', '[organ] [M.company]');\" class='block[class]'><b>[M.company]</b><br>[M.desc]</div>"
-	else if(organ in BP_INTERNAL_ORGANS)
+	else if(organ in BP_INTERNAL_ORGANS - BP_JAW)
 		if(organ == BP_BRAIN)
 			modifications += "<div style = 'padding:2px' onclick=\"set('body_modification', '[organ] ["mechanical"]');\" class='block[class]'><b>\tPositronic</b><br></div>"
 		else

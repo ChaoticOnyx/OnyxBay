@@ -244,7 +244,7 @@ var/global/list/damage_icon_parts = list()
 	var/list/needs_update = list()
 	var/limb_count_update = FALSE
 	for(var/organ_tag in species.has_limbs)
-		var/obj/item/organ/external/limb = organs_by_name[organ_tag]
+		var/obj/item/organ/limb = organs_by_name[organ_tag]
 		if(!QDELETED(limb))
 			var/old_key = limb_render_keys?[organ_tag] // Checks the mob's icon render key list for the bodypart
 			var/new_key = json_encode(limb.get_icon_key()) // Generates a key for the current bodypart
@@ -259,7 +259,7 @@ var/global/list/damage_icon_parts = list()
 	if(length(needs_update) || limb_count_update)
 		//GENERATE NEW LIMBS
 		var/list/new_limbs = list()
-		for(var/obj/item/organ/external/limb in organs)
+		for(var/obj/item/organ/limb in organs)
 			if(limb in needs_update)
 				var/list/limb_overlays = limb.get_overlays()
 				GLOB.limb_overlays_cache[limb_render_keys[limb.organ_tag]] = limb_overlays
