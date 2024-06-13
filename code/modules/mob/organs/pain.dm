@@ -32,12 +32,18 @@
 		last_pain_message = message
 		if(power >= 70)
 			to_chat(src, SPAN("danger", "<font size=3>[message]</font>"))
+			emote("scream")
 		else if(power >= 40)
 			to_chat(src, SPAN("danger", "<font size=2>[message]</font>"))
+			emote("painmoan")
 		else if(power >= 10)
 			to_chat(src, SPAN("danger", "[message]"))
+			if(prob(50))
+				emote("painmoan")
 		else
 			to_chat(src, SPAN("warning", "[message]"))
+			if(prob(15))
+				emote("painmoan")
 	next_pain_time = world.time + (100 - power)
 
 /mob/living/carbon/human/proc/handle_pain()

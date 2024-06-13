@@ -1049,6 +1049,8 @@
 /mob/living/carbon/human/proc/damage_poise(dmg = 1)
 	poise -= dmg
 	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
+	if(poise <= 0)
+		emote("fatigue")
 
 /*
 	Called by life(), instead of having the individual hud items update icons each tick and check for status changes

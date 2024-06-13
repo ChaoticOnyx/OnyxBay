@@ -79,8 +79,20 @@
 		/datum/emote/vomit,
 		/datum/emote/giggle,
 		/datum/emote/whistle,
+		/datum/emote/attnwhistle,
 		/datum/emote/signal,
 		/datum/emote/sway,
+		/datum/emote/choke,
+		/datum/emote/burp,
+		/datum/emote/clearthroat,
+		/datum/emote/shh,
+		/datum/emote/hum,
+		/datum/emote/huh,
+		/datum/emote/hmm,
+		/datum/emote/fatigue,
+		/datum/emote/gag,
+		/datum/emote/psst,
+		/datum/emote/painmoan,
 	)
 
 /mob/living/carbon/metroid/load_default_emotes()
