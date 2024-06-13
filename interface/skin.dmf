@@ -1,9 +1,22 @@
 macro "default"
-	elem ".winset :map.right-click=false"
-		name = "SHIFT+Shift"
-	elem "Shift"
-		name = ""
-
+	elem
+		name = "CTRL"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "CTRL+UP"
+		command = ".winset :map.right-click=false"
+	elem
+		name = "SHIFT"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "SHIFT+UP"
+		command = ".winset :map.right-click=false\n.release_shift"
+	elem
+		name = "ALT"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "ALT+UP"
+		command = ".winset :map.right-click=false"
 
 menu "menu"
 	elem
