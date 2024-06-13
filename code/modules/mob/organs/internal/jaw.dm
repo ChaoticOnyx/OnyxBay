@@ -19,6 +19,33 @@
 	. = ..()
 	reinitialize_teeth_list()
 
+/obj/item/organ/internal/jaw/attack_self(mob/user)
+	. = ..()
+	show_splash_text(user, "Removing teeth.", SPAN_NOTICE("You start removing teeth from \the [src]."))
+	if(!do_after(user, get_teeth_count(), src) || QDELETED(src) || !Adjacent(user, src))
+		return
+
+	for(var/type in teeth_types)
+		if(teeth_types[type] <= 0)
+			return
+
+		for(var/i = 1 to teeth_types[type])
+			var/obj/item/tooth/tooth = new type(get_turf(src))
+			tooth.death_time = world.time + 5 MINUTES
+			teeth_types[type]--
+			if(teeth_types[type] <= 0)
+				break
+
+/obj/item/organ/internal/jaw/attackby(obj/item/W, mob/user)
+	. = ..()
+	if(istype(W, /obj/item/tooth))
+		if(get_teeth_count() >= max_teeth_count)
+			return
+
+		show_splash_text(user, "Installing teeth.", SPAN_NOTICE("You start installing \the [W] into \the [src]."))
+		teeth_types[W.type] += 1
+		QDEL_NULL(W)
+
 /obj/item/organ/internal/jaw/on_update_icon()
 	. = ..()
 	var/datum/robolimb/R = GLOB.all_robolimbs[model]

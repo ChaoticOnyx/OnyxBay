@@ -74,17 +74,21 @@
 		to_chat(src, SPAN_WARNING("Nothing to bite!"))
 		return
 
-	var/damage = 4
+	var/damage = 7
+	var/grab_chance = 20
 	if(jaw.teeth_types[/obj/item/tooth/unathi] > jaw.max_teeth_count / 2)
-		pass()
+		grab_chance += 70
+		damage += 10
 	else if(jaw.teeth_types[/obj/item/tooth/robotic] > jaw.max_teeth_count / 2)
-		pass()
+		grab_chance += 50
+		damage += 7
 
 	var/blocked_dam = victim.run_armor_check(zone, "melee")
 	victim.apply_damage(damage, BRUTE, zone, blocked_dam, user = src)
 	damage_poise(5)
 	victim.damage_poise(round(10 * damage * 0.5 * (100 - victim.get_flat_armor(zone, "brute")), 0.1))
-	make_grab(src, victim, GRAB_BITE)
+	if(prob(grab_chance))
+		make_grab(src, victim, GRAB_BITE)
 
 /mob/living/carbon/human/proc/jump(atom/A)
 	if(!A || QDELETED(A) || !A.loc)
