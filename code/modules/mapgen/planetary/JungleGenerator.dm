@@ -167,7 +167,7 @@
 	flora_spawn_chance = 5
 	flora_spawn_list = list(
 		/obj/structure/flora/jungleflora/rock = 1,
-		/obj/structure/rock/lavarocks = 1,
+		/obj/structure/rock/basalt/pile = 1,
 		/obj/structure/rock/basalt = 1,
 		//obj/structure/flora/ash/space = 1,
 		//obj/structure/flora/ash/leaf_shroom = 1,

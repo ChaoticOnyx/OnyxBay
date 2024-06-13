@@ -2,17 +2,17 @@
 	name = "huge rock"
 	desc = "Huge rocky chunk of asteroid minerals."
 	icon = 'icons/turf/asteroid.dmi'
-	icon_state = "asteroid_bigstone1"
+	icon_state = "big_asteroid1"
 	opacity = 0
 	density = 1
 	anchored = 1
-	var/list/iconlist = list("asteroid_bigstone1","asteroid_bigstone2","asteroid_bigstone3","asteroid_bigstone4")
+	var/list/iconlist = list("big_asteroid1","big_asteroid2","big_asteroid3","big_asteroid4")
 	var/health = 40
 	var/last_act = 0
 
 /obj/structure/rock/Initialize()
 	..()
-	icon_state = "asteroid_bigstone[rand(1, 4)]"
+	icon_state = "big_asteroid[rand(1, 4)]"
 
 /obj/structure/rock/Destroy()
 	var/mineralSpawnChanceList = list(uranium = 10, osmium = 10, iron = 20, coal = 20, diamond = 2, gold = 10, silver = 10, plasma = 20)
@@ -67,30 +67,30 @@
 
 /obj/structure/rock/basalt
 	name = "basalt"
-	desc = "Huge chunk of volcanic rock that contain various minerals."
-	icon_state = "asteroid_bigstone_basalt1"
+	desc = "Huge chunk of gray rock that contain various minerals."
+	icon_state = "big_basalt1"
 
 /obj/structure/rock/basalt/Initialize()
 	. = ..()
-	icon_state = "asteroid_bigstone_basalt[rand(1, 3)]"
+	icon_state = "big_basalt[rand(1, 3)]"
 
-/obj/structure/rock/lavarocks
+/obj/structure/rock/basalt/pile
 	name = "lava rocks"
-	desc = "Small pile of volcanic rocks that contain various minerals."
-	icon_state = "asteroid_lavarocks1"
+	desc = "Small pile of grey rocks that contain various minerals."
+	icon_state = "pile_basalt1"
 
-/obj/structure/rock/lavarocks/Initialize()
+/obj/structure/rock/basalt/pile/Initialize()
 	. = ..()
-	icon_state = "asteroid_lavarocks[rand(1, 3)]"
+	icon_state = "pile_basalt[rand(1, 3)]"
 
 /obj/structure/rock/rockplanet
 	name = "russet stone"
 	desc = "A raised knurl of red rock."
-	icon_state = "asteroid_bigstone_redrock1"
+	icon_state = "big_red1"
 
 /obj/structure/rock/rockplanet/Initialize()
 	. = ..()
-	icon_state = "asteroid_bigstone_redrock[rand(1, 3)]"
+	icon_state = "big_red[rand(1, 3)]"
 
 /obj/structure/rock/rockplanet/Destroy()
 	var/mineralSpawnChanceList = list(glass = 10)
@@ -105,8 +105,20 @@
 /obj/structure/rock/rockplanet/pile
 	name = "russet stones"
 	desc = "A pile of rust-red rocks."
-	icon_state = "asteroid_redrocks1"
+	icon_state = "plie_red1"
 
 /obj/structure/rock/rockplanet/pile/Initialize()
 	. = ..()
-	icon_state = "asteroid_redrocks[rand(1, 3)]"
+	icon_state = "pile_red[rand(1, 3)]"
+
+/obj/structure/rock/icy
+	name = "icy rock"
+	icon_state = "big_icy1"
+
+/obj/structure/rock/icy/Initialize()
+	. = ..()
+	icon_state = "big_icy[rand(1, 3)]"
+
+/obj/structure/rock/icy/pile
+	name = "icy rock"
+	icon_state = "pile_icy1"

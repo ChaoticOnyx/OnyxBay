@@ -556,6 +556,7 @@ var/list/mining_floors = list()
 	temperature = TCMB
 	var/dug = 0       //0 = has not yet been dug, 1 = has already been dug
 	var/overlay_detail
+	var/floor_variance = 0
 	has_resources = 1
 	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
@@ -758,6 +759,7 @@ var/list/mining_floors = list()
 
 /turf/simulated/floor/asteroid/jungle
 	name = "grass"
+	desc = "A dirty surface completly covered in low, dense grass. It looks nice."
 	icon = 'icons/turf/jungle_turfs.dmi'
 	icon_state = "grass1"
 	footstep_sound = SFX_FOOTSTEP_GRASS
@@ -772,13 +774,16 @@ var/list/mining_floors = list()
 	desc = "Looks wet."
 	icon = 'icons/misc/beach.dmi'
 	icon_state = "seashallow"
-	footstep_sound = SFX_FOOTSTEP_WATER
+	footstep_sound = SFX_FOOTSTEP_SWAMP
 	var/overlay = TRUE
 
-/turf/simulated/floor/asteroid/jungle/water/New()
-	..()
+/turf/simulated/floor/asteroid/jungle/water/Initialize()
+	. = ..()
 	if(overlay)
 		AddOverlays(image("icon"='icons/misc/beach.dmi',"icon_state"="riverwater","layer"=MOB_LAYER+1))
+
+/turf/simulated/floor/asteroid/jungle/water/update_dirt()
+	return
 
 /turf/simulated/floor/asteroid/jungle/wasteland
 	name = "cracked earth"
@@ -786,7 +791,7 @@ var/list/mining_floors = list()
 	icon = 'icons/turf/flooring/wasteland.dmi'
 	icon_state = "wasteland1"
 	//slowdown = 1 //<add that shet, i am too stupid and lazy to do it myself
-	var/floor_variance = 15
+	floor_variance = 15
 
 /turf/simulated/floor/asteroid/jungle/wasteland/Initialize(mapload, inherited_virtual_z)
 	. = ..()
@@ -795,10 +800,10 @@ var/list/mining_floors = list()
 
 /turf/simulated/floor/asteroid/rockplanet
 	name = "iron sand"
+	desc = "Reddish sand, probably because it contain too much iron in it."
 	icon = 'icons/turf/flooring/sand.dmi'
 	icon_state = "dry_soft1"
-	footstep_sound = SFX_FOOTSTEP_ASTEROID
-	var/floor_variance = 100
+	floor_variance = 100
 
 /turf/simulated/floor/asteroid/rockplanet/Initialize(mapload, inherited_virtual_z)
 	. = ..()
@@ -830,3 +835,90 @@ var/list/mining_floors = list()
 	. = ..()
 	if(prob(floor_variance))
 		icon_state = "wet_cracked[rand(1, 8)]"
+
+/turf/simulated/floor/asteroid/whitesands
+	name = "salted sand"
+	desc = "Dead-white sand that made almost entirely out of salt."
+	icon = 'icons/turf/flooring/whitesand.dmi'
+	icon_state = "sand1"
+	floor_variance = 80
+
+/turf/simulated/floor/asteroid/whitesands/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "sand[rand(1, 13)]"
+
+/turf/simulated/floor/asteroid/whitesands/dried
+	icon_state = "dry1"
+
+/turf/simulated/floor/asteroid/whitesands/dried/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "dry[rand(1, 13)]"
+
+/turf/simulated/floor/asteroid/whitesands/grass
+	name = "purple grass"
+	desc = "The few known flora on Whitesands are in a purplish color."
+	icon = 'icons/turf/purplegrass.dmi'
+	icon_state = "purplegrass1"
+	footstep_sound = SFX_FOOTSTEP_GRASS
+
+/turf/simulated/floor/asteroid/whitesands/grass/dead
+	name = "dry grass"
+	icon = 'icons/turf/whitegrass.dmi'
+	icon_state = "whitegrass1"
+	desc = "The few known flora on Whitesands also don't tend to live for very long, especially after the war."
+
+/turf/simulated/floor/asteroid/snow
+	name = "snow"
+	desc = "Just a snow."
+	icon = 'icons/turf/planetsnow.dmi'
+	icon_state = "snow1"
+	footstep_sound = SFX_FOOTSTEP_SNOW
+	floor_variance = 100
+
+/turf/simulated/floor/asteroid/snow/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "snow[rand(1, 13)]"
+
+/turf/simulated/floor/asteroid/snow/icerock
+	name = "icy rock"
+	desc = "The coarse rock that covers the surface."
+	icon_state = "icemoon_ground_coarse1"
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
+	floor_variance = 100
+
+/turf/simulated/floor/asteroid/snow/icerock/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "icemoon_ground_coarse[rand(1, 8)]"
+
+/turf/simulated/floor/asteroid/snow/icerock/smooth
+	icon_state = "icemoon_ground_smooth"
+
+/turf/simulated/floor/asteroid/snow/icerock/cracked
+	icon_state = "icemoon_ground_cracked"
+
+/turf/simulated/floor/asteroid/snow/iceberg
+	name = "cracked ice floor"
+	desc = "A sheet of solid ice. It seems too cracked to be slippery anymore."
+	icon_state = "iceberg1"
+	floor_variance = 100
+
+/turf/simulated/floor/asteroid/snow/iceberg/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "iceberg[rand(1, 8)]"
+
+/turf/simulated/floor/asteroid/basalt
+	name = "volcanic floor"
+	desc = "Some dark, rough volcanic rock."
+	icon = 'icons/turf/basalt.dmi'
+	icon_state = "basalt1"
+	floor_variance = 15
+
+/turf/simulated/floor/asteroid/basalt/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "basalt[rand(1, 13)]"

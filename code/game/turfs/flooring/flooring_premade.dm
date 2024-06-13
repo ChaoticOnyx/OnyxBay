@@ -424,7 +424,7 @@
 
 /turf/simulated/floor/natural/ice
 	name = "ice"
-	icon = 'icons/turf/snow.dmi'
+	icon = 'icons/turf/snow.dmi' //there is better textures at icons/turf/ice.dmi
 	icon_state = "ice"
 	footstep_sound = SFX_FOOTSTEP_SNOW
 
@@ -500,6 +500,24 @@
 /turf/simulated/floor/natural/beach/water/New()
 	..()
 	AddOverlays(image("icon"='icons/misc/beach.dmi',"icon_state"="water5","layer"=MOB_LAYER+0.1))
+
+/turf/simulated/floor/natural/ice/iceberg
+	name = "ice sheet"
+	desc = "A sheet of solid ice. Looks slippery."
+	icon = 'icons/turf/planetsnow.dmi'
+	icon_state = "ice1"
+	var/floor_variance = 100
+
+/turf/simulated/floor/natural/ice/iceberg/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "ice[rand(1, 8)]"
+
+/turf/simulated/floor/natural/ice/fancy
+	name = "ice sheet"
+	desc = "A sheet of solid ice. Looks slippery."
+	icon = 'icons/turf/planetsnow.dmi'
+	icon_state = "ice"
 
 //JUNGLE
 

@@ -233,30 +233,30 @@
 	icon_state = "cactus[rand(1, 4)]"
 
 //grass
-/obj/structure/flora/grass
+/obj/structure/flora/grass/snowy
 	name = "grass"
 	icon = 'icons/obj/flora/snowflora.dmi'
 	anchored = 1
 	layer = BELOW_DOOR_LAYER
 
-/obj/structure/flora/grass/brown
+/obj/structure/flora/grass/snowy/brown
 	icon_state = "snowgrass1bb"
 
-/obj/structure/flora/grass/brown/New()
+/obj/structure/flora/grass/snowy/brown/New()
 	..()
 	icon_state = "snowgrass[rand(1, 3)]bb"
 
-/obj/structure/flora/grass/green
+/obj/structure/flora/grass/snowy/green
 	icon_state = "snowgrass1gb"
 
-/obj/structure/flora/grass/green/New()
+/obj/structure/flora/grass/snowy/green/New()
 	..()
 	icon_state = "snowgrass[rand(1, 3)]gb"
 
-/obj/structure/flora/grass/both
+/obj/structure/flora/grass/snowy/both
 	icon_state = "snowgrassall1"
 
-/obj/structure/flora/grass/both/New()
+/obj/structure/flora/grass/snowy/both/New()
 	..()
 	icon_state = "snowgrassall[rand(1, 3)]"
 
@@ -265,6 +265,8 @@
 	desc= "A variety of cold-loving prarie grass. This variety seems to thrive the frigid rockworld enviroment, so long as water can be found nearby."
 	icon = 'icons/obj/flora/grasssticks.dmi'
 	icon_state = "tall_grass_1"
+	anchored = 1
+	layer = BELOW_DOOR_LAYER
 
 /obj/structure/flora/grass/rockplanet/Initialize()
 	. = ..()
