@@ -33,6 +33,15 @@
 			qdel(src)
 		return
 
+/obj/structure/flora/tree/palm
+	name = "Palm tree"
+	icon = 'icons/misc/beach2.dmi'
+	icon_state = "palm1"
+
+/obj/structure/flora/tree/palm/Initialize()
+	. = ..()
+	icon_state = "palm[rand(1, 2)]"
+
 /obj/structure/flora/tree/pine
 	name = "pine tree"
 	icon = 'icons/obj/flora/pinetrees.dmi'
@@ -41,6 +50,11 @@
 /obj/structure/flora/tree/pine/New()
 	..()
 	icon_state = "pine_[rand(1, 3)]"
+
+/obj/structure/flora/tree/pine/dead
+	name = "dead pine"
+	icon = 'icons/obj/flora/aridtrees.dmi'
+	icon_state = "med_pine_dead"
 
 /obj/structure/flora/tree/pine/xmas
 	name = "xmas tree"
@@ -244,7 +258,7 @@
 	icon_state = "tree[rand(1, 6)]"
 
 /obj/structure/flora/tree/cactus
-	pixel_x = -16
+	name = "cactus"
 	pixel_y = 0
 	icon = 'icons/obj/flora/aridtrees.dmi'
 	icon_state = "cactus1"
@@ -302,6 +316,25 @@
 /obj/structure/flora/grass/rockplanet/dead/Initialize()
 	. = ..()
 	icon_state = "dry_grass_[rand(1, 2)]"
+
+/obj/structure/flora/driftwood
+	name = "driftwood"
+	desc = "Floatsam, jetsam, all molded down in the unforgiving sea."
+	icon = 'icons/obj/flora/grasssticks.dmi'
+	icon_state = "stick2"
+	base_icon_state = "stick"
+	density = 0
+
+/obj/structure/flora/driftwood/Initialize()
+	. = ..()
+	icon_state = "stick[rand(1, 4)]"
+
+/obj/structure/flora/driftlog
+	name = "driftwood log"
+	desc = "Better log this one in the database."
+	icon = 'icons/obj/flora/grasssticks.dmi'
+	icon_state = "dry_log"
+	density = 0
 
 //bushes
 /obj/structure/flora/bush

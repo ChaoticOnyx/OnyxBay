@@ -11,7 +11,7 @@
 	var/last_act = 0
 
 /obj/structure/rock/Initialize()
-	..()
+	. = ..()
 	icon_state = "big_asteroid[rand(1, 4)]"
 
 /obj/structure/rock/Destroy()
@@ -144,3 +144,13 @@
 /obj/structure/rock/lava/pile/Initialize()
 	. = ..()
 	icon_state = "pile_lava[rand(1, 3)]"
+
+/obj/structure/rock/pile
+	name = "pebbles"
+	desc = "Some small pebbles, sheared off a larger rock."
+	icon_state = "asteroid1"
+	density = 0
+
+/obj/structure/rock/pile/Initialize()
+	. = ..()
+	icon_state = "pile_asteroid[rand(1, 10)]"

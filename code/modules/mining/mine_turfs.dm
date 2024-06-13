@@ -961,3 +961,44 @@ var/list/mining_floors = list()
 /turf/simulated/floor/asteroid/lavaplanet/grass/orange
 	name = "orange grass"
 	icon_state = "grass_orange"
+
+/turf/simulated/floor/asteroid/beach
+	name = "sand"
+	desc = "Looks sandy."
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "desert0"
+	floor_variance = 35
+
+/turf/simulated/floor/asteroid/beach/Initialize()
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "desert[rand(0, 8)]"
+
+/turf/simulated/floor/asteroid/beach/grass
+	name = "grass"
+	desc = "Light grass that grows on sandy surface."
+	icon = 'icons/turf/grass.dmi'
+	icon_state = "grass_green"
+	footstep_sound = SFX_FOOTSTEP_GRASS
+
+/turf/simulated/floor/asteroid/beach/grass/fairy
+	name = "fairygrass"
+	desc = "Something about this grass makes you want to frolic. Or get high."
+	icon = 'icons/turf/grass.dmi'
+	icon_state = "grass_cyan"
+
+/turf/simulated/floor/asteroid/beach/water
+	name = "water"
+	desc = "Looks wet."
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "seashallow"
+	footstep_sound = SFX_FOOTSTEP_SWAMP
+	var/overlay = TRUE
+
+/turf/simulated/floor/asteroid/beach/water/Initialize()
+	. = ..()
+	if(overlay)
+		AddOverlays(image("icon"='icons/misc/beach.dmi',"icon_state"="riverwater","layer"=MOB_LAYER+1))
+
+/turf/simulated/floor/asteroid/beach/water/update_dirt()
+	return
