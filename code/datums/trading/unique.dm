@@ -133,6 +133,7 @@
 								/obj/item/clothing/suit/necrorobe 					= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/musclemancer 				= TRADER_THIS_TYPE,
 								/obj/item/toy/figure/wizard 						= TRADER_THIS_TYPE,
+								/obj/item/bedsheet/wiz 								= TRADER_THIS_TYPE,
 								/obj/item/teleportation_scroll 						= TRADER_THIS_TYPE,
 								/obj/item/spellbook 								= TRADER_THIS_TYPE,
 								/obj/item/staff 									= TRADER_ALL,

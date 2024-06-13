@@ -120,6 +120,8 @@ They sell generic supplies and ask for generic supplies.
 								/obj/item/stack/tile/carpetpurple/fifty 		= TRADER_THIS_TYPE,
 								/obj/item/stack/tile/carpetred/fifty 			= TRADER_THIS_TYPE,
 								/obj/item/stack/tile/linoleum/fifty 			= TRADER_THIS_TYPE,
+								/obj/item/bedsheet 								= TRADER_SUBTYPES_ONLY,
+								/obj/item/bedsheet/wiz 							= TRADER_BLACKLIST,
 								/obj/item/device/cable_painter 					= TRADER_THIS_TYPE,
 								/obj/item/device/floor_painter 					= TRADER_THIS_TYPE,
 								/obj/item/device/pipe_painter 					= TRADER_THIS_TYPE,

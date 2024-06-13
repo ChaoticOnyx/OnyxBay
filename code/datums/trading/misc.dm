@@ -112,6 +112,7 @@
 								/obj/item/clothingbag 										= TRADER_SUBTYPES_ONLY,
 								/obj/item/toy/pig 											= TRADER_THIS_TYPE,
 								/obj/item/balloon_box 										= TRADER_THIS_TYPE,
+								/obj/item/target 											= TRADER_ALL,
 								/obj/item/reagent_containers/vessel/paint/random 			= TRADER_THIS_TYPE,
 								/obj/item/reagent_containers/vessel/paint/white 			= TRADER_THIS_TYPE,
 								/obj/item/reagent_containers/vessel/bottle/bottleofnothing 	= TRADER_THIS_TYPE,
