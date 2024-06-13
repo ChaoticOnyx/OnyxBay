@@ -760,8 +760,8 @@ var/list/mining_floors = list()
 /turf/simulated/floor/asteroid/jungle
 	name = "grass"
 	desc = "A dirty surface completly covered in low, dense grass. It looks nice."
-	icon = 'icons/turf/jungle_turfs.dmi'
-	icon_state = "grass1"
+	icon = 'icons/turf/grass.dmi'
+	icon_state = "grass_green"
 	footstep_sound = SFX_FOOTSTEP_GRASS
 
 /turf/simulated/floor/asteroid/jungle/dirt
@@ -790,7 +790,6 @@ var/list/mining_floors = list()
 	desc = "Looks a bit dry."
 	icon = 'icons/turf/flooring/wasteland.dmi'
 	icon_state = "wasteland1"
-	//slowdown = 1 //<add that shet, i am too stupid and lazy to do it myself
 	floor_variance = 15
 
 /turf/simulated/floor/asteroid/jungle/wasteland/Initialize(mapload, inherited_virtual_z)
@@ -859,14 +858,14 @@ var/list/mining_floors = list()
 /turf/simulated/floor/asteroid/whitesands/grass
 	name = "purple grass"
 	desc = "The few known flora on Whitesands are in a purplish color."
-	icon = 'icons/turf/purplegrass.dmi'
-	icon_state = "purplegrass1"
+	icon = 'icons/turf/grass.dmi'
+	icon_state = "grass_purple"
 	footstep_sound = SFX_FOOTSTEP_GRASS
 
 /turf/simulated/floor/asteroid/whitesands/grass/dead
 	name = "dry grass"
-	icon = 'icons/turf/whitegrass.dmi'
-	icon_state = "whitegrass1"
+	icon = 'icons/turf/grass.dmi'
+	icon_state = "grass_white"
 	desc = "The few known flora on Whitesands also don't tend to live for very long, especially after the war."
 
 /turf/simulated/floor/asteroid/snow
