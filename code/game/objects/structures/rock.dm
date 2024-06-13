@@ -78,6 +78,7 @@
 	name = "lava rocks"
 	desc = "Small pile of grey rocks that contain various minerals."
 	icon_state = "pile_basalt1"
+	density = 0
 
 /obj/structure/rock/basalt/pile/Initialize()
 	. = ..()
@@ -106,6 +107,7 @@
 	name = "russet stones"
 	desc = "A pile of rust-red rocks."
 	icon_state = "plie_red1"
+	density = 0
 
 /obj/structure/rock/rockplanet/pile/Initialize()
 	. = ..()
@@ -122,3 +124,23 @@
 /obj/structure/rock/icy/pile
 	name = "icy rock"
 	icon_state = "pile_icy1"
+	density = 0
+
+/obj/structure/rock/lava
+	name = "lavatic rock"
+	desc = "A volcanic rock. Lava is gushing from it."
+	icon_state = "big_lava1"
+
+/obj/structure/rock/lava/Initialize()
+	. = ..()
+	icon_state = "big_lava[rand(1, 3)]"
+
+/obj/structure/rock/lava/pile
+	name = "rock shards"
+	desc = "Jagged shards of volcanic rock protuding from the ground."
+	icon_state = "pile_lava1"
+	density = 0
+
+/obj/structure/rock/lava/pile/Initialize()
+	. = ..()
+	icon_state = "pile_lava[rand(1, 3)]"

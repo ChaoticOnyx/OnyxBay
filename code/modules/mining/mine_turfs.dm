@@ -915,9 +915,49 @@ var/list/mining_floors = list()
 	desc = "Some dark, rough volcanic rock."
 	icon = 'icons/turf/basalt.dmi'
 	icon_state = "basalt1"
-	floor_variance = 15
+	footstep_sound = SFX_FOOTSTEP_PLATING
+	floor_variance = 20
 
 /turf/simulated/floor/asteroid/basalt/Initialize(mapload, inherited_virtual_z)
 	. = ..()
 	if(prob(floor_variance))
 		icon_state = "basalt[rand(1, 13)]"
+
+/turf/simulated/floor/asteroid/basalt/lavaplanet
+
+/turf/simulated/floor/asteroid/basalt/purple
+	name = "purple volcanic floor"
+	desc = "Dark volcanic rock, tinted by the chemicals in the atmosphere to an uncanny shade of purple."
+	icon = 'icons/turf/basalt_purple.dmi'
+	icon_state = "basalt1"
+
+/turf/simulated/floor/asteroid/basalt/purple/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "basalt[rand(1, 13)]"
+
+/turf/simulated/floor/asteroid/basalt/purple/sand
+	name = "ashen sand"
+	desc = "Sand, tinted by the chemicals in the atmosphere to an uncanny shade of purple."
+	icon = 'icons/turf/basalt_purple.dmi'
+	icon_state = "sand1"
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
+
+/turf/simulated/floor/asteroid/basalt/purple/sand/Initialize(mapload, inherited_virtual_z)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "sand[rand(1, 13)]"
+
+/turf/simulated/floor/asteroid/lavaplanet/grass
+	name = "red grass"
+	desc = "Common grass, tinged to unnatural colours by chemicals in the atmosphere."
+	icon = 'icons/turf/grass.dmi'
+	icon_state = "grass_red"
+
+/turf/simulated/floor/asteroid/lavaplanet/grass/purple
+	name = "purple grass"
+	icon_state = "grass_purple"
+
+/turf/simulated/floor/asteroid/lavaplanet/grass/orange
+	name = "orange grass"
+	icon_state = "grass_orange"

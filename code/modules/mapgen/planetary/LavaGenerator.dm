@@ -84,12 +84,12 @@
 
 /datum/biome/lavaland
 	open_turf_types = list(
-		/turf/simulated/floor/asteroid/basalt = 1,
+		/turf/simulated/floor/asteroid/basalt/lavaplanet = 1,
 	)
 	flora_spawn_chance = 1
 	flora_spawn_list = list(
-		/obj/structure/flora/ausbushes/ywflowers/hell = 10,
-		/obj/structure/flora/ausbushes/sparsegrass/hell = 40,
+		/obj/structure/flora/ausbushes/hell/ywflowers = 10,
+		/obj/structure/flora/ausbushes/hell/sparsegrass = 40,
 		//obj/structure/flora/ash/fern = 5,
 		//obj/structure/flora/ash/fireblossom = 1,
 		//obj/structure/flora/ash/puce = 5,
@@ -97,11 +97,11 @@
 	)
 	feature_spawn_chance = 0.3
 	feature_spawn_list = list(
-		/obj/structure/flora/rock/hell = 20,
+		/obj/structure/rock/basalt = 20,
 		//obj/structure/elite_tumor = 4,
 		/obj/structure/geyser/random = 6,
 		//obj/effect/spawner/lootdrop/anomaly/lava = 2,
-		/obj/structure/flora/rock/hell = 14,
+		/obj/structure/rock/basalt = 14,
 		//obj/structure/vein = 5,
 		//obj/structure/vein/classtwo = 2,
 		//obj/structure/elite_tumor = 2,
@@ -115,44 +115,44 @@
 	)
 
 /datum/biome/lavaland/forest
-	open_turf_types = list(/turf/open/floor/plating/asteroid/purple/lit = 1)
+	open_turf_types = list(/turf/simulated/floor/asteroid/basalt/purple/sand = 1)
 	flora_spawn_list = list(
 		/obj/structure/flora/tree/dead/tall/grey = 1,
 		/obj/structure/flora/tree/dead/barren = 1,
-		/obj/structure/flora/ausbushes/fullgrass/hell = 10,
-		/obj/structure/flora/ausbushes/sparsegrass/hell = 5
+		/obj/structure/flora/ausbushes/hell/fullgrass = 10,
+		/obj/structure/flora/ausbushes/hell/sparsegrass = 5
 	)
 	flora_spawn_chance = 85
 
 /datum/biome/lavaland/forest/rocky
 	flora_spawn_list = list(
-		/obj/structure/flora/rock/pile/lava = 3,
-		/obj/structure/flora/rock/lava = 2,
+		/obj/structure/rock/lava/pile = 3,
+		/obj/structure/rock/lava = 2,
 		/obj/structure/flora/tree/dead/tall/grey = 10,
-		/obj/structure/flora/ausbushes/fullgrass/hell = 40,
-		/obj/structure/flora/ausbushes/sparsegrass/hell = 20,
+		/obj/structure/flora/ausbushes/hell/fullgrass = 40,
+		/obj/structure/flora/ausbushes/hell/sparsegrass = 20,
 		/obj/structure/flora/ausbushes/hell = 2
 	)
 	flora_spawn_chance = 65
 
 /datum/biome/lavaland/plains
 	open_turf_types = list(
-		/turf/open/floor/plating/grass/lava/purple = 30
+		/turf/simulated/floor/asteroid/lavaplanet/grass/purple = 30
 	)
 
 	flora_spawn_list = list(
-		/obj/structure/flora/ausbushes/fullgrass/hell = 50,
-		/obj/structure/flora/ausbushes/sparsegrass/hell = 35,
-		/obj/structure/flora/ausbushes/ywflowers/hell = 1,
-		/obj/structure/flora/ausbushes/grassybush/hell = 4,
-		/obj/structure/flora/firebush = 1
+		/obj/structure/flora/ausbushes/hell/fullgrass = 50,
+		/obj/structure/flora/ausbushes/hell/sparsegrass = 35,
+		/obj/structure/flora/ausbushes/hell/ywflowers = 1,
+		/obj/structure/flora/ausbushes/hell/grassybush = 4,
+		/obj/structure/flora/ausbushes/hell/firebush = 1
 	)
 	flora_spawn_chance = 15
 
 /datum/biome/lavaland/plains/dense
 	flora_spawn_chance = 85
 	open_turf_types = list(
-		/turf/open/floor/plating/grass/lava = 50
+		/turf/simulated/floor/asteroid/lavaplanet/grass = 50
 	)
 	feature_spawn_chance = 5
 	feature_spawn_list = list(
@@ -167,20 +167,20 @@
 /datum/biome/lavaland/plains/dense/mixed
 	flora_spawn_chance = 50
 	open_turf_types = list(
-		/turf/open/floor/plating/grass/lava = 50,
-		/turf/open/floor/plating/grass/lava/purple = 45,
-		/turf/open/floor/plating/moss = 1
+		/turf/simulated/floor/asteroid/lavaplanet/grass = 50,
+		/turf/simulated/floor/asteroid/lavaplanet/grass/purple = 45,
+		//turf/open/floor/plating/moss = 1
 	)
 
 /datum/biome/lavaland/outback
 	open_turf_types = list(
-		/turf/open/floor/plating/grass/lava/orange = 20
+		/turf/simulated/floor/asteroid/lavaplanet/grass/orange = 20
 	)
 
 	flora_spawn_list = list(
-		/obj/structure/flora/ausbushes/grassybush/hell = 10,
-		/obj/structure/flora/ausbushes/genericbush/hell = 10,
-		/obj/structure/flora/ausbushes/sparsegrass/hell = 3,
+		/obj/structure/flora/ausbushes/hell/grassybush = 10,
+		/obj/structure/flora/ausbushes/hell/genericbush = 10,
+		/obj/structure/flora/ausbushes/hell/sparsegrass = 3,
 		/obj/structure/flora/ausbushes/hell = 3,
 		/obj/structure/flora/tree/dead/hell = 3,
 		/obj/structure/flora/rock/lava = 2
@@ -189,28 +189,28 @@
 
 /datum/biome/lavaland/lush
 	open_turf_types = list(
-		/turf/open/floor/plating/grass/lava/purple = 20,
-		/turf/open/floor/plating/asteroid/basalt/purple/lit = 1
+		/turf/simulated/floor/asteroid/lavaplanet/grass/purple = 20,
+		/turf/simulated/floor/asteroid/basalt/purple = 1
 	)
 	flora_spawn_list = list(
-		/obj/structure/flora/ash/fireblossom = 3,
+		//obj/structure/flora/ash/fireblossom = 3,
 		/obj/structure/flora/tree/dead/hell = 1,
-		/obj/structure/flora/ausbushes/grassybush/hell = 5,
-		/obj/structure/flora/ausbushes/fullgrass/hell = 10,
-		/obj/structure/flora/ausbushes/sparsegrass/hell = 8,
+		/obj/structure/flora/ausbushes/hell/grassybush = 5,
+		/obj/structure/flora/ausbushes/hell/fullgrass = 10,
+		/obj/structure/flora/ausbushes/hell/sparsegrass = 8,
 		/obj/structure/flora/ausbushes/hell = 5,
-		/obj/structure/flora/ausbushes/fernybush/hell = 5,
-		/obj/structure/flora/ausbushes/genericbush/hell = 5,
-		/obj/structure/flora/ausbushes/ywflowers/hell = 7,
-		/obj/structure/flora/firebush = 3
+		/obj/structure/flora/ausbushes/hell/fernybus= 5,
+		/obj/structure/flora/ausbushes/hell/genericbush = 5,
+		/obj/structure/flora/ausbushes/hell/ywflowers = 7,
+		/obj/structure/flora/ausbushes/hell/firebush = 3
 	)
 	flora_spawn_chance = 30
 
 /datum/biome/lavaland/lava
-	open_turf_types = list(/turf/open/lava/smooth/lava_land_surface = 1)
+	open_turf_types = list(/turf/simulated/floor/natural/lava = 1)
 	flora_spawn_list = list(
-		/obj/structure/flora/rock/lava = 1,
-		/obj/structure/flora/rock/pile/lava = 1
+		/obj/structure/rock/lava = 1,
+		/obj/structure/rock/lava/pile = 1
 	)
 	flora_spawn_chance = 2
 	feature_spawn_chance = 0
@@ -220,10 +220,10 @@
 
 /datum/biome/cave/lavaland
 	open_turf_types = list(
-		/turf/open/floor/plating/asteroid/basalt/lava_land_surface = 1
+		/turf/simulated/floor/asteroid/basalt/lavaplanet = 1
 	)
 	closed_turf_types = list(
-		/turf/closed/mineral/random/volcanic = 1
+		/turf/unsimulated/mask = 1
 	)
 	mob_spawn_chance = 4
 	mob_spawn_list = list(
@@ -238,34 +238,34 @@
 		//obj/structure/flora/ash/tall_shroom = 2,
 		//obj/structure/flora/ash/fern = 2,
 		//obj/structure/flora/ash/puce = 2,
-		/obj/item/mine/proximity/explosive/live = 1,
-		/obj/item/mine/pressure/explosive/rusty/live = 1
+		/obj/structure/landmine = 1,
+		/obj/structure/landmine = 1
 	)
 
 /datum/biome/cave/lavaland/rocky
-	open_turf_types = list(/turf/open/floor/plating/asteroid/purple = 1)
+	open_turf_types = list(/turf/simulated/floor/asteroid/basalt/purple/sand = 1)
 	flora_spawn_list = list(
-		/obj/structure/flora/rock/pile/lava = 3,
-		/obj/structure/flora/rock/lava = 3,
-		/obj/item/mine/pressure/explosive/rusty/live = 1
+		/obj/structure/rock/lava/pile = 3,
+		/obj/structure/rock/lava = 3,
+		/obj/structure/landmine  = 1
 	)
 	flora_spawn_chance = 5
 
-/datum/biome/cave/lavaland/mossy
+/*/datum/biome/cave/lavaland/mossy
 	open_turf_types = list(/turf/open/floor/plating/moss = 1)
 	flora_spawn_chance = 80
 	flora_spawn_list = list(
-		/obj/structure/flora/ausbushes/fullgrass/hell = 10,
-		/obj/structure/flora/ausbushes/sparsegrass/hell = 5,
+		/obj/structure/flora/ausbushes/hell/fullgrass = 10,
+		/obj/structure/flora/ausbushes/hell/sparsegrass = 5,
 		//obj/structure/flora/ash/leaf_shroom = 1,
 		//obj/structure/flora/ash/cap_shroom = 2,
 		//obj/structure/flora/ash/stem_shroom = 2,
 		//obj/structure/flora/ash/cacti = 1,
-		/obj/item/mine/pressure/explosive/rusty/live = 1,
+		/obj/structure/landmine = 1,
 		//obj/structure/flora/ash/tall_shroom = 2
-	)
+	)*/
 
 /datum/biome/cave/lavaland/lava
-	open_turf_types = list(/turf/open/lava/smooth/lava_land_surface = 1)
+	open_turf_types = list(/turf/simulated/floor/natural/lava = 1)
 	feature_spawn_chance = 1
-	feature_spawn_list = list(/obj/structure/flora/rock/pile/lava = 1)
+	feature_spawn_list = list(/obj/structure/rock/lava/pile = 1)

@@ -99,6 +99,28 @@
 	..()
 	icon_state = "tree_[rand(1, 12)]"
 
+/obj/structure/flora/tree/dead/tall/grey
+	name = "petrified trunk"
+	desc = "An ancient tree was carbonized in fire and ash. Only a skeleton remains."
+	icon = 'icons/obj/flora/tall_trees_dead.dmi'
+	icon_state = "tree1"
+
+/obj/structure/flora/tree/dead/tall/grey/Initialize()
+	. = ..()
+	icon_state = "tree[rand(1, 3)]"
+
+/obj/structure/flora/tree/dead/barren
+	name = "petrified tree"
+	desc = "An ancient trunk, mummified by the passage of time. This one still has some purple to it."
+	color = "#846996"
+	icon = 'icons/obj/flora/barren_tree.dmi'
+	icon_state = "barren_large"
+
+/obj/structure/flora/tree/dead/barren/Initialize()
+	. = ..()
+	color = pick( "#846996", "#7b4e99", "#924fab")
+	icon_state = "barren_large"
+
 /obj/structure/flora/tree/pine/old_pinteree
 	name = "xmas tree"
 	desc = "Masha, get rid of this fucking yolka!"
@@ -146,11 +168,11 @@
 	icon_state = "tree10"
 
 /obj/structure/flora/tree/green/random
-	icon_state = "tree"
+	icon_state = "tree1"
 
 /obj/structure/flora/tree/green/random/Initialize()
-	..()
-	icon_state = "[icon_state][rand(1, 10)]"
+	. = ..()
+	icon_state = "tree[rand(1, 10)]"
 
 /obj/structure/flora/tree/green/spook1
 	icon_state = "spook1"
@@ -510,6 +532,62 @@
 /obj/structure/flora/ausbushes/fullgrass/New()
 	..()
 	icon_state = "fullgrass_[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/hell
+	name = "hell bush"
+	icon = 'icons/obj/flora/hellflora.dmi'
+	icon_state = "firstbush_1"
+
+/obj/structure/flora/ausbushes/hell/Initialize()
+	. = ..()
+	icon_state = "firstbush_[rand(1, 4)]"
+
+/obj/structure/flora/ausbushes/hell/grassybush
+	icon_state = "grassybush_1"
+
+/obj/structure/flora/ausbushes/hell/grassybush/Initialize()
+	. = ..()
+	icon_state = "grassybush_[rand(1, 4)]"
+
+/obj/structure/flora/ausbushes/hell/fernybush
+	icon_state = "fernybush_1"
+
+/obj/structure/flora/ausbushes/hell/fernybush/Initialize()
+	. = ..()
+	icon_state = "fernybush_[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/hell/genericbush
+	icon_state = "genericbush_1"
+
+/obj/structure/flora/ausbushes/hell/genericbush/Initialize()
+	. = ..()
+	icon_state = "genericbush_[rand(1, 4)]"
+
+/obj/structure/flora/ausbushes/hell/ywflowers
+	icon_state = "ywflowers_1"
+
+/obj/structure/flora/ausbushes/hell/ywflowers/Initialize()
+	. = ..()
+	icon_state = "ywflowers_[rand(1, 4)]"
+
+/obj/structure/flora/ausbushes/hell/sparsegrass
+	icon_state = "sparsegrass_1"
+
+/obj/structure/flora/ausbushes/hell/sparsegrass/Initialize()
+	. = ..()
+	icon_state = "sparsegrass_[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/hell/fullgrass
+	icon_state = "fullgrass_1"
+
+/obj/structure/flora/ausbushes/hell/fullgrass/Initialize()
+	. = ..()
+	icon_state = "fullgrass_[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/hell/firebush
+	name = "flaming bush"
+	desc = "A bush being consumed by flames. Maybe it'll rise from its ashes like a phoenix?"
+	icon_state = "hell_bush"
 
 /obj/structure/flora/ausbushes/jungleflora
 	icon = 'icons/obj/flora/jungleflora.dmi'
