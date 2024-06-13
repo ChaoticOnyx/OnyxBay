@@ -51,7 +51,7 @@
 	add_debris_element()
 
 /obj/structure/table/add_debris_element()
-	if(material.name == MATERIAL_WOOD || material.name == MATERIAL_DARKWOOD)
+	if(material?.name == MATERIAL_WOOD || material?.name == MATERIAL_DARKWOOD)
 		AddElement(/datum/element/debris, DEBRIS_WOOD, -10, 5)
 	else
 		AddElement(/datum/element/debris, DEBRIS_SPARKS, -10, 5)
