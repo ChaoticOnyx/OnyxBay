@@ -73,7 +73,7 @@
 		"You have removed [target]'s [tooth_or_teeth] with \the [tool]."
 		)
 
-	playsound(get_turf(target), pick('sound/effects/gore1.ogg', 'sound/effects/gore2.ogg', 'sound/effects/gore3.ogg'), 75, FALSE, -1)
+	playsound(get_turf(target), SFX_GORE, 75, FALSE, -1)
 
 	for(var/i = 1 to additional_args["teeth"])
 		var/tooth_type = safepick(jaw.teeth_types)

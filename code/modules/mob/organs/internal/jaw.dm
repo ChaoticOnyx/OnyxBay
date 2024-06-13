@@ -75,7 +75,7 @@
 	if(get_teeth_count() <= 0)
 		return
 
-	playsound(get_turf(src), pick('sound/effects/gore1.ogg', 'sound/effects/gore2.ogg', 'sound/effects/gore3.ogg'), 75, FALSE, -1)
+	playsound(get_turf(src), SFX_GORE, 75, FALSE, -1)
 
 	for(var/i = 1 to num_to_kick)
 		var/tooth_type = safepick(teeth_types)

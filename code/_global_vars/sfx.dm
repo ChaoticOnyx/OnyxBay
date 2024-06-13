@@ -1608,6 +1608,11 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/fighting/chop2.ogg',
 		'sound/effects/fighting/chop3.ogg'
 	),
+	SFX_GORE = list(
+		'sound/effects/fighting/gore1.ogg',
+		'sound/effects/fighting/gore2.ogg',
+		'sound/effects/fighting/gore3.ogg',
+	),
 	SFX_TRR = list(
 		'sound/signals/trr1.ogg',
 		'sound/signals/trr2.ogg',
