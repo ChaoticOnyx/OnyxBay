@@ -122,7 +122,7 @@
 
 /mob/proc/clap_emote()
 	set name = "Clap"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("clap", intentional = TRUE)
 
 

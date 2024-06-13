@@ -13,14 +13,15 @@
 	message_type = AUDIBLE_MESSAGE
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
+	sound_human_female = SFX_FEMALE_WHIMPER
+	sound_human_male = SFX_MALE_WHIMPER
 
 	statpanel_proc = /mob/proc/whimper_emote
 
 /mob/proc/whimper_emote()
 	set name = "Whimper"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("whimper", intentional = TRUE)
-
 
 /datum/emote/roar
 	key = "roar"
@@ -74,8 +75,29 @@
 
 /mob/proc/gasp_emote()
 	set name = "Gasp"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("gasp", intentional = TRUE)
+
+
+/datum/emote/gag
+	key = "gag"
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	sound_human_female = SFX_FEMALE_GAG
+	sound_human_male = SFX_MALE_GAG
+
+	statpanel_proc = /mob/proc/gag_emote
+
+/datum/emote/gag/get_sfx_volume()
+	return rand(40, 50)
+
+/mob/proc/gag_emote()
+	set name = "Gag"
+	set category = "Noises"
+	emote("gag", intentional = TRUE)
 
 
 /datum/emote/sneeze
@@ -95,9 +117,40 @@
 
 /mob/proc/sneeze_emote()
 	set name = "Sneeze"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("sneeze", intentional = TRUE)
 
+
+/datum/emote/burp
+	key = "burp"
+
+	message_1p = "You burp."
+	message_3p = "burps."
+
+	message_impaired_production = "makes a noise."
+
+	message_miming = "burps."
+	message_muzzled = "makes a noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	sound_human_female = SFX_FEMALE_BURP
+	sound_human_male = SFX_MALE_BURP
+
+	statpanel_proc = /mob/proc/burp_emote
+
+/datum/emote/burp/get_impaired_msg(mob/user)
+	return "makes a noise!"
+
+/datum/emote/burp/get_sfx_volume()
+	return rand(25, 45)
+
+/mob/proc/burp_emote()
+	set name = "Burp"
+	set category = "Noises"
+	emote("burp", intentional = TRUE)
 
 /datum/emote/choke
 	key = "choke"
@@ -114,8 +167,8 @@
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
-	sound_human_female = SFX_FEMALE_HEAVY_BREATH
-	sound_human_male = SFX_MALE_HEAVY_BREATH
+	sound_human_female = SFX_FEMALE_CHOKE
+	sound_human_male = SFX_MALE_CHOKE
 
 	statpanel_proc = /mob/proc/choke_emote
 
@@ -127,8 +180,40 @@
 
 /mob/proc/choke_emote()
 	set name = "Choke"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("choke", intentional = TRUE)
+
+
+/datum/emote/clearthroat
+	key = "clearthroat"
+
+	message_1p = "You clear your throat."
+	message_3p = "clears their throat."
+
+	message_impaired_production = "makes a muffled noise."
+
+	message_miming = "clears throat."
+	message_muzzled = "makes a muffled noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	sound_human_female = SFX_FEMALE_CLEARHTROAT
+	sound_human_male = SFX_MALE_CLEARHTROAT
+
+	statpanel_proc = /mob/proc/clearthroat_emote
+
+/datum/emote/clearthroat/get_impaired_msg(mob/user)
+	return "makes a muffled noise!"
+
+/datum/emote/clearthroat/get_sfx_volume()
+	return rand(25, 45)
+
+/mob/proc/clearthroat_emote()
+	set name = "Clearthroat"
+	set category = "Noises"
+	emote("clearthroat", intentional = TRUE)
 
 
 /datum/emote/chuckle
@@ -146,8 +231,8 @@
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
-	sound_human_female = SFX_FEMALE_LAUGH
-	sound_human_male = SFX_MALE_LAUGH
+	sound_human_female = SFX_FEMALE_CHUCKLE
+	sound_human_male = SFX_MALE_CHUCKLE
 
 	statpanel_proc = /mob/proc/chuckle_emote
 
@@ -159,7 +244,7 @@
 
 /mob/proc/chuckle_emote()
 	set name = "Chuckle"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("chuckle", intentional = TRUE)
 
 
@@ -189,6 +274,32 @@
 	emote("moan", intentional = TRUE)
 
 
+/datum/emote/painmoan
+	key = "painmoan"
+
+	message_1p = "You moan in pain!"
+	message_3p = "moans in pain!"
+
+	message_impaired_production = "moans in pain, silently."
+
+	sound_human_female = SFX_FEMALE_PAINMOAN
+	sound_human_male = SFX_MALE_PAINMOAN
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/painmoan_emote
+
+/datum/emote/moan/get_impaired_msg(mob/user)
+	return "makes a muffled sound"
+
+/mob/proc/painmoan_emote()
+	set name = "Moan (pain)"
+	set category = "Emotes"
+	emote("painmoan", intentional = TRUE)
+
+
 /datum/emote/cough
 	key = "cough"
 
@@ -215,7 +326,7 @@
 
 /mob/proc/cough_emote()
 	set name = "Cough"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("cough", intentional = TRUE)
 
 
@@ -240,11 +351,11 @@
 	statpanel_proc = /mob/proc/cry_emote
 
 /datum/emote/cry/get_sfx_volume()
-	return rand(25, 45)
+	return rand(40, 55)
 
 /mob/proc/cry_emote()
 	set name = "Cry"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("cry", intentional = TRUE)
 
 
@@ -276,7 +387,7 @@
 
 /mob/proc/scream_emote()
 	set name = "Scream"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("scream", intentional = TRUE)
 
 
@@ -299,11 +410,11 @@
 	statpanel_proc = /mob/proc/scream_long_emote
 
 /datum/emote/scream_long/get_sfx_volume()
-	return rand(40, 60)
+	return rand(50, 70)
 
 /mob/proc/scream_long_emote()
 	set name = "Scream (long)"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("scream_long", intentional = TRUE)
 
 
@@ -330,7 +441,7 @@
 
 /mob/proc/oink_emote()
 	set name = "Oink"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("oink", intentional = TRUE)
 
 
@@ -364,7 +475,7 @@
 
 /mob/proc/laugh_emote()
 	set name = "Laugh"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("laugh", intentional = TRUE)
 
 
@@ -383,8 +494,8 @@
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
-	sound_human_female = SFX_FEMALE_LAUGH
-	sound_human_male = SFX_MALE_LAUGH
+	sound_human_female = SFX_FEMALE_GIGGLE
+	sound_human_male = SFX_MALE_LAUGH // Sadly, I had to leave it as is. Hopefully someone will find the right SFX. ~Filatelele.
 
 	statpanel_proc = /mob/proc/giggle_emote
 
@@ -396,7 +507,7 @@
 
 /mob/proc/giggle_emote()
 	set name = "Giggle"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("giggle", intentional = TRUE)
 
 
@@ -428,7 +539,7 @@
 
 /mob/proc/grunt_emote()
 	set name = "Grunt"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("grunt", intentional = TRUE)
 
 
@@ -447,8 +558,8 @@
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
-	sound_human_female = SFX_FEMALE_PAIN
-	sound_human_male = SFX_MALE_PAIN
+	sound_human_female = SFX_FEMALE_GROAN
+	sound_human_male = SFX_MALE_GROAN
 
 	statpanel_proc = /mob/proc/groan_emote
 
@@ -460,7 +571,7 @@
 
 /mob/proc/groan_emote()
 	set name = "Groan"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("groan", intentional = TRUE)
 
 /datum/emote/hiccup
@@ -487,8 +598,92 @@
 
 /mob/proc/hiccup_emote()
 	set name = "Hiccup"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("hiccup", intentional = TRUE)
+
+/datum/emote/hum
+	key = "hum"
+
+	message_1p = "You hum."
+	message_3p = "hums."
+
+	message_impaired_production = "makes a noise."
+
+	message_miming = "hums."
+	message_muzzled = "makes a noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound_human_female = SFX_FEMALE_HUM
+	sound_human_male = SFX_MALE_HUM
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/hum_emote
+
+/datum/emote/hum/get_sfx_volume()
+	return rand(40, 50)
+
+/mob/proc/hum_emote()
+	set name = "Hum"
+	set category = "Noises"
+	emote("hum", intentional = TRUE)
+
+
+/datum/emote/huh
+	key = "huh"
+
+	message_1p = "You huh."
+	message_3p = "huhs."
+
+	message_impaired_production = "makes a noise."
+
+	message_miming = "huhs."
+	message_muzzled = "makes a noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound_human_female = SFX_FEMALE_HUH
+	sound_human_male = SFX_MALE_HUH
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/huh_emote
+
+/datum/emote/huh/get_sfx_volume()
+	return rand(40, 50)
+
+/mob/proc/huh_emote()
+	set name = "Huh"
+	set category = "Noises"
+	emote("huh", intentional = TRUE)
+
+
+/datum/emote/hmm
+	key = "hmm"
+
+	message_1p = "You hmm."
+	message_3p = "hmms."
+
+	message_impaired_production = "makes a noise."
+
+	message_miming = "hmms."
+	message_muzzled = "makes a noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound_human_female = SFX_FEMALE_HMM
+	sound_human_male = SFX_MALE_HMM
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/hmm_emote
+
+/mob/proc/hmm_emote()
+	set name = "Hmm"
+	set category = "Noises"
+	emote("hmm", intentional = TRUE)
+
 
 /datum/emote/snore
 	key = "snore"
@@ -517,9 +712,33 @@
 
 /mob/proc/snore_emote()
 	set name = "Snore"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("snore", intentional = TRUE)
 
+/datum/emote/shh
+	key = "shh"
+
+	message_1p = "You shhs."
+	message_3p = "shhs."
+
+	message_impaired_production = "makes a weak noise."
+
+	message_miming = "shooshes."
+	message_muzzled = "makes a weak noise."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	sound_human_female = SFX_FEMALE_SHH
+	sound_human_male = SFX_MALE_SHH
+
+	statpanel_proc = /mob/proc/shh_emote
+
+/mob/proc/shh_emote()
+	set name = "Shh"
+	set category = "Noises"
+	emote("shh", intentional = TRUE)
 
 /datum/emote/sniff
 	key = "sniff"
@@ -573,7 +792,7 @@
 
 /mob/proc/sigh_emote()
 	set name = "Sigh"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("sigh", intentional = TRUE)
 
 
@@ -672,7 +891,7 @@
 
 /mob/proc/yawn_emote()
 	set name = "Yawn"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("yawn")
 
 /datum/emote/chirp
@@ -703,8 +922,13 @@
 	message_type = AUDIBLE_MESSAGE
 
 	sound = SFX_WHISTLE
+	sound_human_female = SFX_FEMALE_WHISTLE
+	sound_human_male = SFX_MALE_WHISTLE
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	cooldown = 5 SECONDS
+	audio_cooldown = 5 SECONDS
 
 	statpanel_proc = /mob/proc/whistle_emote
 
@@ -713,5 +937,69 @@
 
 /mob/proc/whistle_emote()
 	set name = "Whistle"
-	set category = "Emotes"
+	set category = "Noises"
 	emote("whistle")
+
+
+/datum/emote/attnwhistle
+	key = "attnwhistle"
+
+	message_1p = "You whistle."
+	message_3p = "whistles!"
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound = SFX_WHISTLE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/attnwhistle_emote
+
+/datum/emote/whistle/get_sfx_volume()
+	return 40
+
+/mob/proc/attnwhistle_emote()
+	set name = "Attnwhistle"
+	set category = "Noises"
+	emote("attnwhistle")
+
+
+/datum/emote/fatigue
+	key = "fatigue"
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound_human_female = SFX_FEMALE_FATIGUE
+	sound_human_male = SFX_MALE_FATIGUE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	cooldown = 2.5 SECONDS
+	audio_cooldown = 3 SECONDS
+
+	statpanel_proc = /mob/proc/fatigue_emote
+
+/datum/emote/fatigue/get_sfx_volume()
+	return rand(40, 50)
+
+/mob/proc/fatigue_emote()
+	set name = "Fatigue"
+	set category = "Noises"
+	emote("fatigue")
+
+
+/datum/emote/psst
+	key = "psst"
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound = SFX_PSST
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/psst_emote
+
+/mob/proc/psst_emote()
+	set name = "Psst"
+	set category = "Noises"
+	emote("psst")

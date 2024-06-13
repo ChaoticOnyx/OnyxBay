@@ -185,6 +185,84 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_FEMALE_SIGH = list(
 		'sound/effects/emotes/f_sigh.ogg'
 	),
+	SFX_FEMALE_WHIMPER = list(
+		'sound/effects/emotes/f_whimper1.ogg',
+		'sound/effects/emotes/f_whimper2.ogg',
+		'sound/effects/emotes/f_whimper3.ogg',
+	),
+	SFX_FEMALE_CHOKE = list(
+		'sound/effects/emotes/f_choke1.ogg',
+		'sound/effects/emotes/f_choke2.ogg',
+		'sound/effects/emotes/f_choke3.ogg',
+	),
+	SFX_FEMALE_CLEARHTROAT = list(
+		'sound/effects/emotes/f_clearthroat.ogg',
+	),
+	SFX_FEMALE_BURP = list(
+		'sound/effects/emotes/f_burp.ogg',
+	),
+	SFX_FEMALE_SHH = list(
+		'sound/effects/emotes/f_shh1.ogg',
+		'sound/effects/emotes/f_shh2.ogg',
+	),
+	SFX_FEMALE_HUM = list(
+		'sound/effects/emotes/f_hum1.ogg',
+		'sound/effects/emotes/f_hum2.ogg',
+		'sound/effects/emotes/f_hum3.ogg',
+	),
+	SFX_FEMALE_HUH = list(
+		'sound/effects/emotes/f_huh1.ogg',
+		'sound/effects/emotes/f_huh2.ogg',
+		'sound/effects/emotes/f_huh3.ogg',
+	),
+	SFX_FEMALE_HMM = list(
+		'sound/effects/emotes/f_hmm1.ogg',
+		'sound/effects/emotes/f_hmm2.ogg',
+	),
+	SFX_FEMALE_CHUCKLE = list(
+		'sound/effects/emotes/f_chuckle1.ogg',
+		'sound/effects/emotes/f_chuckle2.ogg',
+		'sound/effects/emotes/f_chuckle3.ogg',
+	),
+	SFX_FEMALE_GIGGLE = list(
+		'sound/effects/emotes/f_giggle1.ogg',
+		'sound/effects/emotes/f_giggle2.ogg',
+	),
+	SFX_FEMALE_GROAN = list(
+		'sound/effects/emotes/f_groan1.ogg',
+		'sound/effects/emotes/f_groan2.ogg',
+		'sound/effects/emotes/f_groan3.ogg',
+		'sound/effects/emotes/f_groan4.ogg',
+		'sound/effects/emotes/f_groan5.ogg',
+		'sound/effects/emotes/f_groan6.ogg',
+	),
+	SFX_FEMALE_WHISTLE = list(
+		'sound/effects/emotes/f_whistle1.ogg',
+		'sound/effects/emotes/f_whistle2.ogg',
+		'sound/effects/emotes/f_whistle3.ogg',
+		'sound/effects/emotes/f_whistle4.ogg',
+		'sound/effects/emotes/f_whistle5.ogg',
+	),
+	SFX_FEMALE_FATIGUE = list(
+		'sound/effects/emotes/f_fatigue1.ogg',
+		'sound/effects/emotes/f_fatigue2.ogg',
+		'sound/effects/emotes/f_fatigue3.ogg',
+	),
+	SFX_FEMALE_GAG = list(
+		'sound/effects/emotes/f_gag1.ogg',
+		'sound/effects/emotes/f_gag2.ogg',
+		'sound/effects/emotes/f_gag3.ogg',
+	),
+	SFX_FEMALE_PAINMOAN = list(
+		'sound/effects/emotes/f_painmoan1.ogg',
+		'sound/effects/emotes/f_painmoan2.ogg',
+		'sound/effects/emotes/f_painmoan3.ogg',
+		'sound/effects/emotes/f_painmoan4.ogg',
+		'sound/effects/emotes/f_painmoan5.ogg',
+		'sound/effects/emotes/f_painmoan6.ogg',
+		'sound/effects/emotes/f_painmoan7.ogg',
+		'sound/effects/emotes/f_painmoan8.ogg',
+	),
 	// MALE EMOTES
 	SFX_MALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/m_internal1.ogg',
@@ -310,6 +388,72 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_MALE_SIGH = list(
 		'sound/effects/emotes/m_sigh.ogg'
+	),
+	SFX_MALE_WHIMPER = list(
+		'sound/effects/emotes/m_whimper1.ogg',
+		'sound/effects/emotes/m_whimper2.ogg',
+		'sound/effects/emotes/m_whimper3.ogg',
+	),
+	SFX_MALE_CHOKE = list(
+		'sound/effects/emotes/m_choke.ogg',
+	),
+	SFX_MALE_CLEARHTROAT = list(
+		'sound/effects/emotes/m_clearthroat1.ogg',
+		'sound/effects/emotes/m_clearthroat2.ogg',
+		'sound/effects/emotes/m_clearthroat3.ogg',
+	),
+	SFX_MALE_BURP = list(
+		'sound/effects/emotes/m_burp.ogg',
+	),
+	SFX_MALE_SHH = list(
+		'sound/effects/emotes/m_shh.ogg',
+	),
+	SFX_MALE_HUM = list(
+		'sound/effects/emotes/m_hum1.ogg',
+		'sound/effects/emotes/m_hum2.ogg',
+		'sound/effects/emotes/m_hum3.ogg',
+	),
+	SFX_MALE_HUH = list(
+		'sound/effects/emotes/m_huh1.ogg',
+		'sound/effects/emotes/m_huh2.ogg',
+		'sound/effects/emotes/m_huh3.ogg',
+	),
+	SFX_MALE_HMM = list(
+		'sound/effects/emotes/m_hmm.ogg',
+	),
+	SFX_MALE_CHUCKLE = list(
+		'sound/effects/emotes/m_chuckle.ogg',
+	),
+	SFX_MALE_GROAN = list(
+		'sound/effects/emotes/m_groan1.ogg',
+		'sound/effects/emotes/m_groan2.ogg',
+		'sound/effects/emotes/m_groan3.ogg',
+		'sound/effects/emotes/m_groan4.ogg',
+		'sound/effects/emotes/m_groan5.ogg',
+		'sound/effects/emotes/m_groan6.ogg',
+	),
+	SFX_MALE_WHISTLE = list(
+		'sound/effects/emotes/m_whistle1.ogg',
+		'sound/effects/emotes/m_whistle2.ogg',
+		'sound/effects/emotes/m_whistle3.ogg',
+	),
+	SFX_MALE_FATIGUE = list(
+		'sound/effects/emotes/m_fatigue.ogg',
+	),
+	SFX_MALE_GAG = list(
+		'sound/effects/emotes/m_gag1.ogg',
+		'sound/effects/emotes/m_gag2.ogg',
+		'sound/effects/emotes/m_gag3.ogg',
+	),
+	SFX_MALE_PAINMOAN = list(
+		'sound/effects/emotes/m_painmoan1.ogg',
+		'sound/effects/emotes/m_painmoan2.ogg',
+		'sound/effects/emotes/m_painmoan3.ogg',
+		'sound/effects/emotes/m_painmoan4.ogg',
+		'sound/effects/emotes/m_painmoan5.ogg',
+		'sound/effects/emotes/m_painmoan6.ogg',
+		'sound/effects/emotes/m_painmoan7.ogg',
+		'sound/effects/emotes/m_painmoan8.ogg',
 	),
 	// AMBIENT
 	SFX_AMBIENT_POWERED_GLOBAL = list(
@@ -1591,6 +1735,9 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/whistle2.ogg',
 		'sound/effects/emotes/whistle3.ogg',
 		'sound/effects/emotes/whistle4.ogg'
+	),
+	SFX_PSST = list(
+		'sound/effects/emotes/psst.ogg',
 	),
 	SFX_SNORE = list(
 		'sound/effects/emotes/snore1.ogg',
