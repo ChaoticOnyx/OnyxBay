@@ -40,10 +40,10 @@
 /datum/keybinding/human/bite
 	hotkey_keys = list("B")
 	name = "bite"
-	full_name = "Toggle Bite Intent"
+	full_name = "Toggle Bite"
 	description = ""
 
-/datum/keybinding/human/block/down(client/user)
+/datum/keybinding/human/bite/down(client/user)
 	var/mob/living/carbon/human/C = user.mob
 	C.mmb_switch(MMB_BITE)
 	return TRUE
@@ -51,10 +51,10 @@
 /datum/keybinding/human/jump
 	hotkey_keys = list("J")
 	name = "jump"
-	full_name = "Toggle Jump Intent"
+	full_name = "Toggle Jump"
 	description = ""
 
-/datum/keybinding/human/block/down(client/user)
+/datum/keybinding/human/jump/down(client/user)
 	var/mob/living/carbon/human/C = user.mob
 	C.mmb_switch(MMB_JUMP)
 	return TRUE
