@@ -124,9 +124,7 @@
 
 /datum/biome/cave/asteroid/vanilla
 	flora_spawn_list = list(
-		//obj/structure/flora/ash/space/voidmelon = 1,
 		/obj/structure/rock = 1,
-		//obj/structure/flora/rock/pile = 1
 	)
 
 	feature_spawn_list = list(
@@ -170,7 +168,6 @@
 	)
 
 	flora_spawn_list = list(
-		//VOIDMELON
 		/obj/structure/rock = 1,
 	)
 

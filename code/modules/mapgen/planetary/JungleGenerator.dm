@@ -94,7 +94,6 @@
 		/obj/structure/flora/junglevines/heavy = 1,
 		/obj/structure/flora/junglevines/medium = 4,
 		/obj/structure/flora/junglevines/light = 3,
-		//obj/structure/flora/ash/garden = 1,
 	)
 	flora_spawn_chance = 90
 	mob_spawn_chance = 0.3
@@ -119,7 +118,6 @@
 		/obj/structure/flora/junglevines/heavy = 5,
 		/obj/structure/flora/junglevines/medium = 8,
 		/obj/structure/flora/junglevines/light = 7,
-		//obj/structure/flora/ash/garden = 1,
 	)
 	mob_spawn_chance = 0.6
 	mob_spawn_list = list(
@@ -169,11 +167,6 @@
 		/obj/structure/flora/jungleflora/rock = 1,
 		/obj/structure/rock/basalt/pile = 1,
 		/obj/structure/rock/basalt = 1,
-		//obj/structure/flora/ash/space = 1,
-		//obj/structure/flora/ash/leaf_shroom = 1,
-		//obj/structure/flora/ash/cap_shroom = 1,
-		//obj/structure/flora/ash/stem_shroom = 1,
-		//obj/structure/flora/ash/puce = 1,
 	)
 	mob_spawn_chance = 1
 	mob_spawn_list = list(
@@ -184,8 +177,6 @@
 	feature_spawn_chance = 0.5
 	feature_spawn_list = list(
 		/obj/item/pickaxe/rusty = 1,
-		//obj/structure/spawner/ice_moon = 1,
-		//obj/effect/spawner/lootdrop/anomaly/jungle = 1
 	)
 
 /datum/biome/cave/jungle/dirt
@@ -198,7 +189,6 @@
 		/obj/structure/flora/jungleflora/rock/large = 1,
 		/obj/structure/flora/ausbushes/jungleflora/grassa = 1,
 		/obj/structure/flora/ausbushes/jungleflora/grassb = 1,
-		//obj/structure/flora/ash/garden = 1,
 	)
 
 /datum/biome/cave/lush
@@ -227,8 +217,6 @@
 		/obj/structure/flora/junglevines/medium = 20,
 		/obj/structure/flora/junglevines/light = 10,
 		/obj/structure/flora/jungleflora/rock = 1,
-		//obj/structure/flora/ash/garden = 1,
-		//obj/structure/flora/ash/space/voidmelon = 1
 	)
 	mob_spawn_chance = 1
 	mob_spawn_list = list(

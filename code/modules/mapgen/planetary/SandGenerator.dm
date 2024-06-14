@@ -84,19 +84,9 @@
 /datum/biome/sand
 	open_turf_types = list(/turf/simulated/floor/asteroid/whitesands = 1)
 	flora_spawn_chance = 3
-	flora_spawn_list = list(
-		//obj/structure/flora/ash/leaf_shroom = 4 ,
-		//obj/structure/flora/ash/cap_shroom = 4 ,
-		//obj/structure/flora/ash/stem_shroom = 4 ,
-	)
 	feature_spawn_chance = 0.1
 	feature_spawn_list = list(
 		/obj/structure/geyser/random = 8,
-		//obj/structure/vein = 8,
-		//obj/structure/vein/classtwo = 4,
-		//obj/structure/elite_tumor = 4,
-		//obj/structure/vein/classthree = 2,
-		//obj/effect/spawner/lootdrop/anomaly/sand = 1,
 	)
 	mob_spawn_chance = 4
 	mob_spawn_list = list(
@@ -111,14 +101,9 @@
 		/turf/simulated/floor/asteroid/whitesands = 50,
 		/turf/simulated/floor/asteroid/whitesands/dried = 40,
 		/turf/unsimulated/mask = 20,
-		//turf/closed/wall/mineral/titanium/survival/pod = 1,
-		//turf/closed/wall/rust = 1
 	)
 	flora_spawn_chance = 20
 	flora_spawn_list = list(
-		//obj/structure/flora/ash/leaf_shroom = 4,
-		//obj/structure/flora/ash/cap_shroom = 4,
-		//obj/structure/flora/ash/stem_shroom = 4,
 		/obj/effect/decal/remains/human = 4,
 		/obj/effect/spawner/lootdrop/maintenance = 40,
 	)
@@ -127,8 +112,6 @@
 	open_turf_types = list(/turf/simulated/floor/asteroid/whitesands/grass = 1)
 	flora_spawn_chance = 5
 	flora_spawn_list = list(
-		//obj/structure/flora/ash/cacti = 2,
-		//obj/structure/flora/ash/fern = 4,
 		/obj/structure/flora/tree/tall/whitesands = 4,
 		/obj/structure/flora/rock = 3,
 		/obj/structure/flora/rock/pile = 3,
@@ -141,10 +124,6 @@
 /datum/biome/sand/grass/dead
 	open_turf_types = list(/turf/simulated/floor/asteroid/whitesands/grass/dead = 1)
 	flora_spawn_list = list(
-		//obj/structure/flora/ash/leaf_shroom = 2,
-		//obj/structure/flora/ash/cap_shroom = 2,
-		//obj/structure/flora/ash/stem_shroom = 2,
-		//obj/structure/flora/ash/fern = 4,
 		/obj/structure/flora/tree/dead/barren = 4,
 		/obj/structure/rock/basalt = 3,
 		/obj/structure/rock/basalt/pile = 3,
@@ -155,9 +134,6 @@
 	flora_spawn_chance = 4
 	mob_spawn_chance = 1
 	flora_spawn_list = list(
-		//obj/structure/flora/ash/leaf_shroom = 2 ,
-		//obj/structure/flora/ash/cap_shroom = 2 ,
-		//obj/structure/flora/ash/stem_shroom = 2 ,
 		/obj/structure/rock/basalt = 3,
 		/obj/structure/rock/basalt/pile = 3,
 	)
@@ -172,15 +148,6 @@
 		/mob/living/simple_animal/hostile/asteroid/whitesands/survivor/random = 40,
 	)
 
-/*/datum/biome/sand/acid //plains
-	open_turf_types = list(/turf/simulated/floor/asteroid/whitesands = 10, /turf/simulated/acid/whitesands = 1)*/
-
-/*/datum/biome/sand/acid/total
-	open_turf_types = list(/turf/simulated/acid/whitesands = 1)
-	flora_spawn_chance = 0
-	feature_spawn_chance = 0
-	mob_spawn_chance = 0*/
-
 /datum/biome/cave/sand
 	closed_turf_types = list(/turf/unsimulated/mask = 1)
 	open_turf_types = list(
@@ -191,15 +158,9 @@
 	flora_spawn_list = list(
 		/obj/structure/rock/basalt = 4,
 		/obj/structure/rock/basalt/pile = 4,
-		//obj/structure/flora/ash/fern = 2,
-		//obj/structure/flora/ash/puce = 1,
 	)
 	feature_spawn_list = list(
-		//obj/structure/vein = 8,
 		/obj/structure/geyser/random = 4,
-		//obj/structure/vein/classtwo = 4,
-		//obj/structure/elite_tumor = 4,
-		//obj/effect/spawner/lootdrop/anomaly/sand/cave = 1
 	)
 	mob_spawn_chance = 4
 	mob_spawn_list = list(
@@ -219,6 +180,3 @@
 
 /datum/biome/cave/sand/volcanic/lava
 	open_turf_types = list(/turf/simulated/floor/asteroid/whitesands/dried = 7, /turf/simulated/floor/natural/lava = 1)
-
-/*/datum/biome/cave/sand/volcanic/acidic
-	open_turf_types = list(/turf/simulated/floor/asteroid/whitesands/dried = 8, /turf/simulated/acid/whitesands = 1)*/

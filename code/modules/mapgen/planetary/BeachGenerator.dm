@@ -101,15 +101,11 @@
 		/obj/structure/flora/ausbushes/sunnybush = 1,
 		/obj/structure/flora/ausbushes/ywflowers = 1,
 		/obj/structure/flora/tree/palm = 1,
-		//obj/structure/flora/ash/garden = 1,
 	)
 	flora_spawn_chance = 25
 	mob_spawn_list = list(
-		//mob/living/simple_animal/butterfly = 1,
-		//mob/living/simple_animal/chicken/rabbit/normal = 1,
 		/mob/living/simple_animal/mouse = 1,
 		/mob/living/simple_animal/cow = 1,
-		//mob/living/simple_animal/deer = 1
 	)
 	mob_spawn_chance = 1
 
@@ -135,7 +131,6 @@
 		/obj/structure/rock/basalt = 3,
 		/obj/structure/flora/driftwood = 3,
 		/obj/structure/flora/driftlog = 1,
-		//obj/item/toy/seashell = 1,
 	)
 	flora_spawn_chance = 5
 
@@ -145,7 +140,6 @@
 		/obj/structure/rock/pile = 6,
 		/obj/structure/rock/basalt = 2,
 		/obj/structure/flora/driftwood = 6,
-		//obj/item/toy/seashell = 1,
 		/obj/structure/flora/driftlog = 2
 	)
 	flora_spawn_chance = 2
@@ -155,7 +149,6 @@
 	flora_spawn_list = list(
 		/obj/structure/rock/basalt = 1,
 		/obj/structure/basalt/pile = 1,
-		//obj/structure/flora/ash/garden/seaweed = 1
 	)
 	flora_spawn_chance = 1
 

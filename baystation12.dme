@@ -2012,7 +2012,6 @@
 #include "code\modules\locks\lock_construct.dm"
 #include "code\modules\mapgen\_biome.dm"
 #include "code\modules\mapgen\_MapGenerator.dm"
-#include "code\modules\mapgen\_testing.dm"
 #include "code\modules\mapgen\SingleTurf.dm"
 #include "code\modules\mapgen\Whitesandsatmos.dm"
 #include "code\modules\mapgen\atmosphere\_atmosphere.dm"

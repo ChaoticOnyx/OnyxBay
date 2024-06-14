@@ -85,14 +85,8 @@
 
 	feature_spawn_chance = 0.25
 	feature_spawn_list = list(
-		//obj/structure/geyser/random = 80,
-		//obj/structure/vein = 60,
-		//obj/structure/elite_tumor = 40,
-		//obj/structure/vein/classtwo = 40,
-		//obj/effect/spawner/lootdrop/anomaly/rock = 10,
-		//obj/structure/vein/classthree = 10,
+		obj/structure/geyser/random = 80,
 		/obj/effect/minefield = 2,
-		//obj/effect/spawner/lootdrop/anomaly/big = 1 //get out of here stalker
 	)
 
 	flora_spawn_chance = 5
@@ -101,8 +95,6 @@
 	flora_spawn_list = list(
 		/obj/structure/rock/rockplanet = 6,
 		/obj/structure/flora/tree/cactus = 8,
-		//obj/structure/flora/ash/cacti = 2,
-		//obj/structure/flora/ash/garden/arid = 2,
 		/obj/structure/landmine = 1
 	)
 
@@ -126,9 +118,7 @@
 	flora_spawn_list = list(
 		/obj/structure/rock/rockplanet = 6,
 		/obj/structure/flora/tree/cactus = 8,
-		//obj/structure/flora/ash/cacti = 2,
 		/obj/structure/flora/grass/rockplanet/dead = 8,
-		//obj/structure/flora/ash/garden/arid = 1,
 		/obj/structure/landmine = 1
 	)
 
@@ -139,20 +129,12 @@
 	flora_spawn_list = list(
 		/obj/structure/rock/rockplanet = 8,
 		/obj/structure/rock/rockplanet/pile = 8,
-		//obj/structure/flora/ash/fern = 4,
-		//obj/structure/flora/ash/puce = 2,
 		/obj/structure/landmine = 2,
 	)
 	feature_spawn_chance = 0.5
 	feature_spawn_list = list(
-		//obj/structure/vein = 3,
 		/obj/structure/geyser/random = 2,
-		//obj/structure/vein/classtwo = 2,
-		//obj/structure/elite_tumor = 1,
-		//obj/structure/vein/classthree = 1,
 		/obj/effect/spawner/minefield = 1,
-		//obj/structure/spawner/ice_moon/rockplanet = 4,
-		//obj/effect/spawner/lootdrop/anomaly/rock/cave = 1,
 	)
 	mob_spawn_chance = 6
 	mob_spawn_list = list(
@@ -165,9 +147,6 @@
 	flora_spawn_list = list(
 		/obj/structure/rock/rockplanet = 8,
 		/obj/structure/rock/rockplanet/pile = 8,
-		//obj/structure/flora/ash/fern = 6,
-		//obj/structure/flora/ash/puce = 4,
-		//obj/structure/flora/ash/garden/arid = 2,
 		/obj/structure/landmine = 2
 	)
 	mob_spawn_list = list(
