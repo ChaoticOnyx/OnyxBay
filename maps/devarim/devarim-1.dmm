@@ -461,6 +461,7 @@
 "ra" = (/obj/effect/floor_decal/oldflood,/obj/machinery/power/apc{name = "west bump"; dir = 8; pixel_x = -24},/obj/structure/cable/yellow{icon_state = "0-4"; d2 = 4},/turf/simulated/floor/tiled/rough,/area/quartermaster/storage/under)
 "rb" = (/obj/effect/floor_decal/industrial/outline/red,/obj/machinery/atmospherics/binary/pump/high_power{name = "Waste to Space"; dir = 8; target_pressure = 15000},/turf/simulated/floor/plating,/area/engineering/engine_room)
 "rc" = (/obj/effect/floor_decal/corner/orange/diagonal,/obj/effect/floor_decal/corner/yellow/diagonal{dir = 4},/obj/random/pottedplant,/obj/machinery/light{dir = 4},/turf/simulated/floor/tiled/rough,/area/crew_quarters/mess)
+"re" = (/obj/effect/landmark/joinlate/gate,/turf/simulated/floor/tiled/mono,/area/centcom/holding)
 "rf" = (/obj/machinery/light,/turf/simulated/floor/tiled/rough,/area/hallway/deck/lower)
 "rg" = (/obj/machinery/light,/turf/simulated/floor/tiled/rough,/area/hallway/deck/lower/nine)
 "rl" = (/obj/structure/bed/chair/office/light{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/assembly/robotics)
@@ -554,6 +555,7 @@
 "tU" = (/obj/structure/toilet{dir = 8},/obj/machinery/light/small{dir = 4},/obj/machinery/newscaster{layer = 3.3; pixel_y = -27},/obj/effect/landmark/start/crew/clown,/turf/simulated/floor/tiled/freezer,/area/centcom/holding)
 "tV" = (/obj/machinery/power/apc{name = "south bump"; pixel_y = -24},/obj/structure/cable/green,/obj/effect/floor_decal/corner/purple/diagonal{dir = 4},/obj/effect/floor_decal/corner/grey/diagonal,/turf/simulated/floor/tiled/rough,/area/janitor)
 "tW" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled/dark/mono,/area/crew_quarters/mess)
+"tY" = (/obj/effect/landmark/joinlate/cryo,/turf/simulated/floor/tiled/mono,/area/centcom/holding)
 "ue" = (/obj/machinery/light{icon_state = "tube1"; dir = 1},/turf/simulated/floor/tiled/rough,/area/centcom/holding)
 "uf" = (/obj/structure/table/steel,/obj/item/material/ashtray/bronze,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/trim/lino,/area/crew_quarters/bar)
 "uh" = (/obj/machinery/seed_extractor,/obj/effect/floor_decal/spline/plain/green,/turf/simulated/floor/tiled/rough,/area/hydroponics/garden)
@@ -943,6 +945,7 @@
 "HX" = (/obj/item/modular_computer/console/preset/supply,/obj/effect/floor_decal/corner/brown{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/deck/lower/ten)
 "Ia" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/goonbushes/leafy,/turf/simulated/floor/natural/grass,/area/hallway/deck/lower/nine)
 "Ib" = (/obj/machinery/door/firedoor/border_only,/obj/structure/window_frame/reinforced/hull,/turf/simulated/floor/plating,/area/crew_quarters/mess)
+"Ic" = (/obj/effect/landmark/joinlate,/turf/simulated/floor/tiled/mono,/area/centcom/holding)
 "Ie" = (/obj/effect/floor_decal/spline/plain/grey{dir = 8},/obj/structure/closet/crate/freezer,/obj/item/virusdish/random,/obj/item/virusdish/random,/obj/item/virusdish/random,/turf/simulated/floor/tiled/freezer,/area/medical/virology)
 "If" = (/obj/item/storage/box/syringes{pixel_x = 4; pixel_y = 4},/obj/item/storage/box/beakers,/obj/item/reagent_containers/dropper,/obj/structure/table/glass,/turf/simulated/floor/tiled/freezer,/area/medical/virology)
 "Ih" = (/obj/machinery/alarm{dir = 8; pixel_x = 24},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 10},/turf/simulated/floor/tiled/white/rough,/area/medical/patient_b)
@@ -1194,6 +1197,7 @@
 "Rl" = (/obj/structure/table/standard,/obj/item/device/robotanalyzer{pixel_y = 6},/obj/item/reagent_containers/spray/sterilizine,/obj/item/device/radio/intercom{pixel_y = 22},/obj/machinery/atmospherics/unary/vent_pump/on,/obj/effect/floor_decal/corner/paleblue{dir = 9},/turf/simulated/floor/tiled/dark/rough,/area/assembly/robotics)
 "Rm" = (/obj/item/device/radio/intercom{dir = 8; pixel_x = 25},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/tiled/white/rough,/area/medical/patient_b)
 "Rn" = (/obj/structure/cable{icon_state = "4-8"; d1 = 4; d2 = 8},/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/firedoor/border_only,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/deck/lower/three)
+"Ro" = (/obj/effect/landmark/joinlate/cyborg,/turf/simulated/floor/tiled/mono,/area/centcom/holding)
 "Rs" = (/obj/structure/bed/chair{dir = 4},/obj/structure/cable/yellow{icon_state = "2-4"; d1 = 2; d2 = 4},/turf/simulated/floor/tiled/rough,/area/quartermaster/qm)
 "Rt" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/turf/simulated/floor/tiled/rough,/area/centcom/holding)
 "Ru" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/vessel/shaker,/obj/item/packageWrap,/obj/item/wrapping_paper,/obj/item/device/destTagger{pixel_x = 4; pixel_y = 3},/obj/random/music_tape,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/bar)
@@ -1544,8 +1548,8 @@ ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
 ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvuNOwsKuNFFvVJZsbDBdwlSYXFfHyuNsKOwuNZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
 ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvuNcfuNuNqMhluNuNuNuNuNuNWSqMuNuNcfuNZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
 ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvuNTujzvVvVvVMsvVvVvVvVMsFfvVvVSaCtuNuNuNuNuNuNZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
-ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvkFOwjzvVvVvVvVvVvVvVvVvVFfvVvVSaOwOwOwueOwOwkFZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
-ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvuNctvAvVvVvVvVvVvVvVvVvVsJpKvVTDOwOwOwOwOwctuNZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
+ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvkFOwjzvVtYtYvVvVvVrerevVFfvVvVSaOwOwOwueOwOwkFZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
+ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvuNctvAvVIcIcvVRoRovVvVvVsJpKvVTDOwOwOwOwOwctuNZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
 ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvuNuNuNuNuNuNuNLdLdLdLdLdLdLdLdQuxKjgLduNWOWOWOWOWOWOuNuNuNuNuNuNZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
 ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvBYiYiYiYiYiYamQCFqFqFqbManamQCvcnlkKbManamQCUDGsHobManiYiYiYiYBYZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
 ZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvBYiYiYiYiYiYCQvpBmQzbtSECQCQdoPpXVaxZSCQCQQjQjQjQjQjCQiYiYiYiYBYZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZvZv
