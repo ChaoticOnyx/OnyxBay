@@ -511,13 +511,13 @@ This function restores all organs.
 				if(!isnull(M.incoming_brute_damage_percent))
 					damage *= M.incoming_brute_damage_percent
 			created_wound = organ.take_external_damage(damage, 0, damage_flags, used_weapon)
-			if(damage >= 6 && user?.zone_sel?.selecting == BP_MOUTH && prob(30))
+			if(damage >= 6 && user?.zone_sel?.selecting == BP_MOUTH && prob(15))
 				var/obj/item/organ/internal/jaw/jaw = internal_organs_by_name[BP_JAW]
 				if(jaw?.model && prob(50)) // Prosthetic jaws provide more protection.
 					jaw?.knock_teeth(rand(1, 2))
 				else if(!jaw?.model)
 					jaw?.knock_teeth(rand(1, 2))
-			else if(damage >= 10 && istype(organ, /obj/item/organ/external/head) && prob(50))
+			else if(damage >= 10 && istype(organ, /obj/item/organ/external/head) && prob(5))
 				var/obj/item/organ/internal/jaw/jaw = internal_organs_by_name[BP_JAW]
 				if(jaw?.model && prob(50)) // Prosthetic jaws provide more protection.
 					jaw?.knock_teeth(rand(1, 2))

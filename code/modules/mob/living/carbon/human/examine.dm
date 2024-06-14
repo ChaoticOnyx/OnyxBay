@@ -221,13 +221,13 @@
 
 	var/obj/item/organ/internal/jaw/jaw = internal_organs_by_name[BP_JAW]
 	if(!istype(jaw))
-		msg += SPAN_WARNING("[T.He] lacks [T.his] jaw!")
+		msg += SPAN_WARNING("[T.He] lacks [T.his] jaw!\n")
 	else if(jaw.get_teeth_count() < jaw.max_teeth_count && jaw.get_teeth_count() >= jaw.max_teeth_count / 2)
-		msg += SPAN_WARNING("[T.He] lacks some teeth!")
+		msg += SPAN_WARNING("[T.He] lacks some teeth!\n")
 	else if(jaw.get_teeth_count() < jaw.max_teeth_count / 2)
-		msg += SPAN_WARNING("[T.He] clearly lacks most teeth!")
-	else if(is_path_in_list(/obj/item/tooth/robotic, jaw.teeth_types))
-		msg += SPAN_WARNING("[T.He] has artificial teeth.")
+		msg += SPAN_WARNING("[T.He] clearly lacks most teeth!\n")
+	else if(jaw.teeth_types.Find(/obj/item/tooth/robotic))
+		msg += SPAN_WARNING("[T.He] has artificial teeth.\n")
 
 	var/list/wound_flavor_text = list()
 	var/applying_pressure = ""

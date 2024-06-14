@@ -110,6 +110,7 @@
 #define SFX_FEMALE_FATIGUE          "female_fatigue"
 #define SFX_FEMALE_GAG              "female_gag"
 #define SFX_FEMALE_PAINMOAN         "female_painmoan"
+#define SFX_FEMALE_JUMP              "female_jump"
 
 // MALE EMOTES
 #define SFX_MALE_INTERNAL_BREATH    "male_internal_breath"
@@ -138,6 +139,7 @@
 #define SFX_MALE_FATIGUE            "male_fatigue"
 #define SFX_MALE_GAG                "male_gag"
 #define SFX_MALE_PAINMOAN           "male_painmoan"
+#define SFX_MALE_JUMP               "male_jump"
 
 // AMBIENT
 #define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"

@@ -27,6 +27,9 @@
 			switch(organ)
 				if(BP_BRAIN)
 					pref.organ_data[organ] = pick("assisted", "mechanical") // Either positronic or MMI
+				if(BP_JAW)
+					pref.organ_data[organ] = "cyborg"
+					pref.rlimb_data[organ] = pref.rlimb_data[BP_CHEST]
 				else
 					pref.organ_data[organ] = "mechanical" // No filthy organics in my FBP
 

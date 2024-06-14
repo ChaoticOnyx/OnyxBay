@@ -17,7 +17,7 @@
 	src.debris_velocity = debris_velocity
 	src.debris_amount = debris_amount
 	src.debris_scale = debris_scale
-	register_signal(target, SIGNAL_BULLET_ACT, nameof(.proc/register_for_impact))
+	register_signal(target, SIGNAL_BULLET_ACT, nameof(.proc/register_for_impact), TRUE)
 
 /datum/element/debris/detach(datum/source)
 	. = ..()

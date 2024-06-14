@@ -180,3 +180,6 @@
 
 /datum/star_system/proc/after_enter(obj/structure/overmap/OM)
 	pass()
+
+/datum/map_template/empty127
+	mappaths = list('maps/templates/empty_127.dmm')
