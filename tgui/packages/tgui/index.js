@@ -14,7 +14,9 @@ import "./styles/themes/spellbook.scss";
 import "./styles/themes/operating.scss";
 import "./styles/themes/changeling.scss";
 import "./styles/themes/neutral.scss";
+import "./styles/themes/ntos.scss";
 import "./styles/themes/syndicate.scss";
+import "./styles/themes/hackerman.scss";
 
 import { perf } from "common/perf";
 import { setupHotReloading } from "tgui-dev-server/link/client";

@@ -25,6 +25,7 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 	var/datum/configuration_section/indigo_bot/indigo_bot = new
 	var/datum/configuration_section/error/error = new
 	var/datum/configuration_section/donations/donations = new
+	var/datum/configuration_section/overmap/overmap = new
 
 	/// Raw data. Stored here to avoid passing data between procs constantly
 	var/list/raw_data = list()

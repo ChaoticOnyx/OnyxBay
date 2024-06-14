@@ -696,18 +696,21 @@
 	var/mob/living/M = mob
 	if(istype(M))
 		M.OnMouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
+		SEND_SIGNAL(mob, SIGNAL_MOB_MOUSEDRAG, src_object, over_object, src_location, over_location, src_control, over_control, params)
 
 /client/MouseUp(object, location, control, params)
 	. = ..()
 	var/mob/living/M = mob
 	if(istype(M))
 		M.OnMouseUp(object, location, control, params)
+		SEND_SIGNAL(mob, SIGNAL_MOB_MOUSEUP, object, location, control, params)
 
 /client/MouseDown(object, location, control, params)
 	. = ..()
 	var/mob/living/M = mob
 	if(istype(M) && !M.in_throw_mode)
 		M.OnMouseDown(object, location, control, params)
+		SEND_SIGNAL(mob, SIGNAL_MOB_MOUSEDOWN, object, location, control, params)
 
 /client/Click(atom/A)
 	//if(!user_acted(src))

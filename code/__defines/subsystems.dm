@@ -29,6 +29,7 @@
 #define SS_INIT_MAPPING          7
 #define SS_INIT_OPEN_SPACE       6
 #define SS_INIT_CIRCUIT          5
+#define SS_INIT_STARMAP          5
 #define SS_INIT_ATOMS            4
 #define SS_INIT_ICON_UPDATE      3
 #define SS_INIT_RUNECHAT         2

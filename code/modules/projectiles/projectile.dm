@@ -508,6 +508,34 @@
 	if(Angle_offset)
 		setAngle(Angle + Angle_offset)
 
+/// Shit is really fucked here. This bloody mess is necessary to set a corret visual offset.
+/obj/item/projectile/proc/preparePixelProjectileOvermap(obj/structure/overmap/target, obj/structure/overmap/source, params, spread = 0, lateral = TRUE)
+	var/turf/curloc = source.get_center()
+	var/turf/targloc = istype(target, /obj/structure/overmap) ? target.get_center() : get_turf(target)
+	trajectory_ignore_forcemove = TRUE
+	forceMove(curloc)
+	trajectory_ignore_forcemove = FALSE
+	starting = curloc
+	original = target
+	if(!lateral)
+		setAngle(source.angle)
+
+	if(isliving(source) && params)
+		var/list/calculated = calculate_projectile_Angle_and_pixel_offsets(source, target, params2list(params))
+		p_x = calculated[2]
+		p_y = calculated[3]
+
+		if(lateral)
+			setAngle(calculated[1] + spread)
+	else if(targloc && curloc)
+		yo = targloc.y - curloc.y
+		xo = targloc.x - curloc.x
+		if(lateral)
+			setAngle(overmap_angle(src, targloc) + spread)
+	else
+		util_crash_with("WARNING: Projectile [type] fired without either mouse parameters, or a target atom to aim at!")
+		qdel(src)
+
 /obj/item/projectile/Crossed(atom/movable/AM) //A mob moving on a tile with a projectile is hit by it.
 	..()
 	if(isliving(AM) && (AM.density || AM == original) && !(pass_flags & PASS_FLAG_MOB))

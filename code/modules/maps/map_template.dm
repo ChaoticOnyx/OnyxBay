@@ -114,11 +114,11 @@
 	if(!T)
 		return
 
-	if(T.x+width > world.maxx)
-		return
+	//if(T.x+width > world.maxx)
+	//	return
 
-	if(T.y+height > world.maxy)
-		return
+	//if(T.y+height > world.maxy)
+	//	return
 
 	var/list/atoms_to_initialise = list()
 
