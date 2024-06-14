@@ -11,8 +11,8 @@
 	/// Assoc list of all teeth in this jaw. [tooth.type] = amount
 	var/list/teeth_types
 
-/obj/item/organ/internal/jaw/Initialize()
-	. = ..()
+/obj/item/organ/internal/jaw/New(holder)
+	..(holder)
 	reinitialize_teeth_list()
 
 /obj/item/organ/internal/jaw/robotize()

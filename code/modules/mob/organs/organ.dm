@@ -309,7 +309,8 @@ var/list/limb_icon_cache = list()
 			mechassist()
 		else if(status == "mechanical")
 			robotize()
-
+		else if(status == "cyborg")
+			robotize(owner.client.prefs.rlimb_data[name])
 //Germs
 /obj/item/organ/proc/handle_antibiotics()
 	if(!owner || !germ_level)
