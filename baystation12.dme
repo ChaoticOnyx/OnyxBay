@@ -139,6 +139,7 @@
 #include "code\_global_vars\regexes.dm"
 #include "code\_global_vars\sensitive.dm"
 #include "code\_global_vars\sfx.dm"
+#include "code\_global_vars\sfx2.dm"
 #include "code\_global_vars\lists\areas.dm"
 #include "code\_global_vars\lists\flavor.dm"
 #include "code\_global_vars\lists\locations.dm"
