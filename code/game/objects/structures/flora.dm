@@ -36,6 +36,15 @@
 			qdel(src)
 		return
 
+/obj/structure/flora/tree/palm
+	name = "Palm tree"
+	icon = 'icons/misc/beach2.dmi'
+	icon_state = "palm1"
+
+/obj/structure/flora/tree/palm/Initialize()
+	. = ..()
+	icon_state = "palm[rand(1, 2)]"
+
 /obj/structure/flora/tree/pine
 	name = "pine tree"
 	icon = 'icons/obj/flora/pinetrees.dmi'
@@ -44,6 +53,11 @@
 /obj/structure/flora/tree/pine/New()
 	..()
 	icon_state = "pine_[rand(1, 3)]"
+
+/obj/structure/flora/tree/pine/dead
+	name = "dead pine"
+	icon = 'icons/obj/flora/aridtrees.dmi'
+	icon_state = "med_pine_dead"
 
 /obj/structure/flora/tree/pine/xmas
 	name = "xmas tree"
@@ -102,9 +116,27 @@
 	..()
 	icon_state = "tree_[rand(1, 12)]"
 
-/obj/structure/flora/tree/tall/New()
-	icon_state = "tree_[rand(1,6)]"
-	..()
+/obj/structure/flora/tree/dead/tall/grey
+	name = "petrified trunk"
+	desc = "An ancient tree was carbonized in fire and ash. Only a skeleton remains."
+	icon = 'icons/obj/flora/tall_trees_dead.dmi'
+	icon_state = "tree1"
+
+/obj/structure/flora/tree/dead/tall/grey/Initialize()
+	. = ..()
+	icon_state = "tree[rand(1, 3)]"
+
+/obj/structure/flora/tree/dead/barren
+	name = "petrified tree"
+	desc = "An ancient trunk, mummified by the passage of time. This one still has some purple to it."
+	color = "#846996"
+	icon = 'icons/obj/flora/barren_tree.dmi'
+	icon_state = "barren_large"
+
+/obj/structure/flora/tree/dead/barren/Initialize()
+	. = ..()
+	color = pick( "#846996", "#7b4e99", "#924fab")
+	icon_state = "barren_large"
 
 /obj/structure/flora/tree/pine/old_pinteree
 	name = "xmas tree"
@@ -151,6 +183,13 @@
 
 /obj/structure/flora/tree/green/tree10
 	icon_state = "tree10"
+
+/obj/structure/flora/tree/green/random
+	icon_state = "tree1"
+
+/obj/structure/flora/tree/green/random/Initialize()
+	. = ..()
+	icon_state = "tree[rand(1, 10)]"
 
 /obj/structure/flora/tree/green/spook1
 	icon_state = "spook1"
@@ -214,35 +253,91 @@
 /obj/structure/flora/tree/green/small/tree6
 	icon_state = "tree6"
 
+/obj/structure/flora/tree/green/small/random
+	icon_state = "tree1"
+
+/obj/structure/flora/tree/green/small/random/Initialize()
+	. = ..()
+	icon_state = "tree[rand(1, 6)]"
+
+/obj/structure/flora/tree/cactus
+	name = "cactus"
+	pixel_y = 0
+	icon = 'icons/obj/flora/aridtrees.dmi'
+	icon_state = "cactus1"
+	cut_hits = 10
+
+/obj/structure/flora/tree/cactus/Initialize()
+	. = ..()
+	icon_state = "cactus[rand(1, 4)]"
+
 //grass
-/obj/structure/flora/grass
+/obj/structure/flora/grass/snowy
 	name = "grass"
 	icon = 'icons/obj/flora/snowflora.dmi'
 	anchored = 1
 	layer = BELOW_DOOR_LAYER
 
-/obj/structure/flora/grass/brown
+/obj/structure/flora/grass/snowy/brown
 	icon_state = "snowgrass1bb"
 
-/obj/structure/flora/grass/brown/New()
+/obj/structure/flora/grass/snowy/brown/New()
 	..()
 	icon_state = "snowgrass[rand(1, 3)]bb"
 
-
-/obj/structure/flora/grass/green
+/obj/structure/flora/grass/snowy/green
 	icon_state = "snowgrass1gb"
 
-/obj/structure/flora/grass/green/New()
+/obj/structure/flora/grass/snowy/green/New()
 	..()
 	icon_state = "snowgrass[rand(1, 3)]gb"
 
-/obj/structure/flora/grass/both
+/obj/structure/flora/grass/snowy/both
 	icon_state = "snowgrassall1"
 
-/obj/structure/flora/grass/both/New()
+/obj/structure/flora/grass/snowy/both/New()
 	..()
 	icon_state = "snowgrassall[rand(1, 3)]"
 
+/obj/structure/flora/grass/rockplanet
+	name = "cottongrass"
+	desc= "A variety of cold-loving prarie grass. This variety seems to thrive the frigid rockworld enviroment, so long as water can be found nearby."
+	icon = 'icons/obj/flora/grasssticks.dmi'
+	icon_state = "tall_grass_1"
+	anchored = 1
+	layer = BELOW_DOOR_LAYER
+
+/obj/structure/flora/grass/rockplanet/Initialize()
+	. = ..()
+	icon_state = "tall_grass_[rand(1, 2)]"
+
+/obj/structure/flora/grass/rockplanet/dead
+	name = "dry cottongrass"
+	desc= "This patch seems to have run dry on life-giving water."
+	icon_state = "dry_grass_1"
+
+/obj/structure/flora/grass/rockplanet/dead/Initialize()
+	. = ..()
+	icon_state = "dry_grass_[rand(1, 2)]"
+
+/obj/structure/flora/driftwood
+	name = "driftwood"
+	desc = "Floatsam, jetsam, all molded down in the unforgiving sea."
+	icon = 'icons/obj/flora/grasssticks.dmi'
+	icon_state = "stick2"
+	base_icon_state = "stick"
+	density = 0
+
+/obj/structure/flora/driftwood/Initialize()
+	. = ..()
+	icon_state = "stick[rand(1, 4)]"
+
+/obj/structure/flora/driftlog
+	name = "driftwood log"
+	desc = "Better log this one in the database."
+	icon = 'icons/obj/flora/grasssticks.dmi'
+	icon_state = "dry_log"
+	density = 0
 
 //bushes
 /obj/structure/flora/bush
@@ -474,6 +569,62 @@
 	..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 
+/obj/structure/flora/ausbushes/hell
+	name = "hell bush"
+	icon = 'icons/obj/flora/hellflora.dmi'
+	icon_state = "firstbush_1"
+
+/obj/structure/flora/ausbushes/hell/Initialize()
+	. = ..()
+	icon_state = "firstbush_[rand(1, 4)]"
+
+/obj/structure/flora/ausbushes/hell/grassybush
+	icon_state = "grassybush_1"
+
+/obj/structure/flora/ausbushes/hell/grassybush/Initialize()
+	. = ..()
+	icon_state = "grassybush_[rand(1, 4)]"
+
+/obj/structure/flora/ausbushes/hell/fernybush
+	icon_state = "fernybush_1"
+
+/obj/structure/flora/ausbushes/hell/fernybush/Initialize()
+	. = ..()
+	icon_state = "fernybush_[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/hell/genericbush
+	icon_state = "genericbush_1"
+
+/obj/structure/flora/ausbushes/hell/genericbush/Initialize()
+	. = ..()
+	icon_state = "genericbush_[rand(1, 4)]"
+
+/obj/structure/flora/ausbushes/hell/ywflowers
+	icon_state = "ywflowers_1"
+
+/obj/structure/flora/ausbushes/hell/ywflowers/Initialize()
+	. = ..()
+	icon_state = "ywflowers_[rand(1, 4)]"
+
+/obj/structure/flora/ausbushes/hell/sparsegrass
+	icon_state = "sparsegrass_1"
+
+/obj/structure/flora/ausbushes/hell/sparsegrass/Initialize()
+	. = ..()
+	icon_state = "sparsegrass_[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/hell/fullgrass
+	icon_state = "fullgrass_1"
+
+/obj/structure/flora/ausbushes/hell/fullgrass/Initialize()
+	. = ..()
+	icon_state = "fullgrass_[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/hell/firebush
+	name = "flaming bush"
+	desc = "A bush being consumed by flames. Maybe it'll rise from its ashes like a phoenix?"
+	icon_state = "hell_bush"
+
 /obj/structure/flora/ausbushes/jungleflora
 	icon = 'icons/obj/flora/jungleflora.dmi'
 	icon_state = "busha"
@@ -481,39 +632,80 @@
 /obj/structure/flora/ausbushes/jungleflora/busha
 	icon_state = "busha"
 
-/obj/structure/flora/ausbushes/jungleflora/busha/New()
-	..()
+/obj/structure/flora/ausbushes/jungleflora/busha/Initialize()
+	. = ..()
 	icon_state = "busha[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/jungleflora/bushb
 	icon_state = "bushb"
 
-/obj/structure/flora/ausbushes/jungleflora/bushb/New()
-	..()
+/obj/structure/flora/ausbushes/jungleflora/bushb/Initialize()
+	. = ..()
 	icon_state = "bushb[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/jungleflora/bushc
 	icon_state = "bushc"
 
-/obj/structure/flora/ausbushes/jungleflora/bushc/New()
-	..()
+/obj/structure/flora/ausbushes/jungleflora/bushc/Initialize()
+	. = ..()
 	icon_state = "bushc[rand(1, 3)]"
 
 /obj/structure/flora/ausbushes/jungleflora/grassa
 	name = "grass"
 	icon_state = "grassa"
 
-/obj/structure/flora/ausbushes/jungleflora/grassa/New()
-	..()
+/obj/structure/flora/ausbushes/jungleflora/grassa/Initialize()
+	. = ..()
 	icon_state = "grassa[rand(1, 5)]"
 
 /obj/structure/flora/ausbushes/jungleflora/grassb
 	name = "grass"
 	icon_state = "grassb"
 
-/obj/structure/flora/ausbushes/jungleflora/grassb/New()
-	..()
+/obj/structure/flora/ausbushes/jungleflora/grassb/Initialize()
+	. = ..()
 	icon_state = "grassb[rand(1, 5)]"
+
+/obj/structure/flora/ausbushes/jungleflora/large
+	icon_state = "bush"
+	icon = 'icons/obj/flora/largejungleflora.dmi'
+	pixel_x = -16
+	pixel_y = -12
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/structure/flora/ausbushes/jungleflora/large/bush1
+	icon_state = "bush1"
+
+/obj/structure/flora/ausbushes/jungleflora/large/bush2
+	icon_state = "bush2"
+
+/obj/structure/flora/ausbushes/jungleflora/large/bush3
+	icon_state = "bush3"
+
+/obj/structure/flora/ausbushes/jungleflora/large/Initialize()
+	. = ..()
+	icon_state = "bush[rand(1, 3)]"
+
+/obj/structure/flora/jungleflora/rock
+	name = "rock"
+	icon_state = "rock"
+	icon = 'icons/obj/flora/jungleflora.dmi'
+	anchored = 1
+	layer = BELOW_DOOR_LAYER
+
+/obj/structure/flora/jungleflora/rock/Initialize()
+	. = ..()
+	icon_state = "rock[rand(1, 5)]"
+
+/obj/structure/flora/jungleflora/rock/large
+	icon_state = "rocks"
+	icon = 'icons/obj/flora/largejungleflora.dmi'
+	pixel_x = -16
+	pixel_y = -16
+
+/obj/structure/flora/jungleflora/rock/large/Initialize()
+	. = ..()
+	icon_state = "rocks[rand(1, 3)]"
 
 /obj/structure/flora/goonbushes
 	name = "shrub"
@@ -581,7 +773,7 @@
 
 /obj/structure/flora/junglevines/light/New()
 	if(rand_state)
-		icon_state = "light[rand(0, 2)]"
+		icon_state = "light[rand(1, 3)]"
 	..()
 
 /obj/structure/flora/junglevines/light/CanPass(atom/movable/mover, turf/target)
@@ -593,8 +785,29 @@
 		return prob(30)
 	return TRUE
 
+/obj/structure/flora/junglevines/medium
+	icon_state = "medium1"
+	desc = "A dense mass of twisted vines."
+	cut_level = PLANT_CUT
+	cut_hits = 6
+	var/rand_state = TRUE
+
+/obj/structure/flora/junglevines/medium/New()
+	if(rand_state)
+		icon_state = "medium[rand(1, 3)]"
+	..()
+
+/obj/structure/flora/junglevines/medium/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover, /mob/living))
+		if(prob(40))
+			to_chat(mover, "<span class='warning'>You get stuck in \the [src] for a moment.</span>")
+			return FALSE
+	else if(istype(mover, /obj/item/projectile))
+		return prob(30)
+	return TRUE
+
 /obj/structure/flora/junglevines/heavy
-	icon_state = "heavy0"
+	icon_state = "heavy1"
 	desc = "A thick, coiled mass of twisted vines."
 	opacity = 1
 	cut_level = PLANT_CUT
@@ -603,7 +816,7 @@
 
 /obj/structure/flora/junglevines/heavy/New()
 	if(rand_state)
-		icon_state = "heavy[rand(0, 5)]"
+		icon_state = "heavy[rand(1, 3)]"
 	..()
 
 /obj/structure/flora/junglevines/heavy/CanPass(atom/movable/mover, turf/target)
@@ -664,25 +877,6 @@
 /obj/structure/flora/jungleplants/junglebush3
 	name = "bush"
 	icon_state = "junglebush3"
-
-/obj/structure/flora/jungleplants/junglebushlarge
-	name = "bush"
-	icon = 'icons/obj/flora/junglebushlarge.dmi'
-	icon_state = "bush1"
-	pixel_x = -16
-	pixel_y = -8
-
-/obj/structure/flora/jungleplants/junglebushlarge/bush1
-	icon_state = "bush1"
-
-/obj/structure/flora/jungleplants/junglebushlarge/bush2
-	icon_state = "bush2"
-
-/obj/structure/flora/jungleplants/junglebushlarge/bush3
-	icon_state = "bush3"
-
-/obj/structure/flora/jungleplants/junglebushlarge/bush4
-	icon_state = "bush4"
 
 /obj/structure/flora/jungleplants/alienplant1
 	name = "alien plant"

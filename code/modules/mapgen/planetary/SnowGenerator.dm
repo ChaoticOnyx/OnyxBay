@@ -87,13 +87,13 @@
 
 /datum/biome/snow
 	open_turf_types = list(
-		/turf/open/floor/plating/asteroid/snow/lit = 25
+		/turf/simulated/floor/asteroid/snow = 25
 	)
 	flora_spawn_list = list(
 		/obj/structure/flora/tree/pine = 4,
-		/obj/structure/flora/rock/icy = 4,
-		/obj/structure/flora/rock/pile/icy = 4,
-		/obj/structure/flora/grass/both = 12,
+		/obj/structure/rock/icy = 4,
+		/obj/structure/rock/icy/pile = 4,
+		/obj/structure/flora/grass/snowy/both = 12,
 	)
 	flora_spawn_chance = 10
 	mob_spawn_chance = 1
@@ -114,16 +114,16 @@
 
 /datum/biome/snow/lush
 	open_turf_types = list(
-		/turf/open/floor/plating/asteroid/snow/lit = 25
+		/turf/simulated/floor/asteroid/snow = 25
 	)
 	flora_spawn_list = list(
-		/obj/structure/flora/grass/both = 1,
+		/obj/structure/flora/grass/snowy/both = 1,
 	)
 	flora_spawn_chance = 30
 
 /datum/biome/snow/thawed
 	open_turf_types = list(
-		/turf/open/floor/plating/asteroid/icerock/lit = 1
+		/turf/simulated/floor/asteroid/snow/icerock = 1
 	)
 	flora_spawn_chance = 40
 	flora_spawn_list = list(
@@ -132,7 +132,6 @@
 		/obj/structure/flora/ausbushes = 1,
 		/obj/structure/flora/ausbushes/ppflowers = 1,
 		/obj/structure/flora/ausbushes/lavendergrass = 1,
-		/obj/structure/flora/ash/garden/frigid = 1,
 	)
 
 /datum/biome/snow/forest
@@ -140,8 +139,8 @@
 	flora_spawn_list = list(
 		/obj/structure/flora/tree/pine = 20,
 		/obj/structure/flora/tree/dead = 6,
-		/obj/structure/flora/grass/both = 8,
-		/obj/item/mine/pressure/explosive/rusty/live = 1,
+		/obj/structure/flora/grass/snowy/both = 8,
+		/obj/structure/landmine = 1,
 	)
 
 /datum/biome/snow/forest/dense
@@ -150,22 +149,17 @@
 		/obj/structure/flora/tree/pine = 20,
 		/obj/structure/flora/grass/both = 6,
 		/obj/structure/flora/tree/dead = 3,
-		/obj/item/mine/pressure/explosive/rusty/live = 1,
+		/obj/structure/landmine = 1,
 	)
 
 /datum/biome/arctic
 	open_turf_types = list(
-		/turf/open/floor/plating/asteroid/snow/lit = 1
+		/turf/simulated/floor/asteroid/snow = 1
 	)
 	feature_spawn_chance = 0.1
 	feature_spawn_list = list(
-		/obj/structure/spawner/ice_moon = 2,
-		/obj/structure/spawner/ice_moon/polarbear = 2,
 		/obj/structure/statue/snow/snowman = 3,
 		/obj/structure/statue/snow/snowlegion = 1,
-		/obj/structure/vein/ice = 3,
-		/obj/structure/vein/ice/classtwo = 4,
-		/obj/structure/vein/ice/classthree = 1,
 	)
 	mob_spawn_list = list(
 		/mob/living/simple_animal/hostile/asteroid/wolf/random = 30,
@@ -183,15 +177,15 @@
 /datum/biome/arctic/rocky
 	flora_spawn_chance = 5
 	flora_spawn_list = list(
-		/obj/structure/flora/rock/icy = 2,
-		/obj/structure/flora/rock/pile/icy = 2,
+		/obj/structure/rock/icy = 2,
+		/obj/structure/rock/icy/pile = 2,
 	)
 
 /datum/biome/iceberg
 	open_turf_types = list(
-		/turf/open/floor/plating/asteroid/iceberg/lit = 6,
-		/turf/open/floor/plating/ice/iceberg/lit = 1,
-		/turf/closed/mineral/ice = 10
+		/turf/simulated/floor/asteroid/snow/iceberg = 6,
+		/turf/simulated/floor/natural/ice/iceberg = 1,
+		/turf/unsimulated/mask = 10
 	)
 	mob_spawn_chance = 2
 	mob_spawn_list = list(
@@ -204,50 +198,30 @@
 		/mob/living/simple_animal/hostile/asteroid/lobstrosity = 5,
 	)
 	feature_spawn_chance = 0.3
-	feature_spawn_list = list(
-		/obj/effect/spawner/lootdrop/anomaly/ice = 100,
-		/obj/effect/spawner/lootdrop/anomaly/big = 1,
-		/obj/structure/spawner/ice_moon/demonic_portal/low_threat = 200,
-		/obj/structure/spawner/ice_moon/demonic_portal/medium_threat = 400,
-		/obj/structure/spawner/ice_moon/demonic_portal/high_threat = 40,
-		/obj/structure/spawner/ice_moon/demonic_portal/extreme_threat = 1,
-		/obj/structure/vein/ice = 300,
-		/obj/structure/vein/ice/classtwo = 500,
-		/obj/structure/vein/ice/classthree = 50,
-	)
-
 
 /datum/biome/iceberg/lake
 	open_turf_types = list(
-		/turf/open/floor/plating/ice/lit = 1
+		/turf/simulated/floor/natural/ice/fancy = 1
 	)
 
 /datum/biome/plasma
 	open_turf_types = list(
-		/turf/open/lava/plasma/ice_moon = 5,
-		/turf/open/floor/plating/asteroid/icerock/smooth = 1
+		/turf/simulated/floor/asteroid/snow/icerock/smooth = 1
 	)
 
 /datum/biome/cave/snow
 	open_turf_types = list(
-		/turf/open/floor/plating/asteroid/icerock = 1
+		/turf/simulated/floor/asteroid/snow/icerock = 1
 	)
 	flora_spawn_chance = 6
 	flora_spawn_list = list(
-		/obj/structure/flora/grass/both = 10,
-		/obj/structure/flora/rock/pile/icy = 2,
+		/obj/structure/flora/grass/snowy/both = 10,
 		/obj/structure/flora/rock/icy = 2,
-		/obj/structure/flora/ash/space = 2,
-		/obj/structure/flora/ash/leaf_shroom = 2,
-		/obj/structure/flora/ash/cap_shroom = 2,
-		/obj/structure/flora/ash/stem_shroom = 2,
-		/obj/structure/flora/ash/puce = 2,
-		/obj/structure/flora/ash/garden/frigid = 2,
-		/obj/item/mine/proximity/explosive/live = 1,
-		/obj/item/mine/pressure/explosive/rusty/live = 1
+		/obj/structure/flora/rock/icy/pile = 2,
+		/obj/structure/landmine = 2
 	)
 	closed_turf_types = list(
-		/turf/closed/mineral/random/snow = 1
+		/turf/unsimulated/mask = 1
 	)
 	mob_spawn_chance = 2
 	mob_spawn_list = list(
@@ -263,42 +237,32 @@
 	)
 	feature_spawn_chance = 0.2
 	feature_spawn_list = list(
-		/obj/structure/spawner/ice_moon/demonic_portal/low_threat = 20,
-		/obj/structure/spawner/ice_moon/demonic_portal/medium_threat = 40,
-		/obj/structure/spawner/ice_moon/demonic_portal/high_threat = 5,
-		/obj/structure/spawner/ice_moon/demonic_portal/extreme_threat = 1,
-		/obj/structure/spawner/ice_moon = 20,
-		/obj/structure/spawner/ice_moon/polarbear = 20,
-		/obj/effect/spawner/lootdrop/anomaly/ice/cave = 10,
-		/obj/structure/vein/ice = 30,
-		/obj/structure/vein/ice/classtwo = 50,
-		/obj/structure/vein/ice/classthree = 6,
-		/obj/effect/spawner/minefield = 2,
+		/obj/effect/minefield = 2,
 	)
 
 /datum/biome/cave/snow/thawed
 	open_turf_types = list(
-		/turf/open/floor/plating/asteroid/icerock/cracked = 1
+		/turf/simulated/floor/asteroid/snow/icerock/cracked = 1
 	)
 	closed_turf_types = list(
-		/turf/closed/mineral/random/snow = 1
+		/turf/unsimulated/mask = 1
 	)
 
 /datum/biome/cave/snow/ice
 	open_turf_types = list(
-		/turf/open/floor/plating/asteroid/icerock = 20,
-		/turf/open/floor/plating/ice = 3
+		/turf/simulated/floor/asteroid/snow/icerock = 20,
+		/turf/simulated/floor/natural/ice/fancy = 3
 	)
 	closed_turf_types = list(
-		/turf/closed/mineral/random/snow = 1
+		/turf/unsimulated/mask = 1
 	)
 
 /datum/biome/cave/volcanic
 	open_turf_types = list(
-		/turf/open/floor/plating/asteroid/basalt = 1
+		/turf/simulated/floor/asteroid/basalt = 1
 	)
 	closed_turf_types = list(
-		/turf/closed/mineral/random/snow = 1
+		/turf/unsimulated/mask = 1
 		)
 	mob_spawn_chance = 2
 	mob_spawn_list = list(
@@ -312,26 +276,23 @@
 	)
 	flora_spawn_chance = 3
 	flora_spawn_list = list(
-		/obj/structure/flora/ash/leaf_shroom = 3,
-		/obj/structure/flora/ash/cap_shroom = 3,
-		/obj/structure/flora/ash/stem_shroom = 3,
-		/obj/item/mine/pressure/explosive/fire/live = 1,
+		/obj/structure/landmine = 1,
 	)
 	feature_spawn_chance = 0.2
 
 /datum/biome/cave/volcanic/lava
 	open_turf_types = list(
-		/turf/open/lava/smooth = 10,
-		/turf/open/floor/plating/asteroid/icerock/smooth = 1
+		/turf/simulated/floor/natural/lava = 10,
+		/turf/simulated/floor/asteroid/snow/icerock/smooth = 1
 	)
 
 /datum/biome/cave/volcanic/lava/total
 	open_turf_types = list(
-		/turf/open/lava/smooth = 1
+		/turf/simulated/floor/natural/lava = 1
 	)
 
 /datum/biome/cave/volcanic/lava/plasma
 	open_turf_types = list(
-		/turf/open/lava/plasma = 7,
-		/turf/open/floor/plating/asteroid/icerock/smooth = 1
+		/turf/simulated/floor/natural/lava = 7,
+		/turf/simulated/floor/asteroid/snow/icerock/smooth = 1
 	)

@@ -17,3 +17,14 @@
 	if(victim == O)
 		return 0
 	return 1
+
+/obj/effect/minefield
+	name = "minefield"
+	var/minerange = 9
+	var/minetype = /obj/structure/landmine
+
+/obj/effect/minefield/Initialize()
+	. = ..()
+	for(var/turf/simulated/floor/T in view(minerange,loc))
+		if(prob(5))
+			new minetype(T)

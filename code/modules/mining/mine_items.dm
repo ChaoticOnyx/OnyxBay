@@ -56,6 +56,14 @@
 	var/drill_sound = 'sound/effects/fighting/Genhit.ogg'
 	var/drill_verb = "picking"
 
+/obj/item/pickaxe/rusty
+	name = "rusty pickaxe"
+	desc = "A pickaxe that's been left to rust."
+	attack_verb = list("ineffectively hit")
+	force = 7
+	armor_penetration = 30
+	sharp = 0
+
 /obj/item/pickaxe/drill
 	name = "mining drill" //Can dig sand as well!
 	icon_state = "handdrill"
