@@ -321,3 +321,10 @@
 	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 1)
 	build_path = /obj/item/circuitboard/genemod
 	sort_string = "KCAAK"
+
+/datum/design/circuit/pole
+	name = "pole"
+	id = "pole"
+	req_tech = list(TECH_ENGINEERING = 1, TECH_POWER = 1)
+	build_path = /obj/item/circuitboard/pole
+	sort_string = "KCAAL"

@@ -29,6 +29,7 @@
 #define COLOR_TEAL             "#33cccc"
 #define COLOR_RED              "#ff0000"
 #define COLOR_PINK             "#ff00ff"
+#define COLOR_LIGHT_PINK       "#FF3CC8"
 #define COLOR_ORANGE           "#ff9900"
 #define COLOR_YELLOW           "#ffff00"
 #define COLOR_GRAY             "#808080"
