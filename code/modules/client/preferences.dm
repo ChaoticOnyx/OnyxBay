@@ -369,11 +369,11 @@
 			O.desc = initial(O.desc)
 	//For species that don't care about your silly prefs
 	character.species.handle_limbs_setup(character)
-	for(var/name in list(BP_HEART,BP_EYES,BP_BRAIN,BP_LUNGS,BP_LIVER,BP_KIDNEYS,BP_STOMACH,BP_JAW))
+	for(var/name in list(BP_HEART, BP_EYES, BP_BRAIN, BP_LUNGS, BP_LIVER, BP_KIDNEYS, BP_STOMACH, BP_JAW))
 		var/status = organ_data[name]
 		var/obj/item/organ/I = character.internal_organs_by_name[name]
-		I.status = 0
-		I.model = null
+		I?.status = 0
+		I?.model = null
 		if(I)
 			if(status == "assisted")
 				I.mechassist()
