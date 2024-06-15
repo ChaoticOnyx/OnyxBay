@@ -36,7 +36,7 @@
 								/obj/item/toy/figure/ert 			= TRADER_BLACKLIST,
 								/obj/item/toy/plushie 				= TRADER_SUBTYPES_ONLY,
 								/obj/item/toy/katana 				= TRADER_THIS_TYPE,
-								/obj/item/toy/sword	 				= TRADER_THIS_TYPE,
+								/obj/item/toy/sword 				= TRADER_THIS_TYPE,
 								/obj/item/toy/bosunwhistle 			= TRADER_THIS_TYPE,
 								/obj/item/board 					= TRADER_THIS_TYPE,
 								/obj/item/storage/box/checkers 		= TRADER_ALL,
