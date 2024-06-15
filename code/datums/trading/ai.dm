@@ -134,7 +134,7 @@ They sell generic supplies and ask for generic supplies.
 								/obj/item/storage/briefcase/inflatable 			= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/storage/hazardvest 		= TRADER_ALL,
 								/obj/item/clothing/gloves/thick 				= TRADER_THIS_TYPE,
-								/obj/item/clothing/gloves/insulated/cheap 		= TRADER_THIS_TYPE,
+								/obj/item/clothing/gloves/insulated  			= TRADER_ALL,
 								/obj/item/clothing/head/hardhat 				= TRADER_ALL,
 								/obj/item/clothing/head/hardhat/atmos 			= TRADER_BLACKLIST,
 								/obj/item/clothing/shoes/workboots 				= TRADER_THIS_TYPE

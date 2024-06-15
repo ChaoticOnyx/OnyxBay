@@ -38,6 +38,7 @@
 								/obj/item/clothing/accessory/legguards 					= TRADER_ALL,
 								/obj/item/clothing/accessory/storage/pouches 			= TRADER_ALL,
 								/obj/item/clothing/gloves/guards 						= TRADER_THIS_TYPE,
+								/obj/item/clothing/gloves/thick/swat 					= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/armor/bulletproof 				= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/armor/hos 						= TRADER_ALL,
 								/obj/item/clothing/suit/armor/laserproof 				= TRADER_THIS_TYPE,
