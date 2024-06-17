@@ -178,6 +178,8 @@
 
 	var/obj/structure/overmap/last_overmap = null
 
+	var/list/engines = list()
+
 /obj/structure/overmap/Initialize(mapload)
 	GLOB.overmap_objects += src
 	. = ..()
@@ -434,46 +436,6 @@
 /// This is overly expensive, most of these checks are already ran in physics. TODO: optimize
 /obj/structure/overmap/on_update_icon()
 	apply_damage_states()
-
-	CutOverlays("rcs_left")
-	CutOverlays("rcs_right")
-	CutOverlays("thrust")
-	if(angle == desired_angle)
-		return //No RCS needed if we're already facing where we want to go
-
-	var/list/left_thrusts = list()
-	left_thrusts.len = 8
-	var/list/right_thrusts = list()
-	right_thrusts.len = 8
-	var/back_thrust = 0
-	for(var/cdir in GLOB.cardinal)
-		left_thrusts[cdir] = 0
-		right_thrusts[cdir] = 0
-	if(last_thrust_right != 0)
-		var/tdir = last_thrust_right > 0 ? WEST : EAST
-		left_thrusts[tdir] = abs(last_thrust_right) / side_maxthrust
-		right_thrusts[tdir] = abs(last_thrust_right) / side_maxthrust
-	if(last_thrust_forward > 0)
-		back_thrust = last_thrust_forward / forward_maxthrust
-	if(last_thrust_forward < 0)
-		left_thrusts[NORTH] = -last_thrust_forward / backward_maxthrust
-		right_thrusts[NORTH] = -last_thrust_forward / backward_maxthrust
-	if(last_rotate != 0)
-		var/frac = abs(last_rotate) / max_angular_acceleration
-		for(var/cdir in GLOB.cardinal)
-			if(last_rotate > 0)
-				right_thrusts[cdir] += frac
-			else
-				left_thrusts[cdir] += frac
-	for(var/cdir in GLOB.cardinal)
-		var/left_thrust = left_thrusts[cdir]
-		var/right_thrust = right_thrusts[cdir]
-		if(left_thrust)
-			AddOverlays("rcs_left")
-		if(right_thrust)
-			AddOverlays("rcs_right")
-	if(back_thrust)
-		AddOverlays("thrust")
 
 /obj/structure/overmap/proc/apply_damage_states()
 	if(!damage_states)

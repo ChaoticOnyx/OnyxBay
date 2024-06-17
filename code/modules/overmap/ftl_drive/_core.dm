@@ -22,12 +22,12 @@
 	var/required_charge //This is a function of the required fuel joules.
 	var/accumulated_charge
 	var/max_charge = 2000000
-	var/max_range = 30000 //max jump range. This is _very_ long distance
+	var/max_range = 30 //max jump range. This is _very_ long distance
 
 	var/progress = 0 SECONDS
 	var/progress_rate = 1 SECONDS
 	var/jump_delay = 31 SECONDS
-	var/jump_duration = 30 MINUTES
+	var/jump_duration = 5 SECONDS
 
 	var/sabotaged
 	var/jumping = FALSE
@@ -35,14 +35,14 @@
 	var/jump_start_text = "Attention! Superluminal shunt warm-up initiated! Spool-up ETA: %%TIME%%"
 	var/jump_cancel_text = "Attention! Faster-than-light transition cancelled."
 	var/jump_complete_text = "Attention! Faster-than-light transition completed."
-	var/jump_spooling_text = "Attention! Superluminal shunt warm-up complete, spooling up."
+	var/jump_spooling_text = "Attention! FTL warm-up complete, initiating jump."
 
 	var/sabotage_text_minor = "Warning! Electromagnetic flux beyond safety limits - aborting shunt!"
 	var/sabotage_text_major = "Warning! Critical electromagnetic flux in accelerator core! Dumping core and aborting shunt!"
 	var/sabotage_text_critical = "ALERT! Critical malfunction in microsingularity containment core! Safety systems offline!"
 
-	var/moderate_jump_distance = 15000
-	var/safe_jump_distance = 15000
+	var/moderate_jump_distance = 15
+	var/safe_jump_distance = 15
 	var/lockout = FALSE
 
 /obj/machinery/ftl_drive/core/Initialize()
@@ -69,15 +69,13 @@
 		return FTL_START_FAILURE_COOLDOWN
 
 	if(ftl_flags & FTL_DRIVE_REQUIRES_FUEL)
-		if(!length(fuel_ports)) //no fuel ports
+		if(!length(fuel_ports))
 			find_ports()
 			if(!length(fuel_ports))
 				return FTL_START_FAILURE_OTHER
 
 		if(required_fuel_joules > get_fuel(fuel_ports))
 			return FTL_START_FAILURE_FUEL
-
-	//calculate_jump_requirements()
 
 	if(ftl_flags & FTL_DRIVE_REQUIRES_CHARGE)
 		if(accumulated_charge < required_charge)
@@ -133,11 +131,8 @@
 	ftl_computer.linked?.relay('sound/effects/ship/FTL_loop.ogg', null, loop = TRUE, channel = SOUND_CHANNEL_FTL_MANIFOLD)
 	SSskybox.reinstate_skyboxes("ftl", FALSE)
 
-	for(var/mob/M in GLOB.living_mob_list_)
-		shake_camera(M, 2, 3)
-
 	GLOB.using_map.apply_ftl_mask()
-	do_effects(curr.dist(target_system))
+	INVOKE_ASYNC(src, nameof(.proc/do_effects), curr.dist(target_system))
 
 	set_next_think_ctx("jump_end", world.time + jump_duration, target_system, force)
 

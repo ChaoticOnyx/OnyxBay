@@ -161,6 +161,10 @@
 				var/drag_factor_spin = 1 - Clamp(drag * 30 * time / abs(angular_velocity), 0, 1)
 				angular_velocity *= drag_factor_spin
 
+	CutOverlays("rcs_left")
+	CutOverlays("rcs_right")
+	CutOverlays("thrust")
+
 	var/thrust_x
 	var/thrust_y
 	var/fx = cos(90 - angle)
@@ -179,23 +183,24 @@
 		last_thrust_forward = forward_thrust
 		last_thrust_right = right_thrust
 	else
-		if(can_move())
+		if(can_move() && user_thrust_dir)
+			var/total_dv = get_delta_v()
 			if(user_thrust_dir & NORTH)
-				thrust_x += fx * forward_maxthrust
-				thrust_y += fy * forward_maxthrust
-				last_thrust_forward = forward_maxthrust
+				thrust_x += fx * total_dv
+				thrust_y += fy * total_dv
+				last_thrust_forward = total_dv
 			if(user_thrust_dir & SOUTH)
-				thrust_x -= fx * backward_maxthrust
-				thrust_y -= fy * backward_maxthrust
-				last_thrust_forward = -backward_maxthrust
+				thrust_x -= fx * total_dv
+				thrust_y -= fy * total_dv
+				last_thrust_forward = -total_dv
 			if(user_thrust_dir & EAST)
-				thrust_x += sx * side_maxthrust
-				thrust_y += sy * side_maxthrust
-				last_thrust_right = side_maxthrust
+				thrust_x += sx * total_dv
+				thrust_y += sy * total_dv
+				last_thrust_right = total_dv
 			if(user_thrust_dir & WEST)
-				thrust_x -= sx * side_maxthrust
-				thrust_y -= sy * side_maxthrust
-				last_thrust_right = -side_maxthrust
+				thrust_x -= sx * total_dv
+				thrust_y -= sy * total_dv
+				last_thrust_right = -total_dv
 
 	velocity.a = clamp(velocity.a, -speed_limit, speed_limit)
 	velocity.e = clamp(velocity.e, -speed_limit, speed_limit)
@@ -328,7 +333,51 @@
 	user_thrust_dir = 0
 	update_icon()
 
+	if(angle != desired_angle)//No RCS needed if we're already facing where we want to go
+		if(prob(80) && desired_angle)
+			relay('sound/effects/ship/rcs.ogg', null, FALSE, SOUND_CHANNEL_HUM)
+
+	var/list/left_thrusts = list()
+	left_thrusts.len = 8
+	var/list/right_thrusts = list()
+	right_thrusts.len = 8
+	var/back_thrust = 0
+	if(last_thrust_right != 0)
+		var/tdir = last_thrust_right > 0 ? WEST : EAST
+		left_thrusts[tdir] = abs(last_thrust_right) / side_maxthrust
+		right_thrusts[tdir] = abs(last_thrust_right) / side_maxthrust
+	if(last_thrust_forward > 0)
+		back_thrust = last_thrust_forward / forward_maxthrust
+	if(last_thrust_forward < 0)
+		left_thrusts[NORTH] = -last_thrust_forward / backward_maxthrust
+		right_thrusts[NORTH] = -last_thrust_forward / backward_maxthrust
+	if(last_rotate != 0)
+		var/frac = abs(last_rotate) / max_angular_acceleration
+		for(var/cdir in GLOB.cardinal)
+			if(last_rotate > 0)
+				right_thrusts[cdir] += frac
+			else
+				left_thrusts[cdir] += frac
+	for(var/cdir in GLOB.cardinal)
+		var/left_thrust = left_thrusts[cdir]
+		var/right_thrust = right_thrusts[cdir]
+		if(left_thrust)
+			AddOverlays("rcs_left")
+		if(right_thrust)
+			AddOverlays("rcs_right")
+
+	if(back_thrust)
+		AddOverlays("thrust")
+
 	set_next_think(world.time + 1.5)
+
+/obj/structure/overmap/proc/get_delta_v()
+	var/dv = 0
+	for(var/obj/machinery/atmospherics/unary/engine/engine in engines)
+		var/datum/extension/ship_engine/extension = get_extension(engine, /datum/extension/ship_engine)
+		dv += extension.burn()
+
+	return dv / 1000
 
 /obj/structure/overmap/small_craft/collide(obj/structure/overmap/other, datum/collision_response/c_response, collision_velocity)
 	pass()
