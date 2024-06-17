@@ -12,6 +12,7 @@
 
 /obj/machinery/door/unpowered/simple/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	TemperatureAct(exposed_temperature)
+	return ..()
 
 /obj/machinery/door/unpowered/simple/proc/TemperatureAct(temperature)
 	take_damage(100*material.combustion_effect(get_turf(src),temperature, 0.3))

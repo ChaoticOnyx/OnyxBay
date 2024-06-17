@@ -70,6 +70,7 @@
 
 /obj/item/music_tape/fire_act()
 	ruin()
+	return ..()
 
 /obj/item/music_tape/proc/CanPlay()
 	if(!track)

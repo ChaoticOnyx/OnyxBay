@@ -364,6 +364,8 @@
 	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)
 
+	return ..()
+
 /obj/machinery/door/airlock/plasma/proc/ignite(exposed_temperature)
 	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)

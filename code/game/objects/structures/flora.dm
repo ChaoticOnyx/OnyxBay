@@ -377,6 +377,7 @@
 
 /obj/structure/flora/pottedplant/fire_act()
 	death()
+	return ..()
 
 /obj/structure/flora/pottedplant/attackby(obj/item/W, mob/user)
 	if (W.edge && user.a_intent == I_HURT)

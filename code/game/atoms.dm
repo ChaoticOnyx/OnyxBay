@@ -384,8 +384,8 @@ its easier to just keep the beam vertical.
 	return NO_EMAG_ACT
 
 /atom/proc/fire_act()
-	CAN_BE_REDEFINED(TRUE)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	SEND_SIGNAL(src, SIGNAL_FIRE_ACT, src)
 
 /atom/proc/melt()
 	CAN_BE_REDEFINED(TRUE)
