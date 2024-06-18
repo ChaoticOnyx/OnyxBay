@@ -1,3 +1,26 @@
+
+#define FIRE_MODE_ANTI_AIR 1
+#define FIRE_MODE_TORPEDO 2
+#define FIRE_MODE_AMS_LASER 3
+#define FIRE_MODE_AMS 4
+#define FIRE_MODE_MAC 5
+#define FIRE_MODE_RAILGUN 6
+#define FIRE_MODE_GAUSS 7
+#define FIRE_MODE_PDC 8
+#define FIRE_MODE_BROADSIDE 9
+#define FIRE_MODE_PHORON 10
+#define FIRE_MODE_FLAK 11
+#define FIRE_MODE_MISSILE 12
+#define FIRE_MODE_FIGHTER_SLOT_ONE 13
+#define FIRE_MODE_FIGHTER_SLOT_TWO 14
+#define FIRE_MODE_RED_LASER 15
+#define FIRE_MODE_LASER_PD 16
+#define FIRE_MODE_BLUE_LASER 17
+#define FIRE_MODE_HYBRID_RAIL 18
+
+/// This should relate to the maximum number of weapons a ship can ever have. Keep this up to date please!
+#define MAX_POSSIBLE_FIREMODE 18
+
 //Base Armor Values
 
 #define OM_ARMOR list("melee" = 100, "bullet" = 100, "laser" = 100, "energy" = 100, "bomb" = 80, "bio" = 100, "rad" = 100, "acid" = 100, "stamina" = 100)
@@ -77,9 +100,6 @@ GLOBAL_LIST_INIT(overmap_anomalies, list())
 #define FTL_STATE_READY 3
 #define FTL_STATE_JUMPING 4
 
-#define OVERMAP_USER_ROLE_PILOT    (1<<0)
-#define OVERMAP_USER_ROLE_OBSERVER (1<<1)
-
 #define HARDPOINT_SLOT_PRIMARY "Primary"
 #define HARDPOINT_SLOT_SECONDARY "Secondary"
 #define HARDPOINT_SLOT_UTILITY "Utility"
@@ -105,3 +125,23 @@ GLOBAL_LIST_INIT(overmap_anomalies, list())
 #define LOADOUT_UTILITY_ONLY /datum/component/ship_loadout/utility
 
 #define ENGINE_RPM_SPUN 8000
+
+#define OVERMAP_USER_ROLE_PILOT            (1<<0)
+#define OVERMAP_USER_ROLE_GUNNER           (1<<1)
+#define OVERMAP_USER_ROLE_SECONDARY_GUNNER (1<<2)
+#define OVERMAP_USER_ROLE_OBSERVER         (1<<3)
+
+//Weapon classes for AIs
+#define WEAPON_CLASS_LIGHT 1
+#define WEAPON_CLASS_HEAVY 2
+
+#define CLOAK_TEMPORARY_LOSS 2 //Cloak handling. When you fire a weapon, you temporarily lose your cloak, and AIs can target you.
+
+#define SENSOR_VISIBILITY_FULL 1
+#define SENSOR_VISIBILITY_TARGETABLE 0.70 //You have to be close up, or not cloaked to be targetable by the ship's gunner.
+#define SENSOR_VISIBILITY_FAINT 0.5
+#define SENSOR_VISIBILITY_VERYFAINT 0.25
+#define SENSOR_VISIBILITY_GHOST 0 //Totally impervious to scans.
+
+#define SENSOR_RANGE_DEFAULT 40
+#define SENSOR_RANGE_FIGHTER 30 //Fighters have crappier sensors. Coordinate with the ATC!

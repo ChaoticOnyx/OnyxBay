@@ -34,6 +34,8 @@
 	var/radar_delay = MIN_RADAR_DELAY
 	var/dradis_targeting = FALSE
 	var/can_use_radar = TRUE
+	var/visual_range = SENSOR_RANGE_DEFAULT // The default range of a ship's guncam
+
 
 /obj/machinery/computer/ship/dradis/proc/can_radar_pulse()
 	if(!can_use_radar)

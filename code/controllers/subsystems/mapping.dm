@@ -43,3 +43,9 @@ SUBSYSTEM_DEF(mapping)
 
 /datum/controller/subsystem/mapping/proc/lateload_map_zlevels()
 	GLOB.using_map.perform_map_generation(TRUE)
+
+/datum/controller/subsystem/mapping/proc/add_new_zlevel(name, traits = list(), z_type = /datum/space_level)
+	var/new_z = GLOB.using_map.map_levels.len + 1
+	var/datum/space_level/S = new z_type()
+	GLOB.using_map.map_levels.Add(S)
+	return S

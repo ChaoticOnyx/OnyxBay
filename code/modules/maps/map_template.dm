@@ -80,18 +80,22 @@
 	for (var/shuttle_type in shuttles_to_initialise)
 		SSshuttle.initialise_shuttle(shuttle_type)
 
-/datum/map_template/proc/load_new_z()
+/datum/map_template/proc/load_new_z(list/level_traits)
+	var/x = round((world.maxx - width) / 2)
+	var/y = round((world.maxy - height) / 2)
 
-	var/x = round((world.maxx - width)/2)
-	var/y = round((world.maxy - height)/2)
+	if(x < 1)
+		x = 1
 
-	if (x < 1) x = 1
-	if (y < 1) y = 1
+	if(y < 1)
+		y = 1
+
+	var/datum/space_level/level = SSmapping.add_new_zlevel(name, level_traits)
 
 	var/list/bounds = list(1.#INF, 1.#INF, 1.#INF, -1.#INF, -1.#INF, -1.#INF)
 	var/list/atoms_to_initialise = list()
 
-	for (var/mappath in mappaths)
+	for(var/mappath in mappaths)
 		var/datum/map_load_metadata/M = maploader.load_map(file(mappath), x, y, no_changeturf=TRUE)
 		if (M)
 			bounds = extend_bounds_if_needed(bounds, M.bounds)

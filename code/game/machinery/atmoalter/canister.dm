@@ -181,6 +181,8 @@ update_flag
 		health -= 5
 		healthcheck()
 
+	return ..()
+
 /obj/machinery/portable_atmospherics/canister/proc/healthcheck()
 	if(destroyed)
 		return 1

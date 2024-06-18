@@ -147,9 +147,13 @@
 /obj/item/reagent_containers/rag/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature >= (50 CELSIUS))
 		ignite()
+
 	if(exposed_temperature >= (900 CELSIUS))
 		new /obj/effect/decal/cleanable/ash(get_turf(src))
-		qdel(src)
+		qdel_self()
+		return
+
+	return ..()
 
 //rag must have a minimum of 2 units welder fuel and at least 80% of the reagents must be welder fuel.
 //maybe generalize flammable reagents someday

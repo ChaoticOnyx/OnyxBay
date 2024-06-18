@@ -380,6 +380,7 @@
 
 /obj/item/device/tape/fire_act()
 	ruin()
+	return ..()
 
 /obj/item/device/tape/attack_self(mob/user)
 	if(!ruined)

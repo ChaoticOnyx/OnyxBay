@@ -467,3 +467,14 @@
 			return TRUE
 
 	return FALSE
+
+/obj/structure/overmap/small_craft/touch_map_edge()
+	var/obj/structure/overmap/O = get_overmap()
+	if(istype(O))
+		forceMove(O.loc)
+	//	var/datum/star_system/SS = SSstar_system.ships[O]["current_system"]
+//	if(!(O.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_OVERMAP)))
+//		var/obj/structure/overmap/O =
+
+/obj/structure/overmap/small_craft/get_delta_v()
+	return forward_maxthrust

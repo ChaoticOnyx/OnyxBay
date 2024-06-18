@@ -45,3 +45,6 @@
 
 /// Called on 'atom/bullet_act' (/atom, obj/item/projectile)
 #define SIGNAL_BULLET_ACT "atom_bullet_act"
+
+/// Called on '/atom/fire_act' (/atom)
+#define SIGNAL_FIRE_ACT "atom_fire_act"

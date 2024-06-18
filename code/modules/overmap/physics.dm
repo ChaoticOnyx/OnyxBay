@@ -161,6 +161,10 @@
 				var/drag_factor_spin = 1 - Clamp(drag * 30 * time / abs(angular_velocity), 0, 1)
 				angular_velocity *= drag_factor_spin
 
+	CutOverlays("rcs_left")
+	CutOverlays("rcs_right")
+	CutOverlays("thrust")
+
 	var/thrust_x
 	var/thrust_y
 	var/fx = cos(90 - angle)
@@ -179,23 +183,24 @@
 		last_thrust_forward = forward_thrust
 		last_thrust_right = right_thrust
 	else
-		if(can_move())
+		if(can_move() && user_thrust_dir)
+			var/total_dv = get_delta_v()
 			if(user_thrust_dir & NORTH)
-				thrust_x += fx * forward_maxthrust
-				thrust_y += fy * forward_maxthrust
-				last_thrust_forward = forward_maxthrust
+				thrust_x += fx * total_dv
+				thrust_y += fy * total_dv
+				last_thrust_forward = total_dv
 			if(user_thrust_dir & SOUTH)
-				thrust_x -= fx * backward_maxthrust
-				thrust_y -= fy * backward_maxthrust
-				last_thrust_forward = -backward_maxthrust
+				thrust_x -= fx * total_dv
+				thrust_y -= fy * total_dv
+				last_thrust_forward = -total_dv
 			if(user_thrust_dir & EAST)
-				thrust_x += sx * side_maxthrust
-				thrust_y += sy * side_maxthrust
-				last_thrust_right = side_maxthrust
+				thrust_x += sx * total_dv
+				thrust_y += sy * total_dv
+				last_thrust_right = total_dv
 			if(user_thrust_dir & WEST)
-				thrust_x -= sx * side_maxthrust
-				thrust_y -= sy * side_maxthrust
-				last_thrust_right = -side_maxthrust
+				thrust_x -= sx * total_dv
+				thrust_y -= sy * total_dv
+				last_thrust_right = -total_dv
 
 	velocity.a = clamp(velocity.a, -speed_limit, speed_limit)
 	velocity.e = clamp(velocity.e, -speed_limit, speed_limit)
@@ -212,9 +217,6 @@
 	offset._set(offset.a + velocity.a * time, offset.e +  velocity.e * time, TRUE)
 
 	position._set(x * 32 + offset.a * 32, y * 32 + offset.e * 32)
-
-	if(physics2d)
-		physics2d.update(position.a, position.e, angle)
 
 	while((offset.a != 0 && velocity.a != 0) || (offset.e != 0 && velocity.e != 0))
 		var/failed_x = FALSE
@@ -328,93 +330,93 @@
 	user_thrust_dir = 0
 	update_icon()
 
+	if(angle != desired_angle)//No RCS needed if we're already facing where we want to go
+		if(prob(80) && desired_angle)
+			relay('sound/effects/ship/rcs.ogg', null, FALSE, SOUND_CHANNEL_HUM)
+
+	var/list/left_thrusts = list()
+	left_thrusts.len = 8
+	var/list/right_thrusts = list()
+	right_thrusts.len = 8
+	var/back_thrust = 0
+	if(last_thrust_right != 0)
+		var/tdir = last_thrust_right > 0 ? WEST : EAST
+		left_thrusts[tdir] = abs(last_thrust_right) / side_maxthrust
+		right_thrusts[tdir] = abs(last_thrust_right) / side_maxthrust
+	if(last_thrust_forward > 0)
+		back_thrust = last_thrust_forward / forward_maxthrust
+	if(last_thrust_forward < 0)
+		left_thrusts[NORTH] = -last_thrust_forward / backward_maxthrust
+		right_thrusts[NORTH] = -last_thrust_forward / backward_maxthrust
+	if(last_rotate != 0)
+		var/frac = abs(last_rotate) / max_angular_acceleration
+		for(var/cdir in GLOB.cardinal)
+			if(last_rotate > 0)
+				right_thrusts[cdir] += frac
+			else
+				left_thrusts[cdir] += frac
+	for(var/cdir in GLOB.cardinal)
+		var/left_thrust = left_thrusts[cdir]
+		var/right_thrust = right_thrusts[cdir]
+		if(left_thrust)
+			AddOverlays("rcs_left")
+		if(right_thrust)
+			AddOverlays("rcs_right")
+
+	if(back_thrust)
+		AddOverlays("thrust")
+
 	set_next_think(world.time + 1.5)
 
-/obj/structure/overmap/small_craft/collide(obj/structure/overmap/other, datum/collision_response/c_response, collision_velocity)
-	pass()
+/obj/structure/overmap/proc/get_delta_v()
+	var/dv = 0
+	for(var/obj/machinery/atmospherics/unary/engine/engine in engines)
+		var/datum/extension/ship_engine/extension = get_extension(engine, /datum/extension/ship_engine)
+		dv += extension.burn()
 
-/obj/structure/overmap/proc/collide(obj/structure/overmap/other, datum/collision_response/c_response, collision_velocity)
-	if(!c_response)
-		var/src_vel_mag = src.velocity.ln()
-		var/other_vel_mag = other.velocity.ln()
-		var/col_angle = ATAN2((other.position.a + other.pixel_collision_size_x / 2) - (src.position.a + src.pixel_collision_size_x / 2), (other.position.e + other.pixel_collision_size_y / 2) - (src.position.e + pixel_collision_size_y / 2))
+	return dv / 1000
 
-		if(((cos(src.velocity.angle() - col_angle) * src_vel_mag) - (cos(other.velocity.angle() - col_angle) * other_vel_mag)) < 0)
-			return
+/obj/structure/overmap/proc/collide(obj/structure/overmap/other, collision_velocity)
+	var/src_vel_mag = src.velocity.ln()
+	var/other_vel_mag = other.velocity.ln()
+	var/col_angle = ATAN2((other.position.a + other.pixel_collision_size_x / 2) - (src.position.a + src.pixel_collision_size_x / 2), (other.position.e + other.pixel_collision_size_y / 2) - (src.position.e + pixel_collision_size_y / 2))
 
-		var/new_src_vel_x = ((																			\
-			(src_vel_mag * cos(src.velocity.angle() - col_angle) * (src.mass - other.mass)) +			\
-			(2 * other.mass * other_vel_mag * cos(other.velocity.angle() - col_angle))					\
-		) / (src.mass + other.mass)) * cos(col_angle) + (src_vel_mag * sin(src.velocity.angle() - col_angle) * cos(col_angle + 90))
+	if(((cos(src.velocity.angle() - col_angle) * src_vel_mag) - (cos(other.velocity.angle() - col_angle) * other_vel_mag)) < 0)
+		return
 
-		var/new_src_vel_y = ((																			\
-			(src_vel_mag * cos(src.velocity.angle() - col_angle) * (src.mass - other.mass)) +			\
-			(2 * other.mass * other_vel_mag * cos(other.velocity.angle() - col_angle))					\
-		) / (src.mass + other.mass)) * sin(col_angle) + (src_vel_mag * sin(src.velocity.angle() - col_angle) * sin(col_angle + 90))
+	var/new_src_vel_x = ((																			\
+		(src_vel_mag * cos(src.velocity.angle() - col_angle) * (src.mass - other.mass)) +			\
+		(2 * other.mass * other_vel_mag * cos(other.velocity.angle() - col_angle))					\
+	) / (src.mass + other.mass)) * cos(col_angle) + (src_vel_mag * sin(src.velocity.angle() - col_angle) * cos(col_angle + 90))
 
-		var/new_other_vel_x = ((																		\
-			(other_vel_mag * cos(other.velocity.angle() - col_angle) * (other.mass - src.mass)) +		\
-			(2 * src.mass * src_vel_mag * cos(src.velocity.angle() - col_angle))						\
-		) / (other.mass + src.mass)) * cos(col_angle) + (other_vel_mag * sin(other.velocity.angle() - col_angle) * cos(col_angle + 90))
+	var/new_src_vel_y = ((																			\
+		(src_vel_mag * cos(src.velocity.angle() - col_angle) * (src.mass - other.mass)) +			\
+		(2 * other.mass * other_vel_mag * cos(other.velocity.angle() - col_angle))					\
+	) / (src.mass + other.mass)) * sin(col_angle) + (src_vel_mag * sin(src.velocity.angle() - col_angle) * sin(col_angle + 90))
 
-		var/new_other_vel_y = ((																		\
-			(other_vel_mag * cos(other.velocity.angle() - col_angle) * (other.mass - src.mass)) +		\
-			(2 * src.mass * src_vel_mag * cos(src.velocity.angle() - col_angle))						\
-		) / (other.mass + src.mass)) * sin(col_angle) + (other_vel_mag * sin(other.velocity.angle() - col_angle) * sin(col_angle + 90))
+	var/new_other_vel_x = ((																		\
+		(other_vel_mag * cos(other.velocity.angle() - col_angle) * (other.mass - src.mass)) +		\
+		(2 * src.mass * src_vel_mag * cos(src.velocity.angle() - col_angle))						\
+	) / (other.mass + src.mass)) * cos(col_angle) + (other_vel_mag * sin(other.velocity.angle() - col_angle) * cos(col_angle + 90))
 
-		src.velocity._set(new_src_vel_x, new_src_vel_y)
-		other.velocity._set(new_other_vel_x, new_other_vel_y)
+	var/new_other_vel_y = ((																		\
+		(other_vel_mag * cos(other.velocity.angle() - col_angle) * (other.mass - src.mass)) +		\
+		(2 * src.mass * src_vel_mag * cos(src.velocity.angle() - col_angle))						\
+	) / (other.mass + src.mass)) * sin(col_angle) + (other_vel_mag * sin(other.velocity.angle() - col_angle) * sin(col_angle + 90))
 
-		var/bonk = src_vel_mag
-		var/bonk2 = other_vel_mag
-		//Prevent ultra spam.
-		if(!impact_sound_cooldown && (bonk > 2 || bonk2 > 2))
-			bonk *= 5
-			bonk2 *= 5
-			take_quadrant_hit(bonk, projectile_quadrant_impact(other))
-			other.take_quadrant_hit(bonk2, projectile_quadrant_impact(src))
+	src.velocity._set(new_src_vel_x, new_src_vel_y)
+	other.velocity._set(new_other_vel_x, new_other_vel_y)
 
-			log_game("[key_name(pilot)] has impacted an overmap ship into [other] with velocity [bonk]")
+	var/bonk = src_vel_mag
+	var/bonk2 = other_vel_mag
+	//Prevent ultra spam.
+	if(!impact_sound_cooldown && (bonk > 2 || bonk2 > 2))
+		bonk *= 5
+		bonk2 *= 5
+		take_quadrant_hit(bonk, projectile_quadrant_impact(other))
+		other.take_quadrant_hit(bonk2, projectile_quadrant_impact(src))
 
-		return TRUE
-
-	if(physics2d)
-		physics2d.update(position.a, position.e, angle)
-	if(other.physics2d)
-		other.physics2d.update(other.position.a, other.position.e, angle)
-	var/matrix/vector/point_of_collision = physics2d?.collider2d.get_collision_point(other.physics2d?.collider2d)
-	check_quadrant(point_of_collision)
-
-	if(point_of_collision)
-		var/col_angle = c_response.overlap_normal.angle()
-		var/src_vel_mag = src.velocity.ln()
-		var/other_vel_mag = other.velocity.ln()
-
-		var/new_src_vel_x = ((																			\
-			(src_vel_mag * cos(src.velocity.angle() - col_angle) * (src.mass - other.mass)) +			\
-			(2 * other.mass * other_vel_mag * cos(other.velocity.angle() - col_angle))					\
-		) / (src.mass + other.mass)) * cos(col_angle) + (src_vel_mag * sin(src.velocity.angle() - col_angle) * cos(col_angle + 90))
-
-		var/new_src_vel_y = ((																			\
-			(src_vel_mag * cos(src.velocity.angle() - col_angle) * (src.mass - other.mass)) +			\
-			(2 * other.mass * other_vel_mag * cos(other.velocity.angle() - col_angle))					\
-		) / (src.mass + other.mass)) * sin(col_angle) + (src_vel_mag * sin(src.velocity.angle() - col_angle) * sin(col_angle + 90))
-
-		var/new_other_vel_x = ((																		\
-			(other_vel_mag * cos(other.velocity.angle() - col_angle) * (other.mass - src.mass)) +		\
-			(2 * src.mass * src_vel_mag * cos(src.velocity.angle() - col_angle))						\
-		) / (other.mass + src.mass)) * cos(col_angle) + (other_vel_mag * sin(other.velocity.angle() - col_angle) * cos(col_angle + 90))
-
-		var/new_other_vel_y = ((																		\
-			(other_vel_mag * cos(other.velocity.angle() - col_angle) * (other.mass - src.mass)) +		\
-			(2 * src.mass * src_vel_mag * cos(src.velocity.angle() - col_angle))						\
-		) / (other.mass + src.mass)) * sin(col_angle) + (other_vel_mag * sin(other.velocity.angle() - col_angle) * sin(col_angle + 90))
-
-		src.velocity._set(new_src_vel_x*bounce_factor, new_src_vel_y*bounce_factor)
-		other.velocity._set(new_other_vel_x*other.bounce_factor, new_other_vel_y*other.bounce_factor)
-	var/matrix/vector/output = c_response.overlap_vector * (0.25 / 32)
-	src.offset -= output
-	other.offset += output
+		log_game("[key_name(pilot)] has impacted an overmap ship into [other] with velocity [bonk]")
 
 /obj/structure/overmap/Bumped(atom/movable/A)
 	if(brakes || isovermap(A))
@@ -430,7 +432,7 @@
 		velocity.a -= bump_impulse
 	return ..()
 
-/obj/structure/overmap/Bump(atom/movable/A, datum/collision_response/c_response)
+/obj/structure/overmap/Bump(atom/movable/A)
 	var/bump_velocity = 0
 	if(dir & (NORTH|SOUTH))
 		bump_velocity = abs(velocity.e) + (abs(velocity.a) / 10)
@@ -440,7 +442,7 @@
 		return ..()
 
 	if(istype(A, /obj/structure/overmap))
-		collide(A, c_response, bump_velocity)
+		collide(A, bump_velocity)
 		return FALSE
 
 	if(bump_velocity >= 3 && !impact_sound_cooldown && isobj(A))

@@ -747,7 +747,8 @@
 		log_message("Exposed to dangerous temperature.", 1)
 		take_damage(5, "fire")
 		check_for_internal_damage(list(MECHA_INT_FIRE, MECHA_INT_TEMP_CONTROL))
-	return
+
+	return ..()
 
 /obj/mecha/blob_act(damage)
 	take_damage(damage * 2, "brute")

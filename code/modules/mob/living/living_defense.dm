@@ -360,6 +360,8 @@
 		adjust_fire_stacks(4)
 	IgniteMob()
 
+	return ..()
+
 /mob/living/proc/get_cold_protection()
 	return 0
 

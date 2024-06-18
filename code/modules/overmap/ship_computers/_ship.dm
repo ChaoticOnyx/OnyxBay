@@ -31,6 +31,7 @@
 /obj/machinery/computer/ship/proc/relay_sound(sound, message)
 	if(!can_sound)
 		return
+
 	if(message)
 		visible_message(message)
 	if(sound)

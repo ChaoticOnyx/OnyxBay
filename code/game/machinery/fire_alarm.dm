@@ -122,11 +122,12 @@
 
 /obj/machinery/firealarm/fire_act(datum/gas_mixture/air, temperature, volume)
 	if(!detecting)
-		return
+		return ..()
 
 	if(temperature > (200 CELSIUS))
 		alarm()
-	return
+
+	return ..()
 
 /obj/machinery/firealarm/bullet_act(obj/item/projectile/proj)
 	if(!wiresexposed)

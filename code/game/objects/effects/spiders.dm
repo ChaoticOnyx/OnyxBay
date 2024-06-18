@@ -53,6 +53,8 @@
 		health -= 5
 		healthcheck()
 
+	return ..()
+
 /obj/structure/spider/stickyweb
 	icon_state = "stickyweb1"
 	///Whether or not the web is a sealed web
