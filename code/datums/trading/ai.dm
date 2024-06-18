@@ -82,6 +82,7 @@ They sell generic supplies and ask for generic supplies.
 								/obj/item/stack/material/gold/ten 							= TRADER_THIS_TYPE,
 								/obj/item/stack/material/glass/fifty 						= TRADER_THIS_TYPE,
 								/obj/item/stack/material/glass/rplass/ten 					= TRADER_THIS_TYPE,
+								/obj/item/stack/material/glass/rblack/ten 					= TRADER_THIS_TYPE,
 								/obj/item/stack/material/glass/reinforced/fifty 			= TRADER_THIS_TYPE,
 								/obj/item/stack/material/marble/fifty 						= TRADER_THIS_TYPE,
 								/obj/item/stack/material/mhydrogen/ten 						= TRADER_THIS_TYPE,
