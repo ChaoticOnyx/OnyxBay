@@ -152,9 +152,9 @@
 	startswith = list(/datum/reagent/dylovene)
 
 /obj/item/reagent_containers/hypospray/autoinjector/tricordrazine
-	icon_state = "red1"
+	icon_state = "lightpurple1"
 	content_desc = "Tricordrazine 10u. Use to speed up recovery from physical trauma."
-	base_state = "red"
+	base_state = "lightpurple"
 	startswith = list(/datum/reagent/tricordrazine)
 
 /obj/item/reagent_containers/hypospray/autoinjector/pain
@@ -202,9 +202,9 @@
 	startswith = list(/datum/reagent/dexalinp)
 
 /obj/item/reagent_containers/hypospray/autoinjector/bicaridine
-	icon_state = "rred1"
+	icon_state = "red1"
 	content_desc = "Bicaridine 10u. Used to treat serious physical wounds."
-	base_state = "rred"
+	base_state = "red"
 	startswith = list(/datum/reagent/bicaridine)
 
 /obj/item/reagent_containers/hypospray/autoinjector/dermaline
