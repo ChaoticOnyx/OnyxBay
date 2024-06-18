@@ -172,7 +172,6 @@
 	var/matrix/vector/velocity
 	var/matrix/vector/overlap // Will be subtracted from the ships offset as soon as possible, then set to 0
 	var/list/collision_positions = list() //See the collisions doc for how these work. Theyre a pain in the ass.
-	var/datum/component/physics2d/physics2d = null
 
 	is_poi = TRUE
 
@@ -215,10 +214,6 @@
 	position = new /matrix/vector(x*32,y*32)
 	velocity = new /matrix/vector(0, 0)
 	overlap = new /matrix/vector(0, 0)
-	if(collision_positions.len)
-		physics2d = AddComponent(/datum/component/physics2d)
-		physics2d.setup(collision_positions, angle)
-
 
 	integrity = max_integrity
 
@@ -318,31 +313,6 @@
 			weapon_numkeys_map += firemode
 	apply_weapons()
 
-/obj/weapon_overlay
-	name = "Weapon overlay"
-	layer = 4
-	mouse_opacity = FALSE
-	layer = ABOVE_WINDOW_LAYER
-	var/angle = 0 //Debug
-
-/obj/weapon_overlay/proc/do_animation()
-	return
-
-/obj/weapon_overlay/railgun //Railgun sits on top of the ship and swivels to face its target
-	name = "Railgun"
-	icon_state = "railgun"
-
-/obj/weapon_overlay/railgun_overlay/do_animation()
-	flick("railgun_charge", src)
-
-/obj/weapon_overlay/laser
-	name = "Laser cannon"
-	//icon = 'icons/obj/hand_of_god_structures.dmi'
-	//icon_state = "conduit-red"
-
-/obj/weapon_overlay/laser/do_animation()
-	flick("laser", src)
-
 /// Method to apply weapon types to a ship. Override to your liking, this just handles generic rules and behaviours
 /obj/structure/overmap/proc/apply_weapons()
 	if(mass <= MASS_TINY)
@@ -371,8 +341,6 @@
 	SEND_SIGNAL(src, SIGNAL_OVERMAP_SHIP_KILLED)
 	if(cabin_air)
 		QDEL_NULL(cabin_air)
-	if(physics2d)
-		QDEL_NULL(physics2d)
 
 	if(deletion_teleports_occupants)
 		var/turf/T = get_turf(src)
@@ -769,7 +737,7 @@
 	if(weapon_safety)
 		return FALSE
 
-	if(SW?.fire(target, ai_aim=ai_aim))
+	if(SW?.fire(target, ai_aim = ai_aim))
 		return TRUE
 	else
 		if(user_override && SW) //Tell them we failed
