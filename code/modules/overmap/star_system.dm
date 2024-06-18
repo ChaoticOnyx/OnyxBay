@@ -174,6 +174,28 @@
 	var/datum/map_template/map = new mappath()
 	var/turf/new_center = map.load_new_z()
 	occupying_z = new_center.z
+	var/obj/effect/overmap_anomaly/star/star = new /obj/effect/overmap_anomaly/star(new_center)
+	var/curr_offset_x = 128
+	for(var/i = 1 to rand(2, 4))
+		sleep(rand(1 SECOND, 5 SECONDS))
+		var/obj/effect/overmap_anomaly/visitable/planetoid/planetoid = new (new_center)
+		planetoid.orbit(star, curr_offset_x, FALSE, rand(4000, 5000), pre_rotation = TRUE)
+		curr_offset_x += 128
+		switch(i)
+			if(1)
+				planetoid.icon_state = "barren[rand(1, 3)]"
+			if(2)
+				planetoid.icon_state = "lava[rand(1, 3)]"
+			if(3)
+				if(prob(50))
+					planetoid.icon_state = "waste[rand(1, 3)]"
+				else
+					planetoid.icon_state = "earthlike[rand(1, 3)]"
+			if(4)
+				if(prob(50))
+					planetoid.icon_state = "waste[rand(1, 3)]"
+				else
+					planetoid.icon_state = "ice[rand(1, 3)]"
 
 /datum/star_system/proc/remove_ship(obj/structure/overmap/OM, turf/new_location)
 	pass()

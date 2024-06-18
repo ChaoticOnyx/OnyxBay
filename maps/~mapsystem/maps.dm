@@ -343,3 +343,13 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		var/datum/map_template/ftl_mask = new L.ftl_mask()
 		var/turf/spawnloc = locate(1, 1, level)
 		ftl_mask.load(spawnloc, clear_contents = TRUE)
+
+/datum/map/proc/apply_mapgen_mask()
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+		if(!L.has_trait(ZTRAIT_STATION))
+			continue
+
+		var/datum/map_template/mapgen_mask = new L.mapgen_mask()
+		var/turf/spawnloc = locate(1, 1, level)
+		mapgen_mask.load(spawnloc, clear_contents = TRUE)

@@ -160,9 +160,12 @@
 
 	var/ai_controlled = FALSE //Set this to true to let the computer fly your ship.
 
-	/// PHYSICS HUISICS
+	/// This THEORETICALLY helps us fixing bonked physics processing during lags. Boneheaded implementation of /TG/ delta time.
 	var/last_process = 0
-	var/processing_failsafe = FALSE //Has the game lagged to shit and we need to handle our own processing until it clears up?
+
+	/**
+	 * Collision-related stuff (basically physics)
+	 */
 	var/obj/vector_overlay/vector_overlay
 	var/pixel_collision_size_x = 0
 	var/pixel_collision_size_y = 0
@@ -170,8 +173,6 @@
 	var/matrix/vector/last_offset
 	var/matrix/vector/position
 	var/matrix/vector/velocity
-	var/matrix/vector/overlap // Will be subtracted from the ships offset as soon as possible, then set to 0
-	var/list/collision_positions = list() //See the collisions doc for how these work. Theyre a pain in the ass.
 
 	is_poi = TRUE
 
@@ -213,7 +214,6 @@
 	last_offset = new /matrix/vector()
 	position = new /matrix/vector(x*32,y*32)
 	velocity = new /matrix/vector(0, 0)
-	overlap = new /matrix/vector(0, 0)
 
 	integrity = max_integrity
 
@@ -891,3 +891,34 @@
 	proj.original = pickedgoal
 	spawn(0)
 		proj.fire(Get_Angle(pickedstart, pickedgoal))
+
+/**
+ * Landing behavior
+ */
+
+/obj/structure/overmap/proc/land()
+	if(ftl_drive.jumping)
+		return
+
+	GLOB.using_map.apply_mapgen_mask()
+	var/list/spawned1 = block(
+		locate(0 + TRANSITION_EDGE, 0 + TRANSITION_EDGE, 1),
+		locate(world.maxx - TRANSITION_EDGE, world.maxy - TRANSITION_EDGE, 1)
+	)
+	var/list/spawned2 = block(
+		locate(0 + TRANSITION_EDGE, 0 + TRANSITION_EDGE, 2),
+		locate(world.maxx - TRANSITION_EDGE, world.maxy - TRANSITION_EDGE, 2)
+	)
+
+	SSannounce.play_announce(/datum/announce/comm_program, "", "Helm announcement", "Command Room", 'sound/misc/notice2.ogg', FALSE, TRUE, GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
+	var/datum/looping_sound/sound = new /datum/looping_sound/ship/engine(list(), FALSE, TRUE, channel = SOUND_CHANNEL_REACTOR_ALERT)
+	sound.output_atoms |= spawned1 + spawned2
+	var/datum/map_generator/planet_generator/mapgen = new /datum/map_generator/planet_generator/jungle()
+	mapgen.generate_turfs(spawned1)
+	mapgen.populate_turfs(spawned1)
+	relay('sound/effects/ship/radio_100m.wav', null, FALSE, SOUND_CHANNEL_SHIP_ALERT)
+	mapgen.weather_controller_type = new mapgen.weather_controller_type(z)
+	relay('sound/effects/ship/radio_landing_touch_01.wav', null, FALSE, SOUND_CHANNEL_SHIP_ALERT)
+	sound.stop()
+
+/obj/structure/overmap/proc/takeoff()

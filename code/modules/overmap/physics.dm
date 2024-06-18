@@ -32,15 +32,6 @@
 	src.pixel_z = pixel_z
 	src.pixel_w = pixel_w
 
-/// Method to show the hitbox of your current ship to see if youve set it up correctly
-/obj/structure/overmap/proc/display_hitbox()
-	if(!collision_positions.len)
-		return
-
-	for(var/matrix/vector/point in collision_positions)
-		var/obj/effect/overmap_hitbox_marker/H = new(src, point.a, point.e, abs(pixel_z), abs(pixel_w))
-		vis_contents += H
-
 /obj/structure/overmap/proc/can_move()
 	return TRUE
 

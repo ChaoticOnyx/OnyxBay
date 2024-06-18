@@ -147,8 +147,6 @@ SUBSYSTEM_DEF(announce)
 		if(!C || !should_recieve_announce(M, zlevels))
 			continue
 
-		M.playsound_local(M.loc, pick('sound/signals/anounce1.ogg', 'sound/signals/anounce2.ogg', 'sound/signals/anounce3.ogg'), 75)
-
 		var/datum/announcer/A = get_announcer(M)
 		var/sound = sound_override || A.sounds[announce_type]
 
