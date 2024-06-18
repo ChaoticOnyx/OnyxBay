@@ -33,7 +33,6 @@ They sell generic supplies and ask for generic supplies.
 								/obj/item/device/assembly 								= TRADER_BLACKLIST_ALL,
 								/obj/item/device/assembly_holder 						= TRADER_BLACKLIST_ALL,
 								/obj/item/device/encryptionkey/syndicate 				= TRADER_BLACKLIST,
-								/obj/item/tank/plasma/onetankbomb 						= TRADER_BLACKLIST,
 								/obj/item/device/radio 									= TRADER_BLACKLIST_ALL,
 								/obj/item/device/pda 									= TRADER_BLACKLIST_SUB
 								)
