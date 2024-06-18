@@ -185,6 +185,7 @@
 	if(!disabled_for)
 		take_damage(rand(5,10), SHIELD_DAMTYPE_HEAT)
 
+	return ..()
 
 // Projectiles
 /obj/effect/shield/bullet_act(obj/item/projectile/proj)

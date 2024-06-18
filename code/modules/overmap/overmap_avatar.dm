@@ -180,9 +180,33 @@
 
 	var/list/engines = list()
 
+	// Ship weapons
+	var/list/weapon_types[MAX_POSSIBLE_FIREMODE]
+	var/list/weapon_numkeys_map = list() // I hate this
+
+	var/fire_mode = FIRE_MODE_TORPEDO //What gun do we want to fire? Defaults to railgun, with PDCs there for flak
+	var/switchsound_cooldown = 0
+
+	var/torpedoes = 0 //If this starts at above 0, then the ship can use torpedoes when AI controlled
+	var/missiles = 0 //If this starts at above 0, then the ship can use missiles when AI controlled
+	var/torpedo_type = /obj/item/projectile/guided_munition/torpedo
+
+	var/autotarget = FALSE // Whether we autolock onto painted targets or not.
+	var/no_gun_cam = FALSE // Var for disabling the gunner's camera
+	var/atom/target_lock = null // Our "locked" target. This is what manually fired guided weapons will track towards.
+
+	var/atom/last_target //Last thing we shot at, used to point the railgun at an enemy.
+	var/list/target_painted = list() // How many targets we've "painted" for AMS/relay targeting, associated with the ship supplying the datalink (if any)
+	var/list/target_last_tracked = list() // When we last tracked a target
+
+	//Fleet organisation
+	var/shots_left = 15 //Number of arbitrary shots an AI can fire with its heavy weapons before it has to resupply with a supply ship.
+	var/light_shots_left = 300
+	var/uses_integrity = TRUE
+
 /obj/structure/overmap/Initialize(mapload)
-	GLOB.overmap_objects += src
 	. = ..()
+	GLOB.overmap_objects += src
 	var/icon/I = icon(icon,icon_state, SOUTH) //SOUTH because all overmaps only ever face right, no other dirs.
 	pixel_collision_size_x = I.Width()
 	pixel_collision_size_y = I.Height()
@@ -288,6 +312,10 @@
 	if(sys)
 		current_system = sys
 
+	for(var/firemode = 1; firemode <= MAX_POSSIBLE_FIREMODE; firemode++)
+		var/datum/ship_weapon/SW = weapon_types[firemode]
+		if(istype(SW) && (SW.allowed_roles & OVERMAP_USER_ROLE_GUNNER))
+			weapon_numkeys_map += firemode
 	apply_weapons()
 
 /obj/weapon_overlay
@@ -317,7 +345,14 @@
 
 /// Method to apply weapon types to a ship. Override to your liking, this just handles generic rules and behaviours
 /obj/structure/overmap/proc/apply_weapons()
-	pass()
+	if(mass <= MASS_TINY)
+		weapon_types[FIRE_MODE_ANTI_AIR] = new /datum/ship_weapon/light_cannon(src)
+	else
+		weapon_types[FIRE_MODE_PDC] = new /datum/ship_weapon/pdc_mount(src)
+	if(mass >= MASS_SMALL || length(occupying_levels))
+		weapon_types[FIRE_MODE_GAUSS] = new /datum/ship_weapon/gauss(src)
+	if(mass > MASS_MEDIUM || length(occupying_levels))
+		weapon_types[FIRE_MODE_MAC] = new /datum/ship_weapon/mac(src)
 
 /obj/structure/overmap/Destroy()
 	if((overmap_deletion_traits & NEVER_DELETE_OCCUPIED) && has_occupants())
@@ -369,17 +404,6 @@
 
 	fire(target)
 	return TRUE
-
-/obj/structure/overmap/proc/fire(atom/target)
-	if(weapon_safety)
-		if(gunner)
-			to_chat(gunner, "<span class='warning'>Weapon safety interlocks are active! Use the ship verbs tab to disable them!</span>")
-		return
-
-	fire_weapon(target)
-
-/obj/structure/overmap/proc/fire_weapon(atom/target, lateral=(mass > MASS_TINY)) //"Lateral" means that your ship doesnt have to face the target
-	hardpoint_fire(target)
 
 /obj/structure/overmap/onMouseMove(object,location,control,params)
 	if(!pilot || !pilot.client || pilot.incapacitated() || !move_by_mouse || control !="mapwindow.map" ||!can_move())
@@ -570,6 +594,13 @@
 		//addtimer(VARSET_CALLBACK(src, impact_sound_cooldown, FALSE), 1 SECONDS)
 	if(blocked)
 		return FALSE
+
+	if(!uses_integrity)
+		update_icon()
+		return
+
+	var/old_integ = integrity
+	integrity = max(old_integ - damage_amount, 0)
 	if((overmap_deletion_traits & DAMAGE_STARTS_COUNTDOWN) && !(overmap_deletion_traits & DAMAGE_DELETES_UNOCCUPIED) && !has_occupants())
 		if(integrity <= damage_amount || structure_crit)
 			integrity = 10
@@ -620,8 +651,13 @@
 			to_chat(pilot, "<span class='warning'>[user] has kicked you off the ship controls!</span>")
 			stop_piloting(pilot)
 		pilot = user
-		register_signal(pilot, SIGNAL_MOB_MOUSEDOWN, nameof(.proc/InterceptClickOn))
 		LAZYOR(user.mousemove_intercept_objects, src)
+	if(position & OVERMAP_USER_ROLE_GUNNER)
+		if(gunner)
+			to_chat(gunner, "<span class='warning'>[user] has kicked you off the ship controls!</span>")
+			stop_piloting(gunner)
+		gunner = user
+	register_signal(user, SIGNAL_MOB_MOUSEDOWN, nameof(.proc/InterceptClickOn))
 	observe_ship(user)
 	//dradis?.attack_hand(user)
 	//if(position & (OVERMAP_USER_ROLE_PILOT | OVERMAP_USER_ROLE_GUNNER))
@@ -672,7 +708,7 @@
 	return TRUE
 
 /mob/observer/eye/cameranet/ship/proc/update()
-	SIGNAL_HANDLER
+	//SIGNAL_HANDLER Fuck this shit.
 	if(!owner.client)
 		return
 
@@ -681,3 +717,209 @@
 	owner.client.pixel_y = ship.pixel_y
 	setLoc(ship.get_center())
 	return TRUE
+
+/obj/structure/overmap/proc/update_gunner_cam(atom/target)
+	if(!gunner)
+		return
+
+	//var/mob/observer/eye/cameranet/ship/cam = gunner.remote_control
+	//if(!cam)
+	//	return
+
+	//if(target == cam.ship_target) // Allows us to use this as a toggle
+	//	target = null
+	//cam.track_target(target)
+
+/**
+ *
+ * Weapons and stuff.
+ *
+ */
+
+/obj/structure/overmap/proc/add_weapon_overlay(type)
+	var/path = text2path(type)
+	var/obj/weapon_overlay/OL = new path
+	OL.icon = icon
+	OL.appearance_flags |= KEEP_APART
+	OL.appearance_flags |= RESET_TRANSFORM
+	vis_contents += OL
+	weapon_overlays += OL
+	return OL
+
+/obj/structure/overmap/proc/fire(atom/target)
+	if(weapon_safety)
+		if(gunner)
+			to_chat(gunner, "<span class='warning'>Weapon safety interlocks are active! Use the ship verbs tab to disable them!</span>")
+		return
+
+	//handle_cloak(CLOAK_TEMPORARY_LOSS)
+	//last_target = target
+	//var/obj/structure/overmap/ship = target
+	//if(ai_controlled) //Let the AI switch weapons according to range
+	//	ai_fire(target)
+	//	return	//end if(ai_controlled)
+	last_target = target
+	//if(istype(target, /obj/structure/overmap))
+	//	ship.add_enemy(src)
+
+	fire_weapon(target)
+
+/obj/structure/overmap/proc/fire_weapon(atom/target, mode = fire_mode, lateral = (mass > MASS_TINY), mob/user_override = gunner, ai_aim = FALSE) //"Lateral" means that your ship doesnt have to face the target
+	var/datum/ship_weapon/SW = weapon_types[mode]
+	if(weapon_safety)
+		return FALSE
+
+	if(SW?.fire(target, ai_aim=ai_aim))
+		return TRUE
+	else
+		if(user_override && SW) //Tell them we failed
+			if(world.time < SW.next_firetime) //Silence, SPAM.
+				return FALSE
+
+			to_chat(user_override, SW.failure_alert)
+
+/obj/structure/overmap/proc/get_max_firemode()
+	if(mass < MASS_MEDIUM) //Small craft dont get a railgun
+		return FIRE_MODE_TORPEDO
+	return FIRE_MODE_MAC
+
+/obj/structure/overmap/proc/select_weapon(number)
+	if(number > 0 && number <= length(weapon_numkeys_map))
+		swap_to(weapon_numkeys_map[number])
+		return TRUE
+
+/obj/structure/overmap/proc/swap_to(what = FIRE_MODE_ANTI_AIR)
+	if(!weapon_types[what])
+		return FALSE
+
+	var/datum/ship_weapon/SW = weapon_types[what]
+	if(!(SW.allowed_roles & OVERMAP_USER_ROLE_GUNNER))
+		return FALSE
+
+	fire_mode = what
+	if(world.time > switchsound_cooldown)
+		relay(SW.overmap_select_sound)
+		switchsound_cooldown = world.time + 5 SECONDS
+	if(gunner)
+		to_chat(gunner, SW.select_alert)
+	return TRUE
+
+/obj/structure/overmap/proc/fire_torpedo(atom/target, ai_aim = FALSE, burst = 1)
+	if(ai_controlled || !linked_areas.len && role != MAIN_OVERMAP) //AI ships and fighters don't have interiors
+		if(torpedoes <= 0)
+			return FALSE
+		if(isovermap(target))
+			ai_aim = FALSE // This is a homing projectile
+		var/launches = min(torpedoes, burst)
+
+		fire_projectile(torpedo_type, target, speed=3, lateral = TRUE, ai_aim = ai_aim)
+		var/datum/ship_weapon/SW = weapon_types[FIRE_MODE_TORPEDO]
+		relay_to_nearby(pick(SW.overmap_firing_sounds))
+
+		if(launches > 1)
+			fire_torpedo_burst(target, ai_aim, launches - 1)
+		torpedoes -= launches
+		return TRUE
+
+/obj/structure/overmap/proc/fire_torpedo_burst(atom/target, ai_aim = FALSE, burst = 1)
+	set waitfor = FALSE
+	for(var/cycle = 1; cycle <= burst; cycle++)
+		sleep(3)
+		if(QDELETED(src))	//We might get shot.
+			return
+		if(QDELETED(target))
+			target = null
+		fire_projectile(torpedo_type, target, speed=3, lateral = TRUE, ai_aim = ai_aim)
+		var/datum/ship_weapon/SW = weapon_types[FIRE_MODE_TORPEDO]
+		relay_to_nearby(pick(SW.overmap_firing_sounds))
+
+/obj/structure/overmap/proc/fire_missile(atom/target, ai_aim = FALSE)
+	if(ai_controlled || !linked_areas.len && role != MAIN_OVERMAP) //AI ships and fighters don't have interiors
+		if(missiles <= 0)
+			return FALSE
+
+		missiles --
+		var/obj/structure/overmap/OM = target
+		if(istype(OM))
+			ai_aim = FALSE // This is a homing projectile
+		fire_projectile(/obj/item/projectile/guided_munition/missile, target, lateral = FALSE, ai_aim = ai_aim)
+		var/datum/ship_weapon/SW = weapon_types[FIRE_MODE_MISSILE]
+		relay_to_nearby(pick(SW.overmap_firing_sounds))
+		return TRUE
+
+/obj/structure/overmap/proc/get_flak_range(atom/target)
+	if(!target)
+		target = src
+	var/dist = (get_dist(src, target) / 1.5)
+	var/minimum_safe_distance = pixel_collision_size_y / 32
+	return (dist >= minimum_safe_distance) ? dist : minimum_safe_distance //Stops you flak-ing yourself
+
+/obj/structure/overmap/proc/select_target(obj/structure/overmap/target)
+	if(QDELETED(target) || !istype(target) || !locate(target) in target_painted)
+		target_lock = null
+		update_gunner_cam()
+		dump_lock(target)
+		return
+
+	if(target_lock == target)
+		target_lock = null
+		update_gunner_cam()
+		return
+
+	target_lock = target
+
+/obj/structure/overmap/proc/dump_lock(obj/structure/overmap/target) // Our locked target got destroyed/moved, dump the lock
+	SIGNAL_HANDLER
+	SEND_SIGNAL(src, SIGNAL_OM_LOCK_LOST, target)
+	target_painted -= target
+	target_last_tracked -= target
+	unregister_signal(target, SIGNAL_QDELETING)
+	if(target_lock == target)
+		update_gunner_cam()
+		target_lock = null
+
+/obj/structure/overmap/proc/dump_locks() // clears all target locks.
+	SIGNAL_HANDLER
+	update_gunner_cam()
+	for(var/obj/structure/overmap/OM in target_painted)
+		dump_lock(OM)
+
+/**
+ *
+ * Damage behavior
+ *
+ */
+/obj/structure/overmap/bullet_act(obj/item/projectile/P)
+	//if(istype(P, /obj/item/projectile/beam/overmap/aiming_beam))
+	//	return
+
+	P.spec_overmap_hit(src)
+	var/relayed_type = P.type
+	relay_damage(relayed_type)
+	if(!use_armour_quadrants)
+		return ..()
+	else
+		playsound(src, P.hitsound, 50, 1)
+		//visible_message("<span class='danger'>[src] is hit by \a [P]!</span>", null, null, COMBAT_MESSAGE_RANGE)
+		if(!QDELETED(src)) //Bullet on_hit effect might have already destroyed this object
+			take_quadrant_hit(P.damage, projectile_quadrant_impact(P))
+
+/// Special proc special behavior on bullet_act()
+/obj/item/projectile/proc/spec_overmap_hit(obj/structure/overmap/target)
+	return
+
+/obj/structure/overmap/proc/relay_damage(proj_type)
+	if(!length(occupying_levels))
+		return
+
+	var/theZ = pick(occupying_levels)
+	var/startside = pick(GLOB.cardinal)
+	var/turf/pickedstart = spaceDebrisStartLoc(startside, theZ)
+	var/turf/pickedgoal = locate(round(world.maxx * 0.5, 1), round(world.maxy * 0.5, 1), theZ)
+	var/obj/item/projectile/proj = new proj_type(pickedstart)
+	proj.starting = pickedstart
+	proj.firer = null
+	proj.def_zone = "chest"
+	proj.original = pickedgoal
+	spawn(0)
+		proj.fire(Get_Angle(pickedstart, pickedgoal))

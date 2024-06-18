@@ -100,9 +100,6 @@
 
 	proj.fire(null, direct_target)
 
-/obj/structure/overmap/bullet_act(obj/item/projectile/P, def_zone)
-	return PROJECTILE_CONTINUE
-
 /**
 * Given target ship and projectile speed, calculate aim point for intercept
 * See: https://stackoverflow.com/a/3487761

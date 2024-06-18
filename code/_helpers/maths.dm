@@ -230,3 +230,34 @@
 			current_y_step += y_distance_sign
 			line += locate(current_x_step, current_y_step, starting_z)
 	return line
+
+/proc/get_turf_in_angle(angle, turf/starting, increments)
+	var/pixel_x = 0
+	var/pixel_y = 0
+	for(var/i in 1 to increments)
+		pixel_x += sin(angle)+16*sin(angle)*2
+		pixel_y += cos(angle)+16*cos(angle)*2
+	var/new_x = starting.x
+	var/new_y = starting.y
+	while(pixel_x > 16)
+		pixel_x -= 32
+		new_x++
+	while(pixel_x < -16)
+		pixel_x += 32
+		new_x--
+	while(pixel_y > 16)
+		pixel_y -= 32
+		new_y++
+	while(pixel_y < -16)
+		pixel_y += 32
+		new_y--
+	new_x = Clamp(new_x, 0, world.maxx)
+	new_y = Clamp(new_y, 0, world.maxy)
+	return locate(new_x, new_y, starting.z)
+
+///Whether the angle is on the port or starboard side of the ship (facing north or south on the map)
+/proc/angle2dir_ship(angle)
+	if(0 < angle && angle < 180)
+		return SOUTH
+	else
+		return NORTH
