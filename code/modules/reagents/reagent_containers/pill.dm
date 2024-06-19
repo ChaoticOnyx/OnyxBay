@@ -279,3 +279,63 @@
 	icon_state = "cleanerpod"
 	startswith = list(/datum/reagent/space_cleaner/dry = 10)
 	mimic_color = FALSE
+
+//Pills that probably won't be used anywhere, except in merchants or mapping, but who cares?
+
+/obj/item/reagent_containers/pill/oxycodone
+	name = "Oxycodone (15u)"
+	desc = "A complex painkiller."
+	icon_state = "pill3"
+	startswith = list(/datum/reagent/painkiller/tramadol/oxycodone = 15)
+	mimic_color = TRUE
+
+/obj/item/reagent_containers/pill/metazine
+	name = "Metazine (10u)"
+	desc = "A combat painkiller."
+	icon_state = "pill24"
+	startswith = list(/datum/reagent/painkiller = 10)
+	mimic_color = FALSE
+
+/obj/item/reagent_containers/pill/tricordrazine
+	name = "Tricordrazine (20u)"
+	desc = "Used to slowly treat external injuries."
+	icon_state = "pill2"
+	startswith = list(/datum/reagent/tricordrazine = 20)
+	mimic_color = TRUE
+
+/obj/item/reagent_containers/pill/alkysine
+	name = "Alkysine (5u)"
+	desc = "Do you have a headache? Just eat me!"
+	icon_state = "pill2"
+	startswith = list(/datum/reagent/alkysine = 5)
+	mimic_color = TRUE
+
+/obj/item/reagent_containers/pill/imidazoline
+	name = "Imidazoline (10u)"
+	desc = "Used to treat eye injuries."
+	icon_state = "pill2"
+	startswith = list(/datum/reagent/imidazoline = 10)
+	mimic_color = TRUE
+
+/obj/item/reagent_containers/pill/ryetalyn
+	name = "Ryetalyn (5u)"
+	desc = "Used for genetic defects, including cataracts."
+	icon_state = "pill3"
+	startswith = list(/datum/reagent/ryetalyn = 5)
+	mimic_color = TRUE
+
+/obj/item/reagent_containers/pill/peridaxon
+	name = "Peridaxon (10u)"
+	desc = "Used to restore the internal organs and nervous system."
+	icon_state = "pill2"
+	startswith = list(/datum/reagent/peridaxon = 10)
+	mimic_color = TRUE
+
+/obj/item/reagent_containers/pill/albumin
+	name = "Albumin (20u)"
+	desc = "Used to restore blood loss."
+	icon_state = "pill3"
+	startswith = list(
+		/datum/reagent/albumin = 15,
+		/datum/reagent/iron = 5)
+	mimic_color = TRUE

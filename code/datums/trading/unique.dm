@@ -20,15 +20,20 @@
 	origin = "SGS Severance"
 
 	possible_wanted_items = list(
-							/obj/item/reagent_containers/food/human                      = TRADER_SUBTYPES_ONLY,
-							/obj/item/reagent_containers/food/meat/human                 = TRADER_THIS_TYPE,
-							/mob/living/carbon/human                                                   = TRADER_ALL
+							/obj/item/reagent_containers/food/human 							= TRADER_SUBTYPES_ONLY,
+							/obj/item/reagent_containers/food/meat/human 						= TRADER_THIS_TYPE,
+							/mob/living/carbon/human 											= TRADER_ALL
 							)
 
-	possible_trading_items = list(/obj/mecha/combat                                                    = TRADER_SUBTYPES_ONLY,
-							/obj/item/gun/projectile/automatic                                  = TRADER_SUBTYPES_ONLY,
-							/obj/item/gun/projectile/automatic/machine_pistol/mini_uzi/usi      = TRADER_BLACKLIST,
-							/obj/item/gun/projectile/automatic/l6_saw/mag                       = TRADER_BLACKLIST
+	possible_trading_items = list(/obj/mecha/combat 											= TRADER_SUBTYPES_ONLY,
+							/obj/mecha/working/hoverpod/combatpod 								= TRADER_THIS_TYPE,
+							/obj/item/gun/projectile/automatic 									= TRADER_SUBTYPES_ONLY,
+							/obj/item/gun/projectile/automatic/machine_pistol/mini_uzi/usi 		= TRADER_BLACKLIST,
+							/obj/item/gun/projectile/automatic/l6_saw/mag 						= TRADER_BLACKLIST,
+							/obj/item/gun/projectile/lawgiver 									= TRADER_THIS_TYPE,
+							/obj/item/gun/projectile/heavysniper 								= TRADER_THIS_TYPE,
+							/obj/item/gun/energy/pulse_rifle 									= TRADER_THIS_TYPE,
+							/obj/item/gun/launcher/rocket 										= TRADER_THIS_TYPE
 							)
 
 	blacklisted_trade_items = null
@@ -52,14 +57,19 @@
 
 	mob_transfer_message = "<span class='danger'>You are transported to ORIGIN, and with a sickening thud, you fall unconscious, never to wake again.</span>"
 
+/datum/trader/ship/unique/severance/New()
+    ..()
+    var/list/origins = list("SGS", "CS", "NCR", "LTC", "SEV")
+    var/list/names = list("Severance", "Obsidian", "Vortex", "Revenant", "Eclipse", "Horizon")
+    origin = "[pick(origins)] [pick(names)]"
 
 /datum/trader/ship/unique/rock
 	name = "Bobo"
 	origin = "Floating rock"
 
-	possible_wanted_items  = list(/obj/item/ore                        = TRADER_ALL)
-	possible_trading_items = list(/obj/machinery/power/supermatter            = TRADER_ALL,
-								/obj/item/aiModule                     = TRADER_SUBTYPES_ONLY)
+	possible_wanted_items  = list(/obj/item/ore 						= TRADER_ALL)
+	possible_trading_items = list(/obj/machinery/power/supermatter 		= TRADER_ALL,
+								/obj/item/aiModule 						= TRADER_SUBTYPES_ONLY)
 
 	speech = list(
 		TRADER_HAIL_GENERIC       = "Blub am MERCHANT. Blub hunger for things. Boo bring them to blub, yes?",
@@ -102,24 +112,33 @@
 		TRADER_INSULT_BAD         = "Now where do you get off talking to me like that?"
 	)
 
-	possible_wanted_items = list(/mob/living/simple_animal/construct            = TRADER_SUBTYPES_ONLY,
-								/obj/item/melee/cultblade                = TRADER_THIS_TYPE,
-								/obj/item/clothing/head/culthood                = TRADER_ALL,
-								/obj/item/clothing/suit/space/cult              = TRADER_ALL,
-								/obj/item/clothing/suit/cultrobes               = TRADER_ALL,
-								/obj/item/clothing/head/helmet/space/cult       = TRADER_ALL,
-								/obj/structure/cult                             = TRADER_SUBTYPES_ONLY,
-								/obj/structure/constructshell                   = TRADER_ALL,
-								/mob/living/simple_animal/familiar              = TRADER_SUBTYPES_ONLY,
-								/mob/living/simple_animal/familiar/pet          = TRADER_BLACKLIST,
-								/mob/living/simple_animal/hostile/mimic         = TRADER_ALL)
+	possible_wanted_items = list(/mob/living/simple_animal/construct 			= TRADER_SUBTYPES_ONLY,
+								/obj/item/melee/cultblade 						= TRADER_THIS_TYPE,
+								/obj/item/clothing/head/culthood 				= TRADER_ALL,
+								/obj/item/clothing/suit/space/cult 				= TRADER_ALL,
+								/obj/item/clothing/suit/cultrobes 				= TRADER_ALL,
+								/obj/item/clothing/head/helmet/space/cult 		= TRADER_ALL,
+								/obj/structure/cult 							= TRADER_SUBTYPES_ONLY,
+								/obj/structure/constructshell 					= TRADER_ALL,
+								/mob/living/simple_animal/familiar 				= TRADER_SUBTYPES_ONLY,
+								/mob/living/simple_animal/familiar/pet 			= TRADER_BLACKLIST,
+								/mob/living/simple_animal/hostile/mimic 		= TRADER_ALL
+								)
 
-	possible_trading_items = list(/obj/item/clothing/gloves/wizard        = TRADER_THIS_TYPE,
-								/obj/item/clothing/head/helmet/space/void/wizard = TRADER_THIS_TYPE,
-								/obj/item/clothing/head/wizard                   = TRADER_ALL,
-								/obj/item/clothing/suit/space/void/wizard        = TRADER_THIS_TYPE,
-								/obj/item/toy/figure/wizard                      = TRADER_THIS_TYPE,
-								/obj/item/staff                           = TRADER_ALL,
+	possible_trading_items = list(/obj/item/clothing/gloves/wizard 				 	= TRADER_THIS_TYPE,
+								/obj/item/clothing/head/helmet/space/void/wizard 	= TRADER_THIS_TYPE,
+								/obj/item/clothing/head/wizard 						= TRADER_ALL,
+								/obj/item/clothing/head/necro_hood 					= TRADER_THIS_TYPE,
+								/obj/item/clothing/suit/space/void/wizard 			= TRADER_THIS_TYPE,
+								/obj/item/clothing/suit/necrorobe 					= TRADER_THIS_TYPE,
+								/obj/item/clothing/suit/musclemancer 				= TRADER_THIS_TYPE,
+								/obj/item/toy/figure/wizard 						= TRADER_THIS_TYPE,
+								/obj/item/bedsheet/wiz 								= TRADER_THIS_TYPE,
+								/obj/item/teleportation_scroll 						= TRADER_THIS_TYPE,
+								/obj/item/spellbook 								= TRADER_THIS_TYPE,
+								/obj/item/staff 									= TRADER_ALL,
+								/obj/item/gun/energy/staff 							= TRADER_ALL,
+								/obj/item/gun/whip_of_torment 						= TRADER_THIS_TYPE
 								) //Probably see about getting some more wizard based shit
 
 /datum/trader/ship/unique/wizard/New()

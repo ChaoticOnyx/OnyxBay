@@ -111,7 +111,7 @@
 	return FALSE
 
 /obj/item/storage/pill_bottle/bicaridine
-	name = "pill bottle (bicaridine)" // Keeping these for mapping
+	name = "pill bottle (bicaridine)" // Keeping these for mapping or merchants
 	desc = "Contains pills used to stabilize the severely injured."
 	label_color = "#bf0000"
 	starting_label = "bicaridine"
@@ -181,6 +181,70 @@
 	starting_label = "tramadol"
 
 	startswith = list(/obj/item/reagent_containers/pill/tramadol = 14)
+
+/obj/item/storage/pill_bottle/oxycodone
+	name = "pill bottle (oxycodone)"
+	desc = "Contains pills of complex painkillers."
+	label_color = "#800080"
+	starting_label = "oxycodone"
+
+	startswith = list(/obj/item/reagent_containers/pill/oxycodone = 14)
+
+/obj/item/storage/pill_bottle/metazine
+	name = "pill bottle (metazine)"
+	desc = "Contains pills of combat painkillers."
+	label_color = "#b5af80"
+	starting_label = "metazine"
+
+	startswith = list(/obj/item/reagent_containers/pill/metazine = 14)
+
+/obj/item/storage/pill_bottle/tricordrazine
+	name = "pill bottle (tricordrazine)"
+	desc = "Contains pills of treat a wide range of injuries."
+	label_color = "#8040ff"
+	starting_label = "tricordrazine"
+
+	startswith = list(/obj/item/reagent_containers/pill/tricordrazine = 14)
+
+/obj/item/storage/pill_bottle/alkysine
+	name = "pill bottle (alkysine)"
+	desc = "Contains pills of aid in healing brain tissue."
+	label_color = "#ffff66"
+	starting_label = "alkysine"
+
+	startswith = list(/obj/item/reagent_containers/pill/alkysine = 14)
+
+/obj/item/storage/pill_bottle/imidazoline
+	name = "pill bottle (imidazoline)"
+	desc = "Contains pills of heals eye damage."
+	label_color = "#c8a5dc"
+	starting_label = "imidazoline"
+
+	startswith = list(/obj/item/reagent_containers/pill/imidazoline = 14)
+
+/obj/item/storage/pill_bottle/ryetalyn
+	name = "pill bottle (ryetalyn)"
+	desc = "Contains pills of cure all genetic abnomalities."
+	label_color = "#004000"
+	starting_label = "ryetalyn"
+
+	startswith = list(/obj/item/reagent_containers/pill/ryetalyn = 14)
+
+/obj/item/storage/pill_bottle/peridaxon
+	name = "pill bottle (peridaxon)"
+	desc = "Contains pills of encourage recovery of internal organs and nervous systems."
+	label_color = "#561ec3"
+	starting_label = "peridaxon"
+
+	startswith = list(/obj/item/reagent_containers/pill/peridaxon = 14)
+
+/obj/item/storage/pill_bottle/albumin
+	name = "pill bottle (albumin)"
+	desc = "Contains pills of improve blood regeneration rate."
+	label_color = "#803835"
+	starting_label = "albumin"
+
+	startswith = list(/obj/item/reagent_containers/pill/albumin = 14)
 
 //Baycode specific Psychiatry pills.
 /obj/item/storage/pill_bottle/citalopram

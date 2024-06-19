@@ -152,9 +152,9 @@
 	startswith = list(/datum/reagent/dylovene)
 
 /obj/item/reagent_containers/hypospray/autoinjector/tricordrazine
-	icon_state = "red1"
+	icon_state = "lightpurple1"
 	content_desc = "Tricordrazine 10u. Use to speed up recovery from physical trauma."
-	base_state = "red"
+	base_state = "lightpurple"
 	startswith = list(/datum/reagent/tricordrazine)
 
 /obj/item/reagent_containers/hypospray/autoinjector/pain
@@ -165,7 +165,7 @@
 
 /obj/item/reagent_containers/hypospray/autoinjector/combatpain
 	icon_state = "black1"
-	content_desc = "Metazine 5u"
+	content_desc = "Metazine 5u. Used for immediate and temporary pain relief."
 	base_state = "black"
 	amount_per_transfer_from_this = 5
 	volume = 5
@@ -194,3 +194,21 @@
 	startswith = list(
 		/datum/reagent/hyronalin = 5,
 		/datum/reagent/dylovene = 5)
+
+/obj/item/reagent_containers/hypospray/autoinjector/dexalinp
+	icon_state = "darkblue1"
+	content_desc = "Dexalin plus 10u. Used for hypoxia. Increases oxygenation to almost 85%!"
+	base_state = "darkblue"
+	startswith = list(/datum/reagent/dexalinp)
+
+/obj/item/reagent_containers/hypospray/autoinjector/bicaridine
+	icon_state = "red1"
+	content_desc = "Bicaridine 10u. Used to treat serious physical wounds."
+	base_state = "red"
+	startswith = list(/datum/reagent/bicaridine)
+
+/obj/item/reagent_containers/hypospray/autoinjector/dermaline
+	icon_state = "yellow1"
+	content_desc = "Dermaline 10u. Used to treat burn wounds."
+	base_state = "yellow"
+	startswith = list(/datum/reagent/dermaline)

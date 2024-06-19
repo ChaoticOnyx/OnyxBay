@@ -364,37 +364,37 @@
 	value = 0.3
 
 /datum/reagent/inaprovaline
-	value = 3.5
+	value = 1.7
 
 /datum/reagent/bicaridine
-	value = 4.9
+	value = 3
 
 /datum/reagent/kelotane
-	value = 2.9
+	value = 2
 
 /datum/reagent/dermaline
-	value = 3.9
+	value = 2.4
 
 /datum/reagent/dylovene
-	value = 2.1
+	value = 1.2
 
 /datum/reagent/dexalin
 	value = 2.4
 
 /datum/reagent/dexalinp
-	value = 3.6
+	value = 2.8
 
 /datum/reagent/tricordrazine
-	value = 6
+	value = 2
 
 /datum/reagent/cryoxadone
-	value = 3.9
+	value = 2.8
 
 /datum/reagent/clonexadone
 	value = 5.5
 
 /datum/reagent/painkiller/paracetamol
-	value = 3.3
+	value = 2.2
 
 /datum/reagent/painkiller
 	value = 5.5
@@ -403,37 +403,37 @@
 	value = 3.1
 
 /datum/reagent/painkiller/tramadol/oxycodone
-	value = 3.3
+	value = 3.6
 
 /datum/reagent/synaptizine
-	value = 4.6
+	value = 1.1
 
 /datum/reagent/alkysine
-	value = 5.9
+	value = 3
 
 /datum/reagent/imidazoline
-	value = 4.2
+	value = 2.7
 
 /datum/reagent/peridaxon
-	value = 6
+	value = 3.5
 
 /datum/reagent/ryetalyn
-	value = 3.6
+	value = 2.6
 
 /datum/reagent/hyperzine
 	value = 3.9
 
 /datum/reagent/ethylredoxrazine
-	value = 3.1
+	value = 1.8
 
 /datum/reagent/hyronalin
-	value = 2.3
+	value = 2
 
 /datum/reagent/arithrazine
-	value = 2.7
+	value = 2.3
 
 /datum/reagent/spaceacillin
-	value = 2.5
+	value = 2
 
 /datum/reagent/sterilizine
 	value = 2.2
