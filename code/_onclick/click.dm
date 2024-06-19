@@ -389,6 +389,13 @@
 /atom/proc/ShiftRightClick(mob/user)
 	return
 
+/mob/living/ShiftRightClickOn(atom/A)
+	if(isopenspace(A) && Adjacent(A))
+		look_down(A)
+		return
+
+	return ..()
+
 /*
 	Control+Alt+Rclick
 */

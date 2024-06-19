@@ -36,3 +36,18 @@
 	var/mob/living/L = user.mob
 	L.drop_active_hand()
 	return TRUE
+
+/datum/keybinding/living/look_up
+	hotkey_keys = list("ShiftF")
+	name = "look_up"
+	full_name = "Look Up"
+	description = "Look at what's above you, if you are under an open space."
+
+/datum/keybinding/living/look_up/down(client/user)
+	var/mob/living/L = user.mob
+	THROTTLE(cooldown, (1.5 SECONDS))
+	if(!cooldown)
+		return FALSE
+
+	L.look_up()
+	return TRUE

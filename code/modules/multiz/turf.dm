@@ -43,6 +43,33 @@
 	. = ..()
 	update()
 
+/turf/simulated/open/attack_hand(mob/user)
+	if(!isliving(user))
+		return FALSE
+
+	var/mob/living/L = user
+	if(L.incapacitated())
+		show_splash_text(user, "Can't climb!", SPAN_WARNING("You can't climb here!"))
+		return FALSE
+
+		if(!CanZPass(src, DOWN))
+			show_splash_text(user, "Can't climb!", SPAN_WARNING("You can't climb here!"))
+			return TRUE
+
+		var/turf/below = GetBelow(src)
+		if(!istype(below) || iswall(below) || !isfloor(below))
+			show_splash_text(user, "Can't climb!", SPAN_WARNING("You can't climb here!"))
+			return TRUE
+
+		var/time_to_climb = rand(5 SECONDS, 8 SECONDS)
+		user.visible_message(SPAN_WARNING("[user] starts to climb [src]."), SPAN_WARNING("You start to climb [src]..."))
+		if(!do_after(user, time_to_climb, src) || QDELETED(src))
+			return TRUE
+
+		/// Fuck you, movement handler.
+		user.forceMove(below)
+		user.pulling?.forceMove(below)
+		user.start_pulling(user?.pulling)
 
 /turf/simulated/open/proc/update()
 	plane = OPENSPACE_PLANE

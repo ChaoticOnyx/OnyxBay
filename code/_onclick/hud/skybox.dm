@@ -76,8 +76,10 @@
 	. = ..()
 	if(. && skybox)
 		skybox.update()
+	reset_view()
 
 /mob/forceMove()
 	. = ..()
 	if(. && skybox)
 		skybox.update()
+	reset_view()

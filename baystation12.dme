@@ -3255,6 +3255,7 @@
 #include "maps\derelicts\snow_asteroid\snow_asteroid.dm"
 #include "maps\devarim\devarim_areas.dm"
 #include "maps\devarim\devarim_define.dm"
+#include "maps\devarim\devarim_jobs.dm"
 #include "maps\devarim\devarim_levels.dm"
 #include "maps\eclipse\eclipse_areas.dm"
 #include "maps\eclipse\eclipse_define.dm"

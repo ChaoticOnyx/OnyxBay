@@ -99,9 +99,66 @@
 			success_smash(user)
 		else
 			fail_smash(user)
-			return 1
+			return TRUE
 
-	try_touch(user, rotting)
+	if(try_touch(user, rotting))
+		return TRUE
+
+	if(wallclimb && isliving(user))
+		var/mob/living/L = user
+		var/climbsound = 'sound/effects/metalhit.ogg'
+		if(L.incapacitated())
+			return TRUE
+
+		var/turf/above_user = GetAbove(user)
+		if(!istype(above_user))
+			return TRUE
+
+		if(!istype(above_user, /turf/simulated/open))
+			show_splash_text(user, "Can't climb!", SPAN_WARNING("You can't climb here!"))
+			return TRUE
+
+		if(!CanZPass(user, UP))
+			show_splash_text(user, "Can't climb!", SPAN_WARNING("You can't climb here!"))
+			return TRUE
+
+		var/turf/above_wall = GetAbove(src)
+		if(!istype(above_wall) || iswall(above_wall) || isopenspace(above_wall))
+			show_splash_text(user, "Can't climb!", SPAN_WARNING("You can't climb here!"))
+			return TRUE
+
+		for(var/obj/structure/S in above_wall)
+			if(S?.density && !(S.atom_flags & ATOM_FLAG_CLIMBABLE))
+				show_splash_text(user, "Can't climb!", SPAN_WARNING("You can't climb here!"))
+				return TRUE
+
+		var/climb_assist = 0
+		var/turf/simulated/floor/F = get_turf(user)
+		if(F?.turf_height >= 14)
+			climb_assist++
+
+		var/obj/structure/table/TA = locate() in user.loc
+		if(istype(TA))
+			climb_assist++
+		else
+			var/obj/structure/bed/B = locate() in user.loc
+			if(istype(B))
+				climb_assist++
+
+		if(climb_assist < climbdiff)
+			show_splash_text(user, "Can't climb!", SPAN_WARNING("You can't climb here!"))
+			return TRUE
+
+		var/time_to_climb = rand(5 SECONDS, 8 SECONDS)
+		user.visible_message(SPAN_WARNING("[user] starts to climb [src]."), SPAN_WARNING("You start to climb [src]..."))
+		playsound(src, climbsound, 100, FALSE, -1)
+		if(!do_after(user, time_to_climb, src) || QDELETED(src))
+			return TRUE
+
+		/// Fuck you, movement handler.
+		user.forceMove(above_wall)
+		user.pulling?.forceMove(above_wall)
+		user.start_pulling(user?.pulling)
 
 /turf/simulated/wall/attack_generic(mob/user, damage, attack_message, wallbreaker)
 	if(!istype(user))

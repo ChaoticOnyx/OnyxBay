@@ -1270,13 +1270,6 @@
 	else if(eyeobj)
 		if(eyeobj.owner != src)
 			reset_view(null)
-	else
-		var/isRemoteObserve = 0
-		if(shadow && client.eye == shadow && !is_physically_disabled())
-			isRemoteObserve = 1
-		if(!isRemoteObserve && client && !client.adminobs)
-			remoteview_target = null
-			reset_view(null, 0)
 
 	// When a mob does not use a machine but visuals still here.
 	if(!machine && machine_visual)

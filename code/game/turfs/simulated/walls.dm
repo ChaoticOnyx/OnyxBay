@@ -43,6 +43,10 @@
 	var/bullethole_variation = 0
 	/// Pixel shift of a leaning mob
 	var/leaning_offset = 12
+	/// TRUE allows climbing.
+	var/wallclimb = TRUE
+	/// How difficult is it to climb here.
+	var/climbdiff = 1
 
 /datum/rad_resist/wall
 	alpha_particle_resist = 100 MEGA ELECTRONVOLT
