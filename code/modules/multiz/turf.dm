@@ -63,7 +63,7 @@
 
 	var/time_to_climb = rand(5 SECONDS, 8 SECONDS)
 	user.visible_message(SPAN_WARNING("[user] starts to climb [src]."), SPAN_WARNING("You start to climb [src]..."))
-	if(!do_after(user, time_to_climb, src) || QDELETED(src))
+	if(!do_mob(user, user, time_to_climb) || QDELETED(src))
 		return TRUE
 
 	/// Fuck you, movement handler.
