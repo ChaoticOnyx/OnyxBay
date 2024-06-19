@@ -988,7 +988,7 @@
 			if(WEST)
 				shift_y = 16
 
-		shift_view(client, pixel_x = shift_x, pixel_y = shift_y, TRUE)
+		shift_view(shift_x, shift_y, TRUE)
 		reset_view(below)
 
 /mob/living/proc/stop_looking()
