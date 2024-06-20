@@ -642,7 +642,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 //Takes: Area type as text string or as typepath OR an instance of the area.
 //Returns: A list of all areas of that type in the world.
-/proc/get_areas(areatype)
+/proc/get_areas(areatype, subtypes = TRUE)
 	if(!areatype) return null
 	if(istext(areatype)) areatype = text2path(areatype)
 	if(isarea(areatype))
@@ -650,8 +650,16 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		areatype = areatemp.type
 
 	var/list/areas = new /list()
-	for(var/area/N in world)
-		if(istype(N, areatype)) areas += N
+	if(subtypes)
+		var/list/cache = typecacheof(areatype)
+		for(var/area/V in world)
+			if(cache[V.type])
+				areas += V
+	else
+		for(var/area/V in world)
+			if(V.type == areatype)
+				areas += V
+
 	return areas
 
 //Takes: Area type as text string or as typepath OR an instance of the area.

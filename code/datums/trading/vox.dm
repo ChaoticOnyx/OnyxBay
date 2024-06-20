@@ -41,21 +41,27 @@
 		TRADER_INSULT_BAD         = "If you say all this at home, you be dead!"
 	)
 
-	possible_wanted_items = list(/obj/item/                  = TRADER_SUBTYPES_ONLY,
-								/obj/item/stack/material            = TRADER_SUBTYPES_ONLY,
-								/obj/item/stack/material/cyborg     = TRADER_BLACKLIST_ALL,
-								/obj/item/organ                     = TRADER_SUBTYPES_ONLY,
-								/obj/item/organ/external/stump      = TRADER_BLACKLIST_ALL
+	possible_wanted_items = list(/obj/item/ 						= TRADER_SUBTYPES_ONLY,
+								/obj/item/stack/material 			= TRADER_SUBTYPES_ONLY,
+								/obj/item/stack/material/cyborg 	= TRADER_BLACKLIST_ALL,
+								/obj/item/organ 					= TRADER_SUBTYPES_ONLY,
+								/obj/item/organ/external/stump 		= TRADER_BLACKLIST_ALL
 								)
 
-	possible_trading_items = list(/obj/item/gun/projectile/dartgun/vox           = TRADER_SUBTYPES_ONLY,
-								/obj/item/mecha_parts/mecha_equipment/tool/             = TRADER_SUBTYPES_ONLY,
-								/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/ = TRADER_SUBTYPES_ONLY,
-								/obj/item/trash                                         = TRADER_SUBTYPES_ONLY,
-								/obj/item/remains                                       = TRADER_ALL,
-								/obj/item/clothing/accessory                            = TRADER_ALL,
-								/obj/item/robot_parts                                   = TRADER_SUBTYPES_ONLY,
-								/obj/item/robot_parts/robot_component                   = TRADER_BLACKLIST
+	possible_trading_items = list(/obj/item/gun/projectile/dartgun/vox 					= TRADER_SUBTYPES_ONLY,
+								/obj/item/gun/launcher/alien/spikethrower 				= TRADER_THIS_TYPE,
+								/obj/item/gun/launcher/alien/slugsling 					= TRADER_THIS_TYPE,
+								/obj/item/gun/launcher/grenade 							= TRADER_THIS_TYPE,
+								/obj/item/mecha_parts/mecha_equipment/tool	 			= TRADER_SUBTYPES_ONLY,
+								/obj/item/mecha_parts/mecha_equipment/weapon/ballistic 	= TRADER_SUBTYPES_ONLY,
+								/obj/item/trash 										= TRADER_SUBTYPES_ONLY,
+								/obj/item/remains 										= TRADER_ALL,
+								/obj/item/disk/nuclear_fake 							= TRADER_THIS_TYPE,
+								/obj/item/disk/secret_project 							= TRADER_ALL,
+								/obj/item/card/emag_broken 								= TRADER_THIS_TYPE,
+								/obj/item/clothing/accessory 							= TRADER_SUBTYPES_ONLY,
+								/obj/item/robot_parts 									= TRADER_SUBTYPES_ONLY,
+								/obj/item/robot_parts/robot_component 					= TRADER_BLACKLIST
 								)
 
 	mob_transfer_message = "<span class='danger'>You are transported to the ORIGIN. When the transportation dizziness wears off, you find you are surrounded by cackling Vox...</span>"

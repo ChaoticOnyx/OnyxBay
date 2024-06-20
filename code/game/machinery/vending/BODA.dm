@@ -5,7 +5,7 @@
 
 	icon = 'icons/obj/machines/vending/sovietsoda.dmi'
 	icon_state = "sovietsoda"
-	light_color = COLOR_RED
+	light_color = "#FFDCA2"
 
 	vending_sound = SFX_VENDING_GENERIC
 

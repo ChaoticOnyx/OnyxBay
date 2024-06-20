@@ -128,6 +128,8 @@ var/server_name = "OnyxBay"
 	rustg_prom_gauge_float_register(PROM_SUBSYSTEM_TICK_OVERRUN, "Average tick overrun")
 	rustg_prom_counter_register(PROM_RUNTIMES, "Total amount of runtimes")
 	rustg_prom_gauge_int_register(PROM_TOTAL_PLAYERS, "Total amount of players")
+	rustg_prom_gauge_int_register(PROM_TOTAL_LIVING, "Total amount of living players")
+	rustg_prom_gauge_int_register(PROM_WIDESCREEN_PLAYERS, "Total amount of players with widescreen")
 	rustg_prom_gauge_int_register(PROM_GC_QUEUED, "Count of queued datums to be deleted")
 	rustg_prom_counter_register(PROM_GC_HARD_DELS, "Count of hard deleted datums")
 	rustg_prom_counter_register(PROM_GC_COLLECTED, "Count of garbage collected datums")

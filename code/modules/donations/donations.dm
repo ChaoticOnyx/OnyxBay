@@ -221,7 +221,7 @@ SUBSYSTEM_DEF(donations)
 			//Update donations to old record
 			sql_query("UPDATE points_transactions SET player = $discord_player_id WHERE player = $ckey_player_id", dbcon_don, list(discord_player_id = discord_player_id, ckey_player_id = ckey_player_id))
 			sql_query("UPDATE money_transactions SET player = $discord_player_id WHERE player = $ckey_player_id", dbcon_don, list(discord_player_id = discord_player_id, ckey_player_id = ckey_player_id))
-
+			sql_query("UPDATE store_players_items SET player = $discord_player_id WHERE player = $ckey_player_id", dbcon_don, list(discord_player_id = discord_player_id, ckey_player_id = ckey_player_id))
 			sql_query("DELETE FROM players WHERE id = $ckey_player_id", dbcon_don, list(ckey_player_id = ckey_player_id))
 
 		sql_query("UPDATE players SET ckey = $ckey WHERE discord = $discord_id", dbcon_don, list(ckey = player.ckey, discord_id = discord_id))
@@ -249,9 +249,9 @@ SUBSYSTEM_DEF(donations)
 	var/mob/user = usr
 
 	switch(href_list["action"])
-		if("go_to_patreon")
-			log_debug("\[Donations] patreon link used by '[user]'")
-			send_link(user, config.link.patreon)
+		if("go_to_boosty")
+			log_debug("\[Donations] boosty link used by '[user]'")
+			send_link(user, config.link.boosty)
 			return 1
 		if("go_to_discord")
 			log_debug("\[Donations] discord link used by '[user]'")

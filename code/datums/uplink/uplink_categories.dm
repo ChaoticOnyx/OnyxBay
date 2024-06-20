@@ -6,7 +6,7 @@
 	..()
 	items = list()
 
-/datum/uplink_category/proc/can_view(obj/item/device/uplink/U)
+/datum/uplink_category/proc/can_view(datum/component/uplink/U)
 	for(var/datum/uplink_item/item in items)
 		if(item.can_view(U))
 			return 1

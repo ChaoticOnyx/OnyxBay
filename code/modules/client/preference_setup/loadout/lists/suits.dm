@@ -74,18 +74,10 @@
 	path = /obj/item/clothing/suit/storage/hooded/hoodie
 	flags = GEAR_HAS_COLOR_SELECTION
 
-/datum/gear/suit/hoodie_sel
-	display_name = "standard hoodies"
-	path = /obj/item/clothing/suit/storage/toggle/hoodie
-
-/datum/gear/suit/hoodie_sel/New()
-	..()
-	var/hoodies = list()
-	hoodies += /obj/item/clothing/suit/storage/toggle/hoodie/cti
-	hoodies += /obj/item/clothing/suit/storage/toggle/hoodie/mu
-	hoodies += /obj/item/clothing/suit/storage/toggle/hoodie/nt
-	hoodies += /obj/item/clothing/suit/storage/toggle/hoodie/smw
-	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(hoodies)
+/datum/gear/suit/ziphoodie
+	display_name = "zip-up hoodie, colour select"
+	path = /obj/item/clothing/suit/storage/hooded/toggle/hoodie
+	flags = GEAR_HAS_COLOR_SELECTION
 
 /datum/gear/suit/labcoat
 	display_name = "labcoat, colour select"

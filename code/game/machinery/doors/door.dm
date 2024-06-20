@@ -295,11 +295,8 @@
 
 	if(src.operating) return
 
-	if(src.allowed(user) && operable())
-		if(src.density)
-			open()
-		else
-			close()
+	if(allowed(user) && operable())
+		density ? open() : close()
 		return
 
 	if(src.density)

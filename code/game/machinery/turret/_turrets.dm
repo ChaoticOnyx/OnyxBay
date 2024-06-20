@@ -97,6 +97,11 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	/// Will show a nice ray that displays this turret's targeting states.
 	var/debug_mode = FALSE
 
+	var/reloading_state = /datum/state/turret/reloading
+	var/idle_state = /datum/state/turret/idle
+	var/turning_state = /datum/state/turret/turning
+	var/shooting_state = /datum/state/turret/engaging
+
 /obj/machinery/turret/Initialize(mapload, _signaler)
 	. = ..()
 
@@ -264,6 +269,9 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 // State machine processing steps, called by looping timer
 /obj/machinery/turret/proc/process_turning()
+	if(!istype(state_machine?.current_state, turning_state))
+		return
+
 	if(!enabled || inoperable())
 		state_machine.evaluate()
 		return
@@ -282,6 +290,9 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	state_machine.evaluate()
 
 /obj/machinery/turret/proc/process_shooting()
+	if(!istype(state_machine?.current_state, shooting_state))
+		return
+
 	if(operable())
 		if(installed_gun && is_valid_target(target?.resolve()))
 			var/atom/resolved_target = target.resolve()
@@ -297,6 +308,9 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	installed_gun?.Fire(resolved_target, src)
 
 /obj/machinery/turret/proc/process_reloading()
+	if(!istype(state_machine?.current_state, reloading_state))
+		return
+
 	if(istype(installed_gun, /obj/item/gun/projectile))
 		var/obj/item/gun/projectile/proj_gun = installed_gun
 
@@ -323,6 +337,9 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	reloading = FALSE
 
 /obj/machinery/turret/proc/process_idle()
+	if(!istype(state_machine?.current_state, idle_state))
+		return
+
 	if(!isnull(default_bearing) && (target_bearing != default_bearing) && angle_within_traverse(default_bearing))
 		target_bearing = default_bearing
 

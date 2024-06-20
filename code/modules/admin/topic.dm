@@ -1108,17 +1108,6 @@
 		to_chat(M, "<span class='warning'>You have been sent to the prison station!</span>")
 		log_and_message_admins("sent [key_name_admin(M)] to the prison station.")
 
-	else if(href_list["blind"])
-		if(!check_rights(R_ADMIN))
-			return
-
-		var/mob/M = locate(href_list["blind"])
-		if(!ismob(M) || !M.client)
-			return
-
-		M.client.view = M.client.view == world.view ? -1 : world.view
-		log_and_message_admins("[M.client.view == world.view ? "opened" : "closed"] the game window for [key_name_admin(M)]")
-
 	else if(href_list["tdome1"])
 		if(!check_rights(R_FUN))	return
 

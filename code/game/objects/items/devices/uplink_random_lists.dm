@@ -17,7 +17,7 @@
 	..()
 	items = list()
 
-/datum/uplink_random_selection/proc/get_random_item(telecrystals, obj/item/device/uplink/U, list/bought_items)
+/datum/uplink_random_selection/proc/get_random_item(telecrystals, datum/component/uplink/U, list/bought_items)
 	var/const/attempts = 50
 
 	for(var/i = 0; i < attempts; i++)
@@ -110,8 +110,7 @@ var/list/uplink_random_selections_
 			/datum/uplink_item/item/tools/teleporter,
 			/datum/uplink_item/item/tools/supply_beacon,
 			/datum/uplink_item/item/implants/imp_uplink,
-			/datum/uplink_item/item/job,
-			/datum/uplink_item/deity
+			/datum/uplink_item/item/job
 		)
 
 /datum/uplink_random_selection/blacklist/New()
@@ -125,7 +124,7 @@ var/list/uplink_random_selections_
 		var/new_thing = new /datum/uplink_random_item(uplink_item_type)
 		items += new_thing
 
-/datum/uplink_random_selection/blacklist/get_random_item(telecrystals, obj/item/device/uplink/U, list/bought_items)
+/datum/uplink_random_selection/blacklist/get_random_item(telecrystals, datum/component/uplink/U, list/bought_items)
 	var/const/attempts = 50
 	for(var/i = 0; i < attempts; i++)
 		var/datum/uplink_random_item/RI = pick(items)

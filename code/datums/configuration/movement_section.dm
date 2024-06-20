@@ -5,6 +5,7 @@
 	var/walk_speed = 7
 	var/human_delay = 0
 	var/robot_delay = 0
+	var/drone_delay = -1
 	var/metroid_delay = 0
 	var/animal_delay = 0
 

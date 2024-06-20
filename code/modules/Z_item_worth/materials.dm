@@ -20,7 +20,7 @@
 	value = 4
 
 /material/steel
-	value = 4
+	value = 2
 
 /material/diona
 	value = 5
@@ -35,7 +35,7 @@
 	value = 10
 
 /material/glass/reinforced
-	value = 2
+	value = 4
 
 /material/glass/plasma
 	value = 30
@@ -56,7 +56,7 @@
 	value = 80
 
 /material/iron
-	value = 5
+	value = 1
 
 /material/voxalloy
 	value = 100

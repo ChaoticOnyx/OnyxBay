@@ -1,0 +1,50 @@
+"a" = (/turf/simulated/mineral,/area/mine/unexplored/medium)
+"d" = (/mob/living/simple_animal/hostile/asteroid/goliath,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"g" = (/turf/simulated/wall/iron,/area/mine/unexplored/medium)
+"k" = (/obj/machinery/button/remote/blast_door{pixel_y = -22},/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"l" = (/turf/simulated/floor,/area/mine/unexplored/medium)
+"m" = (/obj/item/device/flashlight/lantern/active,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"n" = (/turf/simulated/wall/iron{damage = 70},/area/mine/unexplored/medium)
+"o" = (/obj/structure/table/rack/dark,/obj/item/stack/material/silver,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"p" = (/obj/structure/boulder,/mob/living/simple_animal/hostile/asteroid/goliath,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"q" = (/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"r" = (/obj/item/asteroid/goliath_hide,/obj/item/stack/material/platinum,/obj/item/stack/material/platinum,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"s" = (/obj/item/stack/material/iron,/obj/item/stack/material/iron,/turf/simulated/floor,/area/mine/unexplored/medium)
+"t" = (/obj/effect/floor_decal/asteroid,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"u" = (/obj/item/arrow/rod,/obj/item/pickaxe/drill/diamonddrill,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"y" = (/obj/item/arrow/rod,/obj/item/arrow/rod,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"z" = (/obj/effect/floor_decal/rust,/obj/item/remains/human,/turf/simulated/floor,/area/mine/unexplored/medium)
+"A" = (/obj/item/remains/human,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"B" = (/mob/living/simple_animal/hostile/asteroid/goliath/alpha,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"D" = (/obj/effect/floor_decal/asteroid,/mob/living/simple_animal/hostile/asteroid/goliath,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"E" = (/obj/structure/table/rack/dark,/obj/item/clothing/suit/space/void/engineering/salvage,/obj/item/clothing/head/helmet/space/void/engineering/salvage,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"F" = (/obj/structure/boulder,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"J" = (/obj/structure/closet/crate/handmade,/obj/random/coin,/obj/item/stack/material/plasma/ten,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"K" = (/obj/item/stack/material/iron,/obj/item/stack/material/iron,/obj/item/stack/material/iron,/obj/item/stack/material/iron,/obj/item/stack/material/iron,/obj/item/stack/material/iron,/turf/simulated/floor,/area/mine/unexplored/medium)
+"L" = (/obj/item/stack/material/iron,/obj/item/stack/material/iron,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"M" = (/obj/effect/floor_decal/rust,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"N" = (/obj/item/stack/material/iron,/obj/item/stack/material/iron,/obj/item/stack/material/iron,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"O" = (/obj/structure/rock,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"P" = (/obj/effect/floor_decal/rust,/turf/simulated/floor,/area/mine/unexplored/medium)
+"R" = (/obj/effect/landmark/corpse/miner/rig,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"S" = (/obj/item/asteroid/goliath_hide,/obj/item/stack/material/platinum,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"T" = (/obj/structure/closet/crate/handmade,/obj/random/coin,/obj/random/smokes,/obj/item/stack/material/diamond,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"U" = (/obj/machinery/portable_atmospherics/canister/oxygen{health = -100},/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"V" = (/obj/effect/floor_decal/rust,/obj/effect/floor_decal/asteroid,/obj/item/stack/material/iron,/obj/item/stack/material/iron,/obj/item/stack/material/iron,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+"X" = (/obj/effect/floor_decal/rust,/turf/simulated/wall/iron{damage = 70},/area/mine/unexplored/medium)
+"Y" = (/obj/item/arrow/rod,/turf/simulated/floor/asteroid,/area/mine/unexplored/medium)
+
+(1,1,1) = {"
+aangnaaagaaa
+aaSaBqaaaqaa
+arSOMqaKuRaa
+aLaqqOaqmFga
+gqaqAFPqdqaa
+nEzOtqqYqaga
+nUqsqMqDTana
+gqdqONqqJaoa
+aqyqYqMNqaaa
+aqVkpqqOqqaa
+aqXnqqYnnlaa
+aqqqqOYqqqaa
+"}

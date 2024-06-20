@@ -82,17 +82,16 @@
 	set category = "Object"
 	set src in view(1)
 
-	var/genemask = input("Choose a gene to modify.") as null|anything in SSplants.plant_gene_datums
-
-	if(!genemask)
+	var/gene_name = tgui_input_list(usr, "Choose a gene to modify.", "Gene Selection", ALL_GENES)
+	if (isnull(gene_name))
 		return
 
-	gene = SSplants.plant_gene_datums[genemask]
+	var/decl/plantgene/gene = SSplants.plant_gene_datums[gene_name]
+	if (!isnull(gene))
+		return
 
-	to_chat(usr, "<span class='info'>You set the [src]'s targeted genetic area to [genemask].</span>")
-
-	return
-
+	src.gene = gene
+	show_splash_text(usr, "target gene set", SPAN_INFO("You set the [src]'s targeted genetic area to [gene_name]."))
 
 /obj/item/gun/energy/floragun/consume_next_projectile()
 	. = ..()

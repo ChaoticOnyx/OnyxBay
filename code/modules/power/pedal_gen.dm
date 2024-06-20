@@ -120,7 +120,7 @@
 /obj/structure/bed/chair/pedalgen/post_buckle_mob(mob/user)
 	update_mob(user, 1)
 
-/obj/structure/bed/chair/pedalgen/rotate(mob/user)
+/obj/structure/bed/chair/pedalgen/rotate()
 	..()
 	if(dir == SOUTH)
 		layer = FLY_LAYER
@@ -130,7 +130,7 @@
 	if(buckled_mob)
 		update_mob(buckled_mob)
 
-/obj/structure/bed/chair/pedalgen/rotate_counter(mob/user)
+/obj/structure/bed/chair/pedalgen/rotate_counter()
 	..()
 	if(dir == SOUTH)
 		layer = FLY_LAYER

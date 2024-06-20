@@ -347,12 +347,6 @@ var/list/solars_list = list()
 	set_panels(cdir)
 	updateDialog()
 
-
-/obj/machinery/power/solar_control/Initialize()
-	. = ..()
-	if(!connect_to_network()) return
-	set_panels(cdir)
-
 /obj/machinery/power/solar_control/on_update_icon()
 	ClearOverlays()
 	if(stat & NOPOWER)
@@ -531,12 +525,10 @@ var/list/solars_list = list()
 /obj/machinery/power/solar_control/autostart
 	track = 2 // Auto tracking mode
 
-/obj/machinery/power/solar_control/autostart/Initialize()
-	. = ..()
-	return INITIALIZE_HINT_LATELOAD
+/obj/machinery/power/solar_control/autostart/connect_to_network()
+	return ..() == CONNECT_NETWORK_FAIL ? CONNECT_NETWORK_FAIL : CONNECT_NETWORK_DELAYED_PROC
 
-/obj/machinery/power/solar_control/autostart/LateInitialize()
-	. = ..()
+/obj/machinery/power/solar_control/autostart/after_connect_to_network()
 	autoconnect()
 
 /obj/machinery/power/solar_control/autostart/proc/autoconnect()

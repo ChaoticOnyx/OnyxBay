@@ -49,4 +49,4 @@
 	return 0
 
 /mob/living/carbon/alien/show_inv(mob/user)
-	return //Consider adding cuffs and hats to this, for the sake of fun.
+	return FALSE//Consider adding cuffs and hats to this, for the sake of fun.

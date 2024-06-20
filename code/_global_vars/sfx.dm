@@ -1576,6 +1576,10 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/clownstep1.ogg',
 		'sound/effects/clownstep2.ogg'
 	),
+	SFX_HEELS = list(
+		'sound/effects/heelsstep1.ogg',
+		'sound/effects/heelsstep2.ogg'
+	),
 	SFX_HISS = list(
 		'sound/voice/hiss1.ogg',
 		'sound/voice/hiss2.ogg',
@@ -1642,6 +1646,24 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/pig1.ogg',
 		'sound/effects/pig2.ogg',
 		'sound/effects/pig3.ogg'
+	),
+	SFX_PLANTCROSS = list(
+		'sound/effects/plantcross1.ogg',
+		'sound/effects/plantcross2.ogg',
+		'sound/effects/plantcross3.ogg',
+		'sound/effects/plantcross4.ogg'
+	),
+	SFX_THUNDER = list(
+		'sound/effects/thunder/thunder1.ogg',
+		'sound/effects/thunder/thunder2.ogg',
+		'sound/effects/thunder/thunder3.ogg',
+		'sound/effects/thunder/thunder4.ogg',
+		'sound/effects/thunder/thunder5.ogg',
+		'sound/effects/thunder/thunder6.ogg',
+		'sound/effects/thunder/thunder7.ogg',
+		'sound/effects/thunder/thunder8.ogg',
+		'sound/effects/thunder/thunder9.ogg',
+		'sound/effects/thunder/thunder10.ogg',
 	),
 	// DEVICES
 	SFX_GEIGER_LOW = list(
@@ -1765,6 +1787,12 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_FOOTSTEP_STAIRS = list(
 		'sound/effects/stairs_step.ogg'
 	),
+	SFX_FOOTSTEP_SWAMP = list(
+		'sound/effects/footstep/swamp1.ogg',
+		'sound/effects/footstep/swamp2.ogg',
+		'sound/effects/footstep/swamp3.ogg',
+		'sound/effects/footstep/swamp4.ogg',
+	),
 	SFX_KEYBOARD = list(
 		'sound/machines/keyboard/keystroke1.ogg',
 		'sound/machines/keyboard/keystroke2.ogg',
@@ -1796,4 +1824,16 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_LIGHT_BURNOUT = list(
 		'sound/machines/lightsburnout.ogg'
 	),
+	SFX_MINESWEEPER_CLICK = list(
+		'sound/machines/arcade/minesweeper_click.ogg'
+	),
+	SFX_MINESWEEPER_LOSE = list(
+		'sound/machines/arcade/minesweeper_lose.ogg'
+	),
+	SFX_MINESWEEPER_START = list(
+		'sound/machines/arcade/minesweeper_start.ogg'
+	),
+	SFX_MINESWEEPER_WIN = list(
+		'sound/machines/arcade/minesweeper_win.ogg'
+	)
 ))

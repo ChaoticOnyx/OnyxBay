@@ -109,6 +109,7 @@
 
 	unregister_signal(orbiter, SIGNAL_MOVED)
 	SEND_SIGNAL(parent, SIGNAL_ORBIT_STOP, orbiter)
+	to_chat(orbiter, SPAN_NOTICE("No longer orbiting \the [parent]."))
 	orbiter.SpinAnimation(0, 0)
 
 	if(istype(orbiter_list[orbiter], /matrix))
@@ -124,8 +125,6 @@
 
 	if(!refreshing && !length(orbiter_list) && !QDELETED(src))
 		qdel_self()
-
-	to_chat(orbiter, SPAN_NOTICE("No longer orbiting [parent]."))
 
 /// This proc can receive signals by either the thing being directly orbited or anything holding it
 /datum/component/orbiter/proc/move_react(atom/movable/master, atom/mover, atom/oldloc, direction)

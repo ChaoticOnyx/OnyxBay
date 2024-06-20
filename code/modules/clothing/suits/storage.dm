@@ -10,7 +10,7 @@
 
 /obj/item/clothing/suit/storage/Destroy()
 	QDEL_NULL(pockets)
-	. = ..()
+	return ..()
 
 /obj/item/clothing/suit/storage/attack_hand(mob/user as mob)
 	if (pockets.handle_attack_hand(user))

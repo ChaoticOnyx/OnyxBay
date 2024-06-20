@@ -408,6 +408,7 @@
 
 /obj/structure/closet/crate/hydroponics/prespawned/WillContain()
 	return list(
+		/obj/item/reagent_containers/vessel/bucket/watercan = 2,
 		/obj/item/reagent_containers/spray/plantbgone = 2,
 		/obj/item/material/minihoe = 2,
 		/obj/item/storage/plants = 2,

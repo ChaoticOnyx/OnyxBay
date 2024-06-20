@@ -7,6 +7,11 @@
 /// Total amount of HUD styles, keep this up-to-date
 #define HUD_STYLE_TOTAL    3
 
+/// Width of fullscreen icons in tiles, update manually.
+#define DEFAULT_FULLSCREEN_WIDTH  15
+/// Height of fullscreen icons in tiles, update manually.
+#define DEFAULT_FULLSCREEN_HEIGHT 15
+
 /*
 	These defines specificy screen locations.  For more information, see the byond documentation on the screen_loc var.
 
@@ -23,14 +28,15 @@
 */
 
 #define ui_entire_screen "WEST,SOUTH to EAST,NORTH"
+#define ui_fullscreen "CENTER-7,CENTER-7"
 
 //Lower left, persistant menu
 #define ui_inventory "WEST:6,SOUTH:5"
 
 //Lower center, persistant menu
-#define ui_sstore1 "WEST+2:10,SOUTH:5"
-#define ui_id "WEST+3:12,SOUTH:5"
-#define ui_belt "WEST+4:14,SOUTH:5"
+#define ui_sstore1 "CENTER-5:10,SOUTH:5"
+#define ui_id "CENTER-4:12,SOUTH:5"
+#define ui_belt "CENTER-3:14,SOUTH:5"
 #define ui_back "CENTER-2:14,SOUTH:5"
 #define ui_rhand "CENTER-1:16,SOUTH:5"
 #define ui_lhand "CENTER:16,SOUTH:5"

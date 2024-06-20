@@ -136,7 +136,7 @@
 	cost = 15
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Exotic Seeds crate"
-	access = access_xenobiology
+	access = access_hydroponics
 
 /decl/hierarchy/supply_pack/hydroponics/watertank
 	name = "Water tank crate"

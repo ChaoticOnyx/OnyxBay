@@ -60,6 +60,9 @@
 	master_ai = null
 	return ..()
 
+/obj/machinery/turret_control_panel/tgui_state()
+	return GLOB.tgui_machinery_noaccess_state
+
 /obj/machinery/turret_control_panel/proc/get_connected_turrets()
 	. = list()
 	for(var/obj/machinery/turret/T in GLOB.all_turrets)

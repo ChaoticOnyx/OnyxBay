@@ -189,7 +189,8 @@
 				/obj/item/storage/firstaid/adv = 3,
 				/obj/item/storage/firstaid/combat = 1,
 				/obj/item/storage/firstaid = 6,
-				/obj/item/storage/firstaid/fire = 6)
+				/obj/item/storage/firstaid/fire = 6,
+				/obj/item/storage/firstaid/antirad = 2)
 
 /obj/random/contraband
 	name = "random illegal item"
@@ -890,6 +891,7 @@
 				/obj/item/clothing/head/welding = 2,
 				/obj/item/clothing/head/cardborg = 1,
 				/obj/item/clothing/head/cowboy_hat = 1,
+				/obj/item/clothing/head/panama = 1,
 				/obj/item/clothing/head/nursehat = 1,
 				/obj/item/clothing/head/syndicatefake = 1,
 				/obj/item/clothing/head/wizard/fake = 1,

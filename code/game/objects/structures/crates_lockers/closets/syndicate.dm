@@ -60,8 +60,7 @@
 	new /obj/item/pinpointer/nukeop(src)
 	new /obj/item/pinpointer/nukeop(src)
 	new /obj/item/device/pda/syndicate(src)
-	var/obj/item/device/radio/uplink/U = new(src)
-	U.hidden_uplink.uses = 40
+	new /obj/item/device/radio/uplink(src)
 	return
 
 /obj/structure/closet/syndicate/resources/

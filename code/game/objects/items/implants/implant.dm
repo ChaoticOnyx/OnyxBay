@@ -14,6 +14,14 @@
 	var/malfunction = 0
 	var/known //if advanced scanners would name these in results
 
+/obj/item/implant/Initialize()
+	. = ..()
+	GLOB.implants_list += src
+
+/obj/item/implant/Destroy()
+	GLOB.implants_list -= src
+	return ..()
+
 /obj/item/implant/proc/trigger(emote, source)
 	return
 

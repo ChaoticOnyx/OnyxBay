@@ -320,7 +320,7 @@ var/global/list/_client_preferences_by_type
 		R.GraphicsUpdate()
 
 /datum/client_preference/graphics_quality
-	description = "Graphics Quality (quality of effects)"
+	description = "Effects Quality"
 	key = "GRAPHICS_QUALITY"
 	options = list(GLOB.PREF_LOW, GLOB.PREF_MED, GLOB.PREF_HIGH)
 	category = PREF_CATEGORY_GRAPHICS
@@ -341,7 +341,7 @@ var/global/list/_client_preferences_by_type
 	default_value = GLOB.PREF_STRETCH
 
 /datum/client_preference/pixel_size/changed(mob/preference_mob, new_value)
-	winset(preference_mob, "mapwindow.map", "zoom=[zoom_pref2value(new_value)]")
+	preference_mob?.client.view_size.set_zoom()
 
 /datum/client_preference/scaling_method
 	description = "Scaling Method"
@@ -351,7 +351,25 @@ var/global/list/_client_preferences_by_type
 	default_value = GLOB.PREF_NORMAL
 
 /datum/client_preference/scaling_method/changed(mob/preference_mob, new_value)
-	winset(preference_mob, "mapwindow.map", "zoom-mode=[lowertext(new_value)]")
+	preference_mob?.client.view_size.set_zoom_mode()
+
+/datum/client_preference/auto_fit
+	description = "Auto-fit Viewport"
+	key = "AUTOFIT"
+	category = PREF_CATEGORY_UI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/auto_fit/changed(mob/preference_mob, new_value)
+	preference_mob?.client.attempt_fit_viewport()
+
+/datum/client_preference/widescreen
+	description = "Widescreen"
+	key = "WIDESCREEN"
+	category = PREF_CATEGORY_UI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/widescreen/changed(mob/preference_mob, new_value)
+	preference_mob?.client.view_size.set_default(get_screen_size(new_value == GLOB.PREF_YES))
 
 /datum/client_preference/fullscreen_mode
 	description = "Fullscreen Mode"

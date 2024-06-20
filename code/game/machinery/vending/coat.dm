@@ -4,6 +4,7 @@
 
 	icon = 'icons/obj/machines/vending/theater.dmi'
 	icon_state = "Theater"
+	light_color = "#CA7732"
 
 	vend_delay = 21
 	use_vend_state = TRUE

@@ -25,10 +25,11 @@
 
 /obj/item/material/coin/set_material(new_material)
 	. = ..()
-	if(material.name in icon_states(icon))
-		icon_state = material.name
+	var/temp_state = "[material.name]_coin"
+	if(temp_state in icon_states(icon))
+		icon_state = temp_state
 	else
-		icon_state = "generic"
+		icon_state = "generic_coin"
 		color = material.icon_colour
 
 /obj/item/material/coin/attackby(obj/item/W, mob/user)
@@ -75,29 +76,29 @@
 
 
 /obj/item/material/coin/gold
-	icon_state = "gold"
+	icon_state = "gold_coin"
 	default_material = MATERIAL_GOLD
 
 /obj/item/material/coin/silver
-	icon_state = "silver"
+	icon_state = "silver_coin"
 	default_material = MATERIAL_SILVER
 
 /obj/item/material/coin/diamond
-	icon_state = "diamond"
+	icon_state = "diamond_coin"
 	default_material = MATERIAL_DIAMOND
 
 /obj/item/material/coin/iron
-	icon_state = "iron"
+	icon_state = "iron_coin"
 	default_material = MATERIAL_IRON
 
 /obj/item/material/coin/plasma
-	icon_state = "plasma"
+	icon_state = "plasma_coin"
 	default_material = MATERIAL_PLASMA
 
 /obj/item/material/coin/uranium
-	icon_state = "uranium"
+	icon_state = "uranium_coin"
 	default_material = MATERIAL_URANIUM
 
 /obj/item/material/coin/platinum
-	icon_state = "platinum"
+	icon_state = "platinum_coin"
 	default_material = MATERIAL_PLATINUM

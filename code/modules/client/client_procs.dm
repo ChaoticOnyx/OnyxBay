@@ -216,6 +216,7 @@
 	SSeams.CollectDataForClient(src)
 
 	setup_preferences()
+	view_size = new(src, get_screen_size(TRUE))
 
 	. = ..()	// calls mob.Login()
 
@@ -259,6 +260,8 @@
 
 	if(prefs && !istype(mob, world.mob))
 		prefs.apply_post_login_preferences(src)
+
+	turf_examine = new(src)
 
 	settings = new(src)
 
@@ -580,13 +583,19 @@
 		winset(src, "mainwindow", "menu=menu;")
 	winset(src, "mainwindow", "is-maximized=true")
 
+/client/proc/attempt_fit_viewport()
+	if(get_preference_value("AUTOFIT") != GLOB.PREF_YES)
+		return
+
+	fit_viewport()
+
 /client/verb/fit_viewport()
 	set name = "Fit Viewport"
 	set category = "OOC"
 	set desc = "Fit the width of the map window to match the viewport"
 
 	// Fetch aspect ratio
-	var/view_size = getviewsize(view)
+	var/view_size = get_view_size(view)
 	var/aspect_ratio = view_size[1] / view_size[2]
 
 	// Calculate desired pixel width using window size and aspect ratio
@@ -666,6 +675,18 @@
 			return TRUE
 
 	return FALSE
+
+/client/proc/change_view(new_view)
+	if(isnull(new_view))
+		CRASH("change_view was called without an argument")
+
+	view = new_view
+	attempt_fit_viewport()
+	/**
+	 * We create view in 'client/New()' BEFORE client is actually logged in his mob
+	 * Otherwise apply_post_login_preferences() crashes due to view being not initialized.
+	 */
+	mob?.reload_fullscreen()
 
 /client/MouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
 	. = ..()

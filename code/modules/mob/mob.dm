@@ -236,7 +236,7 @@
 	if((incapacitation_flags & INCAPACITATION_STUNNED) && stunned)
 		return 1
 
-	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (weakened || resting || pinned.len))
+	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (weakened || resting || LAZYLEN(pinned)))
 		return 1
 
 	if((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (stat || paralysis || sleeping || (status_flags & FAKEDEATH)))
@@ -294,8 +294,15 @@
 				client.eye = loc
 	return
 
+/**
+ * This proc creates content for nano inventory.
+ * Returns TRUE if there is content to show.
+ * In case there's nothing to show - returns FALSE.
+ * This is done to prevent UI from showing last opened inventory.
+ * Do not forget to check what this proc has returned before actually opening UI!
+ */
 /mob/proc/show_inv(mob/user)
-	return
+	return FALSE
 
 // Mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
 /mob/verb/examinate(atom/to_axamine as mob|obj|turf in view(client.eye))
@@ -610,7 +617,10 @@
 		return
 	if(istype(M,/mob/living/silicon/ai))
 		return
-	show_inv(usr)
+
+	if(!show_inv(usr))
+		return
+
 	usr.show_inventory?.open()
 
 /mob/verb/stop_pulling_verb()
@@ -621,9 +631,14 @@
 
 /mob/proc/stop_pulling()
 	if(pulling)
+		pulling.set_glide_size(8)
 		unregister_signal(pulling, SIGNAL_QDELETING)
 		pulling.pulledby = null
 		pulling = null
+
+		var/datum/movement_handler/mob/delay/delay = GetMovementHandler(/datum/movement_handler/mob/delay)
+		if(delay)
+			delay.InstantUpdateGlideSize()
 
 	if(pullin)
 		pullin.icon_state = "pull0"
@@ -684,6 +699,10 @@
 
 	register_signal(AM, SIGNAL_QDELETING, nameof(.proc/stop_pulling))
 	update_pull_slowdown(AM)
+	var/datum/movement_handler/mob/delay/delay = GetMovementHandler(/datum/movement_handler/mob/delay)
+	if(delay)
+		delay.InstantUpdateGlideSize()
+	AM.set_glide_size(glide_size)
 
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
@@ -985,7 +1004,7 @@
 	for(var/obj/item/O in pinned)
 		if(O == selection)
 			pinned -= O
-		if(!pinned.len)
+		if(!LAZYLEN(pinned))
 			anchored = 0
 
 	valid_objects = get_visible_implants(0)

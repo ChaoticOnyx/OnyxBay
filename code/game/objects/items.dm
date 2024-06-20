@@ -62,7 +62,6 @@
 	var/force_drop = FALSE // Allows the item to be manually dropped by the wielder even if canremove is set to FALSE.
 	var/list/armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 	var/list/allowed = null //suit storage stuff.
-	var/obj/item/device/uplink/hidden_uplink = null // All items can have an uplink hidden inside, just remember to add the triggers.
 	var/zoomdevicename = null //name used for message when binoculars/scope is used
 	var/zoom = 0 //1 if item is actively being used to zoom. For scoped guns and binoculars.
 	var/surgery_speed = 1 //When this item is used as a surgery tool, multiply the delay of the surgery step by this much.
@@ -122,7 +121,6 @@
 		pixel_y = rand(-randpixel, randpixel)
 
 /obj/item/Destroy()
-	QDEL_NULL(hidden_uplink)
 	if(ismob(loc))
 		var/mob/m = loc
 		m.drop(src, force = TRUE)
@@ -877,7 +875,7 @@ modules/mob/mob_movement.dm if you move you will be zoomed out
 modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 */
 //Looking through a scope or binoculars should /not/ improve your periphereal vision. Still, increase viewsize a tiny bit so that sniping isn't as restricted to NSEW
-/obj/item/proc/zoom(mob/user, tileoffset = 14, viewsize = 9) //tileoffset is client view offset in the direction the user is facing. viewsize is how far out this thing zooms. 7 is normal view
+/obj/item/proc/zoom(mob/user, tileoffset = 14, viewsize = 2) //tileoffset is client view offset in the direction the user is facing. viewsize is how far out this thing zooms. 7 is normal view
 	if(!user.client)
 		return
 	if(zoom)
@@ -901,7 +899,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	if(user.hud_used.hud_shown)
 		user.hud_used.show_hud(HUD_STYLE_REDUCED)
 
-	user.client.view = viewsize
+	user.client.view_size.set_both(viewsize, viewsize)
 	zoom = 1
 
 	var/viewoffset = WORLD_ICON_SIZE * tileoffset
@@ -954,7 +952,8 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	if(!user.client)
 		return
 
-	user.client.view = world.view
+	user.client.view_size.reset_to_default()
+
 	if(!user.hud_used.hud_shown)
 		user.hud_used.show_hud(HUD_STYLE_STANDART)
 

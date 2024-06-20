@@ -45,53 +45,61 @@
 		screen_loc = "[screen_loc_X[1]]:[pix_X],[screen_loc_Y[1]]:[pix_Y]"
 
 /atom/movable/screen/movable/proc/encode_screen_X(X, mob/viewer)
-	var/view = viewer.client ? viewer.client.view : world.view
-	if(X > view+1)
-		. = "EAST-[view*2 + 1-X]"
-	else if(X < view+1)
+	var/list/view_sizes = get_view_size(isnull(viewer.client) ? world.view : viewer.client.view)
+	var/view_width = floor(view_sizes[1] / 2)
+
+	if(X > view_width+1)
+		. = "EAST-[view_width*2 + 1-X]"
+	else if(X < view_width+1)
 		. = "WEST+[X-1]"
 	else
 		. = "CENTER"
 
 /atom/movable/screen/movable/proc/decode_screen_X(X, mob/viewer)
-	var/view = viewer.client ? viewer.client.view : world.view
+	var/list/view_sizes = get_view_size(isnull(viewer.client) ? world.view : viewer.client.view)
+	var/view_width = floor(view_sizes[1] / 2)
+
 	//Find EAST/WEST implementations
 	if(findtext(X,"EAST-"))
 		var/num = text2num(copytext(X,6)) //Trim EAST-
 		if(!num)
 			num = 0
-		. = view*2 + 1 - num
+		. = view_width * 2 + 1 - num
 	else if(findtext(X,"WEST+"))
 		var/num = text2num(copytext(X,6)) //Trim WEST+
 		if(!num)
 			num = 0
 		. = num+1
 	else if(findtext(X,"CENTER"))
-		. = view+1
+		. = view_width+1
 
 /atom/movable/screen/movable/proc/encode_screen_Y(Y, mob/viewer)
-	var/view = viewer.client ? viewer.client.view : world.view
-	if(Y > view+1)
-		. = "NORTH-[view*2 + 1-Y]"
-	else if(Y < view+1)
+	var/list/view_sizes = get_view_size(isnull(viewer.client) ? world.view : viewer.client.view)
+	var/view_height = floor(view_sizes[2] / 2)
+
+	if(Y > view_height+1)
+		. = "NORTH-[view_height * 2 + 1-Y]"
+	else if(Y < view_height + 1)
 		. = "SOUTH+[Y-1]"
 	else
 		. = "CENTER"
 
 /atom/movable/screen/movable/proc/decode_screen_Y(Y, mob/viewer)
-	var/view = viewer.client ? viewer.client.view : world.view
+	var/list/view_sizes = get_view_size(isnull(viewer.client) ? world.view : viewer.client.view)
+	var/view_height = floor(view_sizes[2] / 2)
+
 	if(findtext(Y,"NORTH-"))
 		var/num = text2num(copytext(Y,7)) //Trim NORTH-
 		if(!num)
 			num = 0
-		. = view*2 + 1 - num
+		. = view_height * 2 + 1 - num
 	else if(findtext(Y,"SOUTH+"))
 		var/num = text2num(copytext(Y,7)) //Time SOUTH+
 		if(!num)
 			num = 0
 		. = num+1
 	else if(findtext(Y,"CENTER"))
-		. = view+1
+		. = view_height + 1
 
 //Debug procs
 /client/proc/test_movable_UI()

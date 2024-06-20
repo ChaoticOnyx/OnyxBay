@@ -217,6 +217,9 @@
 	icon_state = "vox-carapace"
 	desc = "A glowing visor, perhaps stolen from a depressed Cylon."
 
+#define DEFAULT_SLOWDOWN 2
+#define PROTECTION_SLOWDOWN 20
+
 /obj/item/clothing/suit/space/vox/carapace
 	name = "alien carapace armour"
 	icon_state = "vox-carapace"
@@ -242,8 +245,9 @@
 			H.head.armor = list(melee = 60, bullet = 50, laser = 40, energy = 40, bomb = 60, bio = 100)
 			H.head.siemens_coefficient = 0.6
 			H.head.item_state = "vox-carapace"
-		slowdown_per_slot[slot_wear_suit] = 3
+		slowdown_per_slot[slot_wear_suit] = DEFAULT_SLOWDOWN
 		item_state = "vox-carapace"
+		H.update_equipment_slowdown()
 	else
 		to_chat(H, "<span class='notice'>You activate the protection mode.</span>")
 		armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 100)
@@ -252,8 +256,9 @@
 			H.head.armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 100)
 			H.head.siemens_coefficient = 0.2
 			H.head.item_state = "vox-carapace-active"
-		slowdown_per_slot[slot_wear_suit] = 20
+		slowdown_per_slot[slot_wear_suit] = PROTECTION_SLOWDOWN
 		item_state = "vox-carapace-active"
+		H.update_equipment_slowdown()
 	protection = !protection
 
 /obj/item/clothing/head/helmet/space/vox/stealth

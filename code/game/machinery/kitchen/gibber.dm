@@ -50,7 +50,7 @@
 		AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
 
 /obj/machinery/gibber/proc/update_glow()
-	if(stat & MAINT)
+	if(inoperable(MAINT))
 		set_light(0)
 		return FALSE
 

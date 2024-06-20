@@ -119,25 +119,21 @@
 /obj/machinery/door/firedoor/Bumped(atom/AM)
 	if(p_open || operating)
 		return
+
 	if(!density)
 		return ..()
+
 	if(istype(AM, /obj/mecha))
 		var/obj/mecha/mecha = AM
 		if(mecha.occupant)
 			var/mob/M = mecha.occupant
 			if(world.time - M.last_bumped <= 10) return //Can bump-open one airlock per second. This is to prevent popup message spam.
 			M.last_bumped = world.time
-			attack_hand(M)
-	return 0
+			trigger_open_close(M, TRUE)
+	return FALSE
 
 /obj/machinery/door/firedoor/attack_hand(mob/user)
 	add_fingerprint(user)
-	if(operating)
-		return//Already doing something.
-
-	if(blocked)
-		to_chat(user, SPAN("warning", "\The [src] is welded solid!"))
-		return
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -145,7 +141,7 @@
 			if(do_after(user, 30, src))
 				if(density)
 					visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
-					INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open))
+					trigger_open_close(H)
 					shake_animation(2, 2)
 			return
 
@@ -174,31 +170,41 @@
 		playsound(loc, 'sound/piano/A#6.ogg', 50)
 
 	var/needs_to_close = 0
-	if(density)
-		if(alarmed)
-			// Accountability!
-			users_to_open |= user.name
-			needs_to_close = !issilicon(user)
-		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open))
-	else
-		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close))
+	if(alarmed)
+		// Accountability!
+		users_to_open |= user.name
+		needs_to_close = !issilicon(user)
+	trigger_open_close(user)
 
 	if(needs_to_close && !thinking_about_closing)
 		thinking_about_closing = TRUE
 		set_next_think_ctx("close_context", world.time + 5 SECONDS)
+
+/obj/machinery/door/firedoor/proc/trigger_open_close(mob/user, forced = FALSE)
+	if(operating)
+		return //Already doing something.
+
+	if(blocked)
+		to_chat(user, SPAN("warning", "\The [src] is welded solid!"))
+		return
+
+	if(density)
+		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open), user, forced)
+	else
+		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close), user, forced)
 
 /obj/machinery/door/firedoor/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
 		if(damage >= 10)
 			if(density)
 				visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
-				INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open), TRUE)
+				trigger_open_close(user, TRUE)
 				if(!(stat & (BROKEN|NOPOWER)) && !thinking_about_closing)
 					thinking_about_closing = TRUE
 					set_next_think_ctx("close_context", world.time + 15 SECONDS)
 			else
 				visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
-				INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close))
+				trigger_open_close(user)
 		else
 			visible_message(SPAN("notice","\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."))
 		return
@@ -269,22 +275,23 @@
 		playsound(loc, 'sound/machines/airlock/creaking.ogg', 30, TRUE)
 		if(!do_after(user, forcing_time, src))
 			return
+
 		if(isCrowbar(C))
 			if(stat & (BROKEN|NOPOWER) || !density)
 				user.visible_message(SPAN("danger", "\The [user] forces \the [src] [density ? "open" : "closed"] with \a [C]!"),\
-									 "You force \the [src] [density ? "open" : "closed"] with \the [C]!",\
-									 "You hear metal strain, and a door [density ? "open" : "close"].")
+									"You force \the [src] [density ? "open" : "closed"] with \the [C]!",\
+									"You hear metal strain, and a door [density ? "open" : "close"].")
 		else
 			user.visible_message(SPAN("danger", "\The [user] forces \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \a [C]!"),\
-								 "You force \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \the [C]!",\
-								 "You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
+								"You force \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \the [C]!",\
+								"You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
 		if(density)
-			INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open), TRUE)
+			trigger_open_close(user, TRUE)
 			if(!(stat & (BROKEN|NOPOWER)) && !thinking_about_closing)
 				thinking_about_closing = TRUE
 				set_next_think_ctx("close_context", world.time + 15 SECONDS)
 		else
-			INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close))
+			trigger_open_close(user)
 		return
 
 	return ..()
@@ -320,7 +327,7 @@
 		return FALSE
 	return ..()
 
-/obj/machinery/door/firedoor/open(forced = 0)
+/obj/machinery/door/firedoor/open(mob/user, forced = 0)
 	lockdown = FALSE
 
 	if(hatch_open)
@@ -332,7 +339,7 @@
 		use_power_oneoff(360)
 	else
 		var/area/A = get_area(src)
-		log_admin("[usr]([usr.ckey]) has forced open an emergency shutter at X:[x], Y:[y], Z:[z] Area: [A.name].")
+		log_admin("[user]([user.ckey]) has forced open an emergency shutter at X:[x], Y:[y], Z:[z] Area: [A.name].")
 
 	playsound(loc, open_sound, 50, TRUE)
 	return ..()

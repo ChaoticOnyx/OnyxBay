@@ -41,14 +41,14 @@
 	possible_origins = list("888 Shanghai Kitchen", "Mr. Lee's Greater Hong Kong", "The House of the Venerable and Inscrutable Colonel", "Lucky Dragon")
 	trade_flags = TRADER_MONEY
 	possible_wanted_items = list()
-	possible_trading_items = list(/obj/item/reagent_containers/food/meatkabob    	     = TRADER_THIS_TYPE,
-							/obj/item/reagent_containers/food/monkeysdelight             = TRADER_THIS_TYPE,
-							/obj/item/reagent_containers/food/ricepudding                = TRADER_THIS_TYPE,
-							/obj/item/reagent_containers/food/slice/xenomeatbread/filled = TRADER_THIS_TYPE,
-							/obj/item/reagent_containers/food/soydope                    = TRADER_THIS_TYPE,
-							/obj/item/reagent_containers/food/stewedsoymeat              = TRADER_THIS_TYPE,
-							/obj/item/reagent_containers/food/wingfangchu                = TRADER_THIS_TYPE,
-							/obj/item/reagent_containers/vessel/dry_ramen           = TRADER_THIS_TYPE
+	possible_trading_items = list(/obj/item/reagent_containers/food/meatkabob 				= TRADER_THIS_TYPE,
+							/obj/item/reagent_containers/food/monkeysdelight 				= TRADER_THIS_TYPE,
+							/obj/item/reagent_containers/food/ricepudding 					= TRADER_THIS_TYPE,
+							/obj/item/reagent_containers/food/slice/xenomeatbread/filled 	= TRADER_THIS_TYPE,
+							/obj/item/reagent_containers/food/soydope 						= TRADER_THIS_TYPE,
+							/obj/item/reagent_containers/food/stewedsoymeat 				= TRADER_THIS_TYPE,
+							/obj/item/reagent_containers/food/wingfangchu 					= TRADER_THIS_TYPE,
+							/obj/item/reagent_containers/vessel/dry_ramen 					= TRADER_THIS_TYPE
 							)
 
 	var/list/fortunes = list("Today it's up to you to create the peacefulness you long for.",
@@ -115,20 +115,20 @@
 		TRADER_BRIBE_FAILURE      = "Of course sir! ORIGIN is always here for you!"
 	)
 
-	possible_trading_items = list(/obj/item/reagent_containers/food                      = TRADER_SUBTYPES_ONLY,
-							/obj/item/reagent_containers/vessel/can                      = TRADER_SUBTYPES_ONLY,
-							/obj/item/reagent_containers/vessel/bottle                   = TRADER_SUBTYPES_ONLY,
-							/obj/item/reagent_containers/vessel/bottle/small             = TRADER_BLACKLIST,
-							/obj/item/reagent_containers/vessel/bottle/chemical          = TRADER_BLACKLIST_ALL,
-							/obj/item/reagent_containers/food/boiledmetroidcore          = TRADER_BLACKLIST,
-							/obj/item/reagent_containers/food/checker                    = TRADER_BLACKLIST_ALL,
-							/obj/item/reagent_containers/food/fruit_slice                = TRADER_BLACKLIST,
-							/obj/item/reagent_containers/food/slice                      = TRADER_BLACKLIST_ALL,
-							/obj/item/reagent_containers/food/grown                      = TRADER_BLACKLIST_ALL,
-							/obj/item/reagent_containers/food/human                      = TRADER_BLACKLIST_ALL,
-							/obj/item/reagent_containers/food/sliceable/braincake        = TRADER_BLACKLIST,
-							/obj/item/reagent_containers/food/meat/human                 = TRADER_BLACKLIST,
-							/obj/item/reagent_containers/food/variable                   = TRADER_BLACKLIST_ALL
+	possible_trading_items = list(/obj/item/reagent_containers/food 					= TRADER_SUBTYPES_ONLY,
+							/obj/item/reagent_containers/vessel/can 					= TRADER_SUBTYPES_ONLY,
+							/obj/item/reagent_containers/vessel/bottle 					= TRADER_SUBTYPES_ONLY,
+							/obj/item/reagent_containers/vessel/bottle/small 			= TRADER_BLACKLIST,
+							/obj/item/reagent_containers/vessel/bottle/chemical 		= TRADER_BLACKLIST_ALL,
+							/obj/item/reagent_containers/food/boiledmetroidcore 		= TRADER_BLACKLIST,
+							/obj/item/reagent_containers/food/checker 					= TRADER_BLACKLIST_ALL,
+							/obj/item/reagent_containers/food/fruit_slice 				= TRADER_BLACKLIST,
+							/obj/item/reagent_containers/food/slice 					= TRADER_BLACKLIST_ALL,
+							/obj/item/reagent_containers/food/grown 					= TRADER_BLACKLIST_ALL,
+							/obj/item/reagent_containers/food/human 					= TRADER_BLACKLIST_ALL,
+							/obj/item/reagent_containers/food/sliceable/braincake 		= TRADER_BLACKLIST,
+							/obj/item/reagent_containers/food/meat/human 				= TRADER_BLACKLIST,
+							/obj/item/reagent_containers/food/variable 					= TRADER_BLACKLIST_ALL
 							)
 
 /datum/trader/ship/bakery
@@ -155,20 +155,21 @@
 		TRADER_BRIBE_FAILURE      = "Oh ho ho! I'd never think of taking ORIGIN on the road!"
 	)
 
-	possible_trading_items = list(/obj/item/reagent_containers/food/slice/birthdaycake/filled     = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/slice/carrotcake/filled         = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/slice/cheesecake/filled         = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/slice/chocolatecake/filled      = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/slice/lemoncake/filled          = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/slice/limecake/filled           = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/slice/orangecake/filled         = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/slice/plaincake/filled          = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/slice/pumpkinpie/filled         = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/slice/bananabread/filled        = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/sliceable                       = TRADER_SUBTYPES_ONLY,
-								/obj/item/reagent_containers/food/sliceable/pizza                 = TRADER_BLACKLIST_ALL,
-								/obj/item/reagent_containers/food/sliceable/xenomeatbread         = TRADER_BLACKLIST,
-								/obj/item/reagent_containers/food/sliceable/flatdough             = TRADER_BLACKLIST,
-								/obj/item/reagent_containers/food/sliceable/braincake             = TRADER_BLACKLIST,
-								/obj/item/reagent_containers/food/pie                             = TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/applepie                        = TRADER_THIS_TYPE)
+	possible_trading_items = list(/obj/item/reagent_containers/food/slice/birthdaycake/filled 	= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/slice/carrotcake/filled 		= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/slice/cheesecake/filled 		= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/slice/chocolatecake/filled 	= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/slice/lemoncake/filled 		= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/slice/limecake/filled 		= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/slice/orangecake/filled 		= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/slice/plaincake/filled 		= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/slice/pumpkinpie/filled 		= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/slice/bananabread/filled 		= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/sliceable 					= TRADER_SUBTYPES_ONLY,
+								/obj/item/reagent_containers/food/sliceable/pizza 				= TRADER_BLACKLIST_ALL,
+								/obj/item/reagent_containers/food/sliceable/xenomeatbread 		= TRADER_BLACKLIST,
+								/obj/item/reagent_containers/food/sliceable/flatdough 			= TRADER_BLACKLIST,
+								/obj/item/reagent_containers/food/sliceable/braincake 			= TRADER_BLACKLIST,
+								/obj/item/reagent_containers/food/pie 							= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/applepie 						= TRADER_THIS_TYPE
+								)

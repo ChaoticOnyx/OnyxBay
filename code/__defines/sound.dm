@@ -334,6 +334,7 @@
 #define SFX_GLASS_KNOCK             "glass_knock"
 #define SFX_GIB                     "gib"
 #define SFX_CLOWN                   "clown"
+#define SFX_HEELS                   "heels"
 #define SFX_HISS                    "hiss"
 #define SFX_WHISTLE                 "whistle"
 #define SFX_SNORE                   "snore"
@@ -344,6 +345,8 @@
 #define SFX_THROWING                "throwing"
 #define SFX_DISPOSAL                "disposal"
 #define SFX_OINK                    "oink"
+#define SFX_PLANTCROSS              "plantcross"
+#define SFX_THUNDER                 "thunder"
 
 // FOOTSTEPS
 #define SFX_DISTANT_MOVEMENT        "distant_movement"
@@ -359,6 +362,7 @@
 #define SFX_FOOTSTEP_ROBOT_LEGS     "footstep_robot_legs"
 #define SFX_FOOTSTEP_ROBOT_SPIDER   "footstep_robot_spider"
 #define SFX_FOOTSTEP_STAIRS         "footstep_stairs"
+#define SFX_FOOTSTEP_SWAMP          "footstep_swamp"
 
 // VENDING
 #define SFX_VENDING_CANS            "vending_cans"
@@ -371,5 +375,11 @@
 #define SFX_LIGHT_TUBE_ON           "light_tube_on"
 #define SFX_LIGHT_BULB_ON           "light_bulb_on"
 #define SFX_LIGHT_BURNOUT           "light_burnout"
+
+// Arcade (minesweeper)
+#define SFX_MINESWEEPER_CLICK       "minesweeper_click"
+#define SFX_MINESWEEPER_LOSE        "minesweeper_lose"
+#define SFX_MINESWEEPER_START       "minesweeper_start"
+#define SFX_MINESWEEPER_WIN         "minesweeper_win"
 
 #define GET_SFX(name) pick(GLOB.sfx_list[name])

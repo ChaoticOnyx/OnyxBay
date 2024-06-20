@@ -71,8 +71,8 @@
 	var/client/usr_client = usr.client
 	var/list/paramslist = list()
 
-	if(href_list["statpanel_item_click"])
-		switch(href_list["statpanel_item_click"])
+	if(href_list["panel_click"])
+		switch(href_list["panel_click"])
 			if("left")
 				paramslist["left"] = "1"
 			if("right")
@@ -82,15 +82,14 @@
 			else
 				return
 
-		if(href_list["statpanel_item_shiftclick"])
+		if(href_list["panel_shiftclick"])
 			paramslist["shift"] = "1"
-		if(href_list["statpanel_item_ctrlclick"])
+		if(href_list["panel_ctrlclick"])
 			paramslist["ctrl"] = "1"
-		if(href_list["statpanel_item_altclick"])
+		if(href_list["panel_altclick"])
 			paramslist["alt"] = "1"
 
-		var/mouseparams = list2params(paramslist)
-		usr_client.Click(src, loc, null, mouseparams)
+		usr_client.Click(src, loc, null, list2params(paramslist))
 		return TRUE
 
 /atom/New(loc, ...)
@@ -846,6 +845,9 @@ its easier to just keep the beam vertical.
 
 /// Advanced-use proc only! Handles verb addition to target's stat panel without tempering with source's verbs.
 /atom/proc/_add_verb_to_stat(mob/target, verb_or_list_to_add)
+	if(isnull(verb_or_list_to_add))
+		return
+
 	if(!islist(verb_or_list_to_add))
 		verb_or_list_to_add = list(verb_or_list_to_add)
 
@@ -865,7 +867,7 @@ its easier to just keep the beam vertical.
 		var/procpath/verb_to_add = thing
 		output_list[++output_list.len] = list(verb_to_add.category, verb_to_add.name)
 
-	if(!LAZYLEN(output_list))
+	if(!length(output_list))
 		return
 
 	target.client?.stat_panel.send_message("add_verb_list", output_list)
@@ -886,6 +888,9 @@ its easier to just keep the beam vertical.
 
 /// Advanced-use proc only! Handles verb removal from target's stat panel without tempering with source's verbs.
 /atom/proc/_remove_verb_from_stat(mob/target, verb_or_list_to_remove)
+	if(isnull(verb_or_list_to_remove))
+		return
+
 	if(!islist(verb_or_list_to_remove))
 		verb_or_list_to_remove = list(verb_or_list_to_remove)
 
@@ -905,7 +910,7 @@ its easier to just keep the beam vertical.
 		var/procpath/verb_to_remove = thing
 		output_list[++output_list.len] = list(verb_to_remove.category, verb_to_remove.name)
 
-	if(!LAZYLEN(output_list))
+	if(!length(output_list))
 		return
 
 	target.client?.stat_panel.send_message("remove_verb_list", output_list)

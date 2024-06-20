@@ -607,14 +607,13 @@
 	//looking through a scope limits your periphereal vision
 	//still, increase the view size by a tiny amount so that sniping isn't too restricted to NSEW
 	var/zoom_offset = round(world.view * zoom_amount)
-	var/view_size = round(world.view + zoom_amount)
 	var/scoped_accuracy_mod = zoom_offset
 
 	if(zoom)
 		unzoom(user)
 		return
 
-	zoom(user, zoom_offset, view_size)
+	zoom(user, zoom_offset, zoom_amount)
 	if(zoom)
 		accuracy = scoped_accuracy + scoped_accuracy_mod
 		if(screen_shake)

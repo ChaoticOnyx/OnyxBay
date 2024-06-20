@@ -29,7 +29,7 @@
 
 		// Regular ghosts can always at least view if in range.
 		if(user.client)
-			var/clientviewlist = getviewsize(user.client.view)
+			var/clientviewlist = get_view_size(user.client.view)
 			if(get_dist(src_object, user) < max(clientviewlist[1], clientviewlist[2]))
 				. = max(., UI_UPDATE)
 

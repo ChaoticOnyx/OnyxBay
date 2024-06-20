@@ -40,7 +40,7 @@ var/global/list/all_grabstates[0]
 var/global/list/all_grabobjects[0]
 
 // Uplinks
-var/list/obj/item/device/uplink/world_uplinks = list()
+GLOBAL_LIST_EMPTY(uplinks)
 
 // Surgery steps
 GLOBAL_LIST_EMPTY(surgery_steps)
@@ -71,6 +71,9 @@ var/datum/visualnet/camera/cameranet = new()
 var/global/list/rune_list = new()
 
 var/global/list/syndicate_access = list(access_maint_tunnels, access_syndicate, access_external_airlocks)
+
+/// Implants
+GLOBAL_LIST_EMPTY(implants_list)
 
 /// Associative list of string -> string, where key is armor class and value is an attack type it protects against.
 GLOBAL_LIST_INIT(descriptive_attack_types, list(

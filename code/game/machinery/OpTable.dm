@@ -61,7 +61,7 @@
 	icon_state = "[base_icon_state][victim?.pulse() ? "-active" : "-idle"]"
 
 /obj/machinery/optable/proc/update_glow()
-	if(stat & (BROKEN | NOPOWER))
+	if(inoperable(MAINT))
 		set_light(0)
 		return FALSE
 

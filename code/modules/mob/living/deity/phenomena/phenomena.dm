@@ -15,12 +15,6 @@
 	linked.remove_phenomena(src)
 	return ..()
 
-/datum/phenomena/proc/Click(atom/target)
-	if(can_activate(target))
-		linked.take_cost(cost)
-		refresh_time = world.time + cooldown
-		activate(target)
-
 /datum/phenomena/proc/can_activate(atom/target)
 	if(!linked)
 		return 0
@@ -55,9 +49,6 @@
 				to_chat(linked, "<span class='warning'>You can't use [name] on non-believers.</span>")
 				return 0
 
-	if(cost > linked.mob_uplink.uses)
-		to_chat(linked, "<span class='warning'>You need more power to use [name] (Need [cost] power, have [linked.mob_uplink.uses])!</span>")
-		return 0
 
 	return 1
 

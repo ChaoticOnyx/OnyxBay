@@ -402,10 +402,10 @@
 
 /mob/living/carbon/Bump(atom/movable/AM, yes)
 	if(now_pushing || !yes)
-		return
-	..()
-	if(istype(AM, /mob/living/carbon) && prob(10))
-		src.spread_disease_to(AM, "Contact")
+		return FALSE
+	. = ..()
+	if(. && istype(AM, /mob/living/carbon) && prob(10))
+		spread_disease_to(AM, "Contact")
 
 /mob/living/carbon/slip(slipped_on, stun_duration = 8)
 	var/area/A = get_area(src)
@@ -479,7 +479,7 @@
 	<BR>"}
 	show_browser(user, dat, text("window=mob[];size=325x500", name))
 	onclose(user, "mob[name]")
-	return
+	return TRUE
 
 /**
  *  Return FALSE if victim can't be devoured, DEVOUR_FAST if they can be devoured quickly, DEVOUR_SLOW for slow devour

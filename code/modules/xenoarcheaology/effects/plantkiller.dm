@@ -19,7 +19,7 @@
 
 /datum/artifact_effect/plantkiller/proc/Kill_plants(range = src.effectrange)
 	for(var/obj/machinery/portable_atmospherics/hydroponics/H in range(range, holder))
-		if(H.seed && !H.dead) // Get your xenobotanist/vox trader/hydroponist mad with you in less than 1 minute with this simple trick.
+		if(H.seed && !H.dead) // Get your vox trader/hydroponist mad with you in less than 1 minute with this simple trick.
 			switch(rand(1,3))
 				if(1)
 					if(H.waterlevel >= 10)

@@ -31,9 +31,9 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 		return SETUP_FAILED
 
 	var/pda_pass = "[rand(100,999)] [pick(GLOB.greek_letters)]"
-	var/obj/item/device/uplink/T = new(P, M.mind, amount)
-	P.hidden_uplink = T
-	P.lock_code = pda_pass
+	P.AddComponent(/datum/component/uplink, M.mind, TRUE, FALSE, null, amount)
+	var/datum/component/uplink/uplink = P.get_component(/datum/component/uplink)
+	uplink.unlock_code = pda_pass
 	to_chat(M, "<span class='notice'>A portable object teleportation relay has been installed in your [P.name]. Simply enter the code \"[pda_pass]\" into the ringtone select to unlock its hidden features.</span>")
 	M.mind.store_memory("<B>Uplink Passcode:</B> [pda_pass] ([P.name]).")
 
@@ -60,9 +60,9 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 			freq += 1
 
 	freq = freqlist[rand(1, freqlist.len)]
-	var/obj/item/device/uplink/T = new(R, M.mind, amount)
-	R.hidden_uplink = T
-	R.traitor_frequency = freq
+	R.AddComponent(/datum/component/uplink, M.mind, FALSE, FALSE, null, amount)
+	var/datum/component/uplink/uplink = R.get_component(/datum/component/uplink)
+	uplink.traitor_frequency = freq
 	to_chat(M, "<span class='notice'>A portable object teleportation relay has been installed in your [R.name]. Simply dial the frequency [format_frequency(freq)] to unlock its hidden features.</span>")
 	M.mind.store_memory("<B>Radio Freq:</B> [format_frequency(freq)] ([R.name]).")
 
@@ -83,13 +83,13 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	if(!head)
 		return SETUP_FAILED
 
-	var/obj/item/implant/uplink/U = new(H, IMPLANT_TELECRYSTAL_AMOUNT(amount))
+	var/obj/item/implant/uplink/U = new(H)
 	U.imp_in = H
 	U.implanted = TRUE
 	U.part = head
 	head.implants += U
 
-	U.implanted(H) // This proc handles the installation feedback
+	U.implanted(H, IMPLANT_TELECRYSTAL_AMOUNT(amount)) // This proc handles the installation feedback
 
 /decl/uplink_source/unit
 	name = "Uplink Unit"
@@ -115,7 +115,8 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 		if(!istype(item, type))
 			continue
 		var/obj/item/I = item
-		if(!I.hidden_uplink)
+		var/datum/component/uplink/U = I.get_component(/datum/component/uplink)
+		if(!istype(U))
 			return I
 
 /decl/uplink_source/proc/put_on_mob(mob/M, atom/movable/AM, text)

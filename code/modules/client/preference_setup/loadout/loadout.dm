@@ -162,7 +162,7 @@ var/list/hash_to_gear = list()
 	if(!patron_tier)
 		. += "<b>You are not a Patron yet.</b><br>"
 	else
-		. += "<b>Your Patreon tier is [patron_tier]</b><br>"
+		. += "<b>Your Boosty tier is [patron_tier]</b><br>"
 	var/current_opyxes = round(user.client.donator_info.opyxes)
 	. += "<b>You have <font color='#e67300'>[current_opyxes]</font> opyx[current_opyxes != 1 ? "es" : ""].</b><br>"
 	. += "<a class='gold' href='?src=\ref[src];get_opyxes=1'><b>Get opyxes</b></a><br>"
@@ -779,8 +779,13 @@ var/list/hash_to_gear = list()
 /datum/gear/proc/spawn_on_mob(mob/living/carbon/human/H, metadata)
 	var/obj/item/item = spawn_item(H, metadata)
 
+	if(isunderwear(item))
+		var/obj/item/underwear/UW = item
+		UW.ForceEquipUnderwear(H)
+		to_chat(H, SPAN_NOTICE("Equipping you with \the [item]!"))
+
 	if(H.equip_to_slot_if_possible(item, slot, del_on_fail = 1, force = 1))
-		to_chat(H, "<span class='notice'>Equipping you with \the [item]!</span>")
+		to_chat(H, SPAN_NOTICE("Equipping you with \the [item]!"))
 		return TRUE
 
 	return FALSE

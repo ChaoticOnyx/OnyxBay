@@ -65,13 +65,11 @@
 	M.overlay_fullscreen("scanlines", /atom/movable/screen/fullscreen/scanline)
 	M.overlay_fullscreen("cam_corners", /atom/movable/screen/fullscreen/cam_corners)
 	M.overlay_fullscreen("fishbed", /atom/movable/screen/fullscreen/fishbed)
+	M.overlay_fullscreen("recording", /atom/movable/screen/fullscreen/rec)
 
-	var/atom/movable/screen/rec/R = (locate(/atom/movable/screen/rec) in M.client.screen)
-	if (!R)
-		R = new()
-		M.client.screen += R
-
+	M.client.view_size.supress()
 	M.machine_visual = src
+
 	return 1
 
 /obj/machinery/camera/remove_visual(mob/living/carbon/human/M)
@@ -83,22 +81,13 @@
 
 	M.hud_used.show_hud(HUD_STYLE_STANDART)
 
-	var/atom/movable/screen/rec/R = (locate(/atom/movable/screen/rec) in M.client.screen)
-	if (R)
-		M.client.screen -= R
-
 	M.clear_fullscreen("scanlines")
 	M.clear_fullscreen("cam_corners", 0)
 	M.clear_fullscreen("fishbed", 0)
+	M.clear_fullscreen("recording", 0)
 
-	if (\
-		!(/atom/movable/screen/rec in M.client.screen) &&\
-		!(/atom/movable/screen/fullscreen/scanline in M.client.screen) &&\
-		!(/atom/movable/screen/fullscreen/fishbed in M.client.screen)\
-		)
-		M.machine_visual = null
-	else
-		util_crash_with("Not all overlays has removed!")
+	M.client.view_size.unsupress()
+	M.machine_visual = null
 
 	return 1
 

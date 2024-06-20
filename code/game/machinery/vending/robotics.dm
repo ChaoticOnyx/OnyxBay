@@ -6,6 +6,7 @@
 
 	icon_state = "robotics"
 	icon = 'icons/obj/machines/vending/engi.dmi'
+	light_color = "#E4E4C6"
 
 	req_access = list(access_robotics)
 

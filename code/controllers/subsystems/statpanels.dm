@@ -76,17 +76,14 @@ SUBSYSTEM_DEF(statpanels)
 			if(target.stat_tab in target.spell_tabs)
 				update_actions = TRUE
 
-			if(!length(target.spell_tabs) && (length(target_mob?.ability_master?.ability_objects) || istype(target_mob?.back, /obj/item/rig)))
+			if(istype(target_mob?.back, /obj/item/rig))
+				update_actions = TRUE
+
+			if(!length(target.spell_tabs) && length(target_mob?.ability_master?.ability_objects))
 				update_actions = TRUE
 
 			if(update_actions && num_fires % default_wait == 0)
 				set_action_tabs(target, target_mob)
-
-			// Handle the examined turf of the stat panel, if it's been long enough, or if we've generated new images for it
-			var/turf/listed_turf = target_mob?.listed_turf
-			if(listed_turf && num_fires % default_wait == 0)
-				if(target.stat_tab == listed_turf.name || !(listed_turf.name in target.panel_tabs))
-					set_turf_examine_tab(target, target_mob)
 
 		if(MC_TICK_CHECK)
 			return
@@ -116,82 +113,6 @@ SUBSYSTEM_DEF(statpanels)
 		target.spell_tabs |= action_data[1]
 
 	target.stat_panel.send_message("update_spells", list(spell_tabs = target.spell_tabs, actions = actions))
-
-/datum/controller/subsystem/statpanels/proc/set_turf_examine_tab(client/target, mob/target_mob)
-	var/list/overrides = list()
-	for(var/image/target_image as anything in target.images)
-		if(!target_image.loc || target_image.loc.loc != target_mob.listed_turf || !target_image.override)
-			continue
-
-		overrides += target_image.loc
-
-	var/list/atoms_to_display = list(target_mob.listed_turf)
-	for(var/atom/movable/turf_content as anything in target_mob.listed_turf)
-		if(!turf_content.mouse_opacity)
-			continue
-
-		if(turf_content.invisibility > target_mob.see_invisible)
-			continue
-
-		if(turf_content in overrides)
-			continue
-
-		atoms_to_display += turf_content
-
-	/// Set the atoms we're meant to display
-	var/datum/object_window_info/obj_window = target.obj_window
-	obj_window.atoms_to_show = atoms_to_display
-	START_PROCESSING(SSobj_tab_items, obj_window)
-	refresh_client_obj_view(target)
-
-/datum/controller/subsystem/statpanels/proc/refresh_client_obj_view(client/refresh)
-	var/list/turf_items = return_object_images(refresh)
-	if(!length(turf_items) || isnull(refresh.mob?.listed_turf))
-		return
-
-	refresh.stat_panel.send_message("update_listedturf", turf_items)
-
-#define OBJ_IMAGE_LOADING "statpanels obj loading temporary"
-
-/**
- * Returns a list of generated images in format `list(list(object_name, object_ref, loaded_image), ...)`,
- * handles queueing generation to `/object_window_info`.
- */
-/datum/controller/subsystem/statpanels/proc/return_object_images(client/load_from)
-	// You might be inclined to think that this is a waste of cpu time, since we
-	// A: Double iterate over atoms in the build case, or
-	// B: Generate these lists over and over in the refresh case
-	// It's really not very hot. The hot portion of this code is genuinely mostly in the image generation
-	// So it's ok to pay a performance cost for cleanliness here
-
-	// No turf? go away
-	if(!load_from.mob?.listed_turf)
-		return list()
-
-	var/datum/object_window_info/obj_window = load_from.obj_window
-	var/list/already_seen = obj_window.atoms_to_images
-	var/list/to_make = obj_window.atoms_to_imagify
-	var/list/turf_items = list()
-	for(var/atom/turf_item as anything in obj_window.atoms_to_show)
-		// First, we fill up the list of refs to display
-		// If we already have one, just use that
-		var/existing_image = already_seen[turf_item]
-		if(existing_image == OBJ_IMAGE_LOADING)
-			continue
-
-		// We already have it. Success!
-		if(existing_image)
-			turf_items[++turf_items.len] = list("[turf_item.name]", ref(turf_item), existing_image)
-			continue
-
-		// Now, we're gonna queue image generation out of those refs
-		to_make += turf_item
-		already_seen[turf_item] = OBJ_IMAGE_LOADING
-		obj_window.register_signal(turf_item, SIGNAL_QDELETING, nameof(/datum/object_window_info.proc/viewing_atom_deleted)) // we reset cache if anything in it gets deleted
-
-	return turf_items
-
-#undef OBJ_IMAGE_LOADING
 
 /datum/controller/subsystem/statpanels/proc/generate_mc_data()
 	mc_data = list(
@@ -224,22 +145,15 @@ SUBSYSTEM_DEF(statpanels)
 	if(target.stat_tab in target.spell_tabs)
 		update_actions = TRUE
 
-	if(!length(target.spell_tabs) && (length(target_mob?.ability_master?.ability_objects) || istype(target_mob?.back, /obj/item/rig)))
+	if(istype(target_mob?.back, /obj/item/rig))
+		update_actions = TRUE
+
+	if(!length(target.spell_tabs) && length(target_mob?.ability_master?.ability_objects))
 		update_actions = TRUE
 
 	if(update_actions)
 		set_action_tabs(target, target_mob)
 		return TRUE
-
-	// Handle turfs
-
-	if(target_mob?.listed_turf)
-		if(!target_mob.TurfAdjacent(target_mob.listed_turf))
-			target_mob.set_listed_turf(null)
-
-		else if(target.stat_tab == target_mob?.listed_turf.name || !(target_mob?.listed_turf.name in target.panel_tabs))
-			set_turf_examine_tab(target, target_mob)
-			return TRUE
 
 	if(!target.holder)
 		return FALSE
