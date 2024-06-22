@@ -346,3 +346,12 @@
 /obj/item/reagent_containers/vessel/condiment/pack/creamer
 	name = "creamer"
 	startswith = list(/datum/reagent/drink/milk/cream)
+
+/obj/item/reagent_containers/food/condiment/soysauce
+	preloaded_reagents = list("soysauce" = 50)
+
+/obj/item/reagent_containers/food/condiment/coldsauce
+	preloaded_reagents = list("frostoil" = 50)
+
+/obj/item/reagent_containers/food/condiment/cornoil
+	preloaded_reagents = list("cornoil" = 50)

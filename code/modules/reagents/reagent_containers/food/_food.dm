@@ -25,9 +25,18 @@
 	var/nutriment_amt = 0 // Amount of nutriments that spawn in Initialize.
 	var/list/nutriment_desc = list("food" = 1) // Taste-describing data for the nutriments spawned by the var above.
 
+	var/food_quality = 1 //Result of cooking effort
+	var/food_tier //Where on the tier scale the food falls on, determines multiplier
+	var/cooking_description_modifier
+	var/food_descriptor //Feedback on quality on examine
+	var/bite_descriptor //Feedback on quality per bite
+
 	var/filling_color = "#ffffff" // Used by sandwiches and stuff.
 	var/trash = null // Type that spawns upon finishing the src.
 
+/obj/item/reagent_containers/food/New()
+	..()
+	get_food_tier()
 
 /obj/item/reagent_containers/food/Initialize()
 	. = ..()
@@ -248,6 +257,8 @@
 			for(var/i = 1 to (slices_num - slices_lost))
 				var/obj/slice = new slice_path(src.loc)
 				reagents.trans_to_obj(slice, reagents_per_slice)
+				if(istype(slice, /obj/item/reagent_containers/food))
+					slice.food_quality = src.food_quality
 			qdel(src)
 			return
 	return ..()
@@ -276,3 +287,43 @@
 
 /obj/item/reagent_containers/food/proc/is_sliceable()
 	return (slices_num && slice_path)
+
+/obj/item/reagent_containers/food/proc/get_food_tier()
+	if(food_quality < -9)
+		food_tier = CWJ_QUALITY_GARBAGE
+		food_descriptor = "It looks gross. Someone cooked this poorly."
+		bite_descriptor = " Eating this makes you regret every decision that lead you to this moment."
+	else if (food_quality >= 100)
+		food_tier = CWJ_QUALITY_ELDRITCH
+		food_descriptor = "What cruel twist of fate it must be, for this unparalleled artistic masterpiece can only be truly appreciated through its destruction. Does this dish's transient form belie the true nature of all things? You see the totality of existence reflected through \the [src]."
+		bite_descriptor = " It's like reliving the happiest moments of your life, nothing is better than this!"
+	else
+		switch(food_quality)
+			if(-9 to 0)
+				food_tier = CWJ_QUALITY_GROSS
+				food_descriptor = "It looks like an unappetizing a meal."
+				bite_descriptor = " Your stomach turns as you chew."
+			if(1 to 10)
+				food_tier = CWJ_QUALITY_MEH
+				food_descriptor = "The food is edible, but frozen dinners have been reheated with more skill."
+				bite_descriptor = " It could be worse, but it certainly isn't good."
+			if(11 to 20)
+				food_tier = CWJ_QUALITY_NORMAL
+				food_descriptor = "It looks adequately made."
+				bite_descriptor = " It's food, alright."
+			if(21 to 30)
+				food_tier = CWJ_QUALITY_GOOD
+				food_descriptor = "The quality of the food is is pretty good."
+				bite_descriptor = " This ain't half bad!"
+			if(31 to 50)
+				food_tier = CWJ_QUALITY_VERY_GOOD
+				food_descriptor = "This food looks very tasty."
+				bite_descriptor = " So tasty!"
+			if(61 to 70)
+				food_tier = CWJ_QUALITY_CUISINE
+				food_descriptor = "There's a special spark in this cooking, a measure of love and care unseen by the casual chef."
+				bite_descriptor = " You can taste the attention to detail like a fine spice on top of the excellently prepared dish."
+			if(81 to 99)
+				food_tier = CWJ_QUALITY_LEGENDARY
+				food_descriptor = "The quality of this food is legendary. Words fail to describe it further. It must be eaten"
+				bite_descriptor = " This food is unreal, the textures blend perfectly with the flavor, could food get any better than this?"

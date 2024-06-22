@@ -1544,7 +1544,7 @@
 /datum/chemical_reaction/faggot/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/reagent_containers/food/faggot(location)
+		new /obj/item/reagent_containers/food/rawmeatball(location)
 
 /datum/chemical_reaction/dough
 	name = "Dough"
@@ -1585,6 +1585,26 @@
 	result = /datum/reagent/drink/chicken_soup
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/drink/chicken_powder = 3)
 	result_amount = 3
+
+/datum/chemical_reaction/mint
+	result = null
+	required_reagents = list("sugar" = 5, "frostoil" = 5)
+	result_amount = 1
+
+/datum/chemical_reaction/mint/on_reaction(var/datum/reagents/holder, var/created_volume)
+	var/location = get_turf(holder.my_atom)
+	for(var/i = 1, i <= created_volume, i++)
+		new /obj/item/reagent_containers/food/snacks/mint(location)
+
+/datum/chemical_reaction/candy_corn
+	result = null
+	required_reagents = list("sugar" = 5, "cornoil" = 5)
+	result_amount = 1
+
+/datum/chemical_reaction/candy_corn/on_reaction(var/datum/reagents/holder, var/created_volume)
+	var/location = get_turf(holder.my_atom)
+	for(var/i = 1, i <= created_volume, i++)
+		new /obj/item/reagent_containers/food/snacks/candy_corn(location)
 
 /* Alcohol */
 

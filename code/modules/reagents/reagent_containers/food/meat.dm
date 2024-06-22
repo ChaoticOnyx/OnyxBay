@@ -75,3 +75,12 @@
 		return
 	else
 		..()
+
+/obj/item/reagent_containers/food/snacks/meat/chicken
+	name = "poultry"
+	desc = "Poultry meat, might be chicken or any other avian species."
+	icon_state = "meat_bird"
+	filling_color = "#EDA897"
+	preloaded_reagents = list("protein" = 8)
+	slice_path = /obj/item/reagent_containers/food/snacks/chickenbreast
+	slices_num = 4

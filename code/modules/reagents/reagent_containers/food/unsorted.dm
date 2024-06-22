@@ -420,6 +420,22 @@
 	startswith = list(/datum/reagent/nutriment/protein = 3)
 	bitesize = 2
 
+/obj/item/reagent_containers/food/snacks/rawmeatball
+	name = "raw meatball"
+	desc = "A raw meatball."
+	icon = 'icons/obj/food_ingredients.dmi'
+	icon_state = "meatball_raw"
+	bitesize = 3
+	center_of_mass = list("x"=16, "y"=15)
+	preloaded_reagents = list("protein" = 2)
+	taste_tag = list(MEAT_FOOD)
+
+/obj/item/reagent_containers/food/snacks/rawmeatball/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/material/kitchen/rollingpin))
+		new /obj/item/reagent_containers/food/snacks/patty_raw(src)
+		to_chat(user, "You flatten the raw meatball.")
+		qdel(src)
+
 /obj/item/reagent_containers/food/sausage
 	name = "Sausage"
 	desc = "A piece of mixed, long meat."
@@ -2277,3 +2293,14 @@
 	center_of_mass = "x=17;y=14"
 	startswith = list(/datum/reagent/nutriment/magical_custard = 6)
 	bitesize = 2
+
+/obj/item/reagent_containers/food/tortilla
+	name = "tortilla"
+	desc = "The foldable possiblites are endless, as long as it's less than seven folds."
+	icon_state = "tortilla"
+	bitesize = 2
+	center_of_mass = list("x"=21, "y"=12)
+	nutriment_desc = list("taco shell" = 2)
+	nutriment_amt = 2
+	cooked = TRUE
+	matter = list(MATERIAL_BIOMATTER = 5)
