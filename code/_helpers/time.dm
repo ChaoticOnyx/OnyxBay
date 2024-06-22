@@ -42,6 +42,36 @@ var/next_station_date_change = 1 DAY
 /proc/time_stamp()
 	return time2text(world.timeofday, "hh:mm:ss")
 
+/proc/ticks_to_text(var/ticks)
+	if(ticks%1 != 0)
+		return "ERROR"
+	var/response = ""
+	var/counter = 0
+	while(ticks >= 1 DAYS)
+		ticks -= 1 DAYS
+		counter++
+	if(counter)
+		response += "[counter] Day[counter>1 ? "s" : ""][ticks ? ", " : ""]"
+	counter=0
+	while(ticks >= 1 HOURS)
+		ticks -= 1 HOURS
+		counter++
+	if(counter)
+		response += "[counter] Hour[counter>1 ? "s" : ""][ticks?", ":""]"
+	counter=0
+	while(ticks >= 1 MINUTES)
+		ticks -= 1 MINUTES
+		counter++
+	if(counter)
+		response += "[counter] Minute[counter>1 ? "s" : ""][ticks?", ":""]"
+		counter=0
+	while(ticks >= 1 SECONDS)
+		ticks -= 1 SECONDS
+		counter++
+	if(counter)
+		response += "[counter][ticks?".[ticks]" : ""] Second[counter>1 ? "s" : ""]"
+	return response
+
 /* Returns 1 if it is the selected month and day */
 /proc/isDay(month, day)
 	if(isnum(month) && isnum(day))
@@ -127,12 +157,12 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 	Example:
 	/datum/foo
 		var/last_action = 0
-	
+
 	/datum/foo/proc/do()
 		THROTTLE_SHARED(cooldown, 1 SECOND, last_action)
 		if(cooldown)
 			do_something()
-	
+
 	/datum/foo/proc/do2()
 		THROTTLE_SHARED(cooldown, 1 SECOND, last_action)
 		if(cooldown)
