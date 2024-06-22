@@ -258,7 +258,8 @@
 				var/obj/slice = new slice_path(src.loc)
 				reagents.trans_to_obj(slice, reagents_per_slice)
 				if(istype(slice, /obj/item/reagent_containers/food))
-					slice.food_quality = src.food_quality
+					var/obj/item/reagent_containers/food/F = slice
+					F.food_quality = src.food_quality
 			qdel(src)
 			return
 	return ..()
