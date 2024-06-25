@@ -1027,9 +1027,20 @@
 	if(shock_stage >= 150)
 		Weaken(20)
 
+/mob/living/carbon/human/proc/get_poise_pool()
+	var/poise_pool = body_build.poise_pool
+
+	for(var/datum/modifier/M in modifiers)
+		if(isnull(M.poise_pool_flat))
+			continue
+
+		poise_pool += M.poise_pool_flat
+
+	return poise_pool
+
 // Stance is being used in the Onyx fighting system. I wanted to call it stamina, but screw it.
 /mob/living/carbon/human/proc/handle_poise()
-	poise_pool = body_build.poise_pool
+	poise_pool = get_poise_pool()
 	if(poise >= poise_pool)
 		poise = poise_pool
 		poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"

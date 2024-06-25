@@ -117,6 +117,15 @@
 	else
 		calculated_slowdown += 1
 
+	if(istype(src, /mob/living/))
+		var/mob/living/L = src
+
+		for(var/datum/modifier/M in L.modifiers)
+			if(isnull(M.pull_slowdown_percent))
+				continue
+
+			calculated_slowdown *= M.pull_slowdown_percent
+
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pull_slowdown, slowdown = calculated_slowdown)
 
 /datum/movespeed_modifier/chem_slowdown

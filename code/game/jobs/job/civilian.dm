@@ -83,6 +83,7 @@
 	minimal_player_age = 7
 	ideal_character_age = 40
 	outfit_type = /decl/hierarchy/outfit/job/cargo/qm
+	traits = list(/datum/trait/modifier/skill/fif)
 
 /datum/job/cargo_tech
 	title = "Cargo Technician"
@@ -95,6 +96,7 @@
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
 	minimal_access = list(access_maint_tunnels, access_cargo, access_cargo_bot, access_mailsorting)
 	outfit_type = /decl/hierarchy/outfit/job/cargo/cargo_tech
+	traits = list(/datum/trait/modifier/skill/fif)
 
 /datum/job/mining
 	title = "Shaft Miner"

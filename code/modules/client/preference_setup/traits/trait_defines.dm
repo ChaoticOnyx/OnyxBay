@@ -30,18 +30,20 @@
 	desc = "You're more fragile than most, and have less of an ability to endure harm."
 	modifier_type = /datum/modifier/trait/flimsy
 	mutually_exclusive = list(/datum/trait/modifier/physical/frail)
+	cost = -2
 
 /datum/trait/modifier/physical/frail
 	name = "Frail"
 	desc = "Your body is very fragile, and has even less of an ability to endure harm."
 	modifier_type = /datum/modifier/trait/frail
 	mutually_exclusive = list(/datum/trait/modifier/physical/flimsy)
-
+	cost = -3
 
 /datum/trait/modifier/physical/haemophilia
 	name = "Haemophilia"
 	desc = "Some say that when it rains, it pours.  Unfortunately, this is also true for yourself if you get cut."
 	modifier_type = /datum/modifier/trait/haemophilia
+	cost = -2
 
 /datum/trait/modifier/physical/haemophilia/test_for_invalidity(datum/category_item/player_setup_item/traits/setup)
 	if(setup.is_FBP())
@@ -49,26 +51,26 @@
 	// If a species lacking blood is added, it is suggested to add a check for them here.
 	return ..()
 
-
 /datum/trait/modifier/physical/weak
 	name = "Weak"
 	desc = "A lack of physical strength causes a diminshed capability in close quarters combat."
 	modifier_type = /datum/modifier/trait/weak
 	mutually_exclusive = list(/datum/trait/modifier/physical/wimpy)
-
+	cost = -1
 
 /datum/trait/modifier/physical/wimpy
 	name = "Wimpy"
 	desc = "An extreme lack of physical strength causes a greatly diminished capability in close quarters combat."
 	modifier_type = /datum/modifier/trait/wimpy
 	mutually_exclusive = list(/datum/trait/modifier/physical/weak)
-
+	cost = -2
 
 /datum/trait/modifier/physical/inaccurate
 	name = "Inaccurate"
 	desc = "You're rather inexperienced with guns, you've never used one in your life, or you're just really rusty.  \
 	Regardless, you find it quite difficult to land shots where you wanted them to go."
 	modifier_type = /datum/modifier/trait/inaccurate
+	cost = -2
 
 /datum/trait/modifier/physical/colorblind_protanopia
 	name = "Protanopia"
@@ -115,6 +117,16 @@
 	if(setup.is_FBP())
 		return "Full Body Prosthetics do not have a metabolism."
 	return ..()
+
+/datum/trait/modifier/physical/athlete
+	name = "Athlete"
+	modifier_type = /datum/modifier/movespeed/athlete
+	cost = 2
+
+/datum/trait/modifier/physical/fit
+	name = "Fit"
+	modifier_type = /datum/modifier/trait/fit
+	cost = 2
 
 // 'Mental' traits are just those that only sapients can have, for now, and generally involves fears.
 // So far, all of them are just for fluff/don't have mechanical effects.
@@ -264,3 +276,53 @@
 	name = "Lisp"
 	modifier_type = /datum/modifier/trait/lisping
 	mutually_exclusive = list(/datum/trait/modifier/physical/stammering, /datum/trait/modifier/physical/burrieng)
+
+/datum/trait/modifier/skill
+	category = "Skill"
+
+/datum/trait/modifier/skill/mechanic
+	name = "Mechanic"
+	modifier_type = /datum/modifier/trait/mechanic
+	mutually_exclusive = list(/datum/trait/modifier/skill/engineer)
+	cost = 2
+
+/datum/trait/modifier/skill/fat
+	name = "First Aid Training"
+	modifier_type = /datum/modifier/trait/fat
+	cost = 2
+
+/datum/trait/modifier/skill/surgeon
+	name = "Surgeon"
+	modifier_type = /datum/modifier/trait/surgeon
+	cost = 2
+
+/datum/trait/modifier/skill/lom
+	name = "Luminary of Medicine"
+	modifier_type = /datum/modifier/trait/lom
+	cost = 4
+
+/datum/trait/modifier/skill/heisenberg
+	name = "Heisenberg"
+	modifier_type = /datum/modifier/trait/heisenberg
+	cost = 2
+
+/datum/trait/modifier/skill/engineer
+	name = "Engineer"
+	modifier_type = /datum/modifier/trait/engineer
+	mutually_exclusive = list(/datum/trait/modifier/skill/mechanic)
+	cost = 2
+
+/datum/trait/modifier/skill/beat_cop
+	name = "Beat Cop"
+	modifier_type = /datum/modifier/trait/beat_cop
+	cost = 2
+
+/datum/trait/modifier/skill/fif
+	name = "Friction is Fiction"
+	modifier_type = /datum/modifier/trait/fif
+	cost = 2
+
+/datum/trait/modifier/skill/electrician
+	name = "Electrician"
+	modifier_type = /datum/modifier/trait/electrician
+	cost = 2

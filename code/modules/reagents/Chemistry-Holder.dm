@@ -217,6 +217,9 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 				missing--
 	return !missing
 
+/datum/reagents/proc/is_empty()
+	return length(reagent_list) == 0
+
 /datum/reagents/proc/clear_reagents()
 	for(var/datum/reagent/current in reagent_list)
 		del_reagent(current.type)
@@ -239,10 +242,16 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 		return initial(current.overdose)
 	return 0
 
-/datum/reagents/proc/get_reagents()
+/datum/reagents/proc/get_reagents(include_volume = TRUE)
 	. = list()
 	for(var/datum/reagent/current in reagent_list)
-		. += "[current.name] ([current.volume])"
+		var/s = current.name
+
+		if(include_volume)
+			s += " ([current.volume])"
+
+		. += s
+
 	return english_list(., "EMPTY", "", ", ", ", ")
 
 /// Return all the `/datum/radiation` from reagents.

@@ -59,7 +59,15 @@
 
 /datum/surgery_step/mouth/remove_tooth/calc_duration(mob/living/user, mob/living/carbon/human/target, obj/item/tool, additional_args)
 	var/teeth_additional_cd = (1 - (additional_args["teeth"] / 32)) * 100
-	return SURGERY_DURATION_DELTA * duration * tool.surgery_speed + teeth_additional_cd
+	var/time = SURGERY_DURATION_DELTA * duration * tool.surgery_speed + teeth_additional_cd
+
+	for(var/datum/modifier/M in user.modifiers)
+		if(isnull(M.surgery_step_time))
+			continue
+
+		time *= M.surgery_step_time
+
+	return time
 
 /datum/surgery_step/mouth/remove_tooth/success(obj/item/organ/external/head/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user, additional_args)
 	var/obj/item/organ/internal/jaw/jaw = target.internal_organs_by_name[BP_JAW]

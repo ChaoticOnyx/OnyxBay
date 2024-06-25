@@ -130,6 +130,14 @@
 	if(status_flags & GODMODE)
 		return 0
 
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.electrocute_block_chance))
+			if(rustg_rand_bool(M.electrocute_block_chance))
+				return 0
+
+		if(!isnull(M.electrocute_damage_percent))
+			shock_damage *= M.electrocute_damage_percent
+
 	shock_damage = apply_shock(shock_damage, def_zone, siemens_coeff)
 
 	if(!shock_damage)

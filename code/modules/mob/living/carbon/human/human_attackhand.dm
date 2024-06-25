@@ -86,7 +86,16 @@
 					return
 
 				H.visible_message("<span class='notice'>\The [H] performs CPR on \the [src]!</span>")
-				if(prob(5))
+
+				var/fracture_chance = 5
+
+				for(var/datum/modifier/mod in H.modifiers)
+					if(isnull(mod.crp_fracture_chance))
+						continue
+
+					fracture_chance *= mod.crp_fracture_chance
+
+				if(prob(fracture_chance))
 					var/obj/item/organ/external/chest = get_organ(BP_CHEST)
 					if(chest)
 						chest.fracture()

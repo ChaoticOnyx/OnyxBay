@@ -204,7 +204,7 @@
  * Calls `success` or `failure` proc based on success chance.
  *
  */
-/datum/surgery_step/proc/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user, additional_args)
+/datum/surgery_step/proc/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/living/user, additional_args)
 	if(can_infect)
 		spread_germs_to_organ(user, target_organ)
 
@@ -222,7 +222,9 @@
 
 	var/success_chance = calc_success_chance(user, target, tool)
 	var/surgery_duration = calc_duration(user, target, tool, additional_args)
-	if(prob(success_chance) && do_mob(user, target, surgery_duration, can_multitask = TRUE))
+	var/can_multitask = user.has_modifier_of_type(/datum/modifier/trait/lom)
+
+	if(prob(success_chance) && do_mob(user, target, surgery_duration, can_multitask = can_multitask))
 		play_success_sound(user, target, target_organ, tool)
 		success(parent_organ, target_organ, target, tool, user, additional_args)
 	else
@@ -275,7 +277,15 @@
 
 /// Override to add variable op duration.
 /datum/surgery_step/proc/calc_duration(mob/living/user, mob/living/carbon/human/target, obj/item/tool, additional_args)
-	return SURGERY_DURATION_DELTA * duration * tool.surgery_speed
+	var/time = SURGERY_DURATION_DELTA * duration * tool.surgery_speed
+
+	for(var/datum/modifier/M in user.modifiers)
+		if(isnull(M.surgery_step_time))
+			continue
+
+		time *= M.surgery_step_time
+
+	return time
 
 /**
  * Called on step success, override to apply effects on target and print out

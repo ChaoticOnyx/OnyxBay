@@ -213,3 +213,55 @@
 /datum/modifier/trait/magicimmune
 	name = "Magic Immunity"
 	desc = "You're immune to magic"
+
+/datum/modifier/trait/fit
+	name = "Fit"
+	desc = "You're more resistant to impact"
+	poise_pool_flat = 5
+
+/datum/modifier/trait/mechanic
+	name = "Mechanic"
+	desc = "You're better with tools"
+	use_tool_delay = 0.5
+
+/datum/modifier/trait/fat
+	name = "First Aid Training"
+	desc = "You're trained in first aid"
+	medical_treatment_time = 0.5
+	crp_fracture_chance = 0.5
+
+/datum/modifier/trait/surgeon
+	name = "Surgeon"
+	desc = "You have extensive experience in performing surgical operations"
+	surgery_step_time = 0.5
+
+/datum/modifier/trait/lom
+	name = "Luminary of Medicine"
+	desc = "You can perform several surgical procedures at the same time"
+
+/datum/modifier/trait/heisenberg
+	name = "Heisenberg"
+	desc = "With just a look and a sniff you can recognize the composition of the mixtures"
+
+	var/cooldown = 0
+
+/datum/modifier/trait/engineer
+	name = "Engineer"
+	desc = "You have a lot of engineering experience and can build advanced structures"
+	use_tool_delay = 0.5
+
+/datum/modifier/trait/beat_cop
+	name = "Beat Cop"
+	desc = "It is more difficult for others to knock objects out of your hands"
+	disarm_drop_percent = 0.65
+
+/datum/modifier/trait/fif
+	name = "Friction is Fiction"
+	desc = "You have learned how to ignore the friction of objects when dragging"
+	pull_slowdown_percent = 0.4
+
+/datum/modifier/trait/electrician
+	name = "Electrician"
+	desc = "You work with the wiring more carefully"
+	electrocute_damage_percent = 0.85
+	electrocute_block_chance = 0.25

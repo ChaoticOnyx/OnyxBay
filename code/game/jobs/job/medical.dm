@@ -22,6 +22,10 @@
 	minimum_character_age = 25
 	ideal_character_age = 50
 	outfit_type = /decl/hierarchy/outfit/job/medical/cmo
+	traits = list(
+		/datum/trait/modifier/skill/fat,
+		/datum/trait/modifier/skill/surgeon
+	)
 
 /datum/job/doctor
 	title = "Medical Doctor"
@@ -42,6 +46,10 @@
 		"Nurse" = /decl/hierarchy/outfit/job/medical/doctor/nurse,
 		)
 	outfit_type = /decl/hierarchy/outfit/job/medical/doctor
+	traits = list(
+		/datum/trait/modifier/skill/fat,
+		/datum/trait/modifier/skill/surgeon
+	)
 
 /datum/job/virologist
 	title = "Virologist"
@@ -57,6 +65,7 @@
 	access = list(access_medical, access_medical_equip, access_virology)
 	minimal_access = list(access_medical, access_medical_equip, access_virology)
 	outfit_type = /decl/hierarchy/outfit/job/medical/virologist
+	traits = list(/datum/trait/modifier/skill/fat)
 
 //Chemist is a medical job damnit	//YEAH FUCK YOU SCIENCE	-Pete	//Guys, behave -Erro
 /datum/job/chemist
@@ -74,6 +83,7 @@
 	minimal_access = list(access_medical, access_medical_equip, access_chemistry)
 	alt_titles = list("Pharmacist")
 	outfit_type = /decl/hierarchy/outfit/job/medical/chemist
+	traits = list(/datum/trait/modifier/skill/heisenberg)
 
 /datum/job/psychiatrist
 	title = "Psychiatrist"
@@ -106,3 +116,4 @@
 	minimal_access = list(access_medical, access_medical_equip, access_morgue, access_eva, access_maint_tunnels, access_external_airlocks)
 	alt_titles = list("Emergency Medical Technician" = /decl/hierarchy/outfit/job/medical/paramedic/emt)
 	outfit_type = /decl/hierarchy/outfit/job/medical/paramedic
+	traits = list(/datum/trait/modifier/skill/fat)

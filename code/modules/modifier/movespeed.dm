@@ -45,3 +45,10 @@
 
 /datum/modifier/movespeed/equipment_immunity_speedmod
 	equipment_slowdown_immunity=TRUE
+
+/datum/modifier/movespeed/athlete
+	desc = "You are running a little faster"
+	movespeed_modifier_path = /datum/movespeed_modifier/athlete
+
+/datum/movespeed_modifier/athlete
+	slowdown = 0.5

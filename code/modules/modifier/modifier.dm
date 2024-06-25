@@ -49,6 +49,15 @@
 	var/stammering
 	var/burrieng
 	var/lisping
+	var/use_tool_delay
+	var/medical_treatment_time
+	var/crp_fracture_chance
+	var/surgery_step_time
+	var/disarm_drop_percent
+	var/pull_slowdown_percent
+	var/electrocute_damage_percent
+	var/electrocute_block_chance
+	var/poise_pool_flat
 
 /datum/modifier/New(new_holder, new_origin)
 	holder = new_holder
@@ -189,59 +198,69 @@
 // This displays the actual 'numbers' that a modifier is doing.  Should only be shown in OOC contexts.
 // When adding new effects, be sure to update this as well.
 /datum/modifier/proc/describe_modifier_effects()
+	// SEMantic COLoring 🤓
+	#define SEMCOL(good_cond, txt) do { var/is_good = good_cond; effects += {"<font color="[is_good ? "green" : "red"]">[txt]</font>"}; } while (FALSE)
+
 	var/list/effects = list()
+
 	if(!isnull(max_health_flat))
-		effects += "You [max_health_flat > 0 ? "gain" : "lose"] [abs(max_health_flat)] maximum health."
+		SEMCOL(max_health_flat > 0, "You [is_good ? "gain" : "lose"] [abs(max_health_flat)] maximum health.")
 	if(!isnull(max_health_percent))
-		effects += "You [max_health_percent > 1.0 ? "gain" : "lose"] [multipler_to_percentage(max_health_percent, TRUE)] maximum health."
-
+		SEMCOL(max_health_percent > 1.0, "You [is_good ? "gain" : "lose"] [multipler_to_percentage(max_health_percent, TRUE)] maximum health.")
 	if(!isnull(disable_duration_percent))
-		effects += "Disabling effects on you last [multipler_to_percentage(disable_duration_percent, TRUE)] [disable_duration_percent > 1.0 ? "longer" : "shorter"]"
-
+		SEMCOL(disable_duration_percent <= 1.0, "Disabling effects on you last [multipler_to_percentage(disable_duration_percent, TRUE)] [is_good ? "shorter" : "longer"]")
 	if(!isnull(incoming_damage_percent))
-		effects += "You take [multipler_to_percentage(incoming_damage_percent, TRUE)] [incoming_damage_percent > 1.0 ? "more" : "less"] damage."
+		SEMCOL(incoming_damage_percent <= 1.0, "You take [multipler_to_percentage(incoming_damage_percent, TRUE)] [is_good ? "less" : "more"] damage.")
 	if(!isnull(incoming_brute_damage_percent))
-		effects += "You take [multipler_to_percentage(incoming_brute_damage_percent, TRUE)] [incoming_brute_damage_percent > 1.0 ? "more" : "less"] brute damage."
+		SEMCOL(incoming_brute_damage_percent <= 1.0, "You take [multipler_to_percentage(incoming_brute_damage_percent, TRUE)] [is_good ? "less" : "more"] brute damage.")
 	if(!isnull(incoming_fire_damage_percent))
-		effects += "You take [multipler_to_percentage(incoming_fire_damage_percent, TRUE)] [incoming_fire_damage_percent > 1.0 ? "more" : "less"] fire damage."
+		SEMCOL(incoming_fire_damage_percent <= 1.0, "You take [multipler_to_percentage(incoming_fire_damage_percent, TRUE)] [is_good ? "less" : "more"] fire damage.")
 	if(!isnull(incoming_tox_damage_percent))
-		effects += "You take [multipler_to_percentage(incoming_tox_damage_percent, TRUE)] [incoming_tox_damage_percent > 1.0 ? "more" : "less"] toxin damage."
+		SEMCOL(incoming_tox_damage_percent <= 1.0, "You take [multipler_to_percentage(incoming_tox_damage_percent, TRUE)] [is_good ? "less" : "more"] toxin damage.")
 	if(!isnull(incoming_oxy_damage_percent))
-		effects += "You take [multipler_to_percentage(incoming_oxy_damage_percent, TRUE)] [incoming_oxy_damage_percent > 1.0 ? "more" : "less"] oxy damage."
+		SEMCOL(incoming_oxy_damage_percent <= 1.0, "You take [multipler_to_percentage(incoming_oxy_damage_percent, TRUE)] [is_good ? "less" : "more"] oxy damage.")
 	if(!isnull(incoming_clone_damage_percent))
-		effects += "You take [multipler_to_percentage(incoming_clone_damage_percent, TRUE)] [incoming_clone_damage_percent > 1.0 ? "more" : "less"] clone damage."
+		SEMCOL(incoming_clone_damage_percent <= 1.0, "You take [multipler_to_percentage(incoming_clone_damage_percent, TRUE)] [is_good ? "less" : "more"] clone damage.")
 	if(!isnull(incoming_hal_damage_percent))
-		effects += "You take [multipler_to_percentage(incoming_hal_damage_percent, TRUE)] [incoming_hal_damage_percent > 1.0 ? "more" : "less"] agony damage."
-
+		SEMCOL(incoming_hal_damage_percent <= 1.0, "You take [multipler_to_percentage(incoming_hal_damage_percent, TRUE)] [is_good ? "less" : "more"] agony damage.")
 	if(!isnull(incoming_healing_percent))
-		effects += "Healing applied to you is [multipler_to_percentage(incoming_healing_percent, TRUE)] [incoming_healing_percent > 1.0 ? "stronger" : "weaker"]."
-
+		SEMCOL(incoming_healing_percent > 1.0, "Healing applied to you is [multipler_to_percentage(incoming_healing_percent, TRUE)] [is_good ? "stronger" : "weaker"].")
 	if(!isnull(outgoing_melee_damage_percent))
-		effects += "Damage you do with melee weapons and unarmed combat is [multipler_to_percentage(outgoing_melee_damage_percent, TRUE)] \
-		[outgoing_melee_damage_percent > 1.0 ? "higher" : "lower"]."
-
+		SEMCOL(outgoing_melee_damage_percent > 1.0, "Damage you do with melee weapons and unarmed combat is [multipler_to_percentage(outgoing_melee_damage_percent, TRUE)] [is_good ? "higher" : "lower"].")
 	if(!isnull(evasion))
-		effects += "You are [abs(evasion)]% [evasion > 0 ? "harder" : "easier"] to hit with weapons."
-
+		SEMCOL(evasion > 0, "You are [abs(evasion)]% [is_good ? "harder" : "easier"] to hit with weapons.")
 	if(!isnull(bleeding_rate_percent))
-		effects += "You bleed [multipler_to_percentage(bleeding_rate_percent, TRUE)] [bleeding_rate_percent > 1.0 ? "faster" : "slower"]."
-
+		SEMCOL(bleeding_rate_percent <= 1.0, "You bleed [multipler_to_percentage(bleeding_rate_percent, TRUE)] [is_good ? "slower" : "faster"].")
 	if(!isnull(accuracy))
-		effects += "It is [abs(accuracy)]% [accuracy > 0 ? "easier" : "harder"] for you to hit someone with a ranged weapon."
-
+		SEMCOL(accuracy > 0, "It is [abs(accuracy)]% [is_good ? "easier" : "harder"] for you to hit someone with a ranged weapon.")
 	if(!isnull(accuracy_dispersion))
-		effects += "Projectiles you fire are [accuracy_dispersion > 0 ? "more" : "less"] likely to stray from your intended target."
-
+		SEMCOL(accuracy_dispersion <= 0, "Projectiles you fire are [is_good ? "less" : "more"] likely to stray from your intended target.")
 	if(!isnull(metabolism_percent))
-		effects += "Your metabolism is [metabolism_percent > 1.0 ? "faster" : "slower"], \
-		causing reagents in your body to process, and hunger to occur [multipler_to_percentage(metabolism_percent, TRUE)] [metabolism_percent > 1.0 ? "faster" : "slower"]."
-
+		SEMCOL(metabolism_percent <= 1.0, "Your metabolism is [is_good ? "slower" : "faster"], causing reagents in your body to process, and hunger to occur [multipler_to_percentage(metabolism_percent, TRUE)] [is_good ? "slower" : "faster"].")
 	if(!isnull(attack_speed_percent))
-		effects += "The delay between attacking is [multipler_to_percentage(attack_speed_percent, TRUE)] [disable_duration_percent > 1.0 ? "longer" : "shorter"]."
+		SEMCOL(disable_duration_percent <= 1.0, "The delay between attacking is [multipler_to_percentage(attack_speed_percent, TRUE)] [is_good ? "longer" : "shorter"].")
+	if(!isnull(use_tool_delay))
+		SEMCOL(use_tool_delay <= 1.0, "Your tooling speed is [is_good ? "increased" : "reduced"] by [multipler_to_percentage(use_tool_delay, TRUE)].")
+	if(!isnull(medical_treatment_time))
+		SEMCOL(medical_treatment_time <= 1.0, "Your speed of medical treatment and syringe's handling is [is_good ? "increased" : "reduced"] by [multipler_to_percentage(medical_treatment_time, TRUE)].")
+	if(!isnull(crp_fracture_chance))
+		SEMCOL(crp_fracture_chance <= 1.0, "Your chance of breaking ribs at CPR is [is_good ? "reduced" : "increased"] by [multipler_to_percentage(crp_fracture_chance, TRUE)].")
+	if(!isnull(surgery_step_time))
+		SEMCOL(surgery_step_time <= 1.0, "Your speed of surgical operations is [is_good ? "increased" : "reduced"] by [multipler_to_percentage(surgery_step_time, TRUE)].")
+	if(!isnull(disarm_drop_percent))
+		SEMCOL(disarm_drop_percent <= 1.0, "Your chance of dropping a held item is [is_good ? "reduced" : "increased"] by [multipler_to_percentage(disarm_drop_percent, TRUE)].")
+	if(!isnull(pull_slowdown_percent))
+		SEMCOL(pull_slowdown_percent <= 1.0, "Your pulling speed is [is_good ? "increased" : "reduced"] by [multipler_to_percentage(pull_slowdown_percent, TRUE)].")
+	if(!isnull(electrocute_damage_percent))
+		SEMCOL(electrocute_damage_percent <= 1.0, "The electrocution damage on you is [is_good ? "reduced" : "increased"] by [multipler_to_percentage(electrocute_damage_percent, TRUE)].")
+	if(!isnull(electrocute_block_chance))
+		SEMCOL(electrocute_damage_percent > 0.0, "The electrocution damage can be blocked with [electrocute_damage_percent * 100]% chance.")
+	if(!isnull(poise_pool_flat))
+		SEMCOL(poise_pool_flat > 0, "You [is_good ? "gain" : "lose"] [abs(poise_pool_flat)] to poison pool.")
+
+	#undef SEMCOL
 
 	return jointext(effects, "<br>")
-
-
 
 // Helper to format multiplers (e.g. 1.4) to percentages (like '40%')
 /proc/multipler_to_percentage(multi, abs = FALSE)
