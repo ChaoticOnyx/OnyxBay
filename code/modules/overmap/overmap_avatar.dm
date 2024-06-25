@@ -896,29 +896,96 @@
  * Landing behavior
  */
 
-/obj/structure/overmap/proc/land()
-	if(ftl_drive.jumping)
+/obj/structure/overmap/proc/land(obj/effect/overmap_anomaly/visitable/overmap)
+	set background = TRUE
+
+	if(ftl_drive?.jumping)
 		return
 
+	var/datum/star_system/SS = SSstar_system.ships[src]["current_system"]
+	SS.remove_ship(src, overmap, remove_fully = FALSE)
+	SSstar_system.ships[src]["landed"] = TRUE
+
 	GLOB.using_map.apply_mapgen_mask()
-	var/list/spawned1 = block(
+	var/list/spawned = block(
 		locate(0 + TRANSITION_EDGE, 0 + TRANSITION_EDGE, 1),
 		locate(world.maxx - TRANSITION_EDGE, world.maxy - TRANSITION_EDGE, 1)
-	)
-	var/list/spawned2 = block(
-		locate(0 + TRANSITION_EDGE, 0 + TRANSITION_EDGE, 2),
-		locate(world.maxx - TRANSITION_EDGE, world.maxy - TRANSITION_EDGE, 2)
 	)
 
 	SSannounce.play_announce(/datum/announce/comm_program, "", "Helm announcement", "Command Room", 'sound/misc/notice2.ogg', FALSE, TRUE, GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
 	var/datum/looping_sound/sound = new /datum/looping_sound/ship/engine(list(), FALSE, TRUE, channel = SOUND_CHANNEL_REACTOR_ALERT)
-	sound.output_atoms |= spawned1 + spawned2
-	var/datum/map_generator/planet_generator/mapgen = new /datum/map_generator/planet_generator/jungle()
-	mapgen.generate_turfs(spawned1)
-	mapgen.populate_turfs(spawned1)
+
+	var/list/predicates = area_repository.get_areas_by_z_level(GLOB.is_station_but_not_space_or_shuttle_area)
+	var/list/areas_to_play = list()
+	for(var/name in predicates)
+		areas_to_play |= predicates[name]
+
+	sound.output_atoms |= areas_to_play
+	sound.start()
+
+	var/list/mask_predicates = area_repository.get_areas_by_name(/proc/is_space_or_mapgen_area)
+	var/list/areas_to_mask = list()
+
+	for(var/name in mask_predicates)
+		var/area/A = mask_predicates[name]
+		areas_to_mask |= A
+		var/icon/clouds = new('icons/effects/weather_effects.dmi', "clouds_fast")
+		clouds.Blend(COLOR_BLUE_LIGHT, ICON_MULTIPLY)
+		A.icon = clouds
+
+	var/datum/map_generator/planet_generator/mapgen = new overmap.mapgen()
+	mapgen.generate_turfs(spawned)
 	relay('sound/effects/ship/radio_100m.wav', null, FALSE, SOUND_CHANNEL_SHIP_ALERT)
-	mapgen.weather_controller_type = new mapgen.weather_controller_type(z)
+
+	sleep(2 SECONDS)
+	mapgen.populate_turfs(spawned)
+	new /datum/random_map/automata/cave_system(null, 1, 1, 1, 127, 127)
+	new /datum/random_map/noise/ore(null, 1, 1, 1, 127, 127)
+
+	sleep(2 SECONDS)
+
+	if(!isnull(mapgen?.weather_controller_type))
+		mapgen.weather_controller_type = new mapgen.weather_controller_type(z)
+	for(var/area/A in areas_to_mask)
+		A.icon = initial(A.icon)
+
 	relay('sound/effects/ship/radio_landing_touch_01.wav', null, FALSE, SOUND_CHANNEL_SHIP_ALERT)
 	sound.stop()
 
 /obj/structure/overmap/proc/takeoff()
+	SSstar_system.ships[src]["landed"] = FALSE
+	SSannounce.play_announce(/datum/announce/comm_program, "", "Helm announcement", "Command Room", 'sound/misc/notice2.ogg', FALSE, TRUE, GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
+	var/datum/looping_sound/sound = new /datum/looping_sound/ship/engine(list(), FALSE, TRUE, channel = SOUND_CHANNEL_REACTOR_ALERT)
+	var/list/predicates = area_repository.get_areas_by_z_level(GLOB.is_station_but_not_space_or_shuttle_area)
+	var/list/areas_to_play = list()
+	for(var/name in predicates)
+		areas_to_play += predicates[name]
+
+	sound.output_atoms |= areas_to_play
+	sound.start()
+
+	sleep (5 SECONDS)
+
+	var/list/mask_predicates = area_repository.get_areas_by_name(/proc/is_space_or_mapgen_area)
+	var/list/areas_to_mask = list()
+
+	for(var/name in mask_predicates)
+		var/area/A = mask_predicates[name]
+		areas_to_mask |= A
+		var/icon/clouds = new('icons/effects/weather_effects.dmi', "clouds_fast")
+		clouds.Blend(COLOR_BLUE_LIGHT, ICON_MULTIPLY)
+		A.icon = clouds
+
+	sleep(4 SECONDS)
+
+	GLOB.using_map.apply_mapgen_mask()
+
+	sleep(2 SECONDS)
+
+	for(var/area/A in areas_to_mask)
+		A.icon = initial(A.icon)
+
+	sound.stop()
+	var/datum/star_system/SS = SSstar_system.ships[src]["current_system"]
+	SSstar_system.ships[src]["landed"] = FALSE
+	SS.add_ship(src)

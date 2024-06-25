@@ -173,3 +173,8 @@
 
 /atom/movable/particle_emitter/firing_smoke/proc/remove_drift()
 	particles.drift = 0
+
+/atom/movable/particle_emitter/clouds
+	particles = new /particles/clouds()
+	layer = FIRE_LAYER
+	render_target = CLOUD_EFFECT_TARGET

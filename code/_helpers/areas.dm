@@ -91,6 +91,15 @@ GLOBAL_LIST_EMPTY(station_areas)
 /proc/is_not_space_area(area/A)
 	. = !istype(A, /area/space)
 
+/proc/is_space_area(area/A)
+	. = istype(A, /area/space)
+
+/proc/is_space_or_mapgen_area(area/A)
+	. = istype(A, /area/space) || istype(A, /area/generated)
+
+/proc/is_generated_area(area/A)
+	. = istype(A, /area/generated)
+
 /proc/is_outside_area(area/A)
 	return A.environment_type == ENVIRONMENT_OUTSIDE
 

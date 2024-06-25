@@ -90,7 +90,7 @@
 	if(y < 1)
 		y = 1
 
-	var/datum/space_level/level = SSmapping.add_new_zlevel(name, level_traits)
+	SSmapping.add_new_zlevel(name, level_traits)
 
 	var/list/bounds = list(1.#INF, 1.#INF, 1.#INF, -1.#INF, -1.#INF, -1.#INF)
 	var/list/atoms_to_initialise = list()

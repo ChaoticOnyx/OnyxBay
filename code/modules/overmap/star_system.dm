@@ -170,6 +170,16 @@
 
 	after_enter(OM)
 
+/// Generic proc to remove ship from a system. Use `remove_fully = FALSE` when ship is landing on a system within a planet, so it will stay in the system (but not physically)
+/datum/star_system/proc/remove_ship(obj/structure/overmap/OM, atom/new_loc, remove_fully = FALSE)
+	if(remove_fully)
+		system_contents -= OM
+		OM.current_system = null
+
+	OM.forceMove(new_loc)
+
+	after_enter(OM)
+
 /datum/star_system/proc/initialize_z_level()
 	var/datum/map_template/map = new mappath()
 	var/turf/new_center = map.load_new_z()
@@ -181,6 +191,7 @@
 		var/obj/effect/overmap_anomaly/visitable/planetoid/planetoid = new (new_center)
 		planetoid.orbit(star, curr_offset_x, FALSE, rand(4000, 5000), pre_rotation = TRUE)
 		curr_offset_x += 128
+		planetoid.mapgen = /datum/map_generator/planet_generator/jungle
 		switch(i)
 			if(1)
 				planetoid.icon_state = "barren[rand(1, 3)]"
@@ -196,9 +207,6 @@
 					planetoid.icon_state = "waste[rand(1, 3)]"
 				else
 					planetoid.icon_state = "ice[rand(1, 3)]"
-
-/datum/star_system/proc/remove_ship(obj/structure/overmap/OM, turf/new_location)
-	pass()
 
 /datum/star_system/proc/after_enter(obj/structure/overmap/OM)
 	pass()
