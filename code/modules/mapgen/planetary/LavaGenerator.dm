@@ -1,9 +1,6 @@
 /datum/map_generator/planet_generator/lava
-	// values near 0.5 look bad due to the behavior of naive perlin noise
-	// so this was bumped down a little below 0.5
 	mountain_height = 0.45
 	perlin_zoom = 65
-
 	primary_area_type = /area/overmap_encounter/planetoid/lava
 
 	biome_table = list(

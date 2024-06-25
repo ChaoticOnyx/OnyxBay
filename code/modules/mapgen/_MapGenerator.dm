@@ -15,6 +15,8 @@
 	/// Turf that will be placed on map's edge (7 turfs border)
 	var/turf/edgeturf
 
+	var/list/turf/smooth_queue = list()
+
 /// Given a list of turfs, asynchronously changes a list of turfs and their areas.
 /// Does not fill them with objects; this should be done with populate_turfs.
 /// This is a wrapper proc for generate_turf(), handling batch processing of turfs.
@@ -27,7 +29,6 @@
 		if(!istype(gen_turf))
 			continue
 
-		// deferring AfterChange() means we don't get huge atmos flows in the middle of making changes
 		generate_turf(gen_turf, CHANGETURF_IGNORE_AIR | CHANGETURF_DEFER_CHANGE | CHANGETURF_DEFER_BATCH)
 		CHECK_TICK
 
@@ -35,16 +36,23 @@
 		if(!istype(gen_turf))
 			continue
 
-		//gen_turf.AfterChange(CHANGETURF_IGNORE_AIR)
+		var/neighbors = RANGE_TURFS(1, gen_turf)
+		smooth_queue |= gen_turf
+		for(var/turf/T in neighbors)
+			smooth_queue |= T
 
-		//QUEUE_SMOOTH(gen_turf)
-		//QUEUE_SMOOTH_NEIGHBORS(gen_turf)
-
-		for(var/turf/space/S in RANGE_TURFS(1, gen_turf))
+		for(var/turf/space/S in neighbors)
 			S.update_starlight()
 
 		// CHECK_TICK here is fine -- we are assuming that the turfs we're generating are staying relatively constant
 		CHECK_TICK
+
+	for(var/turf/simulated/floor/asteroid/A in smooth_queue)
+		A.update_icon()
+		CHECK_TICK
+
+	//for(var/turf/simulated/wall/W in smooth_queue)
+	//	W.update_icon()
 
 	message = "MAPGEN: MAPGEN REF [any2ref(src)] ([type]) HAS FINISHED TURF GEN IN [(REALTIMEOFDAY - start_time)/10]s"
 	to_world_log(message)
