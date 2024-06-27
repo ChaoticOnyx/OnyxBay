@@ -1,6 +1,12 @@
+var/list/cutting_tools = list(
 
+)
+
+var/list/hammering_tools = list(
+
+)
 //Example Recipes
-/datum/cooking_with_jane/recipe/steak_stove
+/datum/cooking/recipe/steak_stove
 
 	//Name of the recipe. If not defined, it will just use the name of the product_type
 	name="Stove-Top cooked Steak"
@@ -60,7 +66,7 @@
 
 //**Meat and Seafood**//
 //Missing: cubancarp, friedchicken, tonkatsu, enchiladas, monkeysdelight, fishandchips, katsudon, fishfingers,
-/datum/cooking_with_jane/recipe/donkpocket //Special interactions in recipes_microwave.dm, not sure if this is going to function as expected
+/datum/cooking/recipe/donkpocket //Special interactions in recipes_microwave.dm, not sure if this is going to function as expected
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/donkpocket
 
@@ -70,7 +76,7 @@
 		list(CWJ_ADD_REAGENT, "thermite", 1) //So it cooks inhand, totally.
 	)
 
-/datum/cooking_with_jane/recipe/cooked_cutlet
+/datum/cooking/recipe/cooked_cutlet
 	cooking_container = GRILL
 	product_type = /obj/item/reagent_containers/food/cutlet
 	step_builder = list(
@@ -80,7 +86,7 @@
 		list(CWJ_USE_STOVE, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/cooked_meatball
+/datum/cooking/recipe/cooked_meatball
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/meatball
 	step_builder = list(
@@ -90,7 +96,7 @@
 		list(CWJ_USE_STOVE, J_LO, 20 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/cooked_patty
+/datum/cooking/recipe/cooked_patty
 	cooking_container = GRILL
 	product_type = /obj/item/reagent_containers/food/patty
 	step_builder = list(
@@ -100,7 +106,7 @@
 		list(CWJ_USE_GRILL, J_LO, 10 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/chickensteak
+/datum/cooking/recipe/chickensteak
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/chickensteak
 
@@ -128,7 +134,7 @@
 		list(CWJ_USE_STOVE, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/porkchops
+/datum/cooking/recipe/porkchops
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/porkchops
 
@@ -157,7 +163,7 @@
 		list(CWJ_USE_STOVE, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/roastchicken
+/datum/cooking/recipe/roastchicken
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/roastchicken
 	step_builder = list(
@@ -168,7 +174,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/tofurkey //Not quite meat but cooked similar to roast chicken
+/datum/cooking/recipe/tofurkey //Not quite meat but cooked similar to roast chicken
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/tofurkey
 	step_builder = list(
@@ -180,7 +186,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/boiled_egg
+/datum/cooking/recipe/boiled_egg
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/boiledegg
 	step_builder = list(
@@ -190,7 +196,7 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/friedegg_basic
+/datum/cooking/recipe/friedegg_basic
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/friedegg
 	step_builder = list(
@@ -207,7 +213,7 @@
 		list(CWJ_USE_STOVE, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/bacon
+/datum/cooking/recipe/bacon
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/bacon
 	step_builder = list(
@@ -219,7 +225,7 @@
 		list(CWJ_USE_OVEN, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/baconegg
+/datum/cooking/recipe/baconegg
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/baconeggs
 	step_builder = list(
@@ -232,7 +238,7 @@
 		list(CWJ_USE_OVEN, J_LO, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/benedict
+/datum/cooking/recipe/benedict
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/benedict
 	step_builder = list(
@@ -248,7 +254,7 @@
 		list(CWJ_USE_OVEN, J_LO, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/omelette
+/datum/cooking/recipe/omelette
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/omelette
 	step_builder = list(
@@ -264,7 +270,7 @@
 		list(CWJ_USE_OVEN, J_LO, 10 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/taco
+/datum/cooking/recipe/taco
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/taco
 	step_builder = list(
@@ -278,7 +284,7 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/hotdog
+/datum/cooking/recipe/hotdog
 	cooking_container = GRILL
 	product_type = /obj/item/reagent_containers/food/hotdog
 	step_builder = list(
@@ -293,7 +299,7 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/sausage
+/datum/cooking/recipe/sausage
 	cooking_container = GRILL
 	product_type = /obj/item/reagent_containers/food/sausage
 	step_builder = list(
@@ -305,7 +311,7 @@
 		list(CWJ_USE_GRILL, J_MED, 10 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/wingfangchu
+/datum/cooking/recipe/wingfangchu
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/wingfangchu
 	step_builder = list(
@@ -314,7 +320,7 @@
 		list(CWJ_USE_TOOL, QUALITY_CUTTING, 1)
 	)
 
-/datum/cooking_with_jane/recipe/sashimi
+/datum/cooking/recipe/sashimi
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/sashimi
 	step_builder = list(
@@ -324,7 +330,7 @@
 		list(CWJ_USE_TOOL, QUALITY_CUTTING, 1)
 	)
 
-/datum/cooking_with_jane/recipe/chawanmushi
+/datum/cooking/recipe/chawanmushi
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/chawanmushi
 	step_builder = list(
@@ -336,7 +342,7 @@
 		list(CWJ_USE_OVEN, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/kabob
+/datum/cooking/recipe/kabob
 	cooking_container = GRILL
 	product_type = /obj/item/reagent_containers/food/kabob
 	step_builder = list(
@@ -348,7 +354,7 @@
 		list(CWJ_USE_GRILL, J_MED, 20 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/tofukabob
+/datum/cooking/recipe/tofukabob
 	cooking_container = GRILL
 	product_type = /obj/item/reagent_containers/food/tofukabob
 	step_builder = list(
@@ -360,7 +366,7 @@
 		list(CWJ_USE_GRILL, J_MED, 20 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/humankabob
+/datum/cooking/recipe/humankabob
 	cooking_container = GRILL
 	product_type = /obj/item/reagent_containers/food/kabob
 	step_builder = list(
@@ -374,7 +380,7 @@
 
 //**Cereals and Grains**//
 //missing: poppyprezel
-/datum/cooking_with_jane/recipe/bread
+/datum/cooking/recipe/bread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/bread
 	recipe_guide = "Put dough in an oven, bake for 30 seconds on medium."
@@ -384,7 +390,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/meatbread
+/datum/cooking/recipe/meatbread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/meatbread
 	recipe_guide = "Put dough in an oven, bake for 30 seconds on medium."
@@ -398,7 +404,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/xenomeatbread
+/datum/cooking/recipe/xenomeatbread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/xenomeatbread
 	recipe_guide = "Put dough in an oven, bake for 30 seconds on medium."
@@ -412,7 +418,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/tofubread
+/datum/cooking/recipe/tofubread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/tofubread
 	recipe_guide = "Put dough in an oven, bake for 30 seconds on medium."
@@ -426,7 +432,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/creamcheesebread
+/datum/cooking/recipe/creamcheesebread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/creamcheesebread
 	recipe_guide = "Put dough in an oven, bake for 30 seconds on medium."
@@ -438,7 +444,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/bananabread
+/datum/cooking/recipe/bananabread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/bananabread
 
@@ -453,7 +459,7 @@
 		list(CWJ_ADD_PRODUCE, "banana", 1),
 		list(CWJ_USE_OVEN, J_MED, 40 SECONDS)
 	)
-/datum/cooking_with_jane/recipe/baguette
+/datum/cooking/recipe/baguette
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/baguette
 	step_builder = list(
@@ -465,7 +471,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/cracker
+/datum/cooking/recipe/cracker
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/cracker
 	step_builder = list(
@@ -475,7 +481,7 @@
 		list(CWJ_USE_OVEN, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/bun
+/datum/cooking/recipe/bun
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/bun
 	product_count = 3
@@ -487,7 +493,7 @@
 		list(CWJ_USE_OVEN, J_HI, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/flatbread
+/datum/cooking/recipe/flatbread
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/flatbread
 	product_count = 3
@@ -497,7 +503,7 @@
 		list(CWJ_USE_OVEN, J_HI, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/twobread
+/datum/cooking/recipe/twobread
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/twobread
 	step_builder = list(
@@ -506,7 +512,7 @@
 		list(CWJ_ADD_REAGENT, "wine", 5)
 	)
 
-/datum/cooking_with_jane/recipe/pancakes
+/datum/cooking/recipe/pancakes
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/pancakes
 	step_builder = list(
@@ -520,7 +526,7 @@
 		list(CWJ_USE_OVEN, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/waffles
+/datum/cooking/recipe/waffles
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/waffles
 	step_builder = list(
@@ -535,7 +541,7 @@
 		list(CWJ_USE_OVEN, J_LO, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/rofflewaffles
+/datum/cooking/recipe/rofflewaffles
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/rofflewaffles
 	step_builder = list(
@@ -552,7 +558,7 @@
 		list(CWJ_USE_OVEN, J_LO, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/jelliedtoast
+/datum/cooking/recipe/jelliedtoast
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/jelliedtoast/cherry
 	step_builder = list(
@@ -561,7 +567,7 @@
 		list(CWJ_USE_TOOL, QUALITY_CUTTING, 1)
 	)
 
-/datum/cooking_with_jane/recipe/amanitajellytoast
+/datum/cooking/recipe/amanitajellytoast
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/jelliedtoast/amanita
 	step_builder = list(
@@ -570,7 +576,7 @@
 		list(CWJ_USE_TOOL, QUALITY_CUTTING, 1)
 	)
 
-/datum/cooking_with_jane/recipe/slimetoast
+/datum/cooking/recipe/slimetoast
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/jelliedtoast/slime
 	step_builder = list(
@@ -579,7 +585,7 @@
 		list(CWJ_USE_TOOL, QUALITY_CUTTING, 1)
 	)
 
-/datum/cooking_with_jane/recipe/stuffing
+/datum/cooking/recipe/stuffing
 	cooking_container = BOWL
 	product_type = /obj/item/reagent_containers/food/stuffing
 	product_count = 3
@@ -591,7 +597,7 @@
 		list(CWJ_ADD_REAGENT, "water", 5),
 	)
 
-/datum/cooking_with_jane/recipe/tortilla
+/datum/cooking/recipe/tortilla
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/tortilla
 	product_count = 3
@@ -602,7 +608,7 @@
 		list(CWJ_USE_OVEN, J_HI, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/muffin
+/datum/cooking/recipe/muffin
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/muffin
 	step_builder = list(
@@ -613,7 +619,7 @@
 		list(CWJ_USE_STOVE, J_LO, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/boiledrice
+/datum/cooking/recipe/boiledrice
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/boiledrice
 	step_builder = list(
@@ -623,7 +629,7 @@
 		list(CWJ_USE_STOVE, J_HI, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/ricepudding
+/datum/cooking/recipe/ricepudding
 	cooking_container = BOWL
 	product_type = /obj/item/reagent_containers/food/ricepudding
 	step_builder = list(
@@ -633,7 +639,7 @@
 	)
 
 //**Burgers**//
-/datum/cooking_with_jane/recipe/burger
+/datum/cooking/recipe/burger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/monkeyburger
 
@@ -651,7 +657,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/patty)
 	)
 
-/datum/cooking_with_jane/recipe/humanburger
+/datum/cooking/recipe/humanburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/human/burger
 
@@ -669,7 +675,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meat/human)
 	)
 
-/datum/cooking_with_jane/recipe/brainburger
+/datum/cooking/recipe/brainburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/brainburger
 
@@ -687,7 +693,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/organ/internal/vital/brain)
 	)
 
-/datum/cooking_with_jane/recipe/roburger
+/datum/cooking/recipe/roburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/roburger
 
@@ -705,7 +711,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/robot_parts/head)
 	)
 
-/datum/cooking_with_jane/recipe/xenoburger
+/datum/cooking/recipe/xenoburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/xenoburger
 
@@ -723,7 +729,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meat/xenomeat)
 	)
 
-/datum/cooking_with_jane/recipe/fishburger
+/datum/cooking/recipe/fishburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/fishburger
 
@@ -741,7 +747,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meat/carp)
 	)
 
-/datum/cooking_with_jane/recipe/tofuburger
+/datum/cooking/recipe/tofuburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/tofuburger
 
@@ -759,7 +765,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/tofu)
 	)
 
-/datum/cooking_with_jane/recipe/clownburger
+/datum/cooking/recipe/clownburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/clownburger
 
@@ -777,7 +783,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/clothing/mask/gas/clown_hat)
 	)
 
-/datum/cooking_with_jane/recipe/mimeburger
+/datum/cooking/recipe/mimeburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/mimeburger
 
@@ -795,7 +801,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/clothing/head/beret)
 	)
 
-/datum/cooking_with_jane/recipe/bigbiteburger
+/datum/cooking/recipe/bigbiteburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/bigbiteburger
 
@@ -816,7 +822,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/boiledegg, qmod=0.5)
 	)
 
-/datum/cooking_with_jane/recipe/superbiteburger
+/datum/cooking/recipe/superbiteburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/superbiteburger
 
@@ -836,7 +842,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/boiledegg, qmod=0.5)
 	)
 
-/datum/cooking_with_jane/recipe/jellyburger
+/datum/cooking/recipe/jellyburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/jellyburger
 
@@ -854,7 +860,7 @@
 		list(CWJ_ADD_REAGENT, "cherryjelly", 5)
 	)
 
-/datum/cooking_with_jane/recipe/amanitajellyburger
+/datum/cooking/recipe/amanitajellyburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/jellyburger/amanita
 
@@ -872,7 +878,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/jelly/amanita, qmod=0.5)
 	)
 
-/datum/cooking_with_jane/recipe/slimeburger
+/datum/cooking/recipe/slimeburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/jellyburger/slime
 
@@ -891,7 +897,7 @@
 	)
 
 //**Sandwiches**//
-/datum/cooking_with_jane/recipe/sandwich_basic
+/datum/cooking/recipe/sandwich_basic
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(
@@ -905,7 +911,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/breadslice, qmod=0.5)
 	)
 
-/datum/cooking_with_jane/recipe/slimesandwich
+/datum/cooking/recipe/slimesandwich
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/jellysandwich/slime
 	step_builder = list(
@@ -914,7 +920,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/breadslice, qmod=0.5)
 	)
 
-/datum/cooking_with_jane/recipe/cherrysandwich
+/datum/cooking/recipe/cherrysandwich
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/jellysandwich/cherry
 	step_builder = list(
@@ -923,7 +929,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/breadslice, qmod=0.5)
 	)
 
-/datum/cooking_with_jane/recipe/amanitajellysandwich
+/datum/cooking/recipe/amanitajellysandwich
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/jellysandwich/amanita
 	step_builder = list(
@@ -932,7 +938,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/breadslice, qmod=0.5)
 	)
 
-/datum/cooking_with_jane/recipe/blt
+/datum/cooking/recipe/blt
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/blt
 	step_builder = list(
@@ -946,7 +952,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/breadslice, qmod=0.5)
 	)
 
-/datum/cooking_with_jane/recipe/grilledcheese
+/datum/cooking/recipe/grilledcheese
 	cooking_container = GRILL
 	product_type = /obj/item/reagent_containers/food/grilledcheese
 	step_builder = list(
@@ -957,7 +963,7 @@
 		list(CWJ_USE_GRILL, J_LO, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/toastedsandwich
+/datum/cooking/recipe/toastedsandwich
 	cooking_container = GRILL
 	product_type = /obj/item/reagent_containers/food/toastedsandwich
 	step_builder = list(
@@ -968,7 +974,7 @@
 
 //**Erisian Cuisine**//
 //Left out due to never having existed previously: Spider burgers, Kraftwerk, Benzin
-/datum/cooking_with_jane/recipe/boiled_roach_egg
+/datum/cooking/recipe/boiled_roach_egg
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/roach_egg
 	step_builder = list(
@@ -978,7 +984,7 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/kampferburger
+/datum/cooking/recipe/kampferburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/kampferburger
 
@@ -992,7 +998,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meat/roachmeat)
 	)
 
-/datum/cooking_with_jane/recipe/seucheburger
+/datum/cooking/recipe/seucheburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/seucheburger
 
@@ -1006,7 +1012,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meat/roachmeat/seuche)
 	)
 
-/datum/cooking_with_jane/recipe/panzerburger
+/datum/cooking/recipe/panzerburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/panzerburger
 
@@ -1020,7 +1026,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meat/roachmeat/panzer)
 	)
 
-/datum/cooking_with_jane/recipe/jagerburger
+/datum/cooking/recipe/jagerburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/jagerburger
 
@@ -1034,7 +1040,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meat/roachmeat/jager)
 	)
 
-/datum/cooking_with_jane/recipe/bigroachburger //Difference: Requires boiled roach egg
+/datum/cooking/recipe/bigroachburger //Difference: Requires boiled roach egg
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/bigroachburger
 
@@ -1052,7 +1058,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meat/roachmeat/jager)
 	)
 
-/datum/cooking_with_jane/recipe/fuhrerburger //Difference: Requires boiled roach egg
+/datum/cooking/recipe/fuhrerburger //Difference: Requires boiled roach egg
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/fuhrerburger
 
@@ -1067,7 +1073,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meat/roachmeat/fuhrer)
 	)
 
-/datum/cooking_with_jane/recipe/kaiserburger //Difference: Requires boiled roach egg
+/datum/cooking/recipe/kaiserburger //Difference: Requires boiled roach egg
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/kaiserburger
 
@@ -1082,7 +1088,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meat/roachmeat/kaiser)
 	)
 
-/datum/cooking_with_jane/recipe/wormburger
+/datum/cooking/recipe/wormburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/wormburger
 
@@ -1096,7 +1102,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/moecube/worm)
 	)
 
-/datum/cooking_with_jane/recipe/geneburger
+/datum/cooking/recipe/geneburger
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/geneburger
 
@@ -1111,7 +1117,7 @@
 	)
 
 //**Pastas**//
-/datum/cooking_with_jane/recipe/raw_spaghetti
+/datum/cooking/recipe/raw_spaghetti
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/spaghetti
 	step_builder = list(
@@ -1120,7 +1126,7 @@
 		list(CWJ_USE_TOOL, QUALITY_CUTTING, 1)
 	)
 
-/datum/cooking_with_jane/recipe/boiledspaghetti
+/datum/cooking/recipe/boiledspaghetti
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/boiledspaghetti
 	step_builder = list(
@@ -1130,7 +1136,7 @@
 		list(CWJ_USE_STOVE, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/pastatomato
+/datum/cooking/recipe/pastatomato
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/pastatomato
 	step_builder = list(
@@ -1142,7 +1148,7 @@
 		list(CWJ_USE_STOVE, J_LO, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/meatballspaghetti
+/datum/cooking/recipe/meatballspaghetti
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/meatballspaghetti
 	step_builder = list(
@@ -1155,7 +1161,7 @@
 		list(CWJ_USE_STOVE, J_LO, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/spesslaw
+/datum/cooking/recipe/spesslaw
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/spesslaw
 	step_builder = list(
@@ -1171,7 +1177,7 @@
 	)
 
 //**Pizzas**//
-/datum/cooking_with_jane/recipe/pizzamargherita
+/datum/cooking/recipe/pizzamargherita
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/pizza/margherita
 	step_builder = list(
@@ -1186,7 +1192,7 @@
 		list(CWJ_USE_OVEN, J_MED, 35 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/meatpizza
+/datum/cooking/recipe/meatpizza
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/pizza/meatpizza
 	step_builder = list(
@@ -1201,7 +1207,7 @@
 		list(CWJ_USE_OVEN, J_MED, 35 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/mushroompizza
+/datum/cooking/recipe/mushroompizza
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/pizza/mushroompizza
 	step_builder = list(
@@ -1218,7 +1224,7 @@
 		list(CWJ_USE_OVEN, J_MED, 35 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/vegetablepizza
+/datum/cooking/recipe/vegetablepizza
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/pizza/vegetablepizza
 	step_builder = list(
@@ -1235,7 +1241,7 @@
 	)
 
 //**Pies**//
-/datum/cooking_with_jane/recipe/meatpie
+/datum/cooking/recipe/meatpie
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/meatpie
 	step_builder = list(
@@ -1245,7 +1251,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/tofupie
+/datum/cooking/recipe/tofupie
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/tofupie
 	step_builder = list(
@@ -1255,7 +1261,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/xemeatpie
+/datum/cooking/recipe/xemeatpie
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/xemeatpie
 	step_builder = list(
@@ -1265,7 +1271,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/pie
+/datum/cooking/recipe/pie
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/pie
 	step_builder = list(
@@ -1277,7 +1283,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/cherrypie
+/datum/cooking/recipe/cherrypie
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/cherrypie
 	step_builder = list(
@@ -1289,7 +1295,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/berryclafoutis
+/datum/cooking/recipe/berryclafoutis
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/berryclafoutis
 	step_builder = list(
@@ -1301,7 +1307,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/amanita_pie
+/datum/cooking/recipe/amanita_pie
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/amanita_pie
 	step_builder = list(
@@ -1312,7 +1318,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/plump_pie
+/datum/cooking/recipe/plump_pie
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/plump_pie
 	step_builder = list(
@@ -1323,7 +1329,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/pumpkinpie
+/datum/cooking/recipe/pumpkinpie
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/pumpkinpie
 	step_builder = list(
@@ -1334,7 +1340,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/applepie
+/datum/cooking/recipe/applepie
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/applepie
 	step_builder = list(
@@ -1346,7 +1352,7 @@
 	)
 
 //**Salads**//
-/datum/cooking_with_jane/recipe/tossedsalad
+/datum/cooking/recipe/tossedsalad
 	cooking_container = BOWL
 	product_type = /obj/item/reagent_containers/food/tossedsalad
 	step_builder = list(
@@ -1361,7 +1367,7 @@
 		list(CWJ_ADD_PRODUCE, "tomato", qmod=0.2),
 	)
 
-/datum/cooking_with_jane/recipe/aesirsalad
+/datum/cooking/recipe/aesirsalad
 	cooking_container = BOWL
 	product_type = /obj/item/reagent_containers/food/aesirsalad
 	step_builder = list(
@@ -1373,7 +1379,7 @@
 		list(CWJ_ADD_PRODUCE, "goldapple", qmod=0.2),
 	)
 
-/datum/cooking_with_jane/recipe/validsalad
+/datum/cooking/recipe/validsalad
 	cooking_container = BOWL
 	product_type = /obj/item/reagent_containers/food/validsalad
 	step_builder = list(
@@ -1388,7 +1394,7 @@
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/meatball, qmod=0.5),
 	)
 //**Soups**// Possibly replaced by Handyman's Soup project, which'll be based on cauldron soup kitchen aesthetic
-/datum/cooking_with_jane/recipe/tomatosoup
+/datum/cooking/recipe/tomatosoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/tomatosoup
 	step_builder = list(
@@ -1403,7 +1409,7 @@
 		list(CWJ_USE_STOVE, J_LO, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/meatballsoup
+/datum/cooking/recipe/meatballsoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/meatballsoup
 	step_builder = list(
@@ -1416,7 +1422,7 @@
 		list(CWJ_USE_STOVE, J_LO, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/vegetablesoup
+/datum/cooking/recipe/vegetablesoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/vegetablesoup
 	step_builder = list(
@@ -1429,7 +1435,7 @@
 		list(CWJ_USE_STOVE, J_LO, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/nettlesoup
+/datum/cooking/recipe/nettlesoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/nettlesoup
 	step_builder = list(
@@ -1440,7 +1446,7 @@
 		list(CWJ_USE_STOVE, J_LO, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/wishsoup
+/datum/cooking/recipe/wishsoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/wishsoup
 	step_builder = list(
@@ -1449,7 +1455,7 @@
 		list(CWJ_USE_STOVE, J_LO, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/coldchili
+/datum/cooking/recipe/coldchili
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/coldchili
 	step_builder = list(
@@ -1461,7 +1467,7 @@
 		list(CWJ_USE_STOVE, J_LO, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/hotchili
+/datum/cooking/recipe/hotchili
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/coldchili
 	step_builder = list(
@@ -1473,7 +1479,7 @@
 		list(CWJ_USE_STOVE, J_LO, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/bearchili
+/datum/cooking/recipe/bearchili
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/bearchili
 	step_builder = list(
@@ -1485,7 +1491,7 @@
 		list(CWJ_USE_STOVE, J_LO, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/stew
+/datum/cooking/recipe/stew
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/stew
 	step_builder = list(
@@ -1499,7 +1505,7 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/milosoup
+/datum/cooking/recipe/milosoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/milosoup
 	step_builder = list(
@@ -1512,7 +1518,7 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/beetsoup
+/datum/cooking/recipe/beetsoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/beetsoup
 	step_builder = list(
@@ -1527,7 +1533,7 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/mushroomsoup
+/datum/cooking/recipe/mushroomsoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/mushroomsoup
 	step_builder = list(
@@ -1547,7 +1553,7 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/mysterysoup
+/datum/cooking/recipe/mysterysoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/mysterysoup
 	step_builder = list(
@@ -1561,7 +1567,7 @@
 		list(CWJ_USE_STOVE, J_MED, 20 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/bloodsoup
+/datum/cooking/recipe/bloodsoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/bloodsoup
 	step_builder = list(
@@ -1570,7 +1576,7 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/slimesoup
+/datum/cooking/recipe/slimesoup
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/slimesoup
 	step_builder = list(
@@ -1580,7 +1586,7 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/beefcurry
+/datum/cooking/recipe/beefcurry
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/beefcurry
 
@@ -1599,7 +1605,7 @@
 		list(CWJ_USE_STOVE, J_MED, 40 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/chickencurry
+/datum/cooking/recipe/chickencurry
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/chickencurry
 
@@ -1620,7 +1626,7 @@
 
 //**Vegetables**//
 //missing: soylenviridians, soylentgreen
-/datum/cooking_with_jane/recipe/mashpotato
+/datum/cooking/recipe/mashpotato
 	cooking_container = BOWL
 	product_type = /obj/item/reagent_containers/food/mashpotatoes
 
@@ -1634,7 +1640,7 @@
 		list(CWJ_USE_TOOL, QUALITY_HAMMERING, 15)
 	)
 
-/datum/cooking_with_jane/recipe/loadedbakedpotato
+/datum/cooking/recipe/loadedbakedpotato
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/loadedbakedpotato
 
@@ -1648,7 +1654,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/fries
+/datum/cooking/recipe/fries
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/fries
 	step_builder = list(
@@ -1658,7 +1664,7 @@
 		list(CWJ_USE_STOVE, J_HI, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/cheesyfries
+/datum/cooking/recipe/cheesyfries
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/cheesyfries
 	step_builder = list(
@@ -1667,7 +1673,7 @@
 		list(CWJ_USE_STOVE, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/eggplantparm
+/datum/cooking/recipe/eggplantparm
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/eggplantparm
 	step_builder = list(
@@ -1684,7 +1690,7 @@
 		list(CWJ_USE_STOVE, J_HI, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/stewedsoymeat
+/datum/cooking/recipe/stewedsoymeat
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/stewedsoymeat
 	step_builder = list(
@@ -1698,7 +1704,7 @@
 	)
 
 //**Cakes**//
-/datum/cooking_with_jane/recipe/plaincake
+/datum/cooking/recipe/plaincake
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/plaincake
 	step_builder = list(
@@ -1711,7 +1717,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/carrotcake
+/datum/cooking/recipe/carrotcake
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/carrotcake
 	step_builder = list(
@@ -1723,7 +1729,7 @@
 		list(CWJ_USE_STOVE, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/cheesecake
+/datum/cooking/recipe/cheesecake
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/cheesecake
 	step_builder = list(
@@ -1734,7 +1740,7 @@
 		list(CWJ_USE_STOVE, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/orangecake
+/datum/cooking/recipe/orangecake
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/orangecake
 	step_builder = list(
@@ -1744,7 +1750,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/limecake
+/datum/cooking/recipe/limecake
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/limecake
 	step_builder = list(
@@ -1754,7 +1760,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/lemoncake
+/datum/cooking/recipe/lemoncake
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/lemoncake
 	step_builder = list(
@@ -1764,7 +1770,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/chocolatecake
+/datum/cooking/recipe/chocolatecake
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/chocolatecake
 	step_builder = list(
@@ -1775,7 +1781,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/applecake
+/datum/cooking/recipe/applecake
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/applecake
 	step_builder = list(
@@ -1786,7 +1792,7 @@
 		list(CWJ_USE_STOVE, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/birthdaycake
+/datum/cooking/recipe/birthdaycake
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/birthdaycake
 	step_builder = list(
@@ -1796,7 +1802,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/braincake
+/datum/cooking/recipe/braincake
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/braincake
 	step_builder = list(
@@ -1807,7 +1813,7 @@
 		list(CWJ_USE_OVEN, J_MED, 30 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/brownies
+/datum/cooking/recipe/brownies
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sliceable/brownie
 	step_builder = list(
@@ -1824,7 +1830,7 @@
 //**Desserts and Sweets**//
 //missing: fortunecookie, honey_bun, honey_pudding
 //Changes: Now a chemical reaction: candy_corn, mint,
-/datum/cooking_with_jane/recipe/chocolateegg
+/datum/cooking/recipe/chocolateegg
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/chocolateegg
 	step_builder = list(
@@ -1834,7 +1840,7 @@
 		list(CWJ_USE_STOVE, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/candiedapple
+/datum/cooking/recipe/candiedapple
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/candiedapple
 	step_builder = list(
@@ -1845,7 +1851,7 @@
 		list(CWJ_USE_STOVE, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/cookie
+/datum/cooking/recipe/cookie
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/cookie
 	step_builder = list(
@@ -1858,7 +1864,7 @@
 		list(CWJ_USE_STOVE, J_LO, 5 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/appletart
+/datum/cooking/recipe/appletart
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/appletart
 	step_builder = list(
@@ -1872,7 +1878,7 @@
 		list(CWJ_USE_OVEN, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/plumphelmetbiscuit
+/datum/cooking/recipe/plumphelmetbiscuit
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/plumphelmetbiscuit
 	step_builder = list(
@@ -1884,7 +1890,7 @@
 		list(CWJ_USE_OVEN, J_LO, 15 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/popcorn
+/datum/cooking/recipe/popcorn
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/popcorn
 	step_builder = list(
@@ -1897,7 +1903,7 @@
 
 //UNSORTED
 //missing: spacylibertyduff
-/datum/cooking_with_jane/recipe/boiledslimeextract
+/datum/cooking/recipe/boiledslimeextract
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/boiledslimecore
 	step_builder = list(

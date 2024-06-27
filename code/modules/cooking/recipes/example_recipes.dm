@@ -2,7 +2,7 @@
 /*
 //Example of the same recipe, but for the grill, just to show off how compact everything is.
 
-/datum/cooking_with_jane/recipe/sandwich_basic_bowl
+/datum/cooking/recipe/sandwich_basic_bowl
 	cooking_container = BOWL
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(
@@ -12,7 +12,7 @@
 	)
 	appear_in_default_catalog = FALSE
 
-/datum/cooking_with_jane/recipe/sandwich_deep_fryer
+/datum/cooking/recipe/sandwich_deep_fryer
 	cooking_container = DF_BASKET
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(
@@ -22,7 +22,7 @@
 	)
 	appear_in_default_catalog = FALSE
 
-/datum/cooking_with_jane/recipe/sandwich_air_fryer
+/datum/cooking/recipe/sandwich_air_fryer
 	cooking_container = AF_BASKET
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(
@@ -32,7 +32,7 @@
 	)
 	appear_in_default_catalog = FALSE
 
-/datum/cooking_with_jane/recipe/sandwich_pot
+/datum/cooking/recipe/sandwich_pot
 	cooking_container = POT
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(
@@ -42,7 +42,7 @@
 	)
 	appear_in_default_catalog = FALSE
 
-/datum/cooking_with_jane/recipe/sandwich_oven
+/datum/cooking/recipe/sandwich_oven
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(
@@ -53,7 +53,7 @@
 	appear_in_default_catalog = FALSE
 
 
-/datum/cooking_with_jane/recipe/sandwich_bad_with_tomato
+/datum/cooking/recipe/sandwich_bad_with_tomato
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(
@@ -64,7 +64,7 @@
 	)
 	appear_in_default_catalog = FALSE
 
-/datum/cooking_with_jane/recipe/sandwich_tofu_bad
+/datum/cooking/recipe/sandwich_tofu_bad
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(
@@ -77,7 +77,7 @@
 	)
 	appear_in_default_catalog = FALSE
 
-/datum/cooking_with_jane/recipe/sandwich_bad_stacked
+/datum/cooking/recipe/sandwich_bad_stacked
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(
@@ -88,7 +88,7 @@
 	)
 	appear_in_default_catalog = FALSE
 
-/datum/cooking_with_jane/recipe/sandwich_salted
+/datum/cooking/recipe/sandwich_salted
 	cooking_container = CUTTING_BOARD
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(
@@ -99,7 +99,7 @@
 	)
 	appear_in_default_catalog = FALSE
 
-/datum/cooking_with_jane/recipe/sandwich_split
+/datum/cooking/recipe/sandwich_split
 	cooking_container = PAN
 	product_type = /obj/item/reagent_containers/food/sandwich
 	product_count = 2
@@ -110,7 +110,7 @@
 	appear_in_default_catalog = FALSE
 
 
-/datum/cooking_with_jane/recipe/sandwich_toasted
+/datum/cooking/recipe/sandwich_toasted
 	cooking_container = GRILL
 	product_type = /obj/item/reagent_containers/food/sandwich
 	step_builder = list(

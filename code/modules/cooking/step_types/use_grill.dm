@@ -1,5 +1,5 @@
 //A cooking step that involves adding a reagent to the food.
-/datum/cooking_with_jane/recipe_step/use_grill
+/datum/cooking/recipe_step/use_grill
 	class=CWJ_USE_GRILL
 	auto_complete_enabled = TRUE
 	var/time
@@ -9,7 +9,7 @@
 //amount: The amount of the required reagent that needs to be added.
 //base_quality_award: The quality awarded by following this step.
 //our_recipe: The parent recipe object,
-/datum/cooking_with_jane/recipe_step/use_grill/New(var/set_heat, var/set_time, var/datum/cooking_with_jane/recipe/our_recipe)
+/datum/cooking/recipe_step/use_grill/New(set_heat, set_time, datum/cooking/recipe/our_recipe)
 
 
 
@@ -21,7 +21,7 @@
 	..(our_recipe)
 
 
-/datum/cooking_with_jane/recipe_step/use_grill/check_conditions_met(var/obj/used_item, var/datum/cooking_with_jane/recipe_tracker/tracker)
+/datum/cooking/recipe_step/use_grill/check_conditions_met(obj/used_item, datum/cooking/recipe_tracker/tracker)
 
 	if(!istype(used_item, /obj/machinery/cooking_with_jane/grill))
 		return CWJ_CHECK_INVALID
@@ -29,8 +29,8 @@
 	return CWJ_CHECK_VALID
 
 //Reagents are calculated prior to object creation
-/datum/cooking_with_jane/recipe_step/use_grill/calculate_quality(var/obj/used_item, var/datum/cooking_with_jane/recipe_tracker/tracker)
-	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = tracker.holder_ref.resolve()
+/datum/cooking/recipe_step/use_grill/calculate_quality(obj/used_item, datum/cooking/recipe_tracker/tracker)
+	var/obj/item/reagent_containers/vessel/cooking_container/container = tracker.holder_ref.resolve()
 
 	var/obj/machinery/cooking_with_jane/grill/our_grill = used_item
 
@@ -47,12 +47,12 @@
 	return clamp_quality(good_cooking)
 
 
-/datum/cooking_with_jane/recipe_step/use_grill/follow_step(var/obj/used_item, var/datum/cooking_with_jane/recipe_tracker/tracker)
+/datum/cooking/recipe_step/use_grill/follow_step(obj/used_item, datum/cooking/recipe_tracker/tracker)
 	return CWJ_SUCCESS
 
-/datum/cooking_with_jane/recipe_step/use_grill/is_complete(var/obj/used_item, var/datum/cooking_with_jane/recipe_tracker/tracker)
+/datum/cooking/recipe_step/use_grill/is_complete(obj/used_item, datum/cooking/recipe_tracker/tracker)
 
-	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = tracker.holder_ref.resolve()
+	var/obj/item/reagent_containers/vessel/cooking_container/container = tracker.holder_ref.resolve()
 
 	if(container.grill_data[heat] >= time)
 		#ifdef CWJ_DEBUG
@@ -64,4 +64,3 @@
 	log_debug("use_grill/is_complete() Returned False; comparing [heat]: [container.grill_data[heat]] to [time]")
 	#endif
 	return FALSE
-

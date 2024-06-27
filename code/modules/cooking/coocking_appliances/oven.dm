@@ -4,7 +4,7 @@
 	name = "Convection Oven"
 	desc = "A cozy oven for baking food."
 	description_info = "Ctrl+Click: Set Temperatures / Timers. \nShift+Ctrl+Click: Turn on the oven.\nAlt+Click: Empty container of physical food."
-	icon = 'icons/obj/cwj_cooking/oven.dmi'
+	icon = 'icons/obj/cooking/oven.dmi'
 	icon_state = "oven"
 	density = TRUE
 	anchored = TRUE
@@ -87,17 +87,17 @@
 						handle_ignition()
 
 /obj/machinery/cooking_with_jane/oven/proc/handle_burning()
-	if(!(items && istype(items, /obj/item/reagent_containers/cooking_with_jane/cooking_container)))
+	if(!(items && istype(items, /obj/item/reagent_containers/vessel/cooking_container)))
 		return
 
-	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items
+	var/obj/item/reagent_containers/vessel/cooking_container/container = items
 	container.handle_burning()
 
 /obj/machinery/cooking_with_jane/oven/proc/handle_ignition()
-	if(!(items && istype(items, /obj/item/reagent_containers/cooking_with_jane/cooking_container)))
+	if(!(items && istype(items, /obj/item/reagent_containers/vessel/cooking_container)))
 		return
 
-	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items
+	var/obj/item/reagent_containers/vessel/cooking_container/container = items
 	if(container.handle_ignition())
 		on_fire = TRUE
 /obj/machinery/cooking_with_jane/oven/attackby(var/obj/item/used_item, var/mob/user, params)
@@ -108,10 +108,10 @@
 
 	if(opened && center_selected)
 		if(items != null)
-			var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items
+			var/obj/item/reagent_containers/vessel/cooking_container/container = items
 			container.process_item(used_item, params)
 
-		else if(istype(used_item, /obj/item/reagent_containers/cooking_with_jane/cooking_container))
+		else if(istype(used_item, /obj/item/reagent_containers/vessel/cooking_container))
 			to_chat(usr, SPAN_NOTICE("You put a [used_item] on the oven."))
 			if(usr.canUnEquip(used_item))
 				usr.unEquip(used_item, src)
@@ -212,8 +212,8 @@
 			if(!opened)
 				to_chat(user, SPAN_NOTICE("The oven must be open to retrieve the food."))
 			else
-				if((items != null && istype(items, /obj/item/reagent_containers/cooking_with_jane/cooking_container)))
-					var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items
+				if((items != null && istype(items, /obj/item/reagent_containers/vessel/cooking_container)))
+					var/obj/item/reagent_containers/vessel/cooking_container/container = items
 
 					#ifdef CWJ_DEBUG
 					log_debug("/cooking_with_jane/oven/AltClick called on [container]")
@@ -297,10 +297,10 @@
 
 /obj/machinery/cooking_with_jane/oven/proc/handle_cooking(var/mob/user, set_timer=FALSE)
 
-	if(!(items && istype(items, /obj/item/reagent_containers/cooking_with_jane/cooking_container)))
+	if(!(items && istype(items, /obj/item/reagent_containers/vessel/cooking_container)))
 		return
 
-	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items
+	var/obj/item/reagent_containers/vessel/cooking_container/container = items
 	if(set_timer)
 		reference_time = timer
 	else

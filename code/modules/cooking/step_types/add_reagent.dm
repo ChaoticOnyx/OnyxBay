@@ -1,5 +1,5 @@
 //A cooking step that involves adding a reagent to the food.
-/datum/cooking_with_jane/recipe_step/add_reagent
+/datum/cooking/recipe_step/add_reagent
 	class=CWJ_ADD_REAGENT
 	auto_complete_enabled = TRUE
 	var/expected_total
@@ -11,7 +11,7 @@
 //amount: The amount of the required reagent that needs to be added.
 //base_quality_award: The quality awarded by following this step.
 //our_recipe: The parent recipe object,
-/datum/cooking_with_jane/recipe_step/add_reagent/New(var/reagent_id,  var/amount, var/datum/cooking_with_jane/recipe/our_recipe)
+/datum/cooking/recipe_step/add_reagent/New(reagent_id,  amount, datum/cooking/recipe/our_recipe)
 
 	var/datum/reagent/global_reagent = GLOB.chemical_reagents_list[reagent_id]
 	if(global_reagent)
@@ -22,12 +22,12 @@
 
 		required_reagent_amount = amount
 	else
-		CRASH("/datum/cooking_with_jane/recipe_step/add/reagent/New(): Reagent [reagent_id] not found. Recipe: [our_recipe]")
+		CRASH("/datum/cooking/recipe_step/add/reagent/New(): Reagent [reagent_id] not found. Recipe: [our_recipe]")
 
 	..(our_recipe)
 
 
-/datum/cooking_with_jane/recipe_step/add_reagent/check_conditions_met(var/obj/used_item, var/datum/cooking_with_jane/recipe_tracker/tracker)
+/datum/cooking/recipe_step/add_reagent/check_conditions_met(obj/used_item, datum/cooking/recipe_tracker/tracker)
 	var/obj/item/container = tracker.holder_ref.resolve()
 
 
@@ -36,7 +36,7 @@
 
 	if(!istype(used_item, /obj/item/reagent_containers))
 		return CWJ_CHECK_INVALID
-	if(!(used_item.reagent_flags & OPENCONTAINER))
+	if(!(used_item.atom_flags & ATOM_FLAG_OPEN_CONTAINER))
 		return CWJ_CHECK_INVALID
 
 	var/obj/item/reagent_containers/our_item = used_item
@@ -47,8 +47,8 @@
 
 	return CWJ_CHECK_VALID
 
-//Reagents are calculated in two areas. Here and /datum/cooking_with_jane/recipe/proc/calculate_reagent_quality
-/datum/cooking_with_jane/recipe_step/add_reagent/calculate_quality(var/obj/used_item, var/datum/cooking_with_jane/recipe_tracker/tracker)
+//Reagents are calculated in two areas. Here and /datum/cooking/recipe/proc/calculate_reagent_quality
+/datum/cooking/recipe_step/add_reagent/calculate_quality(obj/used_item, datum/cooking/recipe_tracker/tracker)
 	var/obj/item/container = tracker.holder_ref.resolve()
 	var/data = container.reagents.get_data(required_reagent_id)
 	var/cooked_quality = 0
@@ -57,7 +57,7 @@
 	return cooked_quality
 
 
-/datum/cooking_with_jane/recipe_step/add_reagent/follow_step(var/obj/used_item, var/datum/cooking_with_jane/recipe_tracker/tracker)
+/datum/cooking/recipe_step/add_reagent/follow_step(obj/used_item, datum/cooking/recipe_tracker/tracker)
 	var/obj/item/reagent_containers/our_item = used_item
 	var/obj/item/container = tracker.holder_ref.resolve()
 
@@ -68,7 +68,7 @@
 
 	return CWJ_SUCCESS
 
-/datum/cooking_with_jane/recipe_step/add_reagent/is_complete(var/obj/used_item, var/datum/cooking_with_jane/recipe_tracker/tracker)
+/datum/cooking/recipe_step/add_reagent/is_complete(obj/used_item, datum/cooking/recipe_tracker/tracker)
 	var/obj/item/reagent_containers/our_item = used_item
 	var/obj/item/container = tracker.holder_ref.resolve()
 	var/part = our_item.reagents.get_reagent_amount(required_reagent_id) / our_item.reagents.total_volume

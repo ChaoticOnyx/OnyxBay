@@ -5,7 +5,7 @@
 	name = "Stovetop"
 	desc = "A set of four burners for cooking food."
 	description_info = "Ctrl+Click: Set Temperatures / Timers. \nShift+Ctrl+Click: Turn on a burner.\nAlt+Click: Empty container of physical food."
-	icon = 'icons/obj/cwj_cooking/stove.dmi'
+	icon = 'icons/obj/cooking/stove.dmi'
 	icon_state = "stove"
 	density = FALSE
 	anchored = TRUE
@@ -93,17 +93,17 @@
 						handle_ignition(input)
 
 /obj/machinery/cooking_with_jane/stove/proc/handle_burning(input)
-	if(!(items[input] && istype(items[input], /obj/item/reagent_containers/cooking_with_jane/cooking_container)))
+	if(!(items[input] && istype(items[input], /obj/item/reagent_containers/vessel/cooking_container)))
 		return
 
-	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items[input]
+	var/obj/item/reagent_containers/vessel/cooking_container/container = items[input]
 	container.handle_burning()
 
 /obj/machinery/cooking_with_jane/stove/proc/handle_ignition(input)
-	if(!(items[input] && istype(items[input], /obj/item/reagent_containers/cooking_with_jane/cooking_container)))
+	if(!(items[input] && istype(items[input], /obj/item/reagent_containers/vessel/cooking_container)))
 		return
 
-	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items[input]
+	var/obj/item/reagent_containers/vessel/cooking_container/container = items[input]
 	if(container.handle_ignition())
 		on_fire = TRUE
 
@@ -134,10 +134,10 @@
 	var/input = getInput(params)
 
 	if(items[input] != null)
-		var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items[input]
+		var/obj/item/reagent_containers/vessel/cooking_container/container = items[input]
 		container.process_item(used_item, params)
 
-	else if(istype(used_item, /obj/item/reagent_containers/cooking_with_jane/cooking_container))
+	else if(istype(used_item, /obj/item/reagent_containers/vessel/cooking_container))
 		to_chat(usr, SPAN_NOTICE("You put a [used_item] on the stove."))
 		if(usr.canUnEquip(used_item))
 			usr.unEquip(used_item, src)
@@ -199,9 +199,9 @@
 		return
 
 	var/input = getInput(params)
-	if(!(items[input] && istype(items[input], /obj/item/reagent_containers/cooking_with_jane/cooking_container)))
+	if(!(items[input] && istype(items[input], /obj/item/reagent_containers/vessel/cooking_container)))
 		return
-	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items[input]
+	var/obj/item/reagent_containers/vessel/cooking_container/container = items[input]
 
 	#ifdef CWJ_DEBUG
 	log_debug("/cooking_with_jane/stove/AltClick called on burner [input] [container]")
@@ -273,10 +273,10 @@
 
 /obj/machinery/cooking_with_jane/stove/proc/handle_cooking(var/mob/user, var/input, set_timer=FALSE)
 
-	if(!(items[input] && istype(items[input], /obj/item/reagent_containers/cooking_with_jane/cooking_container)))
+	if(!(items[input] && istype(items[input], /obj/item/reagent_containers/vessel/cooking_container)))
 		return
 
-	var/obj/item/reagent_containers/cooking_with_jane/cooking_container/container = items[input]
+	var/obj/item/reagent_containers/vessel/cooking_container/container = items[input]
 	if(set_timer)
 		reference_time = timer[input]
 	else

@@ -1,4 +1,4 @@
-/datum/cooking_with_jane/recipe/medialuna //This is 100% a donut but with extra layers
+/datum/cooking/recipe/medialuna //This is 100% a donut but with extra layers
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/medialuna
 	step_builder = list(
@@ -11,7 +11,7 @@
 		list(CWJ_USE_TOOL, QUALITY_CUTTING, 1)
 	)
 
-/datum/cooking_with_jane/recipe/donut
+/datum/cooking/recipe/donut
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/donut
 	step_builder = list(
@@ -22,7 +22,7 @@
 		list(CWJ_USE_OVEN, J_LO, 10 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/jellydonut
+/datum/cooking/recipe/jellydonut
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/donut/jelly
 	step_builder = list(
@@ -34,7 +34,7 @@
 		list(CWJ_USE_OVEN, J_LO, 20 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/slime_jellydonut
+/datum/cooking/recipe/slime_jellydonut
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/donut/slimejelly
 	step_builder = list(
@@ -46,7 +46,7 @@
 		list(CWJ_USE_OVEN, J_LO, 20 SECONDS)
 	)
 
-/datum/cooking_with_jane/recipe/cinnamonroll
+/datum/cooking/recipe/cinnamonroll
 	cooking_container = OVEN
 	product_type = /obj/item/reagent_containers/food/cinnamonroll
 	step_builder = list(
