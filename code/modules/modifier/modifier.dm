@@ -254,7 +254,7 @@
 	if(!isnull(electrocute_damage_percent))
 		SEMCOL(electrocute_damage_percent <= 1.0, "The electrocution damage on you is [is_good ? "reduced" : "increased"] by [multipler_to_percentage(electrocute_damage_percent, TRUE)].")
 	if(!isnull(electrocute_block_chance))
-		SEMCOL(electrocute_damage_percent > 0.0, "The electrocution damage can be blocked with [electrocute_damage_percent * 100]% chance.")
+		SEMCOL(electrocute_block_chance > 0.0, "The electrocution damage can be blocked with [electrocute_block_chance * 100]% chance.")
 	if(!isnull(poise_pool_flat))
 		SEMCOL(poise_pool_flat > 0, "You [is_good ? "gain" : "lose"] [abs(poise_pool_flat)] to poison pool.")
 
