@@ -934,8 +934,8 @@
 
 	sleep(2 SECONDS)
 	mapgen.populate_turfs(spawned)
-	new /datum/random_map/automata/cave_system(null, 1, 1, 1, 127, 127)
-	new /datum/random_map/noise/ore(null, 1, 1, 1, 127, 127)
+	new /datum/random_map/automata/cave_system(null, 1, 1, 1, world.maxx, world.maxy)
+	new /datum/random_map/noise/ore(null, 1, 1, 1, world.maxx, world.maxy)
 
 	sleep(2 SECONDS)
 
