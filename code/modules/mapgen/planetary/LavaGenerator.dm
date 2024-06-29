@@ -1,7 +1,11 @@
+/area/generated/planetoid/lava
+	area_flags = AREA_FLAG_CAVES_ALLOWED
+	base_turf = /turf/simulated/floor/asteroid/basalt/lavaplanet
+
 /datum/map_generator/planet_generator/lava
 	mountain_height = 0.45
 	perlin_zoom = 65
-	primary_area_type = /area/overmap_encounter/planetoid/lava
+	primary_area_type = /area/generated/planetoid/lava
 
 	biome_table = list(
 		BIOME_COLDEST = list(
@@ -54,26 +58,31 @@
 			BIOME_LOW_HUMIDITY = /datum/biome/cave/lavaland/rocky,
 			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/lavaland,
 			BIOME_HIGH_HUMIDITY = /datum/biome/cave/lavaland,
-			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/lavaland/mossy
+			//BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/lavaland/mossy
+			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/lavaland
 		),
 		BIOME_COLD_CAVE = list(
 			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/lavaland/rocky,
 			BIOME_LOW_HUMIDITY = /datum/biome/cave/lavaland,
 			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/lavaland/lava,
-			BIOME_HIGH_HUMIDITY = /datum/biome/cave/lavaland/mossy,
+			//BIOME_HIGH_HUMIDITY = /datum/biome/cave/lavaland/mossy,
+			BIOME_HIGH_HUMIDITY = /datum/biome/cave/lavaland/lava,
 			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/lavaland/lava
 		),
 		BIOME_WARM_CAVE = list(
 			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/lavaland/rocky,
 			BIOME_LOW_HUMIDITY = /datum/biome/cave/lavaland,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/lavaland/mossy,
+			//BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/lavaland/mossy,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/lavaland,
 			BIOME_HIGH_HUMIDITY = /datum/biome/cave/lavaland/rocky,
 			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/lavaland/lava
 		),
 		BIOME_HOT_CAVE = list(
 			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/lavaland/rocky,
-			BIOME_LOW_HUMIDITY = /datum/biome/cave/lavaland/mossy,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/lavaland/mossy,
+			//BIOME_LOW_HUMIDITY = /datum/biome/cave/lavaland/mossy,
+			//BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/lavaland/mossy,
+			BIOME_LOW_HUMIDITY = /datum/biome/cave/lavaland,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/lavaland,
 			BIOME_HIGH_HUMIDITY = /datum/biome/cave/lavaland/lava,
 			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/lavaland/lava
 		)
@@ -164,8 +173,8 @@
 		/obj/structure/flora/ausbushes/hell/genericbush = 10,
 		/obj/structure/flora/ausbushes/hell/sparsegrass = 3,
 		/obj/structure/flora/ausbushes/hell = 3,
-		/obj/structure/flora/tree/dead/hell = 3,
-		/obj/structure/flora/rock/lava = 2
+		///obj/structure/flora/tree/dead/hell = 3,
+		///obj/structure/flora/rock/lava = 2
 	)
 	flora_spawn_chance = 30
 
@@ -175,12 +184,12 @@
 		/turf/simulated/floor/asteroid/basalt/purple = 1
 	)
 	flora_spawn_list = list(
-		/obj/structure/flora/tree/dead/hell = 1,
+		///obj/structure/flora/tree/dead/hell = 1,
 		/obj/structure/flora/ausbushes/hell/grassybush = 5,
 		/obj/structure/flora/ausbushes/hell/fullgrass = 10,
 		/obj/structure/flora/ausbushes/hell/sparsegrass = 8,
 		/obj/structure/flora/ausbushes/hell = 5,
-		/obj/structure/flora/ausbushes/hell/fernybus= 5,
+		///obj/structure/flora/ausbushes/hell/fernybus= 5,
 		/obj/structure/flora/ausbushes/hell/genericbush = 5,
 		/obj/structure/flora/ausbushes/hell/ywflowers = 7,
 		/obj/structure/flora/ausbushes/hell/firebush = 3

@@ -195,18 +195,30 @@
 		switch(i)
 			if(1)
 				planetoid.icon_state = "barren[rand(1, 3)]"
+				planetoid.mapgen = /datum/map_generator/planet_generator/rock
 			if(2)
 				planetoid.icon_state = "lava[rand(1, 3)]"
+				planetoid.mapgen = /datum/map_generator/planet_generator/lava
 			if(3)
 				if(prob(50))
 					planetoid.icon_state = "waste[rand(1, 3)]"
+					planetoid.mapgen = /datum/map_generator/planet_generator/swamp
 				else
 					planetoid.icon_state = "earthlike[rand(1, 3)]"
+					switch(prob(3))
+						if(1)
+							planetoid.mapgen = /datum/map_generator/planet_generator/swamp
+						if(2)
+							planetoid.mapgen = /datum/map_generator/planet_generator/jungle
+						if(3)
+							planetoid.mapgen = /datum/map_generator/planet_generator/beach
 			if(4)
 				if(prob(50))
 					planetoid.icon_state = "waste[rand(1, 3)]"
+					planetoid.mapgen = /datum/map_generator/planet_generator/snow
 				else
 					planetoid.icon_state = "ice[rand(1, 3)]"
+					planetoid.mapgen = /datum/map_generator/planet_generator/snow
 
 /datum/star_system/proc/after_enter(obj/structure/overmap/OM)
 	pass()

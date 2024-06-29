@@ -1,10 +1,13 @@
+/area/generated/planetoid/sand
+	area_flags = AREA_FLAG_CAVES_ALLOWED
+	base_turf = /turf/simulated/floor/asteroid/whitesands
+
 /datum/map_generator/planet_generator/sand
 	mountain_height = 0.8
 	perlin_zoom = 65
 
-	primary_area_type = /area/overmap_encounter/planetoid/sand
+	primary_area_type = /area/generated/planetoid/sand
 
-	// these are largely placeholder biomes and could do with being improved
 	biome_table = list(
 		BIOME_COLDEST = list(
 			BIOME_LOWEST_HUMIDITY = /datum/biome/sand,

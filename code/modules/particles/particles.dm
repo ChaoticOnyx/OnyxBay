@@ -65,19 +65,6 @@
 	friction = 0.2
 	grow = 0.0015
 
-/particles/clouds
-	icon = 'icons/effects/particles/smoke.dmi'
-	icon_state = list("steam_1" = 1, "steam_2" = 1, "steam_3" = 1)
-	count = 500
-	spawning = 7
-	lifespan = 5 SECONDS
-	fade = 1 SECOND
-	fadein = 1 SECOND
-	velocity = generator("box", list(-0.5, -0.25, 0), list(0.5, 0.25, 0), NORMAL_RAND)
-	position = generator("box", list(-14, -14), list(14, 14), UNIFORM_RAND)
-	friction = 0.2
-	grow = 0.0015
-
 /particles/fire_smoke
 	width = 500
 	height = 500

@@ -15,6 +15,7 @@
 // Normal
 #define SS_PRIORITY_PROMETHEUS     100
 #define SS_PRIORITY_TICKER         100   // Gameticker.
+#define SS_PRIORITY_MAPGEN         99
 #define SS_PRIORITY_MOB            95    // Mob Life().
 #define SS_PRIORITY_MACHINERY      95    // Machinery + powernet ticks.
 #define SS_PRIORITY_PHYSICS  	   94

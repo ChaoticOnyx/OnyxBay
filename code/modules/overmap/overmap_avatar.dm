@@ -370,6 +370,12 @@
 	if(target == src || istype(target, /atom/movable/screen) || (target in user.GetAllContents()) || params_list["alt"] || params_list["shift"])
 		return FALSE
 
+	var/dist = modulus(bounds_dist(src, target))
+	if(istype(target, /obj/effect/overmap_anomaly/visitable) && dist <= 32)
+		land(target)
+		stop_piloting(user)
+		return TRUE
+
 	fire(target)
 	return TRUE
 
@@ -616,25 +622,20 @@
 
 	if(position & OVERMAP_USER_ROLE_PILOT)
 		if(pilot)
-			to_chat(pilot, "<span class='warning'>[user] has kicked you off the ship controls!</span>")
+			to_chat(pilot, SPAN_WARNING("[user] has kicked you off the ship controls!"))
 			stop_piloting(pilot)
 		pilot = user
 		LAZYOR(user.mousemove_intercept_objects, src)
 	if(position & OVERMAP_USER_ROLE_GUNNER)
 		if(gunner)
-			to_chat(gunner, "<span class='warning'>[user] has kicked you off the ship controls!</span>")
+			to_chat(gunner, SPAN_WARNING("[user] has kicked you off the ship controls!"))
 			stop_piloting(gunner)
 		gunner = user
 	register_signal(user, SIGNAL_MOB_MOUSEDOWN, nameof(.proc/InterceptClickOn))
 	observe_ship(user)
-	//dradis?.attack_hand(user)
-	//if(position & (OVERMAP_USER_ROLE_PILOT | OVERMAP_USER_ROLE_GUNNER))
-	//	user.add_verb(overmap_verbs) //Add the ship panel verbs
 	if(mass < MASS_MEDIUM)
 		return TRUE
 
-	user.client.overmap_zoomout = (mass <= MASS_MEDIUM) ? 5 : 10 //Automatically zooms you out a fair bit so you can see what's even going on.
-	//user.client.rescale_view(user.client.overmap_zoomout, 0, ((40*2)+1)-15)
 	return TRUE
 
 // Handles actually "observing" the ship.
@@ -642,6 +643,7 @@
 	if(user.overmap_ship == src || LAZYFIND(operators, user))
 		return FALSE
 
+	register_signal(user, SIGNAL_MOVED, nameof(.proc/stop_piloting))
 	LAZYADD(operators,user)
 	user.overmap_ship = src
 	user.click_intercept = src
@@ -661,6 +663,14 @@
 		pilot = null
 		keyboard_delta_angle_left = 0
 		keyboard_delta_angle_right = 0
+
+	var/mob/observer/eye/cameranet/ship/eyeobj = M?.eyeobj
+	M.eyeobj = null
+	qdel(eyeobj)
+	unregister_signal(M, SIGNAL_MOVED)
+
+	M.reset_view(M)
+	M.cancel_camera()
 
 /obj/structure/overmap/touch_map_edge()
 	return FALSE // Just NO.
@@ -690,14 +700,6 @@
 	if(!gunner)
 		return
 
-	//var/mob/observer/eye/cameranet/ship/cam = gunner.remote_control
-	//if(!cam)
-	//	return
-
-	//if(target == cam.ship_target) // Allows us to use this as a toggle
-	//	target = null
-	//cam.track_target(target)
-
 /**
  *
  * Weapons and stuff.
@@ -720,15 +722,7 @@
 			to_chat(gunner, "<span class='warning'>Weapon safety interlocks are active! Use the ship verbs tab to disable them!</span>")
 		return
 
-	//handle_cloak(CLOAK_TEMPORARY_LOSS)
-	//last_target = target
-	//var/obj/structure/overmap/ship = target
-	//if(ai_controlled) //Let the AI switch weapons according to range
-	//	ai_fire(target)
-	//	return	//end if(ai_controlled)
 	last_target = target
-	//if(istype(target, /obj/structure/overmap))
-	//	ship.add_enemy(src)
 
 	fire_weapon(target)
 
@@ -858,9 +852,6 @@
  *
  */
 /obj/structure/overmap/bullet_act(obj/item/projectile/P)
-	//if(istype(P, /obj/item/projectile/beam/overmap/aiming_beam))
-	//	return
-
 	P.spec_overmap_hit(src)
 	var/relayed_type = P.type
 	relay_damage(relayed_type)
@@ -868,7 +859,6 @@
 		return ..()
 	else
 		playsound(src, P.hitsound, 50, 1)
-		//visible_message("<span class='danger'>[src] is hit by \a [P]!</span>", null, null, COMBAT_MESSAGE_RANGE)
 		if(!QDELETED(src)) //Bullet on_hit effect might have already destroyed this object
 			take_quadrant_hit(P.damage, projectile_quadrant_impact(P))
 
@@ -933,8 +923,13 @@
 		clouds.Blend(COLOR_BLUE_LIGHT, ICON_MULTIPLY)
 		A.icon = clouds
 
+/**
+ * '/proc/generate()' is extremely cursed
+ * And fucks CPU usage up, whether it is called async or not, in background or not.
+ * Therefore we are doing a little trick here. Processing this shit with the lowest possible priority.
+ */
 	var/datum/map_generator/planet_generator/mapgen = new overmap.mapgen()
-	mapgen.generate_turfs(spawned)
+	SSmapgen.generate(mapgen, spawned)
 	relay('sound/effects/ship/radio_100m.wav', null, FALSE, SOUND_CHANNEL_SHIP_ALERT)
 
 	sleep(2 SECONDS)

@@ -51,9 +51,6 @@
 		A.update_icon()
 		CHECK_TICK
 
-	//for(var/turf/simulated/wall/W in smooth_queue)
-	//	W.update_icon()
-
 	message = "MAPGEN: MAPGEN REF [any2ref(src)] ([type]) HAS FINISHED TURF GEN IN [(REALTIMEOFDAY - start_time)/10]s"
 	to_world_log(message)
 
