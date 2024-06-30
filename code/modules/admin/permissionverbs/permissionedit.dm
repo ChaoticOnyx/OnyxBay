@@ -46,8 +46,6 @@
 	show_browser(usr, output, "window=editrights;size=600x500")
 
 /datum/admins/proc/log_admin_rank_modification(adm_ckey, new_rank)
-	if(config.admin.admin_legacy_system)	return
-
 	if(!usr.client)
 		return
 
@@ -91,8 +89,6 @@
 			to_chat(usr, "<span class='notice'>Admin rank changed.</span>")
 
 /datum/admins/proc/log_admin_permission_modification(adm_ckey, new_permission)
-	if(config.admin.admin_legacy_system)	return
-
 	if(!usr.client)
 		return
 

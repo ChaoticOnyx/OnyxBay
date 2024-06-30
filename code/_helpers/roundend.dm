@@ -83,8 +83,6 @@ GLOBAL_LIST_EMPTY(common_report)
 	if(escaped_total > 0)
 		feedback_set("escaped_total", escaped_total)
 
-	send2mainirc("A round of [src.name] has ended - [surviving_total] survivor\s, [ghosts] ghost\s.")
-
 	return parts.Join()
 
 /datum/controller/subsystem/ticker/proc/synths_report()

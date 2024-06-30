@@ -1,0 +1,30 @@
+[vote]
+## Allow players to initiate a restart vote.
+allow_vote_restart = true
+
+## Allow players to initate a mode-change start.
+allow_vote_mode = true
+
+## If true, votes can be called to add extra antags to the round.
+allow_extra_antags = false
+
+## Min delay (deciseconds) between voting sessions (default 10 minutes).
+delay = 6000
+
+## Time period (deciseconds) which voting session will last (default 1 minute).
+period = 600
+
+## Autovote initial delay (deciseconds) before first automatic transfer vote call (default 180 minutes).
+autotransfer_initial = 108000
+
+## Autovote delay (deciseconds) before sequential automatic transfer votes are called (default 60 minutes).
+autotransfer_interval = 36000
+
+## Time left (seconds) before round start when automatic gamemote vote is called (default 100).
+autogamemode_timeleft = 100
+
+## Prevents dead players from voting or starting votes.
+no_dead_vote = false
+
+## Players' votes default to "No vote" (otherwise, default to "No change").
+default_no_vote = true

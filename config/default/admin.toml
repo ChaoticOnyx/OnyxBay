@@ -1,0 +1,34 @@
+[admin]
+## Set to false to stop admins being able to
+## choose their personal ooccolor.
+allow_admin_ooccolor = true
+
+## Use jump-to verbs.
+allow_admin_jump = true
+
+## Use of admin revive.
+allow_admin_rev = true
+
+## Spawn items.
+allow_admin_spawning = true
+
+## Uncomment to enable auto-stealthing staff who are AFK for more than specified minutes
+# autostealth = 30
+
+## Set to true to show a popup 'reply to' window to every non-admin that recieves an adminPM.
+## The intention is to make adminPMs more visible. (although I fnd popups annoying so this defaults to off)
+popup_admin_pm = false
+
+## Set to true to forbid admins from posssessing the singularity.
+forbid_singulo_possession = false
+
+## Set to true to make proccall require R_ADMIN instead of R_DEBUG
+## designed for environments where you have testers but don't want them
+## able to use the more powerful debug options.
+debug_paranoid = false
+
+## Set to true to turn off hub visibility while no admins online.
+delist_when_no_admins = false
+
+# Give all the rights for the localhost player.
+promote_localhost = false

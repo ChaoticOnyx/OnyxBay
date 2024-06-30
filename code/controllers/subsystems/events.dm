@@ -1,5 +1,3 @@
-#define EVENT_PRESETS_FILE "config/event_presets.toml"
-
 SUBSYSTEM_DEF(events)
 	name = "Events"
 	wait = 1 MINUTE
@@ -12,8 +10,6 @@ SUBSYSTEM_DEF(events)
 	var/list/total_events = list()
 	/// list("id" = boolean)
 	var/list/disabled_events = list()
-	/// list("name" = list("id" = boolean))
-	var/list/event_presets = list()
 
 	var/list/evars = list()
 	var/datum/event_triggers/triggers = new
@@ -38,16 +34,14 @@ SUBSYSTEM_DEF(events)
 		total_events["[E.id]"] = E
 		disabled_events["[E.id]"] = FALSE
 
-	__populate_presets()
-
 	if(config.game.events_preset)
 		apply_events_preset(config.game.events_preset)
 
 /datum/controller/subsystem/events/proc/apply_events_preset(preset)
-	if(!(preset in event_presets))
+	if(!(preset in config.events.preset))
 		CRASH("Invalid events preset [preset]")
 
-	var/event_state = event_presets[preset]
+	var/event_state = config.events.preset[preset]
 	var/default_state = event_state["default"]
 
 	if(default_state == null)
@@ -74,14 +68,6 @@ SUBSYSTEM_DEF(events)
 /datum/controller/subsystem/events/proc/disable_all_events()
 	for(var/event_id in total_events)
 		disabled_events[event_id] = TRUE
-
-/datum/controller/subsystem/events/proc/__populate_presets()
-	event_presets = list()
-
-	if(fexists(EVENT_PRESETS_FILE))
-		event_presets = rustg_read_toml_file(EVENT_PRESETS_FILE)
-
-	log_debug("Loaded [length(event_presets)] event presets")
 
 /datum/controller/subsystem/events/fire(resumed)
 	if(GAME_STATE < RUNLEVEL_GAME || paused)
@@ -149,5 +135,3 @@ SUBSYSTEM_DEF(events)
 			return
 
 	CRASH("event with type '[ty]' not found")
-
-#undef EVENT_PRESETS_FILE

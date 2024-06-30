@@ -9,7 +9,7 @@
 	var/agony = 10
 	var/agony_limit = AGONY_LIMIT
 	var/stutter = 10
-	var/static/list/obscene_word_list = file2list("config/obscene_word_list.txt")
+	var/static/list/obscene_word_list = file2list("strings/obscene_word_list.txt")
 	var/check_obscene_words = FALSE
 
 /obj/item/implantcase/speech_corrector

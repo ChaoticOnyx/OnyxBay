@@ -130,8 +130,6 @@ var/datum/evacuation_controller/evacuation_controller
 		SSannounce.play_announce(/datum/announce/emergency_shuttle_docked, "The Emergency Shuttle has docked with the station. You have approximately [estimated_time] minute\s to board the Emergency Shuttle.")
 	else
 		SSannounce.play_announce(/datum/announce/shuttle_docked, "The scheduled Crew Transfer Shuttle to [GLOB.using_map.dock_name] has docked with the station. It will depart in approximately [estimated_time] minute\s")
-	if(config.external.announce_shuttle_dock_to_irc)
-		send2mainirc("The shuttle has docked with the station. It will depart in approximately [estimated_time] minute\s.")
 
 /datum/evacuation_controller/proc/launch_evacuation()
 

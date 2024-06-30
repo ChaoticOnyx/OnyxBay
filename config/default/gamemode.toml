@@ -1,0 +1,58 @@
+[gamemode]
+## Set to true to scale amount of traitors based on amount of players.
+traitor_scaling = true
+
+## Uncomment and set value to disable antag objectives.
+## "none" enable all
+## "verb" to allow getting objectives via special verb
+## "all" disable them at all
+disable_objectives = "none"
+
+## Make ERT's be only called by admins
+ert_admin_only = false
+
+## If security is prohibited from being most antagonists
+protect_roles_from_antagonist = false
+
+[gamemode.probabilities]
+## Probablities for game modes chosen in "secret" and "random" modes.
+## Default probablity is 1, increase to make that mode more likely to be picked.
+## Set to 0 to disable that mode.
+extended = 0
+traitor = 3
+changeling = 3
+wizard = 1
+malfunction = 1
+ninja = 1
+revolution = 2
+cult = 2
+nuke = 1
+meteor = 1
+calamity = 2
+## Deity.
+god = 1
+## Cult & wizard.
+conflux = 2
+## Ninja & traitor.
+intrigue = 2
+## Changelings & wizards.
+lizard = 2
+## Changeling, malf & renegade.
+paranoia = 2
+## Changeling & traitor.
+traitorling = 3
+## Revolution & wizard.
+unity = 1
+## Cult & revolution.
+uprising = 2
+## Ninja & wizard.
+visitors = 1
+## Nuke & revolution.
+siege = 2
+heist = 0
+## Deathsquad & xenophage.
+bughunt = 0
+## Nuke & heist.
+crossfire = 0
+## Borer, changeling & xenophage.
+infestation = 0

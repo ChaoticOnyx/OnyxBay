@@ -1,0 +1,47 @@
+texts:
+  motd: |
+    <h1>Welcome to Space Station 13!</h1>
+
+    -<i>This server is running <a href="http://baystation12.net/">Baystation 12's</a> modification of the <a href="http://ss13.eu/">/tg/station13</a> SS13 code.</i>
+    <br><br>
+    <strong>Bugtracker:</strong> <a href="http://baystation12.net/forums/threads/issue-tracker-report-template.110/">for posting of bugs and issues.</a>
+  heads: |
+    <html>
+      <head>
+        <meta charset="utf-8"/>
+        <style>
+          h1 {color: white;}
+          p {color: white;}
+          body {background: #1E1E1E; font-size: 18px;}
+          a {color: cyan;}
+        </style>
+      </head>
+      <body>
+        <center>
+          <h1>Игра за главу отдела</h1>
+          <p>Внимание! Это ваша первая игра за главу. Помните, что персонажи-главы очень сильно влияют на раунд и плохая игра на таких персонажах может испортить игровой опыт другим игрокам. Пожалуйста, отнеситесь к игре на роли главы с чуть большей ответственностью и помните, что за плохую игру на этих ролях можно получить бан.</p>
+        </center>
+      </body>
+    </html>
+  newcomers: |
+    <html>
+      <head>
+        <meta charset="utf-8"/>
+        <style>
+          h1 {color: white;}
+          p {color: white;}
+          body {background: #1E1E1E; font-size: 18px;}
+          a {color: cyan;}
+        </style>
+      </head>
+      <body>
+        <center>
+          <h1>Добро пожаловать на Chaotic Onyx</h1>
+          <p>Перед игрой не забудьте ознакомиться:<br></p>
+          <p><a href="https://wiki.ss13.ru/index.php?title=Onyx_Rules" target="_blank">Правила сервера</a><br>
+          <a href="https://wiki.ss13.ru/index.php?title=Chaotic_Onyx_Backstory" target="_blank">Предыстория</a><br>
+          Также на <a href="https://wiki.ss13.ru/index.php?title=Main_Page" target="_blank">нашей вики</a> есть много других статей, которые могут быть полезными
+          </p>
+        </center>
+      </body>
+    </html>
