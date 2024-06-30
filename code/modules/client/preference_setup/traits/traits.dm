@@ -6,7 +6,7 @@ var/list/trait_to_job = list() // trait name = job names
 /hook/startup/proc/populate_trait_list()
 
 	//create a list of trait datums
-	for(var/trait_type in typesof(/datum/trait) - list(/datum/trait, /datum/trait/modifier, /datum/trait/modifier/physical, /datum/trait/modifier/mental))
+	for(var/trait_type in typesof(/datum/trait) - list(/datum/trait, /datum/trait/modifier, /datum/trait/modifier/physical, /datum/trait/modifier/mental, /datum/trait/modifier/skill))
 		var/datum/trait/T = new trait_type
 
 		if(!T.name)
