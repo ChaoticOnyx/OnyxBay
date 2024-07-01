@@ -892,6 +892,10 @@
 	if(ftl_drive?.jumping)
 		return
 
+	// Preventing people from watching at an empty space
+	stop_piloting(pilot)
+	stop_piloting(gunner)
+
 	var/datum/star_system/SS = SSstar_system.ships[src]["current_system"]
 	SS.remove_ship(src, overmap, remove_fully = FALSE)
 	SSstar_system.ships[src]["landed"] = TRUE

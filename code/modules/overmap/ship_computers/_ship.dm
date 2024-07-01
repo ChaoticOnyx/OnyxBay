@@ -11,8 +11,12 @@
 	var/sound_cooldown = 10 SECONDS
 	var/list/ui_users = list()
 
+	var/datum/action/innate/cancel_camera/off_action = /datum/action/innate/cancel_camera
+	var/list/actions = list()
+
 /obj/machinery/computer/ship/Initialize(mapload)
 	. = ..()
+	actions += new off_action(src)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer/ship/LateInitialize()
@@ -27,6 +31,8 @@
 		return
 
 	tgui_interact(user)
+	for(var/datum/action/action in actions)
+		action.Grant(user)
 
 /obj/machinery/computer/ship/proc/relay_sound(sound, message)
 	if(!can_sound)
@@ -68,12 +74,20 @@
 		return TRUE
 
 	ui_users += user
+	register_signal(user, SIGNAL_QDELETING, nameof(.proc/release))
+	register_signal(user, SIGNAL_LOGGED_OUT, nameof(.proc/release))
+	register_signal(user, SIGNAL_MOB_DEATH, nameof(.proc/release))
+	register_signal(user, SIGNAL_MOVED, nameof(.proc/release))
 	return linked.start_piloting(user, position)
 
 /obj/machinery/computer/ship/Destroy()
 	for(var/mob/living/M in ui_users)
 		ui_close(M)
 		linked?.stop_piloting(M)
+		unregister_signal(M, SIGNAL_QDELETING)
+		unregister_signal(M, SIGNAL_LOGGED_OUT)
+		unregister_signal(M, SIGNAL_MOB_DEATH)
+		unregister_signal(M, SIGNAL_MOVED)
 
 	linked = null
 	ui_users.Cut()
@@ -99,6 +113,7 @@
 	. = ..()
 	if(!linked)
 		return
+
 	if(isobserver(user))
 		var/mob/observer/ghost/G = user
 		G.ManualFollow(linked)
@@ -117,3 +132,20 @@
 		return
 
 	linked.start_piloting(user, OVERMAP_USER_ROLE_OBSERVER)
+
+/datum/action/innate/cancel_camera
+	name = "End Camera View"
+	button_icon_state = "camera_off"
+
+/datum/action/innate/cancel_camera/Activate()
+	if(!owner || !isliving(owner))
+		return
+
+	release()
+
+/datum/action/innate/cancel_camera/proc/release()
+	var/obj/machinery/computer/ship/computer = target
+	var/obj/structure/overmap/overmap = computer?.linked
+
+	overmap.stop_piloting(owner)
+	Remove(owner)

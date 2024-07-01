@@ -26,6 +26,7 @@ GLOBAL_LIST_EMPTY(ship_engines)
 
 /datum/extension/ship_engine/proc/is_on()
 	var/obj/machinery/M = holder
+	M.power_change()
 	if(M.use_power && M.operable(MAINT))
 		if(next_on > world.time)
 			return FALSE
