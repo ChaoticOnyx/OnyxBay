@@ -1185,6 +1185,145 @@ something, make sure it's not in one of the other lists.
 				/obj/item/music_tape_box/retrojazz = 5,
 				/obj/item/music_tape_box/valhalla = 3)
 
+/obj/random/waste
+	name = "wasteplanet loot spawner"
+
+/obj/random/waste/spawn_choices()
+	return list(
+		/obj/item/cigbutt = 1,
+		/obj/structure/grille = 5,
+		/obj/structure/grille/broken = 5,
+		/obj/item/trash/cheesie = 1,
+		/obj/item/trash/candy = 1,
+		/obj/item/trash/chips = 1,
+		/obj/item/trash/pistachios,
+		/obj/item/trash/pan = 1,
+		/obj/item/trash/popcorn = 1,
+		/obj/item/trash/raisins = 1,
+		/obj/item/trash/sosjerky = 1,
+		/obj/item/trash/syndi_cakes = 1,
+	)
+
+/obj/random/waste/mechwreck
+	name = "wasteplanet mech wreckage"
+
+/obj/random/waste/mechwreck/spawn_choices()
+	return list(
+		/obj/effect/decal/mecha_wreckage/ripley = 15,
+		/obj/effect/decal/mecha_wreckage/ripley/firefighter = 9,
+		/obj/effect/decal/mecha_wreckage/ripley/deathripley = 9,
+		/obj/effect/decal/mecha_wreckage/hoverpod = 5,
+	)
+
+/obj/random/waste/mechwreck/rare
+	name = "wasteplanet rare mecha wreckage"
+
+/obj/random/waste/mechwreck/rare/spawn_choices()
+	return list(
+		/obj/effect/decal/mecha_wreckage/durand = 12,
+		/obj/effect/decal/mecha_wreckage/phazon = 12,
+		/obj/effect/decal/mecha_wreckage/odysseus = 25,
+		/obj/effect/decal/mecha_wreckage/gygax = 25,
+	)
+
+/obj/random/waste/trash
+	name = "wasteplanet trash loot"
+
+/obj/random/waste/trash/spawn_choices()
+	return list(
+		/obj/effect/decal/cleanable/vomit = 30,
+		/obj/effect/decal/cleanable/blood/oil = 1,
+		/obj/effect/decal/cleanable/ash = 30,
+		/obj/item/stack/material/glass = 1,
+		/obj/item/stack/material/steel = 1,
+		/obj/item/material/shard,
+	)
+
+/obj/random/waste/radiation
+
+/obj/random/waste/radiation/more_rads
+
+/obj/random/waste/canister
+	name = "wasteplanet canister"
+
+/obj/random/waste/canister/spawn_choices()
+	return list(
+		/obj/machinery/portable_atmospherics/canister/plasma = 3,
+		/obj/machinery/portable_atmospherics/canister/carbon_dioxide = 3,
+		/obj/machinery/portable_atmospherics/canister/nitrogen = 3,
+		/obj/machinery/portable_atmospherics/canister/oxygen = 3,
+		/obj/machinery/portable_atmospherics/canister/sleeping_agent = 1,
+	)
+
+/obj/random/waste/girder
+	name = "wasteplanet girder"
+
+/obj/random/waste/girder/spawn_choices()
+	return list(
+		/obj/structure/girder,
+		/obj/structure/girder/displaced,
+		/obj/structure/girder/reinforced,
+	)
+
+/obj/random/waste/grille_or_trash
+	name = "wasteplanet maint grille or trash spawner"
+
+/obj/random/waste/grille_or_trash/spawn_choices()
+	return list(
+		/obj/structure/grille = 5,
+		/obj/item/cigbutt = 1,
+		/obj/item/trash/cheesie = 1,
+		/obj/item/trash/candy = 1,
+		/obj/item/trash/chips = 1,
+		/obj/item/trash/pistachios = 1,
+		/obj/item/trash/pan = 1,
+		/obj/item/trash/popcorn = 1,
+		/obj/item/trash/raisins = 1,
+		/obj/item/trash/sosjerky = 1,
+		/obj/item/trash/syndi_cakes = 1
+	)
+
+/obj/random/scrap/moderate_weighted
+	name = "random moderate weighted trash"
+
+/obj/random/scrap/moderate_weighted/spawn_choices()
+	return list(
+		/obj/random/scrap/sparse_weighted,
+		/obj/random/scrap/dense_weighted,
+	)
+
+/obj/random/scrap/sparse_weighted
+	name = "random sparse weighted scrap"
+
+/obj/random/scrap/sparse_weighted/spawn_choices()
+	return list(
+		/obj/structure/scrap/poor = 105,
+		/obj/structure/scrap = 18,
+		/obj/structure/scrap/medical = 12,
+		/obj/structure/scrap/vehicle = 18,
+		/obj/structure/scrap/cloth = 24,
+		/obj/structure/scrap/food = 36,
+		/obj/structure/scrap/syndie = 1,
+		/obj/structure/scrap/guns = 1,
+	)
+
+/obj/random/scrap/dense_weighted
+	name = "random dense weighted scrap"
+
+/obj/random/scrap/dense_weighted/spawn_choices()
+	return list(
+		/obj/structure/scrap/poor/large = 70,
+		/obj/structure/scrap/poor/structure = 70,
+		/obj/structure/scrap/large = 20,
+		/obj/structure/scrap/medical/large = 14,
+		/obj/structure/scrap/vehicle/large = 20,
+		/obj/structure/scrap/cloth/large = 26,
+		/obj/structure/scrap/food/large = 40,
+		/obj/structure/scrap/syndie/large = 1,
+		/obj/structure/scrap/guns/large = 3,
+	)
+
+
 // Selects one spawn point out of a group of points with the same ID and asks it to generate its items
 var/list/multi_point_spawns
 

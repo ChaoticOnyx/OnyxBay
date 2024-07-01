@@ -68,7 +68,6 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 
 	try_make_loot()
 	loot.open(user)
-	SEND_SIGNAL(user, SIGNAL_MOB_CONSIDER_AMBUSH)
 	return ..()
 
 /obj/structure/scrap/ex_act(severity)
@@ -105,14 +104,6 @@ GLOBAL_LIST_EMPTY(scrap_base_cache)
 		visible_message(SPAN_NOTICE("\The [user] [pick(ways)] \the [src]."))
 		shuffle_loot()
 		dig_out_lump(get_turf(user), FALSE)
-
-	switch(prob(100))
-		if(40 to 100)
-			SEND_SIGNAL(user, SIGNAL_MOB_CONSIDER_AMBUSH)
-		if(10 to 39)
-			return // Normal needle
-		if(0 to 9)
-			return // FUNNY needle
 
 /obj/structure/scrap/proc/dig_out_lump(newloc = loc, hard_dig = FALSE)
 	dig_amount--

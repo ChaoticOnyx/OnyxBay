@@ -219,6 +219,7 @@
 				else
 					planetoid.icon_state = "ice[rand(1, 3)]"
 					planetoid.mapgen = /datum/map_generator/planet_generator/snow
+				*/
 
 /datum/star_system/proc/after_enter(obj/structure/overmap/OM)
 	pass()

@@ -137,6 +137,14 @@
 	layer = FIRE_LAYER
 	particles = new /particles/smoke/steam()
 
+/atom/movable/particle_emitter/smoke
+	anchored = TRUE
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	appearance_flags = PIXEL_SCALE | TILE_BOUND
+	plane = DEFAULT_PLANE
+	layer = FIRE_LAYER
+	particles = new /particles/smoke()
+
 /atom/movable/particle_emitter/fog
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT

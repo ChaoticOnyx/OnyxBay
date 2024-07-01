@@ -144,6 +144,14 @@
 	pickup_sound = SFX_PICKUP_DEVICE
 	drop_sound = SFX_DROP_DEVICE
 
+/obj/item/proc/update_inv_mob()
+	var/mob/M = loc
+	var/slot = M?.get_inventory_slot(src)
+	if(!slot)
+		return
+
+	M._update_inv_slot(slot)
+
 //Checks if the item is being held by a mob, and if so, updates the held icons
 /obj/item/proc/update_twohanding()
 	update_held_icon()
@@ -1142,3 +1150,18 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	if(slot == slot_l_hand || slot == slot_r_hand)
 		var/volume = clamp(rand(5, 15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
 		playsound(src, pickup_sound, volume, TRUE, extrarange = -5)
+
+/obj/item/add_dirt_cover()
+	. = ..()
+
+	if(!.)
+		return
+
+	if(blood_overlay && blood_overlay.color == dirt_overlay.color)
+		return
+
+	generate_blood_overlay()
+	CutOverlays(blood_overlay)
+	blood_overlay.color = dirt_overlay.color
+	AddOverlays(blood_overlay)
+	update_inv_mob()

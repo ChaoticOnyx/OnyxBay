@@ -1,18 +1,6 @@
 /area/overmap_encounter/planetoid/waste
 	area_flags = AREA_FLAG_CAVES_ALLOWED
-	environment_type = ENVIRONMENT_OUTSIDE
-	sound_env = ASTEROID
 	base_turf = /turf/simulated/floor/asteroid/jungle
-	ambush_types = list(
-		/turf/simulated/floor/asteroid,
-	)
-	ambush_mobs = list(
-		/mob/living/simple_animal/hostile/hivebot
-	)
-
-/area/overmap_encounter/planetoid/waste/cave
-	ambient_music_tags = list(MUSIC_TAG_MYSTIC)
-	sound_env = ASTEROID
 
 /datum/map_generator/planet_generator/waste
 	mountain_height = 0.35
@@ -23,7 +11,6 @@
 	birth_limit = 4
 	death_limit = 3
 	primary_area_type = /area/overmap_encounter/planetoid/waste
-	cave_area_type = /area/overmap_encounter/planetoid/waste/cave
 
 	weather_controller_type = /datum/weather_controller/lush
 
@@ -102,11 +89,6 @@
 			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/waste/metal/
 		)
 	)
-
-	random_ruins = list(
-		/datum/map_template/pandora = 1,
-	)
-
 
 /datum/biome/waste
 	open_turf_types = list(
@@ -477,6 +459,3 @@
 		//obj/effect/spawner/minefield/manhack = 2
 		)
 	feature_spawn_chance = 2
-
-/datum/map_template/pandora
-	mappaths = list('maps/templates/ruins/Waste/pandora.dmm')

@@ -96,3 +96,6 @@
 #define COLOR_BLOOD_UNATHI "#f24b2e"
 #define COLOR_BLOOD_TAJARAN "#862a51"
 #define COLOR_BLOOD_SKRELL "#1d2cbf"
+
+/// Warm orange color, leaning strongly towards yellow. Best used with fires.
+#define LIGHT_COLOR_FIRE         "#faa019"

@@ -902,8 +902,8 @@
 
 	GLOB.using_map.apply_mapgen_mask()
 	var/list/spawned = block(
-		locate(0 + TRANSITION_EDGE, 0 + TRANSITION_EDGE, 1),
-		locate(world.maxx - TRANSITION_EDGE, world.maxy - TRANSITION_EDGE, 1)
+		locate(1, 1, 1),
+		locate(world.maxx, world.maxy, 1)
 	)
 
 	SSannounce.play_announce(/datum/announce/comm_program, "", "Helm announcement", "Command Room", 'sound/misc/notice2.ogg', FALSE, TRUE, GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
@@ -933,16 +933,13 @@
  * Therefore we are doing a little trick here. Processing this shit with the lowest possible priority.
  */
 	var/datum/map_generator/planet_generator/mapgen = new overmap.mapgen()
+	mapgen.load_random_ruins(1)
 	SSmapgen.generate(mapgen, spawned)
+
+	while(SSmapgen.current_mapgen)
+		sleep(1)
+
 	relay('sound/effects/ship/radio_100m.wav', null, FALSE, SOUND_CHANNEL_SHIP_ALERT)
-
-	sleep(2 SECONDS)
-	mapgen.populate_turfs(spawned)
-	new /datum/random_map/automata/cave_system(null, 1, 1, 1, world.maxx, world.maxy)
-	new /datum/random_map/noise/ore(null, 1, 1, 1, world.maxx, world.maxy)
-
-	sleep(2 SECONDS)
-
 	if(!isnull(mapgen?.weather_controller_type))
 		mapgen.weather_controller_type = new mapgen.weather_controller_type(z)
 	for(var/area/A in areas_to_mask)
