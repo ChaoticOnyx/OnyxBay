@@ -43,6 +43,7 @@
 
 	var/hud_icon						  //icon used for Sec HUD overlay
 	var/show_in_setup = TRUE
+	var/list/traits
 
 /datum/job/New()
 	..()

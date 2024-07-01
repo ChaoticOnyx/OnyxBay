@@ -129,6 +129,6 @@
 	throw_spin = FALSE
 	var/jump_turf = get_step(get_step(src, dir), dir)
 
-	damage_poise(body_build.poise_pool / 2)
+	damage_poise(get_poise_pool() / 2)
 	throw_at(jump_turf, 2, 1, src)
 	throw_spin = TRUE

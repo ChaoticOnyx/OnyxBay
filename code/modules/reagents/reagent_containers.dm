@@ -214,3 +214,18 @@
 
 	if(hasHUD(user, HUD_SCIENCE))
 		. += SPAN_NOTICE("The [src] contains: [reagents.get_reagents()].")
+	else if(!reagents.is_empty() && istype(user, /mob/living))
+		var/mob/living/L = user
+
+		for(var/datum/modifier/M in L.modifiers)
+			if(istype(M, /datum/modifier/trait/heisenberg))
+				var/datum/modifier/trait/heisenberg/mod = M
+
+				THROTTLE_SHARED(cooldown, 5 SECONDS, mod.cooldown)
+
+				if(cooldown)
+					. += SPAN_NOTICE("You're assuming [src] contains: [reagents.get_reagents(FALSE)].")
+				else
+					. += SPAN_NOTICE("You have to wait until the odor of the previous reagents wears off.")
+
+				break

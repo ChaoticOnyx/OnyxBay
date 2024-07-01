@@ -23,6 +23,10 @@
 	minimal_player_age = 30
 	minimum_character_age = 25
 	outfit_type = /decl/hierarchy/outfit/job/engineering/chief_engineer
+	traits = list(
+		/datum/trait/modifier/skill/engineer,
+		/datum/trait/modifier/skill/electrician,
+	)
 
 /datum/job/engineer
 	title = "Station Engineer"
@@ -40,6 +44,10 @@
 	alt_titles = list("Maintenance Technician", "Engine Technician", "Electrician", "Atmospheric Technician" = /decl/hierarchy/outfit/job/engineering/atmos)
 	outfit_type = /decl/hierarchy/outfit/job/engineering/engineer
 	hud_icon = "hudengineer"
+	traits = list(
+		/datum/trait/modifier/skill/engineer,
+		/datum/trait/modifier/skill/electrician,
+	)
 
 /datum/job/atmos
 	title = "Atmospheric Technician"
@@ -55,3 +63,7 @@
 	access = list(access_eva, access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)
 	minimal_access = list(access_eva, access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)
 	outfit_type = /decl/hierarchy/outfit/job/engineering/atmos
+	traits = list(
+		/datum/trait/modifier/skill/engineer,
+		/datum/trait/modifier/skill/electrician,
+	)

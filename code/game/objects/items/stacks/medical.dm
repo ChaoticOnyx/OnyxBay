@@ -116,7 +116,7 @@
 	animal_heal = 5
 	stack_full = 1
 
-/obj/item/stack/medical/bruise_pack/attack(mob/living/carbon/M as mob, mob/user as mob)
+/obj/item/stack/medical/bruise_pack/attack(mob/living/carbon/M as mob, mob/living/user)
 	if(..())
 		return 1
 
@@ -136,7 +136,16 @@
 					continue
 				if(used == get_amount())
 					break
-				if(!do_mob(user, M, W.damage/5))
+
+				var/time = W.damage / 5
+
+				for(var/datum/modifier/mod in user.modifiers)
+					if(isnull(mod.medical_treatment_time))
+						continue
+
+					time *= mod.medical_treatment_time
+
+				if(!do_mob(user, M, time))
 					to_chat(user, SPAN("warning", "You must stand still to bandage wounds."))
 					break
 
@@ -180,7 +189,7 @@
 	drop_sound = SFX_DROP_HERB
 	pickup_sound = SFX_PICKUP_HERB
 
-/obj/item/stack/medical/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
+/obj/item/stack/medical/ointment/attack(mob/living/carbon/M as mob, mob/living/user)
 	if(..())
 		return 1
 
@@ -194,7 +203,16 @@
 		else
 			user.visible_message(SPAN("notice", "\The [user] starts salving wounds on [M]'s [affecting.name]."), \
 					                      SPAN("notice", "You start salving wounds on [M]'s [affecting.name]."))
-			if(!do_mob(user, M, 10))
+
+			var/time = 10
+
+			for(var/datum/modifier/mod in user.modifiers)
+				if(isnull(mod.medical_treatment_time))
+					continue
+
+				time *= mod.medical_treatment_time
+
+			if(!do_mob(user, M, time))
 				to_chat(user, SPAN("warning", "You must stand still to salve wounds.</span>"))
 				return 1
 			user.visible_message(SPAN("notice", "[user] salved wounds on [M]'s [affecting.name]."), \
@@ -246,7 +264,7 @@
 	splittable = 0
 	stack_full = 1
 
-/obj/item/stack/medical/advanced/bruise_pack/attack(mob/living/carbon/M as mob, mob/user as mob)
+/obj/item/stack/medical/advanced/bruise_pack/attack(mob/living/carbon/M as mob, mob/living/user)
 	if(..())
 		return 1
 
@@ -265,7 +283,16 @@
 					continue
 				if(used == get_amount())
 					break
-				if(!do_mob(user, M, W.damage/5))
+
+				var/time = W.damage / 5
+
+				for(var/datum/modifier/mod in user.modifiers)
+					if(isnull(mod.medical_treatment_time))
+						continue
+
+					time *= mod.medical_treatment_time
+
+				if(!do_mob(user, M, time))
 					to_chat(user, SPAN("warning", "You must stand still to apply \the [src]."))
 					break
 				if (W.current_stage <= W.max_bleeding_stage)
@@ -302,7 +329,7 @@
 	splittable = 0
 	stack_full = 1
 
-/obj/item/stack/medical/advanced/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
+/obj/item/stack/medical/advanced/ointment/attack(mob/living/carbon/M as mob, mob/living/user)
 	if(..())
 		return 1
 
@@ -316,9 +343,18 @@
 		else
 			user.visible_message(SPAN("notice", "\The [user] starts salving wounds on [M]'s [affecting.name]."), \
 					                      SPAN("notice", "You start salving wounds on [M]'s [affecting.name]."))
-			if(!do_mob(user, M, 10))
+			var/time = 10
+
+			for(var/datum/modifier/mod in user.modifiers)
+				if(isnull(mod.medical_treatment_time))
+					continue
+
+				time *= mod.medical_treatment_time
+
+			if(!do_mob(user, M, time))
 				to_chat(user, SPAN("warning", "You must stand still to salve wounds."))
 				return 1
+
 			user.visible_message(SPAN("notice", "[user] covers wounds on [M]'s [affecting.name] with protein-renaturating gel."), \
 					                 SPAN("notice", "You cover wounds on [M]'s [affecting.name] with protein-renaturating gel."))
 			affecting.heal_damage(0,heal_burn)
@@ -336,7 +372,7 @@
 	animal_heal = 0
 	var/list/splintable_organs = list(BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG, BP_L_HAND, BP_R_HAND, BP_L_FOOT, BP_R_FOOT)	//List of organs you can splint, natch.
 
-/obj/item/stack/medical/splint/attack(mob/living/carbon/M as mob, mob/user as mob)
+/obj/item/stack/medical/splint/attack(mob/living/carbon/M as mob, mob/living/user)
 	if(..())
 		return 1
 
@@ -362,7 +398,16 @@
 			user.visible_message(SPAN("notice", "[user] starts to apply \the [src] to their [limb]."), \
 						             SPAN("notice", "You start to apply \the [src] to your [limb]."), \
 						            SPAN("warning", "You hear something being wrapped."))
-		if(do_after(user, 50, M))
+
+		var/time = 50
+
+		for(var/datum/modifier/mod in user.modifiers)
+			if(isnull(mod.medical_treatment_time))
+				continue
+
+			time *= mod.medical_treatment_time
+
+		if(do_after(user, time, M))
 			if(M == user && prob(75))
 				user.visible_message(SPAN("warning", "\The [user] fumbles [src]."), \
 							         SPAN("warning", "You fumble [src]."), \
@@ -412,7 +457,7 @@
 	stack_empty = 1
 	splittable = 0
 
-/obj/item/stack/medical/patches/attack(mob/living/carbon/M as mob, mob/user as mob)
+/obj/item/stack/medical/patches/attack(mob/living/carbon/M as mob, mob/living/user)
 	if(..())
 		return 1
 
@@ -432,7 +477,16 @@
 					continue
 				if(used == get_amount())
 					break
-				if(!do_mob(user, M, W.damage/5))
+
+				var/time = W.damage / 5
+
+				for(var/datum/modifier/mod in user.modifiers)
+					if(isnull(mod.medical_treatment_time))
+						continue
+
+					time *= mod.medical_treatment_time
+
+				if(!do_mob(user, M, time))
 					to_chat(user, SPAN("warning", "You must stand still to place a bandaid."))
 					break
 

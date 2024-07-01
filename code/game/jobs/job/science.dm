@@ -70,3 +70,4 @@
 	alt_titles = list("Biomechanical Engineer","Mechatronic Engineer")
 	minimal_player_age = 3
 	outfit_type = /decl/hierarchy/outfit/job/science/roboticist
+	traits = list(/datum/trait/modifier/skill/mechanic)

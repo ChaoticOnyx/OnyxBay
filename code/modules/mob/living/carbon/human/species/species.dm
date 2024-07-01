@@ -657,7 +657,15 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 	//See if they have any guns that might go off
 	for(var/obj/item/gun/W in holding)
-		if(W && prob(holding[W]))
+		var/drop_chance = holding[W]
+
+		for(var/datum/modifier/M in target.modifiers)
+			if(isnull(M.disarm_drop_percent))
+				continue
+
+			drop_chance *= M.disarm_drop_percent
+
+		if(W && prob(drop_chance))
 			var/list/turfs = list()
 			for(var/turf/T in view())
 				turfs += T

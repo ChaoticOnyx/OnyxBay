@@ -6,6 +6,12 @@
 
 	delay *= toolspeed
 
+	for(var/datum/modifier/M in user.modifiers)
+		if(isnull(M.use_tool_delay))
+			continue
+
+		delay *= M.use_tool_delay
+
 	// Play tool sound at the beginning of tool usage.
 	play_tool_sound(target, volume)
 

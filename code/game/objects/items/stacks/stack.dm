@@ -70,7 +70,7 @@
 		list_recipes(user)
 	return
 
-/obj/item/stack/proc/list_recipes(mob/user as mob, recipes_sublist)
+/obj/item/stack/proc/list_recipes(mob/living/user, recipes_sublist)
 	if(!recipes)
 		return
 	if(!src || get_amount() <= 0)
@@ -98,8 +98,11 @@
 			var/datum/stack_recipe/R = E
 			var/max_multiplier = round(src.get_amount() / R.req_amount)
 			var/title
-			var/can_build = 1
-			can_build = can_build && (max_multiplier>0)
+			var/can_build = max_multiplier > 0
+
+			if(!isnull(R.modifier_req))
+				can_build &&= user.has_modifier_of_type(R.modifier_req)
+
 			if (R.res_amount>1)
 				title+= "[R.res_amount]x [R.title]\s"
 			else
@@ -430,8 +433,9 @@
 	var/on_floor = 0
 	var/use_material
 	var/goes_in_hands = 1
+	var/modifier_req = null
 
-	New(title, result_type, req_amount = 1, res_amount = 1, max_res_amount = 1, time = 10, one_per_turf = 0, on_floor = 0, supplied_material = null, goes_in_hands = 1)
+	New(title, result_type, req_amount = 1, res_amount = 1, max_res_amount = 1, time = 10, one_per_turf = 0, on_floor = 0, supplied_material = null, goes_in_hands = 1, modifier_req)
 		src.title = title
 		src.result_type = result_type
 		src.req_amount = req_amount
@@ -442,6 +446,7 @@
 		src.on_floor = on_floor
 		src.use_material = supplied_material
 		src.goes_in_hands = goes_in_hands
+		src.modifier_req = modifier_req
 
 /*
  * Recipe list datum

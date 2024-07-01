@@ -459,6 +459,15 @@ var/global/datum/controller/occupations/job_master
 				remembered_info += "<b>Pin:</b> [department_account.remote_access_pin]<br>"
 				remembered_info += "<b>Funds:</b> [department_account.money]cr.<br>"
 
+			if(length(job.traits))
+				for(var/trait_type in job.traits)
+					var/datum/trait/T = trait_type_to_ref[trait_type]
+
+					ASSERT(T)
+
+					if(!H.mind.traits.Find(T.name))
+						H.mind.traits += T.name
+
 			H.mind.store_memory(remembered_info)
 
 		var/alt_title = null

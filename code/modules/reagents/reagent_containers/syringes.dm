@@ -264,6 +264,12 @@
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 		user.do_attack_animation(trackTarget)
 
+		for(var/datum/modifier/M in user.modifiers)
+			if(isnull(M.medical_treatment_time))
+				continue
+
+			injtime *= M.medical_treatment_time
+
 		if(!do_after(user, injtime, trackTarget))
 			return
 
