@@ -124,9 +124,6 @@ SUBSYSTEM_DEF(ticker)
 		//Holiday Round-start stuff	~Carn
 		Holiday_Game_Start()
 
-	if(!length(GLOB.admins))
-		send2adminirc("Round has started with no admins online.")
-
 	if(config.game.disable_ooc_at_roundstart)
 		disable_ooc()
 

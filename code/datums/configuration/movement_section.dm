@@ -1,13 +1,13 @@
 /datum/configuration_section/movement
 	name = "movement"
 
-	var/run_speed = 3
-	var/walk_speed = 7
-	var/human_delay = 0
-	var/robot_delay = 0
-	var/drone_delay = -1
-	var/metroid_delay = 0
-	var/animal_delay = 0
+	var/run_speed
+	var/walk_speed
+	var/human_delay
+	var/robot_delay
+	var/drone_delay
+	var/metroid_delay
+	var/animal_delay
 
 /datum/configuration_section/movement/load_data(list/data)
 	CONFIG_LOAD_NUM(run_speed, data["run_speed"])

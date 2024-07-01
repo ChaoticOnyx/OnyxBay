@@ -23,7 +23,7 @@ SUBSYSTEM_DEF(warnings)
 	ASSERT(type)
 	ASSERT(options)
 	if (!(C.key in shown_warnings_this_round[type]) && (shown_warnings[type][C.key] < WARNINGS_REPEAT_TIMES))
-		var/message = file(warnings_path+type+".html")
+		var/message = config.texts[type]
 		show_browser(C, message, options)
 		shown_warnings_this_round[type].Add(C.key)
 		if(!shown_warnings[type][C.key])

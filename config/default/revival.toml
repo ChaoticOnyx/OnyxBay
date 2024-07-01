@@ -1,0 +1,6 @@
+[revival]
+## If cortical stacks (aka neurolace) are to be used.
+use_cortical_stacks = true
+
+## Amount of time (in hundredths of seconds) for which a brain retains the "spark of life" after the person's death (set to -1 for infinite).
+revival_brain_life = -1

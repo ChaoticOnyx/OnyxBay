@@ -1,12 +1,12 @@
 /datum/configuration_section/character_setup
 	name = "character-setup"
 
-	var/character_slots = 10
-	var/loadout_slots = 10
-	var/max_loadout_points = 10
-	var/extra_loadout_points = 0
-	var/humans_need_surnames = FALSE
-	var/allow_metadata = FALSE
+	var/character_slots
+	var/loadout_slots
+	var/max_loadout_points
+	var/extra_loadout_points
+	var/humans_need_surnames
+	var/allow_metadata
 
 /datum/configuration_section/character_setup/load_data(list/data)
 	CONFIG_LOAD_NUM(character_slots, data["character_slots"])

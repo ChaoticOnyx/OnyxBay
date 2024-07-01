@@ -1,0 +1,18 @@
+[mapping]
+## How many derelicts are going to show up
+derelicts_amount = 2
+
+## Which engine should be on map (not all the maps support this).
+## Pick one from: "random", "singularity", "supermatter"
+preferable_engine = "singularity"
+
+## Which bar should be on map (not all the maps support this).
+## Pick one from: "random", "classic", "modern", "saloon"
+preferable_bar = "classic"
+
+## Which biodome should be spawned on NSS Frontier
+## Pick one from: "random", "forest", "winter", "beach", "concert"
+preferable_biodome = "forest"
+
+[mapping.allowed_maps]
+Example = false

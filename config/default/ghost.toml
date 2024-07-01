@@ -1,0 +1,18 @@
+[ghost]
+## Allow ghosts to use AntagHUD and see antagonist through it.
+allow_antag_hud = true
+
+## If ghosts use antaghud they are no longer allowed to join the round.
+antag_hud_restricted = true
+
+## Set to true to let ghosts spin chairs.
+ghost_interaction = false
+
+## Set to true to allow ghosts flagged animals possessing via mousedrop.
+ghosts_can_possess_animals = false
+
+## Set to true to allow ghosts to write in blood during cult rounds.
+allow_cult_ghostwriter = false
+
+## Sets the minimum number of cultists needed for ghosts to write in blood.
+req_cult_ghostwriter = 6

@@ -26,6 +26,12 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 	var/datum/configuration_section/error/error = new
 	var/datum/configuration_section/donations/donations = new
 	var/datum/configuration_section/overmap/overmap = new
+	var/datum/configuration_section/database/database = new
+	var/datum/configuration_section/texts/texts = new
+	var/datum/configuration_section/custom/custom = new
+	var/datum/configuration_section/jobs/jobs = new
+	var/datum/configuration_section/events/events = new
+	var/datum/configuration_section/whitelist/whitelist = new
 
 	/// Raw data. Stored here to avoid passing data between procs constantly
 	var/list/raw_data = list()
@@ -54,21 +60,35 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 	return list("raw_data")
 
 /datum/server_configuration/proc/load_configuration()
+	#define RUSTG_CHECK(expr) do { var/ret = expr; if(ret != "") { CRASH(ret) } } while(FALSE)
+
 	create_gamemodes_cache()
 
-	// Load our stuff up
-	var/config_file = "config/config.toml"
+	RUSTG_CHECK(rustg_cfg_begin_builder())
+	RUSTG_CHECK(rustg_cfg_add_source_glob("config/default/**/*"))
 
-	if(!fexists(config_file))
-		config_file = "config/example/config.toml" // Fallback to example if user hasnt setup config properly
+	var/mode = world.GetConfig("env", "MODE")
 
-	raw_data = rustg_read_toml_file(config_file)
+	if(mode)
+		RUSTG_CHECK(rustg_cfg_add_source_glob("config/[mode]/**/*"))
+
+	var/server_id = world.GetConfig("env", "ONYXBAY__GENERAL__SERVER_ID")
+
+	if(server_id)
+		RUSTG_CHECK(rustg_cfg_add_source_glob("config/[server_id]/**/*"))
+
+	RUSTG_CHECK(rustg_cfg_add_source_env("ONYXBAY", "__"))
+	RUSTG_CHECK(rustg_cfg_end_builder())
+
+	raw_data = json_decode(rustg_cfg_try_deserialize())
 
 	// Now pass through all our stuff
 	load_all_sections()
 
 	// Clear our list to save RAM
 	raw_data = list()
+
+	#undef RUSTG_CHECK
 
 /datum/server_configuration/proc/load_all_sections()
 	for(var/V in vars)

@@ -67,10 +67,18 @@ var/global/datum/controller/occupations/job_master
 
 
 	proc/GetJob(rank)
-		if(!rank)	return null
+		if(!rank)
+			return null
+
+		rank = lowertext(rank)
+
 		for(var/datum/job/J in occupations)
-			if(!J)	continue
-			if(J.title == rank)	return J
+			if(!J)
+				continue
+
+			if(lowertext(J.title) == rank)
+				return J
+
 		return null
 
 	proc/ShouldCreateRecords(rank)
@@ -555,26 +563,19 @@ var/global/datum/controller/occupations/job_master
 		BITSET(H.hud_updateflag, SPECIALROLE_HUD)
 		return H
 
-	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.toml -- Urist
+	proc/LoadJobs()
 		if(!config.misc.load_jobs_from_txt)
 			return FALSE
 
-		var/raw_data = rustg_read_toml_file(jobsfile)
+		var/list/job_entries = config.jobs.maps[lowertext(GLOB.using_map.name)] || list()
 
-		var/list/jobEntries = raw_data[GLOB.using_map.name]
+		for(var/job in job_entries)
+			var/datum/job/J = GetJob(job)
 
-		for(var/job in jobEntries)
-			if(!length(job) || !isnum(jobEntries[job]))
+			if(!J)
 				continue
 
-			var/name = replacetext_char(job, "_", " ")
-			var/value = jobEntries[job]
-
-			if(name && value)
-				var/datum/job/J = GetJob(name)
-				if(!J)
-					continue
-				J.set_positions(value)
+			J.set_positions(job_entries[job])
 
 		return TRUE
 

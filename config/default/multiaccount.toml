@@ -1,0 +1,17 @@
+[multiaccount]
+## If set true1, redirects all players whose age less than 1 day.
+## to a specific server. Also redirects if server full. Set false to disable.
+panic_bunker = false
+
+## If panic bunker is on and a player is rejected (see above),
+## server will attempt to send them to this connected server (see below) instead.
+# panic_server_address = "byond://address:port"
+
+## Name of the place to send people rejected by the bunker.
+# panic_server_name = "Put the name here"
+
+## Set to true to enable The Epic Anti-Multiaccount System.
+eams = false
+
+## Set to true to prohibit sending in OOC for players blocked by EAMS.
+eams_blocks_ooc = false

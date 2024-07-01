@@ -48,49 +48,6 @@
 /// Gets the version of rust_g
 /proc/rustg_get_version() return RUSTG_CALL(RUST_G, "get_version")()
 
-
-/**
- * Sets up the Aho-Corasick automaton with its default options.
- *
- * The search patterns list and the replacements must be of the same length when replace is run, but an empty replacements list is allowed if replacements are supplied with the replace call
- * Arguments:
- * * key - The key for the automaton, to be used with subsequent rustg_acreplace/rustg_acreplace_with_replacements calls
- * * patterns - A non-associative list of strings to search for
- * * replacements - Default replacements for this automaton, used with rustg_acreplace
- */
-#define rustg_setup_acreplace(key, patterns, replacements) RUSTG_CALL(RUST_G, "setup_acreplace")(key, json_encode(patterns), json_encode(replacements))
-
-/**
- * Sets up the Aho-Corasick automaton using supplied options.
- *
- * The search patterns list and the replacements must be of the same length when replace is run, but an empty replacements list is allowed if replacements are supplied with the replace call
- * Arguments:
- * * key - The key for the automaton, to be used with subsequent rustg_acreplace/rustg_acreplace_with_replacements calls
- * * options - An associative list like list("anchored" = 0, "ascii_case_insensitive" = 0, "match_kind" = "Standard"). The values shown on the example are the defaults, and default values may be omitted. See the identically named methods at https://docs.rs/aho-corasick/latest/aho_corasick/struct.AhoCorasickBuilder.html to see what the options do.
- * * patterns - A non-associative list of strings to search for
- * * replacements - Default replacements for this automaton, used with rustg_acreplace
- */
-#define rustg_setup_acreplace_with_options(key, options, patterns, replacements) RUSTG_CALL(RUST_G, "setup_acreplace")(key, json_encode(options), json_encode(patterns), json_encode(replacements))
-
-/**
- * Run the specified replacement engine with the provided haystack text to replace, returning replaced text.
- *
- * Arguments:
- * * key - The key for the automaton
- * * text - Text to run replacements on
- */
-#define rustg_acreplace(key, text) RUSTG_CALL(RUST_G, "acreplace")(key, text)
-
-/**
- * Run the specified replacement engine with the provided haystack text to replace, returning replaced text.
- *
- * Arguments:
- * * key - The key for the automaton
- * * text - Text to run replacements on
- * * replacements - Replacements for this call. Must be the same length as the set-up patterns
- */
-#define rustg_acreplace_with_replacements(key, text, replacements) RUSTG_CALL(RUST_G, "acreplace_with_replacements")(key, text, json_encode(replacements))
-
 /**
  * This proc generates a cellular automata noise grid which can be used in procedural generation methods.
  *
@@ -106,6 +63,30 @@
  */
 #define rustg_cnoise_generate(percentage, smoothing_iterations, birth_limit, death_limit, width, height) \
 	RUSTG_CALL(RUST_G, "cnoise_generate")(percentage, smoothing_iterations, birth_limit, death_limit, width, height)
+
+/// Call this first to initialize a config builder.
+/// Then use the `rustg_cfg_add_*` macros to configure the builder
+/// (calling these macros before `begin_builder` of `end_builder` will cause an error).
+/// When you are done with configuring the builder - call `rustg_cfg_end_builder`,
+/// then you can call `rustg_cfg_try_deserialize` which will return a JSON string with your config.
+///
+/// **You can only call `rustg_cfg_try_deserialize` only once,
+/// then you have to do everything from `rustg_cfg_begin_builder` and to the end again before you can call this again.**
+#define rustg_cfg_begin_builder(...) RUSTG_CALL(RUST_G, "cfg_begin_builder")()
+
+/// Add files that match the glob pattern, for example: `config/*`
+#define rustg_cfg_add_source_glob(pattern) RUSTG_CALL(RUST_G, "cfg_add_source_glob")(pattern)
+
+/// Add files that match the glob pattern, for example: `config/*`Add the file with the specified path. The extension is optional.
+#define rustg_cfg_add_source_file(name) RUSTG_CALL(RUST_G, "cfg_add_source_file")(name)
+
+/// Use environment variables. The prefix is optional.
+#define rustg_cfg_add_source_env(prefix, separator) RUSTG_CALL(RUST_G, "cfg_add_source_env")(isnull(prefix) ? "" : prefix, isnull(separator) ? "" : separator)
+
+#define rustg_cfg_end_builder(...) RUSTG_CALL(RUST_G, "cfg_end_builder")()
+
+/// Returns a JSON string.
+#define rustg_cfg_try_deserialize(...) RUSTG_CALL(RUST_G, "cfg_try_deserialize")()
 
 /**
  * This proc generates a grid of perlin-like noise
@@ -123,37 +104,6 @@
 #define rustg_dbp_generate(seed, accuracy, stamp_size, world_size, lower_range, upper_range) \
 	RUSTG_CALL(RUST_G, "dbp_generate")(seed, accuracy, stamp_size, world_size, lower_range, upper_range)
 
-
-#define rustg_dmi_strip_metadata(fname) RUSTG_CALL(RUST_G, "dmi_strip_metadata")(fname)
-#define rustg_dmi_create_png(path, width, height, data) RUSTG_CALL(RUST_G, "dmi_create_png")(path, width, height, data)
-#define rustg_dmi_resize_png(path, width, height, resizetype) RUSTG_CALL(RUST_G, "dmi_resize_png")(path, width, height, resizetype)
-/**
- * input: must be a path, not an /icon; you have to do your own handling if it is one, as icon objects can't be directly passed to rustg.
- *
- * output: json_encode'd list. json_decode to get a flat list with icon states in the order they're in inside the .dmi
- */
-#define rustg_dmi_icon_states(fname) RUSTG_CALL(RUST_G, "dmi_icon_states")(fname)
-
-#define rustg_file_read(fname) RUSTG_CALL(RUST_G, "file_read")(fname)
-#define rustg_file_exists(fname) (RUSTG_CALL(RUST_G, "file_exists")(fname) == "true")
-#define rustg_file_write(text, fname) RUSTG_CALL(RUST_G, "file_write")(text, fname)
-#define rustg_file_append(text, fname) RUSTG_CALL(RUST_G, "file_append")(text, fname)
-#define rustg_file_get_line_count(fname) text2num(RUSTG_CALL(RUST_G, "file_get_line_count")(fname))
-#define rustg_file_seek_line(fname, line) RUSTG_CALL(RUST_G, "file_seek_line")(fname, "[line]")
-
-#ifdef RUSTG_OVERRIDE_BUILTINS
-	#define file2text(fname) rustg_file_read("[fname]")
-	#define text2file(text, fname) rustg_file_append(text, "[fname]")
-#endif
-
-/// Returns the git hash of the given revision, ex. "HEAD".
-#define rustg_git_revparse(rev) RUSTG_CALL(RUST_G, "rg_git_revparse")(rev)
-
-/**
- * Returns the date of the given revision in the format YYYY-MM-DD.
- * Returns null if the revision is invalid.
- */
-#define rustg_git_commit_date(rev) RUSTG_CALL(RUST_G, "rg_git_commit_date")(rev)
 
 #define rustg_hash_string(algorithm, text) RUSTG_CALL(RUST_G, "hash_string")(algorithm, text)
 #define rustg_hash_file(algorithm, fname) RUSTG_CALL(RUST_G, "hash_file")(algorithm, fname)
@@ -251,9 +201,6 @@
 #define RUSTG_JOB_ERROR "JOB PANICKED"
 
 #define rustg_json_is_valid(text) (RUSTG_CALL(RUST_G, "json_is_valid")(text) == "true")
-
-#define rustg_log_write(fname, text, format) RUSTG_CALL(RUST_G, "log_write")(fname, text, format)
-/proc/rustg_log_close_all() return RUSTG_CALL(RUST_G, "log_close_all")()
 
 #define rustg_noise_get_at_coordinates(seed, x, y) RUSTG_CALL(RUST_G, "noise_get_at_coordinates")(seed, x, y)
 
@@ -531,21 +478,6 @@
 
 /// https://en.wikipedia.org/wiki/Normal-inverse_Gaussian_distribution
 #define rustg_rand_normal_inverse_gaussian(alpha, beta) text2num(RUSTG_CALL(RUST_G, "rand_normal_inverse_gaussian")(istext(alpha) ? alpha : num2text(alpha), istext(beta) ? beta : num2text(beta)))
-
-#define rustg_sql_connect_pool(options) RUSTG_CALL(RUST_G, "sql_connect_pool")(options)
-#define rustg_sql_query_async(handle, query, params) RUSTG_CALL(RUST_G, "sql_query_async")(handle, query, params)
-#define rustg_sql_query_blocking(handle, query, params) RUSTG_CALL(RUST_G, "sql_query_blocking")(handle, query, params)
-#define rustg_sql_connected(handle) RUSTG_CALL(RUST_G, "sql_connected")(handle)
-#define rustg_sql_disconnect_pool(handle) RUSTG_CALL(RUST_G, "sql_disconnect_pool")(handle)
-#define rustg_sql_check_query(job_id) RUSTG_CALL(RUST_G, "sql_check_query")("[job_id]")
-
-#define rustg_time_microseconds(id) text2num(RUSTG_CALL(RUST_G, "time_microseconds")(id))
-#define rustg_time_milliseconds(id) text2num(RUSTG_CALL(RUST_G, "time_milliseconds")(id))
-#define rustg_time_reset(id) RUSTG_CALL(RUST_G, "time_reset")(id)
-
-/// Returns the timestamp as a string
-/proc/rustg_unix_timestamp()
-	return RUSTG_CALL(RUST_G, "unix_timestamp")()
 
 #define rustg_raw_read_toml_file(path) json_decode(RUSTG_CALL(RUST_G, "toml_file_to_json")(path) || "null")
 

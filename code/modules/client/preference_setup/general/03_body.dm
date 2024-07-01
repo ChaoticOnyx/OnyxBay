@@ -444,7 +444,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "<small>"
 	if(current_species.spawn_flags & SPECIES_CAN_JOIN)
 		dat += "</br><b>Often present among humans.</b>"
-	if(current_species.spawn_flags & SPECIES_IS_WHITELISTED & config.game.use_ingame_alien_whitelist)
+	if(current_species.spawn_flags & SPECIES_IS_WHITELISTED & config.whitelist.enable_alien_whitelist)
 		dat += "</br><b>Whitelist restricted.</b>"
 	if(!current_species.has_organ[BP_HEART])
 		dat += "</br><b>Does not have blood.</b>"
@@ -471,7 +471,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "</table><center><hr/>"
 
 	var/restricted = 0
-	if(config.game.use_ingame_alien_whitelist) //If we're using the whitelist, make sure to check it!
+	if(config.whitelist.enable_alien_whitelist) //If we're using the whitelist, make sure to check it!
 		if (!(current_species.spawn_flags & SPECIES_CAN_JOIN))
 			restricted = 2
 		else if ((current_species.spawn_flags & SPECIES_IS_WHITELISTED) && !is_alien_whitelisted(preference_mob(),current_species))

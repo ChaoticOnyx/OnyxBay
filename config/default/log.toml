@@ -1,0 +1,58 @@
+[log]
+## Log client say.
+say = true
+
+## Log asay/msay.
+asay = true
+
+## Log emotes.
+emote = true
+
+## Log OOC channel.
+ooc = true
+
+## Log client whisper.
+whisper = true
+
+## Log pda messages.
+pda = true
+
+## Log attack messages.
+attack = true
+
+## Log player votes.
+vote = true
+
+## Log admin actions.
+admin = true
+
+## log admin chat messages.
+adminchat = true
+
+## Log admin warning messages.
+## Also duplicates a bunch of other messages.
+adminwarn = true
+
+## Log client access (logon/logoff).
+access = true
+
+## Log game actions (start of round, results, etc.).
+game = true
+
+## Log debug output.
+debug = true
+
+## Log debug verbose output.
+debug_verbose = true
+
+## Log all Topic() calls (for use by coders in tracking down Topic issues).
+hrefs = true
+
+## Log world.log and runtime errors to a file.
+runtime = true
+
+## Log world.log messages.
+world_output = true
+
+## Log story output.
+story = true

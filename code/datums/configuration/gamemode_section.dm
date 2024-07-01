@@ -1,11 +1,11 @@
 /datum/configuration_section/gamemode
 	name = "gamemode"
 
-	var/list/probabilities = list()
-	var/traitor_scaling = FALSE
-	var/disable_objectives = "none"
-	var/ert_admin_only = FALSE
-	var/protect_roles_from_antagonist = FALSE
+	var/list/probabilities
+	var/traitor_scaling
+	var/disable_objectives
+	var/ert_admin_only
+	var/protect_roles_from_antagonist
 
 /datum/configuration_section/gamemode/load_data(data)
 	CONFIG_LOAD_LIST(probabilities, data["probabilities"])
