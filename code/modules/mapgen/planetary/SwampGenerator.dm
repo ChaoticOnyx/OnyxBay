@@ -21,81 +21,81 @@
 
 	biome_table = list(
 		BIOME_COLDEST = list(
-			BIOME_LOWEST_HUMIDITY = /datum/biome/jungle_wasteland,
-			BIOME_LOW_HUMIDITY = /datum/biome/jungle_wasteland,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/jungle/plains,
-			BIOME_HIGH_HUMIDITY = /datum/biome/jungle/plains,
-			BIOME_HIGHEST_HUMIDITY = /datum/biome/mudlands
+			BIOME_LOWEST_HUMIDITY = /datum/biome/swamp_wasteland,
+			BIOME_LOW_HUMIDITY = /datum/biome/swamp_wasteland,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/swamp/plains,
+			BIOME_HIGH_HUMIDITY = /datum/biome/swamp/plains,
+			BIOME_HIGHEST_HUMIDITY = /datum/biome/swamplands
 		),
 		BIOME_COLD = list(
-			BIOME_LOWEST_HUMIDITY = /datum/biome/jungle_wasteland,
-			BIOME_LOW_HUMIDITY = /datum/biome/jungle/plains,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/jungle,
-			BIOME_HIGH_HUMIDITY = /datum/biome/mudlands,
-			BIOME_HIGHEST_HUMIDITY = /datum/biome/mudlands
+			BIOME_LOWEST_HUMIDITY = /datum/biome/swamp_wasteland,
+			BIOME_LOW_HUMIDITY = /datum/biome/swamp/plains,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/swamp,
+			BIOME_HIGH_HUMIDITY = /datum/biome/swamplands,
+			BIOME_HIGHEST_HUMIDITY = /datum/biome/swamplands
 		),
 		BIOME_WARM = list(
-			BIOME_LOWEST_HUMIDITY = /datum/biome/jungle,
-			BIOME_LOW_HUMIDITY = /datum/biome/jungle,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/mudlands,
-			BIOME_HIGH_HUMIDITY = /datum/biome/mudlands,
-			BIOME_HIGHEST_HUMIDITY = /datum/biome/jungle
+			BIOME_LOWEST_HUMIDITY = /datum/biome/swamp,
+			BIOME_LOW_HUMIDITY = /datum/biome/swamp,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/swamplands,
+			BIOME_HIGH_HUMIDITY = /datum/biome/swamplands,
+			BIOME_HIGHEST_HUMIDITY = /datum/biome/swamp
 		),
 		BIOME_TEMPERATE = list(
-			BIOME_LOWEST_HUMIDITY = /datum/biome/jungle/dense,
-			BIOME_LOW_HUMIDITY = /datum/biome/mudlands,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/jungle/water,
-			BIOME_HIGH_HUMIDITY = /datum/biome/jungle/water,
-			BIOME_HIGHEST_HUMIDITY = /datum/biome/mudlands
+			BIOME_LOWEST_HUMIDITY = /datum/biome/swamp/dense,
+			BIOME_LOW_HUMIDITY = /datum/biome/swamplands,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/swamp/water,
+			BIOME_HIGH_HUMIDITY = /datum/biome/swamp/water,
+			BIOME_HIGHEST_HUMIDITY = /datum/biome/swamplands
 		),
 		BIOME_HOT = list(
-			BIOME_LOWEST_HUMIDITY = /datum/biome/jungle,
-			BIOME_LOW_HUMIDITY = /datum/biome/jungle,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/jungle/dense,
-			BIOME_HIGH_HUMIDITY = /datum/biome/jungle/dense,
-			BIOME_HIGHEST_HUMIDITY = /datum/biome/jungle/dense
+			BIOME_LOWEST_HUMIDITY = /datum/biome/swamp,
+			BIOME_LOW_HUMIDITY = /datum/biome/swamp,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/swamp/dense,
+			BIOME_HIGH_HUMIDITY = /datum/biome/swamp/dense,
+			BIOME_HIGHEST_HUMIDITY = /datum/biome/swamp/dense
 		),
 		BIOME_HOTTEST = list(
-			BIOME_LOWEST_HUMIDITY = /datum/biome/jungle/dense,
-			BIOME_LOW_HUMIDITY = /datum/biome/jungle/dense,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/mudlands,
-			BIOME_HIGH_HUMIDITY = /datum/biome/jungle/water,
-			BIOME_HIGHEST_HUMIDITY = /datum/biome/jungle/water
+			BIOME_LOWEST_HUMIDITY = /datum/biome/swamp/dense,
+			BIOME_LOW_HUMIDITY = /datum/biome/swamp/dense,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/swamplands,
+			BIOME_HIGH_HUMIDITY = /datum/biome/swamp/water,
+			BIOME_HIGHEST_HUMIDITY = /datum/biome/swamp/water
 		)
 	)
 
 	cave_biome_table = list(
 		BIOME_COLDEST_CAVE = list(
-			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/jungle,
-			BIOME_LOW_HUMIDITY = /datum/biome/cave/jungle,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/jungle,
-			BIOME_HIGH_HUMIDITY = /datum/biome/cave/jungle,
-			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/jungle
+			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/swamp,
+			BIOME_LOW_HUMIDITY = /datum/biome/cave/swamp,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/swamp,
+			BIOME_HIGH_HUMIDITY = /datum/biome/cave/swamp,
+			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/swamp
 		),
 		BIOME_COLD_CAVE = list(
-			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/jungle/dirt,
-			BIOME_LOW_HUMIDITY = /datum/biome/cave/jungle/dirt,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/jungle/dirt,
-			BIOME_HIGH_HUMIDITY = /datum/biome/cave/jungle/dirt,
-			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/jungle/dirt
+			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/swamp/dirt,
+			BIOME_LOW_HUMIDITY = /datum/biome/cave/swamp/dirt,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/swamp/dirt,
+			BIOME_HIGH_HUMIDITY = /datum/biome/cave/swamp/dirt,
+			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/swamp/dirt
 		),
 		BIOME_WARM_CAVE = list(
-			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/jungle/dirt,
-			BIOME_LOW_HUMIDITY = /datum/biome/cave/jungle/dirt,
-			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/jungle,
-			BIOME_HIGH_HUMIDITY = /datum/biome/cave/jungle,
-			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/jungle
+			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/swamp/dirt,
+			BIOME_LOW_HUMIDITY = /datum/biome/cave/swamp/dirt,
+			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/swamp,
+			BIOME_HIGH_HUMIDITY = /datum/biome/cave/swamp,
+			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/swamp
 		),
 		BIOME_HOT_CAVE = list(
-			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/jungle,
-			BIOME_LOW_HUMIDITY = /datum/biome/cave/jungle/dirt,
+			BIOME_LOWEST_HUMIDITY = /datum/biome/cave/swamp,
+			BIOME_LOW_HUMIDITY = /datum/biome/cave/swamp/dirt,
 			BIOME_MEDIUM_HUMIDITY = /datum/biome/cave/lush,
 			BIOME_HIGH_HUMIDITY = /datum/biome/cave/lush/bright,
 			BIOME_HIGHEST_HUMIDITY = /datum/biome/cave/lush/bright
 		)
 	)
 
-/datum/biome/jungle
+/datum/biome/swamp
 	open_turf_types = list(
 		/turf/simulated/floor/asteroid/swamp_dirt = 5,
 		/turf/simulated/floor/asteroid/swamp = 1,
@@ -116,7 +116,7 @@
 		/obj/item/beartrap/deployed = 1,
 	)
 
-/datum/biome/jungle/dense
+/datum/biome/swamp/dense
 	flora_spawn_chance = 20
 	open_turf_types = list(
 		/turf/simulated/floor/asteroid/swamp_dirt = 5,
@@ -137,7 +137,7 @@
 		/obj/item/beartrap/deployed = 1,
 	)
 
-/datum/biome/jungle/plains
+/datum/biome/swamp/plains
 	open_turf_types = list(
 		/turf/simulated/floor/asteroid/swamp_dirt = 5,
 		/turf/simulated/floor/asteroid/swamp = 1,
@@ -152,7 +152,7 @@
 		/obj/item/beartrap/deployed = 1,
 	)
 
-/datum/biome/mudlands
+/datum/biome/swamplands
 	open_turf_types = list(
 		/turf/simulated/floor/asteroid/swamp_dirt = 5,
 		/turf/simulated/floor/asteroid/swamp = 1,
@@ -173,13 +173,13 @@
 		/obj/item/beartrap/deployed = 1,
 	)
 
-/datum/biome/jungle_wasteland
+/datum/biome/swamp_wasteland
 	open_turf_types = list(
 		/turf/simulated/floor/asteroid/swamp_dirt = 5,
 		/turf/simulated/floor/asteroid/swamp = 1,
 	)
 
-/datum/biome/jungle/water
+/datum/biome/swamp/water
 	open_turf_types = list(
 		/turf/simulated/floor/asteroid/swamp_dirt = 1,
 		/turf/simulated/floor/asteroid/swamp = 5,
@@ -191,7 +191,7 @@
 		/obj/structure/flora/swampgrass = 1
 	)
 
-/datum/biome/cave/jungle
+/datum/biome/cave/swamp
 	open_turf_types = list(
 		/turf/simulated/floor/asteroid/swamp_dirt = 5,
 		/turf/simulated/floor/asteroid/swamp = 1,
@@ -213,7 +213,7 @@
 		/obj/item/beartrap/deployed = 1,
 	)
 
-/datum/biome/cave/jungle/dirt
+/datum/biome/cave/swamp/dirt
 	open_turf_types = list(
 		/turf/simulated/floor/asteroid/swamp_dirt = 5,
 		/turf/simulated/floor/asteroid/swamp = 1,

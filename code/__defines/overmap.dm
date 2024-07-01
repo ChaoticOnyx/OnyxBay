@@ -1,4 +1,3 @@
-
 #define FIRE_MODE_ANTI_AIR 1
 #define FIRE_MODE_TORPEDO 2
 #define FIRE_MODE_AMS_LASER 3

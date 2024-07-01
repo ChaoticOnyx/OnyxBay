@@ -7,6 +7,7 @@
 	var/lateloading_level = FALSE
 	var/obj/structure/overmap/linked_overmap = null
 	var/ftl_mask = null
+	var/mapgen_mask = null
 
 /datum/space_level/New()
 	var/list/traits_map = list()

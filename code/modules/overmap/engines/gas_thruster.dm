@@ -49,6 +49,8 @@
 	. = ..()
 	if(stat & NOPOWER)
 		update_use_power(POWER_USE_OFF)
+	else if(operable(MAINT))
+		update_use_power(POWER_USE_ACTIVE)
 
 /obj/machinery/atmospherics/unary/engine/RefreshParts()
 	..()

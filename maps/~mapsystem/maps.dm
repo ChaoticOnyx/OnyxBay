@@ -129,9 +129,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	/// Avatar type spawned on init
 	var/overmap_type = null
 
-	/// Mapdatum of a ftl mask mask
-	var/ftl_mask
-
 /datum/map/New()
 	if(!allowed_jobs)
 		allowed_jobs = subtypesof(/datum/job)
@@ -188,7 +185,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	for(var/thing in mining_floors["[zlevel]"])
 		var/turf/simulated/floor/asteroid/M = thing
 		if(istype(M))
-			M.updateMineralOverlays()
+			M.update_icon()
 
 /datum/map/proc/get_network_access(network)
 	switch(network)
@@ -340,6 +337,16 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		if(!L.has_trait(ZTRAIT_STATION))
 			continue
 
-		var/datum/map_template/ftl_mask = new L.ftl_mask()
+		var/datum/map_template/ftl_mask = L.ftl_mask
 		var/turf/spawnloc = locate(1, 1, level)
 		ftl_mask.load(spawnloc, clear_contents = TRUE)
+
+/datum/map/proc/apply_mapgen_mask()
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+		if(!L.has_trait(ZTRAIT_STATION))
+			continue
+
+		var/datum/map_template/mapgen_mask = L.mapgen_mask
+		var/turf/spawnloc = locate(1, 1, level)
+		mapgen_mask.load(spawnloc, clear_contents = TRUE)

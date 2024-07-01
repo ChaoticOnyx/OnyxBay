@@ -1,8 +1,12 @@
+/area/generated/planetoid/beachplanet
+	area_flags = AREA_FLAG_CAVES_ALLOWED
+	base_turf = /turf/simulated/floor/asteroid/beach/grass
+
 /datum/map_generator/planet_generator/beach
 	mountain_height = 0.95
 	perlin_zoom = 75
 
-	primary_area_type = /area/overmap_encounter/planetoid/beachplanet
+	primary_area_type = /area/generated/planetoid/beachplanet
 
 	biome_table = list(
 		BIOME_COLDEST = list(
@@ -112,9 +116,9 @@
 /datum/biome/grass/dense
 	flora_spawn_chance = 70
 	mob_spawn_list = list(
-		/mob/living/simple_animal/butterfly = 4,
-		/mob/living/simple_animal/hostile/retaliate/poison/snake = 5,
-		/mob/living/simple_animal/hostile/poison/bees = 3,
+		//mob/living/simple_animal/butterfly = 4,
+		///mob/living/simple_animal/hostile/retaliate/poison/snake = 5,
+		//mob/living/simple_animal/hostile/poison/bees = 3,
 	)
 	mob_spawn_chance = 2
 	feature_spawn_chance = 0.1
@@ -123,7 +127,7 @@
 	open_turf_types = list(/turf/simulated/floor/asteroid/beach = 1)
 	mob_spawn_list = list(
 		/mob/living/simple_animal/crab = 7,
-		/mob/living/simple_animal/hostile/asteroid/lobstrosity/beach = 5
+		//mob/living/simple_animal/hostile/asteroid/lobstrosity/beach = 5
 	)
 	mob_spawn_chance = 1
 	flora_spawn_list = list(
@@ -148,7 +152,7 @@
 	open_turf_types = list(/turf/simulated/floor/asteroid/beach/water = 1)
 	flora_spawn_list = list(
 		/obj/structure/rock/basalt = 1,
-		/obj/structure/basalt/pile = 1,
+		//obj/structure/basalt/pile = 1,
 	)
 	flora_spawn_chance = 1
 
@@ -161,20 +165,20 @@
 	flora_spawn_chance = 4
 	flora_spawn_list = list(
 		/obj/structure/flora/tree/palm = 1,
-		/obj/structure/flora/rock/basalt = 1,
+		//obj/structure/flora/rock/basalt = 1,
 		/obj/structure/rock/pile = 6
 	)
 	mob_spawn_chance = 1
 	mob_spawn_list = list(
-		/mob/living/simple_animal/hostile/bear/cave = 5,
-		/mob/living/simple_animal/hostile/asteroid/lobstrosity/beach = 1,
+		//mob/living/simple_animal/hostile/bear/cave = 5,
+		//mob/living/simple_animal/hostile/asteroid/lobstrosity/beach = 1,
 	)
 
 /datum/biome/cave/beach/cove
 	open_turf_types = list(/turf/simulated/floor/asteroid/beach = 1)
 	flora_spawn_list = list(
 		/obj/structure/flora/tree/pine/dead = 1,
-		/obj/structure/flora/rock/basalt = 1,
+		//obj/structure/flora/rock/basalt = 1,
 		/obj/structure/flora/driftwood = 3,
 		/obj/structure/flora/driftlog = 2
 	)
@@ -200,7 +204,7 @@
 	)
 	mob_spawn_chance = 5
 	mob_spawn_list = list(
-		/mob/living/simple_animal/butterfly = 1,
-		/mob/living/simple_animal/slime/pet = 1,
-		/mob/living/simple_animal/hostile/lightgeist = 1
+		//mob/living/simple_animal/butterfly = 1,
+		//mob/living/simple_animal/slime/pet = 1,
+		//mob/living/simple_animal/hostile/lightgeist = 1
 	)

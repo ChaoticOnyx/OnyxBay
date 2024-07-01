@@ -160,9 +160,12 @@
 
 	var/ai_controlled = FALSE //Set this to true to let the computer fly your ship.
 
-	/// PHYSICS HUISICS
+	/// This THEORETICALLY helps us fixing bonked physics processing during lags. Boneheaded implementation of /TG/ delta time.
 	var/last_process = 0
-	var/processing_failsafe = FALSE //Has the game lagged to shit and we need to handle our own processing until it clears up?
+
+	/**
+	 * Collision-related stuff (basically physics)
+	 */
 	var/obj/vector_overlay/vector_overlay
 	var/pixel_collision_size_x = 0
 	var/pixel_collision_size_y = 0
@@ -170,8 +173,6 @@
 	var/matrix/vector/last_offset
 	var/matrix/vector/position
 	var/matrix/vector/velocity
-	var/matrix/vector/overlap // Will be subtracted from the ships offset as soon as possible, then set to 0
-	var/list/collision_positions = list() //See the collisions doc for how these work. Theyre a pain in the ass.
 
 	is_poi = TRUE
 
@@ -213,7 +214,6 @@
 	last_offset = new /matrix/vector()
 	position = new /matrix/vector(x*32,y*32)
 	velocity = new /matrix/vector(0, 0)
-	overlap = new /matrix/vector(0, 0)
 
 	integrity = max_integrity
 
@@ -369,6 +369,12 @@
 	var/list/params_list = params2list(params)
 	if(target == src || istype(target, /atom/movable/screen) || (target in user.GetAllContents()) || params_list["alt"] || params_list["shift"])
 		return FALSE
+
+	var/dist = modulus(bounds_dist(src, target))
+	if(istype(target, /obj/effect/overmap_anomaly/visitable) && dist <= 32)
+		land(target)
+		stop_piloting(user)
+		return TRUE
 
 	fire(target)
 	return TRUE
@@ -616,25 +622,20 @@
 
 	if(position & OVERMAP_USER_ROLE_PILOT)
 		if(pilot)
-			to_chat(pilot, "<span class='warning'>[user] has kicked you off the ship controls!</span>")
+			to_chat(pilot, SPAN_WARNING("[user] has kicked you off the ship controls!"))
 			stop_piloting(pilot)
 		pilot = user
 		LAZYOR(user.mousemove_intercept_objects, src)
 	if(position & OVERMAP_USER_ROLE_GUNNER)
 		if(gunner)
-			to_chat(gunner, "<span class='warning'>[user] has kicked you off the ship controls!</span>")
+			to_chat(gunner, SPAN_WARNING("[user] has kicked you off the ship controls!"))
 			stop_piloting(gunner)
 		gunner = user
 	register_signal(user, SIGNAL_MOB_MOUSEDOWN, nameof(.proc/InterceptClickOn))
 	observe_ship(user)
-	//dradis?.attack_hand(user)
-	//if(position & (OVERMAP_USER_ROLE_PILOT | OVERMAP_USER_ROLE_GUNNER))
-	//	user.add_verb(overmap_verbs) //Add the ship panel verbs
 	if(mass < MASS_MEDIUM)
 		return TRUE
 
-	user.client.overmap_zoomout = (mass <= MASS_MEDIUM) ? 5 : 10 //Automatically zooms you out a fair bit so you can see what's even going on.
-	//user.client.rescale_view(user.client.overmap_zoomout, 0, ((40*2)+1)-15)
 	return TRUE
 
 // Handles actually "observing" the ship.
@@ -642,6 +643,7 @@
 	if(user.overmap_ship == src || LAZYFIND(operators, user))
 		return FALSE
 
+	register_signal(user, SIGNAL_MOVED, nameof(.proc/stop_piloting))
 	LAZYADD(operators,user)
 	user.overmap_ship = src
 	user.click_intercept = src
@@ -661,6 +663,14 @@
 		pilot = null
 		keyboard_delta_angle_left = 0
 		keyboard_delta_angle_right = 0
+
+	var/mob/observer/eye/cameranet/ship/eyeobj = M?.eyeobj
+	M.eyeobj = null
+	qdel(eyeobj)
+	unregister_signal(M, SIGNAL_MOVED)
+
+	M.reset_view(M)
+	M.cancel_camera()
 
 /obj/structure/overmap/touch_map_edge()
 	return FALSE // Just NO.
@@ -690,14 +700,6 @@
 	if(!gunner)
 		return
 
-	//var/mob/observer/eye/cameranet/ship/cam = gunner.remote_control
-	//if(!cam)
-	//	return
-
-	//if(target == cam.ship_target) // Allows us to use this as a toggle
-	//	target = null
-	//cam.track_target(target)
-
 /**
  *
  * Weapons and stuff.
@@ -720,15 +722,7 @@
 			to_chat(gunner, "<span class='warning'>Weapon safety interlocks are active! Use the ship verbs tab to disable them!</span>")
 		return
 
-	//handle_cloak(CLOAK_TEMPORARY_LOSS)
-	//last_target = target
-	//var/obj/structure/overmap/ship = target
-	//if(ai_controlled) //Let the AI switch weapons according to range
-	//	ai_fire(target)
-	//	return	//end if(ai_controlled)
 	last_target = target
-	//if(istype(target, /obj/structure/overmap))
-	//	ship.add_enemy(src)
 
 	fire_weapon(target)
 
@@ -858,9 +852,6 @@
  *
  */
 /obj/structure/overmap/bullet_act(obj/item/projectile/P)
-	//if(istype(P, /obj/item/projectile/beam/overmap/aiming_beam))
-	//	return
-
 	P.spec_overmap_hit(src)
 	var/relayed_type = P.type
 	relay_damage(relayed_type)
@@ -868,7 +859,6 @@
 		return ..()
 	else
 		playsound(src, P.hitsound, 50, 1)
-		//visible_message("<span class='danger'>[src] is hit by \a [P]!</span>", null, null, COMBAT_MESSAGE_RANGE)
 		if(!QDELETED(src)) //Bullet on_hit effect might have already destroyed this object
 			take_quadrant_hit(P.damage, projectile_quadrant_impact(P))
 
@@ -891,3 +881,110 @@
 	proj.original = pickedgoal
 	spawn(0)
 		proj.fire(Get_Angle(pickedstart, pickedgoal))
+
+/**
+ * Landing behavior
+ */
+
+/obj/structure/overmap/proc/land(obj/effect/overmap_anomaly/visitable/overmap)
+	set background = TRUE
+
+	if(ftl_drive?.jumping)
+		return
+
+	// Preventing people from watching at an empty space
+	stop_piloting(pilot)
+	stop_piloting(gunner)
+
+	var/datum/star_system/SS = SSstar_system.ships[src]["current_system"]
+	SS.remove_ship(src, overmap, remove_fully = FALSE)
+	SSstar_system.ships[src]["landed"] = TRUE
+
+	GLOB.using_map.apply_mapgen_mask()
+	var/list/spawned = block(
+		locate(0 + TRANSITION_EDGE, 0 + TRANSITION_EDGE, 1),
+		locate(world.maxx - TRANSITION_EDGE, world.maxy - TRANSITION_EDGE, 1)
+	)
+
+	SSannounce.play_announce(/datum/announce/comm_program, "", "Helm announcement", "Command Room", 'sound/misc/notice2.ogg', FALSE, TRUE, GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
+	var/datum/looping_sound/sound = new /datum/looping_sound/ship/engine(list(), FALSE, TRUE, channel = SOUND_CHANNEL_REACTOR_ALERT)
+
+	var/list/predicates = area_repository.get_areas_by_z_level(GLOB.is_station_but_not_space_or_shuttle_area)
+	var/list/areas_to_play = list()
+	for(var/name in predicates)
+		areas_to_play |= predicates[name]
+
+	sound.output_atoms |= areas_to_play
+	sound.start()
+
+	var/list/mask_predicates = area_repository.get_areas_by_name(/proc/is_space_or_mapgen_area)
+	var/list/areas_to_mask = list()
+
+	for(var/name in mask_predicates)
+		var/area/A = mask_predicates[name]
+		areas_to_mask |= A
+		var/icon/clouds = new('icons/effects/weather_effects.dmi', "clouds_fast")
+		clouds.Blend(COLOR_BLUE_LIGHT, ICON_MULTIPLY)
+		A.icon = clouds
+
+/**
+ * '/proc/generate()' is extremely cursed
+ * And fucks CPU usage up, whether it is called async or not, in background or not.
+ * Therefore we are doing a little trick here. Processing this shit with the lowest possible priority.
+ */
+	var/datum/map_generator/planet_generator/mapgen = new overmap.mapgen()
+	SSmapgen.generate(mapgen, spawned)
+	relay('sound/effects/ship/radio_100m.wav', null, FALSE, SOUND_CHANNEL_SHIP_ALERT)
+
+	sleep(2 SECONDS)
+	mapgen.populate_turfs(spawned)
+	new /datum/random_map/automata/cave_system(null, 1, 1, 1, world.maxx, world.maxy)
+	new /datum/random_map/noise/ore(null, 1, 1, 1, world.maxx, world.maxy)
+
+	sleep(2 SECONDS)
+
+	if(!isnull(mapgen?.weather_controller_type))
+		mapgen.weather_controller_type = new mapgen.weather_controller_type(z)
+	for(var/area/A in areas_to_mask)
+		A.icon = initial(A.icon)
+
+	relay('sound/effects/ship/radio_landing_touch_01.wav', null, FALSE, SOUND_CHANNEL_SHIP_ALERT)
+	sound.stop()
+
+/obj/structure/overmap/proc/takeoff()
+	SSstar_system.ships[src]["landed"] = FALSE
+	SSannounce.play_announce(/datum/announce/comm_program, "", "Helm announcement", "Command Room", 'sound/misc/notice2.ogg', FALSE, TRUE, GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
+	var/datum/looping_sound/sound = new /datum/looping_sound/ship/engine(list(), FALSE, TRUE, channel = SOUND_CHANNEL_REACTOR_ALERT)
+	var/list/predicates = area_repository.get_areas_by_z_level(GLOB.is_station_but_not_space_or_shuttle_area)
+	var/list/areas_to_play = list()
+	for(var/name in predicates)
+		areas_to_play += predicates[name]
+
+	sound.output_atoms |= areas_to_play
+	sound.start()
+
+	sleep (5 SECONDS)
+
+	var/list/mask_predicates = area_repository.get_areas_by_name(/proc/is_space_or_mapgen_area)
+	var/list/areas_to_mask = list()
+
+	for(var/name in mask_predicates)
+		var/area/A = mask_predicates[name]
+		areas_to_mask |= A
+		var/icon/clouds = new('icons/effects/weather_effects.dmi', "clouds_fast")
+		clouds.Blend(COLOR_BLUE_LIGHT, ICON_MULTIPLY)
+		A.icon = clouds
+
+	sleep(4 SECONDS)
+
+	GLOB.using_map.apply_mapgen_mask()
+
+	sleep(2 SECONDS)
+
+	for(var/area/A in areas_to_mask)
+		A.icon = initial(A.icon)
+
+	sound.stop()
+	var/datum/star_system/SS = SSstar_system.ships[src]["current_system"]
+	SSstar_system.ships[src]["landed"] = FALSE
+	SS.add_ship(src)

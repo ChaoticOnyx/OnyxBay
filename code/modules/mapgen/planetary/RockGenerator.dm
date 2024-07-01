@@ -1,8 +1,12 @@
+/area/generated/planetoid/rock
+	area_flags = AREA_FLAG_CAVES_ALLOWED
+	base_turf = /turf/simulated/floor/asteroid/rockplanet
+
 /datum/map_generator/planet_generator/rock
 	mountain_height = 0.45
 	perlin_zoom = 65
 
-	primary_area_type = /area/overmap_encounter/planetoid/rockplanet
+	primary_area_type = /area/generated/planetoid/rock
 
 	biome_table = list(
 		BIOME_COLDEST = list(
@@ -85,7 +89,7 @@
 
 	feature_spawn_chance = 0.25
 	feature_spawn_list = list(
-		obj/structure/geyser/random = 80,
+		/obj/structure/geyser/random = 80,
 		/obj/effect/minefield = 2,
 	)
 
@@ -134,7 +138,7 @@
 	feature_spawn_chance = 0.5
 	feature_spawn_list = list(
 		/obj/structure/geyser/random = 2,
-		/obj/effect/spawner/minefield = 1,
+		//obj/effect/spawner/minefield = 1,
 	)
 	mob_spawn_chance = 6
 	mob_spawn_list = list(

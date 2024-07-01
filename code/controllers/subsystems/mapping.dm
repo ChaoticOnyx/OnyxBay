@@ -12,6 +12,7 @@ SUBSYSTEM_DEF(mapping)
 	initialize_biomes()
 	preloadTemplates()
 	preloadHolodeckTemplates()
+	preload_level_masks()
 	lateload_map_zlevels()
 	return ..()
 
@@ -41,11 +42,20 @@ SUBSYSTEM_DEF(mapping)
 		var/datum/biome/biome_instance = new biome_path()
 		biomes[biome_path] += biome_instance
 
+/datum/controller/subsystem/mapping/proc/preload_level_masks()
+	for(var/level = 1; level <= length(GLOB.using_map.map_levels); level++)
+		var/datum/space_level/L = GLOB.using_map.map_levels[level]
+
+		if(!isnull(L.ftl_mask))
+			L.ftl_mask = new L.ftl_mask()
+
+		if(!isnull(L?.mapgen_mask))
+			L.mapgen_mask = new L.mapgen_mask()
+
 /datum/controller/subsystem/mapping/proc/lateload_map_zlevels()
 	GLOB.using_map.perform_map_generation(TRUE)
 
 /datum/controller/subsystem/mapping/proc/add_new_zlevel(name, traits = list(), z_type = /datum/space_level)
-	var/new_z = GLOB.using_map.map_levels.len + 1
 	var/datum/space_level/S = new z_type()
 	GLOB.using_map.map_levels.Add(S)
 	return S
