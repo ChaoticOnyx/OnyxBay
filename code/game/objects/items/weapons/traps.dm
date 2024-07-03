@@ -4,6 +4,7 @@
 	gender = PLURAL
 	icon = 'icons/obj/items.dmi'
 	icon_state = "beartrap0"
+	base_icon_state = "beartrap"
 	randpixel = 0
 	desc = "A mechanically activated leg trap. Low-tech, but reliable. Looks like it could really hurt if you set it off."
 	throwforce = 0
@@ -72,7 +73,6 @@
 		..()
 
 /obj/item/beartrap/proc/attack_mob(mob/living/L)
-
 	var/target_zone
 	if(L.lying)
 		target_zone = ran_zone()
@@ -92,6 +92,7 @@
 	set_dir(L.dir)
 	buckle_mob(L)
 	to_chat(L, "<span class='danger'>The steel jaws of \the [src] bite into you, trapping you in place!</span>")
+	SEND_SIGNAL(L, SIGNAL_MOB_CONSIDER_AMBUSH)
 	deployed = 0
 
 /obj/item/beartrap/Crossed(AM as mob|obj)
@@ -114,6 +115,17 @@
 	..()
 
 	if(!deployed)
-		icon_state = "beartrap0"
+		icon_state = "[base_icon_state]0"
 	else
-		icon_state = "beartrap1"
+		icon_state = "[base_icon_state]1"
+
+/obj/item/beartrap/rusty
+	icon_state = "rustytrap0"
+	base_icon_state = "rustytrap"
+
+/obj/item/beartrap/rusty/deployed
+	deployed = TRUE
+	anchored = TRUE
+
+/obj/item/beartrap/rusty/deployed/hidden
+	alpha = 80
