@@ -75,12 +75,12 @@
 	if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 		return
 
-	to_chat(user, SPAN_NOTICE("You dissasembled \the [src] a!"))
-	new /obj/item/stack/material/steel(loc, 10)
+	to_chat(user, SPAN_NOTICE("You dissasembled \the [src]!"))
+	new material_path(loc, 10)
 	qdel(src)
 
 /obj/structure/secure_door_assembly/wrench_floor_bolts(mob/user, delay = 40)
-	if(state > STATE_UNANCHORED)
+	if(state > STATE_EMPTY)
 		return
 
 	. = ..()
