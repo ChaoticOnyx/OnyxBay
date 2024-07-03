@@ -71,7 +71,7 @@
 	return ..()
 
 /obj/structure/secure_door_assembly/proc/deconstruct_assembly(obj/item/weldingtool/WT, mob/user)
-	user.visible_message("[user] dissassembles \the [src] .", "You start to dissassemble \the [src] .")
+	user.visible_message("[user] dissassembles \the [src].", "You start to dissassemble \the [src].")
 	if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 		return
 
