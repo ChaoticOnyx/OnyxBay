@@ -257,34 +257,6 @@ CREATE TABLE IF NOT EXISTS `ip2nationCountries` (
 
 -- Экспортируемые данные не выделены.
 
--- Дамп структуры для таблица library
-CREATE TABLE IF NOT EXISTS `library` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `author` text NOT NULL,
-  `title` text NOT NULL,
-  `content` text NOT NULL,
-  `category` text NOT NULL,
-  `deleted` int DEFAULT NULL,
-  `author_ckey` text CHARACTER SET latin1 COLLATE latin1_swedish_ci,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=912 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
-
--- Экспортируемые данные не выделены.
-
--- Дамп структуры для таблица library_latin1
-CREATE TABLE IF NOT EXISTS `library_latin1` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `author` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `title` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `content` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `category` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `deleted` int DEFAULT NULL,
-  `author_ckey` text CHARACTER SET latin1 COLLATE latin1_swedish_ci,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=623 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
-
--- Экспортируемые данные не выделены.
-
 -- Дамп структуры для таблица old_erro_ban
 CREATE TABLE IF NOT EXISTS `old_erro_ban` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -320,24 +292,6 @@ CREATE TABLE IF NOT EXISTS `old_erro_ban` (
 CREATE TABLE IF NOT EXISTS `serverids` (
   `server_id` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   PRIMARY KEY (`server_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- Экспортируемые данные не выделены.
-
--- Дамп структуры для таблица whitelist
-CREATE TABLE IF NOT EXISTS `whitelist` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `ckey` text NOT NULL,
-  `race` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Экспортируемые данные не выделены.
-
--- Дамп структуры для таблица whitelist_ckey
-CREATE TABLE IF NOT EXISTS `whitelist_ckey` (
-  `ckey` varchar(50) NOT NULL,
-  PRIMARY KEY (`ckey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Экспортируемые данные не выделены.

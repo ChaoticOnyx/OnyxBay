@@ -40,10 +40,6 @@ SUBSYSTEM_DEF(eams)
 		log_debug("EAMS is disabled by configuration!")
 		return ..()
 
-	if(!config.external.sql_enabled)
-		log_debug("EAMS system is disabled with SQL!")
-		return ..()
-
 	Toggle()
 	return ..()
 

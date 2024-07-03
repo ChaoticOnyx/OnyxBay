@@ -2,7 +2,6 @@
 	name = "external"
 	protection_state = PROTECTION_PRIVATE
 
-	var/sql_enabled
 	var/comms_password
 	var/ban_comms_password
 	var/server
@@ -10,7 +9,6 @@
 	var/login_export_addr
 
 /datum/configuration_section/external/load_data(list/data)
-	CONFIG_LOAD_BOOL(sql_enabled, data["sql_enabled"])
 	CONFIG_LOAD_STR(comms_password, data["comms_password"])
 	CONFIG_LOAD_STR(ban_comms_password, data["ban_comms_password"])
 	CONFIG_LOAD_STR(server, data["server"])

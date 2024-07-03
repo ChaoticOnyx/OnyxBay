@@ -4,10 +4,6 @@ SUBSYSTEM_DEF(donations)
 	flags = SS_NO_FIRE
 
 /datum/controller/subsystem/donations/Initialize(timeofday)
-	if(!config.external.sql_enabled)
-		log_debug("Donations system is disabled with SQL!")
-		return
-
 	if(!config.donations.enable)
 		log_debug("Donations system is disabled by configuration!")
 		return
@@ -263,10 +259,6 @@ SUBSYSTEM_DEF(donations)
 /client/verb/chaotic_token(token as text)
 	set name = ".chaotic-token"
 	set hidden = TRUE
-
-	if(!config.external.sql_enabled)
-		to_chat(usr, "Donations system cannot be used, because SQL is disabled by configuration!")
-		return
 
 	if(!config.donations.enable)
 		to_chat(usr, "Donations system is disabled by configuration!")

@@ -525,7 +525,7 @@
 		var/datum/language/chosen_language = all_languages[lang]
 		if(chosen_language)
 			var/is_species_lang = (chosen_language.name in new_character.species.secondary_langs)
-			if(is_species_lang || ((!(chosen_language.language_flags & RESTRICTED) || has_admin_rights()) && is_alien_whitelisted(src, chosen_language)))
+			if(is_species_lang || ((!(chosen_language.language_flags & RESTRICTED) || has_admin_rights())))
 				new_character.add_language(lang)
 
 	if(GLOB.random_players)
@@ -619,10 +619,6 @@
 	if (!(S.spawn_flags & SPECIES_CAN_JOIN) && !has_admin_rights())
 		if (show_alert)
 			alert(client, "Your current species, [client.prefs.species], is not available for play.")
-		return 0
-	if (!is_alien_whitelisted(src, S))
-		if (show_alert)
-			alert(client, "You are currently not whitelisted to play [client.prefs.species].")
 		return 0
 	if (jobban_isbanned(src, "SPECIES") && S.name != SPECIES_HUMAN)
 		if (show_alert)

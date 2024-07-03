@@ -19,7 +19,7 @@
 	name = "Art library"
 	var/error_message = ""
 	var/sort_by = "id"
-	var/current_art
+	var/list/current_art
 	var/obj/machinery/libraryscanner/scanner
 	var/static/list/icon_cache = list()
 	var/static/list/canvas_state_to_type = list()
@@ -43,35 +43,7 @@
 	else if(current_art)
 		data["current_art"] = current_art
 	else
-		var/list/all_entries[0]
-		if(!establish_old_db_connection())
-			error_message = "Unable to contact External Archive. Please contact your system administrator for assistance."
-		else
-			try
-				var/DBQuery/query = sql_query({"
-					SELECT
-						id,
-						ckey,
-						title,
-						data,
-						type
-					FROM
-						art_library
-					ORDER BY
-						$sort_by
-					"}, dbcon_old, list(sort_by = sort_by))
-
-				while(query.NextRow())
-					all_entries.Add(list(list(
-					"id" = query.item[1],
-					"ckey" = query.item[2],
-					"title" = query.item[3],
-					"data" = query.item[4],
-					"type" = query.item[5]
-				)))
-			catch
-				error_message = "Unable to receive arts form External Archive. Please contact your system administrator for assistance."
-		data["art_list"] = all_entries
+		data["art_list"] = db.get_arts_ordered(sort_by)
 		data["scanner"] = istype(scanner)
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
@@ -118,29 +90,12 @@
 			return
 		var/choice = input(usr, "Upload [art_cache.painting_name] to the External Archive?") in list("Yes", "No")
 		if(choice == "Yes")
-			if(!establish_old_db_connection())
-				error_message = "Network Error: Connection to the Archive has been severed."
-				return TRUE
-			var/DBQuery/query = sql_query({"
-				INSERT INTO
-					art_library
-						(ckey,
-						title,
-						data,
-						type)
-				VALUES
-					($ckey,
-					$title,
-					$data,
-					$type)
-				"}, dbcon_old, list(ckey = art_cache.author_ckey, title = art_cache.painting_name, data = encoded_data, type = art_cache.icon_state))
-			if(!query)
-				error_message = "Network Error: Unable to upload to the Archive. Contact your system Administrator for assistance."
-				return TRUE
-			else
-				log_and_message_admins("has uploaded the art titled [art_cache.painting_name], [length(encoded_data)] signs of data")
-				log_game("[usr.name]/[usr.key] has uploaded the art titled [art_cache.painting_name], [length(encoded_data)] signs of data")
-				alert("Upload Complete.")
+			db.add_art(art_cache.painting_name, art_cache.icon_state, encoded_data, art_cache.author_ckey)
+
+			log_and_message_admins("has uploaded the art titled [art_cache.painting_name], [length(encoded_data)] signs of data")
+			log_game("[usr.name]/[usr.key] has uploaded the art titled [art_cache.painting_name], [length(encoded_data)] signs of data")
+			alert("Upload Complete.")
+
 			return TRUE
 
 		return FALSE
@@ -193,47 +148,36 @@
 	if(current_art || !id)
 		return FALSE
 
-	if(!establish_old_db_connection())
-		error_message = "Network Error: Connection to the Archive has been severed."
+	var/list/art = db.find_art(id)
+
+	if(isnull(art))
 		return TRUE
 
-	try
-		var/DBQuery/query = sql_query("SELECT * FROM art_library WHERE id = $id", dbcon_old, list(id = id))
+	var/art_type = art["type"]
+	var/canvas_type = canvas_state_to_type[art_type]
+	var/obj/item/canvas/preview_canvas = new canvas_type()
+	var/art_icon
+	preview_canvas.icon_generated = FALSE
+	preview_canvas.apply_canvas_data(art["data"])
+	preview_canvas.paint_image()
 
-		while(query.NextRow())
-			var/art_type = query.item[6]
-			var/canvas_type = canvas_state_to_type[art_type]
-			var/obj/item/canvas/preview_canvas = new canvas_type()
-			var/art_icon
-			preview_canvas.icon_generated = FALSE
-			preview_canvas.apply_canvas_data(query.item[4])
-			preview_canvas.paint_image()
-			var/icon/pre_icon = getFlatIcon(preview_canvas)
-			switch(art_type)
-				if("11x11")
-					pre_icon.Crop(11, 21, 21, 11)
-				if("19x19")
-					pre_icon.Crop(8, 27, 26, 9)
-				if("23x19")
-					pre_icon.Crop(6, 26, 28, 8)
-				if("23x23")
-					pre_icon.Crop(6, 27, 28, 5)
-				if("24x24")
-					pre_icon.Crop(5, 27, 28, 4)
-			art_icon = icon2base64(pre_icon)
-			icon_cache[query.item[3]] = art_icon
-			current_art = list(
-				"id" = query.item[1],
-				"ckey" = query.item[2],
-				"title" = query.item[3],
-				"data" = query.item[4],
-				"icon" = art_icon,
-				"type" = art_type
-				)
-			QDEL_NULL(preview_canvas)
-			break
-	catch
-		error_message = "Network Error: Connection to the Archive has been severed."
+	var/icon/pre_icon = getFlatIcon(preview_canvas)
+	switch(art_type)
+		if("11x11")
+			pre_icon.Crop(11, 21, 21, 11)
+		if("19x19")
+			pre_icon.Crop(8, 27, 26, 9)
+		if("23x19")
+			pre_icon.Crop(6, 26, 28, 8)
+		if("23x23")
+			pre_icon.Crop(6, 27, 28, 5)
+		if("24x24")
+			pre_icon.Crop(5, 27, 28, 4)
+	art_icon = icon2base64(pre_icon)
+	icon_cache[art["title"]] = art_icon
+	current_art = art
+	QDEL_NULL(preview_canvas)
+
 	return TRUE
 
 /proc/del_art_from_db(id, user)
@@ -242,21 +186,7 @@
 	if(!check_rights(R_INVESTIGATE, TRUE, user))
 		return
 
-	if(!establish_db_connection())
-		to_chat(user, SPAN_WARNING("Failed to establish database connection!"))
-		return
+	var/list/art = db.mark_deleted_art(id)
 
-	var/author
-	var/title
-	var/DBQuery/query = sql_query("SELECT ckey, title FROM art_library WHERE id = $id", dbcon, list(id = id))
-
-	if(query.NextRow())
-		author = query.item[1]
-		title = query.item[2]
-	else
-		to_chat(user, SPAN_WARNING("Art with ISAN number \[[id]\] was not found!"))
-		return
-
-	query = sql_query("DELETE FROM art_library WHERE id = $id", dbcon, list(id = id))
-	if(query)
-		log_and_message_admins("has deleted the art: \[[id]\] \"[title]\" by [author]", user)
+	if(!isnull(art))
+		log_and_message_admins("has deleted the art: \[[id]\] \"[art["title"]]\" by [art["author"]]", user)

@@ -98,8 +98,6 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 		log_runtime(line)
 
 // SQL runtime logging
-	if(!config.external.sql_enabled)
-		return
 	if(!establish_don_db_connection())
 		return
 	sql_query({"

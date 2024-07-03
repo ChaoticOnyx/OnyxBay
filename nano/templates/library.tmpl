@@ -6,19 +6,19 @@
 	<h2>{{:data.current_book.title}}</h2>
 	<div class="item">
 		<div class="itemLabel">
-			Author: 
+			Author:
 		</div>
 		<div class="itemContent">
 			 {{:data.current_book.author}}
 		</div>
 		<div class="itemLabel">
-			USBN: 
+			USBN:
 		</div>
 		<div class="itemContent">
 			{{:data.current_book.id}}
 		</div>
 		<div class="itemLabel">
-			Commands: 
+			Commands:
 		</div>
 		<div class="itemContent">
 			{{:helper.link("Close", null, {'closebook' : 1})}}
@@ -54,10 +54,10 @@
 			Sort by:
 		</div>
 		<div class="itemContent">
-			{{:helper.link("Title", null, {'sortby' : 'title'})}}
-			{{:helper.link("Author", null, {'sortby' : 'author'})}}
-			{{:helper.link("Category", null, {'sortby' : 'category'})}}
-			{{:helper.link("USBN", null, {'sortby' : 'id'})}}
+			{{:helper.link("Title", null, {'sortby' : 'title COLLATE'})}}
+			{{:helper.link("Author", null, {'sortby' : 'author COLLATE'})}}
+			{{:helper.link("Category", null, {'sortby' : 'category COLLATE'})}}
+			{{:helper.link("USBN", null, {'sortby' : 'id NUMERIC'})}}
 		</div>
 	</div>
 

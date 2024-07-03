@@ -74,10 +74,6 @@ var/list/hash_to_gear = list()
 		var/okay = 1
 		if(G.whitelisted && preference_mob)
 			okay = 0
-			for(var/species in G.whitelisted)
-				if(is_species_whitelisted(preference_mob, species))
-					okay = 1
-					break
 		if(!okay)
 			continue
 		if(max_cost && G.cost > max_cost)
@@ -689,7 +685,7 @@ var/list/hash_to_gear = list()
 	var/patron_tier        //Patron tier restriction
 	var/slot               //Slot to equip to.
 	var/list/allowed_roles //Roles that can spawn with this item.
-	var/whitelisted        //Term to check the whitelist for..
+	var/whitelisted        //Term to check the whitelist for.
 	var/sort_category = "General"
 	var/flags              //Special tweaks in new
 	var/list/gear_tweaks = list() //List of datums which will alter the item after it has been spawned.

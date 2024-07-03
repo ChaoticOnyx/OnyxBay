@@ -37,30 +37,7 @@ The answer was five and a half years -ZeroBits
 	else if(current_book)
 		data["current_book"] = current_book
 	else
-		var/list/all_entries[0]
-		if(!establish_old_db_connection())
-			error_message = "Unable to contact External Archive. Please contact your system administrator for assistance."
-		else
-			var/DBQuery/query = sql_query({"
-				SELECT
-					id,
-					author,
-					title,
-					category
-				FROM
-					library
-				ORDER BY
-					$sort_by
-				"}, dbcon_old, list(sort_by = sort_by))
-
-			while(query.NextRow())
-				all_entries.Add(list(list(
-				"id" = query.item[1],
-				"author" = query.item[2],
-				"title" = query.item[3],
-				"category" = query.item[4]
-			)))
-		data["book_list"] = all_entries
+		data["book_list"] = db.get_books_ordered(sort_by)
 		data["scanner"] = istype(scanner)
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
@@ -119,32 +96,13 @@ The answer was five and a half years -ZeroBits
 
 		var/choice = input(usr, "Upload [B.name] by [B.author] to the External Archive?") in list("Yes", "No")
 		if(choice == "Yes")
-			if(!establish_old_db_connection())
-				error_message = "Network Error: Connection to the Archive has been severed."
-				return 1
-
 			var/upload_category = input(usr, "Upload to which category?") in list("Fiction", "Non-Fiction", "Reference", "Religion")
 
-			var/DBQuery/query = sql_query({"
-				INSERT INTO
-					library
-						(author,
-						title,
-						content,
-						category)
-				VALUES
-					($author,
-					$title,
-					$content,
-					$upload_category)
-				"}, dbcon_old, list(author = B.author, title = B.name, content = B.dat, upload_category = upload_category))
-			if(!query)
-				error_message = "Network Error: Unable to upload to the Archive. Contact your system Administrator for assistance."
-				return 1
-			else
-				log_and_message_admins("has uploaded the book titled [B.name], [length(B.dat)] signs")
-				log_game("[usr.name]/[usr.key] has uploaded the book titled [B.name], [length(B.dat)] signs")
-				alert("Upload Complete.")
+			db.add_library_book(B.author, B.name, B.dat, upload_category, usr.ckey)
+
+			log_and_message_admins("has uploaded the book titled [B.name], [length(B.dat)] signs")
+			log_game("[usr.name]/[usr.key] has uploaded the book titled [B.name], [length(B.dat)] signs")
+			alert("Upload Complete.")
 			return 1
 
 		return 0
@@ -191,48 +149,23 @@ The answer was five and a half years -ZeroBits
 
 /datum/nano_module/library/proc/view_book(id)
 	if(current_book || !id)
-		return 0
+		return FALSE
 
-	if(!establish_old_db_connection())
-		error_message = "Network Error: Connection to the Archive has been severed."
-		return 1
+	current_book = db.find_book(id)
 
-	var/DBQuery/query = sql_query("SELECT * FROM library WHERE id = $id", dbcon_old, list(id = id))
-
-	while(query.NextRow())
-		current_book = list(
-			"id" = query.item[1],
-			"author" = query.item[2],
-			"title" = query.item[3],
-			"content" = query.item[4]
-			)
-		break
-	return 1
+	return TRUE
 
 /proc/del_book_from_db(id, user)
 	if(!id || !user)
 		return
+
 	if(!check_rights(R_INVESTIGATE, TRUE, user))
 		return
 
-	if(!establish_db_connection())
-		to_chat(user, SPAN_WARNING("Failed to establish database connection!"))
-		return
+	var/list/book = db.mark_deleted_book(id)
 
-	var/author
-	var/title
-	var/DBQuery/query = sql_query("SELECT author, title FROM library WHERE id = $id", dbcon, list(id = id))
-
-	if(query.NextRow())
-		author = query.item[1]
-		title = query.item[2]
-	else
-		to_chat(user, SPAN_WARNING("Book with ISBN number \[[id]\] was not found!"))
-		return
-
-	query = sql_query("DELETE FROM library WHERE id = $id", dbcon, list(id = id))
-	if(query)
-		log_and_message_admins("has deleted the book: \[[id]\] \"[title]\" by [author]", user)
+	if(!isnull(book))
+		log_and_message_admins("has deleted the book: \[[book["id"]]\] \"[book["title"]]\" by [book["author"]]", user)
 
 #define WIKI_COMMON_CATEGORY "Available_in_library"
 #define WIKI_HACKED_CATEGORY "Available_in_hacked_library"
