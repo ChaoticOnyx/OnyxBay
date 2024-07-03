@@ -33,3 +33,6 @@
 
 /// Called on
 #define COMSIG_MOB_OVERMAP_CHANGE "mob_overmap_change"
+
+/// Called by various atom behaviors that can trigger ambushes.
+#define SIGNAL_MOB_CONSIDER_AMBUSH "mob_consider_ambush"

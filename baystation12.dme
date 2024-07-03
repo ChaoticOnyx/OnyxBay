@@ -356,6 +356,7 @@
 #include "code\datums\communication\pray.dm"
 #include "code\datums\communication\~defines.dm"
 #include "code\datums\components\_component.dm"
+#include "code\datums\components\ambushable.dm"
 #include "code\datums\components\cardborg.dm"
 #include "code\datums\components\connect_mob_behalf.dm"
 #include "code\datums\components\label.dm"
