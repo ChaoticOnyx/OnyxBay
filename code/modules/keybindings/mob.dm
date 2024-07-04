@@ -122,7 +122,7 @@
 	return TRUE
 
 /datum/keybinding/mob/move_up
-	hotkey_keys = list(",")
+	hotkey_keys = list(",", "Northeast")
 	name = "move_up"
 	full_name = "Move Up"
 	description = "Makes you go up"
@@ -132,12 +132,12 @@
 	M.SelfMove(UP)
 
 /datum/keybinding/mob/move_down
-	hotkey_keys = list(".")
+	hotkey_keys = list(".", "Southeast")
 	name = "move_down"
 	full_name = "Move Down"
 	description = "Makes you go down"
 
-/datum/keybinding/mob/move_up/down(client/user)
+/datum/keybinding/mob/move_down/down(client/user)
 	var/mob/M = user.mob
 	M.SelfMove(DOWN)
 
