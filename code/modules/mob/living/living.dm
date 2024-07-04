@@ -948,3 +948,6 @@
 	. = ..()
 	if(stat != old_stat)
 		SEND_SIGNAL(src, SIGNAL_STAT_SET, src, old_stat, new_stat)
+
+/mob/living/proc/can_animate_pickup()
+	return m_intent != M_WALK

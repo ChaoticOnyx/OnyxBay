@@ -381,8 +381,10 @@
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
-			var/obj/effect/temporary/item_pickup_ghost/ghost = new /obj/effect/temporary/item_pickup_ghost(old_loc, src)
-			ghost.animate_towards(user)
+			var/mob/living/l_user = user
+			if(l_user.can_animate_pickup())
+				var/obj/effect/temporary/item_pickup_ghost/ghost = new /obj/effect/temporary/item_pickup_ghost(old_loc, src)
+				ghost.animate_towards(user)
 		if(randpixel)
 			pixel_x = rand(-randpixel, randpixel)
 			pixel_y = rand(-randpixel/2, randpixel/2)
