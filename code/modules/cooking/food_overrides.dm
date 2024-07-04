@@ -1,3 +1,9 @@
+// Tracks precooked food to stop deep fried baked grilled grilled grilled diona nymph cereal.
+/obj/item/reagent_containers/food
+	drop_sound = SFX_DROP_FOOD
+	pickup_sound = SFX_PICKUP_FOOD
+	var/list/cooked_types = list()
+
 /obj/item/reagent_containers/food/examine(mob/user)
 	if(!..(user, get_dist(user, src)))
 		return

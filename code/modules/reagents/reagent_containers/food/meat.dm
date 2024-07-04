@@ -67,20 +67,27 @@
 
 /obj/item/reagent_containers/food/meat/pork/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/knife))
-		new /obj/item/reagent_containers/food/bacon(src)
-		new /obj/item/reagent_containers/food/bacon(src)
-		new /obj/item/reagent_containers/food/bacon(src)
+		new /obj/item/reagent_containers/food/rawbacon(src)
+		new /obj/item/reagent_containers/food/rawbacon(src)
+		new /obj/item/reagent_containers/food/rawbacon(src)
 		to_chat(user, "You cut the meat into thin strips.")
 		qdel(src)
 		return
 	else
 		..()
 
-/obj/item/reagent_containers/food/snacks/meat/chicken
+/obj/item/reagent_containers/food/meat/chicken
 	name = "poultry"
 	desc = "Poultry meat, might be chicken or any other avian species."
 	icon_state = "meat_bird"
 	filling_color = "#EDA897"
-	preloaded_reagents = list("protein" = 8)
-	slice_path = /obj/item/reagent_containers/food/snacks/chickenbreast
+	startswith = list(/datum/reagent/nutriment/protein)
+	slice_path = /obj/item/reagent_containers/food/chickenbreast
 	slices_num = 4
+
+/obj/item/reagent_containers/food/chickenbreast
+	name = "poultry breast"
+	desc = "The breast meat of an avian species, chicken or otherwise."
+	icon_state = "chickenbreast"
+	bitesize = 3
+	startswith = list(/datum/reagent/nutriment/protein = 9)

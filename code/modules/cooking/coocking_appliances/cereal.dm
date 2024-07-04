@@ -1,20 +1,21 @@
-/obj/machinery/cooker/cereal
+/obj/machinery/kitchen/cereal
 	name = "cereal maker"
 	desc = "Now with Dann O's available!"
 	icon = 'icons/obj/cooking_machines.dmi'
 	icon_state = "cereal_off"
+/*
 	cook_type = "cerealized"
 	on_icon = "cereal_on"
 	off_icon = "cereal_off"
 	output_options = list("Cereal" = /obj/item/reagent_containers/food/variable/cereal)
 	selected_option = "Cereal"
 
-/obj/machinery/cooker/cereal/change_product_strings(atom/movable/product, atom/movable/origin)
+/obj/machinery/kitchen/cereal/change_product_strings(atom/movable/product, atom/movable/origin)
 	. = ..()
 	product.SetName("box of [product.name]")
 	return product
 
-/obj/machinery/cooker/cereal/change_product_appearance(obj/item/reagent_containers/food/variable/cereal/product, atom/movable/origin)
+/obj/machinery/kitchen/cereal/change_product_appearance(obj/item/reagent_containers/food/variable/cereal/product, atom/movable/origin)
 	ClearOverlays()
 	var/icon/background = icon(product.icon, "[product.icon_state]_filling")
 	var/origin_color
@@ -36,3 +37,4 @@
 	food_image.pixel_y = 2
 	product.AddOverlays(food_image)
 	return product
+*/

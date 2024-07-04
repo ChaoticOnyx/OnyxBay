@@ -23,7 +23,7 @@
 
 /datum/cooking/recipe_step/use_grill/check_conditions_met(obj/used_item, datum/cooking/recipe_tracker/tracker)
 
-	if(!istype(used_item, /obj/machinery/cooking_with_jane/grill))
+	if(!istype(used_item, /obj/machinery/kitchen/grill))
 		return CWJ_CHECK_INVALID
 
 	return CWJ_CHECK_VALID
@@ -32,7 +32,7 @@
 /datum/cooking/recipe_step/use_grill/calculate_quality(obj/used_item, datum/cooking/recipe_tracker/tracker)
 	var/obj/item/reagent_containers/vessel/cooking_container/container = tracker.holder_ref.resolve()
 
-	var/obj/machinery/cooking_with_jane/grill/our_grill = used_item
+	var/obj/machinery/kitchen/grill/our_grill = used_item
 
 
 	var/bad_cooking = 0

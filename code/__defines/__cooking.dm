@@ -64,6 +64,10 @@
 #define OVEN			"oven"
 #define GRILL			"grill grate"
 
+//Tools qualities
+#define QUALITY_CUTTING "cutting"
+#define QUALITY_HAMMERING "hammering"
+
 //Stove temp settings.
 #define J_LO "Low"
 #define J_MED "Medium"

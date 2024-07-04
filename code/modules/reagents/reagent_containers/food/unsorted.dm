@@ -420,21 +420,39 @@
 	startswith = list(/datum/reagent/nutriment/protein = 3)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/rawmeatball
+/obj/item/reagent_containers/food/rawmeatball
 	name = "raw meatball"
 	desc = "A raw meatball."
 	icon = 'icons/obj/food_ingredients.dmi'
-	icon_state = "meatball_raw"
+	icon_state = "rawfaggot"
 	bitesize = 3
 	center_of_mass = list("x"=16, "y"=15)
-	preloaded_reagents = list("protein" = 2)
-	taste_tag = list(MEAT_FOOD)
+	startswith = list(/datum/reagent/nutriment/protein=5)
 
-/obj/item/reagent_containers/food/snacks/rawmeatball/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/reagent_containers/food/rawmeatball/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/material/kitchen/rollingpin))
-		new /obj/item/reagent_containers/food/snacks/patty_raw(src)
+		new /obj/item/reagent_containers/food/patty_raw(src)
 		to_chat(user, "You flatten the raw meatball.")
 		qdel(src)
+
+
+/obj/item/reagent_containers/food/patty_raw
+	name = "raw patty"
+	desc = "A raw patty ready to be grilled into a juicy and delicious burger."
+	icon = 'icons/obj/food_ingredients.dmi'
+	icon_state = "patty_raw"
+	bitesize = 3
+	center_of_mass = list("x"=17, "y"=20)
+	startswith = list(/datum/reagent/nutriment/protein=2)
+
+/obj/item/reagent_containers/food/patty
+	name = "patty"
+	desc = "A juicy cooked patty, ready to be slapped between two buns."
+	icon = 'icons/obj/food_ingredients.dmi'
+	icon_state = "patty"
+	bitesize = 3
+	center_of_mass = list("x"=17, "y"=20)
+	startswith = list(/datum/reagent/nutriment/protein=5)
 
 /obj/item/reagent_containers/food/sausage
 	name = "Sausage"
@@ -919,7 +937,7 @@
 	nutriment_amt = 2
 	bitesize = 2
 
-/obj/item/reagent_containers/food/spagetti
+/obj/item/reagent_containers/food/spaghetti
 	name = "Spaghetti"
 	desc = "A bundle of raw spaghetti."
 	icon_state = "spagetti"
@@ -1928,27 +1946,44 @@
 	desc = "A thin piece of raw meat."
 	icon = 'icons/obj/food_ingredients.dmi'
 	icon_state = "rawcutlet"
-	center_of_mass = "x=17;y=20"
-	startswith = list(/datum/reagent/nutriment/protein = 1)
-	bitesize = 1
+	bitesize = 2
+	center_of_mass = list("x"=17, "y"=20)
+	startswith = list(/datum/reagent/nutriment/protein = 3)
+
+/obj/item/reagent_containers/food/rawcutlet/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/material/kitchen/rollingpin))
+		new /obj/item/reagent_containers/food/rawmeatball(src)
+		new /obj/item/reagent_containers/food/rawmeatball(src)
+		to_chat(user, "You ground the sliced meat, and shape it into a ball.")
+		qdel(src)
 
 /obj/item/reagent_containers/food/cutlet
 	name = "cutlet"
-	desc = "A tasty meat slice."
+	desc = "A tasty slice of meat."
 	icon = 'icons/obj/food_ingredients.dmi'
 	icon_state = "cutlet"
-	center_of_mass = "x=17;y=20"
-	startswith = list(/datum/reagent/nutriment/protein = 2)
 	bitesize = 2
+	center_of_mass = list("x"=17, "y"=20)
+	startswith = list(/datum/reagent/nutriment/protein = 3)
 
-/obj/item/reagent_containers/food/bacon
-	name = "bacon"
+/obj/item/reagent_containers/food/rawbacon
+	name = "raw bacon"
 	desc = "A thin slice of pork."
 	icon = 'icons/obj/food.dmi'
 	icon_state = "bacon"
 	center_of_mass = "x=17;y=20"
 	startswith = list(/datum/reagent/nutriment/protein = 2)
-	bitesize = 1
+	bitesize = 2
+
+/obj/item/reagent_containers/food/bacon
+	name = "fried bacon"
+	desc = "When it comes to bacon, always be prepared."
+	icon = 'icons/obj/food_ingredients.dmi'
+	icon_state = "bacon"
+	bitesize = 2
+	startswith = list(/datum/reagent/nutriment/cornoil=5,/datum/reagent/nutriment/protein=10)
+	nutriment_desc = list("artery clogging freedom" = 10, "bacon fat" = 3)
+
 
 /obj/item/reagent_containers/food/rawfaggot
 	name = "raw faggot"
@@ -2302,5 +2337,12 @@
 	center_of_mass = list("x"=21, "y"=12)
 	nutriment_desc = list("taco shell" = 2)
 	nutriment_amt = 2
-	cooked = TRUE
 	matter = list(MATERIAL_BIOMATTER = 5)
+
+/obj/item/reagent_containers/food/medialuna
+	name = "croissant"
+	desc = "A flakey, buttery pastry shaped like a crescent moon. Soft and fluffy on the inside, crunchy on the outside, makes a perfect pair with a good cup of espresso."
+	icon_state = "medialuna"
+	bitesize = 3
+	nutriment_amt = 6
+	nutriment_desc = list("crunchy pastry" = 5, "buttery goodness" = 5)

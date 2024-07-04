@@ -1,10 +1,4 @@
-var/list/cutting_tools = list(
 
-)
-
-var/list/hammering_tools = list(
-
-)
 //Example Recipes
 /datum/cooking/recipe/steak_stove
 
@@ -1182,13 +1176,13 @@ var/list/hammering_tools = list(
 	product_type = /obj/item/reagent_containers/food/sliceable/pizza/margherita
 	step_builder = list(
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/sliceable/flatdough, qmod=0.5),
+		list(CWJ_ADD_PRODUCE, "tomato", qmod=0.2),
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/cheesewedge, qmod=0.5),
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/cheesewedge, qmod=0.5),
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/cheesewedge, qmod=0.5),
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/cheesewedge, qmod=0.5),
 		list(CWJ_ADD_REAGENT_OPTIONAL, "water", 5),
 		list(CWJ_ADD_REAGENT_OPTIONAL, "flour", 5),
-		list(CWJ_ADD_PRODUCE, "tomato", qmod=0.2),
 		list(CWJ_USE_OVEN, J_MED, 35 SECONDS)
 	)
 

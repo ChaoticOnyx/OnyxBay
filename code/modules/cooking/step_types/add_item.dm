@@ -67,7 +67,7 @@
 	var/obj/item/container = tracker.holder_ref.resolve()
 	if(container)
 		if(usr.can_unequip(added_item))
-			usr.__unequip(added_item)
+			usr.drop(added_item, container)
 		else
 			added_item.forceMove(container)
 	return CWJ_SUCCESS

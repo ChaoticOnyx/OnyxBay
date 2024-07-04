@@ -1,24 +1,24 @@
-/obj/item/electronics/circuitboard/cooking_with_jane/stove
+/obj/item/circuitboard/stove
 	name = "Circuit board (Stovetop)"
-	build_path = /obj/machinery/cooking_with_jane/stove
+	build_path = /obj/machinery/kitchen/stove
 	board_type = "machine"
 	origin_tech = list(TECH_BIO = 1)
 	req_components = list(
 		/obj/item/stock_parts/manipulator = 2, //Affects the food quality
 	)
 
-/obj/item/electronics/circuitboard/cooking_with_jane/oven
+/obj/item/circuitboard/oven
 	name = "Circuit board (Convection Oven)"
-	build_path = /obj/machinery/cooking_with_jane/oven
+	build_path = /obj/machinery/kitchen/oven
 	board_type = "machine"
 	origin_tech = list(TECH_BIO = 1)
 	req_components = list(
 		/obj/item/stock_parts/micro_laser = 2, //Affects the food quality
 	)
 
-/obj/item/electronics/circuitboard/cooking_with_jane/grill
+/obj/item/circuitboard/grill
 	name = "Circuit board (Charcoal Grill)"
-	build_path = /obj/machinery/cooking_with_jane/grill
+	build_path = /obj/machinery/kitchen/grill
 	board_type = "machine"
 	origin_tech = list(TECH_BIO = 1)
 	req_components = list(

@@ -22,7 +22,7 @@
 
 /datum/cooking/recipe_step/use_oven/check_conditions_met(obj/used_item, datum/cooking/recipe_tracker/tracker)
 
-	if(!istype(used_item, /obj/machinery/cooking_with_jane/oven))
+	if(!istype(used_item, /obj/machinery/kitchen/oven))
 		return CWJ_CHECK_INVALID
 
 	return CWJ_CHECK_VALID
@@ -31,7 +31,7 @@
 /datum/cooking/recipe_step/use_oven/calculate_quality(obj/used_item, datum/cooking/recipe_tracker/tracker)
 	var/obj/item/reagent_containers/vessel/cooking_container/container = tracker.holder_ref.resolve()
 
-	var/obj/machinery/cooking_with_jane/oven/our_oven = used_item
+	var/obj/machinery/kitchen/oven/our_oven = used_item
 
 
 	var/bad_cooking = 0

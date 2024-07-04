@@ -1594,7 +1594,7 @@
 /datum/chemical_reaction/mint/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/reagent_containers/food/snacks/mint(location)
+		new /obj/item/reagent_containers/food/mint(location)
 
 /datum/chemical_reaction/candy_corn
 	result = null
@@ -1604,7 +1604,7 @@
 /datum/chemical_reaction/candy_corn/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/reagent_containers/food/snacks/candy_corn(location)
+		new /obj/item/reagent_containers/food/candy_corn(location)
 
 /* Alcohol */
 
