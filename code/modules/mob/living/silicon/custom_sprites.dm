@@ -16,7 +16,7 @@ GLOBAL_LIST_EMPTY(ai_custom_icons)
 
 /hook/startup/proc/load_silicon_custom_sprites()
 #ifdef CUSTOM_ITEM_AI_HOLO
-	for(var/datum/custom_sprite/sprite in config.custom.sprites["ai_holo"])
+	for(var/datum/custom_sprite/sprite in config.custom.sprites?["ai_holo"])
 		var/ckey = sprite.ckey
 		var/custom_icon_state = sprite.sprite
 
@@ -29,7 +29,7 @@ GLOBAL_LIST_EMPTY(ai_custom_icons)
 #ifdef CUSTOM_ITEM_ROBOTS
 	var/list/custom_robot_icon_states = icon_states(CUSTOM_ITEM_ROBOTS)
 
-	for(var/datum/custom_sprite/sprite in config.custom.sprites["robot"])
+	for(var/datum/custom_sprite/sprite in config.custom.sprites?["robot"])
 		var/ckey = sprite.ckey
 		var/custom_icon_state = sprite.sprite
 		var/footstep_sound = sprite.footstep_sound
@@ -47,7 +47,7 @@ GLOBAL_LIST_EMPTY(ai_custom_icons)
 	var/list/custom_ai_icon_states = icon_states(CUSTOM_ITEM_AI)
 	var/custom_index = 0
 
-	for(var/datum/custom_sprite/sprite in config.custom.sprites["ai_core"])
+	for(var/datum/custom_sprite/sprite in config.custom.sprites?["ai_core"])
 		var/ckey = sprite.ckey
 		var/custom_icon_state = sprite.sprite
 
