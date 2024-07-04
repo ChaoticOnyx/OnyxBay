@@ -34,6 +34,11 @@
 	gear_tweaks += new /datum/gear_tweak/path(shirts)
 
 /datum/gear/clothing/vest
+	display_name = "vest, colour select"
+	path = /obj/item/clothing/accessory/toggleable/color_vest
+	flags = GEAR_HAS_COLOR_SELECTION
+
+/datum/gear/clothing/black_vest
 	display_name = "black vest"
 	path = /obj/item/clothing/accessory/toggleable/vest
 

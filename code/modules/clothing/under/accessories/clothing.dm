@@ -122,6 +122,11 @@
 	desc = "Slick black suit vest."
 	icon_state = "det_vest"
 
+/obj/item/clothing/accessory/toggleable/color_vest
+	name = "slick vest"
+	desc = "Slick suit vest."
+	icon_state = "color_vest"
+
 /obj/item/clothing/accessory/toggleable/tan_jacket
 	name = "tan suit jacket"
 	desc = "Cozy suit jacket."
