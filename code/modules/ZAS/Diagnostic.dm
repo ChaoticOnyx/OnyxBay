@@ -36,8 +36,10 @@
 	if(!direction)
 		return
 
+	var/airblock
 	if(direction == "N/A")
-		if(!(T.c_airblock(T) & AIR_BLOCKED))
+		ATMOS_CANPASS_TURF(airblock, T, T)
+		if(!(airblock & AIR_BLOCKED))
 			to_chat(mob, "The turf can pass air! :D")
 		else
 			to_chat(mob, "No air passage :x")
@@ -47,8 +49,10 @@
 	if(!istype(other_turf))
 		return
 
-	var/t_block = T.c_airblock(other_turf)
-	var/o_block = other_turf.c_airblock(T)
+	var/t_block
+	ATMOS_CANPASS_TURF(t_block, T, other_turf)
+	var/o_block
+	ATMOS_CANPASS_TURF(o_block, other_turf, T)
 
 	if(o_block & AIR_BLOCKED)
 		if(t_block & AIR_BLOCKED)

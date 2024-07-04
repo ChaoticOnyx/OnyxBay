@@ -309,7 +309,7 @@ var/list/name_to_material
 /material/plasma
 	name = MATERIAL_PLASMA
 	stack_type = /obj/item/stack/material/plasma
-	ignition_point = PLASMA_MINIMUM_BURN_TEMPERATURE
+	ignition_point = FLAMMABLE_GAS_FLASHPOINT
 	icon_base = "stone"
 	table_icon_base = "stone"
 	icon_colour = "#a109e2"

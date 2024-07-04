@@ -345,11 +345,6 @@
 
 	return 1
 
-
-/datum/gas_mixture/proc/react()
-	return zburn(null, force_burn=FALSE, no_check=FALSE) //could probably just call zburn() here with no args but I like being explicit.
-
-
 //Rechecks the gas_mixture and adjusts the graphic list if needed.
 //Two lists can be passed by reference if you need know specifically which graphics were added and removed.
 /datum/gas_mixture/proc/check_tile_graphic(list/graphic_add = null, list/graphic_remove = null)

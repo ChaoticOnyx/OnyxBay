@@ -52,8 +52,8 @@
 #define CARBON_LIFEFORM_FIRE_DAMAGE     4
 
 // Plasma fire properties.
-#define PLASMA_MINIMUM_BURN_TEMPERATURE    (126 CELSIUS) // Autoignite temperature in tanks and canisters - enclosed environments I guess
-#define PLASMA_FLASHPOINT                  (246 CELSIUS) // Autoignite temperature in air if that ever gets implemented.
+#define FLAMMABLE_GAS_MINIMUM_BURN_TEMPERATURE    (126 CELSIUS) // Autoignite temperature in tanks and canisters - enclosed environments I guess
+#define FLAMMABLE_GAS_FLASHPOINT           (246 CELSIUS) // Autoignite temperature in air if that ever gets implemented.
 
 //These control the mole ratio of oxidizer and fuel used in the combustion reaction
 #define FIRE_REACTION_OXIDIZER_AMOUNT	3 //should be greater than the fuel amount if fires are going to spread much

@@ -549,7 +549,7 @@ var/list/global/tank_gauge_cache = list()
 	air_contents.gas["oxygen"] = oxygen_amt
 	air_contents.update_values()
 	valve_welded = 1
-	air_contents.temperature = PLASMA_MINIMUM_BURN_TEMPERATURE-1
+	air_contents.temperature = FLAMMABLE_GAS_MINIMUM_BURN_TEMPERATURE - 1
 
 	wired = 1
 
