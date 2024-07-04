@@ -266,7 +266,7 @@
 	src.vis_contents.Remove(our_item)
 
 /obj/item/reagent_containers/vessel/cooking_container/plate
-	icon = 'icons/obj/cooking/eris_kitchen.dmi'
+	icon = 'icons/obj/cooking/kitchen2.dmi'
 	name = "serving plate"
 	shortname = "plate"
 	desc = "A shitty serving plate. You probably shouldn't be seeing this."

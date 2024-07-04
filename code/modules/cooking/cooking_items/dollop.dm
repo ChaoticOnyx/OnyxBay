@@ -4,17 +4,18 @@
 	icon = 'icons/obj/cooking/kitchen.dmi'
 	icon_state = "dollop"
 	bitesize = 4
-	var/reagent_id = "frosting"
+	var/datum/reagent/reagent = /datum/reagent/organic/sugar/frosting
 	startswith = list(/datum/reagent/organic/sugar/frosting = 30)
 
-/obj/item/reagent_containers/food/dollop/New(loc, new_reagent_id = "frosting", new_amount = 30)
+/obj/item/reagent_containers/food/dollop/New(loc, new_reagent = /datum/reagent/organic/sugar/frosting, new_amount = 30)
 	. = ..()
-	if(new_reagent_id)
-		var/reagent_name = get_reagent_name_by_id(reagent_id)
+	if(new_reagent)
+		reagent = new_reagent
+		var/reagent_name = reagent.name
 		if(reagent_name)
 			name = "dollop of [reagent_name]"
 			desc = "A fresh serving of just [reagent_name] and nothing but [reagent_name]."
-		startswith = list("[new_reagent_id]" = new_amount)
+		startswith = list(reagent = new_amount)
 
 /obj/item/reagent_containers/food/dollop/Initialize()
 	. = ..()

@@ -88,7 +88,7 @@ Food quality is calculated based on the steps taken.
 		QDEL_NULL(product_info) //We don't need this anymore.
 
 	if(reagent_id)
-		var/datum/reagent/test_reagent = GLOB.chemical_reagents_list[reagent_id]
+		var/datum/reagent/test_reagent = reagent_id
 		if(test_reagent)
 			if(!name)
 				name = test_reagent.name
@@ -136,14 +136,14 @@ Food quality is calculated based on the steps taken.
 				if(CWJ_ADD_REAGENT)
 					if(step_list.len < 3)
 						reason="Bad argument Length for CWJ_ADD_REAGENT"
-					else if(!is_reagent_with_id_exist(step_list[2]))
+					else if(!ispath(step_list[2],/datum/reagent))
 						reason="Bad reagent type for CWJ_ADD_REAGENT at arg 2"
 					else
 						create_step_add_reagent(step_list[2], step_list[3], FALSE)
 				if(CWJ_ADD_REAGENT_OPTIONAL)
 					if(step_list.len < 3)
 						reason="Bad argument Length for CWJ_ADD_REAGENT_OPTIONAL"
-					else if(!is_reagent_with_id_exist(step_list[2]))
+					else if(!ispath(step_list[2],/datum/reagent))
 						reason="Bad reagent type for CWJ_ADD_REAGENT_OPTIONAL at arg 2"
 					else
 						create_step_add_reagent(step_list[2], step_list[3], TRUE)
@@ -336,9 +336,9 @@ Food quality is calculated based on the steps taken.
 					reason="reagent_skip / reagent_skip declared on non add-item / add-reagent recipe step."
 
 			if("exclude_reagents" in step_list)
-				for(var/id in step_list["exclude_reagents"])
-					if(!is_reagent_with_id_exist(id))
-						reason="exclude_reagents list has nonexistant reagent id [id]"
+				for(var/reagent in step_list["exclude_reagents"])
+					if(istype(reagent, /datum/reagent))
+						reason="exclude_reagents list has bad type reagent [reagent]"
 
 				if(!set_exclude_reagents(step_list["exclude_reagents"]))
 					reason="exclude_reagents declared on non add-item / add-reagent recipe step."

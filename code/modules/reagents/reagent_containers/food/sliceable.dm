@@ -538,6 +538,29 @@
 /obj/item/reagent_containers/food/slice/birthdaycake/filled
 	filled = TRUE
 
+/obj/item/reagent_containers/food/sliceable/brownie
+	name = "brownies"
+	desc = "A huge rectangular brownie ready to be sliced and shared."
+	icon_state = "brownies"
+	trash = /obj/item/trash/waffles
+	filling_color = "#362008"
+	slice_path = /obj/item/reagent_containers/food/brownieslice
+	slices_num = 5
+	nutriment_amt = 20
+	nutriment_desc = list("buttery goodness" = 10, "sweetness" = 10, "chocolate" = 15)
+	matter = list(MATERIAL_BIOMATTER = 30)
+
+/obj/item/reagent_containers/food/brownieslice
+	name = "brownie slice"
+	desc = "A delicious and buttery chocolate brownie, pairs perfect with icecream!"
+	icon_state = "brownieslice"
+	filling_color = "#362008"
+	trash = /obj/item/trash/dish/plate
+	bitesize = 2
+	nutriment_amt = 4
+	nutriment_desc = list("buttery goodness" = 5, "sweetness" = 5, "chocolate" = 10)
+	matter = list(MATERIAL_BIOMATTER = 6)
+
 ////////////////////////
 /obj/item/reagent_containers/food/sliceable/bread
 	name = "Bread"

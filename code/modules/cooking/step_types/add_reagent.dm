@@ -13,7 +13,7 @@
 //our_recipe: The parent recipe object,
 /datum/cooking/recipe_step/add_reagent/New(reagent_id,  amount, datum/cooking/recipe/our_recipe)
 
-	var/datum/reagent/global_reagent = GLOB.chemical_reagents_list[reagent_id]
+	var/datum/reagent/global_reagent = reagent_id
 	if(global_reagent)
 		desc = "Add [amount] unit[amount>1 ? "s" : ""] of [global_reagent.name]."
 

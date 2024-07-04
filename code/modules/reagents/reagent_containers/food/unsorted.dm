@@ -320,6 +320,27 @@
 		/datum/reagent/blackpepper = 1)
 	bitesize = 1
 
+/obj/item/reagent_containers/food/baconeggs
+	name = "eggs and bacon"
+	desc = "A classic breakfast combo of fried, sunny-side eggs, with bacon strips on the side." // Wakey wakey.
+	icon_state = "baconegg"
+	bitesize = 4
+	startswith = list(
+		/datum/reagent/nutriment/protein = 6,
+		/datum/reagent/nutriment/cornoil = 3)
+	nutriment_desc = list("bacon" = 5, "fried eggs" = 5)
+
+/obj/item/reagent_containers/food/benedict
+	name = "eggs benedict"
+	desc = "A perfectly poached runny egg sitting atop a bedding of Nadezhdian bacon and muffin, with hollandaise sauce generously spread on top. The best breakfast you'll ever have."
+	icon_state = "benedict"
+	bitesize = 5
+	startswith = list(
+		/datum/reagent/nutriment/protein = 15,
+		/datum/reagent/sodiumchloride = 1,
+		/datum/reagent/blackpepper = 1)
+	nutriment_desc = list("ham" = 5, "poached egg" = 5, "hollandaise sauce" = 3)
+
 /obj/item/reagent_containers/food/boiledegg
 	name = "Boiled egg"
 	desc = "A hard boiled egg."
@@ -368,6 +389,18 @@
 		/datum/reagent/nutriment/protein = 3,
 		/datum/reagent/toxin/carpotoxin = 6)
 	bitesize = 6
+
+/obj/item/reagent_containers/food/sashimi
+	name = "sashimi"
+	desc = "Raw cuts of carp fillet with a side of soy sauce, apparently an eastern earth delicacy."
+	icon_state = "sashimi"
+	trash = /obj/item/trash/dish/plate
+	bitesize = 2
+	nutriment_amt = 4
+	startswith = list(
+		/datum/reagent/nutriment/protein = 6,
+		/datum/reagent/toxin/carpotoxin = 4)
+	nutriment_desc = list("raw fish" = 2, "soy sauce" = 2)
 
 /obj/item/reagent_containers/food/fishfingers
 	name = "Fish Fingers"
@@ -420,7 +453,7 @@
 	startswith = list(/datum/reagent/nutriment/protein = 3)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/rawmeatball
+/obj/item/reagent_containers/food/rawfaggot
 	name = "raw meatball"
 	desc = "A raw meatball."
 	icon = 'icons/obj/food_ingredients.dmi'
@@ -429,7 +462,7 @@
 	center_of_mass = list("x"=16, "y"=15)
 	startswith = list(/datum/reagent/nutriment/protein=5)
 
-/obj/item/reagent_containers/food/rawmeatball/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/reagent_containers/food/rawfaggot/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/material/kitchen/rollingpin))
 		new /obj/item/reagent_containers/food/patty_raw(src)
 		to_chat(user, "You flatten the raw meatball.")
@@ -1558,7 +1591,7 @@
 	nutriment_amt = 8
 	bitesize = 2
 
-/obj/item/reagent_containers/food/boiledspagetti
+/obj/item/reagent_containers/food/boiledspaghetti
 	name = "Boiled Spaghetti"
 	desc = "A plain dish of noodles, this sucks."
 	icon_state = "spagettiboiled"
@@ -1603,7 +1636,7 @@
 	startswith = list(/datum/reagent/drink/juice/tomato = 10)
 	bitesize = 4
 
-/obj/item/reagent_containers/food/faggotspagetti
+/obj/item/reagent_containers/food/faggotspaghetti
 	name = "Spaghetti & Faggots"
 	desc = "Now thats a nic'e faggot!"
 	icon_state = "faggotspagetti"
@@ -1952,8 +1985,8 @@
 
 /obj/item/reagent_containers/food/rawcutlet/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/material/kitchen/rollingpin))
-		new /obj/item/reagent_containers/food/rawmeatball(src)
-		new /obj/item/reagent_containers/food/rawmeatball(src)
+		new /obj/item/reagent_containers/food/rawfaggot(src)
+		new /obj/item/reagent_containers/food/rawfaggot(src)
 		to_chat(user, "You ground the sliced meat, and shape it into a ball.")
 		qdel(src)
 
@@ -2346,3 +2379,65 @@
 	bitesize = 3
 	nutriment_amt = 6
 	nutriment_desc = list("crunchy pastry" = 5, "buttery goodness" = 5)
+
+/obj/item/reagent_containers/food/blt
+	name = "BLT"
+	desc = "A classic sandwich composed of nothing more than bacon, lettuce and tomato."
+	icon_state = "blt"
+	bitesize = 2
+	nutriment_desc = list("toasted bread" = 3, "bacon" = 3, "tomato" = 2)
+	nutriment_amt = 3
+
+/obj/item/reagent_containers/food/boiledslimecore
+	name = "boiled slime core"
+	desc = "A boiled red thing."
+	icon_state = "boiledrorocore" // Fix'd
+	bitesize = 3
+	startswith = list(/datum/reagent/metroidjelly = 5)
+	matter = list(MATERIAL_BIOMATTER = 33)
+
+/obj/item/reagent_containers/food/bearchili
+	name = "bear meat chili"
+	desc = "A chili so manly you'll end up growing hair on your chest and wrestling Renders with your bare hands."
+	icon_state = "bearchili"
+	nutriment_desc = list("manliest meat" = 10, "hot chili peppers" = 3)
+	nutriment_amt = 3
+	trash = /obj/item/trash/dish/bowl
+	bitesize = 5
+	startswith = list(/datum/reagent/nutriment/protein = 12, /datum/reagent/capsaicin = 3, /datum/reagent/hyperzine = 5)
+
+/obj/item/reagent_containers/food/slimesoup
+	name = "slime soup"
+	desc = "If no water is available, you may substitute tears."
+	icon_state = "slimesoup" //nonexistant?
+	filling_color = "#C4DBA0"
+	bitesize = 5
+	startswith = list(/datum/reagent/metroidjelly = 5, /datum/reagent/water = 10)
+
+/obj/item/reagent_containers/food/beefcurry
+	name = "beef curry"
+	desc = "A piping hot plate of spicy beef curry atop fluffy, steamed white rice."
+	icon_state = "beefcurry"
+	trash = /obj/item/trash/dish/bowl
+	bitesize = 4
+	startswith = list(/datum/reagent/nutriment/protein = 8, /datum/reagent/capsaicin = 5)
+	nutriment_desc = list("beef" = 5, "curry" = 5, "spicyness" = 2)
+
+/obj/item/reagent_containers/food/chickencurry
+	name = "poultry curry"
+	desc = "A piping hot plate of spicy poultry curry atop fluffy, steamed white rice."
+	icon_state = "chickencurry"
+	trash = /obj/item/trash/dish/bowl
+	bitesize = 4
+	startswith = list(/datum/reagent/nutriment/protein = 8, /datum/reagent/capsaicin = 5)
+	nutriment_desc = list("chicken" = 5, "curry" = 5, "spicyness" = 2)
+
+/obj/item/reagent_containers/food/mashpotatoes
+	name = "mashed potatoes"
+	desc = "Soft and fluffy mashed potatoes, the perfect side dish for a variety of meats."
+	icon_state = "mashpotatoes"
+	trash = /obj/item/trash/dish/plate
+	bitesize = 4
+	nutriment_amt = 8
+	nutriment_desc = list("mashed potatoes" = 5, "butter" = 2)
+	matter = list(MATERIAL_BIOMATTER = 8)

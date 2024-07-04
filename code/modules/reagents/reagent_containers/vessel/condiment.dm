@@ -347,11 +347,14 @@
 	name = "creamer"
 	startswith = list(/datum/reagent/drink/milk/cream)
 
-/obj/item/reagent_containers/food/condiment/soysauce
-	preloaded_reagents = list("soysauce" = 50)
+/obj/item/reagent_containers/vessel/condiment/soysauce
+	name = "soysauce"
+	startswith = list(/datum/reagent/nutriment/soysauce = 50)
 
-/obj/item/reagent_containers/food/condiment/coldsauce
-	preloaded_reagents = list("frostoil" = 50)
+/obj/item/reagent_containers/vessel/condiment/coldsauce
+	name = "coldsauce"
+	startswith = list(/datum/reagent/frostoil = 50)
 
-/obj/item/reagent_containers/food/condiment/cornoil
-	preloaded_reagents = list("cornoil" = 50)
+/obj/item/reagent_containers/vessel/condiment/cornoil
+	name = "cornoil"
+	startswith = list(/datum/reagent/nutriment/cornoil = 50)

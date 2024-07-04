@@ -127,8 +127,7 @@
 							/obj/item/reagent_containers/food/grown 					= TRADER_BLACKLIST_ALL,
 							/obj/item/reagent_containers/food/human 					= TRADER_BLACKLIST_ALL,
 							/obj/item/reagent_containers/food/sliceable/braincake 		= TRADER_BLACKLIST,
-							/obj/item/reagent_containers/food/meat/human 				= TRADER_BLACKLIST,
-							/obj/item/reagent_containers/food/variable 					= TRADER_BLACKLIST_ALL
+							/obj/item/reagent_containers/food/meat/human 				= TRADER_BLACKLIST
 							)
 
 /datum/trader/ship/bakery

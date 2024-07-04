@@ -18,6 +18,7 @@ var/global/datum/global_init/init = new ()
 	// kept out of a hook to preserve call order
 	initialize_chemical_reactions()
 
+
 	qdel(src) //we're done
 
 // This dumb shit must be wiped out of existence as soon as possible

@@ -40,9 +40,6 @@ var/list/hammering_tools = list(
 			if(!is_type_in_list(our_tool, hammering_tools))
 				return CWJ_CHECK_INVALID
 
-	if(!(our_tool in tool_type))
-		return CWJ_CHECK_INVALID
-
 	return CWJ_CHECK_VALID
 
 /datum/cooking/recipe_step/use_tool/follow_step(obj/added_item, obj/item/reagent_containers/vessel/cooking_container/container)

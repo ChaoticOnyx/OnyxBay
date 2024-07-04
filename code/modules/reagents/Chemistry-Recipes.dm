@@ -1544,7 +1544,7 @@
 /datum/chemical_reaction/faggot/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/reagent_containers/food/rawmeatball(location)
+		new /obj/item/reagent_containers/food/rawfaggot(location)
 
 /datum/chemical_reaction/dough
 	name = "Dough"
@@ -1588,20 +1588,20 @@
 
 /datum/chemical_reaction/mint
 	result = null
-	required_reagents = list("sugar" = 5, "frostoil" = 5)
+	required_reagents = list(/datum/reagent/sugar = 5, /datum/reagent/frostoil = 5)
 	result_amount = 1
 
-/datum/chemical_reaction/mint/on_reaction(var/datum/reagents/holder, var/created_volume)
+/datum/chemical_reaction/mint/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/mint(location)
 
 /datum/chemical_reaction/candy_corn
 	result = null
-	required_reagents = list("sugar" = 5, "cornoil" = 5)
+	required_reagents = list(/datum/reagent/sugar = 5, /datum/reagent/nutriment/cornoil = 5)
 	result_amount = 1
 
-/datum/chemical_reaction/candy_corn/on_reaction(var/datum/reagents/holder, var/created_volume)
+/datum/chemical_reaction/candy_corn/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/candy_corn(location)

@@ -1,29 +1,27 @@
 
-
+/* REVIEW Need to write dumplings
 /datum/recipe/dumplings //Missing Recipe
 	fruit = list("cabbage" = 1) // A recipe that ACTUALLY uses cabbage.
-	reagents = list("soysauce" = 5, "sodiumchloride" = 1, "blackpepper" = 1, "cornoil" = 1) // No sesame oil, corn will have to do.
+	reagents = list(/datum/reagent/nutriment/soysauce = 5, /datum/reagent/sodiumchloride = 1, /datum/reagent/blackpepper = 1, /datum/reagent/nutriment/cornoil = 1) // No sesame oil, corn will have to do.
 	items = list(
 		/obj/item/reagent_containers/food/rawbacon,
 		/obj/item/reagent_containers/food/rawbacon, // Substitute for minced pork.
 		/obj/item/reagent_containers/food/doughslice,
 	)
 	result = /obj/item/reagent_containers/food/dumplings
+*/
 
 //Somethin' the fuck else
 
 /datum/recipe/donkpocket
 	items = list(
 		/obj/item/reagent_containers/food/dough,
-		/obj/item/reagent_containers/food/meatball
+		/obj/item/reagent_containers/food/faggot
 	)
 	result = /obj/item/reagent_containers/food/donkpocket //SPECIAL
-	proc/warm_up(var/obj/item/reagent_containers/food/donkpocket/being_cooked)
-		being_cooked.heat()
-	make_food(var/obj/container as obj)
-		var/obj/item/reagent_containers/food/donkpocket/being_cooked = ..(container)
-		warm_up(being_cooked)
-		return being_cooked
+
+/datum/recipe/donkpocket/proc/warm_up(obj/item/reagent_containers/food/donkpocket/being_cooked)
+	being_cooked.heat()
 
 /datum/recipe/donkpocket/warm
 	reagents = list() //This is necessary since this is a child object of the above recipe and we don't want donk pockets to need flour
@@ -31,11 +29,12 @@
 		/obj/item/reagent_containers/food/donkpocket
 	)
 	result = /obj/item/reagent_containers/food/donkpocket //SPECIAL
-	make_food(var/obj/container as obj)
-		var/obj/item/reagent_containers/food/donkpocket/being_cooked = locate() in container
-		if(being_cooked && !being_cooked.warm)
-			warm_up(being_cooked)
-		return being_cooked
+
+/datum/recipe/donkpocket/make_food(obj/container as obj)
+	var/obj/item/reagent_containers/food/donkpocket/being_cooked = locate() in container
+	if(being_cooked && !being_cooked.warm)
+		warm_up(being_cooked)
+	return being_cooked
 
 
 // see code/datums/recipe.dm
@@ -58,137 +57,11 @@ I said no!
 	result = /obj/item/reagent_containers/food/telebacon
 */
 
-/datum/recipe/friedegg
-	reagents = list(/datum/reagent/sodiumchloride = 1, /datum/reagent/blackpepper = 1)
-	items = list(
-		/obj/item/reagent_containers/food/egg
-	)
-	result = /obj/item/reagent_containers/food/friedegg
-
-/datum/recipe/boiledegg
-	reagents = list(/datum/reagent/water = 5)
-	items = list(
-		/obj/item/reagent_containers/food/egg
-	)
-	result = /obj/item/reagent_containers/food/boiledegg
-
 /datum/recipe/dionaroast
 	fruit = list("apple" = 1)
 	reagents = list(/datum/reagent/acid/polyacid = 5) //It dissolves the carapace. Still poisonous, though.
 	items = list(/obj/item/holder/diona)
 	result = /obj/item/reagent_containers/food/dionaroast
-
-/datum/recipe/classichotdog
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/holder/corgi
-	)
-	result = /obj/item/reagent_containers/food/classichotdog
-
-/datum/recipe/jellydonut
-	reagents = list(/datum/reagent/drink/juice/berry = 5, /datum/reagent/sugar = 5)
-	items = list(
-		/obj/item/reagent_containers/food/dough
-	)
-	result = /obj/item/reagent_containers/food/donut/jelly
-
-/datum/recipe/jellydonut/metroid
-	reagents = list(/datum/reagent/metroidjelly = 5, /datum/reagent/sugar = 5)
-	items = list(
-		/obj/item/reagent_containers/food/dough
-	)
-	result = /obj/item/reagent_containers/food/donut/metroidjelly
-
-/datum/recipe/jellydonut/cherry
-	reagents = list(/datum/reagent/nutriment/cherryjelly = 5, /datum/reagent/sugar = 5)
-	items = list(
-		/obj/item/reagent_containers/food/dough
-	)
-	result = /obj/item/reagent_containers/food/donut/cherryjelly
-
-/datum/recipe/donut
-	reagents = list(/datum/reagent/sugar = 5)
-	items = list(
-		/obj/item/reagent_containers/food/dough
-	)
-	result = /obj/item/reagent_containers/food/donut/normal
-
-/datum/recipe/plainburger
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/reagent_containers/food/meat
-	)
-	result = /obj/item/reagent_containers/food/plainburger
-
-/datum/recipe/brainburger
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/reagent_containers/food/organ/brain
-	)
-	result = /obj/item/reagent_containers/food/brainburger
-
-/datum/recipe/roburger
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/robot_parts/head
-	)
-	result = /obj/item/reagent_containers/food/roburger
-
-/datum/recipe/xenoburger
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/reagent_containers/food/meat/xeno
-	)
-	result = /obj/item/reagent_containers/food/xenoburger
-
-/datum/recipe/fishburger
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/reagent_containers/food/carpmeat
-	)
-	result = /obj/item/reagent_containers/food/fishburger
-
-/datum/recipe/tofuburger
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/reagent_containers/food/tofu
-	)
-	result = /obj/item/reagent_containers/food/tofuburger
-
-/datum/recipe/ghostburger
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/ectoplasm //where do you even find this stuff
-	)
-	result = /obj/item/reagent_containers/food/ghostburger
-
-/datum/recipe/clownburger
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/clothing/mask/gas/clown_hat
-	)
-	result = /obj/item/reagent_containers/food/clownburger
-
-/datum/recipe/mimeburger
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/clothing/head/beret
-	)
-	result = /obj/item/reagent_containers/food/mimeburger
-
-/datum/recipe/bunbun
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/reagent_containers/food/bun
-	)
-	result = /obj/item/reagent_containers/food/bunbun
-
-/datum/recipe/hotdog
-	items = list(
-		/obj/item/reagent_containers/food/bun,
-		/obj/item/reagent_containers/food/sausage
-	)
-	result = /obj/item/reagent_containers/food/hotdog
 
 /datum/recipe/waffles
 	reagents = list(/datum/reagent/sugar = 10)
@@ -206,30 +79,6 @@ I said no!
 	)
 	result = /obj/item/reagent_containers/food/pancakes
 
-/datum/recipe/donkpocket
-	items = list(
-		/obj/item/reagent_containers/food/dough,
-		/obj/item/reagent_containers/food/faggot
-	)
-	result = /obj/item/reagent_containers/food/donkpocket //SPECIAL
-	proc/warm_up(obj/item/reagent_containers/food/donkpocket/being_cooked)
-		being_cooked.heat()
-	make_food(obj/container as obj)
-		var/obj/item/reagent_containers/food/donkpocket/being_cooked = ..(container)
-		warm_up(being_cooked)
-		return being_cooked
-
-/datum/recipe/donkpocket/warm
-	reagents = list() //This is necessary since this is a child object of the above recipe and we don't want donk pockets to need flour
-	items = list(
-		/obj/item/reagent_containers/food/donkpocket
-	)
-	result = /obj/item/reagent_containers/food/donkpocket //SPECIAL
-	make_food(obj/container as obj)
-		var/obj/item/reagent_containers/food/donkpocket/being_cooked = locate() in container
-		if(being_cooked && !being_cooked.warm)
-			warm_up(being_cooked)
-		return being_cooked
 
 /datum/recipe/meatbread
 	items = list(
@@ -741,18 +590,18 @@ I said no!
 	)
 	result = /obj/item/reagent_containers/food/stewedsoymeat
 
-/*/datum/recipe/spagetti We have the processor now
+/*/datum/recipe/spaghetti We have the processor now
 	items = list(
 		/obj/item/reagent_containers/food/doughslice
 	)
-	result= /obj/item/reagent_containers/food/spagetti*/
+	result= /obj/item/reagent_containers/food/spaghetti*/
 
-/datum/recipe/boiledspagetti
+/datum/recipe/boiledspaghetti
 	reagents = list(/datum/reagent/water = 5)
 	items = list(
-		/obj/item/reagent_containers/food/spagetti,
+		/obj/item/reagent_containers/food/spaghetti,
 	)
-	result = /obj/item/reagent_containers/food/boiledspagetti
+	result = /obj/item/reagent_containers/food/boiledspaghetti
 
 /datum/recipe/boiledrice
 	reagents = list(/datum/reagent/water = 5, /datum/reagent/nutriment/rice = 10)
@@ -765,7 +614,7 @@ I said no!
 /datum/recipe/pastatomato
 	fruit = list("tomato" = 2)
 	reagents = list(/datum/reagent/water = 5)
-	items = list(/obj/item/reagent_containers/food/spagetti)
+	items = list(/obj/item/reagent_containers/food/spaghetti)
 	result = /obj/item/reagent_containers/food/pastatomato
 
 /datum/recipe/poppypretzel
@@ -773,19 +622,19 @@ I said no!
 	items = list(/obj/item/reagent_containers/food/dough)
 	result = /obj/item/reagent_containers/food/poppypretzel
 
-/datum/recipe/faggotspagetti
+/datum/recipe/faggotspaghetti
 	reagents = list(/datum/reagent/water = 5)
 	items = list(
-		/obj/item/reagent_containers/food/spagetti,
+		/obj/item/reagent_containers/food/spaghetti,
 		/obj/item/reagent_containers/food/faggot,
 		/obj/item/reagent_containers/food/faggot,
 	)
-	result = /obj/item/reagent_containers/food/faggotspagetti
+	result = /obj/item/reagent_containers/food/faggotspaghetti
 
 /datum/recipe/spesslaw
 	reagents = list(/datum/reagent/water = 5)
 	items = list(
-		/obj/item/reagent_containers/food/spagetti,
+		/obj/item/reagent_containers/food/spaghetti,
 		/obj/item/reagent_containers/food/faggot,
 		/obj/item/reagent_containers/food/faggot,
 		/obj/item/reagent_containers/food/faggot,
@@ -1213,12 +1062,12 @@ I said no!
 	result = /obj/item/reagent_containers/food/junglesalad
 
 /datum/recipe/chowmein
-	items = list(/obj/item/reagent_containers/food/boiledspagetti, /obj/item/reagent_containers/food/cutlet)
+	items = list(/obj/item/reagent_containers/food/boiledspaghetti, /obj/item/reagent_containers/food/cutlet)
 	fruit = list("cabbage" = 2, "carrot" = 1)
 	result = /obj/item/reagent_containers/food/chowmein
 
 /datum/recipe/beefnoodles
-	items = list(/obj/item/reagent_containers/food/boiledspagetti,/obj/item/reagent_containers/food/cutlet, /obj/item/reagent_containers/food/cutlet)
+	items = list(/obj/item/reagent_containers/food/boiledspaghetti,/obj/item/reagent_containers/food/cutlet, /obj/item/reagent_containers/food/cutlet)
 	fruit = list("cabbage" = 1)
 	result = /obj/item/reagent_containers/food/beefnoodles
 

@@ -13,7 +13,7 @@ list(<CWJ_STEP_CLASS><_OPTIONAL>, <REQUIRED_ARGS>, <CUSTOM_ARGS>=value)
 			The product inherits the item's quality and reagents if able.
 			<REQUIRED_ARGS>:
 				type_path - the type path of the item being added.
-			Example: list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/breadslice)
+			Example: list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/slice/bread)
 
 		CWJ_ADD_REAGENT
 			Add a reagent to the recipe. The resulting reagent is stored in the container's reagent datum.
@@ -61,7 +61,7 @@ list(<CWJ_STEP_CLASS><_OPTIONAL>, <REQUIRED_ARGS>, <CUSTOM_ARGS>=value)
 
 <_OPTIONAL>
 	The tag _OPTIONAL can be tacked onto any command to make it an optional step not required to finish the recipe.
-	Example: list(CWJ_ADD_ITEM_OPTIONAL, /obj/item/reagent_containers/food/breadslice)
+	Example: list(CWJ_ADD_ITEM_OPTIONAL, /obj/item/reagent_containers/food/slice/bread)
 
 <REQUIRED_ARGS>
 	The required arguments for a specific class of step to function. They are not labeled and must be in order.
@@ -70,7 +70,7 @@ list(<CWJ_STEP_CLASS><_OPTIONAL>, <REQUIRED_ARGS>, <CUSTOM_ARGS>=value)
 <CUSTOM_ARGS>
 	All custom arguments are declared in the format key=value. They are used to quickly modify a given step in a recipe.
 
-	Example: list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/breadslice, desc="a custom description")
+	Example: list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/slice/bread, desc="a custom description")
 
 	Valid options are:
 		desc
