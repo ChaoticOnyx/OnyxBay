@@ -80,7 +80,7 @@
 /// Add files that match the glob pattern, for example: `config/*`Add the file with the specified path. The extension is optional.
 #define rustg_cfg_add_source_file(name) RUSTG_CALL(RUST_G, "cfg_add_source_file")(name)
 
-/// Use environment variables. The prefix is optional.
+/// Use environment variables. The prefix and the separator are optional.
 #define rustg_cfg_add_source_env(prefix, separator) RUSTG_CALL(RUST_G, "cfg_add_source_env")(isnull(prefix) ? "" : prefix, isnull(separator) ? "" : separator)
 
 #define rustg_cfg_end_builder(...) RUSTG_CALL(RUST_G, "cfg_end_builder")()
@@ -478,6 +478,28 @@
 
 /// https://en.wikipedia.org/wiki/Normal-inverse_Gaussian_distribution
 #define rustg_rand_normal_inverse_gaussian(alpha, beta) text2num(RUSTG_CALL(RUST_G, "rand_normal_inverse_gaussian")(istext(alpha) ? alpha : num2text(alpha), istext(beta) ? beta : num2text(beta)))
+
+/// addr - A folder path or an IP address.
+/// ns - Namespace.
+/// db - Database name.
+/// login - Root login. Optional.
+/// pass - Root password. Optional.
+#define rustg_sdb_connect(addr, ns, db, login, pass) RUSTG_CALL(RUST_G, "sdb_connect")(addr, ns, db, isnull(login) ? "" : login, isnull(pass) ? "" : pass)
+
+/// Executes a query.
+/// query - The query itself.
+/// binds - a JSON encoded string, for example: `"{ \"some_arg\": \"Value\" }"`. Optional.
+#define rustg_sdb_query(query, binds) RUSTG_CALL(RUST_G, "sdb_query")(query, isnull(binds) ? "" : binds)
+
+/// Import an SQL file.
+/// path - Path to the SQL file.
+#define rustg_sdb_import(path) RUSTG_CALL(RUST_G, "sdb_import")(path)
+
+/// Dumps the database into the SQL file.
+/// path - Path to the file where to save the dump.
+#define rustg_sdb_export(path) RUSTG_CALL(RUST_G, "sdb_export")(path)
+
+#define rustg_sdb_disconnect(...) RUSTG_CALL(RUST_G, "sdb_disconnect")()
 
 #define rustg_raw_read_toml_file(path) json_decode(RUSTG_CALL(RUST_G, "toml_file_to_json")(path) || "null")
 

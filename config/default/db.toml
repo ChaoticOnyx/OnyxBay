@@ -1,0 +1,19 @@
+[db]
+address = "file://data/database"
+namespace = "ss13"
+login = ""
+password = ""
+
+# The following information is for feedback tracking via the blackbox server
+feedback_database = "feedback"
+feedback_login = "root"
+feedback_password = "pass"
+feedback_address = "localhost"
+feedback_port = "3306"
+
+# Third database, external bots can only access it
+donation_address = "localhost"
+donation_port = 3306
+donation_database = "donations"
+donation_login = "root"
+donation_password = "pass"

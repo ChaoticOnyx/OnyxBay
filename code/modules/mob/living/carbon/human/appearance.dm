@@ -1,5 +1,5 @@
-/mob/living/carbon/human/proc/change_appearance(flags = APPEARANCE_ALL_HAIR, location = src, mob/user = src, check_species_whitelist = 1, list/species_whitelist = list(), list/species_blacklist = list(), datum/topic_state/state = GLOB.default_state)
-	var/datum/nano_module/appearance_changer/AC = new(location, src, check_species_whitelist, species_whitelist, species_blacklist)
+/mob/living/carbon/human/proc/change_appearance(flags = APPEARANCE_ALL_HAIR, location = src, mob/user = src, list/species_whitelist = list(), list/species_blacklist = list(), datum/topic_state/state = GLOB.default_state)
+	var/datum/nano_module/appearance_changer/AC = new(location, src, species_whitelist, species_blacklist)
 	AC.flags = flags
 	AC.ui_interact(user, state = state)
 
@@ -174,16 +174,9 @@
 	dna.ready_dna(src)
 	sync_organ_dna()
 
-/mob/living/carbon/human/proc/generate_valid_species(check_whitelist = 1, list/whitelist = list(), list/blacklist = list())
+/mob/living/carbon/human/proc/generate_valid_species(list/whitelist = list(), list/blacklist = list())
 	var/list/valid_species = new()
 	for(var/current_species_name in all_species)
-		var/datum/species/current_species = all_species[current_species_name]
-
-		if(check_whitelist) //If we're using the whitelist, make sure to check it!
-			if((current_species.spawn_flags & SPECIES_IS_RESTRICTED) && !check_rights(R_ADMIN, 0, src))
-				continue
-			if(!is_alien_whitelisted(src, current_species))
-				continue
 		if(whitelist.len && !(current_species_name in whitelist))
 			continue
 		if(blacklist.len && (current_species_name in blacklist))

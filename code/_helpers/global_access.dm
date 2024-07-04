@@ -159,8 +159,6 @@
 			return global.air_alarm_topic;
 		if("air_blocked")
 			return global.air_blocked;
-		if("alien_whitelist")
-			return global.alien_whitelist;
 		if("allCasters")
 			return global.allCasters;
 		if("allConsoles")
@@ -269,8 +267,6 @@
 			return global.damage_icon_parts;
 		if("dbcon")
 			return global.dbcon;
-		if("dbcon_old")
-			return global.dbcon_old;
 		if("dbcon_don")
 			return global.dbcon_don;
 		if("debug_verbs")
@@ -319,8 +315,6 @@
 			return global.explosion_turfs;
 		if("failed_db_connections")
 			return global.failed_db_connections;
-		if("failed_old_db_connections")
-			return global.failed_old_db_connections;
 		if("file_uid")
 			return global.file_uid;
 		if("fileaccess_timer")
@@ -757,8 +751,6 @@
 			return global.weighted_mundaneevent_locations;
 		if("weighted_randomevent_locations")
 			return global.weighted_randomevent_locations;
-		if("whitelisted_species")
-			return global.whitelisted_species;
 		if("wireColours")
 			return global.wireColours;
 		if("world_topic_spam_protect_time")
@@ -932,8 +924,6 @@
 			global.air_alarm_topic=newval;
 		if("air_blocked")
 			global.air_blocked=newval;
-		if("alien_whitelist")
-			global.alien_whitelist=newval;
 		if("allCasters")
 			global.allCasters=newval;
 		if("allConsoles")
@@ -1046,8 +1036,6 @@
 			global.damage_icon_parts=newval;
 		if("dbcon")
 			global.dbcon=newval;
-		if("dbcon_old")
-			global.dbcon_old=newval;
 		if("dbcon_don")
 			global.dbcon_don=newval
 		if("debug_verbs")
@@ -1096,8 +1084,6 @@
 			global.explosion_turfs=newval;
 		if("failed_db_connections")
 			global.failed_db_connections=newval;
-		if("failed_old_db_connections")
-			global.failed_old_db_connections=newval;
 		if("file_uid")
 			global.file_uid=newval;
 		if("fileaccess_timer")
@@ -1532,8 +1518,6 @@
 			global.weighted_mundaneevent_locations=newval;
 		if("weighted_randomevent_locations")
 			global.weighted_randomevent_locations=newval;
-		if("whitelisted_species")
-			global.whitelisted_species=newval;
 		if("wireColours")
 			global.wireColours=newval;
 		if("world_topic_spam_protect_time")
@@ -1635,7 +1619,6 @@
 	"ai_verbs_default",
 	"air_alarm_topic",
 	"air_blocked",
-	"alien_whitelist",
 	"allCasters",
 	"allConsoles",
 	"all_grabobjects",
@@ -1733,7 +1716,6 @@
 	"explosion_in_progress",
 	"explosion_turfs",
 	"failed_db_connections",
-	"failed_old_db_connections",
 	"file_uid",
 	"fileaccess_timer",
 	"finds_as_strings",
@@ -2000,8 +1982,6 @@
 	"wax_recipes",
 	"weighted_mundaneevent_locations",
 	"weighted_randomevent_locations",
-	"whitelist",
-	"whitelisted_species",
 	"wireColours",
 	"world_topic_spam_protect_time",
 	"worths",

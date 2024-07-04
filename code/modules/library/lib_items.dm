@@ -142,17 +142,7 @@
 	. = ..()
 	if(!prefit_category)
 		return
-	if(!establish_old_db_connection())
-		return
-	var/list/potential_books = list()
-	var/DBQuery/query = sql_query("SELECT * FROM library WHERE category = $category", dbcon_old, list(category = prefit_category))
-	while(query.NextRow())
-		potential_books.Add(list(list(
-			"id" = query.item[1],
-			"author" = query.item[2],
-			"title" = query.item[3],
-			"content" = query.item[4]
-		)))
+	var/list/potential_books = db.find_books_with_category(prefit_category)
 	var/list/picked_books = list()
 	for(var/i in 1 to rand(3,5))
 		if(potential_books.len)
