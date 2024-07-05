@@ -3,8 +3,15 @@ GLOBAL_REAL(db, /datum/db) = new
 /datum/db/proc/connect()
 	var/ret = rustg_sdb_connect(config.db.address, config.db.namespace, config.general.server_id, config.db.login, config.db.password)
 
+	if(ret == "")
+		return
+
+	log_error("Can't connect to the database at '[config.db.address]': [ret].")
+
+	ret = rustg_sdb_connect("file://data/database", config.db.namespace, config.general.server_id, "", "")
+
 	if(ret != "")
-		CRASH("Can't connect to the database: [ret]")
+		CRASH("Can't connect to the fallback database: [ret].")
 
 /datum/db/proc/query(query, binds)
 	if(!isnull(binds))
