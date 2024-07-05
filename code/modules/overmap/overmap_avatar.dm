@@ -4,7 +4,7 @@
 /obj/structure/overmap
 	name = "overmap ship"
 	desc = "A space faring vessel."
-	icon = 'icons/overmap/new/nanotrasen/titan.dmi'
+	icon = 'icons/overmap/nsv13/nanotrasen/titan.dmi'
 	icon_state = "titan"
 	density = TRUE
 	dir = NORTH

@@ -26,7 +26,7 @@
 	var/turf/T = get_step(holder, exhaust_dir)
 	if(T)
 		T.assume_air(removed)
-		new/obj/effect/engine_exhaust(T, E.dir)
+		new /obj/effect/engine_exhaust(T, E.dir)
 
 /datum/extension/ship_engine/gas/proc/get_propellant(sample_only = TRUE, partial = 1)
 	var/obj/machinery/atmospherics/unary/engine/E = holder

@@ -142,7 +142,7 @@
 	flora_spawn_chance = 25
 	flora_spawn_list = list(
 		/obj/structure/flora/tree/pine = 20,
-		//obj/structure/flora/grass/both = 6,
+		//obj/structure/flora/grass/snowy/both = 6,
 		/obj/structure/flora/tree/dead = 3,
 		/obj/structure/landmine = 1,
 	)
