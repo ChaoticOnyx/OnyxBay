@@ -139,7 +139,6 @@
 
 	//Make a list of gas flags to avoid
 	var/blacklisted_flags = forced_flag_check & (XGM_GAS_OXIDIZER | XGM_GAS_FUEL) //Prevents combustible mixtures
-	var/list/blacklisted_gases //list of gases that shouldn't be in the atmosphere
 
 	//Habitable planets do not want any contaminants in the air
 	if(habitability == HABITABILITY_OKAY || habitability == HABITABILITY_IDEAL)
