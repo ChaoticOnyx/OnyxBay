@@ -118,54 +118,51 @@
 	var/old_selecting = selecting //We're only going to update_icon() if there's been a change
 
 	switch(icon_y)
-		if(1 to 3) //Feet
+		if(1 to 21) //Feet
 			switch(icon_x)
-				if(10 to 15)
+				if(10 to 19)
 					selecting = BP_R_FOOT
-				if(17 to 22)
+				if(20 to 35)
 					selecting = BP_L_FOOT
 				else
 					return 1
-		if(4 to 9) //Legs
+		if(22 to 37) //Legs
 			switch(icon_x)
-				if(10 to 15)
+				if(10 to 19)
 					selecting = BP_R_LEG
-				if(17 to 22)
+				if(20 to 35)
 					selecting = BP_L_LEG
 				else
 					return 1
-		if(10 to 13) //Hands and groin
+		if(38 to 49) //Hands and groin
 			switch(icon_x)
-				if(8 to 11)
+				if(3 to 13)
 					selecting = BP_R_HAND
-				if(12 to 20)
+				if(14 to 27)
 					selecting = BP_GROIN
-				if(21 to 24)
+				if(28 to 35)
 					selecting = BP_L_HAND
 				else
 					return 1
-		if(14 to 22) //Chest and arms to shoulders
+		if(50 to 65) //Chest and arms to shoulders
 			switch(icon_x)
-				if(8 to 11)
+				if(5 to 12)
 					selecting = BP_R_ARM
-				if(12 to 20)
+				if(13 to 28)
 					selecting = BP_CHEST
-				if(21 to 24)
+				if(29 to 35)
 					selecting = BP_L_ARM
 				else
 					return 1
-		if(23 to 30) //Head, but we need to check for eye or mouth
-			if(icon_x in 12 to 20)
+		if(65 to 75) //Head, but we need to check for eye or mouth
+			if(icon_x in 15 to 25)
 				selecting = BP_HEAD
 				switch(icon_y)
-					if(23 to 24)
-						if(icon_x in 15 to 17)
+					if(65 to 70)
+						if(icon_x in 17 to 22)
 							selecting = BP_MOUTH
-					if(26) //Eyeline, eyes are on 15 and 17
-						if(icon_x in 14 to 18)
-							selecting = BP_EYES
-					if(25 to 27)
-						if(icon_x in 15 to 17)
+					if(72 to 74)
+						if(icon_x in 17 to 22)
 							selecting = BP_EYES
 
 	if(old_selecting != selecting)
@@ -180,7 +177,7 @@
 
 /atom/movable/screen/zone_sel/on_update_icon()
 	ClearOverlays()
-	AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[selecting]"))
+	AddOverlays(image('icons/hud/new_targetdoll.dmi', "[selecting]"))
 
 /atom/movable/screen/intent
 	name = "intent"
@@ -194,14 +191,19 @@
 	var/icon_y = text2num(P["icon-y"])
 	intent = I_DISARM
 
+	if(icon_y > 21)
+		return
 
-	if(icon_x <= world.icon_size/2)
-		if(icon_y <= world.icon_size/2)
-			intent = I_HURT
+	if(icon_x < 20)
+		if(icon_y < 10)
+			intent = I_DISARM
 		else
 			intent = I_HELP
-	else if(icon_y <= world.icon_size/2)
-		intent = I_GRAB
+	else
+		if(icon_y < 10)
+			intent = I_HURT
+		else
+			intent = I_GRAB
 
 	if(is_pacifist(usr))
 		intent = I_HELP
@@ -209,30 +211,11 @@
 	update_icon()
 	usr.a_intent = intent
 
-
-
 /atom/movable/screen/intent/on_update_icon()
 	icon_state = "intent_[intent]"
 
 /atom/movable/screen/Click(location, control, params)
 	switch(name)
-		if("toggle")
-			if(usr.hud_used.inventory_shown)
-				usr.hud_used.inventory_shown = FALSE
-				usr.client.screen -= usr.hud_used.toggleable_inventory
-			else
-				usr.hud_used.inventory_shown = TRUE
-				usr.client.screen += usr.hud_used.toggleable_inventory
-
-			usr.hud_used.hidden_inventory_update()
-
-		if("equip")
-			if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
-				return 1
-			if(ishuman(usr))
-				var/mob/living/carbon/human/H = usr
-				H.quick_equip()
-
 		if("resist")
 			if(isliving(usr))
 				var/mob/living/L = usr
@@ -358,9 +341,6 @@
 		if("act_intent")
 			usr.a_intent_change("right")
 
-		if("pull")
-
-			usr.stop_pulling()
 		if("throw")
 			if(!usr.stat && isturf(usr.loc) && !usr.restrained())
 				usr.toggle_throw_mode()
@@ -577,6 +557,14 @@
 			ASSERT(isAI(usr))
 			var/mob/living/silicon/ai/AI = usr
 			AI.multitool_mode()
+		if("r_hand_button")
+			if(iscarbon(usr))
+				var/mob/living/carbon/C = usr
+				C.activate_hand("r")
+		if("l_hand_button")
+			if(iscarbon(usr))
+				var/mob/living/carbon/C = usr
+				C.activate_hand("l")
 		else
 			return 0
 	return 1

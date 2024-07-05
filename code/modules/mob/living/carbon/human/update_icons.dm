@@ -598,7 +598,7 @@ var/global/list/damage_icon_parts = list()
 	if(client)
 		client.screen |= contents
 		if(hud_used)
-			hud_used.hidden_inventory_update() 	//Updates the screenloc of the items on the 'other' inventory bar
+			hud_used.inventory_update() 	//Updates the screenloc of the items on the 'other' inventory bar
 
 // Handcuffs
 /mob/living/carbon/human/update_inv_handcuffed(update_icons=1)

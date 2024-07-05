@@ -1642,13 +1642,13 @@
 	src.blocking = 0
 	remove_movespeed_modifier(/datum/movespeed_modifier/blocking)
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
-		src.block_icon.icon_state = "act_block0"
+		src.block_icon.icon_state = "block"
 
 /mob/living/carbon/human/proc/useblock_on()
 	src.blocking = 1
 	add_movespeed_modifier(/datum/movespeed_modifier/blocking)
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
-		src.block_icon.icon_state = "act_block1"
+		src.block_icon.icon_state = "block_pressed"
 
 
 /mob/living/carbon/human/verb/blockswitch()
@@ -1660,12 +1660,12 @@
 		blocking_hand = 1
 		to_chat(src, "<span class='notice'>You will use your off hand to block.</span>")
 		if(src.blockswitch_icon)
-			src.blockswitch_icon.icon_state = "act_blockswitch1"
+			src.blockswitch_icon.icon_state = "blockswitch_pressed"
 	else
 		blocking_hand = 0
 		to_chat(src, "<span class='notice'>You will use your main hand to block.</span>")
 		if(src.blockswitch_icon)
-			src.blockswitch_icon.icon_state = "act_blockswitch0"
+			src.blockswitch_icon.icon_state = "blockswitch"
 
 /mob/living/carbon/human/verb/succumb()
 	set hidden = 1

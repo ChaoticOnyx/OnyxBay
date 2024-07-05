@@ -14,18 +14,18 @@
 
 	switch(intent)
 		if(MMB_BITE)
-			jump_icon?.icon_state = "act_jump0"
-			if(bite_icon?.icon_state == "act_bite1")
-				bite_icon?.icon_state = "act_bite0"
+			jump_icon?.icon_state = "jump"
+			if(bite_icon?.icon_state == "bite_pressed")
+				bite_icon?.icon_state = "bite"
 			else
-				bite_icon?.icon_state = "act_bite1"
+				bite_icon?.icon_state = "bite_pressed"
 
 		if(MMB_JUMP)
-			bite_icon?.icon_state = "act_bite0"
-			if(jump_icon?.icon_state == "act_jump1")
-				jump_icon?.icon_state = "act_jump0"
+			bite_icon?.icon_state = "bite"
+			if(jump_icon?.icon_state == "jump_pressed")
+				jump_icon?.icon_state = "jump"
 			else
-				jump_icon?.icon_state = "act_jump1"
+				jump_icon?.icon_state = "jump_pressed"
 
 /mob/living/carbon/human/proc/bite(mob/living/carbon/human/victim)
 	THROTTLE(cooldown, (6 SECONDS))

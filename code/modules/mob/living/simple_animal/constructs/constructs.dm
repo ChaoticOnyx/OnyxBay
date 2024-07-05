@@ -322,10 +322,6 @@
 		if(fire)
 			if(fire_alert)							fire.icon_state = "fire1"
 			else									fire.icon_state = "fire0"
-		if(pullin)
-			if(pulling)								pullin.icon_state = "pull1"
-			else									pullin.icon_state = "pull0"
-
 		if(purged)
 			if(purge > 0)							purged.icon_state = "purge1"
 			else									purged.icon_state = "purge0"

@@ -35,26 +35,26 @@
 	// Update HUD icons.
 	if(owner.gun_move_icon)
 		if(!(target_permissions & TARGET_CAN_MOVE))
-			owner.gun_move_icon.icon_state = "no_walk0"
+			owner.gun_move_icon.icon_state = "walk_off"
 			owner.gun_move_icon.SetName("Allow Movement")
 		else
-			owner.gun_move_icon.icon_state = "no_walk1"
+			owner.gun_move_icon.icon_state = "walk_on"
 			owner.gun_move_icon.SetName("Disallow Movement")
 
 	if(owner.item_use_icon)
 		if(!(target_permissions & TARGET_CAN_CLICK))
-			owner.item_use_icon.icon_state = "no_item0"
+			owner.item_use_icon.icon_state = "throw_off"
 			owner.item_use_icon.SetName("Allow Item Use")
 		else
-			owner.item_use_icon.icon_state = "no_item1"
+			owner.item_use_icon.icon_state = "throw_on"
 			owner.item_use_icon.SetName("Disallow Item Use")
 
 	if(owner.radio_use_icon)
 		if(!(target_permissions & TARGET_CAN_RADIO))
-			owner.radio_use_icon.icon_state = "no_radio0"
+			owner.radio_use_icon.icon_state = "talk_off"
 			owner.radio_use_icon.SetName("Allow Radio Use")
 		else
-			owner.radio_use_icon.icon_state = "no_radio1"
+			owner.radio_use_icon.icon_state = "talk_on"
 			owner.radio_use_icon.SetName("Disallow Radio Use")
 
 	var/message = "no longer permitted to "
@@ -187,9 +187,6 @@
 		set_next_think(0)
 		return
 
-
-
-
 /obj/aiming_overlay/on_update_icon()
 	if(locked)
 		icon_state = "locked"
@@ -215,7 +212,7 @@
 			to_chat(owner, "<span class='notice'>You will no longer aim rather than fire.</span>")
 			owner.client.remove_gun_icons()
 		if(owner.gun_setting_icon)
-			owner.gun_setting_icon.icon_state = "gun[active]"
+			owner.gun_setting_icon.icon_state = "use_[active ? "on" : "off"]"
 
 /obj/aiming_overlay/proc/cancel_aiming(no_message = 0)
 	if(!aiming_with || !aiming_at)

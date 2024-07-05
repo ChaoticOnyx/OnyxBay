@@ -1,11 +1,9 @@
 /// Full HUD shown
 #define HUD_STYLE_STANDART 1
-/// Only static elements are shown
-#define HUD_STYLE_REDUCED  2
 /// No HUD shown
-#define HUD_STYLE_NONE     3
+#define HUD_STYLE_NONE     2
 /// Total amount of HUD styles, keep this up-to-date
-#define HUD_STYLE_TOTAL    3
+#define HUD_STYLE_TOTAL    2
 
 /// Width of fullscreen icons in tiles, update manually.
 #define DEFAULT_FULLSCREEN_WIDTH  15
@@ -31,20 +29,20 @@
 #define ui_fullscreen "CENTER-7,CENTER-7"
 
 //Lower left, persistant menu
-#define ui_inventory "WEST:6,SOUTH:5"
+#define ui_lpanel "WEST:0,SOUTH:0"
 
 //Lower center, persistant menu
-#define ui_sstore1 "CENTER-5:10,SOUTH:5"
-#define ui_id "CENTER-4:12,SOUTH:5"
-#define ui_belt "CENTER-3:14,SOUTH:5"
-#define ui_back "CENTER-2:14,SOUTH:5"
-#define ui_rhand "CENTER-1:16,SOUTH:5"
-#define ui_lhand "CENTER:16,SOUTH:5"
+#define ui_sstore1 "WEST+1:3,SOUTH+2:21"
+#define ui_id "WEST+0:4,SOUTH+2:21"
+#define ui_belt "WEST+1:3,SOUTH+1:22"
+#define ui_back "WEST+0:4,SOUTH+0:23"
+#define ui_rhand "WEST+0:10,SOUTH+5:32"
+#define ui_rhand_button "WEST+0:5,SOUTH+7:6"
+#define ui_lhand "WEST+1:25,SOUTH+5:32"
+#define ui_lhand_button "WEST+1:20,SOUTH+7:6"
 #define ui_equip "CENTER-1:16,SOUTH+1:5"
-#define ui_swaphand1 "CENTER-1:16,SOUTH+1:5"
-#define ui_swaphand2 "CENTER:16,SOUTH+1:5"
-#define ui_storage1 "CENTER+1:16,SOUTH:5"
-#define ui_storage2 "CENTER+2:16,SOUTH:5"
+#define ui_storage1 "WEST+1:3,SOUTH+0:23"
+#define ui_storage2 "WEST+2:2,SOUTH+0:23"
 
 #define ui_alien_head "CENTER-3:12,SOUTH:5"		//aliens
 #define ui_alien_oclothing "CENTER-2:14,SOUTH:5"//aliens
@@ -64,13 +62,14 @@
 #define ui_construct_pull "EAST-1:28,SOUTH+1:10" //above the zone_sel icon
 
 //Lower right, persistant menu
-#define ui_dropbutton "EAST-4:22,SOUTH:5"
-#define ui_drop_throw "EAST-1:28,SOUTH+1:7"
-#define ui_pull_resist "EAST-2:26,SOUTH+1:7"
-#define ui_acti "EAST-2:26,SOUTH:5"
-#define ui_rest_act "EAST-3:24,SOUTH+1:5"
-#define ui_movi "EAST-3:24,SOUTH:5"
-#define ui_zonesel "EAST-1:28,SOUTH:5"
+#define ui_rpanel "EAST-1:15,SOUTH-0"
+#define ui_drop "EAST-1:19,SOUTH+4:15"
+#define ui_throw "EAST-1:19,SOUTH+4:1"
+#define ui_resist "EAST-1:21,SOUTH+6:37"
+#define ui_acti "EAST-1:19,SOUTH+8:16"
+#define ui_rest_act "EAST-1:19,SOUTH+1:11"
+#define ui_movi "EAST-1:19,SOUTH+0:28"
+#define ui_zonesel "EAST-1:21,SOUTH+10:0"
 #define ui_acti_alt "EAST-1:28,SOUTH:5" //alternative intent switcher for when the interface is hidden (F12)
 
 #define ui_borg_pull "EAST-3:24,SOUTH+1:7"
@@ -78,11 +77,10 @@
 #define ui_borg_panel "EAST-1:28,SOUTH+1:7"
 
 //Gun buttons
-#define ui_gun1 "EAST-2:26,SOUTH+2:7"
-#define ui_gun2 "EAST-1:28, SOUTH+3:7"
-#define ui_gun3 "EAST-2:26,SOUTH+3:7"
-#define ui_gun_select "EAST-1:28,SOUTH+2:7"
-#define ui_gun4 "EAST-3:24,SOUTH+2:7"
+#define ui_gun1 "EAST-1:19,SOUTH+5:19"
+#define ui_gun2 "EAST-1:19,SOUTH+5:3"
+#define ui_gun3 "EAST-1:19,SOUTH+5:11"
+#define ui_gun_select "EAST-1:19,SOUTH+5:27"
 
 //Upper-middle right (damage indicators)
 #define ui_toxin "EAST-1:28,NORTH-2:27"
@@ -104,18 +102,18 @@
 #define ui_alien_health "EAST-1:28,CENTER-1:13" //aliens have the health display where humans have the pressure damage indicator.
 
 //Pop-up inventory
-#define ui_shoes "WEST+1:8,SOUTH:5"
+#define ui_shoes "WEST+0:4,SOUTH+1:22"
 
-#define ui_iclothing "WEST:6,SOUTH+1:7"
-#define ui_oclothing "WEST+1:8,SOUTH+1:7"
-#define ui_gloves "WEST+2:10,SOUTH+1:7"
+#define ui_iclothing "WEST+2:2,SOUTH+2:21"
+#define ui_oclothing "WEST+2:2,SOUTH+1:22"
+#define ui_gloves "WEST+0:4,SOUTH+3:20"
 
-#define ui_glasses "WEST:6,SOUTH+2:9"
-#define ui_mask "WEST+1:8,SOUTH+2:9"
-#define ui_l_ear "WEST+2:10,SOUTH+2:9"
-#define ui_r_ear "WEST+2:10,SOUTH+3:11"
+#define ui_glasses "WEST+2:2,SOUTH+3:20"
+#define ui_mask "WEST+1:3,SOUTH+3:20"
+#define ui_l_ear "WEST+2:2,SOUTH+4:19"
+#define ui_r_ear "WEST+0:4,SOUTH+4:19"
 
-#define ui_head "WEST+1:8,SOUTH+3:11"
+#define ui_head "WEST+1:3,SOUTH+4:19"
 
 //Intent small buttons
 #define ui_help_small "EAST-3:8,SOUTH:1"
@@ -140,10 +138,10 @@
 #define ui_genetic_master "EAST-1:16,NORTH-3:16"
 
 //Blocking and and other special attacks
-#define ui_block       "EAST-4:24,SOUTH:5"
-#define ui_blockswitch "EAST-4:24,SOUTH:5"
-#define ui_jump        "EAST-5:24,SOUTH:5"
-#define ui_bite        "EAST-5:24,SOUTH:5"
+#define ui_block       "EAST-1:19,SOUTH+3:5"
+#define ui_blockswitch "EAST-1:19,SOUTH+2:22"
+#define ui_jump        "EAST-1:19,SOUTH+0:13"
+#define ui_bite        "EAST-1:19,SOUTH+2:7"
 
 // AI
 #define ui_ai_core "SOUTH:6,WEST"

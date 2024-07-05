@@ -14,19 +14,28 @@
 
 	infodisplay = list()
 	static_inventory = list()
-	toggleable_inventory = list()
 
 	var/atom/movable/screen/using
 	var/atom/movable/screen/inventory/inv_box
 
-	// Draw the various inventory equipment slots.
-	var/has_hidden_gear
-	for(var/gear_slot in hud_data.gear)
+	using = new /atom/movable/screen()
+	using.SetName("Left Panel")
+	using.icon = 'icons/hud/new_left.dmi'
+	using.icon_state = "panel"
+	using.screen_loc = ui_lpanel
+	static_inventory += using
 
+	using = new /atom/movable/screen()
+	using.SetName("Right Panel")
+	using.icon = 'icons/hud/new_right.dmi'
+	using.icon_state = "panel"
+	using.screen_loc = ui_rpanel
+	static_inventory += using
+
+	// Draw the various inventory equipment slots.
+	for(var/gear_slot in hud_data.gear)
 		inv_box = new /atom/movable/screen/inventory()
-		inv_box.icon = ui_style
-		inv_box.color = ui_color
-		inv_box.alpha = ui_alpha
+		inv_box.icon = 'icons/hud/new_inventory.dmi'
 
 		var/list/slot_data =  hud_data.gear[gear_slot]
 		inv_box.SetName(gear_slot)
@@ -37,185 +46,133 @@
 		if(slot_data["dir"])
 			inv_box.set_dir(slot_data["dir"])
 
-		if(slot_data["toggle"])
-			toggleable_inventory += inv_box
-			has_hidden_gear = 1
-		else
-			static_inventory += inv_box
-
-	if(has_hidden_gear)
-		using = new /atom/movable/screen()
-		using.SetName("toggle")
-		using.icon = ui_style
-		using.icon_state = "other"
-		using.screen_loc = ui_inventory
-		using.color = ui_color
-		using.alpha = ui_alpha
-		static_inventory += using
+		static_inventory += inv_box
 
 	// Draw the attack intent dialogue.
 	if(hud_data.has_a_intent)
-
 		using = new /atom/movable/screen/intent()
-		using.icon = ui_style
+		using.icon = 'icons/hud/new_intent.dmi'
 		static_inventory += using
 		action_intent = using
-
-		static_inventory |= using
 
 	if(hud_data.has_m_intent)
 		using = new /atom/movable/screen()
 		using.SetName("mov_intent")
-		using.icon = ui_style
-		using.icon_state = (mymob.m_intent == M_RUN ? "running" : "walking")
+		using.icon = 'icons/hud/new_right_buttons.dmi'
+		using.icon_state = (mymob.m_intent == M_RUN ? "walk" : "walk_pressed")
 		using.screen_loc = ui_movi
-		using.color = ui_color
-		using.alpha = ui_alpha
 		static_inventory += using
 		move_intent = using
 
 	if(hud_data.has_drop)
 		using = new /atom/movable/screen()
 		using.SetName("drop")
-		using.icon = ui_style
-		using.icon_state = "act_drop"
-		using.screen_loc = ui_drop_throw
-		using.color = ui_color
-		using.alpha = ui_alpha
+		using.icon = 'icons/hud/new_right_buttons.dmi'
+		using.icon_state = "drop"
+		using.screen_loc = ui_drop
 		static_inventory += using
 
 	if(hud_data.has_rest)
 		using = new /atom/movable/screen()
 		using.SetName("rest")
-		using.icon = ui_style
+		using.icon = 'icons/hud/new_right_buttons.dmi'
 		using.icon_state = "rest"
 		using.screen_loc = ui_rest_act
-		using.color = ui_color
-		using.alpha = ui_alpha
 		static_inventory += using
-
 
 	if(hud_data.has_hands)
-
-		using = new /atom/movable/screen()
-		using.SetName("equip")
-		using.icon = ui_style
-		using.icon_state = "act_equip"
-		using.screen_loc = ui_equip
-		using.color = ui_color
-		using.alpha = ui_alpha
-		static_inventory += using
-
 		inv_box = new /atom/movable/screen/inventory()
 		inv_box.SetName("r_hand")
-		inv_box.icon = ui_style
+		inv_box.icon = 'icons/hud/new_hands.dmi'
 		inv_box.icon_state = "r_hand_inactive"
 		if(mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
 			inv_box.icon_state = "r_hand_active"
 		inv_box.screen_loc = ui_rhand
 		inv_box.slot_id = slot_r_hand
-		inv_box.color = ui_color
-		inv_box.alpha = ui_alpha
 
 		r_hand_hud_object = inv_box
 		static_inventory += inv_box
 
+		using = new /atom/movable/screen()
+		using.SetName("r_hand_button")
+		using.icon = 'icons/hud/new_hand_buttons.dmi'
+		using.icon_state = "r_hand"
+		if(mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
+			using.icon_state = "r_hand_pressed"
+		using.screen_loc = ui_rhand_button
+
+		r_hand_button_hud_object = using
+		static_inventory += r_hand_button_hud_object
+
 		inv_box = new /atom/movable/screen/inventory()
 		inv_box.SetName("l_hand")
-		inv_box.icon = ui_style
+		inv_box.icon = 'icons/hud/new_hands.dmi'
 		inv_box.icon_state = "l_hand_inactive"
 		if(mymob && mymob.hand)	//This being 1 means the left hand is in use
 			inv_box.icon_state = "l_hand_active"
 		inv_box.screen_loc = ui_lhand
 		inv_box.slot_id = slot_l_hand
-		inv_box.color = ui_color
-		inv_box.alpha = ui_alpha
+
 		l_hand_hud_object = inv_box
 		static_inventory += inv_box
 
-		using = new /atom/movable/screen/inventory()
-		using.SetName("hand")
-		using.icon = ui_style
-		using.icon_state = "hand1"
-		using.screen_loc = ui_swaphand1
-		using.color = ui_color
-		using.alpha = ui_alpha
-		static_inventory += using
+		using = new /atom/movable/screen()
+		using.SetName("l_hand_button")
+		using.icon = 'icons/hud/new_hand_buttons.dmi'
+		using.icon_state = "l_hand"
+		if(mymob && mymob.hand)	//This being 0 or null means the right hand is in use
+			using.icon_state = "l_hand_pressed"
+		using.screen_loc = ui_lhand_button
 
-		using = new /atom/movable/screen/inventory()
-		using.SetName("hand")
-		using.icon = ui_style
-		using.icon_state = "hand2"
-		using.screen_loc = ui_swaphand2
-		using.color = ui_color
-		using.alpha = ui_alpha
-		static_inventory += using
+		l_hand_button_hud_object = using
+		static_inventory += l_hand_button_hud_object
 
 	if(hud_data.has_resist)
 		using = new /atom/movable/screen()
 		using.SetName("resist")
-		using.icon = ui_style
-		using.icon_state = "act_resist"
-		using.screen_loc = ui_pull_resist
-		using.color = ui_color
-		using.alpha = ui_alpha
+		using.icon = 'icons/hud/new_right_resist.dmi'
+		using.icon_state = "resist"
+		using.screen_loc = ui_resist
 		static_inventory += using
 
 	if(hud_data.has_throw)
 		mymob.throw_icon = new /atom/movable/screen()
-		mymob.throw_icon.icon = ui_style
-		mymob.throw_icon.icon_state = "act_throw_off"
+		mymob.throw_icon.icon = 'icons/hud/new_right_buttons.dmi'
+		mymob.throw_icon.icon_state = "throw"
 		mymob.throw_icon.SetName("throw")
-		mymob.throw_icon.screen_loc = ui_drop_throw
-		mymob.throw_icon.color = ui_color
-		mymob.throw_icon.alpha = ui_alpha
+		mymob.throw_icon.screen_loc = ui_throw
 		static_inventory += mymob.throw_icon
-
-		mymob.pullin = new /atom/movable/screen()
-		mymob.pullin.icon = ui_style
-		mymob.pullin.icon_state = "pull0"
-		mymob.pullin.SetName("pull")
-		mymob.pullin.screen_loc = ui_pull_resist
-		static_inventory += mymob.pullin
 
 	if(hud_data.has_block)
 		mymob.block_icon = new /atom/movable/screen()
-		mymob.block_icon.icon = ui_style
-		mymob.block_icon.icon_state = "act_block0"
+		mymob.block_icon.icon = 'icons/hud/new_right_buttons.dmi'
+		mymob.block_icon.icon_state = "block"
 		mymob.block_icon.SetName("block")
 		mymob.block_icon.screen_loc = ui_block
-		mymob.block_icon.color = ui_color
-		mymob.block_icon.alpha = ui_alpha
 		static_inventory += mymob.block_icon
 
 	if(hud_data.has_bite)
 		mymob.bite_icon = new /atom/movable/screen()
-		mymob.bite_icon.icon = ui_style
-		mymob.bite_icon.icon_state = "act_bite0"
+		mymob.bite_icon.icon = 'icons/hud/new_right_buttons.dmi'
+		mymob.bite_icon.icon_state = "bite"
 		mymob.bite_icon.SetName("bite")
 		mymob.bite_icon.screen_loc = ui_bite
-		mymob.bite_icon.color = ui_color
-		mymob.bite_icon.alpha = ui_alpha
 		static_inventory += mymob.bite_icon
 
 	if(hud_data.has_jump)
 		mymob.jump_icon = new /atom/movable/screen()
-		mymob.jump_icon.icon = ui_style
-		mymob.jump_icon.icon_state = "act_jump0"
+		mymob.jump_icon.icon = 'icons/hud/new_right_buttons.dmi'
+		mymob.jump_icon.icon_state = "jump"
 		mymob.jump_icon.SetName("jump")
 		mymob.jump_icon.screen_loc = ui_jump
-		mymob.jump_icon.color = ui_color
-		mymob.jump_icon.alpha = ui_alpha
 		static_inventory += mymob.jump_icon
 
 	if(hud_data.has_blockswitch)
 		mymob.blockswitch_icon = new /atom/movable/screen()
-		mymob.blockswitch_icon.icon = ui_style
-		mymob.blockswitch_icon.icon_state = "act_blockswitch0"
+		mymob.blockswitch_icon.icon = 'icons/hud/new_right_buttons.dmi'
+		mymob.blockswitch_icon.icon_state = "blockswitch"
 		mymob.blockswitch_icon.SetName("blockswitch")
 		mymob.blockswitch_icon.screen_loc = ui_blockswitch
-		mymob.blockswitch_icon.color = ui_color
-		mymob.blockswitch_icon.alpha = ui_alpha
 		static_inventory += mymob.blockswitch_icon
 
 	if(hud_data.has_internals)
@@ -309,36 +266,24 @@
 	infodisplay |= mymob.pain
 
 	mymob.zone_sel = new /atom/movable/screen/zone_sel( null )
-	mymob.zone_sel.icon = ui_style
-	mymob.zone_sel.color = ui_color
-	mymob.zone_sel.alpha = ui_alpha
+	mymob.zone_sel.icon = 'icons/hud/new_targetdoll.dmi'
 	mymob.zone_sel.ClearOverlays()
-	mymob.zone_sel.AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[mymob.zone_sel.selecting]"))
+	mymob.zone_sel.AddOverlays(image('icons/hud/new_targetdoll.dmi', "[mymob.zone_sel.selecting]"))
 	static_inventory |= mymob.zone_sel
 
 	//Handle the gun settings buttons
 	mymob.gun_setting_icon = new /atom/movable/screen/gun/mode(null)
-	mymob.gun_setting_icon.icon = ui_style
-	mymob.gun_setting_icon.color = ui_color
-	mymob.gun_setting_icon.alpha = ui_alpha
+	mymob.gun_setting_icon.icon = 'icons/hud/new_right_gbuttons.dmi'
 	static_inventory |= mymob.gun_setting_icon
 
 	mymob.item_use_icon = new /atom/movable/screen/gun/item(null)
-	mymob.item_use_icon.icon = ui_style
-	mymob.item_use_icon.color = ui_color
-	mymob.item_use_icon.alpha = ui_alpha
+	mymob.item_use_icon.icon = 'icons/hud/new_right_gbuttons.dmi'
 
 	mymob.gun_move_icon = new /atom/movable/screen/gun/move(null)
-	mymob.gun_move_icon.icon = ui_style
-	mymob.gun_move_icon.color = ui_color
-	mymob.gun_move_icon.alpha = ui_alpha
+	mymob.gun_move_icon.icon = 'icons/hud/new_right_gbuttons.dmi'
 
 	mymob.radio_use_icon = new /atom/movable/screen/gun/radio(null)
-	mymob.radio_use_icon.icon = ui_style
-	mymob.radio_use_icon.color = ui_color
-	mymob.radio_use_icon.alpha = ui_alpha
-
-	inventory_shown = FALSE
+	mymob.radio_use_icon.icon = 'icons/hud/new_right_gbuttons.dmi'
 
 /mob/living/carbon/human/rejuvenate()
 	. = ..()

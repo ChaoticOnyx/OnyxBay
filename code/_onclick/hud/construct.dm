@@ -19,13 +19,6 @@
 	infodisplay = list()
 	static_inventory = list()
 
-	mymob.pullin = new /atom/movable/screen()
-	mymob.pullin.icon = 'icons/hud/mob/screen_construct.dmi'
-	mymob.pullin.icon_state = "pull0"
-	mymob.pullin.SetName("pull")
-	mymob.pullin.screen_loc = ui_construct_pull
-	static_inventory += mymob.pullin
-
 	mymob.fire = new /atom/movable/screen()
 	mymob.fire.icon = 'icons/hud/mob/screen_construct.dmi'
 	mymob.fire.icon_state = "fire0"

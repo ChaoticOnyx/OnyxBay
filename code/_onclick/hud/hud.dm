@@ -22,8 +22,6 @@
 
 	/// Used to toggle the hud (F12)
 	var/hud_shown = TRUE
-	/// Used to show mob's inventory
-	var/inventory_shown = TRUE
 
 	/// Used to toggle action buttons
 	var/action_buttons_hidden = FALSE
@@ -31,7 +29,9 @@
 	var/atom/movable/screen/movable/action_button/hide_toggle/hide_actions_toggle
 	var/atom/movable/screen/lingchemdisplay
 	var/atom/movable/screen/r_hand_hud_object
+	var/atom/movable/screen/r_hand_button_hud_object
 	var/atom/movable/screen/l_hand_hud_object
+	var/atom/movable/screen/l_hand_button_hud_object
 	var/atom/movable/screen/action_intent
 	var/atom/movable/screen/move_intent
 
@@ -40,8 +40,6 @@
 
 	/// List of all static buttons
 	var/list/atom/movable/screen/static_inventory
-	/// List of all equipment slot buttons
-	var/list/atom/movable/screen/toggleable_inventory
 	/// List of all buttons that never exit the view
 	var/list/atom/movable/screen/always_visible_inventory
 
@@ -56,61 +54,41 @@
 	. = ..()
 	lingchemdisplay = null
 	r_hand_hud_object = null
+	r_hand_button_hud_object = null
 	l_hand_hud_object = null
+	l_hand_button_hud_object = null
 	action_intent = null
 	move_intent = null
 	infodisplay = null
 	static_inventory = null
-	toggleable_inventory = null
 	always_visible_inventory = null
 	mymob = null
 
-/datum/hud/proc/hidden_inventory_update()
+/datum/hud/proc/inventory_update()
 	if(!mymob) return
 	if(ishuman(mymob))
 		var/mob/living/carbon/human/H = mymob
 		for(var/gear_slot in H.species.hud.gear)
 			var/list/hud_data = H.species.hud.gear[gear_slot]
-			if(inventory_shown && hud_shown)
-				switch(hud_data["slot"])
-					if(slot_head)
-						if(H.head)      H.head.screen_loc =      hud_data["loc"]
-					if(slot_shoes)
-						if(H.shoes)     H.shoes.screen_loc =     hud_data["loc"]
-					if(slot_l_ear)
-						if(H.l_ear)     H.l_ear.screen_loc =     hud_data["loc"]
-					if(slot_r_ear)
-						if(H.r_ear)     H.r_ear.screen_loc =     hud_data["loc"]
-					if(slot_gloves)
-						if(H.gloves)    H.gloves.screen_loc =    hud_data["loc"]
-					if(slot_glasses)
-						if(H.glasses)   H.glasses.screen_loc =   hud_data["loc"]
-					if(slot_w_uniform)
-						if(H.w_uniform) H.w_uniform.screen_loc = hud_data["loc"]
-					if(slot_wear_suit)
-						if(H.wear_suit) H.wear_suit.screen_loc = hud_data["loc"]
-					if(slot_wear_mask)
-						if(H.wear_mask) H.wear_mask.screen_loc = hud_data["loc"]
-			else
-				switch(hud_data["slot"])
-					if(slot_head)
-						if(H.head)      H.head.screen_loc =      null
-					if(slot_shoes)
-						if(H.shoes)     H.shoes.screen_loc =     null
-					if(slot_l_ear)
-						if(H.l_ear)     H.l_ear.screen_loc =     null
-					if(slot_r_ear)
-						if(H.r_ear)     H.r_ear.screen_loc =     null
-					if(slot_gloves)
-						if(H.gloves)    H.gloves.screen_loc =    null
-					if(slot_glasses)
-						if(H.glasses)   H.glasses.screen_loc =   null
-					if(slot_w_uniform)
-						if(H.w_uniform) H.w_uniform.screen_loc = null
-					if(slot_wear_suit)
-						if(H.wear_suit) H.wear_suit.screen_loc = null
-					if(slot_wear_mask)
-						if(H.wear_mask) H.wear_mask.screen_loc = null
+			switch(hud_data["slot"])
+				if(slot_head)
+					if(H.head)      H.head.screen_loc =      hud_data["loc"]
+				if(slot_shoes)
+					if(H.shoes)     H.shoes.screen_loc =     hud_data["loc"]
+				if(slot_l_ear)
+					if(H.l_ear)     H.l_ear.screen_loc =     hud_data["loc"]
+				if(slot_r_ear)
+					if(H.r_ear)     H.r_ear.screen_loc =     hud_data["loc"]
+				if(slot_gloves)
+					if(H.gloves)    H.gloves.screen_loc =    hud_data["loc"]
+				if(slot_glasses)
+					if(H.glasses)   H.glasses.screen_loc =   hud_data["loc"]
+				if(slot_w_uniform)
+					if(H.w_uniform) H.w_uniform.screen_loc = hud_data["loc"]
+				if(slot_wear_suit)
+					if(H.wear_suit) H.wear_suit.screen_loc = hud_data["loc"]
+				if(slot_wear_mask)
+					if(H.wear_mask) H.wear_mask.screen_loc = hud_data["loc"]
 
 /datum/hud/proc/persistant_inventory_update()
 	if(!mymob)
@@ -202,45 +180,22 @@
 				mymob.client.screen |= infodisplay
 			if(length(static_inventory))
 				mymob.client.screen |= static_inventory
-			if(length(toggleable_inventory) && inventory_shown)
-				mymob.client.screen |= toggleable_inventory
 			if(length(always_visible_inventory))
 				mymob.client.screen |= always_visible_inventory
 			if(action_intent)
 				action_intent.screen_loc = ui_acti
-		if(HUD_STYLE_REDUCED)
-			hud_shown = FALSE
-			if(length(infodisplay))
-				mymob.client.screen |= infodisplay
-			if(length(static_inventory))
-				mymob.client.screen -= static_inventory
-			if(length(toggleable_inventory))
-				mymob.client.screen -= toggleable_inventory
-			if(length(always_visible_inventory))
-				mymob.client.screen |= always_visible_inventory
-			if(l_hand_hud_object)
-				mymob.client.screen += l_hand_hud_object
-			if(r_hand_hud_object)
-				mymob.client.screen += r_hand_hud_object
-			if(action_intent)
-				mymob.client.screen += action_intent
-				action_intent.screen_loc = ui_acti_alt
-			if(mymob.gun_setting_icon)
-				mymob.client.screen += mymob.gun_setting_icon
 		if(HUD_STYLE_NONE)
 			hud_shown = FALSE
 			if(length(infodisplay))
 				mymob.client.screen -= infodisplay
 			if(length(static_inventory))
 				mymob.client.screen -= static_inventory
-			if(length(toggleable_inventory))
-				mymob.client.screen -= toggleable_inventory
 			if(length(always_visible_inventory))
 				mymob.client.screen |= always_visible_inventory
 
 	mymob.update_action_buttons()
 
-	hidden_inventory_update()
+	inventory_update()
 	persistant_inventory_update()
 	reorganize_alerts()
 

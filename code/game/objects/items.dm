@@ -906,9 +906,6 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		to_chat(user, SPAN("warning", "You are too distracted to look through the [devicename], perhaps if it was in your active hand this might work better."))
 		return
 
-	if(user.hud_used.hud_shown)
-		user.hud_used.show_hud(HUD_STYLE_REDUCED)
-
 	user.client.view_size.set_both(viewsize, viewsize)
 	zoom = 1
 

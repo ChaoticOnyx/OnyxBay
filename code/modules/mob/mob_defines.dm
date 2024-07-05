@@ -38,7 +38,6 @@
 	var/stat = 0 //Whether a mob is alive or dead. TODO: Move this to living - Nodrak
 
 	var/atom/movable/screen/hands = null
-	var/atom/movable/screen/pullin = null
 	var/atom/movable/screen/purged = null
 	var/atom/movable/screen/internals = null
 	var/atom/movable/screen/oxygen = null

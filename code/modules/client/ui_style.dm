@@ -15,7 +15,7 @@ GLOBAL_LIST_INIT(all_ui_styles, list(
 	if(!usr.hud_used) // usr's a new_player, s'too early to update things
 		return
 
-	var/list/icons = usr.hud_used.static_inventory + usr.hud_used.toggleable_inventory
+	var/list/icons = usr.hud_used.static_inventory
 	icons.Add(usr.zone_sel)
 	icons.Add(usr.gun_setting_icon)
 	icons.Add(usr.item_use_icon)

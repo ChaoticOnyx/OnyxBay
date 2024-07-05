@@ -899,7 +899,7 @@
 
 	if(hud_used)
 		if(hud_used.move_intent)
-			hud_used.move_intent.icon_state = (intent == M_WALK ? "walking" : "running")
+			hud_used.move_intent.icon_state = (intent == M_WALK ? "walk_pressed" : "walk")
 
 /mob/living/proc/melee_accuracy_mods()
 	. = 0

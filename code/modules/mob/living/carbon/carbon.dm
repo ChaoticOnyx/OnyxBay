@@ -193,10 +193,14 @@
 	if(hud_used.l_hand_hud_object && hud_used.r_hand_hud_object)
 		if(hand)	//This being 1 means the left hand is in use
 			hud_used.l_hand_hud_object.icon_state = "l_hand_active"
+			hud_used.l_hand_button_hud_object.icon_state = "l_hand_pressed"
 			hud_used.r_hand_hud_object.icon_state = "r_hand_inactive"
+			hud_used.r_hand_button_hud_object.icon_state = "r_hand"
 		else
 			hud_used.l_hand_hud_object.icon_state = "l_hand_inactive"
+			hud_used.l_hand_button_hud_object.icon_state = "l_hand"
 			hud_used.r_hand_hud_object.icon_state = "r_hand_active"
+			hud_used.r_hand_button_hud_object.icon_state = "r_hand_pressed"
 	return
 
 /mob/living/carbon/proc/activate_hand(selhand) //0 or "r" or "right" for right hand; 1 or "l" or "left" for left hand.

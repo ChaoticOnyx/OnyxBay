@@ -57,7 +57,6 @@
 
 /mob/proc/remove_screen_obj_references()
 	hands = null
-	pullin = null
 	purged = null
 	internals = null
 	oxygen = null
@@ -615,9 +614,6 @@
 		if(delay)
 			delay.InstantUpdateGlideSize()
 
-	if(pullin)
-		pullin.icon_state = "pull0"
-
 	remove_movespeed_modifier(/datum/movespeed_modifier/pull_slowdown)
 
 /mob/proc/start_pulling(atom/movable/AM)
@@ -668,9 +664,6 @@
 
 	src.pulling = AM
 	AM.pulledby = src
-
-	if(pullin)
-		pullin.icon_state = "pull1"
 
 	register_signal(AM, SIGNAL_QDELETING, nameof(.proc/stop_pulling))
 	update_pull_slowdown(AM)
@@ -1070,12 +1063,12 @@
 /mob/proc/throw_mode_off()
 	src.in_throw_mode = 0
 	if(src.throw_icon) //in case we don't have the HUD and we use the hotkey
-		src.throw_icon.icon_state = "act_throw_off"
+		src.throw_icon.icon_state = "throw"
 
 /mob/proc/throw_mode_on()
 	src.in_throw_mode = 1
 	if(src.throw_icon)
-		src.throw_icon.icon_state = "act_throw_on"
+		src.throw_icon.icon_state = "throw_pressed"
 
 /mob/proc/toggle_antag_pool()
 	set name = "Toggle Add-Antag Candidacy"
