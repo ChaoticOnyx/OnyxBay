@@ -27,8 +27,8 @@
 
 ## Лицензия
 
-Исходный код OnyxBay находится под лицензией [GNU Affero General Public License v3](http://www.gnu.org/licenses/agpl.html), полный текст которой можно найти в файле LICENSE-AGPL3.txt.
+Исходный код OnyxBay находится под лицензией [GNU Affero General Public License v3](http://www.gnu.org/licenses/agpl.html), полный текст которой можно найти в файле [LICENSE](/LICENSE).
 
-Весь код, который был внесен до `1420675200 +0000` (2015/01/08 00:00) находится под лицензией GNU General Public License version 3, которую можно найти в файле LICENSE-GPL3.txt.
+Весь код, который был внесен до `1420675200 +0000` (2015/01/08 00:00) находится под лицензией GNU General Public License version 3, которую можно найти в файле [GPL3.txt](/docs/GPL3.txt).
 
 Если вы хотите внести свой код под лицензией GPL v3, то, пожалуйста, укажите это в сообщении к коммиту.
