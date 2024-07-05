@@ -76,11 +76,11 @@
 		return 1
 	if(modifiers["middle"])
 		if(modifiers["shift"])
-			ShiftMiddleClickOn(A)
+			ShiftMiddleClickOn(A, params)
 		else if(modifiers["alt"])
-			AltMiddleClickOn(A)
+			AltMiddleClickOn(A, params)
 		else
-			MiddleClickOn(A)
+			MiddleClickOn(A, params)
 		return 1
 	if(modifiers["shift"])
 		ShiftClickOn(A)
@@ -243,22 +243,22 @@
 	Middle click
 	Only used for swapping hands
 */
-/mob/proc/MiddleClickOn(atom/A)
+/mob/proc/MiddleClickOn(atom/A, params)
 	if(A.MiddleClick(src))
 		return
 
 	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_MIDDLE_CLICK)
-		if(pointed(A))
+		if(pointed(A, params))
 			return
 	return
 
-/mob/proc/ShiftMiddleClickOn(atom/A)
+/mob/proc/ShiftMiddleClickOn(atom/A, params)
 	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_SHIFT_MIDDLE_CLICK)
-		if(pointed(A))
+		if(pointed(A, params))
 			return
 
-/mob/proc/AltMiddleClickOn(atom/A)
-	pointed(A)
+/mob/proc/AltMiddleClickOn(atom/A, params)
+	pointed(A, params)
 
 /atom/proc/MiddleClick(mob/M)
 	return

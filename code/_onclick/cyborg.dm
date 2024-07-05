@@ -17,9 +17,9 @@
 		return
 	if(modifiers["middle"])
 		if(modifiers["shift"])
-			ShiftMiddleClickOn(A)
+			ShiftMiddleClickOn(A, params)
 		else
-			MiddleClickOn(A)
+			MiddleClickOn(A, params)
 		return
 	if(modifiers["shift"])
 		ShiftClickOn(A)
