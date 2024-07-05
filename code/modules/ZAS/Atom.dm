@@ -52,23 +52,3 @@
 		SSair.mark_for_update(turf)
 
 	return 1
-
-//Basically another way of calling CanPass(null, other, 0, 0) and CanPass(null, other, 1.5, 1).
-//Returns:
-// 0 - Not blocked
-// AIR_BLOCKED - Blocked
-// ZONE_BLOCKED - Not blocked, but zone boundaries will not cross.
-// BLOCKED - Blocked, zone boundaries will not cross even if opened.
-/atom/proc/c_airblock(turf/other)
-	#ifdef ZASDBG
-	ASSERT(isturf(other))
-	#endif
-	return (AIR_BLOCKED*!CanZASPass(other, FALSE))|(ZONE_BLOCKED*!CanZASPass(other, TRUE))
-
-// This is a legacy proc only here for compatibility - you probably should just use ATMOS_CANPASS_TURF directly.
-/turf/c_airblock(turf/other)
-	#ifdef ZASDBG
-	ASSERT(isturf(other))
-	#endif
-	. = 0
-	ATMOS_CANPASS_TURF(., src, other)

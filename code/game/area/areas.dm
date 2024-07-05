@@ -20,6 +20,11 @@
 	var/importance         = 1
 	var/loyalty            = 0
 
+	/// The base turf type of the area, which can be used to override the z-level's base turf
+	var/base_turf
+	/// The base turf of the area if it has a turf below it in multizi. Overrides turf-specific open type
+	var/open_turf
+
 	/// Used by ambush component. Determines which turfs can trigger ambush (no ambushes in your ship, indeed)
 	var/list/ambush_types
 	/// Used by ambush component. List of mob types that will be spawned on ambush.

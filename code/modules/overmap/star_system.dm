@@ -186,40 +186,12 @@
 	occupying_z = new_center.z
 	var/obj/effect/overmap_anomaly/star/star = new /obj/effect/overmap_anomaly/star(new_center)
 	var/curr_offset_x = 128
-	for(var/i = 1 to rand(2, 4))
+	for(var/i = 1 to rand(2, 5))
 		sleep(rand(1 SECOND, 5 SECONDS))
 		var/obj/effect/overmap_anomaly/visitable/planetoid/planetoid = new (new_center)
 		planetoid.orbit(star, curr_offset_x, FALSE, rand(4000, 5000), pre_rotation = TRUE)
 		curr_offset_x += 128
-		planetoid.icon_state = "barren[rand(1, 3)]"
-		switch(i)
-			if(1)
-				planetoid.icon_state = "barren[rand(1, 3)]"
-				planetoid.mapgen = /datum/map_generator/planet_generator/rock
-			if(2)
-				planetoid.icon_state = "lava[rand(1, 3)]"
-				planetoid.mapgen = /datum/map_generator/planet_generator/lava
-			if(3)
-				if(prob(50))
-					planetoid.icon_state = "waste[rand(1, 3)]"
-					planetoid.mapgen = /datum/map_generator/planet_generator/swamp
-				else
-					planetoid.icon_state = "earthlike[rand(1, 3)]"
-					switch(prob(3))
-						if(1)
-							planetoid.mapgen = /datum/map_generator/planet_generator/swamp
-						if(2)
-							planetoid.mapgen = /datum/map_generator/planet_generator/jungle
-						if(3)
-							planetoid.mapgen = /datum/map_generator/planet_generator/beach
-			if(4)
-				if(prob(50))
-					planetoid.icon_state = "waste[rand(1, 3)]"
-					planetoid.mapgen = /datum/map_generator/planet_generator/snow
-				else
-					planetoid.icon_state = "ice[rand(1, 3)]"
-					planetoid.mapgen = /datum/map_generator/planet_generator/snow
-				*/
+		planetoid.pregenerate(i)
 
 /datum/star_system/proc/after_enter(obj/structure/overmap/OM)
 	pass()
