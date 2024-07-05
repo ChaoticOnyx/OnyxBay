@@ -3,6 +3,7 @@ SUBSYSTEM_DEF(star_system)
 	name = "star_system"
 	wait = 1 SECOND
 	init_order = SS_INIT_STARMAP
+	flags = SS_NO_FIRE
 
 	/// Last time an AI controlled ship attacked the players
 	var/last_combat_enter = 0
@@ -27,47 +28,28 @@ SUBSYSTEM_DEF(star_system)
 	. = ..()
 	return_system = system_by_id(config.overmap.return_system)
 
-/datum/controller/subsystem/star_system/proc/load_systems(_source_path = config.overmap.starmap_path)
-	message_admins("Loading starsystem from [_source_path]...")
-	var/list/_systems = list()
-	if(!fexists(_source_path))
-		log_game("Unable to find [_source_path]. Loading default instead.")
-		_source_path = "config/starmap_default.json"
-	try
-		_systems += json_decode(file2text(_source_path))
-	catch(var/exception/ex)
-		CRASH("Unable to load starmap from: [_source_path]. (Defaulting...): [ex]")
-
-	for(var/i = 1; i <= _systems.len; i++)
-		var/list/sys_info = _systems[i]
-		try{
-			var/datum/star_system/next = new /datum/star_system(
-				name = sys_info["name"],
-				desc = sys_info["desc"],
-				x = sys_info["x"],
-				y = sys_info["y"],
-				alignment = sys_info["alignment"],
-				owner = sys_info["owner"],
-				hidden = sys_info["hidden"],
-				sector = sys_info["sector"],
-				adjacency_list = json_decode(sys_info["adjacency_list"]) || list(),
-				threat_level = LAZYACCESS(sys_info, "threat_level") || THREAT_LEVEL_NONE,
-				is_capital = LAZYACCESS(sys_info, "is_capital") || FALSE,
-				parallax_property = LAZYACCESS(sys_info, "parallax_property") || null,
-				visitable = LAZYACCESS(sys_info, "visitable") || TRUE,
-				is_hypergate = LAZYACCESS(sys_info,"is_hypergate") || FALSE,
-				system_traits = LAZYACCESS(sys_info,"system_traits") ? sys_info["system_traits"] : 0,
-				system_type = (LAZYACCESS(sys_info,"system_type") && sys_info["system_type"] != "null" && sys_info["system_type"] != null) ? json_decode(sys_info["system_type"]) : list(),
-				audio_cues = (LAZYACCESS(sys_info,"audio_cues") && sys_info["audio_cues"] != "null" && sys_info["audio_cues"] != null) ? json_decode(sys_info["audio_cues"]) : list(),
-				wormhole_connections = (LAZYACCESS(sys_info,"wormhole_connections") && sys_info["wormhole_connections"] != "null" && sys_info["wormhole_connections"] != null) ? json_decode(sys_info["wormhole_connections"]) : list(),
-			)
-			systems += next
-		}
-		catch(var/exception/e){
-			message_admins("WARNING: Invalid star system in json: [sys_info["name"]] ([e]). Skipping...")
-			continue
-		}
-	message_admins("Successfully loaded starmap layout from [_source_path]")
+/datum/controller/subsystem/star_system/proc/load_systems()
+	for(var/list/sys_info in config.overmap.systems)
+		systems += new /datum/star_system(
+			name = sys_info["name"],
+			desc = sys_info["desc"],
+			x = sys_info["x"],
+			y = sys_info["y"],
+			alignment = sys_info["alignment"],
+			owner = sys_info["owner"],
+			hidden = sys_info["hidden"] || FALSE,
+			sector = sys_info["sector"],
+			adjacency_list = sys_info["adjacency_list"] || list(),
+			threat_level = sys_info["threat_level"] || THREAT_LEVEL_NONE,
+			is_capital = sys_info["is_capital"] || FALSE,
+			parallax_property = sys_info["parallax_property"] || null,
+			visitable = sys_info["visitable"] || FALSE,
+			is_hypergate = sys_info["is_hypergate"] || FALSE,
+			system_traits = sys_info["system_traits"] || 0,
+			system_type = sys_info["system_type"] || list(),
+			audio_cues = sys_info["audio_cues"] || list(),
+			wormhole_connections = sys_info["wormhole_connections"] || list(),
+		)
 
 /datum/controller/subsystem/star_system/proc/lateload_systems()
 	for(var/datum/star_system/system in systems)
