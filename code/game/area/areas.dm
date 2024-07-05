@@ -20,6 +20,11 @@
 	var/importance         = 1
 	var/loyalty            = 0
 
+	/// Used by ambush component. Determines which turfs can trigger ambush (no ambushes in your ship, indeed)
+	var/list/ambush_types
+	/// Used by ambush component. List of mob types that will be spawned on ambush.
+	var/list/ambush_mobs
+
 /area/New()
 	icon_state = ""
 	uid = ++global_uid

@@ -437,6 +437,18 @@ var/list/name_to_material
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	composite_material = list(MATERIAL_STEEL = 3750, MATERIAL_PLATINUM = 3750) //todo
 
+/material/wasteland
+	name = MATERIAL_WASTELAND
+	icon_base = "waste"
+	icon_reinf = "waste"
+	shard_type = SHARD_SCRAP
+	hardness = 40
+	melting_point = 100 CELSIUS
+	weight = 20
+	brute_armor = 1
+	burn_armor = 2
+	resilience = 0
+
 /material/plasteel/titanium
 	name = MATERIAL_TITANIUM
 	stack_type = /obj/item/stack/material/plasteel/titanium

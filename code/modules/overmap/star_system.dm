@@ -191,7 +191,7 @@
 		var/obj/effect/overmap_anomaly/visitable/planetoid/planetoid = new (new_center)
 		planetoid.orbit(star, curr_offset_x, FALSE, rand(4000, 5000), pre_rotation = TRUE)
 		curr_offset_x += 128
-		planetoid.mapgen = /datum/map_generator/planet_generator/jungle
+		planetoid.icon_state = "barren[rand(1, 3)]"
 		switch(i)
 			if(1)
 				planetoid.icon_state = "barren[rand(1, 3)]"
@@ -219,6 +219,7 @@
 				else
 					planetoid.icon_state = "ice[rand(1, 3)]"
 					planetoid.mapgen = /datum/map_generator/planet_generator/snow
+				*/
 
 /datum/star_system/proc/after_enter(obj/structure/overmap/OM)
 	pass()
