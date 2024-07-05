@@ -982,6 +982,13 @@
 		clouds.Blend(COLOR_BLUE_LIGHT, ICON_MULTIPLY)
 		A.icon = clouds
 
+	for(var/zlevel = 1 to GLOB.using_map.map_levels.len)
+		if(!(zlevel in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
+			continue
+
+		var/datum/space_level/L = GLOB.using_map.map_levels[zlevel]
+		L.make_space_atmosphere()
+
 	sleep(4 SECONDS)
 
 	GLOB.using_map.apply_mapgen_mask()

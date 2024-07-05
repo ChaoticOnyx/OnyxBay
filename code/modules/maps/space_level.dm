@@ -55,3 +55,9 @@
 		CRASH("Space level tried to assume non-existent atmosphere!")
 
 	exterior_atmosphere = gas
+
+/datum/space_level/proc/make_space_atmosphere()
+	if(istype(exterior_atmosphere))
+		QDEL_NULL(exterior_atmosphere)
+
+	exterior_atmosphere = new
