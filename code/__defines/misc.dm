@@ -340,3 +340,18 @@
 
 // Shortcut for image_repository.overlay_image(...)
 #define OVERLAY(args...) image_repository.overlay_image(args)
+
+//Turf/area values for 'this space is outside' checks
+#define OUTSIDE_AREA null
+#define OUTSIDE_NO   FALSE
+#define OUTSIDE_YES  TRUE
+#define OUTSIDE_UNCERTAIN null
+
+/// For planets with optimal conditions.
+#define HABITABILITY_IDEAL  1
+/// For planets with survivable conditions.
+#define HABITABILITY_OKAY   2
+/// For planets with very hazardous environment.
+#define HABITABILITY_BAD    3
+/// For dead worlds(barren rocks with no atmosphere and etc..).
+#define HABITABILITY_DEAD   4
