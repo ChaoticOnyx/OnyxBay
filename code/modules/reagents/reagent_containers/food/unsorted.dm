@@ -2406,14 +2406,6 @@
 	bitesize = 5
 	startswith = list(/datum/reagent/nutriment/protein = 12, /datum/reagent/capsaicin = 3, /datum/reagent/hyperzine = 5)
 
-/obj/item/reagent_containers/food/slimesoup
-	name = "slime soup"
-	desc = "If no water is available, you may substitute tears."
-	icon_state = "slimesoup" //nonexistant?
-	filling_color = "#C4DBA0"
-	bitesize = 5
-	startswith = list(/datum/reagent/metroidjelly = 5, /datum/reagent/water = 10)
-
 /obj/item/reagent_containers/food/beefcurry
 	name = "beef curry"
 	desc = "A piping hot plate of spicy beef curry atop fluffy, steamed white rice."

@@ -1,3 +1,4 @@
+// TODO: IF YOU HAVE NOTHING TO DO, SORT DAT SHIT
 
 //Example Recipes
 /datum/cooking/recipe/steak_stove
@@ -66,8 +67,16 @@
 
 	step_builder = list(
 		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/dough, qmod=0.5),
-		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/faggot, qmod=0.5),
-		list(CWJ_ADD_REAGENT, /datum/reagent/thermite, 1) //So it cooks inhand, totally.
+		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/faggot, qmod=0.5)
+	)
+
+/datum/cooking/recipe/donkpocket //Special interactions in recipes_microwave.dm, not sure if this is going to function as expected
+	cooking_container = PAN
+	product_type = /obj/item/reagent_containers/food/donkpocket
+
+	step_builder = list(
+		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/dough, qmod=0.5),
+		list(CWJ_ADD_ITEM, /obj/item/reagent_containers/food/faggot, qmod=0.5)
 	)
 
 /datum/cooking/recipe/cooked_cutlet
@@ -1000,7 +1009,7 @@
 
 /datum/cooking/recipe/hotchili
 	cooking_container = POT
-	product_type = /obj/item/reagent_containers/food/coldchili
+	product_type = /obj/item/reagent_containers/food/hotchili
 	step_builder = list(
 		list(CWJ_ADD_REAGENT, /datum/reagent/water, 10),
 		list(CWJ_ADD_REAGENT_OPTIONAL, /datum/reagent/sodiumchloride, 1, base=1),
@@ -1107,9 +1116,9 @@
 		list(CWJ_USE_STOVE, J_MED, 15 SECONDS)
 	)
 
-/datum/cooking/recipe/slimesoup
+/datum/cooking/recipe/metroidsoup
 	cooking_container = POT
-	product_type = /obj/item/reagent_containers/food/slimesoup
+	product_type = /obj/item/reagent_containers/food/metroidsoup
 	step_builder = list(
 		list(CWJ_ADD_REAGENT, /datum/reagent/water, 10),
 		list(CWJ_ADD_REAGENT, /datum/reagent/metroidjelly, 5),
