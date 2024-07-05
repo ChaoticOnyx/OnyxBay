@@ -50,7 +50,8 @@
 	gas.copy_from(exterior_atmosphere)
 	return gas
 
-/datum/space_level/proc/generate_debug_atmosphere()
-	var/list/gases = list("oxygen" = MOLES_O2ATMOS, "nitrogen" = MOLES_N2ATMOS)
-	exterior_atmosphere.copy_from(gases)
-	exterior_atmosphere.update_values()
+/datum/space_level/proc/assume_atmosphere(datum/gas_mixture/gas)
+	if(!istype(gas))
+		CRASH("Space level tried to assume non-existent atmosphere!")
+
+	exterior_atmosphere = gas
