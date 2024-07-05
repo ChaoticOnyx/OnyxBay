@@ -21,7 +21,6 @@
 	var/sort_by = "id"
 	var/list/current_art
 	var/obj/machinery/libraryscanner/scanner
-	var/static/list/icon_cache = list()
 	var/static/list/canvas_state_to_type = list()
 
 /datum/nano_module/art_library/New(datum/host, topic_manager)
@@ -85,15 +84,19 @@
 			return TRUE
 
 		var/obj/item/canvas/art_cache = scanner.art_cache
-		var/encoded_data = art_cache.to_json()
-		if(!encoded_data)
+
+		if(!art_cache.grid)
 			return
+
 		var/choice = input(usr, "Upload [art_cache.painting_name] to the External Archive?") in list("Yes", "No")
 		if(choice == "Yes")
-			db.add_art(art_cache.painting_name, art_cache.icon_state, encoded_data, art_cache.author_ckey)
+			var/grid = json_encode(art_cache.grid)
+			var/base64_icon = __get_canvas_flat_icon(art_cache, art_cache.icon_state)
 
-			log_and_message_admins("has uploaded the art titled [art_cache.painting_name], [length(encoded_data)] signs of data")
-			log_game("[usr.name]/[usr.key] has uploaded the art titled [art_cache.painting_name], [length(encoded_data)] signs of data")
+			db.add_art(art_cache.painting_name, art_cache.icon_state, grid, base64_icon, art_cache.author_ckey)
+
+			log_and_message_admins("has uploaded the art titled [art_cache.painting_name]")
+			log_game("[usr.name]/[usr.key] has uploaded the art titled [art_cache.painting_name]")
 			alert("Upload Complete.")
 
 			return TRUE
@@ -117,7 +120,8 @@
 					return TRUE
 				var/obj/item/canvas/new_art = bndr.print_object
 				if(!new_art.finalized)
-					new_art.apply_canvas_data(current_art["data"])
+					new_art.grid = json_decode(current_art["grid"])
+					new_art.paint_image()
 					new_art.finalize()
 					new_art.forceMove(get_turf(bndr))
 					bndr.visible_message("\The [bndr] whirs as it prints a new art.")
@@ -144,25 +148,10 @@
 			del_art_from_db(href_list["delart"], usr)
 		return TRUE
 
-/datum/nano_module/art_library/proc/view_art(id)
-	if(current_art || !id)
-		return FALSE
+/datum/nano_module/art_library/proc/__get_canvas_flat_icon(obj/item/canvas/canvas, canvas_type)
+	var/icon/pre_icon = canvas.get_flat_icon()
 
-	var/list/art = db.find_art(id)
-
-	if(isnull(art))
-		return TRUE
-
-	var/art_type = art["type"]
-	var/canvas_type = canvas_state_to_type[art_type]
-	var/obj/item/canvas/preview_canvas = new canvas_type()
-	var/art_icon
-	preview_canvas.icon_generated = FALSE
-	preview_canvas.apply_canvas_data(art["data"])
-	preview_canvas.paint_image()
-
-	var/icon/pre_icon = getFlatIcon(preview_canvas)
-	switch(art_type)
+	switch(canvas_type)
 		if("11x11")
 			pre_icon.Crop(11, 21, 21, 11)
 		if("19x19")
@@ -173,10 +162,34 @@
 			pre_icon.Crop(6, 27, 28, 5)
 		if("24x24")
 			pre_icon.Crop(5, 27, 28, 4)
-	art_icon = icon2base64(pre_icon)
-	icon_cache[art["title"]] = art_icon
+
+	return icon2base64(pre_icon)
+
+/datum/nano_module/art_library/proc/view_art(id)
+	if(current_art || !id)
+		return FALSE
+
+	var/list/art = db.find_art(id)
+
+	if(isnull(art))
+		return TRUE
+
+	if(isnull(art["base64_icon"]))
+		var/art_type = art["type"]
+		var/canvas_type = canvas_state_to_type[art_type]
+		var/obj/item/canvas/preview_canvas = new canvas_type()
+		preview_canvas.icon_generated = FALSE
+		preview_canvas.grid = json_decode(art["grid"])
+		preview_canvas.paint_image()
+
+		var/base64_icon = __get_canvas_flat_icon(preview_canvas, art_type)
+
+		QDEL_NULL(preview_canvas)
+
+		db.update_art_base64_icon(art["id"], base64_icon)
+		art["base64_icon"] = base64_icon
+
 	current_art = art
-	QDEL_NULL(preview_canvas)
 
 	return TRUE
 

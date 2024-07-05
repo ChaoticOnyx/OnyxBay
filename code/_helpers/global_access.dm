@@ -1686,7 +1686,6 @@
 	"custom_items",
 	"damage_icon_parts",
 	"dbcon",
-	"dbcon_old",
 	"dbcon_don",
 	"debug_verbs",
 	"decls_repository",
