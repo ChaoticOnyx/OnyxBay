@@ -114,6 +114,8 @@
 	feature_spawn_chance = 0.2
 	feature_spawn_list = list(
 		/obj/item/beartrap/deployed = 1,
+		/obj/item/beartrap/rusty/deployed/hidden = 3,
+		/obj/item/beartrap/rusty/deployed = 1,
 	)
 
 /datum/biome/swamp/dense
@@ -135,6 +137,8 @@
 	feature_spawn_chance = 0.2
 	feature_spawn_list = list(
 		/obj/item/beartrap/deployed = 1,
+		/obj/item/beartrap/rusty/deployed/hidden = 3,
+		/obj/item/beartrap/rusty/deployed = 1,
 	)
 
 /datum/biome/swamp/plains
@@ -147,9 +151,11 @@
 	mob_spawn_list = list(
 		///ADD BOGLNS
 	)
-	feature_spawn_chance = 0.2
+	feature_spawn_chance = 0.5
 	feature_spawn_list = list(
 		/obj/item/beartrap/deployed = 1,
+		/obj/item/beartrap/rusty/deployed/hidden = 3,
+		/obj/item/beartrap/rusty/deployed = 1,
 	)
 
 /datum/biome/swamplands
@@ -188,7 +194,10 @@
 	mob_spawn_list = list(/mob/living/simple_animal/hostile/carp = 1)
 	flora_spawn_chance = 1
 	flora_spawn_list = list(
-		/obj/structure/flora/swampgrass = 1
+		/obj/structure/flora/swampgrass = 50,
+		/obj/item/beartrap/deployed = 1,
+		/obj/item/beartrap/rusty/deployed/hidden = 3,
+		/obj/item/beartrap/rusty/deployed = 1,
 	)
 
 /datum/biome/cave/swamp
@@ -211,6 +220,8 @@
 	feature_spawn_chance = 0.2
 	feature_spawn_list = list(
 		/obj/item/beartrap/deployed = 1,
+		/obj/item/beartrap/rusty/deployed/hidden = 3,
+		/obj/item/beartrap/rusty/deployed = 1,
 	)
 
 /datum/biome/cave/swamp/dirt
@@ -227,6 +238,8 @@
 	feature_spawn_chance = 0.2
 	feature_spawn_list = list(
 		/obj/item/beartrap/deployed = 1,
+		/obj/item/beartrap/rusty/deployed/hidden = 3,
+		/obj/item/beartrap/rusty/deployed = 1,
 	)
 
 /datum/biome/cave/lush
@@ -263,6 +276,8 @@
 	feature_spawn_chance = 0.2
 	feature_spawn_list = list(
 		/obj/item/beartrap/deployed = 1,
+		/obj/item/beartrap/rusty/deployed/hidden = 3,
+		/obj/item/beartrap/rusty/deployed = 1,
 	)
 
 /datum/biome/cave/lush/bright
@@ -278,4 +293,6 @@
 	feature_spawn_chance = 0.2
 	feature_spawn_list = list(
 		/obj/item/beartrap/deployed = 1,
+		/obj/item/beartrap/rusty/deployed/hidden = 3,
+		/obj/item/beartrap/rusty/deployed = 1,
 	)

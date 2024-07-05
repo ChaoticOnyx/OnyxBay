@@ -61,6 +61,10 @@
 	/// This defines whether this atom will be added to SSpoi, set TRUE if you want it to be shown in follow panel
 	var/is_poi = FALSE
 
+	/// Datumized overlay of dirt.
+	var/datum/dirt_cover/dirt_overlay
+
+
 /// Passes Stat Browser Panel clicks to the game and calls client click on an atom.
 /atom/Topic(href, list/href_list)
 	. = ..()
@@ -919,3 +923,19 @@ its easier to just keep the beam vertical.
 /// Adds the debris element for projectile impacts
 /atom/proc/add_debris_element()
 	AddElement(/datum/element/debris, null, -15, 8, 0.7)
+
+/atom/proc/add_dirt_cover(dirt_datum)
+	SHOULD_CALL_PARENT(TRUE)
+
+	if(atom_flags & ATOM_FLAG_NO_BLOOD)
+		return FALSE
+
+	if(!dirt_datum)
+		return FALSE
+
+	if(!dirt_overlay)
+		dirt_overlay = new /datum/dirt_cover(dirt_datum)
+	else
+		dirt_overlay.add_dirt(dirt_datum)
+
+	return TRUE

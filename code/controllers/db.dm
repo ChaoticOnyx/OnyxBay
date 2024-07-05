@@ -3,8 +3,15 @@ GLOBAL_REAL(db, /datum/db) = new
 /datum/db/proc/connect()
 	var/ret = rustg_sdb_connect(config.db.address, config.db.namespace, config.general.server_id, config.db.login, config.db.password)
 
+	if(ret == "")
+		return
+
+	log_error("Can't connect to the database at '[config.db.address]': [ret].")
+
+	ret = rustg_sdb_connect("file://data/database", config.db.namespace, config.general.server_id, "", "")
+
 	if(ret != "")
-		CRASH("Can't connect to the database: [ret]")
+		CRASH("Can't connect to the fallback database: [ret].")
 
 /datum/db/proc/query(query, binds)
 	if(!isnull(binds))
@@ -117,24 +124,38 @@ GLOBAL_REAL(db, /datum/db) = new
 
 // Art library procs
 
-/datum/db/proc/add_art(title, type, data, author_ckey)
+/datum/db/proc/add_art(title, type, grid, base64_icon, author_ckey)
 	 query(
 		{"
 			CREATE art CONTENT {
 				title: $title,
 				type: $type,
-				data: $data,
+				grid: $grid,
 				deleted: false,
+				base64_icon: $base64_icon,
 				author_player: (<record> $author_player),
 			};
 		"},
-		list("title" = title, "type" = type, "data" = data, "author_player" = "player:[author_ckey]")
+		list("title" = title, "type" = type, "grid" = grid, "base64_icon" = base64_icon, "author_player" = "player:[author_ckey]")
+	)
+
+/datum/db/proc/update_art_base64_icon(art_id, base64_icon)
+	query(
+		{"
+			IF (<record> $art).id IS NOT NONE
+			{
+				RETURN UPDATE (<record> $art) MERGE {
+					base64_icon: $base64_icon
+				};
+			};
+		"},
+		list("art" = "art:[art_id]", "base64_icon" = base64_icon)
 	)
 
 /datum/db/proc/find_art(art_id)
 	var/response = query(
 		{"
-			SELECT meta::id(id) AS id, title, data, type FROM (<record> $art);
+			SELECT meta::id(id) AS id, title, grid, base64_icon, type FROM (<record> $art);
 		"},
 		list("art" = "art:[art_id]")
 	)

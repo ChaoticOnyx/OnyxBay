@@ -275,23 +275,6 @@
 	else if(istype(I, /obj/item/soap) || istype(I, /obj/item/reagent_containers/rag))
 		return canvas_color
 
-/obj/item/canvas/proc/to_json()
-	if(!icon_generated || no_save)
-		return
-	var/list/data = list()
-	data["name"] = painting_name
-	data["ckey"] = author_ckey
-	data["grid"] = grid
-	return json_encode(data)
-
-/obj/item/canvas/proc/apply_canvas_data(encoded_data)
-	if(icon_generated || !istext(encoded_data))
-		return
-	var/list/data = json_decode(encoded_data)
-	painting_name = data["name"]
-	author_ckey = data["ckey"]
-	grid = data["grid"]
-
 /obj/item/canvas/proc/try_rename(mob/user)
 	if(user)
 		var/new_name = sanitize(input(user,"What do you want to name the painting?"))

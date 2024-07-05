@@ -72,8 +72,8 @@
 	spawning = 3
 	bound1 = list(-1000,0,-1000)
 	bound2 = list(1000,75,1000)
-	lifespan = 20
-	fade = 30
+	lifespan = 8
+	fade = 10
 	fadein = 5
 	velocity = list(0, 2)
 	position = list(0, 8)
@@ -182,3 +182,22 @@ GLOBAL_LIST_EMPTY(blood_particles)
 	spin = generator("num", -20, 20)
 	velocity = list(50, 0)
 	friction = generator("num", 0.3, 0.6)
+
+
+/particles/bonfire
+	icon = 'icons/effects/particles/bonfire.dmi'
+	icon_state = "bonfire"
+	width = 100
+	height = 100
+	count = 1000
+	spawning = 4
+	lifespan = 0.7 SECONDS
+	fade = 1 SECONDS
+	grow = -0.01
+	velocity = list(0, 0)
+	position = generator("circle", 0, 16, NORMAL_RAND)
+	drift = generator("vector", list(0, -0.2), list(0, 0.2))
+	gravity = list(0, 0.95)
+	scale = generator("vector", list(0.3, 0.3), list(1,1), NORMAL_RAND)
+	rotation = 30
+	spin = generator("num", -20, 20)

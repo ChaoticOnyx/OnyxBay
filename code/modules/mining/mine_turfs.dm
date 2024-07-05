@@ -449,6 +449,9 @@ var/list/mining_floors = list()
 		MATERIAL_PLASMA = 10
 		)
 
+/turf/simulated/mineral/random/low_chance
+	mineralChance = 5
+
 /turf/simulated/mineral/random/Initialize()
 	. = ..()
 	if(prob(mineralChance) && !mineral)
@@ -988,3 +991,50 @@ var/list/mining_floors = list()
 
 /turf/simulated/floor/asteroid/beach/water/update_dirt()
 	return
+
+/turf/simulated/floor/asteroid/waste
+	name = "iron sand"
+	desc = "Reddish sand, probably because it contain too much iron in it."
+	icon = 'icons/turf/flooring/wasteland.dmi'
+	icon_state = "wasteland_dry1"
+	floor_variance = 100
+	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	temperature = 15 CELSIUS
+
+/turf/simulated/floor/asteroid/waste/Initialize(mapload)
+	. = ..()
+	if(prob(floor_variance))
+		icon_state = "wasteland_dry[rand(1, 12)]"
+
+/turf/simulated/floor/asteroid/rust
+	name = "iron sand"
+	desc = "Reddish sand, probably because it contain too much iron in it."
+	icon = 'icons/turf/flooring/plating.dmi'
+	icon_state = "plating_rust"
+	floor_variance = 100
+	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	temperature = 15 CELSIUS
+
+/turf/simulated/floor/asteroid/tar_water
+	name = "water"
+	desc = "Looks wet."
+	icon = 'icons/turf/flooring/swamp.dmi'
+	icon_state = "swamp"
+	footstep_sound = SFX_FOOTSTEP_SWAMP
+	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	temperature = 15 CELSIUS
+
+/turf/simulated/floor/asteroid/tar_water/update_dirt()
+	return
+
+/turf/simulated/wall/mineral
+	name = "wall"
+	desc = "A huge chunk of metal used to seperate rooms."
+	icon = 'icons/turf/wall_masks.dmi'
+	icon_state = "waste"
+	material = MATERIAL_WASTELAND
+	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	temperature = 15 CELSIUS
+
+/turf/simulated/wall/mineral/Initialize(mapload)
+	. = ..(mapload, MATERIAL_WASTELAND, MATERIAL_WASTELAND) //3strong

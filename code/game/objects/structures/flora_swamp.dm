@@ -32,7 +32,8 @@
 
 /obj/structure/flora/thorn_bush/Crossed(atom/movable/AM) // Fuck this, fuck optimization, fuck common sense. ~Filatelele
 	. = ..()
-	playsound(get_turf(src), GET_SFX(SFX_PLANTCROSS), 100, FALSE, -1)
+	if(!isobserver(AM))
+		playsound(get_turf(src), GET_SFX(SFX_PLANTCROSS), 100, FALSE, -1)
 
 	if(isliving(AM))
 		var/mob/living/L = AM

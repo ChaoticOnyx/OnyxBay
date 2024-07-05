@@ -9,6 +9,7 @@ SUBSYSTEM_DEF(mapgen)
 	var/list/turfs = list()
 	var/list/generated_turfs = list()
 	var/list/smooth_queue = list()
+	var/list/populate_queue = list()
 
 /datum/controller/subsystem/mapgen/fire(resumed = FALSE)
 	while(turfs.len)
@@ -46,11 +47,24 @@ SUBSYSTEM_DEF(mapgen)
 
 		to_smooth.update_icon()
 		smooth_queue.len--
+		populate_queue |= to_smooth
 		if(MC_TICK_CHECK)
 			return
 
-	if(!turfs.len && !generated_turfs.len && !smooth_queue.len)
-		current_mapgen = null
+	while(populate_queue.len)
+		var/turf/to_populate = populate_queue[populate_queue.len]
+		if(!istype(to_populate))
+			continue
+
+		current_mapgen._populate_turf(to_populate)
+		populate_queue.len--
+		if(populate_queue.len <= 0)
+			new /datum/random_map/automata/cave_system(null, 1, 1, 1, world.maxx, world.maxy)
+			new /datum/random_map/noise/ore(null, 1, 1, 1, world.maxx, world.maxy)
+			current_mapgen = null
+
+		if(MC_TICK_CHECK)
+			return
 
 /datum/controller/subsystem/mapgen/Recover()
 	current_mapgen = SSmapgen.current_mapgen
