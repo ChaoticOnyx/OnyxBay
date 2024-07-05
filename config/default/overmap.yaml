@@ -1,0 +1,60 @@
+overmap:
+  blacklisted_gammemodes: []
+  return_system: 'Outpost 45'
+  systems:
+    - name: 'Outpost 45'
+      desc: >
+        The rally point for all ships returning from patrols, deliveries, and shakedowns.
+        Here Whiterapids personnel are stripped of their gear,
+        turn in contraband, and allowed to take leave.
+      x: 47
+      y: 75
+      alignment: 'whiterapids'
+      owner: 'whiterapids'
+      sector: 1
+      hidden: true
+      adjacency_list:
+        - 'Lalande 21185'
+        - 'Sol'
+      is_capital: false
+      visitable: true
+      is_hypergate: false
+      system_traits: 15
+    - name: 'Lalande 21185'
+      desc: >
+        Lalande has always held hypergates for Federation travel.
+        From the Delphic Expanse to the Rosetta Cluster
+        this system is always seeing ships come and go to aid in the war effort
+        and provide corporate and civilian travel alike.
+      x: 25
+      y: 80
+      alignment: 'solgov'
+      owner: 'solgov'
+      sector: 1
+      adjacency_list:
+        - 'Outpost 45'
+      parallax_property: 'demonstar_planet'
+      visitable: true
+      is_hypergate: true
+      system_type:
+        tag: 'demonstar'
+        label: 'Demon Star'
+    - name: 'Sol'
+      desc: >
+        The heart and home of humanity, the centerfold of the technological singularity.
+        Even after the disaster, Earth stands as a veritable stronghold, sprawling cityscape, and absolute paradise.
+        Billions of people live here, the beating heart of the Federation houses wormgates, hypergates,
+        and hyperlanes to the rest of the Federation but you have no business there right now.
+      x: 70
+      y: 50
+      alignment: 'solgov'
+      owner: 'solgov'
+      sector: 1
+      adjacency_list:
+        - 'Outpost 45'
+      is_capital: true
+      visitable: true
+      system_traits: 5
+      system_type:
+        tag: 'planet_earth'
+        label: 'Planetary system'

@@ -1,4 +1,0 @@
-[overmap]
-blacklisted_gammemodes = []
-starmap_path = "strings/names/starmap_default.json"
-return_system = "Outpost 45"
