@@ -152,7 +152,7 @@ var/global/obj/effect/zasdbg/mark/zasdbgovl_mark = new
 			postponed.Add(unsim)
 
 	if(zas_participation && !TURF_HAS_VALID_ZONE(src)) //Still no zone, make a new one.
-		var/zone/newzone = new zone()
+		var/zone/newzone = new /zone()
 		newzone.add(src)
 
 	#ifdef ZASDBG
