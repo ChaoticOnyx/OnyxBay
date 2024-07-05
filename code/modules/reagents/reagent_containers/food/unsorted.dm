@@ -334,6 +334,8 @@
 	name = "eggs benedict"
 	desc = "A perfectly poached runny egg sitting atop a bedding of Nadezhdian bacon and muffin, with hollandaise sauce generously spread on top. The best breakfast you'll ever have."
 	icon_state = "benedict"
+	trash = /obj/item/trash/dish/plate
+	center_of_mass = "x=15;y=15"
 	bitesize = 5
 	startswith = list(
 		/datum/reagent/nutriment/protein = 15,
@@ -2002,8 +2004,8 @@
 /obj/item/reagent_containers/food/rawbacon
 	name = "raw bacon"
 	desc = "A thin slice of pork."
-	icon = 'icons/obj/food.dmi'
-	icon_state = "bacon"
+	icon = 'icons/obj/food_ingredients.dmi'
+	icon_state = "bacon_raw"
 	center_of_mass = "x=17;y=20"
 	startswith = list(/datum/reagent/nutriment/protein = 2)
 	bitesize = 2
@@ -2012,6 +2014,7 @@
 	name = "fried bacon"
 	desc = "When it comes to bacon, always be prepared."
 	icon = 'icons/obj/food_ingredients.dmi'
+	center_of_mass = "x=17;y=20"
 	icon_state = "bacon"
 	bitesize = 2
 	startswith = list(/datum/reagent/nutriment/cornoil=5,/datum/reagent/nutriment/protein=10)
@@ -2129,16 +2132,6 @@
 	center_of_mass = "x=15;y=15"
 	nutriment_amt = 6
 	startswith = list(/datum/reagent/nutriment/protein = 2)
-	bitesize = 4
-
-/obj/item/reagent_containers/food/eggsbenedict
-	name = "Eggs Benedict"
-	desc = "It's has only one egg, how rough."
-	icon_state = "eggsbenedict"
-	trash = /obj/item/trash/dish/plate
-	center_of_mass = "x=15;y=15"
-	nutriment_amt = 6
-	startswith = list(/datum/reagent/nutriment/protein = 4)
 	bitesize = 4
 
 /obj/item/reagent_containers/food/fruitcup
