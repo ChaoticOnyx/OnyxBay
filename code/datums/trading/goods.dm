@@ -346,7 +346,7 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/borg/upgrade 								= TRADER_SUBTYPES_ONLY,
 								/obj/item/borg/upgrade/remodel/advanced 			= TRADER_BLACKLIST_ALL,
 								/obj/item/borg/upgrade/syndicate 					= TRADER_BLACKLIST,
-								/obj/item/borg/upgrade/visor 						= TRADER_SUBTYPES_ONLY,
+								/obj/item/borg/upgrade/visor 						= TRADER_BLACKLIST,
 								/obj/item/borg/upgrade/visor/thermal 				= TRADER_BLACKLIST,
 								/obj/item/borg/upgrade/visor/x_ray 					= TRADER_BLACKLIST,
 								/obj/item/borg/upgrade/visor/flash_screen 			= TRADER_BLACKLIST
