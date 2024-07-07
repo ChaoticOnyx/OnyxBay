@@ -41,7 +41,11 @@
 	QDEL_NULL(air)
 
 	leaks.Cut()
+	for(var/atom/movable/member in members)
+		unregister_signal(member, SIGNAL_QDELETING)
 	members.Cut()
+	for(var/atom/movable/edge in edges)
+		unregister_signal(edge, SIGNAL_QDELETING)
 	edges.Cut()
 	. = ..()
 	return QDEL_HINT_QUEUE
@@ -98,6 +102,7 @@
 							possible_expansions += item
 						item.getting_pipelined = TRUE
 						members += item
+						register_signal(item, SIGNAL_QDELETING, nameof(.proc/on_member_qdel))
 
 						volume += item.volume
 
@@ -117,6 +122,7 @@
 
 			if(edge_check > 0)
 				edges += borderline
+				register_signal(borderline, SIGNAL_QDELETING, nameof(.proc/on_borderline_qdel))
 
 			possible_expansions -= borderline
 
@@ -267,3 +273,9 @@
 	// Only would happen if both sides (all 2 square meters of surface area) were exposed to sunlight.  We now assume it aligned edge on.
 	// It currently should stabilise at 129.6K or -143.6C
 	. -= surface * STEFAN_BOLTZMANN_CONSTANT * thermal_conductivity * (surface_temperature - COSMIC_RADIATION_TEMPERATURE) ** 4
+
+/datum/pipeline/proc/on_borderline_qdel(atom/movable/former_member)
+	qdel_self()
+
+/datum/pipeline/proc/on_member_qdel(atom/movable/former_member)
+	qdel_self()
