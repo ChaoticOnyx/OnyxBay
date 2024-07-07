@@ -27,6 +27,15 @@
 	var/glass_required = null // Required glass for current cocktail
 	var/list/glass_special = null // null equivalent to list()
 
+	///How much fire power does the liquid have, for burning on simulated liquids. Not enough fire power/unit of entire mixture may result in no fire
+	var/liquid_fire_power = 0
+	///How fast does the liquid burn on simulated turfs, if it does
+	var/liquid_fire_burnrate = 0
+	///Whether a fire from this requires oxygen in the atmosphere
+	var/fire_needs_oxygen = TRUE
+	///Whether it will evaporate if left untouched on a liquids simulated puddle
+	var/evaporates = FALSE
+
 /datum/reagent/New(datum/reagents/holder)
 	if(!istype(holder))
 		CRASH("Invalid reagents holder: [log_info_line(holder)]")

@@ -117,6 +117,16 @@
 
 	return dist
 
+/proc/get_step_multiz(ref, dir)
+	var/turf/us = get_turf(ref)
+	if(dir & UP)
+		dir &= ~UP
+		return get_step(GetAbove(us), dir)
+	if(dir & DOWN)
+		dir &= ~DOWN
+		return get_step(GetBelow(us), dir)
+	return get_step(ref, dir)
+
 /proc/circlerangeturfs(center = usr, radius = 3)
 
 	var/turf/centerturf = get_turf(center)

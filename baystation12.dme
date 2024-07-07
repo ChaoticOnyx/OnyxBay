@@ -1,7 +1,7 @@
 // DM Environment file for baystation12.dme.
 // All manual changes should be made outside the BEGIN_ and END_ blocks.
 // New source code should be placed in .dm files: choose File/New --> Code File.
-// #define TRACY_PROFILER
+#define TRACY_PROFILER
 // BEGIN_INTERNALS
 // END_INTERNALS
 // BEGIN_FILE_DIR
@@ -65,6 +65,7 @@
 #include "code\__defines\languages.dm"
 #include "code\__defines\lazy_value.dm"
 #include "code\__defines\lighting.dm"
+#include "code\__defines\liquids.dm"
 #include "code\__defines\machinery.dm"
 #include "code\__defines\mapping.dm"
 #include "code\__defines\materials.dm"
@@ -273,6 +274,7 @@
 #include "code\controllers\subsystems\inactivity.dm"
 #include "code\controllers\subsystems\input.dm"
 #include "code\controllers\subsystems\lighting.dm"
+#include "code\controllers\subsystems\liquid.dm"
 #include "code\controllers\subsystems\lobby.dm"
 #include "code\controllers\subsystems\machines.dm"
 #include "code\controllers\subsystems\mapgen.dm"
@@ -363,6 +365,7 @@
 #include "code\datums\components\cardborg.dm"
 #include "code\datums\components\connect_mob_behalf.dm"
 #include "code\datums\components\label.dm"
+#include "code\datums\components\liquid_interaction.dm"
 #include "code\datums\components\mind_linker.dm"
 #include "code\datums\components\movable_physics.dm"
 #include "code\datums\components\movement_detector.dm"
@@ -2053,6 +2056,10 @@
 #include "code\modules\lighting\lighting_source.dm"
 #include "code\modules\lighting\lighting_turf.dm"
 #include "code\modules\lighting\~lighting_undefs.dm"
+#include "code\modules\liquids\debug.dm"
+#include "code\modules\liquids\effect.dm"
+#include "code\modules\liquids\fancy.dm"
+#include "code\modules\liquids\groups.dm"
 #include "code\modules\lobby_music\_licenses.dm"
 #include "code\modules\lobby_music\_lobby_music.dm"
 #include "code\modules\lobby_music\crocketts_theme.dm"

@@ -434,11 +434,6 @@
 	glass_name = "welder fuel"
 	glass_desc = "Unless you are an industrial tool, this is probably not safe for consumption."
 
-/datum/reagent/fuel/touch_turf(turf/T)
-	new /obj/effect/decal/cleanable/liquid_fuel(T, volume)
-	remove_self(volume)
-	return
-
 /datum/reagent/fuel/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		M.adjust_fire_stacks(removed)

@@ -155,6 +155,10 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 		warning("[log_info_line(my_atom)] attempted to add a reagent of type '[reagent_type]' which doesn't exist. ([usr])")
 	return 0
 
+/datum/reagents/proc/add_reagent_list(list/reagents, list/data, safety = FALSE)
+	for(var/reagent_id in reagents)
+		add_reagent(reagent_id, reagents[reagent_id], data, safety)
+
 /datum/reagents/proc/_delayed_add_reagents(reagent_type, amount, data = null, safety = 0)
 	remove_think_ctx("delayed_add_reagents")
 	return add_reagent(reagent_type, amount, data, safety)
@@ -362,6 +366,8 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	if(spill)
 		splash(target.loc, spill, multiplier, copy, min_spill, max_spill)
 
+	if(isturf(target))
+		target.add_liquid_from_reagents(src)
 	trans_to(target, amount, multiplier, copy)
 
 /datum/reagents/proc/trans_type_to(atom/target, type, amount = 1)

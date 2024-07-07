@@ -246,7 +246,10 @@
 
 	amount = min(amount, reagents.total_volume)
 	reagents.remove_reagent(/datum/reagent/fuel,amount)
-	new /obj/effect/decal/cleanable/liquid_fuel(src.loc, amount,1)
+	var/datum/reagents/tempr = new /datum/reagents(10000, GLOB.temp_reagents_holder)
+	reagents.trans_to_holder(tempr, amount)
+	var/turf/epicenter = get_turf(src)
+	epicenter.add_liquid_from_reagents(tempr)
 
 /obj/structure/reagent_dispensers/composttank
 	name = "compost tank"

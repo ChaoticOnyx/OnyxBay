@@ -48,3 +48,6 @@
 
 /// Called on '/atom/fire_act' (/atom)
 #define SIGNAL_FIRE_ACT "atom_fire_act"
+
+/// CAlled on `/atom/movable/handle_fall` (/turf)
+#define SIGNAL_ATOM_FALL "atom_fall"

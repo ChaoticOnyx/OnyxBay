@@ -159,3 +159,28 @@
 		M.forceMove(target, unbuckle_mob = FALSE)
 
 	return target
+
+/proc/get_passable_turf_in_dir(atom/center, dir)
+	var/turf/simulated/get_turf = get_step(center, dir)
+	if(!get_turf.CanPass(center, get_turf(center)))
+		return null
+
+	if(istype(get_turf))
+		return get_turf
+
+///Returns a list with all the adjacent open turfs. Clears the list of nulls in the end.
+/proc/get_adjacent_passable_turfs(atom/center)
+	var/list/hand_back = list()
+	var/turf/simulated/new_turf = get_passable_turf_in_dir(center, NORTH)
+	if(istype(new_turf))
+		hand_back += new_turf
+	new_turf = get_passable_turf_in_dir(center, SOUTH)
+	if(istype(new_turf))
+		hand_back += new_turf
+	new_turf = get_passable_turf_in_dir(center, EAST)
+	if(istype(new_turf))
+		hand_back += new_turf
+	new_turf = get_passable_turf_in_dir(center, WEST)
+	if(istype(new_turf))
+		hand_back += new_turf
+	return hand_back

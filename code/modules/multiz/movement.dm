@@ -170,6 +170,7 @@
 		return species.can_fall(src)
 
 /atom/movable/proc/handle_fall(turf/landing)
+	SEND_SIGNAL(landing, SIGNAL_ATOM_FALL, src)
 	forceMove(landing)
 	if(locate(/obj/structure/stairs) in landing)
 		return 1

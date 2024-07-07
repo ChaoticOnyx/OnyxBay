@@ -30,6 +30,10 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(air_contents.check_combustibility())
 		igniting = 1
 		create_fire(exposed_temperature)
+	if(liquids && !liquids.fire_state && liquids.check_fire(TRUE))
+		igniting = TRUE
+		SSliquids.processing_fire[src] = TRUE
+
 	return igniting
 
 /zone/proc/process_fire()
