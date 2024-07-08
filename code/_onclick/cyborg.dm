@@ -72,6 +72,7 @@
 
 		var/resolved = I.resolve_attackby(A, src, params)
 		if(!resolved && A && I)
+			SEND_SIGNAL(I, SIGNAL_ITEM_AFTERATTACK, A, src, TRUE, params)
 			I.afterattack(A, src, 1, params) // 1 indicates adjacency
 		return
 
@@ -84,9 +85,11 @@
 
 			var/resolved = I.resolve_attackby(A, src, params)
 			if(!resolved && A && I)
+				SEND_SIGNAL(I, SIGNAL_ITEM_AFTERATTACK, A, src, TRUE, params)
 				I.afterattack(A, src, 1, params) // 1 indicates adjacency
 			return
 		else
+			SEND_SIGNAL(I, SIGNAL_ITEM_AFTERATTACK, A, src, FALSE, params)
 			I.afterattack(A, src, 0, params)
 			return
 	return

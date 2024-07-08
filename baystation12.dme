@@ -2060,6 +2060,7 @@
 #include "code\modules\liquids\effect.dm"
 #include "code\modules\liquids\fancy.dm"
 #include "code\modules\liquids\groups.dm"
+#include "code\modules\liquids\liquid_status_effect.dm"
 #include "code\modules\lobby_music\_licenses.dm"
 #include "code\modules\lobby_music\_lobby_music.dm"
 #include "code\modules\lobby_music\crocketts_theme.dm"

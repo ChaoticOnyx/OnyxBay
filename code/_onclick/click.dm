@@ -136,6 +136,7 @@
 		if(I)
 			var/resolved = I.resolve_attackby(A, src, params)
 			if(!resolved && A && I)
+				SEND_SIGNAL(I, SIGNAL_ITEM_AFTERATTACK, A, src, TRUE, params)
 				I.afterattack(A, src, 1, params) // 1 indicates adjacency
 		else
 			if(ismob(A)) // No instant mob attacking
@@ -162,6 +163,7 @@
 				// Return 1 in attackby() to prevent afterattack() effects (when safely moving items for example)
 				var/resolved = I.resolve_attackby(A,src, params)
 				if(!resolved && A && I)
+					SEND_SIGNAL(I, SIGNAL_ITEM_AFTERATTACK, A, src, TRUE, params)
 					I.afterattack(A, src, 1, params) // 1: clicking something Adjacent
 			else
 				if(ismob(A)) // No instant mob attacking
@@ -172,6 +174,7 @@
 			return
 		else // non-adjacent click
 			if(I)
+				SEND_SIGNAL(I, SIGNAL_ITEM_AFTERATTACK, A, src, FALSE, params)
 				I.afterattack(A, src, 0, params) // 0: not Adjacent
 			else
 				RangedAttack(A, params)
