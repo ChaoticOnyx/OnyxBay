@@ -74,6 +74,9 @@
 	color = "#707C13"
 	strength = 15
 	metabolism = REM
+	liquid_fire_power = 20
+	liquid_fire_burnrate = 0.1
+	evaporates = TRUE
 
 /datum/reagent/toxin/plasma/touch_mob(mob/living/L, amount)
 	if(istype(L))

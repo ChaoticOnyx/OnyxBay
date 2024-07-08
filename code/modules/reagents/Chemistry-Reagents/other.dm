@@ -48,6 +48,9 @@
 	color = "#808080"
 	overdose = REAGENTS_OVERDOSE * 0.5
 	color_weight = 20
+	liquid_fire_power = 5
+	liquid_fire_burnrate = 0.1
+	evaporates = TRUE
 
 /datum/reagent/paint/touch_turf(turf/T)
 	if(istype(T) && !istype(T, /turf/space))
@@ -237,6 +240,9 @@
 	reagent_state = SOLID
 	color = "#673910"
 	touch_met = 50
+	liquid_fire_power = 30
+	liquid_fire_burnrate = 0.1
+	evaporates = TRUE
 
 /datum/reagent/thermite/touch_turf(turf/T)
 	if(volume >= 5)
@@ -433,6 +439,9 @@
 
 	glass_name = "welder fuel"
 	glass_desc = "Unless you are an industrial tool, this is probably not safe for consumption."
+	liquid_fire_power = 20
+	liquid_fire_burnrate = 0.1
+	evaporates = TRUE
 
 /datum/reagent/fuel/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)

@@ -9,6 +9,7 @@
 	glass_name = "water"
 	glass_desc = "The father of all refreshments."
 	var/slippery = 1
+	evaporates = TRUE
 
 /datum/reagent/water/affect_blood(mob/living/carbon/M, alien, removed)
 	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
@@ -101,6 +102,8 @@
 	reagent_state = LIQUID
 	color = "#808080"
 	metabolism = REM * 0.2
+	liquid_fire_power = 15
+	liquid_fire_burnrate = 0.1
 
 /datum/reagent/acetone/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	M.adjustToxLoss(removed * 3)
@@ -146,6 +149,7 @@
 	reagent_state = LIQUID
 	color = "#404030"
 	metabolism = REM * 0.5
+	evaporates = TRUE
 
 /datum/reagent/ammonia/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_VOX)
@@ -196,6 +200,8 @@
 	color = "#808080"
 	metabolism = REM * 0.2
 	touch_met = 5
+	liquid_fire_power = 30
+	liquid_fire_burnrate = 0.1
 
 /datum/reagent/hydrazine/affect_blood(mob/living/carbon/M, alien, removed)
 	M.adjustToxLoss(4 * removed)
@@ -244,6 +250,7 @@
 	reagent_state = LIQUID
 	metabolism = REM * 0.2
 	color = "#484848"
+	evaporates = TRUE
 
 /datum/reagent/mercury/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
@@ -323,6 +330,9 @@
 	touch_met = 50 // It's acid!
 	var/power = 5
 	var/meltdose = 10 // How much is needed to melt
+	liquid_fire_power = 10
+	liquid_fire_burnrate = 0.1
+	evaporates = TRUE
 
 /datum/reagent/acid/affect_blood(mob/living/carbon/M, alien, removed)
 	M.take_organ_damage(0, removed * power * 2)

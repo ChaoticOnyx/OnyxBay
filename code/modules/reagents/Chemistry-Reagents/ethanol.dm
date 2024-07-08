@@ -19,6 +19,9 @@
 
 	glass_name = "ethanol"
 	glass_desc = "A well-known alcohol with a variety of applications."
+	liquid_fire_power = 15
+	liquid_fire_burnrate = 0.1
+	evaporates = TRUE
 
 /datum/reagent/ethanol/touch_mob(mob/living/L, amount)
 	if(istype(L))
