@@ -8,6 +8,8 @@
 	throwforce = 0
 	throw_range = 6
 	origin_tech = list(TECH_BIO = 4)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/Uses = 1 // uses before it goes inert
 	var/enhanced = 0 //has it been enhanced before?
 	var/effectmod = ""

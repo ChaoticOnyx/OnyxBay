@@ -8,6 +8,8 @@
 	var/list/clothing_choices = list()
 	siemens_coefficient = 0.5
 	species_restricted = null
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	armor = list(melee = 70, bullet = 40, laser = 40, energy = 35, bomb = 20, bio = 60)
 
@@ -209,6 +211,8 @@
 	icon_state = "flippers"
 	item_flags = ITEM_FLAG_NOSLIP
 	species_restricted = null
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/shoes/swimmingfins/New()
 	..()

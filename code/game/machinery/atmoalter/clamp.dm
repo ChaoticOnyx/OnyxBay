@@ -146,6 +146,8 @@
 	icon = 'icons/atmos/clamp.dmi'
 	icon_state = "pclamp0"
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 4)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clamp/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity)

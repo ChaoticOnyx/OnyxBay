@@ -57,6 +57,8 @@
 	armor = list(melee = 25, bullet = 25, laser = 25, energy = 10, bomb = 25, bio = 0)
 	coverage = 1.0
 	slot = ACCESSORY_SLOT_ARMOR_C
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/accessory/armorplate/get_fibers()
 	return null	//plates do not shed
@@ -140,6 +142,8 @@
 	armor = list(melee = 40, bullet = 75, laser = 65, energy = 15, bomb = 30, bio = 0)
 	coverage = 1.0
 	slot = ACCESSORY_SLOT_ARMOR_L
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/accessory/legguards/blue
 	desc = "A pair of armored leg pads in blue. Attaches to a plate carrier."
@@ -194,6 +198,8 @@
 	icon = 'icons/obj/clothing/modular_armor.dmi'
 	icon_state = "null"
 	slot = ACCESSORY_SLOT_ARMOR_M
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/accessory/armor/tag/nt
 	name = "\improper NT SECURITY tag"

@@ -14,6 +14,8 @@
 	throw_speed = 2
 	throw_range = 20
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_BALL
 	pickup_sound = SFX_PICKUP_BALL

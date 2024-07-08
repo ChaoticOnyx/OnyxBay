@@ -5,6 +5,8 @@
 	icon_state = "bookHacking"
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/uses = 1
 	var/temp = null
 	var/list/monster = list(/mob/living/simple_animal/familiar/pet/cat,

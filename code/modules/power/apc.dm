@@ -1311,6 +1311,8 @@
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 	w_class = ITEM_SIZE_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/machinery/power/apc/malf_upgrade(mob/living/silicon/ai/user)
 	..()

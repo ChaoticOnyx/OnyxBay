@@ -134,6 +134,7 @@
 	w_class = ITEM_SIZE_TINY
 	throw_range = 3
 	throw_speed = 2
+	can_be_wrung_out = FALSE
 
 /obj/item/shreddedp/New()
 	..()

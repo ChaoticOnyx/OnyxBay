@@ -14,6 +14,9 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	layer = ABOVE_WINDOW_LAYER
 	unacidable = TRUE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	var/buildstage = INTERCOM_EMPTY
 
 /obj/item/intercom_assembly/Initialize(mapload, _dir, atom/frame)

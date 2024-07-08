@@ -7,6 +7,8 @@
 	icon = 'icons/obj/weapons.dmi'
 	var/plantname
 	var/potency = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/grown/New(newloc,planttype)
 
@@ -39,6 +41,8 @@
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 0
 	throw_range = 20
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/corncob/attackby(obj/item/W as obj, mob/user as mob)
 	..()
@@ -57,6 +61,8 @@
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 0
 	throw_range = 20
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/bananapeel/Crossed(mob/living/M)
 	if(!istype(M))

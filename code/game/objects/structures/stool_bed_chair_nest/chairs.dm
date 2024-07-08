@@ -117,6 +117,8 @@
 	matter = list(MATERIAL_STEEL = 2000)
 	var/material/padding_material
 	var/material/material
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/foldchair/New()
 	..()

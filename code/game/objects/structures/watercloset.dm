@@ -189,6 +189,8 @@
 	desc = "It has everything you need to assemble your own shower. Isn't it beautiful?"
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "shower_parts"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/shower_parts/attack_self(mob/user)
 	add_fingerprint(user)

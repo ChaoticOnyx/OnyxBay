@@ -4,6 +4,8 @@
 	item_flags = ITEM_FLAG_NO_PRINT
 	w_class = ITEM_SIZE_TINY
 	var/list/evidence = list()
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/sample/New(newloc, atom/supplied)
 	..(newloc)
@@ -128,6 +130,8 @@
 
 /obj/item/forensics
 	item_flags = ITEM_FLAG_NO_PRINT
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/forensics/sample_kit
 	name = "fiber collection kit"

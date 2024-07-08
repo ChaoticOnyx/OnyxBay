@@ -7,6 +7,8 @@
 	body_parts_covered = 0
 	w_class = ITEM_SIZE_SMALL
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 0, ACID = 0)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/mask/nobreath/equipped(mob/living/carbon/human/user, slot)
 	. = ..()

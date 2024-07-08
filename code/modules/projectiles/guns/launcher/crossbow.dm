@@ -14,6 +14,8 @@
 	mod_reach = 0.8
 	mod_handy = 0.75
 	lock_picking_level = 3
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/arrow/proc/removed() //Helper for metal rods falling apart.
 	return
@@ -42,6 +44,8 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "metal-rod"
 	item_state = "bolt"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/spike/pre_launched()
 	..()
@@ -241,6 +245,8 @@
 	mod_weight = 0.7
 	mod_reach = 0.7
 	mod_handy = 0.85
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/buildstate = 0
 

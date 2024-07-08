@@ -264,6 +264,8 @@
 	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "silencer"
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/gun/projectile/pirate
 	name = "zip gun"
@@ -306,6 +308,8 @@
 	mod_reach = 1.0
 	mod_handy = 0.75
 	var/buildstate = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/zipgunframe/on_update_icon()
 	icon_state = "zipgun[buildstate]"

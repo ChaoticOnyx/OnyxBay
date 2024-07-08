@@ -182,6 +182,8 @@
 	name = "Music Tape box"
 	desc = "You should not see that."
 	icon = 'icons/obj/tapes.dmi'
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/obj/item/music_tape/music_tape = null
 	var/icon_closed
 

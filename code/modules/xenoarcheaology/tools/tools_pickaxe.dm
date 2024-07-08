@@ -88,6 +88,8 @@
 	max_storage_space = 18
 	max_w_class = ITEM_SIZE_SMALL
 	use_to_pickup = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/storage/excavation/New()
 	..()

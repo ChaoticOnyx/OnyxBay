@@ -6,6 +6,8 @@
 	w_class = ITEM_SIZE_LARGE
 	icon = 'icons/obj/airlock_machines.dmi'
 	icon_state = "brace_open"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/cur_health
 	var/max_health = 450
 	var/obj/machinery/door/airlock/airlock = null

@@ -19,6 +19,8 @@
 	allow_quick_gather = TRUE
 	collection_mode = TRUE
 	var/obj/item/storage/laundry_basket/offhand/linked
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/storage/laundry_basket/attack_hand(mob/user)
 	if(ishuman(user))

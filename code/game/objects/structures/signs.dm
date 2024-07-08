@@ -37,6 +37,8 @@
 	w_class = ITEM_SIZE_NORMAL		//big
 	var/sign_state = ""
 	var/fastening = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/sign/attackby(obj/item/W, mob/user)	//construction
 	if(isScrewdriver(W) && isturf(user.loc))

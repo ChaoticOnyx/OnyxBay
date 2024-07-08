@@ -13,6 +13,8 @@
 	w_class = ITEM_SIZE_NORMAL
 	matter = list(MATERIAL_STEEL = 50)
 	attack_verb = list("bludgeoned", "whacked", "disciplined", "thrashed")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/cane/concealed
 	var/concealed_blade

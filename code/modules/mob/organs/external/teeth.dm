@@ -6,6 +6,8 @@
 	var/death_time
 	/// Whether this tooth will be shown in examine.
 	var/shown_in_examine = FALSE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/tooth/Initialize(mapload)
 	. = ..()

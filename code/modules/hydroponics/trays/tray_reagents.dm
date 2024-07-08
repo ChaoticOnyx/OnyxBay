@@ -55,6 +55,8 @@
 	name = "bottle of weedkiller"
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/toxicity = 0
 	var/weed_kill_str = 0
 

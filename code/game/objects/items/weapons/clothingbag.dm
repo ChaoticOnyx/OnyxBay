@@ -3,6 +3,8 @@
 	desc = "A cheap plastic bag that contains a fresh set of clothes."
 	icon = 'icons/obj/trash.dmi'
 	icon_state = "trashbag3"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/icon_used = "trashbag0"
 	var/opened = 0

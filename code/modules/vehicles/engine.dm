@@ -3,6 +3,8 @@
 	desc = "An engine used to power a small vehicle."
 	icon = 'icons/obj/objects.dmi'
 	w_class = ITEM_SIZE_HUGE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/stat = 0
 	var/trail_type
 	var/cost_per_move = 5

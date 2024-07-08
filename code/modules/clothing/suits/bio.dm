@@ -14,6 +14,8 @@
 	body_parts_covered = HEAD|FACE|EYES
 	siemens_coefficient = 0.9
 	rad_resist_type = /datum/rad_resist/suit_bio
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/suit/bio_suit
 	name = "bio suit"
@@ -33,6 +35,8 @@
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	siemens_coefficient = 0.9
 	rad_resist_type = /datum/rad_resist/suit_bio
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /datum/rad_resist/suit_bio
 	alpha_particle_resist = 25.5 MEGA ELECTRONVOLT

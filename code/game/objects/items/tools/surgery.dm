@@ -23,6 +23,8 @@
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	drop_sound = SFX_DROP_SCREWDRIVER
 	pickup_sound = SFX_PICKUP_SCREWDRIVER
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /*
  * Hemostat
@@ -39,6 +41,8 @@
 	attack_verb = list("attacked", "pinched")
 	drop_sound = SFX_DROP_WELDINGTOOL
 	pickup_sound = SFX_PICKUP_WELDINGTOOL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/hemostat/pico
 	name = "precision grasper"
@@ -61,6 +65,8 @@
 	attack_verb = list("burnt")
 	drop_sound = SFX_DROP_SCREWDRIVER
 	pickup_sound = SFX_PICKUP_SCREWDRIVER
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /*
  * Surgical Drill
@@ -84,6 +90,8 @@
 	attack_verb = list("drilled")
 	drop_sound = SFX_DROP_ACCESSORY
 	pickup_sound = SFX_PICKUP_ACCESSORY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /*
  * Scalpel
@@ -111,6 +119,8 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	drop_sound = SFX_DROP_KNIFE
 	pickup_sound = SFX_PICKUP_KNIFE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /*
  * Researchable Scalpels
@@ -184,6 +194,8 @@
 	var/craft_step = CHAINSAW_ADD_COIL // Using for creating the chainsaw
 	drop_sound = SFX_DROP_ACCESSORY
 	pickup_sound = SFX_PICKUP_ACCESSORY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/circular_saw/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/wirerod) && improved == 0)
@@ -315,6 +327,8 @@
 	throwforce = 1.0
 	pickup_sound = SFX_PICKUP_BOTTLE
 	drop_sound = SFX_DROP_BOTTLE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/FixOVein
 	name = "FixOVein"
@@ -327,6 +341,8 @@
 	var/usage_amount = 10
 	pickup_sound = SFX_PICKUP_ACCESSORY
 	drop_sound = SFX_DROP_ACCESSORY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/FixOVein/clot
 	name = "capillary laying operation tool" //C.L.O.T.
@@ -348,6 +364,8 @@
 	attack_verb = list("attacked", "hit", "bludgeoned")
 	drop_sound = SFX_DROP_WELDINGTOOL
 	pickup_sound = SFX_PICKUP_WELDINGTOOL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/bonesetter/bone_mender
 	name = "bone mender"
@@ -371,6 +389,8 @@
 	var/gel_amt_max = 10
 	var/gel_amt = 10
 	var/emagged = 0 // Emagged organ fixer destroys organs for good
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/organfixer/New()
 	..()

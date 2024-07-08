@@ -13,6 +13,8 @@
 	siemens_coefficient = 0
 	permeability_coefficient = 0.05
 	armor = list(melee = 20, bullet = 5, laser = 10, energy = 70, bomb = 0, bio = 30)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_RUBBER
 	pickup_sound = SFX_PICKUP_RUBBER
@@ -40,6 +42,8 @@
 	siemens_coefficient = 0.50
 	permeability_coefficient = 0.05
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
@@ -53,6 +57,8 @@
 	siemens_coefficient = 0.5
 	permeability_coefficient = 0.05
 	armor = list(melee = 50, bullet = 40, laser = 60, energy = 15, bomb = 0, bio = 0)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
@@ -101,6 +107,8 @@
 	permeability_coefficient = 0.01
 	germ_level = 0
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 95)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_RUBBER
 	pickup_sound = SFX_PICKUP_RUBBER

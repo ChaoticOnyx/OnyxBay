@@ -97,6 +97,8 @@
 	cold_protection = HEAD
 	flags_inv = HIDEEARS | BLOCKHAIR
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/suit/storage/hooded/wintercoat/captain
 	name = "captain's winter coat"

@@ -5,6 +5,9 @@
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "target_h"
 	density = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	var/hp = 1800
 	var/icon/virtualIcon
 	var/list/bulletholes = list()

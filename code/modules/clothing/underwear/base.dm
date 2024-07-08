@@ -130,6 +130,7 @@
 	var/mob_wear_layer = HO_WRISTS_UNDER_LAYER
 	/// Some children of this type can be flipped (left/right wrist). -1 means it cannot be flipped at all.
 	var/flipped = -1
+	can_be_wrung_out = FALSE
 
 /obj/item/underwear/wrist/Initialize()
 	. = ..()

@@ -3,6 +3,9 @@
 	desc = "An electronic radio system."
 	icon = 'icons/obj/module.dmi'
 	icon_state = "power_mod"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	var/obj/item/device/pda/hostpda = null
 
 	var/on = 0 //Are we currently active??

@@ -20,6 +20,8 @@
 	force = 5.0
 	throwforce = 5.0
 	throw_range = 15
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/build_path = null
 	var/board_type = "computer"
 	var/list/req_components = null

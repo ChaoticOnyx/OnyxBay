@@ -11,6 +11,7 @@
 	req_access = list(access_armory)
 	var/locked = TRUE
 	var/broken = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/storage/lockbox/Initialize()
 	update_icon()
@@ -142,4 +143,3 @@
 	broken = !broken
 	update_icon()
 	return
-

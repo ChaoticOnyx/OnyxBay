@@ -1,4 +1,6 @@
 /obj/item/ship_weapon/ammunition
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	pull_slowdown = PULL_SLOWDOWN_EXTREME
 	var/projectile_type = null //What does the projectile look like on the overmap?
 	///Type of the volatility component that will be attached if volatility is above 0

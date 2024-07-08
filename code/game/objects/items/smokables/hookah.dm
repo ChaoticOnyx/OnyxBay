@@ -268,6 +268,8 @@
 	icon_state = "mouthpiece"
 	w_class = ITEM_SIZE_NO_CONTAINER
 	var/obj/item/reagent_containers/vessel/hookah/my_hookah = null
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/hookah_hose/dropped(mob/user)
 	..()
@@ -319,6 +321,8 @@
 	var/chem_volume = 40
 	var/pulls_left = 0
 	var/smoke_amount = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/hookah_coal/New()
 	..()
@@ -378,6 +382,8 @@
 	icon_state = "c_makeshift0"
 	w_class = ITEM_SIZE_LARGE
 	var/stage = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/hookah_construction/on_update_icon()
 	icon_state = "c_makeshift[stage]"

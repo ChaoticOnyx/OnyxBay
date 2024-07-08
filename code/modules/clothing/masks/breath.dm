@@ -19,6 +19,8 @@
 		)
 	use_alt_layer = TRUE
 	can_use_alt_layer = TRUE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	rad_resist_type = /datum/rad_resist/mask_breath
 

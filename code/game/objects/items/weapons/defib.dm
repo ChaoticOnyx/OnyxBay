@@ -17,6 +17,8 @@
 	mod_handy = 0.5
 	origin_tech = list(TECH_BIO = 4, TECH_POWER = 2)
 	action_button_name = "Remove/Replace Paddles"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/obj/item/shockpaddles/linked/paddles
 	var/obj/item/cell/bcell = null
@@ -210,6 +212,8 @@
 	mod_weight = 0.75
 	mod_reach = 0.75
 	mod_handy = 1.0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/safety = 1 //if you can zap people with the paddles on harm mode
 	var/combat = 0 //If it can be used to revive people wearing thick clothing (e.g. spacesuits)

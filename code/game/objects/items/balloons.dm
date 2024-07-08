@@ -12,6 +12,8 @@
 	icon = 'icons/obj/balloons.dmi'
 	icon_state = "box"
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/charges = 10
 	var/max_charges = 10
 
@@ -122,6 +124,8 @@
 	throwforce = 0.0
 	throw_range = 2
 	w_class = ITEM_SIZE_HUGE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/type_desc = ""
 	var/wielded = FALSE
 	var/wieldable = FALSE

@@ -259,6 +259,8 @@
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
 	throwforce = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/cigbutt/Initialize()
 	. = ..()

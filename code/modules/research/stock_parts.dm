@@ -8,6 +8,8 @@
 	randpixel = 5
 	w_class = ITEM_SIZE_SMALL
 	var/rating = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_COMPONENT
 	pickup_sound = SFX_PICKUP_COMPONENT
@@ -258,3 +260,5 @@
 	icon = 'icons/obj/stock_parts.dmi'
 	icon_state = "smes_coil"
 	origin_tech = list(TECH_MATERIAL = 19, TECH_ENGINEERING = 19, TECH_PLASMA = 19, TECH_POWER = 19, TECH_BLUESPACE = 19, TECH_BIO = 19, TECH_COMBAT = 19, TECH_MAGNET = 19, TECH_DATA = 19, TECH_ILLEGAL = 19)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE

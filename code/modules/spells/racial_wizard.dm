@@ -8,6 +8,8 @@
 	w_class = ITEM_SIZE_SMALL
 	throw_range = 3
 	force = 15
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/list/potentials = list(
 		SPECIES_HUMAN = /obj/item/storage/bag/cash/infinite,
 		SPECIES_VOX = /datum/spell/targeted/shapeshift/true_form,

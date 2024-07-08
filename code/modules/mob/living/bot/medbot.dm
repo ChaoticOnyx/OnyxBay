@@ -314,6 +314,8 @@
 	desc = "A first aid kit with a robot arm permanently grafted to it."
 	icon = 'icons/obj/aibots.dmi'
 	icon_state = "firstaid_arm"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/build_step = 0
 	var/created_name = "Medibot" //To preserve the name if it's a unique medbot I guess
 	var/skin = null //Same as medbot, set to tox or ointment for the respective kits.

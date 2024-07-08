@@ -7,6 +7,8 @@
 	base_icon_state = "pot"
 	center_of_mass = "x=16;y=13"
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/obj/item/reagent_containers/food/pottable_plant/my_plant = null
 	var/obj/item/my_secret = null
 
@@ -439,6 +441,8 @@
 	icon = 'icons/obj/flora/plant_pots.dmi'
 	icon_state = "gacha"
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/pottable_plant_gacha/attack_self(mob/user)
 	var/prize_type = pick(subtypesof(/obj/item/reagent_containers/food/pottable_plant))

@@ -412,6 +412,7 @@
 	origin_tech = list(TECH_ILLEGAL = 3)
 	var/global/list/clothing_choices
 	rad_resist_type = /datum/rad_resist/mask_chameleon
+	can_be_wrung_out = FALSE
 
 /datum/rad_resist/mask_chameleon
 	alpha_particle_resist = 23 MEGA ELECTRONVOLT

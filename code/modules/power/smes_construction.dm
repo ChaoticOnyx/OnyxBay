@@ -13,6 +13,8 @@
 	icon_state = "smes_coil"			// Just few icons patched together. If someone wants to make better icon, feel free to do so!
 	w_class = ITEM_SIZE_LARGE							// It's LARGE (backpack size)
 	origin_tech = list(TECH_MATERIAL = 7, TECH_POWER = 7, TECH_ENGINEERING = 5)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/ChargeCapacity = 50 KILO WATTS
 	var/IOCapacity = 250 KILO WATTS
 

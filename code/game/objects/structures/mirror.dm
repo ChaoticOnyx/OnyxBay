@@ -153,6 +153,8 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "mirror"
 	var/list/ui_users = list()
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/mirror/attack_self(mob/user as mob)
 	if(ishuman(user))

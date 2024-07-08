@@ -2,6 +2,8 @@
 	name = "Hardware"
 	desc = "Unknown Hardware."
 	icon = 'icons/obj/modular_components.dmi'
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/obj/item/modular_computer/holder2 = null
 	var/power_usage = 0 			// If the hardware uses extra power, change this.
 	var/enabled = 1					// If the hardware is turned off set this to 0.

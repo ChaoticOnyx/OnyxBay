@@ -13,6 +13,8 @@
 	var/base_icon = null
 	var/gear_detachable = FALSE
 	var/obj/item/gear = null
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/backwear/Initialize()
 	. = ..()

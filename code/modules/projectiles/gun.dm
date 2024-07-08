@@ -51,6 +51,7 @@
 	origin_tech = list(TECH_COMBAT = 1)
 	attack_verb = list("struck", "hit", "bashed")
 	zoomdevicename = "scope"
+	can_be_wrung_out = FALSE
 
 	var/burst = 1
 	var/fire_delay = 6 	//delay after shooting before the gun can be used again

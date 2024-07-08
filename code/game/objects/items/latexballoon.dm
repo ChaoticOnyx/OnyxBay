@@ -10,6 +10,8 @@
 	throw_range = 15
 	var/state
 	var/datum/gas_mixture/air_contents = null
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/latexballon/proc/blow(obj/item/tank/tank)
 	if (icon_state == "latexballon_bursted")

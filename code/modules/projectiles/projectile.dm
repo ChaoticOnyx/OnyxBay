@@ -13,6 +13,8 @@
 	mouse_opacity = 0
 
 	check_armour = "bullet" //Defines what armor to use when it hits things.  Must be set to bullet, laser, energy,or bomb	//Cael - bio and rad are also valid
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/bumped = FALSE		//Prevents it from hitting more than one guy at once
 	var/def_zone = ""	//Aiming at

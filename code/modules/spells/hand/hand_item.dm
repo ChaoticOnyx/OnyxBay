@@ -10,6 +10,8 @@ Basically: I can use it to target things where I click. I can then pass these ta
 	obj_flags = 0
 	simulated = 0
 	icon_state = "spell"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/next_spell_time = 0
 	var/datum/spell/hand/hand_spell
 

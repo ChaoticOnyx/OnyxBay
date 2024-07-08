@@ -269,6 +269,8 @@
 	desc = "A conveyor belt assembly."
 	w_class = ITEM_SIZE_HUGE
 	var/id = "" //inherited by the belt
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/conveyor_construct/attackby(obj/item/I, mob/user, params)
 	..()
@@ -300,6 +302,8 @@
 	icon_state = "switch-off"
 	w_class = ITEM_SIZE_HUGE
 	var/id = "" //inherited by the switch
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/conveyor_switch_construct/New()
 	..()

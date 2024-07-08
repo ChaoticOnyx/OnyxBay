@@ -24,6 +24,8 @@
 	siemens_coefficient = 0.2
 	permeability_coefficient = 0.1
 	unacidable = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/hides_uniform = 1 	//used to determinate if uniform should be visible whenever the suit is sealed or not
 

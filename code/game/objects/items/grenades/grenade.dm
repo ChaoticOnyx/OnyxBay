@@ -8,6 +8,8 @@
 	throw_range = 20
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT|SLOT_MASK
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/active = FALSE
 	var/broken = FALSE // For if we would like to reuse assembly
 	var/det_time = null
@@ -199,6 +201,8 @@
 	item_state = "safety_pin"
 	desc = "A grenade safety pin."
 	w_class = ITEM_SIZE_TINY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/safety_pin/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/grenade) && user.is_item_in_hands(W))

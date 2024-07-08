@@ -365,6 +365,8 @@
 	icon = 'icons/obj/aibots.dmi'
 	icon_state = "helmet_signaler"
 	item_state = "helmet"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/build_step = 0
 	var/created_name = "Securitron"
 

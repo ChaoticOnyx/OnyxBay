@@ -287,6 +287,8 @@
 	desc = "A water tank with a robot arm permanently grafted to it."
 	icon = 'icons/obj/aibots.dmi'
 	icon_state = "water_arm"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/build_step = 0
 	var/created_name = "Farmbot"
 	var/obj/tank

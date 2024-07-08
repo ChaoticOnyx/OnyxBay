@@ -208,6 +208,8 @@ var/list/solars_list = list()
 	item_state = "electropack"
 	w_class = ITEM_SIZE_HUGE // Pretty big!
 	anchored = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/tracker = 0
 	var/glass_type = null
 

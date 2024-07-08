@@ -25,7 +25,8 @@
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
 	tool_behaviour = TOOL_WRENCH
 	var/randicon = TRUE
-
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	drop_sound = SFX_DROP_WRENCH
 	pickup_sound = SFX_PICKUP_WRENCH
 

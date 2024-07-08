@@ -67,6 +67,8 @@
 	force = 10
 	throwforce = 0
 	sharp = TRUE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/structure/flora/swampgrass
 	name = "grass"

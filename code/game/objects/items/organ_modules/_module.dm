@@ -3,6 +3,8 @@
 	desc = "A mechanical augment designed for implantation into a human's flesh or prosthetics."
 	icon = 'icons/obj/implants.dmi'
 	matter = list(MATERIAL_STEEL = 12)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	/// List of organ tags
 	var/list/allowed_organs = list()
 	/// For cybernetic-specific applicator sprite calls.

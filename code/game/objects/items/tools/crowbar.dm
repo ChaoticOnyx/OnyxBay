@@ -26,6 +26,8 @@
 	matter = list(MATERIAL_STEEL = 140)
 	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
 	tool_behaviour = TOOL_CROWBAR
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_CROWBAR
 	pickup_sound = SFX_PICKUP_CROWBAR

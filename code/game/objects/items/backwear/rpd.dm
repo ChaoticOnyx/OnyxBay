@@ -39,6 +39,8 @@
 	unacidable = 1 //TODO: make these replaceable so we won't need such ducttaping
 	origin_tech = null
 	matter = null
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/obj/item/backwear/powered/base_unit
 	var/interaction_mode = RPD_DISPENSE

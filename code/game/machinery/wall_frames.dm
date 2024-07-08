@@ -4,6 +4,9 @@
 	icon = 'icons/obj/monitors.dmi'
 	icon_state = "fire_bitem"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	var/build_machine_type
 	var/refund_amt = 2
 	var/refund_type = /obj/item/stack/material/steel

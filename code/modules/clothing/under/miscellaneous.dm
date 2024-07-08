@@ -532,6 +532,8 @@
 	siemens_coefficient = 0.8
 	armor = list(melee = 5, bullet = 5, laser = 10, energy = 15, bomb = 5, bio = 0)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/under/suit_jacket/charcoal
 	name = "charcoal suit"
@@ -667,11 +669,15 @@
 	icon_state = "darkholme"
 	item_state = "darkholme"
 	coverage = 0.35
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/under/latex_suit
 	name = "Latex suit"
 	desc = "A shiny and tight suit for a variety of perversions."
 	icon_state = "latex_suit"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/under/contortionist/proc/check_clothing(mob/user as mob)
 	//Allowed to wear: glasses, shoes, gloves, pockets, mask, and jumpsuit (obviously)

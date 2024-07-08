@@ -5,6 +5,8 @@
 	icon_state = "lipstick_closed"
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/open = FALSE
 	var/colour = COLOR_NT_RED
 
@@ -96,6 +98,8 @@
 	icon_state = "comb"
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/haircomb/attack_self(mob/user)
 	user.visible_message(SPAN_NOTICE("[user] uses [src] to comb their hair with incredible style and sophistication. What a [user.gender == FEMALE ? "lady" : "guy"]."))

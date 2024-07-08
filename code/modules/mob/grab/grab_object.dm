@@ -3,6 +3,9 @@
 	name = "grab"
 	canremove = FALSE
 	force_drop = TRUE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 
 	var/mob/living/carbon/human/affecting = null
 	var/mob/living/carbon/human/assailant = null

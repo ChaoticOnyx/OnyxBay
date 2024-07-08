@@ -62,6 +62,8 @@ Consuming extracts:
 	throwforce = 0
 	throw_speed = 3
 	throw_range = 6
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/metroid_cookie/proc/do_effect(mob/living/M, mob/user)
 	return

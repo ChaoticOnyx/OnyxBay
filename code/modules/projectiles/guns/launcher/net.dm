@@ -13,6 +13,8 @@
 	desc = "A casing containing an autodeploying net for use in a net gun. Kind of looks like a flash light."
 	icon = 'icons/obj/ammo.dmi'
 	icon_state = "netshell"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/gun/launcher/net/examine(mob/user, infix)
 	. = ..()

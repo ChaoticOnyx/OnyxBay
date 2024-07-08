@@ -587,6 +587,8 @@
 /obj/item/hothands
 	name = "burning fingertips"
 	desc = "You shouldn't see this."
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/hothands/get_temperature_as_from_ignitor()
 	return 290 //Below what's required to ignite plasma.

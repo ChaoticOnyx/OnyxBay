@@ -53,6 +53,8 @@
 	var/isoverlaying = 0
 	w_class = ITEM_SIZE_TINY
 	icon = DRINK_ICON_FILE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/glass_extra/cocktail_stick
 	name = "stick"

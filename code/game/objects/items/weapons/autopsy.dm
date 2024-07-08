@@ -10,6 +10,8 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/list/datum/autopsy_data_scanner/wdata = list()
 	var/list/chemtraces = list()
 	var/target_name = null

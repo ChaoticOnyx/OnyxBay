@@ -108,6 +108,8 @@ Using robohead because of restricting to roboticist */
 	item_state = "head"
 	var/buildstep = 0
 	w_class = ITEM_SIZE_LARGE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/TVAssembly/attackby(obj/item/W, mob/user)
 	switch(buildstep)

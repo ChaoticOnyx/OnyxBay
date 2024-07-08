@@ -5,6 +5,7 @@
 	item_state = "headphones_off"
 	slot_flags = SLOT_EARS | SLOT_TWOEARS
 	ear_protection = 0
+	can_be_wrung_out = FALSE
 	var/index = 1
 	var/headphones_on = 0
 	var/obj/item/music_tape/tape

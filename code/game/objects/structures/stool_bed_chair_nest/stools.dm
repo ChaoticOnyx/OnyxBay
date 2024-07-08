@@ -21,6 +21,8 @@ var/global/list/stool_cache = list() //haha stool
 	var/base_icon = "stool"
 	var/material/material
 	var/material/padding_material
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/stool/padded
 	icon_state = "stool_padded_preview" //set for the map

@@ -148,6 +148,8 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "pneumatic0"
 	item_state = "pneumatic"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/buildstate = 0
 

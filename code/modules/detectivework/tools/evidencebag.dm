@@ -9,6 +9,8 @@
 	base_icon_state = "evidence"
 
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/obj/item/stored_item = null
 

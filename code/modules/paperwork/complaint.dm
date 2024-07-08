@@ -65,6 +65,7 @@
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "folder"
 	w_class = ITEM_SIZE_SMALL
+	can_be_wrung_out = FALSE
 
 	var/id
 	var/target_name

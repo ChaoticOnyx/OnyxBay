@@ -7,6 +7,7 @@
 	var/labels_left = 30
 	var/mode = 0	//off or on.
 	matter = list(MATERIAL_STEEL = 100)
+	can_be_wrung_out = FALSE
 
 /obj/item/hand_labeler/attack()
 	return

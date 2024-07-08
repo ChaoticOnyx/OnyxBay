@@ -714,6 +714,8 @@
 	force = 2
 	throwforce = 5
 	w_class = ITEM_SIZE_TINY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/status = 0		// LIGHT_OK, LIGHT_BURNED or LIGHT_BROKEN
 	var/base_state
 	var/switchcount = 0	// number of times switched

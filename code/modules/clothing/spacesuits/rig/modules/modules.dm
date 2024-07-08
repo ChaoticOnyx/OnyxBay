@@ -19,6 +19,8 @@
 	icon = 'icons/obj/rig_modules.dmi'
 	icon_state = ""
 	matter = list(MATERIAL_STEEL = 20000, MATERIAL_PLASTIC = 30000, MATERIAL_GLASS = 5000)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/damage = 0
 	var/obj/item/rig/holder

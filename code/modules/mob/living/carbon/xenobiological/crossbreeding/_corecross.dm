@@ -86,6 +86,8 @@ To add a crossbreed:
 	throw_speed = 3
 	throw_range = 6
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/metroidcross/examine(mob/user, infix)
 	. = ..()

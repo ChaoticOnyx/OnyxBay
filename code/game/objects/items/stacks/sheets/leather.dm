@@ -58,12 +58,16 @@
 	desc = "The claw of a terrible creature."
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "claw"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/weed_extract
 	name = "weed extract"
 	desc = "A piece of slimy, purplish weed."
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "weed_extract"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/stack/material/hairlesshide
 	default_type = "hairless hide"

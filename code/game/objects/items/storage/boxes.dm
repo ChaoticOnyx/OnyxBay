@@ -32,6 +32,7 @@
 
 	drop_sound = SFX_DROP_CARDBOARD
 	pickup_sound = SFX_PICKUP_CARDBOARD
+	can_be_wrung_out = FALSE
 
 /obj/item/storage/box/on_update_icon()
 	ClearOverlays()

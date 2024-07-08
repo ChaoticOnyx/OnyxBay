@@ -43,6 +43,9 @@
 	drop_sound = SFX_DROP_WELDINGTOOL
 	pickup_sound = SFX_PICKUP_WELDINGTOOL
 
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	tool_sound = SFX_WELDING
 	var/toggle_on_sound = SFX_WELDER_ACTIVATE
 	var/toggle_off_sound = SFX_WELDER_DEACTIVATE
@@ -419,6 +422,8 @@
 	icon_state = "fuel_m"
 	w_class = ITEM_SIZE_SMALL
 	center_of_mass = "x=13;y=9"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/max_fuel = 20
 	var/can_remove = 1
 

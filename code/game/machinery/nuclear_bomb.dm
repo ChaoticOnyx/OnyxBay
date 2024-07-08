@@ -376,6 +376,9 @@ var/bomb_set
 
 	is_poi = TRUE
 
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 /obj/item/disk/nuclear/Initialize()
 	. = ..()
 	// Can never be quite sure that a game mode has been properly initiated or not at this point, so always register

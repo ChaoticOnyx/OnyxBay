@@ -17,6 +17,8 @@
 	var/obj/item/key_type //path of the key item that this "fancy" container is meant to store
 	var/opened = 0 //if an item has been removed from this container
 	var/hasany = 0 //if an item only changes sprite upon being used/finished, w/out displaying each key_type occasion
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/storage/fancy/remove_from_storage()
 	. = ..()

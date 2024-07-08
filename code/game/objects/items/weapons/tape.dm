@@ -7,6 +7,8 @@
 	w_class = ITEM_SIZE_SMALL
 	drop_sound = SFX_DROP_CARDBOARD
 	pickup_sound = SFX_PICKUP_CARDBOARD
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/tape_roll/attack(mob/living/carbon/human/H, mob/user)
 	if(istype(H))

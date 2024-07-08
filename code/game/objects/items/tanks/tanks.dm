@@ -21,6 +21,8 @@ var/list/global/tank_gauge_cache = list()
 	mod_weight = 1.5
 	mod_reach = 0.75
 	mod_handy = 0.5
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	/// DO NOT CHANGE IT DIRECTLY. USE `return_air()`!!!
 	var/datum/gas_mixture/air_contents = null

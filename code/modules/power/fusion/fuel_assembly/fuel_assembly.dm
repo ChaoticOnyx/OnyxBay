@@ -3,6 +3,8 @@
 	icon = 'icons/obj/machines/power/fusion.dmi'
 	icon_state = "fuel_assembly"
 	layer = 4
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/material_name
 

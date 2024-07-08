@@ -5,6 +5,9 @@
 	throwforce = 6
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "slugegg"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	var/break_on_impact = 1 //There are two modes to the eggs.
 							//One breaks the egg on hit,
 

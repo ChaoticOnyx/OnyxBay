@@ -8,6 +8,8 @@
 	item_state = "implantcase"
 	throw_range = 5
 	w_class = ITEM_SIZE_TINY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/obj/item/implant/imp = null
 
 /obj/item/implantcase/New()

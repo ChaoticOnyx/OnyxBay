@@ -24,6 +24,8 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO
 	max_heat_protection_temperature = ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.6
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/suit/armor/vest
 	name = "armor"

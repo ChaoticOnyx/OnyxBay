@@ -6,6 +6,8 @@
 	icon_state = "base"
 	var/del_on_empty = TRUE
 	var/list/list_reagents
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/metroidcrossbeaker/Initialize(mapload)
 	. = ..()

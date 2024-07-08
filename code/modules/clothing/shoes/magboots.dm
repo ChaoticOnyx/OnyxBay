@@ -15,6 +15,7 @@
 	var/mob/living/carbon/human/wearer = null	//For shoe procs
 	center_of_mass = null
 	randpixel = 0
+	can_be_wrung_out = FALSE
 
 	armor = list(melee = 90, bullet = 90, laser = 100, energy = 45, bomb = 50, bio = 10)
 	siemens_coefficient = 0.3

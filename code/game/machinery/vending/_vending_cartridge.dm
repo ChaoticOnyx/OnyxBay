@@ -6,6 +6,8 @@
 	icon_state = "refill_generic"
 
 	w_class = ITEM_SIZE_LARGE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	/// Determines what kind of vending machine we want to build.
 	var/build_path = /obj/machinery/vending

@@ -9,6 +9,8 @@
 	mod_reach = 0.25
 	mod_weight = 0.25
 	mod_handy = 0.25
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/trash/dish
 	var/list/stack = list()

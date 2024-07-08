@@ -28,6 +28,9 @@
 	tool_behaviour = TOOL_SCREWDRIVER
 	var/randicon = TRUE
 
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	drop_sound = SFX_DROP_SCREWDRIVER
 	pickup_sound = SFX_PICKUP_SCREWDRIVER
 

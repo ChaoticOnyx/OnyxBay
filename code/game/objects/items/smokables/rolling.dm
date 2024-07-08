@@ -13,6 +13,7 @@
 	throw_speed = 3
 	force = 0
 	var/quality = ""
+	can_be_wrung_out = FALSE
 
 /obj/item/rollingpaper/cheap
 	name = "rolling paper"

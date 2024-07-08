@@ -6,6 +6,8 @@ var/global/list/plant_seed_sprites = list()
 	icon = 'icons/obj/seeds.dmi'
 	icon_state = "seedy"
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/seed_type
 	var/datum/seed/seed

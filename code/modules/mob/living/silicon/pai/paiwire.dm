@@ -3,6 +3,8 @@
 	name = "data cable"
 	icon = 'icons/obj/power.dmi'
 	icon_state = "wire1"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/obj/machinery/machine
 

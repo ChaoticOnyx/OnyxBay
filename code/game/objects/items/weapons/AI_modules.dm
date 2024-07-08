@@ -18,6 +18,8 @@ AI MODULES
 	throwforce = 5.0
 	throw_range = 15
 	origin_tech = list(TECH_DATA = 3)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/datum/ai_laws/laws = null
 
 /obj/item/aiModule/proc/install(obj/machinery/computer/C)

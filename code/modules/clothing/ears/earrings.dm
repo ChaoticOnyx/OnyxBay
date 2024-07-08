@@ -5,6 +5,8 @@
 	icon = 'icons/obj/clothing/ears.dmi'
 	gender = PLURAL
 	species_restricted = list(SPECIES_HUMAN)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/ears/earring/stud
 	name = "pearl stud earrings"

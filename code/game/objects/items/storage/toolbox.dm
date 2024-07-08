@@ -20,6 +20,8 @@
 	max_storage_space = DEFAULT_LARGEBOX_STORAGE //enough to hold all starting contents
 	origin_tech = list(TECH_COMBAT = 1)
 	attack_verb = list("robusted")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_TOOLBOX
 	pickup_sound = SFX_PICKUP_TOOLBOX

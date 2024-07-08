@@ -171,6 +171,8 @@
 	icon = 'icons/obj/playing_cards.dmi'
 	w_class = ITEM_SIZE_TINY
 	var/list/cards = list()
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 
 /obj/item/pack/attack_self(mob/user)
@@ -193,6 +195,8 @@
 	icon = 'icons/obj/playing_cards.dmi'
 	icon_state = "empty"
 	w_class = ITEM_SIZE_TINY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/concealed = 0
 	var/list/cards = list()

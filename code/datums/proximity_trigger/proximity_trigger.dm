@@ -165,6 +165,8 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 /obj/item/proxy_debug
 	var/image/overlay
 	var/proxy_type
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/proxy_debug/line
 	proxy_type = /datum/proximity_trigger/line

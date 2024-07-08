@@ -235,6 +235,8 @@
 	name = "Dermal Armour Patch"
 	desc = "You're not quite sure how you manage to take it on and off, but it implants nicely in your head."
 	icon_state = "dermal"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/head/warden
 	name = "warden's hat"

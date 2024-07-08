@@ -8,6 +8,8 @@
 	item_flags = ITEM_FLAG_NO_BLUDGEON
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_ILLEGAL = 2)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/datum/wires/explosive/c4/wires = null
 	var/timer = 10
 	var/atom/target = null

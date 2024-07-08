@@ -10,6 +10,8 @@
 	siemens_coefficient = 0.3
 
 	armor = list(melee = 55, bullet = 20, laser = 20, energy = 35, bomb = 25, bio = 70)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_BOOTS
 	pickup_sound = SFX_PICKUP_BOOTS

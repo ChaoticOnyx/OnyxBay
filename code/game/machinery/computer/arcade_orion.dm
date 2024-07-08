@@ -485,6 +485,9 @@
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "ship"
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	var/active = 0 //if the ship is on
 
 /obj/item/orion_ship/examine(mob/user, infix)

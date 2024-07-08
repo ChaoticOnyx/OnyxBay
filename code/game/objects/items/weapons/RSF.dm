@@ -15,6 +15,8 @@ RSF
 	var/stored_matter = 30
 	var/mode = 1
 	w_class = ITEM_SIZE_NORMAL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/rsf/examine(mob/user, infix)
 	. = ..()

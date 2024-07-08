@@ -1,5 +1,7 @@
 /obj/item/melee
 	icon = 'icons/obj/weapons.dmi'
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/melee/whip
 	name = "whip"

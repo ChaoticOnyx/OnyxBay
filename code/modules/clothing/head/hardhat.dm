@@ -12,6 +12,8 @@
 	heat_protection = HEAD
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	coverage = 0.8
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	pickup_sound = SFX_PICKUP_HELMET
 	drop_sound = SFX_DROP_HELMET

@@ -8,6 +8,8 @@
 
 /obj/item/ai_verbs
 	name = "AI verb holder"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/ai_verbs/verb/powersuit_interface()
 	set category = "Powersuit"

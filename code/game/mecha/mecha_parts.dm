@@ -11,7 +11,8 @@
 	w_class = ITEM_SIZE_HUGE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2)
-
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/mecha_parts/chassis
 	name="Mecha Chassis"

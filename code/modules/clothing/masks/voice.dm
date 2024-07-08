@@ -3,6 +3,7 @@
 	desc = "A voice scrambling module. If you can see this, report it as a bug on the tracker."
 	var/voice //If set and item is present in mask/suit, this name will be used for the wearer's speech.
 	var/active
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/mask/chameleon/voice
 	name = "gas mask"

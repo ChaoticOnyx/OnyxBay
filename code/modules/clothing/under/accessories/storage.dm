@@ -8,6 +8,8 @@
 	var/obj/item/storage/internal/pockets/hold
 	w_class = ITEM_SIZE_NORMAL
 	high_visibility = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/accessory/storage/New()
 	..()

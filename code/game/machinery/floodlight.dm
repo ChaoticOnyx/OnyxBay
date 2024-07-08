@@ -137,6 +137,8 @@
 	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "flood_box"
 	item_state = "lockbox"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/floodlight_diy/attack_self(mob/user)
 	to_chat(usr, "<span class='notice'>You start piecing together the kit...</span>")

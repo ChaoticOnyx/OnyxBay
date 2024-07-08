@@ -1209,6 +1209,8 @@
 	icon_state = "switch-off"
 	w_class = ITEM_SIZE_LARGE
 	var/id_tag
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/disposal_switch_construct/New(turf/loc, id)
 	..(loc)

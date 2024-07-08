@@ -14,6 +14,8 @@
 	matter = list(MATERIAL_STEEL = 3000)
 	var/list/carrying = list() // List of things on the tray. - Doohl
 	var/max_carry = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/tray/Initialize()
 	. = ..()

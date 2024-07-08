@@ -7,6 +7,8 @@
 	slot_flags = SLOT_BELT
 	var/flush = null
 	origin_tech = list(TECH_DATA = 4, TECH_MATERIAL = 4)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/mob/living/silicon/ai/carded_ai
 

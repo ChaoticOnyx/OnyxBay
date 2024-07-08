@@ -18,6 +18,8 @@
 	mod_reach = 0.5
 	mod_handy = 1.5
 	unacidable = TRUE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/current_shape = IW_WAND
 

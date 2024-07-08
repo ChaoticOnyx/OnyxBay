@@ -4,6 +4,9 @@
 	icon_state = "holster"
 	slot = ACCESSORY_SLOT_HOLSTER
 	high_visibility = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	var/obj/item/holstered = null
 	var/list/can_hold
 	var/datum/action/item_action/holster_action

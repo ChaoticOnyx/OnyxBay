@@ -17,6 +17,7 @@
 	mod_weight = 1.0
 	mod_reach = 0.75
 	mod_handy = 1.0
+	can_be_wrung_out = FALSE
 
 	/// the spark system which sparks whever the ui options are dited
 	var/datum/effect/effect/system/spark_spread/spark_system

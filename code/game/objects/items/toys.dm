@@ -32,6 +32,7 @@
 	mod_handy = 0.25
 	drop_sound = SFX_DROP_GLOVES
 	pickup_sound = SFX_PICKUP_GLOVES
+	can_be_wrung_out = FALSE
 
 /obj/item/toy/proc/speak(message)
 	if (!message)
@@ -825,6 +826,8 @@
 	item_state = "inflatable"
 	icon = 'icons/obj/clothing/belts.dmi'
 	slot_flags = SLOT_BELT
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/marshalling_wand
 	name = "marshalling wand"
@@ -840,6 +843,8 @@
 	w_class = ITEM_SIZE_SMALL
 	force = 1
 	attack_verb = list("attacked", "whacked", "jabbed", "poked", "marshalled")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/marshalling_wand/Initialize()
 	set_light(0.6, 0.5, 2, 2, "#ff0000")

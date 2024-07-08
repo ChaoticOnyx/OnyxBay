@@ -272,6 +272,8 @@
 	var/bedtype = /obj/structure/bed/roller
 	drop_sound = SFX_DROP_AXE
 	pickup_sound = SFX_PICKUP_AXE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/roller/adv
 	name = "advanced roller bed"

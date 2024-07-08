@@ -780,6 +780,8 @@
 	desc = "A box suited for pizzas."
 	icon = 'icons/obj/food.dmi'
 	icon_state = "pizzabox1"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/open = 0 // Is the box open?
 	var/ismessy = 0 // Fancy mess on the lid

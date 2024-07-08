@@ -20,6 +20,8 @@
 	max_w_class = ITEM_SIZE_SMALL
 	max_storage_space = DEFAULT_BOX_STORAGE
 	attack_verb = list("doctored", "medicined", "unhealed", "fist-aided")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/storage/firstaid/regular
 	icon_state = "firstaid"

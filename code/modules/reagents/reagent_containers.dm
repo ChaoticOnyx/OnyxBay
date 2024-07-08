@@ -4,6 +4,8 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = null
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/amount_per_transfer_from_this = 5
 	var/possible_transfer_amounts = "5;10;15;25;30"
 	var/volume = 30

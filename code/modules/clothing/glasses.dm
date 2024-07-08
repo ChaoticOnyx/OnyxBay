@@ -21,6 +21,7 @@ BLIND     // can't see anything
 
 	drop_sound = SFX_DROP_ACCESSORY
 	pickup_sound = SFX_PICKUP_ACCESSORY
+	can_be_wrung_out = FALSE
 
 	var/vision_flags = 0
 	var/darkness_view = 0//Base human is 2

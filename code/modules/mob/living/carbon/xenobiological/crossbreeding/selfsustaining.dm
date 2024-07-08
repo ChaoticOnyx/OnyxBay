@@ -13,6 +13,8 @@ Self-sustaining extracts:
 	desc = "It resembles a normal metroid extract, but seems filled with a strange, multi-colored fluid."
 	var/obj/item/metroid_extract/extract
 	var/effect_desc = "A self-sustaining metroid extract. When used, lets you choose which reaction you want."
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 //Just divides into the actual item.
 /obj/item/metroidcross/selfsustaining/Initialize(mapload)

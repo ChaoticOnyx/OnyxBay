@@ -180,6 +180,8 @@
 	var/max_ammo = 3
 	var/ammo = 3
 	var/last_regen = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/alien_med_device/afterattack(atom/A, mob/user, proximity)
 	if(!ishuman(A))

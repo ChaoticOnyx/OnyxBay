@@ -7,6 +7,8 @@
 	var/status = 0
 	w_class = ITEM_SIZE_HUGE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/assembly/shock_kit/Destroy()
 	qdel(part1)

@@ -15,6 +15,7 @@
 	var/istinted = 0
 	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 75)
 	rad_resist_type = /datum/rad_resist/mask_syrgical
+	can_be_wrung_out = FALSE
 
 /datum/rad_resist/mask_syrgical
 	alpha_particle_resist = 23 MEGA ELECTRONVOLT

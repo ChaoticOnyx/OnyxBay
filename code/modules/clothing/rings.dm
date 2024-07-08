@@ -11,6 +11,8 @@
 	var/undergloves = 1
 	blood_overlay_type = null
 	coverage = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_RING
 	pickup_sound = SFX_PICKUP_RING

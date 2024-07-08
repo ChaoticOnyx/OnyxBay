@@ -23,6 +23,8 @@
 	drop_sound = SFX_DROP_HELMET
 	pickup_sound = SFX_PICKUP_HELMET
 	coverage = 0.8
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	rad_resist_type = /datum/rad_resist/helmet
 

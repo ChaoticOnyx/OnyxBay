@@ -7,6 +7,8 @@
 	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "bone"
 	desc = "It's a fossil."
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/animal = 1
 
 /obj/item/fossil/base/New()

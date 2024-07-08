@@ -24,6 +24,8 @@
 	var/sprite_name = "fire_extinguisher"
 	var/ff_reagent = /datum/reagent/water/firefoam
 	var/external_source = FALSE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_GASCAN
 	pickup_sound = SFX_PICKUP_GASCAN

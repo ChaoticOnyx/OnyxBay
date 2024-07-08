@@ -30,6 +30,7 @@ var/global/photo_count = 0
 	item_state = "paper"
 	randpixel = 10
 	w_class = ITEM_SIZE_TINY
+	can_be_wrung_out = FALSE
 	var/id
 	var/icon/img	//Big photo image
 	var/scribble	//Scribble on the back.

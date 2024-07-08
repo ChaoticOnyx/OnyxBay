@@ -10,6 +10,8 @@
 	layer = BELOW_OBJ_LAYER
 	var/amount = 30					//How much paper is in the bin.
 	var/list/papers = new /list()	//List of papers put in the bin for reference.
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_CARDBOARD
 	pickup_sound = SFX_PICKUP_CARDBOARD

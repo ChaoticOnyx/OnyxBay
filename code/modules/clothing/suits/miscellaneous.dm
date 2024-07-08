@@ -652,6 +652,8 @@
 	name = "human suit"
 	desc = "A Human suit made out of rubber."
 	icon_state = "mansuit"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/suit/rubber/tajaran
 	name = "tajara suit"

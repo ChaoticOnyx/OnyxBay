@@ -7,6 +7,8 @@
 	matter = list(MATERIAL_STEEL = 1800)
 	origin_tech = list(TECH_COMBAT = 1)
 	var/remaining = 9
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/magnetic_ammo/ex_act(severity)
 	. = ..()

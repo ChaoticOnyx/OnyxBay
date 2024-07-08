@@ -93,6 +93,8 @@
 	mod_reach = 0.75
 	mod_handy = 0.75
 	var/buildstate = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/boomstickframe/on_update_icon()
 	icon_state = "boomstick[buildstate]"

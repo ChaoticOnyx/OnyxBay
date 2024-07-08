@@ -7,6 +7,8 @@
 	w_class = ITEM_SIZE_SMALL
 	gas_transfer_coefficient = 0.90
 	voicechange = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/mask/muzzle/tape
 	name = "length of tape"
@@ -74,6 +76,8 @@
 	icon_state = "snorkel"
 	flags_inv = HIDEFACE
 	body_parts_covered = NO_BODYPARTS
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/mask/bluescarf
 	name = "blue neck scarf"
@@ -231,6 +235,8 @@
 	body_parts_covered = HEAD|FACE|EYES
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	rad_resist_type = /datum/rad_resist/mask_rubber
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /datum/rad_resist/mask_rubber
 	alpha_particle_resist = 16 MEGA ELECTRONVOLT
@@ -299,6 +305,8 @@
 	item_state = "spirit_mask"
 	flags_inv = HIDEFACE
 	body_parts_covered = FACE|EYES
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 // Bandanas below
 /obj/item/clothing/mask/bandana
@@ -405,6 +413,8 @@
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.8
 	can_use_alt_layer = TRUE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/mask/plasticbag
 	name = "plastic bag"
@@ -414,6 +424,8 @@
 	flags_inv = HIDEFACE|BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
 	tint = TINT_BLIND
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/mask/plasticbag/attack_self(mob/user)
 	user.replace_item(src, new /obj/item/storage/bag/plasticbag, TRUE, TRUE)

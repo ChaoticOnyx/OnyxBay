@@ -280,6 +280,8 @@
 	w_class = ITEM_SIZE_NORMAL
 	attack_verb = list("bludgeoned", "skulled", "buttheaded", "spooked")
 	var/iscut = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/skull/attackby(obj/item/W as obj, mob/user as mob)
 	if(W.sharp && !iscut)

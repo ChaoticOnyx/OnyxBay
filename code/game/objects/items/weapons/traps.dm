@@ -13,6 +13,8 @@
 	matter = list(MATERIAL_STEEL = 18750)
 	can_buckle = 0 //disallow manual un/buckling
 	var/deployed = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/beartrap/deployed
 	deployed = TRUE

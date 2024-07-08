@@ -100,6 +100,8 @@
 	desc = "A simple necklace."
 	icon_state = "necklace"
 	slot_flags = SLOT_MASK | SLOT_TIE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/accessory/necklace/aquila
 	name = "aquila"
@@ -111,6 +113,8 @@
 	name = "kneepads"
 	desc = "A pair of synthetic kneepads. Doesn't provide protection from more than arthritis."
 	icon_state = "kneepads"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 //Scarves
 /obj/item/clothing/accessory/scarf

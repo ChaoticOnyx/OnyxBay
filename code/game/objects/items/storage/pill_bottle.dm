@@ -19,6 +19,8 @@
 	var/spam_flag = FALSE
 	var/starting_label = null
 	var/true_desc = "It's an airtight container for storing medication."
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	pickup_sound = SFX_PICKUP_PILLBOTTLE
 	drop_sound = SFX_DROP_PILLBOTTLE

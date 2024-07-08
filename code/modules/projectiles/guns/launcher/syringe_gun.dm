@@ -11,6 +11,8 @@
 	force = 3
 	w_class = ITEM_SIZE_TINY
 	var/obj/item/reagent_containers/syringe/syringe
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/syringe_cartridge/pre_launched()
 	..()

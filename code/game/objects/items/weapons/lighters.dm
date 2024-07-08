@@ -8,6 +8,8 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 //For anything that can light stuff on fire
 /obj/item/flame
 	var/lit = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/flame/get_temperature_as_from_ignitor()
 	if(lit)

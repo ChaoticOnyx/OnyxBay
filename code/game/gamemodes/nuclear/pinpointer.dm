@@ -10,6 +10,7 @@
 	var/weakref/target
 	var/active = 0
 	var/beeping = 2
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_DEVICE
 	pickup_sound = SFX_PICKUP_DEVICE

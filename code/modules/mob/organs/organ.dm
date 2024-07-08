@@ -9,6 +9,8 @@ var/list/limb_icon_cache = list()
 	germ_level = 0
 	w_class = ITEM_SIZE_TINY
 	dir = SOUTH
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	// Strings.
 	/// Unique identifier.

@@ -7,6 +7,8 @@
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 1000)
 	var/obj/item/implant/imp = null
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/implanter/New()
 	if(ispath(imp))

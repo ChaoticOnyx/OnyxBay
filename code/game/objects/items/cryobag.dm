@@ -120,6 +120,8 @@
 	desc = "Pretty useless now.."
 	icon_state = "bodybag_used"
 	icon = 'icons/obj/cryobag.dmi'
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/bodybag/cryobag/syndi
 	name = "modified stasis bag"

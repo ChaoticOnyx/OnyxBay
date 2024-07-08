@@ -32,6 +32,8 @@
 	flash_protection = FLASH_PROTECTION_MAJOR
 	tint = TINT_HEAVY
 	var/obj/item/welding_cover/cover = null
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	pickup_sound = SFX_PICKUP_HELMET
 	drop_sound = SFX_DROP_HELMET

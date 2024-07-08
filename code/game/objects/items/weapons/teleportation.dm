@@ -22,6 +22,8 @@
 	throw_range = 20
 	origin_tech = list(TECH_MAGNET = 1)
 	matter = list(MATERIAL_STEEL = 400)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/locator/attack_self(mob/user)
 	user.set_machine(src)

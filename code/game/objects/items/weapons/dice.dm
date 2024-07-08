@@ -9,6 +9,8 @@
 	mod_handy = 0.1
 	var/sides = 6
 	attack_verb = list("diced")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/dice/New()
 	..()

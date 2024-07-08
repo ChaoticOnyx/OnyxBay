@@ -141,6 +141,8 @@
 	name = "small parcel"
 	icon = 'icons/obj/delivery.dmi'
 	icon_state = "deliverycrate3"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/obj/item/wrapped = null
 	var/sortTag = null
 	var/examtext = null
@@ -277,6 +279,8 @@
 	icon_state = "deliveryPaper"
 	w_class = ITEM_SIZE_NORMAL
 	var/amount = 25.0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_WRAPPER
 	pickup_sound = SFX_PICKUP_WRAPPER
@@ -289,6 +293,7 @@
 	throwforce = 1
 	w_class = ITEM_SIZE_SMALL
 	throw_range = 5
+	can_be_wrung_out = FALSE
 
 /obj/item/packageWrap/afterattack(obj/target as obj, mob/user as mob, proximity)
 	if(!proximity) return

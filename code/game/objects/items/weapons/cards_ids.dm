@@ -20,6 +20,9 @@
 	mod_reach = 0.25
 	mod_handy = 0.25
 	slot_flags = SLOT_EARS
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	var/associated_account_number = 0
 
 	var/list/files = list(  )

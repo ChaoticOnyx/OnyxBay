@@ -9,6 +9,8 @@
 	max_w_class = ITEM_SIZE_SMALL
 	var/filled = FALSE
 	attack_verb = list("lunched")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/storage/lunchbox/New()
 	..()
@@ -99,4 +101,3 @@
 
 /obj/item/storage/lunchbox/syndicate/filled
 	filled = TRUE
-

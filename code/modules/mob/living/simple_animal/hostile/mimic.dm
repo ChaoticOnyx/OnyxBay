@@ -533,6 +533,8 @@ var/global/list/protected_objects = list(
 	name = "Unknown"
 	desc = "Unknown"
 	anchored = TRUE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/weakref/owner
 

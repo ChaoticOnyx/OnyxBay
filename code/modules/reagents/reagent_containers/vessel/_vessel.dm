@@ -518,6 +518,8 @@
 	edge = 0
 	unacidable = 1
 	var/icon/broken_outline = icon('icons/obj/reagent_containers/vessels.dmi', "broken")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	drop_sound = SFX_DROP_GLASSSMALL
 	pickup_sound = SFX_PICKUP_GLASSSMALL

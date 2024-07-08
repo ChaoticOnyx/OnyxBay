@@ -26,6 +26,8 @@
 	var/color_description = "black ink"
 	var/battlepen = FALSE
 
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/pen/blue
 	desc = "It's a normal blue ink pen."

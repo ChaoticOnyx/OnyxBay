@@ -5,6 +5,8 @@
 	desc = "A simple grasping tool specialized in construction and engineering work."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "gripper"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	item_flags = ITEM_FLAG_NO_BLUDGEON
 	#define MODE_OPEN 1
@@ -485,6 +487,8 @@
 	desc = "Eating trash, bits of glass, or other debris will replenish your stores."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "decompiler"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	//Metal, glass, wood, plastic.
 	var/datum/matter_synth/metal = null

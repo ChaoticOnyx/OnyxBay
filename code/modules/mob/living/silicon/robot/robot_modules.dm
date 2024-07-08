@@ -20,6 +20,8 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	w_class = ITEM_SIZE_NO_CONTAINER
 	item_state = "electronic"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/hide_on_manifest = 0
 	var/channels = list()
 	var/networks = list()

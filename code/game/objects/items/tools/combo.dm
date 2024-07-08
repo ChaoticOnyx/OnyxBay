@@ -12,6 +12,8 @@
 	mod_weight = 0.5
 	mod_reach = 0.5
 	mod_handy = 0.5
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/tool_c = null
 

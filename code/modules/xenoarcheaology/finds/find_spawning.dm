@@ -9,6 +9,8 @@
 	name = "object"
 	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "unknown2"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/find_type = ARCHAEO_UNKNOWN
 	var/item_type = "object"
 	var/apply_prefix = 1

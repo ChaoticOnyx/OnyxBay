@@ -11,6 +11,8 @@
 	mod_reach = 1.5
 	mod_handy = 1.25
 	attack_verb = list("bludgeoned", "whacked", "disciplined")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/staff/broom
 	name = "broom"

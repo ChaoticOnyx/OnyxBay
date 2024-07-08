@@ -38,6 +38,8 @@
 	desc = "Draw out your soul on this canvas!"
 	icon = 'icons/obj/artstuff.dmi'
 	icon_state = "11x11"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/width = 11
 	var/height = 11
 	var/list/grid

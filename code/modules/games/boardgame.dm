@@ -3,6 +3,8 @@
 	desc = "A standard 16\" checkerboard. Well used." //Goddamn imperial system.
 	icon = 'icons/obj/pieces.dmi'
 	icon_state = "board"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/num = 0
 	var/board_icons = list()
@@ -240,6 +242,8 @@ THAT STUPID GAME KIT
 	var/board_stat = null
 	var/data = ""
 	item_state = "sheet-metal"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /datum/asset/simple/chess
 	assets = list(

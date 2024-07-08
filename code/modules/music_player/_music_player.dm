@@ -27,6 +27,8 @@ GLOBAL_LIST_EMPTY(music_players)
 
 	matter = list(MATERIAL_STEEL = 75, MATERIAL_GLASS = 30)
 	origin_tech = list(TECH_MAGNET = 2)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/mode = 0
 	var/volume = 20

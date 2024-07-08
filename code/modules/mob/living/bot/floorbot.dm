@@ -244,6 +244,8 @@
 	throwforce = 10.0
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/created_name = "Floorbot"
 
 /obj/item/toolbox_tiles/attackby(obj/item/W, mob/user as mob)

@@ -68,6 +68,8 @@ var/const/tk_maxrange = 15
 	item_flags = ITEM_FLAG_NO_BLUDGEON
 	//item_state = null
 	w_class = ITEM_SIZE_NO_CONTAINER
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/last_throw = 0
 	var/atom/movable/focus = null

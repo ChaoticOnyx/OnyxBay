@@ -6,6 +6,8 @@
 	randpixel = 8
 	w_class = ITEM_SIZE_TINY
 	sharp = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/datum/geosample/geological_data
 
 /obj/item/rocksliver/New()

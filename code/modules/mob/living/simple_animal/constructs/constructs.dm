@@ -86,6 +86,8 @@
 	gender = PLURAL
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "ectoplasm"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /mob/living/simple_animal/construct/handle_hud_icons_health()
 	if(!healths)

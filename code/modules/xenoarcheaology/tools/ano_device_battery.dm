@@ -5,6 +5,8 @@
 	name = "Anomaly power battery"
 	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "anobattery0"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/datum/artifact_effect/battery_effect
 	var/capacity = 300
 	var/stored_charge = 0
@@ -21,6 +23,8 @@
 	name = "Anomaly power utilizer"
 	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "anodev"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/activated = 0
 	var/duration = 0
 	var/interval = 0

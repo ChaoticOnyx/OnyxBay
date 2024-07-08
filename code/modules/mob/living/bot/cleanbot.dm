@@ -165,6 +165,8 @@
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	var/created_name = "Cleanbot"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/bucket_sensor/attackby(obj/item/O, mob/user)
 	..()

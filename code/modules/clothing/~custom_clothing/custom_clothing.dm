@@ -60,7 +60,8 @@
 		/obj/item/gun/magnetic,
 		/obj/item/grenade,
 		)
-
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 //Terror
 
 /obj/item/clothing/head/helmet/german
@@ -184,7 +185,7 @@
 	)
 
 /obj/item/clothing/suit/space/void/syndi/clown_syndie
-	name = "Syndicate “Honk” voidsuit"
+	name = "Syndicate ï¿½Honkï¿½ voidsuit"
 	desc = "A suit that protects you against the void. It has a clown face on it."
 	icon_state = "rig-syndie-clown"
 	item_state = "rig-syndie-clown"
@@ -243,6 +244,8 @@
 	name = "dragon skull"
 	desc = "A skull of a fallen one. It's a bit heavy. And plasticy."
 	icon_state = "dragon_skull"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 // Animusin
 /obj/item/clothing/suit/storage/toggle/heart_jacket

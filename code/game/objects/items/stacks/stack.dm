@@ -16,6 +16,8 @@
 	mod_reach = 0.5
 	mod_handy = 0.5
 	icon = 'icons/obj/materials.dmi'
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
 	var/plural_name

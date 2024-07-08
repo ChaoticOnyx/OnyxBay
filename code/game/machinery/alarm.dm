@@ -867,6 +867,8 @@ Just a object used in constructing air alarms
 	desc = "Looks like a circuit. Probably is."
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 #undef GET_DANGER_LEVEL
 #undef OVERALL_DANGER_LEVEL

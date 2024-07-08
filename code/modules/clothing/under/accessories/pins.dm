@@ -5,6 +5,8 @@
 	icon_state = "nt"
 	slot_flags = SLOT_TIE
 	slot = ACCESSORY_SLOT_INSIGNIA
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/accessory/pin/pig
 	name = "pig pin"

@@ -16,6 +16,7 @@
 	var/overlay_state = 0
 	var/overlay_key = "cell-o"
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 50)
+	can_be_wrung_out = FALSE
 
 /obj/item/cell/New()
 	if(isnull(charge))

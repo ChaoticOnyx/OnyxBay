@@ -9,6 +9,8 @@
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 10000)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/ammoamt = 40
 

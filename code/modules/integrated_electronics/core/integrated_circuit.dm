@@ -5,6 +5,8 @@
 	icon_state = "template"
 	w_class = ITEM_SIZE_TINY
 	matter = list()				// To be filled later
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/obj/item/device/electronic_assembly/assembly // Reference to the assembly holding this circuit, if any.
 	var/extended_desc
 	var/list/inputs = list()

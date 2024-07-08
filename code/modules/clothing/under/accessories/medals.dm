@@ -7,6 +7,8 @@
 	slot = ACCESSORY_SLOT_MEDAL
 	coverage = 0.03 // Who said medals are useless?
 	armor = list(melee = 50, bullet = 90, laser = 120, energy = 65, bomb = 0, bio = 0)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/accessory/medal/iron
 	name = "iron medal"

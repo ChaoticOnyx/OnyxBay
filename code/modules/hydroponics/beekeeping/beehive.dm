@@ -194,6 +194,8 @@
 	icon = 'icons/obj/device.dmi'
 	icon_state = "battererburnt"
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/honey_frame
 	name = "beehive frame"
@@ -201,6 +203,8 @@
 	icon = 'icons/obj/beekeeping.dmi'
 	icon_state = "honeyframe"
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/honey = 0
 
@@ -218,6 +222,8 @@
 	desc = "Contains everything you need to build a beehive."
 	icon = 'icons/obj/apiary_bees_etc.dmi'
 	icon_state = "apiary"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/beehive_assembly/attack_self(mob/user)
 	to_chat(user, "<span class='notice'>You start assembling \the [src]...</span>")
@@ -249,6 +255,8 @@ var/global/list/datum/stack_recipe/wax_recipes = list( \
 	icon = 'icons/obj/beekeeping.dmi'
 	icon_state = "beepack"
 	var/full = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/bee_pack/New()
 	..()

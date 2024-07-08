@@ -28,6 +28,8 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/suit/fire/New()
 	..()
@@ -68,6 +70,8 @@
 	siemens_coefficient = 0
 	flash_protection = FLASH_PROTECTION_MAJOR
 	tint = TINT_HEAVY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	rad_resist_type = /datum/rad_resist/bomb_hood
 
@@ -88,6 +92,8 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO
 	max_heat_protection_temperature = ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/suit/bomb_suit/New()
 	..()
@@ -113,6 +119,8 @@
 	body_parts_covered = HEAD|FACE|EYES
 	armor = list(melee = 20, bullet = 0, laser = 20, energy = 10, bomb = 0, bio = 60)
 	rad_resist_type = /datum/rad_resist/suit_radiation
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/suit/radiation
 	name = "Radiation suit"
@@ -129,6 +137,8 @@
 	allowed = list(/obj/item/device/flashlight, /obj/item/device/geiger, /obj/item/tank/emergency,/obj/item/clothing/head/radiation,/obj/item/clothing/mask/gas)
 	armor = list(melee = 20, bullet = 0, laser = 20, energy = 10, bomb = 0, bio = 60)
 	flags_inv = HIDEJUMPSUIT|HIDETAIL|HIDEGLOVES|HIDESHOES
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	rad_resist_type = /datum/rad_resist/suit_radiation
 

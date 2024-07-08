@@ -9,6 +9,8 @@
 	throw_range = 15
 	matter = list(MATERIAL_STEEL = 60)
 	attack_verb = list("stamped")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/stamp/captain
 	name = "captain's rubber stamp"

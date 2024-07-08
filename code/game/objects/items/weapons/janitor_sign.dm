@@ -11,6 +11,8 @@
 	mod_reach = 1.0
 	mod_handy = 0.75
 	attack_verb = list("warned", "cautioned", "smashed")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/caution/cone
 	desc = "This cone is trying to warn you of something!"

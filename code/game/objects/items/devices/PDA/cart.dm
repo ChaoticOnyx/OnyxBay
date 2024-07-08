@@ -5,6 +5,8 @@
 	icon_state = "cart"
 	item_state = "electronic"
 	w_class = ITEM_SIZE_TINY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/obj/item/radio/integrated/radio = null
 	var/access_security = 0

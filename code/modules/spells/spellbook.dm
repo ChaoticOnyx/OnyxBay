@@ -25,6 +25,8 @@ var/list/artefact_feedback = list(
 	icon_state = "spellbook"
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/uses = 1
 	/// A page that will be opened in the UI.
 	var/page = 0

@@ -8,6 +8,8 @@
 	item_state = "bodybag_folded_c"
 	w_class = ITEM_SIZE_SMALL
 	pull_sound = SFX_PULL_BODY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/bodybag/attack_self(mob/user)
 	var/obj/structure/closet/body_bag/R = new /obj/structure/closet/body_bag(user.loc)

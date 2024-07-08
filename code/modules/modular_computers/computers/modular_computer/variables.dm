@@ -3,6 +3,8 @@
 /obj/item/modular_computer
 	name = "Modular Computer"
 	desc = "A modular computer. You shouldn't see this."
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/enabled = 0											// Whether the computer is turned on.
 	var/screen_on = 1										// Whether the computer is active/opened/it's screen is on.

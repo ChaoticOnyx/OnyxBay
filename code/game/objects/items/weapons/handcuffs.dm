@@ -18,6 +18,8 @@
 	throw_range = 5
 	origin_tech = list(TECH_MATERIAL = 1)
 	matter = list(MATERIAL_STEEL = 500)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/elastic
 	var/dispenser = 0
 	var/breakouttime = 1200 //Deciseconds = 120s = 2 minutes

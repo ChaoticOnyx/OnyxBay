@@ -19,6 +19,8 @@
 	mod_handy = 0.5
 	throw_range = 15
 	attack_verb = list("HONKED")
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/spam_flag = 0
 
 /obj/item/bikehorn/attack_self(mob/user as mob)

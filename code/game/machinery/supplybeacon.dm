@@ -6,6 +6,8 @@
 	icon_state = "beacon"
 	var/deploy_path = /obj/machinery/power/supply_beacon
 	var/deploy_time = 30
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/supply_beacon/supermatter
 	name = "inactive supermatter supply beacon"

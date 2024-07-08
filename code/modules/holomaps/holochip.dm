@@ -5,6 +5,9 @@
 	icon = 'icons/holomap/holochips.dmi'
 	icon_state = "holochip"
 	slot = ACCESSORY_SLOT_HELM_H
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	var/datum/action/item_action/toggle_holomap/toggle_holomap
 
 	var/marker_id = null

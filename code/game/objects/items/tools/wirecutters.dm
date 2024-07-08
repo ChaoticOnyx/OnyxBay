@@ -27,6 +27,8 @@
 	edge = 1
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	tool_behaviour = TOOL_WIRECUTTER
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/randicon = TRUE
 
 	drop_sound = SFX_DROP_WIRECUTTER

@@ -97,6 +97,8 @@
 	icon_state = "electric_hand"
 	canremove = FALSE
 	force_drop = TRUE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/finger_lockpick/Initialize()
 	. = ..()

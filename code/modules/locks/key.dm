@@ -5,6 +5,8 @@
 	icon_state = "keys"
 	w_class = 1
 	var/key_data = ""
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/key/New(newloc,data)
 	if(data)

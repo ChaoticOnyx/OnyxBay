@@ -3,6 +3,8 @@
 	desc = "written in the blood of some unfortunate fellow."
 	icon = 'icons/hud/screen_spells.dmi'
 	icon_state = "master_open"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/contract_master = null
 	var/list/contract_spells = list(/datum/spell/contract/reward, /datum/spell/contract/punish, /datum/spell/contract/return_master)

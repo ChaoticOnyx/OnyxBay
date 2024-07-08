@@ -6,6 +6,8 @@
 	desc = "Protected by FRM."
 	icon = 'icons/obj/module.dmi'
 	icon_state = "cyborg_upgrade"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/locked = 0
 	var/require_module = 0
 	var/installed = 0

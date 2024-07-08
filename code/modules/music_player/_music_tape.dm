@@ -8,6 +8,8 @@
 	w_class = ITEM_SIZE_SMALL
 	force = 1
 	throwforce = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	matter = list(MATERIAL_PLASTIC = 20, MATERIAL_STEEL = 5, MATERIAL_GLASS= 5)
 

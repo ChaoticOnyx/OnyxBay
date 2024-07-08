@@ -22,6 +22,8 @@
 	cold_protection =    HANDS
 	species_restricted = null
 	gender = PLURAL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	rad_resist_type = /datum/rad_resist/rig
 
@@ -126,6 +128,8 @@
 	heat_protection =    HEAD|FACE|EYES
 	cold_protection =    HEAD|FACE|EYES
 	item_flags =         ITEM_FLAG_THICKMATERIAL|ITEM_FLAG_AIRTIGHT
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/suit/lightrig
 	name = "suit"
@@ -135,6 +139,8 @@
 	cold_protection =    UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	flags_inv =          HIDEJUMPSUIT
 	item_flags =         ITEM_FLAG_THICKMATERIAL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/shoes/lightrig
 	name = "boots"
@@ -143,6 +149,8 @@
 	heat_protection = FEET
 	species_restricted = null
 	gender = PLURAL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/clothing/gloves/lightrig
 	name = "gloves"
@@ -152,3 +160,5 @@
 	cold_protection =    HANDS
 	species_restricted = null
 	gender = PLURAL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE

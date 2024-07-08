@@ -13,6 +13,8 @@
 	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "barriercube"
 	w_class = ITEM_SIZE_TINY
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/barriercube/attack_self(mob/user)
 	if(locate(/obj/structure/barricade/metroid) in get_turf(loc))
@@ -123,6 +125,8 @@
 	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "capturedevice"
 	var/hacked = FALSE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/capturedevice/hacked
 	hacked = TRUE

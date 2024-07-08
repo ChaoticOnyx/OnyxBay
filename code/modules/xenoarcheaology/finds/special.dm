@@ -53,6 +53,8 @@
 	name = "statuette"
 	icon_state = "statuette"
 	icon = 'icons/obj/xenoarchaeology.dmi'
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/charges = 0
 	var/list/nearby_mobs = list()
 	var/last_bloodcall = 0

@@ -10,6 +10,8 @@
 	damtype = BURN
 	force = 10
 	hitsound = 'sound/items/welder2.ogg'
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/scrying/attack_self(mob/user as mob)
 	if((user.mind && !GLOB.wizards.is_antagonist(user.mind)))

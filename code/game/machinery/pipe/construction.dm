@@ -17,6 +17,8 @@ Buildable meters
 	item_state = "buildpipe"
 	w_class = ITEM_SIZE_NORMAL
 	level = 2
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/pipe/Initialize(mapload, pipe_type, dir, obj/machinery/atmospherics/make_from = null)
 	. = ..()
@@ -1296,6 +1298,8 @@ Buildable meters
 	icon_state = "meter"
 	item_state = "buildpipe"
 	w_class = ITEM_SIZE_LARGE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/pipe_meter/attackby(obj/item/W as obj, mob/user as mob)
 	..()

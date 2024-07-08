@@ -279,6 +279,8 @@
 	var/primed = null
 	throwforce = 120
 	throw_spin = FALSE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/missile/throw_impact(atom/hit_atom)
 	if(primed)

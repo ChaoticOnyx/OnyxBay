@@ -13,6 +13,8 @@
 	mod_handy = 1.0
 	sharp = 0
 	edge = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/applies_material_colour = 1
 	var/unbreakable

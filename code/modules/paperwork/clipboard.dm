@@ -10,6 +10,7 @@
 	var/obj/item/toppaper	//The topmost piece of paper.
 	slot_flags = SLOT_BELT
 	matter = list(MATERIAL_STEEL = 70)
+	can_be_wrung_out = FALSE
 
 /obj/item/clipboard/Initialize()
 	. = ..()

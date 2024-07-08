@@ -49,6 +49,8 @@
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
 	attack_verb = list("hit", "pierced", "sliced", "attacked")
 	sharp = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/power = 10 //Power to an item var so R&D can make improved picks
 	var/drilling = FALSE
@@ -206,6 +208,9 @@
 	sharp = 0
 	edge = 1
 
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
+
 	drop_sound = SFX_DROP_SHOVEL
 	pickup_sound = SFX_PICKUP_SHOVEL
 
@@ -345,6 +350,8 @@
 	item_state = "electronic"
 	throw_range = 20
 	matter = list(MATERIAL_STEEL = 500)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/turf/simulated/mineral/random/sonar = null
 	var/active = 0
 
@@ -409,6 +416,8 @@
 	throwforce = 0
 	w_class = 2
 	throw_range = 5
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/loaded = 1
 	var/malfunctioning = FALSE
 	var/emagged = FALSE
@@ -499,6 +508,8 @@
 	mod_handy = 0.9
 	armor_penetration = 60
 	throwforce = 10
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/burst_time = 50
 	var/fieldlimit = 4
 	var/list/fields = list()
@@ -595,6 +606,8 @@
 	force = 10
 	throwforce = 5
 	origin_tech = list(TECH_MAGNET = 4, TECH_ENGINEERING = 3)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/on = 0
 
 /obj/item/oremagnet/attack_self(mob/user)
@@ -637,6 +650,8 @@
 	force = 15
 	throwforce = 5
 	origin_tech = list(TECH_BLUESPACE = 4, TECH_ENGINEERING = 3)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/oreportal/attack_self(mob/user)
 	to_chat(user, "<span class='info'>You pulse the ore summoner.</span>")
@@ -657,6 +672,8 @@
 	item_state = "jackhammer"
 	origin_tech = list(TECH_MATERIAL = 3, TECH_POWER = 2, TECH_ENGINEERING = 2)
 	desc = "With an integrated AI chip and hair-trigger precision, this baby makes sculpting almost automatic!"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/structure/sculpting_block
 	name = "sculpting block"

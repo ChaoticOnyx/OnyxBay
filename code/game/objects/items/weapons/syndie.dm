@@ -1,5 +1,7 @@
 /obj/item/syndie
 	icon = 'icons/obj/syndieweapons.dmi'
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /*C-4 explosive charge and etc, replaces the old syndie transfer valve bomb.*/
 

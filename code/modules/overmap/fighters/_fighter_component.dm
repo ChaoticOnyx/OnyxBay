@@ -3,6 +3,8 @@
 	desc = "It doesn't really do a whole lot"
 	icon = 'icons/obj/fighter_components.dmi'
 	w_class = ITEM_SIZE_GARGANTUAN
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	//Thanks to comxy on Discord for these lovely tiered sprites o7
 	/// used for multipliers
 	var/tier = 1

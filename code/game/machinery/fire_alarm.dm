@@ -317,6 +317,8 @@ Just a object used in constructing fire alarms
 	desc = "A circuit. It has a label on it, it says \"Can handle heat levels up to 40 degrees celsius!\"."
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/machinery/firealarm/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if((buildstage == FIREALARM_NOCIRCUIT) && (the_rcd.upgrade & RCD_UPGRADE_SIMPLE_CIRCUITS))

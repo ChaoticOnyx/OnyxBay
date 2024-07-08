@@ -6,6 +6,8 @@
 	icon = 'icons/obj/inflatable.dmi'
 	var/deploy_path = null
 	var/inflatable_health
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/inflatable/attack_self(mob/user)
 	if(!deploy_path)

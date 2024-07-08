@@ -12,6 +12,8 @@
 	mod_weight = 1.2
 	mod_reach = 0.75
 	mod_handy = 1.0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/nullrod/attack(mob/M, mob/living/user)
 	admin_attack_log(user, M, "Attacked using \a [src]", "Was attacked with \a [src]", "used \a [src] to attack")
@@ -65,6 +67,8 @@
 	icon_state = "energynet"
 	throwforce = 0
 	force = 0
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/net_type = /obj/effect/energy_net
 
 /obj/item/energy_net/safari

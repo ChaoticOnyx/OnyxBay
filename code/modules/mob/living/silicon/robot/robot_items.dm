@@ -4,6 +4,8 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "portable_analyzer"
 	desc = "Similar to the stationary version, this rather unwieldy device allows you to break down objects in the name of science."
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/min_reliability = 90 //Can't upgrade, call it laziness or a drawback
 
@@ -129,6 +131,8 @@
 	desc = "A hand-held harvest tool that resembles a sickle.  It uses energy to cut plant matter very efficently."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "autoharvester"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/robot_harvester/afterattack(atom/target, mob/living/user, proximity)
 	if(!target)
@@ -164,6 +168,8 @@
 		/obj/item/organfixer/standard,
 	)
 	var/obj/item/selected_tool
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/surgical_selector/proc/refill()
 	var/obj/item/organfixer/OF = locate(/obj/item/organfixer) in surgery_items
@@ -410,6 +416,8 @@
 	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "inf_deployer"
 	w_class = ITEM_SIZE_LARGE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/stored_walls = 5
 	var/stored_doors = 2
@@ -552,6 +560,8 @@
 /obj/item/robot_rack
 	name = "a generic robot rack"
 	desc = "A rack for carrying large items as a robot."
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/list/object_type                    //The types of object the rack holds (subtypes are allowed).
 	var/interact_type = null                  //Things of this type will trigger attack_hand when attacked by this.
 	var/capacity = 1                   //How many objects can be held.
@@ -795,6 +805,8 @@
 	desc = "A device used to rapidly synthesize items."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "rcd"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/mode = 1
 	var/inuse = 0
 	var/list/datum/item_types = list()

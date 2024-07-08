@@ -81,3 +81,5 @@
 	icon = 'icons/obj/doors/door_assembly.dmi'
 	icon_state = "door_electronics"
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE

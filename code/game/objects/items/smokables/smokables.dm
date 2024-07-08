@@ -6,6 +6,7 @@
 	desc = "You're not sure what this is. You should probably ahelp it."
 	body_parts_covered = NO_BODYPARTS
 	icon = 'icons/obj/cigarettes.dmi'
+	can_be_wrung_out = FALSE
 	var/lit = 0
 	var/ever_lit = FALSE // Has it ever been lit
 	var/icon_on

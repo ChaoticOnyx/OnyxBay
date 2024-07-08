@@ -4,6 +4,8 @@
 	icon = 'icons/obj/policetape.dmi'
 	icon_state = "tape"
 	w_class = ITEM_SIZE_SMALL
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/turf/start
 	var/turf/end
 	var/tape_type = /obj/item/tape
@@ -33,6 +35,8 @@ var/list/tape_roll_applications = list()
 	layer = ABOVE_DOOR_LAYER
 	randpixel = 0
 	anchored = 1
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 	var/lifted = 0
 	var/crumpled = 0
 	var/tape_dir = 0

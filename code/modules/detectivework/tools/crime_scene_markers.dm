@@ -22,6 +22,8 @@
 	w_class = ITEM_SIZE_TINY
 	layer = BASE_ABOVE_OBJ_LAYER
 	randpixel = 2
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/crime_scene_marker/Initialize(loc, number)
 	. = ..()

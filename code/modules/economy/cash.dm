@@ -18,6 +18,8 @@
 	var/worth = 0
 	var/max_stack = 100000
 	var/global/denominations = list(1000, 500, 200, 100, 50, 20, 10, 1)
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/spacecash/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/spacecash))

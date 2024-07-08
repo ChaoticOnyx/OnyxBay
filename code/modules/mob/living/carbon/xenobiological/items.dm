@@ -5,6 +5,8 @@
 	desc = "A potent chemical mix that will nullify a metroid's powers, causing it to become docile and tame."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potpink"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/metroidpotion/attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
 	if(!istype(M, /mob/living/carbon/metroid))//If target is not a metroid.
@@ -115,6 +117,8 @@
 	desc = "A potent chemical mix that will reduce a metroid's mutation chance."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potcyan"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/metroid_stabilizer/attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
 	if(!istype(M, /mob/living/carbon/metroid))//If target is not a metroid.
@@ -135,6 +139,8 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potblue"
 	var/uses = 3
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/chill_potion/afterattack(obj/target, mob/user, flag)
 	if(istype(target, /obj/item/clothing))
@@ -204,6 +210,8 @@
 	icon_state = "construct"
 	desc = "The incomplete body of a golem. Add ten sheets of any mineral to finish."
 	w_class = ITEM_SIZE_HUGE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 	var/shell_type = /obj/effect/mob_spawn/ghost_role/human/golem
 
@@ -282,6 +290,8 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potorange"
 	var/prompted = FALSE
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/metroid_transference/attack(mob/living/carbon/metroid/M, mob/user)
 	..()

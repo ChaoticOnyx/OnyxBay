@@ -31,6 +31,8 @@
 
 /obj/item/shield
 	name = "shield"
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /* This shit ain't working, guys. Fix it, please. ~Toby
 /obj/item/shield/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")

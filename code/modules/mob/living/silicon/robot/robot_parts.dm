@@ -10,6 +10,8 @@
 	var/model_info
 	var/bp_tag = null // What part is this?
 	dir = SOUTH
+	can_get_wet = FALSE
+	can_be_wrung_out = FALSE
 
 /obj/item/robot_parts/set_dir()
 	return

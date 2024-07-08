@@ -157,6 +157,7 @@
 
 	pickup_sound = SFX_PICKUP_DEVICE
 	drop_sound = SFX_DROP_DEVICE
+	can_be_wrung_out = FALSE
 
 /obj/item/proc/update_inv_mob()
 	var/mob/M = loc
