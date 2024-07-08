@@ -181,3 +181,8 @@
 
 /atom/movable/particle_emitter/firing_smoke/proc/remove_drift()
 	particles.drift = 0
+
+/atom/movable/particle_emitter/attachable/water_droplets
+	plane = DEFAULT_PLANE
+	layer = FIRE_LAYER
+	particles = new /particles/droplets()

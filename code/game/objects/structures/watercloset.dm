@@ -265,7 +265,7 @@
 	if(isliving(O))
 		var/mob/living/L = O
 		L.ExtinguishMob()
-		L.fire_stacks = -20 //Douse ourselves with water to avoid fire more easily
+		L.adjust_wet_stacks(20)
 
 	if(iscarbon(O))
 		var/mob/living/carbon/M = O

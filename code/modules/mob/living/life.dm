@@ -26,9 +26,6 @@
 	if(!is_ic_dead())
 		aura_check(AURA_TYPE_LIFE)
 
-	//Check if we're on fire
-	handle_fire()
-
 	update_pulling()
 
 	for(var/obj/item/grab/G in src)

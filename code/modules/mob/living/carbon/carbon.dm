@@ -223,20 +223,19 @@
 				M.visible_message(SPAN("warning", "[M] tries to pat out [src]'s flames!"),
 								  SPAN("warning", "You try to pat out [src]'s flames! Hot!"))
 				if(do_mob(M, src, 15))
-					src.fire_stacks -= 0.5
+					src.adjust_fire_stacks(-0.5)
 					if (prob(10) && (M.fire_stacks <= 0))
-						M.fire_stacks += 1
+						M.adjust_fire_stacks(1)
 					M.IgniteMob()
 					if (M.on_fire)
 						M.visible_message(SPAN("danger", "The fire spreads from [src] to [M]!"),
 										  SPAN("danger", "The fire spreads to you as well!"))
 					else
-						src.fire_stacks -= 0.5 //Less effective than stop, drop, and roll - also accounting for the fact that it takes half as long.
+						src.adjust_fire_stacks(-0.5) //Less effective than stop, drop, and roll - also accounting for the fact that it takes half as long.
 						if (src.fire_stacks <= 0)
 							M.visible_message(SPAN("warning", "[M] successfully pats out [src]'s flames."),
 											  SPAN("warning", "You successfully pat out [src]'s flames."))
 							src.ExtinguishMob()
-							src.fire_stacks = 0
 		else
 			var/t_him = "it"
 			if (src.gender == MALE)
@@ -267,8 +266,8 @@
 					M.visible_message(SPAN("notice", "[M] hugs [src] to make [t_him] feel better!"), \
 									  SPAN("notice", "You hug [src] to make [t_him] feel better!"))
 				if(M.fire_stacks >= (src.fire_stacks + 3))
-					src.fire_stacks += 1
-					M.fire_stacks -= 1
+					src.adjust_fire_stacks(1)
+					M.adjust_fire_stacks(-1)
 				if(M.on_fire)
 					src.IgniteMob()
 

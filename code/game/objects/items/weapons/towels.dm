@@ -34,19 +34,3 @@
 	color = "#ffd700"
 	force = 1
 	attack_verb = list("smote")
-
-/obj/item/towel/proc/attack_on_liquids_turf(turf/tile, mob/user, atom/movable/liquid_turf/liquids)
-	if(!in_range(user, tile))
-		return FALSE
-
-	var/free_space = reagents.maximum_volume - reagents.total_volume
-	if(free_space <= 0)
-		to_chat(user, SPAN_WARNING("Your [src] can't absorb any more liquid!"))
-		return TRUE
-
-	var/datum/reagents/tempr = liquids.take_reagents_flat(free_space)
-	tempr.trans_to(reagents, tempr.total_volume)
-	to_chat(user, SPAN_NOTICE("You soak \the [src] with some liquids."))
-	qdel(tempr)
-	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	return TRUE

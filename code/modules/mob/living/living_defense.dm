@@ -315,43 +315,142 @@
 	return 1
 
 /mob/living/proc/IgniteMob()
-	if(fire_stacks > 0 && !on_fire)
-		on_fire = 1
-		set_light(0.6, 0.1, 4, l_color = COLOR_ORANGE)
-		update_fire()
+	for(var/datum/modifier/fire_handler/fire_stacks/stack in modifiers)
+		stack.on_fire = TRUE
+
+	set_light(0.6, 0.1, 4, l_color = COLOR_ORANGE)
+	update_fire()
 
 /mob/living/proc/ExtinguishMob()
 	if(on_fire)
-		on_fire = 0
-		fire_stacks = 0
+		on_fire = FALSE
+		adjust_fire_stacks(0)
 		set_light(0)
 		update_fire()
 
 /mob/living/proc/update_fire()
 	return
 
-/mob/living/proc/adjust_fire_stacks(add_fire_stacks) //Adjusting the amount of fire_stacks we have on person
-	fire_stacks = Clamp(fire_stacks + add_fire_stacks, FIRE_MIN_STACKS, FIRE_MAX_STACKS)
-
+/// Override for specific on-fire behavior. Called from fire_stack modifier.
 /mob/living/proc/handle_fire()
-	if(fire_stacks < 0)
-		fire_stacks = min(0, ++fire_stacks) //If we've doused ourselves in water to avoid fire, dry off slowly
+	SHOULD_CALL_PARENT(FALSE)
+	pass()
 
-	if(!on_fire)
-		return 1
-	else if(fire_stacks <= 0)
-		ExtinguishMob() //Fire's been put out.
-		return 1
+/// Adjusting the amount of fire_stacks we have on person
+/mob/living/proc/adjust_fire_stacks(stacks)
+	if(stacks == 0)
+		remove_modifiers_of_type(/datum/modifier/fire_handler)
+		return
 
-	fire_stacks = max(0, fire_stacks - 0.1) //I guess the fire runs out of fuel eventually
+	add_modifier(/datum/modifier/fire_handler/fire_stacks, null, null, stacks)
 
-	var/datum/gas_mixture/G = loc.return_air() // Check if we're standing in an oxygenless environment
-	if(G.get_by_flag(XGM_GAS_OXIDIZER) < 1)
-		ExtinguishMob() //If there's no oxygen in the tile we're on, put out the fire
-		return 1
+/mob/living/proc/adjust_wet_stacks(stacks, datum/reagents/source_reagents, liquid_height = LIQUID_FULLTILE_LEVEL_HEIGHT, make_clothes_wet = TRUE)
+	if(stacks < 0)
+		stacks = max(fire_stacks, stacks)
 
-	var/turf/location = get_turf(src)
-	location.hotspot_expose(fire_burn_temperature(), 50, 1)
+	add_modifier(/datum/modifier/fire_handler/wet_stacks, null, null, stacks)
+	if(stacks > 0 && make_clothes_wet)
+		on_adjusting_wet_stacks(source_reagents, liquid_height)
+
+/// Override for specific behavior when fire stacks are applied. E.g. - reagents are transfered to a human's clothes.
+/mob/living/proc/on_adjusting_wet_stacks(datum/reagents/source_reagents)
+	SHOULD_CALL_PARENT(FALSE)
+	pass()
+
+// HERE COMES THE BOILERPLATE!!!
+/mob/living/carbon/human/on_adjusting_wet_stacks(datum/reagents/source_reagents, liquid_height)
+	var/washgloves = TRUE
+	var/washshoes = TRUE
+	var/washmask = TRUE
+	var/washears = TRUE
+	var/washglasses = TRUE
+
+	if(wear_suit)
+		washgloves = !(wear_suit.flags_inv & HIDEGLOVES)
+		washshoes = !(wear_suit.flags_inv & HIDESHOES)
+
+	if(head)
+		washmask = !(head.flags_inv & HIDEMASK)
+		washglasses = !(head.flags_inv & HIDEEYES)
+		washears = !(head.flags_inv & HIDEEARS)
+
+	if(wear_mask)
+		if(washears)
+			washears = !(wear_mask.flags_inv & HIDEEARS)
+		if(washglasses)
+			washglasses = !(wear_mask.flags_inv & HIDEEYES)
+	else
+		lip_style = null
+		update_body()
+
+	var/list/clothes_to_make_wet = list()
+	if(r_hand?.can_get_wet && (liquid_height >= LIQUID_SHOULDERS_LEVEL_HEIGHT || lying))
+		clothes_to_make_wet |= r_hand
+
+	if(l_hand?.can_get_wet && (liquid_height >= LIQUID_SHOULDERS_LEVEL_HEIGHT || lying))
+		clothes_to_make_wet |= l_hand
+
+	if(back?.can_get_wet && (liquid_height >= LIQUID_SHOULDERS_LEVEL_HEIGHT || lying))
+		clothes_to_make_wet |= back
+
+	if(!istype(head) ||head?.can_get_wet)
+		if(head && (liquid_height >= LIQUID_FULLTILE_LEVEL_HEIGHT || lying))
+			clothes_to_make_wet |= head
+
+		if(l_ear?.can_get_wet && washears && (liquid_height >= LIQUID_FULLTILE_LEVEL_HEIGHT || lying))
+			clothes_to_make_wet |= l_ear
+
+		if(r_ear?.can_get_wet && washears && (liquid_height >= LIQUID_FULLTILE_LEVEL_HEIGHT || lying))
+			clothes_to_make_wet |= r_ear
+
+	if(!istype(wear_suit) || wear_suit?.can_get_wet)
+		if(w_uniform?.can_get_wet && (liquid_height >= LIQUID_WAIST_LEVEL_HEIGHT || lying))
+			clothes_to_make_wet |= w_uniform
+			if(wear_id?.can_get_wet)
+				clothes_to_make_wet |= wear_id
+			if(r_store?.can_get_wet)
+				clothes_to_make_wet |= r_store
+			if(l_store?.can_get_wet)
+				clothes_to_make_wet |= l_store
+
+	if(wear_suit?.can_get_wet) // This shitfuckery happens to account for a situation where our suit is waterproof (e.g. RIG or hazmat suit), since it should prevent uniform from getting wet, too.
+		if((liquid_height >= LIQUID_SHOULDERS_LEVEL_HEIGHT || lying))
+			clothes_to_make_wet |= wear_suit
+		if(s_store?.can_get_wet)
+			clothes_to_make_wet |= s_store
+
+	if(gloves?.can_get_wet && washgloves && (liquid_height >= LIQUID_SHOULDERS_LEVEL_HEIGHT || lying))
+		clothes_to_make_wet |= gloves
+
+	if(shoes?.can_get_wet && washshoes && (liquid_height >= LIQUID_ANKLES_LEVEL_HEIGHT || lying))
+		clothes_to_make_wet |= shoes
+	else if(!shoes)
+		var/obj/item/organ/external/l_foot = organs_by_name[BP_L_FOOT]
+		var/obj/item/organ/external/r_foot = organs_by_name[BP_R_FOOT]
+		var/no_legs = FALSE
+		if((!l_foot || (l_foot && (l_foot.is_stump()))) && (!r_foot || (r_foot && (r_foot.is_stump()))))
+			no_legs = TRUE
+		if(!no_legs)
+			track_blood = 0
+			feet_blood_color = null
+			feet_blood_DNA = null
+			update_inv_shoes(TRUE)
+
+	if(wear_mask?.can_get_wet && washmask && (liquid_height >= LIQUID_FULLTILE_LEVEL_HEIGHT || lying))
+		clothes_to_make_wet |= wear_mask
+
+	if(glasses?.can_get_wet && washglasses && (liquid_height >= LIQUID_FULLTILE_LEVEL_HEIGHT || lying))
+		clothes_to_make_wet |= glasses
+
+	if(belt?.can_get_wet && (liquid_height >= LIQUID_WAIST_LEVEL_HEIGHT || lying))
+		clothes_to_make_wet |= belt
+
+	var/liquid_units_per_item = clothes_to_make_wet.len / source_reagents.total_volume
+	for(var/obj/item/I in clothes_to_make_wet)
+		I.make_wet(source_reagents, liquid_units_per_item)
+		I.clean_blood()
+
+	clean_blood()
 
 /mob/living/fire_act(datum/gas_mixture/air, temperature, volume)
 	//once our fire_burn_temperature has reached the temperature of the fire that's giving fire_stacks, stop adding them.

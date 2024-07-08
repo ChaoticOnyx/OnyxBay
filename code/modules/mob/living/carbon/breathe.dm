@@ -70,6 +70,17 @@
 	if(loc)
 		environment = loc.return_air_for_internal_lifeform()
 
+	if(isturf(loc))
+		var/turf/curr_turf = loc
+		if(curr_turf.liquids && ((lying && curr_turf.liquids.liquid_state >= LIQUID_STATE_WAIST) || (!lying && curr_turf.liquids.liquid_state >= LIQUID_STATE_FULLTILE)))
+			var/datum/reagents/tempr = curr_turf.liquids.take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_BREATH_AMOUNT)
+			tempr.trans_to(src, tempr.total_volume)
+			visible_message(SPAN_WARNING("[src] chokes on [curr_turf.liquids.reagents_to_text()]!"), \
+						SPAN_DANGER("You're choking on [curr_turf.liquids.reagents_to_text()]!"))
+			if(prob(40))
+				emote("choke")
+			return null
+
 	if(environment)
 		breath = environment.remove_volume(volume_needed)
 		handle_chemical_smoke(environment) //handle chemical smoke while we're at it

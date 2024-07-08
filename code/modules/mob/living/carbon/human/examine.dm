@@ -198,8 +198,10 @@
 					else
 						to_chat(user, SPAN("deadsay", "[T.He] [T.has] a pulse!"))
 
-	if(fire_stacks)
+	if(has_modifier_of_type(/datum/modifier/fire_handler/fire_stacks))
 		msg += "[T.He] looks flammable.\n"
+	if(has_modifier_of_type(/datum/modifier/fire_handler/wet_stacks))
+		msg += "[T.He] looks a little soaked.\n"
 	if(on_fire)
 		msg += SPAN("warning", "[T.He] [T.is] on fire!.\n")
 

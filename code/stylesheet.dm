@@ -74,7 +74,7 @@ em						{font-style: normal;font-weight: bold;}
 .say					{}
 .alert					{color: #ff0000;}
 h1.alert, h2.alert		{color: #000080;}
-
+.wet				    {color: #007fbf;}
 .emote					{font-style: italic;}
 
 /* Game Messages */

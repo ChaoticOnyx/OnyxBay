@@ -229,6 +229,8 @@
 
 #define SPAN_BOLD(X)	 SPAN("bold", X)
 
+#define SPAN_WET(X)      SPAN("wet", X)
+
 #define FONT_SMALL(X)    SPAN("small", X)
 
 #define FONT_NORMAL(X)   SPAN("normal", X)

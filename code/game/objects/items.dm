@@ -101,6 +101,17 @@
 	/// Sound played when this tool is used. Can be a list too.
 	var/tool_sound
 
+	/**
+	 * Wetness variables
+	 */
+
+	/// Whether this item can get wet at all (e.g. hazmat suit)
+	var/can_get_wet = TRUE
+	///	Whether this item can be wrung out (U cant really squeeze water from your headset)
+	var/can_be_wrung_out = TRUE
+	/// Holder of reagents that actually make this item wet.
+	var/datum/reagents/wetness_reagents
+
 	rad_resist_type = /datum/rad_resist/item
 
 /datum/rad_resist/item
@@ -114,11 +125,14 @@
 	if(href_list["examine_combat"])
 		to_chat(usr, EXAMINE_BLOCK(SPAN_NOTICE(get_combat_stats().Join("\n"))))
 
-/obj/item/New()
-	..()
+/obj/item/Initialize()
+	. = ..()
 	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y
 		pixel_x = rand(-randpixel, randpixel)
 		pixel_y = rand(-randpixel, randpixel)
+
+	if(can_be_wrung_out)
+		AddComponent(/datum/component/liquids_interaction, nameof(/obj/item.proc/attack_on_liquids_turf))
 
 /obj/item/Destroy()
 	if(ismob(loc))
@@ -225,7 +239,12 @@
 		if(ITEM_SIZE_HUGE + 1 to INFINITY)
 			size = "huge"
 
-	. += "It is a [size] item."
+	var/stat_flavor = "It is a [wetness_reagents?.total_volume > 0 ? "wet" : ""] [w_class ? size : ""] item."
+
+	if(wetness_reagents?.total_volume > 0)
+		. += SPAN_WET(stat_flavor)
+	else
+		. += stat_flavor
 
 	if(force)
 		var/desc_weight
@@ -1167,3 +1186,95 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	blood_overlay.color = dirt_overlay.color
 	AddOverlays(blood_overlay)
 	update_inv_mob()
+
+/**
+ * Wetness procs
+ */
+/// This proc makes item WET.
+/obj/item/proc/make_wet(datum/reagents/take_from, amount)
+	if(!can_get_wet)
+		return
+
+	if(!istype(wetness_reagents))
+		wetness_reagents = new /datum/reagents(w_class * 10, src)
+
+	var/free_space = Clamp(0, wetness_reagents.maximum_volume - wetness_reagents.total_volume, w_class * 10)
+	if(free_space <= 0)
+		return
+
+	take_from.trans_to_holder(wetness_reagents, min(amount, free_space))
+	try_add_think_ctx("wetness_ctx", CALLBACK(src, nameof(.proc/wetness_context)), world.time + 5 SECONDS)
+
+/obj/item/proc/wetness_context()
+	if(wetness_reagents?.total_volume <= 0)
+		QDEL_NULL(wetness_reagents)
+		return
+
+	var/reagent_to_dry = safepick(wetness_reagents?.reagent_list)
+	var/amt_to_remove = rand(1 ,2)
+	wetness_reagents?.remove_reagent(reagent_to_dry, amt_to_remove, safety = TRUE)
+	if(isliving(loc))
+		var/mob/living/L = loc
+		L.adjust_wet_stacks(amt_to_remove, make_clothes_wet = FALSE)
+
+	set_next_think_ctx("wetness_ctx", world.time + 5 SECONDS)
+
+/obj/item/proc/dry_discharge()
+	pass()
+
+/obj/item/CtrlAltClick(mob/user)
+	var/mob/living/L = user
+	if(!istype(L))
+		return
+
+	if(!istype(wetness_reagents))
+		return
+
+	if(ismob(loc) && L.get_active_hand() != src && L.get_inactive_hand() != src)
+		return
+
+	L.visible_message(SPAN_INFO("[L] starts wringing out \the [src]."), SPAN_INFO("You start wringing out \the [src]"), SPAN_INFO("You hear the sound of clothes being wrung out"))
+	if(!do_after(L, 4 SECONDS, src, can_move = TRUE) || QDELETED(src))
+		return
+
+	if(!istype(wetness_reagents))
+		return
+
+	var/amt_to_remove = wetness_reagents.total_volume
+	if(wetness_reagents.total_volume > 2)
+		amt_to_remove = rand(wetness_reagents.total_volume / 3)
+	wetness_reagents.splash(get_turf(user), min(wetness_reagents.total_volume, amt_to_remove))
+	L.show_splash_text(L, "Wrung out!", SPAN_INFO("You wring out your clothes as best you can!"))
+
+/// Removes liquids from a turf
+/obj/item/proc/attack_on_liquids_turf(turf/tile, mob/user, atom/movable/liquid_turf/liquids)
+	var/mob/living/L = user
+	if(!istype(L))
+		return FALSE
+
+	if(!in_range(user, tile))
+		return FALSE
+
+	if(!istype(wetness_reagents))
+		wetness_reagents = new /datum/reagents(w_class * 10, src)
+
+	var/free_space = wetness_reagents.maximum_volume - wetness_reagents.total_volume
+	if(free_space <= 0)
+		to_chat(user, SPAN_WARNING("Your [src] can't absorb any more liquid!"))
+		return TRUE
+
+	user.visible_message(SPAN_INFO("[user] starts wiping up liquid with \the [src]."), SPAN_INFO("You start wiping up liquid with \the [src]."), SPAN_INFO("You hear someone wiping the water."))
+	if(!do_after(user, 4 SECONDS, src) || QDELETED(src))
+		return TRUE
+
+	free_space = wetness_reagents.maximum_volume - wetness_reagents.total_volume
+	if(free_space <= 0)
+		to_chat(user, SPAN_WARNING("Your [src] can't absorb any more liquid!"))
+		return TRUE
+
+	var/datum/reagents/tempr = liquids.take_reagents_flat(free_space)
+	tempr.trans_to_holder(reagents, tempr.total_volume)
+	to_chat(user, SPAN_NOTICE("You soak \the [src] with some liquids."))
+	qdel(tempr)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	return TRUE

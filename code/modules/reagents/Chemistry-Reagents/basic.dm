@@ -77,7 +77,7 @@
 			L.ExtinguishMob()
 			remove_self(needed)
 		else
-			L.adjust_fire_stacks(-(amount / 10))
+			L.adjust_wet_stacks(amount / 10)
 			remove_self(amount)
 
 /datum/reagent/water/affect_touch(mob/living/carbon/M, alien, removed)

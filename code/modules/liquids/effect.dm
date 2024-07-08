@@ -184,10 +184,6 @@
 		calculate_height()
 		set_reagent_color_for_liquid()
 
-/atom/movable/liquid_turf/forceMove(atom/destination, no_tp=FALSE, harderforce = FALSE)
-	if(harderforce)
-		. = ..()
-
 /**
  * Makes and returns the liquid effect overlay.
  *
@@ -427,13 +423,36 @@
 				'sound/effects/water/water_wade4.ogg'
 				))
 			playsound(T, sound_to_play, 50, 0)
-		//if(iscarbon(AM))
-		//	var/mob/living/carbon/C = AM
-		//	C.apply_status_effect(/datum/status_effect/water_affected)
+
+	var/mob/living/L = AM
+	if(istype(L))
+		switch(liquid_state)
+			if(LIQUID_STATE_ANKLES)
+				if(L.lying && prob(50))
+					var/amt = rand(10, 15)
+					L.adjust_wet_stacks(amt / 10, take_reagents_flat(amt))
+
+				else if(prob(5) && ishuman(L)) // Bypassing making clothes wet via wet_stacks as small puddles do not normally make mobs wet.
+					var/mob/living/carbon/human/H = L
+					var/obj/item/clothing/shoes/S = H.shoes
+					var/amt = rand(5, 10)
+					S?.make_wet(take_reagents_flat(amt), amt)
+
+			if(LIQUID_STATE_WAIST)
+				var/amt = rand(15, 20)
+				L.adjust_wet_stacks(amt / 10, take_reagents_flat(amt))
+			if(LIQUID_STATE_SHOULDERS)
+				if(prob(50))
+					var/amt = rand(20, 25)
+					L.adjust_wet_stacks(amt / 10, take_reagents_flat(amt))
+			if(LIQUID_STATE_FULLTILE)
+				var/amt = rand(20, 30)
+				L.adjust_wet_stacks(amt / 10, take_reagents_flat(amt))
+
 	else if (isliving(AM))
-		var/mob/living/L = AM
+		var/mob/living/living = AM
 		if(prob(7))
-			L.slip(T, 60)
+			living.slip(T, 60)
 	if(fire_state)
 		AM.fire_act((20 CELSIUS + 50) + (50 * fire_state), 125)
 
@@ -500,6 +519,7 @@
 		//QUEUE_SMOOTH_NEIGHBORS(src)
 	else
 		return QDEL_HINT_LETMELIVE
+
 	return ..()
 
 /atom/movable/liquid_turf/immutable/Destroy(force)

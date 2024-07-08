@@ -1222,9 +1222,6 @@
 	return ..()
 
 /mob/living/carbon/human/handle_fire()
-	if(..())
-		return
-
 	var/burn_temperature = fire_burn_temperature()
 	var/thermal_protection = get_heat_protection(burn_temperature)
 

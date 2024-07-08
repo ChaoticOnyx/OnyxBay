@@ -58,6 +58,8 @@
 	var/electrocute_damage_percent
 	var/electrocute_block_chance
 	var/poise_pool_flat
+	/// A particle effect, for effects like embers on fire and water droplets.
+	var/atom/movable/particle_emitter/particle_effect
 
 /datum/modifier/New(new_holder, new_origin)
 	holder = new_holder
@@ -65,7 +67,14 @@
 		origin = weakref(new_origin)
 	else // We assume the holder caused the modifier if not told otherwise.
 		origin = weakref(holder)
+
+	update_particles()
 	..()
+
+/datum/modifier/Destroy(force)
+	if(particle_effect)
+		QDEL_NULL(particle_effect)
+	return ..()
 
 // Checks if the modifier should be allowed to be applied to the mob before attaching it.
 // Override for special criteria, e.g. forbidding robots from receiving it.
@@ -94,7 +103,7 @@
 	qdel(src)
 
 // Override this for special effects when it gets added to the mob.
-/datum/modifier/proc/on_applied()
+/datum/modifier/proc/on_applied(list/arguments)
 	return
 
 // Override this for special effects when it gets removed.
@@ -106,6 +115,16 @@
 	return
 
 /datum/modifier/proc/examine()
+	return
+
+/// Override for specific particle behavior.
+/datum/modifier/proc/update_particles()
+	SHOULD_CALL_PARENT(FALSE)
+	return
+
+/// Override for specific behavior when a new modifier is applied with stacks = MODIFIER_STACK_REFRESH
+/datum/modifier/proc/refresh(arguments)
+	SHOULD_CALL_PARENT(FALSE)
 	return
 
 /mob/living
@@ -129,7 +148,8 @@
 // Call this to add a modifier to a mob. First argument is the modifier type you want, second is how long it should last, in ticks.
 // Third argument is the 'source' of the modifier, if it's from someone else.  If null, it will default to the mob being applied to.
 // The SECONDS/MINUTES macro is very helpful for this.  E.g. M.add_modifier(/datum/modifier/example, 5 MINUTES)
-/mob/living/proc/add_modifier(modifier_type, expire_at = null, mob/living/origin = null)
+/mob/living/proc/add_modifier(modifier_type, expire_at = null, mob/living/origin = null, ...)
+	var/list/arguments = args.Copy()
 	// First, check if the mob already has this modifier.
 	for(var/datum/modifier/M in modifiers)
 		if(ispath(modifier_type, M))
@@ -142,6 +162,9 @@
 					// Not allow to add a second instance, but we can try to prolong the first instance.
 					if(expire_at && world.time + expire_at > M.expire_at)
 						M.expire_at = world.time + expire_at
+					return
+				if(MODIFIER_STACK_REFRESH)
+					M.refresh(arglist(arguments))
 					return
 
 	// If we're at this point, the mob doesn't already have it, or it does but stacking is allowed.
@@ -158,7 +181,7 @@
 		var/mob/living/carbon/human/human_user = src
 		human_user.no_pain = TRUE
 
-	mod.on_applied()
+	mod.on_applied(arglist(arguments))
 	if(mod.mob_overlay_state)
 		update_modifier_visuals()
 	if(mod.client_color)
