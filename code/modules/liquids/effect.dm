@@ -345,7 +345,7 @@
 	set_height(new_height)
 	var/determined_new_state
 	switch(new_height)
-		if(0 to LIQUID_ANKLES_LEVEL_HEIGHT-  1)
+		if(0 to LIQUID_ANKLES_LEVEL_HEIGHT - 1)
 			determined_new_state = LIQUID_STATE_PUDDLE
 		if(LIQUID_ANKLES_LEVEL_HEIGHT to LIQUID_WAIST_LEVEL_HEIGHT - 1)
 			determined_new_state = LIQUID_STATE_ANKLES

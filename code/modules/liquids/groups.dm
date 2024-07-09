@@ -134,7 +134,7 @@ GLOBAL_VAR_INIT(liquid_debug_colors, FALSE)
 			cached_volume += turf_reagents
 			cached_thermal += cached_liquids.total_reagents * cached_liquids.temp
 
-	if(!any_share || !cached_volume)
+	if(!any_share)
 		return
 
 	decay_counter = 0

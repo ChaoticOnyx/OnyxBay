@@ -142,7 +142,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 			return 1
 	if(ispath(reagent_type, /datum/reagent))
 		var/datum/reagent/R = new reagent_type(src)
-		reagent_list += R
+		LAZYADD(reagent_list, R)
 		R.volume = amount
 		R.initialize_data(data)
 		update_total()

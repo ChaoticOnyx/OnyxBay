@@ -21,12 +21,7 @@
 //Required amount of a reagent to be simulated on turf exposures from liquids (to prevent gaming the system with cheap dillutions)
 #define LIQUID_REAGENT_THRESHOLD_TURF_EXPOSURE 5
 
-//Threshold at which the difference of height makes us need to climb/blocks movement/allows to fall down
-#define TURF_HEIGHT_BLOCK_THRESHOLD 20
-
-#define LIQUID_HEIGHT_DIVISOR 10
-
-#define ONE_LIQUIDS_HEIGHT LIQUID_HEIGHT_DIVISOR
+#define LIQUID_HEIGHT_DIVISOR 20
 
 #define LIQUID_ATTRITION_TO_STOP_ACTIVITY 2
 
