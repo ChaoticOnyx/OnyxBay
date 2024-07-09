@@ -379,8 +379,11 @@ var/const/enterloopsanity = 100
 		if(O.turf_height_offset)
 			max_height = max(max_height, O.turf_height_offset)
 	turf_height = max_height
+	liquid_height = max_height
 	for(var/mob/M in contents)
 		M.update_height_offset(turf_height)
+
+	reasses_liquids()
 
 /// Used for astar pathfinding
 /turf/proc/__get_astar_linked_nodes()

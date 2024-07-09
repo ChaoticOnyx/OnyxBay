@@ -312,7 +312,7 @@
 	//tempr.chem_temp = temp
 	return tempr
 
-/atom/movable/liquid_turf/fire_act(temperature, volume)
+/atom/movable/liquid_turf/fire_act()
 	if(!fire_state)
 		if(check_fire(TRUE))
 			SSliquids.processing_fire[my_turf] = TRUE
@@ -326,9 +326,6 @@
 	var/new_height = CEILING(total_reagents, 1) / LIQUID_HEIGHT_DIVISOR
 	set_height(new_height)
 	var/determined_new_state
-	//We add the turf height if it's positive to state calculations
-	if(my_turf.turf_height > 0)
-		new_height += my_turf.turf_height
 	switch(new_height)
 		if(0 to LIQUID_ANKLES_LEVEL_HEIGHT - 1)
 			determined_new_state = LIQUID_STATE_PUDDLE
@@ -491,17 +488,9 @@
 		register_signal(my_turf, SIGNAL_EXAMINED, nameof(.proc/examine_turf))
 		SSliquids.mark_active_turf(my_turf)
 
-		//SEND_SIGNAL(my_turf, COMSIG_TURF_LIQUIDS_CREATION, src)
-
 	update_icon()
-	//if(z)
-		//QUEUE_SMOOTH(src)
-		//QUEUE_SMOOTH_NEIGHBORS(src)
-
-	/* //Cant do it immediately, hmhm
-	if(isspaceturf(my_turf))
-		qdel(src, TRUE)
-	*/
+	smooth(get_turf(src))
+	smooth_neighbors(get_turf(src))
 
 /atom/movable/liquid_turf/Destroy(force)
 	if(force)
@@ -516,7 +505,7 @@
 		SSliquids.mark_active_turf(my_turf)
 		my_turf.liquids = null
 		my_turf = null
-		//QUEUE_SMOOTH_NEIGHBORS(src)
+		smooth_neighbors(get_turf(src))
 	else
 		return QDEL_HINT_LETMELIVE
 
@@ -669,3 +658,41 @@
 	temp = starting_temp
 	calculate_height()
 	set_reagent_color_for_liquid()
+
+/atom/movable/liquid_turf/proc/smooth_neighbors(smoothing_turf)
+	for(var/direction in GLOB.alldirs)
+		var/atom/movable/liquid_turf/L = locate() in get_step(smoothing_turf, direction)
+		if(L)
+			L.smooth(L.loc) //so siding get updated properly
+
+#define ATOMS_TO_SMOOTH_WITH list(/atom/movable/liquid_turf, /turf/simulated/wall, /turf/unsimulated/wall, /obj/structure/window, /obj/structure/window_frame)
+
+/atom/movable/liquid_turf/proc/smooth(smoothing_turf)
+	ASSERT(!isnull(smoothing_turf))
+	var/connectdir = 0
+	for(var/direction in GLOB.cardinal)
+		var/turf/dir_step = get_step(smoothing_turf, direction)
+		for(var/path in ATOMS_TO_SMOOTH_WITH)
+			if(!locate(path) in dir_step)
+				continue
+
+			connectdir |= direction
+			break
+
+	var/diagonalconnect = 0
+	var/dirs = list(1,2,4,8)
+	var/i = 1
+	for(var/diag in list(NORTHEAST, SOUTHEAST,NORTHWEST,SOUTHWEST))
+		if((connectdir & diag) == diag)
+			var/turf/dir_step = get_step(smoothing_turf, diag)
+			for(var/path in ATOMS_TO_SMOOTH_WITH)
+				if(!locate(path) in dir_step)
+					continue
+
+				diagonalconnect |= dirs[i]
+				break
+		i += 1
+
+	icon_state = "water-[connectdir]-[diagonalconnect]"
+
+#undef ATOMS_TO_SMOOTH_WITH
