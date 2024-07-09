@@ -90,6 +90,8 @@
 	update_icon()
 	update_desc()
 	update_material()
+	if(reinforced)
+		AddElement(/datum/element/liquids_height, 20)
 
 /obj/structure/table/Destroy()
 	material = null
@@ -209,6 +211,7 @@
 		update_desc()
 		update_icon()
 		update_material()
+		AddElement(/datum/element/liquids_height, 20)
 
 /obj/structure/table/proc/update_desc()
 	if(material)

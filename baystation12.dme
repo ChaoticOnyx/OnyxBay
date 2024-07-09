@@ -404,6 +404,7 @@
 #include "code\datums\elements\connect_loc.dm"
 #include "code\datums\elements\debris.dm"
 #include "code\datums\elements\last_words.dm"
+#include "code\datums\elements\liquid_height.dm"
 #include "code\datums\elements\point_of_interest.dm"
 #include "code\datums\elements\simple_rotation.dm"
 #include "code\datums\events\apc_damage.dm"
