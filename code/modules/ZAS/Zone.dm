@@ -137,6 +137,7 @@ Class Procs:
 		T.update_graphic(air.graphic)
 		T.needs_air_update = 0 //Reset the marker so that it will be added to the list.
 		SSair.mark_for_update(T)
+		T.liquid_update_turf()
 		CHECK_TICK
 
 /zone/proc/add_tile_air(datum/gas_mixture/tile_air)
