@@ -488,6 +488,8 @@
 		register_signal(my_turf, SIGNAL_EXAMINED, nameof(.proc/examine_turf))
 		SSliquids.mark_active_turf(my_turf)
 
+	if(isspaceturf(my_turf))
+		qdel_self()
 	update_icon()
 	smooth(get_turf(src))
 	smooth_neighbors(get_turf(src))
