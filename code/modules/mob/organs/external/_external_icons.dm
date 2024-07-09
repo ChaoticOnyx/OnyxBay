@@ -206,8 +206,8 @@ var/list/limb_icon_cache = list()
 			ADD_SORTED(sorted, list(list(M.draw_order, I, M)), /proc/cmp_marking_order)
 
 	for(var/entry in sorted) // Revisit this with blendmodes
-		mob_icon.Blend(entry[2], entry[3]["layer_blend"])
-
+		var/datum/sprite_accessory/marking/accessory = entry[3]
+		mob_icon.Blend(entry[2], accessory?.layer_blend)
 
 	// Fix leg layering here
 	// Alternatively you could use masks but it's about same amount of work
