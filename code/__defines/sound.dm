@@ -384,6 +384,7 @@
 #define SFX_THUNDER                 "thunder"
 #define SFX_PSST                    "psst"
 #define SFX_GORE                    "gore"
+#define SFX_CLOTH_WRINGING          "cloth_wringing"
 
 // FOOTSTEPS
 #define SFX_DISTANT_MOVEMENT        "distant_movement"

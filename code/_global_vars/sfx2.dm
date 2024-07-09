@@ -7,3 +7,8 @@ SFX_FEMALE_JUMP = list(
 SFX_MALE_JUMP = list(
 	'sound/effects/emotes/m_jump.ogg'
 ),
+SFX_CLOTH_WRINGING = list(
+	'sound/effects/cloth-wringing1.ogg',
+	'sound/effects/cloth-wringing2.ogg',
+	'sound/effects/cloth-wringing3.ogg',
+)

@@ -1235,7 +1235,8 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 
 	L.visible_message(SPAN_INFO("[L] starts wringing out \the [src]."), SPAN_INFO("You start wringing out \the [src]"), SPAN_INFO("You hear the sound of clothes being wrung out"))
-	if(!do_after(L, 4 SECONDS, src, can_move = TRUE) || QDELETED(src))
+	playsound(get_turf(user), GET_SFX(SFX_CLOTH_WRINGING), rand(60, 80), -1, -1)
+	if(!do_after(L, 2 SECONDS, src, can_move = TRUE) || QDELETED(src))
 		return
 
 	if(!istype(wetness_reagents))
@@ -1274,7 +1275,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return TRUE
 
 	var/datum/reagents/tempr = liquids.take_reagents_flat(free_space)
-	tempr.trans_to_holder(reagents, tempr.total_volume)
+	tempr.trans_to_holder(wetness_reagents, tempr.total_volume)
 	to_chat(user, SPAN_NOTICE("You soak \the [src] with some liquids."))
 	qdel(tempr)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
