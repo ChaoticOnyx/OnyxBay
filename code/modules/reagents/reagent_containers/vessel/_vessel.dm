@@ -98,6 +98,7 @@
 	if(start_label)
 		SetName(base_name)
 		AddComponent(/datum/component/label, start_label) // So the name isn't hardcoded and the label can be removed for reusability
+	AddComponent(/datum/component/liquids_interaction, /obj/item/reagent_containers/vessel./proc/attack_liquid_turf)
 	update_icon()
 
 /obj/item/reagent_containers/vessel/Destroy()
@@ -523,3 +524,54 @@
 
 	drop_sound = SFX_DROP_GLASSSMALL
 	pickup_sound = SFX_PICKUP_GLASSSMALL
+
+/obj/item/reagent_containers/vessel/proc/attack_liquid_turf(turf/target_turf, mob/living/user, atom/movable/liquid_turf/liquids)
+	if(user.a_intent == I_HURT)
+		return FALSE
+
+	if(!can_be_splashed)
+		return FALSE
+
+	if(!user.Adjacent(target_turf))
+		return FALSE
+
+	if(liquids.fire_state)
+		if(!ishuman(user))
+			to_chat(user, SPAN_DANGER("You burn your hand, trying to scoop up liquid while it's on fire!"))
+			user.apply_damage(rand(3, 15), BURN, ran_zone())
+			return TRUE
+
+		var/mob/living/carbon/human/H = user
+		var/hand_to_damage = user.hand ? BP_L_HAND : BP_R_HAND
+		var/obj/item/organ/external/E = H.get_organ(hand_to_damage)
+		if(!istype(E))
+			return TRUE
+
+		if(user.get_flat_armor(hand_to_damage, "laser") > 40)
+			show_splash_text(user, "Extinguish first!", SPAN_WARNING("You can't scoop up anything while it's on fire!"))
+			return
+
+		to_chat(user, SPAN_DANGER("You burn your [E], trying to scoop up liquid while it's on fire!"))
+		E.take_external_damage(0, (rand(3, 15)), (DAM_LASER), used_weapon = "fire")
+		return TRUE
+
+	if(liquids.height == 1)
+		show_splash_text(user, "Too shallow!", SPAN_WARNING("The puddle is too shallow to scoop anything up!"))
+		return TRUE
+
+	var/free_space = reagents.maximum_volume - reagents.total_volume
+	if(free_space <= 0)
+		show_splash_text(user, "Can't fit!", SPAN_WARNING("You can't fit any more liquids inside \the [src]!"))
+		return TRUE
+
+	var/desired_transfer = amount_per_transfer_from_this
+	if(desired_transfer > free_space)
+		desired_transfer = free_space
+
+	playsound(get_turf(user), GET_SFX(SFX_WATER_SCOOPING), rand(30, 50), -1, -1)
+	var/datum/reagents/tempr = liquids.take_reagents_flat(desired_transfer)
+	tempr.trans_to_holder(reagents, tempr.total_volume)
+	to_chat(user, SPAN_NOTICE("You scoop up around [amount_per_transfer_from_this] units of liquids with [src]."))
+	qdel(tempr)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	return TRUE

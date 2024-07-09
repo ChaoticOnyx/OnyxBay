@@ -385,6 +385,7 @@
 #define SFX_PSST                    "psst"
 #define SFX_GORE                    "gore"
 #define SFX_CLOTH_WRINGING          "cloth_wringing"
+#define SFX_WATER_SCOOPING          "water_scooping"
 
 // FOOTSTEPS
 #define SFX_DISTANT_MOVEMENT        "distant_movement"

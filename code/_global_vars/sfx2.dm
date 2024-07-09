@@ -11,4 +11,7 @@ SFX_CLOTH_WRINGING = list(
 	'sound/effects/cloth-wringing1.ogg',
 	'sound/effects/cloth-wringing2.ogg',
 	'sound/effects/cloth-wringing3.ogg',
-)
+),
+SFX_WATER_SCOOPING = list(
+	'sound/effects/liquid_scooping.ogg',
+),

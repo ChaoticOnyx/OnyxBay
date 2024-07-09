@@ -1984,5 +1984,5 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_MINESWEEPER_START = list(
 		'sound/machines/arcade/minesweeper_start.ogg'
 	),
-	#include "sfx2.dm"
+	#include "sfx2.dm" // This file is bloated, use sfx2.dm instead for new SFX
 ))
