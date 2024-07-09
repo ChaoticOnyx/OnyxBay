@@ -178,4 +178,9 @@
 		var/obj/item/stack/cable_coil/coil = thing
 		coil.turf_place(src, user)
 		return
+
+	if(liquids && thing.get_temperature_as_from_ignitor())
+		liquids.fire_act()
+		return
+
 	return ..()
