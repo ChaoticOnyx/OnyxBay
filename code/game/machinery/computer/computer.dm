@@ -27,6 +27,7 @@
 	GLOB.computer_list += src
 	power_change()
 	update_icon()
+	register_context()
 
 /obj/machinery/computer/Destroy()
 	GLOB.computer_list -= src
@@ -133,3 +134,13 @@
 
 /obj/machinery/computer/proc/locate_unit(unit_type)
 	return locate(unit_type) in orange(2, src)
+
+/obj/machinery/computer/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item) && circuit)
+		context[SCREENTIP_CONTEXT_LMB] = "Remove Circuit"
+		return CONTEXTUAL_SCREENTIP_SET
