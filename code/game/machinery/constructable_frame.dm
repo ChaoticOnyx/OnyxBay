@@ -15,6 +15,10 @@
 	var/list/req_components = list()
 	var/state = STAGE_CABLE
 
+/obj/machinery/constructable_frame/Initialize()
+	. = ..()
+	register_context()
+
 /obj/machinery/constructable_frame/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user, amount=1)
 	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
 		return
@@ -75,6 +79,44 @@
 				try_to_complete_construction()
 			else if(istype(I, /obj/item))
 				try_to_add_component(I, user)
+
+/obj/machinery/constructable_frame/machine_frame/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	switch(state)
+		if(STAGE_CABLE)
+			if(isWelder(held_item) && anchored)
+				context[SCREENTIP_CONTEXT_LMB] = "Deconstruct frame"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Un" : ""]anchor"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isCoil(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Wire frame"
+				return CONTEXTUAL_SCREENTIP_SET
+		if(STAGE_CIRCUIT)
+			if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Un" : ""]anchor"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isWirecutter(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Cut wires"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(istype(held_item, /obj/item/circuitboard) && anchored)
+				context[SCREENTIP_CONTEXT_LMB] = "Install circuitboard"
+				return CONTEXTUAL_SCREENTIP_SET
+		if(STAGE_COMPONENTS)
+			if(isCrowbar(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Pry out board"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isScrewdriver(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Finish construction"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(istype(held_item, /obj/item))
+				context[SCREENTIP_CONTEXT_LMB] = "Add component"
+				return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/constructable_frame/machine_frame/proc/add_cable(obj/item/stack/cable_coil/C, mob/user)
 	if (C.get_amount() < 5)
