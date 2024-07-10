@@ -13,3 +13,13 @@
 
 	var/list/viewrangelist = splittext(view, "x")
 	return list(text2num(viewrangelist[1]), text2num(viewrangelist[2]))
+
+/// Takes a string or num view, and converts it to pixel width/height in a list(pixel_width, pixel_height)
+/proc/view_to_pixels(view)
+	if(!view)
+		return list(0, 0)
+
+	var/list/viewrangelist = get_view_size(view)
+	viewrangelist[1] *= world.icon_size
+	viewrangelist[2] *= world.icon_size
+	return viewrangelist

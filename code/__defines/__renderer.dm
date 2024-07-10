@@ -130,10 +130,10 @@
 	//FLY_LAYER                          5
 	#define CHAT_LAYER                  5.0001
 	#define CHAT_LAYER_MAX              5.9999
+	#define SCREENTIP_LAYER             6
 	//OBSERVER
-	#define OBSERVER_LAYER              5.1
-
-	#define OBFUSCATION_LAYER           5.2
+	#define OBSERVER_LAYER              6.1
+	#define OBFUSCATION_LAYER           6.2
 	#define BASE_AREA_LAYER             999
 
 #define OBSERVER_PLANE             2

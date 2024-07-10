@@ -83,3 +83,5 @@
 /datum/view/proc/unsupress()
 	supressed = FALSE
 	apply()
+
+view_to_pixels

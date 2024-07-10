@@ -691,6 +691,7 @@
 
 	view = new_view
 	attempt_fit_viewport()
+	mob?.hud_used?.screentip_text.update_view()
 	/**
 	 * We create view in 'client/New()' BEFORE client is actually logged in his mob
 	 * Otherwise apply_post_login_preferences() crashes due to view being not initialized.

@@ -197,3 +197,5 @@
 #define ui_alert5 "EAST-1:28,CENTER+1:19"
 
 #define ui_holomap "SOUTH,WEST"
+
+#define ui_screentip "TOP,LEFT"
