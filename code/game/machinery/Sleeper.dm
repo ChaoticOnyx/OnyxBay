@@ -54,6 +54,7 @@
 		new /obj/item/reagent_containers/syringe(src),
 		new /obj/item/reagent_containers/vessel/beaker/large(src))
 	RefreshParts()
+	register_context()
 
 /obj/machinery/sleeper/examine(mob/user, infix)
 	. = ..()
@@ -267,6 +268,32 @@
 		else
 			return
 	..()
+
+/obj/machinery/sleeper/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(istype(held_item, /obj/item/reagent_containers/vessel))
+		context[SCREENTIP_CONTEXT_LMB] = "Transfer liquids"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item) && occupant && panel_open)
+		context[SCREENTIP_CONTEXT_LMB] = "Eject occupant"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/grab))
+		context[SCREENTIP_CONTEXT_LMB] = "Place into"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/sleeper/proc/check_compatibility(mob/target, mob/user)
 	if(!istype(user) || !istype(target))
