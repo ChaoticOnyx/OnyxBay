@@ -1,0 +1,13 @@
+[watchdog]
+# If enabled - the watchdog will kill the server when the timeout expires.
+# rustg_wd_update updates the timeout.
+enabled = false
+
+# Seconds.
+timeout = 120
+
+# Notify when the server is killed by the watchdog. Optional.
+webhook_url = ""
+
+# The message within the webhook.
+message = "The server was stopped by the watchdog."
