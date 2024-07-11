@@ -184,6 +184,11 @@
 			wrench_floor_bolts(user)
 			update_icon()
 			return
+
+	if(istype(O, /obj/item/plunger))
+		plunger_act(O, user)
+		return
+
 	return ..()
 
 /obj/examine(mob/user, infix)
@@ -206,7 +211,9 @@
 			return 0
 		to_chat(user, "<span class='notice'>You [anchored? "un" : ""]secured \the [src]!</span>")
 		anchored = !anchored
+		wrenched_change()
 		return 1
+	wrenched_change()
 	return 0
 
 /obj/attack_hand(mob/living/user)
@@ -234,3 +241,7 @@
 	pull_slowdown = new_slowdown
 	if(pulledby)
 		pulledby.update_pull_slowdown()
+
+/// Called when this obj is attacked by a plunger.
+/obj/proc/plunger_act(obj/item/plunger/plunger, mob/user)
+	pass()

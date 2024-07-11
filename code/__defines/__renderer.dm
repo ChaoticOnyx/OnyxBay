@@ -59,6 +59,7 @@
 	#define DECAL_LAYER                 2.03
 	#define RUNE_LAYER                  2.04
 	#define ABOVE_TILE_LAYER            2.05
+	//#define EXPOSED_PLUMBING_PIPE_LAYER
 	#define EXPOSED_PIPE_LAYER          2.06
 	#define EXPOSED_WIRE_LAYER          2.07
 	#define EXPOSED_WIRE_TERMINAL_LAYER 2.08

@@ -49,5 +49,8 @@
 /// Called on '/atom/fire_act' (/atom)
 #define SIGNAL_FIRE_ACT "atom_fire_act"
 
-/// CAlled on `/atom/movable/handle_fall` (/turf)
+/// Called on `/atom/movable/handle_fall` (/turf)
 #define SIGNAL_ATOM_FALL "atom_fall"
+
+/// Called on '/atom/proc/update_icon' (/atom) AFTER calling on_update_icon() (Safe to add extra overlays)
+#define SIGNAL_ATOM_UPDATE_ICON "atom_update_icon"

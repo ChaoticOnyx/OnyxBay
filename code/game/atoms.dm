@@ -370,6 +370,7 @@ its easier to just keep the beam vertical.
 	if(QDELETED(src))
 		return
 	on_update_icon(arglist(args))
+	SEND_SIGNAL(src, SIGNAL_ATOM_UPDATE_ICON, src)
 	return
 
 /atom/proc/on_update_icon()
@@ -669,6 +670,7 @@ its easier to just keep the beam vertical.
 
 // Called after we wrench/unwrench this object
 /obj/proc/wrenched_change()
+	SEND_SIGNAL(src, SIGNAL_OBJ_WRENCHED, src)
 	return
 
 // Pushes A away from the atom's location, unless they are anchored or buckled. Gives up if impossible.

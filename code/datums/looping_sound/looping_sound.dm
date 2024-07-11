@@ -83,7 +83,7 @@
 	set_next_think(world.time + mid_length, world.time)
 
 /datum/looping_sound/proc/play(soundfile, volume_override)
-	var/list/atoms_cache = output_atoms
+	var/list/atoms_cache = list(output_atoms)
 	var/sound/S = sound(soundfile)
 	if(direct)
 		S.channel = channel

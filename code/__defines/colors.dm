@@ -20,6 +20,7 @@
 #define COLOR_BROWN_ORANGE     "#824b28"
 #define COLOR_DARK_ORANGE      "#b95a00"
 #define COLOR_GRAY40           "#666666"
+
 #define COLOR_SEDONA           "#cc6600"
 #define COLOR_DARK_BROWN       "#917448"
 #define COLOR_BLUE             "#0000ff"
@@ -31,8 +32,10 @@
 #define COLOR_PINK             "#ff00ff"
 #define COLOR_LIGHT_PINK       "#FF3CC8"
 #define COLOR_ORANGE           "#ff9900"
+#define COLOR_TAN_ORANGE       "#FF7B00"
 #define COLOR_YELLOW           "#ffff00"
 #define COLOR_GRAY             "#808080"
+#define COLOR_VERY_LIGHT_GRAY  "#EEEEEE"
 #define COLOR_RED_GRAY         "#aa5f61"
 #define COLOR_BROWN            "#b19664"
 #define COLOR_DARK_BROWN_NEW   "#512B0F"
@@ -40,6 +43,7 @@
 #define COLOR_BLUE_GRAY        "#6a97b0"
 #define COLOR_SUN              "#ec8b2f"
 #define COLOR_PURPLE_GRAY      "#a2819e"
+#define COLOR_STRONG_VIOLET     "#6927C5"
 #define COLOR_BLUE_LIGHT       "#33ccff"
 #define COLOR_RED_LIGHT        "#ff3333"
 #define COLOR_BEIGE            "#ceb689"
@@ -52,6 +56,7 @@
 #define COLOR_GRAY80           "#cccccc"
 #define COLOR_OFF_WHITE        "#eeeeee"
 #define COLOR_WHITE            "#ffffff"
+#define COLOR_DARK             "#454545"
 #define COLOR_NT_RED           "#9d2300"
 #define COLOR_GUNMETAL         "#80868e"
 #define COLOR_MUZZLE_FLASH     "#ffffb2"
@@ -61,6 +66,7 @@
 #define COLOR_CYAN_BLUE        "#3366cc"
 #define COLOR_LIGHT_CYAN       "#66ccff"
 #define COLOR_PAKISTAN_GREEN   "#006600"
+#define COLOR_VIBRANT_LIME "#00FF00"
 
 //Color defines used by the assembly detailer.
 

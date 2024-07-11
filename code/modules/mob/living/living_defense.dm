@@ -358,7 +358,7 @@
 	pass()
 
 // HERE COMES THE BOILERPLATE!!!
-/mob/living/carbon/human/on_adjusting_wet_stacks(datum/reagents/source_reagents, liquid_height)
+/mob/living/carbon/human/on_adjusting_wet_stacks(datum/reagents/source_reagents, liquid_height = LIQUID_FULLTILE_LEVEL_HEIGHT)
 	var/washgloves = TRUE
 	var/washshoes = TRUE
 	var/washmask = TRUE
@@ -380,6 +380,11 @@
 		if(washglasses)
 			washglasses = !(wear_mask.flags_inv & HIDEEYES)
 	else
+		var/obj/item/organ/external/head/H = organs_by_name[BP_HEAD]
+		if(istype(H) && H.forehead_graffiti && H.graffiti_style)
+			H.forehead_graffiti = null
+			H.graffiti_style = null
+			H.color = null
 		lip_style = null
 		update_body()
 

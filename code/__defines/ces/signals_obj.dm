@@ -6,3 +6,6 @@
 
 /// Called on `/obj/item/storage/proc/close` (/obj/item/storage, /mob)
 #define SIGNAL_STORAGE_CLOSED "storage_closed"
+
+/// Called on '/obj/wrenched_change' (/obj5)
+#define SIGNAL_OBJ_WRENCHED "obj_wrenched"

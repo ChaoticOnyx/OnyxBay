@@ -106,8 +106,7 @@
 	var/list/calmers = list(/obj/effect/effect/smoke/chem, \
 	/obj/effect/effect/water, \
 	/obj/effect/effect/foam, \
-	/obj/effect/effect/steam, \
-	/obj/effect/mist)
+	/obj/effect/effect/steam)
 
 	for(var/this_type in calmers)
 		var/mob/living/simple_animal/check_effect = locate() in src.loc

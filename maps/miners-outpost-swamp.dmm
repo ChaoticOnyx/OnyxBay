@@ -23,7 +23,7 @@
 "cW" = (/obj/effect/floor_decal/corner/brown/diagonal,/turf/simulated/floor/tiled/dirty,/area/outpost/mining_main/west_hall)
 "da" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/outpost/mining_north)
 "dd" = (/obj/machinery/media/jukebox,/obj/effect/floor_decal/spline/fancy/wood,/obj/machinery/atmospherics/unary/vent_pump/on{dir = 4},/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
-"dr" = (/obj/machinery/shower{dir = 8},/obj/random/soap,/obj/effect/floor_decal/corner/mauve/diagonal,/obj/structure/curtain/open/shower,/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/bar)
+"dr" = (/obj/machinery/plumbing/shower{dir = 8},/obj/random/soap,/obj/effect/floor_decal/corner/mauve/diagonal,/obj/structure/curtain/open/shower,/turf/simulated/floor/tiled/freezer,/area/outpost/main_outpost/bar)
 "du" = (/obj/machinery/atmospherics/pipe/manifold4w/hidden,/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/structure/cable/blue{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/disposalpipe/segment{dir = 4},/obj/effect/floor_decal/rust,/turf/simulated/floor/plating,/area/outpost/mining_main/refinery)
 "dv" = (/obj/random/maintenance/clean,/turf/simulated/floor/asteroid/swamp_dirt,/area/outpost/mining_north)
 "dE" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/door/firedoor/border_only,/obj/machinery/door/blast/regular/open{id = "Dorm2Shutters"; name = "Window Shutters"},/turf/simulated/floor/plating,/area/outpost/main_outpost/dorms/proom2)

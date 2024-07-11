@@ -4,19 +4,8 @@
 #define REQUIRED_EVAPORATION_PROCESSES 80
 #define EVAPORATION_CHANCE 30
 
-/// Portion (out of 1) of reagents that are lost during the transfer from a mop/towel to a container.
-#define SQUEEZING_DISPERSAL_RATIO 0.75
-
 #define REQUIRED_FIRE_PROCESSES 4
 #define REQUIRED_FIRE_POWER_PER_UNIT 5
-
-#define PARTIAL_TRANSFER_AMOUNT 0.3
-
-#define LIQUID_MUTUAL_SHARE 1
-#define LIQUID_NOT_MUTUAL_SHARE 2
-
-#define LIQUID_GIVER 1
-#define LIQUID_TAKER 2
 
 //Required amount of a reagent to be simulated on turf exposures from liquids (to prevent gaming the system with cheap dillutions)
 #define LIQUID_REAGENT_THRESHOLD_TURF_EXPOSURE 5
@@ -25,9 +14,6 @@
 
 #define LIQUID_ATTRITION_TO_STOP_ACTIVITY 2
 
-//Perceived heat capacity for calculations with atmos sharing
-#define REAGENT_HEAT_CAPACITY		5
-
 #define LIQUID_STATE_PUDDLE			1
 #define LIQUID_STATE_ANKLES			2
 #define LIQUID_STATE_WAIST			3
@@ -35,8 +21,6 @@
 #define LIQUID_STATE_FULLTILE		5
 #define TOTAL_LIQUID_STATES			5
 #define LYING_DOWN_SUBMERGEMENT_STATE_BONUS			2
-
-#define LIQUID_STATE_FOR_HEAT_EXCHANGERS LIQUID_STATE_WAIST
 
 #define LIQUID_ANKLES_LEVEL_HEIGHT 8
 #define LIQUID_WAIST_LEVEL_HEIGHT 19
@@ -53,8 +37,6 @@
 //Threshold at which we "choke" on the water, instead of holding our breath
 #define OXYGEN_DAMAGE_CHOKING_THRESHOLD 15
 
-#define IMMUTABLE_LIQUID_SHARE 1
-
 #define LIQUID_RECURSIVE_LOOP_SAFETY 100 //Hundred loops at maximum for adjacency checking
 
 //Height at which we consider the tile "full" and dont drop liquids on it from the upper Z level
@@ -68,11 +50,6 @@
 
 #define LIQUID_GROUP_DECAY_TIME 3
 
-//Scaled with how much a person is submerged
-#define SUBMERGEMENT_REAGENTS_TOUCH_AMOUNT 60
-
 #define CHOKE_REAGENTS_INGEST_ON_FALL_AMOUNT 4
 
 #define CHOKE_REAGENTS_INGEST_ON_BREATH_AMOUNT 2
-
-#define SUBMERGEMENT_PERCENT(carbon, liquids) min(1,(carbon.body_position == LYING_DOWN ? liquids.liquid_state+LYING_DOWN_SUBMERGEMENT_STATE_BONUS : liquids.liquid_state)/TOTAL_LIQUID_STATES)

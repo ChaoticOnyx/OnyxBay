@@ -85,6 +85,7 @@ Class Procs:
 	w_class = ITEM_SIZE_NO_CONTAINER
 	pull_sound = SFX_PULL_MACHINE
 	layer = BELOW_OBJ_LAYER
+	obj_flags = OBJ_FLAG_ANCHORABLE
 
 	var/stat = 0
 	var/emagged = 0
