@@ -45,11 +45,11 @@
 
 	switch(buildstage)
 		if(BUILDSTAGE_INITIAL)
-			if(isWrench(I) && !anchored)
+			if(isWrench(held_item) && !anchored)
 				context[SCREENTIP_CONTEXT_LMB] = "Secure bolts"
 				return CONTEXTUAL_SCREENTIP_SET
 
-			else if(isCrowbar(I) && !anchored)
+			else if(isCrowbar(held_item) && !anchored)
 				context[SCREENTIP_CONTEXT_LMB] = "Disassemble"
 				return CONTEXTUAL_SCREENTIP_SET
 
