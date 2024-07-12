@@ -126,7 +126,7 @@
 	. = NONE
 
 	if(isWelder(held_item))
-		context[SCREENTIP_CONTEXT_LMB] = "Unweld armor"
+		context[SCREENTIP_CONTEXT_LMB] = "Remove armor"
 		return CONTEXTUAL_SCREENTIP_SET
 
 
