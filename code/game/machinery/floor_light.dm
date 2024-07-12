@@ -46,6 +46,9 @@
 	/// Associative list of color -> image, where color contained in `FLOORLIGHT_SETTINGS_COLORS`.
 	var/static/list/colors
 
+/obj/machinery/floor_light/Initialize()
+	. = ..()
+	register_context()
 
 /obj/machinery/floor_light/prebuilt
 	anchored = TRUE
@@ -71,6 +74,19 @@
 	set_light(0.75, 1, 3, 2, colour)
 	return TRUE
 
+/obj/machinery/floor_light/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(damage && isWelder(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Repair damage"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	else if(isMultitool(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Open settings"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/floor_light/attackby(obj/item/W, mob/user)
 	if(W.force && user.a_intent == I_HURT)
