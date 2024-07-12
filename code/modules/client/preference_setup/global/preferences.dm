@@ -50,7 +50,9 @@ GLOBAL_VAR_CONST(PREF_SPLASH_CHAT, "Chat only")
 GLOBAL_VAR_CONST(PREF_SPLASH_BOTH, "Maptext and chat")
 GLOBAL_VAR_CONST(PREF_ENABLED, "Enabled")
 GLOBAL_VAR_CONST(PREF_DISABLED, "Disabled")
-
+GLOBAL_VAR_CONST(PREF_STIPS_FULL, "Show fully")
+GLOBAL_VAR_CONST(PREF_STIPS_NOCONTEXT, "Without context tips")
+GLOBAL_VAR_CONST(PREF_STIPS_CONTEXT_ONLY, "Only with context tips")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -447,6 +449,16 @@ var/global/list/_client_preferences_by_type
 
 /datum/client_preference/legacy_input/changed(mob/preference_mob, new_value)
 	preference_mob?.client?.update_chat_position(new_value)
+
+/datum/client_preference/screentips
+	description = "Show screentips"
+	key = "SHOW_SCREENTIPS"
+	category = PREF_CATEGORY_UI
+	options = list(GLOB.PREF_STIPS_FULL, GLOB.PREF_STIPS_NOCONTEXT, GLOB.PREF_STIPS_CONTEXT_ONLY, GLOB.PREF_DISABLED)
+	default_value = GLOB.PREF_STIPS_FULL
+
+/datum/client_preference/screentips/changed(mob/preference_mob, new_value)
+	preference_mob?.hud_used?.screentips_enabled = new_value
 
 /datum/client_preference/cinema_credits
 	description = "Show Cinema-like Credits At Round-end"

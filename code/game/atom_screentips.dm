@@ -18,8 +18,12 @@
 		return
 
 	var/screentips_enabled = active_hud.screentips_enabled
-	if(screentips_enabled == SCREENTIP_PREFERENCE_DISABLED || atom_flags & ATOM_FLAG_NO_SCREENTIPS)
+	if(screentips_enabled == GLOB.PREF_DISABLED || atom_flags & ATOM_FLAG_NO_SCREENTIPS)
 		active_hud.screentip_text.maptext = ""
+		return
+
+	if(screentips_enabled == GLOB.PREF_STIPS_NOCONTEXT)
+		active_hud.screentip_text.maptext = MAPTEXT("<span style='text-align: center;'>[name]</span>")
 		return
 
 	active_hud.screentip_text.maptext_y = 10
@@ -93,7 +97,7 @@
 
 	var/message = MAPTEXT("<span style='text-align: center;'>[name][extra_context]</span>")
 
-	if(screentips_enabled == SCREENTIP_PREFERENCE_CONTEXT_ONLY && extra_context == "")
+	if(screentips_enabled == GLOB.PREF_STIPS_CONTEXT_ONLY && extra_context == "")
 		active_hud.screentip_text.maptext = ""
 	else
 		active_hud.screentip_text.maptext = message

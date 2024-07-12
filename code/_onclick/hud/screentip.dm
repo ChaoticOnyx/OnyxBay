@@ -24,18 +24,3 @@
 		return
 
 	maptext_width = view_to_pixels(hud.mymob.client.view)[1]
-
-/atom/movable/screen/screentip/proc/move_to_atom(atom/target, mob/user)
-	if(!istype(user))
-		return
-
-	if(user.client?.pixel_x || user?.client.pixel_y)
-		return
-
-	if(!target.x || !target.y)
-		return
-
-	var/atom/screen_center = user.client.virtual_eye
-	var/dx = target.x - screen_center.x
-	var/dy = target.y - screen_center.y
-	screen_loc = "CENTER+[dx]:8,CENTER+[dy]:32"

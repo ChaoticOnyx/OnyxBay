@@ -55,8 +55,6 @@
 	/// Whether to use text or images for click hints.
 	/// Same behavior as `screentips_enabled`--very hot, updated when the preference is updated.
 	var/screentip_images = TRUE
-
-	var/screentips_move_to_atom = GLOB.PREF_YES
 	/// The color to use for the screentips.
 	/// This is updated by the preference for cheaper reads than would be
 	/// had with a proc call, especially on one of the hottest procs in the
@@ -68,6 +66,7 @@
 /datum/hud/New(mob/owner)
 	mymob = owner
 	instantiate()
+	screentips_enabled = owner?.client?.get_preference_value("SHOW_SCREENTIPS")
 	..()
 
 /datum/hud/Destroy()
