@@ -50,7 +50,7 @@
 			if(anchored && isWelder(held_item))
 				context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
 				return CONTEXTUAL_SCREENTIP_SET
-			if(isWrench(Oheld_item))
+			if(isWrench(held_item))
 				context[SCREENTIP_CONTEXT_LMB] = "Anchor bolts"
 				return CONTEXTUAL_SCREENTIP_SET
 			if(isCoil(held_item))
