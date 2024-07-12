@@ -49,6 +49,25 @@
 /obj/machinery/door/Initialize()
 	. = ..()
 	add_think_ctx("close_context", CALLBACK(src, nameof(.proc/close)), 0)
+	register_context()
+
+/obj/machinery/door/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(istype(held_item, /obj/item/stack/material) && held_item.get_material_name() == src.get_material_name())
+		context[SCREENTIP_CONTEXT_LMB] = "Repair"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(repairing && isWelder(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Repair reinforcements"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(repairing && isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Remove reinforcements"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/door/attack_generic(mob/user, damage)
 	if(damage >= 10)
