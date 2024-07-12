@@ -62,8 +62,8 @@
 	if(istype(W, /obj/item/gun) && !istype(W, /obj/item/gun/flamer) && !istype(W, /obj/item/gun/energy/plasmacutter))
 		var/obj/item/gun/gun = W
 		return gun.combustion && gun.loc == src.loc
-	if(istype(W, /obj/machinery/cooker/grill))
-		var/obj/machinery/cooker/grill/grill = W
+	if(istype(W, /obj/machinery/kitchen/grill))
+		var/obj/machinery/kitchen/grill/grill = W
 		return !(grill.stat & (NOPOWER|BROKEN))
 	if(istype(W, /obj/machinery/light))
 		var/obj/machinery/light/mounted = W

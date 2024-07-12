@@ -14,6 +14,10 @@
 	var/list/stack = list()
 	var/max_stack = 5
 
+/obj/item/trash/waffles
+	name = "waffles"
+	icon_state = "waffles"
+
 /obj/item/trash/dish/baking_sheet
 	name = "baking sheet"
 	icon_state = "baking_sheet"

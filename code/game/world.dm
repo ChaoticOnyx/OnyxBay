@@ -187,7 +187,7 @@ var/server_name = "OnyxBay"
 	//Emergency Fix
 	load_mods()
 	//end-emergency fix
-
+	initialize_cooking_recipes()
 	. = ..()
 
 	Master.Initialize(10, FALSE)

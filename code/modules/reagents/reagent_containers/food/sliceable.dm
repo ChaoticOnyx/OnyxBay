@@ -34,7 +34,7 @@
 
 		qdel(whole)
 
-// slicable into 3xdoughslices
+// sliceable into 3xdoughslices
 /obj/item/reagent_containers/food/sliceable/flatdough
 	name = "flat dough"
 	desc = "A flattened dough."
@@ -51,13 +51,57 @@
 	desc = "A building block of an impressive dish."
 	icon = 'icons/obj/food_ingredients.dmi'
 	icon_state = "doughslice"
-	slice_path = /obj/item/reagent_containers/food/spagetti
+	slice_path = /obj/item/reagent_containers/food/spaghetti
 	slices_num = 1
 	center_of_mass = "x=17;y=19"
 	nutriment_desc = list("dough" = 1)
 	nutriment_amt = 1
 	bitesize = 2
 
+// Dough + rolling pin = flat dough
+/obj/item/reagent_containers/food/dough/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/material/kitchen/rollingpin))
+		new /obj/item/reagent_containers/food/sliceable/flatdough(src)
+		to_chat(user, "You flatten the dough.")
+		qdel(src)
+
+// Dough slice + rolling pin = flat dough slice
+/obj/item/reagent_containers/food/doughslice/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/material/kitchen/rollingpin))
+		new /obj/item/reagent_containers/food/flatdoughslice(src)
+		to_chat(user, "You flatten the dough slice.")
+		qdel(src)
+
+/obj/item/reagent_containers/food/flatdoughslice
+	name = "flat dough slice"
+	desc = "A flattened building block of an impressive dish."
+	icon = 'icons/obj/food_ingredients.dmi'
+	icon_state = "flatdoughslice"
+	slice_path = /obj/item/reagent_containers/food/spaghetti
+	slices_num = 1
+	bitesize = 2
+	center_of_mass = list("x"=17, "y"=19)
+	nutriment_desc = list("dough" = 1)
+	nutriment_amt = 1
+	matter = list(MATERIAL_BIOMATTER = 2)
+
+/obj/item/reagent_containers/food/sliceable/butterstick //missing recipe, tried to make it churnable using a centrifuge and failed miserably. Good luck to the next guy.
+	name = "stick of butter"
+	desc = "A whole stick of butter, an excellent flavor booster or spread."
+	icon_state = "butter"
+	slice_path = /obj/item/reagent_containers/food/butterslice
+	slices_num = 5
+	nutriment_amt = 10
+	nutriment_desc = list("your arteries clogging themselves" = 10)
+	matter = list(MATERIAL_BIOMATTER = 10)
+
+/obj/item/reagent_containers/food/butterslice // I'm so sorry for this. Wasting an entire stick of butter on a toast is a no.
+	name = "slice of butter"
+	desc = "A slice of butter ready to be spread over toast or used on recipes."
+	icon_state = "butterslice"
+	bitesize = 2
+	nutriment_amt = 2
+	nutriment_desc = list("butter" = 5)
 ////////////////////////
 /obj/item/reagent_containers/food/sliceable/salami
 	name = "Salami"
@@ -493,6 +537,29 @@
 
 /obj/item/reagent_containers/food/slice/birthdaycake/filled
 	filled = TRUE
+
+/obj/item/reagent_containers/food/sliceable/brownie
+	name = "brownies"
+	desc = "A huge rectangular brownie ready to be sliced and shared."
+	icon_state = "brownies"
+	trash = /obj/item/trash/waffles
+	filling_color = "#362008"
+	slice_path = /obj/item/reagent_containers/food/brownieslice
+	slices_num = 5
+	nutriment_amt = 20
+	nutriment_desc = list("buttery goodness" = 10, "sweetness" = 10, "chocolate" = 15)
+	matter = list(MATERIAL_BIOMATTER = 30)
+
+/obj/item/reagent_containers/food/brownieslice
+	name = "brownie slice"
+	desc = "A delicious and buttery chocolate brownie, pairs perfect with icecream!"
+	icon_state = "brownieslice"
+	filling_color = "#362008"
+	trash = /obj/item/trash/dish/plate
+	bitesize = 2
+	nutriment_amt = 4
+	nutriment_desc = list("buttery goodness" = 5, "sweetness" = 5, "chocolate" = 10)
+	matter = list(MATERIAL_BIOMATTER = 6)
 
 ////////////////////////
 /obj/item/reagent_containers/food/sliceable/bread
