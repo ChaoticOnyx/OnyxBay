@@ -44,6 +44,13 @@
 		icon_state = "[base_state]1-p"
 //		src.sd_SetLuminosity(0)
 
+/obj/machinery/flasher/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isWirecutter(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[disable ? "Disconnect" : "Connect"] flashbulb"
+		return CONTEXTUAL_SCREENTIP_SET
+
 //Don't want to render prison breaks impossible
 /obj/machinery/flasher/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWirecutter(W))
