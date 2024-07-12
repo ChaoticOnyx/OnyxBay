@@ -28,6 +28,83 @@
 	if(_buildstage)
 		buildstage = _buildstage
 
+	register_context()
+
+/obj/machinery/turret_frame/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		switch(buildstage)
+			if(BUILDSTAGE_HATCH)
+				if(!signaler)
+					context[SCREENTIP_CONTEXT_LMB] = "Remove signaler"
+					return CONTEXTUAL_SCREENTIP_SET
+
+			if(BUILDSTAGE_SIGNALLER)
+				context[SCREENTIP_CONTEXT_LMB] = "Remove sensor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+	switch(buildstage)
+		if(BUILDSTAGE_INITIAL)
+			if(isWrench(held_item) && !anchored)
+				context[SCREENTIP_CONTEXT_LMB] = "Secure bolts"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			else if(isCrowbar(held_item) && !anchored)
+				context[SCREENTIP_CONTEXT_LMB] = "Disassemble"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_IARMOR_ATTACH)
+			if(istype(held_item, /obj/item/stack/material) && held_item.get_material_name() == MATERIAL_STEEL)
+				context[SCREENTIP_CONTEXT_LMB] = "Install internal armor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			else if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Unfasten bolts"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_IARMOR_WELD)
+			if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Secure internal armor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			else if(isWelder(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Remove internal armor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_PROX)
+			if(isprox(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Attach sensor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_SIGNALLER)
+			if(issignaler(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Attach signaler"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_HATCH)
+			if(isScrewdriver(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Close hatch"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_EARMOR_ATTACH)
+			if(istype(held_item, /obj/item/stack/material) &&held_item.get_material_name() == MATERIAL_STEEL)
+				context[SCREENTIP_CONTEXT_LMB] = "Install external armor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			else if(isScrewdriver(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Open hatch"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_EARMOR_WELD)
+			if(isWelder(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Weld external armor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			else if(isCrowbar(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Remove external armor"
+				return CONTEXTUAL_SCREENTIP_SET
+
 /obj/machinery/turret_frame/attackby(obj/item/I, mob/user)
 	switch(buildstage)
 		if(BUILDSTAGE_INITIAL)
