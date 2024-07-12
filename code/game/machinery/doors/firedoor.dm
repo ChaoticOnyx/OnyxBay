@@ -67,6 +67,8 @@
 			LAZYADD(A.all_doors, src)
 			areas_added += A
 
+	register_context()
+
 /obj/machinery/door/firedoor/Destroy()
 	for(var/area/A in areas_added)
 		LAZYREMOVE(A.all_doors, src)
@@ -209,6 +211,28 @@
 			visible_message(SPAN("notice","\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."))
 		return
 	..()
+
+/obj/machinery/door/firedoor/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isWelder(held_item) && !repairing)
+		context[SCREENTIP_CONTEXT_LMB] = "[blocked ? "Weld" : "Unweld"]"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(density && isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[hatch_open ? "Open" : "Close"] hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(blocked && isCrowbar(held_item) && !repairing)
+		context[SCREENTIP_CONTEXT_LMB] = "Remove electronics"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item) || istype(held_item, /obj/item/material/twohanded/fireaxe))
+		context[SCREENTIP_CONTEXT_LMB] = "Pry open"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/door/firedoor/attackby(obj/item/C, mob/user)
 	add_fingerprint(user, 0, C)
