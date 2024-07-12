@@ -52,12 +52,35 @@
 			/obj/item/clothing/suit/storage/toggle/bomber = 500,
 			/obj/item/clothing/suit/storage/hooded/wintercoat = 500))
 
-/obj/machinery/biogenerator/New()
-	..()
+/obj/machinery/biogenerator/Initialize()
+	. = ..()
 	create_reagents(1000)
 	beaker = new /obj/item/reagent_containers/vessel/bottle/chemical(src)
 
 	RefreshParts()
+	register_context()
+
+/obj/machinery/biogenerator/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/reagent_containers/vessel))
+		context[SCREENTIP_CONTEXT_LMB] = "Install beaker"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/storage/plants))
+		context[SCREENTIP_CONTEXT_LMB] = "Fill"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/biogenerator/on_reagent_change()			//When the reagents change, change the icon as well.
 	update_icon()
