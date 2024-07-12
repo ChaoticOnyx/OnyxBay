@@ -49,6 +49,7 @@
 
 	RefreshParts()
 	atmos_init()
+	register_context()
 
 /obj/machinery/atmospherics/unary/cryo_cell/Destroy()
 	var/turf/T = loc
@@ -230,6 +231,28 @@
 		return TOPIC_REFRESH
 
 	. = ..()
+
+/obj/machinery/atmospherics/unary/cryo_cell/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/reagent_containers/vessel))
+		context[SCREENTIP_CONTEXT_LMB] = "Install beaker"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/grab))
+		context[SCREENTIP_CONTEXT_LMB] = "Place into"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/atmospherics/unary/cryo_cell/attackby(obj/G, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, G))
