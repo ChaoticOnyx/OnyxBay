@@ -8,6 +8,8 @@ var/list/hash_to_gear = list()
 	var/datum/gear/trying_on_gear
 	var/list/trying_on_tweaks = new
 	var/loadout_is_busy = FALSE // All these gear tweaks be slow as anything. Let's just force things to yield, sparing us from sanitizing and resanitizing stuff.
+	var/max_loadout_points
+	var/total_lpoints_cost
 
 /datum/preferences/proc/Gear()
 	return gear_list[gear_slot]
@@ -56,7 +58,6 @@ var/list/hash_to_gear = list()
 	var/hide_unavailable_gear = FALSE
 	var/hide_donate_gear = FALSE
 	var/flag_not_enough_opyxes = FALSE
-	var/max_loadout_points
 
 /datum/category_item/player_setup_item/loadout/load_character(datum/pref_record_reader/R)
 	pref.gear_list = R.read("gear_list")
@@ -87,10 +88,10 @@ var/list/hash_to_gear = list()
 	if(pref.gear_list.len < config.character_setup.loadout_slots)
 		pref.gear_list.len = config.character_setup.loadout_slots
 
-	max_loadout_points = config.character_setup.max_loadout_points
+	pref.max_loadout_points = config.character_setup.max_loadout_points
 	var/patron_tier = pref.client.donator_info.get_full_patron_tier()
 	if(!isnull(patron_tier) && patron_tier != PATREON_NONE && patron_tier != PATREON_CARGO)
-		max_loadout_points += config.character_setup.extra_loadout_points
+		pref.max_loadout_points += config.character_setup.extra_loadout_points
 
 	for(var/index = 1 to config.character_setup.loadout_slots)
 		var/list/gears = pref.gear_list[index]
@@ -108,12 +109,19 @@ var/list/hash_to_gear = list()
 					gears -= gear_name
 				else
 					var/datum/gear/G = gear_datums[gear_name]
-					if(total_cost + G.cost > max_loadout_points)
+					if(total_cost + G.cost > pref.max_loadout_points)
 						gears -= gear_name
 					else
 						total_cost += G.cost
 		else
 			pref.gear_list[index] = list()
+
+/datum/category_item/player_setup_item/loadout/get_lp_cost()
+	var/list/gears = pref.gear_list[pref.gear_slot]
+	for(var/i = 1; i <= gears.len; i++)
+		var/datum/gear/G = gear_datums[gears[i]]
+		if(G)
+			. += G.cost
 
 /datum/category_item/player_setup_item/loadout/content(mob/user)
 	. = list()
@@ -121,16 +129,11 @@ var/list/hash_to_gear = list()
 	if(!user.client)
 		return
 
-	var/total_cost = 0
-	var/list/gears = pref.gear_list[pref.gear_slot]
-	for(var/i = 1; i <= gears.len; i++)
-		var/datum/gear/G = gear_datums[gears[i]]
-		if(G)
-			total_cost += G.cost
+	var/total_cost = pref.get_lp_cost()
 
 	var/fcolor =  "#3366cc"
 
-	if(total_cost < max_loadout_points)
+	if(total_cost < pref.max_loadout_points)
 		fcolor = "#e67300"
 
 	. += "<table style='width: 100%;'><tr>"
@@ -141,8 +144,8 @@ var/list/hash_to_gear = list()
 	. += "<table style='white-space: nowrap;'><tr>"
 
 	. += "<td style=\"vertical-align: top;\">"
-	if(max_loadout_points < INFINITY)
-		. += "<font color = '[fcolor]'>[total_cost]/[max_loadout_points]</font> loadout points spent.<br>"
+	if(pref.max_loadout_points < INFINITY)
+		. += "<font color = '[fcolor]'>[total_cost]/[pref.max_loadout_points]</font> loadout points spent.<br>"
 	. += "<a href='?src=\ref[src];clear_loadout=1'>Clear Loadout</a><br>"
 	. += "<a href='?src=\ref[src];random_loadout=1'>Random Loadout</a><br>"
 	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show unavailable for your jobs and species" : "Hide unavailable for your jobs and species"]</a><br>"
@@ -614,9 +617,9 @@ var/list/hash_to_gear = list()
 	var/list/pool = new
 	for(var/gear_name in gear_datums)
 		var/datum/gear/G = gear_datums[gear_name]
-		if(gear_allowed_to_see(G) && gear_allowed_to_equip(G, user) && G.cost <= max_loadout_points)
+		if(gear_allowed_to_see(G) && gear_allowed_to_equip(G, user) && G.cost <= pref.max_loadout_points)
 			pool += G
-	var/points_left = max_loadout_points
+	var/points_left = pref.max_loadout_points
 	while (points_left > 0 && length(pool))
 		var/datum/gear/chosen = pick(pool)
 		var/list/chosen_tweaks = new
@@ -670,7 +673,7 @@ var/list/hash_to_gear = list()
 		for(var/gear_name in pref.gear_list[pref.gear_slot])
 			var/datum/gear/G = gear_datums[gear_name]
 			if(istype(G)) total_cost += G.cost
-		if((total_cost+TG.cost) <= max_loadout_points)
+		if((total_cost+TG.cost) <= pref.max_loadout_points)
 			pref.gear_list[pref.gear_slot][TG.display_name] = selected_tweaks.Copy()
 
 

@@ -11,18 +11,33 @@ var/datum/robolimb/basic_robolimb
 			GLOB.chargen_robolimbs[R.company] = R
 
 /datum/robolimb
-	var/company = "Unbranded"                                                        // Shown when selecting the limb.
-	var/desc = "A generic unbranded robotic prosthesis."                             // Seen when examining a limb.
-	var/icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'       // Icon base to draw from.
-	var/unavailable_at_chargen = FALSE                                               // If set, not available at chargen.
-	var/unavailable_at_fab = TRUE                                                    // If set, cannot be fabricated.
+	/// Shown when selecting the limb.
+	var/company = "Unbranded"
+	/// Seen when examining a limb.
+	var/desc = "A generic unbranded robotic prosthesis."
+	/// Icon base to draw from.
+	var/icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'
+	/// If set, not available at chargen.
+	var/unavailable_at_chargen = FALSE
+	/// If set, cannot be fabricated.
+	var/unavailable_at_fab = TRUE
+	/// Defines whether this organ has mouth. Applies to heads only for obvious reasons.
 	var/can_eat = FALSE
-	var/has_eyes_icon = TRUE                                                         // If set, will draw eyes overlay.
-	var/can_feel_pain = FALSE
+	/// If set, will draw eyes overlay.
+	var/has_eyes_icon = TRUE
 	var/skintone
+	var/can_feel_pain = FALSE
 	var/list/species_cannot_use = list()
 	var/list/restricted_to = list()
 	var/list/applies_to_part = list()
+	/// List of default modules that will be initialized.
+	var/list/default_modules = list(/obj/item/organ_module/actuators, /obj/item/organ_module/processor)
+	/// How resistant this prosthetic type is to brute damage.
+	var/brute_mod = 0.9
+	/// How resistant this prosthetic type is to burn damage.
+	var/burn_mod = 1.1
+
+	var/max_module_size = 3
 
 /datum/robolimb/nanotrasen
 	company = "NanoTrasen"

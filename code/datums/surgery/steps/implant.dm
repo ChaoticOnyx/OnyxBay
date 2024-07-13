@@ -261,6 +261,9 @@
 		if(istype(implanted_item, /obj/item/implant))
 			var/obj/item/implant/I = implanted_item
 			I.removed()
+		if(istype(implanted_item, /obj/item/organ_module))
+			var/obj/item/organ_module/module = implanted_item
+			module.remove(parent_organ)
 		return
 
 	announce_success(user,
@@ -275,3 +278,76 @@
 			user.visible_message("Something beeps inside [target]'s [parent_organ]!")
 			spawn(25)
 				I.activate()
+
+/**
+ * Installing organ modules
+ */
+/datum/surgery_step/cavity/place_organ_module
+	duration = ATTACH_DURATION
+
+	allowed_tools = list(
+		/obj/item/organ_module = 100
+		)
+
+	preop_sound = 'sound/surgery/organ1.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
+	failure_sound = 'sound/effects/fighting/crunch1.ogg'
+
+/datum/surgery_step/cavity/place_organ_module/check_parent_organ(obj/item/organ/parent_organ, mob/living/carbon/human/target, obj/item/organ_module/tool, atom/user)
+	. = ..()
+	if(!.)
+		return
+
+	if(issilicon(user))
+		return FALSE
+
+	if(!(parent_organ.organ_tag in tool.allowed_organs))
+		target.show_splash_text(user, "not compatible!", "\The [tool] can't be installed into \the [parent_organ]!")
+		return SURGERY_FAILURE
+
+	var/max_space = parent_organ.max_module_size
+
+	var/datum/robolimb/R = GLOB.all_robolimbs[parent_organ.model]
+	if(istype(R))
+		max_space += R.max_module_size
+
+	var/occupied_space = 0
+	for(var/obj/item/organ_module/mod in parent_organ.organ_modules)
+		occupied_space += mod.w_class
+
+	if((tool.w_class + occupied_space) > max_space)
+		target.show_splash_text(user, "module is too big!", "\The [tool] is too big!")
+		return SURGERY_FAILURE
+
+	if(BP_IS_ROBOTIC(parent_organ) && !(tool.module_flags & OM_FLAG_MECHANICAL))
+		target.show_splash_text(user, "not compatible!", "\The [tool] can't be installed into robotic prosthetics!")
+		return SURGERY_FAILURE
+
+	if(!BP_IS_ROBOTIC(parent_organ) && !(tool.module_flags & OM_FLAG_BIOLOGICAL))
+		target.show_splash_text(user, "not compatible!", "\The [tool] can't be installed into organic bodyparts!")
+		return SURGERY_FAILURE
+
+	return TRUE
+
+/datum/surgery_step/cavity/place_organ_module/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/organ_module/tool, mob/user)
+	announce_preop(user,
+		"[user] starts putting \the [tool] inside [target]'s [parent_organ.cavity_name] cavity.",
+		"You start putting \the [tool] inside [target]'s [parent_organ.cavity_name] cavity."
+		)
+	target.custom_pain(
+		"The pain in your chest is living hell!",
+		1,
+		affecting = parent_organ
+		)
+	playsound(target.loc, 'sound/effects/squelch1.ogg', 25, 1)
+	return ..()
+
+/datum/surgery_step/cavity/place_organ_module/success(obj/item/organ/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/organ_module/tool, mob/user)
+	if(!user.drop(tool, parent_organ))
+		return
+
+	announce_success(user,
+		"[user] puts \the [tool] inside [target]'s [parent_organ].",
+		"You put \the [tool] inside [target]'s [parent_organ]."
+		)
+	tool.install(parent_organ)

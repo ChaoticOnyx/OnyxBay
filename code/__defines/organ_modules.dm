@@ -1,0 +1,9 @@
+#define OM_FLAG_INSPECTABLE (1 << 0)
+#define OM_FLAG_SCANNABLE   (1 << 1)
+#define OM_FLAG_BIOLOGICAL  (1 << 2)
+#define OM_FLAG_MECHANICAL  (1 << 3)
+#define OM_FLAG_DEFAULT     (OM_FLAG_SCANNABLE | OM_FLAG_MECHANICAL)
+
+#define OM_TYPE_PROCESSOR 1
+#define OM_TYPE_ACTUATOR  2
+#define OM_TYPE_OTHER     3

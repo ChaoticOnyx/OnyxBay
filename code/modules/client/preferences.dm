@@ -382,6 +382,20 @@
 			else if(status == "cyborg")
 				I.robotize(rlimb_data[name])
 
+	for(var/tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
+		if(!LAZYLEN(organ_modules[tag]))
+			continue
+
+		var/obj/item/organ/O
+		if(tag in BP_ALL_LIMBS)
+			O = character.organs_by_name[tag]
+		else
+			O = character.internal_organs_by_name[tag]
+
+		for(var/path in organ_modules[tag])
+			var/obj/item/organ_module/module = new path(O)
+			module.install(O)
+
 	QDEL_NULL_LIST(character.worn_underwear)
 	character.worn_underwear = list()
 

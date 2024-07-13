@@ -901,6 +901,13 @@
 
 	for(var/obj/item/organ/external/organ in src.organs)
 		for(var/obj/item/O in organ.implants)
+			if(istype(O, /obj/item/organ_module))
+				var/obj/item/organ_module/module = O
+				if(!(module.module_flags & OM_FLAG_INSPECTABLE))
+					continue
+
+				visible_implants += O
+
 			if(!istype(O,/obj/item/implant) && (O.w_class > class) && !istype(O,/obj/item/material/shard/shrapnel))
 				visible_implants += O
 
@@ -1701,3 +1708,12 @@
 				to_chat(grabber, SPAN("warning", "You can't scoop up \the [src] because of the [M]"))
 				return
 	. = ..()
+
+/mob/living/carbon/human/is_deaf()
+	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	if((sdisabilities & DEAF) && istype(head))
+		var/obj/item/organ_module/active/cochlear/coch = locate() in head
+		if(istype(coch))
+			return FALSE
+
+	return ..()

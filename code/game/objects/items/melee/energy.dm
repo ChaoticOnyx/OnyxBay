@@ -401,7 +401,7 @@
 		QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/think()
-	var/mob/living/_creator = creator.resolve()
+	var/mob/living/_creator = creator?.resolve()
 	if(!_creator || loc != _creator || (_creator.l_hand != src && _creator.r_hand != src))
 		// Tidy up a bit.
 		if(isliving(loc))

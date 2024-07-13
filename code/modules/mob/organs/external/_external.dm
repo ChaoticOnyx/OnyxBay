@@ -13,6 +13,7 @@
 	food_organ_type = /obj/item/reagent_containers/food/meat/human
 
 	throwforce = 2.5
+	necessary_organ_modules = list(/obj/item/organ_module/actuators, /obj/item/organ_module/processor)
 	// Strings
 	/// fracture string if any.
 	var/broken_description
@@ -70,8 +71,6 @@
 	var/list/children
 	/// Internal organs of this body part
 	var/list/internal_organs = list()
-	/// Currently implanted objects.
-	var/list/implants = list()
 	/// Chance of missing.
 	var/base_miss_chance = 20
 	var/genetic_degradation = 0
@@ -111,9 +110,6 @@
 
 	/// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
-
-	/// Reference to this organ's module (if any)
-	var/obj/item/organ_module/active/module = null
 
 /obj/item/organ/external/Initialize(mapload, ...)
 	. = ..()
@@ -187,8 +183,7 @@
 			owner.organs -= null
 		owner.bad_external_organs.Remove(src)
 
-	if(module)
-		QDEL_NULL(module)
+	QDEL_NULL_LIST(organ_modules)
 
 	if(autopsy_data)
 		autopsy_data.Cut()
@@ -430,8 +425,6 @@
 				qdel(W)
 				break
 			parent.update_damages()
-
-	module?.organ_installed(src, owner)
 
 //Helper proc used by various tools for repairing robot limbs
 /obj/item/organ/external/proc/robo_repair(repair_amount, damage_type, damage_desc, obj/item/tool, mob/living/user)
@@ -1087,7 +1080,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	else if(status & ORGAN_BROKEN)
 		movement_tally += broken_tally * damage_multiplier
 
-	if(module)
+	for(var/obj/item/organ_module/module in organ_modules)
 		movement_tally += module.organ_tally
 
 	owner?.update_organ_movespeed()
@@ -1163,7 +1156,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 	return 0
 
 /obj/item/organ/external/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
-
 	if(BP_IS_ROBOTIC(src))
 		return
 
@@ -1181,6 +1173,11 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	for(var/obj/item/organ/external/T in children)
 		T.robotize(company, 1)
+
+	if(company)
+		var/datum/robolimb/R = GLOB.all_robolimbs[company]
+		brute_mod = R?.brute_mod
+		burn_mod = R?.burn_mod
 
 	if(owner)
 
@@ -1213,7 +1210,23 @@ Note that amputating the affected organ does in fact remove the infection from t
 	return 0
 
 /obj/item/organ/external/is_usable(ignore_pain = FALSE)
-	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1
+	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1 && is_robotic_usable()
+
+/// If this BP is robotic - checks for robotic-specific flags and determines whether it is usable.
+/obj/item/organ/external/proc/is_robotic_usable()
+	if(!BP_IS_ROBOTIC(src))
+		return TRUE
+
+	if(!LAZYLEN(necessary_organ_modules))
+		return TRUE
+
+	for(var/path in necessary_organ_modules)
+		if(is_path_in_list(path, organ_modules))
+			continue
+
+		return FALSE
+
+	return TRUE
 
 /obj/item/organ/external/proc/is_malfunctioning()
 	return (BP_IS_ROBOTIC(src) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))
@@ -1281,8 +1294,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 	..()
 
 	victim.bad_external_organs -= src
-
-	module?.organ_removed(src, owner)
 
 	remove_splint()
 	for(var/atom/movable/implant in implants)

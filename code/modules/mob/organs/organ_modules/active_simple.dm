@@ -1,4 +1,3 @@
-//Simple toggleabse module. Just put holding in hands or get it back
 /obj/item/organ_module/active/simple
 	var/obj/item/holding = null
 	var/holding_type = null
@@ -7,22 +6,20 @@
 	. = ..()
 	if(holding_type)
 		holding = new holding_type(src)
-		holding.canremove = 0
-		register_signal(holding, SIGNAL_QDELETING, nameof(.proc/on_holding_qdel))
+		holding.canremove = FALSE
 
 /obj/item/organ_module/active/simple/Destroy()
 	if(holding)
 		unregister_signal(holding, SIGNAL_ITEM_UNEQUIPPED)
-		unregister_signal(holding, SIGNAL_QDELETING)
 		QDEL_NULL(holding)
 
 	return ..()
 
 /obj/item/organ_module/active/simple/proc/deploy(mob/living/carbon/human/H, obj/item/organ/external/E)
 	var/slot = null
-	if(E.organ_tag in list(BP_L_ARM))
+	if(E.organ_tag in list(BP_L_ARM, BP_L_HAND))
 		slot = slot_l_hand
-	else if(E.organ_tag in list(BP_R_ARM))
+	else if(E.organ_tag in list(BP_R_ARM, BP_R_HAND))
 		slot = slot_r_hand
 	if(!H.equip_to_slot_if_possible(holding, slot))
 		return
@@ -46,13 +43,6 @@
 		)
 	holding.forceMove(src)
 	unregister_signal(H, SIGNAL_ITEM_UNEQUIPPED)
-
-/obj/item/organ_module/active/simple/proc/on_holding_qdel(obj/item)
-	util_crash_with("Somehow an organ_module's item got qdeleted. This is NOT normal.")
-	if(holding_type)
-		holding = new holding_type(src)
-		holding.canremove = FALSE
-		register_signal(holding, SIGNAL_QDELETING, nameof(.proc/on_holding_qdel))
 
 /obj/item/organ_module/active/simple/proc/on_holding_unequipped(obj/item, mob/mob)
 	retract(mob, loc)

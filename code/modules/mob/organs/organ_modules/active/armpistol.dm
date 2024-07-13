@@ -4,5 +4,7 @@
 	verb_name = "Deploy embedded pistol"
 	icon_state = "armsmg"
 	matter = list(MATERIAL_PLASTEEL = 20, MATERIAL_PLASTIC = 5, MATERIAL_STEEL = 5)
-	allowed_organs = list(BP_R_ARM, BP_L_ARM)
+	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	holding_type = /obj/item/gun/projectile/pistol/holdout
+	available_in_charsetup = FALSE
+	origin_tech = list(TECH_COMBAT = 4, TECH_POWER = 3)
