@@ -321,8 +321,8 @@
 /datum/disease2/effect/deaf/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	mob.ear_deaf = 5
 
+	mob.setEarDamage(null, 5)
 
 /datum/disease2/effect/telepathic
 	name = "Telepathy Syndrome"
