@@ -66,7 +66,7 @@
 
 /datum/design/item/augment/augment/armblade/popout_shotgun
 	id = "augment_popout_shotgun"
-	build_path = /obj/item/organ/internal/augment/active/item/popout_shotgun
+	build_path = /obj/item/organ_module/active/simple/shotgun
 	materials = list(MATERIAL_STEEL = 5000, MATERIAL_SILVER = 500)
 	req_tech = list(TECH_ESOTERIC = 5, TECH_COMBAT = 6, TECH_BIO = 4)
 	sort_string = "VADAE"
