@@ -15,6 +15,10 @@
 		/obj/item/stock_parts/capacitor
 	)
 
+/obj/machinery/cell_charger/Initialize()
+	. = ..()
+	register_context()
+
 /obj/machinery/cell_charger/on_update_icon()
 	icon_state = "ccharger[charging ? 1 : 0]"
 	if(charging)
@@ -40,6 +44,24 @@
 
 	if(charging)
 		. += "Current charge: [charging.charge]"
+
+/obj/machinery/cell_charger/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(istype(held_item, /obj/item/cell) && anchored && !charging)
+		context[SCREENTIP_CONTEXT_LMB] = "Insert cell"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/cell_charger/attackby(obj/item/W, mob/user)
 	if(stat & BROKEN)

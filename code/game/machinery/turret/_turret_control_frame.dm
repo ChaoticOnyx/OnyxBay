@@ -27,6 +27,65 @@
 	if(_buildstage)
 		buildstage = _buildstage
 
+	register_context()
+
+/obj/structure/turret_control_frame/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		switch(buildstage)
+			if(BUILDSTAGE_HATCH)
+				if(signaler)
+					context[SCREENTIP_CONTEXT_LMB] = "Remove signaller"
+					return CONTEXTUAL_SCREENTIP_SET
+
+			if(BUILDSTAGE_SIGNALER)
+				context[SCREENTIP_CONTEXT_LMB] = "Remove circuit"
+				return CONTEXTUAL_SCREENTIP_SET
+
+	switch(buildstage)
+		if(BUILDSTAGE_INITIAL)
+			if(isWrench(held_item) && !anchored)
+				context[SCREENTIP_CONTEXT_LMB] = "Secure bolts"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			else if(isCrowbar(held_item) && !anchored)
+				context[SCREENTIP_CONTEXT_LMB] = "Disassemble"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_CIRCUITBOARD)
+			if(istype(held_item, /obj/item/circuitboard/turret_control_panel))
+				context[SCREENTIP_CONTEXT_LMB] = "Install circuit"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_SIGNALER)
+			if(issignaler(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Install signaller"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_HATCH)
+			if(isScrewdriver(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Secure hatch"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_ARMOR_ATTACH)
+			if(istype(held_item, /obj/item/stack/material) && held_item.get_material_name() == MATERIAL_STEEL)
+				context[SCREENTIP_CONTEXT_LMB] = "Install armor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			else if(isScrewdriver(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Open hatch"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(BUILDSTAGE_ARMOR_WELD)
+			if(isWelder(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Weld armor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			else if(isCrowbar(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Detach armor"
+				return CONTEXTUAL_SCREENTIP_SET
+
 /obj/structure/turret_control_frame/attackby(obj/item/I, mob/user)
 	switch(buildstage)
 		if(BUILDSTAGE_INITIAL)

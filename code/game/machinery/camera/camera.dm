@@ -125,6 +125,7 @@
 			c_tag = "[A.name][number == 1 ? "" : " #[number]"]"
 		invalidateCameraCache()
 
+	register_context()
 
 /obj/machinery/camera/Destroy()
 	deactivate(null, 0) //kick anyone viewing out
@@ -190,6 +191,24 @@
 		playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
 		add_hiddenprint(user)
 		destroy()
+
+/obj/machinery/camera/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Open" : "Close"] panel"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isWirecutter(held_item) || isMultitool(held_item) && panel_open)
+		context[SCREENTIP_CONTEXT_LMB] = "Interact"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isWelder(held_item) && (wires.CanDeconstruct() || (stat & BROKEN)))
+		context[SCREENTIP_CONTEXT_LMB] = "Disassemble"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/camera/attackby(obj/item/W as obj, mob/living/user as mob)
 	update_coverage()

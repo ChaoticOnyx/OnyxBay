@@ -47,9 +47,26 @@
 
 	var/atom/movable/screen/holomap_obj
 
+	/// Whether or not screentips are enabled.
+	/// This is updated by the preference for cheaper reads than would be
+	/// had with a proc call, especially on one of the hottest procs in the
+	/// game (MouseEntered).
+	var/screentips_enabled = GLOB.PREF_YES
+	/// Whether to use text or images for click hints.
+	/// Same behavior as `screentips_enabled`--very hot, updated when the preference is updated.
+	var/screentip_images = TRUE
+	/// The color to use for the screentips.
+	/// This is updated by the preference for cheaper reads than would be
+	/// had with a proc call, especially on one of the hottest procs in the
+	/// game (MouseEntered).
+	var/screentip_color
+	///UI for screentips that appear when you mouse over things
+	var/atom/movable/screen/screentip/screentip_text
+
 /datum/hud/New(mob/owner)
 	mymob = owner
 	instantiate()
+	screentips_enabled = owner?.client?.get_preference_value("SHOW_SCREENTIPS")
 	..()
 
 /datum/hud/Destroy()
@@ -64,6 +81,7 @@
 	toggleable_inventory = null
 	always_visible_inventory = null
 	mymob = null
+	QDEL_NULL(screentip_text)
 
 /datum/hud/proc/hidden_inventory_update()
 	if(!mymob) return
@@ -159,6 +177,9 @@
 
 	holomap_obj = new /atom/movable/screen/holomap
 	LAZYADD(always_visible_inventory, holomap_obj)
+
+	screentip_text = new /atom/movable/screen/screentip(null, src)
+	LAZYADD(always_visible_inventory, screentip_text)
 
 	FinalizeInstantiation(ui_style, ui_color, ui_alpha)
 

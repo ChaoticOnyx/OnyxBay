@@ -38,6 +38,24 @@
 		BP_R_FOOT  = list("Right Foot", /obj/item/organ/external/foot/right, 40),
 		)
 
+/obj/machinery/organ_printer/Initialize()
+	. = ..()
+	register_context()
+
+/obj/machinery/organ_printer/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
+
 /obj/machinery/organ_printer/attackby(obj/item/O, mob/user)
 	if(default_deconstruction_screwdriver(user, O))
 		updateUsrDialog()
@@ -203,6 +221,13 @@
 	O.update_icon()
 	return O
 
+/obj/machinery/organ_printer/robot/add_context(list/context, obj/item/held_item, mob/user)
+	. = ..()
+
+	if(istype(held_item, /obj/item/stack/material) && held_item.get_material_name() == matter_type)
+		context[SCREENTIP_CONTEXT_LMB] = "Add matter"
+		return CONTEXTUAL_SCREENTIP_SET
+
 /obj/machinery/organ_printer/robot/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/stack/material) && W.get_material_name() == matter_type)
 		if((max_stored_matter-stored_matter) < matter_amount_per_sheet)
@@ -273,6 +298,13 @@
 
 	visible_message("<span class='info'>\The [src] churns for a moment, injects its stored DNA into the biomass, then spits out \a [O].</span>")
 	return O
+
+/obj/machinery/organ_printer/flesh/add_context(list/context, obj/item/held_item, mob/user)
+	. = ..()
+
+	if(istype(held_item, /obj/item/reagent_containers/syringe) || istype(held_item, /obj/item/reagent_containers/dna_sampler))
+		context[SCREENTIP_CONTEXT_LMB] = "Submit DNA sample"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/organ_printer/flesh/attackby(obj/item/W, mob/user)
 	// Load with matter for printing.

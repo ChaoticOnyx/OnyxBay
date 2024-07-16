@@ -167,6 +167,8 @@
 	if (!master_is_operating())
 		elect_master()
 
+	register_context()
+
 	update_icon()
 
 /obj/machinery/alarm/Process()
@@ -848,6 +850,38 @@
 				qdel(src)
 
 	return ..()
+
+/obj/machinery/alarm/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	switch(buildstage)
+		if(2)
+			if(isScrewdriver(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "[wiresexposed ? "Expose" : "Unexpose"] wires"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isWirecutter(held_item) && wiresexposed)
+				context[SCREENTIP_CONTEXT_LMB] = "Cut wires"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(istype(held_item, /obj/item/card/id) || istype(held_item, /obj/item/device/pda))
+				context[SCREENTIP_CONTEXT_LMB] = "[locked ? "Lock" : "Unlock"]"
+				return CONTEXTUAL_SCREENTIP_SET
+		if(1)
+			if(isCoil(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Wire frame"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isCrowbar(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Pry out board"
+				return CONTEXTUAL_SCREENTIP_SET
+		if(0)
+			if(istype(held_item, /obj/item/airalarm_electronics))
+				context[SCREENTIP_CONTEXT_LMB] = "Install circuitboard"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Unwrench"
+				return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/alarm/examine(mob/user, infix)
 	. = ..()

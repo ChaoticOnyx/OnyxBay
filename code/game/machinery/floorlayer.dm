@@ -9,9 +9,10 @@
 	var/obj/item/stack/tile/T
 	var/list/mode = list("dismantle"=0,"laying"=0,"collect"=0)
 
-/obj/machinery/floorlayer/New()
+/obj/machinery/floorlayer/Initialize()
+	. = ..()
 	T = new /obj/item/stack/tile/floor(src)
-	..()
+	register_context()
 
 /obj/machinery/floorlayer/Move(newloc, direct)
 	. = ..()
@@ -39,6 +40,24 @@
 	on=!on
 	user.visible_message("<span class='notice'>[user] has [!on?"de":""]activated \the [src].</span>", "<span class='notice'>You [!on?"de":""]activate \the [src].</span>")
 	return
+
+/obj/machinery/floorlayer/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isWrench(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Select mode"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Remove tiles"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Select tile type"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/floorlayer/attackby(obj/item/W as obj, mob/user as mob)
 

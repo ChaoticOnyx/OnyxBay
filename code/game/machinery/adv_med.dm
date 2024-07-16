@@ -38,6 +38,7 @@
 		BSC = console
 		break
 	RefreshParts()
+	register_context()
 	update_icon()
 
 /obj/machinery/bodyscanner/relaymove(mob/user)
@@ -155,6 +156,24 @@
 		qdel(G)
 	else
 		return
+
+/obj/machinery/bodyscanner/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/grab))
+		context[SCREENTIP_CONTEXT_LMB] = "Place into"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/bodyscanner/proc/check_compatibility(mob/target, mob/user)
 	if(!istype(user) || !istype(target))

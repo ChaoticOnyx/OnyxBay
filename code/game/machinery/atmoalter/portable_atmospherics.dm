@@ -28,6 +28,7 @@
 
 /obj/machinery/portable_atmospherics/Initialize()
 	..()
+	register_context()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/portable_atmospherics/LateInitialize()
@@ -134,6 +135,24 @@
 		return
 
 	return
+
+/obj/machinery/portable_atmospherics/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if((istype(held_item, /obj/item/tank)))
+		context[SCREENTIP_CONTEXT_LMB] = "Insert tank"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isWrench(held_item))
+		if(connected_port)
+			context[SCREENTIP_CONTEXT_LMB] = "Disconnect from port"
+			return CONTEXTUAL_SCREENTIP_SET
+		else
+			context[SCREENTIP_CONTEXT_LMB] = "Connect to port"
+			return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/portable_atmospherics/return_air()
 	return air_contents

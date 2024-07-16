@@ -33,6 +33,8 @@
 
 	targeting_settings = new targeting_settings()
 
+	register_context()
+
 	update_icon()
 
 	return INITIALIZE_HINT_LATELOAD
@@ -119,6 +121,14 @@
 		return
 
 	return ..()
+
+/obj/machinery/turret_control_panel/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isWelder(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Remove armor"
+		return CONTEXTUAL_SCREENTIP_SET
+
 
 /obj/machinery/turret_control_panel/emag_act(remaining_charges, mob/user)
 	if(emagged)

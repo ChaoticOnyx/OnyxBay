@@ -35,6 +35,7 @@
 /obj/machinery/autolathe/Initialize()
 	. = ..()
 	wires = new(src)
+	register_context()
 
 /obj/machinery/autolathe/Destroy()
 	qdel(wires)
@@ -122,6 +123,28 @@
 	if(!ui)
 		ui = new(user, src, "Autolathe", "Autolathe Control Panel")
 		ui.open()
+
+/obj/machinery/autolathe/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if((isMultitool(held_item) || isWirecutter(held_item)) && panel_open)
+		context[SCREENTIP_CONTEXT_LMB] = "Interact with wires"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/stack))
+		context[SCREENTIP_CONTEXT_LMB] = "Add material"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/autolathe/attackby(obj/item/O, mob/user)
 	if(busy)

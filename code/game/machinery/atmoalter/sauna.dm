@@ -55,6 +55,7 @@
 /obj/machinery/sauna/Initialize(mapload)
 	. = ..()
 	emissive = emissive_appearance(icon, "sauna_ea")
+	register_context()
 
 /obj/machinery/sauna/Destroy()
 	steam = null // Steam object deletes itself on depletion of reagents
@@ -129,6 +130,24 @@
 		return
 
 	return ..()
+
+/obj/machinery/sauna/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item) && !container)
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/reagent_containers/vessel) && held_item.is_open_container())
+		context[SCREENTIP_CONTEXT_LMB] = "Replace container"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/sauna/wrench_floor_bolts(mob/user)
 	if(!(stat & (NOPOWER | BROKEN | POWEROFF)))

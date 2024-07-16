@@ -16,6 +16,10 @@
 	var/state = STAGE_CABLE
 	var/obj/item/vending_cartridge/cartridge
 
+/obj/machinery/vending_frame/Initialize()
+	. = ..()
+	register_context()
+
 /obj/machinery/vending_frame/proc/update_desc()
 	var/D
 	if(cartridge)
@@ -34,6 +38,54 @@
 			icon_state = "vbox_2"
 		if(STAGE_FINISHING)
 			icon_state = "vbox_3"
+
+/obj/machinery/vending_frame/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	switch(state)
+		if(STAGE_CABLE)
+			if(anchored && isWelder(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+				return CONTEXTUAL_SCREENTIP_SET
+			if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Anchor bolts"
+				return CONTEXTUAL_SCREENTIP_SET
+			if(isCoil(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Install wires"
+				return CONTEXTUAL_SCREENTIP_SET
+		if(STAGE_CARTRIDGE)
+			if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Unfasten bolts"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			if(isWirecutter(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Cut wires"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			if(istype(held_item, /obj/item/vending_cartridge))
+				context[SCREENTIP_CONTEXT_LMB] = "Install cartridge"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(STAGE_GLASS)
+			if(isCrowbar(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Remove cartridge"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			if(istype(held_item, /obj/item/stack/material/glass))
+				context[SCREENTIP_CONTEXT_LMB] = "Install glass"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(STAGE_FINISHING)
+			if(isCrowbar(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Remove glass"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			if(isScrewdriver(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Finish construction"
+				return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/vending_frame/attackby(obj/item/O, mob/user)
 	switch(state)

@@ -13,6 +13,10 @@
 	pull_sound = SFX_PULL_MACHINE
 //	weight = 1.0E8
 
+/obj/structure/computerframe/Initialize()
+	. = ..()
+	register_context()
+
 /obj/structure/computerframe/attackby(obj/item/P as obj, mob/user as mob)
 	switch(state)
 		if(0)
@@ -115,3 +119,52 @@
 				var/B = new src.circuit.build_path ( src.loc )
 				src.circuit.construct(B)
 				qdel(src)
+
+/obj/structure/computerframe/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	switch(state)
+		if(0)
+			if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Un" : ""]anchor"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isWelder(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Unweld frame"
+				return CONTEXTUAL_SCREENTIP_SET
+		if(1)
+			if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Unfasten frame"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(istype(held_item, /obj/item/circuitboard) && !circuit)
+				context[SCREENTIP_CONTEXT_LMB] = "Install circuitboard"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isScrewdriver(held_item) && circuit)
+				context[SCREENTIP_CONTEXT_LMB] = "Secure circuitboard"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isCrowbar(held_item) && circuit)
+				context[SCREENTIP_CONTEXT_LMB] = "Pry out board"
+				return CONTEXTUAL_SCREENTIP_SET
+		if(2)
+			if(isScrewdriver(held_item) && circuit)
+				context[SCREENTIP_CONTEXT_LMB] = "Unsecure circuitboard"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if (isCoil(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Install cable"
+				return CONTEXTUAL_SCREENTIP_SET
+		if(3)
+			if(isWirecutter(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Cut out cable"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(istype(held_item, /obj/item/stack/material) && held_item.get_material_name() == MATERIAL_GLASS)
+				context[SCREENTIP_CONTEXT_LMB] = "Install panel"
+				return CONTEXTUAL_SCREENTIP_SET
+		if(4)
+			if(isCrowbar(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Pry out glass"
+				return CONTEXTUAL_SCREENTIP_SET
+			else if(isScrewdriver(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Connect monitor"
+				return CONTEXTUAL_SCREENTIP_SET

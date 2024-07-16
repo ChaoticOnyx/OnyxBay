@@ -40,6 +40,7 @@
 		register_signal(turf_to_listen, SIGNAL_EXITED, nameof(.proc/atom_exited))
 
 	RefreshParts()
+	register_context()
 
 	emissive_overlay = emissive_appearance(icon, "surgery_table_ea")
 	return INITIALIZE_HINT_LATELOAD
@@ -234,6 +235,24 @@
 		return FALSE
 
 	return TRUE
+
+/obj/machinery/optable/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/grab))
+		context[SCREENTIP_CONTEXT_LMB] = "Place onto"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/optable/Destroy()
 	opcomp = null

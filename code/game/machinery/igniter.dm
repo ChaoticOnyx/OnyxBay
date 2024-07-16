@@ -72,6 +72,8 @@
 	if(_wifi_id)
 		wifi_receiver = new(_wifi_id, src)
 
+	register_context()
+
 /obj/machinery/sparker/Destroy()
 	qdel(wifi_receiver)
 	wifi_receiver = null
@@ -87,6 +89,14 @@
 	else
 		icon_state = "migniter-p"
 //		src.sd_SetLuminosity(0)
+
+/obj/machinery/sparker/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[disable ? "Reconnect" : "Disconnect"]"
+		return CONTEXTUAL_SCREENTIP_SET
+
 
 /obj/machinery/sparker/attackby(obj/item/W as obj, mob/user as mob)
 	if(isScrewdriver(W))

@@ -119,6 +119,7 @@
 	power_change()
 	setup_icon_states()
 	update_icon()
+	register_context()
 
 /obj/machinery/vending/proc/refresh_cartridge()
 	cartridge = locate() in component_parts
@@ -215,6 +216,29 @@
 			return TRUE
 
 	return FALSE
+
+/obj/machinery/vending/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if((isMultitool(held_item) || isWirecutter(held_item)) && panel_open)
+		context[SCREENTIP_CONTEXT_LMB] = "Interact with wires"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Un" : ""]anchor"
+		return CONTEXTUAL_SCREENTIP_SET
+
 
 /obj/machinery/vending/attackby(obj/item/W, mob/user)
 	if(default_deconstruction_screwdriver(user, W))

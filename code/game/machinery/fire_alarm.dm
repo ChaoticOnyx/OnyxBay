@@ -46,6 +46,8 @@
 	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
 		update_icon()
 
+	register_context()
+
 /obj/machinery/firealarm/Destroy()
 	GLOB.firealarm_list -= src
 	ClearOverlays()
@@ -141,6 +143,40 @@
 	if(prob(50/severity))
 		alarm(rand(30/severity, 60/severity))
 	..()
+
+/obj/machinery/firealarm/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item) && buildstage == FIREALARM_COMPLETE)
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(wiresexposed)
+		switch(buildstage)
+			if(2)
+				if(isMultitool(held_item))
+					context[SCREENTIP_CONTEXT_LMB] = "Connect detecting unit"
+					return CONTEXTUAL_SCREENTIP_SET
+				else if(isWirecutter(held_item))
+					context[SCREENTIP_CONTEXT_LMB] = "Cut wires"
+					return CONTEXTUAL_SCREENTIP_SET
+			if(1)
+				if(isCoil(held_item))
+					context[SCREENTIP_CONTEXT_LMB] = "Install wires"
+					return CONTEXTUAL_SCREENTIP_SET
+				else if(isCrowbar(held_item))
+					context[SCREENTIP_CONTEXT_LMB] = "Remove circuit"
+					return CONTEXTUAL_SCREENTIP_SET
+			if(0)
+				if(istype(held_item, /obj/item/firealarm_electronics))
+					context[SCREENTIP_CONTEXT_LMB] = "Install circuit"
+					return CONTEXTUAL_SCREENTIP_SET
+				else if(isWrench(held_item))
+					context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+					return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/firealarm/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W) && buildstage == FIREALARM_COMPLETE)

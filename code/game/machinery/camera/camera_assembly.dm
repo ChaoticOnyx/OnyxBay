@@ -23,6 +23,10 @@
 				4 = Screwdriver panel closed and is fully built (you cannot attach upgrades)
 	*/
 
+/obj/item/camera_assembly/Initialize()
+	. = ..()
+	register_context()
+
 /obj/item/camera_assembly/attackby(obj/item/W as obj, mob/living/user as mob)
 
 	switch(state)
@@ -140,6 +144,55 @@
 		return
 
 	..()
+
+/obj/item/camera_assembly/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(is_type_in_list(held_item, possible_upgrades) && !is_type_in_list(held_item, upgrades))
+		context[SCREENTIP_CONTEXT_LMB] = "Install upgrade"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	else if(isCrowbar(held_item) && upgrades.len)
+		context[SCREENTIP_CONTEXT_LMB] = "Remove upgrade"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	switch(state)
+		if(0)
+			if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Un" : ""]anchor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(1)
+			if(isWelder(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Weld"
+				return CONTEXTUAL_SCREENTIP_SET
+
+
+			else if(isWrench(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "[anchored ? "Un" : ""]anchor"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(2)
+			if(isCoil(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Install cable"
+				return CONTEXTUAL_SCREENTIP_SET
+
+
+			else if(isWelder(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Unweld"
+				return CONTEXTUAL_SCREENTIP_SET
+
+		if(3)
+			if(isScrewdriver(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Connect"
+				return CONTEXTUAL_SCREENTIP_SET
+
+			else if(isWirecutter(held_item))
+				context[SCREENTIP_CONTEXT_LMB] = "Remove cable"
+				return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/camera_assembly/on_update_icon()
 	if(anchored)

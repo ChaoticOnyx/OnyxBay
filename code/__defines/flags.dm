@@ -38,6 +38,10 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ATOM_FLAG_HOLOGRAM (1<<12)
 /// This atom can'be deconstructed by a normal means.
 #define ATOM_FLAG_NO_DECONSTRUCTION (1<<13)
+/// Whether or not this atom has contextual screentips when hovered OVER
+#define ATOM_FLAG_CONTEXTUAL_SCREENTIPS (1<<14)
+///Whether or not this atom shows screentips when hovered over
+#define ATOM_FLAG_NO_SCREENTIPS (1<<15)
 
 /// This object can be stuck in place with a tool
 #define OBJ_FLAG_ANCHORABLE (1<<0)
@@ -45,7 +49,8 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define OBJ_FLAG_CONDUCTIBLE (1<<1)
 /// Can't rotate while anchored
 #define OBJ_FLAG_ANCHOR_BLOCKS_ROTATION (1<<2)
-
+/// Has contextual screentips when HOVERING OVER OTHER objects
+#define ITEM_HAS_CONTEXTUAL_SCREENTIPS (1 << 3)
 #define MOB_FLAG_HOLY_BAD                0x001  // If this mob is allergic to holiness
 
 //Flags for items (equipment)

@@ -9,10 +9,11 @@
 	var/max_cable = 100
 	var/on = 0
 
-/obj/machinery/cablelayer/New()
+/obj/machinery/cablelayer/Initialize()
+	. = ..()
 	cable = new(src)
 	cable.amount = 100
-	..()
+	register_context()
 
 /obj/machinery/cablelayer/Move(newloc, direct)
 	. = ..()
@@ -51,6 +52,20 @@
 				CC.amount = m
 		else
 			to_chat(usr, "<span class='warning'>There's no more cable on the reel.</span>")
+
+/obj/machinery/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isCoil(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Load cable"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isWirecutter(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Cut cable"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/cablelayer/examine(mob/user, infix)
 	. = ..()

@@ -63,6 +63,7 @@
 		anchored = TRUE
 
 	update_icon()
+	register_context()
 
 /obj/machinery/coffeemaker/Destroy()
 	QDEL_NULL(coffeepot)
@@ -192,6 +193,43 @@
 
 	update_icon()
 	return TRUE
+
+/obj/machinery/coffeemaker/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(!coffeepot && isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[panel_open ? "Close" : "Open"] maintenance hatch"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Dismantle"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/reagent_containers/vessel/coffeepot) && held_item.is_open_container())
+		context[SCREENTIP_CONTEXT_LMB] = "Replace pot"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/reagent_containers/vessel/takeaway))
+		context[SCREENTIP_CONTEXT_LMB] = "Insert cup"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/reagent_containers/food/grown/coffee))
+		context[SCREENTIP_CONTEXT_LMB] = "Load beans"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/storage/box/coffeepack))
+		context[SCREENTIP_CONTEXT_LMB] = "Load beans"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/reagent_containers/vessel/condiment/pack/creamer) \
+		|| istype(held_item, /obj/item/reagent_containers/vessel/condiment/pack/sugar) \
+		|| istype(held_item, /obj/item/reagent_containers/vessel/condiment/pack/astrotame)
+		)
+		context[SCREENTIP_CONTEXT_LMB] = "Load condiments"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/coffeemaker/attackby(obj/item/attack_item, mob/living/user, params)
 	if(!coffeepot && default_deconstruction_screwdriver(user, attack_item))

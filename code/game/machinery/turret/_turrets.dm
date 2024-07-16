@@ -117,6 +117,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		installed_gun = new installed_gun(src)
 		setup_gun()
 
+	register_context()
+
 	add_think_ctx("process_reloading", CALLBACK(src, nameof(.proc/process_reloading)), 0)
 	add_think_ctx("process_idle", CALLBACK(src, nameof(.proc/process_idle)), 0)
 	add_think_ctx("process_turning", CALLBACK(src, nameof(.proc/process_turning)), 0)
@@ -189,6 +191,32 @@ GLOBAL_LIST_EMPTY(all_turrets)
 	if(auto_repair && (integrity < max_integrity))
 		use_power_oneoff(20000)
 		integrity = min(integrity + 1, max_integrity) // 1HP for 20kJ
+
+/obj/machinery/turret/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(istype(held_item, /obj/item/gun) && !installed_gun)
+		context[SCREENTIP_CONTEXT_LMB] = "Mount gun"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/gun) && !installed_gun)
+		context[SCREENTIP_CONTEXT_LMB] = "Mount gun"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(installed_gun, /obj/item/gun/projectile) && istype(held_item, /obj/item/ammo_magazine))
+		context[SCREENTIP_CONTEXT_LMB] = "Add ammo"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item) && !locked && installed_gun)
+		context[SCREENTIP_CONTEXT_LMB] = "Remove gun"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isWelder(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "Remove external armor"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/turret/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/gun) && !installed_gun)

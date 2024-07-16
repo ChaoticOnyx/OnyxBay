@@ -17,6 +17,7 @@
 /obj/machinery/floodlight/Initialize()
 	. = ..()
 	cell = new /obj/item/cell/crap(src)
+	register_context()
 
 /obj/machinery/floodlight/Destroy()
 	QDEL_NULL(cell)
@@ -101,6 +102,24 @@
 
 	update_icon()
 
+/obj/machinery/floodlight/add_context(list/context, obj/item/held_item, mob/user)
+	. = NONE
+
+	if(isnull(held_item))
+		return
+
+	if(isScrewdriver(held_item))
+		context[SCREENTIP_CONTEXT_LMB] = "[unlocked ? "Screw" : "Unscrew"] panel"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	if(isCrowbar(held_item))
+		if(unlocked)
+			context[SCREENTIP_CONTEXT_LMB] = "[open ? "Install" : "remove"] panel"
+			return CONTEXTUAL_SCREENTIP_SET
+
+	if(istype(held_item, /obj/item/cell) && open && !cell)
+		context[SCREENTIP_CONTEXT_LMB] = "Install power cell"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/floodlight/attackby(obj/item/W as obj, mob/user as mob)
 	if(isScrewdriver(W))

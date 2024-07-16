@@ -1,3 +1,8 @@
+/// Bitflag for convenience.
+#define NONE 0
+/// Bitflag for convenience.
+#define ALL (~0)
+
 #define DEBUG
 // Turf-only flags.
 /// This is used in literally one place, turf.dm, to block ethereal jaunt.
