@@ -195,7 +195,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	// Sort subsystems by display setting for easy access.
 	sortTim(subsystems, /proc/cmp_subsystem_display)
 	// Set world options.
-	world.sleep_offline = TRUE
+	world.sleep_offline = FALSE
 	world.fps = config.general.fps
 	var/initialized_tod = REALTIMEOFDAY
 
