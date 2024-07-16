@@ -15,7 +15,7 @@
 /obj/item/organ_module/active/simple/armblade
 	name = "embedded armblade"
 	desc = "A mechanical blade designed to be inserted into an arm. Gives you a nice advantage in a brawl."
-	verb_name = "Deploy armblade"
+	action_button_name = "Deploy armblade"
 	icon_state = "armblade"
 	matter = list(MATERIAL_STEEL = 30)
 	allowed_organs = list(BP_L_ARM, BP_R_ARM)

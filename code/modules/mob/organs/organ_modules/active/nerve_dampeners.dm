@@ -1,6 +1,7 @@
 /obj/item/organ_module/active/nerve_dampeners
 	name = "nerve dampeners"
 	icon_state = "emotional_manipulator"
+	action_button_name = "Engage nerve dampeners"
 	desc = "Each activation of this augment provides a strong painkilling effect for around thirty seconds, but will be followed by a powerful comedown. Excessive short-term use may cause brain damage."
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	origin_tech = list(TECH_DATA = 4, TECH_BIO = 4)

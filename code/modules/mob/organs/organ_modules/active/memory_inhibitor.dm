@@ -3,6 +3,7 @@
 	desc = "A Zeng Hu implant that allows one to have control over their memories, " \
 		+ "allowing you to set a timer and remove any memories developed within it. " \
 		+ "This is most popular in Zeng Hu labs within Eridani."
+	action_button_name = "Wipe memory"
 	icon_state = "memory_inhibitor"
 	allowed_organs = list(BP_HEAD)
 	cooldown = 5 MINUTES

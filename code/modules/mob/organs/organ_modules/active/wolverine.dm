@@ -8,7 +8,7 @@
 /obj/item/organ_module/active/simple/wolverine
 	name = "embedded claws"
 	desc = "A variant on the popular armblade, these claws allow for a more traditional unarmed brawl style while still mantaining your advantage."
-	verb_name = "Deploy embedded claws"
+	action_button_name = "Deploy embedded claws"
 	icon_state = "wolverine"
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)
 	holding_type = /obj/item/melee/implant/claws

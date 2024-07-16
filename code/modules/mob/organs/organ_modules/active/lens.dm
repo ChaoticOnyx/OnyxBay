@@ -61,6 +61,7 @@
 	name = "hud lenses"
 	toggleable = TRUE
 	toggled = FALSE
+	action_button_name = "Toggle HUD lenses"
 	/// Will process security hud if TRUE
 	var/sec_hud = FALSE
 	/// Will process medhud if TRUE

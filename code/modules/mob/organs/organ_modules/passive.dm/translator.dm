@@ -1,4 +1,4 @@
-/obj/item/organ_module/active/translator
+/obj/item/organ_module/translator
 	name = "universal translator"
 	/// List of languages that the augment can translate.
 	var/list/languages = list(

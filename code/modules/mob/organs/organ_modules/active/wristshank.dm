@@ -17,7 +17,7 @@
 /obj/item/organ_module/active/simple/wristshank
 	name = "embedded wristshank"
 	desc = "A stubby blade designed to be inserted into a wrist. Gives you a nice advantage in a brawl."
-	verb_name = "Deploy wristshank"
+	action_button_name = "Deploy wristshank"
 	icon_state = "wristshank"
 	matter = list(MATERIAL_STEEL = 20)
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)

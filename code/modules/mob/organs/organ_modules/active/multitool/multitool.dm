@@ -1,7 +1,7 @@
 /obj/item/organ_module/active/multitool
 	name = "multitool embed module"
 	desc = "An augment designed to hold multiple tools for swift deployment."
-	verb_name = "Deploy tool"
+	action_button_name = "Deploy tool"
 	icon_state = "multitool"
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)
 	matter = list(MATERIAL_STEEL = 100)

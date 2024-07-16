@@ -1,7 +1,7 @@
 /obj/item/organ_module/active/simple/surgical
 	name = "embedded surgical multitool"
 	desc = "An embedded incision manager."
-	verb_name = "Deploy embedded incision manager"
+	action_button_name = "Deploy embedded incision manager"
 	icon_state = "multitool_medical"
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)
 	holding_type = /obj/item/scalpel/manager

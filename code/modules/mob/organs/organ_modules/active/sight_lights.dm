@@ -2,6 +2,7 @@
 	name = "ocular installed sightlights "
 	desc = "Designed to assist medical personnel in darker areas or places experiencing periodic power issues, " \
 		+ "Sightlights will allow one to be able to use their eyes as a flashlight."
+	action_button_name = "Toggle sightlights"
 	icon_state = "sightlights"
 	cooldown = 30
 	var/lights_on = FALSE

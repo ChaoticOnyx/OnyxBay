@@ -1,7 +1,7 @@
 /obj/item/organ_module/active/simple/armblade/energy_blade
 	name = "energy armblade"
 	desc = "A energy blade designed to be inserted into an arm. Gives you a nice advantage in a brawl."
-	verb_name = "Deploy energyblade"
+	action_button_name = "Deploy energyblade"
 	icon_state = "energyblade"
 	mod_overlay = "installer_armblade"
 	origin_tech = list(TECH_COMBAT = 4, TECH_POWER = 3)

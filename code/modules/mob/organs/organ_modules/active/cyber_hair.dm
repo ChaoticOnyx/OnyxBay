@@ -1,6 +1,7 @@
 /obj/item/organ_module/active/cyber_hair
 	name = "synthetic hair extensions"
 	icon_state = "cranial_aug"
+	action_button_name = "Synthetic hair extensions"
 	cooldown = 20
 	allowed_organs = list(BP_HEAD)
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL

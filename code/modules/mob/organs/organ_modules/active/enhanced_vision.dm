@@ -2,6 +2,7 @@
 	name = "vision enhanced retinas"
 	desc = "Zeng Hu implants given to EMTs to assist with finding the injured. These eye implants allow one to see further than you normally could."
 	icon_state = "adaptive_binoculars"
+	action_button_name = "Toggle adaptive binoculars"
 	var/viewsize = 8
 	allowed_organs = list(BP_EYES)
 	cpu_load = 0

@@ -80,9 +80,9 @@
 
 /datum/design/item/augment/augment/langprocessor
 	id = "augment_langprocessor"
-	build_path = /obj/item/organ_module/active/language
-	materials = list(MATERIAL_STEEL = 100, MATERIAL_GLASS = 2000)
-	req_tech = list(TECH_MATERIAL = 3, TECH_ENGINEERING = 3)
+	build_path = /obj/item/organ_module/language
+	materials = list(MATERIAL_STEEL = 100, MATERIAL_GLASS = 1000)
+	req_tech = list(TECH_BIO = 2, TECH_ENGINEERING = 2)
 	sort_string = "VADAG"
 
 /datum/design/item/augment/augment/adaptive_binoculars
@@ -151,3 +151,10 @@
 	materials = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 	req_tech = list(TECH_MAGNET = 3, TECH_BIO = 4)
 	sort_string = "VADAQ"
+
+/datum/design/item/augment/augment/translator
+	id = "augment_translator"
+	build_path = /obj/item/organ_module/translator
+	materials = list(MATERIAL_STEEL = 100, MATERIAL_GLASS = 2000)
+	req_tech = list(TECH_MATERIAL = 3, TECH_ENGINEERING = 3)
+	sort_string = "VADAR"
