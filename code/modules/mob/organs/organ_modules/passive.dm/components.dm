@@ -1,5 +1,6 @@
 /obj/item/organ_module/actuators
 	name = "Organ actuator"
+	icon_state = "ams"
 	desc = "A mechanic actuator that fits most prostheses."
 	allowed_organs = BP_ALL_LIMBS
 	module_type = OM_TYPE_ACTUATOR

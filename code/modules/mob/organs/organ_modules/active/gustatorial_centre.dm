@@ -1,5 +1,6 @@
 /obj/item/organ_module/active/gustatorial
 	name = "gustatorial centre"
+	icon_state = "augment"
 	action_button_name = "Activate Gustatorial Centre (tongue)"
 	allowed_organs = list(BP_HEAD)
 	cooldown = 1 SECOND

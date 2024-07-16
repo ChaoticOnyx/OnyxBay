@@ -2503,6 +2503,7 @@
 #include "code\modules\mob\organs\organ_modules\active_simple.dm"
 #include "code\modules\mob\organs\organ_modules\augment.dm"
 #include "code\modules\mob\organs\organ_modules\installer.dm"
+#include "code\modules\mob\organs\organ_modules\active\cyborg_analyzer.dm"
 #include "code\modules\mob\organs\organ_modules\active\gustatorial_centre.dm"
 #include "code\modules\mob\organs\organ_modules\active\memory_inhibitor.dm"
 #include "code\modules\mob\organs\organ_modules\active\nerve_dampeners.dm"

@@ -1,6 +1,7 @@
 /obj/item/organ_module/passive/resuscitator
 	name = "Reviver implant"
 	desc = "This implant will attempt to revive and heal you if you lose consciousness. For the faint of heart!"
+	icon_state = "bbattery"
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	loadout_cost = 15
 	allowed_organs = list(BP_CHEST)

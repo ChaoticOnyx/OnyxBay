@@ -1710,7 +1710,7 @@
 /mob/living/carbon/human/is_deaf()
 	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
 	if((sdisabilities & DEAF) && istype(head))
-		var/obj/item/organ_module/active/cochlear/coch = locate() in head
+		var/obj/item/organ_module/cochlear/coch = locate() in head
 		if(istype(coch))
 			return FALSE
 

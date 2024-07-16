@@ -1,5 +1,5 @@
 /obj/item/organ_module/active/simple/surgical
-	name = "embedded surgical multitool"
+	name = "embedded incision manager"
 	desc = "An embedded incision manager."
 	action_button_name = "Deploy embedded incision manager"
 	icon_state = "multitool_medical"
@@ -12,7 +12,7 @@
 	name = "surgical multitool module"
 	desc = "An augment designed to hold multiple surgical instruments."
 	verb_name = "Deploy Surgical Tool"
-	icon_state = "multitool"
+	icon_state = "multitool_medical"
 	items = list(
 		/obj/item/bonesetter/bone_mender,
 		/obj/item/cautery,
