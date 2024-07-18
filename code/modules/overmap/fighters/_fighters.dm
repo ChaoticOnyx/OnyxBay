@@ -53,7 +53,7 @@
 	if(dradis_type)
 		dradis = new dradis_type(src)
 		dradis.linked = src
-	set_light(4)
+
 	integrity = max_integrity
 	register_signal(src, SIGNAL_MOVED, nameof(.proc/handle_moved)) //Used to smoothly transition from ship to overmap
 	var/obj/item/fighter_component/engine/engineGoesLast = null
