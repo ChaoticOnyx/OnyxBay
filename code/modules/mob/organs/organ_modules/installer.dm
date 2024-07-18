@@ -38,7 +38,10 @@
 	var/obj/item/organ/external/affected = null
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		affected = H.get_organ(user.zone_sel.selecting)
+		affected = H.organs_by_name[user.zone_sel.selecting]
+
+		if(!affected)
+			affected = H.internal_organs_by_name[user.zone_sel.selecting]
 
 		if(!affected)
 			to_chat(user, SPAN_WARNING("[M] is missing that body part."))
@@ -48,9 +51,17 @@
 			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
 			return
 
-		if(affected.module != null)
-			to_chat(user, SPAN_WARNING("[mod] cannot be installed into this [affected], as it's already occupied."))
+		if((BP_IS_ROBOTIC(affected) && !(mod.module_flags & OM_FLAG_MECHANICAL)) || (BP_IS_ROBOTIC(affected) && !(mod.module_flags & OM_FLAG_BIOLOGICAL)))
+			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
 			return
+
+		if((mod.w_class + affected.occupied_space) > affected.max_module_size)
+			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
+			return
+
+		//if(affected.module != null)
+		//	to_chat(user, SPAN_WARNING("[mod] cannot be installed into this [affected], as it's already occupied."))
+		//	return
 
 	M.visible_message(SPAN_WARNING("[user] is attemping to install something into [M]."))
 

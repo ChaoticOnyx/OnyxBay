@@ -1,10 +1,11 @@
 /obj/item/organ_module/active/multitool
 	name = "multitool embed module"
 	desc = "An augment designed to hold multiple tools for swift deployment."
-	verb_name = "Deploy tool"
+	action_button_name = "Deploy tool"
 	icon_state = "multitool"
-	allowed_organs = list(BP_R_ARM, BP_L_ARM)
+	allowed_organs = list(BP_L_HAND, BP_R_HAND)
 	matter = list(MATERIAL_STEEL = 100)
+	origin_tech = list(TECH_BIO = 3, TECH_POWER = 3)
 	var/list/items = list(
 		/obj/item/screwdriver,
 		/obj/item/wrench,
@@ -13,6 +14,7 @@
 		/obj/item/wirecutters,
 		/obj/item/device/analyzer
 	)
+	loadout_cost = 10
 
 /obj/item/organ_module/active/multitool/Initialize()
 	. = ..()
@@ -52,5 +54,5 @@
 	items += I
 	register_signal(I, SIGNAL_QDELETING, nameof(.proc/on_holding_qdel))
 
-/obj/item/organ_module/active/multitoolle/proc/on_holding_unequipped(obj/item, mob/mob)
+/obj/item/organ_module/active/multitool/proc/on_holding_unequipped(obj/item, mob/mob)
 	mob.drop(item, src, TRUE)

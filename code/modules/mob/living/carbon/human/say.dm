@@ -82,6 +82,12 @@
 	if(species.can_understand(other))
 		return TRUE
 
+	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	if(istype(head))
+		var/obj/item/organ_module/translator/translator = locate() in head
+		if(language.name in translator?.languages)
+			return TRUE
+
 	//These only pertain to common. Languages are handled by mob/say_understands()
 	if(!language)
 		if(istype(other, /mob/living/carbon/alien/diona))

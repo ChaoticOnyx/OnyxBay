@@ -93,6 +93,10 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 	for(var/datum/category_group/player_setup_category/PS in categories)
 		PS.save_preferences(W)
 
+/datum/category_collection/player_setup_collection/proc/get_lp_cost()
+	for(var/datum/category_group/player_setup_category/PS in categories)
+		. += PS.get_lp_cost()
+
 /datum/category_collection/player_setup_collection/proc/header()
 	var/dat = ""
 	for(var/datum/category_group/player_setup_category/PS in categories)
@@ -158,6 +162,10 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 	for(var/datum/category_item/player_setup_item/PI in items)
 		PI.save_preferences(W)
 
+/datum/category_group/player_setup_category/proc/get_lp_cost()
+	for(var/datum/category_item/player_setup_item/PI in items)
+		. += PI.get_lp_cost()
+
 /datum/category_group/player_setup_category/proc/content(mob/user)
 	. = "<table style='width:100%'><tr style='vertical-align:top'><td style='width:50%'>"
 	var/current = 0
@@ -191,6 +199,9 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 
 /datum/category_item/player_setup_item/dd_SortValue()
 	return sort_order
+
+/datum/category_item/player_setup_item/proc/get_lp_cost()
+	return 0
 
 /*
 * Called when the item is asked to load per character settings

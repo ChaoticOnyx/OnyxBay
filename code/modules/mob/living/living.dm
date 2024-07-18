@@ -400,6 +400,9 @@
 	else
 
 		L += src.contents
+		for(var/obj/item/organ/E in contents)
+			L += E.get_contents()
+
 		for(var/obj/item/storage/S in src.contents)	//Check for storage items
 			L += get_contents(S)
 

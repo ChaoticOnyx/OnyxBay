@@ -231,9 +231,8 @@
 /datum/disease2/effect/deaf/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	mob.ear_deaf += 20
 
-
+	mob.setEarDamage(null, 20)
 
 /datum/disease2/effect/radian
 	name = "Radian's Syndrome"

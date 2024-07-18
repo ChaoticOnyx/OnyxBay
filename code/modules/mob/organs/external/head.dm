@@ -18,6 +18,8 @@
 
 	internal_organs_size = 3
 
+	max_module_size = 2
+
 	var/can_intake_reagents = 1
 
 	var/has_lips = TRUE

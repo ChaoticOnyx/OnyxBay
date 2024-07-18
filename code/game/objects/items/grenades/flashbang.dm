@@ -66,10 +66,11 @@
 
 	if(ear_effect >= 1)
 		if(prob(ear_effect * 2) || (M == loc && prob(70)))
+			M.adjustEarDamage(rand(1, 10), null)
 			M.ear_damage += rand(1, 10)
 		else
-			M.ear_damage += rand(0, 5)
-		M.ear_deaf = max(M.ear_deaf, (ear_effect * 3))
+			M.adjustEarDamage(rand(0, 5), null)
+		M.adjustEarDamage(null, (ear_effect * 3))
 
 	// This really should be in mob not every check
 	if(ishuman(M))

@@ -88,6 +88,8 @@
 	if(istype(back,/obj/item/rig))
 		process_rig(back)
 
+	process_eye_modules()
+
 	// Removes zoom effect
 	if (client && machine_visual)
 		if (client.pixel_x != 0 || client.pixel_y != 0)
@@ -116,6 +118,33 @@
 /mob/living/carbon/human/proc/process_rig(obj/item/rig/O)
 	if(O.visor && O.visor.active && O.visor.vision && O.visor.vision.glasses && (!O.helmet || (head && O.helmet == head)))
 		process_glasses(O.visor.vision.glasses)
+
+/mob/living/carbon/human/proc/process_eye_modules()
+	var/obj/item/organ/internal/eyes/eyes = internal_organs_by_name[BP_EYES]
+	if(!istype(eyes))
+		return
+
+	for(var/obj/item/organ_module/active/lenses/lens in eyes.organ_modules)
+		if(!lens.toggled && lens.toggleable)
+			continue
+
+		equipment_darkness_modifier += lens.darkness_view
+		equipment_vision_flags |= lens.vision_flags
+		equipment_prescription += lens.prescription
+		equipment_light_protection += lens.light_protection
+		flash_protection += lens.flash_protection
+		equipment_tint_total += lens.tint
+
+		if(lens.see_invisible >= 0)
+			if(equipment_see_invis)
+				equipment_see_invis = min(equipment_see_invis, lens.see_invisible)
+			else
+				equipment_see_invis = lens.see_invisible
+
+		if(lens.overlay)
+			equipment_overlays |= lens.overlay
+
+		lens.process_hud(src)
 
 /mob/living/carbon/human/get_gender()
 	return gender

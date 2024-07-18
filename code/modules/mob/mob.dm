@@ -224,7 +224,7 @@
 	return ((sdisabilities & BLIND) || blinded || incapacitated(INCAPACITATION_KNOCKOUT))
 
 /mob/proc/is_deaf()
-	return ((sdisabilities & DEAF) || ear_deaf || incapacitated(INCAPACITATION_KNOCKOUT))
+	return (isdeaf(src) || incapacitated(INCAPACITATION_KNOCKOUT))
 
 /mob/proc/is_physically_disabled()
 	return incapacitated(INCAPACITATION_DISABLED)
