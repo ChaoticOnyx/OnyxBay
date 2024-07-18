@@ -4,7 +4,7 @@
 /// This is not necessary for Type-B interactions, as you can just apply the flag and register to the signal yourself.
 /atom/proc/register_context()
 	atom_flags |= ATOM_FLAG_CONTEXTUAL_SCREENTIPS
-	register_signal(src, SIGNAL_ATOM_REQUESTING_CONTEXT_FROM_ITEM, nameof(.proc/add_context))
+	register_signal(src, SIGNAL_ATOM_REQUESTING_CONTEXT_FROM_ITEM, nameof(.proc/add_context), TRUE)
 
 /// Creates a "Type-B" contextual screentip interaction.
 /// When a user hovers over this, this proc will be called in order
