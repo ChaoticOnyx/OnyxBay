@@ -163,6 +163,7 @@
 #include "code\_helpers\auxtools.dm"
 #include "code\_helpers\builtin_proc_callers.dm"
 #include "code\_helpers\cmp.dm"
+#include "code\_helpers\contents_recursive.dm"
 #include "code\_helpers\emissives.dm"
 #include "code\_helpers\files.dm"
 #include "code\_helpers\flick_overlay.dm"

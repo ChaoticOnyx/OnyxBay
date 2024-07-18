@@ -900,7 +900,7 @@
 	SS.remove_ship(src, overmap, remove_fully = FALSE)
 	SSstar_system.ships[src]["landed"] = TRUE
 
-	GLOB.using_map.apply_mapgen_mask()
+	GLOB.using_map.apply_mask()
 	var/list/spawned = block(
 		locate(1, 1, 1),
 		locate(world.maxx, world.maxy, 1)
@@ -988,7 +988,7 @@
 
 	sleep(4 SECONDS)
 
-	GLOB.using_map.apply_mapgen_mask()
+	GLOB.using_map.apply_mask()
 
 	sleep(2 SECONDS)
 

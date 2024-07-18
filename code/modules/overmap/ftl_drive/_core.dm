@@ -131,7 +131,7 @@
 	ftl_computer.linked?.relay('sound/effects/ship/FTL_loop.ogg', null, loop = TRUE, channel = SOUND_CHANNEL_FTL_MANIFOLD)
 	SSskybox.reinstate_skyboxes("ftl", FALSE)
 
-	GLOB.using_map.apply_ftl_mask()
+	GLOB.using_map.apply_mask(/turf/space/transit/east)
 	INVOKE_ASYNC(src, nameof(.proc/do_effects), curr.dist(target_system))
 
 	set_next_think_ctx("jump_end", world.time + jump_duration, target_system, force)
