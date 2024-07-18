@@ -55,6 +55,8 @@ var/list/limb_icon_cache = list()
 	var/model
 	/// Used to force override of species-specific organ icons (for prosthetics).
 	var/force_icon
+	/// Whether it has complex icon to apply to the owner mob.
+	var/has_complex_icon = TRUE
 	// Appearance vars.
 	/// Icon state base.
 	var/icon_name = null
@@ -510,6 +512,9 @@ var/list/limb_icon_cache = list()
 	return .
 
 /obj/item/organ/on_update_icon()
+	if(!has_complex_icon)
+		return
+
 	ClearOverlays()
 	mob_overlays = list()
 
