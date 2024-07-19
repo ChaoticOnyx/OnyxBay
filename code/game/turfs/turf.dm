@@ -91,7 +91,7 @@
 	else
 		luminosity = 1
 
-	if(!mapload)
+	if(!mapload && !istype(src, /turf/space))
 		SSair.mark_for_update(src)
 
 	RecalculateOpacity()

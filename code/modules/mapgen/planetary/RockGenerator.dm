@@ -1,5 +1,4 @@
 /area/generated/planetoid/rock
-	area_flags = AREA_FLAG_CAVES_ALLOWED
 	base_turf = /turf/simulated/floor/asteroid/rockplanet
 
 /datum/map_generator/planet_generator/rock

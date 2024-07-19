@@ -1,5 +1,5 @@
 /area/generated/planetoid/swamp
-	area_flags = AREA_FLAG_CAVES_ALLOWED | AREA_FLAG_ALLOW_WEATHER
+	base_turf = /turf/simulated/floor/asteroid/swamp_dirt
 
 /datum/map_generator/planet_generator/swamp
 	perlin_zoom = 65

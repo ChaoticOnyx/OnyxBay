@@ -326,13 +326,20 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	return result
 
 /datum/map/proc/apply_mask(turf_type = /turf/space)
-	var/list/predicates = area_repository.get_areas_by_name(/proc/is_space_or_mapgen_area)
 	var/list/areas_to_clean = list()
-	for(var/name in predicates)
-		var/area/A = predicates[name]
+
+	for(var/type in GLOB.areas_by_type)
+		var/area/A = GLOB.areas_by_type[type]
+		if(!is_space_or_mapgen_area(A))
+			continue
+
 		areas_to_clean |= A
 
+	var/list/ship_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 	for(var/area/A in areas_to_clean)
 		for(var/turf/T in A.contents)
-			CHECK_TICK
+			if(!(T.z in ship_z))
+				continue
+
 			T.empty(/turf/space)
+			CHECK_TICK

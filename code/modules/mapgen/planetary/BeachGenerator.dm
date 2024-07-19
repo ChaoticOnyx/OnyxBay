@@ -1,5 +1,4 @@
 /area/generated/planetoid/beachplanet
-	area_flags = AREA_FLAG_CAVES_ALLOWED
 	base_turf = /turf/simulated/floor/asteroid/beach/grass
 
 /datum/map_generator/planet_generator/beach
