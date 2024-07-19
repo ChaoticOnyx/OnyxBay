@@ -21,6 +21,9 @@
 	/// Gas mixture datum returned to exterior return_air. Set to assoc list of material to moles to initialize the gas datum.
 	var/datum/gas_mixture/exterior_atmosphere
 
+	/// Fallback turf in case area has none.
+	var/base_turf = /turf/space
+
 /datum/space_level/New()
 	var/list/traits_map = list()
 

@@ -1,4 +1,5 @@
 /area/generated/planetoid/asteroid
+	base_turf = /turf/space
 
 /datum/map_generator/planet_generator/asteroid
 	mountain_height = 0.25

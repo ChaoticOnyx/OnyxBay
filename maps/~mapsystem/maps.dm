@@ -325,28 +325,21 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	return result
 
-/**
- * THEORETICALLY it would be easier to change all space turfs.
- * However, I do not want to fuck with cleaning space turfs from excess shit and space stragglers.
- * That's one bad decision from Filatelele.
- * One giant problem for our coderbus.
- */
-/datum/map/proc/apply_ftl_mask()
-	for(var/level = 1; level <= length(map_levels); level++)
-		var/datum/space_level/L = map_levels[level]
-		if(!L.has_trait(ZTRAIT_STATION))
+/datum/map/proc/apply_mask(turf_type = /turf/space)
+	var/list/areas_to_clean = list()
+
+	for(var/type in GLOB.areas_by_type)
+		var/area/A = GLOB.areas_by_type[type]
+		if(!is_space_or_mapgen_area(A))
 			continue
 
-		var/datum/map_template/ftl_mask = L.ftl_mask
-		var/turf/spawnloc = locate(1, 1, level)
-		ftl_mask.load(spawnloc, clear_contents = TRUE)
+		areas_to_clean |= A
 
-/datum/map/proc/apply_mapgen_mask()
-	for(var/level = 1; level <= length(map_levels); level++)
-		var/datum/space_level/L = map_levels[level]
-		if(!L.has_trait(ZTRAIT_STATION))
-			continue
+	var/list/ship_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
+	for(var/area/A in areas_to_clean)
+		for(var/turf/T in A.contents)
+			if(!(T.z in ship_z))
+				continue
 
-		var/datum/map_template/mapgen_mask = L.mapgen_mask
-		var/turf/spawnloc = locate(1, 1, level)
-		mapgen_mask.load(spawnloc, clear_contents = TRUE)
+			T.empty(/turf/space)
+			CHECK_TICK

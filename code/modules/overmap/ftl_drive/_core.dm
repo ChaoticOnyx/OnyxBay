@@ -1,6 +1,6 @@
 /obj/machinery/ftl_drive
 	anchored = TRUE
-	icon = 'icons/obj/artillery.dmi'
+	icon = 'icons/obj/ftl_drive.dmi'
 	var/initial_id_tag = "ftl"
 
 /obj/machinery/ftl_drive/core
@@ -9,7 +9,7 @@
 	use_power = POWER_USE_OFF
 	power_channel = STATIC_EQUIP
 	idle_power_usage = 1600
-	icon_state = "bsd"
+	icon_state = "center"
 	light_color = COLOR_BLUE
 	var/obj/machinery/computer/ship/ftl/ftl_computer
 	var/ftl_flags = FTL_DRIVE_MAKES_ANNOUNCEMENT
@@ -50,6 +50,18 @@
 	add_think_ctx("start_jump", CALLBACK(src, nameof(.proc/start_jump)), 0)
 	add_think_ctx("execute_jump", CALLBACK(src, nameof(.proc/execute_jump)), 0)
 	add_think_ctx("jump_end", CALLBACK(src, nameof(.proc/jump_end)), 0)
+
+/obj/machinery/ftl_drive/core/on_update_icon()
+	var/obj/machinery/ftl_drive/left = locate() in get_step(src, WEST)
+	var/obj/machinery/ftl_drive/right = locate() in get_step(src, EAST)
+	if(istype(left) && istype(right))
+		icon_state = "center"
+
+	if(!istype(left) && istype(right))
+		icon_state = "left"
+
+	if(istype(left) && !istype(right))
+		icon_state = "right"
 
 /obj/machinery/ftl_drive/core/proc/find_ports()
 	pass()
@@ -131,7 +143,7 @@
 	ftl_computer.linked?.relay('sound/effects/ship/FTL_loop.ogg', null, loop = TRUE, channel = SOUND_CHANNEL_FTL_MANIFOLD)
 	SSskybox.reinstate_skyboxes("ftl", FALSE)
 
-	GLOB.using_map.apply_ftl_mask()
+	GLOB.using_map.apply_mask(/turf/space/transit/east)
 	INVOKE_ASYNC(src, nameof(.proc/do_effects), curr.dist(target_system))
 
 	set_next_think_ctx("jump_end", world.time + jump_duration, target_system, force)

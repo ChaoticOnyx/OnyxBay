@@ -1,5 +1,4 @@
 /area/generated/planetoid/ice
-	area_flags = AREA_FLAG_CAVES_ALLOWED
 	base_turf = /turf/simulated/floor/asteroid/snow
 
 /datum/map_generator/planet_generator/snow

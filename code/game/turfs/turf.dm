@@ -12,6 +12,12 @@
 
 	var/open_turf_type // Which open turf type to use by default above this turf in a multiz context. Overridden by area.
 
+	/// Used in multi-z context. Applied during ChangeTurf if it has another level above.
+	var/ceiling_type = /turf/simulated/open
+
+	/// Used in multi-z context. Applied during ChangeTurf if it has another level above and its area is /area/space.
+	var/airless_celing_type = /turf/simulated/open
+
 	// Initial air contents (in moles)
 	var/list/initial_gas
 
@@ -91,7 +97,7 @@
 	else
 		luminosity = 1
 
-	if(!mapload)
+	if(!mapload && !istype(src, /turf/space))
 		SSair.mark_for_update(src)
 
 	RecalculateOpacity()

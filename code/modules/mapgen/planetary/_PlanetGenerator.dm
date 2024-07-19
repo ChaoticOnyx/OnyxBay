@@ -71,8 +71,7 @@
 		// This generates a CA for the entire game map, which is sort of inefficient, but not too big a deal.
 		string_gen = rustg_cnoise_generate("[initial_closed_chance]", "[smoothing_iterations]", "[birth_limit]", "[death_limit]", "[world.maxx]", "[world.maxy]")
 
-	//primary_area = GLOB.areas_by_type[primary_area_type] || new primary_area_type
-	primary_area = new primary_area_type
+	primary_area = GLOB.areas_by_type[primary_area_type] || new primary_area_type
 	cave_area = GLOB.areas_by_type[cave_area_type] || new cave_area_type
 
 	turf_biome_cache = list()
@@ -176,3 +175,6 @@
 	return sel_biome
 
 #undef BIOME_RANDOM_SQUARE_DRIFT
+
+/area/generated/planetoid
+	area_flags = AREA_FLAG_UNIQUE_AREA | AREA_FLAG_ALLOW_WEATHER | AREA_FLAG_CAVES_ALLOWED | AREA_FLAG_FLORA_ALLOWED | AREA_FLAG_NO_STATION

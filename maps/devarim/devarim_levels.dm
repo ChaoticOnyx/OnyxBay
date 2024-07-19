@@ -5,8 +5,6 @@
 		ZTRAIT_CONTACT
 	)
 	travel_chance = 10
-	ftl_mask = /datum/map_template/devarim_ftl_1
-	mapgen_mask = /datum/map_template/devarim_mapgen_1
 
 /datum/space_level/devarim_2
 	path = 'devarim-2.dmm'
@@ -15,8 +13,6 @@
 		ZTRAIT_CONTACT
 	)
 	travel_chance = 10
-	ftl_mask = /datum/map_template/devarim_ftl_2
-	mapgen_mask = /datum/map_template/devarim_mapgen_2
 
 /datum/map_template/devarim_ftl_1
 	name = "devarim ftl passthrough"

@@ -1,5 +1,4 @@
 /area/generated/planetoid/lava
-	area_flags = AREA_FLAG_CAVES_ALLOWED
 	base_turf = /turf/simulated/floor/asteroid/basalt/lavaplanet
 
 /datum/map_generator/planet_generator/lava

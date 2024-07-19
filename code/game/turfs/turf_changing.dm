@@ -13,8 +13,12 @@
 // Called after turf replaces old one
 /turf/proc/post_change()
 	levelupdate()
-	var/turf/simulated/open/T = GetAbove(src)
-	if(istype(T))
+	var/turf/T = GetAbove(src)
+	if(istype(T, /turf/space) || (density && istype(T, /turf/simulated/open)))
+		var/new_turf_type = density ? (istype(T.loc, /area/space) ? airless_celing_type : ceiling_type) : ceiling_type
+		T.ChangeTurf(new_turf_type)
+
+	if(istype(T, /turf/simulated/open))
 		T.update_icon()
 
 //Creates a new turf
@@ -194,3 +198,16 @@
 /turf/simulated/shuttle/wall/corner/transport_properties_from(turf/simulated/other)
 	. = ..()
 	reset_base_appearance()
+
+/// Clear turf and its contents
+/turf/proc/empty(turf_type = /turf/space, list/ignore_typecache)
+	// Remove all atoms except observers, landmarks, docking ports
+	var/static/list/ignored_atoms = typecacheof(list(/mob/dead, /obj/effect/landmark))
+	var/list/allowed_contents = typecache_filter_list_reverse(get_all_contents_ignoring(ignore_typecache), ignored_atoms)
+	allowed_contents -= src
+	for(var/i in 1 to allowed_contents.len)
+		var/thing = allowed_contents[i]
+		qdel(thing, force = TRUE)
+
+	if(turf_type)
+		ChangeTurf(turf_type, TRUE, TRUE)

@@ -893,14 +893,16 @@
 		return
 
 	// Preventing people from watching at an empty space
-	stop_piloting(pilot)
-	stop_piloting(gunner)
+	if(pilot)
+		stop_piloting(pilot)
+	if(gunner)
+		stop_piloting(gunner)
 
 	var/datum/star_system/SS = SSstar_system.ships[src]["current_system"]
 	SS.remove_ship(src, overmap, remove_fully = FALSE)
 	SSstar_system.ships[src]["landed"] = TRUE
 
-	GLOB.using_map.apply_mapgen_mask()
+	GLOB.using_map.apply_mask()
 	var/list/spawned = block(
 		locate(1, 1, 1),
 		locate(world.maxx, world.maxy, 1)
@@ -917,11 +919,13 @@
 	sound.output_atoms |= areas_to_play
 	sound.start()
 
-	var/list/mask_predicates = area_repository.get_areas_by_name(/proc/is_space_or_mapgen_area)
 	var/list/areas_to_mask = list()
 
-	for(var/name in mask_predicates)
-		var/area/A = mask_predicates[name]
+	for(var/type in GLOB.areas_by_type)
+		var/area/A = GLOB.areas_by_type[type]
+		if(!is_space_or_mapgen_area(A))
+			continue
+
 		areas_to_mask |= A
 		var/icon/clouds = new('icons/effects/weather_effects.dmi', "clouds_fast")
 		clouds.Blend(COLOR_BLUE_LIGHT, ICON_MULTIPLY)
@@ -969,11 +973,13 @@
 
 	sleep (5 SECONDS)
 
-	var/list/mask_predicates = area_repository.get_areas_by_name(/proc/is_space_or_mapgen_area)
 	var/list/areas_to_mask = list()
 
-	for(var/name in mask_predicates)
-		var/area/A = mask_predicates[name]
+	for(var/type in GLOB.areas_by_type)
+		var/area/A = GLOB.areas_by_type[type]
+		if(!is_space_or_mapgen_area(A))
+			continue
+
 		areas_to_mask |= A
 		var/icon/clouds = new('icons/effects/weather_effects.dmi', "clouds_fast")
 		clouds.Blend(COLOR_BLUE_LIGHT, ICON_MULTIPLY)
@@ -988,7 +994,7 @@
 
 	sleep(4 SECONDS)
 
-	GLOB.using_map.apply_mapgen_mask()
+	GLOB.using_map.apply_mask()
 
 	sleep(2 SECONDS)
 

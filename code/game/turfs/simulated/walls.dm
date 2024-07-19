@@ -12,6 +12,9 @@
 	hitby_sound = 'sound/effects/metalhit2.ogg'
 	explosion_block = 1
 
+	ceiling_type = /turf/simulated/floor/plating
+	airless_celing_type = /turf/simulated/floor/plating/airless
+
 	rad_resist_type = /datum/rad_resist/wall
 
 	var/damage = 0

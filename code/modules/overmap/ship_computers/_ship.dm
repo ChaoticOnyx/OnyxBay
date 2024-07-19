@@ -9,14 +9,12 @@
 	var/position = null
 	var/can_sound = TRUE
 	var/sound_cooldown = 10 SECONDS
-	var/list/ui_users = list()
 
-	var/datum/action/innate/cancel_camera/off_action = /datum/action/innate/cancel_camera
+	var/off_action = /datum/action/innate/cancel_camera
 	var/list/actions = list()
 
 /obj/machinery/computer/ship/Initialize(mapload)
 	. = ..()
-	actions += new off_action(src)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer/ship/LateInitialize()
@@ -31,8 +29,10 @@
 		return
 
 	tgui_interact(user)
-	for(var/datum/action/action in actions)
-		action.Grant(user)
+	var/datum/action/innate/cancel_camera/new_act = new off_action()
+	new_act.target = src
+	actions[user] = new_act
+	new_act.Grant(user)
 
 /obj/machinery/computer/ship/proc/relay_sound(sound, message)
 	if(!can_sound)
@@ -73,24 +73,29 @@
 	if(!position)
 		return TRUE
 
-	ui_users += user
-	register_signal(user, SIGNAL_QDELETING, nameof(.proc/release))
-	register_signal(user, SIGNAL_LOGGED_OUT, nameof(.proc/release))
-	register_signal(user, SIGNAL_MOB_DEATH, nameof(.proc/release))
-	register_signal(user, SIGNAL_MOVED, nameof(.proc/release))
+	register_signal(user, list(SIGNAL_QDELETING, SIGNAL_LOGGED_OUT, SIGNAL_MOB_DEATH, SIGNAL_MOVED), nameof(.proc/release))
 	return linked.start_piloting(user, position)
 
+/obj/machinery/computer/ship/proc/release(atom/releasee)
+	unregister_signal(releasee, list(SIGNAL_QDELETING, SIGNAL_LOGGED_OUT, SIGNAL_MOB_DEATH, SIGNAL_MOVED))
+	var/mob/former_user = releasee
+	if(!istype(former_user))
+		return
+
+	var/datum/action/innate/cancel_camera/cc = actions[former_user]
+	if(!istype(cc))
+		return
+
+	actions[former_user] = null
+	actions -= former_user
+	cc.release()
+
 /obj/machinery/computer/ship/Destroy()
-	for(var/mob/living/M in ui_users)
-		ui_close(M)
-		linked?.stop_piloting(M)
-		unregister_signal(M, SIGNAL_QDELETING)
-		unregister_signal(M, SIGNAL_LOGGED_OUT)
-		unregister_signal(M, SIGNAL_MOB_DEATH)
-		unregister_signal(M, SIGNAL_MOVED)
+	for(var/mob/living/M in actions)
+		release(M)
 
 	linked = null
-	ui_users.Cut()
+	actions.Cut()
 	return ..()
 
 /obj/machinery/computer/ship/viewscreen
@@ -141,7 +146,8 @@
 	if(!owner || !isliving(owner))
 		return
 
-	release()
+	var/obj/machinery/computer/ship/computer = target
+	computer?.release(owner)
 
 /datum/action/innate/cancel_camera/proc/release()
 	var/obj/machinery/computer/ship/computer = target
