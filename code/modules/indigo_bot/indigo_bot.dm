@@ -1,5 +1,35 @@
 GLOBAL_DATUM_INIT(indigo_bot, /datum/indigo_bot, new)
 
+/client/verb/connect_account()
+	set name = "Connect Account"
+	set category = "OOC"
+	set desc = "Connect your BYOND and Discord accounts together."
+
+	var/static/list/cooldowns = list()
+
+	if(!cooldowns[usr.ckey])
+		cooldowns[usr.ckey] = world.time
+
+	var/datum/indigo_bot/B = GLOB.indigo_bot
+	if(!B.is_enabled())
+		to_chat(usr, SPAN_WARNING("The service is not available yet"))
+		return
+
+	THROTTLE_SHARED(cd, 1 SECOND, cooldowns[usr.ckey])
+
+	var/list/bot_identity = json_decode(B.identity())
+	var/tfa_secret = tgui_input_text(usr, "Enter here your 2FA token. That token you can get from the Discord bot '[bot_identity["name"]]#[bot_identity["discriminator"]]' by DM him with the command '!2fa'", "Connect Account")
+
+	if(!tfa_secret)
+		return
+
+	var/datum/http_response/response = B.connect_byond(url_encode(tfa_secret), ckey)
+
+	if(response.status_code == 200)
+		to_chat(usr, SPAN_NOTICE("Your account is now connected!"))
+	else
+		to_chat(usr, SPAN_DANGER("Your token is invalid or something went wrong, contact developers (code: [response.status_code])"))
+
 /datum/indigo_bot/proc/is_enabled()
 	return config.indigo_bot.address != null
 
@@ -28,6 +58,18 @@ GLOBAL_DATUM_INIT(indigo_bot, /datum/indigo_bot, new)
 		stoplag()
 
 	return R.into_response()
+
+/datum/indigo_bot/proc/connect_byond(tfa_secret, ckey)
+	var/datum/http_request/R = new()
+	R.prepare(RUSTG_HTTP_METHOD_POST, "/api/connect/byond", json_encode(list(
+		"tfa_secret" = tfa_secret,
+		"ckey" = ckey,
+	)), list(
+		"Content-Type" = "application/json",
+		"Authorization" = "Bearer [config.indigo_bot.secret]"
+	), "")
+
+	return __send(R, TRUE)
 
 /datum/indigo_bot/proc/chat_webhook(secret, message)
 	if(secret == null)
