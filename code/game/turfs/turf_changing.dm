@@ -13,8 +13,12 @@
 // Called after turf replaces old one
 /turf/proc/post_change()
 	levelupdate()
-	var/turf/simulated/open/T = GetAbove(src)
-	if(istype(T))
+	var/turf/T = GetAbove(src)
+	if(istype(T, /turf/space) || (density && istype(T, /turf/simulated/open)))
+		var/new_turf_type = density ? (istype(T.loc, /area/space) ? airless_celing_type : ceiling_type) : ceiling_type
+		T.ChangeTurf(new_turf_type)
+
+	if(istype(T, /turf/simulated/open))
 		T.update_icon()
 
 //Creates a new turf

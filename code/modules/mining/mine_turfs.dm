@@ -1036,5 +1036,8 @@ var/list/mining_floors = list()
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 	temperature = 15 CELSIUS
 
+	ceiling_type = /turf/simulated/floor/asteroid/waste
+	airless_celing_type = /turf/simulated/floor/asteroid/waste
+
 /turf/simulated/wall/mineral/Initialize(mapload)
 	. = ..(mapload, MATERIAL_WASTELAND, MATERIAL_WASTELAND) //3strong

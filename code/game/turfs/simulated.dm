@@ -13,13 +13,6 @@
 	var/max_fire_temperature_sustained = 0 //The max temperature of the fire which it was subjected to
 	var/dirt = 0
 
-/turf/simulated/post_change()
-	..()
-	var/turf/T = GetAbove(src)
-	if(istype(T,/turf/space) || (density && istype(T, /turf/simulated/open)))
-		var/new_turf_type = density ? (istype(T.loc, /area/space) ? /turf/simulated/floor/plating/airless : /turf/simulated/floor/plating) : /turf/simulated/open
-		T.ChangeTurf(new_turf_type)
-
 // This is not great.
 /turf/simulated/proc/wet_floor(wet_val = 1, overwrite = FALSE)
 	if(wet_val < wet && !overwrite)
