@@ -29,14 +29,6 @@
 			playsound(src, 'sound/effects/fighting/punch4.ogg', 50, 1)
 			if(damtype == "brute")
 				step_away(M,src,15)
-			/*
-			if(M.stat>1)
-				M.gib()
-				melee_can_hit = 0
-				if(do_after(melee_cooldown))
-					melee_can_hit = 1
-				return
-			*/
 
 			var/hit_zone = ran_zone()
 			switch(damtype)

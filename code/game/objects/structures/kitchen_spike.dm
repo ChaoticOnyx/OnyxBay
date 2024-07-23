@@ -89,7 +89,7 @@
 			SPAN_WARNING("[user] is trying to pull you off \the [src], opening up fresh wounds!"),\
 			SPAN("italics", "You hear a squishy wet noise.</span>"))
 		unbuckling = TRUE
-		if(!do_after(user, delay = 150, target = src))
+		if(!do_after(user, delay = 150, target = src, luck_check_type = LUCK_CHECK_COMBAT))
 			if(M && M == buckled_mob)
 				M.visible_message(\
 				SPAN_WARNING("[user] fails to free [M]!"),\
@@ -102,7 +102,7 @@
 		SPAN_WARNING("You struggle to break free from \the [src], exacerbating your wounds!"),\
 		SPAN("italics", "You hear a wet squishing noise."))
 		M.adjustBruteLoss(30)
-		if(!do_after(M, delay = 600, target = src))
+		if(!do_after(M, delay = 600, target = src, luck_check_type = LUCK_CHECK_COMBAT))
 			if(M && M == buckled_mob)
 				to_chat(M, SPAN("warning", "You fail to free yourself!"))
 			return
@@ -126,7 +126,7 @@
 	var/mob/living/carbon/human/H = buckled_mob
 	if (!istype(H))
 		to_chat(user, SPAN_NOTICE("You start to butcher [buckled_mob] with your [I]..."))
-		if (!do_after(user, delay = 100, target = buckled_mob))
+		if (!do_after(user, delay = 100, target = buckled_mob, luck_check_type = LUCK_CHECK_COMBAT))
 			return
 		var/slab_name = buckled_mob.name
 		var/slab_count = 3
@@ -203,7 +203,7 @@
 		SPAN_NOTICE("You try to butcher [H]'s [butchered_organ_name]..."),\
 		SPAN("italics", "You hear a wet squishing noise.</span>"))
 
-	if (do_after(user, delay = 20, target = H))
+	if (do_after(user, delay = 20, target = H, luck_check_type = LUCK_CHECK_COMBAT))
 		if (istype(C))
 			if (C.butchering_capacity <= 0)
 				return

@@ -367,7 +367,7 @@
 
 			playsound(src, 'sound/items/Crowbar.ogg', 50, 1)
 			to_chat(user, "You begin to disassemble \the [src]!")
-			if(do_after(usr, 50 * cur_coils, src)) // More coils = takes longer to disassemble. It's complex so largest one with 6 coils will take 30s
+			if(do_after(usr, 50 * cur_coils, src, luck_check_type = LUCK_CHECK_ENG)) // More coils = takes longer to disassemble. It's complex so largest one with 6 coils will take 30s
 				if (failure_probability && prob(failure_probability))
 					total_system_failure(failure_probability, user)
 					return

@@ -125,7 +125,7 @@
 			if(G.force_danger())
 				G.assailant.next_move = world.time + 13 //also should prevent user from triggering this repeatedly
 				visible_message("<span class='warning'>[G.assailant] starts putting [G.affecting] on \the [src].</span>")
-				if(!do_after(G.assailant, 13))
+				if(!do_after(G.assailant, 13, luck_check_type = LUCK_CHECK_COMBAT))
 					return FALSE
 
 				if(!G) //check that we still have a grab

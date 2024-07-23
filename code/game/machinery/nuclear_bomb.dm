@@ -102,7 +102,7 @@ var/bomb_set
 				if(isCrowbar(O))
 					user.visible_message("[user] starts forcing open the bolt covers on [src].", "You start forcing open the anchoring bolt covers with [O]...")
 
-					if(do_after(user, 15, src))
+					if(do_after(user, 15, src, luck_check_type = LUCK_CHECK_ENG) && !QDELETED(src))
 						if(!src || !user) return
 						user.visible_message("\The [user] forces open the bolt covers on \the [src].", "You force open the bolt covers.")
 						removal_stage = 2
@@ -125,7 +125,7 @@ var/bomb_set
 			if(3)
 				if(isWrench(O))
 					user.visible_message("[user] begins unwrenching the anchoring bolts on [src].", "You begin unwrenching the anchoring bolts...")
-					if(do_after(user, 50, src))
+					if(do_after(user, 50, src, luck_check_type = LUCK_CHECK_ENG) && !QDELETED(src))
 						if(!src || !user) return
 						user.visible_message("[user] unwrenches the anchoring bolts on [src].", "You unwrench the anchoring bolts.")
 						removal_stage = 4
@@ -134,7 +134,7 @@ var/bomb_set
 			if(4)
 				if(isCrowbar(O))
 					user.visible_message("[user] begins lifting [src] off of the anchors.", "You begin lifting the device off the anchors...")
-					if(do_after(user, 80, src))
+					if(do_after(user, 80, src, luck_check_type = LUCK_CHECK_ENG) && !QDELETED(src))
 						if(!src || !user) return
 						user.visible_message("\The [user] crowbars \the [src] off of the anchors. It can now be moved.", "You jam the crowbar under the nuclear device and lift it off its anchors. You can now move it!")
 						anchored = 0

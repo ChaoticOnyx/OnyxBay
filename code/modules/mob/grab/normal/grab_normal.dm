@@ -272,7 +272,7 @@
 	user.visible_message("<span class='danger'>\The [user] begins to slit [affecting]'s throat with \the [W]!</span>")
 
 	user.next_move = world.time + 30 //also should prevent user from triggering this repeatedly
-	if(!do_after(user, 30))
+	if(!do_after(user, 30, luck_check_type = LUCK_CHECK_COMBAT))
 		return 0
 	if(!(G && G.affecting == affecting)) //check that we still have a grab
 		return 0
@@ -324,7 +324,7 @@
 	user.visible_message("<span class='danger'>\The [user] begins to slit [affecting]'s cheeks with \the [W]!</span>")
 
 	user.next_move = world.time + 30
-	if(!do_after(user, 30))
+	if(!do_after(user, 30, luck_check_type = LUCK_CHECK_COMBAT))
 		return 0
 	if(!(G && G.affecting == affecting)) //check that we still have a grab
 		return 0
@@ -362,7 +362,7 @@
 	user.visible_message("<span class='danger'>\The [user] begins to cut \the [affecting]'s [O.tendon_name] with \the [W]!</span>")
 	user.next_move = world.time + 20
 
-	if(!do_after(user, 20, progress=0))
+	if(!do_after(user, 20, progress=0, , luck_check_type = LUCK_CHECK_COMBAT))
 		return 0
 	if(!(G && G.affecting == affecting)) //check that we still have a grab
 		return 0
@@ -396,7 +396,7 @@
 	user.visible_message("<span class='danger'>\The [user] aims \his [W.name] at [affecting]'s eyes!</span>")
 
 	user.next_move = world.time + 25
-	if(!do_after(user, 25))
+	if(!do_after(user, 25, , luck_check_type = LUCK_CHECK_COMBAT))
 		return 0
 	if(!(G && G.affecting == affecting)) //check that we still have a grab
 		return 0
@@ -428,7 +428,7 @@
 
 	if(!eyes)
 		return 0 //rare case of the victim's eyes being removed by someone faster than us
-	if(!do_after(user, 50))
+	if(!do_after(user, 50, , luck_check_type = LUCK_CHECK_COMBAT))
 		return 0
 	if(!(G && G.affecting == affecting)) //check that we still have a grab
 		return 0

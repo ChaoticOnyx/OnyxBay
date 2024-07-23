@@ -174,7 +174,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 			to_chat(user, SPAN("notice", "You think you're being silly trying to reset the DNA profile from \the [src] because there is no DNA profile here."))
 			return
 		hack_in_progress = TRUE
-		if(do_after(user, 10 SECOND, src) && prob(25))
+		if(do_after(user, 10 SECOND, src, luck_check_type = LUCK_CHECK_COMBAT) && prob(25))
 			hack_in_progress = FALSE
 			if(--hacks_remains)
 				to_chat(user, SPAN("notice", "\The [src] cracks, after a few tries, you will be able to reset the DNA lock."))

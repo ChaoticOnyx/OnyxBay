@@ -874,6 +874,37 @@
 			//M.client = null
 			qdel(M.client)
 
+	else if(href_list["hellban"])
+		if(!check_rights(R_BAN))
+			return
+
+		var/mob/M = locate(href_list["hellban"])
+		if(!ismob(M))
+			to_chat(usr, "This can only be used on instances of type /mob")
+			return
+
+		if(!M.ckey)
+			to_chat(usr, "This mob has no ckey")
+			return
+
+		var/type = tgui_input_list(usr, "Choose luckban type", "Hellban", list(LUCK_CHECK_GENERAL, LUCK_CHECK_COMBAT, LUCK_CHECK_ENG, LUCK_CHECK_MED, LUCK_CHECK_RND))
+		if(!type)
+			return
+
+		var/duration = tgui_input_number(usr, "Choose the duration (ROUNDS!!!)", "Hellban", 0, 1000, 1, round_value = TRUE)
+		if(!duration)
+			return
+
+		var/level = tgui_input_number(usr, "Select luck level", "Hellban", 100, 100, 0, round_value = TRUE)
+		if(!duration)
+			return
+
+		var/confirmation = tgui_alert(usr, "Luckban [M.ckey], lucktype [type], luck level [level], duration: [duration].", "Hellban", list("Yes", "No"))
+		if(confirmation == "No")
+			return
+
+		M.client.write_luck(type, level, duration)
+
 	else if(href_list["removejobban"])
 		if(!check_rights(R_BAN))	return
 

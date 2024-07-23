@@ -31,7 +31,7 @@
 			if(R.opened)
 				fix_robot(R, user)
 			else
-				if(do_after(user, 10))
+				if(do_after(user, 10, luck_check_type = LUCK_CHECK_MED))
 					fix_robot(R, user)
 
 	if (istype(M,/mob/living/carbon/human))		//Repairing robolimbs

@@ -412,7 +412,7 @@
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 			to_chat(user, "You are trying to remove the power control board...")//lpeters - fixed grammar issues
 
-			if(do_after(user, 50, src))
+			if(do_after(user, 50, src, luck_check_type = LUCK_CHECK_ENG))
 				if (has_electronics==1)
 					has_electronics = 0
 					if ((stat & BROKEN))
@@ -512,7 +512,7 @@
 		user.visible_message("<span class='warning'>[user.name] adds cables to the APC frame.</span>", \
 							"You start adding cables to the APC frame...")
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-		if(do_after(user, 20, src))
+		if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 			if (C.amount >= 10 && !terminal && opened && has_electronics != 2)
 				var/obj/structure/cable/N = T.get_cable_node()
 				if (prob(50) && electrocute_mob(usr, N, N))
@@ -535,7 +535,7 @@
 		user.visible_message("<span class='warning'>[user.name] dismantles the power terminal from [src].</span>", \
 							"You begin to cut the cables...")
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-		if(do_after(user, 50, src))
+		if(do_after(user, 50, src, luck_check_type = LUCK_CHECK_ENG))
 			if(terminal && opened && has_electronics!=2)
 				if (prob(50) && electrocute_mob(usr, terminal.powernet, terminal))
 					var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -550,7 +550,7 @@
 		user.visible_message("<span class='warning'>[user.name] inserts the power control board into [src].</span>", \
 							"You start to insert the power control board into the frame...")
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-		if(do_after(user, 10, src))
+		if(do_after(user, 10, src, luck_check_type = LUCK_CHECK_ENG))
 			if(has_electronics==0)
 				has_electronics = 1
 				reboot() //completely new electronics
@@ -600,7 +600,7 @@
 			return
 		user.visible_message("<span class='warning'>[user.name] replaces the damaged APC frame with a new one.</span>",\
 							"You begin to replace the damaged APC frame...")
-		if(do_after(user, 50, src))
+		if(do_after(user, 50, src, luck_check_type = LUCK_CHECK_ENG))
 			user.visible_message(\
 				"<span class='notice'>[user.name] has replaced the damaged APC frame with new one.</span>",\
 				"You replace the damaged APC frame with new one.")
@@ -661,7 +661,7 @@
 			to_chat(user, "Nothing happens.")
 		else
 			flick("apc-spark", src)
-			if (do_after(user,6,src))
+			if (do_after(user,6,src, luck_check_type = LUCK_CHECK_ENG))
 				if(prob(50))
 					playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 					emagged = 1

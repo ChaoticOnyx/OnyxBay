@@ -219,7 +219,7 @@
 
 	user.visible_message(SPAN("danger", "\The [user] starts to put \the [victim] into \the [src]!"))
 	add_fingerprint(user)
-	if(do_after(user, 30, src) && victim.Adjacent(src) && user.Adjacent(src) && victim.Adjacent(user) && length(mobs_to_process) < mob_capacity)
+	if(do_after(user, 30, src, luck_check_type = LUCK_CHECK_COMBAT) && victim.Adjacent(src) && user.Adjacent(src) && victim.Adjacent(user) && length(mobs_to_process) < mob_capacity)
 		user.visible_message(SPAN("danger", "\The [user] stuffs \the [victim] into \the [src]!"))
 		move_inside(victim)
 		update_icon()

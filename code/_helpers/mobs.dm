@@ -199,9 +199,15 @@
 	if(!can_multitask)
 		LAZYREMOVE(GLOB.domobs, uniqueid)
 
-/proc/do_after(mob/user, delay, atom/target = null, needhand = TRUE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = FALSE, can_move = FALSE, datum/callback/extra_checks)
+/proc/do_after(mob/user, delay, atom/target = null, needhand = TRUE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = FALSE, can_move = FALSE, luck_check_type = LUCK_CHECK_GENERAL, datum/callback/extra_checks)
 	if(!user)
 		return FALSE
+
+	if(luck_check_type)
+		var/user_luck = user.client?.get_luck_for_type(luck_check_type)
+		if(user_luck != 100 && !prob(user_luck))
+			target?.show_splash_text(user, "You fail!", SPAN_DANGER("You fail, miserably!"))
+			return
 
 	var/uniqueid = "doafter_\ref[user]_\ref[target]"
 	if(uniqueid in GLOB.doafters)

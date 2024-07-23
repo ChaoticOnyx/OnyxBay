@@ -259,6 +259,10 @@
 		to_chat(attacker, SPAN("warning", "[victim] is missing the body part you tried to grab!"))
 		return FALSE
 
+	if(!prob(attacker.client?.get_luck_for_type(LUCK_CHECK_COMBAT)))
+		visible_message(SPAN_DANGER("[M] attempted to swing at \the [src], but failed miserably!"))
+		return
+
 	if(!grab_tag)
 		G = new attacker.current_grab_type(attacker, victim)
 	else

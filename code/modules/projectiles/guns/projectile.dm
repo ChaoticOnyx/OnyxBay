@@ -183,7 +183,7 @@
 /obj/item/gun/projectile/proc/unload_ammo(atom/movable/unloader, allow_dump = TRUE, dump_loc = null)
 	if(is_jammed)
 		unloader.visible_message("<b>[unloader]</b> begins to unjam [src].", "You clear the jam and unload [src]")
-		if(!do_after(unloader, 4, src))
+		if(!do_after(unloader, 4, src, luck_check_type = LUCK_CHECK_COMBAT))
 			return
 
 		is_jammed = 0

@@ -140,7 +140,7 @@
 
 /obj/item/floodlight_diy/attack_self(mob/user)
 	to_chat(usr, "<span class='notice'>You start piecing together the kit...</span>")
-	if(do_after(user, 80))
+	if(do_after(user, 80, src, luck_check_type = LUCK_CHECK_ENG) && !QDELETED(src))
 		var/obj/machinery/floodlight/R = new /obj/machinery/floodlight(user.loc)
 		user.visible_message("<span class='notice'>[user] assembles \a [R].\
 			</span>", "<span class='notice'>You assemble \a [R].</span>")

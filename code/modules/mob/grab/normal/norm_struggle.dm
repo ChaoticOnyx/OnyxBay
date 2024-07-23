@@ -48,7 +48,7 @@
 
 /datum/grab/normal/struggle/proc/resolve_struggle(obj/item/grab/G)
 	set waitfor = FALSE
-	if(do_after(G.assailant, upgrade_cooldown, G, can_move = 1))
+	if(do_after(G.assailant, upgrade_cooldown, G, can_move = 1, , luck_check_type = LUCK_CHECK_COMBAT))
 		G.done_struggle = TRUE
 		G.upgrade(TRUE)
 	else

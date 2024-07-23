@@ -58,7 +58,7 @@
 
 /obj/structure/barricade/material/proc/_deconstruct(mob/user)
 	show_splash_text(user, "starting deconstruction.", "You begin deconstructing <b>\the [src]</b>!")
-	if(do_after(user, 20, src))
+	if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 		show_splash_text(user, "barricade deconstucted.", "You deconstruct <b>\the [src]</b>!")
 		playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 
@@ -77,7 +77,7 @@
 		return
 
 	show_splash_text(user, "starting repair.", "You begin to repair <b>\the [src]</b>.")
-	if(do_after(user, 20, src) && damage != 0)
+	if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG) && damage != 0)
 		if(S.use(1))
 			damage = 0
 

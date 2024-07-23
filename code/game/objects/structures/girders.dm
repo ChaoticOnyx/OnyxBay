@@ -67,7 +67,7 @@
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			user.visible_message(SPAN("notice", "[user] is disassembling \the [src]..."), \
 					   	         SPAN("notice", "Now disassembling \the [src]..."))
-			if(do_after(user,40,src))
+			if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 				if(!src) return
 				user.visible_message(SPAN("notice", "[user] dissasembled \the [src]!"), \
 					        	     SPAN("notice", "You dissasembled \the [src]!"))
@@ -76,7 +76,7 @@
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			user.visible_message(SPAN("notice", "[user] is securing \the [src]..."), \
 					   	         SPAN("notice", "Now securing \the [src]..."))
-			if(do_after(user, 40,src))
+			if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 				if(QDELETED(src))
 					return
 				user.visible_message(SPAN("notice", "[user] secured \the [src]!"), \
@@ -88,7 +88,7 @@
 	else if((istype(W, /obj/item/gun/energy/plasmacutter) || (istype(W, /obj/item/melee/energy) && W.force > 20)) && user.a_intent == I_HELP)
 		user.visible_message(SPAN("notice", "[user] is slicing apart \the [src]..."), \
 				             SPAN("notice", "Now slicing apart \the [src]..."))
-		if(do_after(user,30,src))
+		if(do_after(user,30, src, luck_check_type = LUCK_CHECK_ENG))
 			if(QDELETED(src))
 				return
 
@@ -107,7 +107,7 @@
 		if(state == 2)
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 			to_chat(user, SPAN("notice", "Now unsecuring support struts of \the [src]..."))
-			if(do_after(user, 40, src))
+			if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 				if(!src) return
 				to_chat(user, SPAN("notice", "You unsecured support struts of \the [src]!"))
 				state = 1
@@ -120,7 +120,7 @@
 	else if(isWirecutter(W) && state == 1)
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		to_chat(user, SPAN("notice", "Now removing the support struts from \the [src]..."))
-		if(do_after(user, 40, src))
+		if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 			if(QDELETED(src))
 				return
 
@@ -136,7 +136,7 @@
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 		user.visible_message(SPAN("notice", "[user] is dislodging \the [src]..."), \
 				             SPAN("notice", "Now dislodging \the [src]..."))
-		if(do_after(user, 40, src))
+		if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 			if(QDELETED(src))
 				return
 
@@ -210,7 +210,7 @@
 	user.visible_message(SPAN("notice", "[user] is adding some planting to \the [src]..."), \
 				    	 SPAN("notice", "You begin adding the plating..."))
 
-	if(!do_after(user,40,src) || !S.use(2))
+	if(!do_after(user,40, src, luck_check_type = LUCK_CHECK_ENG) || !S.use(2))
 		return 1 //once we've gotten this far don't call parent attackby()
 
 	if(anchored)
@@ -248,7 +248,7 @@
 
 	user.visible_message(SPAN("notice", "[user] is reinforcing \the [src]..."), \
 				    	 SPAN("notice", "Now reinforcing \the [src]..."))
-	if (!do_after(user, 40,src) || !S.use(2))
+	if (!do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG) || !S.use(2))
 		return 1 //don't call parent attackby() past this point
 	user.visible_message(SPAN("notice", "[user] added reinforcement to \the [src]!"), \
 				    	 SPAN("notice", "You added reinforcement to \the [src]!"))
@@ -310,7 +310,7 @@
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 		user.visible_message(SPAN("notice", "[user] is disassembling \the [src]..."), \
 				   	         SPAN("notice", "Now disassembling \the [src]!"))
-		if(do_after(user,40,src))
+		if(do_after(user,40, src, luck_check_type = LUCK_CHECK_ENG))
 			if(!src) return
 			user.visible_message(SPAN("notice", "[user] dissasembled \the [src]!"), \
 				        	     SPAN("notice", "You dissasembled \the [src]!"))
@@ -319,7 +319,7 @@
 	else if((istype(W, /obj/item/gun/energy/plasmacutter) || (istype(W, /obj/item/melee/energy) && W.force > 20)) && user.a_intent == I_HELP)
 		user.visible_message(SPAN("notice", "[user] is slicing apart \the [src]..."), \
 				             SPAN("notice", "Now slicing apart \the [src]..."))
-		if(do_after(user,30,src))
+		if(do_after(user,30, src, luck_check_type = LUCK_CHECK_ENG))
 			if(!src) return
 			user.visible_message(SPAN("notice", "[user] slices apart \the [src]!"), \
 				             	 SPAN("notice", "You slice apart \the [src]!"))

@@ -145,7 +145,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 			M.visible_message(\
 				SPAN_NOTICE("[M] struggles to untie the noose over their neck."),\
 				SPAN_WARNING("You struggle to untie the noose over your neck!"))
-			if(!do_after(M, 15 SECONDS))
+			if(!do_after(M, 15 SECONDS, luck_check_type = LUCK_CHECK_COMBAT))
 				if(M?.buckled)
 					to_chat(M, SPAN_WARNING("You fail to untie yourself!"))
 				return
@@ -192,7 +192,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 			SPAN_DANGER("[user] attempts to tie \the [src] over [G.his] neck!"),\
 			SPAN_DANGER("You attempt to tie \the [src] over your neck!"))
 
-		if(do_after(user, 5 SECONDS))
+		if(do_after(user, 5 SECONDS, luck_check_type = LUCK_CHECK_COMBAT))
 			if(buckle_mob(M))
 				M.visible_message(\
 					SPAN_WARNING("[user] ties \the [src] over [G.his] neck!"),\
@@ -210,7 +210,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 			SPAN_DANGER("You ties \the [src] over your neck!"))
 		to_chat(user, SPAN_NOTICE("It will take 20 seconds and you have to stand still."))
 
-		if(do_after(user, 20 SECONDS))
+		if(do_after(user, 20 SECONDS, luck_check_type = LUCK_CHECK_COMBAT))
 			if(buckle_mob(M))
 				M.visible_message(\
 					SPAN_DANGER("[user] ties \the [src] over [M]'s neck!"),\

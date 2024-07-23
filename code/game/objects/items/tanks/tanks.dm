@@ -140,7 +140,7 @@ var/list/global/tank_gauge_cache = list()
 		if(wired && istype(assembly))
 
 			to_chat(user, "<span class='notice'>You carefully begin clipping the wires that attach to the tank.</span>")
-			if(do_after(user, 100,src))
+			if(do_after(user, 100, src, luck_check_type = LUCK_CHECK_ENG))
 				wired = FALSE
 				to_chat(user, "<span class='notice'>You cut the wire and remove the device.</span>")
 				assembly.master = null
@@ -154,7 +154,7 @@ var/list/global/tank_gauge_cache = list()
 					assembly.process_activation(src)
 
 		else if(wired)
-			if(!do_after(user, 10, src))
+			if(!do_after(user, 10, src, luck_check_type = LUCK_CHECK_ENG))
 				return
 
 			if(QDELETED(src))
@@ -170,7 +170,7 @@ var/list/global/tank_gauge_cache = list()
 	if(istype(W, /obj/item/device/assembly_holder))
 		if(wired)
 			to_chat(user, "<span class='notice'>You begin attaching the assembly to \the [src].</span>")
-			if(do_after(user, 50, src))
+			if(do_after(user, 50, src, luck_check_type = LUCK_CHECK_ENG))
 				to_chat(user, "<span class='notice'>You finish attaching the assembly to \the [src].</span>")
 				GLOB.bombers += "[key_name(user)] attached an assembly to a wired [src]. Temp: [CONV_KELVIN_CELSIUS(air_contents.temperature)]"
 				message_admins("[key_name_admin(user)] attached an assembly to a wired [src]. Temp: [CONV_KELVIN_CELSIUS(air_contents.temperature)]")

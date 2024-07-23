@@ -57,7 +57,7 @@
 				SPAN_NOTICE("You begin assembling \the [singular_name]."))
 		in_use = 1
 
-		if (!do_after(usr, 25))
+		if (!do_after(usr, 25, src, luck_check_type = LUCK_CHECK_ENG))
 			in_use = 0
 			return
 
@@ -89,7 +89,7 @@
 				SPAN_NOTICE("You begin assembling \the [singular_name]."))
 		in_use = 1
 
-		if (!do_after(usr, 40))
+		if (!do_after(usr, 40, src, luck_check_type = LUCK_CHECK_ENG))
 			in_use = 0
 			return
 

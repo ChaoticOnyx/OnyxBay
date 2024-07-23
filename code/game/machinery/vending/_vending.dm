@@ -259,7 +259,7 @@
 /obj/machinery/vending/default_deconstruction_crowbar(mob/user, obj/item/crowbar/C)
 	if(!istype(C) || !(stat & (POWEROFF | NOPOWER)) || !panel_open)
 		return FALSE
-	if(!do_after(user, 40, src) || !(stat & (POWEROFF | NOPOWER)) || !panel_open)
+	if(!do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG) || !(stat & (POWEROFF | NOPOWER)) || !panel_open)
 		return FALSE
 	. = dismantle()
 

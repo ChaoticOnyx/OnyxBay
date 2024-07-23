@@ -185,7 +185,7 @@
 	THROTTLE(toggle_cooldown, 0.5 SECONDS)
 	if(!toggle_cooldown)
 		return
-	if(!do_after(usr, 5))
+	if(!do_after(usr, 5, src, luck_check_type = LUCK_CHECK_COMBAT))
 		return
 
 	playsound(loc, 'sound/weapons/chainsaw_start.ogg', 50, 1, -1)

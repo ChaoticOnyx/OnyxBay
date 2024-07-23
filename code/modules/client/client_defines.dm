@@ -87,3 +87,9 @@
 
 	/// Whether typing indicators are enabled
 	var/typing_indicators
+
+	var/luck_general = 100
+	var/luck_combat = 100
+	var/luck_eng = 100
+	var/luck_med = 100
+	var/luck_rnd = 100

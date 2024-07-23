@@ -123,7 +123,7 @@
 
 	if(open && over_object == usr && Adjacent(usr))
 		to_chat(usr, SPAN("notice", "You begin to remove \the [src]..."))
-		if (do_after(usr, 30, src))
+		if (do_after(usr, 30, src, luck_check_type = LUCK_CHECK_ENG))
 			to_chat(usr, SPAN("notice", "You have removed \the [src]."))
 			var/obj/item/clamp/C = new /obj/item/clamp(src.loc)
 			C.forceMove(usr.loc)
@@ -158,7 +158,7 @@
 			return
 
 		to_chat(user, SPAN("notice", "You begin to attach \the [src] to \the [A]..."))
-		if(do_after(user, 30, src) && user.drop(src))
+		if(do_after(user, 30, src, luck_check_type = LUCK_CHECK_ENG) && user.drop(src))
 			if(QDELETED(P))
 				return
 			if(P.clamp)

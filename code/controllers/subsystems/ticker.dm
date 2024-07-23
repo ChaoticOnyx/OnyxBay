@@ -141,6 +141,7 @@ SUBSYSTEM_DEF(ticker)
 		Master.SetRunLevel(RUNLEVEL_POSTGAME)
 		end_game_state = END_GAME_READY_TO_END
 		INVOKE_ASYNC(src, nameof(.proc/declare_completion))
+		INVOKE_ASYNC(src, nameof(.proc/update_clients_luck))
 
 	else if(mode_finished && (end_game_state <= END_GAME_NOT_OVER))
 		end_game_state = END_GAME_MODE_FINISH_DONE
@@ -403,6 +404,13 @@ Helpers
 			return
 	message_staff("<span class='warning'><b>No active tickets remaining, restarting in [restart_timeout/10] seconds if an admin has not delayed the round end.</b></span>")
 	end_game_state = END_GAME_ENDING
+
+/datum/controller/subsystem/ticker/proc/update_clients_luck()
+	for(var/client/C in GLOB.clients)
+		if(isnewplayer(C.mob))
+			continue
+
+		C.update_luck()
 
 /datum/controller/subsystem/ticker/proc/declare_completion()
 	to_world("<br><br><br><H1>A round of [mode.name] has ended!</H1>")

@@ -49,7 +49,7 @@
 		if(direction == "Cancel")
 			fastening = 0
 			return
-		if(!QDELETED(src) && do_after(user, 10, src))
+		if(!QDELETED(src) && do_after(user, 10, src, luck_check_type = LUCK_CHECK_ENG))
 			if(!(loc_W == W.loc && loc_user == user.loc && Adjacent(user)))
 				fastening = 0
 				return

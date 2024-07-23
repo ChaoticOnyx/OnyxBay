@@ -96,7 +96,7 @@
 		return
 
 	user.visible_message("[user] wires \the [src].", "You start to wire \the [src].")
-	if(do_after(user, 40, src) && anchored)
+	if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG) && anchored)
 		if (C.use(1))
 			to_chat(user, SPAN_NOTICE("You wire \the [src]."))
 			state = STATE_WIRED
@@ -106,7 +106,7 @@
 	playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
 	user.visible_message("[user] cuts the wires from \the [src].", "You start to cut the wires from \the [src].")
 
-	if(do_after(user, 40, src))
+	if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 		to_chat(user, SPAN_NOTICE("You cut \the [src] wires!"))
 		new /obj/item/stack/cable_coil(loc, 1)
 		state = STATE_EMPTY
@@ -116,7 +116,7 @@
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	user.visible_message("[user] installs the signaller into \the [src].", "You start to install signaller into \the [src].")
 
-	if(do_after(user, 40, src))
+	if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 		if(!user.drop(W, src))
 			return
 
@@ -128,7 +128,7 @@
 /obj/structure/secure_door_assembly/proc/remove_signaler(mob/user)
 	user.visible_message("\The [user] starts removing the signaller from \the [src].", "You start removing the signaller from \the [src].")
 
-	if(do_after(user, 40, src))
+	if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 		to_chat(user, SPAN_NOTICE("You removed \the signaller!"))
 		state = STATE_WIRED
 		signaler.dropInto(loc)
@@ -139,7 +139,7 @@
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	to_chat(user, SPAN_NOTICE("Now finishing \the shutters."))
 
-	if(do_after(user, 40, src))
+	if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 		new door_path(loc, signaler?.code, signaler?.frequency, dir)
 		qdel(src)
 

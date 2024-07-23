@@ -28,7 +28,7 @@
 
 /obj/machinery/constructable_frame/proc/wrench_frame(mob/user)
 	playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
-	if(do_after(user, 20, src))
+	if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 		to_chat(user, SPAN_NOTICE("You [anchored ? "unwrench" : "wrench"] \the [src] [anchored ? "from" : "into"] place."))
 		anchored = !anchored
 
@@ -82,7 +82,7 @@
 		return
 	playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 	to_chat(user, SPAN("notice", "You start to add cables to \the [src]."))
-	if(do_after(user, 20, src) && state == STAGE_CABLE)
+	if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG) && state == STAGE_CABLE)
 		if(C.use(5))
 			to_chat(user, SPAN("notice", "You add cables to \the [src]."))
 			state = STAGE_CIRCUIT

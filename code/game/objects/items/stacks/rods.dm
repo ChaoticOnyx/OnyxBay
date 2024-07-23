@@ -108,7 +108,7 @@
 			return
 		to_chat(usr, SPAN("notice", "Assembling a window frame..."))
 		in_use = TRUE
-		if(!do_after(usr, 1 SECOND))
+		if(!do_after(usr, 1 SECOND, luck_check_type = LUCK_CHECK_ENG))
 			in_use = FALSE
 			return
 		in_use = FALSE
@@ -140,7 +140,7 @@
 			return
 		to_chat(usr, SPAN("notice", "Assembling grille..."))
 		in_use = 1
-		if(!do_after(usr, 1 SECOND))
+		if(!do_after(usr, 1 SECOND, luck_check_type = LUCK_CHECK_ENG))
 			in_use = 0
 			return
 		var/obj/structure/grille/F = new /obj/structure/grille(user.loc)

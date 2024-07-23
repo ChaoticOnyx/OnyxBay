@@ -59,7 +59,7 @@
 			return
 
 		if(isScrewdriver(W))
-			if(!do_after(user, 20, src))
+			if(!do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 				return
 
 			if(QDELETED(src))
@@ -72,7 +72,7 @@
 		if(isMultitool(W) && open && !hacking)
 			show_splash_text(user, "resetting internal memory...", "You begin resetting \the [src] internal memory...")
 			hacking = TRUE
-			if(!do_after(usr, 100, src))
+			if(!do_after(usr, 100, src, luck_check_type = LUCK_CHECK_ENG))
 				return
 
 			if(QDELETED(src))

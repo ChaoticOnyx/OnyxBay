@@ -168,7 +168,7 @@
 	// Dismantle
 	if(isWrench(W) && !anchored)
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-		if(do_after(user, 20, src))
+		if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 			user.visible_message("<span class='notice'>\The [user] dismantles \the [src].</span>", "<span class='notice'>You dismantle \the [src].</span>")
 			new material_path(get_turf(usr), 2)
 			qdel(src)
@@ -191,7 +191,7 @@
 	if(isScrewdriver(W))
 		user.visible_message(anchored ? "<span class='notice'>\The [user] begins unscrewing \the [src].</span>" : "<span class='notice'>\The [user] begins fasten \the [src].</span>" )
 		playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-		if(do_after(user, 10, src))
+		if(do_after(user, 10, src, luck_check_type = LUCK_CHECK_ENG))
 			to_chat(user, (anchored ? "<span class='notice'>You have unfastened \the [src] from the floor.</span>" : "<span class='notice'>You have fastened \the [src] to the floor.</span>"))
 			anchored = !anchored
 			update_icon()

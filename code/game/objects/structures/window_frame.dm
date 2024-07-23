@@ -613,7 +613,7 @@
 				to_chat(user, SPAN("warning", "\The [WINDOW] interferes with your attempts to place a windowpane."))
 				return
 			to_chat(user, SPAN("notice", "You start placing the [is_inner ? "inner " : ""]windowpane into \the [src]."))
-			if(do_after(user, 20, src))
+			if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 				for(var/obj/structure/window/WINDOW in loc) // checking this for a 2nd time to check if a window was made while we were waiting.
 					to_chat(user, SPAN("warning", "\The [WINDOW] interferes with your attempts to place a windowpane."))
 					return
@@ -646,7 +646,7 @@
 		var/old_state = affected.state
 		if(isScrewdriver(W) && affected.state >= 1)
 			to_chat(user, (affected.state == 1 ? SPAN("notice", "You begin fastening \the [affected.name] to the frame.") : SPAN("notice", "You begin unfastening \the [affected.name] from the frame.")))
-			if(!do_after(user, 10, src))
+			if(!do_after(user, 10, src, luck_check_type = LUCK_CHECK_ENG))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -658,7 +658,7 @@
 
 		if(isCrowbar(W) && affected.state <= 1)
 			to_chat(user, (affected.state == 0 ? SPAN("notice", "You begin prying \the [affected.name] into the frame.") : SPAN("notice", "You begin prying \the [affected.name] out of the frame.")))
-			if(!do_after(user, 10, src))
+			if(!do_after(user, 10, src, luck_check_type = LUCK_CHECK_ENG))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -670,7 +670,7 @@
 
 		if(isWrench(W) && affected.state == 0)
 			to_chat(user, SPAN("notice", "You begin dismantling \the [affected.name] from \the [src]."))
-			if(!do_after(user, 15, src))
+			if(!do_after(user, 15, src, luck_check_type = LUCK_CHECK_ENG))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -720,7 +720,7 @@
 			if(FRAME_NORMAL)
 				to_chat(user, SPAN("notice", "You begin reinforcing the frame."))
 				add_fingerprint(user)
-				if(!do_after(user, 10, src))
+				if(!do_after(user, 10, src, luck_check_type = LUCK_CHECK_ENG))
 					return
 				if(frame_state != FRAME_NORMAL)
 					return
@@ -732,7 +732,7 @@
 			if(FRAME_REINFORCED)
 				to_chat(user, SPAN("notice", "You begin constructing a grille."))
 				add_fingerprint(user)
-				if(!do_after(user, 10, src))
+				if(!do_after(user, 10, src, luck_check_type = LUCK_CHECK_ENG))
 					return
 				if(frame_state != FRAME_REINFORCED)
 					return
@@ -749,7 +749,7 @@
 			var/old_state = frame_state
 			to_chat(user, SPAN("notice", "You begin wiring \the [src]."))
 			add_fingerprint(user)
-			if(!do_after(user, 20, src))
+			if(!do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 				return
 			if(frame_state != old_state)
 				return
