@@ -18,7 +18,7 @@
 		if(0)
 			if(isWrench(P))
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-				if(do_after(user, 20, src))
+				if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 					to_chat(user, "<span class='notice'>You wrench the frame into place.</span>")
 					src.anchored = 1
 					src.state = 1
@@ -36,7 +36,7 @@
 		if(1)
 			if(isWrench(P))
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-				if(do_after(user, 20, src))
+				if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 					to_chat(user, "<span class='notice'>You unfasten the frame.</span>")
 					src.anchored = 0
 					src.state = 0
@@ -76,7 +76,7 @@
 					return
 				to_chat(user, "<span class='notice'>You start to add cables to the frame.</span>")
 				playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-				if(do_after(user, 20, src) && state == 2)
+				if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG) && state == 2)
 					if (C.use(5))
 						to_chat(user, "<span class='notice'>You add cables to the frame.</span>")
 						state = 3
@@ -97,7 +97,7 @@
 					return
 				playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 				to_chat(user, "<span class='notice'>You start to put in the glass panel.</span>")
-				if(do_after(user, 20, src) && state == 3)
+				if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG) && state == 3)
 					if (G.use(2))
 						to_chat(user, "<span class='notice'>You put in the glass panel.</span>")
 						src.state = 4

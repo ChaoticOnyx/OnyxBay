@@ -65,7 +65,7 @@
 				SPAN("notice", "\The [user] starts to fix part of the microwave."), \
 				SPAN("notice", "You start to fix part of the microwave.") \
 			)
-			if (do_after(user, 20, src))
+			if (do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 				user.visible_message( \
 					SPAN("notice", "\The [user] fixes part of the microwave."), \
 					SPAN("notice", "You have fixed part of the microwave.") \
@@ -76,7 +76,7 @@
 				SPAN("notice", "\The [user] starts to fix part of the microwave."), \
 				SPAN("notice", "You start to fix part of the microwave.") \
 			)
-			if (do_after(user, 20, src))
+			if (do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 				user.visible_message( \
 					SPAN("notice", "\The [user] fixes the microwave."), \
 					SPAN("notice", "You have fixed the microwave.") \
@@ -94,7 +94,7 @@
 				SPAN("notice", "\The [user] starts to clean the microwave."), \
 				SPAN("notice", "You start to clean the microwave.") \
 			)
-			if (do_after(user, 20, src))
+			if (do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 				user.visible_message( \
 					SPAN("notice", "\The [user] has cleaned the microwave."), \
 					SPAN("notice", "You have cleaned the microwave.") \
@@ -119,7 +119,7 @@
 			SPAN("notice", "\The [user] begins [src.anchored ? "unsecuring" : "securing"] the microwave."), \
 			SPAN("notice", "You attempt to [src.anchored ? "unsecure" : "secure"] the microwave.")
 			)
-		if(do_after(user,20, src))
+		if(do_after(user,20, src, luck_check_type = LUCK_CHECK_ENG))
 			src.anchored = !src.anchored
 			user.visible_message( \
 			SPAN("notice", "\The [user] [src.anchored ? "secures" : "unsecures"] the microwave."), \

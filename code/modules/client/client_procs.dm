@@ -285,6 +285,7 @@
 		qdel(src)
 		return
 
+	load_luck()
 	//////////////
 	//DISCONNECT//
 	//////////////
@@ -705,3 +706,72 @@
 	var/mob/living/M = mob
 	if(istype(M) && !M.in_throw_mode)
 		M.OnMouseDown(object, location, control, params)
+
+/client/proc/get_luck_for_type(luck_type)
+	switch(luck_type)
+		if(LUCK_CHECK_GENERAL)
+			return luck_general
+
+		if(LUCK_CHECK_COMBAT)
+			return luck_combat
+
+		if(LUCK_CHECK_ENG)
+			return luck_eng
+
+		if(LUCK_CHECK_MED)
+			return luck_med
+
+		if(LUCK_CHECK_RND)
+			return luck_rnd
+
+/client/proc/load_luck()
+	var/json_file = file("data/players/[ckey]/luck.json")
+	var/list/luck = json_decode(file2text(json_file))
+
+	for(var/lucktype in luck)
+		var/level = luck[lucktype]["level"]
+		switch(lucktype)
+			if(LUCK_CHECK_GENERAL)
+				luck_general = level
+			if(LUCK_CHECK_COMBAT)
+				luck_combat = level
+			if(LUCK_CHECK_ENG)
+				luck_eng = level
+			if(LUCK_CHECK_MED)
+				luck_med = level
+			if(LUCK_CHECK_RND)
+				luck_rnd = level
+
+/client/proc/write_luck(lucktype, luck_level, duration)
+	var/json_file = file("data/players/[ckey]/luck.json")
+	var/list/to_send = list()
+	if(!fexists(json_file))
+		WRITE_FILE(json_file, "{}")
+	else
+		to_send = json_decode(file2text(json_file))
+	to_send[lucktype] = list(
+		"level" = luck_level,
+		"rounds_left" = duration,
+	)
+	listclearnulls(to_send)
+	fdel(json_file)
+	WRITE_FILE(json_file, json_encode(to_send))
+	load_luck()
+
+/client/proc/update_luck()
+	var/json_file = file("data/players/[ckey]/luck.json")
+	var/list/to_send = list()
+	if(!fexists(json_file))
+		WRITE_FILE(json_file, "{}")
+	else
+		to_send = json_decode(file2text(json_file))
+
+	for(var/lucktype in to_send)
+		var/list/luck = to_send[lucktype]
+		luck["rounds_left"]--
+		if(luck["rounds_left"] <= 0)
+			to_send -= lucktype
+
+	fdel(json_file)
+	listclearnulls(to_send)
+	WRITE_FILE(json_file, json_encode(to_send))

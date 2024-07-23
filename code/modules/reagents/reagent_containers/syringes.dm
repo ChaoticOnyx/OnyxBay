@@ -264,7 +264,7 @@
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 		user.do_attack_animation(trackTarget)
 
-		if(!do_after(user, injtime, trackTarget))
+		if(!do_after(user, injtime, trackTarget, luck_check_type = LUCK_CHECK_MED))
 			return
 
 		if(target != trackTarget && target.loc != trackTarget)

@@ -287,7 +287,7 @@
 		var/datum/gas_mixture/env_air = loc.return_air()
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>You begin to unfasten \the [src]...</span>")
-		if (do_after(user, 40, src))
+		if (do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 			user.visible_message( \
 				"<span class='notice'>\The [user] unfastens \the [src].</span>", \
 				"<span class='notice'>You have unfastened \the [src].</span>", \

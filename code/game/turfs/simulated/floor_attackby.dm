@@ -110,7 +110,7 @@
 					T.visible_message(SPAN("warning", "The ceiling above looks as if it's being pried off."))
 				playsound(src, 'sound/items/Crowbar.ogg', 80, 1)
 				visible_message(SPAN("notice", "[user] has begun prying off the damaged plating."))
-				if(do_after(user, 10 SECONDS))
+				if(do_after(user, 10 SECONDS, luck_check_type = LUCK_CHECK_ENG))
 					if(!istype(src, /turf/simulated/floor))
 						return
 					if(!broken && !burnt || !is_plating())

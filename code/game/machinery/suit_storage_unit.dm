@@ -548,7 +548,7 @@
 	if(isCrowbar(I))
 		if((stat & NOPOWER) && !islocked && !isopen)
 			to_chat(user, "<span class='warning'>You begin prying the unit open.</span>")
-			if(do_after(user, 50, src))
+			if(do_after(user, 50, src, luck_check_type = LUCK_CHECK_ENG) && !QDELETED(src))
 				isopen = 1
 				to_chat(user, "<span class='warning'>You pry the unit open.</span>")
 				update_icon()

@@ -154,7 +154,7 @@
 	var/mob/living/carbon/human/M = user
 	M.visible_message(SPAN("danger", "[user] sticks [src] in their mouth, ready to pull the trigger..."))
 
-	if(!do_after(user, 40, progress = 0))
+	if(!do_after(user, 40, progress = 0, luck_check_type = LUCK_CHECK_COMBAT))
 		M.visible_message(SPAN("notice", "[user] decided life was worth living."))
 		return
 
@@ -167,7 +167,7 @@
 	var/mob/living/carbon/human/M = user
 	M.visible_message(SPAN("danger", "[user] sticks their gun in [target]'s mouth, ready to pull the trigger..."))
 
-	if(!do_after(user, 40, progress = 0))
+	if(!do_after(user, 40, progress = 0, luck_check_type = LUCK_CHECK_COMBAT))
 		M.visible_message(SPAN("notice", "[user] decided [target]'s life was worth living."))
 		return
 

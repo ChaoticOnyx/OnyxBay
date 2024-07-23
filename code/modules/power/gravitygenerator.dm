@@ -233,7 +233,7 @@ GLOBAL_VAR(station_gravity_generator)
 									SPAN_NOTICE("You begin to add plasteel to the destroyed frame."))
 
 				playsound(loc, 'sound/machines/click.ogg', 75, 1)
-				if(!do_after(user, 15 SECONDS, middle) || PS.amount < 10)
+				if(!do_after(user, 15 SECONDS, middle, luck_check_type = LUCK_CHECK_ENG) || PS.amount < 10)
 					return
 				PS.use(10)
 				health += 250
@@ -271,7 +271,7 @@ GLOBAL_VAR(station_gravity_generator)
 									SPAN_NOTICE("You begin to screw the parts back."))
 
 				playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
-				if(!do_after(user, 15 SECONDS, middle) || broken_state != GRAV_NEEDS_WRENCH)
+				if(!do_after(user, 15 SECONDS, middle, luck_check_type = LUCK_CHECK_ENG) || broken_state != GRAV_NEEDS_WRENCH)
 					return
 				health += 250
 				user.visible_message(SPAN_NOTICE("[user] screwed the parts back."),
@@ -287,7 +287,7 @@ GLOBAL_VAR(station_gravity_generator)
 									SPAN_NOTICE("You begin to attach the details in the desired order."))
 
 				playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-				if(!do_after(user, 15 SECONDS, middle) || broken_state != GRAV_NEEDS_SCREWDRIVER)
+				if(!do_after(user, 15 SECONDS, middle, luck_check_type = LUCK_CHECK_ENG) || broken_state != GRAV_NEEDS_SCREWDRIVER)
 					return
 				health += max(initial(health), health + 250)
 				user.visible_message(SPAN_NOTICE("[user] attached the details."),
@@ -299,7 +299,7 @@ GLOBAL_VAR(station_gravity_generator)
 				return
 
 	if(isCrowbar(I))
-		if(!do_after(user, 5 SECONDS, middle))
+		if(!do_after(user, 5 SECONDS, middle, luck_check_type = LUCK_CHECK_ENG))
 			return
 		playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 		panel_open = !panel_open
@@ -369,7 +369,7 @@ GLOBAL_VAR(station_gravity_generator)
 
 		user.visible_message(SPAN_WARNING("[user] starts to press a lot of buttons on \the [src]!"),
                              SPAN_NOTICE("You start to press many buttons on \the [src], as if you know what you are doing."))
-		if(do_after(user, 15 SECONDS, src))
+		if(do_after(user, 15 SECONDS, src, luck_check_type = LUCK_CHECK_ENG))
 			emergency_shutoff()
 
 /obj/machinery/gravity_generator/main/proc/emergency_shutoff()

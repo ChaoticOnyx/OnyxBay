@@ -157,7 +157,7 @@
 	busy = TRUE
 	usr.visible_message(SPAN_DANGER("[usr] begins to undress [patient] on the table with the built-in tool."),
 						SPAN_NOTICE("You begin to undress [patient] on the table with the built-in tool."))
-	if(do_after(usr, time_to_strip, patient))
+	if(do_after(usr, time_to_strip, patient, luck_check_type = LUCK_CHECK_MED) && !QDELETED(src))
 		if(!patient)
 			busy = FALSE
 			return

@@ -48,7 +48,7 @@
 	to_chat(user, "Planting explosives...")
 	user.do_attack_animation(target)
 
-	if(do_after(user, 50, target) && in_range(user, target))
+	if(do_after(user, 50, target, luck_check_type = LUCK_CHECK_COMBAT) && in_range(user, target))
 		user.drop(src)
 		src.target = target
 		forceMove(null)

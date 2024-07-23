@@ -178,7 +178,7 @@
 			return
 
 		to_chat(usr, SPAN_NOTICE("You begin repairing [src]..."))
-		if(do_after(user, 30, src))
+		if(do_after(user, 30, src, luck_check_type = LUCK_CHECK_ENG))
 			if(P.use(amt))
 				to_chat(user, SPAN_NOTICE("You have repaired \the [src]"))
 				repair()

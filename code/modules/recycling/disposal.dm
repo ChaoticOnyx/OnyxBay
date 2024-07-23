@@ -122,7 +122,7 @@
 			var/mob/GM = G.affecting
 			for (var/mob/V in viewers(usr))
 				V.show_message("[usr] starts putting [GM.name] into the disposal.", 3)
-			if(do_after(usr, 20, src))
+			if(do_after(usr, 20, src, luck_check_type = LUCK_CHECK_COMBAT))
 				playsound(src, SFX_DISPOSAL, 75, 0)
 				if(GM.client)
 					GM.client.perspective = EYE_PERSPECTIVE

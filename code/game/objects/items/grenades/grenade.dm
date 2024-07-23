@@ -115,7 +115,7 @@
 			to_chat(user, SPAN("warning", "You broke grenade, while trying to remove detonator!"))
 		if(active)
 			to_chat(user, SPAN("notice", "You begin to remove detonator from grenade chamber."))
-			if(do_after(usr, 50, src))
+			if(do_after(usr, 50, src, luck_check_type = LUCK_CHECK_COMBAT))
 				active = FALSE
 				update_icon()
 			else

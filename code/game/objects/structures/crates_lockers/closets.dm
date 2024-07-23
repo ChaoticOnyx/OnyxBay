@@ -453,7 +453,7 @@
 		if(isScrewdriver(W) && dremovable && cdoor)
 			user.visible_message(SPAN_NOTICE("[user] starts unscrewing [cdoor] from [src]."))
 			user.next_move = world.time + 10
-			if(!do_after(user, 30))
+			if(!do_after(user, 30, luck_check_type = LUCK_CHECK_COMBAT))
 				return FALSE
 			if(!cdoor)
 				return FALSE
@@ -465,7 +465,7 @@
 			var/obj/item/shield/closet/C = W
 			user.visible_message(SPAN_NOTICE("[user] starts connecting [C] to [src]."))
 			user.next_move = world.time + 10
-			if(!do_after(user, 20))
+			if(!do_after(user, 20, luck_check_type = LUCK_CHECK_COMBAT))
 				return FALSE
 			if(cdoor)
 				return FALSE
@@ -528,7 +528,7 @@
 		for(var/i in 1 to rand(4, 8))
 			user.visible_message(SPAN("warning", "[user] picks in wires of \the [name] with a multitool."),
 								 SPAN("warning", "I am trying to reset circuitry lock module ([i])..."))
-			if(!do_after(user, 200, src) || locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && dremovable && !cdoor))
+			if(!do_after(user, 200, src, luck_check_type = LUCK_CHECK_COMBAT) || locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && dremovable && !cdoor))
 				multi.in_use = 0
 				return
 		locked = !locked
@@ -595,7 +595,7 @@
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return
 	in_use = TRUE
-	if(open_delay && !do_after(user, open_delay))
+	if(open_delay && !do_after(user, open_delay, luck_check_type = LUCK_CHECK_COMBAT))
 		in_use = FALSE
 		return
 	toggle(user)

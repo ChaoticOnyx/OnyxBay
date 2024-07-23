@@ -422,7 +422,7 @@ About the new airlock wires panel:
 			if(density && (!arePowerSystemsOn() || (stat & BROKEN)))
 				user.setClickCooldown(DEFAULT_WEAPON_COOLDOWN)
 				to_chat(user, "You start forcing \the [src] open...")
-				if(do_after(user, 30, src))
+				if(do_after(user, 30, src, luck_check_type = LUCK_CHECK_ENG))
 					if(welded)
 						to_chat(user, SPAN("danger", "The airlock has been welded shut!"))
 					else if(locked)
@@ -633,7 +633,7 @@ About the new airlock wires panel:
 		if((!B.req_access.len && !B.req_one_access) && (alert("\the [B]'s 'Access Not Set' light is flashing. Install it anyway?", "Access not set", "Yes", "No") == "No"))
 			return
 
-		if(do_after(user, 50, src) && density && user.drop(B, src))
+		if(do_after(user, 50, src, luck_check_type = LUCK_CHECK_ENG) && density && user.drop(B, src))
 			to_chat(user, "You successfully install \the [B]. \The [src] has been locked.")
 			brace = B
 			brace.airlock = src
@@ -691,7 +691,7 @@ About the new airlock wires panel:
 		if(p_open && (operating < 0 || (!operating && welded && !arePowerSystemsOn() && density && !locked)) && !brace)
 			playsound(loc, 'sound/items/Crowbar.ogg', 100, 1)
 			user.visible_message("[user] removes the electronics from the airlock assembly.", "You start to remove electronics from the airlock assembly.")
-			if(do_after(user, 40, src))
+			if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 				to_chat(user, SPAN("notice", "You remove the airlock electronics!"))
 				deconstruct(user)
 				return

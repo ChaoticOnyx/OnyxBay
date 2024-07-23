@@ -60,7 +60,7 @@
 		"<span class='warning'>You attempt to remove \the [HC]. (This will take around [displaytime] minutes and you need to stand still)</span>"
 		)
 
-	if(do_after(src, breakouttime, incapacitation_flags = INCAPACITATION_DEFAULT & ~INCAPACITATION_RESTRAINED))
+	if(do_after(src, breakouttime, incapacitation_flags = INCAPACITATION_DEFAULT & ~INCAPACITATION_RESTRAINED, luck_check_type = LUCK_CHECK_COMBAT))
 		if(!handcuffed || buckled)
 			return
 		visible_message(
@@ -79,7 +79,7 @@
 		"<span class='warning'>You attempt to break your [handcuffed.name]. (This will take around 5 seconds and you need to stand still)</span>"
 		)
 
-	if(do_after(src, 5 SECONDS, incapacitation_flags = INCAPACITATION_DEFAULT & ~INCAPACITATION_RESTRAINED))
+	if(do_after(src, 5 SECONDS, incapacitation_flags = INCAPACITATION_DEFAULT & ~INCAPACITATION_RESTRAINED, luck_check_type = LUCK_CHECK_COMBAT))
 		if(!handcuffed || buckled)
 			return
 
@@ -117,7 +117,7 @@
 		visible_message(SPAN_DANGER("[src] attempts to unbuckle themself!"),
 						SPAN_WARNING("You attempt to unbuckle yourself. (This will take around 2 minutes and you need to stand still)"))
 
-		if(do_after(src, 2 MINUTES, incapacitation_flags = INCAPACITATION_DEFAULT & ~(INCAPACITATION_RESTRAINED | INCAPACITATION_BUCKLED_FULLY)))
+		if(do_after(src, 2 MINUTES, incapacitation_flags = INCAPACITATION_DEFAULT & ~(INCAPACITATION_RESTRAINED | INCAPACITATION_BUCKLED_FULLY),  luck_check_type = LUCK_CHECK_COMBAT))
 			if(!buckled)
 				return
 			visible_message(SPAN_DANGER("\The [src] manages to unbuckle themself!"),

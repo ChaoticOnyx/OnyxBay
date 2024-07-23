@@ -82,7 +82,7 @@
 		return
 
 	for(var/i in 1 to 5)
-		if(!do_after(user, 6 SECOND, src))
+		if(!do_after(user, 6 SECOND, src, luck_check_type = LUCK_CHECK_COMBAT))
 			to_chat(user, SPAN("warning", "Your reading has been interrupted."))
 			return
 		subjects.Cut()

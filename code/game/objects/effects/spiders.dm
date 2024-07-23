@@ -75,7 +75,7 @@
 /obj/structure/spider/stickyweb/sealed/attack_generic(mob/user, damage, attack_verb, wallbreaker)
     if(istype (user, /mob/living/simple_animal/hostile/giant_spider))
         user.visible_message(SPAN_WARNING("[user] begins to claw through the [src]!"), "You begin to claw through the [src].")
-        if(do_after(user, 50, target = src))
+        if(do_after(user, 50, target = src, , luck_check_type = LUCK_CHECK_COMBAT))
             user.visible_message(SPAN_WARNING("[user] ruptures [src] open!"), "You succesfully claw through the [src].")
             health = 0
             healthcheck ()
@@ -328,7 +328,7 @@
 	user.last_special = world.time + 100
 	to_chat(user, SPAN_NOTICE("You struggle against the tight bonds... (This will take about [time2text(breakout_time)].)"))
 	visible_message(SPAN_NOTICE("You see something struggling and writhing in \the [src]!"))
-	if(do_after(user,(breakout_time), target = src))
+	if(do_after(user,(breakout_time), target = src, luck_check_type = LUCK_CHECK_COMBAT))
 		if(!user || user.stat != CONSCIOUS || user.loc != src)
 			return
 		qdel(src)

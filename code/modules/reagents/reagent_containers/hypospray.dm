@@ -88,7 +88,7 @@
 /obj/item/reagent_containers/hypospray/vial/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/reagent_containers/vessel/beaker/vial))
 		if(!loaded_vial)
-			if(!do_after(user, 10) || loaded_vial || !(W in user))
+			if(!do_after(user, 10, , luck_check_type = LUCK_CHECK_MED) || loaded_vial || !(W in user))
 				return FALSE
 			if(!user.drop(W, src))
 				return

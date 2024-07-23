@@ -1113,7 +1113,7 @@
 
 	visible_message("<span class='notice'>\The [user] starts to climb into [src.name]</span>")
 
-	if(do_after(user, 40, target))
+	if(do_after(user, 40, target, luck_check_type = LUCK_CHECK_COMBAT))
 		if(!occupant)
 			moved_inside(user)
 		else if(occupant != user)
@@ -1737,7 +1737,7 @@
 		var/mob/occupant = P.occupant
 
 		user.visible_message("<span class='notice'>\The [user] begins opening the hatch on \the [P]...</span>", "<span class='notice'>You begin opening the hatch on \the [P]...</span>")
-		if (!do_after(user, 40, src, needhand = FALSE))
+		if (!do_after(user, 40, src, needhand = FALSE, luck_check_type = LUCK_CHECK_COMBAT))
 			return
 
 		user.visible_message("<span class='notice'>\The [user] opens the hatch on \the [P] and removes [occupant]!</span>", "<span class='notice'>You open the hatch on \the [P] and remove [occupant]!</span>")
@@ -1780,7 +1780,7 @@
 		src.occupant_message("Recalibrating coordination system.")
 		src.log_message("Recalibration of coordination system started.")
 		var/T = src.loc
-		if(do_after(usr, 100, src))
+		if(do_after(usr, 100, src, luck_check_type = LUCK_CHECK_COMBAT))
 			if(T == src.loc)
 				src.clearInternalDamage(MECHA_INT_CONTROL_LOST)
 				src.occupant_message("<span class='info'>Recalibration successful.</span>")

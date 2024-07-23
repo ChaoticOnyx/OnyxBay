@@ -138,7 +138,7 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.species?.can_shred(H))
-			if(do_after(user, 30, src))
+			if(do_after(user, 30, src, luck_check_type = LUCK_CHECK_ENG))
 				if(density)
 					visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
 					trigger_open_close(H)
@@ -239,7 +239,7 @@
 		else
 			user.visible_message("<span class='danger'>[user] is removing the electronics from \the [src].</span>",
 									"You start to remove the electronics from [src].")
-			if(do_after(user,30,src))
+			if(do_after(user,30,src, luck_check_type = LUCK_CHECK_ENG))
 				if(blocked && density && hatch_open)
 					playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 					user.visible_message("<span class='danger'>[user] has removed the electronics from \the [src].</span>",
@@ -273,7 +273,7 @@
 			)
 		var/forcing_time = istype(C, /obj/item/crowbar/emergency) ? 60 : 30
 		playsound(loc, 'sound/machines/airlock/creaking.ogg', 30, TRUE)
-		if(!do_after(user, forcing_time, src))
+		if(!do_after(user, forcing_time, src, luck_check_type = LUCK_CHECK_ENG))
 			return
 
 		if(isCrowbar(C))

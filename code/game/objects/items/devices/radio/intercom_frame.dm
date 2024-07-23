@@ -94,7 +94,7 @@
 		return
 
 	show_splash_text(user, "wiring...", "Now wiring \the [src]...")
-	if(do_after(user, 40, src))
+	if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 		if(C.use(1))
 			show_splash_text(user, "wired!", SPAN("notice", "You have wired \the [src]!"))
 			buildstage = INTERCOM_WIRED
@@ -104,7 +104,7 @@
 	playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
 	show_splash_text(user, "cutting cable...", "Now cutting cable out of \the [src]...")
 
-	if(do_after(user, 40, src))
+	if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 		show_splash_text(user, "cut out!", SPAN("notice", "You have cut the cable out of \the [src]!"))
 		new /obj/item/stack/cable_coil(loc, 1)
 		buildstage = INTERCOM_EMPTY
@@ -125,7 +125,7 @@
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	show_splash_text(user, "installing radio...", "Now installing the radio into \the [src]...")
 
-	if(do_after(user, 40, src))
+	if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 		if(!user.drop(R, src))
 			return
 
@@ -138,7 +138,7 @@
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 	show_splash_text(user, "removing radio...", "Now removing the radio from \the [src]...")
 
-	if(do_after(user, 40, src))
+	if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 		show_splash_text(user, "removed radio!", SPAN("notice", "You have removed the radio from \the [src]!"))
 		new /obj/item/device/radio(user.loc, 1)
 		buildstage = INTERCOM_WIRED
@@ -148,7 +148,7 @@
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	show_splash_text(user, "finishing \the [src]...", "Now finishing \the [src]...")
 
-	if(do_after(user, 40, src))
+	if(do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 		show_splash_text(user, "finished \the [src]!", SPAN("notice", "You have finished assembing \the [src]!"))
 		new /obj/item/device/radio/intercom(loc, dir)
 		qdel(src)

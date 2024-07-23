@@ -53,7 +53,7 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 
 		//Do the searching
 		busy = TRUE
-		if(do_after(user,rand(4 SECONDS,6 SECONDS),src))
+		if(do_after(user,rand(4 SECONDS,6 SECONDS), src, luck_check_type = LUCK_CHECK_COMBAT))
 			// The loot's all gone.
 			if(loot_depletion && loot_left <= 0)
 				to_chat(L, "<span class='warning'>\The [src] has been picked clean.</span>")

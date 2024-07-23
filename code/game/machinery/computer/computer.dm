@@ -107,7 +107,7 @@
 /obj/machinery/computer/attackby(obj/item/I, user)
 	if(isScrewdriver(I) && circuit)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20, src))
+		if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 			var/obj/item/circuitboard/M = new circuit( A )
 			A.circuit = M

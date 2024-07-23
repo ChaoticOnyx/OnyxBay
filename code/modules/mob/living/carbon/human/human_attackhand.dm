@@ -127,6 +127,10 @@
 			return H.make_grab(H, src)
 
 		if(I_HURT)
+			if(!prob(M.client?.get_luck_for_type(LUCK_CHECK_COMBAT)))
+				visible_message(SPAN_DANGER("[M] attempted to swing at \the [src], but failed miserably!"))
+				return
+
 			if(M.zone_sel.selecting == "mouth" && wear_mask && istype(wear_mask, /obj/item/grenade))
 				var/obj/item/grenade/G = wear_mask
 				if(!G.active)

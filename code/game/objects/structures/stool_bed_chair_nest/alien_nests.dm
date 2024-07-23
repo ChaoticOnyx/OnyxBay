@@ -47,7 +47,7 @@
 					"<span class='warning'>[buckled_mob.name] struggles to break free of the gelatinous resin...</span>",\
 					"<span class='warning'>You struggle to break free from the gelatinous resin...</span>",\
 					"<span class='notice'>You hear squelching...</span>")
-				if(!do_after(M, NEST_RESIST_TIME))
+				if(!do_after(M, NEST_RESIST_TIME, luck_check_type = LUCK_CHECK_COMBAT))
 					to_chat(M, SPAN("warning", "You fail to untie yourself!"))
 					M.last_special = world.time - NEST_RESIST_TIME/2 // Don't make them wait forever till next try, but also don't allow them to try again immediately
 					return

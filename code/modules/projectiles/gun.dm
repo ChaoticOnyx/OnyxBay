@@ -197,6 +197,10 @@
 	if(!user.IsAdvancedToolUser())
 		return FALSE
 
+	if(!prob(user.client?.get_luck_for_type(LUCK_CHECK_COMBAT)))
+		show_splash_text(user, "Gun misfires!", SPAN_DANGER("Your Gun misfires!"))
+		return
+
 	var/mob/living/M = user
 	if(is_pacifist(user))
 		to_chat(user, SPAN("warning", "You can't you're pacifist!"))

@@ -64,7 +64,7 @@
 		if (src.stage == 1)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 			to_chat(usr, "You begin deconstructing \a [src].")
-			if (!do_after(usr, 30,src))
+			if (!do_after(usr, 30,src, luck_check_type = LUCK_CHECK_ENG))
 				return
 			new /obj/item/stack/material/steel( get_turf(src.loc), sheets_refunded )
 			user.visible_message("[user.name] deconstructs [src].", \

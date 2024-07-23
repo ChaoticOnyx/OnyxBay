@@ -231,7 +231,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 		return
 
 	if(isCrowbar(I) && !locked && installed_gun)
-		if(do_after(user, 50, src))
+		if(do_after(user, 50, src, luck_check_type = LUCK_CHECK_ENG))
 			if(QDELETED(src) || !installed_gun || locked)
 				return
 

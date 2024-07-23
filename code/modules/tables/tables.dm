@@ -225,7 +225,7 @@
 	if(manipulating) return M
 	manipulating = 1
 	to_chat(user, "<span class='notice'>You begin [verb]ing \the [src] with [M.display_name].</span>")
-	if(!do_after(user, 20, src) || !S.use(1))
+	if(!do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG) || !S.use(1))
 		manipulating = 0
 		return null
 	user.visible_message("<span class='notice'>\The [user] [verb]es \the [src] with [M.display_name].</span>", "<span class='notice'>You finish [verb]ing \the [src].</span>")
@@ -244,7 +244,7 @@
 	                              "<span class='notice'>You begin removing the [type_holding] holding \the [src]'s [M.display_name] [what] in place.</span>")
 	if(sound)
 		playsound(src.loc, sound, 50, 1)
-	if(!do_after(user, 40, src))
+	if(!do_after(user, 40, src, luck_check_type = LUCK_CHECK_ENG))
 		manipulating = 0
 		return M
 	user.visible_message("<span class='notice'>\The [user] removes the [M.display_name] [what] from \the [src].</span>",
@@ -270,7 +270,7 @@
 	user.visible_message("<span class='notice'>\The [user] begins dismantling \the [src].</span>",
 	                              "<span class='notice'>You begin dismantling \the [src].</span>")
 	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-	if(!do_after(user, 20, src))
+	if(!do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG))
 		manipulating = 0
 		return
 	user.visible_message("<span class='notice'>\The [user] dismantles \the [src].</span>",

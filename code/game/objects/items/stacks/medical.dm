@@ -362,7 +362,7 @@
 			user.visible_message(SPAN("notice", "[user] starts to apply \the [src] to their [limb]."), \
 						             SPAN("notice", "You start to apply \the [src] to your [limb]."), \
 						            SPAN("warning", "You hear something being wrapped."))
-		if(do_after(user, 50, M))
+		if(do_after(user, 50, M, luck_check_type = LUCK_CHECK_MED))
 			if(M == user && prob(75))
 				user.visible_message(SPAN("warning", "\The [user] fumbles [src]."), \
 							         SPAN("warning", "You fumble [src]."), \
@@ -471,7 +471,7 @@
 		return
 
 	to_chat(user, SPAN("notice", "You prepare to inject [M]..."))
-	if(!do_after(user, 100))
+	if(!do_after(user, 100, luck_check_type = LUCK_CHECK_MED))
 		return
 
 	if(!M.is_ic_dead())

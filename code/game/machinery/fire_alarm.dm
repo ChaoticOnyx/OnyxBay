@@ -172,7 +172,7 @@
 				else if(isCrowbar(W))
 					to_chat(user, SPAN("danger", "You pry out the circuit!"))
 					playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
-					if(do_after(user, 20, src))
+					if(do_after(user, 20, src, luck_check_type = LUCK_CHECK_ENG) && !QDELETED(src))
 						var/obj/item/firealarm_electronics/circuit = new /obj/item/firealarm_electronics()
 						circuit.dropInto(user.loc)
 						buildstage = FIREALARM_NOCIRCUIT

@@ -75,7 +75,7 @@
 
 	weapon_in_mouth = TRUE
 	target.visible_message(SPAN_DANGER("[user] sticks their gun in [target]'s mouth, ready to pull the trigger..."))
-	if(!do_after(user, 2 SECONDS, progress=0))
+	if(!do_after(user, 2 SECONDS, progress=0, luck_check_type = LUCK_CHECK_COMBAT))
 		target.visible_message(SPAN_NOTICE("[user] decided [target]'s life was worth living."))
 		weapon_in_mouth = FALSE
 		return

@@ -206,7 +206,7 @@
 				Fire(user, user)	//will this work? //it will. we call it twice, for twice the FUN
 			user.visible_message("<span class='danger'>The shotgun goes off!</span>", "<span class='danger'>The shotgun goes off in your face!</span>")
 			return
-		if(do_after(user, 30, src))	//SHIT IS STEALTHY EYYYYY
+		if(do_after(user, 30, src, luck_check_type = LUCK_CHECK_COMBAT))	//SHIT IS STEALTHY EYYYYY
 			icon_state = "sawnshotgun"
 			item_state = "sawnshotgun"
 			wielded_item_state = null
