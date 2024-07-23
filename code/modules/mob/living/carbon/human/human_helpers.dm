@@ -260,7 +260,7 @@
 		return FALSE
 
 	if(!prob(attacker.client?.get_luck_for_type(LUCK_CHECK_COMBAT)))
-		visible_message(SPAN_DANGER("[M] attempted to swing at \the [src], but failed miserably!"))
+		visible_message(SPAN_DANGER("[attacker] attempted to swing at \the [victim], but failed miserably!"))
 		return
 
 	if(!grab_tag)
