@@ -10,33 +10,6 @@
 
 	SelfMove(DOWN)
 
-/mob/proc/zPull(direction)
-	//checks and handles pulled items across z levels
-	if(!pulling)
-		return 0
-
-	var/turf/start = pulling.loc
-	var/turf/destination = (direction == UP) ? GetAbove(pulling) : GetBelow(pulling)
-
-	if(!start.CanZPass(pulling, direction))
-		to_chat(src, "<span class='warning'>\The [start] blocked your pulled object!</span>")
-		stop_pulling()
-		return 0
-
-	if(!destination.CanZPass(pulling, direction))
-		to_chat(src, "<span class='warning'>The [pulling] you were pulling bumps up against \the [destination].</span>")
-		stop_pulling()
-		return 0
-
-	for(var/atom/A in destination)
-		if(!A.CanMoveOnto(pulling, start, 1.5, direction))
-			to_chat(src, "<span class='warning'>\The [A] blocks the [pulling] you were pulling.</span>")
-			stop_pulling()
-			return 0
-
-	pulling.forceMove(destination)
-	return 1
-
 /atom/proc/CanMoveOnto(atom/movable/mover, turf/target, height=1.5, direction = 0)
 	//Purpose: Determines if the object can move through this
 	//Uses regular limitations plus whatever we think is an exception for the purpose of

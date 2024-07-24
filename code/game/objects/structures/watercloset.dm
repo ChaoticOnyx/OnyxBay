@@ -79,7 +79,7 @@
 		if(!isliving(G.affecting))
 			return
 
-		if(G.current_grab.state_name == NORM_PASSIVE)
+		if(istype(G.current_grab, /datum/grab/normal/passive))
 			show_splash_text(user, "tighter grip is needed!", SPAN("warning", "You need a tigher grip!"))
 			return
 
@@ -102,15 +102,17 @@
 			user.visible_message(SPAN_DANGER("[user] gives [G.affecting.name] a swirlie!"), \
 									SPAN_DANGER("You give [G.affecting.name] a swirlie!"))
 			playsound(src, 'sound/effects/toilet_flush.ogg', 100, TRUE)
-			if(!G?.affecting?.internal && !G.affecting.isSynthetic())
-				G.affecting.adjustOxyLoss(TOILET_OXYLOSS_PER_SWIRLIE)
-				G.affecting.emote("gasp")
+			var/mob/living/carbon/human/H = G.get_affecting_mob()
+			if(!H?.internal && !H.isSynthetic())
+				H.adjustOxyLoss(TOILET_OXYLOSS_PER_SWIRLIE)
+				H.emote("gasp")
 			swirlie = null
 			return
 		else
 			user.visible_message(SPAN_DANGER("[user] slams [G.affecting.name] into the [src]!"), \
 									SPAN_DANGER("You slam [G.affecting.name] into the [src]!"))
-			G.affecting.adjustBruteLoss(TOILET_BRUTELOSS_PER_LIDSTOMP)
+			var/mob/living/L = G.get_affecting_mob()
+			L?.adjustBruteLoss(TOILET_BRUTELOSS_PER_LIDSTOMP)
 			return
 
 	if(cistern && !istype(user, /mob/living/silicon/robot)) //STOP PUTTING YOUR MODULES IN THE TOILET.

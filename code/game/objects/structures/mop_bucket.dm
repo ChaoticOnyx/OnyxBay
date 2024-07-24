@@ -42,7 +42,7 @@
 		if(!isliving(G.affecting))
 			return
 
-		if(G.current_grab.state_name == NORM_PASSIVE)
+		if(istype(G.current_grab, /datum/grab/normal/passive))
 			to_chat(user, SPAN_NOTICE("You need a tighter grip!"))
 			return
 
@@ -66,9 +66,10 @@
 								SPAN_DANGER("You raise [G.affecting.name]'s head out of \the [src]!"))
 		reagents.trans_to(G.affecting, min(reagents.total_volume, 5))
 		playsound(get_turf(src), GET_SFX(SFX_FOOTSTEP_WATER), 100, TRUE)
-		if(!G?.affecting?.internal && !G.affecting.isSynthetic())
-			G.affecting.adjustOxyLoss(OXYLOS_PER_HEAD_DIP)
-			G.affecting.emote("gasp")
+		var/mob/living/carbon/human/H = G.get_affecting_mob()
+		if(!H?.internal && !H.isSynthetic())
+			H?.adjustOxyLoss(OXYLOS_PER_HEAD_DIP)
+			H?.emote("gasp")
 		return
 
 #undef OXYLOS_PER_HEAD_DIP

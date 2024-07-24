@@ -248,7 +248,7 @@
 			handleAdjacentTarget()
 		else
 			handleRangedTarget()
-		if(!wait_if_pulled || !pulledby)
+		if(!wait_if_pulled || !restrained())
 			for(var/i = 1 to target_speed)
 				sleep(20 / (target_speed + 1))
 				stepToTarget()
@@ -258,7 +258,7 @@
 	else
 		resetTarget()
 		lookForTargets()
-		if(will_patrol && !pulledby && !target)
+		if(will_patrol && !restrained() && !target)
 			if(patrol_path && patrol_path.len)
 				for(var/i = 1 to patrol_speed)
 					sleep(20 / (patrol_speed + 1))

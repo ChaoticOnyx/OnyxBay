@@ -407,8 +407,6 @@
 	if (M.client)
 		M.client.perspective = EYE_PERSPECTIVE
 		M.client.eye = src
-	M.stop_pulling()
-	M.forceMove(src)
 	M.ExtinguishMob()
 	if(!M.is_ic_dead() && air_contents.temperature <= 278)
 		to_chat(M, SPAN("notice", "<b>You feel a cold liquid surround you. Your skin starts to freeze up.</b>"))

@@ -17,18 +17,6 @@
 #define FAKELIVING  0x10000 // For vampire Revitalise()
 #define UNDEAD      0x20000 // For undead creatures
 
-// Grab Types
-#define GRAB_NORMAL			"normal"
-#define GRAB_QUICKCHOKE     "choke"
-#define GRAB_BITE           "bite"
-
-// Grab levels.
-#define NORM_PASSIVE    "normal passive"
-#define NORM_STRUGGLE   "normal struggle"
-#define NORM_AGGRESSIVE "normal aggressive"
-#define NORM_NECK       "normal neck"
-#define NORM_KILL       "normal kill"
-
 #define BORGMESON 0x1
 #define BORGTHERM 0x2
 #define BORGXRAY  0x4

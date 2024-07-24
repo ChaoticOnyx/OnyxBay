@@ -246,22 +246,6 @@ var/global/list/string_slot_flags = list(
 		var/datum/poster/P = new T
 		poster_designs += P
 
-	//Grabs
-	paths = typesof(/datum/grab) - /datum/grab
-	for(var/T in paths)
-		var/datum/grab/G = new T
-		if(G.state_name)
-			all_grabstates[G.state_name] = G
-
-	paths = typesof(/obj/item/grab) - /obj/item/grab
-	for(var/T in paths)
-		var/obj/item/grab/G = T
-		all_grabobjects[initial(G.type_name)] = T
-
-	for(var/grabstate_name in all_grabstates)
-		var/datum/grab/G = all_grabstates[grabstate_name]
-		G.refresh_updown()
-
 	//Manuals
 	paths = typesof(/obj/item/book/wiki) - /obj/item/book/wiki - /obj/item/book/wiki/template
 	for(var/booktype in paths)
@@ -292,6 +276,13 @@ var/global/list/string_slot_flags = list(
 		GLOB.bb_clothing_icon_states[BB.type][slot_wear_id_str]    = icon_states(BB.clothing_icons["slot_wear_id"])
 		GLOB.bb_clothing_icon_states[BB.type][slot_handcuffed_str] = icon_states(BB.misk_icon)
 		GLOB.bb_clothing_icon_states[BB.type][slot_legcuffed_str]  = icon_states(BB.misk_icon)
+
+	for(var/path in subtypesof(/datum/grab))
+		GLOB.all_grabstates[path] = new path()
+
+	for(var/path in GLOB.all_grabstates)
+		var/datum/grab/G = GLOB.all_grabstates[path]
+		G.refresh_updown()
 
 	return 1
 

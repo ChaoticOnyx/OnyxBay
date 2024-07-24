@@ -143,7 +143,6 @@
 		src.attack_self(M)
 
 /obj/proc/hide(hide)
-	pulledby?.stop_pulling()
 	set_invisibility(hide ? INVISIBILITY_MAXIMUM : initial(invisibility))
 
 /obj/proc/hides_under_flooring()
@@ -230,7 +229,5 @@
 	if(T)
 		T.update_turf_height()
 
-/obj/proc/change_pull_slowdown(new_slowdown)
-	pull_slowdown = new_slowdown
-	if(pulledby)
-		pulledby.update_pull_slowdown()
+/obj/get_object_size()
+	return w_class

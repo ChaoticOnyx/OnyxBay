@@ -135,10 +135,11 @@
 					return FALSE
 
 				G.affecting.forceMove(src.loc)
-				G.affecting.Weaken(rand(1,4))
-				G.affecting.Stun(1)
+				var/mob/living/carbon/human/affecting_mob = G.get_affecting_mob()
+				affecting_mob?.Weaken(rand(1,4))
+				affecting_mob?.Stun(1)
 				visible_message("<span class='warning'>[G.assailant] puts [G.affecting] on \the [src].</span>")
-				G.affecting.break_all_grabs(G.assailant)
+				affecting_mob?.break_all_grabs(G.assailant)
 				qdel(W)
 			else
 				to_chat(user, "<span class='danger'>You need a better grip to do that!</span>")

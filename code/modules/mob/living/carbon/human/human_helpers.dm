@@ -281,30 +281,6 @@
 /mob/living/carbon/human/proc/has_headset_in_ears()
 	return istype(get_equipped_item(slot_l_ear), /obj/item/device/radio/headset) || istype(get_equipped_item(slot_r_ear), /obj/item/device/radio/headset)
 
-/mob/living/carbon/human/proc/make_grab(mob/living/carbon/human/attacker, mob/living/carbon/human/victim, grab_tag)
-	var/obj/item/grab/G
-
-	if(!victim.get_organ(attacker.zone_sel.selecting))
-		to_chat(attacker, SPAN("warning", "[victim] is missing the body part you tried to grab!"))
-		return FALSE
-
-	if(!grab_tag)
-		G = new attacker.current_grab_type(attacker, victim)
-	else
-		var/obj/item/grab/given_grab_type = all_grabobjects[grab_tag]
-		G = new given_grab_type(attacker, victim)
-
-	if(!G.pre_check())
-		qdel(G)
-		return FALSE
-
-	if(G.can_grab())
-		G.init()
-		return TRUE
-	else
-		qdel(G)
-		return FALSE
-
 /mob/living/carbon/human
 	var/list/cloaking_sources
 

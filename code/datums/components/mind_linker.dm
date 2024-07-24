@@ -288,7 +288,7 @@
 	else
 		if(istype(owner.r_hand, /obj/item/grab))
 			G = owner.r_hand
-	if(G.current_grab.state_name != NORM_AGGRESSIVE)
+	if(!istype(G.current_grab, /datum/grab/normal/aggressive))
 		to_chat(owner, SPAN_WARNING("You need to aggressively grab someone to link minds!"))
 		return
 
@@ -327,7 +327,7 @@
 	else
 		if(istype(owner.r_hand, /obj/item/grab))
 			G = owner.r_hand
-	if(G.current_grab.state_name != NORM_AGGRESSIVE || G.current_grab.state_name != NORM_NECK || G.current_grab.state_name != NORM_KILL)
+	if(!istype(G.current_grab, /datum/grab/normal/aggressive) || !istype(G.current_grab, /datum/grab/normal/kill) || !istype(G.current_grab, /datum/grab/normal/neck))
 		return FALSE
 
 	if(!G.affecting)

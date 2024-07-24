@@ -124,7 +124,7 @@
 			return
 
 		add_to_contents(user, G.affecting)
-		G.delete_self()
+		G.force_drop()
 		return
 
 	if(istype(W, /obj/item/organ))

@@ -6,7 +6,6 @@
 	var/buckle_lying = -1 //bed-like behavior, forces mob.lying = buckle_lying if != -1
 	var/buckle_pixel_shift = "x=0;y=0" //where the buckled mob should be pixel shifted to, or null for no pixel shift control
 	var/buckle_require_restraints = 0 //require people to be handcuffed before being able to buckle. eg: pipes
-	var/mob/living/buckled_mob = null
 
 /obj/attack_hand(mob/living/user)
 	. = ..()
@@ -109,15 +108,23 @@
 /obj/proc/user_unbuckle_mob(mob/user)
 	var/mob/living/M = unbuckle_mob()
 	if(M)
-		if(M != user)
-			M.visible_message(\
-				SPAN("notice", "\The [M.name] was unbuckled by \the [user.name]!"),\
-				SPAN("notice", "You were unbuckled from \the [src] by \the [user.name]."),\
-				SPAN("notice", "You hear metal clanking."))
-		else
-			M.visible_message(\
-				SPAN("notice", "\The [M.name] unbuckled themselves!"),\
-				SPAN("notice", "You unbuckle yourself from \the [src]."),\
-				SPAN("notice", "You hear metal clanking."))
+		show_unbuckle_message(M, user)
+		for(var/obj/item/grab/G as anything in (M.grabbed_by | grabbed_by))
+			qdel(G)
 		add_fingerprint(user)
 	return M
+
+/atom/movable/proc/show_unbuckle_message(mob/buckled, mob/buckling)
+	if(buckled == buckling)
+		var/datum/gender/G = gender_datums[buckled.gender]
+		visible_message(
+			SPAN_NOTICE("\The [buckled] unbuckled [G.self] from \the [src]!"),
+			SPAN_NOTICE("You unbuckle yourself from \the [src]."),
+			SPAN_NOTICE("You hear metal clanking.")
+		)
+	else
+		visible_message(
+			SPAN_NOTICE("\The [buckled] was unbuckled from \the [src] by \the [buckling]!"),
+			SPAN_NOTICE("You were unbuckled from \the [src] by \the [buckling]."),
+			SPAN_NOTICE("You hear metal clanking.")
+		)

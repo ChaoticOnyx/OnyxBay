@@ -36,3 +36,9 @@
 
 /// Called by various atom behaviors that can trigger ambushes.
 #define SIGNAL_MOB_CONSIDER_AMBUSH "mob_consider_ambush"
+
+/// Called on `/atom/movable/screen/zone_sel/proc/set_selected_zone()` (old_zone, new_zone)
+#define SIGNAL_MOB_ZONE_SELECTED "mob_zone_selected"
+
+/// Called on `/obj/item/organ/proc/removed()` (organ)
+#define SIGNAL_MOB_ORGAN_REMOVED "mob_organ_removed"

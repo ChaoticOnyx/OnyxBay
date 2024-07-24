@@ -396,6 +396,7 @@ var/list/limb_icon_cache = list()
 	for(var/obj/item/organ_module/module in organ_modules)
 		module.organ_removed(src, owner)
 
+	SEND_SIGNAL(owner, SIGNAL_MOB_ORGAN_REMOVED, src)
 	owner = null
 
 /obj/item/organ/proc/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)

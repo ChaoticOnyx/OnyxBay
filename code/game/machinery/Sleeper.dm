@@ -245,29 +245,7 @@
 	if(default_part_replacement(user, I))
 		return
 
-	if(istype(I, /obj/item/grab))
-		if(!ismob(I:affecting))
-			return
-		if(!check_compatibility(I:affecting, user))
-			return
-		user.visible_message("<span class='notice'>\The [user] starts placing \the [I:affecting] into \the [src].</span>", "<span class='notice'>You start placing \the [I:affecting] into \the [src].</span>")
-
-		if(do_after(user, 20, src))
-			if(!check_compatibility(I:affecting, user))
-				return
-			I:affecting.stop_pulling()
-			if(I:affecting.client)
-				I:affecting.client.perspective = EYE_PERSPECTIVE
-				I:affecting.client.eye = src
-			I:affecting.forceMove(src)
-			update_use_power(POWER_USE_IDLE)
-			occupant = I:affecting
-			update_icon()
-			qdel(I)
-			return
-		else
-			return
-	..()
+	return ..()
 
 /obj/machinery/sleeper/add_context(list/context, obj/item/held_item, mob/user)
 	. = NONE
@@ -410,7 +388,6 @@
 		if(occupant)
 			to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
 			return
-		M.stop_pulling()
 		if(M.client)
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src

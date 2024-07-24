@@ -586,7 +586,6 @@
 			to_chat(user, "<span class='warning'>Unbuckle [M == user ? "yourself" : M] first.</span>")
 			return FALSE
 
-		M.stop_pulling()
 		if(M.client)
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src
@@ -599,7 +598,6 @@
 		SetName(initial(name))
 		return
 
-	occupant.stop_pulling()
 	if(occupant.client)
 		to_chat(occupant, "<span class='notice'>[on_enter_occupant_message]</span>")
 		to_chat(occupant, "<span class='notice'><b>If you ghost, log out or close your client now, your character will shortly be permanently removed from the round.</b></span>")

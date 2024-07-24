@@ -85,7 +85,6 @@
 		to_chat(usr, SPAN("warning", "The subject cannot have abiotic items on."))
 		return
 
-	usr.pulling = null
 	usr.client.perspective = EYE_PERSPECTIVE
 	usr.client.eye = src
 	usr.forceMove(src)
@@ -130,11 +129,11 @@
 	if(default_part_replacement(user, W))
 		return
 
-	var/obj/item/grab/normal/G = W
+	var/obj/item/grab/G = W
 	if(!istype(G))
 		return ..()
 
-	var/mob/M = G.affecting
+	var/mob/M = G.get_affecting_mob()
 	if(!check_compatibility(M, user))
 		return
 

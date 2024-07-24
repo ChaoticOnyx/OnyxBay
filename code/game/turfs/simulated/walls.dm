@@ -311,10 +311,9 @@
 		return
 
 	for(var/obj/item/grab/grab in bumped.grabbed_by)
-		if(grab.current_grab.state_name == NORM_PASSIVE)
+		if(istype(grab.current_grab, /datum/grab/normal/passive))
 			continue
 
-		bumped.stop_pulling()
 		bumped.start_leaning(src)
 
 /turf/simulated/wall/MouseDrop_T(atom/movable/target, mob/user)
@@ -331,8 +330,6 @@
 
 	if(!leaner.density)
 		return
-
-	leaner.stop_pulling()
 
 	leaner.start_leaning(src)
 

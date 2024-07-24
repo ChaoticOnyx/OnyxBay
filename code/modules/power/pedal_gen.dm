@@ -98,7 +98,7 @@
 		pedaled = 0
 	return 1
 
-/obj/structure/bed/chair/pedalgen/relaymove(mob/user, direction)
+/obj/structure/bed/chair/pedalgen/handle_buckled_relaymove(datum/movement_handler/mh, mob/user, direction, mover)
 	if(!ishuman(user))
 		unbuckle_mob()
 	var/mob/living/carbon/human/pedaler = user

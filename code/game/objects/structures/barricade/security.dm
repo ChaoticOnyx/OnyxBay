@@ -108,7 +108,6 @@
 		return FALSE
 
 	atom_flags |= ATOM_FLAG_UNPUSHABLE
-	change_pull_slowdown(PULL_SLOWDOWN_EXTREME)
 	emagged = TRUE
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread

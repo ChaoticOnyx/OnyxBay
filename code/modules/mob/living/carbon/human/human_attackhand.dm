@@ -133,7 +133,7 @@
 
 		if(I_GRAB)
 			visible_message(SPAN("danger", "[M] attempted to grab \the [src]!"))
-			return H.make_grab(H, src)
+			return try_make_grab(H)
 
 		if(I_HURT)
 			if(M.zone_sel.selecting == "mouth" && wear_mask && istype(wear_mask, /obj/item/grenade))
@@ -343,27 +343,13 @@
 
 //Breaks all grips and pulls that the mob currently has.
 /mob/living/carbon/human/proc/break_all_grabs(mob/living/carbon/user, silent = 0)
-	var/success = 0
-	if(pulling)
-		if(!silent)
-			visible_message("<span class='danger'>[user] has broken [src]'s grip on [pulling]!</span>")
-		success = 1
-		stop_pulling()
-
-	if(istype(l_hand, /obj/item/grab))
-		var/obj/item/grab/lgrab = l_hand
-		if(lgrab.affecting)
+	var/success = FALSE
+	for(var/obj/item/grab/grab in get_active_grabs())
+		if(grab.affecting)
 			if(!silent)
-				visible_message("<span class='danger'>[user] has broken [src]'s grip on [lgrab.affecting]!</span>")
-			success = 1
-		lgrab.delete_self()
-	if(istype(r_hand, /obj/item/grab))
-		var/obj/item/grab/rgrab = r_hand
-		if(rgrab.affecting)
-			if(!silent)
-				visible_message("<span class='danger'>[user] has broken [src]'s grip on [rgrab.affecting]!</span>")
-			success = 1
-		rgrab.delete_self()
+				visible_message(SPAN_DANGER("[user] has broken [src]'s grip on [grab.affecting]!"))
+			success = TRUE
+		grab.force_drop()
 	return success
 
 /*

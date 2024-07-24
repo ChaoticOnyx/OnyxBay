@@ -233,11 +233,6 @@
 		return 1
 	return 0
 
-/mob/living/carbon/human/proc/grab_restrained()
-	for (var/obj/item/grab/G in grabbed_by)
-		if(G.restrains())
-			return TRUE
-
 /mob/living/carbon/human/var/co2overloadtime = null
 /mob/living/carbon/human/var/temperature_resistance = 75 CELSIUS
 

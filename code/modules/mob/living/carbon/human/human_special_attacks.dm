@@ -99,7 +99,7 @@
 	)
 
 	if(will_grab && prob(grab_chance))
-		make_grab(src, victim, GRAB_BITE)
+		make_grab(victim, /datum/grab/normal/struggle, defer_hand = FALSE)
 
 /mob/living/carbon/human/proc/jump(atom/A)
 	if(!A || QDELETED(A) || !A.loc)
@@ -112,7 +112,7 @@
 		to_chat(src, SPAN_WARNING("I should stand up first."))
 		return
 
-	if(pulledby || LAZYLEN(grabbed_by))
+	if(LAZYLEN(grabbed_by))
 		to_chat(src, SPAN_WARNING("I'm being grabbed!"))
 		return
 

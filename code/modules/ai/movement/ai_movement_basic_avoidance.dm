@@ -10,7 +10,7 @@
 		///	continue
 		///COOLDOWN_START(controller, movement_cooldown, controller.movement_delay)
 
-		var/atom/movable/movable_pawn = controller.pawn
+		var/mob/living/movable_pawn = controller.pawn
 
 		// Check if this controller can actually run, so we don't chase people with corpses
 		if(!controller.able_to_run())
@@ -20,7 +20,7 @@
 
 		var/can_move = TRUE
 
-		if(controller.ai_traits & STOP_MOVING_WHEN_PULLED && movable_pawn.pulledby)
+		if(controller.ai_traits & STOP_MOVING_WHEN_PULLED && movable_pawn?.restrained())
 			can_move = FALSE
 
 		if(!isturf(movable_pawn.loc)) //No moving if not on a turf

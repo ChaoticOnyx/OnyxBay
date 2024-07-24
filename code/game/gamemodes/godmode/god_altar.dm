@@ -21,9 +21,10 @@
 		var/obj/item/grab/G = I
 		if(G.force_danger())
 			G.affecting.forceMove(get_turf(src))
-			G.affecting.Weaken(1)
+			var/mob/living/L = G.get_affecting_mob()
+			L?.Weaken(1)
 			user.visible_message("<span class='warning'>\The [user] throws \the [G.affecting] onto \the [src]!</span>")
-			G.delete_self()
+			G.force_drop()
 	else ..()
 
 /obj/structure/deity/altar/think()

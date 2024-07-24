@@ -522,7 +522,6 @@
 		if(QDELETED(src))
 			return
 
-		usr.stop_pulling()
 		usr.client.perspective = EYE_PERSPECTIVE
 		usr.client.eye = src
 		usr.forceMove(src)

@@ -64,9 +64,6 @@
 	main_effect.process()
 	secondary_effect?.process()
 
-	if(pulledby)
-		Bumped(pulledby)
-
 	if((main_effect.trigger | secondary_effect?.trigger) & TRIGGERS_ENVIROMENT)
 		var/env_triggers = check_env()
 
