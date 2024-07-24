@@ -16,7 +16,7 @@
 				return
 
 		else
-			if(!do_after(user, delay, target=target, can_move = can_move, , luck_check_type = LUCK_CHECK_ENG, extra_checks = tool_check) || !is_tool_on())
+			if(!do_after(user, delay, target=target, can_move = can_move, luck_check_type = LUCK_CHECK_ENG, extra_checks = tool_check) || !is_tool_on())
 				return
 
 	// Use tool's fuel, stack sheets or charges if amount is set.
