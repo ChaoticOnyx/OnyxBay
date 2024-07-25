@@ -168,6 +168,14 @@
 			S.gather_all(src, user)
 	return ..()
 
+/turf/grab_attack(obj/item/grab/G)
+	if(G.affecting != G.assailant)
+		if(G.affecting.DoMove(get_dir(G.affecting.loc, src), G.assailant, TRUE) & MOVEMENT_HANDLED)
+			playsound(G.affecting, G.affecting?.pull_sound, rand(50, 75), TRUE)
+		G.assailant.setClickCooldown(DEFAULT_QUICK_COOLDOWN + G.grab_slowdown())
+
+	return TRUE
+
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
 
 	..()
