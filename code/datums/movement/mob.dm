@@ -184,7 +184,7 @@
 	return ((mover && mover != mob) || !mob.incapacitated(INCAPACITATION_DISABLED & ~INCAPACITATION_FORCELYING)) ? MOVEMENT_PROCEED : MOVEMENT_STOP
 
 // Is anything physically preventing movement?
-/datum/movement_handler/mob/physically_restrained/MayMove(mob/mover)
+/datum/movement_handler/mob/physically_restrained/MayMove(mob/mover, is_external)
 	if(istype(mob.buckled) && !(mob.buckled.buckle_movable || mob.buckled.buckle_relaymove))
 		if(mover == mob)
 			to_chat(mob, SPAN("notice", "You're buckled to \the [mob.buckled]!"))
@@ -199,13 +199,6 @@
 		if(mover == mob)
 			to_chat(mob, SPAN("notice", "You're anchored down!"))
 		return MOVEMENT_STOP
-
-	for(var/obj/item/grab/G in mob.grabbed_by)
-		if(G.stop_move())
-			if(mover == mob)
-				to_chat(mob, SPAN("notice", "You're stuck in a grab!"))
-			mob.ProcessGrabs()
-			return MOVEMENT_STOP
 
 	for(var/obj/item/grab/G as anything in mob.grabbed_by)
 		if(G.assailant != mob && G.assailant != mover && (mob.restrained() || G.stop_move()))
@@ -234,13 +227,14 @@
 	//We are now going to move
 	mob.moving = 1
 
-	direction = mob.AdjustMovementDirection(direction)
+	if(mover == mob)
+		direction = mob.AdjustMovementDirection(direction)
 
 	if(direction & (UP|DOWN))
 		var/txt_dir = direction & UP ? "upwards" : "downwards"
 		mob.visible_message(SPAN("notice", "[mob] moves [txt_dir]."))
 
-	step(mob, direction)
+	var/result = step(mob, direction)
 
 	if(!mob)
 		return // If the mob gets deleted on move (e.g. Entered, whatever), it wipes this reference on us in Destroy (and we should be aborting all action anyway).
@@ -249,37 +243,6 @@
 
 /datum/movement_handler/mob/movement/MayMove(mob/mover)
 	return IS_SELF(mover) && mob.moving ? MOVEMENT_STOP : MOVEMENT_PROCEED
-
-/datum/movement_handler/mob/movement/proc/HandleGrabs(direction, old_turf)
-	. = 0
-	// TODO: Look into making grabs use movement events instead, this is a mess.
-	for(var/obj/item/grab/G in mob)
-		if(G.assailant == G.affecting)
-			return
-		var/list/L = mob.ret_grab()
-		if(istype(L, /list))
-			if(L.len == 2)
-				L -= mob
-				var/mob/M = L[1]
-				if(M)
-					if(get_dist(old_turf, M) <= 1)
-						if(isturf(M.loc) && isturf(mob.loc))
-							if(mob.loc != old_turf && M.loc != mob.loc)
-								step_glide(M, get_dir(M.loc, old_turf), host.glide_size)
-			else
-				for(var/mob/M in L)
-					M.other_mobs = 1
-					if(mob != M)
-						M.animate_movement = 3
-				for(var/mob/M in L)
-					spawn(0)
-						step(M, direction)
-						return
-					spawn(1)
-						M.other_mobs = null
-						M.animate_movement = 2
-						return
-			G.adjust_position()
 
 // Misc. helpers
 /mob/proc/MayEnterTurf(turf/T)

@@ -331,12 +331,28 @@
 
 /obj/item/grab/proc/grab_slowdown()
 	var/slowdown = 0
-	if(isstructure(affecting))
-		var/obj/structure/S = affecting
-		slowdown = ceil(S?.pull_slowdown * current_grab.grab_slowdown)
+	if(isobj(affecting))
+		var/obj/O = affecting
+		if(O.pull_slowdown == PULL_SLOWDOWN_WEIGHT)
+			slowdown += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
+		else
+			slowdown += O.pull_slowdown
+	else if(ismob(affecting))
+		var/mob/M = affecting
+		slowdown += max(0, M.mob_size) / MOB_MEDIUM * (M.lying ? 2 : 0.5)
 	else
-		slowdown = ceil(affecting?.get_object_size())
-	return max(slowdown, 1)
+		slowdown += 1
+
+	if(istype(src, /mob/living/))
+		var/mob/living/L = src
+
+		for(var/datum/modifier/M in L.modifiers)
+			if(isnull(M.pull_slowdown_percent))
+				continue
+
+			slowdown *= M.pull_slowdown_percent
+
+	return slowdown
 
 /obj/item/grab/proc/assailant_moved()
 	affecting.glide_size = assailant.glide_size // Note that this is called _after_ the Move() call resolves, so while it adjusts affecting's move animation, it won't adjust anything else depending on it.
