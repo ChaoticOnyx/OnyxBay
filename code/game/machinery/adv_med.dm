@@ -85,7 +85,6 @@
 		to_chat(usr, SPAN("warning", "The subject cannot have abiotic items on."))
 		return
 
-	usr.pulling = null
 	usr.client.perspective = EYE_PERSPECTIVE
 	usr.client.eye = src
 	usr.forceMove(src)
@@ -130,32 +129,37 @@
 	if(default_part_replacement(user, W))
 		return
 
-	var/obj/item/grab/normal/G = W
-	if(!istype(G))
-		return ..()
+	return ..()
 
-	var/mob/M = G.affecting
+/obj/machinery/bodyscanner/grab_attack(obj/item/grab/G)
+	var/mob/M = G.get_affecting_mob()
+	var/mob/user = G.assailant
 	if(!check_compatibility(M, user))
-		return
+		return FALSE
 
-	user.visible_message(SPAN("notice", "\The [user] begins placing \the [M] into \the [src]."), SPAN("notice", "You start placing \the [M] into \the [src]."))
-	if(do_after(user, 20, src))
-		if(!check_compatibility(M, user))
-			return
+	user.visible_message(
+		SPAN("notice", "\The [user] begins placing \the [M] into \the [src]."),
+		SPAN("notice", "You start placing \the [M] into \the [src].")
+	)
+	if(!do_after(user, 2 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(M) || !Adjacent(M, src))
+		return TRUE
 
-		M.forceMove(src)
-		src.occupant = M
-		update_use_power(POWER_USE_ACTIVE)
-		src.icon_state = "body_scanner_1"
-		for(var/obj/O in src)
-			if(O in component_parts)
-				continue
+	if(!check_compatibility(M, user))
+		return TRUE
 
-			O.forceMove(loc)
-		src.add_fingerprint(user)
-		qdel(G)
-	else
-		return
+	M.forceMove(src)
+	occupant = M
+	update_use_power(POWER_USE_ACTIVE)
+	icon_state = "body_scanner_1"
+	add_fingerprint(user)
+	for(var/obj/O in src)
+		if(O in component_parts)
+			continue
+
+		O.forceMove(loc)
+
+	G.force_drop()
+	return TRUE
 
 /obj/machinery/bodyscanner/add_context(list/context, obj/item/held_item, mob/user)
 	. = NONE

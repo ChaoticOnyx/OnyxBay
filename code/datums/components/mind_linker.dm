@@ -283,12 +283,12 @@
 /datum/action/innate/link_minds/Activate()
 
 	var/obj/item/grab/G
-	if(istype(owner.l_hand, /obj/item/grab))
+	if(isgrab(owner.l_hand))
 		G = owner.l_hand
 	else
-		if(istype(owner.r_hand, /obj/item/grab))
+		if(isgrab(owner.r_hand))
 			G = owner.r_hand
-	if(G.current_grab.state_name != NORM_AGGRESSIVE)
+	if(!istype(G.current_grab, /datum/grab/normal/aggressive))
 		to_chat(owner, SPAN_WARNING("You need to aggressively grab someone to link minds!"))
 		return
 
@@ -322,12 +322,12 @@
 		return FALSE
 
 	var/obj/item/grab/G
-	if(istype(owner.l_hand, /obj/item/grab))
+	if(isgrab(owner.l_hand))
 		G = owner.l_hand
 	else
-		if(istype(owner.r_hand, /obj/item/grab))
+		if(isgrab(owner.r_hand))
 			G = owner.r_hand
-	if(G.current_grab.state_name != NORM_AGGRESSIVE || G.current_grab.state_name != NORM_NECK || G.current_grab.state_name != NORM_KILL)
+	if(!istype(G.current_grab, /datum/grab/normal/aggressive) || !istype(G.current_grab, /datum/grab/normal/kill) || !istype(G.current_grab, /datum/grab/normal/neck))
 		return FALSE
 
 	if(!G.affecting)

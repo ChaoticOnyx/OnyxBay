@@ -207,11 +207,14 @@
 	if(!istype(recoil_turf))
 		return
 
-	if(pulling)
+	for(var/obj/item/grab/G as anything in grabbed_by)
+		var/mob/grabber = G.assailant
+		if(!istype(grabber))
+			continue
+
 		var/turf/pulling_recoil_turf = get_step(recoil_turf, GLOB.flip_dir[dir])
-		pulling.throw_at(istype(pulling_recoil_turf) ? pulling_recoil_turf : recoil_turf, world.view, 1, src, src)
-		pulling.pulledby = null
-		pulling = null
+		grabber.throw_at(istype(pulling_recoil_turf) ? pulling_recoil_turf : recoil_turf, world.view, 1, src, src)
+		qdel(G)
 
 	Move(recoil_turf)
 	QDEL_IN(particle, 1.5 SECONDS)

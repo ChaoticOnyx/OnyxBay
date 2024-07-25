@@ -8,7 +8,7 @@
 	if(LAZYLEN(living_pawn.do_afters))
 		return FALSE
 
-	if(prob(walk_chance) && isturf(living_pawn.loc) && !living_pawn.pulledby)
+	if(prob(walk_chance) && isturf(living_pawn.loc) && !living_pawn.restrained())
 		var/move_dir = pick(GLOB.cardinal)
 		var/turf/destination_turf = get_step(living_pawn, move_dir)
 		//if(!destination_turf?.can_cross_safely(living_pawn))
@@ -58,7 +58,7 @@
 	//if(LAZYLEN(living_pawn.do_afters))
 	//	return
 
-	if(!prob(walk_chance) || !isturf(living_pawn.loc) || living_pawn.pulledby)
+	if(!prob(walk_chance) || !isturf(living_pawn.loc) || living_pawn.restrained())
 		return
 
 	var/atom/target = controller.blackboard[target_key]

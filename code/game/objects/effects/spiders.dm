@@ -92,10 +92,8 @@
 		return TRUE
 
 	else if(istype(mover, /mob/living))
-		if(istype(mover.pulledby, /mob/living/simple_animal/hostile/giant_spider))
-			return TRUE
 		if(prob(70))
-			to_chat(mover, "<span class='warning'>You get stuck in \the [src] for a moment.</span>")
+			to_chat(mover, SPAN_WARNING("You get stuck in \the [src] for a moment."))
 			return FALSE
 		return TRUE
 

@@ -12,7 +12,7 @@
 
 	unset_machine()
 	//SStgui.force_close_all_windows(src) Needs further investigating
-
+	leaning = null
 	QDEL_NULL(hud_used)
 	QDEL_NULL(show_inventory)
 	QDEL_NULL(skybox)
@@ -20,11 +20,9 @@
 	QDEL_NULL(shadow)
 	QDEL_NULL(bugreporter)
 	QDEL_NULL(language_menu)
+	QDEL_NULL_LIST(grabbed_by)
 
 	LAssailant = null
-	for(var/obj/item/grab/G in grabbed_by)
-		qdel(G)
-	grabbed_by.Cut()
 
 	clear_fullscreen()
 	if(ability_master)
@@ -57,7 +55,6 @@
 
 /mob/proc/remove_screen_obj_references()
 	hands = null
-	pullin = null
 	purged = null
 	internals = null
 	oxygen = null
@@ -203,7 +200,14 @@
 	if(istype(loc, /turf/space))
 		return cached_slowdown_space
 
-	return cached_slowdown
+	var/grab_slowdown = 0
+	for(var/obj/item/grab/G in src)
+		if(G.assailant == G.affecting)
+			continue
+
+		grab_slowdown += G.grab_slowdown()
+
+	return cached_slowdown + grab_slowdown
 
 /mob/proc/Life()
 //	if(organStructure)
@@ -276,8 +280,16 @@
 	CAN_BE_REDEFINED(TRUE)
 	return list()
 
+/mob/proc/grab_restrained()
+	for(var/obj/item/grab/G in grabbed_by)
+		if(G.restrains())
+			return TRUE
+
 /mob/proc/restrained()
-	return
+	if(grab_restrained())
+		return TRUE
+
+	return FALSE
 
 /mob/proc/reset_view(atom/A)
 	if (client)
@@ -356,17 +368,17 @@
 
 //Gets the mob grab conga line.
 /mob/proc/ret_grab(list/L)
-	if (!istype(l_hand, /obj/item/grab) && !istype(r_hand, /obj/item/grab))
+	var/grabs = get_active_grabs()
+	if(!length(grabs))
 		return L
-	if (!L)
+	if(!L)
 		L = list(src)
-	for(var/A in list(l_hand,r_hand))
-		if (istype(A, /obj/item/grab))
-			var/obj/item/grab/G = A
-			if (!(G.affecting in L))
-				L += G.affecting
-				if (G.affecting)
-					G.affecting.ret_grab(L)
+	for(var/obj/item/grab/G in grabs)
+		if(G.affecting && !(G.affecting in L))
+			L += G.affecting
+			var/mob/living/affecting_mob = G.get_affecting_mob()
+			if(istype(affecting_mob))
+				affecting_mob.ret_grab(L)
 	return L
 
 /mob/verb/mode()
@@ -598,96 +610,6 @@
 
 	usr.show_inventory?.open()
 
-/mob/verb/stop_pulling_verb()
-	set name = "Stop Pulling"
-	set category = "IC"
-
-	stop_pulling() // Verbs are less CPU time efficient than procs.
-
-/mob/proc/stop_pulling()
-	if(pulling)
-		pulling.set_glide_size(8)
-		unregister_signal(pulling, SIGNAL_QDELETING)
-		pulling.pulledby = null
-		pulling = null
-
-		var/datum/movement_handler/mob/delay/delay = GetMovementHandler(/datum/movement_handler/mob/delay)
-		if(delay)
-			delay.InstantUpdateGlideSize()
-
-	if(pullin)
-		pullin.icon_state = "pull0"
-
-	remove_movespeed_modifier(/datum/movespeed_modifier/pull_slowdown)
-
-/mob/proc/start_pulling(atom/movable/AM)
-	if ( !AM || !usr || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
-		return
-
-	AM.on_pulling_try(src)
-
-	if (AM.anchored)
-		to_chat(src, "<span class='warning'>It won't budge!</span>")
-		return
-
-	var/mob/M = AM
-	if(ismob(AM))
-		if(!can_pull_mobs || !can_pull_size)
-			to_chat(src, "<span class='warning'>It won't budge!</span>")
-			return
-
-		if((mob_size < M.mob_size) && (can_pull_mobs != MOB_PULL_LARGER))
-			to_chat(src, "<span class='warning'>It won't budge!</span>")
-			return
-
-		if((mob_size == M.mob_size) && (can_pull_mobs == MOB_PULL_SMALLER))
-			to_chat(src, "<span class='warning'>It won't budge!</span>")
-			return
-
-		// If your size is larger than theirs and you have some
-		// kind of mob pull value AT ALL, you will be able to pull
-		// them, so don't bother checking that explicitly.
-
-		if(!iscarbon(src))
-			M.LAssailant = null
-		else
-			M.LAssailant = weakref(usr)
-
-	else if(isobj(AM))
-		var/obj/I = AM
-		if(!can_pull_size || can_pull_size < I.w_class)
-			to_chat(src, "<span class='warning'>It won't budge!</span>")
-			return
-
-	if(pulling)
-		var/pulling_old = pulling
-		stop_pulling()
-		// Are we pulling the same thing twice? Just stop pulling.
-		if(pulling_old == AM)
-			return
-
-	src.pulling = AM
-	AM.pulledby = src
-
-	if(pullin)
-		pullin.icon_state = "pull1"
-
-	register_signal(AM, SIGNAL_QDELETING, nameof(.proc/stop_pulling))
-	update_pull_slowdown(AM)
-	var/datum/movement_handler/mob/delay/delay = GetMovementHandler(/datum/movement_handler/mob/delay)
-	if(delay)
-		delay.InstantUpdateGlideSize()
-	AM.set_glide_size(glide_size)
-
-	if(ishuman(AM))
-		var/mob/living/carbon/human/H = AM
-		if(H.pull_damage())
-			to_chat(src, "<span class='danger'>Pulling \the [H] in their current condition would probably be a bad idea.</span>")
-	//Attempted fix for people flying away through space when cuffed and dragged.
-	if(ismob(AM))
-		var/mob/pulled = AM
-		pulled.inertia_dir = 0
-
 /mob/proc/can_use_hands()
 	return
 
@@ -754,7 +676,7 @@
 
 	for(var/obj/item/grab/G in grabbed_by)
 		if(G.force_stand())
-			lying = 0
+			lying = FALSE
 
 	if(lying_old != lying)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/lying, slowdown = (lying ? 10 + (weakened * 2) : 0))

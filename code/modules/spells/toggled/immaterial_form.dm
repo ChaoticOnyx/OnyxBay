@@ -115,7 +115,7 @@
 	user.alpha = 127
 	immaterial_user = user
 
-/obj/effect/dummy/immaterial_form/relaymove(mob/user, direction)
+/obj/effect/dummy/immaterial_form/handle_buckled_relaymove(datum/movement_handler/mh, mob/user, direction, mover)
 	if(world.time < nextmove)
 		return
 

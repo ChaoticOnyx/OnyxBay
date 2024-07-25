@@ -140,14 +140,3 @@
 /datum/keybinding/mob/move_down/down(client/user)
 	var/mob/M = user.mob
 	M.SelfMove(DOWN)
-
-/datum/keybinding/mob/pull
-	hotkey_keys = list("Delete")
-	name = "pull"
-	full_name = "Pull"
-	description = ""
-
-/datum/keybinding/mob/pull/down(client/user)
-	var/mob/M = user.mob
-	M.stop_pulling()
-	return TRUE

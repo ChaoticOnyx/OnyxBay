@@ -522,7 +522,6 @@
 		if(QDELETED(src))
 			return
 
-		usr.stop_pulling()
 		usr.client.perspective = EYE_PERSPECTIVE
 		usr.client.eye = src
 		usr.forceMove(src)
@@ -554,35 +553,6 @@
 				update_icon()
 		else if(islocked)
 			to_chat(user, "<span class='warning'>You can't pry the unit open, it's locked!</span>")
-		return
-	if(istype(I, /obj/item/grab) )
-		var/obj/item/grab/G = I
-		if( !(ismob(G.affecting)) )
-			return
-		if (!isopen)
-			to_chat(user, "<span class='warning'>The unit's doors are shut.</span>")
-			return
-		if ((stat & NOPOWER) || isbroken)
-			to_chat(user, "<span class='warning'>The unit is not operational.</span>")
-			return
-		if ( (occupant) || (helmet ) || (suit) || (boots) || (tank) || (mask)) //Unit needs to be absolutely empty
-			to_chat(user, "<span class='warning'>The unit's storage area is too cluttered.</span>")
-			return
-		visible_message("[user] starts putting [G.affecting.name] into the Suit Storage Unit.")
-		if(do_after(user, 20, src))
-			if(!G || !G.affecting) return //derpcheck
-			var/mob/M = G.affecting
-			if (M.client)
-				M.client.perspective = EYE_PERSPECTIVE
-				M.client.eye = src
-			M.forceMove(src)
-			occupant = M
-			isopen = 0 //close ittt
-			add_fingerprint(user)
-			qdel(G)
-			updateUsrDialog()
-			update_icon()
-			return
 		return
 	if( istype(I,/obj/item/clothing/suit/space) )
 		if(!isopen)
@@ -658,6 +628,48 @@
 	updateUsrDialog()
 	return
 
+/obj/machinery/suit_storage_unit/grab_attack(obj/item/grab/G)
+	var/mob/living/M = G.get_affecting_mob()
+	var/mob/user = G.assailant
+
+	if(!istype(M))
+		return FALSE
+
+	if(!isopen)
+		show_splash_text(user, "Doors are shut!", SPAN_WARNING("The unit's doors are shut."))
+		return TRUE
+
+	if(inoperable(MAINT) || isbroken)
+		show_splash_text(user, "Not operational!", SPAN_WARNING("The unit is not operational."))
+		return TRUE
+
+	if((occupant) || (helmet) || (suit) || (boots) || (tank) || (mask)) //Unit needs to be absolutely empty
+		show_splash_text(user, "No free space!", SPAN_WARNING("The unit's storage area is too cluttered."))
+		return TRUE
+
+	user.visible_message(
+		SPAN_NOTICE("\The [user] begins placing \the [M] into \the [src]."),
+		SPAN_NOTICE("You start placing \the [M] into \the [src].")
+	)
+
+	if(!do_after(user, 2 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(M) || !Adjacent(M, src))
+		return TRUE
+
+	user.visible_message(
+		SPAN_NOTICE("\The [user] places \the [M] into \the [src]."),
+		SPAN_NOTICE("You place \the [M] into \the [src].")
+	)
+	if(M.client)
+		M.client.perspective = EYE_PERSPECTIVE
+		M.client.eye = src
+	M.forceMove(src)
+	occupant = M
+	isopen = FALSE
+	G.force_drop()
+	add_fingerprint(user)
+	updateUsrDialog()
+	update_icon()
+	return TRUE
 
 /obj/machinery/suit_storage_unit/attack_ai(mob/user as mob)
 	return attack_hand(user)

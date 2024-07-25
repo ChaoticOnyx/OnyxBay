@@ -98,7 +98,7 @@
 		pedaled = 0
 	return 1
 
-/obj/structure/bed/chair/pedalgen/relaymove(mob/user, direction)
+/obj/structure/bed/chair/pedalgen/handle_buckled_relaymove(datum/movement_handler/mh, mob/user, direction, mover)
 	if(!ishuman(user))
 		unbuckle_mob()
 	var/mob/living/carbon/human/pedaler = user
@@ -119,6 +119,7 @@
 
 /obj/structure/bed/chair/pedalgen/post_buckle_mob(mob/user)
 	update_mob(user, 1)
+	return ..()
 
 /obj/structure/bed/chair/pedalgen/rotate()
 	..()
@@ -150,22 +151,19 @@
 		var/new_pixel_y = 0
 		switch(dir)
 			if(SOUTH)
-				new_pixel_x = 0
-				new_pixel_y = 7
+				buckle_pixel_shift = "x=0;y=7"
+				buckled_mob.update_offsets()
 			if(WEST)
-				new_pixel_x = 13
-				new_pixel_y = 7
+				buckle_pixel_shift = "x=13;y=7"
+				buckled_mob.update_offsets()
 			if(NORTH)
-				new_pixel_x = 0
-				new_pixel_y = 4
+				buckle_pixel_shift = "x=0;y=4"
+				buckled_mob.update_offsets()
 			if(EAST)
-				new_pixel_x = -13
-				new_pixel_y = 7
+				buckle_pixel_shift = "x=-13;y=7"
+				buckled_mob.update_offsets()
 		if(buckling)
 			animate(M, pixel_x = new_pixel_x, pixel_y = new_pixel_y, 2, 1, LINEAR_EASING)
-		else
-			M.pixel_x = new_pixel_x
-			M.pixel_y = new_pixel_y
 	else
 		animate(M, pixel_x = 0, pixel_y = 0, 2, 1, LINEAR_EASING)
 

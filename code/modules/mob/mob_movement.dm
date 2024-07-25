@@ -75,14 +75,6 @@
 	else
 		drop_active_hand(force = TRUE)
 
-//This gets called when you press the delete button.
-/client/verb/delete_key_pressed()
-	set hidden = 1
-
-	if(!usr.pulling)
-		to_chat(usr, "<span class='notice'>You are not pulling anything.</span>")
-		return
-	usr.stop_pulling()
 
 /client/verb/swap_hand()
 	set hidden = 1

@@ -115,29 +115,7 @@
 		mob.buckled.DoMove(direction, mob)
 		return MOVEMENT_HANDLED
 
-	if(mob.pulledby || mob.buckled) // Wheelchair driving!
-		if(istype(mob.buckled, /obj/effect/dummy/immaterial_form))
-			mob.buckled.relaymove(mob, direction)
-			return MOVEMENT_HANDLED
-		if(istype(mob.loc, /turf/space))
-			return // No wheelchair driving in space
-		if(istype(mob.buckled, /obj/structure/bed/chair/pedalgen))
-			mob.buckled.relaymove(mob, direction)
-			return MOVEMENT_HANDLED
-		if(istype(mob.pulledby, /obj/structure/bed/chair/wheelchair))
-			. = MOVEMENT_HANDLED
-			mob.pulledby.DoMove(direction, mob)
-		else if(istype(mob.buckled, /obj/structure/bed/chair/wheelchair))
-			. = MOVEMENT_HANDLED
-			if(ishuman(mob))
-				var/mob/living/carbon/human/driver = mob
-				var/obj/item/organ/external/l_hand = driver.get_organ(BP_L_HAND)
-				var/obj/item/organ/external/r_hand = driver.get_organ(BP_R_HAND)
-				if((!l_hand || l_hand.is_stump()) && (!r_hand || r_hand.is_stump()))
-					return // No hands to drive your chair? Tough luck!
-			//drunk wheelchair driving
-			direction = mob.AdjustMovementDirection(direction)
-			mob.buckled.DoMove(direction, mob)
+	return mob?.buckled?.handle_buckled_relaymove(src, mob, direction, mover)
 
 /datum/movement_handler/mob/buckle_relay/MayMove(mover)
 	if(mob.buckled)
@@ -152,7 +130,7 @@
 /datum/movement_handler/mob/delay/DoMove(direction, mover, is_external)
 	if(is_external)
 		return
-	delay = max(1, mob.movement_delay() + GetGrabSlowdown())
+	delay = max(1, mob.movement_delay())
 	next_move = world.time + delay
 	UpdateGlideSize()
 
@@ -177,15 +155,8 @@
 	else
 		host.set_glide_size(DELAY2GLIDESIZE(delay))
 
-/datum/movement_handler/mob/delay/proc/GetGrabSlowdown()
-	. = 0
-	for (var/obj/item/grab/G in mob)
-		if(G.assailant == G.affecting)
-			return
-		. = max(., G.grab_slowdown())
-
 /datum/movement_handler/mob/delay/proc/InstantUpdateGlideSize()
-	var/supposed_delay = max(1, mob.movement_delay() + GetGrabSlowdown())
+	var/supposed_delay = max(1, mob.movement_delay())
 	host.set_glide_size(DELAY2GLIDESIZE(supposed_delay))
 
 // Stop effect
@@ -213,7 +184,7 @@
 	return ((mover && mover != mob) || !mob.incapacitated(INCAPACITATION_DISABLED & ~INCAPACITATION_FORCELYING)) ? MOVEMENT_PROCEED : MOVEMENT_STOP
 
 // Is anything physically preventing movement?
-/datum/movement_handler/mob/physically_restrained/MayMove(mob/mover)
+/datum/movement_handler/mob/physically_restrained/MayMove(mob/mover, is_external)
 	if(istype(mob.buckled) && !(mob.buckled.buckle_movable || mob.buckled.buckle_relaymove))
 		if(mover == mob)
 			to_chat(mob, SPAN("notice", "You're buckled to \the [mob.buckled]!"))
@@ -229,22 +200,12 @@
 			to_chat(mob, SPAN("notice", "You're anchored down!"))
 		return MOVEMENT_STOP
 
-	for(var/obj/item/grab/G in mob.grabbed_by)
-		if(G.stop_move())
+	for(var/obj/item/grab/G as anything in mob.grabbed_by)
+		if(G.assailant != mob && G.assailant != mover && (mob.restrained() || G.stop_move()))
 			if(mover == mob)
-				to_chat(mob, SPAN("notice", "You're stuck in a grab!"))
+				to_chat(mob, SPAN_WARNING("You're restrained and cannot move!"))
 			mob.ProcessGrabs()
 			return MOVEMENT_STOP
-
-	if(mob.restrained())
-		for(var/mob/M in range(mob, 1))
-			if(M.pulling == mob)
-				if(!M.incapacitated() && mob.Adjacent(M))
-					if(mover == mob)
-						to_chat(mob, SPAN("notice", "You're restrained! You can't move!"))
-					return MOVEMENT_STOP
-				else
-					M.stop_pulling()
 
 	return MOVEMENT_PROCEED
 
@@ -253,10 +214,6 @@
 	//if we are being grabbed
 	if(grabbed_by.len)
 		resist() //shortcut for resisting grabs
-
-/mob/proc/ProcessGrabs()
-	return
-
 
 // Finally.. the last of the mob movement junk
 /datum/movement_handler/mob/movement/DoMove(direction, mob/mover)
@@ -270,66 +227,22 @@
 	//We are now going to move
 	mob.moving = 1
 
-	direction = mob.AdjustMovementDirection(direction)
-	var/old_turf = get_turf(mob)
+	if(mover == mob)
+		direction = mob.AdjustMovementDirection(direction)
 
 	if(direction & (UP|DOWN))
 		var/txt_dir = direction & UP ? "upwards" : "downwards"
 		mob.visible_message(SPAN("notice", "[mob] moves [txt_dir]."))
-		if(mob.pulling)
-			mob.zPull(direction)
 
 	step(mob, direction)
 
 	if(!mob)
 		return // If the mob gets deleted on move (e.g. Entered, whatever), it wipes this reference on us in Destroy (and we should be aborting all action anyway).
-	// Something with pulling things
-	HandleGrabs(direction, old_turf)
 
-	for(var/obj/item/grab/G in mob)
-		if(G.reverse_moving())
-			G.assailant.set_dir(GLOB.reverse_dir[direction])
-			G.affecting.set_dir(GLOB.reverse_dir[direction])
-		if(G.current_grab.downgrade_on_move)
-			G.downgrade()
-	for(var/obj/item/grab/G in mob.grabbed_by)
-		G.adjust_position()
-
-	mob.moving = 0
+	mob.moving = FALSE
 
 /datum/movement_handler/mob/movement/MayMove(mob/mover)
 	return IS_SELF(mover) && mob.moving ? MOVEMENT_STOP : MOVEMENT_PROCEED
-
-/datum/movement_handler/mob/movement/proc/HandleGrabs(direction, old_turf)
-	. = 0
-	// TODO: Look into making grabs use movement events instead, this is a mess.
-	for(var/obj/item/grab/G in mob)
-		if(G.assailant == G.affecting)
-			return
-		var/list/L = mob.ret_grab()
-		if(istype(L, /list))
-			if(L.len == 2)
-				L -= mob
-				var/mob/M = L[1]
-				if(M)
-					if(get_dist(old_turf, M) <= 1)
-						if(isturf(M.loc) && isturf(mob.loc))
-							if(mob.loc != old_turf && M.loc != mob.loc)
-								step_glide(M, get_dir(M.loc, old_turf), host.glide_size)
-			else
-				for(var/mob/M in L)
-					M.other_mobs = 1
-					if(mob != M)
-						M.animate_movement = 3
-				for(var/mob/M in L)
-					spawn(0)
-						step(M, direction)
-						return
-					spawn(1)
-						M.other_mobs = null
-						M.animate_movement = 2
-						return
-			G.adjust_position()
 
 // Misc. helpers
 /mob/proc/MayEnterTurf(turf/T)

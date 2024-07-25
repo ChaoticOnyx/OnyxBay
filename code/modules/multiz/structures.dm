@@ -129,16 +129,14 @@
 		to_chat(src, "<span class='warning'>You are physically unable to climb \the [ladder].</span>")
 		return FALSE
 
-	var/carry_count = 0
-	for(var/obj/item/grab/G in src)
-		if(!G.ladder_carry())
-			to_chat(src, "<span class='warning'>You can't carry [G.affecting] up \the [ladder].</span>")
+	var/can_carry = can_pull_size
+	if(has_gravity(loc))
+		can_carry = round(can_carry * 0.75)
+	for(var/obj/item/grab/G in get_active_grabs())
+		can_carry -= G.affecting.get_object_size()
+		if(can_carry < 0)
+			to_chat(src, SPAN_WARNING("You can't carry \the [G.affecting] up \the [ladder]."))
 			return FALSE
-		else
-			carry_count++
-	if(carry_count > 1)
-		to_chat(src, "<span class='warning'>You can't carry more than one person up \the [ladder].</span>")
-		return FALSE
 
 	return TRUE
 
@@ -210,8 +208,8 @@
 			A.forceMove(target)
 			if(isliving(A))
 				var/mob/living/L = A
-				if(L.pulling)
-					L.pulling.forceMove(target)
+				for(var/obj/item/grab/G in L.get_active_grabs())
+					G.affecting.forceMove(target)
 			if(ishuman(A))
 				playsound(source, SFX_FOOTSTEP_STAIRS, 50)
 				playsound(target, SFX_FOOTSTEP_STAIRS, 50)

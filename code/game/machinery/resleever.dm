@@ -193,33 +193,40 @@
 		else
 			to_chat(user, "<span class='warning'>Can not do that while [src] is occupied.</span>")
 
-	else if(istype(W, /obj/item/grab))
-		var/obj/item/grab/grab = W
-		if(occupant)
-			to_chat(user, "<span class='notice'>\The [src] is in use.</span>")
-			return
+	return ..()
 
-		if(!ismob(grab.affecting))
-			return
+/obj/machinery/resleever/grab_attack(obj/item/grab/G)
+	var/mob/living/M = G.get_affecting_mob()
+	var/mob/user = G.assailant
 
-		if(!check_occupant_allowed(grab.affecting))
-			return
+	if(occupant)
+		to_chat(user, SPAN_NOTICE("\The [src] is in use."))
+		return FALSE
 
-		var/mob/M = grab.affecting
+	if(!check_occupant_allowed(M))
+		return TRUE
 
-		visible_message("[user] starts putting [grab.affecting:name] into \the [src].")
+	user.visible_message(
+		SPAN_NOTICE("\The [user] begins placing \the [M] into \the [src]."),
+		SPAN_NOTICE("You start placing \the [M] into \the [src].")
+	)
 
-		if(do_after(user, 20, src))
-			if(!M || !grab || !grab.affecting) return
+	if(!do_after(user, 2 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(M) || !Adjacent(M, src))
+		return TRUE
 
-			M.forceMove(src)
-
-			occupant = M
-			occupant_name = occupant.name
-			update_icon()
-			if(M.client)
-				M.client.perspective = EYE_PERSPECTIVE
-				M.client.eye = src
+	user.visible_message(
+		SPAN_NOTICE("\The [user] places \the [M] into \the [src]."),
+		SPAN_NOTICE("You place \the [M] into \the [src].")
+	)
+	M.forceMove(src)
+	occupant = M
+	occupant_name = occupant.name
+	G.force_drop()
+	update_icon()
+	if(M.client)
+		M.client.perspective = EYE_PERSPECTIVE
+		M.client.eye = src
+	return TRUE
 
 /obj/machinery/resleever/MouseDrop_T(mob/target, mob/user)
 	if(occupant)

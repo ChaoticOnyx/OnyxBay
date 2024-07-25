@@ -145,17 +145,24 @@
 		playsound(src, 'sound/items/Wirecutter.ogg', 100, 1)
 		remove_padding()
 
-	else if(istype(W, /obj/item/grab))
-		var/obj/item/grab/G = W
-		var/mob/living/affecting = G.affecting
-		user.visible_message("<span class='notice'>[user] attempts to buckle [affecting] into \the [src]!</span>")
-		if(do_after(user, 20, src))
-			if(user_buckle_mob(affecting, user))
-				qdel(W)
 	else
 		if(W.mod_weight >= 0.75)
 			shake_animation(stime = 4)
 		..()
+
+/obj/structure/bed/grab_attack(obj/item/grab/G)
+	var/mob/living/L = G.get_affecting_mob()
+	var/mob/user = G.assailant
+	user.visible_message(SPAN_NOTICE("[user] attempts to buckle [L] into \the [src]!"))
+	if(!do_after(user, 2 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(L) || !Adjacent(L, src))
+		return TRUE
+
+	if(!user_buckle_mob(L, user))
+		return TRUE
+
+	G.force_drop()
+	return TRUE
+
 /obj/structure/bed/attack_robot(mob/user)
 	if(Adjacent(user)) // Robots can open/close it, but not the AI.
 		attack_hand(user)

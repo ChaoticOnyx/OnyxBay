@@ -38,7 +38,6 @@
 	var/stat = 0 //Whether a mob is alive or dead. TODO: Move this to living - Nodrak
 
 	var/atom/movable/screen/hands = null
-	var/atom/movable/screen/pullin = null
 	var/atom/movable/screen/purged = null
 	var/atom/movable/screen/internals = null
 	var/atom/movable/screen/oxygen = null
@@ -85,7 +84,6 @@
 	var/disabilities = 0	//Carbon
 
 	var/last_pull_sound = 0
-	var/atom/movable/pulling = null
 	var/other_mobs = null
 	var/next_move = null
 	var/hand = null
@@ -126,6 +124,7 @@
 	var/bodytemperature_lasttick
 	var/default_pixel_x = 0
 	var/default_pixel_y = 0
+	var/default_pixel_z = 0
 
 	var/shakecamera = 0
 	var/a_intent = I_HELP//Living
@@ -137,8 +136,6 @@
 	var/obj/item/back = null//Human/Monkey
 	var/obj/item/storage/s_active = null//Carbon
 	var/obj/item/clothing/mask/wear_mask = null//Carbon
-
-	var/list/grabbed_by = list(  )
 
 	var/in_throw_mode = 0
 
@@ -249,6 +246,8 @@
 
 	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
 	var/list/do_afters
+	//The last mob/living to push/drag/grab this mob (mostly used by slimes friend recognition)
+	var/weakref/last_handled_by_mob
 
 /datum/rad_resist/mob
 	alpha_particle_resist = 6 MEGA ELECTRONVOLT

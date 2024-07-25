@@ -1130,7 +1130,6 @@
 	_add_verb_to_stat(H, verbs)
 
 	H.reset_view(src)
-	H.stop_pulling()
 	H.forceMove(src)
 	occupant = H
 	add_fingerprint(H)

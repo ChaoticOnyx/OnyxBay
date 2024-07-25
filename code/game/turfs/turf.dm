@@ -146,36 +146,20 @@
 
 /turf/attack_hand(mob/user)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	if(!user.pulling)
-		// QOL feature, clicking on turf can toogle doors
-		var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
-		if(AL)
-			AL.attack_hand(user)
-			return TRUE
-		var/obj/machinery/door/firedoor/FD = locate(/obj/machinery/door/firedoor) in contents
-		if(FD)
-			FD.attack_hand(user)
-			return TRUE
+	// QOL feature, clicking on turf can toogle doors
+	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
+	if(AL)
+		AL.attack_hand(user)
+		return TRUE
+	var/obj/machinery/door/firedoor/FD = locate(/obj/machinery/door/firedoor) in contents
+	if(FD)
+		FD.attack_hand(user)
+		return TRUE
 
 	if(user.restrained())
-		return 0
-	if(QDELETED(user.pulling) || user.pulling.anchored || !isturf(user.pulling.loc))
-		return 0
-	if(user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1)
-		return 0
+		return FALSE
 
-	if(ismob(user.pulling))
-		var/mob/M = user.pulling
-		var/atom/movable/t = M.pulling
-		M.stop_pulling()
-		step(user.pulling, get_dir(user.pulling.loc, src))
-		M.start_pulling(t)
-	else
-		step(user.pulling, get_dir(user.pulling.loc, src))
-		if(isobj(user.pulling))
-			var/obj/O = user.pulling
-			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN + O.pull_slowdown)
-	return 1
+	return TRUE
 
 /turf/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/storage))
@@ -183,6 +167,14 @@
 		if(S.use_to_pickup && S.collection_mode)
 			S.gather_all(src, user)
 	return ..()
+
+/turf/grab_attack(obj/item/grab/G)
+	if(G.affecting != G.assailant)
+		if(G.affecting.DoMove(get_dir(G.affecting.loc, src), G.assailant, TRUE) & MOVEMENT_HANDLED)
+			playsound(G.affecting, G.affecting?.pull_sound, rand(50, 75), TRUE)
+		G.assailant.setClickCooldown(DEFAULT_QUICK_COOLDOWN + G.grab_slowdown())
+
+	return TRUE
 
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
 
@@ -242,7 +234,7 @@ var/const/enterloopsanity = 100
 		else
 			M.inertia_dir = 0
 			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
-			M.update_height_offset(turf_height)
+			M.update_offsets()
 
 	else if(isobj(AM))
 		var/obj/O = AM
@@ -269,7 +261,7 @@ var/const/enterloopsanity = 100
 			M.inertia_dir  = 0
 			return
 		spawn(5)
-			if(M && !(M.anchored) && !(M.pulledby) && (M.loc == src))
+			if(M && !(M.anchored) && !LAZYLEN(M.grabbed_by) && (M.loc == src))
 				if(!M.inertia_dir)
 					M.inertia_dir = M.last_move
 				step(M, M.inertia_dir)
@@ -376,7 +368,7 @@ var/const/enterloopsanity = 100
 			max_height = max(max_height, O.turf_height_offset)
 	turf_height = max_height
 	for(var/mob/M in contents)
-		M.update_height_offset(turf_height)
+		M.update_offsets()
 
 /// Used for astar pathfinding
 /turf/proc/__get_astar_linked_nodes()

@@ -1,23 +1,18 @@
 /datum/grab/normal/aggressive
-	state_name = NORM_AGGRESSIVE
-
-	upgrab_name = NORM_NECK
-	downgrab_name = NORM_PASSIVE
-
-	shift = 12
-
-
-	stop_move = 1
-	can_absorb = 0
-	shield_assailant = 0
-	point_blank_mult = 1
-	same_tile = 0
-	can_throw = 1
-	force_danger = 1
-	breakability = 3
-
-	icon_state = "reinforce1"
-
+	name               = "aggressive grab"
+	upgrab             = /datum/grab/normal/neck
+	downgrab           = /datum/grab/normal/passive
+	shift              = 12
+	stop_move          = TRUE
+	reverse_facing     = FALSE
+	shield_assailant   = FALSE
+	point_blank_mult   = 1.5
+	damage_stage       = 1
+	same_tile          = FALSE
+	can_throw          = TRUE
+	force_danger       = TRUE
+	breakability       = 3
+	grab_icon_state    = "reinforce1"
 	break_chance_table = list(5, 20, 40, 80, 100)
 
 /datum/grab/normal/aggressive/process_effect(obj/item/grab/G)
@@ -40,12 +35,21 @@
 		affecting.Stun(2)
 
 /datum/grab/normal/aggressive/can_upgrade(obj/item/grab/G)
-	if(!(G.target_zone in list(BP_CHEST, BP_HEAD)))
-		to_chat(G.assailant, "<span class='warning'>You need to be grabbing their torso or head for this!</span>")
+	. = ..()
+	if(!.)
+		return
+
+	if(!ishuman(G.affecting))
+		to_chat(G.assailant, SPAN_WARNING("You can only upgrade an aggressive grab when grappling a human!"))
 		return FALSE
-	var/obj/item/clothing/C = G.affecting.head
-	if(istype(C)) //powersuit helmets etc
-		if((C.item_flags & ITEM_FLAG_STOPPRESSUREDAMAGE) && C.armor["melee"] > 20)
-			to_chat(G.assailant, "<span class='warning'>\The [C] is in the way!</span>")
+
+	if(!(G.target_zone in list(BP_CHEST, BP_HEAD)))
+		to_chat(G.assailant, SPAN_WARNING("You need to be grabbing their torso or head for this!"))
+		return FALSE
+
+	var/mob/living/carbon/human/affecting_mob = G.get_affecting_mob()
+	if(istype(affecting_mob))
+		var/obj/item/clothing/C = affecting_mob.head
+		if((C?.item_flags & ITEM_FLAG_STOPPRESSUREDAMAGE) && C?.armor["melee"] > 20)
+			to_chat(G.assailant, SPAN_WARNING("\The [C] is in the way!"))
 			return FALSE
-	return TRUE

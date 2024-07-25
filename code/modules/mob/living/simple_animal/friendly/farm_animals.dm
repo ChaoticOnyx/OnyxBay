@@ -64,7 +64,7 @@
 				src.visible_message(SPAN("notice", "\The [src] chews on the plants."))
 			return
 
-		if(!pulledby)
+		if(!restrained())
 			var/obj/effect/vine/food
 			food = locate(/obj/effect/vine) in oview(5,loc)
 			if(food)

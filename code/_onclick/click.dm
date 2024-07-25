@@ -292,8 +292,7 @@
 	return
 
 /atom/movable/CtrlClick(mob/user)
-	if(Adjacent(user))
-		user.start_pulling(src)
+	return try_make_grab(user, defer_hand = TRUE) || ..()
 
 /*
 	Alt click

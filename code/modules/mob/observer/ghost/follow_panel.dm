@@ -98,7 +98,7 @@
 
 		if(istype(atom_poi, /obj/item/disk/nuclear))
 			var/obj/item/disk/nuclear/disk = atom_poi
-			var/mob/holder = disk.pulledby || get(disk, /mob)
+			var/mob/holder = get(disk, /mob)
 			misc[length(misc)]["extra"] = "Location: [holder?.real_name || "Unsecured"]"
 			continue
 

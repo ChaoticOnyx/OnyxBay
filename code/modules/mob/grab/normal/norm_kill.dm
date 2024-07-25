@@ -1,25 +1,19 @@
 /datum/grab/normal/kill
-	state_name = NORM_KILL
-
-	downgrab_name = NORM_NECK
-
-	shift = 8
-
-	stop_move = 1
-	reverse_moving = TRUE
-	can_absorb = 1
-	shield_assailant = 0
-	point_blank_mult = 1
-	same_tile = 1
-	force_danger = 1
-	restrains = 1
-
-	downgrade_on_action = 1
-	downgrade_on_move = 1
-
-	icon_state = "kill1"
-
-	break_chance_table = list(5, 20, 40, 80, 100)
+	name                = "strangle"
+	downgrab            = /datum/grab/normal/neck
+	shift               = 0
+	stop_move           = TRUE
+	reverse_facing      = TRUE
+	shield_assailant    = FALSE
+	point_blank_mult    = 2
+	damage_stage        = 3
+	same_tile           = TRUE
+	force_danger        = TRUE
+	restrains           = TRUE
+	downgrade_on_action = TRUE
+	downgrade_on_move   = TRUE
+	grab_icon_state     = "kill1"
+	break_chance_table  = list(5, 20, 40, 80, 100)
 
 /datum/grab/normal/kill/process_effect(obj/item/grab/G)
 	var/mob/living/carbon/human/affecting = G.affecting

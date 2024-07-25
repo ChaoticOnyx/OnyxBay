@@ -145,7 +145,8 @@
 	var/hud_type
 	var/health_hud_intensity = 1
 
-	var/grab_type = GRAB_NORMAL		// The species' default grab type.
+	/// The species' default grab type.
+	var/grab_type = /datum/grab/normal/passive
 
 	// Body/form vars.
 	var/list/inherent_verbs 	       // Species-specific verbs.

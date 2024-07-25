@@ -19,7 +19,6 @@
 	var/throw_range = 7
 	var/throw_spin = TRUE // Should the atom spin when thrown.
 	var/moved_recently = 0
-	var/mob/pulledby = null
 	var/item_state = null // Used to specify the item state for the on-mob overlays.
 	var/pull_sound = null
 
@@ -29,6 +28,10 @@
 	var/mutable_appearance/em_block
 	/// [EMISSIVE_BLOCK_GENERIC] will use this as the em_block mask if specified. Cause we have /obj/item/'s with emissives.
 	var/em_block_state
+
+	/// List of grabs affecting this atom
+	var/list/grabbed_by
+	var/mob/living/buckled_mob = null
 
 /atom/movable/Initialize()
 	. = ..()
@@ -48,10 +51,6 @@
 		qdel(A)
 
 	forceMove(null)
-	if(pulledby)
-		if(pulledby.pulling == src)
-			pulledby.pulling = null
-		pulledby = null
 
 	if(LAZYLEN(movement_handlers) && !ispath(movement_handlers[1]))
 		QDEL_NULL_LIST(movement_handlers)
@@ -403,10 +402,6 @@
 	if(T != loc)
 		forceMove(T)
 
-/// Called on `/mob/proc/start_pulling`.
-/atom/movable/proc/on_pulling_try(mob/user)
-	return
-
 /**
 * A wrapper for setDir that should only be able to fail by living mobs.
 *
@@ -414,3 +409,10 @@
 */
 /atom/movable/proc/keybind_face_direction(direction)
 	return
+
+/// Called by a movement handler when a buckled mob tries to move.
+/atom/movable/proc/handle_buckled_relaymove(datum/movement_handler/mh, mob/mob, direction, mover)
+	return
+
+/atom/movable/proc/get_object_size()
+	return ITEM_SIZE_NORMAL

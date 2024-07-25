@@ -23,7 +23,7 @@
 		if(isturf(holder.loc) && !holder.resting && !holder.buckled)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
 			holder.turns_since_move++
 			if(holder.turns_since_move >= holder.turns_per_move)
-				if(!(holder.stop_automated_movement_when_pulled && holder.pulledby)) //Some animals don't move when pulled
+				if(!(holder.stop_automated_movement_when_pulled && holder.restrained())) //Some animals don't move when pulled
 					do_move()
 
 /datum/mob_ai/proc/do_move()

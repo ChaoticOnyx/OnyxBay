@@ -939,3 +939,15 @@ its easier to just keep the beam vertical.
 		dirt_overlay.add_dirt(dirt_datum)
 
 	return TRUE
+
+/**
+	Handle this atom being hit by a grab.
+
+	Called by resolve_attackby()
+
+	- `G`: The grab hitting this atom
+	- Return: `TRUE` to skip attackby() and afterattack() or `FALSE`
+*/
+/atom/proc/grab_attack(obj/item/grab/G)
+	SHOULD_CALL_PARENT(FALSE)
+	return FALSE

@@ -894,7 +894,7 @@
 
 /// Whenever we grab someone by the neck, set "draining" to a weakref of them.
 /datum/modifier/status_effect/stabilized/black/proc/on_grab(mob/living/source, new_state, target)
-	if(new_state != NORM_KILL || !isliving(target))
+	if(!istype(new_state, /datum/grab/normal/kill) || !isliving(target))
 		draining_ref = null
 		return
 
@@ -928,7 +928,7 @@
 	if(!istype(G))
 		return
 
-	if(G.current_grab.state_name != NORM_KILL || !IS_WEAKREF_OF(G.affecting, draining_ref))
+	if(!istype(G.current_grab, /datum/grab/normal/kill) || !IS_WEAKREF_OF(G.affecting, draining_ref))
 		return
 
 	var/mob/living/drained = draining_ref.resolve()

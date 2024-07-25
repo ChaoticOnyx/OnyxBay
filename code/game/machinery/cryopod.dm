@@ -490,30 +490,35 @@
 	set_occupant(null)
 	despawning_now = FALSE
 
-/obj/machinery/cryopod/attackby(obj/item/G as obj, mob/user as mob)
+/obj/machinery/cryopod/grab_attack(obj/item/grab/G)
+	var/mob/living/M = G.get_affecting_mob()
+	var/mob/user = G.assailant
+	if(!check_compatibility(M, user))
+		return FALSE
 
-	if(istype(G, /obj/item/grab))
-		var/obj/item/grab/grab = G
-		if(!check_compatibility(grab.affecting, user))
-			return
+	var/willing = FALSE //We don't want to allow people to be forced into despawning.
+	if(M.client)
+		var/response = tgui_alert(M, "Would you like to enter long-term storage?", "Cryopod", list("Yes, No"))
+		if(response != "Yes")
+			return TRUE
 
-		var/willing = null //We don't want to allow people to be forced into despawning.
-		var/mob/M = G:affecting
+		willing = TRUE
 
-		if(M.client)
-			if(alert(M,"Would you like to enter long-term storage?",,"Yes","No") == "Yes")
-				if(!M || !grab || !grab.affecting)
-					return
-				willing = 1
-		else
-			willing = 1
+	if(!willing)
+		return TRUE
 
-		if(willing && go_in(grab.affecting, user))
-			if(!check_compatibility(grab.affecting, user))
-				return
-			log_and_message_admins("put [key_name_admin(grab.affecting)] into the cryopod.")
-			add_fingerprint(M)
-			qdel(grab)
+	if(QDELETED(G) || !Adjacent(M, src) || !Adjacent(user, src))
+		return TRUE
+
+	if(check_compatibility(M, user) && go_in(M, user))
+		user.visible_message(
+			SPAN_NOTICE("\The [user] places \the [M] into \the [src]."),
+			SPAN_NOTICE("You place \the [M] into \the [src].")
+		)
+		log_and_message_admins("put [key_name_admin(M)] into the cryopod.")
+		add_fingerprint(M)
+		G.force_drop()
+	return TRUE
 
 /obj/machinery/cryopod/verb/eject()
 	set name = "Eject Pod"
@@ -586,7 +591,6 @@
 			to_chat(user, "<span class='warning'>Unbuckle [M == user ? "yourself" : M] first.</span>")
 			return FALSE
 
-		M.stop_pulling()
 		if(M.client)
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src
@@ -599,7 +603,6 @@
 		SetName(initial(name))
 		return
 
-	occupant.stop_pulling()
 	if(occupant.client)
 		to_chat(occupant, "<span class='notice'>[on_enter_occupant_message]</span>")
 		to_chat(occupant, "<span class='notice'><b>If you ghost, log out or close your client now, your character will shortly be permanently removed from the round.</b></span>")

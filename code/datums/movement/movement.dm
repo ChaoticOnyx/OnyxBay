@@ -84,6 +84,16 @@ if(LAZYLEN(movement_handlers) && ispath(movement_handlers[1])) { \
 	SET_MOVER(mover)
 	SET_IS_EXTERNAL(mover)
 
+	if(!length(movement_handlers) && is_external && isturf(loc))
+		var/oldloc = loc
+		var/turf/T = get_step(loc, direction)
+		if(istype(T))
+			if(direction in GLOB.cornerdirs)
+				forceMove(T)
+			else
+				step(src, direction)
+		return loc != oldloc
+
 	for(var/mh in movement_handlers)
 		var/datum/movement_handler/movement_handler = mh
 		if(movement_handler.MayMove(mover, is_external) & MOVEMENT_STOP)

@@ -155,13 +155,18 @@
 	if(istype(AM, /obj/structure/bed/chair/wheelchair))
 		var/obj/structure/bed/chair/wheelchair/wheel = AM
 		if(density)
-			if(wheel.pulling && (src.allowed(wheel.pulling)))
+			if(allowed(wheel?.buckled_mob))
 				open()
-			else
-				do_animate("deny")
-		return
-	return
+				return
 
+			for(var/obj/item/grab/G as anything in (wheel.grabbed_by))
+				if(!allowed(G.assailant))
+					continue
+
+				open()
+				return
+
+			do_animate("deny")
 
 /obj/machinery/door/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)

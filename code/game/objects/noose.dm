@@ -62,7 +62,8 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 	anchored = TRUE
 	can_buckle = TRUE
 	buckle_lying = FALSE
-	layer = 5
+	layer = FLY_LAYER
+	buckle_pixel_shift = "x=0;y=8"
 	var/ticks = 0
 
 	var/manual_triggered
@@ -113,7 +114,6 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 	if(M == buckled_mob)
 		layer = 3
 		AddOverlays(over)
-		M.pixel_y = initial(M.pixel_y) + 8
 		M.dir = SOUTH
 		set_next_think(world.time)
 	else
@@ -121,9 +121,9 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 		layer = initial(layer)
 		ClearOverlays()
 		pixel_x = initial(pixel_x)
-		M.pixel_x = initial(M.pixel_x)
-		M.pixel_y = initial(M.pixel_y)
 		manual_triggered = FALSE
+
+	buckled_mob?.update_offsets(1)
 
 /obj/structure/noose/user_unbuckle_mob(mob/living/user)
 	if(!user.IsAdvancedToolUser())
@@ -232,7 +232,8 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 	if((is_standing_on_object(buckled_mob) && !buckled_mob.resting) || !current_area.has_gravity)
 		if(pixel_x != initial(pixel_x) || buckled_mob.pixel_x != initial(buckled_mob.pixel_x))
 			pixel_x = initial(pixel_x)
-			buckled_mob.pixel_x = initial(buckled_mob.pixel_x)
+			buckle_pixel_shift = initial(buckle_pixel_shift)
+			buckled_mob.update_offsets()
 			manual_triggered = FALSE
 		set_next_think(world.time + 1 SECOND)
 		return
@@ -245,13 +246,16 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 	switch(ticks)
 		if(1)
 			pixel_x -= 1
-			buckled_mob.pixel_x -= 1
+			buckle_pixel_shift = "x=-1,y=8"
+			buckled_mob.update_offsets()
 		if(2)
 			pixel_x = initial(pixel_x)
-			buckled_mob.pixel_x = initial(buckled_mob.pixel_x)
+			buckle_pixel_shift = "x=0,y=8"
+			buckled_mob.update_offsets()
 		if(3)
 			pixel_x += 1
-			buckled_mob.pixel_x += 1
+			buckle_pixel_shift = "x=1,y=8"
+			buckled_mob.update_offsets()
 
 			if(buckled_mob)
 				playsound(buckled_mob, 'sound/effects/noose/noose_idle.ogg', 50, 1, -3)
@@ -279,6 +283,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 	if(ishuman(buckled_mob))
 		var/mob/living/carbon/human/H = buckled_mob
 		if(!H.need_breathe())
+			set_next_think(world.time + 1 SECOND)
 			return
 
 		buckled_mob.adjustOxyLoss(3)

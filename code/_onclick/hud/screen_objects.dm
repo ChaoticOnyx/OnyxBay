@@ -178,6 +178,8 @@
 	if(old_selecting != selecting)
 		update_icon()
 
+	SEND_SIGNAL(src, SIGNAL_MOB_ZONE_SELECTED, old_selecting, selecting)
+
 /atom/movable/screen/zone_sel/on_update_icon()
 	ClearOverlays()
 	AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[selecting]"))
@@ -358,9 +360,6 @@
 		if("act_intent")
 			usr.a_intent_change("right")
 
-		if("pull")
-
-			usr.stop_pulling()
 		if("throw")
 			if(!usr.stat && isturf(usr.loc) && !usr.restrained())
 				usr.toggle_throw_mode()

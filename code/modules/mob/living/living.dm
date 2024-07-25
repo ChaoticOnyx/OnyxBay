@@ -22,17 +22,7 @@
 
 	return ..()
 
-//mob verbs are faster than object verbs. See mob/verb/examine.
-/mob/living/verb/pulled(atom/movable/AM as mob|obj in oview(1))
-	set name = "Pull"
-	set category = "Object"
-
-	if(AM.Adjacent(src))
-		src.start_pulling(AM)
-
-	return
-
-//mob verbs are faster than object verbs. See above.
+//mob verbs are faster than object verbs.
 /mob/living/pointed(atom/A as mob|obj|turf in view())
 	if(incapacitated())
 		return 0
@@ -88,14 +78,9 @@
 			var/mob/living/tmob = AM
 
 			for(var/mob/living/M in range(tmob, 1))
-				if(LAZYLEN(tmob.pinned) ||  ((M.pulling == tmob && ( tmob.restrained() && !( M.restrained() ) && M.stat == 0)) || locate(/obj/item/grab, tmob.grabbed_by.len)) )
+				if(LAZYLEN(tmob.pinned) || locate(/obj/item/grab, LAZYLEN(tmob.grabbed_by)))
 					if ( !(world.time % 5) )
 						to_chat(src, "<span class='warning'>[tmob] is restrained, you cannot push past</span>")
-					now_pushing = 0
-					return
-				if( tmob.pulling == M && ( M.restrained() && !( tmob.restrained() ) && tmob.stat == 0) )
-					if ( !(world.time % 5) )
-						to_chat(src, "<span class='warning'>[tmob] is restraining [M], you cannot push past</span>")
 					now_pushing = 0
 					return
 
@@ -185,8 +170,9 @@
 						now_pushing = 0
 						return
 
-				var/pulled_pushing = (AM.pulledby == src && pulling == AM)
-				if(pulled_pushing)
+				var/grab_pushing = FALSE
+				if(AM in ret_grab())
+					grab_pushing = TRUE
 					step_glide(AM, t, AM.glide_size)
 				else
 					step(AM, t)
@@ -206,10 +192,8 @@
 				if(saved_dir)
 					AM.set_dir(saved_dir)
 
-				if(pulled_pushing)
+				if(grab_pushing)
 					step_glide(src, t, glide_size)
-					if(pulling != AM)
-						start_pulling(AM, TRUE)
 
 				now_pushing = 0
 
@@ -561,9 +545,6 @@
 	if(buckled)
 		return
 
-	if(get_dist(src, pulling) > 1)
-		stop_pulling()
-
 	var/turf/old_loc = get_turf(src)
 
 	pull_sound = lying ? SFX_PULL_BODY : null
@@ -572,8 +553,7 @@
 	if(!.)
 		return
 
-	if(pulling)
-		handle_pulling_after_move(old_loc)
+	handle_grabs_after_move(old_loc, direct)
 
 	if(s_active && !((s_active in contents) || Adjacent(s_active)))
 		s_active.close(src)
@@ -582,86 +562,9 @@
 		for(var/mob/living/carbon/metroid/M in view(1, src))
 			M.UpdateFeed()
 
+/mob/living/proc/handle_grab_damage(mob/living/puller)
+	set waitfor = FALSE
 
-/mob/living/proc/can_pull()
-	if(!moving)
-		return FALSE
-	if(pulling.anchored)
-		return FALSE
-	if(!isturf(pulling.loc))
-		return FALSE
-	if(restrained())
-		return FALSE
-
-	if(get_dist(src, pulling) > 2)
-		return FALSE
-
-	if(pulling.z != z)
-		if(pulling.z < z)
-			return FALSE
-		var/turf/T = GetAbove(src)
-		if(!isopenspace(T))
-			return FALSE
-	return TRUE
-
-/mob/living/proc/handle_pulling_after_move(turf/old_loc)
-	if(!pulling)
-		return
-
-	if(!can_pull())
-		stop_pulling()
-		return
-
-	if(pulling.loc == loc || pulling.loc == old_loc)
-		return
-
-	if(!isliving(pulling))
-		step_glide(pulling, get_dir(pulling.loc, old_loc), glide_size)
-	else
-		var/mob/living/M = pulling
-		if(M.grabbed_by.len)
-			if(prob(75))
-				var/obj/item/grab/G = pick(M.grabbed_by)
-				if(istype(G))
-					M.visible_message(SPAN_WARNING("[G.affecting] has been pulled from [G.assailant]'s grip by [src]!"), SPAN_WARNING("[G.affecting] has been pulled from your grip by [src]!"))
-					qdel(G)
-		if(!M.grabbed_by.len)
-			M.handle_pull_damage(src)
-
-			var/atom/movable/t = M.pulling
-			M.stop_pulling()
-			step_glide(M, get_dir(pulling.loc, old_loc), glide_size)
-			if(t)
-				M.start_pulling(t)
-
-	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, pulling.loc)
-
-	handle_dir_after_pull()
-
-	if(m_intent == M_RUN && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
-		last_pull_sound = world.time
-		playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
-
-/mob/living/proc/handle_dir_after_pull()
-	if(!pulling)
-		return
-	if(isobj(pulling))
-		var/obj/O = pulling
-		// Hacky check to know if you can pass through the closet
-		if(istype(O, /obj/structure/closet) && !O.density)
-			return set_dir(get_dir(src, pulling))
-		if(O.pull_slowdown >= PULL_SLOWDOWN_MEDIUM)
-			return set_dir(get_dir(src, pulling))
-		else if(O.pull_slowdown == PULL_SLOWDOWN_WEIGHT && O.w_class >= ITEM_SIZE_HUGE)
-			return set_dir(get_dir(src, pulling))
-	if(isliving(pulling))
-		var/mob/living/L = pulling
-		// If pulled mob was bigger than us, we morelike will turn
-		// I made additional check in case if someone want a hand walk
-		if(L.mob_size > mob_size || L.lying)
-			return set_dir(get_dir(src, pulling))
-
-/mob/living/proc/handle_pull_damage(mob/living/puller)
 	var/area/A = get_area(src)
 	if(!A.has_gravity)
 		return

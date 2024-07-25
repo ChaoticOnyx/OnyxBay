@@ -34,6 +34,8 @@
 
 #define isEye(A) istype(A, /mob/observer/eye)
 
+#define isgrab(A) istype(A, /obj/item/grab)
+
 #define ishuman(A) istype(A, /mob/living/carbon/human)
 
 #define ispromethean(A) (is_species(A, /datum/species/promethean))

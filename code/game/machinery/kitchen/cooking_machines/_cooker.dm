@@ -105,7 +105,7 @@
 	else if(istype(I, /obj/item/grab))
 		var/obj/item/grab/G = I
 		inserted_mob = G.affecting
-		G.delete_self()
+		G.force_drop()
 	else
 		to_chat(user, SPAN_WARNING("That's not edible."))
 		return 0

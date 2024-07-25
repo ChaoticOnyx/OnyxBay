@@ -719,13 +719,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	M.client?.init_verbs()
 	log_and_message_admins("has respawned.", M)
 
-/mob/observer/ghost/update_height_offset()
-	if(invisibility == 0) // We update height offset only when it is visible to mortals.
-		return ..()
-
-	else
-		return
-
 /mob/observer/ghost/custom_emote(message_type, message, intentional)
 	message = "<i>[message]</i>"
 	communicate(/decl/communication_channel/dsay, client, message, /decl/dsay_communication/emote)
