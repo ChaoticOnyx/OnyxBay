@@ -11,15 +11,18 @@
 	break_chance_table = list(15, 60, 100)
 
 /datum/grab/normal/passive/on_hit_disarm(obj/item/grab/G)
-	to_chat(G.assailant, SPAN_WARNING("Your grip isn't strong enough to pin."))
+	if(ismob(G.affecting))
+		to_chat(G.assailant, SPAN_WARNING("Your grip isn't strong enough to pin."))
 	return FALSE
 
 /datum/grab/normal/passive/on_hit_grab(obj/item/grab/G)
-	to_chat(G.assailant, SPAN_WARNING("Your grip isn't strong enough to jointlock."))
+	if(ismob(G.affecting))
+		to_chat(G.assailant, SPAN_WARNING("Your grip isn't strong enough to jointlock."))
 	return FALSE
 
 /datum/grab/normal/passive/on_hit_harm(obj/item/grab/G)
-	to_chat(G.assailant, SPAN_WARNING("Your grip isn't strong enough to dislocate."))
+	if(ismob(G.affecting))
+		to_chat(G.assailant, SPAN_WARNING("Your grip isn't strong enough to dislocate."))
 	return FALSE
 
 /datum/grab/normal/passive/resolve_openhand_attack(obj/item/grab/G)
