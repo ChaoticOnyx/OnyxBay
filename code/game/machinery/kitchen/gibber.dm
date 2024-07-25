@@ -117,16 +117,6 @@
 	if(default_part_replacement(user, W))
 		return
 
-	if(istype(W, /obj/item/grab))
-		var/obj/item/grab/G = W
-		if(!G.force_danger())
-			to_chat(user, SPAN("danger", "You need a better grip to do that!"))
-			return
-
-		add_to_contents(user, G.affecting)
-		G.force_drop()
-		return
-
 	if(istype(W, /obj/item/organ))
 		if(!user.drop(W))
 			return
@@ -136,6 +126,15 @@
 		return
 
 	return ..()
+
+/obj/machinery/gibber/grab_attack(obj/item/grab/G)
+	var/mob/user = G.assailant
+	if(!G.force_danger())
+		to_chat(user, SPAN("danger", "You need a better grip to do that!"))
+		return
+
+	add_to_contents(user, G.affecting)
+	G.force_drop()
 
 /obj/machinery/gibber/relaymove(mob/user)
 	if(!empty_contents())

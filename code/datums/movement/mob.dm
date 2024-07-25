@@ -234,7 +234,7 @@
 		var/txt_dir = direction & UP ? "upwards" : "downwards"
 		mob.visible_message(SPAN("notice", "[mob] moves [txt_dir]."))
 
-	var/result = step(mob, direction)
+	step(mob, direction)
 
 	if(!mob)
 		return // If the mob gets deleted on move (e.g. Entered, whatever), it wipes this reference on us in Destroy (and we should be aborting all action anyway).

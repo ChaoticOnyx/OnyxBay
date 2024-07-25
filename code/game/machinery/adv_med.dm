@@ -129,32 +129,36 @@
 	if(default_part_replacement(user, W))
 		return
 
-	var/obj/item/grab/G = W
-	if(!istype(G))
-		return ..()
+	return ..()
 
+/obj/machinery/bodyscanner/grab_attack(obj/item/grab/G)
 	var/mob/M = G.get_affecting_mob()
+	var/mob/user = G.assailant
+	if(!check_compatibility(M, user))
+		return FALSE
+
+	user.visible_message(
+		SPAN("notice", "\The [user] begins placing \the [M] into \the [src]."),
+		SPAN("notice", "You start placing \the [M] into \the [src].")
+	)
+	if(!do_after(user, 2 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(M) || !Adjacent(M, src))
+		return
+
 	if(!check_compatibility(M, user))
 		return
 
-	user.visible_message(SPAN("notice", "\The [user] begins placing \the [M] into \the [src]."), SPAN("notice", "You start placing \the [M] into \the [src]."))
-	if(do_after(user, 20, src))
-		if(!check_compatibility(M, user))
-			return
+	M.forceMove(src)
+	occupant = M
+	update_use_power(POWER_USE_ACTIVE)
+	icon_state = "body_scanner_1"
+	add_fingerprint(user)
+	for(var/obj/O in src)
+		if(O in component_parts)
+			continue
 
-		M.forceMove(src)
-		src.occupant = M
-		update_use_power(POWER_USE_ACTIVE)
-		src.icon_state = "body_scanner_1"
-		for(var/obj/O in src)
-			if(O in component_parts)
-				continue
+		O.forceMove(loc)
 
-			O.forceMove(loc)
-		src.add_fingerprint(user)
-		qdel(G)
-	else
-		return
+	G.force_drop()
 
 /obj/machinery/bodyscanner/add_context(list/context, obj/item/held_item, mob/user)
 	. = NONE

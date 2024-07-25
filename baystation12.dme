@@ -1228,7 +1228,6 @@
 #include "code\game\objects\items\grenades\supermatter.dm"
 #include "code\game\objects\items\implants\implant.dm"
 #include "code\game\objects\items\implants\implantcase.dm"
-#include "code\game\objects\items\implants\implantchair.dm"
 #include "code\game\objects\items\implants\implanter.dm"
 #include "code\game\objects\items\implants\implantpad.dm"
 #include "code\game\objects\items\implants\implants\adrenaline.dm"

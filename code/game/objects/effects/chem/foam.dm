@@ -170,16 +170,18 @@
 	return
 
 /obj/structure/foamedmetal/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/grab))
-		var/obj/item/grab/G = I
-		G.affecting.forceMove(loc)
-		visible_message("<span class='warning'>[G.assailant] smashes [G.affecting] through the foamed metal wall.</span>")
-		qdel(I)
-		qdel(src)
-		return
-
 	if(prob(I.force * 20 - metal * 25))
 		user.visible_message("<span class='warning'>[user] smashes through the foamed metal.</span>", "<span class='notice'>You smash through the foamed metal with \the [I].</span>")
 		qdel(src)
 	else
 		to_chat(user, "<span class='notice'>You hit the metal foam to no effect.</span>")
+
+/obj/structure/foamedmetal/grab_attack(obj/item/grab/G)
+	var/mob/living/M = G.get_affecting_mob()
+	if(!istype(M))
+		return FALSE
+
+	G.affecting.forceMove(loc)
+	visible_message(SPAN_WARNING("[G.assailant] smashes [G.affecting] through the foamed metal wall."))
+	G.force_drop()
+	qdel_self()

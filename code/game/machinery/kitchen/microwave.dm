@@ -163,10 +163,6 @@
 				to_chat(user, SPAN("warning", "Your [O] contains components unsuitable for cookery."))
 				return 1
 		return
-	else if(istype(O,/obj/item/grab))
-		var/obj/item/grab/G = O
-		to_chat(user, SPAN("warning", "This is ridiculous. You can not fit \the [G.affecting] in this [src]."))
-		return 1
 	else
 		to_chat(user, SPAN("warning", "You have no idea what you can cook with this [O]."))
 	..()

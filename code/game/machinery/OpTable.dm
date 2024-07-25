@@ -218,11 +218,19 @@
 	if(default_part_replacement(user, W))
 		return
 
-	if(istype(W, /obj/item/grab))
-		var/obj/item/grab/G = W
-		if(iscarbon(G.affecting) && check_table(G.affecting))
-			take_victim_ref(G.affecting, usr)
-			qdel(W)
+	return ..()
+
+/obj/machinery/optable/grab_attack(obj/item/grab/G)
+	var/mob/living/carbon/C = G.get_affecting_mob()
+	var/mob/user = G.assailant
+	if(!istype(C))
+		return FALSE
+
+	if(!check_table(C))
+		return
+
+	take_victim_ref(C, user)
+	G.force_drop()
 
 /obj/machinery/optable/proc/check_table(mob/living/carbon/patient)
 	var/mob/living/carbon/human/occupant = victim_ref?.resolve()

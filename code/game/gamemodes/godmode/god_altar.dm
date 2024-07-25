@@ -16,16 +16,19 @@
 		to_chat(src, "<span class='danger'>You've lost an altar!</span>")
 	return ..()
 
-/obj/structure/deity/altar/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/grab))
-		var/obj/item/grab/G = I
-		if(G.force_danger())
-			G.affecting.forceMove(get_turf(src))
-			var/mob/living/L = G.get_affecting_mob()
-			L?.Weaken(1)
-			user.visible_message("<span class='warning'>\The [user] throws \the [G.affecting] onto \the [src]!</span>")
-			G.force_drop()
-	else ..()
+/obj/structure/deity/altar/grab_attack(obj/item/grab/G)
+	if(!G.force_danger())
+		return FALSE
+
+	var/mob/living/L = G.get_affecting_mob()
+	var/mob/user = G.assailant
+	if(!istype(L))
+		return FALSE
+
+	L.forceMove(get_turf(src))
+	L?.Weaken(1)
+	user.visible_message(SPAN_WARNING("\The [user] throws \the [L] onto \the [src]!"))
+	G.force_drop()
 
 /obj/structure/deity/altar/think()
 	if(!linked_god || target.stat)

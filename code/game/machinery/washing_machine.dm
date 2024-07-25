@@ -100,15 +100,6 @@
 				..()
 		else
 			..()
-	else if(istype(W,/obj/item/grab))
-		if( (state == 1) && hacked)
-			var/obj/item/grab/G = W
-			if(ishuman(G.assailant) && iscorgi(G.affecting))
-				G.affecting.forceMove(src)
-				qdel(G)
-				state = 3
-		else
-			..()
 	else if(istype(W,/obj/item/stack/material/hairlesshide) || \
 		istype(W,/obj/item/clothing/under) || \
 		istype(W,/obj/item/clothing/mask) || \
@@ -165,6 +156,19 @@
 	else
 		..()
 	update_icon()
+
+/obj/machinery/washing_machine/grab_attack(obj/item/grab/G)
+	var/mob/living/simple_animal/corgi/C = G.get_affecting_mob()
+	if(!istype(C))
+		return FALSE
+
+	if(state == 1 && hacked)
+		if(!ishuman(G.assailant))
+			return
+
+		C.forceMove(src)
+		G.force_drop()
+		state = 3
 
 /obj/machinery/washing_machine/attack_hand(mob/user as mob)
 	switch(state)

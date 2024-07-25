@@ -269,23 +269,40 @@
 			return
 		beaker = G
 		user.visible_message("[user] adds \a [G] to \the [src]!", "You add \a [G] to \the [src]!")
-	else if(istype(G, /obj/item/grab))
-		if(!ismob(G:affecting))
-			return
-		for(var/mob/living/carbon/metroid/M in range(1, G:affecting))
-			if(M.Victim == G:affecting)
-				to_chat(usr, "[G:affecting:name] will not fit into the cryo because they have a metroid latched onto their head.")
-				return
-		user.visible_message(SPAN("notice", "\The [user] begins placing \the [G:affecting] into \the [src]."), SPAN("notice", "You start placing \the [G:affecting] into \the [src]."))
-		if(!do_after(user, 30, src))
-			return
-		if(!ismob(G:affecting))
-			return
-		var/mob/M = G:affecting
-		if(put_mob(M))
-			qdel(G)
-			user.visible_message(SPAN("notice", "\The [user] places \the [M] into \the [src]."), SPAN("notice", "You place \the [M] into \the [src]."))
-	return
+
+	return ..()
+
+/obj/machinery/atmospherics/unary/cryo_cell/grab_attack(obj/item/grab/G)
+	var/mob/M = G.get_affecting_mob()
+	var/mob/user = G.assailant
+	if(!istype(M))
+		return FALSE
+
+	for(var/mob/living/carbon/metroid/metroid in range(1, M))
+		if(metroid.Victim != M)
+			continue
+
+		to_chat(usr, SPAN_WARNING("[M] will not fit into the cryo because they have a metroid latched onto their head."))
+		return
+
+	user.visible_message(
+		SPAN("notice", "\The [user] begins placing \the [M] into \the [src]."),
+		SPAN("notice", "You start placing \the [M] into \the [src].")
+	)
+	if(!do_after(user, 3 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(M) || !Adjacent(M, src))
+		return
+
+	if(!ismob(M))
+		return
+
+	if(!put_mob(M))
+		return
+
+	G.force_drop()
+	user.visible_message(
+		SPAN("notice", "\The [user] places \the [M] into \the [src]."),
+		SPAN("notice", "You place \the [M] into \the [src].")
+	)
 
 /obj/machinery/atmospherics/unary/cryo_cell/on_update_icon()
 	ClearOverlays()

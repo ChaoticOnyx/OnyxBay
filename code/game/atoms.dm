@@ -949,4 +949,5 @@ its easier to just keep the beam vertical.
 	- Return: `TRUE` to skip attackby() and afterattack() or `FALSE`
 */
 /atom/proc/grab_attack(obj/item/grab/G)
+	SHOULD_CALL_PARENT(FALSE)
 	return FALSE

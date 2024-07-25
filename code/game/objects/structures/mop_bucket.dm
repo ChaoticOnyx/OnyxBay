@@ -36,40 +36,39 @@
 			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 			return
 
-	else if(istype(I, /obj/item/grab))
-		var/obj/item/grab/G = I
+	else return ..()
 
-		if(!isliving(G.affecting))
-			return
-
-		if(istype(G.current_grab, /datum/grab/normal/passive))
-			to_chat(user, SPAN_NOTICE("You need a tighter grip!"))
-			return
-
-		if(reagents.total_volume < 1)
-			show_splash_text(user, "no water!", SPAN("warning", "\The [src] is empty!"))
-			return
-
-		user.visible_message(SPAN_DANGER("[user] starts to put [G.affecting.name]'s head into \the [src]!"), \
-						SPAN_DANGER("You start to put [G.affecting.name]'s head into \the [src]!"))
-		reagents.trans_to(G.affecting, min(reagents.total_volume, 5))
-		playsound(get_turf(src), GET_SFX(SFX_FOOTSTEP_WATER), 100, TRUE)
-
-		if(!do_after(user, 3 SECONDS, src, TRUE))
-			return
-
-		if(QDELETED(src) || !G?.affecting)
-			return
-
-
-		user.visible_message(SPAN_DANGER("[user] finally raises [G.affecting.name]'s head out of \the [src]!"), \
-								SPAN_DANGER("You raise [G.affecting.name]'s head out of \the [src]!"))
-		reagents.trans_to(G.affecting, min(reagents.total_volume, 5))
-		playsound(get_turf(src), GET_SFX(SFX_FOOTSTEP_WATER), 100, TRUE)
-		var/mob/living/carbon/human/H = G.get_affecting_mob()
-		if(!H?.internal && !H.isSynthetic())
-			H?.adjustOxyLoss(OXYLOS_PER_HEAD_DIP)
-			H?.emote("gasp")
+/obj/structure/mopbucket/grab_attack(obj/item/grab/G)
+	var/mob/user = G.assailant
+	if(!isliving(G.affecting))
 		return
+
+	if(istype(G.current_grab, /datum/grab/normal/passive))
+		to_chat(user, SPAN_NOTICE("You need a tighter grip!"))
+		return
+
+	if(reagents.total_volume < 1)
+		show_splash_text(user, "no water!", SPAN("warning", "\The [src] is empty!"))
+		return
+
+	user.visible_message(SPAN_DANGER("[user] starts to put [G.affecting.name]'s head into \the [src]!"), \
+					SPAN_DANGER("You start to put [G.affecting.name]'s head into \the [src]!"))
+	reagents.trans_to(G.affecting, min(reagents.total_volume, 5))
+	playsound(get_turf(src), GET_SFX(SFX_FOOTSTEP_WATER), 100, TRUE)
+
+	if(!do_after(user, 3 SECONDS, src, TRUE))
+		return
+
+	if(QDELETED(src) || !G?.affecting)
+		return
+
+	user.visible_message(SPAN_DANGER("[user] finally raises [G.affecting.name]'s head out of \the [src]!"), \
+							SPAN_DANGER("You raise [G.affecting.name]'s head out of \the [src]!"))
+	reagents.trans_to(G.affecting, min(reagents.total_volume, 5))
+	playsound(get_turf(src), GET_SFX(SFX_FOOTSTEP_WATER), 100, TRUE)
+	var/mob/living/carbon/human/H = G.get_affecting_mob()
+	if(!H?.internal && !H.isSynthetic())
+		H?.adjustOxyLoss(OXYLOS_PER_HEAD_DIP)
+		H?.emote("gasp")
 
 #undef OXYLOS_PER_HEAD_DIP

@@ -55,7 +55,6 @@
 
 /mob/proc/remove_screen_obj_references()
 	hands = null
-	pullin = null
 	purged = null
 	internals = null
 	oxygen = null

@@ -73,48 +73,6 @@
 		update_icon()
 		return
 
-	else if(istype(I, /obj/item/grab) && lid_open && !swirlie)
-		var/obj/item/grab/G = I
-
-		if(!isliving(G.affecting))
-			return
-
-		if(istype(G.current_grab, /datum/grab/normal/passive))
-			show_splash_text(user, "tighter grip is needed!", SPAN("warning", "You need a tigher grip!"))
-			return
-
-		if(get_dist(G.affecting, get_turf(src)) > 1)
-			show_splash_text(user, "victim needs to be on the toilet!", SPAN("warning", "The victim must be held right above the toilet!"))
-			return
-
-		if(lid_open && !swirlie)
-			user.visible_message(SPAN_DANGER("[user] starts to give [G.affecting.name] a swirlie!"), \
-									SPAN_DANGER("You start to give [G.affecting.name] a swirlie!"))
-			swirlie = G.affecting
-			if(!do_after(user, 3 SECONDS, src, FALSE))
-				swirlie = null
-				return
-
-			if(QDELETED(src) || !G?.affecting)
-				swirlie = null
-				return
-
-			user.visible_message(SPAN_DANGER("[user] gives [G.affecting.name] a swirlie!"), \
-									SPAN_DANGER("You give [G.affecting.name] a swirlie!"))
-			playsound(src, 'sound/effects/toilet_flush.ogg', 100, TRUE)
-			var/mob/living/carbon/human/H = G.get_affecting_mob()
-			if(!H?.internal && !H.isSynthetic())
-				H.adjustOxyLoss(TOILET_OXYLOSS_PER_SWIRLIE)
-				H.emote("gasp")
-			swirlie = null
-			return
-		else
-			user.visible_message(SPAN_DANGER("[user] slams [G.affecting.name] into the [src]!"), \
-									SPAN_DANGER("You slam [G.affecting.name] into the [src]!"))
-			var/mob/living/L = G.get_affecting_mob()
-			L?.adjustBruteLoss(TOILET_BRUTELOSS_PER_LIDSTOMP)
-			return
-
 	if(cistern && !istype(user, /mob/living/silicon/robot)) //STOP PUTTING YOUR MODULES IN THE TOILET.
 		if(I.w_class > ITEM_SIZE_NORMAL)
 			show_splash_text(user, "won't fit!", SPAN("notice", "\The [I] does not fit."))
@@ -131,6 +89,46 @@
 		return
 
 	return ..()
+
+/obj/structure/toilet/grab_attack(obj/item/grab/G)
+	var/mob/user = G.assailant
+	if(!isliving(G.affecting))
+		return
+
+	if(istype(G.current_grab, /datum/grab/normal/passive))
+		show_splash_text(user, "tighter grip is needed!", SPAN("warning", "You need a tigher grip!"))
+		return
+
+	if(get_dist(G.affecting, get_turf(src)) > 1)
+		show_splash_text(user, "victim needs to be on the toilet!", SPAN("warning", "The victim must be held right above the toilet!"))
+		return
+
+	if(lid_open && !swirlie)
+		user.visible_message(SPAN_DANGER("[user] starts to give [G.affecting.name] a swirlie!"), \
+								SPAN_DANGER("You start to give [G.affecting.name] a swirlie!"))
+		swirlie = G.affecting
+		if(!do_after(user, 3 SECONDS, src, FALSE))
+			swirlie = null
+			return
+
+		if(QDELETED(src) || !G?.affecting)
+			swirlie = null
+			return
+
+		user.visible_message(SPAN_DANGER("[user] gives [G.affecting.name] a swirlie!"), \
+								SPAN_DANGER("You give [G.affecting.name] a swirlie!"))
+		playsound(src, 'sound/effects/toilet_flush.ogg', 100, TRUE)
+		var/mob/living/carbon/human/H = G.get_affecting_mob()
+		if(!H?.internal && !H.isSynthetic())
+			H.adjustOxyLoss(TOILET_OXYLOSS_PER_SWIRLIE)
+			H.emote("gasp")
+		swirlie = null
+		return
+	else
+		user.visible_message(SPAN_DANGER("[user] slams [G.affecting.name] into the [src]!"), \
+								SPAN_DANGER("You slam [G.affecting.name] into the [src]!"))
+		var/mob/living/L = G.get_affecting_mob()
+		L?.adjustBruteLoss(TOILET_BRUTELOSS_PER_LIDSTOMP)
 
 /obj/structure/toilet/gold
 	name = "golden toilet"
