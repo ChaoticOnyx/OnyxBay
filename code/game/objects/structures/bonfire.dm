@@ -9,6 +9,7 @@
 	density = FALSE
 	anchored = TRUE
 	buckle_lying = 0
+	buckle_pixel_shift = "x=0;y=13"
 	var/burning = 0
 	var/grill = FALSE
 	var/fire_stack_strength = 5
@@ -135,13 +136,8 @@
 		set_next_think(0)
 
 /obj/structure/bonfire/post_buckle_mob(mob/living/M)
-	if(buckled_mob == M)
-		M.pixel_y = 13
-		M.layer = ABOVE_HUMAN_LAYER
-	else
-		if(M.pixel_y == 13)
-			M.pixel_y = M.default_pixel_y
-		M.layer = ABOVE_HUMAN_LAYER
+	M.layer = ABOVE_HUMAN_LAYER
+	return ..()
 
 /obj/structure/bonfire/dynamic
 	desc = "For grilling, broiling, charring, smoking, heating, roasting, toasting, simmering, searing, melting, and occasionally burning things."

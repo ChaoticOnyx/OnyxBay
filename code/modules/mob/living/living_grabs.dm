@@ -111,7 +111,7 @@
 	if(length(grabbed_by))
 		for(var/obj/item/grab/G as anything in grabbed_by)
 			G.adjust_position()
-		//reset_offsets()
+		update_offsets()
 		reset_layer()
 
 	if(!length(mygrabs))

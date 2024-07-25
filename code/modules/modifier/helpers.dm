@@ -35,8 +35,7 @@
 		time = 10
 	)
 
-/mob/living/carbon/human/update_transform()
-	var/anim_time = 3
+/mob/living/carbon/human/update_transform(anim_time = 3)
 	var/rotate_deg = (tf_rotation || 0)
 	var/translate_x = 0
 	var/translate_y = 16 * ((tf_scale_y || 1) * body_height - 1) + species.y_shift
@@ -66,6 +65,65 @@
 		time = anim_time
 	)
 
+/// Gathers all offsets into one proc. Prevents conflicting animations/offsets from overwriting each other and causing awful visuals.
+/// Never, ever set pixel offset on mobs directly. You have been warned!
+/mob/proc/update_offsets(anim_time = 3)
+	var/last_pixel_x = pixel_x
+	var/last_pixel_y = pixel_y
+	var/last_pixel_z = pixel_z
+
+	var/new_pixel_x =  default_pixel_x
+	var/new_pixel_y =  default_pixel_y
+	var/new_pixel_z =  default_pixel_z
+
+	var/turf/T = loc
+	if(istype(loc))
+		// Updating grab offsets
+		if(length(grabbed_by))
+			for(var/obj/item/grab/G as anything in grabbed_by)
+				var/grab_dir = get_dir(G.assailant, src)
+				if(grab_dir && G.current_grab.shift > 0)
+					if(grab_dir & WEST)
+						new_pixel_x = min(new_pixel_x + G.current_grab.shift, default_pixel_x + G.current_grab.shift)
+					else if(grab_dir & EAST)
+						new_pixel_x = max(new_pixel_x - G.current_grab.shift, default_pixel_x - G.current_grab.shift)
+					if(grab_dir & NORTH)
+						new_pixel_y = max(new_pixel_y - G.current_grab.shift, default_pixel_y - G.current_grab.shift)
+					else if(grab_dir & SOUTH)
+						new_pixel_y = min(new_pixel_y + G.current_grab.shift, default_pixel_y + G.current_grab.shift)
+
+		// Updating turf height offset.
+		if(!isghost(src) || invisibility == 0)
+			new_pixel_z = T.turf_height
+
+		// Update offsets from our buckled atom.
+		if(buckled && buckled.buckle_pixel_shift)
+			var/list/pixel_shift = buckled.buckle_pixel_shift
+			if(istext(pixel_shift))
+				pixel_shift = cached_key_number_decode(pixel_shift)
+			if(islist(pixel_shift))
+				var/list/directional_offset = LAZYACCESS(pixel_shift, num2text(dir))
+				if(!directional_offset)
+					if(dir & EAST)
+						directional_offset = LAZYACCESS(pixel_shift, num2text(EAST))
+					else if(dir & WEST)
+						directional_offset = LAZYACCESS(pixel_shift, num2text(WEST))
+				if(islist(directional_offset))
+					pixel_shift = directional_offset
+				new_pixel_x += pixel_shift["x"] || 0
+				new_pixel_y += pixel_shift["y"] || 0
+				new_pixel_z += pixel_shift["z"] || 0
+
+	if(last_pixel_x != new_pixel_x || last_pixel_y != new_pixel_y || last_pixel_z != new_pixel_z)
+		if(anim_time > 0)
+			animate(src, pixel_x = new_pixel_x, pixel_y = new_pixel_y, pixel_z = new_pixel_z, anim_time, 1, (LINEAR_EASING | EASE_IN))
+		else
+			pixel_x = new_pixel_x
+			pixel_y = new_pixel_y
+			pixel_z = new_pixel_z
+
+/mob/observer/virtual/update_offsets()
+	return
 
 /mob/living/proc/update_modifier_visuals()
 	return

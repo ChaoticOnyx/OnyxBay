@@ -226,7 +226,7 @@ var/const/enterloopsanity = 100
 		else
 			M.inertia_dir = 0
 			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
-			M.update_height_offset(turf_height)
+			M.update_offsets()
 
 	else if(isobj(AM))
 		var/obj/O = AM
@@ -360,7 +360,7 @@ var/const/enterloopsanity = 100
 			max_height = max(max_height, O.turf_height_offset)
 	turf_height = max_height
 	for(var/mob/M in contents)
-		M.update_height_offset(turf_height)
+		M.update_offsets()
 
 /// Used for astar pathfinding
 /turf/proc/__get_astar_linked_nodes()
