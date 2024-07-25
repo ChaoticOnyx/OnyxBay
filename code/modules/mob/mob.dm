@@ -12,7 +12,7 @@
 
 	unset_machine()
 	//SStgui.force_close_all_windows(src) Needs further investigating
-
+	leaning = null
 	QDEL_NULL(hud_used)
 	QDEL_NULL(show_inventory)
 	QDEL_NULL(skybox)

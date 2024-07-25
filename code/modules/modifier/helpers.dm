@@ -114,6 +114,21 @@
 				new_pixel_y += pixel_shift["y"] || 0
 				new_pixel_z += pixel_shift["z"] || 0
 
+		if(leaning)
+			switch(get_dir(src, leaning))
+				if(SOUTH)
+					set_dir(NORTH)
+					new_pixel_y -= leaning.leaning_offset
+				if(NORTH)
+					set_dir(SOUTH)
+					new_pixel_y += leaning.leaning_offset
+				if(WEST)
+					set_dir(EAST)
+					new_pixel_x -= leaning.leaning_offset
+				if(EAST)
+					set_dir(WEST)
+					new_pixel_x += leaning.leaning_offset
+
 	if(last_pixel_x != new_pixel_x || last_pixel_y != new_pixel_y || last_pixel_z != new_pixel_z)
 		if(anim_time > 0)
 			animate(src, pixel_x = new_pixel_x, pixel_y = new_pixel_y, pixel_z = new_pixel_z, anim_time, 1, (LINEAR_EASING | EASE_IN))

@@ -46,6 +46,8 @@
 	var/bullethole_variation = 0
 	/// Pixel shift of a leaning mob
 	var/leaning_offset = 12
+	/// Weakref to a leaning mob. One leaning mob per wall, no more, no less.
+	var/weakref/leaning_mob = null
 
 /datum/rad_resist/wall
 	alpha_particle_resist = 100 MEGA ELECTRONVOLT
@@ -67,6 +69,7 @@
 	add_debris_element()
 
 /turf/simulated/wall/Destroy()
+	leaning_mob = null
 	QDEL_NULL(bullethole_overlay)
 	return ..()
 
@@ -334,30 +337,17 @@
 	leaner.start_leaning(src)
 
 /// Used by grab stunning
-/mob/living/var/leaning = FALSE
+/mob/var/turf/simulated/wall/leaning = null
 
 /mob/living/proc/start_leaning(turf/simulated/wall/wall)
-	var/new_y
-	var/new_x
+	if(!isnull(wall.leaning_mob))
+		return FALSE
 
-	switch(get_dir(src, wall))
-		if(SOUTH)
-			set_dir(NORTH)
-			new_y -= wall.leaning_offset
-		if(NORTH)
-			set_dir(SOUTH)
-			new_y += wall.leaning_offset
-		if(WEST)
-			set_dir(EAST)
-			new_x -= wall.leaning_offset
-		if(EAST)
-			set_dir(WEST)
-			new_x += wall.leaning_offset
-
-	animate(src, 0.2 SECONDS, pixel_x = new_x, pixel_y = new_y)
+	wall.leaning_mob = weakref(src)
 	density = FALSE
-	leaning = TRUE
+	leaning = wall
 	update_transform()
+	update_offsets()
 	visible_message(
 		SPAN_NOTICE("[src] leans against \the [wall]."),
 		SPAN_NOTICE("You lean against \the [wall]."),
@@ -367,9 +357,10 @@
 /mob/living/proc/stop_leaning()
 	unregister_signal(src, SIGNAL_MOVED)
 	density = TRUE
-	leaning = FALSE
+	leaning.leaning_mob = null
+	leaning = null
 	update_transform()
-	animate(src, 0.2 SECONDS, pixel_x = 0, pixel_y = 0)
+	update_offsets()
 
 //Appearance
 /turf/simulated/wall/examine(mob/user, infix)
