@@ -185,3 +185,4 @@
 	visible_message(SPAN_WARNING("[G.assailant] smashes [G.affecting] through the foamed metal wall."))
 	G.force_drop()
 	qdel_self()
+	return TRUE

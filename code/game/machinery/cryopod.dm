@@ -500,15 +500,15 @@
 	if(M.client)
 		var/response = tgui_alert(M, "Would you like to enter long-term storage?", "Cryopod", list("Yes, No"))
 		if(response != "Yes")
-			return
+			return TRUE
 
 		willing = TRUE
 
 	if(!willing)
-		return
+		return TRUE
 
 	if(QDELETED(G) || !Adjacent(M, src) || !Adjacent(user, src))
-		return
+		return TRUE
 
 	if(check_compatibility(M, user) && go_in(M, user))
 		user.visible_message(
@@ -518,6 +518,7 @@
 		log_and_message_admins("put [key_name_admin(M)] into the cryopod.")
 		add_fingerprint(M)
 		G.force_drop()
+	return TRUE
 
 /obj/machinery/cryopod/verb/eject()
 	set name = "Eject Pod"

@@ -93,15 +93,15 @@
 /obj/structure/toilet/grab_attack(obj/item/grab/G)
 	var/mob/user = G.assailant
 	if(!isliving(G.affecting))
-		return
+		return FALSE
 
 	if(istype(G.current_grab, /datum/grab/normal/passive))
 		show_splash_text(user, "tighter grip is needed!", SPAN("warning", "You need a tigher grip!"))
-		return
+		return TRUE
 
 	if(get_dist(G.affecting, get_turf(src)) > 1)
 		show_splash_text(user, "victim needs to be on the toilet!", SPAN("warning", "The victim must be held right above the toilet!"))
-		return
+		return TRUE
 
 	if(lid_open && !swirlie)
 		user.visible_message(SPAN_DANGER("[user] starts to give [G.affecting.name] a swirlie!"), \
@@ -109,11 +109,11 @@
 		swirlie = G.affecting
 		if(!do_after(user, 3 SECONDS, src, FALSE))
 			swirlie = null
-			return
+			return TRUE
 
 		if(QDELETED(src) || !G?.affecting)
 			swirlie = null
-			return
+			return TRUE
 
 		user.visible_message(SPAN_DANGER("[user] gives [G.affecting.name] a swirlie!"), \
 								SPAN_DANGER("You give [G.affecting.name] a swirlie!"))
@@ -123,12 +123,13 @@
 			H.adjustOxyLoss(TOILET_OXYLOSS_PER_SWIRLIE)
 			H.emote("gasp")
 		swirlie = null
-		return
+		return TRUE
 	else
 		user.visible_message(SPAN_DANGER("[user] slams [G.affecting.name] into the [src]!"), \
 								SPAN_DANGER("You slam [G.affecting.name] into the [src]!"))
 		var/mob/living/L = G.get_affecting_mob()
 		L?.adjustBruteLoss(TOILET_BRUTELOSS_PER_LIDSTOMP)
+	return TRUE
 
 /obj/structure/toilet/gold
 	name = "golden toilet"

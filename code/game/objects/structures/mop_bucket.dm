@@ -41,15 +41,15 @@
 /obj/structure/mopbucket/grab_attack(obj/item/grab/G)
 	var/mob/user = G.assailant
 	if(!isliving(G.affecting))
-		return
+		return FALSE
 
 	if(istype(G.current_grab, /datum/grab/normal/passive))
 		to_chat(user, SPAN_NOTICE("You need a tighter grip!"))
-		return
+		return TRUE
 
 	if(reagents.total_volume < 1)
 		show_splash_text(user, "no water!", SPAN("warning", "\The [src] is empty!"))
-		return
+		return TRUE
 
 	user.visible_message(SPAN_DANGER("[user] starts to put [G.affecting.name]'s head into \the [src]!"), \
 					SPAN_DANGER("You start to put [G.affecting.name]'s head into \the [src]!"))
@@ -57,10 +57,10 @@
 	playsound(get_turf(src), GET_SFX(SFX_FOOTSTEP_WATER), 100, TRUE)
 
 	if(!do_after(user, 3 SECONDS, src, TRUE))
-		return
+		return TRUE
 
 	if(QDELETED(src) || !G?.affecting)
-		return
+		return TRUE
 
 	user.visible_message(SPAN_DANGER("[user] finally raises [G.affecting.name]'s head out of \the [src]!"), \
 							SPAN_DANGER("You raise [G.affecting.name]'s head out of \the [src]!"))
@@ -70,5 +70,6 @@
 	if(!H?.internal && !H.isSynthetic())
 		H?.adjustOxyLoss(OXYLOS_PER_HEAD_DIP)
 		H?.emote("gasp")
+	return TRUE
 
 #undef OXYLOS_PER_HEAD_DIP

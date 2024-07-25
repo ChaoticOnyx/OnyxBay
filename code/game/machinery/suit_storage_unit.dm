@@ -637,15 +637,15 @@
 
 	if(!isopen)
 		show_splash_text(user, "Doors are shut!", SPAN_WARNING("The unit's doors are shut."))
-		return
+		return TRUE
 
 	if(inoperable(MAINT) || isbroken)
 		show_splash_text(user, "Not operational!", SPAN_WARNING("The unit is not operational."))
-		return
+		return TRUE
 
 	if((occupant) || (helmet) || (suit) || (boots) || (tank) || (mask)) //Unit needs to be absolutely empty
 		show_splash_text(user, "No free space!", SPAN_WARNING("The unit's storage area is too cluttered."))
-		return
+		return TRUE
 
 	user.visible_message(
 		SPAN_NOTICE("\The [user] begins placing \the [M] into \the [src]."),
@@ -653,7 +653,7 @@
 	)
 
 	if(!do_after(user, 2 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(M) || !Adjacent(M, src))
-		return
+		return TRUE
 
 	user.visible_message(
 		SPAN_NOTICE("\The [user] places \the [M] into \the [src]."),
@@ -669,6 +669,7 @@
 	add_fingerprint(user)
 	updateUsrDialog()
 	update_icon()
+	return TRUE
 
 /obj/machinery/suit_storage_unit/attack_ai(mob/user as mob)
 	return attack_hand(user)

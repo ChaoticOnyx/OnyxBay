@@ -131,10 +131,11 @@
 	var/mob/user = G.assailant
 	if(!G.force_danger())
 		to_chat(user, SPAN("danger", "You need a better grip to do that!"))
-		return
+		return TRUE
 
 	add_to_contents(user, G.affecting)
 	G.force_drop()
+	return TRUE
 
 /obj/machinery/gibber/relaymove(mob/user)
 	if(!empty_contents())

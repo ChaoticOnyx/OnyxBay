@@ -204,7 +204,7 @@
 		return FALSE
 
 	if(!check_occupant_allowed(M))
-		return
+		return TRUE
 
 	user.visible_message(
 		SPAN_NOTICE("\The [user] begins placing \the [M] into \the [src]."),
@@ -212,7 +212,7 @@
 	)
 
 	if(!do_after(user, 2 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(M) || !Adjacent(M, src))
-		return
+		return TRUE
 
 	user.visible_message(
 		SPAN_NOTICE("\The [user] places \the [M] into \the [src]."),
@@ -226,6 +226,7 @@
 	if(M.client)
 		M.client.perspective = EYE_PERSPECTIVE
 		M.client.eye = src
+	return TRUE
 
 /obj/machinery/resleever/MouseDrop_T(mob/target, mob/user)
 	if(occupant)

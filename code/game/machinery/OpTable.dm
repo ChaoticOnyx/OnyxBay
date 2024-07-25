@@ -227,10 +227,11 @@
 		return FALSE
 
 	if(!check_table(C))
-		return
+		return TRUE
 
 	take_victim_ref(C, user)
 	G.force_drop()
+	return TRUE
 
 /obj/machinery/optable/proc/check_table(mob/living/carbon/patient)
 	var/mob/living/carbon/human/occupant = victim_ref?.resolve()

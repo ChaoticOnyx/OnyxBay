@@ -142,10 +142,10 @@
 		SPAN("notice", "You start placing \the [M] into \the [src].")
 	)
 	if(!do_after(user, 2 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(M) || !Adjacent(M, src))
-		return
+		return TRUE
 
 	if(!check_compatibility(M, user))
-		return
+		return TRUE
 
 	M.forceMove(src)
 	occupant = M
@@ -159,6 +159,7 @@
 		O.forceMove(loc)
 
 	G.force_drop()
+	return TRUE
 
 /obj/machinery/bodyscanner/add_context(list/context, obj/item/held_item, mob/user)
 	. = NONE

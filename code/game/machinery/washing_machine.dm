@@ -164,11 +164,13 @@
 
 	if(state == 1 && hacked)
 		if(!ishuman(G.assailant))
-			return
+			return TRUE
 
 		C.forceMove(src)
 		G.force_drop()
 		state = 3
+
+	return TRUE
 
 /obj/machinery/washing_machine/attack_hand(mob/user as mob)
 	switch(state)

@@ -155,12 +155,13 @@
 	var/mob/user = G.assailant
 	user.visible_message(SPAN_NOTICE("[user] attempts to buckle [L] into \the [src]!"))
 	if(!do_after(user, 2 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(L) || !Adjacent(L, src))
-		return
+		return TRUE
 
 	if(!user_buckle_mob(L, user))
-		return
+		return TRUE
 
 	G.force_drop()
+	return TRUE
 
 /obj/structure/bed/attack_robot(mob/user)
 	if(Adjacent(user)) // Robots can open/close it, but not the AI.

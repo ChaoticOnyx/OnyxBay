@@ -283,26 +283,27 @@
 			continue
 
 		to_chat(usr, SPAN_WARNING("[M] will not fit into the cryo because they have a metroid latched onto their head."))
-		return
+		return TRUE
 
 	user.visible_message(
 		SPAN("notice", "\The [user] begins placing \the [M] into \the [src]."),
 		SPAN("notice", "You start placing \the [M] into \the [src].")
 	)
 	if(!do_after(user, 3 SECONDS, src) || QDELETED(src) || QDELETED(G) || QDELETED(M) || !Adjacent(M, src))
-		return
+		return TRUE
 
 	if(!ismob(M))
-		return
+		return TRUE
 
 	if(!put_mob(M))
-		return
+		return TRUE
 
 	G.force_drop()
 	user.visible_message(
 		SPAN("notice", "\The [user] places \the [M] into \the [src]."),
 		SPAN("notice", "You place \the [M] into \the [src].")
 	)
+	return TRUE
 
 /obj/machinery/atmospherics/unary/cryo_cell/on_update_icon()
 	ClearOverlays()

@@ -29,6 +29,7 @@
 	L?.Weaken(1)
 	user.visible_message(SPAN_WARNING("\The [user] throws \the [L] onto \the [src]!"))
 	G.force_drop()
+	return TRUE
 
 /obj/structure/deity/altar/think()
 	if(!linked_god || target.stat)
