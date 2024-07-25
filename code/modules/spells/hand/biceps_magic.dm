@@ -22,7 +22,7 @@
 
 	var/saved_zone_sel = user.zone_sel.selecting
 	user.zone_sel.selecting = BP_HEAD
-	//user.make_grab(user, H, GRAB_QUICKCHOKE)
+	user.make_grab(H, /datum/grab/normal/kill, TRUE, TRUE)
 	user.zone_sel.selecting = saved_zone_sel
 
 	H.damage_poise(25)
