@@ -1,6 +1,6 @@
 /obj/structure
 	icon = 'icons/obj/structures.dmi'
-	w_class = ITEM_SIZE_NO_CONTAINER
+	w_class = ITEM_SIZE_STRUCTURE
 	pull_sound = SFX_PULL_WOOD
 	pull_slowdown = PULL_SLOWDOWN_MEDIUM
 

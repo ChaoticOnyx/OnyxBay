@@ -7,7 +7,8 @@
 #define ITEM_SIZE_LARGE          4
 #define ITEM_SIZE_HUGE           5
 #define ITEM_SIZE_GARGANTUAN     6
-#define ITEM_SIZE_NO_CONTAINER INFINITY // Use this to forbid item from being placed in a container.
+#define ITEM_SIZE_NO_CONTAINER   10 // Use this to forbid item from being placed in a container.
+#define ITEM_SIZE_STRUCTURE      20
 
 #define base_storage_cost(w_class) ((w_class == 1) ? 1 : (3**(w_class-1) / 3 * 2)) // 1, 2, 6, 18, ...
 

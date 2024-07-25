@@ -142,8 +142,11 @@
 				mygrabs -= G
 			continue
 
-	if(length(mygrabs))
-		for(var/obj/item/grab/grab as anything in mygrabs)
-			var/mob/living/affecting_mob = grab.get_affecting_mob()
-			if(affecting_mob)
-				affecting_mob.handle_grab_damage()
+	for(var/obj/item/grab/grab as anything in mygrabs)
+		var/mob/living/affecting_mob = grab.get_affecting_mob()
+		if(affecting_mob)
+			affecting_mob.handle_grab_damage()
+
+		if(m_intent == M_RUN && grab.affecting?.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
+			last_pull_sound = world.time
+			playsound(grab.affecting, grab.affecting?.pull_sound, rand(50, 75), TRUE)

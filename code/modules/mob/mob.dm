@@ -201,7 +201,14 @@
 	if(istype(loc, /turf/space))
 		return cached_slowdown_space
 
-	return cached_slowdown
+	var/grab_slowdown = 0
+	for(var/obj/item/grab/G in src)
+		if(G.assailant == G.affecting)
+			continue
+
+		grab_slowdown += G.grab_slowdown()
+
+	return cached_slowdown + grab_slowdown
 
 /mob/proc/Life()
 //	if(organStructure)

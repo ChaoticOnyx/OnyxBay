@@ -402,10 +402,6 @@
 	if(T != loc)
 		forceMove(T)
 
-/// Called on `/mob/proc/start_pulling`.
-/atom/movable/proc/on_pulling_try(mob/user)
-	return
-
 /**
 * A wrapper for setDir that should only be able to fail by living mobs.
 *

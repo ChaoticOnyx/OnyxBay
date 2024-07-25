@@ -13,8 +13,6 @@
 		if(isliving(grabber))
 			last_handled_by_mob = weakref(grabber)
 
-/mob/proc/handle_grab_damage()
-	set waitfor = FALSE
 
 /mob/proc/handle_grabs_after_move(turf/old_loc, direction)
 	set waitfor = FALSE

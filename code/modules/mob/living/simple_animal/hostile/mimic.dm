@@ -124,10 +124,6 @@ var/global/list/protected_objects = list(
 
 	_update_inactive_time()
 
-/mob/living/simple_animal/hostile/mimic/on_pulling_try(mob/user)
-	if(_in_trap_mode)
-		_activate_trap(user)
-
 /mob/living/simple_animal/hostile/mimic/Life()
 	. = ..()
 
@@ -560,9 +556,6 @@ var/global/list/protected_objects = list(
 	var/mob/living/simple_animal/hostile/mimic/M = owner.resolve()
 
 	M.attack_hand(user)
-
-/obj/item/mimic_trap/on_pulling_try(mob/user)
-	attack_hand(user)
 
 #undef WAIT_TO_HEAL
 #undef WAIT_TO_CRIT

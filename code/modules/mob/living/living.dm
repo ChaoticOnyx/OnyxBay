@@ -562,7 +562,9 @@
 		for(var/mob/living/carbon/metroid/M in view(1, src))
 			M.UpdateFeed()
 
-/mob/living/proc/handle_pull_damage(mob/living/puller)
+/mob/living/proc/handle_grab_damage(mob/living/puller)
+	set waitfor = FALSE
+
 	var/area/A = get_area(src)
 	if(!A.has_gravity)
 		return
