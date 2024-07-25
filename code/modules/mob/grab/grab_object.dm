@@ -87,6 +87,8 @@
 		else
 			visible_message(SPAN_NOTICE("\The [assailant] has grabbed [G.self]!"))
 
+	add_think_ctx("handle_resist", CALLBACK(src, nameof(.proc/handle_resist)), 0)
+
 	if(affecting_mob && assailant?.a_intent == I_HURT)
 		upgrade(TRUE)
 
