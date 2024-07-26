@@ -93,6 +93,10 @@
 			if(is_client_moving)
 				M.moving = 1
 			handle_fall(below)
+			if(isliving(M))
+				var/mob/living/L = M
+				for(var/obj/item/grab/G in L.get_active_grabs())
+					G.affecting.handle_fall(below)
 			if(is_client_moving)
 				M.moving = 0
 

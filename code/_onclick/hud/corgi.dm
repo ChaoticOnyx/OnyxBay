@@ -5,6 +5,20 @@
 	infodisplay = list()
 	static_inventory = list()
 
+	mymob.pullin = new /atom/movable/screen()
+	mymob.pullin.icon = 'icons/hud/mob/screen_corgi.dmi'
+	mymob.pullin.icon_state = "pull0"
+	mymob.pullin.name = "pull"
+	mymob.pullin.screen_loc = ui_construct_pull
+	static_inventory += mymob.pullin
+
+	mymob.fire = new /atom/movable/screen()
+	mymob.fire.icon = 'icons/hud/mob/screen_corgi.dmi'
+	mymob.fire.icon_state = "fire0"
+	mymob.fire.name = "fire"
+	mymob.fire.screen_loc = ui_fire
+	infodisplay += mymob.fire
+
 	mymob.healths = new /atom/movable/screen()
 	mymob.healths.icon = 'icons/hud/mob/screen_corgi.dmi'
 	mymob.healths.icon_state = "health0"

@@ -128,6 +128,19 @@ var/atom/movable/screen/robot_inventory
 	R.oxygen.screen_loc = ui_oxygen
 	infodisplay += R.oxygen
 
+	R.pullin = new /atom/movable/screen()
+	R.pullin.icon = 'icons/hud/mob/screen_robot.dmi'
+	R.pullin.icon_state = "pull0"
+	R.pullin.SetName("pull")
+	R.pullin.screen_loc = ui_borg_pull
+	static_inventory += R.pullin
+
+	R.zone_sel = new /atom/movable/screen/zone_sel()
+	R.zone_sel.icon = 'icons/hud/mob/screen_robot.dmi'
+	R.zone_sel.ClearOverlays()
+	R.zone_sel.AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[R.zone_sel.selecting]"))
+	static_inventory += R.zone_sel
+
 	//Handle the gun settings buttons
 	R.gun_setting_icon = new /atom/movable/screen/gun/mode(null)
 	R.item_use_icon = new /atom/movable/screen/gun/item(null)

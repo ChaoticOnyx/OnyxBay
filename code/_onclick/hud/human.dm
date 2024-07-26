@@ -171,6 +171,12 @@
 		mymob.throw_icon.alpha = ui_alpha
 		static_inventory += mymob.throw_icon
 
+	mymob.pullin = new /atom/movable/screen()
+	mymob.pullin.icon = ui_style
+	mymob.pullin.icon_state = "pull0"
+	mymob.pullin.SetName("pull")
+	mymob.pullin.screen_loc = ui_pull_resist
+	static_inventory += mymob.pullin
 
 	if(hud_data.has_block)
 		mymob.block_icon = new /atom/movable/screen()

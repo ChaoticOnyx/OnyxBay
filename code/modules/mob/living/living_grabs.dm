@@ -38,7 +38,7 @@
 
 	return TRUE
 
-/mob/living/proc/make_grab(atom/movable/target, grab_tag = /datum/grab/simple, defer_hand = FALSE, force_grab_tag = FALSE)
+/mob/living/proc/make_grab(atom/movable/target, grab_tag = /datum/grab/simple, defer_hand = FALSE, force_grab_tag = FALSE, use_pull_slot = FALSE)
 	// Resolve to the 'topmost' atom in the buckle chain, as grabbing someone buckled to something tends to prevent further interaction.
 	var/atom/movable/original_target = target
 	var/mob/grabbing_mob = (ismob(target) && target)
@@ -59,7 +59,7 @@
 	face_atom(target)
 	var/obj/item/grab/grab
 	if(ispath(grab_tag, /datum/grab) && can_grab(target, check_zone(zone_sel?.selecting), defer_hand = defer_hand) && target.can_be_grabbed(src, check_zone(zone_sel?.selecting), defer_hand))
-		grab = new /obj/item/grab(src, target, grab_tag, defer_hand)
+		grab = new /obj/item/grab(src, target, grab_tag, defer_hand, use_pull_slot)
 
 	if(QDELETED(grab))
 		if(original_target != src && ismob(original_target))
@@ -67,12 +67,14 @@
 		to_chat(src, SPAN_WARNING("You try to grab \the [target], but fail!"))
 	return grab
 
-/mob/living/add_grab(obj/item/grab/grab, defer_hand = FALSE)
+/mob/living/add_grab(obj/item/grab/grab, defer_hand = FALSE, use_pull_slot = FALSE)
 	for(var/obj/item/grab/other_grab in contents)
 		if(other_grab != grab)
 			return FALSE
 
 	grab.forceMove(src)
+	pull_grab = grab
+	pullin?.icon_state = "pull1"
 	return TRUE
 
 /mob/living/ProcessGrabs()

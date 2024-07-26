@@ -1,5 +1,7 @@
-/mob/living/carbon/human/add_grab(obj/item/grab/grab, defer_hand = FALSE)
-	if(defer_hand)
+/mob/living/carbon/human/add_grab(obj/item/grab/grab, defer_hand = FALSE, use_pull_slot = FALSE)
+	if(use_pull_slot)
+		return ..()
+	else if(defer_hand)
 		. = put_in_hands(grab)
 	else
 		. = put_in_active_hand(grab)
@@ -33,7 +35,7 @@
 	if(istype(C))
 		C.add_fingerprint(grabber)
 
-/mob/living/carbon/human/make_grab(atom/movable/target, grab_tag = /datum/grab/simple, defer_hand = FALSE, force_grab_tag = FALSE)
+/mob/living/carbon/human/make_grab(atom/movable/target, grab_tag = /datum/grab/simple, defer_hand = FALSE, force_grab_tag = FALSE, use_pull_slot = FALSE)
 	. = ..()
 	if(!.)
 		return

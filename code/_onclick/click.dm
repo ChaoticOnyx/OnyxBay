@@ -291,8 +291,11 @@
 /atom/proc/CtrlClick(mob/user)
 	return
 
-/atom/movable/CtrlClick(mob/user)
-	return try_make_grab(user, defer_hand = TRUE) || ..()
+/atom/movable/CtrlClick(mob/living/user)
+	if(istype(user) && CanPhysicallyInteract(user))
+		return user.make_grab(src, grab_tag = /datum/grab/simple, defer_hand = FALSE, force_grab_tag = TRUE, use_pull_slot = TRUE)
+	else
+		return ..()
 
 /*
 	Alt click

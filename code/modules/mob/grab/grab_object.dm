@@ -33,7 +33,7 @@
 	/// Used to avoid stacking interactions that sleep during /datum/grab/proc/on_hit_foo() (ie. do_after() is used)
 	var/is_currently_resolving_hit = FALSE
 
-/obj/item/grab/Initialize(mapload, atom/movable/target, use_grab_state, defer_hand)
+/obj/item/grab/Initialize(mapload, atom/movable/target, use_grab_state, defer_hand, use_pull_slot)
 	. = ..(mapload)
 	if(. == INITIALIZE_HINT_QDEL)
 		return
@@ -43,7 +43,7 @@
 		return INITIALIZE_HINT_QDEL
 
 	assailant = loc
-	if(!istype(assailant) || !assailant.add_grab(src, defer_hand = defer_hand))
+	if(!istype(assailant) || !assailant.add_grab(src, defer_hand = defer_hand, use_pull_slot = use_pull_slot))
 		return INITIALIZE_HINT_QDEL
 
 	affecting = target
@@ -163,6 +163,9 @@
 		affecting = null
 	if(assailant)
 		unregister_signal(assailant?.zone_sel, SIGNAL_MOB_ZONE_SELECTED)
+		if(assailant.pull_grab == src)
+			assailant.pull_grab = null
+			assailant.pullin?.icon_state = "pull0"
 		assailant = null
 	. = ..()
 	if(old_affecting)

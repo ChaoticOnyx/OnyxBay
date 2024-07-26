@@ -360,6 +360,10 @@
 		if("act_intent")
 			usr.a_intent_change("right")
 
+		if("pull")
+			var/mob/living/user = usr
+			QDEL_NULL(user?.pull_grab)
+
 		if("throw")
 			if(!usr.stat && isturf(usr.loc) && !usr.restrained())
 				usr.toggle_throw_mode()

@@ -176,6 +176,11 @@
 
 	handle_hud_icons()
 	handle_vision()
+	if(pullin)
+		if(pull_grab)
+			pullin.icon_state = "pull1"
+		else
+			pullin.icon_state = "pull0"
 
 	return TRUE
 

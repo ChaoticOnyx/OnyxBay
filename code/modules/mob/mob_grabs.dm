@@ -17,7 +17,7 @@
 /mob/proc/handle_grabs_after_move(turf/old_loc, direction)
 	set waitfor = FALSE
 
-/mob/proc/add_grab(obj/item/grab/grab, defer_hand = FALSE)
+/mob/proc/add_grab(obj/item/grab/grab, defer_hand = FALSE, use_pull_slot = FALSE)
 	return FALSE
 
 /mob/proc/ProcessGrabs()
