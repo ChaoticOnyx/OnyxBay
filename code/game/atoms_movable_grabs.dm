@@ -32,7 +32,6 @@
 	if(isliving(user) && user.a_intent == I_GRAB && !anchored)
 		return try_make_grab(user)
 
-
 /atom/movable/proc/try_make_grab(mob/living/user, defer_hand = FALSE)
 	if(istype(user) && CanPhysicallyInteract(user))
 		if(user == buckled_mob)

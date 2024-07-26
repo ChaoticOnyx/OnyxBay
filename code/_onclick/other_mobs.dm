@@ -22,6 +22,10 @@
 	if(istype(G) && G.Touch(A,1))
 		return
 
+	var/atom/movable/grabbable = A
+	if(grabbable?.handle_grab_interaction(src))
+		return
+
 	A.attack_hand(src)
 
 /atom/proc/attack_hand(mob/user as mob)
