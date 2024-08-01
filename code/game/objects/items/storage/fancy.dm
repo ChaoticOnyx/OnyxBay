@@ -271,7 +271,7 @@
 	item_state = "Dpacket"
 	max_storage_space = 6
 	key_type = /obj/item/clothing/mask/smokable/cigarette/trident
-	startswith = list(/obj/item/clothing/mask/smokable/cigarette/trident = 5)
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/trident = 6)
 
 /obj/item/storage/fancy/cigarettes/cigarello/variety
 	name = "pack of Trident Fruit cigars"
@@ -287,7 +287,7 @@
 	name = "pack of Trident Menthol cigars"
 	desc = "The Trident brand's wood tipped little cigar, favored by the Sol corps diplomatique for their pleasant aroma. Machine made on Mars for over 100 years. These are the menthol variety."
 	icon_state = "CRMpacket"
-	startswith = list(/obj/item/clothing/mask/smokable/cigarette/trident/mint = 5)
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/trident/mint = 6)
 
 /obj/item/storage/fancy/cigar
 	name = "cigar case"
