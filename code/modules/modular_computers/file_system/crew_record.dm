@@ -246,7 +246,7 @@ var/const/record_field_context_universal   = ~record_field_context_none
 		if(EDIT_SHORTTEXT)
 			newval = sanitize(newval)
 		if(EDIT_LONGTEXT)
-			newval = sanitize(replacetext(newval, "\n", "\[br\]"), MAX_PAPER_MESSAGE_LEN)
+			newval = sanitize(replacetext(newval, "\n", "\[br\]"), MAX_BOOK_MESSAGE_LEN)
 	value = newval
 	announce(automatic)
 	return TRUE

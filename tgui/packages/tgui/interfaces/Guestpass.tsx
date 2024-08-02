@@ -16,6 +16,7 @@ interface Access {
   name: string;
   id: number;
   req: string;
+  allowed: boolean;
 }
 
 interface Region {
@@ -98,7 +99,9 @@ export const Guestpass = (props: any, context: any) => {
                       content={data.giv_name ? data.giv_name : "-----"}
                       disabled={!data.scanName}
                       onChange={(_, value: string) => {
-                        setName(value);
+                        act("set_name", {
+                          new_name: value,
+                        });
                       }}
                     />
                   </LabeledList.Item>
@@ -108,7 +111,9 @@ export const Guestpass = (props: any, context: any) => {
                       content={data.reason ? data.reason : "-----"}
                       disabled={!data.scanName}
                       onChange={(_, value: string) => {
-                        setReason(value);
+                        act("set_reason", {
+                          new_reason: value,
+                        });
                       }}
                     />
                   </LabeledList.Item>
@@ -119,8 +124,12 @@ export const Guestpass = (props: any, context: any) => {
                       disabled={!data.scanName}
                       unit="minutes"
                       minValue={0}
+                      maxValue={30}
                       value={duration}
                       onChange={(_, value: number) => {
+                        act("set_duration", {
+                          new_duration: value,
+                        });
                         setDuration(value);
                       }}
                     />
@@ -175,7 +184,7 @@ export const Guestpass = (props: any, context: any) => {
                   />
                 }
               >
-                {(!!data.IssueLog?.length && (
+                {(data.IssueLog?.length && (
                   <LabeledList>
                     {data.IssueLog.map((a, i) => (
                       <LabeledList.Item key={i}>{a}</LabeledList.Item>
@@ -333,6 +342,7 @@ const AirlockAccessList = (props: any, context: any) => {
               key={entry.name}
               content={entry.name}
               checked={entry.req}
+              disabled={!entry.allowed}
               onClick={() => act("select_access", { area: entry.id })}
             />
           ))}

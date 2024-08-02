@@ -9,7 +9,6 @@ var/list/global/tank_gauge_cache = list()
 
 	var/gauge_icon = "indicator_tank"
 	var/gauge_cap = 6
-	var/previous_gauge_pressure = null
 
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BACK
@@ -31,6 +30,7 @@ var/list/global/tank_gauge_cache = list()
 	var/obj/item/device/assembly_holder/assembly = null
 	var/static/image/bomb_assembly = image(icon = 'icons/obj/tank.dmi', icon_state = "bomb_assembly")
 	var/image/assembly_overlay = null
+	var/image/gauge_overlay = null
 
 	var/volume = 70
 	var/manipulated_by = null		//Used by _onclick/hud/screen_objects.dm internals to determine if someone has messed with our tank or not.
@@ -71,6 +71,7 @@ var/list/global/tank_gauge_cache = list()
 /obj/item/tank/Destroy()
 	manipulated_by = null
 	assembly_overlay = null
+	gauge_overlay = null
 
 	QDEL_NULL(air_contents)
 	QDEL_NULL(assembly)
@@ -382,22 +383,28 @@ var/list/global/tank_gauge_cache = list()
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/tank/on_update_icon(override)
-	var/needs_updating = override
-
-	if((atom_flags & ATOM_FLAG_INITIALIZED) && istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/) && !override) //So we don't eat up our tick. Every tick, when we're not actually in play.
+/obj/item/tank/on_update_icon()
+	if((atom_flags & ATOM_FLAG_INITIALIZED) && istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/)) //So we don't eat up our tick. Every tick, when we're not actually in play.
 		return
 
-	var/gauge_pressure = 0
-	if(air_contents)
+	CutOverlays(gauge_overlay)
+	CutOverlays(bomb_assembly)
+	CutOverlays(assembly_overlay)
+
+	if(gauge_icon && air_contents)
+		var/gauge_pressure = 0
 		gauge_pressure = air_contents.return_pressure()
 		if(gauge_pressure > TANK_IDEAL_PRESSURE)
 			gauge_pressure = -1
 		else
-			gauge_pressure = round((gauge_pressure/TANK_IDEAL_PRESSURE)*gauge_cap)
+			gauge_pressure = round((gauge_pressure / TANK_IDEAL_PRESSURE) * gauge_cap)
 
-	CutOverlays(bomb_assembly)
-	CutOverlays(assembly_overlay)
+		var/indicator = "[gauge_icon][(gauge_pressure == -1) ? "overload" : gauge_pressure]"
+		if(!tank_gauge_cache[indicator])
+			tank_gauge_cache[indicator] = image(icon, indicator)
+		gauge_overlay = tank_gauge_cache[indicator]
+		AddOverlays(gauge_overlay)
+
 	if(wired)
 		AddOverlays(bomb_assembly)
 		if(istype(assembly))
@@ -406,23 +413,6 @@ var/list/global/tank_gauge_cache = list()
 			assembly_overlay.pixel_y = -1
 			assembly_overlay.pixel_x = -3
 			AddOverlays(assembly_overlay)
-
-	if(previous_gauge_pressure != gauge_pressure)
-		needs_updating = 1
-
-	previous_gauge_pressure = gauge_pressure
-	if(!needs_updating)
-		return
-
-	ClearOverlays() // Each time you modify this, the object is redrawn. Cunts.
-
-	if(!gauge_icon)
-		return
-
-	var/indicator = "[gauge_icon][(gauge_pressure == -1) ? "overload" : gauge_pressure]"
-	if(!tank_gauge_cache[indicator])
-		tank_gauge_cache[indicator] = image(icon, indicator)
-	AddOverlays(tank_gauge_cache[indicator])
 
 /// Handle exploding, leaking, and rupturing of the tank.
 /// Returns `TRUE` if it should continue thinking.

@@ -151,6 +151,9 @@ Class Procs:
 		if(length(component_parts))
 			RefreshParts()
 
+	if(!mapload)
+		power_change()
+
 	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here.
 
 /obj/machinery/Destroy()
