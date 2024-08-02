@@ -132,6 +132,10 @@
 /obj/machinery/door/airlock/AICtrlAltClick() // Electrifies doors.
 	if(usr.incapacitated())
 		return
+
+	if(!CanUseTopic(usr))
+		return
+
 	if(!electrified_until)
 		// permanent shock
 		Topic(src, list("command"="electrify_permanently", "activate" = "1"))
@@ -149,6 +153,10 @@
 /obj/machinery/door/airlock/AIShiftClick()  // Opens and closes doors!
 	if(usr.incapacitated())
 		return
+
+	if(!CanUseTopic(usr))
+		return
+
 	if(density)
 		Topic(src, list("command"="open", "activate" = "1"))
 	else
@@ -161,6 +169,10 @@
 /obj/machinery/door/airlock/AICtrlClick() // Bolts doors
 	if(usr.incapacitated())
 		return
+
+	if(!CanUseTopic(usr))
+		return
+
 	if(locked)
 		Topic(src, list("command"="bolts", "activate" = "0"))
 	else
@@ -170,6 +182,10 @@
 /obj/machinery/power/apc/AICtrlClick() // turns off/on APCs.
 	if(usr.incapacitated())
 		return
+
+	if(!CanUseTopic(usr))
+		return
+
 	Topic(src, list("breaker"="1"))
 	return 1
 

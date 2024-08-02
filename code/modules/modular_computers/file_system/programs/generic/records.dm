@@ -24,8 +24,10 @@
 
 	data["message"] = message
 	if(active_record)
-		send_rsc(user, active_record.photo_front, "front_[active_record.uid].png")
-		send_rsc(user, active_record.photo_side, "side_[active_record.uid].png")
+		if(!isnull(active_record.photo_front))
+			send_rsc(user, active_record.photo_front, "front_[active_record.uid].png")
+		if(!isnull(active_record.photo_side))
+			send_rsc(user, active_record.photo_side, "side_[active_record.uid].png")
 		data["pic_edit"] = check_access(user, access_heads) || check_access(user, access_security)
 		data["uid"] = active_record.uid
 		var/list/fields = list()
