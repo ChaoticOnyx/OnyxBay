@@ -342,13 +342,12 @@
 		var/turf/T = get_turf(user)
 		for(var/obj/item/light/L in src.contents)
 			if(L.status == 0)
-				if(LP.uses < LP.max_uses)
-					LP.AddUses(1)
+				if(LP.bulbs_amt() < LP.max_uses)
 					amt_inserted++
 					remove_from_storage(L, T)
-					qdel(L)
+					LP.load_bulb_and_qdel(L)
 		if(amt_inserted)
-			to_chat(user, "You inserted [amt_inserted] light\s into \the [LP.name]. You have [LP.uses] light\s remaining.")
+			to_chat(user, "You inserted [amt_inserted] light\s into \the [LP.name]. You have [LP.bulbs_amt()] light\s remaining.")
 			return
 
 	if(!can_be_inserted(W, user))

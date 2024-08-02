@@ -37,6 +37,7 @@
 #define LIGHT_BROKEN 2
 #define LIGHT_BURNED 3
 
+#define DEFAULT_BULB_TYPE /obj/item/light/tube
 
 /obj/item/device/lightreplacer
 
@@ -55,7 +56,8 @@
 	origin_tech = list(TECH_MAGNET = 3, TECH_MATERIAL = 2)
 
 	var/max_uses = 20
-	var/uses = 10
+	/// Assoc list of loaded bulbs [type] -> [amount]
+	var/list/bulbs_assoc = list(DEFAULT_BULB_TYPE = 10)
 	var/emagged = 0
 	var/failmsg = ""
 	var/charge = 0
@@ -68,7 +70,7 @@
 	store_broken = 1
 	load_interval = 10
 	max_uses = 30
-	uses = 0 //Starts empty
+	bulbs_assoc = list()
 	name = "advanced light replacer"
 	desc = "A specialised light replacer which stores more lights and refills faster from boxes."
 	icon_state = "adv_lightreplacer"
@@ -84,7 +86,7 @@
 	if(get_dist(src, user) > 2)
 		return
 
-	. += "It has [uses] light\s remaining."
+	. += "It has [bulbs_amt()] light\s remaining."
 
 	if (store_broken)
 		. += "It is storing [stored()]/[max_stored] broken light\s."
@@ -92,14 +94,14 @@
 /obj/item/device/lightreplacer/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/stack/material) && W.get_material_name() == MATERIAL_GLASS)
 		var/obj/item/stack/G = W
-		if(uses >= max_uses)
+		if(bulbs_amt() >= max_uses)
 			to_chat(user, "<span class='warning'>[src.name] is full.</span>")
 			return
 		else if(G.use(5))
-			AddUses(2)
-			if (prob(50))
-				AddUses(1)
-			to_chat(user, "<span class='notice'>You insert a piece of glass into \the [src.name]. You have [uses] light\s remaining.</span>")
+			bulbs_assoc[DEFAULT_BULB_TYPE] += 2
+			if(prob(50))
+				bulbs_assoc[DEFAULT_BULB_TYPE] += 1
+			to_chat(user, "<span class='notice'>You insert a piece of glass into \the [src.name]. You have [bulbs_amt()] light\s remaining.</span>")
 			return
 		else
 			to_chat(user, "<span class='warning'>You need 5 sheets of glass to replace lights.</span>")
@@ -107,10 +109,9 @@
 	if(istype(W, /obj/item/light))
 		var/obj/item/light/L = W
 		if(L.status == 0) // LIGHT OKAY
-			if(uses < max_uses)
-				AddUses(1)
-				to_chat(user, "You insert \the [L.name] into \the [src.name]. You have [uses] light\s remaining.")
-				qdel(L)
+			if(bulbs_amt() < max_uses)
+				to_chat(user, "You insert \the [L.name] into \the [src.name]. You have [bulbs_amt()] light\s remaining.")
+				load_bulb_and_qdel(L)
 				return
 		else
 			to_chat(user, "You need a working light.")
@@ -128,13 +129,26 @@
 		var/obj/item/light/L = target
 		if(L.status != 0)
 			return
-		if(load_queue || uses >= max_uses)
+		if(load_queue || bulbs_amt() >= max_uses)
 			to_chat(user, "\The [src] is already full!")
 			return
-		uses++
-		to_chat(user, SPAN("notice", "Light loaded: [uses]/[max_uses]"))
+
+		to_chat(user, SPAN("notice", "Light loaded: [bulbs_amt()]/[max_uses]"))
 		playsound(loc, 'sound/machines/click.ogg', 20, 1)
-		qdel(L)
+		load_bulb_and_qdel(L)
+
+/// Adds amount of L.type available bulbs and qdels L
+/obj/item/device/lightreplacer/proc/load_bulb_and_qdel(obj/item/light/L)
+	bulbs_assoc[L.type]++
+	qdel(L)
+
+/// Total amount of available bulbs
+/obj/item/device/lightreplacer/proc/bulbs_amt()
+	var/amt = 0
+	for(var/type in bulbs_assoc)
+		amt += bulbs_assoc[type]
+
+	return amt
 
 /obj/item/device/lightreplacer/proc/box_contains_lights(obj/item/storage/box/box)
 	for(var/obj/item/light/L in box.contents)
@@ -148,12 +162,12 @@
 	var/ourstartloc = loc
 	if(load_queue)
 		return
-	if(uses >= max_uses)
+	if(bulbs_amt() >= max_uses)
 		to_chat(user, "\The [src] is already full!")
 		return
 	load_queue = TRUE
 	user.visible_message(SPAN("notice", "[user] starts loading lights from \the [box] into their [src]."), SPAN("notice", "You start loading lights from the [box] into the [src]."))
-	while(uses < max_uses)
+	while(bulbs_amt() < max_uses)
 		var/bulb = null
 		for(var/obj/item/light/L in box.contents)
 			if(L.status == 0)
@@ -166,11 +180,10 @@
 			return
 
 		if(do_after(user, load_interval, needhand = 0) && boxstartloc == box.loc && ourstartloc == loc)
-			uses++
-			to_chat(user, SPAN("notice", "Light loaded: [uses]/[max_uses]"))
+			to_chat(user, SPAN("notice", "Light loaded: [bulbs_amt()]/[max_uses]"))
 			playsound(loc, 'sound/machines/click.ogg', 20, 1)
 			box.remove_from_storage(bulb, get_turf(box))
-			qdel(bulb)
+			load_bulb_and_qdel(bulb)
 		else
 			to_chat(usr, SPAN("warning", "You need to keep \the [src] close to \the [box]!"))
 			load_queue = FALSE
@@ -195,26 +208,35 @@
 			to_chat(usr, "You shortcircuit the [src].")
 			return
 	*/
-	to_chat(user, "It has [uses] lights remaining.")
+	to_chat(user, "It has [bulbs_amt()] lights remaining.")
 
 /obj/item/device/lightreplacer/on_update_icon()
 	icon_state = "lightreplacer[emagged]"
 
 
-/obj/item/device/lightreplacer/proc/Use(mob/user)
-
+/obj/item/device/lightreplacer/proc/Use(mob/user, obj/machinery/light/target)
 	playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-	AddUses(-1)
-	return 1
+	for(var/path in bulbs_assoc)
+		if(bulbs_assoc[path] <= 0)
+			continue
 
-// Negative numbers will subtract
-/obj/item/device/lightreplacer/proc/AddUses(amount = 1)
-	uses = min(max(uses + amount, 0), max_uses)
+		if(!ispath(path, target.light_type))
+			continue
+
+		bulbs_assoc[path]--
+		if(bulbs_assoc[path] <= 0)
+			bulbs_assoc -= path
+
+		var/obj/item/light/L = new path(get_turf(src))
+		return L
+
+	playsound(src.loc, 'sound/machines/triple_beep.ogg', 50, 1)
+	return FALSE
 
 /obj/item/device/lightreplacer/proc/Charge(mob/user, amount = 1)
 	charge += amount
 	if(charge > 6)
-		AddUses(1)
+		bulbs_assoc[DEFAULT_BULB_TYPE]++
 		charge = 0
 
 /obj/item/device/lightreplacer/proc/ReplaceLight(obj/machinery/light/target, mob/living/U)
@@ -223,15 +245,20 @@
 		to_chat(U, "There is a working [target.get_fitting_name()] already inserted.")
 	else if(!CanUse(U))
 		to_chat(U, failmsg)
-	else if(Use(U))
-		to_chat(U, "<span class='notice'>You replace the [target.get_fitting_name()] with the [src].</span>")
 
-		if(target.lightbulb)
-			target.remove_bulb()
+	var/obj/item/light/bulb = Use(U, target)
+	if(!istype(bulb))
+		return
 
-		var/obj/item/light/L = new target.light_type()
-		L.rigged = emagged
-		target.insert_bulb(L)
+	to_chat(U, "<span class='notice'>You replace the [target.get_fitting_name()] with the [src].</span>")
+
+	if(target.lightbulb)
+		var/obj/item/light/lightbulb = target.remove_bulb()
+		if(store_broken && !(stored() >= max_stored))
+			lightbulb.forceMove(src)
+
+	bulb.rigged = emagged
+	target.insert_bulb(bulb)
 
 /obj/item/device/lightreplacer/emag_act(remaining_charges, mob/user)
 	emagged = !emagged
@@ -244,7 +271,7 @@
 /obj/item/device/lightreplacer/proc/CanUse(mob/living/user)
 	src.add_fingerprint(user)
 	//Not sure what else to check for. Maybe if clumsy?
-	if(uses > 0)
+	if(bulbs_amt() > 0)
 		return 1
 	else
 		return 0
