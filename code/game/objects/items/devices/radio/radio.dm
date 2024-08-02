@@ -215,17 +215,16 @@
 		connection = secure_radio_connections[channel]
 	else
 		channel = null
+
 	if(!connection)
 		connection = radio_connection
-	if (!istype(connection))
+	if(!istype(connection))
 		return
-	var/mob/living/silicon/ai/A
-	if(istext(from))
-		A = isnull(GLOB.global_ai_announcer) ? (GLOB.global_ai_announcer = new(src, null, null, TRUE)) : GLOB.global_ai_announcer
-		A.fully_replace_character_name(from)
-	else
-		A = from
-	talk_into(A, message, channel, say_verb, speaking)
+
+	Broadcast_Message(connection, null,
+						0, "*garbled automated announcement*", src,
+						message, from, "Automated Announcement", from, "synthesized voice",
+						4, 0, list(0), connection.frequency, "states", speaking)
 
 // Interprets the message mode when talking into a radio, possibly returning a connection datum
 /obj/item/device/radio/proc/handle_message_mode(mob/living/M as mob, message, message_mode)
