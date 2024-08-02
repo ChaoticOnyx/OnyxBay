@@ -439,6 +439,9 @@ interface ExploitableMenuProps {
 const ExploitableMenu = (props: ExploitableMenuProps, context: any) => {
   const { act } = useBackend<InputData>(context);
   const { exploits, selectedExploit } = props;
+  const rawHtml = {
+    __html: selectedExploit["Exploitable Information"],
+  };
   return (
     <Stack vertical fill>
       <Stack.Item>
@@ -493,7 +496,10 @@ const ExploitableMenu = (props: ExploitableMenuProps, context: any) => {
             </LabeledList.Item>
 
             <LabeledList.Item label="Exploitable information">
-              {selectedExploit["Exploitable Information"] || "N/A"}
+              <span
+                class="ConditionsDescription"
+                dangerouslySetInnerHTML={rawHtml}
+              ></span>
             </LabeledList.Item>
           </LabeledList>
         </Stack.Item>
