@@ -42,7 +42,8 @@
 	mapgen.populate_turfs(spawned)
 	new /datum/random_map/automata/cave_system(null, 1, 1, z, 255, 255)
 	new /datum/random_map/noise/ore(null, 1, 1, z, 255, 255)
-	mapgen.weather_controller_type = new mapgen.weather_controller_type(z)
+	if(ispath(mapgen.weather_controller_type))
+		mapgen.weather_controller_type = new mapgen.weather_controller_type(z)
 
 /datum/space_level/exodus_4
 	path = 'exodus-4.dmm'
