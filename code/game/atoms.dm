@@ -723,8 +723,16 @@ its easier to just keep the beam vertical.
 	for(var/atom/movable/A in T)
 		if(A == src)
 			continue
+
 		if(A.anchored)
 			continue
+
+		if(isobserver(A))
+			continue
+
+		if(!A.simulated)
+			continue
+
 		if(istype(A, /obj/item))
 			if(!shove_items)
 				continue
