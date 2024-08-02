@@ -130,6 +130,7 @@ export const Guestpass = (props: any, context: any) => {
                         act("set_duration", {
                           new_duration: value,
                         });
+                        setDuration(value);
                       }}
                     />
                   </LabeledList.Item>

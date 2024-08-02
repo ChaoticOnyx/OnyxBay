@@ -227,9 +227,11 @@
 
 		if("set_duration")
 			duration = params["new_duration"]
+			return TRUE
 
 		if("set_reason")
 			reason = params["new_reason"]
+			return TRUE
 
 		if("issue")
 			if(!giver || !LAZYLEN(accesses))
