@@ -147,7 +147,7 @@
 
 	end_orbit(orbiter)
 
-/datum/component/orbiter/proc/orbiter_glide_size_update(datum/source, target)
+/datum/component/orbiter/proc/orbiter_glide_size_update(new_value)
 	for(var/orbiter in orbiter_list)
 		var/atom/movable/movable_orbiter = orbiter
 		movable_orbiter.glide_size = target
