@@ -33,7 +33,6 @@
 		/obj/item/clothing/accessory/holster/waist,
 		/obj/item/clothing/accessory/storage/black_vest,
 		/obj/item/clothing/under/rank/head_of_security/jensen,
-		/obj/item/clothing/under/rank/head_of_security/corp,
 		/obj/item/clothing/suit/armor/vest/hos_heavy,
 		/obj/item/clothing/suit/armor/hos,
 		/obj/item/clothing/suit/armor/hos/jensen,
@@ -54,8 +53,7 @@
 		/obj/item/clothing/accessory/storage/black_vest,
 		/obj/item/clothing/suit/armor/vest/warden_heavy,
 		/obj/item/clothing/suit/armor/vest/warden,
-		/obj/item/clothing/under/rank/warden,
-		/obj/item/clothing/under/rank/warden/corp
+		/obj/item/clothing/under/rank/warden
 	)
 
 /obj/item/storage/garment/head_of_personnel
