@@ -186,6 +186,7 @@
 
 	switch(href_list["command"])
 		if("power")
+			playsound(src.loc, 'sound/effects/using/switch/lever2.ogg', 50)
 			if(!configuring)
 				update_use_power(!use_power)
 			else

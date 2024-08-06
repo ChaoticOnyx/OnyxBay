@@ -177,6 +177,7 @@ Thus, the two variables affect pump operation are set in New():
 		return 0
 
 	if(signal.data["power"])
+		playsound(src.loc, 'sound/effects/using/switch/lever2.ogg', 50)
 		if(text2num(signal.data["power"]))
 			update_use_power(POWER_USE_IDLE)
 		else
@@ -217,6 +218,7 @@ Thus, the two variables affect pump operation are set in New():
 	if((. = ..())) return
 
 	if(href_list["power"])
+		playsound(src.loc, 'sound/effects/using/switch/lever2.ogg', 50)
 		update_use_power(!use_power)
 		. = 1
 

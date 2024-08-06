@@ -289,6 +289,7 @@
 			else if(params["handle"])
 				if(panel_open)
 					return TRUE
+				playsound(src.loc, 'sound/effects/using/switch/lever3.ogg', 50)
 				flush = !flush
 				update_icon()
 			return TRUE

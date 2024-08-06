@@ -202,6 +202,7 @@
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return 0
 	if(signal.data["power"])
+		playsound(src.loc, 'sound/effects/using/switch/lever2.ogg', 50)
 		update_use_power(sanitize_integer(text2num(signal.data["power"]), POWER_USE_OFF, POWER_USE_ACTIVE, use_power))
 
 	if(signal.data["power_toggle"])
