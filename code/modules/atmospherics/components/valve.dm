@@ -236,8 +236,10 @@
 	if(!powered())
 		return
 	if(!src.allowed(user))
+		playsound(src.loc, 'sound/signals/error32.ogg', 50)
 		to_chat(user, "<span class='warning'>Access denied.</span>")
 		return
+	playsound(src.loc, 'sound/effects/using/switch/lever2.ogg', 50)
 	..()
 
 /obj/machinery/atmospherics/valve/digital/open

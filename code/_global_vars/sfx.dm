@@ -75,6 +75,10 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_792_BOLT_FORWARD = list(
 		'sound/effects/weapons/gun/bolt_forward_2.ogg'
 	),
+	SFX_GRENADE_LAUNCHER = list(
+		'sound/effects/weapons/gun/grenade/glauncher1.ogg',
+		'sound/effects/weapons/gun/grenade/glauncher2.ogg',
+	),
 	// FEMALE EMOTES
 	SFX_FEMALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/f_internalb1.ogg'
@@ -1515,12 +1519,23 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/fighting/punch1.ogg',
 		'sound/effects/fighting/punch2.ogg',
 		'sound/effects/fighting/punch3.ogg',
-		'sound/effects/fighting/punch4.ogg'
+		'sound/effects/fighting/punch4.ogg',
+		'sound/effects/fighting/punch5.ogg',
+		'sound/effects/fighting/punch6.ogg',
 	),
 	SFX_FIGHTING_SWING = list(
 		'sound/effects/fighting/genhit1.ogg',
 		'sound/effects/fighting/genhit2.ogg',
 		'sound/effects/fighting/genhit3.ogg'
+	),
+	SFX_STUNSTICK_HIT = list(
+		'sound/effects/fighting/stunstick_hit1.ogg',
+		'sound/effects/fighting/stunstick_hit2.ogg',
+	),
+	SFX_FALL_DAMAGE = list(
+		'sound/effects/fall_damage1.ogg',
+		'sound/effects/fall_damage2.ogg',
+		'sound/effects/fall_damage3.ogg',
 	),
 	// MISC
 	SFX_VENT = list(
