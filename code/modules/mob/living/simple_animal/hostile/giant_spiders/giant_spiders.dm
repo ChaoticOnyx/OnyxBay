@@ -21,6 +21,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	speak_chance = 5
 	turns_per_move = 5
 	see_in_dark = 10
+	see_invisible = 15
 	meat_type = /obj/item/reagent_containers/food/meat/xeno
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
@@ -29,7 +30,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	maxHealth = 200
 	health = 200
 	melee_damage_lower = 15
-	melee_damage_upper = 20
+	melee_damage_upper = 25
 	heat_damage_per_tick = 20
 	cold_damage_per_tick = 20
 	faction = "spiders"
@@ -41,7 +42,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	mob_swap_flags = ALLMOBS
 	mob_push_flags = ALLMOBS
 	///How much of a reagent the mob injects on attack
-	var/poison_per_bite = 0
+	var/poison_per_bite = 4
 	///What reagent the mob injects targets with
 	var/poison_type = /datum/reagent/toxin
 	///Whether or not the spider is in the middle of an action.
@@ -111,7 +112,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	health = 100
 	melee_damage_lower = 15
 	melee_damage_upper = 20
-	poison_per_bite = 5
+	poison_per_bite = 10
 	move_to_delay = 4
 	speed = -0.1
 	menu_description = "Fast spider variant specializing in catching running prey and toxin injection, but has less health and damage."
@@ -135,8 +136,8 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	health = 60
 	speed = 0.75
 	melee_damage_lower = 5
-	melee_damage_upper = 10
-	poison_per_bite = 3
+	melee_damage_upper = 20
+	poison_per_bite = 4
 	web_speed = 0.25
 	web_sealer = TRUE
 	menu_description = "Support spider variant specializing in healing their brethren and placing webbings very swiftly, but has very low amount of health and deals low damage."
@@ -240,8 +241,8 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	maxHealth = 60
 	health = 60
 	melee_damage_lower = 5
-	melee_damage_upper = 5
-	poison_per_bite = 5
+	melee_damage_upper = 10
+	poison_per_bite = 7
 	move_to_delay = 4
 	poison_type = /datum/reagent/toxin/cyanide
 	speed = -0.7
@@ -267,8 +268,8 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	maxHealth = 300
 	health = 300
 	melee_damage_lower = 5
-	melee_damage_upper = 10
-	poison_per_bite = 3
+	melee_damage_upper = 25
+	poison_per_bite = 5
 	web_sealer = TRUE
 	menu_description = "Royal spider variant specializing in reproduction and leadership, but has very low amount of health and deals low damage."
 	///If the spider is trying to cocoon something, what that something is.
