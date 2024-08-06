@@ -87,7 +87,7 @@
 		/obj/item/taperoll/police,
 		/obj/item/device/holowarrant,
 		/obj/item/cartridge/security,
-		/obj/item/storage/secure/guncase/security,
+		/obj/item/gun/energy/security/pistol,
 		/obj/item/reagent_containers/spray/pepper,
 		/obj/item/device/radio/headset/headset_sec,
 		/obj/item/device/radio/headset/tactical/sec
@@ -119,7 +119,7 @@
 		/obj/item/taperoll/police,
 		/obj/item/device/hailer,
 		/obj/item/device/holowarrant,
-		/obj/item/storage/secure/guncase/security
+		/obj/item/gun/energy/security/pistol
 	)
 
 /obj/structure/closet/secure_closet/security/cargo/WillContain()

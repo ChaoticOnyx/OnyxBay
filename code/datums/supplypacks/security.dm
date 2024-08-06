@@ -126,10 +126,18 @@
 	name = "Weapons - Security basic"
 	contains = list(/obj/item/device/flash = 4,
 					/obj/item/reagent_containers/spray/pepper = 4,
-					/obj/item/storage/secure/guncase/security = 4)
+					/obj/item/gun/energy/security/pistol = 4)
 	cost = 50
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Weapons crate"
+	access = access_security
+
+/decl/hierarchy/supply_pack/security/guncases
+	name = "Weapons - Guncases"
+	contains = list(/obj/item/storage/secure/guncase/security = 4)
+	cost = 40
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Guncases crate"
 	access = access_security
 
 /decl/hierarchy/supply_pack/security/nonlethal
