@@ -28,26 +28,6 @@
 	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.8
 
-/obj/item/clothing/under/rank/security/corp
-	icon_state = "sec_corp"
-	item_state_slots = list(
-		slot_hand_str = "black"
-		)
-
-/obj/item/clothing/under/rank/security/old
-	icon_state = "officer_legacy"
-	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for robust protection. This one must be quite old, yet it's colors are so vibrant it hurts your eyes."
-
-/obj/item/clothing/under/rank/warden/corp
-	icon_state = "warden_corp"
-	item_state_slots = list(
-		slot_hand_str = "black"
-		)
-
-/obj/item/clothing/under/rank/warden/old
-	icon_state = "warden_corp"
-	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for more robust protection. It has the word \"Warden\" written on the shoulders. This one must be quite old, yet it's colors are so vibrant it hurts your eyes."
-
 /obj/item/clothing/under/tactical
 	name = "tactical jumpsuit"
 	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for robust protection."
@@ -97,12 +77,6 @@
 		)
 	armor = list(melee = 20, bullet = 25, laser = 25, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.7
-
-/obj/item/clothing/under/rank/head_of_security/corp
-	icon_state = "hos_corp"
-	item_state_slots = list(
-		slot_hand_str = "black"
-		)
 
 /obj/item/clothing/under/rank/head_of_security/jensen
 	desc = "You never asked for anything that stylish."
