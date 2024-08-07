@@ -8,7 +8,7 @@
 	var/heartbeat = 0
 	var/beat_sound = 'sound/effects/singlebeat.ogg'
 	var/tmp/next_blood_squirt = 0
-	relative_size = 15
+	relative_size = 20
 	max_damage = 50
 	min_bruised_damage = 15
 	min_broken_damage = 35

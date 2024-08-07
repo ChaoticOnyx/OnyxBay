@@ -8,7 +8,7 @@
 	min_bruised_damage = 25
 	min_broken_damage = 50
 	max_damage = 100
-	relative_size = 60
+	relative_size = 65
 
 	var/active_breathing = 1
 

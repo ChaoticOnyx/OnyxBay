@@ -104,7 +104,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		var/organ_damage_threshold = 5
 		if(sharp)
 			organ_damage_threshold *= 0.5
-		var/organ_damage_prob = 6.25 * damage_amt/organ_damage_threshold //more damage, higher chance to damage
+		var/organ_damage_prob = 7 * damage_amt/organ_damage_threshold //more damage, higher chance to damage
 		if(sharp)
 			organ_damage_prob *= 1.5
 		if(cur_damage >= 15)
@@ -123,7 +123,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 				brute /= 2
 				if(laser)
 					burn /= 3
-				damage_amt /= 2
+				damage_amt *= 2
 				victim.take_internal_damage(damage_amt)
 
 	if(status & ORGAN_BROKEN && brute)

@@ -8,7 +8,7 @@
 	min_bruised_damage = 25
 	min_broken_damage = 45 // Also the amount of toxic damage it can store
 	max_damage = 70
-	relative_size = 60
+	relative_size = 45
 	var/tox_filtering = 0
 
 /obj/item/organ/internal/liver/robotize()

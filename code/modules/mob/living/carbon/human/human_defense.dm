@@ -50,7 +50,7 @@ meteor_act
 	// Internal damage
 	// Some day we should make internals deal with blunt and sharp damage differently, but for now it's like this, if 'blocked' is non-zero, then the projectile's already lost its SHARP/EDGE flags and thus we cut the damage accordingly
 	if(length(organ.internal_organs))
-		var/internal_damage_prob = 70 * blocked_mult(blocked) // 70% for a naked dude/armor fail, 35% if one armor layer's succeeded, etc.
+		var/internal_damage_prob = 90 * blocked_mult(blocked) // 70% for a naked dude/armor fail, 35% if one armor layer's succeeded, etc.
 
 		// If our bodypart is a pile of shredded meat then it doesn't protect organs well
 		if(organ.damage > organ.max_damage)
@@ -59,18 +59,19 @@ meteor_act
 		if(prob(internal_damage_prob))
 			var/penetrating_damage = P.damage * P.penetration_modifier * PROJECTILE_INTERNAL_DAMAGE_MULT * blocked_mult(blocked)
 			if(organ.encased && !(organ.status & ORGAN_BROKEN))
-				penetrating_damage *= 0.75 // Ribs and skulls somewhat protect
+				penetrating_damage *= 0.8 // Ribs and skulls somewhat protect
 
 			var/list/victims = list()
-			var/list/possible_victims = shuffle(organ.internal_organs.Copy())
+//			var/list/possible_victims = shuffle(organ.internal_organs.Copy())
 
-			for(var/obj/item/organ/internal/I in possible_victims)
-				if(I.damage < I.max_damage && (prob((sqrt(I.relative_size) * 10) * (1 / max(1, victims.len)))))
+			for(var/obj/item/organ/internal/I in organ.internal_organs)
+				if(I.damage < I.max_damage && (prob(I.relative_size)*2))
 					victims += I
+					internal_damage_prob += I.relative_size
 
 			if(length(victims))
 				for(var/obj/item/organ/internal/victim in victims)
-					victim.take_internal_damage(penetrating_damage / victims.len)
+					victim.take_internal_damage(penetrating_damage*3)
 
 	// Embed or sever artery, only happens if the projectile's successfully bypassed armor
 	if(!blocked && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(PROJECTILE_EMBED_CHANCE) && P.can_embed())
