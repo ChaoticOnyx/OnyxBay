@@ -123,7 +123,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 				brute /= 2
 				if(laser)
 					burn /= 3
-				damage_amt *= 2
+				damage_amt /= 2
 				victim.take_internal_damage(damage_amt)
 
 	if(status & ORGAN_BROKEN && brute)
