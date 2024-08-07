@@ -10,7 +10,7 @@
 	mod_reach = 0.8
 	mod_handy = 1.0
 
-	fire_sound = 'sound/weapons/empty.ogg'
+	fire_sound = SFX_GRENADE_LAUNCHER
 	fire_sound_text = "a metallic thunk"
 	screen_shake = 0
 	throw_distance = 7

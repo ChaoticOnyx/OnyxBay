@@ -181,6 +181,7 @@
 		visible_message("\The [src] falls from the deck above through \the [landing]!", "You hear a whoosh of displaced air.")
 	else
 		visible_message("\The [src] falls from the deck above and slams into \the [landing]!", "You hear something slam into the deck.")
+		playsound(landing, SFX_FALL_DAMAGE, 75)
 		if(fall_damage())
 			for(var/mob/living/M in landing.contents)
 				visible_message("\The [src] hits \the [M.name]!")

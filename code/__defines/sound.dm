@@ -77,6 +77,7 @@
 #define SFX_792_FIRE                "792_fire"
 #define SFX_792_BOLT_BACK           "792_bolt_back"
 #define SFX_792_BOLT_FORWARD        "792_bolt_back"
+#define SFX_GRENADE_LAUNCHER        "glauncher"
 
 // FEMALE EMOTES
 #define SFX_FEMALE_INTERNAL_BREATH  "female_internal_breath"
@@ -317,6 +318,8 @@
 #define SFX_FIGHTING_CRUNCH         "fighting_crunch"
 #define SFX_FIGHTING_PUNCH          "fighting_punch"
 #define SFX_FIGHTING_SWING          "fighting_swing"
+#define SFX_STUNSTICK_HIT           "stunstick_hit"
+#define SFX_FALL_DAMAGE             "fall_damage"
 
 // DEVICES
 #define SFX_GEIGER_LOW              "geiger_low"

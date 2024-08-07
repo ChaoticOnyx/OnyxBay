@@ -61,7 +61,7 @@
 		return 1
 
 /obj/machinery/light_switch/attack_hand(mob/user)
-	playsound(src, SFX_USE_SMALL_SWITCH, 75)
+	playsound(src, 'sound/effects/using/switch/lightswitch.ogg', 75)
 	set_state(!on)
 
 /obj/machinery/light_switch/powered()

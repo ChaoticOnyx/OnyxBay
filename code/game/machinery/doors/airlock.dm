@@ -321,8 +321,7 @@ About the new airlock wires panel:
 		if("deny")
 			if(density && arePowerSystemsOn())
 				flick("door_deny", src)
-				if(secured_wires)
-					playsound(loc, open_failure_access_denied, 50, 0)
+				playsound(loc, open_failure_access_denied, 50, 0)
 	return
 
 /obj/machinery/door/airlock/attack_ai(mob/user)

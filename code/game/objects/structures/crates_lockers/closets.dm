@@ -768,6 +768,7 @@
 		update_icon()
 		return TRUE
 	else
+		playsound(src.loc, 'sound/signals/error31.ogg', 50)
 		to_chat(user, SPAN_WARNING("Access denied!"))
 		return FALSE
 
