@@ -25,7 +25,14 @@
 		traits_map += list("[T]" = TRUE)
 
 	traits = traits_map
-	exterior_atmosphere = new
+	if(!islist(exterior_atmosphere))
+		exterior_atmosphere = new
+	else
+		var/datum/gas_mixture/atmos = new
+		var/list/gases = exterior_atmosphere
+		atmos.gas = gases.Copy()
+		exterior_atmosphere = atmos
+	exterior_atmosphere.temperature = exterior_atmos_temp
 
 /datum/space_level/proc/remove_trait(trait)
 	traits["[trait]"] = FALSE
