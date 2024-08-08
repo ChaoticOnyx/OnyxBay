@@ -463,9 +463,6 @@
 	if(!istype(P))
 		return 0 //default behaviour only applies to true projectiles
 
-	if(params)
-		P.set_clickpoint(params)
-
 	//shooting while in shock
 	var/shock_dispersion = 0
 	if(istype(firer, /mob/living/carbon/human))
