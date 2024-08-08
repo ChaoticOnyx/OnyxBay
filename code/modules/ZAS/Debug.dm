@@ -18,3 +18,6 @@ var/image/mark = image('icons/testing/zone.dmi', icon_state = "mark")
 
 /proc/soft_assert(thing,fail)
 	if(!thing) message_admins(fail)
+
+/datum/proc/zas_log(string)
+	return

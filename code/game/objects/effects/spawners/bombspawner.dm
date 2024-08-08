@@ -177,13 +177,13 @@
 	PM.gas["plasma"] = plasma_amt
 	PM.gas["carbon_dioxide"] = carbon_amt
 	PM.total_moles = plasma_amt + carbon_amt
-	PM.temperature = PLASMA_MINIMUM_BURN_TEMPERATURE+1
+	PM.temperature = FLAMMABLE_GAS_MINIMUM_BURN_TEMPERATURE + 1
 	PM.update_values()
 
 	OT.valve_welded = 1
 	OM.gas["oxygen"] = oxygen_amt
 	OM.total_moles = oxygen_amt
-	OM.temperature = PLASMA_MINIMUM_BURN_TEMPERATURE+1
+	OM.temperature = FLAMMABLE_GAS_MINIMUM_BURN_TEMPERATURE + 1
 	OM.update_values()
 
 
