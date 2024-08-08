@@ -261,7 +261,7 @@ var/global/obj/effect/zasdbg/mark/zasdbgovl_mark = new
 	return FALSE
 
 /turf/proc/make_air()
-	air = new/datum/gas_mixture
+	air = new /datum/gas_mixture
 	air.temperature = temperature
 	if(initial_gas)
 		air.gas = initial_gas.Copy()
@@ -280,7 +280,7 @@ var/global/obj/effect/zasdbg/mark/zasdbgovl_mark = new
 
 /turf/proc/c_copy_air()
 	if(!air)
-		air = new/datum/gas_mixture
+		air = new /datum/gas_mixture
 	air.copy_from(zone.air)
 	air.group_multiplier = 1
 
