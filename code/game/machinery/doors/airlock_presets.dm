@@ -1,4 +1,4 @@
-#define GLASS_AIRLOCK_HIT_SOUND pick('sound/effects/materials/glass/knock1.ogg', 'sound/effects/materials/glass/knock2.ogg', 'sound/effects/materials/glass/knock3.ogg')
+#define GLASS_AIRLOCK_HIT_SOUND pick(SFX_GLASS_HIT)
 
 //regular airlock presets
 
