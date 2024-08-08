@@ -1,6 +1,33 @@
 [
   {
     "author": "Filatelele",
+    "date": "2024-08-08T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Experiment",
+        "message": "Полярка",
+        "pr": 12646
+      },
+      {
+        "prefix": "Experiment",
+        "message": "Обновления атмоса. Станет либо лучше, либо сильно хуже.",
+        "pr": 12645
+      }
+    ]
+  },
+  {
+    "author": "SVEDETEL69",
+    "date": "2024-08-08T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "Теперь лампочки на аутпосте РнД не будут мешать анализировать аномалии.",
+        "pr": 12636
+      }
+    ]
+  },
+  {
+    "author": "Filatelele",
     "date": "2024-08-06T00:00:00+03:00",
     "changes": [
       {
