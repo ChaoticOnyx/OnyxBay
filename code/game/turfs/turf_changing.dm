@@ -19,7 +19,8 @@
 
 //Creates a new turf
 /turf/proc/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE, keep_air = FALSE)
-	ASSERT(N)
+	if(!ispath(N))
+		CRASH("Wrong turf-type submitted to ChangeTurf()")
 
 	// Spawning space in the middle of a multiz stack should just spawn an open turf.
 	if(ispath(N, /turf/space))

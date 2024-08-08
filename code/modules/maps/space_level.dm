@@ -2,10 +2,8 @@
 	var/path
 	var/list/traits
 	var/travel_chance = 0
-	/// The base turf type of the area, which can be used to override the z-level's base turf
-	//var/base_turf = /turf/space
-	//// The base turf of the area if it has a turf below it in multizi. Overrides turf-specific open type
-	//var/open_turf = /turf/simulated/open
+	/// The base turf type
+	var/base_turf = /turf/space
 
 	/// Set to TRUE so this level will be initialized in SSmapping initialization sequence.
 	var/lateloading_level = FALSE
