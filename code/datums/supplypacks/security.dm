@@ -414,15 +414,17 @@
 					/obj/item/gun/projectile/bolt_action/mauser = 2,
 					/obj/item/ammo_magazine/c792 = 4
 					)
-	cost = 40
+	cost = 100
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Surplus Firearms"
 	access = access_security
+	security_level = SUPPLY_SECURITY_ELEVATED
 
 /decl/hierarchy/supply_pack/security/surplusammo
 	name = "Misc - Surplus ammo"
 	contains = list(/obj/item/ammo_magazine/c792 = 8)
-	cost = 10
+	cost = 20
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Surplus Ammo"
 	access = access_security
+	security_level = SUPPLY_SECURITY_ELEVATED
