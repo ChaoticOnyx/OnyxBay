@@ -312,6 +312,8 @@
 	brute_mod = 0.65
 	burn_mod  = 1.4
 
+	push_flags = ~HEAVY
+
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
 
 	has_organ = list(
@@ -360,6 +362,10 @@
 	burn_mod  = 1.2
 	icon_scale = 1.3
 	generic_attack_mod = 4.5
+
+	bump_flag = HEAVY
+	swap_flags = ALLMOBS
+	push_flags = ALLMOBS
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_queen.dmi'
 
