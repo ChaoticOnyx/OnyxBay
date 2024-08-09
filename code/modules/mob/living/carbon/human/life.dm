@@ -956,10 +956,9 @@
 	return 1
 
 /mob/living/carbon/human/handle_hud_icons_health()
-	if(!healths)
+	if(!healths || !should_update_healths)
 		return
 
-	healths.ClearOverlays()
 	healths.icon = 'icons/hud/common/screen_health.dmi'
 
 	if(is_ic_dead())
