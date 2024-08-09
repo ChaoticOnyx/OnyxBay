@@ -50,7 +50,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 				fire_tiles -= T
 				fuel_objs -= fuel
 	else
-		for(var/turf/simulated/T in fire_tiles)
+		for(var/turf/T in fire_tiles)
 			if(istype(T.fire))
 				T.fire.RemoveFire()
 			T.fire = null
@@ -84,9 +84,6 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			qdel(fuel)
 
 /turf/proc/create_fire(fl)
-	return 0
-
-/turf/simulated/create_fire(fl)
 	if(fire)
 		fire.firelevel = max(fl, fire.firelevel)
 		return 1
@@ -121,12 +118,12 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /obj/fire/Process()
 	. = 1
 
-	var/turf/simulated/my_tile = loc
+	var/turf/my_tile = loc
 	if(!istype(my_tile) || !my_tile.zone)
 		if(my_tile && my_tile.fire == src)
 			my_tile.fire = null
 		RemoveFire()
-		return 1
+		return PROCESS_KILL
 
 	var/datum/gas_mixture/air_contents = my_tile.return_air()
 
@@ -149,7 +146,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	//spread
 	for(var/direction in GLOB.cardinal)
-		var/turf/simulated/enemy_tile = get_step(my_tile, direction)
+		var/turf/enemy_tile = get_step(my_tile, direction)
 
 		if(istype(enemy_tile))
 			if(my_tile.open_directions & direction) //Grab all valid bordering tiles
