@@ -102,6 +102,9 @@
 /turf/space/is_open()
 	return TRUE
 
+/turf/space/is_outside()
+	return OUTSIDE_YES
+
 /turf/space/proc/Sandbox_Spacemove(atom/movable/A as mob|obj)
 	var/cur_x
 	var/cur_y
