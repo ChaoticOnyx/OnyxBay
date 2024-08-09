@@ -157,3 +157,12 @@
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/red_mule
 	startswith = list(/datum/reagent/drink/energy = 40)
+
+/obj/item/reagent_containers/vessel/can/startrucks
+	name = "\improper Startrucks Cold Brew"
+	desc = "Favourite choice of many space truck drivers! And space office workers, too."
+	icon_state = "startrucks"
+	item_state = "startrucks"
+	center_of_mass = "x=16;y=10"
+	trash = /obj/item/trash/cans/startrucks
+	startswith = list(/datum/reagent/caffeine/coffee/icecoffee = 40)
