@@ -18,6 +18,12 @@
 		new /obj/item/reagent_containers/food/rawcutlet(src)
 		new /obj/item/reagent_containers/food/rawcutlet(src)
 		to_chat(user, "You cut the meat into thin strips.")
+		playsound(src, pick(
+				'sound/effects/slice1.ogg',
+				'sound/effects/slice2.ogg',
+				'sound/effects/slice3.ogg',
+				'sound/effects/slice4.ogg',
+			), 50, FALSE)
 		qdel(src)
 	else
 		..()
@@ -71,6 +77,12 @@
 		new /obj/item/reagent_containers/food/bacon(src)
 		new /obj/item/reagent_containers/food/bacon(src)
 		to_chat(user, "You cut the meat into thin strips.")
+		playsound(src, pick(
+				'sound/effects/slice1.ogg',
+				'sound/effects/slice2.ogg',
+				'sound/effects/slice3.ogg',
+				'sound/effects/slice4.ogg',
+			), 50, FALSE)
 		qdel(src)
 		return
 	else

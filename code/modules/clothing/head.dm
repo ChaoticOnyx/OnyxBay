@@ -44,6 +44,7 @@
 		if(!isturf(user.loc))
 			to_chat(user, "You cannot turn the light on while in this [user.loc]")
 			return
+		playsound(src, 'sound/effects/flashlight2.ogg', 75, FALSE)
 		on = !on
 		to_chat(user, "You [on ? "enable" : "disable"] the helmet light.")
 		update_flashlight(user)

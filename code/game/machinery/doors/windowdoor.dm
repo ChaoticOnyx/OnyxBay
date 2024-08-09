@@ -27,11 +27,7 @@
 	. = ..()
 	update_nearby_tiles()
 	update_icon()
-	hitsound = pick(
-		'sound/effects/materials/glass/knock1.ogg',
-		'sound/effects/materials/glass/knock2.ogg',
-		'sound/effects/materials/glass/knock3.ogg',
-	)
+	hitsound = pick(SFX_GLASS_HIT)
 
 /obj/machinery/door/window/on_update_icon()
 	if(density)

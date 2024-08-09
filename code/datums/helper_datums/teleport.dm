@@ -15,6 +15,12 @@
 		target.visible_message(SPAN("warning", "\The [target] bounces off the teleporter!"))
 		return
 
+	playsound(target, pick(
+		'sound/effects/teleport1.ogg',
+		'sound/effects/teleport2.ogg',
+		'sound/effects/teleport3.ogg',
+	), 75, FALSE)
+
 	target.forceMove(destination)
 	if(isliving(target))
 		var/mob/living/L = target
@@ -51,7 +57,7 @@
 		return
 	var/turf/T = get_turf(target)
 	if (!(locate(/obj/effect/sparks) in T))
-		spark.set_up(5,1,target)
+		spark.set_up(1,1,target)
 		spark.attach(T)
 		spark.start()
 
