@@ -52,6 +52,7 @@ Class Procs:
 	var/list/graphic_remove = list()
 	var/last_air_temperature = TCMB
 	var/condensing = FALSE
+	var/list/fuel_objs = list()
 
 /zone/New()
 	SSair.add_zone(src)
@@ -72,6 +73,9 @@ Class Procs:
 	T.zone = src
 	contents.Add(T)
 	if(T.fire)
+		var/obj/effect/decal/cleanable/liquid_fuel/fuel = locate() in T
+		if(fuel)
+			fuel_objs += fuel
 		fire_tiles.Add(T)
 		SSair.active_fire_zones |= src
 	T.update_graphic(air.graphic)
@@ -87,6 +91,9 @@ Class Procs:
 	T.c_copy_air() // to avoid losing contents
 	contents.Remove(T)
 	fire_tiles.Remove(T)
+	if(T.fire)
+		var/obj/effect/decal/cleanable/liquid_fuel/fuel = locate() in T
+		fuel_objs -= fuel
 	T.zone = null
 	T.update_graphic(air.graphic)
 	if(contents.len)

@@ -102,7 +102,7 @@
 							possible_expansions += item
 						item.getting_pipelined = TRUE
 						members += item
-						register_signal(item, SIGNAL_QDELETING, nameof(.proc/on_member_qdel))
+						register_signal(item, SIGNAL_QDELETING, nameof(.proc/on_member_qdel), TRUE)
 
 						volume += item.volume
 
@@ -122,7 +122,7 @@
 
 			if(edge_check > 0)
 				edges += borderline
-				register_signal(borderline, SIGNAL_QDELETING, nameof(.proc/on_borderline_qdel))
+				register_signal(borderline, SIGNAL_QDELETING, nameof(.proc/on_borderline_qdel), TRUE)
 
 			possible_expansions -= borderline
 
