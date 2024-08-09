@@ -152,7 +152,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	var/datum/gas_mixture/air_contents = loc.return_air()
 	color = fire_color(air_contents.temperature)
-	set_light(3, 0.5, color)
+	set_light(0.5, 1, 3, 2, color)
 
 	firelevel = fl
 	SSair.active_hotspots.Add(src)
