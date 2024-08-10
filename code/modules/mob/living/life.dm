@@ -117,10 +117,109 @@
 		silent = max(silent-1, 0)
 	return silent
 
+/mob/living/proc/make_drugged(vol, weigth = 0.5, force = FALSE)
+	if(force)
+		druggy = vol
+	else if(druggy < vol)
+		druggy = Interpolate(druggy, vol, weigth)
+
 /mob/living/proc/handle_drugged()
 	if(druggy)
 		druggy = max(druggy-1, 0)
+
+	if(druggy <= 0)
+		clear_all_druggy_effects()
+
 	return druggy
+
+/mob/living/proc/clear_all_druggy_effects()
+	remove_opioid_effects()
+	remove_hyperzine_effects()
+	remove_spessdrugs_effects()
+	remove_mindbreaker_effects()
+	remove_psilo_effects()
+
+/mob/living/proc/apply_opioid_effects()
+	playsound_local(src, 'sound/effects/drugs/painkiller.ogg', 100, FALSE)
+	var/mob/living/carbon/human/H = src
+	if(H?.pulse() >= PULSE_NORM)
+		playsound_local(src, 'sound/effects/Heart Beat.ogg', 100, FALSE)
+
+	flash_fullscreen("white_flash")
+	overlay_fullscreen("painkiller", /atom/movable/screen/fullscreen/high_purest)
+	animate(client, pixel_y = 1, time = 1, loop = -1, flags = ANIMATION_RELATIVE)
+	animate(pixel_y = -1, time = 1, flags = ANIMATION_RELATIVE)
+
+/mob/living/proc/remove_opioid_effects()
+	clear_fullscreen("painkiller")
+	animate(client)
+
+/mob/living/proc/apply_hyperzine_effects()
+	playsound_local(src, 'sound/effects/drugs/hyperzine.ogg', 100, FALSE)
+	var/mob/living/carbon/human/H = src
+	if(H?.pulse() >= PULSE_NORM)
+		src.playsound_local(src, 'sound/effects/Heart Beat.ogg', 100, FALSE)
+
+	overlay_fullscreen("hyperzine", /atom/movable/screen/fullscreen/high_purest)
+	animate(client, pixel_y = 1, time = 1, loop = -1, flags = ANIMATION_RELATIVE)
+	animate(pixel_y = -1, time = 1, flags = ANIMATION_RELATIVE)
+
+/mob/living/proc/remove_hyperzine_effects()
+	clear_fullscreen("hyperzine")
+	animate(client)
+
+/mob/living/proc/apply_spessdrugs_effects()
+	playsound_local(src, 'sound/effects/drugs/space_drugs.ogg', 100, FALSE)
+	overlay_fullscreen("space_drugs", /atom/movable/screen/fullscreen/space_drugs)
+
+/mob/living/proc/remove_spessdrugs_effects()
+	clear_fullscreen("space_drugs")
+
+/mob/living/proc/apply_mindbreaker_effects()
+	var/atom/movable/renderer/game/G = renderers[GAME_RENDERER]
+	G.add_filter("trip_ripple", 0, list(type = "ripple",x = 80, size = 50, radius = 0, falloff = 1))
+	G.add_filter("trip_blur", -1, list(type = "blur", size = 0.2))
+	G.add_filter("trip_color", 0, list(type="color", color = list(-1,0,0,0, 0,-1,0,0, 0,0,-1,0, 0,0,0,1, 1,1,1,0)))
+	G.add_filter("trip_bloom", -2, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
+
+	var/atom/movable/renderer/turf/T = renderers[TURF_RENDERER]
+	T.add_filter("trip_ripple", 0, list(type = "ripple",x = 80, size = 50, radius = 0, falloff = 1))
+	T.add_filter("trip_blur", 0, list(type = "blur", size = 0.2))
+	T.add_filter("trip_bloom", -2, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
+
+/mob/living/proc/remove_mindbreaker_effects()
+	var/atom/movable/renderer/game/G = renderers[GAME_RENDERER]
+	G.remove_filter("trip_ripple")
+	G.remove_filter("trip_blur")
+	G.remove_filter("trip_color")
+	G.remove_filter("trip_bloom")
+
+	var/atom/movable/renderer/turf/T = renderers[TURF_RENDERER]
+	T.remove_filter("trip_ripple")
+	T.remove_filter("trip_blur")
+	T.remove_filter("trip_bloom")
+
+/mob/living/proc/apply_psilo_effects()
+	var/atom/movable/renderer/game/G = renderers[GAME_RENDERER]
+	G.add_filter("psilo_color", 0, list(type="color", list(0,0,1,0, 0,1,0,0, 1,0,0,0, 0,0,0,1, 0,0,0,0)))
+	G.add_filter("psilo_bloom", 0, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
+
+	var/atom/movable/renderer/turf/T = renderers[TURF_RENDERER]
+	T.add_filter("psilo_color", 0, list(type="color", list(0,0,1,0, 0,1,0,0, 1,0,0,0, 0,0,0,1, 0,0,0,0)))
+	T.add_filter("psilo_bloom", 0, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
+
+	overlay_fullscreen("psilocybin", /atom/movable/screen/fullscreen/lsd_warp)
+
+/mob/living/proc/remove_psilo_effects()
+	var/atom/movable/renderer/game/G = renderers[GAME_RENDERER]
+	G.remove_filter("psilo_color")
+	G.remove_filter("psilo_bloom")
+
+	var/atom/movable/renderer/turf/T = renderers[TURF_RENDERER]
+	T.remove_filter("psilo_color")
+	T.remove_filter("psilo_bloom")
+
+	clear_fullscreen("psilocybin")
 
 /mob/living/proc/handle_slurring()
 	if(slurring)

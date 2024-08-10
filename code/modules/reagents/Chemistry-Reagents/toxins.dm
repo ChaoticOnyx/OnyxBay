@@ -417,6 +417,9 @@
 	metabolism = REM * 0.5
 	overdose = REAGENTS_OVERDOSE
 
+/datum/reagent/space_drugs/add_user_effects(mob/living/carbon/M)
+	M.apply_spessdrugs_effects()
+
 /datum/reagent/space_drugs/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
@@ -425,7 +428,7 @@
 	if(alien == IS_SKRELL)
 		effect_mult *= 0.8
 
-	M.druggy = max(M.druggy, 15 * effect_mult)
+	M.make_drugged(15 * effect_mult)
 	if(prob(10))
 		M.SelfMove(pick(GLOB.cardinal))
 	if(prob(7))
@@ -495,6 +498,9 @@
 	metabolism = REM * 0.25
 	overdose = REAGENTS_OVERDOSE
 
+/datum/reagent/mindbreaker/add_user_effects(mob/living/carbon/M)
+	M.apply_mindbreaker_effects()
+
 /datum/reagent/mindbreaker/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
@@ -514,6 +520,9 @@
 	metabolism = REM * 0.5
 	digest_absorbability = 0.75
 
+/datum/reagent/psilocybin/add_user_effects(mob/living/carbon/M)
+	M.apply_psilo_effects()
+
 /datum/reagent/psilocybin/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	if(alien == IS_DIONA)
 		return
@@ -526,14 +535,14 @@
 	if(affecting_dose < 1 * threshold)
 		M.apply_effect(3, STUTTER)
 		M.make_dizzy(5 * effect_mult)
-		M.druggy = max(M.druggy, 30 * effect_mult)
+		M.make_drugged(30 * effect_mult)
 		if(prob(5))
 			M.emote(pick("twitch", "giggle"))
 	else if(affecting_dose < 2 * threshold)
 		M.apply_effect(3, STUTTER)
 		M.make_jittery(5 * effect_mult)
 		M.make_dizzy(5 * effect_mult)
-		M.druggy = max(M.druggy, 35 * effect_mult)
+		M.make_drugged(35 * effect_mult)
 		if(prob(10))
 			M.emote(pick("twitch", "giggle"))
 	else
@@ -541,7 +550,7 @@
 		M.apply_effect(3, STUTTER)
 		M.make_jittery(10 * effect_mult)
 		M.make_dizzy(10 * effect_mult)
-		M.druggy = max(M.druggy, 40 * effect_mult)
+		M.make_drugged(40 * effect_mult)
 		if(prob(15))
 			M.emote(pick("twitch", "giggle"))
 
