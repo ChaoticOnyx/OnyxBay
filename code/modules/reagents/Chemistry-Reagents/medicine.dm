@@ -500,6 +500,9 @@
 	var/tolerance_threshold = 15.0 // Having more than this value in chem_traces will cause pain
 	var/tolerance_mult = 2.0 // Amount of pain for each ml over tolerance_threshold
 
+/datum/reagent/hyperzine/add_user_effects(mob/living/carbon/M)
+	M.apply_hyperzine_effects()
+
 /datum/reagent/hyperzine/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	if(alien == IS_DIONA)
 		return
@@ -922,7 +925,7 @@
 /datum/reagent/antidexafen/overdose(mob/living/carbon/M, alien)
 	M.add_chemical_effect(CE_TOXIN, 5)
 	M.hallucination(60, 20)
-	M.druggy = max(M.druggy, 2)
+	M.make_drugged(2)
 
 /datum/reagent/adrenaline
 	name = "Adrenaline"
@@ -1032,7 +1035,7 @@
 		M.add_chemical_effect(CE_PAINKILLER, 75)
 		M.drowsyness = max(M.drowsyness, 10)
 		if(prob(30))
-			M.druggy = max(M.druggy, 6)
+			M.make_drugged(6)
 		if(prob(5))
 			M.emote(pick("cough", "giggle", "laugh"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
@@ -1050,9 +1053,9 @@
 		M.remove_nutrition(max(0, M.nutrition - 20 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 50)
 		if(prob(15))
-			M.druggy = max(M.druggy, 2)
+			M.make_drugged(2)
 		if(prob(5))
-			M.druggy = max(M.druggy, 4)
+			M.make_drugged(4)
 			M.emote(pick("cough", "giggle"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 			data = world.time
@@ -1069,9 +1072,9 @@
 		M.remove_nutrition(max(0, M.nutrition - 10 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 25)
 		if(prob(10))
-			M.druggy = max(M.druggy, 2)
+			M.make_drugged(2)
 		if(prob(4))
-			M.druggy = max(M.druggy, 3)
+			M.make_drugged(3)
 			M.emote(pick("cough"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 			data = world.time
@@ -1088,7 +1091,7 @@
 		M.remove_nutrition(max(0, M.nutrition - 3 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 5)
 		if(prob(3))
-			M.druggy = max(M.druggy, 2)
+			M.make_drugged(2)
 			M.emote(pick("cough"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 			data = world.time

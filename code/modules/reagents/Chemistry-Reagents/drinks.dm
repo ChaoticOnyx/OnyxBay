@@ -716,7 +716,7 @@
 /datum/reagent/drink/nuka_cola/affect_digest(mob/living/carbon/M, alien, removed)
 	..()
 	M.make_jittery(20)
-	M.druggy = max(M.druggy, 30)
+	M.make_drugged(30)
 	M.dizziness += 5
 	M.drowsyness = 0
 

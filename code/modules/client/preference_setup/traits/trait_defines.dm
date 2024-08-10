@@ -146,6 +146,31 @@
 	desc = "Small spaces and tight quarters makes you feel distressed.  Unfortunately both are rather common when living in space."
 	modifier_type = /datum/modifier/trait/phobia/claustrophobe
 
+/datum/trait/modifier/mental/opiat_addiction
+	name = "Opiat addiction"
+	desc = "You are addicted to opiates."
+	modifier_type = /datum/modifier/trait/opiat_addiction
+
+/datum/trait/modifier/mental/alcohol_addiction
+	name = "Alcohol addiction"
+	desc = "You are addicted to alcohol."
+	modifier_type = /datum/modifier/trait/alcohol_addiction
+
+/datum/trait/modifier/mental/coffee_addiction
+	name = "Coffee addiction"
+	desc = "You are addicted to coffee."
+	//modifier_type = /datum/modifier/trait/coffee_addiction
+
+/datum/trait/modifier/mental/trick_addiction
+	name = "Tricordrazine addiction"
+	desc = "You are addicted to tricordrazine."
+	//modifier_type = /datum/modifier/trait/coffee_addiction
+
+/datum/trait/modifier/mental/smoker
+	name = "Smoker"
+	desc = "You like to smoke."
+	modifier_type = /datum/modifier/trait/smoker
+
 /*
 
 /datum/trait/modifier/physical/cloned

@@ -80,6 +80,7 @@
 	//No need to update all of these procs if the guy is dead.
 	if(!is_ooc_dead() && !InStasis())
 		//Organs and blood
+		handle_addictions()
 		handle_organs()
 		handle_organs_pain()
 		stabilize_body_temperature() //Body temperature adjusts itself (self-regulation)
