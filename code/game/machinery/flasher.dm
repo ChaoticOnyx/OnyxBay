@@ -129,12 +129,12 @@
 		if (!anchored)
 			user.show_message(text("<span class='warning'>[src] can now be moved.</span>"))
 			ClearOverlays()
-			proximity_monitor.SetRange(0)
+			proximity_monitor.set_range(0, TRUE)
 
 		else if (src.anchored)
 			user.show_message(text("<span class='warning'>[src] is now secured.</span>"))
 			AddOverlays("[base_state]-s")
-			proximity_monitor.SetRange(range)
+			proximity_monitor.set_range(range, TRUE)
 
 /obj/machinery/button/flasher
 	name = "flasher button"
