@@ -38,7 +38,7 @@
 
 	is_poi = TRUE
 
-/obj/singularity/New(loc, starting_energy = 50, temp = 0)
+/obj/singularity/New(loc, starting_energy = 50, temp = 0, create_childs)
 	//CARN: admin-alert for chuckle-fuckery.
 	admin_investigate_setup()
 	energy = starting_energy
@@ -54,6 +54,7 @@
 			target = singubeacon
 			break
 
+	src.create_childs = create_childs
 	if(create_childs)
 		create_childs()
 
