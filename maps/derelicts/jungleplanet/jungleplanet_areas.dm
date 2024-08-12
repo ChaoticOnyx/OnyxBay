@@ -3,6 +3,7 @@
 	icon = 'icons/turf/jungleplanet_areas.dmi'
 	icon_state = "jungle"
 	base_turf = /turf/simulated/floor/natural/jungle/dirt
+	area_flags = AREA_FLAG_EXTERNAL | AREA_FLAG_UNIQUE_AREA
 
 /area/jungleplanet/jungle
 	name = "Jungle"
