@@ -35,6 +35,11 @@
 
 /datum/vampire/New(mob/_M)
 	..()
+	if(!istype(_M))
+		util_crash_with("Vampire datum was initialised without `var/my_mob`. Shit is fucked.")
+		qdel_self()
+		return
+
 	my_mob = _M
 	set_next_think(world.time + 1 SECOND)
 
@@ -104,6 +109,10 @@
 
 /datum/vampire/proc/set_up_organs()
 	if(vamp_status & VAMP_ISTHRALL)
+		return
+
+	if(!istype(my_mob))
+		util_crash_with("Vampire datum was initialised without `var/my_mob`. Shit is fucked.")
 		return
 
 	blood_usable = 30

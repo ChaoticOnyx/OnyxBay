@@ -22,13 +22,20 @@
 	if(!istype(T) || T.isSynthetic())
 		to_chat(my_mob, SPAN("warning", "[T] is not a creature you can enthrall."))
 		return
+
 	if(!vampire.can_affect(T, TRUE, TRUE))
 		return
-	if (!T.client || !T.mind)
+
+	if(!T.client || !T.mind)
 		to_chat(my_mob, SPAN("warning", "[T]'s mind is empty and useless. They cannot be forced into a blood bond."))
 		return
+
 	if(vampire.vamp_status & VAMP_DRAINING)
 		to_chat(my_mob, SPAN("warning", "Your fangs are already sunk into a victim's neck!"))
+		return
+
+	if(jobban_isbanned(T, MODE_THRALL))
+		to_chat(my_mob, SPAN_WARNING("[T]'s mind is tainted. They cannot be forced into a blood bond."))
 		return
 
 	my_mob.visible_message(SPAN("danger", "[my_mob] tears the flesh on their wrist, and holds it up to [T]. In a gruesome display, [T] starts lapping up the blood that's oozing from the fresh wound."),\
@@ -38,6 +45,17 @@
 	if(!do_mob(my_mob, T, 50))
 		my_mob.visible_message(SPAN("warning", "[my_mob] yanks away their hand from [T]'s mouth as they're interrupted, the wound quickly sealing itself!"),\
 							   SPAN("danger", "You are interrupted!"))
+		return
+
+	if(!istype(T) || T.isSynthetic())
+		to_chat(my_mob, SPAN("warning", "[T] is not a creature you can enthrall."))
+		return
+
+	if(!vampire.can_affect(T, TRUE, TRUE))
+		return
+
+	if(!T.client || !T.mind)
+		to_chat(my_mob, SPAN("warning", "[T]'s mind is empty and useless. They cannot be forced into a blood bond."))
 		return
 
 	to_chat(T, SPAN("danger", "Your mind blanks as you finish feeding from [my_mob]'s wrist."))

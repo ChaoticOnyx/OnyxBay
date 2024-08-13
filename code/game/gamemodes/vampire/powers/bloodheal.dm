@@ -62,7 +62,7 @@
 
 		for(var/obj/item/organ/external/current_organ in organs)
 			for(var/datum/wound/wound in current_organ.wounds)
-				wound.embedded_objects.Cut()
+				LAZYCLEARLIST(wound.embedded_objects)
 
 			// remove embedded objects and drop them on the floor
 			for(var/obj/implanted_object in current_organ.implants)
