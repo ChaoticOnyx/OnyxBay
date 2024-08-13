@@ -45,6 +45,11 @@
 	path = /obj/item/clothing/mask/gas/clear
 	price = 15
 
+/datum/gear/mask/gas/tactical
+	display_name = "tactical gas mask"
+	path = /obj/item/clothing/mask/gas/syndicate/cheap
+	price = 15
+
 /datum/gear/utility/music_tape_custom
 	display_name = "music tape (custom)"
 	description = {"

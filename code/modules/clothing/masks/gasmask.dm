@@ -124,6 +124,9 @@
 	siemens_coefficient = 0.5
 	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75)
 
+/obj/item/clothing/mask/gas/syndicate/cheap
+	armor = list(melee = 5, bullet = 2.5, laser = 5, energy = 0, bomb = 0, bio = 75)
+
 /obj/item/clothing/mask/gas/clown_hat
 	name = "clown wig and mask"
 	desc = "A true prankster's facial attire. A clown is incomplete without their wig and mask."
