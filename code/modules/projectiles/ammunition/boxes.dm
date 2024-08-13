@@ -36,6 +36,11 @@
 	icon_state = "R38"
 	ammo_type = /obj/item/ammo_casing/c38/rubber
 
+/obj/item/ammo_magazine/c38/emp
+	name = "speed loader (.38 EMP)"
+	icon_state = "E38"
+	ammo_type = /obj/item/ammo_casing/c38/emp
+
 /obj/item/ammo_magazine/c38/spec
 	name = "speed loader (.38 SPEC)"
 	desc = "A five-round speed loader for M2019."
