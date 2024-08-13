@@ -37,6 +37,9 @@
 
 	client?.spellcheck(message)
 
+	if(usr.ckey in config.indigo_bot.ignored_ckeys)
+		return
+
 	var/ckeyname = "[usr.ckey]/[usr.name]"
 	GLOB.indigo_bot.chat_webhook(config.indigo_bot.emote_webhook, "**[ckeyname]:** [message]")
 

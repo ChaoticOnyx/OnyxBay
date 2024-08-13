@@ -509,6 +509,8 @@
 
 	if(client.holder && (client.holder.rights & R_ADMIN))
 		is_admin = 1
+	else
+		return
 
 	if(is_admin && is_ooc_dead())
 		is_admin = 0

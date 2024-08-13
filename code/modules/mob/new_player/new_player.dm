@@ -58,7 +58,8 @@
 		output += "<a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A><br><br>"
 		output += "<p><a href='byond://?src=\ref[src];late_join=1'>Join Game!</A></p>"
 
-	output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
+	if(client.holder && (client.holder.rights & R_ADMIN))
+		output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
 
 	output += "</div>"
 
@@ -134,6 +135,9 @@
 	if(href_list["observe"])
 		if(GAME_STATE < RUNLEVEL_LOBBY)
 			to_chat(src, "<span class='warning'>Please wait for server initialization to complete...</span>")
+			return
+
+		if(client.holder && (client.holder.rights & R_ADMIN))
 			return
 
 		if (!SSeams.CheckForAccess(client))
