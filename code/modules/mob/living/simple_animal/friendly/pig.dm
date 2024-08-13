@@ -68,14 +68,14 @@
 		turns_since_scan--
 
 	if(QDELETED(pig_ai.movement_target) || !isturf(pig_ai.movement_target.loc))
-		pig_ai.movement_target = null
+		pig_ai.reset_target()
 
 	turns_since_scan++
 	if(turns_since_scan > 5)
 		turns_since_scan = 0
 
 		if(!pig_ai.movement_target || !(pig_ai.movement_target.loc in oview(src, 3)))
-			pig_ai.movement_target = null
+			pig_ai.reset_target()
 
 			for(var/obj/item/reagent_containers/food/S in oview(src, 4))
 				if(!isturf(S.loc))
@@ -83,7 +83,7 @@
 				if(Adjacent(S))
 					consume_food(S)
 				else
-					pig_ai.movement_target = S
+					pig_ai.set_target(S)
 				break
 
 /mob/living/simple_animal/pig/mini
@@ -139,6 +139,8 @@
 // Yes, pigs DO have an advanced AI, unlike most mobs. That's exactly what we deserve.
 /datum/mob_ai/pig
 	var/atom/movable/movement_target
+	var/target_failcount = 3 // How many turns we can waste before we stop giving a flying fuk about the target
+	var/_target_failcount = 3
 
 /datum/mob_ai/pig/process_moving()
 	//Movement
@@ -162,6 +164,7 @@
 		..()
 		return
 
+	var/old_pos = holder.loc
 	var/d = get_dir(holder, movement_target)
 	if(d & (d - 1))
 		var/ax = abs(movement_target.x - holder.x)
@@ -169,3 +172,18 @@
 		d &= (rand(1, ax + ay) <= ax) ? 12 : 3
 
 	holder.SelfMove(d)
+	if(holder.loc == old_pos)
+		_target_failcount --
+		if(_target_failcount == 0)
+			reset_target()
+			..() // Pretend that we don't even care
+
+/datum/mob_ai/pig/proc/set_target(atom/movable/AM)
+	if(QDELETED(AM))
+		return
+	movement_target = AM
+	_target_failcount = target_failcount
+
+/datum/mob_ai/pig/proc/reset_target()
+	movement_target = null
+	_target_failcount = target_failcount
