@@ -82,6 +82,8 @@
 	. = ..()
 	if(is_pet)
 		mob_ai = new /datum/mob_ai/pet()
+	else if(ispath(mob_ai))
+		mob_ai = new mob_ai()
 	else
 		mob_ai = new()
 	mob_ai.holder = src

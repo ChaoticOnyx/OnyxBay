@@ -2331,6 +2331,7 @@
 #include "code\modules\mob\living\simple_animal\friendly\parrot.dm"
 #include "code\modules\mob\living\simple_animal\friendly\pets.dm"
 #include "code\modules\mob\living\simple_animal\friendly\pets_ai.dm"
+#include "code\modules\mob\living\simple_animal\friendly\pig.dm"
 #include "code\modules\mob\living\simple_animal\friendly\spiderbot.dm"
 #include "code\modules\mob\living\simple_animal\friendly\thatdog.dm"
 #include "code\modules\mob\living\simple_animal\hostile\alien.dm"
