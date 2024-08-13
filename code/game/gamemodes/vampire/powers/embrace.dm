@@ -111,7 +111,9 @@
 	T.Weaken(15)
 	T.Stun(15)
 	var/datum/antagonist/vampire/VAMP = GLOB.all_antag_types_[MODE_VAMPIRE]
-	VAMP.add_antagonist(T.mind, 1, 1, 0, 0, 1)
+	if(!VAMP.add_antagonist(T.mind, 1, 1, 0, 0, 1))
+		to_chat(my_mob, SPAN("warning", "[T] is not a creature you can embrace."))
+		return
 
 	admin_attack_log(my_mob, T, "successfully embraced [key_name(T)]", "was successfully embraced by [key_name(my_mob)]", "successfully embraced and turned into a vampire")
 

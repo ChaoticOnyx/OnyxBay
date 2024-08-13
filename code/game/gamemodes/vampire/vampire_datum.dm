@@ -124,6 +124,9 @@
 	my_mob.add_modifier(/datum/modifier/trait/low_metabolism)
 	my_mob.innate_heal = 0
 
+	for(var/obj/item/organ/external/E in my_mob.organs)
+		E.limb_flags &= ~ORGAN_FLAG_CAN_BREAK
+
 	for(var/datum/modifier/mod in my_mob.modifiers)
 		if(!isnull(mod.metabolism_percent))
 			mod.metabolism_percent = 0 // Vampire is not affected by chemicals
@@ -143,6 +146,9 @@
 	my_mob.status_flags &= ~UNDEAD
 	my_mob.remove_modifiers_of_type(/datum/modifier/trait/low_metabolism, TRUE)
 	my_mob.innate_heal = 1
+
+	for(var/obj/item/organ/external/E in my_mob.organs)
+		E.limb_flags |= ORGAN_FLAG_CAN_BREAK
 
 	var/obj/item/organ/internal/heart/O = my_mob.internal_organs_by_name[BP_HEART]
 	if(O)
