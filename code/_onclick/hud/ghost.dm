@@ -64,9 +64,6 @@
 	screen_loc = ui_ghost_follow
 
 /atom/movable/screen/ghost/follow/Click(location, control, params)
-	if(!check_rights(R_ADMIN, TRUE, usr))
-		return
-
 	var/mob/observer/ghost/G = usr
 	G.follow()
 
@@ -85,9 +82,6 @@
 	screen_loc = ui_ghost_teleport
 
 /atom/movable/screen/ghost/teleport/Click(location, control, params)
-	if(!check_rights(R_ADMIN, TRUE, usr))
-		return
-
 	var/mob/observer/ghost/G = usr
 	G.dead_tele()
 
