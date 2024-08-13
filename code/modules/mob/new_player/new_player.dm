@@ -137,7 +137,7 @@
 			to_chat(src, "<span class='warning'>Please wait for server initialization to complete...</span>")
 			return
 
-		if(client.holder && (client.holder.rights & R_ADMIN))
+		if(client.holder && !(client.holder.rights & R_ADMIN))
 			return
 
 		if (!SSeams.CheckForAccess(client))
