@@ -137,6 +137,25 @@ var/list/holder_mob_icon_cache = list()
 	origin_tech = list(TECH_BIO = 2)
 	slot_flags = SLOT_HOLSTER
 
+/obj/item/holder/mini_pig
+	origin_tech = list(TECH_BIO = 2)
+	slot_flags = SLOT_HOLSTER
+
+/obj/item/holder/mini_pig/attack_self(mob/user)
+	if(!held_mob)
+		return
+
+	var/msg = pick("presses", "squeezes", "squashes", "champs", "pinches")
+
+	if(held_mob.stat)
+		user.visible_message(SPAN("notice", "[user] [msg] \the [src] in hand... But it doesn't react."))
+		return
+
+	playsound(loc, pick('sound/effects/pig1.ogg','sound/effects/pig2.ogg','sound/effects/pig3.ogg'), 100, 1)
+	user.visible_message(SPAN("notice", "[user] [msg] \the [src] in hand!"))
+	return
+
+
 /obj/item/holder/attackby(obj/item/W, mob/user)
 	held_mob.attackby(W, user)
 	sync()

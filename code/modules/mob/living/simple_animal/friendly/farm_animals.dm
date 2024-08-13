@@ -19,7 +19,8 @@
 	response_harm   = "kicks"
 	faction = "goat"
 	attacktext = "kicked"
-	health = 40
+	maxHealth = 50
+	health = 50
 	melee_damage_lower = 1
 	melee_damage_upper = 5
 	bodyparts = /decl/simple_animal_bodyparts/quadruped
@@ -135,7 +136,8 @@
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
 	attacktext = "kicked"
-	health = 50
+	maxHealth = 75
+	health = 75
 	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 	var/milktype = /datum/reagent/drink/milk
@@ -186,38 +188,8 @@
 	icon_living = "cowcownut"
 	icon_dead = "cowcownut_dead"
 	emote_see = list("shakes its nuts")
+	maxHealth = 100
 	health = 100
 	faction = "floral"
 
 	milktype = /datum/reagent/drink/juice/coconut
-
-/mob/living/simple_animal/pig
-	name = "pig"
-	desc = "This sausage is still kicking."
-	icon_state = "pig"
-	icon_living = "pig"
-	icon_dead = "pig_dead"
-	speak = list("oink?", "oink", "OINK")
-	speak_emote = list("oinks", "honks")
-	emote_hear = list("oinks")
-	emote_see = list("shakes its head", "is loafing around")
-	speak_chance = 1
-	turns_per_move = 5
-	see_in_dark = 6
-	meat_type = /obj/item/reagent_containers/food/meat/pork
-	meat_amount = 5
-	response_help  = "pets"
-	response_disarm = "gently pushes aside"
-	response_harm   = "kicks"
-	attacktext = "headbutted"
-	health = 50
-	bodyparts = /decl/simple_animal_bodyparts/quadruped
-
-/mob/living/simple_animal/pig/attack_hand(mob/living/carbon/M)
-	if(!stat && M.a_intent == I_DISARM)
-		M.visible_message(SPAN("warning", "[M] pulls [src]'s tail!"), SPAN("notice", "You pull [src]'s tail."))
-		if(prob(33))
-			visible_message("<b>[src]</b> oinks hysterically!")
-			playsound(loc, pick('sound/effects/pig1.ogg','sound/effects/pig2.ogg','sound/effects/pig3.ogg'), 100, 1)
-	else
-		..()
