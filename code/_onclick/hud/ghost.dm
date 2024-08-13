@@ -9,20 +9,22 @@
 	using = new /atom/movable/screen/ghost/spawners_menu()
 	static_inventory += using
 
-	using = new /atom/movable/screen/ghost/follow()
-	static_inventory += using
-
 	using = new /atom/movable/screen/ghost/reenter_corpse()
 	static_inventory += using
 
-	using = new /atom/movable/screen/ghost/teleport()
-	static_inventory += using
 
 	using = new /atom/movable/screen/ghost/move_up()
 	static_inventory += using
 
 	using = new /atom/movable/screen/ghost/move_down()
 	static_inventory += using
+
+	if(check_rights(R_ADMIN, TRUE, mymob))
+		using = new /atom/movable/screen/ghost/follow()
+		static_inventory += using
+
+		using = new /atom/movable/screen/ghost/teleport()
+		static_inventory += using
 
 /datum/hud/ghost/show_hud(hud_style = 0)
 	. = ..()
@@ -63,6 +65,9 @@
 	screen_loc = ui_ghost_follow
 
 /atom/movable/screen/ghost/follow/Click(location, control, params)
+	if(!check_rights(R_ADMIN, TRUE, usr))
+		return
+
 	var/mob/observer/ghost/G = usr
 	G.follow()
 
@@ -81,6 +86,9 @@
 	screen_loc = ui_ghost_teleport
 
 /atom/movable/screen/ghost/teleport/Click(location, control, params)
+	if(!check_rights(R_ADMIN, TRUE, usr))
+		return
+
 	var/mob/observer/ghost/G = usr
 	G.dead_tele()
 
