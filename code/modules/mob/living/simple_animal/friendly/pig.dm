@@ -122,7 +122,7 @@
 		return
 
 	if(prob(growth_chance))
-		new /mob/living/simple_animal/pig/dzherelo(loc)
+		new /mob/living/simple_animal/pig/dzherelo(get_turf(src))
 		qdel(src)
 
 /mob/living/simple_animal/pig/dzherelo
