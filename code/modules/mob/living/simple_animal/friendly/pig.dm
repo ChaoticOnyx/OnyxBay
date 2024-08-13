@@ -27,9 +27,16 @@
 /mob/living/simple_animal/pig/attack_hand(mob/living/carbon/M)
 	if(!stat && M.a_intent == I_DISARM)
 		M.visible_message(SPAN("warning", "[M] pulls [src]'s tail!"), SPAN("notice", "You pull [src]'s tail."))
-		if(prob(33))
+		if(prob(50))
 			visible_message("<b>[src]</b> oinks hysterically!")
 			playsound(loc, pick('sound/effects/pig1.ogg','sound/effects/pig2.ogg','sound/effects/pig3.ogg'), 100, 1)
+	else
+		..()
+
+/mob/living/simple_animal/pig/attackby(obj/item/O, mob/user)
+	if(istype(O, /obj/item/reagent_containers/food))
+		visible_message("<b>[user]</b> feeds [src] with \the [O]!")
+		consume_food(O, TRUE)
 	else
 		..()
 
@@ -37,7 +44,7 @@
 	if(stat)
 		return FALSE
 
-	if(!Adjacent(F))
+	if(!Adjacent(F) && !ismob(F.loc))
 		return FALSE
 
 	qdel(F)
@@ -70,7 +77,7 @@
 		if(!pig_ai.movement_target || !(pig_ai.movement_target.loc in oview(src, 3)))
 			pig_ai.movement_target = null
 
-			for(var/obj/item/reagent_containers/food/S in oview(src, 3))
+			for(var/obj/item/reagent_containers/food/S in oview(src, 4))
 				if(!isturf(S.loc))
 					continue
 				if(Adjacent(S))
@@ -107,7 +114,7 @@
 	. = ..()
 	if(!.)
 		return
-	growth_chance += 0.1
+	growth_chance += 0.15
 
 /mob/living/simple_animal/pig/mini/mykola/Life()
 	. = ..()
@@ -125,6 +132,8 @@
 	icon_living = "pig_maxi"
 	icon_dead = "pig_maxi_dead"
 	meat_amount = 10
+	maxHealth = 100
+	health = 100
 
 
 // Yes, pigs DO have an advanced AI, unlike most mobs. That's exactly what we deserve.
