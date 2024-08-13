@@ -59,7 +59,9 @@
 		return
 
 	to_chat(T, SPAN("danger", "Your mind blanks as you finish feeding from [my_mob]'s wrist."))
-	GLOB.thralls.add_antagonist(T.mind, 1, 1, 0, 1, 1)
+	if(!GLOB.thralls.add_antagonist(T.mind, 1, 1, 0, 1, 1))
+		to_chat(my_mob, SPAN("warning", "[T] is not a creature you can enthrall."))
+		return
 
 	T.mind.vampire.master = weakref(my_mob)
 	vampire.thralls += T

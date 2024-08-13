@@ -378,6 +378,9 @@
 		owner.organs_by_name[organ_tag] = src
 		owner.organs |= src
 
+		if(owner.mind?.vampire)
+			limb_flags &= ~ORGAN_FLAG_CAN_BREAK
+
 		for(var/obj/item/organ/organ in internal_organs)
 			organ.replaced(owner, src)
 

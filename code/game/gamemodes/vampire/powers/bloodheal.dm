@@ -58,6 +58,14 @@
 			blood_used += 12
 			use_blood(12)
 
+		for(var/obj/item/organ/internal/I in my_mob.internal_organs)
+			if(!I.is_damaged())
+				continue
+
+			I.heal_damage(I.damage)
+			blood_used += 5
+			use_blood(5)
+
 		CHECK_HEAL_BREAK(12)
 
 		for(var/obj/item/organ/external/current_organ in organs)
