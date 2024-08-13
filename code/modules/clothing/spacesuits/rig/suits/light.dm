@@ -72,6 +72,12 @@
 /obj/item/clothing/gloves/lightrig/hacker
 	siemens_coefficient = 0
 
+/obj/item/rig/light/hacker/empty
+	initial_modules = list(
+		/obj/item/rig_module/ai_container,
+		/obj/item/rig_module/cooling_unit,
+		)
+
 /obj/item/rig/light/ninja
 	name = "ominous suit control module"
 	desc = "A unique, vaccum-proof suit of nano-enhanced armor designed specifically for assassins."

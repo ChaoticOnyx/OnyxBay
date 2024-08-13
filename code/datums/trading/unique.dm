@@ -33,7 +33,8 @@
 							/obj/item/gun/projectile/lawgiver 									= TRADER_THIS_TYPE,
 							/obj/item/gun/projectile/heavysniper 								= TRADER_THIS_TYPE,
 							/obj/item/gun/energy/pulse_rifle 									= TRADER_THIS_TYPE,
-							/obj/item/gun/launcher/rocket 										= TRADER_THIS_TYPE
+							/obj/item/gun/launcher/rocket 										= TRADER_THIS_TYPE,
+							/obj/item/rig/ert/assetprotection 									= TRADER_THIS_TYPE
 							)
 
 	blacklisted_trade_items = null
@@ -69,7 +70,9 @@
 
 	possible_wanted_items  = list(/obj/item/ore 						= TRADER_ALL)
 	possible_trading_items = list(/obj/machinery/power/supermatter 		= TRADER_ALL,
-								/obj/item/aiModule 						= TRADER_SUBTYPES_ONLY)
+								/obj/item/aiModule 						= TRADER_SUBTYPES_ONLY,
+								/obj/item/stock_parts 					= TRADER_SUBTYPES_ONLY,
+								/obj/item/stock_parts/subspace 			= TRADER_BLACKLIST)
 
 	speech = list(
 		TRADER_HAIL_GENERIC       = "Blub am MERCHANT. Blub hunger for things. Boo bring them to blub, yes?",
