@@ -726,9 +726,9 @@
 
 /client/proc/load_luck()
 	var/json_file = file("data/players/[ckey]/luck.json")
-	var/list/luck = json_decode(file2text(json_file))
 	if(!fexists(json_file))
 		return
+	var/list/luck = json_decode(file2text(json_file))
 
 	for(var/lucktype in luck)
 		var/level = luck[lucktype]["level"]
