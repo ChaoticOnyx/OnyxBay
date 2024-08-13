@@ -19,7 +19,8 @@
 	response_harm   = "kicks"
 	faction = "goat"
 	attacktext = "kicked"
-	health = 40
+	maxHealth = 50
+	health = 50
 	melee_damage_lower = 1
 	melee_damage_upper = 5
 	bodyparts = /decl/simple_animal_bodyparts/quadruped
@@ -135,7 +136,8 @@
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
 	attacktext = "kicked"
-	health = 50
+	maxHealth = 75
+	health = 75
 	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 	var/milktype = /datum/reagent/drink/milk
@@ -186,6 +188,7 @@
 	icon_living = "cowcownut"
 	icon_dead = "cowcownut_dead"
 	emote_see = list("shakes its nuts")
+	maxHealth = 100
 	health = 100
 	faction = "floral"
 
@@ -210,8 +213,10 @@
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
 	attacktext = "headbutted"
-	health = 50
+	maxHealth = 75
+	health = 75
 	bodyparts = /decl/simple_animal_bodyparts/quadruped
+	var/obj/movement_target
 
 /mob/living/simple_animal/pig/attack_hand(mob/living/carbon/M)
 	if(!stat && M.a_intent == I_DISARM)
@@ -221,3 +226,48 @@
 			playsound(loc, pick('sound/effects/pig1.ogg','sound/effects/pig2.ogg','sound/effects/pig3.ogg'), 100, 1)
 	else
 		..()
+
+mob/living/simple_animal/corgi/Life()
+	..()
+
+	// Feeding, chasing food, FOOOOODDDD
+	if(stat || resting || buckled)
+		return
+
+	turns_since_scan++
+	if(turns_since_scan > 5)
+		turns_since_scan = 0
+		if((movement_target) && !(isturf(movement_target.loc) || ishuman(movement_target.loc) ))
+			movement_target = null
+			stop_automated_movement = FALSE
+		if( !movement_target || !(movement_target.loc in oview(src, 3)) )
+			movement_target = null
+			stop_automated_movement = FALSE
+			for(var/obj/item/reagent_containers/food/S in oview(src,3))
+				if(isturf(S.loc) || ishuman(S.loc))
+					movement_target = S
+					break
+
+/mob/living/simple_animal/pig/mini
+	name = "mini pig"
+	desc = "This cocktail sausage is still kicking."
+	icon_state = "pig_mini"
+	icon_living = "pig_mini"
+	icon_dead = "pig_mini_dead"
+	density = FALSE
+	mob_size = MOB_SMALL
+	pass_flags = PASS_FLAG_TABLE
+	maxHealth = 25 // Smol HP for smol piggies
+	health = 25
+	response_harm   = "stomps on"
+	meat_amount = 2
+
+	can_pull_size = ITEM_SIZE_NORMAL
+	can_pull_mobs = MOB_PULL_SAME
+
+	holder_type = /obj/item/holder/mini_pig
+
+/mob/living/simple_animal/pig/mini/mykola
+	name = "Mykola"
+	desc = "Cargo pig, cargo pig, does whatever a cargo pig does. Probably."
+
