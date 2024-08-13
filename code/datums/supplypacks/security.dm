@@ -189,7 +189,7 @@
 	security_level = SUPPLY_SECURITY_ELEVATED
 
 /decl/hierarchy/supply_pack/security/accelerator
-	name = "Accelerator weapons crate"
+	name = "Weapons - Accelerator crate"
 	contains = list(/obj/item/gun/energy/accelerator = 2,
 					/obj/item/gun/energy/accelerator/pistol = 2)
 	cost = 60
