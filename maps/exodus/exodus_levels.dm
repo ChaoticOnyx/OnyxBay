@@ -5,6 +5,8 @@
 		ZTRAIT_CONTACT
 	)
 	travel_chance = 5
+	exterior_atmos_temp = - 20 CELSIUS
+	exterior_atmosphere = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 
 /datum/space_level/exodus_2
 	path = 'exodus-2.dmm'
@@ -13,6 +15,8 @@
 		ZTRAIT_CONTACT
 	)
 	travel_chance = 5
+	exterior_atmos_temp = - 20 CELSIUS
+	exterior_atmosphere = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 
 /datum/space_level/exodus_3
 	path = 'maps/templates/empty_255.dmm'
@@ -24,6 +28,8 @@
 	var/list/possible_planet_types = list(
 		/datum/map_generator/planet_generator/asteroid = 1,
 	)
+	exterior_atmos_temp = - 20 CELSIUS
+	exterior_atmosphere = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 
 /datum/space_level/exodus_3/generate(z)
 	var/planet_type = util_pick_weight(possible_planet_types)

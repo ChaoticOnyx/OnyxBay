@@ -557,6 +557,16 @@
 	icon_state = "flag_rainbow"
 	desc = "This piece of cloth will get you jailed in Nova Magnitka, love it or hate it."
 
+/obj/structure/sign/flag/solgovleft
+	name = "SolGov Flag"
+	icon_state = "flag_soll"
+	desc = "Flag of Solar System Government. You should probably solute it, or whatever."
+
+/obj/structure/sign/flag/solgovright
+	name =  "SolGov Flag"
+	icon_state = "flag_solr"
+	desc = "Flag of Solar System Government. You should probably solute it, or whatever."
+
 /obj/structure/sign/flag/coder
 	name = "\improper GitTrasen Contributor flag"
 	icon_state = "flag_coder"
