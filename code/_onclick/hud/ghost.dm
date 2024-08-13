@@ -19,12 +19,11 @@
 	using = new /atom/movable/screen/ghost/move_down()
 	static_inventory += using
 
-	if(check_rights(R_ADMIN, TRUE, mymob))
-		using = new /atom/movable/screen/ghost/follow()
-		static_inventory += using
+	using = new /atom/movable/screen/ghost/follow()
+	static_inventory += using
 
-		using = new /atom/movable/screen/ghost/teleport()
-		static_inventory += using
+	using = new /atom/movable/screen/ghost/teleport()
+	static_inventory += using
 
 /datum/hud/ghost/show_hud(hud_style = 0)
 	. = ..()
