@@ -116,7 +116,7 @@
 
 /decl/hierarchy/supply_pack/security/rig
 	name = "Armor - Security RIG"
-	contains = list(/obj/item/rig/security)
+	contains = list(/obj/item/rig/security/equipped)
 	cost = 480
 	containername = "\improper Security RIG crate"
 	containertype = /obj/structure/closet/crate/secure
@@ -186,6 +186,16 @@
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Ballistic sidearms crate"
 	access = access_armory
+	security_level = SUPPLY_SECURITY_ELEVATED
+
+/decl/hierarchy/supply_pack/security/accelerator
+	name = "Weapons - Accelerator crate"
+	contains = list(/obj/item/gun/energy/accelerator = 2,
+					/obj/item/gun/energy/accelerator/pistol = 2)
+	cost = 60
+	containertype = /obj/structure/closet/crate/secure
+	containername = "\improper Accelerator weapons crate"
+	access = access_security
 	security_level = SUPPLY_SECURITY_ELEVATED
 
 /decl/hierarchy/supply_pack/security/shotgun

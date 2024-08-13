@@ -49,7 +49,7 @@
 
 /decl/hierarchy/supply_pack/science/amirig
 	name = "AMI RIG crate"
-	contains = list(/obj/item/rig/hazmat)
+	contains = list(/obj/item/rig/hazmat/equipped)
 	cost = 480
 	containertype = /obj/structure/closet/crate/secure/science
 	containername = "\improper AMI RIG crate"
