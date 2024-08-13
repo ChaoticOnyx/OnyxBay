@@ -56,6 +56,12 @@
 	cost = 15
 	containername = "\improper Tinted glass sheets crate"
 
+/decl/hierarchy/supply_pack/materials/plass50
+	name = "50 plass sheets"
+	contains = list(/obj/item/stack/material/glass/plass/fifty)
+	cost = 80
+	containername = "\improper Plass sheets crate"
+
 // Material sheets (10 - Smaller amounts, less cost efficient)
 /decl/hierarchy/supply_pack/materials/marble10
 	name = "10 slabs of marble"
@@ -74,6 +80,12 @@
 	contains = list(/obj/item/stack/material/ocp/ten)
 	cost = 30
 	containername = "\improper Osmium carbide plasteel sheets crate"
+
+/decl/hierarchy/supply_pack/materials/plass10
+	name = "10 plass sheets"
+	contains = list(/obj/item/stack/material/glass/plass/ten)
+	cost = 25
+	containername = "\improper Plass sheets crate"
 
 // Material sheets of expensive materials. These are very expensive and therefore pretty hard
 // to get without mining crew that would bring materials to sell in exchange.

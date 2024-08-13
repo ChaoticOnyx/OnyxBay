@@ -78,13 +78,39 @@
 /decl/hierarchy/supply_pack/operations/webbing
 	name = "Webbing crate"
 	num_contained = 4
-	contains = list(/obj/item/clothing/accessory/holster,
-					/obj/item/clothing/accessory/storage/black_vest,
+	contains = list(/obj/item/clothing/accessory/storage/black_vest,
+					/obj/item/clothing/accessory/storage/black_vest/alt
 					/obj/item/clothing/accessory/storage/brown_vest,
+					/obj/item/clothing/accessory/storage/brown_vest/alt,
 					/obj/item/clothing/accessory/storage/white_vest,
+					/obj/item/clothing/accessory/storage/white_vest/alt,
 					/obj/item/clothing/accessory/storage/drop_pouches/black,
 					/obj/item/clothing/accessory/storage/drop_pouches/brown,
 					/obj/item/clothing/accessory/storage/drop_pouches/white,
 					/obj/item/clothing/accessory/storage/webbing)
 	cost = 15
 	containername = "\improper Webbing crate"
+
+/decl/hierarchy/supply_pack/operations/holsters
+	name = "Holster crate"
+	contains = list(/obj/item/clothing/accessory/holster = 2,
+					/obj/item/clothing/accessory/holster/thigh = 2,
+					/obj/item/clothing/accessory/holster/hip = 2)
+	cost = 15
+	containername = "\improper Holster crate"
+
+/decl/hierarchy/supply_pack/operations/syndicate
+	name = "Special Ops Equipment crate"
+	contains = list(/obj/item/clothing/head/helmet/swat,
+					/obj/item/device/radio/headset/binary,
+					/obj/item/clothing/glasses/sunglasses,
+					/obj/item/clothing/mask/gas,
+					/obj/item/clothing/suit/armor/vest,
+					/obj/item/clothing/under/syndicate,
+					/obj/item/storage/belt/security,
+					/obj/item/clothing/gloves/thick/swat,
+					/obj/item/clothing/shoes/combat,
+					/obj/item/storage/backpack)
+	cost = 40
+	containername = "\improper Spec Ops Equipment crate"
+	contraband = 1
