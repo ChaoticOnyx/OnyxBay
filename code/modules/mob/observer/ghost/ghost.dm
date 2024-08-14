@@ -270,23 +270,6 @@ Works together with spawning an observer, noted above.
 
 	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))
 
-	var/assigned_role = "Assistant"
-	if(mind)
-		mind.active = FALSE // we wish to transfer the key manually
-		if(LAZYLEN(client.prefs.job_low))
-			assigned_role = safepick(client.prefs.job_low)
-		if(LAZYLEN(client.prefs.job_medium))
-			assigned_role = safepick(client.prefs.job_medium)
-		if(!isnull(client.prefs.job_high))
-			assigned_role = client.prefs.job_high
-		assigned_role = (!isnull(assigned_role)) ? assigned_role : "Assistant"
-		mind.original_mob = weakref(new_character)
-		if(client.prefs.memory)
-			mind.store_memory(client.prefs.memory)
-		mind.traits = client.prefs.traits.Copy()
-		mind.transfer_to(new_character)
-		mind = null
-
 	new_character.apply_traits()
 	new_character.SetName(real_name)
 	new_character.dna.ready_dna(new_character)
@@ -301,10 +284,29 @@ Works together with spawning an observer, noted above.
 	new_character.update_eyes()
 	new_character.regenerate_icons()
 
+	var/assigned_role = "Assistant"
+	var/alt_title = ""
+	if(mind)
+		mind.active = FALSE // we wish to transfer the key manually
+		if(LAZYLEN(client.prefs.job_low))
+			assigned_role = safepick(client.prefs.job_low)
+		if(LAZYLEN(client.prefs.job_medium))
+			assigned_role = safepick(client.prefs.job_medium)
+		if(!isnull(client.prefs.job_high))
+			assigned_role = client.prefs.job_high
+		assigned_role = (!isnull(assigned_role)) ? assigned_role : "Assistant"
+		alt_title = (!isnull(mind.role_alt_title)) ? mind.role_alt_title : ""
+		mind.original_mob = weakref(new_character)
+		if(client.prefs.memory)
+			mind.store_memory(client.prefs.memory)
+		mind.traits = client.prefs.traits.Copy()
+		mind.transfer_to(new_character)
+		mind = null
+
 	var/datum/job/job = job_master.GetJob(assigned_role)
 
 	if(job)
-		job.equip(new_character, mind ? mind.role_alt_title : "")
+		job.equip(new_character, alt_title)
 		job.apply_fingerprints(new_character)
 
 	var/obj/item/organ/external/l_foot = new_character.get_organ(BP_L_FOOT)
