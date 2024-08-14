@@ -370,12 +370,22 @@ Works together with spawning an observer, noted above.
 		for(var/obj/item/modular_computer/mc in items)
 			qdel(mc)
 
+		var/datum/action/ghostarena/R = new
+		R.Grant(new_character)
+
 	catch()
 		client.screen.Cut()
 		var/mob/new_player/M = new /mob/new_player()
 		M.key = key
 		M.client?.init_verbs()
 		log_and_message_admins("has entered spessmans' haven.", M)
+
+/datum/action/ghostarena
+	name = "Arena"
+	button_icon_state = "round_end"
+
+/datum/action/ghostarena/Trigger()
+	owner.open_ghost_arena_menu()
 
 /*
 This is the proc mobs get to turn into a ghost. Forked from ghostize due to compatibility issues.
