@@ -412,6 +412,11 @@ Works together with spawning an observer, noted above.
 	M.key = owner.key
 	M.client?.init_verbs()
 	log_and_message_admins("has respawned.", M)
+	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+	s.set_up(5, 1, src)
+	s.start()
+
+	QDEL_IN(src, 1 SECOND)
 
 /*
 This is the proc mobs get to turn into a ghost. Forked from ghostize due to compatibility issues.
