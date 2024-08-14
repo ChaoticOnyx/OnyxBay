@@ -62,7 +62,8 @@
 		instant_climb(AIeye)
 
 /obj/structure/ladder/attack_ghost(mob/user)
-	instant_climb(user)
+	if(Adjacent(user, src))
+		instant_climb(user)
 
 /obj/structure/ladder/proc/instant_climb(mob/user)
 	var/target_ladder = getTargetLadder(user)

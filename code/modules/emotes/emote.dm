@@ -162,9 +162,9 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 	if(msg_3p)
 		if(message_type & VISIBLE_MESSAGE)
-			user.visible_message(message = msg_3p, self_message = msg_1p, blind_message = impaired_msg, range = range, checkghosts = /datum/client_preference/ghost_sight)
+			user.visible_message(message = msg_3p, self_message = msg_1p, blind_message = impaired_msg, range = range, checkghosts = /datum/client_preference/staff/ghost_sight)
 		else if(message_type & AUDIBLE_MESSAGE)
-			user.audible_message(message = msg_3p, self_message = msg_1p, deaf_message = impaired_msg, hearing_distance = range, checkghosts = /datum/client_preference/ghost_sight)
+			user.audible_message(message = msg_3p, self_message = msg_1p, deaf_message = impaired_msg, hearing_distance = range, checkghosts = /datum/client_preference/staff/ghost_sight)
 
 	else if(msg_1p)
 		to_chat(user, msg_1p)
