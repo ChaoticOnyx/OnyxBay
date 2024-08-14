@@ -196,7 +196,7 @@ Works together with spawning an observer, noted above.
 		C.images += target.hud_list[SPECIALROLE_HUD]
 	return 1
 
-/mob/proc/ghostize(can_reenter_corpse = CORPSE_CAN_REENTER, send_to_cafe = TRUE)
+/mob/proc/ghostize(can_reenter_corpse = CORPSE_CAN_REENTER, allow_choice = TRUE, force_ghost_lounge = FALSE)
 	if(ghostizing)
 		return
 
@@ -207,11 +207,36 @@ Works together with spawning an observer, noted above.
 		return
 
 	ghostizing = TRUE // Since ghost spawn is way to far from being instant, we must make sure ghosts won't get duped.
-	if(!is_admin(src) && send_to_cafe)
+	if(force_ghost_lounge)
 		goto_spessman_heaven()
 		return
 
-	var/mob/observer/ghost/ghost = (!QDELETED(teleop) && isghost(teleop)) ? teleop : new(src)
+	if(allow_choice)
+		var/response = tgui_alert(
+			src,
+			"You can either become a ghost, or go to the ghost lounge. The former option will prevent you from respawning.",
+			"Ghostize",
+			list("Ghostize", "Ghost lounge", "Cancel")
+		)
+		if(!key || copytext(key, 1, 2) == "@")
+			return
+
+		if(response == "Cancel")
+			ghostizing = FALSE
+			return
+
+		if(response == "Ghost lounge")
+			goto_spessman_heaven()
+			return
+
+	var/mob/observer/ghost/ghost
+	if(!QDELETED(teleop) && isghost(teleop))
+		ghost = teleop
+
+	if(is_admin(src))
+		ghost = new (src)
+	else
+		ghost = new /mob/observer/ghost/player(src)
 
 	hide_fullscreens()
 	ghost.key = key
@@ -530,6 +555,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!client)
 		return
 
+	if(!is_admin(usr))
+		return
+
 	var/response = tgui_input_list(src, "Choose an area to teleport to.", "Teleport", area_repository.get_areas_by_z_level())
 	if(isnull(response))
 		return
@@ -552,6 +580,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set desc= "Teleport to a coordinate"
 
 	if(!client)
+		return
+
+	if(!is_admin(usr))
 		return
 
 	var/turf_x = tgui_input_number(src, "Choose a X coordinate.", "Teleport to Coordinate")
@@ -578,6 +609,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set desc = "Follow and haunt a mob."
 
 	if(!client)
+		return
+
+	if(!is_admin(usr))
 		return
 
 	follow_panel.tgui_interact(usr)

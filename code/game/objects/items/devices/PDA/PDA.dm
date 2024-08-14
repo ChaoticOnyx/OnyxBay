@@ -1041,6 +1041,10 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			if(M.is_ooc_dead() && M.get_preference_value(/datum/client_preference/ghost_radio) == GLOB.PREF_ALL_CHATTER) // src.client is so that ghosts don't have to listen to mice
 				if(istype(M, /mob/new_player))
 					continue
+
+				if(istype(M, /mob/observer/ghost/player))
+					continue
+
 				M.show_message("<span class='game say'>PDA Message - <span class='name'>[owner]</span> -> <span class='name'>[P.owner]</span>: <span class='message'>[message]</span></span>")
 
 		if(!conversations.Find("\ref[P]"))

@@ -441,48 +441,6 @@ var/global/list/_client_preferences_by_type
 	if(isobserver(preference_mob))
 		preference_mob?.hud_used?.show_hud()
 
-/datum/client_preference/ghost_ears
-	description = "Ghost ears"
-	key = "CHAT_GHOSTEARS"
-	category = PREF_CATEGORY_GHOST
-	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
-	default_value = GLOB.PREF_NEARBY
-
-/datum/client_preference/ghost_radio/changed(client/given_client)
-	if(!check_rights(R_ADMIN, TRUE, given_client))
-		given_client.set_preference("CHAT_GHOSTEARS", GLOB.PREF_NEARBY)
-		return FALSE
-
-	return TRUE
-
-/datum/client_preference/ghost_sight
-	description = "Ghost sight"
-	key = "CHAT_GHOSTSIGHT"
-	category = PREF_CATEGORY_GHOST
-	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
-	default_value = GLOB.PREF_NEARBY
-
-/datum/client_preference/ghost_radio/changed(client/given_client)
-	if(!check_rights(R_ADMIN, TRUE, given_client))
-		given_client.set_preference("CHAT_GHOSTSIGHT", GLOB.PREF_NEARBY)
-		return FALSE
-
-	return TRUE
-
-/datum/client_preference/ghost_radio
-	description = "Ghost radio"
-	key = "CHAT_GHOSTRADIO"
-	category = PREF_CATEGORY_GHOST
-	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
-	default_value = GLOB.PREF_NEARBY
-
-/datum/client_preference/ghost_radio/changed(client/given_client)
-	if(!check_rights(R_ADMIN, TRUE, given_client))
-		given_client.set_preference("CHAT_GHOSTRADIO", GLOB.PREF_NEARBY)
-		return FALSE
-
-	return TRUE
-
 /datum/client_preference/ghost_follow_link_length
 	description = "Ghost Follow Links"
 	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
@@ -599,3 +557,24 @@ var/global/list/_client_preferences_by_type
 	category = PREF_CATEGORY_STAFF
 	default_value = GLOB.PREF_NO
 	flags = R_PERMISSIONS
+
+/datum/client_preference/staff/ghost_radio
+	description = "Ghost radio"
+	key = "CHAT_GHOSTRADIO"
+	category = PREF_CATEGORY_STAFF
+	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
+	default_value = GLOB.PREF_ALL_CHATTER
+
+/datum/client_preference/staff/ghost_ears
+	description = "Ghost ears"
+	key = "CHAT_GHOSTEARS"
+	category = PREF_CATEGORY_STAFF
+	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
+	default_value = GLOB.PREF_ALL_SPEECH
+
+/datum/client_preference/staff/ghost_sight
+	description = "Ghost sight"
+	key = "CHAT_GHOSTSIGHT"
+	category = PREF_CATEGORY_STAFF
+	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
+	default_value = GLOB.PREF_ALL_EMOTES
