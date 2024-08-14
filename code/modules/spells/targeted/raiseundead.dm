@@ -47,11 +47,10 @@
 		target.make_undead(user, should_lichify)
 
 	if(!target.client && target.mind)
-		for(var/mob/observer/ghost/ghost in GLOB.ghost_mob_list)
+		for(var/mob/ghost in GLOB.player_list)
 			if(ghost.mind?.key != target.mind?.key)
 				continue
 
-			ghost.can_reenter_corpse = TRUE
 			target_player = ghost
 
 	if(!target_player)
@@ -61,8 +60,8 @@
 	var/player_choice = tgui_alert(target_player, "A necromancer is attempting to raise your body as an undead", "Would you like to return to your body?", list("Yes", "No"), RAISE_UNDEAD_TIMEOUT)
 	if(player_choice == "Yes")
 		if(isghost(target_player))
-			var/mob/observer/ghost/player = target_player
-			player.reenter_corpse()
+			var/mob/player = target_player
+			player.mind.transfer_to(target)
 		target.make_undead(user, should_lichify)
 	else
 		draft_ghosts(target, user)

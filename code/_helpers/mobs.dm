@@ -337,8 +337,13 @@
 
 	if(include_observers)
 		for(var/mob/M in GLOB.player_list)
-			if((!M.is_ooc_dead()) || (!M.client))
+			if((!M.client))
 				continue
+
+			var/datum/element/in_spessmans_haven/restriction = M.LoadComponent(/datum/element/in_spessmans_haven)
+			if(!istype(restriction))
+				continue
+
 			if(M.ckey == find_key)
 				selected = M
 				break

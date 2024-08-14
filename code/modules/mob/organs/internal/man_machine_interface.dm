@@ -139,6 +139,14 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	if(!istype(new_occupant))
 		return
 
+	if(new_occupant.key)
+		var/mob/dead_owner = find_dead_player(ckey(new_occupant.key), 1)
+		var/datum/element/in_spessmans_haven/restriction = dead_owner.LoadComponent(/datum/element/in_spessmans_haven)
+		if(isghost(dead_owner) || istype(restriction))
+			var/response = tgui_alert(dead_owner, "Your brain has been placed into a MMI. Do you wish to return to life?", "MMI", list("Yes", "No"))
+			if(!QDELETED(src) && response == "Yes")
+				new_occupant.key = dead_owner.key
+
 	brainmob = new_occupant
 	new_brain.brainmob = null
 	new_occupant.forceMove(src)
