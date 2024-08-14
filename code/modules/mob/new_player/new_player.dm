@@ -60,10 +60,12 @@
 
 	if((client.holder && (client.holder.rights & R_ADMIN)))
 		output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
-		output += "<p><a href='byond://?src=\ref[src];ghost_cafe=1'>Ghost cafe</A></p>"
+		output += "<p><a href='byond://?src=\ref[src];ghost_cafe=1'>Ghost lounge</A></p>"
 
-	if(round_duration_in_ticks > 1 HOUR)
-		output += "<p><a href='byond://?src=\ref[src];ghost_cafe=1'>Ghost cafe</A></p>"
+	if(round_duration_in_ticks > 5 MINUTES)
+		output += "<p><a href='byond://?src=\ref[src];ghost_cafe=1'>Ghost lounge</A></p>"
+	else
+		output += "<p><a href='byond://?src=\ref[src];'>Ghost lounge (will open in a couple minutes)</A></p>"
 
 	output += "</div>"
 
