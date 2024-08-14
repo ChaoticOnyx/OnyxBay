@@ -196,6 +196,11 @@
 		if(!SSeams.CheckForAccess(client))
 			return
 
+		THROTTLE(cafe_cooldown, 15 SECONDS)
+		if(!cafe_cooldown)
+			to_chat(src, SPAN_WARNING("Please, wait!"))
+			return
+
 		panel.close()
 		goto_spessman_heaven()
 		qdel_self()
