@@ -1,4 +1,4 @@
-"bB" = (/obj/structure/cargo_container/green{dir = 4},/turf/unsimulated/beach/sand,/area/ghost_arena)
+"bB" = (/turf/unsimulated/beach/sand,/area/ghost_arena)
 "cN" = (/obj/structure/cargo_container/horizontal{dir = 4},/turf/unsimulated/floor{dir = 5; icon_state = "vault"},/area/ghost_arena)
 "ei" = (/obj/structure/cargo_container/horizontal{dir = 1},/turf/unsimulated/beach/sand,/area/ghost_arena)
 "em" = (/obj/structure/barricade,/turf/unsimulated/beach/sand,/area/ghost_arena)
@@ -35,7 +35,7 @@
 "Hp" = (/turf/unsimulated/floor{icon_state = "asteroidfloor"},/area/ghost_arena)
 "KL" = (/obj/effect/floor_decal/industrial/warning,/obj/structure/barricade,/turf/unsimulated/floor,/area/ghost_arena)
 "Lk" = (/turf/unsimulated/floor,/area/ghost_arena)
-"Lv" = (/obj/structure/cargo_container/green{dir = 1},/turf/unsimulated/beach/sand,/area/ghost_arena)
+"Lv" = (/turf/unsimulated/beach/sand,/area/ghost_arena)
 "LA" = (/obj/structure/table/standard,/turf/unsimulated/floor{icon_state = "asteroidfloor"},/area/ghost_arena)
 "Mg" = (/obj/structure/cargo_container/horizontal{dir = 4},/turf/unsimulated/beach/sand,/area/ghost_arena)
 "MT" = (/obj/effect/landmark/ghost_arena_spawn/security,/turf/unsimulated/floor{dir = 5; icon_state = "vault"},/area/ghost_arena)
@@ -48,7 +48,7 @@
 "VK" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/structure/barricade,/turf/unsimulated/floor,/area/ghost_arena)
 "Wp" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/effect/floor_decal/industrial/warning{dir = 1},/turf/unsimulated/floor,/area/ghost_arena)
 "WM" = (/obj/structure/cargo_container/nt{dir = 1},/turf/unsimulated/beach/sand,/area/ghost_arena)
-"Xp" = (/obj/structure/cargo_container/green,/turf/unsimulated/beach/sand,/area/ghost_arena)
+"Xp" = (/turf/unsimulated/beach/sand,/area/ghost_arena)
 "ZE" = (/turf/unsimulated/floor{dir = 5; icon_state = "vault"},/area/ghost_arena)
 
 (1,1,1) = {"
