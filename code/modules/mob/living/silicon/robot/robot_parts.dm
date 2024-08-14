@@ -177,10 +177,11 @@
 			if(!B.key)
 				var/ghost_can_reenter = 0
 				if(B.mind)
-					for(var/mob/observer/ghost/G in GLOB.player_list)
-						if(G.can_reenter_corpse && G.mind == B.mind)
-							ghost_can_reenter = 1
+					for(var/mob/G in GLOB.player_list)
+						if(G.mind == B.mind)
+							G.mind.transfer_to(B)
 							break
+
 				if(!ghost_can_reenter)
 					to_chat(user, "<span class='notice'>\The [W] is completely unresponsive; there's no point.</span>")
 					return

@@ -101,11 +101,9 @@
 
 	// You ain't goin' anywhere, bud.
 	if(!T.client && T.mind)
-		for (var/mob/observer/ghost/ghost in GLOB.ghost_mob_list)
-			if (ghost.mind == T.mind)
-				ghost.can_reenter_corpse = 1
-				ghost.reenter_corpse()
-
+		for(var/mob/ghost in GLOB.player_list)
+			if(ghost.mind == T.mind)
+				ghost.mind.transfer_to(T)
 				to_chat(T, SPAN("danger", "A dark force pushes you back into your body. You find yourself somehow still clinging to life."))
 
 	T.Weaken(15)

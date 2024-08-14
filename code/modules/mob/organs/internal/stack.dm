@@ -46,7 +46,18 @@
 	robotize()
 
 /obj/item/organ/internal/stack/proc/backup_inviable()
-	return 	(!istype(backup) || backup == owner.mind || (backup.current && !backup.current.is_ooc_dead()))
+	if(!istype(backup))
+		return TRUE
+
+	if(backup == owner.mind)
+		return TRUE
+
+	if(backup.current)
+		var/datum/element/in_spessmans_haven/restriction = backup.current.LoadComponent(/datum/element/in_spessmans_haven)
+		if(!istype(restriction))
+			return TRUE
+
+	return FALSE
 
 /obj/item/organ/internal/stack/replaced()
 	if(!..()) return 0
