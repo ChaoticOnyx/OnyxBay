@@ -317,6 +317,7 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 #define SPECIES_LUMINESCENT "Luminescent"
 #define SPECIES_EGYNO       "Egyno"
 #define SPECIES_SWINE		"Trottine"
+#define SPECIES_ARENAMOB    "Arenahuman"
 
 #define SPECIES_MONKEY      "Monkey"
 #define SPECIES_FARWA       "Farwa"

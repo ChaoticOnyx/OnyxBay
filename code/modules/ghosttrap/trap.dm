@@ -36,9 +36,14 @@ var/list/ghost_traps
 	..()
 
 // Check for bans, proper atom types, etc.
-/datum/ghosttrap/proc/assess_candidate(mob/observer/ghost/candidate, mob/target, feedback = TRUE)
+/datum/ghosttrap/proc/assess_candidate(mob/candidate, mob/target, feedback = TRUE)
+	var/datum/element/in_spessmans_haven/restriction = candidate.LoadComponent(/datum/element/in_spessmans_haven)
+	if(istype(restriction))
+		return FALSE
+
 	if(!candidate.MayRespawn(1, minutes_since_death))
 		return 0
+
 	if(islist(ban_checks))
 		for(var/bantype in ban_checks)
 			if(jobban_isbanned(candidate, "[bantype]"))
@@ -55,13 +60,13 @@ var/list/ghost_traps
 	else
 		unregister_target(target)
 
-	for(var/mob/observer/ghost/O in GLOB.player_list)
-		if(!assess_candidate(O, target, FALSE))
+	for(var/mob/M in GLOB.player_list)
+		if(!assess_candidate(M, target, FALSE))
 			return
-		if(pref_check && !O.client.wishes_to_be_role(pref_check))
+		if(pref_check && !M.client.wishes_to_be_role(pref_check))
 			continue
-		if(O.client)
-			to_chat(O, "[request_string] <a href='?src=\ref[src];candidate=\ref[O];target=\ref[target]'>(Occupy)</a> ([ghost_follow_link(target, O)])")
+		if(M.client)
+			to_chat(M, "[request_string] <a href='?src=\ref[src];candidate=\ref[M];target=\ref[target]'>(Occupy)</a> ([ghost_follow_link(target, M)])")
 
 /datum/ghosttrap/proc/unregister_target(target)
 	request_timeouts -= target
@@ -72,7 +77,7 @@ var/list/ghost_traps
 	if(..())
 		return 1
 	if(href_list["candidate"] && href_list["target"])
-		var/mob/observer/ghost/candidate = locate(href_list["candidate"]) // BYOND magic.
+		var/mob/candidate = locate(href_list["candidate"]) // BYOND magic.
 		var/mob/target = locate(href_list["target"])                     // So much BYOND magic.
 		if(!target || !candidate)
 			return
@@ -162,7 +167,7 @@ var/list/ghost_traps
 	minutes_since_death = DRONE_SPAWN_DELAY
 	..()
 
-/datum/ghosttrap/drone/assess_candidate(mob/observer/ghost/candidate, mob/target)
+/datum/ghosttrap/drone/assess_candidate(mob/candidate, mob/target)
 	. = ..()
 	if(. && !target.can_be_possessed_by(candidate))
 		return 0
@@ -181,7 +186,7 @@ var/list/ghost_traps
 	ghost_trap_message = "They are occupying a pAI now."
 	ghost_trap_role = "pAI"
 
-/datum/ghosttrap/pai/assess_candidate(mob/observer/ghost/candidate, mob/target)
+/datum/ghosttrap/pai/assess_candidate(mob/candidate, mob/target)
 	return 0
 
 /datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot/drone/drone)
@@ -219,14 +224,18 @@ var/list/ghost_traps
 	else
 		unregister_target(target)
 
-	for(var/mob/observer/ghost/O in GLOB.player_list)
-		if(!O.client)
+	for(var/mob/M in GLOB.player_list)
+		var/datum/element/in_spessmans_haven/restriction = M.LoadComponent(/datum/element/in_spessmans_haven)
+		if(istype(restriction))
+			return FALSE
+
+		if(!M.client)
 			continue
 
-		if(pref_check && !O.client.wishes_to_be_role(pref_check))
+		if(pref_check && !M.client.wishes_to_be_role(pref_check))
 			continue
 
-		INVOKE_ASYNC(src, nameof(.proc/send_request), target, O, request_timeout)
+		INVOKE_ASYNC(src, nameof(.proc/send_request), target, M, request_timeout)
 
 /datum/ghosttrap/undead/proc/send_request(mob/target, mob/observer/ghost, request_timeout)
 	var/player_choice = tgui_alert(ghost, "A necromancer is requesting a soul to animate an undead body.", "Would you like to become undead?", list("Yes", "No"), request_timeout)
@@ -252,7 +261,7 @@ var/list/ghost_traps
 	var/mob/living/carbon/human/new_undead = target
 	new_undead.make_undead(necromancer, lichify)
 
-/datum/ghosttrap/undead/assess_candidate(mob/observer/ghost/candidate, mob/target, feedback = TRUE)
+/datum/ghosttrap/undead/assess_candidate(mob/candidate, mob/target, feedback = TRUE)
 	return TRUE
 
 /datum/ghosttrap/undead/Destroy()

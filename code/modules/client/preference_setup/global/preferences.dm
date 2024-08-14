@@ -448,7 +448,7 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
 	default_value = GLOB.PREF_NEARBY
 
-/datum/client_preference/ghost_radio/may_set(client/given_client)
+/datum/client_preference/ghost_radio/changed(client/given_client)
 	if(!check_rights(R_ADMIN, TRUE, given_client))
 		given_client.set_preference("CHAT_GHOSTEARS", GLOB.PREF_NEARBY)
 		return FALSE
@@ -462,7 +462,7 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
 	default_value = GLOB.PREF_NEARBY
 
-/datum/client_preference/ghost_radio/may_set(client/given_client)
+/datum/client_preference/ghost_radio/changed(client/given_client)
 	if(!check_rights(R_ADMIN, TRUE, given_client))
 		given_client.set_preference("CHAT_GHOSTSIGHT", GLOB.PREF_NEARBY)
 		return FALSE
@@ -476,7 +476,7 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
 	default_value = GLOB.PREF_NEARBY
 
-/datum/client_preference/ghost_radio/may_set(client/given_client)
+/datum/client_preference/ghost_radio/changed(client/given_client)
 	if(!check_rights(R_ADMIN, TRUE, given_client))
 		given_client.set_preference("CHAT_GHOSTRADIO", GLOB.PREF_NEARBY)
 		return FALSE

@@ -58,11 +58,14 @@
 		output += "<a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A><br><br>"
 		output += "<p><a href='byond://?src=\ref[src];late_join=1'>Join Game!</A></p>"
 
-	output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
+	if((client.holder && (client.holder.rights & R_ADMIN)))
+		output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
+
+	output += "<p><a href='byond://?src=\ref[src];ghost_cafe=1'>Ghost cafe</A></p>"
 
 	output += "</div>"
 
-	panel = new(src, "Welcome","Welcome", 210, 280, src)
+	panel = new(src, "Welcome","Welcome", 250, 280, src)
 	panel.set_window_options("can_close=0")
 	panel.set_content(output)
 	panel.open()
@@ -156,6 +159,7 @@
 			else
 				to_chat(src, "<span class='danger'>Could not locate an observer spawn point. Use the Teleport verb to jump to the map.</span>")
 			observer.timeofdeath = world.time // Set the time of death so that the respawn timer works correctly.
+			GLOB.timeofdeath[key] = observer.timeofdeath
 
 			if(QDELETED(client.holder))
 				announce_ghost_joinleave(src)
@@ -182,8 +186,21 @@
 
 			return 1
 
-	if(href_list["late_join"])
+	if(href_list["ghost_cafe"])
+		if(GAME_STATE != RUNLEVEL_GAME)
+			to_chat(src, SPAN_WARNING("The round is either not ready, or has already finished..."))
+			return
 
+		if(!SSeams.CheckForAccess(client))
+			return
+
+		panel.close()
+		goto_spessman_heaven()
+		QDEL_NULL(mind)
+		qdel_self()
+		return TRUE
+
+	if(href_list["late_join"])
 		if(GAME_STATE != RUNLEVEL_GAME)
 			to_chat(usr, "<span class='warning'>The round is either not ready, or has already finished...</span>")
 			return
@@ -201,6 +218,12 @@
 
 		if(jobban_isbanned(src, "FEMALE") && client.prefs.gender == FEMALE)
 			to_chat(src, "<span class='warning'>No traps allowed.</span>")
+			return
+
+		var/timedifference = world.time - GLOB.timeofdeath[key]
+		var/timedifference_text = time2text(15 MINUTES - timedifference,"mm:ss")
+		if(timedifference < 15 MINUTES)
+			to_chat(src, SPAN_DANGER("You must wait [timedifference_text] before respawning"))
 			return
 
 		LateChoices() //show the latejoin job selection menu

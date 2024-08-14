@@ -241,6 +241,9 @@
 	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
 	var/list/do_afters
 
+	/// Holds ghost arena menu
+	var/datum/ghost_arena_menu/ghost_arena_menu = null
+
 /datum/rad_resist/mob
 	alpha_particle_resist = 6 MEGA ELECTRONVOLT
 	beta_particle_resist = 0.1 MEGA ELECTRONVOLT

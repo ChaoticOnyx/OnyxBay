@@ -6,12 +6,14 @@
 
 	var/atom/movable/screen/using
 
+	using = new /atom/movable/screen/ghost/ghost_arena_menu()
+	static_inventory += using
+
 	using = new /atom/movable/screen/ghost/spawners_menu()
 	static_inventory += using
 
 	using = new /atom/movable/screen/ghost/reenter_corpse()
 	static_inventory += using
-
 
 	using = new /atom/movable/screen/ghost/move_up()
 	static_inventory += using
@@ -48,6 +50,15 @@
 /atom/movable/screen/ghost/on_update_icon()
 	ClearOverlays()
 	LAZYADD(overlays, image('icons/hud/screen_ghost.dmi', icon_state = ghost_icon_state))
+
+/atom/movable/screen/ghost/ghost_arena_menu
+	name = "Ghost arena menu"
+	ghost_icon_state = "spawners"
+	screen_loc = ui_ghost_arena_menu
+
+/atom/movable/screen/ghost/ghost_arena_menu/Click(location, control, params)
+	var/mob/G = usr
+	G.open_ghost_arena_menu()
 
 /atom/movable/screen/ghost/spawners_menu
 	name = "Spawners Menu"

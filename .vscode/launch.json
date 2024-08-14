@@ -5,7 +5,8 @@
       "type": "byond",
       "request": "launch",
       "name": "DS Debug",
-      "dmb": "${workspaceFolder}/${command:CurrentDMB}"
+      "dmb": "${workspaceFolder}/${command:CurrentDMB}",
+      "dreamDaemon": true
     },
     {
       "type": "byond",

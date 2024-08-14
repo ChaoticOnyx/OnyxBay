@@ -7,11 +7,13 @@ SUBSYSTEM_DEF(mapping)
 	var/list/holodeck_templates = list()
 	///All possible biomes in assoc list as type || instance
 	var/list/biomes = list()
+	var/list/ghost_arena_templates = list()
 
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	initialize_biomes()
 	preloadTemplates()
 	preloadHolodeckTemplates()
+	preloadGhostArenaTemplates()
 	lateload_map_zlevels()
 	return ..()
 
@@ -34,6 +36,12 @@ SUBSYSTEM_DEF(mapping)
 
 		var/datum/map_template/holodeck/holodeck_template = new holodeck_type()
 		holodeck_templates[holodeck_template.template_id] = holodeck_template
+
+/datum/controller/subsystem/mapping/proc/preloadGhostArenaTemplates(path = "maps/ghost_arena/")
+	var/list/maplists = subtypesof(/datum/map_template/arena_map)
+	for(var/map in maplists)
+		var/datum/map_template/arena_map/T = new map
+		ghost_arena_templates[T.name] = T
 
 /// Initialize all biomes, assoc as type || instance
 /datum/controller/subsystem/mapping/proc/initialize_biomes()
