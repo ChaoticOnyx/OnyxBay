@@ -196,7 +196,7 @@ Works together with spawning an observer, noted above.
 		C.images += target.hud_list[SPECIALROLE_HUD]
 	return 1
 
-/mob/proc/ghostize(can_reenter_corpse = CORPSE_CAN_REENTER)
+/mob/proc/ghostize(can_reenter_corpse = CORPSE_CAN_REENTER, send_to_cafe = TRUE)
 	if(ghostizing)
 		return
 
@@ -207,7 +207,7 @@ Works together with spawning an observer, noted above.
 		return
 
 	ghostizing = TRUE // Since ghost spawn is way to far from being instant, we must make sure ghosts won't get duped.
-	if(!is_admin(src))
+	if(!is_admin(src) && send_to_cafe)
 		goto_spessman_heaven()
 		return
 
