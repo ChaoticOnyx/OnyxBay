@@ -194,14 +194,13 @@
 		if(!SSeams.CheckForAccess(client))
 			return
 
-		goto_spessman_heaven()
 		panel.close()
+		goto_spessman_heaven()
 		QDEL_NULL(mind)
 		qdel_self()
 		return TRUE
 
 	if(href_list["late_join"])
-
 		if(GAME_STATE != RUNLEVEL_GAME)
 			to_chat(usr, "<span class='warning'>The round is either not ready, or has already finished...</span>")
 			return
@@ -219,6 +218,12 @@
 
 		if(jobban_isbanned(src, "FEMALE") && client.prefs.gender == FEMALE)
 			to_chat(src, "<span class='warning'>No traps allowed.</span>")
+			return
+
+		var/timedifference = world.time - GLOB.timeofdeath[key]
+		var/timedifference_text = time2text(15 MINUTES - timedifference,"mm:ss")
+		if(timedifference < 15 MINUTES)
+			to_chat(src, SPAN_DANGER("You must wait [timedifference_text] before respawning"))
 			return
 
 		LateChoices() //show the latejoin job selection menu
