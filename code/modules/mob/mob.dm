@@ -505,13 +505,10 @@
 		to_chat(src, "<span class='warning'>Please wait for server initialization to complete...</span>")
 		return
 
-	var/is_admin = 0
+	var/is_admin = TRUE
 
-	if(client.holder && (client.holder.rights & R_ADMIN))
-		is_admin = 1
-
-	if(is_admin && is_ooc_dead())
-		is_admin = 0
+	if(!check_rights(R_ADMIN, FALSE, usr))
+		return
 
 	var/list/names = list()
 	var/list/namecounts = list()
