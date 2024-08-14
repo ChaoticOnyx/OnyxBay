@@ -113,7 +113,7 @@
 
 
 			for(var/mob/M in GLOB.player_list)
-				if(M.is_ooc_dead() && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH)
+				if(M.is_ooc_dead() && M.get_preference_value(/datum/client_preference/staff/ghost_ears) == GLOB.PREF_ALL_SPEECH)
 					M.hear_say(message,verb,speaking,null,null, src)
 					continue
 				if(M.loc && (M.locs[1] in hearturfs))

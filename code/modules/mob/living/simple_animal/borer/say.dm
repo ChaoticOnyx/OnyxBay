@@ -39,5 +39,5 @@
 	for (var/mob/M in GLOB.player_list)
 		if (istype(M, /mob/new_player))
 			continue
-		else if(M.is_ooc_dead() && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH)
+		else if(M.is_ooc_dead() && M.get_preference_value(/datum/client_preference/staff/ghost_ears) == GLOB.PREF_ALL_SPEECH)
 			to_chat(M, "[src.truename] whispers to [host], \"[message]\"")

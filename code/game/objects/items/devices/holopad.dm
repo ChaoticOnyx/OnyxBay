@@ -187,7 +187,7 @@
 	var/list/listening = get_mobs_or_objects_in_view(3, src)
 
 	for(var/mob/observer/ghost/G in GLOB.ghost_mob_list)
-		if(get_dist(src, G) > world.view && G.get_preference_value(/datum/client_preference/ghost_ears) != GLOB.PREF_ALL_SPEECH)
+		if(get_dist(src, G) > world.view && G.get_preference_value(/datum/client_preference/staff/ghost_ears) != GLOB.PREF_ALL_SPEECH)
 			continue
 		listening |= G
 
