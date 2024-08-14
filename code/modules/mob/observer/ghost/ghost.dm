@@ -232,7 +232,7 @@ Works together with spawning an observer, noted above.
 	return ghost
 
 /mob/proc/goto_spessman_heaven()
-	GLOB.timeofdeath[key] = is_ooc_dead() ? src.timeofdeath : world.time
+	GLOB.timeofdeath[key] = world.time
 
 	try
 		var/mob/living/carbon/human/new_character
@@ -373,6 +373,9 @@ Works together with spawning an observer, noted above.
 		var/datum/action/ghostarena/R = new
 		R.Grant(new_character)
 
+		var/datum/action/heaven_respawn/hr = new
+		hr.Grant(new_character)
+
 	catch()
 		client.screen.Cut()
 		var/mob/new_player/M = new /mob/new_player()
@@ -381,11 +384,43 @@ Works together with spawning an observer, noted above.
 		log_and_message_admins("has entered spessmans' haven.", M)
 
 /datum/action/ghostarena
-	name = "Arena"
+	name = "Arena (Не нажимать)"
 	button_icon_state = "round_end"
+	var/pressed = 0
 
 /datum/action/ghostarena/Trigger()
-	owner.open_ghost_arena_menu()
+	var/list/possible_answers = list(
+		"Не нажимать!",
+		"Не нажимать!",
+		"Еще не готово!",
+		"Подождите.",
+		"Work In Progress",
+	)
+	if(prob(pressed))
+		to_chat(owner, FONT_GIANT("А ведь тебя предупреждали..."))
+		qdel(owner.client)
+	else
+		to_chat(owner, SPAN_DANGER(pick(possible_answers)))
+	pressed++
+	//owner.open_ghost_arena_menu()
+
+/datum/action/heaven_respawn
+	name = "Exit to lobby"
+	button_icon_state = "set_drop"
+
+/datum/action/heaven_respawn/Trigger()
+	var/timedifference = world.time - GLOB.timeofdeath[owner.key]
+	var/timedifference_text = time2text(15 MINUTES - timedifference,"mm:ss")
+
+	var/response = tgui_alert(owner, "This will send you back to lobby. You will [(timedifference < 15 MINUTES) ? "not be able to respawn for [timedifference_text]." : "be able to respawn immediately."]", "Spaceman's heaven.", list("Yes", "No"))
+	if(response == "No")
+		return
+
+	owner.client.screen.Cut()
+	var/mob/new_player/M = new /mob/new_player()
+	M.key = owner.key
+	M.client?.init_verbs()
+	log_and_message_admins("has respawned.", M)
 
 /*
 This is the proc mobs get to turn into a ghost. Forked from ghostize due to compatibility issues.
