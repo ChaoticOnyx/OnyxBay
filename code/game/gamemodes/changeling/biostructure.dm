@@ -124,7 +124,7 @@
 		return FALSE
 
 	if(target.key)
-		target.ghostize()
+		target.ghostize(CORPSE_CAN_REENTER, FALSE)
 
 	if(brainchan)
 		if(brainchan.mind)

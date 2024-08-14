@@ -19,7 +19,7 @@
 	to_chat(user, "<span class='info'>You can see... everything!</span>") // This never actually happens.
 	visible_message("<span class='danger'>[user] stares into [src], their eyes glazing over.</span>")
 
-	user.teleop = user.ghostize(1)
+	user.teleop = user.ghostize(CORPSE_CAN_REENTER, FALSE)
 	announce_ghost_joinleave(user.teleop, 1, "You feel that they used a powerful artifact to [pick("invade","disturb","disrupt","infest","taint","spoil","blight")] this place with their presence.")
 	return
 

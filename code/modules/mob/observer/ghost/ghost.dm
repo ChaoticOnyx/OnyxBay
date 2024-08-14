@@ -196,7 +196,7 @@ Works together with spawning an observer, noted above.
 		C.images += target.hud_list[SPECIALROLE_HUD]
 	return 1
 
-/mob/proc/ghostize(can_reenter_corpse = CORPSE_CAN_REENTER)
+/mob/proc/ghostize(can_reenter_corpse = CORPSE_CAN_REENTER, send_to_cafe = TRUE)
 	if(ghostizing)
 		return
 
@@ -207,7 +207,7 @@ Works together with spawning an observer, noted above.
 		return
 
 	ghostizing = TRUE // Since ghost spawn is way to far from being instant, we must make sure ghosts won't get duped.
-	if(!is_admin(src))
+	if(!is_admin(src) && send_to_cafe)
 		goto_spessman_heaven()
 		return
 
@@ -234,154 +234,120 @@ Works together with spawning an observer, noted above.
 /mob/proc/goto_spessman_heaven()
 	GLOB.timeofdeath[key] = world.time
 
-	try
-		var/mob/living/carbon/human/new_character
+	var/mob/living/carbon/human/new_character
 
-		var/datum/species/chosen_species
-		if(client.prefs.species)
-			chosen_species = all_species[client.prefs.species]
+	var/datum/species/chosen_species
+	if(client.prefs.species)
+		chosen_species = all_species[client.prefs.species]
 
-		var/datum/spawnpoint/spawnpoint = pick(GLOB.spessmans_heaven)
-		var/turf/spawn_turf = get_turf(spawnpoint)
+	var/datum/spawnpoint/spawnpoint = pick(GLOB.spessmans_heaven)
+	var/turf/spawn_turf = get_turf(spawnpoint)
 
-		if(chosen_species)
-			new_character = new(spawn_turf, chosen_species.name)
+	if(chosen_species)
+		new_character = new(spawn_turf, chosen_species.name)
 
-		if(!new_character)
-			new_character = new(spawn_turf)
+	if(!new_character)
+		new_character = new(spawn_turf)
 
-		new_character.lastarea = get_area(spawn_turf)
-
-		for(var/lang in client.prefs.alternate_languages)
-			var/datum/language/chosen_language = all_languages[lang]
-			if(chosen_language)
-				var/is_species_lang = (chosen_language.name in new_character.species.secondary_langs)
-				if(is_species_lang || ((!(chosen_language.language_flags & RESTRICTED) || has_admin_rights()) && is_alien_whitelisted(src, chosen_language)))
-					new_character.add_language(lang)
-
-		client.prefs.copy_to(new_character)
-
-		sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// MAD JAMS cant last forever yo
-
-		var/assigned_role = "Assistant"
-		if(mind)
-			mind.active = FALSE // we wish to transfer the key manually
-			if(LAZYLEN(client.prefs.job_low))
-				assigned_role = safepick(client.prefs.job_low)
-			if(LAZYLEN(client.prefs.job_medium))
-				assigned_role = safepick(client.prefs.job_medium)
-			if(!isnull(client.prefs.job_high))
-				assigned_role = client.prefs.job_high
-			assigned_role = (!isnull(assigned_role)) ? assigned_role : "Assistant"
-			mind.original_mob = weakref(new_character)
-			if(client.prefs.memory)
-				mind.store_memory(client.prefs.memory)
-			mind.traits = client.prefs.traits.Copy()
-			mind.transfer_to(new_character)
-			mind = null
-
-		new_character.apply_traits()
-		new_character.SetName(real_name)
-		new_character.dna.ready_dna(new_character)
-		new_character.dna.b_type = client.prefs.b_type
-		new_character.sync_organ_dna()
-		if(client.prefs.disabilities)
-			// Set defer to 1 if you add more crap here so it only recalculates struc_enzymes once. - N3X
-			new_character.disabilities |= NEARSIGHTED
-
-		// Do the initial caching of the player's body icons.
-		new_character.force_update_limbs()
-		new_character.update_eyes()
-		new_character.regenerate_icons()
-
-		var/datum/job/job = job_master.GetJob(assigned_role)
-		var/list/spawn_in_storage = list()
-
-		if(job)
-			job.equip(new_character, mind ? mind.role_alt_title : "")
-			job.apply_fingerprints(new_character)
-
-			// Equip custom gear loadout, replacing any job items
-			var/list/loadout_taken_slots = list()
-			if(client.prefs.Gear() && job.loadout_allowed)
-				for(var/thing in client.prefs.Gear())
-					var/datum/gear/G = gear_datums[thing]
-					if(G)
-						var/permitted = TRUE
-						if(length(G.allowed_roles))
-							permitted = FALSE
-							for(var/job_type in G.allowed_roles)
-								if(job.type == job_type)
-									permitted = TRUE
-									break
-
-						if(G.whitelisted && (!(chosen_species.name in G.whitelisted)))
-							permitted = FALSE
-
-						if(!G.is_allowed_to_equip(new_character))
-							permitted = FALSE
-
-						if(!permitted)
-							to_chat(new_character, SPAN("warning", "Your current species, job, whitelist status or loadout configuration does not permit you to spawn with [thing]!"))
-							continue
-
-						if(!G.slot || G.slot == slot_tie || G.slot == slot_belt ||(G.slot in loadout_taken_slots) || !G.spawn_on_mob(new_character, client.prefs.Gear()[G.display_name]))
-							spawn_in_storage.Add(G)
-						else
-							loadout_taken_slots.Add(G.slot)
-
-		for(var/datum/gear/G in spawn_in_storage)
-			G.spawn_in_storage_or_drop(new_character, client.prefs.Gear()[G.display_name])
-
-		var/obj/item/organ/external/l_foot = new_character.get_organ(BP_L_FOOT)
-		var/obj/item/organ/external/r_foot = new_character.get_organ(BP_R_FOOT)
-		if(!l_foot || !r_foot)
-			var/obj/structure/bed/chair/wheelchair/W = new /obj/structure/bed/chair/wheelchair(new_character.loc)
-			new_character.buckled = W
-			new_character.update_canmove()
-			W.set_dir(new_character.dir)
-			W.buckled_mob = new_character
-			W.add_fingerprint(new_character)
-
-		new_character.key = key
-		new_character.client?.init_verbs()
-
-		new /atom/movable/screen/splash/fake(null, TRUE, new_character.client, SSlobby.current_lobby_art)
-
-		if(config && config.revival.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
-			new_character.create_stack()
-
-		if(new_character.isSynthetic())
-			new_character.add_synth_emotes()
-		log_and_message_admins("has entered spessmans' haven [key] as [new_character.real_name].")
-
-		to_chat(new_character, "Enjoy the game.")
-
-		new_character.RemoveElement(/datum/element/last_words)
-		new_character._add_element(list(/datum/element/in_spessmans_haven))
-
-		var/list/items = recursive_content_check(new_character)
-		for(var/obj/item/device/radio/R in items)
-			qdel(R)
-
-		for(var/obj/item/device/pda/P in items)
-			qdel(P)
-
-		for(var/obj/item/modular_computer/mc in items)
-			qdel(mc)
-
-		var/datum/action/ghostarena/R = new
-		R.Grant(new_character)
-
-		var/datum/action/heaven_respawn/hr = new
-		hr.Grant(new_character)
-
-	catch()
+	if(!istype(new_character))
+		util_crash_with("Shit was broken, new character was not spawned in spessman's heaven")
 		client.screen.Cut()
 		var/mob/new_player/M = new /mob/new_player()
 		M.key = key
 		M.client?.init_verbs()
-		log_and_message_admins("has entered spessmans' haven.", M)
+		return
+
+	new_character.lastarea = get_area(spawn_turf)
+
+	for(var/lang in client.prefs.alternate_languages)
+		var/datum/language/chosen_language = all_languages[lang]
+		if(chosen_language)
+			var/is_species_lang = (chosen_language.name in new_character.species.secondary_langs)
+			if(is_species_lang || ((!(chosen_language.language_flags & RESTRICTED) || has_admin_rights()) && is_alien_whitelisted(src, chosen_language)))
+				new_character.add_language(lang)
+
+	client.prefs.copy_to(new_character)
+
+	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))
+
+	new_character.apply_traits()
+	new_character.SetName(real_name)
+	new_character.dna.ready_dna(new_character)
+	new_character.dna.b_type = client.prefs.b_type
+	new_character.sync_organ_dna()
+	if(client.prefs.disabilities)
+		// Set defer to 1 if you add more crap here so it only recalculates struc_enzymes once. - N3X
+		new_character.disabilities |= NEARSIGHTED
+
+	// Do the initial caching of the player's body icons.
+	new_character.force_update_limbs()
+	new_character.update_eyes()
+	new_character.regenerate_icons()
+
+	var/assigned_role = "Assistant"
+	var/alt_title = ""
+	if(mind)
+		mind.active = FALSE // we wish to transfer the key manually
+		if(LAZYLEN(client.prefs.job_low))
+			assigned_role = safepick(client.prefs.job_low)
+		if(LAZYLEN(client.prefs.job_medium))
+			assigned_role = safepick(client.prefs.job_medium)
+		if(!isnull(client.prefs.job_high))
+			assigned_role = client.prefs.job_high
+		assigned_role = (!isnull(assigned_role)) ? assigned_role : "Assistant"
+		alt_title = (!isnull(mind.role_alt_title)) ? mind.role_alt_title : ""
+		mind.original_mob = weakref(new_character)
+		if(client.prefs.memory)
+			mind.store_memory(client.prefs.memory)
+		mind.traits = client.prefs.traits.Copy()
+		mind.transfer_to(new_character)
+		mind = null
+
+	var/datum/job/job = job_master.GetJob(assigned_role)
+
+	if(job)
+		job.equip(new_character, alt_title)
+		job.apply_fingerprints(new_character)
+
+	var/obj/item/organ/external/l_foot = new_character.get_organ(BP_L_FOOT)
+	var/obj/item/organ/external/r_foot = new_character.get_organ(BP_R_FOOT)
+	if(!l_foot || !r_foot)
+		var/obj/structure/bed/chair/wheelchair/W = new /obj/structure/bed/chair/wheelchair(new_character.loc)
+		new_character.buckled = W
+		new_character.update_canmove()
+		W.set_dir(new_character.dir)
+		W.buckled_mob = new_character
+		W.add_fingerprint(new_character)
+
+	new_character.key = key
+	new_character.client?.init_verbs()
+
+	new /atom/movable/screen/splash/fake(null, TRUE, new_character.client, SSlobby.current_lobby_art)
+
+	if(new_character.isSynthetic())
+		new_character.add_synth_emotes()
+	log_and_message_admins("has entered spessmans' haven [key] as [new_character.real_name].")
+
+	to_chat(new_character, "Enjoy the game.")
+
+	new_character.RemoveElement(/datum/element/last_words)
+	new_character._add_element(list(/datum/element/in_spessmans_haven))
+
+	var/list/items = recursive_content_check(new_character)
+	for(var/obj/item/device/radio/R in items)
+		qdel(R)
+
+	for(var/obj/item/device/pda/P in items)
+		qdel(P)
+
+	for(var/obj/item/modular_computer/mc in items)
+		qdel(mc)
+
+	var/datum/action/ghostarena/R = new
+	R.Grant(new_character)
+
+	var/datum/action/heaven_respawn/hr = new
+	hr.Grant(new_character)
 
 /datum/action/ghostarena
 	name = "Arena (Не нажимать)"

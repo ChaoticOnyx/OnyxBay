@@ -308,7 +308,7 @@ Ccomp's first proc.
 		.[M.ckey] = M
 	. = sortAssoc(.)
 
-/client/proc/allow_character_respawn(selection in get_ghosts_by_key())
+/client/proc/allow_character_respawn()
 	set category = "Special Verbs"
 	set name = "Allow player to respawn"
 	set desc = "Allows the player bypass the wait to respawn or allow them to re-enter their corpse."
@@ -316,28 +316,23 @@ Ccomp's first proc.
 	if(!check_rights(R_ADMIN))
 		return
 
-	var/list/ghosts = get_ghosts_by_key()
-	var/mob/observer/ghost/G = ghosts[selection]
-	if(!istype(G))
-		to_chat(src, "<span class='warning'>[selection] no longer has an associated ghost.</span>")
+	var/mob/selection = tgui_input_list(usr, "Select user to respawn", "Allow player to respawn", GLOB.player_list)
+	if(!istype(selection))
+		to_chat(src, "<span class='warning'>[selection] no longer has an associated mob.</span>")
 		return
 
-	if(G.has_enabled_antagHUD == 1 && config.ghost.antag_hud_restricted)
-		var/response = alert(src, "[selection] has enabled antagHUD. Are you sure you wish to allow them to respawn?","Ghost has used AntagHUD","No","Yes")
-		if(response == "No") return
-	else
-		var/response = alert(src, "Are you sure you wish to allow [selection] to respawn?","Allow respawn","No","Yes")
-		if(response == "No") return
+	var/response = alert(src, "Are you sure you wish to allow [selection] to respawn?","Allow respawn","No","Yes")
+	if(response == "No")
+		return
 
-	G.timeofdeath=-19999						/* time of death is checked in /mob/verb/abandon_mob() which is the Respawn verb.
+	GLOB.timeofdeath[selection.key] = -19999
+	selection.timeofdeath=-19999						/* time of death is checked in /mob/verb/abandon_mob() which is the Respawn verb.
 									   timeofdeath is used for bodies on autopsy but since we're messing with a ghost I'm pretty sure
 									   there won't be an autopsy.
 									*/
-	G.has_enabled_antagHUD = 2
-	G.can_reenter_corpse = CORPSE_CAN_REENTER_AND_RESPAWN
 
-	G.show_message("<span class=notice><b>You may now respawn.  You should roleplay as if you learned nothing about the round during your time with the dead.</b></span>", 1)
-	log_and_message_admins("has allowed [key_name(G)] to bypass the [config.misc.respawn_delay] minute respawn limit.")
+	selection.show_message("<span class=notice><b>You may now respawn.  You should roleplay as if you learned nothing about the round during your time with the dead.</b></span>", 1)
+	log_and_message_admins("has allowed [key_name(selection)] to bypass the [config.misc.respawn_delay] minute respawn limit.")
 
 /client/proc/toggle_antagHUD_use()
 	set category = "Server"
