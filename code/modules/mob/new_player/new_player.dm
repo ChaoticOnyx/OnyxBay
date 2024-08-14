@@ -60,8 +60,10 @@
 
 	if((client.holder && (client.holder.rights & R_ADMIN)))
 		output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
+		output += "<p><a href='byond://?src=\ref[src];ghost_cafe=1'>Ghost cafe</A></p>"
 
-	output += "<p><a href='byond://?src=\ref[src];ghost_cafe=1'>Ghost cafe</A></p>"
+	if(round_duration_in_ticks > 1 HOUR)
+		output += "<p><a href='byond://?src=\ref[src];ghost_cafe=1'>Ghost cafe</A></p>"
 
 	output += "</div>"
 
@@ -196,7 +198,6 @@
 
 		panel.close()
 		goto_spessman_heaven()
-		QDEL_NULL(mind)
 		qdel_self()
 		return TRUE
 
@@ -220,11 +221,12 @@
 			to_chat(src, "<span class='warning'>No traps allowed.</span>")
 			return
 
-		var/timedifference = world.time - GLOB.timeofdeath[key]
-		var/timedifference_text = time2text(15 MINUTES - timedifference,"mm:ss")
-		if(timedifference < 15 MINUTES)
-			to_chat(src, SPAN_DANGER("You must wait [timedifference_text] before respawning"))
-			return
+		if(!isnull(GLOB.timeofdeath[key]))
+			var/timedifference = world.time - GLOB.timeofdeath[key]
+			var/timedifference_text = time2text(15 MINUTES - timedifference,"mm:ss")
+			if(timedifference < 15 MINUTES)
+				to_chat(src, SPAN_DANGER("You must wait [timedifference_text] before respawning"))
+				return
 
 		LateChoices() //show the latejoin job selection menu
 
