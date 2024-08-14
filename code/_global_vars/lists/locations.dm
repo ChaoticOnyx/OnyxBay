@@ -3,6 +3,7 @@ GLOBAL_LIST_EMPTY(latejoin)
 GLOBAL_LIST_EMPTY(latejoin_gateway)
 GLOBAL_LIST_EMPTY(latejoin_cryo)
 GLOBAL_LIST_EMPTY(latejoin_cyborg)
+GLOBAL_LIST_EMPTY(spessmans_heaven)
 
 // Bluespace rift.
 GLOBAL_LIST_EMPTY(endgame_exits)

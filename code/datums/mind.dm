@@ -75,6 +75,9 @@
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()
 
+	/// Overrides may have relations. That's it.
+	var/may_have_relations = TRUE
+
 /datum/mind/New(key)
 	src.key = key
 	..()

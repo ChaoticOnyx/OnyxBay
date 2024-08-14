@@ -245,6 +245,9 @@
 		if("JoinLateCyborg")
 			GLOB.latejoin_cyborg += loc
 			return
+		if("Spessmans' haven")
+			GLOB.spessmans_heaven += loc
+			return
 	return ..()
 
 /obj/effect/landmark/joinlate/gate
@@ -263,3 +266,6 @@
 	icon_state = "landmark_observer"
 	delete_after = FALSE
 	should_be_added = TRUE
+
+/obj/effect/landmark/joinlate/spessmans_heaven
+	name = "Spessmans' haven"

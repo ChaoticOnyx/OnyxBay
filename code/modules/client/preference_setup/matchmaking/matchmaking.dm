@@ -33,6 +33,9 @@ var/global/datum/matchmaker/matchmaker = new()
 			. += R
 
 /datum/mind/proc/may_have_relations()
+	if(!may_have_relations)
+		return FALSE
+
 	var/datum/antagonist/special_role_data = get_antag_data(special_role)
 
 	if(special_role_data && (special_role_data.flags & ANTAG_OVERRIDE_JOB))
@@ -74,6 +77,9 @@ var/global/datum/matchmaker/matchmaker = new()
 		return FALSE
 
 	if(issilicon(M.current)) // No relationships with robots
+		return FALSE
+
+	if(!M.may_have_relations)
 		return FALSE
 
 	return TRUE

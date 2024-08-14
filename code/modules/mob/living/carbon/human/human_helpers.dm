@@ -350,4 +350,24 @@
 	return .
 
 /mob/living/carbon/human/is_eligible_for_antag_spawn(antag_id)
+	var/datum/element/in_spessmans_haven/restriction = LoadComponent(/datum/element/in_spessmans_haven)
+	if(istype(restriction))
+		return FALSE
+
 	return species ? species.is_eligible_for_antag_spawn(antag_id) : TRUE // No species = no problems, assuming ourselves to be a baseline human being
+
+/mob/living/carbon/human/MayRespawn(feedback, respawn_time)
+	if(!client)
+		return FALSE
+
+	var/datum/element/in_spessmans_haven/restriction = LoadComponent(/datum/element/in_spessmans_haven)
+	if(!istype(restriction))
+		return FALSE
+
+	var/timedifference = world.time - GLOB.timeofdeath[key]
+	if(!client.holder && respawn_time && timeofdeath && timedifference < respawn_time MINUTES)
+		var/timedifference_text = time2text(respawn_time MINUTES - timedifference,"mm:ss")
+		to_chat(src, SPAN_WARNING("You must have been dead for [respawn_time] minute\s to respawn. You have [timedifference_text] left."))
+		return FALSE
+
+	return TRUE
