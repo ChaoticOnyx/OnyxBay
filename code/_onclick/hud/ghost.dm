@@ -9,19 +9,20 @@
 	using = new /atom/movable/screen/ghost/spawners_menu()
 	static_inventory += using
 
-	using = new /atom/movable/screen/ghost/follow()
-	static_inventory += using
-
 	using = new /atom/movable/screen/ghost/reenter_corpse()
 	static_inventory += using
 
-	using = new /atom/movable/screen/ghost/teleport()
-	static_inventory += using
 
 	using = new /atom/movable/screen/ghost/move_up()
 	static_inventory += using
 
 	using = new /atom/movable/screen/ghost/move_down()
+	static_inventory += using
+
+	using = new /atom/movable/screen/ghost/follow()
+	static_inventory += using
+
+	using = new /atom/movable/screen/ghost/teleport()
 	static_inventory += using
 
 /datum/hud/ghost/show_hud(hud_style = 0)
