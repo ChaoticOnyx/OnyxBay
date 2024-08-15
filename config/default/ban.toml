@@ -10,3 +10,6 @@ mod_tempban_max = 1440
 
 ## Maximum mod job tempban duration (in minutes)
 mod_job_tempban_max = 1440
+
+## Minimal playtime for round bans (in minutes)
+round_minimal_playtime = 30

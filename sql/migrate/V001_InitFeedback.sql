@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `erro_ban` (
   `reason` text NOT NULL,
   `job` varchar(32) DEFAULT NULL,
   `duration` int NOT NULL,
-  `rounds` int DEFAULT NULL,
+  `rounds` tinyint(1) NOT NULL DEFAULT 0,
   `expiration_time` datetime NOT NULL,
   `ckey` varchar(32) NOT NULL,
   `computerid` varchar(32) NOT NULL,
@@ -124,6 +124,8 @@ CREATE TABLE IF NOT EXISTS `erro_ban` (
   `unbanned_computerid` varchar(32) DEFAULT NULL,
   `unbanned_ip` varchar(32) DEFAULT NULL,
   `server_id` varchar(32) NOT NULL,
+  `luck_level` int DEFAULT NULL,
+  `luck_type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`,`server_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=91043 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPACT;
 

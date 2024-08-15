@@ -71,7 +71,8 @@
 				expiration_time,
 				duration,
 				bantime,
-				bantype
+				bantype,
+				rounds
 			FROM
 				erro_ban
 			WHERE
@@ -103,6 +104,7 @@
 			var/duration = query.item[7]
 			var/bantime = query.item[8]
 			var/bantype = query.item[9]
+			var/rounds = query.item[10]
 
 			var/expires = ""
 			if(text2num(duration) > 0)
@@ -115,6 +117,10 @@
 			var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires][appeal]"
 
 			key_cache[key] = 0
+
+			if (rounds)
+				to_chat(key, "Your ban is expiring in [duration] rounds \n "+FONT_LARGE(SPAN_NOTICE("Round is counted as played if you were playing for at least [config.ban.round_minimal_playtime] minutes.")))
+
 			return list("reason"="[bantype]", "desc"="[desc]")
 
 		if (failedcid)

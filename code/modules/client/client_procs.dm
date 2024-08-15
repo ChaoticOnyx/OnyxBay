@@ -731,55 +731,120 @@
 			return luck_rnd
 
 /client/proc/load_luck()
-	var/json_file = file("data/players/[ckey]/luck.json")
-	if(!fexists(json_file))
+	if(!establish_db_connection())
+		error("Ban database connection failure.")
+		log_misc("Ban database connection failure.")
 		return
-	var/list/luck = json_decode(file2text(json_file))
 
-	for(var/lucktype in luck)
-		var/level = luck[lucktype]["level"]
-		switch(lucktype)
+	var/DBQuery/query = sql_query({"
+			SELECT
+				luck_level,
+				luck_type
+			FROM
+				erro_ban
+			WHERE
+				(ckey = $ckeytext)
+				AND
+				(
+					bantype = 'LUCK_PERMABAN'
+					OR
+					bantype = 'LUCK_TEMPBAN'
+				)
+				AND
+				isnull(unbanned)
+				[isnull(config.general.server_id) ? "" : " AND server_id = $server_id"]
+			"}, dbcon, list(ckeytext = src.ckey, server_id = config.general.server_id))
+
+	while(query.NextRow())
+		var/luck_level =  text2num(query.item[1])
+		var/luck_type = query.item[2]
+		switch(luck_type)
 			if(LUCK_CHECK_GENERAL)
-				luck_general = level
+				luck_general =luck_level
 			if(LUCK_CHECK_COMBAT)
-				luck_combat = level
+				luck_combat = luck_level
 			if(LUCK_CHECK_ENG)
-				luck_eng = level
+				luck_eng = luck_level
 			if(LUCK_CHECK_MED)
-				luck_med = level
+				luck_med = luck_level
 			if(LUCK_CHECK_RND)
-				luck_rnd = level
+				luck_rnd = luck_level
 
-/client/proc/write_luck(lucktype, luck_level, duration)
-	var/json_file = file("data/players/[ckey]/luck.json")
-	var/list/to_send = list()
-	if(!fexists(json_file))
-		WRITE_FILE(json_file, "{}")
-	else
-		to_send = json_decode(file2text(json_file))
-	to_send[lucktype] = list(
-		"level" = luck_level,
-		"rounds_left" = duration,
-	)
-	listclearnulls(to_send)
-	fdel(json_file)
-	WRITE_FILE(json_file, json_encode(to_send))
+
+
+/client/proc/write_luck(lucktype, luck_level, duration=-1, admin, reason)
+	if(!establish_db_connection())
+		error("Ban database connection failure.")
+		log_misc("Ban database connection failure.")
+		return
+
+	var/datum/admins/admin_datum = admin
+	var/bantype = BANTYPE_PERMA_LUCKBAN
+	if(duration!=-1)
+		bantype = BANTYPE_TEMP_LUCKBAN
+
+	admin_datum.DB_ban_record(bantype,src.mob,duration,reason,null,TRUE,src.ckey,null,src.computer_id,luck_level,lucktype)
 	load_luck()
 
 /client/proc/update_luck()
-	var/json_file = file("data/players/[ckey]/luck.json")
-	var/list/to_send = list()
-	if(!fexists(json_file))
-		WRITE_FILE(json_file, "{}")
-	else
-		to_send = json_decode(file2text(json_file))
+	if(!establish_db_connection())
+		error("Ban database connection failure.")
+		log_misc("Ban database connection failure.")
+		return
 
-	for(var/lucktype in to_send)
-		var/list/luck = to_send[lucktype]
-		luck["rounds_left"]--
-		if(luck["rounds_left"] <= 0)
-			to_send -= lucktype
+	var/DBQuery/query = sql_query({"
+			SELECT
+				id,
+				duration,
+				rounds
+			FROM
+				erro_ban
+			WHERE
+				(ckey = $ckeytext)
+				AND
+				bantype = 'LUCK_TEMPBAN'
+				AND
+				isnull(unbanned)
+				[isnull(config.general.server_id) ? "" : " AND server_id = $server_id"]
+			"}, dbcon, list(ckeytext = src.ckey, server_id = config.general.server_id))
 
-	fdel(json_file)
-	listclearnulls(to_send)
-	WRITE_FILE(json_file, json_encode(to_send))
+	while(query.NextRow())
+		var/id = text2num(query.item[1])
+		var/duration = text2num(query.item[2])
+		var/isRounds = text2num(query.item[3])
+		if(!isRounds)
+			return
+		if(duration>1)
+			sql_query({"
+				UPDATE
+					erro_ban
+				SET
+					duration = $duration
+				WHERE
+					id = $id
+					AND
+					ckey = $ckeytext
+					AND
+					bantype = 'LUCK_TEMPBAN'
+					AND
+					isnull(unbanned)
+					[isnull(config.general.server_id) ? "" : " AND server_id = $server_id"]
+				"}, dbcon, list(id = id, duration = duration-1, ckeytext = src.ckey, server_id = config.general.server_id))
+		else
+			sql_query({"
+				UPDATE
+					erro_ban
+				SET
+					unbanned = 1,
+					unbanned_reason = 'Expired',
+					unbanned_datetime = Now()
+				WHERE
+					id = $id
+					AND
+					ckey = $ckeytext
+					AND
+					bantype = 'LUCK_TEMPBAN'
+					AND
+					isnull(unbanned)
+					[isnull(config.general.server_id) ? "" : " AND server_id = $server_id"]
+				"}, dbcon, list(id = id, ckeytext = src.ckey, server_id = config.general.server_id))
