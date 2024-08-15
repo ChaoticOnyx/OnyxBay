@@ -1,5 +1,5 @@
 /datum/configuration_section/database
-	name = "db"
+	name = "database"
 	protection_state = PROTECTION_PRIVATE
 
 	// MySQL configuration
