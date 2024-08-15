@@ -10,11 +10,13 @@
 #define MUTE_ALL       0xFFFF
 
 // Some constants for DB_Ban
-#define BANTYPE_PERMA       1
-#define BANTYPE_TEMP        2
-#define BANTYPE_JOB_PERMA   3
-#define BANTYPE_JOB_TEMP    4
-#define BANTYPE_ANY_FULLBAN 5 // Used to locate stuff to unban.
+#define BANTYPE_PERMA       	1
+#define BANTYPE_TEMP        	2
+#define BANTYPE_JOB_PERMA   	3
+#define BANTYPE_JOB_TEMP    	4
+#define BANTYPE_ANY_FULLBAN 	5 // Used to locate stuff to unban.
+#define BANTYPE_PERMA_LUCKBAN 	6
+#define BANTYPE_TEMP_LUCKBAN  	7
 
 #define ROUNDSTART_LOGOUT_REPORT_TIME 6000 // Amount of time (in deciseconds) after the rounds starts, that the player disconnect report is issued.
 

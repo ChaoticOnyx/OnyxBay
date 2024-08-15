@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.2.5",
   "configurations": [
     {
       "type": "byond",
@@ -20,7 +20,8 @@
       "env": {
         "MODE": "dev",
         "ONYXBAY__GENERAL__SERVER_ID": "test"
-      }
+      },
+      "dreamDaemon": true
     },
     {
       "name": "Nano Watch",
