@@ -1,11 +1,11 @@
 /datum/configuration_section/mapping
 	name = "mapping"
 
-	var/preferable_engine = MAP_ENG_SINGULARITY
-	var/preferable_biodome = MAP_BIO_FOREST
-	var/preferable_bar = MAP_BAR_CLASSIC
-	var/derelicts_amount = MAP_DERELICTS_AMOUNT
-	var/list/allowed_maps = list()
+	var/preferable_engine
+	var/preferable_biodome
+	var/preferable_bar
+	var/derelicts_amount
+	var/list/allowed_maps
 
 /datum/configuration_section/mapping/load_data(list/data)
 

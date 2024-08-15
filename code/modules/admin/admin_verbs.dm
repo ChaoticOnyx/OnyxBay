@@ -196,7 +196,6 @@ var/list/admin_verbs_debug = list(
 	/client/proc/cmd_debug_tog_aliens,
 	/client/proc/air_report,
 	/client/proc/reload_admins,
-	/client/proc/reload_mentors,
 	/client/proc/print_random_map,
 	/client/proc/create_random_map,
 	/client/proc/apply_random_map,

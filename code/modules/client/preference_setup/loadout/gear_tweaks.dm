@@ -33,7 +33,7 @@
 	current_data.apply_to_item(I)
 
 /datum/gear_tweak/custom/tweak_description(description, metadata)
-	return current_data.item_desc ? current_data.item_desc : description
+	return description
 
 /*
 * Color adjustment

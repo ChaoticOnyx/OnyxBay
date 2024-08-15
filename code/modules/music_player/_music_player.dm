@@ -49,7 +49,6 @@ GLOBAL_LIST_EMPTY(music_players)
 	. = ..()
 	if(type == /obj/item/music_player)
 		log_and_message_admins("Something, or someone has tried create \"[src.type]\", which was prohibited since the specific path is not for the gameplay. It will be deleted.")
-		send2adminirc("Something, or someone has tried create \"[src.type]\", which was prohibited since the specific path is not for the gameplay. It will be deleted.")
 		cell = null
 		tape = null
 		return INITIALIZE_HINT_QDEL

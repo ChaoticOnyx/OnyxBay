@@ -1,25 +1,25 @@
 /datum/configuration_section/log
 	name = "log"
 
-	var/say = TRUE
-	var/asay = TRUE
-	var/emote = TRUE
-	var/ooc = TRUE
-	var/whisper = TRUE
-	var/pda = TRUE
-	var/attack = TRUE
-	var/vote = TRUE
-	var/admin = TRUE
-	var/adminchat = TRUE
-	var/adminwarn = TRUE
-	var/access = TRUE
-	var/game = TRUE
-	var/debug = TRUE
-	var/debug_verbose = TRUE
-	var/hrefs = TRUE
-	var/runtime = TRUE
-	var/world_output = TRUE
-	var/story = TRUE
+	var/say
+	var/asay
+	var/emote
+	var/ooc
+	var/whisper
+	var/pda
+	var/attack
+	var/vote
+	var/admin
+	var/adminchat
+	var/adminwarn
+	var/access
+	var/game
+	var/debug
+	var/debug_verbose
+	var/hrefs
+	var/runtime
+	var/world_output
+	var/story
 
 /datum/configuration_section/log/load_data(list/data)
 	CONFIG_LOAD_BOOL(say, data["say"])

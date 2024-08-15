@@ -140,10 +140,6 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 	to_chat(src, SPAN("notice linkify", "PM to-<b>Staff</b> (<a href='?src=\ref[usr];close_ticket=\ref[ticket]'>CLOSE</a>): [original_msg]"), type = MESSAGE_TYPE_ADMINPM)
 	var/admin_number_present = GLOB.admins.len - admin_number_afk
 	log_admin("HELP: [key_name(src)]: [original_msg] - heard by [admin_number_present] non-AFK admins.")
-	if(admin_number_present <= 0)
-		adminmsg2adminirc(src, null, "[html_decode(original_msg)] - !![admin_number_afk ? "All admins AFK ([admin_number_afk])" : "No admins online"]!!")
-	else
-		adminmsg2adminirc(src, null, "[html_decode(original_msg)]")
 
 	GLOB.indigo_bot.chat_webhook(config.indigo_bot.ahelp_webhook, "**[src.ckey]:** [original_msg] *(heard by [admin_number_present] non-AFK admins)*")
 

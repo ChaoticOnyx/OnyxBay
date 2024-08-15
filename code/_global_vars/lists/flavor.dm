@@ -11,10 +11,10 @@ GLOBAL_LIST_INIT(robot_module_types, list(
 )) // This shouldn't be a static list. Am I the only one who cares about extendability around here?
 
 // Noises made when hit while typing.
-GLOBAL_LIST_INIT(hit_appends, world.file2list("config/translation/hit_appends.txt"))
+GLOBAL_LIST_INIT(hit_appends, world.file2list("strings/translation/hit_appends.txt"))
 
 // Noises made by lizards when disturbed.
-GLOBAL_LIST_INIT(lizard_noises, world.file2list("config/translation/lizard_noises.txt"))
+GLOBAL_LIST_INIT(lizard_noises, world.file2list("strings/translation/lizard_noises.txt"))
 
 // Some scary sounds.
 GLOBAL_LIST_INIT(scarySounds, list(

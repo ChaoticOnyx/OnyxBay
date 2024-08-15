@@ -37,6 +37,7 @@
 #define R_HOST          0x8000 //higher than this will overflow
 #define R_INVESTIGATE   (R_ADMIN|R_MOD)
 
+#define R_ALL (R_BUILDMODE | R_ADMIN | R_BAN | R_FUN | R_SERVER | R_DEBUG | R_POSSESS | R_PERMISSIONS | R_STEALTH | R_REJUVINATE | R_VAREDIT | R_SOUNDS | R_SPAWN | R_MOD | R_MENTOR | R_HOST)
 #define R_MAXPERMISSION 0x8000 // This holds the maximum value for a permission. It is used in iteration, so keep it updated.
 
 #define TICKET_CLOSED 0   // Ticket has been resolved or declined

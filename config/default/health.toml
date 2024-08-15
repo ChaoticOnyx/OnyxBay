@@ -1,0 +1,24 @@
+[health]
+## level of health at which a mob becomes dead
+health_threshold_dead = -100
+
+## Determines whether bones can be broken through excessive damage to the organ.
+bones_can_break = true
+
+## Determines whether limbs can be amputated through excessive damage to the organ.
+limbs_can_break = true
+
+## Set to true to enable organ decay outside of a body or storage item.
+organs_can_decay = false
+
+## Multiplier which enables organs to take more damage before bones breaking or limbs being destroyed.
+## 1.0 means normal, 0.5 means half.
+organ_health_multiplier = 0.9
+
+## Multiplier which influences how fast organs regenerate naturally.
+## 1.0 means normal, 0.25 means half.
+organ_regeneration_multiplier = 0.25
+
+## Multiplier which influences spillover modifier.
+## 1.0 means normal, 0.5 means half.
+organ_damage_spillover_multiplier = 0.5

@@ -1026,13 +1026,13 @@ var/global/floorIsLava = 0
 
 	if(!check_rights(R_SPAWN))	return
 
-	var/owner = input("Select a ckey.", "Spawn Custom Item") as null|anything in custom_items
-	if(!owner|| !custom_items[owner])
+	var/owner = input("Select a ckey.", "Spawn Custom Item") as null|anything in config.custom.items
+	if(!owner|| !config.custom.items[owner])
 		return
 
-	var/list/possible_items = custom_items[owner]
+	var/list/possible_items = config.custom.items[owner]
 	var/datum/custom_item/item_to_spawn = input("Select an item to spawn.", "Spawn Custom Item") as null|anything in possible_items
-	if(!item_to_spawn || !item_to_spawn.is_valid(usr))
+	if(!item_to_spawn)
 		return
 
 	item_to_spawn.spawn_item(get_turf(usr))
@@ -1043,21 +1043,18 @@ var/global/floorIsLava = 0
 	set desc = "Check the custom item list."
 	set name = "Check Custom Items"
 
-	if(!check_rights(R_SPAWN))	return
-
-	if(!custom_items)
-		to_chat(usr, "Custom item list is null.")
+	if(!check_rights(R_SPAWN))
 		return
 
-	if(!custom_items.len)
+	if(!length(config.custom.items))
 		to_chat(usr, "Custom item list not populated.")
 		return
 
-	for(var/assoc_key in custom_items)
+	for(var/assoc_key in config.custom.items)
 		to_chat(usr, "[assoc_key] has:")
-		var/list/current_items = custom_items[assoc_key]
+		var/list/current_items = config.custom.items[assoc_key]
 		for(var/datum/custom_item/item in current_items)
-			to_chat(usr, "- name: [item.name] icon: [item.item_icon] path: [item.item_path] desc: [item.item_desc]")
+			to_chat(usr, "- path: [item.item_path] patreon_type: [item.patreon_type] req_job: [json_encode(item.req_job)] flags: [json_encode(item.flags)]")
 
 /datum/admins/proc/spawn_plant(seedtype in SSplants.seeds)
 	set category = "Debug"

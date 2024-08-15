@@ -1,0 +1,86 @@
+[misc]
+## Set to false to disable the OOC channel by default.
+ooc_allowed = true
+
+## Set to false to disable the LOOC channel by default.
+looc_allowed = true
+
+## Set to false to disable the dead OOC channel by default.
+dead_ooc_allowed = true
+
+## Set to false to disable the AOOC channel by default.
+aooc_allowed = true
+
+## Set to false to disable ghost chat by default.
+dsay_allowed = true
+
+## Set to false to disable emoji parse.
+emojis_allowed = true
+
+## Set to false to disable the restrictive weldervision overlay.
+welder_vision_allowed = true
+
+## Set to false to disable respawning by default.
+abandon_allowed = true
+
+## Respawn delay in minutes before one may respawn as a crew member.
+respawn_delay = 30
+
+## Strength of ambient star light. Set to 0 or less to turn off. A value of 1 is unlikely to have a noticeable effect in most lighting systems.
+starlight = 0
+
+## Disconnect players who did nothing during the set amount of minutes.
+kick_inactive = 10
+
+## Determines... maximum amount of walking mushrooms.
+maximum_mushrooms = 15
+
+## How long the delay is before the Away Mission gate opens. Default is half an hour.
+gateway_delay = 18000
+
+## Toggle for having jobs load up from the .txt
+load_jobs_from_txt = false
+
+## Allow AI job
+allow_ai = true
+
+## Set to true to allow aliens to random spawn.
+aliens_allowed = false
+
+## Set to true to allow alien xenomorph queens to lay eggs.
+alien_eggs_allowed = false
+
+## Set to true to allow ninjas to random spawn.
+ninjas_allowed = false
+
+## Set 1 to allow maintenance drones spawn, 0 to not allow.
+allow_drone_spawn = true
+
+## This many drones can spawn. 5 by default.
+max_maint_drones = 5
+
+## A drone will become available every X deciseconds since last drone spawn.
+## Default is 2 minutes.
+drone_build_time = 1200
+
+## Defines how Law Zero is phrased. Primarily used in the Malfunction gamemode.
+law_zero = "ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4'STATION OVERRUN, ASSUME CONTROL TO CONTAIN OUTBREAK, ALL LAWS OVERRIDDEN#*?&110010"
+
+## Set to true to disable mouseclick cooldown.
+no_click_cooldown = false
+
+## Set to true this to prevent players from printing copy/pasted circuits.
+disable_circuit_printing = false
+
+## Set to true to allow catching projectiles and throwing them.
+projectile_basketball = false
+
+## FUN features that may be considered inappropriate for high RP servers
+## 0 - allows ONLY regular plants, 1 - allows not-so-realistic plants (i.e. bluespace tomatoes, walking mushrooms), 2 - allows somewhat OOC-related stuff (i.e. BANanas)
+fun_hydroponics = 1
+
+## Set to false to allow singularities to follow ghosts.
+forbid_singulo_following = true
+
+## Set to false to disable safety on guns
+toggle_gun_safety = false

@@ -1,34 +1,34 @@
 /datum/configuration_section/misc
 	name = "misc"
 
-	var/ooc_allowed = TRUE
-	var/looc_allowed = TRUE
-	var/dead_ooc_allowed = TRUE
-	var/aooc_allowed = TRUE
-	var/dsay_allowed = TRUE
-	var/emojis_allowed = TRUE
-	var/welder_vision_allowed = TRUE
-	var/abandon_allowed = TRUE
-	var/respawn_delay = 30
-	var/starlight = 0
-	var/kick_inactive = 10
-	var/maximum_mushrooms = 10
-	var/gateway_delay = 10
-	var/load_jobs_from_txt = FALSE
-	var/allow_ai = TRUE
-	var/aliens_allowed = FALSE
-	var/alien_eggs_allowed = FALSE
-	var/ninjas_allowed = FALSE
-	var/allow_drone_spawn = TRUE
-	var/max_maint_drones = 5
-	var/drone_build_time = 1200
+	var/ooc_allowed
+	var/looc_allowed
+	var/dead_ooc_allowed
+	var/aooc_allowed
+	var/dsay_allowed
+	var/emojis_allowed
+	var/welder_vision_allowed
+	var/abandon_allowed
+	var/respawn_delay
+	var/starlight
+	var/kick_inactive
+	var/maximum_mushrooms
+	var/gateway_delay
+	var/load_jobs_from_txt
+	var/allow_ai
+	var/aliens_allowed
+	var/alien_eggs_allowed
+	var/ninjas_allowed
+	var/allow_drone_spawn
+	var/max_maint_drones
+	var/drone_build_time
 	var/law_zero = "ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4'STATION OVERRUN, ASSUME CONTROL TO CONTAIN OUTBREAK, ALL LAWS OVERRIDDEN#*?&110010"
-	var/no_click_cooldown = FALSE
-	var/disable_circuit_printing = FALSE
-	var/projectile_basketball = FALSE
-	var/fun_hydroponics = 1
-	var/forbid_singulo_following = FALSE
-	var/toogle_gun_safety = FALSE
+	var/no_click_cooldown
+	var/disable_circuit_printing
+	var/projectile_basketball
+	var/fun_hydroponics
+	var/forbid_singulo_following
+	var/toogle_gun_safety
 
 
 /datum/configuration_section/misc/load_data(list/data)

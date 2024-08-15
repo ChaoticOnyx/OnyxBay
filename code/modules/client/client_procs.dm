@@ -197,6 +197,13 @@
 			holder = admin_datum
 			GLOB.admins += src
 		admin_datum.owner = src
+	else if(config.admin.promote_localhost)
+		var/static/localhost_addresses = list("127.0.0.1", "::1")
+
+		if(isnull(address) || (address in localhost_addresses))
+			var/datum/admins/A = new /datum/admins("Host", R_ALL, ckey)
+
+			A.associate(src)
 
 	else if((config.multiaccount.panic_bunker != 0) && (get_player_age(ckey) < config.multiaccount.panic_bunker))
 		var/player_age = get_player_age(ckey)
@@ -330,7 +337,6 @@
 	return FALSE
 
 /client/proc/log_client_to_db()
-
 	if(IsGuestKey(src.key))
 		return
 

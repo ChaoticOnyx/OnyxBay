@@ -13,7 +13,7 @@
 		"presets" = list()
 	)
 
-	for(var/preset_name in SSevents.event_presets)
+	for(var/preset_name in config.events.preset)
 		data["presets"] += preset_name
 
 	for(var/datum/event/E  in SSevents.scheduled_events)

@@ -5,14 +5,22 @@
       "type": "byond",
       "request": "launch",
       "name": "DS Debug",
-      "dmb": "${workspaceFolder}/${command:CurrentDMB}"
+      "dmb": "${workspaceFolder}/${command:CurrentDMB}",
+      "env": {
+        "MODE": "dev",
+        "ONYXBAY__GENERAL__SERVER_ID": "test"
+      }
     },
     {
       "type": "byond",
       "request": "launch",
       "name": "Build & DS Debug",
       "preLaunchTask": "dm: build - ${command:CurrentDME}",
-      "dmb": "${workspaceFolder}/${command:CurrentDMB}"
+      "dmb": "${workspaceFolder}/${command:CurrentDMB}",
+      "env": {
+        "MODE": "dev",
+        "ONYXBAY__GENERAL__SERVER_ID": "test"
+      }
     },
     {
       "name": "Nano Watch",

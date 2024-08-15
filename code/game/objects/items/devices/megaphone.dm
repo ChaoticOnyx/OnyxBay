@@ -1,6 +1,6 @@
 #define MEGAPHONE_COOLDOWN 2 SECONDS
 
-GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphone_insults.txt"))
+GLOBAL_LIST_INIT(megaphone_insults, world.file2list("strings/translation/megaphone_insults.txt"))
 
 /obj/item/device/megaphone
 	name = "megaphone"

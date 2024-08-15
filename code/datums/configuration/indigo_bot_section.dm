@@ -1,5 +1,5 @@
 /datum/configuration_section/indigo_bot
-	name = "indigo_bot"
+	name = "indigo-bot"
 	protection_state = PROTECTION_PRIVATE
 
 	var/secret = null
