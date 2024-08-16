@@ -17,15 +17,15 @@
 /datum/mob_ai/pet/New()
 	..()
 	if(!length(text_to_command))
-		for(var/command_text in world.file2list("config/names/animal_commands/stop.txt"))
+		for(var/command_text in world.file2list("strings/names/animal_commands/stop.txt"))
 			if(!command_text)
 				continue
 			text_to_command[command_text] = COMMAND_STOP
-		for(var/command_text in world.file2list("config/names/animal_commands/follow.txt"))
+		for(var/command_text in world.file2list("strings/names/animal_commands/follow.txt"))
 			if(!command_text)
 				continue
 			text_to_command[command_text] = COMMAND_FOLLOW
-		for(var/command_text in world.file2list("config/names/animal_commands/wander.txt"))
+		for(var/command_text in world.file2list("strings/names/animal_commands/wander.txt"))
 			if(!command_text)
 				continue
 			text_to_command[command_text] = COMMAND_WANDERING

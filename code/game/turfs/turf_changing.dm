@@ -18,8 +18,19 @@
 		T.update_icon()
 
 //Creates a new turf
-/turf/proc/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
-	ASSERT(N)
+/turf/proc/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE, keep_air = FALSE)
+	if(!ispath(N))
+		CRASH("Wrong turf-type submitted to ChangeTurf()")
+
+	// Spawning space in the middle of a multiz stack should just spawn an open turf.
+	if(ispath(N, /turf/space))
+		var/turf/below = GetBelow(src)
+		if(istype(below) && !isspaceturf(below))
+			var/area/A = get_area(src)
+			N = A?.open_turf || open_turf_type || /turf/simulated/open
+
+	if (!(atom_flags & ATOM_FLAG_INITIALIZED))
+		return new N(src)
 
 	// This makes sure that turfs are not changed to space when one side is part of a zone
 	if(ispath(N, /turf/space))
@@ -34,8 +45,17 @@
 	var/old_affecting_lights = affecting_lights
 	var/old_lighting_overlay = lighting_overlay
 	var/old_corners = corners
+	var/old_outside = is_outside
+	var/old_is_open = is_open()
+	var/old_zone_membership_candidate = zone_membership_candidate
 
-//	log_debug("Replacing [src.type] with [N]")
+	var/datum/gas_mixture/old_air
+	if(keep_air)
+		if(zone)
+			c_copy_air()
+			old_air = air
+		else
+			old_air = return_air()
 
 	changing_turf = TRUE
 
@@ -72,6 +92,15 @@
 
 	var/turf/simulated/W = new N(src)
 
+	// Update ZAS, atmos and fire.
+	if(W.can_inherit_air)
+		W.air = old_air
+	if(old_fire)
+		if(W.simulated)
+			W.fire = old_fire
+		else if(old_fire)
+			qdel(old_fire)
+
 	comp_lookup = old_lookups
 	datum_components = old_components
 	signal_procs = old_signals
@@ -81,14 +110,6 @@
 
 	W.opaque_counter = old_opaque_counter
 	W.RecalculateOpacity()
-
-	if(ispath(N, /turf/simulated))
-		if(old_fire)
-			fire = old_fire
-		if(istype(W, /turf/simulated/floor))
-			W.RemoveLattice()
-	else if(old_fire)
-		old_fire.RemoveFire()
 
 	if(tell_universe)
 		GLOB.universe.OnTurfChange(W)
@@ -118,6 +139,26 @@
 				lighting_build_overlay()
 			else
 				lighting_clear_overlay()
+
+	// In case the turf isn't marked for update in Initialize (e.g. space), we call this to create any unsimulated edges necessary.
+	if(W.zone_membership_candidate != old_zone_membership_candidate)
+		SSair.mark_for_update(src)
+
+	// we check the var rather than the proc, because area outside values usually shouldn't be set on turfs
+	W.last_outside_check = OUTSIDE_UNCERTAIN
+	if(W.is_outside != old_outside)
+		// This will check the exterior atmos participation of this turf and all turfs connected by open space below.
+		W.set_outside(old_outside)
+	else if(HasBelow(z) && (W.is_open() != old_is_open)) // Otherwise, we do it here if the open status of the turf has changed.
+		var/turf/checking = src
+		while(HasBelow(checking.z))
+			checking = GetBelow(checking)
+			if(!isturf(checking))
+				break
+
+			checking.update_external_atmos_participation()
+			if(!checking.is_open())
+				break
 
 	for(var/turf/T in RANGE_TURFS(1, src))
 		T.update_icon()

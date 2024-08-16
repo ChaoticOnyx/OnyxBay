@@ -136,22 +136,24 @@
 	#define OBFUSCATION_LAYER           5.2
 	#define BASE_AREA_LAYER             999
 
-#define OBSERVER_PLANE             2
+#define RUNECHAT_PLANE             2
 
-#define LIGHTING_PLANE             3 // For Lighting. - The highest plane (ignoring all other even higher planes)
+#define OBSERVER_PLANE             3
+
+#define LIGHTING_PLANE             4 // For Lighting. - The highest plane (ignoring all other even higher planes)
 	#define LIGHTBULB_LAYER        0
 	#define LIGHTING_LAYER         1
 	#define ABOVE_LIGHTING_LAYER   2
 
-#define EFFECTS_ABOVE_LIGHTING_PLANE   4 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
+#define EFFECTS_ABOVE_LIGHTING_PLANE   5 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
 	#define EYE_GLOW_LAYER         1
 	#define BEAM_PROJECTILE_LAYER  2
 	#define SUPERMATTER_WALL_LAYER 3
 	#define SPLASH_TEXT_LAYER      4
 
-#define OBFUSCATION_PLANE				5 // AI
+#define OBFUSCATION_PLANE				6 // AI
 
-#define FULLSCREEN_PLANE                6 // for fullscreen overlays that do not cover the hud.
+#define FULLSCREEN_PLANE                7 // for fullscreen overlays that do not cover the hud.
 
 	#define FULLSCREEN_LAYER    0
 	#define DAMAGE_LAYER        1
@@ -159,7 +161,7 @@
 	#define BLIND_LAYER         3
 	#define CRIT_LAYER          4
 
-#define HUD_PLANE                    7
+#define HUD_PLANE                    8
 	#define UNDER_HUD_LAYER              0
 	#define HUD_BASE_LAYER               1
 	#define HUD_CLICKABLE_LAYER          2
@@ -168,7 +170,7 @@
 	#define HUD_HOLOMARKER_LAYER         5
 	#define HUD_HOLOMARKER_SELF_LAYER    6
 
-#define ABOVE_HUD_PLANE              8
+#define ABOVE_HUD_PLANE              9
 	#define ABOVE_HUD_LAYER              5
 
 /// This plane masks out lighting, to create an "emissive" effect for e.g glowing screens in otherwise dark areas.
@@ -189,6 +191,7 @@
 #define TURF_RENDERER 				 "TURF"
 #define GAME_RENDERER 				 "GAME"
 #define OBSERVERS_RENDERER 			 "OBSERVERS"
+#define RUNECHAT_RENDERER            "RUNECHAT"
 #define LIGHTING_RENDERER 			 "LIGHTING"
 #define ABOVE_LIGHTING_RENDERER 	 "ABOVE_LIGHTING"
 #define SCREEN_EFFECTS_RENDERER 	 "SCREEN_EFFECTS"

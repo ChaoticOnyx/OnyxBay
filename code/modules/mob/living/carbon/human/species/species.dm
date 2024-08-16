@@ -204,9 +204,9 @@
 	var/list/genders = list(MALE, FEMALE)
 
 	// Bump vars
-	var/bump_flag = HUMAN	// What are we considered to be when bumped?
-	var/push_flags = ~HEAVY	// What can we push?
-	var/swap_flags = ~HEAVY	// What can we swap place with?
+	var/bump_flag  = HUMAN            // What are we considered to be when bumped?
+	var/push_flags = ~HEAVY           // What can we push?
+	var/swap_flags = (~HEAVY) ^ ROBOT // What can we swap place with?
 
 	var/pass_flags = 0
 	var/breathing_sound = 'sound/voice/monkey.ogg'

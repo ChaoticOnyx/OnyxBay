@@ -10,11 +10,13 @@
 #define MUTE_ALL       0xFFFF
 
 // Some constants for DB_Ban
-#define BANTYPE_PERMA       1
-#define BANTYPE_TEMP        2
-#define BANTYPE_JOB_PERMA   3
-#define BANTYPE_JOB_TEMP    4
-#define BANTYPE_ANY_FULLBAN 5 // Used to locate stuff to unban.
+#define BANTYPE_PERMA       	1
+#define BANTYPE_TEMP        	2
+#define BANTYPE_JOB_PERMA   	3
+#define BANTYPE_JOB_TEMP    	4
+#define BANTYPE_ANY_FULLBAN 	5 // Used to locate stuff to unban.
+#define BANTYPE_PERMA_LUCKBAN 	6
+#define BANTYPE_TEMP_LUCKBAN  	7
 
 #define ROUNDSTART_LOGOUT_REPORT_TIME 6000 // Amount of time (in deciseconds) after the rounds starts, that the player disconnect report is issued.
 
@@ -37,6 +39,7 @@
 #define R_HOST          0x8000 //higher than this will overflow
 #define R_INVESTIGATE   (R_ADMIN|R_MOD)
 
+#define R_ALL (R_BUILDMODE | R_ADMIN | R_BAN | R_FUN | R_SERVER | R_DEBUG | R_POSSESS | R_PERMISSIONS | R_STEALTH | R_REJUVINATE | R_VAREDIT | R_SOUNDS | R_SPAWN | R_MOD | R_MENTOR | R_HOST)
 #define R_MAXPERMISSION 0x8000 // This holds the maximum value for a permission. It is used in iteration, so keep it updated.
 
 #define TICKET_CLOSED 0   // Ticket has been resolved or declined

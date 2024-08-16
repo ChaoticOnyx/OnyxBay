@@ -31,6 +31,7 @@
 		/obj/item/reagent_containers/vessel/can/space_up = 10,
 		/obj/item/reagent_containers/vessel/can/iced_tea = 10,
 		/obj/item/reagent_containers/vessel/can/grape_juice = 10,
+		/obj/item/reagent_containers/vessel/can/startrucks = 10,
 		/obj/item/reagent_containers/vessel/can/red_mule = 5
 		)
 
@@ -55,6 +56,7 @@
 		/obj/item/reagent_containers/vessel/can/space_up = 5,
 		/obj/item/reagent_containers/vessel/can/iced_tea = 8,
 		/obj/item/reagent_containers/vessel/can/grape_juice = 5,
+		/obj/item/reagent_containers/vessel/can/startrucks = 10,
 		/obj/item/reagent_containers/vessel/can/red_mule = 15
 		)
 

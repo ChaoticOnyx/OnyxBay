@@ -17,7 +17,7 @@
 
 	var/const/climb_time = 2 SECONDS
 	var/const/drag_time = 15 SECONDS
-	var/static/list/climbsounds = list('sound/effects/ladder.ogg','sound/effects/ladder2.ogg','sound/effects/ladder3.ogg','sound/effects/ladder4.ogg')
+	var/static/list/climbsounds = list('sound/effects/ladder1.ogg','sound/effects/ladder2.ogg','sound/effects/ladder3.ogg','sound/effects/ladder4.ogg')
 
 	var/static/radial_ladder_down = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_ladder_down")
 	var/static/radial_ladder_up = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_ladder_up")

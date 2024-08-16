@@ -1,0 +1,19 @@
+[external]
+## SQL storage switching.
+# sql_enabled = true
+
+## Password used for authorizing ircbot and other external tools.
+# comms_password = "pass"
+
+## Password used for authorizing external tools that can apply bans
+# ban_comms_password = "word"
+
+## Set a server location for world reboot. Don't include the byond://, just give the address and port.
+# server = "server.net:port"
+
+## Set a server URL for the IRC bot to use; like SERVER, don't include the byond://
+## Unlike SERVER, this one shouldn't break auto-reconnect
+# server_url = "server.net:port"
+
+## Export address where external tools that monitor logins are located
+# login_export_addr = "address"

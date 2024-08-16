@@ -37,6 +37,11 @@
 
 /datum/vampire/New(mob/_M)
 	..()
+	if(!istype(_M))
+		util_crash_with("Vampire datum was initialised without `var/my_mob`. Shit is fucked.")
+		qdel_self()
+		return
+
 	my_mob = _M
 	set_next_think(world.time + 1 SECOND)
 
@@ -122,6 +127,10 @@
 	if(vamp_status & VAMP_ISTHRALL)
 		return
 
+	if(!istype(my_mob))
+		util_crash_with("Vampire datum was initialised without `var/my_mob`. Shit is fucked.")
+		return
+
 	blood_usable = 200
 
 	my_mob.does_not_breathe = 1
@@ -131,6 +140,9 @@
 	my_mob.add_modifier(/datum/modifier/trait/low_metabolism)
 	my_mob.innate_heal = 0
 	set_up_colors()
+
+	for(var/obj/item/organ/external/E in my_mob.organs)
+		E.limb_flags &= ~ORGAN_FLAG_CAN_BREAK
 
 	for(var/datum/modifier/mod in my_mob.modifiers)
 		if(!isnull(mod.metabolism_percent))
@@ -152,6 +164,9 @@
 	my_mob.remove_modifiers_of_type(/datum/modifier/trait/low_metabolism, TRUE)
 	my_mob.innate_heal = 1
 	restore_colors()
+
+	for(var/obj/item/organ/external/E in my_mob.organs)
+		E.limb_flags |= ORGAN_FLAG_CAN_BREAK
 
 	var/obj/item/organ/internal/heart/O = my_mob.internal_organs_by_name[BP_HEART]
 	if(O)

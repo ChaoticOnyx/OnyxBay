@@ -1,0 +1,24 @@
+[link]
+## Wiki URL
+# wiki = "http://example.com"
+
+## Rules URL
+# rules = "http://example.com"
+
+## Backstory URL
+# backstory = "http://example.com"
+
+## Discord URL
+# discord = "http://example.com"
+
+## GitHub URL
+# github = "https://github.com/example-user/example-repository"
+
+## Forum URL
+# forum = "http://example.com"
+
+## Ban appeals URL - usually for a forum or wherever people should go to contact your admins.
+# banappeals = "http://example.com"
+
+## Boosty URL
+# boosty = "http://example.com"

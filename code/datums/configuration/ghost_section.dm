@@ -1,12 +1,12 @@
 /datum/configuration_section/ghost
 	name = "ghost"
 
-	var/allow_antag_hud = TRUE
-	var/antag_hud_restricted = TRUE
-	var/ghost_interaction = FALSE
-	var/ghosts_can_possess_animals = FALSE
-	var/allow_cult_ghostwriter = FALSE
-	var/req_cult_ghostwriter = 6
+	var/allow_antag_hud
+	var/antag_hud_restricted
+	var/ghost_interaction
+	var/ghosts_can_possess_animals
+	var/allow_cult_ghostwriter
+	var/req_cult_ghostwriter
 
 /datum/configuration_section/ghost/load_data(list/data)
 	CONFIG_LOAD_BOOL(allow_antag_hud, data["allow_antag_hud"])

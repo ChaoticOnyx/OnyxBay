@@ -1,0 +1,15 @@
+[ban]
+## Set to true if you want to use the SQL based banning system. The legacy systems use the files in the data folder. You need to set up your database to use the SQL based system.
+ban_legacy_system = true
+
+## Chooses whether mods have the ability to issue tempbans for jobs or not
+mods_can_job_tempban = true
+
+## Maximum mod tempban duration (in minutes)
+mod_tempban_max = 1440
+
+## Maximum mod job tempban duration (in minutes)
+mod_job_tempban_max = 1440
+
+## Minimal playtime for round bans (in minutes)
+round_minimal_playtime = 30

@@ -46,10 +46,10 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 /obj/item/gun/projectile/lawgiver/proc/init_voice_activators()
 	if(voice_activators_init_complete)
 		return
-	if(!fexists("config/names/lawgiver.txt"))
+	if(!fexists("strings/names/lawgiver.txt"))
 		CRASH("Lawgiver voice activators file not found")
 	voice_activators_init_complete = TRUE
-	var/list/voice_activators = world.file2list("config/names/lawgiver.txt")
+	var/list/voice_activators = world.file2list("strings/names/lawgiver.txt")
 	var/ind
 	for(ind = 1, ind <= length(GLOB.lawgiver_modes), ind++)
 		GLOB.lawgiver_modes[ind]["voice_activator"] = splittext(voice_activators[ind], ";")

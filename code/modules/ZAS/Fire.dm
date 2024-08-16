@@ -10,27 +10,25 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 /turf/var/obj/fire/fire = null
 
-//Some legacy definitions so fires can be started.
-/atom/proc/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-	return null
+/atom/movable/proc/is_burnable()
+	return FALSE
 
+/mob/is_burnable()
+	return simulated
 
 /turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
-
-
-/turf/simulated/hotspot_expose(exposed_temperature, exposed_volume, soh)
 	if(fire_protection > world.time-300)
 		return 0
 	if(locate(/obj/fire) in src)
 		return 1
+
 	var/datum/gas_mixture/air_contents = return_air()
-	if(!air_contents || exposed_temperature < PLASMA_MINIMUM_BURN_TEMPERATURE)
+	if(!air_contents || exposed_temperature < FLAMMABLE_GAS_MINIMUM_BURN_TEMPERATURE)
 		return 0
 
 	var/igniting = 0
 	var/obj/effect/decal/cleanable/liquid_fuel/liquid = locate() in src
-
-	if(air_contents.check_combustability(liquid))
+	if(air_contents.check_combustibility(liquid))
 		igniting = 1
 
 		create_fire(exposed_temperature)
@@ -39,7 +37,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /zone/proc/process_fire()
 	var/datum/gas_mixture/burn_gas = air.remove_ratio(vsc.fire_consuption_rate, fire_tiles.len)
 
-	var/firelevel = burn_gas.zburn(src, fire_tiles, force_burn = 1, no_check = 1)
+	var/firelevel = burn_gas.react(src, fire_tiles, force_burn = 1, no_check = 1)
 
 	air.merge(burn_gas)
 
@@ -52,7 +50,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 				fire_tiles -= T
 				fuel_objs -= fuel
 	else
-		for(var/turf/simulated/T in fire_tiles)
+		for(var/turf/T in fire_tiles)
 			if(istype(T.fire))
 				T.fire.RemoveFire()
 			T.fire = null
@@ -86,9 +84,6 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			qdel(fuel)
 
 /turf/proc/create_fire(fl)
-	return 0
-
-/turf/simulated/create_fire(fl)
 	if(fire)
 		fire.firelevel = max(fl, fire.firelevel)
 		return 1
@@ -123,12 +118,12 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /obj/fire/Process()
 	. = 1
 
-	var/turf/simulated/my_tile = loc
+	var/turf/my_tile = loc
 	if(!istype(my_tile) || !my_tile.zone)
 		if(my_tile && my_tile.fire == src)
 			my_tile.fire = null
 		RemoveFire()
-		return 1
+		return PROCESS_KILL
 
 	var/datum/gas_mixture/air_contents = my_tile.return_air()
 
@@ -151,7 +146,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	//spread
 	for(var/direction in GLOB.cardinal)
-		var/turf/simulated/enemy_tile = get_step(my_tile, direction)
+		var/turf/enemy_tile = get_step(my_tile, direction)
 
 		if(istype(enemy_tile))
 			if(my_tile.open_directions & direction) //Grab all valid bordering tiles
@@ -161,7 +156,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 				//if(!enemy_tile.zone.fire_tiles.len) TODO - optimize
 				var/datum/gas_mixture/acs = enemy_tile.return_air()
 				var/obj/effect/decal/cleanable/liquid_fuel/liquid = locate() in enemy_tile
-				if(!acs || !acs.check_combustability(liquid))
+				if(!acs || !acs.check_combustibility(liquid))
 					continue
 
 				//If extinguisher mist passed over the turf it's trying to spread to, don't spread and
@@ -205,8 +200,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 /obj/fire/Destroy()
 	RemoveFire()
-
-	. = ..()
+	return ..()
 
 /obj/fire/proc/RemoveFire()
 	var/turf/T = loc
@@ -217,16 +211,15 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		forceMove(null)
 	SSair.active_hotspots.Remove(src)
 
-
-/turf/simulated/var/fire_protection = 0 //Protects newly extinguished tiles from being overrun again.
+/// Protects newly extinguished tiles from being overrun again.
+/turf/var/fire_protection = 0
 /turf/proc/apply_fire_protection()
-/turf/simulated/apply_fire_protection()
 	fire_protection = world.time
 
 //Returns the firelevel
-/datum/gas_mixture/proc/zburn(zone/zone, force_burn, no_check = 0)
+/datum/gas_mixture/proc/react(zone/zone, force_burn, no_check = 0)
 	. = 0
-	if((temperature > PLASMA_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
+	if((temperature > FLAMMABLE_GAS_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
 
 		#ifdef FIREDBG
 		log_debug("***************** FIREDBG *****************")
@@ -267,7 +260,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		//determine how far the reaction can progress
 		var/reaction_limit = min(total_oxidizers*(FIRE_REACTION_FUEL_AMOUNT/FIRE_REACTION_OXIDIZER_AMOUNT), total_fuel) //stoichiometric limit
 
-		//vapour fuels are extremely volatile! The reaction progress is a percentage of the total fuel (similar to old zburn).)
+		//vapour fuels are extremely volatile! The reaction progress is a percentage of the total fuel (similar to old react).)
 		var/gas_firelevel = calculate_firelevel(gas_fuel, total_oxidizers, reaction_limit, volume*group_multiplier) / vsc.fire_firelevel_multiplier
 		var/min_burn = 0.30*volume*group_multiplier/CELL_VOLUME //in moles - so that fires with very small gas concentrations burn out fast
 		var/gas_reaction_progress = min(max(min_burn, gas_firelevel*gas_fuel)*FIRE_GAS_BURNRATE_MULT, gas_fuel)
@@ -311,14 +304,14 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 			adjust_gas(gas_data.burn_product[g], burned_fuel.gas[g])
 
 		if(zone)
-			zone.remove_liquidfuel(used_liquid_fuel, !check_combustability())
+			zone.remove_liquidfuel(used_liquid_fuel, !check_combustibility())
 
 		//calculate the energy produced by the reaction and then set the new temperature of the mix
 		temperature = (starting_energy + vsc.fire_fuel_energy_release * (used_gas_fuel + used_liquid_fuel)) / heat_capacity()
 		update_values()
 
 		#ifdef FIREDBG
-		log_debug("used_gas_fuel = [used_gas_fuel]; used_liquid_fuel = [used_liquid_fuel]; total = [used_fuel]")
+		log_debug("used_fuel = [used_fuel]; total = [used_fuel]")
 		log_debug("new temperature = [temperature]; new pressure = [return_pressure()]")
 		#endif
 
@@ -327,9 +320,10 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 /datum/gas_mixture/proc/check_recombustability(list/fuel_objs)
 	. = 0
 	for(var/g in gas)
-		if(gas_data.flags[g] & XGM_GAS_OXIDIZER && gas[g] >= 0.1)
-			. = 1
-			break
+		if(gas[g] >= 0.1)
+			if(gas_data.flags[g] & XGM_GAS_OXIDIZER)
+				. = 1
+				break
 
 	if(!.)
 		return 0
@@ -339,16 +333,18 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	. = 0
 	for(var/g in gas)
-		if(gas_data.flags[g] & XGM_GAS_FUEL && gas[g] >= 0.1)
-			. = 1
-			break
+		if(gas[g] >= 0.1)
+			if(gas_data.flags[g] & XGM_GAS_OXIDIZER)
+				. = 1
+				break
 
-/datum/gas_mixture/proc/check_combustability(obj/effect/decal/cleanable/liquid_fuel/liquid=null)
+/datum/gas_mixture/proc/check_combustibility(obj/effect/decal/cleanable/liquid_fuel/liquid = null)
 	. = 0
 	for(var/g in gas)
-		if(gas_data.flags[g] & XGM_GAS_OXIDIZER && QUANTIZE(gas[g] * vsc.fire_consuption_rate) >= 0.1)
-			. = 1
-			break
+		if(QUANTIZE(gas[g] * vsc.fire_consuption_rate) >= 0.1)
+			if(gas_data.flags[g] & XGM_GAS_OXIDIZER)
+				. = 1
+				break
 
 	if(!.)
 		return 0
@@ -358,28 +354,29 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 	. = 0
 	for(var/g in gas)
-		if(gas_data.flags[g] & XGM_GAS_FUEL && QUANTIZE(gas[g] * vsc.fire_consuption_rate) >= 0.1)
-			. = 1
-			break
+		if(QUANTIZE(gas[g] * vsc.fire_consuption_rate) >= 0.1)
+			if(gas_data.flags[g] & XGM_GAS_FUEL)
+				. = 1
+				break
 
 //returns a value between 0 and vsc.fire_firelevel_multiplier
 /datum/gas_mixture/proc/calculate_firelevel(total_fuel, total_oxidizers, reaction_limit, gas_volume)
 	//Calculates the firelevel based on one equation instead of having to do this multiple times in different areas.
 	var/firelevel = 0
 
-	var/total_combustables = (total_fuel + total_oxidizers)
-	var/active_combustables = (FIRE_REACTION_OXIDIZER_AMOUNT/FIRE_REACTION_FUEL_AMOUNT + 1)*reaction_limit
+	var/total_combustibles = (total_fuel + total_oxidizers)
+	var/active_combustibles = (FIRE_REACTION_OXIDIZER_AMOUNT/FIRE_REACTION_FUEL_AMOUNT + 1)*reaction_limit
 
-	if(total_moles && total_combustables > 0)
+	if(total_combustibles > 0 && total_moles > 0 && group_multiplier > 0)
 		//slows down the burning when the concentration of the reactants is low
-		var/damping_multiplier = min(1, active_combustables / (total_moles/group_multiplier))
+		var/damping_multiplier = min(1, active_combustibles / (total_moles/group_multiplier))
 
 		//weight the damping mult so that it only really brings down the firelevel when the ratio is closer to 0
 		damping_multiplier = 2*damping_multiplier - (damping_multiplier*damping_multiplier)
 
 		//calculates how close the mixture of the reactants is to the optimum
 		//fires burn better when there is more oxidizer -- too much fuel will choke the fire out a bit, reducing firelevel.
-		var/mix_multiplier = 1 / (1 + (5 * ((total_fuel / total_combustables) ** 2)))
+		var/mix_multiplier = 1 / (1 + (5 * ((total_fuel / total_combustibles) ** 2)))
 
 		#ifdef FIREDBG
 		ASSERT(damping_multiplier <= 1)
@@ -393,9 +390,9 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 
 /mob/living/proc/FireBurn(firelevel, last_temperature, pressure)
-	var/mx = 5 * firelevel/vsc.fire_firelevel_multiplier * min(pressure / ONE_ATMOSPHERE, 1)
-	apply_damage(2.5*mx, BURN)
-
+	var/mx = 5 * firelevel / vsc.fire_firelevel_multiplier * min(pressure / ONE_ATMOSPHERE, 1)
+	apply_damage(2.5 * mx, BURN)
+	return mx
 
 /mob/living/carbon/human/FireBurn(firelevel, last_temperature, pressure)
 	//Burns mobs due to fire. Respects heat transfer coefficients on various body parts.
@@ -413,7 +410,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 		if(l_hand == C || r_hand == C)
 			continue
 
-		if( C.max_heat_protection_temperature >= last_temperature )
+		if(C.max_heat_protection_temperature >= last_temperature )
 			if(C.body_parts_covered & HEAD)
 				head_exposure = 0
 			if(C.body_parts_covered & UPPER_TORSO)
@@ -436,3 +433,6 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	apply_damage(0.6*mx*legs_exposure,  BURN, BP_R_LEG, 0, 0, "Fire")
 	apply_damage(0.4*mx*arms_exposure,  BURN, BP_L_ARM, 0, 0, "Fire")
 	apply_damage(0.4*mx*arms_exposure,  BURN, BP_R_ARM, 0, 0, "Fire")
+
+	//return a truthy value of whether burning actually happened
+	return mx * (head_exposure + chest_exposure + groin_exposure + legs_exposure + arms_exposure)

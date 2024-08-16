@@ -1,16 +1,16 @@
 /datum/configuration_section/vote
 	name = "vote"
 
-	var/allow_vote_restart = TRUE
-	var/allow_vote_mode = TRUE
-	var/allow_extra_antags = FALSE
-	var/delay = 6000
-	var/period = 600
-	var/autotransfer_initial = 108000
-	var/autotransfer_interval = 36000
-	var/autogamemode_timeleft = 100
-	var/no_dead_vote = FALSE
-	var/default_no_vote = TRUE
+	var/allow_vote_restart
+	var/allow_vote_mode
+	var/allow_extra_antags
+	var/delay
+	var/period
+	var/autotransfer_initial
+	var/autotransfer_interval
+	var/autogamemode_timeleft
+	var/no_dead_vote
+	var/default_no_vote
 
 /datum/configuration_section/vote/load_data(list/data)
 	CONFIG_LOAD_BOOL(allow_vote_restart, data["allow_vote_restart"])

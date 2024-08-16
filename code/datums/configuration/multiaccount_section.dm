@@ -1,11 +1,11 @@
 /datum/configuration_section/multiaccount
 	name = "multiaccount"
 
-	var/panic_bunker = FALSE
-	var/panic_server_address = null
-	var/panic_server_name = null
-	var/eams = FALSE
-	var/eams_blocks_ooc = FALSE
+	var/panic_bunker
+	var/panic_server_address
+	var/panic_server_name
+	var/eams
+	var/eams_blocks_ooc
 
 /datum/configuration_section/multiaccount/load_data(list/data)
 	CONFIG_LOAD_BOOL(panic_bunker, data["panic_bunker"])

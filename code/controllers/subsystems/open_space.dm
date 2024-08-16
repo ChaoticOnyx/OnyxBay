@@ -74,6 +74,8 @@ SUBSYSTEM_DEF(open_space)
 	. = ..()
 	SSopen_space.add_turf(src)
 
+/turf/simulated/open/is_open()
+	return TRUE
 
 /obj/on_update_icon()
 	. = ..()

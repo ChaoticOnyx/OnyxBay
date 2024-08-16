@@ -1,0 +1,507 @@
+"ac" = (/turf/simulated/shuttle/wall{icon_state = "whiteship"},/area/polarplanet/shuttle/arrival/station)
+"ap" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"av" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"aF" = (/obj/machinery/vending/snack,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"aQ" = (/obj/effect/floor_decal/industrial/warning,/obj/effect/floor_decal/industrial/caution/yellow{dir = 1},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"aY" = (/obj/item/clothing/suit/storage/hooded/wintercoat,/obj/item/clothing/suit/storage/hooded/wintercoat,/obj/structure/table/rack,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"ba" = (/obj/machinery/telecomms/server/presets/common,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"bb" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{d2 = 8; dir = 1; icon_state = "0-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"bd" = (/obj/machinery/telecomms/processor/preset_two,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"bj" = (/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/obj/effect/floor_decal/corner/alt/red{dir = 6},/obj/structure/bed/chair{dir = 8},/obj/machinery/light{dir = 4},/obj/machinery/camera/network/telecom{c_tag = "Tram Hub - Security Room"; dir = 1},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"bB" = (/obj/machinery/light/small/red,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"bE" = (/obj/item/caution/cone,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"bJ" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"bM" = (/obj/random/trash,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"bN" = (/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"bQ" = (/obj/structure/bed/chair/blue,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"bS" = (/turf/simulated/shuttle/wall{icon_state = "whiteship_t"; dir = 4},/area/polarplanet/shuttle/arrival/station)
+"bU" = (/obj/machinery/atmospherics/pipe/manifold/visible{dir = 1},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"bW" = (/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"cm" = (/obj/machinery/door/airlock/maintenance_hatch{name = "Telecoms Server Access"; req_access = list(61)},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"cp" = (/obj/effect/floor_decal/corner/alt/blue{dir = 9},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"cs" = (/obj/effect/floor_decal/industrial/arrows/yellow,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"cu" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/plating,/area/polarplanet/street)
+"cA" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"cB" = (/obj/structure/snow,/obj/structure/flora/tree/pine,/obj/structure/flora/grass/both,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"cH" = (/turf/simulated/floor/shuttle/yellow,/area/polarplanet/shuttle/arrival/station)
+"cY" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"de" = (/obj/machinery/door/airlock/hatch{name = "Telecoms Control Room"; req_access = list(61)},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"du" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"dD" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"; tag = ""},/obj/effect/decal/cleanable/blood/oil,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"dO" = (/obj/structure/table/steel,/obj/random/tech_supply,/obj/random/tech_supply,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"dQ" = (/obj/machinery/atmospherics/unary/freezer{dir = 1},/turf/simulated/floor/tiled/rough,/area/polarplanet/tcommsat/computer)
+"dR" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/camera/network/telecom{c_tag = "Telecoms South"; dir = 1},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"dV" = (/obj/effect/floor_decal/industrial/hatch/red,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"dX" = (/obj/machinery/telecomms/server/presets/science,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"ee" = (/obj/machinery/camera/network/telecom{c_tag = "Telecoms East"; dir = 8},/obj/machinery/light/he{dir = 4},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"eg" = (/obj/machinery/light/small/red{dir = 1},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"ex" = (/obj/effect/floor_decal/corner/alt/blue/corner{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"ez" = (/obj/item/crowbar,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"eJ" = (/obj/structure/sign/directions/medical,/obj/structure/sign/directions/science{pixel_y = 6},/obj/structure/sign/directions/security{pixel_y = -6},/turf/simulated/wall,/area/polarplanet/tcommsat/computer)
+"eQ" = (/obj/machinery/power/terminal{dir = 1},/obj/structure/cable/yellow{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"eT" = (/obj/structure/lattice,/obj/structure/snow,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"eW" = (/obj/structure/flora/pottedplant/dead,/obj/effect/decal/cleanable/dirt,/obj/machinery/light,/obj/structure/extinguisher_cabinet{layer = 3.1; pixel_y = -32},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"fh" = (/obj/effect/shuttle_landmark/escape/station,/turf/simulated/floor/plating,/area/polarplanet/shuttle/escape/station)
+"fl" = (/obj/machinery/power/apc{dir = 4; name = "Telecoms Teleporter APC"; pixel_x = 26},/obj/structure/cable,/obj/effect/floor_decal/industrial/warning{dir = 5},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"fm" = (/obj/effect/decal/cleanable/dirt,/obj/structure/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"ft" = (/obj/machinery/door/airlock/maintenance_hatch{name = "Telecoms Server Access"; req_access = list(61)},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"fL" = (/obj/machinery/light/small/red{dir = 1},/obj/effect/floor_decal/industrial/warning/red/corner{dir = 1},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"fM" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"fU" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/industrial/warning/red{dir = 1},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"fX" = (/obj/structure/bed/chair{dir = 8},/obj/effect/floor_decal/corner/alt/blue{dir = 4},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"gs" = (/obj/effect/floor_decal/corner/alt/blue/corner{dir = 8},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"gu" = (/obj/structure/disposalpipe/broken{dir = 1},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"gG" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"; tag = ""},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"ht" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"hy" = (/obj/machinery/telecomms/broadcaster/preset_right,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"hD" = (/obj/effect/floor_decal/corner/alt/blue/corner{dir = 8},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"hH" = (/obj/effect/floor_decal/corner/alt/blue,/obj/structure/extinguisher_cabinet{layer = 3.1; pixel_y = -32},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"hP" = (/turf/unsimulated/mineral,/area/polarplanet/mine/explored)
+"hQ" = (/turf/simulated/floor/plating,/area/polarplanet/street)
+"hV" = (/obj/effect/floor_decal/industrial/warning{dir = 9},/turf/simulated/floor/plating,/area/polarplanet/street)
+"hY" = (/obj/structure/window_frame/grille/rglass,/obj/machinery/atmospherics/pipe/simple/visible,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"ie" = (/obj/effect/shuttle_landmark/train/dock,/turf/simulated/floor/plating,/area/polarplanet/shuttle/train/dock)
+"if" = (/obj/item/device/multitool,/obj/structure/table/standard,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"ij" = (/obj/structure/snow,/obj/structure/flora/grass/brown,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"ip" = (/obj/structure/cable/yellow{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"it" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d2 = 8; dir = 1; icon_state = "0-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/entrance)
+"iu" = (/obj/machinery/door/airlock/external/bolted{id_tag = "train_dock_hatch"; frequency = 2880},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"iH" = (/obj/effect/floor_decal/corner/alt/blue{dir = 4},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"jj" = (/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"jm" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"jp" = (/obj/item/stack/cable_coil/random,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"jq" = (/obj/machinery/power/solar,/obj/structure/cable/yellow{d2 = 8; icon_state = "0-8"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"jB" = (/obj/machinery/door/airlock/hatch{name = "Teleport Room"; req_access = list(61)},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"jC" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"jG" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"jO" = (/obj/effect/floor_decal/corner/alt/blue{dir = 1},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"jQ" = (/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"jU" = (/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/structure/bed/chair{dir = 4},/obj/structure/bed/chair{dir = 4; pixel_x = 3; pixel_y = 3},/obj/structure/bed/chair{dir = 4; pixel_x = 6; pixel_y = 6},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"kk" = (/obj/machinery/telecomms/server/presets/security,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"kp" = (/obj/structure/cable/yellow{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"kv" = (/obj/structure/cable/yellow{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"kx" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable,/obj/structure/cable{d2 = 8; dir = 1; icon_state = "0-8"},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"ky" = (/obj/structure/window_frame/grille/rglass,/obj/structure/sign/directions/evac{dir = 4; tag = "icon-departsign (EAST)"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"kz" = (/obj/effect/decal/cleanable/dirt,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"kF" = (/obj/structure/closet/crate/bin{desc = "A large bin. For trash."; name = "Trash bin"},/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"kU" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{d2 = 8; dir = 1; icon_state = "0-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"lq" = (/obj/effect/decal/cleanable/dirt,/obj/random/trash,/turf/simulated/floor/plating,/area/polarplanet/street)
+"lv" = (/obj/structure/lattice,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"lH" = (/obj/effect/floor_decal/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"lI" = (/obj/machinery/computer/station_alert,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"lL" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"lM" = (/turf/simulated/shuttle/wall/corner/smoothwhite/ne,/area/polarplanet/shuttle/arrival/station)
+"me" = (/obj/structure/bed/chair/shuttle/blue{dir = 1},/obj/effect/landmark/joinlate,/turf/simulated/floor/shuttle/yellow,/area/polarplanet/shuttle/arrival/station)
+"mh" = (/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "escape_dock_inner"; locked = 1; name = "Escape Airlock"; req_access = list(13)},/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/mech_sensor{dir = 8; frequency = 1380; id_tag = "escape_dock_south_mech"; pixel_y = -19},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"ml" = (/obj/machinery/atmospherics/pipe/manifold/visible{dir = 8},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"mn" = (/obj/structure/snow,/obj/structure/flora/grass/both,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"mu" = (/obj/machinery/embedded_controller/radio/airlock/docking_port{dir = 8; frequency = 1380; id_tag = "escape_dock"; pixel_x = 25; req_one_access = list(13,65); tag_chamber_sensor = "escape_dock_sensor"; tag_exterior_door = "escape_dock_outer"; tag_interior_door = "escape_dock_inner"},/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/effect/floor_decal/rust,/obj/structure/bed/chair/blue{dir = 1},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"mv" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"mw" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 4; external_pressure_bound = 140; pressure_checks = 0},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"mA" = (/turf/simulated/shuttle/wall{icon_state = "whiteship"; dir = 1},/area/polarplanet/shuttle/arrival/station)
+"mN" = (/obj/structure/window_frame/grille/rglass,/obj/structure/sign/warning/docking_area,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"mQ" = (/turf/simulated/shuttle/wall/corner/smoothwhite/sw,/area/polarplanet/shuttle/arrival/station)
+"mR" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"mU" = (/obj/machinery/door/firedoor/border_only{dir = 8; name = "Firelock West"},/obj/machinery/door/window/eastleft{req_access = list(61)},/obj/machinery/door/window/westleft{req_access = list(61)},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/chamber)
+"mX" = (/obj/effect/floor_decal/industrial/arrows/yellow,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"nb" = (/obj/effect/floor_decal/industrial/warning/cee{dir = 1},/obj/machinery/airlock_sensor{frequency = 1380; id_tag = "escape_dock_sensor"; pixel_y = 25},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"nf" = (/obj/structure/cable{d2 = 4; icon_state = "0-4"},/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"ng" = (/obj/structure/girder,/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"nj" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 6},/obj/machinery/computer/telecomms/server,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"nk" = (/obj/effect/floor_decal/corner/alt/red,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"nv" = (/obj/machinery/power/solar_control/autostart,/obj/structure/cable/yellow{d2 = 2; icon_state = "0-2"},/obj/effect/decal/cleanable/cobweb,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"nF" = (/turf/simulated/shuttle/wall/corner/smoothwhite/nw,/area/polarplanet/shuttle/arrival/station)
+"nG" = (/obj/machinery/telecomms/relay/preset/station,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"nM" = (/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/structure/cable/yellow{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"nR" = (/obj/effect/floor_decal/corner/alt/red{dir = 8},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"nZ" = (/obj/structure/table/rack,/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"oq" = (/obj/machinery/light{dir = 8},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"ox" = (/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"oy" = (/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"oD" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8; external_pressure_bound = 0; external_pressure_bound_default = 0; frequency = 1441; icon_state = "map_vent_in"; id_tag = "o2_out"; initialize_directions = 1; internal_pressure_bound = 4000; internal_pressure_bound_default = 4000; pressure_checks = 2; pressure_checks_default = 2; pump_direction = 0},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"oE" = (/obj/structure/cable/yellow{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable/yellow{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"oN" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"oZ" = (/obj/machinery/bluespacerelay,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"pb" = (/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "escape_dock_outer"; locked = 1; name = "Escape Airlock"; req_access = list(13)},/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"pm" = (/obj/machinery/computer/teleporter,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/entrance)
+"pz" = (/obj/effect/floor_decal/industrial/arrows/yellow,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"pL" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 5},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"pM" = (/obj/structure/bed/chair{dir = 8},/obj/effect/floor_decal/corner/alt/blue{dir = 4},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"pO" = (/obj/effect/floor_decal/industrial/warning/red,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"qh" = (/obj/item/storage/toolbox/electrical,/obj/item/wirecutters,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"qk" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable{icon_state = "2-8"},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"qo" = (/obj/effect/floor_decal/corner/alt/blue{dir = 4},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/obj/item/device/radio/intercom{dir = 8; frequency = 1444; pixel_x = 22},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"qu" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/cable{icon_state = "2-8"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"qy" = (/obj/structure/sign/directions/evac{dir = 4; pixel_y = 32; tag = "icon-departsign (EAST)"},/obj/effect/floor_decal/spline/plain/corner/grey{dir = 4},/obj/effect/floor_decal/corner/alt/blue{dir = 1},/obj/effect/decal/cleanable/dirt,/obj/machinery/door/airlock/glass,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"qA" = (/obj/machinery/power/tracker,/obj/structure/cable/yellow,/obj/effect/floor_decal/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"qI" = (/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"qM" = (/obj/machinery/camera/network/telecom{c_tag = "Telecoms West"; dir = 4},/obj/machinery/light/he{dir = 8},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"qT" = (/obj/machinery/light/small/red{dir = 1},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"re" = (/obj/machinery/lapvend,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"rg" = (/obj/effect/floor_decal/corner/alt/blue,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"rk" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d2 = 8; dir = 1; icon_state = "0-8"},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"rN" = (/obj/effect/floor_decal/corner/alt/blue,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"rQ" = (/obj/item/cell,/obj/structure/table/standard,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"sa" = (/obj/machinery/vending/cola,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"sd" = (/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"si" = (/obj/machinery/door/airlock/maintenance_hatch{name = "Telecoms Server Access"; req_access = list(61)},/turf/simulated/floor/grid/bluegrid{icon_state = "dark"; name = "Mainframe Floor"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"so" = (/obj/effect/floor_decal/corner/alt/blue{dir = 1},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"sq" = (/obj/structure/bed/chair/shuttle/blue{dir = 1},/obj/effect/landmark/joinlate/gate,/turf/simulated/floor/shuttle/yellow,/area/polarplanet/shuttle/arrival/station)
+"sz" = (/obj/machinery/light/small/red{dir = 8},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"td" = (/obj/effect/floor_decal/industrial/arrows/yellow,/obj/structure/cable/green{d2 = 4; icon_state = "0-4"},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"ti" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"tB" = (/obj/effect/floor_decal/corner/alt/blue{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"tG" = (/turf/simulated/shuttle/wall,/area/polarplanet/shuttle/arrival/station)
+"tH" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"tL" = (/obj/item/caution/cone,/obj/effect/floor_decal/corner/alt/blue{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"tP" = (/obj/machinery/light/small/red{dir = 1},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"tS" = (/obj/machinery/light{dir = 1},/obj/effect/floor_decal/corner/alt/blue{dir = 1},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"ua" = (/obj/structure/closet/crate,/obj/item/aicard,/obj/item/device/multitool,/obj/machinery/light/he{dir = 1},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"ub" = (/obj/structure/cable/yellow{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"uc" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"uf" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"; tag = ""},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"uv" = (/obj/effect/floor_decal/corner/alt/blue/corner,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/sign/poster{pixel_x = 32; pixel_y = -32},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"uB" = (/obj/machinery/telecomms/processor/preset_one,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"uK" = (/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"vb" = (/obj/effect/floor_decal/corner/alt/blue,/obj/machinery/computer/shuttle_control/train,/obj/effect/floor_decal/industrial/box/red,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"vs" = (/obj/machinery/door/airlock/external{name = "Arrival Airlock"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"vv" = (/obj/effect/floor_decal/corner/alt/blue/corner{dir = 4},/obj/structure/sign/poster{pixel_x = 32; pixel_y = 32},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"vx" = (/obj/structure/window/reinforced{dir = 1},/obj/structure/shuttle/engine/heater,/turf/simulated/floor/plating/airless,/area/polarplanet/shuttle/arrival/station)
+"vB" = (/obj/effect/floor_decal/industrial/warning/red/corner,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"vJ" = (/obj/effect/floor_decal/corner/alt/blue,/obj/effect/floor_decal/rust,/obj/machinery/computer/shuttle_control/train,/obj/effect/floor_decal/industrial/box/red,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"vK" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 1; external_pressure_bound = 140; pressure_checks = 0},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"vL" = (/obj/structure/railing/steel,/obj/effect/floor_decal/corner/alt/blue{dir = 4},/obj/structure/closet/crate/bin{desc = "A large bin. For trash."; name = "Trash bin"},/obj/effect/floor_decal/industrial/warning,/obj/item/device/radio/intercom{dir = 8; frequency = 1444; pixel_x = 22},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"vP" = (/turf/simulated/wall/r_wall,/area/polarplanet/tcommsat/computer)
+"vS" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d2 = 8; dir = 1; icon_state = "0-8"},/obj/structure/cable,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"wg" = (/obj/effect/floor_decal/corner/alt/blue{dir = 4},/obj/structure/bed/chair{dir = 8},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"wr" = (/obj/structure/window/shuttle{icon_state = "window-whiteship-straight"; dir = 4},/turf/simulated/floor/plating,/area/polarplanet/shuttle/arrival/station)
+"wI" = (/obj/structure/bed/chair{dir = 4},/obj/structure/bed/chair{dir = 4; pixel_x = 3; pixel_y = 3},/obj/structure/bed/chair{dir = 4; pixel_x = 6; pixel_y = 6},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"wP" = (/obj/machinery/status_display,/turf/simulated/wall,/area/polarplanet/tcommsat/computer)
+"wU" = (/obj/effect/floor_decal/corner/alt/blue{dir = 4},/obj/structure/flora/pottedplant/smelly,/obj/effect/floor_decal/industrial/warning{dir = 1},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"xk" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"xx" = (/obj/machinery/light/small/red,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"xy" = (/obj/effect/floor_decal/industrial/warning/red,/obj/effect/floor_decal/industrial/standclear/red,/obj/effect/floor_decal/industrial/warning/red{dir = 1},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"xE" = (/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/effect/decal/cleanable/dirt,/obj/structure/sign/poster{pixel_x = -32},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"xQ" = (/obj/effect/floor_decal/corner/alt/blue/corner,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"yb" = (/obj/effect/floor_decal/corner/alt/blue,/obj/item/device/radio/intercom{dir = 1; pixel_y = -22},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"yp" = (/obj/machinery/telecomms/hub/preset,/obj/machinery/camera/network/telecom{c_tag = "Telecoms North"},/obj/machinery/light/he{dir = 1},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"yX" = (/obj/effect/floor_decal/corner/alt/red{dir = 4},/obj/structure/bed/chair{dir = 8},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"zb" = (/obj/machinery/light/small/red{dir = 1},/obj/effect/floor_decal/industrial/warning/red/corner{dir = 1},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"zf" = (/obj/effect/floor_decal/corner/alt/blue{dir = 4},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"zg" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8; external_pressure_bound = 140; pressure_checks = 0},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"zk" = (/obj/structure/disposalpipe/segment,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"zp" = (/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair/blue{dir = 1},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"zq" = (/obj/effect/floor_decal/corner/alt/blue{dir = 1},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"zv" = (/obj/machinery/light{dir = 8},/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/structure/bed/chair{dir = 4},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"zw" = (/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "escape_dock_inner"; locked = 1; name = "Escape Airlock"; req_access = list(13)},/obj/effect/floor_decal/industrial/hatch/red,/obj/machinery/mech_sensor{dir = 8; frequency = 1380; id_tag = "escape_dock_south_mech"; pixel_y = 19},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Ae" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Af" = (/obj/effect/decal/cleanable/dirt,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"AJ" = (/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"AK" = (/obj/effect/floor_decal/corner/alt/blue/corner{dir = 4},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"AW" = (/obj/machinery/light/small/red{dir = 1},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"AX" = (/obj/machinery/power/apc{dir = 1; name = "test APC"; pixel_x = -1; pixel_y = 26},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Bm" = (/obj/effect/floor_decal/corner/alt/blue,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"Bn" = (/obj/machinery/floodlight,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"Bs" = (/obj/machinery/computer/telecomms/monitor,/obj/machinery/light/he{dir = 1},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Bv" = (/obj/effect/floor_decal/spline/plain/corner/grey{dir = 4},/obj/effect/floor_decal/corner/alt/blue{dir = 1},/obj/effect/decal/cleanable/dirt,/obj/machinery/vending/wallmed1{name = "Emergency NanoMed"; pixel_y = 28},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"Bz" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 10; initialize_directions = 10},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"BB" = (/obj/machinery/door/airlock/maintenance_hatch{name = "Telecoms Server Access"; req_access = list(61)},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/chamber)
+"BL" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"BS" = (/obj/structure/window_frame/grille/rglass,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"BY" = (/obj/structure/snow,/obj/structure/snow,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"BZ" = (/obj/effect/landmark/joinlate/gate,/turf/simulated/floor/shuttle/yellow,/area/polarplanet/shuttle/arrival/station)
+"Cc" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/effect/floor_decal/industrial/standclear/yellow{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Cg" = (/obj/structure/closet/wardrobe/black,/turf/simulated/floor/shuttle/yellow,/area/polarplanet/shuttle/arrival/station)
+"Cl" = (/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/effect/floor_decal/industrial/arrows/yellow{dir = 4},/obj/machinery/camera/network/telecom{c_tag = "Tram Hub West"; dir = 4},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"Cn" = (/obj/effect/floor_decal/industrial/warning/cee,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"CG" = (/turf/simulated/wall/r_wall,/area/polarplanet/tcommsat/entrance)
+"CS" = (/obj/machinery/telecomms/receiver/preset_right,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"CU" = (/obj/effect/floor_decal/industrial/warning{dir = 6},/turf/simulated/floor/plating,/area/polarplanet/street)
+"Dc" = (/obj/effect/floor_decal/industrial/warning/red/full,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Dk" = (/obj/machinery/light{dir = 8},/obj/effect/floor_decal/industrial/warning{dir = 10},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"Dq" = (/obj/structure/snow,/obj/structure/flora/tree/pine,/obj/structure/flora/grass/brown,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"DH" = (/obj/machinery/telecomms/bus/preset_three,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"DL" = (/obj/structure/computerframe,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"DN" = (/obj/machinery/light{dir = 8},/obj/structure/bed/chair{dir = 4},/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"DQ" = (/obj/machinery/embedded_controller/radio/simple_docking_controller{dir = 1; pixel_y = -32; frequency = 2880; id_tag = "train_dock_dock"; tag_door = "train_dock_hatch"; req_access = list(109)},/obj/machinery/light,/obj/effect/floor_decal/corner/alt/blue,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"DR" = (/obj/effect/floor_decal/corner/alt/blue,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"DS" = (/obj/machinery/power/apc{dir = 1; name = "Telecoms APC"; pixel_x = 1; pixel_y = 26},/obj/structure/cable{d2 = 4; icon_state = "0-4"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"DV" = (/obj/effect/floor_decal/spline/plain/grey{dir = 1},/obj/effect/floor_decal/corner/alt/blue{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"Ec" = (/obj/effect/floor_decal/industrial/warning{dir = 5},/turf/simulated/floor/plating,/area/polarplanet/street)
+"Ey" = (/obj/effect/floor_decal/industrial/warning/red,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Ez" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair/blue,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"EJ" = (/obj/machinery/telecomms/processor/preset_four,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"EK" = (/turf/simulated/wall/r_wall,/area/polarplanet/tcommsat/chamber)
+"ES" = (/turf/simulated/shuttle/wall/corner/smoothwhite/se,/area/polarplanet/shuttle/arrival/station)
+"ET" = (/obj/structure/closet/crate,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"EU" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"EW" = (/obj/structure/girder/reinforced,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"EY" = (/obj/machinery/vending/coffee,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Fa" = (/obj/structure/closet/toolcloset,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Fm" = (/obj/machinery/telecomms/bus/preset_four,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"Ft" = (/obj/structure/window/shuttle{icon_state = "11"; dir = 4},/turf/simulated/floor/plating,/area/polarplanet/shuttle/arrival/station)
+"Fu" = (/obj/structure/disposalpipe/segment,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"FC" = (/obj/machinery/light/small/red{dir = 1},/obj/effect/floor_decal/industrial/warning/red/corner{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"FH" = (/obj/effect/floor_decal/spline/plain/corner/grey{dir = 1},/obj/effect/floor_decal/corner/alt/blue{dir = 1},/obj/machinery/camera/network/telecom{c_tag = "Tram Hub East"},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"FI" = (/obj/item/paper_bin,/obj/item/pen/blue{pixel_x = -3; pixel_y = 2},/obj/structure/table/standard,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"FO" = (/obj/structure/window_frame/grille/rglass,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"FP" = (/obj/machinery/telecomms/server/presets/engineering,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"FR" = (/obj/item/caution/cone,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"FV" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"FW" = (/obj/structure/window/shuttle{icon_state = "11"; dir = 8},/turf/simulated/floor/plating,/area/polarplanet/shuttle/arrival/station)
+"FY" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Gb" = (/obj/machinery/telecomms/bus/preset_one,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"Gp" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/effect/floor_decal/rust,/obj/machinery/camera/network/telecom{c_tag = "Tram Hub - Escape Shuttle"; dir = 8},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Gx" = (/turf/simulated/floor/plating,/area/polarplanet/shuttle/train/dock)
+"GF" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"GW" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 10; initialize_directions = 10},/obj/machinery/computer/shuttle,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Hj" = (/obj/effect/floor_decal/industrial/arrows/yellow{dir = 4},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"Hm" = (/obj/machinery/light{dir = 8},/obj/item/caution/cone,/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"HA" = (/obj/structure/table/standard,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"HD" = (/obj/item/caution/cone,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"HI" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/polarplanet/street)
+"Iv" = (/obj/item/storage/toolbox/electrical{pixel_x = 1; pixel_y = -1},/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"Iw" = (/obj/structure/table/steel,/obj/random/toolbox,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Ix" = (/obj/machinery/light,/obj/effect/floor_decal/corner/alt/blue,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"IC" = (/obj/machinery/light{dir = 8},/obj/structure/bed/chair{dir = 4},/obj/effect/floor_decal/corner/alt/blue{dir = 8},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"IE" = (/obj/machinery/door/unpowered/shuttle,/turf/simulated/floor/shuttle/yellow,/area/polarplanet/shuttle/arrival/station)
+"IX" = (/obj/structure/disposalpipe/segment,/obj/machinery/floodlight,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"Jb" = (/obj/structure/closet/wardrobe/grey,/turf/simulated/floor/shuttle/yellow,/area/polarplanet/shuttle/arrival/station)
+"Jc" = (/obj/structure/snow,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"Jk" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Jl" = (/obj/structure/table,/obj/item/storage/firstaid/fire,/obj/item/storage/firstaid/regular{pixel_x = 2; pixel_y = 3},/obj/item/crowbar,/obj/machinery/light,/turf/simulated/floor/shuttle/yellow,/area/polarplanet/shuttle/arrival/station)
+"JA" = (/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"JH" = (/obj/effect/decal/cleanable/blood/oil,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"JN" = (/obj/machinery/door/airlock/maintenance_hatch{name = "Telecoms Server Access"; req_access = list(61)},/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"JT" = (/obj/machinery/door/firedoor/border_only{dir = 8; name = "Firelock West"},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/chamber)
+"Kb" = (/turf/simulated/wall/r_wall,/area/polarplanet/street)
+"Kc" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"Kf" = (/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "escape_dock_inner"; locked = 1; name = "Escape Airlock"; req_access = list(13)},/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/mech_sensor{dir = 8; frequency = 1380; id_tag = "escape_dock_south_mech"; pixel_y = 19},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Kj" = (/obj/structure/bed/chair/office/dark{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Kz" = (/obj/machinery/light/small/red,/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"KB" = (/turf/simulated/wall,/area/polarplanet/street)
+"KH" = (/obj/structure/sign/directions/bridge,/obj/structure/sign/directions/engineering{pixel_y = 10; pixel_z = -4},/obj/structure/sign/directions/supply{pixel_y = -6},/turf/simulated/wall,/area/polarplanet/tcommsat/computer)
+"KI" = (/obj/effect/floor_decal/corner/alt/blue,/obj/structure/extinguisher_cabinet{layer = 3.1; pixel_y = -32},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"KM" = (/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/structure/flora/pottedplant/dead,/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/obj/item/device/radio/intercom{dir = 4; pixel_x = -22},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"KY" = (/turf/simulated/shuttle/wall{icon_state = "whiteship_straight"},/area/polarplanet/shuttle/arrival/station)
+"La" = (/obj/structure/sign/warning/secure_area/cctv,/turf/simulated/wall/r_wall,/area/polarplanet/tcommsat/computer)
+"Lo" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"Lt" = (/obj/machinery/power/solar,/obj/structure/cable/yellow{d2 = 4; icon_state = "0-4"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"Ly" = (/obj/effect/floor_decal/industrial/warning/red{dir = 1},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Lz" = (/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"LE" = (/obj/structure/cable/yellow{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"LH" = (/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "escape_dock_outer"; locked = 1; name = "Escape Airlock"; req_access = list(13)},/obj/effect/floor_decal/industrial/hatch/red,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"LP" = (/obj/effect/floor_decal/spline/plain/corner/grey{dir = 1},/obj/effect/floor_decal/corner/alt/blue{dir = 1},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"LR" = (/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"LZ" = (/obj/machinery/telecomms/processor/preset_three,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"Mf" = (/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/structure/bed/chair{dir = 4},/obj/effect/decal/cleanable/dirt,/obj/machinery/camera/network/telecom{c_tag = "Tram Hub - Escape Shuttle Hallway"; dir = 4},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"Mj" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 4; external_pressure_bound = 0; external_pressure_bound_default = 0; frequency = 1441; icon_state = "map_vent_in"; id_tag = "o2_out"; initialize_directions = 1; internal_pressure_bound = 4000; internal_pressure_bound_default = 4000; pressure_checks = 2; pressure_checks_default = 2; pump_direction = 0},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"Mo" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/turf/simulated/floor/plating,/area/polarplanet/street)
+"My" = (/obj/machinery/ntnet_relay,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"MA" = (/obj/structure/table/steel,/obj/machinery/cell_charger,/obj/item/cell/standard,/obj/item/device/radio/intercom{broadcasting = 1; dir = 8; frequency = 1444; listening = 0; pixel_x = 22},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"ME" = (/obj/effect/floor_decal/corner/alt/blue{dir = 10},/obj/item/device/radio/intercom{dir = 1; pixel_y = -22},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"MN" = (/obj/machinery/light{dir = 1},/obj/effect/floor_decal/corner/alt/blue{dir = 1},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"Nb" = (/obj/effect/floor_decal/industrial/warning/red,/obj/effect/floor_decal/industrial/standclear/red,/obj/effect/floor_decal/industrial/warning/red{dir = 1},/obj/structure/disposalpipe/segment,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Ne" = (/turf/simulated/wall,/area/polarplanet/tcommsat/computer)
+"Nj" = (/obj/effect/floor_decal/spline/plain/grey{dir = 4},/obj/effect/floor_decal/corner/alt/blue{dir = 5},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"Nm" = (/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"No" = (/obj/machinery/light/he{dir = 8},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"Np" = (/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"Nu" = (/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"Nz" = (/obj/effect/floor_decal/industrial/arrows/yellow,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"NC" = (/obj/structure/closet,/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"NO" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"NX" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/plating,/area/polarplanet/street)
+"NZ" = (/obj/structure/sign/warning/detailed,/turf/simulated/wall/r_wall,/area/polarplanet/tcommsat/computer)
+"On" = (/obj/structure/railing/steel,/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/structure/closet/crate/bin{desc = "A large bin. For trash."; name = "Trash bin"},/obj/effect/floor_decal/industrial/warning,/obj/structure/sign/poster{pixel_x = -32},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"Ot" = (/obj/effect/floor_decal/industrial/warning{dir = 10},/turf/simulated/floor/plating,/area/polarplanet/street)
+"OM" = (/obj/machinery/atmospherics/pipe/manifold/visible{dir = 4},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"OS" = (/obj/item/storage/toolbox/mechanical,/obj/item/device/radio/intercom{dir = 1; pixel_y = -22},/obj/structure/table/standard,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Pb" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/industrial/warning{dir = 9},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"Pd" = (/obj/item/caution/cone,/obj/structure/sign/poster{pixel_y = 32},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"Pf" = (/obj/machinery/telecomms/bus/preset_two,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"Pv" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"PF" = (/turf/simulated/floor/plating,/area/polarplanet/tcommsat/entrance)
+"PP" = (/obj/machinery/door/airlock/external/bolted,/obj/structure/barricade/material{layer = 6},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"PQ" = (/obj/machinery/atmospherics/pipe/simple/visible,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"PS" = (/turf/simulated/floor/plating,/area/polarplanet/shuttle/escape/station)
+"Qc" = (/obj/machinery/light/small/red,/obj/machinery/camera/network/telecom{c_tag = "Telecoms Hallway - East"; dir = 1},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Qd" = (/obj/machinery/door/airlock/multi_tile/glass{locked = 1; req_access = list(61)},/obj/effect/floor_decal/industrial/hatch/red,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Qr" = (/obj/machinery/camera/network/telecom{c_tag = "Telecoms Hallway - West"; dir = 4},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Qx" = (/obj/structure/cable/yellow{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Qz" = (/obj/effect/floor_decal/spline/plain/grey{dir = 1},/obj/effect/floor_decal/corner/alt/blue{dir = 1},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"QD" = (/obj/effect/floor_decal/corner/alt/blue,/obj/machinery/door/airlock/glass,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"QI" = (/obj/structure/sign/poster{pixel_y = 32},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Rd" = (/obj/effect/floor_decal/corner/alt/red{dir = 4},/obj/effect/floor_decal/industrial/outline/yellow,/obj/effect/floor_decal/industrial/loading{dir = 4},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Rp" = (/obj/item/folder/yellow,/obj/item/folder/yellow,/obj/machinery/camera/network/telecom{c_tag = "Telecoms Computer Room"},/obj/structure/table/standard,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"RC" = (/obj/item/cell,/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"RV" = (/obj/effect/floor_decal/corner/alt/red{dir = 5},/obj/structure/bed/chair/red{dir = 8},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Sa" = (/obj/structure/closet/crate,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Se" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Sn" = (/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/structure/bed/chair{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"St" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d2 = 8; dir = 1; icon_state = "0-8"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"Sz" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"SE" = (/obj/effect/floor_decal/corner/alt/red{dir = 9},/obj/structure/bed/chair/red{dir = 4},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"SG" = (/obj/item/device/radio/intercom{dir = 4; pixel_x = -22},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"SJ" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"SL" = (/obj/structure/cable,/turf/simulated/floor/plating/airless,/area/polarplanet/street)
+"SN" = (/obj/effect/floor_decal/corner/alt/blue,/obj/machinery/camera/network/telecom{c_tag = "Tram Hub Central"; dir = 1},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"SP" = (/obj/effect/floor_decal/corner/alt/red{dir = 10},/obj/structure/bed/chair{dir = 4; pixel_x = 3; pixel_y = 3},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"SW" = (/turf/simulated/shuttle/wall{icon_state = "whiteship_t"; dir = 8},/area/polarplanet/shuttle/arrival/station)
+"Tf" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 9},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"Tg" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"Ti" = (/obj/effect/floor_decal/spline/plain/grey{dir = 4},/obj/effect/floor_decal/corner/alt/blue{dir = 4},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"Tl" = (/obj/structure/railing/steel,/obj/effect/floor_decal/corner/alt/blue{dir = 4},/obj/structure/flora/pottedplant/aquatic,/obj/effect/floor_decal/industrial/warning,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"To" = (/obj/structure/cable/yellow{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/snow,/turf/simulated/floor/plating,/area/polarplanet/street)
+"TA" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"TB" = (/obj/machinery/atmospherics/unary/freezer{dir = 1},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"TR" = (/obj/structure/snow,/obj/structure/flora/bush,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"TT" = (/obj/effect/floor_decal/industrial/arrows/yellow,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"TY" = (/obj/structure/sign/directions/evac{dir = 4; pixel_y = 32; tag = "icon-departsign (EAST)"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"Um" = (/obj/machinery/power/smes/buildable{charge = 2.5e+006; output_attempt = 1; input_attempt = 1; RCon_tag = "Telecomms"; input_level = 250000; output_level = 250000},/obj/structure/cable{d2 = 4; icon_state = "0-4"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Uq" = (/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"Ut" = (/obj/item/caution/cone,/obj/item/device/radio/intercom{dir = 4; pixel_x = -22},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"US" = (/obj/effect/floor_decal/industrial/warning,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/caution/yellow{dir = 1},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"UY" = (/obj/effect/floor_decal/corner/alt/blue/corner{dir = 1},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"UZ" = (/obj/structure/window_frame/grille/rglass,/obj/machinery/atmospherics/pipe/simple/visible{dir = 4; tag = "icon-intact (EAST)"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"Vd" = (/obj/effect/floor_decal/industrial/warning/red{dir = 1},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Ve" = (/obj/structure/table/standard,/obj/effect/floor_decal/corner/alt/red{dir = 1},/obj/machinery/recharger,/obj/item/handcuffs,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Vf" = (/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Vn" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 6},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"Vt" = (/obj/machinery/light/small/red{dir = 1},/obj/effect/floor_decal/industrial/warning/red/corner{dir = 4},/obj/machinery/camera/network/telecom{c_tag = "Telecoms Access"},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"VH" = (/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/plating,/area/polarplanet/street)
+"VK" = (/obj/machinery/light{dir = 4},/obj/structure/bed/chair{dir = 8},/obj/effect/floor_decal/corner/alt/blue{dir = 4},/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)
+"VP" = (/obj/machinery/telecomms/server/presets/command,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"VU" = (/obj/structure/snow,/turf/unsimulated/mineral,/area/polarplanet/street)
+"Wd" = (/obj/structure/closet/crate,/obj/machinery/light/small/red,/obj/effect/floor_decal/industrial/warning/red/corner{dir = 8},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Wk" = (/obj/machinery/light,/obj/effect/floor_decal/corner/alt/blue,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"Wm" = (/obj/machinery/door/airlock/glass_security{name = "Escape Shuttle Cell"; req_access = list(1)},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/cable{icon_state = "2-8"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Wx" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d2 = 8; dir = 1; icon_state = "0-8"},/obj/structure/cable{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating,/area/polarplanet/tcommsat/computer)
+"WE" = (/obj/effect/floor_decal/corner/alt/red{dir = 8},/obj/structure/bed/chair{dir = 4; pixel_x = 3; pixel_y = 3},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"WM" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 1; external_pressure_bound = 0; external_pressure_bound_default = 0; frequency = 1441; icon_state = "map_vent_in"; id_tag = "o2_out"; initialize_directions = 1; internal_pressure_bound = 4000; internal_pressure_bound_default = 4000; pressure_checks = 2; pressure_checks_default = 2; pump_direction = 0},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"WO" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/cable{icon_state = "2-8"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"WT" = (/obj/machinery/telecomms/server/presets/medical,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"WV" = (/obj/machinery/vending/cigarette,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"WY" = (/obj/machinery/camera/network/telecom{c_tag = "Telecoms Power Supply"; dir = 1},/obj/machinery/light/small/hl,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/chamber)
+"Xi" = (/obj/machinery/telecomms/server/presets/supply,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"Xp" = (/obj/effect/floor_decal/industrial/warning,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"Xs" = (/turf/simulated/mineral/frozen,/area/polarplanet/mine/explored)
+"Xx" = (/obj/structure/table/steel,/obj/machinery/light/he{dir = 1},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"XD" = (/obj/structure/disposalpipe/broken,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"XI" = (/obj/machinery/light{dir = 1},/obj/machinery/teleporter_gate,/turf/simulated/floor/plating,/area/polarplanet/tcommsat/entrance)
+"XX" = (/obj/structure/shuttle/engine/propulsion,/turf/simulated/floor/natural/frozenground,/area/polarplanet/shuttle/arrival/station)
+"Yb" = (/obj/structure/snow,/obj/structure/flora/tree/pine,/turf/simulated/floor/natural/frozenground,/area/polarplanet/street)
+"Yf" = (/obj/machinery/door/airlock/hatch{name = "Telecoms Control Room"; req_access = list(61)},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Yp" = (/obj/structure/bed/chair/office/dark{dir = 4},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"YD" = (/obj/structure/bed/chair/shuttle/blue{dir = 1},/obj/effect/landmark/joinlate,/obj/machinery/camera/network/telecom{c_tag = "Arrival Shuttle"; dir = 4},/turf/simulated/floor/shuttle/yellow,/area/polarplanet/shuttle/arrival/station)
+"YL" = (/obj/structure/bed/chair/office/dark{dir = 1},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"YV" = (/obj/structure/bed/chair{dir = 4},/obj/effect/floor_decal/corner/alt/blue{dir = 8},/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"Zg" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"Zq" = (/obj/structure/railing/steel,/obj/effect/floor_decal/corner/alt/blue{dir = 8},/obj/structure/flora/pottedplant/sticky,/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
+"Zv" = (/turf/simulated/mineral/frozen,/area/polarplanet/street)
+"ZN" = (/obj/machinery/light{dir = 4},/obj/machinery/camera/network/telecom{c_tag = "Telecoms Teleporter"; dir = 1},/obj/effect/floor_decal/industrial/warning{dir = 6},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/entrance)
+"ZQ" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 4},/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+"ZU" = (/obj/machinery/telecomms/relay/preset/telecomms,/turf/simulated/floor/grid/bluegrid{name = "Mainframe Base"; temperature = 80},/area/polarplanet/tcommsat/chamber)
+
+(1,1,1) = {"
+hPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhP
+hPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhP
+hPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhP
+hPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhP
+hPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcXsJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcXsXsJcJcJcJcJcXsXsXsXsXsXsXsJcJcJcJcJcbNbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcVUhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcXsXsJcJcJcJcXsXsXsXsXsXsXsXsXsJcJcJcJcKbKbKbKbKbeTJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJchPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcXsXsXsXsJcJcJcJcJcJcJcJcbNJcJcJcXsXsXsJcJcJcXsXsXsXsXsXsXsXsXsXsJceTeTKbKbDLKcqIKbKbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJchPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNJcJcXsXsXsXsJcJcJcJcJcJcJcbNbNbNJcJcJcXsXsXsJcXsXsXsXsXsXsXsXsJcJcJcJceTeTKbKboxqISLqInZKbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsJcJcJcXsXsXsXsXsXsXsbNJcXsXsXsJcJcJcJcJcJcJcbNbNbNbNbNJcJcJcXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcngRCqIcYbNqIqIqIKbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsbNXsXsXsJcJcJcJcJcJcbNbNbNbNbNbNbNJcJcJcXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcqIqIqIlvlvlvqIqIKbJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcbNJcJcJcJcJcJcJcJcbNbNbNbNbNbNbNbNJcJcJcXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcKbqIlvlvbNlvbNNCKbJcJcJcJcJcYbJcJcJcJcJcJcJcJcXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcbNbNJcJcbNJcJcJcJcJcbNbNbNbNbNbNJcJcJcJcXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJceTeTKbKbnftHbNlvIvKbKbJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsbNbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcbNJcbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJceTeTKbKbqIlvqIKbKbJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsJcbNXsXsJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcbNJcJcbNbNbNbNJcJcbNbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcKbKbqIKbKbeTJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsJcbNXsXsXsJcbNbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcbNbNbNbNbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJceTJceTJceTJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsJcbNbNbNbNbNJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcbNbNbNbNbNbNJcmnJcJcBYJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcZvZvZvZvJceTeTeTJcJcJcJcJcJcJcJcJcJcYbJcJcJcXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsJcXsXsXsXsJcbNbNbNbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcbNJcJcJcbNbNbNbNbNbNJcmnJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsJcJcJcJcJcJcJcJcJcbNbNbNbNbNbNbNbNXsXsXsJcJcXsbNbNbNbNbNbNbNJcJcJcmnJcJcJcJcJcbNJcbNbNbNbNbNbNbNbNbNbNbNbNJcJcbNbNbNbNbNbNbNJcJcTRbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsJcJcJcJcJcJcJcJcJcbNbNbNbNbNbNbNbNbNbNbNXsXsJcJcXsbNbNbNbNbNbNbNbNbNJcJcbNbNJcJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcJcJcbNJcJcXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsJcJcJcJcJcJcJcJcXsbNbNJcbNbNbNbNbNbNbNbNbNXsXsJcXsXsbNbNbNbNbNbNbNbNbNbNbNbNbNJcbNbNbNbNbNbNbNbNbNbNbNbNJcJcbNbNbNbNbNbNbNbNbNbNJcJcbNJcJcJcJcbNXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsJcJcJcYbJcJcXsXsXsXsbNJcbNJcJcJcJcJcJcJcJcJcJcXsbNXsbNbNbNbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqJcLtnMjqbNLtnMjqbNbNbNbNJcJcJcJcJcJcJcJcXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsJcJcJcJcJcJcXsXsXsXsbNbNXsXsJcJcXsXsXsXsXsXsXsXsbNbNbNbNbNbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqJcLtnMjqbNLtnMjqbNbNbNbNbNbNbNJcYbbNbNbNXsXsXsXsXsJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqJcLtnMjqbNLtnMjqbNbNbNbNJcJcJcJcJcJcJcXsXsXsXsXsXsJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNbNbNbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqJcLtnMjqbNLtnMjqbNbNJcJcYbJcJcJcJcmnJcJcXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsJcJcJcJcJcJcXsXsXsXsXsXsJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsbNbNbNbNbNLtnMjqbNLtnMjqJcLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNbNJcJcJcJcJcJcJcmnJcXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsJcJcJcJcJcJcXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsbNbNbNbNbNLtnMjqbNLtnMjqJcLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNbNJcJcJcJcYbJcJcJcXsXsXsJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsJcJcJcJcXsXsXsJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcXsbNbNbNbNbNLtnMjqbNLtnMjqJcLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqJcbNJcJcmnJcJcJcJcJcXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsJcJcJcXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcbNbNbNbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcbNbNbNbNLtnMjqJcLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcTRJcJcJcbNbNLtnMjqJcLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqbNLtnMjqJcmnmnJcJcbNbNJcJcJcJcJcJcJcJcJcJcbNbNbNJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsJcJcJcJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcbNbNAJJcJcbNAJbNbNbNAJJcbNbNAJbNbNbNAJbNbNbNAJbNbNbNAJbNbNJcAJJcmnmnJcJcJcbNbNJcJcJcJcJcJcJcJcJcbNbNbNbNXsXsJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcmnJcJcJcJcJcJcJcbNbNAJmnJcJcAJbNbNbNAJmnmnJcAJbNbNbNAJbNbNJcAJbNbNbNAJJcJcJcAJJcJcJcJcJcJcbNJcJcJcJcJcmnmnbNbNbNbNXsXsbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcYbJcJcJcJcJcYbJcJcJcJcbNbNLEToToTokvToToTokvToToTooEToToTokvToToTokvToToipubToToTokpJcJcJcJcJcJcJcJcJcJcJcJcJcbNbNbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcbNbNbNbNbNbNbNbNbNbNJcJcJcAJbNbNbNbNbNJcJcJcbNbNAJbNbNJcJcJcJcJcYbJcJcJcJcJcJcYbJcJcbNbNbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcmnJcJcJcJcbNbNbNbNbNTRbNbNbNJcJcJclHAJlHbNbNbNJcJcJcJcJcbNAJbNbNbNbNJcJcTRJcJcJcJcYbJcJcJcbNbNbNbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcmnmnJcJcJcJcbNbNbNJcJcbNbNbNJcJcmnlHqAlHbNbNJcJcmncBJcJcbNAJbNbNbNbNbNbNJcJcJcJcJcJcJcJcbNbNbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcmnmnJcJcJcJcJcJcbNbNbNbNbNbNbNbNJcJclHlHlHJcbNcBmnJcJcJcJcbNAJbNbNbNbNbNbNbNJcJcYbJcJcbNbNbNbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcmnJcJcJcJcJcJcJcJcJcJcbNbNbNbNbNbNbNbNbNbNbNJcJcbNJcJcJcJcJcbNbNAJbNbNbNbNbNbNbNbNJcJcJcbNbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcYbJcJcJcJcJcJcJcYbJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcmnmnbNAJbNbNbNbNbNbNbNbNJcbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcbNbNbNJcJcJcbNbNbNbNJcJcJcYbmnmnAJbNbNbNbNbNbNbNbNbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcmnmnmnJcJcJcJcJcJcJcbNbNJcbNbNbNbNbNbNJcJcmnbNAJbNbNbNbNbNbNJcJcbNXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJccBJcmnmnJcJcJcJcJcJcJcJcJcJcbNbNbNJcJcJcJcbNbNbNbNbNAJbNbNbNbNJcJcJcJcXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcJcTRJcJcJcJcmnJcJcEKEKEKEKEKEKEKJcbNbNbNbNAJbNbNbNEKEKEKEKEKEKEKXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcmnJcJcJcJcJcJcJcJcJcJcJcYbJcJcJcJcJcEKhyoZypMyCSEKJcJcJcJcbNAJEKFOFOEKnvQIUmAeAXEKXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcYbJcJcJcJcEKEKEKEKEKEKVnZQbUZQBzEKEKEKEKEKEKLEJNuKuKJNQxuKeQJkNmEKXsXsXsJcJcJcJcJcJcJcJcYbJcJcJcJcJcJcXsJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcYbJcJcJcJcJcJcJcJcEKEKUqXiUqUqsivKBShYBSWMsiUqbaFPUqEKEKEKFOFOEKaYNmVfdDMAEKXsXsJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcXsXsXsEKUqMjZQBzvPvPBSBSdQBSBSvPvPVnZQoDUqFOJcJcmnEKFaWYJkdOIwEKXsJcJcJcJcJcTRJcYbJcJcbNbNbNbNbNbNbNJcJcJcJcXsJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcXsXsXsXsXsXsEKbdPfZUPQBSXxFIlIYLHARpBsBSPQnGEJFmFOTRbNbNEKEKEKcmEKEKEKXsJcJcJcJcJcJcJcJcbNbNbNbNbNbNbNbNbNbNbNJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsEKqMUqUqmlUZGWKjoyFYoyYpnjUZOMUqUqeeEKJcbNbNbNbNEKJkEKXsXsXsJcJcYbJcJcJcJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsEKGbuBUqPQBSTBifOSJASarQTBBSPQUqDHLZFOJcYbbNJcJcFOJkEKXsXsJcJcJcJcJcJcYbJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcXsXsXsXsXsXsJcJcJcXsXsXsXsXsEKUqmwZQTfBSBSBSNeYfwPBSBSBSpLZQzgUqFOmnJcJcJcmnFOJkEKXsJcJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsijijJcJcJcJcJcJcJcJcXsJcJcJcJcJcijijXsXsEKEKUqdXWTUqUqFODSbJuaFOUqUqVPkkUqEKEKmnmnJcYbmnEKmvEKXsJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsijijJcJcJcJcJcJcJcJcJcJcJcijJcJcJcJcijijXsXsEKNoUqUqUqEKEKJAZgjQEKEKFOFOFOFOEKEKEKFOFOFOEKEKJkEKJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsijJcJcJcYbJcJcJcJcJcJcJcJcJcJcJcJcJcJcijJcJcEKUqUqUqUqBBmUJANOdRJTftSeSeSeSeftSeGFSeSeSeSeSegGEKJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsijJcJcJcJcJcijijJcJcYbJcJcJcJcJcJcJcJcJcJcJcEKEKEKEKEKEKEKvPdevPEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKEKJcbNbNbNbNbNbNbNbNbNhVMoMoMoMoMoMoMoMoMoMoMoMoMoMoMoMoMoMoMoEcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcijijJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcCGpmXIPFCGFCfUfLvPlvJcJcJcJcbNbNbNJcJcJcJcbNbNJcJcbNbNbNbNbNbNbNbNbNcuhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQNXJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcJcJcJcijJcJcJcJcYbJcJcJcJcTRJcJcitTAhtNujBoNufjQvPlvlvlvlvlvlvlveTeTeTlvlvlvlvlvlvlvlvlvlvlvbNbNbNbNcuhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQNXJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcYbJcJcJcijJcbNbNJcJcJcJcbNJcJcJcJcCGPbPvflCGSGjGFYvPvPWxkUkUavvPWxkUkUavvPWxkUkUavvPWxkUkUavvPbNbNbNbNcuhQhQhQhQhQhQhQPSPSPSPSPShQhQhQhQhQhQhQNXJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcbNbNbNbNJcJcbNbNbNJcJcJcitSzLRjmCGszfMEUoNegquBLBLSJqTquoNEUoNAWquoNBLoNtPcAEUqkETapbNbNbNbNcuhQhQhQhQhQhQPSPSPSPSPSPSPShQhQhQhQhQhQNXJcJcJcJcJcYbJcJcXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcbNbNbNbNbNbNbNbNbNbNbNbNJcCGDkXpZNCGQrJAoyoybBjGjQFYJAxxjGFYoyoyQcjGoyFYJAKzvBEypOWdTgJcbNbNbNcuhQhQhQhQhQhQPSPSPSPSPSPSPShQhQhQhQhQhQNXJcJcJcYbJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNCGCGCGCGCGvPvPvPvPvPvSrkrkavvPvSrkrkavvPvSrkrkavvPNZQddVLavPJcbNbNbNcuhQhQhQhQhQhQPSPSPSPSPSPSPShQhQhQhQhQhQNXJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcJcbNbNbNJcJclvlvlvlvlveTeTlvlvlvJcJcJcJcvPVtVdLyzbvPbNbNbNbNcuhQhQhQhQhQhQPSPSPSPSPSPSPShQhQhQhQhQhQNXJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcXsXsXsXsXsJcJcJcbNbNbNbNbNbNbNJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcbNbNJcJcJcJcbNbNJcJcJcTRBSoyFYZgjQBSbNbNbNbNcuhQhQhQhQhQhQPSPSPSPSPSPSPShQhQhQhQhQhQNXJcYbJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcXsXsJcJcXsJcJcbNbNbNbNbNbNbNbNJcJcJcJcJcbNbNbNbNbNbNbNbNbNKBKBKBEWEWEWJcKBKBKBKBKBJcEWKBEWEWKBlvJcvPJAXDjGoyvPbNbNbNbNcuhQhQhQhQhQhQPSPSPSPSPSPSPShQhQhQhQhQhQNXJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcJcJcbNbNbNbNbNbNbNJcJcJcJcJcJcbNbNbNbNbNbNbNbNbNbNbNHIHIHIHIHIfmlqHIHIHIHIfmHIlqHIHIHIlvJcvPvPNbxyvPvPBSBSBSNecuhQPSPSPSPShQPSPSPSPSPSPSPShQPSPSPSPShQNXJcJcJcJcJcYbJcJcJcJcJcJcJcJcXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcbNbNbNbNbNbNbNbNbNJcijDqJcJcJcbNbNbNbNbNbNbNJcbNbNEWHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIlvJcBSJHFusoNjkFbQbQEzmNBSBSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPShQNXJcJcJcJcJcJcJcJcJcJcYbJcJcJcXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcYbJcJcbNbNbNbNbNbNbNbNJcijijbNbNbNbNbNbNbNbNJcJcbNbNKBHIlqlqHIHIlqHIHIHIHIlqHIHIHIlqHIHIlvlvBSwIFubETiFYoyjQCcKfnbpbPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPShQNXbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcJcbNKBHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIHIlvlvBSwIFukzTiJAoyjQCcmhCnpbPSPSPSPSPSPSPSPSfhPSPSPSPSPSPSPSPShQNXbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcJcJcbNKBHIfmfmHIHIHIHIHIHIHIHIlqHIHIHIHIHIlvlvNeoqIXxkTioyFYjQGpkyBSBSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPShQNXbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNYbbNbNEWEWeTNeBSPPPPBSNeEWlvNeBSPPPPBSNeeTlvlvBSNpzkxkTieWzpzpmuBScuhQPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPShQNXbNbNbNbNJcJcJcJcJcJcJcJcJcJcJcJcJcJcJcXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcXsXsXsXsbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNJcijbNbNbNbNbNbNbNJcJcNeNpLoLowUNebNbNNeKMNpNpbMNeJcJclvNeUtguAfzfNeStbbavNecuhQPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPShQNXbNbNbNbNbNJcJcJcJcJcJcJcJcJcJcJcJcbNbNXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcJcJcJcbNbNbNJcbNbNbNbNbNbNbNnFFtwrFWlMbNJcJcJcJcbNbNbNJcijJcJcNejUpzmXVKNeNeNeNeDNTTHDduNeNeNeNeNezvLzxkzfmRSEVeRVBSBSBSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPShQNXbNbNbNbNbNJcJcJcJcJcbNbNbNJcJcbNbNbNXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcbNbNbNbNbNbNJcbNbNbNbNbNbNbNKYmeBZmemANeNeNeNeBSBSBSNeBSBSBSNeNeJHLzbWwgNeEYaFNeSnFVFVzfNesareWVNeMfLzlLtBWmnRWORdzwDcLHPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPShQNXbNbNbNbNbNJcYbJcbNbNbNbNbNbNbNbNbNbNbNXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcbNbNbNbNbNJcJcJcbNbNbNbNbNbNKYcHcHcHIEjQjQvscptSzqjOjOjOjOMNPdTYezNzNzvvLPQzDVBvUYTTNzAKFHQzQzDVqyexLzLziHTgWEjGyXmNBSBSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPShQNXbNbNbNbNbNJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcbNbNbNbNJcJcJcJcbNbNbNbNbNKYYDsqmetGNeBSNeCljCFVHjLzLzHjsdsdHjLzLzLzLzLzLzLzLzLzLzLzLzFVFVjjjjtiLzFVLzqoNeSPnkbjNecuhQPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPSPShQNXbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcbNbNbNJcJcJcYbJcbNbNbNbNbNKYcHcHcHIEjQjQvsMEIxrNrNBmrgrgWkhHSNgsNzNzxQvJybDQvbgsNztduvFRDRIxKIQDhDLzLztLNeStkxavNecuhQhQPSPSPSPSPShQPSPSPShQPSPSPSPSPShQhQNXbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcbNbNbNbNbNbNJcJcbNbNbNbNbNbNKYmesqmeacNeNeNeNeBSBSBSNeBSBSBSNeKHYVLzLzpMeJNeNeNeYVFVLzfXNeNeNeNeNeHmjCjjBnNebNbNbNbNcuhQhQhQPSPSPShQhQhQhQhQhQhQPSPSPShQhQhQNXbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcbNbNbNbNbNbNbNbNbNbNbNbNbNnFbSCgJlJbSWlMbNbNJcijijJcJcTRbNbNhPNeICNzcspMBSTRJcBSICNzNzfXNehPhPhPNexEjpqhNpBSbNbNbNbNcuhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQhQNXbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcbNbNbNbNbNbNbNbNbNbNbNbNKYvxvxacvxvxKYbNbNbNbNijhPhPhPhPhPhPNeOnaQUSTlBSmnijBSZqUSaQvLNehPhPhPNeNpJHNpNpNebNbNbNbNOtVHVHVHVHVHVHVHVHVHVHVHVHVHVHVHVHVHVHVHCUbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcJcJcbNbNbNbNbNbNbNbNbNbNbNbNmQXXXXmAXXXXESbNbNbNhPhPhPhPhPNeNeNeNeBSiuiuBSNeNeNeNeBSiuiuBSNeNeNeNeNeNeBSBSNeNebNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcbNbNbNbNbNbNJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNhPhPhPhPhPNeucGxGxGxGxGxGxGxGxGxGxGxGxGxGxGxGxNpNehPhPJcJcJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcbNbNbNbNbNJcJcXsXsXsbNbNbNbNbNbNbNbNbNbNbNhPhPhPhPhPhPNeucGxGxGxGxGxGxGxGxGxGxGxGxGxGxGxGxNpNehPhPJcJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNbNJcJcJcJcXsXsXsXsXsXsbNbNbNbNbNbNbNbNbNhPhPhPhPhPhPNeucGxGxGxGxGxGxGxGxGxGxGxGxGxGxieGxNpNehPhPJcYbbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsJcXsXsXsXsXsXsXsXsXsXsXsbNbNbNhPhPhPhPhPhPhPhPhPNeucGxGxGxGxGxGxGxGxGxGxGxGxGxGxGxGxNpNehPhPJcJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNhPhPhPhPhPhPhPhPhPhPNeucGxGxGxGxGxGxGxGxGxGxGxGxGxGxGxGxNpNehPhPXsJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhPhPhPhPhPNeNeNeNeNeNeNeNeNeNeNeNeNeNeNeNeNeNeNeNehPXsXsJcbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPXsXsXsbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPXsXsXsXsXsXsXsbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNbNbNXsXsbNbNbNbNbNXsbNbNbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsbNXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXsXshPhPhPhPhP
+hPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhP
+hPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhP
+hPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhP
+hPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhP
+hPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhPhP
+"}

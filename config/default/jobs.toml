@@ -1,0 +1,38 @@
+[jobs.Exodus]
+Captain = 1
+Head_of_Personnel = 1
+Head_of_Security = 1
+Chief_Engineer = 1
+Research_Director = 1
+Chief_Medical_Officer = 1
+
+Station_Engineer = 5
+Roboticist = 1
+
+Medical_Doctor = 5
+Geneticist = 2
+Virologist = 1
+
+Scientist = 3
+Chemist = 2
+
+Bartender = 1
+Botanist = 2
+Chef = 1
+Janitor = 1
+Quartermaster = 1
+Shaft_Miner = 3
+
+Warden = 1
+Detective = 1
+Security_Officer = 5
+
+Assistant = -1
+Atmospheric_Technician = 4
+Cargo_Technician = 3
+Chaplain = 1
+Lawyer = 2
+Librarian = 1
+
+AI = 1
+Cyborg = 1

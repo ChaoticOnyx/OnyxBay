@@ -103,9 +103,10 @@
 
 // Blade Runner pistol.
 /obj/item/gun/projectile/revolver/deckard
-	name = "Deckard .44"
+	name = "Deckard .38"
 	desc = "A custom-built revolver, based off the semi-popular Detective Special model."
 	icon_state = "deckard-empty"
+	caliber = ".38"
 	ammo_type = /obj/item/ammo_magazine/c38/rubber
 
 /obj/item/gun/projectile/revolver/deckard/emp

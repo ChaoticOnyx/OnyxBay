@@ -52,6 +52,7 @@ var/list/flooring_types
 	damage_temperature = 80 CELSIUS
 	flags = TURF_HAS_EDGES | TURF_REMOVE_SHOVEL
 	build_type = /obj/item/stack/tile/grass
+	footstep_sound = SFX_FOOTSTEP_GRASS
 
 /decl/flooring/asteroid
 	name = "coarse sand"

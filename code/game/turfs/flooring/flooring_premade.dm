@@ -434,6 +434,13 @@
 	icon_state = "snow"
 	footstep_sound = SFX_FOOTSTEP_SNOW
 
+/turf/simulated/floor/natural/frozenground
+	name = "frozen ground"
+	icon = 'icons/turf/flooring/frozenground.dmi'
+	icon_state = "frozen_ground"
+	temperature = -30 CELSIUS
+	footstep_sound = SFX_FOOTSTEP_SNOW
+
 /turf/simulated/floor/natural/frozenground/cave
 	name = "frozen ground"
 	icon = 'icons/turf/flooring/frozenground.dmi'

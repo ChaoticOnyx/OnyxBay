@@ -1,121 +1,88 @@
 /datum/proximity_monitor
-	var/atom/host	//the atom we are tracking
-	var/atom/hasprox_receiver //the atom that will receive HasProximity calls.
-	var/atom/last_host_loc
-	var/list/checkers //list of /obj/effect/abstract/proximity_checkers
+	///The atom we are tracking
+	var/atom/host
+	///The atom that will receive HasProximity calls.
+	var/atom/hasprox_receiver
+	///The range of the proximity monitor. Things moving wihin it will trigger HasProximity calls.
 	var/current_range
-	var/ignore_if_not_on_turf	//don't check turfs in range if the host's loc isn't a turf
-	var/wire = FALSE
+	///If we don't check turfs in range if the host's loc isn't a turf
+	var/ignore_if_not_on_turf
+	///The signals of the connect range component, needed to monitor the turfs in range.
+	var/static/list/loc_connections = list(
+		SIGNAL_ENTERED = nameof(.proc/on_entered),
+		SIGNAL_EXITED = nameof(.proc/on_uncrossed),
+		SIGNAL_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON = nameof(.proc/on_initialized),
+	)
 
 /datum/proximity_monitor/New(atom/_host, range, _ignore_if_not_on_turf = TRUE)
-	checkers = list()
-	last_host_loc = _host.loc
 	ignore_if_not_on_turf = _ignore_if_not_on_turf
 	current_range = range
-	SetHost(_host)
+	set_host(_host)
 
-/datum/proximity_monitor/proc/SetHost(atom/H, atom/R)
-	if(H == host)
+/datum/proximity_monitor/proc/set_host(atom/new_host, atom/new_receiver)
+	if(new_host == host)
 		return
-	if(host)
-		unregister_signal(host, SIGNAL_MOVED)
-	if(R)
-		hasprox_receiver = R
+	if(host) //No need to delete the connect range and containers comps. They'll be updated with the new tracked host.
+		unregister_signal(host, list(SIGNAL_MOVED, SIGNAL_QDELETING))
+	if(hasprox_receiver)
+		unregister_signal(hasprox_receiver, SIGNAL_QDELETING)
+	if(new_receiver)
+		hasprox_receiver = new_receiver
+		if(new_receiver != new_host)
+			register_signal(new_receiver, SIGNAL_QDELETING, nameof(.proc/on_host_or_receiver_del))
 	else if(hasprox_receiver == host) //Default case
-		hasprox_receiver = H
-	host = H
-	register_signal(host, SIGNAL_MOVED, nameof(.proc/HandleMove))
-	last_host_loc = host.loc
-	SetRange(current_range,TRUE)
+		hasprox_receiver = new_host
+	host = new_host
+	register_signal(new_host, SIGNAL_QDELETING, nameof(.proc/on_host_or_receiver_del))
+	var/static/list/containers_connections = list(SIGNAL_MOVED = nameof(.proc/on_moved), SIGNAL_Z_CHANGED = nameof(.proc/on_z_change))
+	AddComponent(/datum/component/connect_containers, host, containers_connections)
+	register_signal(host, SIGNAL_MOVED, nameof(.proc/on_moved), TRUE)
+	register_signal(host, SIGNAL_Z_CHANGED, nameof(.proc/on_z_change), TRUE)
+	set_range(current_range, TRUE)
+
+/datum/proximity_monitor/proc/on_host_or_receiver_del(datum/source)
+	qdel_self()
 
 /datum/proximity_monitor/Destroy()
-	if(!isnull(host))
-		unregister_signal(host, SIGNAL_MOVED)
 	host = null
-	last_host_loc = null
 	hasprox_receiver = null
-	QDEL_NULL_LIST(checkers)
 	return ..()
 
-/datum/proximity_monitor/proc/HandleMove()
-	var/atom/_host = host
-	var/atom/new_host_loc = ignore_if_not_on_turf ? _host.loc : get_turf(_host)
-	if(last_host_loc != new_host_loc)
-		last_host_loc = new_host_loc	//hopefully this won't cause GC issues with containers
-		var/curr_range = current_range
-		SetRange(curr_range, TRUE)
-		if(curr_range)
-			hasprox_receiver.HasProximity(host)	//if we are processing, we're guaranteed to be a movable
-
-/datum/proximity_monitor/proc/SetRange(range, force_rebuild = FALSE)
+/datum/proximity_monitor/proc/set_range(range, force_rebuild = FALSE)
 	if(!force_rebuild && range == current_range)
 		return FALSE
 	. = TRUE
-
 	current_range = range
 
-	var/list/checkers_local = length(checkers) ? checkers : list()
-	var/old_checkers_len = length(checkers_local)
+	//If the connect_range component exists already, this will just update its range. No errors or duplicates.
+	AddComponent(/datum/component/connect_range, host, loc_connections, range, !ignore_if_not_on_turf)
 
-	var/atom/_host = host
+/datum/proximity_monitor/proc/on_moved(atom/movable/source, atom/old_loc)
+	SIGNAL_HANDLER
+	if(source == host)
+		hasprox_receiver?.HasProximity(host)
 
-	var/atom/loc_to_use = ignore_if_not_on_turf ? _host.loc : get_turf(_host)
-	if(wire && !isturf(loc_to_use)) //it makes assemblies attached on wires work
-		loc_to_use = get_turf(loc_to_use)
-	if(!isturf(loc_to_use))	//only check the host's loc
-		if(range)
-			var/obj/effect/abstract/proximity_checker/pc
-			if(old_checkers_len)
-				pc = checkers_local[old_checkers_len]
-				--checkers_local.len
-				QDEL_NULL_LIST(checkers_local)
-			else
-				pc = new(loc_to_use, src)
+/datum/proximity_monitor/proc/on_z_change()
+	SIGNAL_HANDLER
+	return
 
-			checkers_local += pc	//only check the host's loc
+/datum/proximity_monitor/proc/set_ignore_if_not_on_turf(does_ignore = TRUE)
+	if(ignore_if_not_on_turf == does_ignore)
 		return
+	ignore_if_not_on_turf = does_ignore
+	//Update the ignore_if_not_on_turf
+	AddComponent(/datum/component/connect_range, host, loc_connections, current_range, ignore_if_not_on_turf)
 
-	var/list/turfs = RANGE_TURFS(range, loc_to_use)
-	var/turfs_len = length(turfs)
-	var/old_checkers_used = min(turfs_len, old_checkers_len)
+/datum/proximity_monitor/proc/on_uncrossed()
+	SIGNAL_HANDLER
+	return //Used by the advanced subtype for effect fields.
 
-	//reuse what we can
-	for(var/I in 1 to old_checkers_len)
-		if(I <= old_checkers_used)
-			var/obj/effect/abstract/proximity_checker/pc = checkers_local[I]
-			if(pc)
-				pc.forceMove(turfs[I])
-			else
-				checkers += new /obj/effect/abstract/proximity_checker(turfs[I], src)
-		else
-			qdel(checkers_local[I])	//delete the leftovers
+/datum/proximity_monitor/proc/on_entered(atom/source, atom/movable/arrived, turf/old_loc)
+	SIGNAL_HANDLER
+	if(source != host)
+		hasprox_receiver?.HasProximity(arrived)
 
-	if(old_checkers_len < turfs_len)
-		//create what we lack
-		for(var/I in (old_checkers_used + 1) to turfs_len)
-			checkers_local += new /obj/effect/abstract/proximity_checker(turfs[I], src)
-	else
-		checkers_local.Cut(old_checkers_used + 1, old_checkers_len)
-
-/obj/effect/abstract/proximity_checker
-	invisibility = INVISIBILITY_SYSTEM
-	anchored = TRUE
-	var/datum/proximity_monitor/monitor
-
-/obj/effect/abstract/proximity_checker/Initialize(mapload, datum/proximity_monitor/_monitor)
-	. = ..()
-	if(_monitor)
-		monitor = _monitor
-	else
-		util_crash_with("proximity_checker created without host")
-		return INITIALIZE_HINT_QDEL
-
-/obj/effect/abstract/proximity_checker/Destroy()
-	LAZYREMOVE(monitor.checkers, src)
-	monitor = null
-	return ..()
-
-/obj/effect/abstract/proximity_checker/Crossed(atom/movable/AM)
-	set waitfor = FALSE
-	if(monitor)
-		monitor.hasprox_receiver?.HasProximity(AM)
+/datum/proximity_monitor/proc/on_initialized(turf/location, atom/created, init_flags)
+	SIGNAL_HANDLER
+	if(location != host)
+		hasprox_receiver?.HasProximity(created)

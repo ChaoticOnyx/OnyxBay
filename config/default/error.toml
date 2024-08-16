@@ -1,0 +1,12 @@
+[error]
+## The "cooldown" time for each occurrence of a unique error.
+cooldown = 600
+
+## How many occurrences before the next will silence them.
+limit = 50
+
+## How long a unique error will be silenced for.
+silence_time = 6000
+
+## How long to wait between messaging admins about occurrences of a unique error.
+msg_delay = 50

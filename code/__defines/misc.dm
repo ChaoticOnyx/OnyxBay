@@ -340,3 +340,9 @@
 
 // Shortcut for image_repository.overlay_image(...)
 #define OVERLAY(args...) image_repository.overlay_image(args)
+
+//Turf/area values for 'this space is outside' checks
+#define OUTSIDE_AREA null
+#define OUTSIDE_NO   FALSE
+#define OUTSIDE_YES  TRUE
+#define OUTSIDE_UNCERTAIN null

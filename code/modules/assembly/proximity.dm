@@ -42,6 +42,9 @@
 	return secured
 
 /obj/item/device/assembly/prox_sensor/HasProximity(atom/movable/AM)
+	if(!istype(AM))
+		return
+
 	if(!scanning)
 		return
 	if(istype(AM, /obj/effect/beam))
@@ -165,7 +168,7 @@
 		range += r
 		range = Clamp(range, 1, 5)
 		if(range != old_range)
-			proximity_monitor.SetRange(range)
+			proximity_monitor.set_range(range, TRUE)
 
 	if(href_list["close"])
 		close_browser(usr, "window=prox")

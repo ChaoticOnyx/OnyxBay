@@ -1,0 +1,67 @@
+[general]
+## Server name: This appears at the top of the screen in-game.
+## In this case it will read "tgstation: station_name" where station_name is the randomly generated name of the station for the round.
+server_name = "Onyxbay"
+
+## Subserver name: Only used as part of game's window title name.
+## Leave commented and it won't appear.
+subserver_name = "Chaotic"
+
+## Server id. This is used, when you have more than one server connected to single DB.
+## NOTE! You should migrate your DB to schema with server_id applied to each ban record
+## to actually support this option. Leave this commented, if you have just one server.
+server_id = "onyxbay"
+
+# Set to true to generate numeric suffix after server name based on server port.
+server_suffix = false
+
+## Set a different port to use.
+# server_port = 8080
+
+## set a hosted by name for unix platforms.
+# hosted_by = "yournamehere"
+
+## Server players limit. If player try to connect while server is full he will
+## be redirected to the panic server. Otherwise, it's just close the connection.
+## Write 0 to toggle limit off.
+player_limit = 0
+
+## Extra players limit. Allows to connect players who already have living mob.
+## Write 0 to toggle limit off. Must be more than PLAYER_LIMIT in order to work correctly.
+hard_player_limit = 0
+
+## Kick players that have major or minor BYOND build below this numbers.
+## Write numbers of major and minor BYOND build. Writing numbers above existing BYOND builds will result in impossibility to join server.
+client_min_major_version = 514
+client_min_minor_version = 1589
+
+## Defines the ticklag for the world. Ticklag is the amount of time between game ticks (aka byond ticks) (in 1/10ths of a second).
+## This also controls the client network update rate, as well as the default client fps (10 / TICKLAG). 0.9 is the normal one, 0.5 is smoother.
+ticklag = 0.33333333333333333333
+
+## Defines the fps for the players with 0 in preferences. -1 for synced with server fps.
+## 65 recommended.
+client_fps = 65
+
+## Defines the world fps.
+fps = 20
+
+## Set to true to have the changelog file automatically open when a user connects and hasn't seen the latest changelog.
+aggressive_changelog = false
+
+## SSinitialization throttling, if disabled, uses default value.
+tick_limit_mc_init = 100
+
+## TOPIC RATE LIMITING
+## This allows you to limit how many topic calls (clicking on a interface window) the client can do in any given game second and/or game minute.
+## Admins are exempt from these limits.
+## Hitting the minute limit notifies admins.
+## Set to 0 or comment out to disable.
+second_topic_limit = 10
+minute_topic_limit = 200
+
+## Set to true to make Dream Daemon refuse to reboot for any reason other than `SIGUSR1`.
+wait_for_sigusr1 = false
+
+## Uncomment to start a metrics endpoint for prometheus.
+#prometheus_port = "9080"

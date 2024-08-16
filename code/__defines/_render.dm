@@ -161,6 +161,12 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	if (istype(owner) && owner.client && owner.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_NO)
 		remove_filter("AO")
 
+/// Renders runechat. That's it.
+/atom/movable/renderer/runechat
+	name  = RUNECHAT_RENDERER
+	group = RENDER_GROUP_SCENE
+	plane = RUNECHAT_PLANE
+
 /// Draws observers; ghosts, camera eyes, etc.
 /atom/movable/renderer/observers
 	name  = OBSERVERS_RENDERER

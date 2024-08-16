@@ -267,7 +267,7 @@
 
 /decl/hierarchy/supply_pack/engineering/rig
 	name = "EVA RIG"
-	contains = list(/obj/item/rig/eva)
+	contains = list(/obj/item/rig/eva/equipped)
 	cost = 240
 	containername = "\improper EVA RIG crate"
 	containertype = /obj/structure/closet/crate/secure/engineering

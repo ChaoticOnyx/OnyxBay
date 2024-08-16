@@ -55,10 +55,14 @@
 					/obj/item/storage/pill_bottle/kelotane,
 					/obj/item/storage/pill_bottle/spaceacillin,
 					/obj/item/storage/pill_bottle/tramadol,
+					/obj/item/storage/pill_bottle/oxycodone,
 					/obj/item/storage/pill_bottle/antidexafen,
 					/obj/item/storage/pill_bottle/paracetamol,
 					/obj/item/storage/pill_bottle/hyronalin,
-					/obj/item/storage/pill_bottle/glucose)
+					/obj/item/storage/pill_bottle/glucose,
+					/obj/item/storage/pill_bottle/tricordrazine,
+					/obj/item/storage/pill_bottle/ryetalyn,
+					/obj/item/storage/pill_bottle/albumin)
 	name = "Surplus medical drugs"
 	cost = 30
 	containername = "\improper Medical drugs crate"
@@ -331,7 +335,7 @@
 
 /decl/hierarchy/supply_pack/medical/rig
 	name = "Medical RIG"
-	contains = list(/obj/item/rig/medical)
+	contains = list(/obj/item/rig/medical/equipped)
 	cost = 360
 	containername = "\improper Medical RIG crate"
 	containertype = /obj/structure/closet/crate/secure

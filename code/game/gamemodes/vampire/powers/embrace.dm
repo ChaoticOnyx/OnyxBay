@@ -21,17 +21,25 @@
 	var/mob/living/carbon/human/T = G.affecting
 	if(!vampire.can_affect(T, check_thrall = FALSE))
 		return
+
 	if(!T.client)
 		to_chat(my_mob, SPAN("warning", "[T] is a mindless husk. The Veil has no purpose for them."))
 		return
-	if(T.stat == 2)
+
+	if(T.is_ic_dead())
 		to_chat(my_mob, SPAN("warning", "[T]'s body is broken and damaged beyond salvation. You have no use for them."))
 		return
+
 	if(T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		to_chat(my_mob, SPAN("warning", "[T] has no blood and can not be affected by your powers!"))
 		return
+
 	if(vampire.vamp_status & VAMP_DRAINING)
 		to_chat(my_mob, SPAN("warning", "Your fangs are already sunk into a victim's neck!"))
+		return
+
+	if(jobban_isbanned(T, MODE_VAMPIRE))
+		to_chat(my_mob, SPAN_WARNING("[T]'s mind is tainted. They cannot be forced into a blood bond."))
 		return
 
 	if(T.mind.vampire)
@@ -66,7 +74,7 @@
 	to_chat(T, SPAN("notice", "You are currently being turned into a vampire. You will die in the course of this, but you will be revived by the end. Please do not ghost out of your body until the process is complete."))
 
 	while(do_mob(my_mob, T, 50))
-		if (!my_mob.mind.vampire)
+		if(!my_mob.mind.vampire)
 			to_chat(my_mob, SPAN("alert", "Your fangs have disappeared!"))
 			return
 		if (!T.vessel.get_reagent_amount(/datum/reagent/blood))
@@ -74,6 +82,20 @@
 			break
 
 		T.vessel.remove_reagent(/datum/reagent/blood, 50)
+
+	if(!istype(T))
+		vampire.vamp_status &= ~VAMP_DRAINING
+		return
+
+	if(T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
+		to_chat(my_mob, SPAN("warning", "[T] has no blood and can not be affected by your powers!"))
+		vampire.vamp_status &= ~VAMP_DRAINING
+		return
+
+	if(jobban_isbanned(T, MODE_VAMPIRE))
+		to_chat(my_mob, SPAN_WARNING("[T]'s mind is tainted. They cannot be forced into a blood bond."))
+		vampire.vamp_status &= ~VAMP_DRAINING
+		return
 
 	T.revive()
 
@@ -89,7 +111,9 @@
 	T.Weaken(15)
 	T.Stun(15)
 	var/datum/antagonist/vampire/VAMP = GLOB.all_antag_types_[MODE_VAMPIRE]
-	VAMP.add_antagonist(T.mind, 1, 1, 0, 0, 1)
+	if(!VAMP.add_antagonist(T.mind, 1, 1, 0, 0, 1))
+		to_chat(my_mob, SPAN("warning", "[T] is not a creature you can embrace."))
+		return
 
 	admin_attack_log(my_mob, T, "successfully embraced [key_name(T)]", "was successfully embraced by [key_name(my_mob)]", "successfully embraced and turned into a vampire")
 

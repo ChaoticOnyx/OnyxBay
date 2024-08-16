@@ -80,7 +80,7 @@ var/DB_PORT = 3306 // This is the port your MySQL server is running on (3306 is 
 /DBConnection/proc/SelectDB(database_name,dbi)
 	if(IsConnected()) Disconnect()
 	//return Connect("[dbi?"[dbi]":"dbi:mysql:[database_name]:[DB_SERVER]:[DB_PORT]"]",user,password)
-	return Connect("[dbi?"[dbi]":"dbi:mysql:[database_name]:[sqladdress]:[sqlport]"]",user,password)
+	return Connect("[dbi?"[dbi]":"dbi:mysql:[database_name]:[config.database.address]:[config.database.port]"]",user,password)
 /DBConnection/proc/NewQuery(sql_query,cursor_handler=src.default_cursor) return new /DBQuery(sql_query,src,cursor_handler)
 
 

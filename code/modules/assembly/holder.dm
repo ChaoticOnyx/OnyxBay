@@ -45,9 +45,9 @@
 	D.forceMove(src)
 	D2.forceMove(src)
 	if(D.proximity_monitor)
-		D.proximity_monitor.SetHost(src, D)
+		D.proximity_monitor.set_host(src, D)
 	if(D2.proximity_monitor)
-		D2.proximity_monitor.SetHost(src, D2)
+		D2.proximity_monitor.set_host(src, D2)
 	a_left = D
 	a_right = D2
 	SetName("[D.name]-[D2.name] assembly")
@@ -179,12 +179,12 @@
 			a_left.holder = null
 			a_left.forceMove(T)
 			if(a_left.proximity_monitor)
-				a_left.proximity_monitor.SetHost(a_left, a_left)
+				a_left.proximity_monitor.set_host(a_left, a_left)
 		if(a_right)
 			a_right.holder = null
 			a_right.forceMove(T)
 			if(a_right.proximity_monitor)
-				a_right.proximity_monitor.SetHost(a_right, a_right)
+				a_right.proximity_monitor.set_host(a_right, a_right)
 		spawn(0)
 			user.drop(src)
 			qdel(src)

@@ -150,8 +150,6 @@ var/server_name = "OnyxBay"
 	if(byond_version < RECOMMENDED_VERSION)
 		to_world_log("Your server's byond version does not meet the recommended requirements for this server. Please update BYOND")
 
-	load_sql_config("config/dbconfig.txt")
-
 	// Load up the base config.toml
 	config.load_configuration()
 
@@ -184,9 +182,6 @@ var/server_name = "OnyxBay"
 	GLOB.lobby_music = new lobby_music_type()
 
 	callHook("startup")
-	//Emergency Fix
-	load_mods()
-	//end-emergency fix
 
 	. = ..()
 
@@ -593,54 +588,8 @@ var/world_topic_spam_protect_time = world.timeofday
 	return 1
 
 /world/proc/load_motd()
-	join_motd = file2text("config/motd.txt")
+	join_motd = config.texts.motd
 	load_regular_announcement()
-
-/hook/startup/proc/loadMods()
-	world.load_mods()
-	world.load_mentors() // no need to write another hook.
-	return 1
-
-/world/proc/load_mods()
-	if(config.admin.admin_legacy_system)
-		var/text = file2text("config/moderators.txt")
-		if (!text)
-			error("Failed to load config/mods.txt")
-		else
-			var/list/lines = splittext(text, "\n")
-			for(var/line in lines)
-				if (!line)
-					continue
-
-				if (copytext(line, 1, 2) == ";")
-					continue
-
-				var/title = "Moderator"
-				var/rights = admin_ranks[title]
-
-				var/ckey = copytext(line, 1, length(line)+1)
-				var/datum/admins/D = new /datum/admins(title, rights, ckey)
-				D.associate(GLOB.ckey_directory[ckey])
-
-/world/proc/load_mentors()
-	if(config.admin.admin_legacy_system)
-		var/text = file2text("config/mentors.txt")
-		if (!text)
-			error("Failed to load config/mentors.txt")
-		else
-			var/list/lines = splittext(text, "\n")
-			for(var/line in lines)
-				if (!line)
-					continue
-				if (copytext(line, 1, 2) == ";")
-					continue
-
-				var/title = "Mentor"
-				var/rights = admin_ranks[title]
-
-				var/ckey = copytext(line, 1, length(line)+1)
-				var/datum/admins/D = new /datum/admins(title, rights, ckey)
-				D.associate(GLOB.ckey_directory[ckey])
 
 /world/proc/update_status()
 	var/s = ""
@@ -738,18 +687,17 @@ var/failed_don_db_connections = 0
 	return TRUE
 
 /proc/setup_database_connection()
-
 	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to connect anymore.
 		return 0
 
 	if(!dbcon)
 		dbcon = new()
 
-	var/user = sql_feedback_login
-	var/pass = sql_feedback_pass
-	var/db = sql_feedback_db
-	var/address = sqladdress
-	var/port = sqlport
+	var/user = config.database.feedback_login
+	var/pass = config.database.feedback_password
+	var/db = config.database.feedback_database
+	var/address = config.database.address
+	var/port = config.database.port
 
 	dbcon.Connect("dbi:mysql:[db]:[address]:[port]","[user]","[pass]")
 	. = dbcon.IsConnected()
@@ -794,11 +742,11 @@ var/failed_don_db_connections = 0
 	if(!dbcon_old)
 		dbcon_old = new()
 
-	var/user = sqllogin
-	var/pass = sqlpass
-	var/db = sqldb
-	var/address = sqladdress
-	var/port = sqlport
+	var/user = config.database.login
+	var/pass = config.database.password
+	var/db = config.database.database
+	var/address = config.database.address
+	var/port = config.database.port
 
 	dbcon_old.Connect("dbi:mysql:[db]:[address]:[port]","[user]","[pass]")
 	. = dbcon_old.IsConnected()
@@ -841,11 +789,11 @@ proc/setup_don_database_connection()
 	if(!dbcon_don)
 		dbcon_don = new()
 
-	var/user = sqldonlogin
-	var/pass = sqldonpass
-	var/db = sqldondb
-	var/address = sqldonaddress
-	var/port = sqldonport
+	var/user = config.database.donation_login
+	var/pass = config.database.donation_pass
+	var/db = config.database.donation_database
+	var/address = config.database.donation_address
+	var/port = config.database.donation_port
 	dbcon_don.Connect("dbi:mysql:[db]:[address]:[port]","[user]","[pass]")
 	log_debug("Connecting to donationsDB")
 

@@ -1,46 +1,18 @@
-#define WHITELISTFILE "config/whitelist.txt"
-
-var/list/whitelist = list()
-
-/hook/startup/proc/loadWhitelist()
-	if(config.game.use_whitelist)
-		load_whitelist()
-	return 1
-
-/proc/load_whitelist()
-	whitelist = file2list(WHITELISTFILE)
-	if(!whitelist.len)	whitelist = null
-
 /proc/check_whitelist(mob/M /*, rank*/)
-	if(!whitelist)
-		return 0
-	return ("[M.ckey]" in whitelist)
+	return ("[M.ckey]" in config.whitelist.ckeys)
 
 /var/list/alien_whitelist = list()
 
 /hook/startup/proc/loadAlienWhitelist()
-	if(config.game.use_ingame_alien_whitelist)
-		if(config.game.use_alien_whitelist_sql)
-			load_alienwhitelistSQL()
-		else
-			load_alienwhitelist()
+	if(config.whitelist.enable_alien_whitelist)
+		load_alienwhitelist()
+
 	return 1
 
 /proc/load_alienwhitelist()
-	var/text = file2text("config/alienwhitelist.txt")
-	if (!text)
-		log_misc("Failed to load config/alienwhitelist.txt")
-		return 0
-	else
-		alien_whitelist = splittext(text, "\n")
-		return 1
-
-/proc/load_alienwhitelistSQL()
 	if(!establish_old_db_connection())
-		error("Failed to connect to database in load_alienwhitelistSQL(). Reverting to legacy system.")
-		log_misc("Failed to connect to database in load_alienwhitelistSQL(). Reverting to legacy system.")
-		config.game.use_alien_whitelist_sql = 0
-		load_alienwhitelist()
+		error("Failed to connect to database in load_alienwhitelist().")
+		log_misc("Failed to connect to database in load_alienwhitelist().")
 		return FALSE
 	var/DBQuery/query = sql_query("SELECT * FROM whitelist", dbcon_old)
 	while(query.NextRow())
@@ -60,7 +32,7 @@ var/list/whitelist = list()
 /proc/is_alien_whitelisted(mob/M, species)
 	if(!M || !species)
 		return 0
-	if(!config.game.use_ingame_alien_whitelist)
+	if(!config.whitelist.enable_alien_whitelist)
 		return 1
 
 	var/client/C = M.client
@@ -85,20 +57,10 @@ var/list/whitelist = list()
 	if(!alien_whitelist)
 		return 0
 
-	if(config.game.use_alien_whitelist_sql)
-		//SQL Whitelist
-		if(!(ckey in alien_whitelist))
-			return 0;
-		var/list/whitelisted = alien_whitelist[ckey]
-		if(lowertext(item) in whitelisted)
-			return 1
-	else
-		//Config File Whitelist
-		for(var/s in alien_whitelist)
-			if(findtext(s,"[ckey] - [item]"))
-				return 1
-			if(findtext(s,"[ckey] - All"))
-				return 1
-	return 0
+	if(!(ckey in alien_whitelist))
+		return 0;
+	var/list/whitelisted = alien_whitelist[ckey]
+	if(lowertext(item) in whitelisted)
+		return 1
 
-#undef WHITELISTFILE
+	return 0

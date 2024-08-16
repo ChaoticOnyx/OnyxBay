@@ -28,7 +28,7 @@ var/const/IAA_ban_reason = "Restricted by CentComm"
 		if (guest_jobbans(rank))
 			if(config.game.guest_jobban && IsGuestKey(M.key))
 				return "Guest Job-ban"
-			if(config.game.use_whitelist && !check_whitelist(M))
+			if(config.whitelist.enable && !check_whitelist(M))
 				return "Whitelisted Job"
 
 		for (var/s in jobban_keylist)
@@ -98,14 +98,14 @@ DEBUG
 
 		//Job permabans
 		var/DBQuery/query = sql_query({"
-			SELECT 
-				ckey, 
-				job 
-			FROM 
-				erro_ban 
-			WHERE 
-				bantype = 'JOB_PERMABAN' 
-				AND 
+			SELECT
+				ckey,
+				job
+			FROM
+				erro_ban
+			WHERE
+				bantype = 'JOB_PERMABAN'
+				AND
 				isnull(unbanned)
 				[isnull(config.general.server_id) ? "" : " AND server_id = $sid"]
 			"}, dbcon, list(sid = config.general.server_id))

@@ -348,20 +348,31 @@
 /obj/machinery/door/firedoor/proc/can_safely_open()
 	var/turf/neighbour
 	for(var/dir in GLOB.cardinal)
-		neighbour = get_step(src.loc, dir)
-		if(neighbour.c_airblock(src.loc) & AIR_BLOCKED)
+		neighbour = get_step(loc, dir)
+		var/turf/my_turf = get_turf(src)
+		if(!neighbour)
 			continue
-		for(var/obj/O in src.loc)
+
+		var/airblock // zeroed by ATMOS_CANPASS_TURF, declared early as microopt
+		ATMOS_CANPASS_TURF(airblock, neighbour, my_turf)
+		if(airblock & AIR_BLOCKED)
+			continue
+
+		for(var/obj/O in my_turf)
 			if(istype(O, /obj/machinery/door))
 				continue
-			. |= O.c_airblock(neighbour)
+			ATMOS_CANPASS_MOVABLE(airblock, O, neighbour)
+			. |= airblock
+
 		if(. & AIR_BLOCKED)
 			continue
 		var/area/A = get_area(neighbour)
 		if(!A.master_air_alarm)
 			return
+
 		if(A.atmosalm)
 			return
+
 	return TRUE
 
 /obj/machinery/door/firedoor/do_animate(animation)

@@ -16,8 +16,6 @@
 
 		errors[++errors.len] = list2params(data)
 
-	runtimes2irc(list2params(errors), revdata.revision)
-
 	return 1
 
 #endif

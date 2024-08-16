@@ -66,6 +66,7 @@
 								/obj/item/rig/security 											= TRADER_THIS_TYPE,
 								/obj/item/rig/hazmat 											= TRADER_THIS_TYPE,
 								/obj/item/rig/light/stealth 									= TRADER_THIS_TYPE,
+								/obj/item/rig/light/hacker/empty 								= TRADER_THIS_TYPE,
 								/obj/item/rig/medical 											= TRADER_THIS_TYPE,
 								/obj/item/rig/industrial 										= TRADER_THIS_TYPE,
 								/obj/item/rig/mining 											= TRADER_THIS_TYPE,

@@ -917,3 +917,17 @@ proc/dd_sortedObjectList(list/incoming)
 	for(var/atom/atom_checked as anything in atoms)
 		if(!typecache[atom_checked.type])
 			. += atom_checked
+
+///compare two lists, returns TRUE if they are the same
+/proc/compare_list(list/l,list/d)
+	if(!islist(l) || !islist(d))
+		return FALSE
+
+	if(l.len != d.len)
+		return FALSE
+
+	for(var/i in 1 to l.len)
+		if(l[i] != d[i])
+			return FALSE
+
+	return TRUE

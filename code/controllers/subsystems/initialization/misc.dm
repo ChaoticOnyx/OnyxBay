@@ -14,7 +14,7 @@ SUBSYSTEM_DEF(misc)
 
 	job_master = new /datum/controller/occupations()
 	job_master.SetupOccupations(setup_titles=1)
-	job_master.LoadJobs("config/jobs.toml")
+	job_master.LoadJobs()
 
 	GLOB.syndicate_code_phrase = generate_code_phrase()
 	GLOB.code_phrase_highlight_rule = generate_code_regex(GLOB.syndicate_code_phrase, @"\u0430-\u0451") // Russian chars only
