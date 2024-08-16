@@ -24,7 +24,7 @@
 /datum/configuration_section/database/load_data(list/data)
 	CONFIG_LOAD_STR(address, data["address"])
 	CONFIG_LOAD_STR(port, data["port"])
-	CONFIG_LOAD_STR(database, data["db"])
+	CONFIG_LOAD_STR(database, data["database"])
 	CONFIG_LOAD_STR(login, data["login"])
 	CONFIG_LOAD_STR(password, data["password"])
 
