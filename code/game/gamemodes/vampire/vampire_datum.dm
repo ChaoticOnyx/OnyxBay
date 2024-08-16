@@ -11,6 +11,8 @@
 	var/last_frenzy_message = 0                            // Keeps track of when the last frenzy alert was sent.
 	var/vamp_status = 0                                    // Bitfield including different statuses.
 	var/stealth = TRUE                                     // Do you want your victims to know of your sucking?
+	var/list/eyescolor = list()
+	var/list/skincolor = list()
 
 	var/list/purchased_powers = list()                      // List of power datums we currently use.
 	var/list/datum/vampire_power/available_powers = list() // List of vampire_power datums available for use.
@@ -101,6 +103,20 @@
 	blood_usable += blood_to_get
 	return
 
+/datum/vampire/proc/set_up_colors()
+	eyescolor |= my_mob.r_eyes
+	eyescolor |= my_mob.g_eyes
+	eyescolor |= my_mob.b_eyes
+
+	skincolor |= my_mob.s_tone
+	my_mob.change_eye_color(255, 0, 0)
+	my_mob.change_skin_tone(0)
+
+/datum/vampire/proc/restore_colors()
+	my_mob.change_eye_color(eyescolor[0], eyescolor[1], eyescolor[2])
+	my_mob.change_skin_tone(skincolor[0])
+	eyescolor = list()
+	skincolor = list()
 
 /datum/vampire/proc/set_up_organs()
 	if(vamp_status & VAMP_ISTHRALL)
@@ -114,6 +130,7 @@
 	my_mob.oxygen_alert = 0
 	my_mob.add_modifier(/datum/modifier/trait/low_metabolism)
 	my_mob.innate_heal = 0
+	set_up_colors()
 
 	for(var/datum/modifier/mod in my_mob.modifiers)
 		if(!isnull(mod.metabolism_percent))
@@ -134,6 +151,7 @@
 	my_mob.status_flags &= ~UNDEAD
 	my_mob.remove_modifiers_of_type(/datum/modifier/trait/low_metabolism, TRUE)
 	my_mob.innate_heal = 1
+	restore_colors()
 
 	var/obj/item/organ/internal/heart/O = my_mob.internal_organs_by_name[BP_HEART]
 	if(O)
