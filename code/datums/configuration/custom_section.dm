@@ -2,10 +2,10 @@
 	name = "custom"
 
 	/// sprite_type = list(/datum/custom_sprite, ...)
-	var/list/sprites
+	var/list/sprites = list()
 
 	/// ckey = list(/datum/custom_item, ...)
-	var/list/items
+	var/list/items = list()
 
 /datum/configuration_section/custom/load_data(list/data)
 	var/list/new_sprites = data["sprites"]
