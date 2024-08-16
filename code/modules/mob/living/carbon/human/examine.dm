@@ -340,7 +340,7 @@
 	msg += applying_pressure
 
 	if (isundead(src) && !isfakeliving(src))
-		msg += SPAN("danger", "[T.He] looks like a month old corpse.\n")
+		msg += SPAN("danger", "[T.He] looks like a month-old corpse.\n")
 
 	if (pose)
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
