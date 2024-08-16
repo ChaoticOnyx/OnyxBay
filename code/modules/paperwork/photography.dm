@@ -220,9 +220,11 @@ var/global/photo_count = 0
 			mob_detail = "You can see [A] on the photo[(A.health / A.maxHealth) < 0.75 ? " - [A] looks hurt":""].[holding ? " [holding]":"."]. "
 		else
 			mob_detail += "You can also see [A] on the photo[(A.health / A.maxHealth)< 0.75 ? " - [A] looks hurt":""].[holding ? " [holding]":"."]."
-		var/obj/item/organ/external/head/E = A.get_organ(BP_HEAD)
-		if(E && (E?.status & ORGAN_DISFIGURED)) // Check to see if we even have a head and if the head's disfigured.
-			mob_detail += "You can see [A] on the photo is disfigured."
+		if(ishuman(A))
+			var/mob/living/carbon/human/H = A
+			var/obj/item/organ/external/head/E = H.get_organ(BP_HEAD)
+			if(E && (E?.status & ORGAN_DISFIGURED)) // Check to see if we even have a head and if the head's disfigured.
+				mob_detail += "You can see [A] on the photo is disfigured."
 	return mob_detail
 
 /obj/item/device/camera/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
@@ -260,9 +262,11 @@ var/global/photo_count = 0
 			if(user.can_capture_turf(T))
 				mobs += get_mobs(T)
 				for(var/mob/living/carbon/A in T)
-					var/obj/item/organ/external/head/E = A.get_organ(BP_HEAD)
-					if(E && (E?.status & ORGAN_DISFIGURED))
-						disfigured |= A
+					if(ishuman(A))
+						var/mob/living/carbon/human/H = A
+						var/obj/item/organ/external/head/E = H.get_organ(BP_HEAD)
+						if(E && (E?.status & ORGAN_DISFIGURED))
+							disfigured |= A
 			x_c++
 		y_c--
 		x_c = x_c - size

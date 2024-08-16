@@ -648,8 +648,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	reward = 4 // This is how expensive your face is, fellow NT employee
 	intent = CONTRACT_IMPACT_MILITARY
 	var/target_real_name
-	var/weakref/photo // obj/item
 	var/weakref/H // mob/living/carbon/human
+	var/mob/living/carbon/human/target
 
 /datum/antag_contract/item/disfigure/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	organization = contract_organization
@@ -683,6 +683,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 			_H = candidate_mind.current
 			H = weakref(_H)
+			target = _H
 			if(!istype(_H) || _H.is_ooc_dead() || !is_station_turf(get_turf(_H)))
 				continue
 
@@ -702,6 +703,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		if(!istype(_H))
 			return
 		H = weakref(_H)
+		target = _H
 		target_real_name = _H.real_name
 		name = "[name] [target_real_name]"
 	if(!istype(H))
@@ -709,12 +711,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_explain_text("disfigure <b>[target_real_name]</b> face and send the photo of them via STD (found in <b>Contracts Equipment</b>) as a proof.")
 
 /datum/antag_contract/item/disfigure/can_place()
-	return ..() && target && !QDELETED(target_mind) && !QDELETED(target_mind.current)
+	return ..() && !QDELETED(target_mind) && !QDELETED(target_mind.current)
 
 /datum/antag_contract/item/disfigure/check_contents(list/contents)
-	var/obj/item/photo/photo = photo?.resolve()
 	for(var/obj/item/photo/p in contents)
-		if(H in p.disfigured_mobs)
+		if(target in p.disfigured_mobs)
 			return TRUE
 
 /datum/antag_contract/item/disfigure/on_mob_despawned(datum/mind/M)
