@@ -5,7 +5,7 @@
 	desc = "Allows you to hide among your prey."
 	icon_state = "vamp_revitalise"
 	blood_cost = 1
-	blood_drain = 1
+	blood_drain = 0.3
 	max_stat = UNCONSCIOUS
 
 	text_activate = "You begin hiding your true self."

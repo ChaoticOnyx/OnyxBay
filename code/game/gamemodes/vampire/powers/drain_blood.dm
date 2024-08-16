@@ -89,7 +89,7 @@
 
 		// Alive and not of empty mind.
 		if(T.stat < DEAD && T.client)
-			blood = min(15, T.vessel.get_reagent_amount(/datum/reagent/blood))
+			blood = min(30, T.vessel.get_reagent_amount(/datum/reagent/blood))
 			vampire.blood_total += blood
 			vampire.gain_blood(blood)
 			blood_drained += blood

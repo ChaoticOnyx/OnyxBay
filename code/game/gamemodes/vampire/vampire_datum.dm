@@ -122,7 +122,7 @@
 	if(vamp_status & VAMP_ISTHRALL)
 		return
 
-	blood_usable = 30
+	blood_usable = 200
 
 	my_mob.does_not_breathe = 1
 	my_mob.remove_blood(my_mob.species.blood_volume)
