@@ -767,6 +767,7 @@
 #include "code\game\gamemodes\vampire\vampire_powers.dm"
 #include "code\game\gamemodes\vampire\powers\alertness.dm"
 #include "code\game\gamemodes\vampire\powers\bats.dm"
+#include "code\game\gamemodes\vampire\powers\bloodbuff.dm"
 #include "code\game\gamemodes\vampire\powers\bloodheal.dm"
 #include "code\game\gamemodes\vampire\powers\darkvision.dm"
 #include "code\game\gamemodes\vampire\powers\drain_blood.dm"

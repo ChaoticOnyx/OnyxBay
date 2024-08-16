@@ -109,17 +109,17 @@
 	return
 
 /datum/vampire/proc/set_up_colors()
-	eyescolor |= my_mob.r_eyes
-	eyescolor |= my_mob.g_eyes
-	eyescolor |= my_mob.b_eyes
+	eyescolor += my_mob.r_eyes
+	eyescolor += my_mob.g_eyes
+	eyescolor += my_mob.b_eyes
 
-	skincolor |= my_mob.s_tone
+	skincolor += my_mob.s_tone
 	my_mob.change_eye_color(255, 0, 0)
-	my_mob.change_skin_tone(0)
+	my_mob.change_skin_tone(35)
 
 /datum/vampire/proc/restore_colors()
-	my_mob.change_eye_color(eyescolor[0], eyescolor[1], eyescolor[2])
-	my_mob.change_skin_tone(skincolor[0])
+	my_mob.change_eye_color(eyescolor[1], eyescolor[2], eyescolor[3])
+	my_mob.change_skin_tone(skincolor[1])
 	eyescolor = list()
 	skincolor = list()
 

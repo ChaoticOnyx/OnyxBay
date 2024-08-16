@@ -16,11 +16,11 @@
 	if(!..())
 		return
 	my_mob.status_flags |= FAKELIVING
-	restore_colors()
+	vampire.restore_colors()
 	log_and_message_admins("activated revitalise.")
 
 /datum/vampire_power/toggled/revitalise/deactivate(no_message = TRUE)
 	if(!..())
 		return
 	my_mob.status_flags &= ~FAKELIVING
-	set_up_colors()
+	vampire.set_up_colors()

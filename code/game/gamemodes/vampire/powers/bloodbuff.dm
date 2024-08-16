@@ -15,9 +15,9 @@
 	my_mob.add_mutation(MUTATION_STRONG)
 	my_mob.update_mutations()
 	my_mob.visible_message(SPAN("danger", "A dark aura manifests itself around [my_mob], their eyes turning red and their composure changing to be more beast-like."))
-	for(var/datum/power/vampire/P in vampire.vampirepowers)
+	for(var/datum/power/vampire/P in vampirepowers)
 		if(P.name == "Grapple")
-			add_power(P)
+			vampire.add_power(P)
 			break
 
 /datum/vampire_power/toggled/blood_buff/deactivate(no_message = TRUE)
@@ -26,8 +26,8 @@
 	my_mob.remove_mutation(MUTATION_STRONG)
 	my_mob.update_mutations()
 	my_mob.visible_message(SPAN("danger", "[my_mob]'s eyes no longer glow with violent rage, their form reverting to resemble that of a normal person's."))
-	for(var/datum/power/vampire/P in vampire.vampirepowers)
+	for(var/datum/power/vampire/P in vampirepowers)
 		if(P.name == "Grapple")
-			remove_power(P)
+			vampire.remove_power(P)
 			break
 	my_mob.regenerate_icons()
