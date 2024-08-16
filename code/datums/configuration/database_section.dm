@@ -19,7 +19,7 @@
 	var/donation_port
 	var/donation_database
 	var/donation_login
-	var/donation_pass
+	var/donation_password
 
 /datum/configuration_section/database/load_data(list/data)
 	CONFIG_LOAD_STR(address, data["address"])
@@ -36,4 +36,4 @@
 	CONFIG_LOAD_STR(donation_port, data["donation_port"])
 	CONFIG_LOAD_STR(donation_database, data["donation_database"])
 	CONFIG_LOAD_STR(donation_login, data["donation_login"])
-	CONFIG_LOAD_STR(donation_pass, data["donation_pass"])
+	CONFIG_LOAD_STR(donation_password, data["donation_password"])

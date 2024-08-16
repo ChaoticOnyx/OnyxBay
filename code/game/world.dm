@@ -790,7 +790,7 @@ proc/setup_don_database_connection()
 		dbcon_don = new()
 
 	var/user = config.database.donation_login
-	var/pass = config.database.donation_pass
+	var/pass = config.database.donation_password
 	var/db = config.database.donation_database
 	var/address = config.database.donation_address
 	var/port = config.database.donation_port
