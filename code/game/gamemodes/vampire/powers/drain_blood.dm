@@ -71,7 +71,7 @@
 		if(!my_mob.mind.vampire)
 			to_chat(my_mob, SPAN("danger", "Your fangs have suddenly disappeared!"))
 			return
-		if(blood_drained >= 115)
+		if(blood_drained >= 250)
 			to_chat(my_mob, SPAN("danger", "You can't force any more blood down your throat!"))
 			break
 

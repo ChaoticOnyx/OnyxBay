@@ -319,9 +319,6 @@
 		my_mob.visible_message(SPAN("danger", "A dark aura manifests itself around [my_mob], their eyes turning red and their composure changing to be more beast-like."),\
 							   SPAN("danger", "You can resist no longer. The power of the Veil takes control over your mind: you are unable to speak or think. In people, you see nothing but prey to be feasted upon. You are reduced to an animal."))
 
-		my_mob.add_mutation(MUTATION_STRONG)
-		my_mob.update_mutations()
-
 		my_mob.set_sight(my_mob.sight|SEE_MOBS)
 
 		for(var/datum/power/vampire/P in vampirepowers)
@@ -336,8 +333,6 @@
 	if(prob(force_stop ? 100 : blood_usable))
 		vamp_status &= ~VAMP_FRENZIED
 
-		my_mob.remove_mutation(MUTATION_STRONG)
-		my_mob.update_mutations()
 
 		my_mob.set_sight(my_mob.sight&(~SEE_MOBS))
 
