@@ -100,5 +100,6 @@
 	changeling.absorbedcount++
 	changeling.using_proboscis = FALSE
 
-	T.death(0)
 	T.Drain()
+	spawn()			//Spawned in the same manner the brain damage alert is, just so the proc keeps running without stops.
+		alert(T, "You remember NOTHING about the cause of your encounter.", "Losing your genes")
