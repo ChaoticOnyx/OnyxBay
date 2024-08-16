@@ -339,7 +339,7 @@
 
 	msg += applying_pressure
 
-	if (isundead(src) && !isfakeliving(src) && (!skipface || !skipgloves || !skipjumpsuit || !skipshoes || !w_uniform))
+	if (isundead(src) && !isfakeliving(src) && (!skipface || (!skipgloves && !gloves) || (!skipjumpsuit && !w_uniform) || (!skipshoes && !shoes)))
 		msg += SPAN("danger", "[T.He] looks like a month-old corpse.\n")
 
 	if (pose)
