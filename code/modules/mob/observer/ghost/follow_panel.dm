@@ -27,7 +27,7 @@
 		var/number_of_orbiters = length(mob_poi.get_all_orbiters())
 
 		serialized["ref"] = poi_ref
-		serialized["full_name"] = name
+		serialized["full_name"] = name || "Unknown"
 		if(number_of_orbiters)
 			serialized["orbiters"] = number_of_orbiters
 
