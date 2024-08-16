@@ -101,5 +101,6 @@
 	changeling.using_proboscis = FALSE
 
 	T.Drain()
+	T.paralysis = 100
 	spawn()			//Spawned in the same manner the brain damage alert is, just so the proc keeps running without stops.
 		alert(T, "You remember NOTHING about the cause of your encounter.", "Losing your genes")
