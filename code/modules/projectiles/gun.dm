@@ -293,6 +293,10 @@
 			break
 
 		fired = TRUE
+		if(ismob(firer))
+			var/mob/living/A = firer
+			if(!A.aura_check(AURA_TYPE_BULLET, projectile, target_zone))
+				break
 		process_accuracy(projectile, firer, target, i, held_twohanded)
 
 		if(pointblank)
