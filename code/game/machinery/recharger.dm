@@ -12,7 +12,7 @@
 	var/list/allowed_devices = list(
 		/obj/item/gun/energy, /obj/item/gun/magnetic/railgun, /obj/item/melee/baton, /obj/item/cell,
 		/obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/computer_hardware/battery_module,
-		/obj/item/shield_diffuser, /obj/item/clothing/mask/smokable/ecig, /obj/item/shield/barrier, /obj/item/ammo_magazine/lawgiver
+		/obj/item/shield_diffuser, /obj/item/clothing/mask/smokable/ecig, /obj/item/shield/barrier, /obj/item/device/personal_shield, /obj/item/ammo_magazine/lawgiver
 	)
 	var/icon_state_charged = "recharger2"
 	var/icon_state_charging = "recharger1"
@@ -121,6 +121,9 @@
 			cell = C.battery_module.battery
 		else if(istype(charging, /obj/item/gun/energy))
 			var/obj/item/gun/energy/E = charging
+			cell = E.power_supply
+		else if(istype(charging, /obj/item/device/personal_shield))
+			var/obj/item/device/personal_shield/E = charging
 			cell = E.power_supply
 		else if(istype(charging, /obj/item/computer_hardware/battery_module))
 			var/obj/item/computer_hardware/battery_module/BM = charging
