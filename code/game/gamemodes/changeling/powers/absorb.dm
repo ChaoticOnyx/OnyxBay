@@ -60,7 +60,7 @@
 				my_mob.visible_message(SPAN("danger", "[my_mob] stabs [T] with the proboscis!"), \
 					  				   SPAN("changeling", "We stab [T] with the proboscis."))
 				to_chat(T, SPAN("danger", "You feel a sharp stabbing pain!"))
-				affecting.take_external_damage(39, 0, DAM_SHARP, "large organic needle")
+				affecting.take_external_damage(10, 0, DAM_SHARP, "large organic needle")
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(my_mob, T, 150))
@@ -84,8 +84,6 @@
 
 	if(T.reagents)
 		T.reagents.trans_to(my_mob.reagents, T.reagents.total_volume)
-	if(T.vessel)
-		T.vessel.remove_any(T.vessel.total_volume)
 
 	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.modifiers, T.flavor_texts)
 	changeling.absorbDNA(newDNA)
@@ -101,6 +99,6 @@
 	changeling.using_proboscis = FALSE
 
 	T.Drain()
-	T.paralysis = 100
+	T.paralysis = 50
 	spawn()			//Spawned in the same manner the brain damage alert is, just so the proc keeps running without stops.
 		alert(T, "You remember NOTHING about the cause of your encounter.", "Losing your genes")
