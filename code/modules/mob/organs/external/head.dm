@@ -111,7 +111,7 @@
 		var/has_eyes_overlay = S.has_eyes_icon
 		if(BP_IS_ROBOTIC(src)) // Robolimbs don't always have eye icon.
 			var/datum/robolimb/R = GLOB.all_robolimbs[model]
-			has_eyes_overlay = R.has_eyes_icon
+			has_eyes_overlay = R?.has_eyes_icon
 		if(has_eyes_overlay)
 			var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[S.vision_organ ? S.vision_organ : BP_EYES]
 			if(!ishuman(loc))
@@ -131,7 +131,7 @@
 		var/has_eyes_overlay = S.has_eyes_icon
 		if(BP_IS_ROBOTIC(src)) // Robolimbs don't always have eye icon.
 			var/datum/robolimb/R = GLOB.all_robolimbs[model]
-			has_eyes_overlay = R.has_eyes_icon
+			has_eyes_overlay = R?.has_eyes_icon
 
 		var/datum/body_build/BB = owner.body_build
 		if(has_eyes_overlay)

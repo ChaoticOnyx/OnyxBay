@@ -1148,15 +1148,17 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	if(company)
 		var/datum/robolimb/R = GLOB.all_robolimbs[company]
+
 		if(!R || (species && (species.name in R.species_cannot_use)) || \
 		 (R.restricted_to.len && !(species.name in R.restricted_to)) || \
 		 (R.applies_to_part.len && !(organ_tag in R.applies_to_part)))
 			R = basic_robolimb
 		else
 			model = company
-			force_icon = R.icon
-			name = "robotic [initial(name)]"
 			desc = "[R.desc] It looks like it was produced by [R.company]."
+
+		name = "robotic [initial(name)]"
+		force_icon = (species && (species.name in R.racial_icons)) ? R.racial_icons[species.name] : R.icon
 
 	dislocated = -1
 	remove_splint()
