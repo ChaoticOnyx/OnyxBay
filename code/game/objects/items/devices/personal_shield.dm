@@ -6,7 +6,7 @@
 	var/obj/aura/personal_shield/device/shield
 	var/obj/item/cell/power_supply //What type of power cell this uses
 	var/charge_cost = 20 //How much energy is needed to fire.
-	var/max_shots = 15 //Determines the capacity of the weapon's power cell. Specifying a cell_type overrides this value.
+	var/max_shots = 7 //Determines the capacity of the weapon's power cell. Specifying a cell_type overrides this value.
 	w_class = ITEM_SIZE_SMALL
 	var/active = FALSE
 	var/mob/living/holder = null
