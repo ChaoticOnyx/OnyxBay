@@ -564,17 +564,3 @@ var/global/list/_client_preferences_by_type
 	key = "SOUND_PRAY"
 	category = PREF_CATEGORY_STAFF
 	flags = R_PERMISSIONS
-
-/datum/client_preference/staff/fast_mc_refresh
-	description = "Fast MC Refresh"
-	key = "FAST_REFRESH"
-	category = PREF_CATEGORY_STAFF
-	default_value = GLOB.PREF_NO
-	flags = R_DEBUG
-
-/datum/client_preference/staff/split_admin_tabs
-	description = "Split Admin Tabs"
-	key = "SPLIT_TABS"
-	category = PREF_CATEGORY_STAFF
-	default_value = GLOB.PREF_NO
-	flags = R_PERMISSIONS

@@ -401,7 +401,7 @@
 		if(!verb || verb == "Cancel")
 			return
 		else
-			grant_verb(H, verb)
+			H.verbs += verb
 
 	else if(href_list["remverb"])
 		if(!check_rights(R_DEBUG))      return
@@ -418,7 +418,7 @@
 		if(!verb)
 			return
 		else
-			revoke_verb(H, verb)
+			H.verbs -= verb
 
 	else if(href_list["addorgan"])
 		if(!check_rights(R_SPAWN))	return

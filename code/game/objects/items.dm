@@ -470,7 +470,6 @@
 		M.r_hand.update_twohanding()
 
 	play_handling_sound(slot)
-	_add_verb_to_stat(user, verbs)
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_EQUIPPED, src, user, slot)
 
