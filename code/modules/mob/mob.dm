@@ -301,10 +301,10 @@
 		var/mob/living/carbon/C = src
 		var/mob/fake = C.get_fake_appearance(A)
 		if(fake)
-			examine_result = fake.wrapped_examine(src)
+			examine_result = fake.baked_examine(src)
 
 	if(isnull(examine_result))
-		examine_result = A.wrapped_examine(src)
+		examine_result = A.baked_examine(src)
 
 	to_chat(usr, examine_result)
 

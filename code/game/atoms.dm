@@ -314,17 +314,18 @@ its easier to just keep the beam vertical.
 		else
 			f_name += "oil-stained [name][infix]."
 
-	. = "\icon[src] That's [f_name][infix]"
-	. += "\n[desc]"
+	. = list("\icon[src] That's [f_name][infix]")
+	. += desc
 
 	return
 
-/atom/proc/wrapped_examine(...)
+/atom/proc/baked_examine(...)
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/content = "<div class='Examine'>"
 
-	content += examine(arglist(args))
+	var/list/strings_list = examine(arglist(args))
+	content += strings_list.Join("\n")
 	content += "</div>"
 
 	return content
