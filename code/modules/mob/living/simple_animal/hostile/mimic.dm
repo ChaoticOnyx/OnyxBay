@@ -145,20 +145,16 @@ var/global/list/protected_objects = list(
 		return
 
 	if(C.w_class < ITEM_SIZE_NORMAL)
-		grant_verb(src, list(
-			/mob/living/proc/ventcrawl,
-			/mob/living/proc/hide,
-		))
+		verbs |= /mob/living/proc/ventcrawl
+		verbs |= /mob/living/proc/hide
 	else
-		revoke_verb(src, list(
-			/mob/living/proc/ventcrawl,
-			/mob/living/proc/hide,
-		))
+		verbs -= /mob/living/proc/ventcrawl
+		verbs -= /mob/living/proc/hide
 
 	if(can_setup_trap())
-		grant_verb(src, /mob/living/simple_animal/hostile/mimic/verb/Trap)
+		verbs |= /mob/living/simple_animal/hostile/mimic/verb/Trap
 	else
-		revoke_verb(src, /mob/living/simple_animal/hostile/mimic/verb/Trap)
+		verbs -= /mob/living/simple_animal/hostile/mimic/verb/Trap
 
 /mob/living/simple_animal/hostile/mimic/proc/_handle_healing()
 	var/healing_check = world.time > inactive_time + WAIT_TO_HEAL

@@ -42,6 +42,8 @@
 			world.Export("[config.external.login_export_addr]?[list2params(params)]", null, 1)
 
 /mob/Login()
+	CAN_BE_REDEFINED(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
 	if(!client)
 		return
 
@@ -104,5 +106,3 @@
 
 	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_IN, src)
 	SEND_SIGNAL(src, SIGNAL_LOGGED_IN, src)
-
-	client.init_verbs()

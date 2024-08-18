@@ -9,12 +9,12 @@
 /obj/item/organ/internal/xenos/replaced(mob/living/carbon/human/target,obj/item/organ/external/affected)
 	. = ..()
 	if(ishuman(owner) && associated_power)
-		grant_verb(owner, associated_power)
+		owner.verbs |= associated_power
 
 /obj/item/organ/internal/xenos/removed(mob/living/user)
 	. = ..()
 	if(ishuman(owner) && associated_power && !(associated_power in owner.species.inherent_verbs))
-		revoke_verb(owner, associated_power)
+		owner.verbs -= associated_power
 
 /obj/item/organ/internal/xenos/eggsac
 	name = "egg sac"

@@ -104,12 +104,10 @@
 
 	parrot_sleep_dur = parrot_sleep_max //In case someone decides to change the max without changing the duration var
 
-	grant_verb(src, list(
-		/mob/living/simple_animal/parrot/proc/steal_from_ground,
-		/mob/living/simple_animal/parrot/proc/steal_from_mob,
-		/mob/living/simple_animal/parrot/verb/drop_held_item_player,
-		/mob/living/simple_animal/parrot/proc/perch_player,
-	))
+	verbs.Add(/mob/living/simple_animal/parrot/proc/steal_from_ground, \
+			  /mob/living/simple_animal/parrot/proc/steal_from_mob, \
+			  /mob/living/simple_animal/parrot/verb/drop_held_item_player, \
+			  /mob/living/simple_animal/parrot/proc/perch_player)
 
 /mob/living/simple_animal/parrot/Destroy()
 	drop_held_item()
@@ -126,10 +124,9 @@
 	walk(src, 0)
 	..(gibbed, deathmessage, show_dead_message)
 
-/mob/living/simple_animal/parrot/get_status_tab_items()
+/mob/living/simple_animal/parrot/Stat()
 	. = ..()
-
-	. += "Held Item: [held_item]"
+	stat("Held Item", held_item)
 
 // These two are used often AF, it's easier to handle them this way than resolve weakrefs everywhere.
 /mob/living/simple_animal/parrot/proc/set_interest(atom/movable/AM)

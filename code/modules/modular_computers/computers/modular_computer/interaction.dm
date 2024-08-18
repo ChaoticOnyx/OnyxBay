@@ -1,12 +1,12 @@
 /obj/item/modular_computer/proc/update_verbs()
-	remove_verb(loc, verbs)
+	verbs.Cut()
 	if(ai_slot)
-		add_verb(loc, /obj/item/modular_computer/verb/eject_ai)
+		verbs |= /obj/item/modular_computer/verb/eject_ai
 	if(portable_drive)
-		add_verb(loc, /obj/item/modular_computer/verb/eject_usb)
+		verbs |= /obj/item/modular_computer/verb/eject_usb
 	if(card_slot)
-		add_verb(loc, /obj/item/modular_computer/verb/eject_id)
-	add_verb(loc, /obj/item/modular_computer/verb/emergency_shutdown)
+		verbs |= /obj/item/modular_computer/verb/eject_id
+	verbs |= /obj/item/modular_computer/verb/emergency_shutdown
 
 // Forcibly shut down the device. To be used when something bugs out and the UI is nonfunctional.
 /obj/item/modular_computer/verb/emergency_shutdown()
