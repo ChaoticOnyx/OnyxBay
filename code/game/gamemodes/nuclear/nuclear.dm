@@ -12,7 +12,7 @@ var/list/nuke_disks = list()
 		colony of sizable population and considerable wealth causes it to often be the target of various \
 		attempts of robbery, fraud and other malicious actions."
 	config_tag = "nuke"
-	required_players = 15
+	required_players = 20
 	required_enemies = 1
 	end_on_antag_death = 1
 	var/nuke_off_station = 0 //Used for tracking if the syndies actually haul the nuke to the station
