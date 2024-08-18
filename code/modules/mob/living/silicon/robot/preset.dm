@@ -13,9 +13,6 @@
 	cell = /obj/item/cell/super
 	pitch_toggle = 0
 	custom_sprite = FALSE // presets robots must not have custom sprites.
-	default_silicon_subsystems = list(
-		/datum/nano_module/law_manager
-	)
 
 /mob/living/silicon/robot/combat
 	lawupdate = 0

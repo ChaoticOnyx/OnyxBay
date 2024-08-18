@@ -203,7 +203,7 @@
 	if(isobserver(usr) || usr.restrained() || !usr.Adjacent(src) || !isturf(loc))
 		return FALSE
 
-	remove_verb(loc, /obj/item/balloon/verb/deflate)
+	verbs -= /obj/item/balloon/verb/deflate
 	playsound(loc, 'sound/machines/hiss.ogg', 50, 1)
 	var/obj/item/balloon_flat/BF = new /obj/item/balloon_flat(loc)
 	BF.color = color

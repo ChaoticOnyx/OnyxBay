@@ -92,7 +92,6 @@
 		add_movespeed_mod_immunities(src, /datum/movespeed_modifier/pull_slowdown)
 	add_think_ctx("dust", CALLBACK(src, nameof(.proc/dust)), 0)
 	add_think_ctx("dust_deletion", CALLBACK(src, nameof(.proc/dust_check_delete)), 0)
-	add_think_ctx("remove_from_examine_context", CALLBACK(src, nameof(.proc/remove_from_recent_examines)), 0)
 	add_think_ctx("weaken_context", CALLBACK(src, nameof(.proc/Weaken)), 0)
 	add_think_ctx("post_close_winset", CALLBACK(src, nameof(.proc/post_close_winset)), 0)
 	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	nameof(.proc/set_blackness))
@@ -258,24 +257,6 @@
 #undef PARTIALLY_BUCKLED
 #undef FULLY_BUCKLED
 
-/**
- * Assembles one-dimensional array of strings to display inside "Status" stat panel tab.
- */
-/mob/proc/get_status_tab_items()
-	SHOULD_CALL_PARENT(TRUE)
-	CAN_BE_REDEFINED(TRUE)
-	return list()
-
-/**
- * Assembles two-dimensional array of objects representing action entry inside stat panel. Objects must
- * look like `list([action_category], [unclickable_action_string], [action_string], [action_holder_ref])`,
- * not passing ref makes stat entry unclickable.
- */
-/mob/proc/get_actions_for_statpanel()
-	SHOULD_CALL_PARENT(TRUE)
-	CAN_BE_REDEFINED(TRUE)
-	return list()
-
 /mob/proc/restrained()
 	return
 
@@ -305,54 +286,27 @@
 	return FALSE
 
 // Mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
-/mob/verb/examinate(atom/to_axamine as mob|obj|turf in view(client.eye))
+/mob/verb/examinate(atom/A as mob|obj|turf in view(client.eye))
 	set name = "Examine"
 	set category = "IC"
 
-	run_examinate(to_axamine)
-
-/// Runs examine proc chain, generates styled description and prints it to mob's client chat.
-/mob/proc/run_examinate(atom/to_axamine)
-	if((isliving(src) && is_ic_dead(src)) || is_blind(src))
-		to_chat(src, SPAN_NOTICE("Something is there but you can't see it."))
+	if((is_blind(src) || usr?.stat) && !isobserver(src))
+		to_chat(src, SPAN("notice", "Something is there but you can't see it."))
 		return
 
-	face_atom(to_axamine)
+	var/examine_result
 
-	var/to_examine_ref = ref(to_axamine)
-	var/list/examine_result
+	face_atom(A)
+	if(iscarbon(src))
+		var/mob/living/carbon/C = src
+		var/mob/fake = C.get_fake_appearance(A)
+		if(fake)
+			examine_result = fake.baked_examine(src)
 
-	if(isnull(client))
-		examine_result = to_axamine.examine(src)
-	else
-		if(LAZYISIN(client.recent_examines, to_examine_ref))
-			examine_result = to_axamine.examine_more(src)
+	if(isnull(examine_result))
+		examine_result = A.baked_examine(src)
 
-			if(!length(examine_result))
-				examine_result += SPAN_NOTICE("<i>You examine [to_axamine] closer, but find nothing of interest...</i>")
-		else
-			examine_result = to_axamine.examine(src)
-			LAZYINITLIST(client.recent_examines)
-			client.recent_examines[to_examine_ref] = world.time + 1 SECOND
-
-		set_next_think_ctx("remove_from_examine_context", world.time + 1 SECOND)
-
-	to_chat(usr, EXAMINE_BLOCK(examine_result.Join("\n")))
-
-/mob/proc/remove_from_recent_examines()
-	SIGNAL_HANDLER
-
-	if(isnull(client))
-		return
-
-	for(var/ref in client.recent_examines)
-		if(client.recent_examines[ref] > world.time)
-			continue
-
-		LAZYREMOVE(client.recent_examines, ref)
-
-	if(client.recent_examines)
-		set_next_think_ctx("remove_from_examine_context", world.time + 1 SECOND)
+	to_chat(usr, examine_result)
 
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
 	set name = "Point To"
@@ -742,6 +696,53 @@
 	for(var/mob/M in viewers())
 		M.see(message)
 
+/mob/Stat()
+	..()
+	. = (is_client_active(10 MINUTES))
+	if(!.)
+		return
+
+	if(statpanel("Status"))
+		if(GAME_STATE >= RUNLEVEL_LOBBY)
+			stat("Local Time", stationtime2text())
+			stat("Local Date", stationdate2text())
+			stat("Round Duration", roundduration2text())
+		if(client.holder || isghost(client.mob))
+			stat("Location:", "([x], [y], [z]) [loc]")
+
+	if(client.holder)
+		if(statpanel("MC"))
+			stat("CPU:","[world.cpu]")
+			stat("Instances:","[world.contents.len]")
+			stat(null)
+			if(Master)
+				Master.stat_entry()
+			else
+				stat("Master Controller:", "ERROR")
+			if(Failsafe)
+				Failsafe.stat_entry()
+			else
+				stat("Failsafe Controller:", "ERROR")
+			if(Master)
+				stat(null)
+				for(var/datum/controller/subsystem/SS in Master.subsystems)
+					SS.stat_entry()
+
+	if(listed_turf && client)
+		if(!TurfAdjacent(listed_turf))
+			listed_turf = null
+		else
+			if(statpanel("Turf"))
+				stat(listed_turf)
+				for(var/atom/A in listed_turf)
+					if(!A.mouse_opacity)
+						continue
+					if(A.invisibility > see_invisible)
+						continue
+					if(is_type_in_list(A, shouldnt_see))
+						continue
+					stat(A)
+
 // facing verbs
 /mob/proc/canface()
 	return !incapacitated()
@@ -949,7 +950,7 @@
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
 		else
 			to_chat(U, "[src] has nothing stuck in their wounds that is large enough to remove.")
-		revoke_verb(src, /mob/proc/yank_out_object)
+		src.verbs -= /mob/proc/yank_out_object
 		return
 
 	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
@@ -1009,7 +1010,7 @@
 
 	valid_objects = get_visible_implants(0)
 	if(!valid_objects.len)
-		revoke_verb(src, /mob/proc/yank_out_object)
+		src.verbs -= /mob/proc/yank_out_object
 
 	return 1
 

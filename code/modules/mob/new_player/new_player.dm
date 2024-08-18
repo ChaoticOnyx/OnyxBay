@@ -3,6 +3,8 @@
 /mob/new_player
 	var/ready = 0
 	var/spawning = 0//Referenced when you want to delete the new_player later on in the code.
+	var/totalPlayers = 0 //Player counts for the Lobby tab
+	var/totalPlayersReady = 0
 	var/datum/browser/panel
 	var/show_invalid_jobs = 0
 	universal_speak = 1
@@ -24,11 +26,9 @@
 		util_crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
-	grant_verb(src, list(
-		/mob/proc/toggle_antag_pool,
-		/mob/proc/join_as_actor,
-		/mob/proc/join_response_team,
-	))
+	verbs += /mob/proc/toggle_antag_pool
+	verbs += /mob/proc/join_as_actor
+	verbs += /mob/proc/join_response_team
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -68,27 +68,29 @@
 	panel.open()
 	return
 
-/mob/new_player/get_status_tab_items()
+/mob/new_player/Stat()
 	. = ..()
 
-	if(check_rights(R_INVESTIGATE, 0, src))
-		. += "Game Mode: [SSticker.mode ? SSticker.mode.name : SSticker.master_mode] ([SSticker.master_mode])"
-	else
-		. += "Game Mode: [PUBLIC_GAME_MODE]"
+	if(statpanel("Lobby"))
+		if(check_rights(R_INVESTIGATE, 0, src))
+			stat("Game Mode:", "[SSticker.mode ? SSticker.mode.name : SSticker.master_mode] ([SSticker.master_mode])")
+		else
+			stat("Game Mode:", PUBLIC_GAME_MODE)
+		var/extra_antags = list2params(additional_antag_types)
+		stat("Added Antagonists:", extra_antags ? extra_antags : "None")
 
-	var/extra_antags = list2params(additional_antag_types)
-	. += "Added Antagonists: [extra_antags ? extra_antags : "None"]"
-
-	. += ""
-
-	if(GAME_STATE > RUNLEVEL_LOBBY)
-		return
-
-	. += list(
-		"Time To Start: [round(SSticker.pregame_timeleft/10)]s[SSticker.round_progressing ? "" : " (DELAYED)"]",
-		"Players: [SSticker.total_players]",
-		"Players Ready: [SSticker.total_players_ready]",
-	)
+		if(GAME_STATE <= RUNLEVEL_LOBBY)
+			stat("Time To Start:", "[round(SSticker.pregame_timeleft/10)][SSticker.round_progressing ? "" : " (DELAYED)"]")
+			stat("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
+			totalPlayers = 0
+			totalPlayersReady = 0
+			for(var/mob/new_player/player in GLOB.player_list)
+				var/highjob
+				if(player.client?.prefs?.job_high)
+					highjob = " as [player.client.prefs.job_high]"
+				stat("[player.key]", (player.ready)?("(Playing[highjob])"):(null))
+				totalPlayers++
+				if(player.ready)totalPlayersReady++
 
 /mob/new_player/Topic(href, href_list[])
 	if(!client)	return 0
@@ -169,11 +171,10 @@
 				client.prefs.real_name = random_name(client.prefs.gender)
 			observer.real_name = client.prefs.real_name
 			observer.SetName(observer.real_name)
-			if(!client.holder && !config.ghost.allow_antag_hud)
-				revoke_verb(observer, /mob/observer/ghost/verb/toggle_antagHUD)
+			if(!client.holder && !config.ghost.allow_antag_hud) // For new ghosts we remove the verb from even showing up if it's not allowed.
+				observer.verbs -= /mob/observer/ghost/verb/toggle_antagHUD // Poor guys, don't know what they are missing!
 
 			observer.key = key
-			observer.client?.init_verbs()
 
 			new /atom/movable/screen/splash/fake(null, TRUE, observer.client, SSlobby.current_lobby_art)
 
@@ -573,8 +574,7 @@
 	new_character.update_eyes()
 	new_character.regenerate_icons()
 
-	new_character.key = key		//Manually transfer the key to log them in
-	new_character.client?.init_verbs()
+	new_character.key = key //Manually transfer the key to log them in
 
 	new /atom/movable/screen/splash/fake(null, TRUE, new_character.client, SSlobby.current_lobby_art)
 

@@ -254,7 +254,6 @@
 
 /obj/mecha/examine(mob/user, infix)
 	. = ..()
-
 	var/integrity = health/initial(health)*100
 	switch(integrity)
 		if(85 to 100)
@@ -267,11 +266,12 @@
 			. += "It's heavily damaged."
 		else
 			. += "It's falling apart."
-
 	if(equipment && equipment.len)
 		. += "It's equipped with:"
 		for(var/obj/item/mecha_parts/mecha_equipment/ME in equipment)
 			. += "\icon[ME] [ME]"
+	return
+
 
 /obj/mecha/proc/drop_item()//Derpfix, but may be useful in future for engineering exosuits.
 	return
@@ -868,17 +868,19 @@
 		if(!WT.use_tool(src, user, amount = 1))
 			return
 
+		if(!hasInternalDamage(MECHA_INT_TANK_BREACH))
+			return
+
+		clearInternalDamage(MECHA_INT_TANK_BREACH)
+		to_chat(user, SPAN_NOTICE("You repair the damaged gas tank."))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
-		if(hasInternalDamage(MECHA_INT_TANK_BREACH))
-			clearInternalDamage(MECHA_INT_TANK_BREACH)
-			show_splash_text(user, "gas tank repaired!", SPAN_NOTICE("You repair the damaged gas tank."))
-
 		if(health < initial(health))
-			show_splash_text(user, "damage repaired!", SPAN_NOTICE("You repair some damage to \the [src]."))
-			health += min(10, initial(health) - health)
+			to_chat(user, SPAN_NOTICE("You repair some damage to [src.name]."))
+			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+			src.health += min(10, initial(health) - health)
 		else
-			show_splash_text(user, "damage fully repaired!", SPAN_NOTICE("\The [src] is at full integrity!"))
+			to_chat(user, "\The [name] is at full integrity")
 		return
 
 	else if(istype(W, /obj/item/mecha_parts/mecha_tracking))
@@ -1009,8 +1011,8 @@
 	if(possible_port)
 		if(connect(possible_port))
 			src.occupant_message("<span class='notice'>\The [name] connects to the port.</span>")
-			add_verb(occupant, /obj/mecha/verb/disconnect_from_port)
-			remove_verb(occupant, /obj/mecha/verb/connect_to_port)
+			src.verbs += /obj/mecha/verb/disconnect_from_port
+			src.verbs -= /obj/mecha/verb/connect_to_port
 			return
 		else
 			src.occupant_message("<span class='danger'>\The [name] failed to connect to the port.</span>")
@@ -1029,8 +1031,8 @@
 		return
 	if(disconnect())
 		src.occupant_message("<span class='notice'>[name] disconnects from the port.</span>")
-		add_verb(occupant, /obj/mecha/verb/connect_to_port)
-		remove_verb(occupant, /obj/mecha/verb/disconnect_from_port)
+		src.verbs -= /obj/mecha/verb/disconnect_from_port
+		src.verbs += /obj/mecha/verb/connect_to_port
 	else
 		src.occupant_message("<span class='danger'>[name] is not connected to the port at the moment.</span>")
 
@@ -1125,8 +1127,6 @@
 /obj/mecha/proc/moved_inside(mob/living/carbon/human/H)
 	. = FALSE
 	ASSERT(H.client)
-
-	_add_verb_to_stat(H, verbs)
 
 	H.reset_view(src)
 	H.stop_pulling()
@@ -1230,7 +1230,7 @@
 	brainmob.forceMove(src) // should allow relaymove
 	//brainmob.canmove = TRUE
 	//mmi_as_oc.mecha = src
-	remove_verb(occupant, /obj/mecha/verb/eject)
+	verbs -= /obj/mecha/verb/eject
 	Entered(I)
 	forceMove(loc)
 	icon_state = reset_icon()
@@ -1275,9 +1275,6 @@
 
 /obj/mecha/proc/go_out()
 	if(!src.occupant) return
-
-	_remove_verb_from_stat(occupant, verbs)
-
 	var/atom/movable/mob_container
 	var/list/onmob_items //prevents duplication of objects with which the human interacted in the mech
 	if(ishuman(occupant))
@@ -1310,12 +1307,12 @@
 			var/obj/item/organ/internal/cerebrum/mmi/mmi = mob_container
 			if(mmi.brainmob)
 				occupant.forceMove(mmi)
-			add_verb(occupant, /obj/mecha/verb/eject)
+			verbs += /obj/mecha/verb/eject
 		if(istype(mob_container, /obj/item/organ/internal/cerebrum/posibrain))
 			var/obj/item/organ/internal/cerebrum/posibrain/pb = mob_container
 			if(pb.brainmob)
 				occupant.forceMove(pb)
-			add_verb(occupant, /obj/mecha/verb/eject)
+			verbs += /obj/mecha/verb/eject
 
 		occupant = null
 		icon_state = reset_icon()+"-open"
@@ -1511,6 +1508,7 @@
 	output += "</div>"
 	return output
 
+
 /obj/mecha/proc/get_mecha_log()
 	var/list/data = list()
 
@@ -1522,10 +1520,11 @@
 
 	return data
 
+
 /obj/mecha/proc/get_log_html()
-	var/output = "<html><meta charset=\"utf-8\"><head><title>[name] Log</title></head><body style='font: 13px 'Courier', monospace;'>"
+	var/output = "<html><meta charset=\"utf-8\"><head><title>[src.name] Log</title></head><body style='font: 13px 'Courier', monospace;'>"
 	for(var/list/entry in log)
-		output += {"<div style='font-weight: bold;'>[time2text(entry["time"], "DDD MMM DD hh:mm:ss")] [game_year]</div>
+		output += {"<div style='font-weight: bold;'>[time2text(entry["time"],"DDD MMM DD hh:mm:ss")] [game_year]</div>
 						<div style='margin-left:15px; margin-bottom:10px;'>[entry["message"]]</div>
 						"}
 	output += "</body></html>"

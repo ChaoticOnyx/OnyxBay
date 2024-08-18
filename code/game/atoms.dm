@@ -15,13 +15,6 @@
 	var/simulated = 1 //filter for actions - used by lighting overlays
 	var/fluorescent // Shows up under a UV light.
 
-	/// Helpful blue text, can be used to describe usage caveats and etc.
-	var/description_info
-	/// Green text containing the atom's fluff, if any exists.
-	var/description_fluff
-	/// Malicious red text, can be viewed by antags.
-	var/description_antag
-
 	///Value used to increment ex_act() if reactionary_explosions is on
 	var/explosion_block = 0
 
@@ -60,37 +53,6 @@
 
 	/// This defines whether this atom will be added to SSpoi, set TRUE if you want it to be shown in follow panel
 	var/is_poi = FALSE
-
-/// Passes Stat Browser Panel clicks to the game and calls client click on an atom.
-/atom/Topic(href, list/href_list)
-	. = ..()
-
-	if(!usr?.client)
-		return
-
-	var/client/usr_client = usr.client
-	var/list/paramslist = list()
-
-	if(href_list["panel_click"])
-		switch(href_list["panel_click"])
-			if("left")
-				paramslist["left"] = "1"
-			if("right")
-				paramslist["right"] = "1"
-			if("middle")
-				paramslist["middle"] = "1"
-			else
-				return
-
-		if(href_list["panel_shiftclick"])
-			paramslist["shift"] = "1"
-		if(href_list["panel_ctrlclick"])
-			paramslist["ctrl"] = "1"
-		if(href_list["panel_altclick"])
-			paramslist["alt"] = "1"
-
-		usr_client.Click(src, loc, null, list2params(paramslist))
-		return TRUE
 
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
@@ -339,6 +301,34 @@ its easier to just keep the beam vertical.
 		sleep(3)	//Changing this to a lower value will cause the beam to follow more smoothly with movement, but it will also be more laggy.
 					//I've found that 3 ticks provided a nice balance for my use.
 	for(var/obj/effect/overlay/beam/O in orange(10,src)) if(O.BeamSource==src) qdel(O)
+
+/atom/proc/examine(mob/user, infix = "")
+	// This reformat names to get a/an properly working on item descriptions when they are bloody
+	var/f_name = "\a [SPAN("info", "<em>[src][infix]</em>")]."
+	if(is_bloodied && !istype(src, /obj/effect/decal))
+
+		f_name = (gender == PLURAL) ? "some " : "a "
+
+		if(blood_color != SYNTH_BLOOD_COLOUR)
+			f_name += "<span class='danger'>blood-stained</span> [SPAN("info", "<em>[name][infix]</em>")]!"
+		else
+			f_name += "oil-stained [name][infix]."
+
+	. = list("\icon[src] That's [f_name][infix]")
+	. += desc
+
+	return
+
+/atom/proc/baked_examine(...)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	var/content = "<div class='Examine'>"
+
+	var/list/strings_list = examine(arglist(args))
+	content += strings_list.Join("\n")
+	content += "</div>"
+
+	return content
 
 // called by mobs when e.g. having the atom as their machine, pulledby, loc (AKA mob being inside the atom) or buckled var set.
 // see code/modules/mob/mob_movement.dm for more.
@@ -836,89 +826,3 @@ its easier to just keep the beam vertical.
 ///Return the values you get when an RCD eats you?
 /atom/proc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	return FALSE
-
-/**
- * Adds a verb to the source object, updates mob/s stat panel if given.
- *
- * Please, note that this proc is **DEPRECATED** and most functionality must be implemented
- * without interacting with stat panel AKA using action buttons or hotkeys.
- */
-/atom/proc/add_verb(mob/target, verb_or_list_to_add)
-	verbs += verb_or_list_to_add
-
-	if(!istype(target))
-		return
-
-	_add_verb_to_stat(target, verb_or_list_to_add)
-
-/// Advanced-use proc only! Handles verb addition to target's stat panel without tempering with source's verbs.
-/atom/proc/_add_verb_to_stat(mob/target, verb_or_list_to_add)
-	if(isnull(verb_or_list_to_add))
-		return
-
-	if(!islist(verb_or_list_to_add))
-		verb_or_list_to_add = list(verb_or_list_to_add)
-
-	var/list/verbs_to_add = list()
-	for(var/procpath as anything in verb_or_list_to_add)
-		var/list/proc_sources = LAZYACCESS(target.atom_verbs, procpath) || list()
-
-		if(!length(proc_sources))
-			LAZYSET(target.atom_verbs, procpath, proc_sources)
-			verbs_to_add += procpath
-
-		LAZYDISTINCTADD(proc_sources, src)
-
-	// We can't use `grant_verb` here 'cause proc is actually an object and it's `src` is being implicitly set to `usr` when added to a /client's verbs.
-	var/list/output_list = list()
-	for(var/thing in verbs_to_add)
-		var/procpath/verb_to_add = thing
-		output_list[++output_list.len] = list(verb_to_add.category, verb_to_add.name)
-
-	if(!length(output_list))
-		return
-
-	target.client?.stat_panel.send_message("add_verb_list", output_list)
-
-/**
- * Removes verb from the source object, updates mob stat panel if given.
- *
- * Please, note that this proc is **DEPRECATED** and most functionality must be implemented
- * without interacting with stat panel AKA using action buttons or hotkeys.
- */
-/atom/proc/remove_verb(mob/target, verb_or_list_to_remove)
-	verbs -= verb_or_list_to_remove
-
-	if(!istype(target))
-		return
-
-	_remove_verb_from_stat(target, verb_or_list_to_remove)
-
-/// Advanced-use proc only! Handles verb removal from target's stat panel without tempering with source's verbs.
-/atom/proc/_remove_verb_from_stat(mob/target, verb_or_list_to_remove)
-	if(isnull(verb_or_list_to_remove))
-		return
-
-	if(!islist(verb_or_list_to_remove))
-		verb_or_list_to_remove = list(verb_or_list_to_remove)
-
-	var/list/verbs_to_remove = list()
-	for(var/procpath as anything in verb_or_list_to_remove)
-		var/list/proc_sources = LAZYACCESS(target.atom_verbs, procpath)
-
-		if(src in proc_sources)
-			LAZYREMOVEASSOC(target.atom_verbs, procpath, src)
-
-		if(!length(proc_sources))
-			verbs_to_remove += procpath
-
-	// We can't use `revoke_verb` here 'cause proc is actually an object and it's `src` is being implicitly set to `usr` when added to a /client's verbs.
-	var/list/output_list = list()
-	for(var/thing in verbs_to_remove)
-		var/procpath/verb_to_remove = thing
-		output_list[++output_list.len] = list(verb_to_remove.category, verb_to_remove.name)
-
-	if(!length(output_list))
-		return
-
-	target.client?.stat_panel.send_message("remove_verb_list", output_list)

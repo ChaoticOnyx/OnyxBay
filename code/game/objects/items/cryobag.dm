@@ -113,7 +113,7 @@
 	if(Adjacent(user)) //The bag's rather thick and opaque from a distance.
 		. += SPAN_INFO("You peer into \the [src].")
 		for(var/mob/living/L in contents)
-			L.run_examinate(user)
+			L.examine(user)
 
 /obj/item/usedcryobag
 	name = "used stasis bag"

@@ -391,7 +391,7 @@
 			var/metadata = all_underwear_metadata[underwear_category_name]
 			var/obj/item/underwear/UW = UWD.create_underwear(metadata)
 			if(UW)
-				UW.ForceEquipUnderwear(character, null, FALSE)
+				UW.ForceEquipUnderwear(character, FALSE)
 		else
 			all_underwear -= underwear_category_name
 

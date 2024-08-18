@@ -7,9 +7,8 @@ PROCESSING_SUBSYSTEM_DEF(icon_update)
 
 	var/list/queue = list()
 
-/datum/controller/subsystem/processing/icon_update/stat_entry(msg)
-	msg = "QU:[queue.len]"
-	return ..()
+/datum/controller/subsystem/processing/icon_update/stat_entry()
+	..("Queued Updates: [queue.len]")
 
 /datum/controller/subsystem/processing/icon_update/Initialize()
 	fire(FALSE, TRUE)

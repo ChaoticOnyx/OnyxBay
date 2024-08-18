@@ -68,10 +68,8 @@
 /mob/living/simple_animal/mouse/Initialize()
 	. = ..()
 
-	grant_verb(src, list(
-		/mob/living/proc/ventcrawl,
-		/mob/living/proc/hide,
-	))
+	verbs += /mob/living/proc/ventcrawl
+	verbs += /mob/living/proc/hide
 
 	if(name == initial(name))
 		name = "[name] ([sequential_id(/mob/living/simple_animal/mouse)])"

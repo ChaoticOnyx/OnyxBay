@@ -202,29 +202,6 @@ export const reduce = (reducerFn, initialValue) => array => {
 }
 
 /**
- * This function takes a function that determines grouping criteria, runs it over
- * every item in list and stores them in a hash map by generated keys.
- *
- * @param groupingFn
- * @returns
- */
-export const groupBy =
-  <T extends unknown>(groupingFn: (value: T) => unknown) =>
-  (array: T[]): Map<any, T[]> => {
-    return array.reduce((grouped: Map<any, T[]>, value: T) => {
-      let key = grouped.get(groupingFn(value));
-
-      if (key === undefined) {
-        grouped.set(groupingFn(value), [value]);
-      } else {
-        key.push(value);
-      }
-
-      return grouped;
-    }, new Map<any, T[]>());
-  };
-
-/**
  * Creates a duplicate-free version of an array, using SameValueZero for
  * equality comparisons, in which only the first occurrence of each element
  * is kept. The order of result values is determined by the order they occur

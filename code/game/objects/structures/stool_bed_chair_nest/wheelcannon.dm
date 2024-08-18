@@ -62,11 +62,6 @@
 		for(var/atom/content in item_storage.contents)
 			. += SPAN_NOTICE("It has [SPAN_NOTICE("[content]")] loaded.")
 
-/obj/structure/bed/chair/wheelchair/wheelcannon/examine_more(mob/user)
-	. = ..()
-	. += SPAN_NOTICE("Load with items. Fuel with ethanol, plasma or acetone.")
-	. += SPAN_NOTICE("Igniter can be also attached. Ctrl + Shift + Click to detach it.")
-
 /obj/structure/bed/chair/wheelchair/wheelcannon/on_update_icon()
 	CutOverlays(assembly_overlay)
 	if(!istype(assembly))

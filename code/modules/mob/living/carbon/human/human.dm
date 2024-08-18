@@ -95,46 +95,53 @@
 		if(stomach)
 			stomach.metabolize()
 
-/mob/living/carbon/human/get_status_tab_items()
+/mob/living/carbon/human/Stat()
 	. = ..()
+	if(statpanel("Status"))
+		stat("Intent:", "[a_intent]")
+		stat("Move Mode:", "[m_intent]")
+		stat("Poise:", "[round(100/poise_pool*poise)]%")
+		stat("Special Ability:", "[active_ability]")
 
-	. += "Intent: [a_intent]"
-	. += "Move Mode: [m_intent]"
-	. += "Poise: [round(100/poise_pool*poise)]%"
-	. += "Special Ability: [active_ability]"
+		if(evacuation_controller)
+			var/eta_status = evacuation_controller.get_status_panel_eta()
+			if(eta_status)
+				stat(null, eta_status)
 
-	if(istype(internal))
-		if(!internal.air_contents)
-			qdel(internal)
-		else
-			. += "Internal Atmosphere Info: [internal.name]"
-			. += "Tank Pressure: [internal.air_contents.return_pressure()]"
-			. += "Distribution Pressure: [internal.distribute_pressure]"
+		if (istype(internal))
+			if (!internal.air_contents)
+				qdel(internal)
+			else
+				stat("Internal Atmosphere Info: ", internal.name)
+				stat("Tank Pressure: ", internal.air_contents.return_pressure())
+				stat("Distribution Pressure: ", internal.distribute_pressure)
 
-	var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
-	if(P)
-		. += "Plasma Stored: [P.stored_plasma]/[P.max_plasma]"
+		var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
+		if(P)
+			stat(null, "Plasma Stored: [P.stored_plasma]/[P.max_plasma]")
 
-	var/obj/item/organ/internal/cell/potato = internal_organs_by_name[BP_CELL]
-	if(potato && potato.cell)
-		. += "Battery charge: [potato.get_charge()]/[potato.cell.maxcharge]"
+		var/obj/item/organ/internal/cell/potato = internal_organs_by_name[BP_CELL]
+		if(potato && potato.cell)
+			stat("Battery charge:", "[potato.get_charge()]/[potato.cell.maxcharge]")
 
-	if(back && istype(back, /obj/item/rig))
-		var/obj/item/rig/suit = back
-		. += "RIG Charge: [isnull(suit.cell) ? "ERROR" : "[suit.cell.charge]/[suit.cell.maxcharge]"]"
+		if(back && istype(back,/obj/item/rig))
+			var/obj/item/rig/suit = back
+			var/cell_status = "ERROR"
+			if(suit.cell) cell_status = "[suit.cell.charge]/[suit.cell.maxcharge]"
+			stat(null, "Suit charge: [cell_status]")
 
-	if(mind)
-		if(mind.vampire)
-			. += "Usable Blood: [mind.vampire.blood_usable]"
-			. += "Total Blood: [mind.vampire.blood_total]"
+		if(mind)
+			if(mind.vampire)
+				stat("Usable Blood: ", mind.vampire.blood_usable)
+				stat("Total Blood: ", mind.vampire.blood_total)
 
-		if(mind.changeling)
-			. += "Chemical Storage: [mind.changeling.chem_charges]"
-			. += "Genetic Damage Time: [mind.changeling.genome_damage]"
+			if(mind.changeling)
+				stat("Chemical Storage: ", mind.changeling.chem_charges)
+				stat("Genetic Damage Time: ", mind.changeling.genome_damage)
 
-		if(mind.special_role == "Borer Husk")
-			var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
-			. += "Chemicals: [B?.chemicals]"
+			if(mind.special_role == "Borer Husk")
+				var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
+				stat("Chemicals: ", B?.chemicals)
 
 /mob/living/carbon/human/ex_act(severity)
 	if(!blinded)
@@ -797,7 +804,7 @@
 		return
 
 	if(!(mRemotetalk in src.mutations))
-		revoke_verb(src, /mob/living/carbon/human/proc/remotesay)
+		src.verbs -= /mob/living/carbon/human/proc/remotesay
 		return
 	var/list/creatures = list()
 	for(var/mob/living/carbon/h in world)
@@ -870,7 +877,7 @@
 	hand_blood_color = blood_color
 	update_inv_gloves(1) // handles bloody hands overlays and updating
 
-	grant_verb(src, /mob/living/carbon/human/proc/bloody_doodle)
+	verbs += /mob/living/carbon/human/proc/bloody_doodle
 
 /mob/living/carbon/human/clean_blood(clean_feet)
 	. =..()
@@ -1130,7 +1137,7 @@
 		return 0 //something is terribly wrong
 
 	if (!bloody_hands)
-		revoke_verb(src, /mob/living/carbon/human/proc/bloody_doodle)
+		verbs -= /mob/living/carbon/human/proc/bloody_doodle
 
 	if (src.gloves)
 		to_chat(src, "<span class='warning'>Your [src.gloves] are getting in the way.</span>")

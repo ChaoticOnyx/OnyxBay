@@ -108,12 +108,6 @@
 	beta_particle_resist = 6 MEGA ELECTRONVOLT
 	hawking_resist = 1 ELECTRONVOLT
 
-/obj/item/Topic(href, href_list, datum/topic_state/state)
-	. = ..()
-
-	if(href_list["examine_combat"])
-		to_chat(usr, EXAMINE_BLOCK(SPAN_NOTICE(get_combat_stats().Join("\n"))))
-
 /obj/item/New()
 	..()
 	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y
@@ -262,76 +256,7 @@
 		else
 			. += SPAN("danger", "No extractable materials detected.<BR>")
 
-	if(force || block_tier == BLOCK_TIER_ADVANCED || mod_shield == BLOCK_TIER_PROJECTILE)
-		. += "<a href='?src=[ref(src)];examine_combat=1'>Show combat information.</a>"
-
-/// Generates and returns a list of combat-related stats.
-/obj/item/proc/get_combat_stats()
-	RETURN_TYPE(/list)
-
-	. = list()
-
-	if(force)
-		switch(mod_weight)
-			if(0 to 0.4)
-				. += "It's very light."
-			if(0.4 to 0.8)
-				. += "It's light."
-			if(0.8 to 1.25)
-				. += "It has moderate weight."
-			if(1.25 to 1.65)
-				. += "It's heavy."
-			else
-				. += "It's very heavy"
-
-		switch(mod_reach)
-			if(0 to 0.4)
-				. += "It's reach is very short."
-			if(0.4 to 0.8)
-				. += "It's reach is short."
-			if(0.8 to 1.25)
-				. += "It's reach is average."
-			if(1.25 to 1.65)
-				. += "It's reach is long."
-			else
-				. += "It's reach is very long."
-
-		switch(mod_handy)
-			if(0 to 0.4)
-				. += "It's unhandy."
-			if(0.4 to 0.8)
-				. += "It's not that handy."
-			if(0.8 to 1.25)
-				. += "It's handy."
-			if(1.25 to 1.65)
-				. += "It's really handy."
-			else
-				. += "It's outstandingly handy."
-
-		if(armor_penetration)
-			switch(armor_penetration)
-				if(1 to 19)
-					. += "It's good for penetrating light armor."
-				if(20 to 39)
-					. += "It's good for penetrating medium armor."
-				if(40 to 59)
-					. += "It's good for penetrating above-average armor."
-				if(60 to 79)
-					. += "It's good for penetrating heavy armor."
-				if(80 to 99)
-					. += "It's exceptionally good for penetrating most armor."
-				if(100 to INFINITY)
-					. += "It goes through most armor as a hot knife through butter."
-		else
-			. += "It's not that good at penetrating armor."
-
-		. += "It's attack cooldown is about [round((attack_cooldown + DEFAULT_WEAPON_COOLDOWN * (mod_weight / mod_handy)) * mod_speed * 0.1, 0.1)] seconds."
-		. += "It has parry window of [round(mod_handy * 12 * 0.1, 0.1)] seconds."
-
-	if(block_tier == BLOCK_TIER_ADVANCED)
-		. += "It may block or reflect projectiles really well."
-	else if(mod_shield == BLOCK_TIER_PROJECTILE)
-		. += "It may block projectiles."
+		. += "*--------*"
 
 /obj/item/attack_hand(mob/user)
 	if(!user)
@@ -432,9 +357,6 @@
 	if(!changing_slots && !istype(loc, /obj/item/clothing/accessory))
 		play_drop_sound()
 
-	if(!changing_slots)
-		_remove_verb_from_stat(user, verbs)
-
 	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
 
 // called just as an item is picked up (loc is not yet changed)
@@ -473,7 +395,6 @@
 		M.r_hand.update_twohanding()
 
 	play_handling_sound(slot)
-	_add_verb_to_stat(user, verbs)
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_EQUIPPED, src, user, slot)
 

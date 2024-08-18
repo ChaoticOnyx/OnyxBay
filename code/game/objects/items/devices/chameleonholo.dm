@@ -33,8 +33,9 @@
 		return
 
 /obj/item/device/chameleonholo/examine(mob/user, infix)
-	. = ..()
-	. += saved_examine_result
+	if(!active)
+		return ..()
+	return saved_examine_result
 
 /obj/item/device/chameleonholo/attack_self(mob/user)
 	if(!saved_appearance)
@@ -63,7 +64,7 @@
 	saved_appearance = object.appearance
 	saved_dir = object.dir
 	saved_density = object.density
-	saved_examine_result = user.run_examinate(object)
+	saved_examine_result = object.examine(user)
 
 /obj/item/device/chameleonholo/proc/activate(obj/saved_item)
 	if(active || !saved_appearance)

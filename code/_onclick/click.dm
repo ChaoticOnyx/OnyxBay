@@ -299,24 +299,16 @@
 	A.AltClick(src)
 
 /atom/proc/AltClick(mob/user)
-	var/cancel = SEND_SIGNAL(src, SIGNAL_ALT_CLICKED, src, user)
-	if(cancel)
-		return
+	var/turf/T = get_turf(src)
 
-	var/turf/clicked_turf = get_turf(src)
-	user.set_listed_turf(clicked_turf)
+	if(T && user.TurfAdjacent(T))
+		if(user.listed_turf == T)
+			user.listed_turf = null
+		else
+			user.listed_turf = T
+			user.client.statpanel = "Turf"
 
-/mob/proc/set_listed_turf(turf/turf_to_list)
-	if(isnull(client))
-		return
-
-	if(!istype(turf_to_list))
-		return
-
-	if(!TurfAdjacent(turf_to_list))
-		return
-
-	client.turf_examine.set_turf(turf_to_list)
+	return TRUE
 
 /mob/proc/TurfAdjacent(turf/T)
 	return T.AdjacentQuick(src)

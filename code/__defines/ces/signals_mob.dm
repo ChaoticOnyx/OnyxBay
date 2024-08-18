@@ -24,9 +24,3 @@
 
 /// Called on '/mob/proc/update_movespeed()' (/mob)
 #define SIGNAL_MOB_MOVESPEED_UPDATED "mob_movespeed_updated"
-
-/// Called on `/atom/proc/examine` (mob/user, list/examine_result)
-#define SIGNAL_MOB_EXAMINED "mob_examined"
-
-/// Called on `/atom/proc/examine` (mob/user, list/examine_result)
-#define SIGNAL_MOB_EXAMINED_MORE "mob_examined_more"

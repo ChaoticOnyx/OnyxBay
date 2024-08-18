@@ -134,7 +134,6 @@
 		ghost.admin_ghosted = 1
 		ghost.can_reenter_corpse = 1
 		ghost.reload_fullscreen()
-		ghost.client?.init_verbs()
 
 /mob/living/carbon/human/bluespace_tech/verb/antigrav()
 	set name = "Toggle Gravity"

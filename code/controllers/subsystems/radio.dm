@@ -5,9 +5,8 @@ SUBSYSTEM_DEF(radio)
 	/// Associative list of text -> datum, where text is a frequency string, datum is a `/datum/frequency`.
 	var/list/frequencies = list()
 
-/datum/controller/subsystem/radio/stat_entry(msg)
-	msg = "F:[length(frequencies)]"
-	return ..()
+/datum/controller/subsystem/radio/stat_entry()
+	..("F:[length(frequencies)]")
 
 /**
  * Adds an object to the specified frequency with a specified filter.

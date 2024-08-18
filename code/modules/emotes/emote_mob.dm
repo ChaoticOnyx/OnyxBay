@@ -18,7 +18,7 @@
 		var/datum/emote/E = GLOB.all_emotes[path]
 		set_emote(E.key, E)
 		if(!isnull(E.statpanel_proc))
-			grant_verb(src, E.statpanel_proc)
+			verbs |= E.statpanel_proc
 
 	default_emotes = null
 
@@ -32,7 +32,7 @@
 	for(var/datum/emote/E in GLOB.all_emotes)
 		clear_emote(E.key)
 		if(!isnull(E.statpanel_proc))
-			revoke_verb(src, E.statpanel_proc)
+			verbs -= E.statpanel_proc
 
 /mob/proc/get_emote(key)
 	return LAZYACCESS(current_emotes, key)
@@ -66,7 +66,7 @@
 		var/datum/emote/E = GLOB.all_emotes[path]
 		set_emote(E.key, E)
 		if(!isnull(E.statpanel_proc))
-			grant_verb(src, E.statpanel_proc)
+			verbs |= E.statpanel_proc
 
 /// A simple emote - just the message, and it's type. For anything more complex use datumized emotes.
 /mob/proc/custom_emote(message_type = VISIBLE_MESSAGE, message, intentional = FALSE)

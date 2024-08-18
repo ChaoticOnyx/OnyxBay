@@ -116,8 +116,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	if(!dna_profile)
 		dna_profile = H.dna.unique_enzymes
 		to_chat(usr, SPAN("notice", "You submit a DNA sample to \the [src]."))
-		add_verb(loc, /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample)
-		remove_verb(loc, /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample)
+		verbs += /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
+		verbs -= /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
 		update_icon()
 		return 1
 
@@ -143,8 +143,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 /obj/item/gun/projectile/lawgiver/proc/remove_dna()
 	dna_profile = null
 	audible_message("<b>\The [src]</b> reports, \"No DNA profile found.\"", splash_override = "No DNA profile found.")
-	add_verb(loc, /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample)
-	remove_verb(loc, /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample)
+	verbs += /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
+	verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
 	update_icon()
 
 /obj/item/gun/projectile/lawgiver/emp_act(severity)

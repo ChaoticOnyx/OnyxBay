@@ -31,12 +31,6 @@
 /// Called on `/atom/movable/set_glide_size` (new_glide_size)
 #define SIGNAL_UPDATE_GLIDE_SIZE "movable_glide_size"
 
-/// Called on `/atom/proc/examine` (mob/user, list/examine_result)
-#define SIGNAL_EXAMINED "examined"
-
-/// Called on `/atom/proc/examine` (mob/user, list/examine_result)
-#define SIGNAL_EXAMINED_MORE "examined_more"
-
 /// Called on `/atom/AltClick` (/atom)
 #define SIGNAL_ALT_CLICKED "atom_alt_click"
 

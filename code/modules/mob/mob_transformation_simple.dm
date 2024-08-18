@@ -47,7 +47,6 @@
 		mind.transfer_to(M)
 	else
 		M.key = key
-		M.client?.init_verbs()
 
 	if(subspecies && istype(M,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M

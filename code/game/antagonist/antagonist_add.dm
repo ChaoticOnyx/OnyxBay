@@ -33,10 +33,10 @@
 	current_antagonists |= player
 
 	if(faction_verb)
-		grant_verb(player.current, faction_verb)
+		player.current.verbs |= faction_verb
 
 	if(config.gamemode.disable_objectives == CONFIG_OBJECTIVE_VERB)
-		grant_verb(player.current, /mob/proc/add_objectives)
+		player.current.verbs += /mob/proc/add_objectives
 
 	if(player.current.client)
 		player.current.client.verbs += /client/proc/aooc
@@ -45,7 +45,7 @@
 		to_chat(player.current, SPAN("notice", "Once you decide on a goal to pursue, you can optionally display it to \
 			everyone at the end of the shift with the <b>Set Ambition</b> verb, located in the IC tab.  You can change this at any time, \
 			and it otherwise has no bearing on your round."))
-	grant_verb(player.current, /mob/living/proc/write_ambition)
+	player.current.verbs += /mob/living/proc/write_ambition
 
 	if(player.assigned_role == "Clown")
 		to_chat(player.current, SPAN("notice", "Your diligent training has helped you overcome your clownish nature."))
@@ -67,7 +67,7 @@
 	if(!istype(player))
 		return 0
 	if(player.current && faction_verb)
-		revoke_verb(player.current, faction_verb)
+		player.current.verbs -= faction_verb
 	if(player in current_antagonists)
 		to_chat(player.current, "<span class='danger'><font size = 3>You are no longer a [role_text]!</font></span>")
 		current_antagonists -= player
@@ -80,9 +80,9 @@
 
 		if(!is_special_character(player))
 			if(player.current)
-				revoke_verb(player.current, /mob/living/proc/write_ambition)
+				player.current.verbs -= /mob/living/proc/write_ambition
 				if(player.current.client)
-					revoke_verb(player.current.client, /client/proc/aooc)
+					player.current.client.verbs -= /client/proc/aooc
 			player.ambitions = ""
 		return 1
 	return 0

@@ -8,10 +8,10 @@
 	var/moving_delay_max = 150
 
 /datum/changeling_power/passive/move_biostructure/activate()
-	grant_verb(my_mob, /datum/changeling/proc/move_biostructure)
+	my_mob.verbs += /datum/changeling/proc/move_biostructure
 
 /datum/changeling_power/passive/move_biostructure/deactivate()
-	revoke_verb(my_mob, /datum/changeling/proc/move_biostructure)
+	my_mob.verbs -= /datum/changeling/proc/move_biostructure
 
 /datum/changeling_power/passive/move_biostructure/update_recursive_enhancement()
 	if(..())
@@ -35,7 +35,7 @@
 
 	var/datum/changeling_power/passive/move_biostructure/source_power = get_changeling_power_by_name("Relocate Biostructure")
 	if(!source_power)
-		revoke_verb(my_mob, /datum/changeling/proc/move_biostructure)
+		my_mob.verbs -= /datum/changeling/proc/move_biostructure
 		return
 
 	if(!ishuman(my_mob))

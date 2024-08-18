@@ -27,11 +27,6 @@ SUBSYSTEM_DEF(ticker)
 	var/list/antag_pool = list()
 	var/looking_for_antags = 0
 
-	/// Amount of new players in lobby during roundstart, used in stat panel.
-	var/total_players
-	/// Amount of ready new players in lobby during roundstart, used in stat panel.
-	var/total_players_ready
-
 	var/pregame_timeleft
 	var/restart_timeout
 
@@ -55,15 +50,6 @@ SUBSYSTEM_DEF(ticker)
 			post_game_tick()
 
 /datum/controller/subsystem/ticker/proc/pregame_tick()
-	total_players = 0
-	total_players_ready = 0
-
-	for(var/mob/new_player/player in GLOB.player_list)
-		total_players++
-
-		if(player.ready)
-			total_players_ready++
-
 	if(round_progressing && last_fire)
 		pregame_timeleft -= world.time - last_fire
 
@@ -189,29 +175,27 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/stat_entry(msg)
 	switch(GAME_STATE)
 		if(RUNLEVEL_LOBBY)
-			msg = "[round_progressing ? "START:[round(pregame_timeleft/10)]s" : "(PAUSED)"]"
+			..("[round_progressing ? "START:[round(pregame_timeleft/10)]s" : "(PAUSED)"]")
 		if(RUNLEVEL_SETUP)
-			msg = "SETUP"
+			..("SETUP")
 		if(RUNLEVEL_GAME)
-			msg = "GAME"
+			..("GAME")
 		if(RUNLEVEL_POSTGAME)
 			switch(end_game_state)
 				if(END_GAME_NOT_OVER)
-					msg = "ENDGAME ERROR"
+					..("ENDGAME ERROR")
 				if(END_GAME_AWAITING_MAP)
-					msg = "MAP VOTE"
+					..("MAP VOTE")
 				if(END_GAME_MODE_FINISH_DONE)
-					msg = "MODE OVER, WAITING"
+					..("MODE OVER, WAITING")
 				if(END_GAME_READY_TO_END)
-					msg = "ENDGAME PROCESSING"
+					..("ENDGAME PROCESSING")
 				if(END_GAME_DELAYED)
-					msg = "PAUSED"
+					..("PAUSED")
 				if(END_GAME_AWAITING_TICKETS)
-					msg = "AWAITING TICKETS"
+					..("AWAITING TICKETS")
 				if(END_GAME_ENDING)
-					msg = "END IN [round(restart_timeout/10)]s"
-
-	return ..()
+					..("END IN [round(restart_timeout/10)]s")
 
 /datum/controller/subsystem/ticker/Recover()
 	pregame_timeleft = SSticker.pregame_timeleft

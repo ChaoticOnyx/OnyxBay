@@ -121,7 +121,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	if(my_mob)
 		remove_all_changeling_powers()
 		my_mob.mind?.changeling = null
-		revoke_verb(my_mob, /datum/changeling/proc/EvolutionMenu)
+		my_mob.verbs -= /datum/changeling/proc/EvolutionMenu
 
 		// Biostructural stuff
 		var/obj/item/organ/internal/biostructure/BIO

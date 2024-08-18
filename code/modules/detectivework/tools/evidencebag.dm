@@ -114,7 +114,7 @@
 	if(!stored_item)
 		return
 
-	. += user.run_examinate(stored_item)
+	. += stored_item.examine(user)
 
 /obj/item/evidencebag/cyborg
 	name = "integrated evidence bag dispenser"

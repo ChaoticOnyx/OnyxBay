@@ -65,7 +65,6 @@
 
 /obj/item/rig_module/examine(mob/user, infix)
 	. = ..()
-
 	switch(damage)
 		if(0)
 			. += "It is undamaged."
@@ -258,22 +257,21 @@
 /obj/item/rig_module/proc/accepts_item(obj/item/input_device)
 	return 0
 
-/mob/living/carbon/human/get_actions_for_statpanel()
+/mob/living/carbon/human/Stat()
 	. = ..()
 
-	var/obj/item/rig/wearing_rig = back
-	if(istype(wearing_rig) && !wearing_rig.canremove)
-		for(var/obj/item/rig_module/module as anything in wearing_rig.installed_modules)
-			for(var/stat_rig_module/stat_module in module.stat_modules)
-				if(!stat_module.CanUse())
-					continue
+	if(. && istype(back,/obj/item/rig))
+		var/obj/item/rig/R = back
+		SetupStat(R)
 
-				. += list(list(
-					"Powersuit Modules",
-					stat_module.module.interface_name,
-					stat_module.name,
-					ref(stat_module),
-				))
+/mob/proc/SetupStat(obj/item/rig/R)
+	if(R && !R.canremove && R.installed_modules.len && statpanel("Powersuit Modules"))
+		var/cell_status = R.cell ? "[R.cell.charge]/[R.cell.maxcharge]" : "ERROR"
+		stat("Suit charge", cell_status)
+		for(var/obj/item/rig_module/module in R.installed_modules)
+			for(var/stat_rig_module/SRM in module.stat_modules)
+				if(SRM.CanUse())
+					stat(SRM.module.interface_name,SRM)
 
 /stat_rig_module
 	parent_type = /atom/movable

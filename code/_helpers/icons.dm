@@ -869,19 +869,13 @@
 
 /// Costlier version of icon2html() that uses getFlatIcon() to account for overlays, underlays, etc. Use with extreme moderation, ESPECIALLY on mobs.
 /proc/costly_icon2html(thing, target, sourceonly = FALSE)
-	if(isnull(thing))
+	if (!thing)
 		return
 
-	if(isicon(thing))
+	if (isicon(thing))
 		return icon2html(thing, target)
 
-	var/icon/I
-	if(!isnull(target))
-		var/atom/thing_atom = thing
-		I = thing_atom.get_flat_icon(target)
-	else
-		I = getFlatIcon(thing)
-
+	var/icon/I = getFlatIcon(thing)
 	return icon2html(I, target, sourceonly = sourceonly)
 
 /proc/path2icon(path, dir = SOUTH, frame = 1, moving = FALSE)
@@ -974,9 +968,7 @@
 // I'm not completely sure how ethical the 'allow_ratty_rendering' usage is, since it's basically lowkey cryptomining, but who fucking cares?
 /atom/proc/get_flat_icon(mob/caller, dir, force_appearance_flags, allow_ratty_rendering = TRUE)
 	var/client/rendering_client
-	if(isclient(caller))
-		rendering_client = caller
-	else if(caller?.client)
+	if(caller?.client)
 		rendering_client = caller.client // We are good, let the caller deal with their own stuff.
 	else if(allow_ratty_rendering)
 		for(var/mob/prey in shuffle(GLOB.player_list)) // We are not that good, randomly choosing a poor being to deal with rendering.

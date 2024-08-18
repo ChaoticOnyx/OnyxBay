@@ -33,7 +33,8 @@ SUBSYSTEM_DEF(explosions)
 
 	var/currentpart = SSEXPLOSIONS_TURFS
 
-/datum/controller/subsystem/explosions/stat_entry(msg)
+/datum/controller/subsystem/explosions/stat_entry()
+	var/msg = ""
 	msg += "C:{"
 	msg += "LT:[round(cost_lowturf,1)]|"
 	msg += "MT:[round(cost_medturf,1)]|"
@@ -60,7 +61,7 @@ SUBSYSTEM_DEF(explosions)
 
 	msg += "} "
 
-	return ..()
+	..(msg)
 
 #define SSEX_TURF "turf"
 #define SSEX_OBJ "obj"

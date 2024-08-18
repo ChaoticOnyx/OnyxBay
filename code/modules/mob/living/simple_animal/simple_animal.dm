@@ -275,11 +275,11 @@
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/purge_slowdown)
 
-/mob/living/simple_animal/get_status_tab_items()
+/mob/living/simple_animal/Stat()
 	. = ..()
 
-	if(show_stat_health)
-		. += "Health: [round((health / maxHealth) * 100)]%"
+	if(statpanel("Status") && show_stat_health)
+		stat(null, "Health: [round((health / maxHealth) * 100)]%")
 
 /mob/living/simple_animal/death(gibbed, deathmessage = "dies!", show_dead_message)
 	. = ..()
