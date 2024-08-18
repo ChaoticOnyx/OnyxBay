@@ -464,9 +464,6 @@
 		fake_look.SetTransform(others = fake.transform, rotation = -90)
 	holder.client.images |= fake_look
 
-	register_signal(holder, SIGNAL_MOB_EXAMINED, nameof(.proc/on_mob_examined))
-	register_signal(holder, SIGNAL_MOB_EXAMINED_MORE, nameof(.proc/on_mob_examined_more))
-
 	log_misc("[holder.name] is hallucinating that [origin.name] is the [fake.name]")
 
 /datum/hallucination/fake_appearance/proc/get_living_sublist(list/subtypes, list/exclude)
@@ -493,20 +490,11 @@
 	if(holder.client)
 		holder.client.images -= fake_look
 
-	unregister_signal(holder, SIGNAL_EXAMINED)
-	unregister_signal(holder, SIGNAL_EXAMINED_MORE)
-
 	QDEL_NULL(fake_look)
 
 /datum/hallucination/fake_appearance/Destroy()
 	end()
 	. = ..()
-
-/datum/hallucination/fake_appearance/proc/on_mob_examined(datum/source, mob/user, list/examine_result)
-	examine_result = fake.examine(user)
-
-/datum/hallucination/fake_appearance/proc/on_mob_examined_more(datum/source, mob/user, list/examine_result)
-	examine_result = fake.examine_more(user)
 
 /mob/living/carbon/proc/get_fake_appearance(mob/M)
 	for(var/datum/hallucination/fake_appearance/hallutination in hallucinations)

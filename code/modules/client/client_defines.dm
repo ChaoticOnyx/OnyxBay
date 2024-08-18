@@ -84,9 +84,6 @@
 	/// Messages currently seen by this client
 	var/list/seen_messages
 
-	/// List of atom refs that were recently examined via `run_examinare` proc.
-	var/list/recent_examines
-
 	/// Whether typing indicators are enabled
 	var/typing_indicators
 
