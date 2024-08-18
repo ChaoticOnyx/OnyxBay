@@ -7,7 +7,6 @@
 
 // SS_TICKER
 #define SS_PRIORITY_CHAT           100
-#define SS_PRIORITY_STATPANELS     95
 #define SS_PRIORITY_THINK          90    // Datums thinking.
 #define SS_PRIORITY_OVERLAYS       20
 #define SS_PRIORITY_ICON_UPDATE    10 // Queued icon updates. Mostly used by APCs and tables.

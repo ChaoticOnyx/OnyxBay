@@ -76,9 +76,8 @@ SUBSYSTEM_DEF(radiation)
 		if (MC_TICK_CHECK)
 			return
 
-/datum/controller/subsystem/radiation/stat_entry(msg)
-	msg = "S:[sources.len]"
-	return ..()
+/datum/controller/subsystem/radiation/stat_entry()
+	..("S:[sources.len]")
 
 /// Returns Gy
 /datum/controller/subsystem/radiation/proc/get_total_absorbed_dose_at_turf(turf/T, weight = AVERAGE_HUMAN_WEIGHT)

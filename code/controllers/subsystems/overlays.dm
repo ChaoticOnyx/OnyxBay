@@ -45,9 +45,8 @@ SUBSYSTEM_DEF(overlays)
 	fire(FALSE, TRUE)
 
 
-/datum/controller/subsystem/overlays/stat_entry(msg)
-	msg = "Queued Atoms: [length(queue)], Cache Size: [cache_size]"
-	return ..()
+/datum/controller/subsystem/overlays/stat_entry()
+	..("Queued Atoms: [length(queue)] | Cache Size: [cache_size]")
 
 
 /datum/controller/subsystem/overlays/fire(resumed, no_mc_tick)

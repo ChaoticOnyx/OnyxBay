@@ -29,9 +29,8 @@ SUBSYSTEM_DEF(trade)
 	if(prob(100-traders.len*10))
 		generate_trader()
 
-/datum/controller/subsystem/trade/stat_entry(msg)
-	msg = "Traders: [traders.len]"
-	return ..()
+/datum/controller/subsystem/trade/stat_entry()
+	..("Traders: [traders.len]")
 
 /datum/controller/subsystem/trade/proc/generate_trader(stations = 0)
 	var/list/possible = list()
