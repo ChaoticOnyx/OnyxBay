@@ -56,7 +56,7 @@
 		holding.forceMove(src)
 
 	if(!holding)
-		remove_verb(loc, /obj/item/clothing/shoes/proc/draw_knife)
+		verbs -= /obj/item/clothing/shoes/proc/draw_knife
 
 	update_icon()
 	return
@@ -76,7 +76,7 @@
 			return
 		holding = I
 		user.visible_message("<span class='notice'>\The [user] shoves \the [I] into \the [src].</span>", range = 1)
-		add_verb(loc, /obj/item/clothing/shoes/proc/draw_knife)
+		verbs |= /obj/item/clothing/shoes/proc/draw_knife
 		update_icon()
 	else if(istype(I, /obj/item/flame/match))
 		var/obj/item/flame/match/M = I

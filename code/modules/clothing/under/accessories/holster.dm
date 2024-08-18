@@ -33,7 +33,7 @@
 
 /obj/item/clothing/accessory/holster/Destroy()
 	if(has_suit)
-		has_suit.remove_verb(has_suit.loc, /obj/item/clothing/accessory/holster/verb/holster_verb)
+		has_suit.verbs -= /obj/item/clothing/accessory/holster/verb/holster_verb
 	QDEL_NULL(holstered)
 	QDEL_NULL(holster_action)
 	return ..()
@@ -129,11 +129,11 @@
 
 /obj/item/clothing/accessory/holster/on_attached(obj/item/clothing/under/S, mob/user)
 	..()
-	has_suit.add_verb(has_suit.loc, /obj/item/clothing/accessory/holster/verb/holster_verb)
+	has_suit.verbs += /obj/item/clothing/accessory/holster/verb/holster_verb
 
 /obj/item/clothing/accessory/holster/on_removed(mob/user)
 	if(has_suit)
-		has_suit.remove_verb(has_suit.loc, /obj/item/clothing/accessory/holster/verb/holster_verb)
+		has_suit.verbs -= /obj/item/clothing/accessory/holster/verb/holster_verb
 	..()
 
 //For the holster hotkey

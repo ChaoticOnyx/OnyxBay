@@ -82,11 +82,11 @@
 
 /obj/item/clothing/accessory/toggleable/on_attached(obj/item/clothing/under/S, mob/user as mob)
 	..()
-	has_suit.add_verb(has_suit.loc, /obj/item/clothing/accessory/toggleable/verb/toggle)
+	has_suit.verbs += /obj/item/clothing/accessory/toggleable/verb/toggle
 
 /obj/item/clothing/accessory/toggleable/on_removed(mob/user as mob)
 	if(has_suit)
-		has_suit.remove_verb(has_suit.loc, /obj/item/clothing/accessory/toggleable/verb/toggle)
+		has_suit.verbs -= /obj/item/clothing/accessory/toggleable/verb/toggle
 	..()
 
 /obj/item/clothing/accessory/toggleable/verb/toggle()
@@ -194,13 +194,13 @@
 
 /obj/item/clothing/accessory/toggleable/flannel/on_attached(obj/item/clothing/under/S, mob/user as mob)
 	..()
-	has_suit.add_verb(has_suit.loc, /obj/item/clothing/accessory/toggleable/flannel/verb/tuck)
-	has_suit.add_verb(has_suit.loc, /obj/item/clothing/accessory/toggleable/flannel/verb/roll_up_sleeves)
+	has_suit.verbs += /obj/item/clothing/accessory/toggleable/flannel/verb/tuck
+	has_suit.verbs += /obj/item/clothing/accessory/toggleable/flannel/verb/roll_up_sleeves
 
 /obj/item/clothing/accessory/toggleable/flannel/on_removed(mob/user as mob)
 	if(has_suit)
-		has_suit.remove_verb(has_suit.loc, /obj/item/clothing/accessory/toggleable/flannel/verb/tuck)
-		has_suit.remove_verb(has_suit.loc, /obj/item/clothing/accessory/toggleable/flannel/verb/roll_up_sleeves)
+		has_suit.verbs -= /obj/item/clothing/accessory/toggleable/flannel/verb/tuck
+		has_suit.verbs -= /obj/item/clothing/accessory/toggleable/flannel/verb/roll_up_sleeves
 	..()
 
 /obj/item/clothing/accessory/toggleable/flannel/do_toggle(user)
@@ -285,11 +285,11 @@
 
 /obj/item/clothing/accessory/security_shirt/on_attached(obj/item/clothing/under/S, mob/user)
 	..()
-	has_suit.add_verb(has_suit.loc, /obj/item/clothing/accessory/security_shirt/verb/roll_up_sleeves)
+	has_suit.verbs += /obj/item/clothing/accessory/security_shirt/verb/roll_up_sleeves
 
 /obj/item/clothing/accessory/security_shirt/on_removed(mob/user)
 	if(has_suit)
-		has_suit.remove_verb(has_suit.loc, /obj/item/clothing/accessory/security_shirt/verb/roll_up_sleeves)
+		has_suit.verbs -= /obj/item/clothing/accessory/security_shirt/verb/roll_up_sleeves
 	..()
 
 /obj/item/clothing/accessory/security_shirt/verb/roll_up_sleeves()
