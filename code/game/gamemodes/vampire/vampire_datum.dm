@@ -11,6 +11,8 @@
 	var/last_frenzy_message = 0                            // Keeps track of when the last frenzy alert was sent.
 	var/vamp_status = 0                                    // Bitfield including different statuses.
 	var/stealth = TRUE                                     // Do you want your victims to know of your sucking?
+	var/list/eyescolor = list()
+	var/list/skincolor = list()
 
 	var/list/purchased_powers = list()                      // List of power datums we currently use.
 	var/list/datum/vampire_power/available_powers = list() // List of vampire_power datums available for use.
@@ -106,6 +108,20 @@
 	blood_usable += blood_to_get
 	return
 
+/datum/vampire/proc/set_up_colors()
+	eyescolor += my_mob.r_eyes
+	eyescolor += my_mob.g_eyes
+	eyescolor += my_mob.b_eyes
+
+	skincolor += my_mob.s_tone
+	my_mob.change_eye_color(255, 0, 0)
+	my_mob.change_skin_tone(35)
+
+/datum/vampire/proc/restore_colors()
+	my_mob.change_eye_color(eyescolor[1], eyescolor[2], eyescolor[3])
+	my_mob.change_skin_tone(skincolor[1])
+	eyescolor = list()
+	skincolor = list()
 
 /datum/vampire/proc/set_up_organs()
 	if(vamp_status & VAMP_ISTHRALL)
@@ -115,7 +131,7 @@
 		util_crash_with("Vampire datum was initialised without `var/my_mob`. Shit is fucked.")
 		return
 
-	blood_usable = 30
+	blood_usable = 200
 
 	my_mob.does_not_breathe = 1
 	my_mob.remove_blood(my_mob.species.blood_volume)
@@ -123,6 +139,7 @@
 	my_mob.oxygen_alert = 0
 	my_mob.add_modifier(/datum/modifier/trait/low_metabolism)
 	my_mob.innate_heal = 0
+	set_up_colors()
 
 	for(var/obj/item/organ/external/E in my_mob.organs)
 		E.limb_flags &= ~ORGAN_FLAG_CAN_BREAK
@@ -146,6 +163,7 @@
 	my_mob.status_flags &= ~UNDEAD
 	my_mob.remove_modifiers_of_type(/datum/modifier/trait/low_metabolism, TRUE)
 	my_mob.innate_heal = 1
+	restore_colors()
 
 	for(var/obj/item/organ/external/E in my_mob.organs)
 		E.limb_flags |= ORGAN_FLAG_CAN_BREAK
@@ -316,9 +334,6 @@
 		my_mob.visible_message(SPAN("danger", "A dark aura manifests itself around [my_mob], their eyes turning red and their composure changing to be more beast-like."),\
 							   SPAN("danger", "You can resist no longer. The power of the Veil takes control over your mind: you are unable to speak or think. In people, you see nothing but prey to be feasted upon. You are reduced to an animal."))
 
-		my_mob.add_mutation(MUTATION_STRONG)
-		my_mob.update_mutations()
-
 		my_mob.set_sight(my_mob.sight|SEE_MOBS)
 
 		for(var/datum/power/vampire/P in vampirepowers)
@@ -333,8 +348,6 @@
 	if(prob(force_stop ? 100 : blood_usable))
 		vamp_status &= ~VAMP_FRENZIED
 
-		my_mob.remove_mutation(MUTATION_STRONG)
-		my_mob.update_mutations()
 
 		my_mob.set_sight(my_mob.sight&(~SEE_MOBS))
 

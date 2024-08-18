@@ -71,7 +71,7 @@
 		if(!my_mob.mind.vampire)
 			to_chat(my_mob, SPAN("danger", "Your fangs have suddenly disappeared!"))
 			return
-		if(blood_drained >= 115)
+		if(blood_drained >= 250)
 			to_chat(my_mob, SPAN("danger", "You can't force any more blood down your throat!"))
 			break
 
@@ -89,7 +89,7 @@
 
 		// Alive and not of empty mind.
 		if(T.stat < DEAD && T.client)
-			blood = min(15, T.vessel.get_reagent_amount(/datum/reagent/blood))
+			blood = min(30, T.vessel.get_reagent_amount(/datum/reagent/blood))
 			vampire.blood_total += blood
 			vampire.gain_blood(blood)
 			blood_drained += blood

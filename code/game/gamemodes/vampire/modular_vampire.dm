@@ -116,3 +116,9 @@ var/list/datum/power/vampire/vampirepowers = list()
 	desc = "Lunge towards a target like an animal, and grapple them."
 	verbpath = /datum/vampire_power/grapple
 	blood_cost = 66666 // Can't gain via normal means... But if one actually manages to do this, he's one cool bloodsucking dude for sure.
+
+/datum/power/vampire/blood_buff
+	name = "Blood Buff"
+	desc = "Increases your strength imbued with the Power of the Veil."
+	helptext = "Makes you stronger."
+	verbpath = /datum/vampire_power/toggled/blood_buff
