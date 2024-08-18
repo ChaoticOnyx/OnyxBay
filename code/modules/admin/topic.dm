@@ -2122,13 +2122,16 @@
 			if(!selected_org_name) return
 			selected_org = GLOB.traitors.fixer.organizations_by_name[selected_org_name]
 			if(!selected_org) return
-			var/new_cnt_type = input("Select contract type:", "Contract type", null) as null|anything in list("Assassinate", "Implant", "Steal", "Steal active AI", "Steal blood samples", "Dump")
+			var/new_cnt_type = input("Select contract type:", "Contract type", null) as null|anything in list("Assassinate", "Implant", "Steal", "Steal active AI", "Steal blood samples", "Dump", "Disfigure")
 			var/selected_reason = input("Enter reason (don't select any, if you want to select reason by code)", "Contract reason") as null|text
 			if(!selected_reason) selected_reason = null
 			switch(new_cnt_type)
 				if("Assassinate")
 					var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
 					contract = new /datum/antag_contract/item/assassinate(selected_org, selected_reason, selected_target)
+				if("Disfigure")
+					var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
+					contract = new /datum/antag_contract/item/disfigure(selected_org, selected_reason, selected_target)
 				if("Implant")
 					var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
 					contract = new /datum/antag_contract/implant(selected_org, selected_reason, selected_target)

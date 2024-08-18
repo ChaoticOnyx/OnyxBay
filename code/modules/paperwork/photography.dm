@@ -35,6 +35,7 @@ var/global/photo_count = 0
 	var/scribble	//Scribble on the back.
 	var/image/tiny
 	var/photo_size = 3
+	var/list/disfigured_mobs = list()
 
 /obj/item/photo/New()
 	id = photo_count++
@@ -219,6 +220,11 @@ var/global/photo_count = 0
 			mob_detail = "You can see [A] on the photo[(A.health / A.maxHealth) < 0.75 ? " - [A] looks hurt":""].[holding ? " [holding]":"."]. "
 		else
 			mob_detail += "You can also see [A] on the photo[(A.health / A.maxHealth)< 0.75 ? " - [A] looks hurt":""].[holding ? " [holding]":"."]."
+		if(ishuman(A))
+			var/mob/living/carbon/human/H = A
+			var/obj/item/organ/external/head/E = H.get_organ(BP_HEAD)
+			if(E && (E?.status & ORGAN_DISFIGURED)) // Check to see if we even have a head and if the head's disfigured.
+				mob_detail += "You can see [A] on the photo is disfigured."
 	return mob_detail
 
 /obj/item/device/camera/afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
@@ -249,19 +255,26 @@ var/global/photo_count = 0
 	var/y_c = target.y + (size-1)/2
 	var/z_c	= target.z
 	var/mobs = ""
+	var/list/disfigured = list()
 	for(var/i = 1 to size)
 		for(var/j = 1 to size)
 			var/turf/T = locate(x_c, y_c, z_c)
 			if(user.can_capture_turf(T))
 				mobs += get_mobs(T)
+				for(var/mob/living/carbon/A in T)
+					if(ishuman(A))
+						var/mob/living/carbon/human/H = A
+						var/obj/item/organ/external/head/E = H.get_organ(BP_HEAD)
+						if(E && (E?.status & ORGAN_DISFIGURED))
+							disfigured |= A
 			x_c++
 		y_c--
 		x_c = x_c - size
 
-	var/obj/item/photo/p = createpicture(target, user, mobs, flag)
+	var/obj/item/photo/p = createpicture(target, user, mobs, flag, disfigured)
 	printpicture(user, p)
 
-/obj/item/device/camera/proc/createpicture(atom/target, mob/user, mobs, flag)
+/obj/item/device/camera/proc/createpicture(atom/target, mob/user, mobs, flag, list/disfigured)
 	var/x_c = target.x - (size-1)/2
 	var/y_c = target.y - (size-1)/2
 	var/z_c	= target.z
@@ -271,6 +284,7 @@ var/global/photo_count = 0
 	p.img = photoimage
 	p.desc = mobs
 	p.photo_size = size
+	p.disfigured_mobs = disfigured
 	p.update_icon()
 
 	return p
@@ -303,7 +317,7 @@ var/global/photo_count = 0
 	name = "camera "
 	desc = "A polaroid camera. It seems to have an extra magnifier on the end."
 
-/obj/item/device/camera/random/createpicture(atom/target, mob/user, mobs, flag)
+/obj/item/device/camera/random/createpicture(atom/target, mob/user, mobs, flag, list/disfigured)
 	var/atom/new_target = pick(GLOB.player_list)
 
 	var/x_c = new_target.x - (size-1)/2
