@@ -5,10 +5,10 @@
 	required_chems = 20
 
 /datum/changeling_power/passive/hive_upload/activate()
-	grant_verb(my_mob, /datum/changeling/proc/hive_upload)
+	my_mob.verbs += /datum/changeling/proc/hive_upload
 
 /datum/changeling_power/passive/hive_upload/deactivate()
-	revoke_verb(my_mob, /datum/changeling/proc/hive_upload)
+	my_mob.verbs -= /datum/changeling/proc/hive_upload
 
 /datum/changeling/proc/hive_upload()
 	set category = "Changeling"
@@ -24,7 +24,7 @@
 
 	var/datum/changeling_power/source_power = get_changeling_power_by_name("Hive Channel")
 	if(!source_power)
-		revoke_verb(my_mob, /datum/changeling/proc/hive_upload)
+		my_mob.verbs -= /datum/changeling/proc/hive_upload
 		return
 
 	if(!source_power.is_usable())

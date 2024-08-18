@@ -165,21 +165,19 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	cult_rating = max(0, cult_rating - amount)
 
 /datum/antagonist/cultist/proc/add_cult_magic(mob/M)
-	grant_verb(M, Tier1Runes)
+	M.verbs |= Tier1Runes
 
 	if(max_cult_rating >= CULT_RUNES_1)
-		grant_verb(M, Tier2Runes)
+		M.verbs |= Tier2Runes
 
 	if(max_cult_rating >= CULT_RUNES_2)
-		grant_verb(M, Tier3Runes)
+		M.verbs |= Tier3Runes
 
 	if(max_cult_rating >= CULT_RUNES_3)
-		grant_verb(M, Tier4Runes)
+		M.verbs |= Tier4Runes
 
 /datum/antagonist/cultist/proc/remove_cult_magic(mob/M)
-	revoke_verb(M, list(
-		Tier1Runes,
-		Tier2Runes,
-		Tier3Runes,
-		Tier4Runes,
-	))
+	M.verbs -= Tier1Runes
+	M.verbs -= Tier2Runes
+	M.verbs -= Tier3Runes
+	M.verbs -= Tier4Runes

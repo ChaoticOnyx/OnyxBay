@@ -5,10 +5,10 @@
 	required_chems = 40
 
 /datum/changeling_power/passive/hive_download/activate()
-	grant_verb(my_mob, /datum/changeling/proc/hive_download)
+	my_mob.verbs += /datum/changeling/proc/hive_download
 
 /datum/changeling_power/passive/hive_download/deactivate()
-	revoke_verb(my_mob, /datum/changeling/proc/hive_download)
+	my_mob.verbs -= /datum/changeling/proc/hive_download
 
 /datum/changeling/proc/hive_download()
 	set category = "Changeling"
@@ -24,7 +24,7 @@
 
 	var/datum/changeling_power/source_power = get_changeling_power_by_name("Hive Absorb")
 	if(!source_power)
-		revoke_verb(my_mob, /datum/changeling/proc/hive_download)
+		my_mob.verbs -= /datum/changeling/proc/hive_download
 		return
 
 	if(!source_power.is_usable())
