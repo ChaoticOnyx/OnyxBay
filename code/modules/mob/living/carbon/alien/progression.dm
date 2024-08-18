@@ -1,8 +1,7 @@
-/mob/living/carbon/alien/get_status_tab_items()
+/mob/living/carbon/alien/Stat()
 	. = ..()
-
-	if(adult_form)
-		. += "Growth: [round(amount_grown)]/[max_grown]"
+	if(. && statpanel("Status") && adult_form)
+		stat("Growth", "[round(amount_grown)]/[max_grown]")
 
 /mob/living/carbon/alien/verb/evolve()
 
@@ -14,7 +13,7 @@
 		return
 
 	if(!adult_form)
-		revoke_verb(src, /mob/living/carbon/alien/verb/evolve)
+		verbs -= /mob/living/carbon/alien/verb/evolve
 		return
 
 	if(handcuffed)

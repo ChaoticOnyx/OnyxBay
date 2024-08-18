@@ -94,7 +94,7 @@
 		var/newname = sanitize(input(src, "Choose a name for your new form.", "Name change", form.name) as text, MAX_NAME_LEN)
 		if(newname)
 			fully_replace_character_name(newname)
-	revoke_verb(src, /mob/living/deity/verb/choose_form)
+	src.verbs -= /mob/living/deity/verb/choose_form
 	show_browser(src, null, "window=godform")
 	for(var/m in minions)
 		var/datum/mind/mind = m

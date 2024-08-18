@@ -439,11 +439,15 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 /datum/species/proc/remove_inherent_verbs(mob/living/carbon/human/H)
 	if(inherent_verbs)
-		revoke_verb(H, inherent_verbs)
+		for(var/verb_path in inherent_verbs)
+			H.verbs -= verb_path
+	return
 
 /datum/species/proc/add_inherent_verbs(mob/living/carbon/human/H)
 	if(inherent_verbs)
-		grant_verb(H, inherent_verbs)
+		for(var/verb_path in inherent_verbs)
+			H.verbs |= verb_path
+	return
 
 /datum/species/proc/remove_inherent_traits(mob/living/carbon/human/H)
 	if(inherent_traits)
