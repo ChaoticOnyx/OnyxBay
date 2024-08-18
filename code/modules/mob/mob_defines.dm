@@ -187,6 +187,9 @@
 	//so don't treat them as being SSD even though their client var is null.
 	var/mob/teleop = null
 
+	/// Reference to the turf currently being examined in the stat panel.
+	var/turf/listed_turf
+
 	var/mob_size = MOB_MEDIUM
 	var/throw_multiplier = 1
 
