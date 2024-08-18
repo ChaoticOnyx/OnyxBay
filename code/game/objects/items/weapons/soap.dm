@@ -34,7 +34,7 @@
 			return
 		if(M.slip_on_obj(src, 2, 2))
 			reagents.remove_any(3)
-			if(prob(1))
+			if(rustg_rand_bool(0.001))
 				to_chat(M, SPAN_DANGER("You slipped so hard that you gibbed!"))
 				M.gib()
 
