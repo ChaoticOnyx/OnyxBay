@@ -34,6 +34,9 @@
 			return
 		if(M.slip_on_obj(src, 2, 2))
 			reagents.remove_any(3)
+		if(prob(1))
+			to_chat(M, SPAN_DANGER("You slipped so hard that you gibbed!"))
+			M.gib()
 
 /obj/item/soap/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity)
