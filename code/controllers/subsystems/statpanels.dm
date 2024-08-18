@@ -76,10 +76,7 @@ SUBSYSTEM_DEF(statpanels)
 			if(target.stat_tab in target.spell_tabs)
 				update_actions = TRUE
 
-			if(istype(target_mob?.back, /obj/item/rig))
-				update_actions = TRUE
-
-			if(!length(target.spell_tabs) && length(target_mob?.ability_master?.ability_objects))
+			if(!length(target.spell_tabs) && (length(target_mob?.ability_master?.ability_objects) || istype(target_mob?.back, /obj/item/rig)))
 				update_actions = TRUE
 
 			if(update_actions && num_fires % default_wait == 0)
@@ -227,10 +224,7 @@ SUBSYSTEM_DEF(statpanels)
 	if(target.stat_tab in target.spell_tabs)
 		update_actions = TRUE
 
-	if(istype(target_mob?.back, /obj/item/rig))
-		update_actions = TRUE
-
-	if(!length(target.spell_tabs) && length(target_mob?.ability_master?.ability_objects))
+	if(!length(target.spell_tabs) && (length(target_mob?.ability_master?.ability_objects) || istype(target_mob?.back, /obj/item/rig)))
 		update_actions = TRUE
 
 	if(update_actions)

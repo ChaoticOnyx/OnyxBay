@@ -854,9 +854,6 @@ its easier to just keep the beam vertical.
 
 /// Advanced-use proc only! Handles verb addition to target's stat panel without tempering with source's verbs.
 /atom/proc/_add_verb_to_stat(mob/target, verb_or_list_to_add)
-	if(isnull(verb_or_list_to_add))
-		return
-
 	if(!islist(verb_or_list_to_add))
 		verb_or_list_to_add = list(verb_or_list_to_add)
 
@@ -876,7 +873,7 @@ its easier to just keep the beam vertical.
 		var/procpath/verb_to_add = thing
 		output_list[++output_list.len] = list(verb_to_add.category, verb_to_add.name)
 
-	if(!length(output_list))
+	if(!LAZYLEN(output_list))
 		return
 
 	target.client?.stat_panel.send_message("add_verb_list", output_list)
@@ -897,9 +894,6 @@ its easier to just keep the beam vertical.
 
 /// Advanced-use proc only! Handles verb removal from target's stat panel without tempering with source's verbs.
 /atom/proc/_remove_verb_from_stat(mob/target, verb_or_list_to_remove)
-	if(isnull(verb_or_list_to_remove))
-		return
-
 	if(!islist(verb_or_list_to_remove))
 		verb_or_list_to_remove = list(verb_or_list_to_remove)
 
@@ -919,7 +913,7 @@ its easier to just keep the beam vertical.
 		var/procpath/verb_to_remove = thing
 		output_list[++output_list.len] = list(verb_to_remove.category, verb_to_remove.name)
 
-	if(!length(output_list))
+	if(!LAZYLEN(output_list))
 		return
 
 	target.client?.stat_panel.send_message("remove_verb_list", output_list)

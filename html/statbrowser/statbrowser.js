@@ -140,11 +140,7 @@ function remove_verb(v) {
 
 function check_verbs() {
   for (var v = verb_tabs.length - 1; v >= 0; v--) {
-    var cat = verb_tabs[v];
-
-    if (cat == null) continue;
-
-    verbs_cat_check(cat);
+    verbs_cat_check(verb_tabs[v]);
   }
 }
 
