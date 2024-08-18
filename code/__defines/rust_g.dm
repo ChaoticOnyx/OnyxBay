@@ -284,7 +284,7 @@
 
 /// Returns a bool with a probability of numerator/denominator of being true. I.e. gen_ratio(2, 3) has chance of 2 in 3, or about 67%, of returning true.
 /// If numerator == denominator, then the returned value is guaranteed to be true. If numerator == 0, then the returned value is guaranteed to be false.
-#define rustg_rand_ratio(nominator, denominator) ext2num(RUSTG_CALL(RUST_G, "rand_ratio")(istext(nominator) ? nominator : num2text(nominator), istext(denominator) ? denominator : num2text(denominator)))
+#define rustg_rand_ratio(nominator, denominator) text2num(RUSTG_CALL(RUST_G, "rand_ratio")(istext(nominator) ? nominator : num2text(nominator), istext(denominator) ? denominator : num2text(denominator)))
 
 // Related to real-valued quantities that grow linearly (e.g. errors, offsets):
 
