@@ -92,7 +92,6 @@
 		add_movespeed_mod_immunities(src, /datum/movespeed_modifier/pull_slowdown)
 	add_think_ctx("dust", CALLBACK(src, nameof(.proc/dust)), 0)
 	add_think_ctx("dust_deletion", CALLBACK(src, nameof(.proc/dust_check_delete)), 0)
-	add_think_ctx("remove_from_examine_context", CALLBACK(src, nameof(.proc/remove_from_recent_examines)), 0)
 	add_think_ctx("weaken_context", CALLBACK(src, nameof(.proc/Weaken)), 0)
 	add_think_ctx("post_close_winset", CALLBACK(src, nameof(.proc/post_close_winset)), 0)
 	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	nameof(.proc/set_blackness))

@@ -63,16 +63,15 @@
 
 	var/list/stat_rig_module/stat_modules = new()
 
-/obj/item/rig_module/examine(mob/user, infix)
+/obj/item/rig_module/_examine_text(mob/user)
 	. = ..()
-
 	switch(damage)
 		if(0)
-			. += "It is undamaged."
+			. += "\nIt is undamaged."
 		if(1)
-			. += "It is badly damaged."
+			. += "\nIt is badly damaged."
 		if(2)
-			. += "It is almost completely destroyed."
+			. += "\nIt is almost completely destroyed."
 
 /obj/item/rig_module/attackby(obj/item/W, mob/user)
 
@@ -261,7 +260,7 @@
 /mob/living/carbon/human/Stat()
 	. = ..()
 
-	if(. && istype(back, /obj/item/rig))
+	if(. && istype(back,/obj/item/rig))
 		var/obj/item/rig/R = back
 		SetupStat(R)
 
@@ -272,8 +271,8 @@
 		for(var/obj/item/rig_module/module in R.installed_modules)
 		{
 			for(var/stat_rig_module/SRM in module.stat_modules)
-			if(SRM.CanUse())
-				stat(SRM.module.interface_name,SRM)
+				if(SRM.CanUse())
+					stat(SRM.module.interface_name,SRM)
 		}
 
 /stat_rig_module

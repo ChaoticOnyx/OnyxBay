@@ -1509,6 +1509,18 @@
 	return output
 
 
+/obj/mecha/proc/get_mecha_log()
+	var/list/data = list()
+
+	for(var/list/entry in log)
+		data.Add(list(list(
+			"time" = time2text(entry["time"], "DDD MMM DD hh:mm:ss"),
+			"message" = entry["message"],
+		)))
+
+	return data
+
+
 /obj/mecha/proc/get_log_html()
 	var/output = "<html><meta charset=\"utf-8\"><head><title>[src.name] Log</title></head><body style='font: 13px 'Courier', monospace;'>"
 	for(var/list/entry in log)
