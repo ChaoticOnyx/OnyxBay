@@ -235,8 +235,6 @@
 
 	/// UI holder for a language menu.
 	var/datum/language_menu/language_menu
-	/// Associative list of procpath -> list/atom, where atom is a source a procpath comes from.
-	var/list/atom_verbs
 
 	///AI controller that controls this atom. type on init, then turned into an instance during runtime
 	var/datum/ai_controller/ai_controller

@@ -844,10 +844,10 @@ its easier to just keep the beam vertical.
  * Please, note that this proc is **DEPRECATED** and most functionality must be implemented
  * without interacting with stat panel AKA using action buttons or hotkeys.
  */
-/atom/proc/add_verb(mob/target, verb_or_list_to_add)
+/atom/proc/add_verb(target_or_list, verb_or_list_to_add)
 	verbs += verb_or_list_to_add
 
-	if(!istype(target))
+	if(isnull(target_or_list))
 		return
 
 	_add_verb_to_stat(target, verb_or_list_to_add)

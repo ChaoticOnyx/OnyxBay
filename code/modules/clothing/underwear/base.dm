@@ -76,18 +76,13 @@
 		return FALSE
 	return ForceEquipUnderwear(H, user)
 
-/obj/item/underwear/proc/ForceEquipUnderwear(mob/living/carbon/human/H, mob/user, update_icons = TRUE)
+/obj/item/underwear/proc/ForceEquipUnderwear(mob/living/carbon/human/H, update_icons = TRUE)
 	// No matter how forceful, we still don't allow multiples of the same underwear type
 	if(is_path_in_list(type, H.worn_underwear))
 		return FALSE
 
-	if(isnull(user))
-		forceMove(H)
-		_add_verb_to_stat(H, /obj/item/underwear/verb/RemoveSocks)
-	else if(!user.drop(src, H, changing_slots = H == user))
-		return FALSE
-
 	H.worn_underwear += src
+	forceMove(H)
 
 	if(update_icons)
 		H.update_underwear()

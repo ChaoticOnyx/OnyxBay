@@ -263,6 +263,12 @@
 
 	var/obj/item/rig/wearing_rig = back
 	if(istype(wearing_rig) && !wearing_rig.canremove)
+		. += list(list(
+			"Powersuit Modules"
+			"Suit charge:"
+			wearing_rig.cell ? "[wearing_rig.cell.charge]/[wearing_rig.cell.maxcharge]" : "ERROR"
+		))
+
 		for(var/obj/item/rig_module/module as anything in wearing_rig.installed_modules)
 			for(var/stat_rig_module/stat_module in module.stat_modules)
 				if(!stat_module.CanUse())

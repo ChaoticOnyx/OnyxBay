@@ -121,7 +121,11 @@
 
 	if(back && istype(back, /obj/item/rig))
 		var/obj/item/rig/suit = back
-		. += "RIG Charge: [isnull(suit.cell) ? "ERROR" : "[suit.cell.charge]/[suit.cell.maxcharge]"]"
+		var/cell_status = "ERROR"
+
+		if(suit.cell)
+			cell_status = "[suit.cell.charge]/[suit.cell.maxcharge]"
+		. += "Suit charge: [cell_status]"
 
 	if(mind)
 		if(mind.vampire)

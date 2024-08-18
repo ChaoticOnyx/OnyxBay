@@ -432,9 +432,6 @@
 	if(!changing_slots && !istype(loc, /obj/item/clothing/accessory))
 		play_drop_sound()
 
-	if(!changing_slots)
-		_remove_verb_from_stat(user, verbs)
-
 	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
 
 // called just as an item is picked up (loc is not yet changed)
