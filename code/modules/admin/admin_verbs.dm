@@ -707,7 +707,7 @@ var/list/admin_verbs_mentor = list(
 		log_admin("[src] re-admined themself.")
 		message_admins("[src] re-admined themself.", 1)
 		to_chat(src, "<span class='interface'>You now have the keys to control the planet, or atleast a small space station</span>")
-		revoke_verb(src, /client/proc/readmin_self)
+		src.verbs -= /client/proc/readmin_self
 
 /client/proc/deadmin_self()
 	set name = "De-admin self"
@@ -719,7 +719,7 @@ var/list/admin_verbs_mentor = list(
 			message_admins("[src] deadmined themself.", 1)
 			deadmin()
 			to_chat(src, "<span class='interface'>You are now a normal player.</span>")
-			grant_verb(src, /client/proc/readmin_self)
+			src.verbs |= /client/proc/readmin_self
 	feedback_add_details("admin_verb","DAS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/check_ai_laws()

@@ -324,7 +324,7 @@ its easier to just keep the beam vertical.
 
 	var/content = "<div class='Examine'>"
 
-	content += _examine_text(arglist(args))
+	content += examine(arglist(args))
 	content += "</div>"
 
 	return content
