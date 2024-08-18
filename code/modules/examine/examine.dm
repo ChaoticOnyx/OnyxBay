@@ -1,64 +1,77 @@
+/*	This code is responsible for the examine tab.  When someone examines something, it copies the examined object's description_info,
+	description_fluff, and description_antag, and shows it in a new tab.
+
+	In this file, some atom and mob stuff is defined here.  It is defined here instead of in the normal files, to keep the whole system self-contained.
+	This means that this file can be unchecked, along with the other examine files, and can be removed entirely with no effort.
+*/
+
+
+/atom/
+	var/description_info = null //Helpful blue text.
+	var/description_fluff = null //Green text about the atom's fluff, if any exists.
+	var/description_antag = null //Malicious red text, for the antags.
+
+//Override these if you need special behaviour for a specific type.
 /atom/proc/get_description_info()
-	return description_info
+	if(description_info)
+		return description_info
+	return
 
 /atom/proc/get_description_fluff()
-	return description_fluff
+	if(description_fluff)
+		return description_fluff
+	return
 
 /atom/proc/get_description_antag()
-	return description_antag
+	if(description_antag)
+		return description_antag
+	return
 
-/// Called when `user` examines this atom.
-/atom/proc/examine(mob/user, infix)
-	RETURN_TYPE(/list)
+/atom/proc/get_description_combat()
+	return
 
-	var/examine_string = get_examine_string(user, infix)
-	if(examine_string)
-		. = list(examine_string)
-	else
-		. = list()
+/mob/living/get_description_fluff()
+	if(flavor_text) //Get flavor text for the green text.
+		return flavor_text
+	else //No flavor text?  Try for hardcoded fluff instead.
+		return ..()
 
-	if(desc)
-		. += desc
+/mob/living/carbon/human/get_description_fluff()
+	return print_flavor_text(0)
 
-	SEND_SIGNAL(src, SIGNAL_EXAMINED, user, .)
-	SEND_SIGNAL(user, SIGNAL_MOB_EXAMINED, src, .)
+/* The examine panel itself */
 
-/// Called when `user` examines this atom multiple times in ~1 second window.
-/atom/proc/examine_more(mob/user)
-	RETURN_TYPE(/list)
+/client/var/description_holders[0]
 
-	. = list()
+/client/proc/update_description_holders(atom/A, update_antag_info=0)
+	description_holders["info"] = A.get_description_info()
+	description_holders["fluff"] = A.get_description_fluff()
+	description_holders["antag"] = (update_antag_info)? A.get_description_antag() : ""
+	description_holders["combat"] = A.get_description_combat()
 
-	var/info_text = get_description_info()
-	if(info_text)
-		. += "<font color='#084b8a'>[info_text]</font>"
+	description_holders["name"] = "[A.name]"
+	description_holders["icon"] = "\icon[A]"
+	description_holders["desc"] = A.desc
 
-	var/fluff_text = get_description_fluff()
-	if(fluff_text)
-		. += "<font color='#298a08'>[fluff_text]</font>"
+/mob/Stat()
+	. = ..()
+	if(client && statpanel("Examine"))
+		stat(null,"[client.description_holders["icon"]]    <font size='5'>[client.description_holders["name"]]</font>") //The name, written in big letters.
+		stat(null,"[client.description_holders["desc"]]") //the default examine text.
+		if(client.description_holders["combat"])
+			stat(null,"<b>[client.description_holders["combat"]]</b>") //Colorless, combat stats.
+		if(client.description_holders["info"])
+			stat(null,"<font color='#084b8a'><b>[client.description_holders["info"]]</b></font>") //Blue, informative text.
+		if(client.description_holders["fluff"])
+			stat(null,"<font color='#298a08'><b>[client.description_holders["fluff"]]</b></font>") //Yellow, fluff-related text.
+		if(client.description_holders["antag"])
+			stat(null,"<font color='#8a0808'><b>[client.description_holders["antag"]]</b></font>") //Red, malicious antag-related text
 
-	var/antag_text = get_description_antag()
-	if(antag_text && (user?.mind?.special_role || isghost(user)))
-		. += "<font color='#8a0808'>[antag_text]</font>"
+//override examinate verb to update description holders when things are examined
+/mob/examinate(atom/A as mob|obj|turf in view(src.client.eye))
+	if(..())
+		return 1
 
-	SEND_SIGNAL(src, SIGNAL_EXAMINED_MORE, user, .)
-	SEND_SIGNAL(user, SIGNAL_MOB_EXAMINED_MORE, src, .)
-
-/// Generates fancy object's name including article and dirty status.
-/atom/proc/get_examine_name(mob/user, infix)
-	var/infix_string = isnull(infix) ? "" : " [infix]"
-	var/examine_name = "\a [SPAN_INFO("<em>[name][infix_string]</em>")]."
-
-	if(is_bloodied)
-		examine_name = gender == PLURAL ? "some " : "a"
-
-		if(blood_color != SYNTH_BLOOD_COLOUR)
-			examine_name += "[SPAN_DANGER("blood-stained")] [SPAN_INFO("<em>[name][infix_string]</em>")]!"
-		else
-			examine_name += "oil-stained [name][infix_string]"
-
-	return examine_name
-
-/// Generates leading examine line containing object's name and icon.
-/atom/proc/get_examine_string(mob/user, infix)
-	return "\icon[src] That's [get_examine_name(user, infix)]"
+	var/is_antag = ((mind && mind.special_role) || isghost(src)) //ghosts don't have minds
+	if(client)
+		client.update_description_holders(A, is_antag)

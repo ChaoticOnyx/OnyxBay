@@ -89,10 +89,24 @@
 		return
 
 	. += list(
-		"Time To Start: [round(SSticker.pregame_timeleft/10)]s[SSticker.round_progressing ? "" : " (DELAYED)"]",
-		"Players: [SSticker.total_players]",
-		"Players Ready: [SSticker.total_players_ready]",
+		"Time To Start: [round(SSticker.pregame_timeleft/10)][SSticker.round_progressing ? "" : " (DELAYED)"]",
+		"",
+		"Players: [totalPlayers]",
+		"Players Ready: [totalPlayersReady]",
+		"",
 	)
+
+	totalPlayers = 0
+	totalPlayersReady = 0
+	for(var/mob/new_player/player in GLOB.player_list)
+		var/highjob
+		if(player.client?.prefs?.job_high)
+			highjob = " as [player.client.prefs.job_high]"
+		. += "[player.key] [player.ready ? "(Playing[highjob])" : ""]"
+
+		totalPlayers++
+		if(player.ready)
+			totalPlayersReady++
 
 /mob/new_player/Topic(href, href_list[])
 	if(!client)	return 0
