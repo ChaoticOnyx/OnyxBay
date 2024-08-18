@@ -48,6 +48,7 @@ var/list/ai_verbs_default = list(
 	anchored = 1 // -- TLE
 	density = 1
 	status_flags = CANSTUN|CANPARALYSE|CANPUSH
+	shouldnt_see = list(/obj/effect/rune)
 	maxHealth = 200
 	var/list/network = list("Exodus")
 	var/obj/machinery/camera/camera = null
@@ -108,10 +109,10 @@ var/list/ai_verbs_default = list(
 	give_ghost_proc_at_initialize = FALSE
 
 /mob/living/silicon/ai/proc/add_ai_verbs()
-	grant_verb(src, ai_verbs_default)
+	src.verbs |= ai_verbs_default
 
 /mob/living/silicon/ai/proc/remove_ai_verbs()
-	revoke_verb(src, ai_verbs_default)
+	src.verbs -= ai_verbs_default
 
 /mob/living/silicon/ai/New(loc, datum/ai_laws/L,  obj/item/organ/internal/cerebrum/mmi/B, safety = 0)
 	var/list/possibleNames = GLOB.ai_names
@@ -155,14 +156,6 @@ var/list/ai_verbs_default = list(
 	add_language(LANGUAGE_SIGN, 0)
 	add_language(LANGUAGE_INDEPENDENT, 1)
 	add_language(LANGUAGE_SPACER, 1)
-
-	default_silicon_subsystems.Cut()
-
-	for(var/datum/nano_module/subsystem_type as anything in subtypesof(/datum/nano_module))
-		if(!subsystem_type::available_to_ai)
-			continue
-
-		default_silicon_subsystems += subsystem_type
 
 	if(!safety)//Only used by AIize() to successfully spawn an AI.
 		if (!B)//If there is no player/brain inside.

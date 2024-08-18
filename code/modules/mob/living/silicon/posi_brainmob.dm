@@ -8,7 +8,7 @@
 	use_me = 0 //Can't use the me verb, it's a freaking immobile brain
 	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "brain-prosthetic"
-	default_silicon_subsystems = list(
+	silicon_subsystems  = list(
 		/datum/nano_module/law_manager
 	)
 
