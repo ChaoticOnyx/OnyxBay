@@ -299,6 +299,10 @@
 	A.AltClick(src)
 
 /atom/proc/AltClick(mob/user)
+	var/cancel = SEND_SIGNAL(src, SIGNAL_ALT_CLICKED, src, user)
+	if(cancel)
+		return
+
 	var/turf/T = get_turf(src)
 
 	if(T && user.TurfAdjacent(T))
