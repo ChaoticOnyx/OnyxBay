@@ -1,5 +1,16 @@
 [
   {
+    "author": "BaraBara",
+    "date": "2024-08-19T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Предметы снова вращаются на альт + клик",
+        "pr": 12731
+      }
+    ]
+  },
+  {
     "author": "Animusin",
     "date": "2024-08-18T00:00:00+03:00",
     "changes": [
