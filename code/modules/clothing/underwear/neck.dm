@@ -11,7 +11,7 @@
 		underwear_list |= N
 
 	if(length(underwear_list) < 1)
-		to_chat(user, SPAN("notice", "You wear nothing on your neck."))
+		to_chat(usr, SPAN("notice", "You wear nothing on your neck."))
 		return
 
 	var/obj/item/underwear/neck/choice = null

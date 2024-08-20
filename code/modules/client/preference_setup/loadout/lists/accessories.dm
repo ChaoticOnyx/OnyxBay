@@ -38,28 +38,9 @@
 	path = /obj/item/clothing/accessory/corset
 	flags = GEAR_HAS_COLOR_SELECTION
 
-/datum/gear/accessory/choker_color
-	display_name = "colored choker"
-	path = /obj/item/clothing/accessory/choker
-	flags = GEAR_HAS_COLOR_SELECTION
-
 /datum/gear/accessory/vynilcorset
 	display_name = "vinyl corset"
 	path = /obj/item/clothing/accessory/vynilcorset
-
-/datum/gear/accessory/locket
-	display_name = "locket"
-	path = /obj/item/clothing/accessory/locket
-
-/datum/gear/accessory/aquila
-	display_name = "aquila"
-	path = /obj/item/clothing/accessory/necklace/aquila
-	slot = slot_tie
-
-/datum/gear/accessory/necklace
-	display_name = "necklace, colour select"
-	path = /obj/item/clothing/accessory/necklace
-	flags = GEAR_HAS_COLOR_SELECTION
 
 /datum/gear/accessory/bowtie
 	display_name = "bowtie, horrible"
@@ -117,20 +98,6 @@
 /datum/gear/accessory/armband_nt
 	display_name = "NanoTrasen armband"
 	path = /obj/item/clothing/accessory/armband/whitered
-
-/datum/gear/accessory/dogtag
-	display_name = "dogtag"
-	path = /obj/item/clothing/accessory/badge/dogtag
-
-/datum/gear/accessory/dogtag/spawn_item(mob/living/carbon/human/H, metadata)
-	. = .. ()
-	var/obj/item/clothing/accessory/badge/dogtag/dogtag = .
-	if(!istype(dogtag))
-		return
-
-	dogtag.stored_name = H.real_name
-	dogtag.religion = H.religion
-	dogtag.stored_blood_type = H.b_type
 
 /datum/gear/accessory/pin
 	display_name = "pin selection"

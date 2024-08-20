@@ -289,8 +289,7 @@ var/global/list/damage_icon_parts = list()
 		var/image/I = image(body_build.get_mob_icon(slot_hidden_str, UW.icon_state), UW.icon_state)
 		I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		I.color = UW.color
-		overlays_standing[W.mob_wear_layer] += I
-		overlays_standing[HO_UNDERWEAR_LAYER] += I
+		overlays_standing[UW.mob_wear_layer] += I
 
 	if(update_icons)
 		queue_icon_update()

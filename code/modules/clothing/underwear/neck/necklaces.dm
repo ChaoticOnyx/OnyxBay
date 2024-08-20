@@ -25,7 +25,7 @@
 	desc = "A religious symbol, typically worn on one's neck. This one is made of silver."
 	icon_state = "cross_wood"
 
-/obj/item/underwear/neck/cross/wood
+/obj/item/underwear/neck/cross/gold
 	name = "wooden cross necklace"
 	desc = "A religious symbol, typically worn on one's neck. This one is extremely shiny, and appears to be made of gold. Somebody's definitely showing off."
 	icon_state = "cross_wood"
@@ -33,3 +33,4 @@
 /obj/item/underwear/neck/tooth
 	name = "tooth necklace"
 	desc = "A rather large tooth on a string. It must have belonged to a space crocodile. Or, perhaps, an unlucky unathi."
+	icon_state = "tooth_necklace"

@@ -11,7 +11,7 @@
 		underwear_list |= W
 
 	if(length(underwear_list) < 1)
-		to_chat(user, SPAN("notice", "You wear nothing on your wrists."))
+		to_chat(usr, SPAN("notice", "You wear nothing on your wrists."))
 		return
 
 	var/obj/item/underwear/wrist/choice = null
@@ -60,7 +60,7 @@
 
 	var/mob/living/carbon/human/H = loc
 	if(istype(H) && (src in H.worn_underwear))
-		to_char(usr, "\The [src] must be taken off first.")
+		to_chat(usr, "\The [src] must be taken off first.")
 		return // Screw checking things, let's just force them to take the thing off. That's exactly now you put your watches on the other wrist, after all.
 
 	flipped = !flipped
@@ -75,5 +75,4 @@
 	else
 		play_drop_sound()
 
-	var/mob/living/carbon/human/H = usr
 	H?.update_underwear()

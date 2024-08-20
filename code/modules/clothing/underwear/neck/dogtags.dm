@@ -4,12 +4,13 @@
 	desc = "A simple badge that demonstrates its owner's military background."
 	icon_state = "dogtag"
 	slot_flags = SLOT_MASK | SLOT_TIE
+	var/stored_name
 	var/stored_blood_type
 	var/religion
 
 /obj/item/underwear/neck/dogtag/proc/set_name(new_name)
 	stored_name = new_name
-	name = "[initial(name)] ([stored_name])
+	name = "[initial(name)] ([stored_name])"
 
 /obj/item/underwear/neck/dogtag/attack_self(mob/user)
 	if(isliving(user))

@@ -1,8 +1,8 @@
 
 // Lockets
 /obj/item/underwear/neck/locket
-	name = "silver locket"
-	desc = "A silver locket that seems to have space for a photo within."
+	name = "locket necklace"
+	desc = "A locket on a chain that seems to have space for a photo within."
 	icon_state = "locket"
 	item_state = "locket"
 	slot_flags = 0
