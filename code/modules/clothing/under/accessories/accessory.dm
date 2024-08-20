@@ -1,7 +1,7 @@
 /obj/item/clothing/accessory
 	name = "tie"
 	desc = "A neosilk clip-on tie."
-	icon = 'icons/obj/clothing/ties.dmi'
+	icon = 'icons/obj/clothing/accessories.dmi'
 	icon_state = "tie"
 	item_state = ""	//no inhands
 	slot_flags = SLOT_TIE
@@ -93,18 +93,6 @@
 	if(has_suit)
 		return	//we aren't an object on the ground so don't call parent
 	..()
-
-//Necklaces
-/obj/item/clothing/accessory/necklace
-	name = "necklace"
-	desc = "A simple necklace."
-	icon_state = "necklace"
-	slot_flags = SLOT_MASK | SLOT_TIE
-
-/obj/item/clothing/accessory/necklace/aquila
-	name = "aquila"
-	desc = "You can see the Emperor smiling in the reflection."
-	icon_state = "aquila"
 
 //Misc
 /obj/item/clothing/accessory/kneepads

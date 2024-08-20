@@ -108,10 +108,6 @@
 	desc = "Have fun.."
 	icon_state = "vynilcorset"
 
-/obj/item/clothing/accessory/choker
-	name = "choker"
-	icon_state = "choker_color"
-
 /obj/item/clothing/accessory/bowtie/ugly
 	name = "horrible bowtie"
 	desc = "A neosilk hand-tied bowtie. This one is disgusting."

@@ -90,6 +90,7 @@
 	if((equip_preview_mob & EQUIP_PREVIEW_LOADOUT) && !previewJob?.preview_override)
 		// Equip custom gear loadout, replacing any job items
 		var/wrist_underwear_equipped = FALSE
+		var/neck_underwear_equipped = FALSE
 		var/list/loadout_taken_slots = list()
 		var/list/accessories = list()
 
@@ -122,6 +123,11 @@
 				if(ispath(G.path, /obj/item/underwear/wrist) && !wrist_underwear_equipped)
 					G.spawn_on_mob(mannequin, gears[G.display_name])
 					wrist_underwear_equipped = TRUE
+					update_icon = TRUE
+
+				if(ispath(G.path, /obj/item/underwear/neck) && !neck_underwear_equipped)
+					G.spawn_on_mob(mannequin, gears[G.display_name])
+					neck_underwear_equipped = TRUE
 					update_icon = TRUE
 
 				if(G.slot && !(G.slot in loadout_taken_slots) && G.spawn_on_mob(mannequin, gears[G.display_name]))

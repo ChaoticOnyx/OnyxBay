@@ -1,6 +1,8 @@
-/obj/item/clothing/accessory/locket
-	name = "silver locket"
-	desc = "A silver locket that seems to have space for a photo within."
+
+// Lockets
+/obj/item/underwear/neck/locket
+	name = "locket necklace"
+	desc = "A locket on a chain that seems to have space for a photo within."
 	icon_state = "locket"
 	item_state = "locket"
 	slot_flags = 0
@@ -12,11 +14,11 @@
 	var/held_alt = 0
 	var/held_alt_desc = ""
 
-/obj/item/clothing/accessory/locket/Destroy()
+/obj/item/underwear/neck/locket/Destroy()
 	QDEL_NULL(held)
 	return ..()
 
-/obj/item/clothing/accessory/locket/attack_self(mob/user as mob)
+/obj/item/underwear/neck/locket/attack_self(mob/user as mob)
 	if(!base_icon)
 		base_icon = icon_state
 
@@ -35,7 +37,7 @@
 	else
 		icon_state = "[base_icon]"
 
-/obj/item/clothing/accessory/locket/attackby(obj/item/O as obj, mob/user as mob)
+/obj/item/underwear/neck/locket/attackby(obj/item/O as obj, mob/user as mob)
 	if(!open)
 		to_chat(user, "You have to open it first.")
 		return
@@ -53,7 +55,7 @@
 		return
 	..()
 
-/obj/item/clothing/accessory/locket/verb/setphoto()
+/obj/item/underwear/neck/locket/verb/setphoto()
 	set name = "Set Locket"
 	set category = "Object"
 	set src in usr
