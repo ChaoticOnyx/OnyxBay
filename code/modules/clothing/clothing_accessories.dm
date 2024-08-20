@@ -49,11 +49,16 @@
 	if(!usr.drop(src, changing_slots = TRUE))
 		return
 
-	switch(over_object.name)
-		if("r_hand")
+	var/atom/movable/screen/inventory/inv_box = over_object
+	if(!istype(inv_box))
+		return
+
+	switch(inv_box.slot_id)
+		if(slot_r_hand)
 			usr.put_in_r_hand(src)
-		if("l_hand")
+		if(slot_l_hand)
 			usr.put_in_l_hand(src)
+
 	add_fingerprint(usr)
 
 /obj/item/clothing/examine(mob/user, infix)
