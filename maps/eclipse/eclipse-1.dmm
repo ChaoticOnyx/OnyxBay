@@ -8005,7 +8005,7 @@
 "dhf" = (/obj/structure/closet/cabinet,/obj/item/clothing/accessory/red,/obj/item/clothing/accessory/storage/knifeharness,/turf/simulated/floor/trim/wood,/area/eclipse/civilian/dormitory/rooms/room4)
 "dhg" = (/obj/structure/window/reinforced{dir = 4},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/obj/machinery/status_display{pixel_x = -32; name = "status display west"},/turf/simulated/floor/tiled/mono,/area/eclipse/civilian/dormitory/rooms/room9)
 "dhh" = (/obj/structure/bed/chair/comfy/blue{dir = 4},/turf/simulated/floor/trim/carpet/purple,/area/eclipse/civilian/dormitory/rooms/room9)
-"dhi" = (/obj/structure/table/woodentable,/obj/item/clothing/accessory/locket,/turf/simulated/floor/trim/carpet/purple,/area/eclipse/civilian/dormitory/rooms/room9)
+"dhi" = (/obj/structure/table/woodentable,/obj/item/underwear/neck/locket,/turf/simulated/floor/trim/carpet/purple,/area/eclipse/civilian/dormitory/rooms/room9)
 "dhj" = (/obj/effect/floor_decal/corner/blue/three_quarters{dir = 4},/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "med_foyer_blast"; opacity = 0; open_layer = 2.8},/turf/simulated/floor/tiled/white,/area/eclipse/medical/hallway/reception)
 "dhk" = (/obj/structure/sign/chemistry{pixel_x = 32},/turf/simulated/wall,/area/eclipse/medical/hallway/reception)
 "dhl" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "med_chem_blast"; opacity = 0; open_layer = 2.8},/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/eclipse/medical/support/chemistry)
