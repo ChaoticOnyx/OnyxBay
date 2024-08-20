@@ -50,13 +50,18 @@
 
 		//TODO make this less terrible
 		if (!( user.restrained() ) && !( user.stat ))
-			switch(over_object.name)
-				if(BP_R_HAND)
+			var/atom/movable/screen/inventory/inv_box = over_object
+			if(!istype(inv_box))
+				return 0
+
+			switch(inv_box.slot_id)
+				if(slot_r_hand)
 					if(user.drop(master_item, changing_slots = TRUE))
 						user.put_in_r_hand(master_item)
-				if(BP_L_HAND)
+				if(slot_l_hand)
 					if(user.drop(master_item, changing_slots = TRUE))
 						user.put_in_l_hand(master_item)
+
 			master_item.add_fingerprint(user)
 			return 0
 	return 0
