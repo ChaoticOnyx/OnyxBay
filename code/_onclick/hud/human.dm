@@ -29,7 +29,7 @@
 		inv_box.alpha = ui_alpha
 
 		var/list/slot_data =  hud_data.gear[gear_slot]
-		inv_box.SetName(gear_slot)
+		inv_box.SetName(slot_data["name"])
 		inv_box.screen_loc =  slot_data["loc"]
 		inv_box.slot_id =     slot_data["slot"]
 		inv_box.icon_state =  slot_data["state"]
@@ -98,7 +98,7 @@
 	if(hud_data.has_hands)
 
 		using = new /atom/movable/screen()
-		using.SetName("equip")
+		using.SetName("Equip")
 		using.icon = ui_style
 		using.icon_state = "act_equip"
 		using.screen_loc = ui_equip
@@ -107,7 +107,7 @@
 		static_inventory += using
 
 		inv_box = new /atom/movable/screen/inventory()
-		inv_box.SetName("r_hand")
+		inv_box.SetName("Right Hand")
 		inv_box.icon = ui_style
 		inv_box.icon_state = "r_hand_inactive"
 		if(mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
@@ -121,7 +121,7 @@
 		static_inventory += inv_box
 
 		inv_box = new /atom/movable/screen/inventory()
-		inv_box.SetName("l_hand")
+		inv_box.SetName("Left Hand")
 		inv_box.icon = ui_style
 		inv_box.icon_state = "l_hand_inactive"
 		if(mymob && mymob.hand)	//This being 1 means the left hand is in use
@@ -134,7 +134,7 @@
 		static_inventory += inv_box
 
 		using = new /atom/movable/screen/inventory()
-		using.SetName("hand")
+		using.SetName("Swap Hands")
 		using.icon = ui_style
 		using.icon_state = "hand1"
 		using.screen_loc = ui_swaphand1
@@ -143,7 +143,7 @@
 		static_inventory += using
 
 		using = new /atom/movable/screen/inventory()
-		using.SetName("hand")
+		using.SetName("Swap Hands")
 		using.icon = ui_style
 		using.icon_state = "hand2"
 		using.screen_loc = ui_swaphand2
