@@ -226,7 +226,7 @@
 
 			usr.hud_used.hidden_inventory_update()
 
-		if("equip")
+		if("Equip")
 			if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
 				return 1
 			if(ishuman(usr))
@@ -581,18 +581,23 @@
 	if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
 		return 1
 	switch(name)
-		if("r_hand")
+		if("Right Hand")
 			if(iscarbon(usr))
 				var/mob/living/carbon/C = usr
 				C.activate_hand("r")
-		if("l_hand")
+		if("Left Hand")
 			if(iscarbon(usr))
 				var/mob/living/carbon/C = usr
 				C.activate_hand("l")
-		if("swap")
+		if("Swap Hands")
 			usr.swap_hand()
-		if("hand")
-			usr.swap_hand()
+		if("Miscellaneous")
+			if(ishuman(usr))
+				var/mob/living/carbon/human/H = usr
+				if(!H.show_inv(H, TRUE))
+					return
+
+				H.show_inventory?.open()
 		else
 			if(usr.attack_ui(slot_id))
 				usr.update_inv_l_hand(0)

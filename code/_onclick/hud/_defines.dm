@@ -117,6 +117,8 @@
 
 #define ui_head "WEST+1:8,SOUTH+3:11"
 
+#define ui_underwear "WEST:6,SOUTH+3:11"
+
 //Intent small buttons
 #define ui_help_small "EAST-3:8,SOUTH:1"
 #define ui_disarm_small "EAST-3:15,SOUTH:18"

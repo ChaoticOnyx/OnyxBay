@@ -328,6 +328,7 @@
 
 /mob/proc/can_block_magic()
 	return FALSE
+
 //Find a dead mob with a brain and client.
 /proc/find_dead_player(find_key, include_observers = 0)
 	if(isnull(find_key))

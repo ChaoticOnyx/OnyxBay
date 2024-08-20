@@ -74,7 +74,9 @@
 /obj/item/underwear/proc/EquipUnderwear(mob/user, mob/living/carbon/human/H)
 	if(!CanEquipUnderwear(user, H))
 		return FALSE
-	return ForceEquipUnderwear(H, user)
+	if(!user.drop(src))
+		return FALSE
+	return ForceEquipUnderwear(H)
 
 /obj/item/underwear/proc/ForceEquipUnderwear(mob/living/carbon/human/H, update_icons = TRUE)
 	// No matter how forceful, we still don't allow multiples of the same underwear type
