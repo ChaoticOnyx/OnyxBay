@@ -29,7 +29,7 @@
 		"gloves" =       list("loc" = ui_gloves,    "name" = "Gloves",        "slot" = slot_gloves,    "state" = "gloves",  "toggle" = 1),
 		"eyes" =         list("loc" = ui_glasses,   "name" = "Glasses",       "slot" = slot_glasses,   "state" = "glasses", "toggle" = 1),
 		"l_ear" =        list("loc" = ui_l_ear,     "name" = "Left Ear",      "slot" = slot_l_ear,     "state" = "ears",    "toggle" = 1),
-		"r_ear" =        list("loc" = ui_r_ear,     "name" = "Right Ear",     "slot" = slot_r_ear,     "state" = "ears",    "toggle" = 1),
+		"r_ear" =        list("loc" = ui_r_ear,     "name" = "Right Ear",     "slot" = slot_r_ear,     "state" = "ears2",   "toggle" = 1),
 		"head" =         list("loc" = ui_head,      "name" = "Hat",           "slot" = slot_head,      "state" = "hair",    "toggle" = 1),
 		"shoes" =        list("loc" = ui_shoes,     "name" = "Shoes",         "slot" = slot_shoes,     "state" = "shoes",   "toggle" = 1),
 		"suit storage" = list("loc" = ui_sstore1,   "name" = "Suit Storage",  "slot" = slot_s_store,   "state" = "suitstore"),
