@@ -281,20 +281,16 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/proc/update_underwear(update_icons=1)
 	overlays_standing[HO_UNDERWEAR_LAYER] = list()
 
-	overlays_standing[HO_WRISTS_UNDER_LAYER] = list()
-	overlays_standing[HO_WRIST_UNIFORM_LAYER] = list()
-	overlays_standing[HO_WRISTS_OVER_LAYER] = list()
+	overlays_standing[HO_UNDERWEAR_PLUS_LAYER] = list()
+	overlays_standing[HO_UNDERWEAR_UNIFORM_LAYER] = list()
+	overlays_standing[HO_UNDERWEAR_SUIT_LAYER] = list()
 
 	for(var/obj/item/underwear/UW in worn_underwear)
 		var/image/I = image(body_build.get_mob_icon(slot_hidden_str, UW.icon_state), UW.icon_state)
 		I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		I.color = UW.color
-		if(istype(UW, /obj/item/underwear/wrist))
-			var/obj/item/underwear/wrist/W = UW
-			overlays_standing[W.mob_wear_layer] += I
-
-		else
-			overlays_standing[HO_UNDERWEAR_LAYER] += I
+		overlays_standing[W.mob_wear_layer] += I
+		overlays_standing[HO_UNDERWEAR_LAYER] += I
 
 	if(update_icons)
 		queue_icon_update()
