@@ -95,16 +95,22 @@
 		if(loc != usr)
 			return
 
-		add_fingerprint(usr)
-		switch(over_object.name)
-			if(BP_R_HAND)
+
+		var/atom/movable/screen/inventory/inv_box = over_object
+		if(!istype(inv_box))
+			return
+
+		switch(inv_box.slot_id)
+			if(slot_r_hand)
 				if(usr.drop(src))
 					usr.put_in_r_hand(src)
-			if(BP_L_HAND)
+			if(slot_l_hand)
 				if(usr.drop(src))
 					usr.put_in_l_hand(src)
-			if("back")
+			if(slot_back)
 				usr.drop(src)
+
+		add_fingerprint(usr)
 
 /obj/item/storage/AltClick(mob/usr)
 	if(!canremove)
