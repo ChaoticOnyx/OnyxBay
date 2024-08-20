@@ -31,6 +31,7 @@
 
 /obj/item/underwear/wrist
 	required_free_body_parts = NO_BODYPARTS
+	mob_wear_layer = HO_UNDERWEAR_PLUS_LAYER
 	underwear_slot = UNDERWEAR_SLOT_WRISTS
 	icon = 'icons/obj/clothing/wrist.dmi'
 	/// Can use different wear layers to be drawn over/under uniform.
@@ -40,10 +41,10 @@
 /obj/item/underwear/wrist/Initialize()
 	. = ..()
 	if(flipped != -1)
-		verbs += /obj/item/underwear/wrist/proc/swapwrists
+		verbs += /obj/item/underwear/wrist/proc/swap_wrists
 
 // If we can't equip the thing - we'll try to flip it automatically.
-/obj/item/underwear/wrist/CanEquipUnderwear(mob/user, mob/living/carbon/human/H)
+/obj/item/underwear/wrist/CanEquipUnderwear(mob/user, mob/living/carbon/human/H, silent = TRUE)
 	. = ..()
 	if(.)
 		return TRUE // We are good
@@ -51,28 +52,37 @@
 	if(flipped == -1)
 		return FALSE // No sense trying
 
-	swapwrists(TRUE)
-	return ..(user, H, TRUE) // Trying again after swapping
+	_swap_wrists(null)
+	return ..(user, H, FALSE) // Trying again after swapping
 
-/obj/item/underwear/wrist/proc/swapwrists(silent = FALSE)
+/obj/item/underwear/wrist/proc/swap_wrists()
 	set name = "Flip Wristwear"
 	set category = "Object"
+	set src in usr
 
-	var/mob/living/carbon/human/H = loc
-	if(istype(H) && (src in H.worn_underwear))
-		to_chat(usr, "\The [src] must be taken off first.")
+	if(!ishuman(usr))
+		return
+
+	if(usr.stat)
+		return
+
+	_swap_wrists(usr)
+
+/obj/item/underwear/wrist/proc/_swap_wrists(mob/living/carbon/human/user)
+	if(user && (src in user.worn_underwear))
+		to_chat(user, "\The [src] must be taken off first.")
 		return // Screw checking things, let's just force them to take the thing off. That's exactly now you put your watches on the other wrist, after all.
 
 	flipped = !flipped
 	icon_state = "[initial(item_state)][flipped ? "_flip" : ""]"
 	underwear_slot = flipped ? UNDERWEAR_SLOT_L_WRIST  : UNDERWEAR_SLOT_R_WRIST
 
-	if(!silent)
-		to_chat(usr, "You change \the [src] to be on your [src.flipped ? "left" : "right"] wrist.")
+	if(user)
+		to_chat(user, "You change \the [src] to be on your [flipped ? "left" : "right"] wrist.")
 
 	if(pickup_sound)
 		play_handling_sound(slot_r_hand)
 	else
 		play_drop_sound()
 
-	H?.update_underwear()
+	user?.update_underwear()

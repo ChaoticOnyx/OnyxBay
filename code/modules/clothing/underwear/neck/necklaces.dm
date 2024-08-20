@@ -23,12 +23,12 @@
 /obj/item/underwear/neck/cross/silver
 	name = "silver cross necklace"
 	desc = "A religious symbol, typically worn on one's neck. This one is made of silver."
-	icon_state = "cross_wood"
+	icon_state = "cross_silver"
 
 /obj/item/underwear/neck/cross/gold
 	name = "wooden cross necklace"
 	desc = "A religious symbol, typically worn on one's neck. This one is extremely shiny, and appears to be made of gold. Somebody's definitely showing off."
-	icon_state = "cross_wood"
+	icon_state = "cross_gold"
 
 /obj/item/underwear/neck/tooth
 	name = "tooth necklace"

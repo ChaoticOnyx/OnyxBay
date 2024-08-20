@@ -30,6 +30,7 @@
 
 /obj/item/underwear/neck
 	required_free_body_parts = HEAD
+	mob_wear_layer = HO_UNDERWEAR_UNIFORM_LAYER
 	underwear_slot = UNDERWEAR_SLOT_NECK
 	icon = 'icons/obj/clothing/neck.dmi'
 	/// Can use different wear layers to be drawn over/under uniform.
