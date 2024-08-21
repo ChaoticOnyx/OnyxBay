@@ -6,7 +6,7 @@
 	var/obj/aura/personal_shield/device/shield
 	var/obj/item/cell/power_supply //What type of power cell this uses
 	var/charge_cost = 20 //How much energy is needed to fire.
-	var/max_shots = 7 //Determines the capacity of the weapon's power cell. Specifying a cell_type overrides this value.
+	var/max_shots = 5 //Determines the capacity of the weapon's power cell. Specifying a cell_type overrides this value.
 	w_class = ITEM_SIZE_SMALL
 	var/active = FALSE
 	var/mob/living/holder = null
@@ -17,13 +17,16 @@
 	. = ..()
 	power_supply = new /obj/item/cell/device/variable(src, max_shots*charge_cost)
 
-/obj/item/device/personal_shield/is_active(mob/living/user)
+/obj/item/device/personal_shield/proc/is_active(mob/living/user)
 	var/act = FALSE
-	for(var//obj/item/device/personal_shield/a in user.contents)
+	for(var/obj/item/device/personal_shield/a in user.contents)
 		if(a.active)
 			act = TRUE
+	return act
 
 /obj/item/device/personal_shield/attack_self(mob/living/user)
+	playsound(user, 'sound/effects/weapons/energy/toggle_mode1.ogg', 25, 1)
+	spawn(5)
 	if(power_supply.charge && !is_active(user))
 		active = TRUE
 		shield = new(user,src)
@@ -32,10 +35,11 @@
 		QDEL_NULL(shield)
 		active = FALSE
 		holder = null
+		playsound(user,'sound/mecha/internaldmgalarm.ogg',25,1)
 
 /obj/item/device/personal_shield/Move()
 	..()
-	if(holder && get_turf(holder) != get_turf(src))
+	if(holder && !(src in holder.contents))
 		QDEL_NULL(shield)
 		active = FALSE
 		holder = null
@@ -43,14 +47,14 @@
 
 /obj/item/device/personal_shield/forceMove()
 	..()
-	if(holder && get_turf(holder) != get_turf(src))
+	if(holder && !(src in holder.contents))
 		QDEL_NULL(shield)
 		active = FALSE
 		holder = null
 	return
 
 /obj/item/device/personal_shield/proc/take_charge(cost)
-	if(!power_supply.checked_use(cost))
+	if(!power_supply.use(cost) && cost)
 		QDEL_NULL(shield)
 		active = FALSE
 		holder = null
