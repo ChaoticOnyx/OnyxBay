@@ -118,7 +118,7 @@
 /datum/uplink_item/item/tools/personal_shield
 	name = "Personal Shield"
 	desc = "This small device creates defensive shield around the user, protecting both them and their enemies for a few shots. Rechargable."
-	item_cost = 8
+	item_cost = 6
 	path = /obj/item/device/personal_shield
 
 /datum/uplink_item/item/tools/advemag
