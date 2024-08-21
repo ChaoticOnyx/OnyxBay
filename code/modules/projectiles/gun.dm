@@ -295,8 +295,9 @@
 		fired = TRUE
 		if(ismob(firer))
 			var/mob/living/A = firer
-			if(!A.aura_check(AURA_TYPE_BULLET, projectile, target_zone))
-				break
+			if(!A.aura_check(AURA_TYPE_BULLET, projectile, target_zone, firer))
+				target = firer
+				targloc = get_turf(target)
 		process_accuracy(projectile, firer, target, i, held_twohanded)
 
 		if(pointblank)

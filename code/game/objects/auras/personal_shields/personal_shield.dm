@@ -10,12 +10,19 @@
 	new /obj/effect/sparks(user.loc)
 	to_chat(user,"<span class='notice'>You feel your body prickle as \the [src] comes online.</span>")
 
-/obj/aura/personal_shield/bullet_act(obj/item/projectile/P, def_zone)
-	user.visible_message("<span class='warning'>\The [user]'s [src.name] flashes before \the [P] can hit them!</span>")
-	new /obj/effect/shield_impact(user.loc)
-	playsound(user,'sound/effects/bamf.ogg',40,1)
-	new /obj/effect/sparks(user.loc)
-	return AURA_FALSE|AURA_CANCEL
+/obj/aura/personal_shield/bullet_act(obj/item/projectile/P, def_zone, mob/A)
+	if(user != A)
+		user.visible_message("<span class='warning'>\The [user]'s [src.name] flashes before \the [P] can hit them!</span>")
+		new /obj/effect/shield_impact(user.loc)
+		playsound(user,'sound/effects/bamf.ogg',40,1)
+		new /obj/effect/sparks(user.loc)
+		return AURA_FALSE|AURA_CANCEL
+	else
+		user.visible_message("<span class='warning'>\The [user]'s [src.name] flashes reflecting \the [P] back at them!</span>")
+		new /obj/effect/shield_impact(user.loc)
+		playsound(user,'sound/effects/fighting/energyblock.ogg',40,1)
+		new /obj/effect/sparks(user.loc)
+		return AURA_FALSE|AURA_CANCEL
 
 /obj/aura/personal_shield/hitby(atom/movable/M, speed, nomsg)
 	new /obj/effect/shield_impact(user.loc)
