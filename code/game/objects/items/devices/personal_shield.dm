@@ -17,8 +17,14 @@
 	. = ..()
 	power_supply = new /obj/item/cell/device/variable(src, max_shots*charge_cost)
 
+/obj/item/device/personal_shield/is_active(mob/living/user)
+	var/act = FALSE
+	for(var//obj/item/device/personal_shield/a in user.contents)
+		if(a.active)
+			act = TRUE
+
 /obj/item/device/personal_shield/attack_self(mob/living/user)
-	if(power_supply.charge && !active)
+	if(power_supply.charge && !is_active(user))
 		active = TRUE
 		shield = new(user,src)
 		holder = user
