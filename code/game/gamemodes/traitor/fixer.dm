@@ -25,8 +25,15 @@
 		set_next_think(world.time + time_to_next_contract)
 
 /datum/contract_fixer/think()
-	create_random_contract(1)
-	set_next_think(world.time + time_to_next_contract)
+	if(!contract_list_overfilled())
+		create_random_contract(1)
+		set_next_think(world.time + time_to_next_contract)
+
+/datum/contract_fixer/proc/contract_list_overfilled()
+	if(GLOB.all_contracts.len > (6 + round(SSticker.minds.len / 5)))
+		return TRUE
+	else
+		return FALSE
 
 /datum/contract_fixer/proc/create_random_contract(count = 1)
 	while(count--)
