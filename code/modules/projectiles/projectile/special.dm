@@ -176,7 +176,7 @@
 	muzzle_type = /obj/effect/projectile/muzzle/bullet
 
 /obj/item/projectile/energy/laser
-	name = "laser bolt"
+	name = "energy blast"
 	icon_state = "ibeam"
 	damage = 30
 	agony = 10
@@ -193,7 +193,7 @@
 	projectile_brightness_color = COLOR_RED_LIGHT
 
 /obj/item/projectile/energy/laser/small // Pistol level
-	name = "small laser bolt"
+	name = "small energy blast"
 	icon_state = "laser_small"
 	damage = 27.5
 	armor_penetration = 0
@@ -213,7 +213,7 @@
 	armor_penetration = 10
 
 /obj/item/projectile/energy/laser/greater // Advanced laser rifle or something
-	name = "large laser bolt"
+	name = "large energy blast"
 	icon_state = "laser_greater"
 	damage = 55
 	agony = 15
@@ -222,7 +222,7 @@
 	projectile_outer_range = 1.75
 
 /obj/item/projectile/energy/laser/heavy // Cannon level
-	name = "heavy laser bolt"
+	name = "heavy energy blast"
 	icon_state = "laser_heavy"
 	damage = 70
 	agony = 20

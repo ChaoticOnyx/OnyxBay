@@ -192,6 +192,17 @@
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg' // Gauss .38 should sound like a badass
 	poisedamage = 12.5
 
+// Damage-wise these are something between 10mm and revolvers
+// Lore-wise, "bullet" version of accelerated particles launched by the accelerator-type weapons
+/obj/item/projectile/bullet/charge
+	name = "bullet" // Not "accelerated chunk of particles" or something like that, since it's too small to notice that it's not a regular bullet
+	icon_state = "blaster"
+	embed = FALSE // Unstable particles just disappear
+	can_ricochet = FALSE // Too unstable to survive ricocheting
+	damage = 35.0
+	armor_penetration = 20
+	poisedamage = 8.0
+
 
 /* shotgun projectiles */
 

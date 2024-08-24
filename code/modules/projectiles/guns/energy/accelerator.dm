@@ -5,7 +5,7 @@
 	item_state = "phazer"
 	improper_held_icon = TRUE
 	wielded_item_state = "phazer-wielded"
-	icon_rounder = 20
+	icon_rounder = 25
 	screen_shake = 1
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_HUGE
