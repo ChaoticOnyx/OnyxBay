@@ -1,10 +1,10 @@
 
+#define BARREL_TIMER 5
 /obj/item/gun/charge
 	name = "charge carbine"
 	desc = "C-13 Charge Carbine, NanoTrasen's flagship all-purpose weapon. Even though it's rather cheap and somewhat unwieldy, it can use a wide range of energy-based ammunition."
 	icon_state = "charge_rifle-preview"
 	item_state = "erifle"
-	modifystate = "charge_rifle"
 	improper_held_icon = TRUE
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
@@ -33,6 +33,8 @@
 	var/mag_eject_sound = 'sound/weapons/empty.ogg'
 	var/charge_cost = 20
 	var/modifystate = "charge_rifle"
+	var/barrel_overlay = ""
+	var/cell_cooldown = 0
 
 	var/obj/item/cell/ammo/charge/power_supply
 	var/projectile_type = /obj/item/projectile/energy/electrode/stunsphere
@@ -43,14 +45,14 @@
 	. = ..()
 	if(cell_type)
 		power_supply = new cell_type(src)
-	update_mode()
+	update_cell(FALSE)
 
 /obj/item/gun/charge/Destroy()
 	QDEL_NULL(power_supply)
 	return ..()
 
 /obj/item/gun/charge/attackby(obj/item/A, mob/user)
-	if(istype(A, obj/item/cell/ammo/charge))
+	if(istype(A, /obj/item/cell/ammo/charge))
 		load_cell(A, user)
 		return
 	return ..()
@@ -95,9 +97,77 @@
 	return BB
 
 
+/obj/item/gun/charge/on_update_icon()
+	..()
+	ClearOverlays()
+	if(!power_supply)
+		icon_state = "[modifystate]-empty"
+		return
+
+	icon_state = modifystate
+
+	if(round(power_supply.charge / charge_cost) == 0)
+		AddOverlays("[modifystate]-noammo")
+	else if(burst == 1)
+		AddOverlays("[modifystate]-semiauto")
+	else
+		AddOverlays("[modifystate]-burst")
+
+	var/ratio = (power_supply.charge >= charge_cost) ? max(round(CELL_PERCENT(power_supply), 25), 25) : 0
+	AddOverlays("[modifystate]-[power_supply.barrel_overlay][ratio]")
+
+/obj/item/gun/charge/proc/update_barrel_overlay(opening)
+	if(opening)
+		CutOverlays(barrel_overlay, ATOM_ICON_CACHE_PROTECTED)
+		CutOverlays("[modifystate]_closing", ATOM_ICON_CACHE_PROTECTED)
+
+		barrel_overlay = "[modifystate]-[power_supply.barrel_overlay]"
+		AddOverlays(barrel_overlay, ATOM_ICON_CACHE_PROTECTED)
+		AddOverlays("[modifystate]_opening", ATOM_ICON_CACHE_PROTECTED)
+		ImmediateOverlayUpdate()
+		spawn(BARREL_TIMER)
+			CutOverlays("[modifystate]_opening", ATOM_ICON_CACHE_PROTECTED)
+			ImmediateOverlayUpdate()
+	else
+		CutOverlays("[modifystate]_opening", ATOM_ICON_CACHE_PROTECTED)
+		AddOverlays("[modifystate]_closing", ATOM_ICON_CACHE_PROTECTED)
+		ImmediateOverlayUpdate()
+		spawn(BARREL_TIMER)
+			CutOverlays("[modifystate]_closing", ATOM_ICON_CACHE_PROTECTED)
+			AddOverlays("[modifystate]_closed", ATOM_ICON_CACHE_PROTECTED)
+			ImmediateOverlayUpdate()
+
+
+/obj/item/gun/charge/proc/update_cell(should_update_icons = TRUE)
+	if(!power_supply)
+		if(should_update_icons)
+			update_icon()
+			update_barrel_overlay(FALSE)
+		return
+
+	var/_sel_mode = sel_mode // So we don't have to switch between semiauto and bursts every time we reload
+	set_firemodes(power_supply.firemodes)
+	sel_mode= _sel_mode
+	set_firemode()
+
+	update_icon()
+	update_barrel_overlay(TRUE)
+	return
+
+/obj/item/gun/charge/proc/check_load_cooldown(mob/user)
+	if(istype(user))
+		to_chat(user, SPAN("notice", "\The [src] is still reassembling!"))
+	return (world.time >= cell_cooldown)
+
+/obj/item/gun/charge/proc/set_load_cooldown()
+	cell_cooldown = world.time + BARREL_TIMER
+
 /obj/item/gun/charge/proc/load_cell(obj/item/cell/ammo/charge/A, atom/movable/loader)
 	if(power_supply)
 		to_chat(loader, SPAN("warning", "\The [src] already has a magazine cell loaded."))
+		return
+
+	if(!check_load_cooldown(loader))
 		return
 
 	if(ismob(loader))
@@ -112,11 +182,17 @@
 		SPAN("notice", "You insert \the [A] into \the [src].")
 		)
 
+	set_load_cooldown()
 	playsound(loc, mag_insert_sound, rand(45, 60), FALSE)
-	update_mode()
+
+	update_cell()
+	return
 
 /obj/item/gun/charge/proc/unload_cell(atom/movable/unloader, allow_dump = TRUE, dump_loc = null)
 	if(!power_supply)
+		return
+
+	if(!check_load_cooldown(unloader))
 		return
 
 	if(allow_dump)
@@ -135,15 +211,13 @@
 	else if(Adjacent(src, unloader))
 		power_supply.forceMove(get_turf(unloader))
 
+	set_load_cooldown()
 	playsound(src.loc, mag_eject_sound, 50, 1)
 	power_supply.update_icon()
 	power_supply = null
-	update_mode()
 
-/obj/item/gun/charge/proc/update_mode(update_icons = TRUE)
-	ClearOverlays()
-	if(!power_supply)
-		icon_state = "[modifystate]-empty"
+	update_cell()
+	return
 
 
 /obj/item/cell/ammo/charge
@@ -154,11 +228,10 @@
 	icon_state = "charge"
 	maxcharge = 160
 
-	var/modifystate = ""
-	var/projectile_type
+	var/barrel_overlay = ""
 	var/firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = null, charge_cost = 20, burst = 2),
-		list(mode_name = "2-round bursts", fire_delay = 2,    charge_cost = 40, burst = 1)
+		list(mode_name = "semiauto",       fire_delay = 2, charge_cost = 20, burst = 1, projectile_type = null),
+		list(mode_name = "2-round bursts", fire_delay = 2, charge_cost = 20, burst = 2, projectile_type = null)
 	)
 
 /obj/item/cell/ammo/charge/stun
@@ -166,16 +239,22 @@
 	desc = "A power cell designed to be used as a magazine for charge-based weapons. This one turns the weapon into a non-lethal taser rifle."
 	icon_state = "charge_stun"
 
-	modifystate = "stun"
-	projectile_type = /obj/item/projectile/energy/electrode/lesser
+	barrel_overlay = "stun"
+	firemodes = list(
+		list(mode_name = "semiauto",       fire_delay = 2, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/energy/electrode/lesser),
+		list(mode_name = "2-round bursts", fire_delay = 2, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/energy/electrode/lesser)
+	)
 
 /obj/item/cell/ammo/charge/blaster
 	name = "magazine cell (blaster)"
 	desc = "A power cell designed to be used as a magazine for charge-based weapons. This one allows the weapon to shoot concentrated blasts of energy. While the blasts deal more damage than lasers, they are not as good at penetrating armor."
 	icon_state = "charge_blaster"
 
-	modifystate = "blaster"
-	projectile_type = /obj/item/projectile/energy/electrode/lesser
+	barrel_overlay = "blaster"
+	firemodes = list(
+		list(mode_name = "semiauto",       fire_delay = 2, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/energy/laser/lesser),
+		list(mode_name = "2-round bursts", fire_delay = 2, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/energy/laser/lesser)
+	)
 
 
 /obj/item/cell/ammo/charge/accelerator
@@ -183,5 +262,10 @@
 	desc = "A power cell designed to be used as a magazine for charge-based weapons. This one allows the weapon to synthesize dense chunks of unstable particles and accelerate them, effectively shooting \"temporary\" bullets."
 	icon_state = "charge_phazer"
 
-	modifystate = "phazer"
-	projectile_type = /obj/item/projectile/energy/electrode/lesser
+	barrel_overlay = "phazer"
+	firemodes = list(
+		list(mode_name = "semiauto",       fire_delay = 2, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/bullet/charge),
+		list(mode_name = "2-round bursts", fire_delay = 2, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/bullet/charge)
+	)
+
+#undef BARREL_TIMER
