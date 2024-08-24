@@ -1,8 +1,9 @@
 
 #define BARREL_TIMER 5
+
 /obj/item/gun/charge
 	name = "charge carbine"
-	desc = "C-13 Charge Carbine, NanoTrasen's flagship all-purpose weapon. Even though it's rather cheap and somewhat unwieldy, it can use a wide range of energy-based ammunition."
+	desc = "C-13 Charge Carbine, NanoTrasen's flagship all-purpose weapon. Even though it's rather cheap and somewhat unwieldy, it can use a wide range of energy-based ammunition because of its internal miniature autolathe that effectively reassembles the gun on the run."
 	icon_state = "charge_rifle-preview"
 	item_state = "erifle"
 	improper_held_icon = TRUE
@@ -29,8 +30,8 @@
 		list(mode_name = "2-round bursts", fire_delay = 2,    charge_cost = 40, burst = 2)
 	)
 
-	var/mag_insert_sound = SFX_MAGAZINE_INSERT
-	var/mag_eject_sound = 'sound/weapons/empty.ogg'
+	var/mag_insert_sound = 'sound/effects/weapons/gun/assaultrifle_magin.ogg'
+	var/mag_eject_sound = 'sound/effects/weapons/gun/assaultrifle_magout.ogg'
 	var/charge_cost = 20
 	var/modifystate = "charge_rifle"
 	var/barrel_overlay = ""
@@ -73,7 +74,7 @@
 	. = ..()
 	if(.)
 		update_icon()
-		playsound(src, 'sound/effects/weapons/energy/toggle_mode1.ogg', rand(50, 75), FALSE)
+		playsound(src, 'sound/effects/weapons/gun/selector.ogg', rand(50, 75), FALSE)
 
 /obj/item/gun/charge/emp_act(severity)
 	..()
@@ -96,6 +97,8 @@
 		BB.set_light(BB.projectile_max_bright, BB.projectile_inner_range, BB.projectile_outer_range, BB.projectile_falloff_curve, BB.projectile_brightness_color)
 	return BB
 
+/obj/item/gun/charge/play_fire_sound(atom/movable/firer, obj/item/projectile/P)
+	playsound(loc, power_supply.fire_sound, rand(85, 95), extrarange = 10, falloff = 1) // it should be LOUD // TODO: Normalize all fire sound files so every volume is closely same
 
 /obj/item/gun/charge/on_update_icon()
 	..()
@@ -183,6 +186,7 @@
 		)
 
 	set_load_cooldown()
+	playsound(loc, 'sound/effects/weapons/energy/unfold2.ogg', 75, FALSE)
 	playsound(loc, mag_insert_sound, rand(45, 60), FALSE)
 
 	update_cell()
@@ -228,10 +232,11 @@
 	icon_state = "charge"
 	maxcharge = 160
 
+	var/fire_sound
 	var/barrel_overlay = ""
 	var/firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = 2, charge_cost = 20, burst = 1, projectile_type = null),
-		list(mode_name = "2-round bursts", fire_delay = 2, charge_cost = 20, burst = 2, projectile_type = null)
+		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 20, burst = 1, projectile_type = null),
+		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 20, burst = 2, projectile_type = null)
 	)
 
 /obj/item/cell/ammo/charge/stun
@@ -239,10 +244,11 @@
 	desc = "A power cell designed to be used as a magazine for charge-based weapons. This one turns the weapon into a non-lethal taser rifle."
 	icon_state = "charge_stun"
 
+	fire_sound = 'sound/effects/weapons/energy/Taser.ogg'
 	barrel_overlay = "stun"
 	firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = 2, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/energy/electrode/lesser),
-		list(mode_name = "2-round bursts", fire_delay = 2, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/energy/electrode/lesser)
+		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/energy/electrode/lesser),
+		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/energy/electrode/lesser)
 	)
 
 /obj/item/cell/ammo/charge/blaster
@@ -250,10 +256,11 @@
 	desc = "A power cell designed to be used as a magazine for charge-based weapons. This one allows the weapon to shoot concentrated blasts of energy. While the blasts deal more damage than lasers, they are not as good at penetrating armor."
 	icon_state = "charge_blaster"
 
+	fire_sound = 'sound/effects/weapons/energy/fire14.ogg'
 	barrel_overlay = "blaster"
 	firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = 2, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/energy/laser/lesser),
-		list(mode_name = "2-round bursts", fire_delay = 2, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/energy/laser/lesser)
+		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/energy/laser/lesser),
+		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/energy/laser/lesser)
 	)
 
 
@@ -262,10 +269,11 @@
 	desc = "A power cell designed to be used as a magazine for charge-based weapons. This one allows the weapon to synthesize dense chunks of unstable particles and accelerate them, effectively shooting \"temporary\" bullets."
 	icon_state = "charge_phazer"
 
+	fire_sound = 'sound/effects/weapons/gun/gunshot3.ogg'
 	barrel_overlay = "phazer"
 	firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = 2, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/bullet/charge),
-		list(mode_name = "2-round bursts", fire_delay = 2, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/bullet/charge)
+		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/bullet/charge),
+		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/bullet/charge)
 	)
 
 #undef BARREL_TIMER
