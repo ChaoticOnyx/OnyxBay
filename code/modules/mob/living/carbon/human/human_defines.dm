@@ -124,4 +124,6 @@
 	var/full_pain = 0 // Cheaper to actually store this than iterate over all the organs for every single check
 	var/full_pain_lasttick = 0
 
+	var/push_ups = FALSE
+
 	var/debug = 0

@@ -231,3 +231,96 @@
 	set name = "Handshake"
 	set category = "Emotes"
 	target_emote("handshake", max_range = 1)
+
+/mob/living/carbon/human/proc/push_up_emote()
+	set name = "Push-up"
+	set category = "Emotes"
+	emote("push_up", intentional = TRUE)
+
+/datum/emote/push_up
+	key = "push_up"
+
+	message_type = VISIBLE_MESSAGE
+
+	cooldown = 2 SECONDS
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/living/carbon/human/proc/push_up_emote
+
+/datum/emote/push_up/can_emote(mob/living/carbon/human/user, intentional)
+	if(user.push_ups)
+		return FALSE
+	return ..(user, intentional)
+
+/datum/emote/push_up/do_emote(mob/user, emote_key, intentional, target, additional_params)
+	LAZYINITLIST(user.next_emote_use)
+	set_cooldown(user.next_emote_use, cooldown, intentional)
+	user.visible_message("<i><b>[user]</b> drops to the floor and starts doing push-ups.</i>",
+						"<i>You drop to the floor and start doing push-ups.</i>")
+	log_emote("[key_name(user)] : push ups")
+	INVOKE_ASYNC(src, nameof(.proc/push_up), user)
+
+/datum/emote/push_up/proc/push_up(mob/living/carbon/human/user)
+	var/datum/push_up/P = new(user)
+
+	user.dir = 4
+	user.resting = TRUE
+	user.push_ups = TRUE
+	user.update_transform()
+
+	sleep(20)
+	animate(user, time = 10, pixel_y = 5)
+	sleep(10)
+
+	var/oldpixely = user.pixel_y
+	while(!P.interrupted && user.resting && !user.buckled && !user.stat)
+		var/mult = P.get_mult()
+		if(!P.down)
+			animate(user, time = 10 * mult, pixel_y = oldpixely - 10)
+		else
+			animate(user, time = 10 * mult, pixel_y = oldpixely)
+			P.times += 1
+			if(P.times % 5 == 0)
+				user.visible_message("<i><b>[user]</b> does \his <b>[P.times]th</b> push-up in a row!</i>",
+										"<i>You do your <b>[P.times]th</b> push-up in a row!</i>", checkghosts = FALSE)
+			user.remove_nutrition(1)
+
+		P.down = !P.down
+		sleep(12 * mult)
+
+	user.pixel_y = 0
+	user.push_ups = FALSE
+
+/datum/push_up
+	var/mob/living/carbon/human/user = null
+	var/times = 0
+	var/down = FALSE
+	var/interrupted = FALSE
+
+/datum/push_up/New(mob/living/carbon/human/user)
+	src.user = user
+
+	register_signal(user, SIGNAL_MOVED, nameof(.proc/interrupt))
+	register_signal(user, SIGNAL_DIR_SET, nameof(.proc/interrupt))
+
+/datum/push_up/proc/interrupt()
+	interrupted = TRUE
+
+/datum/push_up/proc/get_mult()
+	. = 1
+
+	if(user.gender == FEMALE)
+		. *= 1.1
+
+	if(user.nutrition > STOMACH_FULLNESS_SUPER_HIGH)
+		. *= 1 + (user.nutrition - STOMACH_FULLNESS_SUPER_HIGH) / 400
+
+	else if(user.nutrition <= STOMACH_FULLNESS_SUPER_LOW)
+		. *= 1 + (STOMACH_FULLNESS_SUPER_LOW - user.nutrition) / 100
+
+	if(user.reagents.has_reagent(/datum/reagent/hyperzine))
+		. *= 0.2
+
+	else if(user.reagents.has_reagent(/datum/reagent/adrenaline))
+		. *= 0.8
