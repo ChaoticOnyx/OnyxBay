@@ -177,7 +177,8 @@
 		/obj/item/device/radio,
 		/obj/item/material/knife,
 		/obj/item/material/butterfly,
-		/obj/item/material/hatchet/tacknife
+		/obj/item/material/hatchet/tacknife,
+		/obj/item/cell/ammo/charge
 		)
 
 /obj/item/storage/belt/soulstone
@@ -311,7 +312,8 @@
 		/obj/item/stack/telecrystal,
 		/obj/item/material/knife,
 		/obj/item/material/butterfly,
-		/obj/item/material/hatchet/tacknife
+		/obj/item/material/hatchet/tacknife,
+		/obj/item/cell/ammo/charge
 		)
 
 /obj/item/storage/belt/janitor
