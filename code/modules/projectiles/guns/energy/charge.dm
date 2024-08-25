@@ -4,9 +4,11 @@
 /obj/item/gun/charge
 	name = "charge carbine"
 	desc = "C-13 Charge Carbine, NanoTrasen's flagship all-purpose weapon. Even though it's rather cheap and somewhat unwieldy, it can use a wide range of energy-based ammunition because of its internal miniature autolathe that effectively reassembles the gun on the run."
+
 	icon_state = "charge_rifle-preview"
-	item_state = "erifle"
-	improper_held_icon = TRUE
+	item_state = "charge_rifle"
+	wielded_item_state = "charge_rifle-wielded"
+
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 
@@ -150,7 +152,7 @@
 
 	var/_sel_mode = sel_mode // So we don't have to switch between semiauto and bursts every time we reload
 	set_firemodes(power_supply.firemodes)
-	sel_mode= _sel_mode
+	sel_mode = _sel_mode
 	set_firemode()
 
 	update_icon()
@@ -231,6 +233,8 @@
 	item_state = "cell"
 	icon_state = "charge"
 	maxcharge = 160
+	overlay_key = "charge_over"
+	w_class = ITEM_SIZE_SMALL
 
 	var/fire_sound
 	var/barrel_overlay = ""
@@ -238,6 +242,14 @@
 		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 20, burst = 1, projectile_type = null),
 		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 20, burst = 2, projectile_type = null)
 	)
+
+/obj/item/cell/ammo/charge/on_update_icon()
+	var/ratio = (charge >= 25) ? max(round(CELL_PERCENT(src), 25), 25) : 0
+	if(ratio != overlay_state)
+		overlay_state = ratio
+		ClearOverlays()
+		if(overlay_state)
+			AddOverlays(image('icons/obj/power.dmi', "[overlay_key][overlay_state]"))
 
 /obj/item/cell/ammo/charge/stun
 	name = "magazine cell (stun)"

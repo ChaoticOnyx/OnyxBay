@@ -250,7 +250,7 @@
 	embed = FALSE // Unstable particles just disappear
 	can_ricochet = FALSE // Too unstable to survive ricocheting
 	damage = 22.5
-	armor_penetration = 15
+	armor_penetration = 5
 	pellets = 5
 	range_step = 3
 	spread_step = 5

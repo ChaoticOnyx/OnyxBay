@@ -49,6 +49,9 @@
 		if(charging)
 			to_chat(user, "<span class='warning'>There is already a cell in the charger.</span>")
 			return
+		else if(istype(W, /obj/item/cell/ammo))
+			to_chat(user, SPAN("warning", "You can't seem to find a way to charge \the [W] using \the [src]."))
+			return
 		else
 			var/area/a = get_area(loc)
 			if(a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
