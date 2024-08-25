@@ -1,20 +1,21 @@
 
 /obj/item/clothing/suit/armor
 	allowed = list(
-		/obj/item/gun/energy,
-		/obj/item/device/radio,
-		/obj/item/device/flashlight,
-		/obj/item/reagent_containers/spray/pepper,
-		/obj/item/gun/projectile,
 		/obj/item/ammo_magazine,
 		/obj/item/ammo_casing,
-		/obj/item/melee/baton,
-		/obj/item/handcuffs,
-		/obj/item/gun/magnetic,
-		/obj/item/grenade,
-		/obj/item/gun/launcher/grenade,
 		/obj/item/clothing/head/helmet,
-		/obj/item/clothing/mask/gas
+		/obj/item/clothing/mask/gas,
+		/obj/item/device/radio,
+		/obj/item/device/flashlight,
+		/obj/item/grenade,
+		/obj/item/gun/energy,
+		/obj/item/gun/projectile,
+		/obj/item/gun/charge,
+		/obj/item/gun/magnetic,
+		/obj/item/gun/launcher/grenade,
+		/obj/item/handcuffs,
+		/obj/item/melee/baton,
+		/obj/item/reagent_containers/spray/pepper
 		)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	item_flags = ITEM_FLAG_THICKMATERIAL
