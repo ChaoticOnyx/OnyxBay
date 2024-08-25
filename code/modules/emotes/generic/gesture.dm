@@ -307,6 +307,9 @@
 /datum/push_up/proc/interrupt()
 	interrupted = TRUE
 
+	unregister_signal(user, SIGNAL_MOVED)
+	unregister_signal(user, SIGNAL_DIR_SET)
+
 /datum/push_up/proc/get_mult()
 	. = 1
 
