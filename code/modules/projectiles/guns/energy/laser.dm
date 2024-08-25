@@ -16,13 +16,8 @@
 	fire_delay = 9
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	matter = list(MATERIAL_STEEL = 2000)
-	projectile_type = /obj/item/projectile/energy/laser/mid
+	projectile_type = /obj/item/projectile/beam/laser/mid
 	wielded_item_state = "laserrifle-wielded"
-
-	firemodes = list(
-		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/mid),
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/mid)
-	)
 
 /obj/item/gun/energy/laser/mounted
 	desc = "A modification of NanoTrasen G40E rifle, designed to be mounted on cyborgs and other battle machinery. It's designed to kill with concentrated energy blasts."
@@ -62,17 +57,12 @@
 	accuracy = 1.0
 	max_shots = 12
 	fire_delay = 5.5
-	projectile_type = /obj/item/projectile/energy/laser/small
+	projectile_type = /obj/item/projectile/beam/laser/lesser
 	wielded_item_state = null
 	force = 8.5
 	mod_weight = 0.7
 	mod_reach = 0.5
 	mod_handy = 1.0
-
-	firemodes = list(
-		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/small),
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/small)
-	)
 
 /obj/item/gun/energy/laser/practice
 	name = "practice laser rifle"
@@ -113,7 +103,7 @@
 	desc = "An older model of the basic lasergun. Nevertheless, it is still quite deadly and easy to maintain, making it a favorite amongst pirates and other outlaws."
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	w_class = ITEM_SIZE_NORMAL
-	projectile_type = /obj/item/projectile/energy/laser/lesser // Old but gold
+	projectile_type = /obj/item/projectile/beam/laser/lesser // Old but gold
 	fire_delay = 15 //old technology, and a pistol
 	force = 9.0
 	mod_weight = 0.7
@@ -131,7 +121,7 @@
 	mod_handy = 1.1
 	slot_flags = SLOT_BELT //too unusually shaped to fit in a holster
 	w_class = ITEM_SIZE_NORMAL
-	projectile_type = /obj/item/projectile/energy/laser/small
+	projectile_type = /obj/item/projectile/beam/laser/lesser
 	fire_delay = 6
 	origin_tech = null
 	max_shots = 5 //to compensate a bit for self-recharging
@@ -148,7 +138,7 @@
 	slot_flags = SLOT_BACK
 	one_hand_penalty = 6 //large and heavy
 	w_class = ITEM_SIZE_HUGE
-	projectile_type = /obj/item/projectile/energy/laser/heavy
+	projectile_type = /obj/item/projectile/beam/laser/heavy
 	charge_cost = 40
 	max_shots = 8
 	accuracy = 2
@@ -158,11 +148,6 @@
 	mod_weight = 1.25
 	mod_reach = 1.0
 	mod_handy = 1.0
-
-	firemodes = list(
-		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/heavy),
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/heavy)
-	)
 
 /obj/item/gun/energy/lasercannon/mounted
 	name = "mounted laser cannon"

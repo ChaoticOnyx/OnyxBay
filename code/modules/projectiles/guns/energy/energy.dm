@@ -46,8 +46,8 @@
 	modifystate = "smallgunstun"
 
 	firemodes = list(
-		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,   modifystate = "smallgunstun"),
-		list(mode_name = "lethal", projectile_type = /obj/item/projectile/energy/laser/small, modifystate = "smallgunkill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode, modifystate = "smallgunstun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/small, modifystate = "smallgunkill")
 		)
 
 /obj/item/gun/energy/secure/gun/small
@@ -206,8 +206,8 @@
 	combustion = FALSE
 
 	firemodes = list(
-		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,    modifystate="egunstun"),
-		list(mode_name = "lethal", projectile_type = /obj/item/projectile/energy/laser/lesser, modifystate="egunkill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,  modifystate="egunstun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/small, modifystate="egunkill")
 		)
 
 /obj/item/gun/energy/egun/elite
@@ -223,8 +223,8 @@
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 5, TECH_POWER = 3)
 
 	firemodes = list(
-		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,    modifystate="egunestun"),
-		list(mode_name = "lethal", projectile_type = /obj/item/projectile/energy/laser/lesser, modifystate="egunekill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,  modifystate="egunestun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/lesser, modifystate="egunekill")
 		)
 
 /obj/item/gun/energy/rifle
@@ -254,8 +254,7 @@
 
 	firemodes = list(
 		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode, fire_delay = null, charge_cost = 10, burst = 2),
-		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/mid,   fire_delay = 8,    charge_cost = 20, burst = 1),
-		list(mode_name = "bolt", modifystate = "eriflekill", projectile_type = /obj/item/projectile/energy/laser/mid, fire_delay = 8,    charge_cost = 20, burst = 1)
+		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/mid,   fire_delay = 8,    charge_cost = 20, burst = 1)
 	)
 
 /obj/item/gun/energy/rifle/on_update_icon()
@@ -292,7 +291,6 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 
 	firemodes = list(
-		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode,    fire_delay = null, charge_cost = 10, burst = 2),
-		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/lesser,   fire_delay = 10,   charge_cost = 20, burst = 1),
-		list(mode_name = "bolt", modifystate = "eriflekill", projectile_type = /obj/item/projectile/energy/laser/lesser, fire_delay = 10,   charge_cost = 20, burst = 1)
+		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode,  fire_delay = null, charge_cost = 10, burst = 2),
+		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/lesser, fire_delay = 10,   charge_cost = 20, burst = 1)
 	)

@@ -141,6 +141,14 @@
 	containername = "\improper Non-lethal energy weapons crate"
 	access = access_security
 
+/decl/hierarchy/supply_pack/security/charge_carbine
+	name = "Weapons - Charge carbines"
+	contains = list(/obj/item/gun/charge = 2)
+	cost = 40
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Charge carbines crate"
+	access = access_security
+
 /decl/hierarchy/supply_pack/security/egun
 	name = "Weapons - Energy sidearms"
 	contains = list(/obj/item/gun/energy/egun = 4)
@@ -358,6 +366,32 @@
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper .38 CHEM ammunition crate"
 	access = access_forensics_lockers
+
+/decl/hierarchy/supply_pack/security/charge_stun
+	name = "Ammunition - Charge Magazine (Stun)"
+	contains = list(/obj/item/cell/ammo/charge/stun = 2)
+	cost = 30
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Magazine Cells (Stun) crate"
+	access = access_security
+
+/decl/hierarchy/supply_pack/security/charge_blaster
+	name = "Ammunition - Charge Magazine (Blaster)"
+	contains = list(/obj/item/cell/ammo/charge/blaster = 2)
+	cost = 40
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Magazine Cells (Blaster) crate"
+	access = access_security
+	security_level = SUPPLY_SECURITY_ELEVATED
+
+/decl/hierarchy/supply_pack/security/charge_accelerator
+	name = "Ammunition - Charge Magazine (Accelerator)"
+	contains = list(/obj/item/cell/ammo/charge/accelerator = 2)
+	cost = 40
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Magazine Cells (Accelerator) crate"
+	access = access_security
+	security_level = SUPPLY_SECURITY_ELEVATED
 
 /decl/hierarchy/supply_pack/security/forensics //Not access-restricted so PIs can use it.
 	name = "Forensics - Auxiliary tools"
