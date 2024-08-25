@@ -57,7 +57,7 @@
 	accuracy = 1.0
 	max_shots = 12
 	fire_delay = 5.5
-	projectile_type = /obj/item/projectile/beam/laser/small
+	projectile_type = /obj/item/projectile/beam/laser/lesser
 	wielded_item_state = null
 	force = 8.5
 	mod_weight = 0.7

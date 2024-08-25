@@ -207,7 +207,7 @@
 
 	firemodes = list(
 		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,  modifystate="egunstun"),
-		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/lesser, modifystate="egunkill")
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/small, modifystate="egunkill")
 		)
 
 /obj/item/gun/energy/egun/elite

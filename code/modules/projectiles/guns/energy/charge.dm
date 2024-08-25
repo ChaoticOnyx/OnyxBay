@@ -227,7 +227,7 @@
 
 
 /obj/item/cell/ammo/charge
-	name = "magazine cell"
+	name = "charge magazine"
 	desc = "A power cell designed to be used as a magazine for charge-based weapons. This one must not be seen at all."
 	icon = 'icons/obj/ammo.dmi'
 	item_state = "cell"
@@ -252,7 +252,7 @@
 			AddOverlays(image('icons/obj/power.dmi', "[overlay_key][overlay_state]"))
 
 /obj/item/cell/ammo/charge/stun
-	name = "magazine cell (stun)"
+	name = "charge magazine (stun)"
 	desc = "A power cell designed to be used as a magazine for charge-based weapons. This one turns the weapon into a non-lethal taser rifle."
 	icon_state = "charge_stun"
 
@@ -264,7 +264,7 @@
 	)
 
 /obj/item/cell/ammo/charge/blaster
-	name = "magazine cell (blaster)"
+	name = "charge magazine (blaster)"
 	desc = "A power cell designed to be used as a magazine for charge-based weapons. This one allows the weapon to shoot concentrated blasts of energy. While the blasts deal more damage than lasers, they are not as good at penetrating armor."
 	icon_state = "charge_blaster"
 
@@ -277,7 +277,7 @@
 
 
 /obj/item/cell/ammo/charge/accelerator
-	name = "magazine cell (accelerator)"
+	name = "charge magazine (accelerator)"
 	desc = "A power cell designed to be used as a magazine for charge-based weapons. This one allows the weapon to synthesize dense chunks of unstable particles and accelerate them, effectively shooting \"temporary\" bullets."
 	icon_state = "charge_phazer"
 
