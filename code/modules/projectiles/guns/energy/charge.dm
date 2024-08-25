@@ -28,13 +28,13 @@
 	matter = list(MATERIAL_STEEL = 2500)
 
 	firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = null, charge_cost = 20, burst = 1),
-		list(mode_name = "2-round bursts", fire_delay = 2,    charge_cost = 40, burst = 2)
+		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 15, burst = 1),
+		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 15, burst = 2)
 	)
 
 	var/mag_insert_sound = 'sound/effects/weapons/gun/assaultrifle_magin.ogg'
 	var/mag_eject_sound = 'sound/effects/weapons/gun/assaultrifle_magout.ogg'
-	var/charge_cost = 20
+	var/charge_cost = 15
 	var/modifystate = "charge_rifle"
 	var/barrel_overlay = ""
 	var/cell_cooldown = 0
@@ -232,15 +232,15 @@
 	icon = 'icons/obj/ammo.dmi'
 	item_state = "cell"
 	icon_state = "charge"
-	maxcharge = 160
+	maxcharge = 120
 	overlay_key = "charge_over"
 	w_class = ITEM_SIZE_SMALL
 
 	var/fire_sound
 	var/barrel_overlay = ""
 	var/firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 20, burst = 1, projectile_type = null),
-		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 20, burst = 2, projectile_type = null)
+		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 15, burst = 1, projectile_type = null),
+		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 15, burst = 2, projectile_type = null)
 	)
 
 /obj/item/cell/ammo/charge/on_update_icon()
@@ -259,8 +259,8 @@
 	fire_sound = 'sound/effects/weapons/energy/Taser.ogg'
 	barrel_overlay = "stun"
 	firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/energy/electrode/lesser),
-		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/energy/electrode/lesser)
+		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 15, burst = 1, projectile_type = /obj/item/projectile/energy/electrode/lesser),
+		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 15, burst = 2, projectile_type = /obj/item/projectile/energy/electrode/lesser)
 	)
 
 /obj/item/cell/ammo/charge/blaster
@@ -271,8 +271,8 @@
 	fire_sound = 'sound/effects/weapons/energy/fire14.ogg'
 	barrel_overlay = "blaster"
 	firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/energy/laser/lesser),
-		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/energy/laser/lesser)
+		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 15, burst = 1, projectile_type = /obj/item/projectile/energy/laser/lesser),
+		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 15, burst = 2, projectile_type = /obj/item/projectile/energy/laser/lesser)
 	)
 
 
@@ -284,8 +284,8 @@
 	fire_sound = 'sound/effects/weapons/gun/gunshot3.ogg'
 	barrel_overlay = "phazer"
 	firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 20, burst = 1, projectile_type = /obj/item/projectile/bullet/charge),
-		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 20, burst = 2, projectile_type = /obj/item/projectile/bullet/charge)
+		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 15, burst = 1, projectile_type = /obj/item/projectile/bullet/charge),
+		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 15, burst = 2, projectile_type = /obj/item/projectile/bullet/charge)
 	)
 
 #undef BARREL_TIMER
