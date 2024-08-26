@@ -275,7 +275,7 @@
 
 	var/oldpixely = user.pixel_y
 	while(!P.interrupted && user.resting && !user.buckled && !user.stat)
-		var/mult = P.get_mult()
+		var/mult = P.get_mult() + rand(-1, 1) / 100
 		if(!P.down)
 			animate(user, time = 10 * mult, pixel_y = oldpixely - 10)
 		else
@@ -291,7 +291,7 @@
 
 	if(P.times)
 		user.visible_message("<i><b>[user]</b> stops \his exercise at <b>[P.times]</b> push-ups.</i>",
-								"<i>You stop your exercise at <b>[P.times]</b> push-ups'.</i>")
+								"<i>You stop your exercise at <b>[P.times]</b> push-ups.</i>")
 
 	user.pixel_y = 0
 	user.push_ups = FALSE
