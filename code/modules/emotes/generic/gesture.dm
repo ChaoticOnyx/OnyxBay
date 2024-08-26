@@ -320,6 +320,9 @@
 	if(user.gender == FEMALE)
 		. *= 1.1
 
+	if(user.full_pain && !user.no_pain)
+		. *= 1 + user.full_pain / 100
+
 	if(user.nutrition > STOMACH_FULLNESS_SUPER_HIGH)
 		. *= 1 + (user.nutrition - STOMACH_FULLNESS_SUPER_HIGH) / 400
 
