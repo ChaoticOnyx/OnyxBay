@@ -281,13 +281,17 @@
 		else
 			animate(user, time = 10 * mult, pixel_y = oldpixely)
 			P.times += 1
-			if(P.times % 5 == 0)
-				user.visible_message("<i><b>[user]</b> does \his <b>[P.times]th</b> push-up in a row!</i>",
-										"<i>You do your <b>[P.times]th</b> push-up in a row!</i>", checkghosts = FALSE)
+			if(P.times % 10 == 0)
+				user.visible_message("<i><b>[user]</b> has done \his <b>[P.times]</b> push-up!</i>",
+										"<i>You've done your <b>[P.times]</b> push-up!</i>", checkghosts = FALSE)
 			user.remove_nutrition(1)
 
 		P.down = !P.down
 		sleep(12 * mult)
+
+	if(P.times)
+		user.visible_message("<i><b>[user]</b> stops \his exercise at <b>[P.times]</b> push-ups.</i>",
+								"<i>You stop your exercise at <b>[P.times]</b> push-ups'.</i>")
 
 	user.pixel_y = 0
 	user.push_ups = FALSE
