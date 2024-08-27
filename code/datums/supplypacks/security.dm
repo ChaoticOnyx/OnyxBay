@@ -141,10 +141,18 @@
 	containername = "\improper Non-lethal energy weapons crate"
 	access = access_security
 
+/decl/hierarchy/supply_pack/security/charge_pistol
+	name = "Weapons - Charge pistols"
+	contains = list(/obj/item/gun/charge/pistol = 2)
+	cost = 40
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Charge pistols crate"
+	access = access_security
+
 /decl/hierarchy/supply_pack/security/charge_carbine
 	name = "Weapons - Charge carbines"
 	contains = list(/obj/item/gun/charge = 2)
-	cost = 40
+	cost = 50
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Charge carbines crate"
 	access = access_security
@@ -161,7 +169,7 @@
 /decl/hierarchy/supply_pack/security/laser
 	name = "Weapons - Laser carbines"
 	contains = list(/obj/item/gun/energy/laser = 2)
-	cost = 40
+	cost = 50
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Laser carbines crate"
 	access = access_armory
@@ -368,28 +376,36 @@
 	access = access_forensics_lockers
 
 /decl/hierarchy/supply_pack/security/charge_stun
-	name = "Ammunition - Charge Magazine (Stun)"
+	name = "Ammunition - Charge Magazines (Stun)"
 	contains = list(/obj/item/cell/ammo/charge/stun = 2)
 	cost = 30
 	containertype = /obj/structure/closet/crate/secure/weapon
-	containername = "\improper Magazine Cells (Stun) crate"
+	containername = "\improper stun charge magazines crate"
+	access = access_security
+
+/decl/hierarchy/supply_pack/security/charge_kinetic
+	name = "Ammunition - Charge Magazines (Kinetic)"
+	contains = list(/obj/item/cell/ammo/charge/kinetic = 2)
+	cost = 35
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper kinetic charge magazines crate"
 	access = access_security
 
 /decl/hierarchy/supply_pack/security/charge_blaster
-	name = "Ammunition - Charge Magazine (Blaster)"
+	name = "Ammunition - Charge Magazines (Blaster)"
 	contains = list(/obj/item/cell/ammo/charge/blaster = 2)
 	cost = 40
 	containertype = /obj/structure/closet/crate/secure/weapon
-	containername = "\improper Magazine Cells (Blaster) crate"
+	containername = "\improper blaster charge magazines crate"
 	access = access_security
 	security_level = SUPPLY_SECURITY_ELEVATED
 
 /decl/hierarchy/supply_pack/security/charge_accelerator
-	name = "Ammunition - Charge Magazine (Accelerator)"
+	name = "Ammunition - Charge Magazines (Accelerator)"
 	contains = list(/obj/item/cell/ammo/charge/accelerator = 2)
 	cost = 40
 	containertype = /obj/structure/closet/crate/secure/weapon
-	containername = "\improper Magazine Cells (Accelerator) crate"
+	containername = "\improper accelerator charge magazines crate"
 	access = access_security
 	security_level = SUPPLY_SECURITY_ELEVATED
 
