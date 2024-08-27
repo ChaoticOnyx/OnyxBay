@@ -293,8 +293,7 @@
 	if(ratio != overlay_state)
 		overlay_state = ratio
 		ClearOverlays()
-		if(overlay_state)
-			AddOverlays(image('icons/obj/power.dmi', "[overlay_key][overlay_state]"))
+		AddOverlays("[overlay_key][overlay_state]")
 
 /obj/item/cell/ammo/charge/stun
 	name = "charge magazine (stun)"
