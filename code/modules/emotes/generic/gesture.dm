@@ -280,7 +280,6 @@
 		if(!P.down)
 			animate(user, time = 10 * mult, pixel_y = oldpixely - 10)
 		else
-			animate(user, time = 10 * mult, pixel_y = oldpixely)
 			P.times += 1
 
 			if(mult >= 2 && prob(mult * 10))
@@ -290,6 +289,8 @@
 									FONT_LARGE("<i><b>You clumsily fall in an attempt to do your [P.times] push-up.</b></i>"))
 				playsound(user.loc, 'sound/effects/bangtaper.ogg', 50, 1, -1)
 				return
+
+			animate(user, time = 10 * mult, pixel_y = oldpixely)
 
 			if(P.times % 10 == 0)
 				user.visible_message("<i><b>[user]</b> has done \his <b>[P.times]</b> push-up!</i>",
