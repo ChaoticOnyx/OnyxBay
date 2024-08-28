@@ -73,18 +73,18 @@ meteor_act
 					victim.take_internal_damage(penetrating_damage / victims.len)
 
 	// Embed or sever artery, only happens if the projectile's successfully bypassed armor
-	if(!blocked && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(PROJECTILE_EMBED_CHANCE) && P.can_embed())
+	if(!blocked && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(PROJECTILE_EMBED_CHANCE))
 		// Lower cal. bullets tend to embed, while higher cal. bullets are more likely to make things bloody
 		var/embed_odds = P.damage * 1.3
 
 		if(prob(embed_odds))
+			organ.sever_artery()
+		else if(P.can_embed())
 			var/obj/item/material/shard/shrapnel/SP = new()
 			SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
 			SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
 			SP.forceMove(organ)
 			organ.embed(SP)
-		else
-			organ.sever_artery()
 
 	// Poise damage, the last actual harmful thing to happen
 	projectile_affect_poise(P, P.poisedamage * blocked_mult(blocked), def_zone)

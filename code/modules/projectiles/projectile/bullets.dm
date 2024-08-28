@@ -201,7 +201,17 @@
 	can_ricochet = FALSE // Too unstable to survive ricocheting
 	damage = 35.0
 	armor_penetration = 20
-	poisedamage = 8.0
+	poisedamage = 6.0
+
+/obj/item/projectile/bullet/charge/kinetic
+	name = "kinetic bullet"
+	icon_state = "kinetic"
+	embed = FALSE
+	can_ricochet = FALSE
+	damage = 22.5
+	agony = 15
+	penetration_modifier = 0.35
+	poisedamage = 10.0
 
 
 /* shotgun projectiles */
