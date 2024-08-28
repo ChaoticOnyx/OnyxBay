@@ -37,7 +37,7 @@
 	ammo_type = /obj/item/ammo_casing/c38/rubber
 
 /obj/item/ammo_magazine/c38/emp
-	name = "speed loader (.38 EMP)"
+	name = "speed loader (.38 haywire)"
 	icon_state = "E38"
 	ammo_type = /obj/item/ammo_casing/c38/emp
 
