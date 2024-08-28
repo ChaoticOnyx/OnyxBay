@@ -1247,6 +1247,12 @@ var/list/multi_point_spawns
 	id = "Veridical Chronicles of NanoTrasen"
 	item_path = /obj/item/book/rev
 
+/obj/random_multi/single_item/autolathe
+	name = "multi point - Circuit board (autolathe)"
+	icon_state = "landmark_autolathe"
+	id = "Circuit board (autolathe)"
+	item_path = /obj/item/circuitboard/autolathe
+
 // Broken items, or stuff that could be picked up.
 /obj/random/junk
 	name = "random junk"
