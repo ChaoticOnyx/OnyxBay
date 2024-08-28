@@ -287,7 +287,7 @@
 				user.pixel_y = 0
 				user.push_ups = FALSE
 				user.visible_message(FONT_LARGE("<i><b>[user] clumsily falls in an attempt to do \his [P.times] push-up.</b></i>"),
-									FONT_LARGE("<i><b>You clumsily fallin an attempt to do your [P.times] push-up.</b></i>"))
+									FONT_LARGE("<i><b>You clumsily fall in an attempt to do your [P.times] push-up.</b></i>"))
 				playsound(user.loc, 'sound/effects/bangtaper.ogg', 50, 1, -1)
 				return
 
