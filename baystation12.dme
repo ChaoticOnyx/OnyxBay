@@ -2017,6 +2017,7 @@
 #include "code\modules\lighting\~lighting_undefs.dm"
 #include "code\modules\lobby_music\_licenses.dm"
 #include "code\modules\lobby_music\_lobby_music.dm"
+#include "code\modules\lobby_music\asshole_in_space.dm"
 #include "code\modules\lobby_music\crocketts_theme.dm"
 #include "code\modules\lobby_music\dilbert.dm"
 #include "code\modules\lobby_music\endless_space.dm"
