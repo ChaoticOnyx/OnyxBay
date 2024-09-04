@@ -1,5 +1,16 @@
 [
   {
+    "author": "igorsaux",
+    "date": "2024-09-05T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Исправлен спавн кастомных предметов.",
+        "pr": 12775
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2024-09-02T00:00:00+03:00",
     "changes": [
