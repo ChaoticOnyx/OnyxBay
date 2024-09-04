@@ -33,11 +33,9 @@
 			if(isnull(item_path))
 				util_crash_with("The given item path, [item_info["path"]], is invalid and does not exist.")
 
+			var/character_name = item_info["character_name"]
 			var/patreon_type = item_info["patreon_type"]
-			var/req_job = item_info["req_job"]
-			var/flags = item_info["flags"]
+			var/list/req_job = item_info["req_job"]
+			var/list/flags = item_info["flags"]
 
-			if(!isnull(req_job))
-				req_job = text2path(req_job)
-
-			items[ckey] += new /datum/custom_item(item_path, patreon_type, req_job, flags)
+			items[ckey] += new /datum/custom_item(character_name, item_path, patreon_type, req_job, flags)

@@ -3,12 +3,14 @@
 // spawns, the list is checked and all appropriate datums are spawned.
 
 /datum/custom_item
+	var/character_name
 	var/item_path
 	var/patreon_type
 	var/list/req_job
 	var/list/flags = list()
 
-/datum/custom_item/New(item_path, patreon_type, req_job, flags)
+/datum/custom_item/New(character_name, item_path, patreon_type, req_job, flags)
+	src.character_name = character_name
 	src.item_path = item_path
 	src.patreon_type = patreon_type
 	src.req_job = req_job
@@ -81,6 +83,10 @@
 		return
 
 	for(var/datum/custom_item/citem in key_list)
+		// Check for requisite character name.
+		if(lowertext(citem.character_name) != lowertext(M.real_name))
+			continue
+
 		// Check for required job title.
 		if(length(citem.req_job))
 			var/has_title
