@@ -278,6 +278,7 @@
 	icon_state = "charge"
 	maxcharge = 160
 	overlay_key = "charge_over"
+	overlay_state = -1
 	w_class = ITEM_SIZE_SMALL
 
 	var/tier = 0
