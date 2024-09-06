@@ -518,8 +518,7 @@ meteor_act
 
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		if(A.body_build.name == "Slim" || A.body_build.name == "Slim Alt")
-			effective_force *= 0.8
+		effective_force *= A.body_build.melee_modifier
 
 	effective_force *= round((100-blocked)/100, 0.01)
 
