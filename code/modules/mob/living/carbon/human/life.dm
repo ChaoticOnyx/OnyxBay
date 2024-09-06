@@ -38,10 +38,6 @@
 	var/pressure_alert = 0
 	var/temperature_alert = 0
 	var/heartbeat = 0
-	var/poise_pool = HUMAN_DEFAULT_POISE
-	var/poise = HUMAN_DEFAULT_POISE
-	var/blocking_hand = 0 //0 for main hand, 1 for offhand
-	var/last_block = 0
 
 /mob/living/carbon/human/Initialize()
 	. = ..()
@@ -1042,11 +1038,34 @@
 	if(blocking)
 		pregen -= 2.5
 
+	if(lying)
+		pregen += 2.5
+
 	poise = between(0, poise+pregen, poise_pool)
 
 	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 
-/mob/living/carbon/human/proc/damage_poise(dmg = 1)
+/mob/living/carbon/human/proc/poise_immunity(duration = 0, restore_poise = TRUE)
+	if(restore_poise)
+		poise = poise_pool
+		poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
+
+	poise_immune_until = max(poise_immune_until, world.time + (duration * 10))
+
+/// Returns TRUE if the human is immune to poise damage
+/mob/living/carbon/human/proc/check_poise_immunity()
+	return (poise_immune_until >= world.time) || !!stat
+
+/mob/living/carbon/human/proc/damage_poise(dmg = 1, force = FALSE)
+	if(stat) // A glimmer of hope for the knocked-out
+		return
+
+	if(!force && check_poise_immunity())
+		return
+
+	if(lying)
+		dmg *= 0.5
+
 	poise -= dmg
 	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 

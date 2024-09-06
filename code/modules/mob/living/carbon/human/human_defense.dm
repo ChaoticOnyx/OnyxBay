@@ -135,6 +135,8 @@ meteor_act
 				visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))
 			Stun(reduced_tasing)
 			Weaken(reduced_tasing + 1) // Getting up after being tased is not instant, adding 1 tick of unstunned crawling
+			if(poise <= 0)
+				poise_immunity(min(reduced_tasing, 3))
 
 
 //////////////////////
@@ -396,15 +398,16 @@ meteor_act
 	if(!affecting)
 		return 0
 
+	// Poise damage part
 	var/poise_damage
 
 	visible_message(SPAN("danger", "[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] in the [affecting.name] with [I.name] by [user]!"))
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		A.damage_poise(2.0+(I.mod_weight*2 + (1-I.mod_handy)))
+		A.damage_poise(3.0 - I.mod_handy + I.mod_weight*2, TRUE)
 		//visible_message("Debug \[HIT\]: [A] used [2.0+(I.mod_weight*2 + (1-I.mod_handy))] poise ([A.poise]/[A.poise_pool])") // Debug Message
 
-	poise_damage = round((2.5+(I.mod_weight*3.0 + I.mod_reach))/1.5 + (2.5+(I.mod_weight*3.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
+	poise_damage = round(((2.5 + I.mod_weight*3 + I.mod_reach) / 1.5) + ((2.5 + I.mod_weight*3 + I.mod_reach) / 1.5 * ((100-blocked)/100)), 0.1)
 	if(headcheck(hit_zone))
 		poise_damage *= 1.15
 	damage_poise(poise_damage)
@@ -420,37 +423,38 @@ meteor_act
 	if(lying)
 		effective_force *= 1.5 // Well it's easier to beat a lying dude to death right?
 
-	if(istype(user,/mob/living/carbon/human))
+	if(!I.sharp && ishuman(user))
 		var/mob/living/carbon/human/A = user
-		if((A.body_build.name == "Slim" || A.body_build.name == "Slim Alt") && !I.sharp)
-			effective_force *= 0.75 // It's kinda hard to club people when you're two times thinner than a regular person.
+		effective_force *= A.body_build.melee_modifier
 
 	effective_force *= round((100-blocked)/100, 0.1)
 
-	//Apply weapon damage
+	// Apply weapon damage
 	var/damage_flags = I.damage_flags()
 	if(prob(blocked + 25)) // successful armorblock greatly reduces the cutties, but doesn't prevent them completely
 		damage_flags &= ~(DAM_SHARP|DAM_EDGE)
 
 	//Oh you've run outta poise? I see... You're wrecked, my boy.
 	if(I.damtype == BRUTE || I.damtype == PAIN)
-		if(poise <= poise_pool*0.7)
+		if(poise <= poise_pool*0.7 && !check_poise_immunity())
 			switch(hit_zone)
 				if(BP_HEAD, BP_EYES, BP_MOUTH) //Knocking your enemy out or making them dizzy
 					if(poise <= effective_force/3*I.mod_weight)
-						if(!stat || (stat && !paralysis))
-							visible_message(SPAN("danger", "[src] [species.knockout_message]"))
-							custom_pain("Your head's definitely gonna hurt tomorrow.", 30, affecting = affecting)
+						visible_message(SPAN("danger", "[src] [species.knockout_message]"))
+						custom_pain("Your head's definitely gonna hurt tomorrow.", 30, affecting = affecting)
 						apply_effect((I.mod_weight*15), PARALYZE, (blocked/2))
-					else
-						if(prob(effective_force))
-							src.visible_message(SPAN("danger", "[src] looks momentarily disoriented."), SPAN("danger", "You see stars."))
-							src.apply_effect(2, EYE_BLUR, blocked)
+						poise_immunity(3)
+
+					else if(prob(effective_force))
+						visible_message(SPAN("danger", "[src] looks momentarily disoriented."), SPAN("danger", "You see stars."))
+						apply_effect(2, EYE_BLUR, blocked)
+
 				if(BP_CHEST, BP_GROIN, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT) //Knock down
 					if(poise <= effective_force/3*I.mod_weight)
-						if(!stat || (stat && !paralysis))
-							visible_message(SPAN("danger", "[src] has been knocked down!"))
-							apply_effect(min((I.mod_weight*3),2), WEAKEN, (blocked/2))
+						visible_message(SPAN("danger", "[src] has been knocked down!"))
+						apply_effect(min((I.mod_weight * 3), 4), WEAKEN, (blocked/2))
+						poise_immunity(2)
+
 				if(BP_L_HAND, BP_R_HAND) //Knocking someone down by smashing their hands? Hell no.
 					if(poise <= effective_force/3*I.mod_weight)
 						visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
@@ -491,10 +495,10 @@ meteor_act
 	visible_message(SPAN("danger", "[user] bashes [src]'s [affecting.name] with their [I.name]!"))
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		A.damage_poise(2.0+(I.mod_weight*2 + (1-I.mod_handy)))
+		A.damage_poise(3.0 - I.mod_handy + I.mod_weight * 2, TRUE)
 		//visible_message("Debug \[BASH\]: [A] used [2.0+(I.mod_weight*2 + (1-I.mod_handy))] poise ([A.poise]/[A.poise_pool])") // Debug Message
 
-	poise_damage = round((3.5+(I.mod_weight*3.0 + I.mod_reach))/1.5 + (3.5+(I.mod_weight*4.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
+	poise_damage = round(((3.5 + I.mod_weight*3 + I.mod_reach) / 1.5) + ((3.5 + I.mod_weight*4 + I.mod_reach) / 1.5 * ((100-blocked)/100)), 0.1)
 	if(headcheck(hit_zone))
 		poise_damage *= 1.15
 	damage_poise(poise_damage)
@@ -519,28 +523,31 @@ meteor_act
 
 	effective_force *= round((100-blocked)/100, 0.01)
 
-	if(poise <= poise_pool*0.7)
+	if(poise <= poise_pool*0.7 && !check_poise_immunity())
 		switch(hit_zone) // strong punches can have effects depending on where they hit
 			if(BP_HEAD, BP_EYES, BP_MOUTH)
 				if(poise <= effective_force/3*I.mod_weight)
-					if(!stat || (stat && !paralysis))
-						visible_message(SPAN("danger", "[src] [species.knockout_message]"))
-						custom_pain("Your head's <B>definitely</B> gonna hurt tomorrow.", 30, affecting = affecting)
-						apply_effect((I.mod_weight*20), PARALYZE, (blocked/2))
-				else
-					if(prob(effective_force))
-						visible_message(SPAN("danger", "[src] looks momentarily disoriented."), SPAN("danger", "You see stars."))
-						apply_effect(2, EYE_BLUR, blocked)
+					visible_message(SPAN("danger", "[src] [species.knockout_message]"))
+					custom_pain("Your head's <B>definitely</B> gonna hurt tomorrow.", 30, affecting = affecting)
+					apply_effect((I.mod_weight*20), PARALYZE, (blocked/2))
+					poise_immunity(3)
+
+				else if(prob(effective_force))
+					visible_message(SPAN("danger", "[src] looks momentarily disoriented."), SPAN("danger", "You see stars."))
+					apply_effect(2, EYE_BLUR, blocked)
+
 			if(BP_L_ARM)
 				if(l_hand && (poise <= effective_force/3*I.mod_weight*1.5))
-					src.visible_message(SPAN("danger", "\The [src.l_hand] was knocked right out of [src]'s grasp!"))
+					visible_message(SPAN("danger", "\The [src.l_hand] was knocked right out of [src]'s grasp!"))
 					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 					drop_l_hand()
+
 			if(BP_R_ARM)
 				if(r_hand && (poise <= effective_force/3*I.mod_weight*1.5))
-					src.visible_message(SPAN("danger", "\The [src.l_hand] was knocked right out of [src]'s grasp!"))
+					visible_message(SPAN("danger", "\The [src.l_hand] was knocked right out of [src]'s grasp!"))
 					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 					drop_r_hand()
+
 			if(BP_L_HAND, BP_R_HAND)
 				if(poise <= effective_force*I.mod_reach)
 					visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
@@ -548,25 +555,30 @@ meteor_act
 					for(var/obj/item/D in holding)
 						drop(D)
 					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
+
 			if(BP_CHEST, BP_GROIN, BP_L_LEG, BP_R_LEG)
-				if(!stat && (poise <= effective_force/3*I.mod_weight))
+				if(poise <= effective_force/3*I.mod_weight)
 					visible_message(SPAN("danger", "[src] has been knocked down!"))
-					apply_effect((I.mod_weight*3), WEAKEN, (blocked/2))
-				else
-					if(!stat && prob(effective_force))
-						var/turf/T = get_step(get_turf(src), get_dir(get_turf(user), get_turf(src)))
-						if(prob(50))
-							set_dir(GLOB.reverse_dir[src.dir])
-						if(!T.density)
-							step(src, get_dir(get_turf(user), get_turf(src)))
-							visible_message(SPAN("danger", "[pick("[src] was sent flying backward!", "[src] staggers back from the impact!")]"))
-						else
-							visible_message(SPAN("danger", "[src] bumps into \the [T]!"))
-							apply_effect(effective_force * 0.4, WEAKEN, (blocked/2))
+					apply_effect((I.mod_weight*3.5), WEAKEN, (blocked/2))
+					poise_immunity(2)
+
+				else if(prob(effective_force))
+					var/turf/T = get_step(get_turf(src), get_dir(get_turf(user), get_turf(src)))
+					if(prob(50))
+						set_dir(GLOB.reverse_dir[src.dir])
+					if(!T.density)
+						step(src, get_dir(get_turf(user), get_turf(src)))
+						visible_message(SPAN("danger", "[pick("[src] was sent flying backward!", "[src] staggers back from the impact!")]"))
+					else
+						visible_message(SPAN("danger", "[src] bumps into \the [T]!"))
+						apply_effect(effective_force * 0.4, WEAKEN, (blocked/2))
+						poise_immunity(2)
+
 			if(BP_L_FOOT, BP_R_FOOT)
 				if(poise <= effective_force*I.mod_reach)
 					visible_message(SPAN("danger", "[user] takes [src] down with their [I.name]!"))
 					apply_effect((I.mod_reach*5), WEAKEN, blocked)
+					poise_immunity(2)
 
 	if(effective_force <= 0)
 		return 0
@@ -655,10 +667,10 @@ meteor_act
 				defender.parrying = 0
 				return 0
 			defender.next_move = world.time+1 //Well I'd prefer to use setClickCooldown but it ain't gonna work here.
-			defender.damage_poise(2.5+(weapon_atk.mod_weight*1.5))
+			defender.damage_poise(2.5 + weapon_atk.mod_weight*1.5, TRUE)
 			//visible_message("Debug \[parry\]: Defender [defender] lost [2.5+(weapon_def.mod_weight*2.5)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
 			attacker.setClickCooldown(weapon_atk.update_attack_cooldown()*2)
-			attacker.damage_poise(17.5+(weapon_atk.mod_weight*7.5))
+			attacker.damage_poise(17.5 + weapon_atk.mod_weight*7.5, TRUE)
 			//visible_message("Debug \[parry\]: Attacker [attacker] lost [20.0+(weapon_atk.mod_weight*5.0)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
 			visible_message(SPAN("warning", "[defender] parries [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
 
@@ -726,6 +738,7 @@ meteor_act
 				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
 				defender.apply_effect(3, WEAKEN, 0)
 				defender.useblock_off()
+				defender.poise_immunity(2)
 	return 1
 
 //Src (defender) blocks attacking_mob's (attacker) punch/generic attack with their weapon_def
@@ -775,6 +788,7 @@ meteor_act
 				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
 				defender.apply_effect(3, WEAKEN, 0)
 				defender.useblock_off()
+				defender.poise_immunity(2)
 	return 1
 
 
@@ -859,6 +873,7 @@ meteor_act
 	damage_poise(poisedamage * pd_mult)
 	if(poise <= 25 && !prob(poise * 3))
 		apply_effect(max(3, (poisedamage * pd_mult / 4)), WEAKEN)
+		poise_immunity(2)
 		if(!lying)
 			visible_message(SPAN("danger", "[src] goes down under the impact of \the [P]!"))
 
@@ -924,6 +939,7 @@ meteor_act
 						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
 						apply_effect(2, WEAKEN, 0)
 						useblock_off()
+						poise_immunity(1)
 					return
 
 

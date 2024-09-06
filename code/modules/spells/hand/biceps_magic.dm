@@ -25,7 +25,7 @@
 	user.make_grab(user, H, GRAB_QUICKCHOKE)
 	user.zone_sel.selecting = saved_zone_sel
 
-	H.damage_poise(25)
+	H.damage_poise(25, TRUE)
 
 	to_chat(H, SPAN("warning", "It looks like you're in trouble."))
 	return TRUE

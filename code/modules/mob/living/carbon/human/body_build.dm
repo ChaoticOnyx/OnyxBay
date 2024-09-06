@@ -38,6 +38,7 @@ var/global/datum/body_build/default_body_build = new
 	var/poise_pool         = HUMAN_DEFAULT_POISE
 	var/stomach_capacity   = STOMACH_CAPACITY_NORMAL
 	var/ambiguous_gender   = FALSE // If TRUE, both females and females will be PLURAL if there's no beard and their groin is covered
+	var/melee_modifier     = 1.0
 
 	var/list/equip_adjust
 	var/list/equip_overlays = list()
@@ -92,6 +93,7 @@ var/global/datum/body_build/default_body_build = new
 
 	stomach_capacity   = STOMACH_CAPACITY_LOW
 	poise_pool         = HUMAN_LOW_POISE
+	melee_modifier     = 0.75 // It's kinda hard to club people when you're two times thinner than a regular person.
 
 	equip_adjust = list(
 		"slot_l_hand" = list(
@@ -225,7 +227,8 @@ var/global/datum/body_build/default_body_build = new
 	movespeed_modifier = /datum/movespeed_modifier/bodybuild/fat
 	equipment_modifier = 0.5
 	poise_pool         = HUMAN_HIGH_POISE
-	ambiguous_gender = TRUE
+	ambiguous_gender   = TRUE
+	melee_modifier     = 1.15 // Force is acceleration times MASS, so...
 
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
@@ -310,7 +313,7 @@ var/global/datum/body_build/default_body_build = new
 	movespeed_modifier = /datum/movespeed_modifier/bodybuild/fat
 	equipment_modifier = 0.5
 	poise_pool         = HUMAN_HIGH_POISE
-	ambiguous_gender = TRUE
+	ambiguous_gender   = TRUE
 
 /datum/body_build/unathi
 	name                 = SPECIES_UNATHI
@@ -337,6 +340,7 @@ var/global/datum/body_build/default_body_build = new
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_lizard.dmi'
 
 	poise_pool         = HUMAN_HIGH_POISE
+	melee_modifier     = 1.15
 
 /datum/body_build/vox
 	name                 = "Vox"
@@ -390,6 +394,7 @@ var/global/datum/body_build/default_body_build = new
 	stomach_capacity   = STOMACH_CAPACITY_LOW
 
 	equipment_modifier = -0.5
+	melee_modifier     = 1.25 // Monke muscles are no joke
 
 /datum/body_build/xenomorph
 	name                 = "Xenomorph"
