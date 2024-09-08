@@ -39,7 +39,7 @@
 		H.apply_damage(rand(20, 40), BRUTE, affecting)
 		H.Weaken(8)
 		H.Stun(4)
-		H.damage_poise(30)
+		H.damage_poise(30, TRUE)
 		playsound(H.loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 
 	H.throw_at(get_edge_target_turf(H, throw_dir), 5, 1)

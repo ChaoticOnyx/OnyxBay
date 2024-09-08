@@ -32,7 +32,7 @@
 			to_chat(L, SPAN("danger", "You are sent flying!"))
 		if(ishuman(L))
 			var/mob/living/carbon/human/H = L
-			H.damage_poise(25)
+			H.damage_poise(25, TRUE)
 
 	var/turf/T = get_turf(user)
 	T.ex_act(rand(2, 3))
