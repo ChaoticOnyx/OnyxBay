@@ -265,8 +265,8 @@
 
 //cigarellos
 /obj/item/storage/fancy/cigarettes/cigarello
-	name = "pack of Trident Original cigars"
-	desc = "The Trident brand's wood tipped little cigar, favored by the Sol corps diplomatique for their pleasant aroma. Machine made on Mars for over 100 years."
+	name = "pack of Trident Original cigarillos"
+	desc = "The Trident brand's wood tipped little cigars, favored by the Sol corps diplomatique for their pleasant aroma. Machine made on Mars for over 100 years."
 	icon_state = "CRpacket"
 	item_state = "Dpacket"
 	max_storage_space = 6
@@ -274,8 +274,8 @@
 	startswith = list(/obj/item/clothing/mask/smokable/cigarette/trident = 6)
 
 /obj/item/storage/fancy/cigarettes/cigarello/variety
-	name = "pack of Trident Fruit cigars"
-	desc = "The Trident brand's wood tipped little cigar, favored by the Sol corps diplomatique for their pleasant aroma. Machine made on Mars for over 100 years. This is a fruit variety pack."
+	name = "pack of Trident Fruit cigarillos"
+	desc = "The Trident brand's wood tipped little cigars, favored by the Sol corps diplomatique for their pleasant aroma. Machine made on Mars for over 100 years. This is a fruit variety pack."
 	icon_state = "CRFpacket"
 	startswith = list(	/obj/item/clothing/mask/smokable/cigarette/trident/watermelon,
 						/obj/item/clothing/mask/smokable/cigarette/trident/orange,
@@ -284,8 +284,8 @@
 						/obj/item/clothing/mask/smokable/cigarette/trident/berry)
 
 /obj/item/storage/fancy/cigarettes/cigarello/mint
-	name = "pack of Trident Menthol cigars"
-	desc = "The Trident brand's wood tipped little cigar, favored by the Sol corps diplomatique for their pleasant aroma. Machine made on Mars for over 100 years. These are the menthol variety."
+	name = "pack of Trident Menthol cigarillos"
+	desc = "The Trident brand's wood tipped little cigars, favored by the Sol corps diplomatique for their pleasant aroma. Machine made on Mars for over 100 years. These are the menthol variety."
 	icon_state = "CRMpacket"
 	startswith = list(/obj/item/clothing/mask/smokable/cigarette/trident/mint = 6)
 
