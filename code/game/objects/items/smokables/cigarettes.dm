@@ -3,6 +3,7 @@
 	name = "cigarette"
 	desc = "A small paper cylinder filled with processed tobacco and various fillers."
 	icon_state = "cigoff"
+	base_icon_state = null
 	throw_speed = 2
 	item_state = "cigoff"
 	w_class = ITEM_SIZE_TINY
@@ -19,6 +20,8 @@
 
 /obj/item/clothing/mask/smokable/cigarette/Initialize()
 	. = ..()
+	if(!base_icon_state)
+		base_icon_state = icon_state
 	for(var/R in filling)
 		reagents.add_reagent(R, filling[R])
 
@@ -27,7 +30,7 @@
 	ClearOverlays()
 	if(dynamic_icon)
 		var/ratio = round(smoketime / initial(smoketime), 0.25) * 100
-		icon_state = ever_lit ? "[initial(icon_state)][ratio]" : initial(icon_state)
+		icon_state = ever_lit ? "[base_icon_state][ratio]" : initial(icon_state)
 		if(lit)
 			AddOverlays(OVERLAY(icon, "[ember_state][ratio]", alpha, RESET_COLOR))
 	else if(lit)
@@ -319,47 +322,61 @@
 // CIGARILLOS //
 ////////////////
 /obj/item/clothing/mask/smokable/cigarette/trident
-	name = "wood tip cigar"
-	brand = "\improper Trident cigar"
-	desc = "A narrow cigar with a wooden tip."
-	icon_state = "cigarello"
+	name = "wood tip cigarillo"
+	brand = "\improper Trident cigarillo"
+	desc = "A narrow cigarillo with a wooden tip."
+	icon_state = "cigarillo"
+	base_icon_state = "cigarillo"
 	item_state = "cigaroff"
-	ember_state = "cigarello-on"
+	ember_state = "cigarilloember"
 	smoketime = 480
 	chem_volume = 10
 	filter_trans = 0.25
 	type_butt = /obj/item/cigbutt/woodbutt
 	filling = list(/datum/reagent/tobacco/fine = 6)
-	dynamic_icon = FALSE
+	var/brand_overlay = ""
+
+/obj/item/clothing/mask/smokable/cigarette/trident/Initialize()
+	. = ..()
+	if(brand_overlay)
+		icon_state = "cigarillo"
+		base_icon_state = "cigarillo"
+		AddOverlays("[base_icon_state]_[brand_overlay]", ATOM_ICON_CACHE_PROTECTED)
 
 /obj/item/cigbutt/woodbutt
 	name = "wooden tip"
-	desc = "A wooden mouthpiece from a cigar. Smells rather bad."
-	icon_state = "woodbutt"
+	desc = "A wooden mouthpiece from a cigarillo. Smells rather bad."
+	icon_state = "cigarillobutt"
 	matter = list(MATERIAL_WOOD = 1)
 
 /obj/item/clothing/mask/smokable/cigarette/trident/mint
-	icon_state = "cigarelloMi"
+	icon_state = "cigarilloMi"
+	brand_overlay = "Mi"
 	filling = list(/datum/reagent/tobacco/fine = 6, /datum/reagent/menthol = 2)
 
 /obj/item/clothing/mask/smokable/cigarette/trident/berry
-	icon_state = "cigarelloBe"
+	icon_state = "cigarilloBe"
+	brand_overlay = "Be"
 	filling = list(/datum/reagent/tobacco/fine = 6, /datum/reagent/drink/juice/berry = 2)
 
 /obj/item/clothing/mask/smokable/cigarette/trident/cherry
-	icon_state = "cigarelloCh"
+	icon_state = "cigarilloCh"
+	brand_overlay = "Ch"
 	filling = list(/datum/reagent/tobacco/fine = 6, /datum/reagent/nutriment/cherryjelly = 2)
 
 /obj/item/clothing/mask/smokable/cigarette/trident/grape
-	icon_state = "cigarelloGr"
+	icon_state = "cigarilloGr"
+	brand_overlay = "Gr"
 	filling = list(/datum/reagent/tobacco/fine = 6, /datum/reagent/drink/juice/grape = 2)
 
 /obj/item/clothing/mask/smokable/cigarette/trident/watermelon
-	icon_state = "cigarelloWm"
+	icon_state = "cigarilloWm"
+	brand_overlay = "Wm"
 	filling = list(/datum/reagent/tobacco/fine = 6, /datum/reagent/drink/juice/watermelon = 2)
 
 /obj/item/clothing/mask/smokable/cigarette/trident/orange
-	icon_state = "cigarelloOr"
+	icon_state = "cigarilloOr"
+	brand_overlay = "Or"
 	filling = list(/datum/reagent/tobacco/fine = 6, /datum/reagent/drink/juice/orange = 2)
 
 ////////////////////

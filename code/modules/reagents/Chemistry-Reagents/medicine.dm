@@ -661,6 +661,7 @@
 	reagent_state = SOLID
 	color = "#684b3c"
 	scannable = 1
+	taste_mult = 2.0
 	var/nicotine = REM * 0.1
 
 /datum/reagent/tobacco/affect_blood(mob/living/carbon/M, alien, removed)
@@ -695,6 +696,7 @@
 	overdose = REAGENTS_OVERDOSE * 0.25
 	scannable = 1
 	data = 0
+	taste_mult = 1.5
 
 /datum/reagent/menthol/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
