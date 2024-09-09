@@ -2847,7 +2847,7 @@
 #include "code\modules\research\designs\protolathe\dp-stock_parts.dm"
 #include "code\modules\research\designs\protolathe\dp-surgery.dm"
 #include "code\modules\research\designs\protolathe\dp-weapons.dm"
-#include "code\modules\security levels\keycard authentication.dm"
+#include "code\modules\security_levels\keycard_auth.dm"
 #include "code\modules\shield_generators\floor_diffuser.dm"
 #include "code\modules\shield_generators\handheld_diffuser.dm"
 #include "code\modules\shield_generators\modes.dm"
