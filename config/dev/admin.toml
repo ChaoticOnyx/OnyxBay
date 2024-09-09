@@ -1,2 +1,3 @@
 [admin]
 promote_localhost = true
+admin_legacy_system = true

@@ -11,6 +11,7 @@
 	var/debug_paranoid
 	var/delist_when_no_admins
 	var/promote_localhost
+	var/admin_legacy_system
 
 /datum/configuration_section/admin/load_data(list/data)
 	CONFIG_LOAD_BOOL(allow_admin_ooccolor, data["allow_admin_ooccolor"])
@@ -23,3 +24,4 @@
 	CONFIG_LOAD_BOOL(debug_paranoid, data["debug_paranoid"])
 	CONFIG_LOAD_BOOL(delist_when_no_admins, data["delist_when_no_admins"])
 	CONFIG_LOAD_BOOL(promote_localhost, data["promote_localhost"])
+	CONFIG_LOAD_BOOL(admin_legacy_system, data["admin_legacy_system"])
