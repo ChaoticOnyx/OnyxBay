@@ -11,7 +11,7 @@
 	icon_state = "auth_off"
 
 	// 3 vars here as booleans produce 4 relevant state:
-	//  (!!auth_proxy)<<2 | (!!first_id)<<1 | (active_event != INACTIVE)
+	//  (!!auth_proxy)<<2 | (!!trigger_id)<<1 | (active_event != INACTIVE)
 	// 000 -- Standby, waiting for an event to be selected
 	// 001 -- Event selected, waiting for causer to swipe ID
 	// 011 -- Causer waits for confirmation
@@ -20,8 +20,7 @@
 	var/event_reason = ""
 
 	var/obj/machinery/keycard_auth/auth_proxy
-	var/obj/item/card/id/first_id
-	var/obj/item/card/id/second_id
+	var/obj/item/card/id/trigger_id
 
 	var/confirm_delay = 3 SECONDS
 
@@ -58,7 +57,7 @@
 				src.reset()
 			else
 				visible_message(SPAN_WARNING("\The [src] blinks and displays a message: Unable to confirm the event with the same card."), range=2)
-		else if (src.active_event == INACTIVE || first_id)
+		else if (src.active_event == INACTIVE || src.trigger_id)
 			visible_message(SPAN_NOTICE("\The [user] swipes \the [id] through \the [src], but nothing happens."))
 		else if (!(access_keycard_auth in id.access))
 			visible_message(SPAN_NOTICE("\The [user] swipes \the [id] through \the [src], but it's declined."))
@@ -66,9 +65,9 @@
 			visible_message(SPAN_NOTICE("\The [user] swipes \the [id] through \the [src] and it's accepted."))
 			src.do_proxy(id, user)
 
-/obj/machinery/keycard_auth/proc/do_proxy(obj/item/card/id/first_id, mob/triggerer)
+/obj/machinery/keycard_auth/proc/do_proxy(obj/item/card/id/trigger_id, mob/triggerer)
 	src.icon_state = "auth_on"
-	src.first_id = first_id
+	src.trigger_id = trigger_id
 	src.triggered_by = triggerer
 
 	for(var/obj/machinery/keycard_auth/KA in world)
@@ -84,13 +83,13 @@
 
 	sleep(src.confirm_delay)
 
-	if (src.first_id)
+	if (src.trigger_id)
 		visible_message(SPAN_INFO("\The [src] blinks and displays a message: Confirmation failure."), range=2)
 
 		src.reset()
 
 /obj/machinery/keycard_auth/proc/try_confirm(obj/item/card/id/second_id, mob/confirmer)
-	if (!src.first_id || src.first_id == second_id)
+	if (!src.trigger_id || src.trigger_id == second_id)
 		return FALSE
 
 	visible_message(SPAN_INFO("\The [src] blinks and displays a message: Confirmed."), range=2)
@@ -112,7 +111,7 @@
 	src.event_reason = ""
 	src.icon_state = "auth_off"
 	src.auth_proxy = null
-	src.first_id = null
+	src.trigger_id = null
 	src.triggered_by = null
 	src.confirmed_by = null
 
@@ -122,7 +121,7 @@
 		return
 	if(!user.IsAdvancedToolUser())
 		return 0
-	if(src.first_id)
+	if(src.trigger_id)
 		to_chat(user, "This device is busy.")
 		return
 
