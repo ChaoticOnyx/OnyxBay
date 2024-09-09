@@ -79,7 +79,7 @@
 			KA.auth_proxy = src
 			KA.icon_state = "auth_on"
 			spawn(src.confirm_delay)
-				if (KA.auth_proxy)
+				if (KA.auth_proxy == src)
 					KA.reset()
 
 	sleep(src.confirm_delay)
