@@ -37,6 +37,7 @@
 		key = user.key
 
 	updatename()
+	update_icon()
 	qdel(silicon_radio)
 	silicon_radio = new /obj/item/device/radio/headset/heads/ai_integrated(src)
 
