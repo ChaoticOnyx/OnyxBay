@@ -27,7 +27,7 @@
 								/obj/item/gun/projectile/revolver/detective 		= TRADER_ALL,
 								/obj/item/gun/projectile/revolver/m2019/detective 	= TRADER_THIS_TYPE,
 								/obj/item/gun/projectile/revolver/coltpython 		= TRADER_THIS_TYPE,
-								/obj/item/gun/projectile/revolver/deckard 			= TRADER_THIS_TYPE,
+								/obj/item/gun/projectile/revolver/deckard 			= TRADER_ALL,
 								/obj/item/gun/projectile/pistol 					= TRADER_SUBTYPES_ONLY,
 								/obj/item/gun/projectile/pistol/secgun/MK 			= TRADER_BLACKLIST,
 								/obj/item/gun/projectile/shotgun 					= TRADER_SUBTYPES_ONLY,

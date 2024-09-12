@@ -236,6 +236,14 @@
 	projectile_type = /obj/item/projectile/ion/small
 	matter = list(MATERIAL_STEEL = 130, MATERIAL_URANIUM = 100)
 
+/obj/item/ammo_casing/c44/emp
+	name = ".44 haywire round"
+	desc = "A .44 bullet casing fitted with a single-use ion pulse generator."
+	icon_state = "empcasing"
+	projectile_type = /obj/item/projectile/ion/small
+	matter = list(MATERIAL_STEEL = 130, MATERIAL_URANIUM = 100)
+
+
 /obj/item/ammo_casing/c45/emp
 	name = ".45 haywire round"
 	desc = "A .45 bullet casing fitted with a single-use ion pulse generator."
