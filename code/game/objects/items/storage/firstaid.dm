@@ -102,7 +102,7 @@
 	name = "combat medical kit"
 	desc = "Contains advanced medical treatments."
 	icon_state = "firstaid-bezerk"
-	item_state = "firstaid-advanced"
+	item_state = "firstaid-bezerk"
 	storage_slots = 9 // Tacticoolness makes it more spaceous
 
 	startswith = list(
