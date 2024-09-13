@@ -64,6 +64,23 @@
 	desc = "Built for close quarters combat, the Hephaestus Industries KS-40 is widely regarded as a weapon of choice for repelling boarders. This one emmits LAW."
 	ammo_type = /obj/item/ammo_casing/shotgun
 
+/obj/item/gun/projectile/shotgun/pump/compact
+	name = "compact shotgun"
+	desc = "The GA Protector: Compact, gripping, and decisively powerful weapon for face-to-face combat."
+	icon_state = "compact-shotgun"
+	item_state = "compact-shotgun"
+	wielded_item_state = "compact-shotgun-wielded"
+	slot_flags = SLOT_BELT|SLOT_BACK
+	w_class = ITEM_SIZE_NORMAL
+	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 2) //more stylish than a combat shotgun
+	max_shells = 3
+	force = 9.5
+	mod_weight = 0.85
+	mod_reach = 0.8
+	mod_handy = 0.9
+	ammo_type = /obj/item/ammo_casing/shotgun
+	one_hand_penalty = 1
+
 /obj/item/gun/projectile/shotgun/pump/boomstick
 	name = "makeshift shotgun"
 	icon_state = "boomstick"
