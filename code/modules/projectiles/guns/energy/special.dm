@@ -26,8 +26,8 @@
 /obj/item/gun/energy/ionrifle/small
 	name = "ion pistol"
 	desc = "The NT Mk72 EW Preston is a personal defense weapon designed to disable mechanical threats."
-	icon_state = "ionpistolonyx"
-	item_state = "ionpistolonyx"
+	icon_state = "ionpistol"
+	item_state = "ionpistol"
 	improper_held_icon = FALSE
 	origin_tech = list(TECH_COMBAT = 2, TECH_MAGNET = 4)
 	w_class = ITEM_SIZE_NORMAL
