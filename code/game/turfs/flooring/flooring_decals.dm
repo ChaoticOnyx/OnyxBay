@@ -591,8 +591,8 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/sandfloordec
 	name = "sandfloor"
-	icon = 'icons/turf/floors.dmi'
-	icon_state = "asteroidfloor"
+	icon = 'icons/turf/flooring/decals.dmi'
+	icon_state = "sandfloordec"
 	alpha = 209
 
 /obj/effect/floor_decal/junglepath
