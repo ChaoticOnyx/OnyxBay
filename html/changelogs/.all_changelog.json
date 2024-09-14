@@ -1,5 +1,37 @@
 [
   {
+    "author": "ilyadobr",
+    "date": "2024-09-14T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Спрайт комбат аптечки в руке теперь правильный.",
+        "pr": 12799
+      },
+      {
+        "prefix": "Tweak",
+        "message": "Новые спрайты сабель.",
+        "pr": 12796
+      },
+      {
+        "prefix": "Tweak",
+        "message": "Новый спрайт у пистолета с интегральным глушителем.",
+        "pr": 12797
+      }
+    ]
+  },
+  {
+    "author": "EditorRUS",
+    "date": "2024-09-14T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Keycard Auth works now",
+        "pr": 12789
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2024-09-08T00:00:00+03:00",
     "changes": [
