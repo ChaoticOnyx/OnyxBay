@@ -285,6 +285,7 @@
 	. = ..()
 	if(.)
 		icon_state = icon_dead
+		item_state = icon_dead
 		density = 0
 		health = 0 //Make sure dey dead.
 		walk_to(src, 0)
