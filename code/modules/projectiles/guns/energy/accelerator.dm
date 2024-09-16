@@ -1,6 +1,7 @@
 /obj/item/gun/energy/accelerator
 	name = "accelerator shotgun"
 	desc = "A NanoTrasen UPA \"Shepherd\". It synthesizes unstable particles and accelerates them, effectively shooting \"temporary\" bullets without using any ammunition besides electric power."
+
 	icon_state = "phazer"
 	item_state = "phazer"
 	modifystate = "phazer"
@@ -8,17 +9,23 @@
 	wielded_item_state = "phazer-wielded"
 	icon_rounder = 25
 	screen_shake = 1
+
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_HUGE
+
 	force = 12.5
 	mod_weight = 1.0
 	mod_reach = 0.8
 	mod_handy = 1.0
+
 	one_hand_penalty = 2
 	max_shots = 8
+
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 3, TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 2000)
+
 	projectile_type = /obj/item/projectile/bullet/pellet/accelerated
+
 	var/pumped = TRUE
 	var/recentpump = 0 // to prevent spammage
 	fire_sound = 'sound/effects/weapons/energy/kinetic_accel.ogg'
@@ -40,9 +47,16 @@
 		update_icon()
 
 /obj/item/gun/energy/accelerator/on_update_icon()
-	var/mob/living/M = loc
-	var/ratio = 0
 	..()
+	ClearOverlays()
+
+	var/ratio = 0
+	if(power_supply && power_supply.charge >= charge_cost)
+		ratio = max(round(CELL_PERCENT(power_supply), icon_rounder), icon_rounder)
+
+		item_state = "[modifystate]"
+
+	var/mob/living/M = loc
 	if(istype(M))
 		if(M.can_wield_item(src) && is_held_twohanded(M))
 			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]-wielded"
@@ -54,7 +68,6 @@
 			improper_held_icon = FALSE
 	update_held_icon()
 
-	ClearOverlays()
 	AddOverlays(image(icon, "[initial(icon_state)]_over[pumped]"))
 
 /obj/item/gun/energy/accelerator/pistol
