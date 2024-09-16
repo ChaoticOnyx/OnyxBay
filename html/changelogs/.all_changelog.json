@@ -1,6 +1,22 @@
 [
   {
     "author": "ilyadobr",
+    "date": "2024-09-16T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "tacticool turtleneck теперь правильно отображается в руке.",
+        "pr": 12803
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Теперь бореры нормально отображаются в руках.",
+        "pr": 12812
+      }
+    ]
+  },
+  {
+    "author": "ilyadobr",
     "date": "2024-09-15T00:00:00+03:00",
     "changes": [
       {
