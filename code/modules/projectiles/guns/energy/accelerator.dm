@@ -2,7 +2,8 @@
 	name = "accelerator shotgun"
 	desc = "A NanoTrasen UPA \"Shepherd\". It synthesizes unstable particles and accelerates them, effectively shooting \"temporary\" bullets without using any ammunition besides electric power."
 	icon_state = "phazer"
-	item_state = null
+	item_state = "phazer"
+	modifystate = "phazer"
 	improper_held_icon = TRUE
 	wielded_item_state = "phazer-wielded"
 	icon_rounder = 25
@@ -39,14 +40,29 @@
 		update_icon()
 
 /obj/item/gun/energy/accelerator/on_update_icon()
+	var/mob/living/M = loc
+	var/ratio = 0
+	..()
+	if(istype(M))
+		if(M.can_wield_item(src) && is_held_twohanded(M))
+			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]-wielded"
+			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]-wielded"
+			improper_held_icon = TRUE
+		else
+			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]"
+			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]"
+			improper_held_icon = FALSE
+	update_held_icon()
+
 	ClearOverlays()
 	AddOverlays(image(icon, "[initial(icon_state)]_over[pumped]"))
-	..()
 
 /obj/item/gun/energy/accelerator/pistol
 	name = "accelerator pistol"
 	desc = "An experimental NanoTrasen UPA \"Wingman\", based on the famous VP78. While being almost just as powerful as its larger counterpart, it is as small as a regular pistol."
 	icon_state = "phazer_pistol"
+	item_state = "phazer_pistol"
+	modifystate = "phazer_pistol"
 	improper_held_icon = FALSE
 	icon_rounder = 20
 	w_class = ITEM_SIZE_NORMAL
