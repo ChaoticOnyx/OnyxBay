@@ -54,7 +54,7 @@
 	if(power_supply && power_supply.charge >= charge_cost)
 		ratio = max(round(CELL_PERCENT(power_supply), icon_rounder), icon_rounder)
 
-		item_state = "[modifystate]"
+		item_state = "[modifystate][ratio]"
 
 	var/mob/living/M = loc
 	if(istype(M))
@@ -66,6 +66,7 @@
 			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]"
 			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]"
 			improper_held_icon = FALSE
+
 	update_held_icon()
 
 	AddOverlays(image(icon, "[initial(icon_state)]_over[pumped]"))
