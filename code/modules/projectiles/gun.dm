@@ -171,8 +171,8 @@
 				item_state_slots[slot_r_hand_str] = wielded_item_state
 				improper_held_icon = TRUE
 			else
-				item_state_slots[slot_l_hand_str] = initial(item_state)
-				item_state_slots[slot_r_hand_str] = initial(item_state)
+				item_state_slots[slot_l_hand_str] = item_state
+				item_state_slots[slot_r_hand_str] = item_state
 				improper_held_icon = FALSE
 	update_held_icon()
 

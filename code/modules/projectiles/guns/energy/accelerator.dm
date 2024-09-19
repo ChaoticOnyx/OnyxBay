@@ -47,28 +47,19 @@
 		update_icon()
 
 /obj/item/gun/energy/accelerator/on_update_icon()
-	..()
-	ClearOverlays()
 
 	var/ratio = 0
 	if(power_supply && power_supply.charge >= charge_cost)
 		ratio = max(round(CELL_PERCENT(power_supply), icon_rounder), icon_rounder)
 
 		item_state = "[modifystate][ratio]"
+	if(wielded_item_state)
+		wielded_item_state = "[modifystate][ratio]-wielded"
+	else
+		wielded_item_state = null
 
-	var/mob/living/M = loc
-	if(istype(M))
-		if(M.can_wield_item(src) && is_held_twohanded(M))
-			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]-wielded"
-			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]-wielded"
-			improper_held_icon = TRUE
-		else
-			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]"
-			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]"
-			improper_held_icon = FALSE
-
-	update_held_icon()
-
+	..()
+	ClearOverlays()
 	AddOverlays(image(icon, "[initial(icon_state)]_over[pumped]"))
 
 /obj/item/gun/energy/accelerator/pistol
