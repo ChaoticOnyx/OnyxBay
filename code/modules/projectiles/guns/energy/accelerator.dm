@@ -1,7 +1,6 @@
 /obj/item/gun/energy/accelerator
 	name = "accelerator shotgun"
 	desc = "A NanoTrasen UPA \"Shepherd\". It synthesizes unstable particles and accelerates them, effectively shooting \"temporary\" bullets without using any ammunition besides electric power."
-
 	icon_state = "phazer"
 	item_state = "phazer"
 	modifystate = "phazer"
@@ -9,23 +8,17 @@
 	wielded_item_state = "phazer-wielded"
 	icon_rounder = 25
 	screen_shake = 1
-
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_HUGE
-
 	force = 12.5
 	mod_weight = 1.0
 	mod_reach = 0.8
 	mod_handy = 1.0
-
 	one_hand_penalty = 2
 	max_shots = 8
-
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 3, TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 2000)
-
 	projectile_type = /obj/item/projectile/bullet/pellet/accelerated
-
 	var/pumped = TRUE
 	var/recentpump = 0 // to prevent spammage
 	fire_sound = 'sound/effects/weapons/energy/kinetic_accel.ogg'
