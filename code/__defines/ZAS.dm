@@ -53,7 +53,6 @@ GLOBAL_LIST_INIT(csrfz_check, list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST, N
 	} \
 	else if (B.z != A.z) { \
 		if (B.z < A.z) { \
-			ret = A.z_flags ? ZONE_BLOCKED : BLOCKED; \
 			if (!istype(A, /turf/simulated/open)) { \
 				ret = BLOCKED; \
 			} else { \
