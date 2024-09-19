@@ -326,7 +326,7 @@
 	var/turf/simulated/T = get_turf(src)
 	var/list/turfs = T?.zone?.contents
 	for(var/turf/turf in turfs)
-		turf.vis_contents.Remove(overlay)
+		turf.update_graphic()
 
 	QDEL_NULL(overlay)
 
@@ -363,8 +363,7 @@
 	var/turf/simulated/T = get_turf(src)
 	var/list/turfs = T?.zone?.contents
 	for(var/turf/simulated/floor/turf in turfs)
-		if(!LAZYISIN(turf.vis_contents, overlay))
-			turf.vis_contents.Add(overlay)
+		LAZYDISTINCTADD(turf.vis_contents, overlay)
 
 		if(!reagents.reagent_list.len)
 			continue
