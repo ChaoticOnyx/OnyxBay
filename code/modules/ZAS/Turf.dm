@@ -284,8 +284,18 @@ var/global/obj/effect/zasdbg/mark/zasdbgovl_mark = new
 	air.copy_from(zone.air)
 	air.group_multiplier = 1
 
-/turf/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
-	if(graphic_add && graphic_add.len)
-		vis_contents += graphic_add
-	if(graphic_remove && graphic_remove.len)
-		vis_contents -= graphic_remove
+/turf/proc/update_graphic()
+	var/air_graphic = get_air_graphic()
+	if(LAZYLEN(air_graphic))
+		vis_contents = air_graphic
+	else
+		vis_contents = null
+
+/turf/proc/get_air_graphic()
+	if(zone && !zone.invalid)
+		return zone.air?.graphic
+	if(external_atmosphere_participation && is_outside())
+		var/datum/gas_mixture/external = get_external_air()
+		return external.graphic
+	var/datum/gas_mixture/environment = return_air()
+	return environment?.graphic
