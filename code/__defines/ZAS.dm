@@ -54,9 +54,19 @@ GLOBAL_LIST_INIT(csrfz_check, list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST, N
 	else if (B.z != A.z) { \
 		if (B.z < A.z) { \
 			ret = A.z_flags ? ZONE_BLOCKED : BLOCKED; \
+			if (!istype(A, /turf/simulated/open)) { \
+				ret = BLOCKED; \
+			} else { \
+				ret = ZONE_BLOCKED; \
+			} \
 		} \
 		else { \
 			ret = B.z_flags ? ZONE_BLOCKED : BLOCKED; \
+			if (!istype(B, /turf/simulated/open)) { \
+				ret = BLOCKED; \
+			} else { \
+				ret = ZONE_BLOCKED; \
+			} \
 		} \
 	} \
 	else if (A.blocks_air & ZONE_BLOCKED || B.blocks_air & ZONE_BLOCKED) { \
