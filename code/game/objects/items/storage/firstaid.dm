@@ -104,6 +104,7 @@
 	icon_state = "firstaid-bezerk"
 	item_state = "firstaid-bezerk"
 	storage_slots = 9 // Tacticoolness makes it more spaceous
+	max_storage_space = null
 
 	startswith = list(
 		/obj/item/stack/medical/advanced/bruise_pack,
