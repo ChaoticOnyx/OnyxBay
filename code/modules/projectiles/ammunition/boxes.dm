@@ -72,6 +72,11 @@
 	icon_state = "R38"
 	ammo_type = /obj/item/ammo_casing/c44/rubber
 
+/obj/item/ammo_magazine/c44/emp
+	name = "speed loader (.44 magnum, haywire)"
+	icon_state = "E38"
+	ammo_type = /obj/item/ammo_casing/c44/emp
+
 /obj/item/ammo_magazine/c45m
 	name = "magazine (.45)"
 	icon_state = "45"
