@@ -30,7 +30,7 @@
 	name = "armor"
 	desc = "An armored vest that protects against some damage."
 	icon_state = "onyxvest"
-	//item_state = "armor"
+	item_state = "armor"
 	blood_overlay_type = "armorblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
@@ -47,7 +47,7 @@
 	name = "warden's jacket"
 	desc = "An armoured jacket with silver rank pips and livery."
 	icon_state = "warden_jacket"
-	//item_state = "armor"
+	item_state = "warden_jacket"
 	armor = list(melee = 60, bullet = 90, laser = 70, energy = 25, bomb = 40, bio = 10)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
@@ -57,7 +57,7 @@
 	name = "warden's armoured vest"
 	desc = "An upgraded version of a regular bulletproof vest, featuring custom shoulder pads and silver rank livery."
 	icon_state = "warden_heavy"
-	//item_state = "armor"
+	item_state = "warden_heavy"
 	armor = list(melee = 70, bullet = 100, laser = 80, energy = 25, bomb = 40, bio = 10)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
@@ -65,7 +65,7 @@
 	name = "commander's armoured vest"
 	desc = "A custom-made, expensive bulletproof vest with golden rank livery."
 	icon_state = "hos_heavy"
-	//item_state = "armor"
+	item_state = "hos_heavy"
 	armor = list(melee = 80, bullet = 120, laser = 110, energy = 35, bomb = 55, bio = 20)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
@@ -90,7 +90,7 @@
 	name = "captain's carapace"
 	desc = "An extremely expensive piece of exclusive, hand-crafted corporate armor. YOU are in charge!"
 	icon_state = "capcarapace"
-	//item_state = "capcarapace"
+	item_state = "capcarapace"
 	armor = list(melee = 90, bullet = 120, laser = 110, energy = 35, bomb = 55, bio = 20)
 	allowed = list(
 		/obj/item/gun,
@@ -114,7 +114,7 @@
 	name = "ERT commander armor"
 	desc = "A set of armor worn by Nanotrasen's elite Emergency Response Teams. Has blue highlights."
 	icon_state = "ertarmor_cmd"
-	item_state = "armor"
+	item_state = "ertarmor_cmd"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	armor = list(melee = 80, bullet = 110, laser = 100, energy = 40, bomb = 20, bio = 0)
 
@@ -123,18 +123,21 @@
 	name = "ERT security armor"
 	desc = "A set of armor worn by NanoTrasen's elite Emergency Response Teams. Has red highlights."
 	icon_state = "ertarmor_sec"
+	item_state = "ertarmor_sec"
 
 //Engineer
 /obj/item/clothing/suit/armor/vest/ert/engineer
 	name = "ERT engineering armor"
 	desc = "A set of armor worn by NanoTrasen's elite Emergency Response Teams. Has orange highlights."
 	icon_state = "ertarmor_eng"
+	item_state = "ertarmor_eng"
 
 //Medical
 /obj/item/clothing/suit/armor/vest/ert/medical
 	name = "ERT medical armor"
 	desc = "A set of armor worn by NanoTrasen's elite Emergency Response Teams. Has red and white highlights."
 	icon_state = "ertarmor_med"
+	item_state = "ertarmor_med"
 
 //Modular specialty armor
 /obj/item/clothing/suit/armor/riot
@@ -146,6 +149,7 @@
 		slot_r_hand_str = 'icons/mob/onmob/items/righthand.dmi'
 		)
 	icon_state = "riot_vest"
+	item_state = "riot_vest"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
@@ -158,6 +162,7 @@
 	desc = "An armored vest with heavy plates to protect against ballistic projectiles."
 	icon = 'icons/obj/clothing/modular_armor.dmi'
 	icon_state = "ballistic"
+	item_state = "ballistic"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
@@ -173,6 +178,7 @@
 	desc = "An armored vest with advanced shielding to protect against energy weapons."
 	icon = 'icons/obj/clothing/modular_armor.dmi'
 	icon_state = "ablative"
+	item_state = "ablative"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
@@ -277,7 +283,7 @@
 	name = "officer jacket"
 	desc = "An armored jacket used in special operations."
 	icon_state = "detective"
-	//item_state = "det_suit"
+	item_state = "det_suit"
 	blood_overlay_type = "coatblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
