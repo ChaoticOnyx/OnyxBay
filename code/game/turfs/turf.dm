@@ -77,8 +77,6 @@
 	var/is_outside = OUTSIDE_AREA
 	var/last_outside_check = OUTSIDE_UNCERTAIN
 
-	var/z_flags = FALSE
-
 /datum/rad_resist/turf
 	alpha_particle_resist = 38 MEGA ELECTRONVOLT
 	beta_particle_resist = 50 KILO ELECTRONVOLT
@@ -96,6 +94,7 @@
 
 	RecalculateOpacity()
 	update_astar_node()
+	update_graphic()
 
 /turf/Destroy()
 	if(!changing_turf)

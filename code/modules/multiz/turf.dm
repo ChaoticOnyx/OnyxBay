@@ -101,7 +101,7 @@
 	var/turf/below = GetBelow(src)
 	if(below)
 		var/below_is_open = isopenspace(below)
-		vis_contents += below
+		update_graphic()
 
 		if(!below_is_open)
 			AddOverlays(GLOB.over_OS_darkness)
@@ -109,6 +109,16 @@
 		return 0
 	return PROCESS_KILL
 
+/turf/simulated/open/update_graphic()
+	var/air_graphic = get_air_graphic()
+	if(LAZYLEN(air_graphic))
+		vis_contents = air_graphic
+	else
+		vis_contents = null
+
+	var/turf/below = GetBelow(src)
+	if(below)
+		vis_contents += below
 
 /turf/simulated/open/attackby(obj/item/C, mob/user)
 	if (istype(C, /obj/item/stack/rods))

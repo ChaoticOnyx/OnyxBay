@@ -57,7 +57,7 @@ var/list/flooring_cache = list()
 		if(!isnull(burnt) && (flooring.flags & TURF_CAN_BURN))
 			AddOverlays(get_damage_overlay("burned[burnt]"))
 
-	update_graphic(zone?.air?.graphic)
+	update_graphic()
 
 	if(update_neighbors)
 		for(var/turf/simulated/floor/F in orange(src, 1))

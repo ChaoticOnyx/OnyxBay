@@ -78,7 +78,7 @@ Class Procs:
 			fuel_objs += fuel
 		fire_tiles.Add(T)
 		SSair.active_fire_zones |= src
-	T.update_graphic(air.graphic)
+	T.update_graphic()
 
 /zone/proc/remove(turf/T)
 #ifdef ZASDBG
@@ -95,7 +95,7 @@ Class Procs:
 		var/obj/effect/decal/cleanable/liquid_fuel/fuel = locate() in T
 		fuel_objs -= fuel
 	T.zone = null
-	T.update_graphic(air.graphic)
+	T.update_graphic()
 	if(contents.len)
 		air.group_multiplier = contents.len
 	else
@@ -114,7 +114,7 @@ Class Procs:
 			continue
 
 		into.add(T)
-		T.update_graphic(air.graphic)
+		T.update_graphic()
 		#ifdef ZASDBG
 		T.dbg(zasdbgovl_merged)
 		#endif
@@ -141,7 +141,7 @@ Class Procs:
 
 	c_invalidate()
 	for(var/turf/T as anything in contents)
-		T.update_graphic(air.graphic)
+		T.update_graphic()
 		T.needs_air_update = 0 //Reset the marker so that it will be added to the list.
 		SSair.mark_for_update(T)
 		CHECK_TICK
@@ -165,7 +165,7 @@ Class Procs:
 	// Update gas overlays.
 	if(air.check_tile_graphic(graphic_add, graphic_remove))
 		for(var/turf/T as anything in contents)
-			T.update_graphic(air.graphic)
+			T.update_graphic()
 			CHECK_TICK
 		graphic_add.len = 0
 		graphic_remove.len = 0
