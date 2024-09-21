@@ -73,8 +73,8 @@
 	desc = "A suit that protects against low pressure environments."
 	icon_state = "space"
 	item_state_slots = list(
-		slot_l_hand_str = "s_suit",
-		slot_r_hand_str = "s_suit",
+		slot_l_hand_str = "space",
+		slot_r_hand_str = "space",
 	)
 	w_class = ITEM_SIZE_LARGE//large item
 	gas_transfer_coefficient = 0
