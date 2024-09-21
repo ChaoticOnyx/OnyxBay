@@ -42,6 +42,7 @@
 	name = "detective armor"
 	desc = "An armored vest with a detective's badge on it."
 	icon_state = "detective-armor"
+	item_state = "detective-armor"
 
 /obj/item/clothing/suit/armor/vest/warden
 	name = "warden's jacket"
@@ -144,10 +145,6 @@
 	name = "riot vest"
 	desc = "An armored vest with heavy padding to protect against melee attacks."
 	icon = 'icons/obj/clothing/modular_armor.dmi'
-	item_icons = list(
-		slot_l_hand_str = 'icons/mob/onmob/items/lefthand.dmi',
-		slot_r_hand_str = 'icons/mob/onmob/items/righthand.dmi'
-		)
 	icon_state = "riot_vest"
 	item_state = "riot_vest"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
@@ -283,7 +280,7 @@
 	name = "officer jacket"
 	desc = "An armored jacket used in special operations."
 	icon_state = "detective"
-	item_state = "det_suit"
+	item_state = "detective_open"
 	blood_overlay_type = "coatblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS

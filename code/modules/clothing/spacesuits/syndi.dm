@@ -145,8 +145,8 @@
 	name = "black medical space suit"
 	icon_state = "syndicate-black-med"
 	item_state_slots = list(
-		slot_l_hand_str = "syndicate-black",
-		slot_r_hand_str = "syndicate-black",
+		slot_l_hand_str = "syndicate-black-med",
+		slot_r_hand_str = "syndicate-black-med",
 	)
 
 
@@ -160,8 +160,8 @@
 	name = "black and orange space suit"
 	icon_state = "syndicate-black-orange"
 	item_state_slots = list(
-		slot_l_hand_str = "syndicate-black",
-		slot_r_hand_str = "syndicate-black",
+		slot_l_hand_str = "syndicate-black-orange",
+		slot_r_hand_str = "syndicate-black-orange",
 	)
 
 
@@ -189,6 +189,6 @@
 	name = "black engineering space suit"
 	icon_state = "syndicate-black-engie"
 	item_state_slots = list(
-		slot_l_hand_str = "syndicate-black",
-		slot_r_hand_str = "syndicate-black",
+		slot_l_hand_str = "syndicate-black-engie",
+		slot_r_hand_str = "syndicate-black-engie",
 	)
