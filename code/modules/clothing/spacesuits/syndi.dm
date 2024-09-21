@@ -12,8 +12,8 @@
 	name = "red space suit"
 	icon_state = "syndicate"
 	item_state_slots = list(
-		slot_l_hand_str = "space_suit_syndicate",
-		slot_r_hand_str = "space_suit_syndicate",
+		slot_l_hand_str = "syndicate",
+		slot_r_hand_str = "syndicate",
 	)
 	desc = "A crimson spacesuit sporting clean lines and durable plating. Robust, reliable, and slightly suspicious."
 	w_class = ITEM_SIZE_NORMAL

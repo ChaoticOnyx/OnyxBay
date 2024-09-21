@@ -3,6 +3,10 @@
 /obj/item/clothing/suit
 	name = "suit"
 	icon = 'icons/obj/clothing/suits.dmi'
+	item_icons = list(
+		slot_l_hand_str = 'icons/inv_slots/suits/hand_l_default.dmi',
+		slot_r_hand_str = 'icons/inv_slots/suits/hand_r_default.dmi',
+		)
 	w_class = ITEM_SIZE_NORMAL
 
 	siemens_coefficient = 0.9
