@@ -46,7 +46,6 @@
 	icon_state = "syndicate-green-dark"
 	item_state = "syndicate-green-dark"
 
-
 //Orange syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/orange
 	name = "orange space helmet"
@@ -57,7 +56,6 @@
 	name = "orange space suit"
 	icon_state = "syndicate-orange"
 	item_state = "syndicate-orange"
-
 
 //Blue syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/blue
@@ -81,7 +79,6 @@
 	icon_state = "syndicate-black"
 	item_state = "syndicate-black"
 
-
 //Black-green syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/black/green
 	name = "black and green space helmet"
@@ -92,7 +89,6 @@
 	name = "black and green space suit"
 	icon_state = "syndicate-black-green"
 	item_state = "syndicate-black-green"
-
 
 //Black-blue syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/black/blue
@@ -105,7 +101,6 @@
 	icon_state = "syndicate-black-blue"
 	item_state = "syndicate-black-blue"
 
-
 //Black medical syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/black/med
 	name = "black medical space helmet"
@@ -117,7 +112,6 @@
 	icon_state = "syndicate-black-med"
 	item_state = "syndicate-black-med"
 
-
 //Black-orange syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/black/orange
 	name = "black and orange space helmet"
@@ -128,7 +122,6 @@
 	name = "black and orange space suit"
 	icon_state = "syndicate-black-orange"
 	item_state = "syndicate-black-orange"
-
 
 //Black-red syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/black/red
