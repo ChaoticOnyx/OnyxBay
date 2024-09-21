@@ -103,7 +103,7 @@
 /obj/item/clothing/suit/space/syndicate/black/blue
 	name = "black and blue space suit"
 	icon_state = "syndicate-black-blue"
-	item_state_slots = "syndicate-black-blue"
+	item_state = "syndicate-black-blue"
 
 
 //Black medical syndicate space suit
