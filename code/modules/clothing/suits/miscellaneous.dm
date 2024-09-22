@@ -92,7 +92,7 @@
 /obj/item/clothing/suit/syndicatefake
 	name = "red space suit replica"
 	icon_state = "syndicate"
-	item_state = "space_suit_syndicate"
+	item_state = "syndicate"
 	desc = "A plastic replica of the syndicate space suit, you'll look just like a real murderous syndicate agent in this! This is a toy, it is not made for use in space!"
 	w_class = ITEM_SIZE_NORMAL
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank/emergency,/obj/item/toy)
@@ -270,7 +270,7 @@
 	name = "xenos suit"
 	desc = "A suit made out of chitinous alien hide."
 	icon_state = "xenos"
-	//item_state = "xenos_helm"
+	item_state = "xenos_suit"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 2.0

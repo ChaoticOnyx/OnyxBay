@@ -18,10 +18,7 @@
 	name = "atmos voidsuit"
 	desc = "A durable voidsuit with advanced temperature-regulation systems as well as minor radiation protection. Well worth the price."
 	icon_state = "rig-atmos"
-	item_state_slots = list(
-		slot_l_hand_str = "atmos_voidsuit",
-		slot_r_hand_str = "atmos_voidsuit",
-	)
+	item_state = "atmos_voidsuit"
 	armor = list(melee = 50, bullet = 45, laser = 70, energy = 45, bomb = 35, bio = 100)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/construction/rcd)

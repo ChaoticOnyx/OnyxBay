@@ -16,10 +16,7 @@
 	icon_state = "rig-medical"
 	name = "medical voidsuit"
 	desc = "A sterile voidsuit with minor radiation shielding and a suite of self-cleaning technology. Standard issue in NanoTrasen medical facilities."
-	item_state_slots = list(
-		slot_l_hand_str = "medical_voidsuit",
-		slot_r_hand_str = "medical_voidsuit",
-	)
+	item_state = "medical_voidsuit"
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/firstaid,/obj/item/device/healthanalyzer,/obj/item/stack/medical,/obj/item/device/antibody_scanner)
 	armor = list(melee = 40, bullet = 20, laser = 40, energy = 15, bomb = 0, bio = 100)
 	rad_resist_type = /datum/rad_resist/void_med

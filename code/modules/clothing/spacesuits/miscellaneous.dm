@@ -9,6 +9,7 @@
 	name = "Santa's suit"
 	desc = "Festive!"
 	icon_state = "santa"
+	item_state = "santa"
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE
 	allowed = list(/obj/item) //for stuffing exta special presents
 

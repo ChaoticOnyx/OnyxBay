@@ -5,6 +5,7 @@
 	desc = "A lightweight black plate carrier vest. It can be equipped with armor plates, but provides no protection of its own."
 	icon = 'icons/obj/clothing/modular_armor.dmi'
 	icon_state = "pcarrier"
+	item_state = "pcarrier"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_C, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L, ACCESSORY_SLOT_ARMOR_S, ACCESSORY_SLOT_ARMOR_M)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_C, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L, ACCESSORY_SLOT_ARMOR_S)
 	blood_overlay_type = "armorblood"
@@ -28,21 +29,25 @@
 	name = "blue plate carrier"
 	desc = "A lightweight blue plate carrier vest. It can be equipped with armor plates, but provides no protection of its own."
 	icon_state = "pcarrier_blue"
+	item_state = "pcarrier_blue"
 
 /obj/item/clothing/suit/armor/pcarrier/green
 	name = "green plate carrier"
 	desc = "A lightweight green plate carrier vest. It can be equipped with armor plates, but provides no protection of its own."
 	icon_state = "pcarrier_green"
+	item_state = "pcarrier_green"
 
 /obj/item/clothing/suit/armor/pcarrier/navy
 	name = "navy plate carrier"
 	desc = "A lightweight navy blue plate carrier vest. It can be equipped with armor plates, but provides no protection of its own."
 	icon_state = "pcarrier_navy"
+	item_state = "pcarrier_navy"
 
 /obj/item/clothing/suit/armor/pcarrier/tan
 	name = "tan plate carrier"
 	desc = "A lightweight tan plate carrier vest. It can be equipped with armor plates, but provides no protection of its own."
 	icon_state = "pcarrier_tan"
+	item_state = "pcarrier_tan"
 
 /obj/item/clothing/suit/armor/pcarrier/syndi
 	starting_accessories = list(/obj/item/clothing/accessory/armorplate/syndi, /obj/item/clothing/accessory/armguards/syndi, /obj/item/clothing/accessory/legguards/syndi, /obj/item/clothing/accessory/storage/pouches/large)
