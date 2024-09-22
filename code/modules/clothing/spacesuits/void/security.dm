@@ -16,10 +16,7 @@
 	icon_state = "rig-sec"
 	name = "security voidsuit"
 	desc = "A heavily armored voidsuit, designed to intimidate people who find black intimidating. Surprisingly slimming."
-	item_state_slots = list(
-		slot_l_hand_str = "sec_voidsuit",
-		slot_r_hand_str = "sec_voidsuit",
-	)
+	item_state = "sec_voidsuit"
 	armor = list(melee = 70, bullet = 100, laser = 70, energy = 5, bomb = 45, bio = 100)
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)
 	siemens_coefficient = 0.7

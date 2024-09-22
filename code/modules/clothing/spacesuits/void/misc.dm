@@ -4,6 +4,7 @@
 	name = "\improper SWAT suit"
 	desc = "A heavily armored suit that protects against moderate damage. Used in special operations."
 	icon_state = "deathsquad"
+	item_state = "deathsquad"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS
 	allowed = list(/obj/item/gun, /obj/item/ammo_magazine, /obj/item/ammo_casing, /obj/item/melee/baton, /obj/item/handcuffs, /obj/item/tank)
 	armor = list(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 100)
@@ -19,9 +20,10 @@
 	name = "deathsquad helmet"
 	desc = "That's not red paint. That's real blood."
 	icon_state = "deathsquad"
+	item_state = "deathsquad"
 	item_state_slots = list(
-		slot_l_hand_str = "syndicate-helm-black-red",
-		slot_r_hand_str = "syndicate-helm-black-red",
+		slot_l_hand_str = "deathsquad",
+		slot_r_hand_str = "deathsquad",
 		)
 	armor = list(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 100)
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL

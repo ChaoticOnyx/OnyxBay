@@ -17,10 +17,7 @@
 	name = "engineering voidsuit"
 	desc = "A run-of-the-mill service voidsuit with all the plating and radiation protection required for industrial work in vacuum."
 	icon_state = "rig-engineering"
-	item_state_slots = list(
-		slot_l_hand_str = "eng_voidsuit",
-		slot_r_hand_str = "eng_voidsuit",
-	)
+	item_state = "eng_voidsuit"
 	siemens_coefficient = 0.3
 	armor = list(melee = 60, bullet = 50, laser = 60, energy = 45, bomb = 35, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/construction/rcd)

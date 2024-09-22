@@ -15,10 +15,7 @@
 	icon_state = "rig-syndie"
 	name = "blood-red voidsuit"
 	desc = "An advanced suit that protects against injuries during special operations. Property of Gorlex Marauders."
-	item_state_slots = list(
-		slot_l_hand_str = "syndie_voidsuit",
-		slot_r_hand_str = "syndie_voidsuit",
-	)
+	item_state = "syndie-void"
 	w_class = ITEM_SIZE_LARGE //normally voidsuits are bulky but the syndi voidsuit is 'advanced' or something
 	armor = list(melee = 80, bullet = 100, laser = 120, energy = 35, bomb = 30, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword/one_hand,/obj/item/handcuffs)
