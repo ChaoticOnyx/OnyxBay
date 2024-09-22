@@ -5,7 +5,7 @@ default_view = "15x15"
 default_view_wide = "19x15"
 
 ## Preset name from file 'event_presets.toml', leave empty to not use a preset.
-events_preset = ""
+events_preset = "default"
 ## Set to true to enable map voting; you'll need to use the script at tools/server.sh or an equivalent for it to take effect
 ## You'll also likely need to enable wait_for_sigusr1.
 map_switching = false
