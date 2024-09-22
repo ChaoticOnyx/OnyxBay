@@ -106,7 +106,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/proc/skip_unwanted_job(datum/mind/H)
 	var/datum/job/title = job_master.GetJob(H.assigned_role)
-	if(wanted_jobs.len)
+	if(length(wanted_jobs))
 		if(title in wanted_jobs)
 			return FALSE
 		else
