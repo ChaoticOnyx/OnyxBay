@@ -55,6 +55,7 @@
 
 /obj/item/clothing/suit/space/void/security/hos
 	icon_state = "rig-sechos"
+	item_state = "sechos_voidsuit"
 	name = "security commander voidsuit"
 	desc = "A heavily armored voidsuit. Gold trimming shows who's the boss here, while heavy pauldrons and kama make it extra durable."
 	armor = list(melee = 80, bullet = 120, laser = 90, energy = 35, bomb = 45, bio = 100)
