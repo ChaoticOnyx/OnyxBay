@@ -37,6 +37,7 @@
 	charge_cost = 20
 	max_shots = 6
 	projectile_type = /obj/item/projectile/ion/small
+	wielded_item_state = null
 	fire_sound = 'sound/effects/weapons/energy/fire1.ogg'
 
 /obj/item/gun/energy/decloner
