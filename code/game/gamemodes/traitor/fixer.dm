@@ -25,7 +25,7 @@
 		set_next_think(world.time + time_to_next_contract)
 
 /datum/contract_fixer/think()
-	if(!contract_list_overfilled())
+	if(!contract_list_closed())
 		create_random_contract(1)
 	set_next_think(world.time + time_to_next_contract)
 
