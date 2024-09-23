@@ -183,12 +183,12 @@
 			update_icon()
 
 	else if(W.get_temperature_as_from_ignitor())
-		if(reagents.total_volume == 0)
-		user.visible_message(
-		  SPAN("danger", "[user] puts [W] to [src]."),
-		  SPAN("danger", "You put \the [W] \the [src] to and nothing happens.")
-		)
-		return
+		if (reagents.total_volume == 0)
+			user.visible_message(
+		 	 SPAN("danger", "[user] puts [W] to [src]."),
+		 	 SPAN("danger", "You put \the [W] \the [src] to and nothing happens.")
+			)
+			return
 		log_and_message_admins("triggered a fueltank explosion with [W].")
 		user.visible_message(
 		  SPAN("danger", "[user] puts [W] to [src]!"),
@@ -228,6 +228,13 @@
 			qdel(src)
 			return
 		if(2.0)
+			if (prob(50))
+				qdel(src)
+				return
+		if(3.0)
+			if (prob(5))
+				qdel(src)
+				return
 	explode()
 
 /obj/structure/reagent_dispensers/fueltank/proc/explode()
