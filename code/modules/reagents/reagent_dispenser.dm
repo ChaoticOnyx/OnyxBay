@@ -181,14 +181,14 @@
 			  SPAN("notice", "You rig [W] to \the [src].")
 			)
 			update_icon()
-	else if(reagents.total_volume == 0 && W.get_temperature_as_from_ignitor())
-		user.visible_message(
-		  SPAN("danger", "[user] puts [W] to [src]."),
-		  SPAN("danger", "You put \the [W] to \the [src] and nothing happened.")
-		)
-		return ..()
 
 	else if(W.get_temperature_as_from_ignitor())
+		if(reagents.total_volume == 0)
+		user.visible_message(
+		  SPAN("danger", "[user] puts [W] to [src]."),
+		  SPAN("danger", "You put \the [W] \the [src] to and nothing happens.")
+		)
+		return
 		log_and_message_admins("triggered a fueltank explosion with [W].")
 		user.visible_message(
 		  SPAN("danger", "[user] puts [W] to [src]!"),
@@ -222,7 +222,12 @@
 		if(!istype(Proj ,/obj/item/projectile/beam/lasertag) && !istype(Proj ,/obj/item/projectile/beam/practice) )
 			explode()
 
-/obj/structure/reagent_dispensers/fueltank/ex_act()
+/obj/structure/reagent_dispensers/fueltank/ex_act(severity)
+	switch(severity)
+		if(1.0)
+			qdel(src)
+			return
+		if(2.0)
 	explode()
 
 /obj/structure/reagent_dispensers/fueltank/proc/explode()
