@@ -58,6 +58,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/reason
 	var/list/reason_list = list()
 	var/datum/contract_organization/organization
+	var/list/wanted_jobs = list()
 
 /datum/antag_contract/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	ASSERT(intent)
@@ -102,6 +103,16 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(!H?.species)
 		return FALSE
 	return !!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET)
+
+/datum/antag_contract/proc/skip_unwanted_job(datum/mind/H)
+	var/datum/job/title = job_master.GetJob(H.assigned_role)
+	if(length(wanted_jobs))
+		if(title in wanted_jobs)
+			return FALSE
+		else
+			return TRUE
+	else
+		return FALSE
 
 /datum/antag_contract/proc/create_contract(new_reason, target)
 	return
@@ -400,6 +411,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/weakref/alternative_target // obj/item
 	var/weakref/H // mob/living/carbon/human
 	var/full_reward_mod = 1.5
+	wanted_jobs = list(/datum/job/captain,/datum/job/hop,/datum/job/rd,/datum/job/chief_engineer,/datum/job/cmo,/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/qm)
 
 /datum/antag_contract/item/assassinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	organization = contract_organization
@@ -438,7 +450,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 			target_real_name = _H.real_name
 			target_mind = candidate_mind
-			if(skip_antag_role() || skip_unwanted_species(_H))
+			if(skip_antag_role() || skip_unwanted_species(_H) || skip_unwanted_job(_H))
 				target_mind = null
 				_H = null
 				continue
