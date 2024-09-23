@@ -186,7 +186,7 @@
 		if (reagents.total_volume == 0)
 			user.visible_message(
 		 	 SPAN("danger", "[user] puts [W] to [src]."),
-		 	 SPAN("danger", "You put \the [W] \the [src] to and nothing happens.")
+		 	 SPAN("danger", "You put \the [W] to \the [src] and nothing happens.")
 			)
 			return
 		log_and_message_admins("triggered a fueltank explosion with [W].")
