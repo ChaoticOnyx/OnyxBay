@@ -181,6 +181,13 @@
 			  SPAN("notice", "You rig [W] to \the [src].")
 			)
 			update_icon()
+	else if(reagents.total_volume == 0)
+		user.visible_message(
+		  SPAN("danger", "[user] puts [W] to [src]."),
+		  SPAN("danger", "You put \the [W] to \the [src] and nothing happened.")
+		)
+		return ..()
+
 	else if(W.get_temperature_as_from_ignitor())
 		log_and_message_admins("triggered a fueltank explosion with [W].")
 		user.visible_message(
@@ -225,6 +232,8 @@
 		explosion(src.loc,0,1,3,sfx_to_play=SFX_EXPLOSION_FUEL)
 	else if (reagents.total_volume > 50)
 		explosion(src.loc,-1,1,2,sfx_to_play=SFX_EXPLOSION_FUEL)
+	else if (reagents.total_volume == 0)
+		return
 	if(src)
 		qdel(src)
 
