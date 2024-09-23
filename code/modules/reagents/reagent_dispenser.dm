@@ -181,7 +181,7 @@
 			  SPAN("notice", "You rig [W] to \the [src].")
 			)
 			update_icon()
-	else if(reagents.total_volume == 0)
+	else if(reagents.total_volume == 0 && W.get_temperature_as_from_ignitor())
 		user.visible_message(
 		  SPAN("danger", "[user] puts [W] to [src]."),
 		  SPAN("danger", "You put \the [W] to \the [src] and nothing happened.")
