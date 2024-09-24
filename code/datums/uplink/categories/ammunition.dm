@@ -80,7 +80,7 @@
 
 /datum/uplink_item/item/ammo/rocket
 	name = "Rocket"
-	item_cost = 2
+	item_cost = 1
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/ammo_casing/rocket
 
