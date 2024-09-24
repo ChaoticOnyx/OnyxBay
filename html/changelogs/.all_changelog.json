@@ -1,5 +1,16 @@
 [
   {
+    "author": "ilyadobr",
+    "date": "2024-09-24T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Пустой топливный бак теперь не взрывается.",
+        "pr": 12838
+      }
+    ]
+  },
+  {
     "author": "Animusin",
     "date": "2024-09-23T00:00:00+03:00",
     "changes": [
