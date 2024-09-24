@@ -72,7 +72,7 @@
 
 // Nuke-only ammo below
 
-/datum/uplink_item/item/ammo/a556box //Because the L6-saw is only available to nukers
+/datum/uplink_item/item/ammo/a556box
 	name = "5.56mm Magazine Box"
 	item_cost = 3
 	antag_roles = list(MODE_NUKE)
