@@ -199,7 +199,7 @@
 			info += "\[item]\[b][tr_cat]\[/b]\[/item]"
 	info += "\[/list]\[/small]"
 	info += "\[hr]"
-	info += "\[br]\[b]Подпись Агента:\[/b]\[i] [nt_agent] \[/i]"
+	info += "\[br]\[b]Подпись Агента:\[/b]\[i][nt_agent]\[/i]"
 	info += "\[br]Место для печатей:"
 	stamps_images += "<br><img src = stamp-ntd.png>"
 	stamps_images += "<br><img src = stamp-merchant.png>"
