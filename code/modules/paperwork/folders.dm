@@ -3,6 +3,7 @@
 	desc = "A folder."
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "folder"
+	item_state = "folder"
 	w_class = ITEM_SIZE_SMALL
 
 	drop_sound = SFX_DROP_PAPER
@@ -11,22 +12,27 @@
 /obj/item/folder/blue
 	desc = "A blue folder."
 	icon_state = "folder_blue"
+	item_state = "folder_blue"
 
 /obj/item/folder/red
 	desc = "A red folder."
 	icon_state = "folder_red"
+	item_state = "folder_red"
 
 /obj/item/folder/yellow
 	desc = "A yellow folder."
 	icon_state = "folder_yellow"
+	item_state = "folder_yellow"
 
 /obj/item/folder/white
 	desc = "A white folder."
 	icon_state = "folder_white"
+	item_state = "folder_white"
 
 /obj/item/folder/nt
 	desc = "A NanoTrasen folder."
 	icon_state = "folder_nt"
+	item_state = "folder_nt"
 
 /obj/item/folder/on_update_icon()
 	ClearOverlays()
@@ -114,6 +120,7 @@
 	name = "envelope"
 	desc = "A thick envelope. You can't see what's inside."
 	icon_state = "envelope_sealed"
+	item_state = "envelope_sealed"
 	var/sealed = 1
 
 /obj/item/folder/envelope/on_update_icon()

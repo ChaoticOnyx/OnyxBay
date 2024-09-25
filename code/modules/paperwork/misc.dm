@@ -78,6 +78,7 @@
 	name = "Sol Work Visa"
 	desc = "A flimsy piece of laminated cardboard issued by the Sol Central Government."
 	icon_state = "workvisa" //Has to be here or it'll assume default paper sprites.
+	item_state = "workvisa"
 	dynamic_icon = TRUE
 	readonly = TRUE
 	info = "\[center]\[b]\[large]Work Visa of the Sol Central Government\[/large]\[/b]\[/center]\[br]\[center]\[solcrest]\[br]\[br]\[i]\[small]Issued on behalf of the Secretary-General.\[/small]\[/i]\[/center]\[hr]\[br]This paper hereby permits the carrier to travel unhindered through Sol territories, colonies, and space for the purpose of work and labor."
@@ -102,6 +103,7 @@
 	name = "Trade License"
 	desc = "A flimsy piece of laminated cardboard."
 	icon_state = "trade_license"
+	item_state = "trade_license"
 	dynamic_icon = TRUE
 	readonly = TRUE
 	var/dest_station = ""
@@ -160,7 +162,7 @@
 	dest_station = "[station_name()]"
 	var/department = pick(true_departaments)
 	var/org_name = pick(org_names)
-	var/date = list("day" = rand(1,30), "month" = rand(1,12), "year" = rand(2562,2564), "dur" = rand(3,5))
+	var/date = list("day" = rand(1,30), "month" = rand(1,12), "year" = rand(2564,2566), "dur" = rand(3,5))
 	var/nt_code = "[rand(100,999)]-[rand(100,999)]-[rand(100,999)]"
 	var/org_code = "[rand(100,999)]-[rand(10,999)]-[rand(100,999)]"
 	if(GLOB.merchant_illegalness)
