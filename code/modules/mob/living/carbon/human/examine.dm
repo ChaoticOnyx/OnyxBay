@@ -73,6 +73,9 @@
 
 	msg += "<br>"
 
+	if (isundead(src) && !isfakeliving(src) && (!skipface || (!skipgloves && !gloves) || (!skipjumpsuit && !w_uniform) || (!skipshoes && !shoes)))
+		msg += FONT_LARGE(SPAN_DANGER("[T.He] looks like a month-old corpse.\n"))
+
 	// uniform
 	if(w_uniform && !skipjumpsuit)
 		msg += "[T.He] [T.is] wearing [w_uniform.get_examine_line(!skipjumpsuitaccessories)].\n"
@@ -338,9 +341,6 @@
 	if(print_flavor_text()) msg += "[print_flavor_text()]\n"
 
 	msg += applying_pressure
-
-	if (isundead(src) && !isfakeliving(src) && (!skipface || (!skipgloves && !gloves) || (!skipjumpsuit && !w_uniform) || (!skipshoes && !shoes)))
-		msg += SPAN("danger", "[T.He] looks like a month-old corpse.\n")
 
 	if (pose)
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
