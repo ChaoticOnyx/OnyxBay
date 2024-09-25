@@ -45,6 +45,13 @@
 	var/rickrolling = FALSE
 	var/spamcheck = FALSE
 
+/obj/machinery/media/jukebox/super_juke
+	name = "fancy jukebox"
+	desc = "Touch the goddamn thing, and even a space marine's powersuit won't save you from the captain's rage."
+	icon = 'icons/obj/jukebox.dmi'
+	icon_state = "superjuke-nopower"
+	state_base = "superjuke"
+
 /obj/machinery/media/jukebox/Initialize()
 	. = ..()
 
