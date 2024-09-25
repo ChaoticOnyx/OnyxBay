@@ -153,9 +153,9 @@
 	"Скафандры и иное оборудование, предназначенное для проведения работ в открытом космосе" = 50,\
 	"Антиквариат" = 50,\
 	"Домашние питомцы" = 50,\
-	"Мелкокалиберное огнестрельное или слабое энергетическое оружие" = 5,\
-	"Крупнокалиберное огнестрельное или мощное энергетическое оружие" = 0.1,\
-	"Взрывчатые или сильногорючие вещества, гранаты, в том числе нестандартного действия" = 0.1)
+	"Мелкокалиберное огнестрельное или слабое энергетическое оружие" = 10,\
+	"Крупнокалиберное огнестрельное или мощное энергетическое оружие" = 1,\
+	"Взрывчатые или сильногорючие вещества, гранаты, в том числе нестандартного действия" = 1)
 
 
 /obj/item/paper/trade_lic/Initialize()
@@ -165,6 +165,7 @@
 	var/date = list("day" = rand(1,30), "month" = rand(1,12), "year" = rand(2564,2566), "dur" = rand(3,5))
 	var/nt_code = "[rand(100,999)]-[rand(100,999)]-[rand(100,999)]"
 	var/org_code = "[rand(100,999)]-[rand(10,999)]-[rand(100,999)]"
+	var/nt_agent = "[pick(GLOB.first_names_female)] [pick(GLOB.last_names)]"
 	if(GLOB.merchant_illegalness)
 		var/mistake = pick(possible_mis)
 		switch(mistake)
@@ -179,10 +180,13 @@
 			if("department")
 				department = pick(fake_departaments)
 
+	stamps += "<br><i>This paper has been stamped with the [department] stamp.</i>"
+	stamps += "<br><i>This paper has been stamped with the [org_name] stamp.</i>"
+
 	info = ""
 	info += "\[center]\[large]\[b]Разрешение на торговлю\[/b]\[/large]\[/center]"
 	info += "\[center]\[large]\[bluelogo]\[/large]\[/center]"
-	info += "\[small]Выдана агентом [pick(GLOB.first_names_female)] [pick(GLOB.last_names)] от лица [department]"
+	info += "\[small]Выдана агентом [nt_agent] от лица [department]"
 	info += "\[br]Код агента: [nt_code]\[br] Код организации: [org_code]"
 	info += "\[br]Дата выдачи: [date["day"]].[date["month"]].[date["year"]]\[br] Срок действия: [date["dur"]] года\[/small]"
 	info += "\[hr]"
@@ -193,10 +197,12 @@
 	for(var/tr_cat in trade_category)
 		if(prob(trade_category[tr_cat]))
 			info += "\[item]\[b][tr_cat]\[/b]\[/item]"
-	info += "\[/list]"
-	info += "\[i]This paper has been stamped with the [department] stamp.\[/i]"
-	info += "\[br]\[i]This paper has been stamped with the [org_name] stamp.\[/i]"
-	info += "\[/small]"
+	info += "\[/list]\[/small]"
+	info += "\[hr]"
+	info += "\[br]\[b]Подпись Агента:\[/b]\[i] [nt_agent] \[/i]"
+	info += "\[br]Место для печатей:"
+	stamps_images += "<br><img src = stamp-ntd.png>"
+	stamps_images += "<br><img src = stamp-merchant.png>"
 	. = ..()
 
 /obj/item/paper/trade_lic/trade_guide

@@ -3,7 +3,7 @@
 	desc = "A rubber stamp for stamping important documents."
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "stamp-qm"
-	item_state = "stamp"
+	item_state = "stamp-qm"
 	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 	throw_range = 15
@@ -104,6 +104,16 @@
 	name = "chapel rubber stamp"
 	icon_state = "stamp-chap"
 	item_state = "stamp-chap"
+
+/obj/item/stamp/merchant
+	name = "merchant rubber stamp"
+	icon_state = "stamp-merchant"
+	item_state = "stamp-merchant"
+
+/obj/item/stamp/ntd
+	name = "nanotrasen trading department rubber stamp"
+	icon_state = "stamp-ntd"
+	item_state = "stamp-ntd"
 
 // Syndicate stamp to forge documents.
 /obj/item/stamp/chameleon/attack_self(mob/user as mob)
