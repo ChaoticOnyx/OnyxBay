@@ -162,7 +162,8 @@
 	dest_station = "[station_name()]"
 	var/department = pick(true_departaments)
 	var/org_name = pick(org_names)
-	var/date = list("day" = rand(1,30), "month" = rand(1,12), "year" = rand(2564,2566), "dur" = rand(3,5))
+	var/station_year = text2num(copytext(station_date, 1, 5))
+	var/date = list("day" = rand(1,30), "month" = rand(1,12), "year" = rand(station_year-3,station_year-1), "dur" = rand(4,6))
 	var/nt_code = "[rand(100,999)]-[rand(100,999)]-[rand(100,999)]"
 	var/org_code = "[rand(100,999)]-[rand(10,999)]-[rand(100,999)]"
 	var/nt_agent = "[pick(GLOB.first_names_female)] [pick(GLOB.last_names)]"
@@ -174,21 +175,19 @@
 			if("org_code")
 				org_code = "[rand(100,999)]-[rand(1000,9999)]-[rand(100,999)]"
 			if("date")
-				date = list("day" = rand(1, 37), "month" = rand(1, 13), "year" = rand(2565), "dur" = rand(3, 10))
+				date = list("day" = rand(1, 37), "month" = rand(1, 13), "year" = rand(station_year-1984,station_year-69), "dur" = rand(3, 10))
 			if("dest")
 				dest_station = pick(another_stations)
 			if("department")
 				department = pick(fake_departaments)
-
-	stamps += "<br><i>This paper has been stamped with the [department] stamp.</i>"
-	stamps += "<br><i>This paper has been stamped with the [org_name] stamp.</i>"
 
 	info = ""
 	info += "\[center]\[large]\[b]Разрешение на торговлю\[/b]\[/large]\[/center]"
 	info += "\[center]\[large]\[bluelogo]\[/large]\[/center]"
 	info += "\[small]Выдана агентом [nt_agent] от лица [department]"
 	info += "\[br]Код агента: [nt_code]\[br] Код организации: [org_code]"
-	info += "\[br]Дата выдачи: [date["day"]].[date["month"]].[date["year"]]\[br] Срок действия: [date["dur"]] года\[/small]"
+	info += "\[br]Дата выдачи: [date["day"]<10?"0":""][date["day"]].[date["month"]<10?"0":""][date["month"]].[date["year"]]"
+	info += "\[br]Срок действия: [date["dur"]] года\[/small]"
 	info += "\[hr]"
 	info += "\[small]Данная лицензия дает разрешение всем сотрудникам торговой \
 	 компании \[i][org_name]\[/i] обслуживать станцию \[i][dest_station]\[/i] корпорации НаноТрейзен, осуществляя услуги по \
@@ -199,10 +198,16 @@
 			info += "\[item]\[b][tr_cat]\[/b]\[/item]"
 	info += "\[/list]\[/small]"
 	info += "\[hr]"
-	info += "\[br]\[b]Подпись Агента:\[/b]\[i][nt_agent]\[/i]"
+	info += "\[br]\[b]Подпись Агента: \[/b]\[i][nt_agent]\[/i]"
+	info += "\[br]"
 	info += "\[br]Место для печатей:"
+
+	stamped = list(/obj/item/stamp/ntd, /obj/item/stamp/merchant)
+	stamps += "<br><i>This paper has been stamped with the [department] stamp.</i>"
+	stamps += "<br><i>This paper has been stamped with the [org_name] stamp.</i>"
+
 	stamps_images += "<br><img src = stamp-ntd.png>"
-	stamps_images += "<br><img src = stamp-merchant.png>"
+	stamps_images += "<img src = stamp-merchant.png>"
 	. = ..()
 
 /obj/item/paper/trade_lic/trade_guide
