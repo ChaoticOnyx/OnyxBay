@@ -95,6 +95,7 @@
 
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 4)
 
+	var/tool_c
 	var/obj/item/device/multitool/advpart/multitool = null
 	var/obj/item/screwdriver/advpart/screwdriver = null
 	var/obj/item/wirecutters/advpart/wirecutters = null
@@ -108,7 +109,12 @@
 	tool_c = "multitool"
 	tool_behaviour = TOOL_MULTITOOL
 
-/obj/item/device/multitool/advtool/switchtools()
+/obj/item/device/multitool/advtool/on_update_icon()
+	underlays.Cut()
+	underlays += "adv_[tool_c]"
+	..()
+
+/obj/item/device/multitool/advtool/proc/switchtools()
 	if(tool_c == "multitool")
 		if(screwdriver)
 			tool_c = "screwdriver"
@@ -136,16 +142,21 @@
 
 /obj/item/device/multitool/advtool/attack_self(mob/user)
 	if(!screwdriver && !wirecutters)
-		to_chat(user, "<span class='notice'>[src] lacks tools.</span>")
+		to_chat(user, SPAN_NOTICE("[src] lacks tools."))
 		return
-	..()
+
+	switchtools()
+	to_chat(user, SPAN_NOTICE("[src] mode: [tool_c]."))
+	update_icon()
+	return
+
 
 /obj/item/device/multitool/advtool/attack_hand(mob/user)
 	if(src != user.get_inactive_hand())
 		return ..()
 
 	if(!src.contents.len)
-		to_chat(user, "<span class=warning>There's nothing in \the [src] to remove!</span>")
+		to_chat(user, SPAN_WARNING("There's nothing in \the [src] to remove!"))
 		return
 
 	var/choice = input(user, "What would you like to remove from the [src]?") as null|anything in src.contents
@@ -153,18 +164,18 @@
 		return
 
 	if(choice == multitool)
-		to_chat(user, "<span class=warning>You cannot remove the multitool itself.</span>")
+		to_chat(user, SPAN_WARNING("You cannot remove the multitool itself."))
 		return
 
 	if(user.pick_or_drop(choice))
-		to_chat(user, "<span class=notice>You remove \the [choice] from \the [src].</span>")
+		to_chat(user, SPAN_NOTICE("You remove \the [choice] from \the [src]."))
 		src.contents -= choice
 		if(choice == wirecutters)
 			wirecutters = null
 		else if(choice == screwdriver)
 			screwdriver = null
 	else
-		to_chat(user, "<span class=warning>Something went wrong, please try again.</span>")
+		to_chat(user, SPAN_WARNING("Something went wrong, please try again."))
 
 	tool_c = "multitool"
 	tool_behaviour = TOOL_MULTITOOL
@@ -178,20 +189,20 @@
 			contents += SD
 			user.drop(SD, src)
 			screwdriver = SD
-			to_chat(user, "<span class=notice>You insert \the [SD] into \the [src].</span>")
+			to_chat(user, SPAN_NOTICE("You insert \the [SD] into \the [src]."))
 			update_icon()
 		else
-			to_chat(user, "<span class=warning>There's already \the [screwdriver] in \the [src]!</span>")
+			to_chat(user, SPAN_WARNING("There's already \the [screwdriver] in \the [src]!"))
 	else if(istype(I, /obj/item/wirecutters/advpart))
 		var/obj/item/screwdriver/advpart/WC = I
 		if(!wirecutters)
 			contents += WC
 			user.drop(WC, src)
 			wirecutters = WC
-			to_chat(user, "<span class=notice>You insert \the [WC] into \the [src].</span>")
+			to_chat(user, SPAN_NOTICE("You insert \the [WC] into \the [src]."))
 			update_icon()
 		else
-			to_chat(user, "<span class=warning>There are already \the [wirecutters] in \the [src]!</span>")
+			to_chat(user, SPAN_WARNING("There are already \the [wirecutters] in \the [src]!"))
 	else
 		return ..()
 
