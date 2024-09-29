@@ -155,7 +155,7 @@
 	if(src != user.get_inactive_hand())
 		return ..()
 
-	if(!src.contents.len)
+	if(!contents.len)
 		to_chat(user, SPAN_WARNING("There's nothing in \the [src] to remove!"))
 		return
 
