@@ -112,7 +112,6 @@
 /obj/item/device/multitool/advtool/on_update_icon()
 	underlays.Cut()
 	underlays += "adv_[tool_c]"
-	..()
 
 /obj/item/device/multitool/advtool/proc/switchtools()
 	if(tool_c == "multitool")
@@ -138,7 +137,6 @@
 		tool_behaviour = TOOL_MULTITOOL
 		sharp = FALSE
 	update_icon()
-	return
 
 /obj/item/device/multitool/advtool/attack_self(mob/user)
 	if(!screwdriver && !wirecutters)
@@ -148,19 +146,18 @@
 	switchtools()
 	to_chat(user, SPAN_NOTICE("[src] mode: [tool_c]."))
 	update_icon()
-	return
 
 
 /obj/item/device/multitool/advtool/attack_hand(mob/user)
 	if(src != user.get_inactive_hand())
 		return ..()
 
-	if(!src.contents.len)
+	if(!contents.len)
 		to_chat(user, SPAN_WARNING("There's nothing in \the [src] to remove!"))
 		return
 
-	var/choice = input(user, "What would you like to remove from the [src]?") as null|anything in src.contents
-	if(!choice || !(choice in src.contents))
+	var/choice = tgui_input_list(user, "What would you like to remove from the [src]?", "Instrument remove", contents)
+	if(!choice || !(choice in contents))
 		return
 
 	if(choice == multitool)
@@ -169,7 +166,7 @@
 
 	if(user.pick_or_drop(choice))
 		to_chat(user, SPAN_NOTICE("You remove \the [choice] from \the [src]."))
-		src.contents -= choice
+		contents -= choice
 		if(choice == wirecutters)
 			wirecutters = null
 		else if(choice == screwdriver)
@@ -180,13 +177,11 @@
 	tool_c = "multitool"
 	tool_behaviour = TOOL_MULTITOOL
 	update_icon()
-	return
 
 /obj/item/device/multitool/advtool/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/screwdriver/advpart))
 		var/obj/item/screwdriver/advpart/SD = I
 		if(!screwdriver)
-			contents += SD
 			user.drop(SD, src)
 			screwdriver = SD
 			to_chat(user, SPAN_NOTICE("You insert \the [SD] into \the [src]."))
@@ -196,7 +191,6 @@
 	else if(istype(I, /obj/item/wirecutters/advpart))
 		var/obj/item/screwdriver/advpart/WC = I
 		if(!wirecutters)
-			contents += WC
 			user.drop(WC, src)
 			wirecutters = WC
 			to_chat(user, SPAN_NOTICE("You insert \the [WC] into \the [src]."))
