@@ -245,7 +245,7 @@
 
 		if(STATE_DEPRESSURIZE)
 			if(memory["chamber_sensor_pressure"] <= memory["target_pressure"] + SENSOR_TOLERANCE)
-				if(memory["pump_status"] != "off")
+				if(memory["pump_status"] != "off" && memory["pump_status"] != "unknown")
 					signalPump(tag_airpump, 0)
 					if(cycle_to_external_air)
 						signalPump(tag_pump_out_internal, 0)
