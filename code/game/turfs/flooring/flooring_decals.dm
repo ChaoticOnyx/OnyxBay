@@ -459,7 +459,6 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/grey/diagonal_edge
 	icon_state = "corner_white_diagonal_edge"
 
-
 //ALT CORNER DECALS
 
 /obj/effect/floor_decal/corner/alt
@@ -672,7 +671,6 @@ var/list/floor_decals = list()
 	icon_state = "corner_oldtile_diagonal_centre"
 
 /obj/effect/floor_decal/corner/old/purple/diagonal_edge
-
 	icon_state = "corner_oldtile_diagonal_edge"
 
 /obj/effect/floor_decal/corner/old/yellow
@@ -695,7 +693,6 @@ var/list/floor_decals = list()
 	icon_state = "corner_oldtile_diagonal_centre"
 
 /obj/effect/floor_decal/corner/old/yellow/diagonal_edge
-
 	icon_state = "corner_oldtile_diagonal_edge"
 
 /obj/effect/floor_decal/corner/old/gray
@@ -760,8 +757,7 @@ var/list/floor_decals = list()
 	icon_state = "sandfloordec"
 	alpha = 209
 
-/obj/effect/floor_decal/sandfloordec/asteroid0
-
+/obj/effect/floor_decal/sandfloordec/asteroid
 	name = "asteroid floor"
 	icon_state = "asteroidfloordec"
 
@@ -798,11 +794,9 @@ var/list/floor_decals = list()
 	icon_state = "stairs"
 
 /obj/effect/floor_decal/stairs/wood
-
 	color = COLOR_WOOD
 
 /obj/effect/floor_decal/stairs/darkwood
-
 	color = "#603413"
 
 /obj/effect/floor_decal/spline/plain/black
@@ -2281,11 +2275,9 @@ var/list/floor_decals = list()
 	icon_state = "bot"
 
 /obj/effect/floor_decal/bot/red
-
 	color = COLOR_RED
 
 /obj/effect/floor_decal/bot/yellow
-
 	color = COLOR_YELLOW
 
 /obj/effect/floor_decal/bot/right
@@ -2293,11 +2285,9 @@ var/list/floor_decals = list()
 	icon_state = "bot_right"
 
 /obj/effect/floor_decal/bot/right/red
-
 	color = COLOR_RED
 
 /obj/effect/floor_decal/bot/right/yellow
-
 	color = COLOR_YELLOW
 
 /obj/effect/floor_decal/bot/left
@@ -2305,11 +2295,9 @@ var/list/floor_decals = list()
 	icon_state = "bot_left"
 
 /obj/effect/floor_decal/bot/left/red
-
 	color = COLOR_RED
 
 /obj/effect/floor_decal/bot/left/yellow
-
 	color = COLOR_YELLOW
 
 /obj/effect/floor_decal/ss13_new/l1
