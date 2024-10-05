@@ -3002,34 +3002,170 @@ var/list/floor_decals = list()
 	name = "number"
 	icon_state = "number"
 
-/obj/effect/floor_decal/numbers/zero
+/obj/effect/floor_decal/numbers/white/zero
 	icon_state = "number_0"
 
-/obj/effect/floor_decal/numbers/one
+/obj/effect/floor_decal/numbers/white/one
 	icon_state = "number_1"
 
-/obj/effect/floor_decal/numbers/two
+/obj/effect/floor_decal/numbers/white/two
 	icon_state = "number_2"
 
-/obj/effect/floor_decal/numbers/three
+/obj/effect/floor_decal/numbers/white/three
 	icon_state = "number_3"
 
-/obj/effect/floor_decal/numbers/four
+/obj/effect/floor_decal/numbers/white/four
 	icon_state = "number_4"
 
-/obj/effect/floor_decal/numbers/five
+/obj/effect/floor_decal/numbers/white/five
 	icon_state = "number_5"
 
-/obj/effect/floor_decal/numbers/six
+/obj/effect/floor_decal/numbers/white/six
 	icon_state = "number_6"
 
-/obj/effect/floor_decal/numbers/seven
+/obj/effect/floor_decal/numbers/white/seven
 	icon_state = "number_7"
 
-/obj/effect/floor_decal/numbers/eight
+/obj/effect/floor_decal/numbers/white/eight
 	icon_state = "number_8"
 
-/obj/effect/floor_decal/numbers/nine
+/obj/effect/floor_decal/numbers/white/nine
+	icon_state = "number_9"
+
+/obj/effect/floor_decal/numbers/yellow
+
+	color = COLOR_YELLOW
+
+/obj/effect/floor_decal/numbers/yellow/zero
+	icon_state = "number_0"
+
+/obj/effect/floor_decal/numbers/yellow/one
+	icon_state = "number_1"
+
+/obj/effect/floor_decal/numbers/yellow/two
+	icon_state = "number_2"
+
+/obj/effect/floor_decal/numbers/yellow/three
+	icon_state = "number_3"
+
+/obj/effect/floor_decal/numbers/yellow/four
+	icon_state = "number_4"
+
+/obj/effect/floor_decal/numbers/yellow/five
+	icon_state = "number_5"
+
+/obj/effect/floor_decal/numbers/yellow/six
+	icon_state = "number_6"
+
+/obj/effect/floor_decal/numbers/yellow/seven
+	icon_state = "number_7"
+
+/obj/effect/floor_decal/numbers/yellow/eight
+	icon_state = "number_8"
+
+/obj/effect/floor_decal/numbers/yellow/nine
+	icon_state = "number_9"
+
+/obj/effect/floor_decal/numbers/orange
+
+	color = COLOR_ORANGE
+
+/obj/effect/floor_decal/numbers/orange/zero
+	icon_state = "number_0"
+
+/obj/effect/floor_decal/numbers/orange/one
+	icon_state = "number_1"
+
+/obj/effect/floor_decal/numbers/orange/two
+	icon_state = "number_2"
+
+/obj/effect/floor_decal/numbers/orange/three
+	icon_state = "number_3"
+
+/obj/effect/floor_decal/numbers/orange/four
+	icon_state = "number_4"
+
+/obj/effect/floor_decal/numbers/orange/five
+	icon_state = "number_5"
+
+/obj/effect/floor_decal/numbers/orange/six
+	icon_state = "number_6"
+
+/obj/effect/floor_decal/numbers/orange/seven
+	icon_state = "number_7"
+
+/obj/effect/floor_decal/numbers/orange/eight
+	icon_state = "number_8"
+
+/obj/effect/floor_decal/numbers/orange/nine
+	icon_state = "number_9"
+
+/obj/effect/floor_decal/numbers/red
+
+	color = COLOR_RED
+
+/obj/effect/floor_decal/numbers/red/zero
+	icon_state = "number_0"
+
+/obj/effect/floor_decal/numbers/red/one
+	icon_state = "number_1"
+
+/obj/effect/floor_decal/numbers/red/two
+	icon_state = "number_2"
+
+/obj/effect/floor_decal/numbers/red/three
+	icon_state = "number_3"
+
+/obj/effect/floor_decal/numbers/red/four
+	icon_state = "number_4"
+
+/obj/effect/floor_decal/numbers/red/five
+	icon_state = "number_5"
+
+/obj/effect/floor_decal/numbers/red/six
+	icon_state = "number_6"
+
+/obj/effect/floor_decal/numbers/red/seven
+	icon_state = "number_7"
+
+/obj/effect/floor_decal/numbers/red/eight
+	icon_state = "number_8"
+
+/obj/effect/floor_decal/numbers/red/nine
+	icon_state = "number_9"
+
+/obj/effect/floor_decal/numbers/blue
+
+	color = COLOR_BLUE
+
+/obj/effect/floor_decal/numbers/blue/zero
+	icon_state = "number_0"
+
+/obj/effect/floor_decal/numbers/blue/one
+	icon_state = "number_1"
+
+/obj/effect/floor_decal/numbers/blue/two
+	icon_state = "number_2"
+
+/obj/effect/floor_decal/numbers/blue/three
+	icon_state = "number_3"
+
+/obj/effect/floor_decal/numbers/blue/four
+	icon_state = "number_4"
+
+/obj/effect/floor_decal/numbers/blue/five
+	icon_state = "number_5"
+
+/obj/effect/floor_decal/numbers/blue/six
+	icon_state = "number_6"
+
+/obj/effect/floor_decal/numbers/blue/seven
+	icon_state = "number_7"
+
+/obj/effect/floor_decal/numbers/blue/eight
+	icon_state = "number_8"
+
+/obj/effect/floor_decal/numbers/blue/nine
 	icon_state = "number_9"
 
 /obj/effect/floor_decal/bot
