@@ -3101,7 +3101,6 @@ var/list/floor_decals = list()
 	icon_state = "number_9"
 
 /obj/effect/floor_decal/numbers/red
-
 	color = COLOR_RED
 
 /obj/effect/floor_decal/numbers/red/zero
