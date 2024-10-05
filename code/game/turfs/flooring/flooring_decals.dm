@@ -1459,7 +1459,7 @@ var/list/floor_decals = list()
 	icon_state = "corner_oldtile_diagonal_edge"
 
 /obj/effect/floor_decal/corner/old/gray
-	name = "red corner"
+	name = "gray corner"
 	color = COLOR_GRAY_SPECIAL
 
 /obj/effect/floor_decal/corner/old/gray/diagonal
