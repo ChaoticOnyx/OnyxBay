@@ -3067,7 +3067,6 @@ var/list/floor_decals = list()
 	icon_state = "number_9"
 
 /obj/effect/floor_decal/numbers/orange
-
 	color = COLOR_ORANGE
 
 /obj/effect/floor_decal/numbers/orange/zero
@@ -3134,7 +3133,6 @@ var/list/floor_decals = list()
 	icon_state = "number_9"
 
 /obj/effect/floor_decal/numbers/blue
-
 	color = COLOR_BLUE
 
 /obj/effect/floor_decal/numbers/blue/zero
