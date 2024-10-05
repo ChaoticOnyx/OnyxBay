@@ -1390,7 +1390,6 @@ var/list/floor_decals = list()
 	icon_state = "corner_oldtile_diagonal_centre"
 
 /obj/effect/floor_decal/corner/old/teal/diagonal_edge
-
 	icon_state = "corner_oldtile_diagonal_edge"
 
 /obj/effect/floor_decal/corner/old/blue
@@ -1413,7 +1412,6 @@ var/list/floor_decals = list()
 	icon_state = "corner_oldtile_diagonal_centre"
 
 /obj/effect/floor_decal/corner/old/blue/diagonal_edge
-
 	icon_state = "corner_oldtile_diagonal_edge"
 
 /obj/effect/floor_decal/corner/old/purple
