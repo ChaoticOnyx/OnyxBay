@@ -40,7 +40,7 @@
 	..()
 
 /obj/item/storage/briefcase/std/proc/can_launch()
-	return authentication_complete && (locate(/turf/space) in view(get_turf(src)))
+	return authentication_complete && ((locate(/turf/space) in view(get_turf(src))) || (locate(/area/polarplanet/street) in view(get_turf(src))))
 
 /obj/item/storage/briefcase/std/attack_self(mob/user)
 	ui_interact(user)
