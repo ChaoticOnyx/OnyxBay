@@ -78,6 +78,7 @@
 	name = "Sol Work Visa"
 	desc = "A flimsy piece of laminated cardboard issued by the Sol Central Government."
 	icon_state = "workvisa" //Has to be here or it'll assume default paper sprites.
+	item_state = "workvisa"
 	dynamic_icon = TRUE
 	readonly = TRUE
 	info = "\[center]\[b]\[large]Work Visa of the Sol Central Government\[/large]\[/b]\[/center]\[br]\[center]\[solcrest]\[br]\[br]\[i]\[small]Issued on behalf of the Secretary-General.\[/small]\[/i]\[/center]\[hr]\[br]This paper hereby permits the carrier to travel unhindered through Sol territories, colonies, and space for the purpose of work and labor."
@@ -102,6 +103,7 @@
 	name = "Trade License"
 	desc = "A flimsy piece of laminated cardboard."
 	icon_state = "trade_license"
+	item_state = "trade_license"
 	dynamic_icon = TRUE
 	readonly = TRUE
 	var/dest_station = ""
@@ -151,18 +153,20 @@
 	"Скафандры и иное оборудование, предназначенное для проведения работ в открытом космосе" = 50,\
 	"Антиквариат" = 50,\
 	"Домашние питомцы" = 50,\
-	"Мелкокалиберное огнестрельное или слабое энергетическое оружие" = 5,\
-	"Крупнокалиберное огнестрельное или мощное энергетическое оружие" = 0.1,\
-	"Взрывчатые или сильногорючие вещества, гранаты, в том числе нестандартного действия" = 0.1)
+	"Мелкокалиберное огнестрельное или слабое энергетическое оружие" = 10,\
+	"Крупнокалиберное огнестрельное или мощное энергетическое оружие" = 1,\
+	"Взрывчатые или сильногорючие вещества, гранаты, в том числе нестандартного действия" = 1)
 
 
 /obj/item/paper/trade_lic/Initialize()
 	dest_station = "[station_name()]"
 	var/department = pick(true_departaments)
 	var/org_name = pick(org_names)
-	var/date = list("day" = rand(1,30), "month" = rand(1,12), "year" = rand(2562,2564), "dur" = rand(3,5))
+	var/station_year = text2num(copytext(station_date, 1, 5))
+	var/date = list("day" = rand(1,30), "month" = rand(1,12), "year" = rand(station_year-3,station_year-1), "dur" = rand(4,6))
 	var/nt_code = "[rand(100,999)]-[rand(100,999)]-[rand(100,999)]"
 	var/org_code = "[rand(100,999)]-[rand(10,999)]-[rand(100,999)]"
+	var/nt_agent = "[pick(GLOB.first_names_female)] [pick(GLOB.last_names)]"
 	if(GLOB.merchant_illegalness)
 		var/mistake = pick(possible_mis)
 		switch(mistake)
@@ -171,7 +175,7 @@
 			if("org_code")
 				org_code = "[rand(100,999)]-[rand(1000,9999)]-[rand(100,999)]"
 			if("date")
-				date = list("day" = rand(1, 37), "month" = rand(1, 13), "year" = rand(2565), "dur" = rand(3, 10))
+				date = list("day" = rand(1, 37), "month" = rand(1, 13), "year" = rand(station_year-1984,station_year-69), "dur" = rand(3, 10))
 			if("dest")
 				dest_station = pick(another_stations)
 			if("department")
@@ -180,9 +184,10 @@
 	info = ""
 	info += "\[center]\[large]\[b]Разрешение на торговлю\[/b]\[/large]\[/center]"
 	info += "\[center]\[large]\[bluelogo]\[/large]\[/center]"
-	info += "\[small]Выдана агентом [pick(GLOB.first_names_female)] [pick(GLOB.last_names)] от лица [department]"
+	info += "\[small]Выдана агентом [nt_agent] от лица [department]"
 	info += "\[br]Код агента: [nt_code]\[br] Код организации: [org_code]"
-	info += "\[br]Дата выдачи: [date["day"]].[date["month"]].[date["year"]]\[br] Срок действия: [date["dur"]] года\[/small]"
+	info += "\[br]Дата выдачи: [date["day"]<10?"0":""][date["day"]].[date["month"]<10?"0":""][date["month"]].[date["year"]]"
+	info += "\[br]Срок действия: [date["dur"]] года\[/small]"
 	info += "\[hr]"
 	info += "\[small]Данная лицензия дает разрешение всем сотрудникам торговой \
 	 компании \[i][org_name]\[/i] обслуживать станцию \[i][dest_station]\[/i] корпорации НаноТрейзен, осуществляя услуги по \
@@ -191,10 +196,18 @@
 	for(var/tr_cat in trade_category)
 		if(prob(trade_category[tr_cat]))
 			info += "\[item]\[b][tr_cat]\[/b]\[/item]"
-	info += "\[/list]"
-	info += "\[i]This paper has been stamped with the [department] stamp.\[/i]"
-	info += "\[br]\[i]This paper has been stamped with the [org_name] stamp.\[/i]"
-	info += "\[/small]"
+	info += "\[/list]\[/small]"
+	info += "\[hr]"
+	info += "\[br]\[b]Подпись Агента: \[/b]\[i][nt_agent]\[/i]"
+	info += "\[br]"
+	info += "\[br]Место для печатей:"
+
+	stamped = list(/obj/item/stamp/ntd, /obj/item/stamp/merchant)
+	stamps += "<br><i>This paper has been stamped with the [department] stamp.</i>"
+	stamps += "<br><i>This paper has been stamped with the [org_name] stamp.</i>"
+
+	stamps_images += "<br><img src = stamp-ntd.png>"
+	stamps_images += "<img src = stamp-merchant.png>"
 	. = ..()
 
 /obj/item/paper/trade_lic/trade_guide

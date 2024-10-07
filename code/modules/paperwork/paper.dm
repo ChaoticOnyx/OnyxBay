@@ -26,7 +26,7 @@
 	var/photocopied = FALSE
 	var/free_space = MAX_PAPER_MESSAGE_LEN
 	var/stamps_generated = TRUE
-	var/list/stamped
+	var/list/stamped = list()
 	var/list/ico[0]      //Icons and
 	var/list/offset_x[0] //offsets stored for later
 	var/list/offset_y[0] //usage by the photocopier
@@ -209,7 +209,6 @@
 
 	if(name != "sheet of paper")
 		. += "It's titled '[name]'."
-		. += stamps
 
 	if(length(stamped))
 		if(is_type_in_list(/obj/item/stamp/void, stamped))

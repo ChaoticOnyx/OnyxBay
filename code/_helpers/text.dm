@@ -441,6 +441,7 @@
 	t = replacetext(t, "\[/u\]", "</u>")
 	t = replacetext(t, "\[time\]", "[stationtime2text()]")
 	t = replacetext(t, "\[date\]", "[stationdate2text()]")
+	t = replacetext(t, "\[station\]", "[station_name()]")
 	t = replacetext(t, "\[large\]", "<span class='LargeFont' [class]>")
 	t = replacetext(t, "\[/large\]", "</span>")
 	t = replacetext(t, "\[field\]", "<!--paper_field-->")

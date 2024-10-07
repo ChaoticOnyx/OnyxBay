@@ -3,7 +3,7 @@
 	desc = "A rubber stamp for stamping important documents."
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "stamp-qm"
-	item_state = "stamp"
+	item_state = "stamp-qm"
 	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 	throw_range = 15
@@ -13,78 +13,107 @@
 /obj/item/stamp/captain
 	name = "captain's rubber stamp"
 	icon_state = "stamp-cap"
+	item_state = "stamp-cap"
 
 /obj/item/stamp/hop
 	name = "head of personnel's rubber stamp"
 	icon_state = "stamp-hop"
+	item_state = "stamp-hop"
 
 /obj/item/stamp/hos
 	name = "head of security's rubber stamp"
 	icon_state = "stamp-hos"
+	item_state = "stamp-hos"
 
 /obj/item/stamp/ward
 	name = "warden's rubber stamp"
 	icon_state = "stamp-ward"
+	item_state = "stamp-ward"
 
 /obj/item/stamp/ce
 	name = "chief engineer's rubber stamp"
 	icon_state = "stamp-ce"
+	item_state = "stamp-ce"
 
 /obj/item/stamp/rd
 	name = "research director's rubber stamp"
 	icon_state = "stamp-rd"
+	item_state = "stamp-rd"
 
 /obj/item/stamp/cmo
 	name = "chief medical officer's rubber stamp"
 	icon_state = "stamp-cmo"
+	item_state = "stamp-cmo"
 
 /obj/item/stamp/denied
 	name = "\improper DENIED rubber stamp"
 	icon_state = "stamp-deny"
+	item_state = "stamp-deny"
 
 /obj/item/stamp/clown
 	name = "clown's rubber stamp"
 	icon_state = "stamp-clown"
+	item_state = "stamp-clown"
 
 /obj/item/stamp/internalaffairs
 	name = "internal affairs rubber stamp"
 	icon_state = "stamp-intaff"
+	item_state = "stamp-intaff"
 
 /obj/item/stamp/centcomm
 	name = "centcomm rubber stamp"
 	icon_state = "stamp-cent"
+	item_state = "stamp-cent"
 
 /obj/item/stamp/qm
 	name = "quartermaster's rubber stamp"
 	icon_state = "stamp-qm"
+	item_state = "stamp-qm"
 
 /obj/item/stamp/cargo
 	name = "cargo rubber stamp"
 	icon_state = "stamp-cargo"
+	item_state = "stamp-cargo"
 
 /obj/item/stamp/ok
 	name = "\improper APPROVED rubber stamp"
 	icon_state = "stamp-ok"
+	item_state = "stamp-ok"
 
 /obj/item/stamp/syndicate
 	name = "\improper 'criminal' rubber stamp"
 	icon_state = "stamp-syndicate"
+	item_state = "stamp-syndicate"
 
 /obj/item/stamp/void
 	name = "void rubber stamp"
 	icon_state = "stamp-void"
+	item_state = "stamp-void"
 
 /obj/item/stamp/mime
 	name = "mime rubber stamp"
 	icon_state = "stamp-mime"
+	item_state = "stamp-mime"
 
 /obj/item/stamp/law
 	name = "law rubber stamp"
 	icon_state = "stamp-law"
+	item_state = "stamp-law"
 
 /obj/item/stamp/chapel
 	name = "chapel rubber stamp"
 	icon_state = "stamp-chap"
+	item_state = "stamp-chap"
+
+/obj/item/stamp/merchant
+	name = "merchant rubber stamp"
+	icon_state = "stamp-merchant"
+	item_state = "stamp-merchant"
+
+/obj/item/stamp/ntd
+	name = "nanotrasen trading department rubber stamp"
+	icon_state = "stamp-ntd"
+	item_state = "stamp-ntd"
 
 // Syndicate stamp to forge documents.
 /obj/item/stamp/chameleon/attack_self(mob/user as mob)

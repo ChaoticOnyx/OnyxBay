@@ -131,7 +131,7 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/black
 	name = "black corner"
-	color = "#333333"
+	color = COLOR_BLACK30
 
 /obj/effect/floor_decal/corner/black/diagonal
 	icon_state = "corner_white_diagonal"
@@ -144,6 +144,63 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/black/mono
 	icon_state = "corner_white_mono"
+
+/obj/effect/floor_decal/corner/black/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/black/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/black/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/black/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/black/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/black/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/black/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/black/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/black/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/black/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/black/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/black/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/black/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/black/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/black/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/black/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/black/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/black/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/black/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
 
 /obj/effect/floor_decal/corner/blue
 	name = "blue corner"
@@ -161,6 +218,63 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/blue/mono
 	icon_state = "corner_white_mono"
 
+/obj/effect/floor_decal/corner/blue/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/blue/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/blue/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/blue/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/blue/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/blue/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/blue/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/blue/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/blue/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/blue/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/blue/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/blue/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/blue/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/blue/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/blue/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/blue/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/blue/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/blue/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/blue/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
+
 /obj/effect/floor_decal/corner/paleblue
 	name = "pale blue corner"
 	color = COLOR_PALE_BLUE_GRAY
@@ -176,6 +290,63 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/paleblue/mono
 	icon_state = "corner_white_mono"
+
+/obj/effect/floor_decal/corner/paleblue/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/paleblue/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/paleblue/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
 
 /obj/effect/floor_decal/corner/green
 	name = "green corner"
@@ -193,6 +364,63 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/green/mono
 	icon_state = "corner_white_mono"
 
+/obj/effect/floor_decal/corner/green/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/green/diagonal_centre
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/green/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/green/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/green/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/green/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/green/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/green/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/green/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/green/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/green/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/green/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/green/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/green/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/green/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/green/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/green/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/green/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/green/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
+
 /obj/effect/floor_decal/corner/lime
 	name = "lime corner"
 	color = COLOR_PALE_GREEN_GRAY
@@ -208,6 +436,63 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/lime/mono
 	icon_state = "corner_white_mono"
+
+/obj/effect/floor_decal/corner/lime/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/lime/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/lime/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/lime/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/lime/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/lime/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/lime/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/lime/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/lime/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/lime/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/lime/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/lime/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/lime/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/lime/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/lime/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/lime/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/lime/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/lime/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/lime/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
 
 /obj/effect/floor_decal/corner/yellow
 	name = "yellow corner"
@@ -225,6 +510,63 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/yellow/mono
 	icon_state = "corner_white_mono"
 
+/obj/effect/floor_decal/corner/yellow/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/yellow/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/yellow/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/yellow/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/yellow/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/yellow/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/yellow/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/yellow/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/yellow/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/yellow/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/yellow/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/yellow/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/yellow/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/yellow/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/yellow/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/yellow/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/yellow/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/yellow/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/yellow/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
+
 /obj/effect/floor_decal/corner/beige
 	name = "beige corner"
 	color = COLOR_BEIGE
@@ -240,6 +582,63 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/beige/mono
 	icon_state = "corner_white_mono"
+
+/obj/effect/floor_decal/corner/beige/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/beige/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/beige/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/beige/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/beige/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/beige/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/beige/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/beige/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/beige/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/beige/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/beige/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/beige/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/beige/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/beige/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/beige/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/beige/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/beige/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/beige/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/beige/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
 
 /obj/effect/floor_decal/corner/red
 	name = "red corner"
@@ -257,6 +656,63 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/red/mono
 	icon_state = "corner_white_mono"
 
+/obj/effect/floor_decal/corner/red/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/red/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/red/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/red/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/red/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/red/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/red/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/red/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/red/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/red/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/red/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/red/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/red/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/red/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/red/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/red/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/red/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/red/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/red/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
+
 /obj/effect/floor_decal/corner/pink
 	name = "pink corner"
 	color = COLOR_PALE_RED_GRAY
@@ -272,6 +728,63 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/pink/mono
 	icon_state = "corner_white_mono"
+
+/obj/effect/floor_decal/corner/pink/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/pink/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/pink/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/pink/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/pink/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/pink/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/pink/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/pink/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/pink/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/pink/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/pink/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/pink/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/pink/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/pink/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/pink/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/pink/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/pink/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/pink/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/pink/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
 
 /obj/effect/floor_decal/corner/purple
 	name = "purple corner"
@@ -289,6 +802,63 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/purple/mono
 	icon_state = "corner_white_mono"
 
+/obj/effect/floor_decal/corner/purple/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/purple/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/purple/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/purple/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/purple/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/purple/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/purple/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/purple/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/purple/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/purple/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/purple/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/purple/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/purple/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/purple/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/purple/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/purple/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/purple/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/purple/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/purple/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
+
 /obj/effect/floor_decal/corner/mauve
 	name = "mauve corner"
 	color = COLOR_PALE_PURPLE_GRAY
@@ -304,6 +874,63 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/mauve/mono
 	icon_state = "corner_white_mono"
+
+/obj/effect/floor_decal/corner/mauve/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/mauve/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/mauve/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/mauve/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/mauve/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/mauve/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/mauve/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/mauve/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/mauve/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/mauve/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/mauve/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/mauve/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/mauve/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/mauve/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/mauve/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/mauve/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/mauve/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/mauve/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/mauve/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
 
 /obj/effect/floor_decal/corner/orange
 	name = "orange corner"
@@ -321,6 +948,63 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/orange/mono
 	icon_state = "corner_white_mono"
 
+/obj/effect/floor_decal/corner/orange/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/orange/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/orange/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/orange/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/orange/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/orange/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/orange/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/orange/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/orange/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/orange/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/orange/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/orange/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/orange/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/orange/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/orange/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/orange/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/orange/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/orange/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/orange/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
+
 /obj/effect/floor_decal/corner/brown
 	name = "brown corner"
 	color = COLOR_DARK_BROWN
@@ -336,6 +1020,63 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/brown/mono
 	icon_state = "corner_white_mono"
+
+/obj/effect/floor_decal/corner/brown/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/brown/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/brown/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/brown/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/brown/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/brown/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/brown/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/brown/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/brown/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/brown/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/brown/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/brown/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/brown/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/brown/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/brown/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/brown/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/brown/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/brown/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/brown/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
 
 /obj/effect/floor_decal/corner/white
 	name = "white corner"
@@ -353,9 +1094,66 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/white/mono
 	icon_state = "corner_white_mono"
 
+/obj/effect/floor_decal/corner/white/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/white/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/white/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/white/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/white/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/white/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/white/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/white/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/white/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/white/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/white/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/white/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/white/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/white/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/white/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/white/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/white/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/white/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/white/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
+
 /obj/effect/floor_decal/corner/grey
 	name = "grey corner"
-	color = "#8d8c8c"
+	color = COLOR_GRAY_SPECIAL
 
 /obj/effect/floor_decal/corner/grey/diagonal
 	icon_state = "corner_white_diagonal"
@@ -368,6 +1166,63 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/grey/mono
 	icon_state = "corner_white_mono"
+
+/obj/effect/floor_decal/corner/grey/diagonal_centre
+	icon_state = "corner_white_diagonal_centre"
+
+/obj/effect/floor_decal/corner/grey/diagonal_edge
+	icon_state = "corner_white_diagonal_edge"
+
+/obj/effect/floor_decal/corner/grey/trimline/line
+	icon_state = "corner_white_trimline"
+
+/obj/effect/floor_decal/corner/grey/trimline/corner
+	icon_state = "corner_white_trimline_corner"
+
+/obj/effect/floor_decal/corner/grey/trimline/end
+	icon_state = "corner_white_trimline_end"
+
+/obj/effect/floor_decal/corner/grey/trimline/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw"
+
+/obj/effect/floor_decal/corner/grey/trimline/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw"
+
+/obj/effect/floor_decal/corner/grey/trimline/warning
+	icon_state = "corner_white_trimline_warn"
+
+/obj/effect/floor_decal/corner/grey/trimline/mid_joiner
+	icon_state = "corner_white_trimline_mid"
+
+/obj/effect/floor_decal/corner/grey/trimline/filled
+	icon_state = "corner_white_trimline_box_fill"
+
+/obj/effect/floor_decal/corner/grey/trimline/filled/line
+	icon_state = "corner_white_trimline_fill"
+
+/obj/effect/floor_decal/corner/grey/trimline/filled/corner
+	icon_state = "corner_white_trimline_corner_fill"
+
+/obj/effect/floor_decal/corner/grey/trimline/filled/end
+	icon_state = "corner_white_trimline_end_fill"
+
+/obj/effect/floor_decal/corner/grey/trimline/filled/arrow_cw
+	icon_state = "corner_white_trimline_arrow_cw_fill"
+
+/obj/effect/floor_decal/corner/grey/trimline/filled/arrow_ccw
+	icon_state = "corner_white_trimline_arrow_ccw_fill"
+
+/obj/effect/floor_decal/corner/grey/trimline/filled/warning
+	icon_state = "corner_white_trimline_warn_fill"
+
+/obj/effect/floor_decal/corner/grey/trimline/filled/mid_joiner
+	icon_state = "corner_white_trimline_mid_fill"
+
+/obj/effect/floor_decal/corner/grey/trimline/filled/shrink_cw
+	icon_state = "corner_white_trimline_shrink_cw"
+
+/obj/effect/floor_decal/corner/grey/trimline/filled/shrink_ccw
+	icon_state = "corner_white_trimline_shrink_ccw"
 
 //ALT CORNER DECALS
 
@@ -443,6 +1298,12 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/old/red/mono
 	icon_state = "corner_oldtile_mono"
 
+/obj/effect/floor_decal/corner/old/red/diagonal_centre
+	icon_state = "corner_oldtile_diagonal_centre"
+
+/obj/effect/floor_decal/corner/old/red/diagonal_edge
+	icon_state = "corner_oldtile_diagonal_edge"
+
 /obj/effect/floor_decal/corner/old/green
 	name = "green corner"
 	color = "#4A5F50"
@@ -458,6 +1319,12 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/old/green/mono
 	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/green/diagonal_centre
+	icon_state = "corner_oldtile_diagonal_centre"
+
+/obj/effect/floor_decal/corner/old/green/diagonal_edge
+	icon_state = "corner_oldtile_diagonal_edge"
 
 /obj/effect/floor_decal/corner/old/whitegreen
 	name = "whitegreen corner"
@@ -475,6 +1342,12 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/old/whitegreen/mono
 	icon_state = "corner_oldtile_mono"
 
+/obj/effect/floor_decal/corner/old/whitegreen/diagonal_centre
+	icon_state = "corner_oldtile_diagonal_centre"
+
+/obj/effect/floor_decal/corner/old/whitegreen/diagonal_edge
+	icon_state = "corner_oldtile_diagonal_edge"
+
 /obj/effect/floor_decal/corner/old/cyan
 	name = "cyan corner"
 	color = "#486164"
@@ -490,6 +1363,12 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/old/cyan/mono
 	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/cyan/diagonal_centre
+	icon_state = "corner_oldtile_diagonal_centre"
+
+/obj/effect/floor_decal/corner/old/cyan/diagonal_edge
+	icon_state = "corner_oldtile_diagonal_edge"
 
 /obj/effect/floor_decal/corner/old/teal
 	name = "teal corner"
@@ -507,6 +1386,12 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/old/teal/mono
 	icon_state = "corner_oldtile_mono"
 
+/obj/effect/floor_decal/corner/old/teal/diagonal_centre
+	icon_state = "corner_oldtile_diagonal_centre"
+
+/obj/effect/floor_decal/corner/old/teal/diagonal_edge
+	icon_state = "corner_oldtile_diagonal_edge"
+
 /obj/effect/floor_decal/corner/old/blue
 	name = "blue corner"
 	color = "#3F526B"
@@ -522,6 +1407,12 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/old/blue/mono
 	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/blue/diagonal_centre
+	icon_state = "corner_oldtile_diagonal_centre"
+
+/obj/effect/floor_decal/corner/old/blue/diagonal_edge
+	icon_state = "corner_oldtile_diagonal_edge"
 
 /obj/effect/floor_decal/corner/old/purple
 	name = "purple corner"
@@ -539,6 +1430,12 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/old/purple/mono
 	icon_state = "corner_oldtile_mono"
 
+/obj/effect/floor_decal/corner/old/purple/diagonal_centre
+	icon_state = "corner_oldtile_diagonal_centre"
+
+/obj/effect/floor_decal/corner/old/purple/diagonal_edge
+	icon_state = "corner_oldtile_diagonal_edge"
+
 /obj/effect/floor_decal/corner/old/yellow
 	name = "yellow corner"
 	color = "#95784F"
@@ -554,6 +1451,34 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/old/yellow/mono
 	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/yellow/diagonal_centre
+	icon_state = "corner_oldtile_diagonal_centre"
+
+/obj/effect/floor_decal/corner/old/yellow/diagonal_edge
+	icon_state = "corner_oldtile_diagonal_edge"
+
+/obj/effect/floor_decal/corner/old/gray
+	name = "gray corner"
+	color = COLOR_GRAY_SPECIAL
+
+/obj/effect/floor_decal/corner/old/gray/diagonal
+	icon_state = "corner_oldtile_diagonal"
+
+/obj/effect/floor_decal/corner/old/gray/three_quarters
+	icon_state = "corner_oldtile_three_quarters"
+
+/obj/effect/floor_decal/corner/old/gray/full
+	icon_state = "corner_oldtile_full"
+
+/obj/effect/floor_decal/corner/old/gray/mono
+	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/gray/diagonal_centre
+	icon_state = "corner_oldtile_diagonal_centre"
+
+/obj/effect/floor_decal/corner/old/gray/diagonal_edge
+	icon_state = "corner_oldtile_diagonal_edge"
 
 /obj/effect/floor_decal/corner_steel_grid
 	name = "corner steel_grid"
@@ -595,6 +1520,10 @@ var/list/floor_decals = list()
 	icon_state = "sandfloordec"
 	alpha = 209
 
+/obj/effect/floor_decal/sandfloordec/asteroid
+	name = "asteroid floor"
+	icon_state = "asteroidfloordec"
+
 /obj/effect/floor_decal/junglepath
 	name = "junglepath"
 	icon = 'icons/turf/jungle_turfs.dmi'
@@ -627,11 +1556,17 @@ var/list/floor_decals = list()
 	name = "stairs"
 	icon_state = "stairs"
 
+/obj/effect/floor_decal/stairs/wood
+	color = COLOR_WOOD
+
+/obj/effect/floor_decal/stairs/darkwood
+	color = "#603413"
+
 /obj/effect/floor_decal/spline/plain/black
-	color = "#333333"
+	color = COLOR_BLACK30
 
 /obj/effect/floor_decal/spline/plain/corner/black
-	color = "#333333"
+	color = COLOR_BLACK30
 
 /obj/effect/floor_decal/spline/plain/blue
 	color = COLOR_BLUE_GRAY
@@ -712,10 +1647,10 @@ var/list/floor_decals = list()
 	color = COLOR_WHITE
 
 /obj/effect/floor_decal/spline/plain/grey
-	color = "#8d8c8c"
+	color = COLOR_GRAY_SPECIAL
 
 /obj/effect/floor_decal/spline/plain/corner/grey
-	color = "#8d8c8c"
+	color = COLOR_GRAY_SPECIAL
 
 /obj/effect/floor_decal/spline/fancy
 	name = "spline - fancy"
@@ -747,6 +1682,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/industrial/warning/full
 	icon_state = "warningfull"
 
+/obj/effect/floor_decal/industrial/warning/full/tile
+	icon_state = "warningfulltile"
+
 /obj/effect/floor_decal/industrial/warning/cee
 	icon_state = "warningcee"
 
@@ -768,6 +1706,25 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/industrial/warning/dust/full/tile
 	icon_state = "warningfulltile_dust"
+
+/obj/effect/floor_decal/industrial/warning/asteroid
+	name = "hazard stripes"
+	icon_state = "warning_asteroid"
+
+/obj/effect/floor_decal/industrial/warning/asteroid/corner
+	name = "hazard stripes"
+	icon_state = "warningcorner_asteroid"
+
+/obj/effect/floor_decal/industrial/warning/asteroid/cee
+	name = "hazard stripes"
+	icon_state = "warningcee_asteroid"
+
+/obj/effect/floor_decal/industrial/warning/asteroid/full
+	name = "hazard stripes"
+	icon_state = "warningfull_asteroid"
+
+/obj/effect/floor_decal/industrial/warning/asteroid/full/tile
+	icon_state = "warningfulltile_asteroid"
 
 /obj/effect/floor_decal/industrial/warning/red
 	name = "hazard stripes"
@@ -823,6 +1780,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/industrial/hatch/blue
 	color = COLOR_BLUE_GRAY
 
+/obj/effect/floor_decal/industrial/hatch/gray
+	color = COLOR_GRAY
+
 /obj/effect/floor_decal/industrial/standclear
 	name = "industrial marking"
 	icon_state = "stand_clear"
@@ -838,6 +1798,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/industrial/standclear/blue
 	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/standclear/gray
+	color = COLOR_GRAY
 
 /obj/effect/floor_decal/industrial/caution
 	name = "industrial marking"
@@ -855,6 +1818,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/industrial/caution/blue
 	color = COLOR_BLUE_GRAY
 
+/obj/effect/floor_decal/industrial/caution/gray
+	color = COLOR_GRAY
+
 /obj/effect/floor_decal/industrial/box
 	name = "industrial marking"
 	icon_state = "box"
@@ -870,6 +1836,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/industrial/box/blue
 	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/box/gray
+	color = COLOR_GRAY
 
 /obj/effect/floor_decal/industrial/boxcorners
 	name = "industrial marking"
@@ -887,6 +1856,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/industrial/boxcorners/blue
 	color = COLOR_BLUE_GRAY
 
+/obj/effect/floor_decal/industrial/boxcorners/gray
+	color = COLOR_GRAY
+
 /obj/effect/floor_decal/industrial/arrows
 	name = "industrial marking"
 	icon_state = "arrows"
@@ -902,6 +1874,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/industrial/arrows/blue
 	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/industrial/arrows/gray
+	color = COLOR_GRAY
 
 /obj/effect/floor_decal/industrial/shutoff
 	name = "shutoff valve marker"
@@ -922,7 +1897,7 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/industrial/outline/grey
 	name = "grey outline"
-	color = "#808080"
+	color = COLOR_GRAY
 
 /obj/effect/floor_decal/industrial/outline/red
 	name = "red outline"
@@ -1063,6 +2038,21 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/sign/cell4
 	icon_state = "cell_4"
 
+/obj/effect/floor_decal/sign/cell5
+	icon_state = "cell_5"
+
+/obj/effect/floor_decal/sign/cell6
+	icon_state = "cell_6"
+
+/obj/effect/floor_decal/sign/cell7
+	icon_state = "cell_7"
+
+/obj/effect/floor_decal/sign/cell8
+	icon_state = "cell_8"
+
+/obj/effect/floor_decal/sign/cell9
+	icon_state = "cell_9"
+
 /obj/effect/floor_decal/sign/armory
 	icon_state = "rigdecal"
 
@@ -1089,6 +2079,12 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/sign/armory/ablative2
 	icon_state = "ablativedecal_2"
+
+/obj/effect/floor_decal/sign/armory/accelerator1
+	icon_state = "acceleratordecal_1"
+
+/obj/effect/floor_decal/sign/armory/accelerator2
+	icon_state = "acceleratordecal_2"
 
 /obj/effect/floor_decal/sign/armory/energy
 	icon_state = "energydecal"
@@ -1248,13 +2244,13 @@ var/list/floor_decals = list()
 /// Trimlines
 
 /obj/effect/floor_decal/trimline
-	alpha = 110
+	alpha = 229
 	icon_state = "trimline_box"
 
 /// White trimlines
 
 /obj/effect/floor_decal/trimline/white
-	color = "#FFFFFF"
+	color = COLOR_WHITE
 
 /obj/effect/floor_decal/trimline/white/line
 	name = "trim decal"
@@ -1311,7 +2307,7 @@ var/list/floor_decals = list()
 /// Red trimlines
 
 /obj/effect/floor_decal/trimline/red
-	color = "#DE3A3A"
+	color = COLOR_RED
 
 /obj/effect/floor_decal/trimline/red/line
 	icon_state = "trimline"
@@ -1367,7 +2363,7 @@ var/list/floor_decals = list()
 /// Dark red trimlines
 
 /obj/effect/floor_decal/trimline/dark_red
-	color = "#B11111"
+	color = COLOR_DARK_RED
 
 /obj/effect/floor_decal/trimline/dark_red/line
 	icon_state = "trimline"
@@ -1423,7 +2419,7 @@ var/list/floor_decals = list()
 /// Green trimlines
 
 /obj/effect/floor_decal/trimline/green
-	color = "#9FED58"
+	color = COLOR_GREEN
 
 /obj/effect/floor_decal/trimline/green/line
 	icon_state = "trimline"
@@ -1479,7 +2475,7 @@ var/list/floor_decals = list()
 /// Dark green Trimlines
 
 /obj/effect/floor_decal/trimline/dark_green
-	color = "#439C1E"
+	color = COLOR_DARK_GREEN
 
 /obj/effect/floor_decal/trimline/dark_green/line
 	icon_state = "trimline"
@@ -1535,7 +2531,7 @@ var/list/floor_decals = list()
 /// Blue trimlines
 
 /obj/effect/floor_decal/trimline/blue
-	color = "#52B4E9"
+	color = COLOR_BLUE
 
 /obj/effect/floor_decal/trimline/blue/line
 	icon_state = "trimline"
@@ -1591,7 +2587,7 @@ var/list/floor_decals = list()
 /// Dark blue trimlines
 
 /obj/effect/floor_decal/trimline/dark_blue
-	color = "#486091"
+	color = COLOR_DARK_BLUE
 
 /obj/effect/floor_decal/trimline/dark_blue/line
 	icon_state = "trimline"
@@ -1647,7 +2643,7 @@ var/list/floor_decals = list()
 /// Yellow trimlines
 
 /obj/effect/floor_decal/trimline/yellow
-	color = "#EFB341"
+	color = COLOR_YELLOW
 
 /obj/effect/floor_decal/trimline/yellow/line
 	icon_state = "trimline"
@@ -1703,7 +2699,7 @@ var/list/floor_decals = list()
 /// Purple trimlines
 
 /obj/effect/floor_decal/trimline/purple
-	color = "#D381C9"
+	color = COLOR_PURPLE
 
 /obj/effect/floor_decal/trimline/purple/line
 	icon_state = "trimline"
@@ -1759,7 +2755,7 @@ var/list/floor_decals = list()
 /// Brown trimlines
 
 /obj/effect/floor_decal/trimline/brown
-	color = "#A46106"
+	color = COLOR_BROWN
 
 /obj/effect/floor_decal/trimline/brown/line
 	icon_state = "trimline"
@@ -1812,67 +2808,66 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/trimline/brown/filled/shrink_ccw
 	icon_state = "trimline_shrink_ccw"
 
-/// Neutral trimlines
+/// Gray trimlines
 
-/obj/effect/floor_decal/trimline/neutral
-	color = "#D4D4D4"
-	alpha = 50
+/obj/effect/floor_decal/trimline/gray
+	color = COLOR_GRAY_SPECIAL
 
-/obj/effect/floor_decal/trimline/neutral/line
+/obj/effect/floor_decal/trimline/gray/line
 	icon_state = "trimline"
 
-/obj/effect/floor_decal/trimline/neutral/corner
+/obj/effect/floor_decal/trimline/gray/corner
 	icon_state = "trimline_corner"
 
-/obj/effect/floor_decal/trimline/neutral/end
+/obj/effect/floor_decal/trimline/gray/end
 	icon_state = "trimline_end"
 
-/obj/effect/floor_decal/trimline/neutral/arrow_cw
+/obj/effect/floor_decal/trimline/gray/arrow_cw
 	icon_state = "trimline_arrow_cw"
 
-/obj/effect/floor_decal/trimline/neutral/arrow_ccw
+/obj/effect/floor_decal/trimline/gray/arrow_ccw
 	icon_state = "trimline_arrow_ccw"
 
-/obj/effect/floor_decal/trimline/neutral/warning
+/obj/effect/floor_decal/trimline/gray/warning
 	icon_state = "trimline_warn"
 
-/obj/effect/floor_decal/trimline/neutral/mid_joiner
+/obj/effect/floor_decal/trimline/gray/mid_joiner
 	icon_state = "trimline_mid"
 
-/obj/effect/floor_decal/trimline/neutral/filled
+/obj/effect/floor_decal/trimline/gray/filled
 	icon_state = "trimline_box_fill"
 
-/obj/effect/floor_decal/trimline/neutral/filled/line
+/obj/effect/floor_decal/trimline/gray/filled/line
 	icon_state = "trimline_fill"
 
-/obj/effect/floor_decal/trimline/neutral/filled/corner
+/obj/effect/floor_decal/trimline/gray/filled/corner
 	icon_state = "trimline_corner_fill"
 
-/obj/effect/floor_decal/trimline/neutral/filled/end
+/obj/effect/floor_decal/trimline/gray/filled/end
 	icon_state = "trimline_end_fill"
 
-/obj/effect/floor_decal/trimline/neutral/filled/arrow_cw
+/obj/effect/floor_decal/trimline/gray/filled/arrow_cw
 	icon_state = "trimline_arrow_cw_fill"
 
-/obj/effect/floor_decal/trimline/neutral/filled/arrow_ccw
+/obj/effect/floor_decal/trimline/gray/filled/arrow_ccw
 	icon_state = "trimline_arrow_ccw_fill"
 
-/obj/effect/floor_decal/trimline/neutral/filled/warning
+/obj/effect/floor_decal/trimline/gray/filled/warning
 	icon_state = "trimline_warn_fill"
 
-/obj/effect/floor_decal/trimline/neutral/filled/mid_joiner
+/obj/effect/floor_decal/trimline/gray/filled/mid_joiner
 	icon_state = "trimline_mid_fill"
 
-/obj/effect/floor_decal/trimline/neutral/filled/shrink_cw
+/obj/effect/floor_decal/trimline/gray/filled/shrink_cw
 	icon_state = "trimline_shrink_cw"
 
-/obj/effect/floor_decal/trimline/neutral/filled/shrink_ccw
+/obj/effect/floor_decal/trimline/gray/filled/shrink_ccw
 	icon_state = "trimline_shrink_ccw"
 
 /// Dark trimlines
 
 /obj/effect/floor_decal/trimline/dark
-	color = "#0e0f0f"
+	color = COLOR_DARK
 
 /obj/effect/floor_decal/trimline/dark/line
 	icon_state = "trimline"
@@ -1928,7 +2923,7 @@ var/list/floor_decals = list()
 /// Black trimlines
 
 /obj/effect/floor_decal/trimline/black
-	color = "#000000"
+	color = COLOR_BLACK
 
 /obj/effect/floor_decal/trimline/black/line
 	name = "trim decal"
@@ -1984,7 +2979,7 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/siding/wood
 	icon_state = "siding_wood_line"
-	color = "#55391A"
+	color = COLOR_WOOD
 
 /obj/effect/floor_decal/siding/wood/corner
 	icon_state = "siding_wood_corner"
@@ -1992,65 +2987,214 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/siding/wood/end
 	icon_state = "siding_wood_end"
 
-/obj/effect/floor_decal/numbers/zero
+/obj/effect/floor_decal/siding/darkwood
+	icon_state = "siding_wood_line"
+	color = COLOR_DARKWOOD
+
+/obj/effect/floor_decal/siding/darkwood/corner
+	icon_state = "siding_wood_corner"
+
+/obj/effect/floor_decal/siding/darkwood/end
+	icon_state = "siding_wood_end"
+
+/obj/effect/floor_decal/numbers
+	alpha = 229
+	name = "number"
+	icon_state = "number"
+
+/obj/effect/floor_decal/numbers/white/zero
 	icon_state = "number_0"
 
-/obj/effect/floor_decal/numbers/one
+/obj/effect/floor_decal/numbers/white/one
 	icon_state = "number_1"
 
-/obj/effect/floor_decal/numbers/two
+/obj/effect/floor_decal/numbers/white/two
 	icon_state = "number_2"
 
-/obj/effect/floor_decal/numbers/three
+/obj/effect/floor_decal/numbers/white/three
 	icon_state = "number_3"
 
-/obj/effect/floor_decal/numbers/four
+/obj/effect/floor_decal/numbers/white/four
 	icon_state = "number_4"
 
-/obj/effect/floor_decal/numbers/five
+/obj/effect/floor_decal/numbers/white/five
 	icon_state = "number_5"
 
-/obj/effect/floor_decal/numbers/six
+/obj/effect/floor_decal/numbers/white/six
 	icon_state = "number_6"
 
-/obj/effect/floor_decal/numbers/seven
+/obj/effect/floor_decal/numbers/white/seven
 	icon_state = "number_7"
 
-/obj/effect/floor_decal/numbers/eight
+/obj/effect/floor_decal/numbers/white/eight
 	icon_state = "number_8"
 
-/obj/effect/floor_decal/numbers/nine
+/obj/effect/floor_decal/numbers/white/nine
 	icon_state = "number_9"
 
+/obj/effect/floor_decal/numbers/yellow
+
+	color = COLOR_YELLOW
+
+/obj/effect/floor_decal/numbers/yellow/zero
+	icon_state = "number_0"
+
+/obj/effect/floor_decal/numbers/yellow/one
+	icon_state = "number_1"
+
+/obj/effect/floor_decal/numbers/yellow/two
+	icon_state = "number_2"
+
+/obj/effect/floor_decal/numbers/yellow/three
+	icon_state = "number_3"
+
+/obj/effect/floor_decal/numbers/yellow/four
+	icon_state = "number_4"
+
+/obj/effect/floor_decal/numbers/yellow/five
+	icon_state = "number_5"
+
+/obj/effect/floor_decal/numbers/yellow/six
+	icon_state = "number_6"
+
+/obj/effect/floor_decal/numbers/yellow/seven
+	icon_state = "number_7"
+
+/obj/effect/floor_decal/numbers/yellow/eight
+	icon_state = "number_8"
+
+/obj/effect/floor_decal/numbers/yellow/nine
+	icon_state = "number_9"
+
+/obj/effect/floor_decal/numbers/orange
+	color = COLOR_ORANGE
+
+/obj/effect/floor_decal/numbers/orange/zero
+	icon_state = "number_0"
+
+/obj/effect/floor_decal/numbers/orange/one
+	icon_state = "number_1"
+
+/obj/effect/floor_decal/numbers/orange/two
+	icon_state = "number_2"
+
+/obj/effect/floor_decal/numbers/orange/three
+	icon_state = "number_3"
+
+/obj/effect/floor_decal/numbers/orange/four
+	icon_state = "number_4"
+
+/obj/effect/floor_decal/numbers/orange/five
+	icon_state = "number_5"
+
+/obj/effect/floor_decal/numbers/orange/six
+	icon_state = "number_6"
+
+/obj/effect/floor_decal/numbers/orange/seven
+	icon_state = "number_7"
+
+/obj/effect/floor_decal/numbers/orange/eight
+	icon_state = "number_8"
+
+/obj/effect/floor_decal/numbers/orange/nine
+	icon_state = "number_9"
+
+/obj/effect/floor_decal/numbers/red
+	color = COLOR_RED
+
+/obj/effect/floor_decal/numbers/red/zero
+	icon_state = "number_0"
+
+/obj/effect/floor_decal/numbers/red/one
+	icon_state = "number_1"
+
+/obj/effect/floor_decal/numbers/red/two
+	icon_state = "number_2"
+
+/obj/effect/floor_decal/numbers/red/three
+	icon_state = "number_3"
+
+/obj/effect/floor_decal/numbers/red/four
+	icon_state = "number_4"
+
+/obj/effect/floor_decal/numbers/red/five
+	icon_state = "number_5"
+
+/obj/effect/floor_decal/numbers/red/six
+	icon_state = "number_6"
+
+/obj/effect/floor_decal/numbers/red/seven
+	icon_state = "number_7"
+
+/obj/effect/floor_decal/numbers/red/eight
+	icon_state = "number_8"
+
+/obj/effect/floor_decal/numbers/red/nine
+	icon_state = "number_9"
+
+/obj/effect/floor_decal/numbers/blue
+	color = COLOR_BLUE
+
+/obj/effect/floor_decal/numbers/blue/zero
+	icon_state = "number_0"
+
+/obj/effect/floor_decal/numbers/blue/one
+	icon_state = "number_1"
+
+/obj/effect/floor_decal/numbers/blue/two
+	icon_state = "number_2"
+
+/obj/effect/floor_decal/numbers/blue/three
+	icon_state = "number_3"
+
+/obj/effect/floor_decal/numbers/blue/four
+	icon_state = "number_4"
+
+/obj/effect/floor_decal/numbers/blue/five
+	icon_state = "number_5"
+
+/obj/effect/floor_decal/numbers/blue/six
+	icon_state = "number_6"
+
+/obj/effect/floor_decal/numbers/blue/seven
+	icon_state = "number_7"
+
+/obj/effect/floor_decal/numbers/blue/eight
+	icon_state = "number_8"
+
+/obj/effect/floor_decal/numbers/blue/nine
+	icon_state = "number_9"
+
+/obj/effect/floor_decal/bot
+	alpha = 229
+	name = "bot"
+	icon_state = "bot"
+
+/obj/effect/floor_decal/bot/red
+	color = COLOR_RED
+
+/obj/effect/floor_decal/bot/yellow
+	color = COLOR_YELLOW
+
 /obj/effect/floor_decal/bot/right
+	name = "bot right"
 	icon_state = "bot_right"
 
+/obj/effect/floor_decal/bot/right/red
+	color = COLOR_RED
+
+/obj/effect/floor_decal/bot/right/yellow
+	color = COLOR_YELLOW
+
 /obj/effect/floor_decal/bot/left
+	name = "bot left"
 	icon_state = "bot_left"
 
-/obj/effect/floor_decal/bot_white
-	icon_state = "bot_white"
+/obj/effect/floor_decal/bot/left/red
+	color = COLOR_RED
 
-/obj/effect/floor_decal/bot_white/right
-	icon_state = "bot_right_white"
-
-/obj/effect/floor_decal/bot_white/left
-	icon_state = "bot_left_white"
-
-/obj/effect/floor_decal/bot_red
-	icon_state = "bot_red"
-
-/obj/effect/floor_decal/bot_red/right
-	icon_state = "bot_right_red"
-
-/obj/effect/floor_decal/bot_red/left
-	icon_state = "bot_left_red"
-
-/obj/effect/floor_decal/diagonal_centre
-	icon_state = "diagonal_centre"
-
-/obj/effect/floor_decal/diagonal_edge
-	icon_state = "diagonal_edge"
+/obj/effect/floor_decal/bot/left/yellow
+	color = COLOR_YELLOW
 
 /obj/effect/floor_decal/ss13_new/l1
 	name = "L1"

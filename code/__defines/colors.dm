@@ -60,6 +60,14 @@
 #define COLOR_CYAN_BLUE        "#3366cc"
 #define COLOR_LIGHT_CYAN       "#66ccff"
 #define COLOR_PAKISTAN_GREEN   "#006600"
+#define COLOR_DARK_RED         "#B11111"
+#define COLOR_DARK_BLUE	       "#486091"
+#define COLOR_DARK_GREEN       "#439C1E"
+#define COLOR_GRAY_SPECIAL     "#8d8c8c"
+#define COLOR_DARK             "#0e0f0f"
+#define COLOR_BLACK30          "#333333"
+#define COLOR_WOOD             "#55391A"
+#define COLOR_DARKWOOD         "#512B0F"
 
 //Color defines used by the assembly detailer.
 
