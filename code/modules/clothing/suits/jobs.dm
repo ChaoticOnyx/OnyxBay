@@ -209,7 +209,6 @@
 	icon_state = "hazard_g"
 	item_state = "hazard_g"
 
-
 //Lawyer
 /obj/item/clothing/suit/storage/toggle/suit
 	name = "suit jacket"
