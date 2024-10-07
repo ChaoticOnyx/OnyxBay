@@ -2,7 +2,7 @@
 	name = "labcoat"
 	desc = "A suit that protects against minor chemical spills."
 	icon_state = "labcoat_open"
-	//item_state = "labcoat" //Is this even used for anything?
+	item_state = "labcoat_open"
 	icon_open = "labcoat_open"
 	icon_closed = "labcoat"
 	blood_overlay_type = "coatblood"
@@ -12,16 +12,11 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_ARMBAND)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_ARMBAND)
 
-	item_state_slots = list(
-		slot_l_hand_str = "labcoat",
-		slot_r_hand_str = "labcoat",
-		)
-
 /obj/item/clothing/suit/storage/toggle/labcoat/cmo
 	name = "chief medical officer's labcoat"
 	desc = "Bluer than the standard model."
 	icon_state = "labcoat_cmo_open"
-	//item_state = "labcoat_cmo"
+	item_state = "labcoat_cmo_open"
 	icon_open = "labcoat_cmo_open"
 	icon_closed = "labcoat_cmo"
 
@@ -29,6 +24,7 @@
 	name = "chief medical officer labcoat"
 	desc = "A labcoat with command blue highlights."
 	icon_state = "labcoat_cmoalt_open"
+	item_state = "labcoat_cmoalt_open"
 	icon_open = "labcoat_cmoalt_open"
 	icon_closed = "labcoat_cmoalt"
 
@@ -36,7 +32,7 @@
 	name = "The Mad's labcoat"
 	desc = "It makes you look capable of konking someone on the noggin and shooting them into space."
 	icon_state = "labgreen_open"
-	//item_state = "labgreen"
+	item_state = "labgreen_open"
 	icon_open = "labgreen_open"
 	icon_closed = "labgreen"
 
@@ -44,6 +40,7 @@
 	name = "Geneticist labcoat"
 	desc = "A suit that protects against minor chemical spills. Has a blue stripe on the shoulder."
 	icon_state = "labcoat_gen_open"
+	item_state = "labcoat_gen_open"
 	icon_open = "labcoat_gen_open"
 	icon_closed = "labcoat_gen"
 
@@ -51,6 +48,7 @@
 	name = "Chemist labcoat"
 	desc = "A suit that protects against minor chemical spills. Has an orange stripe on the shoulder."
 	icon_state = "labcoat_chem_open"
+	item_state = "labcoat_chem_open"
 	icon_open = "labcoat_chem_open"
 	icon_closed = "labcoat_chem"
 
@@ -58,6 +56,7 @@
 	name = "Virologist labcoat"
 	desc = "A suit that protects against minor chemical spills. Offers slightly more protection against biohazards than the standard model. Has a green stripe on the shoulder."
 	icon_state = "labcoat_vir_open"
+	item_state = "labcoat_vir_open"
 	icon_open = "labcoat_vir_open"
 	icon_closed = "labcoat_vir"
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 60)
@@ -66,6 +65,7 @@
 	name = "Scientist labcoat"
 	desc = "A suit that protects against minor chemical spills. Has a purple stripe on the shoulder and purple trim on the sleeves."
 	icon_state = "labcoat_nt_open"
+	item_state = "labcoat_nt_open"
 	icon_open = "labcoat_nt_open"
 	icon_closed = "labcoat_nt"
 
@@ -73,6 +73,7 @@
 	name = "research director's labcoat"
 	desc = "A full-body labcoat covered in violet and black designs, denoting it as a R&D Experimental Coat Design. Judging by the amount of designs on it, it is only to be worn by the most enthusiastic of NanoTrasen employees."
 	icon_state = "labcoat_rd_open"
+	item_state = "labcoat_rd_open"
 	icon_open = "labcoat_rd_open"
 	icon_closed = "labcoat_rd"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
@@ -81,6 +82,7 @@
 	name = "blue-edged labcoat"
 	desc = "A suit that protects against minor chemical spills. This one has blue trim."
 	icon_state = "blue_edge_labcoat_open"
+	item_state = "blue_edge_labcoat_open"
 	icon_open = "blue_edge_labcoat_open"
 	icon_closed = "blue_edge_labcoat"
 
