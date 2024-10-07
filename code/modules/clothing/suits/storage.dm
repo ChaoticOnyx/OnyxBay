@@ -43,11 +43,13 @@
 
 	if(icon_state == icon_open) //Will check whether icon state is currently set to the "open" or "closed" state and switch it around with a message to the user
 		icon_state = icon_closed
+		item_state = icon_closed
 		to_chat(usr, "You button up the coat.")
 		flags_inv |= HIDEJUMPSUITACCESSORIES
 		coverage = 1.0
 	else if(icon_state == icon_closed)
 		icon_state = icon_open
+		item_state = icon_open
 		to_chat(usr, "You unbutton the coat.")
 		flags_inv &= HIDEJUMPSUITACCESSORIES
 		coverage = 0.8
