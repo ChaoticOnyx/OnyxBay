@@ -37,8 +37,8 @@
 
 /obj/item/clothing/suit/space/void/medical/alt
 	name = "streamlined medical voidsuit"
-	icon_state = "medical_voidsuitalt"
-	item_state = "medical_voidsuitalt"
+	icon_state = "medicalalt_voidsuit"
+	item_state = "medicalalt_voidsuit"
 	desc = "A more recent model of Vey-Med voidsuit, featuring the latest in radiation shielding technology, without sacrificing comfort or style."
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/firstaid,/obj/item/device/healthanalyzer,/obj/item/stack/medical,/obj/item/device/antibody_scanner)
 	armor = list(melee = 45, bullet = 20, laser = 40, energy = 15, bomb = 0, bio = 100)
