@@ -11,7 +11,7 @@
 	siemens_coefficient = 0.6
 	rad_resist_type = /datum/rad_resist/deathsquad
 
-/obj/item/clothing/suit/space/void/swat
+/obj/item/clothing/suit/space/void/deathsquad
 	name = "\improper SWAT suit"
 	desc = "A heavily armored suit that protects against moderate damage. Used in special operations."
 	icon_state = "deathsquad_voidsuit"
@@ -23,7 +23,7 @@
 	siemens_coefficient = 0.6
 	rad_resist_type = /datum/rad_resist/deathsquad
 
-/obj/item/clothing/suit/space/void/swat/New()
+/obj/item/clothing/suit/space/void/deathsquad/New()
 	..()
 	slowdown_per_slot[slot_wear_suit] = 1
 
