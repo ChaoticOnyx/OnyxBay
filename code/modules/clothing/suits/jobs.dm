@@ -214,7 +214,7 @@
 
 /obj/item/clothing/suit/storage/hazardvest/white
 	name = "white hazard vest"
-	desc = "A high-visibility vest used in work zones. This one has a red cross!"
+	desc = "A high-visibility vest used in work zones. This one has a blue cross!"
 	icon_state = "hazard_w"
 
 /obj/item/clothing/suit/storage/hazardvest/green
