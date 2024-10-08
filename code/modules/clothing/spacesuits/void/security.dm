@@ -51,10 +51,10 @@
 	light_overlay = "helmet_light_dual"
 
 /obj/item/clothing/suit/space/void/security/hos
-	icon_state = "sechos_voidsuit"
-	item_state = "sechos_voidsuit"
 	name = "security commander voidsuit"
 	desc = "A heavily armored voidsuit. Gold trimming shows who's the boss here, while heavy pauldrons and kama make it extra durable."
+	icon_state = "sechos_voidsuit"
+	item_state = "sechos_voidsuit"
 	armor = list(melee = 80, bullet = 120, laser = 90, energy = 35, bomb = 45, bio = 100)
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)
 
