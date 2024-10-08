@@ -18,7 +18,7 @@
 
 /decl/hierarchy/outfit/spec_op_officer/space
 	name = "Spec Ops - Officer in space"
-	suit = /obj/item/clothing/suit/space/void/swat
+	suit = /obj/item/clothing/suit/space/void/deathsquad
 	back = /obj/item/tank/jetpack/oxygen
 	mask = /obj/item/clothing/mask/gas/swat
 
