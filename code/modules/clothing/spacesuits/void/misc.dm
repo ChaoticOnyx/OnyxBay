@@ -1,5 +1,16 @@
 
 //Deathsquad suit
+/obj/item/clothing/head/helmet/space/deathsquad
+	name = "deathsquad helmet"
+	desc = "That's not red paint. That's real blood."
+	icon_state = "deathsquad_helm"
+	item_state = "deathsquad_helm"
+	armor = list(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 100)
+	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL
+	flags_inv = BLOCKHAIR
+	siemens_coefficient = 0.6
+	rad_resist_type = /datum/rad_resist/deathsquad
+
 /obj/item/clothing/suit/space/void/swat
 	name = "\improper SWAT suit"
 	desc = "A heavily armored suit that protects against moderate damage. Used in special operations."
@@ -16,21 +27,14 @@
 	..()
 	slowdown_per_slot[slot_wear_suit] = 1
 
-/obj/item/clothing/head/helmet/space/deathsquad
-	name = "deathsquad helmet"
-	desc = "That's not red paint. That's real blood."
-	icon_state = "deathsquad_helm"
-	item_state = "deathsquad_helm"
-	armor = list(melee = 120, bullet = 150, laser = 150, energy = 65, bomb = 90, bio = 100)
-	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL
-	flags_inv = BLOCKHAIR
-	siemens_coefficient = 0.6
-	rad_resist_type = /datum/rad_resist/deathsquad
-
 /datum/rad_resist/deathsquad
 	alpha_particle_resist = 59.4 MEGA ELECTRONVOLT
 	beta_particle_resist = 13.2 MEGA ELECTRONVOLT
 	hawking_resist = 1 ELECTRONVOLT
+
+/obj/item/clothing/suit/space/void/deathsquad/prepared
+	helmet = /obj/item/clothing/head/helmet/space/deathsquad
+	boots = /obj/item/clothing/shoes/magboots
 
 // Captain
 /obj/item/clothing/head/helmet/space/void/captain
@@ -70,7 +74,7 @@
 	name = "exploration voidsuit"
 	desc = "A lightweight, radiation-resistant voidsuit, featuring the Expeditionary Corps emblem on its chest plate. Designed for exploring unknown planetary environments."
 	icon_state = "explorer_voidsuit"
-	//item_state = "explorer_voidsuit"
+	item_state = "explorer_voidsuit"
 	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/device/healthanalyzer,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/bluespace_beacon,/obj/item/material/hatchet/machete,/obj/item/shovel)
 	rad_resist_type = /datum/rad_resist/void_engi_salvage
@@ -93,7 +97,7 @@
 	name = "salvage voidsuit"
 	desc = "A hand-me-down salvage voidsuit. It has obviously had a lot of repair work done to its radiation shielding."
 	icon_state = "salvage_voidsuit"
-	//item_state = "salvage_voidsuit"
+	item_state = "salvage_voidsuit"
 	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/construction/rcd)
 	rad_resist_type = /datum/rad_resist/void_engi_salvage
@@ -144,7 +148,7 @@
 
 /obj/item/clothing/suit/space/void/knight
 	icon_state = "hardsuit_knight"
-	//item_state = "hardsuit_knight"
+	item_state = "hardsuit_knight"
 	name = "strange voidsuit"
 	desc = "A bulky set of space-proof armor, that looks kinda ancient. 'Lancelot X-40' is written on the front plate."
 	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100)
@@ -156,7 +160,7 @@
 /obj/item/clothing/head/helmet/space/void/optical
 	name = "experimental voidhelmet"
 	icon_state = "hardsuit_optical_helm"
-	//item_state = "hardsuit_optical_helm"
+	item_state = "hardsuit_optical_helm"
 	desc = "Strange looking, smoothly contoured helmet. It looks a bit blurry."
 	siemens_coefficient = 0
 	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100)
@@ -164,7 +168,7 @@
 /obj/item/clothing/suit/space/void/optical
 	name = "experimental voidsuit"
 	icon_state = "hardsuit_optical"
-	//item_state = "hardsuit_optical"
+	item_state = "hardsuit_optical"
 	desc = "Strange black voidsuit, with some devices attached to it. It looks a bit blurry."
 	action_button_name = "Toggle Optical Disruptor"
 	siemens_coefficient = 0

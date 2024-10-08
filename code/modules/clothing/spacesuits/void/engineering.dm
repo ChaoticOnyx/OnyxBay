@@ -32,15 +32,15 @@
 	name = "engineering hardsuit helmet"
 	desc = "A heavy, radiation-shielded voidsuit helmet with a surprisingly comfortable interior."
 	icon_state = "engalt_helm"
-	//item_state = "engalt_helm"
+	item_state = "engalt_helm"
 	armor = list(melee = 80, bullet = 70, laser = 60, energy = 65, bomb = 35, bio = 100)
 	light_overlay = "helmet_light_dual_low"
 
 /obj/item/clothing/suit/space/void/engineering/alt
 	name = "engineering hardsuit"
 	desc = "A bulky industrial voidsuit. It's a few generations old, but a reliable design and radiation shielding make up for the lack of climate control."
-	icon_state = "eng_voidsuitalt"
-	item_state = "eng_voidsuitalt"
+	icon_state = "engalt_voidsuit"
+	item_state = "engalt_voidsuit"
 	armor = list(melee = 80, bullet = 70, laser = 60, energy = 65, bomb = 35, bio = 100)
 
 /obj/item/clothing/suit/space/void/engineering/alt/New()

@@ -31,7 +31,7 @@
 	name = "streamlined medical voidhelmet"
 	desc = "A trendy, lightly radiation-shielded voidsuit helmet trimmed in a fetching blue."
 	icon_state = "medicalalt_helm"
-	//item_state = "medicalalt_helm"
+	item_state = "medicalalt_helm"
 	armor = list(melee = 45, bullet = 20, laser = 40, energy = 15, bomb = 0, bio = 100)
 	light_overlay = "helmet_light_dual_green"
 
