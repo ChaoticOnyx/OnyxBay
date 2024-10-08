@@ -26,14 +26,14 @@
 	name = "frontier mining voidhelmet"
 	desc = "An armored voidsuit helmet. Someone must have through they were pretty cool when they painted a mohawk on it."
 	icon_state = "miningalt_helm"
-	item_state = "miningalt_helm"
+	//item_state = "miningalt_helm"
 	armor = list(melee = 50, bullet = 15, laser = 20,energy = 5, bomb = 55, bio = 100)
 
 /obj/item/clothing/suit/space/void/mining/alt
 	name = "frontier mining voidsuit"
 	desc = "A cheap prospecting voidsuit. What it lacks in comfort it makes up for in armor plating and street cred."
-	icon_state = "mining_voidsuitalt"
-	item_state = "mining_voidsuitalt"
+	icon_state = "miningalt_voidsuit"
+	item_state = "miningalt_voidsuit"
 	armor = list(melee = 50, bullet = 15, laser = 20,energy = 5, bomb = 55, bio = 100)
 
 /obj/item/clothing/suit/space/void/mining/alt/prepared
@@ -44,14 +44,14 @@
 	name = "mining hardsuit helmet"
 	desc = "An armored hardsuit helmet. Provides exceptionally good protection against aggressive asteroid dwellers."
 	icon_state = "miningref_helm"
-	item_state = "miningref_helm"
+	//item_state = "miningref_helm"
 	armor = list(melee = 125, bullet = 80, laser = 65, energy = 15, bomb = 65, bio = 100)
 
 /obj/item/clothing/suit/space/void/mining/reinforced
 	name = "mining hardsuit"
 	desc = "A heavy-duty prospecting hardsuit. What it lacks in comfort it makes up for in armor plating and street cred."
-	icon_state = "mining_voidsuitref"
-	item_state = "mining_voidsuitref"
+	icon_state = "miningref_voidsuit"
+	item_state = "miningref_voidsuit"
 	armor = list(melee = 125, bullet = 80, laser = 65, energy = 15, bomb = 65, bio = 100)
 
 /obj/item/clothing/suit/space/void/mining/reinforced/prepared

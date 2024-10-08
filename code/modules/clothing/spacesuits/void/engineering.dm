@@ -5,10 +5,6 @@
 	desc = "A sturdy looking voidsuit helmet rated to protect against radiation."
 	icon_state = "eng_helm"
 	item_state = "eng_helm"
-	item_state_slots = list(
-		slot_l_hand_str = "eng_helm",
-		slot_r_hand_str = "eng_helm",
-		)
 	siemens_coefficient = 0.3
 	armor = list(melee = 60, bullet = 50, laser = 60, energy = 45, bomb = 35, bio = 100)
 	rad_resist_type = /datum/rad_resist/void_engi_salvage
@@ -36,7 +32,7 @@
 	name = "engineering hardsuit helmet"
 	desc = "A heavy, radiation-shielded voidsuit helmet with a surprisingly comfortable interior."
 	icon_state = "engalt_helm"
-	item_state = "engalt_helm"
+	//item_state = "engalt_helm"
 	armor = list(melee = 80, bullet = 70, laser = 60, energy = 65, bomb = 35, bio = 100)
 	light_overlay = "helmet_light_dual_low"
 

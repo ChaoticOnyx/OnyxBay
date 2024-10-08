@@ -29,7 +29,7 @@
 	name = "atmos hardsuit helmet"
 	desc = "A voidsuit helmet plated with an expensive heat and radiation resistant ceramic."
 	icon_state = "atmosalt_helm"
-	item_state = "atmosalt_helm"
+	//item_state = "atmosalt_helm"
 	armor = list(melee = 50, bullet = 45, laser = 90, energy = 45, bomb = 45, bio = 100)
 	max_heat_protection_temperature = ATMOS_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light"

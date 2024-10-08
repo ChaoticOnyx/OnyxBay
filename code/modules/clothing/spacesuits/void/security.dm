@@ -32,8 +32,8 @@
 /obj/item/clothing/suit/space/void/security/alt
 	name = "riot security voidsuit"
 	desc = "A somewhat clumsy voidsuit layered with impact and laser-resistant armor plating. Specially designed to dissipate minor electrical charges."
-	icon_state = "sec_voidsuitalt"
-	item_state = "sec_voidsuitalt"
+	icon_state = "secalt_voidsuit"
+	item_state = "secalt_voidsuit"
 	armor = list(melee = 90, bullet = 90, laser = 80, energy = 25, bomb = 35, bio = 100)
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)
 
