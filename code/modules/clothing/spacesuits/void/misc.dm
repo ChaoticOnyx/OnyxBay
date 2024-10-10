@@ -12,7 +12,7 @@
 	rad_resist_type = /datum/rad_resist/deathsquad
 
 /obj/item/clothing/suit/space/void/deathsquad
-	name = "\improper SWAT suit"
+	name = "deathsquad suit"
 	desc = "A heavily armored suit that protects against moderate damage. Used in special operations."
 	icon_state = "deathsquad_voidsuit"
 	item_state = "deathsquad_voidsuit"
