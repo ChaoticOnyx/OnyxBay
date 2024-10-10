@@ -209,6 +209,7 @@
 	icon = 'icons/obj/cloning.dmi'
 	icon_state = "datadisk2"
 	item_state = "card-id"
+	w_class = ITEM_SIZE_SMALL
 	var/upgrade
 
 /obj/item/rcd_upgrade/frames
