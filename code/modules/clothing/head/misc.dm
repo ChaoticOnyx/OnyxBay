@@ -251,6 +251,7 @@
 	name = "witch costume wig"
 	desc = "Eeeee~heheheheheheh!"
 	icon_state = "witch"
+	item_state = "witch"
 	flags_inv = BLOCKHAIR
 	siemens_coefficient = 2.0
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)

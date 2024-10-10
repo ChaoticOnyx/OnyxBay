@@ -2,10 +2,7 @@
 	name = "helmet"
 	desc = "Reinforced headgear. Protects the head from impacts."
 	icon_state = "helmet"
-	item_state_slots = list(
-		slot_l_hand_str = "helmet",
-		slot_r_hand_str = "helmet",
-		)
+	item_state = "helmet"
 	valid_accessory_slots = list(ACCESSORY_SLOT_HELM_C, ACCESSORY_SLOT_HELM_H)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C, ACCESSORY_SLOT_HELM_H)
 	item_flags = ITEM_FLAG_THICKMATERIAL

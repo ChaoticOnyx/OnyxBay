@@ -2,11 +2,8 @@
 /obj/item/clothing/head/helmet/space/void/wizard
 	name = "gem-encrusted voidsuit helmet"
 	desc = "A bizarre gem-encrusted helmet that radiates magical energies."
-	icon_state = "rig0-wiz"
-	item_state_slots = list(
-		slot_l_hand_str = "wiz_helm",
-		slot_r_hand_str = "wiz_helm",
-		)
+	icon_state = "wiz_helm"
+	item_state = "wiz_helm"
 	unacidable = TRUE //No longer shall our kind be foiled by lone chemists with spray bottles!
 	armor = list(melee = 40, bullet = 30, laser = 40, energy = 75, bomb = 35, bio = 100)
 	siemens_coefficient = 0.4
@@ -15,10 +12,10 @@
 	species_restricted = list(SPECIES_HUMAN, SPECIES_UNATHI)
 
 /obj/item/clothing/suit/space/void/wizard
-	icon_state = "rig-wiz"
-	item_state = "wizard-void"
 	name = "gem-encrusted voidsuit"
 	desc = "A bizarre gem-encrusted suit that radiates magical energies."
+	icon_state = "wizard_voidsuit"
+	item_state = "wizard_voidsuit"
 	w_class = ITEM_SIZE_LARGE //normally voidsuits are bulky but this one is magic I suppose
 	unacidable = TRUE
 	armor = list(melee = 40, bullet = 30, laser = 40, energy = 75, bomb = 35, bio = 100)

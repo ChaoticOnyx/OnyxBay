@@ -143,53 +143,37 @@
 /obj/item/clothing/suit/storage/toggle/forensics
 	name = "jacket"
 	desc = "A forensics technician jacket."
-	item_state = "det_suit"
+	icon_state = "forensics"
+	item_state = "forensics"
+	icon_open = "forensics_open"
+	icon_closed = "forensics"
 	body_parts_covered = UPPER_TORSO|ARMS
 	blood_overlay_type = "armorblood"
 	allowed = list(/obj/item/tank/emergency,/obj/item/device/flashlight,/obj/item/gun/energy,/obj/item/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/device/taperecorder)
 	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0)
 	coverage = 0.8
 
-/obj/item/clothing/suit/storage/toggle/forensics/toggle()
-	if(!CanPhysicallyInteract(usr))
-		return 0
-
-	if(icon_state == icon_open) //Will check whether icon state is currently set to the "open" or "closed" state and switch it around with a message to the user
-		icon_state = icon_closed
-		item_state = icon_closed
-		to_chat(usr, "You button up the jacket.")
-		coverage = 1.0
-	else if(icon_state == icon_closed)
-		icon_state = icon_open
-		item_state = icon_open
-		to_chat(usr, "You unbutton the jacket.")
-		coverage = 0.8
-	else
-		to_chat(usr, "You attempt to button-up the velcro on your [src], before promptly realising how silly you are.")
-		return
-	update_clothing_icon()
-
 /obj/item/clothing/suit/storage/toggle/forensics/red
 	name = "red jacket"
 	desc = "A red forensics technician jacket."
-	item_state = "forensics_red_open"
 	icon_state = "forensics_red_open"
+	item_state = "forensics_red_open"
 	icon_open = "forensics_red_open"
 	icon_closed = "forensics_red"
 
 /obj/item/clothing/suit/storage/toggle/forensics/blue
 	name = "blue jacket"
 	desc = "A blue forensics technician jacket."
-	item_state = "forensics_blue_open"
 	icon_state = "forensics_blue_open"
+	item_state = "forensics_blue_open"
 	icon_open = "forensics_blue_open"
 	icon_closed = "forensics_blue"
 
 /obj/item/clothing/suit/storage/toggle/forensics/labcoat
 	name = "forensic labcoat"
 	desc = "A white forensics technician labcoat."
-	item_state = "forensictech_open"
 	icon_state = "forensictech_open"
+	item_state = "forensictech_open"
 	icon_open = "forensictech_open"
 	icon_closed = "forensictech"
 
@@ -211,16 +195,19 @@
 	name = "blue hazard vest"
 	desc = "A high-visibility vest used in work zones. This one is blue!"
 	icon_state = "hazard_b"
+	item_state = "hazard_b"
 
 /obj/item/clothing/suit/storage/hazardvest/white
 	name = "white hazard vest"
 	desc = "A high-visibility vest used in work zones. This one has a red cross!"
 	icon_state = "hazard_w"
+	item_state = "hazard_w"
 
 /obj/item/clothing/suit/storage/hazardvest/green
 	name = "green hazard vest"
 	desc = "A high-visibility vest used in work zones. This one is green!"
 	icon_state = "hazard_g"
+	item_state = "hazard_g"
 
 //Lawyer
 /obj/item/clothing/suit/storage/toggle/suit

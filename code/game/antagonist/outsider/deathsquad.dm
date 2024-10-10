@@ -55,7 +55,7 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 	player.equip_to_slot_or_del(new /obj/item/ammo_magazine/c50(player), slot_in_backpack)
 	player.equip_to_slot_or_del(new /obj/item/ammo_magazine/c50(player), slot_in_backpack)
 	player.equip_to_slot_or_del(new /obj/item/melee/energy/sword/one_hand(player), slot_l_hand)
-	player.equip_to_slot_or_del(new /obj/item/clothing/suit/space/void/swat(player), slot_wear_suit)
+	player.equip_to_slot_or_del(new /obj/item/clothing/suit/space/void/deathsquad(player), slot_wear_suit)
 	player.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad(player), slot_head)
 	player.implant_loyalty(player)
 
