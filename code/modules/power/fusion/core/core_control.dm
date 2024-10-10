@@ -5,6 +5,7 @@
 	light_color = COLOR_ORANGE
 	idle_power_usage = 250 WATTS
 	active_power_usage = 500 WATTS
+	circuit = /obj/item/circuitboard/fusion_core_control
 
 	var/id_tag
 	var/scan_range = 25
@@ -18,6 +19,7 @@
 			id_tag = new_ident
 			cur_viewed_device = null
 		return
+
 	else
 		return ..()
 
@@ -27,6 +29,7 @@
 /obj/machinery/computer/fusion_core_control/attack_hand(mob/user)
 	if(..())
 		return
+
 	add_fingerprint(user)
 	interact(user)
 
@@ -142,7 +145,7 @@
 		var/idx = Clamp(text2num(href_list["toggle_active"]), 1, connected_devices.len)
 		cur_viewed_device = connected_devices[idx]
 		updateUsrDialog()
-		return 1
+		return TRUE
 
 	//All HREFs from this point on require a device anyways.
 	if(!cur_viewed_device || !check_core_status(cur_viewed_device) || cur_viewed_device.id_tag != id_tag || get_dist(src, cur_viewed_device) > scan_range)
@@ -151,13 +154,13 @@
 	if(href_list["goto_scanlist"])
 		cur_viewed_device = null
 		updateUsrDialog()
-		return 1
+		return TRUE
 
 	if(href_list["toggle_active"])
 		if(!cur_viewed_device.Startup()) //Startup() whilst the device is active will return null.
 			cur_viewed_device.Shutdown()
 		updateUsrDialog()
-		return 1
+		return TRUE
 
 	if(href_list["str"])
 		var/val = text2num(href_list["str"])
@@ -166,8 +169,8 @@
 		else
 			cur_viewed_device.set_strength(cur_viewed_device.field_strength + val)
 		updateUsrDialog()
-		return 1
+		return TRUE
 
 //Returns 1 if the machine can be interacted with via this console.
 /obj/machinery/computer/fusion_core_control/proc/check_core_status(obj/machinery/power/fusion_core/C)
-	. = 1
+	. = TRUE

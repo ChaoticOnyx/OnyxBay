@@ -5,6 +5,7 @@
 	light_color = COLOR_ORANGE
 	idle_power_usage = 250 WATTS
 	active_power_usage = 500 WATTS
+	circuit = /obj/item/circuitboard/fusion_fuel_control
 
 	var/id_tag
 	var/scan_range = 25
@@ -15,6 +16,7 @@
 /obj/machinery/computer/fusion_fuel_control/attack_hand(mob/user)
 	if(..())
 		return
+
 	add_fingerprint(user)
 	interact(user)
 
@@ -78,7 +80,7 @@
 
 /obj/machinery/computer/fusion_fuel_control/Topic(href, href_list)
 	if(..())
-		return 1
+		return TRUE
 
 	if(href_list["toggle_injecting"])
 		var/obj/machinery/fusion_fuel_injector/I = locate(href_list["toggle_injecting"])
