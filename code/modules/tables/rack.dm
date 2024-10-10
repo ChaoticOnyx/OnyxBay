@@ -28,14 +28,10 @@
 /obj/structure/table/rack/can_connect()
 	return FALSE
 
-/obj/structure/table/rack/bograck
-	name = "strange rack"
-	desc ="Must be the color."
-	icon = 'icons/obj/objects.dmi'
-	icon_state = "bograck"
-	can_plate = 0
-	can_reinforce = 0
-	flipped = -1
-
 /obj/structure/table/rack/dark
 	color = COLOR_GRAY40
+
+/obj/structure/table/rack/bograck
+	name = "strange rack"
+	desc = "Must be the color."
+	icon_state = "bograck"
