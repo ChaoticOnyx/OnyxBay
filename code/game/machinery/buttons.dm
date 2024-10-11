@@ -69,11 +69,11 @@
 //alternate button with the same functionality, except has a door control sprite instead
 /obj/machinery/button/alternate
 	icon = 'icons/obj/stationobjs.dmi'
-	icon_state = "doorctrl0"
+	icon_state = "doorctrl"
 
 /obj/machinery/button/alternate/on_update_icon()
 	if(active)
-		icon_state = "doorctrl0"
+		icon_state = "doorctrl"
 	else
 		icon_state = "doorctrl2"
 
@@ -105,11 +105,11 @@
 //alternate button with the same toggle functionality, except has a door control sprite instead
 /obj/machinery/button/toggle/alternate
 	icon = 'icons/obj/stationobjs.dmi'
-	icon_state = "doorctrl0"
+	icon_state = "doorctrl"
 
 /obj/machinery/button/toggle/alternate/on_update_icon()
 	if(active)
-		icon_state = "doorctrl0"
+		icon_state = "doorctrl"
 	else
 		icon_state = "doorctrl2"
 
@@ -150,7 +150,7 @@
 
 /obj/machinery/button/toggle/door
 	icon = 'icons/obj/stationobjs.dmi'
-	icon_state = "doorctrl0"
+	icon_state = "doorctrl"
 
 	var/_door_functions = 1
 /*	Bitflag, 	1 = open
