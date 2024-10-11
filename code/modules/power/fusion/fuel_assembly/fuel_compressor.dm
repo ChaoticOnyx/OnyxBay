@@ -11,8 +11,7 @@
 		/obj/item/circuitboard/fusion_fuel_compressor = 1,
 		/obj/item/stock_parts/manipulator/pico = 2,
 		/obj/item/stock_parts/matter_bin/super = 2,
-		/obj/item/stock_parts/console_screen = 1,
-		/obj/item/stack/cable_coil{amount = 5}
+		/obj/item/stock_parts/console_screen = 1
 	)
 
 /obj/machinery/fusion_fuel_compressor/MouseDrop_T(atom/movable/target, mob/user)
