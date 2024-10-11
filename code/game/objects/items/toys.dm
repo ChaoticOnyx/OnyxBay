@@ -270,7 +270,7 @@
 
 /obj/effect/foam_dart_dummy
 	name = "foam dart dummy"
-	desc = "Foam Dart Dummy: A simple target to practice your dart shooting skills."
+	desc = "foam dart dummy: A simple target to practice your dart shooting skills."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "null"
 	anchored = 1
