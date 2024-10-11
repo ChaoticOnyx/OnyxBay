@@ -7,17 +7,12 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	turf_height_offset = 23
 
-/obj/machinery/fusion_fuel_compressor/Initialize()
-	. = ..()
-	component_parts = list(
-		new /obj/item/circuitboard/fusion_fuel_compressor(src),
-		new /obj/item/stock_parts/manipulator/pico(src),
-		new /obj/item/stock_parts/manipulator/pico(src),
-		new /obj/item/stock_parts/matter_bin/super(src),
-		new /obj/item/stock_parts/matter_bin/super(src),
-		new /obj/item/stock_parts/console_screen(src),
-		new /obj/item/stack/cable_coil(src, 5))
-	RefreshParts()
+	component_types = list(
+		/obj/item/stock_parts/manipulator/pico = 2,
+		/obj/item/stock_parts/matter_bin/super = 2,
+		/obj/item/stock_parts/console_screen = 1,
+		/obj/item/stack/cable_coil = 5
+	)
 
 /obj/machinery/fusion_fuel_compressor/MouseDrop_T(atom/movable/target, mob/user)
 	if(user.incapacitated() || !user.Adjacent(src))
