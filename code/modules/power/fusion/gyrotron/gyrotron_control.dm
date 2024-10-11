@@ -69,7 +69,7 @@
 			to_chat(usr, "<span class='warning'>That's not a valid number.</span>")
 			return TRUE
 
-		G.mega_energy = Clamp(new_val, 1, 10)
+		G.mega_energy = Clamp(new_val, 1, 50)
 		G.change_power_consumption(G.mega_energy * 1500, POWER_USE_ACTIVE)
 		updateUsrDialog()
 		return TRUE
