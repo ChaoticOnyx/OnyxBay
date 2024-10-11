@@ -20,7 +20,7 @@
 /obj/machinery/door/unpowered/shuttle
 	icon = 'icons/turf/shuttle.dmi'
 	name = "door"
-	icon_state = "door1"
+	icon_state = "door_closed"
 	opacity = 1
 	density = 1
 
@@ -29,7 +29,7 @@
 	name = "Vent Shaft"
 	desc = "Used to hide ugly pipes and cabels."
 	icon = 'icons/obj/doors/doormorgue.dmi'
-	icon_state = "door1"
+	icon_state = "door_closed"
 
 /obj/machinery/door/unpowered/vent_shaft/inoperable(additional_flags = 0)
 	return (stat & (BROKEN|additional_flags))

@@ -389,10 +389,13 @@ Holographic project of everything else.
 /*
  * Other Stuff: Is this even used?
  */
-/obj/machinery/hologram/projector
-	name = "hologram projector"
+/obj/machinery/hologram/holopad/projector
+	name = "holopad projector"
 	desc = "It makes a hologram appear...with magnets or something..."
-	icon_state = "hologram0"
+	icon_state = "holopad0"
+	map_range = 1
+	holopadType = HOLOPAD_AVERAGE_RANGE
+	base_icon = "holopad"
 
 /obj/machinery/hologram/holopad/longrange
 	name = "long range holopad"
