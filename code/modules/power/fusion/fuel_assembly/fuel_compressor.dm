@@ -38,7 +38,7 @@
 	if(do_fuel_compression(thing, user))
 		return
 
-	..()
+	return ..()
 
 /obj/machinery/fusion_fuel_compressor/proc/do_fuel_compression(obj/item/thing, mob/user)
 	if(istype(thing) && thing.reagents && thing.reagents.total_volume && thing.is_open_container())
