@@ -60,7 +60,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 
 /obj/machinery/hologram/holopad/New()
 	..()
-	desc += "It's a floor-mounted device for projecting holographic images. Its ID is '[loc.loc]'"
+	desc += " Its ID is '[loc.loc]'"
 
 /obj/machinery/hologram/holopad/attack_hand(mob/living/carbon/human/user) //Carn: Hologram requests.
 	if(!istype(user))
@@ -391,7 +391,7 @@ Holographic project of everything else.
  */
 /obj/machinery/hologram/holopad/projector
 	name = "holopad projector"
-	desc = "It makes a hologram appear...with magnets or something..."
+	desc = "It's a floor-mounted device for projecting holographic images. This one has hologram appear...with magnets or something..."
 	icon_state = "holopad0"
 	map_range = 1
 	holopadType = HOLOPAD_AVERAGE_RANGE

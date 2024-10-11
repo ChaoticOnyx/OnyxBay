@@ -192,7 +192,7 @@
 	name = "master armor tag"
 	desc = "A collection of various tags for placing on the front of a plate carrier."
 	icon = 'icons/obj/clothing/modular_armor.dmi'
-	icon_state = "null"
+	icon_state = "tag"
 	slot = ACCESSORY_SLOT_ARMOR_M
 
 /obj/item/clothing/accessory/armor/tag/nt
@@ -250,7 +250,7 @@
 	name = "helmet cover"
 	desc = "A fabric cover for armored helmets."
 	icon = 'icons/obj/clothing/modular_armor.dmi'
-	icon_state = "null"
+	icon_state = "helmcover"
 	slot = ACCESSORY_SLOT_HELM_C
 
 /obj/item/clothing/accessory/armor/helmcover/blue
