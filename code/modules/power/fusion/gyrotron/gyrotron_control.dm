@@ -64,7 +64,7 @@
 		return
 
 	if(href_list["modifypower"])
-		var/new_val = input("Enter new emission power level (1 - 10)", "Modifying power level", G.mega_energy) as num
+		var/new_val = input("Enter new emission power level (1 - 50)", "Modifying power level", G.mega_energy) as num
 		if(!new_val)
 			to_chat(usr, "<span class='warning'>That's not a valid number.</span>")
 			return TRUE
