@@ -392,7 +392,6 @@ Holographic project of everything else.
 /obj/machinery/hologram/projector
 	name = "hologram projector"
 	desc = "It makes a hologram appear...with magnets or something..."
-	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "hologram0"
 
 /obj/machinery/hologram/holopad/longrange

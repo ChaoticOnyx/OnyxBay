@@ -150,7 +150,7 @@
 
 /obj/machinery/button/toggle/door
 	icon = 'icons/obj/stationobjs.dmi'
-	icon_state = "doorctrl"
+	icon_state = "doorctrl0"
 
 	var/_door_functions = 1
 /*	Bitflag, 	1 = open
