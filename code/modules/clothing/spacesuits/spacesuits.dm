@@ -5,10 +5,7 @@
 /obj/item/clothing/head/helmet/space
 	name = "Space helmet"
 	icon_state = "space"
-	item_state_slots = list(
-		slot_l_hand_str = "s_helmet",
-		slot_r_hand_str = "s_helmet",
-		)
+	item_state = "space"
 	desc = "A special helmet designed for work in a hazardous, low-pressure environment."
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL | ITEM_FLAG_AIRTIGHT
 	flags_inv = BLOCKHAIR
