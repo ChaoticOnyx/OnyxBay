@@ -5,6 +5,7 @@
 	light_color = COLOR_BLUE
 	idle_power_usage = 250 WATTS
 	active_power_usage = 500 WATTS
+	circuit = /obj/item/circuitboard/gyrotron_control
 
 	var/id_tag
 	var/scan_range = 25
@@ -66,27 +67,29 @@
 		var/new_val = input("Enter new emission power level (1 - 50)", "Modifying power level", G.mega_energy) as num
 		if(!new_val)
 			to_chat(usr, "<span class='warning'>That's not a valid number.</span>")
-			return 1
+			return TRUE
+
 		G.mega_energy = Clamp(new_val, 1, 50)
 		G.change_power_consumption(G.mega_energy * 1500, POWER_USE_ACTIVE)
 		updateUsrDialog()
-		return 1
+		return TRUE
 
 	if(href_list["modifyrate"])
 		var/new_val = input("Enter new emission delay between 1 and 10 seconds.", "Modifying emission rate", G.rate) as num
 		if(!new_val)
 			to_chat(usr, "<span class='warning'>That's not a valid number.</span>")
-			return 1
+			return TRUE
+
 		G.rate = Clamp(new_val, 1, 10)
 		updateUsrDialog()
-		return 1
+		return TRUE
 
 	if(href_list["toggle"])
 		G.activate(usr)
 		updateUsrDialog()
-		return 1
+		return TRUE
 
-	return 0
+	return FALSE
 
 /obj/machinery/computer/gyrotron_control/attackby(obj/item/W, mob/user)
 	if(isMultitool(W))

@@ -12,7 +12,6 @@
 							/obj/item/stock_parts/manipulator/pico = 2,
 							/obj/item/stock_parts/matter_bin/super = 2,
 							/obj/item/stock_parts/console_screen = 1,
-							/obj/item/stack/cable_coil = 5
 							)
 
 /obj/item/circuitboard/fusion_fuel_control
