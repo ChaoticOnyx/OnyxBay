@@ -501,8 +501,7 @@
 /obj/item/storage/box/lights/tubes
 	name = "box of replacement tubes"
 	icon_state = "lighttube"
-	startswith = list(/obj/item/light/tube = 17,
-					/obj/item/light/tube/large = 4)
+	startswith = list(/obj/item/light/tube = 21)
 
 /obj/item/storage/box/lights/tubes/empty
 	startswith = null
@@ -510,8 +509,7 @@
 /obj/item/storage/box/lights/mixed
 	name = "box of replacement lights"
 	icon_state = "lightmixed"
-	startswith = list(/obj/item/light/tube = 12,
-					/obj/item/light/tube/large = 4,
+	startswith = list(/obj/item/light/tube = 16,
 					/obj/item/light/bulb = 5)
 
 /obj/item/storage/box/lights/mixed/empty
