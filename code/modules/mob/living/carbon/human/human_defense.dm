@@ -135,8 +135,6 @@ meteor_act
 				visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))
 			Stun(reduced_tasing)
 			Weaken(reduced_tasing + 1) // Getting up after being tased is not instant, adding 1 tick of unstunned crawling
-			if(poise <= 0)
-				poise_immunity(min(reduced_tasing, 3))
 
 
 //////////////////////
@@ -443,7 +441,6 @@ meteor_act
 						visible_message(SPAN("danger", "[src] [species.knockout_message]"))
 						custom_pain("Your head's definitely gonna hurt tomorrow.", 30, affecting = affecting)
 						apply_effect((I.mod_weight*15), PARALYZE, (blocked/2))
-						poise_immunity(3)
 
 					else if(prob(effective_force))
 						visible_message(SPAN("danger", "[src] looks momentarily disoriented."), SPAN("danger", "You see stars."))
@@ -453,7 +450,6 @@ meteor_act
 					if(poise <= effective_force/3*I.mod_weight)
 						visible_message(SPAN("danger", "[src] has been knocked down!"))
 						apply_effect(min((I.mod_weight * 3), 4), WEAKEN, (blocked/2))
-						poise_immunity(2)
 
 				if(BP_L_HAND, BP_R_HAND) //Knocking someone down by smashing their hands? Hell no.
 					if(poise <= effective_force/3*I.mod_weight)
@@ -529,7 +525,6 @@ meteor_act
 					visible_message(SPAN("danger", "[src] [species.knockout_message]"))
 					custom_pain("Your head's <B>definitely</B> gonna hurt tomorrow.", 30, affecting = affecting)
 					apply_effect((I.mod_weight*20), PARALYZE, (blocked/2))
-					poise_immunity(3)
 
 				else if(prob(effective_force))
 					visible_message(SPAN("danger", "[src] looks momentarily disoriented."), SPAN("danger", "You see stars."))
@@ -559,7 +554,6 @@ meteor_act
 				if(poise <= effective_force/3*I.mod_weight)
 					visible_message(SPAN("danger", "[src] has been knocked down!"))
 					apply_effect((I.mod_weight*3.5), WEAKEN, (blocked/2))
-					poise_immunity(2)
 
 				else if(prob(effective_force))
 					var/turf/T = get_step(get_turf(src), get_dir(get_turf(user), get_turf(src)))
@@ -571,13 +565,11 @@ meteor_act
 					else
 						visible_message(SPAN("danger", "[src] bumps into \the [T]!"))
 						apply_effect(effective_force * 0.4, WEAKEN, (blocked/2))
-						poise_immunity(2)
 
 			if(BP_L_FOOT, BP_R_FOOT)
 				if(poise <= effective_force*I.mod_reach)
 					visible_message(SPAN("danger", "[user] takes [src] down with their [I.name]!"))
 					apply_effect((I.mod_reach*5), WEAKEN, blocked)
-					poise_immunity(2)
 
 	if(effective_force <= 0)
 		return 0
@@ -737,7 +729,6 @@ meteor_act
 				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
 				defender.apply_effect(3, WEAKEN, 0)
 				defender.useblock_off()
-				defender.poise_immunity(2)
 	return 1
 
 //Src (defender) blocks attacking_mob's (attacker) punch/generic attack with their weapon_def
@@ -787,7 +778,6 @@ meteor_act
 				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
 				defender.apply_effect(3, WEAKEN, 0)
 				defender.useblock_off()
-				defender.poise_immunity(2)
 	return 1
 
 
@@ -872,7 +862,6 @@ meteor_act
 	damage_poise(poisedamage * pd_mult)
 	if(poise <= 25 && !prob(poise * 3))
 		apply_effect(max(3, (poisedamage * pd_mult / 4)), WEAKEN)
-		poise_immunity(2)
 		if(!lying)
 			visible_message(SPAN("danger", "[src] goes down under the impact of \the [P]!"))
 
@@ -938,7 +927,6 @@ meteor_act
 						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
 						apply_effect(2, WEAKEN, 0)
 						useblock_off()
-						poise_immunity(1)
 					return
 
 
