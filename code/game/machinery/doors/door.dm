@@ -5,7 +5,7 @@
 	name = "Door"
 	desc = "It opens and closes."
 	icon = 'icons/obj/doors/doorint.dmi'
-	icon_state = "door1"
+	icon_state = "door_closed"
 	anchored = 1
 	opacity = 1
 	density = 1
@@ -363,9 +363,9 @@
 
 /obj/machinery/door/on_update_icon()
 	if(density)
-		icon_state = "door1"
+		icon_state = "door_closed"
 	else
-		icon_state = "door0"
+		icon_state = "door_open"
 	return
 
 
@@ -398,7 +398,7 @@
 	operating = TRUE
 
 	do_animate("opening")
-	icon_state = "door0"
+	icon_state = "door_opening"
 	set_opacity(FALSE)
 	if(filler)
 		filler.set_opacity(opacity)

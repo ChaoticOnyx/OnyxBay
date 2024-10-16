@@ -269,8 +269,8 @@
 	slot_flags = SLOT_EARS
 
 /obj/effect/foam_dart_dummy
-	name = ""
-	desc = ""
+	name = "foam dart dummy"
+	desc = "foam dart dummy: A simple target to practice your dart shooting skills."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "null"
 	anchored = 1
