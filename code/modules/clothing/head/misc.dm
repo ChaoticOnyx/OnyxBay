@@ -328,7 +328,7 @@
 	name = "cowboy hat"
 	desc = "A wide-brimmed hat, in the prevalent style of America's frontier period. By SolGov law, you are required to wear this hat while watching True Grit."
 	icon_state = "cowboyhat"
-	item_state = "cowboy_hat"
+	item_state = "cowboyhat"
 	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/panama
