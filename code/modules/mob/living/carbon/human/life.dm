@@ -1030,18 +1030,19 @@
 		poise = poise_pool
 		poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 		return
-	var/pregen = 5
+	var/base_pregen = poise_pool * 0.1
+	var/pregen = base_pregen
 
 	for(var/obj/item/grab/G in list(get_active_hand(), get_inactive_hand()))
-		pregen -= 1.25
+		pregen -= base_pregen * 0.25
 
 	if(blocking)
-		pregen -= 2.5
+		pregen -= base_pregen * 0.5
 
 	if(lying)
-		pregen += 2.5
+		pregen += base_pregen * 0.5
 
-	poise = between(0, poise+pregen, poise_pool)
+	poise = between(0, poise + pregen, poise_pool)
 
 	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 

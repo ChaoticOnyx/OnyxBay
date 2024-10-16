@@ -639,7 +639,6 @@ var/list/global/slot_flags_enumeration = list(
 			return TRUE
 	H.visible_message(SPAN("warning", "[H] falls down, unable to keep balance!"))
 	H.apply_effect(5, WEAKEN, 0)
-	H.poise_immunity(3)
 	return canremove ? TRUE : FALSE
 
 /obj/item/proc/get_loc_turf()
