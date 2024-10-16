@@ -96,7 +96,7 @@
 								/obj/item/cell/hyper 											= TRADER_THIS_TYPE,
 								/obj/item/module 												= TRADER_SUBTYPES_ONLY,
 								/obj/item/tracker_electronics 									= TRADER_THIS_TYPE,
-								/obj/item/combotool/advtool 									= TRADER_THIS_TYPE,
+								/obj/item/device/multitool/advtool 								= TRADER_THIS_TYPE,
 								/obj/item/modular_computer/tablet/preset/custom_loadout/cheap 	= TRADER_THIS_TYPE,
 								/obj/item/modular_computer/laptop/preset/custom_loadout/cheap 	= TRADER_THIS_TYPE,
 								/obj/item/computer_hardware										= TRADER_ALL,

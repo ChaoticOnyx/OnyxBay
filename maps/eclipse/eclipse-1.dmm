@@ -5346,7 +5346,7 @@
 "cfB" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/nw,/area/shuttle/escape_pod5/station)
 "cfC" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/ne,/area/shuttle/escape_pod5/station)
 "cfD" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/light/small{dir = 1},/obj/structure/table/steel,/obj/machinery/cell_charger,/obj/item/device/t_scanner,/obj/structure/sign/poster{layer = 3.6; pixel_y = 32; name = "poster north"},/turf/simulated/floor/plating,/area/eclipse/engineering/misc/advanced_technical_storage)
-"cfE" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/table/steel,/obj/item/device/multitool,/obj/item/device/multitool,/obj/item/combotool/advtool,/turf/simulated/floor/plating,/area/eclipse/engineering/misc/advanced_technical_storage)
+"cfE" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/table/steel,/obj/item/device/multitool,/obj/item/device/multitool,/obj/item/device/multitool/advtool,/turf/simulated/floor/plating,/area/eclipse/engineering/misc/advanced_technical_storage)
 "cfF" = (/turf/simulated/floor/plating/airless,/area/space)
 "cfG" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/obj/structure/table/steel,/obj/item/aicard,/obj/item/device/flash,/obj/item/device/flash,/turf/simulated/floor/plating,/area/eclipse/engineering/misc/advanced_technical_storage)
 "cfH" = (/obj/machinery/door/blast/regular/open{density = 0; id = "SupermatterPort"; name = "Reactor Blast Door"},/obj/structure/window_frame/reinforced/thermal,/turf/simulated/floor/plating,/area/eclipse/engineering/tech/supermatter_engine)

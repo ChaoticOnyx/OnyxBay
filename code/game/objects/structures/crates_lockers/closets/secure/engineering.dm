@@ -17,7 +17,7 @@
 		/obj/item/cartridge/ce,
 		/obj/item/device/radio/headset/heads/ce,
 		/obj/item/storage/toolbox/mechanical,
-		/obj/item/combotool/advtool,
+		/obj/item/device/multitool/advtool,
 		/obj/item/device/flash,
 		/obj/item/taperoll/engineering,
 		/obj/item/crowbar/brace_jack
