@@ -72,7 +72,7 @@
 		/obj/item/taperoll,
 		/obj/item/extinguisher/mini,
 		/obj/item/marshalling_wand,
-		/obj/item/combotool/advtool,
+		/obj/item/device/multitool/advtool,
 		/obj/item/device/geiger,
 		/obj/item/device/lightreplacer,
 		/obj/item/device/robotanalyzer
