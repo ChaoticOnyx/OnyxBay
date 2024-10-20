@@ -363,9 +363,9 @@
 
 /obj/machinery/door/on_update_icon()
 	if(density)
-		icon_state = "door_closed"
+		icon_state = "door1"
 	else
-		icon_state = "door_open"
+		icon_state = "door0"
 	return
 
 
@@ -398,7 +398,7 @@
 	operating = TRUE
 
 	do_animate("opening")
-	icon_state = "door_opening"
+	icon_state = "door0"
 	set_opacity(FALSE)
 	if(filler)
 		filler.set_opacity(opacity)
