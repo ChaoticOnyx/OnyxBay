@@ -353,7 +353,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	if(spill)
 		splash(target.loc, spill, multiplier, copy, min_spill, max_spill)
 
-	trans_to(target, amount, multiplier, copy)
+	return trans_to(target, amount, multiplier, copy)
 
 /datum/reagents/proc/trans_type_to(atom/target, type, amount = 1)
 	if (!target || !target.reagents || !target.simulated)
