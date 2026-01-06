@@ -168,7 +168,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		force_droplimb = TRUE
 
 	if(burn && (burn_dam >= max_damage))
-		if(prob(burn) || force_droplimb))
+		if(prob(burn) || force_droplimb)
 			droplimb(laser, DROPLIMB_BURN)
 			return TRUE
 
@@ -257,9 +257,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	var/burn_dealt = burn_dam - burn_last
 
 	// Dismemberment stuff
-	if(!isnull(owner)) && loc == owner && !clean)
+	if(!isnull(owner) && loc == owner && !clean)
 		owner.updatehealth()
-		if(try_to_dismember(brute, burn, damage_flags)
+		if(try_to_dismember(brute, burn, damage_flags))
 			return
 
 	// High brute damage or sharp objects may damage internal organs

@@ -124,9 +124,9 @@
 					if(ishuman(temp.applied_pressure))
 						var/mob/living/carbon/human/H = temp.applied_pressure
 						H.bloody_hands(src, 0)
-					blood_max += bleeding * 0.15 // still want a little bit to drip out, for effect
+					blood_max += temp.bleeding * 0.15 // still want a little bit to drip out, for effect
 				else
-					blood_max += bleeding * 0.75
+					blood_max += temp.bleeding * 0.75
 					open_wound = TRUE
 
 			if(temp.status & ORGAN_ARTERY_CUT)
