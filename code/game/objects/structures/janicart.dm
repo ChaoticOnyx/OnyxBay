@@ -7,6 +7,7 @@
 	density = 1
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER | ATOM_FLAG_CLIMBABLE
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
+	climb_delay = 3 SECONDS
 	//copypaste sorry
 	var/amount_per_transfer_from_this = 5 //shit I dunno, adding this so syringes stop runtime erroring. --NeoFite
 	var/obj/item/storage/bag/trash/mybag	= null
@@ -33,34 +34,34 @@
 		mybag = I
 		update_icon()
 		updateUsrDialog()
-		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+		to_chat(user, SPAN_NOTICE("You put [I] into [src]."))
 
 	else if(istype(I, /obj/item/mop))
 		if(I.reagents.total_volume < I.reagents.maximum_volume)	//if it's not completely soaked we assume they want to wet it, otherwise store it
 			if(reagents.total_volume < 1)
-				to_chat(user, "<span class='warning'>[src] is out of water!</span>")
+				to_chat(user, SPAN_WARNING("[src] is out of water!"))
 			else
 				reagents.trans_to_obj(I, I.reagents.maximum_volume)
-				to_chat(user, "<span class='notice'>You wet [I] in [src].</span>")
+				to_chat(user, SPAN_NOTICE("You wet [I] in [src]."))
 				playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 				return
 		if(!mymop && user.drop(I, src))
 			mymop = I
 			update_icon()
 			updateUsrDialog()
-			to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+			to_chat(user, SPAN_NOTICE("You put [I] into [src]."))
 
 	else if(istype(I, /obj/item/reagent_containers/spray) && !myspray && user.drop(I, src))
 		myspray = I
 		update_icon()
 		updateUsrDialog()
-		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+		to_chat(user, SPAN_NOTICE("You put [I] into [src]."))
 
 	else if(istype(I, /obj/item/device/lightreplacer) && !myreplacer && user.drop(I, src))
 		myreplacer = I
 		update_icon()
 		updateUsrDialog()
-		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+		to_chat(user, SPAN_NOTICE("You put [I] into [src]."))
 
 	else if(istype(I, /obj/item/caution))
 		if(signs < 4)
@@ -69,9 +70,9 @@
 			signs++
 			update_icon()
 			updateUsrDialog()
-			to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+			to_chat(user, SPAN_NOTICE("You put [I] into [src]."))
 		else
-			to_chat(user, "<span class='notice'>[src] can't hold any more signs.</span>")
+			to_chat(user, SPAN_NOTICE("[src] can't hold any more signs."))
 
 	else if(istype(I, /obj/item/reagent_containers/vessel))
 		var/obj/item/reagent_containers/vessel/V = I
@@ -204,14 +205,14 @@
 	if(istype(I, /obj/item/mop))
 		if(reagents.total_volume > 1)
 			reagents.trans_to_obj(I, 2)
-			to_chat(user, "<span class='notice'>You wet [I] in the [callme].</span>")
+			to_chat(user, SPAN_NOTICE("You wet [I] in the [callme]."))
 			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 		else
-			to_chat(user, "<span class='notice'>This [callme] is out of water!</span>")
+			to_chat(user, SPAN_NOTICE("This [callme] is out of water!"))
 	else if(istype(I, /obj/item/key))
 		to_chat(user, "Hold [I] in one of your hands while you drive this [callme].")
 	else if(istype(I, /obj/item/storage/bag/trash) && !mybag && user.drop(I, src))
-		to_chat(user, "<span class='notice'>You hook the trashbag onto the [callme].</span>")
+		to_chat(user, SPAN_NOTICE("You hook the trashbag onto the [callme]."))
 		mybag = I
 
 
@@ -230,7 +231,7 @@
 		step(src, direction)
 		update_mob()
 	else
-		to_chat(user, "<span class='notice'>You'll need the keys in one of your hands to drive this [callme].</span>")
+		to_chat(user, SPAN_NOTICE("You'll need the keys in one of your hands to drive this [callme]."))
 
 
 /obj/structure/bed/chair/janicart/Move(newloc, direct)
@@ -287,7 +288,7 @@
 	if(buckled_mob)
 		if(prob(85))
 			return buckled_mob.bullet_act(Proj)
-	visible_message("<span class='warning'>[Proj] ricochets off the [callme]!</span>")
+	visible_message(SPAN_WARNING("[Proj] ricochets off the [callme]!"))
 
 
 /obj/item/key

@@ -11,6 +11,7 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	pull_slowdown = PULL_SLOWDOWN_TINY
 	turf_height_offset = 14
+	climb_delay = 1 SECONDS
 	var/amount_per_transfer_from_this = 5	//shit I dunno, adding this so syringes stop runtime erroring. --NeoFite
 
 
@@ -31,7 +32,7 @@
 			return
 
 		else
-			reagents.trans_to_obj(I, 5)
+			reagents.trans_to_obj(I, 50)
 			show_splash_text(user, "you wet the mop!", SPAN("notice", "You wet \the [I] in \the [src]."))
 			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 			return

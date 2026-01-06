@@ -7,6 +7,7 @@
 
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	turf_height_offset = 3 // It looks so shitty I dunno what offset to use. 3 will go for now I guess. ~ TobyThorne
+	climb_delay = 5 SECONDS // Matching the old delay. RIP fatties.
 
 	/// Reference to a material datum this object was made from.
 	var/material/material

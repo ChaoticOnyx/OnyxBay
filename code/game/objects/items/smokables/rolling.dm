@@ -88,53 +88,33 @@
 	. = ..()
 	bitesize = 3
 
-/obj/item/reagent_containers/food/tobacco/generic/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/tobacco, 4)
+/obj/item/reagent_containers/food/tobacco/generic
+	startswith = list(/datum/reagent/tobacco = 4)
 
 /obj/item/reagent_containers/food/tobacco/cherry
 	desc = "A small pile of dried and grinded herbs. Smells of cherries."
 	icon_state = "tpile_cherry"
-
-/obj/item/reagent_containers/food/tobacco/cherry/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/tobacco, 3)
-	reagents.add_reagent(/datum/reagent/nutriment/cherryjelly, 2)
+	startswith = list(/datum/reagent/tobacco = 3, /datum/reagent/nutriment/cherryjelly = 2)
 
 /obj/item/reagent_containers/food/tobacco/menthol
 	desc = "A small pile of dried and grinded herbs. Smells of mint."
 	icon_state = "tpile_menthol"
-
-/obj/item/reagent_containers/food/tobacco/menthol/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/tobacco, 3)
-	reagents.add_reagent(/datum/reagent/menthol, 2)
+	startswith = list(/datum/reagent/tobacco = 3, /datum/reagent/menthol = 2)
 
 /obj/item/reagent_containers/food/tobacco/chocolate
 	desc = "A small pile of dried and grinded herbs. Smells of cocoa."
 	icon_state = "tpile_chocolate"
-
-/obj/item/reagent_containers/food/tobacco/chocolate/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/tobacco, 3)
-	reagents.add_reagent(/datum/reagent/nutriment/coco, 2)
+	startswith = list(/datum/reagent/tobacco = 3, /datum/reagent/nutriment/coco = 2)
 
 /obj/item/reagent_containers/food/tobacco/premium
 	desc = "A small pile of evenly dried and finely grounded herbs. Smells of quality."
 	icon_state = "tpile_premium"
-
-/obj/item/reagent_containers/food/tobacco/premium/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/tobacco/fine, 4)
+	startswith = list(/datum/reagent/tobacco/fine = 4)
 
 /obj/item/reagent_containers/food/tobacco/contraband
 	desc = "A suspicious pile of dried and grinded herbs. Smells of something barely legal."
 	icon_state = "tpile_contraband"
-
-/obj/item/reagent_containers/food/tobacco/contraband/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/tobacco, 2)
-	reagents.add_reagent(/datum/reagent/thc, 4)
+	startswith = list(/datum/reagent/tobacco = 2, /datum/reagent/thc = 4)
 
 // Packs
 /obj/item/storage/tobaccopack

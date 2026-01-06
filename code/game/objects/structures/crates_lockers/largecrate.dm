@@ -7,6 +7,7 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	turf_height_offset = 22
+	climb_delay = 4 SECONDS // It's tall AF.
 
 /obj/structure/largecrate/Initialize()
 	. = ..()

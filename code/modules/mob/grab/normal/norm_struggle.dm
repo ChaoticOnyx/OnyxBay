@@ -16,8 +16,6 @@
 	grab_slowdown = 10
 	upgrade_cooldown = 20
 
-	can_downgrade_on_resist = 0
-
 	icon_state = "reinforce"
 
 	break_chance_table = list(5, 20, 30, 80, 100)

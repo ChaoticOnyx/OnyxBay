@@ -20,6 +20,7 @@
 	var/rad_resist_type = /datum/rad_resist/none
 	hitby_sound = 'sound/effects/metalhit2.ogg'
 	var/turf_height_offset = 0
+	var/climb_delay = 2 SECONDS // Default for everything. Doesn't make the thing climbable on its own, it still requires ATOM_FLAG_CLIMBABLE.
 
 /obj/Initialize()
 	. = ..()
@@ -232,3 +233,6 @@
 	pull_slowdown = new_slowdown
 	if(pulledby)
 		pulledby.update_pull_slowdown()
+
+/obj/do_climb(mob/living/user)
+	return ..(user, climb_delay)

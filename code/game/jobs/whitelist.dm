@@ -1,12 +1,23 @@
 /proc/check_whitelist(ckey)
 	if(!establish_old_db_connection())
-		error("Failed to connect to database in load_whitelist().")
-		log_misc("Failed to connect to database in load_whitelist().")
+		error("Failed to connect to database in check_whitelist().")
+		log_misc("Failed to connect to database in check_whitelist().")
 		return FALSE
 	var/DBQuery/query = sql_query("SELECT * FROM erro_whitelist WHERE ckey='[lowertext(ckey)]'", dbcon_old)
 	while(query.NextRow())
 		return TRUE
 	return FALSE
+
+/proc/check_job_whitelist(ckey, rank)
+	if(!establish_old_db_connection())
+		error("Failed to connect to database in check_job_whitelist().")
+		log_misc("Failed to connect to database in check_job_whitelist().")
+		return FALSE
+	var/DBQuery/query = sql_query("SELECT * FROM erro_job_whitelist WHERE ckey='[lowertext(ckey)]' and job='[rank]'", dbcon_old)
+	while(query.NextRow())
+		return TRUE
+	return FALSE
+
 
 /var/list/alien_whitelist = list()
 

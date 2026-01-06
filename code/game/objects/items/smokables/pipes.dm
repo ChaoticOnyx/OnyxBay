@@ -38,7 +38,7 @@
 	if(ismob(loc))
 		var/mob/living/M = loc
 		if (!nomessage)
-			to_chat(M, "<span class='notice'>Your [name] goes out, and you empty the ash.</span>")
+			to_chat(M, SPAN_NOTICE("Your [name] goes out, and you empty the ash."))
 
 
 // Actually i take this from cigarette, but... who cares?
@@ -70,13 +70,13 @@
 
 /obj/item/clothing/mask/smokable/pipe/attack_self(mob/user)
 	if(lit == 1)
-		user.visible_message("<span class='notice'>[user] puts out [src].</span>", "<span class='notice'>You put out [src].</span>")
+		user.visible_message(SPAN_NOTICE("[user] puts out [src]."), SPAN_NOTICE("You put out [src]."))
 		lit = 0
 		update_icon()
 		set_next_think(0)
 	else if(smoketime)
 		var/turf/location = get_turf(user)
-		user.visible_message("<span class='notice'>[user] empties out [src].</span>", "<span class='notice'>You empty out [src].</span>")
+		user.visible_message(SPAN_NOTICE("[user] empties out [src]."), SPAN_NOTICE("You empty out [src]."))
 		new /obj/effect/decal/cleanable/ash(location)
 		smoketime = 0
 		reagents.clear_reagents()
@@ -100,6 +100,7 @@
 		smoketime = 180
 		if(G.reagents)
 			G.reagents.trans_to_obj(src, G.reagents.total_volume)
+		user.visible_message(SPAN_NOTICE("[user] stuffs [src] with [G]."), SPAN_NOTICE("You stuff [src] with [G]."))
 		SetName("[G.name]-packed [initial(name)]")
 		qdel(G)
 

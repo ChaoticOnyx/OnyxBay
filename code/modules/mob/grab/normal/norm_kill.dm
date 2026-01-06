@@ -13,6 +13,7 @@
 	same_tile = 1
 	force_danger = 1
 	restrains = 1
+	breakability = 5
 
 	downgrade_on_action = 1
 	downgrade_on_move = 1
@@ -34,10 +35,10 @@
 		affecting.Stun(2)
 
 	if((MUTATION_HULK in G.assailant.mutations) || (MUTATION_STRONG in G.assailant.mutations))
-		affecting.adjustOxyLoss(3)
+		affecting.adjustOxyLoss(5)
 		affecting.Stun(2)
 	else
-		affecting.adjustOxyLoss(1)
+		affecting.adjustOxyLoss(3)
 
 	affecting.apply_effect(STUTTER, 5) //It will hamper your voice, being choked and all.
 	affecting.losebreath = max(affecting.losebreath + 2, 3)

@@ -28,7 +28,7 @@ var/const/IAA_ban_reason = "Restricted by CentComm"
 		if (guest_jobbans(rank))
 			if(config.game.guest_jobban && IsGuestKey(M.key))
 				return "Guest Job-ban"
-			if(config.whitelist.enable && !check_whitelist(M.ckey))
+			if(config.whitelist.enable && !check_job_whitelist(M.ckey, rank))
 				return "Whitelisted Job"
 
 		for (var/s in jobban_keylist)

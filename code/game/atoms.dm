@@ -585,14 +585,14 @@ its easier to just keep the beam vertical.
 			return A
 	return 0
 
-/atom/proc/do_climb(mob/living/user)
+/atom/proc/do_climb(mob/living/user, climb_time = 2 SECONDS)
 	if(!can_climb(user))
 		return
 
 	user.visible_message(SPAN_WARNING("\The [user] starts climbing onto \the [src]!"))
 	LAZYDISTINCTADD(climbers, user)
 
-	if(!do_after(user,(issmall(user) ? 30 : 50), src))
+	if(!do_after(user,(user.get_climb_speed() * climb_time), src))
 		LAZYREMOVE(climbers, user)
 		return
 

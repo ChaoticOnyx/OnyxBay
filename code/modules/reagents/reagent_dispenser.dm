@@ -102,6 +102,7 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	filling_overlay_levels = 7
 	turf_height_offset = 25
+	climb_delay = 3 SECONDS
 
 /obj/structure/reagent_dispensers/fueltank
 	name = "fueltank"
@@ -114,6 +115,7 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	filling_overlay_levels = 6
 	turf_height_offset = 25
+	climb_delay = 3 SECONDS
 
 /obj/structure/reagent_dispensers/fueltank/Destroy()
 	QDEL_NULL(rig)
@@ -279,6 +281,7 @@
 	initial_reagent_types = list(/datum/reagent/toxin/fertilizer/compost = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	turf_height_offset = 25
+	climb_delay = 3 SECONDS
 
 /obj/structure/reagent_dispensers/composttank/attackby(obj/item/W, mob/user)
 	src.add_fingerprint(user)

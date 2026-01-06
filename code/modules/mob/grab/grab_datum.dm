@@ -265,14 +265,14 @@
 		p_mult -= 0.1
 	if(affecting.confused)
 		p_mult -= 0.1
-	if(!affecting.lying)
-		p_mult += 0.1
+	if(affecting.lying)
+		p_mult -= 0.1
 
 	//if(break_strength < 1)
 	//	to_chat(G.assailant, "<span class='warning'>You try to break free but feel that unless something changes, you'll never escape!</span>")
 	//	return
 
-	var/p_lost = (5.5 + affecting.poise/10 - assailant.poise/20) * p_mult
+	var/p_lost = round((5.0 + affecting.poise/10 - assailant.poise/15) * p_mult, 0.1)
 	assailant.damage_poise(p_lost)
 	affecting.damage_poise(2.0)
 
@@ -288,7 +288,7 @@
 
 	//assailant.visible_message("Debug: p_diff = [p_diff] | breakability = [breakability]") //Debug message
 
-	if(p_diff > assailant.poise || prob(p_diff))
+	if(p_diff > assailant.poise && prob(p_diff))
 		if(can_downgrade_on_resist && !prob(p_diff))
 			affecting.visible_message(SPAN("warning", "[affecting] has loosened [assailant]'s grip!"))
 			assailant.setClickCooldown(10)

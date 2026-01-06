@@ -135,6 +135,7 @@
 	desc = "An advanced powersuit that protects against hazardous, low pressure environments. Shines with a high polish. Appears compatible with the physiology of most species."
 	icon_state = "ce_rig"
 	armor = list(melee = 80, bullet = 70, laser = 60, energy = 65, bomb = 45, bio = 100)
+	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	online_slowdown = 0
 	offline_slowdown = 0
 	offline_vision_restriction = TINT_HEAVY

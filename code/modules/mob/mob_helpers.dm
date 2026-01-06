@@ -757,3 +757,8 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	animate(C, pixel_x=recoil_x, pixel_y=recoil_y, time=1, easing=SINE_EASING|EASE_OUT, flags=ANIMATION_PARALLEL|ANIMATION_RELATIVE)
 	sleep(2)
 	animate(C, pixel_x=0, pixel_y=0, time=3, easing=SINE_EASING|EASE_IN)
+
+/mob/proc/get_climb_speed()
+	if(issmall(src))
+		return 0.6
+	return 1.0

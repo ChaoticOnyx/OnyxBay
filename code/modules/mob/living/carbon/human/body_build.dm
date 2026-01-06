@@ -39,6 +39,7 @@ var/global/datum/body_build/default_body_build = new
 	var/stomach_capacity   = STOMACH_CAPACITY_NORMAL
 	var/ambiguous_gender   = FALSE // If TRUE, both females and females will be PLURAL if there's no beard and their groin is covered
 	var/melee_modifier     = 1.0
+	var/climb_speed        = 1.0 // Climbing tables, etc.; lower is faster
 
 	var/list/equip_adjust
 	var/list/equip_overlays = list()
@@ -229,6 +230,7 @@ var/global/datum/body_build/default_body_build = new
 	poise_pool         = HUMAN_HIGH_POISE
 	ambiguous_gender   = TRUE
 	melee_modifier     = 1.15 // Force is acceleration times MASS, so...
+	climb_speed        = 2.5 // You're a landwhale; not a, what, tablewhale?
 
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
@@ -259,6 +261,7 @@ var/global/datum/body_build/default_body_build = new
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran_slim.dmi'
 
 	equipment_modifier = -0.5
+	climb_speed = 0.75
 
 /datum/body_build/tajaran
 	name                 = "Tajaran"
@@ -283,6 +286,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand.dmi'
 		)
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran.dmi'
+	climb_speed = 0.75
 
 /datum/body_build/tajaran/fat
 	name                 = "Fat Tajaran"
@@ -314,6 +318,7 @@ var/global/datum/body_build/default_body_build = new
 	equipment_modifier = 0.5
 	poise_pool         = HUMAN_HIGH_POISE
 	ambiguous_gender   = TRUE
+	climb_speed        = 1.0 // Even a OH-LAWD-CHONK-BOI-fat cat is at least as agile as a normal human
 
 /datum/body_build/unathi
 	name                 = SPECIES_UNATHI
@@ -395,6 +400,7 @@ var/global/datum/body_build/default_body_build = new
 
 	equipment_modifier = -0.5
 	melee_modifier     = 1.25 // Monke muscles are no joke
+	climb_speed        = 0.5
 
 /datum/body_build/xenomorph
 	name                 = "Xenomorph"
@@ -404,3 +410,4 @@ var/global/datum/body_build/default_body_build = new
 	bandages_icon        =  null
 
 	poise_pool         = HUMAN_MAX_POISE
+	climb_speed        = 0.5 // Realistically, they should be able to jog along walls and ceilings, effectively ignoring four-legged thingies, but let's keep things at least somewhat balanced.

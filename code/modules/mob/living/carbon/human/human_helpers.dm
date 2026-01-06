@@ -372,3 +372,29 @@
 
 /mob/living/carbon/human/is_eligible_for_antag_spawn(antag_id)
 	return species ? species.is_eligible_for_antag_spawn(antag_id) : TRUE // No species = no problems, assuming ourselves to be a baseline human being
+
+/mob/living/carbon/human/get_climb_speed()
+	. = 1.0
+
+	if(body_build?.climb_speed)
+		. = body_build.climb_speed
+	else
+		. = ..()
+
+	var/area/area = get_area(src)
+	if(shoes && (shoes.item_flags & ITEM_FLAG_NOSLIP) && istype(shoes, /obj/item/clothing/shoes/magboots))
+		. *= 2.0 // Magboots are pain in the ass
+	else if(!area || !area.has_gravity())
+		. *= 0.25 // Zero G is fun
+		return
+
+	if(isSynthetic())
+		. *= 1.5 // Fullsteel fucks are heavy
+
+	// Check hands for additional difficulties
+	if(l_hand?.w_class >= ITEM_SIZE_NORMAL && r_hand?.w_class >= ITEM_SIZE_NORMAL)
+		. *= 2.5 // Pure pain
+	else if(l_hand?.w_class >= ITEM_SIZE_NORMAL || r_hand?.w_class >= ITEM_SIZE_NORMAL)
+		. *= 1.5 // Less pain
+
+	return
