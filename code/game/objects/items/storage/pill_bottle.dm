@@ -328,3 +328,11 @@
 	icon_state = "sugar_bottle"
 
 	startswith = list(/obj/item/reagent_containers/pill/sugar_cube = 14)
+
+/obj/item/storage/pill_bottle/emezoline
+	name = "pill bottle (emezoline)"
+	desc = "A substance that effectively supresses vomiting and nausea."
+	label_color = "#abead6"
+	starting_label = "emezoline"
+
+	startswith = list(/obj/item/reagent_containers/pill/emezoline = 14)
