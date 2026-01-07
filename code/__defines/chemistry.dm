@@ -1,6 +1,6 @@
 // Factor of how fast mob nutrition decreases
 #define DEFAULT_HUNGER_FACTOR 0.075
-#define DEFAULT_THIRST_FACTOR 0.2
+#define DEFAULT_THIRST_FACTOR 0.1
 
 #define METABOLISM_FALLBACK -1
 #define METABOLISM_NONE      0
