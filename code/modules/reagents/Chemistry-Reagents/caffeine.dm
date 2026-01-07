@@ -10,6 +10,8 @@
 	metabolism = REM * 0.5
 	ingest_met = REM * 0.1
 	digest_met = REM * 0.5
+	ingest_absorbability = 0.0
+	digest_absorbability = 0.0
 	overdose = REAGENTS_OVERDOSE * 0.5
 
 	glass_icon = DRINK_ICON_NOISY
@@ -23,6 +25,8 @@
 	var/adj_speed = 0.3
 
 /datum/reagent/caffeine/affect_ingest(mob/living/carbon/M, alien, removed)
+	..()
+
 	if(alien == IS_DIONA)
 		return
 
@@ -32,6 +36,8 @@
 		M.bodytemperature = min(310, M.bodytemperature - (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
 
 /datum/reagent/caffeine/affect_digest(mob/living/carbon/M, alien, removed)
+	..()
+
 	if(alien == IS_DIONA)
 		return
 
