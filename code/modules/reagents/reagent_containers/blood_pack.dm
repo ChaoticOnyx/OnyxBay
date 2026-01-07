@@ -1,6 +1,6 @@
 /obj/item/storage/box/bloodpacks
-	name = "blood packs box"
-	desc = "This box contains blood packs."
+	name = "IV bags box"
+	desc = "This box contains IV bags."
 	icon_state = "bloodbags"
 	startswith = list(/obj/item/reagent_containers/ivbag = 7)
 
@@ -71,8 +71,6 @@
 
 	if(vampire_marks)
 		. += SPAN_WARNING("There are teeth marks on it.")
-
-/obj/item/reagent_containers/attackby(obj/item/W as obj, mob/user as mob)
 
 /obj/item/reagent_containers/ivbag/on_update_icon()
 	ClearOverlays()

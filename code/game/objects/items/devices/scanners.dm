@@ -191,10 +191,10 @@ REAGENT SCANNER
 			status_data += "<span class='danger'>Patient is unstable, administer a single dose of inaprovaline.</span>"
 		if(H.get_blood_volume() <= 500 && H.nutrition < 150)
 			status_data += "<span class='warning'>Administer food or recommend the patient to eat.</span>"
-		if(H.hydration <= HYDRATION_LOW)
-			status_data += "<span class='warning'>Mild dehydration: administer liquid intake or recommend the patient to drink.</span>"
-		else if(H.hydration <= HYDRATION_NONE)
+		if(H.hydration <= HYDRATION_NONE)
 			status_data += "<span class='danger'>Severe dehydration! Administer liquid intake immediately.</span>"
+		else if(H.hydration <= HYDRATION_LOW)
+			status_data += "<span class='warning'>Mild dehydration: administer liquid intake or recommend the patient to drink.</span>"
 
 	var/specific_limb_data = list()
 	var/overall_limbs_data = list()

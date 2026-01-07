@@ -143,6 +143,7 @@
 		/obj/item/reagent_containers/ivbag/blood/AMinus = 2,
 		/obj/item/reagent_containers/ivbag/blood/BPlus = 2,
 		/obj/item/reagent_containers/ivbag/blood/BMinus = 2,
+		/obj/item/reagent_containers/ivbag/saline = 2,
 		/obj/item/reagent_containers/ivbag = 2
 		)
 
