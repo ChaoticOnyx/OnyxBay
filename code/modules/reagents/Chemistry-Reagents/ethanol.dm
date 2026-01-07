@@ -12,7 +12,7 @@
 	ingest_met = 0.75
 	digest_met = 3.5
 	ingest_absorbability = 0.5
-	digest_absorbability = 1.0
+	digest_absorbability = 0.0 // Works directly from the guts, and only poisons one if injected.
 	touch_met = 5
 
 	var/nutriment_factor = 0
@@ -36,6 +36,7 @@
 	return
 
 /datum/reagent/ethanol/affect_digest(mob/living/carbon/M, alien, removed)
+	..()
 	M.add_nutrition(nutriment_factor * removed)
 	var/strength_mod = 0.2
 	if(alien == IS_SKRELL)

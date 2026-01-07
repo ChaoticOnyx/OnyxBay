@@ -1191,3 +1191,16 @@
 
 /datum/reagent/lipozine/affect_blood(mob/living/carbon/M, alien, removed)
 	M.nutrition = max(M.nutrition - 10 * removed, 0)
+
+/datum/reagent/emezoline
+	name = "Emezoline"
+	description = "A substance that effectively supresses vomiting and nausea."
+	taste_description = "pepper"
+	reagent_state = SOLID
+	color = "#abead6"
+	overdose = REAGENTS_OVERDOSE
+	scannable = TRUE
+	metabolism = REM * 0.5
+
+/datum/reagent/emezoline/affect_blood(mob/living/carbon/M, alien, removed)
+	M.add_chemical_effect(CE_NOVOMIT, 1)

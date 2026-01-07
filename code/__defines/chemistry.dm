@@ -56,6 +56,7 @@
 #define	CE_VOICELOSS     "whispers"     // Lowers the subject's voice to a whisper
 #define CE_SEDATE        "sedate"       // Applies sedation effects, i.e. paralysis, inability to use items, etc.
 #define CE_TOXBLOCK      "toxblock"     // (Mostly) prevents internal organs from being damaged by toxLoss.
+#define CE_NOVOMIT       "novomit"      // Prevents vomiting.
 
 //reagent flags
 #define IGNORE_MOB_SIZE 0x1

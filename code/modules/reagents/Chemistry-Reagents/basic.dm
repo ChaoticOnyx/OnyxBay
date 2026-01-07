@@ -24,6 +24,11 @@
 	if(istype(M, /mob/living/carbon/metroid) || alien == IS_METROID)
 		M.adjustToxLoss(removed)
 		return
+	if(holder.has_reagent(/datum/reagent/salt, removed * 0.009)) // IV Saline Solution
+		holder.remove_reagent(/datum/reagent/salt, removed * 0.009)
+		M.add_hydration(removed * hydration_value * 3.0)
+	else
+		M.add_hydration(removed * hydration_value * 0.5)
 
 /datum/reagent/water/affect_ingest(mob/living/carbon/M, alien, removed)
 	if(istype(M, /mob/living/carbon/metroid) || alien == IS_METROID)
