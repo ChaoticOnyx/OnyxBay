@@ -979,6 +979,33 @@ var/global/floorIsLava = 0
 		alert("[M.name] is not prisoned.")
 	feedback_add_details("admin_verb","UP") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+/datum/admins/proc/ring_unready()
+	set category = "Server"
+	set desc = "(Pre-round only) Send an audio and text notification to all non-ready players."
+	set name = "Ring Unready"
+
+	if(!check_rights(R_SERVER))
+		return
+
+	if(GAME_STATE > RUNLEVEL_LOBBY)
+		to_chat(usr, "Ring Unready is only available during the pre-round lobby.")
+		return
+
+	var/secs_to_roundstart = round(SSticker.pregame_timeleft / 10)
+	var/players_rung = 0
+
+	for(var/mob/new_player/player in GLOB.player_list)
+		if(player.ready)
+			continue
+
+		to_chat(player, "<font size = '6'>READY UP! The round is starting in [secs_to_roundstart] seconds!</font>")
+		sound_to(player, sound('sound/effects/adminhelp.ogg'))
+		players_rung++
+
+	to_chat(usr, "[players_rung] unready players notified.")
+
+	feedback_add_details("admin_verb","RING") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
 ////////////////////////////////////////////////////////////////////////////////////////////////ADMIN HELPER PROCS
 
 /proc/is_special_character(character) // returns 1 for special characters and 2 for heroes of gamemode
