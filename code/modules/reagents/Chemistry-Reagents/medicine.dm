@@ -393,7 +393,7 @@
 
 /datum/reagent/peridaxon
 	name = "Peridaxon"
-	description = "Used to encourage recovery of internal organs and nervous systems. Medicate cautiously."
+	description = "Encourages recovery and prevents toxic decomposition of internal organs and nervous systems. Medicate cautiously."
 
 	taste_description = "bitterness"
 
@@ -416,6 +416,7 @@
 				if(I.damage >= I.min_bruised_damage)
 					continue
 			I.damage = max(I.damage - removed*3, 0)
+		M.add_chemical_effect(CE_TOXBLOCK, 1)
 
 /datum/reagent/ryetalyn
 	name = "Ryetalyn"
