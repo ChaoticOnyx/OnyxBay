@@ -59,9 +59,9 @@
 	item_state = "coffecup_metal"
 	force = 1.0
 
-	volume = 0.125 LITERS
+	volume = 0.2 LITERS
 	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;100;125"
+	possible_transfer_amounts = "25;30;50;100;150;200"
 
 	matter = list(MATERIAL_PLASTIC = 100)
 	center_of_mass = "x=16;y=12"
