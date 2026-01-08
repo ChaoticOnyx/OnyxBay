@@ -324,7 +324,7 @@
 	if(cups >= max_cups)
 		icon_state = "water_cooler-4"
 		return
-	icon_state = "water_cooler-[round(cups / (max_cups / 4))]"
+	icon_state = "water_cooler-[ceil(cups / (max_cups / 4))]"
 
 /obj/structure/reagent_dispensers/water_cooler/examine()
 	. = ..()
@@ -349,9 +349,6 @@
 			to_chat(user, SPAN_NOTICE("You [anchored? "un" : ""]secured \the [src]!"))
 			anchored = !anchored
 		return
-	if(istype(W, /obj/item/reagent_containers/vessel/plastic/cup))
-		to_chat(user, SPAN_NOTICE("You tried to put \the [src] back onto the stand... but it was already too crumpled."))
-		return
 	else
 		return ..()
 
@@ -370,6 +367,8 @@
 		human_user.visible_message(SPAN_NOTICE("[human_user] grabs a cup from \the [src]'s stand."))
 	else
 		human_user.visible_message(SPAN_NOTICE("[human_user] grabs a cup from \the [src]'s stand but drops it clumsily!"))
+	cups = max(0, cups - 1)
+	update_icon()
 
 /obj/structure/reagent_dispensers/beerkeg
 	name = "beer keg"
