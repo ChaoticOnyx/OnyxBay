@@ -126,6 +126,12 @@
 	name = "\improper old canned food"
 	icon_state = "surstromming"
 
+/obj/item/trash/plastic_cup
+	name = "crushed plastic cup"
+	desc = "This is rubbish. Somebody wasn't careful enough."
+	icon_state = "plastic_cup"
+	matter = list(MATERIAL_PLASTIC = 100)
+
 /obj/item/trash/cans
 	name = "crushed can"
 	icon_state = "can"
