@@ -307,7 +307,7 @@
 	desc = "A machine that dispenses water to drink. A stand for plastic cups has inexplicably attached itself to its side."
 	amount_per_transfer_from_this = 50
 	icon = 'icons/obj/water_cooler.dmi'
-	icon_state = "water_cooler"
+	icon_state = "water_cooler-4"
 	possible_transfer_amounts = null
 	anchored = 1
 	initial_capacity = 5 LITERS
