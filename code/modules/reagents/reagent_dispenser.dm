@@ -304,7 +304,7 @@
 
 /obj/structure/reagent_dispensers/water_cooler
 	name = "Water-Cooler"
-	desc = "A machine that dispenses water to drink."
+	desc = "A machine that dispenses water to drink. A stand for plastic cups has inexplicably attached itself to its side."
 	amount_per_transfer_from_this = 50
 	icon = 'icons/obj/water_cooler.dmi'
 	icon_state = "water_cooler"
@@ -312,7 +312,29 @@
 	anchored = 1
 	initial_capacity = 5 LITERS
 	initial_reagent_types = list(/datum/reagent/water = 1)
+	var/max_cups = 12
+	var/cups = 12
 
+/obj/structure/reagent_dispensers/water_cooler/New()
+	..()
+	update_icon()
+
+/obj/structure/reagent_dispensers/water_cooler/on_update_icon()
+	..()
+	if(cups >= max_cups)
+		icon_state = "water_cooler-4"
+		return
+	icon_state = "water_cooler-[round(cups / (max_cups / 4))]"
+
+/obj/structure/reagent_dispensers/water_cooler/examine()
+	. = ..()
+
+	if(cups)
+		. += SPAN_NOTICE("There's [cups] cups left.")
+		return
+
+	. += SPAN_NOTICE("Oh no, there's no cups left!")
+	return
 
 /obj/structure/reagent_dispensers/water_cooler/attackby(obj/item/W, mob/user)
 	if(isWrench(W))
@@ -324,11 +346,30 @@
 
 		if(do_after(user, 20, src))
 			if(!src) return
-			to_chat(user, "<span class='notice'>You [anchored? "un" : ""]secured \the [src]!</span>")
+			to_chat(user, SPAN_NOTICE("You [anchored? "un" : ""]secured \the [src]!"))
 			anchored = !anchored
+		return
+	if(istype(W, /obj/item/reagent_containers/vessel/plastic/cup))
+		to_chat(user, SPAN_NOTICE("You tried to put \the [src] back onto the stand... but it was already too crumpled."))
 		return
 	else
 		return ..()
+
+/obj/structure/reagent_dispensers/water_cooler/attack_hand(mob/user)
+	..()
+	if(!ishuman(user))
+		to_chat(user, SPAN_NOTICE("No way to grab a cup without proper hands."))
+		return
+	if(cups <= 0)
+		to_chat(user, SPAN_NOTICE("Uh-oh. There's no cups left."))
+		return
+
+	var/mob/living/carbon/human/human_user = user
+	var/obj/item/reagent_containers/vessel/plastic/cup/new_cup = new(get_turf(human_user))
+	if(human_user.put_in_active_hand(new_cup))
+		human_user.visible_message(SPAN_NOTICE("[human_user] grabs a cup from \the [src]'s stand."))
+	else
+		human_user.visible_message(SPAN_NOTICE("[human_user] grabs a cup from \the [src]'s stand but drops it clumsily!"))
 
 /obj/structure/reagent_dispensers/beerkeg
 	name = "beer keg"
