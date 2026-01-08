@@ -959,15 +959,18 @@
 /obj/item/toy/chubbyskeleton/proc/badtime(mob/user)
 	dodgecount++
 	if(dodgecount < 4)
-		user.visible_message("<span class='warning'>[src] dodges [user]'s attack!</span>")
+		user.visible_message(SPAN_WARNING("[src] dodges [user]'s attack!"))
 		speak(pick("welp.","what? you think i'm just gonna stand there and take it? ","all right.","our reports showed a massive bluespace anomaly.","that sent chills down my SPINE."))
 	else if(dodgecount == 4)
 		icon_state = "badtime"
-		user.visible_message("<span class='warning'>[src] dodges [user]'s attack!</span>")
+		user.visible_message(SPAN_WARNING("[src] dodges [user]'s attack!"))
 		speak(pick("do you wanna have a bad time?","you are REALLY not going to like what happens next."))
 	else
 		icon_state = "heya"
 		dodgecount = 0
+		if(!config.misc.meme_content)
+			speak("aaand you'd be dunked on by now but the big shots told me to stop dunking on people. lucks for you.")
+			return
 		speak(pick("geeettttttt dunked on!!!","told ya."))
 		if(istype(user, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = user
