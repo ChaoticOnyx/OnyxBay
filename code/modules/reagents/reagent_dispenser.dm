@@ -349,6 +349,32 @@
 			to_chat(user, SPAN_NOTICE("You [anchored? "un" : ""]secured \the [src]!"))
 			anchored = !anchored
 		return
+	else if(istype(W, /obj/item/storage/plastic_cup_bag))
+		if(cups >= max_cups)
+			to_chat(user, SPAN_NOTICE("\The [src]'s stand is full!"))
+			return
+
+		var/obj/item/storage/plastic_cup_bag/cup_bag = W
+		if(cup_bag.contents?.len <= 0)
+			to_chat(user, SPAN_NOTICE("\The [cup_bag] is empty!"))
+			return
+
+		add_fingerprint(user)
+		user.visible_message(SPAN_NOTICE("[user] begins refilling \the [src]'s cup stand from \the [cup_bag]."))
+		if(!do_after(user, 2 SECONDS, src))
+			return
+
+		var/new_cup_amount = min(cups + cup_bag.contents.len, max_cups)
+		var/i = 0
+		for(var/obj/item/reagent_containers/vessel/plastic/cup/cup in cup_bag.contents)
+			qdel(cup)
+			i++
+			if(i >= new_cup_amount - cups)
+				break
+		cups = new_cup_amount
+		update_icon()
+		user.visible_message(SPAN_NOTICE("[user] refills \the [src]'s cup stand!"))
+		return
 	else
 		return ..()
 

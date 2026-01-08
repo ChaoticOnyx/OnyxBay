@@ -56,7 +56,7 @@
 	name = "plastic cup"
 	desc = "It's translucent and ribbed. Typically encountered around water coolers. Be careful not to crush it!"
 	icon_state = "plastic_cup"
-	item_state = "water_cup"
+	item_state = "coffecup_metal"
 	force = 1.0
 
 	volume = 0.125 LITERS
@@ -65,7 +65,7 @@
 
 	matter = list(MATERIAL_PLASTIC = 100)
 	center_of_mass = "x=16;y=12"
-	filling_states = "50;100"
+	filling_states = "25;50;75;100"
 	lid_type = null
 	can_flip = FALSE
 	var/trash = /obj/item/trash/plastic_cup
@@ -118,5 +118,5 @@ obj/item/reagent_containers/vessel/plastic/cup/Crossed(atom/movable/AM)
 
 /obj/item/reagent_containers/vessel/plastic/cup/throw_impact(atom/hit_atom, speed)
 	..()
-	hit_atom.visible_message(SPAN_WARNING("\The [src] crumples against \the [hit_atom]!"))
+	visible_message(SPAN_WARNING("\The [src] crumples against \the [hit_atom]!"))
 	crush(splash_target = hit_atom)
