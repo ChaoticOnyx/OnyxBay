@@ -1003,6 +1003,7 @@ var/global/floorIsLava = 0
 		players_rung++
 
 	to_chat(usr, "[players_rung] unready players notified.")
+	log_and_message_admins("notified [players_rung] unready players.")
 
 	feedback_add_details("admin_verb","RING") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
