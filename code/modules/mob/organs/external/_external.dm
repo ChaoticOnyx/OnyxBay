@@ -179,13 +179,13 @@
 	var/burn_damage = 0
 	switch (severity)
 		if (1)
-			burn_damage = 15
+			burn_damage = 28
 		if (2)
-			burn_damage = 7
+			burn_damage = 18
 		if (3)
-			burn_damage = 3
+			burn_damage = 13
 
-	var/mult = BP_IS_ROBOTIC(src) + BP_IS_ASSISTED(src)
+	var/mult = round((BP_IS_ROBOTIC(src) + BP_IS_ASSISTED(src)) / 1000)
 	burn_damage *= mult/burn_mod //ignore burn mod for EMP damage
 
 	var/power = 4 - severity //stupid reverse severity
