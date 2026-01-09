@@ -20,7 +20,7 @@
 #define CRITICAL_TEMPERATURE 5000	//K
 #define CHARGING_FACTOR 0.05
 #define DAMAGE_RATE_LIMIT 4.5		//damage rate cap at power = 300, scales linearly with power
-#define RADIATION_RELEASE_MODIFIER 100 KILO ELECTRONVOLT	//Higher == more radiation released by the SM
+#define RADIATION_RELEASE 100 KILO ELECTRONVOLT	//Higher == more radiation released by the SM
 
 // Experimental randomized supermatter
 #define DELTA_THERMAL_RELEASE_MODIFIER 6000
@@ -409,7 +409,7 @@
 		if(rad_source == null)
 			rad_source = SSradiation.radiate(src, new /datum/radiation/preset/supermatter)
 
-		rad_source.info.energy = power * RADIATION_RELEASE_MODIFIER * current_radiation_release_modifier
+		rad_source.info.energy = power * RADIATION_RELEASE * current_radiation_release_modifier
 	else
 		qdel(rad_source)
 
@@ -733,9 +733,8 @@
 #undef DETONATION_SHUTDOWN_RNG_FACTOR
 #undef DETONATION_SOLAR_BREAK_CHANCE
 #undef WARNING_DELAY
-#undef RADIATION_RELEASE_MODIFIER
+#undef RADIATION_RELEASE
 #undef DELTA_THERMAL_RELEASE_MODIFIER
-#undef DELTA_RADIATION_RELEASE_MODIFIER
 #undef DELTA_POWER_FACTOR
 #undef DELTA_DECAY_FACTOR
 #undef DELTA_CRITICAL_TEMPERATURE
