@@ -1833,3 +1833,13 @@
 				to_chat(grabber, SPAN("warning", "You can't scoop up \the [src] because of the [M]"))
 				return
 	. = ..()
+
+/mob/living/carbon/human/lay_down()
+	if(crawling && canClick())
+		setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		src.apply_damage(rand(3, 7), BRUTE, BP_HEAD)
+		to_chat(src, SPAN_WARNING("You tried to get up, but you bump your head instead!"))
+		show_splash_text_to_viewers("you hear a dull thud!", force_skip_chat = TRUE)
+
+	else
+		. = ..()

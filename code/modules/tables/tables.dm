@@ -178,9 +178,24 @@
 
 	return ..()
 
-/obj/structure/table/MouseDrop_T(obj/item/stack/material/what)
-	if(can_reinforce && isliving(usr) && (!usr.stat) && istype(what) && usr.get_active_hand() == what && Adjacent(usr))
-		reinforce_table(what, usr)
+/obj/structure/table/proc/do_crawl(mob/living/user)
+	user.visible_message(SPAN_WARNING("\The [user] starts crawling under \the [src]!"))
+
+	if(!do_after(user, 0.8 SECONDS, src, incapacitation_flags = INCAPACITATION_BUCKLED_FULLY|INCAPACITATION_STUNNED))
+		return
+
+	user.forceMove(get_turf(src))
+
+	if(get_turf(user) == get_turf(src))
+		user.visible_message(SPAN_WARNING("\The [user] crawls under \the [src]!"))
+
+/obj/structure/table/MouseDrop_T(obj/item/stack/material/what, mob/living/user)
+	if(can_reinforce && (!user.stat) && istype(what) && user.get_active_hand() == what && Adjacent(user))
+		reinforce_table(what, user)
+	if(user.lying && !user.stat && !reinforced)
+		user.hiding = TRUE
+		user.crawling = TRUE
+		do_crawl(user)
 	else
 		return ..()
 
