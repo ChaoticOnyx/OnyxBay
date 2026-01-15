@@ -185,6 +185,8 @@
 		return
 
 	user.forceMove(get_turf(src))
+	user.hiding = TRUE
+	user.crawling = TRUE
 
 	if(get_turf(user) == get_turf(src))
 		user.visible_message(SPAN_WARNING("\The [user] crawls under \the [src]!"))
@@ -193,8 +195,6 @@
 	if(can_reinforce && (!user.stat) && istype(what) && user.get_active_hand() == what && Adjacent(user))
 		reinforce_table(what, user)
 	if(user.lying && !user.stat && !reinforced)
-		user.hiding = TRUE
-		user.crawling = TRUE
 		do_crawl(user)
 	else
 		return ..()
