@@ -194,7 +194,7 @@
 /obj/structure/table/MouseDrop_T(obj/item/stack/material/what, mob/living/user)
 	if(can_reinforce && (!user.stat) && istype(what) && user.get_active_hand() == what && Adjacent(user))
 		reinforce_table(what, user)
-	if(user.lying && !user.stat && !reinforced)
+	else if(user.lying && !user.stat && !reinforced)
 		do_crawl(user)
 	else
 		return ..()
