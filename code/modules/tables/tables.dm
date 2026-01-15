@@ -185,10 +185,10 @@
 		return
 
 	user.forceMove(get_turf(src))
-	user.hiding = TRUE
-	user.crawling = TRUE
 
 	if(get_turf(user) == get_turf(src))
+		user.hiding = TRUE
+		user.crawling = TRUE
 		user.visible_message(SPAN_WARNING("\The [user] crawls under \the [src]!"))
 
 /obj/structure/table/MouseDrop_T(obj/item/stack/material/what, mob/living/user)
