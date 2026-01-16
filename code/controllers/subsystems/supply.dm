@@ -129,7 +129,7 @@ SUBSYSTEM_DEF(supply)
 	var/announce = FALSE
 	announce = prob(chance) || force
 	if(announce)
-		SSannounce.play_station_announce(/datum/announce/suspicious_cargo, title_override = "[GLOB.using_map.company_name] Cargo Security Departament")
+		SSannounce.play_station_announce(/datum/announce/suspicious_cargo, title_override = "[GLOB.using_map.company_name] Cargo Security Department")
 
 //Buyin
 /datum/controller/subsystem/supply/proc/buy()
