@@ -704,6 +704,27 @@
 	item_state = "hosformal"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
+	allowed = list(
+		/obj/item/ammo_magazine,
+		/obj/item/ammo_casing,
+		/obj/item/clothing/head/helmet,
+		/obj/item/clothing/mask/gas,
+		/obj/item/device/radio,
+		/obj/item/device/flashlight,
+		/obj/item/grenade,
+		/obj/item/gun/energy,
+		/obj/item/gun/projectile,
+		/obj/item/gun/charge,
+		/obj/item/gun/magnetic,
+		/obj/item/gun/launcher/grenade,
+		/obj/item/handcuffs,
+		/obj/item/melee/baton,
+		/obj/item/reagent_containers/spray/pepper
+	)
+
+	armor = list(melee = 70, bullet = 110, laser = 100, energy = 35, bomb = 55, bio = 20)
+	siemens_coefficient = 0.6
+
 /obj/item/clothing/suit/yuri
 	name = "yuri initiate coat"
 	desc = "Yuri is master! Sponsored by DonkSoft Co."

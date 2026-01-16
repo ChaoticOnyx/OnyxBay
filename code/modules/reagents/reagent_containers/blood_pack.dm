@@ -1,6 +1,6 @@
 /obj/item/storage/box/bloodpacks
-	name = "blood packs box"
-	desc = "This box contains blood packs."
+	name = "IV bags box"
+	desc = "This box contains IV bags."
 	icon_state = "bloodbags"
 	startswith = list(/obj/item/reagent_containers/ivbag = 7)
 
@@ -72,8 +72,6 @@
 	if(vampire_marks)
 		. += SPAN_WARNING("There are teeth marks on it.")
 
-/obj/item/reagent_containers/attackby(obj/item/W as obj, mob/user as mob)
-
 /obj/item/reagent_containers/ivbag/on_update_icon()
 	ClearOverlays()
 	var/percent = round(reagents.total_volume / volume * 100)
@@ -128,20 +126,20 @@
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/reagent_containers/ivbag/nanoblood
-	name = "nanoblood pack"
+	name = "\improper IV bag (nanoblood)"
 
 /obj/item/reagent_containers/ivbag/nanoblood/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nanoblood, volume)
 
 /obj/item/reagent_containers/ivbag/blood
-	name = "blood pack"
+	name = "\improper IV bag (blood)"
 	var/blood_type = null
 
 /obj/item/reagent_containers/ivbag/blood/Initialize()
 	. = ..()
 	if(blood_type)
-		name = "blood pack [blood_type]"
+		name = "\improper IV bag (blood, [blood_type])"
 		reagents.add_reagent(/datum/reagent/blood, volume, list("donor" = null, "blood_DNA" = null, "blood_type" = blood_type, "trace_chem" = null, "virus2" = list(), "antibodies" = list()))
 
 /obj/item/reagent_containers/ivbag/blood/APlus
@@ -161,3 +159,11 @@
 
 /obj/item/reagent_containers/ivbag/blood/OMinus
 	blood_type = "O-"
+
+/obj/item/reagent_containers/ivbag/saline
+	name = "\improper IV bag (saline)"
+
+/obj/item/reagent_containers/ivbag/saline/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/water, 991)
+	reagents.add_reagent(/datum/reagent/salt, 9)

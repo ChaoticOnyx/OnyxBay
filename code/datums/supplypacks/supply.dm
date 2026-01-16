@@ -85,3 +85,9 @@
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Shaft miner equipment"
 	access = access_mining
+
+/decl/hierarchy/supply_pack/supply/plastic_cup_bags
+	name = "Plastic cup bags"
+	contains = list(/obj/item/storage/plastic_cup_bag = 2)
+	cost = 10
+	containername = "\improper Plastic cup bags"
