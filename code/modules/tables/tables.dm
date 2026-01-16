@@ -192,7 +192,7 @@
 		user.visible_message(SPAN_WARNING("\The [user] crawls under \the [src]!"))
 
 /obj/structure/table/MouseDrop_T(obj/item/stack/material/what, mob/living/user)
-	if(can_reinforce && (!user.stat) && istype(what) && user.get_active_hand() == what && Adjacent(user))
+	if(can_reinforce && (!user.stat) && istype(what) && user.get_active_hand() == what)
 		reinforce_table(what, user)
 	else if(user.lying && !user.stat && !reinforced)
 		do_crawl(user)
