@@ -44,6 +44,7 @@
 #define ORGAN_SABOTAGED  (1<<9)  // The organ will explode if exposed to EMP, if prosthetic.
 #define ORGAN_ASSISTED   (1<<10) // The organ is partially prosthetic. No mechanical effect.
 #define ORGAN_ROBOTIC    (1<<11) // The organ is robotic. Changes numerous behaviors, search BP_IS_ROBOTIC for checks.
+#define ORGAN_PAIN_PROCESSOR (1<<12)
 
 // Organ flag defines.
 #define ORGAN_FLAG_CAN_AMPUTATE   (1<<0) // The organ can be amputated.

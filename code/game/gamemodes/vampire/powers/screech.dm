@@ -26,7 +26,7 @@
 
 		to_chat(T, SPAN("danger", "You hear an ear piercing shriek and feel your senses go dull!"))
 		T.Weaken(5)
-		T.ear_deaf = 20
+		T.adjustEarDamage(null, 20)
 		T.stuttering = 20
 		T.Stun(5)
 
