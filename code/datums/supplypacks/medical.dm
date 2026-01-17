@@ -86,16 +86,22 @@
 	containername = "\improper Syringe cartridges crate"
 
 /decl/hierarchy/supply_pack/medical/bloodpack
-	name = "Blood pack crate"
+	name = "IV bags crate"
 	contains = list(/obj/item/storage/box/bloodpacks = 3)
 	cost = 10
-	containername = "\improper Blood pack crate"
+	containername = "\improper IV bags crate"
 
 /decl/hierarchy/supply_pack/medical/blood
-	name = "Nanoblood crate"
+	name = "IV bags (nanoblood) crate"
 	contains = list(/obj/item/reagent_containers/ivbag/nanoblood = 4)
 	cost = 15
 	containername = "\improper Nanoblood crate"
+
+/decl/hierarchy/supply_pack/medical/saline
+	name = "IV bags (saline) crate"
+	contains = list(/obj/item/reagent_containers/ivbag/saline = 10)
+	cost = 10
+	containername = "\improper Saline crate"
 
 /decl/hierarchy/supply_pack/medical/bodybag
 	name = "Body bag crate"

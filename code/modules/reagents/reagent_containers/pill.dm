@@ -357,3 +357,10 @@
 		/datum/reagent/albumin = 15,
 		/datum/reagent/iron = 5)
 	mimic_color = TRUE
+
+/obj/item/reagent_containers/pill/emezoline
+	name = "Emezoline (15 ml)"
+	desc = "Used to prevent vomiting."
+	icon_state = "pill4"
+	startswith = list(/datum/reagent/emezoline = 15)
+	mimic_color = TRUE
