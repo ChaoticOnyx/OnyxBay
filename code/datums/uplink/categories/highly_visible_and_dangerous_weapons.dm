@@ -125,26 +125,12 @@
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/gun/energy/pulse_rifle/carbine
 
-/datum/uplink_item/item/visible_weapons/grenade_slingshot
-	name = "Grenade Slingshot"
-	desc = "Let's make it clear: it's not a real grenade launcher. However, this thing might come in handy when used with fragmentation shells."
+/datum/uplink_item/item/visible_weapons/grenade_launcher
+	name = "Grenade Launcher"
+	desc = "In fact, it's just a slingshot for grenades. However, this thing might come in handy when used with fragmentation shells."
 	item_cost = 3
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/gun/launcher/grenade/loaded
-
-/datum/uplink_item/item/visible_weapons/grenade_launcher
-	name = "Grenade Launcher"
-	desc = "Single-shell grenade launcher. It's quite compact and can be easily used with just one hand."
-	item_cost = 3
-	antag_roles = list(MODE_NUKE)
-	path = /obj/item/gun/projectile/grenade_launcher
-
-/datum/uplink_item/item/visible_weapons/revolver_grenade_launcher
-	name = "Multiple Grenade Launcher"
-	desc = "It's like if a revolver married a grenade launcher and they've had a baby."
-	item_cost = 7
-	antag_roles = list(MODE_NUKE)
-	path = /obj/item/gun/projectile/revolver/grenade_launcher
 
 /datum/uplink_item/item/visible_weapons/rocketlauncher
 	name = "Rocket Launcher"

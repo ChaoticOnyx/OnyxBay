@@ -1,6 +1,6 @@
 /obj/item/gun/launcher/grenade
-	name = "grenade slingshot"
-	desc = "A bulky pump-action grenade slingshot. Holds up to 6 grenades in a revolving magazine."
+	name = "grenade launcher"
+	desc = "A bulky pump-action grenade launcher. Holds up to 6 grenades in a revolving magazine."
 	icon_state = "riotgun"
 	item_state = "riotgun"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 3)

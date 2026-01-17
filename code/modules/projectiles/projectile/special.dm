@@ -349,10 +349,6 @@
 	parent = loc
 	return ..()
 
-/obj/item/projectile/portal/Destroy()
-	parent = null
-	return ..()
-
 /obj/item/projectile/portal/on_impact(atom/A)
 	if(!istype(parent, /obj/item/gun/portalgun))
 		return
@@ -363,69 +359,3 @@
 		if(!ismob(firer))
 			firer = shot_from
 		P.open_portal(setting,loc,A,firer)
-
-/obj/item/projectile/grenade
-	name = "grenade"
-	icon_state = "40mm"
-	fire_sound = 'sound/effects/weapons/misc/bloop.ogg'
-	damage_type = BRUTE
-	nodamage = 0
-	damage = 25
-	agony = 20
-	embed = 0
-	sharp = 0
-	penetration_modifier = 0.2
-	poisedamage = 20.0
-	check_armour = "melee"
-	impact_on_original = TRUE
-
-/obj/item/projectile/grenade/on_impact(atom/A)
-	if(isfloor(A))
-		visible_message(SPAN("warning", "\The [src] bumps against \the [A]!"))
-
-/obj/item/projectile/grenade/rubber
-	name = "rubber grenade"
-	damage = 20
-	agony = 70
-	poisedamage = 27.5
-	impact_on_original = FALSE // No boomies, keep flying
-
-/obj/item/projectile/grenade/he/on_impact(atom/A)
-	explosion(A, -1, 2, 4)
-	return TRUE
-
-/obj/item/projectile/grenade/hep/on_impact(atom/A)
-	explosion(A, 0, 3, 4)
-	return TRUE
-
-/obj/item/projectile/grenade/loaded
-	var/obj/item/grenade/grenade
-
-/obj/item/projectile/grenade/loaded/Destroy()
-	if(!QDELETED(grenade))
-		QDEL_NULL(grenade)
-	return ..()
-
-/obj/item/projectile/grenade/loaded/proc/set_grenade(obj/item/grenade/G)
-	if(QDELETED(G))
-		return
-
-	G.forceMove(src)
-	grenade = G
-
-/obj/item/projectile/grenade/loaded/on_impact(atom/A)
-	if(!grenade)
-		return TRUE
-
-	if(istype(grenade, /obj/item/grenade/chem_grenade))
-		var/obj/item/grenade/chem_grenade/CG = grenade
-		CG.stage = 2
-
-	if(!QDELETED(grenade.safety_pin))
-		qdel(grenade.safety_pin)
-		grenade.safety_pin = null
-
-	grenade.forceMove(get_turf(A))
-	grenade.detonate()
-	grenade = null
-	return TRUE

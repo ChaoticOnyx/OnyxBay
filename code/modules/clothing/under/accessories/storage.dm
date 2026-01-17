@@ -165,8 +165,7 @@
 		/obj/item/rcd_ammo/magnetic_ammo,
 		/obj/item/ammo_magazine,
 		/obj/item/net_shell,
-		/obj/item/reagent_containers/vessel/beaker/vial,
-		/obj/item/ammo_casing/grenade
+		/obj/item/reagent_containers/vessel/beaker/vial
 	)
 
 /obj/item/clothing/accessory/storage/bandolier/safari/New()

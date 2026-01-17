@@ -582,13 +582,6 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	hidden = 1
 	category = "Arms and Ammunition"
 
-/datum/autolathe/recipe/grenade_shell
-	name = "ammunition (spare 40mm)"
-	path = /obj/item/ammo_casing/grenade/loaded/empty
-	hidden = 1
-	category = "Arms and Ammunition"
-	resources = list(MATERIAL_STEEL = (SHEET_MATERIAL_AMOUNT * EXTRA_COST_FACTOR))
-
 /datum/autolathe/recipe/consolescreen
 	name = "console screen"
 	path = /obj/item/stock_parts/console_screen

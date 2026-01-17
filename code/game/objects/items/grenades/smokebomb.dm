@@ -26,5 +26,5 @@
 		smoke.start()
 		set_next_think(world.time + 1 SECOND)
 		return
-
+	
 	return

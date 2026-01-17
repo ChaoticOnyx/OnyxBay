@@ -42,8 +42,8 @@
 	set category = "Object"
 
 	chamber_offset = 0
-	visible_message(SPAN("warning", "\The [usr] spins the cylinder of \the [src]!"), \
-					SPAN("notice", "You hear something metallic spin and click."))
+	visible_message("<span class='warning'>\The [usr] spins the cylinder of \the [src]!</span>", \
+	"<span class='notice'>You hear something metallic spin and click.</span>")
 	playsound(src.loc, 'sound/effects/weapons/gun/revolver_spin.ogg', 100, FALSE)
 	loaded = shuffle(loaded)
 	if(rand(1,max_shells) > loaded.len)
@@ -296,32 +296,3 @@
 		icon_state = "[icon_state]0"
 	else
 		icon_state = "[icon_state][chargemode]"
-
-/obj/item/gun/projectile/revolver/grenade_launcher
-	name = "multiple grenade launcher"
-	desc = "The Lumoco Arms MGL is the weapon of choice for when civilized approach is not even considered an option."
-	icon_state = "grenade_launcher"
-	item_state = "grenade_launcher"
-	wielded_item_state = "grenade_launcher-wielded"
-
-	w_class = ITEM_SIZE_HUGE
-	force = 12.5
-	mod_weight = 1.0
-	mod_reach = 0.8
-	mod_handy = 1.0
-	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 2)
-	slot_flags = 0
-
-	caliber = "40mm"
-	handle_casings = HOLD_CASINGS
-	handle_casings = CYCLE_CASINGS
-	ammo_type = /obj/item/ammo_casing/grenade
-	max_shells = 6
-	fire_delay = 5
-	fire_sound = 'sound/effects/weapons/misc/bloop.ogg'
-	one_hand_penalty = 3
-	starts_loaded = FALSE
-
-/obj/item/gun/projectile/revolver/grenade_launcher/on_update_icon()
-	icon_state = "grenade_launcher[!!loaded.len]"
-	..()

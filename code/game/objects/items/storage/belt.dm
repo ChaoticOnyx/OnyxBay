@@ -178,8 +178,7 @@
 		/obj/item/material/knife,
 		/obj/item/material/butterfly,
 		/obj/item/material/hatchet/tacknife,
-		/obj/item/cell/ammo/charge,
-		/obj/item/ammo_casing/grenade
+		/obj/item/cell/ammo/charge
 		)
 
 /obj/item/storage/belt/soulstone
