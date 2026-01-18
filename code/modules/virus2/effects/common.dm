@@ -22,7 +22,7 @@
 	stage = 1
 	badness = VIRUS_COMMON
 	possible_mutations = list(/datum/disease2/effect/adaptation_chem,
-							  /datum/disease2/effect/chem_synthesis)
+							/datum/disease2/effect/chem_synthesis)
 
 /datum/disease2/effect/adaptation_chem/generate(c_data)
 	if(c_data)
@@ -231,7 +231,7 @@
 /datum/disease2/effect/deaf/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	mob.ear_deaf += 20
+	mob.setEarDamage(null, 20)
 
 
 

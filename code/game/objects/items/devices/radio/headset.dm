@@ -282,8 +282,7 @@
 			to_chat(M, SPAN("danger", "You hear a loud deafening screech!"))
 			M.Stun(10)
 			M.Weaken(3)
-			M.ear_damage += rand(0, 5)
-			M.ear_deaf = max(M.ear_deaf,15)
+			M.adjustEarDamage(rand(0, 5), 15)
 	..()
 
 /obj/item/device/radio/headset/attackby(obj/item/W as obj, mob/user as mob)

@@ -32,6 +32,16 @@ var/list/organ_cache = list()
 	var/obj/item/reagent_containers/food/food_organ
 	var/disable_food_organ = FALSE // used to override food_organ's creation and using
 
+	/// Currently implanted objects.
+	var/list/implants = list()
+	/// List of installed augmentations.
+	var/list/organ_modules = list()
+	/// Types of modules without which this organ will not work. Applies ONLY to prosthetic limbs.
+	var/list/necessary_organ_modules
+
+	var/max_module_size = 1
+	var/occupied_space = 0
+
 	drop_sound = SFX_DROP_FLESH
 	pickup_sound = SFX_PICKUP_FLESH
 
@@ -282,10 +292,14 @@ var/list/organ_cache = list()
 	damage = between(0, damage - round(amount, 0.1), max_damage)
 
 
-/obj/item/organ/proc/robotize() //Being used to make robutt hearts, etc
+/obj/item/organ/proc/robotize(company) //Being used to make robutt hearts, etc
 	status = ORGAN_ROBOTIC
 	if(owner?.isSynthetic()) // If owner becomes fully synthetic - he receives all corresponding emotes.
 		owner.add_synth_emotes()
+
+	var/datum/robolimb/R = GLOB.all_robolimbs[company]
+	if(R.can_feel_pain)
+		status |= ORGAN_PAIN_PROCESSOR
 
 /obj/item/organ/proc/mechassist() //Used to add things like pacemakers, etc
 	status = ORGAN_ASSISTED
@@ -317,6 +331,9 @@ var/list/organ_cache = list()
 			admin_attack_log(user, owner, "Removed a vital organ ([src]).", "Had a vital organ ([src]) removed.", "removed a vital organ ([src]) from")
 		owner.death()
 
+	for(var/obj/item/organ_module/module in organ_modules)
+		module.organ_removed(src, owner)
+
 	owner = null
 
 /obj/item/organ/proc/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)
@@ -324,6 +341,10 @@ var/list/organ_cache = list()
 	forceMove(owner) //just in case
 	if(BP_IS_ROBOTIC(src))
 		set_dna(owner.dna)
+
+	for(var/obj/item/organ_module/module in organ_modules)
+		module.organ_installed(src, owner)
+
 	return 1
 
 /obj/item/organ/attack(mob/target, mob/user)
@@ -346,7 +367,8 @@ var/list/organ_cache = list()
 	return (!BP_IS_ROBOTIC(src) && owner && (!owner.no_pain || !species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
 
 /obj/item/organ/proc/is_usable()
-	return !(status & (ORGAN_CUT_AWAY|ORGAN_MUTATED|ORGAN_DEAD))
+	var/robotic_pain = (!(status & ORGAN_PAIN_PROCESSOR) && BP_IS_ROBOTIC(src))
+	return (!robotic_pain && owner && (!owner.no_pain || !species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
 
 /obj/item/organ/proc/can_recover()
 	return (!(status & ORGAN_DEAD) || death_time >= world.time - ORGAN_RECOVERY_THRESHOLD)
@@ -388,3 +410,10 @@ var/list/organ_cache = list()
 //used by stethoscope
 /obj/item/organ/proc/listen()
 	return
+
+/obj/item/organ/proc/get_contents()
+	. = list()
+
+	LAZYDISTINCTADD(., implants)
+	LAZYDISTINCTADD(., organ_modules)
+	LAZYDISTINCTADD(., contents)

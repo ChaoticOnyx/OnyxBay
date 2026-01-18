@@ -372,6 +372,7 @@
 	brightness_color = "#68ff4d"
 	var/weakref/creator
 	var/datum/effect/effect/system/spark_spread/spark_system
+	var/destroy_on_drop = TRUE
 
 /obj/item/melee/energy/blade/New()
 	..()
@@ -396,10 +397,11 @@
 
 /obj/item/melee/energy/blade/dropped()
 	..()
-	QDEL_IN(src, 0)
+	if(destroy_on_drop)
+		QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/think()
-	var/mob/living/_creator = creator.resolve()
+	var/mob/living/_creator = creator?.resolve()
 	if(!_creator || loc != _creator || (_creator.l_hand != src && _creator.r_hand != src))
 		// Tidy up a bit.
 		if(isliving(loc))

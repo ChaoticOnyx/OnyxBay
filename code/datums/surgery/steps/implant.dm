@@ -307,7 +307,7 @@
 
 	var/max_space = parent_organ.max_module_size
 
-	var/datum/robolimb/R = GLOB.all_robolimbs[parent_organ.model]
+	var/datum/robolimb/R = GLOB.all_robolimbs[parent_organ]
 	if(istype(R))
 		max_space += R.max_module_size
 

@@ -87,4 +87,7 @@
 	player_setup.sanitize_setup()
 	return 1
 
+/datum/preferences/proc/get_lp_cost()
+	return player_setup.get_lp_cost()
+
 #undef PREF_SER_VERSION
