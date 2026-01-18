@@ -5,7 +5,7 @@
 	allowed_organs = list(BP_HEAD)
 	icon_state = "cranial_aug"
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
-	loadout_cost = 5
+	loadout_cost = 0
 	/// A list of languages that this augment will add. add your language to this
 	var/list/augment_languages = list()
 	/// A list of languages that get added when it's installed. used to remove languages later. don't touch this.

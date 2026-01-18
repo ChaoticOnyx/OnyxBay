@@ -22,11 +22,11 @@
 	icon_state = "cpu_adv"
 	desc = "Advanced CPU capable of supporting a large number of prosthetic modules."
 	cpu_power = 4
-	loadout_cost = 8
+	loadout_cost = 0
 
 /obj/item/organ_module/processor/super
 	name = "Raven Microcyber MK.3"
 	icon_state = "cpu_super"
 	desc = "Produced by Raven Biotech corporation, this CPU is considered to be one of the most advanced processors for prosthetics."
 	cpu_power = 5
-	loadout_cost = 16
+	loadout_cost = 0

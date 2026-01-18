@@ -14,4 +14,4 @@
 	icon_state = "cranial_aug"
 	allowed_organs = list(BP_HEAD)
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
-	loadout_cost = 8
+	loadout_cost = 0

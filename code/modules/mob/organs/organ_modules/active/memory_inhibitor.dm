@@ -8,7 +8,7 @@
 	allowed_organs = list(BP_HEAD)
 	cooldown = 5 MINUTES
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
-	loadout_cost = 10
+	loadout_cost = 0
 	var/ready_to_erase = FALSE
 
 /obj/item/organ_module/active/memory_inhibitor/activate(obj/item/organ/E, mob/living/carbon/human/H)

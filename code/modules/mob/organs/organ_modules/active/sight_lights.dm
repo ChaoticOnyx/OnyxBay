@@ -8,7 +8,7 @@
 	var/lights_on = FALSE
 	allowed_organs = list(BP_EYES)
 	cpu_load = 0
-	loadout_cost = 5
+	loadout_cost = 0
 
 /obj/item/organ_module/active/sightlights/activate(obj/item/organ/E, mob/living/carbon/human/H)
 	lights_on = !lights_on

@@ -5,7 +5,7 @@
 	allowed_organs = list(BP_HEAD)
 	cooldown = 1 SECOND
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
-	loadout_cost = 10
+	loadout_cost = 0
 
 	var/taste_sensitivity = TASTE_NORMAL
 	var/action_verb = "samples"
