@@ -619,7 +619,7 @@
 /obj/machinery/power/supermatter/random/Initialize()
 	. = ..()
 	current_thermal_release_modifier = rand(THERMAL_RELEASE_MODIFIER - DELTA_THERMAL_RELEASE_MODIFIER, THERMAL_RELEASE_MODIFIER + DELTA_THERMAL_RELEASE_MODIFIER)
-	current_radiation_release_modifier = rand(0.7, 1.2)
+	current_radiation_release_modifier = rand(7, 12)/10
 	current_power_factor = rand(10*(POWER_FACTOR - DELTA_POWER_FACTOR), 10*(POWER_FACTOR + DELTA_POWER_FACTOR)) / 10
 	current_decay_factor = rand(DECAY_FACTOR - DELTA_DECAY_FACTOR, DECAY_FACTOR + DELTA_DECAY_FACTOR)
 	current_critical_temperature = rand(CRITICAL_TEMPERATURE - DELTA_CRITICAL_TEMPERATURE, CRITICAL_TEMPERATURE + DELTA_CRITICAL_TEMPERATURE)
