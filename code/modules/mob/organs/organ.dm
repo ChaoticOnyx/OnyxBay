@@ -367,7 +367,7 @@ var/list/organ_cache = list()
 	return (!BP_IS_ROBOTIC(src) && owner && (!owner.no_pain || !species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
 
 /obj/item/organ/proc/is_usable()
-	var/robotic_pain = (!(status & ORGAN_PAIN_PROCESSOR) && BP_IS_ROBOTIC(src))
+	var/robotic_pain = (!!(status & ORGAN_PAIN_PROCESSOR) && BP_IS_ROBOTIC(src))
 	return (!robotic_pain && owner && (!owner.no_pain || !species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
 
 /obj/item/organ/proc/can_recover()
