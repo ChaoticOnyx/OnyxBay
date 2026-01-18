@@ -91,4 +91,11 @@
 	total_lpoints_cost = player_setup.get_lp_cost()
 	return total_lpoints_cost
 
+/datum/preferences/proc/get_aug_cost()
+	total_aug_points = 0
+	for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
+		for(var/obj/item/organ_module/mod as anything in organ_modules[organ_tag])
+			total_aug_points += initial(mod.loadout_cost)
+	return total_aug_points
+
 #undef PREF_SER_VERSION

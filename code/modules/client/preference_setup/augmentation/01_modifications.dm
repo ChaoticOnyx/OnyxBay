@@ -26,7 +26,7 @@
 	LAZYINITLIST(pref.organ_data)
 	LAZYINITLIST(pref.rlimb_data)
 	LAZYINITLIST(pref.organ_modules)
-
+	pref.max_augmentation_points = config.character_setup.max_augmentation_points
 	if(pref.organ_data[BP_CHEST] == "cyborg")
 		for(var/organ in BP_INTERNAL_ORGANS)
 			if(pref.organ_data[organ] != null)
@@ -126,9 +126,9 @@
 		if(isnull(module_path))
 			return TOPIC_REFRESH
 
-		pref.total_lpoints_cost = pref.get_lp_cost()
-		if((initial(module_path.loadout_cost) + pref.total_lpoints_cost) > pref.max_loadout_points)
-			return TOPIC_REFRESH
+	pref.total_aug_points = pref.get_aug_cost()
+	if((initial(module_path.loadout_cost) + pref.total_aug_points) > pref.max_augmentation_points)
+		return TOPIC_REFRESH
 
 		if(!isnull(initial(module_path.module_type)))
 			for(var/obj/item/organ_module/mod as anything in pref.organ_modules[pref.current_organ])
@@ -278,13 +278,14 @@
 	data += "<tr style='vertical-align: top;'>"
 	var/fcolor = "#3366cc"
 
-	var/total_cost = pref.get_lp_cost()
-
-	if(total_cost < pref.max_loadout_points)
+	var/total_cost = pref.get_aug_cost()
+	if(total_cost < pref.max_augmentation_points)
 		fcolor = "#e67300"
+	if(pref.max_augmentation_points < INFINITY)
+		data += "<font color = '[fcolor]'>[total_cost]/[pref.max_augmentation_points]</font> augmentation points spent.<br>"
 
-	if(pref.max_loadout_points < INFINITY)
-		data += "<font color = '[fcolor]'>[total_cost]/[pref.max_loadout_points]</font> loadout points spent.<br>"
+	if(pref.max_augmentation_points < INFINITY)
+		data += "<font color = '[fcolor]'>[total_cost]/[pref.max_augmentation_points]</font> augmentation points spent.<br>"
 
 	data += "<br><b>CPU: [loaded_cpu_power]/[total_cpu_power] <br>Space: [occupied_space]/[total_space]</b><br>"
 

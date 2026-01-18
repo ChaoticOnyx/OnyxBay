@@ -48,11 +48,15 @@
 			)
 
 /obj/item/organ_module/active/multitool/proc/on_holding_qdel(obj/item)
-	util_crash_with("Somehow an organ_module's item got qdeleted. This is NOT normal.")
-	var/obj/item/I = new item.type (src)
-	I.canremove = FALSE
-	items += I
-	register_signal(I, SIGNAL_QDELETING, nameof(.proc/on_holding_qdel))
+    if(!item)
+        log_runtime("Organ module [type] lost a held item (null); skipping replacement.")
+        return
+    log_runtime("Organ module [type] lost held item [item.type]; recreating replacement.")
+    var/obj/item/I = new item.type (src)
+    I.canremove = FALSE
+    items += I
+    register_signal(I, SIGNAL_QDELETING, nameof(.proc/on_holding_qdel))
+
 
 /obj/item/organ_module/active/multitool/proc/on_holding_unequipped(obj/item, mob/mob)
 	mob.drop(item, src, TRUE)

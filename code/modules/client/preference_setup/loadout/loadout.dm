@@ -9,6 +9,7 @@ var/list/hash_to_gear = list()
 	var/list/trying_on_tweaks = new
 	var/loadout_is_busy = FALSE // All these gear tweaks be slow as anything. Let's just force things to yield, sparing us from sanitizing and resanitizing stuff.
 	var/max_loadout_points
+	var/max_augmentation_points
 	var/total_lpoints_cost
 
 /datum/preferences/proc/Gear()

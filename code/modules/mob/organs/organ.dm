@@ -298,8 +298,9 @@ var/list/organ_cache = list()
 		owner.add_synth_emotes()
 
 	var/datum/robolimb/R = GLOB.all_robolimbs[company]
-	if(R.can_feel_pain)
+	if(R?.can_feel_pain)
 		status |= ORGAN_PAIN_PROCESSOR
+
 
 /obj/item/organ/proc/mechassist() //Used to add things like pacemakers, etc
 	status = ORGAN_ASSISTED
@@ -366,7 +367,7 @@ var/list/organ_cache = list()
 
 /obj/item/organ/proc/is_usable()
 	var/robotic_pain = (!(status & ORGAN_PAIN_PROCESSOR) && BP_IS_ROBOTIC(src))
-	return (!robotic_pain && owner && (!owner.no_pain || !species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
+	return (owner && !(status & (ORGAN_CUT_AWAY | ORGAN_MUTATED | ORGAN_DEAD)) && !robotic_pain)
 
 /obj/item/organ/proc/can_recover()
 	return (!(status & ORGAN_DEAD) || death_time >= world.time - ORGAN_RECOVERY_THRESHOLD)
