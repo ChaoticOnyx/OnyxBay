@@ -87,4 +87,8 @@
 	player_setup.sanitize_setup()
 	return 1
 
+/datum/preferences/proc/get_lp_cost()
+	total_lpoints_cost = player_setup.get_lp_cost()
+	return total_lpoints_cost
+
 #undef PREF_SER_VERSION

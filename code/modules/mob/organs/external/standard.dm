@@ -23,6 +23,7 @@
 	limb_flags = ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
 	var/butchering_capacity = 1
 	internal_organs_size = 12 // Liver = 2, stomach = 2, heart = 2, lungs = 6
+	max_module_size = 4
 
 /obj/item/organ/external/chest/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
 	if(..())

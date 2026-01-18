@@ -259,7 +259,7 @@
 			formatted = language.format_message_radio(message, nverb)
 	else
 		formatted = "[verb], <span class=\"body\">\"[message]\"</span>"
-	if(sdisabilities & DEAF || ear_deaf)
+	if(isdeaf(src))
 		var/mob/living/carbon/human/H = src
 		if(istype(H) && H.has_headset_in_ears() && prob(20))
 			to_chat(src, SPAN("warning", "You feel your headset vibrate [loud ? "really hard " : ""]but can hear nothing from it!"))

@@ -13,6 +13,7 @@
 	food_organ_type = /obj/item/reagent_containers/food/meat/human
 
 	throwforce = 2.5
+	necessary_organ_modules = list(/obj/item/organ_module/actuators, /obj/item/organ_module/processor)
 	// Strings
 	var/broken_description             // fracture string if any.
 	var/damage_state = "00"            // Modifier used for generating the on-mob damage overlay for this limb.
@@ -63,7 +64,6 @@
 	var/obj/item/organ/external/parent // Master-limb.
 	var/list/children                  // Sub-limbs.
 	var/list/internal_organs = list()  // Internal organs of this body part
-	var/list/implants = list()         // Currently implanted objects.
 	var/base_miss_chance = 20          // Chance of missing.
 	var/genetic_degradation = 0
 
@@ -164,6 +164,8 @@
 		while(null in owner.organs)
 			owner.organs -= null
 		owner.bad_external_organs.Remove(src)
+
+	QDEL_NULL_LIST(organ_modules)
 
 	if(autopsy_data)
 		autopsy_data.Cut()
@@ -1067,6 +1069,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 	else if(status & ORGAN_BROKEN)
 		movement_tally += broken_tally * damage_multiplier
 
+	for(var/obj/item/organ_module/module in organ_modules)
+		movement_tally += module.organ_tally
+
+
 	owner?.update_organ_movespeed()
 
 /obj/item/organ/external/proc/fracture()
@@ -1152,6 +1158,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	if(company)
 		var/datum/robolimb/R = GLOB.all_robolimbs[company]
+		brute_mod = R?.brute_mod
+		burn_mod = R?.burn_mod
 
 		if(!R || (species && (species.name in R.species_cannot_use)) || \
 		 (R.restricted_to.len && !(species.name in R.restricted_to)) || \
@@ -1204,7 +1212,23 @@ Note that amputating the affected organ does in fact remove the infection from t
 	return 0
 
 /obj/item/organ/external/is_usable(ignore_pain = FALSE)
-	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1
+	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1 && is_robotic_usable()
+
+/// If this BP is robotic - checks for robotic-specific flags and determines whether it is usable.
+/obj/item/organ/external/proc/is_robotic_usable()
+	if(!BP_IS_ROBOTIC(src))
+		return TRUE
+
+	if(!LAZYLEN(necessary_organ_modules))
+		return TRUE
+
+	for(var/path in necessary_organ_modules)
+		if(is_path_in_list(path, organ_modules))
+			continue
+
+		return FALSE
+
+	return TRUE
 
 /obj/item/organ/external/proc/is_malfunctioning()
 	return (BP_IS_ROBOTIC(src) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))
