@@ -71,6 +71,9 @@
 /area/bridge/meeting_room/cafe
 	name = "\improper Heads of Staff Cafeteria"
 
+/area/bridge/storage
+	name = "\improper Bridge Storage"
+
 // Shuttles
 
 /area/shuttle/constructionsite
