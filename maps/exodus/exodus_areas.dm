@@ -1086,6 +1086,9 @@
 	icon_state = "captain"
 	sound_env = MEDIUM_SOFTFLOOR
 
+/area/crew_quarters/captain/quarters
+	name = "\improper Command - Captain's Quarters"
+
 // Crew
 
 

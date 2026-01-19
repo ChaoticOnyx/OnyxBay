@@ -18,10 +18,10 @@
 
 	access = list(access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station,
 			access_bar, access_construction, access_kitchen, access_hydroponics, access_janitor, access_tech_storage,
-			access_heads, access_hop, access_RC_announce, access_keycard_auth, access_sec_doors, access_eva, access_maint_tunnels, access_external_airlocks, access_change_ids)
+			access_heads, access_hop, access_RC_announce, access_keycard_auth, access_sec_doors, access_eva, access_maint_tunnels, access_external_airlocks, access_change_ids, access_teleporter)
 	minimal_access = list(access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station,
 			access_bar, access_construction, access_kitchen, access_hydroponics, access_janitor, access_tech_storage,
-			access_heads, access_hop, access_RC_announce, access_keycard_auth, access_sec_doors, access_eva, access_maint_tunnels, access_external_airlocks, access_change_ids)
+			access_heads, access_hop, access_RC_announce, access_keycard_auth, access_sec_doors, access_eva, access_maint_tunnels, access_external_airlocks, access_change_ids, access_teleporter)
 
 	outfit_type = /decl/hierarchy/outfit/job/hop
 
