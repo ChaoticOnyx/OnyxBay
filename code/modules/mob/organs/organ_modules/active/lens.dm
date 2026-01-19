@@ -4,7 +4,7 @@
 	allowed_organs = list(BP_EYES)
 	cpu_load = 0
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
-	loadout_cost = 1
+	loadout_cost = 0
 
 	/// Influences darksight range
 	var/darkness_view
@@ -85,12 +85,12 @@
 	name = "Security HUD implant"
 	icon_state = "hunterseye"
 	sec_hud = TRUE
-	loadout_cost = 2
+	loadout_cost = 0
 	allowed_jobs = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer)
 
 /obj/item/organ_module/active/lenses/hud/med
 	name = "Medical HUD implant"
 	icon_state = "eye_medical"
 	med_hud = TRUE
-	loadout_cost = 2
+	loadout_cost = 0
 	allowed_jobs = list(/datum/job/cmo, /datum/job/doctor, /datum/job/psychiatrist, /datum/job/chemist, /datum/job/paramedic)

@@ -11,7 +11,7 @@ var/list/hash_to_gear = list()
 	var/max_loadout_points
 	var/max_augmentation_points
 	var/total_lpoints_cost
-
+	var/total_aug_points
 /datum/preferences/proc/Gear()
 	return gear_list[gear_slot]
 

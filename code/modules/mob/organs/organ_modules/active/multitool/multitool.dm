@@ -14,7 +14,7 @@
 		/obj/item/wirecutters,
 		/obj/item/device/analyzer
 	)
-	loadout_cost = 10
+	loadout_cost = 0
 
 /obj/item/organ_module/active/multitool/Initialize()
 	. = ..()

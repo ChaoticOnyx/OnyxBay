@@ -5,7 +5,7 @@
 	icon_state = "multitool_medical"
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)
 	holding_type = /obj/item/scalpel/manager
-	loadout_cost = 10
+	loadout_cost = 0
 	allowed_jobs = list(/datum/job/cmo, /datum/job/doctor, /datum/job/psychiatrist, /datum/job/chemist, /datum/job/paramedic)
 
 /obj/item/organ_module/active/multitool/surgical

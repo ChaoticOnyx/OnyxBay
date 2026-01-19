@@ -18,9 +18,15 @@
 	W.write("organ_modules", pref.organ_modules)
 
 /datum/category_item/player_setup_item/augmentation/get_lp_cost()
-	for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
-		for(var/obj/item/organ_module/mod as anything in pref.organ_modules[organ_tag])
-			. += initial(mod.loadout_cost)
+    for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
+        for(var/obj/item/organ_module/mod as anything in pref.organ_modules[organ_tag])
+            if(pref.is_default_module(organ_tag, mod))
+                continue
+            if(initial(mod.module_type) == OM_TYPE_ACTUATOR || initial(mod.module_type) == OM_TYPE_PROCESSOR)
+                continue
+            if(initial(mod.loadout_cost) <= 0)
+                continue
+            . += initial(mod.loadout_cost)
 
 /datum/category_item/player_setup_item/augmentation/sanitize_character()
 	LAZYINITLIST(pref.organ_data)
@@ -41,13 +47,16 @@
 	if(pref.organ_data[BP_BRAIN] != null && pref.organ_data[BP_CHEST] != "cyborg")
 		pref.organ_data[BP_BRAIN] = null
 
-	for(var/organ in pref.organ_data)
-		var/datum/robolimb/R = GLOB.all_robolimbs[pref.rlimb_data[organ]]
-		if(isnull(R))
+	for(var/organ_tag in pref.organ_modules)
+		if(!pref.organ_modules[organ_tag])
 			continue
-
-		for(var/path in R.default_modules)
-			LAZYDISTINCTADD(pref.organ_modules[organ], path)
+		for(var/obj/item/organ_module/mod as anything in pref.organ_modules[organ_tag].Copy())
+			if(initial(mod.module_type) == OM_TYPE_PROCESSOR && organ_tag != BP_HEAD)
+				LAZYREMOVE(pref.organ_modules[organ_tag], mod)
+				continue
+			if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
+				if(organ_tag == BP_HEAD || pref.organ_data[organ_tag] == "cyborg" || !(organ_tag in BP_ALL_LIMBS))
+					LAZYREMOVE(pref.organ_modules[organ_tag], mod)
 
 /datum/category_item/player_setup_item/augmentation/content(mob/user)
 	. = list()
@@ -126,20 +135,58 @@
 		if(isnull(module_path))
 			return TOPIC_REFRESH
 
-	pref.total_aug_points = pref.get_aug_cost()
-	if((initial(module_path.loadout_cost) + pref.total_aug_points) > pref.max_augmentation_points)
-		return TOPIC_REFRESH
+		var/list/current_modules = pref.organ_modules ? pref.organ_modules[pref.current_organ] : null
+		if(islist(current_modules) && (module_path in current_modules))
+			LAZYREMOVE(pref.organ_modules[pref.current_organ], module_path)
+			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+		if(initial(module_path.allowed_jobs) && length(initial(module_path.allowed_jobs)))
+			var/job_allowed = FALSE
+			for(var/job_title in (pref.job_medium | pref.job_low | pref.job_high))
+				var/datum/job/J = job_master?.occupations_by_title[job_title]
+				if(J && (J.type in initial(module_path.allowed_jobs)))
+					job_allowed = TRUE
+					break
+			if(!job_allowed && !LAZYFIND(pref.organ_modules[pref.current_organ], module_path))
+				return TOPIC_REFRESH
+
+		if(initial(module_path.module_type) == OM_TYPE_PROCESSOR && pref.current_organ != BP_HEAD)
+			return TOPIC_REFRESH
+		if(initial(module_path.module_type) == OM_TYPE_ACTUATOR && (pref.current_organ == BP_HEAD || pref.organ_data[pref.current_organ] == "cyborg"))
+			return TOPIC_REFRESH
+
+		pref.total_aug_points = pref.get_aug_cost()
+		if((initial(module_path.loadout_cost) + pref.total_aug_points) > pref.max_augmentation_points)
+			return TOPIC_REFRESH
+
+		var/total_cpu_power = 0
+		var/loaded_cpu_power = 0
+		for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
+			for(var/path in pref.organ_modules[organ_tag])
+				total_cpu_power += module_cpu_power_for(organ_tag, path)
+				loaded_cpu_power += module_cpu_load_for(organ_tag, path)
+
+		var/new_cpu_power = module_cpu_power_for(pref.current_organ, module_path)
+		var/new_cpu_load = module_cpu_load_for(pref.current_organ, module_path)
+		var/total_space = get_organ_total_space(pref.current_organ)
+		var/occupied_space = get_organ_occupied_space(pref.current_organ)
 
 		if(!isnull(initial(module_path.module_type)))
 			for(var/obj/item/organ_module/mod as anything in pref.organ_modules[pref.current_organ])
 				if(isnull(initial(mod.module_type)))
 					continue
-
 				if(initial(mod.type) == initial(module_path.type))
 					continue
-
 				if(initial(mod.module_type) != initial(module_path.module_type))
 					continue
+
+				var/new_total_cpu_power = total_cpu_power - module_cpu_power_for(pref.current_organ, mod) + new_cpu_power
+				var/new_loaded_cpu_power = loaded_cpu_power - module_cpu_load_for(pref.current_organ, mod) + new_cpu_load
+				if(new_loaded_cpu_power > new_total_cpu_power)
+					return TOPIC_REFRESH
+				var/new_occupied_space = occupied_space - initial(mod.w_class) + initial(module_path.w_class)
+				if(new_occupied_space > total_space)
+					return TOPIC_REFRESH
 
 				LAZYREMOVE(pref.organ_modules[pref.current_organ], mod)
 				LAZYDISTINCTADD(pref.organ_modules[pref.current_organ], module_path)
@@ -148,6 +195,13 @@
 		if(LAZYFIND(pref.organ_modules[pref.current_organ], module_path))
 			LAZYREMOVE(pref.organ_modules[pref.current_organ], module_path)
 		else
+			var/new_total_cpu_power = total_cpu_power + new_cpu_power
+			var/new_loaded_cpu_power = loaded_cpu_power + new_cpu_load
+			if(new_loaded_cpu_power > new_total_cpu_power)
+				return TOPIC_REFRESH
+			var/new_occupied_space = occupied_space + initial(module_path.w_class)
+			if(new_occupied_space > total_space)
+				return TOPIC_REFRESH
 			LAZYDISTINCTADD(pref.organ_modules[pref.current_organ], module_path)
 
 		return TOPIC_REFRESH_UPDATE_PREVIEW
@@ -192,7 +246,7 @@
 					pref.rlimb_data[other_limb] = null
 					for(var/internal_organ in BP_INTERNAL_ORGANS)
 						pref.organ_data[internal_organ] = null
-				pref.organ_modules = null
+				pref.organ_modules.Cut()
 
 			pref.organ_data[organ] = null
 			pref.rlimb_data[organ] = null
@@ -248,31 +302,70 @@
 	pref.rlimb_data.Cut()
 	pref.organ_modules.Cut()
 
+/datum/category_item/player_setup_item/augmentation/proc/module_cpu_power_for(organ_tag, module_path)
+	var/obj/item/organ_module/module = module_path
+	if(pref.is_default_module(organ_tag, module_path))
+		return 0
+	if(initial(module.module_type) != OM_TYPE_PROCESSOR)
+		return 0
+	if(organ_tag != BP_HEAD)
+		return 0
+	return (isnull(initial(module.cpu_power)) ? 0 : initial(module.cpu_power))
+
+/datum/category_item/player_setup_item/augmentation/proc/module_cpu_load_for(organ_tag, module_path)
+	var/obj/item/organ_module/module = module_path
+	if(pref.is_default_module(organ_tag, module_path))
+		return 0
+	var/module_type = initial(module.module_type)
+	if(module_type == OM_TYPE_ACTUATOR || module_type == OM_TYPE_PROCESSOR)
+		return 0
+	return (isnull(initial(module.cpu_load)) ? 0 : initial(module.cpu_load))
+
+/datum/category_item/player_setup_item/augmentation/proc/get_organ_total_space(organ)
+	var/mob/living/carbon/human/mannequin = get_mannequin(pref.client_ckey)
+	var/obj/item/organ/O
+	if(organ in BP_ALL_LIMBS)
+		O = mannequin?.organs_by_name[organ]
+	else if(organ in BP_INTERNAL_ORGANS)
+		O = mannequin?.internal_organs_by_name[organ]
+	if(!O)
+		return 0
+
+	var/total_space = O.max_module_size
+	var/datum/robolimb/R = GLOB.all_robolimbs[pref.rlimb_data[organ]]
+	if(istype(R))
+		total_space += R.max_module_size
+	return total_space
+
+/datum/category_item/player_setup_item/augmentation/proc/get_organ_occupied_space(organ)
+	var/occupied_space = 0
+	for(var/path in pref.organ_modules[organ])
+		var/obj/item/organ_module/module = path
+		occupied_space += initial(module.w_class)
+	return occupied_space
+
 /datum/category_item/player_setup_item/augmentation/proc/get_organ_modules(organ)
 	var/list/data = list()
 
 	var/total_cpu_power = 0
 	var/loaded_cpu_power = 0
-	var/total_space = 0
-	var/occupied_space = 0
 
 	var/mob/living/carbon/human/mannequin = get_mannequin(pref.client_ckey)
 	var/obj/item/organ/O
 	if(organ in BP_ALL_LIMBS)
-		O = mannequin.organs_by_name[organ]
+		O = mannequin?.organs_by_name[organ]
 	else if(organ in BP_INTERNAL_ORGANS)
-		O = mannequin.internal_organs_by_name[organ]
+		O = mannequin?.internal_organs_by_name[organ]
+	if(!O)
+		return "<b>Augmentations not avaible.</b>"
 
-	total_space = O.max_module_size
-	var/datum/robolimb/R = GLOB.all_robolimbs[pref.rlimb_data[organ]]
-	if(istype(R))
-		total_space += R.max_module_size
+	var/total_space = get_organ_total_space(organ)
+	var/occupied_space = get_organ_occupied_space(organ)
 
-	for(var/path in pref.organ_modules[organ])
-		var/obj/item/organ_module/module = path
-		total_cpu_power += initial(module.cpu_power)
-		loaded_cpu_power += initial(module.cpu_load)
-		occupied_space += initial(module.w_class)
+	for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
+		for(var/path in pref.organ_modules[organ_tag])
+			total_cpu_power += module_cpu_power_for(organ_tag, path)
+			loaded_cpu_power += module_cpu_load_for(organ_tag, path)
 
 	data += "<table><tr><td style='width:115px; text-align:right; margin-right:10px;'>"
 	data += "<tr style='vertical-align: top;'>"
@@ -281,8 +374,6 @@
 	var/total_cost = pref.get_aug_cost()
 	if(total_cost < pref.max_augmentation_points)
 		fcolor = "#e67300"
-	if(pref.max_augmentation_points < INFINITY)
-		data += "<font color = '[fcolor]'>[total_cost]/[pref.max_augmentation_points]</font> augmentation points spent.<br>"
 
 	if(pref.max_augmentation_points < INFINITY)
 		data += "<font color = '[fcolor]'>[total_cost]/[pref.max_augmentation_points]</font> augmentation points spent.<br>"
@@ -303,22 +394,25 @@
 
 		var/job_allows_this_module = TRUE
 		if(LAZYLEN(mod.allowed_jobs))
+			job_allows_this_module = FALSE
 			for(var/datum/job/J in selected_jobs)
 				if(J.type in mod.allowed_jobs)
 					job_allows_this_module = TRUE
 					break
 
-		if(!job_allows_this_module)
-			return FALSE
+		var/list/current_modules = pref.organ_modules ? pref.organ_modules[pref.current_organ] : null
+		if(!job_allows_this_module && (!islist(current_modules) || !(mod_path in current_modules)))
+			continue
 
 		if(!(organ in allowed))
 			continue
 
-		if(pref.rlimb_data[organ] == "cyborg" && !(initial(mod.module_flags) & OM_FLAG_MECHANICAL))
-			continue
-
-		if(isnull(pref.rlimb_data[organ]) && !(initial(mod.module_flags) & OM_FLAG_BIOLOGICAL))
-			continue
+		if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
+			if(organ == BP_HEAD || pref.organ_data[organ] == "cyborg" || !(organ in BP_ALL_LIMBS))
+				continue
+		if(initial(mod.module_type) == OM_TYPE_PROCESSOR)
+			if(organ != BP_HEAD)
+				continue
 
 		var/list/job_restriction_data
 		if(length(mod.allowed_jobs))
@@ -342,11 +436,11 @@
 			job_restriction_data = jointext(job_restriction_data, "<br>")
 
 		var/points_suffix = mod.loadout_cost != 1 ? "s" : ""
-		var/price = "<b>Price: [mod.loadout_cost] point[points_suffix]</b>"
+		var/module_cpu_load = isnull(mod.cpu_load) ? 0 : mod.cpu_load
+		var/cpu_info = "CPU load: [module_cpu_load]"
+		var/price = "<b>Price: [mod.loadout_cost] point[points_suffix]</b> <br><b>[cpu_info]</b>"
 
-		if(LAZYFIND(R?.default_modules, mod_path))
-			data += "<div style = 'padding:2px' onclick=\"set('module', '[organ] [mod_path]');\" class='block'><b>[capitalize(mod.name)] [price]</b><br>[mod.desc] [job_restriction_data]</font></div>"
-		else if(LAZYFIND(pref.organ_modules[pref.current_organ], mod_path))
+		if(LAZYFIND(pref.organ_modules[pref.current_organ], mod_path))
 			data += "<div style = 'padding:2px' onclick=\"set('module', '[organ] [mod_path]');\" class='block'><font color='#4f7529'><b>[capitalize(mod.name)] [price]</b><br>[mod.desc] [job_restriction_data]</font></div>"
 		else
 			data += "<div style = 'padding:2px' onclick=\"set('module', '[organ] [mod_path]');\" class='block'><font color='#ee0000'><b>[capitalize(mod.name)] [price]</b><br>[mod.desc] [job_restriction_data]</font></div>"

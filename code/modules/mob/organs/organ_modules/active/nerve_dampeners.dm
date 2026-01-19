@@ -6,7 +6,7 @@
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	origin_tech = list(TECH_DATA = 4, TECH_BIO = 4)
 	cooldown = 1 MINUTE
-	loadout_cost = 15
+	loadout_cost = 0
 	available_in_charsetup = TRUE
 	allowed_organs = list(BP_CHEST)
 	var/stop_thinking_at

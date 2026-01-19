@@ -23,10 +23,10 @@ var/datum/robolimb/basic_robolimb
 	var/list/species_cannot_use = list()
 	var/list/restricted_to = list()
 	var/list/applies_to_part = list()
-	var/list/default_modules = list(/obj/item/organ_module/actuators, /obj/item/organ_module/processor)	/// List of default modules that will be initialized.
+	var/list/default_modules = list()
 	var/brute_mod = 0.9																					/// How resistant this prosthetic type is to brute damage.
 	var/burn_mod = 1.1																					/// How resistant this prosthetic type is to burn damage.
-	var/max_module_size = 3
+	var/max_module_size = 4
 	var/list/racial_icons = list(
 		SPECIES_TAJARA = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_taj.dmi'
 	)

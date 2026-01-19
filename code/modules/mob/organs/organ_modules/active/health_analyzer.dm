@@ -4,7 +4,7 @@
 	icon_state = "iatric_monitor"
 	cooldown = 8
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)
-	loadout_cost = 10
+	loadout_cost = 0
 
 /obj/item/organ_module/active/health_scanner/activate(obj/item/organ/E, mob/living/carbon/human/H)
 	show_browser(H, medical_scan_results(H, TRUE), "window=scanconsole;size=430x350")

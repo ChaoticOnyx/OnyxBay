@@ -62,6 +62,7 @@
 	max_damage = 55
 	min_broken_damage = 30
 	w_class = ITEM_SIZE_NORMAL
+	max_module_size = 3 /// For augments
 	body_part = ARM_LEFT
 	parent_organ = BP_CHEST
 	joint = "left elbow"
@@ -87,6 +88,7 @@
 	max_damage = 60
 	min_broken_damage = 40
 	w_class = ITEM_SIZE_NORMAL
+	max_module_size = 3 /// For augments
 	body_part = LEG_LEFT
 	icon_position = LEFT
 	parent_organ = BP_GROIN
@@ -140,6 +142,7 @@
 	max_damage = 45
 	min_broken_damage = 25
 	w_class = ITEM_SIZE_SMALL
+	max_module_size = 3 /// For augments
 	body_part = HAND_LEFT
 	parent_organ = BP_L_ARM
 	joint = "left wrist"

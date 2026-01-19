@@ -7,7 +7,7 @@
 	allowed_organs = list(BP_EYES)
 	cpu_load = 0
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
-	loadout_cost = 8
+	loadout_cost = 0
 
 /obj/item/organ_module/active/enhanced_vision/activate(obj/item/organ/E, mob/living/carbon/human/user)
 	if(!toggled)

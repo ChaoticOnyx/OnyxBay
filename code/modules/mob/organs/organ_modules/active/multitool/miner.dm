@@ -10,4 +10,4 @@
 		/obj/item/device/radio/off,
 		/obj/item/screwdriver
 	)
-	loadout_cost = 10
+	loadout_cost = 0

@@ -7,6 +7,8 @@
 	. = ..()
 	organ_action = new /datum/action/item_action/organ_module
 	organ_action.target = src
+	var/action_name = implant_action_name || action_button_name
+	organ_action.name = action_name ? action_name : "Activate [src.name]"
 	organ_action.Grant(E?.owner)
 
 /obj/item/organ_module/active/_on_remove(obj/item/organ/external/E)
@@ -16,6 +18,19 @@
 	if(H?.incapacitated(INCAPACITATION_KNOCKOUT))
 		show_splash_text(usr, "Can't do that!", SPAN_WARNING("You can't do that now!"))
 		return
+
+	if(istype(E, /obj/item/organ/external))
+		var/obj/item/organ/external/external = E
+		if(!external.is_robotic_usable())
+			var/cpu_name = "CPU"
+			var/obj/item/organ/external/head/head = H?.organs_by_name[BP_HEAD]
+			if(istype(head))
+				for(var/obj/item/organ_module/module in head.organ_modules)
+					if(initial(module.module_type) == OM_TYPE_PROCESSOR)
+						cpu_name = module.name
+						break
+			to_chat(H, SPAN_WARNING("Your [cpu_name] send a signal to [src.name] but [external.name] actuator dont respond."))
+			return
 
 	return TRUE
 

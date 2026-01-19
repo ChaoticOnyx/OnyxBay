@@ -463,6 +463,10 @@
 This function completely restores a damaged organ to perfect condition.
 */
 /obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs = FALSE)
+	var/list/kept_modules = list()
+	for(var/obj/item/organ_module/module in organ_modules)
+		kept_modules += module
+
 	damage_state = "00"
 
 	status = 0
@@ -481,9 +485,21 @@ This function completely restores a damaged organ to perfect condition.
 
 	// remove embedded objects and drop them on the floor
 	for(var/obj/implanted_object in implants)
+		if(istype(implanted_object, /obj/item/organ_module))
+			continue
 		if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
 			implanted_object.dropInto(get_turf(src))
 			implants -= implanted_object
+
+	for(var/obj/item/organ_module/module in kept_modules)
+		if(QDELETED(module))
+			continue
+		if(module.loc != src)
+			module.forceMove(src)
+		if(!(module in organ_modules))
+			organ_modules += module
+		if(!(module in implants))
+			implants += module
 
 	if(owner && !ignore_prosthetic_prefs)
 		if(owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
@@ -1214,21 +1230,18 @@ Note that amputating the affected organ does in fact remove the infection from t
 /obj/item/organ/external/is_usable(ignore_pain = FALSE)
 	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1 && is_robotic_usable()
 
-/// If this BP is robotic - checks for robotic-specific flags and determines whether it is usable.
 /obj/item/organ/external/proc/is_robotic_usable()
-	if(!BP_IS_ROBOTIC(src))
+	if(BP_IS_ROBOTIC(src))
 		return TRUE
 
-	if(!LAZYLEN(necessary_organ_modules))
+	if(!LAZYLEN(organ_modules))
 		return TRUE
 
-	for(var/path in necessary_organ_modules)
-		if(is_path_in_list(path, organ_modules))
-			continue
+	if(is_path_in_list(/obj/item/organ_module/actuators, organ_modules))
+		return TRUE
 
-		return FALSE
+	return FALSE
 
-	return TRUE
 
 /obj/item/organ/external/proc/is_malfunctioning()
 	return (BP_IS_ROBOTIC(src) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))

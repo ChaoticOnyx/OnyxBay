@@ -28,7 +28,8 @@
 		SPAN_WARNING("[H] extend \his [holding.name] from [E]."),
 		SPAN_NOTICE("You extend your [holding.name] from [E].")
 	)
-	register_signal(holding, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/on_holding_unequipped))
+	register_signal(holding, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/on_holding_unequipped), override = TRUE)
+
 
 /obj/item/organ_module/active/simple/proc/retract(mob/living/carbon/human/H, obj/item/organ/external/E)
 	if(holding.loc == src)
