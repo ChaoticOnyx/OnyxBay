@@ -51,7 +51,7 @@ var/const/IAA_ban_reason = "Restricted by CentComm"
 			var/datum/job/J_banned = job_master.GetJob(JB.job)
 			if (rank == JB.job) //fastest check first
 				return IAA_ban_reason
-			if (J_banned.department == "Civilian" || J_banned.department == "Service" || J_banned.department == "Supply")
+			if (J_banned.department == "Civilian" || J_banned.department == "Provisioning" || J_banned.department == "Cargo")
 				if (J.head_position)
 					return IAA_ban_reason
 			else if (J_banned.department == J.department)

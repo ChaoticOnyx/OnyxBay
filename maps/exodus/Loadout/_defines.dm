@@ -18,11 +18,11 @@
 //For members of the security department
 #define SECURITY_ROLES list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer)
 
-//For members of the supply department
-#define SUPPLY_ROLES list(/datum/job/qm, /datum/job/cargo_tech, /datum/job/mining)
+//For members of the cargo department
+#define CARGO_ROLES list(/datum/job/hop, /datum/job/cargo_tech, /datum/job/mining)
 
-//For members of the service department
-#define SERVICE_ROLES list(/datum/job/janitor, /datum/job/chef, /datum/job/crew, /datum/job/bartender)
+//For members of the provisioning department
+#define SERVICE_ROLES list(/datum/job/hop, /datum/job/janitor, /datum/job/chef, /datum/job/crew, /datum/job/bartender)
 
 //For members of the research department and jobs that are scientific
 #define RESEARCH_ROLES list(/datum/job/rd, /datum/job/scientist, /datum/job/roboticist, /datum/job/xenobiologist)

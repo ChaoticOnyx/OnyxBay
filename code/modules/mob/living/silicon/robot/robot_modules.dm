@@ -679,7 +679,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 /obj/item/robot_module/janitor
 	name = "janitorial robot module"
 	icon_state = "robot_mod_yellow"
-	channels = list("Service" = 1)
+	channels = list("Provisioning" = 1)
 	hulls = list(
 		"Default" = new /datum/robot_hull/spider/robot_janitor,
 		"Basic" = new /datum/robot_hull/legs/janbot2,
@@ -725,7 +725,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 /obj/item/robot_module/service
 	name = "service robot module"
 	icon_state = "robot_mod_yellow"
-	channels = list("Service" = 1)
+	channels = list("Provisioning" = 1)
 	languages = list(
 					LANGUAGE_SOL_COMMON	= 1,
 					LANGUAGE_UNATHI		= 1,

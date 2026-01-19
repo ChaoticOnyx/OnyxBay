@@ -152,13 +152,13 @@
 /datum/access/bar
 	id = access_bar
 	desc = "Bar"
-	region = ACCESS_REGION_GENERAL
+	region = ACCESS_REGION_SUPPLY
 
 /var/const/access_janitor = 26
 /datum/access/janitor
 	id = access_janitor
 	desc = "Custodial Closet"
-	region = ACCESS_REGION_GENERAL
+	region = ACCESS_REGION_SUPPLY
 
 /var/const/access_crematorium = 27
 /datum/access/crematorium
@@ -170,7 +170,7 @@
 /datum/access/kitchen
 	id = access_kitchen
 	desc = "Kitchen"
-	region = ACCESS_REGION_GENERAL
+	region = ACCESS_REGION_SUPPLY
 
 /var/const/access_robotics = 29
 /datum/access/robotics
@@ -212,7 +212,7 @@
 /datum/access/hydroponics
 	id = access_hydroponics
 	desc = "Hydroponics"
-	region = ACCESS_REGION_GENERAL
+	region = ACCESS_REGION_SUPPLY
 
 /var/const/access_manufacturing = 36
 /datum/access/manufacturing
@@ -330,8 +330,8 @@
 /var/const/access_hop = 57
 /datum/access/hop
 	id = access_hop
-	desc = "Head of Personnel"
-	region = ACCESS_REGION_COMMAND
+	desc = "Head of Provisioning"
+	region = ACCESS_REGION_SUPPLY
 
 /var/const/access_hos = 58
 /datum/access/hos
@@ -392,6 +392,12 @@
 	id = access_lawyer
 	desc = "Lawyer"
 	region = ACCESS_REGION_GENERAL
+
+/var/const/access_human_resources = 68
+/datum/access/human_resources
+	id = access_human_resources
+	desc = "Human Resources"
+	region = ACCESS_REGION_COMMAND
 
 /******************
 * Central Command *

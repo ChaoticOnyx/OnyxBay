@@ -212,15 +212,15 @@
 	ks2type = /obj/item/device/encryptionkey/heads/cmo
 
 /obj/item/device/radio/headset/heads/hop
-	name = "head of personnel's headset"
-	desc = "The headset of the guy who will one day be captain."
+	name = "head of provisioning's headset"
+	desc = "The headset of the guy who might be Batman."
 	icon_state = "com_headset"
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/heads/hop
 
 /obj/item/device/radio/headset/headset_cargo
 	name = "supply radio headset"
-	desc = "A headset used by the box pushers."
+	desc = "A headset used by the box pushers and garbage sorters."
 	icon_state = "cargo_headset"
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/headset_cargo

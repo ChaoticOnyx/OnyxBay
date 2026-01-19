@@ -50,11 +50,8 @@
 		/obj/item/clothing/under/rank/engineer/skirt,
 		/obj/item/clothing/under/rank/atmospheric_technician/skirt),
 	/datum/job/hop = list(
-		/obj/item/clothing/under/rank/head_of_personnel/dress,
-		/obj/item/clothing/under/rank/head_of_personnel/skirt),
-	/datum/job/qm = list(
-		/obj/item/clothing/under/rank/qm/dress,
-		/obj/item/clothing/under/rank/qm/skirt),
+		/obj/item/clothing/under/rank/hop/dress,
+		/obj/item/clothing/under/rank/hop/skirt),
 	/datum/job/cargo_tech = list(
 		/obj/item/clothing/under/rank/cargotech/dress,
 		/obj/item/clothing/under/rank/cargotech/skirt),

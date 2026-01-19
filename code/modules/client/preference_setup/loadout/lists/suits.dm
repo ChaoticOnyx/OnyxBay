@@ -31,7 +31,7 @@
 /datum/gear/suit/cargo_poncho
 	display_name = "poncho, supply"
 	path = /obj/item/clothing/suit/poncho/roles/cargo
-	allowed_roles = SUPPLY_ROLES
+	allowed_roles = CARGO_ROLES
 
 /datum/gear/suit/suit_jacket
 	display_name = "standard suit jackets"

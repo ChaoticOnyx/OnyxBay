@@ -19,7 +19,7 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"a chief engineer's jumpsuit" =                     list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_engineer),
 	"a chief medical officer's jumpsuit" =              list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_medical_officer),
 	"a head of security's jumpsuit" =                   list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_security),
-	"a head of personnel's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_personnel),
+	"a head of provisioning's jumpsuit" =               list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/hop),
 	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/reagent_containers/hypospray/vial),
 	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/pinpointer),
 	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/ionrifle/small),
@@ -411,7 +411,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/weakref/alternative_target // obj/item
 	var/weakref/H // mob/living/carbon/human
 	var/full_reward_mod = 1.5
-	wanted_jobs = list(/datum/job/captain,/datum/job/hop,/datum/job/rd,/datum/job/chief_engineer,/datum/job/cmo,/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/qm)
+	wanted_jobs = list(/datum/job/captain,/datum/job/hop,/datum/job/rd,/datum/job/chief_engineer,/datum/job/cmo,/datum/job/hos, /datum/job/warden, /datum/job/detective)
 
 /datum/antag_contract/item/assassinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	organization = contract_organization

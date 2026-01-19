@@ -14,7 +14,7 @@
 	icon_state = "landmark_captain"
 
 /obj/effect/landmark/start/crew/hop
-	name = "Head of Personnel"
+	name = "Head of Provisioning"
 	icon_state = "landmark_hop"
 
 // Silicon

@@ -13,16 +13,19 @@
 #define ENGINEERING_ROLES list(/datum/job/chief_engineer, /datum/job/engineer)
 
 //For members of Engineering, Cargo, and Research
-#define TECHNICAL_ROLES list(/datum/job/engineer, /datum/job/roboticist, /datum/job/qm, /datum/job/cargo_tech, /datum/job/mining, /datum/job/merchant, /datum/job/rd, /datum/job/scientist, /datum/job/chief_engineer)
+#define TECHNICAL_ROLES list(/datum/job/engineer, /datum/job/roboticist, /datum/job/hop, /datum/job/cargo_tech, /datum/job/mining, /datum/job/merchant, /datum/job/rd, /datum/job/scientist, /datum/job/chief_engineer)
 
 //For members of the security department
 #define SECURITY_ROLES list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer)
 
-//For members of the supply department
-#define SUPPLY_ROLES list(/datum/job/qm, /datum/job/cargo_tech, /datum/job/mining)
+//For members of the provisioning department
+#define PROVISIONING_ROLES list(/datum/job/hop, /datum/job/cargo_tech, /datum/job/mining, /datum/job/janitor, /datum/job/chef, /datum/job/crew, /datum/job/bartender)
 
-//For members of the service department
-#define SERVICE_ROLES list(/datum/job/janitor, /datum/job/chef, /datum/job/crew, /datum/job/bartender)
+//For members of the cargo sub-department
+#define CARGO_ROLES list(/datum/job/hop, /datum/job/cargo_tech, /datum/job/mining)
+
+//For members of the service sub-department
+#define SERVICE_ROLES list(/datum/job/hop, /datum/job/janitor, /datum/job/chef, /datum/job/crew, /datum/job/bartender)
 
 //For members of the research department and jobs that are scientific
 #define RESEARCH_ROLES list(/datum/job/rd, /datum/job/scientist, /datum/job/roboticist, /datum/job/xenobiologist)
@@ -34,4 +37,4 @@
 #define ARMORED_ROLES list(/datum/job/captain, /datum/job/hop, /datum/job/rd, /datum/job/cmo, /datum/job/chief_engineer, /datum/job/hos, /datum/job/qm, /datum/job/officer, /datum/job/warden, /datum/job/detective, /datum/job/merchant)
 
 //For jobs that are allowed to give zero fucks about uniforms.
-#define CIVILIAN_ROLES list(/datum/job/captain, /datum/job/hop, /datum/job/assistant, /datum/job/bartender, /datum/job/chef, /datum/job/hydro, /datum/job/qm, /datum/job/cargo_tech, /datum/job/mining, /datum/job/janitor, /datum/job/librarian, /datum/job/lawyer, /datum/job/iaa, /datum/job/clown, /datum/job/mime, /datum/job/chaplain, /datum/job/merchant, /datum/job/psychiatrist, /datum/job/scientist)
+#define CIVILIAN_ROLES list(/datum/job/captain, /datum/job/hop, /datum/job/assistant, /datum/job/bartender, /datum/job/chef, /datum/job/hydro, /datum/job/cargo_tech, /datum/job/mining, /datum/job/janitor, /datum/job/librarian, /datum/job/lawyer, /datum/job/iaa, /datum/job/clown, /datum/job/mime, /datum/job/chaplain, /datum/job/merchant, /datum/job/psychiatrist, /datum/job/scientist)

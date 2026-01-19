@@ -81,22 +81,21 @@
 		/obj/item/clothing/shoes/laceup
 	)
 
-/obj/item/storage/garment/head_of_personnel
-	name = "head of personnel's garment bag"
-	desc = "A bag for storing multiple clothig items in a better and convenient way! This one belongs to the head of personnel."
+/obj/item/storage/garment/head_of_provisioning
+	name = "head of provisioning's garment bag"
+	desc = "A bag for storing multiple clothig items in a better and convenient way! This one belongs to the head of provisioning."
 
 	startswith = list(
+		/obj/item/clothing/glasses/hud/standard/meson,
 		/obj/item/clothing/glasses/sunglasses,
-		/obj/item/clothing/head/helmet,
+		/obj/item/clothing/head/soft/hop,
+		/obj/item/clothing/gloves/thick,
 		/obj/item/clothing/head/caphat/hop,
-		/obj/item/clothing/accessory/holster/waist,
-		/obj/item/clothing/under/dress/dress_hr,
-		/obj/item/clothing/under/rank/head_of_personnel,
-		/obj/item/clothing/under/rank/head_of_personnel/dress,
-		/obj/item/clothing/under/rank/head_of_personnel/whimsy,
-		/obj/item/clothing/suit/armor/vest,
-		/obj/item/clothing/shoes/black,
-		/obj/item/clothing/shoes/white
+		/obj/item/clothing/under/rank/hop,
+		/obj/item/clothing/under/rank/hop/dress,
+		/obj/item/clothing/under/rank/hop/whimsy,
+		/obj/item/clothing/shoes/brown,
+		/obj/item/clothing/shoes/leather
 	)
 
 /obj/item/storage/garment/captain
