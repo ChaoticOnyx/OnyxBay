@@ -300,7 +300,7 @@
 
 /obj/item/stack/material/duranium
 	name = "duranium"
-	icon_state = "plasteel"
+	icon_state = "duranium"
 	item_state = "sheet-plasteel"
 	default_type = MATERIAL_DURANIUM
 
