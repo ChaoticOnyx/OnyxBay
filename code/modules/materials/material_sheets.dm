@@ -298,6 +298,18 @@
 /obj/item/stack/material/plasteel/titanium/fifty
 	amount = 50
 
+/obj/item/stack/material/duranium
+	name = "duranium"
+	icon_state = "duranium"
+	item_state = "sheet-plasteel"
+	default_type = MATERIAL_DURANIUM
+
+/obj/item/stack/material/duranium/ten
+	amount = 10
+
+/obj/item/stack/material/duranium/fifty
+	amount = 50
+
 /obj/item/stack/material/wood
 	name = "wooden plank"
 	icon_state = "wood"

@@ -1,8 +1,12 @@
+/obj/item/modular_computer/console/preset
+	var/default_processor_unit = /obj/item/computer_hardware/processor_unit
+	var/default_hard_drive = /obj/item/computer_hardware/hard_drive/super
+
 /obj/item/modular_computer/console/preset/install_default_hardware()
 	..()
-	processor_unit = new /obj/item/computer_hardware/processor_unit(src)
+	processor_unit = new default_processor_unit(src)
 	tesla_link = new /obj/item/computer_hardware/tesla_link(src)
-	hard_drive = new /obj/item/computer_hardware/hard_drive/super(src)
+	hard_drive = new default_hard_drive(src)
 	network_card = new /obj/item/computer_hardware/network_card/wired(src)
 
 // Engineering
@@ -200,3 +204,34 @@
 	hard_drive.store_file(new /datum/computer_file/program/library())
 	hard_drive.store_file(new /datum/computer_file/program/art_library())
 	hard_drive.store_file(new /datum/computer_file/program/wiki())
+
+// AI Supercomputer
+/obj/item/modular_computer/console/preset/ai
+	default_processor_unit = /obj/item/computer_hardware/processor_unit/photonic
+	default_hard_drive = /obj/item/computer_hardware/hard_drive/cluster
+
+/obj/item/modular_computer/console/preset/ai/install_default_hardware()
+	..()
+	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+
+/obj/item/modular_computer/console/preset/ai/install_default_programs()
+	..()
+	hard_drive.store_file(new /datum/computer_file/program/chatclient())
+	hard_drive.store_file(new /datum/computer_file/program/card_mod())
+	hard_drive.store_file(new /datum/computer_file/program/hire_tool())
+	hard_drive.store_file(new /datum/computer_file/program/comm())
+	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
+	hard_drive.store_file(new /datum/computer_file/program/email_client())
+	hard_drive.store_file(new /datum/computer_file/program/records())
+	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
+	hard_drive.store_file(new /datum/computer_file/program/docking())
+	hard_drive.store_file(new /datum/computer_file/program/ntnetmonitor())
+	hard_drive.store_file(new /datum/computer_file/program/nttransfer())
+	hard_drive.store_file(new /datum/computer_file/program/aidiag())
+	hard_drive.store_file(new /datum/computer_file/program/suit_sensors())
+	hard_drive.store_file(new /datum/computer_file/program/records())
+	hard_drive.store_file(new /datum/computer_file/program/records/medical())
+	hard_drive.store_file(new /datum/computer_file/program/records/security())
+	hard_drive.store_file(new /datum/computer_file/program/digitalwarrant())
+	hard_drive.store_file(new /datum/computer_file/program/forceauthorization())
+	hard_drive.store_file(new /datum/computer_file/program/supply())
