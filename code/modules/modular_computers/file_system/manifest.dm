@@ -113,7 +113,7 @@ GLOBAL_LIST_EMPTY(dept_data)
 			for(var/priority = JOB_PRIORITY_HIGH to JOB_PRIORITY_LOW)
 				if(player_prefs.IsJobPriority(job, priority))
 					if(!command_positions_with_candidates[command_position])
-						command_positions_with_candidates[command_position] = list(
+						command_positions_with_candidates[command_position] = alist(
 							JOB_PRIORITY_HIGH = list(),
 							JOB_PRIORITY_MIDDLE = list(),
 							JOB_PRIORITY_LOW = list()
@@ -132,8 +132,8 @@ GLOBAL_LIST_EMPTY(dept_data)
 				empty_command_positions -= command_position
 				var/ckey = candidates[priority][candidate]
 				if(!command_positions_by_ckey[ckey])
-					command_positions_by_ckey[ckey] = list(
-						"positions" = list(
+					command_positions_by_ckey[ckey] = alist(
+						"positions" = alist(
 							JOB_PRIORITY_HIGH = list(),
 							JOB_PRIORITY_MIDDLE = list(),
 							JOB_PRIORITY_LOW = list()

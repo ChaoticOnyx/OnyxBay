@@ -232,6 +232,7 @@ var/list/admin_verbs_debug = list(
 	/client/proc/test_pt_mark_goal,
 	/client/proc/test_pt_clear,
 	/client/proc/test_pt_vis,
+	/client/proc/debug_bloom
 	)
 
 var/list/admin_verbs_paranoid_debug = list(
