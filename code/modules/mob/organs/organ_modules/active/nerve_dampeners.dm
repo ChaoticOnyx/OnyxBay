@@ -5,7 +5,7 @@
 	desc = "Each activation of this augment provides a strong painkilling effect for around thirty seconds, but will be followed by a powerful comedown. Excessive short-term use may cause brain damage."
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	origin_tech = list(TECH_DATA = 4, TECH_BIO = 4)
-	cooldown = 1 MINUTE
+	cooldown = 2 MINUTES
 	loadout_cost = 0
 	available_in_charsetup = TRUE
 	allowed_organs = list(BP_CHEST)
@@ -18,12 +18,36 @@
 	to_chat(H, SPAN_NOTICE("You activate your [name], and feel a wave of numbness wash over you!"))
 	stop_thinking_at = world.time + 30 SECONDS
 	set_next_think(world.time + 1 SECOND)
+	var/brain_loss = H.getBrainLoss()
+	if(brain_loss > 0 && prob(brain_loss))
+		to_chat(H, SPAN_DANGER("You slump to the ground and black out."))
+		H.Paralyse(10)
 	if(H.drowsyness)
 		to_chat(H, SPAN_DANGER("Your body slackens as you lose sensation."))
-		if(prob(H.getBrainLoss()))
-			to_chat(H, SPAN_DANGER("You slump to the ground and black out."))
-			H.Paralyse(10)
 		H.adjustBrainLoss(H.drowsyness)
+
+/obj/item/organ_module/active/nerve_dampeners/ui_action_click()
+	var/obj/item/organ/O = loc
+	if(!istype(O))
+		return
+
+	if(!can_activate(O, usr))
+		return
+
+	THROTTLE(activate_cd, cooldown)
+	if(!activate_cd)
+		var/cpu_name = "CPU"
+		var/mob/living/carbon/human/H = O?.owner
+		var/obj/item/organ/external/head/head = H?.organs_by_name[BP_HEAD]
+		if(istype(head))
+			for(var/obj/item/organ_module/module in head.organ_modules)
+				if(initial(module.module_type) == OM_TYPE_PROCESSOR)
+					cpu_name = module.name
+					break
+		to_chat(usr, SPAN_WARNING("Your [cpu_name] send a signal to nerve dumpeners, but it is not ready to be used again!"))
+		return
+
+	activate(O, O?.owner)
 
 /obj/item/organ_module/active/nerve_dampeners/think()
 	var/obj/item/organ/external/chest = loc

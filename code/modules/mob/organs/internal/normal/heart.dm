@@ -15,6 +15,34 @@
 	min_broken_damage = 35
 	var/open
 
+/obj/item/organ/internal/heart/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/organ_module))
+		var/obj/item/organ_module/module = I
+		if(owner)
+			to_chat(user, SPAN_NOTICE("You need to remove the heart first."))
+			return
+		if(!(organ_tag in module.allowed_organs))
+			to_chat(user, SPAN_NOTICE("You cannot install \the [module] into \the [src]."))
+			return
+		if(module.has_duplicate_in(src))
+			to_chat(user, SPAN_NOTICE("You cannot install another [module.name] into \the [src]."))
+			return
+		if(BP_IS_ROBOTIC(src) && !(module.module_flags & OM_FLAG_MECHANICAL))
+			to_chat(user, SPAN_NOTICE("You cannot install \the [module] into a robotic heart."))
+			return
+		if(!BP_IS_ROBOTIC(src) && !(module.module_flags & OM_FLAG_BIOLOGICAL))
+			to_chat(user, SPAN_NOTICE("You cannot install \the [module] into an organic heart."))
+			return
+		if((module.w_class + occupied_space) > max_module_size)
+			to_chat(user, SPAN_NOTICE("There is not enough space in \the [src]."))
+			return
+		if(!user.drop(I, src))
+			return
+		module.install(src)
+		to_chat(user, SPAN_NOTICE("You install \the [module] into \the [src]."))
+		return
+	return ..()
+
 /obj/item/organ/internal/heart/die()
 	if(dead_icon)
 		icon_state = dead_icon

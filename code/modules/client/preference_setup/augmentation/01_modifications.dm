@@ -50,6 +50,16 @@
 	for(var/organ_tag in pref.organ_modules)
 		if(!pref.organ_modules[organ_tag])
 			continue
+		var/list/converted = list()
+		for(var/mod_entry in pref.organ_modules[organ_tag])
+			if(ispath(mod_entry))
+				converted |= mod_entry
+				continue
+			if(istext(mod_entry))
+				var/path = text2path(mod_entry)
+				if(path)
+					converted |= path
+		pref.organ_modules[organ_tag] = converted
 		for(var/obj/item/organ_module/mod as anything in pref.organ_modules[organ_tag].Copy())
 			if(initial(mod.module_type) == OM_TYPE_PROCESSOR && organ_tag != BP_HEAD)
 				LAZYREMOVE(pref.organ_modules[organ_tag], mod)
@@ -57,6 +67,9 @@
 			if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
 				if(organ_tag == BP_HEAD || pref.organ_data[organ_tag] == "cyborg" || !(organ_tag in BP_ALL_LIMBS))
 					LAZYREMOVE(pref.organ_modules[organ_tag], mod)
+
+	if(pref.organ_data[BP_EYES] != "mechanical")
+		pref.organ_modules[BP_EYES] = null
 
 /datum/category_item/player_setup_item/augmentation/content(mob/user)
 	. = list()
@@ -134,6 +147,8 @@
 		var/obj/item/organ_module/module_path = text2path(copytext_char(href_list["module"], spaceposition + 1))
 		if(isnull(module_path))
 			return TOPIC_REFRESH
+		if(pref.current_organ == BP_EYES && pref.organ_data[BP_EYES] != "mechanical")
+			return TOPIC_REFRESH
 
 		var/list/current_modules = pref.organ_modules ? pref.organ_modules[pref.current_organ] : null
 		if(islist(current_modules) && (module_path in current_modules))
@@ -210,8 +225,12 @@
 	switch(action)
 		if("nothing")
 			pref.organ_data[organ] = null
+			if(organ == BP_EYES)
+				pref.organ_modules[organ] = null
 		if("assisted")
 			pref.organ_data[organ] = "assisted"
+			if(organ == BP_EYES)
+				pref.organ_modules[organ] = null
 		if("mechanical")
 			pref.organ_data[organ] = "mechanical"
 
@@ -358,6 +377,8 @@
 		O = mannequin?.internal_organs_by_name[organ]
 	if(!O)
 		return "<b>Augmentations not avaible.</b>"
+	if(organ == BP_EYES && pref.organ_data[BP_EYES] != "mechanical")
+		return "<b>Augmentations not avaible.</b>"
 
 	var/total_space = get_organ_total_space(organ)
 	var/occupied_space = get_organ_occupied_space(organ)
@@ -412,6 +433,9 @@
 				continue
 		if(initial(mod.module_type) == OM_TYPE_PROCESSOR)
 			if(organ != BP_HEAD)
+				continue
+		if(organ == BP_EYES && initial(mod.type) == /obj/item/organ_module/active/lenses/hud)
+			if(pref.organ_data[BP_EYES] != "mechanical")
 				continue
 
 		var/list/job_restriction_data

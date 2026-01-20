@@ -9,10 +9,19 @@
 	organ_action.target = src
 	var/action_name = implant_action_name || action_button_name
 	organ_action.name = action_name ? action_name : "Activate [src.name]"
-	organ_action.Grant(E?.owner)
+	if(E?.owner)
+		organ_action.Grant(E.owner)
 
 /obj/item/organ_module/active/_on_remove(obj/item/organ/external/E)
 	QDEL_NULL(organ_action)
+
+/obj/item/organ_module/active/organ_removed(obj/item/organ/E, mob/living/carbon/human/owner)
+	if(organ_action && owner)
+		organ_action.Remove(owner)
+
+/obj/item/organ_module/active/organ_installed(obj/item/organ/E, mob/living/carbon/human/owner)
+	if(organ_action && owner)
+		organ_action.Grant(owner)
 
 /obj/item/organ_module/active/proc/can_activate(obj/item/organ/E, mob/living/carbon/human/H)
 	if(H?.incapacitated(INCAPACITATION_KNOCKOUT))

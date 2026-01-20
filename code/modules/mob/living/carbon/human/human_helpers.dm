@@ -167,6 +167,8 @@
 
 		lens.process_hud(src)
 
+	return
+
 /mob/living/carbon/human/get_gender()
 	return gender
 

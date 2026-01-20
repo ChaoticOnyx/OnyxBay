@@ -4,7 +4,7 @@
 	icon_state = "bbattery"
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	loadout_cost = 0
-	allowed_organs = list(BP_CHEST)
+	allowed_organs = list(BP_HEART)
 	/// How many charges it has.
 	var/uses = 1
 	/// Burn applied on resuscitation attempt
@@ -30,9 +30,9 @@
 	return i
 
 /obj/item/organ_module/passive/resuscitator/think()
-	var/obj/item/organ/external/chest/chest = loc
-	var/mob/living/carbon/human/H = chest?.owner
-	if(!istype(H)) // This should NOT happen, as thinking stops when this implant is removed from chest. Yet, better safe, than sorry.
+	var/obj/item/organ/internal/heart/heart = loc
+	var/mob/living/carbon/human/H = heart?.owner
+	if(!istype(H)) // This should NOT happen, as thinking stops when this implant is removed from heart. Yet, better safe, than sorry.
 		set_next_think(0)
 
 	if(H.is_asystole() && H.should_have_organ(BP_HEART))

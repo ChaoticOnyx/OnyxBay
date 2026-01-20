@@ -304,6 +304,9 @@
 	if(!(parent_organ.organ_tag in tool.allowed_organs))
 		target.show_splash_text(user, "not compatible!", "\The [tool] can't be installed into \the [parent_organ]!")
 		return SURGERY_FAILURE
+	if(tool.has_duplicate_in(parent_organ))
+		target.show_splash_text(user, "already installed!", "\The [tool] is already installed in \the [parent_organ]!")
+		return SURGERY_FAILURE
 
 	var/max_space = parent_organ.max_module_size
 

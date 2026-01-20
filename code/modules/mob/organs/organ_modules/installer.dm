@@ -48,23 +48,6 @@
 		return FALSE
 	return TRUE
 
-/obj/item/implanter/installer/proc/get_target_organ(mob/living/carbon/human/H, list/allowed_organs, preferred_zone)
-	if(!istype(H) || !islist(allowed_organs) || !length(allowed_organs))
-		return null
-	if(preferred_zone && (preferred_zone in allowed_organs))
-		var/obj/item/organ/preferred = H.organs_by_name[preferred_zone]
-		if(!preferred)
-			preferred = H.internal_organs_by_name[preferred_zone]
-		if(preferred)
-			return preferred
-	for(var/organ_tag in allowed_organs)
-		var/obj/item/organ/O = H.organs_by_name[organ_tag]
-		if(!O)
-			O = H.internal_organs_by_name[organ_tag]
-		if(O)
-			return O
-	return null
-
 /obj/item/implanter/installer/attackby(obj/item/I, mob/user)
 	if(!mod && can_reload && istype(I, /obj/item/organ_module))
 		var/obj/item/organ_module/M = I
@@ -86,14 +69,24 @@
 	var/obj/item/organ/affected = null
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		affected = get_target_organ(H, mod.allowed_organs, user.zone_sel?.selecting)
+		var/target_zone = user.zone_sel?.selecting
+		if(!target_zone)
+			to_chat(user, SPAN_NOTICE("You must target a body part first."))
+			return
+		if(target_zone in BP_INTERNAL_ORGANS)
+			affected = H.internal_organs_by_name[target_zone]
+		else
+			affected = H.get_organ(target_zone)
 
 		if(!affected)
 			to_chat(user, SPAN_WARNING("[M] is missing that body part."))
 			return
 
 		if(!(affected.organ_tag in mod.allowed_organs))
-			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
+			to_chat(user, SPAN_WARNING("You can't install [mod.name] in the [affected.name]."))
+			return
+		if(mod.has_duplicate_in(affected))
+			to_chat(user, SPAN_NOTICE("You cannot install another [mod.name] into the [affected]."))
 			return
 
 		if(initial(mod.module_type) == OM_TYPE_PROCESSOR && affected.organ_tag != BP_HEAD)
@@ -101,6 +94,29 @@
 			return
 		if(initial(mod.module_type) == OM_TYPE_ACTUATOR && (affected.organ_tag == BP_HEAD || BP_IS_ROBOTIC(affected)))
 			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
+			return
+
+		if(istype(affected, /obj/item/organ/external))
+			var/obj/item/organ/external/external = affected
+			if(BP_IS_ROBOTIC(external))
+				if(external.hatch_state != HATCH_OPENED)
+					to_chat(user, SPAN_NOTICE("You must open the maintenance panel first."))
+					return
+			else
+				var/open_state = external.open()
+				if(external.encased)
+					if(open_state < SURGERY_RETRACTED)
+						to_chat(user, SPAN_NOTICE("You must open the incision first."))
+						return
+					if(open_state < SURGERY_ENCASED)
+						to_chat(user, SPAN_NOTICE("You must cut through the bones first."))
+						return
+				else if(open_state < SURGERY_RETRACTED)
+					to_chat(user, SPAN_NOTICE("You must open the incision first."))
+					return
+
+		if(!locate(/obj/machinery/optable, get_turf(M)))
+			to_chat(user, SPAN_NOTICE("[M] must be on an operating table."))
 			return
 
 		if((mod.w_class + affected.occupied_space) > affected.max_module_size)
@@ -141,7 +157,7 @@
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 	user.do_attack_animation(M)
 
-	var/implant_duration = SURGERY_DURATION_DELTA * CONNECT_DURATION /// yeah fuck new durations
+	var/implant_duration = SURGERY_DURATION_DELTA * CUT_DURATION * 2
 	if(do_mob(user, M, implant_duration) && !QDELETED(src) && !QDELETED(mod))
 		mod.install(affected)
 		M.visible_message(

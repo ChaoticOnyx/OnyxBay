@@ -18,7 +18,6 @@ var/datum/robolimb/basic_robolimb
 	var/unavailable_at_fab = TRUE                                                    // If set, cannot be fabricated.
 	var/can_eat = FALSE
 	var/has_eyes_icon = TRUE                                                         // If set, will draw eyes overlay.
-	var/can_feel_pain = FALSE
 	var/skintone
 	var/list/species_cannot_use = list()
 	var/list/restricted_to = list()

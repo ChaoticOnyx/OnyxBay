@@ -47,6 +47,14 @@
 	_on_install(E)
 	post_install(E)
 
+/obj/item/organ_module/proc/has_duplicate_in(obj/item/organ/E)
+	for(var/obj/item/organ_module/module in E.organ_modules)
+		if(module == src)
+			continue
+		if(istype(module, src.type))
+			return TRUE
+	return FALSE
+
 /obj/item/organ_module/proc/_on_install(obj/item/organ/E)
 	if(organ_tally)
 		var/obj/item/organ/external/ex = E

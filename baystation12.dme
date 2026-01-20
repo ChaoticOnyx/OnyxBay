@@ -2470,6 +2470,7 @@
 #include "code\modules\mob\organs\internal\normal\bladder.dm"
 #include "code\modules\mob\organs\internal\normal\brain.dm"
 #include "code\modules\mob\organs\internal\normal\eyes.dm"
+#include "code\modules\mob\organs\internal\normal\eyes_augmentations.dm"
 #include "code\modules\mob\organs\internal\normal\heart.dm"
 #include "code\modules\mob\organs\internal\normal\intestines.dm"
 #include "code\modules\mob\organs\internal\normal\kidneys.dm"

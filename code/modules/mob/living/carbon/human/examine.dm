@@ -342,6 +342,13 @@
 
 	msg += applying_pressure
 
+	if(!skipeyes)
+		var/obj/item/organ/internal/eyes/eyes = internal_organs_by_name[BP_EYES]
+		if(istype(eyes))
+			var/list/glow = eyes.get_active_glow()
+			if(glow && glow["name"])
+				msg += SPAN("danger", "[T.His] eyes are glowing [glow["name"]].\n")
+
 	if (pose)
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.

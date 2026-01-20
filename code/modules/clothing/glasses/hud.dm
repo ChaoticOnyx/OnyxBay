@@ -18,7 +18,64 @@
 	var/matrix_icon = ""
 	var/sec_hud = FALSE
 	var/med_hud = FALSE
+	var/eye_glow_name = null
+	var/list/eye_glow_rgb = null
 	origin_tech = list(TECH_MAGNET = 3, TECH_BIO = 2)
+
+/obj/item/device/hudmatrix/attack(mob/living/carbon/human/target, mob/user)
+	if(ishuman(user) && target == user)
+		var/mob/living/carbon/human/H = user
+		if(H.zone_sel?.selecting != BP_EYES)
+			to_chat(H, SPAN("notice", "You need to target your eyes."))
+			return
+		return try_install_in_eyes(H)
+	return ..()
+
+/obj/item/device/hudmatrix/proc/try_install_in_eyes(mob/living/carbon/human/H)
+	if(H.glasses)
+		to_chat(H, SPAN("notice", "You need to remove your [H.glasses] first."))
+		return
+
+	var/obj/item/organ/internal/eyes/eyes = H.internal_organs_by_name[BP_EYES]
+	if(!istype(eyes))
+		eyes = H.internal_organs_by_name[BP_OPTICS]
+	if(!istype(eyes) || eyes.owner != H)
+		to_chat(H, SPAN("notice", "You need eyes installed to do that."))
+		return
+
+	var/obj/item/organ_module/active/lenses/hud/hud = null
+	for(var/obj/item/organ_module/active/lenses/hud/HM in eyes.organ_modules)
+		hud = HM
+		break
+
+	if(!hud)
+		to_chat(H, SPAN("notice", "You need HUD lenses installed in your eyes."))
+		return
+
+	if(hud.matrix)
+		to_chat(H, SPAN("notice", "Your HUD lenses already have a [hud.matrix] installed."))
+		return
+
+	if(!do_after(H, 10 SECONDS, target = H))
+		return
+
+	if(!prob(60))
+		H.visible_message(
+			"[H] glanced up and to the left and, missing, poked themselves in the eye with [src].",
+			"You glanced up and to the left and, missing, jabbed [src] into your eye. Ouch!"
+		)
+		eyes.take_internal_damage(10)
+		return
+
+	if(!H.drop(src, hud))
+		return
+	hud.install_matrix(src)
+	H.visible_message(
+		"[H] glanced up and to the left, then, with a careful motion, fitted [src]'s eyes in place.",
+		"You glanced up and to the left, then, with a careful motion, inserted [src] into your eyes."
+	)
+	H.update_equipment_vision()
+	return
 
 /obj/item/device/hudmatrix/material
 	name = "HUD material matrix"
@@ -27,6 +84,8 @@
 	vision_flags = SEE_OBJS
 	matrix_type = "material"
 	matrix_icon = "material"
+	eye_glow_name = "dark blue"
+	eye_glow_rgb = list(0, 0, 139)
 	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3)
 
 /obj/item/device/hudmatrix/material/Initialize()
@@ -41,6 +100,8 @@
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
 	matrix_type = "meson"
 	matrix_icon = "meson"
+	eye_glow_name = "green"
+	eye_glow_rgb = list(0, 200, 0)
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2)
 
 /obj/item/device/hudmatrix/meson/Initialize()
@@ -57,6 +118,8 @@
 	matrix_type = "security"
 	matrix_icon = "sec"
 	sec_hud = TRUE
+	eye_glow_name = "light red"
+	eye_glow_rgb = list(255, 120, 120)
 
 /obj/item/device/hudmatrix/thermal
 	name = "HUD thermal matrix"
@@ -67,6 +130,8 @@
 	flash_protection = FLASH_PROTECTION_REDUCED
 	matrix_type = "thermal"
 	matrix_icon = "thermal"
+	eye_glow_name = "dark red"
+	eye_glow_rgb = list(139, 0, 0)
 
 /obj/item/device/hudmatrix/thermal/Initialize()
 	. = ..()
@@ -80,6 +145,8 @@
 	matrix_type = "medical"
 	matrix_icon = "medical"
 	med_hud = TRUE
+	eye_glow_name = "blue"
+	eye_glow_rgb = list(0, 128, 255)
 
 /obj/item/device/hudmatrix/science
 	name = "HUD science matrix"
@@ -88,6 +155,8 @@
 	hud_type = HUD_SCIENCE
 	matrix_type = "science"
 	matrix_icon = "science"
+	eye_glow_name = "purple"
+	eye_glow_rgb = list(128, 0, 128)
 
 /obj/item/device/hudmatrix/science/Initialize()
 	. = ..()
@@ -104,6 +173,8 @@
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
 	flash_protection = FLASH_PROTECTION_REDUCED
 	origin_tech = list(TECH_MAGNET = 2)
+	eye_glow_name = "dark green"
+	eye_glow_rgb = list(0, 100, 0)
 
 /obj/item/device/hudmatrix/night/Initialize()
 	. = ..()
@@ -115,6 +186,8 @@
 	icon_state = "matrix_syndie"
 	matrix_type = "meson"
 	matrix_icon = "meson"
+	eye_glow_name = "green"
+	eye_glow_rgb = list(0, 200, 0)
 	var/syndie_matrix_mask = 0 // 0 for meson, 1 for medical, 2 for science, 3 for thermal
 
 /obj/item/device/hudmatrix/thermal/syndie/attack_self(mob/user) // Kinda placeholderish stuff, gonna be changed in the future ~Toby
@@ -125,16 +198,167 @@
 		if(0)
 			matrix_type = "meson"
 			matrix_icon = "meson"
+			eye_glow_name = "green"
+			eye_glow_rgb = list(0, 200, 0)
 		if(1)
 			matrix_type = "medical"
 			matrix_icon = "medical"
+			eye_glow_name = "blue"
+			eye_glow_rgb = list(0, 128, 255)
 		if(2)
 			matrix_type = "science"
 			matrix_icon = "science"
+			eye_glow_name = "purple"
+			eye_glow_rgb = list(128, 0, 128)
 		if(3)
 			matrix_type = "thermal"
 			matrix_icon = "thermal"
+			eye_glow_name = "dark red"
+			eye_glow_rgb = list(139, 0, 0)
 	to_chat(user, SPAN("notice", "\The [src] mimics a [matrix_type] now."))
+	var/obj/item/organ_module/active/lenses/hud/hud = loc
+	var/obj/item/organ/internal/eyes/eyes = hud?.loc
+	if(istype(eyes))
+		var/mob/living/carbon/human/wearer = eyes.owner
+		wearer?.update_hud_eye_glow()
+
+/mob/living/carbon/human
+	var/hud_eye_glow_active = FALSE
+	var/hud_eye_glow_color = null
+	var/hud_eye_glow_range = 2
+	var/list/hud_eye_glow_saved = null
+
+/mob/living/carbon/human/proc/update_hud_eye_glow()
+	var/obj/item/organ/internal/eyes/eyes = internal_organs_by_name[BP_EYES]
+	if(!istype(eyes))
+		return
+
+	var/list/glow = eyes.get_active_glow()
+	if(glow && glow["rgb"])
+		if(!hud_eye_glow_saved)
+			hud_eye_glow_saved = list(r_eyes, g_eyes, b_eyes)
+		var/r = glow["rgb"][1]
+		var/g = glow["rgb"][2]
+		var/b = glow["rgb"][3]
+		change_eye_color(r, g, b)
+		set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(r, g, b))
+		hud_eye_glow_active = TRUE
+		hud_eye_glow_color = light_color
+		return
+
+	var/obj/item/clothing/glasses/hud/goggles = glasses
+	if(istype(goggles) && goggles.active && goggles.matrix?.eye_glow_rgb)
+		if(!hud_eye_glow_saved)
+			hud_eye_glow_saved = list(r_eyes, g_eyes, b_eyes)
+		var/list/g = goggles.matrix.eye_glow_rgb
+		set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(g[1], g[2], g[3]))
+		hud_eye_glow_active = TRUE
+		hud_eye_glow_color = light_color
+		return
+
+	if(hud_eye_glow_saved)
+		change_eye_color(hud_eye_glow_saved[1], hud_eye_glow_saved[2], hud_eye_glow_saved[3])
+		hud_eye_glow_saved = null
+	else if(eyes.eye_colour)
+		change_eye_color(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3])
+	if(hud_eye_glow_active)
+		set_light(0)
+	hud_eye_glow_active = FALSE
+	hud_eye_glow_color = null
+
+/obj/item/organ/internal/eyes/proc/get_active_glow()
+	for(var/obj/item/organ_module/active/lenses/hud/H in organ_modules)
+		var/list/glow = H.get_eye_glow()
+		if(glow)
+			return glow
+	return null
+
+/obj/item/organ_module/active/lenses/hud/proc/install_matrix(obj/item/device/hudmatrix/M)
+	if(matrix || !M)
+		return FALSE
+	matrix = M
+	overlay = M.overlay
+	vision_flags = M.vision_flags
+	see_invisible = M.see_invisible
+	darkness_view = M.darkness_view
+	flash_protection = M.flash_protection
+	sec_hud = M.sec_hud
+	med_hud = M.med_hud
+	if(toggled)
+		var/obj/item/organ/internal/eyes/eyes = loc
+		if(istype(eyes))
+			var/mob/living/carbon/human/wearer = eyes.owner
+			wearer?.update_hud_eye_glow()
+	return TRUE
+
+/obj/item/organ_module/active/lenses/hud/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/device/hudmatrix))
+		if(matrix)
+			to_chat(user, SPAN("notice", "\The [src] already has a [matrix] installed."))
+			return
+		if(user.drop(W, src))
+			install_matrix(W)
+			to_chat(user, SPAN("notice", "You install \the [W] into \the [src]."))
+		return
+	return ..()
+
+/obj/item/organ_module/active/lenses/hud/attack_hand(mob/user)
+	if(matrix)
+		if(user.get_active_hand())
+			to_chat(user, SPAN("notice", "You need a free hand."))
+			return
+		var/obj/item/device/hudmatrix/M = matrix
+		matrix = null
+		overlay = null
+		vision_flags = initial(vision_flags)
+		see_invisible = initial(see_invisible)
+		darkness_view = initial(darkness_view)
+		flash_protection = initial(flash_protection)
+		sec_hud = FALSE
+		med_hud = FALSE
+		toggled = FALSE
+		if(!user.put_in_active_hand(M))
+			M.dropInto(get_turf(user))
+		to_chat(user, SPAN("notice", "You remove \the [M] from \the [src]."))
+		if(ishuman(user))
+			var/mob/living/carbon/human/H = user
+			H.update_hud_eye_glow()
+		return
+	return ..()
+
+/obj/item/organ_module/active/lenses/hud/proc/get_eye_glow()
+	if(toggleable && !toggled)
+		return null
+
+	if(matrix?.eye_glow_name && matrix?.eye_glow_rgb)
+		return list("name" = matrix.eye_glow_name, "rgb" = matrix.eye_glow_rgb)
+
+	if(sec_hud)
+		return list("name" = "light red", "rgb" = get_glow_color_rgb("light red"))
+	if(med_hud)
+		return list("name" = "blue", "rgb" = get_glow_color_rgb("blue"))
+
+	return null
+
+/obj/item/organ_module/active/lenses/hud/proc/get_glow_color_rgb(color_name)
+	var/static/list/glow_rgb = list(
+		"light red" = list(255, 120, 120),
+		"blue" = list(0, 128, 255)
+	)
+	return glow_rgb[color_name]
+
+/obj/item/organ_module/active/lenses/hud/activate(obj/item/organ/E, mob/living/carbon/human/user)
+	toggled = !toggled
+
+	user.visible_message(
+		toggled ? "<b>[user]</b>'s pupils narrow..." : "<b>[user]</b>'s pupils return to normal.",
+		range = 3
+	)
+	user.update_hud_eye_glow()
+
+/obj/item/organ_module/active/lenses/hud/post_removed(obj/item/organ/E)
+	var/mob/living/carbon/human/wearer = E?.owner
+	wearer?.update_hud_eye_glow()
 
 // HUD Lenses
 /obj/item/device/hudlenses
@@ -370,6 +594,21 @@
 		sound_to(user, sound(deactivation_sound, volume = 50))
 	update_clothing_icon()
 	user.update_action_buttons()
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		H.update_hud_eye_glow()
+
+/obj/item/clothing/glasses/hud/equipped(mob/user)
+	. = ..()
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		H.update_hud_eye_glow()
+
+/obj/item/clothing/glasses/hud/dropped()
+	. = ..()
+	var/mob/living/carbon/human/H = loc
+	if(istype(H))
+		H.update_hud_eye_glow()
 
 /obj/item/clothing/glasses/hud/standard
 	name = "goggles HUD"
