@@ -267,6 +267,10 @@
 	else
 		set_light(lightbulb.b_max_bright, lightbulb.b_inner_range, lightbulb.b_outer_range, lightbulb.b_curve, lightbulb.b_color)
 
+	glow_icon_state = istype(lightbulb) ? lightbulb.glow_icon_state : null
+	exposure_icon_state = istype(lightbulb) ? lightbulb.exposure_icon_state : null
+	update_bloom()
+
 	return TRUE
 
 /obj/machinery/light/on_update_icon()
@@ -756,6 +760,10 @@
 	sound_on = SFX_LIGHT_TUBE_ON
 	sound_on_volume = 50
 
+	glow_icon_state = "tube1"
+	exposure_icon_state = "cone"
+	glow_colored = TRUE
+
 /obj/item/light/tube/nobreak // For mapping's sake
 	desc = "A replacement light tube. This one seems to wield some extra quality."
 	broken_chance = 0
@@ -809,6 +817,8 @@
 	random_tone = TRUE
 	sound_on = SFX_LIGHT_BULB_ON
 	sound_on_volume = 75
+	glow_icon_state = "bulb1"
+	exposure_icon_state = "circle"
 
 /obj/item/light/bulb/he
 	name = "high efficiency light bulb"
