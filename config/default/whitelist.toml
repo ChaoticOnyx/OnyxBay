@@ -1,4 +1,5 @@
 [whitelist]
 enable = false
+jobs_enable = false
 ckeys = []
 enable_alien_whitelist = false
