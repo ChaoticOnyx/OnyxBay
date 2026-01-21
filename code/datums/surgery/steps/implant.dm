@@ -235,7 +235,19 @@
 			)
 		return
 
-	var/obj/item/implanted_item = pick(loot)
+	var/obj/item/implanted_item = null
+	var/list/armor_loot = list()
+	for(var/obj/item/organ_module/armor/A in loot)
+		armor_loot += A
+	if(length(armor_loot))
+		if(length(armor_loot) == 1)
+			implanted_item = armor_loot[1]
+		else
+			implanted_item = show_radial_menu(user, target, armor_loot, require_near = TRUE)
+			if(!istype(implanted_item))
+				return
+	else
+		implanted_item = pick(loot)
 	if(istype(implanted_item, /obj/item/implant))
 		var/obj/item/implant/I = implanted_item
 		find_prob += I.islegal() ? 60 : 40

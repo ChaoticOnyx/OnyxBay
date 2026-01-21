@@ -6,5 +6,5 @@
 	matter = list(MATERIAL_PLASTEEL = 20, MATERIAL_PLASTIC = 5, MATERIAL_STEEL = 5)
 	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	holding_type = /obj/item/shield/energy
-	available_in_charsetup = FALSE
+	available_in_charsetup = TRUE
 	origin_tech = list(TECH_COMBAT = 4, TECH_POWER = 3)

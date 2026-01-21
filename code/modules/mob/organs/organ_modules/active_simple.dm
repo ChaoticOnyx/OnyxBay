@@ -17,6 +17,11 @@
 
 /obj/item/organ_module/active/simple/proc/deploy(mob/living/carbon/human/H, obj/item/organ/external/E)
 	var/slot = null
+	if(QDELETED(holding) && holding_type)
+		holding = new holding_type(src)
+		holding.canremove = FALSE
+	if(!holding)
+		return
 	if(E.organ_tag in list(BP_L_ARM, BP_L_HAND))
 		slot = slot_l_hand
 	else if(E.organ_tag in list(BP_R_ARM, BP_R_HAND))
@@ -32,6 +37,8 @@
 
 
 /obj/item/organ_module/active/simple/proc/retract(mob/living/carbon/human/H, obj/item/organ/external/E)
+	if(!holding || QDELETED(holding))
+		return
 	if(holding.loc == src)
 		return
 
@@ -44,6 +51,14 @@
 		)
 	holding.forceMove(src)
 	unregister_signal(H, SIGNAL_ITEM_UNEQUIPPED)
+
+/obj/item/organ_module/active/simple/_on_remove(obj/item/organ/external/E)
+	var/mob/living/carbon/human/H = E?.owner
+	if(ishuman(H))
+		retract(H, E)
+	else if(holding && !QDELETED(holding) && holding.loc != src)
+		holding.forceMove(src)
+	return ..()
 
 /obj/item/organ_module/active/simple/proc/on_holding_unequipped(obj/item, mob/mob)
 	retract(mob, loc)

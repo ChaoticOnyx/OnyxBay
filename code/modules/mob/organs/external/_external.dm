@@ -1233,6 +1233,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 /obj/item/organ/external/proc/is_robotic_usable()
 	if(BP_IS_ROBOTIC(src))
 		return TRUE
+	if(organ_tag == BP_CHEST)
+		return TRUE
 
 	if(!LAZYLEN(organ_modules))
 		return TRUE

@@ -7,7 +7,7 @@
 	holding_type = /obj/item/gun/projectile/shotgun/popout
 	origin_tech = list(TECH_MATERIAL = 3, TECH_COMBAT = 3)
 	module_flags = OM_FLAG_DEFAULT
-	available_in_charsetup = FALSE
+	available_in_charsetup = TRUE
 
 /obj/item/gun/projectile/shotgun/popout
 	name = "pop-out shotgun"

@@ -81,6 +81,16 @@
 		if(!affected)
 			to_chat(user, SPAN_WARNING("[M] is missing that body part."))
 			return
+		var/clothing_zone = target_zone
+		if(istype(affected, /obj/item/organ/internal))
+			var/obj/item/organ/internal/internal = affected
+			if(internal.parent_organ)
+				clothing_zone = internal.parent_organ
+		var/list/clothes = get_target_clothes(H, clothing_zone)
+		for(var/obj/item/clothing/C in clothes)
+			if(C.body_parts_covered & body_part_flags[clothing_zone])
+				to_chat(user, SPAN_DANGER("Clothing on [M]'s [organ_name_by_zone(H, clothing_zone)] blocks surgery!"))
+				return
 
 		if(!(affected.organ_tag in mod.allowed_organs))
 			to_chat(user, SPAN_WARNING("You can't install [mod.name] in the [affected.name]."))
@@ -94,29 +104,6 @@
 			return
 		if(initial(mod.module_type) == OM_TYPE_ACTUATOR && (affected.organ_tag == BP_HEAD || BP_IS_ROBOTIC(affected)))
 			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
-			return
-
-		if(istype(affected, /obj/item/organ/external))
-			var/obj/item/organ/external/external = affected
-			if(BP_IS_ROBOTIC(external))
-				if(external.hatch_state != HATCH_OPENED)
-					to_chat(user, SPAN_NOTICE("You must open the maintenance panel first."))
-					return
-			else
-				var/open_state = external.open()
-				if(external.encased)
-					if(open_state < SURGERY_RETRACTED)
-						to_chat(user, SPAN_NOTICE("You must open the incision first."))
-						return
-					if(open_state < SURGERY_ENCASED)
-						to_chat(user, SPAN_NOTICE("You must cut through the bones first."))
-						return
-				else if(open_state < SURGERY_RETRACTED)
-					to_chat(user, SPAN_NOTICE("You must open the incision first."))
-					return
-
-		if(!locate(/obj/machinery/optable, get_turf(M)))
-			to_chat(user, SPAN_NOTICE("[M] must be on an operating table."))
 			return
 
 		if((mod.w_class + affected.occupied_space) > affected.max_module_size)

@@ -3,7 +3,8 @@
 	desc = "A stubby blade deployed from your wrist. Get shanking."
 	icon = 'icons/obj/implants.dmi'
 	icon_state = "wristshank"
-	item_state = null
+	item_state = "wristshank"
+	hitsound = 'sound/weapons/bladeslice.ogg'
 	w_class = ITEM_SIZE_SMALL
 	attack_verb = list("shanked", "slashed", "gored")
 	edge = TRUE
@@ -23,7 +24,7 @@
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)
 	holding_type = /obj/item/melee/implant/armblade/wristshank
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
-	available_in_charsetup = FALSE
+	available_in_charsetup = TRUE
 	allowed_jobs = list(/datum/job/hos, /datum/job/captain)
-	available_in_charsetup = FALSE
+	available_in_charsetup = TRUE
 	origin_tech = list(TECH_COMBAT = 4, TECH_POWER = 3)

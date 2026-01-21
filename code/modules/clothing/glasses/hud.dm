@@ -59,7 +59,7 @@
 	if(!do_after(H, 10 SECONDS, target = H))
 		return
 
-	if(!prob(60))
+	if(!prob(80))
 		H.visible_message(
 			"[H] glanced up and to the left and, missing, poked themselves in the eye with [src].",
 			"You glanced up and to the left and, missing, jabbed [src] into your eye. Ouch!"

@@ -51,6 +51,8 @@ meteor_act
 	// Some day we should make internals deal with blunt and sharp damage differently, but for now it's like this, if 'blocked' is non-zero, then the projectile's already lost its SHARP/EDGE flags and thus we cut the damage accordingly
 	if(length(organ.internal_organs))
 		var/internal_damage_prob = 70 * blocked_mult(blocked) // 70% for a naked dude/armor fail, 35% if one armor layer's succeeded, etc.
+		if(organ && P.damage_type == BRUTE)
+			internal_damage_prob *= organ.brute_mod
 
 		// If our bodypart is a pile of shredded meat then it doesn't protect organs well
 		if(organ.damage > organ.max_damage)
@@ -75,7 +77,7 @@ meteor_act
 	// Embed or sever artery, only happens if the projectile's successfully bypassed armor
 	if(!blocked && P.damage_type == BRUTE && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(PROJECTILE_EMBED_CHANCE))
 		// Lower cal. bullets tend to embed, while higher cal. bullets are more likely to make things bloody
-		var/embed_odds = P.damage * 1.3
+		var/embed_odds = P.damage * 1.3 * organ.brute_mod
 
 		if(prob(embed_odds))
 			organ.sever_artery()

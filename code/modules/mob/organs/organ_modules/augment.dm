@@ -66,11 +66,13 @@
 	pass()
 
 /obj/item/organ_module/proc/remove(obj/item/organ/E)
+	_on_remove(E)
 	E.implants -= src
 	E.organ_modules -= src
 	E.occupied_space = max(0, E.occupied_space - w_class)
 	if(!QDELETED(src))
 		forceMove(E.drop_location())
+	post_removed(E)
 
 /obj/item/organ_module/proc/_on_remove(obj/item/organ/E)
 	if(organ_tally)

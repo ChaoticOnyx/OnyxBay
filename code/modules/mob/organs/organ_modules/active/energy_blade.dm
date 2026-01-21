@@ -6,11 +6,17 @@
 	mod_overlay = "installer_armblade"
 	origin_tech = list(TECH_COMBAT = 4, TECH_POWER = 3)
 	holding_type = /obj/item/melee/energy/blade/organ_module
-	available_in_charsetup = FALSE
+	available_in_charsetup = TRUE
 
 /obj/item/melee/energy/blade/organ_module
 	force_drop = FALSE
 	destroy_on_drop = FALSE
+
+/obj/item/melee/energy/blade/organ_module/attack_self(mob/user)
+	return
+
+/obj/item/melee/energy/blade/organ_module/think()
+	return
 
 /obj/item/organ_module/active/simple/armblade/energy_blade/deploy(mob/living/carbon/human/H, obj/item/organ/external/E)
 	..()

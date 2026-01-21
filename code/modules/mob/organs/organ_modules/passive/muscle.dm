@@ -4,5 +4,5 @@
 	allowed_organs = list(BP_R_LEG, BP_L_LEG)
 	icon_state = "muscle"
 	organ_tally = -0.1
-	available_in_charsetup = FALSE
+	available_in_charsetup = TRUE
 /// later will be used for jumps
