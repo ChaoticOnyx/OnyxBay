@@ -18,6 +18,7 @@
 	var/exploit_uid = null
 	// Can STD be purchased for free
 	var/complimentary_std = TRUE
+	var/list/discounted_items
 
 /datum/component/uplink/Initialize(owner, lockable = TRUE, active = FALSE, datum/game_mode/gamemode, starting_tc = DEFAULT_TELECRYSTAL_AMOUNT)
 	if(!isitem(parent))
