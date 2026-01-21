@@ -178,6 +178,11 @@
 
 	return ..()
 
+/obj/structure/table/proc/can_be_crawled_under()
+	if(reinforced || flipped)
+		return FALSE
+	return TRUE
+
 /obj/structure/table/proc/do_crawl(mob/living/user)
 	user.visible_message(SPAN_WARNING("\The [user] starts crawling under \the [src]!"))
 
@@ -191,10 +196,24 @@
 		user.crawling = TRUE
 		user.visible_message(SPAN_WARNING("\The [user] crawls under \the [src]!"))
 
+/obj/structure/table/proc/headbumped(mob/living/user)
+	if(!ishuman(user))
+		return
+
+	var/bump_force = rand(3, 7)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	user.apply_damage(bump_force, BRUTE, BP_HEAD)
+	to_chat(user, SPAN_WARNING("You tried to get up, but you bump your head instead!"))
+	show_splash_text_to_viewers("you hear a dull thud!", force_skip_chat = TRUE)
+	throw_contents_around(ITEM_SIZE_LARGE, 35)
+	playsound(loc, 'sound/effects/deskslam.ogg', 50, 1)
+	take_damage(bump_force)
+	return
+
 /obj/structure/table/MouseDrop_T(obj/item/stack/material/what, mob/living/user)
 	if(can_reinforce && (!user.stat) && istype(what) && user.get_active_hand() == what)
 		reinforce_table(what, user)
-	else if(user.lying && !user.stat && !reinforced)
+	else if(user.lying && !user.stat && !user.buckled && can_be_crawled_under())
 		do_crawl(user)
 	else
 		return ..()
