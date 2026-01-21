@@ -191,6 +191,7 @@
 
 	user.hiding = TRUE
 	user.crawling = TRUE
+	user.reset_layer()
 	user.visible_message(SPAN_WARNING("\The [user] crawls under \the [src]!"))
 	user.forceMove(get_turf(src))
 
