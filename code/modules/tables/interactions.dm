@@ -62,31 +62,17 @@
 	return 1
 
 
-/obj/structure/table/MouseDrop_T(obj/O, mob/user, params)
-	if(!istype(O, /obj/item))
+/obj/structure/table/MouseDrop_T(obj/O, mob/living/user, params)
+	for(var/obj/possible_blocker in get_turf(src))
+		if(possible_blocker.atom_flags & ATOM_FLAG_FULLTILE_OBJECT)
+			return
+
+	if(can_reinforce && (!user.stat) && istype(O, /obj/item/stack/material) && user.get_active_hand() == O)
+		reinforce_table(O, user)
+	else if(user.lying && !user.stat && !user.buckled && can_be_crawled_under())
+		do_crawl(user)
+	else if(!slide_object(O, user))
 		return ..()
-
-	var/turf/T = get_turf(O)
-	var/table_found = FALSE
-	for(var/obj/item in T.contents)
-		if(istype(item, /obj/structure/table))
-			table_found = TRUE
-			break
-
-	var/do_slide = FALSE
-	if(O.loc == loc)
-		do_slide = TRUE // Sliding on the same time
-	else if(ishuman(user) && O == user.get_active_hand() && user.drop(O))
-		do_slide = TRUE // Dropping from the inventory
-	else if(table_found && T.Adjacent(src, user))
-		do_slide = TRUE // Sliding across tables
-
-	if(do_slide)
-		O.forceMove(loc)
-		auto_align(O, params)
-		return
-
-	return ..()
 
 /obj/structure/table/attack_hand(mob/user as mob)
 	if(ishuman(user))
