@@ -1841,7 +1841,7 @@
 			..()
 			return
 
-		T.headbumped(user)
+		T.headbumped(src)
 		return
 
 	..()
