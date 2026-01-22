@@ -36,10 +36,6 @@
 		/obj/item/device/hudlenses/sunshield = 2
 		)
 
-	premium = list(
-		/obj/item/rig/light/hacker/empty = 1
-		)
-
 /obj/item/vending_cartridge/robotics
 	icon_state = "refill_parts"
 	build_path = /obj/machinery/vending/robotics

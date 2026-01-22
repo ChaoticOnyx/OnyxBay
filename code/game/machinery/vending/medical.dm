@@ -46,7 +46,6 @@
 		)
 
 	premium = list(
-		/obj/item/storage/firstaid/surgery = 1,
 		/obj/item/storage/firstaid/adv = 1
 		)
 

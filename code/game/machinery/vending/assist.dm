@@ -22,10 +22,6 @@
 		/obj/item/device/assembly/voice = 2
 		)
 
-	premium = list(
-		/obj/item/device/radio/headset/tactical = 1
-		)
-
 /obj/item/vending_cartridge/assist
 	icon_state = "refill_parts"
 	build_path = /obj/machinery/vending/props

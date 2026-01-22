@@ -39,9 +39,7 @@
 		)
 
 	premium = list(
-		/obj/item/clothing/mask/smokable/pipe = 3,
-		/obj/item/reagent_containers/spray/hair_grower = 1,
-		/obj/item/reagent_containers/spray/hair_remover = 1
+		/obj/item/clothing/mask/smokable/pipe = 3
 		)
 
 	prices = list(

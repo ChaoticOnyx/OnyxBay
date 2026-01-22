@@ -35,8 +35,7 @@
 		)
 
 	illegal = list(
-		/obj/item/reagent_containers/syringe/steroid/packaged = 4,
-		/obj/item/reagent_containers/food/monkeycube/wrapped = 4
+		/obj/item/reagent_containers/syringe/steroid/packaged = 4
 		)
 
 	premium = list(
