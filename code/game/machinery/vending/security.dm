@@ -40,8 +40,7 @@
 
 	premium = list(
 		/obj/item/melee/baton/loaded = 1,
-		/obj/item/gun/energy/stunrevolver = 1,
-		/obj/item/grenade/flashbang/clusterbang = 1,
+		/obj/item/gun/energy/stunrevolver = 1
 		)
 
 /obj/item/vending_cartridge/security
