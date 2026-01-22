@@ -4,7 +4,6 @@
 	action_button_name = "Deploy mining tool"
 	items = list(
 		/obj/item/wrench,
-		/obj/item/pickaxe/drill,
 		/obj/item/device/depth_scanner,
 		/obj/item/shovel,
 		/obj/item/device/radio/off,

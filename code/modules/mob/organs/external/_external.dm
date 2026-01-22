@@ -1235,6 +1235,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 		return TRUE
 	if(organ_tag == BP_CHEST)
 		return TRUE
+	if(organ_tag == BP_HEAD)
+		return TRUE
 
 	if(!LAZYLEN(organ_modules))
 		return TRUE

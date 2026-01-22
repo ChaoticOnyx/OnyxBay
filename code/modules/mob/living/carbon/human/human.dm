@@ -165,6 +165,7 @@
 
 	var/b_loss = null
 	var/f_loss = null
+	var/cochlear = has_cochlear_implant()
 	switch(severity)
 		if(1.0)
 			b_loss = 400
@@ -185,14 +186,14 @@
 
 			if(get_ear_protection() < 2)
 				adjustEarDamage(30, 120)
-			if(prob(70))
+			if(!cochlear && prob(70))
 				Paralyse(10)
 
 		if(3.0)
 			b_loss = 30
 			if(get_ear_protection() < 2)
 				adjustEarDamage(15, 60)
-			if(prob(50))
+			if(!cochlear && prob(50))
 				Paralyse(10)
 
 	// factor in armour

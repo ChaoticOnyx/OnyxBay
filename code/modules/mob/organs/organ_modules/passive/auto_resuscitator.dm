@@ -7,9 +7,18 @@
 	allowed_organs = list(BP_HEART)
 	/// How many charges it has.
 	var/uses = 1
+	/// Whether the implant has already been spent.
+	var/used = FALSE
 	/// Burn applied on resuscitation attempt
 	var/burn_per_resuscitate = 10
 	var/chargecost = 100 //units of charge
+	/// Reagents injected on resuscitation attempt.
+	var/list/resuscitate_reagents = list(
+		/datum/reagent/adrenaline = 15,
+		/datum/reagent/tricordrazine = 30,
+		/datum/reagent/dexalinp = 15,
+		/datum/reagent/painkiller/tramadol = 15
+	)
 
 /obj/item/organ_module/passive/resuscitator/organ_installed()
 	set_next_think(world.time + SSmobs.wait)
@@ -26,8 +35,17 @@
 /obj/item/organ_module/passive/resuscitator/emp_act(severity)
 	. = ..()
 
-	var/i = 1 + 2
-	return i
+	if(severity != 1)
+		return
+	var/obj/item/organ/internal/heart/heart = loc
+	if(!istype(heart))
+		return
+	if(heart.pulse == PULSE_NONE)
+		return
+	heart.pulse = PULSE_NONE
+	var/mob/living/carbon/human/H = heart.owner
+	if(istype(H))
+		to_chat(H, SPAN_DANGER("Your heart spasms and stops!"))
 
 /obj/item/organ_module/passive/resuscitator/think()
 	var/obj/item/organ/internal/heart/heart = loc
@@ -44,16 +62,31 @@
 /obj/item/organ_module/passive/resuscitator/proc/try_resuscitate(mob/living/carbon/human/owner)
 	if((owner.species.species_flags & SPECIES_FLAG_NO_SCAN) || owner.isSynthetic() || owner.is_ic_dead())
 		return
+	if(uses <= 0 || used)
+		return
 
 	if(owner.ssd_check())
-		to_chat(find_dead_player(owner.ckey, TRUE), SPAN_NOTICE("Someone is attempting to resuscitate you. Re-enter your body if you want to be revived!"))
+		to_chat(find_dead_player(owner.ckey, TRUE), SPAN_NOTICE("Your heart augmentetion tries to resuscitate you. Re-enter your body if you want to be revived!"))
+
+	var/cpu_name = "CPU"
+	var/obj/item/organ/external/head/head = owner.organs_by_name[BP_HEAD]
+	if(istype(head))
+		for(var/obj/item/organ_module/module in head.organ_modules)
+			if(initial(module.module_type) == OM_TYPE_PROCESSOR)
+				cpu_name = module.name
+				break
+	to_chat(owner, SPAN_NOTICE("[cpu_name] activates [initial(name)]."))
+	sound_to(owner, sound('sound/voice/auto_resuscitator.ogg', volume = 50))
 
 	owner.apply_damage(burn_per_resuscitate, BURN, BP_CHEST)
 	heal(owner)
+	if(owner.reagents && LAZYLEN(resuscitate_reagents))
+		for(var/reagent_type in resuscitate_reagents)
+			owner.reagents.add_reagent(reagent_type, resuscitate_reagents[reagent_type])
 	owner.resuscitate()
-	var/obj/item/organ/internal/cell/cell = owner.internal_organs_by_name[BP_CELL]
-	var/obj/item/cell/potato = cell?.cell
-	potato.give(chargecost)
+	uses = 0
+	used = TRUE
+	SetName("[initial(name)] (used)")
 
 /// Override for special behavior during resuscitation
 /obj/item/organ_module/passive/resuscitator/proc/heal(mob/living/carbon/human/owner)
@@ -64,6 +97,15 @@
 	name = "Theranos auto-resuscitator"
 	desc = "An advanced auto-resuscitator, designed to deal with extreme situations."
 	icon_state = "armor"
+	resuscitate_reagents = list(
+		/datum/reagent/painkiller = 15,
+		/datum/reagent/bicaridine = 30,
+		/datum/reagent/dermaline = 15,
+		/datum/reagent/dexalinp = 15,
+		/datum/reagent/adrenaline = 15,
+		/datum/reagent/rezadone = 20,
+		/datum/reagent/peridaxon = 5
+	)
 
 /obj/item/organ_module/passive/resuscitator/theranos/Initialize()
 	. = ..()

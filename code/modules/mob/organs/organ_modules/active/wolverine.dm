@@ -4,13 +4,14 @@
 	icon_state = "wolverine"
 	icon = 'icons/obj/implants.dmi'
 	item_state = "wolverine"
-	force = 9
+	force = 25
 	sharp = TRUE
 	edge = TRUE
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	mod_weight = 0.4
-	mod_reach = 0.5
-	mod_handy = 1.0
+	mod_weight = 0.8
+	mod_reach = 1.2
+	mod_handy = 1.5
+	armor_penetration = 45
 	attack_verb = list("ripped", "torn", "cut")
 
 /obj/item/organ_module/active/simple/wolverine

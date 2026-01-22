@@ -60,3 +60,29 @@
 
 /obj/item/organ_module/active/multitool/proc/on_holding_unequipped(obj/item, mob/mob)
 	mob.drop(item, src, TRUE)
+
+/obj/item/organ_module/active/multitool/emp_act(severity)
+	. = ..()
+
+	var/obj/item/organ/external/E = loc
+	var/mob/living/carbon/human/H = E?.owner
+	if(!istype(E) || !istype(H))
+		return
+
+	var/obj/item/weldingtool/WT = null
+	for(var/obj/item/weldingtool/W in items)
+		WT = W
+		break
+	if(!WT || WT.get_fuel() <= 0)
+		return
+
+	var/chance = 10 * (4 - severity)
+	if(!prob(chance))
+		return
+
+	H.visible_message(
+		SPAN_WARNING("[H]'s embedded welder pops and flares!"),
+		SPAN_DANGER("Your embedded welder pops and flares in your hand!")
+	)
+	WT.burn_fuel(min(5, WT.get_fuel()))
+	H.apply_damage(rand(8, 16), BURN, E.organ_tag)

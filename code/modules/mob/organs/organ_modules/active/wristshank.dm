@@ -13,7 +13,7 @@
 	mod_weight = 0.6
 	mod_reach = 0.6
 	mod_handy = 1.2
-	armor_penetration = 50
+	armor_penetration = 20
 
 /obj/item/organ_module/active/simple/wristshank
 	name = "embedded wristshank"

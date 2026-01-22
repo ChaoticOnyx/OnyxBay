@@ -16,6 +16,7 @@
 		return
 
 	to_chat(H, SPAN_NOTICE("You activate your [name], and feel a wave of numbness wash over you!"))
+	H.no_pain = TRUE
 	stop_thinking_at = world.time + 30 SECONDS
 	set_next_think(world.time + 1 SECOND)
 	var/brain_loss = H.getBrainLoss()
@@ -60,6 +61,7 @@
 		stop_thinking_at = null
 		set_next_think(0)
 		to_chat(H, SPAN_WARNING("You abruptly feel intensely exhausted as sensation returns."))
+		H.no_pain = FALSE
 		H.drowsyness = max(H.drowsyness, 15)
 		H.confused += 15
 		H.slurring = max(H.slurring, 30)
@@ -69,3 +71,18 @@
 
 	H.add_chemical_effect(CE_PAINKILLER, 160)
 	set_next_think(world.time + 2 SECONDS)
+
+/obj/item/organ_module/active/nerve_dampeners/emp_act(severity)
+	. = ..()
+
+	var/obj/item/organ/O = loc
+	var/mob/living/carbon/human/H = O?.owner
+	if(!istype(H))
+		return
+
+	var/chance = 10 * (4 - severity)
+	if(!prob(chance))
+		return
+
+	H.adjustBrainLoss(rand(0, 10))
+	H.custom_pain("Your nerves flare with agony!", 60)

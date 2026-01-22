@@ -7,12 +7,13 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	w_class = ITEM_SIZE_SMALL
 	attack_verb = list("stabbed", "chopped", "cut")
-	mod_weight = 1.3
-	mod_reach = 1.5
-	mod_handy = 1.75
-	armor_penetration = 30
+	mod_weight = 0.75
+	mod_reach = 1
+	mod_handy = 1.25
+	armor_penetration = 25
 	sharp = TRUE
 	edge = TRUE
+	force = 25
 
 /obj/item/organ_module/active/simple/armblade
 	name = "embedded armblade"

@@ -57,6 +57,11 @@
 		return
 
 	if(!do_after(H, 10 SECONDS, target = H))
+		H.visible_message(
+			"[H] glanced up and to the left and, missing, poked themselves in the eye with [src].",
+			"You glanced up and to the left and, missing, jabbed [src] into your eye. Ouch!"
+		)
+		eyes.take_internal_damage(10)
 		return
 
 	if(!prob(80))

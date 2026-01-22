@@ -348,6 +348,10 @@
 	else if(organ in BP_INTERNAL_ORGANS)
 		O = mannequin?.internal_organs_by_name[organ]
 	if(!O)
+		if(organ in BP_INTERNAL_ORGANS)
+			var/path = get_internal_organ_path(organ)
+			if(path)
+				return initial(path:max_module_size)
 		return 0
 
 	var/total_space = O.max_module_size
@@ -376,9 +380,12 @@
 	else if(organ in BP_INTERNAL_ORGANS)
 		O = mannequin?.internal_organs_by_name[organ]
 	if(!O)
-		return "<b>Augmentations not avaible.</b>"
+		if(!(organ in BP_INTERNAL_ORGANS) || !get_internal_organ_path(organ))
+			return "<b>Augmentations not avaible.</b>"
 	if(organ == BP_EYES && pref.organ_data[BP_EYES] != "mechanical")
 		return "<b>Augmentations not avaible.</b>"
+	if(organ == BP_HEART && pref.organ_data[BP_HEART] == "mechanical")
+		return "<b>Heart augmentations are only available for organic hearts.</b>"
 
 	var/total_space = get_organ_total_space(organ)
 	var/occupied_space = get_organ_occupied_space(organ)
@@ -472,6 +479,30 @@
 	data += "</td></tr></table>"
 
 	return data
+
+/datum/category_item/player_setup_item/augmentation/proc/get_internal_organ_path(organ)
+	switch(organ)
+		if(BP_HEART)
+			return /obj/item/organ/internal/heart
+		if(BP_EYES)
+			return /obj/item/organ/internal/eyes
+		if(BP_TONGUE)
+			return /obj/item/organ/internal/tongue
+		if(BP_LUNGS)
+			return /obj/item/organ/internal/lungs
+		if(BP_LIVER)
+			return /obj/item/organ/internal/liver
+		if(BP_KIDNEYS)
+			return /obj/item/organ/internal/kidneys
+		if(BP_STOMACH)
+			return /obj/item/organ/internal/stomach
+		if(BP_INTESTINES)
+			return /obj/item/organ/internal/intestines
+		if(BP_BLADDER)
+			return /obj/item/organ/internal/bladder
+		if(BP_BRAIN)
+			return /obj/item/organ/internal/cerebrum/brain
+	return null
 
 /datum/category_item/player_setup_item/augmentation/proc/get_augmentations(organ)
 	if(pref.current_organ == BP_HEAD && pref.rlimb_data[BP_CHEST] != "cyborg")

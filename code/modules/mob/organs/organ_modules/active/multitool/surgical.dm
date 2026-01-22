@@ -14,7 +14,7 @@
 	verb_name = "Deploy Surgical Tool"
 	icon_state = "multitool_medical"
 	items = list(
-		/obj/item/bonesetter/bone_mender,
+		/obj/item/bonesetter,
 		/obj/item/cautery,
 		/obj/item/circular_saw/plasmasaw,
 		/obj/item/hemostat/pico,
@@ -25,3 +25,21 @@
 		/obj/item/FixOVein/clot,
 		/obj/item/organfixer/advanced,
 	)
+
+/obj/item/organ_module/active/multitool/surgical/emp_act(severity)
+	. = ..()
+
+	var/obj/item/organ/external/E = loc
+	var/mob/living/carbon/human/H = E?.owner
+	if(!istype(E) || !istype(H))
+		return
+
+	var/chance = 10 * (4 - severity)
+	if(!prob(chance))
+		return
+
+	H.visible_message(
+		SPAN_WARNING("[H]'s surgical saw jerks and bites inside \his hand!"),
+		SPAN_DANGER("Your surgical saw jerks and bites inside your hand!")
+	)
+	H.apply_damage(rand(6, 12), BRUTE, E.organ_tag)

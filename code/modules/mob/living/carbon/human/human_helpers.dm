@@ -399,7 +399,17 @@
 	for(var/obj/item/C in list(l_ear, r_ear, head))
 		if(istype(C))
 			. += C.ear_protection
+	if(has_cochlear_implant())
+		. = max(., 2)
 	return .
+
+/mob/living/carbon/human/proc/has_cochlear_implant()
+	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	if(!istype(head))
+		return FALSE
+	if(locate(/obj/item/organ_module/cochlear) in head.organ_modules)
+		return TRUE
+	return FALSE
 
 /mob/living/carbon/human/is_eligible_for_antag_spawn(antag_id)
 	return species ? species.is_eligible_for_antag_spawn(antag_id) : TRUE // No species = no problems, assuming ourselves to be a baseline human being

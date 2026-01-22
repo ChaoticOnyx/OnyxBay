@@ -84,3 +84,15 @@
 
 /obj/item/organ/internal/eyes/proc/additional_flash_effects(intensity)
 	return -1
+
+/obj/item/organ/internal/eyes/emp_act(severity)
+	. = ..()
+
+	if(!LAZYLEN(organ_modules))
+		return
+
+	var/damage = 2 * (4 - severity)
+	if(damage <= 0)
+		return
+
+	take_internal_damage(damage)

@@ -60,7 +60,7 @@
 	desc = "A favorite among skeletons. It even sounds like a skeleton too."
 	id = "bonemender"
 	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5)
-	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_GOLD = 500, MATERIAL_SILVER = 250)
+	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_GOLD = 500)
 	category = "Surgery"
 	build_path = /obj/item/bonesetter/bone_mender
 	sort_string = "MBEAG"
