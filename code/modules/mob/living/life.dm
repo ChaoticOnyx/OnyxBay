@@ -176,6 +176,7 @@
 	clear_fullscreen("space_drugs")
 
 /mob/living/proc/apply_mindbreaker_effects()
+	playsound_local(src, pick('sound/effects/drugs/mindbreaker1.ogg','sound/effects/drugs/mindbreaker2.ogg'), 100, FALSE)
 	var/atom/movable/renderer/game/G = renderers[GAME_RENDERER]
 	G.add_filter("trip_ripple", 0, list(type = "ripple",x = 80, size = 50, radius = 0, falloff = 1))
 	G.add_filter("trip_blur", -1, list(type = "blur", size = 0.2))
@@ -200,6 +201,7 @@
 	T.remove_filter("trip_bloom")
 
 /mob/living/proc/apply_psilo_effects()
+	playsound_local(src, 'sound/effects/drugs/psylocibin.ogg', 100, FALSE)
 	var/atom/movable/renderer/game/G = renderers[GAME_RENDERER]
 	G.add_filter("psilo_color", 0, list(type="color", list(0,0,1,0, 0,1,0,0, 1,0,0,0, 0,0,0,1, 0,0,0,0)))
 	G.add_filter("psilo_bloom", 0, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))

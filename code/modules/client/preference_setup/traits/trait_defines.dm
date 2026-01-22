@@ -156,16 +156,6 @@
 	desc = "You are addicted to alcohol."
 	modifier_type = /datum/modifier/trait/alcohol_addiction
 
-/datum/trait/modifier/mental/coffee_addiction
-	name = "Coffee addiction"
-	desc = "You are addicted to coffee."
-	//modifier_type = /datum/modifier/trait/coffee_addiction
-
-/datum/trait/modifier/mental/trick_addiction
-	name = "Tricordrazine addiction"
-	desc = "You are addicted to tricordrazine."
-	//modifier_type = /datum/modifier/trait/coffee_addiction
-
 /datum/trait/modifier/mental/smoker
 	name = "Smoker"
 	desc = "You like to smoke."
