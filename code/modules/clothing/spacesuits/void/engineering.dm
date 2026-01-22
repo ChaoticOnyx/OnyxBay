@@ -59,7 +59,7 @@
 	item_state = "rad_helm"
 	siemens_coefficient = 0.15
 	armor = list(melee = 55, bullet = 45, laser = 130, energy = 65, bomb = 65, bio = 100)
-	rad_resist_type = /datum/rad_resist/rig_ce
+	rad_resist_type = /datum/rad_resist/suit_radiation
 
 /obj/item/clothing/suit/space/void/engineering/meltdown
 	name = "meltdown voidsuit"
@@ -69,7 +69,7 @@
 	siemens_coefficient = 0.15
 	armor = list(melee = 55, bullet = 45, laser = 130, energy = 65, bomb = 65, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/construction/rcd, /obj/item/device/geiger)
-	rad_resist_type = /datum/rad_resist/rig_ce
+	rad_resist_type = /datum/rad_resist/suit_radiation
 
 /obj/item/clothing/suit/space/void/engineering/meltdown/New()
 	..()
