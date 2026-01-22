@@ -178,26 +178,63 @@
 
 	return ..()
 
+/obj/structure/table/proc/can_be_crawled_under()
+	if(reinforced || flipped)
+		return FALSE
+	return TRUE
+
 /obj/structure/table/proc/do_crawl(mob/living/user)
 	user.visible_message(SPAN_WARNING("\The [user] starts crawling under \the [src]!"))
 
 	if(!do_after(user, 0.8 SECONDS, src, incapacitation_flags = INCAPACITATION_BUCKLED_FULLY|INCAPACITATION_STUNNED))
 		return
 
+	user.hiding = TRUE
+	user.crawling = TRUE
+	user.reset_layer()
+	user.visible_message(SPAN_WARNING("\The [user] crawls under \the [src]!"))
 	user.forceMove(get_turf(src))
 
-	if(get_turf(user) == get_turf(src))
-		user.hiding = TRUE
-		user.crawling = TRUE
-		user.visible_message(SPAN_WARNING("\The [user] crawls under \the [src]!"))
+/obj/structure/table/proc/headbumped(mob/living/user)
+	if(!ishuman(user))
+		return
 
-/obj/structure/table/MouseDrop_T(obj/item/stack/material/what, mob/living/user)
-	if(can_reinforce && (!user.stat) && istype(what) && user.get_active_hand() == what)
-		reinforce_table(what, user)
-	else if(user.lying && !user.stat && !reinforced)
-		do_crawl(user)
-	else
-		return ..()
+	var/bump_force = rand(3, 7)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	user.apply_damage(bump_force, BRUTE, BP_HEAD)
+	to_chat(user, SPAN_WARNING("You tried to get up, but you bump your head instead!"))
+	show_splash_text_to_viewers("you hear a dull thud!", force_skip_chat = TRUE)
+	throw_contents_around(ITEM_SIZE_LARGE, 35, FALSE)
+	shake_animation(stime = 1)
+	playsound(loc, 'sound/effects/deskslam.ogg', 50, 1)
+	take_damage(bump_force)
+	return
+
+/obj/structure/table/proc/slide_object(obj/O, mob/living/user, params)
+	if(!istype(O, /obj/item))
+		return FALSE
+
+	var/turf/T = get_turf(O)
+	var/table_found = FALSE
+	for(var/obj/item in T.contents)
+		if(istype(item, /obj/structure/table))
+			table_found = TRUE
+			break
+
+	var/do_slide = FALSE
+	if(O.loc == loc)
+		do_slide = TRUE // Sliding on the same time
+	else if(ishuman(user) && O == user.get_active_hand() && user.drop(O))
+		do_slide = TRUE // Dropping from the inventory
+	else if(table_found && T.Adjacent(src, user))
+		do_slide = TRUE // Sliding across tables
+
+	if(do_slide)
+		O.forceMove(loc)
+		auto_align(O, params)
+		return TRUE
+
+	return FALSE
 
 /obj/structure/table/proc/reinforce_table(obj/item/stack/material/S, mob/user)
 	if(reinforced)
@@ -298,9 +335,13 @@
 	qdel(src)
 	return
 
-/obj/structure/table/proc/throw_contents_around(max_size = ITEM_SIZE_HUGE, dropchance = -1)
+/obj/structure/table/proc/throw_contents_around(max_size = ITEM_SIZE_HUGE, dropchance = -1, throw_crawlers = TRUE)
 	var/list/targets = list(get_step(src, dir), get_step(src, turn(dir, 45)), get_step(src, turn(dir, -45)))
 	for(var/atom/movable/A in get_turf(src))
+		if(!throw_crawlers && isliving(A))
+			var/mob/living/L = A
+			if(L.crawling)
+				continue
 		if(!A.anchored)
 			if(dropchance == -1)
 				A.throw_at(pick(targets), 1)

@@ -33,6 +33,12 @@
 /obj/structure/table/rack/can_connect()
 	return FALSE
 
+/obj/structure/table/rack/headbumped()
+	return
+
+/obj/structure/table/rack/can_be_crawled_under()
+	return FALSE
+
 /obj/structure/table/rack/dark
 	color = COLOR_GRAY40
 

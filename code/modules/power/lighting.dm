@@ -147,6 +147,7 @@
 	idle_power_usage = 2 WATTS
 	active_power_usage = 20 WATTS
 	power_channel = STATIC_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
+	glow_colored = TRUE
 
 	/// Whether light is currently turned on.
 	var/on = TRUE
