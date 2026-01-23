@@ -116,6 +116,8 @@
 /obj/item/gun/energy/crossbow/largecrossbow
 	name = "energy crossbow"
 	desc = "A weapon favored by syndicate infiltration teams."
+	icon_state = "crossbowbig"
+	item_state = "crossbow-solid"
 	w_class = ITEM_SIZE_LARGE
 	force = 10
 	one_hand_penalty = 1
