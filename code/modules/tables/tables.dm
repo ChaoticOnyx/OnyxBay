@@ -214,6 +214,9 @@
 	if(!istype(O, /obj/item))
 		return FALSE
 
+	if(O.anchored)
+		return FALSE
+
 	var/turf/T = get_turf(O)
 	var/table_found = FALSE
 	for(var/obj/item in T.contents)
