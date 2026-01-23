@@ -54,7 +54,7 @@
 	var/hotspot = (locate(/obj/fire) in T)
 	if(hotspot && !istype(T, /turf/space))
 		var/datum/gas_mixture/lowertemp = T.remove_air(T:air:total_moles)
-		lowertemp.temperature = max(min(lowertemp.temperature-2000, lowertemp.temperature / 2), 0)
+		lowertemp.temperature = max(min(lowertemp.temperature-2000, lowertemp.temperature / 2), 273.15) // It's 273.15 since we don't want extinguishers to drop the room temp down to the absolute zero.
 		lowertemp.react()
 		T.assume_air(lowertemp)
 		qdel(hotspot)
@@ -94,13 +94,13 @@
 
 /datum/reagent/water/touch_mob(mob/living/L, amount)
 	if(istype(L))
-		var/needed = L.fire_stacks * 100
+		var/needed = L.fire_stacks * 50
 		if(amount > needed)
 			L.fire_stacks = 0
 			L.ExtinguishMob()
 			remove_self(needed)
 		else
-			L.adjust_fire_stacks(-(amount / 100))
+			L.adjust_fire_stacks(-(amount / 50))
 			remove_self(amount)
 
 /datum/reagent/water/affect_touch(mob/living/carbon/M, alien, removed)
