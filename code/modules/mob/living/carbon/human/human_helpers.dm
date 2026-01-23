@@ -242,7 +242,7 @@
 		to_chat(src, SPAN_DANGER("Emergency [get_cpu_name()] reset, deactivating active augmentations."))
 		adjustBrainLoss(rand(10, 35))
 		deactivate_active_augmentations()
-		Paralyse(rand(1, 60) * 10)
+		Paralyse(rand(1, 60) * 3)
 		cpu_overload_since = 0
 		cpu_overload_warned_at = 0
 

@@ -4,6 +4,7 @@
 	desc = "A mechanic actuator that fits most prostheses."
 	allowed_organs = list(BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND)
 	module_type = OM_TYPE_ACTUATOR
+	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	origin_tech = list(TECH_ENGINEERING = 2, TECH_MAGNET = 2)
 	matter = list(
 		MATERIAL_PLASTIC = 2000,
@@ -78,7 +79,7 @@
 	cpu_power = 4
 	loadout_cost = 0
 	available_in_charsetup = TRUE
-	augment_cost = 0
+	augment_cost = 5
 	origin_tech = list(TECH_BIO = 3, TECH_DATA = 3)
 	matter = list(
 		MATERIAL_GOLD = 150,
@@ -91,10 +92,10 @@
 	name = "Raven Microcyber MK.3"
 	icon_state = "cpu_super"
 	desc = "Produced by Raven Biotech corporation, this CPU is considered to be one of the most advanced processors for prosthetics."
-	cpu_power = 5
+	cpu_power = 6
 	loadout_cost = 0
 	available_in_charsetup = TRUE
-	augment_cost = 0
+	augment_cost = 8
 	origin_tech = list(TECH_BIO = 6, TECH_DATA = 6, TECH_BLUESPACE = 6)
 	matter = list(
 		MATERIAL_GOLD = 150,

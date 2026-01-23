@@ -100,16 +100,16 @@
 	return (module_path in R.default_modules)
 
 /datum/preferences/proc/get_aug_cost()
-    total_aug_points = 0
-    for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
-        for(var/obj/item/organ_module/mod as anything in organ_modules[organ_tag])
-            if(initial(mod.module_type) == OM_TYPE_ACTUATOR || initial(mod.module_type) == OM_TYPE_PROCESSOR)
-                continue
-            if(is_default_module(organ_tag, mod))
-                continue
-            if(initial(mod.augment_cost) <= 0)
-                continue
-            total_aug_points += initial(mod.augment_cost)
-    return total_aug_points
+	total_aug_points = 0
+	for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
+		for(var/obj/item/organ_module/mod as anything in organ_modules[organ_tag])
+			if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
+				continue
+			if(is_default_module(organ_tag, mod))
+				continue
+			if(initial(mod.augment_cost) <= 0)
+				continue
+			total_aug_points += initial(mod.augment_cost)
+	return total_aug_points
 
 #undef PREF_SER_VERSION

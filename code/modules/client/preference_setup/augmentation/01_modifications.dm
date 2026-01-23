@@ -23,7 +23,7 @@
 		for(var/obj/item/organ_module/mod as anything in pref.organ_modules[organ_tag])
 			if(pref.is_default_module(organ_tag, mod))
 				continue
-			if(initial(mod.module_type) == OM_TYPE_ACTUATOR || initial(mod.module_type) == OM_TYPE_PROCESSOR)
+			if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
 				continue
 			if(initial(mod.augment_cost) <= 0)
 				continue
@@ -467,7 +467,7 @@
 			continue
 
 		if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
-			if(organ == BP_HEAD || pref.organ_data[organ] == "cyborg" || !(organ in BP_ALL_LIMBS) || (organ in list(BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND)))
+			if(organ == BP_HEAD || pref.organ_data[organ] == "cyborg" || !(organ in BP_ALL_LIMBS))
 				continue
 		if(initial(mod.module_type) == OM_TYPE_PROCESSOR)
 			if(organ != BP_HEAD)
@@ -497,8 +497,13 @@
 		else
 			job_restriction_data = ""
 
-		var/module_cpu_load = isnull(mod.cpu_load) ? 0 : mod.cpu_load
-		var/cpu_info = "CPU load: [module_cpu_load]"
+		var/cpu_info
+		if(initial(mod.module_type) == OM_TYPE_PROCESSOR)
+			var/module_cpu_power = isnull(mod.cpu_power) ? 0 : mod.cpu_power
+			cpu_info = "CPU gain: [module_cpu_power]"
+		else
+			var/module_cpu_load = isnull(mod.cpu_load) ? 0 : mod.cpu_load
+			cpu_info = "CPU gain: [module_cpu_load]"
 		var/price
 		var/loadout_gear_name = get_module_loadout_name(mod_path)
 		if(loadout_gear_name)
