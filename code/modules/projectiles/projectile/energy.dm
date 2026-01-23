@@ -171,7 +171,7 @@
 /obj/item/projectile/energy/bolt
 	name = "bolt"
 	icon_state = "cbbolt"
-	damage = 45
+	damage = 50
 	damage_type = TOX
 	nodamage = 0
 	agony = 40
@@ -181,7 +181,7 @@
 /obj/item/projectile/energy/bolt/large
 	name = "largebolt"
 	icon_state = "cbboltl"
-	damage = 75
+	damage = 85
 	agony = 60
 
 
