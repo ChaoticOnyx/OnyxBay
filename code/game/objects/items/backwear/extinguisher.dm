@@ -9,7 +9,7 @@
 	gear_detachable = FALSE
 	gear = /obj/item/extinguisher/linked
 	atom_flags = null
-	initial_capacity = 50 LITERS
+	initial_capacity = 30 LITERS
 	initial_reagent_types = list(/datum/reagent/water/firefoam = 1)
 	origin_tech = list(TECH_ENGINEERING = 2)
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_GLASS = 500)
@@ -45,7 +45,7 @@
 	mod_reach = 0.6
 	armor_penetration = 20
 	w_class = ITEM_SIZE_NORMAL
-	spray_amount = 1.2 LITERS
+	spray_amount = 1 LITER
 	spray_cooldown = 1 SECOND
 	max_volume = 0
 	safety = 0
