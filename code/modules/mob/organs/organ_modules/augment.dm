@@ -29,6 +29,8 @@
 
 	/// The number of loadout points for selecting this module in char setup.
 	var/loadout_cost = 0
+	/// The number of augmentation points for selecting this module in char setup.
+	var/augment_cost = 0
 	/// Whether this module can be selected in character setup menu
 	var/available_in_charsetup = TRUE
 	var/list/allowed_jobs

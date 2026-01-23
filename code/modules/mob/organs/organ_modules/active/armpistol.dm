@@ -3,11 +3,17 @@
 	desc = "A pistol designed to be embedded into prosthetics. Gives you a nice advantage in a firefight"
 	action_button_name = "Deploy embedded pistol"
 	icon_state = "armsmg"
-	matter = list(MATERIAL_PLASTEEL = 20, MATERIAL_PLASTIC = 5, MATERIAL_STEEL = 5)
+	matter = list(
+		MATERIAL_PLASTEEL = 2000,
+		MATERIAL_PLASTIC = 5000,
+		MATERIAL_SILVER = 1000
+	)
 	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	holding_type = /obj/item/gun/projectile/pistol/holdout
-	available_in_charsetup = TRUE
-	origin_tech = list(TECH_COMBAT = 4, TECH_POWER = 3)
+	available_in_charsetup = FALSE
+	w_class = 2
+	cpu_load = 1
+	origin_tech = list(TECH_ILLEGAL = 4, TECH_COMBAT = 6, TECH_BIO = 4)
 
 /obj/item/organ_module/active/simple/armsmg/emp_act(severity)
 	. = ..()

@@ -107,9 +107,9 @@
                 continue
             if(is_default_module(organ_tag, mod))
                 continue
-            if(initial(mod.loadout_cost) <= 0)
+            if(initial(mod.augment_cost) <= 0)
                 continue
-            total_aug_points += initial(mod.loadout_cost)
+            total_aug_points += initial(mod.augment_cost)
     return total_aug_points
 
 #undef PREF_SER_VERSION

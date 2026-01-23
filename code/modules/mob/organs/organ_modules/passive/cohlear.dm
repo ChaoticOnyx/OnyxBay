@@ -5,6 +5,14 @@
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	icon_state = "cranial_aug"
 	loadout_cost = 0
+	available_in_charsetup = TRUE
+	augment_cost = 1
+	allowed_jobs = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer, /datum/job/chief_engineer, /datum/job/engineer)
+	origin_tech = list(TECH_BIO = 4, TECH_COMBAT = 4, TECH_ENGINEERING = 4)
+	matter = list(
+		MATERIAL_SILVER = 800,
+		MATERIAL_PLASTIC = 500
+	)
 
 /obj/item/organ_module/cochlear/emp_act(severity)
 	. = ..()

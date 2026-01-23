@@ -3,11 +3,17 @@
 	desc = "An embedded shield designed to be inserted into an arm."
 	action_button_name = "Deploy embedded shield"
 	icon_state = "armshield"
-	matter = list(MATERIAL_PLASTEEL = 20, MATERIAL_PLASTIC = 5, MATERIAL_STEEL = 5)
+	matter = list(
+		MATERIAL_DURANIUM = 2000,
+		MATERIAL_GOLD = 5000,
+		MATERIAL_DIAMOND = 2000
+	)
 	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	holding_type = /obj/item/shield/energy
-	available_in_charsetup = TRUE
-	origin_tech = list(TECH_COMBAT = 4, TECH_POWER = 3)
+	available_in_charsetup = FALSE
+	w_class = 3
+	cpu_load = 2
+	origin_tech = list(TECH_COMBAT = 9, TECH_ILLEGAL = 5)
 
 /obj/item/organ_module/active/simple/armshield/emp_act(severity)
 	. = ..()

@@ -4,8 +4,16 @@
 	desc = "A mechanic actuator that fits most prostheses."
 	allowed_organs = list(BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND)
 	module_type = OM_TYPE_ACTUATOR
+	origin_tech = list(TECH_ENGINEERING = 2, TECH_MAGNET = 2)
+	matter = list(
+		MATERIAL_PLASTIC = 2000,
+		MATERIAL_STEEL = 2000,
+		MATERIAL_GLASS = 2000
+	)
 	cpu_load = 0
 	loadout_cost = 0
+	available_in_charsetup = TRUE
+	augment_cost = 1
 
 /obj/item/organ_module/processor
 	name = "CPU"
@@ -17,6 +25,15 @@
 	cpu_power = 2
 	cpu_load = 0
 	loadout_cost = 0
+	available_in_charsetup = TRUE
+	augment_cost = 0
+	w_class = 1
+	origin_tech = list(TECH_BIO = 1, TECH_DATA = 1)
+	matter = list(
+		MATERIAL_GOLD = 50,
+		MATERIAL_PLASTEEL = 1000,
+		MATERIAL_PLASTIC = 1000
+	)
 
 /obj/item/organ_module/processor/post_install(obj/item/organ/E)
 	. = ..()
@@ -46,12 +63,29 @@
 			if(A.organ_action)
 				A.organ_action.Remove(H)
 
+/obj/item/organ_module/processor/has_duplicate_in(obj/item/organ/E)
+	for(var/obj/item/organ_module/module in E.organ_modules)
+		if(module == src)
+			continue
+		if(initial(module.module_type) == OM_TYPE_PROCESSOR)
+			return TRUE
+	return FALSE
+
 /obj/item/organ_module/processor/advanced
 	name = "Biotech Sigma CPU"
 	icon_state = "cpu_adv"
 	desc = "Advanced CPU capable of supporting a large number of prosthetic modules."
 	cpu_power = 4
 	loadout_cost = 0
+	available_in_charsetup = TRUE
+	augment_cost = 0
+	origin_tech = list(TECH_BIO = 3, TECH_DATA = 3)
+	matter = list(
+		MATERIAL_GOLD = 150,
+		MATERIAL_PLASTEEL = 3000,
+		MATERIAL_PLASTIC = 3000,
+		MATERIAL_GLASS = 1000
+	)
 
 /obj/item/organ_module/processor/super
 	name = "Raven Microcyber MK.3"
@@ -59,6 +93,16 @@
 	desc = "Produced by Raven Biotech corporation, this CPU is considered to be one of the most advanced processors for prosthetics."
 	cpu_power = 5
 	loadout_cost = 0
+	available_in_charsetup = TRUE
+	augment_cost = 0
+	origin_tech = list(TECH_BIO = 6, TECH_DATA = 6, TECH_BLUESPACE = 6)
+	matter = list(
+		MATERIAL_GOLD = 150,
+		MATERIAL_PLASTEEL = 3000,
+		MATERIAL_PLASTIC = 3000,
+		MATERIAL_GLASS = 1000,
+		MATERIAL_DIAMOND = 1500
+	)
 
 /obj/item/organ_module/processor/emp_act(severity)
 	. = ..()

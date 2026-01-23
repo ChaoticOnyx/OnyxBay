@@ -60,7 +60,7 @@
 	desc = "A sleek, sturdy box. That one has an explosion warning on it."
 	startswith = list(/obj/item/grenade/chem_grenade = 5)
 
-/obj/item/storage/box/syndie_kit/strange_seeds 
+/obj/item/storage/box/syndie_kit/strange_seeds
 	startswith = list(/obj/item/seeds/maneaterseed = 3)
 
 /obj/item/storage/box/syndie_kit/applenades
@@ -169,7 +169,57 @@
 	new /obj/item/storage/fancy/cigarettes/syndi_cigs/mind_breaker(src)
 	new /obj/item/storage/fancy/cigarettes/syndi_cigs/tricordrazine(src)
 
-	new /obj/item/flame/lighter/zippo(src)
+/obj/item/storage/box/syndie_kit/augment_armblade
+	name = "armblade augment kit"
+	startswith = list(
+		/obj/item/organ_module/active/simple/armblade,
+		/obj/item/implanter/installer/disposable
+	)
+
+/obj/item/storage/box/syndie_kit/augment_actuators
+	name = "actuator kit"
+	startswith = list(
+		/obj/item/organ_module/actuators,
+		/obj/item/organ_module/actuators,
+		/obj/item/implanter/installer/disposable,
+		/obj/item/implanter/installer/disposable
+	)
+
+/obj/item/storage/box/syndie_kit/augment_armpistol
+	name = "embedded pistol augment kit"
+	startswith = list(
+		/obj/item/organ_module/active/simple/armsmg,
+		/obj/item/implanter/installer/disposable
+	)
+
+/obj/item/storage/box/syndie_kit/augment_armshield
+	name = "embedded shield augment kit"
+	startswith = list(
+		/obj/item/organ_module/active/simple/armshield,
+		/obj/item/implanter/installer/disposable
+	)
+
+/obj/item/storage/box/syndie_kit/augment_energy_blade
+	name = "energy armblade augment kit"
+	startswith = list(
+		/obj/item/organ_module/active/simple/armblade/energy_blade,
+		/obj/item/implanter/installer/disposable
+	)
+
+/obj/item/storage/box/syndie_kit/augment_popout_shotgun
+	name = "pop-out shotgun augment kit"
+	startswith = list(
+		/obj/item/organ_module/active/simple/shotgun,
+		/obj/item/ammo_casing/shotgun,
+		/obj/item/implanter/installer/disposable
+	)
+
+/obj/item/storage/box/syndie_kit/augment_muscle
+	name = "muscle augment kit"
+	startswith = list(
+		/obj/item/organ_module/muscle,
+		/obj/item/organ_module/muscle
+	)
 
 /proc/fill_cigarre_package(obj/item/storage/fancy/cigarettes/C, list/reagents)
 	for(var/reagent in reagents)

@@ -20,7 +20,15 @@
 	desc = "A mechanical blade designed to be inserted into an arm. Gives you a nice advantage in a brawl."
 	action_button_name = "Deploy armblade"
 	icon_state = "armblade"
-	matter = list(MATERIAL_STEEL = 30)
+	matter = list(
+		MATERIAL_PLASTIC = 2000,
+		MATERIAL_PLATINUM = 3000,
+		MATERIAL_GOLD = 1500,
+		MATERIAL_PLASTEEL = 2000
+	)
 	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	holding_type = /obj/item/melee/implant/armblade
-	available_in_charsetup = TRUE
+	available_in_charsetup = FALSE
+	w_class = 2
+	cpu_load = 2
+	origin_tech = list(TECH_COMBAT = 4, TECH_ENGINEERING = 3)

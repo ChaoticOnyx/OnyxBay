@@ -169,6 +169,83 @@
 
 	return
 
+/mob/living/carbon/human/proc/get_cpu_name()
+	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	if(!istype(head))
+		return "CPU"
+	for(var/obj/item/organ_module/module in head.organ_modules)
+		if(initial(module.module_type) == OM_TYPE_PROCESSOR)
+			return module.name
+	return "CPU"
+
+/mob/living/carbon/human/proc/get_cpu_power()
+	var/total_cpu_power = 0
+	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	if(!istype(head))
+		return total_cpu_power
+	for(var/obj/item/organ_module/module in head.organ_modules)
+		if(initial(module.module_type) == OM_TYPE_PROCESSOR)
+			total_cpu_power += (isnull(initial(module.cpu_power)) ? 0 : initial(module.cpu_power))
+	return total_cpu_power
+
+/mob/living/carbon/human/proc/get_active_cpu_load()
+	var/loaded_cpu_power = 0
+	for(var/obj/item/organ/O in organs)
+		for(var/obj/item/organ_module/module in O.organ_modules)
+			var/load = isnull(initial(module.cpu_load)) ? 0 : initial(module.cpu_load)
+			if(load <= 0)
+				continue
+			if(istype(module, /obj/item/organ_module/active))
+				var/obj/item/organ_module/active/A = module
+				if(!A.is_cpu_active(src))
+					continue
+			loaded_cpu_power += load
+	for(var/obj/item/organ/I in internal_organs)
+		for(var/obj/item/organ_module/module in I.organ_modules)
+			var/load = isnull(initial(module.cpu_load)) ? 0 : initial(module.cpu_load)
+			if(load <= 0)
+				continue
+			if(istype(module, /obj/item/organ_module/active))
+				var/obj/item/organ_module/active/A = module
+				if(!A.is_cpu_active(src))
+					continue
+			loaded_cpu_power += load
+	return loaded_cpu_power
+
+/mob/living/carbon/human/proc/deactivate_active_augmentations()
+	for(var/obj/item/organ/O in organs)
+		for(var/obj/item/organ_module/active/A in O.organ_modules)
+			if(A.is_cpu_active(src))
+				A.deactivate(O, src)
+	for(var/obj/item/organ/I in internal_organs)
+		for(var/obj/item/organ_module/active/A in I.organ_modules)
+			if(A.is_cpu_active(src))
+				A.deactivate(I, src)
+
+/mob/living/carbon/human/proc/handle_cpu_overload()
+	var/total_cpu_power = get_cpu_power()
+	var/loaded_cpu_power = get_active_cpu_load()
+	if(loaded_cpu_power <= total_cpu_power)
+		cpu_overload_since = 0
+		cpu_overload_warned_at = 0
+		return
+
+	if(!cpu_overload_since)
+		cpu_overload_since = world.time
+
+	if(!cpu_overload_warned_at && (world.time - cpu_overload_since) >= 10 SECONDS)
+		to_chat(src, SPAN_WARNING("Warning! [get_cpu_name()] is running at its limit, brain damage is possible."))
+		cpu_overload_warned_at = world.time
+		return
+
+	if(cpu_overload_warned_at && (world.time - cpu_overload_warned_at) >= 10 SECONDS)
+		to_chat(src, SPAN_DANGER("Emergency [get_cpu_name()] reset, deactivating active augmentations."))
+		adjustBrainLoss(rand(10, 35))
+		deactivate_active_augmentations()
+		Paralyse(rand(1, 60) * 10)
+		cpu_overload_since = 0
+		cpu_overload_warned_at = 0
+
 /mob/living/carbon/human/get_gender()
 	return gender
 

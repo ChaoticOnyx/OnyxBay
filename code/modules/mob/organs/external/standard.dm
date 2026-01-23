@@ -115,6 +115,7 @@
 	max_damage = 45
 	min_broken_damage = 30
 	w_class = ITEM_SIZE_SMALL
+	max_module_size = 2 /// For augments
 	body_part = FOOT_LEFT
 	icon_position = LEFT
 	parent_organ = BP_L_LEG

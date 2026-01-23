@@ -109,35 +109,6 @@
 		if((mod.w_class + affected.occupied_space) > affected.max_module_size)
 			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
 			return
-		var/total_cpu_power = 0
-		var/loaded_cpu_power = 0
-		var/obj/item/organ/external/head/head = H.organs_by_name[BP_HEAD]
-		if(head)
-			for(var/obj/item/organ_module/module in head.organ_modules)
-				if(initial(module.module_type) == OM_TYPE_PROCESSOR)
-					total_cpu_power += (isnull(initial(module.cpu_power)) ? 0 : initial(module.cpu_power))
-		for(var/obj/item/organ/external/O in H.organs)
-			for(var/obj/item/organ_module/module in O.organ_modules)
-				var/module_type = initial(module.module_type)
-				if(module_type == OM_TYPE_ACTUATOR || module_type == OM_TYPE_PROCESSOR)
-					continue
-				loaded_cpu_power += (isnull(initial(module.cpu_load)) ? 0 : initial(module.cpu_load))
-		for(var/obj/item/organ/internal/I in H.internal_organs)
-			for(var/obj/item/organ_module/module in I.organ_modules)
-				var/module_type = initial(module.module_type)
-				if(module_type == OM_TYPE_ACTUATOR || module_type == OM_TYPE_PROCESSOR)
-					continue
-				loaded_cpu_power += (isnull(initial(module.cpu_load)) ? 0 : initial(module.cpu_load))
-
-		var/new_cpu_power = 0
-		if(initial(mod.module_type) == OM_TYPE_PROCESSOR && affected.organ_tag == BP_HEAD)
-			new_cpu_power = (isnull(initial(mod.cpu_power)) ? 0 : initial(mod.cpu_power))
-		var/new_cpu_load = 0
-		if(initial(mod.module_type) != OM_TYPE_ACTUATOR && initial(mod.module_type) != OM_TYPE_PROCESSOR)
-			new_cpu_load = (isnull(initial(mod.cpu_load)) ? 0 : initial(mod.cpu_load))
-		if((loaded_cpu_power + new_cpu_load) > (total_cpu_power + new_cpu_power))
-			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
-			return
 
 	M.visible_message(SPAN_WARNING("[user] is attemping to install something into [M]."))
 

@@ -18,7 +18,7 @@
 
 	internal_organs_size = 4 // Brain = 2, eyes = 1, tongue = 1
 
-	max_module_size = 2
+	max_module_size = 3
 
 	var/can_intake_reagents = 1
 

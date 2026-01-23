@@ -6,6 +6,16 @@
 	cooldown = 1 SECOND
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	loadout_cost = 0
+	available_in_charsetup = TRUE
+	w_class = 1
+	augment_cost = 1
+	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 6)
+	matter = list(
+		MATERIAL_GOLD = 250,
+		MATERIAL_SILVER = 250,
+		MATERIAL_PLATINUM = 250,
+		MATERIAL_PLASTIC = 250
+	)
 
 	var/action_verb = "sticks their finger in"
 	var/self_action_verb = "stick your finger in"

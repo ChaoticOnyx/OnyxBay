@@ -14,7 +14,7 @@
 	min_bruised_damage = 15
 	min_broken_damage = 30
 	var/isRobotize = 0
-	max_module_size = 99
+	max_module_size = 2
 
 /obj/item/organ/internal/eyes/New()
 	..()

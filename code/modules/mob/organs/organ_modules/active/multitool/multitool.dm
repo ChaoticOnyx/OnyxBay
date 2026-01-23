@@ -6,6 +6,12 @@
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)
 	matter = list(MATERIAL_STEEL = 100)
 	origin_tech = list(TECH_BIO = 3, TECH_POWER = 3)
+	augment_cost = 3
+	cpu_load = 1
+	w_class = 3
+	available_in_charsetup = TRUE
+	allowed_jobs = list(/datum/job/chief_engineer, /datum/job/engineer)
+	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL
 	var/list/items = list(
 		/obj/item/screwdriver,
 		/obj/item/wrench,
@@ -60,6 +66,15 @@
 
 /obj/item/organ_module/active/multitool/proc/on_holding_unequipped(obj/item, mob/mob)
 	mob.drop(item, src, TRUE)
+
+/obj/item/organ_module/active/multitool/is_cpu_active(mob/living/carbon/human/H)
+	if(!istype(H))
+		return FALSE
+	if(H.l_hand && (H.l_hand in items))
+		return TRUE
+	if(H.r_hand && (H.r_hand in items))
+		return TRUE
+	return FALSE
 
 /obj/item/organ_module/active/multitool/emp_act(severity)
 	. = ..()

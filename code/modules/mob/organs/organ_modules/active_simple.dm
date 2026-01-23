@@ -79,3 +79,6 @@
 /obj/item/organ_module/active/simple/organ_removed(obj/item/organ/external/E, mob/living/carbon/human/H)
 	retract(H, E)
 	return ..()
+
+/obj/item/organ_module/active/simple/is_cpu_active(mob/living/carbon/human/H)
+	return holding && !QDELETED(holding) && holding.loc != src

@@ -88,26 +88,8 @@
 			if(!organ_found)
 				to_chat(user, "No prosthetics located.")
 
-			var/total_cpu = 0
-			var/used_cpu = 0
-			var/obj/item/organ/external/head/head = H.organs_by_name[BP_HEAD]
-			if(head)
-				for(var/obj/item/organ_module/module in head.organ_modules)
-					if(initial(module.module_type) == OM_TYPE_PROCESSOR)
-						total_cpu += (isnull(initial(module.cpu_power)) ? 0 : initial(module.cpu_power))
-
-			for(var/obj/item/organ/external/ex in H.organs)
-				for(var/obj/item/organ_module/module in ex.organ_modules)
-					var/module_type = initial(module.module_type)
-					if(module_type == OM_TYPE_ACTUATOR || module_type == OM_TYPE_PROCESSOR)
-						continue
-					used_cpu += (isnull(initial(module.cpu_load)) ? 0 : initial(module.cpu_load))
-			for(var/obj/item/organ/internal/internal in H.internal_organs)
-				for(var/obj/item/organ_module/module in internal.organ_modules)
-					var/module_type = initial(module.module_type)
-					if(module_type == OM_TYPE_ACTUATOR || module_type == OM_TYPE_PROCESSOR)
-						continue
-					used_cpu += (isnull(initial(module.cpu_load)) ? 0 : initial(module.cpu_load))
+			var/total_cpu = H.get_cpu_power()
+			var/used_cpu = H.get_active_cpu_load()
 
 			to_chat(user, "<hr>")
 			to_chat(user, "<span class='notice'>Augmentations:</span>")
@@ -119,6 +101,10 @@
 				var/list/modules = list()
 				for(var/obj/item/organ_module/module in organ.organ_modules)
 					var/load = (isnull(initial(module.cpu_load)) ? 0 : initial(module.cpu_load))
+					if(load > 0 && istype(module, /obj/item/organ_module/active))
+						var/obj/item/organ_module/active/A = module
+						if(!A.is_cpu_active(H))
+							load = 0
 					modules += "[module.name] (CPU [load])"
 				if(length(modules))
 					augment_found = TRUE

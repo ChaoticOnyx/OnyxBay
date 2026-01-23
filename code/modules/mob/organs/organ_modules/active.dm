@@ -61,6 +61,9 @@
 /obj/item/organ_module/active/proc/deactivate(obj/item/organ/E, mob/living/carbon/human/H)
 	pass()
 
+/obj/item/organ_module/active/proc/is_cpu_active(mob/living/carbon/human/H)
+	return FALSE
+
 /datum/action/item_action/organ_module
 	name = "Activate Organ Module"
 	check_flags = AB_CHECK_ALIVE

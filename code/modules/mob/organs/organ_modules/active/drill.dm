@@ -4,6 +4,18 @@
 	action_button_name = "Deploy drill"
 	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	holding_type = /obj/item/pickaxe/drill
+	available_in_charsetup = TRUE
+	w_class = 4
+	cpu_load = 1
+	augment_cost = 3
+	origin_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 2, TECH_BIO = 2)
+	matter = list(
+		MATERIAL_STEEL = 8000,
+		MATERIAL_PLASTIC = 2000,
+		MATERIAL_PLASTEEL = 1000
+	)
+	allowed_jobs = list(/datum/job/mining)
+	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL
 
 /obj/item/organ_module/active/simple/drill/emp_act(severity)
 	. = ..()

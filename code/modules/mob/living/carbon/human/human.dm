@@ -118,6 +118,10 @@
 		stat("Move Mode:", "[m_intent]")
 		stat("Poise:", "[round(100/poise_pool*poise)]%")
 		stat("Special Ability:", "[active_ability]")
+		var/cpu_total = get_cpu_power()
+		var/cpu_used = get_active_cpu_load()
+		if(cpu_total || cpu_used)
+			stat("CPU:", "[cpu_used]/[cpu_total]")
 
 		if(evacuation_controller)
 			var/eta_status = evacuation_controller.get_status_panel_eta()

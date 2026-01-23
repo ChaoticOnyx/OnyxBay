@@ -4,11 +4,19 @@
 	action_button_name = "Engage nerve dampeners"
 	desc = "Each activation of this augment provides a strong painkilling effect for around thirty seconds, but will be followed by a powerful comedown. Excessive short-term use may cause brain damage."
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
-	origin_tech = list(TECH_DATA = 4, TECH_BIO = 4)
+	origin_tech = list(TECH_BIO = 6, TECH_COMBAT = 7)
 	cooldown = 2 MINUTES
 	loadout_cost = 0
 	available_in_charsetup = TRUE
 	allowed_organs = list(BP_CHEST)
+	allowed_jobs = list(/datum/job/hos, /datum/job/warden, /datum/job/officer, /datum/job/paramedic, /datum/job/captain, /datum/job/mining)
+	cpu_load = 1
+	augment_cost = 7
+	w_class = 1
+	matter = list(
+		MATERIAL_PLASTIC = 4000,
+		MATERIAL_SILVER = 8000
+	)
 	var/stop_thinking_at
 
 /obj/item/organ_module/active/nerve_dampeners/activate(obj/item/organ/E, mob/living/carbon/human/H)
@@ -16,7 +24,10 @@
 		return
 
 	to_chat(H, SPAN_NOTICE("You activate your [name], and feel a wave of numbness wash over you!"))
-	H.no_pain = TRUE
+	if(!H.host_pain_disable())
+		to_chat(H, SPAN_WARNING("Your pain receptors are already numb!"))
+		return
+
 	stop_thinking_at = world.time + 30 SECONDS
 	set_next_think(world.time + 1 SECOND)
 	var/brain_loss = H.getBrainLoss()
@@ -45,7 +56,7 @@
 				if(initial(module.module_type) == OM_TYPE_PROCESSOR)
 					cpu_name = module.name
 					break
-		to_chat(usr, SPAN_WARNING("Your [cpu_name] send a signal to nerve dumpeners, but it is not ready to be used again!"))
+		to_chat(usr, SPAN_WARNING("Your [cpu_name] sends a signal to nerve dampeners, but it is not ready to be used again!"))
 		return
 
 	activate(O, O?.owner)
@@ -57,19 +68,21 @@
 		set_next_think(0)
 		return
 
+	if(!stop_thinking_at)
+		set_next_think(0)
+		return
+
 	if(world.time >= stop_thinking_at)
 		stop_thinking_at = null
 		set_next_think(0)
 		to_chat(H, SPAN_WARNING("You abruptly feel intensely exhausted as sensation returns."))
-		H.no_pain = FALSE
+		H.host_pain_enable()
 		H.drowsyness = max(H.drowsyness, 15)
 		H.confused += 15
 		H.slurring = max(H.slurring, 30)
-		H.chem_effects[CE_PAINKILLER] = 0
 		H.damage_poise(10)
 		return
 
-	H.add_chemical_effect(CE_PAINKILLER, 160)
 	set_next_think(world.time + 2 SECONDS)
 
 /obj/item/organ_module/active/nerve_dampeners/emp_act(severity)
@@ -86,3 +99,13 @@
 
 	H.adjustBrainLoss(rand(0, 10))
 	H.custom_pain("Your nerves flare with agony!", 60)
+
+/obj/item/organ_module/active/nerve_dampeners/deactivate(obj/item/organ/E, mob/living/carbon/human/H)
+	if(stop_thinking_at)
+		stop_thinking_at = null
+		set_next_think(0)
+		if(istype(H))
+			H.host_pain_enable()
+
+/obj/item/organ_module/active/nerve_dampeners/is_cpu_active(mob/living/carbon/human/H)
+	return stop_thinking_at && world.time < stop_thinking_at

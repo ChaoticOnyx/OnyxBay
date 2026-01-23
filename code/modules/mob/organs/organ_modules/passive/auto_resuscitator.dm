@@ -5,6 +5,15 @@
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	loadout_cost = 0
 	allowed_organs = list(BP_HEART)
+	available_in_charsetup = TRUE
+	augment_cost = 4
+	cpu_load = 0
+	origin_tech = list(TECH_BIO = 3)
+	matter = list(
+		MATERIAL_STEEL = 1000,
+		MATERIAL_PLASTIC = 2000,
+		MATERIAL_GLASS = 500
+	)
 	/// How many charges it has.
 	var/uses = 1
 	/// Whether the implant has already been spent.
@@ -76,7 +85,7 @@
 				cpu_name = module.name
 				break
 	to_chat(owner, SPAN_NOTICE("[cpu_name] activates [initial(name)]."))
-	sound_to(owner, sound('sound/voice/auto_resuscitator.ogg', volume = 50))
+	sound_to(owner, sound('sound/voice/Hevsounds/flatline_medical.ogg', volume = 50))
 
 	owner.apply_damage(burn_per_resuscitate, BURN, BP_CHEST)
 	heal(owner)
@@ -97,6 +106,17 @@
 	name = "Theranos auto-resuscitator"
 	desc = "An advanced auto-resuscitator, designed to deal with extreme situations."
 	icon_state = "armor"
+	available_in_charsetup = TRUE
+	augment_cost = 10
+	cpu_load = 0
+	allowed_jobs = list(/datum/job/hos, /datum/job/captain, /datum/job/cmo, /datum/job/iaa, /datum/job/hop)
+	origin_tech = list(TECH_BIO = 6, TECH_COMBAT = 6, TECH_ENGINEERING = 7, TECH_BLUESPACE = 4, TECH_PLASMA = 4)
+	matter = list(
+		MATERIAL_URANIUM = 50,
+		MATERIAL_GOLD = 500,
+		MATERIAL_DIAMOND = 500,
+		MATERIAL_PLASTEEL = 1000
+	)
 	resuscitate_reagents = list(
 		/datum/reagent/painkiller = 15,
 		/datum/reagent/bicaridine = 30,

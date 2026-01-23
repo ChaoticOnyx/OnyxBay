@@ -5,9 +5,17 @@
 	icon_state = "popout_shotgun"
 	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	holding_type = /obj/item/gun/projectile/shotgun/popout
-	origin_tech = list(TECH_MATERIAL = 3, TECH_COMBAT = 3)
-	module_flags = OM_FLAG_DEFAULT
-	available_in_charsetup = TRUE
+	origin_tech = list(TECH_COMBAT = 8, TECH_ILLEGAL = 6, TECH_BIO = 5, TECH_MATERIAL = 4)
+	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL
+	available_in_charsetup = FALSE
+	cpu_load = 1
+	w_class = 4
+	matter = list(
+		MATERIAL_DURANIUM = 1000,
+		MATERIAL_PLASTEEL = 2000,
+		MATERIAL_SILVER = 500,
+		MATERIAL_GOLD = 500
+	)
 
 /obj/item/organ_module/active/simple/shotgun/emp_act(severity)
 	. = ..()
@@ -21,14 +29,8 @@
 	if(!prob(chance))
 		return
 
-	if(QDELETED(holding) && holding_type)
-		holding = new holding_type(src)
-		holding.canremove = FALSE
-	if(!holding || !istype(holding, /obj/item/gun/projectile))
-		return
-
-	var/obj/item/gun/projectile/G = holding
-	if(!G.chambered && (!islist(G.loaded) || !G.loaded.len))
+	var/obj/item/gun/projectile/G = get_shotgun()
+	if(!G || !has_ammo(G))
 		return
 
 	H.visible_message(
@@ -36,6 +38,19 @@
 		SPAN_DANGER("Your pop-out shotgun fires inside your arm!")
 	)
 	G.Fire(H, H, pointblank = TRUE, target_zone = E.organ_tag)
+
+/obj/item/organ_module/active/simple/shotgun/proc/get_shotgun()
+	if(QDELETED(holding))
+		holding = null
+	if(!holding && holding_type)
+		holding = new holding_type(src)
+		holding.canremove = FALSE
+	if(istype(holding, /obj/item/gun/projectile))
+		return holding
+	return null
+
+/obj/item/organ_module/active/simple/shotgun/proc/has_ammo(obj/item/gun/projectile/G)
+	return G.chambered || (islist(G.loaded) && G.loaded.len)
 
 /obj/item/gun/projectile/shotgun/popout
 	name = "pop-out shotgun"

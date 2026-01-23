@@ -38,6 +38,8 @@
 	var/pressure_alert = 0
 	var/temperature_alert = 0
 	var/heartbeat = 0
+	var/cpu_overload_since = 0
+	var/cpu_overload_warned_at = 0
 
 /mob/living/carbon/human/Initialize()
 	. = ..()
@@ -88,6 +90,7 @@
 		handle_toxins()
 		handle_shock()
 		handle_pain()
+		handle_cpu_overload()
 		handle_medical_side_effects()
 		handle_poise()
 		update_canmove(TRUE) // Otherwise we'll have a 1 tick latency between actual getting-up and the animation update

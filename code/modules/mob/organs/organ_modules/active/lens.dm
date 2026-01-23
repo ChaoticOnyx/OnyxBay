@@ -4,6 +4,7 @@
 	allowed_organs = list(BP_EYES, BP_OPTICS)
 	cpu_load = 0
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL | OM_FLAG_MECHANICAL
+	available_in_charsetup = FALSE
 	loadout_cost = 0
 
 	/// Influences darksight range
@@ -57,6 +58,7 @@
 	name = "prescription lenses"
 	prescription = 7
 
+
 /obj/item/organ_module/active/lenses/hud
 	name = "hud lenses"
 	toggleable = TRUE
@@ -64,6 +66,11 @@
 	action_button_name = "HUD lenses"
 	available_in_charsetup = TRUE
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL | OM_FLAG_MECHANICAL
+	loadout_cost = 0
+	augment_cost = 5
+	w_class = 1
+	cpu_load = 0
+	origin_tech = list(TECH_BIO = 5, TECH_MATERIAL = 3, TECH_ENGINEERING = 2, TECH_DATA = 4)
 	/// Will process security hud if TRUE
 	var/sec_hud = FALSE
 	/// Will process medhud if TRUE
@@ -81,14 +88,17 @@
 	icon_state = "hunterseye"
 	sec_hud = TRUE
 	loadout_cost = 0
+	augment_cost = 5
 	available_in_charsetup = TRUE
 	allowed_jobs = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer)
+	flash_protection = FLASH_PROTECTION_MODERATE
 
 /obj/item/organ_module/active/lenses/hud/med
 	name = "Medical HUD implant"
 	icon_state = "eye_medical"
 	med_hud = TRUE
 	loadout_cost = 0
+	augment_cost = 3
 	available_in_charsetup = TRUE
 	allowed_jobs = list(/datum/job/cmo, /datum/job/doctor, /datum/job/psychiatrist, /datum/job/chemist, /datum/job/paramedic)
 
@@ -111,7 +121,8 @@
 			toggled ? "<b>[user]</b>'s pupils narrow..." : "<b>[user]</b>'s pupils return to normal.",
 			range = 3
 		)
-		user.update_hud_eye_glow()
+		if(istype(user, /mob/living/carbon/human))
+			user.update_hud_eye_glow()
 		return
 
 	if(choices[choice] == "remove")
@@ -130,5 +141,16 @@
 		flash_protection = initial(flash_protection)
 		sec_hud = FALSE
 		med_hud = FALSE
+
+/obj/item/organ_module/active/lenses/hud/deactivate(obj/item/organ/E, mob/living/carbon/human/user)
+	if(toggled)
 		toggled = FALSE
-		user.update_hud_eye_glow()
+		user.visible_message(
+			"<b>[user]</b>'s pupils return to normal.",
+			range = 3
+		)
+		if(istype(user, /mob/living/carbon/human))
+			user.update_hud_eye_glow()
+
+/obj/item/organ_module/active/lenses/hud/is_cpu_active(mob/living/carbon/human/H)
+	return toggled

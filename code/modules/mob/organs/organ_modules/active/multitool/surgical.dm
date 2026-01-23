@@ -6,13 +6,24 @@
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)
 	holding_type = /obj/item/scalpel/manager
 	loadout_cost = 0
-	allowed_jobs = list(/datum/job/cmo, /datum/job/doctor, /datum/job/psychiatrist, /datum/job/chemist, /datum/job/paramedic)
+	allowed_jobs = list(/datum/job/cmo)
+	augment_cost = 6
+	cpu_load = 2
+	w_class = 2
+	available_in_charsetup = TRUE
+	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL
 
 /obj/item/organ_module/active/multitool/surgical
 	name = "surgical multitool module"
 	desc = "An augment designed to hold multiple surgical instruments."
 	verb_name = "Deploy Surgical Tool"
 	icon_state = "multitool_medical"
+	augment_cost = 3
+	cpu_load = 1
+	w_class = 3
+	available_in_charsetup = TRUE
+	allowed_jobs = list(/datum/job/cmo, /datum/job/doctor)
+	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL
 	items = list(
 		/obj/item/bonesetter,
 		/obj/item/cautery,

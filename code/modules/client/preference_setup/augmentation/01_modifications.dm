@@ -18,15 +18,33 @@
 	W.write("organ_modules", pref.organ_modules)
 
 /datum/category_item/player_setup_item/augmentation/get_lp_cost()
-    for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
-        for(var/obj/item/organ_module/mod as anything in pref.organ_modules[organ_tag])
-            if(pref.is_default_module(organ_tag, mod))
-                continue
-            if(initial(mod.module_type) == OM_TYPE_ACTUATOR || initial(mod.module_type) == OM_TYPE_PROCESSOR)
-                continue
-            if(initial(mod.loadout_cost) <= 0)
-                continue
-            . += initial(mod.loadout_cost)
+	LAZYINITLIST(pref.organ_modules)
+	for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
+		for(var/obj/item/organ_module/mod as anything in pref.organ_modules[organ_tag])
+			if(pref.is_default_module(organ_tag, mod))
+				continue
+			if(initial(mod.module_type) == OM_TYPE_ACTUATOR || initial(mod.module_type) == OM_TYPE_PROCESSOR)
+				continue
+			if(initial(mod.augment_cost) <= 0)
+				continue
+			. += initial(mod.augment_cost)
+
+/datum/category_item/player_setup_item/augmentation/proc/get_loadout_points_cost()
+	LAZYINITLIST(pref.gear_list)
+	var/list/gears = pref.gear_list[pref.gear_slot]
+	if(!islist(gears))
+		return 0
+	for(var/i = 1; i <= gears.len; i++)
+		var/datum/gear/G = gear_datums[gears[i]]
+		if(G)
+			. += G.cost
+
+/datum/category_item/player_setup_item/augmentation/proc/get_module_loadout_name(module_path)
+	if(module_path == /obj/item/organ_module/active/simple/pen)
+		return "embedded pen module"
+	if(module_path == /obj/item/organ_module/active/cyber_hair)
+		return "synthetic hair extensions module"
+	return null
 
 /datum/category_item/player_setup_item/augmentation/sanitize_character()
 	LAZYINITLIST(pref.organ_data)
@@ -75,7 +93,7 @@
 	. = list()
 
 	. += "<style>div.block{margin: 3px 0px;padding: 4px 0px;}"
-	. += "span.color_holder_box{display: inline-block; width: 20px; height: 8px; border:1px solid #000; padding: 0px;}<"
+	. += "span.color_holder_box{display: inline-block; width: 20px; height: 8px; border:1px solid #000; padding: 0px;}"
 	. += "a.Organs_active {background: #cc5555;}</style>"
 
 	. +=  "<script language='javascript'> [js_byjax] function set(param, value) {window.location='?src=\ref[src];'+param+'='+value;}</script>"
@@ -151,8 +169,14 @@
 			return TOPIC_REFRESH
 
 		var/list/current_modules = pref.organ_modules ? pref.organ_modules[pref.current_organ] : null
+		var/loadout_gear_name = get_module_loadout_name(module_path)
 		if(islist(current_modules) && (module_path in current_modules))
 			LAZYREMOVE(pref.organ_modules[pref.current_organ], module_path)
+			if(loadout_gear_name)
+				LAZYINITLIST(pref.gear_list)
+				if(!islist(pref.gear_list[pref.gear_slot]))
+					pref.gear_list[pref.gear_slot] = list()
+				LAZYREMOVE(pref.gear_list[pref.gear_slot], loadout_gear_name)
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 		if(initial(module_path.allowed_jobs) && length(initial(module_path.allowed_jobs)))
@@ -167,12 +191,21 @@
 
 		if(initial(module_path.module_type) == OM_TYPE_PROCESSOR && pref.current_organ != BP_HEAD)
 			return TOPIC_REFRESH
-		if(initial(module_path.module_type) == OM_TYPE_ACTUATOR && (pref.current_organ == BP_HEAD || pref.organ_data[pref.current_organ] == "cyborg"))
+		if(initial(module_path.module_type) == OM_TYPE_ACTUATOR && (pref.current_organ == BP_HEAD || pref.organ_data[pref.current_organ] == "cyborg" || (pref.current_organ in list(BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND))))
 			return TOPIC_REFRESH
 
 		pref.total_aug_points = pref.get_aug_cost()
-		if((initial(module_path.loadout_cost) + pref.total_aug_points) > pref.max_augmentation_points)
+		if((initial(module_path.augment_cost) + pref.total_aug_points) > pref.max_augmentation_points)
 			return TOPIC_REFRESH
+		if(loadout_gear_name)
+			var/datum/gear/G = gear_datums[loadout_gear_name]
+			var/loadout_cost = G ? G.cost : 0
+			var/loadout_points = get_loadout_points_cost()
+			var/max_points = pref.max_loadout_points
+			if(!max_points)
+				max_points = config.character_setup.max_loadout_points + config.character_setup.extra_loadout_points
+			if((loadout_points + loadout_cost) > max_points)
+				return TOPIC_REFRESH
 
 		var/total_cpu_power = 0
 		var/loaded_cpu_power = 0
@@ -181,8 +214,6 @@
 				total_cpu_power += module_cpu_power_for(organ_tag, path)
 				loaded_cpu_power += module_cpu_load_for(organ_tag, path)
 
-		var/new_cpu_power = module_cpu_power_for(pref.current_organ, module_path)
-		var/new_cpu_load = module_cpu_load_for(pref.current_organ, module_path)
 		var/total_space = get_organ_total_space(pref.current_organ)
 		var/occupied_space = get_organ_occupied_space(pref.current_organ)
 
@@ -195,10 +226,6 @@
 				if(initial(mod.module_type) != initial(module_path.module_type))
 					continue
 
-				var/new_total_cpu_power = total_cpu_power - module_cpu_power_for(pref.current_organ, mod) + new_cpu_power
-				var/new_loaded_cpu_power = loaded_cpu_power - module_cpu_load_for(pref.current_organ, mod) + new_cpu_load
-				if(new_loaded_cpu_power > new_total_cpu_power)
-					return TOPIC_REFRESH
 				var/new_occupied_space = occupied_space - initial(mod.w_class) + initial(module_path.w_class)
 				if(new_occupied_space > total_space)
 					return TOPIC_REFRESH
@@ -210,14 +237,15 @@
 		if(LAZYFIND(pref.organ_modules[pref.current_organ], module_path))
 			LAZYREMOVE(pref.organ_modules[pref.current_organ], module_path)
 		else
-			var/new_total_cpu_power = total_cpu_power + new_cpu_power
-			var/new_loaded_cpu_power = loaded_cpu_power + new_cpu_load
-			if(new_loaded_cpu_power > new_total_cpu_power)
-				return TOPIC_REFRESH
 			var/new_occupied_space = occupied_space + initial(module_path.w_class)
 			if(new_occupied_space > total_space)
 				return TOPIC_REFRESH
 			LAZYDISTINCTADD(pref.organ_modules[pref.current_organ], module_path)
+			if(loadout_gear_name)
+				LAZYINITLIST(pref.gear_list)
+				if(!islist(pref.gear_list[pref.gear_slot]))
+					pref.gear_list[pref.gear_slot] = list()
+				LAZYDISTINCTADD(pref.gear_list[pref.gear_slot], loadout_gear_name)
 
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
@@ -386,6 +414,8 @@
 		return "<b>Augmentations not avaible.</b>"
 	if(organ == BP_HEART && pref.organ_data[BP_HEART] == "mechanical")
 		return "<b>Heart augmentations are only available for organic hearts.</b>"
+	if(organ in list(BP_LUNGS, BP_LIVER, BP_KIDNEYS, BP_TONGUE, BP_INTESTINES, BP_BLADDER))
+		return "<b>Augmentations not avaible.</b>"
 
 	var/total_space = get_organ_total_space(organ)
 	var/occupied_space = get_organ_occupied_space(organ)
@@ -429,14 +459,15 @@
 					break
 
 		var/list/current_modules = pref.organ_modules ? pref.organ_modules[pref.current_organ] : null
-		if(!job_allows_this_module && (!islist(current_modules) || !(mod_path in current_modules)))
-			continue
+		var/locked_by_job = !job_allows_this_module && (!islist(current_modules) || !(mod_path in current_modules))
 
 		if(!(organ in allowed))
 			continue
+		if(!islist(allowed))
+			continue
 
 		if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
-			if(organ == BP_HEAD || pref.organ_data[organ] == "cyborg" || !(organ in BP_ALL_LIMBS))
+			if(organ == BP_HEAD || pref.organ_data[organ] == "cyborg" || !(organ in BP_ALL_LIMBS) || (organ in list(BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND)))
 				continue
 		if(initial(mod.module_type) == OM_TYPE_PROCESSOR)
 			if(organ != BP_HEAD)
@@ -445,36 +476,47 @@
 			if(pref.organ_data[BP_EYES] != "mechanical")
 				continue
 
-		var/list/job_restriction_data
+		var/list/job_restriction_data = list()
 		if(length(mod.allowed_jobs))
-			job_restriction_data += "<br><b>Has jobs restrictions!</b>"
-			job_restriction_data += "<br>"
+			var/list/job_titles = list()
+			job_restriction_data += "<br><b>Has jobs restrictions!</b> "
 			job_restriction_data += "<i>"
-			var/ind = 0
 			for(var/allowed_type in mod.allowed_jobs)
 				if(!ispath(allowed_type, /datum/job))
 					continue
 
 				var/datum/job/J = job_master ? job_master.occupations_by_type[allowed_type] : new allowed_type
-				++ind
-				if(ind > 1)
-					job_restriction_data += ", "
 				if(selected_jobs && length(selected_jobs) && (J in selected_jobs))
-					job_restriction_data += "<font color='#55cc55'>[J.title]</font>"
+					job_titles += "<font color='#55cc55'>[J.title]</font>"
 				else
-					job_restriction_data += "<font color='#808080'>[J.title]</font>"
+					job_titles += "<font color='#808080'>[J.title]</font>"
 
-			job_restriction_data = jointext(job_restriction_data, "<br>")
+			job_restriction_data += jointext(job_titles, ", ")
+			job_restriction_data += "</i>"
+			job_restriction_data = jointext(job_restriction_data, "")
+		else
+			job_restriction_data = ""
 
-		var/points_suffix = mod.loadout_cost != 1 ? "s" : ""
 		var/module_cpu_load = isnull(mod.cpu_load) ? 0 : mod.cpu_load
 		var/cpu_info = "CPU load: [module_cpu_load]"
-		var/price = "<b>Price: [mod.loadout_cost] point[points_suffix]</b> <br><b>[cpu_info]</b>"
-
-		if(LAZYFIND(pref.organ_modules[pref.current_organ], mod_path))
-			data += "<div style = 'padding:2px' onclick=\"set('module', '[organ] [mod_path]');\" class='block'><font color='#4f7529'><b>[capitalize(mod.name)] [price]</b><br>[mod.desc] [job_restriction_data]</font></div>"
+		var/price
+		var/loadout_gear_name = get_module_loadout_name(mod_path)
+		if(loadout_gear_name)
+			var/datum/gear/G = gear_datums[loadout_gear_name]
+			var/loadout_cost = G ? G.cost : 0
+			var/points_suffix = loadout_cost != 1 ? "s" : ""
+			price = "<b>Loadout Points: [loadout_cost] point[points_suffix]</b> <br><b>[cpu_info]</b>"
 		else
-			data += "<div style = 'padding:2px' onclick=\"set('module', '[organ] [mod_path]');\" class='block'><font color='#ee0000'><b>[capitalize(mod.name)] [price]</b><br>[mod.desc] [job_restriction_data]</font></div>"
+			var/points_suffix = mod.augment_cost != 1 ? "s" : ""
+			price = "<b>Price: [mod.augment_cost] point[points_suffix]</b> <br><b>[cpu_info]</b>"
+
+		var/title_line = "<b>[capitalize(mod.name)]</b>"
+		if(LAZYFIND(pref.organ_modules[pref.current_organ], mod_path))
+			data += "<div style = 'padding:2px' onclick=\"set('module', '[organ] [mod_path]');\" class='block'><font color='#4f7529'>[title_line]<br>[price]<br>[mod.desc] [job_restriction_data]</font></div>"
+		else if(locked_by_job)
+			data += "<div style = 'padding:2px' class='block'><font color='#808080'>[title_line]<br>[price]<br>[mod.desc] [job_restriction_data]</font></div>"
+		else
+			data += "<div style = 'padding:2px' onclick=\"set('module', '[organ] [mod_path]');\" class='block'><font color='#ee0000'>[title_line]<br>[price]<br>[mod.desc] [job_restriction_data]</font></div>"
 
 	data += "</td></tr></table>"
 
