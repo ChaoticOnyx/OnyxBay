@@ -46,6 +46,7 @@
 	armor_penetration = 20
 	w_class = ITEM_SIZE_NORMAL
 	spray_amount = 1.2 LITERS
+	spray_cooldown = 1 SECOND
 	max_volume = 0
 	safety = 0
 	external_source = TRUE
@@ -77,7 +78,7 @@
 	if(user.a_intent == I_HELP)
 		if(!base_unit)
 			return
-		if(world.time < last_use + 20) // We still catch help intent to not randomly attack people
+		if(world.time < last_use + spray_cooldown) // We still catch help intent to not randomly attack people
 			return
 		if(!base_unit.reagents.total_volume)
 			to_chat(user, SPAN("notice", "\The [base_unit] is empty."))
@@ -97,7 +98,7 @@
 	if(!base_unit.reagents.total_volume)
 		to_chat(usr, SPAN("notice", "\The [src] is empty."))
 		return
-	if(world.time < last_use + 20)
+	if(world.time < last_use + 1 SECOND)
 		return
 	last_use = world.time
 	playsound(src.loc, 'sound/effects/extinguish.ogg', 75, 1, -3)
