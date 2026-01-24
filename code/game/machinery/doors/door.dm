@@ -193,7 +193,6 @@
 
 	if(damage)
 		//cap projectile damage so that there's still a minimum number of hits required to break the door
-		//Exception: breaching shells ignore the cap
 		if(is_breaching)
 			take_damage(damage)
 		else
