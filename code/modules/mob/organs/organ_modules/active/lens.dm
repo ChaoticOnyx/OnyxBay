@@ -61,6 +61,7 @@
 
 /obj/item/organ_module/active/lenses/hud
 	name = "hud lenses"
+	desc = "With this Zeng-Hu technology - you can forget about fragile glasses on your face. Works with every hud matrix."
 	toggleable = TRUE
 	toggled = FALSE
 	action_button_name = "HUD lenses"
@@ -85,6 +86,7 @@
 
 /obj/item/organ_module/active/lenses/hud/sec
 	name = "Security HUD implant"
+	desc = "Zeng-Hu augmentation for eyes of military personell. Flash protection included."
 	icon_state = "hunterseye"
 	sec_hud = TRUE
 	loadout_cost = 0
@@ -95,6 +97,7 @@
 
 /obj/item/organ_module/active/lenses/hud/med
 	name = "Medical HUD implant"
+	desc = "Provides you with real-time vitals of every person you see."
 	icon_state = "eye_medical"
 	med_hud = TRUE
 	loadout_cost = 0

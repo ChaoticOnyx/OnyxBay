@@ -1,5 +1,6 @@
 /obj/item/organ_module/active/health_scanner
 	name = "integrated health scanner"
+	desc = "Vey-Med augmentation, used to check your vitals anytime."
 	action_button_name = "Activate Health Scanner"
 	icon_state = "iatric_monitor"
 	cooldown = 8

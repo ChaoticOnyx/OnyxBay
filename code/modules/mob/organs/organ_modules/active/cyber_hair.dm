@@ -1,5 +1,6 @@
 /obj/item/organ_module/active/cyber_hair
 	name = "synthetic hair extensions"
+	desc = "Synthetical hair augmentations, that allows you to change your hairstyle and haicolor. Facial hair included! Remember, style comes first"
 	icon_state = "cranial_aug"
 	action_button_name = "Synthetic hair extensions"
 	cooldown = 20

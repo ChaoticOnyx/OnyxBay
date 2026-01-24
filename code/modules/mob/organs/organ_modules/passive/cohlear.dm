@@ -1,6 +1,6 @@
 /obj/item/organ_module/cochlear
 	name = "cochlear implant"
-	desc = "A synthetic replacement for the structures within the ear, allowing the user to hear without requiring external tools."
+	desc = "Ear augmentation, that protects your hearing from loud sounds. Mostly used by people of loud jobs."
 	allowed_organs =  list(BP_HEAD)
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	icon_state = "cranial_aug"

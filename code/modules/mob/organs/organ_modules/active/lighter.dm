@@ -1,5 +1,6 @@
 /obj/item/organ_module/active/simple/lighter
 	name = "integrated lighter"
+	desc = "A compact internal lighter for a quick flame whenever you need it."
 	icon_state = "lighter-aug"
 	action_button_name = "Deploy lighter"
 	holding_type = /obj/item/flame/lighter/zippo

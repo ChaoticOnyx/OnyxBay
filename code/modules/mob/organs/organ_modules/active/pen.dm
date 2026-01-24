@@ -1,5 +1,6 @@
 /obj/item/organ_module/active/simple/pen
 	name = "retractable pen"
+	desc = "A discreet pen integrated into your hand for quick notes and signatures."
 	icon_state = "augment"
 	action_button_name = "Deploy Pen"
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)

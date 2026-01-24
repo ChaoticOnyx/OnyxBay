@@ -1,5 +1,6 @@
 /obj/item/organ_module/active/translator
 	name = "universal translator"
+	desc = "NanoTrasen designed. Translates to you other races and some human languages."
 	/// List of languages that the augment can translate.
 	var/list/languages = list(
 		LANGUAGE_GALCOM,

@@ -1,7 +1,7 @@
 /obj/item/organ_module/actuators
 	name = "Organ actuator"
 	icon_state = "ams"
-	desc = "A mechanic actuator that fits most prostheses."
+	desc = "A mechanic actuator, used to connect augmentations from organic limbs to CPU. Without it - nithing will work, nor hand, nor augmentation."
 	allowed_organs = list(BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND)
 	module_type = OM_TYPE_ACTUATOR
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
