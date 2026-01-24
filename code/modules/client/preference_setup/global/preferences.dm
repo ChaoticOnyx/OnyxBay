@@ -335,7 +335,7 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[LIGHTING_LAMPS_RENDERER]
+	var/atom/movable/renderer/R = preference_mob.renderers[LIGHTING_LAMPS_GLOW_RENDERER]
 	R.GraphicsUpdate()
 
 /datum/client_preference/glare
@@ -349,7 +349,7 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[LIGHTING_LAMPS_RENDERER]
+	var/atom/movable/renderer/R = preference_mob.renderers[LIGHTING_LAMPS_GLARE_RENDERER]
 	R.GraphicsUpdate()
 
 /datum/client_preference/exposure
