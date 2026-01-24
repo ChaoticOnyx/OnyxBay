@@ -205,46 +205,104 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	name  = ABOVE_LIGHTING_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = EFFECTS_ABOVE_LIGHTING_PLANE
-	alpha = 0
 
 /// For BLOOOOM
-
-/atom/movable/renderer/lighting_lamps_renderer
+/atom/movable/renderer/lighting_lamps_source_renderer
 	name = LIGHTING_LAMPS_RENDERER
-	group = RENDER_GROUP_SCENE
+	group = RENDER_GROUP_NONE
 	plane = LIGHTING_LAMPS_PLANE
-	relay_blend_mode = BLEND_OVERLAY
 	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
 	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
 
-/atom/movable/renderer/lighting_lamps_renderer/Initialize(mapload, mob/owner)
+	render_target_name = LIGHTING_LAMPS_RENDER_TARGET
+
+/atom/movable/renderer/lighting_lamps_source_renderer/Initialize(mapload, mob/owner)
+	. = ..()
+	if(relay)
+		relay.alpha = 0
+		relay.mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+
+/atom/movable/renderer/lighting_lamps_selfglow_renderer
+	name = LIGHTING_LAMPS_GLOW_RENDERER
+	group = RENDER_GROUP_SCENE
+	plane = LIGHTING_LAMPS_GLOW_PLANE
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
+	blend_mode = BLEND_ADD
+
+/atom/movable/renderer/lighting_lamps_selfglow_renderer/Initialize(mapload, mob/owner)
 	. = ..()
 	GraphicsUpdate()
 
-/atom/movable/renderer/lighting_lamps_renderer/GraphicsUpdate()
+/atom/movable/renderer/lighting_lamps_selfglow_renderer/GraphicsUpdate()
 	. = ..()
-	remove_filter("lamps_glow")
+	remove_filter("add_lamps_to_selfglow")
+	remove_filter("lamps_selfglow_bloom")
+	remove_filter("subtract_lamps_core")
+
+	if(!owner?.client)
+		return
+
+	var/level = owner.get_preference_value("LAMP_GLOW")
+	if(isnull(level) || level == GLOB.PREF_OFF)
+		return
+
+	var/bloomsize = 0
+	var/bloomoffset = 0
+	switch(level)
+		if(GLOB.PREF_LOW)
+			bloomsize = 2
+			bloomoffset = 1
+		if(GLOB.PREF_MED)
+			bloomsize = 3
+			bloomoffset = 2
+		if(GLOB.PREF_HIGH)
+			bloomsize = 5
+			bloomoffset = 3
+		else
+			return
+
+	add_filter("add_lamps_to_selfglow", 1, layering_filter(
+		render_source = LIGHTING_LAMPS_RENDER_TARGET,
+		blend_mode = BLEND_OVERLAY
+	))
+
+	add_filter("lamps_selfglow_bloom", 1, bloom_filter(
+		threshold = "#aaaaaa",
+		size = bloomsize,
+		offset = bloomoffset,
+		alpha = 100
+	))
+
+/atom/movable/renderer/lighting_lamps_glare_renderer
+	name = LIGHTING_LAMPS_GLARE_RENDERER
+	group = RENDER_GROUP_SCENE
+	plane = LIGHTING_LAMPS_GLARE_PLANE
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
+
+/atom/movable/renderer/lighting_lamps_glare_renderer/Initialize(mapload, mob/owner)
+	. = ..()
+	GraphicsUpdate()
+
+/atom/movable/renderer/lighting_lamps_glare_renderer/GraphicsUpdate()
+	. = ..()
+	remove_filter("add_lamps_to_glare")
 	remove_filter("lamps_glare")
+	remove_filter("subtract_lamps_glare_core")
 
-	if(owner?.client)
-		var/level = owner.get_preference_value("LAMP_GLOW")
-		var/bloomsize = 0
-		var/bloomoffset = 0
-		switch(level)
-			if(GLOB.PREF_LOW)
-				bloomsize = 1
-				bloomoffset = 1
-			if(GLOB.PREF_MED)
-				bloomsize = 2
-				bloomoffset = 2
-			if(GLOB.PREF_HIGH)
-				bloomsize = 3
-				bloomoffset = 3
+	if(!owner?.client)
+		return
 
-		add_filter("lamps_glow", 1, bloom_filter(threshold = "#aaaaaa", size = bloomsize, offset = bloomoffset, alpha = 100))
+	if(owner.get_preference_value("LAMP_GLARE") != GLOB.PREF_ENABLED)
+		return
 
-	if(owner?.client && owner.get_preference_value("LAMP_GLARE") == GLOB.PREF_ENABLED)
-		add_filter("lamps_glare", 2, radial_blur_filter(size = 0.05))
+	add_filter("add_lamps_to_glare", 1, layering_filter(
+		render_source = LIGHTING_LAMPS_RENDER_TARGET,
+		blend_mode = BLEND_OVERLAY
+	))
+
+	add_filter("lamps_glare", 1, radial_blur_filter(size = 0.05))
 
 
 /atom/movable/renderer/additive_lighting
