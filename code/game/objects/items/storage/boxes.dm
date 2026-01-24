@@ -229,6 +229,12 @@
 	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."
 	startswith = list(/obj/item/ammo_casing/shotgun/stunshell = 20)
 
+/obj/item/storage/box/shotgun/breaching
+	icon_state = "shotgunbreach"
+	name = "box of breaching shells"
+	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Designed for structural breaching operations."
+	startswith = list(/obj/item/ammo_casing/shotgun/breaching = 20)
+
 /obj/item/storage/box/practiceshells
 	name = "box of practice shells"
 	desc = "It has a picture of a gun and several warning symbols on the front.<br>WARNING: Live ammunition. Misuse may result in serious injury or death."

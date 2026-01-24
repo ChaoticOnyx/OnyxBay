@@ -233,6 +233,36 @@
 	can_ricochet = FALSE // Too soft
 	poisedamage = 20.0
 
+// Breaching slug - designed for destroying doors and structures
+/obj/item/projectile/bullet/shotgun/breaching
+	name = "breaching slug"
+	damage = 30 // Reduced damage to living targets
+	armor_penetration = 10
+	embed = FALSE
+	sharp = FALSE
+	penetration_modifier = 0.1
+	poisedamage = 8.0
+
+/obj/item/projectile/bullet/shotgun/breaching/get_structure_damage()
+	return 350 // More than enough to destroy standard doors in one shot (breaching shells ignore the 100 damage cap)
+
+/obj/item/projectile/bullet/shotgun/breaching/on_hit(atom/target, blocked = 0, def_zone = null)
+	// Extra effects when hitting doors or structures
+	if(istype(target, /obj/machinery/door))
+		var/obj/machinery/door/D = target
+		// Breaching rounds destroy doors instantly by setting destroy_hits to 0
+		D.destroy_hits = 0
+		if(istype(D, /obj/machinery/door/blast/shutters))
+			D.visible_message(SPAN("danger", "\The [src] tears through \the [D] with tremendous force!"))
+		else
+			D.visible_message(SPAN("danger", "\The [src] blasts through \the [D], destroying it completely!"))
+		playsound(D, 'sound/effects/bang.ogg', 75, 1)
+	else if(istype(target, /turf/simulated/wall))
+		var/turf/simulated/wall/W = target
+		W.visible_message(SPAN("danger", "\The [src] impacts \the [W], creating cracks!"))
+		playsound(W, 'sound/effects/bang.ogg', 75, 1)
+	return ..()
+
 //Should do about 80 damage at 1 tile distance (adjacent), and 50 damage at 3 tiles distance.
 //Overall less damage than slugs in exchange for more damage at very close range and more embedding
 /obj/item/projectile/bullet/pellet/shotgun

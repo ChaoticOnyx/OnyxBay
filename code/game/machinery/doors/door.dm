@@ -175,9 +175,11 @@
 	..()
 
 	var/damage = Proj.get_structure_damage()
+	var/is_breaching = istype(Proj, /obj/item/projectile/bullet/shotgun/breaching)
 
 	// Emitter Blasts - these will eventually completely destroy the door, given enough time.
-	if(damage > 90)
+	// Breaching shells don't trigger this - they just deal direct damage
+	if(damage > 90 && !is_breaching)
 		destroy_hits--
 		if(destroy_hits <= 0)
 			visible_message("<span class='danger'>\The [src.name] disintegrates!</span>")
@@ -191,7 +193,11 @@
 
 	if(damage)
 		//cap projectile damage so that there's still a minimum number of hits required to break the door
-		take_damage(min(damage, 100))
+		//Exception: breaching shells ignore the cap
+		if(is_breaching)
+			take_damage(damage)
+		else
+			take_damage(min(damage, 100))
 
 
 /obj/machinery/door/hitby(atom/movable/AM, speed = 1, nomsg = FALSE)

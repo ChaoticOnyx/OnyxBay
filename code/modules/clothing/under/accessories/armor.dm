@@ -277,3 +277,76 @@
 	name = "\improper NanoTrasen helmet cover"
 	desc = "A fabric cover for armored helmets. This one has NanoTrasen's colors."
 	icon_state = "helmcover_nt"
+
+//Security Bodycam
+/obj/item/clothing/accessory/armor/bodycam
+	name = "security bodycam"
+	desc = "A Continuous Universal Crime-logging Kit (C.U.C.K.) - a compact body-worn camera designed to record all security interactions. \
+	Remember: The Warden is always watching. Features include motion detection, low-light recording, and tamper-proof data storage. \
+	Standard issue for accountability and evidence documentation."
+	icon = 'icons/obj/clothing/modular_armor.dmi'
+	icon_state = "bodycam"
+	slot = ACCESSORY_SLOT_ARMOR_M
+	high_visibility = TRUE
+	w_class = ITEM_SIZE_SMALL
+
+	var/obj/machinery/camera/bodycam/camera
+	var/assigned_owner = null // Set by guncase when issued
+
+/obj/item/clothing/accessory/armor/bodycam/Initialize()
+	. = ..()
+	camera = new(src)
+	camera.set_status(FALSE) // Inactive by default, activates when worn
+
+/obj/item/clothing/accessory/armor/bodycam/Destroy()
+	QDEL_NULL(camera)
+	return ..()
+
+/obj/item/clothing/accessory/armor/bodycam/examine(mob/user, infix)
+	. = ..()
+	if(get_dist(src, user) <= 2)
+		if(camera && camera.status)
+			. += SPAN("good", "A small LED indicates it is currently active and recording.")
+		else
+			. += "The camera appears to be powered off."
+
+/obj/item/clothing/accessory/armor/bodycam/on_attached(obj/item/clothing/S, mob/user)
+	. = ..()
+	if(user)
+		// Activate camera with pre-assigned owner name
+		var/wearer_name = assigned_owner ? assigned_owner : "Unknown"
+		camera.c_tag = "[wearer_name]'s Bodycam"
+		camera.set_status(TRUE)
+		to_chat(user, SPAN("notice", "\The [src] activates. Broadcasting as '[camera.c_tag]'."))
+
+/obj/item/clothing/accessory/armor/bodycam/on_removed(mob/user)
+	// Deactivate camera when removed
+	if(camera)
+		camera.set_status(FALSE)
+	if(user)
+		to_chat(user, SPAN("notice", "\The [src] deactivates."))
+	..()
+
+/obj/item/clothing/accessory/armor/bodycam/attack_self(mob/user)
+	// Toggle camera by clicking on it
+	if(!camera)
+		return
+
+	if(camera.status)
+		camera.set_status(FALSE)
+		to_chat(user, SPAN("notice", "You disable \the [src]."))
+	else
+		// Use pre-assigned owner name only
+		var/wearer_name = assigned_owner ? assigned_owner : "Unknown"
+		camera.c_tag = "[wearer_name]'s Bodycam"
+		camera.set_status(TRUE)
+		to_chat(user, SPAN("notice", "You enable \the [src]. Broadcasting as '[camera.c_tag]'."))
+
+// Camera subtype for bodycams - compact and invulnerable
+/obj/machinery/camera/bodycam
+	name = "bodycam"
+	desc = "A compact body-worn camera broadcasting to the security network."
+	network = list(NETWORK_SECURITY)
+	c_tag = "Bodycam"
+	invuln = TRUE // Can't be damaged directly
+	light_disabled = TRUE // No visible light
