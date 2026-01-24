@@ -250,16 +250,17 @@
 	// Extra effects when hitting doors or structures
 	if(istype(target, /obj/machinery/door))
 		var/obj/machinery/door/D = target
+		// Breaching rounds destroy doors instantly by setting destroy_hits to 0
 		D.destroy_hits = 0
 		if(istype(D, /obj/machinery/door/blast/shutters))
 			D.visible_message(SPAN("danger", "\The [src] tears through \the [D] with tremendous force!"))
 		else
 			D.visible_message(SPAN("danger", "\The [src] blasts through \the [D], destroying it completely!"))
-		playsound(D, 'sound/effects/bang.ogg', 75, 1)
+		playsound(D, SFX_BANG, 75, 1)
 	else if(istype(target, /turf/simulated/wall))
 		var/turf/simulated/wall/W = target
 		W.visible_message(SPAN("danger", "\The [src] impacts \the [W], creating cracks!"))
-		playsound(W, 'sound/effects/bang.ogg', 75, 1)
+		playsound(W, SFX_BANG, 75, 1)
 	return ..()
 
 //Should do about 80 damage at 1 tile distance (adjacent), and 50 damage at 3 tiles distance.
