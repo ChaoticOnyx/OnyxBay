@@ -17,6 +17,17 @@
 
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
+		// Try to extract HUD matrix from target with empty hand
+		if(H.zone_sel && H.zone_sel.selecting == BP_EYES && H.a_intent == I_HELP && !H.get_active_hand())
+			var/obj/item/organ/internal/eyes/eyes = src.internal_organs_by_name[BP_EYES]
+			if(!istype(eyes))
+				eyes = src.internal_organs_by_name[BP_OPTICS]
+			if(istype(eyes))
+				for(var/obj/item/organ_module/active/lenses/hud/HM in eyes.organ_modules)
+					if(HM.try_extract_matrix(H, src))
+						return
+					break
+
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
 		if(H.hand)
 			temp = H.organs_by_name[BP_L_HAND]

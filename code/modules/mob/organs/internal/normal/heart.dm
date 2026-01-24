@@ -15,6 +15,21 @@
 	min_broken_damage = 35
 	var/open
 
+/obj/item/organ/internal/heart/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/organ_module))
+		var/obj/item/organ_module/module = I
+		if(owner)
+			to_chat(user, SPAN_NOTICE("You need to remove the heart first."))
+			return
+		if(!module.can_install_in(src, user))
+			return
+		if(!user.drop(I, src))
+			return
+		module.install(src)
+		to_chat(user, SPAN_NOTICE("You install \the [module] into \the [src]."))
+		return
+	return ..()
+
 /obj/item/organ/internal/heart/die()
 	if(dead_icon)
 		icon_state = dead_icon

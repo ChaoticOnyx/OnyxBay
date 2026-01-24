@@ -118,6 +118,10 @@
 		stat("Move Mode:", "[m_intent]")
 		stat("Poise:", "[round(100/poise_pool*poise)]%")
 		stat("Special Ability:", "[active_ability]")
+		var/cpu_total = get_cpu_power()
+		var/cpu_used = get_active_cpu_load()
+		if(cpu_total || cpu_used)
+			stat("CPU:", "[cpu_used]/[cpu_total]")
 
 		if(evacuation_controller)
 			var/eta_status = evacuation_controller.get_status_panel_eta()
@@ -165,6 +169,7 @@
 
 	var/b_loss = null
 	var/f_loss = null
+	var/cochlear = has_cochlear_implant()
 	switch(severity)
 		if(1.0)
 			b_loss = 400
@@ -184,17 +189,15 @@
 			f_loss = 60
 
 			if(get_ear_protection() < 2)
-				ear_damage += 30
-				ear_deaf += 120
-			if(prob(70))
+				adjustEarDamage(30, 120)
+			if(!cochlear && prob(70))
 				Paralyse(10)
 
 		if(3.0)
 			b_loss = 30
 			if(get_ear_protection() < 2)
-				ear_damage += 15
-				ear_deaf += 60
-			if(prob(50))
+				adjustEarDamage(15, 60)
+			if(!cochlear && prob(50))
 				Paralyse(10)
 
 	// factor in armour
@@ -1028,6 +1031,11 @@
 
 	for(var/obj/item/organ/external/organ in src.organs)
 		for(var/obj/item/O in organ.implants)
+			if(istype(O, /obj/item/organ_module))
+				var/obj/item/organ_module/module = O
+				if(!(module.module_flags & OM_FLAG_INSPECTABLE))
+					continue
+				visible_implants += O
 			if(!istype(O,/obj/item/implant) && (O.w_class > class) && !istype(O,/obj/item/material/shard/shrapnel))
 				visible_implants += O
 
@@ -1798,6 +1806,15 @@
 		to_chat(src, "<span class='notice'>You will use your main hand to block.</span>")
 		if(src.blockswitch_icon)
 			src.blockswitch_icon.icon_state = "act_blockswitch0"
+
+/mob/living/carbon/human/is_deaf()
+	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	if((sdisabilities & DEAF) && istype(head))
+		var/obj/item/organ_module/cochlear/coch = locate() in head
+		if(istype(coch))
+			return FALSE
+
+	return ..()
 
 /mob/living/carbon/human/verb/succumb()
 	set hidden = 1

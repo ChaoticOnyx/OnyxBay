@@ -14,7 +14,7 @@
 
 	playsound(src, SFX_FIGHTING_CRUNCH, 75, 1)
 	for(var/obj/item/organ/external/E in organs)
-		E.droplimb(TRUE, DROPLIMB_EDGE, TRUE, TRUE)
+		E.droplimb(TRUE, DROPLIMB_EDGE, TRUE, TRUE, TRUE)
 
 	sleep(1)
 

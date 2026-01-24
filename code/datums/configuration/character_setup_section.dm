@@ -5,6 +5,7 @@
 	var/loadout_slots
 	var/max_loadout_points
 	var/extra_loadout_points
+	var/max_augmentation_points
 	var/humans_need_surnames
 	var/allow_metadata
 
@@ -13,9 +14,12 @@
 	CONFIG_LOAD_NUM(loadout_slots, data["loadout_slots"])
 	CONFIG_LOAD_NUM(max_loadout_points, data["max_loadout_points"])
 	CONFIG_LOAD_NUM(extra_loadout_points, data["extra_loadout_points"])
+	CONFIG_LOAD_NUM(max_augmentation_points, data["max_augmentation_points"])
 
 	if(max_loadout_points < 0)
 		max_loadout_points = INFINITY
+	if(max_augmentation_points < 0)
+		max_augmentation_points = INFINITY
 
 	CONFIG_LOAD_BOOL(humans_need_surnames, data["humans_need_surnames"])
 	CONFIG_LOAD_BOOL(allow_metadata, data["allow_metadata"])

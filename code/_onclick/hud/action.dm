@@ -40,6 +40,8 @@
 	return ..()
 
 /datum/action/proc/Grant(mob/living/T)
+	if(!T)
+		return
 	if(owner)
 		if(owner == T)
 			return

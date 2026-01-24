@@ -87,4 +87,29 @@
 	player_setup.sanitize_setup()
 	return 1
 
+/datum/preferences/proc/get_lp_cost()
+	total_lpoints_cost = player_setup.get_lp_cost()
+	return total_lpoints_cost
+
+/datum/preferences/proc/is_default_module(organ_tag, module_path)
+	if(!organ_tag || !module_path)
+		return FALSE
+	var/datum/robolimb/R = GLOB.all_robolimbs[rlimb_data[organ_tag]]
+	if(!R || !R.default_modules)
+		return FALSE
+	return (module_path in R.default_modules)
+
+/datum/preferences/proc/get_aug_cost()
+	total_aug_points = 0
+	for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
+		for(var/obj/item/organ_module/mod as anything in organ_modules[organ_tag])
+			if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
+				continue
+			if(is_default_module(organ_tag, mod))
+				continue
+			if(initial(mod.augment_cost) <= 0)
+				continue
+			total_aug_points += initial(mod.augment_cost)
+	return total_aug_points
+
 #undef PREF_SER_VERSION
