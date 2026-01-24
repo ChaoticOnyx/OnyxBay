@@ -185,7 +185,7 @@ var/list/hash_to_gear = list()
 		. += "<td><b>Selected Item:</b></td>"
 	. += "</tr>"
 
-	. += "<tr style='vertical-align: top;'>"
+	. += "<tr style='vertical-align:top'>"
 
 	// Categories
 

@@ -98,7 +98,7 @@
 
 	. +=  "<script language='javascript'> [js_byjax] function set(param, value) {window.location='?src=\ref[src];'+param+'='+value;}</script>"
 	. += "<table style='max-height:400px;height:410px; margin-left:250px; margin-right:250px'>"
-	. += "<tr style='vertical-align: top;'>"
+	. += "<tr style='vertical-align:top'>"
 	. += "<td><div style='max-width:230px;width:230px;height:100%;overflow-y:auto;border-right:1px solid;padding:3px'>"
 	if(pref.current_organ in BP_ALL_LIMBS)
 		. += "<b>Selected organ: [capitalize(GLOB.organ_tag_to_name[pref.current_organ])]</b>"

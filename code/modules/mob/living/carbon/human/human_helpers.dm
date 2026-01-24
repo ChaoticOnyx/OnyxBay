@@ -240,7 +240,7 @@
 		to_chat(src, SPAN_DANGER("Emergency [get_cpu_name()] reset, deactivating active augmentations."))
 		adjustBrainLoss(rand(10, 35))
 		deactivate_active_augmentations()
-		Paralyse(rand(1, 20))
+		Paralyse(rand(5, 20))
 		cpu_overload_since = 0
 		cpu_overload_warned_at = 0
 
@@ -514,3 +514,48 @@
 		. *= 1.5 // Less pain
 
 	return
+
+/// used for hud lights and eye glow effects
+/mob/living/carbon/human
+	var/hud_eye_glow_active = FALSE
+	var/hud_eye_glow_color = null
+	var/hud_eye_glow_range = 2
+	var/list/hud_eye_glow_saved = null
+
+/mob/living/carbon/human/proc/update_hud_eye_glow()
+	var/obj/item/organ/internal/eyes/eyes = internal_organs_by_name[BP_EYES]
+	if(!istype(eyes))
+		return
+
+	var/list/glow = eyes.get_active_glow()
+	if(glow && glow["rgb"])
+		if(!hud_eye_glow_saved)
+			hud_eye_glow_saved = list(r_eyes, g_eyes, b_eyes)
+		var/r = glow["rgb"][1]
+		var/g = glow["rgb"][2]
+		var/b = glow["rgb"][3]
+		change_eye_color(r, g, b)
+		set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(r, g, b))
+		hud_eye_glow_active = TRUE
+		hud_eye_glow_color = light_color
+		return
+
+	var/obj/item/clothing/glasses/hud/goggles = glasses
+	if(istype(goggles) && goggles.active && goggles.matrix?.eye_glow_rgb)
+		if(!hud_eye_glow_saved)
+			hud_eye_glow_saved = list(r_eyes, g_eyes, b_eyes)
+		var/list/g = goggles.matrix.eye_glow_rgb
+		set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(g[1], g[2], g[3]))
+		hud_eye_glow_active = TRUE
+		hud_eye_glow_color = light_color
+		return
+
+	if(hud_eye_glow_saved)
+		change_eye_color(hud_eye_glow_saved[1], hud_eye_glow_saved[2], hud_eye_glow_saved[3])
+		hud_eye_glow_saved = null
+	else if(eyes.eye_colour)
+		change_eye_color(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3])
+	if(hud_eye_glow_active)
+		set_light(0)
+	hud_eye_glow_active = FALSE
+	hud_eye_glow_color = null

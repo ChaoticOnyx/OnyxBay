@@ -54,7 +54,7 @@
 		)
 	target.custom_pain(
 		"The pain in your chest is living hell!",
-		1,
+		50,
 		affecting = target_organ
 		)
 	parent_organ.cavity = TRUE
@@ -94,7 +94,7 @@
 		)
 	target.custom_pain(
 		"The pain in your chest is living hell!",
-		1,
+		50,
 		affecting = parent_organ
 		)
 	parent_organ.cavity = FALSE
@@ -159,7 +159,7 @@
 		)
 	target.custom_pain(
 		"The pain in your chest is living hell!",
-		1,
+		50,
 		affecting = parent_organ
 		)
 	playsound(target.loc, 'sound/effects/squelch1.ogg', 25, 1)
@@ -325,7 +325,7 @@
 		)
 	target.custom_pain(
 		"The pain in your chest is living hell!",
-		1,
+		50,
 		affecting = parent_organ
 		)
 	playsound(target.loc, 'sound/effects/squelch1.ogg', 25, 1)

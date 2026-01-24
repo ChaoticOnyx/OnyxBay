@@ -38,6 +38,9 @@
 /obj/item/implanter/installer/attack_self(mob/user)
 	if(!mod)
 		return ..()
+	if(istype(src, /obj/item/implanter/installer/disposable) && !can_reload)
+		to_chat(user, SPAN_NOTICE("This installer is spent."))
+		return
 	if(user.get_inactive_hand())
 		to_chat(user, SPAN_NOTICE("Your other hand must be empty."))
 		return
@@ -70,17 +73,18 @@
 	return TRUE
 
 /obj/item/implanter/installer/attackby(obj/item/I, mob/user)
-	if(!mod && (can_reload || istype(src, /obj/item/implanter/installer/disposable)) && istype(I, /obj/item/organ_module))
-		var/obj/item/organ_module/M = I
-		if(!can_load_module(M))
-			to_chat(user, SPAN_NOTICE("You cannot load \the [M] into \the [src]."))
+	if(!mod && istype(I, /obj/item/organ_module))
+		if(can_reload && can_load_module(I))
+			var/obj/item/organ_module/M = I
+			if(!user.drop(I, src))
+				return
+			to_chat(user, SPAN_NOTICE("You slide \the [M] into \the [src]."))
+			mod = M
+			update_icon()
 			return
-		if(!user.drop(I, src))
+		else
+			to_chat(user, SPAN_NOTICE("You cannot load \the [I] into \the [src]."))
 			return
-		to_chat(user, SPAN_NOTICE("You slide \the [M] into \the [src]."))
-		mod = M
-		update_icon()
-		return
 	return ..()
 
 /obj/item/implanter/installer/attack(mob/living/M, mob/living/user)
@@ -123,16 +127,26 @@
 		mod = null
 		if(istype(src, /obj/item/implanter/installer/disposable))
 			can_reload = FALSE
-			SetName("[initial(name)] (used)")
 		update_icon()
 
 /obj/item/implanter/installer/disposable
 	name = "cybernetic installer (disposable)"
 	desc = "A single use medical applicator of cybernetics."
-	can_reload = FALSE
+	can_reload = TRUE
 
 /obj/item/implanter/installer/disposable/New()
 	..()
 	if(ispath(mod))
 		mod = new mod(src)
 		update_icon()
+
+/obj/item/implanter/installer/disposable/attackby(obj/item/I, mob/user)
+	if(!can_reload)
+		to_chat(user, SPAN_NOTICE("This installer is spent."))
+		return
+	return ..()
+
+/obj/item/implanter/installer/disposable/attack(mob/living/M, mob/living/user)
+	. = ..()
+	if(. && !can_reload && mod == null)
+		SetName("[initial(name)] (used)")

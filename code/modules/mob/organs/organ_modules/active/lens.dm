@@ -77,6 +77,8 @@
 	/// Will process medhud if TRUE
 	var/med_hud = FALSE
 	var/obj/item/device/hudmatrix/matrix = null
+	/// Built-in HUD, doesn't require or allow matrix installation
+	var/builtin = FALSE
 
 /obj/item/organ_module/active/lenses/hud/process_hud(mob/living/carbon/human/owner)
 	if(sec_hud)
@@ -84,28 +86,25 @@
 	if(med_hud)
 		process_med_hud(owner, TRUE)
 
-/obj/item/organ_module/active/lenses/hud/sec
-	name = "Security HUD implant"
-	desc = "Zeng-Hu augmentation for eyes of military personell. Flash protection included."
-	icon_state = "hunterseye"
-	sec_hud = TRUE
-	loadout_cost = 0
-	augment_cost = 5
-	available_in_charsetup = TRUE
-	allowed_jobs = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer)
-	flash_protection = FLASH_PROTECTION_MODERATE
-
-/obj/item/organ_module/active/lenses/hud/med
-	name = "Medical HUD implant"
-	desc = "Provides you with real-time vitals of every person you see."
-	icon_state = "eye_medical"
-	med_hud = TRUE
-	loadout_cost = 0
-	augment_cost = 3
-	available_in_charsetup = TRUE
-	allowed_jobs = list(/datum/job/cmo, /datum/job/doctor, /datum/job/psychiatrist, /datum/job/chemist, /datum/job/paramedic)
-
 /obj/item/organ_module/active/lenses/hud/activate(obj/item/organ/E, mob/living/carbon/human/user)
+	if(builtin)
+		toggled = !toggled
+		var/eyes_covered = FALSE
+		if(istype(user, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = user
+			var/list/protection = list(H.head, H.glasses, H.wear_mask)
+			for(var/obj/item/I in protection)
+				if(I && (I.body_parts_covered & EYES))
+					eyes_covered = TRUE
+					break
+		if(!eyes_covered)
+			user.visible_message(
+				toggled ? "<b>[user]</b>'s pupils narrow..." : "<b>[user]</b>'s pupils return to normal.",
+				range = 3
+			)
+		user.update_hud_eye_glow()
+		return
+
 	if(!matrix)
 		to_chat(user, SPAN("notice", "No HUD matrix installed."))
 		return
@@ -120,38 +119,66 @@
 
 	if(choices[choice] == "toggle")
 		toggled = !toggled
-		user.visible_message(
-			toggled ? "<b>[user]</b>'s pupils narrow..." : "<b>[user]</b>'s pupils return to normal.",
-			range = 3
-		)
+		var/eyes_covered = FALSE
 		if(istype(user, /mob/living/carbon/human))
-			user.update_hud_eye_glow()
+			var/mob/living/carbon/human/H = user
+			var/list/protection = list(H.head, H.glasses, H.wear_mask)
+			for(var/obj/item/I in protection)
+				if(I && (I.body_parts_covered & EYES))
+					eyes_covered = TRUE
+					break
+		if(!eyes_covered)
+			user.visible_message(
+				toggled ? "<b>[user]</b>'s pupils narrow..." : "<b>[user]</b>'s pupils return to normal.",
+				range = 3
+			)
+		user.update_hud_eye_glow()
 		return
 
-	if(choices[choice] == "remove")
-		var/obj/item/organ/internal/eyes/eyes = loc
-		if(!istype(eyes))
-			return
-		var/turf/target_turf = get_turf(user)
-		if(!target_turf)
-			target_turf = get_turf(eyes)
-		matrix.dropInto(target_turf)
-		matrix = null
-		overlay = null
-		vision_flags = initial(vision_flags)
-		see_invisible = initial(see_invisible)
-		darkness_view = initial(darkness_view)
-		flash_protection = initial(flash_protection)
-		sec_hud = FALSE
-		med_hud = FALSE
+/obj/item/organ_module/active/lenses/hud/attackby(obj/item/I, mob/user)
+	if(builtin)
+		return
+	. = ..()
+
+/obj/item/organ_module/active/lenses/hud/sec
+	name = "Security HUD implant"
+	desc = "Zeng-Hu augmentation for eyes of military personell. Flash protection included."
+	icon_state = "hunterseye"
+	sec_hud = TRUE
+	builtin = TRUE
+	loadout_cost = 0
+	augment_cost = 5
+	available_in_charsetup = TRUE
+	allowed_jobs = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer)
+	flash_protection = FLASH_PROTECTION_MODERATE
+
+/obj/item/organ_module/active/lenses/hud/med
+	name = "Medical HUD implant"
+	desc = "Provides you with real-time vitals of every person you see."
+	icon_state = "eye_medical"
+	med_hud = TRUE
+	builtin = TRUE
+	loadout_cost = 0
+	augment_cost = 3
+	available_in_charsetup = TRUE
+	allowed_jobs = list(/datum/job/cmo, /datum/job/doctor, /datum/job/psychiatrist, /datum/job/chemist, /datum/job/paramedic)
 
 /obj/item/organ_module/active/lenses/hud/deactivate(obj/item/organ/E, mob/living/carbon/human/user)
 	if(toggled)
 		toggled = FALSE
-		user.visible_message(
-			"<b>[user]</b>'s pupils return to normal.",
-			range = 3
-		)
+		var/eyes_covered = FALSE
+		if(istype(user, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = user
+			var/list/protection = list(H.head, H.glasses, H.wear_mask)
+			for(var/obj/item/I in protection)
+				if(I && (I.body_parts_covered & EYES))
+					eyes_covered = TRUE
+					break
+		if(!eyes_covered)
+			user.visible_message(
+				"<b>[user]</b>'s pupils return to normal.",
+				range = 3
+			)
 		if(istype(user, /mob/living/carbon/human))
 			user.update_hud_eye_glow()
 

@@ -32,6 +32,12 @@
 	return ..()
 
 /obj/item/device/hudmatrix/proc/try_install_in_eyes(mob/living/carbon/human/H)
+	var/obj/item/organ_module/active/lenses/hud/hud = null
+
+	if(!hud)
+		to_chat(H, SPAN("notice", "You need HUD lenses installed in your eyes."))
+		return
+
 	if(H.glasses)
 		to_chat(H, SPAN("notice", "You need to remove your [H.glasses] first."))
 		return
@@ -43,14 +49,9 @@
 		to_chat(H, SPAN("notice", "You need eyes installed to do that."))
 		return
 
-	var/obj/item/organ_module/active/lenses/hud/hud = null
 	for(var/obj/item/organ_module/active/lenses/hud/HM in eyes.organ_modules)
 		hud = HM
 		break
-
-	if(!hud)
-		to_chat(H, SPAN("notice", "You need HUD lenses installed in your eyes."))
-		return
 
 	if(hud.matrix)
 		to_chat(H, SPAN("notice", "Your HUD lenses already have a [hud.matrix] installed."))
@@ -64,7 +65,7 @@
 		eyes.take_internal_damage(10)
 		return
 
-	if(!prob(80))
+	if(prob(20))
 		H.visible_message(
 			"[H] glanced up and to the left and, missing, poked themselves in the eye with [src].",
 			"You glanced up and to the left and, missing, jabbed [src] into your eye. Ouch!"
@@ -227,50 +228,6 @@
 		var/mob/living/carbon/human/wearer = eyes.owner
 		wearer?.update_hud_eye_glow()
 
-/mob/living/carbon/human
-	var/hud_eye_glow_active = FALSE
-	var/hud_eye_glow_color = null
-	var/hud_eye_glow_range = 2
-	var/list/hud_eye_glow_saved = null
-
-/mob/living/carbon/human/proc/update_hud_eye_glow()
-	var/obj/item/organ/internal/eyes/eyes = internal_organs_by_name[BP_EYES]
-	if(!istype(eyes))
-		return
-
-	var/list/glow = eyes.get_active_glow()
-	if(glow && glow["rgb"])
-		if(!hud_eye_glow_saved)
-			hud_eye_glow_saved = list(r_eyes, g_eyes, b_eyes)
-		var/r = glow["rgb"][1]
-		var/g = glow["rgb"][2]
-		var/b = glow["rgb"][3]
-		change_eye_color(r, g, b)
-		set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(r, g, b))
-		hud_eye_glow_active = TRUE
-		hud_eye_glow_color = light_color
-		return
-
-	var/obj/item/clothing/glasses/hud/goggles = glasses
-	if(istype(goggles) && goggles.active && goggles.matrix?.eye_glow_rgb)
-		if(!hud_eye_glow_saved)
-			hud_eye_glow_saved = list(r_eyes, g_eyes, b_eyes)
-		var/list/g = goggles.matrix.eye_glow_rgb
-		set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(g[1], g[2], g[3]))
-		hud_eye_glow_active = TRUE
-		hud_eye_glow_color = light_color
-		return
-
-	if(hud_eye_glow_saved)
-		change_eye_color(hud_eye_glow_saved[1], hud_eye_glow_saved[2], hud_eye_glow_saved[3])
-		hud_eye_glow_saved = null
-	else if(eyes.eye_colour)
-		change_eye_color(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3])
-	if(hud_eye_glow_active)
-		set_light(0)
-	hud_eye_glow_active = FALSE
-	hud_eye_glow_color = null
-
 /obj/item/organ/internal/eyes/proc/get_active_glow()
 	for(var/obj/item/organ_module/active/lenses/hud/H in organ_modules)
 		var/list/glow = H.get_eye_glow()
@@ -355,10 +312,17 @@
 /obj/item/organ_module/active/lenses/hud/activate(obj/item/organ/E, mob/living/carbon/human/user)
 	toggled = !toggled
 
-	user.visible_message(
-		toggled ? "<b>[user]</b>'s pupils narrow..." : "<b>[user]</b>'s pupils return to normal.",
-		range = 3
-	)
+	var/eyes_covered = FALSE
+	var/list/protection = list(user.head, user.glasses, user.wear_mask)
+	for(var/obj/item/I in protection)
+		if(I && (I.body_parts_covered & EYES))
+			eyes_covered = TRUE
+			break
+	if(!eyes_covered)
+		user.visible_message(
+			toggled ? "<b>[user]</b>'s pupils narrow..." : "<b>[user]</b>'s pupils return to normal.",
+			range = 3
+		)
 	user.update_hud_eye_glow()
 
 /obj/item/organ_module/active/lenses/hud/post_removed(obj/item/organ/E)
