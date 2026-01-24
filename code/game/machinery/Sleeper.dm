@@ -17,7 +17,7 @@
 	var/filtering = 0
 	var/pump
 	var/filtering_strength = 5
-	var/list/possible_filtering = list(5, 7.5, 10, 15)
+	var/list/possible_filtering = list(7.5, 10.0, 15.0, 25.0)
 	var/list/possible_stasis = list(list(1, 2, 5),
 									list(1, 2, 5, 10),
 									list(1, 2, 5, 10, 15),
