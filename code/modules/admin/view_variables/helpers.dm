@@ -199,12 +199,10 @@
 	return TRUE
 
 /proc/forbidden_varedit_object_types()
-	return list(
-		/datum/admins,						    //Admins editing their own admin-power object? Yup, sounds like a good idea.,
-		/obj/machinery/blackbox_recorder,	    //Prevents people messing with feedback gathering,
-		/datum/feedback_variable,			    //Prevents people messing with feedback gathering
-		/atom/movable/screen/splash/persistent, // Prevents morons from fucking up lobby screen.
-		/datum/lobby_art                        // Same as above
+ 	return list(
+		/datum/admins,						//Admins editing their own admin-power object? Yup, sounds like a good idea.,
+		/obj/machinery/blackbox_recorder,	//Prevents people messing with feedback gathering,
+		/datum/feedback_variable			//Prevents people messing with feedback gathering
 	)
 
 /proc/input_bitfield(mob/User, title, bitfield, current_value, nwidth = 350, nheight = 350, nslidecolor, allowed_edit_list = null)
