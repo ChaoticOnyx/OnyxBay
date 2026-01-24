@@ -28,6 +28,7 @@
 		return
 
 	to_chat(H, SPAN_NOTICE("You activate your [name], and feel a wave of numbness wash over you!"))
+	H.visible_message(SPAN_NOTICE("[H] twitches and loses tension in muscles!"), null, H)
 	if(!H.no_pain)
 		H.no_pain = TRUE
 		pain_disabled = TRUE
