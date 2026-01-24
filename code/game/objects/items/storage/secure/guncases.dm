@@ -179,7 +179,6 @@
 	override_w_class = list(/obj/item/gun/energy/security)
 	max_storage_space = null
 	storage_slots = 7
-	storage_slots = 6
 
 	possible_guns = list(
 		"Pistol" = "A taser pistol. The smallest of all the tasers. It only has a single fire mode, but each shot wields power. Comes with a baton, a handheld barrier, a bodycam, and a couple of handcuffs.",
