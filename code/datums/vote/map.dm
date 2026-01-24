@@ -12,7 +12,10 @@
 	. = ..()
 	for(var/map_name in GLOB.all_maps)
 		var/datum/map/M = GLOB.all_maps[map_name]
-		if(M.can_be_voted)
+		if(lowertext("[M.name]") in config.mapping.allowed_maps) // Config doesn't have letter case btw, so we use lowertext()
+			if(config.mapping.allowed_maps[lowertext("[M.name]")])
+				default_choices += M.name
+		else if(M.can_be_voted)
 			default_choices += M.name
 
 /datum/vote/map/finalize_vote(winning_option)
