@@ -250,7 +250,6 @@
 	// Extra effects when hitting doors or structures
 	if(istype(target, /obj/machinery/door))
 		var/obj/machinery/door/D = target
-		// Breaching rounds destroy doors instantly by setting destroy_hits to 0
 		D.destroy_hits = 0
 		if(istype(D, /obj/machinery/door/blast/shutters))
 			D.visible_message(SPAN("danger", "\The [src] tears through \the [D] with tremendous force!"))

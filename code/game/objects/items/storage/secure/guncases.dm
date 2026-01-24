@@ -178,13 +178,13 @@
 	desc = "A heavy-duty container with an ID-based locking system. This one is painted in NT Security colors."
 	override_w_class = list(/obj/item/gun/energy/security)
 	max_storage_space = null
-	storage_slots = 7
+	storage_slots = 8
 
 	possible_guns = list(
 		"Pistol" = "A taser pistol. The smallest of all the tasers. It only has a single fire mode, but each shot wields power. Comes with a baton, a handheld barrier, a bodycam, and a couple of handcuffs.",
 		"SMG" = "A taser SMG. This model is not as powerful as pistols, but is capable of launching electrodes left and right with its remarkable rate of fire. Comes with a baton, a handheld barrier, a bodycam, and a couple of handcuffs.",
 		"Rifle" = "A taser rifle. Bulky and heavy, it must be wielded with both hands. Although its rate of fire is way below average, it is capable of shooting stun beams. Comes with a baton, a handheld barrier, a bodycam, and a couple of handcuffs.",
-		"Classic" = "A rusty-and-trusty taser. It's overall worse than the modern baseline tasers, but it still does its job. Useful for those who want to assert their robust dominance. Or, maybe, for old farts. Comes with a basic armor vest, a baton, a bodycam, a couple of handcuffs, and a drink to stay cool."
+		"Classic" = "A rusty-and-trusty taser. It's overall worse than the modern baseline tasers, but it still does its job. Useful for those who want to assert their robust dominance. Or, maybe, for old farts. Comes with a basic armor vest, a baton, a bodycam, a couple of handcuffs, a pair of donuts, and a drink to stay cool."
 	)
 
 	gun_spawn = list(
@@ -242,6 +242,8 @@
 
 	if(set_name == "Classic")
 		new /obj/item/clothing/suit/armor/vest(src)
+		new /obj/item/reagent_containers/food/donut/normal(src)
+		new /obj/item/reagent_containers/food/donut/normal(src)
 		if(prob(70))
 			new /obj/item/reagent_containers/vessel/bottle/small/darkbeer(src)
 		else

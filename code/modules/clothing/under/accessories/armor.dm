@@ -291,12 +291,12 @@
 	w_class = ITEM_SIZE_SMALL
 
 	var/obj/machinery/camera/bodycam/camera
-	var/assigned_owner = null // Set by guncase when issued
+	var/assigned_owner = null
 
 /obj/item/clothing/accessory/armor/bodycam/Initialize()
 	. = ..()
 	camera = new(src)
-	camera.set_status(FALSE) // Inactive by default, activates when worn
+	camera.set_status(FALSE)
 
 /obj/item/clothing/accessory/armor/bodycam/Destroy()
 	QDEL_NULL(camera)
@@ -313,14 +313,12 @@
 /obj/item/clothing/accessory/armor/bodycam/on_attached(obj/item/clothing/S, mob/user)
 	. = ..()
 	if(user)
-		// Activate camera with pre-assigned owner name
 		var/wearer_name = assigned_owner ? assigned_owner : "Unknown"
 		camera.c_tag = "[wearer_name]'s Bodycam"
 		camera.set_status(TRUE)
 		to_chat(user, SPAN("notice", "\The [src] activates. Broadcasting as '[camera.c_tag]'."))
 
 /obj/item/clothing/accessory/armor/bodycam/on_removed(mob/user)
-	// Deactivate camera when removed
 	if(camera)
 		camera.set_status(FALSE)
 	if(user)
@@ -328,7 +326,6 @@
 	..()
 
 /obj/item/clothing/accessory/armor/bodycam/attack_self(mob/user)
-	// Toggle camera by clicking on it
 	if(!camera)
 		return
 
@@ -336,17 +333,15 @@
 		camera.set_status(FALSE)
 		to_chat(user, SPAN("notice", "You disable \the [src]."))
 	else
-		// Use pre-assigned owner name only
 		var/wearer_name = assigned_owner ? assigned_owner : "Unknown"
 		camera.c_tag = "[wearer_name]'s Bodycam"
 		camera.set_status(TRUE)
 		to_chat(user, SPAN("notice", "You enable \the [src]. Broadcasting as '[camera.c_tag]'."))
 
-// Camera subtype for bodycams - compact and invulnerable
 /obj/machinery/camera/bodycam
 	name = "bodycam"
 	desc = "A compact body-worn camera broadcasting to the security network."
 	network = list(NETWORK_SECURITY)
 	c_tag = "Bodycam"
-	invuln = TRUE // Can't be damaged directly
-	light_disabled = TRUE // No visible light
+	invuln = TRUE
+	light_disabled = TRUE
