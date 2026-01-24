@@ -429,8 +429,8 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 #define TOXLOSS_SEVERE   50
 #define TOXLOSS_CRITICAL 75
 #define TOXLOSS_LETHAL   100
-#define TOXLOSS_SOFTCAP  150
-#define TOXLOSS_HARDCAP  200
+#define TOXLOSS_SOFTCAP  125
+#define TOXLOSS_HARDCAP  150
 
 #define HUMAN_POWER_NONE    "None"
 #define HUMAN_POWER_SPIT    "Spit"
