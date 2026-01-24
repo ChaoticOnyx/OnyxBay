@@ -4,20 +4,7 @@
 		if(owner)
 			to_chat(user, SPAN_NOTICE("You need to remove the eyes first."))
 			return
-		if(!(organ_tag in module.allowed_organs))
-			to_chat(user, SPAN_NOTICE("You cannot install \the [module] into \the [src]."))
-			return
-		if(module.has_duplicate_in(src))
-			to_chat(user, SPAN_NOTICE("You cannot install another [module.name] into \the [src]."))
-			return
-		if(BP_IS_ROBOTIC(src) && !(module.module_flags & OM_FLAG_MECHANICAL))
-			to_chat(user, SPAN_NOTICE("You cannot install \the [module] into robotic optics."))
-			return
-		if(!BP_IS_ROBOTIC(src) && !(module.module_flags & OM_FLAG_BIOLOGICAL))
-			to_chat(user, SPAN_NOTICE("You cannot install \the [module] into organic eyes."))
-			return
-		if((module.w_class + occupied_space) > max_module_size)
-			to_chat(user, SPAN_NOTICE("There is not enough space in \the [src]."))
+		if(!module.can_install_in(src, user))
 			return
 		if(!user.drop(I, src))
 			return

@@ -3,7 +3,7 @@
 	icon_state = "emotional_manipulator"
 	action_button_name = "Engage nerve dampeners"
 	desc = "Each activation of this augment provides a strong painkilling effect for around thirty seconds, but will be followed by a powerful comedown. Excessive short-term use may cause brain damage."
-	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
+	module_flags = OM_FLAG_SCANNABLE | OM_FLAG_BIOLOGICAL
 	origin_tech = list(TECH_BIO = 6, TECH_COMBAT = 7)
 	cooldown = 2 MINUTES
 	loadout_cost = 0
@@ -18,15 +18,19 @@
 		MATERIAL_SILVER = 8000
 	)
 	var/stop_thinking_at
+	var/pain_disabled = FALSE
 
 /obj/item/organ_module/active/nerve_dampeners/activate(obj/item/organ/E, mob/living/carbon/human/H)
 	if(!istype(H))
 		return
+	if(H.isSynthetic())
+		to_chat(H, SPAN_NOTICE("You feel no effect from [name]."))
+		return
 
 	to_chat(H, SPAN_NOTICE("You activate your [name], and feel a wave of numbness wash over you!"))
-	if(!H.host_pain_disable())
-		to_chat(H, SPAN_WARNING("Your pain receptors are already numb!"))
-		return
+	if(!H.no_pain)
+		H.no_pain = TRUE
+		pain_disabled = TRUE
 
 	stop_thinking_at = world.time + 30 SECONDS
 	set_next_think(world.time + 1 SECOND)
@@ -76,7 +80,11 @@
 		stop_thinking_at = null
 		set_next_think(0)
 		to_chat(H, SPAN_WARNING("You abruptly feel intensely exhausted as sensation returns."))
-		H.host_pain_enable()
+		if(H.getHalLoss() > 0)
+			H.emote("scream_long")
+		if(pain_disabled)
+			H.no_pain = FALSE
+			pain_disabled = FALSE
 		H.drowsyness = max(H.drowsyness, 15)
 		H.confused += 15
 		H.slurring = max(H.slurring, 30)
@@ -104,8 +112,18 @@
 	if(stop_thinking_at)
 		stop_thinking_at = null
 		set_next_think(0)
-		if(istype(H))
-			H.host_pain_enable()
+		if(istype(H) && pain_disabled)
+			H.no_pain = FALSE
+			pain_disabled = FALSE
 
 /obj/item/organ_module/active/nerve_dampeners/is_cpu_active(mob/living/carbon/human/H)
 	return stop_thinking_at && world.time < stop_thinking_at
+
+/obj/item/organ_module/active/nerve_dampeners/can_install_in(obj/item/organ/affected, mob/user)
+	if(!..())
+		return FALSE
+	if(affected?.owner?.isSynthetic())
+		if(user)
+			to_chat(user, SPAN_NOTICE("You cannot install [name] into synthetic bodies."))
+		return FALSE
+	return TRUE

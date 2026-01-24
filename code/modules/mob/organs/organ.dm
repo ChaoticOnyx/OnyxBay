@@ -401,6 +401,17 @@ var/list/organ_cache = list()
 	if(rejecting)
 		. += "Genetic Rejection"
 
+	if(!istype(src, /obj/item/organ/external) && length(implants))
+		var/unknown_body = 0
+		for(var/I in implants)
+			var/obj/item/implant/imp = I
+			if(istype(imp) && imp.known)
+				. += "[capitalize(imp.name)] implanted"
+			else
+				unknown_body++
+		if(unknown_body)
+			. += "Unknown body present"
+
 //used by stethoscope
 /obj/item/organ/proc/listen()
 	return

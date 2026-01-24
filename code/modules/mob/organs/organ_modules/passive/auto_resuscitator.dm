@@ -86,6 +86,10 @@
 				break
 	to_chat(owner, SPAN_NOTICE("[cpu_name] activates [initial(name)]."))
 	sound_to(owner, sound('sound/voice/Hevsounds/flatline_medical.ogg', volume = 50))
+	owner.visible_message(
+		SPAN_NOTICE("[owner]'s chest rises up and down, as if something hit it from the inside."),
+		null
+	)
 
 	owner.apply_damage(burn_per_resuscitate, BURN, BP_CHEST)
 	heal(owner)

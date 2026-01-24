@@ -3,7 +3,7 @@
 	desc = "An augment designed to hold multiple tools for swift deployment."
 	action_button_name = "Deploy tool"
 	icon_state = "multitool"
-	allowed_organs = list(BP_L_HAND, BP_R_HAND)
+	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	matter = list(MATERIAL_STEEL = 100)
 	origin_tech = list(TECH_BIO = 3, TECH_POWER = 3)
 	augment_cost = 3

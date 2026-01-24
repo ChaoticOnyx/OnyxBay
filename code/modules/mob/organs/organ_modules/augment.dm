@@ -57,6 +57,39 @@
 			return TRUE
 	return FALSE
 
+/obj/item/organ_module/proc/can_install_in(obj/item/organ/affected, mob/user)
+	if(!affected)
+		return FALSE
+	if(!(affected.organ_tag in allowed_organs))
+		if(user)
+			to_chat(user, SPAN_WARNING("You can't install [name] in the [affected.name]."))
+		return FALSE
+	if(has_duplicate_in(affected))
+		if(user)
+			to_chat(user, SPAN_NOTICE("You cannot install another [name] into the [affected]."))
+		return FALSE
+	if(BP_IS_ROBOTIC(affected) && !(module_flags & OM_FLAG_MECHANICAL))
+		if(user)
+			to_chat(user, SPAN_NOTICE("You cannot install the [src] into the [affected]."))
+		return FALSE
+	if(!BP_IS_ROBOTIC(affected) && !(module_flags & OM_FLAG_BIOLOGICAL))
+		if(user)
+			to_chat(user, SPAN_NOTICE("You cannot install the [src] into the [affected]."))
+		return FALSE
+	if(module_type == OM_TYPE_PROCESSOR && affected.organ_tag != BP_HEAD)
+		if(user)
+			to_chat(user, SPAN_NOTICE("You cannot install the [src] into the [affected]."))
+		return FALSE
+	if(module_type == OM_TYPE_ACTUATOR && (affected.organ_tag == BP_HEAD || BP_IS_ROBOTIC(affected)))
+		if(user)
+			to_chat(user, SPAN_NOTICE("You cannot install the [src] into the [affected]."))
+		return FALSE
+	if((w_class + affected.occupied_space) > affected.max_module_size)
+		if(user)
+			to_chat(user, SPAN_NOTICE("You cannot install the [src] into the [affected]."))
+		return FALSE
+	return TRUE
+
 /obj/item/organ_module/proc/_on_install(obj/item/organ/E)
 	if(organ_tally)
 		var/obj/item/organ/external/ex = E

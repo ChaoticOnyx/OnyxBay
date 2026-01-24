@@ -3,7 +3,7 @@
 	desc = "An embedded incision manager."
 	action_button_name = "Deploy embedded incision manager"
 	icon_state = "multitool_medical"
-	allowed_organs = list(BP_L_HAND, BP_R_HAND)
+	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	holding_type = /obj/item/scalpel/manager
 	loadout_cost = 0
 	allowed_jobs = list(/datum/job/cmo)
@@ -18,6 +18,7 @@
 	desc = "An augment designed to hold multiple surgical instruments."
 	verb_name = "Deploy Surgical Tool"
 	icon_state = "multitool_medical"
+	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	augment_cost = 3
 	cpu_load = 1
 	w_class = 3

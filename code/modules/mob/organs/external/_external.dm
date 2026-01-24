@@ -883,7 +883,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 				)
 
 //Handles dismemberment
-/obj/item/organ/external/proc/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
+/obj/item/organ/external/proc/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent, drop_modules = FALSE)
 
 	if(!(limb_flags & ORGAN_FLAG_CAN_AMPUTATE) || !owner)
 		return
@@ -911,6 +911,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 		victim.UpdateDamageIcon()
 		victim.regenerate_icons()
 		return
+
+	if(drop_modules)
+		for(var/obj/item/organ_module/module in organ_modules.Copy())
+			module.remove(src)
 
 	if(!clean)
 		victim.shock_stage += min_broken_damage
@@ -1087,7 +1091,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	for(var/obj/item/organ_module/module in organ_modules)
 		movement_tally += module.organ_tally
-
 
 	owner?.update_organ_movespeed()
 

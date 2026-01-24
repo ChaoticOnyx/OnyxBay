@@ -313,33 +313,7 @@
 	if(issilicon(user))
 		return FALSE
 
-	if(!(parent_organ.organ_tag in tool.allowed_organs))
-		target.show_splash_text(user, "not compatible!", "\The [tool] can't be installed into \the [parent_organ]!")
-		return SURGERY_FAILURE
-	if(tool.has_duplicate_in(parent_organ))
-		target.show_splash_text(user, "already installed!", "\The [tool] is already installed in \the [parent_organ]!")
-		return SURGERY_FAILURE
-
-	var/max_space = parent_organ.max_module_size
-
-	var/datum/robolimb/R = GLOB.all_robolimbs[parent_organ]
-	if(istype(R))
-		max_space += R.max_module_size
-
-	var/occupied_space = 0
-	for(var/obj/item/organ_module/mod in parent_organ.organ_modules)
-		occupied_space += mod.w_class
-
-	if((tool.w_class + occupied_space) > max_space)
-		target.show_splash_text(user, "module is too big!", "\The [tool] is too big!")
-		return SURGERY_FAILURE
-
-	if(BP_IS_ROBOTIC(parent_organ) && !(tool.module_flags & OM_FLAG_MECHANICAL))
-		target.show_splash_text(user, "not compatible!", "\The [tool] can't be installed into robotic prosthetics!")
-		return SURGERY_FAILURE
-
-	if(!BP_IS_ROBOTIC(parent_organ) && !(tool.module_flags & OM_FLAG_BIOLOGICAL))
-		target.show_splash_text(user, "not compatible!", "\The [tool] can't be installed into organic bodyparts!")
+	if(!tool.can_install_in(parent_organ, user))
 		return SURGERY_FAILURE
 
 	return TRUE

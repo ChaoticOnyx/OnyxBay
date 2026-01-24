@@ -8,6 +8,27 @@
 	var/mod_overlay = null
 	var/can_reload = TRUE
 
+/obj/item/implanter/installer/proc/get_target_organ(mob/living/carbon/human/H, target_zone)
+	if(!target_zone)
+		to_chat(H, SPAN_NOTICE("You must target a body part first."))
+		return null
+	if(target_zone in BP_INTERNAL_ORGANS)
+		return H.internal_organs_by_name[target_zone]
+	return H.get_organ(target_zone)
+
+/obj/item/implanter/installer/proc/is_clothing_blocking(mob/living/carbon/human/H, obj/item/organ/affected, target_zone)
+	var/clothing_zone = target_zone
+	if(istype(affected, /obj/item/organ/internal))
+		var/obj/item/organ/internal/internal = affected
+		if(internal.parent_organ)
+			clothing_zone = internal.parent_organ
+	var/list/clothes = get_target_clothes(H, clothing_zone)
+	for(var/obj/item/clothing/C in clothes)
+		if(C.body_parts_covered & body_part_flags[clothing_zone])
+			to_chat(H, SPAN_DANGER("Clothing on [H]'s [organ_name_by_zone(H, clothing_zone)] blocks surgery!"))
+			return TRUE
+	return FALSE
+
 /obj/item/implanter/installer/New()
 	..()
 	if(ispath(mod))
@@ -49,7 +70,7 @@
 	return TRUE
 
 /obj/item/implanter/installer/attackby(obj/item/I, mob/user)
-	if(!mod && can_reload && istype(I, /obj/item/organ_module))
+	if(!mod && (can_reload || istype(src, /obj/item/implanter/installer/disposable)) && istype(I, /obj/item/organ_module))
 		var/obj/item/organ_module/M = I
 		if(!can_load_module(M))
 			to_chat(user, SPAN_NOTICE("You cannot load \the [M] into \the [src]."))
@@ -70,44 +91,14 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/target_zone = user.zone_sel?.selecting
-		if(!target_zone)
-			to_chat(user, SPAN_NOTICE("You must target a body part first."))
-			return
-		if(target_zone in BP_INTERNAL_ORGANS)
-			affected = H.internal_organs_by_name[target_zone]
-		else
-			affected = H.get_organ(target_zone)
+		affected = get_target_organ(H, target_zone)
 
 		if(!affected)
 			to_chat(user, SPAN_WARNING("[M] is missing that body part."))
 			return
-		var/clothing_zone = target_zone
-		if(istype(affected, /obj/item/organ/internal))
-			var/obj/item/organ/internal/internal = affected
-			if(internal.parent_organ)
-				clothing_zone = internal.parent_organ
-		var/list/clothes = get_target_clothes(H, clothing_zone)
-		for(var/obj/item/clothing/C in clothes)
-			if(C.body_parts_covered & body_part_flags[clothing_zone])
-				to_chat(user, SPAN_DANGER("Clothing on [M]'s [organ_name_by_zone(H, clothing_zone)] blocks surgery!"))
-				return
-
-		if(!(affected.organ_tag in mod.allowed_organs))
-			to_chat(user, SPAN_WARNING("You can't install [mod.name] in the [affected.name]."))
+		if(is_clothing_blocking(H, affected, target_zone))
 			return
-		if(mod.has_duplicate_in(affected))
-			to_chat(user, SPAN_NOTICE("You cannot install another [mod.name] into the [affected]."))
-			return
-
-		if(initial(mod.module_type) == OM_TYPE_PROCESSOR && affected.organ_tag != BP_HEAD)
-			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
-			return
-		if(initial(mod.module_type) == OM_TYPE_ACTUATOR && (affected.organ_tag == BP_HEAD || BP_IS_ROBOTIC(affected)))
-			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
-			return
-
-		if((mod.w_class + affected.occupied_space) > affected.max_module_size)
-			to_chat(user, SPAN_NOTICE("You cannot install the [mod] into the [affected]."))
+		if(!mod.can_install_in(affected, user))
 			return
 
 	M.visible_message(SPAN_WARNING("[user] is attemping to install something into [M]."))
@@ -130,6 +121,9 @@
 		)
 
 		mod = null
+		if(istype(src, /obj/item/implanter/installer/disposable))
+			can_reload = FALSE
+			SetName("[initial(name)] (used)")
 		update_icon()
 
 /obj/item/implanter/installer/disposable

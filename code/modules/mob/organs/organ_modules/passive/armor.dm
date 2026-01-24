@@ -2,7 +2,7 @@
 	name = "armor plating"
 	desc = "A set of lightweight armor plates designed to provide additional impact protection."
 	allowed_organs = BP_ALL_LIMBS
-	icon_state = "armor-chest"
+	icon_state = "armor"
 	loadout_cost = 0
 	available_in_charsetup = TRUE
 	augment_cost = 5

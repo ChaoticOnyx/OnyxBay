@@ -2,6 +2,7 @@
 	name = "embedded mining multitool"
 	desc = "A specialized mining multitool frequently purchased by the guild, it allows a miner to free up the space taken by some of their bulkier equipment. Includes an emergency radio, just in case."
 	action_button_name = "Deploy mining tool"
+	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	items = list(
 		/obj/item/wrench,
 		/obj/item/device/depth_scanner,

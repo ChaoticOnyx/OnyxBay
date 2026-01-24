@@ -191,7 +191,7 @@
 
 		if(initial(module_path.module_type) == OM_TYPE_PROCESSOR && pref.current_organ != BP_HEAD)
 			return TOPIC_REFRESH
-		if(initial(module_path.module_type) == OM_TYPE_ACTUATOR && (pref.current_organ == BP_HEAD || pref.organ_data[pref.current_organ] == "cyborg" || (pref.current_organ in list(BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND))))
+		if(initial(module_path.module_type) == OM_TYPE_ACTUATOR && (pref.current_organ == BP_HEAD || pref.organ_data[pref.current_organ] == "cyborg" || !(pref.current_organ in list(BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND))))
 			return TOPIC_REFRESH
 
 		pref.total_aug_points = pref.get_aug_cost()
@@ -206,13 +206,6 @@
 				max_points = config.character_setup.max_loadout_points + config.character_setup.extra_loadout_points
 			if((loadout_points + loadout_cost) > max_points)
 				return TOPIC_REFRESH
-
-		var/total_cpu_power = 0
-		var/loaded_cpu_power = 0
-		for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
-			for(var/path in pref.organ_modules[organ_tag])
-				total_cpu_power += module_cpu_power_for(organ_tag, path)
-				loaded_cpu_power += module_cpu_load_for(organ_tag, path)
 
 		var/total_space = get_organ_total_space(pref.current_organ)
 		var/occupied_space = get_organ_occupied_space(pref.current_organ)
@@ -390,7 +383,10 @@
 
 /datum/category_item/player_setup_item/augmentation/proc/get_organ_occupied_space(organ)
 	var/occupied_space = 0
-	for(var/path in pref.organ_modules[organ])
+	var/list/modules = pref.organ_modules ? pref.organ_modules[organ] : null
+	if(!islist(modules))
+		return 0
+	for(var/path in modules)
 		var/obj/item/organ_module/module = path
 		occupied_space += initial(module.w_class)
 	return occupied_space
@@ -466,8 +462,16 @@
 		if(!islist(allowed))
 			continue
 
+		var/is_robotic = (pref.organ_data[organ] == "mechanical" || pref.organ_data[organ] == "cyborg")
+		if(is_robotic)
+			if(!(initial(mod.module_flags) & OM_FLAG_MECHANICAL))
+				continue
+		else
+			if(!(initial(mod.module_flags) & OM_FLAG_BIOLOGICAL))
+				continue
+
 		if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
-			if(organ == BP_HEAD || pref.organ_data[organ] == "cyborg" || !(organ in BP_ALL_LIMBS))
+			if(organ == BP_HEAD || pref.organ_data[organ] == "cyborg" || !(organ in list(BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND)))
 				continue
 		if(initial(mod.module_type) == OM_TYPE_PROCESSOR)
 			if(organ != BP_HEAD)
@@ -503,7 +507,7 @@
 			cpu_info = "CPU gain: [module_cpu_power]"
 		else
 			var/module_cpu_load = isnull(mod.cpu_load) ? 0 : mod.cpu_load
-			cpu_info = "CPU gain: [module_cpu_load]"
+			cpu_info = "CPU usage: [module_cpu_load]"
 		var/price
 		var/loadout_gear_name = get_module_loadout_name(mod_path)
 		if(loadout_gear_name)

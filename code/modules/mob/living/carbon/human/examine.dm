@@ -347,7 +347,7 @@
 		if(istype(eyes))
 			var/list/glow = eyes.get_active_glow()
 			if(glow && glow["name"])
-				msg += SPAN("danger", "[T.His] eyes are glowing [glow["name"]].\n")
+				msg += SPAN("notice", "[T.His] eyes are glowing [glow["name"]].\n")
 
 	if (pose)
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )

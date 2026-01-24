@@ -162,6 +162,7 @@
 
 /obj/item/storage/box/syndie_kit/cigarette/New()
 	..()
+	new /obj/item/flame/lighter/zippo/syndie(src)
 	new /obj/item/storage/fancy/cigarettes/syndi_cigs/flash(src)
 	new /obj/item/storage/fancy/cigarettes/syndi_cigs/flash(src)
 	new /obj/item/storage/fancy/cigarettes/syndi_cigs/smoke(src)
