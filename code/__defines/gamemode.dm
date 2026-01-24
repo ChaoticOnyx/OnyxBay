@@ -63,8 +63,8 @@
 #define MODE_SPIDER "spider"
 #define MODE_GODCULTIST "god cultist"
 
-#define DEFAULT_TELECRYSTAL_AMOUNT 12
-#define NUCLEAR_TELECRYSTAL_AMOUNT 15
+#define DEFAULT_TELECRYSTAL_AMOUNT 20
+#define NUCLEAR_TELECRYSTAL_AMOUNT 25
 #define IMPLANT_TELECRYSTAL_AMOUNT(x) ((x / 2) - 1) // If this cost is ever greater than half of DEFAULT_TELECRYSTAL_AMOUNT then it is possible to buy more TC than you spend
 
 /////////////////
