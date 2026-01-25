@@ -3,6 +3,7 @@
 	desc = "A mechanical augment designed for implantation into a human's flesh or prosthetics."
 	icon = 'icons/obj/implants.dmi'
 	matter = list(MATERIAL_STEEL = 12)
+	var/augment_size = ITEM_SIZE_TINY
 	w_class = ITEM_SIZE_TINY
 	/// List of organ tags
 	var/list/allowed_organs = list()
@@ -44,7 +45,7 @@
 /obj/item/organ_module/proc/install(obj/item/organ/E)
 	E.implants += src
 	E.organ_modules += src
-	E.occupied_space += w_class
+	E.occupied_space += augment_size
 	forceMove(E)
 	_on_install(E)
 	post_install(E)
@@ -84,7 +85,7 @@
 		if(user)
 			to_chat(user, SPAN_NOTICE("You cannot install the [src] into the [affected]."))
 		return FALSE
-	if((w_class + affected.occupied_space) > affected.max_module_size)
+	if((augment_size + affected.occupied_space) > affected.max_module_size)
 		if(user)
 			to_chat(user, SPAN_NOTICE("You cannot install the [src] into the [affected]."))
 		return FALSE
@@ -104,7 +105,7 @@
 	_on_remove(E)
 	E.implants -= src
 	E.organ_modules -= src
-	E.occupied_space = max(0, E.occupied_space - w_class)
+	E.occupied_space = max(0, E.occupied_space - augment_size)
 	if(!QDELETED(src))
 		forceMove(E.drop_location())
 	post_removed(E)

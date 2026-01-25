@@ -88,9 +88,22 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 	for(var/datum/category_group/player_setup_category/PS in categories)
 		PS.save_preferences(W)
 
+// Sum total loadout cost from all categories except augmentation (augmentation uses own points)
 /datum/category_collection/player_setup_collection/proc/get_lp_cost()
+	var/total_cost = 0
 	for(var/datum/category_group/player_setup_category/PS in categories)
-		. += PS.get_lp_cost()
+		if(PS.category_item_type == /datum/category_item/player_setup_item/augmentation)
+			continue
+		total_cost += PS.get_lp_cost()
+	return total_cost
+
+/datum/category_collection/player_setup_collection/proc/get_loadout_points_cost()
+	var/total_loadout = 0
+	for(var/datum/category_group/player_setup_category/PS in categories)
+		if(PS.category_item_type != /datum/category_item/player_setup_item/loadout)
+			continue
+		total_loadout += PS.get_lp_cost()
+	return total_loadout
 
 /datum/category_collection/player_setup_collection/proc/header()
 	var/dat = ""

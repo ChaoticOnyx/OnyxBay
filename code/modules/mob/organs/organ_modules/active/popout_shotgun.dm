@@ -9,7 +9,7 @@
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL
 	available_in_charsetup = FALSE
 	cpu_load = 1
-	w_class = 4
+	w_class = 3
 	matter = list(
 		MATERIAL_DURANIUM = 1000,
 		MATERIAL_PLASTEEL = 2000,

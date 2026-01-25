@@ -10,3 +10,4 @@
 	w_class = 1
 	cpu_load = 0
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
+	slot_flags = SLOT_DENYPOCKET
