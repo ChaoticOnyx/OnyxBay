@@ -293,12 +293,14 @@
 			to_chat(firer, SPAN_WARNING("[src] is not ready to fire again!"))
 		return
 
-	// Handling heat now
+	// Handling heat now		
+	if(!heat_amount && heat_per_fire != 0 )
+		set_next_think(world.time + 1 SECOND)
+		heat_amount += heat_per_fire
+
 	if(on_overheat)
 		show_splash_text(firer, "Overheat!", SPAN_DANGER("\The [src] is not ready to fire!"))
 		return
-
-	heat_amount += heat_per_fire
 
 	var/shoot_time = (burst - 1)* burst_delay
 
@@ -386,6 +388,7 @@
 	heat_amount = max(0, heat_amount - cool_amount)
 	if(!heat_amount)
 		set_next_think(0)
+		return
 
 	set_next_think(world.time + 1 SECOND)
 

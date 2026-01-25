@@ -1,7 +1,7 @@
 /// How many variations of bullethole patterns there are
 #define BULLETHOLE_STATES 10
 /// Maximum possible bullet holes in a closed turf
-#define BULLETHOLE_MAX 24
+#define BULLETHOLE_MAX 6
 
 /turf/simulated/wall/proc/update_material()
 	if(!material)
