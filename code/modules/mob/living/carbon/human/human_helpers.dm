@@ -232,7 +232,7 @@
 		cpu_overload_since = world.time
 
 	if(!cpu_overload_warned_at && (world.time - cpu_overload_since) >= 10 SECONDS)
-		to_chat(src, SPAN_WARNING("Warning! [get_cpu_name()] is running at its limit, brain damage is possible."))
+		to_chat(src, SPAN_WARNING("Your body feels like a thousand needles crawling under your skin."))
 		cpu_overload_warned_at = world.time
 		return
 
