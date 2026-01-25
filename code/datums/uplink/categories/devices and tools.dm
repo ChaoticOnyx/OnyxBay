@@ -12,7 +12,7 @@
 /datum/uplink_item/item/tools/toolbox
 	name = "Fully Loaded Toolbox"
 	desc = "An extra robust toolbox filled with all the tools you need."
-	item_cost = 1
+	item_cost = 2
 	path = /obj/item/storage/toolbox/syndicate
 
 /datum/uplink_item/item/tools/ductape
@@ -30,7 +30,7 @@
 /datum/uplink_item/item/tools/barrier
 	name = "Energy Barrier"
 	desc = "A simple yet effective one-use energy barrier generator. Quite effective as a battlefield cover, but explodes upon recieving too much damage."
-	item_cost = 1
+	item_cost = 2
 	path = /obj/item/device/energybarrier
 
 /datum/uplink_item/item/tools/money
@@ -95,7 +95,7 @@
 
 /datum/uplink_item/item/tools/c4explosive
 	name = "Small Package Bomb"
-	item_cost = 3
+	item_cost = 5
 	path = /obj/item/syndie/c4explosive
 
 /datum/uplink_item/item/tools/hacking_tool
@@ -138,7 +138,7 @@
 	desc = "This bad boy is a station engineers and AI's worst enemy. When bought, this thing is useless, \
 			but when the power sink comes in contact with exposed wires out in space or on the station it starts to drain the power at a RAPID rate. \
 			Once it has enough power, powersink explodes, destroying everything in a HUGE range."
-	item_cost = 5
+	item_cost = 10
 	path = /obj/item/device/powersink
 
 /datum/uplink_item/item/stealth_items/chameleon_bomb
@@ -149,12 +149,12 @@
 
 /datum/uplink_item/item/tools/c4explosive/heavy
 	name = "Large Package Bomb"
-	item_cost = 6
+	item_cost = 12
 	path = /obj/item/syndie/c4explosive/heavy
 
 /datum/uplink_item/item/tools/supply_beacon
 	name = "Hacked Supply Beacon"
-	item_cost = 6
+	item_cost = 8
 	path = /obj/item/supply_beacon
 
 /datum/uplink_item/item/tools/camera_mask
@@ -164,18 +164,18 @@
 
 /datum/uplink_item/item/tools/heavy_armor
 	name = "Heavy Armor Vest and Helmet"
-	item_cost = 6
+	item_cost = 10
 	path = /obj/item/storage/backpack/satchel/syndie_kit/armor
 
 /datum/uplink_item/item/tools/flashdark
 	name = "Flashdark"
-	item_cost = 7
+	item_cost = 10
 	antag_costs = list(MODE_NUKE = 14)
 	path = /obj/item/device/flashlight/flashdark
 
 /datum/uplink_item/item/tools/ai_module
 	name = "Hacked AI Upload Module"
-	item_cost = 7
+	item_cost = 8
 	path = /obj/item/aiModule/syndicate
 
 /datum/uplink_item/item/tools/teleporter

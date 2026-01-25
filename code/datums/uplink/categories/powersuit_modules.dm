@@ -36,5 +36,5 @@
 
 /datum/uplink_item/item/powersuit_modules/laser_canon
 	name = "Mounted Laser Cannon"
-	item_cost = 11 // This thing mounted on a RIG turns you into a walking siege machine
+	item_cost = 15 // This thing mounted on a RIG turns you into a walking siege machine
 	path = /obj/item/rig_module/mounted

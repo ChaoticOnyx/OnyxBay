@@ -26,13 +26,13 @@
 /datum/uplink_item/item/badassery/money_cannon
 	name = "Modified Money Cannon"
 	desc = "Too much money? Not enough screaming? Try the Money Cannon."
-	item_cost = 6
+	item_cost = 8
 	path = /obj/item/gun/launcher/money/hacked
 
 /datum/uplink_item/item/visible_weapons/chainsaw
 	name = "Chainsaw"
 	desc = "BRRR-BRRR-BRRR!"
-	item_cost = 5
+	item_cost = 8
 	path = /obj/item/storage/backpack/dufflebag/syndie_kit/chainsaw
 
 /datum/uplink_item/item/visible_weapons/ionpistol
@@ -44,41 +44,41 @@
 /datum/uplink_item/item/visible_weapons/sawnoff
 	name = "Sawnoff Shotgun"
 	desc = "A sawed-off double-barreled shotgun."
-	item_cost = 6
+	item_cost = 8
 	antag_costs = list(MODE_NUKE = 4)
 	path = /obj/item/gun/projectile/shotgun/doublebarrel/sawn
 
 /datum/uplink_item/item/visible_weapons/g9mm
 	name = "Silenced Pistol"
 	desc = "A 9mm pistol with silencer kit and ammunition."
-	item_cost = 6
+	item_cost = 8
 	antag_costs = list(MODE_NUKE = 4)
 	path = /obj/item/storage/box/syndie_kit/g9mm
 
 /datum/uplink_item/item/visible_weapons/crossbow
 	name = "Energy Crossbow"
 	desc = "A self-recharging, almost silent weapon employed by stealth operatives."
-	item_cost = 6
+	item_cost = 8
 	path = /obj/item/gun/energy/crossbow
 
 /datum/uplink_item/item/visible_weapons/revolver
 	name = "Revolver"
 	desc = "A classic .357 relover. Trusty, deadly, loud as hell, it assures everyone around that you work for the Syndicate."
-	item_cost = 7
+	item_cost = 12
 	antag_costs = list(MODE_NUKE = 4)
 	path = /obj/item/storage/backpack/satchel/syndie_kit/revolver
 
 /datum/uplink_item/item/visible_weapons/energy_sword
 	name = "Energy Sword"
 	desc = "One of the best melee weapons known to the mankind, it can turn a living being into something less living and less being in just a few swings. It is also capable of reflecting any projectiles. Just don't forget to turn it on."
-	item_cost = 8
+	item_cost = 12
 	antag_costs = list(MODE_NUKE = 6)
 	path = /obj/item/melee/energy/sword/one_hand
 
 /datum/uplink_item/item/visible_weapons/submachinegun
 	name = "Submachine Gun"
 	desc = "C20-r, the standard issue 10mm submachine gun given to Syndicate Nuclear Ops. Rapid-firing, accurate, and unbeliveably lethal."
-	item_cost = 12
+	item_cost = 20
 	antag_costs = list(MODE_NUKE = 6)
 	path = /obj/item/gun/projectile/automatic/c20r
 

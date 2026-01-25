@@ -31,7 +31,7 @@
 /datum/uplink_item/item/medical/surgery
 	name = "Surgery kit"
 	desc = "Filled with everything you need to reattach limbs and remove shrapnels."
-	item_cost = 3
+	item_cost = 5
 	path = /obj/item/storage/firstaid/surgery/syndie
 
 /datum/uplink_item/item/medical/serum
