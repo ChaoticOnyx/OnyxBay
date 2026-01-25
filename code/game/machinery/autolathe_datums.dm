@@ -474,6 +474,12 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	hidden = 1
 	category = "Arms and Ammunition"
 
+/datum/autolathe/recipe/shotgun_breaching
+	name = "ammunition (breaching, shotgun)"
+	path = /obj/item/ammo_casing/shotgun/breaching
+	hidden = 1
+	category = "Arms and Ammunition"
+
 /datum/autolathe/recipe/magazine_c45mrubber
 	name = "ammunition (.45, rubber)"
 	path = /obj/item/ammo_magazine/c45m/rubber
