@@ -9,7 +9,8 @@
 	loadout_cost = 0
 	available_in_charsetup = TRUE
 	w_class = 1
-	augment_cost = 1
+	augment_cost = 6
+	allowed_jobs = list(/datum/job/cmo, /datum/job/doctor, /datum/job/chemist, /datum/job/detective)
 	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 6)
 	matter = list(
 		MATERIAL_GOLD = 250,

@@ -28,7 +28,7 @@
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)
 	holding_type = /obj/item/melee/implant/armblade/wristshank
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
-	available_in_charsetup = TRUE
+	available_in_charsetup = FALSE
 	origin_tech = list(TECH_COMBAT = 2, TECH_BIO = 3, TECH_MATERIAL = 2)
 	loadout_cost = 0
 	augment_cost = 5
