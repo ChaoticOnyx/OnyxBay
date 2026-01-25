@@ -530,7 +530,7 @@
 	return
 
 /obj/item/device/radio/proc/receive()
-	return
+	playsound(loc, 'sound/effects/radiohiss.ogg', 15, 0, -1)
 
 ///////////////////////////////
 //////////Borg Radios//////////
