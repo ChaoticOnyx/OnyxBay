@@ -826,7 +826,3 @@ its easier to just keep the beam vertical.
 ///Return the values you get when an RCD eats you?
 /atom/proc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	return FALSE
-
-/// Adds the debris element for projectile impacts
-/atom/proc/add_debris_element()
-	AddElement(/datum/element/debris, null, -15, 8, 0.7)
