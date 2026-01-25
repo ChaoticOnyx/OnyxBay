@@ -506,6 +506,7 @@
 		return
 	M.add_chemical_effect(CE_MIND, -2)
 	var/effect_mult = removed / metabolism
+	M.make_drugged(30 * effect_mult)
 	if(alien == IS_SKRELL)
 		M.hallucination(25 * effect_mult, 30 * effect_mult)
 	else

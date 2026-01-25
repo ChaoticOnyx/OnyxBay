@@ -215,8 +215,8 @@
 	desc = "You're immune to magic"
 
 /datum/modifier/trait/opiat_addiction
-	name = "Opiat addiction"
-	desc = "You are addicted to opiates."
+	name = "Opiate Dependence"
+	desc = "You rely on opiates to feel normal. Without them, your body and mind quickly turn against you."
 
 /datum/modifier/trait/opiat_addiction/on_applied()
 	. = ..()
@@ -226,8 +226,8 @@
 		H.add_addiction(A, (rand(40, 70) * 0.25))
 
 /datum/modifier/trait/alcohol_addiction
-	name = "Alcohol addiction"
-	desc = "You are addicted to alcohol."
+	name = "Alcohol Dependence"
+	desc = "Alcohol has become a part of your routine. Going without it makes everything feel just a little worse."
 
 /datum/modifier/trait/alcohol_addiction/on_applied()
 	. = ..()
@@ -236,20 +236,22 @@
 		var/datum/addiction/alcohol/A = new
 		H.add_addiction(A, (rand(40, 70) * 0.25))
 
-/datum/modifier/trait/alcohol_addiction
-	name = "Alcohol addiction"
-	desc = "You are addicted to alcohol."
 
-/datum/modifier/trait/alcohol_addiction/on_applied()
+/datum/modifier/trait/cannabis_addiction
+	name = "Cannabis Dependence"
+	desc = "You are used to calming your thoughts with cannabis. Without it, staying relaxed becomes difficult."
+
+/datum/modifier/trait/cannabis_addiction/on_applied()
 	. = ..()
 	var/mob/living/carbon/human/H = holder
 	if(H)
-		var/datum/addiction/alcohol/A = new
+		var/datum/addiction/cannabis/A = new
 		H.add_addiction(A, (rand(40, 70) * 0.25))
+
 
 /datum/modifier/trait/smoker
 	name = "Smoker"
-	desc = "You are smoker."
+	desc = "You are used to nicotine. Going without a cigarette makes you restless and irritable."
 
 /datum/modifier/trait/smoker/on_applied()
 	. = ..()
