@@ -4,6 +4,7 @@
 		/datum/reagent/painkiller/opium,
 		/datum/reagent/painkiller/tramadol/oxycodone,
 		/datum/reagent/painkiller/tramadol,
+		/datum/reagent/painkiller/opium/tarine
 	)
 	antagonist_reagent = list(
 		// Core detox/support
