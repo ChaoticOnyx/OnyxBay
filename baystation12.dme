@@ -2201,6 +2201,7 @@
 #include "code\modules\mob\living\carbon\human\whisper.dm"
 #include "code\modules\mob\living\carbon\human\addictions\_addictions.dm"
 #include "code\modules\mob\living\carbon\human\addictions\alcohol.dm"
+#include "code\modules\mob\living\carbon\human\addictions\cannabis.dm"
 #include "code\modules\mob\living\carbon\human\addictions\nicotine.dm"
 #include "code\modules\mob\living\carbon\human\addictions\opioid.dm"
 #include "code\modules\mob\living\carbon\human\species\species.dm"

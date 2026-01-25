@@ -79,7 +79,7 @@
 			to_chat(H, SPAN_WARNING("[pick(
 				"You really want a drink.",\
 				"Your hands feel a little restless without alcohol.",\
-				"You keep imagining that first swallow."\
+				"You keep imagining that first sip."\
 			)]"))
 		if((10 MINUTES) to INFINITY)
 			to_chat(H, SPAN_DANGER("[pick(
