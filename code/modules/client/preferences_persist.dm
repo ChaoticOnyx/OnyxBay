@@ -91,6 +91,9 @@
 	total_lpoints_cost = player_setup.get_lp_cost()
 	return total_lpoints_cost
 
+/datum/preferences/proc/get_loadout_points_cost()
+	return player_setup.get_loadout_points_cost()
+
 /datum/preferences/proc/is_default_module(organ_tag, module_path)
 	if(!organ_tag || !module_path)
 		return FALSE

@@ -18,16 +18,7 @@
 	W.write("organ_modules", pref.organ_modules)
 
 /datum/category_item/player_setup_item/augmentation/get_lp_cost()
-	LAZYINITLIST(pref.organ_modules)
-	for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
-		for(var/obj/item/organ_module/mod as anything in pref.organ_modules[organ_tag])
-			if(pref.is_default_module(organ_tag, mod))
-				continue
-			if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
-				continue
-			if(initial(mod.augment_cost) <= 0)
-				continue
-			. += initial(mod.augment_cost)
+	return pref.get_loadout_points_cost()
 
 /datum/category_item/player_setup_item/augmentation/proc/get_loadout_points_cost()
 	LAZYINITLIST(pref.gear_list)
