@@ -1,5 +1,32 @@
 [
   {
+    "author": "Zert0X",
+    "date": "2026-01-25T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Энерго проджектайлы опять видны",
+        "pr": 13382
+      },
+      {
+        "prefix": "Tweak",
+        "message": "Подкорректирована цветовая палитра у блума",
+        "pr": 13382
+      }
+    ]
+  },
+  {
+    "author": "FelixArzt",
+    "date": "2026-01-25T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Фиксы аугментаций",
+        "pr": 13391
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2026-01-24T00:00:00+03:00",
     "changes": [
