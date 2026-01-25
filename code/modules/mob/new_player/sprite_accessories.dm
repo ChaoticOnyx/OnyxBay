@@ -1989,7 +1989,7 @@ May God have mercy.
 // Hair Fade
 /datum/sprite_accessory/marking/hair_fade
 	icon = 'icons/mob/human_races/hair_fade.dmi'
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA)
 	body_parts = list(BP_HEAD)
 	draw_target = MARKING_TARGET_HAIR
 	draw_order = 50 //before ears & horns
@@ -1998,12 +1998,12 @@ May God have mercy.
 /datum/sprite_accessory/marking/hair_fade/fade_up_short
 	name = "Fade (Up, Short)"
 	icon_state = "fade_up_short"
-	species_allowed = list(SPECIES_HUMAN, SPECIES_SKRELL)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL)
 
 /datum/sprite_accessory/marking/hair_fade/fade_up_long
 	name = "Fade (Up, Long)"
 	icon_state = "fade_up_long"
-	species_allowed = list(SPECIES_HUMAN, SPECIES_SKRELL)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL)
 
 /datum/sprite_accessory/marking/hair_fade/fade_down_short
 	name = "Fade (Down, Short)"
