@@ -84,6 +84,15 @@
 	build_path = /obj/item/rig_module/device/rcd
 	sort_string = "WCEAA"
 
+/datum/design/item/rig/kinetic
+	name = "gravikinetic module"
+	desc = "A directed point-gravity manipulator module for lifting and moving things out of reach. Mountable on a RIG."
+	id = "rig_kinesis"
+	req_tech = list(TECH_MATERIAL = 7, TECH_MAGNET = 7, TECH_ENGINEERING = 7)
+	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 1000, MATERIAL_PLASTIC = 1000, MATERIAL_GOLD = 700, MATERIAL_SILVER = 700, MATERIAL_DIAMOND = 500)
+	build_path = /obj/item/rig_module/kinetic_module
+	sort_string = "WCEAB"
+
 /datum/design/item/rig/jets
 	name = "maneuvering jets"
 	desc = "A compact gas thruster system, mountable on a RIG."

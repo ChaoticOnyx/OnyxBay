@@ -122,6 +122,7 @@
 	req_access = list(access_engine_equip)
 
 	initial_modules = list(
+		/obj/item/rig_module/kinetic_module,
 		/obj/item/rig_module/maneuvering_jets,
 		/obj/item/rig_module/device/rcd,
 		/obj/item/rig_module/vision/meson,
@@ -155,6 +156,7 @@
 	req_access = list(access_ce)
 
 	initial_modules = list(
+		/obj/item/rig_module/kinetic_module,
 		/obj/item/rig_module/ai_container,
 		/obj/item/rig_module/maneuvering_jets,
 		/obj/item/rig_module/device/rcd,

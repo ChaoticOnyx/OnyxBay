@@ -450,7 +450,7 @@
 	..()
 
 /obj/machinery/disposal/CanPass(atom/movable/mover, turf/target)
-	if(istype(mover,/obj/item) && mover.throwing)
+	if((istype(mover,/obj/item) || istype(mover,/mob)) && mover.throwing)
 		var/obj/item/I = mover
 		if(istype(I, /obj/item/projectile))
 			return

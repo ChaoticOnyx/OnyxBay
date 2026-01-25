@@ -500,3 +500,73 @@
 	H.bodytemperature -= temp_adj
 	active_power_cost = round((temp_adj/max_cooling)*charge_consumption)
 	return active_power_cost
+
+/obj/item/rig_module/kinetic_module
+	name = "gravikinetic module"
+	desc = "A point-gravity manipulator module for the powersuit. Throw their limbs."
+	icon_state = "kinetic"
+	selectable = TRUE
+	use_power_cost = 20 KILO WATTS
+
+	interface_name = "gravikinetic module"
+	interface_desc = "A directed point-gravity manipulator module for lifting and moving things out of reach."
+	origin_tech = list(TECH_MAGNET = 6, TECH_MATERIAL = 6,  TECH_ENGINEERING = 6)
+
+	var/atom/movable/locked
+	var/datum/beam = null
+	var/max_dist = 4
+	var/obj/effect/warp/small/warpeffect = null
+
+/obj/item/rig_module/kinetic_module/proc/beamdestroyed()
+	if(beam)
+		unregister_signal(beam, SIGNAL_QDELETING, nameof(.proc/beamdestroyed))
+		beam = null
+	if(locked)
+		if(holder.wearer)
+			show_splash_text(holder.wearer, "lock on \the [locked] disengaged.",SPAN_NOTICE("Lock on \the [locked] disengaged."))
+		endanimation()
+		locked = null
+	//It's possible beam self destroyed, match active
+	if(active)
+		deactivate() 
+
+/obj/item/rig_module/kinetic_module/proc/endanimation()
+	if(locked)
+		animate(locked,pixel_y= initial(locked.pixel_y), time = 0)
+
+/obj/item/rig_module/kinetic_module/deactivate()
+	. = ..()
+	if(beam)
+		QDEL_NULL(beam)
+
+/obj/item/rig_module/kinetic_module/engage(atom/target, inrange, params)
+	. = ..()
+	if(.)
+		if(!locked && (get_dist(holder.wearer, target) <= max_dist))
+			var/atom/movable/AM = target
+			if(!istype(AM) || AM.anchored || !AM.simulated || AM == holder.wearer)
+				show_splash_text(holder.wearer, "unable to lock on [target].", SPAN_NOTICE("Unable to lock on [target]."))
+				return
+			locked = AM
+			beam = holder.wearer.Beam(target, time=50, maxdistance=max_dist)
+
+			register_signal(beam, SIGNAL_QDELETING, nameof(.proc/beamdestroyed)) 
+
+			animate(target,pixel_y= initial(target.pixel_y) - 2,time=1 SECOND, easing = SINE_EASING, flags = ANIMATION_PARALLEL, loop = -1)
+			animate(pixel_y= initial(target.pixel_y) + 2,time=1 SECOND)
+
+			active = TRUE
+
+			show_splash_text(holder.wearer, "locked on [AM].", SPAN_NOTICE("Locked on [AM]."))
+			return
+		else if(target != locked)
+			if(locked in view(holder.wearer))
+				endanimation() //End animation without waiting for delete, so throw won't be affected
+				locked.throw_at(target, 14, 1.5, holder.wearer)
+				locked = null
+				deactivate()
+
+				holder.cell.use(use_power_cost * CELLRATE)
+
+			else
+				deactivate()
