@@ -438,7 +438,7 @@
 			var/icon/icon = new('icons/obj/guns/gun.dmi')
 
 			var/list/icon_states = icon.IconStates()
-			icon_states -= list("energykill", "energystan", "nenergy-g", "nenergy-f", "nenergy-c",
+			icon_states -= list("energykill", "energystun", "nenergy-g", "nenergy-f", "nenergy-c",
 								"nucgun-stun", "nucgun-kill", "nucgun-100", "nucgun-75", "nucgun-50",
 								"nucgun-25", "nucgun-0", "nucgun-whee", "nucgun-clean", "nucgun-light",
 								"nucgun-crit", "unused")
@@ -453,8 +453,8 @@
 
 			if(findtext(icon_state, "sword"))
 				I.name = "Energy sword"
-			if(findtext(icon_state, "stanbaton"))
-				I.name = "Stanbaton"
+			if(findtext(icon_state, "stunbaton"))
+				I.name = "Stunbaton"
 		if(4) // card
 			var/icon/icon = new('icons/obj/card.dmi')
 			var/icon_state = pick(icon.IconStates())
