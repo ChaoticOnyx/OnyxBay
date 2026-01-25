@@ -6,7 +6,7 @@
 	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	holding_type = /obj/item/pickaxe/drill
 	available_in_charsetup = TRUE
-	w_class = 4
+	w_class = 3
 	cpu_load = 1
 	augment_cost = 3
 	origin_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 2, TECH_BIO = 2)

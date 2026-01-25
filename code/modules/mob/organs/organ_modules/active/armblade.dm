@@ -27,6 +27,7 @@
 		MATERIAL_PLASTEEL = 2000
 	)
 	allowed_organs = list(BP_L_ARM, BP_R_ARM)
+	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL | OM_FLAG_BIOLOGICAL
 	holding_type = /obj/item/melee/implant/armblade
 	available_in_charsetup = FALSE
 	w_class = 2

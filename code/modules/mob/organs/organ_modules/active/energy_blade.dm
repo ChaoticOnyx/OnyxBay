@@ -4,6 +4,7 @@
 	action_button_name = "Deploy energyblade"
 	icon_state = "energyblade"
 	mod_overlay = "installer_armblade"
+	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL | OM_FLAG_BIOLOGICAL
 	origin_tech = list(TECH_COMBAT = 4, TECH_POWER = 3)
 	holding_type = /obj/item/melee/energy/sword/organ_module
 	available_in_charsetup = FALSE
