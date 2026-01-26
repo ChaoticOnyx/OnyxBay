@@ -20,6 +20,7 @@
 		/obj/item/stack/cable_coil = 4,
 		/obj/item/device/flash/synthetic = 4,
 		/obj/item/cell = 4,
+		/obj/item/organ/internal/cerebrum/mmi = 2,
 		/obj/item/device/healthanalyzer = 2,
 		/obj/item/device/robotanalyzer = 2,
 		/obj/item/scalpel = 1,
@@ -31,7 +32,8 @@
 		)
 
 	illegal = list(
-		/obj/item/device/flash = 2
+		/obj/item/device/flash = 2,
+		/obj/item/device/hudlenses/sunshield = 2
 		)
 
 /obj/item/vending_cartridge/robotics

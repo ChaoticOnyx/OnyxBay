@@ -93,6 +93,10 @@
 		/obj/item/glass_extra/glassholder = 10
 		)
 
+	premium = list(
+		/obj/item/reagent_containers/vessel/bottle/pwine = 1,
+		)
+
 /obj/item/vending_cartridge/boozeomat
 	icon_state = "refill_booze"
 	build_path = /obj/machinery/vending/boozeomat

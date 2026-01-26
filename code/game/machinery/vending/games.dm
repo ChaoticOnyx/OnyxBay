@@ -35,12 +35,14 @@
 
 	illegal = list(
 		/obj/item/reagent_containers/spray/waterflower = 2,
-		/obj/item/storage/box/snappops = 3
+		/obj/item/storage/box/snappops = 3,
+		/obj/item/gun/energy/laser/practice = 1
 		)
 
 	premium = list(
 		/obj/item/gun/projectile/revolver/capgun = 1,
-		/obj/item/ammo_magazine/caps = 4
+		/obj/item/ammo_magazine/caps = 4,
+		/obj/item/toy/pig = 1
 		)
 
 	prices = list(
