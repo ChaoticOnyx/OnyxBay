@@ -61,6 +61,7 @@
 	var/mob/living/carbon/human/H = heart?.owner
 	if(!istype(H)) // This should NOT happen, as thinking stops when this implant is removed from heart. Yet, better safe, than sorry.
 		set_next_think(0)
+		return
 
 	if(H.is_asystole() && H.should_have_organ(BP_HEART))
 		try_resuscitate(H)
