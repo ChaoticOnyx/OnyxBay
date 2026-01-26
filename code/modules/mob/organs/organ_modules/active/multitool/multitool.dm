@@ -10,7 +10,7 @@
 	cpu_load = 1
 	w_class = 3
 	available_in_charsetup = TRUE
-	allowed_jobs = list(/datum/job/chief_engineer, /datum/job/engineer)
+	allowed_roles = list(/datum/job/chief_engineer, /datum/job/engineer)
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL
 	var/list/items = list(
 		/obj/item/screwdriver,
@@ -27,6 +27,8 @@
 	for(var/path in items)
 		var/obj/item/I = new path(src)
 		I.canremove = FALSE
+		I.w_class = ITEM_SIZE_NO_CONTAINER
+		I.slot_flags = 0
 		items += I
 		register_signal(I, SIGNAL_QDELETING, nameof(.proc/on_holding_qdel))
 

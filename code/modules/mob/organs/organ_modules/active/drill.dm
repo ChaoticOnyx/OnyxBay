@@ -15,7 +15,7 @@
 		MATERIAL_PLASTIC = 2000,
 		MATERIAL_PLASTEEL = 1000
 	)
-	allowed_jobs = list(/datum/job/mining)
+	allowed_roles = list(/datum/job/mining)
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL
 
 /obj/item/organ_module/active/simple/drill/emp_act(severity)

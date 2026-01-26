@@ -29,7 +29,7 @@
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_BIOLOGICAL
 	available_in_charsetup = TRUE
 	origin_tech = list(TECH_COMBAT = 4, TECH_ENGINEERING = 3)
-	allowed_jobs = list(/datum/job/hos, /datum/job/captain)
+	allowed_roles = list(/datum/job/hos, /datum/job/captain)
 	loadout_cost = 0
 	augment_cost = 4
 	cpu_load = 2

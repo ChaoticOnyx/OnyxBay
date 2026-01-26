@@ -37,6 +37,15 @@
 	build_path = /obj/item/scalpel/manager
 	sort_string = "MBEAD"
 
+/datum/design/item/surgery/implant_installer
+	name = "biotech implanter"
+	desc = "A professional implanter enabling precise organ module installation. This unit contains the reusable mechanics surgeons and roboticists rely on."
+	id = "implant_installer"
+	req_tech = list(TECH_BIO = 3, TECH_ENGINEERING = 4, TECH_MATERIAL = 4)
+	materials = list(MATERIAL_STEEL = 3000, MATERIAL_GLASS = 3000, MATERIAL_PLASTIC = 2500)
+	build_path = /obj/item/implanter/installer
+	sort_string = "MBEAZ"
+
 /datum/design/item/surgery/pico_grasper
 	name = "precision grasper"
 	desc = "A thin rod with pico manipulators embedded in it allowing for fast and precise extraction."
