@@ -10,7 +10,7 @@
 	cpu_load = 1
 	w_class = 3
 	available_in_charsetup = TRUE
-	allowed_jobs = list(/datum/job/chief_engineer, /datum/job/engineer)
+	allowed_roles = list(/datum/job/chief_engineer, /datum/job/engineer)
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL
 	var/list/items = list(
 		/obj/item/screwdriver,

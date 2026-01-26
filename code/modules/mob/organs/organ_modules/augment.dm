@@ -35,6 +35,7 @@
 	/// Whether this module can be selected in character setup menu
 	var/available_in_charsetup = TRUE
 	var/list/allowed_jobs
+	var/list/allowed_roles
 
 /obj/item/organ_module/Initialize()
 	. = ..()
@@ -125,3 +126,13 @@
 
 /obj/item/organ_module/proc/organ_installed()
 	pass()
+
+/obj/item/organ_module/proc/is_allowed_for_job(datum/job/job)
+	if(!job)
+		return TRUE
+	var/list/roles = allowed_roles
+	if(!length(roles))
+		roles = allowed_jobs
+	if(!length(roles))
+		return TRUE
+	return (job.type in roles)
