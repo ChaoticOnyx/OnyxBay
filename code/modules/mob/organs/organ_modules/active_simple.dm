@@ -7,6 +7,8 @@
 	if(holding_type)
 		holding = new holding_type(src)
 		holding.canremove = FALSE
+		holding.w_class = ITEM_SIZE_NO_CONTAINER
+		holding.slot_flags = 0
 
 /obj/item/organ_module/active/simple/Destroy()
 	if(holding)

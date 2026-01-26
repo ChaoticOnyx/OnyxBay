@@ -1247,6 +1247,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(is_path_in_list(/obj/item/organ_module/actuators, organ_modules))
 		return TRUE
 
+	if(is_path_in_list(/obj/item/organ_module/muscle, organ_modules))
+		return TRUE
+
 	return FALSE
 
 

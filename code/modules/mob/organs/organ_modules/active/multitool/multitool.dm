@@ -27,6 +27,8 @@
 	for(var/path in items)
 		var/obj/item/I = new path(src)
 		I.canremove = FALSE
+		I.w_class = ITEM_SIZE_NO_CONTAINER
+		I.slot_flags = 0
 		items += I
 		register_signal(I, SIGNAL_QDELETING, nameof(.proc/on_holding_qdel))
 
