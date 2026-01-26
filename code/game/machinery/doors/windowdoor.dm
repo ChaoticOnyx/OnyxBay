@@ -36,6 +36,9 @@
 	if(Adjacent(user) && operating == DOOR_FAILURE)
 		. += SPAN("warning", "It appears to be jammed, and its lock looks cooked.")
 
+/obj/machinery/door/window/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_GLASS, -10, 5)
+
 /obj/machinery/door/window/on_update_icon()
 	ClearOverlays()
 
