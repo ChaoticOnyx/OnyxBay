@@ -424,7 +424,7 @@
 		data += "<font color = '[fcolor]'>[total_cost]/[pref.max_augmentation_points]</font> augmentation points spent.<br>"
 
 	data += "<br><b>CPU: [loaded_cpu_power]/[total_cpu_power] <br>Space: [occupied_space]/[total_space]</b><br>"
-	data += "<span style='color:#ff3300; font-size:11px;'>To use augmentations in organic limbs you must install an actuator into the limb!</span><br>"
+	data += "<span style='color:#ff3300; font-size:11px;'>To use augmentations in organic limbs you must install an actuator into the limb! To use ANY augmentation - install CPU in the head!</span><br>"
 
 	var/list/selected_jobs = list()
 	for(var/job_title in (pref.job_medium | pref.job_low | pref.job_high))
