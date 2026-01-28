@@ -393,6 +393,14 @@
 
 /obj/structure/closet/crate/secure/large/plasma/supermatter/prespawned/WillContain()
 	return list(/obj/machinery/power/supermatter)
+
+/obj/structure/closet/crate/secure/large/plasma/supermatter/random
+	name = "unstable supermatter crate"
+	desc = "A crate with an experimental supermatter crystal inside."
+
+/obj/structure/closet/crate/secure/large/plasma/supermatter/random/WillContain()
+	return list(/obj/machinery/power/supermatter/random)
+
 //fluff variant
 /obj/structure/closet/crate/secure/large/reinforced
 	desc = "A hefty, reinforced metal crate with an electronic locking system."

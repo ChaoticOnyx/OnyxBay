@@ -133,12 +133,12 @@
 	access_status_display = 1
 
 /obj/item/cartridge/hop
-	name = "\improper HumanResources9001 cartridge"
+	name = "\improper Resources9001 DELUXE"
 	icon_state = "cart-h"
 	access_status_display = 1
 	access_quartermaster = 1
 	access_janitor = 1
-	access_security = 1
+	access_hydroponics = 1
 
 /obj/item/cartridge/hos
 	name = "\improper R.O.B.U.S.T. DELUXE"

@@ -49,6 +49,16 @@ GLOBAL_LIST_EMPTY(alloy_data)
 		)
 	product = /obj/item/stack/material/steel
 
+/datum/alloy/duranium
+	metaltag = MATERIAL_DURANIUM
+	requires = list(
+		MATERIAL_CARBON = 4,
+		MATERIAL_IRON = 2,
+		MATERIAL_URANIUM = 1,
+		MATERIAL_PLASMA = 2
+		)
+	product = /obj/item/stack/material/duranium
+
 /datum/alloy/plass
 	metaltag = MATERIAL_PLASS
 	requires = list(

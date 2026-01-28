@@ -66,9 +66,16 @@
 
 /obj/item/clothing/under/rank/cargotech
 	name = "cargo technician's jumpsuit"
-	desc = "Shooooorts! They're comfy and easy to wear!"
+	desc = "It's a jumpsuit worn by cargo technicians. It's specially designed to stay comfortable when both pushing papers and signing crates."
 	icon_state = "cargo"
 	item_state = "cargo"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+
+/obj/item/clothing/under/rank/cargotech/shorts
+	name = "cargo docker's jumpshorts"
+	desc = "Shooooorts! They're comfy and easy to wear!"
+	icon_state = "cargo_shorts"
+	item_state = "cargo_shorts"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
 /obj/item/clothing/under/rank/cargotech/skirt
@@ -140,28 +147,28 @@
 	icon_state = "clown"
 	item_state = "clown"
 
-/obj/item/clothing/under/rank/head_of_personnel
-	name = "head of personnel's jumpsuit"
-	desc = "It's a jumpsuit worn by someone who works in the position of \"Head of Personnel\"."
+/obj/item/clothing/under/rank/hop
+	name = "head of provisioning's jumpsuit"
+	desc = "It's a jumpsuit worn by someone who works in the position of \"Head of Provisioning\"."
 	icon_state = "hop"
 	item_state = "hop"
 
-/obj/item/clothing/under/rank/head_of_personnel/skirt
-	name = "head of personnel's jumpskirt"
-	desc = "It's a jumpskirt worn by someone who works in the position of \"Head of Personnel\"."
+/obj/item/clothing/under/rank/hop/skirt
+	name = "head of provisioning's jumpskirt"
+	desc = "It's a jumpskirt worn by someone who works in the position of \"Head of Provisioning\"."
 	icon_state = "hop_skirt"
 	item_state = "hop_skirt"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
-/obj/item/clothing/under/rank/head_of_personnel/dress
-	name = "head of personnel's jumpdress"
-	desc = "It's a jumpdress worn by someone who works in the position of \"Head of Personnel\"."
+/obj/item/clothing/under/rank/hop/dress
+	name = "head of provisioning's jumpdress"
+	desc = "It's a jumpdress worn by someone who works in the position of \"Head of Provisioning\"."
 	icon_state = "hop_dress"
 	item_state = "hop_dress"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
-/obj/item/clothing/under/rank/head_of_personnel/whimsy
-	name = "head of personnel's suit"
+/obj/item/clothing/under/rank/hop/whimsy
+	name = "head of provisioning's suit"
 	desc = "A blue jacket and red tie, with matching red cuffs! Snazzy. Wearing this makes you feel more important than your job title does."
 	icon_state = "hopwhimsy"
 	item_state = "hopwhimsy"

@@ -168,6 +168,7 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
+	/datum/admins/proc/ring_unready,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
 	/client/proc/cmd_admin_delete,		// delete an instance/object/mob/etc,
@@ -231,6 +232,7 @@ var/list/admin_verbs_debug = list(
 	/client/proc/test_pt_mark_goal,
 	/client/proc/test_pt_clear,
 	/client/proc/test_pt_vis,
+	/client/proc/debug_bloom
 	)
 
 var/list/admin_verbs_paranoid_debug = list(

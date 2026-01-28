@@ -109,6 +109,8 @@
 	if(istype(back,/obj/item/rig))
 		process_rig(back)
 
+	process_eye_modules()
+
 	// Removes zoom effect
 	if (client && machine_visual)
 		if (client.pixel_x != 0 || client.pixel_y != 0)
@@ -137,6 +139,110 @@
 /mob/living/carbon/human/proc/process_rig(obj/item/rig/O)
 	if(O.visor && O.visor.active && O.visor.vision && O.visor.vision.glasses && (!O.helmet || (head && O.helmet == head)))
 		process_glasses(O.visor.vision.glasses)
+
+/mob/living/carbon/human/proc/process_eye_modules()
+	var/obj/item/organ/internal/eyes/eyes = internal_organs_by_name[BP_EYES]
+	if(!istype(eyes))
+		return
+
+	for(var/obj/item/organ_module/active/lenses/lens in eyes.organ_modules)
+		if(!lens.toggled && lens.toggleable)
+			continue
+
+		equipment_darkness_modifier += lens.darkness_view
+		equipment_vision_flags |= lens.vision_flags
+		equipment_prescription += lens.prescription
+		equipment_light_protection += lens.light_protection
+		flash_protection += lens.flash_protection
+		equipment_tint_total += lens.tint
+
+		if(lens.see_invisible >= 0)
+			if(equipment_see_invis)
+				equipment_see_invis = min(equipment_see_invis, lens.see_invisible)
+			else
+				equipment_see_invis = lens.see_invisible
+
+		if(lens.overlay)
+			equipment_overlays |= lens.overlay
+
+		lens.process_hud(src)
+
+	return
+
+/mob/living/carbon/human/proc/get_head_organ()
+	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	return istype(head) ? head : null
+
+/mob/living/carbon/human/proc/get_all_organs()
+	var/list/all_organs = list()
+	if(islist(organs))
+		all_organs += organs
+	if(islist(internal_organs))
+		all_organs += internal_organs
+	return all_organs
+
+/mob/living/carbon/human/proc/get_cpu_name()
+	var/obj/item/organ/external/head/head = get_head_organ()
+	if(!head)
+		return "CPU"
+	for(var/obj/item/organ_module/module in head.organ_modules)
+		if(initial(module.module_type) == OM_TYPE_PROCESSOR)
+			return module.name
+	return "CPU"
+
+/mob/living/carbon/human/proc/get_cpu_power()
+	var/total_cpu_power = 0
+	var/obj/item/organ/external/head/head = get_head_organ()
+	if(!head)
+		return total_cpu_power
+	for(var/obj/item/organ_module/module in head.organ_modules)
+		if(initial(module.module_type) == OM_TYPE_PROCESSOR)
+			total_cpu_power += (isnull(initial(module.cpu_power)) ? 0 : initial(module.cpu_power))
+	return total_cpu_power
+
+/mob/living/carbon/human/proc/get_active_cpu_load()
+	var/loaded_cpu_power = 0
+	for(var/obj/item/organ/O in get_all_organs())
+		for(var/obj/item/organ_module/module in O.organ_modules)
+			var/load = isnull(initial(module.cpu_load)) ? 0 : initial(module.cpu_load)
+			if(load <= 0)
+				continue
+			if(istype(module, /obj/item/organ_module/active))
+				var/obj/item/organ_module/active/A = module
+				if(!A.is_cpu_active(src))
+					continue
+			loaded_cpu_power += load
+	return loaded_cpu_power
+
+/mob/living/carbon/human/proc/deactivate_active_augmentations()
+	for(var/obj/item/organ/O in get_all_organs())
+		for(var/obj/item/organ_module/active/A in O.organ_modules)
+			if(A.is_cpu_active(src))
+				A.deactivate(O, src)
+
+/mob/living/carbon/human/proc/handle_cpu_overload()
+	var/total_cpu_power = get_cpu_power()
+	var/loaded_cpu_power = get_active_cpu_load()
+	if(loaded_cpu_power <= total_cpu_power)
+		cpu_overload_since = 0
+		cpu_overload_warned_at = 0
+		return
+
+	if(!cpu_overload_since)
+		cpu_overload_since = world.time
+
+	if(!cpu_overload_warned_at && (world.time - cpu_overload_since) >= 10 SECONDS)
+		to_chat(src, SPAN_WARNING("Your body feels like a thousand needles crawling under your skin."))
+		cpu_overload_warned_at = world.time
+		return
+
+	if(cpu_overload_warned_at && (world.time - cpu_overload_warned_at) >= 10 SECONDS)
+		to_chat(src, SPAN_DANGER("Emergency [get_cpu_name()] reset, deactivating active augmentations."))
+		adjustBrainLoss(rand(10, 35))
+		deactivate_active_augmentations()
+		Paralyse(rand(5, 20))
+		cpu_overload_since = 0
+		cpu_overload_warned_at = 0
 
 /mob/living/carbon/human/get_gender()
 	return gender
@@ -368,7 +474,17 @@
 	for(var/obj/item/C in list(l_ear, r_ear, head))
 		if(istype(C))
 			. += C.ear_protection
+	if(has_cochlear_implant())
+		. = max(., 2)
 	return .
+
+/mob/living/carbon/human/proc/has_cochlear_implant()
+	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	if(!istype(head))
+		return FALSE
+	if(locate(/obj/item/organ_module/cochlear) in head.organ_modules)
+		return TRUE
+	return FALSE
 
 /mob/living/carbon/human/is_eligible_for_antag_spawn(antag_id)
 	return species ? species.is_eligible_for_antag_spawn(antag_id) : TRUE // No species = no problems, assuming ourselves to be a baseline human being
@@ -398,3 +514,48 @@
 		. *= 1.5 // Less pain
 
 	return
+
+/// used for hud lights and eye glow effects
+/mob/living/carbon/human
+	var/hud_eye_glow_active = FALSE
+	var/hud_eye_glow_color = null
+	var/hud_eye_glow_range = 2
+	var/list/hud_eye_glow_saved = null
+
+/mob/living/carbon/human/proc/update_hud_eye_glow()
+	var/obj/item/organ/internal/eyes/eyes = internal_organs_by_name[BP_EYES]
+	if(!istype(eyes))
+		return
+
+	var/list/glow = eyes.get_active_glow()
+	if(glow && glow["rgb"])
+		if(!hud_eye_glow_saved)
+			hud_eye_glow_saved = list(r_eyes, g_eyes, b_eyes)
+		var/r = glow["rgb"][1]
+		var/g = glow["rgb"][2]
+		var/b = glow["rgb"][3]
+		change_eye_color(r, g, b)
+		set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(r, g, b))
+		hud_eye_glow_active = TRUE
+		hud_eye_glow_color = light_color
+		return
+
+	var/obj/item/clothing/glasses/hud/goggles = glasses
+	if(istype(goggles) && goggles.active && goggles.matrix?.eye_glow_rgb)
+		if(!hud_eye_glow_saved)
+			hud_eye_glow_saved = list(r_eyes, g_eyes, b_eyes)
+		var/list/g = goggles.matrix.eye_glow_rgb
+		set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(g[1], g[2], g[3]))
+		hud_eye_glow_active = TRUE
+		hud_eye_glow_color = light_color
+		return
+
+	if(hud_eye_glow_saved)
+		change_eye_color(hud_eye_glow_saved[1], hud_eye_glow_saved[2], hud_eye_glow_saved[3])
+		hud_eye_glow_saved = null
+	else if(eyes.eye_colour)
+		change_eye_color(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3])
+	if(hud_eye_glow_active)
+		set_light(0)
+	hud_eye_glow_active = FALSE
+	hud_eye_glow_color = null

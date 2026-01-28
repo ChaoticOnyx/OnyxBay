@@ -73,7 +73,7 @@
 /datum/gear/accessory/armband_cargo
 	display_name = "cargo armband"
 	path = /obj/item/clothing/accessory/armband/cargo
-	allowed_roles = SUPPLY_ROLES
+	allowed_roles = CARGO_ROLES
 
 /datum/gear/accessory/armband_medical
 	display_name = "medical armband"

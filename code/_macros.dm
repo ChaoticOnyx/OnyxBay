@@ -190,6 +190,8 @@
 #define LAZYCLEARLIST(L) if(L) L.Cut()
 // Reads L or an empty list if L is not a list.  Note: Does NOT assign, L may be an expression.
 #define SANITIZE_LIST(L) ( islist(L) ? L : list() )
+// Null-safe Find()
+#define LAZYFIND(L, V) L ? L.Find(V) : 0
 
 // Adds value V to associati list L[K]
 #define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += list(V);
@@ -215,6 +217,8 @@
 #define SPAN_INFO(X)     SPAN("info", X)
 
 #define SPAN_NOTICE(X)   SPAN("notice", X)
+
+#define SPAN_THOUGHT(X)  SPAN("thought", X)
 
 #define SPAN_WARNING(X)  SPAN("warning", X)
 

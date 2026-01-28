@@ -79,7 +79,7 @@
 	var/outfits_to_spawn = list( // List of outfits to pick from. Uses util_pick_weight()
 		/decl/hierarchy/outfit = 10,
 		/decl/hierarchy/outfit/job/assistant = 20,
-		/decl/hierarchy/outfit/job/service/janitor = 2,
+		/decl/hierarchy/outfit/job/provisioning/janitor = 2,
 		/decl/hierarchy/outfit/job/internal_affairs_agent = 2,
 		/decl/hierarchy/outfit/job/chaplain = 2,
 		/decl/hierarchy/outfit/job/merchant = 10,

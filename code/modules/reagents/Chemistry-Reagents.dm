@@ -63,6 +63,9 @@
 	if(!(flags & AFFECTS_DEAD) && M.is_ic_dead() && (world.time - M.timeofdeath > 150))
 		return
 
+	if(!(type in M.chem_doses))
+		add_user_effects(M)
+
 	if(overdose && (location != CHEM_TOUCH))
 		var/overdose_threshold = overdose * (flags & IGNORE_MOB_SIZE? 1 : MOB_MEDIUM/M.mob_size)
 		var/overdose_volume = volume - overdose_threshold
@@ -112,6 +115,14 @@
 	if(volume)
 		remove_self(removed)
 	return
+
+/// Use this proc to add user audiovisual effects, e.g. - flash overlay while under combat painkillers.
+/datum/reagent/proc/add_user_effects(mob/living/carbon/M)
+	SHOULD_CALL_PARENT(FALSE)
+
+/// Use this proc to remove user audiovisual effects.
+/datum/reagent/proc/remove_user_effects(mob/living/carbon/M)
+	SHOULD_CALL_PARENT(FALSE)
 
 /datum/reagent/proc/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	return

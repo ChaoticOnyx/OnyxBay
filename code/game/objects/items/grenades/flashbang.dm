@@ -22,7 +22,7 @@
 
 /obj/item/grenade/flashbang/proc/bang(turf/T , mob/living/carbon/M) // Added a new proc called 'bang' that takes a location and a person to be banged.
 	to_chat(M, SPAN("danger", "*BANG*"))                // Called during the loop that bangs people in lockers/containers and when banging
-	playsound(loc, 'sound/effects/bang.ogg', 50, 1, 30) // people in normal view. Could theroetically be called during other explosions.
+	playsound(loc, SFX_BANG, 50, 1, 30) // people in normal view. Could theroetically be called during other explosions.
 															// -- Polymorph
 	// Checking for protections
 	var/eye_effect = 0
@@ -66,10 +66,10 @@
 
 	if(ear_effect >= 1)
 		if(prob(ear_effect * 2) || (M == loc && prob(70)))
-			M.ear_damage += rand(1, 10)
+			M.adjustEarDamage(rand(1, 10), null)
 		else
-			M.ear_damage += rand(0, 5)
-		M.ear_deaf = max(M.ear_deaf, (ear_effect * 3))
+			M.adjustEarDamage(rand(0, 5), null)
+		M.setEarDamage(null, max(M.ear_deaf, ear_effect * 3))
 
 	// This really should be in mob not every check
 	if(ishuman(M))

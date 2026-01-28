@@ -43,6 +43,9 @@ var/list/flooring_types
 /decl/flooring/proc/on_remove()
 	return
 
+/decl/flooring/proc/on_attack_hand(mob/user)
+	return FALSE
+
 /decl/flooring/grass
 	name = "grass"
 	desc = "Do they smoke grass out in space, Bowie? Or do they smoke AstroTurf?"
@@ -53,6 +56,18 @@ var/list/flooring_types
 	flags = TURF_HAS_EDGES | TURF_REMOVE_SHOVEL
 	build_type = /obj/item/stack/tile/grass
 	footstep_sound = SFX_FOOTSTEP_GRASS
+
+/decl/flooring/grass/on_attack_hand(mob/user)
+	if(!ishuman(user))
+		return ..()
+
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	user.visible_message("<b>[user]</b> touches \the [src].", "You touch \the [src].")
+	if(prob(25))
+		to_chat(user, SPAN("notice", "<b>You feel calmer!</b>"))
+	user.do_attack_animation(src)
+	playsound(user, 'sound/effects/plantshake.ogg', 10, 1)
+	return TRUE
 
 /decl/flooring/asteroid
 	name = "coarse sand"

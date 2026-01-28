@@ -218,6 +218,9 @@
 	// Load EAMS data
 	SSeams.CollectDataForClient(src)
 
+	var/age = get_player_age(ckey)
+	message_staff("[src] ([age < 10 ? "<font color='#ff0000'>[age]</font>" : age]) has connected.")
+
 	setup_preferences()
 	view_size = new(src, get_screen_size(TRUE))
 

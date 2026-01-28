@@ -522,3 +522,9 @@
 	result = /datum/reagent/vecuronium_bromide
 	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/mercury = 2, /datum/reagent/luminol = 2)
 	result_amount = 1
+
+/datum/chemical_reaction/emezoline
+	name = "Emezoline"
+	result = /datum/reagent/emezoline
+	required_reagents = list(/datum/reagent/lithium = 1, /datum/reagent/potassium = 1, /datum/reagent/dylovene = 1)
+	result_amount = 1

@@ -265,6 +265,17 @@
 	containertype = /obj/structure/closet/crate/secure/large
 	access = access_engine
 
+/decl/hierarchy/supply_pack/engineering/meltdownsuit
+	name = "Meltdown voidsuit"
+	contains = list(/obj/item/clothing/suit/space/void/engineering/meltdown,
+					/obj/item/clothing/head/helmet/space/void/engineering/meltdown,
+					/obj/item/clothing/shoes/magboots,
+					/obj/item/device/geiger)
+	cost = 75
+	containername = "\improper Meltdown voidsuit crate"
+	containertype = /obj/structure/closet/crate/secure/large
+	access = access_engine
+
 /decl/hierarchy/supply_pack/engineering/rig
 	name = "EVA RIG"
 	contains = list(/obj/item/rig/eva/equipped)

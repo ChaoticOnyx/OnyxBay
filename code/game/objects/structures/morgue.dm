@@ -344,9 +344,9 @@
 							shake_animation(3)
 							playsound(src.loc, 'sound/effects/grillehit.ogg', 45, 1)
 						if(3)
-							playsound(src, 'sound/effects/bang.ogg', 45, 1)
+							playsound(src, SFX_BANG, 45, 1)
 							if(prob(50))
-								playsound(src, 'sound/effects/bang.ogg', 45, 1)
+								playsound(src, SFX_BANG, 45, 1)
 								shake_animation()
 							else
 								shake_animation(5)

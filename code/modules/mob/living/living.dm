@@ -414,6 +414,8 @@
 	else
 
 		L += src.contents
+		for(var/obj/item/organ/E in contents)
+			L += E.get_contents()
 		for(var/obj/item/storage/S in src.contents)	//Check for storage items
 			L += get_contents(S)
 
@@ -586,6 +588,13 @@
 
 	if(pulling)
 		handle_pulling_after_move(old_loc)
+
+	if(crawling)
+		var/turf/L = get_turf(newloc)
+		var/obj/structure/table/T = locate() in L.contents
+		if(!istype(T))
+			crawling = FALSE
+			hiding = FALSE
 
 	if(s_active && !((s_active in contents) || Adjacent(s_active)))
 		s_active.close(src)
@@ -875,6 +884,12 @@
 /mob/living/reset_layer()
 	if(hiding)
 		layer = HIDING_MOB_LAYER
+	else
+		..()
+
+/mob/living/update_height_offset()
+	if(hiding)
+		return
 	else
 		..()
 
