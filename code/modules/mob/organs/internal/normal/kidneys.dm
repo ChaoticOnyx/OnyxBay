@@ -28,12 +28,19 @@
 		return
 
 	detox_efficiency = 0.5
-	// Technically, ceases toxloss healing function. Lore-wise, still filters out the body's natural toxic buildup, but can't handle anything beyond that.
-	if(is_bruised())
-		detox_efficiency -= 0.5
-	// Causes the body's natural toxic buildup to... build up.
-	if(is_broken())
-		detox_efficiency -= 0.5
+	if(status & ORGAN_DEAD) // Causes the body's natural toxic buildup to... build up.
+		detox_efficiency *= -1
+	else if(is_broken()) // Technically, ceases toxloss healing function. Lore-wise, still filters out the body's natural toxic buildup, but can't handle anything beyond that.
+		detox_efficiency = 0
+	else if(is_bruised()) // Halves the healing potential, we'll only get intoxicated when completely dehydrated.
+		detox_efficiency *= 0.5
+
+	else
+
+/obj/item/organ/internal/kidneys/die()
+	..()
+	if(status & ORGAN_DEAD)
+		detox_efficiency = -0.5
 
 /obj/item/organ/internal/kidneys/proc/process_hydration()
 	if(!owner)

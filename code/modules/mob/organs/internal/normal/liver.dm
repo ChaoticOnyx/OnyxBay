@@ -75,7 +75,7 @@
 		filtering_efficiency -= 1
 	// That's where we're in trouble.
 	if(is_broken())
-		filtering_efficiency -= 2
+		filtering_efficiency -= 1
 	// Robotic organs filter better but don't get benefits from dylovene for filtering.
 	if(BP_IS_ROBOTIC(src) || owner.chem_effects[CE_ANTITOX])
 		filtering_efficiency += 1
@@ -89,6 +89,11 @@
 	// If the liver's not too busy, the body slowly regains its "anti-toxic shield".
 	if(filtering_efficiency >= 2 && !owner.chem_effects[CE_TOXIN])
 		stored_tox = max(damage, (stored_tox - filtering_efficiency * 0.1))
+
+/obj/item/organ/internal/liver/die()
+	..()
+	if(status & ORGAN_DEAD)
+		filtering_efficiency = 0
 
 /obj/item/organ/internal/liver/autoheal()
 	if(!damage)

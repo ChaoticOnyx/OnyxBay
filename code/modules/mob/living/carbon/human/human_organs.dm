@@ -471,7 +471,7 @@
 		if(K)
 			detox_efficiency = K.detox_efficiency
 		else
-			detox_efficiency = -1.0
+			detox_efficiency = -0.5
 
 	// High hydratation boosts detox efficiency (if applicible), low hydration slows it down or halts it completely.
 	switch(hydration)
