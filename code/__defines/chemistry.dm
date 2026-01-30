@@ -14,8 +14,8 @@
 
 #define MINIMUM_CHEMICAL_VOLUME 0.01
 
-// 200ml per sheet
-#define REAGENTS_PER_MATERIAL_SHEET 200
+// 20u per sheet
+#define REAGENTS_PER_MATERIAL_SHEET 20
 
 #define SOLID 1
 #define LIQUID 2

@@ -264,7 +264,7 @@
 		var/obj/item/weldingtool/WT = I
 
 		to_chat(user, SPAN_NOTICE("You start to fix dents and weld \the [repairing] into place."))
-		if(!WT.use_tool(src, user, delay = 5 * repairing.amount, amount = 50))
+		if(!WT.use_tool(src, user, delay = 5 * repairing.amount, amount = 5))
 			return
 
 		if(QDELETED(src) || !user)

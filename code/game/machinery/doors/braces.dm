@@ -94,7 +94,7 @@
 
 		var/obj/item/weldingtool/WT = W
 
-		if(!WT.use_tool(src, user, amount = 10))
+		if(!WT.use_tool(src, user, amount = 1))
 			return FALSE
 
 		cur_health = min(cur_health + rand(80,120), max_health)

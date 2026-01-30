@@ -280,8 +280,8 @@
 	..()
 	explosion(src.loc, 0, 0, 4, 3, 0)
 	var/obj/effect/decal/cleanable/greenglow/glow = new(get_turf(src))
-	glow.create_reagents(300)
-	glow.reagents.add_reagent(/datum/reagent/uranium, 300)
+	glow.create_reagents(30)
+	glow.reagents.add_reagent(/datum/reagent/uranium, 30)
 
 /obj/effect/meteor/golden
 	name = "golden meteor"

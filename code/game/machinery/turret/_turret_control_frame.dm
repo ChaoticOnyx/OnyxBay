@@ -82,7 +82,7 @@
 			if(isWelder(I))
 				var/obj/item/weldingtool/WT = I
 
-				if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 50))
+				if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 					return FALSE
 
 				if(QDELETED(src) || !user)

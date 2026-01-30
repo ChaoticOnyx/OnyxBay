@@ -243,7 +243,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 	if(isWelder(I))
 		var/obj/item/weldingtool/WT = I
-		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 50))
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 			return
 
 		if(QDELETED(src) || !user)

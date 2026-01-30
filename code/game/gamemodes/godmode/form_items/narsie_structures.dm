@@ -82,7 +82,7 @@
 	while(do_after(H,50,src))
 		user.audible_message("\The [user] utters something under their breath.", "<span class='cult'>You mutter a dark prayer to your master as you feel the stone eat away at your lifeforce.</span>")
 		if(H.should_have_organ(BP_HEART))
-			H.drip(25, get_turf(src))
+			H.drip(5, get_turf(src))
 		else
 			H.adjustBruteLoss(5)
 		linked_god.adjust_power(1,1)

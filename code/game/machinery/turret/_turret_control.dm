@@ -108,7 +108,7 @@
 
 	if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
-		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 50))
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 			return FALSE
 
 		show_splash_text(user, "External armor removed!")

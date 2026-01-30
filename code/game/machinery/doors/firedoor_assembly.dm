@@ -56,7 +56,7 @@
 		var/obj/item/weldingtool/WT = C
 		user.visible_message("<span class='warning'>[user] dissassembles \the [src].</span>",
 			"You start to dissassemble \the [src].")
-		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 10))
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 1))
 			return
 
 		if(QDELETED(src) || !user)

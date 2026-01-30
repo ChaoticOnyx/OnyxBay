@@ -39,7 +39,7 @@
 					state = AI_STAGE_CIRCUIT
 			if(isWelder(P))
 				var/obj/item/weldingtool/WT = P
-				if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 50))
+				if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 					return
 
 				if(QDELETED(src) || !user)

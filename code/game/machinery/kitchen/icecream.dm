@@ -65,10 +65,10 @@
 	create_reagents(1 LITER)
 	while(product_types.len < 8)
 		product_types.Add(5)
-	reagents.add_reagent(/datum/reagent/drink/milk, 50)
-	reagents.add_reagent(/datum/reagent/nutriment/flour, 50)
-	reagents.add_reagent(/datum/reagent/sugar, 50)
-	reagents.add_reagent(/datum/reagent/drink/ice, 50)
+	reagents.add_reagent(/datum/reagent/drink/milk, 5)
+	reagents.add_reagent(/datum/reagent/nutriment/flour, 5)
+	reagents.add_reagent(/datum/reagent/sugar, 5)
+	reagents.add_reagent(/datum/reagent/drink/ice, 5)
 
 /obj/machinery/icecream_vat/attack_hand(mob/user as mob)
 	user.set_machine(src)
@@ -108,8 +108,8 @@
 				I.add_ice_cream(flavour_name)
 			//	if(beaker)
 			//		beaker.reagents.trans_to(I, 10)
-				if(I.reagents.total_volume < 100)
-					I.reagents.add_reagent(/datum/reagent/sugar, 100 - I.reagents.total_volume)
+				if(I.reagents.total_volume < 10)
+					I.reagents.add_reagent(/datum/reagent/sugar, 10 - I.reagents.total_volume)
 			else
 				to_chat(user, "<span class='warning'>There is not enough icecream left!</span>")
 		else
@@ -190,8 +190,8 @@
 
 /obj/item/reagent_containers/food/icecream/Initialize()
 	. = ..()
-	create_reagents(200)
-	reagents.add_reagent(/datum/reagent/nutriment, 50)
+	create_reagents(20)
+	reagents.add_reagent(/datum/reagent/nutriment, 5)
 
 /obj/item/reagent_containers/food/icecream/proc/add_ice_cream(flavour_name)
 	name = "[flavour_name] icecream"

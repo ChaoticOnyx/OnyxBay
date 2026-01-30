@@ -401,7 +401,7 @@
 	src.reagents.clear_reagents()
 	var/obj/item/reagent_containers/food/badrecipe/ffuu = new(src)
 	ffuu.reagents.add_reagent(/datum/reagent/carbon, amount)
-	ffuu.reagents.add_reagent(/datum/reagent/toxin, amount / 100)
+	ffuu.reagents.add_reagent(/datum/reagent/toxin, amount / 10)
 	return list(ffuu)
 
 /obj/machinery/microwave/Topic(href, href_list)

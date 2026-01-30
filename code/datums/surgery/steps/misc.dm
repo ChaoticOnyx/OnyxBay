@@ -33,7 +33,7 @@
 
 	if(isWelder(tool))
 		var/obj/item/weldingtool/WT = tool
-		if(!WT.use_tool(target, user, amount = 10))
+		if(!WT.use_tool(target, user, amount = 1))
 			return FALSE
 
 	return !(target.back.canremove)

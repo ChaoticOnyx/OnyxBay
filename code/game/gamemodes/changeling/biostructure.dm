@@ -41,8 +41,8 @@
 	spawn(5)
 		brainchan?.client?.screen.len = null //clear the hud
 
-	reagents.maximum_volume += 15
-	reagents.add_reagent(/datum/reagent/toxin/cyanide/change_toxin, 15)
+	reagents.maximum_volume += 5
+	reagents.add_reagent(/datum/reagent/toxin/cyanide/change_toxin, 5)
 
 
 /obj/item/organ/internal/biostructure/Destroy()

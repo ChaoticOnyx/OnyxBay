@@ -154,7 +154,7 @@
 /obj/item/camera_assembly/proc/weld(obj/item/weldingtool/WT, mob/user)
 	to_chat(user, SPAN_NOTICE("You start to weld \the [src]."))
 
-	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 10))
+	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 		return FALSE
 
 	if(QDELETED(src) || !user)
