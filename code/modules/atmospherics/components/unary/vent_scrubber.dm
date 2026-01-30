@@ -304,7 +304,7 @@
 		var/obj/item/weldingtool/WT = W
 
 		if(broken)
-			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 50))
+			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
 				return
 
 			if(QDELETED(src) || !user)
@@ -329,7 +329,7 @@
 			return
 
 		else
-			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 50))
+			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
 				return
 
 			if(QDELETED(src) || !user)

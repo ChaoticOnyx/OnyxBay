@@ -432,7 +432,7 @@ its easier to just keep the beam vertical.
 	if(istype(src, /turf/simulated))
 		var/obj/effect/decal/cleanable/vomit/this = new /obj/effect/decal/cleanable/vomit(src)
 		if(istype(inject_reagents) && inject_reagents.total_volume)
-			inject_reagents.trans_to_obj(this, min(150, inject_reagents.total_volume))
+			inject_reagents.trans_to_obj(this, min(15, inject_reagents.total_volume))
 			//this.reagents.add_reagent(/datum/reagent/acid/stomach, 5) //Gonna rework the vomiting system one day. ~Toby
 		// Make toxins vomit look different
 		if(toxvomit)

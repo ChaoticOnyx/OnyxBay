@@ -139,7 +139,7 @@
 	if(locate(/obj/effect/overlay/wallrot) in src)
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
-			if(!WT.use_tool(src, user, amount = 10))
+			if(!WT.use_tool(src, user, amount = 1))
 				return
 
 			to_chat(user, SPAN("notice","You burn away the fungi with \the [WT]."))
@@ -156,7 +156,7 @@
 	if(thermite)
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
-			if(!WT.use_tool(src, user, amount = 10))
+			if(!WT.use_tool(src, user, amount = 1))
 				return
 
 			thermitemelt(user)
@@ -182,7 +182,7 @@
 	if(damage && isWelder(W))
 		var/obj/item/weldingtool/WT = W
 		to_chat(user, SPAN("notice","You start repairing the damage to [src]."))
-		if(!WT.use_tool(src, user, delay = max(5, damage / 5), amount = 50))
+		if(!WT.use_tool(src, user, delay = max(5, damage / 5), amount = 5))
 			return
 
 		if(QDELETED(src) || !user)
@@ -273,11 +273,11 @@
 			if(4)
 				if(isWelder(W))
 					var/obj/item/weldingtool/WT = W
-					if(!WT.use_tool(src, user, amount = 10))
+					if(!WT.use_tool(src, user, amount = 1))
 						return
 
 					to_chat(user, SPAN("notice","You begin slicing through the metal cover."))
-					if(!WT.use_tool(src, user, delay = 6 SECONDS, amount = 50) || !istype(src, /turf/simulated/wall) || construction_stage != 4)
+					if(!WT.use_tool(src, user, delay = 6 SECONDS, amount = 5) || !istype(src, /turf/simulated/wall) || construction_stage != 4)
 						return
 
 					if(QDELETED(src))
@@ -326,7 +326,7 @@
 				if(isWelder(W))
 					var/obj/item/weldingtool/WT = W
 					to_chat(user, SPAN("notice","You begin slicing through the support rods."))
-					if(!WT.use_tool(src, user, delay = 7 SECONDS, amount = 50) || !istype(src, /turf/simulated/wall) || construction_stage != 1)
+					if(!WT.use_tool(src, user, delay = 7 SECONDS, amount = 5) || !istype(src, /turf/simulated/wall) || construction_stage != 1)
 						return
 
 					if(QDELETED(src))
