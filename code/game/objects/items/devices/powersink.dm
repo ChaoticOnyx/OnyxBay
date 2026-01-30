@@ -109,6 +109,13 @@
 		set_mode(DISCONNECTED)
 		return
 
+	var/turf/T = get_turf(src)
+	if(!isturf(T) || !T.is_plating())
+		if(mode == OPERATING)
+			visible_message(SPAN_WARNING("\The [src] shuts down as it's no longer accessible!"))
+			set_mode(CLAMPED_OFF)
+		return
+
 	var/datum/powernet/PN = attached.powernet
 	if(PN)
 		set_light(0.5, 0.1, 12)
