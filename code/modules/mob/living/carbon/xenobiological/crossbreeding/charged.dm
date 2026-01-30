@@ -12,13 +12,13 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/Initialize(mapload)
 	. = ..()
-	create_reagents(100)
+	create_reagents(0.1 LITERS)
 
 /obj/item/metroidcross/charged/attack_self(mob/user)
-	if(!reagents.has_reagent(/datum/reagent/toxin/plasma, 100))
+	if(!reagents.has_reagent(/datum/reagent/toxin/plasma, 0.1 LITERS))
 		to_chat(user, SPAN_WARNING("This extract needs to be full of plasma to activate!"))
 		return
-	reagents.remove_reagent(/datum/reagent/toxin/plasma, 100)
+	reagents.remove_reagent(/datum/reagent/toxin/plasma, 0.1 LITERS)
 	to_chat(user, SPAN_NOTICE("You squeeze the extract, and it absorbs the plasma!"))
 	playsound(src, 'sound/effects/bubbles.ogg', 50, TRUE)
 	playsound(src, GET_SFX(SFX_SPARK_MEDIUM), 50, TRUE)

@@ -200,7 +200,7 @@
 			to_chat(user, "\The [src] does not require repairs.")
 			return
 
-		if(!WT.use_tool(src, user, delay = round(damage /10), amount = round(damage/7.5)))
+		if(!WT.use_tool(src, user, delay = round(damage /10), amount = round(damage/75)))
 			return
 
 		damage = 0

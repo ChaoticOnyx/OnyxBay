@@ -36,7 +36,7 @@ Self-sustaining extracts:
 	var/reagentselect = tgui_input_list(user, "Reagent the extract will produce.", "Self-sustaining Reaction", sort_list(extract.activate_reagents, /proc/cmp_name_or_type_asc))
 	if(isnull(reagentselect))
 		return
-	var/amount = 50
+	var/amount = 5
 	var/secondary
 
 	if (user.get_active_item() != src || user.stat != CONSCIOUS || user.restrained())

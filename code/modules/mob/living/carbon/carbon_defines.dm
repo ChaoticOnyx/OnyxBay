@@ -24,9 +24,9 @@
 	var/cpr_time = 1.0
 	var/lastpuke = 0
 	var/last_nutrition_speed_update
-	var/nutrition = 400
+	var/nutrition = 40
 	var/last_hydration_speed_update
-	var/hydration = 750
+	var/hydration = 75
 
 	var/toxic_buildup = 0.0 // Absolute value of the toxic damage buildup.
 	var/toxic_severity = 0 // Effective value of the toxic damage buildup, with 100 representing the lethal amount.

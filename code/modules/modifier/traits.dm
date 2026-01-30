@@ -200,7 +200,7 @@
 		carbon_target.regenerate_blood(carbon_target.species.blood_volume*min_blood - carbon_target.get_blood_volume_abs())
 		return
 	// Ensures that we don't reduce total blood volume below min_blood.
-	carbon_target.remove_blood(1.525)
+	carbon_target.remove_blood(1.525 * 0.1)
 
 /datum/modifier/trait/radimmune
 	name = "Radiation Immunity"

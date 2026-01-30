@@ -9,7 +9,7 @@
 
 /obj/item/metroidcrossbeaker/Initialize(mapload)
 	. = ..()
-	create_reagents(0.2 LITERS)
+	create_reagents(0.5 LITERS)
 	if(list_reagents)
 		for(var/reagent in list_reagents)
 			reagents.add_reagent(reagent, list_reagents[reagent])

@@ -13,7 +13,7 @@ Burning extracts:
 /obj/item/metroidcross/burning/Initialize(mapload)
 	. = ..()
 	create_reagents(4 LITERS)
-	plasma_value = rand(100, 200)
+	plasma_value = rand(10, 20)
 
 /obj/item/metroidcross/burning/attack_self(mob/user)
 	if(!reagents.has_reagent(/datum/reagent/toxin/plasma, plasma_value))
@@ -50,11 +50,11 @@ Burning extracts:
 	var/obj/item/reagent_containers/vessel/beaker/large/B1 = new(src)
 	var/obj/item/reagent_containers/vessel/beaker/large/B2 = new(src)
 
-	B1.reagents.add_reagent(/datum/reagent/phosphorus, 400)
-	B1.reagents.add_reagent(/datum/reagent/potassium, 400)
-	B1.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 400)
-	B2.reagents.add_reagent(/datum/reagent/sugar, 400)
-	B2.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 800)
+	B1.reagents.add_reagent(/datum/reagent/phosphorus, 40)
+	B1.reagents.add_reagent(/datum/reagent/potassium, 40)
+	B1.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 40)
+	B2.reagents.add_reagent(/datum/reagent/sugar, 40)
+	B2.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 80)
 
 	for(var/obj/item/reagent_containers/vessel/G in list(B1,B2))
 		G.reagents.trans_to_obj(src, G.reagents.total_volume)
@@ -151,12 +151,12 @@ Burning extracts:
 	var/obj/item/reagent_containers/vessel/beaker/large/B1 = new(src)
 	var/obj/item/reagent_containers/vessel/beaker/large/B2 = new(src)
 
-	B1.reagents.add_reagent(/datum/reagent/phosphorus, 400)
-	B1.reagents.add_reagent(/datum/reagent/potassium, 400)
-	B1.reagents.add_reagent(/datum/reagent/frostoil, 400)
-	B2.reagents.add_reagent(/datum/reagent/sugar, 400)
-	B2.reagents.add_reagent(/datum/reagent/regen_jelly, 200)
-	B2.reagents.add_reagent(/datum/reagent/frostoil, 600)
+	B1.reagents.add_reagent(/datum/reagent/phosphorus, 40)
+	B1.reagents.add_reagent(/datum/reagent/potassium, 40)
+	B1.reagents.add_reagent(/datum/reagent/frostoil, 40)
+	B2.reagents.add_reagent(/datum/reagent/sugar, 40)
+	B2.reagents.add_reagent(/datum/reagent/regen_jelly, 20)
+	B2.reagents.add_reagent(/datum/reagent/frostoil, 60)
 
 	for(var/obj/item/reagent_containers/vessel/G in list(B1,B2))
 		G.reagents.trans_to_obj(src, G.reagents.total_volume)
@@ -192,7 +192,7 @@ Burning extracts:
 	for(var/i in 1 to amount)
 		var/path = pick(typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food)
 		var/obj/item/reagent_containers/food/food = new path(pick(turfs))
-		food.reagents.add_reagent(/datum/reagent/metroidjelly, 50) //Oh god it burns
+		food.reagents.add_reagent(/datum/reagent/metroidjelly, 5) //Oh god it burns
 		if(prob(50))
 			food.desc += " It smells strange..."
 	user.visible_message(SPAN_DANGER("[src] produces a few pieces of food!"))

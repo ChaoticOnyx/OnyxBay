@@ -273,7 +273,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	src.modules += new /obj/item/robot_rack/medical(src)
 	src.modules += new /obj/item/inflatable_dispenser/robot(src) // Allows usage of inflatables. Since they are basically robotic alternative to EMTs, they should probably have them.
 	src.emag = new /obj/item/reagent_containers/spray(src)
-	src.emag.reagents.add_reagent(/datum/reagent/acid/polyacid, 1 LITER)
+	src.emag.reagents.add_reagent(/datum/reagent/acid/polyacid, 2.5 LITERS)
 	src.emag.SetName("Polyacid spray")
 
 	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(15000)
@@ -315,7 +315,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 
 	if(src.emag)
 		var/obj/item/reagent_containers/spray/PS = src.emag
-		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 50 * amount)
+		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 5 * amount)
 	var/obj/item/surgical_selector/SEL = locate(/obj/item/surgical_selector) in src.modules
 	SEL.refill()
 
@@ -352,10 +352,10 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	src.modules += new /obj/item/robot_rack/medical(src)
 	src.modules += new /obj/item/inflatable_dispenser/robot(src) // Allows usage of inflatables. Since they are basically robotic alternative to EMTs, they should probably have them.
 	var/obj/item/reagent_containers/spray/cleaner/drone/SC = new /obj/item/reagent_containers/spray/cleaner/drone(src)
-	SC.reagents.add_reagent(/datum/reagent/space_cleaner, 1 LITER)
+	SC.reagents.add_reagent(/datum/reagent/space_cleaner, 1.5 LITERS)
 	src.emag = new /obj/item/reagent_containers/spray(src)
 	src.modules += SC
-	src.emag.reagents.add_reagent(/datum/reagent/acid/polyacid, 1 LITER)
+	src.emag.reagents.add_reagent(/datum/reagent/acid/polyacid, 2.5 LITERS)
 	src.emag.SetName("Polyacid spray")
 
 	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(25000)
@@ -397,10 +397,10 @@ GLOBAL_LIST_INIT(robot_modules, list(
 
 	if(src.emag)
 		var/obj/item/reagent_containers/spray/PS = src.emag
-		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 50 * amount)
+		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 5 * amount)
 
 	var/obj/item/reagent_containers/spray/cleaner/drone/SC = locate(/obj/item/reagent_containers/spray/cleaner/drone) in src.modules
-	SC.reagents.add_reagent(/datum/reagent/space_cleaner, 100 * amount)
+	SC.reagents.add_reagent(/datum/reagent/space_cleaner, 10 * amount)
 	var/obj/item/surgical_selector/advanced/SEL = locate(/obj/item/surgical_selector/advanced) in src.modules
 	SEL.refill()
 
@@ -670,7 +670,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 
 	var/obj/item/reagent_containers/spray/luminol/L = locate(/obj/item/reagent_containers/spray/luminol) in src.modules
 	if (L)
-		L.reagents.add_reagent(/datum/reagent/luminol, 50 * amount)
+		L.reagents.add_reagent(/datum/reagent/luminol, 5 * amount)
 
 	var/obj/item/melee/baton/robot/B = locate() in src.modules
 	if(B && B.bcell)
@@ -706,7 +706,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	src.modules += new /obj/item/robot_item_dispenser/janitor(src)
 
 	src.emag = new /obj/item/reagent_containers/spray(src)
-	src.emag.reagents.add_reagent(/datum/reagent/lube, 1 LITER)
+	src.emag.reagents.add_reagent(/datum/reagent/lube, 2.5 LITERS)
 	src.emag.SetName("Lube spray")
 	..()
 
@@ -717,10 +717,10 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	LR.Charge(R, amount)
 	if(src.emag)
 		var/obj/item/reagent_containers/spray/S = src.emag
-		S.reagents.add_reagent(/datum/reagent/lube, 200 * amount)
+		S.reagents.add_reagent(/datum/reagent/lube, 20 * amount)
 	var/obj/item/reagent_containers/vessel/bucket/B = locate() in src.modules
 	if (B.reagents.total_volume < B.reagents.maximum_volume)
-		B.reagents.add_reagent(/datum/reagent/water, 200)
+		B.reagents.add_reagent(/datum/reagent/water, 20)
 
 /obj/item/robot_module/service
 	name = "service robot module"
@@ -784,20 +784,20 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	src.modules += new /obj/item/reagent_containers/borghypo/service(src)
 	src.emag = new /obj/item/reagent_containers/vessel/bottle/small/beer(src)
 
-	var/datum/reagents/R = src.emag.create_reagents(500)
-	R.add_reagent(/datum/reagent/chloralhydrate/beer2, 50)
-	R.add_reagent(/datum/reagent/ethanol/beer, 450)
+	var/datum/reagents/R = src.emag.create_reagents(50)
+	R.add_reagent(/datum/reagent/chloralhydrate/beer2, 5)
+	R.add_reagent(/datum/reagent/ethanol/beer, 45)
 	src.emag.SetName("Mickey Finn's Special Brew")
 	..()
 
 /obj/item/robot_module/general/butler/respawn_consumable(mob/living/silicon/robot/R, amount)
 	..()
 	var/obj/item/reagent_containers/vessel/condiment/enzyme/E = locate() in src.modules
-	E.reagents.add_reagent(/datum/reagent/enzyme, 100 * amount)
+	E.reagents.add_reagent(/datum/reagent/enzyme, 10 * amount)
 	if(src.emag)
 		var/obj/item/reagent_containers/vessel/bottle/small/beer/B = src.emag
-		B.reagents.add_reagent(/datum/reagent/chloralhydrate/beer2, 10 * amount)
-		B.reagents.add_reagent(/datum/reagent/ethanol/beer, 90 * amount)
+		B.reagents.add_reagent(/datum/reagent/chloralhydrate/beer2, 1 * amount)
+		B.reagents.add_reagent(/datum/reagent/ethanol/beer, 9 * amount)
 
 /obj/item/robot_module/miner
 	name = "miner robot module"
@@ -1061,7 +1061,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 /obj/item/robot_module/drone/respawn_consumable(mob/living/silicon/robot/R, amount)
 	..()
 	var/obj/item/reagent_containers/spray/cleaner/drone/SC = locate() in src.modules
-	SC.reagents.add_reagent(/datum/reagent/space_cleaner, 100 * amount)
+	SC.reagents.add_reagent(/datum/reagent/space_cleaner, 10 * amount)
 
 /obj/item/robot_module/drone/construction
 	name = "construction drone module"

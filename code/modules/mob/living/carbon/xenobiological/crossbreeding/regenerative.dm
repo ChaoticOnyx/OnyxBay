@@ -52,7 +52,7 @@ Regenerative extracts:
 	effect_desc = "Fully heals the target and injects them with some regen jelly."
 
 /obj/item/metroidcross/regenerative/purple/core_effect(mob/living/target, mob/user)
-	target.reagents.add_reagent(/datum/reagent/regen_jelly, 100)
+	target.reagents.add_reagent(/datum/reagent/regen_jelly, 0.1 LITERS)
 
 /obj/item/metroidcross/regenerative/blue
 	colour = "blue"
@@ -195,7 +195,7 @@ Regenerative extracts:
 		var/mob/living/carbon/metroid/S = target
 		S.random_colour()
 	if(ispromethean(target))
-		target.reagents.add_reagent(/datum/reagent/metroidjelly, 50)
+		target.reagents.add_reagent(/datum/reagent/metroidjelly, 5)
 
 
 /obj/item/metroidcross/regenerative/pink

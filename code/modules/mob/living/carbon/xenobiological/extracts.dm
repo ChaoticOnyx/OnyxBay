@@ -36,7 +36,7 @@
 
 /obj/item/metroid_extract/New()
 	..()
-	create_reagents(0.15 LITERS)
+	create_reagents(1 LITER)
 
 /obj/item/metroid_extract/proc/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	show_splash_text(user, SPAN_WARNING("Nothing happened... This metroid extract cannot be activated this way."))
@@ -175,13 +175,13 @@
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			user.nutrition+=50
-			user.reagents.add_reagent(/datum/reagent/metroidjelly, 500)
+			user.reagents.add_reagent(/datum/reagent/metroidjelly, 50)
 			show_splash_text(user, SPAN_NOTICE("You activate [src], and your body is refilled with fresh metroid jelly!"))
 			return 150
 
 		if(METROID_ACTIVATE_MAJOR)
 			show_splash_text(user, SPAN_NOTICE("You activate [src], and it releases regenerative chemicals!"))
-			user.reagents.add_reagent(/datum/reagent/regen_jelly, 10)
+			user.reagents.add_reagent(/datum/reagent/regen_jelly, 1)
 			return 600
 
 /obj/item/metroid_extract/darkpurple
@@ -219,9 +219,9 @@
 			return 150
 
 		if(METROID_ACTIVATE_MAJOR)
-			user.reagents.add_reagent(/datum/reagent/phosphorus, 50)//
-			user.reagents.add_reagent(/datum/reagent/potassium, 50) // = smoke, along with any reagents inside mr. metroid
-			user.reagents.add_reagent(/datum/reagent/sugar, 50)     //
+			user.reagents.add_reagent(/datum/reagent/phosphorus, 5)//
+			user.reagents.add_reagent(/datum/reagent/potassium, 5) // = smoke, along with any reagents inside mr. metroid
+			user.reagents.add_reagent(/datum/reagent/sugar, 5)     //
 			show_splash_text(user, SPAN_WARNING("You activate [src], and a cloud of smoke bursts out of your skin!"))
 			return 450
 

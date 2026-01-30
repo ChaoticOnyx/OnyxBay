@@ -51,7 +51,7 @@
 
 		if(stat == CONSCIOUS)
 			if(udder && prob(5))
-				udder.add_reagent(/datum/reagent/drink/milk, rand(50, 100))
+				udder.add_reagent(/datum/reagent/drink/milk, rand(5, 10))
 
 		if(locate(/obj/effect/vine) in loc)
 			var/obj/effect/vine/SV = locate() in loc
@@ -163,7 +163,7 @@
 	. = ..()
 	if(stat == CONSCIOUS)
 		if(udder && prob(5))
-			udder.add_reagent(milktype, rand(50, 100))
+			udder.add_reagent(milktype, rand(5, 10))
 
 /mob/living/simple_animal/cow/attack_hand(mob/living/carbon/M)
 	if(!stat && M.a_intent == I_DISARM && icon_state != icon_dead)

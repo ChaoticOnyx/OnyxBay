@@ -902,8 +902,8 @@
 						stomach.processing.Remove(a)
 					stomach.recalc_items_volume()
 
-					// Getting rid of reagents in stomach, randoming from 30 ml to the whole contents
-					stomach.ingested.remove_any(rand(30, stomach.ingested.total_volume))
+					// Getting rid of reagents in stomach, randoming from 5u to the whole contents
+					stomach.ingested.remove_any(rand(5, stomach.ingested.total_volume))
 
 					src.visible_message("<span class='warning'>[src] throws up!</span>","<span class='warning'>You throw up!</span>")
 					playsound(loc, 'sound/effects/splat.ogg', 50, 1)
@@ -913,7 +913,7 @@
 						location.add_vomit_floor(src, toxvomit, stomach.ingested)
 
 					remove_nutrition(10.0)
-					remove_hydration(rand(50, 200))
+					remove_hydration(rand(5, 20))
 		sleep(350)	//wait 35 seconds before next volley
 		lastpuke = 0
 
