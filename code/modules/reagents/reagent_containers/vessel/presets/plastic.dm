@@ -17,9 +17,9 @@
 	center_of_mass = "x=16;y=9"
 	w_class = ITEM_SIZE_NORMAL
 
-	volume = 1.0 LITER
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;300;1000"
+	volume = 120
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "5;10;20;25;50;60;100;120"
 
 	startswith = list(/datum/reagent/drink/milk)
 
@@ -31,9 +31,9 @@
 	center_of_mass = "x=16;y=9"
 	w_class = ITEM_SIZE_NORMAL
 
-	volume = 1.0 LITER
+	volume = 120
 	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;300;1000"
+	possible_transfer_amounts = "5;10;20;25;50;60;100;120"
 
 	startswith = list(/datum/reagent/drink/milk/soymilk)
 
@@ -59,9 +59,9 @@
 	item_state = "coffecup_metal"
 	force = 1.0
 
-	volume = 0.2 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;100;150;200"
+	volume = 20
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;20"
 
 	matter = list(MATERIAL_PLASTIC = 100)
 	center_of_mass = "x=16;y=12"

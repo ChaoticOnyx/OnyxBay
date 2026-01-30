@@ -1,25 +1,25 @@
 
-// Shot - 50ml
+// Shot - 5u
 /obj/item/reagent_containers/vessel/glass/shot
 	name = "shot glass"
 	icon_state = "shot_preview"
 	base_name = "shot"
 	base_icon = "shot"
-	filling_states = "33;66;100"
+	filling_states = "5"
 	force = 3.0
 	matter = list(MATERIAL_GLASS = 15)
 	w_class = ITEM_SIZE_TINY
 
-	volume = 50
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "10;15;25;30;50"
+	volume = 5
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5"
 
 	rim_pos = "y=17;x_left=13;x_right=21"
 
 /obj/item/reagent_containers/vessel/glass/shot/get_storage_cost()
 	return ..() * 1.5
 
-// Ryumka - 50ml
+// Ryumka - 5u
 /obj/item/reagent_containers/vessel/glass/vodkaglass
 	name = "rumka"
 	icon_state = "vodka_preview"
@@ -30,16 +30,16 @@
 	matter = list(MATERIAL_GLASS = 15)
 	w_class = ITEM_SIZE_TINY
 
-	volume = 50
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "10;15;25;30;50"
+	volume = 5
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5"
 
 	rim_pos = "y=21;x_left=14;x_right=21"
 
 /obj/item/reagent_containers/vessel/glass/vodkaglass/get_storage_cost()
 	return ..() * 1.5
 
-// Double Shot - 100ml
+// Double Shot - 10u
 /obj/item/reagent_containers/vessel/glass/dshot
 	name = "double shot"
 	icon_state = "dshot_preview"
@@ -49,16 +49,16 @@
 	force = 3.0
 	w_class = ITEM_SIZE_TINY
 
-	volume = 100
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "10;15;25;30;50;100"
+	volume = 10
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10"
 
 	rim_pos = "y=21;x_left=14;x_right=20"
 
 /obj/item/reagent_containers/vessel/glass/dshot/get_storage_cost()
 	return ..() * 1.5
 
-// Cocktail glass - 200ml
+// Cocktail glass - 20u
 /obj/item/reagent_containers/vessel/glass/cocktail
 	name = "cocktail glass"
 	icon_state = "cocktail_preview"
@@ -67,12 +67,12 @@
 	filling_states = "33;66;100"
 
 	volume = 0.2 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;200"
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;20"
 
 	rim_pos = "y=22;x_left=13;x_right=21"
 
-// Wine glass - 250ml
+// Wine glass - 25u
 /obj/item/reagent_containers/vessel/glass/wine
 	name = "wine glass"
 	icon_state = "wine_preview"
@@ -81,12 +81,12 @@
 	filling_states = "20;40;60;80;100"
 
 	volume = 0.25 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250"
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;25"
 
 	rim_pos = "y=25;x_left=12;x_right=21"
 
-// Cognac glass - 250ml
+// Cognac glass - 25u
 /obj/item/reagent_containers/vessel/glass/cognac
 	name = "cognac glass"
 	icon_state = "cognac_preview"
@@ -95,12 +95,12 @@
 	filling_states = "20;40;60;80;100"
 
 	volume = 0.25 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250"
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;25"
 
 	rim_pos = "y=22;x_left=13;x_right=20"
 
-// Half-pint glass - 250ml
+// Half-pint glass - 25u
 /obj/item/reagent_containers/vessel/glass/square
 	name = "half-pint glass"
 	icon_state = "square_preview"
@@ -111,12 +111,12 @@
 	filling_states = "20;40;60;80;100"
 
 	volume = 0.25 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250"
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;25"
 
 	rim_pos = "y=23;x_left=13;x_right=20"
 
-// Rocks glass - 300ml
+// Rocks glass - 30u
 /obj/item/reagent_containers/vessel/glass/rocks
 	name = "rocks glass"
 	icon_state = "rocks_preview"
@@ -125,12 +125,12 @@
 	filling_states = "25;50;75;100"
 
 	volume = 0.3 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;200;300"
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;20;30"
 
 	rim_pos = "y=21;x_left=10;x_right=23"
 
-// Shake glass - 350ml
+// Shake glass - 35u
 /obj/item/reagent_containers/vessel/glass/shake
 	name = "tall cocktail glass"
 	icon_state = "shake_preview"
@@ -139,12 +139,12 @@
 	filling_states = "25;50;75;100"
 
 	volume = 0.35 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;350"
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;20;35"
 
 	rim_pos = "y=25;x_left=13;x_right=21"
 
-// Hurricane glass - 350ml
+// Hurricane glass - 35u
 /obj/item/reagent_containers/vessel/glass/hurricane
 	name = "hurricane glass"
 	icon_state = "hurricane_preview"
@@ -153,12 +153,12 @@
 	filling_states = "20;40;60;80;100"
 
 	volume = 0.35 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;350"
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;20;35"
 
 	rim_pos = "y=25;x_left=13;x_right=20"
 
-// Pint glass - 500ml
+// Pint glass - 50u
 /obj/item/reagent_containers/vessel/glass/pint
 	name = "pint glass"
 	icon_state = "pint_preview"
@@ -172,15 +172,15 @@
 	smash_weaken = 2
 
 	volume = 0.5 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;300;500"
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "5;10;20;25;50"
 
 	rim_pos = "y=25;x_left=12;x_right=21"
 
 /obj/item/reagent_containers/vessel/glass/pint/get_storage_cost()
 	return ..() * 1.5
 
-// Beer mug - 500ml
+// Beer mug - 60u
 /obj/item/reagent_containers/vessel/glass/mug
 	name = "glass mug"
 	icon_state = "mug_preview"
@@ -193,16 +193,16 @@
 	mod_handy = 0.65
 	smash_weaken = 3
 
-	volume = 0.5 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;300;500"
+	volume = 0.6 LITERS
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "5;10;20;25;50;60"
 
 	rim_pos = "y=22;x_left=12;x_right=20"
 
 /obj/item/reagent_containers/vessel/glass/mug/get_storage_cost()
 	return ..() * 1.5
 
-// Dwarf mug - 650ml
+// Dwarf mug - 100u
 /obj/item/reagent_containers/vessel/glass/bigmug
 	name = "large mug"
 	icon_state = "bigmug"
@@ -214,9 +214,9 @@
 	mod_reach = 0.25
 	mod_handy = 0.65
 
-	volume = 0.65 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;300;500;650"
+	volume = 100
+	amount_per_transfer_from_this = 20
+	possible_transfer_amounts = "5;10;20;25;50;60;100"
 
 	rim_pos = "y=22;x_left=12;x_right=20"
 	brittle = FALSE
@@ -224,7 +224,7 @@
 /obj/item/reagent_containers/vessel/glass/bigmug/get_storage_cost()
 	return ..() * 1.5
 
-// Carafe - 1.5l
+// Carafe - 180u
 /obj/item/reagent_containers/vessel/glass/carafe
 	name = "carafe"
 	icon_state = "carafe_preview"
@@ -239,9 +239,9 @@
 	matter = list(MATERIAL_GLASS = 250)
 	w_class = ITEM_SIZE_NORMAL
 
-	volume = 1.5 LITERS
+	volume = 180
 	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;300;500;750;1000"
+	possible_transfer_amounts = "5;10;20;25;50;60;100;120;180"
 
 	rim_pos = "y=26;x_left=12;x_right=21"
 	center_of_mass = "x=16;y=7"

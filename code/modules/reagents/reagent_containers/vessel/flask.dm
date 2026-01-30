@@ -9,9 +9,7 @@
 	mod_reach = 0.25
 	mod_handy = 0.5
 
-	volume = 0.25 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250"
+	volume = 60
 
 	center_of_mass = "x=17;y=7"
 	lid_type = /datum/vessel_lid/flask
@@ -48,10 +46,6 @@
 	desc = "Keeping your drinks at the perfect temperature since 1892."
 	icon_state = "vacuumflask"
 	item_state = "vacuumflask"
-
-	volume = 0.5 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;300;500"
 
 	center_of_mass = "x=15;y=4"
 	lid_type = /datum/vessel_lid/cap

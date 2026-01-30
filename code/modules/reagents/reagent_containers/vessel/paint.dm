@@ -7,9 +7,9 @@
 	matter = list(MATERIAL_STEEL = 200)
 	w_class = ITEM_SIZE_NORMAL
 
-	volume = 1.5 LITERS
-	amount_per_transfer_from_this = 100
-	possible_transfer_amounts = "50;100;150;250;300;1000"
+	volume = 60
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "10;20;30;60"
 
 	unacidable = FALSE
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
@@ -19,9 +19,9 @@
 /obj/item/reagent_containers/vessel/paint/afterattack(turf/simulated/target, mob/user, proximity)
 	if(!proximity)
 		return
-	if(istype(target) && reagents.total_volume > 50)
+	if(istype(target) && reagents.total_volume > 5)
 		user.visible_message(SPAN("waarning", "\The [target] has been splashed with something by [user]!"))
-		reagents.trans_to_turf(target, min(reagents.total_volume, 100))
+		reagents.trans_to_turf(target, min(reagents.total_volume, 10))
 	else
 		return ..()
 

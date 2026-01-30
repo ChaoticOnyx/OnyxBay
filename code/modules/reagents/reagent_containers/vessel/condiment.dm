@@ -14,9 +14,8 @@
 	item_state = "emptycondiment"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	center_of_mass = "x=16;y=6"
-	volume = 0.3 LITERS
-	amount_per_transfer_from_this = 10
-	possible_transfer_amounts = "5;10;15;25;30;50;60;100;150;250;300"
+	volume = 50
+	possible_transfer_amounts = "1;5;10"
 	lid_type = null
 	can_flip = TRUE
 
@@ -67,7 +66,7 @@
 			return
 
 		var/trans = reagents.trans_to_obj(target, amount_per_transfer_from_this)
-		to_chat(user, "<span class='notice'>You add [trans] ml of the condiment to \the [target].</span>")
+		to_chat(user, "<span class='notice'>You add [trans] units of the condiment to \the [target].</span>")
 	else
 		..()
 
@@ -178,9 +177,9 @@
 	startswith = list(/datum/reagent/sugar)
 
 /obj/item/reagent_containers/vessel/condiment/small
-	volume = 0.1 LITERS
+	volume = 20
 	amount_per_transfer_from_this = 1
-	possible_transfer_amounts = "1;5;10;15;25;30;50;60;100"
+	possible_transfer_amounts = "1;2;5;10;15;20"
 
 /obj/item/reagent_containers/vessel/condiment/small/on_reagent_change()
 	return
@@ -212,9 +211,6 @@
 	icon_state = "flour"
 	item_state = "flour"
 	randpixel = 10
-	volume = 1.0 LITER
-	amount_per_transfer_from_this = 50
-	possible_transfer_amounts = "50;60;100;150;250;300;1000"
 	startswith = list(/datum/reagent/nutriment/flour)
 
 /obj/item/reagent_containers/vessel/condiment/flour/on_reagent_change()

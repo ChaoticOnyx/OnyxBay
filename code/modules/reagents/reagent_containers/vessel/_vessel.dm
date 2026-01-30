@@ -16,8 +16,8 @@
 		slot_r_hand_str = 'icons/mob/onmob/items/righthand_vessels.dmi',
 		)
 
-	volume = 0.5 LITERS
-	amount_per_transfer_from_this = 100
+	volume = 60
+	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "5;10;15;25;30;60"
 	w_class = ITEM_SIZE_SMALL
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
@@ -178,14 +178,14 @@
 /obj/item/reagent_containers/vessel/examine(mob/user, infix)
 	. = ..()
 
-	. += "Can hold up to <b>[volume]</b>ml."
+	. += "Can hold up to <b>[volume]</b>u."
 
 	if(get_dist(src, user) > 2)
 		return
 
 	if(precise_measurement)
 		if(reagents?.reagent_list.len)
-			. += SPAN_NOTICE("It contains <b>[reagents.total_volume]</b>ml of liquid.")
+			. += SPAN_NOTICE("It contains <b>[reagents.total_volume]</b>u of liquid.")
 		else
 			. += SPAN_NOTICE("It is empty.")
 	else
@@ -316,13 +316,13 @@
 /obj/item/reagent_containers/vessel/self_feed_message(mob/user, feed_volume = 0)
 	var/feed_desc = ""
 	switch(feed_volume)
-		if(50.01 to INFINITY)
+		if(30.01 to INFINITY)
 			feed_desc = "swallow a mouth full"
-		if(30.01 to 50)
-			feed_desc = "take a gulp"
 		if(15.01 to 30)
+			feed_desc = "take a gulp"
+		if(10.01 to 15)
 			feed_desc = "drink"
-		if(5.01 to 15)
+		if(5.01 to 10)
 			feed_desc = "take a sip"
 		if(0 to 5)
 			feed_desc = "take a tiny sip"
@@ -332,13 +332,13 @@
 	user.visible_message("<span class='warning'>[user] has fed [target] \the [src]!</span>")
 	var/feed_desc = "drink"
 	switch(feed_volume)
-		if(50.01 to INFINITY)
+		if(30.01 to INFINITY)
 			feed_desc = "swallow a mouth full"
-		if(30.01 to 50)
-			feed_desc = "take a gulp"
 		if(15.01 to 30)
+			feed_desc = "take a gulp"
+		if(10.01 to 15)
 			feed_desc = "drink"
-		if(5.01 to 15)
+		if(5.01 to 10)
 			feed_desc = "take a sip"
 		if(0 to 5)
 			feed_desc = "take a tiny sip"

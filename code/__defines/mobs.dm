@@ -421,7 +421,7 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 #define HYDRATION_SUPER 1400
 #define HYDRATION_LIMIT 2000
 
-#define MOUTH_CAPACITY 5
+#define MOUTH_CAPACITY 30
 
 #define TOXLOSS_NONE     0
 #define TOXLOSS_CASUAL   5

@@ -9,10 +9,6 @@
 	icon_state = "jar"
 	item_state = "beaker"
 
-	volume = 1.0 LITER
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;300;1000"
-
 	center_of_mass = "x=15;y=8"
 	unacidable = TRUE
 	lid_type = null

@@ -16,9 +16,9 @@
 	item_state = "cream"
 	w_class = ITEM_SIZE_SMALL
 
-	volume = 0.5 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250;500"
+	volume = 60
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;20;25;50;60"
 
 	startswith = list(/datum/reagent/drink/milk/cream)
 
@@ -38,9 +38,9 @@
 	item_state = "milk"
 	w_class = ITEM_SIZE_SMALL
 
-	volume = 0.25 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "25;30;50;60;100;150;250"
+	volume = 30
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;20;25;30"
 
 	startswith = list(/datum/reagent/drink/milk)
 

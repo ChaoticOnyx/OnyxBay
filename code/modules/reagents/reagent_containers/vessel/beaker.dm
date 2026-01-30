@@ -14,10 +14,6 @@
 	brittle = TRUE
 	precise_measurement = TRUE
 
-	volume = 0.3 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "10;15;25;30;50;60;100;150;250;300" // Quite precise, but still requires syringes/droppers/vials for precise transfer.
-
 	label_icon = TRUE
 	overlay_icon = TRUE
 	filling_states = "5;10;25;50;75;80;100"
@@ -43,9 +39,9 @@
 	mod_handy = 0.45
 	matter = list(MATERIAL_GLASS = 5000)
 
-	volume = 0.6 LITER
+	volume = 120
 	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "10;15;25;30;50;60;100;150;250;300;600"
+	possible_transfer_amounts = "5;10;15;25;30;50;60;100;120"
 
 	override_lid_state = LID_OPEN
 
@@ -88,9 +84,9 @@
 	matter = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 5000)
 	brittle = FALSE
 
-	volume = 1.5 LITERS
-	amount_per_transfer_from_this = 25
-	possible_transfer_amounts = "10;25;30;50;60;100;150;200;300;600;1000;1500"
+	volume = 3 LITERS
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "5;10;15;25;30;60;120;150;200;250;300"
 
 	override_lid_state = LID_OPEN
 
@@ -105,10 +101,10 @@
 	mod_handy = 0.4
 	matter = list(MATERIAL_GLASS = 1250)
 
-	volume = 50
+	volume = 30
 	w_class = ITEM_SIZE_TINY
-	amount_per_transfer_from_this = 5
-	possible_transfer_amounts = "5;10;15;25;30;50"
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "5;10;15;30"
 
 	override_lid_state = LID_OPEN
 	lid_type = /datum/vessel_lid/cork
