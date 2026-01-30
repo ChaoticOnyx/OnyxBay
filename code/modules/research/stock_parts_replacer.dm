@@ -54,7 +54,7 @@
 /obj/item/storage/part_replacer/mini/attackby(obj/item/I, mob/user)
 	if(isWelder(I))
 		var/obj/item/weldingtool/WT = I
-		if(!WT.use_tool(src, user, amount = 10))
+		if(!WT.use_tool(src, user, amount = 1))
 			return FALSE
 
 		salvage()

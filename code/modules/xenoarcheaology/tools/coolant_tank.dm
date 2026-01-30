@@ -3,7 +3,7 @@
 	desc = "A tank of industrial coolant"
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "coolanttank"
-	amount_per_transfer_from_this = 100
+	amount_per_transfer_from_this = 0.1 LITERS
 
 /obj/structure/reagent_dispensers/coolanttank/New()
 	..()

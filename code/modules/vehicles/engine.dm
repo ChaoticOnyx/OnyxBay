@@ -83,7 +83,7 @@
 	..()
 	create_reagents(5 LITERS)
 	temp_reagents_holder = new()
-	temp_reagents_holder.create_reagents(150)
+	temp_reagents_holder.create_reagents(15)
 	temp_reagents_holder.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 
 /obj/item/engine/thermal/attackby(obj/item/I, mob/user)
@@ -102,7 +102,7 @@
 	if(!reagents || reagents.total_volume <= 0 || stat)
 		return 0
 
-	reagents.trans_to(temp_reagents_holder,min(reagents.total_volume, 150))
+	reagents.trans_to(temp_reagents_holder,min(reagents.total_volume, 15))
 	var/multiplier = 1
 	var/actually_flameable = 0
 	for(var/datum/reagent/R in temp_reagents_holder.reagents.reagent_list)

@@ -11,7 +11,7 @@
 	set_next_think(world.time)
 
 /obj/item/reagent_containers/vessel/replenishing/think()
-	reagents.add_reagent(spawning_id, 3)
+	reagents.add_reagent(spawning_id, 0.3)
 
 	set_next_think(world.time + 1 SECOND)
 

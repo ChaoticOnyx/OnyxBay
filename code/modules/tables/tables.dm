@@ -163,7 +163,7 @@
 	if(health < maxhealth && isWelder(W))
 		var/obj/item/weldingtool/F = W
 		to_chat(user, SPAN_NOTICE("You begin reparing damage to \the [src]."))
-		if(!F.use_tool(src, user, delay = 2 SECONDS, amount = 10))
+		if(!F.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 			return FALSE
 
 		if(QDELETED(src) || !user)

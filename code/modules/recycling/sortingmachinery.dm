@@ -538,7 +538,7 @@
 	else if(isWelder(I) && c_mode == 1)
 		var/obj/item/weldingtool/WT = I
 		to_chat(user, "You start slicing the floorweld off the delivery chute.")
-		if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 10))
+		if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 			return
 
 		if(QDELETED(src) || !user)

@@ -97,5 +97,5 @@
 /obj/item/projectile/bullet/pellet/blood/power_two/attack_mob(mob/living/target_mob, distance, miss_modifier)
 	if(ishuman(target_mob))
 		var/mob/living/carbon/human/H = firer
-		H.vessel.add_reagent(/datum/reagent/blood, 20)
+		H.vessel.add_reagent(/datum/reagent/blood, 2)
 	return ..()

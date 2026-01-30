@@ -278,7 +278,7 @@
 		if(anchored)
 			var/obj/item/weldingtool/WT = I
 			to_chat(user, "Welding the [nicetype] in place.")
-			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 10))
+			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 				return
 
 			if(QDELETED(src) || !user)

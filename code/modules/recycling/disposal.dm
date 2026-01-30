@@ -78,7 +78,7 @@
 
 			var/obj/item/weldingtool/WT = I
 			to_chat(user, "You start slicing the floorweld off the disposal unit.")
-			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 10))
+			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 				return
 
 			if(QDELETED(src) || !user)
@@ -856,7 +856,7 @@
 		if(isWelder(I))
 			var/obj/item/weldingtool/WT = I
 			to_chat(user, "Slicing the disposal pipe.")
-			if(!WT.use_tool(src, user, delay = 3 SECONDS, amount = 10))
+			if(!WT.use_tool(src, user, delay = 3 SECONDS, amount = 1))
 				return
 
 			if(QDELETED(src) || !user)
@@ -1501,7 +1501,7 @@
 	src.add_fingerprint(user, 0, I)
 	if(isWelder(I))
 		var/obj/item/weldingtool/WT = I
-		if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 10))
+		if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 			return
 
 		if(QDELETED(src) || !user)
@@ -1626,7 +1626,7 @@
 		else if(isWelder(I) && mode==1)
 			var/obj/item/weldingtool/WT = I
 			to_chat(user, "You start slicing the floorweld off the disposal outlet.")
-			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 10))
+			if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 1))
 				return
 
 			if(QDELETED(src) || !user)
