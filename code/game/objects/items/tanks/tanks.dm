@@ -119,18 +119,21 @@ var/list/global/tank_gauge_cache = list()
 
 /obj/item/tank/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if (istype(loc, /obj/item/assembly))
+	if(istype(loc, /obj/item/assembly))
 		icon = loc
 
-	if (istype(W, /obj/item/device/analyzer))
+	if(istype(W, /obj/item/device/analyzer))
 		return
 
-	if (istype(W,/obj/item/latexballon))
+	if(istype(W,/obj/item/latexballon))
 		var/obj/item/latexballon/LB = W
 		LB.blow(src)
 		add_fingerprint(user)
 
 	if(isCoil(W))
+		if(is_pacifist(usr))
+			show_splash_text(user, "you're a pacifist!", SPAN_WARNING("You're a pacifist and a bomb is very much not pacific. You can't."))
+			return
 		var/obj/item/stack/cable_coil/C = W
 		if(!wired && C.use(1))
 			wired = TRUE
@@ -161,31 +164,38 @@ var/list/global/tank_gauge_cache = list()
 			if(QDELETED(src))
 				return
 
-			to_chat(user, "<span class='notice'>You quickly clip the wire from the tank.</span>")
+			to_chat(user, SPAN_NOTICE("You quickly clip the wire from the tank."))
 			wired = FALSE
 			update_icon(TRUE)
 
 		else
-			to_chat(user, "<span class='notice'>There are no wires to cut!</span>")
+			to_chat(user, SPAN_NOTICE("There are no wires to cut!"))
 
 	if(istype(W, /obj/item/device/assembly_holder))
+		if(is_pacifist(usr))
+			show_splash_text(user, "you're a pacifist!", SPAN_WARNING("You're a pacifist and a bomb is very much not pacific. You can't."))
+			return
 		if(wired)
-			to_chat(user, "<span class='notice'>You begin attaching the assembly to \the [src].</span>")
+			to_chat(user, SPAN_NOTICE("You begin attaching the assembly to \the [src]."))
 			if(do_after(user, 50, src, luck_check_type = LUCK_CHECK_ENG))
-				to_chat(user, "<span class='notice'>You finish attaching the assembly to \the [src].</span>")
+				to_chat(user, SPAN_NOTICE("You finish attaching the assembly to \the [src]."))
 				GLOB.bombers += "[key_name(user)] attached an assembly to a wired [src]. Temp: [CONV_KELVIN_CELSIUS(air_contents.temperature)]"
 				message_admins("[key_name_admin(user)] attached an assembly to a wired [src]. Temp: [CONV_KELVIN_CELSIUS(air_contents.temperature)]")
 				assemble_bomb(W,user)
 			else
-				to_chat(user, "<span class='notice'>You stop attaching the assembly.</span>")
+				to_chat(user, SPAN_NOTICE("You stop attaching the assembly."))
 		else
-			to_chat(user, "<span class='notice'>You need to wire the device up first.</span>")
+			to_chat(user, SPAN_NOTICE("You need to wire the device up first."))
 
 	if(isWelder(W))
-		var/obj/item/weldingtool/WT = W
-
 		if(valve_welded)
 			to_chat(user, SPAN_NOTICE("The emergency pressure relief valve has already been welded."))
+
+		if(is_pacifist(usr))
+			show_splash_text(user, "you're a pacifist!", SPAN_WARNING("You're a pacifist and a bomb is very much not pacific. You can't."))
+			return
+
+		var/obj/item/weldingtool/WT = W
 
 		to_chat(user, SPAN_NOTICE("You begin welding the \the [src] emergency pressure relief valve."))
 

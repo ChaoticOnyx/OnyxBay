@@ -198,6 +198,9 @@
 		var/dtype = O.damtype
 		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 
+		if(is_pacifist(O.thrower) && (ishuman(src) || client))
+			throw_damage = 1
+
 		var/miss_chance = 15
 		if(O.throw_source)
 			var/distance = get_dist(O.throw_source, loc)

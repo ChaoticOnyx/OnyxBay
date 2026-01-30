@@ -51,6 +51,9 @@
 		AddOverlays(blood_overlay)
 	return ..()
 
+/obj/item/gun/portalgun/get_projectile_type()
+	return /obj/item/projectile/portal
+
 /obj/item/gun/portalgun/proc/open_portal(proj_setting, turf/T, atom/A, mob/firer)
 	if(!T)
 		return

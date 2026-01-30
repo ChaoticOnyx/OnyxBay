@@ -60,6 +60,15 @@
 	QDEL_NULL(chambered)
 	return ..()
 
+/obj/item/gun/projectile/get_projectile_type()
+	if(chambered)
+		return chambered.type
+	if(loaded?.len)
+		return loaded[1].type
+	if(ammo_magazine?.stored_ammo?.len)
+		return ammo_magazine.stored_ammo[1].type
+	return ..()
+
 /obj/item/gun/projectile/consume_next_projectile()
 	if(!is_jammed && prob(jam_chance))
 		src.visible_message("<span class='danger'>\The [src] jams!</span>")

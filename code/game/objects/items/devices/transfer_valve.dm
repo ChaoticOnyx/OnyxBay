@@ -124,6 +124,9 @@
 	else if(tank_two && href_list["tanktwo"])
 		remove_tank(tank_two)
 	else if(href_list["open"])
+		if(is_pacifist(usr))
+			show_splash_text(usr, "you're a pacifist!", SPAN_WARNING("God, no. Definitely not this. You can't."))
+			return
 		toggle_valve()
 	else if(attached_device)
 		if(href_list["rem_device"])

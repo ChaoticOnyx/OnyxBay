@@ -57,6 +57,9 @@
 	QDEL_NULL(power_supply)
 	return ..()
 
+/obj/item/gun/charge/get_projectile_type()
+	return projectile_type
+
 /obj/item/gun/charge/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/cell/ammo/charge))
 		load_cell(A, user)

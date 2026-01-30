@@ -122,6 +122,9 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 			icon_state = "[initial(icon_state)][ratio]"
 	..()
 
+/obj/item/gun/energy/get_projectile_type()
+	return projectile_type
+
 /obj/item/gun/energy/secure
 	desc = "A basic energy-based gun with a secure authorization chip."
 	req_access = list(access_brig)

@@ -209,6 +209,9 @@
 	..()
 	update_icon()
 
+/obj/item/gun/proc/get_projectile_type()
+	return /obj/item/projectile
+
 //Checks whether a given mob can use the gun
 //Any checks that shouldn't result in handle_click_empty() being called if they fail should go here.
 //Otherwise, if you want handle_click_empty() to be called, check in consume_next_projectile() and return null there.
@@ -224,9 +227,7 @@
 		return
 
 	var/mob/living/M = user
-	if(is_pacifist(user))
-		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("No way! This weapon could seriously hurt somebody and you're a pacifist!"))
-		return FALSE
+
 	if(MUTATION_HULK in M.mutations)
 		to_chat(M, SPAN_DANGER("Your fingers are much too large for the trigger guard!"))
 		return FALSE
@@ -247,6 +248,45 @@
 		else
 			handle_click_empty(user)
 		return FALSE
+
+	if(is_pacifist(M))
+		to_chat(user, "PROCCED PACIFIST")
+		var/proj_type = get_projectile_type()
+		to_chat(user, "PROJ TYPE [proj_type]")
+
+		var/list/nonlethal_projectiles = list(/obj/item/projectile/energy/electrode,
+											  /obj/item/projectile/energy/flash,
+			                                  /obj/item/projectile/beam/stun,
+			                                  /obj/item/projectile/beam/practice,
+			                                  /obj/item/projectile/beam/lasertag,
+			                                  /obj/item/projectile/beam/plasmacutter,
+			                                  /obj/item/projectile/portal,
+			                                  /obj/item/projectile/chameleon,
+			                                  /obj/item/ammo_casing/cap,
+			                                  /obj/item/ammo_casing/c38/spec/nonlethal,
+			                                  /obj/item/ammo_casing/c38/chem/nonlethal,
+			                                  /obj/item/ammo_casing/c9mm/flash,
+			                                  /obj/item/ammo_casing/c9mm/practice,
+			                                  /obj/item/ammo_casing/c45/practice,
+			                                  /obj/item/ammo_casing/c45/flash,
+			                                  /obj/item/ammo_casing/c45/stun,
+			                                  /obj/item/ammo_casing/shotgun/blank,
+			                                  /obj/item/ammo_casing/shotgun/practice,
+			                                  /obj/item/ammo_casing/shotgun/stunshell,
+			                                  /obj/item/ammo_casing/shotgun/flash)
+
+		/*
+		var/is_nonlethal = FALSE
+		for(var/nonlethal_type in nonlethal_projectiles)
+			to_chat(user, "COMPARING AGAINST [nonlethal_type]")
+			if(ispath(proj_type, nonlethal_type))
+				is_nonlethal = TRUE
+				break
+		*/
+		if(!(proj_type in nonlethal_projectiles))
+			show_splash_text(M, "you're a pacifist!", SPAN_WARNING("No way! This weapon could seriously hurt somebody and you're a pacifist! Is there a non-lethal option?.."))
+			return FALSE
+
 	return TRUE
 
 /obj/item/gun/emp_act(severity)
@@ -613,6 +653,9 @@
 /obj/item/gun/proc/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	var/obj/item/grab/G = user.get_inactive_hand()
 	if(G?.affecting == target)
+		if(is_pacifist(user))
+			show_splash_text(user, "you're a pacifist!", SPAN_WARNING("Oh god, no. You can't bring yourself to do this."))
+			return FALSE
 		if(!G?.current_grab?.can_absorb)
 			to_chat(user, SPAN_NOTICE("You need a better grab for this."))
 			return

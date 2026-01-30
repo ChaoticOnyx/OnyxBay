@@ -59,10 +59,13 @@
 	if(active)
 		return
 
-	// Yes, this means pacifists can't even use cleaner, foam, smoke, etc. grenades. Feature, not a bug, I say.
 	if(is_pacifist(user))
-		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("Oh no... This thing could hurt a lot of people! You can't!"))
-		return
+		var/list/nonlethal_nades = list(/obj/item/grenade/flashbang,
+									    /obj/item/grenade/smokebomb,
+									    /obj/item/grenade/fake)
+		if(!(type in nonlethal_nades))
+			show_splash_text(user, "you're a pacifist!", SPAN_WARNING("Oh no... This thing could hurt a lot of people! You can't!"))
+			return
 
 	if(clown_check(user))
 		activate(user)

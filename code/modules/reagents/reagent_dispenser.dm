@@ -150,6 +150,9 @@
 /obj/structure/reagent_dispensers/fueltank/attackby(obj/item/W, mob/user)
 	add_fingerprint(user)
 	if(isWrench(W))
+		if(is_pacifist(user))
+			show_splash_text(user, "you're a pacifist!", SPAN_WARNING("If you do this, the fuel might catch on fire... You don't want to."))
+			return
 		user.visible_message(
 		  "[user] wrenches [src]'s faucet [modded ? "closed" : "open"].",
 		  "You wrench [src]'s faucet [modded ? "closed" : "open"]"
@@ -163,6 +166,9 @@
 		if(rig)
 			to_chat(user, SPAN("warning", "There is another device in the way."))
 			return ..()
+		if(is_pacifist(user))
+			show_splash_text(user, "you're a pacifist!", SPAN_WARNING("If you do this, \the [src] might explode... You don't want to."))
+			return
 		user.visible_message(
 		  "\The [user] begins rigging [W] to \the [src].",
 		  "You begin rigging [W] to \the [src]"
@@ -185,11 +191,14 @@
 			update_icon()
 
 	else if(W.get_temperature_as_from_ignitor())
-		if (reagents.total_volume == 0)
+		if(reagents.total_volume == 0)
 			user.visible_message(
 		 	 SPAN("danger", "[user] puts [W] to [src]."),
 		 	 SPAN("danger", "You put \the [W] to \the [src] and nothing happens.")
 			)
+			return
+		if(is_pacifist(user))
+			show_splash_text(user, "you're a pacifist!", SPAN_WARNING("If you do this, \the [src] might explode... You don't want to."))
 			return
 		log_and_message_admins("triggered a fueltank explosion with [W].")
 		user.visible_message(
