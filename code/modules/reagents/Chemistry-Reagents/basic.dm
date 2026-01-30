@@ -1,4 +1,4 @@
-#define WATER_LATENT_HEAT 1900 // How much heat is removed when applied to a hot turf, in J/ml (1900 makes 1200 u of water roughly equivalent to 4L)
+#define WATER_LATENT_HEAT 19000 // How much heat is removed when applied to a hot turf, in J/ml (19000 makes 120u of water roughly equivalent to 4L)
 
 /// Water
 /datum/reagent/water
@@ -69,7 +69,7 @@
 		if(prob(5))
 			T.visible_message(SPAN("warning", "The water sizzles as it lands on \the [T]!"))
 
-	else if(volume >= 100 && slippery)
+	else if(volume >= 10 && slippery)
 		var/turf/simulated/S = T
 		S.wet_floor(1, TRUE)
 
@@ -94,19 +94,19 @@
 
 /datum/reagent/water/touch_mob(mob/living/L, amount)
 	if(istype(L))
-		var/needed = L.fire_stacks * 50
+		var/needed = L.fire_stacks * 5
 		if(amount > needed)
 			L.fire_stacks = 0
 			L.ExtinguishMob()
 			remove_self(needed)
 		else
-			L.adjust_fire_stacks(-(amount / 50))
+			L.adjust_fire_stacks(-(amount / 5))
 			remove_self(amount)
 
 /datum/reagent/water/affect_touch(mob/living/carbon/M, alien, removed)
 	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
 		return
-	M.adjustToxLoss(removed)	// Babies have 150 health, adults have 200; So, 150ml and 200ml
+	M.adjustToxLoss(10 * removed)	// Babies have 150 health, adults have 200; So, 15u and 20u
 	var/mob/living/carbon/metroid/S = M
 	if(!S.client && istype(S))
 		if(S.Target) // Like cats
@@ -142,7 +142,7 @@
 		to_chat(usr, "The solution dissolves the ink on the paper.")
 		return
 	if(istype(O, /obj/item/book))
-		if(volume < 15)
+		if(volume < 5)
 			return
 		if(istype(O, /obj/item/book/tome))
 			to_chat(usr, "<span class='notice'>The solution does nothing. Whatever this is, it isn't normal ink.</span>")
@@ -392,7 +392,7 @@
 						M.adjustToxLoss(100)
 
 /datum/reagent/radium/touch_turf(turf/T)
-	if(volume >= 5)
+	if(volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, T)
 
@@ -517,7 +517,7 @@
 	if(volume < meltdose) // Not enough to melt anything
 		M.take_organ_damage(0, removed * power * 0.1) //burn damage, since it causes chemical burns. Acid doesn't make bones shatter, like brute trauma would.
 	else
-		M.take_organ_damage(0, removed * power * 0.1)
+		M.take_organ_damage(0, removed * power * 0.2)
 		if(removed && ishuman(M) && prob(100 * removed / meltdose)) // Applies disfigurement
 			var/mob/living/carbon/human/H = M
 			var/screamed
@@ -535,7 +535,7 @@
 		for(var/mob/M in viewers(5, O))
 			to_chat(M, "<span class='warning'>\The [O] melts.</span>")
 		qdel(O)
-		remove_self(meltdose) // 10 ml of acid will not melt EVERYTHING on the tile
+		remove_self(meltdose) // 10u of acid will not melt EVERYTHING on the tile
 
 /// Hydrochloric Acid
 /datum/reagent/acid/hydrochloric //Like sulfuric, but less toxic and more acidic.
@@ -618,7 +618,7 @@
 	glass_icon = DRINK_ICON_NOISY
 
 /datum/reagent/sugar/affect_blood(mob/living/carbon/M, alien, removed)
-	M.add_nutrition(removed * 10.0)
+	M.add_nutrition(removed * 3)
 
 	if(alien == IS_UNATHI)
 		if(M.chem_doses[type] < 2)

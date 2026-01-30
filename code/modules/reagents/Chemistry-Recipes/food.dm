@@ -4,7 +4,7 @@
 /datum/chemical_reaction/tofu
 	name = "Tofu"
 	result = null
-	required_reagents = list(/datum/reagent/drink/milk/soymilk = 100)
+	required_reagents = list(/datum/reagent/drink/milk/soymilk = 10)
 	catalysts = list(/datum/reagent/enzyme = 5)
 	result_amount = 1
 
@@ -16,7 +16,7 @@
 /datum/chemical_reaction/chocolate_bar
 	name = "Chocolate Bar"
 	result = null
-	required_reagents = list(/datum/reagent/drink/milk/soymilk = 50, /datum/reagent/nutriment/coco = 20, /datum/reagent/sugar = 10)
+	required_reagents = list(/datum/reagent/drink/milk/soymilk = 5, /datum/reagent/nutriment/coco = 2, /datum/reagent/sugar = 1)
 	result_amount = 1
 
 /datum/chemical_reaction/chocolate_bar/on_reaction(datum/reagents/holder, created_volume)
@@ -27,7 +27,7 @@
 /datum/chemical_reaction/chocolate_bar2
 	name = "Chocolate Bar"
 	result = null
-	required_reagents = list(/datum/reagent/drink/milk = 50, /datum/reagent/nutriment/coco = 20, /datum/reagent/sugar = 10)
+	required_reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/coco = 2, /datum/reagent/sugar = 1)
 	result_amount = 1
 
 /datum/chemical_reaction/chocolate_bar2/on_reaction(datum/reagents/holder, created_volume)
@@ -62,7 +62,7 @@
 /datum/chemical_reaction/cheesewheel
 	name = "Cheesewheel"
 	result = null
-	required_reagents = list(/datum/reagent/drink/milk = 500)
+	required_reagents = list(/datum/reagent/drink/milk = 50)
 	catalysts = list(/datum/reagent/enzyme = 5)
 	result_amount = 1
 
@@ -74,7 +74,7 @@
 /datum/chemical_reaction/faggot
 	name = "Faggot"
 	result = null
-	required_reagents = list(/datum/reagent/nutriment/protein = 25, /datum/reagent/nutriment/flour = 25)
+	required_reagents = list(/datum/reagent/nutriment/protein = 2.5, /datum/reagent/nutriment/flour = 2.5)
 	result_amount = 1
 
 /datum/chemical_reaction/faggot/on_reaction(datum/reagents/holder, created_volume)
@@ -85,7 +85,7 @@
 /datum/chemical_reaction/dough
 	name = "Dough"
 	result = null
-	required_reagents = list(/datum/reagent/nutriment/protein/egg = 15, /datum/reagent/nutriment/flour = 100, /datum/reagent/water = 50)
+	required_reagents = list(/datum/reagent/nutriment/protein/egg = 1.5, /datum/reagent/nutriment/flour = 10, /datum/reagent/water = 5)
 	result_amount = 1
 
 /datum/chemical_reaction/dough/on_reaction(datum/reagents/holder, created_volume)
@@ -96,7 +96,7 @@
 /datum/chemical_reaction/syntiflesh
 	name = "Syntiflesh"
 	result = null
-	required_reagents = list(/datum/reagent/blood = 50, /datum/reagent/clonexadone = 1)
+	required_reagents = list(/datum/reagent/blood = 5, /datum/reagent/clonexadone = 1)
 	result_amount = 1
 
 /datum/chemical_reaction/syntiflesh/on_reaction(datum/reagents/holder, created_volume)
@@ -113,7 +113,7 @@
 /datum/chemical_reaction/hell_ramen
 	name = "Hell Ramen"
 	result = /datum/reagent/drink/hell_ramen
-	required_reagents = list(/datum/reagent/capsaicin = 1, /datum/reagent/drink/hot_ramen = 50)
+	required_reagents = list(/datum/reagent/capsaicin = 1, /datum/reagent/drink/hot_ramen = 5)
 	result_amount = 6
 
 /datum/chemical_reaction/chicken_soup

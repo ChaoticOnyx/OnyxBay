@@ -6,9 +6,9 @@
 	w_class = ITEM_SIZE_NORMAL
 
 	volume = CARTRIDGE_VOLUME_LARGE
-	amount_per_transfer_from_this = 250
+	amount_per_transfer_from_this = 50
 	// Large, but inaccurate. Use a chem dispenser or beaker for accuracy.
-	possible_transfer_amounts = "250;500"
+	possible_transfer_amounts = "50;100"
 	unacidable = 1
 	atom_flags = ATOM_FLAG_IGNORE_RADIATION
 
@@ -25,12 +25,12 @@
 /obj/item/reagent_containers/chem_disp_cartridge/examine(mob/user, infix)
 	. = ..()
 
-	. += "It has a capacity of [volume] ml."
+	. += "It has a capacity of [volume]u."
 
 	if(reagents.total_volume <= 0)
 		. += "It is empty."
 	else
-		. += "It contains [reagents.total_volume] ml of liquid."
+		. += "It contains [reagents.total_volume]u of liquid."
 
 	if(!is_open_container())
 		. += "The cap is sealed."
@@ -82,7 +82,7 @@
 			return
 
 		var/trans = target.reagents.trans_to(src, target:amount_per_transfer_from_this)
-		to_chat(user, "<span class='notice'>You fill \the [src] with [trans] ml of the contents of \the [target].</span>")
+		to_chat(user, "<span class='notice'>You fill \the [src] with [trans]u of the contents of \the [target].</span>")
 
 	else if(target.is_open_container() && target.reagents) //Something like a glass. Player probably wants to transfer TO it.
 
@@ -95,7 +95,7 @@
 			return
 
 		var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
-		to_chat(user, "<span class='notice'>You transfer [trans] ml of the solution to \the [target].</span>")
+		to_chat(user, "<span class='notice'>You transfer [trans]u of the solution to \the [target].</span>")
 
 	else
 		return ..()

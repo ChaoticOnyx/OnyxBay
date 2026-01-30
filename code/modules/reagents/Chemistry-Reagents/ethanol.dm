@@ -16,7 +16,7 @@
 	touch_met = 5
 
 	var/nutriment_factor = 0
-	var/strength = 10 // This is, essentially, ml between stages - the lower, the stronger. Less fine tuning, more clarity.
+	var/strength = 10 // This is, essentially, units between stages - the lower, the stronger. Less fine tuning, more clarity.
 	var/toxicity = 1
 
 	var/druggy = 0
@@ -29,7 +29,7 @@
 
 /datum/reagent/ethanol/touch_mob(mob/living/L, amount)
 	if(istype(L))
-		L.adjust_fire_stacks(amount / 100)
+		L.adjust_fire_stacks(amount / 15)
 
 /datum/reagent/ethanol/affect_blood(mob/living/carbon/M, alien, removed)
 	M.adjustToxLoss(removed * 2 * toxicity)
@@ -45,7 +45,7 @@
 		strength_mod = 0
 
 	M.add_chemical_effect(CE_ALCOHOL, 1)
-	var/effective_dose = M.chem_traces[type] * strength_mod * (1 + volume / 500) //drinking a LOT will make you go down faster
+	var/effective_dose = M.chem_traces[type] * strength_mod * (1 + volume / 50) //drinking a LOT will make you go down faster
 
 	if(effective_dose >= strength) // Early warning
 		M.make_dizzy(6) // It is decreased at the speed of 3 per tick

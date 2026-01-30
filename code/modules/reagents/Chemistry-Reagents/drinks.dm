@@ -195,7 +195,7 @@
 	..()
 	if(alien == IS_DIONA)
 		return
-	M.adjustToxLoss(-0.1 * removed)
+	M.adjustToxLoss(-0.5 * removed)
 
 /datum/reagent/drink/juice/orange
 	name = "Orange juice"
@@ -218,7 +218,7 @@
 	..()
 	if(alien == IS_DIONA)
 		return
-	M.adjustOxyLoss(-0.15 * removed)
+	M.adjustOxyLoss(-1.5 * removed)
 
 /datum/reagent/toxin/poisonberryjuice // It has more in common with toxins than drinks... but it's a juice
 	name = "Poison Berry Juice"
@@ -322,7 +322,7 @@
 	..()
 	if(alien == IS_DIONA)
 		return
-	M.heal_organ_damage(0, 0.1 * removed)
+	M.heal_organ_damage(0, 0.5 * removed)
 
 /datum/reagent/drink/juice/watermelon
 	name = "Watermelon Juice"
@@ -362,7 +362,7 @@
 	..()
 	if(alien == IS_DIONA)
 		return
-	M.heal_organ_damage(0, 0.1 * removed)
+	M.heal_organ_damage(0, 0.5 * removed)
 
 /datum/reagent/drink/juice/coconut
 	name = "Coconut Milk"
@@ -833,7 +833,7 @@
 	adj_sleepy = -2
 	adj_temp = -8
 	adj_speed = 0.4
-	overdose = 0.4 LITERS
+	overdose = 0.45 LITERS
 
 	glass_name = "energy drink"
 	glass_desc = "Looks like a liquid power cell."
@@ -846,7 +846,7 @@
 	if(alien == IS_TAJARA)
 		M.adjustToxLoss(0.5 * removed)
 		M.make_jittery(4) //extra sensitive to caffine, taurine, and all the kinds of shit in nrg drinks
-	if(volume > 100)
+	if(volume > 15)
 		M.add_chemical_effect(CE_PULSE, 1)
 
 /datum/reagent/drink/energy/overdose(mob/living/carbon/M, alien)

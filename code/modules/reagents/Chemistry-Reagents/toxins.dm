@@ -15,7 +15,7 @@
 	digest_absorbability = 1.0 // Eaten toxins last twice as long and deal half the damage per tick.
 
 	var/target_organ
-	var/strength = 5 // How much damage it deals per ml
+	var/strength = 5 // How much damage it deals per unit
 
 /datum/reagent/toxin/affect_blood(mob/living/carbon/M, alien, removed)
 	if(strength && alien != IS_DIONA)

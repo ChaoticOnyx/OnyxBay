@@ -51,7 +51,7 @@
 	adjust_nutrition(M, alien, removed * ingest_absorbability)
 
 /datum/reagent/nutriment/affect_digest(mob/living/carbon/M, alien, removed)
-	M.heal_organ_damage(0.1 * removed, 0) //what
+	M.heal_organ_damage(removed, 0) //what
 	adjust_nutrition(M, alien, removed * digest_absorbability)
 
 /datum/reagent/nutriment/proc/adjust_nutrition(mob/living/carbon/M, alien, removed)

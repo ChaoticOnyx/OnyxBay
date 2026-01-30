@@ -384,7 +384,7 @@
 /datum/reagent/lube/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
-	if(volume >= 5)
+	if(volume >= 1)
 		T.wet_floor(80)
 
 /datum/reagent/silicate
