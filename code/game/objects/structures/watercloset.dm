@@ -525,7 +525,7 @@
 
 	else if(istype(O, /obj/item/mop))
 		playsound(loc, 'sound/effects/using/sink/filling1.ogg', 75)
-		O.reagents.add_reagent(/datum/reagent/water, 300)
+		O.reagents.add_reagent(/datum/reagent/water, 30)
 		to_chat(user, "<span class='notice'>You wet \the [O] in \the [src].</span>")
 		playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 		return TRUE

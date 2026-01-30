@@ -79,7 +79,7 @@
 		return
 
 
-	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 30))
+	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 3))
 		return
 
 	visible_message(SPAN("notice", "\The [user] has repaired \the [src]"))

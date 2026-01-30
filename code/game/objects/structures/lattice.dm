@@ -56,7 +56,7 @@
 		return
 	if(isWelder(C))
 		var/obj/item/weldingtool/WT = C
-		if(!WT.use_tool(src, user, amount = 10))
+		if(!WT.use_tool(src, user, amount = 1))
 			return
 
 		to_chat(user, SPAN_NOTICE("Slicing lattice joints."))

@@ -189,7 +189,7 @@ var/list/global/tank_gauge_cache = list()
 
 		to_chat(user, SPAN_NOTICE("You begin welding the \the [src] emergency pressure relief valve."))
 
-		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 50))
+		if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 			GLOB.bombers += "[key_name(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]"
 			message_admins("[key_name_admin(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]")
 			if(WT.welding)

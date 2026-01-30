@@ -76,7 +76,7 @@
 			if(isWelder(W) && !anchored )
 				var/obj/item/weldingtool/WT = W
 				user.visible_message("[user] dissassembles the windoor assembly.", "You start to dissassemble the windoor assembly.")
-				if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 50))
+				if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 					return
 
 				if(QDELETED(src)|| !user)

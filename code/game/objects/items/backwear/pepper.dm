@@ -9,7 +9,7 @@
 	gear_detachable = FALSE
 	gear = /obj/item/reagent_containers/spray/chemsprayer/crowdbuster
 	atom_flags = null
-	initial_capacity = 2.0 LITERS
+	initial_capacity = 3.0 LITERS
 	initial_reagent_types = list(/datum/reagent/capsaicin/condensed = 1)
 	origin_tech = list(TECH_ENGINEERING = 2)
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_GLASS = 500)

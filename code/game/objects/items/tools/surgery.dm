@@ -256,7 +256,7 @@
 			if(!isWelder(W))
 				return ..()
 			var/obj/item/weldingtool/WT = W
-			if(!WT.use_tool(src, user, amount = 50))
+			if(!WT.use_tool(src, user, amount = 5))
 				return
 
 			visible_message(SPAN("notice", "[usr] welded a case of \the [src]!"))

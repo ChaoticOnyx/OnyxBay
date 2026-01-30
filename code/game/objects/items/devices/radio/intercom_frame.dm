@@ -112,7 +112,7 @@
 
 /obj/item/intercom_assembly/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user)
 	show_splash_text(user, "dissasembling...", "Now dissasembling \the [src]...")
-	if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 50))
+	if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 		return
 
 	if(QDELETED(src) || !user)

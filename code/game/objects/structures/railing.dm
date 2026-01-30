@@ -178,7 +178,7 @@
 	// Repair
 	if(health < maxhealth && isWelder(W))
 		var/obj/item/weldingtool/F = W
-		if(!F.use_tool(src, user, delay = 2 SECONDS, amount = 50))
+		if(!F.use_tool(src, user, delay = 2 SECONDS, amount = 5))
 			return
 
 		if(QDELETED(src) || !user)

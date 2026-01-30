@@ -20,7 +20,7 @@
 	. = ..()
 	if(stage == STAGE_BASIC)
 		QDEL_NULL(detonator) // Yea, we surely don't need it, if chemnade is not ready.
-	create_reagents(1 LITER)
+	create_reagents(1000)
 
 /obj/item/grenade/chem_grenade/attack_self(mob/user)
 	if(stage != STAGE_READY)
@@ -210,12 +210,12 @@
 
 /obj/item/grenade/chem_grenade/metalfoam/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/vessel/bottle/chemical/big/B1 = new(src)
-	B1.reagents.add_reagent(/datum/reagent/aluminum, 300)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	B1.reagents.add_reagent(/datum/reagent/aluminum, 30)
 
-	var/obj/item/reagent_containers/vessel/bottle/chemical/big/B2 = new(src)
-	B2.reagents.add_reagent(/datum/reagent/foaming_agent, 100)
-	B2.reagents.add_reagent(/datum/reagent/acid/polyacid, 100)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
+	B2.reagents.add_reagent(/datum/reagent/foaming_agent, 10)
+	B2.reagents.add_reagent(/datum/reagent/acid/polyacid, 10)
 
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 
@@ -230,14 +230,13 @@
 
 /obj/item/grenade/chem_grenade/incendiary/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/vessel/bottle/chemical/big/B1 = new(src)
-	B1.reagents.add_reagent(/datum/reagent/aluminum, 150)
-	B1.reagents.add_reagent(/datum/reagent/fuel, 350)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	B1.reagents.add_reagent(/datum/reagent/aluminum, 15)
+	B1.reagents.add_reagent(/datum/reagent/fuel, 40)
 
-	var/obj/item/reagent_containers/vessel/bottle/chemical/big/B2 = new(src)
-	B2.reagents.add_reagent(/datum/reagent/toxin/plasma, 150)
-	B2.reagents.add_reagent(/datum/reagent/acid, 150)
-	B1.reagents.add_reagent(/datum/reagent/fuel, 50)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
+	B2.reagents.add_reagent(/datum/reagent/toxin/plasma, 15)
+	B2.reagents.add_reagent(/datum/reagent/acid, 15)
 
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 
@@ -252,13 +251,13 @@
 
 /obj/item/grenade/chem_grenade/antiweed/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/vessel/bottle/chemical/big/B1 = new(src)
-	B1.reagents.add_reagent(/datum/reagent/toxin/plantbgone, 250)
-	B1.reagents.add_reagent(/datum/reagent/potassium, 250)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	B1.reagents.add_reagent(/datum/reagent/toxin/plantbgone, 25)
+	B1.reagents.add_reagent(/datum/reagent/potassium, 25)
 
-	var/obj/item/reagent_containers/vessel/bottle/chemical/big/B2 = new(src)
-	B2.reagents.add_reagent(/datum/reagent/phosphorus, 250)
-	B2.reagents.add_reagent(/datum/reagent/sugar, 250)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
+	B2.reagents.add_reagent(/datum/reagent/phosphorus, 25)
+	B2.reagents.add_reagent(/datum/reagent/sugar, 25)
 
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 
@@ -273,12 +272,12 @@
 
 /obj/item/grenade/chem_grenade/cleaner/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/vessel/bottle/chemical/big/B1 = new(src)
-	B1.reagents.add_reagent(/datum/reagent/surfactant, 400)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	B1.reagents.add_reagent(/datum/reagent/surfactant, 40)
 
-	var/obj/item/reagent_containers/vessel/bottle/chemical/big/B2 = new(src)
-	B2.reagents.add_reagent(/datum/reagent/water, 400)
-	B2.reagents.add_reagent(/datum/reagent/space_cleaner, 100)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
+	B2.reagents.add_reagent(/datum/reagent/water, 40)
+	B2.reagents.add_reagent(/datum/reagent/space_cleaner, 10)
 
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 
@@ -293,14 +292,14 @@
 
 /obj/item/grenade/chem_grenade/teargas/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/vessel/bottle/chemical/big/B1 = new(src)
-	B1.reagents.add_reagent(/datum/reagent/phosphorus, 200)
-	B1.reagents.add_reagent(/datum/reagent/potassium, 200)
-	B1.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 100)
+	var/obj/item/reagent_containers/vessel/beaker/large/B1 = new(src)
+	B1.reagents.add_reagent(/datum/reagent/phosphorus, 40)
+	B1.reagents.add_reagent(/datum/reagent/potassium, 40)
+	B1.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 40)
 
-	var/obj/item/reagent_containers/vessel/bottle/chemical/big/B2 = new(src)
-	B2.reagents.add_reagent(/datum/reagent/sugar, 200)
-	B2.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 300)
+	var/obj/item/reagent_containers/vessel/beaker/large/B2 = new(src)
+	B2.reagents.add_reagent(/datum/reagent/sugar, 40)
+	B2.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 80)
 
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 
@@ -315,12 +314,12 @@
 
 /obj/item/grenade/chem_grenade/apple/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/vessel/bottle/chemical/B1 = new(src)
-	var/obj/item/reagent_containers/vessel/bottle/chemical/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
 
-	B1.reagents.add_reagent(/datum/reagent/potassium, 200)
+	B1.reagents.add_reagent(/datum/reagent/potassium, 60)
 
-	B2.reagents.add_reagent(/datum/reagent/water, 200)
+	B2.reagents.add_reagent(/datum/reagent/water, 60)
 
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 	beakers += B1

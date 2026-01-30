@@ -13,16 +13,16 @@
 	attack_verb = list("mopped", "bashed", "bludgeoned", "whacked")
 
 /obj/item/mop/New()
-	create_reagents(300)
+	create_reagents(30)
 
 /obj/item/mop/afterattack(atom/A, mob/user, proximity)
 	if(!proximity)
 		return
 	if(istype(A, /turf) || istype(A, /obj/effect/decal/cleanable) || istype(A, /obj/effect/overlay) || istype(A, /obj/effect/rune))
 		var/volume_to_spend
-		if(reagents.has_reagent(/datum/reagent/space_cleaner, 5))
+		if(reagents.has_reagent(/datum/reagent/space_cleaner, 1))
 			volume_to_spend = 5
-		else if(reagents.has_reagent(/datum/reagent/water, 30))
+		else if(reagents.has_reagent(/datum/reagent/water, 3))
 			volume_to_spend = 30
 
 		if(!volume_to_spend)

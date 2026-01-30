@@ -272,7 +272,7 @@
 			var/obj/item/reagent_containers/food/meat/new_meat = new slab_type(victim.loc, rand(3, 8))
 			if(istype(new_meat))
 				new_meat.SetName("[slab_name] [new_meat.name]")
-				new_meat.reagents.add_reagent(/datum/reagent/nutriment, slab_nutrition * 10)
+				new_meat.reagents.add_reagent(/datum/reagent/nutriment, slab_nutrition)
 				if(victim.reagents)
 					victim.reagents.trans_to_obj(new_meat, reagent_transfer_amt)
 

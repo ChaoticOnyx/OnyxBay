@@ -158,7 +158,7 @@
 			var/obj/item/reagent_containers/food/meat/new_meat = new slab_type(src, rand(3,8))
 			if (istype(new_meat))
 				new_meat.SetName("[slab_name] [new_meat.name]")
-				new_meat.reagents.add_reagent(/datum/reagent/nutriment, slab_nutrition * 10)
+				new_meat.reagents.add_reagent(/datum/reagent/nutriment, slab_nutrition)
 				if (buckled_mob.reagents)
 					buckled_mob.reagents.trans_to_obj(new_meat, reagent_transfer_amt)
 
@@ -220,7 +220,7 @@
 		var/obj/item/reagent_containers/food/meat/new_meat = new slab_type(get_turf(src), rand(3,8))
 		if (istype(new_meat))
 			new_meat.SetName("[slab_name] [new_meat.name]")
-			new_meat.reagents.add_reagent(/datum/reagent/nutriment, slab_nutrition * nutrition_transfer_mod * 10)
+			new_meat.reagents.add_reagent(/datum/reagent/nutriment, slab_nutrition * nutrition_transfer_mod)
 			if (H.reagents)
 				H.reagents.trans_to_obj(new_meat, round(buckled_mob.reagents.total_volume / meat_limbs_left, 1))
 	return

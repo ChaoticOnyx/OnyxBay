@@ -12,7 +12,7 @@
 
 /obj/item/soap/New()
 	..()
-	create_reagents(150)
+	create_reagents(30)
 	wet()
 
 /obj/item/soap/examine(mob/user, infix)
@@ -25,7 +25,7 @@
 		. += "It's dry!"
 
 /obj/item/soap/proc/wet()
-	reagents.add_reagent(/datum/reagent/space_cleaner, 75)
+	reagents.add_reagent(/datum/reagent/space_cleaner, 15)
 
 /obj/item/soap/proc/wash(mob/user = null, volume_to_spend = 5)
 	if(reagents.has_reagent(/datum/reagent/space_cleaner, volume_to_spend))

@@ -29,7 +29,7 @@
 		user.visible_message(SPAN("notice", "[user] is repairing the damage to \the [src]..."), \
 				             SPAN("notice", "You start repairing the damage to \the [src]..."))
 
-		if(!WT.use_tool(src, user, delay = max(5, health / 3), amount = 50))
+		if(!WT.use_tool(src, user, delay = max(5, health / 3), amount = 5))
 			return
 
 		if(QDELETED(src) || !user)

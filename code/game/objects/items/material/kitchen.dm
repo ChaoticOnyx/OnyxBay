@@ -26,7 +26,7 @@
 	..()
 	if (prob(60))
 		src.pixel_y = rand(0, 4)
-	create_reagents(50)
+	create_reagents(5)
 	return
 
 /obj/item/material/kitchen/utensil/attack(mob/living/carbon/M, mob/living/carbon/user)

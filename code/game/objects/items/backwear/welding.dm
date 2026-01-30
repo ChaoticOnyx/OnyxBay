@@ -12,7 +12,7 @@
 	gear_detachable = FALSE
 	gear = /obj/item/weldingtool/linked
 	atom_flags = null
-	initial_capacity = 2 LITERS
+	initial_capacity = 5 LITERS
 	initial_reagent_types = list(/datum/reagent/fuel = 1)
 	origin_tech = list(TECH_ENGINEERING = 3)
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_GLASS = 500)

@@ -80,7 +80,7 @@
 			to_chat(user, "<span class='warning'>You'll need to turn [src] on to patch the damage on [M]'s [S.name]!</span>")
 			return 1
 		if(S.robo_repair(15, BRUTE, "some dents", src, user))
-			remove_fuel(10, user)
+			remove_fuel(1, user)
 	else
 		return ..()
 
@@ -161,7 +161,7 @@
 		refuel_from_obj(O, user)
 		return
 	if(welding)
-		remove_fuel(10)
+		remove_fuel(1)
 		var/turf/location = get_turf(user)
 		if(isliving(O))
 			var/mob/living/L = O
@@ -519,7 +519,7 @@
 /obj/item/welder_tank/experimental/think()
 	var/cur_fuel = reagents.get_reagent_amount(/datum/reagent/fuel)
 	if(cur_fuel < max_fuel)
-		var/gen_amount = ((world.time-last_gen) / 2.5)
+		var/gen_amount = ((world.time-last_gen) / 25)
 		reagents.add_reagent(/datum/reagent/fuel, gen_amount)
 		last_gen = world.time
 

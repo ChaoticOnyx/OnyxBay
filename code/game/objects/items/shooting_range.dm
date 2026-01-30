@@ -35,7 +35,7 @@
 	attackby(obj/item/W as obj, mob/user as mob)
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
-			if(!WT.use_tool(src, user, amount = 10))
+			if(!WT.use_tool(src, user, amount = 1))
 				return
 
 			ClearOverlays()

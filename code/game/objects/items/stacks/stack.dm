@@ -168,7 +168,7 @@
 			return
 
 	to_chat(user, "<span class='notice'>Building [recipe.title] ...</span>")
-	if(craft_tool == 2 && WT?.use_tool(src, user, delay = recipe.time, amount = 50))
+	if(craft_tool == 2 && WT?.use_tool(src, user, delay = recipe.time, amount = 5))
 		finalize_recipe_production(recipe, required, produced, user)
 		return
 

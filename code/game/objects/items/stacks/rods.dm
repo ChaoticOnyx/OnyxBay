@@ -48,7 +48,7 @@
 			return
 
 
-		if(!WT.use_tool(src, user, amount = 10))
+		if(!WT.use_tool(src, user, amount = 1))
 			return
 
 		var/obj/item/stack/material/steel/new_item = new(usr.loc)

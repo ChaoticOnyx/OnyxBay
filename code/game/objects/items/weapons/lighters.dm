@@ -90,7 +90,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	attack_verb = list("burnt", "singed")
-	var/max_fuel = 50
+	var/max_fuel = 5
 	var/flame_overlay = "cheapoverlay"
 	var/spam_flag = 0
 	var/requires_hold = TRUE

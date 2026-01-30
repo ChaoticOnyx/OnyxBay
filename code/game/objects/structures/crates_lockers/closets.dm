@@ -546,7 +546,7 @@
 		src.attack_hand(user)
 
 /obj/structure/closet/proc/slice_into_parts(obj/item/weldingtool/WT, mob/user)
-	if(!WT.use_tool(src, user, amount = 10))
+	if(!WT.use_tool(src, user, amount = 1))
 		return
 
 	if(material != null)

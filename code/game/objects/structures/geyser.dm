@@ -49,7 +49,7 @@
 
 /obj/structure/geyser/random
 	erupting_state = null
-	var/list/options = list(/datum/reagent/toxin/plasma = 100, /datum/reagent/water = 100, /datum/reagent/toxin/chlorine = 60)
+	var/list/options = list(/datum/reagent/toxin/plasma = 10, /datum/reagent/water = 10, /datum/reagent/toxin/chlorine = 6)
 
 /obj/structure/geyser/random/Initialize()
 	. = ..()

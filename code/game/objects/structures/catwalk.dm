@@ -59,7 +59,7 @@
 /obj/structure/catwalk/attackby(obj/item/C, mob/user)
 	if(isWelder(C))
 		var/obj/item/weldingtool/WT = C
-		if(!WT.use_tool(src, user, amount = 10))
+		if(!WT.use_tool(src, user, amount = 1))
 			return
 
 		to_chat(user, SPAN("notice", "Slicing catwalk joints ..."))

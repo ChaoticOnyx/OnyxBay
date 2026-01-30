@@ -173,7 +173,7 @@
 			return 1
 		to_chat(M, "You take a bite of the [src.name] and swallow it.")
 		M.add_nutrition(1)
-		M.reagents.add_reagent(/datum/reagent/crayon_dust, min(50, uses * 10) / 3)
+		M.reagents.add_reagent(/datum/reagent/crayon_dust, min(5, uses) / 3)
 		reduce_uses(5, "ate")
 	else if(istype(M,/mob/living/carbon/human) && M.lying)
 		to_chat(user, "You start outlining [M.name].")

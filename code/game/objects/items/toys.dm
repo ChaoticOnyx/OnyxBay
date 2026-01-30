@@ -53,7 +53,7 @@
 	w_class = ITEM_SIZE_TINY
 
 /obj/item/toy/water_balloon/New()
-	create_reagents(100)
+	create_reagents(10)
 	..()
 
 /obj/item/toy/water_balloon/attack(mob/living/carbon/human/M, mob/user)
@@ -62,7 +62,7 @@
 /obj/item/toy/water_balloon/afterattack(atom/A, mob/user, proximity)
 	if(!proximity) return
 	if(istype(A, /obj/structure/reagent_dispensers) && Adjacent(A))
-		A.reagents.trans_to_obj(src, 100)
+		A.reagents.trans_to_obj(src, 10)
 		to_chat(user, "<span class='notice'>You fill the balloon with the contents of [A].</span>")
 		src.desc = "A translucent balloon with some form of liquid sloshing around in it."
 		src.update_icon()
@@ -82,7 +82,7 @@
 				else
 					src.desc = "A translucent balloon with some form of liquid sloshing around in it."
 					to_chat(user, "<span class='notice'>You fill the balloon with the contents of [O].</span>")
-					O.reagents.trans_to_obj(src, 100)
+					O.reagents.trans_to_obj(src, 10)
 					w_class = ITEM_SIZE_SMALL
 	src.update_icon()
 	return

@@ -77,7 +77,7 @@
 		if(reagents.total_volume < 1)
 			show_splash_text(user, "no water!", SPAN("warning", "\The [src] is empty!"))
 		else
-			reagents.trans_to_obj(D, 50)
+			reagents.trans_to_obj(D, 5)
 			show_splash_text(user, "you wet the mop!", SPAN("notice", "You wet \the [D] in \the [src]."))
 			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 		return

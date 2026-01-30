@@ -68,7 +68,7 @@
 /obj/item/material/shard/attackby(obj/item/W, mob/user)
 	if(isWelder(W) && material.shard_can_repair)
 		var/obj/item/weldingtool/WT = W
-		if(!WT.use_tool(src, user, amount = 10))
+		if(!WT.use_tool(src, user, amount = 1))
 			return
 
 		material.place_sheet(get_turf(loc))

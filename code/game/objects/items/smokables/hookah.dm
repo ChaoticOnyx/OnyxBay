@@ -18,7 +18,7 @@
 	label_icon = FALSE
 	overlay_icon = FALSE
 	lid_type = null
-	volume = 0.5 LITERS
+	volume = 0.6 LITERS
 
 	var/obj/item/hookah_coal/HC = null
 	var/obj/item/hookah_hose/H1 = null

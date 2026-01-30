@@ -32,7 +32,7 @@
 			return
 
 		else
-			reagents.trans_to_obj(I, 50)
+			reagents.trans_to_obj(I, 5)
 			show_splash_text(user, "you wet the mop!", SPAN("notice", "You wet \the [I] in \the [src]."))
 			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 			return
