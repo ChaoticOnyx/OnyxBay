@@ -75,9 +75,9 @@
 	trash = /obj/item/trash/dish/bowl
 	filling_color = "#468c00"
 	center_of_mass = "x=17;y=11"
-	nutriment_amt = 160
+	nutriment_amt = 16
 	nutriment_desc = list("apples" = 3,"salad" = 5)
 	startswith = list(
-		/datum/reagent/drink/doctor_delight = 10,
-		/datum/reagent/tricordrazine = 10)
-	bitesize = 30 // 160 nutrition, 4 bites
+		/datum/reagent/drink/doctor_delight = 1,
+		/datum/reagent/tricordrazine = 1)
+	bitesize = 3 // 160 nutrition, 4 bites

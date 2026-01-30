@@ -6,12 +6,12 @@
 	filling_color = "#d63c3c"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("fast food" = 3)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/nutriment/protein/cooked = 50
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/nutriment/protein/cooked = 5
 		)
-	bitesize = 25 // 320 nutrition, 8 bites
+	bitesize = 2.5 // 320 nutrition, 8 bites
 
 // Burger + cheese wedge = cheeseburger
 /obj/item/reagent_containers/food/plainburger/attackby(obj/item/reagent_containers/food/cheesewedge/W, mob/user)
@@ -31,12 +31,12 @@
 	filling_color = "#f2b6ea"
 	center_of_mass = "x=15;y=11"
 	nutriment_desc = list("illithid fast food" = 3)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/alkysine = 6,
-		/datum/reagent/nutriment/protein/gluten/cooked = 30
+		/datum/reagent/alkysine = 0.6,
+		/datum/reagent/nutriment/protein/gluten/cooked = 3
 		)
-	bitesize = 25 // 195 nutrition and whatever comes with the brain.
+	bitesize = 2.5 // 195 nutrition and whatever comes with the brain.
 
 /obj/item/reagent_containers/food/ghostburger
 	name = "Ghost Burger"
@@ -45,12 +45,12 @@
 	filling_color = "#fff2ff"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("spooky fast food" = 3)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/drink/nothing = 50
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/drink/nothing = 5
 		)
-	bitesize = 25 // 195 nutrition, 8 bites
+	bitesize = 2.5 // 195 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/human
 	var/hname = ""
@@ -63,11 +63,11 @@
 	icon_state = "hburger"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("humanity" = 2, "fast food" = 3)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30
+		/datum/reagent/nutriment/protein/gluten/cooked = 3
 		)
-	bitesize = 25 // 195 nutrition and whatever comes with the hooman.
+	bitesize = 2.5 // 195 nutrition and whatever comes with the hooman.
 
 // Human Burger + cheese wedge = cheeseburger
 /obj/item/reagent_containers/food/human/burger/attackby(obj/item/reagent_containers/food/cheesewedge/W, mob/user)
@@ -86,12 +86,12 @@
 	icon_state = "cheeseburger"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("cheese" = 2, "fast food" = 2)
-	nutriment_amt = 160
+	nutriment_amt = 16
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/nutriment/protein/cooked = 60
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/nutriment/protein/cooked = 6
 		)
-	bitesize = 25 // 385 nutrition, 10 bites
+	bitesize = 2.5 // 385 nutrition, 10 bites
 
 /obj/item/reagent_containers/food/fishburger
 	name = "Fillet -o- Carp Sandwich"
@@ -100,12 +100,12 @@
 	filling_color = "#ffdefe"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("fishy fast food" = 3)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/nutriment/protein/cooked = 50
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/nutriment/protein/cooked = 5
 		)
-	bitesize = 25 // 320 nutrition, 8 bites
+	bitesize = 2.5 // 320 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/tofuburger
 	name = "Tofu Burger"
@@ -114,11 +114,11 @@
 	filling_color = "#fffee0"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("tofu" = 2, "fake fast food" = 2)
-	nutriment_amt = 195
+	nutriment_amt = 19.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30
+		/datum/reagent/nutriment/protein/gluten/cooked = 3
 		)
-	bitesize = 25 // 270 nutrition, 9 bites
+	bitesize = 2.5 // 270 nutrition, 9 bites
 
 /obj/item/reagent_containers/food/roburger
 	name = "cyburger"
@@ -127,12 +127,12 @@
 	filling_color = "#cccccc"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("nanomachines' son" = 1, "cybernetic fast food" = 2)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/iron = 30
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/iron = 3
 		)
-	bitesize = 20 // 320 nutrition, 9 bites
+	bitesize = 2 // 180 nutrition, 9 bites
 
 /obj/item/reagent_containers/food/roburger/Initialize()
 	. = ..()
@@ -146,12 +146,12 @@
 	filling_color = "#cccccc"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("nanomachines' son" = 5)
-	nutriment_amt = 40
+	nutriment_amt = 4
 	startswith = list(
-		/datum/reagent/nanites = 100,
-		/datum/reagent/iron = 60
+		/datum/reagent/nanites = 10,
+		/datum/reagent/iron = 6
 		)
-	bitesize = 10 // 40 nutrition, 20 bites
+	bitesize = 1 // 40 nutrition, 20 bites
 
 /obj/item/reagent_containers/food/xenoburger
 	name = "xenoburger"
@@ -160,13 +160,13 @@
 	filling_color = "#43de18"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("heresy" = 2, "fast food" = 2)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/nutriment/protein/cooked = 40,
-		/datum/reagent/xenomicrobes = 10
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/nutriment/protein/cooked = 4,
+		/datum/reagent/xenomicrobes = 1
 		)
-	bitesize = 25 // 295 nutrition, 8 bites
+	bitesize = 2.5 // 295 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/clownburger
 	name = "Clown Burger"
@@ -175,11 +175,11 @@
 	filling_color = "#ff00ff"
 	center_of_mass = "x=17;y=12"
 	nutriment_desc = list("pun" = 1, "bun" = 1, "clown shoe" = 1, "fast food" = 1)
-	nutriment_amt = 195
+	nutriment_amt = 19.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30
+		/datum/reagent/nutriment/protein/gluten/cooked = 3
 		)
-	bitesize = 25 // 270 nutrition, 9 bites
+	bitesize = 2.5 // 270 nutrition, 9 bites
 
 /obj/item/reagent_containers/food/mimeburger
 	name = "Mime Burger"
@@ -188,12 +188,12 @@
 	filling_color = "#ffffff"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("pantomime" = 2, "silence" = 2, "mime paint" = 2, "fast food" = 2)
-	nutriment_amt = 50
+	nutriment_amt = 5
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/drink/nothing = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/drink/nothing = 12
 		)
-	bitesize = 1 // 125 nutrition, 200 bites
+	bitesize = 0.1 // 125 nutrition, 200 bites
 
 /obj/item/reagent_containers/food/spellburger
 	name = "Spell Burger"
@@ -201,11 +201,11 @@
 	icon_state = "spellburger"
 	filling_color = "#d505ff"
 	nutriment_desc = list("magic" = 2, "fast food" = 2)
-	nutriment_amt = 195
+	nutriment_amt = 19.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30
+		/datum/reagent/nutriment/protein/gluten/cooked = 3
 		)
-	bitesize = 25 // 270 nutrition, 9 bites
+	bitesize = 2.5 // 270 nutrition, 9 bites
 
 /obj/item/reagent_containers/food/bigbiteburger
 	name = "Big Bite Burger"
@@ -214,12 +214,12 @@
 	filling_color = "#e3d681"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("jaw dislocation" = 5, "fast food" = 3)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/nutriment/protein/cooked = 545
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/nutriment/protein/cooked = 54.5
 		)
-	bitesize = 25 // 1557.5 nutrition, 16 bites
+	bitesize = 2.5 // 1557.5 nutrition, 16 bites
 
 /obj/item/reagent_containers/food/superbiteburger
 	name = "Super Bite Burger"
@@ -228,12 +228,12 @@
 	filling_color = "#cca26a"
 	center_of_mass = "x=16;y=3"
 	nutriment_desc = list("jaw fracture" = 5, "fast food" = 3)
-	nutriment_amt = 280
+	nutriment_amt = 28
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 60,
-		/datum/reagent/nutriment/protein/cooked = 750
+		/datum/reagent/nutriment/protein/gluten/cooked = 6,
+		/datum/reagent/nutriment/protein/cooked = 75
 		)
-	bitesize = 25 // 2305 nutrition, 32 bites
+	bitesize = 2.5 // 2305 nutrition, 32 bites
 
 /obj/item/reagent_containers/food/jellyburger
 	name = "Jelly Burger"
@@ -258,12 +258,12 @@
 	icon_state = "hotdog"
 	center_of_mass = "x=16;y=17"
 	nutriment_desc = list("bread" = 3)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 75,
-		/datum/reagent/nutriment/protein/gluten/cooked = 30
+		/datum/reagent/nutriment/protein/cooked = 7.5,
+		/datum/reagent/nutriment/protein/gluten/cooked = 3
 		)
-	bitesize = 30 // 382.5 nutrition, 8 bites
+	bitesize = 3 // 382.5 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/classichotdog
 	name = "classic hotdog"
@@ -271,10 +271,10 @@
 	icon_state = "hotcorgi"
 	w_class = ITEM_SIZE_LARGE
 	center_of_mass = "x=16;y=17"
-	nutriment_amt = 120
+	nutriment_amt = 12
 	nutriment_desc = list("hot" = 2.5, "dog" = 2.5)
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 300,
-		/datum/reagent/nutriment/protein/gluten/cooked = 30
+		/datum/reagent/nutriment/protein/cooked = 30,
+		/datum/reagent/nutriment/protein/gluten/cooked = 3
 		)
-	bitesize = 30 // Whooping 945 nutrition (a whole Ian plus some bread), 15 bites
+	bitesize = 3 // Whooping 945 nutrition (a whole Ian plus some bread), 15 bites

@@ -7,12 +7,12 @@
 	filling_color = "#785210"
 	center_of_mass = "x=16;y=8"
 	nutriment_desc = list("meatballs" = 3, "potato" = 2, "carrot" = 2)
-	nutriment_amt = 150
+	nutriment_amt = 15
 	startswith = list(
-		/datum/reagent/nutriment/protein = 25,
-		/datum/reagent/water = 125
+		/datum/reagent/nutriment/protein = 2.5,
+		/datum/reagent/water = 12
 		)
-	bitesize = 40 // 212.5 nutrition, 8 bites
+	bitesize = 4 // 212.5 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/fathersoup
 	name = "Father's soup"
@@ -22,12 +22,12 @@
 	filling_color = "#f85210"
 	center_of_mass = "x=16;y=16"
 	nutriment_desc = list("peeling wallpaper" = 1)
-	nutriment_amt = 150
+	nutriment_amt = 15
 	startswith = list(
-		/datum/reagent/water = 10,
-		/datum/reagent/thermite = 2,
-		/datum/reagent/capsaicin = 5)
-	bitesize = 40 // God know how many nutrition, some bites, ooh blya
+		/datum/reagent/water = 1,
+		/datum/reagent/thermite = 1,
+		/datum/reagent/capsaicin = 1)
+	bitesize = 4 // God know how many nutrition, some bites, ooh blya
 
 /obj/item/reagent_containers/food/metroidsoup
 	name = "metroid soup"
@@ -35,12 +35,12 @@
 	icon_state = "rorosoup"
 	filling_color = "#c4dba0"
 	nutriment_desc = list("xenoscience" = 1)
-	nutriment_amt = 150
+	nutriment_amt = 15
 	startswith = list(
-		/datum/reagent/metroidjelly = 10,
-		/datum/reagent/water = 40
+		/datum/reagent/metroidjelly = 1,
+		/datum/reagent/water = 4
 		)
-	bitesize = 28 // 100 nutrition, 8 bites
+	bitesize = 2.8 // 100 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/bloodsoup
 	name = "Tomato soup"
@@ -49,11 +49,11 @@
 	filling_color = "#ff0000"
 	center_of_mass = "x=16;y=7"
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 40,
-		/datum/reagent/blood = 100,
-		/datum/reagent/water = 100
+		/datum/reagent/nutriment/protein/cooked = 4,
+		/datum/reagent/blood = 10,
+		/datum/reagent/water = 10
 		)
-	bitesize = 40 // 200 nutrition, 6 bites
+	bitesize = 4 // 200 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/clownstears
 	name = "Clown's Tears"
@@ -62,12 +62,12 @@
 	filling_color = "#c4fbff"
 	center_of_mass = "x=16;y=7"
 	nutriment_desc = list("salt" = 1, "the worst joke" = 3)
-	nutriment_amt = 100
+	nutriment_amt = 10
 	startswith = list(
-		/datum/reagent/drink/juice/banana = 50,
-		/datum/reagent/water = 50
+		/datum/reagent/drink/juice/banana = 5,
+		/datum/reagent/water = 5
 		)
-	bitesize = 25 // 125 nutrition, 8 bites
+	bitesize = 2.5 // 125 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/vegetablesoup
 	name = "Vegetable soup"
@@ -77,11 +77,11 @@
 	filling_color = "#afc4b5"
 	center_of_mass = "x=16;y=8"
 	nutriment_desc = list("carrot" = 2, "corn" = 2, "eggplant" = 2, "potato" = 2)
-	nutriment_amt = 200
+	nutriment_amt = 20
 	startswith = list(
-		/datum/reagent/water = 75
+		/datum/reagent/water = 7.5
 		)
-	bitesize = 45 // 200+ nutrition, 7+ bites
+	bitesize = 4.5 // 200+ nutrition, 7+ bites
 
 /obj/item/reagent_containers/food/nettlesoup
 	name = "Nettle soup"
@@ -91,13 +91,13 @@
 	filling_color = "#afc4b5"
 	center_of_mass = "x=16;y=7"
 	nutriment_desc = list("salad" = 4, "egg" = 2, "potato" = 2)
-	nutriment_amt = 125
+	nutriment_amt = 12.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 45,
-		/datum/reagent/water = 70,
-		/datum/reagent/tricordrazine = 10
+		/datum/reagent/nutriment/protein/cooked = 4.5,
+		/datum/reagent/water = 7,
+		/datum/reagent/tricordrazine = 1
 		)
-	bitesize = 40 // 237.5 nutrition, 7+ bites
+	bitesize = 4 // 237.5 nutrition, 7+ bites
 
 /obj/item/reagent_containers/food/mysterysoup
 	name = "Mystery soup"
@@ -107,48 +107,48 @@
 	filling_color = "#f082ff"
 	center_of_mass = "x=16;y=6"
 	nutriment_desc = list("backwash" = 1)
-	nutriment_amt = 50
-	bitesize = 40 // No fucking clue
+	nutriment_amt = 5
+	bitesize = 4 // No fucking clue
 
 /obj/item/reagent_containers/food/mysterysoup/Initialize()
 	. = ..()
 	var/mysteryselect = rand(1, 10)
 	switch(mysteryselect)
 		if(1)
-			reagents.add_reagent(/datum/reagent/nutriment, 60)
-			reagents.add_reagent(/datum/reagent/capsaicin, 30)
-			reagents.add_reagent(/datum/reagent/drink/juice/tomato, 20)
+			reagents.add_reagent(/datum/reagent/nutriment, 6)
+			reagents.add_reagent(/datum/reagent/capsaicin, 3)
+			reagents.add_reagent(/datum/reagent/drink/juice/tomato, 2)
 		if(2)
-			reagents.add_reagent(/datum/reagent/nutriment, 60)
-			reagents.add_reagent(/datum/reagent/frostoil, 3)
-			reagents.add_reagent(/datum/reagent/drink/juice/tomato, 20)
+			reagents.add_reagent(/datum/reagent/nutriment, 6)
+			reagents.add_reagent(/datum/reagent/frostoil, 0.5)
+			reagents.add_reagent(/datum/reagent/drink/juice/tomato, 2)
 		if(3)
-			reagents.add_reagent(/datum/reagent/nutriment, 50)
-			reagents.add_reagent(/datum/reagent/water, 50)
-			reagents.add_reagent(/datum/reagent/tricordrazine, 5)
+			reagents.add_reagent(/datum/reagent/nutriment, 5)
+			reagents.add_reagent(/datum/reagent/water, 5)
+			reagents.add_reagent(/datum/reagent/tricordrazine, 0.5)
 		if(4)
-			reagents.add_reagent(/datum/reagent/nutriment, 50)
-			reagents.add_reagent(/datum/reagent/water, 100)
+			reagents.add_reagent(/datum/reagent/nutriment, 5)
+			reagents.add_reagent(/datum/reagent/water, 10)
 		if(5)
-			reagents.add_reagent(/datum/reagent/nutriment, 20)
-			reagents.add_reagent(/datum/reagent/drink/juice/banana, 100)
+			reagents.add_reagent(/datum/reagent/nutriment, 2)
+			reagents.add_reagent(/datum/reagent/drink/juice/banana, 10)
 		if(6)
-			reagents.add_reagent(/datum/reagent/nutriment, 60)
-			reagents.add_reagent(/datum/reagent/blood, 100)
+			reagents.add_reagent(/datum/reagent/nutriment, 6)
+			reagents.add_reagent(/datum/reagent/blood, 10)
 		if(7)
-			reagents.add_reagent(/datum/reagent/metroidjelly, 10)
-			reagents.add_reagent(/datum/reagent/water, 100)
+			reagents.add_reagent(/datum/reagent/metroidjelly, 1)
+			reagents.add_reagent(/datum/reagent/water, 10)
 		if(8)
-			reagents.add_reagent(/datum/reagent/nutriment, 50)
-			reagents.add_reagent(/datum/reagent/carbon, 10)
-			reagents.add_reagent(/datum/reagent/toxin, 10)
+			reagents.add_reagent(/datum/reagent/nutriment, 5)
+			reagents.add_reagent(/datum/reagent/carbon, 1)
+			reagents.add_reagent(/datum/reagent/toxin, 1)
 		if(9)
-			reagents.add_reagent(/datum/reagent/nutriment, 50)
-			reagents.add_reagent(/datum/reagent/drink/juice/tomato, 100)
+			reagents.add_reagent(/datum/reagent/nutriment, 5)
+			reagents.add_reagent(/datum/reagent/drink/juice/tomato, 10)
 		if(10)
-			reagents.add_reagent(/datum/reagent/nutriment, 60)
-			reagents.add_reagent(/datum/reagent/drink/juice/tomato, 50)
-			reagents.add_reagent(/datum/reagent/imidazoline, 5)
+			reagents.add_reagent(/datum/reagent/nutriment, 6)
+			reagents.add_reagent(/datum/reagent/drink/juice/tomato, 5)
+			reagents.add_reagent(/datum/reagent/imidazoline, 0.5)
 
 /obj/item/reagent_containers/food/wishsoup
 	name = "Wish Soup"
@@ -157,16 +157,16 @@
 	trash = /obj/item/trash/dish/bowl
 	filling_color = "#d1f4ff"
 	center_of_mass = "x=16;y=11"
-	startswith = list(/datum/reagent/water = 100)
-	bitesize = 25 // 0 or 100 nutrition, 8 bites
+	startswith = list(/datum/reagent/water = 10)
+	bitesize = 2.5 // 0 or 100 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/wishsoup/Initialize()
 	. = ..()
 	if(prob(25))
 		desc = "A wish come true!"
-		reagents.add_reagent(/datum/reagent/nutriment, 100, list("something good" = 8))
+		reagents.add_reagent(/datum/reagent/nutriment, 10, list("something good" = 8))
 	else
-		reagents.add_reagent(/datum/reagent/water, 100)
+		reagents.add_reagent(/datum/reagent/water, 10)
 
 /obj/item/reagent_containers/food/hotchili
 	name = "Hot Chili"
@@ -176,12 +176,12 @@
 	filling_color = "#ff3c00"
 	center_of_mass = "x=15;y=9"
 	nutriment_desc = list("chilli peppers" = 3)
-	nutriment_amt = 20
+	nutriment_amt = 2
 	startswith = list(
-		/datum/reagent/nutriment/protein = 150,
-		/datum/reagent/capsaicin = 5,
-		/datum/reagent/drink/juice/tomato = 25)
-	bitesize = 25 // 407.5 nutrition, 8 bites
+		/datum/reagent/nutriment/protein = 15,
+		/datum/reagent/capsaicin = 1,
+		/datum/reagent/drink/juice/tomato = 2.5)
+	bitesize = 2.5 // 407.5 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/coldchili
 	name = "Cold Chili"
@@ -190,12 +190,12 @@
 	filling_color = "#2b00ff"
 	center_of_mass = "x=15;y=9"
 	nutriment_desc = list("chilly peppers" = 3)
-	nutriment_amt = 20
+	nutriment_amt = 2
 	startswith = list(
-		/datum/reagent/nutriment/protein = 150,
-		/datum/reagent/frostoil = 5,
-		/datum/reagent/drink/juice/tomato = 25)
-	bitesize = 25 // 407.5 nutrition, 8 bites
+		/datum/reagent/nutriment/protein = 15,
+		/datum/reagent/frostoil = 1,
+		/datum/reagent/drink/juice/tomato = 2.5)
+	bitesize = 2.5 // 407.5 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/tomatosoup
 	name = "Tomato Soup"
@@ -205,11 +205,11 @@
 	filling_color = "#d92929"
 	center_of_mass = "x=16;y=7"
 	nutriment_desc = list("soup" = 5)
-	nutriment_amt = 150
+	nutriment_amt = 15
 	startswith = list(
-		/datum/reagent/drink/juice/tomato = 50
+		/datum/reagent/drink/juice/tomato = 5
 		)
-	bitesize = 25 // 175 nutrition, 8 bites
+	bitesize = 2.5 // 175 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/stew
 	name = "Stew"
@@ -218,13 +218,13 @@
 	filling_color = "#9e673a"
 	center_of_mass = "x=16;y=5"
 	nutriment_desc = list("tomato" = 2, "potato" = 2, "carrot" = 2, "eggplant" = 2, "mushroom" = 2)
-	nutriment_amt = 100
+	nutriment_amt = 10
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 150,
-		/datum/reagent/drink/juice/tomato = 25,
-		/datum/reagent/imidazoline = 5,
-		/datum/reagent/water = 20)
-	bitesize = 40 // 487.5 nutrition, 8 bites
+		/datum/reagent/nutriment/protein/cooked = 15,
+		/datum/reagent/drink/juice/tomato = 2.5,
+		/datum/reagent/imidazoline = 1,
+		/datum/reagent/water = 2)
+	bitesize = 4 // 487.5 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/milosoup
 	name = "Milosoup"
@@ -233,11 +233,11 @@
 	trash = /obj/item/trash/dish/bowl
 	center_of_mass = "x=16;y=7"
 	nutriment_desc = list("soy" = 8)
-	nutriment_amt = 250
+	nutriment_amt = 25
 	startswith = list(
-		/datum/reagent/water = 50
+		/datum/reagent/water = 5
 		)
-	bitesize = 40 // 250 nutrition, 8 bites
+	bitesize = 4 // 250 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/mushroomsoup
 	name = "chantrelle soup"
@@ -247,8 +247,8 @@
 	filling_color = "#e386bf"
 	center_of_mass = "x=17;y=10"
 	nutriment_desc = list("mushroom" = 8, "milk" = 2)
-	nutriment_amt = 200
-	bitesize = 25 // 200 nutrition, 8 bites
+	nutriment_amt = 20
+	bitesize = 2.5 // 200 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/beetsoup
 	name = "beet soup"
@@ -258,8 +258,8 @@
 	filling_color = "#fac9ff"
 	center_of_mass = "x=15;y=8"
 	nutriment_desc = list("tomato" = 4, "beet" = 4)
-	nutriment_amt = 200
-	bitesize = 25 // 200 nutrition, 8 bites
+	nutriment_amt = 20
+	bitesize = 2.5 // 200 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/beetsoup/Initialize()
 	. = ..()

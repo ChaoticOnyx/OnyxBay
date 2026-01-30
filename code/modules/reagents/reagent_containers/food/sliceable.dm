@@ -44,11 +44,11 @@
 	filling_color = "#fff700"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cheese" = 5)
-	nutriment_amt = 200
+	nutriment_amt = 20
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 50
+		/datum/reagent/nutriment/protein/cooked = 5
 		)
-	bitesize = 25 // 325 nutrition, 10 bites
+	bitesize = 2.5 // 325 nutrition, 10 bites
 
 /obj/item/reagent_containers/food/cheesewedge
 	name = "Cheese wedge"
@@ -57,11 +57,11 @@
 	filling_color = "#fff700"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cheese" = 5)
-	nutriment_amt = 40
+	nutriment_amt = 4
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 10
+		/datum/reagent/nutriment/protein/cooked = 1
 		)
-	bitesize = 25 // 65 nutrition, 2 bites
+	bitesize = 2.5 // 65 nutrition, 2 bites
 
 ////////////////////////
 /obj/item/reagent_containers/food/sliceable/flatdough
@@ -73,12 +73,12 @@
 	slice_path = /obj/item/reagent_containers/food/doughslice
 	slices_num = 3
 	center_of_mass = "x=16;y=16"
-	nutriment_amt = 120
+	nutriment_amt = 12
 	nutriment_desc = list("dough" = 1)
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten = 30
+		/datum/reagent/nutriment/protein/gluten = 3
 		)
-	bitesize = 25 // 157.5 nutrition, 6 bites
+	bitesize = 2.5 // 157.5 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/sliceable/flatdough/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/reagent_containers/food/faggot) || istype(W, /obj/item/reagent_containers/food/rawfaggot))
@@ -98,11 +98,11 @@
 	slices_num = 1
 	center_of_mass = "x=17;y=19"
 	nutriment_desc = list("dough" = 1)
-	nutriment_amt = 40
+	nutriment_amt = 4
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten = 10
+		/datum/reagent/nutriment/protein/gluten = 1
 		)
-	bitesize = 25 // 52.5 nutrition, 2 bites
+	bitesize = 2.5 // 52.5 nutrition, 2 bites
 
 ////////////////////////
 /obj/item/reagent_containers/food/sliceable/salami
@@ -114,14 +114,14 @@
 	slice_path = /obj/item/reagent_containers/food/slice/salami
 	slices_num = 6
 	nutriment_desc = list("salami" = 5)
-	nutriment_amt = 25
+	nutriment_amt = 2.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 75,
-		/datum/reagent/salt = 5,
-		/datum/reagent/blackpepper = 5,
-		/datum/reagent/nutriment/garlicsauce = 15
+		/datum/reagent/nutriment/protein/cooked = 7.5,
+		/datum/reagent/salt = 1,
+		/datum/reagent/blackpepper = 1,
+		/datum/reagent/nutriment/garlicsauce = 1.5
 		)
-	bitesize = 12.5 // 257.5 nutrition, 10 bites
+	bitesize = 1.25 // 257.5 nutrition, 10 bites
 
 /obj/item/reagent_containers/food/slice/salami
 	name = "Salami's slice"
@@ -133,12 +133,12 @@
 	nutriment_desc = list("salami" = 5)
 	nutriment_amt = 5
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 15,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
 		/datum/reagent/salt = 1,
 		/datum/reagent/blackpepper = 1,
-		/datum/reagent/nutriment/garlicsauce = 3
+		/datum/reagent/nutriment/garlicsauce = 2
 		)
-	bitesize = 12.5 // 51.5 nutrition, 2 bites
+	bitesize = 1.25 // 51.5 nutrition, 2 bites
 
 /obj/item/reagent_containers/food/slice/salami/filled
 	filled = TRUE
@@ -152,11 +152,11 @@
 	center_of_mass = "x=15;y=15"
 	slice_path = /obj/item/reagent_containers/food/slice/sushi
 	nutriment_desc = list("sushi" = 5)
-	nutriment_amt = 180
+	nutriment_amt = 18
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 120
+		/datum/reagent/nutriment/protein/cooked = 12
 		)
-	bitesize = 30 // 480 nutrition, 10 bites
+	bitesize = 3 // 480 nutrition, 10 bites
 
 /obj/item/reagent_containers/food/slice/sushi
 	name = "Sushi's slice"
@@ -165,11 +165,11 @@
 	center_of_mass = "x=15;y=15"
 	whole_path = /obj/item/reagent_containers/food/sliceable/sushi
 	nutriment_desc = list("sushi" = 5)
-	nutriment_amt = 35
+	nutriment_amt = 3.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 20
+		/datum/reagent/nutriment/protein/cooked = 2
 		)
-	bitesize = 60 // 80 nutrition, 1 bite
+	bitesize = 6 // 80 nutrition, 1 bite
 
 /obj/item/reagent_containers/food/slice/sushi/filled
 	filled = TRUE
@@ -184,11 +184,11 @@
 	filling_color = "#ffe396"
 	center_of_mass = "x=16;y=9"
 	nutriment_desc = list("bread" = 3)
-	nutriment_amt = 360
+	nutriment_amt = 36
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90
+		/datum/reagent/nutriment/protein/gluten/cooked = 9
 		)
-	bitesize = 25 // 585 nutrition, 23 bites
+	bitesize = 2.5 // 585 nutrition, 23 bites
 
 /obj/item/reagent_containers/food/slice/bread
 	name = "Bread slice"
@@ -199,11 +199,11 @@
 	center_of_mass = "x=16;y=4"
 	whole_path = /obj/item/reagent_containers/food/sliceable/bread
 	nutriment_desc = list("bread" = 3)
-	nutriment_amt = 36
+	nutriment_amt = 3.6
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 9
+		/datum/reagent/nutriment/protein/gluten/cooked = 1
 		)
-	bitesize = 25 // 58.5 nutrition, 2 bites
+	bitesize = 2.5 // 58.5 nutrition, 2 bites
 
 /obj/item/reagent_containers/food/slice/bread/filled
 	filled = TRUE
@@ -218,12 +218,12 @@
 	filling_color = "#ff7575"
 	center_of_mass = "x=19;y=9"
 	nutriment_desc = list("bread" = 3, "meat" = 3, "cheese" = 2)
-	nutriment_amt = 480
+	nutriment_amt = 48
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 480,
-		/datum/reagent/nutriment/protein/gluten/cooked = 90
+		/datum/reagent/nutriment/protein/cooked = 48,
+		/datum/reagent/nutriment/protein/gluten/cooked = 9
 		)
-	bitesize = 35 // 1905 nutrition, 30 bites
+	bitesize = 3.5 // 1905 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/meatbread
 	name = "meatbread slice"
@@ -234,12 +234,12 @@
 	center_of_mass = "x=16;y=13"
 	whole_path = /obj/item/reagent_containers/food/sliceable/meatbread
 	nutriment_desc = list("bread" = 3, "meat" = 3, "cheese" = 2)
-	nutriment_amt = 48
+	nutriment_amt = 5
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 48,
-		/datum/reagent/nutriment/protein/gluten/cooked = 9
+		/datum/reagent/nutriment/protein/cooked = 5,
+		/datum/reagent/nutriment/protein/gluten/cooked = 1
 		)
-	bitesize = 35 // 190.5 nutrition, 3 bites
+	bitesize = 3.5 // 190.5 nutrition, 3 bites
 
 /obj/item/reagent_containers/food/slice/meatbread/filled
 	filled = TRUE
@@ -254,12 +254,12 @@
 	filling_color = "#8aff75"
 	center_of_mass = "x=16;y=9"
 	nutriment_desc = list("bread" = 3, "heresy" = 3, "cheese" = 2)
-	nutriment_amt = 480
+	nutriment_amt = 48
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 480,
-		/datum/reagent/nutriment/protein/gluten/cooked = 90
+		/datum/reagent/nutriment/protein/cooked = 48,
+		/datum/reagent/nutriment/protein/gluten/cooked = 9
 		)
-	bitesize = 35 // 1905 nutrition, 30 bites
+	bitesize = 3.5 // 1905 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/xenomeatbread
 	name = "xenomeatbread slice"
@@ -270,12 +270,12 @@
 	center_of_mass = "x=16;y=13"
 	whole_path = /obj/item/reagent_containers/food/sliceable/xenomeatbread
 	nutriment_desc = list("bread" = 3, "heresy" = 3, "cheese" = 2)
-	nutriment_amt = 48
+	nutriment_amt = 5
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 48,
-		/datum/reagent/nutriment/protein/gluten/cooked = 9
+		/datum/reagent/nutriment/protein/cooked = 5,
+		/datum/reagent/nutriment/protein/gluten/cooked = 1
 		)
-	bitesize = 35 // 190.5 nutrition, 3 bites
+	bitesize = 3.5 // 190.5 nutrition, 3 bites
 
 /obj/item/reagent_containers/food/slice/xenomeatbread/filled
 	filled = TRUE
@@ -290,12 +290,12 @@
 	filling_color = "#ede5ad"
 	center_of_mass = "x=16;y=9"
 	nutriment_desc = list("bread" = 3, "banana" = 3)
-	nutriment_amt = 610
+	nutriment_amt = 61
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/sugar = 50
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/sugar = 5
 		)
-	bitesize = 30 // 1085 nutrition, 25 bites
+	bitesize = 3 // 1085 nutrition, 25 bites
 
 /obj/item/reagent_containers/food/slice/bananabread
 	name = "Banana bread slice"
@@ -306,12 +306,12 @@
 	center_of_mass = "x=16;y=8"
 	whole_path = /obj/item/reagent_containers/food/sliceable/bananabread
 	nutriment_desc = list("bread" = 3, "banana" = 3)
-	nutriment_amt = 61
+	nutriment_amt = 6
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 9,
-		/datum/reagent/sugar = 5
+		/datum/reagent/nutriment/protein/gluten/cooked = 1,
+		/datum/reagent/sugar = 0.5
 		)
-	bitesize = 30 // 108.5 nutrition, 3 bites
+	bitesize = 3 // 108.5 nutrition, 3 bites
 
 /obj/item/reagent_containers/food/slice/bananabread/filled
 	filled = TRUE
@@ -326,11 +326,11 @@
 	filling_color = "#f7ffe0"
 	center_of_mass = "x=16;y=9"
 	nutriment_desc = list("bread" = 3, "tofu" = 3, "cheese" = 2)
-	nutriment_amt = 700
+	nutriment_amt = 70
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 12
 		)
-	bitesize = 30 // 1000 nutrition, 28 bites
+	bitesize = 3 // 1000 nutrition, 28 bites
 
 /obj/item/reagent_containers/food/slice/tofubread
 	name = "Tofubread slice"
@@ -341,11 +341,11 @@
 	center_of_mass = "x=16;y=13"
 	whole_path = /obj/item/reagent_containers/food/sliceable/tofubread
 	nutriment_desc = list("bread" = 3, "tofu" = 3, "cheese" = 2)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 12
+		/datum/reagent/nutriment/protein/gluten/cooked = 1
 		)
-	bitesize = 30 // 100 nutrition, 3 bites
+	bitesize = 3 // 100 nutrition, 3 bites
 
 /obj/item/reagent_containers/food/slice/tofubread/filled
 	filled = TRUE
@@ -360,11 +360,11 @@
 	filling_color = "#fff896"
 	center_of_mass = "x=16;y=9"
 	nutriment_desc = list("bread" = 3, "cheese" = 3, "cream" = 2)
-	nutriment_amt = 700
+	nutriment_amt = 70
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 12
 		)
-	bitesize = 30 // 1000 nutrition, 28 bites
+	bitesize = 3 // 1000 nutrition, 28 bites
 
 /obj/item/reagent_containers/food/slice/creamcheesebread
 	name = "Cream Cheese Bread slice"
@@ -376,11 +376,11 @@
 	center_of_mass = "x=16;y=13"
 	whole_path = /obj/item/reagent_containers/food/sliceable/creamcheesebread
 	nutriment_desc = list("bread" = 3, "cheese" = 3, "cream" = 2)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 12
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.2
 		)
-	bitesize = 30 // 100 nutrition, 3 bites
+	bitesize = 3 // 100 nutrition, 3 bites
 
 /obj/item/reagent_containers/food/slice/creamcheesebread/filled
 	filled = TRUE
@@ -395,14 +395,14 @@
 	filling_color = "#ffd675"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "sweetness" = 10, "carrot" = 15)
-	nutriment_amt = 420
+	nutriment_amt = 42
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/sugar = 120,
-		/datum/reagent/imidazoline = 12
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/sugar = 12,
+		/datum/reagent/imidazoline = 1.2
 		)
-	bitesize = 25 // 1470 nutrition, 30 bites
+	bitesize = 2.5 // 1470 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/carrotcake
 	name = "Carrot Cake slice"
@@ -413,14 +413,14 @@
 	center_of_mass = "x=16;y=14"
 	whole_path = /obj/item/reagent_containers/food/sliceable/carrotcake
 	nutriment_desc = list("cake" = 10, "carrot" = 10)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/sugar = 20,
-		/datum/reagent/imidazoline = 2
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/sugar = 2,
+		/datum/reagent/imidazoline = 1
 		)
-	bitesize = 25 // 147 nutrition, 5 bites
+	bitesize = 2.5 // 147 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/slice/carrotcake/filled
 	filled = TRUE
@@ -435,13 +435,13 @@
 	filling_color = "#e6aedb"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "slime" = 10)
-	nutriment_amt = 510
+	nutriment_amt = 51
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/sugar = 120,
-		/datum/reagent/alkysine = 12
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/sugar = 12,
+		/datum/reagent/alkysine = 1.2
 		)
-	bitesize = 25 // 1335 nutrition, 30 bites
+	bitesize = 2.5 // 1335 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/braincake
 	name = "Brain Cake slice"
@@ -454,11 +454,11 @@
 	nutriment_desc = list("cake" = 10, "slime" = 10)
 	nutriment_amt = 85
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/sugar = 20,
-		/datum/reagent/alkysine = 2
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/sugar = 2,
+		/datum/reagent/alkysine = 1
 		)
-	bitesize = 25 // 133.5 nutrition, 5 bites
+	bitesize = 2.5 // 133.5 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/slice/braincake/filled
 	filled = TRUE
@@ -473,13 +473,13 @@
 	filling_color = "#faf7af"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "cheese" = 10)
-	nutriment_amt = 390
+	nutriment_amt = 39
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 120,
-		/datum/reagent/sugar = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 12,
+		/datum/reagent/sugar = 12
 		)
-	bitesize = 25 // 1515 nutrition, 30 bites
+	bitesize = 2.5 // 1515 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/cheesecake
 	name = "Cheese Cake slice"
@@ -490,13 +490,13 @@
 	center_of_mass = "x=16;y=14"
 	whole_path = /obj/item/reagent_containers/food/sliceable/cheesecake
 	nutriment_desc = list("cake" = 10, "cheese" = 10)
-	nutriment_amt = 65
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 20,
-		/datum/reagent/sugar = 20
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 2,
+		/datum/reagent/sugar = 2
 		)
-	bitesize = 25 // 151.5 nutrition, 5 bites
+	bitesize = 2.5 // 151.5 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/slice/cheesecake/filled
 	filled = TRUE
@@ -511,13 +511,13 @@
 	filling_color = "#f7edd5"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10)
-	nutriment_amt = 420
+	nutriment_amt = 42
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/sugar = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/sugar = 12
 		)
-	bitesize = 25 // 1470 nutrition, 29 bites
+	bitesize = 2.5 // 1470 nutrition, 29 bites
 
 /obj/item/reagent_containers/food/slice/plaincake
 	name = "Vanilla Cake slice"
@@ -527,13 +527,13 @@
 	filling_color = "#f7edd5"
 	center_of_mass = "x=16;y=14"
 	whole_path = /obj/item/reagent_containers/food/sliceable/plaincake
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/sugar = 20
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/sugar = 2
 		)
-	bitesize = 25 // 147 nutrition, 5 bites
+	bitesize = 2.5 // 147 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/slice/plaincake/filled
 	filled = TRUE
@@ -548,13 +548,13 @@
 	filling_color = "#fada8e"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "orange" = 10)
-	nutriment_amt = 420
+	nutriment_amt = 42
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/sugar = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/sugar = 12
 		)
-	bitesize = 25 // 1470 nutrition, 30 bites
+	bitesize = 2.5 // 1470 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/orangecake
 	name = "Orange Cake slice"
@@ -565,13 +565,13 @@
 	center_of_mass = "x=16;y=14"
 	whole_path = /obj/item/reagent_containers/food/sliceable/orangecake
 	nutriment_desc = list("cake" = 10, "orange" = 10)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/sugar = 20
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/sugar = 2
 		)
-	bitesize = 25 // 147 nutrition, 30 bites
+	bitesize = 2.5 // 147 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/orangecake/filled
 	filled = TRUE
@@ -586,13 +586,13 @@
 	filling_color = "#cbfa8e"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "lime" = 10)
-	nutriment_amt = 420
+	nutriment_amt = 42
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/sugar = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/sugar = 12
 		)
-	bitesize = 25 // 1470 nutrition, 30 bites
+	bitesize = 2.5 // 1470 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/limecake
 	name = "Lime Cake slice"
@@ -603,13 +603,13 @@
 	center_of_mass = "x=16;y=14"
 	whole_path = /obj/item/reagent_containers/food/sliceable/limecake
 	nutriment_desc = list("cake" = 10, "lime" = 10)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/sugar = 20
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/sugar = 2
 		)
-	bitesize = 25 // 147 nutrition, 30 bites
+	bitesize = 2.5 // 147 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/limecake/filled
 	filled = TRUE
@@ -624,13 +624,13 @@
 	filling_color = "#fafa8e"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "lemon" = 10)
-	nutriment_amt = 420
+	nutriment_amt = 42
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/sugar = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/sugar = 12
 		)
-	bitesize = 25 // 1470 nutrition, 30 bites
+	bitesize = 2.5 // 1470 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/lemoncake
 	name = "Lemon Cake slice"
@@ -641,13 +641,13 @@
 	center_of_mass = "x=16;y=14"
 	whole_path = /obj/item/reagent_containers/food/sliceable/lemoncake
 	nutriment_desc = list("cake" = 10, "lemon" = 10)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/sugar = 20
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/sugar = 2
 		)
-	bitesize = 25 // 147 nutrition, 30 bites
+	bitesize = 2.5 // 147 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/lemoncake/filled
 	filled = TRUE
@@ -662,14 +662,14 @@
 	filling_color = "#805930"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "chocolate" = 15)
-	nutriment_amt = 360
+	nutriment_amt = 36
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/sugar = 120,
-		/datum/reagent/nutriment/coco = 60
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/sugar = 12,
+		/datum/reagent/nutriment/coco = 6
 		)
-	bitesize = 25 // 1560 nutrition, 30 bites
+	bitesize = 2.5 // 1560 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/chocolatecake
 	name = "Chocolate Cake slice"
@@ -680,14 +680,14 @@
 	center_of_mass = "x=16;y=14"
 	whole_path = /obj/item/reagent_containers/food/sliceable/chocolatecake
 	nutriment_desc = list("cake" = 10, "chocolate" = 15)
-	nutriment_amt = 36
+	nutriment_amt = 4
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/sugar = 20,
-		/datum/reagent/nutriment/coco = 10
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/sugar = 2,
+		/datum/reagent/nutriment/coco = 1
 		)
-	bitesize = 25 // 156 nutrition, 30 bites
+	bitesize = 2.5 // 156 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/chocolatecake/filled
 	filled = TRUE
@@ -702,13 +702,13 @@
 	filling_color = "#D3D3D3"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "goo" = 15)
-	nutriment_amt = 420
+	nutriment_amt = 42
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/sugar = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/sugar = 12
 		)
-	bitesize = 25 // 1470 nutrition, 30 bites
+	bitesize = 2.5 // 1470 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/metroidcake
 	name = "Metroid Cake slice"
@@ -719,13 +719,13 @@
 	center_of_mass = "x=16;y=14"
 	whole_path = /obj/item/reagent_containers/food/sliceable/metroidcake
 	nutriment_desc = list("cake" = 10, "goo" = 15)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/sugar = 20
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/sugar = 2
 		)
-	bitesize = 25 // 147 nutrition, 30 bites
+	bitesize = 2.5 // 147 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/metroidcake/filled
 	filled = TRUE
@@ -740,13 +740,13 @@
 	filling_color = "#ffd6d6"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "lie" = 1)
-	nutriment_amt = 420
+	nutriment_amt = 42
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/nutriment/sprinkles = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/nutriment/sprinkles = 12
 		)
-	bitesize = 25 // 1470 nutrition, 30 bites
+	bitesize = 2.5 // 1470 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/birthdaycake
 	name = "Birthday Cake slice"
@@ -757,13 +757,13 @@
 	center_of_mass = "x=16;y=14"
 	whole_path = /obj/item/reagent_containers/food/sliceable/birthdaycake
 	nutriment_desc = list("cake" = 10, "lie" = 1)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/nutriment/sprinkles = 20
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/nutriment/sprinkles = 2
 		)
-	bitesize = 25 // 147 nutrition, 30 bites
+	bitesize = 2.5 // 147 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/birthdaycake/filled
 	filled = TRUE
@@ -787,13 +787,13 @@
 	filling_color = "#ebf5b8"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "apple" = 10)
-	nutriment_amt = 420
+	nutriment_amt = 42
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/sugar = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/sugar = 12
 		)
-	bitesize = 25 // 1470 nutrition, 30 bites
+	bitesize = 2.5 // 1470 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/applecake
 	name = "Apple Cake slice"
@@ -804,13 +804,13 @@
 	center_of_mass = "x=16;y=14"
 	whole_path = /obj/item/reagent_containers/food/sliceable/applecake
 	nutriment_desc = list("cake" = 10, "apple" = 10)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/sugar = 20
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/sugar = 2
 		)
-	bitesize = 25 // 147 nutrition, 30 bites
+	bitesize = 2.5 // 147 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/applecake/filled
 	filled = TRUE
@@ -825,13 +825,13 @@
 	filling_color = "#f5b951"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("pie" = 5, "cream" = 5, "pumpkin" = 5)
-	nutriment_amt = 420
+	nutriment_amt = 42
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/sugar = 120
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/sugar = 12
 		)
-	bitesize = 25 // 1470 nutrition, 30 bites
+	bitesize = 2.5 // 1470 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/pumpkinpie
 	name = "Pumpkin Pie slice"
@@ -842,13 +842,13 @@
 	center_of_mass = "x=16;y=12"
 	whole_path = /obj/item/reagent_containers/food/sliceable/pumpkinpie
 	nutriment_desc = list("pie" = 5, "cream" = 5, "pumpkin" = 5)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/sugar = 20
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/sugar = 2
 		)
-	bitesize = 25 // 147 nutrition, 30 bites
+	bitesize = 2.5 // 147 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/pumpkinpie/filled
 	filled = TRUE
@@ -890,14 +890,14 @@
 	slices_num = 6
 	center_of_mass = "x=15;y=15"
 	nutriment_desc = list("cake" = 5, "chocolate" = 5, "cherry" = 5)
-	nutriment_amt = 360
+	nutriment_amt = 36
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/sugar = 120,
-		/datum/reagent/nutriment/coco = 60
+		/datum/reagent/nutriment/protein/gluten/cooked = 9,
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/sugar = 12,
+		/datum/reagent/nutriment/coco = 6
 		)
-	bitesize = 25 // 1560 nutrition, 30 bites
+	bitesize = 2.5 // 1560 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/choccherrycake
 	name = "Chocolate - cherry cake's slice"
@@ -907,14 +907,14 @@
 	center_of_mass = "x=15;y=15"
 	whole_path = /obj/item/reagent_containers/food/sliceable/choccherrycake
 	nutriment_desc = list("cake" = 5, "chocolate" = 5, "cherry" = 5)
-	nutriment_amt = 60
+	nutriment_amt = 6
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
-		/datum/reagent/sugar = 20,
-		/datum/reagent/nutriment/coco = 10
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 1.5,
+		/datum/reagent/sugar = 2,
+		/datum/reagent/nutriment/coco = 1
 		)
-	bitesize = 25 // 156 nutrition, 30 bites
+	bitesize = 2.5 // 156 nutrition, 30 bites
 
 /obj/item/reagent_containers/food/slice/choccherrycake/filled
 	filled = TRUE
@@ -936,12 +936,12 @@
 	slices_num = 8
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("pizza crust" = 1, "tomato" = 1, "cheese" = 2)
-	nutriment_amt = 570
+	nutriment_amt = 57
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 130,
-		/datum/reagent/drink/juice/tomato = 100
+		/datum/reagent/nutriment/protein/gluten/cooked = 13,
+		/datum/reagent/drink/juice/tomato = 10
 		)
-	bitesize = 25 // 945 nutrition (+312 with rims), 32 bites
+	bitesize = 2.5 // 945 nutrition (+312 with rims), 32 bites
 
 /obj/item/reagent_containers/food/slice/margherita
 	name = "Margherita slice"
@@ -951,12 +951,12 @@
 	center_of_mass = "x=18;y=13"
 	whole_path = /obj/item/reagent_containers/food/sliceable/pizza/margherita
 	nutriment_desc = list("pizza crust" = 1, "tomato" = 1, "cheese" = 2)
-	nutriment_amt = 71.25
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 16.25,
-		/datum/reagent/drink/juice/tomato = 12.5
+		/datum/reagent/nutriment/protein/gluten/cooked = 2,
+		/datum/reagent/drink/juice/tomato = 1.25
 		)
-	bitesize = 25 // 119 nutrition (+39 with a rim), 4 bites
+	bitesize = 2.5 // 119 nutrition (+39 with a rim), 4 bites
 	trash = /obj/item/reagent_containers/food/pizzarim
 
 /obj/item/reagent_containers/food/slice/margherita/filled
@@ -971,13 +971,13 @@
 	slices_num = 8
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("pizza crust" = 1, "tomato" = 1, "cheese" = 2, "meat" = 2)
-	nutriment_amt = 560
+	nutriment_amt = 56
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 120,
-		/datum/reagent/nutriment/protein/gluten/cooked = 150,
-		/datum/reagent/drink/juice/tomato = 50
+		/datum/reagent/nutriment/protein/gluten/cooked = 12,
+		/datum/reagent/nutriment/protein/gluten/cooked = 15,
+		/datum/reagent/drink/juice/tomato = 5
 		)
-	bitesize = 25 // 1260 nutrition (+312 with rims), 36 bites
+	bitesize = 2.5 // 1260 nutrition (+312 with rims), 36 bites
 
 /obj/item/reagent_containers/food/slice/meatpizza
 	name = "Meatpizza slice"
@@ -987,13 +987,13 @@
 	center_of_mass = "x=18;y=13"
 	whole_path = /obj/item/reagent_containers/food/sliceable/pizza/meatpizza
 	nutriment_desc = list("pizza crust" = 1, "tomato" = 1, "cheese" = 2, "meat" = 2)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 18.75,
-		/datum/reagent/drink/juice/tomato = 6.25
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/cooked = 2,
+		/datum/reagent/drink/juice/tomato = 0.6
 		)
-	bitesize = 25 // 157.5 nutrition (+39 with a rim), 5 bites
+	bitesize = 2.5 // 157.5 nutrition (+39 with a rim), 5 bites
 	trash = /obj/item/reagent_containers/food/pizzarim
 
 /obj/item/reagent_containers/food/slice/meatpizza/filled
@@ -1008,13 +1008,13 @@
 	slices_num = 8
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("pizza crust" = 1, "tomato" = 1, "cheese" = 2, "mushroom" = 2)
-	nutriment_amt = 560
+	nutriment_amt = 56
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 120,
-		/datum/reagent/nutriment/protein/fungal = 150,
-		/datum/reagent/drink/juice/tomato = 50
+		/datum/reagent/nutriment/protein/gluten/cooked = 12,
+		/datum/reagent/nutriment/protein/fungal = 15,
+		/datum/reagent/drink/juice/tomato = 5
 		)
-	bitesize = 25 // 1072.5 nutrition (+312 with rims), 36 bites
+	bitesize = 2.5 // 1072.5 nutrition (+312 with rims), 36 bites
 
 /obj/item/reagent_containers/food/slice/mushroompizza
 	name = "Mushroompizza slice"
@@ -1024,13 +1024,13 @@
 	center_of_mass = "x=18;y=13"
 	whole_path = /obj/item/reagent_containers/food/sliceable/pizza/mushroompizza
 	nutriment_desc = list("pizza crust" = 1, "tomato" = 1, "cheese" = 2, "mushroom" = 2)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/fungal = 18.75,
-		/datum/reagent/drink/juice/tomato = 6.25
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/nutriment/protein/fungal = 2,
+		/datum/reagent/drink/juice/tomato = 0.6
 		)
-	bitesize = 25 // 157.5 nutrition (+39 with a rim), 5 bites
+	bitesize = 2.5 // 157.5 nutrition (+39 with a rim), 5 bites
 	trash = /obj/item/reagent_containers/food/pizzarim
 
 /obj/item/reagent_containers/food/slice/mushroompizza/filled
@@ -1045,14 +1045,14 @@
 	slices_num = 8
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("pizza crust" = 1, "tomato" = 1, "cheese" = 2, "eggplant" = 1, "carrot" = 1, "corn" = 1)
-	nutriment_amt = 560
+	nutriment_amt = 56
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 120,
-		/datum/reagent/nutriment/protein/fungal = 150,
-		/datum/reagent/drink/juice/tomato = 50,
-		/datum/reagent/imidazoline = 12
+		/datum/reagent/nutriment/protein/gluten/cooked = 12,
+		/datum/reagent/nutriment/protein/fungal = 15,
+		/datum/reagent/drink/juice/tomato = 5,
+		/datum/reagent/imidazoline = 1.2
 		)
-	bitesize = 25
+	bitesize = 2.5
 
 /obj/item/reagent_containers/food/slice/vegetablepizza
 	name = "Vegetable pizza slice"
@@ -1062,13 +1062,13 @@
 	center_of_mass = "x=18;y=13"
 	whole_path = /obj/item/reagent_containers/food/sliceable/pizza/vegetablepizza
 	nutriment_desc = list("pizza crust" = 1, "tomato" = 1, "cheese" = 2, "eggplant" = 1, "carrot" = 1, "corn" = 1)
-	nutriment_amt = 560
+	nutriment_amt = 56
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/drink/juice/tomato = 6.25,
-		/datum/reagent/imidazoline = 1.5
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
+		/datum/reagent/drink/juice/tomato = 0.6,
+		/datum/reagent/imidazoline = 1
 		)
-	bitesize = 25
+	bitesize = 2.5
 	trash = /obj/item/reagent_containers/food/pizzarim
 
 /obj/item/reagent_containers/food/slice/vegetablepizza/filled

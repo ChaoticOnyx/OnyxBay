@@ -33,7 +33,7 @@
 	nutriment_amt = 0
 	volume = 0.1 LITER
 	static_volume = TRUE
-	bitesize = 30
+	bitesize = 3
 	w_class = ITEM_SIZE_TINY
 
 /obj/item/reagent_containers/food/ingested_chunk/proc/split_from(obj/item/reagent_containers/food/RC, mob/M)
@@ -61,11 +61,11 @@
 	filling_color = "#211f02"
 	center_of_mass = "x=16;y=12"
 	startswith = list(
-		/datum/reagent/toxin = 5,
-		/datum/reagent/nutriment/oil/burned = 5,
-		/datum/reagent/carbon = 10
+		/datum/reagent/toxin = 0.5,
+		/datum/reagent/nutriment/oil/burned = 0.5,
+		/datum/reagent/carbon = 1
 		)
-	bitesize = 5 // 15 nutrition, 4 bites
+	bitesize = 0.5 // 15 nutrition, 4 bites
 
 // MRE
 /obj/item/reagent_containers/food/liquidfood
@@ -76,11 +76,11 @@
 	filling_color = "#a8a8a8"
 	center_of_mass = "x=16;y=15"
 	nutriment_desc = list("wet dust" = 1)
-	nutriment_amt = 165
+	nutriment_amt = 16
 	startswith = list(
-		/datum/reagent/iron = 5,
-		/datum/reagent/nutriment/glucose = 30)
-	bitesize = 25 // 315 nutrition, 8 bites
+		/datum/reagent/iron = 0.5,
+		/datum/reagent/nutriment/glucose = 3)
+	bitesize = 2.5 // 315 nutrition, 8 bites
 
 // Meaty stuff
 /obj/item/reagent_containers/food/meatsteak
@@ -91,11 +91,11 @@
 	filling_color = "#7a3d11"
 	center_of_mass = "x=16;y=13"
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 148,
+		/datum/reagent/nutriment/protein/cooked = 15,
 		/datum/reagent/salt = 1,
 		/datum/reagent/blackpepper = 1
 		)
-	bitesize = 25 // 370 nutrition, 6 bites
+	bitesize = 2.5 // 370 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/loadedsteak
 	name = "Loaded steak"
@@ -105,15 +105,15 @@
 	filling_color = "#7a3d11"
 	center_of_mass = "x=16;y=13"
 	nutriment_desc = list("onion" = 2, "mushrooms" = 2)
-	nutriment_amt = 15
+	nutriment_amt = 1.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 148,
+		/datum/reagent/nutriment/protein/cooked = 15,
 		/datum/reagent/salt = 1,
 		/datum/reagent/blackpepper = 1,
-		/datum/reagent/nutriment/protein/fungal = 35,
-		/datum/reagent/nutriment/garlicsauce = 10
+		/datum/reagent/nutriment/protein/fungal = 3.5,
+		/datum/reagent/nutriment/garlicsauce = 1
 		)
-	bitesize = 30 // 458.75 nutrition, 7 bites
+	bitesize = 3 // 458.75 nutrition, 7 bites
 
 /obj/item/reagent_containers/food/porkchop
 	name = "Pork chop"
@@ -123,11 +123,11 @@
 	filling_color = "#7a3d11"
 	center_of_mass = "x=16;y=13"
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 148,
+		/datum/reagent/nutriment/protein/cooked = 15,
 		/datum/reagent/salt = 1,
 		/datum/reagent/blackpepper = 1
 		)
-	bitesize = 25 // 370 nutrition, 6 bites
+	bitesize = 2.5 // 370 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/meatbun
 	name = "Meatbun"
@@ -135,13 +135,13 @@
 	icon_state = "meatbun"
 	center_of_mass = "x=15;y=15"
 	nutriment_desc = list("bread" = 2, "cabbage" = 1)
-	nutriment_amt = 180
+	nutriment_amt = 18
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/nutriment/protein/cooked = 25,
-		/datum/reagent/nutriment/soysauce = 5
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/nutriment/protein/cooked = 2.5,
+		/datum/reagent/nutriment/soysauce = 0.5
 		)
-	bitesize = 30 // 322.5 nutrition, 8 bites
+	bitesize = 3 // 322.5 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/wingfangchu
 	name = "Wing Fang Chu"
@@ -151,12 +151,12 @@
 	filling_color = "#43de18"
 	center_of_mass = "x=17;y=9"
 	nutriment_desc = list("alien wing wang" = 5)
-	nutriment_amt = 45
+	nutriment_amt = 4.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 100,
-		/datum/reagent/nutriment/soysauce = 5
+		/datum/reagent/nutriment/protein/cooked = 10,
+		/datum/reagent/nutriment/soysauce = 0.5
 		)
-	bitesize = 30 // 300 nutrition, 5 bites
+	bitesize = 3.0 // 300 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/meatkabob
 	name = "Meat-kabob"
@@ -166,9 +166,9 @@
 	filling_color = "#a85340"
 	center_of_mass = "x=17;y=15"
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 100
+		/datum/reagent/nutriment/protein/cooked = 10
 		)
-	bitesize = 20 // 250 nutrition, 5 bites
+	bitesize = 2 // 250 nutrition, 5 bites
 
 // Tofu
 /obj/item/reagent_containers/food/tofukabob
@@ -178,9 +178,9 @@
 	trash = /obj/item/stack/rods
 	filling_color = "#fffee0"
 	center_of_mass = "x=17;y=15"
-	nutriment_amt = 150
+	nutriment_amt = 15
 	nutriment_desc = list("tofu" = 2, "metal" = 1)
-	bitesize = 30 // 150 nutrition, 5 bites
+	bitesize = 3 // 150 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/stewedsoymeat
 	name = "Stewed Soy Meat"
@@ -189,8 +189,8 @@
 	trash = /obj/item/trash/dish/plate
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("soy" = 4, "tomato" = 4)
-	nutriment_amt = 225
-	bitesize = 30 // 225 nutrition, 8 bites
+	nutriment_amt = 22.5
+	bitesize = 3 // 225 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/tofurkey
 	name = "Tofurkey"
@@ -220,10 +220,10 @@
 	filling_color = "#ffdefe"
 	center_of_mass = "x=16;y=13"
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 65,
-		/datum/reagent/nutriment/protein/gluten/cooked = 15,
+		/datum/reagent/nutriment/protein/cooked = 6.5,
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.5,
 		)
-	bitesize = 20 // 200 nutrition, 4 bites
+	bitesize = 2 // 200 nutrition, 4 bites
 
 /obj/item/reagent_containers/food/fishandchips
 	name = "Fish and Chips"
@@ -232,12 +232,12 @@
 	filling_color = "#e3d796"
 	center_of_mass = "x=16;y=16"
 	nutriment_desc = list("fish" = 2, "chips" = 2)
-	nutriment_amt = 60
+	nutriment_amt = 6
 	startswith = list(
-		/datum/reagent/nutriment/protein = 110,
-		/datum/reagent/nutriment/oil = 30
+		/datum/reagent/nutriment/protein = 11,
+		/datum/reagent/nutriment/oil = 3
 		)
-	bitesize = 25 // 425 nutrition, 8 bites
+	bitesize = 2.5 // 425 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/cubancarp
 	name = "Cuban Carp"
@@ -247,13 +247,13 @@
 	filling_color = "#e9adff"
 	center_of_mass = "x=12;y=5"
 	nutriment_desc = list("fish" = 3, "toasted bread" = 2)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/nutriment/protein/cooked = 100,
-		/datum/reagent/capsaicin = 5
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/nutriment/protein/cooked = 10,
+		/datum/reagent/capsaicin = 0.5
 		)
-	bitesize = 30 // 445 nutrition, 9 bites
+	bitesize = 3 // 445 nutrition, 9 bites
 
 // Popcorn
 /obj/item/reagent_containers/food/popcorn
@@ -265,14 +265,14 @@
 	filling_color = "#fffad4"
 	center_of_mass = "x=16;y=8"
 	nutriment_desc = list("popcorn" = 3)
-	nutriment_amt = 110
+	nutriment_amt = 11
 	bitesize = 0.1
 
 	startswith = list(
-		/datum/reagent/salt = 10,
-		/datum/reagent/nutriment/oil = 30
+		/datum/reagent/salt = 1,
+		/datum/reagent/nutriment/oil = 3
 		)
-	bitesize = 7.5 // 200 nutrition, 20 bites
+	bitesize = 1 // 200 nutrition, 20 bites
 
 /obj/item/reagent_containers/food/popcorn/Initialize()
 	. = ..()
@@ -293,11 +293,11 @@
 	filling_color = "#4d2f5e"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("cheese" = 3, "eggplant" = 3)
-	nutriment_amt = 130
+	nutriment_amt = 13
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 20
+		/datum/reagent/nutriment/protein/cooked = 2
 		)
-	bitesize = 30 // 180 nutrition, 5 bites
+	bitesize = 3 // 180 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/loadedbakedpotato
 	name = "Loaded Baked Potato"
@@ -306,11 +306,11 @@
 	filling_color = "#9c7a68"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("baked potato" = 2, "cheese" = 2)
-	nutriment_amt = 115
+	nutriment_amt = 11
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 10
+		/datum/reagent/nutriment/protein/cooked = 1
 		)
-	bitesize = 25 // 140 nutrition, 5 bites
+	bitesize = 2.5 // 140 nutrition, 5 bites
 
 // Fries
 /obj/item/reagent_containers/food/fries
@@ -321,11 +321,11 @@
 	filling_color = "#eddd00"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("fresh fries" = 4)
-	nutriment_amt = 60
+	nutriment_amt = 6
 	startswith = list(
-		/datum/reagent/nutriment/oil = 30
+		/datum/reagent/nutriment/oil = 3
 		)
-	bitesize = 15 // 150 nutrition, 6 bites
+	bitesize = 1.5 // 150 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/cheesyfries
 	name = "Cheesy Fries"
@@ -335,12 +335,12 @@
 	filling_color = "#eddd00"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("fresh fries" = 4, "cheese" = 3)
-	nutriment_amt = 100
+	nutriment_amt = 10
 	startswith = list(
-		/datum/reagent/nutriment/oil = 30,
-		/datum/reagent/nutriment/protein/cooked = 10
+		/datum/reagent/nutriment/oil = 3,
+		/datum/reagent/nutriment/protein/cooked = 1
 		)
-	bitesize = 25 // 215 nutrition, 6 bites
+	bitesize = 2.5 // 215 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/onionrings
 	name = "Onion Rings"
@@ -350,12 +350,12 @@
 	filling_color = "#eddd00"
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("fried onions" = 3)
-	nutriment_amt = 75
+	nutriment_amt = 7.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten = 10,
-		/datum/reagent/nutriment/oil = 15
+		/datum/reagent/nutriment/protein/gluten = 1,
+		/datum/reagent/nutriment/oil = 1.5
 		)
-	bitesize = 25 // 145 nutrition, 4 bites
+	bitesize = 2.5 // 145 nutrition, 4 bites
 
 // Pelmeni
 /obj/item/reagent_containers/food/pelmeni
@@ -364,13 +364,13 @@
 	icon_state = "pelmeni"
 	filling_color = "#d9be29"
 	center_of_mass = "x=16;y=4"
-	nutriment_amt = 145
+	nutriment_amt = 15
 	nutriment_desc = list("raw pelmeni" = 1)
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten = 30,
-		/datum/reagent/nutriment/protein = 25
+		/datum/reagent/nutriment/protein/gluten = 3,
+		/datum/reagent/nutriment/protein = 2.5
 		)
-	bitesize = 25 // 282.5 nutrition, 8 bites
+	bitesize = 2.5 // 282.5 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/boiledpelmeni
 	name = "Boiled Pelmeni"
@@ -379,13 +379,13 @@
 	trash = /obj/item/trash/dish/bowl
 	filling_color = "#d9be29"
 	center_of_mass = "x=16;y=4"
-	nutriment_amt = 145
+	nutriment_amt = 15
 	nutriment_desc = list("pelmeni" = 1)
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/nutriment/protein/cooked = 25
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/nutriment/protein/cooked = 2.5
 		)
-	bitesize = 25 // 282.5 nutrition, 8 bites
+	bitesize = 2.5 // 282.5 nutrition, 8 bites
 
 // Noodles
 /obj/item/reagent_containers/food/boiledspagetti
@@ -396,11 +396,11 @@
 	filling_color = "#fcee81"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("noodles" = 2)
-	nutriment_amt = 40
+	nutriment_amt = 4
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 10
+		/datum/reagent/nutriment/protein/gluten/cooked = 1
 		)
-	bitesize = 12.5 // 65 nutrition, 4 bites
+	bitesize = 1.5 // 65 nutrition, 4 bites
 
 /obj/item/reagent_containers/food/pastatomato
 	name = "Spaghetti"
@@ -411,15 +411,15 @@
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("tomato" = 3, "noodles" = 3)
 	nutriment_amt = 6
-	startswith = list(/datum/reagent/drink/juice/tomato = 25)
+	startswith = list(/datum/reagent/drink/juice/tomato = 2.5)
 	bitesize = 4
 
-	nutriment_amt = 160
+	nutriment_amt = 16
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 10,
-		/datum/reagent/drink/juice/tomato = 30
+		/datum/reagent/nutriment/protein/gluten/cooked = 1,
+		/datum/reagent/drink/juice/tomato = 3
 		)
-	bitesize = 25 // 200 nutrition, 8 bites
+	bitesize = 2.5 // 200 nutrition, 8 bites
 
 /obj/item/reagent_containers/food/faggotspagetti
 	name = "Spaghetti & Faggots"
@@ -429,12 +429,12 @@
 	filling_color = "#de4545"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("noodles" = 4)
-	nutriment_amt = 60
+	nutriment_amt = 6
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 10,
-		/datum/reagent/nutriment/protein/cooked = 50
+		/datum/reagent/nutriment/protein/gluten/cooked = 1,
+		/datum/reagent/nutriment/protein/cooked = 5
 		)
-	bitesize = 20 // 210 nutrition, 6 bites
+	bitesize = 2 // 210 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/spesslaw
 	name = "Spesslaw"
@@ -443,12 +443,12 @@
 	filling_color = "#de4545"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("noodles" = 4)
-	nutriment_amt = 60
+	nutriment_amt = 6
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 10,
-		/datum/reagent/nutriment/protein/cooked = 100
+		/datum/reagent/nutriment/protein/gluten/cooked = 1,
+		/datum/reagent/nutriment/protein/cooked = 10
 		)
-	bitesize = 30 // 335 nutrition, 6 bites
+	bitesize = 3 // 335 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/beefnoodles
 	name = "Beef noodles"
@@ -478,9 +478,9 @@
 	nutriment_amt = 75
 	nutriment_desc = list("lasagna" = 3)
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 75,
-		/datum/reagent/nutriment/protein/gluten = 15)
-	bitesize = 30 // 300 nutrition, 6 bites
+		/datum/reagent/nutriment/protein/cooked = 7.5,
+		/datum/reagent/nutriment/protein/gluten = 1.5)
+	bitesize = 3 // 300 nutrition, 6 bites
 
 // Rice
 /obj/item/reagent_containers/food/boiledrice
@@ -491,8 +491,8 @@
 	filling_color = "#fffbdb"
 	center_of_mass = "x=17;y=11"
 	nutriment_desc = list("rice" = 2)
-	nutriment_amt = 125
-	bitesize = 25 // 125 nutrition, 5 bites
+	nutriment_amt = 12.5
+	bitesize = 2.5 // 125 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/ricepudding
 	name = "Rice Pudding"
@@ -502,11 +502,11 @@
 	filling_color = "#fffbdb"
 	center_of_mass = "x=17;y=11"
 	nutriment_desc = list("milk" = 2, "rice" = 2)
-	nutriment_amt = 125
+	nutriment_amt = 12.5
 	startswith = list(
-		/datum/reagent/drink/milk/cream = 25
+		/datum/reagent/drink/milk/cream = 2.5
 		)
-	bitesize = 30 // 162.5 nutrition, 5 bites
+	bitesize = 3 // 162.5 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/risotto
 	name = "Risotto"
@@ -514,12 +514,12 @@
 	icon_state = "risotto"
 	center_of_mass = "x=15;y=15"
 	nutriment_desc = list("rice" = 2)
-	nutriment_amt = 75
+	nutriment_amt = 7.5
 	startswith = list(
-		/datum/reagent/ethanol/wine = 25,
-		/datum/reagent/nutriment/protein/cooked = 10
+		/datum/reagent/ethanol/wine = 2.5,
+		/datum/reagent/nutriment/protein/cooked = 1
 		)
-	bitesize = 25 // 200 nutrition, 5 bites
+	bitesize = 2.5 // 200 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/ricewithmeat
 	name = "Rice with meat"
@@ -544,7 +544,7 @@
 	name = "Boiled metroid Core"
 	desc = "A boiled red thing."
 	icon_state = "boiledrorocore"
-	startswith = list(/datum/reagent/metroidjelly = 10)
+	startswith = list(/datum/reagent/metroidjelly = 1)
 	bitesize = 5
 
 /obj/item/reagent_containers/food/plumphelmetbiscuit
@@ -554,8 +554,8 @@
 	filling_color = "#cfb4c4"
 	center_of_mass = "x=16;y=13"
 	nutriment_desc = list("heartiness" = 2, "mushroom" = 4)
-	nutriment_amt = 125
-	bitesize = 30 // 125+ nutrition, 5+ bites
+	nutriment_amt = 12.5
+	bitesize = 3 // 125+ nutrition, 5+ bites
 
 /obj/item/reagent_containers/food/plumphelmetbiscuit/Initialize()
 	. = ..()
@@ -564,29 +564,29 @@
 		if(100)
 			name = "Planepacked Pie"
 			desc = "This is a plump helmet biscuit. All craftsdwarfship is of the highest quality. It is encrusted with Limestone, Gypsum, Native platinum, Magnetite, Limonite and Malachite, studded with Pig iron, decorated with cave lobster shell and dog leather and encircled with bands of Limestone, Gypsum, Magnetite, Native gold, Malachite, Limonite and Oak. This object is adorned with hanging rings of Limestone, Gypsum, Native platinum, Magnetite and Limonite and menaces with spikes of Limestone, Gypsum, Magnetite, Limonite, Malachite, Orthoclase, Steel and Brown jasper. On the item is an image of Fok'Byiond the Invisible virology airlock in Limestone."
-			reagents.add_reagent(/datum/reagent/adminordrazine, 10)
+			reagents.add_reagent(/datum/reagent/adminordrazine, 1)
 		if(97 to 99)
 			name = "¤plump helmet biscuit¤"
 			desc = "Microwave is taken by a fey mood! It has cooked a masterful plump helmet biscuit!"
-			reagents.add_reagent(/datum/reagent/tricordrazine, 15)
-			reagents.add_reagent(/datum/reagent/drink/doctor_delight, 30)
+			reagents.add_reagent(/datum/reagent/tricordrazine, 1.5)
+			reagents.add_reagent(/datum/reagent/drink/doctor_delight, 3)
 		if(91 to 96)
 			name = "≡plump helmet biscuit≡"
 			desc = "It's an exceptional plump helmet biscuit. I bet you love stuff made out of plump helmets!"
-			reagents.add_reagent(/datum/reagent/tricordrazine, 15)
-			reagents.add_reagent(/datum/reagent/drink/doctor_delight, 15)
+			reagents.add_reagent(/datum/reagent/tricordrazine, 1.5)
+			reagents.add_reagent(/datum/reagent/drink/doctor_delight, 1.5)
 		if(81 to 90)
 			name = "*plump helmet biscuit*"
 			desc = "It's a superior quality plump helmet biscuit. I bet you love stuff made out of plump helmets!"
-			reagents.add_reagent(/datum/reagent/tricordrazine, 15)
+			reagents.add_reagent(/datum/reagent/tricordrazine, 1.5)
 		if(66 to 80)
 			name = "+plump helmet biscuit+"
 			desc = "It's a finely-cooked plump helmet biscuit. I bet you love stuff made out of plump helmets!"
-			reagents.add_reagent(/datum/reagent/tricordrazine, 10)
+			reagents.add_reagent(/datum/reagent/tricordrazine, 1)
 		if(46 to 65)
 			name = "-plump helmet biscuit-"
 			desc = "It's a well-cooked plump helmet biscuit. I bet you love stuff made out of plump helmets!"
-			reagents.add_reagent(/datum/reagent/tricordrazine, 5)
+			reagents.add_reagent(/datum/reagent/tricordrazine, 0.5)
 
 /obj/item/reagent_containers/food/dionaroast
 	name = "roast diona"
@@ -596,11 +596,11 @@
 	filling_color = "#75754b"
 	center_of_mass = "x=16;y=7"
 	nutriment_desc = list("a chorus of flavor" = 6)
-	nutriment_amt = 298
+	nutriment_amt = 30
 	startswith = list(
-		/datum/reagent/radium = 2
+		/datum/reagent/radium = 1
 	)
-	bitesize = 30 // 298 nutrition, 10 bites
+	bitesize = 3 // 298 nutrition, 10 bites
 
 /obj/item/reagent_containers/food/monkeysdelight
 	name = "monkey's Delight"
@@ -610,22 +610,22 @@
 	filling_color = "#5c3c11"
 	center_of_mass = "x=16;y=13"
 	startswith = list(
-		/datum/reagent/nutriment/protein = 10,
-		/datum/reagent/drink/juice/banana = 5,
+		/datum/reagent/nutriment/protein = 1,
+		/datum/reagent/drink/juice/banana = 0.5,
 		/datum/reagent/blackpepper = 1,
 		/datum/reagent/salt = 1
 		)
-	bitesize = 30
+	bitesize = 3
 
 /obj/item/reagent_containers/food/julienne
 	name = "Julienne"
 	desc = "This is not the Julien, which you can think of, but also nice."
 	icon_state = "julienne"
 	center_of_mass = "x=15;y=15"
-	nutriment_amt = 10
+	nutriment_amt = 1
 	startswith = list(
-		/datum/reagent/nutriment/protein = 5,
-		/datum/reagent/drink/juice/onion = 2
+		/datum/reagent/nutriment/protein = 1,
+		/datum/reagent/drink/juice/onion = 1
 		)
 	bitesize = 3
 
@@ -635,14 +635,14 @@
 	icon_state = "quiche"
 	trash = /obj/item/trash/dish/plate
 	center_of_mass = "x=15;y=15"
-	nutriment_amt = 30
+	nutriment_amt = 3
 	nutriment_desc = list("intelligence" = 3)
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 55,
-		/datum/reagent/drink/juice/tomato = 10,
-		/datum/reagent/drink/juice/garlic = 5
+		/datum/reagent/nutriment/protein/cooked = 5.5,
+		/datum/reagent/drink/juice/tomato = 1,
+		/datum/reagent/drink/juice/garlic = 0.5
 		)
-	bitesize = 30 // 175 nutrition, 4 bites
+	bitesize = 3 // 175 nutrition, 4 bites
 
 // Mexican
 /obj/item/reagent_containers/food/taco
@@ -651,12 +651,12 @@
 	icon_state = "taco"
 	center_of_mass = "x=21;y=12"
 	nutriment_desc = list("cheese" = 2,"taco shell" = 2)
-	nutriment_amt = 80
+	nutriment_amt = 8
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 60,
-		/datum/reagent/nutriment/protein/gluten = 10
+		/datum/reagent/nutriment/protein/cooked = 6,
+		/datum/reagent/nutriment/protein/gluten = 1
 		)
-	bitesize = 30 // 255 nutrition, 5 bites
+	bitesize = 3 // 255 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/enchiladas
 	name = "Enchiladas"
@@ -666,11 +666,11 @@
 	filling_color = "#a36a1f"
 	center_of_mass = "x=16;y=13"
 	nutriment_desc = list("tortilla" = 3, "corn" = 3)
-	nutriment_amt = 125
+	nutriment_amt = 12.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 50
+		/datum/reagent/nutriment/protein/cooked = 5
 		)
-	bitesize = 30 // 250 nutrition, 6 bites
+	bitesize = 3 // 250 nutrition, 6 bites
 
 // Nachos
 /obj/item/reagent_containers/food/nachos
@@ -764,12 +764,12 @@
 	filling_color = "#e6deb5"
 	center_of_mass = "x=15;y=11"
 	nutriment_desc = list("waffle" = 3)
-	nutriment_amt = 90
+	nutriment_amt = 9
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 20,
-		/datum/reagent/sugar = 10
+		/datum/reagent/nutriment/protein/gluten/cooked = 2,
+		/datum/reagent/sugar = 1
 		)
-	bitesize = 25 // 190 nutrition, 6 bites
+	bitesize = 2.5 // 190 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/rofflewaffles
 	name = "Roffle Waffles"
@@ -779,13 +779,13 @@
 	filling_color = "#ff00f7"
 	center_of_mass = "x=15;y=11"
 	nutriment_desc = list("waffle" = 3)
-	nutriment_amt = 87
+	nutriment_amt = 9
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 20,
-		/datum/reagent/sugar = 10,
-		/datum/reagent/psilocybin = 3
+		/datum/reagent/nutriment/protein/gluten/cooked = 2,
+		/datum/reagent/sugar = 1,
+		/datum/reagent/psilocybin = 1
 		)
-	bitesize = 25 // 187 nutrition, 6 bites
+	bitesize = 2.5 // 187 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/soylentgreen
 	name = "Soylent Green"
@@ -794,12 +794,12 @@
 	trash = /obj/item/trash/dish/baking_sheet
 	filling_color = "#b8e6b5"
 	center_of_mass = "x=15;y=11"
-	nutriment_amt = 50
+	nutriment_amt = 5
 	nutriment_desc = list("some sort of protein" = 10)
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 100
+		/datum/reagent/nutriment/protein/cooked = 10
 		)
-	bitesize = 30 // 300 nutrition, 5 bites
+	bitesize = 3 // 300 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/soylenviridians
 	name = "Soylen Virdians"
@@ -808,9 +808,9 @@
 	trash = /obj/item/trash/dish/baking_sheet
 	filling_color = "#e6fa61"
 	center_of_mass = "x=15;y=11"
-	nutriment_amt = 150
+	nutriment_amt = 15
 	nutriment_desc = list("some sort of protein" = 5)
-	bitesize = 30 // 150 nutrition, 5 bites
+	bitesize = 3 // 150 nutrition, 5 bites
 
 // Weird jellies
 /obj/item/reagent_containers/food/spacylibertyduff
@@ -821,12 +821,12 @@
 	filling_color = "#42b873"
 	center_of_mass = "x=16;y=8"
 	nutriment_desc = list("liberty" = 3)
-	nutriment_amt = 90
+	nutriment_amt = 9
 	startswith = list(
-		/datum/reagent/ethanol = 5,
-		/datum/reagent/psilocybin = 5
+		/datum/reagent/ethanol = 1,
+		/datum/reagent/psilocybin = 1
 		)
-	bitesize = 25 // 90 nutrition, 4 bites
+	bitesize = 2.5 // 90 nutrition, 4 bites
 
 /obj/item/reagent_containers/food/amanitajelly
 	name = "Amanita Jelly"
@@ -836,12 +836,12 @@
 	filling_color = "#ed0758"
 	center_of_mass = "x=16;y=5"
 	nutriment_desc = list("jelly" = 3, "mushroom" = 3)
-	nutriment_amt = 90
+	nutriment_amt = 9
 	startswith = list(
-		/datum/reagent/ethanol = 5,
-		/datum/reagent/psilocybin = 5
+		/datum/reagent/ethanol = 1,
+		/datum/reagent/psilocybin = 1
 		)
-	bitesize = 25 // 90 nutrition, 4 bites
+	bitesize = 2.5 // 90 nutrition, 4 bites
 
 // Sandwiches
 /obj/item/reagent_containers/food/sandwich

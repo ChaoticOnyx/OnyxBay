@@ -48,11 +48,11 @@
 	affect_digest(M, alien, removed)
 
 /datum/reagent/nutriment/affect_ingest(mob/living/carbon/M, alien, removed)
-	adjust_nutrition(M, alien, removed * ingest_absorbability)
+	adjust_nutrition(M, alien, removed * 10 * ingest_absorbability)
 
 /datum/reagent/nutriment/affect_digest(mob/living/carbon/M, alien, removed)
 	M.heal_organ_damage(removed, 0) //what
-	adjust_nutrition(M, alien, removed * digest_absorbability)
+	adjust_nutrition(M, alien, removed * 10 * digest_absorbability)
 
 /datum/reagent/nutriment/proc/adjust_nutrition(mob/living/carbon/M, alien, removed)
 	switch(alien)

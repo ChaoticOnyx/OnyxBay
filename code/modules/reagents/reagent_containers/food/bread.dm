@@ -6,11 +6,11 @@
 	icon_state = "bun"
 	center_of_mass = "x=16;y=12"
 	nutriment_desc = list("bread" = 3)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30
+		/datum/reagent/nutriment/protein/gluten/cooked = 3
 		)
-	bitesize = 25 // 195 nutrition, 6 bites
+	bitesize = 2.5 // 195 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/bun/attackby(obj/item/W, mob/user)
 	// Bun + faggot = burger
@@ -40,11 +40,11 @@
 	icon_state = "bunbun"
 	center_of_mass = "x=16;y=8"
 	nutriment_desc = list("bread" = 3)
-	nutriment_amt = 240
+	nutriment_amt = 24
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 60
+		/datum/reagent/nutriment/protein/gluten/cooked = 6
 		)
-	bitesize = 25 // 390 nutrition, 12 bites. On other words, exactly two buns.
+	bitesize = 2.5 // 390 nutrition, 12 bites. In other words, exactly two buns.
 
 /obj/item/reagent_containers/food/flatbread
 	name = "flatbread"
@@ -53,11 +53,11 @@
 	icon_state = "flatbread"
 	center_of_mass = "x=16;y=16"
 	nutriment_desc = list("bread" = 3)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30
+		/datum/reagent/nutriment/protein/gluten/cooked = 3
 		)
-	bitesize = 25 // 195 nutrition, 6 bites
+	bitesize = 2.5 // 195 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/baguette
 	name = "Baguette"
@@ -66,13 +66,13 @@
 	filling_color = "#e3d796"
 	center_of_mass = "x=18;y=12"
 	nutriment_desc = list("french bread" = 3)
-	nutriment_amt = 248
+	nutriment_amt = 24
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 50,
+		/datum/reagent/nutriment/protein/gluten/cooked = 5,
 		/datum/reagent/blackpepper = 1,
 		/datum/reagent/salt = 1
 		)
-	bitesize = 30 // 373 nutrition, 10 bites
+	bitesize = 3.5 // ~373 nutrition, 10 bites
 
 /obj/item/reagent_containers/food/cracker
 	name = "Cracker"
@@ -81,12 +81,12 @@
 	filling_color = "#f5deb8"
 	center_of_mass = "x=17;y=6"
 	nutriment_desc = list("cracker" = 1)
-	nutriment_amt = 30
+	nutriment_amt = 3
 	startswith = list(
 		/datum/reagent/nutriment/protein/gluten/cooked = 5,
 		/datum/reagent/salt = 1
 		)
-	bitesize = 20 // 32.5 nutrition, 2 bites
+	bitesize = 2 // 32.5 nutrition, 2 bites
 
 /obj/item/reagent_containers/food/poppypretzel
 	name = "Poppy pretzel"
@@ -96,11 +96,11 @@
 	filling_color = "#916e36"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("pretzel" = 3, "poppy seeds" = 2)
-	nutriment_amt = 20
+	nutriment_amt = 2
 	startswith = list(
 		/datum/reagent/nutriment/protein/gluten/cooked = 5
 		)
-	bitesize = 30 // 32.5 nutrition, 1 bite
+	bitesize = 3 // 32.5 nutrition, 1 bite
 
 /obj/item/reagent_containers/food/tortilla
 	name = "Tortilla"
@@ -108,8 +108,8 @@
 	icon_state = "tortilla"
 	center_of_mass = "x=15;y=15"
 	nutriment_desc = list("tortilla" = 1)
-	nutriment_amt = 60
-	bitesize = 20 // 60 nutrition, 3 bites
+	nutriment_amt = 6
+	bitesize = 2 // 60 nutrition, 3 bites
 
 /obj/item/reagent_containers/food/bruschetta
 	name = "Bruschetta"
@@ -118,14 +118,14 @@
 	trash = /obj/item/trash/dish/plate
 	center_of_mass = "x=15;y=15"
 	nutriment_desc = list("bread" = 3)
-	nutriment_amt = 120
+	nutriment_amt = 12
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
 		/datum/reagent/salt = 5,
-		/datum/reagent/drink/juice/tomato = 10,
+		/datum/reagent/drink/juice/tomato = 1,
 		/datum/reagent/drink/juice/garlic = 5
 		)
-	bitesize = 30 // 202.5 nutrition, 6 bites
+	bitesize = 3 // ~202.5 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/twobread
 	name = "Two Bread"
@@ -134,11 +134,11 @@
 	filling_color = "#dbcc9a"
 	center_of_mass = "x=15;y=12"
 	nutriment_desc = list("sourness" = 2, "bread" = 3)
-	nutriment_amt = 72
+	nutriment_amt = 7.2
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 18
+		/datum/reagent/nutriment/protein/gluten/cooked = 1.8
 		)
-	bitesize = 30 // 100 nutrition, 3 bites
+	bitesize = 3 // 100 nutrition, 3 bites
 
 /obj/item/reagent_containers/food/threebread
 	name = "Three Bread"
@@ -147,11 +147,11 @@
 	filling_color = "#dbcc9a"
 	center_of_mass = "x=15;y=12"
 	nutriment_desc = list("sourness" = 2, "bread" = 3)
-	nutriment_amt = 108
+	nutriment_amt = 10.8
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 27
+		/datum/reagent/nutriment/protein/gluten/cooked = 2.7
 		)
-	bitesize = 30 // 100 nutrition, 5 bites
+	bitesize = 3 // 100 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/pizzarim
 	name = "pizza rim"
@@ -159,8 +159,8 @@
 	icon_state = "pizzarim"
 	center_of_mass = "x=15;y=13"
 	nutriment_desc = list("bread" = 3)
-	nutriment_amt = 24
+	nutriment_amt = 2.4
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 6
+		/datum/reagent/nutriment/protein/gluten/cooked = 0.6
 		)
-	bitesize = 20 // 39 nutrition, 2 bites
+	bitesize = 2 // 39 nutrition, 2 bites

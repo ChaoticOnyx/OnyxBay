@@ -6,8 +6,8 @@
 	icon_state = "monkeycube"
 	filling_color = "#adac7f"
 	center_of_mass = "x=16;y=14"
-	startswith = list(/datum/reagent/nutriment/protein/compressed = 50)
-	bitesize = 60 // 312.5 nutrition, 1 bite, 1 hole in the chest
+	startswith = list(/datum/reagent/nutriment/protein/compressed = 5)
+	bitesize = 6 // 312.5 nutrition, 1 bite, 1 hole in the chest
 
 	var/wrapped = 0
 	var/growing = 0

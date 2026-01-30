@@ -8,9 +8,9 @@
 	static_volume = TRUE
 	center_of_mass = "x=16;y=13"
 	startswith = list(
-		/datum/reagent/nutriment/protein/egg = 45
+		/datum/reagent/nutriment/protein/egg = 4.5
 		)
-	bitesize = 30 // 56.25 nutrition, 2 bites
+	bitesize = 3 // 56.25 nutrition, 2 bites
 
 /obj/item/reagent_containers/food/egg/afterattack(obj/O, mob/user, proximity)
 	if(istype(O,/obj/machinery/microwave))
@@ -77,24 +77,24 @@
 	name = "robot egg"
 	icon_state = "egg-robot"
 	startswith = list(
-		/datum/reagent/nutriment/protein/egg = 45,
-		/datum/reagent/nanites = 1
+		/datum/reagent/nutriment/protein/egg = 4.5,
+		/datum/reagent/nanites = 0.1
 		)
 
 /obj/item/reagent_containers/food/egg/golden
 	name = "golden egg"
 	icon_state = "egg-golden"
 	startswith = list(
-		/datum/reagent/nutriment/protein/egg = 45,
-		/datum/reagent/gold = 15
+		/datum/reagent/nutriment/protein/egg = 4.5,
+		/datum/reagent/gold = 1.5
 		)
 
 /obj/item/reagent_containers/food/egg/plasma
 	name = "plasma egg"
 	icon_state = "egg-plasma"
 	startswith = list(
-		/datum/reagent/nutriment/protein/egg = 45,
-		/datum/reagent/toxin/plasma = 15
+		/datum/reagent/nutriment/protein/egg = 4.5,
+		/datum/reagent/toxin/plasma = 1.5
 		)
 
 /obj/item/reagent_containers/food/vegg
@@ -102,11 +102,11 @@
 	desc = "So... It's more like a seed, right?"
 	icon_state = "egg-vegan"
 	filling_color = "#70bf70"
-	volume = 60
+	volume = 6
 	static_volume = TRUE
 	center_of_mass = "x=16;y=13"
-	nutriment_amt = 50
-	bitesize = 30 // 50 nutrition, 2 bites
+	nutriment_amt = 5
+	bitesize = 3 // 5 nutrition, 2 bites
 
 /obj/item/reagent_containers/food/boiledegg
 	name = "Boiled egg"
@@ -114,9 +114,9 @@
 	icon_state = "egg"
 	filling_color = "#ffffff"
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 45
+		/datum/reagent/nutriment/protein/cooked = 4.5
 		)
-	bitesize = 25 // 112.5 nutrition, 2 bites
+	bitesize = 2.5 // 112.5 nutrition, 2 bites
 
 /obj/item/reagent_containers/food/friedegg
 	name = "Fried egg"
@@ -125,12 +125,12 @@
 	filling_color = "#ffdf78"
 	center_of_mass = "x=16;y=14"
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 45,
+		/datum/reagent/nutriment/protein/cooked = 4.5,
 		/datum/reagent/salt = 1,
 		/datum/reagent/blackpepper = 1,
-		/datum/reagent/nutriment/oil = 15
+		/datum/reagent/nutriment/oil = 1.5
 		)
-	bitesize = 12.5 // 157.5 nutrition, 5 bites
+	bitesize = 1.5 // ~15.75 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/omelette
 	name = "Omelette Du Fromage"
@@ -140,11 +140,11 @@
 	filling_color = "#fff9a8"
 	center_of_mass = "x=16;y=13"
 	nutriment_desc = list("cheese" = 2, "omelette" = 3)
-	nutriment_amt = 70
+	nutriment_amt = 7
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 110
+		/datum/reagent/nutriment/protein/cooked = 11
 		)
-	bitesize = 30 // 345 nutrition, 6 bites
+	bitesize = 3 // 34.5 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/chawanmushi
 	name = "chawanmushi"
@@ -154,12 +154,12 @@
 	filling_color = "#f0f2e4"
 	center_of_mass = "x=17;y=10"
 	nutriment_desc = list("eggs" = 3, "friendship" = 1)
-	nutriment_amt = 55
+	nutriment_amt = 5.5
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 90,
-		/datum/reagent/nutriment/soysauce = 5
+		/datum/reagent/nutriment/protein/cooked = 9,
+		/datum/reagent/nutriment/soysauce = 1
 		)
-	bitesize = 30 // 280 nutrition, 5 bites
+	bitesize = 3 // 28 nutrition, 5 bites
 
 /obj/item/reagent_containers/food/eggsbenedict
 	name = "Eggs Benedict"

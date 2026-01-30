@@ -6,8 +6,8 @@
 	health = 180
 	filling_color = "#ff1c1c"
 	center_of_mass = "x=16;y=14"
-	startswith = list(/datum/reagent/nutriment/protein = 150)
-	bitesize = 30
+	startswith = list(/datum/reagent/nutriment/protein = 15)
+	bitesize = 3
 
 	drop_sound = SFX_DROP_FLESH
 	pickup_sound = SFX_PICKUP_FLESH
@@ -62,8 +62,8 @@
 	filling_color = "#db0000"
 	center_of_mass = "x=16;y=10"
 	startswith = list(
-		/datum/reagent/nutriment/protein = 145,
-		/datum/reagent/hyperzine = 5)
+		/datum/reagent/nutriment/protein = 14.5,
+		/datum/reagent/hyperzine = 1)
 
 /obj/item/reagent_containers/food/meat/xeno
 	name = "xenomeat"
@@ -72,8 +72,8 @@
 	item_state = "xenomeat"
 	filling_color = "#43de18"
 	startswith = list(
-		/datum/reagent/nutriment/protein = 100,
-		/datum/reagent/acid/polyacid = 50)
+		/datum/reagent/nutriment/protein = 10,
+		/datum/reagent/acid/polyacid = 5)
 
 /obj/item/reagent_containers/food/meat/pork
 	name = "pork slab"

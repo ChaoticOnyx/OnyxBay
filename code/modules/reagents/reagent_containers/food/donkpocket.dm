@@ -7,12 +7,12 @@
 	center_of_mass = "x=16;y=10"
 
 	nutriment_desc = list("heartiness" = 3)
-	nutriment_amt = 90
+	nutriment_amt = 9
 	startswith = list(
-		/datum/reagent/nutriment/protein/gluten/cooked = 30,
-		/datum/reagent/nutriment/protein/cooked = 25
+		/datum/reagent/nutriment/protein/gluten/cooked = 3,
+		/datum/reagent/nutriment/protein/cooked = 2.5
 		)
-	bitesize = 30 // 227.5 nutrition, 5 bites
+	bitesize = 3 // 227.5 nutrition, 5 bites
 
 	var/warm = FALSE
 	var/list/heated_reagents = list(/datum/reagent/tricordrazine = 5)
