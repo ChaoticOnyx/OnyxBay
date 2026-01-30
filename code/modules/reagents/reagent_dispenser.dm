@@ -305,7 +305,7 @@
 /obj/structure/reagent_dispensers/water_cooler
 	name = "Water-Cooler"
 	desc = "A machine that dispenses water to drink. A stand for plastic cups has inexplicably attached itself to its side."
-	amount_per_transfer_from_this = 50
+	amount_per_transfer_from_this = 5
 	icon = 'icons/obj/water_cooler.dmi'
 	icon_state = "water_cooler-4"
 	possible_transfer_amounts = null
