@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 /obj/item/reagent_containers/dropper
 	name = "Dropper"
-	desc = "A dropper. Transfers up to 5 ml."
+	desc = "A dropper. Transfers up to 5 units."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "dropper0"
 	amount_per_transfer_from_this = 5
@@ -56,7 +56,7 @@
 
 					if(safe_thing)
 						trans = reagents.splash(safe_thing, amount_per_transfer_from_this, max_spill=30)
-						user.visible_message("<span class='warning'>[user] tries to squirt something into [target]'s eyes, but fails!</span>", "<span class='notice'>You transfer [trans] ml of the solution.</span>")
+						user.visible_message("<span class='warning'>[user] tries to squirt something into [target]'s eyes, but fails!</span>", "<span class='notice'>You transfer [trans] units of the solution.</span>")
 						return
 
 				var/mob/living/M = target
@@ -66,14 +66,14 @@
 				var/spill_amt = M.incapacitated()? 0 : 30
 				trans += reagents.splash(target, reagents.total_volume/2, max_spill = spill_amt)
 				trans += reagents.trans_to_mob(target, reagents.total_volume/2, CHEM_BLOOD) //I guess it gets into the bloodstream through the eyes or something
-				user.visible_message("<span class='warning'>[user] squirts something into [target]'s eyes!</span>", "<span class='notice'>You transfer [trans] ml of the solution.</span>")
+				user.visible_message("<span class='warning'>[user] squirts something into [target]'s eyes!</span>", "<span class='notice'>You transfer [trans] units of the solution.</span>")
 
 
 				return
 
 			else
 				trans = reagents.splash(target, amount_per_transfer_from_this, max_spill=0) //sprinkling reagents on generic non-mobs. Droppers are very precise
-				to_chat(user, "<span class='notice'>You transfer [trans] ml of the solution.</span>")
+				to_chat(user, "<span class='notice'>You transfer [trans] units of the solution.</span>")
 
 		else // Taking from something
 
@@ -87,7 +87,7 @@
 
 			var/trans = target.reagents.trans_to_obj(src, amount_per_transfer_from_this)
 
-			to_chat(user, "<span class='notice'>You fill the dropper with [trans] ml of the solution.</span>")
+			to_chat(user, "<span class='notice'>You fill the dropper with [trans] units of the solution.</span>")
 
 		return
 
@@ -102,7 +102,7 @@
 
 /obj/item/reagent_containers/dropper/industrial
 	name = "Industrial Dropper"
-	desc = "A larger dropper. Transfers up to 10 ml."
+	desc = "A larger dropper. Transfers up to 10 units."
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "1;2;3;4;5;6;7;8;9;10"
 	volume = 10

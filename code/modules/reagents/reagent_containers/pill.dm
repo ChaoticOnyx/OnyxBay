@@ -119,35 +119,35 @@
 	startswith = list(/datum/reagent/adminordrazine)
 
 /obj/item/reagent_containers/pill/stox
-	name = "Soporific (15 ml)"
+	name = "Soporific (15u)"
 	desc = "Commonly used to treat insomnia."
 	icon_state = "pill3"
 	startswith = list(/datum/reagent/soporific = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/kelotane
-	name = "Kelotane (15 ml)"
+	name = "Kelotane (15u)"
 	desc = "Used to treat burns."
 	icon_state = "pill2"
 	startswith = list(/datum/reagent/kelotane = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/paracetamol
-	name = "Paracetamol (15 ml)"
+	name = "Paracetamol (15u)"
 	desc = "A painkiller for the ages. Chewables!"
 	icon_state = "pill3"
 	startswith = list(/datum/reagent/painkiller/paracetamol = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/tramadol
-	name = "Tramadol (15 ml)"
+	name = "Tramadol (15u)"
 	desc = "A simple painkiller."
 	icon_state = "pill3"
 	startswith = list(/datum/reagent/painkiller/tramadol = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/inaprovaline
-	name = "Inaprovaline (30 ml)"
+	name = "Inaprovaline (30u)"
 	desc = "Used to stabilize patients."
 	icon_state = "pill1"
 	startswith = list(/datum/reagent/inaprovaline)
@@ -161,28 +161,28 @@
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/dexalin_plus
-	name = "Dexalin Plus (15 ml)"
+	name = "Dexalin Plus (15u)"
 	desc = "Used to treat extreme oxygen deprivation."
 	icon_state = "pill2"
 	startswith = list(/datum/reagent/dexalinp = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/dermaline
-	name = "Dermaline (15 ml)"
+	name = "Dermaline (15u)"
 	desc = "Used to treat burn wounds."
 	icon_state = "pill2"
 	startswith = list(/datum/reagent/dermaline = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/dylovene
-	name = "Dylovene (15 ml)"
+	name = "Dylovene (15u)"
 	desc = "A broad-spectrum anti-toxin."
 	icon_state = "pill1"
 	startswith = list(/datum/reagent/dylovene = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/bicaridine
-	name = "Bicaridine (20 ml)"
+	name = "Bicaridine (20u)"
 	desc = "Used to treat physical injuries."
 	icon_state = "pill2"
 	startswith = list(/datum/reagent/bicaridine = 20)
@@ -208,7 +208,7 @@
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/spaceacillin
-	name = "Spaceacillin (10 ml)"
+	name = "Spaceacillin (10u)"
 	desc = "Contains antiviral agents."
 	icon_state = "pill3"
 	startswith = list(/datum/reagent/spaceacillin = 10)
@@ -222,14 +222,14 @@
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/noexcutite
-	name = "Noexcutite (15 ml)"
+	name = "Noexcutite (15u)"
 	desc = "Feeling jittery? This should calm you down."
 	icon_state = "pill4"
 	startswith = list(/datum/reagent/noexcutite = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/antidexafen
-	name = "Antidexafen (15 ml)"
+	name = "Antidexafen (15u)"
 	desc = "Common cold mediciation. Safe for babies!"
 	icon_state = "pill4"
 	startswith = list(
@@ -240,35 +240,35 @@
 
 //Psychiatry pills.
 /obj/item/reagent_containers/pill/methylphenidate
-	name = "Methylphenidate (15 ml)"
+	name = "Methylphenidate (15u)"
 	desc = "Improves the ability to concentrate."
 	icon_state = "pill2"
 	startswith = list(/datum/reagent/methylphenidate = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/citalopram
-	name = "Citalopram (15 ml)"
+	name = "Citalopram (15u)"
 	desc = "Mild anti-depressant."
 	icon_state = "pill4"
 	startswith = list(/datum/reagent/citalopram = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/paroxetine
-	name = "Paroxetine (10 ml)"
+	name = "Paroxetine (10u)"
 	desc = "Before you swallow a bullet: try swallowing this!"
 	icon_state = "pill4"
 	startswith = list(/datum/reagent/paroxetine = 10)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/hyronalin
-	name = "Hyronalin (10 ml)"
+	name = "Hyronalin (10u)"
 	desc = "Got some rads? Eat this!"
 	icon_state = "pill4"
 	startswith = list(/datum/reagent/hyronalin = 10)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/glucose
-	name = "Glucose (20 ml)"
+	name = "Glucose (20u)"
 	desc = "Used to treat blood loss"
 	icon_state = "pill4"
 	startswith = list(/datum/reagent/nutriment/glucose = 20)
@@ -277,7 +277,7 @@
 //Mining pills.
 /obj/item/reagent_containers/pill/leporazine
 	name = "Thermostabilizine"
-	desc = "Contents 15 ml of leporazine. Effectively stabilizes body temperature."
+	desc = "Contents 15u of leporazine. Effectively stabilizes body temperature."
 	icon_state = "pill2"
 	startswith = list(/datum/reagent/leporazine = 15)
 	mimic_color = TRUE
@@ -301,56 +301,56 @@
 //Pills that probably won't be used anywhere, except in merchants or mapping, but who cares?
 
 /obj/item/reagent_containers/pill/oxycodone
-	name = "Oxycodone (15 ml)"
+	name = "Oxycodone (15u)"
 	desc = "A complex painkiller."
 	icon_state = "pill3"
 	startswith = list(/datum/reagent/painkiller/tramadol/oxycodone = 15)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/metazine
-	name = "Metazine (10 ml)"
+	name = "Metazine (10u)"
 	desc = "A combat painkiller."
 	icon_state = "pill24"
 	startswith = list(/datum/reagent/painkiller = 10)
 	mimic_color = FALSE
 
 /obj/item/reagent_containers/pill/tricordrazine
-	name = "Tricordrazine (20 ml)"
+	name = "Tricordrazine (20u)"
 	desc = "Used to slowly treat external injuries."
 	icon_state = "pill2"
 	startswith = list(/datum/reagent/tricordrazine = 20)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/alkysine
-	name = "Alkysine (5 ml)"
+	name = "Alkysine (5u)"
 	desc = "Do you have a headache? Just eat me!"
 	icon_state = "pill2"
 	startswith = list(/datum/reagent/alkysine = 5)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/imidazoline
-	name = "Imidazoline (10 ml)"
+	name = "Imidazoline (10u)"
 	desc = "Used to treat eye injuries."
 	icon_state = "pill2"
 	startswith = list(/datum/reagent/imidazoline = 10)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/ryetalyn
-	name = "Ryetalyn (5 ml)"
+	name = "Ryetalyn (5u)"
 	desc = "Used for genetic defects, including cataracts."
 	icon_state = "pill3"
 	startswith = list(/datum/reagent/ryetalyn = 5)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/peridaxon
-	name = "Peridaxon (10 ml)"
+	name = "Peridaxon (10u)"
 	desc = "Used to restore the internal organs and nervous system."
 	icon_state = "pill2"
 	startswith = list(/datum/reagent/peridaxon = 10)
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/albumin
-	name = "Albumin (20 ml)"
+	name = "Albumin (20u)"
 	desc = "Used to restore blood loss."
 	icon_state = "pill3"
 	startswith = list(
@@ -359,7 +359,7 @@
 	mimic_color = TRUE
 
 /obj/item/reagent_containers/pill/emezoline
-	name = "Emezoline (15 ml)"
+	name = "Emezoline (15u)"
 	desc = "Used to prevent vomiting."
 	icon_state = "pill4"
 	startswith = list(/datum/reagent/emezoline = 15)

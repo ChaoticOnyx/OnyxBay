@@ -52,7 +52,7 @@
 		var/contained = reagentlist()
 		var/trans = reagents.trans_to_mob(M, amount_per_transfer_from_this, CHEM_BLOOD)
 		admin_inject_log(user, M, src, contained, trans)
-		to_chat(user, "<span class='notice'>[trans] ml injected. [reagents.total_volume] ml remaining in \the [src].</span>")
+		to_chat(user, "<span class='notice'>[trans] units injected. [reagents.total_volume] units remaining in \the [src].</span>")
 
 	return
 
@@ -116,7 +116,7 @@
 	origin_tech = list(TECH_MATERIAL = 2, TECH_BIO = 2)
 	atom_flags = null
 	startswith = list(/datum/reagent/inaprovaline)
-	var/content_desc = "Inaprovaline 10ml. Use to stabilize an injured person."
+	var/content_desc = "Inaprovaline 10u. Use to stabilize an injured person."
 	var/base_state = "blue"
 
 /obj/item/reagent_containers/hypospray/autoinjector/Initialize()
@@ -147,25 +147,25 @@
 
 /obj/item/reagent_containers/hypospray/autoinjector/detox
 	icon_state = "green1"
-	content_desc = "Dylovene 10ml. Use in case of poisoning."
+	content_desc = "Dylovene 10u. Use in case of poisoning."
 	base_state = "green"
 	startswith = list(/datum/reagent/dylovene)
 
 /obj/item/reagent_containers/hypospray/autoinjector/tricordrazine
 	icon_state = "lightpurple1"
-	content_desc = "Tricordrazine 10ml. Use to speed up recovery from physical trauma."
+	content_desc = "Tricordrazine 10u. Use to speed up recovery from physical trauma."
 	base_state = "lightpurple"
 	startswith = list(/datum/reagent/tricordrazine)
 
 /obj/item/reagent_containers/hypospray/autoinjector/pain
 	icon_state = "purple1"
-	content_desc = "Tramadol 10ml. Highly potent painkiller. Warning: Do Not Mix With Alcohol!"
+	content_desc = "Tramadol 10u. Highly potent painkiller. Warning: Do Not Mix With Alcohol!"
 	base_state = "purple"
 	startswith = list(/datum/reagent/painkiller/tramadol)
 
 /obj/item/reagent_containers/hypospray/autoinjector/combatpain
 	icon_state = "black1"
-	content_desc = "Metazine 5ml. Used for immediate and temporary pain relief."
+	content_desc = "Metazine 5u. Used for immediate and temporary pain relief."
 	base_state = "black"
 	amount_per_transfer_from_this = 5
 	volume = 5
@@ -181,7 +181,7 @@
 
 /obj/item/reagent_containers/hypospray/autoinjector/antirad
 	icon_state = "orange1"
-	content_desc = "Hyronalin 10ml. Use in case of radiation poisoning."
+	content_desc = "Hyronalin 10u. Use in case of radiation poisoning."
 	base_state = "orange"
 	startswith = list(/datum/reagent/hyronalin)
 
@@ -197,18 +197,18 @@
 
 /obj/item/reagent_containers/hypospray/autoinjector/dexalinp
 	icon_state = "darkblue1"
-	content_desc = "Dexalin plus 10ml. Used for hypoxia. Increases oxygenation to almost 85%!"
+	content_desc = "Dexalin plus 10u. Used for hypoxia. Increases oxygenation to almost 85%!"
 	base_state = "darkblue"
 	startswith = list(/datum/reagent/dexalinp)
 
 /obj/item/reagent_containers/hypospray/autoinjector/bicaridine
 	icon_state = "red1"
-	content_desc = "Bicaridine 10ml. Used to treat serious physical wounds."
+	content_desc = "Bicaridine 10u. Used to treat serious physical wounds."
 	base_state = "red"
 	startswith = list(/datum/reagent/bicaridine)
 
 /obj/item/reagent_containers/hypospray/autoinjector/dermaline
 	icon_state = "yellow1"
-	content_desc = "Dermaline 10ml. Used to treat burn wounds."
+	content_desc = "Dermaline 10u. Used to treat burn wounds."
 	base_state = "yellow"
 	startswith = list(/datum/reagent/dermaline)

@@ -10,8 +10,8 @@
 	icon = 'icons/obj/bloodpack.dmi'
 	icon_state = "empty"
 	w_class = ITEM_SIZE_SMALL
-	volume = 1 LITER
-	possible_transfer_amounts = "0.2;1;2;3;5;10;15"
+	volume = 360
+	possible_transfer_amounts = "0.2;1;2"
 	amount_per_transfer_from_this = REM
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	var/being_feed = FALSE
@@ -27,7 +27,7 @@
 
 /obj/item/reagent_containers/ivbag/on_reagent_change()
 	update_icon()
-	if(reagents.total_volume > volume * 0.66)
+	if(reagents.total_volume > volume / 2)
 		w_class = ITEM_SIZE_NORMAL
 	else
 		w_class = ITEM_SIZE_SMALL
@@ -51,13 +51,13 @@
 				if(!user)
 					return
 				var/blood_taken = 0
-				blood_taken = min(50, reagents.get_reagent_amount(/datum/reagent/blood)/4)
+				blood_taken = min(5, reagents.get_reagent_amount(/datum/reagent/blood)/4)
 
 				reagents.remove_reagent(/datum/reagent/blood, blood_taken * 4)
 				user.mind.vampire.gain_blood(blood_taken)
 
 				if (blood_taken)
-					to_chat(user, SPAN_NOTICE("You have accumulated [user.mind.vampire.blood_usable] [user.mind.vampire.blood_usable]ml of usable blood. It tastes quite stale."))
+					to_chat(user, SPAN_NOTICE("You have accumulated [user.mind.vampire.blood_usable] [user.mind.vampire.blood_usable]u of usable blood. It tastes quite stale."))
 
 				if (reagents.get_reagent_amount(/datum/reagent/blood) < 1)
 					break

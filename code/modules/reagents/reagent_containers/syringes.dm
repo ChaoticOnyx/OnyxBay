@@ -207,7 +207,7 @@
 			return
 
 		var/trans = target.reagents.trans_to_obj(src, amount_per_transfer_from_this)
-		to_chat(user, SPAN_NOTICE("You fill the syringe with [trans] ml of the solution."))
+		to_chat(user, SPAN_NOTICE("You fill the syringe with [trans] units of the solution."))
 		update_icon()
 
 	if(!reagents.get_free_space())
@@ -234,7 +234,7 @@
 		return
 
 	var/trans = reagents.trans_to(target, amount_per_transfer_from_this)
-	to_chat(user, SPAN_NOTICE("You inject \the [target] with [trans] ml of the solution. \The [src] now contains [src.reagents.total_volume] ml."))
+	to_chat(user, SPAN_NOTICE("You inject \the [target] with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units."))
 	if(reagents.total_volume <= 0 && mode == SYRINGE_INJECT)
 		mode = SYRINGE_DRAW
 		update_icon()
@@ -275,9 +275,9 @@
 	if(target != user)
 		var/contained = reagentlist()
 		admin_inject_log(user, target, src, contained, trans)
-		user.visible_message(SPAN_WARNING("\the [user] injects \the [target] with [visible_name]!"), SPAN_NOTICE("You inject \the [target] with [trans] ml of the solution. \The [src] now contains [src.reagents.total_volume] ml."))
+		user.visible_message(SPAN_WARNING("\the [user] injects \the [target] with [visible_name]!"), SPAN_NOTICE("You inject \the [target] with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units."))
 	else
-		to_chat(user, SPAN_NOTICE("You inject yourself with [trans] ml of the solution. \The [src] now contains [src.reagents.total_volume] ml."))
+		to_chat(user, SPAN_NOTICE("You inject yourself with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units."))
 
 	if(reagents.total_volume <= 0 && mode == SYRINGE_INJECT)
 		mode = SYRINGE_DRAW
@@ -405,7 +405,7 @@
 			return
 
 		var/trans = reagents.trans_to(target, amount_per_transfer_from_this)
-		to_chat(user, SPAN("notice", "You inject \the [target] with [trans] ml of the solution. \The [src] now contains [src.reagents.total_volume] ml."))
+		to_chat(user, SPAN("notice", "You inject \the [target] with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units."))
 		update_icon()
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -490,7 +490,7 @@
 	return // No instant injecting
 
 /obj/item/reagent_containers/syringe/ld50_syringe/drawReagents(target, mob/user)
-	if(ismob(target)) // No drawing 60 ml of blood at once
+	if(ismob(target)) // No drawing 60 units of blood at once
 		to_chat(user, SPAN_NOTICE("This needle isn't designed for drawing blood."))
 		return
 	..()

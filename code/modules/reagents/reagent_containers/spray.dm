@@ -10,14 +10,14 @@
 	throwforce = 3
 	w_class = ITEM_SIZE_SMALL
 	throw_range = 10
-	amount_per_transfer_from_this = 25
+	amount_per_transfer_from_this = 10
 	unacidable = 1 //plastic
-	possible_transfer_amounts = "10;25" //Set to null instead of list, if there is only one.
+	possible_transfer_amounts = "5;10" //Set to null instead of list, if there is only one.
 	var/spray_size = 3
 	var/list/spray_sizes = list(1,3)
 	var/step_delay = 10 // lower is faster
 	var/widespray = FALSE
-	volume = 0.5 LITERS
+	volume = 250
 	var/obj/item/reagent_containers/external_container = null // Using an external reagent container (i.e. backwear spray)
 
 /obj/item/reagent_containers/spray/Initialize()
@@ -114,13 +114,13 @@
 		return
 	amount_per_transfer_from_this = next_in_list(amount_per_transfer_from_this, cached_number_list_decode(possible_transfer_amounts))
 	spray_size = next_in_list(spray_size, spray_sizes)
-	to_chat(user, "<span class='notice'>You adjusted the pressure nozzle. You'll now use [amount_per_transfer_from_this] ml per spray.</span>")
+	to_chat(user, "<span class='notice'>You adjusted the pressure nozzle. You'll now use [amount_per_transfer_from_this] units per spray.</span>")
 
 /obj/item/reagent_containers/spray/examine(mob/user, infix)
 	. = ..()
 
 	if(get_dist(src, user) <= 0 && loc == user)
-		. += "[round(external_container ? external_container.reagents.total_volume : reagents.total_volume)] ml left."
+		. += "[round(external_container ? external_container.reagents.total_volume : reagents.total_volume)] units left."
 
 
 /obj/item/reagent_containers/spray/verb/empty()
@@ -165,7 +165,7 @@
 	item_state = "pepperspray"
 	amount_per_transfer_from_this = 15
 	possible_transfer_amounts = null
-	volume = 75
+	volume = 60
 	var/safety = 1
 	step_delay = 1
 	startswith = list(/datum/reagent/capsaicin/condensed)
@@ -192,7 +192,7 @@
 	icon = 'icons/obj/device.dmi'
 	icon_state = "sunflower"
 	item_state = "sunflower"
-	amount_per_transfer_from_this = 10
+	amount_per_transfer_from_this = 1
 	possible_transfer_amounts = null
 	volume = 0.1 LITERS
 	startswith = list(/datum/reagent/water)
@@ -210,7 +210,7 @@
 	w_class = ITEM_SIZE_LARGE
 	amount_per_transfer_from_this = 75
 	possible_transfer_amounts = null
-	volume = 1.5 LITERS
+	volume = 600
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_ENGINEERING = 3)
 	step_delay = 8
 	widespray = TRUE
@@ -221,6 +221,7 @@
 	icon = 'icons/obj/hydroponics_items.dmi'
 	icon_state = "plantbgone"
 	item_state = "plantbgone"
+	volume = 100
 	startswith = list(/datum/reagent/toxin/plantbgone)
 
 /obj/item/reagent_containers/spray/plantbgone/afterattack(atom/A, mob/user, proximity)
@@ -235,4 +236,4 @@
 	A disclaimer towards the bottom states <span class = 'warning'>Warning: Do not use around the house, or in proximity of dogs|children|clowns</span>"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER|ATOM_FLAG_NO_REACT
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_MATERIAL = 5)
-	possible_transfer_amounts = "50;100;250"
+	possible_transfer_amounts = "5;10;25"
