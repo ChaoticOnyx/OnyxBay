@@ -144,7 +144,7 @@
 /obj/item/boomstickframe/attackby(obj/item/W, mob/user)
 	if(isWelder(W) && buildstate == 0)
 		var/obj/item/weldingtool/WT = W
-		if(!WT.use_tool(src, user, amount = 10))
+		if(!WT.use_tool(src, user, amount = 1))
 			return
 
 		user.visible_message("<span class='notice'>\The [user] secures \the [src]'s barrel.</span>")

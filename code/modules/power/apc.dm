@@ -565,7 +565,7 @@
 		user.visible_message("<span class='warning'>[user.name] welds [src].</span>", \
 							"You start welding the APC frame...", \
 							"You hear welding.")
-		if(!WT.use_tool(src, user, delay = 5 SECONDS, amount = 50))
+		if(!WT.use_tool(src, user, delay = 5 SECONDS, amount = 5))
 			return
 
 		if(QDELETED(src) || !user)

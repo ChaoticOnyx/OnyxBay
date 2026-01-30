@@ -339,7 +339,7 @@
 			to_chat(user, "\The [src] is already fully repaired.")
 			return
 
-		if(!WT.use_tool(src, user, delay = damage, amount = 50))
+		if(!WT.use_tool(src, user, delay = damage, amount = 5))
 			return
 
 		if(QDELETED(src) || !user)

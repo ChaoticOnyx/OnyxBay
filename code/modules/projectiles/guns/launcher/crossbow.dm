@@ -271,7 +271,7 @@
 	else if(isWelder(W))
 		if(buildstate == 1)
 			var/obj/item/weldingtool/WT = W
-			if(!WT.use_tool(src, user, amount = 10))
+			if(!WT.use_tool(src, user, amount = 1))
 				return
 
 			to_chat(user, "<span class='notice'>You weld the rods into place.</span>")

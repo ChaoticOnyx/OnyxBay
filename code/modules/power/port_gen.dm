@@ -467,7 +467,7 @@
 	if(reagents.has_reagent("vodka"))
 		rad_power = 2
 		temperature_gain = 60
-		reagents.remove_any(10)
+		reagents.remove_any(1)
 		if(prob(2))
 			audible_message("<span class='notice'>[src] churns happily</span>", splash_override = "*churn*")
 	else

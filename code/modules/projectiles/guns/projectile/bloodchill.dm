@@ -24,9 +24,9 @@
 		return FALSE
 	charge_timer = 0
 	var/mob/living/carbon/human/M = loc
-	if(istype(M) && M.get_blood_volume_abs() >= 200)
+	if(istype(M) && M.get_blood_volume_abs() >= 0.2 LITERS)
 		charges++
-		M.remove_blood(200)
+		M.remove_blood(0.2 LITERS)
 	if(charges == 1)
 		loaded += new ammo_type(src)
 		consume_next_projectile()

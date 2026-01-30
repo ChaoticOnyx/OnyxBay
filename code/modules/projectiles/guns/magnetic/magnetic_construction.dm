@@ -34,7 +34,7 @@
 
 	if(isWelder(thing) && construction_stage == 4)
 		var/obj/item/weldingtool/WT = thing
-		if(!WT.use_tool(src, user, amount = 10))
+		if(!WT.use_tool(src, user, amount = 1))
 			return
 
 		user.visible_message("<span class='notice'>\The [user] welds the barrel of \the [src] into place.</span>")

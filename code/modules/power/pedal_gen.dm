@@ -86,7 +86,7 @@
 		visible_message(SPAN("notice", "[pedaler] pedals \the [src]!"))
 		generator.Rotated()
 		pedaler.remove_nutrition(2.5)
-		pedaler.remove_hydration(0.5)
+		pedaler.remove_hydration(0.1)
 		pedaler.adjustHalLoss(1)
 		if(pedaler.getHalLoss() > 80)
 			to_chat(user, "You pushed yourself too hard.")

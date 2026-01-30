@@ -251,7 +251,7 @@ GLOBAL_VAR(station_gravity_generator)
 
 				playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 				var/obj/item/weldingtool/WT = I
-				if(!WT.use_tool(src, user, delay = 15 SECONDS, amount = 50))
+				if(!WT.use_tool(src, user, delay = 15 SECONDS, amount = 5))
 					return
 
 				if(QDELETED(src) || !user || broken_state != GRAV_NEEDS_WELDING)
