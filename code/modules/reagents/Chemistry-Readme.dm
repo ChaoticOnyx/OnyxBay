@@ -58,7 +58,7 @@ About the Holder:
 			Checks reagents and triggers any reactions that happen. Usually called automatically.
 
 		add_reagent(var/id, var/amount, var/data = null, var/safety = 0)
-			Adds [amount] ml of [id] reagent. [data] will be passed to reagent's mix_data() or initialize_data(). If [safety] is 0, handle_reactions() will be called. Returns 1 if successful, 0 otherwise.
+			Adds [amount] units of [id] reagent. [data] will be passed to reagent's mix_data() or initialize_data(). If [safety] is 0, handle_reactions() will be called. Returns 1 if successful, 0 otherwise.
 
 		remove_reagent(var/id, var/amount, var/safety = 0)
 			Ditto, but removes reagent. Returns 1 if successful, 0 otherwise.

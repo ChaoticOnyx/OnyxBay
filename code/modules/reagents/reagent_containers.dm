@@ -4,9 +4,9 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = null
 	w_class = ITEM_SIZE_SMALL
-	var/amount_per_transfer_from_this = 50
-	var/possible_transfer_amounts = "50;100;150;250;300"
-	var/volume = 0.3 LITERS
+	var/amount_per_transfer_from_this = 5
+	var/possible_transfer_amounts = "5;10;15;25;30"
+	var/volume = 30
 	var/label_text
 	var/can_be_splashed = FALSE
 	var/list/startswith // List of reagents to start with
@@ -80,7 +80,7 @@
 
 	var/trans = target.reagents.trans_to_obj(src, target:amount_per_transfer_from_this)
 	playsound(target, 'sound/effects/using/sink/fast_filling1.ogg', 75, TRUE)
-	to_chat(user, "<span class='notice'>You fill [src] with [trans] ml of the contents of [target].</span>")
+	to_chat(user, "<span class='notice'>You fill [src] with [trans] units of the contents of [target].</span>")
 	return 1
 
 /obj/item/reagent_containers/proc/standard_splash_mob(mob/user, mob/target) // This goes into afterattack
@@ -199,7 +199,7 @@
 
 	var/trans = reagents.trans_to(target, amount_per_transfer_from_this)
 	playsound(target, 'sound/effects/using/bottles/transfer1.ogg')
-	to_chat(user, "<span class='notice'>You transfer [trans] ml of the solution to \the [target].</span>")
+	to_chat(user, "<span class='notice'>You transfer [trans] units of the solution to \the [target].</span>")
 	return 1
 
 /obj/item/reagent_containers/do_surgery(mob/living/carbon/M, mob/living/user)

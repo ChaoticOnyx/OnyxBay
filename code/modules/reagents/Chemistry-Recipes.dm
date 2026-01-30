@@ -172,7 +172,7 @@
 /datum/chemical_reaction/lube
 	name = "Space Lube"
 	result = /datum/reagent/lube
-	required_reagents = list(/datum/reagent/water = 3, /datum/reagent/silicon = 1, /datum/reagent/acetone = 1)
+	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/silicon = 1, /datum/reagent/acetone = 1)
 	result_amount = 3
 	log_is_important = 1
 

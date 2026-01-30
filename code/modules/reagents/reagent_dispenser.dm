@@ -39,7 +39,7 @@
 	. += SPAN_NOTICE("It contains:")
 	if(reagents && reagents.reagent_list.len)
 		for(var/datum/reagent/R in reagents.reagent_list)
-			. += SPAN_NOTICE("[R.volume] ml of [R.name]")
+			. += SPAN_NOTICE("[R.volume] units of [R.name]")
 	else
 		. += SPAN_NOTICE("Nothing.")
 
@@ -96,7 +96,7 @@
 	desc = "A tank containing water."
 	icon_state = "watertank"
 	amount_per_transfer_from_this = 0.1 LITERS
-	possible_transfer_amounts = "100;250;500;1000"
+	possible_transfer_amounts = "10;25;50;100;250;500;1000"
 	initial_capacity = 50 LITERS
 	initial_reagent_types = list(/datum/reagent/water = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
@@ -275,8 +275,8 @@
 	name = "compost tank"
 	desc = "A tank containing compost. Can be used to recycle excessive seeds."
 	icon_state = "compost"
-	amount_per_transfer_from_this = 100
-	possible_transfer_amounts = "50;100;250;500"
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "5;10;25;50;100;250;500"
 	initial_capacity = 5 LITERS
 	initial_reagent_types = list(/datum/reagent/toxin/fertilizer/compost = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
@@ -288,7 +288,7 @@
 	if(istype(W,/obj/item/seeds))
 		user.visible_message("[user] places [W] into \the [src].", \
 							 "You place [W] into \the [src].")
-		reagents.add_reagent(/datum/reagent/toxin/fertilizer/compost, 30)
+		reagents.add_reagent(/datum/reagent/toxin/fertilizer/compost, 10)
 		qdel(W)
 	return ..()
 
@@ -400,7 +400,7 @@
 	name = "beer keg"
 	desc = "A beer keg."
 	icon_state = "beertankTEMP"
-	amount_per_transfer_from_this = 100
+	amount_per_transfer_from_this = 10
 	initial_reagent_types = list(/datum/reagent/ethanol/beer = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_slowdown = PULL_SLOWDOWN_MEDIUM
@@ -410,7 +410,7 @@
 	name = "Virus Food Dispenser"
 	desc = "A dispenser of virus food."
 	icon_state = "virusfoodtank"
-	amount_per_transfer_from_this = 100
+	amount_per_transfer_from_this = 10
 	anchored = 1
 	initial_reagent_types = list(/datum/reagent/nutriment/virus_food = 1)
 
@@ -418,6 +418,6 @@
 	name = "Sulphuric Acid Dispenser"
 	desc = "A dispenser of acid for industrial processes."
 	icon_state = "acidtank"
-	amount_per_transfer_from_this = 50
+	amount_per_transfer_from_this = 10
 	anchored = 1
 	initial_reagent_types = list(/datum/reagent/acid = 1)
