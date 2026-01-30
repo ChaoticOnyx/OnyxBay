@@ -669,7 +669,7 @@
 
 		if("seal")
 			if(!opened)
-				if(!I.use_tool(src, user, amount = 30))
+				if(!I.use_tool(src, user, amount = 3))
 					return
 
 				sealed = TRUE
@@ -682,7 +682,7 @@
 
 		if("unseal")
 			to_chat(user,SPAN_NOTICE("You start unsealing the assembly carefully..."))
-			if(!I.use_tool(src, user, amount = 30))
+			if(!I.use_tool(src, user, amount = 3))
 				return
 
 			for(var/obj/item/integrated_circuit/IC in assembly_components)

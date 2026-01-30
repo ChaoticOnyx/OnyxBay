@@ -29,7 +29,7 @@
 	into the smoke clouds when activated. The reagents are consumed when the smoke is made."
 	ext_cooldown = 1
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
-	volume = 0.5 LITERS
+	volume = 1 LITER
 
 	complexity = 20
 	cooldown_per_use = 1 SECONDS
@@ -74,7 +74,7 @@
 	name = "integrated hypo-injector"
 	desc = "This scary looking thing is able to pump liquids into, or suck liquids out of, whatever it's pointed at."
 	icon_state = "injector"
-	extended_desc = "This autoinjector can push up to 30ml of reagents into another container or someone else outside of the machine. The target \
+	extended_desc = "This autoinjector can push up to 30 units of reagents into another container or someone else outside of the machine. The target \
 	must be adjacent to the machine, and if it is a person, they cannot be wearing thick clothing. Negative given amounts makes the injector suck out reagents instead."
 
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
@@ -244,7 +244,7 @@
 	desc = "Moves liquids safely inside a machine, or even nearby it."
 	icon_state = "reagent_pump"
 	extended_desc = "This is a pump which will move liquids from the source ref to the target ref. The third pin determines \
-	how much liquid is moved per pulse, between 0 and 500ml. The pump can move reagents to any open container inside the machine, or \
+	how much liquid is moved per pulse, between 0 and 50 units. The pump can move reagents to any open container inside the machine, or \
 	outside the machine if it is adjacent to the machine."
 
 	complexity = 8
@@ -253,7 +253,7 @@
 	outputs = list()
 	activators = list("transfer reagents" = IC_PINTYPE_PULSE_IN, "on transfer" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
-	var/transfer_amount = 100
+	var/transfer_amount = 10
 	var/direction_mode = IC_REAGENTS_INJECT
 	power_draw_per_use = 10
 
@@ -265,7 +265,7 @@
 	else
 		direction_mode = IC_REAGENTS_INJECT
 	if(isnum_safe(new_amount))
-		new_amount = Clamp(new_amount, 0, 500)
+		new_amount = Clamp(new_amount, 0, 50)
 		transfer_amount = new_amount
 
 /obj/item/integrated_circuit/reagent/pump/do_work()
@@ -303,7 +303,7 @@
 /obj/item/integrated_circuit/reagent/storage
 	cooldown_per_use = 1
 	name = "reagent storage"
-	desc = "Stores liquid inside the device away from electrical components. It can store up to 60ml."
+	desc = "Stores liquid inside the device away from electrical components. It can store up to 60u."
 	icon_state = "reagent_storage"
 	extended_desc = "This is effectively an internal beaker."
 
@@ -331,7 +331,7 @@
 /obj/item/integrated_circuit/reagent/storage/big
 	name = "big reagent storage"
 	icon_state = "reagent_storage_big"
-	desc = "Stores liquid inside the device away from electrical components. Can store up to 180ml."
+	desc = "Stores liquid inside the device away from electrical components. Can store up to 180u."
 
 	volume = 1.8 LITERS
 
@@ -340,7 +340,7 @@
 
 /obj/item/integrated_circuit/reagent/storage/cryo
 	name = "cryo reagent storage"
-	desc = "Stores liquid inside the device away from electrical components. It can store up to 60ml. This will also prevent reactions."
+	desc = "Stores liquid inside the device away from electrical components. It can store up to 60u. This will also prevent reactions."
 	icon_state = "reagent_storage_cryo"
 	extended_desc = "This is effectively an internal cryo beaker."
 
@@ -350,7 +350,7 @@
 
 /obj/item/integrated_circuit/reagent/storage/grinder
 	name = "reagent grinder"
-	desc = "This is a reagent grinder. It accepts a ref to something, and refines it into reagents. It can store up to 1000ml."
+	desc = "This is a reagent grinder. It accepts a ref to something, and refines it into reagents. It can store up to 100ul."
 	icon_state = "blender"
 	extended_desc = ""
 	inputs = list(

@@ -372,7 +372,7 @@
 	..()
 	if(isWelder(O) && !build_step)
 		var/obj/item/weldingtool/WT = O
-		if(!WT.use_tool(src, user, amount = 10))
+		if(!WT.use_tool(src, user, amount = 1))
 			return
 
 		build_step = 1

@@ -185,7 +185,7 @@
 				busy = 1
 				if(do_after(src, 30, A))
 					visible_message("<span class='notice'>[src] fertilizes \the [A].</span>")
-					T.reagents.add_reagent(/datum/reagent/ammonia, 100)
+					T.reagents.add_reagent(/datum/reagent/ammonia, 10)
 		busy = 0
 		action = ""
 		update_icons()
@@ -198,7 +198,7 @@
 		visible_message("<span class='notice'>[src] starts refilling its tank from \the [A].</span>")
 		busy = 1
 		while(do_after(src, 10) && tank.reagents.total_volume < tank.reagents.maximum_volume)
-			tank.reagents.add_reagent(/datum/reagent/water, 100)
+			tank.reagents.add_reagent(/datum/reagent/water, 10)
 			if(prob(5))
 				playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 		busy = 0

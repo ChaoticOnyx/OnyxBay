@@ -45,7 +45,7 @@
 	. = ..()
 
 	create_reagents()
-	reagents.add_reagent(/datum/reagent/uranium, ore.result_amount * 10, null, FALSE)
+	reagents.add_reagent(/datum/reagent/uranium, ore.result_amount, null, FALSE)
 
 /obj/item/ore/iron
 	ore = /ore/hematite

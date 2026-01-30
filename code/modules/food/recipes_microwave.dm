@@ -1171,7 +1171,7 @@ I said no!
 	/datum/reagent/drink/milk = 5,
 	/datum/reagent/nutriment/flour = 15,
 	/datum/reagent/sugar = 15,
-	/datum/reagent/nutriment/protein/egg = 9
+	/datum/reagent/nutriment/protein/egg = 9,
 	/datum/reagent/nutriment/coco = 5
 	)
 	result = /obj/item/reagent_containers/food/sliceable/chocolatecake
@@ -1182,7 +1182,7 @@ I said no!
 	/datum/reagent/drink/milk = 5,
 	/datum/reagent/nutriment/flour = 15,
 	/datum/reagent/sugar = 15,
-	/datum/reagent/nutriment/protein/egg = 9
+	/datum/reagent/nutriment/protein/egg = 9,
 	/datum/reagent/nutriment/coco = 5
 	)
 	result = /obj/item/reagent_containers/food/sliceable/choccherrycake

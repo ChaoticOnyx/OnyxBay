@@ -5,7 +5,7 @@
 	density = 1
 	anchored = 1
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
-	volume = 2.5 LITERS
+	volume = 1 LITER
 
 	var/mechanical = 1         // Set to 0 to stop it from drawing the alert lights.
 	var/vertical_shift = 0     // As we want plants to grow from the visual center of soil trays
@@ -168,7 +168,7 @@
 /obj/machinery/portable_atmospherics/hydroponics/Initialize()
 	. = ..()
 	temp_chem_holder = new()
-	temp_chem_holder.create_reagents(100)
+	temp_chem_holder.create_reagents(1 LITER)
 	temp_chem_holder.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 	create_reagents(2 LITERS)
 	if(mechanical)
