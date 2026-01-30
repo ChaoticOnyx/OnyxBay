@@ -66,7 +66,7 @@
 				create_vendomat()
 
 /obj/machinery/vending_frame/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user)
-	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 50))
+	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
 		return
 
 	if(QDELETED(src) || !user)

@@ -88,7 +88,7 @@ var/bomb_set
 				if(isWelder(O))
 					var/obj/item/weldingtool/WT = O
 					user.visible_message("[user] starts cutting loose the anchoring bolt covers on [src].", "You start cutting loose the anchoring bolt covers with [O]...")
-					if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 50))
+					if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 						return FALSE
 
 					if(QDELETED(src) || !user )
@@ -112,7 +112,7 @@ var/bomb_set
 				if(isWelder(O))
 					var/obj/item/weldingtool/WT = O
 					user.visible_message("[user] starts cutting apart the anchoring system sealant on [src].", "You start cutting apart the anchoring system's sealant with [O]...")
-					if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 50))
+					if(!WT.use_tool(src, user, delay = 4 SECONDS, amount = 5))
 						return FALSE
 
 					if(QDELETED(src) || !user)

@@ -16,7 +16,7 @@
 	var/state = STAGE_CABLE
 
 /obj/machinery/constructable_frame/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user, amount=1)
-	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 50))
+	if(!WT.use_tool(src, user, delay = 2 SECONDS, amount = 5))
 		return
 
 	if(QDELETED(src) || !user)

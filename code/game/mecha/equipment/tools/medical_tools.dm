@@ -226,7 +226,7 @@
 	var/list/known_reagents
 	var/list/processed_reagents
 	var/max_syringes = 10
-	var/max_volume = 750 //max reagent volume
+	var/max_volume = 75 //max reagent volume
 	var/synth_speed = 5 //[num] reagent units per cycle
 	energy_drain = 2 KILO WATTS // Synthetises things, so it's quite power-hungry
 	var/mode = 0 //0 - fire syringe, 1 - analyze reagents.

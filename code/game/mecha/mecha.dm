@@ -865,7 +865,7 @@
 	else if(isWelder(W) && user.a_intent != I_HURT)
 		var/obj/item/weldingtool/WT = W
 
-		if(!WT.use_tool(src, user, amount = 10))
+		if(!WT.use_tool(src, user, amount = 1))
 			return
 
 		if(hasInternalDamage(MECHA_INT_TANK_BREACH))

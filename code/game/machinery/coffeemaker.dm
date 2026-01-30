@@ -135,7 +135,7 @@
 	CutOverlays(coffeepot_full)
 	CutOverlays(coffeepot_halffull)
 	if(coffeepot)
-		if(coffeepot.reagents.total_volume >= 0.45 LITERS)
+		if(coffeepot.reagents.total_volume >= 70)
 			AddOverlays(coffeepot_full)
 		else if(coffeepot.reagents.total_volume > 0)
 			AddOverlays(coffeepot_halffull)
@@ -478,7 +478,7 @@
 		return
 
 	operate_for(brew_time)
-	coffeepot.reagents.add_reagent(/datum/reagent/caffeine/coffee, 0.6 LITERS)
+	coffeepot.reagents.add_reagent(/datum/reagent/caffeine/coffee, 120)
 	coffee.Cut(1, 2) //remove the first item from the list
 	coffee_amount--
 	update_icon()

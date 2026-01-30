@@ -62,10 +62,10 @@
 		F = new(T, metal)
 		F.amount = amount
 		if(!metal)
-			F.create_reagents(100)
+			F.create_reagents(10)
 			if(reagents)
 				for(var/datum/reagent/R in reagents.reagent_list)
-					F.reagents.add_reagent(R.type, 10, safety = 1) //added safety check since reagents in the foam have already had a chance to react
+					F.reagents.add_reagent(R.type, 1, safety = 1) //added safety check since reagents in the foam have already had a chance to react
 
 	set_next_think(world.time + 1 SECOND)
 
@@ -115,13 +115,13 @@
 		F.amount = amount
 
 		if(!metal) // don't carry other chemicals if a metal foam
-			F.create_reagents(100)
+			F.create_reagents(10)
 
 			if(carried_reagents)
 				for(var/id in carried_reagents)
-					F.reagents.add_reagent(id, 10, safety = 1) //makes a safety call because all reagents should have already reacted anyway
+					F.reagents.add_reagent(id, 1, safety = 1) //makes a safety call because all reagents should have already reacted anyway
 			else
-				F.reagents.add_reagent(/datum/reagent/water, 10, safety = 1)
+				F.reagents.add_reagent(/datum/reagent/water, 1, safety = 1)
 
 // wall formed by metal foams, dense and opaque, but easy to break
 
