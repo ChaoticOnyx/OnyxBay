@@ -649,7 +649,7 @@ var/list/global/slot_flags_enumeration = list(
 
 /obj/item/proc/eyestab(mob/living/carbon/M, mob/living/carbon/user)
 	if(is_pacifist(user))
-		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("You're a pacifist! You don't want to hurt [M]..."))
 		return
 
 	var/mob/living/carbon/human/H = M

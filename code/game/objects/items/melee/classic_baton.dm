@@ -15,12 +15,8 @@
 	pickup_sound = SFX_PICKUP_CROWBAR
 
 /obj/item/melee/classic_baton/attack(mob/M as mob, mob/living/user as mob)
-	if(is_pacifist(user))
-		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
-		return
-
-	if ((MUTATION_CLUMSY in user.mutations) && prob(50))
-		to_chat(user, "<span class='warning'>You club yourself over the head.</span>")
+	if((MUTATION_CLUMSY in user.mutations) && prob(50))
+		to_chat(user, SPAN_WARNING("You club yourself over the head."))
 		user.Weaken(3 * force)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user

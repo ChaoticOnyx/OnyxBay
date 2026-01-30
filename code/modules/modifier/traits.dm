@@ -143,10 +143,10 @@
 
 /datum/modifier/trait/pacifism
 	name = "Pacifism"
-	desc = "You can't attack!"
+	desc = "You can't hurt people!"
 
-/datum/modifier/trait/pacifism/on_applied()
-	holder.a_intent_change(I_HELP)
+	on_created_text = SPAN_WARNING("You feel disgusted by the thought of hurting anyone.")
+	on_expired_text = SPAN_NOTICE("Suddenly, you think hurting people is fine, actually.")
 
 /datum/modifier/trait/cold_resist
 	name = "Cold Resistance"

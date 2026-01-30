@@ -56,13 +56,20 @@
 		. += "\The [src] is set for instant detonation."
 
 /obj/item/grenade/attack_self(mob/user)
-	if(!active)
-		if(clown_check(user)&&!is_pacifist(user))
-			activate(user)
-			add_fingerprint(user)
-			if(iscarbon(user))
-				var/mob/living/carbon/C = user
-				C.throw_mode_on()
+	if(active)
+		return
+
+	// Yes, this means pacifists can't even use cleaner, foam, smoke, etc. grenades. Feature, not a bug, I say.
+	if(is_pacifist(user))
+		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("Oh no... This thing could hurt a lot of people! You can't!"))
+		return
+
+	if(clown_check(user))
+		activate(user)
+		add_fingerprint(user)
+		if(iscarbon(user))
+			var/mob/living/carbon/C = user
+			C.throw_mode_on()
 
 /obj/item/grenade/proc/activate(mob/user)
 	if(broken)

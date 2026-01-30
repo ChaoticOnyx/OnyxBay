@@ -35,8 +35,9 @@
 						sleep(rand(2,4))
 
 	if(is_pacifist(user))
-		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("You're a pacifist! You don't want to hurt [M]..."))
 		return
+
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))              //What if he's a clown?
 		to_chat(M, "<span class='warning'>You accidentally slam yourself with the [src]!</span>")
 		M.Weaken(1)

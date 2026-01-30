@@ -42,18 +42,18 @@ avoid code duplication. This includes items that may sometimes act as a standard
 //I would prefer to rename this attack_as_weapon(), but that would involve touching hundreds of files.
 /obj/item/proc/attack(mob/living/M, mob/living/user, target_zone)
 	if(is_pacifist(user))
-		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("You're a pacifist! You don't want to hurt [M]..."))
 		return
 
 	if(!force || (item_flags & ITEM_FLAG_NO_BLUDGEON))
-		return 0
+		return FALSE
 	if(M == user && user.a_intent != I_HURT)
-		return 0
+		return FALSE
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.blocking && (world.time - H.last_block) > 15)
 			to_chat(user, SPAN("warning", "You can't attack while blocking!"))
-			return 0
+			return FALSE
 
 	//////////Logging////////
 	if(!no_attack_log)
@@ -63,7 +63,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	user.setClickCooldown(update_attack_cooldown())
 	user.do_attack_animation(M)
 	if(!user.aura_check(AURA_TYPE_WEAPON, src, user))
-		return 0
+		return FALSE
 
 	var/hit_zone = M.resolve_item_attack(src, user, target_zone)
 	if(user.a_intent != I_GRAB)
@@ -72,7 +72,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	else
 		apply_hit_effect(M, user, target_zone)
 
-	return 1
+	return TRUE
 
 //Called when a weapon is used to make a successful melee attack on a mob. Returns the blocked result
 /obj/item/proc/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)

@@ -220,15 +220,15 @@
 		return FALSE
 
 	if(!prob(user.client?.get_luck_for_type(LUCK_CHECK_COMBAT)))
-		show_splash_text(user, "Gun misfires!", SPAN_DANGER("Your Gun misfires!"))
+		show_splash_text(user, "Gun misfires!", SPAN_DANGER("Your gun misfires!"))
 		return
 
 	var/mob/living/M = user
 	if(is_pacifist(user))
-		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
-		return 0
+		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("No way! This weapon could seriously hurt somebody and you're a pacifist!"))
+		return FALSE
 	if(MUTATION_HULK in M.mutations)
-		to_chat(M, "<span class='danger'>Your fingers are much too large for the trigger guard!</span>")
+		to_chat(M, SPAN_DANGER("Your fingers are much too large for the trigger guard!"))
 		return FALSE
 
 	if(safety())
@@ -240,14 +240,14 @@
 			if(process_projectile(P, user, user, pick(BP_L_FOOT, BP_R_FOOT)))
 				handle_post_fire(user, user)
 				user.visible_message(
-					"<span class='danger'>\The [user] shoots \himself in the foot with \the [src]!</span>",
-					"<span class='danger'>You shoot yourself in the foot with \the [src]!</span>"
+					SPAN_DANGER("\The [user] shoots \himself in the foot with \the [src]!"),
+					SPAN_DANGER("You shoot yourself in the foot with \the [src]!")
 					)
 				M.drop_active_hand()
 		else
 			handle_click_empty(user)
 		return FALSE
-	return 1
+	return TRUE
 
 /obj/item/gun/emp_act(severity)
 	for(var/obj/O in contents)
@@ -293,7 +293,7 @@
 			to_chat(firer, SPAN_WARNING("[src] is not ready to fire again!"))
 		return
 
-	// Handling heat now		
+	// Handling heat now
 	if(!heat_amount && heat_per_fire != 0 )
 		set_next_think(world.time + 1 SECOND)
 		heat_amount += heat_per_fire

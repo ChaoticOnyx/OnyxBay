@@ -109,7 +109,7 @@
 		return
 
 	if(is_pacifist(user))
-		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("You're a pacifist! You don't want to hurt [victim]..."))
 		return
 
 	var/aim = check_aim(user.zone_sel.selecting)
