@@ -283,7 +283,7 @@
 	if(!reagents.total_volume || !target_vessel.reagents.total_volume)
 		return TRUE
 
-	var/transfer_amount = rand(5, 25) // milliliters
+	var/transfer_amount = rand(1, 5)
 
 	reagents.remove_any(transfer_amount)
 	target_vessel.reagents.remove_any(transfer_amount)
