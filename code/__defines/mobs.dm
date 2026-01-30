@@ -400,12 +400,12 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 #define MARKING_TARGET_HAIR 1 // Draw a datum/sprite_accessory/marking to the mob's hair, eg. color fades
 #define MARKING_TARGET_HEAD 2 // Draw a datum/sprite_accessory/marking to the mob's head after their hair, eg. ears, horns (To Be Implemented since tajarans dropping ears because of radiation is cringe)
 
-#define STOMACH_FULLNESS_SUPER_LOW  25
-#define STOMACH_FULLNESS_LOW        125
-#define STOMACH_FULLNESS_MEDIUM     250
-#define STOMACH_FULLNESS_HIGH       425
-#define STOMACH_FULLNESS_SUPER_HIGH 550
-#define STOMACH_FULLNESS_CAP        800
+#define STOMACH_FULLNESS_SUPER_LOW  2.5
+#define STOMACH_FULLNESS_LOW        12.5
+#define STOMACH_FULLNESS_MEDIUM     25
+#define STOMACH_FULLNESS_HIGH       42.5
+#define STOMACH_FULLNESS_SUPER_HIGH 55
+#define STOMACH_FULLNESS_CAP        80
 
 // Slim people
 #define STOMACH_CAPACITY_LOW    0.75
@@ -415,11 +415,11 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 #define STOMACH_CAPACITY_HIGH   1.45
 
 #define HYDRATION_NONE 0
-#define HYDRATION_LOW 200
-#define HYDRATION_NORMAL 500
-#define HYDRATION_HIGH 900
-#define HYDRATION_SUPER 1400
-#define HYDRATION_LIMIT 2000
+#define HYDRATION_LOW 20
+#define HYDRATION_NORMAL 50
+#define HYDRATION_HIGH 90
+#define HYDRATION_SUPER 140
+#define HYDRATION_LIMIT 200
 
 #define MOUTH_CAPACITY 5
 
