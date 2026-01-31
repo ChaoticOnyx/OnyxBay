@@ -51,7 +51,7 @@
 			spam_flag = 0
 	return
 
-/obj/item/bikehorn/vuvuzela/traitor 
+/obj/item/bikehorn/vuvuzela/traitor
 
 /obj/item/bikehorn/vuvuzela/traitor/attack_self(mob/user)
 	if (spam_flag == 0)
@@ -76,7 +76,6 @@
 
 //Ha-ha-ha
 /obj/item/device/clowntaperecorder
-	var/honk_sound = 'sound/items/sitcom_laugh.ogg'
 	name = "clown taperecorder"
 	desc = "A funny-looking tiny taperecorder. It smells like bananas."
 	icon = 'icons/obj/device.dmi'
@@ -89,43 +88,50 @@
 	mod_handy = 0.5
 	throw_range = 15
 	attack_verb = list("HONKED")
-	var/spam_flag = 0
-	var/active = FALSE
-	
-/obj/item/device/clowntaperecorder/attack_self(mob/user as mob)
-	if(spam_flag)
-		to_chat(user, "<span class='warning'>The tape recorder needs a moment to rewind.</span>")
-		return
-	spam_flag = 1
-	playsound(src.loc, honk_sound, 100, 0)
-	src.add_fingerprint(user)
 
-	active = !active
-	if(active)
-		icon_state = "stereo_playing"
-	else
-		icon_state = "stereo"
-		
+	var/spam_flag = FALSE
+	var/spam_cooldown = 30 SECONDS
+
+	var/current_honk_sound = 1
+	var/static/list/honk_sounds = list(
+		'sound/items/sitcom_laugh.ogg',
+		'sound/items/ba_dum_tss.ogg'
+	)
+
+/obj/item/device/clowntaperecorder/attack_self(mob/user)
+	if(spam_flag)
+		to_chat(user, SPAN("notice", "\The [src] needs a moment to rewind."))
+		return
+
+	spam_flag = TRUE
+	playsound(loc, honk_sounds[current_honk_sound], 100, TRUE)
+	add_fingerprint(user)
 	update_icon()
 
-	spawn(30)
-		if(active)
-			active = FALSE
-			icon_state = "stereo"
-			desc = initial(desc)
-		spam_flag = 0
+	set_next_think(world.time + spam_cooldown)
+	return
+
+/obj/item/device/clowntaperecorder/think()
+	spam_flag = FALSE
+	update_icon()
+	return
+
+/obj/item/device/clowntaperecorder/on_update_icon()
+	icon_state = (spam_flag ? "[initial(icon_state)]_playing" : initial(icon_state))
 
 /obj/item/device/clowntaperecorder/verb/change_sound()
-	set name = "Change sound"
-	set category = "IC"
+	set name = "Change Taperecorder Sound"
+	set category = "Object"
 	set src in usr
 
-	var/mob/M = usr
-
-	if(M.stat || M.incapacitated())
+	if(!isliving(usr))
+		to_chat(usr, SPAN("warning", "You can't do that."))
 		return
 
-	if(honk_sound == 'sound/items/sitcom_laugh.ogg')
-		honk_sound = 'sound/items/ba_dum_tss.ogg'
-	else
-		honk_sound = 'sound/items/sitcom_laugh.ogg'
+	var/mob/living/L = usr
+
+	if(L.incapacitated())
+		return
+
+	current_honk_sound = (current_honk_sound == length(honk_sounds) ? 1 : current_honk_sound + 1)
+	return
