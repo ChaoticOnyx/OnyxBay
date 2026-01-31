@@ -11,7 +11,7 @@
 	return list(
 		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/messenger/tox, /obj/item/storage/backpack/satchel/tox)),
 		/obj/item/clothing/under/rank/scientist,
-		/obj/item/clothing/suit/storage/toggle/labcoat,
+		/obj/item/clothing/suit/storage/toggle/labcoat/science,
 		/obj/item/clothing/shoes/white,
 		/obj/item/device/radio/headset/headset_sci,
 		/obj/item/clothing/glasses/hud/standard/science,
@@ -32,7 +32,7 @@
 	return list(
 		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/messenger/tox, /obj/item/storage/backpack/satchel/tox)),
 		/obj/item/clothing/under/rank/scientist,
-		/obj/item/clothing/suit/storage/toggle/labcoat,
+		/obj/item/clothing/suit/storage/toggle/labcoat/science,
 		/obj/item/clothing/shoes/white,
 		/obj/item/device/radio/headset/headset_sci,
 		/obj/item/clothing/glasses/hud/standard/science,
