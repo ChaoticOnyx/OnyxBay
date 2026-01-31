@@ -39,7 +39,6 @@
 		/obj/item/clothing/suit/armor/vest/hos_heavy,
 		/obj/item/clothing/suit/armor/hos,
 		/obj/item/clothing/suit/armor/hos/jensen,
-		/obj/item/clothing/shoes/swat
 	)
 
 /obj/item/storage/garment/warden
