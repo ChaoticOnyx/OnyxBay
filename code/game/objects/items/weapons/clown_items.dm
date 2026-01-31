@@ -115,9 +115,6 @@
 	spam_flag = FALSE
 	return
 
-/obj/item/device/clowntaperecorder/on_update_icon()
-	icon_state = (spam_flag ? "[initial(icon_state)]_playing" : initial(icon_state))
-
 /obj/item/device/clowntaperecorder/verb/change_sound()
 	set name = "Change Taperecorder Sound"
 	set category = "Object"
