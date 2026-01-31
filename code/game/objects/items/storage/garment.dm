@@ -64,7 +64,6 @@
 	desc = "A bag for storing multiple clothig items in a better and convenient way! This one belongs to the detective."
 
 	startswith = list(
-		/obj/item/clothing/glasses/hud/standard/thermal,
 		/obj/item/clothing/head/det,
 		/obj/item/clothing/head/det/grey,
 		/obj/item/clothing/under/rank/det,
