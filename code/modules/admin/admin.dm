@@ -1560,3 +1560,26 @@ datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 		return
 
 	SSlobby.change_lobby_art(chosen_one)
+
+/datum/admins/proc/change_lobby_music()
+	set name = "Change Lobby music"
+	set category = "Server"
+
+	if(!check_rights(R_SERVER))
+		return
+
+	var/list/music_choices = list()
+	for (var/type in typesof(/lobby_music))
+		var/lobby_music/temp = new type()
+		music_choices[temp.title] = type
+
+	var/choice = input("Choose a new lobby music to set.", "Lobby Music") as null|anything in music_choices
+
+	if (choice)
+		var/lobby_music/M = music_choices[choice]
+		GLOB.lobby_music = new M()
+		message_admins("[key_name(usr)] has changed lobby music to [M.title].")
+		for(var/client/C in GLOB.clients)
+			if(C.mob && isnewplayer(C.mob))
+				sound_to(C, sound(null, repeat = 0, wait = 0, volume = 0, channel = 1))
+				C.playtitlemusic()
