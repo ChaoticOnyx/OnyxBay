@@ -943,6 +943,7 @@ About the new airlock wires panel:
 		wires = new /datum/wires/airlock(src)
 
 /obj/machinery/door/airlock/Initialize()
+	add_debris_element()
 	if(closeOtherId != null)
 		for(var/obj/machinery/door/airlock/A in world)
 			if(A.closeOtherId == closeOtherId && A != src)
