@@ -250,5 +250,5 @@
 	M.make_drugged(2)
 	M.add_chemical_effect(CE_PAINKILLER, 10)
 
-/datum/reagent/painkiller/add_user_effects(mob/living/carbon/M)
+/datum/reagent/painkiller/paracetamol/add_user_effects(mob/living/carbon/M)
 	return
