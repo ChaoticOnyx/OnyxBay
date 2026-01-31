@@ -1562,7 +1562,7 @@ datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 	SSlobby.change_lobby_art(chosen_one)
 
 /datum/admins/proc/change_lobby_music()
-	set name = "Change Lobby music"
+	set name = "Change Lobby Music"
 	set category = "Server"
 
 	if(!check_rights(R_SERVER))
