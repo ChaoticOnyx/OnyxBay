@@ -90,7 +90,7 @@
 	attack_verb = list("HONKED")
 
 	var/spam_flag = FALSE
-	var/spam_cooldown = 30 SECONDS
+	var/spam_cooldown = 10 SECONDS
 
 	var/current_honk_sound = 1
 	var/static/list/honk_sounds = list(
@@ -106,14 +106,13 @@
 	spam_flag = TRUE
 	playsound(loc, honk_sounds[current_honk_sound], 100, TRUE)
 	add_fingerprint(user)
-	update_icon()
+	flick("[initial(icon_state)]_playing", src)
 
 	set_next_think(world.time + spam_cooldown)
 	return
 
 /obj/item/device/clowntaperecorder/think()
 	spam_flag = FALSE
-	update_icon()
 	return
 
 /obj/item/device/clowntaperecorder/on_update_icon()
@@ -134,4 +133,5 @@
 		return
 
 	current_honk_sound = (current_honk_sound == length(honk_sounds) ? 1 : current_honk_sound + 1)
+	to_chat(L, SPAN("notice", "You press a tiny button on \the [src] and wonder what comes next."))
 	return
