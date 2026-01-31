@@ -106,7 +106,7 @@
 	spam_flag = TRUE
 	playsound(loc, honk_sounds[current_honk_sound], 100, TRUE)
 	add_fingerprint(user)
-	flick("[initial(icon_state)]_playing", src)
+	flick("[icon_state]_playing", src)
 
 	set_next_think(world.time + spam_cooldown)
 	return
