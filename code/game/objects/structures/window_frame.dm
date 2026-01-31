@@ -221,6 +221,7 @@
 	explosion_block = EXPLOSION_BLOCK_PROC
 	update_nearby_tiles(need_rebuild = TRUE)
 	update_nearby_icons()
+	add_debris_element()
 
 /obj/structure/window_frame/add_debris_element()
 	AddElement(/datum/element/debris, DEBRIS_GLASS, -10, 5)

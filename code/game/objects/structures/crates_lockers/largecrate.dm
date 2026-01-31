@@ -11,6 +11,7 @@
 
 /obj/structure/largecrate/Initialize()
 	. = ..()
+	add_debris_element()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/largecrate/LateInitialize(mapload, ...)

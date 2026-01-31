@@ -38,7 +38,7 @@ GLOBAL_LIST_INIT(all_addictions, init_addictions())
 	var/min_chem_dose_required = 2
 
 	/// Detox duration required to get rid of this addiction (abstinence from CAUSE reagent).
-	var/detox_time_required = 15 MINUTES
+	var/detox_time_required = 45 MINUTES
 
 	/// How much antagonists slow down satisfaction drain (0..1). Applied as: drain *= (1 - relief * antagonist_drain_reduction)
 	var/antagonist_drain_reduction = 0.45

@@ -52,10 +52,9 @@
 			climb_delay = 1.5 SECONDS
 
 	health += maxhealth - old_maxhealth
-	add_debris_element()
 
 /obj/structure/table/add_debris_element()
-	if(material.name == MATERIAL_WOOD || material.name == MATERIAL_DARKWOOD)
+	if(material?.name == MATERIAL_WOOD || material?.name == MATERIAL_DARKWOOD)
 		AddElement(/datum/element/debris, DEBRIS_WOOD, -10, 5)
 	else
 		AddElement(/datum/element/debris, DEBRIS_SPARKS, -10, 5)
@@ -94,6 +93,7 @@
 	update_icon()
 	update_desc()
 	update_material()
+	add_debris_element()
 
 /obj/structure/table/Destroy()
 	material = null

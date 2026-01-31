@@ -132,6 +132,7 @@
 
 	if(intact_closet && (z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 		GLOB.intact_station_closets.Add(src)
+	add_debris_element()
 
 	return INITIALIZE_HINT_LATELOAD
 

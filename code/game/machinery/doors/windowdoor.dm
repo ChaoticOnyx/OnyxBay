@@ -29,6 +29,7 @@
 	update_nearby_tiles()
 	update_icon()
 	hitsound = pick(SFX_GLASS_HIT)
+	add_debris_element()
 	add_think_ctx("hack_context", CALLBACK(src, nameof(.proc/on_hacked)), 0)
 
 /obj/machinery/door/window/examine(mob/user, infix)

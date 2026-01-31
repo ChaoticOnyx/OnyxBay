@@ -24,6 +24,7 @@
 		return INITIALIZE_HINT_QDEL
 
 	_apply_material(material)
+	add_debris_element()
 
 /obj/structure/barricade/material/add_debris_element()
 	if(material.name == MATERIAL_WOOD)
