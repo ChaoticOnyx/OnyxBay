@@ -35,6 +35,7 @@
 	item_state = "engalt_helm"
 	armor = list(melee = 80, bullet = 70, laser = 60, energy = 65, bomb = 35, bio = 100)
 	light_overlay = "helmet_light_dual_low"
+	rad_resist_type = /datum/rad_resist/suit_radiation
 
 /obj/item/clothing/suit/space/void/engineering/alt
 	name = "engineering hardsuit"
@@ -42,6 +43,7 @@
 	icon_state = "engalt_voidsuit"
 	item_state = "engalt_voidsuit"
 	armor = list(melee = 80, bullet = 70, laser = 60, energy = 65, bomb = 35, bio = 100)
+	rad_resist_type = /datum/rad_resist/suit_radiation
 
 /obj/item/clothing/suit/space/void/engineering/alt/New()
 	..()
