@@ -51,6 +51,7 @@
 		/datum/emote/blink,
 		/datum/emote/blink_rapidly,
 		/datum/emote/bow,
+		/datum/emote/burp,
 		/datum/emote/salute,
 		/datum/emote/flap,
 		/datum/emote/aflap,

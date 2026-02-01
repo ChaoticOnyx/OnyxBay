@@ -715,3 +715,25 @@
 	set name = "Whistle"
 	set category = "Emotes"
 	emote("whistle")
+
+/datum/emote/burp
+	key = "burp"
+
+	message_1p = "You burp."
+	message_3p = "burps."
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound = SFX_BURP
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/burp_emote
+
+/datum/emote/burp/get_sfx_volume()
+	return 40
+
+/mob/proc/burp_emote()
+	set name = "Burp"
+	set category = "Emotes"
+	emote("burp")

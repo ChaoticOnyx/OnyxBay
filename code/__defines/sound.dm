@@ -354,6 +354,7 @@
 #define SFX_SHOE_COVERS             "shoe_covers"
 #define SFX_GLASSES_CLINK           "glasses_clink"
 #define SFX_SUPERMATTER             "supermatter"
+#define SFX_BURP 					"burp"
 
 // FOOTSTEPS
 #define SFX_DISTANT_MOVEMENT        "distant_movement"
