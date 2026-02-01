@@ -22,11 +22,11 @@
 /obj/item/clothing/suit/armor/pcarrier/light/cheap
 	starting_accessories = list(/obj/item/clothing/accessory/armorplate)
 
-/obj/item/clothing/suit/armor/pcarrier/light/security
-	starting_accessories = list(/obj/item/clothing/accessory/armorplate, /obj/item/clothing/accessory/armor/tag/nt)
-
 /obj/item/clothing/suit/armor/pcarrier/medium
 	starting_accessories = list(/obj/item/clothing/accessory/armorplate/medium, /obj/item/clothing/accessory/legguards, /obj/item/clothing/accessory/armguards)
+
+/obj/item/clothing/suit/armor/pcarrier/medium/security
+	starting_accessories = list(/obj/item/clothing/accessory/armorplate/medium, /obj/item/clothing/accessory/armor/tag/nt)
 
 /obj/item/clothing/suit/armor/pcarrier/medium/nt
 	starting_accessories = list(/obj/item/clothing/accessory/armorplate/medium, /obj/item/clothing/accessory/legguards, /obj/item/clothing/accessory/armguards, /obj/item/clothing/accessory/armor/tag/nt)

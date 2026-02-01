@@ -50,6 +50,11 @@
 		return
 
 	var/dynamic_hydration_consumption = hydration_consumption
+
+	for(var/datum/modifier/mod in owner.modifiers)
+		if(!isnull(mod.metabolism_percent))
+			dynamic_hydration_consumption *= mod.metabolism_percent
+
 	switch(owner.hydration)
 		if(HYDRATION_NONE)
 			dynamic_hydration_consumption = 0
