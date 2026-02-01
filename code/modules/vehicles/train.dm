@@ -48,7 +48,9 @@
 		if(isturf(T))
 			A.Move(T)	//bump things away when hit
 
-	if(emagged)
+	var/mob/living/carbon/human/driver = load
+
+	if(emagged || (ishuman(driver) && driver.dizziness > 0))
 		if(istype(A, /mob/living))
 			var/mob/living/M = A
 			visible_message("<span class='warning'>[src] knocks over [M]!</span>")
