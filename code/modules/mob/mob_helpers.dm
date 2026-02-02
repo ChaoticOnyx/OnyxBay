@@ -403,11 +403,18 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			return 1
 	return 0
 
-/proc/is_pacifist(A)
-	if(istype(A, /mob/living))
-		var/mob/living/C = A
-		return HAS_TRAIT(C, TRAIT_PACIFISM)
-	return FALSE
+/proc/is_pacifist(mob/living/A)
+	if(!istype(A))
+		return FALSE
+	return HAS_TRAIT(A, TRAIT_PACIFISM)
+
+/proc/pacifist_can_interact(mob/living/user, mob/living/target, message = "You're a pacifist!")
+	if(!istype(user) || !istype(target))
+		return TRUE
+	if(is_pacifist(user) && target != user && (ishuman(target) || target.client))
+		user.show_splash_text(user, "you're a pacifist!", SPAN_WARNING(message))
+		return FALSE
+	return TRUE
 
 /proc/broadcast_security_hud_message(message, broadcast_source)
 	broadcast_hud_message(message, broadcast_source, GLOB.sec_hud_users, /obj/item/clothing/glasses/hud)

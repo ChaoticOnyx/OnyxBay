@@ -41,8 +41,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 
 //I would prefer to rename this attack_as_weapon(), but that would involve touching hundreds of files.
 /obj/item/proc/attack(mob/living/M, mob/living/user, target_zone)
-	if(is_pacifist(user) && user.a_intent != I_HELP && user.a_intent != I_GRAB && M != user && (ishuman(M) || M.client))
-		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("You're a pacifist! You don't want to hurt [M]..."))
+	if(user.a_intent != I_HELP && user.a_intent != I_GRAB && !pacifist_can_interact(user, M, "You're a pacifist! You don't want to hurt [M]..."))
 		return
 
 	if(!force || (item_flags & ITEM_FLAG_NO_BLUDGEON))

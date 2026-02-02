@@ -195,8 +195,7 @@
 	if(isnull(victim))
 		return FALSE
 
-	if(is_pacifist(user) && victim != user && (ishuman(victim) || victim.client))
-		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("No. You can't bring yourself to do this to [victim]..."))
+	if(!pacifist_can_interact(user, victim, "No. You can't bring yourself to do this to [victim]..."))
 		return FALSE
 
 	if(length(mobs_to_process) >= mob_capacity)

@@ -120,8 +120,7 @@
 	if(istype(G))	// handle grabbed mob
 		if(ismob(G.affecting))
 			var/mob/GM = G.affecting
-			if(is_pacifist(user) && (ishuman(GM) || GM.client))
-				show_splash_text(user, "you're a pacifist!", SPAN_WARNING("The disposal pipes will hurt [GM]... You can't."))
+			if(!pacifist_can_interact(user, GM, "The disposal pipes will hurt [GM]... You can't."))
 				return
 			for (var/mob/V in viewers(usr))
 				V.show_message("[usr] starts putting [GM.name] into the disposal.", 3)
@@ -181,8 +180,7 @@
 	else if(!is_type_in_list(AM, allowed_objects))
 		return
 
-	if(is_pacifist(user) && M != user && (ishuman(M) || M.client))
-		show_splash_text(user, "you're a pacifist!", SPAN_WARNING("The disposal pipes will hurt [M]... You can't."))
+	if(!pacifist_can_interact(user, M, "The disposal pipes will hurt [M]... You can't."))
 		return
 
 	// Checks completed, start inserting

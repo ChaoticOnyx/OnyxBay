@@ -37,8 +37,7 @@
 
 	..()
 
-	if(is_pacifist(M) && M.a_intent == I_HURT && M != src && (ishuman(src) || client))
-		M.show_splash_text(M, "you're a pacifist!", SPAN_WARNING("You're a pacifist! You don't want to hurt [src]..."))
+	if(M.a_intent == I_HURT && !pacifist_can_interact(M, src, "You're a pacifist! You don't want to hurt [src]..."))
 		return
 
 	// Should this all be in Touch()?
