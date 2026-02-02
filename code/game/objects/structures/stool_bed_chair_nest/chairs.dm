@@ -152,6 +152,9 @@
 		if(H.restrained())
 			return
 
+		if(!pacifist_can_interact(usr, buckled_mob, "Folding the chair now would make [buckled_mob] fall and get hurt... You can't."))
+			return
+
 		fold(usr)
 
 /obj/structure/bed/chair/proc/fold(mob/user)
