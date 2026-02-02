@@ -38,6 +38,9 @@
 					user.pick_or_drop(B)
 		SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
 	if(stage == STAGE_READY && !active && clown_check(user))
+		if(is_pacifist(user))
+			show_splash_text(user, "you're a pacifist!", SPAN_WARNING("Oh no... Who knows what's inside this thing? It could hurt a lot of people! You can't!"))
+			return
 		if(safety_pin)
 			user.pick_or_drop(safety_pin)
 			safety_pin = null
