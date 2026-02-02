@@ -526,6 +526,11 @@
 	var/obj/item/organ/internal/eyes/eyes = internal_organs_by_name[BP_EYES]
 	if(!istype(eyes))
 		return
+	var/sightlights_active = FALSE
+	for(var/obj/item/organ_module/active/sightlights/S in eyes.organ_modules)
+		if(S.lights_on)
+			sightlights_active = TRUE
+			break
 
 	var/list/glow = eyes.get_active_glow()
 	if(glow && glow["rgb"])
@@ -535,7 +540,8 @@
 		var/g = glow["rgb"][2]
 		var/b = glow["rgb"][3]
 		change_eye_color(r, g, b)
-		set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(r, g, b))
+		if(!sightlights_active)
+			set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(r, g, b))
 		hud_eye_glow_active = TRUE
 		hud_eye_glow_color = light_color
 		return
@@ -545,7 +551,8 @@
 		if(!hud_eye_glow_saved)
 			hud_eye_glow_saved = list(r_eyes, g_eyes, b_eyes)
 		var/list/g = goggles.matrix.eye_glow_rgb
-		set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(g[1], g[2], g[3]))
+		if(!sightlights_active)
+			set_light(0.2, 0.1, hud_eye_glow_range, l_color = rgb(g[1], g[2], g[3]))
 		hud_eye_glow_active = TRUE
 		hud_eye_glow_color = light_color
 		return
@@ -555,7 +562,7 @@
 		hud_eye_glow_saved = null
 	else if(eyes.eye_colour)
 		change_eye_color(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3])
-	if(hud_eye_glow_active)
+	if(hud_eye_glow_active && !sightlights_active)
 		set_light(0)
 	hud_eye_glow_active = FALSE
 	hud_eye_glow_color = null
