@@ -10,6 +10,7 @@
 	name = "\improper AI core"
 	icon = 'icons/mob/silicon/ai.dmi'
 	icon_state = "0"
+	w_class = ITEM_SIZE_NO_CONTAINER
 	var/state = AI_STAGE_FRAME
 	var/datum/ai_laws/laws = new /datum/ai_laws/nanotrasen
 	var/obj/item/circuitboard/circuit = null

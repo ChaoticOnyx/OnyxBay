@@ -222,6 +222,8 @@
 	return ..()
 
 /obj/structure/synthesized_instrument/attack_hand(mob/user)
+	if(istype(user, /mob/living) && user.stat != CONSCIOUS)
+		return
 	src.interact(user)
 
 

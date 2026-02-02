@@ -163,7 +163,7 @@
 		message_data["message"] = ""
 		return TRUE
 	if(should_have_organ(BP_TONGUE) && !(message_data["language"]?.language_flags & (NONVERBAL|SIGNLANG)))
-		var/obj/item/organ/internal/tongue/T = internal_organs_by_name[BP_KIDNEYS]
+		var/obj/item/organ/internal/tongue/T = internal_organs_by_name[BP_TONGUE]
 		if(!T)
 			message_data["message"] = mutespeech(message_data["message"], 95)
 			message_data["verb"] = "mumbles"
