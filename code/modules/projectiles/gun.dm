@@ -250,10 +250,7 @@
 		return FALSE
 
 	if(is_pacifist(M))
-		to_chat(user, "PROCCED PACIFIST")
 		var/proj_type = get_projectile_type()
-		to_chat(user, "PROJ TYPE [proj_type]")
-
 		var/list/nonlethal_projectiles = list(/obj/item/projectile/energy/electrode,
 											  /obj/item/projectile/energy/flash,
 			                                  /obj/item/projectile/beam/stun,
