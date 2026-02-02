@@ -353,7 +353,8 @@
 		jobs += "<A href='?_src_=holder;jobban3=MALE;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "MALE"))?"red":"blue"]>Male</font></A> | "
 		jobs += "<A href='?_src_=holder;jobban3=FEMALE;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "FEMALE"))?"red":"blue"]>Female</font></A> | "
 		jobs += "<A href='?_src_=holder;jobban3=APPEARANCE;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "APPEARANCE"))?"red":"blue"]>Appearance</font></A> | "
-		jobs += "<A href='?_src_=holder;jobban3=NAME;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "NAME"))?"red":"blue"]>Name</font></A></td>"
+		jobs += "<A href='?_src_=holder;jobban3=NAME;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "NAME"))?"red":"blue"]>Name</font></A>| "
+		jobs += "<A href='?_src_=holder;jobban3=HARM;jobban4=\ref[M]'><font color=[(jobban_isbanned(M, "HARM"))?"red":"blue"]>Harm</font></A></td>"
 
 		jobs += "</tr>"
 

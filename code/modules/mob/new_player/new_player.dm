@@ -542,6 +542,9 @@
 
 		client.prefs.copy_to(new_character)
 
+	if(jobban_isbanned(src, "HARM"))
+		ADD_TRAIT(new_character, TRAIT_PACIFISM)
+
 	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// MAD JAMS cant last forever yo
 
 	if(mind)
@@ -671,7 +674,7 @@
 /mob/new_player/proc/show_game_tip()
 	if(!config.game_tips.enable)
 		return
-	
+
 	var/atom/movable/screen/text = new()
 
 	text.screen_loc = "CENTER,SOUTH+1%"
