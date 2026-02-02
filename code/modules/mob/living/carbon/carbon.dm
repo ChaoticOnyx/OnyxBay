@@ -329,6 +329,12 @@
 	if(!I.canremove && !is_grab)
 		return
 
+	if(is_pacifist(src) && !is_grab && !istype(item, /obj/item/grenade))
+		show_splash_text(src, "you're a pacifist!", SPAN_WARNING("What if \the [item] hits and hurts somebody? You can't throw it so recklessly!"))
+		visible_message(SPAN_WARNING("[src] tried to throw \the [item] but dropped it clumsily!"))
+		drop(item)
+		return
+
 	var/throw_range = item.throw_range
 	var/itemsize
 	if(is_grab)
