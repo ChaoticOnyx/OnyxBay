@@ -166,7 +166,7 @@
 	desc = "You are used to nicotine. Going without a cigarette makes you restless and irritable."
 	modifier_type = /datum/modifier/trait/smoker
 
-/datum/trait/modifier/mental/smoker
+/datum/trait/modifier/mental/pacifism
 	name = "Pacifist"
 	desc = "Whether due to your personal beliefs or otherwise, you cannot bring yourself to harm other sentient beings. Non-lethal methods and dumb animals are fine, though."
 	modifier_type = /datum/modifier/trait/pacifism
