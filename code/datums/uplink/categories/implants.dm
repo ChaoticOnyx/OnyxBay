@@ -39,6 +39,12 @@
 	item_cost = 1
 	path = /obj/item/storage/box/syndie_kit/adrenalin
 
+/datum/uplink_item/item/implants/imp_pacifism
+	name = "Pacifism Implant"
+	desc = "Implant this bad boy into a bad boy and he'll soon find himself being a good boy. At least, as far as harming people goes."
+	item_cost = 3
+	path = /obj/item/storage/box/syndie_kit/imp_pacifism
+
 /datum/uplink_item/item/implants/spy
 	name = "Spy Implant"
 	item_cost = 1

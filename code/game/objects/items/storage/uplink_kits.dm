@@ -56,6 +56,10 @@
 		/obj/item/reagent_containers/hypospray/autoinjector/mindbreaker
 		)
 
+/obj/item/storage/box/syndie_kit/imp_pacifism
+	name = "box (P)"
+	startswith = list(/obj/item/implanter/pacifism)
+
 /obj/item/storage/box/syndie_kit/empty_grenades
 	desc = "A sleek, sturdy box. That one has an explosion warning on it."
 	startswith = list(/obj/item/grenade/chem_grenade = 5)

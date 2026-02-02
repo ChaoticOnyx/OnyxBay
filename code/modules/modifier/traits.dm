@@ -147,6 +147,7 @@
 
 	on_created_text = SPAN_WARNING("You feel disgusted by the thought of hurting anyone.")
 	on_expired_text = SPAN_NOTICE("Suddenly, you think hurting people is fine, actually.")
+	var/innate = TRUE
 
 /datum/modifier/trait/cold_resist
 	name = "Cold Resistance"
