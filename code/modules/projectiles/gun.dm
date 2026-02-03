@@ -272,11 +272,14 @@
 			                                  /obj/item/ammo_casing/shotgun/stunshell,
 			                                  /obj/item/ammo_casing/shotgun/flash)
 
-
+		var/is_lethal = TRUE
 		for(var/nonlethal_type in nonlethal_projectiles)
 			if(ispath(proj_type, nonlethal_type))
-				show_splash_text(M, "you're a pacifist!", SPAN_WARNING("No way! This weapon could seriously hurt somebody and you're a pacifist! Is there a non-lethal option?.."))
-				return FALSE
+				is_lethal = FALSE
+				break
+		if(is_lethal)
+			show_splash_text(M, "you're a pacifist!", SPAN_WARNING("No way! This weapon could seriously hurt somebody and you're a pacifist! Is there a non-lethal option?.."))
+			return FALSE
 
 	return TRUE
 
