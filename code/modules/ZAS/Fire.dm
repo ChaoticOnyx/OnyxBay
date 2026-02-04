@@ -85,7 +85,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 				if(istype(T) && T.fire) qdel(T.fire)
 			qdel(fuel)
 
-/turf/proc/create_fire(fl)
+/turf/proc/create_fire(fl, turf/parent_loc = null)
 	if(fire)
 		fire.firelevel = max(fl, fire.firelevel)
 		return 1
@@ -93,7 +93,13 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	if(!zone)
 		return 1
 
-	fire = new(src, fl)
+	if(parent_loc)
+		fire = new(parent_loc, fl)
+		spawn(1)
+			fire.forceMove(src)
+	else
+		fire = new(src, fl)
+
 	SSair.active_fire_zones |= zone
 
 	var/obj/effect/decal/cleanable/liquid_fuel/fuel = locate() in src
@@ -114,6 +120,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	icon_state = "1"
 	light_color = "#ed9200"
 	layer = FIRE_LAYER
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 
 	var/firelevel = 1 //Calculated by gas_mixture.calculate_firelevel()
 
@@ -169,7 +176,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 				//Spread the fire.
 				if(prob(50 + 50 * (firelevel / vsc.fire_firelevel_multiplier)) && my_tile.CanPass(src, enemy_tile) && enemy_tile.CanPass(src, my_tile))
-					enemy_tile.create_fire(firelevel)
+					enemy_tile.create_fire(firelevel, my_tile)
 
 			else
 				enemy_tile.adjacent_fire_act(loc, air_contents, air_contents.temperature, air_contents.volume)

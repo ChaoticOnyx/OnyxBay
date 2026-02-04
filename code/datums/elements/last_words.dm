@@ -23,7 +23,7 @@ GLOBAL_LIST_EMPTY(last_words)
 	if(new_stat != DEAD || !L.is_ooc_dead())
 		return
 
-	if(!length(L.logging[INDIVIDUAL_SAY_LOG]) || (L.loc?.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
+	if(!length(L.logging[INDIVIDUAL_SAY_LOG]) || (L.loc?.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)) || istype(L, /mob/living/silicon/robot/drone))
 		detach(L)
 		return
 

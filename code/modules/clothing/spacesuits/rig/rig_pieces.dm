@@ -37,6 +37,7 @@
 
 /obj/item/clothing/suit/space/rig
 	name = "chestpiece"
+	item_state = null // Otherwise RIG chestpieces always just use human icons. Why? No bloody clue. ~TheUnknownOne
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	heat_protection =    UPPER_TORSO|LOWER_TORSO|LEGS|ARMS

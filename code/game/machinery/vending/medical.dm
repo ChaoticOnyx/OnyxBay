@@ -33,7 +33,9 @@
 		/obj/item/stack/medical/advanced/bruise_pack = 3,
 		/obj/item/stack/medical/advanced/ointment = 3,
 		/obj/item/stack/medical/splint = 2,
-		/obj/item/reagent_containers/hypospray/autoinjector/pain = 4
+		/obj/item/reagent_containers/hypospray/autoinjector/pain = 4,
+		/obj/item/compact_shoe_covers = 5,
+		/obj/item/storage/box/compact_shoe_covers = 1
 		)
 
 	illegal = list(
@@ -41,6 +43,10 @@
 		/obj/item/reagent_containers/pill/stox = 4,
 		/obj/item/reagent_containers/pill/dylovene = 6,
 		/obj/item/reagent_containers/hypospray/autoinjector/combatpain = 2
+		)
+
+	premium = list(
+		/obj/item/storage/firstaid/adv = 1
 		)
 
 /obj/item/vending_cartridge/medical

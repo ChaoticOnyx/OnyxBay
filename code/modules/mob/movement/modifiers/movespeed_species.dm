@@ -22,6 +22,9 @@
 /datum/movespeed_modifier/tajaran
 	slowdown = -0.5
 
+/datum/movespeed_modifier/mechanical_muscles
+	slowdown = -0.1
+
 /datum/movespeed_modifier/diona
 	slowdown = 7
 

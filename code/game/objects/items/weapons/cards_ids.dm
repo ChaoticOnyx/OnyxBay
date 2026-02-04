@@ -433,23 +433,45 @@ var/const/NO_EMAG_ACT = -50
 	item_state = "card_head"
 	job_access_type = /datum/job/rd
 
-/obj/item/card/id/cargo
+/obj/item/card/id/provisioning
+	name = "identification card"
+	desc = "A card issued to provisioning staff."
+	icon_state = "card_civ"
+	item_state = "card_civ"
+
+/obj/item/card/id/provisioning/head
+	name = "identification card"
+	desc = "A card which represents service and planning."
+	icon_state = "card_hop"
+	item_state = "card_head"
+	job_access_type = /datum/job/hop
+
+/obj/item/card/id/provisioning/cargo
 	name = "identification card"
 	desc = "A card issued to cargo staff."
 	icon_state = "card_cargo"
 	item_state = "card_cargo"
 	job_access_type = /datum/job/cargo_tech
 
-/obj/item/card/id/cargo/mining
+/obj/item/card/id/provisioning/cargo/mining
 	icon_state = "card_mining"
 	job_access_type = /datum/job/mining
 
-/obj/item/card/id/cargo/head
-	name = "identification card"
-	desc = "A card which represents service and planning."
-	icon_state = "card_qm"
-	item_state = "card_head"
-	job_access_type = /datum/job/qm
+/obj/item/card/id/provisioning/bartender
+	icon_state = "card_bartender"
+	job_access_type = /datum/job/bartender
+
+/obj/item/card/id/provisioning/chef
+	icon_state = "card_chef"
+	job_access_type = /datum/job/chef
+
+/obj/item/card/id/provisioning/botanist
+	icon_state = "card_botanist"
+	job_access_type = /datum/job/hydro
+
+/obj/item/card/id/provisioning/janitor
+	icon_state = "card_janitor"
+	job_access_type = /datum/job/janitor
 
 /obj/item/card/id/civilian
 	name = "identification card"
@@ -457,22 +479,6 @@ var/const/NO_EMAG_ACT = -50
 	icon_state = "card_civ"
 	item_state = "card_civ"
 	job_access_type = /datum/job/assistant
-
-/obj/item/card/id/civilian/bartender
-	icon_state = "card_bartender"
-	job_access_type = /datum/job/bartender
-
-/obj/item/card/id/civilian/chef
-	icon_state = "card_chef"
-	job_access_type = /datum/job/chef
-
-/obj/item/card/id/civilian/botanist
-	icon_state = "card_botanist"
-	job_access_type = /datum/job/hydro
-
-/obj/item/card/id/civilian/janitor
-	icon_state = "card_janitor"
-	job_access_type = /datum/job/janitor
 
 /obj/item/card/id/civilian/librarian
 	icon_state = "card_librarian"

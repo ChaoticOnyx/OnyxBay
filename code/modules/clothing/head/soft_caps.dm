@@ -110,3 +110,10 @@
 	name = "\improper NanoTrasen security cap"
 	desc = "It's field cap in NanoTrasen colors. This one seems to be extra durable."
 	icon_state = "ntwhitesoft"
+
+/obj/item/clothing/head/soft/hop
+	name = "\improper Head of Provisioning cap"
+	desc = "One headwear to rule all of these tasteless yellow caps. This one seems to be extremely durable."
+	icon_state = "hopsoft"
+	siemens_coefficient = 0.8
+	armor = list(melee = 35, bullet = 25, laser = 25,energy = 0, bomb = 0, bio = 0)

@@ -118,6 +118,22 @@
 	path = /obj/item/storage/wallet/poly
 	cost = 2
 
+/datum/gear/augmentations/pen /// well it could be in a new category, but there will be only 2 items so whatever
+	display_name = "embedded pen module"
+	path = /obj/item/organ_module/active/simple/pen
+	cost = 1
+
+/datum/gear/augmentations/pen/is_allowed_to_display(mob/user)
+	return FALSE
+
+/datum/gear/augmentations/cyber_hair
+	display_name = "synthetic hair extensions module"
+	path = /obj/item/organ_module/active/cyber_hair
+	cost = 1
+
+/datum/gear/augmentations/cyber_hair/is_allowed_to_display(mob/user)
+	return FALSE
+
 /datum/gear/welding_cover
 	display_name = "welding helmet covers selection"
 	path = /obj/item/welding_cover/knight

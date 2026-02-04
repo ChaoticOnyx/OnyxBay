@@ -261,7 +261,7 @@
 /obj/structure/reagent_dispensers/fueltank/Move()
 	. = ..()
 	if (. && modded)
-		leak_fuel(amount_per_transfer_from_this/10.0)
+		leak_fuel(amount_per_transfer_from_this / 5.0)
 
 /obj/structure/reagent_dispensers/fueltank/proc/leak_fuel(amount)
 	if (reagents.total_volume == 0)

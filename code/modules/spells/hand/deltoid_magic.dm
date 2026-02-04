@@ -32,7 +32,7 @@
 		user.visible_message(SPAN("danger", "[user] has punched the floor, sending themselves flying!"))
 		var/turf/T = get_turf(user)
 		T.ex_act(rand(2, 3))
-		playsound(T, 'sound/effects/bang.ogg', rand(80, 100), 1, -1)
+		playsound(T, GET_SFX(SFX_BANG), rand(80, 100), 1, -1)
 	else
 		throw_dir = turn(get_dir(H, user), 180)
 		user.visible_message(SPAN("danger", "[user] has punched \the [H] so hard, they're sent flying!"))

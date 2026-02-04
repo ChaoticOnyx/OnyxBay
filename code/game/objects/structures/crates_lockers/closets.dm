@@ -56,6 +56,9 @@
 	density = FALSE
 	intact_closet = FALSE
 
+/obj/structure/closet/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_SPARKS, -10, 5)
+
 /obj/item/shield/closet
 	name = "closet door"
 	desc = "An essential part of a closet. Could it be used as a tower shield?.."
@@ -129,6 +132,7 @@
 
 	if(intact_closet && (z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 		GLOB.intact_station_closets.Add(src)
+	add_debris_element()
 
 	return INITIALIZE_HINT_LATELOAD
 

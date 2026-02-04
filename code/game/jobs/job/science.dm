@@ -14,11 +14,11 @@
 	access = list(access_rd, access_heads, access_tox, access_morgue, access_eva,
 			            access_tox_storage, access_teleporter, access_sec_doors, access_maint_tunnels,
 			            access_research, access_robotics, access_xenobiology, access_ai_upload, access_tech_storage,
-			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_network)
+			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_network, access_change_ids)
 	minimal_access = list(access_rd, access_heads, access_tox, access_morgue, access_eva,
 			            access_tox_storage, access_teleporter, access_sec_doors, access_maint_tunnels,
 			            access_research, access_robotics, access_xenobiology, access_ai_upload, access_tech_storage,
-			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_network)
+			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_network, access_change_ids)
 	minimal_player_age = 30
 	minimum_character_age = 25
 	ideal_character_age = 50

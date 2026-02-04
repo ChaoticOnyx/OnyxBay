@@ -147,6 +147,21 @@
 	garland["flower crown, yellow, green & white"] = /obj/item/clothing/head/garland/rainbowbunch/ygw
 	gear_tweaks += new /datum/gear_tweak/path(garland)
 
+/datum/gear/head/beanie
+	display_name = "beanie selection"
+	path = /obj/item/clothing/head
+
+/datum/gear/head/beanie/New()
+	..()
+	var/list/beanies = typesof(/obj/item/clothing/head/beanie)
+	beanies.Remove(/obj/item/clothing/head/beanie, /obj/item/clothing/head/beanie/psyche)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(beanies)
+
+/datum/gear/head/beanie_custom
+	display_name = "beanie, colour select"
+	path = /obj/item/clothing/head/beanie
+	flags = GEAR_HAS_COLOR_SELECTION
+
 //
 // Donator's shop
 //

@@ -34,7 +34,13 @@
 
 	illegal = list(
 		/obj/item/clothing/glasses/sunglasses = 2,
-		/obj/item/storage/box/donut = 2
+		/obj/item/storage/box/donut = 2,
+		/obj/item/reagent_containers/food/donut/chaos = 5
+		)
+
+	premium = list(
+		/obj/item/melee/baton/loaded = 1,
+		/obj/item/gun/energy/stunrevolver = 1
 		)
 
 /obj/item/vending_cartridge/security

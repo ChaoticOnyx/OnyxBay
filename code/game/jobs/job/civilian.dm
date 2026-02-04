@@ -1,127 +1,3 @@
-//Food
-/datum/job/bartender
-	title = "Bartender"
-	department = "Service"
-	department_flag = SRV
-	total_positions = 1
-	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
-	access = list(access_hydroponics, access_bar, access_kitchen)
-	minimal_access = list(access_bar)
-	outfit_type = /decl/hierarchy/outfit/job/service/bartender
-
-/datum/job/bartender/equip(mob/living/carbon/human/H)
-	. = ..()
-	if(.)
-		H.add_mutation(MUTATION_BARTENDER)
-
-/datum/job/chef
-	title = "Chef"
-	department = "Service"
-	department_flag = SRV
-	total_positions = 2
-	spawn_positions = 2
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
-	access = list(access_hydroponics, access_bar, access_kitchen)
-	minimal_access = list(access_kitchen)
-	alt_titles = list("Cook")
-	outfit_type = /decl/hierarchy/outfit/job/service/chef
-
-/datum/job/barmonkey
-	title = "Waiter"
-	department = "Service"
-	department_flag = SRV
-	total_positions = 1
-	spawn_positions = 1
-	no_latejoin = TRUE
-	supervisors = "the bartender"
-	selection_color = "#515151"
-	access = list(access_hydroponics, access_bar, access_kitchen)
-	minimal_access = list(access_bar)
-	outfit_type = /decl/hierarchy/outfit/job/service/barmonkey
-	preview_override = list("preview", 'icons/mob/human_races/monkeys/r_monkey.dmi')
-
-/datum/job/barmonkey/equip(mob/living/carbon/human/H)
-	. = ..()
-	if(.)
-		var/new_name = (H.gender == FEMALE ? "Mrs. Deempisi" : "Mr. Deempisi")
-		H.fully_replace_character_name(new_name)
-		H.dna.real_name = new_name
-		H.mind?.name = new_name
-		H.flavor_text = ""
-		H.add_mutation(MUTATION_BARTENDER)
-		for(var/thing in H.flavor_texts)
-			H.flavor_texts[thing] = null
-
-/datum/job/hydro
-	title = "Gardener"
-	department = "Service"
-	department_flag = SRV
-	total_positions = 2
-	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
-	access = list(access_hydroponics, access_bar, access_kitchen)
-	minimal_access = list(access_hydroponics)
-	alt_titles = list("Hydroponicist")
-	outfit_type = /decl/hierarchy/outfit/job/service/gardener
-
-//Cargo
-/datum/job/qm
-	title = "Quartermaster"
-	department = "Supply"
-	department_flag = SUP
-	total_positions = 1
-	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
-	economic_modifier = 5
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
-	minimal_access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
-	minimal_player_age = 7
-	ideal_character_age = 40
-	outfit_type = /decl/hierarchy/outfit/job/cargo/qm
-
-/datum/job/cargo_tech
-	title = "Cargo Technician"
-	department = "Supply"
-	department_flag = SUP
-	total_positions = 2
-	spawn_positions = 2
-	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#515151"
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
-	minimal_access = list(access_maint_tunnels, access_cargo, access_cargo_bot, access_mailsorting)
-	outfit_type = /decl/hierarchy/outfit/job/cargo/cargo_tech
-
-/datum/job/mining
-	title = "Shaft Miner"
-	department = "Supply"
-	department_flag = SUP
-	total_positions = 3
-	spawn_positions = 3
-	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#515151"
-	economic_modifier = 5
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
-	minimal_access = list(access_mining, access_mining_station, access_mailsorting)
-	alt_titles = list("Drill Technician","Prospector")
-	outfit_type = /decl/hierarchy/outfit/job/cargo/mining
-
-/datum/job/janitor
-	title = "Janitor"
-	department = "Service"
-	department_flag = SRV
-	total_positions = 1
-	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
-	access = list(access_janitor, access_maint_tunnels, access_engine, access_research, access_sec_doors, access_medical)
-	minimal_access = list(access_janitor, access_maint_tunnels, access_engine, access_research, access_sec_doors, access_medical)
-	alt_titles = list("Custodian","Sanitation Technician")
-	outfit_type = /decl/hierarchy/outfit/job/service/janitor
 
 //More or less assistants
 /datum/job/librarian
@@ -130,7 +6,7 @@
 	department_flag = CIV
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel"
+	supervisors = "the heads of staff"
 	selection_color = "#515151"
 	access = list(access_library, access_maint_tunnels)
 	minimal_access = list(access_library)
@@ -196,7 +72,7 @@
 	department_flag = CIV
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel"
+	supervisors = "the sound of silence"
 	selection_color = "#515151"
 	access = list(access_maint_tunnels, access_mime)
 	minimal_access = list(access_maint_tunnels, access_mime)

@@ -36,9 +36,9 @@ GLOBAL_LIST_EMPTY(exploration_positions)
 
 GLOBAL_LIST_EMPTY(unsorted_positions) // for nano manifest
 
-GLOBAL_LIST_INIT(commandjobs, list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director"))
+GLOBAL_LIST_INIT(commandjobs, list("Captain", "Head of Provisioning", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director"))
 
-GLOBAL_LIST_INIT(whitejobs, list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director", "AI"))
+GLOBAL_LIST_INIT(whitejobs, list("Captain", "Head of Provisioning", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director", "AI"))
 
 /proc/guest_jobbans(job)
 	return (job in GLOB.whitejobs) //rot beycev ebal

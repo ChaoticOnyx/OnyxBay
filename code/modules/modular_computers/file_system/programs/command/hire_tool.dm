@@ -7,7 +7,7 @@
 	program_menu_icon = "suitcase"
 	program_light_color = "#0099FF"
 	extended_desc = "The official NanoTrasen application that allows head command to hire new employees."
-	required_access = access_change_ids
+	required_access = access_human_resources
 	requires_ntnet = 1
 	size = 16
 	usage_flags = PROGRAM_CONSOLE

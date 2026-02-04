@@ -95,7 +95,7 @@
 									/datum/job/hydro,
 									/datum/job/chaplain,
 									/datum/job/cargo_tech,
-									/datum/job/qm,
+									/datum/job/hop,
 									/datum/job/mining,
 									/datum/job/janitor,
 									/datum/job/librarian,

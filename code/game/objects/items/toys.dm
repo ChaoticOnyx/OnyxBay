@@ -564,9 +564,14 @@
 	desc = "A \"Space Life\" brand Geneticist action figure, which was recently dicontinued."
 	icon_state = "geneticist"
 
-/obj/item/toy/figure/hop
+/obj/item/toy/figure/hr
 	name = "Head of Personel action figure"
-	desc = "A \"Space Life\" brand Head of Personel action figure."
+	desc = "A \"Space Life\" brand Head of Personel action figure. Wait, who's that?"
+	icon_state = "hr"
+
+/obj/item/toy/figure/hop
+	name = "Head of Provisioning action figure"
+	desc = "A \"Space Life\" brand Head of Provisioning action figure."
 	icon_state = "hop"
 
 /obj/item/toy/figure/hos

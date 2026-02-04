@@ -88,6 +88,12 @@
 	if(species.can_understand(other))
 		return TRUE
 
+	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	if(istype(head))
+		var/obj/item/organ_module/active/translator/translator = locate() in head
+		if(language && translator?.toggled && (language.name in translator.languages))
+			return TRUE
+
 	//These only pertain to common. Languages are handled by mob/say_understands()
 	if(!language)
 		if(istype(other, /mob/living/carbon/alien/diona))
@@ -157,7 +163,7 @@
 		message_data["message"] = ""
 		return TRUE
 	if(should_have_organ(BP_TONGUE) && !(message_data["language"]?.language_flags & (NONVERBAL|SIGNLANG)))
-		var/obj/item/organ/internal/tongue/T = internal_organs_by_name[BP_KIDNEYS]
+		var/obj/item/organ/internal/tongue/T = internal_organs_by_name[BP_TONGUE]
 		if(!T)
 			message_data["message"] = mutespeech(message_data["message"], 95)
 			message_data["verb"] = "mumbles"

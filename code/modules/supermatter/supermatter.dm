@@ -20,11 +20,10 @@
 #define CRITICAL_TEMPERATURE 5000	//K
 #define CHARGING_FACTOR 0.05
 #define DAMAGE_RATE_LIMIT 4.5		//damage rate cap at power = 300, scales linearly with power
-#define RADIATION_RELEASE_MODIFIER 100 KILO ELECTRONVOLT	//Higher == more radiation released by the SM
+#define RADIATION_RELEASE 100 KILO ELECTRONVOLT	//Higher == more radiation released by the SM
 
 // Experimental randomized supermatter
 #define DELTA_THERMAL_RELEASE_MODIFIER 6000
-#define DELTA_RADIATION_RELEASE_MODIFIER 0.7
 #define DELTA_POWER_FACTOR 0.2
 #define DELTA_DECAY_FACTOR 100
 #define DELTA_CRITICAL_TEMPERATURE 2600
@@ -62,7 +61,7 @@
 	layer = ABOVE_OBJ_LAYER
 
 	var/current_thermal_release_modifier = THERMAL_RELEASE_MODIFIER
-	var/current_radiation_release_modifier = RADIATION_RELEASE_MODIFIER
+	var/current_radiation_release_modifier = 1
 	var/current_power_factor = POWER_FACTOR
 	var/current_decay_factor = DECAY_FACTOR
 	var/current_critical_temperature = CRITICAL_TEMPERATURE
@@ -410,7 +409,7 @@
 		if(rad_source == null)
 			rad_source = SSradiation.radiate(src, new /datum/radiation/preset/supermatter)
 
-		rad_source.info.energy = power * current_radiation_release_modifier
+		rad_source.info.energy = power * RADIATION_RELEASE * current_radiation_release_modifier
 	else
 		qdel(rad_source)
 
@@ -620,7 +619,7 @@
 /obj/machinery/power/supermatter/random/Initialize()
 	. = ..()
 	current_thermal_release_modifier = rand(THERMAL_RELEASE_MODIFIER - DELTA_THERMAL_RELEASE_MODIFIER, THERMAL_RELEASE_MODIFIER + DELTA_THERMAL_RELEASE_MODIFIER)
-	current_radiation_release_modifier = rand(10*(RADIATION_RELEASE_MODIFIER - DELTA_RADIATION_RELEASE_MODIFIER), 10*(RADIATION_RELEASE_MODIFIER + DELTA_RADIATION_RELEASE_MODIFIER)) / 10
+	current_radiation_release_modifier = rand(7, 12)/10
 	current_power_factor = rand(10*(POWER_FACTOR - DELTA_POWER_FACTOR), 10*(POWER_FACTOR + DELTA_POWER_FACTOR)) / 10
 	current_decay_factor = rand(DECAY_FACTOR - DELTA_DECAY_FACTOR, DECAY_FACTOR + DELTA_DECAY_FACTOR)
 	current_critical_temperature = rand(CRITICAL_TEMPERATURE - DELTA_CRITICAL_TEMPERATURE, CRITICAL_TEMPERATURE + DELTA_CRITICAL_TEMPERATURE)
@@ -665,11 +664,11 @@
 		info += "Extreme<br>"
 
 	info += "<b>Radiation Release:</b> "
-	if(SM.current_radiation_release_modifier < 1.2)
+	if(SM.current_radiation_release_modifier < 0.9)
 		info += "Low<br>"
-	else if(SM.current_radiation_release_modifier < 1.7)
+	else if(SM.current_radiation_release_modifier < 1)
 		info += "Medium<br>"
-	else if(SM.current_radiation_release_modifier < 2.1)
+	else if(SM.current_radiation_release_modifier < 1.1)
 		info += "High<br>"
 	else
 		info += "Extreme<br>"
@@ -734,9 +733,8 @@
 #undef DETONATION_SHUTDOWN_RNG_FACTOR
 #undef DETONATION_SOLAR_BREAK_CHANCE
 #undef WARNING_DELAY
-#undef RADIATION_RELEASE_MODIFIER
+#undef RADIATION_RELEASE
 #undef DELTA_THERMAL_RELEASE_MODIFIER
-#undef DELTA_RADIATION_RELEASE_MODIFIER
 #undef DELTA_POWER_FACTOR
 #undef DELTA_DECAY_FACTOR
 #undef DELTA_CRITICAL_TEMPERATURE

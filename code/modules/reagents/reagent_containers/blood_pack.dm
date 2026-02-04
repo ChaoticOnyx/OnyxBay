@@ -10,7 +10,7 @@
 	icon = 'icons/obj/bloodpack.dmi'
 	icon_state = "empty"
 	w_class = ITEM_SIZE_SMALL
-	volume = 1 LITER
+	volume = 1.5 LITERS
 	possible_transfer_amounts = "0.2;1;2;3;5;10;15"
 	amount_per_transfer_from_this = REM
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
@@ -25,15 +25,37 @@
 	attached = null
 	. = ..()
 
+/obj/item/reagent_containers/ivbag/examine(mob/user, infix)
+	. = ..()
+
+	var/ratio = 0
+	if(reagents?.total_volume)
+		ratio = reagents.total_volume / volume
+	var/ratio_text = ""
+	switch(ratio)
+		if(0)
+			ratio_text = "empty"
+		if(0.01 to 0.25)
+			ratio_text = "almost empty"
+		if(0.25 to 0.66)
+			ratio_text = "half full"
+		if(0.66 to 0.90)
+			ratio_text = "almost full"
+		else
+			ratio_text = "full"
+
+	. += "The [src] can hold up to <b>[volume]</b> ml."
+	. += SPAN("notice", "It's <b>[ratio_text]</b>.")
+
 /obj/item/reagent_containers/ivbag/on_reagent_change()
 	update_icon()
-	if(reagents.total_volume > volume * 0.66)
+	if(reagents.total_volume > volume * 0.50)
 		w_class = ITEM_SIZE_NORMAL
 	else
 		w_class = ITEM_SIZE_SMALL
 
 /obj/item/reagent_containers/vessel/carton/get_storage_cost()
-	if(w_class < ITEM_SIZE_NORMAL && reagents.total_volume >= volume * 0.33)
+	if(w_class < ITEM_SIZE_NORMAL && reagents.total_volume >= volume * 0.25)
 		return ..() * 1.5
 	return ..()
 
@@ -165,5 +187,5 @@
 
 /obj/item/reagent_containers/ivbag/saline/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/water, 991)
-	reagents.add_reagent(/datum/reagent/salt, 9)
+	reagents.add_reagent(/datum/reagent/water, 1486)
+	reagents.add_reagent(/datum/reagent/salt, 14)

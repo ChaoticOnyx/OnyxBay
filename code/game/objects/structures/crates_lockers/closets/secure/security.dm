@@ -19,7 +19,7 @@
 	)
 
 /obj/structure/closet/secure_closet/hop
-	name = "head of personnel's locker"
+	name = "head of provisioning's locker"
 	req_access = list(access_hop)
 	icon_state = "hopsecure1"
 	icon_closed = "hopsecure"
@@ -29,13 +29,15 @@
 
 /obj/structure/closet/secure_closet/hop/WillContain()
 	return list(
-		/obj/item/storage/garment/head_of_personnel,
+		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack = 75,  /obj/item/storage/backpack/satchel/grey = 25)),
+		new /datum/atom_creator/simple(/obj/item/storage/backpack/dufflebag, 25),
+		/obj/item/storage/garment/head_of_provisioning,
 		/obj/item/melee/telebaton,
 		/obj/item/device/radio/headset/heads/hop,
 		/obj/item/cartridge/hop,
-		/obj/item/storage/box/ids = 2,
-		/obj/item/gun/energy/egun/elite,
-		/obj/item/device/flash
+		/obj/item/device/flash,
+		/obj/item/tank/emergency/oxygen,
+		/obj/item/material/coin/silver = 2
 	)
 
 /obj/structure/closet/secure_closet/hos
@@ -108,7 +110,7 @@
 		new /datum/atom_creator/simple(/obj/item/storage/backpack/dufflebag/sec, 50),
 		/obj/item/clothing/head/helmet,
 		/obj/item/clothing/head/soft/sec,
-		/obj/item/clothing/suit/armor/vest,
+		/obj/item/clothing/suit/armor/pcarrier/medium/security,
 		/obj/item/clothing/under/rank/security,
 		/obj/item/clothing/glasses/hud/aviators/security,
 		/obj/item/storage/belt/security,

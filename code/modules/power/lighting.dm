@@ -147,6 +147,7 @@
 	idle_power_usage = 2 WATTS
 	active_power_usage = 20 WATTS
 	power_channel = STATIC_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
+	glow_colored = TRUE
 
 	/// Whether light is currently turned on.
 	var/on = TRUE
@@ -266,6 +267,10 @@
 		set_light(arglist(lightbulb.lighting_modes[current_mode]))
 	else
 		set_light(lightbulb.b_max_bright, lightbulb.b_inner_range, lightbulb.b_outer_range, lightbulb.b_curve, lightbulb.b_color)
+
+	glow_icon_state = istype(lightbulb) ? lightbulb.glow_icon_state : null
+	exposure_icon_state = istype(lightbulb) ? lightbulb.exposure_icon_state : null
+	update_bloom()
 
 	return TRUE
 
@@ -756,6 +761,10 @@
 	sound_on = SFX_LIGHT_TUBE_ON
 	sound_on_volume = 50
 
+	glow_icon_state = "tube1-ea"
+	exposure_icon_state = "cone"
+	glow_colored = TRUE
+
 /obj/item/light/tube/nobreak // For mapping's sake
 	desc = "A replacement light tube. This one seems to wield some extra quality."
 	broken_chance = 0
@@ -809,6 +818,8 @@
 	random_tone = TRUE
 	sound_on = SFX_LIGHT_BULB_ON
 	sound_on_volume = 75
+	glow_icon_state = "bulb1-ea"
+	exposure_icon_state = "circle"
 
 /obj/item/light/bulb/he
 	name = "high efficiency light bulb"

@@ -41,8 +41,8 @@
 
 //HOP
 /obj/item/clothing/head/caphat/hop
-	name = "crew resource's hat"
-	desc = "A stylish hat that both protects you from enraged former-crewmembers and gives you a false sense of authority."
+	name = "provisioning inspection hat"
+	desc = "A stylish hat that both protects you from enraged crewmembers waiting for their supply orders since the beginning of the shift, and gives you a false sense of authority."
 	icon_state = "hopcap"
 	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 

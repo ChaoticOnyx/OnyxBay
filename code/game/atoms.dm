@@ -196,6 +196,7 @@
 
 /atom/proc/bullet_act(obj/item/projectile/P, def_zone)
 	P.on_hit(src, 0, def_zone)
+	SEND_SIGNAL(src, SIGNAL_BULLET_ACT, src, P)
 	. = 0
 
 /atom/proc/in_contents_of(container)//can take class or object instance as argument
@@ -826,3 +827,7 @@ its easier to just keep the beam vertical.
 ///Return the values you get when an RCD eats you?
 /atom/proc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	return FALSE
+
+/// Adds the debris element for projectile impacts
+/atom/proc/add_debris_element()
+	AddElement(/datum/element/debris, null, -15, 8, 0.7)
