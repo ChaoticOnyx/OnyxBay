@@ -1368,6 +1368,7 @@
 #include "code\game\objects\structures\plasticflaps.dm"
 #include "code\game\objects\structures\railing.dm"
 #include "code\game\objects\structures\rock.dm"
+#include "code\game\objects\structures\rocky.dm"
 #include "code\game\objects\structures\roulette.dm"
 #include "code\game\objects\structures\safe.dm"
 #include "code\game\objects\structures\secure_door_assembly.dm"
