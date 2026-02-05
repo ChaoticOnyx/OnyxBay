@@ -890,15 +890,19 @@
 	else
 		src.log_message("Attacked by [W]. Attacker - [user]")
 
-		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(deflect_hit(is_melee=1))
-			to_chat(user, "<span class='danger'>\The [W] bounces off [src.name].</span>")
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
+		obj_attack_sound(W)
+
+		if(deflect_hit(is_melee = TRUE))
+			to_chat(user, SPAN("danger", "\The [W] bounces off [src]."))
 			src.log_append_to_last("Armor saved.")
 		else
 			src.occupant_message("<font color='red'><b>[user] hits [src] with [W].</b></font>")
 			user.visible_message("<font color='red'><b>[user] hits [src] with [W].</b></font>", "<font color='red'><b>You hit [src] with [W].</b></font>")
 			src.hit_damage(W.force, W.damtype, is_melee=1)
 			src.check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST))
+		return
 
 	return
 
