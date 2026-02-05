@@ -8,7 +8,7 @@
 	step_in = 4
 	step_energy_drain = 400
 	max_temperature = 20000
-	health = 150
+	health = 200
 	infra_luminosity = 6
 	wreckage = /obj/effect/decal/mecha_wreckage/hoverpod
 	cargo_capacity = 5

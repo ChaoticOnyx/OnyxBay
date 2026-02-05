@@ -5,7 +5,7 @@
 	initial_icon = "honker"
 	base_color = "#BD0F17"
 	step_in = 2
-	health = 200
+	health = 250
 	deflect_chance = 60
 	internal_damage_threshold = 60
 	damage_absorption = list("brute" = 1.2, "fire" = 1.5, "bullet" = 1, "laser" = 1, "energy" = 1, "bomb" = 1)
