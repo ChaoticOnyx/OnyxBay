@@ -55,7 +55,7 @@
 /mob/proc/death(gibbed, deathmessage = "seizes up and falls limp...", show_dead_message = "You have died.")
 
 	if(is_ooc_dead())
-		return 0
+		return FALSE
 
 	facing_dir = null
 
@@ -88,5 +88,12 @@
 
 	if(SSticker.mode)
 		SSticker.mode.check_win()
-	to_chat(src,"<span class='deadsay'>[show_dead_message]</span>")
-	return 1
+	to_chat(src, SPAN_DEADSAY("[show_dead_message]"))
+
+	if(client)
+		var/turf/death_turf = get_turf(src)
+		var/death_turf_descriptor = "[death_turf.loc] \[[death_turf.x],[death_turf.y],[death_turf.z]\]"
+		log_and_message_staff("has died in [death_turf_descriptor]", src, death_turf)
+
+	return TRUE
+

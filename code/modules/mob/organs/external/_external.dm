@@ -13,6 +13,7 @@
 	food_organ_type = /obj/item/reagent_containers/food/meat/human
 
 	throwforce = 2.5
+	necessary_organ_modules = list(/obj/item/organ_module/actuators, /obj/item/organ_module/processor)
 	// Strings
 	var/broken_description             // fracture string if any.
 	var/damage_state = "00"            // Modifier used for generating the on-mob damage overlay for this limb.
@@ -79,7 +80,6 @@
 	var/obj/item/organ/external/parent // Master-limb.
 	var/list/children                  // Sub-limbs.
 	var/list/internal_organs = list()  // Internal organs of this body part
-	var/list/implants = list()         // Currently implanted objects.
 	var/base_miss_chance = 20          // Chance of missing.
 	var/genetic_degradation = 0
 
@@ -175,6 +175,8 @@
 		while(null in owner.organs)
 			owner.organs -= null
 		owner.bad_external_organs.Remove(src)
+
+	QDEL_NULL_LIST(organ_modules)
 
 	if(autopsy_data)
 		autopsy_data.Cut()
@@ -432,6 +434,10 @@
 This function completely restores a damaged organ to perfect condition.
 */
 /obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs = FALSE)
+	var/list/kept_modules = list()
+	for(var/obj/item/organ_module/module in organ_modules)
+		kept_modules += module
+
 	damage_state = "00"
 
 	status = 0
@@ -453,9 +459,21 @@ This function completely restores a damaged organ to perfect condition.
 
 	// remove embedded objects and drop them on the floor
 	for(var/obj/implanted_object in implants)
+		if(istype(implanted_object, /obj/item/organ_module))
+			continue
 		if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
 			implanted_object.dropInto(get_turf(src))
 			implants -= implanted_object
+
+	for(var/obj/item/organ_module/module in kept_modules)
+		if(QDELETED(module))
+			continue
+		if(module.loc != src)
+			module.forceMove(src)
+		if(!(module in organ_modules))
+			organ_modules += module
+		if(!(module in implants))
+			implants += module
 
 	if(owner && !ignore_prosthetic_prefs)
 		if(owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
@@ -690,7 +708,7 @@ This function completely restores a damaged organ to perfect condition.
 				)
 
 //Handles dismemberment
-/obj/item/organ/external/proc/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
+/obj/item/organ/external/proc/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent, drop_modules = FALSE)
 
 	if(!(limb_flags & ORGAN_FLAG_CAN_AMPUTATE) || !owner)
 		return
@@ -718,6 +736,10 @@ This function completely restores a damaged organ to perfect condition.
 		victim.UpdateDamageIcon()
 		victim.regenerate_icons()
 		return
+
+	if(drop_modules)
+		for(var/obj/item/organ_module/module in organ_modules.Copy())
+			module.remove(src)
 
 	if(!clean)
 		victim.shock_stage += min_broken_damage
@@ -883,6 +905,9 @@ This function completely restores a damaged organ to perfect condition.
 	else if(status & ORGAN_BROKEN)
 		movement_tally += broken_tally * damage_multiplier
 
+	for(var/obj/item/organ_module/module in organ_modules)
+		movement_tally += module.organ_tally
+
 	owner?.update_organ_movespeed()
 
 /obj/item/organ/external/proc/fracture()
@@ -968,6 +993,8 @@ This function completely restores a damaged organ to perfect condition.
 
 	if(company)
 		var/datum/robolimb/R = GLOB.all_robolimbs[company]
+		brute_mod = R?.brute_mod
+		burn_mod = R?.burn_mod
 
 		if(!R || (species && (species.name in R.species_cannot_use)) || \
 		 (R.restricted_to.len && !(species.name in R.restricted_to)) || \
@@ -1020,7 +1047,27 @@ This function completely restores a damaged organ to perfect condition.
 	return 0
 
 /obj/item/organ/external/is_usable(ignore_pain = FALSE)
-	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1
+	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1 && is_robotic_usable()
+
+/obj/item/organ/external/proc/is_robotic_usable()
+	if(BP_IS_ROBOTIC(src))
+		return TRUE
+	if(organ_tag == BP_CHEST)
+		return TRUE
+	if(organ_tag == BP_HEAD)
+		return TRUE
+
+	if(!LAZYLEN(organ_modules))
+		return TRUE
+
+	if(is_path_in_list(/obj/item/organ_module/actuators, organ_modules))
+		return TRUE
+
+	if(is_path_in_list(/obj/item/organ_module/muscle, organ_modules))
+		return TRUE
+
+	return FALSE
+
 
 /obj/item/organ/external/proc/is_malfunctioning()
 	return (BP_IS_ROBOTIC(src) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))

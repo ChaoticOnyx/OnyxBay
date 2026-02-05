@@ -15,6 +15,48 @@
 	min_broken_damage = 35
 	var/open
 
+/obj/item/organ/internal/heart/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/organ_module))
+		var/obj/item/organ_module/module = I
+		if(owner)
+			to_chat(user, SPAN_NOTICE("You need to remove the heart first."))
+			return
+		if(!module.can_install_in(src, user))
+			return
+		if(!user.drop(I, src))
+			return
+		module.install(src)
+		to_chat(user, SPAN_NOTICE("You install \the [module] into \the [src]."))
+		return
+	return ..()
+
+/obj/item/organ/internal/heart/proc/remove_all_augmentations(mob/user)
+	if(!user || user.stat)
+		return
+	if(owner)
+		to_chat(user, SPAN_NOTICE("You need to remove the heart first."))
+		return
+	if(!LAZYLEN(organ_modules))
+		to_chat(user, SPAN_NOTICE("There are no augmentations installed in \the [src]."))
+		return
+
+	var/list/removed = list()
+	for(var/obj/item/organ_module/module in organ_modules.Copy())
+		removed += module.name
+		module.remove(src)
+	if(length(removed))
+		to_chat(user, SPAN_NOTICE("You remove [english_list(removed)] from \the [src]."))
+
+/obj/item/organ/internal/heart/verb/remove_augmentations()
+	set name = "Remove augmentations"
+	set category = "Object"
+	set src in view(1)
+	remove_all_augmentations(usr)
+
+/obj/item/organ/internal/heart/attack_self(mob/user)
+	. = ..()
+	remove_all_augmentations(user)
+
 /obj/item/organ/internal/heart/die()
 	if(dead_icon)
 		icon_state = dead_icon

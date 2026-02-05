@@ -54,7 +54,7 @@
 		)
 	target.custom_pain(
 		"The pain in your chest is living hell!",
-		1,
+		50,
 		affecting = target_organ
 		)
 	parent_organ.cavity = TRUE
@@ -94,7 +94,7 @@
 		)
 	target.custom_pain(
 		"The pain in your chest is living hell!",
-		1,
+		50,
 		affecting = parent_organ
 		)
 	parent_organ.cavity = FALSE
@@ -159,7 +159,7 @@
 		)
 	target.custom_pain(
 		"The pain in your chest is living hell!",
-		1,
+		50,
 		affecting = parent_organ
 		)
 	playsound(target.loc, 'sound/effects/squelch1.ogg', 25, 1)
@@ -235,7 +235,19 @@
 			)
 		return
 
-	var/obj/item/implanted_item = pick(loot)
+	var/obj/item/implanted_item = null
+	var/list/armor_loot = list()
+	for(var/obj/item/organ_module/armor/A in loot)
+		armor_loot += A
+	if(length(armor_loot))
+		if(length(armor_loot) == 1)
+			implanted_item = armor_loot[1]
+		else
+			implanted_item = show_radial_menu(user, target, armor_loot, require_near = TRUE)
+			if(!istype(implanted_item))
+				return
+	else
+		implanted_item = pick(loot)
 	if(istype(implanted_item, /obj/item/implant))
 		var/obj/item/implant/I = implanted_item
 		find_prob += I.islegal() ? 60 : 40
@@ -261,6 +273,9 @@
 		if(istype(implanted_item, /obj/item/implant))
 			var/obj/item/implant/I = implanted_item
 			I.removed()
+		if(istype(implanted_item, /obj/item/organ_module))
+			var/obj/item/organ_module/module = implanted_item
+			module.remove(parent_organ)
 		return
 
 	announce_success(user,
@@ -275,3 +290,53 @@
 			user.visible_message("Something beeps inside [target]'s [parent_organ]!")
 			spawn(25)
 				I.activate()
+
+/**
+ * Installing organ modules
+ */
+/datum/surgery_step/cavity/place_organ_module
+	duration = ATTACH_DURATION
+
+	allowed_tools = list(
+		/obj/item/organ_module = 100
+		)
+
+	preop_sound = 'sound/surgery/organ1.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
+	failure_sound = 'sound/effects/fighting/crunch1.ogg'
+
+/datum/surgery_step/cavity/place_organ_module/check_parent_organ(obj/item/organ/parent_organ, mob/living/carbon/human/target, obj/item/organ_module/tool, atom/user)
+	. = ..()
+	if(!.)
+		return
+
+	if(issilicon(user))
+		return FALSE
+
+	if(!tool.can_install_in(parent_organ, user))
+		return SURGERY_FAILURE
+
+	return TRUE
+
+/datum/surgery_step/cavity/place_organ_module/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/organ_module/tool, mob/user)
+	announce_preop(user,
+		"[user] starts putting \the [tool] inside [target]'s [parent_organ.cavity_name] cavity.",
+		"You start putting \the [tool] inside [target]'s [parent_organ.cavity_name] cavity."
+		)
+	target.custom_pain(
+		"The pain in your chest is living hell!",
+		50,
+		affecting = parent_organ
+		)
+	playsound(target.loc, 'sound/effects/squelch1.ogg', 25, 1)
+	return ..()
+
+/datum/surgery_step/cavity/place_organ_module/success(obj/item/organ/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/organ_module/tool, mob/user)
+	if(!user.drop(tool, parent_organ))
+		return
+
+	announce_success(user,
+		"[user] puts \the [tool] inside [target]'s [parent_organ].",
+		"You put \the [tool] inside [target]'s [parent_organ]."
+		)
+	tool.install(parent_organ)

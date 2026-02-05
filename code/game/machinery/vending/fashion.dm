@@ -34,7 +34,8 @@
 	illegal = list(
 		/obj/item/clothing/glasses/eyepatch = 2,
 		/obj/item/clothing/accessory/horrible = 2,
-		/obj/item/clothing/under/monkey/color/random = 3
+		/obj/item/clothing/under/monkey/color/random = 3,
+		/obj/item/clothing/mask/gas/monkeymask = 3
 		)
 
 	premium = list(

@@ -13,6 +13,7 @@
 	obj_flags = OBJ_FLAG_ANCHOR_BLOCKS_ROTATION
 	req_access = list(access_engine_equip)
 	rad_resist_type = /datum/rad_resist/none
+	pull_slowdown = PULL_SLOWDOWN_HEAVY // The barrel must be made of the immovable rod if it withstands so that much
 
 	var/id = null
 

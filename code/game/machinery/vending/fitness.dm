@@ -26,6 +26,7 @@
 		/obj/item/reagent_containers/food/packaged/nutribar = 8,
 		/obj/item/reagent_containers/food/liquidfood = 8,
 		/obj/item/reagent_containers/pill/diet = 8,
+		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/towel/random = 8,
 		/obj/item/clothing/gloves/boxing = 2,
 		/obj/item/clothing/gloves/boxing/blue = 2,
@@ -37,6 +38,10 @@
 		/obj/item/reagent_containers/syringe/steroid/packaged = 4
 		)
 
+	premium = list(
+		/obj/item/storage/backpack/dufflebag = 1
+		)
+
 	prices = list(
 		/obj/item/reagent_containers/vessel/carton/milk = 3,
 		/obj/item/reagent_containers/vessel/carton/milk/chocolate = 3,
@@ -45,6 +50,7 @@
 		/obj/item/reagent_containers/food/packaged/nutribar = 5,
 		/obj/item/reagent_containers/food/liquidfood = 5,
 		/obj/item/reagent_containers/pill/diet = 25,
+		/obj/item/stack/medical/bruise_pack = 20,
 		/obj/item/towel/random = 40,
 		/obj/item/clothing/gloves/boxing = 50,
 		/obj/item/clothing/gloves/boxing/blue = 50,

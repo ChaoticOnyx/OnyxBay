@@ -23,6 +23,7 @@
 	limb_flags = ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
 	var/butchering_capacity = 1
 	internal_organs_size = 12 // Liver = 2, stomach = 2, heart = 2, lungs = 6
+	max_module_size = 4
 
 /obj/item/organ/external/chest/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
 	if(..())
@@ -61,6 +62,7 @@
 	max_damage = 55
 	min_broken_damage = 30
 	w_class = ITEM_SIZE_NORMAL
+	max_module_size = 3 /// For augments
 	body_part = ARM_LEFT
 	parent_organ = BP_CHEST
 	joint = "left elbow"
@@ -86,6 +88,7 @@
 	max_damage = 60
 	min_broken_damage = 40
 	w_class = ITEM_SIZE_NORMAL
+	max_module_size = 3 /// For augments
 	body_part = LEG_LEFT
 	icon_position = LEFT
 	parent_organ = BP_GROIN
@@ -112,6 +115,7 @@
 	max_damage = 45
 	min_broken_damage = 30
 	w_class = ITEM_SIZE_SMALL
+	max_module_size = 2 /// For augments
 	body_part = FOOT_LEFT
 	icon_position = LEFT
 	parent_organ = BP_L_LEG
@@ -139,6 +143,7 @@
 	max_damage = 45
 	min_broken_damage = 25
 	w_class = ITEM_SIZE_SMALL
+	max_module_size = 3 /// For augments
 	body_part = HAND_LEFT
 	parent_organ = BP_L_ARM
 	joint = "left wrist"

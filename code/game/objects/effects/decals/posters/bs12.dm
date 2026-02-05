@@ -419,3 +419,7 @@
 	name = "Kosmicheskaya Stantsiya 13 Does Not Exist"
 	desc = "A poster mocking CentCom's denial of the existence of the derelict station near Space Station 13."
 
+/datum/poster/bay_85
+	icon_state="bsposter85"
+	name = "Best Synth CMO"
+	desc = "UUUOOOOGHHHH"

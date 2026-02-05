@@ -70,7 +70,22 @@
 		if("c-4detonator_1")
 			if(!pr_open)
 				pr_open = 1
-				switch(alert(user, "What would you like to do?", "Lighter", "Press the button.", "Close the lighter."))
+				var/choice = alert(user, "What would you like to do?", "Lighter", "Press the button.", "Close the lighter.")
+				pr_open = 0
+				
+				// Validate conditions after alert returns
+				if(!user || user.stat != CONSCIOUS || QDELETED(user))
+					return
+				if(QDELETED(src) || QDELETED(bomb))
+					return
+				if(!(src in user.contents))
+					to_chat(user, SPAN_WARNING("You no longer have \the [src]!"))
+					return
+				if(get_dist(user, bomb) > 7)
+					to_chat(user, SPAN_WARNING("You are too far from the package!"))
+					return
+				
+				switch(choice)
 					if("Press the button.")
 						to_chat(user, "<span class='warning'>You press the button.</span>")
 						flick("c-4detonator_click", src)
@@ -82,4 +97,3 @@
 					if("Close the lighter.")
 						src.icon_state = "c-4detonator_0"
 						to_chat(user, "You close the lighter.")
-				pr_open = 0

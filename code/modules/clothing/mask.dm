@@ -67,11 +67,15 @@
 				gas_transfer_coefficient = initial(gas_transfer_coefficient)
 				body_parts_covered = initial(body_parts_covered)
 				icon_state = initial(icon_state)
-				item_state = initial(icon_state)
+				item_state = initial(item_state)
 				item_flags = initial(item_flags)
 				flags_inv = initial(flags_inv)
 				to_chat(usr, "You pull [src] up to cover your face.")
 			update_clothing_icon()
+			if(ishuman(user))
+				var/mob/living/carbon/human/H = user
+				H.update_hair()
+				H.update_facial_hair()
 			user.update_action_buttons()
 
 

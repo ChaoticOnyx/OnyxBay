@@ -282,3 +282,28 @@
 	name = "Retro Jazz tape box"
 	icon_closed = "box_retrojazz"
 	music_tape = /obj/item/music_tape/random/retrojazz
+
+// -----------------------------
+//    Plastic Cup Bag
+// -----------------------------
+
+/obj/item/storage/plastic_cup_bag
+	name = "plastic cup bag"
+	desc = "A bag full of pristine plastic cups. You can probably refill a water cooler's stand with these."
+	icon = 'icons/obj/storage/misc.dmi'
+	icon_state = "plastic_cup_bag"
+	item_state = "plasticbag"
+	w_class = ITEM_SIZE_NORMAL
+	max_storage_space = 80
+	can_hold = list(/obj/item/reagent_containers/vessel/plastic/cup)
+	startswith = list(/obj/item/reagent_containers/vessel/plastic/cup = 36)
+	allow_quick_gather = TRUE
+	allow_quick_empty = TRUE
+	use_to_pickup = TRUE
+
+/obj/item/storage/plastic_cup_bag/on_update_icon()
+	..()
+	if(contents?.len <= 0)
+		icon_state = "plastic_cup_bag_empty"
+		return
+	icon_state = "plastic_cup_bag"

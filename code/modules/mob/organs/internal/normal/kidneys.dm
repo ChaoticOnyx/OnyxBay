@@ -28,12 +28,19 @@
 		return
 
 	detox_efficiency = 0.5
-	// Technically, ceases toxloss healing function. Lore-wise, still filters out the body's natural toxic buildup, but can't handle anything beyond that.
-	if(is_bruised())
-		detox_efficiency -= 0.5
-	// Causes the body's natural toxic buildup to... build up.
-	if(is_broken())
-		detox_efficiency -= 0.5
+	if(status & ORGAN_DEAD) // Causes the body's natural toxic buildup to... build up.
+		detox_efficiency *= -1
+	else if(is_broken()) // Technically, ceases toxloss healing function. Lore-wise, still filters out the body's natural toxic buildup, but can't handle anything beyond that.
+		detox_efficiency = 0
+	else if(is_bruised()) // Halves the healing potential, we'll only get intoxicated when completely dehydrated.
+		detox_efficiency *= 0.5
+
+	else
+
+/obj/item/organ/internal/kidneys/die()
+	..()
+	if(status & ORGAN_DEAD)
+		detox_efficiency = -0.5
 
 /obj/item/organ/internal/kidneys/proc/process_hydration()
 	if(!owner)
@@ -43,10 +50,15 @@
 		return
 
 	var/dynamic_hydration_consumption = hydration_consumption
+
+	for(var/datum/modifier/mod in owner.modifiers)
+		if(!isnull(mod.metabolism_percent))
+			dynamic_hydration_consumption *= mod.metabolism_percent
+
 	switch(owner.hydration)
 		if(HYDRATION_NONE)
 			dynamic_hydration_consumption = 0
-			take_internal_damage(0.15) // kidneys autoheal 0.1 damage each tick, so we effectively deal 0.05 damage here; hence it takes ~17 minutes of complete dehydration to bruise a pair of healthy kidneys.
+			take_internal_damage(0.1) // kidneys autoheal 0.1 damage each tick, so we effectively deal no damage here if kidneys are healthy.
 		if(HYDRATION_NONE+0.01 to HYDRATION_LOW)
 			dynamic_hydration_consumption *= 0.75
 		if(HYDRATION_HIGH+0.01 to HYDRATION_SUPER)

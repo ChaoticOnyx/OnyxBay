@@ -29,7 +29,7 @@
 	item_state = "stamp-cap"
 
 /obj/item/stamp/hop
-	name = "head of personnel's rubber stamp"
+	name = "head of provisioning's rubber stamp"
 	icon_state = "stamp-hop"
 	item_state = "stamp-hop"
 

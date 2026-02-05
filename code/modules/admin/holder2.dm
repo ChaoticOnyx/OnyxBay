@@ -21,6 +21,7 @@ var/list/admin_datums = list()
 	var/datum/follow_panel/follow_panel = new()
 	var/datum/events_panel/events_panel = new()
 	var/list/events_windows = list()
+	var/datum/bloom_edit/debug_bloom
 
 /datum/admins/proc/marked_datum()
 	if(marked_datum_weak)

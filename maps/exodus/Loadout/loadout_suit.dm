@@ -28,7 +28,7 @@
 	allowed_roles = RESEARCH_ROLES
 
 /datum/gear/suit/roles/poncho/cargo
-	allowed_roles = SUPPLY_ROLES
+	allowed_roles = CARGO_ROLES
 
 /datum/gear/suit/roles/surgical_apron
 	display_name = "surgical apron"
@@ -76,7 +76,7 @@
 /datum/gear/suit/wintercoat/cargo
 	display_name = "winter coat, cargo"
 	path = /obj/item/clothing/suit/storage/hooded/wintercoat/cargo
-	allowed_roles = SUPPLY_ROLES
+	allowed_roles = CARGO_ROLES
 
 /datum/gear/suit/wintercoat/miner
 	display_name = "winter coat, mining"

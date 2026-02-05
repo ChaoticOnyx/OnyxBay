@@ -439,6 +439,27 @@ var/global/datum/controller/occupations/job_master
 							spawn_in_storage.Add(G)
 						else
 							loadout_taken_slots.Add(G.slot)
+
+			// Remove augmentations that are not allowed for this job (loadout-like behavior).
+			var/list/organs = list()
+			for(var/organ_tag in H.organs_by_name)
+				var/obj/item/organ/O = H.organs_by_name[organ_tag]
+				if(O)
+					organs += O
+			for(var/organ_tag in H.internal_organs_by_name)
+				var/obj/item/organ/O = H.internal_organs_by_name[organ_tag]
+				if(O)
+					organs += O
+
+			for(var/obj/item/organ/O in organs)
+				if(!LAZYLEN(O.organ_modules))
+					continue
+				for(var/obj/item/organ_module/module in O.organ_modules.Copy())
+					if(!module.is_allowed_for_job(job))
+						to_chat(H, SPAN_WARNING("Your current species, job, whitelist status or loadout configuration does not permit you to spawn with [module.name]!"))
+						module.remove(O)
+						if(!QDELETED(module))
+							qdel(module)
 		else
 			to_chat(H, "Your job is [rank] and the game just can't handle it! Please report this bug to an administrator.")
 

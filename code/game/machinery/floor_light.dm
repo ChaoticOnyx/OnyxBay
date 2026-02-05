@@ -50,6 +50,13 @@
 /obj/machinery/floor_light/prebuilt
 	anchored = TRUE
 
+/obj/machinery/floor_light/prebuilt/on
+	on = TRUE
+
+/obj/machinery/floor_light/prebuilt/on/Initialize()
+	. = ..()
+	update_glow()
+	update_icon()
 
 /obj/machinery/floor_light/on_update_icon()
 	ClearOverlays()

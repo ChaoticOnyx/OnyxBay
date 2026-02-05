@@ -17,13 +17,14 @@
 	attack_verb = list("slammed", "whacked", "bashed", "thunked", "battered", "bludgeoned", "thrashed")
 
 	var/spray_particles = 3
-	var/spray_amount = 120	//units of liquid per spray - 120 -> same as splashing them with a bucket per spray
-	var/max_volume = 2000
+	var/spray_amount = 0.5 LITERS // ML of liquid per spray
+	var/max_volume = 7.5 LITERS
 	var/last_use = 1.0
 	var/safety = 1
 	var/sprite_name = "fire_extinguisher"
 	var/ff_reagent = /datum/reagent/water/firefoam
 	var/external_source = FALSE
+	var/spray_cooldown = 1.5 SECONDS
 
 	drop_sound = SFX_DROP_GASCAN
 	pickup_sound = SFX_PICKUP_GASCAN
@@ -41,8 +42,8 @@
 	mod_reach = 0.6
 	armor_penetration = 5
 	w_class = ITEM_SIZE_SMALL
-	spray_amount = 0.8 LITERS
-	max_volume = 10 LITERS
+	spray_amount = 0.25 LITERS
+	max_volume = 2 LITERS
 	sprite_name = "miniFE"
 	matter = list(MATERIAL_STEEL = 500)
 
@@ -68,7 +69,7 @@
 
 /obj/item/extinguisher/attack(mob/living/M, mob/user)
 	if((user.a_intent == I_HELP) && !external_source)
-		if(safety || (world.time < last_use + 20)) // We still catch help intent to not randomly attack people
+		if(safety || (world.time < last_use + spray_cooldown)) // We still catch help intent to not randomly attack people
 			return
 		if(reagents.total_volume < 1)
 			to_chat(user, SPAN("notice", "\The [src] is empty."))

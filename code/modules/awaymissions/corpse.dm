@@ -126,7 +126,7 @@
 
 /obj/effect/landmark/corpse/chef
 	name = "Chef"
-	corpse_outfits = list(/decl/hierarchy/outfit/job/service/chef)
+	corpse_outfits = list(/decl/hierarchy/outfit/job/provisioning/chef)
 
 /obj/effect/landmark/corpse/doctor
 	name = "Doctor"
