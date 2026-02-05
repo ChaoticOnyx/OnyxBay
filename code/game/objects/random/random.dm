@@ -1537,6 +1537,12 @@ var/list/multi_point_spawns
 	id = "Circuit board (autolathe)"
 	item_path = /obj/item/circuitboard/autolathe
 
+/obj/random_multi/single_item/rocky
+	name = "multi point - Rocky"
+	icon_state = "landmark_rocky"
+	id = "Rocky"
+	item_path = /obj/structure/rocky
+
 // Broken items, or stuff that could be picked up.
 /obj/random/junk
 	name = "random junk"

@@ -195,6 +195,7 @@
 				dismantle()
 		else
 			user.visible_message(SPAN("danger", "[user] hits \the [src] with \the [W], but it bounces off!"))
+		return
 
 	return ..()
 
