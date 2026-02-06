@@ -116,53 +116,40 @@
 	animal_heal = 5
 	stack_full = 1
 
-/obj/item/stack/medical/bruise_pack/attack(mob/living/carbon/M as mob, mob/user as mob)
+/obj/item/stack/medical/bruise_pack/attack(mob/living/carbon/M, mob/user)
 	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting) //nullchecked by ..()
+	if(!ishuman(M))
+		return 1
 
-		if(affecting.is_bandaged())
-			to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been bandaged."))
+	var/mob/living/carbon/human/H = M
+	var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting) //nullchecked by ..()
+
+	if(affecting.is_bandaged())
+		to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been bandaged."))
+		return 1
+	else
+		user.visible_message(SPAN("notice", "\The [user] starts bandaging [M]'s [affecting.name]."), \
+							 SPAN("notice", "You start bandaging [M]'s [affecting.name]."))
+
+		if(!do_mob(user, M, 2.5 SECONDS))
+			to_chat(user, SPAN("warning", "You must stand still to bandage wounds."))
 			return 1
-		else
-			user.visible_message(SPAN("notice", "\The [user] starts treating [M]'s [affecting.name]."), \
-					             SPAN("notice", "You start treating [M]'s [affecting.name]."))
-			var/used = 0
-			for (var/datum/wound/W in affecting.wounds)
-				if(W.bandaged)
-					continue
-				if(used == get_amount())
-					break
-				if(!do_mob(user, M, W.damage/5))
-					to_chat(user, SPAN("warning", "You must stand still to bandage wounds."))
-					break
 
-				if (W.current_stage <= W.max_bleeding_stage)
-					user.visible_message(SPAN("notice", "\The [user] bandages \a [W.desc] on [M]'s [affecting.name]."), \
-					                              SPAN("notice", "You bandage \a [W.desc] on [M]'s [affecting.name]."))
-					//H.add_side_effect("Itch")
-				else if (W.damage_type == BRUISE)
-					user.visible_message(SPAN("notice", "\The [user] places a bruise patch over \a [W.desc] on [M]'s [affecting.name]."), \
-					                              SPAN("notice", "You place a bruise patch over \a [W.desc] on [M]'s [affecting.name]."))
-				else
-					user.visible_message(SPAN("notice", "\The [user] places a bandaid over \a [W.desc] on [M]'s [affecting.name]."), \
-					                              SPAN("notice", "You place a bandaid over \a [W.desc] on [M]'s [affecting.name]."))
-				W.bandage()
-				W.heal_damage(heal_brute)
-				used++
-			affecting.update_damages()
-			if(affecting.update_damstate())
-				H.UpdateDamageIcon()
-			if(used == get_amount())
-				if(affecting.is_bandaged())
-					to_chat(user, SPAN("warning", "\The [src] is used up."))
-				else
-					to_chat(user, SPAN("warning", "\The [src] is used up, but there are more wounds to treat on \the [affecting.name]."))
-			use(used)
-			H.update_bandages(1)
+		user.visible_message(SPAN("notice", "\The [user] bandages [M]'s [affecting.name]."), \
+							 SPAN("notice", "You bandage [M]'s [affecting.name]."))
+		affecing.bandage()
+		used++
+
+		affecting.update_damages()
+		if(affecting.update_damstate())
+			H.UpdateDamageIcon()
+		if(get_amount() == 1)
+			to_chat(user, SPAN("warning", "\The [src] is used up."))
+		use(1)
+		H.update_bandages(1)
+	return 1
 
 /obj/item/stack/medical/ointment
 	name = "ointment"
@@ -412,34 +399,31 @@
 	stack_empty = 1
 	splittable = 0
 
-/obj/item/stack/medical/patches/attack(mob/living/carbon/M as mob, mob/user as mob)
+/obj/item/stack/medical/patches/attack(mob/living/carbon/M, mob/user)
 	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting) //nullchecked by ..()
 
 		if(affecting.is_bandaged())
-			to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been treated."))
+			to_chat(user, SPAN("notice", "[M]'s [affecting.name] doesn't seem to be bleeding."))
 			return 1
 		else
-			user.visible_message(SPAN("notice", "\The [user] starts treating [M]'s [affecting.name]."), \
-					                      SPAN("notice", "You start treating [M]'s [affecting.name]."))
+			user.visible_message(SPAN("notice", "\The [user] starts placing bandaids on [M]'s [affecting.name]."), \
+								 SPAN("notice", "You start placing bandaids on [M]'s [affecting.name]."))
 			var/used = 0
-			for (var/datum/wound/W in affecting.wounds)
-				if(W.bandaged)
-					continue
-				if(used == get_amount())
-					break
-				if(!do_mob(user, M, W.damage/5))
+
+			while(!affecing.is_bandaged() && used < get_amount())
+				if(!do_mob(user, M, 1.5 SECONDS))
 					to_chat(user, SPAN("warning", "You must stand still to place a bandaid."))
 					break
-
-				user.visible_message(SPAN("notice", "\The [user] places a bandaid over \a [W.desc] on [M]'s [affecting.name]."), \
-									          SPAN("notice", "You place a bandaid over \a [W.desc] on [M]'s [affecting.name]."))
-				W.bandage()
+				user.visible_message(SPAN("notice", "\The [user] places a bandaid on [M]'s [affecting.name]."), \
+									 SPAN("notice", "You place a bandaid on [M]'s [affecting.name]."))
+				affecing.bandage(20)
 				used++
+
 			affecting.update_damages()
 			if(affecting.update_damstate())
 				H.UpdateDamageIcon()
@@ -447,9 +431,9 @@
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))
 				else
-					to_chat(user, SPAN("warning", "\The [src] is used up, but there are more wounds to treat on \the [affecting.name]."))
+					to_chat(user, SPAN("warning", "\The [src] is used up, but [M]'s [affecting.name] is still not completely covered."))
 			use(used)
-
+			H.update_bandages(1)
 
 /obj/item/stack/medical/advanced/resurrection_serum
 	name = "prototype serum injector"

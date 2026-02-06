@@ -376,10 +376,7 @@
 			if(!parent.children)
 				parent.children = list()
 			parent.children.Add(src)
-			//Remove all stump wounds since limb is not missing anymore
-			for(var/datum/wound/lost_limb/W in parent.wounds)
-				qdel(W)
-				break
+			/// NOWOUNDS TODO: Stump removal
 			parent.update_damages()
 
 //Helper proc used by various tools for repairing robot limbs
@@ -622,11 +619,17 @@ This function completely restores a damaged organ to perfect condition.
 // Updates damage ratios, bleeding status, etc.
 /obj/item/organ/external/proc/update_damages()
 	if(owner && (owner.status_flags & GODMODE))
+		max_bleeding = 0
+		bandaged = 0
+		scabbed = 0
+		bleeding = 0
+		brute_dam = 0
+		burn_dam = 0
 		return
 
 	// Bleeding
 	if(!BP_IS_ROBOTIC(src))
-		max_bleeding = (cut_dam + pierce_dam) * 0.5
+		max_bleeding = max(cut_dam, pierce_dam)
 		bandaged = clamp(bandaged, 0, max_bleeding)
 		scabbed = clamp(scabbed, 0, max_bleeding)
 
@@ -745,10 +748,8 @@ This function completely restores a damaged organ to perfect condition.
 		victim.shock_stage += min_broken_damage
 
 	if(parent_organ)
-		var/datum/wound/lost_limb/W = new (src, disintegrate, clean)
 		if(clean)
-			W.parent_organ = parent_organ
-			LAZYADD(parent_organ.wounds, W)
+			/// NOWOUNDS TODO: Clean cut bleeding
 			parent_organ.update_damages()
 		else
 			var/obj/item/organ/external/stump/stump = new (victim, src)
@@ -756,12 +757,14 @@ This function completely restores a damaged organ to perfect condition.
 			stump.artery_name = "mangled [artery_name]"
 			stump.arterial_bleed_severity = arterial_bleed_severity
 			stump.adjust_pain(max_damage)
+
 			W.parent_organ = stump
-			LAZYADD(stump.wounds, W)
 			victim.organs |= stump
+
 			stump.movement_tally = stumped_tally * damage_multiplier
 			if(disintegrate != DROPLIMB_BURN)
 				stump.sever_artery()
+
 			stump.update_damages()
 			stump.replaced(victim)
 
@@ -830,12 +833,9 @@ This function completely restores a damaged organ to perfect condition.
 			"\The [holder.handcuffed.name] falls off you.")
 		holder.drop(holder.handcuffed, force = TRUE)
 
-// checks if all wounds on the organ are bandaged
+// Checks if the organ is fully bandaged
 /obj/item/organ/external/proc/is_bandaged()
-	for(var/datum/wound/W in wounds)
-		if(!W.bandaged)
-			return 0
-	return 1
+	return (bandaged >= max_bleeding)
 
 // checks if all wounds on the organ are salved
 /obj/item/organ/external/proc/is_salved()
@@ -844,21 +844,20 @@ This function completely restores a damaged organ to perfect condition.
 			return 0
 	return 1
 
-/obj/item/organ/external/proc/bandage()
+// Applies the amt of 'bandaged', up to 'max_bleeding'.
+// Returns the amount of bleeding left.
+/obj/item/organ/external/proc/bandage(amt = 999)
 	if(bandaged >= max_bleeding)
 		return 0 // No bandaging needed
 
-	if(bandaged)
-		. = 2 // Replacing bandages
+	if(amt == -1)
+		bandaged = max_bleeding
 	else
-		. = 1 // Bandaging anew
-
-	bandaged = max_bleeding
-	clamped = FALSE
+		bandaged = min(max_bleeding, bandaged + amt)
 
 	update_damages()
 	owner?.update_surgery()
-	return
+	return (max_bleeding - bandaged)
 
 /obj/item/organ/external/proc/salve()
 	var/rval = 0
