@@ -248,12 +248,6 @@
 
 	return MOVEMENT_PROCEED
 
-
-/mob/living/ProcessGrabs()
-	//if we are being grabbed
-	if(grabbed_by.len)
-		resist() //shortcut for resisting grabs
-
 /mob/proc/ProcessGrabs()
 	return
 
