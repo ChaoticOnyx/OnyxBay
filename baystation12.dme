@@ -2464,8 +2464,6 @@
 #include "code\modules\mob\organs\external\unbreakable.dm"
 #include "code\modules\mob\organs\external\vox.dm"
 #include "code\modules\mob\organs\external\xenos.dm"
-#include "code\modules\mob\organs\external\wounds\wound.dm"
-#include "code\modules\mob\organs\external\wounds\wound_types.dm"
 #include "code\modules\mob\organs\internal\_internal.dm"
 #include "code\modules\mob\organs\internal\borer.dm"
 #include "code\modules\mob\organs\internal\cerebrum.dm"
