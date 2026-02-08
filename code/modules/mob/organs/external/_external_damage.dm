@@ -344,6 +344,8 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 			if(internal_damage)
 				owner.custom_pain("You feel something rip in your [name]!", 50, affecting = src)
 
+		salved = FALSE
+
 		if(clamped && !clean)
 			clamped = FALSE
 			owner?.update_surgery()
@@ -567,6 +569,8 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		lasting_pain += 5
 
 	full_pain = min(pain, max_damage) + lasting_pain + min(max_damage, 0.7 * brute_dam + 0.8 * burn_dam) + 0.5 * get_genetic_damage()
+	if(salved)
+		full_pain *= 0.5 // It gets interrupted by virtually any damage, so this can't be too OP.
 
 /obj/item/organ/external/proc/get_pain()
 	return pain

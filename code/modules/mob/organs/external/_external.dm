@@ -37,11 +37,12 @@
 	var/pierce_dam = 0                 // Amount of pierce brute damage, aka "cut depth".
 	var/pierce_last = 0
 
-	var/max_bleeding = 0               // Maximum potential bleeding.
+	var/max_bleeding = 0               // Potential bleeding, not counting scabbing, bandages or clamps.
+	var/bleeding = 0                   // Effective bleeding severity at the moment.
 	var/bandaged = 0                   // Bandaged stage.
 	var/scabbed = 0                    // Scabbing stage.
 	var/clamped = FALSE                // Clamped state. Completely prevents bleeding, but also prevents sharp regeneration and is interrupted by any damage.
-	var/bleeding = 0                   // Effective bleeding severity.
+	var/salved = FALSE                 // Salved state. Speeds up blunt regeneration and decreases pain. Interrupted by any damage.
 
 	var/last_dam = -1                  // used in healing/processing calculations.
 	var/pain = 0                       // How much the limb hurts.
@@ -579,42 +580,40 @@ This function completely restores a damaged organ to perfect condition.
 
 	var/heal_amt = H ? H.coagulation * 0.5 : 0.5
 
-	if(!heal_amt || owner.chem_effects[CE_TOXIN] || brute_ratio >= 3 || burn_ratio >= 2)
+	if(!heal_amt)
 		return // No autoheal
 
-	heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.1)
+	// Organs won't autoheal until all the wounds are scabbed.
+	// Scabbing progresses faster under properly-applied bandages.
+	if(scabbed < max_bleeding)
+		scabbed += (H ? H.coagulation : 1.0) * ((bandaged >= scabbed) ? 1:0 * 0.5) * wound_update_accuracy
+	else
+		heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.1)
 
-	// Evenly spreading regeneration between burn and brute damage if both are present
-	if(burn_dam && brute_dam)
-		heal_amt *= 0.5
-
-	if(burn_dam)
-		heal_burn_damage(heal_amt, FALSE, FALSE, FALSE)
-
-	if(brute_dam)
-		if(blunt_dam && (pierce_dam || cut_dam))
+		// Evenly spreading regeneration between burn and brute damage if both are present
+		if(burn_dam && brute_dam)
 			heal_amt *= 0.5
 
-		 if(blunt_dam)
-		 	heal_blunt_damage(heal_amt, FALSE, FALSE, FALSE)
+		if(bleeding)
+			heal_amt *= 0.5
 
-		// Sharp damage can't regenerate naturally if it's still bleeding
-		if(!(status & ORGAN_BLEEDING) && !clamped)
-			heal_sharp_damage(heal_amt, FALSE, FALSE, FALSE)
+		if(burn_dam)
+			heal_burn_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
 
-	if(scabbed < max_bleeding)
-		scabbed += (H ? H.coagulation : 1.0) * wound_update_accuracy * ((bandaged >= scabbed) ? 1:0 * 0.5)
+		if(brute_dam)
+			if(blunt_dam && (pierce_dam || cut_dam))
+				heal_amt *= 0.5
+
+			 if(blunt_dam)
+			 	heal_blunt_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
+
+			// Wounds won't close naturally if they are clamped
+			if(!clamped)
+				heal_sharp_damage(heal_amt, FALSE, FALSE, FALSE)
 
 	update_damages()
-
-	var/should_update_damstate
-
-	if(owner)
-		owner.updatehealth()
-		if(update_damstate())
-			owner.UpdateDamageIcon()
-
-	return should_update_damstate
+	owner?.updatehealth()
+	return update_damstate()
 
 // Updates damage ratios, bleeding status, etc.
 /obj/item/organ/external/proc/update_damages()
@@ -645,6 +644,7 @@ This function completely restores a damaged organ to perfect condition.
 	// Ratios
 	burn_ratio = burn_dam / max_damage
 	brute_ratio = brute_dam / max_damage
+	return
 
 //Returns TRUE if damage_state changed
 /obj/item/organ/external/proc/update_damstate()
@@ -837,13 +837,6 @@ This function completely restores a damaged organ to perfect condition.
 /obj/item/organ/external/proc/is_bandaged()
 	return (bandaged >= max_bleeding)
 
-// checks if all wounds on the organ are salved
-/obj/item/organ/external/proc/is_salved()
-	for(var/datum/wound/W in wounds)
-		if(!W.salved)
-			return 0
-	return 1
-
 // Applies the amt of 'bandaged', up to 'max_bleeding'.
 // Returns the amount of bleeding left.
 /obj/item/organ/external/proc/bandage(amt = 999)
@@ -860,11 +853,8 @@ This function completely restores a damaged organ to perfect condition.
 	return (max_bleeding - bandaged)
 
 /obj/item/organ/external/proc/salve()
-	var/rval = 0
-	for(var/datum/wound/W in wounds)
-		rval |= !W.salved
-		W.salved = 1
-	return rval
+	salved = TRUE
+	return
 
 /obj/item/organ/external/proc/clamp_organ()
 	if(clamped || !max_bleeding)

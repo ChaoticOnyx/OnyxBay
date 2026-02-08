@@ -341,18 +341,6 @@
 				I.take_internal_damage(amount, silent=TRUE)
 				amount = 0
 
-/mob/living/carbon/human/proc/can_autoheal(dam_type)
-	if(!species || !dam_type)
-		return FALSE
-
-	if(dam_type == BRUTE)
-		return !!coagulation && (getBruteLoss() < species.total_health) // No blood clotting = no brute autohealing, simple as that.
-
-	if(dam_type == BURN)
-		return (getFireLoss() < species.total_health)
-
-	return FALSE
-
 ////////////////////////////////////////////
 
 //Returns a list of damaged organs

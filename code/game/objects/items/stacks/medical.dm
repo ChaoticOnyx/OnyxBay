@@ -118,42 +118,44 @@
 
 /obj/item/stack/medical/bruise_pack/attack(mob/living/carbon/M, mob/user)
 	if(..())
-		return 1
+		return TRUE
 
 	if(!ishuman(M))
-		return 1
+		return TRUE
 
 	var/mob/living/carbon/human/H = M
 	var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting) //nullchecked by ..()
 
 	if(affecting.is_bandaged())
 		to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been bandaged."))
-		return 1
+		return TRUE
 	else
 		user.visible_message(SPAN("notice", "\The [user] starts bandaging [M]'s [affecting.name]."), \
 							 SPAN("notice", "You start bandaging [M]'s [affecting.name]."))
 
 		if(!do_mob(user, M, 2.5 SECONDS))
 			to_chat(user, SPAN("warning", "You must stand still to bandage wounds."))
-			return 1
+			return TRUE
 
 		user.visible_message(SPAN("notice", "\The [user] bandages [M]'s [affecting.name]."), \
 							 SPAN("notice", "You bandage [M]'s [affecting.name]."))
-		affecing.bandage()
-		used++
 
+		affecting.bandage()
 		affecting.update_damages()
+
 		if(affecting.update_damstate())
 			H.UpdateDamageIcon()
+
 		if(get_amount() == 1)
 			to_chat(user, SPAN("warning", "\The [src] is used up."))
+
 		use(1)
 		H.update_bandages(1)
-	return 1
+	return TRUE
 
 /obj/item/stack/medical/ointment
 	name = "ointment"
-	desc = "Used to treat those nasty burns. Also works as an antiseptic. Smells like aloe and welding fuel. "
+	desc = "Used to treat those nasty burns and bruises. Also works as an antiseptic and topical painkiller. Smells like aloe and welding fuel."
 	gender = PLURAL
 	singular_name = "ointment dose"
 	icon_state = "salve"
@@ -169,26 +171,31 @@
 
 /obj/item/stack/medical/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(..())
-		return 1
+		return TRUE
 
-	if (istype(M, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting) //nullchecked by ..()
+	if(!ishuman(M))
+		return TRUE
 
-		if(affecting.is_salved())
-			to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been salved."))
-			return 1
-		else
-			user.visible_message(SPAN("notice", "\The [user] starts salving wounds on [M]'s [affecting.name]."), \
-					                      SPAN("notice", "You start salving wounds on [M]'s [affecting.name]."))
-			if(!do_mob(user, M, 10))
-				to_chat(user, SPAN("warning", "You must stand still to salve wounds.</span>"))
-				return 1
-			user.visible_message(SPAN("notice", "[user] salved wounds on [M]'s [affecting.name]."), \
-			                        SPAN("notice", "You salved wounds on [M]'s [affecting.name]."))
-			use(1)
-			affecting.salve()
-			affecting.disinfect()
+	var/mob/living/carbon/human/H = M
+	var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting) //nullchecked by ..()
+
+	if(affecting.salved)
+		to_chat(user, SPAN("notice", "[M]'s [affecting.name] has already been salved."))
+		return TRUE
+	else
+		user.visible_message(SPAN("notice", "\The [user] starts smearing salve over [M]'s [affecting.name]."), \
+							 SPAN("notice", "You start smearing salve over [M]'s [affecting.name]."))
+		if(!do_mob(user, M, 10))
+			to_chat(user, SPAN("warning", "You must stand still to apply salve."))
+			return TRUE
+
+		user.visible_message(SPAN("notice", "[user] smears some salve over [M]'s [affecting.name]."), \
+							 SPAN("notice", "You smear some salve over [M]'s [affecting.name]."))
+		use(1)
+		affecting.salve()
+		affecting.disinfect()
+
+	return TRUE
 
 /obj/item/stack/medical/advanced/proc/refill(amt = 1)
 	if(get_amount() >= max_amount)
@@ -415,13 +422,13 @@
 								 SPAN("notice", "You start placing bandaids on [M]'s [affecting.name]."))
 			var/used = 0
 
-			while(!affecing.is_bandaged() && used < get_amount())
+			while(!affecting.is_bandaged() && used < get_amount())
 				if(!do_mob(user, M, 1.5 SECONDS))
 					to_chat(user, SPAN("warning", "You must stand still to place a bandaid."))
 					break
 				user.visible_message(SPAN("notice", "\The [user] places a bandaid on [M]'s [affecting.name]."), \
 									 SPAN("notice", "You place a bandaid on [M]'s [affecting.name]."))
-				affecing.bandage(20)
+				affecting.bandage(20)
 				used++
 
 			affecting.update_damages()
