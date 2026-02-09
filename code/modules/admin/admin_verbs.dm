@@ -108,7 +108,8 @@ var/list/admin_verbs_admin = list(
 	/client/proc/delbook,
 	/datum/admins/proc/follow_panel,
 	/datum/admins/proc/events_panel,
-	/datum/admins/proc/change_lobby_art
+	/datum/admins/proc/change_lobby_art,
+	/datum/admins/proc/change_lobby_music
 	)
 
 var/list/admin_verbs_ban = list(

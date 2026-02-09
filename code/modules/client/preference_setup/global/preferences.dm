@@ -150,7 +150,20 @@ var/global/list/_client_preferences_by_type
 		if(isnewplayer(preference_mob) && preference_mob.client)
 			GLOB.lobby_music.play_to(preference_mob.client)
 	else
-		sound_to(preference_mob.client, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))
+		sound_to(preference_mob.client, sound(null, repeat = 0, wait = 0, volume = 0, channel = 1))
+
+/datum/client_preference/volume_lobby_music
+	description ="Lobby music volume"
+	key = "SOUND_LOBBY_VOLUME"
+	category = PREF_CATEGORY_AUDIO
+	options = list(GLOB.PREF_LOW, GLOB.PREF_MED, GLOB.PREF_HIGH)
+	default_value = GLOB.PREF_MED
+
+/datum/client_preference/volume_lobby_music/changed(mob/preference_mob, new_value)
+	if(isnewplayer(preference_mob) && preference_mob.client)
+		var/sound/S = sound(channel = 1, volume = GLOB.lobby_music.get_volume_from_pref(new_value))
+		S.status = SOUND_UPDATE
+		sound_to(preference_mob.client, S)
 
 /datum/client_preference/play_ambiance
 	description ="Play ambience"
