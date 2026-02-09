@@ -552,9 +552,6 @@ This function completely restores a damaged organ to perfect condition.
 		// Process wounds, doing healing etc. Only do this every few ticks to save processing power
 		if(owner.life_tick % wound_update_accuracy == 0)
 			should_update_damage_icons_this_tick = handle_regeneration()
-
-		//Infections
-		update_germs()
 	else
 		remove_all_pain()
 		..()
@@ -1249,27 +1246,125 @@ This function completely restores a damaged organ to perfect condition.
 		var/obj/item/organ/internal/I = pick(internal_organs)
 		I.take_internal_damage(rand(3,5))
 
+/obj/item/organ/external/proc/get_damages_desc()
+	var/is_robotic = BP_IS_ROBOTIC(src)
+
+	var/flavor_text = ""
+
+	var/blunt_desc = ""
+	if(blunt_dam)
+		switch(round((blunt_dam / max_damage) * 100))
+			if(1 to 33)
+				blunt_desc = "lightly" + (is_robotic ? "dented" : "bruised")
+			if(34 to 66)
+				blunt_desc = (is_robotic ? "dented" : "bruised")
+			if(66 to 99)
+				blunt_desc = "severely" + (is_robotic ? "dented" : "bruised")
+			if(100)
+				blunt_desc = "<b>crushed</b>"
+
+	var/sharp_desc = ""
+	if(cut_dam)
+		switch(round((cut_dam / max_damage) * 100))
+			if(0 to 20)
+				sharp_desc = "narrow"
+			if(21 to 45)
+				sharp_desc = ""
+			if(46 to 70)
+				sharp_desc = "wide"
+			if(71 to 99)
+				sharp_desc = "gaping"
+			if(100)
+				sharp_desc = "<b>massive</b>"
+	if(pierce_dam)
+		if(sharp_desc)
+			sharp_desc += ", "
+		switch(round((pierce_dam / max_damage) * 100))
+			if(0 to 20)
+				sharp_desc += "shallow"
+			if(21 to 45)
+				sharp_desc += ""
+			if(46 to 70)
+				sharp_desc += "deepish"
+			if(71 to 99)
+				sharp_desc += "deep"
+			if(100)
+				sharp_desc += "<b>penetrating</b>"
+
+	var/burns_desc = ""
+	if(burn_dam)
+		if(!is_robotic)
+			switch(round(burn_ratio))
+				if(1 to 10)
+					burns_desc = "a few blisters"
+				if(11 to 20)
+					burns_desc = "some blisters"
+				if(21 to 45)
+					burns_desc = "burns"
+				if(46 to 70)
+					burns_desc = "severe burns"
+				if(71 to 99)
+					burns_desc = "massive burns"
+				if(100 to 150)
+					burns_desc = "<b>carbonised burns</b>"
+				if(151 to 200)
+					burns_desc = "<b>horrifying charred burns</b>"
+		else
+			switch(round(burn_ratio))
+				if(1 to 10)
+					burns_desc = "a few burn marks"
+				if(11 to 20)
+					burns_desc = "some burn marks"
+				if(21 to 45)
+					burns_desc = "scorches"
+				if(46 to 70)
+					burns_desc = "severe scorches"
+				if(71 to 99)
+					burns_desc = "massive scorches"
+				if(100 to 150)
+					burns_desc = "<b>severe melting</b>"
+				if(151 to 200)
+					burns_desc = "<b>massive melting</b>"
+
+	var/bandages_desc = ""
+	if(max_bleeding)
+		if(bandaged >= max_bleeding)
+			flavor_text += "bandaged "
+		else if(scabbed >= max_bleeding)
+			flavor_text += "scabbed "
+		else if(bandaged && bleeding)
+			flavor_text += "partially bandaged, bleeding "
+		else
+			flavor_text += "<b>bleeding</b> "
+
+	// Assembling all the stuff from above into a human-readable line
+	if(blunt_desc)
+		flavor_text += "is " + blunt_desc
+
+	if(sharp_desc)
+		if(flavor_text)
+			flavor_text += ", has "
+		else
+			flavor_text += "has "
+		flavor_text += bandages_desc + sharp_desc + (is_robotic ? " tears" : " wounds")
+
+	if(burns_desc)
+		if(flavor_text)
+			flavor_text += ", with "
+		else
+			flavor_text = "has "
+		flavor_text += burns_desc
+
+	return flavor_text
+
 /obj/item/organ/external/proc/get_wounds_desc()
 	if(BP_IS_ROBOTIC(src))
 		var/list/descriptors = list()
-		if(brute_dam)
-			switch(brute_dam)
-				if(0 to 20)
-					descriptors += "some dents"
-				if(21 to INFINITY)
-					descriptors += pick("a lot of dents","severe denting")
-		if(burn_dam)
-			switch(burn_dam)
-				if(0 to 20)
-					descriptors += "some burns"
-				if(21 to INFINITY)
-					descriptors += pick("a lot of burns","severe melting")
 		switch(hatch_state)
 			if(HATCH_UNSCREWED)
 				descriptors += "a closed but unsecured panel"
 			if(HATCH_OPENED)
 				descriptors += "an open panel"
-
 		return english_list(descriptors)
 
 	var/list/flavor_text = list()
@@ -1278,30 +1373,6 @@ This function completely restores a damaged organ to perfect condition.
 
 	if(organ_tag == BP_HEAD && deformities == 1)
 		flavor_text += "terrible scars on cheeks forming a horrifying smile"
-
-	var/list/wound_descriptors = list()
-	for(var/datum/wound/W in wounds)
-		var/this_wound_desc = W.desc
-		if(W.damage_type == BURN && W.salved)
-			this_wound_desc = "salved [this_wound_desc]"
-
-		if(W.bleeding())
-			if(W.wound_damage() > W.bleed_threshold)
-				this_wound_desc = "<b>bleeding</b> [this_wound_desc]"
-			else
-				this_wound_desc = "bleeding [this_wound_desc]"
-		else if(W.bandaged)
-			this_wound_desc = "bandaged [this_wound_desc]"
-
-		if(W.germ_level > 600)
-			this_wound_desc = "badly infected [this_wound_desc]"
-		else if(W.germ_level > 330)
-			this_wound_desc = "lightly infected [this_wound_desc]"
-
-		if(wound_descriptors[this_wound_desc])
-			wound_descriptors[this_wound_desc] += W.amount
-		else
-			wound_descriptors[this_wound_desc] = W.amount
 
 	if(open() >= (encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
 		var/list/bits = list()
@@ -1312,25 +1383,14 @@ This function completely restores a damaged organ to perfect condition.
 		if(bits.len)
 			wound_descriptors["[english_list(bits)] visible in the wounds"] = 1
 
-	for(var/wound in wound_descriptors)
-		switch(wound_descriptors[wound])
-			if(1)
-				flavor_text += "a [wound]"
-			if(2)
-				flavor_text += "a pair of [wound]s"
-			if(3 to 5)
-				flavor_text += "several [wound]s"
-			if(6 to INFINITY)
-				flavor_text += "a ton of [wound]\s"
-
 	return english_list(flavor_text)
 
 /obj/item/organ/external/get_scan_results()
 	. = ..()
-	for(var/datum/wound/W in wounds)
-		if (W.damage_type == CUT && W.current_stage <= W.max_bleeding_stage && !W.bandaged)
-			. += "Open wound"
-			break
+	if(blunt_dam)
+		. += "Bruised"
+	if(cut_dam || pierce_dam)
+		. += "Open wound"
 	if(status & ORGAN_ARTERY_CUT)
 		. += "[capitalize(artery_name)] ruptured"
 	if(status & ORGAN_TENDON_CUT)

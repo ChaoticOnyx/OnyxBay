@@ -249,23 +249,29 @@
 				break
 
 		if(hidden && user != src)
-			if(E.status & ORGAN_BLEEDING && !(hidden.item_flags & ITEM_FLAG_THICKMATERIAL)) //not through a spacesuit
+			if(E.bleeding && !(hidden.item_flags & ITEM_FLAG_THICKMATERIAL)) //not through a spacesuit
 				wound_flavor_text[hidden.name] = SPAN("danger", "[T.He] [T.has] blood soaking through [hidden]!<br>")
 		else
 			if(E.is_stump())
 				wound_flavor_text[E.name] += "<b>[T.He] [T.has] a stump where [T.his] [organ_descriptor] should be.</b>\n"
-				if(LAZYLEN(E.wounds) && E.parent)
-					wound_flavor_text[E.name] += "[T.He] [T.has] [E.get_wounds_desc()] on [T.his] [E.parent.name].<br>"
 			else
 				if(!is_synth && BP_IS_ROBOTIC(E) && (E.parent && !BP_IS_ROBOTIC(E.parent) && !BP_IS_ASSISTED(E.parent)))
 					wound_flavor_text[E.name] = "[T.He] [T.has] a [E.name].\n"
+				var/damagedesc = E.get_damages_desc()
 				var/wounddesc = E.get_wounds_desc()
-				if(wounddesc != "nothing")
+				if(damagedesc)
+					wound_flavor_text[E.name] += "[T.His] [E.name] [damagedesc]."
+					if(wounddesc == "nothing")
+						wound_flavor_text[E.name] += "<br>"
+					else
+						wound_flavor_text[E.name] += " It has [wounddesc].<br>"
+				else if(wounddesc != "nothing")
 					wound_flavor_text[E.name] += "[T.He] [T.has] [wounddesc] on [T.his] [E.name].<br>"
+
 		if(!hidden || distance <=1)
 			if(E.dislocated > 0)
 				wound_flavor_text[E.name] += "[T.His] [E.joint] is dislocated!<br>"
-			if(((E.status & ORGAN_BROKEN) && E.brute_dam > E.min_broken_damage) || (E.status & ORGAN_MUTATED))
+			if(((E.status & ORGAN_BROKEN) && E.blunt_dam > E.min_broken_damage) || (E.status & ORGAN_MUTATED))
 				wound_flavor_text[E.name] += "[T.His] [E.name] is dented and swollen!<br>"
 
 		for(var/datum/wound/wound in E.wounds)

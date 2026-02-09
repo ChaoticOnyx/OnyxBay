@@ -64,7 +64,6 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	// The amount of damage we'd like to inflict.
 	var/potential_pierce_damage = brute * 0.25
 	var/potential_cut_damage = brute * 0.75
-	var/potential_blunt_damage = 0
 
 	var/damage_potential = 0
 
@@ -108,7 +107,6 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	var/max_pierce_damage = brute
 
 	// The amount of damage we'd like to inflict.
-	var/potential_blunt_damage = 0
 	var/potential_cut_damage = brute * 0.25
 	var/potential_pierce_damage = brute * 0.75
 
@@ -308,9 +306,8 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 				var/should_fracture = FALSE
 				if(blunt_last >= max_damage && (blunt || prob(brute_dam + brute)))
 					should_fracture = TRUE
-				else if(!should_fracture && blunt_dam >= min_broken_damage)
-					if(prob(brute_dam + brute * (1 + blunt))) // blunt damage is gud at fracturing
-						should_fracture = TRUE
+				else if(blunt_dam >= min_broken_damage && prob(brute_dam + brute * (1 + blunt))) // blunt damage is gud at fracturing
+					should_fracture = TRUE
 
 				if(should_fracture)
 					fracture()
@@ -367,7 +364,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		return FALSE
 
 	if(burn_dam && burn)
-		heal_burn_damage(brute * blunt_ratio, robo_repair, FALSE, FALSE)
+		heal_burn_damage(burn * burn_ratio, robo_repair, FALSE, FALSE)
 
 	if(brute_dam && brute)
 		var/blunt_ratio = blunt_dam / brute_dam
