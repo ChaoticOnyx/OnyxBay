@@ -210,6 +210,7 @@
 		return
 
 	var/list/affected_z = GetConnectedZlevels(TS.z)
+	sound_to(world, sound('sound/effects/explosions/global_supermatter_boom.ogg', volume = 100))
 
 	// Effect 1: Radiation, weakening to all mobs on Z level
 	for(var/z in affected_z)
