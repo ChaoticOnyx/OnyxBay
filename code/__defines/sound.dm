@@ -54,6 +54,7 @@
 #define SOUND_CHANNEL_AMBIENT_MUSIC 2
 #define SOUND_CHANNEL_HUM           3
 #define SOUND_CHANNEL_WEATHER       4
+#define SOUND_CHANNEL_NUKE          5
 
 // Ambient music tags
 #define MUSIC_TAG_NORMAL          0
