@@ -170,7 +170,7 @@ GLOBAL_VAR_INIT(lizard_count, 0)
 		turns_since_scan = 5
 
 /mob/living/simple_animal/lizard/proc/setPoison(datum/reagent/P)
-	if(poison)
+	if(P)
 		poison = P
 		color = GLOB.lizard_colors[poison]
 	else

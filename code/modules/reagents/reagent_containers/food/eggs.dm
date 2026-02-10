@@ -32,14 +32,14 @@
 		set_next_think(world.time + 10 SECONDS)
 		return
 
-	amount_grown++
-
 	if(amount_grown >= max_growth)
 		if(prob(20))
 			hatch()
 		else
-			set_next_think(world.time + 5 SECONDS)
+			set_next_think(world.time + 3 SECONDS)
 		return
+
+	amount_grown++
 
 	if(amount_grown == max_growth * 0.75) // Disguisting. And a bit more nutritive.
 		desc += " It feels warm to the touch."
