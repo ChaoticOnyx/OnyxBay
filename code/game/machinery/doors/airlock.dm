@@ -46,11 +46,24 @@
 	var/secured_wires = 0
 	var/datum/wires/airlock/wires = null
 
-	var/open_sound_powered = list('sound/machines/airlock/open1.ogg', 'sound/machines/airlock/open2.ogg', 'sound/machines/airlock/open3.ogg', 'sound/machines/airlock/open4.ogg', 'sound/machines/airlock/open5.ogg', 'sound/machines/airlock/open6.ogg')
+	var/open_sound_powered = list(
+		'sound/machines/airlock/open1.ogg',
+		'sound/machines/airlock/open2.ogg',
+		'sound/machines/airlock/open3.ogg',
+		'sound/machines/airlock/open4.ogg',
+		'sound/machines/airlock/open5.ogg',
+		'sound/machines/airlock/open6.ogg',
+		'sound/machines/airlock/open7.ogg',
+		'sound/machines/airlock/open8.ogg'
+	)
 	var/open_sound_unpowered = 'sound/machines/airlock/open_force1.ogg'
 	var/open_failure_access_denied = 'sound/machines/airlock/error3.ogg'
 
-	var/close_sound_powered = list('sound/machines/airlock/close1.ogg','sound/machines/airlock/close2.ogg', 'sound/machines/airlock/close3.ogg')
+	var/close_sound_powered = list(
+		'sound/machines/airlock/close1.ogg',
+		'sound/machines/airlock/close2.ogg',
+		'sound/machines/airlock/close3.ogg'
+	)
 	var/close_sound_unpowered = 'sound/machines/airlock/close_force1.ogg'
 	var/close_failure_blocked = 'sound/machines/airlock/error1.ogg'
 

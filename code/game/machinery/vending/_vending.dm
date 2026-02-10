@@ -722,6 +722,12 @@
 		pixel_y = initial(pixel_y)
 	update_icon()
 
+/obj/machinery/vending/power_change()
+	var/oldstat = stat
+	. = ..()
+	if((oldstat & NOPOWER) && !(stat & NOPOWER) && !(stat & (BROKEN | POWEROFF)))
+		playsound(loc, 'sound/machines/vending/vendomat_on.ogg', 45, 1)
+
 //Oh no we're malfunctioning!  Dump out some product and break.
 /obj/machinery/vending/proc/malfunction()
 	for(var/datum/stored_items/vending_products/R in cartridge.product_records)

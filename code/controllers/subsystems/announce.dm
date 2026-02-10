@@ -147,7 +147,8 @@ SUBSYSTEM_DEF(announce)
 		if(!C || !should_recieve_announce(M, zlevels))
 			continue
 
-		M.playsound_local(M.loc, pick('sound/signals/anounce1.ogg', 'sound/signals/anounce2.ogg', 'sound/signals/anounce3.ogg'), 75)
+		if(!(announce_type in list(/datum/announce/security_level_elevated, /datum/announce/security_level_down)))
+			M.playsound_local(M.loc, pick('sound/signals/anounce1.ogg', 'sound/signals/anounce2.ogg', 'sound/signals/anounce3.ogg'), 75)
 
 		var/datum/announcer/A = get_announcer(M)
 		var/datum/announce/announce_def = announce_type

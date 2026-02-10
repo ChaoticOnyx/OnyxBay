@@ -1137,6 +1137,7 @@
 	icon_state = src.reset_icon()
 	update_icon()
 	set_dir(dir_in)
+	playsound(src, 'sound/mecha/mecha_in.ogg', 20, 1)
 	playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
 	if(!hasInternalDamage())
 		sound_to(occupant, sound('sound/mecha/nominal.ogg', volume = 50))
