@@ -3,6 +3,9 @@
 #define POISON_AMOUNT 3	//How much poison will one lizard inject per one bite
 #define BREEDING_COOLDOWN (10 MINUTES)	//How long will lizard be unable to breed after breeding or birth
 
+#define MAX_LIZARDS 100 // Let's fucking don't
+GLOBAL_VAR_INIT(lizard_count, 0)
+
 /mob/living/simple_animal/lizard
 	name = "lizard"
 	desc = "A cute tiny lizard."
@@ -54,6 +57,8 @@
 /mob/living/simple_animal/lizard/proc/isFertile()
 	if(is_ooc_dead())
 		return FALSE
+	if(panic_target || aggressive_target)
+		return FALSE
 	if(!last_breed || world.time - last_breed > BREEDING_COOLDOWN)
 		return TRUE
 	return FALSE
@@ -61,14 +66,18 @@
 /mob/living/simple_animal/lizard/proc/Breed(mob/living/simple_animal/lizard/partner)
 	if(is_ooc_dead())
 		return
+
+	if(GLOB.lizard_count >= MAX_LIZARDS)
+		return
+
 	var/place = pick(get_turf(src), get_turf(partner))
 	var/datum/reagent/child_poison = pick(poison, partner.poison)
-	var/mob/living/simple_animal/lizard/child = new /mob/living/simple_animal/lizard(place)
-	child.setPoison(child_poison)
+	var/obj/item/reagent_containers/food/egg/lizard/EGG = new /obj/item/reagent_containers/food/egg/lizard(place)
+	EGG.make_fertile(/mob/living/simple_animal/lizard, child_poison)
 
-	child.last_breed = world.time
 	partner.last_breed = world.time
 	last_breed = world.time
+	return
 
 /mob/living/simple_animal/lizard/proc/CountLizards()
 	var/count = 0
@@ -76,6 +85,8 @@
 		if(L.is_ooc_dead() || L == src)
 			continue
 		count += 1
+		if(count >= (100 / COURAGE_MODIFIER))
+			break // There's no point in further counting, let's cut things early.
 	return count
 
 /mob/living/simple_animal/lizard/proc/CallLizards(mob/target)
@@ -174,29 +185,37 @@
 	. = ..()
 	CutOverlays(face)
 	AddOverlays(blood)
+	GLOB.lizard_count -= 1
 
 /mob/living/simple_animal/lizard/Initialize()
 	. = ..()
+	GLOB.lizard_count += 1
 	setPoison(poison) //To make sure we paint lizard
 	blood = image(icon, icon_state = icon_blood, layer = FLOAT_LAYER+1)
 	blood.color = null	//We don't want to paint it
 	face = image(icon, icon_state = icon_face, layer = FLOAT_LAYER+1)
 	face.color = null	//We don't want to paint it
 	AddOverlays(face)
+	last_breed = world.time
 
 /mob/living/simple_animal/lizard/Life()
 	. = ..()
 	HandleAggressiveTarget()
 
-	if(panic_target == null && aggressive_target == null && isFertile()) //Find someone to breed
-		for(var/mob/living/simple_animal/lizard/L in view(1, src))
-			if(L == src)
-				continue
-			if(L && !L.is_ooc_dead() && L.panic_target == null && L.aggressive_target == null && L.isFertile())
-				Breed(L)
-				break
+	if(!isFertile()) // No breeding - no further life
+		return
 
-/mob/living/simple_animal/lizard/Crossed(AM as mob|obj)
+	if(prob(75))
+		return // Let's keep the birds-and-bees stuff a bit random so all the kiddos won't just appear in batches
+
+	for(var/mob/living/simple_animal/lizard/L in view(1, src))
+		if(L == src)
+			continue
+		if(L?.isFertile())
+			Breed(L)
+			break
+
+/mob/living/simple_animal/lizard/Crossed(atom/movable/AM)
 	if(ishuman(AM) && !stat)
 		var/mob/M = AM
 		if(prob(CountLizards()*COURAGE_MODIFIER))
@@ -211,3 +230,5 @@
 #undef MAX_ALLIES
 #undef POISON_AMOUNT
 #undef BREEDING_COOLDOWN
+
+#undef MAX_LIZARDS

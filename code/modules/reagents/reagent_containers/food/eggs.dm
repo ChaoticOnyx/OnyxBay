@@ -12,26 +12,103 @@
 		)
 	bitesize = 30 // 56.25 nutrition, 2 bites
 
+	var/colorable = TRUE
+	var/amount_grown = 0
+	var/max_growth = 300 // How many seconds it takes to hatch
+	var/whos_that_pokemon = null
+	var/hatch_data = null
+
+/obj/item/reagent_containers/food/egg/Initialize()
+	. = ..()
+	if(whos_that_pokemon)
+		make_fertile(whos_that_pokemon)
+
+/obj/item/reagent_containers/food/egg/Destroy()
+	hatch_data = null
+	return ..()
+
+/obj/item/reagent_containers/food/egg/think()
+	if(!ismob(loc) && !isturf(loc)) // So that we can store these in a fridge without causing chickpocalypse
+		set_next_think(world.time + 10 SECONDS)
+		return
+
+	amount_grown++
+
+	if(amount_grown >= max_growth)
+		if(prob(20))
+			hatch()
+		else
+			set_next_think(world.time + 5 SECONDS)
+		return
+
+	if(amount_grown == max_growth * 0.75) // Disguisting. And a bit more nutritive.
+		desc += " It feels warm to the touch."
+		reagents.add_reagent(/datum/reagent/blood, 10)
+
+	set_next_think(world.time + 1 SECOND)
+	return
+
+/obj/item/reagent_containers/food/egg/proc/make_fertile(pokemon_type, _hatch_data = null)
+	if(!pokemon_type)
+		return FALSE
+	whos_that_pokemon = pokemon_type
+	hatch_data = _hatch_data
+	set_next_think(world.time + 1 SECOND)
+	return TRUE
+
+/obj/item/reagent_containers/food/egg/proc/hatch(silent = FALSE)
+	if(!whos_that_pokemon)
+		return FALSE
+	if(!silent)
+		visible_message("[src] hatches with a quiet cracking sound.")
+
+	var/mob/M = new whos_that_pokemon(get_turf(src))
+
+	if(istype(M, /mob/living/simple_animal/chick))
+		var/mob/living/simple_animal/chick/C = M
+		C.species = hatch_data
+	else if(istype(M, /mob/living/simple_animal/lizard))
+		var/mob/living/simple_animal/lizard/L = M
+		L.setPoison(hatch_data)
+		L.last_breed = world.time
+
+	qdel_self()
+	return TRUE
+
 /obj/item/reagent_containers/food/egg/afterattack(obj/O, mob/user, proximity)
 	if(istype(O,/obj/machinery/microwave))
 		return ..()
 	if(!(proximity && O.is_open_container()))
 		return
+
+	if(amount_grown >= max_growth * 0.9)
+		to_chat(user, "You crack \the [src], and something suddenly hatches from it!")
+		hatch(TRUE)
+		return
+
 	to_chat(user, "You crack \the [src] into \the [O].")
 	reagents.trans_to(O, reagents.total_volume)
 	qdel(src)
+	return
 
 /obj/item/reagent_containers/food/egg/throw_impact(atom/hit_atom)
 	..()
 	if(QDELETED(src))
 		return // Could be happened hitby()
+
+	if(amount_grown >= max_growth * 0.9)
+		visible_message(SPAN("warning", "\The [src] cracks, and something suddenly hatches from it!"), SPAN("warning", "You hear a smack."))
+		hatch(TRUE)
+		return
+
 	new /obj/effect/decal/cleanable/egg_smudge(src.loc)
 	src.reagents.splash(hit_atom, src.reagents.total_volume)
 	src.visible_message("<span class='warning'>\The [src] has been squashed!</span>","<span class='warning'>You hear a smack.</span>")
 	qdel(src)
+	return
 
 /obj/item/reagent_containers/food/egg/attackby(obj/item/W, mob/user)
-	if(istype( W, /obj/item/pen/crayon ))
+	if(istype(W, /obj/item/pen/crayon) && colorable)
 		var/obj/item/pen/crayon/C = W
 		var/clr = C.colourName
 
@@ -80,6 +157,7 @@
 		/datum/reagent/nutriment/protein/egg = 45,
 		/datum/reagent/nanites = 1
 		)
+	colorable = FALSE
 
 /obj/item/reagent_containers/food/egg/golden
 	name = "golden egg"
@@ -88,6 +166,7 @@
 		/datum/reagent/nutriment/protein/egg = 45,
 		/datum/reagent/gold = 15
 		)
+	colorable = FALSE
 
 /obj/item/reagent_containers/food/egg/plasma
 	name = "plasma egg"
@@ -97,6 +176,54 @@
 		/datum/reagent/toxin/plasma = 15
 		)
 
+/obj/item/reagent_containers/food/egg/fertile
+	whos_that_pokemon = /mob/living/simple_animal/chick
+
+// Lizzy eggies
+/obj/item/reagent_containers/food/egg/lizard
+	name = "tiny egg"
+	icon_state = "lizegg"
+	item_state = "egg"
+	colorable = FALSE
+
+/obj/item/reagent_containers/food/egg/lizard/make_fertile(pokemon_type, _hatch_data = null)
+	. = ..()
+	if(!.)
+		return FALSE
+	if(_hatch_data)
+		reagents.add_reagent(_hatch_data, 5)
+	update_icon()
+	return TRUE
+
+/obj/item/reagent_containers/food/egg/lizard/on_update_icon()
+	ClearOverlays()
+	var/overlay_color = null
+	for(var/datum/reagent/R in reagents.reagent_list)
+		if(istype(R, /datum/reagent/nutriment/protein/egg))
+			continue
+		overlay_color = R.color // Since we only do this after spawning the egg, there shouldn't be anything but the lizardish poison
+	if(!overlay_color)
+		overlay_color = "#00C000"
+	var/image/I = new(icon, "[icon_state]-over")
+	I.color = overlay_color
+	AddOverlays(I)
+	return
+
+/obj/item/reagent_containers/food/egg/lizard/fertile
+	whos_that_pokemon = /mob/living/simple_animal/lizard
+
+/obj/item/reagent_containers/food/egg/lizard/fertile/random/make_fertile(pokemon_type, _hatch_data = null)
+	. = ..()
+	if(!.)
+		return FALSE
+	hatch_data = pick(POSSIBLE_LIZARD_TOXINS)
+	reagents.add_reagent(hatch_data, 5)
+	update_icon()
+	return TRUE
+
+////////////////////
+// Actual foodies //
+////////////////////
 /obj/item/reagent_containers/food/vegg
 	name = "vegg"
 	desc = "So... It's more like a seed, right?"
