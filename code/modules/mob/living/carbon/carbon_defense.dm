@@ -15,7 +15,7 @@
 	if(prob(blocked)) //armour provides a chance to turn sharp/edge weapon attacks into blunt ones
 		damage_flags &= ~(DAM_SHARP|DAM_EDGE)
 
-	var/datum/wound/created_wound = apply_damage(effective_force, I.damtype, hit_zone, blocked, damage_flags, used_weapon=I)
+	apply_damage(effective_force, I.damtype, hit_zone, blocked, damage_flags, used_weapon=I)
 
 	//Melee weapon embedded object code.
 	if(istype(created_wound) && I && I.damtype == BRUTE && !I.anchored && !is_robot_module(I))

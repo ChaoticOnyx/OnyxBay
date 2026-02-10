@@ -73,10 +73,7 @@
 				LAZYCLEARLIST(wound.embedded_objects)
 
 			// remove embedded objects and drop them on the floor
-			for(var/obj/implanted_object in current_organ.implants)
-				if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
-					implanted_object.loc = get_turf(my_mob)
-					current_organ.implants -= implanted_object
+			current_organ.drop_embedded_objects()
 
 		var/organ_heal_blood = 0
 		for(var/A in organs)

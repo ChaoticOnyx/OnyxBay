@@ -971,7 +971,6 @@ meteor_act
 			return
 
 		var/hit_area = affecting.name
-		var/datum/wound/created_wound
 
 		visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
 		play_hitby_sound(AM)
@@ -987,7 +986,7 @@ meteor_act
 			var/damage_flags = O.damage_flags()
 			if(prob(armor))
 				damage_flags &= ~(DAM_SHARP|DAM_EDGE)
-			created_wound = apply_damage(throw_damage, dtype, zone, armor, damage_flags, O)
+			apply_damage(throw_damage, dtype, zone, armor, damage_flags, O)
 
 		if(ismob(O.thrower))
 			var/mob/M = O.thrower

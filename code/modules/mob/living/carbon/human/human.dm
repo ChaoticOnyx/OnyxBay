@@ -1029,59 +1029,19 @@
 /mob/living/carbon/human/get_visible_implants(class = 0)
 	var/list/visible_implants = ..()
 
-	for(var/obj/item/organ/external/organ in src.organs)
+	for(var/obj/item/organ/external/organ in organs)
 		for(var/obj/item/O in organ.implants)
 			if(istype(O, /obj/item/organ_module))
 				var/obj/item/organ_module/module = O
 				if(!(module.module_flags & OM_FLAG_INSPECTABLE))
 					continue
 				visible_implants += O
-			if(!istype(O,/obj/item/implant) && (O.w_class > class) && !istype(O,/obj/item/material/shard/shrapnel))
-				visible_implants += O
+		for(var/obj/O in organ.embedded_objects)
+			if((O.w_class <= class) || istype(O,/obj/item/material/shard/shrapnel))
+				continue
+			visible_implants += O
 
 	return(visible_implants)
-
-/mob/living/carbon/human/embedded_needs_process()
-	for(var/obj/item/organ/external/organ in src.organs)
-		for(var/obj/item/O in organ.implants)
-			if(!istype(O, /obj/item/implant)) //implant type items do not cause embedding effects, see handle_embedded_objects()
-				return 1
-	return 0
-
-/mob/living/carbon/human/proc/handle_embedded_and_stomach_objects()
-	for(var/obj/item/organ/external/organ in src.organs)
-		if(organ.splinted)
-			continue
-		for(var/obj/item/O in organ.implants)
-			if(!istype(O,/obj/item/implant) && O.w_class > 1 && prob(5)) //Moving with things stuck in you could be bad.
-				jossle_internal_object(organ, O)
-	var/obj/item/organ/external/groin = src.get_organ(BP_GROIN)
-	if(groin && stomach_contents && stomach_contents.len)
-		for(var/obj/item/O in stomach_contents)
-			if(O.edge || O.sharp)
-				if(prob(1))
-					stomach_contents.Remove(O)
-					if(can_feel_pain())
-						to_chat(src, "<span class='danger'>You feel something rip out of your stomach!</span>")
-						groin.embed(O)
-				else if(prob(5))
-					jossle_internal_object(groin,O)
-
-/mob/living/carbon/human/proc/jossle_internal_object(obj/item/organ/external/organ, obj/item/O)
-	// All kinds of embedded objects cause bleeding.
-	if(!can_feel_pain())
-		to_chat(src, "<span class='warning'>You feel [O] moving inside your [organ.name].</span>")
-	else
-		var/msg = pick( \
-			"<span class='warning'>A spike of pain jolts your [organ.name] as you bump [O] inside.</span>", \
-			"<span class='warning'>Your movement jostles [O] in your [organ.name] painfully.</span>", \
-			"<span class='warning'>Your movement jostles [O] in your [organ.name] painfully.</span>")
-		custom_pain(msg,40,affecting = organ)
-
-	organ.take_external_damage(rand(1,3), 0, 0)
-	if(!BP_IS_ROBOTIC(organ) && (should_have_organ(BP_HEART))) //There is no blood in protheses.
-		organ.status |= ORGAN_BLEEDING
-		adjustInternalLoss(rand(1,3))
 
 /mob/living/carbon/human/verb/check_pulse()
 	set category = "Object"

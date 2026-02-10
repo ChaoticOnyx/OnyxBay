@@ -504,7 +504,6 @@ This function restores all organs.
 	if(blocked >= 100)	return 0
 	if(blocked) damage *= blocked_mult(blocked)
 
-	var/datum/wound/created_wound
 	damageoverlaytemp = 20
 	if(getHalLoss() < last_body_response_to_pain)
 		last_body_response_to_pain = getHalLoss()
@@ -523,7 +522,7 @@ This function restores all organs.
 					damage *= M.incoming_damage_percent
 				if(!isnull(M.incoming_brute_damage_percent))
 					damage *= M.incoming_brute_damage_percent
-			created_wound = organ.take_external_damage(damage, 0, damage_flags, used_weapon)
+			organ.take_external_damage(damage, 0, damage_flags, used_weapon)
 		if(BURN)
 			damage = damage*species.burn_mod
 			for(var/datum/modifier/M in modifiers)
@@ -531,7 +530,7 @@ This function restores all organs.
 					damage *= M.incoming_damage_percent
 				if(!isnull(M.incoming_fire_damage_percent))
 					damage *= M.incoming_fire_damage_percent
-			created_wound = organ.take_external_damage(0, damage, damage_flags, used_weapon)
+			organ.take_external_damage(0, damage, damage_flags, used_weapon)
 		if(PAIN)
 			organ.adjust_pain(damage)
 		if(CLONE)
@@ -546,7 +545,7 @@ This function restores all organs.
 	updatehealth()
 	species.handle_damage(src)
 	BITSET(hud_updateflag, HEALTH_HUD)
-	return created_wound
+	return TRUE
 
 // Find out in how much pain the mob is at the moment.
 /mob/living/carbon/human/proc/get_shock()

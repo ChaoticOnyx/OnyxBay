@@ -844,9 +844,6 @@
 			visible_implants += O
 	return visible_implants
 
-/mob/proc/embedded_needs_process()
-	return (embedded.len > 0)
-
 /mob/proc/yank_out_object()
 	set category = "Object"
 	set name = "Yank out object"
@@ -902,14 +899,12 @@
 		var/mob/living/carbon/human/H = src
 		var/obj/item/organ/external/affected
 
-		for(var/obj/item/organ/external/organ in H.organs) //Grab the organ holding the implant.
-			for(var/obj/item/O in organ.implants)
-				if(O == selection)
-					affected = organ
+		for(var/obj/item/organ/external/organ in H.organs) //Grab the organ holding the embedded object.
+			if(LAZYISIN(organ.embedded_objects, selection))
+				affected = organ
+				break
 
-		affected.implants -= selection
-		for(var/datum/wound/wound in affected.wounds)
-			LAZYREMOVE(wound.embedded_objects, selection)
+		affected.drop_embedded_object(selection)
 
 		H.shock_stage+=20
 		affected.take_external_damage((selection.w_class * 3), 0, DAM_EDGE, "Embedded object extraction")

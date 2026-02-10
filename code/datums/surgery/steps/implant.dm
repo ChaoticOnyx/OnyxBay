@@ -222,11 +222,9 @@
 	var/list/atom/loot = list()
 	if(exposed)
 		loot = parent_organ.implants
-	else
-		for(var/datum/wound/W in parent_organ.wounds)
-			if(LAZYLEN(W.embedded_objects))
-				loot |= W.embedded_objects
-			find_prob += 50
+	else if(LAZYLEN(parent_organ.embedded_objects))
+		loot |= parent_organ.embedded_objects
+		find_prob += 50
 
 	if(!length(loot))
 		announce_success(user,
@@ -259,11 +257,8 @@
 			"[user] takes something out of incision on [target]'s [parent_organ] with \the [tool].",
 			"You take [implanted_item] out of incision on [target]'s [parent_organ]s with \the [tool]."
 			)
-		parent_organ.implants -= implanted_item
-		for(var/datum/wound/wound in parent_organ.wounds)
-			if(implanted_item in wound.embedded_objects)
-				wound.embedded_objects -= implanted_item
-				break
+		LAZYREMOVE(parent_organ.implants, implanted_item)
+		LAZYREMOVE(parent_organ.embedded_objects, implanted_item)
 
 		BITSET(target.hud_updateflag, IMPLOYAL_HUD)
 

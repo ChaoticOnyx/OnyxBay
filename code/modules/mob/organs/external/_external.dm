@@ -106,6 +106,7 @@
 	var/atom/movable/applied_pressure
 	var/atom/movable/splinted
 	var/internal_organs_size = 0       // Current size cost of internal organs in this body part
+	var/list/embedded_objects
 
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
@@ -176,6 +177,8 @@
 		while(null in owner.organs)
 			owner.organs -= null
 		owner.bad_external_organs.Remove(src)
+
+	drop_embedded_objects()
 
 	QDEL_NULL_LIST(organ_modules)
 
@@ -330,6 +333,7 @@
 
 	all_items.Add(implants)
 	all_items.Add(internal_organs)
+	all_items.Add(embedded_objects)
 
 	for(var/obj/item/organ/external/child in children)
 		all_items.Add(child.get_contents_recursive())
@@ -1058,40 +1062,30 @@ This function completely restores a damaged organ to perfect condition.
 /obj/item/organ/external/proc/is_malfunctioning()
 	return (BP_IS_ROBOTIC(src) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))
 
-/obj/item/organ/external/proc/embed(obj/item/W, silent = 0, supplied_message, datum/wound/supplied_wound)
+/obj/item/organ/external/proc/embed(obj/item/W, silent = 0, supplied_message)
 	if(!owner || loc != owner)
-		return
+		return FALSE
 	if(W.w_class > ITEM_SIZE_NORMAL)
-		return
+		return FALSE
 	if(species.species_flags & SPECIES_FLAG_NO_EMBED)
-		return
+		return FALSE
 	if(!silent)
 		if(supplied_message)
 			owner.visible_message("<span class='danger'>[supplied_message]</span>")
 		else
 			owner.visible_message("<span class='danger'>\The [W] sticks in the wound!</span>")
 
-	if(!supplied_wound)
-		for(var/datum/wound/wound in wounds)
-			if((wound.damage_type == CUT || wound.damage_type == PIERCE) && wound.damage >= W.w_class * 5)
-				supplied_wound = wound
-				break
-	if(!supplied_wound)
-		supplied_wound = createwound(PIERCE, W.w_class * 5)
-
-	if(!supplied_wound || (W in supplied_wound.embedded_objects)) // Just in case.
-		return
-
-	LAZYADD(supplied_wound.embedded_objects, W)
-	implants += W
+	LAZYADD(embedded_objects, W)
 	owner.embedded_flag = 1
 	owner.verbs += /mob/proc/yank_out_object
 	W.add_blood(owner)
 	if(ismob(W.loc))
 		var/mob/living/H = W.loc
-		H.drop(W, owner, force = TRUE)
+		H.drop(W, src, force = TRUE)
 	else
-		W.forceMove(owner)
+		W.forceMove(src)
+
+	return TRUE
 
 /obj/item/organ/external/removed(mob/living/user, drop_organ = 1, ignore_children = 0, detach_children_and_internals = 0)
 	if(!owner)
@@ -1517,3 +1511,23 @@ This function completely restores a damaged organ to perfect condition.
 		. += max_delay * 3/8
 	else if(BP_IS_ROBOTIC(src))
 		. += max_delay * CLAMP01(damage/max_damage)
+
+/obj/item/organ/external/proc/drop_embedded_objects()
+	if(!LAZYLEN(embedded_objects))
+		return FALSE
+	var/turf/my_turf = get_turf(src)
+	for(var/obj/O in embedded_objects)
+		O.forceMove(my_turf)
+	LAZYCLEARLIST(embedded_objects)
+	return TRUE
+
+/obj/item/organ/external/proc/drop_embedded_object(obj/thing)
+	if(!LAZYLEN(embedded_objects))
+		return FALSE
+	var/turf/my_turf = get_turf(src)
+	for(var/obj/O in embedded_objects)
+		if(O == thing)
+			O.forceMove(my_turf)
+			LAZYREMOVE(embedded_objects, O)
+			return TRUE
+	return FALSE
