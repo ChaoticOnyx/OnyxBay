@@ -362,6 +362,8 @@ GLOBAL_VAR(station_gravity_generator)
 		if(!can_toggle_breaker || !power_supply || stat & NOPOWER)
 			to_chat(user, SPAN_WARNING("You pressed a button, but it doesn’t seem to respond."))
 			return
+		if(!breaker)
+			playsound(loc, 'sound/effects/gravgen_on.ogg', 75, 1)
 		set_state(breaker ? FALSE : TRUE)
 
 	else if(href_list["eshutoff"])
@@ -521,7 +523,6 @@ GLOBAL_VAR(station_gravity_generator)
 				enabled = TRUE
 				update_gravity_status()
 				start_operating_sound()
-				playsound(loc, 'sound/effects/gravgen_on.ogg', 75, 1)
 				sound_to(world, sound('sound/effects/gravgen_global_on.ogg'))
 				playsound(loc, 'sound/effects/alert.ogg', 50, 1)
 				if(announcer)
@@ -619,3 +620,4 @@ GLOBAL_VAR(station_gravity_generator)
 #undef AREA_STATION
 #undef AREA_SPACE
 #undef AREA_SPECIAL
+
