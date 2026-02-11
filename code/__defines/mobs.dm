@@ -307,13 +307,6 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 #define HEAT_LEVEL_2 2
 #define HEAT_LEVEL_3 3
 
-//Synthetic human temperature vals
-#define SYNTH_COLD_LEVEL_1 50
-#define SYNTH_COLD_LEVEL_2 -1
-#define SYNTH_COLD_LEVEL_3 -1
-#define SYNTH_HEAT_LEVEL_1 500
-#define SYNTH_HEAT_LEVEL_2 1000
-#define SYNTH_HEAT_LEVEL_3 2000
 
 #define CORPSE_CAN_REENTER 1
 #define CORPSE_CAN_REENTER_AND_RESPAWN 2
