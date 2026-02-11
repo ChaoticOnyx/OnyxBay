@@ -278,7 +278,7 @@ GLOBAL_LIST_EMPTY(lifts)
 		if(is_type_in_list(victim_machine, lift_master_datum.ignored_smashthroughs))
 			continue
 		if(victim_machine.layer >= ABOVE_OBJ_LAYER) //avoids stuff that is probably flush with the ground
-			playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
+			playsound(src, GET_SFX(SFX_BANG), 50, TRUE)
 			visible_message(SPAN_DANGER("[src] smashes through [victim_machine]!"))
 			qdel(victim_machine)
 

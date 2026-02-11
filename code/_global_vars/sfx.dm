@@ -79,6 +79,9 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/weapons/gun/grenade/glauncher1.ogg',
 		'sound/effects/weapons/gun/grenade/glauncher2.ogg',
 	),
+	SFX_BANG = list(
+		"sound/effects/bang.ogg"
+	),
 	// FEMALE EMOTES
 	SFX_FEMALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/f_internalb1.ogg'

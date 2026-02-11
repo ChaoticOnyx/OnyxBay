@@ -9,7 +9,7 @@
 	loadout_cost = 0
 	available_in_charsetup = TRUE
 	allowed_organs = list(BP_CHEST)
-	allowed_jobs = list(/datum/job/hos, /datum/job/warden, /datum/job/officer, /datum/job/paramedic, /datum/job/captain, /datum/job/mining)
+	allowed_roles = list(/datum/job/hos, /datum/job/warden, /datum/job/officer, /datum/job/paramedic, /datum/job/captain, /datum/job/mining)
 	cpu_load = 1
 	augment_cost = 7
 	w_class = 1

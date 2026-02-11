@@ -761,7 +761,7 @@
 	sound_on = SFX_LIGHT_TUBE_ON
 	sound_on_volume = 50
 
-	glow_icon_state = "tube1"
+	glow_icon_state = "tube1-ea"
 	exposure_icon_state = "cone"
 	glow_colored = TRUE
 
@@ -818,7 +818,7 @@
 	random_tone = TRUE
 	sound_on = SFX_LIGHT_BULB_ON
 	sound_on_volume = 75
-	glow_icon_state = "bulb1"
+	glow_icon_state = "bulb1-ea"
 	exposure_icon_state = "circle"
 
 /obj/item/light/bulb/he

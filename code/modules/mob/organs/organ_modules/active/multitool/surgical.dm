@@ -6,7 +6,7 @@
 	allowed_organs = list(BP_L_ARM, BP_R_ARM)
 	holding_type = /obj/item/scalpel/manager
 	loadout_cost = 0
-	allowed_jobs = list(/datum/job/cmo)
+	allowed_roles = list(/datum/job/cmo)
 	augment_cost = 6
 	cpu_load = 2
 	w_class = 2
@@ -23,7 +23,7 @@
 	cpu_load = 1
 	w_class = 3
 	available_in_charsetup = TRUE
-	allowed_jobs = list(/datum/job/cmo, /datum/job/doctor)
+	allowed_roles = list(/datum/job/cmo, /datum/job/doctor)
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL
 	items = list(
 		/obj/item/bonesetter,

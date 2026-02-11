@@ -77,6 +77,10 @@
 		return
 	..()
 
+/obj/machinery/door/airlock/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_SPARKS, -10, 5)
+
+
 /obj/machinery/door/airlock/get_material()
 	return get_material_by_name(mineral ? mineral : MATERIAL_STEEL)
 
@@ -939,6 +943,7 @@ About the new airlock wires panel:
 		wires = new /datum/wires/airlock(src)
 
 /obj/machinery/door/airlock/Initialize()
+	add_debris_element()
 	if(closeOtherId != null)
 		for(var/obj/machinery/door/airlock/A in world)
 			if(A.closeOtherId == closeOtherId && A != src)

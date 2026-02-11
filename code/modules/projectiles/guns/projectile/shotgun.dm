@@ -95,6 +95,23 @@
 	mod_handy = 0.75
 	has_safety = FALSE
 
+/obj/item/gun/projectile/shotgun/pump/breacher
+	name = "breaching shotgun"
+	desc = "A compact, single-shot shotgun designed for forced entry operations. Pre-loaded with a specialized breaching round effective against doors and locks."
+	icon_state = "compact-shotgun"
+	item_state = "compact-shotgun"
+	wielded_item_state = "compact-shotgun-wielded"
+	slot_flags = SLOT_BELT
+	w_class = ITEM_SIZE_NORMAL
+	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 2)
+	max_shells = 1
+	force = 9.5
+	mod_weight = 0.85
+	mod_reach = 0.8
+	mod_handy = 0.9
+	ammo_type = /obj/item/ammo_casing/shotgun/breaching
+	one_hand_penalty = 1
+
 // Zip gun construction.
 /obj/item/boomstickframe
 	name = "modified welding tool"

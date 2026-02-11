@@ -39,7 +39,6 @@
 		/obj/item/clothing/suit/armor/vest/hos_heavy,
 		/obj/item/clothing/suit/armor/hos,
 		/obj/item/clothing/suit/armor/hos/jensen,
-		/obj/item/clothing/shoes/swat
 	)
 
 /obj/item/storage/garment/warden
@@ -64,7 +63,7 @@
 	desc = "A bag for storing multiple clothig items in a better and convenient way! This one belongs to the detective."
 
 	startswith = list(
-		/obj/item/clothing/glasses/hud/standard/thermal,
+		/obj/item/clothing/glasses/hud/standard/material/active,
 		/obj/item/clothing/head/det,
 		/obj/item/clothing/head/det/grey,
 		/obj/item/clothing/under/rank/det,

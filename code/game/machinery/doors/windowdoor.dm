@@ -29,12 +29,16 @@
 	update_nearby_tiles()
 	update_icon()
 	hitsound = pick(SFX_GLASS_HIT)
+	add_debris_element()
 	add_think_ctx("hack_context", CALLBACK(src, nameof(.proc/on_hacked)), 0)
 
 /obj/machinery/door/window/examine(mob/user, infix)
 	. = ..()
 	if(Adjacent(user) && operating == DOOR_FAILURE)
 		. += SPAN("warning", "It appears to be jammed, and its lock looks cooked.")
+
+/obj/machinery/door/window/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_GLASS, -10, 5)
 
 /obj/machinery/door/window/on_update_icon()
 	ClearOverlays()

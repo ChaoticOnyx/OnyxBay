@@ -82,6 +82,7 @@
 	//No need to update all of these procs if the guy is dead.
 	if(!is_ooc_dead() && !InStasis())
 		//Organs and blood
+		handle_addictions()
 		handle_organs()
 		handle_organs_pain()
 		stabilize_body_temperature() //Body temperature adjusts itself (self-regulation)
@@ -958,7 +959,7 @@
 	return 1
 
 /mob/living/carbon/human/handle_hud_icons_health()
-	if(!healths)
+	if(!healths || !should_update_healths)
 		return
 
 	healths.ClearOverlays()

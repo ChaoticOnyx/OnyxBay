@@ -103,13 +103,13 @@ a.popt {
   color: #333;
 }
 
-.popup input[type='text']:hover,
-.popup input[type='text']:active,
-.popup input[type='text']:focus {
+.popup input[type="text"]:hover,
+.popup input[type="text"]:active,
+.popup input[type="text"]:focus {
   border-color: green;
 }
 
-.popup input[type='submit'] {
+.popup input[type="submit"] {
   padding: 5px 10px;
   background: #999;
   color: #ddd;
@@ -118,9 +118,9 @@ a.popt {
   font-weight: bold;
 }
 
-.popup input[type='submit']:hover,
-.popup input[type='submit']:focus,
-.popup input[type='submit']:active {
+.popup input[type="submit"]:hover,
+.popup input[type="submit"]:focus,
+.popup input[type="submit"]:active {
   background: #aaa;
   cursor: pointer;
 }
@@ -145,7 +145,7 @@ a.popt {
   text-align: center;
 }
 
-.highlightPopup input[type='text'] {
+.highlightPopup input[type="text"] {
   display: block;
   width: 215px;
   text-align: left;
@@ -219,7 +219,7 @@ span.text-tag {
   }
 
   &-mod {
-    background-color: #9611D4;
+    background-color: #9611d4;
   }
 
   &-admin {
@@ -239,7 +239,7 @@ span.text-tag {
   }
 
   &-dooc {
-    background-color: #5869EA;
+    background-color: #5869ea;
   }
 
   &-help {
@@ -361,7 +361,6 @@ em {
   color: rgb(53, 71, 209);
 }
 
-
 .ooc .looc {
   color: #098080;
 }
@@ -443,7 +442,7 @@ em {
 /* Admin: Channels */
 
 .mod_channel {
-  color: #9611D4;
+  color: #9611d4;
   font-weight: bold;
 }
 
@@ -588,6 +587,10 @@ h2.alert {
 
 .notice {
   color: #000099;
+}
+
+.thought {
+  color: #ff9900;
 }
 
 .alium {

@@ -15,5 +15,5 @@
 	augment_cost = 3
 	cpu_load = 1
 	w_class = 3
-	allowed_jobs = list(/datum/job/mining)
+	allowed_roles = list(/datum/job/mining)
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL

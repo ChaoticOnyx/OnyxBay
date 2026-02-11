@@ -149,7 +149,7 @@
 	loadout_cost = 0
 	augment_cost = 5
 	available_in_charsetup = TRUE
-	allowed_jobs = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer)
+	allowed_roles = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer)
 	flash_protection = FLASH_PROTECTION_MODERATE
 
 /obj/item/organ_module/active/lenses/hud/med
@@ -161,7 +161,7 @@
 	loadout_cost = 0
 	augment_cost = 3
 	available_in_charsetup = TRUE
-	allowed_jobs = list(/datum/job/cmo, /datum/job/doctor, /datum/job/psychiatrist, /datum/job/chemist, /datum/job/paramedic)
+	allowed_roles = list(/datum/job/cmo, /datum/job/doctor, /datum/job/psychiatrist, /datum/job/chemist, /datum/job/paramedic)
 
 /obj/item/organ_module/active/lenses/hud/deactivate(obj/item/organ/E, mob/living/carbon/human/user)
 	if(toggled)

@@ -19,6 +19,19 @@
 		screen.stretch_to_view(client.view)
 		client.screen += screen
 
+/mob/proc/flash_fullscreen(state)
+	var/atom/movable/screen/fullscreen/flashholder/screen = screens["flashholder"]
+
+	if(!screen)
+		screen = new /atom/movable/screen/fullscreen/flashholder()
+		screens["flashholder"] = screen
+
+	if(client && screen.should_show_to(src))
+		screen.stretch_to_view(client.view)
+		client.screen += screen
+
+	flick(state, screen)
+
 /mob/proc/clear_fullscreen(category, animate = 10)
 	var/atom/movable/screen/fullscreen/screen = screens[category]
 	if(isnull(screen))
@@ -143,6 +156,30 @@
 	icon = 'icons/hud/screen.dmi'
 	screen_loc = ui_entire_screen
 	icon_state = "druggy"
+
+/atom/movable/screen/fullscreen/high_purest
+	icon = 'icons/hud/screen.dmi'
+	screen_loc = ui_entire_screen
+	icon_state = "purest"
+	alpha = 60
+
+/atom/movable/screen/fullscreen/space_drugs
+	icon = 'icons/hud/screen_full.dmi'
+	icon_state = "spa"
+	plane = TURF_PLANE
+	layer = 5
+	blend_mode = 0
+
+/atom/movable/screen/fullscreen/flashholder
+	icon_state = ""
+	layer = CRIT_LAYER
+	plane = FULLSCREEN_PLANE
+
+/atom/movable/screen/fullscreen/lsd_warp
+	icon = 'icons/hud/screen_full.dmi'
+	icon_state = "smok"
+	plane = WARP_EFFECT_PLANE
+	render_target = "*warp"
 
 /atom/movable/screen/fullscreen/scanline
 	icon = 'icons/hud/screen.dmi'

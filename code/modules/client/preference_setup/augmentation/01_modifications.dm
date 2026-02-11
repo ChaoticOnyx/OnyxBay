@@ -18,16 +18,7 @@
 	W.write("organ_modules", pref.organ_modules)
 
 /datum/category_item/player_setup_item/augmentation/get_lp_cost()
-	LAZYINITLIST(pref.organ_modules)
-	for(var/organ_tag in BP_ALL_LIMBS + BP_INTERNAL_ORGANS)
-		for(var/obj/item/organ_module/mod as anything in pref.organ_modules[organ_tag])
-			if(pref.is_default_module(organ_tag, mod))
-				continue
-			if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
-				continue
-			if(initial(mod.augment_cost) <= 0)
-				continue
-			. += initial(mod.augment_cost)
+	return pref.get_loadout_points_cost()
 
 /datum/category_item/player_setup_item/augmentation/proc/get_loadout_points_cost()
 	LAZYINITLIST(pref.gear_list)
@@ -65,6 +56,10 @@
 	if(pref.organ_data[BP_BRAIN] != null && pref.organ_data[BP_CHEST] != "cyborg")
 		pref.organ_data[BP_BRAIN] = null
 
+
+	if(pref.organ_data[BP_EYES] != "mechanical")
+		pref.organ_modules[BP_EYES] = null
+
 	for(var/organ_tag in pref.organ_modules)
 		if(!pref.organ_modules[organ_tag])
 			continue
@@ -85,9 +80,7 @@
 			if(initial(mod.module_type) == OM_TYPE_ACTUATOR)
 				if(organ_tag == BP_HEAD || pref.organ_data[organ_tag] == "cyborg" || !(organ_tag in BP_ALL_LIMBS))
 					LAZYREMOVE(pref.organ_modules[organ_tag], mod)
-
-	if(pref.organ_data[BP_EYES] != "mechanical")
-		pref.organ_modules[BP_EYES] = null
+					continue
 
 /datum/category_item/player_setup_item/augmentation/content(mob/user)
 	. = list()
@@ -178,16 +171,6 @@
 					pref.gear_list[pref.gear_slot] = list()
 				LAZYREMOVE(pref.gear_list[pref.gear_slot], loadout_gear_name)
 			return TOPIC_REFRESH_UPDATE_PREVIEW
-
-		if(initial(module_path.allowed_jobs) && length(initial(module_path.allowed_jobs)))
-			var/job_allowed = FALSE
-			for(var/job_title in (pref.job_medium | pref.job_low | pref.job_high))
-				var/datum/job/J = job_master?.occupations_by_title[job_title]
-				if(J && (J.type in initial(module_path.allowed_jobs)))
-					job_allowed = TRUE
-					break
-			if(!job_allowed && !LAZYFIND(pref.organ_modules[pref.current_organ], module_path))
-				return TOPIC_REFRESH
 
 		if(initial(module_path.module_type) == OM_TYPE_PROCESSOR && pref.current_organ != BP_HEAD)
 			return TOPIC_REFRESH
@@ -358,6 +341,19 @@
 		return 0
 	return (isnull(initial(module.cpu_power)) ? 0 : initial(module.cpu_power))
 
+/datum/category_item/player_setup_item/augmentation/proc/get_module_allowed_roles(module_or_path)
+	var/list/roles
+	if(ispath(module_or_path))
+		roles = initial(module_or_path:allowed_roles)
+		if(!length(roles))
+			roles = initial(module_or_path:allowed_jobs)
+	else
+		var/obj/item/organ_module/module = module_or_path
+		roles = module.allowed_roles
+		if(!length(roles))
+			roles = module.allowed_jobs
+	return roles
+
 /datum/category_item/player_setup_item/augmentation/proc/module_cpu_load_for(organ_tag, module_path)
 	var/obj/item/organ_module/module = module_path
 	if(pref.is_default_module(organ_tag, module_path))
@@ -439,6 +435,7 @@
 		data += "<font color = '[fcolor]'>[total_cost]/[pref.max_augmentation_points]</font> augmentation points spent.<br>"
 
 	data += "<br><b>CPU: [loaded_cpu_power]/[total_cpu_power] <br>Space: [occupied_space]/[total_space]</b><br>"
+	data += "<span style='color:#ff3300; font-size:11px;'>To use augmentations in organic limbs you must install an actuator into the limb! To use ANY augmentation - install CPU in the head!</span><br>"
 
 	var/list/selected_jobs = list()
 	for(var/job_title in (pref.job_medium | pref.job_low | pref.job_high))
@@ -452,11 +449,12 @@
 		if(!mod.available_in_charsetup)
 			continue
 
+		var/list/allowed_roles = get_module_allowed_roles(mod)
 		var/job_allows_this_module = TRUE
-		if(LAZYLEN(mod.allowed_jobs))
+		if(LAZYLEN(allowed_roles))
 			job_allows_this_module = FALSE
 			for(var/datum/job/J in selected_jobs)
-				if(J.type in mod.allowed_jobs)
+				if(J.type in allowed_roles)
 					job_allows_this_module = TRUE
 					break
 
@@ -487,11 +485,11 @@
 				continue
 
 		var/list/job_restriction_data = list()
-		if(length(mod.allowed_jobs))
+		if(length(allowed_roles))
 			var/list/job_titles = list()
 			job_restriction_data += "<br><b>Has jobs restrictions!</b> "
 			job_restriction_data += "<i>"
-			for(var/allowed_type in mod.allowed_jobs)
+			for(var/allowed_type in allowed_roles)
 				if(!ispath(allowed_type, /datum/job))
 					continue
 
@@ -529,7 +527,7 @@
 		if(LAZYFIND(pref.organ_modules[pref.current_organ], mod_path))
 			data += "<div style = 'padding:2px' onclick=\"set('module', '[organ] [mod_path]');\" class='block'><font color='#4f7529'>[title_line]<br>[price]<br>[mod.desc] [job_restriction_data]</font></div>"
 		else if(locked_by_job)
-			data += "<div style = 'padding:2px' class='block'><font color='#808080'>[title_line]<br>[price]<br>[mod.desc] [job_restriction_data]</font></div>"
+			data += "<div style = 'padding:2px' onclick=\"set('module', '[organ] [mod_path]');\" class='block'><font color='#ee0000'>[title_line]<br>[price]<br>[mod.desc] [job_restriction_data]</font></div>"
 		else
 			data += "<div style = 'padding:2px' onclick=\"set('module', '[organ] [mod_path]');\" class='block'><font color='#ee0000'>[title_line]<br>[price]<br>[mod.desc] [job_restriction_data]</font></div>"
 

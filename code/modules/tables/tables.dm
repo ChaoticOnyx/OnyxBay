@@ -53,6 +53,12 @@
 
 	health += maxhealth - old_maxhealth
 
+/obj/structure/table/add_debris_element()
+	if(material?.name == MATERIAL_WOOD || material?.name == MATERIAL_DARKWOOD)
+		AddElement(/datum/element/debris, DEBRIS_WOOD, -10, 5)
+	else
+		AddElement(/datum/element/debris, DEBRIS_SPARKS, -10, 5)
+
 /obj/structure/table/proc/take_damage(amount)
 	// If the table is made of a brittle material, and is *not* reinforced with a non-brittle material, damage is multiplied by TABLE_BRITTLE_MATERIAL_MULTIPLIER
 	if(material && material.is_brittle())
@@ -87,6 +93,7 @@
 	update_icon()
 	update_desc()
 	update_material()
+	add_debris_element()
 
 /obj/structure/table/Destroy()
 	material = null

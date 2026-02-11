@@ -53,11 +53,15 @@ var/list/mining_floors = list()
 		mining_walls["[src.z]"] = list()
 	mining_walls["[src.z]"] += src
 	update_icon()
+	add_debris_element()
 
 /turf/simulated/mineral/Destroy()
 	if (mining_walls["[src.z]"])
 		mining_walls["[src.z]"] -= src
 	return ..()
+
+/turf/simulated/mineral/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_ROCK, -10, 5, 1)
 
 /turf/simulated/mineral/can_build_cable()
 	return !density

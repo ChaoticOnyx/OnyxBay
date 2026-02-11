@@ -61,6 +61,7 @@
 	var/mob/living/carbon/human/H = heart?.owner
 	if(!istype(H)) // This should NOT happen, as thinking stops when this implant is removed from heart. Yet, better safe, than sorry.
 		set_next_think(0)
+		return
 
 	if(H.is_asystole() && H.should_have_organ(BP_HEART))
 		try_resuscitate(H)
@@ -113,7 +114,7 @@
 	available_in_charsetup = TRUE
 	augment_cost = 10
 	cpu_load = 0
-	allowed_jobs = list(/datum/job/hos, /datum/job/captain, /datum/job/cmo, /datum/job/iaa, /datum/job/hop)
+	allowed_roles = list(/datum/job/hos, /datum/job/captain, /datum/job/cmo, /datum/job/iaa, /datum/job/hop)
 	origin_tech = list(TECH_BIO = 6, TECH_COMBAT = 6, TECH_ENGINEERING = 7, TECH_BLUESPACE = 4, TECH_PLASMA = 4)
 	matter = list(
 		MATERIAL_URANIUM = 50,

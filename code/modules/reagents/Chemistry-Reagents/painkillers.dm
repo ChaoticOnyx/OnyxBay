@@ -27,7 +27,7 @@
 /datum/reagent/painkiller/overdose(mob/living/carbon/M, alien)
 	..()
 	M.hallucination(120, 30)
-	M.druggy = max(M.druggy, 10)
+	M.make_drugged(10)
 	M.add_chemical_effect(CE_PAINKILLER, pain_power * 0.5) // extra painkilling for extra trouble
 	M.add_chemical_effect(CE_BREATHLOSS, 0.6) // Have trouble breathing, need more air
 
@@ -37,6 +37,9 @@
 	if(M.chem_traces[type] > tolerance_threshold)
 		effectiveness *= clamp(1.0 - ((M.chem_traces[type] - tolerance_threshold) * tolerance_mult), 0, 1)
 	M.add_chemical_effect(CE_PAINKILLER, pain_power * effectiveness)
+
+/datum/reagent/painkiller/add_user_effects(mob/living/carbon/M)
+	M.apply_opioid_effects()
 
 /datum/reagent/painkiller/proc/handle_painkiller_overdose(mob/living/carbon/M, affecting_dose)
 	if(M.chem_doses[type] > soft_overdose)
@@ -82,6 +85,9 @@
 	soft_overdose = 15
 	tolerance_threshold = 15.0
 	tolerance_mult = 0.05
+
+/datum/reagent/painkiller/tramadol/add_user_effects(mob/living/carbon/M)
+	return
 
 /datum/reagent/painkiller/tramadol/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	..()
@@ -164,7 +170,7 @@
 	var/whole_volume = (volume + M.chem_traces[type]) // side effects are more robust (dose-wise) than in the case of *legal* painkillers usage
 	if(whole_volume > soft_overdose)
 		M.add_chemical_effect(CE_SLOWDOWN, 1)
-		M.druggy = max(M.druggy, 10)
+		M.make_drugged(10)
 		if(prob(1))
 			M.slurring = max(M.slurring, 10)
 	if(whole_volume > (overdose+soft_overdose)/2)
@@ -205,7 +211,7 @@
 		M.hallucination(30, 30)
 		M.eye_blurry = max(M.eye_blurry, 10)
 		M.drowsyness = max(M.drowsyness, 5)
-		M.druggy = max(M.druggy, 10)
+		M.make_drugged(10)
 		M.add_chemical_effect(CE_SLOWDOWN, 2)
 		if(prob(5))
 			M.slurring = max(M.slurring, 20)
@@ -241,5 +247,8 @@
 
 /datum/reagent/painkiller/paracetamol/overdose(mob/living/carbon/M, alien)
 	M.add_chemical_effect(CE_TOXIN, 5)
-	M.druggy = max(M.druggy, 2)
+	M.make_drugged(2)
 	M.add_chemical_effect(CE_PAINKILLER, 10)
+
+/datum/reagent/painkiller/paracetamol/add_user_effects(mob/living/carbon/M)
+	return

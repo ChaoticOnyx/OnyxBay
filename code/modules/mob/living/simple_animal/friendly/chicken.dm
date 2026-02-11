@@ -36,6 +36,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
 	mob_size = MOB_MINISCULE
 	bodyparts = /decl/simple_animal_bodyparts/bird
+	var/species = null
 
 /mob/living/simple_animal/chick/Initialize()
 	. = ..()
@@ -49,8 +50,9 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	if(!stat)
 		amount_grown++
 		if(amount_grown >= 180)
-			amount_grown = -1
-			new /mob/living/simple_animal/chicken(loc)
+			var/mob/living/simple_animal/chicken/big_guy = new /mob/living/simple_animal/chicken(loc)
+			if(species)
+				big_guy.change_species(species)
 			qdel(src)
 
 /mob/living/simple_animal/chicken
@@ -151,7 +153,8 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			egg.pixel_x = rand(-6, 6)
 			egg.pixel_y = rand(-6, 6)
 			if(species.fertile && istype(egg, /obj/item/reagent_containers/food/egg) && GLOB.chicken_count < MAX_CHICKENS)
-				egg.set_next_think(world.time)
+				var/obj/item/reagent_containers/food/egg/E = egg
+				E.make_fertile(/mob/living/simple_animal/chick, species.type)
 	else
 		egg_chance = 0
 
@@ -248,7 +251,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	var/egg_type = list(/obj/item/reagent_containers/food/egg)
 	var/fertile = TRUE
 	var/mutable = TRUE
-	var/mob/living/simple_animal/chicken/owner = null
+	var/mob/living/simple_animal/owner = null
 
 /datum/chicken_species/Destroy()
 	owner = null
@@ -345,21 +348,6 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 ///////////////////////
 /// Some eggs stuff ///
 ///////////////////////
-/obj/item/reagent_containers/food/egg
-	var/amount_grown = 0
-
-/obj/item/reagent_containers/food/egg/think()
-	if(isturf(loc) || ismob(loc))
-		amount_grown++
-		if(amount_grown >= 300)
-			visible_message("[src] hatches with a quiet cracking sound.")
-			new /mob/living/simple_animal/chick(get_turf(src))
-			qdel(src)
-			return
-	else
-		return
-
-	set_next_think(world.time + 1 SECOND)
 
 #undef CHICKEN_WHITE
 #undef CHICKEN_BROWN

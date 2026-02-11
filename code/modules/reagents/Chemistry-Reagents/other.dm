@@ -370,7 +370,7 @@
 		M.adjustOxyLoss(-removed * 10)
 	else if(alien != IS_DIONA)
 		M.adjustToxLoss(removed * 5)
-		M.druggy = max(M.druggy, 5)
+		M.make_drugged(5)
 
 /datum/reagent/lube // TODO: spraying on borgs speeds them up
 	name = "Space Lube"

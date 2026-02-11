@@ -22,7 +22,7 @@
 
 /obj/item/grenade/flashbang/proc/bang(turf/T , mob/living/carbon/M) // Added a new proc called 'bang' that takes a location and a person to be banged.
 	to_chat(M, SPAN("danger", "*BANG*"))                // Called during the loop that bangs people in lockers/containers and when banging
-	playsound(loc, 'sound/effects/bang.ogg', 50, 1, 30) // people in normal view. Could theroetically be called during other explosions.
+	playsound(loc, GET_SFX(SFX_BANG), 50, 1, 30) // people in normal view. Could theroetically be called during other explosions.
 															// -- Polymorph
 	// Checking for protections
 	var/eye_effect = 0

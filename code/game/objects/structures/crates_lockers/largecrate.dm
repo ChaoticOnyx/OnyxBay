@@ -11,12 +11,16 @@
 
 /obj/structure/largecrate/Initialize()
 	. = ..()
+	add_debris_element()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/largecrate/LateInitialize(mapload, ...)
 	. = ..()
 	if(mapload) // if it's the map loading phase, relevant items at the crate's loc are put in the contents
 		add_think_ctx("store_contents_mapload", CALLBACK(src, nameof(.proc/store_contents)), world.time + 1 SECOND)
+
+/obj/structure/largecrate/add_debris_element()
+	AddElement(/datum/element/debris, DEBRIS_WOOD, -10, 5)
 
 /obj/structure/largecrate/proc/store_contents()
 	for(var/obj/I in loc)
