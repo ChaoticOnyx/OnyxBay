@@ -143,37 +143,7 @@
 	if(old_turf?.z != new_turf?.z)
 		SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, old_turf, new_turf)
 
-	if (direct & (direct - 1))
-		if (direct & 1)
-			if (direct & 4)
-				if (step(src, NORTH))
-					step(src, EAST)
-				else
-					if (step(src, EAST))
-						step(src, NORTH)
-			else
-				if (direct & 8)
-					if (step(src, NORTH))
-						step(src, WEST)
-					else
-						if (step(src, WEST))
-							step(src, NORTH)
-		else
-			if (direct & 2)
-				if (direct & 4)
-					if (step(src, SOUTH))
-						step(src, EAST)
-					else
-						if (step(src, EAST))
-							step(src, SOUTH)
-				else
-					if (direct & 8)
-						if (step(src, SOUTH))
-							step(src, WEST)
-						else
-							if (step(src, WEST))
-								step(src, SOUTH)
-	else
+	if(IS_POWER_OF_TWO(direct))
 		var/atom/A = src.loc
 
 		var/olddir = dir //we can't override this without sacrificing the rest of movable/New()
@@ -184,9 +154,21 @@
 
 		src.move_speed = world.time - src.l_move_time
 		src.l_move_time = world.time
-		src.m_flag = 1
 		if ((A != src.loc && A && A.z == src.z))
 			src.last_move = get_dir(A, src.loc)
+	else // This doesn't handle 3D moves properly, but the old code didn't either.
+		moving_diagonally = /atom/movable::FIRST_DIAGONAL_STEP
+		var/first_dir = ((direct) & -(direct))
+		var/second_dir = direct & ~first_dir
+		if(step(src, first_dir))
+			if(moving_diagonally) // check if unset by falling
+				moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+				step(src, second_dir)
+		else if(step(src, second_dir))
+			if(moving_diagonally)
+				moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+				step(src, first_dir)
+		moving_diagonally = FALSE
 
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
 

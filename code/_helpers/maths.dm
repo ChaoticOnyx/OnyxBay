@@ -21,6 +21,9 @@
 /// Gets the sign of x, returns -1 if negative, 0 if 0, 1 if positive
 #define SIGN(x) ( ((x) > 0) - ((x) < 0) )
 
+#define IS_POWER_OF_TWO(VAL) ((VAL & (VAL-1)) == 0)
+#define ROUND_UP_TO_POWER_OF_TWO(VAL) (2 ** ceil(log(2,VAL)))
+
 // min is inclusive, max is exclusive
 /proc/Wrap(val, min, max)
 	var/d = max - min

@@ -270,8 +270,6 @@
 	if(SSinput.initialized)
 		set_macros()
 
-	turf_examine = new(src)
-
 	settings = new(src)
 
 	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))

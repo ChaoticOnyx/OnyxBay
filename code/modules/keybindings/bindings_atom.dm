@@ -15,10 +15,11 @@
 	if((movement_dir & EAST) && (movement_dir & WEST))
 		movement_dir &= ~(EAST|WEST)
 
-	if(movement_dir & user.last_move_dir_pressed)
-		movement_dir = user.last_move_dir_pressed
-	else
-		movement_dir = ((movement_dir) & -(movement_dir))
+	if(config.movement.diagonal_movement_disabled)
+		if(movement_dir & user.last_move_dir_pressed)
+			movement_dir = user.last_move_dir_pressed
+		else
+			movement_dir = ((movement_dir) & -(movement_dir))
 
 	if(movement_dir)
 		movement_dir = turn(movement_dir, -dir2angle(user.dir))
