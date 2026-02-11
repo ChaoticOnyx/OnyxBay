@@ -307,7 +307,6 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 #define HEAT_LEVEL_2 2
 #define HEAT_LEVEL_3 3
 
-
 #define CORPSE_CAN_REENTER 1
 #define CORPSE_CAN_REENTER_AND_RESPAWN 2
 
