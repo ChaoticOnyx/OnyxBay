@@ -152,7 +152,7 @@
 /datum/movement_handler/mob/delay/DoMove(direction, mover, is_external)
 	if(is_external)
 		return
-	delay = max(1, (mob.movement_delay() * (IS_POWER_OF_TWO(direction) ? 1.0 : 0.7)) + GetGrabSlowdown())
+	delay = max(1, (mob.movement_delay() / (IS_POWER_OF_TWO(direction) ? 1.0 : 0.7)) + GetGrabSlowdown())
 	next_move = world.time + delay
 	UpdateGlideSize()
 
