@@ -220,7 +220,7 @@
 		'sound/effects/explosions/meteor_hit4.ogg',
 		'sound/effects/explosions/meteor_hit5.ogg'
 	)
-	sound_to(world, sound(pick(hit_sounds), volume = 70))
+	sound_to(world, sound(pick(hit_sounds), volume = 20))
 	if(heavy)
 		for(var/mob/M in GLOB.player_list)
 			var/turf/T = get_turf(M)
