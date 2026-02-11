@@ -152,7 +152,7 @@
 /datum/movement_handler/mob/delay/DoMove(direction, mover, is_external)
 	if(is_external)
 		return
-	delay = max(1, mob.movement_delay() + GetGrabSlowdown())
+	delay = max(1, (mob.movement_delay() / (IS_POWER_OF_TWO(direction) ? 1.0 : 0.7)) + GetGrabSlowdown())
 	next_move = world.time + delay
 	UpdateGlideSize()
 
@@ -230,7 +230,7 @@
 		return MOVEMENT_STOP
 
 	for(var/obj/item/grab/G in mob.grabbed_by)
-		if(G.stop_move())
+		if(G.assailant != mob && G.assailant != mover && (mob.restrained() || G.stop_move()))
 			if(mover == mob)
 				to_chat(mob, SPAN("notice", "You're stuck in a grab!"))
 			mob.ProcessGrabs()
@@ -281,10 +281,16 @@
 
 	step(mob, direction)
 
-	if(!mob)
+	if(mob.loc == old_turf) // Did not move for whatever reason.
+		mob.moving = FALSE
+
+	var/turf/new_loc = mob.loc
+	if(istype(new_loc))
+		HandleGrabs(direction, old_turf)
+
+	if(QDELETED(mob))
 		return // If the mob gets deleted on move (e.g. Entered, whatever), it wipes this reference on us in Destroy (and we should be aborting all action anyway).
 	// Something with pulling things
-	HandleGrabs(direction, old_turf)
 
 	for(var/obj/item/grab/G in mob)
 		if(G.reverse_moving())
@@ -295,7 +301,7 @@
 	for(var/obj/item/grab/G in mob.grabbed_by)
 		G.adjust_position()
 
-	mob.moving = 0
+	mob.moving = FALSE
 
 /datum/movement_handler/mob/movement/MayMove(mob/mover)
 	return IS_SELF(mover) && mob.moving ? MOVEMENT_STOP : MOVEMENT_PROCEED

@@ -8,6 +8,9 @@
 	// var/elevation = 2    - not used anywhere
 	var/move_speed = 10
 	var/l_move_time = 1
+	var/const/FIRST_DIAGONAL_STEP = 1
+	var/const/SECOND_DIAGONAL_STEP = 2
+	var/moving_diagonally = FALSE // Used so we don't break grabs mid-diagonal-move.
 	var/m_flag = 1
 	var/throwing = 0
 	var/thrower
@@ -405,4 +408,12 @@
 
 /// Called on `/mob/proc/start_pulling`.
 /atom/movable/proc/on_pulling_try(mob/user)
+	return
+
+/**
+* A wrapper for setDir that should only be able to fail by living mobs.
+*
+* Called from '/atom/movable/proc/keyLoop', this exists to be overwritten by living mobs with a check to see if we're actually alive enough to change directions
+*/
+/atom/movable/proc/keybind_face_direction(direction)
 	return
