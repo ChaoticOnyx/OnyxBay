@@ -319,7 +319,7 @@ var/global/list/all_objectives = list()
 /datum/objective/escape/changeling
 
 /datum/objective/escape/changeling/target_is_disallowed(mob/living/carbon/human/H)
-	if(H.full_prosthetic)
+	if(H.isSynthetic())
 		return TRUE
 
 /datum/objective/escape/changeling/find_target()

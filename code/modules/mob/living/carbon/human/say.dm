@@ -21,7 +21,7 @@
 	var/obj/item/organ/internal/voicebox/vox = locate() in internal_organs
 	var/snowflake_speak = (language?.language_flags & (NONVERBAL|SIGNLANG)) || (vox?.is_usable() && (language in vox.assists_languages))
 
-	if(stat == CONSCIOUS && !full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
+	if(stat == CONSCIOUS && !isSynthetic() && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
 
 		var/first_char = copytext_char(message, 1, 2)
@@ -162,9 +162,12 @@
 	if(silent || (sdisabilities & MUTE))
 		message_data["message"] = ""
 		return TRUE
-	if(should_have_organ(BP_TONGUE) && !(message_data["language"]?.language_flags & (NONVERBAL|SIGNLANG)))
-		var/obj/item/organ/internal/tongue/T = internal_organs_by_name[BP_KIDNEYS]
+	if(should_have_organ(isSynthetic()? BP_VOICE : BP_TONGUE) && !(message_data["language"]?.language_flags & (NONVERBAL|SIGNLANG)))
+		var/obj/item/organ/internal/tongue/T = internal_organs_by_name[isSynthetic()? BP_VOICE : BP_TONGUE]
 		if(!T)
+			if(isSynthetic())
+				message_data["message"] = ""
+				return TRUE
 			message_data["message"] = mutespeech(message_data["message"], 95)
 			message_data["verb"] = "mumbles"
 		else if(T.is_broken())

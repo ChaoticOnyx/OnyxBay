@@ -604,7 +604,7 @@
 		var/mob/living/carbon/human/H = user
 
 		if(istype(H))
-			if(H.getSpeciesOrSynthTemp(HEAT_LEVEL_1) > LIGHT_BULB_TEMPERATURE)
+			if(H.species.heat_level_1 > LIGHT_BULB_TEMPERATURE)
 				prot = 1
 			else if(H.gloves)
 				var/obj/item/clothing/gloves/G = H.gloves

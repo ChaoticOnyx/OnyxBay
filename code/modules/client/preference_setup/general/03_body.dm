@@ -209,8 +209,17 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 	else if(href_list["show_species"])
 		// Actual whitelist checks are handled elsewhere, this is just for accessing the preview window.
-		var/choice = input("Which species would you like to look at?") as null|anything in playable_species
-		if(!choice) return
+		var/chooseable_species = list()
+		for(var/N in playable_species)
+			var/datum/species/S = all_species[N]
+			if(S.spawn_flags & SPECIES_IS_FBP)	// No no no, mister synthetic, you wont go into species list, you will go in yobaniy augmentations blyat
+				continue
+			chooseable_species += N
+		var/choice = input("Which species would you like to look at?") as null|anything in chooseable_species
+
+		if(!choice)
+			return
+
 		pref.species_preview = choice
 		SetSpecies(preference_mob())
 		return TOPIC_HANDLED
@@ -220,9 +229,11 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		if(!pref.species_preview || !(pref.species_preview in all_species))
 			return TOPIC_NOACTION
 
-		var/prev_species = pref.species
+		var/datum/species/prev_species = all_species[pref.species]
 		pref.species = href_list["set_species"]
-		if(prev_species != pref.species)
+		if(prev_species.name != pref.species)
+			if(prev_species.spawn_flags & SPECIES_IS_FBP)
+				pref.species = all_species[pref.species].synthetic_type_species
 			mob_species = all_species[pref.species]
 			if(!(pref.gender in mob_species.genders))
 				pref.gender = mob_species.genders[1]
@@ -470,23 +481,26 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "</tr>"
 	dat += "</table><center><hr/>"
 
+	var/datum/species/pref_species = all_species[pref.species]
 	var/restricted = 0
 	if(config.whitelist.enable_alien_whitelist) //If we're using the whitelist, make sure to check it!
-		if (!(current_species.spawn_flags & SPECIES_CAN_JOIN))
+		if(!(current_species.spawn_flags & SPECIES_CAN_JOIN))
 			restricted = 2
-		else if ((current_species.spawn_flags & SPECIES_IS_WHITELISTED) && !is_alien_whitelisted(preference_mob(),current_species))
+		else if((current_species.spawn_flags & SPECIES_IS_WHITELISTED) && !is_alien_whitelisted(preference_mob(),current_species))
 			restricted = 1
-		else if (jobban_isbanned(user, "SPECIES"))
+		else if(jobban_isbanned(user, "SPECIES"))
 			restricted = 3
 
-	if (restricted)
-		if (restricted == 1)
+	if(restricted)
+		if(restricted == 1)
 			dat += "<font color='red'><b>You cannot play as this species.</br><small>If you wish to be whitelisted, contact admins by AHelp.</small></b></font></br>"
-		else if (restricted == 2)
+		else if(restricted == 2)
 			dat += "<font color='red'><b>You cannot play as this species.</br><small>This species is not available as a player race.</small></b></font></br>"
-		else if (restricted == 3)
+		else if(restricted == 3)
 			dat += "<font color='red'><b>You cannot play as this species.</br><small>You was banned to play species!</small></b></font></br>"
-	if (!restricted)
+	else if((current_species.name == pref_species.name) || (current_species.name == pref_species.organic_type_species))
+		dat += "<b>You've already selected this species.</b></br>"
+	else if(!restricted)
 		dat += "\[<a href='?src=\ref[src];set_species=[pref.species_preview]'>select</a>\]"
 	dat += "</center></body>"
 

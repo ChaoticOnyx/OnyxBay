@@ -1392,14 +1392,10 @@
 /mob/living/carbon/human/getDNA()
 	if(species.species_flags & SPECIES_FLAG_NO_SCAN)
 		return null
-	if(isSynthetic())
-		return
 	..()
 
 /mob/living/carbon/human/setDNA()
 	if(species.species_flags & SPECIES_FLAG_NO_SCAN)
-		return
-	if(isSynthetic())
 		return
 	..()
 

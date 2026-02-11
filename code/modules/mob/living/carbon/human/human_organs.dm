@@ -417,7 +417,7 @@
 	return FALSE
 
 /mob/living/carbon/human/is_asystole()
-	if(full_prosthetic)
+	if(isSynthetic())
 		var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]
 		if(istype(C) && !C.is_usable())
 			return TRUE
@@ -435,7 +435,7 @@
 	return 0
 
 /mob/living/carbon/human/proc/handle_coagulation()
-	if(isSynthetic() || isundead(src))
+	if(isundead(src))
 		coagulation = COAGULATION_NONE
 		return
 

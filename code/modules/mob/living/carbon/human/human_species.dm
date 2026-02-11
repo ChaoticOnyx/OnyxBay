@@ -64,6 +64,10 @@
 	var/datum/antagonist/selected_antag = GLOB.all_antag_types_[util_pick_weight(antag_poll)]
 	selected_antag?.add_antagonist(mind, TRUE, max_stat = UNCONSCIOUS)
 
+/mob/living/carbon/human/robot/New(new_loc)
+	full_prosthetic = TRUE
+	..(new_loc, SPECIES_SYNTH)
+
 /mob/living/carbon/human/skrell/New(new_loc)
 	h_style = "Skrell Male Tentacles"
 	..(new_loc, SPECIES_SKRELL)

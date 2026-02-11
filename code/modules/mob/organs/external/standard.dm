@@ -135,7 +135,6 @@
 	joint = "right ankle"
 	amputation_point = "right ankle"
 
-
 /obj/item/organ/external/hand
 	organ_tag = BP_L_HAND
 	name = "left hand"
@@ -160,3 +159,33 @@
 	parent_organ = BP_R_ARM
 	joint = "right wrist"
 	amputation_point = "right wrist"
+
+/obj/item/organ/external/chest/robotic
+	status = ORGAN_ROBOTIC
+
+/obj/item/organ/external/groin/robotic
+	status = ORGAN_ROBOTIC
+
+/obj/item/organ/external/arm/robotic
+	status = ORGAN_ROBOTIC
+
+/obj/item/organ/external/arm/right/robotic
+	status = ORGAN_ROBOTIC
+
+/obj/item/organ/external/leg/robotic
+	status = ORGAN_ROBOTIC
+
+/obj/item/organ/external/leg/right/robotic
+	status = ORGAN_ROBOTIC
+
+/obj/item/organ/external/foot/robotic
+	status = ORGAN_ROBOTIC
+
+/obj/item/organ/external/foot/right/robotic
+	status = ORGAN_ROBOTIC
+
+/obj/item/organ/external/hand/robotic
+	status = ORGAN_ROBOTIC
+
+/obj/item/organ/external/hand/right/robotic
+	status = ORGAN_ROBOTIC

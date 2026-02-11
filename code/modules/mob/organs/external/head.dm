@@ -205,7 +205,7 @@
 		if((owner.head?.flags_inv & BLOCKHEADHAIR) && !(H.flags & VERY_SHORT))
 			H = GLOB.hair_styles_list["Short Hair"]
 		if(H)
-			if((!length(H.species_allowed) || (species.name in H.species_allowed)) && species.hair_key)
+			if((!length(H.species_allowed) || (species.hair_key in H.species_allowed)))
 				if(istype(owner.body_build,/datum/body_build/slim))
 					HI = icon(GLOB.hair_icons["slim"][species.hair_key], H.icon_state)
 				else
@@ -275,7 +275,7 @@
 
 	if(owner.f_style)
 		var/datum/sprite_accessory/FH = GLOB.facial_hair_styles_list[owner.f_style]
-		if(FH?.species_allowed && species.facial_hair_key && (species.name in FH.species_allowed))
+		if(FH?.species_allowed && (species.facial_hair_key in FH.species_allowed))
 			var/icon/FHI
 			if(istype(owner.body_build,/datum/body_build/slim))
 				FHI = icon(GLOB.facial_hair_icons["slim"][species.hair_key], FH.icon_state)
@@ -295,6 +295,9 @@
 	get_facial_hair_icon()
 	update_icon()
 	owner = null
+
+/obj/item/organ/external/head/robotic
+	status = ORGAN_ROBOTIC
 
 /obj/item/skull
 	name = "skull"

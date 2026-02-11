@@ -40,7 +40,7 @@
 
 /mob/living/carbon/human/update_hydration_movespeed_if_necessary()
 	last_hydration_speed_update = world.time
-	if(full_prosthetic)
+	if(isSynthetic())
 		return
 
 	if(hydration <= HYDRATION_NONE)

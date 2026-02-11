@@ -3,7 +3,10 @@
 	name_plural = "Humans"
 	hair_key = SPECIES_HUMAN
 	facial_hair_key = SPECIES_HUMAN
+
 	primitive_form = "Monkey"
+	synthetic_type_species = SPECIES_SYNTH
+
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch, /datum/unarmed_attack/bite)
 	blurb = "Humanity originated in the Sol system, and over the last five centuries has spread \
 	colonies across a wide swathe of space. They hold a wide range of forms and creeds.<br/><br/> \
@@ -83,6 +86,7 @@
 /datum/species/tajaran
 	name = SPECIES_TAJARA
 	name_plural = "Tajaran"
+	synthetic_type_species = SPECIES_SYNTH_TAJARA
 	icobase = 'icons/mob/human_races/r_tajaran.dmi'
 	tail = "tajtail"
 	var/tail_slim = "tajtail_slim"
@@ -131,6 +135,7 @@
 	heat_level_3 = 800 //Default 1000
 
 	primitive_form = "Farwa"
+	synthetic_type_species = SPECIES_SYNTH_TAJARA
 
 	spawn_flags = SPECIES_CAN_JOIN | SPECIES_IS_WHITELISTED
 	species_appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR | HAS_EYE_COLOR
@@ -178,7 +183,10 @@
 	name = SPECIES_SKRELL
 	name_plural = SPECIES_SKRELL
 	icobase = 'icons/mob/human_races/r_skrell.dmi'
+
 	primitive_form = "Neaera"
+	synthetic_type_species = SPECIES_SYNTH_SKRELL
+
 	hair_key = SPECIES_SKRELL
 	unarmed_types = list(/datum/unarmed_attack/punch)
 	blurb = "An amphibious species, Skrell come from the star system known as Qerr'Vallis, which translates to 'Star of \

@@ -258,6 +258,7 @@
 /datum/category_item/player_setup_item/augmentation/proc/update_external_organ(organ, action)
 	var/second_limb = null // if you try to change the arm, the hand should also change
 	var/third_limb = null  // if you try to unchange the hand, the arm should also change
+	var/datum/species/S = all_species[pref.species]
 	switch(organ)
 		if(BP_L_LEG)
 			second_limb = BP_L_FOOT
@@ -287,6 +288,8 @@
 					for(var/internal_organ in BP_INTERNAL_ORGANS)
 						pref.organ_data[internal_organ] = null
 				pref.organ_modules.Cut()
+				if(S.spawn_flags & SPECIES_IS_FBP)
+					pref.species = S.organic_type_species
 
 			pref.organ_data[organ] = null
 			pref.rlimb_data[organ] = null
@@ -336,6 +339,9 @@
 					pref.organ_data[BP_BRAIN] = "assisted"
 				for(var/internal_organ in list(BP_HEART,BP_EYES,BP_TONGUE,BP_LUNGS,BP_LIVER,BP_KIDNEYS,BP_INTESTINES,BP_BLADDER))
 					pref.organ_data[internal_organ] = "mechanical"
+
+				if(!(S.spawn_flags & SPECIES_IS_FBP))
+					pref.species = S.synthetic_type_species
 
 /datum/category_item/player_setup_item/augmentation/proc/reset_limbs()
 	pref.organ_data.Cut()

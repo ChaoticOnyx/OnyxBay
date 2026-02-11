@@ -69,7 +69,7 @@
 
 /// Tries to resuscitate its owner
 /obj/item/organ_module/passive/resuscitator/proc/try_resuscitate(mob/living/carbon/human/owner)
-	if((owner.species.species_flags & SPECIES_FLAG_NO_SCAN) || owner.isSynthetic() || owner.is_ic_dead())
+	if((owner.species.species_flags & SPECIES_FLAG_NO_SCAN) || owner.is_ic_dead())
 		return
 	if(uses <= 0 || used)
 		return

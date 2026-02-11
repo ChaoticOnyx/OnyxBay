@@ -50,7 +50,7 @@
 
 /mob/living/carbon/human/update_nutrition_movespeed_if_necessary()
 	last_nutrition_speed_update = world.time
-	if(full_prosthetic)
+	if(isSynthetic())
 		return
 
 	var/normalized_nutrition = nutrition / body_build.stomach_capacity

@@ -32,22 +32,22 @@
 	return race_key
 
 /datum/species/proc/get_knockout_message(mob/living/carbon/human/H)
-	return ((H && H.isSynthetic()) ? "encounters a hardware fault and suddenly reboots!" : knockout_message)
+	return knockout_message
 
 /datum/species/proc/get_death_message(mob/living/carbon/human/H)
-	return ((H && H.isSynthetic()) ? "gives one shrill beep before falling lifeless." : death_message)
+	return death_message
 
 /datum/species/proc/get_ssd(mob/living/carbon/human/H)
-	return ((H && H.isSynthetic()) ? "flashing a 'system offline' glyph on their monitor" : show_ssd)
+	return show_ssd
 
 /datum/species/proc/get_blood_colour(mob/living/carbon/human/H)
-	return ((H && H.isSynthetic()) ? SYNTH_BLOOD_COLOUR : blood_color)
+	return blood_color
 
 /datum/species/proc/get_virus_immune(mob/living/carbon/human/H)
-	return ((H && H.isSynthetic()) ? 1 : virus_immune)
+	return virus_immune
 
 /datum/species/proc/get_flesh_colour(mob/living/carbon/human/H)
-	return ((H && H.isSynthetic()) ? SYNTH_FLESH_COLOUR : flesh_color)
+	return flesh_color
 
 /datum/species/proc/get_environment_discomfort(mob/living/carbon/human/H, msg_type)
 

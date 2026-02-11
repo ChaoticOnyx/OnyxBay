@@ -164,14 +164,16 @@
 	/// Allows to calculate value representing `cached_slowdown` that can be interpreted as walking.
 	var/walk_speed_perc = 0.5
 
-	var/primitive_form                 // Lesser form, if any (ie. monkey for humans)
-	var/greater_form                   // Greater form, if any, ie. human for monkeys.
+	var/primitive_form					// Lesser form, if any (ie. monkey for humans)
+	var/greater_form					// Greater form, if any, ie. human for monkeys.
+	var/organic_type_species			// The origin of the synthetic race
+	var/synthetic_type_species			// The synthetic type for this species
 	var/holder_type
-	var/gluttonous                     // Can eat some mobs. Values can be GLUT_TINY, GLUT_SMALLER, GLUT_ANYTHING, GLUT_ITEM_TINY, GLUT_ITEM_NORMAL, GLUT_ITEM_ANYTHING, GLUT_PROJECTILE_VOMIT
-	var/stomach_capacity = 5           // How much stuff they can stick in their stomach
-	var/rarity_value = 1               // Relative rarity/collector value for this species.
-	                                   // Determines the organs that the species spawns with and
-	var/list/has_organ = list(         // which required-organ checks are conducted.
+	var/gluttonous						// Can eat some mobs. Values can be GLUT_TINY, GLUT_SMALLER, GLUT_ANYTHING, GLUT_ITEM_TINY, GLUT_ITEM_NORMAL, GLUT_ITEM_ANYTHING, GLUT_PROJECTILE_VOMIT
+	var/stomach_capacity = 5			// How much stuff they can stick in their stomach
+	var/rarity_value = 1				// Relative rarity/collector value for this species.
+	    								// Determines the organs that the species spawns with and
+	var/list/has_organ = list(			// which required-organ checks are conducted.
 		BP_HEART =      /obj/item/organ/internal/heart,
 		BP_STOMACH =    /obj/item/organ/internal/stomach,
 		BP_LUNGS =      /obj/item/organ/internal/lungs,
@@ -726,7 +728,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		LAZYSET(hair_styles, type, L)
 		for(var/hairstyle in GLOB.hair_styles_list)
 			var/datum/sprite_accessory/S = GLOB.hair_styles_list[hairstyle]
-			if(!(name in S.species_allowed))
+			if(!(hair_key in S.species_allowed))
 				continue
 			ADD_SORTED(L, hairstyle, /proc/cmp_text_asc)
 			L[hairstyle] = S
@@ -749,7 +751,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				continue
 			if(gender == FEMALE && S.gender == MALE)
 				continue
-			if(!(name in S.species_allowed))
+			if(!(facial_hair_key in S.species_allowed))
 				continue
 			ADD_SORTED(facial_hair_style_by_gender, facialhairstyle, /proc/cmp_text_asc)
 			facial_hair_style_by_gender[facialhairstyle] = S

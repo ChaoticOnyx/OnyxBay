@@ -245,7 +245,7 @@
 		var/damage = radiation / (0.5 SIEVERT)
 
 		if(radiation > (1 SIEVERT))
-			if(!full_prosthetic && !isundead(src))
+			if(!isSynthetic() && !isundead(src))
 				if(prob(5))
 					to_chat(src, SPAN("warning", "You feel weak."))
 					Weaken(3)
@@ -261,7 +261,7 @@
 						update_facial_hair()
 
 		if(radiation > (2 SIEVERT))
-			if(!full_prosthetic && !isundead(src))
+			if(!isSynthetic() && !isundead(src))
 				if(prob(5))
 					take_overall_damage(0, damage, used_weapon = "Radiation Burns")
 				if(prob(1))
@@ -274,7 +274,7 @@
 			adjustToxLoss(damage)
 			updatehealth()
 
-			if(!full_prosthetic && !isundead(src) && organs.len)
+			if(!isSynthetic() && !isundead(src) && organs.len)
 				var/obj/item/organ/external/O = pick(organs)
 				if(istype(O))
 					O.add_autopsy_data("Radiation Poisoning", damage)
@@ -380,29 +380,29 @@
 		bodytemperature += between(BODYTEMP_COOLING_MAX, temp_adj*relative_density, BODYTEMP_HEATING_MAX)
 
 	// +/- 50 degrees from 310.15K is the 'safe' zone, where no damage is dealt.
-	if(bodytemperature >= getSpeciesOrSynthTemp(HEAT_LEVEL_1))
+	if(bodytemperature >= species.heat_level_1)
 		//Body temperature is too hot.
 		fire_alert = max(fire_alert, 1)
 		if(status_flags & GODMODE)	return 1	//godmode
 		var/burn_dam = 0
-		if(bodytemperature < getSpeciesOrSynthTemp(HEAT_LEVEL_2))
+		if(bodytemperature < species.heat_level_2)
 			burn_dam = HEAT_DAMAGE_LEVEL_1
-		else if(bodytemperature < getSpeciesOrSynthTemp(HEAT_LEVEL_3))
+		else if(bodytemperature < species.heat_level_3)
 			burn_dam = HEAT_DAMAGE_LEVEL_2
 		else
 			burn_dam = HEAT_DAMAGE_LEVEL_3
 		take_overall_damage(burn=burn_dam, used_weapon = "High Body Temperature")
 		fire_alert = max(fire_alert, 2)
 
-	else if(bodytemperature <= getSpeciesOrSynthTemp(COLD_LEVEL_1))
+	else if(bodytemperature <= species.cold_level_1)
 		fire_alert = max(fire_alert, 1)
 		if(status_flags & GODMODE)	return 1	//godmode
 
 		var/burn_dam = 0
 
-		if(bodytemperature > getSpeciesOrSynthTemp(COLD_LEVEL_2))
+		if(bodytemperature > species.cold_level_2)
 			burn_dam = COLD_DAMAGE_LEVEL_1
-		else if(bodytemperature > getSpeciesOrSynthTemp(COLD_LEVEL_3))
+		else if(bodytemperature > species.cold_level_3)
 			burn_dam = COLD_DAMAGE_LEVEL_2
 		else
 			burn_dam = COLD_DAMAGE_LEVEL_3
@@ -692,7 +692,6 @@
 						nutrition_reduction *= mod.metabolism_percent
 				remove_nutrition(nutrition_reduction)
 
-			if(!isSynthetic(src))
 				if(should_have_organ(BP_KIDNEYS))
 					var/obj/item/organ/internal/kidneys/K = internal_organs_by_name[BP_KIDNEYS]
 					if(K)
@@ -879,7 +878,7 @@
 					else
 						bowels_icon.icon_state = "bowels5"
 
-		if(full_prosthetic)
+		if(isSynthetic())
 			var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]
 			if(istype(C))
 				var/chargeNum = Clamp(ceil(C.percent()/25), 0, 4)	//0-100 maps to 0-4, but give it a paranoid clamp just in case.
@@ -925,9 +924,9 @@
 
 				var/temp_step
 				if(bodytemperature >= base_temperature)
-					temp_step = (getSpeciesOrSynthTemp(HEAT_LEVEL_1) - base_temperature)/4
+					temp_step = (species.heat_level_1 - base_temperature)/4
 
-					if(bodytemperature >= getSpeciesOrSynthTemp(HEAT_LEVEL_1))
+					if(bodytemperature >= species.heat_level_1)
 						bodytemp.icon_state = "temp4"
 					else if(bodytemperature >= base_temperature + temp_step*3)
 						bodytemp.icon_state = "temp3"
@@ -939,9 +938,9 @@
 						bodytemp.icon_state = "temp0"
 
 				else if (bodytemperature < base_temperature)
-					temp_step = (base_temperature - getSpeciesOrSynthTemp(COLD_LEVEL_1))/4
+					temp_step = (base_temperature - species.cold_level_1)/4
 
-					if(bodytemperature <= getSpeciesOrSynthTemp(COLD_LEVEL_1))
+					if(bodytemperature <= species.cold_level_1)
 						bodytemp.icon_state = "temp-4"
 						overlay_fullscreen("temperature", /atom/movable/screen/fullscreen/frost, 4)
 					else if(bodytemperature <= base_temperature - temp_step*3)
@@ -1333,7 +1332,6 @@
 
 /mob/living/carbon/human/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	restore_blood()
-	full_prosthetic = null
 	shock_stage = 0
 	poise = poise_pool
 	bad_external_organs.Cut()
