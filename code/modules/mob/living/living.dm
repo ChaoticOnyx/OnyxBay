@@ -586,7 +586,7 @@
 	if(!.)
 		return
 
-	if(pulling)
+	if(pulling && (moving_diagonally != /atom/movable::SECOND_DIAGONAL_STEP) && get_turf(src) != old_loc)
 		handle_pulling_after_move(old_loc)
 
 	if(crawling)
@@ -633,7 +633,7 @@
 		stop_pulling()
 		return
 
-	if(pulling.loc == loc || pulling.loc == old_loc)
+	if(pulling.loc == loc || !old_loc.Adjacent(pulling))
 		return
 
 	if(!isliving(pulling))
