@@ -22,7 +22,9 @@
 	var/throw_range = 7
 	var/throw_spin = TRUE // Should the atom spin when thrown.
 	var/moved_recently = 0
+	var/atom/movable/pulling = null // No longer livings' feature. Might implement train-pulling or something.
 	var/mob/pulledby = null
+	var/atom/movable/moving_from_pull
 	var/item_state = null // Used to specify the item state for the on-mob overlays.
 	var/pull_sound = null
 

@@ -135,71 +135,86 @@
 
 //This proc should never be overridden elsewhere at /atom/movable to keep directions sane.
 /atom/movable/Move(newloc, direct)
+	if(!loc || !newloc)
+		return
+
 	var/oldloc = loc
+	var/atom/movable/pullee = pulling
 
 	var/turf/old_turf = get_turf(oldloc)
 	var/turf/new_turf = get_turf(newloc)
 
-	if(old_turf?.z != new_turf?.z)
-		SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, old_turf, new_turf)
+	if(loc != newloc)
+		if(old_turf?.z != new_turf?.z)
+			SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, old_turf, new_turf)
 
-	if(IS_POWER_OF_TWO(direct)) // Cardinal move
-		. = ..()
-	else // Diagonal move, split it into cardinal moves
-		moving_diagonally = /atom/movable::FIRST_DIAGONAL_STEP
-		var/first_step_dir
-		// The `&& moving_diagonally` checks are so that a forceMove taking
-		// place due to a Crossed, Bumped, etc. call will interrupt
-		// the second half of the diagonal movement, or the second attempt
-		// at a first half if step() fails because we hit something.
-		if(direct & NORTH)
-			if(direct & EAST)
-				if(step(src, NORTH) && moving_diagonally)
-					first_step_dir = NORTH
-					moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
-					. = step(src, EAST)
-				else if(moving_diagonally && step(src, EAST))
-					first_step_dir = EAST
-					moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
-					. = step(src, NORTH)
-			else if(direct & WEST)
-				if(step(src, NORTH) && moving_diagonally)
-					first_step_dir = NORTH
-					moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
-					. = step(src, WEST)
-				else if (moving_diagonally && step(src, WEST))
-					first_step_dir = WEST
-					moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
-					. = step(src, NORTH)
-		else if(direct & SOUTH)
-			if(direct & EAST)
-				if (step(src, SOUTH) && moving_diagonally)
-					first_step_dir = SOUTH
-					moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
-					. = step(src, EAST)
-				else if(moving_diagonally && step(src, EAST))
-					first_step_dir = EAST
-					moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
-					. = step(src, SOUTH)
-			else if(direct & WEST)
-				if(step(src, SOUTH) && moving_diagonally)
-					first_step_dir = SOUTH
-					moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
-					. = step(src, WEST)
-				else if(moving_diagonally && step(src, WEST))
-					first_step_dir = WEST
-					moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
-					. = step(src, SOUTH)
+		if(IS_POWER_OF_TWO(direct)) // Cardinal move
+			. = ..()
+		else // Diagonal move, split it into cardinal moves
+			moving_diagonally = /atom/movable::FIRST_DIAGONAL_STEP
+			var/first_step_dir
+			// The `&& moving_diagonally` checks are so that a forceMove taking
+			// place due to a Crossed, Bumped, etc. call will interrupt
+			// the second half of the diagonal movement, or the second attempt
+			// at a first half if step() fails because we hit something.
+			if(direct & NORTH)
+				if(direct & EAST)
+					if(step(src, NORTH) && moving_diagonally)
+						first_step_dir = NORTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, EAST)
+					else if(moving_diagonally && step(src, EAST))
+						first_step_dir = EAST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, NORTH)
+				else if(direct & WEST)
+					if(step(src, NORTH) && moving_diagonally)
+						first_step_dir = NORTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, WEST)
+					else if (moving_diagonally && step(src, WEST))
+						first_step_dir = WEST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, NORTH)
+			else if(direct & SOUTH)
+				if(direct & EAST)
+					if (step(src, SOUTH) && moving_diagonally)
+						first_step_dir = SOUTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, EAST)
+					else if(moving_diagonally && step(src, EAST))
+						first_step_dir = EAST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, SOUTH)
+				else if(direct & WEST)
+					if(step(src, SOUTH) && moving_diagonally)
+						first_step_dir = SOUTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, WEST)
+					else if(moving_diagonally && step(src, WEST))
+						first_step_dir = WEST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, SOUTH)
 
-		if(moving_diagonally == /atom/movable::SECOND_DIAGONAL_STEP)
-			if(!.)
-				set_dir(first_step_dir)
-		moving_diagonally = FALSE
-		return
+			if(moving_diagonally == /atom/movable::SECOND_DIAGONAL_STEP)
+				if(!.)
+					set_dir(first_step_dir)
+			moving_diagonally = FALSE
+			return
 
 	if(!loc || (loc == oldloc && oldloc != newloc))
 		last_move = 0
 		return
+
+	if(. && pulling && pulling == pullee && pulling != moving_from_pull) //we were pulling a thing and didn't lose it during our move.
+		if(pulling.anchored)
+			if(isliving(src))
+				var/mob/living/L = src
+				L.stop_pulling()
+		else
+			var/pull_dir = get_dir(pulling, src)
+			if(get_dist(src, pulling) > 1 || (moving_diagonally != /atom/movable::SECOND_DIAGONAL_STEP && ISDIAGONALDIR(pull_dir)))
+				handle_pulling_after_move(oldloc)
 
 	last_move = direct
 	move_speed = world.time - src.l_move_time
@@ -208,7 +223,17 @@
 	if(dir != direct)
 		set_dir(direct)
 
-	SEND_SIGNAL(src, SIGNAL_MOVED, src, oldloc, loc)
+	// Cursed pieces of code that we need right here for reasons.
+	if(.)
+		if(light_sources)
+			for(var/datum/light_source/L in light_sources)
+				L.source_atom.update_light()
+
+		if(opacity)
+			updateVisibility(src)
+
+		SEND_SIGNAL(src, SIGNAL_MOVED, src, oldloc, loc)
+
 	return
 
 /proc/step_glide(atom/movable/am, dir, glide_size_override)

@@ -77,9 +77,27 @@
 		return 0
 	return ..()
 
-/mob/living/Bump(atom/movable/AM, yes)
+/mob/living/Bump(atom/A, yes)
+	if(..())
+		return
 	if(now_pushing || !yes || !loc)
-		return FALSE
+		return
+	if(ismob(A))
+		var/mob/M = A
+		if(MobBump(M))
+			return
+	if(isObj(AM))
+		var/obj/O = A
+		if(ObjBump(O))
+			return
+	if(istype(A, /atom/movable))
+		var/atom/movable/AM = A
+		if(PushAM(AM))
+			return
+
+/mob/living/Bumped(atom/movable/AM)
+	..()
+	last_bumped = world.time
 
 	spawn(0)
 		if(!istype(AM, /mob/living/bot/mulebot))
@@ -578,16 +596,11 @@
 	if(get_dist(src, pulling) > 1)
 		stop_pulling()
 
-	var/turf/old_loc = get_turf(src)
-
 	pull_sound = lying ? SFX_PULL_BODY : null
 
 	. = ..()
 	if(!.)
 		return
-
-	if(pulling && (moving_diagonally != /atom/movable::SECOND_DIAGONAL_STEP) && get_turf(src) != old_loc)
-		handle_pulling_after_move(old_loc)
 
 	if(crawling)
 		var/turf/L = get_turf(newloc)
@@ -625,22 +638,24 @@
 			return FALSE
 	return TRUE
 
-/atom/movable/proc/handle_pulling_after_move(turf/old_loc)
-	return
+/atom/movable/proc/handle_pulling_after_move(turf/target_turf)
+	return FALSE // TODO: Use it somehow.
 
-/mob/living/handle_pulling_after_move(turf/old_loc)
+/mob/living/handle_pulling_after_move(turf/target_turf)
 	if(!pulling)
-		return
+		return FALSE
 
 	if(!can_pull())
 		stop_pulling()
-		return
-
-	if(pulling.loc == loc || !old_loc.Adjacent(pulling))
-		return
+		return FALSE
 
 	if(!isliving(pulling))
+		var/pull_dir = get_dir(pulling.loc, src)
+		pulling.set_glide_size(glide_size)
+		pulling.moving_from_pull = src
+		pulling.Move(get_step(pulling.loc, pull_dir), pull_dir)
 		step_glide(pulling, get_dir(pulling.loc, old_loc), glide_size)
+		pulling.moving_from_pull = null
 	else
 		var/mob/living/M = pulling
 		if(M.grabbed_by.len)
@@ -654,11 +669,11 @@
 
 			var/atom/movable/t = M.pulling
 			M.stop_pulling()
-			step_glide(M, get_dir(pulling.loc, old_loc), glide_size)
+			step_glide(M, get_dir(pulling, target_turf), glide_size)
 			if(t)
 				M.start_pulling(t)
 
-	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, pulling.loc)
+	//SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, pulling.loc)
 
 	handle_dir_after_pull()
 
