@@ -175,7 +175,7 @@
 					src.apply_damage(5, BRUTE)
 				return
 
-			if (!now_pushing)
+			if(!now_pushing && !moving_diagonally)
 				now_pushing = 1
 
 				var/t = get_dir(src, AM)
@@ -625,7 +625,10 @@
 			return FALSE
 	return TRUE
 
-/mob/living/proc/handle_pulling_after_move(turf/old_loc)
+/atom/movable/proc/handle_pulling_after_move(turf/old_loc)
+	return
+
+/mob/living/handle_pulling_after_move(turf/old_loc)
 	if(!pulling)
 		return
 
