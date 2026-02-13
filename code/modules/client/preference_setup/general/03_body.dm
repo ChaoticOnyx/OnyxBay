@@ -212,14 +212,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 	else if(href_list["show_species"])
 		// Actual whitelist checks are handled elsewhere, this is just for accessing the preview window.
-		var/chooseable_species = list()
-		for(var/N in playable_species)
-			var/datum/species/S = all_species[N]
-			if(S.spawn_flags & SPECIES_IS_FBP)	// No no no, mister synthetic, you wont go into species list, you will go in yobaniy augmentations blyat
-				continue
-			chooseable_species += N
-		var/choice = input("Which species would you like to look at?") as null|anything in chooseable_species
-
+		var/choice = input("Which species would you like to look at?") as null|anything in playable_species
 		if(!choice)
 			return
 

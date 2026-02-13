@@ -69,7 +69,7 @@
 		BP_OPTICS =		/obj/item/organ/internal/eyes/optics,
 		)
 
-	spawn_flags = SPECIES_IS_FBP
+	spawn_flags = SPECIES_IS_FBP | SPECIES_NOT_CHOOSEABLE
 	species_appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR
 
 /datum/species/synth/generate_synth_species(species_name, company)
