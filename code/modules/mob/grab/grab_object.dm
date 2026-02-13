@@ -246,7 +246,7 @@
 	return current_grab.throw_held(src)
 
 /obj/item/grab/proc/handle_resist()
-	current_grab.handle_resist(src)
+	return current_grab.handle_resist(src)
 
 /obj/item/grab/proc/adjust_position(force = FALSE)
 	if(force)

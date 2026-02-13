@@ -248,12 +248,13 @@
 
 /datum/grab/proc/handle_resist(obj/item/grab/G)
 	if(!G.affecting && !G.assailant)
-		return
+		return FALSE
 	var/mob/living/carbon/human/affecting = G.affecting
 	var/mob/living/carbon/human/assailant = G.assailant
 
-	if(affecting.incapacitated(INCAPACITATION_KNOCKOUT | INCAPACITATION_STUNNED))
+	if(affecting.incapacitated(INCAPACITATION_KNOCKOUT | INCAPACITATION_STUNNED | INCAPACITATION_WEAKENED | INCAPACITATION_RESTRAINED))
 		to_chat(affecting, SPAN("warning", "You can't resist in your current state!"))
+		return FALSE //return blyat
 
 	//var/break_strength = breakability + size_difference(affecting, assailant)
 
@@ -293,11 +294,11 @@
 			affecting.visible_message(SPAN("warning", "[affecting] has loosened [assailant]'s grip!"))
 			assailant.setClickCooldown(10)
 			G.downgrade()
-			return
 		else
 			affecting.visible_message(SPAN("warning", "[affecting] has broken free of [assailant]'s grip!"))
 			assailant.setClickCooldown(15)
 			G.delete_self()
+	return TRUE
 
 /datum/grab/proc/size_difference(mob/A, mob/B)
 	return mob_size_difference(A.mob_size, B.mob_size)

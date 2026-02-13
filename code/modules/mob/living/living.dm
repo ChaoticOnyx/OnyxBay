@@ -778,12 +778,9 @@
 			return
 
 /mob/living/proc/resist_grab()
-	var/resisting = 0
 	for(var/obj/item/grab/G in grabbed_by)
-		resisting++
-		G.handle_resist()
-	if(resisting)
-		visible_message("<span class='danger'>[src] resists!</span>")
+		if(G.handle_resist())
+			visible_message(SPAN_DANGER("[src] resists!"))
 
 /mob/living/verb/lay_down()
 	set name = "Rest"

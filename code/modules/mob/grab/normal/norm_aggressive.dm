@@ -31,10 +31,12 @@
 		if(affecting.can_unequip(affecting.r_hand))
 			affecting.drop_r_hand()
 
+/datum/grab/normal/aggressive/enter_as_up(obj/item/grab/G)
+	var/mob/living/carbon/human/affecting = G.affecting
 	// Keeps those who are on the ground down
 	if(affecting.lying)
-		affecting.Weaken(2)
-		affecting.Stun(2)
+		affecting.Weaken(5)
+		affecting.Stun(5)
 
 /datum/grab/normal/aggressive/can_upgrade(obj/item/grab/G)
 	if(!(G.target_zone in list(BP_CHEST, BP_HEAD)))

@@ -238,7 +238,10 @@
 	if((incapacitation_flags & INCAPACITATION_STUNNED) && stunned)
 		return 1
 
-	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (weakened || resting || LAZYLEN(pinned)))
+	if((incapacitation_flags & INCAPACITATION_WEAKENED) && (weakened || LAZYLEN(pinned)))
+		return 1
+
+	if((incapacitation_flags & INCAPACITATION_RESTING) && resting)
 		return 1
 
 	if((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (stat || paralysis || sleeping || (status_flags & FAKEDEATH)))

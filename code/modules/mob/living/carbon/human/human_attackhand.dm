@@ -134,8 +134,11 @@
 			return 1
 
 		if(I_GRAB)
-			visible_message(SPAN("danger", "[M] attempted to grab \the [src]!"))
-			return H.make_grab(H, src)
+			if(!src.incapacitated(INCAPACITATION_BUCKLED_PARTIALLY|INCAPACITATION_BUCKLED_FULLY))
+				visible_message(SPAN("danger", "[M] attempted to grab \the [src]!"))
+				return H.make_grab(H, src)
+			to_chat(usr, SPAN_DANGER("\the [src] is buckled!"))
+			return
 
 		if(I_HURT)
 			if(!prob(M.client?.get_luck_for_type(LUCK_CHECK_COMBAT)))

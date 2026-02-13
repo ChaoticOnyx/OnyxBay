@@ -59,8 +59,8 @@
 		if(do_mob(assailant, affecting, action_cooldown - 1))
 			G.attacking = 0
 			G.action_used()
-			affecting.Weaken(2)
-			affecting.Stun(2)
+			affecting.Weaken(10)
+			affecting.Stun(10)
 			affecting.visible_message("<span class='notice'>[assailant] pins [affecting] to the ground!</span>")
 			affecting.damage_poise(affecting.poise)
 
