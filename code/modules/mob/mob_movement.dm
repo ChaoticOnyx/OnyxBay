@@ -341,5 +341,17 @@
 
 #undef DO_MOVE
 
+/mob/proc/set_m_intent(intent)
+	if(intent != M_WALK && intent != M_RUN)
+		return FALSE
+
+	m_intent = intent
+
+	update_move_intent_slowdown()
+
+	if(hud_used)
+		if(hud_used.move_intent)
+			hud_used.move_intent.icon_state = (intent == M_WALK ? "walking" : "running")
+
 /mob/proc/update_move_intent_slowdown()
 	add_movespeed_modifier((m_intent == M_WALK) ? /datum/movespeed_modifier/walk : /datum/movespeed_modifier/run)
