@@ -46,7 +46,8 @@
 		)
 
 	premium = list(
-		/obj/item/storage/firstaid/adv = 1
+		/obj/item/storage/firstaid/adv = 1,
+		/obj/item/reagent_containers/hypospray/autoinjector/adrenaline = 2
 		)
 
 /obj/item/vending_cartridge/medical
