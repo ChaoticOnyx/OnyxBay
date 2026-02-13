@@ -7,8 +7,14 @@
 /// Called on `/atom/proc/set_invisibility` (/atom, old_invisibility, new_invisibility)
 #define SIGNAL_INVISIBILITY_SET "set_invisibility"
 
-/// Called in `/atom/movable/Move` and `/atom/movable/proc/forceMove` (/atom/movable, /atom, /atom)
+/// Called in `/atom/movable/Moved` and `/atom/movable/proc/forceMove` (/atom/movable, /atom, /atom)
 #define SIGNAL_MOVED "moved"
+
+///from base of atom/movable/Cross(): (/atom/movable)
+#define SIGNAL_MOVABLE_CROSS "movable_cross"
+
+///from base of atom/movable/Move(): (/atom/movable)
+#define SIGNAL_MOVABLE_CROSS_OVER "movable_cross_am"
 
 ///from base of atom/movable/Bump(): (/atom)
 #define SIGNAL_MOVABLE_BUMP "movable_bump"
