@@ -54,6 +54,8 @@
 #define SOUND_CHANNEL_AMBIENT_MUSIC 2
 #define SOUND_CHANNEL_HUM           3
 #define SOUND_CHANNEL_WEATHER       4
+#define SOUND_CHANNEL_NUKE          5
+#define SOUND_CHANNEL_RED_ALERT     6
 
 // Ambient music tags
 #define MUSIC_TAG_NORMAL          0
@@ -93,6 +95,7 @@
 #define SFX_FEMALE_LAUGH            "female_laugh"
 #define SFX_FEMALE_YAWN             "female_yawn"
 #define SFX_FEMALE_SIGH             "female_sigh"
+#define SFX_FEMALE_MOAN            "female_moan"
 
 // MALE EMOTES
 #define SFX_MALE_INTERNAL_BREATH    "male_internal_breath"
@@ -107,6 +110,7 @@
 #define SFX_MALE_LAUGH              "male_laugh"
 #define SFX_MALE_YAWN               "male_yawn"
 #define SFX_MALE_SIGH               "male_sigh"
+#define SFX_MALE_MOAN              "male_moan"
 
 // AMBIENT
 #define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"

@@ -213,6 +213,14 @@
 		O.throw_at(dest, 5)
 
 /obj/effect/meteor/proc/meteor_effect()
+	var/static/list/hit_sounds = list(
+		'sound/effects/explosions/meteor_hit.ogg',
+		'sound/effects/explosions/meteor_hit2.ogg',
+		'sound/effects/explosions/meteor_hit3.ogg',
+		'sound/effects/explosions/meteor_hit4.ogg',
+		'sound/effects/explosions/meteor_hit5.ogg'
+	)
+	sound_to(world, sound(pick(hit_sounds), volume = 20))
 	if(heavy)
 		for(var/mob/M in GLOB.player_list)
 			var/turf/T = get_turf(M)

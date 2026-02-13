@@ -80,14 +80,24 @@ if(LAZYLEN(movement_handlers) && ispath(movement_handlers[1])) { \
 #define SET_IS_EXTERNAL(X) is_external = isnull(is_external) ? (X != src) : is_external
 
 /atom/movable/proc/DoMove(direction, mob/mover, is_external)
+	if(!direction || !isnum(direction))
+		return MOVEMENT_STOP
+
 	INIT_MOVEMENT_HANDLERS
 	SET_MOVER(mover)
 	SET_IS_EXTERNAL(mover)
 
+	if(!length(movement_handlers) && is_external && isturf(loc))
+		var/oldloc = loc
+		var/turf/T = get_step(loc, direction)
+		if(istype(T))
+			step(src, direction)
+		return loc != oldloc
+
 	for(var/mh in movement_handlers)
 		var/datum/movement_handler/movement_handler = mh
 		if(movement_handler.MayMove(mover, is_external) & MOVEMENT_STOP)
-			return MOVEMENT_HANDLED
+			return MOVEMENT_STOP
 
 		. = movement_handler.DoMove(direction, mover, is_external)
 		if(. & MOVEMENT_REMOVE)

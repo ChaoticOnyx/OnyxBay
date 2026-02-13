@@ -226,6 +226,22 @@
 	up_description = "There is an immediate serious threat to the station. Security may have weapons unholstered at all times. Random searches are allowed and advised."
 	down_description = "The self-destruct mechanism has been deactivated, there is still however an immediate serious threat to the station. Security may have weapons unholstered at all times, random searches are allowed and advised."
 
+/decl/security_level/default/code_red/switching_up_to()
+	..()
+	sound_to(world, sound('sound/signals/red_alarm.ogg', channel = SOUND_CHANNEL_RED_ALERT, volume = 50))
+
+/decl/security_level/default/code_red/switching_down_to()
+	..()
+	sound_to(world, sound('sound/signals/red_alarm.ogg', channel = SOUND_CHANNEL_RED_ALERT, volume = 50))
+
+/decl/security_level/default/code_red/switching_up_from()
+	..()
+	sound_to(world, sound(null, channel = SOUND_CHANNEL_RED_ALERT))
+
+/decl/security_level/default/code_red/switching_down_from()
+	..()
+	sound_to(world, sound(null, channel = SOUND_CHANNEL_RED_ALERT))
+
 /decl/security_level/default/code_delta
 	name = "code delta"
 

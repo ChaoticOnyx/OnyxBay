@@ -252,7 +252,7 @@
 	if(force)
 		affecting.forceMove(assailant.loc)
 
-	if(!assailant || !affecting || !assailant.Adjacent(affecting))
+	if(!assailant || !affecting || (!assailant.Adjacent(affecting) && affecting.moving_diagonally != /atom/movable::FIRST_DIAGONAL_STEP))
 		delete_self()
 		return FALSE
 	else

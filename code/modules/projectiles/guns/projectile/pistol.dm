@@ -275,7 +275,7 @@
 
 /obj/item/gun/projectile/pirate
 	name = "zip gun"
-	desc = "Little more than a barrel, handle, and firing mechanism, cheap makeshift firearms like this one are not uncommon in frontier systems."
+	desc = "Little more than a barrel, handle, and firing mechanism, cheap makeshift firearms like this one are not uncommon in frontier systems. Fires 12g. Looks too loose to fire powerful cartridges."
 	icon_state = "zipgun"
 	item_state = "sawnshotgun"
 	handle_casings = CYCLE_CASINGS //player has to take the old casing out manually before reloading
@@ -284,23 +284,26 @@
 	mod_reach = 1.0
 	mod_handy = 1.0
 	max_shells = 1 //literally just a barrel
+	caliber = "12g"
 	fire_sound = 'sound/effects/weapons/gun/fire6.ogg'
-
 	has_safety = FALSE
 
-	var/global/list/ammo_types = list(
-		/obj/item/ammo_casing/a357              = ".357",
-		/obj/item/ammo_casing/a762              = "7.62mm",
-		/obj/item/ammo_casing/a556              = "5.56mm"
-		)
+/obj/item/gun/projectile/pirate/Fire(atom/target, atom/movable/firer, clickparams, pointblank, reflex, target_zone)
+	if(!loaded.len)
+		return ..()
+	//ambatublou
+	var/obj/item/ammo_casing/shotgun/slug = src.loaded[1]
+	var/slug_spent = slug.is_spent
+	. = ..()
+	if(slug.type == /obj/item/ammo_casing/shotgun && !slug_spent)
+		show_splash_text_to_viewers("BOOM! <b>\The [src]</b> explodes due to a powerful cartridge!")
+		explosion(src, -1, -1, 2, 5)
+		qdel(src)
 
 /obj/item/gun/projectile/pirate/Initialize()
 	. = ..()
-	ammo_type = pick(ammo_types)
-	desc += " Uses [ammo_types[ammo_type]] rounds."
-
-	var/obj/item/ammo_casing/ammo = ammo_type
-	caliber = initial(ammo.caliber)
+	//no spawning with ammo after assemble
+	ammo_type = /obj/item/ammo_casing/shotgun
 
 // Zip gun construction.
 /obj/item/zipgunframe
