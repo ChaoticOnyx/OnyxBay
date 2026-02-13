@@ -284,7 +284,7 @@
 /datum/preferences/proc/copy_to(mob/living/carbon/human/character, is_preview_copy = FALSE)
 	// Sanitizing rather than saving as someone might still be editing when copy_to occurs.
 	player_setup.sanitize_setup()
-	character.set_species(species)
+	character.set_species(species, FALSE, species_datum)
 	if(be_random_name)
 		real_name = random_name(gender,species)
 

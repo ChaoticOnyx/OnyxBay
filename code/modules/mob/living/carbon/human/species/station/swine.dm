@@ -8,7 +8,6 @@
 
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/punch)
 	gluttonous = GLUT_TINY | GLUT_SMALLER | GLUT_ITEM_ANYTHING
-	synthetic_type_species = SPECIES_SYNTH_SWINE
 	strength = STR_HIGH
 	brute_mod = 0.8
 	burn_mod =  0.8

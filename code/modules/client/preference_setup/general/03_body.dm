@@ -2,6 +2,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 /datum/preferences
 	var/species = SPECIES_HUMAN         //Species datum to use.
+	var/datum/species/species_datum = /datum/species		//REAL datum to use
 	var/b_type = "A+"					//blood type (not-chooseable)
 	var/h_style = "Short Hair"			//Hair type
 	var/r_hair = 0						//Hair color
@@ -34,6 +35,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 /datum/category_item/player_setup_item/general/body/load_character(datum/pref_record_reader/R)
 	pref.species = R.read("species")
+	pref.species = R.read("species_datum")
 	pref.r_hair = R.read("hair_red")
 	pref.g_hair = R.read("hair_green")
 	pref.b_hair = R.read("hair_blue")
@@ -60,6 +62,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 /datum/category_item/player_setup_item/general/body/save_character(datum/pref_record_writer/W)
 	W.write("species", pref.species)
+	W.write("species_datum", pref.species_datum)
 	W.write("hair_red", pref.r_hair)
 	W.write("hair_green", pref.g_hair)
 	W.write("hair_blue", pref.b_hair)
@@ -233,8 +236,12 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		pref.species = href_list["set_species"]
 		if(prev_species.name != pref.species)
 			if(prev_species.spawn_flags & SPECIES_IS_FBP)
-				pref.species = all_species[pref.species].synthetic_type_species
-			mob_species = all_species[pref.species]
+				pref.species_datum = all_species[SPECIES_SYNTH]
+				pref.species_datum.generate_synth_species(pref.species)
+				pref.species = SPECIES_SYNTH
+				mob_species = pref.species_datum
+			else
+				mob_species = all_species[pref.species]
 			if(!(pref.gender in mob_species.genders))
 				pref.gender = mob_species.genders[1]
 			if(!(pref.body in mob_species.body_builds))

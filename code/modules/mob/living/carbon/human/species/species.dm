@@ -167,7 +167,6 @@
 	var/primitive_form					// Lesser form, if any (ie. monkey for humans)
 	var/greater_form					// Greater form, if any, ie. human for monkeys.
 	var/organic_type_species			// The origin of the synthetic race
-	var/synthetic_type_species			// The synthetic type for this species
 	var/holder_type
 	var/gluttonous						// Can eat some mobs. Values can be GLUT_TINY, GLUT_SMALLER, GLUT_ANYTHING, GLUT_ITEM_TINY, GLUT_ITEM_NORMAL, GLUT_ITEM_ANYTHING, GLUT_PROJECTILE_VOMIT
 	var/stomach_capacity = 5			// How much stuff they can stick in their stomach
@@ -767,3 +766,6 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	else
 		var/list/A = list(max(64, H.r_hair), max(64, H.g_hair), max(64, H.b_hair))
 		return A
+
+/datum/species/proc/generate_synth_species(species_name, company)
+	return

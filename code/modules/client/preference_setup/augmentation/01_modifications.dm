@@ -273,6 +273,7 @@
 				pref.organ_modules.Cut()
 				if(S.spawn_flags & SPECIES_IS_FBP)
 					pref.species = S.organic_type_species
+					pref.species_datum = all_species[pref.species]
 
 			pref.organ_data[organ] = null
 			pref.rlimb_data[organ] = null
@@ -324,7 +325,9 @@
 					pref.organ_data[internal_organ] = "mechanical"
 
 				if(!(S.spawn_flags & SPECIES_IS_FBP))
-					pref.species = S.synthetic_type_species
+					pref.species_datum = all_species[SPECIES_SYNTH]
+					pref.species_datum.generate_synth_species(pref.species)
+					pref.species = SPECIES_SYNTH
 
 /datum/category_item/player_setup_item/augmentation/proc/reset_limbs()
 	pref.organ_data.Cut()

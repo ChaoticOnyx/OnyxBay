@@ -325,11 +325,7 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 #define SPECIES_LUMINESCENT 	"Luminescent"
 #define SPECIES_EGYNO       	"Egyno"
 #define SPECIES_SWINE			"Trottine"
-#define SPECIES_SYNTH			"Cyborg Human"
-#define SPECIES_SYNTH_TAJARA	"Cyborg Tajara"
-#define SPECIES_SYNTH_UNATHI	"Cyborg Unathi"
-#define SPECIES_SYNTH_SKRELL	"Cyborg Skrell"
-#define SPECIES_SYNTH_SWINE		"Cyborg Trottine"
+#define SPECIES_SYNTH			"Cyborg"
 
 #define SPECIES_MONKEY      "Monkey"
 #define SPECIES_FARWA       "Farwa"

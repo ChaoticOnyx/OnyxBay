@@ -1135,7 +1135,7 @@
 		to_chat(src, "<span class='notice'>You can't look up right now.</span>")
 	return
 
-/mob/living/carbon/human/set_species(new_species, default_colour)
+/mob/living/carbon/human/set_species(new_species, default_colour, datum/species/species_datum)
 	if(!dna)
 		if(!new_species)
 			new_species = SPECIES_HUMAN
@@ -1165,7 +1165,10 @@
 		species.on_species_loss(src)
 		holder_type = null
 
-	species = all_species[new_species]
+	if(species_datum)
+		species = species_datum
+	else
+		species = all_species[new_species]
 	species.handle_pre_spawn(src)
 
 	fix_body_build()

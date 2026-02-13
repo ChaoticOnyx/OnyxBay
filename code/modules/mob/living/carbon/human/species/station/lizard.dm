@@ -10,7 +10,6 @@
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/tail, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
 	generic_attack_mod = 2.0
 	primitive_form = "Stok"
-	synthetic_type_species = SPECIES_SYNTH_UNATHI
 	darksight_range = 3
 	darksight_tint = DARKTINT_MODERATE
 	gluttonous = GLUT_TINY
