@@ -22,7 +22,9 @@
 	var/throw_range = 7
 	var/throw_spin = TRUE // Should the atom spin when thrown.
 	var/moved_recently = 0
+	var/atom/movable/pulling = null // No longer livings' feature. Might implement train-pulling or something.
 	var/mob/pulledby = null
+	var/atom/movable/moving_from_pull
 	var/item_state = null // Used to specify the item state for the on-mob overlays.
 	var/pull_sound = null
 
@@ -73,20 +75,6 @@
 
 	return ..()
 
-/atom/movable/Bump(atom/A, yes)
-	if(src.throwing)
-		src.throw_impact(A)
-		src.throwing = 0
-
-	spawn(0)
-		if (A && yes)
-			A.last_bumped = world.time
-			SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
-			A.Bumped(src)
-		return
-	..()
-	return
-
 /atom/movable/proc/get_selected_zone()
 	return
 
@@ -135,6 +123,220 @@
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, origin, destination)
 
 	return 1
+
+/proc/step_glide(atom/movable/am, dir, glide_size_override)
+	am.set_glide_size(glide_size_override)
+	return step(am, dir)
+
+/atom/movable/proc/set_glide_size(glide_size_override = 0, min = 0.9, max = world.icon_size / 2)
+	if (!glide_size_override || glide_size_override > max)
+		glide_size = 0
+	else
+		glide_size = max(min, glide_size_override)
+
+	if(istype(src, /obj))
+		var/obj/O = src
+		if(O.buckled_mob)
+			O.buckled_mob.set_glide_size(glide_size, min, max)
+
+	SEND_SIGNAL(src, SIGNAL_UPDATE_GLIDE_SIZE, glide_size)
+
+////////////////////////////////////////
+// Here's where we rewrite how byond handles movement except slightly different
+// To be removed on step_ conversion
+// All this work to prevent a second bump
+/atom/movable/Move(atom/newloc, direction)
+	. = FALSE
+	if(!newloc || newloc == loc)
+		return
+
+	if(!direction)
+		direction = get_dir(src, newloc)
+
+	set_dir(direction)
+
+	if(!loc.Exit(src))
+		return
+
+	// TODO: Get rid of this in favor of components or something. All the overhead just for a couple of things is crazy.
+	for(var/i in loc)
+		if(i == src)
+			continue
+		var/atom/movable/thing = i
+		if(!thing.Uncross(src, newloc))
+			return
+
+	if(!newloc.Enter(src))
+		return
+
+	// Past this is the point of no return
+	var/atom/oldloc = loc
+	loc = newloc
+	. = TRUE
+	oldloc.Exited(src, direction)
+	if(oldarea != newarea)
+		oldarea.Exited(src, direction)
+
+	// TODO: Get rid of this in favor of components or something. All the overhead just for a couple of things is crazy.
+	for(var/i in loc)
+		if(i == src)
+			continue
+		var/atom/movable/thing = i
+		if(!thing.Uncrossed(src, newloc))
+			return
+
+	newloc.Entered(src, oldloc)
+	if(oldarea != newarea)
+		newarea.Entered(src, oldarea)
+
+	// TODO: Get rid of this in favor of components or something. All the overhead just for a couple of things is crazy.
+	for(var/i in loc)
+		if(i == src)
+			continue
+		var/atom/movable/thing = i
+		if(!thing.Crossed(src))
+			return
+
+	Moved(oldloc, direction, FALSE)
+//
+////////////////////////////////////////
+
+/atom/movable/Move(newloc, direct)
+	if(!loc || !newloc)
+		return
+
+	var/oldloc = loc
+	var/atom/movable/pullee = pulling
+
+	var/turf/old_turf = get_turf(oldloc)
+	var/turf/new_turf = get_turf(newloc)
+
+	if(loc != newloc)
+		if(old_turf?.z != new_turf?.z)
+			SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, old_turf, new_turf)
+
+		if(IS_POWER_OF_TWO(direct)) // Cardinal move
+			. = ..()
+		else // Diagonal move, split it into cardinal moves
+			moving_diagonally = /atom/movable::FIRST_DIAGONAL_STEP
+			var/first_step_dir
+			// The `&& moving_diagonally` checks are so that a forceMove taking
+			// place due to a Crossed, Bumped, etc. call will interrupt
+			// the second half of the diagonal movement, or the second attempt
+			// at a first half if step() fails because we hit something.
+			if(direct & NORTH)
+				if(direct & EAST)
+					if(step(src, NORTH) && moving_diagonally)
+						first_step_dir = NORTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, EAST)
+					else if(moving_diagonally && step(src, EAST))
+						first_step_dir = EAST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, NORTH)
+				else if(direct & WEST)
+					if(step(src, NORTH) && moving_diagonally)
+						first_step_dir = NORTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, WEST)
+					else if (moving_diagonally && step(src, WEST))
+						first_step_dir = WEST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, NORTH)
+			else if(direct & SOUTH)
+				if(direct & EAST)
+					if (step(src, SOUTH) && moving_diagonally)
+						first_step_dir = SOUTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, EAST)
+					else if(moving_diagonally && step(src, EAST))
+						first_step_dir = EAST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, SOUTH)
+				else if(direct & WEST)
+					if(step(src, SOUTH) && moving_diagonally)
+						first_step_dir = SOUTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, WEST)
+					else if(moving_diagonally && step(src, WEST))
+						first_step_dir = WEST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, SOUTH)
+
+			if(moving_diagonally == /atom/movable::SECOND_DIAGONAL_STEP)
+				if(!.)
+					set_dir(first_step_dir)
+			moving_diagonally = FALSE
+			return
+
+	if(!loc || (loc == oldloc && oldloc != newloc))
+		last_move = 0
+		return
+
+	if(. && pulling && pulling == pullee && pulling != moving_from_pull) //we were pulling a thing and didn't lose it during our move.
+		if(pulling.anchored)
+			if(isliving(src))
+				var/mob/living/L = src
+				L.stop_pulling()
+		else
+			var/pull_dir = get_dir(pulling, src)
+			if(get_dist(src, pulling) > 1 || (moving_diagonally != /atom/movable::SECOND_DIAGONAL_STEP && ISDIAGONALDIR(pull_dir)))
+				handle_pulling_after_move(oldloc)
+
+	last_move = direct
+	move_speed = world.time - src.l_move_time
+	l_move_time = world.time
+
+	if(dir != direct)
+		set_dir(direct)
+
+	// Cursed pieces of code that we need right here for reasons.
+	if(.)
+		if(light_sources)
+			for(var/datum/light_source/L in light_sources)
+				L.source_atom.update_light()
+
+		if(opacity)
+			updateVisibility(src)
+
+		SEND_SIGNAL(src, SIGNAL_MOVED, src, oldloc, loc)
+
+	return
+
+// Make sure you know what you're doing if you call this, this is intended to only be called by byond directly.
+// You probably want CanPass()
+/atom/movable/Cross(atom/movable/AM)
+	. = TRUE
+	SEND_SIGNAL(src, SIGNAL_MOVABLE_CROSS, AM)
+	return CanPass(AM, AM.loc, TRUE)
+
+//oldloc = old location on atom, inserted when forceMove is called and ONLY when forceMove is called!
+/atom/movable/Crossed(atom/movable/AM, oldloc)
+	SEND_SIGNAL(src, SIGNAL_MOVABLE_CROSSED, AM)
+
+/atom/movable/Uncross(atom/movable/AM, atom/newloc)
+	. = ..()
+	if(isturf(newloc) && !CheckExit(AM, newloc))
+		return FALSE
+
+/atom/movable/Uncrossed(atom/movable/AM)
+	SEND_SIGNAL(src, SIGNAL_MOVABLE_UNCROSSED, AM)
+
+/atom/movable/Bump(atom/bumped_atom)
+	if(!bumped_atom)
+		CRASH("Bump was called with no argument.")
+	SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, bumped_atom)
+	. = ..()
+	if(!QDELETED(throwing))
+		throw_impact(A)
+		throwing = 0
+		. = TRUE
+		if(QDELETED(A))
+			return
+
+	A.Bumped(src)
+	A.last_bumped = world.time
+	return
 
 //called when src is thrown into hit_atom
 /atom/movable/proc/throw_impact(atom/hit_atom, speed, target_zone)
@@ -326,29 +528,6 @@
 	update_emissive_blocker()
 	if(em_block)
 		AddOverlays(em_block)
-
-//Overlays
-/atom/movable/fake_overlay
-	var/atom/master = null
-	anchored = 1
-
-/atom/movable/fake_overlay/New()
-	src.verbs.Cut()
-	..()
-
-/atom/movable/fake_overlay/Destroy()
-	master = null
-	. = ..()
-
-/atom/movable/fake_overlay/attackby(a, b)
-	if (src.master)
-		return src.master.attackby(a, b)
-	return
-
-/atom/movable/fake_overlay/attack_hand(a, b, c)
-	if (src.master)
-		return src.master.attack_hand(a, b, c)
-	return
 
 /atom/movable/proc/touch_map_edge()
 	if(!simulated)

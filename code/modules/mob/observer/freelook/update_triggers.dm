@@ -16,10 +16,10 @@
 
 	return ..()
 
-/atom/movable/Move(newloc, direct)
-	. = ..()
-	if(opacity && .)
-		updateVisibility(src)
+//atom/movable/Move(newloc, direct)
+//	. = ..()
+//	if(opacity && .)
+//		updateVisibility(src)
 
 /atom/movable/forceMove()
 	. = ..()

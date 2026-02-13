@@ -113,8 +113,9 @@ if(loc != old_loc) {\
 	}\
 }
 
-/atom/movable/Move(newloc, direct)
-	LIGHT_MOVE_UPDATE
+// for fucks sake you had one job not to override this
+//atom/movable/Move(newloc, direct)
+//	LIGHT_MOVE_UPDATE
 
 /atom/movable/forceMove()
 	LIGHT_MOVE_UPDATE

@@ -340,7 +340,6 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 50
 	ext_cooldown = 1
-	var/atom/movable/pulling
 
 /obj/item/integrated_circuit/manipulation/claw/Destroy()
 	stop_pulling()

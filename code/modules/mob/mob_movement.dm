@@ -120,62 +120,6 @@
 		if(I && mob.can_unequip(I))
 			mob.drop_active_hand()
 
-/atom/movable/proc/set_glide_size(glide_size_override = 0, min = 0.9, max = world.icon_size / 2)
-	if (!glide_size_override || glide_size_override > max)
-		glide_size = 0
-	else
-		glide_size = max(min, glide_size_override)
-
-	if(istype(src, /obj))
-		var/obj/O = src
-		if(O.buckled_mob)
-			O.buckled_mob.set_glide_size(glide_size, min, max)
-
-	SEND_SIGNAL(src, SIGNAL_UPDATE_GLIDE_SIZE, glide_size)
-
-//This proc should never be overridden elsewhere at /atom/movable to keep directions sane.
-/atom/movable/Move(newloc, direct)
-	var/old_loc = loc
-
-	var/turf/old_turf = get_turf(old_loc)
-	var/turf/new_turf = get_turf(newloc)
-
-	if(old_turf?.z != new_turf?.z)
-		SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, old_turf, new_turf)
-
-	if(IS_POWER_OF_TWO(direct))
-		var/atom/A = src.loc
-
-		var/olddir = dir //we can't override this without sacrificing the rest of movable/New()
-		. = ..()
-		if(direct != olddir)
-			dir = olddir
-			set_dir(direct)
-
-		src.move_speed = world.time - src.l_move_time
-		src.l_move_time = world.time
-		if ((A != src.loc && A && A.z == src.z))
-			src.last_move = get_dir(A, src.loc)
-	else // This doesn't handle 3D moves properly, but the old code didn't either.
-		moving_diagonally = /atom/movable::FIRST_DIAGONAL_STEP
-		var/first_dir = ((direct) & -(direct))
-		var/second_dir = direct & ~first_dir
-		if(step(src, first_dir))
-			if(moving_diagonally) // check if unset by falling
-				moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
-				step(src, second_dir)
-		else if(step(src, second_dir))
-			if(moving_diagonally)
-				moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
-				step(src, first_dir)
-		moving_diagonally = FALSE
-
-	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
-
-/proc/step_glide(atom/movable/am, dir, glide_size_override)
-	am.set_glide_size(glide_size_override)
-	return step(am, dir)
-
 /client/Move(n, direction)
 	return mob.SelfMove(direction)
 
@@ -276,6 +220,18 @@
 	DO_MOVE(WEST)
 
 #undef DO_MOVE
+
+/mob/proc/set_m_intent(intent)
+	if(intent != M_WALK && intent != M_RUN)
+		return FALSE
+
+	m_intent = intent
+
+	update_move_intent_slowdown()
+
+	if(hud_used)
+		if(hud_used.move_intent)
+			hud_used.move_intent.icon_state = (intent == M_WALK ? "walking" : "running")
 
 /mob/proc/update_move_intent_slowdown()
 	add_movespeed_modifier((m_intent == M_WALK) ? /datum/movespeed_modifier/walk : /datum/movespeed_modifier/run)

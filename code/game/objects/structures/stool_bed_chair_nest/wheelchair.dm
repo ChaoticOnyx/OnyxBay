@@ -15,12 +15,12 @@
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 
 	var/driving = 0
-	var/mob/living/pulling = null
+	var/mob/living/pullee = null
 	var/bloodiness
 
 /obj/structure/bed/chair/wheelchair/Destroy()
-	pulling?.pulledby = null
-	pulling = null
+	pullee?.pulledby = null
+	pullee = null
 	return ..()
 
 /obj/structure/bed/chair/wheelchair/on_update_icon()
@@ -43,30 +43,30 @@
 /obj/structure/bed/chair/wheelchair/relaymove(mob/user, direction)
 	// Redundant check?
 	if(user.stat || user.stunned || user.weakened || user.paralysis || user.lying || user.restrained())
-		if(user==pulling)
-			pulling = null
+		if(user==pullee)
+			pullee = null
 			user.pulledby = null
 			to_chat(user, "<span class='warning'>You lost your grip!</span>")
 		return
-	if(buckled_mob && pulling && user == buckled_mob)
-		if(pulling.stat || pulling.stunned || pulling.weakened || pulling.paralysis || pulling.lying || pulling.restrained())
-			pulling.pulledby = null
-			pulling = null
-	if(user.pulling && (user == pulling))
-		pulling = null
+	if(buckled_mob && pullee && user == buckled_mob)
+		if(pullee.stat || pullee.stunned || pullee.weakened || pullee.paralysis || pullee.lying || pullee.restrained())
+			pullee.pulledby = null
+			pullee = null
+	if(user.pulling && (user == pullee))
+		pullee = null
 		user.pulledby = null
 		return
 	if(propelled)
 		return
-	if(pulling && (get_dist_zlevel_aware(src, pulling) > 1))
-		pulling = null
+	if(pullee && (get_dist_zlevel_aware(src, pullee) > 1))
+		pullee = null
 		user.pulledby = null
-		if(user==pulling)
+		if(user==pullee)
 			return
-	if(pulling && (get_dir(src.loc, pulling.loc) == direction))
+	if(pullee && (get_dir(src.loc, pullee.loc) == direction))
 		to_chat(user, "<span class='warning'>You cannot go there.</span>")
 		return
-	if(pulling && buckled_mob && (buckled_mob == user))
+	if(pullee && buckled_mob && (buckled_mob == user))
 		to_chat(user, "<span class='warning'>You cannot drive while being pushed.</span>")
 		return
 
@@ -79,24 +79,24 @@
 		step(buckled_mob, direction)
 		buckled_mob.buckled = src
 	//--2----Move driver----2--//
-	if(pulling)
-		T = pulling.loc
-		if(get_dist_zlevel_aware(src, pulling) >= 1)
-			step(pulling, get_dir(pulling.loc, src.loc))
+	if(pullee)
+		T = pullee.loc
+		if(get_dist_zlevel_aware(src, pullee) >= 1)
+			step(pullee, get_dir(pullee.loc, src.loc))
 	//--3--Move wheelchair--3--//
 	step(src, direction)
 	if(buckled_mob) // Make sure it stays beneath the occupant
 		Move(buckled_mob.loc)
 	set_dir(direction)
-	if(pulling) // Driver
-		if(pulling.loc == src.loc) // We moved onto the wheelchair? Revert!
-			pulling.forceMove(T)
+	if(pullee) // Driver
+		if(pullee.loc == src.loc) // We moved onto the wheelchair? Revert!
+			pullee.forceMove(T)
 		else
 			spawn(0)
-			if(get_dist_zlevel_aware(src, pulling) > 1) // We are too far away? Losing control.
-				pulling = null
+			if(get_dist_zlevel_aware(src, pullee) > 1) // We are too far away? Losing control.
+				pullee = null
 				user.pulledby = null
-			pulling.set_dir(get_dir(pulling, src)) // When everything is right, face the wheelchair
+			pullee.set_dir(get_dir(pullee, src)) // When everything is right, face the wheelchair
 	if(bloodiness)
 		create_track()
 	driving = 0
@@ -116,16 +116,16 @@
 							Bump(O)
 				else
 					unbuckle_mob()
-			if (pulling && (get_dist_zlevel_aware(src, pulling) > 1))
-				pulling.pulledby = null
-				to_chat(pulling, "<span class='warning'>You lost your grip!</span>")
-				pulling = null
+			if (pullee && (get_dist_zlevel_aware(src, pullee) > 1))
+				pullee.pulledby = null
+				to_chat(pullee, "<span class='warning'>You lost your grip!</span>")
+				pullee = null
 		else
 			if (occupant && (src.loc != occupant.loc))
 				src.forceMove(occupant.loc) // Failsafe to make sure the wheelchair stays beneath the occupant after driving
 
 /obj/structure/bed/chair/wheelchair/attack_hand(mob/living/user as mob)
-	if (pulling)
+	if (pullee)
 		MouseDrop(usr)
 	else
 		user_unbuckle_mob(user)
@@ -138,8 +138,8 @@
 		if(user == buckled_mob)
 			to_chat(user, "<span class='warning'>You realize you are unable to push the wheelchair you sit in.</span>")
 			return
-		if(!pulling)
-			pulling = user
+		if(!pullee)
+			pullee = user
 			user.pulledby = src
 			if(user.pulling)
 				user.stop_pulling()
@@ -147,8 +147,8 @@
 			to_chat(user, "You grip \the [name]'s handles.")
 		else
 			to_chat(usr, "You let go of \the [name]'s handles.")
-			pulling.pulledby = null
-			pulling = null
+			pullee.pulledby = null
+			pullee = null
 		return
 
 /obj/structure/bed/chair/wheelchair/MouseDrop_T(atom/movable/dropping, mob/living/user)
@@ -171,11 +171,11 @@
 	..()
 	if(!buckled_mob)	return
 
-	if(propelled || (pulling && (pulling.a_intent == I_HURT)))
+	if(propelled || (pullee && (pullee.a_intent == I_HURT)))
 		var/mob/living/occupant = unbuckle_mob()
 
-		if (pulling && (pulling.a_intent == I_HURT))
-			occupant.throw_at(A, 3, 1, pulling)
+		if (pullee && (pullee.a_intent == I_HURT))
+			occupant.throw_at(A, 3, 1, pullee)
 		else if (propelled)
 			occupant.throw_at(A, 3, 1)
 
@@ -195,9 +195,9 @@
 			victim.apply_effect(6, WEAKEN, blocked)
 			victim.apply_effect(6, STUTTER, blocked)
 			victim.apply_damage(10, BRUTE, def_zone, blocked)
-		if(pulling)
-			occupant.visible_message("<span class='danger'>[pulling] has thrusted \the [name] into \the [A], throwing \the [occupant] out of it!</span>")
-			admin_attack_log(pulling, occupant, "Crashed their victim into \an [A].", "Was crashed into \an [A].", "smashed into \the [A] using")
+		if(pullee)
+			occupant.visible_message("<span class='danger'>[pullee] has thrusted \the [name] into \the [A], throwing \the [occupant] out of it!</span>")
+			admin_attack_log(pullee, occupant, "Crashed their victim into \an [A].", "Was crashed into \an [A].", "smashed into \the [A] using")
 		else
 			occupant.visible_message("<span class='danger'>[occupant] crashed into \the [A]!</span>")
 
@@ -221,8 +221,8 @@
 	return ..()
 
 /obj/structure/bed/chair/wheelchair/buckle_mob(mob/M as mob, mob/user as mob)
-	if(M == pulling)
-		pulling = null
+	if(M == pullee)
+		pullee = null
 		usr.pulledby = null
 	..()
 	if(ishuman(M))
