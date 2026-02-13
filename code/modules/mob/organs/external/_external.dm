@@ -32,10 +32,13 @@
 
 	var/blunt_dam = 0                  // Amount of blunt brute damage.
 	var/blunt_last = 0
+	var/blunt_ratio = 0
 	var/cut_dam = 0                    // Amount of sharp brute damage, aka "cut area".
 	var/cut_last = 0
+	var/cut_ratio = 0
 	var/pierce_dam = 0                 // Amount of pierce brute damage, aka "cut depth".
 	var/pierce_last = 0
+	var/pierce_ratio = 0
 
 	var/max_bleeding = 0               // Potential bleeding, not counting scabbing, bandages or clamps.
 	var/bleeding = 0                   // Effective bleeding severity at the moment.
@@ -648,6 +651,9 @@ This function completely restores a damaged organ to perfect condition.
 	// Ratios
 	burn_ratio = burn_dam / max_damage
 	brute_ratio = brute_dam / max_damage
+	bruise_ratio = bruise_dam / max_damage
+	cut_ratio = cut_dam / max_damage
+	pierce_ratio = pierce_dam / max_damage
 	return
 
 //Returns TRUE if damage_state changed

@@ -92,7 +92,7 @@
 
 /datum/reagent/dermaline/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		M.heal_organ_damage(0, 12 * removed)
+		M.adjustFireLoss(-12 * removed)
 
 /datum/reagent/dylovene
 	name = "Dylovene"
@@ -241,10 +241,9 @@
 	for(var/obj/item/organ/external/E in H.organs)
 		if(BP_IS_ROBOTIC(E))
 			continue
-		if(E.status & ORGAN_BLEEDING && prob(50))
-			E.status &= ~ORGAN_BLEEDING
-			for(var/datum/wound/W in E.wounds)
-				W.clamped = 1
+		if((E.status & ORGAN_BLEEDING) && prob(50))
+			E.clamped = 1
+			E.update_damages()
 			H.update_surgery()
 
 	for(var/obj/item/organ/internal/I in H.internal_organs)
@@ -254,7 +253,7 @@
 			continue
 		I.damage = max(I.damage - (removed * H.stasis_value), 0)
 
-	H.heal_organ_damage((5 * removed * H.stasis_value), (7.5 * removed * H.stasis_value))
+	H.heal_overall_damage((5 * removed * H.stasis_value), (7.5 * removed * H.stasis_value))
 
 /datum/reagent/clonexadone
 	name = "Clonexadone"
@@ -292,9 +291,8 @@
 		if(BP_IS_ROBOTIC(E))
 			continue
 		if(E.status & ORGAN_BLEEDING && prob(80))
-			E.status &= ~ORGAN_BLEEDING
-			for(var/datum/wound/W in E.wounds)
-				W.clamped = 1
+			E.clamped = 1
+			E.update_damages()
 			H.update_surgery()
 		if(E.status & ORGAN_ARTERY_CUT && prob(8 * removed * H.stasis_value))
 			E.status &= ~ORGAN_ARTERY_CUT
@@ -306,7 +304,7 @@
 			continue
 		I.damage = max(I.damage - (2 * removed * H.stasis_value), 0)
 
-	H.heal_organ_damage((10 * removed * H.stasis_value), (12.5 * removed * H.stasis_value))
+	H.heal_overall_damage((10 * removed * H.stasis_value), (12.5 * removed * H.stasis_value))
 
 /* Other medicine */
 
