@@ -282,6 +282,7 @@
 			if(istype(W))
 				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
 					user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
+					drop_embedded_objects()
 					stage++
 					return
 		if(2)
@@ -460,10 +461,12 @@ This function completely restores a damaged organ to perfect condition.
 		current_organ.rejuvenate(ignore_prosthetic_prefs)
 
 	// remove embedded objects and drop them on the floor
+	drop_embedded_objects()
+
 	for(var/obj/implanted_object in implants)
 		if(istype(implanted_object, /obj/item/organ_module))
 			continue
-		if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
+		if(!istype(implanted_object,/obj/item/implant)) // We don't want to remove REAL implants. Just stuck things etc.
 			implanted_object.dropInto(get_turf(src))
 			implants -= implanted_object
 

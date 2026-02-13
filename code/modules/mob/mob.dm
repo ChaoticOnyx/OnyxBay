@@ -837,12 +837,15 @@
 /mob/proc/get_species()
 	return ""
 
-/mob/proc/get_visible_implants(class = 0)
-	var/list/visible_implants = list()
+/mob/proc/get_visible_implants()
+	return
+
+/mob/proc/get_embedded_objects(class = 0)
+	var/list/embedded_objects = list()
 	for(var/obj/item/O in embedded)
 		if(O.w_class > class)
-			visible_implants += O
-	return visible_implants
+			embedded_objects += O
+	return embedded_objects
 
 /mob/proc/yank_out_object()
 	set category = "Object"
@@ -870,7 +873,7 @@
 	if(S == U)
 		self = 1 // Removing object from yourself.
 
-	valid_objects = get_visible_implants(0)
+	valid_objects = get_embedded_objects(0)
 	if(!valid_objects.len)
 		if(self)
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
@@ -932,7 +935,7 @@
 		if(!LAZYLEN(pinned))
 			anchored = 0
 
-	valid_objects = get_visible_implants(0)
+	valid_objects = get_embedded_objects(0)
 	if(!valid_objects.len)
 		src.verbs -= /mob/proc/yank_out_object
 

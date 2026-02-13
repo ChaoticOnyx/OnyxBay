@@ -1026,22 +1026,30 @@
 		germ_level = 0
 	update_icons()	//apply the now updated overlays to the mob
 
-/mob/living/carbon/human/get_visible_implants(class = 0)
+/mob/living/carbon/human/get_visible_implants()
 	var/list/visible_implants = ..()
 
 	for(var/obj/item/organ/external/organ in organs)
 		for(var/obj/item/O in organ.implants)
-			if(istype(O, /obj/item/organ_module))
-				var/obj/item/organ_module/module = O
-				if(!(module.module_flags & OM_FLAG_INSPECTABLE))
-					continue
-				visible_implants += O
-		for(var/obj/O in organ.embedded_objects)
-			if((O.w_class <= class) || istype(O,/obj/item/material/shard/shrapnel))
+			if(!istype(O, /obj/item/organ_module))
+				continue
+			var/obj/item/organ_module/module = O
+			if(!(module.module_flags & OM_FLAG_INSPECTABLE))
 				continue
 			visible_implants += O
 
-	return(visible_implants)
+	return visible_implants
+
+/mob/living/carbon/human/get_embedded_objects(class = 0)
+	var/list/embedded_objects = ..()
+
+	for(var/obj/item/organ/external/organ in organs)
+		for(var/obj/O in organ.embedded_objects)
+			if((O.w_class <= class) || istype(O,/obj/item/material/shard/shrapnel))
+				continue
+			embedded_objects += O
+
+	return embedded_objects
 
 /mob/living/carbon/human/verb/check_pulse()
 	set category = "Object"
