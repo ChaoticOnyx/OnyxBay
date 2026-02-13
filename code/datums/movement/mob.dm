@@ -281,16 +281,17 @@
 
 	step(mob, direction)
 
+	if(QDELETED(mob))
+		return // If the mob gets deleted on move (e.g. Entered, whatever), it wipes this reference on us in Destroy (and we should be aborting all action anyway).
+	// Something with pulling things
+
 	if(mob.loc == old_turf) // Did not move for whatever reason.
 		mob.moving = FALSE
+		return
 
 	var/turf/new_loc = mob.loc
 	if(istype(new_loc))
 		HandleGrabs(direction, old_turf)
-
-	if(QDELETED(mob))
-		return // If the mob gets deleted on move (e.g. Entered, whatever), it wipes this reference on us in Destroy (and we should be aborting all action anyway).
-	// Something with pulling things
 
 	for(var/obj/item/grab/G in mob)
 		if(G.reverse_moving())

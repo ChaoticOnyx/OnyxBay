@@ -113,8 +113,10 @@ if(loc != old_loc) {\
 	}\
 }
 
+/* For fucks sake can we keep this monstrosity atomized til we sort things out please?
 /atom/movable/Move(newloc, direct)
 	LIGHT_MOVE_UPDATE
+*/
 
 /atom/movable/forceMove()
 	LIGHT_MOVE_UPDATE
