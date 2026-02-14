@@ -137,8 +137,9 @@
 // TODO: Dump the entire movement code, and rip a sane one from TG or something.
 //       For now, it's but a magic box that runs in an unpredictable order.
 /atom/movable/Move(newloc, direct)
-	if(!loc || !newloc)
-		return
+	// v please put this back up once /atom/movable/proc/throw_at() get rewritten into something less cursed
+	//if(!loc || !newloc)
+	//	return
 
 	var/oldloc = loc
 
