@@ -13,6 +13,7 @@
 /obj/structure/rock/New()
 	..()
 	icon_state = pick(iconlist)
+	add_debris_element()
 
 /obj/structure/rock/add_debris_element()
 	AddElement(/datum/element/debris, DEBRIS_ROCK, -10, 5, 1)

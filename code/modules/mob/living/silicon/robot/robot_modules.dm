@@ -803,7 +803,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	name = "miner robot module"
 	icon_state = "robot_mod_brown"
 	subsystems = list(/datum/nano_module/supply)
-	channels = list("Supply" = 1, "Science" = 1)
+	channels = list("Cargo" = 1, "Science" = 1)
 	networks = list(NETWORK_MINE)
 	hulls = list(
 		"Default" = new /datum/robot_hull/spider/robot_mining,

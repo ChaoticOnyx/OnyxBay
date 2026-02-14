@@ -28,6 +28,7 @@
 		return
 
 	to_chat(H, SPAN_NOTICE("You activate your [name], and feel a wave of numbness wash over you!"))
+	sound_to(H, sound('sound/effects/nerve_dampeners_on.ogg', volume = 50))
 	H.visible_message(SPAN_NOTICE("[H] twitches and loses tension in muscles!"), null, H)
 	if(!H.no_pain)
 		H.no_pain = TRUE
@@ -80,6 +81,7 @@
 	if(world.time >= stop_thinking_at)
 		stop_thinking_at = null
 		set_next_think(0)
+		sound_to(H, sound('sound/effects/nerve_dampeners_off.ogg', volume = 50))
 		to_chat(H, SPAN_WARNING("You abruptly feel intensely exhausted as sensation returns."))
 		if(H.getHalLoss() > 0)
 			H.emote("scream_long")

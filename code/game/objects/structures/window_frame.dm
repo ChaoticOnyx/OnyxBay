@@ -221,6 +221,7 @@
 	explosion_block = EXPLOSION_BLOCK_PROC
 	update_nearby_tiles(need_rebuild = TRUE)
 	update_nearby_icons()
+	add_debris_element()
 
 /obj/structure/window_frame/add_debris_element()
 	AddElement(/datum/element/debris, DEBRIS_GLASS, -10, 5)
@@ -956,6 +957,19 @@
 		health -= damage
 		healthcheck()
 
+/obj/structure/window_frame/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("delay" = 2 SECONDS, "cost" = 5)
+
+	return FALSE
+
+/obj/structure/window_frame/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_DECONSTRUCT)
+		qdel_self()
+		return TRUE
+
+	return FALSE
+
 /obj/structure/window_frame/proc/toggle_tint()
 	if(frame_state != FRAME_ELECTRIC && frame_state != FRAME_RELECTRIC)
 		return
@@ -1025,6 +1039,12 @@
 	pane_melee_mult = 0.9
 
 	rad_resist_type = /datum/rad_resist/none
+
+/obj/structure/window_frame/reinforced/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_DECONSTRUCT)
+		return list("delay" = 3 SECONDS, "cost" = 10)
+
+	return FALSE
 
 // Pretty much the same as the old grille, but smarter.
 /obj/structure/window_frame/grille

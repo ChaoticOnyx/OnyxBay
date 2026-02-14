@@ -44,6 +44,8 @@
 		action_button_name = null
 
 /obj/item/organ_module/proc/install(obj/item/organ/E)
+	if(!E)
+		return     /// le costil, must fix runtimes
 	E.implants += src
 	E.organ_modules += src
 	E.occupied_space += augment_size

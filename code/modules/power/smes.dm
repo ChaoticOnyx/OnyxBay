@@ -26,6 +26,7 @@
 	var/output_level = 50000		// amount of power the SMES attempts to output
 	var/output_level_max = 200000	// cap on output_level
 	var/output_used = 0				// amount of power actually outputted. may be less than output_level if the powernet returns excess power
+	var/datum/sound_token/ambient_sound_token = null
 
 	//Holders for powerout event.
 	//var/last_output_attempt	= 0
@@ -103,9 +104,21 @@
 	update_icon()
 
 /obj/machinery/power/smes/Destroy()
+	stop_ambient_sound()
 	GLOB.smes_list -= src
 	ClearOverlays()
 	return ..()
+
+/obj/machinery/power/smes/proc/start_ambient_sound()
+	if(ambient_sound_token)
+		return
+	ambient_sound_token = GLOB.sound_player.PlayLoopingSound(src, "\ref[src]_smes_ambient", 'sound/machines/smes_ambient.ogg', volume = 35, range = 6, falloff = 2)
+
+/obj/machinery/power/smes/proc/stop_ambient_sound()
+	if(!ambient_sound_token)
+		return
+	ambient_sound_token.Stop()
+	ambient_sound_token = null
 
 /obj/machinery/power/smes/add_avail(amount)
 	if(..(amount))
@@ -173,8 +186,11 @@
 	charge -= amount*CELLRATE
 
 /obj/machinery/power/smes/Process()
-	if(stat & BROKEN)	return
+	if(stat & BROKEN)
+		stop_ambient_sound()
+		return
 	if(failure_timer)	// Disabled by gridcheck.
+		stop_ambient_sound()
 		failure_timer--
 		return
 
@@ -215,6 +231,11 @@
 		outputting = 1
 	else
 		outputting = 0
+
+	if(outputting == 2)
+		start_ambient_sound()
+	else
+		stop_ambient_sound()
 
 // called after all power processes are finished
 // restores charge level to smes if there was excess this ptick

@@ -21,11 +21,13 @@
 		H.set_light(1, 1, 3, l_color = light_color)
 	else
 		H.set_light(0)
+	H.update_hud_eye_glow()
 
 /obj/item/organ_module/active/sightlights/deactivate(obj/item/organ/E, mob/living/carbon/human/H)
 	if(lights_on)
 		lights_on = FALSE
 		H.set_light(0)
+		H.update_hud_eye_glow()
 
 /obj/item/organ_module/active/sightlights/is_cpu_active(mob/living/carbon/human/H)
 	return lights_on

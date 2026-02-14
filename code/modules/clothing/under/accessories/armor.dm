@@ -65,7 +65,7 @@
 	name = "medium armor plate"
 	desc = "A plasteel-reinforced synthetic armor plate, providing good protection. Attaches to a plate carrier."
 	icon_state = "armor_medium"
-	armor = list(melee = 40, bullet = 75, laser = 65, energy = 15, bomb = 30, bio = 0)
+	armor = list(melee = 55, bullet = 80, laser = 60, energy = 15, bomb = 25, bio = 0)
 
 /obj/item/clothing/accessory/armorplate/syndi
 	name = "heavy armor plate"

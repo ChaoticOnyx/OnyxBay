@@ -494,6 +494,7 @@
 	update_nearby_icons()
 
 	AddElement(/datum/element/simple_rotation)
+	add_debris_element()
 
 /obj/structure/window/reinforced/full
 	dir = 5

@@ -468,7 +468,10 @@ var/bomb_set
 
 	var/announced = 0
 	var/time_to_explosion = 0
-	var/self_destruct_cutoff = 60 //Seconds
+	var/self_destruct_cutoff = 60 SECONDS
+	var/countdown_sound = 'sound/machines/nuke_countdown.ogg'
+	var/countdown_volume = 50
+	var/countdown_channel = SOUND_CHANNEL_NUKE
 
 /obj/machinery/nuclearbomb/station/Initialize()
 	. = ..()
@@ -510,6 +513,7 @@ var/bomb_set
 
 /obj/machinery/nuclearbomb/station/start_bomb()
 	visible_message(SPAN("warning", "Warning! The self-destruct sequence override will be disabled [self_destruct_cutoff] seconds before detonation."))
+	sound_to(world, sound(countdown_sound, repeat = 1, wait = 0, volume = countdown_volume, channel = countdown_channel))
 	return ..()
 
 /obj/machinery/nuclearbomb/station/check_cutoff()
@@ -519,6 +523,7 @@ var/bomb_set
 	..()
 
 /obj/machinery/nuclearbomb/station/Destroy()
+	sound_to(world, sound(null, channel = countdown_channel))
 	flash_tiles.Cut()
 	return ..()
 
@@ -549,6 +554,11 @@ var/bomb_set
 /obj/machinery/nuclearbomb/station/secure_device()
 	..()
 	announced = 0
+	sound_to(world, sound(null, channel = countdown_channel))
+
+/obj/machinery/nuclearbomb/station/explode()
+	sound_to(world, sound(null, channel = countdown_channel))
+	..()
 
 /obj/machinery/nuclearbomb/station/on_update_icon()
 	var/target_icon_state

@@ -200,7 +200,7 @@
 	embed = FALSE // Unstable particles just disappear
 	can_ricochet = FALSE // Too unstable to survive ricocheting
 	damage = 35.0
-	armor_penetration = 20
+	armor_penetration = 30
 	poisedamage = 6.0
 
 /obj/item/projectile/bullet/charge/kinetic
@@ -256,11 +256,11 @@
 			D.visible_message(SPAN("danger", "\The [src] tears through \the [D] with tremendous force!"))
 		else
 			D.visible_message(SPAN("danger", "\The [src] blasts through \the [D], destroying it completely!"))
-		playsound(D, SFX_BANG, 75, 1)
+		playsound(D, (GET_SFX(SFX_BANG)), 75, 1)
 	else if(istype(target, /turf/simulated/wall))
 		var/turf/simulated/wall/W = target
 		W.visible_message(SPAN("danger", "\The [src] impacts \the [W], creating cracks!"))
-		playsound(W, SFX_BANG, 75, 1)
+		playsound(W, (GET_SFX(SFX_BANG)), 75, 1)
 	return ..()
 
 //Should do about 80 damage at 1 tile distance (adjacent), and 50 damage at 3 tiles distance.

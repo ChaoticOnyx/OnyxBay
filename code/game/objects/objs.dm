@@ -28,8 +28,6 @@
 		var/turf/T = loc
 		T.update_turf_height()
 
-	add_debris_element()
-
 /obj/Destroy()
 	CAN_BE_REDEFINED(TRUE)
 	var/obj/item/smallDelivery/delivery = loc

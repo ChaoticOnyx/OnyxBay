@@ -8,10 +8,6 @@
 	explosion_block = 1
 	rad_resist_type = /datum/rad_resist/wall
 
-/turf/unsimulated/wall/Initialize(mapload, ...)
-	. = ..()
-	add_debris_element()
-
 /turf/unsimulated/wall/fakeglass
 	name = "window"
 	icon = 'icons/turf/walls.dmi'
@@ -21,6 +17,3 @@
 /turf/unsimulated/wall/other
 	icon = 'icons/turf/wall_masks.dmi'
 	icon_state = "rgeneric"
-
-/turf/unsimulated/wall/add_debris_element()
-	AddElement(/datum/element/debris, DEBRIS_SPARKS, -15, 8, 1)

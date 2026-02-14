@@ -17,7 +17,7 @@
 	src.debris_velocity = debris_velocity
 	src.debris_amount = debris_amount
 	src.debris_scale = debris_scale
-	register_signal(target, SIGNAL_BULLET_ACT, nameof(.proc/register_for_impact))
+	register_signal(target, SIGNAL_BULLET_ACT, nameof(.proc/register_for_impact), TRUE)
 
 /datum/element/debris/detach(datum/source)
 	. = ..()
@@ -34,12 +34,12 @@
 	var/x_component_smoke = sin(angle) * -15
 	var/y_component_smoke = cos(angle) * -15
 	var/position_offset = rand(-6,6)
-	var/atom/movable/particle_emitter/smoke_visuals/smoke_visuals = new(source)
+	var/atom/movable/particle_emitter/smoke_visuals/smoke_visuals = new(get_turf(source))
 	smoke_visuals.particles.position = list(position_offset, position_offset)
 	smoke_visuals.particles.velocity = list(x_component_smoke, y_component_smoke)
 
 	if(debris && P.check_armour != ENERGY && P.check_armour != LASER)
-		var/atom/movable/particle_emitter/debris_visuals/debris_visuals = new(source)
+		var/atom/movable/particle_emitter/debris_visuals/debris_visuals = new(get_turf(source))
 		debris_visuals.particles.position = generator("circle", position_offset, position_offset)
 		debris_visuals.particles.velocity = list(x_component, y_component)
 		debris_visuals.layer = ABOVE_HUMAN_LAYER + 0.02

@@ -110,7 +110,7 @@
 		new /datum/atom_creator/simple(/obj/item/storage/backpack/dufflebag/sec, 50),
 		/obj/item/clothing/head/helmet,
 		/obj/item/clothing/head/soft/sec,
-		/obj/item/clothing/suit/armor/pcarrier/light/security,
+		/obj/item/clothing/suit/armor/pcarrier/medium/security,
 		/obj/item/clothing/under/rank/security,
 		/obj/item/clothing/glasses/hud/aviators/security,
 		/obj/item/storage/belt/security,

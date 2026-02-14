@@ -121,7 +121,7 @@
 		vis_contents += below
 
 /turf/simulated/open/attackby(obj/item/C, mob/user)
-	if (istype(C, /obj/item/stack/rods))
+	if(istype(C, /obj/item/stack/rods))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
 			return L.attackby(C, user)
@@ -134,7 +134,7 @@
 			SSopen_space.add_turf(src, 1)
 		return
 
-	if (istype(C, /obj/item/stack/tile))
+	if(istype(C, /obj/item/stack/tile))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
 			var/obj/item/stack/tile/floor/S = C
@@ -157,6 +157,26 @@
 		coil.turf_place(src, user)
 		return
 	return
+
+/turf/simulated/open/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	if(the_rcd.mode == RCD_TURF && the_rcd.rcd_design_path == /turf/simulated/floor/plating)
+		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
+		if(L)
+			return list("delay" = 0, "cost" = 1)
+		else
+			return list("delay" = 0, "cost" = 3)
+
+	return FALSE
+
+/turf/simulated/open/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_TURF)
+		ChangeTurf(/turf/simulated/floor/plating)
+		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
+		if(L)
+			qdel(L)
+		return TRUE
+
+	return FALSE
 
 //Most things use is_plating to test if there is a cover tile on top (like regular floors)
 /turf/simulated/open/is_plating()

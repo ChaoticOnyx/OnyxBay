@@ -109,6 +109,13 @@
 		set_mode(DISCONNECTED)
 		return
 
+	var/turf/T = get_turf(src)
+	if(!isturf(T) || !T.is_plating())
+		if(mode == OPERATING)
+			visible_message(SPAN_WARNING("\The [src] shuts down as it's no longer accessible!"))
+			set_mode(CLAMPED_OFF)
+		return
+
 	var/datum/powernet/PN = attached.powernet
 	if(PN)
 		set_light(0.5, 0.1, 12)
@@ -122,9 +129,9 @@
 		// if tried to drain more than available on powernet
 		// now look for APCs and drain their cells
 		if(drained < drain_rate)
-			for(var/obj/machinery/power/terminal/T in PN.nodes)
-				if(istype(T.master, /obj/machinery/power/apc))
-					var/obj/machinery/power/apc/A = T.master
+			for(var/obj/machinery/power/terminal/term in PN.nodes)
+				if(istype(term.master, /obj/machinery/power/apc))
+					var/obj/machinery/power/apc/A = term.master
 					if(A.operating && A.cell)
 						A.cell.charge = max(0, A.cell.charge - 50)
 						power_drained += 50

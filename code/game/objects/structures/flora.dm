@@ -12,6 +12,10 @@
 	var/cut_level = PLANT_CUT
 	var/cut_hits = 20
 
+/obj/structure/flora/tree/Initialize()
+	. = ..()
+	add_debris_element()
+
 /obj/structure/flora/tree/add_debris_element()
 	AddElement(/datum/element/debris, DEBRIS_WOOD, -10, 5)
 

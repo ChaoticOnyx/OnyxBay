@@ -137,14 +137,14 @@
 
 /obj/machinery/smartfridge/secure/blood/filled
 	var/list/starts_with = list(
-		/obj/item/reagent_containers/ivbag/blood/OPlus = 1,
-		/obj/item/reagent_containers/ivbag/blood/OMinus = 1,
-		/obj/item/reagent_containers/ivbag/blood/APlus = 2,
-		/obj/item/reagent_containers/ivbag/blood/AMinus = 2,
-		/obj/item/reagent_containers/ivbag/blood/BPlus = 2,
-		/obj/item/reagent_containers/ivbag/blood/BMinus = 2,
-		/obj/item/reagent_containers/ivbag/saline = 2,
-		/obj/item/reagent_containers/ivbag = 2
+		/obj/item/reagent_containers/ivbag/blood/OPlus = 2,
+		/obj/item/reagent_containers/ivbag/blood/OMinus = 2,
+		/obj/item/reagent_containers/ivbag/blood/APlus = 4,
+		/obj/item/reagent_containers/ivbag/blood/AMinus = 4,
+		/obj/item/reagent_containers/ivbag/blood/BPlus = 4,
+		/obj/item/reagent_containers/ivbag/blood/BMinus = 4,
+		/obj/item/reagent_containers/ivbag/saline = 6,
+		/obj/item/reagent_containers/ivbag = 6
 		)
 
 /obj/machinery/smartfridge/secure/blood/accept_check(obj/item/O)
