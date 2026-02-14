@@ -206,6 +206,33 @@
 	else
 		icon_state = "det-m9_e"
 
+/obj/item/gun/projectile/pistol/tec9
+	name = "makeshift pistol"
+	desc = "A makeshift 9mm pistol. You're curious as to how it even holds itself together. Probably not too reliable... For whatever reason, you want to scream RUSH BRIG!"
+	icon_state = "tec9"
+	item_state = "vp78"
+	w_class = ITEM_SIZE_NORMAL
+	caliber = "9mm"
+	fire_delay = 1
+	mod_weight = 1
+	mod_reach = 0.5
+	mod_handy = 0.8
+	jam_chance = 30
+	//30% chance to jam, which means you'll have to remove the magazine before you can fire again
+	origin_tech = list(TECH_COMBAT = 3)
+	//it's a miracle this thing works!
+	magazine_type = /obj/item/ammo_magazine/mc9mm
+	allowed_magazines = /obj/item/ammo_magazine/mc9mm
+	fire_sound = 'sound/effects/weapons/gun/fire_9mm.ogg'
+	has_safety = FALSE
+
+/obj/item/gun/projectile/pistol/tec9/on_update_icon()
+	..()
+	if(ammo_magazine)
+		icon_state = "tec9"
+	else
+		icon_state = "tec9_e"
+
 /obj/item/gun/projectile/pistol/holdout
 	name = "holdout pistol"
 	desc = "The Lumoco Arms P3 Whisper. A small, easily concealable gun. Uses 9mm rounds."
@@ -359,6 +386,62 @@
 		if(ismob(loc))
 			var/mob/M = loc
 			M.replace_item(src, zipgun, TRUE)
+		else
+			qdel(src)
+		return
+	else
+		..()
+
+//RUSH BRIG SUKA BLYAT construction
+/obj/item/tec9frame
+	name = "makeshift pistol frame"
+	desc = "A half-finished makeshift pistol receiver."
+	icon = 'icons/obj/guns/gun.dmi'
+	icon_state = "rushbrig0"
+	item_state = null
+	var/buildstate = 0
+
+/obj/item/tec9frame/on_update_icon()
+	icon_state = "rushbrig[buildstate]"
+
+/obj/item/tec9frame/examine(mob/user, infix)
+	. = ..()
+
+	switch(buildstate)
+		if(1) . += "It has a grip fitted to the receiver."
+		if(2) . += "It has a striker poking out of the back."
+		if(3) . += "It has a trigger and striker assembly loosely fitted into place."
+/obj/item/tec9frame/attackby(obj/item/thing, mob/user)
+	if(istype(thing,/obj/item/material/shivgrip) && buildstate == 0)
+		user.visible_message("<span class='notice'>\The [user] fits \the [thing] to \the [src] as a pistol grip.</span>")
+		add_fingerprint(user)
+		buildstate++
+		update_icon()
+		qdel(thing)
+		return
+	else if(istype(thing,/obj/item/device/assembly/mousetrap) && buildstate == 1)
+		user.visible_message("<span class='notice'>\The [user] adds \the [thing] to the receiver, turning it into a makeshift striker mechanism.</span>")
+		add_fingerprint(user)
+		buildstate++
+		update_icon()
+		qdel(thing)
+		return
+	else if(istype(thing,/obj/item/device/assembly/signaler) && buildstate == 2)
+		user.visible_message("<span class='notice'>\The [user] takes apart \the [thing] and uses the parts to construct and attach a crude trigger.</span>")
+		add_fingerprint(user)
+		buildstate++
+		update_icon()
+		qdel(thing)
+		return
+	else if(isScrewdriver(thing) && buildstate == 3)
+		user.visible_message("<span class='notice'>\The [user] secures the trigger assembly with \the [thing].</span>")
+		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
+		var/obj/item/gun/projectile/pistol/tec9
+		tec9 = new /obj/item/gun/projectile/pistol/tec9 { starts_loaded = 0 } (loc)
+		transfer_fingerprints_to(tec9)
+		if(ismob(loc))
+			var/mob/M = loc
+			M.replace_item(src, tec9, TRUE)
 		else
 			qdel(src)
 		return
