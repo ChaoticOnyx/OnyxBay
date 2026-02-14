@@ -420,13 +420,6 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	hidden = 1
 	category = "Arms and Ammunition"
 
-/datum/autolathe/recipe/rushbrig
-	name = "makeshift pistol receiver"
-	path = /obj/item/tec9frame
-	hidden = 1
-	category = "Arms and Ammunition"
-	resources = list(MATERIAL_STEEL = 10000)
-
 /datum/autolathe/recipe/machete
 	name = "machete"
 	path = /obj/item/material/hatchet/machete
@@ -601,6 +594,13 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	hidden = 1
 	category = "Arms and Ammunition"
 	resources = list(MATERIAL_STEEL = (SHEET_MATERIAL_AMOUNT * EXTRA_COST_FACTOR))
+
+/datum/autolathe/recipe/tec9frame
+	name = "makeshift pistol receiver"
+	path = /obj/item/tec9frame
+	hidden = 1
+	category = "Arms and Ammunition"
+	resources = list(MATERIAL_STEEL = 10000)
 
 /datum/autolathe/recipe/consolescreen
 	name = "console screen"

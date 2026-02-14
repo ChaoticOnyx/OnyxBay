@@ -208,7 +208,7 @@
 
 /obj/item/gun/projectile/pistol/tec9
 	name = "makeshift pistol"
-	desc = "A makeshift 9mm pistol. You're curious as to how it even holds itself together. Probably not too reliable... For whatever reason, you want to scream RUSH BRIG!"
+	desc = "A makeshift 9mm pistol. You're curious as to how it even holds itself together. Probably not too reliable..."
 	icon_state = "tec9"
 	item_state = "vp78"
 	w_class = ITEM_SIZE_NORMAL
@@ -392,17 +392,16 @@
 	else
 		..()
 
-//RUSH BRIG SUKA BLYAT construction
 /obj/item/tec9frame
 	name = "makeshift pistol frame"
 	desc = "A half-finished makeshift pistol receiver."
 	icon = 'icons/obj/guns/gun.dmi'
-	icon_state = "rushbrig0"
+	icon_state = "tec9frame_0"
 	item_state = null
 	var/buildstate = 0
 
 /obj/item/tec9frame/on_update_icon()
-	icon_state = "rushbrig[buildstate]"
+	icon_state = "tec9frame_[buildstate]"
 
 /obj/item/tec9frame/examine(mob/user, infix)
 	. = ..()
@@ -413,28 +412,28 @@
 		if(3) . += "It has a trigger and striker assembly loosely fitted into place."
 /obj/item/tec9frame/attackby(obj/item/thing, mob/user)
 	if(istype(thing,/obj/item/material/shivgrip) && buildstate == 0)
-		user.visible_message("<span class='notice'>\The [user] fits \the [thing] to \the [src] as a pistol grip.</span>")
+		user.visible_message(SPAN_NOTICE("The [user] fits \the [thing] to \the [src] as a pistol grip."))
 		add_fingerprint(user)
 		buildstate++
 		update_icon()
 		qdel(thing)
 		return
 	else if(istype(thing,/obj/item/device/assembly/mousetrap) && buildstate == 1)
-		user.visible_message("<span class='notice'>\The [user] adds \the [thing] to the receiver, turning it into a makeshift striker mechanism.</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] adds \the [thing] to the receiver, turning it into a makeshift striker mechanism."))
 		add_fingerprint(user)
 		buildstate++
 		update_icon()
 		qdel(thing)
 		return
 	else if(istype(thing,/obj/item/device/assembly/signaler) && buildstate == 2)
-		user.visible_message("<span class='notice'>\The [user] takes apart \the [thing] and uses the parts to construct and attach a crude trigger.</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] takes apart \the [thing] and uses the parts to construct and attach a crude trigger."))
 		add_fingerprint(user)
 		buildstate++
 		update_icon()
 		qdel(thing)
 		return
 	else if(isScrewdriver(thing) && buildstate == 3)
-		user.visible_message("<span class='notice'>\The [user] secures the trigger assembly with \the [thing].</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] secures the trigger assembly with \the [thing]."))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		var/obj/item/gun/projectile/pistol/tec9
 		tec9 = new /obj/item/gun/projectile/pistol/tec9 { starts_loaded = 0 } (loc)
