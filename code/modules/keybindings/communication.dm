@@ -2,16 +2,16 @@
 	category = CATEGORY_COMMUNICATION
 
 /datum/keybinding/client/communication/say
-	hotkey_keys = list("F3", "T")
+	hotkey_keys = list("T", "F3")
 	name = "Say"
 	full_name = "IC Say"
 
 /datum/keybinding/client/communication/say/down(client/user)
-	user.mob.say_verb_fake()
+	user.open_saywindow()
 	return TRUE
 
 /datum/keybinding/client/communication/ooc
-	hotkey_keys = list("F2", "O")
+	hotkey_keys = list("O", "F2")
 	name = "OOC"
 	full_name = "Out Of Character Say (OOC)"
 
@@ -33,7 +33,7 @@
 	return TRUE
 
 /datum/keybinding/client/communication/me
-	hotkey_keys = list("F4", "M")
+	hotkey_keys = list("M", "F4")
 	name = "Me"
 	full_name = "Emote"
 

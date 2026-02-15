@@ -56,6 +56,7 @@
 		return
 
 	var/temp = client.close_saywindow(return_content = TRUE)
+	remove_speech_bubble() // Never trust a winget() not to be late for the party
 
 	if(!temp && client)
 		temp = winget(client, ":input", "text")
