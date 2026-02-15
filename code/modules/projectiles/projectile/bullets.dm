@@ -200,7 +200,7 @@
 	embed = FALSE // Unstable particles just disappear
 	can_ricochet = FALSE // Too unstable to survive ricocheting
 	damage = 35.0
-	armor_penetration = 20
+	armor_penetration = 30
 	poisedamage = 6.0
 
 /obj/item/projectile/bullet/charge/kinetic

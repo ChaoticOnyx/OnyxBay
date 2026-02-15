@@ -133,9 +133,13 @@
 			T.update_icon()
 
 		if(T.is_critical)
+			if(!T.emp_hardened && !T.failure_timer)
+				playsound(T, 'sound/machines/apc_storm.ogg', 75, 0)
 			T.energy_fail(10 * severity)
 			continue
 		else
+			if(!T.emp_hardened && !T.failure_timer)
+				playsound(T, 'sound/machines/apc_storm.ogg', 75, 0)
 			T.energy_fail(10 * severity * rand(severity * 2, severity * 4))
 
 		// Very tiny chance to completely break the APC. Has a check to ensure we don't break critical APCs such as the Engine room, or AI core. Does not occur on Mundane severity.

@@ -22,7 +22,7 @@ var/list/mining_floors = list()
 	var/mined_turf = /turf/simulated/floor/asteroid
 	var/ore/mineral
 	var/last_act = 0
-	var/rock_type = "z"
+	var/rock_type = ""
 	var/durability = 100  //How many hits can our rock take
 
 	var/datum/geosample/geologic_data

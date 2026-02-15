@@ -5,7 +5,7 @@
 	initial_icon = "marauder"
 	base_color = "#7886A5"
 	step_in = 5
-	health = 500
+	health = 750
 	deflect_chance = 25
 	damage_absorption = list("brute"=0.5,"fire"=0.7,"bullet"=0.45,"laser"=0.6,"energy"=0.7,"bomb"=0.7)
 	max_temperature = 60000
@@ -31,7 +31,7 @@
 	base_color = "#878C97"
 	operation_req_access = list(access_cent_creed)
 	step_in = 3
-	health = 550
+	health = 900
 	wreckage = /obj/effect/decal/mecha_wreckage/seraph
 	internal_damage_threshold = 20
 	force = 55

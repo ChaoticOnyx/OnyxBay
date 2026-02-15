@@ -234,6 +234,9 @@
 /turf/space/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
 	if(rcd_data["[RCD_DESIGN_MODE]"] == RCD_TURF)
 		ChangeTurf(/turf/simulated/floor/plating/airless)
+		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
+		if(L)
+			qdel(L)
 		return TRUE
 
 	return FALSE

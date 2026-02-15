@@ -94,6 +94,7 @@
 				var/mob/living/simple_animal/lizard/L = S
 				if(prob(50))
 					L.setPoison(lizard_poison)
+				L.last_breed = 0
 
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
 

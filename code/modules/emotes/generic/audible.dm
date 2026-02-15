@@ -177,6 +177,9 @@
 	message_type = AUDIBLE_MESSAGE
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
+	sound_human_female = SFX_FEMALE_MOAN
+	sound_human_male = SFX_MALE_MOAN
+
 
 	statpanel_proc = /mob/proc/moan_emote
 
@@ -715,3 +718,5 @@
 	set name = "Whistle"
 	set category = "Emotes"
 	emote("whistle")
+
+

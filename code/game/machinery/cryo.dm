@@ -23,6 +23,7 @@
 
 	var/ejecting = 0
 	var/biochemical_stasis = 0
+	var/datum/sound_token/cryo_sound_token = null
 
 	component_types = list(
 		/obj/item/circuitboard/cryo_cell,
@@ -49,8 +50,11 @@
 
 	RefreshParts()
 	atmos_init()
+	if(on)
+		start_operating_sound()
 
 /obj/machinery/atmospherics/unary/cryo_cell/Destroy()
+	stop_operating_sound()
 	var/turf/T = loc
 	T.contents += contents
 	if(beaker)
@@ -84,6 +88,7 @@
 
 /obj/machinery/atmospherics/unary/cryo_cell/Process()
 	if(stat & (BROKEN|NOPOWER))
+		stop_operating_sound()
 		update_use_power(0)
 		update_icon()
 	..()
@@ -200,11 +205,13 @@
 	if(href_list["switchOn"])
 		on = 1
 		update_icon()
+		start_operating_sound()
 		return TOPIC_REFRESH
 
 	if(href_list["switchOff"])
 		on = 0
 		update_icon()
+		stop_operating_sound()
 		return TOPIC_REFRESH
 
 	if(href_list["ejectBeaker"])
@@ -229,7 +236,17 @@
 		update_icon()
 		return TOPIC_REFRESH
 
-	. = ..()
+/obj/machinery/atmospherics/unary/cryo_cell/proc/start_operating_sound()
+	if(cryo_sound_token)
+		return
+	var/sound_id = "\ref[src]_cryo"
+	cryo_sound_token = GLOB.sound_player.PlayLoopingSound(src, sound_id, 'sound/effects/machinery/medical/cryo_ambient.ogg', volume = 15, range = 7, falloff = 3)
+
+/obj/machinery/atmospherics/unary/cryo_cell/proc/stop_operating_sound()
+	if(!cryo_sound_token)
+		return
+	cryo_sound_token.Stop()
+	cryo_sound_token = null
 
 /obj/machinery/atmospherics/unary/cryo_cell/attackby(obj/G, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, G))
