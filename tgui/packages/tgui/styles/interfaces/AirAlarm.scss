@@ -1632,7 +1632,7 @@
 
 .AirAlarm__shieldList {
   flex: 0 0 44%;
-  min-width: 220px;
+  max-height: 380px;
   max-width: 360px;
   border-radius: 12px;
   padding: 8px;
@@ -1641,8 +1641,39 @@
     inset 0 0 0 1px rgba(255,255,255,0.06),
     inset 0 0 30px rgba(0,0,0,0.60),
     0 10px 18px rgba(0,0,0,0.28);
-  overflow: auto;
-  max-height: 520px;
+  overflow-y: scroll;
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #e6e6e6 transparent;
+
+  /* WebKit */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Полностью прозрачный трек */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Thumb — белый / ярко-серый */
+  &::-webkit-scrollbar-thumb {
+    background: #e6e6e6;
+    border-radius: 8px;
+  }
+
+  /* Hover эффект (опционально, но выглядит лучше) */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #ffffff;
+  }
+
+  /* Убираем стрелки */
+  &::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
 }
 
 .AirAlarm__shieldRow {
@@ -1817,31 +1848,6 @@
   border-bottom: 1px solid rgba(255,255,255,0.07);
 }
 
-/* Узкие окна */
-@media (max-width: 600px) {
-  .AirAlarm__thNameHdr,
-  .AirAlarm__thNameCell {
-    width: 96px;
-    min-width: 96px;
-  }
-
-  .AirAlarm__thValCell {
-    width: 48px;
-    min-width: 48px;
-  }
-
-  .AirAlarm__thCell {
-    width: 42px;
-    min-width: 42px;
-    height: 26px;
-    font-size: 11px;
-  }
-
-  .AirAlarm__thLegend {
-    font-size: 10px;
-    padding: 2px 6px;
-  }
-}
 
 
 /* ===== NumberInput skin (AirAlarm only) ===== */

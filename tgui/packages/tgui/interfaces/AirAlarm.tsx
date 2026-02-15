@@ -23,7 +23,7 @@ export const AirAlarm = (_props, context) => {
   const isNarrow = w < 980;
 
   return (
-    <Window width={650} height={800} title="Air Alarm Control Panel" resizable theme="industrial">
+    <Window width={650} height={700} title="Air Alarm Control Panel" resizable theme="industrial">
       <Window.Content className={classes(["AirAlarm", dangerPulse && "AirAlarm--dangerPulse"])} theme="industrial">
         <Box className="AirAlarm__device">
           <Box className="AirAlarm__screw AirAlarm__screw--tl" />

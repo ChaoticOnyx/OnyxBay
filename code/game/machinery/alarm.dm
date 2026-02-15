@@ -91,6 +91,7 @@
 	var/datum/frequency/radio_connection
 
 	var/list/TLV = list()
+	var/list/DEFAULT_TLV = list()
 
 	var/danger_level = 0
 	var/pressure_dangerlevel = 0
@@ -162,7 +163,7 @@
 	TLV["other"] =			list(-1.0, -1.0, 0.2, 0.5) // Partial pressure, kpa
 	TLV["pressure"] =		list(ONE_ATMOSPHERE*0.80,ONE_ATMOSPHERE*0.90,ONE_ATMOSPHERE*1.10,ONE_ATMOSPHERE*1.20) /* kpa */
 	TLV["temperature"] =	list(-26 CELSIUS, 0 CELSIUS, 40 CELSIUS, 66 CELSIUS)
-
+	DEFAULT_TLV = TLV.Copy()
 	set_frequency(frequency)
 	if (!master_is_operating())
 		elect_master()
@@ -496,31 +497,23 @@
 	wires.Interact(user)
 
 /obj/machinery/alarm/tgui_interact(mob/user, datum/tgui/ui)
-	// Обновляем существующее или создаём новое
 	ui = SStgui.try_update_ui(user, src, ui)
 
 	if(!ui)
-		// "AirAlarm" — имя интерфейса (фронт)
 		ui = new(user, src, "AirAlarm", name)
 		ui.set_autoupdate(TRUE)
 
 	ui.open()
 
 /obj/machinery/alarm/tgui_state(mob/user)
-	// По умолчанию — стандартная проверка дистанции/сознания и т.п.
-	// Если у вас есть кастомные стейты для remote-коннекта — можно заменить.
 	return GLOB.default_state
 
 /obj/machinery/alarm/tgui_data(mob/user)
 	var/list/data = list()
 
-	// То, что раньше формировали в ui_interact(data)
 	var/remote_connection = 0
 	var/remote_access = 0
 
-	// Если у вас используются topic_state href_list — обычно в tgui это делается иначе.
-	// Поэтому здесь оставляем безопасный минимум:
-	// remote_connection/remote_access можете прокинуть из отдельной логики RCON-консоли, если есть.
 	data["remote_connection"] = remote_connection
 	data["remote_access"] = remote_access
 
@@ -529,10 +522,8 @@
 	data["screen"] = screen
 	data["mode"] = mode
 
-	// Для “железного” ощущения UI удобно знать: можно ли управлять прямо сейчас
 	data["can_control"] = (!data["locked"] || issilicon(user)) ? TRUE : FALSE
 
-	// Границы термостата (в °C) — чтобы фронт рисовал лимиты корректно
 	var/list/t_sel = TLV["temperature"]
 	var/max_temperature_c = min(CONV_KELVIN_CELSIUS(t_sel[3]), MAX_TEMPERATURE)
 	var/min_temperature_c = max(CONV_KELVIN_CELSIUS(t_sel[2]), MIN_TEMPERATURE)
@@ -540,15 +531,12 @@
 	data["max_temp_c"] = max_temperature_c
 	data["target_temp_c"] = round(CONV_KELVIN_CELSIUS(target_temperature), 0.1)
 
-	// Статусы/среда — переиспользуем старые процедуры
 	populate_status(data)
 	populate_controls(data)
 	populate_thresholds(data)
 	return data
 
 /obj/machinery/alarm/proc/_tgui_can_control(mob/user)
-	// Та же логика, что у вас в tgui_data: locked && !issilicon(user)
-	// remote_access/remote_connection при необходимости синхронизируйте с этой проверкой
 	if(stat & (NOPOWER|BROKEN))
 		return FALSE
 	if(shorted || buildstage != 2)
@@ -563,7 +551,6 @@
 	if(.)
 		return .
 
-	// Базовая интерактивность
 	if(buildstage != 2)
 		return FALSE
 	if(aidisabled && isAI(usr))
@@ -576,13 +563,9 @@
 
 	switch(action)
 
-		// -------------------------
-		// Area atmospheric alarm (legacy tmpl parity)
-		// -------------------------
 		if("atmos_alarm")
 			if(!_tgui_can_control(usr))
 				return FALSE
-			// Manual activation: raise to danger level 2 (red). Adjust if your fork expects 1.
 			alarm_area.atmosalert(2, src)
 			update_icon()
 			return TRUE
@@ -594,15 +577,12 @@
 			update_icon()
 			return TRUE
 
-		// -------------------------
-		// Area fire alarm
-		// -------------------------
 		if("fire_alarm")
 			if(!_tgui_can_control(usr))
 				return FALSE
 			if(alarm_area)
-				for(var/obj/machinery/firealarm/FA in alarm_area)
-					fire_alarm.triggerAlarm(loc, FA)
+				var/obj/machinery/firealarm/FA = pick(/obj/machinery/firealarm in alarm_area)
+				FA.alarm()
 			update_icon()
 			return TRUE
 
@@ -610,13 +590,11 @@
 			if(!_tgui_can_control(usr))
 				return FALSE
 			if(alarm_area)
-				for(var/obj/machinery/firealarm/FA in alarm_area)
-					fire_alarm.clearAlarm(loc, FA)
+				var/obj/machinery/firealarm/FA = pick(/obj/machinery/firealarm in alarm_area)
+				FA.reset()
 			update_icon()
 			return TRUE
-		// -------------------------
-		// Вкладки / экран
-		// -------------------------
+
 		if("set_screen")
 			var/new_screen = text2num(params["screen"])
 			if(!new_screen)
@@ -624,9 +602,6 @@
 			screen = new_screen
 			return TRUE
 
-		// -------------------------
-		// RCON
-		// -------------------------
 		if("set_rcon")
 			var/v = text2num(params["value"])
 			if(!v)
@@ -637,9 +612,6 @@
 					return TRUE
 			return FALSE
 
-		// -------------------------
-		// Режим комнаты
-		// -------------------------
 		if("set_mode")
 			if(!_tgui_can_control(usr))
 				return FALSE
@@ -656,9 +628,6 @@
 
 			return FALSE
 
-		// -------------------------
-		// Целевая температура (°C)
-		// -------------------------
 		if("set_target_temp")
 			if(!_tgui_can_control(usr))
 				return FALSE
@@ -677,9 +646,6 @@
 			target_temperature = CONV_CELSIUS_KELVIN(temp_c)
 			return TRUE
 
-		// -------------------------
-		// Команды устройствам (вент/скруб/фильтры)
-		// -------------------------
 		if("device_command")
 			if(!_tgui_can_control(usr))
 				return FALSE
@@ -689,7 +655,6 @@
 			if(!device_id || !cmd)
 				return FALSE
 
-			// set_external_pressure: фронт присылает val числом
 			if(cmd == "set_external_pressure")
 				var/input_pressure = text2num(params["val"])
 				if(!isnum(input_pressure))
@@ -697,24 +662,19 @@
 				send_signal(device_id, list("set_external_pressure" = input_pressure))
 				return TRUE
 
-			// reset_external_pressure: возвращаем к ONE_ATMOSPHERE
 			if(cmd == "reset_external_pressure")
 				send_signal(device_id, list("set_external_pressure" = ONE_ATMOSPHERE))
 				return TRUE
 
-			// Типовые бинарные команды 0/1
 			var/numval = text2num(params["val"])
 			if(!isnum(numval))
-				// Для бинарных допускаем отсутствие val? — нет, считаем ошибкой
 				return FALSE
 
 			switch(cmd)
-				// вент
 				if("power", "checks", "adjust_external_pressure")
 					send_signal(device_id, list("[cmd]" = numval))
 					return TRUE
 
-				// скруб
 				if("panic_siphon", "scrubbing",
 					"o2_scrub", "n2_scrub", "co2_scrub", "tox_scrub", "n2o_scrub")
 					send_signal(device_id, list("[cmd]" = numval))
@@ -722,9 +682,6 @@
 
 			return FALSE
 
-		// -------------------------
-		// Настройка порогов TLV (как в старом OnTopic)
-		// -------------------------
 		if("set_threshold")
 			if(!_tgui_can_control(usr))
 				return FALSE
@@ -740,7 +697,24 @@
 			var/list/selected = TLV[env]
 
 			var/list/thresholds = list("lower bound", "low warning", "high warning", "upper bound")
-			var/newval = input(usr, "Enter [thresholds[idx]] for [env]", "Alarm triggers", selected[idx]) as null|num
+
+			var/max_value = 200
+			if(env == "temperature")
+				max_value = 5000
+			else if(env == "pressure")
+				max_value = 50 * ONE_ATMOSPHERE
+
+			var/min_value = -1
+
+			var/newval = tgui_input_number(
+				usr,
+				"Enter [thresholds[idx]] for [env]",
+				"Alarm triggers",
+				DEFAULT_TLV[env][idx],
+				max_value,
+				min_value
+			)
+
 			if(isnull(newval))
 				return TRUE
 
@@ -756,7 +730,6 @@
 				newval = round(newval, 0.01)
 				selected[idx] = newval
 
-			// Нормализация границ (перенесено из вашего OnTopic)
 			if(idx == 1)
 				if(selected[1] > selected[2]) selected[2] = selected[1]
 				if(selected[1] > selected[3]) selected[3] = selected[1]
@@ -774,7 +747,6 @@
 				if(selected[2] > selected[4]) selected[2] = selected[4]
 				if(selected[3] > selected[4]) selected[3] = selected[4]
 
-			// Применяем, чтобы устройства подхватили изменения
 			apply_mode()
 			return TRUE
 
@@ -785,7 +757,6 @@
 	var/list/thresholds[0]
 	var/list/selected
 
-	// Газы (подписи как в старом UI)
 	var/list/gas_names = list(
 		"oxygen"         = "O₂",
 		"carbon dioxide" = "CO₂",
