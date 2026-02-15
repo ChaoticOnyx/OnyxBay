@@ -104,6 +104,8 @@
 
 	var/static/status_overlays = FALSE
 	var/static/list/alarm_overlays
+	var/previous_controls_open = FALSE
+	var/controls_open = FALSE
 
 /obj/machinery/alarm/cold
 	target_temperature = 4 CELSIUS
@@ -217,6 +219,11 @@
 		if(RCON_YES)
 			remote_control = 1
 
+	if(controls_open)
+		if(!length(SStgui.get_all_open_uis(src)))
+			controls_open = FALSE
+			update_icon()
+
 	return
 
 /obj/machinery/alarm/proc/handle_heating_cooling(datum/gas_mixture/environment)
@@ -306,6 +313,12 @@
 			return 1
 	return 0
 
+#define ALARM_OVERLAY_NORMAL          1
+#define ALARM_OVERLAY_WARNING         2
+#define ALARM_OVERLAY_DANGER          3
+#define ALARM_OVERLAY_EA              4
+#define ALARM_OVERLAY_WIRES           5
+
 /obj/machinery/alarm/on_update_icon()
 	if(!status_overlays)
 		status_overlays = TRUE
@@ -313,16 +326,24 @@
 
 	ClearOverlays()
 
+	if(controls_open && !previous_controls_open)
+		previous_controls_open = TRUE
+		flick("alarm-open", src)
+	else if(!controls_open && previous_controls_open)
+		previous_controls_open = FALSE
+		flick("alarm-close", src)
+
+	icon_state = controls_open ? "alarm-opened" : "alarm"
+
 	if(wiresexposed)
-		icon_state = "alarmx"
-		set_light(0)
-		return
-	if((stat & (NOPOWER|BROKEN)) || shorted)
-		icon_state = "alarmp"
+		AddOverlays(alarm_overlays[ALARM_OVERLAY_WIRES])
 		set_light(0)
 		return
 
-	icon_state = "alarm"
+	if((stat & (NOPOWER|BROKEN)) || shorted)
+		set_light(0)
+		return
+
 	var/icon_level = danger_level
 	if(alarm_area.atmosalm)
 		icon_level = max(icon_level, 1)	//if there's an atmos alarm but everything is okay locally, no need to go past yellow
@@ -337,21 +358,29 @@
 			new_color = COLOR_RED_LIGHT
 
 	AddOverlays(alarm_overlays[icon_level+1])
-	AddOverlays(emissive_appearance(icon, "alarm_ea"))
+	AddOverlays(alarm_overlays[ALARM_OVERLAY_EA])
 
 	set_light(0.65, 0.1, 1, 2, new_color)
 
 /obj/machinery/alarm/proc/generate_overlays()
 	alarm_overlays = new
-	alarm_overlays.len = 4
-	alarm_overlays[1] = image(icon, "alarm_over0")
-	alarm_overlays[2] = image(icon, "alarm_over1")
-	alarm_overlays[3] = image(icon, "alarm_over2")
-	alarm_overlays[1].alpha = 200
-	alarm_overlays[2].alpha = 200
-	alarm_overlays[3].alpha = 200
+	alarm_overlays.len = 7
+	alarm_overlays[ALARM_OVERLAY_NORMAL]  = image(icon, "alarm_over0")
+	alarm_overlays[ALARM_OVERLAY_WARNING] = image(icon, "alarm_over1")
+	alarm_overlays[ALARM_OVERLAY_DANGER]  = image(icon, "alarm_over2")
+	alarm_overlays[ALARM_OVERLAY_NORMAL].alpha  = 200
+	alarm_overlays[ALARM_OVERLAY_WARNING].alpha = 200
+	alarm_overlays[ALARM_OVERLAY_DANGER].alpha  = 200
 
-	alarm_overlays[4] = emissive_appearance(icon, "alarm_ea", cache = FALSE)
+	alarm_overlays[ALARM_OVERLAY_EA] = emissive_appearance(icon, "alarm_ea", cache = FALSE)
+
+	alarm_overlays[ALARM_OVERLAY_WIRES] = image(icon, "alarm-wires")
+
+#undef ALARM_OVERLAY_NORMAL
+#undef ALARM_OVERLAY_WARNING
+#undef ALARM_OVERLAY_DANGER
+#undef ALARM_OVERLAY_EA
+#undef ALARM_OVERLAY_WIRES
 
 /obj/machinery/alarm/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))
@@ -501,6 +530,9 @@
 /obj/machinery/alarm/interact(mob/user)
 	tgui_interact(user)
 	wires.Interact(user)
+
+	controls_open = TRUE
+	update_icon()
 
 /obj/machinery/alarm/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
