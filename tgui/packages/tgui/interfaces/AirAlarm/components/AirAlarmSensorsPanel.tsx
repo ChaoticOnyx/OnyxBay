@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Section } from "../../../components";
+import { Box, Button, Flex, Section, Table } from "../../../components";
 import { classes } from "common/react";
 import type { ThresholdRow } from "./airAlarmTypes";
 
@@ -6,40 +6,66 @@ const SensorsPanelInner = (props: { thresholds?: ThresholdRow[]; can: boolean; a
   const th = props.thresholds || [];
   if (!th.length) return null;
 
-  const colorClassByIdx = (idx: number) => {
-    if (idx <= 1) return "AirAlarm__thBtn--c1";
-    if (idx === 2) return "AirAlarm__thBtn--c2";
-    if (idx === 3) return "AirAlarm__thBtn--c3";
-    return "AirAlarm__thBtn--c4";
+  const cellClassByIdx = (idx: number) => {
+    if (idx <= 1) return "AirAlarm__thCell--c1";
+    if (idx === 2) return "AirAlarm__thCell--c2";
+    if (idx === 3) return "AirAlarm__thCell--c3";
+    return "AirAlarm__thCell--c4";
   };
 
-  return (
-    <Flex direction="column" gap={1}>
-      {th.map((row) => (
-        <Section key={row.name} title={row.name} className="AirAlarm__sensorCard">
-          <Box className="AirAlarm__sensorLegend">
-            <span className="AirAlarm__sensorLegendItem AirAlarm__sensorLegendItem--c1">1: lower</span>
-            <span className="AirAlarm__sensorLegendItem AirAlarm__sensorLegendItem--c2">2: low warn</span>
-            <span className="AirAlarm__sensorLegendItem AirAlarm__sensorLegendItem--c3">3: high warn</span>
-            <span className="AirAlarm__sensorLegendItem AirAlarm__sensorLegendItem--c4">4: upper</span>
-          </Box>
+  const sorted4 = (settings: ThresholdRow["settings"]) =>
+    [...settings].sort((a, b) => (a.val ?? 0) - (b.val ?? 0));
 
-          <Flex gap={0.6} wrap className="AirAlarm__thRow">
-            {row.settings.map((s) => (
-              <Button
-                key={`${s.env}:${s.val}`}
-                className={classes(["AirAlarm__thBtn", colorClassByIdx(s.val)])}
-                disabled={!props.can}
-                onClick={() => props.act("set_threshold", { env: s.env, idx: s.val })}
-              >
-                <span className="AirAlarm__thIdx">{s.val}</span>
-                <span className="AirAlarm__thVal">{s.selected}</span>
-              </Button>
+  return (
+    <Section className="AirAlarm__sensorCard" fitted>
+      <Table className="AirAlarm__thTable" collapsing>
+        {/* Header row */}
+        <Table.Row header className="AirAlarm__thHdrRow">
+          <Table.Cell header className="AirAlarm__thNameHdr">
+            NAME:
+          </Table.Cell>
+
+          <Table.Cell header className="AirAlarm__thHdrCell">
+            <Box className="AirAlarm__thLegend AirAlarm__thLegend--c1">1: LOWER</Box>
+          </Table.Cell>
+          <Table.Cell header className="AirAlarm__thHdrCell">
+            <Box className="AirAlarm__thLegend AirAlarm__thLegend--c2">2: LOW WARN</Box>
+          </Table.Cell>
+          <Table.Cell header className="AirAlarm__thHdrCell">
+            <Box className="AirAlarm__thLegend AirAlarm__thLegend--c3">3: HIGH WARN</Box>
+          </Table.Cell>
+          <Table.Cell header className="AirAlarm__thHdrCell">
+            <Box className="AirAlarm__thLegend AirAlarm__thLegend--c4">4: UPPER</Box>
+          </Table.Cell>
+        </Table.Row>
+
+        {/* Data rows */}
+        {th.map((row) => (
+          <Table.Row key={row.name} className="AirAlarm__thRow">
+            <Table.Cell className="AirAlarm__thNameCell">
+              <span className="AirAlarm__thNameInline">{row.name}</span>:
+            </Table.Cell>
+
+
+            {sorted4(row.settings).map((s) => (
+              <Table.Cell key={`${row.name}:${s.env}:${s.val}`} className="AirAlarm__thValCell">
+                <Button
+                  className={classes([
+                    "AirAlarm__thCell",
+                    cellClassByIdx(s.val),
+                    s.selected && "AirAlarm__thCell--sel",
+                  ])}
+                  disabled={!props.can}
+                  onClick={() => props.act("set_threshold", { env: s.env, idx: s.val })}
+                >
+                  {s.selected}
+                </Button>
+              </Table.Cell>
             ))}
-          </Flex>
-        </Section>
-      ))}
-    </Flex>
+          </Table.Row>
+        ))}
+      </Table>
+    </Section>
   );
 };
 

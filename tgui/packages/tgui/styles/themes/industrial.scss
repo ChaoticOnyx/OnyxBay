@@ -497,6 +497,14 @@
  * Section title как ind-label
  * ========================================================= */
 
+.LabeledList__label{
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  opacity: 0.92;
+  font-size: 11px;
+}
+
 .Section__titleText {
   padding: 6px 12px;
 

@@ -80,8 +80,8 @@ export const AirAlarmScrubbersPanel = (props: {
                 }
               />
 
-              <Section title="Filters" fitted className="AirAlarm__filters">
-                <Flex direction="column" gap={0.5}>
+              <Section title="Filters"  className="AirAlarm__filters">
+                <Flex direction="column">
                   {(selected.filters || []).map((f) => (
                     <RockerSwitch
                       key={f.command}

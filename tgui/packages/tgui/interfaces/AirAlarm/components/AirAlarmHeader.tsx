@@ -8,8 +8,8 @@ export const AirAlarmHeader = (props: { data: AirAlarmData; act: any }) => {
 
   return (
     <Section className="AirAlarm__header" fitted>
-      <Flex align="center" justify="space-between">
-        <Flex align="center" className="flex-gap-8">
+      <Flex align="center" justify="space-between" className="AirAlarm__headerRow">
+        <Flex align="center" className="flex-gap-8 AirAlarm__headerLeft">
           <Box
             className={classes([
               "AirAlarm__status",
@@ -30,7 +30,7 @@ export const AirAlarmHeader = (props: { data: AirAlarmData; act: any }) => {
 
             <Box className={classes([
               "AirAlarm__ann",
-              !data.fire_alarm && "AirAlarm__ann--on",
+              !!data.fire_alarm && "AirAlarm__ann--on",
               "AirAlarm__ann--fire"
             ])}>
               FIRE
@@ -38,7 +38,7 @@ export const AirAlarmHeader = (props: { data: AirAlarmData; act: any }) => {
 
             <Box className={classes([
               "AirAlarm__ann",
-              !data.atmos_alarm && "AirAlarm__ann--on",
+              !!data.atmos_alarm && "AirAlarm__ann--on",
               "AirAlarm__ann--atmos"
             ])}>
               ATMOS
@@ -53,7 +53,7 @@ export const AirAlarmHeader = (props: { data: AirAlarmData; act: any }) => {
           </Box>
         </Flex>
 
-        <Flex align="center" gap={0.7}>
+        <Flex align="center" className="AirAlarm__headerRight">
           <Flex align="center" gap={0.4} className="AirAlarm__rconLabel">
             <Icon name="broadcast-tower" />
             RCON:

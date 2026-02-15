@@ -61,24 +61,43 @@ export const AirAlarmVentsPanel = (props: {
 
               <LabeledList>
                 <LabeledList.Item label="External kPa">
-                  <NumberInput
-                    value={toNum(selected.external)}
-                    minValue={0}
-                    maxValue={500}
-                    step={1}
-                    width="140px"
-                    disabled={!can}
-                    onChange={(val) => act("device_command", { id_tag: selected.id_tag, cmd: "set_external_pressure", val })}
-                  />
-                  <Button
-                    className="AirAlarm__miniBtn"
-                    ml={1}
-                    disabled={!can}
-                    onClick={() => act("device_command", { id_tag: selected.id_tag, cmd: "reset_external_pressure", val: 0 })}
-                  >
-                    RESET
-                  </Button>
+                  <Flex className="AirAlarm__kpaCtl" align="center" justify="flex-end">
+                    <Button
+                      className="AirAlarm__btn AirAlarm__miniBtn--sym"
+                      disabled={!can}
+                      title="Reset external pressure"
+                      onClick={() =>
+                        act("device_command", {
+                          id_tag: selected.id_tag,
+                          cmd: "reset_external_pressure",
+                          val: 0,
+                        })
+                      }
+                      icon="refresh"
+                    >
+                    </Button>
+
+                    <NumberInput
+                      className="AirAlarm__kpaInput"
+                      value={toNum(selected.external)}
+                      minValue={0}
+                      maxValue={500}
+                      step={1}
+                      width="88px"
+                      unit="kPa"
+                      animated
+                      disabled={!can}
+                      onChange={(_, val) =>
+                        act("device_command", {
+                          id_tag: selected.id_tag,
+                          cmd: "set_external_pressure",
+                          val,
+                        })
+                      }
+                    />
+                  </Flex>
                 </LabeledList.Item>
+
               </LabeledList>
             </Section>
           )}

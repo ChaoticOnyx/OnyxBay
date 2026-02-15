@@ -558,7 +558,7 @@
 	return TRUE
 
 
-/obj/machinery/alarm/tgui_act(action, list/params, datum/tgui/ui, datum/tgui_state/state)
+/obj/machinery/alarm/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return .
@@ -591,6 +591,27 @@
 			if(!_tgui_can_control(usr))
 				return FALSE
 			alarm_area.atmosalert(0, src)
+			update_icon()
+			return TRUE
+
+		// -------------------------
+		// Area fire alarm
+		// -------------------------
+		if("fire_alarm")
+			if(!_tgui_can_control(usr))
+				return FALSE
+			if(alarm_area)
+				for(var/obj/machinery/firealarm/FA in alarm_area)
+					fire_alarm.triggerAlarm(loc, FA)
+			update_icon()
+			return TRUE
+
+		if("fire_reset")
+			if(!_tgui_can_control(usr))
+				return FALSE
+			if(alarm_area)
+				for(var/obj/machinery/firealarm/FA in alarm_area)
+					fire_alarm.clearAlarm(loc, FA)
 			update_icon()
 			return TRUE
 		// -------------------------
@@ -766,8 +787,8 @@
 
 	// Газы (подписи как в старом UI)
 	var/list/gas_names = list(
-		"oxygen"         = "O<sub>2</sub>",
-		"carbon dioxide" = "CO<sub>2</sub>",
+		"oxygen"         = "O₂",
+		"carbon dioxide" = "CO₂",
 		"plasma"         = "Toxin",
 		"other"          = "Other")
 

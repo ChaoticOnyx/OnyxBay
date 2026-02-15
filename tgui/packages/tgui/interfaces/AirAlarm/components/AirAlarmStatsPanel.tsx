@@ -1,13 +1,11 @@
 import { clamp } from "common/math";
-import { Box, Flex, Icon, NumberInput, Section } from "../../../components";
+import { Box, Flex, Icon, Section } from "../../../components";
 import type { AirAlarmData, EnvRow } from "./airAlarmTypes";
 import { dangerTone, fmt4, toNum } from "./airAlarmFormat";
-import { buildLedCells } from "./airAlarmLed";
 
 import { Seg7Display } from "../../_shared/components/Seg7/Seg7Display";
 import { FlatGauge, type GaugeZone } from "../../_shared/components/Gauge/FlatGauge";
 import { ThermoSlider } from "../../_shared/components/Slider/ThermoSlider";
-import { LedMatrix } from "../../_shared/components/LedMatrix/LedMatrix";
 
 const GasGrid = (props: { env: EnvRow[]; pulse: boolean }) => {
   const byName = (n: string) => props.env.find((x) => x.name === n);
@@ -24,7 +22,7 @@ const GasGrid = (props: { env: EnvRow[]; pulse: boolean }) => {
     <Box className="AirAlarm__gasGrid">
       <Seg7Display size="sm" label={<span>O<sub>2</sub></span>} value={fmt4(pct(o2))} unit="%" tone={tone(o2)} pulse={props.pulse} color="cyan" />
       <Seg7Display size="sm" label={<span>N<sub>2</sub></span>} value={fmt4(pct(n2))} unit="%" tone={tone(n2)} pulse={props.pulse} color="green" />
-      <Seg7Display size="sm" label="CO₂" value={fmt4(pct(co2))} unit="%" tone={tone(co2)} pulse={props.pulse} color="amber" />
+      <Seg7Display size="sm" label={<span>CO<sub>2</sub></span>}  value={fmt4(pct(co2))} unit="%" tone={tone(co2)} pulse={props.pulse} color="amber" />
       <Seg7Display size="sm" label="OTHER" value={fmt4(pct(other))} unit="%" tone={tone(other)} pulse={props.pulse} color="white" />
     </Box>
   );
@@ -65,9 +63,6 @@ export const AirAlarmStatsPanel = (props: {
     { from: 400, to: 450, tone: "z5" },
   ];
 
-  const LED_COLS = 16;
-  const LED_ROWS = 6;
-  const leds = buildLedCells(data, env, LED_COLS * LED_ROWS);
 
   return (
     <Box className="AirAlarm__crtBezel ind-plate ind-plate--plastic">
@@ -126,8 +121,6 @@ export const AirAlarmStatsPanel = (props: {
             </Box>
           </Flex>
         </Section>
-
-        <LedMatrix title="DIAGNOSTICS" cols={LED_COLS} rows={LED_ROWS} cells={leds} className="AirAlarm__ledPanelCompat" />
       </Section>
     </Box>
   );
