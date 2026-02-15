@@ -8,26 +8,9 @@
   opacity: 0.45;
   filter: grayscale(0.55);
 }
-
-/* Контейнер Slider */
-.ThermoSlider__control {
-  /* Здесь можно переопределять фон/радиусы под “термо” */
-}
-
 /* Полоса заполнения (оба слоя) */
 .ThermoSlider__control .ProgressBar__fill {
   border-radius: 12px;
-}
-
-/* Курсор/указатель */
-.ThermoSlider__control .Slider__cursor,
-.ThermoSlider__control .Slider__pointer {
-  /* при необходимости — стили под “thumb” */
-}
-
-/* Popup значение при драге */
-.ThermoSlider__control .Slider__popupValue {
-  /* стили popup при dragging */
 }
 
 /* Шкала как раньше */

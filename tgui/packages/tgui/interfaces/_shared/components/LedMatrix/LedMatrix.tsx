@@ -1,6 +1,6 @@
 import { classes } from "common/react";
 import { Box } from "../../../../components";
-import type { LedCell } from "../../../AirAlarm/components/airAlarmLed"; // либо вынесите LedCell в shared, если хотите
+import type { LedCell } from "../../../AirAlarm/components/airAlarmLed";
 
 export const LedMatrix = (props: {
   cols: number;

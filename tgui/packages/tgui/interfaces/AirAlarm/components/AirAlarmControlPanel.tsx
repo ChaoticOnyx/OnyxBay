@@ -6,7 +6,6 @@ import { AirAlarmVentsPanel } from "./AirAlarmVentsPanel";
 import { AirAlarmScrubbersPanel } from "./AirAlarmScrubbersPanel";
 import { AirAlarmSensorsPanel } from "./AirAlarmSensorsPanel";
 
-// сохраняем “как было” (module-level), чтобы поведение не менялось
 let selectedVentId: string | null = null;
 let selectedScrubId: string | null = null;
 

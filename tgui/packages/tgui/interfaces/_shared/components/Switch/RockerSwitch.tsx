@@ -34,21 +34,18 @@ export class RockerSwitch extends Component<RockerProps, RockerInternalState> {
 
   componentDidUpdate(prevProps: RockerProps) {
     if (prevProps.state !== this.props.state) {
-      // Если бекенд догнал наш optimistic target — снимаем local
       if (this.state.pending && this.props.state === this.state.pending) {
         if (this.timer) clearTimeout(this.timer);
         this.setState({ local: null, pending: null, animating: false });
         return;
       }
 
-      // Если бекенд пришёл с другим значением (оверрайд) — тоже сбрасываем optimistic
       if (this.state.pending && this.props.state !== this.state.pending) {
         if (this.timer) clearTimeout(this.timer);
         this.setState({ local: null, pending: null, animating: false });
         return;
       }
 
-      // Если pending нет — обычное обновление
       if (!this.state.pending) {
         this.setState({ local: null, animating: false });
       }
