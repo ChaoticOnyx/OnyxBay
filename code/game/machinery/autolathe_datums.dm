@@ -657,3 +657,9 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "ecigarette cartridge"
 	path = /obj/item/reagent_containers/ecig_cartridge/blank
 	category = "Devices and Components"
+
+
+/datum/autolathe/recipe/eftpos
+	name = "EFTPOS scanner"
+	path = /obj/item/device/eftpos
+	category = "Devices and Components"

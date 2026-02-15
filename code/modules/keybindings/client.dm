@@ -8,7 +8,8 @@
 	description = "Ask an admin for help"
 
 /datum/keybinding/client/admin_help/down(client/user)
-	user.adminhelp()
+	// Some weird stuff is happening with F1. TODO: Find out what the fuck.
+	// user.adminhelp()
 	return TRUE
 
 /datum/keybinding/client/screenshot
@@ -35,10 +36,10 @@
 	hotkey_keys = list("F11")
 	name = "toggle_fullscreen"
 	full_name = "Toggle Fullscreen"
-	description = "Take a screenshot"
+	description = "Toggles fullscreen mode"
 
 /datum/keybinding/client/toggle_fullscreen/down(client/user)
-	user.toggle_fullscreen()
+	user.cycle_preference(/datum/client_preference/fullscreen_mode)
 	return TRUE
 
 /datum/keybinding/client/minimal_hud

@@ -36,3 +36,16 @@
 	var/mob/living/carbon/human/C = user.mob
 	C.useblock()
 	return TRUE
+
+/datum/keybinding/human/powersuit_select_module
+	hotkey_keys = list("V")
+	name = "powersuit_select_module"
+	full_name = "Select Powersuit Module"
+	description = "Opens a worn powersuit's module selection."
+
+/datum/keybinding/human/powersuit_select_module/down(client/user)
+	var/mob/living/carbon/human/H = user.mob
+	var/obj/item/rig/R = locate() in H
+	if(istype(R))
+		R.select_module()
+	return TRUE

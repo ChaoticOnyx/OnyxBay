@@ -99,5 +99,5 @@
 	cmd_admin_say(msg)
 
 /client/proc/get_mod_say()
-	var/msg = input(src, null, "msay \"text\"") as text
-	get_mod_say(msg)
+	var/msg = input(src, null, "msay \"text\"") as text|null
+	cmd_mod_say(msg)
