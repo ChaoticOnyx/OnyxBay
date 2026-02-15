@@ -21,7 +21,7 @@
     "@babel/preset-env": "7.x.x",
     "@babel/preset-typescript": "7.x.x",
     "@types/node": "16.x.x",
-    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/eslint-plugin": "5.5.x",
     "@typescript-eslint/parser": "5.5.x",
     "babel-loader": "8.2.x",
     "babel-plugin-inferno": "6.x.x",

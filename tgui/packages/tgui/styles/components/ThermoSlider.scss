@@ -1,0 +1,91 @@
+.ThermoSlider {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ThermoSlider--disabled {
+  opacity: 0.45;
+  filter: grayscale(0.55);
+}
+
+/* Контейнер Slider */
+.ThermoSlider__control {
+  /* Здесь можно переопределять фон/радиусы под “термо” */
+}
+
+/* Полоса заполнения (оба слоя) */
+.ThermoSlider__control .ProgressBar__fill {
+  border-radius: 12px;
+}
+
+/* Курсор/указатель */
+.ThermoSlider__control .Slider__cursor,
+.ThermoSlider__control .Slider__pointer {
+  /* при необходимости — стили под “thumb” */
+}
+
+/* Popup значение при драге */
+.ThermoSlider__control .Slider__popupValue {
+  /* стили popup при dragging */
+}
+
+/* Шкала как раньше */
+.ThermoSlider__scale {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.ThermoSlider__scaleMin { text-align: left; }
+.ThermoSlider__scaleMid { text-align: center; opacity: 0.65; }
+.ThermoSlider__scaleMax { text-align: right; }
+.ThermoSlider__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ThermoSlider__control {
+  flex: 1 1 auto;
+  min-width: 260px;
+}
+
+/* Mini display справа */
+.ThermoSlider__miniDisplay {
+  flex: 0 0 auto;
+  min-width: 86px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 10px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: var(--ind-font-mono);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+
+  color: var(--ind-fg);
+
+  background: linear-gradient(180deg, rgba(10,18,12,0.78), rgba(0,0,0,0.84));
+  box-shadow:
+    inset 0 0 0 1px rgba(140,255,190,0.14),
+    inset 0 0 18px rgba(0,0,0,0.70),
+    0 10px 18px rgba(0,0,0,0.40);
+
+  user-select: none;
+}
+
+/* Disabled совпадает с вашим общим disabled */
+.ThermoSlider--disabled .ThermoSlider__miniDisplay {
+  opacity: 0.55;
+  filter: grayscale(0.55);
+}

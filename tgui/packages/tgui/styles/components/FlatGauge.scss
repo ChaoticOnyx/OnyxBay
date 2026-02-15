@@ -1,0 +1,103 @@
+.FlatGauge {
+  padding: 10px 10px 8px 10px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(10, 18, 12, 0.40), rgba(0, 0, 0, 0.35));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 0 30px rgba(0, 0, 0, 0.55);
+}
+
+.FlatGauge__head { margin-bottom: 8px; }
+
+.FlatGauge__title {
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  font-size: 11px;
+}
+
+.FlatGauge__readout {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.FlatGauge__readout--good { color: var(--ind-good, rgba(140, 255, 180, 0.95)); }
+.FlatGauge__readout--average { color: var(--ind-avg, rgba(240, 200, 80, 0.95)); }
+.FlatGauge__readout--bad { color: var(--ind-bad, rgba(255, 110, 110, 0.95)); }
+
+.FlatGauge__unit { opacity: 0.75; font-weight: 800; }
+
+.FlatGauge__track {
+  position: relative;
+  height: 16px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(70, 70, 70, 0.26), rgba(10, 10, 10, 0.40));
+  box-shadow:
+    inset 0 0 12px rgba(0, 0, 0, 0.70),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.FlatGauge__zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  opacity: 0.95;
+  filter: saturate(1.05);
+}
+
+.FlatGauge__zone--z0 { background: rgba(110, 255, 160, 0.35); }
+.FlatGauge__zone--z1 { background: rgba(70, 180, 120, 0.28); }
+.FlatGauge__zone--z2 { background: rgba(210, 200, 80, 0.30); }
+.FlatGauge__zone--z3 { background: rgba(240, 160, 60, 0.30); }
+.FlatGauge__zone--z4 { background: rgba(255, 120, 90, 0.30); }
+.FlatGauge__zone--z5 { background: rgba(255, 70, 70, 0.32); }
+
+.FlatGauge__ticks {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 16px,
+      rgba(255, 255, 255, 0.09) 17px);
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
+
+.FlatGauge__gloss {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 55%);
+  opacity: 0.22;
+}
+
+.FlatGauge__needleWrap {
+  position: absolute;
+  top: 50%;
+  height: 0;
+  width: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.FlatGauge__needle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 9px solid rgba(235, 235, 235, 0.92);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.60));
+  opacity: 0.95;
+}
