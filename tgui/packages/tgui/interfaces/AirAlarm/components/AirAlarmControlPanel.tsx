@@ -24,6 +24,7 @@ export const AirAlarmControlPanel = (props: { data: AirAlarmData; can: boolean; 
   selectedVentId = pickFirst(data.vents, selectedVentId);
   selectedScrubId = pickFirst(data.scrubbers, selectedScrubId);
 
+  const canControl = !!can;
   return (
     <Box className="AirAlarm__panelInset AirAlarm__panelInset--crt ind-plate ind-plate--plastic">
       <Section className="AirAlarm__panel" title="CONTROL PANEL">
@@ -34,112 +35,123 @@ export const AirAlarmControlPanel = (props: { data: AirAlarmData; can: boolean; 
           <Tabs.Tab selected={tab === 4} onClick={() => setScreen(4)}>SENSORS</Tabs.Tab>
         </Tabs>
 
+        {/* ===== Overlay across ALL tabs ===== */}
+          {!canControl && (
+            <Box className="AirAlarm__lockedOverlay" aria-label="Controls are locked">
+              <Box className="AirAlarm__lockedOverlayInner">
+                <Box className="AirAlarm__lockedTitle">CONTROLS ARE LOCKED</Box>
+                <Box className="AirAlarm__lockedHint">
+                  Access denied. Unlock the panel to change settings.
+                </Box>
+              </Box>
+            </Box>
+          )}
+          
         {tab === 1 && (() => {
-  const mode = toNum(data.mode);
-  const canControl = !!can;
+          const mode = toNum(data.mode);
 
-  return (
-    <Section className="AirAlarm__subpanel">
-      {/* =========================
-       * Control Modes
-       * ========================= */}
-      <Section title="Control Modes" className="AirAlarm__subpanel" mt={1}>
-        <Box className="AirAlarm__modePanel">
-          <Box className="AirAlarm__modeGrid AirAlarm__modeGrid--layoutA">
-            <Button
-              className="AirAlarm__btn AirAlarm__modeKey AirAlarm__modeKey--filter"
-              selected={mode === 1}
-              disabled={!canControl}
-              onClick={() => act("set_mode", { mode: 1 })}
-            >
-              <Icon name="wind" /> FILTERING
-            </Button>
+          return (
+            <Section className="AirAlarm__subpanel">
+              {/* =========================
+               * Control Modes
+               * ========================= */}
+              <Section title="Control Modes" className="AirAlarm__subpanel" mt={1}>
+                <Box className="AirAlarm__modePanel">
+                  <Box className="AirAlarm__modeGrid AirAlarm__modeGrid--layoutA">
+                    <Button
+                      className="AirAlarm__btn AirAlarm__modeKey AirAlarm__modeKey--filter"
+                      selected={mode === 1}
+                      disabled={!canControl}
+                      onClick={() => act("set_mode", { mode: 1 })}
+                    >
+                      <Icon name="wind" /> FILTERING
+                    </Button>
 
-            <Button
-              className="AirAlarm__btn AirAlarm__modeKey AirAlarm__modeKey--replace"
-              selected={mode === 2}
-              disabled={!canControl}
-              onClick={() => act("set_mode", { mode: 2 })}
-            >
-              <Icon name="exchange-alt" /> REPLACE
-            </Button>
+                    <Button
+                      className="AirAlarm__btn AirAlarm__modeKey AirAlarm__modeKey--replace"
+                      selected={mode === 2}
+                      disabled={!canControl}
+                      onClick={() => act("set_mode", { mode: 2 })}
+                    >
+                      <Icon name="exchange-alt" /> REPLACE
+                    </Button>
 
-            <Button
-              className="AirAlarm__btn AirAlarm__modeKey AirAlarm__modeKey--cycle"
-              selected={mode === 4}
-              disabled={!canControl}
-              onClick={() => act("set_mode", { mode: 4 })}
-            >
-              <Icon name="sync" /> CYCLE
-            </Button>
+                    <Button
+                      className="AirAlarm__btn AirAlarm__modeKey AirAlarm__modeKey--cycle"
+                      selected={mode === 4}
+                      disabled={!canControl}
+                      onClick={() => act("set_mode", { mode: 4 })}
+                    >
+                      <Icon name="sync" /> CYCLE
+                    </Button>
 
-            <Button
-              className="AirAlarm__btn AirAlarm__modeKey AirAlarm__modeKey--fill"
-              selected={mode === 5}
-              disabled={!canControl}
-              onClick={() => act("set_mode", { mode: 5 })}
-            >
-              <Icon name="plus-circle" /> FILL
-            </Button>
+                    <Button
+                      className="AirAlarm__btn AirAlarm__modeKey AirAlarm__modeKey--fill"
+                      selected={mode === 5}
+                      disabled={!canControl}
+                      onClick={() => act("set_mode", { mode: 5 })}
+                    >
+                      <Icon name="plus-circle" /> FILL
+                    </Button>
 
-            <Button
-              className="AirAlarm__btn AirAlarm__btn--danger AirAlarm__modeKey--power"
-              color="bad"
-              selected={mode === 6}
-              disabled={!canControl}
-              onClick={() => act("set_mode", { mode: 6 })}
-            >
-              <Icon name="power-off" /> POWER SHUTDOWN
-            </Button>
-          </Box>
+                    <Button
+                      className="AirAlarm__btn AirAlarm__btn--danger AirAlarm__modeKey--power"
+                      color="bad"
+                      selected={mode === 6}
+                      disabled={!canControl}
+                      onClick={() => act("set_mode", { mode: 6 })}
+                    >
+                      <Icon name="power-off" /> POWER SHUTDOWN
+                    </Button>
+                  </Box>
 
-          <Box className="AirAlarm__bigRed">
-            <Button
-              className="AirAlarm__bigRedBtn"
-              selected={mode === 3}
-              fluid
-              color="bad"
-              disabled={!canControl}
-              onClick={() => act("set_mode", { mode: 3 })}
-            >
-              <Icon name="exclamation-triangle" /> PANIC SIPHON
-            </Button>
-          </Box>
+                  <Box className="AirAlarm__bigRed">
+                    <Button
+                      className="AirAlarm__bigRedBtn"
+                      selected={mode === 3}
+                      fluid
+                      color="bad"
+                      disabled={!canControl}
+                      onClick={() => act("set_mode", { mode: 3 })}
+                    >
+                      <Icon name="exclamation-triangle" /> PANIC SIPHON
+                    </Button>
+                  </Box>
 
 
-          {!canControl && <Box className="AirAlarm__lockedNote">Controls are locked.</Box>}
-        </Box>
-      </Section>
+                  {!canControl && <Box className="AirAlarm__lockedNote">Controls are locked.</Box>}
+                </Box>
+              </Section>
 
-      {/* =========================
-       * Area Alerts
-       * ========================= */}
-      <Section title="Area Alerts" className="AirAlarm__subpanel AirAlarm__alertsPanel" mt={1}>
-        <Flex className="AirAlarm__alertsRow" gap={0.8} wrap>
-          <Button
-            className="AirAlarm__btn AirAlarm__alertKey"
-            disabled={!canControl}
-            color={data.atmos_alarm ? "bad" : undefined}
-            onClick={() => act(data.atmos_alarm ? "atmos_reset" : "atmos_alarm")}
-          >
-            <Icon name={data.atmos_alarm ? "undo" : "exclamation"} />
-            {data.atmos_alarm ? "RESET ATMOS" : "ACTIVATE ATMOS"}
-          </Button>
+              {/* =========================
+               * Area Alerts
+               * ========================= */}
+              <Section title="Area Alerts" className="AirAlarm__subpanel AirAlarm__alertsPanel" mt={1}>
+                <Flex className="AirAlarm__alertsRow" gap={0.8} wrap>
+                  <Button
+                    className="AirAlarm__btn AirAlarm__alertKey"
+                    disabled={!canControl}
+                    color={data.atmos_alarm ? "bad" : undefined}
+                    onClick={() => act(data.atmos_alarm ? "atmos_reset" : "atmos_alarm")}
+                  >
+                    <Icon name={data.atmos_alarm ? "undo" : "exclamation"} />
+                    {data.atmos_alarm ? "RESET ATMOS" : "ACTIVATE ATMOS"}
+                  </Button>
 
-          <Button
-            className="AirAlarm__btn AirAlarm__alertKey"
-            disabled={!canControl}
-            color={data.fire_alarm ? "bad" : undefined}
-            onClick={() => act(data.fire_alarm ? "fire_reset" : "fire_alarm")}
-          >
-            <Icon name={data.fire_alarm ? "undo" : "fire"} />
-            {data.fire_alarm ? "RESET FIRE" : "ACTIVATE FIRE"}
-          </Button>
-        </Flex>
-      </Section>
-    </Section>
-  );
-})()}
+                  <Button
+                    className="AirAlarm__btn AirAlarm__alertKey"
+                    disabled={!canControl}
+                    color={data.fire_alarm ? "bad" : undefined}
+                    onClick={() => act(data.fire_alarm ? "fire_reset" : "fire_alarm")}
+                  >
+                    <Icon name={data.fire_alarm ? "undo" : "fire"} />
+                    {data.fire_alarm ? "RESET FIRE" : "ACTIVATE FIRE"}
+                  </Button>
+                </Flex>
+              </Section>
+            </Section>
+          );
+        })()}
 
 
         {tab === 2 && (

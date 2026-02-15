@@ -30,25 +30,29 @@ export const FlatGauge = (props: {
 
       <Box className="FlatGauge__body">
         <Box className="FlatGauge__track">
-          {props.zones.map((z, idx) => {
-            const left = clamp(((z.from - min) / (max - min)) * 100, 0, 100);
-            const right = clamp(((z.to - min) / (max - min)) * 100, 0, 100);
-            const width = clamp(right - left, 0, 100);
-            return (
-              <Box
-                key={idx}
-                className={`FlatGauge__zone FlatGauge__zone--${z.tone}`}
-                style={{ left: left + "%", width: width + "%" }}
-              />
-            );
-          })}
-          <Box className="FlatGauge__ticks" />
-          <Box className="FlatGauge__gloss" />
+          <Box className="FlatGauge__trackClip">
+            {props.zones.map((z, idx) => {
+              const left = clamp(((z.from - min) / (max - min)) * 100, 0, 100);
+              const right = clamp(((z.to - min) / (max - min)) * 100, 0, 100);
+              const width = clamp(right - left, 0, 100);
+              return (
+                <Box
+                  key={idx}
+                  className={`FlatGauge__zone FlatGauge__zone--${z.tone}`}
+                  style={{ left: left + "%", width: width + "%" }}
+                />
+              );
+            })}
+            <Box className="FlatGauge__ticks" />
+            <Box className="FlatGauge__gloss" />
+          </Box>
+
+          <Box className="FlatGauge__needleWrap" style={{ left: pct + "%" }}>
+            <Box className="FlatGauge__needle" />
+          </Box>
         </Box>
 
-        <Box className="FlatGauge__needleWrap" style={{ left: pct + "%" }}>
-          <Box className="FlatGauge__needle" />
-        </Box>
+
       </Box>
     </Box>
   );

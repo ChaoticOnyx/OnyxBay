@@ -14,7 +14,7 @@ export const AirAlarmVentsPanel = (props: {
   const { vents, can, act, selectedId, onPick } = props;
   const list = vents || [];
   const selected = list.find((v) => v.id_tag === selectedId) || null;
-  const formatShieldName = (name: string, max_length:number=15): string => {
+  const formatShieldName = (name: string, max_length:number=17): string => {
       if (!name) return "";
 
       // Убираем только ведущий "Atmospherics "

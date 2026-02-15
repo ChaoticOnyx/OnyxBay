@@ -119,6 +119,7 @@
 	..()
 	req_access = list(access_rd, access_atmospherics, access_engine_equip)
 	TLV["temperature"] =	list(-26 CELSIUS, 0 CELSIUS, 30 CELSIUS, 40 CELSIUS)
+	DEFAULT_TLV["temperature"] =	list(-26 CELSIUS, 0 CELSIUS, 30 CELSIUS, 40 CELSIUS)
 	target_temperature = 10 CELSIUS
 
 /obj/machinery/alarm/Destroy()
@@ -163,7 +164,12 @@
 	TLV["other"] =			list(-1.0, -1.0, 0.2, 0.5) // Partial pressure, kpa
 	TLV["pressure"] =		list(ONE_ATMOSPHERE*0.80,ONE_ATMOSPHERE*0.90,ONE_ATMOSPHERE*1.10,ONE_ATMOSPHERE*1.20) /* kpa */
 	TLV["temperature"] =	list(-26 CELSIUS, 0 CELSIUS, 40 CELSIUS, 66 CELSIUS)
-	DEFAULT_TLV = TLV.Copy()
+	DEFAULT_TLV["oxygen"] =			list(16, 19, 135, 140) // Partial pressure, kpa
+	DEFAULT_TLV["plasma"] =			list(-1.0, -1.0, 5, 10) // Partial pressure, kpa
+	DEFAULT_TLV["carbon dioxide"] = list(-1.0, -1.0, 5, 10) // Partial pressure, kpa
+	DEFAULT_TLV["other"] =			list(-1.0, -1.0, 0.2, 0.5) // Partial pressure, kpa
+	DEFAULT_TLV["pressure"] =		list(ONE_ATMOSPHERE*0.80,ONE_ATMOSPHERE*0.90,ONE_ATMOSPHERE*1.10,ONE_ATMOSPHERE*1.20) /* kpa */
+	DEFAULT_TLV["temperature"] =	list(-26 CELSIUS, 0 CELSIUS, 40 CELSIUS, 66 CELSIUS)
 	set_frequency(frequency)
 	if (!master_is_operating())
 		elect_master()
@@ -581,8 +587,9 @@
 			if(!_tgui_can_control(usr))
 				return FALSE
 			if(alarm_area)
-				var/obj/machinery/firealarm/FA = pick(/obj/machinery/firealarm in alarm_area)
-				FA.alarm()
+				for(var/obj/machinery/firealarm/FA in alarm_area)
+					FA.alarm()
+					break;
 			update_icon()
 			return TRUE
 
@@ -590,8 +597,9 @@
 			if(!_tgui_can_control(usr))
 				return FALSE
 			if(alarm_area)
-				var/obj/machinery/firealarm/FA = pick(/obj/machinery/firealarm in alarm_area)
-				FA.reset()
+				for(var/obj/machinery/firealarm/FA in alarm_area)
+					FA.reset()
+					break;
 			update_icon()
 			return TRUE
 
@@ -712,7 +720,8 @@
 				"Alarm triggers",
 				DEFAULT_TLV[env][idx],
 				max_value,
-				min_value
+				min_value,
+				round_value = FALSE
 			)
 
 			if(isnull(newval))
@@ -816,7 +825,7 @@
 	data["total_danger"] = danger_level
 	data["environment"] = environment_data
 	data["atmos_alarm"] = alarm_area.atmosalm
-	data["fire_alarm"] = alarm_area.fire != null
+	data["fire_alarm"] = alarm_area.fire != null ? alarm_area.fire : 0
 	data["target_temperature"] = "[CONV_KELVIN_CELSIUS(target_temperature)]C"
 
 /obj/machinery/alarm/proc/populate_controls(list/data)

@@ -13,9 +13,6 @@ const SensorsPanelInner = (props: { thresholds?: ThresholdRow[]; can: boolean; a
     return "AirAlarm__thCell--c4";
   };
 
-  const sorted4 = (settings: ThresholdRow["settings"]) =>
-    [...settings].sort((a, b) => (a.val ?? 0) - (b.val ?? 0));
-
   return (
     <Section className="AirAlarm__sensorCard" fitted>
       <Table className="AirAlarm__thTable" collapsing>
@@ -47,7 +44,7 @@ const SensorsPanelInner = (props: { thresholds?: ThresholdRow[]; can: boolean; a
             </Table.Cell>
 
 
-            {sorted4(row.settings).map((s) => (
+            {row.settings.map((s) => (
               <Table.Cell key={`${row.name}:${s.env}:${s.val}`} className="AirAlarm__thValCell">
                 <Button
                   className={classes([

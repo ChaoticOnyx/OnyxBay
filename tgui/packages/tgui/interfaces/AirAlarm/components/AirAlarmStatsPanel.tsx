@@ -45,24 +45,67 @@ export const AirAlarmStatsPanel = (props: {
   const pressureTone = dangerTone(toNum(pressure?.danger_level || 0));
   const tempTone = dangerTone(toNum(temp?.danger_level || 0));
 
-  const pressureZones: GaugeZone[] = [
-    { from: 0, to: 80, tone: "z1" },
-    { from: 80, to: 95, tone: "z0" },
-    { from: 95, to: 110, tone: "z2" },
-    { from: 110, to: 120, tone: "z3" },
-    { from: 120, to: 150, tone: "z4" },
-    { from: 150, to: 200, tone: "z5" },
-  ];
+  // 1) Достаём числовое значение порога из settings.
+  // Поддержка нескольких возможных имён поля, чтобы не упереться в ваш текущий DTO.
+  const getSettingNumber = (s: any): number | null => {
+    const v =
+      (typeof s.selected === "number" ? s.selected : null) ?? // <-- ВАЖНО у вас тут число TLV
+      (typeof s.threshold === "number" ? s.threshold : null) ??
+      (typeof s.value === "number" ? s.value : null) ??
+      (typeof s.num === "number" ? s.num : null);
+    return v;
+  };
 
-  const tempZones: GaugeZone[] = [
-    { from: 150, to: 250, tone: "z1" },
-    { from: 250, to: 280, tone: "z0" },
-    { from: 280, to: 320, tone: "z2" },
-    { from: 320, to: 350, tone: "z3" },
-    { from: 350, to: 400, tone: "z4" },
-    { from: 400, to: 450, tone: "z5" },
-  ];
+  // 2) Собираем карту TLV: env -> [lower, lowWarn, highWarn, upper]
+  const buildTlvMap = (thresholds?: any[]) => {
+    const map: Record<string, number[]> = {};
+    for (const row of thresholds || []) {
+      for (const s of row.settings || []) {
+        const env = s.env;
+        const idx = s.val; // у вас это 1..4 (индекс порога)
+        const num = getSettingNumber(s);
+        if (!env || !idx || num === null) continue;
 
+        if (!map[env]) map[env] = [];
+        map[env][idx - 1] = num; // 0..3
+      }
+    }
+    return map;
+  };
+
+  // 3) Генерируем зоны из TLV (5 интервалов)
+  const buildZonesFromTlv = (tlv: number[] | undefined, min: number, max: number): GaugeZone[] => {
+    // если TLV ещё не пришёл — fallback: один “нейтральный” интервал
+    if (!tlv || tlv.length < 4 || tlv.some((x) => typeof x !== "number" || Number.isNaN(x))) {
+      return [{ from: min, to: max, tone: "z2" }];
+    }
+
+    // lower, lowWarn, highWarn, upper
+    let [lb, lw, hw, ub] = tlv;
+
+    // Нормализация/страховка: сортируем по возрастанию и режем в [min, max]
+    const pts = [lb, lw, hw, ub].sort((a, b) => a - b).map((x) => clamp(x, min, max));
+    [lb, lw, hw, ub] = pts;
+
+    // Интервалы: danger / warn / safe / warn / danger
+    // Тона:
+    // - z5: опасно (красный)
+    // - z3: предупреждение (оранжевый)
+    // - z0: норма (зелёный)
+    const zones: GaugeZone[] = [];
+    if (min < lb) zones.push({ from: min, to: lb, tone: "z5" });
+    if (lb < lw) zones.push({ from: lb, to: lw, tone: "z3" });
+    if (lw < hw) zones.push({ from: lw, to: hw, tone: "z0" });
+    if (hw < ub) zones.push({ from: hw, to: ub, tone: "z3" });
+    if (ub < max) zones.push({ from: ub, to: max, tone: "z5" });
+
+    return zones.length ? zones : [{ from: min, to: max, tone: "z2" }];
+  };
+
+  const tlvMap = buildTlvMap(data.thresholds); // <-- берём thresholds из backend data
+
+  const pressureZones = buildZonesFromTlv(tlvMap["pressure"], 0, 5066.25);
+  const tempZones = buildZonesFromTlv(tlvMap["temperature"], 0, 5000);
 
   return (
     <Box className="AirAlarm__crtBezel ind-plate ind-plate--plastic">
