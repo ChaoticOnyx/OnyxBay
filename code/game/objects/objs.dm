@@ -24,9 +24,12 @@
 
 /obj/Initialize()
 	. = ..()
-	if(turf_height_offset && isturf(loc))
-		var/turf/T = loc
-		T.update_turf_height()
+	var/turf/T = get_turf(src)
+	if(T)
+		if(turf_height_offset)
+			T.update_turf_height()
+		if(density && !(atom_flags & ATOM_FLAG_CHECKS_BORDER) && !istype(src, /obj/machinery/door))
+			T.update_astar_node()
 
 /obj/Destroy()
 	CAN_BE_REDEFINED(TRUE)
@@ -35,8 +38,11 @@
 		delivery.wrapped = null
 
 	var/turf/T = get_turf(src)
-	if(T && turf_height_offset)
-		set_turf_height_offset(0)
+	if(T)
+		if(turf_height_offset)
+			set_turf_height_offset(0)
+		if(density && !(atom_flags & ATOM_FLAG_CHECKS_BORDER) && !istype(src, /obj/machinery/door))
+			T.update_astar_node()
 	return ..()
 
 /obj/forceMove(atom/destination)

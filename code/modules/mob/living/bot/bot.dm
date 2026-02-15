@@ -313,13 +313,32 @@
 	if(!LAZYLEN(patrol_path))
 		return
 
-	var/list/pos = patrol_path[patrol_path.len - 1 > 1 ? patrol_path.len - 1 : 1]
+	var/list/pos = patrol_path[patrol_path.len]
 	var/turf/next_step = locate(pos["x"], pos["y"], pos["z"])
+
+	// Skip waypoints we're already standing on (e.g. our start position)
+	if(get_turf(src) == next_step)
+		patrol_path.Cut(patrol_path.len)
+		return
+
 	step_towards(src, next_step)
 	if(get_turf(src) == next_step)
-		patrol_path.Cut(patrol_path.len - 1, patrol_path.len)
+		patrol_path.Cut(patrol_path.len)
 	else
-		frustration++
+		// Check if waypoint is blocked by a non-door dense object
+		var/path_blocked = next_step.density
+		if(!path_blocked)
+			for(var/obj/O in next_step)
+				if(istype(O, /obj/machinery/door))
+					continue
+				if(O.density && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER))
+					path_blocked = TRUE
+					break
+		if(path_blocked)
+			patrol_path = list() // Abandon path — re-route next tick
+			next_step.update_astar_node() // Update rustg graph
+		else
+			frustration++
 
 /mob/living/bot/proc/startPatrol()
 	var/turf/target_turf = getPatrolTurf()

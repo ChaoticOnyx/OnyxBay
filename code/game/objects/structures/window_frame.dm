@@ -282,7 +282,7 @@
 			icon_base = "winframe_r"
 			icon_border = "winborder_r"
 			hitby_loudness_multiplier = 1.0
-			density = TRUE
+			set_density(TRUE)
 			max_health = 10
 			pane_melee_mult = 0.9
 		if(FRAME_NORMAL)
@@ -292,7 +292,7 @@
 			icon_base = "winframe"
 			icon_border = "winborder"
 			hitby_loudness_multiplier = 0.5
-			density = outer_pane ? TRUE : FALSE
+			set_density(outer_pane ? TRUE : FALSE)
 			max_health = 8
 			pane_melee_mult = 1.0
 		if(FRAME_GRILLE)
@@ -302,7 +302,7 @@
 			icon_base = "grille"
 			icon_border = "winborder"
 			hitby_loudness_multiplier = 1.5
-			density = TRUE
+			set_density(TRUE)
 			max_health = 12
 			pane_melee_mult = 0.7
 		if(FRAME_DESTROYED)
@@ -312,7 +312,7 @@
 			icon_base = "grille-b"
 			icon_border = "blank"
 			hitby_loudness_multiplier = 0.5
-			density = FALSE
+			set_density(FALSE)
 			max_health = 6
 		if(FRAME_ELECTRIC)
 			name = outer_pane ? "electrochromic window" : "wired window frame"
@@ -321,7 +321,7 @@
 			icon_base = "winframe_e"
 			icon_border = "winborder"
 			hitby_loudness_multiplier = 0.5
-			density = outer_pane ? TRUE : FALSE
+			set_density(outer_pane ? TRUE : FALSE)
 			max_health = 8
 			pane_melee_mult = 1.0
 		if(FRAME_RELECTRIC)
@@ -331,7 +331,7 @@
 			icon_base = "winframe_re"
 			icon_border = "winborder_r"
 			hitby_loudness_multiplier = 1.0
-			density = TRUE
+			set_density(TRUE)
 			max_health = 10
 			pane_melee_mult = 0.9
 

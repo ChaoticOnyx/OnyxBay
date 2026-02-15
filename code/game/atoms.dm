@@ -193,6 +193,9 @@
 /atom/proc/set_density(new_density)
 	if(density != new_density)
 		density = !!new_density
+		var/turf/T = get_turf(src)
+		if(T)
+			T.update_astar_node()
 
 /atom/proc/bullet_act(obj/item/projectile/P, def_zone)
 	P.on_hit(src, 0, def_zone)
