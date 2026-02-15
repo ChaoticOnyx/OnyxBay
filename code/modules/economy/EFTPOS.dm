@@ -30,7 +30,9 @@
 	/// Associative list of input mode identifiers to `/datum/eftpos_input_mode` instances.
 	var/list/input_modes
 	/// Unique identifier for this terminal, used in transaction logs.
-	var/machine_id
+	var/eftpos_id
+	/// Deprecated! Name of this terminal, was used by our 'precious' mappers, so I left it.
+	var/eftpos_name = "Default EFTPOS scanner"
 	/// Overlay used to display the holographic price indicator.
 	var/image/price_overlay
 
@@ -41,8 +43,7 @@
 		IM_PIN = new /datum/eftpos_input_mode/pin(),
 		IM_ACC = new /datum/eftpos_input_mode/account(),
 	)
-
-	machine_id = "[station_name()] EFTPOS #[num_financial_terminals++]"
+	eftpos_id = "[station_name()] EFTPOS #[num_financial_terminals++]"
 	price_overlay = image('icons/effects/effects.dmi', "blank")
 
 /obj/item/device/eftpos/Destroy()
@@ -137,7 +138,7 @@
 	if (payment_amount > wallet.worth)
 		return
 
-	if (!charge_to_account(payment_account_number, wallet.owner_name, "Charge (Charge Card)", machine_id, payment_amount))
+	if (!charge_to_account(payment_account_number, wallet.owner_name, "Charge (Charge Card)", eftpos_id, payment_amount))
 		return
 
 	wallet.deduct(payment_amount)
@@ -157,8 +158,8 @@
 		announce_message("insufficient funds", TA_ERROR)
 		return
 
-	charge_to_account(account_number, name, "Payment", machine_id, -payment_amount)
-	charge_to_account(payment_account_number, buyer_account.owner_name, "Charge", machine_id, payment_amount)
+	charge_to_account(account_number, name, "Payment", eftpos_id, -payment_amount)
+	charge_to_account(payment_account_number, buyer_account.owner_name, "Charge", eftpos_id, payment_amount)
 
 	announce_message("payment complete", TA_SUCCESS)
 
@@ -189,7 +190,7 @@
 /obj/item/device/eftpos/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
-		ui = new(user, src, "PaymentTerminal", name)
+		ui = new(user, src, "PaymentTerminal", "EFTPOS scanner")
 		ui.open()
 
 /obj/item/device/eftpos/tgui_data(mob/user)
