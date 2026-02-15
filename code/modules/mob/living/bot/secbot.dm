@@ -128,13 +128,11 @@
 
 /mob/living/bot/secbot/turn_on()
 	..()
-	if(stun_baton)
-		stun_baton.set_status(on, null)
+	stun_baton.set_status(on, null)
 
 /mob/living/bot/secbot/turn_off()
 	..()
-	if(stun_baton)
-		stun_baton.set_status(on, null)
+	stun_baton.set_status(on, null)
 
 /mob/living/bot/secbot/update_icons()
 	icon_state = "secbot[on]"
