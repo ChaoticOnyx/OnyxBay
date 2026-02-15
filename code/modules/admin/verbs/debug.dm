@@ -463,3 +463,11 @@
 		SSgarbage.toggle_harddel(TRUE)
 		log_and_message_admins("stop hard deleting garbage queue.", usr)
 	return
+
+/client/proc/allow_browser_inspect()
+	set category = "Debug"
+	set name = "Allow Browser Inspect"
+	set desc = "Allow browser debugging via inspect."
+
+	to_chat(usr, SPAN("notice", "You can now right click to use inspect on browsers."))
+	winset(usr, null, list("browser-options" = "+devtools"))
