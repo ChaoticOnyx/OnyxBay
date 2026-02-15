@@ -13,8 +13,6 @@
 	icon = 'icons/obj/device.dmi'
 	icon_state = "eftpos"
 
-	obj_flags = OBJ_FLAG_ANCHORABLE
-
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
 	origin_tech = list(TECH_MAGNET = 1)
@@ -114,7 +112,7 @@
 	var/datum/eftpos_input_mode/current_mode = get_current_mode()
 	current_mode.set_meta(list("acc" = id_card.associated_account_number))
 
-	if (!check_account(id_card.associated_account_number))
+	if (!check_account(id_card.associated_account_number, FALSE))
 		return
 
 	pay_with_account(id_card.associated_account_number)
@@ -313,14 +311,14 @@
 				announce_message("amount set", TA_SUCCESS)
 			current_mode.reset()
 
-/obj/item/device/eftpos/proc/check_account(account_number)
+/obj/item/device/eftpos/proc/check_account(account_number, pin_required = TRUE)
 	var/datum/money_account/account = get_account(account_number)
 	if (isnull(account) || account.suspended)
 		announce_message("account not found or suspended", TA_ERROR)
 		return FALSE
 
 	// This way we're skipping PIN input screen if the account isn't secured.
-	if (!account.security_level)
+	if (!account.security_level && !pin_required)
 		return TRUE
 
 	if (input_mode != IM_PIN)
