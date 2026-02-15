@@ -409,8 +409,7 @@ var/const/enterloopsanity = 100
 	var/result = rustg_update_nodes_astar(json_encode(list(__get_astar_node())))
 
 	if(result != "1")
-		return FALSE
-	return TRUE
+		CRASH(result)
 
 // Updates turf participation in ZAS according to outside status. Must be called whenever the outside status of a turf may change.
 /turf/proc/update_external_atmos_participation()
