@@ -37,9 +37,9 @@
 /obj/item/device/eftpos/Initialize()
 	. = ..()
 	input_modes = list(
-		IM_SUM = new/datum/eftpos_input_mode,
-		IM_PIN = new/datum/eftpos_input_mode/pin,
-		IM_ACC = new/datum/eftpos_input_mode/account,
+		IM_SUM = new /datum/eftpos_input_mode(),
+		IM_PIN = new /datum/eftpos_input_mode/pin(),
+		IM_ACC = new /datum/eftpos_input_mode/account(),
 	)
 
 	machine_id = "[station_name()] EFTPOS #[num_financial_terminals++]"
