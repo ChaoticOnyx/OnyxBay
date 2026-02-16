@@ -18,6 +18,8 @@
 	slot_flags = SLOT_HEAD
 	body_parts_covered = HEAD
 	attack_verb = list("bapped")
+	base_icon_state = "paper"
+	var/crumpled_state = "scrap"
 
 	var/info = ""   	//What's actually written on the paper.
 	var/info_links  	//A different version of the paper which includes html links at fields and EOF
@@ -38,6 +40,7 @@
 	var/appendable = TRUE
 	var/dynamic_icon = FALSE
 	var/rawhtml = FALSE
+	var/override_bgcolor = null
 
 	var/const/deffont = "Verdana"
 	var/const/signfont = "Times New Roman"
@@ -182,14 +185,11 @@
 /obj/item/paper/on_update_icon()
 	if(dynamic_icon)
 		return
-	if(!crumpled)
-		icon_state = "paper"
-		if(!is_clean())
-			icon_state = "[icon_state]_words"
-	else
-		icon_state = "scrap"
+	icon_state = crumpled ? crumpled_state : base_icon_state
+	if(!is_clean())
+		icon_state += "_words"
 	if(taped)
-		icon_state = "[icon_state]_taped"
+		icon_state += "_taped"
 
 /obj/item/paper/proc/update_space()
 	free_space = initial(free_space)
@@ -241,7 +241,7 @@
 		<title>[name]</title>
 		<style>[styles]</style>
 	</head>
-	<body bgcolor='[color ? color : COLOR_WHITE]' text='[text_color]'>
+	<body bgcolor='[override_bgcolor ? override_bgcolor : (color ? color : COLOR_WHITE)]' text='[text_color]'>
 		[can_read ? info : stars(info)][stamps_images]
 	</body>
 </html>
@@ -266,18 +266,22 @@
 			name = "[name] (taped)"
 		add_fingerprint(usr)
 
+/obj/item/paper/proc/crumple()
+	if(crumpled)
+		return FALSE
+	info = stars(info,85)
+	crumpled = TRUE
+	update_icon()
+	throw_range = 7
+	throw_speed = 1
+	return TRUE
+
 /obj/item/paper/attack_self(mob/living/user)
 	if(user.a_intent == I_HURT)
-		if(crumpled)
+		if(crumple())
+			user.visible_message(SPAN_WARNING("\The [user] crumples \the [src] into a ball!"))
+		else
 			user.show_message(SPAN_NOTICE("\The [src] is already crumpled."))
-			return
-		//crumple dat paper
-		info = stars(info,85)
-		user.visible_message(SPAN_WARNING("\The [user] crumples \the [src] into a ball!"))
-		crumpled = TRUE
-		update_icon()
-		throw_range = 7
-		throw_speed = 1
 		return
 	if(taped)
 		name = copytext(name, 1, length(name)-7)
@@ -416,7 +420,7 @@
 		<title>[name]</title>
 		<style>[styles]</style>
 	</head>
-	<body bgcolor='[color]'>
+	<body bgcolor='[override_bgcolor ? override_bgcolor : color]'>
 		[info_links][stamps_images]
 	</body>
 </html>
@@ -609,7 +613,7 @@
 	var/class = "warning"
 
 	if(P.lit && !user.restrained())
-		if(istype(P, /obj/item/flame/lighter/zippo))
+		if(istype(P, /obj/item/flame/lighter))
 			class = "rose"
 
 		user.visible_message("<span class='[class]'>[user] holds \the [P] up to \the [src], it looks like \he's trying to burn it!</span>", \
@@ -678,7 +682,7 @@
 		<title>[name]</title>
 		<style>[styles]</style>
 	</head>
-	<body bgcolor='[color]'>
+	<body bgcolor='[override_bgcolor ? override_bgcolor : color]'>
 		[info_links][stamps_images]
 	</body>
 </html>
@@ -746,7 +750,7 @@
 		<title>[name]</title>
 		<style>[styles]</style>
 	</head>
-	<body bgcolor='[color]'>
+	<body bgcolor='[override_bgcolor ? override_bgcolor : color]'>
 		[info_links][stamps_images]
 	</body>
 </html>
