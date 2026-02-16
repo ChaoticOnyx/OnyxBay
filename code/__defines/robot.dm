@@ -12,3 +12,5 @@
 #define ROBOT_HULL_FLAG_HAS_PANEL (1<<1)
 /// Determines whether to play robot's footstep sounds
 #define ROBOT_HULL_FLAG_HAS_FOOTSTEPS (1<<2)
+/// Determines whether to animate the robot's incapacitated state.
+#define ROBOT_HULL_FLAG_TILTABLE (1<<3)
