@@ -215,3 +215,29 @@
 
 /datum/robot_hull/drone/construction
 	icon_state = "constructiondrone"
+
+/datum/robot_hull/sphere
+	hull_flags = parent_type::hull_flags | ROBOT_HULL_FLAG_TILTABLE
+	footstep_sound = SFX_FOOTSTEP_ROBOT_UNICYCLE
+
+/datum/robot_hull/sphere/kerfur_standart
+	icon_state = "kerfur-standard"
+	default_emotes = list(
+		/datum/emote/synth/meow,
+	)
+
+/datum/robot_hull/sphere/kerfur_engineer
+	parent_type = /datum/robot_hull/sphere/kerfur_standart
+	icon_state = "kerfur-engineer"
+
+/datum/robot_hull/sphere/kerfur_security
+	parent_type = /datum/robot_hull/sphere/kerfur_standart
+	icon_state = "kerfur-security"
+
+/datum/robot_hull/sphere/kerfur_service
+	parent_type = /datum/robot_hull/sphere/kerfur_standart
+	icon_state = "kerfur-service"
+
+/datum/robot_hull/sphere/kerfur_science
+	parent_type = /datum/robot_hull/sphere/kerfur_standart
+	icon_state = "kerfur-science"

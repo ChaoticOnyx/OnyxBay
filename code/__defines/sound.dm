@@ -108,6 +108,9 @@
 #define SFX_MALE_YAWN               "male_yawn"
 #define SFX_MALE_SIGH               "male_sigh"
 
+// MISC EMOTES
+#define SFX_ROBOTIC_MEOW "robotic_meow"
+
 // AMBIENT
 #define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"
 #define SFX_AMBIENT_OFF_GLOBAL          "ambient_off_global"
@@ -368,6 +371,7 @@
 #define SFX_FOOTSTEP_BLANK          "footstep_blank"
 #define SFX_FOOTSTEP_ROBOT_LEGS     "footstep_robot_legs"
 #define SFX_FOOTSTEP_ROBOT_SPIDER   "footstep_robot_spider"
+#define SFX_FOOTSTEP_ROBOT_UNICYCLE "footstep_robot_unicycle"
 #define SFX_FOOTSTEP_STAIRS         "footstep_stairs"
 #define SFX_FOOTSTEP_SWAMP          "footstep_swamp"
 
