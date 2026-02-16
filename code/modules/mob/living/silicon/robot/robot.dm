@@ -812,7 +812,7 @@
 
 	ClearOverlays()
 
-	if (!is_ic_dead() && (using_hull.hull_flags & ROBOT_HULL_FLAG_HAS_EYES))
+	if (stat == CONSCIOUS && (using_hull.hull_flags & ROBOT_HULL_FLAG_HAS_EYES))
 		var/eyes_icon_state = "eyes-[using_hull.icon_state]"
 
 		AddOverlays(eyes_icon_state)
