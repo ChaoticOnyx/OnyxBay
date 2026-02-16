@@ -8,6 +8,7 @@
 
 	density = 1
 	anchored = 1.0
+	turf_height_offset = 2
 	idle_power_usage = 1 WATTS
 	active_power_usage = 5 WATTS
 	var/strapped = 0.0
@@ -157,6 +158,7 @@
 	busy = TRUE
 	usr.visible_message(SPAN_DANGER("[usr] begins to undress [patient] on the table with the built-in tool."),
 						SPAN_NOTICE("You begin to undress [patient] on the table with the built-in tool."))
+	playsound(loc, 'sound/machines/surg_table_undress.ogg', 50, 1)
 	if(do_after(usr, time_to_strip, patient, luck_check_type = LUCK_CHECK_MED) && !QDELETED(src))
 		if(!patient)
 			busy = FALSE
@@ -185,6 +187,7 @@
 
 	C.resting = TRUE
 	C.dropInto(loc)
+	C.set_dir(SOUTH)
 	add_fingerprint(user)
 
 	if(ishuman(C))

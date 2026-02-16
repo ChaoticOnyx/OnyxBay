@@ -1,0 +1,97 @@
+.RockerSwitch__row { gap: 0.75rem; }
+
+.RockerSwitch__label {
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  opacity: 0.92;
+  font-size: 0.6875rem;
+}
+
+.RockerSwitch {
+  position: relative;
+  width: 7.5rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+
+  background:
+    radial-gradient(13.75rem 2.75rem at 30% 18%, rgba(255, 255, 255, 0.16), rgba(0, 0, 0, 0) 58%),
+    linear-gradient(180deg, rgba(90, 90, 90, 0.55), rgba(10, 10, 10, 0.82));
+
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1.125rem 1.625rem rgba(0, 0, 0, 0.52),
+    inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.08),
+    0 0.625rem 1.125rem rgba(0, 0, 0, 0.40);
+
+  overflow: hidden;
+  user-select: none;
+}
+
+.RockerSwitch__rail {
+  position: absolute;
+  inset: 0.4375rem 0.4375rem;
+  border-radius: 0.625rem;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.06),
+    inset 0 0 1.125rem rgba(0, 0, 0, 0.70);
+}
+
+.RockerSwitch__handle {
+  position: absolute;
+  top: 0.4375rem;
+  bottom: 0.4375rem;
+  width: 3.25rem;
+  left: 0.4375rem;
+  border-radius: 0.625rem;
+
+  background:
+    radial-gradient(circle at 28% 28%, rgba(255, 255, 255, 0.92), rgba(185, 185, 185, 0.52) 56%, rgba(18, 18, 18, 0.75) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(0, 0, 0, 0.25));
+
+  box-shadow:
+    0 0.625rem 0.875rem rgba(0, 0, 0, 0.55),
+    inset 0 0 0 0.0625rem rgba(0, 0, 0, 0.42),
+    inset 0 0.625rem 0.875rem rgba(255, 255, 255, 0.06);
+
+  transition: transform 160ms cubic-bezier(.2,.9,.2,1.1), filter 120ms ease;
+  will-change: transform;
+}
+
+.RockerSwitch__labels--2 {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  opacity: 0.92;
+  pointer-events: none;
+}
+
+.RockerSwitch__lab { opacity: 0.72; }
+.RockerSwitch--on  .RockerSwitch__lab--on  { opacity: 1; color: var(--ind-good, rgba(140, 255, 180, 0.95)); }
+.RockerSwitch--on  .RockerSwitch__lab--off { opacity: 0.55; }
+.RockerSwitch--off .RockerSwitch__lab--on  { opacity: 0.55; color: var(--ind-good, rgba(140, 255, 180, 0.95)); }
+.RockerSwitch--off .RockerSwitch__lab--off { opacity: 1; color: rgba(202, 60, 60, 0.92); }
+
+.RockerSwitch__hit--2 {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.RockerSwitch__hitZone { cursor: pointer; }
+.RockerSwitch--disabled .RockerSwitch__hitZone { cursor: default; }
+
+.RockerSwitch--on  .RockerSwitch__handle { transform: translateX(0); }
+.RockerSwitch--off .RockerSwitch__handle { transform: translateX(3.375rem); }
+
+.RockerSwitch--danger.RockerSwitch--on .RockerSwitch__lab--on { color: var(--ind-bad, rgba(255, 110, 110, 0.95)); }
+.RockerSwitch--disabled { opacity: 0.45; filter: grayscale(0.55); }
+.RockerSwitch--anim .RockerSwitch__handle { filter: brightness(1.06); }

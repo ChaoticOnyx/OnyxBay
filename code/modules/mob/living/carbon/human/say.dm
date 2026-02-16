@@ -80,6 +80,11 @@
 			temp += pick(append)
 		say(temp)
 
+	// Never trust a winget() not to be late for the party
+	// YES I KNOW spawns are bad. Could care less in this particular case.
+	spawn(1)
+		remove_speech_bubble()
+
 /mob/living/carbon/human/say_understands(mob/other,datum/language/language = null)
 
 	if(has_brain_worms()) //Brain worms translate everything. Even mice and alien speak.

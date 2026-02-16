@@ -125,6 +125,7 @@ else if(##equipment_var) {\
 			to_chat(M, "You are unable to deploy your suit's helmet as \the [H.head] is in the way.")
 		else if (H.equip_to_slot_if_possible(helmet, slot_head))
 			to_chat(M, "Your suit's helmet deploys with a hiss.")
+			playsound(loc, 'sound/effects/using/outfit/helmet_voidsuit.ogg', 75, 1)
 			helmet.canremove = 0
 
 	if(tank)
@@ -189,6 +190,7 @@ else if(##equipment_var) {\
 		if(H.equip_to_slot_if_possible(helmet, slot_head))
 			helmet.pickup(H)
 			helmet.canremove = FALSE
+			playsound(loc, 'sound/effects/using/outfit/helmet_voidsuit.ogg', 75, 1)
 			to_chat(H, "<span class='info'>You deploy your suit helmet, sealing you off from the world.</span>")
 	helmet.update_light(H)
 

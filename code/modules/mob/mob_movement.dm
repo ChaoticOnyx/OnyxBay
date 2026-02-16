@@ -134,61 +134,101 @@
 	SEND_SIGNAL(src, SIGNAL_UPDATE_GLIDE_SIZE, glide_size)
 
 //This proc should never be overridden elsewhere at /atom/movable to keep directions sane.
+// TODO: Dump the entire movement code, and rip a sane one from TG or something.
+//       For now, it's but a magic box that runs in an unpredictable order.
 /atom/movable/Move(newloc, direct)
-	var/old_loc = loc
+	// v please put this back up once /atom/movable/proc/throw_at() get rewritten into something less cursed
+	//if(!loc || !newloc)
+	//	return
 
-	var/turf/old_turf = get_turf(old_loc)
+	var/oldloc = loc
+
+	var/turf/old_turf = get_turf(oldloc)
 	var/turf/new_turf = get_turf(newloc)
 
-	if(old_turf?.z != new_turf?.z)
-		SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, old_turf, new_turf)
+	if(loc != newloc)
+		if(old_turf?.z != new_turf?.z)
+			SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, old_turf, new_turf)
 
-	if (direct & (direct - 1))
-		if (direct & 1)
-			if (direct & 4)
-				if (step(src, NORTH))
-					step(src, EAST)
-				else
-					if (step(src, EAST))
-						step(src, NORTH)
-			else
-				if (direct & 8)
-					if (step(src, NORTH))
-						step(src, WEST)
-					else
-						if (step(src, WEST))
-							step(src, NORTH)
-		else
-			if (direct & 2)
-				if (direct & 4)
-					if (step(src, SOUTH))
-						step(src, EAST)
-					else
-						if (step(src, EAST))
-							step(src, SOUTH)
-				else
-					if (direct & 8)
-						if (step(src, SOUTH))
-							step(src, WEST)
-						else
-							if (step(src, WEST))
-								step(src, SOUTH)
-	else
-		var/atom/A = src.loc
+		if(ISCARDINALDIR(direct)) // Cardinal move
+			. = ..()
+		else // Diagonal move, split it into cardinal moves
+			moving_diagonally = /atom/movable::FIRST_DIAGONAL_STEP
+			var/first_step_dir
+			// The `&& moving_diagonally` checks are so that a forceMove taking
+			// place due to a Crossed, Bumped, etc. call will interrupt
+			// the second half of the diagonal movement, or the second attempt
+			// at a first half if step() fails because we hit something.
+			if(direct & NORTH)
+				if(direct & EAST)
+					if(step(src, NORTH) && moving_diagonally)
+						first_step_dir = NORTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, EAST)
+					else if(moving_diagonally && step(src, EAST))
+						first_step_dir = EAST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, NORTH)
+				else if(direct & WEST)
+					if(step(src, NORTH) && moving_diagonally)
+						first_step_dir = NORTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, WEST)
+					else if (moving_diagonally && step(src, WEST))
+						first_step_dir = WEST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, NORTH)
+			else if(direct & SOUTH)
+				if(direct & EAST)
+					if (step(src, SOUTH) && moving_diagonally)
+						first_step_dir = SOUTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, EAST)
+					else if(moving_diagonally && step(src, EAST))
+						first_step_dir = EAST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, SOUTH)
+				else if(direct & WEST)
+					if(step(src, SOUTH) && moving_diagonally)
+						first_step_dir = SOUTH
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, WEST)
+					else if(moving_diagonally && step(src, WEST))
+						first_step_dir = WEST
+						moving_diagonally = /atom/movable::SECOND_DIAGONAL_STEP
+						. = step(src, SOUTH)
 
-		var/olddir = dir //we can't override this without sacrificing the rest of movable/New()
-		. = ..()
-		if(direct != olddir)
-			dir = olddir
-			set_dir(direct)
+			if(moving_diagonally == /atom/movable::SECOND_DIAGONAL_STEP)
+				if(!.)
+					set_dir(first_step_dir)
+			moving_diagonally = FALSE
+			return
 
-		src.move_speed = world.time - src.l_move_time
-		src.l_move_time = world.time
-		src.m_flag = 1
-		if ((A != src.loc && A && A.z == src.z))
-			src.last_move = get_dir(A, src.loc)
+	if(!loc || (loc == oldloc && oldloc != newloc))
+		last_move = 0
+		return
 
-	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
+	last_move = direct
+	move_speed = world.time - src.l_move_time
+	l_move_time = world.time
+
+	if(dir != direct)
+		set_dir(direct)
+
+	// Cursed pieces of code that we need right here for reasons.
+	if(.)
+		// 'Check code/modules/lighting/lighting_atom.dm'
+		if(light_sources)
+			for(var/datum/light_source/L in light_sources)
+				L.source_atom.update_light()
+
+		// Check '‎code/modules/mob/observer/freelook/update_triggers.dm'
+		if(opacity)
+			updateVisibility(src)
+
+		SEND_SIGNAL(src, SIGNAL_MOVED, src, oldloc, loc)
+
+	return
 
 /proc/step_glide(atom/movable/am, dir, glide_size_override)
 	am.set_glide_size(glide_size_override)

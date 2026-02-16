@@ -213,6 +213,8 @@
 				M.client.eye = src
 
 	AM.forceMove(src)
+	if(ismob(AM))
+		playsound(src.loc, 'sound/effects/using/disposal/person_bin_get.ogg', 40, 1)
 	update_icon()
 	return
 

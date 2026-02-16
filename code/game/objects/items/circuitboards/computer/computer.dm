@@ -115,6 +115,10 @@
 	build_path = /obj/machinery/computer/operating
 	origin_tech = list(TECH_DATA = 2, TECH_BIO = 2)
 
+/obj/item/circuitboard/operating/small
+	name = T_BOARD("surgical console")
+	build_path = /obj/machinery/computer/operating/small
+
 /obj/item/circuitboard/curefab
 	name = T_BOARD("cure fabricator")
 	icon_state = "id_mod_cyan"

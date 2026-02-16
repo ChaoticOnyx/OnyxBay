@@ -69,6 +69,7 @@
 
 	locked = !locked
 	anchored = locked
+	playsound(src, locked ? 'sound/machines/d_barrier.ogg' : 'sound/machines/d_barrier_off.ogg', 30, FALSE)
 
 	update_icon()
 	show_splash_text(user, "bolts [locked ? "dropped" : "lifted"].", "You [locked ? "drop" : "lift"] \the [src] bolts.")
@@ -129,3 +130,7 @@
 	var/datum/effect/effect/system/spark_spread/S = new /datum/effect/effect/system/spark_spread
 	S.set_up(3, 1, src)
 	S.start()
+
+
+
+

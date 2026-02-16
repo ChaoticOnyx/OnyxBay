@@ -10,9 +10,12 @@
 	set name = "Say"
 	set hidden = TRUE
 
-	ASSERT(client && usr == src)
+	ASSERT(client && (usr == src || usr == client))
 
 	client.close_saywindow()
+
+	if(!message)
+		return
 
 	usr.say(message)
 
@@ -20,13 +23,16 @@
 	set name = "Say Verb"
 	set category = "IC"
 
-	ASSERT(client && usr == src)
+	ASSERT(client && (usr == src || usr == client))
 
-	winset(usr, null, "saywindow.is-visible=true;saywindow-input.focus=true;")
+	client.open_saywindow()
 
-/mob/verb/me_verb(message as text)
+/mob/verb/me_verb(message as text|null)
 	set name = "Me"
-	set category = "IC"
+	set hidden = TRUE
+
+	if(!message)
+		return
 
 	message = sanitize(message)
 
@@ -42,6 +48,14 @@
 
 	var/ckeyname = "[usr.ckey]/[usr.name]"
 	GLOB.indigo_bot.chat_webhook(config.indigo_bot.emote_webhook, "**[ckeyname]:** [message]")
+
+/mob/verb/me_verb_fake()
+	set name = "Me Verb"
+	set category = "IC"
+
+	ASSERT(client && (usr == src || usr == client))
+
+	me_wrapper()
 
 /mob/proc/say_dead(message)
 	communicate(/decl/communication_channel/dsay, client, message)

@@ -9,9 +9,9 @@
 	active_power_usage = 4 KILO WATTS // A CT scan machine uses 1-15 kW depending on the model and equipment involved.
 	req_access = list(access_medical)
 
-	icon_state = "body_scanner_0"
-	var/empty_state = "body_scanner_0"
-	var/occupied_state = "body_scanner_1"
+	icon_state = "resleever_0"
+	var/empty_state = "resleever_0"
+	var/occupied_state = "resleever_1"
 	var/allow_occupant_types = list(/mob/living/carbon/human)
 	var/disallow_occupant_types = list()
 

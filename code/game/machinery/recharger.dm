@@ -70,6 +70,7 @@
 
 		if(user.drop(G, src))
 			charging = G
+			playsound(loc, 'sound/machines/recharger_in.ogg', 50, 1)
 			update_icon(icon_state_charging)
 	else if((isScrewdriver(G) || isCrowbar(G) || isWrench(G)) && portable)
 		if(charging)

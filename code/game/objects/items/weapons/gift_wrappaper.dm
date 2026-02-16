@@ -146,6 +146,7 @@
 	desc = "You can use this to wrap items in."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "wrap_paper"
+	item_state = "wrap_paper"
 	var/amount = 0
 
 /obj/item/wrapping_paper/Initialize()
@@ -176,6 +177,7 @@
 					G.add_fingerprint(user)
 					W.add_fingerprint(user)
 					amount -= a_used
+					icon_state = "wrap_paper-used"
 
 			if (src.amount <= 0)
 				new /obj/item/c_tube( src.loc )
