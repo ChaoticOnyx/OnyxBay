@@ -1,4 +1,4 @@
-/// Utility proc that allows to easily override hull vars during instantiation.
+/// Utility proc that allows easy overriding of hull vars during instantiation.
 /proc/create_hull_with_overrides(list/overrides)
 	var/datum/robot_hull/new_hull = new
 
@@ -11,15 +11,17 @@
 	return new_hull
 
 /datum/robot_hull
-	// Bitfield, used in multiple places to enable/disable certain hull features
+	// Bitfield used in multiple places to enable or disable certain hull features.
 	var/hull_flags = ROBOT_HULL_FLAG_HAS_EYES | ROBOT_HULL_FLAG_HAS_PANEL | ROBOT_HULL_FLAG_HAS_FOOTSTEPS
-	// Path to a file where `icon_state` is located
+	// Path to the file containing the `icon_state`.
 	var/icon = 'icons/mob/silicon/robot.dmi'
-	// String later to be used as `icon_state` on robot
+	// String used as the `icon_state` for the robot.
 	var/icon_state = "robot"
-	/// Sound later to be played on every robot movement
+	/// Sound played on every robot movement.
 	var/footstep_sound = SFX_FOOTSTEP_ROBOT_SPIDER
-	/// Prefix used during panel's `icon_state` generation, can't be used from the get-go due to some robots having unique panels
+	/// List of custom emote typepaths assoicated with this hull.
+	var/list/default_emotes
+	/// Prefix used during panel `icon_state` generation. Cannot be used from the start due to some robots having unique panels.
 	VAR_PROTECTED/panel_icon_state_prefix = ROBOT_HULL_PANEL_DEFAULT
 
 /datum/robot_hull/proc/is_panel_custom()
