@@ -295,6 +295,7 @@
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 		to_chat(user, SPAN_NOTICE("You [anchored ? "unwrench" : "wrench"] \the [src] [anchored ? "from" : "into"] place."))
 		anchored = !anchored
+		connect_to_network()
 	if(default_deconstruction_screwdriver(user, W))
 		return
 	if(default_deconstruction_crowbar(user, W))

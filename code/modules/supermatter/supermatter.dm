@@ -120,12 +120,14 @@
 	var/aw_EPR = FALSE
 
 	var/datum/radiation_source/rad_source = null
+	var/datum/sound_token/ambient_sound_token = null
 
 	is_poi = TRUE
 
 /obj/machinery/power/supermatter/Initialize()
 	. = ..()
 	uid = gl_uid++
+	ambient_sound_token = GLOB.sound_player.PlayLoopingSound(src, "\ref[src]_supermatter_ambient", 'sound/machines/supermatter_ambient.ogg', volume = 60, range = 8, falloff = 2)
 
 /obj/machinery/power/supermatter/proc/handle_admin_warnings()
 	if(disable_adminwarn)
@@ -210,6 +212,7 @@
 		return
 
 	var/list/affected_z = GetConnectedZlevels(TS.z)
+	sound_to(world, sound('sound/effects/explosions/global_supermatter_boom.ogg', volume = 100))
 
 	// Effect 1: Radiation, weakening to all mobs on Z level
 	for(var/z in affected_z)
@@ -432,6 +435,10 @@
 			H.adjust_hallucination(effect, 0.25 * effect)
 
 /obj/machinery/power/supermatter/Destroy()
+	if(ambient_sound_token)
+		ambient_sound_token.Stop()
+		ambient_sound_token = null
+
 	qdel(rad_source)
 
 	. = ..()

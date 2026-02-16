@@ -20,3 +20,6 @@ robot_delay = 0
 metroid_delay = 0
 
 animal_delay = 0
+
+## Reject the future and go back to the cardinal-bound monkey existence.
+diagonal_movement_disabled = 0

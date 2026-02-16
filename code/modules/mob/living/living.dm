@@ -78,7 +78,7 @@
 	return ..()
 
 /mob/living/Bump(atom/movable/AM, yes)
-	if(now_pushing || !yes || !loc)
+	if(now_pushing || !yes || !loc || moving_diagonally)
 		return FALSE
 
 	spawn(0)
@@ -175,7 +175,7 @@
 					src.apply_damage(5, BRUTE)
 				return
 
-			if (!now_pushing)
+			if(!now_pushing && !moving_diagonally)
 				now_pushing = 1
 
 				var/t = get_dir(src, AM)
@@ -191,17 +191,17 @@
 				else
 					step(AM, t)
 
-				if(istype(AM, /mob/living))
+				if(isliving(AM))
 					var/mob/living/tmob = AM
 					if(istype(tmob.buckled, /obj/structure/bed))
 						if(!tmob.buckled.anchored)
 							step_glide(tmob.buckled, t, tmob.buckled.glide_size)
 
-				if(ishuman(AM))
-					var/mob/living/carbon/human/M = AM
-					for(var/obj/item/grab/G in M.grabbed_by)
-						step(G.assailant, get_dir(G.assailant, AM))
-						G.adjust_position()
+					if(ishuman(AM))
+						var/mob/living/carbon/human/M = AM
+						for(var/obj/item/grab/G in M.grabbed_by)
+							step(G.assailant, get_dir(G.assailant, AM))
+							G.adjust_position()
 
 				if(saved_dir)
 					AM.set_dir(saved_dir)
@@ -578,7 +578,7 @@
 	if(get_dist(src, pulling) > 1)
 		stop_pulling()
 
-	var/turf/old_loc = get_turf(src)
+	var/turf/oldloc = get_turf(src)
 
 	pull_sound = lying ? SFX_PULL_BODY : null
 
@@ -587,7 +587,9 @@
 		return
 
 	if(pulling)
-		handle_pulling_after_move(old_loc)
+		var/pull_dir = get_dir(pulling, src)
+		if(get_dist(src, pulling) > 1 || (moving_diagonally != /atom/movable::SECOND_DIAGONAL_STEP && ISDIAGONALDIR(pull_dir)))
+			handle_pulling_after_move(oldloc)
 
 	if(crawling)
 		var/turf/L = get_turf(newloc)
@@ -602,7 +604,6 @@
 	if(update_metroids)
 		for(var/mob/living/carbon/metroid/M in view(1, src))
 			M.UpdateFeed()
-
 
 /mob/living/proc/can_pull()
 	if(!moving)
@@ -625,7 +626,7 @@
 			return FALSE
 	return TRUE
 
-/mob/living/proc/handle_pulling_after_move(turf/old_loc)
+/mob/living/proc/handle_pulling_after_move(turf/target_turf)
 	if(!pulling)
 		return
 
@@ -633,29 +634,30 @@
 		stop_pulling()
 		return
 
-	if(pulling.loc == loc || pulling.loc == old_loc)
+	if(pulling.loc == loc || pulling.loc == target_turf)
 		return
 
 	if(!isliving(pulling))
-		step_glide(pulling, get_dir(pulling.loc, old_loc), glide_size)
+		step_glide(pulling, get_dir(pulling.loc, target_turf), glide_size)
 	else
 		var/mob/living/M = pulling
 		if(M.grabbed_by.len)
 			if(prob(75))
 				var/obj/item/grab/G = pick(M.grabbed_by)
 				if(istype(G))
-					M.visible_message(SPAN_WARNING("[G.affecting] has been pulled from [G.assailant]'s grip by [src]!"), SPAN_WARNING("[G.affecting] has been pulled from your grip by [src]!"))
+					M.visible_message(SPAN_WARNING("[G.affecting] has been pulled from [G.assailant]'s grip by [src]!"),\
+									  SPAN_WARNING("[G.affecting] has been pulled from your grip by [src]!"))
 					qdel(G)
 		if(!M.grabbed_by.len)
 			M.handle_pull_damage(src)
 
 			var/atom/movable/t = M.pulling
 			M.stop_pulling()
-			step_glide(M, get_dir(pulling.loc, old_loc), glide_size)
+			step_glide(M, get_dir(pulling.loc, target_turf), glide_size)
 			if(t)
 				M.start_pulling(t)
 
-	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, pulling.loc)
+	SEND_SIGNAL(src, SIGNAL_MOVED, src, target_turf, pulling.loc)
 
 	handle_dir_after_pull()
 

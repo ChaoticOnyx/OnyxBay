@@ -267,6 +267,9 @@
 	if(prefs && !istype(mob, world.mob))
 		prefs.apply_post_login_preferences(src)
 
+	if(SSinput.initialized)
+		set_macros()
+
 	settings = new(src)
 
 	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))
@@ -508,11 +511,9 @@
 
 		winset(src, "input_alt", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton_alt", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
 
 		winset(src, "input", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle", "is-visible=false;is-disabled=true;is-default=false")
 
 	else if(alternate && new_position == GLOB.PREF_MODERN)
 		var/list/game_size = splittext(winget(src, "mainvsplit", "size"), "x")
@@ -530,11 +531,9 @@
 
 		winset(src, "input_alt", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton_alt", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
 
 		winset(src, "input", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle", "is-visible=true;is-disabled=false;is-default=true")
 
 #undef VERTICAL_INPUT_MARGIN
 
@@ -806,3 +805,57 @@
 					isnull(unbanned)
 					[isnull(config.general.server_id) ? "" : " AND server_id = $server_id"]
 				"}, dbcon, list(id = id, ckeytext = src.ckey, server_id = config.general.server_id))
+
+/client/Click(atom/A)
+	//if(!user_acted(src))
+	//	return
+
+	if(holder && holder.callproc && holder.callproc.waiting_for_click)
+		if(alert("Do you want to select \the [A] as the [holder.callproc.arguments.len+1]\th argument?",, "Yes", "No") == "Yes")
+			holder.callproc.arguments += A
+
+		holder.callproc.waiting_for_click = 0
+		verbs -= /client/proc/cancel_callproc_select
+		holder.callproc.do_args()
+		return
+
+	return ..()
+
+/**
+ * Updates the keybinds for special keys
+ *
+ * Handles adding macros for the keys that need it
+ * And adding movement keys to the clients movement_keys list
+ * At the time of writing this, communication(OOC, Say, IC) require macros
+ * Arguments:
+ * * direct_prefs - the preference we're going to get keybinds from
+ */
+/client/proc/update_special_keybinds(datum/preferences/direct_prefs)
+	var/datum/preferences/D = prefs || direct_prefs
+	if(!D?.key_bindings)
+		return
+	movement_keys = list()
+	var/list/communication_hotkeys = list()
+	for(var/key in D.key_bindings)
+		for(var/kb_name in D.key_bindings[key])
+			switch(kb_name)
+				if("North")
+					movement_keys[key] = NORTH
+				if("East")
+					movement_keys[key] = EAST
+				if("West")
+					movement_keys[key] = WEST
+				if("South")
+					movement_keys[key] = SOUTH
+				if("admin_help")
+					communication_hotkeys += key
+					winset(src, "default-\ref[key]", "parent=default;name=[key];command=adminhelp")
+				if("OOC")
+					communication_hotkeys += key
+					winset(src, "default-\ref[key]", "parent=default;name=[key];command=ooc")
+
+	// winget() does not work for F1 and F2
+	for(var/key in communication_hotkeys)
+		if(!(key in list("F1","F2")) && !winget(src, "default-\ref[key]", "command"))
+			to_chat(src, "You probably entered the game with a different keyboard layout.\n<a href='?src=\ref[src];reset_macros=1'>Please switch to the English layout and click here to fix the communication hotkeys.</a>")
+			break

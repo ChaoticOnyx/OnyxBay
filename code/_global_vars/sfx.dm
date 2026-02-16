@@ -93,7 +93,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/emotes/f_cough4.ogg',
 		'sound/effects/emotes/f_cough5.ogg',
 		'sound/effects/emotes/f_cough6.ogg',
-		'sound/effects/emotes/f_cough7.ogg'
+		'sound/effects/emotes/f_cough7.ogg',
 	),
 	SFX_FEMALE_SNEEZE = list(
 		'sound/effects/emotes/f_sneeze1.ogg',
@@ -191,6 +191,13 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_FEMALE_SIGH = list(
 		'sound/effects/emotes/f_sigh.ogg'
+	),
+	SFX_FEMALE_MOAN = list(
+		'sound/effects/emotes/f_moan1.ogg',
+		'sound/effects/emotes/f_moan2.ogg',
+		'sound/effects/emotes/f_moan3.ogg',
+		'sound/effects/emotes/f_moan4.ogg',
+		'sound/effects/emotes/f_moan5.ogg'
 	),
 	// MALE EMOTES
 	SFX_MALE_INTERNAL_BREATH = list(
@@ -317,6 +324,14 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_MALE_SIGH = list(
 		'sound/effects/emotes/m_sigh.ogg'
+	),
+	SFX_MALE_MOAN = list(
+		'sound/effects/emotes/m_moan1.ogg',
+		'sound/effects/emotes/m_moan2.ogg',
+		'sound/effects/emotes/m_moan3.ogg',
+		'sound/effects/emotes/m_moan4.ogg',
+		'sound/effects/emotes/m_moan5.ogg',
+		'sound/effects/emotes/m_moan6.ogg'
 	),
 	SFX_ROBOTIC_MEOW = list(
 		'sound/effects/emotes/r_meow.ogg',

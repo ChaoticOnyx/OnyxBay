@@ -11,7 +11,7 @@
 	can_absorb = 0
 	point_blank_mult = 1
 	same_tile = 0
-	breakability = 3
+	breakability = 1
 
 	grab_slowdown = 10
 	upgrade_cooldown = 20
