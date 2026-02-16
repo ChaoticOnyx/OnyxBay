@@ -275,6 +275,7 @@
 	name = "package wrapper"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "deliveryPaper"
+	item_state = "deliveryPaper"
 	w_class = ITEM_SIZE_NORMAL
 	var/amount = 25.0
 
@@ -287,7 +288,7 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "c_tube"
 	throwforce = 1
-	w_class = ITEM_SIZE_SMALL
+	w_class = ITEM_SIZE_NORMAL
 	throw_range = 5
 
 /obj/item/packageWrap/afterattack(obj/target as obj, mob/user as mob, proximity)
@@ -346,6 +347,7 @@
 			add_fingerprint(usr)
 
 			amount -= 1
+			icon_state = "deliveryPaper-used"
 
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
 			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]."),\
@@ -367,6 +369,7 @@
 			P.wrapped = O
 			O.forceMove(P)
 			src.amount -= 3
+			icon_state = "deliveryPaper-used"
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
 			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]"),\
 			"You hear someone taping paper around a large object.")
@@ -380,6 +383,7 @@
 			O.welded = 1
 			O.forceMove(P)
 			src.amount -= 3
+			icon_state = "deliveryPaper-used"
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
 			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]"),\
 			"You hear someone taping paper around a large object.")
