@@ -515,6 +515,8 @@
 		winset(src, "input", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton", "is-visible=false;is-disabled=true;is-default=false")
 
+		winset(src, null, "default.Tab.command=\".winset \\\"input_alt.focus=true ? mapwindow.map.focus=true : input_alt.focus=true\\\"\"")
+
 	else if(alternate && new_position == GLOB.PREF_MODERN)
 		var/list/game_size = splittext(winget(src, "mainvsplit", "size"), "x")
 		var/list/alt_input_size = splittext(winget(src, "input_alt", "size"), "x")
@@ -534,6 +536,8 @@
 
 		winset(src, "input", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton", "is-visible=true;is-disabled=false;is-default=true")
+
+		winset(src, null, "default.Tab.command=\".winset \\\"input.focus=true ? mapwindow.map.focus=true : input.focus=true\\\"\"")
 
 #undef VERTICAL_INPUT_MARGIN
 

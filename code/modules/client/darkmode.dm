@@ -170,15 +170,11 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	saybutton.text-color = [COLOR_MARINEMODE_TEXT];
 	asset_cache_browser.background-color = [COLOR_MARINEMODE_GRAYBUTTON];
 	asset_cache_browser.text-color = [COLOR_MARINEMODE_TEXT];
-	hotkey_toggle.background-color = [COLOR_MARINEMODE_GRAYBUTTON];
-	hotkey_toggle.text-color = [COLOR_MARINEMODE_TEXT];
 	input.background-color = [COLOR_MARINEMODE_BACKGROUND];
 	input.text-color = [COLOR_MARINEMODE_TEXT];
 
 	saybutton_alt.background-color = [COLOR_MARINEMODE_GRAYBUTTON];
 	saybutton_alt.text-color = [COLOR_MARINEMODE_TEXT];
-	hotkey_toggle_alt.background-color = [COLOR_MARINEMODE_GRAYBUTTON];
-	hotkey_toggle_alt.text-color = [COLOR_MARINEMODE_TEXT];
 	input_alt.background-color = [COLOR_MARINEMODE_BACKGROUND];
 	input_alt.text-color = [COLOR_MARINEMODE_TEXT];
 	"})
