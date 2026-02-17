@@ -457,15 +457,15 @@
 		if("Show Camera List")
 			ASSERT(isAI(usr))
 			var/mob/living/silicon/ai/AI = usr
-			var/network = input(AI, "Chooce which network you want to view", "Networks") as null|anything in AI.get_camera_network_list()
+			var/network = tgui_input_list(AI, "Chooce which network you want to view", "Networks", AI.get_camera_network_list())
 			AI.ai_network_change(network)
-			var/camera = input(AI, "Choose which camera you want to view", "Cameras") as null|anything in AI.get_camera_list()
+			var/camera = tgui_input_list(AI, "Choose which camera you want to view", "Cameras", AI.get_camera_list())
 			AI.ai_camera_list(camera)
 
 		if("Track With Camera")
 			ASSERT(isAI(usr))
 			var/mob/living/silicon/ai/AI = usr
-			var/target_name = input(AI, "Choose who you want to track", "Tracking") as null|anything in AI.trackable_mobs()
+			var/target_name = tgui_input_list(AI, "Choose who you want to track", "Tracking", AI.trackable_mobs())
 			AI.ai_camera_track(target_name)
 
 		if("Toggle Camera Light")
@@ -482,13 +482,13 @@
 		if("Goto Camera Location")
 			ASSERT(isAI(usr))
 			var/mob/living/silicon/ai/AI = usr
-			var/cam_loc = input(AI, "Choose which location you want to view", "Locations") as null|anything in AI.sorted_stored_locations()
+			var/cam_loc = tgui_input_list(AI, "Choose which location you want to view", "Locations", AI.sorted_stored_locations())
 			AI.ai_goto_location(cam_loc)
 
 		if("Delete Camera Location")
 			ASSERT(isAI(usr))
 			var/mob/living/silicon/ai/AI = usr
-			var/delete = input(AI, "Choose which location you want to delete", "Locations") as null|anything in AI.sorted_stored_locations()
+			var/delete = tgui_input_list(AI, "Choose which location you want to delete", "Locations", AI.sorted_stored_locations())
 			AI.ai_remove_location(delete)
 
 		if("Crew Manifest")
