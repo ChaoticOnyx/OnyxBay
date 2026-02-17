@@ -517,7 +517,6 @@
 		if(cooldown)
 			R.resonance_damage *= quick_burst_mod
 			R.burst(T)
-			return
 		else
 			show_splash_text(creator, "Cooling!", "\The [src] is cooling.")
 	else if(fields.len < fieldlimit)
