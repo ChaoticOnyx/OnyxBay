@@ -481,12 +481,6 @@ var/global/list/_client_preferences_by_type
 	ASSERT(given_client)
 	return given_client.donator_info.patron_type
 
-/datum/client_preference/default_hotkey_mode
-	description = "Default Hotkey Mode"
-	key = "DEFAULT_HOTKEY_MODE"
-	category = PREF_CATEGORY_CONTROL
-	default_value = GLOB.PREF_NO
-
 /********************
 * Ghost Preferences *
 ********************/
