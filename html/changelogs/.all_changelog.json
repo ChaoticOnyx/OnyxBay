@@ -33,6 +33,17 @@
   },
   {
     "author": "TobyThorne",
+    "date": "2026-02-17T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Нажатие Tab больше не ломает командную строку в положении \"Modern\".",
+        "pr": 13532
+      }
+    ]
+  },
+  {
+    "author": "TobyThorne",
     "date": "2026-02-16T00:00:00+03:00",
     "changes": [
       {
