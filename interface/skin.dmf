@@ -1,7 +1,7 @@
 macro "default"
 	elem 
 		name = "Tab"
-		command = ".winset \"input_alt.is-visible ? input_alt.focus=true ? mapwindow.map.focus=true : input_alt.focus=true : input.focus=true ? mapwindow.map.focus=true : input.focus=true \""
+		command = ".winset \"input.focus=true ? mapwindow.map.focus=true : input.focus=true \""
 	elem ".winset :map.right-click=false"
 		name = "SHIFT+Shift"
 	elem 
