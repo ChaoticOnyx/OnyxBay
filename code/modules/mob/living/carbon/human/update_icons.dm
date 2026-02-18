@@ -171,6 +171,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	SetOverlays(overlays_to_apply)
 
 	update_transform()
+	update_floating()
 
 var/global/list/damage_icon_parts = list()
 

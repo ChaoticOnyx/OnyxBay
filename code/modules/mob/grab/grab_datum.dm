@@ -105,7 +105,7 @@
 	var/mob/living/carbon/human/affecting = G.affecting
 
 	if(can_throw)
-		animate(affecting, pixel_x = 0, pixel_y = 0, 4, 1)
+		animate(affecting, pixel_x = affecting.default_pixel_x, pixel_y = affecting.default_pixel_y, 4, 1, tag = MOB_ANIM_GRAB)
 		qdel(G)
 		return affecting
 	return null
@@ -164,16 +164,16 @@
 
 	switch(adir)
 		if(NORTH)
-			animate(affecting, pixel_x = 0, pixel_y =-shift, 5, 1, LINEAR_EASING)
+			animate(affecting, pixel_x = affecting.default_pixel_x, pixel_y =-shift, 5, 1, LINEAR_EASING, tag = MOB_ANIM_GRAB)
 			G.draw_affecting_under()
 		if(SOUTH)
-			animate(affecting, pixel_x = 0, pixel_y = shift, 5, 1, LINEAR_EASING)
+			animate(affecting, pixel_x = affecting.default_pixel_x, pixel_y = shift, 5, 1, LINEAR_EASING, tag = MOB_ANIM_GRAB)
 			G.draw_affecting_over()
 		if(WEST)
-			animate(affecting, pixel_x = shift, pixel_y = 0, 5, 1, LINEAR_EASING)
+			animate(affecting, pixel_x = shift, pixel_y = affecting.default_pixel_y, 5, 1, LINEAR_EASING, tag = MOB_ANIM_GRAB)
 			G.draw_affecting_under()
 		if(EAST)
-			animate(affecting, pixel_x =-shift, pixel_y = 0, 5, 1, LINEAR_EASING)
+			animate(affecting, pixel_x =-shift, pixel_y = affecting.default_pixel_y, 5, 1, LINEAR_EASING, tag = MOB_ANIM_GRAB)
 			G.draw_affecting_under()
 
 	affecting.reset_plane_and_layer()
@@ -184,7 +184,7 @@
 	var/mob/living/carbon/human/affecting = G.affecting
 
 	if(!affecting.buckled)
-		animate(affecting, pixel_x = 0, pixel_y = 0, 4, 1, LINEAR_EASING)
+		animate(affecting, pixel_x = affecting.default_pixel_x, pixel_y = affecting.default_pixel_y, 4, 1, LINEAR_EASING, tag = MOB_ANIM_GRAB)
 	affecting.reset_plane_and_layer()
 
 /*

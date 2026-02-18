@@ -32,7 +32,8 @@
 			offset_x = (tf_offset_x || 0),
 			offset_y = (tf_offset_y || 0) + 16 * ((tf_scale_y || 1) - 1)
 		),
-		time = 10
+		time = 10,
+		flags = ANIMATION_PARALLEL
 	)
 
 /mob/living/carbon/human/update_transform()
@@ -63,7 +64,8 @@
 			offset_x = (tf_offset_x || 0) + translate_x,
 			offset_y = (tf_offset_y || 0) + translate_y
 		),
-		time = anim_time
+		time = anim_time,
+		flags = ANIMATION_PARALLEL
 	)
 
 // TODO: Add some kind of transform source management helpers, 'cause this is disgusting.
@@ -89,7 +91,8 @@
 			offset_x = (tf_offset_x || 0) + translate_x,
 			offset_y = (tf_offset_y || 0) + translate_y
 		),
-		time = lying ? 1 : 10
+		time = lying ? 1 : 10,
+		flags = ANIMATION_PARALLEL
 	)
 
 /mob/living/proc/update_modifier_visuals()
