@@ -225,8 +225,9 @@ var/const/enterloopsanity = 100
 	if(!istype(AM))
 		return
 
-	if(ismob(AM))
-		var/mob/M = AM
+	if(isliving(AM))
+		var/mob/living/M = AM
+		M.update_height_offset(turf_height)
 		if(!M.check_solid_ground())
 			inertial_drift(M)
 			//we'll end up checking solid ground again but we still need to check the other things.
@@ -235,7 +236,6 @@ var/const/enterloopsanity = 100
 		else
 			M.inertia_dir = 0
 			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
-			M.update_height_offset(turf_height)
 
 	else if(isobj(AM))
 		var/obj/O = AM

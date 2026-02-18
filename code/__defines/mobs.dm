@@ -513,3 +513,13 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 #define HO_MODIFIER_EFFECTS_LAYER  37
 #define HO_TARGETED_LAYER          38
 #define HO_TOTAL_LAYERS            39
+
+#define MOB_ANIM_ATTACK "attack"
+#define MOB_ANIM_FLOATING "floating"
+#define MOB_ANIM_HEIGHT_OFFSET "height_offset"
+#define MOB_ANIM_GRAB "grab"
+#define MOB_ANIM_TWITCH "twitch"
+#define MOB_ANIM_TWITCH_V "twitch_violently"
+#define MOB_ANIM_TREMBLE "tremble"
+#define MOB_ANIM_SHIVER "shiver"
+#define MOB_ANIM_SWAY "sway"

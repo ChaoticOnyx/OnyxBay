@@ -313,7 +313,7 @@ var/list/mob/living/forced_ambiance_list = new
 		return
 
 	has_gravity = new_state
-	for(var/mob/M in src)
+	for(var/mob/living/M in src)
 		if(has_gravity)
 			thunk(M)
 		M.update_floating()
