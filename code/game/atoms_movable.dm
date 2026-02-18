@@ -138,19 +138,9 @@
 
 //called when src is thrown into hit_atom
 /atom/movable/proc/throw_impact(atom/hit_atom, datum/thrownthing/TT)
-	if(isliving(hit_atom))
-		var/mob/living/M = hit_atom
-		M.hitby(src, TT)
-
-	else if(isobj(hit_atom))
-		var/obj/O = hit_atom
-		if(!O.anchored)
-			step(O, src.last_move)
-		O.hitby(src, TT)
-
-	else if(isturf(hit_atom))
-		var/turf/T = hit_atom
-		T.hitby(src, TT)
+	SHOULD_CALL_PARENT(TRUE)
+	if(istype(hit_atom) && !QDELETED(hit_atom))
+		hit_atom.hitby(src, TT)
 
 /atom/movable/proc/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, datum/callback/callback) //If this returns FALSE then callback will not be called.
 	. = TRUE
@@ -331,17 +321,15 @@
 
 	return SPACE_MOVE_FORBIDDEN
 
-/
-
 /atom/movable/hitby(atom/movable/AM, datum/thrownthing/TT)
-	. = ..()
-	process_momentum(AM,TT)
+	..()
+	process_momentum(AM, TT)
 
 /atom/movable/proc/process_momentum(atom/movable/AM, datum/thrownthing/TT)//physic isn't an exact science
 	. = momentum_power(AM,TT)
 
 	if(.)
-		momentum_do(.,TT,AM)
+		momentum_do(., TT, AM)
 
 /atom/movable/proc/momentum_power(atom/movable/AM, datum/thrownthing/TT)
 	if(anchored)

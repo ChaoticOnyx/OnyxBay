@@ -88,6 +88,7 @@
 
 
 /obj/machinery/shield/hitby(atom/movable/AM, datum/thrownthing/TT) // Okay this stuff is belly-deep in legacy stuff, let's rework it later
+	..()
 	//Let everyone know we've been hit!
 	visible_message("<span class='notice'><B>\[src] was hit by [AM].</B></span>")
 
@@ -109,8 +110,6 @@
 	set_opacity(1)
 	spawn(20) if(!QDELETED(src)) set_opacity(0)
 
-	..()
-	return
 /obj/machinery/shieldgen
 	name = "Emergency shield projector"
 	desc = "Used to seal minor hull breaches."

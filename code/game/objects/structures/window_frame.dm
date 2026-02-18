@@ -1304,6 +1304,7 @@
 	return
 
 /obj/structure/window_frame/indestructible/hitby()
+	SHOULD_CALL_PARENT(FALSE)
 	return
 
 

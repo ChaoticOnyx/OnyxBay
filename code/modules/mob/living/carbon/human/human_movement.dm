@@ -1,4 +1,14 @@
 
+/mob/living/carbon/human/can_slip(magboots_only = FALSE)
+	. = ..()
+	if(!.)
+		return
+
+	if(species?.check_no_slip(src, magboots_only))
+		return FALSE
+
+	return TRUE
+
 /mob/living/carbon/human/get_jetpack()
 	if(!back)
 		return null

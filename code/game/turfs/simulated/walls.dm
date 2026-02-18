@@ -267,6 +267,7 @@
 	return ..()
 
 /turf/simulated/wall/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg)
+	..()
 	play_hitby_sound(AM)
 	if(!isobj(AM))
 		return
@@ -280,8 +281,6 @@
 		if(!nomsg)
 			visible_message(SPAN("warning", "[src] was hit by [AM]."))
 		take_damage(tforce)
-
-	..()
 
 /turf/simulated/wall/proc/clear_plants()
 	for(var/obj/effect/overlay/wallrot/WR in src)

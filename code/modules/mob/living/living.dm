@@ -83,7 +83,7 @@
 		return
 
 	spawn(0)
-		if(now_pushing || !yes || !loc || moving_diagonally)
+		if(!yes || QDELETED(src) || QDELETED(AM) || !loc || !AM.loc)
 			return
 
 		if(!istype(AM, /mob/living/bot/mulebot))
@@ -154,6 +154,8 @@
 
 		now_pushing = 0
 		spawn(0)
+			if(QDELETED(src) || QDELETED(AM) || !loc || !AM.loc)
+				return
 			..()
 			var/saved_dir = AM.dir
 

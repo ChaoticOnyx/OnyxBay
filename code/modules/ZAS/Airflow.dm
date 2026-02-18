@@ -30,9 +30,9 @@ mob/living/carbon/metroid/airflow_stun()
 
 /mob/living/carbon/human/airflow_stun()
 	if(!get_eva_slip_prob())
-		to_chat(src, "<span class='notice'>Air suddenly rushes past you!</span>")
-		return 0
-	..()
+		to_chat(src, SPAN("notice", "Air suddenly rushes past you!"))
+		return FALSE
+	return ..()
 
 /atom/movable/proc/check_airflow_movable(n)
 

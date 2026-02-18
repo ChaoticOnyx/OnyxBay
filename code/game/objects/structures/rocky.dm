@@ -114,7 +114,7 @@
 	unacidable = TRUE
 
 /obj/item/rocky_jr/throw_impact(hit_atom, datum/thrownthing/TT)
-	. = ..()
+	..()
 	if(isliving(hit_atom) && prob(35))
 		var/mob/living/L = hit_atom
 		playsound(L.loc, GET_SFX(SFX_BANG), 50, 1, -1)

@@ -1204,10 +1204,6 @@
 	if(!simulated || !isturf(loc) || buckled || (lying || resting) || throwing)
 		return FALSE
 
-	// Species flag/proc check.
-	if(get_species()?.check_no_slip(src, magboots_only))
-		return FALSE
-
 	// Check footwear.
 	if(!magboots_only && has_non_slip_footing())
 		return FALSE
@@ -1219,10 +1215,10 @@
 	return TRUE
 
 /mob/proc/has_non_slip_footing()
-	var/obj/item/shoes = get_equipped_item(slot_shoes_str)
+	var/obj/item/shoes = get_equipped_item(slot_shoes)
 	return istype(shoes) && (shoes.item_flags & ITEM_FLAG_NOSLIP)
 
 /mob/proc/has_magnetised_footing()
-	var/obj/item/shoes = get_equipped_item(slot_shoes_str)
+	var/obj/item/shoes = get_equipped_item(slot_shoes)
 	return istype(shoes) && (shoes.item_flags & ITEM_FLAG_MAGNETISED)
 

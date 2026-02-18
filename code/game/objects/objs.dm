@@ -56,6 +56,11 @@
 		var/turf/T = destination
 		T.update_turf_height()
 
+/obj/hitby(atom/movable/AM, datum/thrownthing/TT)
+	..()
+	if(!anchored)
+		step(src, AM.last_move)
+
 /obj/item/proc/is_used_on(obj/O, mob/user)
 
 /obj/assume_air(datum/gas_mixture/giver)

@@ -381,7 +381,8 @@ its easier to just keep the beam vertical.
 	CAN_BE_REDEFINED(TRUE)
 	return
 
-/atom/proc/hitby(atom/movable/AM, speed = 0, nomsg = FALSE)
+/atom/proc/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = FALSE)
+	SHOULD_CALL_PARENT(TRUE)
 	if(density)
 		play_hitby_sound(AM)
 		if(!nomsg)

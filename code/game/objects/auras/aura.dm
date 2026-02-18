@@ -27,7 +27,7 @@ They should also be used for when you want to effect the ENTIRE mob, like having
 	return 0
 
 /obj/aura/hitby(atom/movable/M, datum/thrownthing/TT, nomsg)
-	return 0
+	SHOULD_CALL_PARENT(FALSE)
 
 /obj/aura/debug
 	var/returning = 0
@@ -45,5 +45,6 @@ They should also be used for when you want to effect the ENTIRE mob, like having
 	return returning
 
 /obj/aura/debug/hitby(atom/movable/M, datum/thrownthing/TT, nomsg)
+	SHOULD_CALL_PARENT(FALSE)
 	log_debug("Hit By for \ref[src]: [M], [TT.speed]")
 	return returning

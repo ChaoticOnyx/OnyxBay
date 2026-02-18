@@ -202,7 +202,6 @@
 				if(!.)
 					set_dir(first_step_dir)
 			moving_diagonally = FALSE
-			return
 
 	if(!loc || (loc == oldloc && oldloc != newloc))
 		last_move = 0
@@ -291,7 +290,7 @@
 
 //return 1 if slipped, 0 otherwise
 /mob/proc/handle_spaceslipping()
-	if(!buckled)
+	if(!buckled && prob(get_eva_slip_prob()))
 		to_chat(src, "<span class='warning'>You slipped!</span>")
 		step(src, turn(last_move, pick(45,-45)))
 		return 1

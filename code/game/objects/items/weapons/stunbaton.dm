@@ -190,7 +190,7 @@
 	return 0
 
 /obj/item/melee/baton/throw_impact(hit_atom, datum/thrownthing/TT)
-	. = ..()
+	..()
 	if(isliving(hit_atom) && status && prob(50))
 		var/mob/living/L = hit_atom
 		L.stun_effect_act(stun_amount = rand(2,5), agony_amount = rand(10, 90), def_zone = ran_zone(TT.target_zone, 30), used_weapon = src)

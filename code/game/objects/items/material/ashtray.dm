@@ -93,17 +93,17 @@
 			shatter()
 
 /obj/item/material/ashtray/throw_impact(atom/hit_atom, datum/thrownthing/TT)
+	..()
 	if (health > 0)
 		health = max(0,health - 3)
 		if (contents.len)
 			visible_message(SPAN_DANGER("\The [src] slams into [hit_atom], spilling its contents!"))
 			for (var/obj/O in contents)
 				O.dropInto(loc)
-		if (health < 1)
+		if(health < 1)
 			shatter()
-			return
-		update_icon()
-	return ..()
+		else
+			update_icon()
 
 /obj/item/material/ashtray/verb/empty_butts()
 	set name = "Empty Contents"

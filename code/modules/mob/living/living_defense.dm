@@ -190,6 +190,11 @@
 
 // this proc handles being hit by a thrown atom
 /mob/living/hitby(atom/movable/AM, datum/thrownthing/TT)// Standardization and logging -Sieve
+	..()
+
+	if(ishuman(src))
+		return // Humans are snowflakes
+
 	if(!aura_check(AURA_TYPE_THROWN, AM, TT.speed))
 		return
 

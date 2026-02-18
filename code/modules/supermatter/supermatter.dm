@@ -521,8 +521,8 @@
 	return TRUE
 
 /obj/machinery/power/supermatter/throw_impact(atom/hit_atom, datum/thrownthing/TT)
-	. = ..()
-	if (hit_atom.density)
+	..()
+	if(hit_atom.density)
 		Consume(hit_atom)
 
 /obj/machinery/power/supermatter/Bumped(atom/movable/AM)

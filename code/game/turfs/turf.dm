@@ -228,6 +228,7 @@ var/const/enterloopsanity = 100
 	if(isliving(AM))
 		var/mob/living/M = AM
 		M.update_height_offset(turf_height)
+		M.update_floating()
 
 	else if(isobj(AM))
 		var/obj/O = AM
@@ -329,6 +330,7 @@ var/const/enterloopsanity = 100
 
 // Called when turf is hit by a thrown object
 /turf/hitby(atom/movable/AM, datum/thrownthing/TT)
+	..()
 	if(density)
 		if(isliving(AM))
 			var/mob/living/M = AM
