@@ -82,6 +82,8 @@
 		throwing.hit_atom(AM)
 		return
 
+	var/was_moving_diagonally = moving_diagonally // apparently it gets lost during the two spawns
+
 	spawn(0)
 		if(!yes || QDELETED(src) || QDELETED(AM) || !loc || !AM.loc)
 			return
@@ -181,7 +183,7 @@
 					src.apply_damage(5, BRUTE)
 				return
 
-			if(!now_pushing && !moving_diagonally)
+			if(!now_pushing && !was_moving_diagonally)
 				now_pushing = 1
 
 				var/t = get_dir(src, AM)

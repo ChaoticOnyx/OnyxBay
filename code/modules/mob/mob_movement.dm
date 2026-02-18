@@ -152,6 +152,8 @@
 
 		if(ISCARDINALDIR(direct)) // Cardinal move
 			. = ..()
+			if(dir != direct)
+				set_dir(direct)
 		else // Diagonal move, split it into cardinal moves
 			moving_diagonally = /atom/movable::FIRST_DIAGONAL_STEP
 			var/first_step_dir
@@ -201,7 +203,12 @@
 			if(moving_diagonally == /atom/movable::SECOND_DIAGONAL_STEP)
 				if(!.)
 					set_dir(first_step_dir)
+				else if(!inertia_moving)
+					inertia_next_move = world.time + inertia_move_delay
+					space_drift(direct ? direct : last_move)
+
 			moving_diagonally = FALSE
+			return
 
 	if(!loc || (loc == oldloc && oldloc != newloc))
 		last_move = 0
@@ -210,9 +217,6 @@
 	last_move = direct
 	move_speed = world.time - src.l_move_time
 	l_move_time = world.time
-
-	if(dir != direct)
-		set_dir(direct)
 
 	// Cursed pieces of code that we need right here for reasons.
 	if(.)

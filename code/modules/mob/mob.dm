@@ -1169,15 +1169,23 @@
 	if(platform)
 		return platform
 
+	// Check for a dense object to push off of
+	var/atom/dense_object = my_turf.get_first_dense_object(exceptions = src, check_mobs = FALSE)
+	if(dense_object)
+		return dense_object
+
 	// Check for supportable nearby atoms.
 	for(var/turf/neighbor in RANGE_TURFS(1, my_turf))
 		if(neighbor == my_turf)
 			continue
-		if(neighbor.contains_dense_objects(exceptions = src))
+		if(istype(neighbor, /turf/simulated) && !neighbor.is_open())
 			return neighbor
 		platform = (locate(/obj/structure/catwalk) in neighbor) || (locate(/obj/structure/lattice) in neighbor)
 		if(platform)
 			return platform
+		dense_object = neighbor.get_first_dense_object(exceptions = src, check_mobs = FALSE)
+		if(dense_object)
+			return dense_object
 
 	// Find something we are grabbing onto for support.
 	for(var/atom/movable/thing in range(1, my_turf))
@@ -1205,10 +1213,10 @@
 		return FALSE
 
 	// Check footwear.
-	if(!magboots_only && has_non_slip_footing())
-		return FALSE
+	if(!magboots_only)
+		return !((has_gravity() || has_magnetised_footing()) && get_solid_footing())
 
-	if((has_gravity() || has_magnetised_footing()) && get_solid_footing())
+	if(has_non_slip_footing())
 		return FALSE
 
 	// Slip!

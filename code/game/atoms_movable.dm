@@ -82,7 +82,7 @@
 	if(A && yes)
 		A.last_bumped = world.time
 		SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
-		INVOKE_ASYNC(A, /atom/proc/Bumped, src) // Avoids bad actors sleeping or unexpected side effects, as the legacy behavior was to spawn here
+		INVOKE_ASYNC(A, nameof(.proc/Bumped), src) // Avoids bad actors sleeping or unexpected side effects, as the legacy behavior was to spawn here
 		return
 	..()
 	return

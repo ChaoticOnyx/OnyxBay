@@ -287,14 +287,17 @@ var/const/enterloopsanity = 100
 /turf/proc/contains_dense_objects(list/exceptions, check_mobs = TRUE)
 	if(density)
 		return TRUE
+	return !!get_first_dense_object(exceptions)
+
+/turf/proc/get_first_dense_object(list/exceptions, check_mobs = TRUE)
 	for(var/atom/A in src)
 		if(!check_mobs && ismob(A))
 			continue
 		if(exceptions && (exceptions == A || (islist(exceptions) && (A in exceptions))))
 			continue
 		if(A.density && !(A.atom_flags & ATOM_FLAG_CHECKS_BORDER))
-			return TRUE
-	return FALSE
+			return A
+	return null
 
 //expects an atom containing the reagents used to clean the turf
 /turf/proc/clean(atom/source, mob/user = null)
