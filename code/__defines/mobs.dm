@@ -522,3 +522,4 @@ GLOBAL_LIST_INIT(organ_tag_to_name, list(
 #define MOB_ANIM_TWITCH_V "twitch_violently"
 #define MOB_ANIM_TREMBLE "tremble"
 #define MOB_ANIM_SHIVER "shiver"
+#define MOB_ANIM_SWAY "sway"

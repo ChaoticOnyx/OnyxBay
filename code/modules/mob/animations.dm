@@ -121,8 +121,8 @@ note dizziness decrements automatically in the mob's Life() proc.
 	var/period = 36 //time taken for the mob to go up >> down >> original position, in deciseconds. Should be multiple of 4
 
 	animate(src, pixel_z = amplitude, time = period/4, easing = SINE_EASING | EASE_OUT, loop = -1, tag = MOB_ANIM_FLOATING, flags = ANIMATION_RELATIVE)		//up
-	animate(pixel_z = amplitude * -2, time = period/2, easing = SINE_EASING, loop = -1)						//down
-	animate(pixel_z = amplitude, time = period/4, easing = SINE_EASING | EASE_IN, loop = -1)			//back
+	animate(pixel_z = amplitude * -2, time = period/2, easing = SINE_EASING, loop = -1, flags = ANIMATION_RELATIVE)						//down
+	animate(pixel_z = amplitude, time = period/4, easing = SINE_EASING | EASE_IN, loop = -1, flags = ANIMATION_RELATIVE)			//back
 
 /mob/proc/stop_floating()
 	animate(src, pixel_z = height_offset, time = 5, easing = SINE_EASING | EASE_IN, tag = MOB_ANIM_FLOATING) //halt animation
@@ -157,7 +157,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 			pixel_y_diff = -8
 
 	animate(src, pixel_x = pixel_x_diff, pixel_y = pixel_y_diff, time = 2, tag = MOB_ANIM_ATTACK, flags = ANIMATION_RELATIVE)
-	animate(pixel_x = -pixel_x_diff, pixel_y = -pixel_y_diff, time = 2)
+	animate(pixel_x = -pixel_x_diff, pixel_y = -pixel_y_diff, time = 2, flags = ANIMATION_RELATIVE)
 
 /mob/do_attack_animation(atom/A)
 	..()
