@@ -37,8 +37,7 @@
 		var/turf/above = shadow.loc
 		if(T.Adjacent(shadow) && above.CanZPass(src, UP)) //Certain structures will block passage from below, others not
 
-			var/area/location = get_area(loc)
-			if(location.has_gravity && !can_overcome_gravity())
+			if(has_gravity() && !can_overcome_gravity())
 				return
 
 			visible_message("<span class='notice'>[src] starts climbing onto \the [A]!</span>", "<span class='notice'>You start climbing onto \the [A]!</span>")

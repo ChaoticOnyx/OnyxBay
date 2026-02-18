@@ -12,12 +12,7 @@
 	var/const/SECOND_DIAGONAL_STEP = 2
 	var/moving_diagonally = FALSE // Used so we don't break grabs mid-diagonal-move.
 	var/m_flag = 1
-	var/throwing = 0
-	var/thrower
-	var/throw_dir
-	var/turf/throw_source = null
-	var/atom/thrown_to
-	var/throwed_dist
+	var/datum/thrownthing/throwing
 	var/throw_speed = 1 // Number of ticks to travel 1 tile. Values between 0 and 1 allow traveling multiple tiles per tick, though it looks ugly and ain't recommended unless totally needed.
 	var/throw_range = 7
 	var/throw_spin = TRUE // Should the atom spin when thrown.
@@ -25,6 +20,13 @@
 	var/mob/pulledby = null
 	var/item_state = null // Used to specify the item state for the on-mob overlays.
 	var/pull_sound = null
+
+	var/inertia_dir = 0
+	var/atom/inertia_last_loc
+	var/inertia_moving = 0
+	var/inertia_next_move = 0
+	var/inertia_move_delay = 5
+	var/atom/movable/inertia_ignore
 
 	/// Either [EMISSIVE_BLOCK_NONE], [EMISSIVE_BLOCK_GENERIC], or [EMISSIVE_BLOCK_UNIQUE]
 	var/blocks_emissive = EMISSIVE_BLOCK_NONE
@@ -65,24 +67,22 @@
 	if(em_block)
 		QDEL_NULL(em_block)
 
-	thrown_to = null
-	throwed_dist = 0
-	throwing = FALSE
-	thrower = null
-	throw_source = null
+	if(throwing)
+		QDEL_NULL(throwing)
 
 	return ..()
 
 /atom/movable/Bump(atom/A, yes)
-	if(src.throwing)
-		src.throw_impact(A)
-		src.throwing = 0
+	if(!QDELETED(throwing))
+		throwing.hit_atom(A)
 
-	spawn(0)
-		if (A && yes)
-			A.last_bumped = world.time
-			SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
-			A.Bumped(src)
+	if(inertia_dir)
+		inertia_dir = 0
+
+	if(A && yes)
+		A.last_bumped = world.time
+		SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
+		INVOKE_ASYNC(A, /atom/proc/Bumped, src) // Avoids bad actors sleeping or unexpected side effects, as the legacy behavior was to spawn here
 		return
 	..()
 	return
@@ -137,165 +137,39 @@
 	return 1
 
 //called when src is thrown into hit_atom
-/atom/movable/proc/throw_impact(atom/hit_atom, speed, target_zone)
+/atom/movable/proc/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	if(isliving(hit_atom))
 		var/mob/living/M = hit_atom
-		M.hitby(src, speed)
+		M.hitby(src, TT)
 
 	else if(isobj(hit_atom))
 		var/obj/O = hit_atom
 		if(!O.anchored)
 			step(O, src.last_move)
-		O.hitby(src, speed)
+		O.hitby(src, TT)
 
 	else if(isturf(hit_atom))
-		throwing = 0
 		var/turf/T = hit_atom
-		T.hitby(src, speed)
+		T.hitby(src, TT)
 
-//decided whether a movable atom being thrown can pass through the turf it is in.
-/atom/movable/proc/hit_check(speed, thrown_with, target_zone)
-	if(!throwing)
-		return
-
-	for(var/atom/movable/A in get_turf(src))
-		if(A == src)
-			continue
-
-		if(isliving(A))
-			var/mob/living/L = A
-			if(L.lying)
-				continue
-			throw_impact(A, speed, thrown_with, target_zone)
-
-		if(isobj(A))
-			if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
-				throw_impact(A, speed)
-
-/atom/movable/proc/throw_at(atom/target, range, speed = throw_speed, atom/thrower, thrown_with, target_zone, launched_div)
-	set waitfor = FALSE
-
-	if(!target || QDELETED(src))
-		return FALSE
-	if(target.z != src.z)
-		return FALSE
-	// src loc check
-	if(thrower && !isturf(thrower.loc))
+/atom/movable/proc/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, datum/callback/callback) //If this returns FALSE then callback will not be called.
+	. = TRUE
+	if(!target || speed <= 0 || QDELETED(src) || (target.z != z))
 		return FALSE
 
-	speed = max(0, (speed || throw_speed))
+	if(pulledby)
+		pulledby.stop_pulling()
 
-	throwing = TRUE
-	src.thrower = thrower
-	throw_source = get_turf(src)	//store the origin turf
+	var/datum/thrownthing/TT = new(src, target, range, speed, thrower, callback)
+	throwing = TT
+
 	pixel_z = 0
-	thrown_to = target
-	throwed_dist = range
-	throw_dir = get_dir(src, target)
-	if(usr)
-		if(MUTATION_HULK in usr.mutations)
-			throwing = 2 // really strong throw!
-		else if(MUTATION_STRONG in usr.mutations)
-			throwing = 2
+	if(spin && throw_spin)
+		SpinAnimation(4, 1)
 
-	var/dist_travelled = 0
-	var/dist_since_sleep = 0
-	var/time_travelled = 0
-	var/tiles_per_tick = speed
-	speed = round(speed)
-	var/impact_speed = speed
-	if(launched_div)
-		impact_speed /= launched_div
-		pre_launched()
-	var/area/a = get_area(loc)
-
-	//use a modified version of Bresenham's algorithm to get from the atom's current position to that of the target
-	var/dist_x = abs(target.x - src.x)
-	var/dist_y = abs(target.y - src.y)
-
-	var/dx
-	if(target.x > src.x)
-		dx = EAST
-	else
-		dx = WEST
-
-	var/dy
-	if(target.y > src.y)
-		dy = NORTH
-	else
-		dy = SOUTH
-
-	var/error
-	var/major_dir
-	var/major_dist
-	var/minor_dir
-	var/minor_dist
-	if(dist_x > dist_y)
-		error = dist_x / 2 - dist_y
-		major_dir = dx
-		major_dist = dist_x
-		minor_dir = dy
-		minor_dist = dist_y
-	else
-		error = dist_y / 2 - dist_x
-		major_dir = dy
-		major_dist = dist_y
-		minor_dir = dx
-		minor_dist = dist_x
-
-	if(throw_spin)
-		SpinAnimation(speed = 4, loops = 1)
-
-	while(!QDELETED(src) && target && throwing && isturf(loc) \
-			&& ((abs(target.x - src.x) + abs(target.y - src.y) > 0 && dist_travelled < range) \
-			|| !a?.has_gravity \
-			|| isspaceturf(loc)))
-		// only stop when we've gone the whole distance (or max throw range) and are on a non-space tile, or hit something, or hit the end of the map, or someone picks it up
-		var/atom/step
-		if(error >= 0)
-			step = get_step(src, major_dir)
-			error -= minor_dist
-		else
-			step = get_step(src, minor_dir)
-			error += major_dist
-		if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
-			break
-		var/atom/previous = src.loc
-		src.loc = null
-		if (Move(previous))
-			Move(step)
-		if(!loc && !QDELETED(src)) // Check for gc_destroyed is absolutely mandatory here, in case thrown atom was somehow GC'd
-			// we got into nullspace! abort!
-			loc = previous
-			break
-		hit_check(impact_speed)
-		dist_travelled++
-		dist_since_sleep += tiles_per_tick
-		if(throw_spin && !(time_travelled % 4))
-			SpinAnimation(speed = 4, loops = 1)
-		if(dist_since_sleep >= 1)
-			dist_since_sleep = 0
-			time_travelled += speed
-			sleep(speed)
-		a = get_area(loc)
-		// and yet it moves
-
-	if(!src)
-		return
-
-	//done throwing, either because it hit something or it finished moving
-	if(isobj(src))
-		throw_impact(get_turf(src), impact_speed)
-
-	if(launched_div)
-		post_launched()
-
-	thrown_to = null
-	throw_dir = null
-	throwing = FALSE
-	src.thrower = null
-	throw_source = null
-	fall()
+	SSthrowing.processing[src] = TT
+	if(SSthrowing.state == SS_PAUSED && length(SSthrowing.currentrun))
+		SSthrowing.currentrun[src] = TT
 
 // Used when the atom's thrown by a launcher-type gun (or by anything that provides a nulln't launcher_mult arg)
 /atom/movable/proc/pre_launched()
@@ -417,3 +291,92 @@
 */
 /atom/movable/proc/keybind_face_direction(direction)
 	return
+
+//call this proc to start space drifting
+/atom/movable/proc/space_drift(direction)//move this down
+	if(!loc || direction & (UP|DOWN) || is_space_movement_permitted() != SPACE_MOVE_FORBIDDEN)
+		inertia_dir = 0
+		inertia_ignore = null
+		return 0
+
+	inertia_dir = direction
+	if(!direction)
+		return TRUE
+	inertia_last_loc = loc
+	SSspacedrift.processing[src] = src
+	return 1
+
+//return 0 to space drift, 1 to stop, -1 for mobs to handle space slips
+/atom/movable/proc/is_space_movement_permitted(allow_movement = FALSE)
+	if(!simulated)
+		return TRUE
+
+	if(has_gravity())
+		return SPACE_MOVE_PERMITTED
+
+	if(pulledby)
+		return SPACE_MOVE_PERMITTED
+
+	if(throwing)
+		return SPACE_MOVE_PERMITTED
+
+	if(anchored)
+		return SPACE_MOVE_PERMITTED
+
+	if(!isturf(loc))
+		return SPACE_MOVE_PERMITTED
+
+	if(locate(/obj/structure/lattice) in range(1, get_turf(src))) //Not realistic but makes pushing things in space easier
+		return SPACE_MOVE_SUPPORTED
+
+	return SPACE_MOVE_FORBIDDEN
+
+/
+
+/atom/movable/hitby(atom/movable/AM, datum/thrownthing/TT)
+	. = ..()
+	process_momentum(AM,TT)
+
+/atom/movable/proc/process_momentum(atom/movable/AM, datum/thrownthing/TT)//physic isn't an exact science
+	. = momentum_power(AM,TT)
+
+	if(.)
+		momentum_do(.,TT,AM)
+
+/atom/movable/proc/momentum_power(atom/movable/AM, datum/thrownthing/TT)
+	if(anchored)
+		return 0
+
+	. = (AM.get_mass()*TT.speed)/(get_mass()*min(AM.throw_speed,2))
+	if(has_gravity())
+		. *= 0.5
+
+/atom/movable/proc/momentum_do(power, datum/thrownthing/TT)
+	var/direction = TT.init_dir
+	switch(power)
+		if(0.75 to INFINITY)		//blown backward, also calls being pinned to walls
+			throw_at(get_edge_target_turf(src, direction), min((TT.maxrange - TT.dist_travelled) * power, 10), throw_speed * min(power, 1.5))
+
+		if(0.5 to 0.75)	//knocks them back and changes their direction
+			step(src, direction)
+
+		if(0.25 to 0.5)	//glancing change in direction
+			var/drift_dir
+			if(direction & (NORTH|SOUTH))
+				if(inertia_dir & (NORTH|SOUTH))
+					drift_dir |= (direction & (NORTH|SOUTH)) & (inertia_dir & (NORTH|SOUTH))
+				else
+					drift_dir |= direction & (NORTH|SOUTH)
+			else
+				drift_dir |= inertia_dir & (NORTH|SOUTH)
+			if(direction & (EAST|WEST))
+				if(inertia_dir & (EAST|WEST))
+					drift_dir |= (direction & (EAST|WEST)) & (inertia_dir & (EAST|WEST))
+				else
+					drift_dir |= direction & (EAST|WEST)
+			else
+				drift_dir |= inertia_dir & (EAST|WEST)
+			space_drift(drift_dir)
+
+/atom/movable/proc/get_mass()
+	return 1.5

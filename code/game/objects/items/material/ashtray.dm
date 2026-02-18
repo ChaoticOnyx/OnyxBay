@@ -92,7 +92,7 @@
 		if(health < 1)
 			shatter()
 
-/obj/item/material/ashtray/throw_impact(atom/hit_atom)
+/obj/item/material/ashtray/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	if (health > 0)
 		health = max(0,health - 3)
 		if (contents.len)

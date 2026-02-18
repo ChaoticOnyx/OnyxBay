@@ -1147,3 +1147,82 @@
 
 /mob/keybind_face_direction(direction)
 	facedir(direction)
+
+/mob/get_mass()
+	return mob_size
+
+/mob/proc/get_solid_footing()
+
+	if(!loc)
+		return src // this is a bit weird but we shouldn't slip in nullspace probably
+
+	// Check for dense turfs.
+	var/turf/my_turf = loc
+	if(!istype(my_turf))
+		return my_turf
+
+	if(istype(my_turf, /turf/simulated) && !my_turf.is_open())
+		return my_turf
+
+	// Check for catwalks and lattices.
+	var/atom/platform = (locate(/obj/structure/catwalk) in my_turf) || (locate(/obj/structure/lattice) in my_turf)
+	if(platform)
+		return platform
+
+	// Check for supportable nearby atoms.
+	for(var/turf/neighbor in RANGE_TURFS(1, my_turf))
+		if(neighbor == my_turf)
+			continue
+		if(neighbor.contains_dense_objects(exceptions = src))
+			return neighbor
+		platform = (locate(/obj/structure/catwalk) in neighbor) || (locate(/obj/structure/lattice) in neighbor)
+		if(platform)
+			return platform
+
+	// Find something we are grabbing onto for support.
+	for(var/atom/movable/thing in range(1, my_turf))
+		if(thing == src || thing == inertia_ignore || !thing.simulated || thing == buckled)
+			continue
+		if(isturf(thing))
+			continue // We checked turfs when using magboots above.
+		else if(ismob(thing))
+			var/mob/victim = thing
+			if(victim.buckled)
+				continue
+		else if(thing.CanPass(src))
+			continue
+		if(thing.anchored)
+			return thing
+
+/mob/proc/can_slip(magboots_only = FALSE)
+
+	// Are we immune to everything?
+	if(status_flags & GODMODE)
+		return FALSE
+
+	// Quick basic checks.
+	if(!simulated || !isturf(loc) || buckled || (lying || resting) || throwing)
+		return FALSE
+
+	// Species flag/proc check.
+	if(get_species()?.check_no_slip(src, magboots_only))
+		return FALSE
+
+	// Check footwear.
+	if(!magboots_only && has_non_slip_footing())
+		return FALSE
+
+	if((has_gravity() || has_magnetised_footing()) && get_solid_footing())
+		return FALSE
+
+	// Slip!
+	return TRUE
+
+/mob/proc/has_non_slip_footing()
+	var/obj/item/shoes = get_equipped_item(slot_shoes_str)
+	return istype(shoes) && (shoes.item_flags & ITEM_FLAG_NOSLIP)
+
+/mob/proc/has_magnetised_footing()
+	var/obj/item/shoes = get_equipped_item(slot_shoes_str)
+	return istype(shoes) && (shoes.item_flags & ITEM_FLAG_MAGNETISED)
+

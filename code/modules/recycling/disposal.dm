@@ -448,7 +448,7 @@
 		qdel(H)
 
 
-/obj/machinery/disposal/hitby(atom/movable/AM, speed, nomsg = TRUE)
+/obj/machinery/disposal/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = TRUE)
 	..()
 
 /obj/machinery/disposal/CanPass(atom/movable/mover, turf/target)

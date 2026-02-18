@@ -189,7 +189,7 @@
 	return 1
 
 
-/obj/structure/window/hitby(atom/movable/AM, speed, nomsg)
+/obj/structure/window/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg)
 	..()
 	var/tforce = 0
 	if(ismob(AM)) // All mobs have a multiplier and a size according to mob_defines.dm

@@ -87,11 +87,11 @@ note dizziness decrements automatically in the mob's Life() proc.
 /mob/var/floatiness = FALSE
 
 /mob/proc/update_floating()
-	if(anchored || buckled || check_solid_ground())
+	if(anchored || buckled || has_gravity())
 		make_floating(FALSE)
 		return
 
-	if(Check_Shoegrip() && Check_Dense_Object())
+	if(!can_slip(magboots_only = TRUE))
 		make_floating(FALSE)
 		return
 

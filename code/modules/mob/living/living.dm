@@ -78,10 +78,14 @@
 	return ..()
 
 /mob/living/Bump(atom/movable/AM, yes)
-	if(now_pushing || !yes || !loc || moving_diagonally)
-		return FALSE
+	if(!QDELETED(throwing))
+		throwing.hit_atom(AM)
+		return
 
 	spawn(0)
+		if(now_pushing || !yes || !loc || moving_diagonally)
+			return
+
 		if(!istype(AM, /mob/living/bot/mulebot))
 			now_pushing = 1
 		if (istype(AM, /mob/living))
@@ -685,8 +689,7 @@
 			return set_dir(get_dir(src, pulling))
 
 /mob/living/proc/handle_pull_damage(mob/living/puller)
-	var/area/A = get_area(src)
-	if(!A.has_gravity)
+	if(!has_gravity())
 		return
 	var/turf/location = get_turf(src)
 	if(lying && prob(getBruteLoss() / 6))

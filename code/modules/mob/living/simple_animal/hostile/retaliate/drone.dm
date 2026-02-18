@@ -10,6 +10,7 @@
 	rapid = 1
 	speak_chance = 5
 	turns_per_move = 3
+	skip_spacemove = TRUE
 	response_help = "pokes"
 	response_disarm = "gently pushes aside"
 	response_harm = "hits"
@@ -54,9 +55,6 @@
 	ion_trail = new /datum/effect/effect/system/trail/ion()
 	ion_trail.set_up(src)
 	ion_trail.start()
-
-/mob/living/simple_animal/hostile/retaliate/malf_drone/Allow_Spacemove(check_drift = 0)
-	return 1
 
 /mob/living/simple_animal/hostile/retaliate/malf_drone/proc/Haywire()
 	if(prob(disabled ? 0 : 1) && malfunctioning)

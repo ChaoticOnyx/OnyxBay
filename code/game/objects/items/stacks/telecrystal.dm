@@ -63,7 +63,7 @@
 	playsound(L,'sound/effects/phasein.ogg',50)
 	do_teleport(L, get_turf(L), blink_range)
 
-/obj/item/stack/telecrystal/bluespace_crystal/throw_impact(atom/hit_atom)
+/obj/item/stack/telecrystal/bluespace_crystal/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	if(!..()) // not caught in mid-air
 		visible_message(SPAN_NOTICE("[src] fizzles and disappears upon impact!"))
 		var/turf/T = get_turf(hit_atom)

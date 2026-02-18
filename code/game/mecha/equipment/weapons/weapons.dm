@@ -280,7 +280,7 @@
 	throwforce = 120
 	throw_spin = FALSE
 
-/obj/item/missile/throw_impact(atom/hit_atom)
+/obj/item/missile/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	if(primed)
 		explosion(hit_atom, 0, 1, 4, 4)
 		qdel(src)

@@ -22,6 +22,7 @@
 	var/pumped = TRUE
 	var/recentpump = 0 // to prevent spammage
 	fire_sound = 'sound/effects/weapons/energy/kinetic_accel.ogg'
+	space_recoil = TRUE
 
 /obj/item/gun/energy/accelerator/consume_next_projectile()
 	if(!pumped)

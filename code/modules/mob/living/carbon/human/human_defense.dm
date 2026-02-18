@@ -899,148 +899,116 @@ meteor_act
 	return 1
 
 //this proc handles being hit by a thrown atom
-/mob/living/carbon/human/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)
-	if(!aura_check(AURA_TYPE_THROWN, AM, speed))
+/mob/living/carbon/human/hitby(atom/movable/AM, datum/thrownthing/TT)
+	if(!aura_check(AURA_TYPE_THROWN, AM, TT.speed))
 		return
 
-	if(isobj(AM))
-		var/obj/O = AM
-		if(in_throw_mode && !get_active_hand() && speed >= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
-			if(!incapacitated() && isturf(O.loc) && put_in_active_hand(O))
-				visible_message(SPAN("warning", "[src] catches [O]!"))
-				throw_mode_off()
-				return
+	if(!isobj(AM))
+		..()
+		return
 
-		var/dtype = O.damtype
-		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
-
-		if(blocking)
-			var/obj/item/weapon_def
-			if(blocking_hand && get_inactive_hand())
-				weapon_def = get_inactive_hand()
-			else if(get_active_hand())
-				weapon_def = get_active_hand()
-
-			if(weapon_def)
-				if(weapon_def.force && weapon_def.w_class >= O.w_class)
-					var/dir = get_dir(src,O)
-					O.throw_at(get_edge_target_turf(src, dir), 1)
-
-					visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
-					playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
-
-					damage_poise(throw_damage / weapon_def.mod_shield)
-					if(poise < throw_damage / weapon_def.mod_shield)
-						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
-						apply_effect(2, WEAKEN, 0)
-						useblock_off()
-					return
-
-
-		var/zone = BP_CHEST
-		if(isliving(O.thrower))
-			var/mob/living/L = O.thrower
-			if(L.zone_sel)
-				zone = check_zone(L.zone_sel.selecting)
-		else
-			zone = ran_zone(BP_CHEST, 75)	//Hits a random part of the body, geared towards the chest
-
-		//check if we hit
-		var/miss_chance = 15
-		if(O.throw_source)
-			var/distance = get_dist(O.throw_source, loc)
-			miss_chance = max(15 * (distance - 2), 0)
-		zone = get_zone_with_miss_chance(zone, src, miss_chance, ranged_attack=1)
-
-		if(zone && O.thrower != src)
-			var/shield_check = check_shields(throw_damage, O, thrower, zone, "[O]")
-			if(shield_check == PROJECTILE_FORCE_MISS)
-				zone = null
-			else if(shield_check)
-				return
-
-		if(!zone)
-			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+	var/obj/O = AM
+	if(in_throw_mode && !get_active_hand() && TT.speed >= THROWFORCE_SPEED_DIVISOR) // empty active hand and we're in throw mode
+		if(!incapacitated() && isturf(O.loc) && put_in_active_hand(O))
+			visible_message(SPAN("warning", "[src] catches [O]!"))
+			throw_mode_off()
 			return
 
-		O.throwing = 0		//it hit, so stop moving
+	var/dtype = O.damtype
+	var/throw_damage = O.throwforce * (TT.speed/THROWFORCE_SPEED_DIVISOR)
 
-		var/obj/item/organ/external/affecting = get_organ(zone)
-		if(!affecting)
-			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+	if(blocking)
+		var/obj/item/weapon_def
+		if(blocking_hand && get_inactive_hand())
+			weapon_def = get_inactive_hand()
+		else if(get_active_hand())
+			weapon_def = get_active_hand()
+
+		if(weapon_def)
+			if(weapon_def.force && weapon_def.w_class >= O.w_class)
+				var/dir = get_dir(src,O)
+				O.throw_at(get_edge_target_turf(src, dir), 1)
+
+				visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
+				playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
+
+				damage_poise(throw_damage / weapon_def.mod_shield)
+				if(poise < throw_damage / weapon_def.mod_shield)
+					visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
+					apply_effect(2, WEAKEN, 0)
+					useblock_off()
+				return
+
+
+	var/zone = BP_CHEST
+	if(TT.target_zone)
+		zone = check_zone(TT.target_zone)
+	else
+		zone = ran_zone(BP_CHEST, 75)	//Hits a random part of the body, geared towards the chest
+
+	//check if we hit
+	var/miss_chance = max(15 * (TT.dist_travelled - 2), 0)
+	zone = get_zone_with_miss_chance(zone, src, miss_chance, ranged_attack=1)
+
+	if(zone && TT.thrower && TT.thrower != src)
+		var/shield_check = check_shields(throw_damage, O, TT.thrower, zone, "[O]")
+		if(shield_check == PROJECTILE_FORCE_MISS)
+			zone = null
+		else if(shield_check)
 			return
 
-		var/hit_area = affecting.name
-		var/datum/wound/created_wound
+	if(!zone)
+		visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+		return
 
-		visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
-		play_hitby_sound(AM)
+	var/obj/item/organ/external/affecting = get_organ(zone)
+	if(!affecting)
+		visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+		return
 
-		var/armor
-		if(istype(O, /obj/item))
-			var/obj/item/I = O
-			armor = run_armor_check(affecting, I.check_armour, O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].")
-		else
-			armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+	var/hit_area = affecting.name
+	var/datum/wound/created_wound
 
-		if(armor < 100)
-			var/damage_flags = O.damage_flags()
-			if(prob(armor))
-				damage_flags &= ~(DAM_SHARP|DAM_EDGE)
-			created_wound = apply_damage(throw_damage, dtype, zone, armor, damage_flags, O)
+	visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
+	play_hitby_sound(AM)
 
-		if(ismob(O.thrower))
-			var/mob/M = O.thrower
-			var/client/assailant = M.client
-			if(assailant)
-				admin_attack_log(M, src, "Threw \an [O] at their victim.", "Had \an [O] thrown at them", "threw \an [O] at")
+	var/armor
+	if(istype(O, /obj/item))
+		var/obj/item/I = O
+		armor = run_armor_check(affecting, I.check_armour, O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].")
+	else
+		armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
 
-		//thrown weapon embedded object code.
-		if(dtype == BRUTE && istype(O, /obj/item))
-			var/obj/item/I = O
-			if(!is_robot_module(I))
-				var/sharp = is_sharp(I)
-				var/damage = throw_damage //the effective damage used for embedding purposes, no actual damage is dealt here
-				if(armor)
-					damage *= blocked_mult(armor)
+	if(armor < 100)
+		var/damage_flags = O.damage_flags()
+		if(prob(armor))
+			damage_flags &= ~(DAM_SHARP|DAM_EDGE)
+		created_wound = apply_damage(throw_damage, dtype, zone, armor, damage_flags, O)
 
-				//blunt objects should really not be embedding in things unless a huge amount of force is involved
-				var/embed_chance = sharp? (damage / I.w_class) : (damage / (I.w_class * 3))
-				var/embed_threshold = sharp? (5 * I.w_class) : (15 * I.w_class)
+	if(TT.thrower)
+		var/client/assailant = TT.thrower.client
+		if(assailant)
+			admin_attack_log(TT.thrower, src, "Threw \an [O] at their victim.", "Had \an [O] thrown at them", "threw \an [O] at")
 
-				//Sharp objects will always embed if they do enough damage.
-				//Thrown sharp objects have some momentum already and have a small chance to embed even if the damage is below the threshold
-				if((sharp && prob(damage / (10 * I.w_class) * 100)) || (damage > embed_threshold && prob(embed_chance)))
-					affecting.embed(I, supplied_wound = created_wound)
+	//thrown weapon embedded object code.
+	if(dtype == BRUTE && istype(O, /obj/item))
+		var/obj/item/I = O
+		if(!is_robot_module(I))
+			var/sharp = is_sharp(I)
+			var/damage = throw_damage //the effective damage used for embedding purposes, no actual damage is dealt here
+			if(armor)
+				damage *= blocked_mult(armor)
 
-		// Begin BS12 momentum-transfer code.
-		var/mass = 1.5
-		if(istype(O, /obj/item))
-			var/obj/item/I = O
-			mass = I.w_class / THROWNOBJ_KNOCKBACK_DIVISOR
-		var/momentum = (1 / speed) * mass
+			//blunt objects should really not be embedding in things unless a huge amount of force is involved
+			var/embed_chance = sharp? (damage / I.w_class) : (damage / (I.w_class * 3))
+			var/embed_threshold = sharp? (5 * I.w_class) : (15 * I.w_class)
 
-		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
-			var/dir = get_dir(O.throw_source, src)
+			//Sharp objects will always embed if they do enough damage.
+			//Thrown sharp objects have some momentum already and have a small chance to embed even if the damage is below the threshold
+			if((sharp && prob(damage / (10 * I.w_class) * 100)) || (damage > embed_threshold && prob(embed_chance)))
+				affecting.embed(I, supplied_wound = created_wound)
 
-			if(buckled)
-				return
-
-			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
-
-			if(!O || !src)
-				return
-
-			if(O.loc == src && O.sharp) //Projectile is embedded and suitable for pinning.
-				embed(O, zone)
-				var/turf/T = near_wall(dir, 2)
-
-				if(T)
-					forceMove(T)
-					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
-					anchored = 1
-					pinned += O
+	process_momentum(AM, TT)
 
 /mob/living/carbon/human/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
 	if(!def_zone) ..()

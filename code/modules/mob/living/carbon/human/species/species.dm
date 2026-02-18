@@ -766,3 +766,8 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	else
 		var/list/A = list(max(64, H.r_hair), max(64, H.g_hair), max(64, H.b_hair))
 		return A
+
+/datum/species/proc/check_no_slip(mob/living/user, magboots_only)
+	if(can_overcome_gravity(user))
+		return TRUE
+	return (species_flags & SPECIES_FLAG_NO_SLIP)

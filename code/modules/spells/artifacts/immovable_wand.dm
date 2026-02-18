@@ -57,7 +57,7 @@
 
 	return ..()
 
-/obj/item/immovable_wand/throw_impact(hit_atom, speed)
+/obj/item/immovable_wand/throw_impact(hit_atom, datum/thrownthing/TT)
 	. = ..()
 	var/pwn_chance = current_shape == IW_BALL ? 100 : 50
 	if(isliving(hit_atom) && prob(pwn_chance))

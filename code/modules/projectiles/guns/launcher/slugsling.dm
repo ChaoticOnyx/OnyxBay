@@ -12,7 +12,7 @@
 	. = ..()
 	proximity_monitor = new(src, 0)
 
-/obj/item/slugegg/throw_impact(atom/hit_atom, speed)
+/obj/item/slugegg/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	if(break_on_impact)
 		squish()
 	return ..()

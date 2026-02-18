@@ -28,6 +28,7 @@
 	var/stop_automated_movement = 0 //Use this to temporarely stop random movement or to if you write special movement code for animals.
 	var/wander = 1	// Does the mob wander around when idle?
 	var/stop_automated_movement_when_pulled = 1 //When set to 1 this stops the animal from moving when someone is pulling it.
+	var/skip_spacemove = FALSE // Set to TRUE to ignore slipping while EVA
 
 	//Interaction
 	var/response_help   = "tries to help"
@@ -404,3 +405,6 @@
 	if(M && !ckey)
 		panic_target = weakref(M)
 		turns_since_scan = 5
+
+/mob/living/simple_animal/is_space_movement_permitted(allow_movement = FALSE)
+	return skip_spacemove ? SPACE_MOVE_PERMITTED : ..()

@@ -318,24 +318,22 @@ var/list/mob/living/forced_ambiance_list = new
 			thunk(M)
 		M.update_floating()
 
-/area/proc/thunk(mob)
-	if(istype(get_turf(mob), /turf/space)) // Can't fall onto nothing.
+/area/proc/thunk(mob/M)
+	if(istype(get_turf(M), /turf/space)) // Can't fall onto nothing.
 		return
 
-	if(istype(mob,/mob/living/carbon/human/))
-		var/mob/living/carbon/human/H = mob
-		if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & ITEM_FLAG_NOSLIP))
-			return
+	if(!M.can_slip(magboots_only = TRUE))
+		return
+
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
 
 		if(istype(H.buckled, /obj/effect/dummy/immaterial_form))
 			return
 
-		if(H.species?.can_overcome_gravity(H))
-			return
-
-		H.AdjustStunned(1)
-		H.AdjustWeakened(1)
-		to_chat(mob, SPAN_WARNING("The sudden appearance of gravity makes you fall to the floor!"))
+		H.AdjustStunned(2)
+		H.AdjustWeakened(5)
+		to_chat(M, SPAN("warning", "The sudden appearance of gravity makes you fall to the floor!"))
 
 /area/proc/prison_break()
 	var/obj/machinery/power/apc/theAPC = get_apc()
@@ -347,14 +345,27 @@ var/list/mob/living/forced_ambiance_list = new
 		for(var/obj/machinery/door/window/temp_windoor in src)
 			temp_windoor.open()
 
-/area/proc/has_gravity()
+/area/has_gravity()
 	return has_gravity
 
 /area/space/has_gravity()
-	return 0
+	return FALSE
 
-/proc/has_gravity(atom/AT)
-	var/area/A = get_area(AT)
+/atom/proc/has_gravity()
+	var/area/A = get_area(src)
+	if(A && A.has_gravity())
+		return TRUE
+	return FALSE
+
+/mob/has_gravity()
+	if(!lastarea)
+		lastarea = get_area(src)
+	if(!lastarea || !lastarea.has_gravity())
+		return FALSE
+	return TRUE
+
+/turf/has_gravity()
+	var/area/A = loc
 	if(A?.has_gravity())
 		return TRUE
 	return FALSE

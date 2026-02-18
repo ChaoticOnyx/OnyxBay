@@ -147,10 +147,6 @@
 				for(var/i = 1 to slip_dist)
 					step(M, M.dir)
 					sleep(1)
-			else
-				M.inertia_dir = 0
-		else
-			M.inertia_dir = 0
 
 	..()
 

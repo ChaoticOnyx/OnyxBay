@@ -110,7 +110,7 @@
 
 	return FALSE
 
-/obj/item/device/assembly/mousetrap/hitby(atom/movable/A)
+/obj/item/device/assembly/mousetrap/hitby(atom/movable/A, datum/thrownthing/TT)
 	if(!armed)
 		return ..()
 

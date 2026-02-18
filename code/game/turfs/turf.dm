@@ -228,14 +228,6 @@ var/const/enterloopsanity = 100
 	if(isliving(AM))
 		var/mob/living/M = AM
 		M.update_height_offset(turf_height)
-		if(!M.check_solid_ground())
-			inertial_drift(M)
-			//we'll end up checking solid ground again but we still need to check the other things.
-			//Ususally most people aren't in space anyways so hopefully this is acceptable.
-			M.update_floating()
-		else
-			M.inertia_dir = 0
-			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
 
 	else if(isobj(AM))
 		var/obj/O = AM
@@ -253,20 +245,6 @@ var/const/enterloopsanity = 100
 
 /turf/proc/protects_atom(atom/A)
 	return FALSE
-
-/turf/proc/inertial_drift(atom/movable/A)
-	if(!(A.last_move))	return
-	if((istype(A, /mob/) && src.x > 2 && src.x < (world.maxx - 1) && src.y > 2 && src.y < (world.maxy-1)))
-		var/mob/M = A
-		if(M.Allow_Spacemove(1)) //if this mob can control their own movement in space then they shouldn't be drifting
-			M.inertia_dir  = 0
-			return
-		spawn(5)
-			if(M && !(M.anchored) && !(M.pulledby) && (M.loc == src))
-				if(!M.inertia_dir)
-					M.inertia_dir = M.last_move
-				step(M, M.inertia_dir)
-	return
 
 /turf/proc/levelupdate()
 	for(var/obj/O in src)
@@ -305,11 +283,13 @@ var/const/enterloopsanity = 100
 				L.Add(t)
 	return L
 
-/turf/proc/contains_dense_objects(check_mobs = TRUE)
+/turf/proc/contains_dense_objects(list/exceptions, check_mobs = TRUE)
 	if(density)
 		return TRUE
 	for(var/atom/A in src)
 		if(!check_mobs && ismob(A))
+			continue
+		if(exceptions && (exceptions == A || (islist(exceptions) && (A in exceptions))))
 			continue
 		if(A.density && !(A.atom_flags & ATOM_FLAG_CHECKS_BORDER))
 			return TRUE
@@ -348,13 +328,18 @@ var/const/enterloopsanity = 100
 		decals = null
 
 // Called when turf is hit by a thrown object
-/turf/hitby(atom/movable/AM, speed, nomsg)
-	if(src.density)
-		spawn(2)
-			step(AM, turn(AM.last_move, 180))
+/turf/hitby(atom/movable/AM, datum/thrownthing/TT)
+	if(density)
 		if(isliving(AM))
 			var/mob/living/M = AM
-			M.turf_collision(src, speed)
+			M.turf_collision(src, TT.speed)
+			if(M.pinned)
+				return
+		spawn(2)
+			bounce_off(AM, TT.init_dir)
+
+/turf/proc/bounce_off(atom/movable/AM, direction)
+	step(AM, turn(direction, 180))
 
 /turf/allow_drop()
 	return TRUE

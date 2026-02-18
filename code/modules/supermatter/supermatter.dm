@@ -520,7 +520,7 @@
 	qdel_self()
 	return TRUE
 
-/obj/machinery/power/supermatter/throw_impact(atom/hit_atom, speed, target_zone)
+/obj/machinery/power/supermatter/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	. = ..()
 	if (hit_atom.density)
 		Consume(hit_atom)

@@ -42,6 +42,7 @@
 /obj/item/clothing/shoes/magboots/attack_self(mob/user)
 	if(magpulse)
 		item_flags &= ~ITEM_FLAG_NOSLIP
+		item_flags &= ~ITEM_FLAG_MAGNETISED
 		magpulse = 0
 		set_slowdown()
 		force = 3
@@ -49,6 +50,7 @@
 		to_chat(user, "You disable the [traction_system] traction system.")
 	else
 		item_flags |= ITEM_FLAG_NOSLIP
+		item_flags |= ITEM_FLAG_MAGNETISED
 		magpulse = 1
 		set_slowdown()
 		force = 5
@@ -106,7 +108,7 @@
 	. = ..()
 
 	var/state = "disabled"
-	if(item_flags & ITEM_FLAG_NOSLIP)
+	if(item_flags & ITEM_FLAG_MAGNETISED)
 		state = "enabled"
 
 	. += "Its [traction_system] traction system appears to be [state]."
