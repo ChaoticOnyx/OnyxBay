@@ -53,6 +53,7 @@
 	var/penetration_modifier = 0.2 //How much internal damage this projectile can deal, as a multiplier.
 	var/tasing = 0 //Whether or not it will stun the target once they reach the pain limit
 	var/poisedamage = 0 //Kinda self-decriptive
+	var/space_knockback = FALSE //whether or not it will knock things back in space
 
 
 	// effect types to be used
@@ -156,6 +157,17 @@
 		var/turf/T = get_turf(A)
 		if(T)
 			T.hotspot_expose(700, 5)
+
+	if(space_knockback && ismovable(A))
+		var/atom/movable/AM = A
+		if(!AM.anchored && !AM.has_gravity())
+			if(ismob(AM))
+				var/mob/M = AM
+				if(!M.can_slip(magboots_only = TRUE))
+					return
+			var/old_dir = AM.dir
+			step(AM, get_dir(firer, AM))
+			AM.set_dir(old_dir)
 
 //Checks if the projectile is eligible for embedding. Not that it necessarily will.
 /obj/item/projectile/proc/can_embed()
@@ -739,3 +751,6 @@
 
 /obj/item/projectile/proc/update_effect(obj/effect/projectile/effect)
 	return
+
+/obj/item/projectile/is_space_movement_permitted(allow_movement = FALSE)
+	return SPACE_MOVE_PERMITTED // Bullets don't drift in space

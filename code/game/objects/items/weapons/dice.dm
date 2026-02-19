@@ -80,7 +80,7 @@
 						 "<span class='notice'>You throw [src]. It lands on a [result]. [comment]</span>", \
 						 "<span class='notice'>You hear [src] landing on a [result]. [comment]</span>")
 
-/obj/item/dice/throw_impact(atom/hit_atom, speed)
+/obj/item/dice/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
 	var/list/roll_result = roll_die()
 	var/result = roll_result[1]

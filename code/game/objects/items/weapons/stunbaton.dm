@@ -189,11 +189,11 @@
 		deductcharge(hitcost)
 	return 0
 
-/obj/item/melee/baton/throw_impact(hit_atom, speed)
-	. = ..()
+/obj/item/melee/baton/throw_impact(hit_atom, datum/thrownthing/TT)
+	..()
 	if(isliving(hit_atom) && status && prob(50))
 		var/mob/living/L = hit_atom
-		L.stun_effect_act(stun_amount = rand(2,5), agony_amount = rand(10, 90), def_zone = ran_zone(BP_CHEST, 75), used_weapon = src)
+		L.stun_effect_act(stun_amount = rand(2,5), agony_amount = rand(10, 90), def_zone = ran_zone(TT.target_zone, 30), used_weapon = src)
 		playsound(L.loc, SFX_STUNSTICK_HIT, 70, FALSE, -1)
 		deductcharge(hitcost)
 

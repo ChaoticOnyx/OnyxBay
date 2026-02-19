@@ -16,7 +16,7 @@
 		)
 	bitesize = 30 // 300 nutrition, 6 bites
 
-/obj/item/reagent_containers/food/pie/throw_impact(atom/hit_atom)
+/obj/item/reagent_containers/food/pie/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
 	new /obj/effect/decal/cleanable/pie_smudge(loc)
 	visible_message(SPAN("danger", "\The [src] splats."), SPAN("danger", "You hear a splat."))
@@ -37,7 +37,7 @@
 		)
 	bitesize = 30 // 300 nutrition, 6 bites
 
-/obj/item/reagent_containers/food/berryclafoutis/throw_impact(atom/hit_atom)
+/obj/item/reagent_containers/food/berryclafoutis/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
 	new /obj/effect/decal/cleanable/pie_smudge(loc)
 	visible_message(SPAN("danger", "\The [src] splats."), SPAN("danger", "You hear a splat."))
@@ -58,7 +58,7 @@
 		)
 	bitesize = 30 // 300 nutrition, 6 bites
 
-/obj/item/reagent_containers/food/applepie/throw_impact(atom/hit_atom)
+/obj/item/reagent_containers/food/applepie/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
 	new /obj/effect/decal/cleanable/pie_smudge(loc)
 	visible_message(SPAN("danger", "\The [src] splats."), SPAN("danger", "You hear a splat."))
@@ -79,7 +79,7 @@
 		)
 	bitesize = 30 // 300 nutrition, 6 bites
 
-/obj/item/reagent_containers/food/cherrypie/throw_impact(atom/hit_atom)
+/obj/item/reagent_containers/food/cherrypie/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
 	new /obj/effect/decal/cleanable/pie_smudge(loc)
 	visible_message(SPAN("danger", "\The [src] splats."), SPAN("danger", "You hear a splat."))

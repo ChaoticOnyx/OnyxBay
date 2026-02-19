@@ -318,10 +318,6 @@ var/list/mob_hat_cache = list()
 	death() //Possibly redundant, having trouble making death() cooperate.
 	gib()
 
-//DRONE MOVEMENT.
-/mob/living/silicon/robot/drone/slip_chance(prob_slip)
-	return 0
-
 //CONSOLE PROCS
 /mob/living/silicon/robot/drone/proc/law_resync()
 

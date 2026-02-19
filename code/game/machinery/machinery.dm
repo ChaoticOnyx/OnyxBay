@@ -86,6 +86,9 @@ Class Procs:
 	pull_sound = SFX_PULL_MACHINE
 	layer = BELOW_OBJ_LAYER
 
+	throw_speed = 1
+	throw_range = 5
+
 	var/stat = 0
 	var/emagged = 0
 	var/malf_upgraded = 0

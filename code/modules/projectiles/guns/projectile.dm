@@ -14,6 +14,7 @@
 	screen_shake = TRUE
 	combustion = TRUE
 	has_smoke_particles = TRUE
+	space_recoil = TRUE
 
 	var/caliber = "357"		//determines which casings will fit
 	var/handle_casings = EJECT_CASINGS	//determines how spent casings should be handled

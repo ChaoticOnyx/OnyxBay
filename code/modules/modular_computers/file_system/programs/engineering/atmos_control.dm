@@ -51,8 +51,7 @@
 	if(href_list["alarm"])
 		if(ui_ref)
 			var/obj/machinery/alarm/alarm = locate(href_list["alarm"]) in (monitored_alarms.len ? monitored_alarms : GLOB.alarm_list)
-			if(alarm)
-				var/datum/topic_state/TS = generate_state(alarm)
+			if(istype(alarm))
 				alarm.tgui_interact(usr)
 		return 1
 

@@ -1,19 +1,15 @@
-/mob/living/silicon/robot/slip_chance(prob_slip)
+/mob/living/silicon/robot/has_non_slip_footing(obj/item/shoes)
 	if(module && module.no_slip)
-		return 0
-	..(prob_slip)
+		return TRUE
+	return FALSE
 
-/mob/living/silicon/robot/Check_Shoegrip()
+/mob/living/silicon/robot/has_magnetised_footing(obj/item/shoes)
 	if(module && module.no_slip)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
-/mob/living/silicon/robot/Allow_Spacemove()
-	if(module)
-		for(var/obj/item/tank/jetpack/J in module.modules)
-			if(J && J.allow_thrust(0.01))
-				return 1
-	. = ..()
+/mob/living/silicon/robot/get_jetpack()
+	return locate(/obj/item/tank/jetpack) in module?.modules
 
 /mob/living/silicon/robot/Initialize(mapload, ...)
 	. = ..()

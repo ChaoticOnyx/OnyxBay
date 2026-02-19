@@ -189,72 +189,75 @@
 	return 1
 
 // this proc handles being hit by a thrown atom
-/mob/living/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)// Standardization and logging -Sieve
-	if(!aura_check(AURA_TYPE_THROWN, AM, speed))
+/mob/living/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = TRUE)// Standardization and logging -Sieve
+	..()
+
+	if(ishuman(src))
+		return // Humans are snowflakes
+
+	if(!aura_check(AURA_TYPE_THROWN, AM, TT.speed))
 		return
 
-	if(isobj(AM))
-		var/obj/O = AM
-		var/dtype = O.damtype
-		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
+	if(!isobj(AM))
+		return
 
-		var/miss_chance = 15
-		if(O.throw_source)
-			var/distance = get_dist(O.throw_source, loc)
-			miss_chance = max(15 * (distance - 2), 0)
+	var/obj/O = AM
+	var/dtype = O.damtype
+	var/throw_damage = O.throwforce * (TT.speed / THROWFORCE_SPEED_DIVISOR)
 
-		if(prob(miss_chance))
-			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
-			return
+	var/miss_chance = max(15 * (TT.dist_travelled - 2), 0)
 
-		visible_message(SPAN("warning", "\The [src] has been hit by \the [O]."))
-		play_hitby_sound(AM)
+	if(prob(miss_chance))
+		visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+		return
 
-		var/armor = run_armor_check(null, "melee")
-		if(armor < 100)
-			var/damage_flags = O.damage_flags()
-			if(prob(armor))
-				damage_flags &= ~(DAM_SHARP|DAM_EDGE)
-			apply_damage(throw_damage, dtype, null, armor, damage_flags, O)
+	visible_message(SPAN("warning", "\The [src] has been hit by \the [O]."))
+	play_hitby_sound(AM)
 
-		O.throwing = 0		//it hit, so stop moving
+	var/armor = run_armor_check(null, "melee")
+	if(armor < 100)
+		var/damage_flags = O.damage_flags()
+		if(prob(armor))
+			damage_flags &= ~(DAM_SHARP|DAM_EDGE)
+		apply_damage(throw_damage, dtype, null, armor, damage_flags, O)
 
-		if(ismob(O.thrower))
-			var/mob/M = O.thrower
-			var/client/assailant = M.client
-			if(assailant)
-				admin_attack_log(M, src, "Threw \an [O] at the victim.", "Had \an [O] thrown at them.", "threw \an [O] at")
+	if(TT.thrower)
+		var/client/assailant = TT.thrower.client
+		if(assailant)
+			admin_attack_log(TT.thrower, src, "Threw \an [O] at the victim.", "Had \an [O] thrown at them.", "threw \an [O] at")
 
-		// Begin BS12 momentum-transfer code.
-		var/mass = 1.5
-		if(istype(O, /obj/item))
-			var/obj/item/I = O
-			mass = I.w_class / THROWNOBJ_KNOCKBACK_DIVISOR
-		var/momentum = speed * mass
+	if(O.sharp && (throw_damage > 5*O.w_class)) //Handles embedding for non-humans and simple_animals.
+		embed(O)
 
-		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
-			var/dir = get_dir(O.throw_source, src)
+	process_momentum(AM, TT)
 
-			if(buckled)
-				return
+/mob/living/momentum_power(atom/movable/AM, datum/thrownthing/TT)
+	if(anchored || buckled)
+		return 0
 
-			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
+	. = (AM.get_mass()*TT.speed)/(get_mass()*min(AM.throw_speed,2))
+	if(!can_slip(magboots_only = TRUE))
+		. *= 0.5
 
-			if(!O || !src)
-				return
+/mob/living/momentum_do(power, datum/thrownthing/TT, atom/movable/AM)
+	if(power >= 0.75) //snowflake to enable being pinned to walls
+		var/direction = TT.init_dir
+		throw_at(get_edge_target_turf(src, direction), min((TT.maxrange - TT.dist_travelled) * power, 10), throw_speed * min(power, 1.5), callback = CALLBACK(src,/mob/living/proc/pin_to_wall,AM,direction))
+		visible_message(SPAN_DANGER("\The [src] staggers under the impact!"),SPAN_DANGER("You stagger under the impact!"))
+		return
+	. = ..()
 
-			if(O.sharp) //Projectile is suitable for pinning.
-				//Handles embedding for non-humans and simple_animals.
-				embed(O)
+/mob/living/proc/pin_to_wall(obj/O, direction)
+	if(!istype(O) || O.loc != src || !O.sharp) // Projectile is suitable for pinning.
+		return
 
-				var/turf/T = near_wall(dir, 2)
-
-				if(T)
-					forceMove(T)
-					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
-					anchored = 1
-					pinned += O
+	var/turf/T = near_wall(direction, 2)
+	if(istype(T))
+		forceMove(T)
+		visible_message(SPAN_DANGER("[src] is pinned to the wall by [O]!"),SPAN_DANGER("You are pinned to the wall by [O]!"))
+		anchored = TRUE
+		pinned += O
+	return
 
 /mob/living/play_hitby_sound(atom/movable/AM)
 	var/sound_to_play

@@ -496,16 +496,10 @@
 // this function displays jetpack pressure in the stat panel
 /mob/living/silicon/robot/proc/show_jetpack_pressure()
 	// if you have a jetpack, show the internal tank pressure
-	var/obj/item/tank/jetpack/current_jetpack = installed_jetpack()
+	var/obj/item/tank/jetpack/current_jetpack = get_jetpack()
 	if (current_jetpack)
 		stat("Internal Atmosphere Info", current_jetpack.name)
 		stat("Tank Pressure", current_jetpack.air_contents.return_pressure())
-
-// this function returns the robots jetpack, if one is installed
-/mob/living/silicon/robot/proc/installed_jetpack()
-	if(module)
-		return (locate(/obj/item/tank/jetpack) in module.modules)
-	return null
 
 // this function displays the cyborgs current cell charge in the stat panel
 /mob/living/silicon/robot/proc/show_cell_power()
