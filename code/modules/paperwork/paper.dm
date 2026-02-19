@@ -700,11 +700,6 @@
 			to_chat(usr, SPAN("info", "There isn't enough space left on \the [src] to write anything."))
 			return
 
-		var/t =  sanitize(input("Enter what you want to write:", "Write", null, null) as message, free_space, extra = 0, trim = 0)
-
-		if(!t)
-			return
-
 		var/obj/item/i = get_pen()
 		if (!i)
 			return
@@ -721,6 +716,24 @@
 
 			if(istype(i, /obj/item/pen/fancy))
 				isfancy = TRUE
+
+		var/t = tgui_input_pencode_editor(
+			usr,
+			"Enter what you want to write:",
+			"Write",
+			"",              // default
+			free_space,      // max_length = текущий free_space (как было в sanitize)
+			ishandwritten,
+			0
+		)
+
+		if(!t)
+			return
+
+		t = sanitize(t, free_space, extra = 0, trim = 0)
+
+		if(!t)
+			return
 
 		if (!check_proximity())
 			return

@@ -57,8 +57,8 @@ tick_limit_mc_init = 100
 ## Admins are exempt from these limits.
 ## Hitting the minute limit notifies admins.
 ## Set to 0 or comment out to disable.
-second_topic_limit = 10
-minute_topic_limit = 200
+second_topic_limit = 20
+minute_topic_limit = 350
 
 ## Set to true to make Dream Daemon refuse to reboot for any reason other than `SIGUSR1`.
 wait_for_sigusr1 = false

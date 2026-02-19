@@ -144,22 +144,35 @@
 		var/oldtext = html_decode(loaded_data)
 		oldtext = replacetext(oldtext, "\[br\]", "\n")
 
-		var/newtext = sanitize(replacetext(input(usr, "Editing file '[open_file]'. You may use most tags used in paper formatting:", "Text Editor", oldtext) as message|null, "\n", "\[br\]"), MAX_TEXTFILE_LENGTH)
+		var/newtext = tgui_input_pencode_editor(
+			usr,
+			"Editing file '[open_file]'. You may use most tags used in paper formatting:",
+			"Text Editor",
+			oldtext,
+			MAX_TEXTFILE_LENGTH,
+			FALSE, // is_handwritten
+			0      // timeout (0 = no timeout)
+		)
+
 		if(!newtext)
 			return
+
+		newtext = sanitize(replacetext(newtext, "\n", "\[br\]"), MAX_TEXTFILE_LENGTH)
+
 		//Count the fields
 		var/laststart = 1
-		var/fields
-		while(1)
+		var/fields = 0
+		while(TRUE)
 			var/i = findtext_char(newtext, "\[field\]", laststart)
-			if(i==0)
+			if(i == 0)
 				break
-			laststart = i+1
+			laststart = i + 1
 			fields++
 
 		if(fields > 50)
 			to_chat(usr, SPAN_WARNING("Too many fields. Sorry, you can't do this."))
 			return
+
 		loaded_data = newtext
 		is_edited = 1
 		return 1
