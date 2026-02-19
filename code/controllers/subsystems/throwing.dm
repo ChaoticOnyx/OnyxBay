@@ -62,7 +62,7 @@ SUBSYSTEM_DEF(throwing)
 
 	var/thrown_with
 
-/datum/thrownthing/New(var/atom/movable/thrownthing, var/atom/target, var/range, var/speed, var/mob/thrower, var/datum/callback/callback)
+/datum/thrownthing/New(atom/movable/thrownthing, atom/target, range, speed, mob/thrower, datum/callback/callback)
 	..()
 	src.thrownthing = thrownthing
 	src.target = target
