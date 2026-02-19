@@ -899,7 +899,7 @@ meteor_act
 	return 1
 
 //this proc handles being hit by a thrown atom
-/mob/living/carbon/human/hitby(atom/movable/AM, datum/thrownthing/TT)
+/mob/living/carbon/human/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = TRUE)
 	..()
 
 	if(!aura_check(AURA_TYPE_THROWN, AM, TT.speed))

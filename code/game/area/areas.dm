@@ -327,22 +327,31 @@ var/list/mob/living/forced_ambiance_list = new
 	if(istype(get_turf(M), /turf/space)) // Can't fall onto nothing.
 		return
 
-	to_chat(M, SPAN("warning", "Trying to thunk, checking can_slip."))
-
-	if(!M.can_slip(magboots_only = TRUE))
+	if(!ishuman(M))
 		return
 
-	to_chat(M, SPAN("warning", "Trying to thunk, can_slip failed successfully."))
+	var/mob/living/carbon/human/H = M
 
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
+	if(istype(H.buckled, /obj/effect/dummy/immaterial_form))
+		return
 
-		if(istype(H.buckled, /obj/effect/dummy/immaterial_form))
-			return
+	// A huge-ass boilerplate, because we can't just use can_slip() here,
+	// since the area already has gravity upon calling this proc.
+	if(H.status_flags & GODMODE)
+		return
 
-		H.AdjustStunned(2)
-		H.AdjustWeakened(3)
-		to_chat(M, SPAN("warning", "The sudden appearance of gravity makes you fall to the floor!"))
+	if(!H.simulated || !isturf(H.loc) || H.buckled || (H.lying || H.resting) || H.throwing)
+		return
+
+	if(H.has_magnetised_footing())
+		return
+
+	if(H.species?.check_no_slip(H))
+		return
+
+	H.AdjustStunned(2)
+	H.AdjustWeakened(3)
+	to_chat(M, SPAN("warning", "The sudden appearance of gravity makes you fall to the floor!"))
 
 /area/proc/prison_break()
 	var/obj/machinery/power/apc/theAPC = get_apc()

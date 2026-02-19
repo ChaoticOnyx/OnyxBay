@@ -189,7 +189,7 @@
 	return 1
 
 // this proc handles being hit by a thrown atom
-/mob/living/hitby(atom/movable/AM, datum/thrownthing/TT)// Standardization and logging -Sieve
+/mob/living/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = TRUE)// Standardization and logging -Sieve
 	..()
 
 	if(ishuman(src))
