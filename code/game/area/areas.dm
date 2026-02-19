@@ -241,22 +241,27 @@
 var/list/mob/living/forced_ambiance_list = new
 
 /area/Entered(A)
-	if(!istype(A,/mob/living))	return
-
+	if(!isliving(A))
+		return
 	var/mob/living/L = A
-	if(!L.ckey)	return
 
 	if(!L.lastarea)
 		L.lastarea = get_area(L.loc)
-	var/area/newarea = get_area(L.loc)
-	var/area/oldarea = L.lastarea
-	if(oldarea.has_gravity != newarea.has_gravity)
-		if(newarea.has_gravity == 1 && L.m_intent == M_RUN) // Being ready when you change areas allows you to avoid falling.
-			thunk(L)
-		L.update_floating()
 
-	L.lastarea = newarea
-	play_ambience(L)
+	var/area/oldarea = L.lastarea
+	if(!oldarea || oldarea.has_gravity != has_gravity)
+		if(has_gravity == 1)
+			if(L.m_intent == M_RUN) // Being ready when you change areas allows you to avoid falling.
+				thunk(L)
+			else
+				to_chat(L, SPAN("notice", "You feel heavier as gravity suddenly appears."))
+		else
+			to_chat(L, SPAN("notice", "You momentarily feel a bit dizzy as gravity suddenly disappears."))
+
+	if(L.ckey)
+		play_ambience(L)
+
+	L.lastarea = src
 
 /area/proc/play_ambience(mob/living/L, custom_period = 1 MINUTES)
 	set waitfor = FALSE
@@ -322,8 +327,12 @@ var/list/mob/living/forced_ambiance_list = new
 	if(istype(get_turf(M), /turf/space)) // Can't fall onto nothing.
 		return
 
+	to_chat(M, SPAN("warning", "Trying to thunk, checking can_slip."))
+
 	if(!M.can_slip(magboots_only = TRUE))
 		return
+
+	to_chat(M, SPAN("warning", "Trying to thunk, can_slip failed successfully."))
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -332,7 +341,7 @@ var/list/mob/living/forced_ambiance_list = new
 			return
 
 		H.AdjustStunned(2)
-		H.AdjustWeakened(5)
+		H.AdjustWeakened(3)
 		to_chat(M, SPAN("warning", "The sudden appearance of gravity makes you fall to the floor!"))
 
 /area/proc/prison_break()
@@ -353,22 +362,16 @@ var/list/mob/living/forced_ambiance_list = new
 
 /atom/proc/has_gravity()
 	var/area/A = get_area(src)
-	if(A && A.has_gravity())
-		return TRUE
-	return FALSE
+	return A?.has_gravity()
 
-/mob/has_gravity()
-	if(!lastarea)
-		lastarea = get_area(src)
-	if(!lastarea || !lastarea.has_gravity())
+/atom/movable/has_gravity()
+	if(istype(loc, /turf/space))
 		return FALSE
-	return TRUE
+	var/area/A = get_area(src)
+	return A?.has_gravity()
 
 /turf/has_gravity()
-	var/area/A = loc
-	if(A?.has_gravity())
-		return TRUE
-	return FALSE
+	return loc.has_gravity()
 
 /area/proc/get_dimensions()
 	var/list/res = list("x"=1,"y"=1)

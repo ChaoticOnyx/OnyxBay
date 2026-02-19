@@ -259,10 +259,13 @@
 		return SPACE_MOVE_SUPPORTED
 
 /mob/living/is_space_movement_permitted(allow_movement = FALSE)
+	. = ..()
+	if(.)
+		return
+
 	var/obj/item/tank/jetpack/thrust = get_jetpack()
 	if(thrust && thrust.on && (allow_movement || thrust.stabilization_on) && thrust.allow_thrust(0.01, src))
 		return SPACE_MOVE_PERMITTED
-	return ..()
 
 /mob/living/proc/get_jetpack()
 	return

@@ -301,9 +301,6 @@
 	if(!simulated)
 		return TRUE
 
-	if(has_gravity())
-		return SPACE_MOVE_PERMITTED
-
 	if(pulledby)
 		return SPACE_MOVE_PERMITTED
 
@@ -311,6 +308,9 @@
 		return SPACE_MOVE_PERMITTED
 
 	if(anchored)
+		return SPACE_MOVE_PERMITTED
+
+	if(has_gravity())
 		return SPACE_MOVE_PERMITTED
 
 	if(!isturf(loc))

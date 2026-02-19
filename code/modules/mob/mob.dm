@@ -1213,7 +1213,7 @@
 		return FALSE
 
 	// Check footwear.
-	if(!magboots_only)
+	if(magboots_only)
 		return !((has_gravity() || has_magnetised_footing()) && get_solid_footing())
 
 	if(has_non_slip_footing())
