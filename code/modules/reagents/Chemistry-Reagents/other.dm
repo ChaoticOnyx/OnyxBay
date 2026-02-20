@@ -291,7 +291,7 @@
 
 /datum/reagent/thermite/touch_mob(mob/living/L, amount)
 	if(istype(L))
-		L.adjust_fire_stacks(amount / 5)
+		L.adjust_fire_stacks(amount) // Sweet hell that's a lot
 
 /datum/reagent/thermite/affect_blood(mob/living/carbon/M, alien, removed)
 	M.adjustFireLoss(3 * removed)
@@ -523,7 +523,7 @@
 
 /datum/reagent/fuel/touch_mob(mob/living/L, amount)
 	if(istype(L))
-		L.adjust_fire_stacks(amount / 10) // Splashing people with welding fuel to make them easy to ignite!
+		L.adjust_fire_stacks(ceil(amount / 5)) // Splashing people with welding fuel to make them easy to ignite!
 
 /datum/reagent/water/firefoam
 	name = "Firefighting foam"

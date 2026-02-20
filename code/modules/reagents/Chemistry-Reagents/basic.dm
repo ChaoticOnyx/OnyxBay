@@ -94,14 +94,10 @@
 
 /datum/reagent/water/touch_mob(mob/living/L, amount)
 	if(istype(L))
-		var/needed = L.fire_stacks * 50
-		if(amount > needed)
-			L.fire_stacks = 0
-			L.ExtinguishMob()
-			remove_self(needed)
-		else
-			L.adjust_fire_stacks(-(amount / 50))
-			remove_self(amount)
+		var/removed_amount = L.fire_stacks
+		L.adjust_fire_stacks(-(amount / 10))
+		removed_amount = L.fire_stacks - removed_amount
+		remove_self(removed_amount)
 
 /datum/reagent/water/affect_touch(mob/living/carbon/M, alien, removed)
 	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
@@ -264,7 +260,7 @@
 	M.adjustToxLoss(4 * removed)
 
 /datum/reagent/hydrazine/affect_touch(mob/living/carbon/M, alien, removed) // Hydrazine is both toxic and flammable.
-	M.adjust_fire_stacks(removed / 12)
+	M.adjust_fire_stacks(removed / 5)
 	M.adjustToxLoss(0.2 * removed)
 
 /datum/reagent/hydrazine/touch_turf(turf/T)

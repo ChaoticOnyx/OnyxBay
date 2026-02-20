@@ -100,7 +100,7 @@
 	name = "Plasmygen"
 	description = "An exceptionally flammable molecule formed from deuterium synthesis."
 	strength = 15
-	fire_mult = 15
+	fire_mult = 2
 
 /datum/reagent/toxin/plasma/oxygen/touch_turf(turf/simulated/T)
 	if(!istype(T))

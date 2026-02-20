@@ -215,27 +215,27 @@
 	if(!is_asystole() || isundead(src))
 		if (on_fire)
 			playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-			if (M.on_fire)
+			if(M.on_fire)
 				M.visible_message(SPAN("warning", "[M] tries to pat out [src]'s flames, but to no avail!"),
 								  SPAN("warning", "You try to pat out [src]'s flames, but to no avail! Put yourself out first!"))
 			else
 				M.visible_message(SPAN("warning", "[M] tries to pat out [src]'s flames!"),
 								  SPAN("warning", "You try to pat out [src]'s flames! Hot!"))
 				if(do_mob(M, src, 15))
-					src.fire_stacks -= 0.5
-					if (prob(10) && (M.fire_stacks <= 0))
-						M.fire_stacks += 1
+					var/fire_stacks_to_extinguish = min(((M.fire_stacks < 0) ? -30 :-15), src.fire_stacks) // Less effective than stop, drop, and roll - also accounting for the fact that it takes half as long
+					var/fire_level_sqr = src.get_fire_level()**2
+
+					src.adjust_fire_stacks(fire_stacks_to_extinguish, TRUE)
+					if(prob(5 * fire_level_sqr)) // 5% -> 20% -> 45%
+						M.adjust_fire_stacks(10 * fire_level_sqr)
 					M.IgniteMob()
-					if (M.on_fire)
+
+					if(M.on_fire)
 						M.visible_message(SPAN("danger", "The fire spreads from [src] to [M]!"),
 										  SPAN("danger", "The fire spreads to you as well!"))
-					else
-						src.fire_stacks -= 0.5 //Less effective than stop, drop, and roll - also accounting for the fact that it takes half as long.
-						if (src.fire_stacks <= 0)
-							M.visible_message(SPAN("warning", "[M] successfully pats out [src]'s flames."),
-											  SPAN("warning", "You successfully pat out [src]'s flames."))
-							src.ExtinguishMob()
-							src.fire_stacks = 0
+					else if(!src.on_fire)
+						M.visible_message(SPAN("warning", "[M] successfully pats out [src]'s flames."),
+										  SPAN("warning", "You successfully pat out [src]'s flames."))
 		else
 			var/t_him = "it"
 			if (src.gender == MALE)
@@ -265,11 +265,17 @@
 				else
 					M.visible_message(SPAN("notice", "[M] hugs [src] to make [t_him] feel better!"), \
 									  SPAN("notice", "You hug [src] to make [t_him] feel better!"))
-				if(M.fire_stacks >= (src.fire_stacks + 3))
-					src.fire_stacks += 1
-					M.fire_stacks -= 1
-				if(M.on_fire)
-					src.IgniteMob()
+
+				var/fire_level = M.get_fire_level()
+				if(fire_level < 0 && M.fire_stacks <= (src.fire_stacks - 10))
+					src.adjust_fire_stacks(-5)
+					M.adjust_fire_stacks(5)
+				else if(fire_level > 0)
+					if(M.fire_stacks >= (src.fire_stacks + 10))
+						src.adjust_fire_stacks(5 * fire_level)
+						M.adjust_fire_stacks(-5)
+					if(M.on_fire)
+						src.IgniteMob()
 
 			if(!is_ic_dead())
 				AdjustParalysis(-3)
