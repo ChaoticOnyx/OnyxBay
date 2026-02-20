@@ -323,7 +323,11 @@
 		for(var/mob/living/carbon/metroid/M in T)
 			M.adjustToxLoss(rand(5, 10))
 
-/datum/reagent/space_cleaner/affect_touch(mob/living/carbon/M, alien, removed)
+/datum/reagent/space_cleaner/touch_mob(mob/living/L, amount)
+	var/mob/living/carbon/M = L
+	if(!istype(M))
+		return
+
 	if(M.r_hand)
 		M.r_hand.clean_blood()
 	if(M.l_hand)
@@ -511,9 +515,9 @@
 	glass_name = "welder fuel"
 	glass_desc = "Unless you are an industrial tool, this is probably not safe for consumption."
 
-/datum/reagent/fuel/touch_turf(turf/T)
-	new /obj/effect/decal/cleanable/liquid_fuel(T, volume)
-	remove_self(volume)
+/datum/reagent/fuel/touch_turf(turf/T, amount)
+	new /obj/effect/decal/cleanable/liquid_fuel(T, amount)
+	remove_self(amount)
 	return
 
 /datum/reagent/fuel/affect_blood(mob/living/carbon/M, alien, removed)

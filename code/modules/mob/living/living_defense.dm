@@ -343,9 +343,21 @@
 	return
 
 /mob/living/proc/adjust_fire_stacks(add_fire_stacks, silent = FALSE) // Adjusting the amount of fire_stacks we have on person
+	if(!on_fire)
+		fire_stacks = Clamp(fire_stacks + add_fire_stacks, FIRE_STACKS_MIN, FIRE_STACKS_MAX)
+		return
+
+	var/old_fire_level = get_fire_level()
 	fire_stacks = Clamp(fire_stacks + add_fire_stacks, FIRE_STACKS_MIN, FIRE_STACKS_MAX)
-	if(on_fire && fire_stacks <= FIRE_STACKS_LEVEL_1)
+
+	if(fire_stacks <= FIRE_STACKS_LEVEL_1)
 		ExtinguishMob(silent)
+		return
+
+	if(old_fire_level != get_fire_level())
+		update_fire()
+
+	return
 
 /mob/living/proc/handle_fire()
 	if(fire_stacks < FIRE_STACKS_LEVEL_1)
@@ -358,7 +370,10 @@
 		ExtinguishMob() //Fire's been put out.
 		return 1
 
+	var/old_fire_level = get_fire_level()
 	fire_stacks = max(FIRE_STACKS_LEVEL_1, --fire_stacks) //I guess the fire runs out of fuel eventually
+	if(old_fire_level != get_fire_level())
+		update_fire()
 
 	var/datum/gas_mixture/G = loc.return_air() // Check if we're standing in an oxygenless environment
 	if(G.get_by_flag(XGM_GAS_OXIDIZER) < 1)
@@ -369,15 +384,17 @@
 	location.hotspot_expose(fire_burn_temperature(), 50, 1)
 
 /mob/living/fire_act(datum/gas_mixture/air, temperature, volume)
-	//once our fire_burn_temperature has reached the temperature of the fire that's giving fire_stacks, stop adding them.
-	//allow fire_stacks to go up to 40 for fires cooler than 700 K, since are being immersed in flame after all.
+	// once our fire_burn_temperature has reached the temperature of the fire that's giving fire_stacks, we DON'T stop adding them (but do it slower), since it's fun to assum that humans are fuel
+	// allow fire_stacks to go up to 40 for fires cooler than 700 K, since are being immersed in flame after all.
 	var/current_burn_temperature = fire_burn_temperature()
 	if(current_burn_temperature < temperature)
-		current_burn_temperature++ // Don't wanna divide by zero
-		var/fire_stacks_burst = ceil(10 * (temperature / current_burn_temperature)) // We'll turn into a torch must faster in a burning inferno
+		current_burn_temperature = max(current_burn_temperature, 700)
+		var/fire_stacks_burst = clamp(ceil(10 * (temperature / current_burn_temperature)), 2, 50) // We'll turn into a torch must faster in a burning inferno
 		adjust_fire_stacks(fire_stacks_burst)
-	else if(fire_stacks <= 40)
+	else if(fire_stacks < 40)
 		adjust_fire_stacks(10)
+	else
+		adjust_fire_stacks(2)
 	IgniteMob()
 
 /mob/living/proc/get_cold_protection()

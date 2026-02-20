@@ -259,8 +259,11 @@
 /datum/reagent/hydrazine/affect_blood(mob/living/carbon/M, alien, removed)
 	M.adjustToxLoss(4 * removed)
 
+/datum/reagent/hydrazine/touch_mob(mob/living/L, amount)
+	if(istype(L))
+		L.adjust_fire_stacks(ceil(amount / 5))
+
 /datum/reagent/hydrazine/affect_touch(mob/living/carbon/M, alien, removed) // Hydrazine is both toxic and flammable.
-	M.adjust_fire_stacks(removed / 5)
 	M.adjustToxLoss(0.2 * removed)
 
 /datum/reagent/hydrazine/touch_turf(turf/T)
