@@ -11,7 +11,7 @@
  * * is_handwritten - Pass-through to pencode2html.
  * * timeout - Auto-close after timeout ticks (0 = no timeout).
  */
-/proc/tgui_input_pencode_editor(mob/user, message, title = "Pencode Editor", default = "", max_length = MAX_TGUI_PENCODE_INPUT, is_handwritten = FALSE, timeout = 0)
+/proc/tgui_input_pencode_editor(mob/user, message, title = "Pencode Editor", default = "", max_length = MAX_MESSAGE_LEN, is_handwritten = FALSE, timeout = 0)
 	if (!user)
 		user = usr
 	if (!istype(user))
@@ -54,7 +54,7 @@
 	var/timeout
 
 
-/datum/tgui_input_pencode_editor/New(mob/user, message, title, default, max_length = MAX_TGUI_PENCODE_INPUT, is_handwritten, timeout)
+/datum/tgui_input_pencode_editor/New(mob/user, message, title, default, max_length = MAX_MESSAGE_LEN, is_handwritten, timeout)
 	src.default = istext(default) ? default : ""
 	src.current_text = src.default
 	src.max_length = max_length

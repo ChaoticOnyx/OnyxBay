@@ -73,7 +73,6 @@
 #define MAX_NAME_LEN           26
 #define MAX_DESC_LEN           128
 #define MAX_EMAIL_LEN          10240
-#define MAX_TGUI_PENCODE_INPUT 10240
 #define MAX_TEXTFILE_LENGTH    128000 //Are you writing book?
 
 
