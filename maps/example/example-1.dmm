@@ -37,6 +37,7 @@
 "L" = (/obj/machinery/atmospherics/pipe/manifold/visible,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "M" = (/obj/machinery/atmospherics/pipe/manifold/visible{dir = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "P" = (/obj/map_ent/info_maptext{ev_text = "Map entities showcase"},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"V" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/item/modular_computer/console/preset/security,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "X" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/effect/landmark/joinlate,/obj/machinery/alarm{pixel_y = 29},/turf/simulated/floor/tiled,/area/engineering/toilet)
 
 (1,1,1) = {"
@@ -51,7 +52,7 @@ JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcccccccccccccccccJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaaaaaaaaaaaaaaacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcabbbdbbbbbdbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcabbbbbfgfbbbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcabbbbbVgfbbbbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcabbbbbfXfbbbbhacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaibbbjfffbbbbkacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcabmmmmmmmmmmbbacJJJJJJJJJJJJJJJ

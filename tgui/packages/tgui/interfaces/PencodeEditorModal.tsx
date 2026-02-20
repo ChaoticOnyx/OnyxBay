@@ -71,7 +71,11 @@ const highlightPencodeToHtml = (text: string) => {
 export class PencodeEditorModal extends Component<any, State> {
   private textareaEl: HTMLTextAreaElement | null = null;
   private updateTimer: number | null = null;
+  private highlightEl: HTMLDivElement | null = null;
   private highlightContentEl: HTMLDivElement | null = null;
+
+  private lastUpdateText: string | null = null;
+  private lastPreviewSyncText: string | null = null;
 
   constructor(props: any, context: any) {
     super(props, context);
@@ -85,9 +89,9 @@ export class PencodeEditorModal extends Component<any, State> {
   }
 
   componentDidMount() {
-    // ВАЖНО: после переоткрытия синхронизируем превью на сервере сразу
     const { act } = useBackend<Data>(this.context);
-    this.actTextChunked(act, 'update', this.state.text || '');
+    const text = this.state.text || '';
+    this.sendUpdateIfChanged(act, text, this.state.tab === 'preview');
   }
 
   componentWillUnmount() {
@@ -101,50 +105,48 @@ export class PencodeEditorModal extends Component<any, State> {
     this.textareaEl = el;
   };
 
+  private setHighlightRef = (el: HTMLDivElement | null) => {
+    this.highlightEl = el;
+  };
+
   private setHighlightContentRef = (el: HTMLDivElement | null) => {
     this.highlightContentEl = el;
   };
 
   private syncScroll = () => {
     const ta = this.textareaEl;
+    const hl = this.highlightEl;
     const hc = this.highlightContentEl;
-    if (!ta || !hc) return;
+    if (!ta || !hl || !hc) return;
+
+    // Размеры скроллбаров textarea (если их нет — будет 0)
+    const sbw = Math.max(0, (ta.offsetWidth || 0) - (ta.clientWidth || 0));
+    const sbh = Math.max(0, (ta.offsetHeight || 0) - (ta.clientHeight || 0));
+
+    // Уменьшаем overlay-область под размеры полос
+    hl.style.setProperty('--pencode-sbw', `${sbw}px`);
+    hl.style.setProperty('--pencode-sbh', `${sbh}px`);
 
     const x = ta.scrollLeft || 0;
     const y = ta.scrollTop || 0;
     hc.style.transform = `translate(${-x}px, ${-y}px)`;
   };
 
-  private actTextChunked(
+  private sendUpdateIfChanged(
     act: (a: string, p?: any) => void,
-    action: 'update' | 'submit',
     text: string,
+    markPreviewSync?: boolean
   ) {
-    if (!text || text.length < CHUNK_THRESHOLD) {
-      act(action, { text });
+    // общий анти-спам: одинаковое не отправляем
+    if (this.lastUpdateText === text) {
+      if (markPreviewSync) this.lastPreviewSyncText = text;
       return;
     }
 
-    const chunkId = makeChunkId();
-    const total = Math.ceil(text.length / CHUNK_SIZE);
+    this.lastUpdateText = text;
+    if (markPreviewSync) this.lastPreviewSyncText = text;
 
-    act(`${action}_chunk_begin`, {
-      chunk_id: chunkId,
-      chunk_total: total,
-      text_len: text.length,
-    });
-
-    for (let i = 0; i < total; i++) {
-      const part = text.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
-      act(`${action}_chunk_part`, {
-        chunk_id: chunkId,
-        chunk_index: i + 1,
-        chunk_total: total,
-        payload: part,
-      });
-    }
-
-    act(`${action}_chunk_end`, { chunk_id: chunkId });
+    act('update', {text});
   }
 
   private scheduleUpdate(act: (a: string, p?: any) => void, text: string, immediate?: boolean) {
@@ -152,12 +154,14 @@ export class PencodeEditorModal extends Component<any, State> {
       clearTimeout(this.updateTimer);
       this.updateTimer = null;
     }
+
     if (immediate) {
-      this.actTextChunked(act, 'update', text);
+      this.sendUpdateIfChanged(act, text);
       return;
     }
+
     this.updateTimer = window.setTimeout(() => {
-      this.actTextChunked(act, 'update', text);
+      this.sendUpdateIfChanged(act, text);
       this.updateTimer = null;
     }, DEBOUNCE_MS) as any;
   }
@@ -248,7 +252,10 @@ export class PencodeEditorModal extends Component<any, State> {
   private setTab(act: (a: string, p?: any) => void, tab: 'edit' | 'preview') {
     this.setState({ tab }, () => {
       if (tab === 'preview') {
-        this.scheduleUpdate(act, this.state.text || '', true);
+        const text = this.state.text || '';
+        if (this.lastPreviewSyncText !== text) {
+          this.sendUpdateIfChanged(act, text, true);
+        }
       }
       this.syncScroll();
     });
@@ -344,7 +351,7 @@ export class PencodeEditorModal extends Component<any, State> {
                   content="Submit"
                   tooltip={canSubmit ? 'Submit text' : 'Cannot submit: limit exceeded'}
                   disabled={!canSubmit}
-                  onClick={() => this.actTextChunked(act, 'submit', text)}
+                  onClick={() => act('submit', {text})}
                 />
                 <Button
                   className="PencodeEditorModal__btnWide"
@@ -412,7 +419,8 @@ export class PencodeEditorModal extends Component<any, State> {
             <Box className="PencodeEditorModal__body">
               {this.state.tab === 'edit' ? (
                 <Box className="PencodeEditorModal__editorWrap">
-                  <div className={`PencodeEditorModal__highlight ${this.state.syntax ? '' : 'PencodeEditorModal__highlight--off'}`}>
+                  <div className={`PencodeEditorModal__highlight ${this.state.syntax ? '' : 'PencodeEditorModal__highlight--off'}`}
+                    ref={this.setHighlightRef as any}>
                     <div
                       className="PencodeEditorModal__highlightContent"
                       ref={this.setHighlightContentRef as any}

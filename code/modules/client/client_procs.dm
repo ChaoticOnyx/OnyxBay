@@ -54,7 +54,14 @@
 			completed_asset_jobs += asset_cache_job
 			return
 
-	if(config.general.minute_topic_limit)
+	// TGUI oversized payload chunking
+	var/skip_topic_limiter = FALSE
+	if(href_list["tgui"])
+		var/t = href_list["type"]
+		if(t == "oversizedPayloadRequest" || t == "payloadChunk")
+			skip_topic_limiter = TRUE
+
+	if(!skip_topic_limiter && config.general.minute_topic_limit)
 		var/minute = round(world.time, 600)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -72,7 +79,7 @@
 			to_chat(src, SPAN("danger", "[msg]"))
 			return
 
-	if(config.general.second_topic_limit)
+	if(!skip_topic_limiter && config.general.second_topic_limit)
 		var/second = round(world.time, 10)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)

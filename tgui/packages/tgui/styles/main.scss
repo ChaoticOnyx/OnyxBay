@@ -58,6 +58,7 @@
 @include meta.load-css("./interfaces/Minesweeper.scss");
 @include meta.load-css("./interfaces/PencodeEditorModal.scss");
 @include meta.load-css("./interfaces/AirAlarm.scss");
+@include meta.load-css("./interfaces/WordProcessor.scss");
 
 // Layouts
 @include meta.load-css("./layouts/Layout.scss");

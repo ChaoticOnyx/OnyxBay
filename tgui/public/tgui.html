@@ -48,8 +48,8 @@
           var majorVersion = groups && groups[1];
           return majorVersion ? parseInt(majorVersion, 10) : null;
         })();
-		
-		// Blink engine version
+
+        // Blink engine version
         Byond.BLINK = (function () {
           var groups = navigator.userAgent.match(/Chrome\/(\d+)\./);
           var majorVersion = groups && groups[1];
@@ -204,83 +204,47 @@
           }
         };
 
-        let MAX_PACKET_SIZE = 1024;
+        // ======================================================
+        // STEP 1: Incoming message handling MUST be defined
+        // BEFORE Byond.subscribe() / chunking logic uses it.
+        // ======================================================
 
-        // Считает длину строки после URL-кодирования (как в Topic querystring)
-        function encodedLength(str) {
-          // encodeURIComponent даёт ровно тот рост, который убивает кириллицу
-          return encodeURIComponent(str).length;
-        }
-
-        // Режет строку так, чтобы каждый кусок проходил по encodedLength <= limit
-        function splitByEncodedLimit(str, limit) {
-          const chunks = [];
-          let i = 0;
-
-          while (i < str.length) {
-            // Быстрый верхний предел: не больше limit символов сырого текста
-            // (на ASCII encodedLength ~= length)
-            let lo = 1;
-            let hi = Math.min(str.length - i, limit);
-
-            // Бинарный поиск максимального префикса, который влезает после encodeURIComponent
-            while (lo <= hi) {
-              const mid = (lo + hi) >> 1;
-              const part = str.substring(i, i + mid);
-              const len = encodedLength(part);
-
-              if (len <= limit) {
-                lo = mid + 1;
-              } else {
-                hi = mid - 1;
-              }
-            }
-
-            // hi — максимальная длина, которая влезает
-            const take = Math.max(1, hi);
-            chunks.push(str.substring(i, i + take));
-            i += take;
+        // Message handler called by BYOND
+        window.update = function (rawMessage) {
+          // Push onto the queue (active during initialization)
+          if (window.update.queueActive) {
+            window.update.queue.push(rawMessage);
+            return;
           }
+          // Parse the message
+          var message = Byond.parseJson(rawMessage);
+          // Notify listeners
+          var listeners = window.update.listeners;
+          for (var i = 0; i < listeners.length; i++) {
+            listeners[i](message.type, message.payload);
+          }
+        };
 
-          return chunks;
-        }
-
-        Byond.sendMessage = function (type, payload) {
-          let message =
-            typeof type === 'string' ? { type: type, payload: payload } : type;
-
-          if (message.payload !== null && message.payload !== undefined) {
-            message.payload = JSON.stringify(message.payload);
-
-            if (!Byond.TRIDENT) {
-              // ВАЖНО: считаем лимит по URL-encoded длине payload
-              if (encodedLength(message.payload) > MAX_PACKET_SIZE) {
-                const chunks = splitByEncodedLimit(message.payload, MAX_PACKET_SIZE);
-
-                for (let i = 0; i < chunks.length; i++) {
-                  const to_send = chunks[i];
-
-                  const chunkMsg = {
-                    type: type,
-                    packet: to_send,
-                    packetId: i + 1,
-                    totalPackets: chunks.length,
-                    tgui: 1,
-                    window_id: Byond.windowId,
-                  };
-                  Byond.topic(chunkMsg);
-                }
-
-                return;
-              }
+        // Properties and variables of this specific handler
+        window.update.listeners = [];
+        window.update.queue = [];
+        window.update.queueActive = true;
+        window.update.flushQueue = function (listener) {
+          // Disable and clear the queue permanently on short delay
+          if (window.update.queueActive) {
+            window.update.queueActive = false;
+            if (window.setTimeout) {
+              window.setTimeout(function () {
+                window.update.queue = [];
+              }, 0);
             }
           }
-
-          assign(message, {
-            tgui: 1,
-            window_id: Byond.windowId,
-          });
-          Byond.topic(message);
+          // Process queued messages on provided listener
+          var queue = window.update.queue;
+          for (var i = 0; i < queue.length; i++) {
+            var message = Byond.parseJson(queue[i]);
+            listener(message.type, message.payload);
+          }
         };
 
 
@@ -289,19 +253,205 @@
           window.update(JSON.stringify({ type: type, payload: payload }));
         };
 
+        // Ранняя подписка: НЕ трогает очередь и НЕ отключает queueActive.
+        // Используется только для bootstrap-слушателей (например, chunking).
+        Byond.subscribeEarly = function (listener) {
+          window.update.listeners.push(listener);
+        };
+
+        // Обычная подписка: именно она должна "разом" обработать очередь.
         Byond.subscribe = function (listener) {
           window.update.flushQueue(listener);
           window.update.listeners.push(listener);
         };
-
         Byond.subscribeTo = function (type, listener) {
-          _listener = function (_type, payload) {
+          var _listener = function (_type, payload) {
             if (_type === type) {
               listener(payload);
             }
           };
           window.update.listeners.push(_listener);
           window.update.flushQueue(_listener);
+        };
+
+        // ------------------------------------------------------
+        // TGUI oversized payload chunking (PR #90295)
+        // ------------------------------------------------------
+
+        var TOPIC_URL_LIMIT = 2048;
+        var CHUNK_URL_LIMIT = 1024;
+
+        Byond.__outgoingPayloadQueues__ = {}; // id -> { chunks: string[] }
+
+        function estimateTopicUrlSize(obj) {
+          var i = 0;
+          var url = "";
+          for (var key in obj) {
+            if (hasOwn.call(obj, key)) {
+              var value = obj[key];
+              if (value === null || value === undefined) value = "";
+              url +=
+                (i++ > 0 ? "&" : "?") +
+                encodeURIComponent(key) +
+                "=" +
+                encodeURIComponent(value);
+            }
+          }
+          return url.length;
+        }
+
+        function encodedLengthBinarySearch(haystackArray, targetEncodedLen) {
+          var high = haystackArray.length - 1;
+          var low = 0;
+          var mid = 0;
+
+          while (low < high) {
+            mid = Math.round((low + high) / 2);
+            var substring = haystackArray.slice(0, mid).join("");
+            var substringLen = encodeURIComponent(substring).length;
+
+            if (substringLen === targetEncodedLen) {
+              break;
+            }
+            if (substringLen < targetEncodedLen) {
+              low = mid + 1;
+            } else {
+              high = mid - 1;
+            }
+          }
+          return mid;
+        }
+
+        function splitIntoEncodedChunks(str) {
+          var chars = str.split("");
+          var length = chars.length;
+
+          var chunks = [];
+          var startIndex = 0;
+          var endIndex = CHUNK_URL_LIMIT;
+
+          while (startIndex < length) {
+            var cut = chars.slice(
+              startIndex,
+              endIndex < length ? endIndex : undefined
+            );
+            var cutString = cut.join("");
+
+            if (encodeURIComponent(cutString).length > CHUNK_URL_LIMIT) {
+              var splitIndex =
+                startIndex + encodedLengthBinarySearch(cut, CHUNK_URL_LIMIT);
+
+              chunks.push(
+                chars
+                  .slice(startIndex, splitIndex < length ? splitIndex : undefined)
+                  .join("")
+              );
+              startIndex = splitIndex;
+            } else {
+              chunks.push(cutString);
+              startIndex = endIndex;
+            }
+
+            endIndex = startIndex + CHUNK_URL_LIMIT;
+          }
+
+          return chunks;
+        }
+
+        function sendNextPayloadChunk(id) {
+          var q = Byond.__outgoingPayloadQueues__[id];
+          if (!q || !q.chunks || q.chunks.length === 0) {
+            delete Byond.__outgoingPayloadQueues__[id];
+            return;
+          }
+
+          var chunk = q.chunks[0];
+
+          Byond.topic({
+            tgui: 1,
+            window_id: Byond.windowId,
+            type: "payloadChunk",
+            payload: JSON.stringify({
+              id: id,
+              chunk: chunk,
+            }),
+          });
+        }
+
+        // Listen server replies
+        Byond.subscribeEarly(function (type, payload) {
+          if (type === "oversizePayloadResponse") {
+            if (payload && payload.allow) {
+              sendNextPayloadChunk(payload.id);
+            } else if (payload && payload.id) {
+              delete Byond.__outgoingPayloadQueues__[payload.id];
+            }
+            return;
+          }
+
+          if (type === "acknowlegePayloadChunk") {
+            var id = payload && payload.id;
+            var q = id && Byond.__outgoingPayloadQueues__[id];
+            if (!q) return;
+
+            q.chunks.shift();
+            sendNextPayloadChunk(id);
+            return;
+          }
+        });
+
+        // Override sendMessage: chunking only for act/*
+        Byond.sendMessage = function (type, payload) {
+          var message =
+            typeof type === "string" ? { type: type, payload: payload } : type;
+
+          if (
+            typeof message.type === "string" &&
+            message.type.indexOf("act/") === 0 &&
+            !Byond.TRIDENT
+          ) {
+            var stringifiedPayload = "{}";
+            if (message.payload !== null && message.payload !== undefined) {
+              stringifiedPayload = JSON.stringify(message.payload);
+            }
+
+            var urlSize = estimateTopicUrlSize({
+              type: message.type,
+              payload: stringifiedPayload,
+              tgui: 1,
+              window_id: Byond.windowId,
+            });
+
+            if (urlSize > TOPIC_URL_LIMIT) {
+              var chunks = splitIntoEncodedChunks(stringifiedPayload);
+              var id = "" + Date.now();
+
+              Byond.__outgoingPayloadQueues__[id] = { chunks: chunks };
+
+              Byond.topic({
+                tgui: 1,
+                window_id: Byond.windowId,
+                type: "oversizedPayloadRequest",
+                payload: JSON.stringify({
+                  type: message.type,
+                  id: id,
+                  chunkCount: chunks.length,
+                }),
+              });
+
+              return;
+            }
+          }
+
+          // Normal send
+          if (message.payload !== null && message.payload !== undefined) {
+            message.payload = JSON.stringify(message.payload);
+          }
+          assign(message, {
+            tgui: 1,
+            window_id: Byond.windowId,
+          });
+          Byond.topic(message);
         };
 
         // Asset loaders
@@ -412,15 +562,15 @@
             if (!sync) {
               node.media = "only x";
             }
-			var removeNodeAndRetry = function () {
+            var removeNodeAndRetry = function () {
               node.parentNode.removeChild(node);
               node = null;
               retry();
-			}
-			node.onerror = function () {
+            };
+            node.onerror = function () {
               node.onerror = null;
-			  removeNodeAndRetry();
-			}
+              removeNodeAndRetry();
+            };
             node.onload = function () {
               node.onload = null;
               if (isStyleSheetLoaded(node, url)) {
@@ -444,33 +594,32 @@
           loadAsset({ url: url, sync: sync, type: "css" });
         };
       })();
-	  
-	  Byond.saveBlob = function (blob, filename, ext) {
+
+      Byond.saveBlob = function (blob, filename, ext) {
         if (window.navigator.msSaveBlob) {
-		  // IE backwards compatibility for clients using BYOND <= 515
-		  window.navigator.msSaveBlob(blob, filename)
-		} else if (window.showSaveFilePicker) {
-		  var accept = {};
-		  accept[blob.type] = [ext];
-		  var opts = {
-		    suggestedName: filename,
-			types: [
-			  {
-			    description: "SS13 chatlog",
-				accept: accept,
-              }
-            ]
-          }
+          // IE backwards compatibility for clients using BYOND <= 515
+          window.navigator.msSaveBlob(blob, filename);
+        } else if (window.showSaveFilePicker) {
+          var accept = {};
+          accept[blob.type] = [ext];
+          var opts = {
+            suggestedName: filename,
+            types: [
+              {
+                description: "SS13 chatlog",
+                accept: accept,
+              },
+            ],
+          };
           window.showSaveFilePicker(opts).then(function (fileHandle) {
-		    fileHandle.createWritable().then(function (writeableFileHandle) {
-			  writeableFileHandle.write(blob).then(function () {
-			    writeableFileHandle.close()
-			  })
-			})
-		  })
-		}
-	  };
-		 
+            fileHandle.createWritable().then(function (writeableFileHandle) {
+              writeableFileHandle.write(blob).then(function () {
+                writeableFileHandle.close();
+              });
+            });
+          });
+        }
+      };
 
       // Error handling
       // ------------------------------------------------------
@@ -541,51 +690,10 @@
         return stack + "\nUser Agent: " + navigator.userAgent;
       };
 
-      // Incoming message handling
-      // ------------------------------------------------------
-
-      // Message handler
-      window.update = function (rawMessage) {
-        // Push onto the queue (active during initialization)
-        if (window.update.queueActive) {
-          window.update.queue.push(rawMessage);
-          return;
-        }
-        // Parse the message
-        var message = Byond.parseJson(rawMessage);
-        // Notify listeners
-        var listeners = window.update.listeners;
-        for (var i = 0; i < listeners.length; i++) {
-          listeners[i](message.type, message.payload);
-        }
-      };
-
-      // Properties and variables of this specific handler
-      window.update.listeners = [];
-      window.update.queue = [];
-      window.update.queueActive = true;
-      window.update.flushQueue = function (listener) {
-        // Disable and clear the queue permanently on short delay
-        if (window.update.queueActive) {
-          window.update.queueActive = false;
-          if (window.setTimeout) {
-            window.setTimeout(function () {
-              window.update.queue = [];
-            }, 0);
-          }
-        }
-        // Process queued messages on provided listener
-        var queue = window.update.queue;
-        for (var i = 0; i < queue.length; i++) {
-          var message = Byond.parseJson(queue[i]);
-          listener(message.type, message.payload);
-        }
-      };
-
       // Signal tgui that we're ready to receive updates
-	  document.addEventListener('DOMContentLoaded', function (event) {
-		Byond.sendMessage('ready');
-	  });
+      document.addEventListener("DOMContentLoaded", function (event) {
+        Byond.sendMessage("ready");
+      });
     </script>
 
     <style>

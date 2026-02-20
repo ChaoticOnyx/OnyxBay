@@ -304,7 +304,7 @@
 		var/oldtext = html_decode(msg_body)
 		oldtext = replacetext(oldtext, "\[editorbr\]", "\n")
 
-		var/newtext = sanitize(replacetext(input(usr, "Enter your message. You may use most tags from paper formatting", "Message Editor", oldtext) as message|null, "\n", "\[editorbr\]"), 20000)
+		var/newtext = sanitize(replacetext(tgui_input_pencode_editor(usr, "Enter your message. You may use most tags from paper formatting", "Message Editor", oldtext, MAX_EMAIL_LEN), "\n", "\[editorbr\]"))
 		if(newtext)
 			msg_body = newtext
 		return 1

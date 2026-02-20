@@ -145,11 +145,15 @@
 /* highlight layer - ПОД textarea, БЕЗ собственного скролла */
 .PencodeEditorModal__highlight {
   position: absolute;
-  inset: 0;
-  overflow: hidden; /* ВАЖНО: никаких scrollbar */
+
+  top: 0;
+  left: 0;
+  right: var(--pencode-sbw, 0px);
+  bottom: var(--pencode-sbh, 0px);
+
+  overflow: hidden;
   pointer-events: none;
   z-index: 1;
-
   background: transparent;
 }
 
@@ -295,14 +299,17 @@
 }
 
 .PencodeEditorModal__preview hr.Handwritten {
-  border: 0;
-  height: 5px;
-  margin: 0.5em 0;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.65),
-    rgba(0, 0, 0, 0.65) 10px,
-    rgba(0, 0, 0, 0.0) 10px,
-    rgba(0, 0, 0, 0.0) 16px
-  );
-}
+		border: none;
+		height: 5px;
+		background-image: url('../assets/line_hand.png');
+		background-repeat: repeat-x;
+		background-size: contain;
+	}
+
+.PencodeEditorModal__preview table.Handwritten,
+.PencodeEditorModal__preview th.Handwritten,
+.PencodeEditorModal__preview td.Handwritten {
+		border: 5px solid black;
+		border-image: url('../assets/borders_hand.png') 27 fill;
+		border-image-width: 10px;
+	}

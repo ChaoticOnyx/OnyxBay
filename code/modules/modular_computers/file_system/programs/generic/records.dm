@@ -132,7 +132,7 @@
 			if(EDIT_SHORTTEXT)
 				newValue = sanitize(input(user, "Enter [F.name]:", "Record edit", html_decode(F.get_value())))
 			if(EDIT_LONGTEXT)
-				newValue = sanitize(replacetext(input(user, "Enter [F.name]. You may use HTML paper formatting tags:", "Record edit", replacetext(html_decode(F.get_value()), "\[br\]", "\n")), "\n", "\[br\]"))
+				newValue = sanitize(replacetext(tgui_input_pencode_editor(user, "Enter [F.name]. You may use HTML paper formatting tags:", "Record edit", replacetext(html_decode(F.get_value()), "\[br\]", "\n")), "\n", "\[br\]"))
 			if(EDIT_NUMERIC)
 				newValue = input(user, "Enter [F.name]:", "Record edit", F.get_value()) as null|num
 			if(EDIT_LIST)

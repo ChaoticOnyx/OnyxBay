@@ -11,7 +11,7 @@
  * * is_handwritten - Pass-through to pencode2html.
  * * timeout - Auto-close after timeout ticks (0 = no timeout).
  */
-/proc/tgui_input_pencode_editor(mob/user, message, title = "Pencode Editor", default = "", max_length = MAX_TEXTFILE_LENGTH, is_handwritten = FALSE, timeout = 0)
+/proc/tgui_input_pencode_editor(mob/user, message, title = "Pencode Editor", default = "", max_length = MAX_TGUI_PENCODE_INPUT, is_handwritten = FALSE, timeout = 0)
 	if (!user)
 		user = usr
 	if (!istype(user))
@@ -53,11 +53,8 @@
 	var/start_time
 	var/timeout
 
-	// chunk_id -> list("action"="update"/"submit", "total"=N, "parts"=list(), "ts"=world.time)
-	var/list/_chunk_buf
 
-
-/datum/tgui_input_pencode_editor/New(mob/user, message, title, default, max_length = MAX_TEXTFILE_LENGTH, is_handwritten, timeout)
+/datum/tgui_input_pencode_editor/New(mob/user, message, title, default, max_length = MAX_TGUI_PENCODE_INPUT, is_handwritten, timeout)
 	src.default = istext(default) ? default : ""
 	src.current_text = src.default
 	src.max_length = max_length
@@ -108,8 +105,6 @@
 	data["init_value"] = default
 	data["max_length"] = max_length
 	data["max_fields"] = max_fields
-	data["second_topic_limit"] = config.general.second_topic_limit
-	data["minute_topic_limit"] = config.general.minute_topic_limit
 	return data
 
 
@@ -152,12 +147,10 @@
 
 
 /datum/tgui_input_pencode_editor/proc/_handle_submit_text(t)
-	// Длина
 	if(length_char(t) > max_length)
 		error_message = "Text is too long."
 		return TRUE
 
-	// Поля
 	var/laststart = 1
 	var/fields = 0
 	while(TRUE)
@@ -177,120 +170,11 @@
 	return TRUE
 
 
-/datum/tgui_input_pencode_editor/proc/_cleanup_chunks()
-	if(!_chunk_buf)
-		return
-	// протухшие чанки (например 10 секунд)
-	for(var/k in _chunk_buf)
-		var/list/st = _chunk_buf[k]
-		if(!islist(st))
-			_chunk_buf -= k
-			continue
-		var/ts = st["ts"]
-		if(isnum(ts) && (world.time - ts > 10 SECONDS))
-			_chunk_buf -= k
-
 
 /datum/tgui_input_pencode_editor/tgui_act(action, list/params)
 	. = ..()
 	if (.)
 		return
-
-	if(!_chunk_buf)
-		_chunk_buf = list()
-
-	_cleanup_chunks()
-
-	// ----------------------------
-	// Chunked update/submit
-	// ----------------------------
-
-	if(action == "update_chunk_begin" || action == "submit_chunk_begin")
-		var/chunk_id = params["chunk_id"]
-		var/total = text2num(params["chunk_total"])
-
-		// клиент может не прислать — валим мягко
-		if(!istext(chunk_id) || total <= 0)
-			return TRUE
-
-		var/text_len = text2num(params["text_len"])
-		if(text_len > 0 && text_len > max_length)
-			return
-
-		// если id повторился — сбросим старое состояние
-		if(_chunk_buf[chunk_id])
-			_chunk_buf -= chunk_id
-
-		_chunk_buf[chunk_id] = list(
-			"action" = (action == "update_chunk_begin") ? "update" : "submit",
-			"total" = total,
-			"parts" = list(),
-			"ts" = world.time
-		)
-		return TRUE
-
-
-	if(action == "update_chunk_part" || action == "submit_chunk_part")
-		var/chunk_id = params["chunk_id"]
-		var/index = text2num(params["chunk_index"])
-		var/part = params["payload"]
-
-		if(!istext(chunk_id) || index <= 0 || !istext(part))
-			return TRUE
-
-		var/list/st = _chunk_buf[chunk_id]
-		if(!islist(st))
-			return TRUE
-
-		var/expected = st["action"]
-		if((action == "update_chunk_part" && expected != "update") || (action == "submit_chunk_part" && expected != "submit"))
-			return TRUE
-
-		var/total = st["total"]
-		if(index > total)
-			return TRUE
-
-		var/list/parts = st["parts"]
-
-		// ВАЖНО: ассоциативно, чтобы не было "дыр" и out-of-bounds
-		parts["[index]"] = part
-
-		// обновим таймстамп, чтобы не очистили
-		st["ts"] = world.time
-		return TRUE
-
-
-	if(action == "update_chunk_end" || action == "submit_chunk_end")
-		var/chunk_id = params["chunk_id"]
-		if(!istext(chunk_id))
-			return TRUE
-
-		var/list/st = _chunk_buf[chunk_id]
-		if(!islist(st))
-			return TRUE
-
-		var/expected = st["action"]
-		if((action == "update_chunk_end" && expected != "update") || (action == "submit_chunk_end" && expected != "submit"))
-			return TRUE
-
-		var/total = st["total"]
-		var/list/parts = st["parts"]
-
-		var/t = ""
-		for(var/i = 1, i <= total, i++)
-			var/p = parts["[i]"]
-			if(!istext(p))
-				_chunk_buf -= chunk_id
-				return TRUE
-			t += p
-
-		_chunk_buf -= chunk_id
-
-		if(expected == "update")
-			return _handle_update_text(t)
-		else
-			return _handle_submit_text(t)
-
 
 	// ----------------------------
 	// Non-chunked fallback
