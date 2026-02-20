@@ -608,16 +608,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/proc/updateghostsight()
 	set_see_invisible(ghostvision ? SEE_INVISIBLE_OBSERVER : SEE_INVISIBLE_LIVING)
 
-	var/atom/movable/renderer/lighting/l_renderer = renderers[LIGHTING_RENDERER]
-	switch(get_preference_value("GHOST_DARKVISION"))
-		if(GLOB.PREF_DARKNESS_VISIBLE)
-			l_renderer.relay.alpha = 255
-		if(GLOB.PREF_DARKNESS_MOSTLY_VISIBLE)
-			l_renderer.relay.alpha = 192
-		if(GLOB.PREF_DARKNESS_BARELY_VISIBLE)
-			l_renderer.relay.alpha = 128
-		if(GLOB.PREF_DARKNESS_INVISIBLE)
-			l_renderer.relay.alpha = 0
+	var/atom/movable/renderer/lighting/l_renderer = A_LAZYACCESS(renderers, LIGHTING_RENDERER)
+	if(istype(l_renderer))
+		switch(get_preference_value("GHOST_DARKVISION"))
+			if(GLOB.PREF_DARKNESS_VISIBLE)
+				l_renderer.relay.alpha = 255
+			if(GLOB.PREF_DARKNESS_MOSTLY_VISIBLE)
+				l_renderer.relay.alpha = 192
+			if(GLOB.PREF_DARKNESS_BARELY_VISIBLE)
+				l_renderer.relay.alpha = 128
+			if(GLOB.PREF_DARKNESS_INVISIBLE)
+				l_renderer.relay.alpha = 0
 
 /mob/observer/ghost/MayRespawn(feedback = FALSE, respawn_time = 0)
 	if(!client)

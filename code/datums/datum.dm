@@ -6,7 +6,7 @@
 	/// Components attached to this datum.
 	var/list/datum_components = list()
 	/// Any datum registered to receive signals from this datum is in this list.
-	var/list/comp_lookup = list()
+	var/alist/comp_lookup = list()
 	/// Lazy associated list of signals that are run when the datum receives that signal
 	var/list/signal_procs = list()
 	/// Used to avoid unnecessary refstring creation in Destroy().
@@ -66,7 +66,7 @@
 /// Only override this if you know what you're doing. You do not know what you're doing
 /// This is a threat
 /datum/proc/clear_signal_refs()
-	var/list/lookup = comp_lookup
+	var/alist/lookup = comp_lookup
 	if(lookup)
 		for(var/sig in lookup)
 			var/list/comps = lookup[sig]
