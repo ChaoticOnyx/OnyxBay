@@ -352,7 +352,7 @@
 		O.status = 0
 		O.model = null
 		if(status == "amputated")
-			character.organs_by_name.Remove -= O.organ_tag
+			character.organs_by_name -= O.organ_tag
 			character.organs -= O
 			if(O.children) // This might need to become recursive.
 				for(var/obj/item/organ/external/child in O.children)
