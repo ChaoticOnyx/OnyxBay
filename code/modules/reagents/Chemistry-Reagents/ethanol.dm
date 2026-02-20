@@ -30,7 +30,7 @@
 /datum/reagent/ethanol/touch_mob(mob/living/L, amount)
 	if(istype(L))
 		if(strength >= 30) // So that things like beer and wine extinguish you instead of making you burn brighter.
-			L.adjust_fire_stacks(-(amount / 10)) // The same as water, let's not make things overcomplicated.
+			L.adjust_fire_stacks(-1 * ceil(amount / 10)) // The same as water, let's not make things overcomplicated.
 		else
 			L.adjust_fire_stacks(ceil(amount / strength)) // Thus, pure ethanol has a half of welding fuel's flammability, further decreasing as the drink gets softer.
 

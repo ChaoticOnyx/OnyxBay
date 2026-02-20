@@ -44,7 +44,7 @@
 	..()
 	return
 
-/datum/reagent/water/touch_turf(turf/simulated/T)
+/datum/reagent/water/touch_turf(turf/simulated/T, amount)
 	if(!istype(T))
 		return
 
@@ -64,12 +64,12 @@
 		qdel(flamer)
 
 	if(environment && environment.temperature > min_temperature) // Abstracted as steam or something
-		var/removed_heat = between(0, volume * WATER_LATENT_HEAT, -environment.get_thermal_energy_change(min_temperature))
+		var/removed_heat = between(0, amount * WATER_LATENT_HEAT, -environment.get_thermal_energy_change(min_temperature))
 		environment.add_thermal_energy(-removed_heat)
 		if(prob(5))
 			T.visible_message(SPAN("warning", "The water sizzles as it lands on \the [T]!"))
 
-	else if(volume >= 100 && slippery)
+	else if(amount >= 100 && slippery)
 		var/turf/simulated/S = T
 		S.wet_floor(1, TRUE)
 
@@ -95,7 +95,7 @@
 /datum/reagent/water/touch_mob(mob/living/L, amount)
 	if(istype(L))
 		var/removed_amount = L.fire_stacks
-		L.adjust_fire_stacks(-(amount / 10))
+		L.adjust_fire_stacks(-1 * ceil(amount / 10))
 		removed_amount = L.fire_stacks - removed_amount
 		remove_self(removed_amount)
 

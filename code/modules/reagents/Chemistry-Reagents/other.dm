@@ -230,7 +230,7 @@
 	if(!L.mind)
 		return
 	if((L.mind.vampire && !(L.mind.vampire.vamp_status & VAMP_ISTHRALL)) || is_species(L, /datum/species/golem/runic))
-		L.adjust_fire_stacks(amount / 15)
+		L.adjust_fire_stacks(ceil(amount / 15))
 		L.IgniteMob()
 
 /datum/reagent/water/holywater/touch_turf(turf/T)
@@ -291,7 +291,7 @@
 
 /datum/reagent/thermite/touch_mob(mob/living/L, amount)
 	if(istype(L))
-		L.adjust_fire_stacks(amount) // Sweet hell that's a lot
+		L.adjust_fire_stacks(ceil(amount)) // Sweet hell that's a lot
 
 /datum/reagent/thermite/affect_blood(mob/living/carbon/M, alien, removed)
 	M.adjustFireLoss(3 * removed)
@@ -517,12 +517,11 @@
 
 /datum/reagent/fuel/touch_turf(turf/T, amount)
 	new /obj/effect/decal/cleanable/liquid_fuel(T, amount)
-	remove_self(amount)
 	return
 
 /datum/reagent/fuel/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
-		M.adjust_fire_stacks(removed)
+		M.adjust_fire_stacks(ceil(removed))
 	M.adjustToxLoss(3 * removed)
 
 /datum/reagent/fuel/touch_mob(mob/living/L, amount)
