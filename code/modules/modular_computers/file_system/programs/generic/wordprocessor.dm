@@ -134,7 +134,6 @@
 	if(page_index < 1 || page_index > pages.len)
 		return null
 
-	var/total = pages.len
 	var/docname = _doc_display_name()
 
 	var/obj/item/paper/P = computer.nano_printer.print_text_paper(pages[page_index], paper_title="[docname] - page [page_index]")
@@ -148,6 +147,9 @@
 	var/list/pages = get_pages()
 	if(!pages || !pages.len)
 		return FALSE
+	
+	if(from_page==to_page)
+		return isnull(print_page_to_paper(from_page))
 
 	if(to_page <= 0)
 		to_page = pages.len
@@ -160,7 +162,6 @@
 		to_page = tmp
 
 	var/docname = _doc_display_name()
-
 	var/obj/item/paper_bundle/B = new(get_turf(computer))
 	B.SetName("[docname]")
 

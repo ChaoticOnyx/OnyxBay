@@ -193,7 +193,7 @@
 
 /obj/item/paper/proc/update_space()
 	free_space = initial(free_space)
-	free_space -= length(strip_html_properly(info_links)) //using info_links to also count field prompts
+	free_space -= length_char(strip_html_properly(info_links)) //using info_links to also count field prompts
 
 /obj/item/paper/proc/is_clean()
 	var/list/visible_html_tags = list("<table","<img","<hr")
