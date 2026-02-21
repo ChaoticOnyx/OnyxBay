@@ -98,7 +98,7 @@
 "bU" = (/turf/simulated/wall/r_wall,/area/entrepot/crew_2/fitness)
 "bV" = (/obj/structure/table/standard,/obj/item/towel,/obj/item/reagent_containers/vessel/fitnessflask/proteinshake,/obj/machinery/atmospherics/unary/vent_pump/on,/obj/machinery/light{dir = 1},/obj/structure/extinguisher_cabinet{pixel_x = -24},/turf/simulated/floor/tiled/white/mono,/area/entrepot/crew_2/fitness)
 "bW" = (/obj/structure/fitness/weightlifter,/obj/item/device/radio/intercom{pixel_y = 22},/turf/simulated/floor/tiled/white/mono,/area/entrepot/crew_2/fitness)
-"bX" = (/obj/structure/reagent_dispensers/water_cooler,/obj/structure/sign/flag/rainbow{pixel_y = 32},/obj/machinery/camera/network/civilian_east{c_tag = "Living Module 2F - Gym"},/turf/simulated/floor/tiled/white/mono,/area/entrepot/crew_2/fitness)
+"bX" = (/obj/structure/reagent_dispensers/water_cooler,/obj/structure/sign/flag/nt{pixel_y = 32},/obj/machinery/camera/network/civilian_east{c_tag = "Living Module 2F - Gym"},/turf/simulated/floor/tiled/white/mono,/area/entrepot/crew_2/fitness)
 "bY" = (/obj/structure/window/reinforced{dir = 4},/obj/structure/table/standard,/obj/item/reagent_containers/vessel/bottle/cola,/obj/item/storage/box/cups,/obj/effect/floor_decal/spline/plain/black{dir = 4},/obj/machinery/atmospherics/unary/vent_scrubber/on,/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled/white/mono,/area/entrepot/crew_2/fitness)
 "bZ" = (/obj/item/stool,/turf/simulated/floor/tiled/dark/rough,/area/entrepot/crew_2/fitness)
 "ca" = (/obj/effect/floor_decal/techgrid,/obj/effect/floor_decal/techgrid{dir = 4},/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/reinforced/airless,/area/space)
