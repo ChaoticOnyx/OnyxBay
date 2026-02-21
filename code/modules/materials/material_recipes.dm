@@ -106,8 +106,8 @@
 	))
 
 	recipes += new /datum/stack_recipe_list("flagpoles", list( \
-		new /datum/stack_recipe("table flag stand", /obj/item/flagpole/telescopic, 10), \
-		new /datum/stack_recipe("flag stand", /obj/item/flagpole, 5), \
+		new /datum/stack_recipe("flag stand", /obj/item/flagpole/telescopic/deployed, 3), \
+		new /datum/stack_recipe("table flag stand", /obj/item/flagpole, 1), \
 	))
 
 /material/plasteel/generate_recipes()

@@ -18,6 +18,9 @@
 	/// Currently mounted flag appearance, or null if empty.
 	var/datum/flag_appearance/flag_appearance
 
+	/// Amount of material given when deconstructed.
+	var/material_amount = 1
+
 /obj/item/flagpole/Initialize()
 	. = ..()
 	if (flag_appearance_type)
@@ -52,6 +55,9 @@
 		wrench_floor_bolts(user)
 		return TRUE
 
+	if (attempt_deconstruct(W, user))
+		return TRUE
+
 	return ..()
 
 /obj/item/flagpole/proc/attempt_flag_insert(obj/item/flag/flag, mob/user)
@@ -68,6 +74,26 @@
 	playsound(src, SFX_PICKUP_CLOTH, 40)
 
 	qdel(flag)
+	return TRUE
+
+/obj/item/flagpole/proc/attempt_deconstruct(obj/item/weldingtool/welder, mob/user)
+	if (atom_flags & ATOM_FLAG_NO_DECONSTRUCTION)
+		return FALSE
+
+	if (!istype(welder))
+		return FALSE
+
+	if (!welder.use_tool(src, user, delay = 1 SECONDS, amount = material_amount * 10))
+		return FALSE
+
+	if (QDELETED(src) || !user)
+		return FALSE
+
+	var/turf/loc_turf = get_turf(src)
+	loc_turf?.show_splash_text(user, "deconstructed", "You deconstruct \the [src]",)
+	new /obj/item/stack/material/steel(loc, material_amount)
+	qdel(src)
+
 	return TRUE
 
 /obj/item/flagpole/AltClick(mob/user)
@@ -122,6 +148,8 @@
 	obj_flags = OBJ_FLAG_ANCHORABLE
 
 	w_class = ITEM_SIZE_LARGE
+
+	material_amount = 3
 
 	/// Whether this flagpole is in its standing position.
 	var/deployed = TRUE
