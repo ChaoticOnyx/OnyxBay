@@ -1,0 +1,315 @@
+.PencodeEditorModal {
+  height: 100%;
+}
+
+.PencodeEditorModal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.PencodeEditorModal {
+  height: 100%;
+  position: relative;
+  isolation: isolate; /* ВАЖНО: отдельный stacking context для всей модалки */
+}
+
+/* Шапка и тулбар всегда кликабельны поверх любых transform-слоёв редактора */
+.PencodeEditorModal__topbar,
+.PencodeEditorModal__toolbar {
+  position: relative;
+  z-index: 1000;
+}
+
+/* Тело ниже шапки */
+.PencodeEditorModal__body {
+  position: relative;
+  z-index: 1;
+  overflow: hidden; /* чтобы внутренние абсолютные слои не “выпрыгивали” */
+}
+
+/* Редактор в своём локальном контексте, ниже шапки */
+.PencodeEditorModal__editorWrap {
+  position: relative;
+  z-index: 0;
+  overflow: hidden; /* на всякий случай для хитбокса при скролле */
+}
+/* Ключевой фикс "textarea не раздувает окно":
+   делаем внутренний layout flex-column и разрешаем body сжиматься */
+.PencodeEditorModal__layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Шапка и тулбар всегда выше любых слоёв редактора */
+.PencodeEditorModal__topbar,
+.PencodeEditorModal__toolbar {
+  position: relative;
+  z-index: 50;
+}
+
+/* Тело ниже шапки */
+.PencodeEditorModal__body {
+  position: relative;
+  z-index: 1;
+}
+
+/* ВАЖНО: создаём локальный stacking context для редактора,
+   чтобы transform внутри не мог “выпрыгнуть” над шапку */
+.PencodeEditorModal__editorWrap {
+  position: relative;
+  z-index: 0;
+  overflow: hidden; /* фикс на случай артефактов хитбокса при скролле */
+}
+
+
+.PencodeEditorModal__topbar {
+  margin-bottom: 6px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.10);
+}
+
+.PencodeEditorModal__topbarRow {
+  gap: 6px;
+}
+
+.PencodeEditorModal__message {
+  margin-top: 4px;
+  opacity: 0.85;
+}
+
+.PencodeEditorModal__counter {
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.14);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.PencodeEditorModal__counter--bad {
+  border-color: rgba(255, 80, 80, 0.35);
+  background: rgba(255, 80, 80, 0.10);
+}
+
+.PencodeEditorModal__toolbar {
+  margin-bottom: 8px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.10);
+}
+
+.PencodeEditorModal__toolbarRow {
+  gap: 4px;
+  align-items: center;
+}
+
+/* Scoped alignment for icons */
+.PencodeEditorModal .Button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.PencodeEditorModal .Button .Icon,
+.PencodeEditorModal .Button i {
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.PencodeEditorModal__btn {
+  height: 24px;
+  min-width: 28px;
+  padding: 0 6px;
+  font-size: 12px;
+  line-height: 22px;
+}
+
+.PencodeEditorModal__btnWide {
+  height: 24px;
+  min-width: 92px;
+}
+
+/* editor */
+.PencodeEditorModal__previewWrap,
+.PencodeEditorModal__editorWrap {
+  position: relative;
+  height: 100%;
+  min-height: 0; /* важно */
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+}
+
+
+/* highlight layer - ПОД textarea, БЕЗ собственного скролла */
+.PencodeEditorModal__highlight {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: var(--pencode-sbw, 0px);
+  bottom: var(--pencode-sbh, 0px);
+
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+  background: transparent;
+}
+
+/* контент подсветки, который мы будем сдвигать transform'ом */
+.PencodeEditorModal__highlightContent {
+  padding: 8px;
+  box-sizing: border-box;
+
+  font: inherit;
+  line-height: 1.3;
+  white-space: pre-wrap;
+  word-break: break-word;
+
+  color: #000000;
+
+  will-change: transform;
+}
+
+/* textarea - НАД highlight */
+.PencodeEditorModal__textarea {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  height: 100%;
+  resize: none;
+  box-sizing: border-box;
+  padding: 8px;
+  font: inherit;
+  line-height: 1.3;
+
+  /* фон/рамка убраны — они у editorWrap */
+  background: transparent;
+  border: 0;
+  outline: none;
+
+  color: #000000;
+}
+
+/* syntax: делаем текст почти прозрачным, но caret/selection остаются */
+.PencodeEditorModal__textarea--syntax {
+  color: rgba(0, 0, 0, 0.02);
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.02);
+  caret-color: #000000;
+}
+
+/* выделение */
+.PencodeEditorModal__textarea--syntax::selection {
+  background: rgba(0, 120, 215, 0.35);
+}
+
+/* выключение overlay */
+.PencodeEditorModal__highlight--off {
+  visibility: hidden;
+}
+
+/* highlight colors */
+.PencodeEditorModal__tok--open { color: #0066cc; }
+.PencodeEditorModal__tok--close { color: #cc5500; }
+.PencodeEditorModal__tok--star { color: #1a7f37; }
+
+/* ===========================
+   Preview (paper-like, input-like)
+   =========================== */
+
+/* Обёртка превью должна скроллиться как textarea */
+.PencodeEditorModal__previewWrap {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+
+  overflow: auto; /* КЛЮЧ: скролл */
+
+  /* В теме общий цвет текста часто белый — прибиваем к “бумаге” */
+  color: #000;
+
+  /* на всякий: не даём теме делать полупрозрачность */
+  opacity: 1;
+}
+
+/* Сам контейнер HTML: без внутренней “тёмной панели” */
+.PencodeEditorModal__preview {
+  box-sizing: border-box;
+  padding: 8px;
+
+  border: 0;
+  background: transparent;
+
+  /* КЛЮЧ: метрики как у ввода */
+  font: inherit;
+  line-height: 1.3;
+
+  /* КЛЮЧ: фикс “видно только при выделении” */
+  color: #000;
+  opacity: 1;
+  text-shadow: none;
+  -webkit-text-fill-color: #000; /* Safari/Chromium: иногда тема ломает fill */
+
+  word-break: break-word;
+}
+
+/* Часто проблема именно в том, что тема накладывает “прозрачный текст” на потомков.
+   Это НЕ должно ломать inline-цвета (font color / span style), т.к. inline сильнее. */
+.PencodeEditorModal__preview * {
+  opacity: 1;
+  text-shadow: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+/* Картинки/таблицы не должны вылезать за ширину */
+.PencodeEditorModal__preview img,
+.PencodeEditorModal__preview table {
+  max-width: 100%;
+}
+
+/* ===========================
+   Paper-like bits (scoped)
+   =========================== */
+
+/* Таблицы: ближе к DM (там нет collapse), но без “дыр” */
+.PencodeEditorModal__preview table {
+  border: 1px solid #000;
+
+  border-collapse: separate; /* важно: не collapse */
+  border-spacing: 0;         /* если хотите “классический зазор” — поставьте 2px */
+}
+
+.PencodeEditorModal__preview th,
+.PencodeEditorModal__preview td {
+  border: 1px solid #000;
+  padding: 2px 4px;
+  vertical-align: top;
+}
+
+/* Размерные классы как в paper.styles */
+.PencodeEditorModal__preview .SmallFont { font-size: 0.7em; }
+.PencodeEditorModal__preview .MediumFont { font-size: 1.2em; }
+.PencodeEditorModal__preview .LargeFont { font-size: 1.3em; }
+
+/* Если прилетает Handwritten — пусть выглядит отличимо, но без обязательных ассетов */
+.PencodeEditorModal__preview .Handwritten {
+  font-family: "Segoe Script", "Comic Sans MS", cursive;
+}
+
+.PencodeEditorModal__preview hr.Handwritten {
+		border: none;
+		height: 5px;
+		background-image: url('../assets/line_hand.png');
+		background-repeat: repeat-x;
+		background-size: contain;
+	}
+
+.PencodeEditorModal__preview table.Handwritten,
+.PencodeEditorModal__preview th.Handwritten,
+.PencodeEditorModal__preview td.Handwritten {
+		border: 5px solid black;
+		border-image: url('../assets/borders_hand.png') 27 fill;
+		border-image-width: 10px;
+	}

@@ -23,6 +23,7 @@
 	var/initial_inline_html
 	var/initial_inline_js
 	var/initial_inline_css
+	var/list/oversized_payloads = list()
 
 /**
  * public
@@ -345,3 +346,88 @@
 			client << link(href_list["url"])
 		if("cacheReloaded")
 			reinitialize()
+		if("oversizedPayloadRequest")
+			var/payload_id = payload["id"]
+			var/chunk_count = payload["chunkCount"]
+
+			var/permit_payload = chunk_count <= config.general.tgui_max_chunk_count
+			if(permit_payload)
+				create_oversized_payload(payload_id, payload["type"], chunk_count)
+
+			send_message("oversizePayloadResponse", list(
+				"allow" = permit_payload,
+				"id" = payload_id
+			))
+			return
+
+		if("payloadChunk")
+			var/payload_id = payload["id"]
+			append_payload_chunk(payload_id, payload["chunk"])
+			send_message("acknowlegePayloadChunk", list("id" = payload_id))
+			return
+			
+/datum/tgui_window/proc/create_oversized_payload(payload_id, message_type, chunk_count)
+	if(oversized_payloads[payload_id])
+		CRASH("Attempted to create oversized tgui payload with duplicate ID.")
+
+	var/ctx_name = "tgui_oversize_[payload_id]"
+
+	oversized_payloads[payload_id] = list(
+		"type" = message_type,
+		"count" = chunk_count,
+		"chunks" = list(),
+		"ctx" = ctx_name
+	)
+
+	try_add_think_ctx(
+		ctx_name,
+		CALLBACK(src, CALLBACK(src, .proc/remove_oversized_payload), payload_id),
+		1 SECONDS
+	)
+
+
+/datum/tgui_window/proc/append_payload_chunk(payload_id, chunk)
+	var/list/payload = oversized_payloads[payload_id]
+	if(!payload)
+		return
+
+	var/list/chunks = payload["chunks"]
+	chunks += chunk
+
+	var/ctx_name = payload["ctx"]
+	if(ctx_name)
+		set_next_think_ctx(ctx_name, 1 SECONDS)
+
+	if(length(chunks) < payload["count"])
+		return
+
+	if(ctx_name)
+		remove_think_ctx(ctx_name)
+
+	var/message_type = payload["type"]
+	var/final_payload = chunks.Join()
+
+	oversized_payloads -= payload_id
+
+	on_message(
+		message_type,
+		json_decode(final_payload),
+		list(
+			"type" = message_type,
+			"payload" = final_payload,
+			"tgui" = TRUE,
+			"window_id" = id
+		)
+	)
+
+
+/datum/tgui_window/proc/remove_oversized_payload(payload_id)
+	var/list/payload = oversized_payloads[payload_id]
+	if(!payload)
+		return
+
+	var/ctx_name = payload["ctx"]
+	if(ctx_name)
+		remove_think_ctx(ctx_name)
+
+	oversized_payloads -= payload_id

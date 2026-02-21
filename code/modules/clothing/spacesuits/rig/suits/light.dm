@@ -67,7 +67,7 @@
 
 /obj/item/clothing/shoes/lightrig/hacker
 	siemens_coefficient = 0.2
-	item_flags = ITEM_FLAG_NOSLIP //All the other rigs have magboots anyways, hopefully gives the hacker suit something more going for it.
+	item_flags = ITEM_FLAG_NOSLIP | ITEM_FLAG_MAGNETISED //All the other rigs have magboots anyways, hopefully gives the hacker suit something more going for it.
 
 /obj/item/clothing/gloves/lightrig/hacker
 	siemens_coefficient = 0

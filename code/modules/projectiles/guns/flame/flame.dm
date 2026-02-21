@@ -38,9 +38,8 @@
 
 // when you pass the turf with fire, obviously
 /mob/living/proc/flamer_fire_crossed(burnlevel, firelevel, fire_mod = 1)
-	var/burn_damage = 0.3*burnlevel
-	if(fire_stacks < 4) // please not more that impossible self-extingushing without godmode or something. enough to put out fire when you will be in crit if you walked all fire_stack limit
-		adjust_fire_stacks(rand(1, burn_damage))
+	var/burn_damage = burnlevel
+	adjust_fire_stacks(rand(1, burn_damage))
 	if(!on_fire)
 		IgniteMob()
 

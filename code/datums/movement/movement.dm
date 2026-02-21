@@ -27,9 +27,8 @@ if(LAZYLEN(movement_handlers) && ispath(movement_handlers[1])) { \
 	if(ispath(movement_handlers[1]))
 		return (handler_path in movement_handlers)
 	else
-		for(var/mh in movement_handlers)
-			var/datum/MH = mh
-			if(MH.type == handler_path)
+		for(var/datum/movement_handler/movement_handler as anything in movement_handlers)
+			if(movement_handler.type == handler_path)
 				return TRUE
 	return FALSE
 
@@ -94,8 +93,7 @@ if(LAZYLEN(movement_handlers) && ispath(movement_handlers[1])) { \
 			step(src, direction)
 		return loc != oldloc
 
-	for(var/mh in movement_handlers)
-		var/datum/movement_handler/movement_handler = mh
+	for(var/datum/movement_handler/movement_handler as anything in movement_handlers)
 		if(movement_handler.MayMove(mover, is_external) & MOVEMENT_STOP)
 			return MOVEMENT_STOP
 
@@ -112,8 +110,7 @@ if(LAZYLEN(movement_handlers) && ispath(movement_handlers[1])) { \
 	SET_MOVER(mover)
 	SET_IS_EXTERNAL(mover)
 
-	for(var/mh in movement_handlers)
-		var/datum/movement_handler/movement_handler = mh
+	for(var/datum/movement_handler/movement_handler as anything in movement_handlers)
 		var/may_move = movement_handler.MayMove(mover, is_external)
 		if(may_move & MOVEMENT_STOP)
 			return FALSE

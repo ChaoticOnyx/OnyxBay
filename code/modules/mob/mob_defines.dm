@@ -128,6 +128,7 @@
 	var/bodytemperature_lasttick
 	var/default_pixel_x = 0
 	var/default_pixel_y = 0
+	var/default_pixel_z = 0
 
 	var/shakecamera = 0
 	var/a_intent = I_HELP//Living
@@ -142,8 +143,6 @@
 	var/list/grabbed_by = list(  )
 
 	var/in_throw_mode = 0
-
-	var/inertia_dir = 0
 
 //	var/job = null//Living
 

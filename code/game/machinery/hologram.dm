@@ -65,6 +65,8 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 /obj/machinery/hologram/holopad/attack_hand(mob/living/carbon/human/user) //Carn: Hologram requests.
 	if(!istype(user))
 		return
+	if(user.a_intent != I_HELP) // We don't really want to interrupt fight because of this.
+		return
 	if(incoming_connection&&caller_id)
 		visible_message("The pad hums quietly as it establishes a connection.")
 		if(caller_id.loc!=sourcepad.loc)

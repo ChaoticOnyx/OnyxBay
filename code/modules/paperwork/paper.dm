@@ -193,7 +193,7 @@
 
 /obj/item/paper/proc/update_space()
 	free_space = initial(free_space)
-	free_space -= length(strip_html_properly(info_links)) //using info_links to also count field prompts
+	free_space -= length_char(strip_html_properly(info_links)) //using info_links to also count field prompts
 
 /obj/item/paper/proc/is_clean()
 	var/list/visible_html_tags = list("<table","<img","<hr")
@@ -700,11 +700,6 @@
 			to_chat(usr, SPAN("info", "There isn't enough space left on \the [src] to write anything."))
 			return
 
-		var/t =  sanitize(input("Enter what you want to write:", "Write", null, null) as message, free_space, extra = 0, trim = 0)
-
-		if(!t)
-			return
-
 		var/obj/item/i = get_pen()
 		if (!i)
 			return
@@ -721,6 +716,24 @@
 
 			if(istype(i, /obj/item/pen/fancy))
 				isfancy = TRUE
+
+		var/t = tgui_input_pencode_editor(
+			usr,
+			"Enter what you want to write:",
+			"Write",
+			"",
+			free_space,
+			ishandwritten,
+			0
+		)
+
+		if(!t)
+			return
+
+		t = sanitize(t, free_space, extra = 0, trim = 0)
+
+		if(!t)
+			return
 
 		if (!check_proximity())
 			return

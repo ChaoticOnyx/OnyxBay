@@ -9,6 +9,7 @@
 	fire_sound_text = "clanging chains"
 	clumsy_unaffected = TRUE
 	fire_delay = 40
+	space_recoil = FALSE
 
 	var/projectile_type = /obj/item/projectile/meathook
 

@@ -60,5 +60,5 @@
 		return
 
 	to_chat(target, SPAN_DANGER("You feel punished!"))
-	target.fire_stacks += 15
+	target.adjust_fire_stacks(FIRE_STACKS_MAX)
 	target.IgniteMob()

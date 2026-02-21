@@ -29,7 +29,7 @@
 	if(!..())
 		return
 	var/mob/living/carbon/human/H = my_mob
-	animate(H, alpha = 255, alpha = 10, time = 10)
+	animate(H, alpha = 255, alpha = 10, time = 10, flags = ANIMATION_PARALLEL)
 	if(must_walk)
 		H.set_m_intent(M_WALK)
 	use_chems()
@@ -42,7 +42,7 @@
 	H.visible_message(SPAN("warning", "[H] suddenly fades in, seemingly from nowhere!"), \
 					  SPAN("changeling", text_deactivate))
 	H.set_m_intent(M_RUN)
-	animate(H, alpha = 10, alpha = 255, time = 10)
+	animate(H, alpha = 10, alpha = 255, time = 10, flags = ANIMATION_PARALLEL)
 
 /datum/changeling_power/toggled/visible_camouflage/think()
 	if(!..())

@@ -297,7 +297,8 @@
 	else if(!isturf(loc) && loc != user.loc)
 		return
 
-	throwing = 0
+	if(!QDELETED(throwing))
+		throwing.finalize(hit = TRUE)
 
 	if(QDELETED(src)) // Unequipping may change src gc_destroyed, so must check here
 		return

@@ -9,6 +9,7 @@
 	icon_gib = "carp_gib"
 	speak_chance = 0
 	turns_per_move = 5
+	skip_spacemove = TRUE
 	meat_type = /obj/item/reagent_containers/food/carpmeat
 	response_help = "pets the"
 	response_disarm = "gently pushes aside the"
@@ -32,9 +33,6 @@
 	break_stuff_probability = 15
 
 	faction = "carp"
-
-/mob/living/simple_animal/hostile/carp/Allow_Spacemove(check_drift = 0)
-	return 1	//No drifting in space for space carp!	//original comments do not steal
 
 /mob/living/simple_animal/hostile/carp/find_target()
 	. = ..()

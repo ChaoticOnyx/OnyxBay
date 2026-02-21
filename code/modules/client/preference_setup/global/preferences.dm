@@ -334,8 +334,9 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
-	R.GraphicsUpdate()
+	var/atom/movable/renderer/R = A_LAZYACCESS(preference_mob.renderers, GAME_RENDERER)
+	if(istype(R))
+		R.GraphicsUpdate()
 
 /datum/client_preference/glow
 	description = "Lighting: Lamp Glow"
@@ -348,8 +349,9 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[LIGHTING_LAMPS_GLOW_RENDERER]
-	R.GraphicsUpdate()
+	var/atom/movable/renderer/R = A_LAZYACCESS(preference_mob.renderers, LIGHTING_LAMPS_GLOW_RENDERER)
+	if(istype(R))
+		R.GraphicsUpdate()
 
 /datum/client_preference/glare
 	description = "Lighting: Lamp Glare"
@@ -362,8 +364,9 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[LIGHTING_LAMPS_GLARE_RENDERER]
-	R.GraphicsUpdate()
+	var/atom/movable/renderer/R = A_LAZYACCESS(preference_mob.renderers, LIGHTING_LAMPS_GLARE_RENDERER)
+	if(istype(R))
+		R.GraphicsUpdate()
 
 /datum/client_preference/exposure
 	description = "Lighting: Lamp Exposure"
@@ -376,8 +379,9 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[ADDITIVE_LIGHTING_RENDERER]
-	R.GraphicsUpdate()
+	var/atom/movable/renderer/R = A_LAZYACCESS(preference_mob.renderers, ADDITIVE_LIGHTING_RENDERER)
+	if(istype(R))
+		R.GraphicsUpdate()
 
 /datum/client_preference/graphics_quality
 	description = "Effects Quality"
@@ -390,8 +394,9 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[TEMPERATURE_EFFECT_RENDERER]
-	R.GraphicsUpdate()
+	var/atom/movable/renderer/R = A_LAZYACCESS(preference_mob.renderers, TEMPERATURE_EFFECT_RENDERER)
+	if(istype(R))
+		R.GraphicsUpdate()
 
 /datum/client_preference/pixel_size
 	description = "Pixel Size"

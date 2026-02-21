@@ -96,7 +96,8 @@
 	for(var/obj/item/I in H.contents)
 		if(isorgan(I))
 			continue
-		H.drop(I, force = TRUE)
+		if(I in H.contents) // Since things may actually be dropped upon removing other things (i.e. removing uniform first causes belts to drop)
+			H.drop(I, force = TRUE)
 
 	var/atom/movable/fake_overlay/effect = new /atom/movable/fake_overlay(get_turf(H))
 

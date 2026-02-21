@@ -140,6 +140,14 @@
 				else
 					extra += "<li>[index]: [make_view_variables_value(entry)]</li>"
 			extra += "</ul>"
+	else if("[value]" == "/alist") // There's no isalist(), how cool is that?
+		var/alist/L = value
+		vtext = "/alist ([L.len])"
+		if(!(varname in view_variables_dont_expand) && L.len > 0 && L.len < 100)
+			extra += "<ul>"
+			for(var/entry in L)
+				extra += "<li>[make_view_variables_value(entry)]: [make_view_variables_value(L[entry])]</li>"
+			extra += "</ul>"
 	else
 		vtext = "[value]"
 

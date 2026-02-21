@@ -42,8 +42,8 @@
 	// organ-related variables, see organ.dm and human_organs.dm
 	var/list/internal_organs = list()
 	var/list/organs = list()
-	var/list/organs_by_name = list() // map organ names to organs
-	var/list/internal_organs_by_name = list() // so internal organs have less ickiness too
+	var/alist/organs_by_name = alist() // map organ names to organs
+	var/alist/internal_organs_by_name = alist() // so internal organs have less ickiness too
 
 	var/list/stasis_sources = list()
 	var/stasis_value

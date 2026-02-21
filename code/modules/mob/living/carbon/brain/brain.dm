@@ -45,3 +45,16 @@
 
 /mob/living/carbon/brain/check_has_mouth()
 	return 0
+
+/mob/living/carbon/brain/Move(new_loc) //It moves the brain-mob along with the container in which it is stored.
+
+	if(!istype(src.container))
+		return FALSE
+	
+	var/old_turf = get_turf(loc)
+
+	if(old_turf != new_loc)
+		src.container.Move(new_loc)
+		return TRUE
+	
+	return FALSE

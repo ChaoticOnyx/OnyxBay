@@ -98,8 +98,9 @@
 		effective *= (MOB_MEDIUM/M.mob_size)
 	effective = min(effective, volume)
 
-	M.chem_doses[type] += effective
-	M.chem_traces[type] += effective
+	if(location != CHEM_TOUCH)
+		M.chem_doses[type] += effective
+		M.chem_traces[type] += effective
 
 	var/affecting_dose = min(volume, M.chem_doses[type])
 	switch(location)

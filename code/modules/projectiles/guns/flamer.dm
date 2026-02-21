@@ -30,6 +30,7 @@
 	var/last_fired = 0
 	fire_delay = 35
 	has_safety = FALSE
+	space_recoil = TRUE
 
 /obj/item/gun/flamer/Destroy()
 	QDEL_NULL(fuel_tank)

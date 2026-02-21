@@ -329,8 +329,9 @@
 		if(handle_block_normal(user, damage))
 			return 0
 
-	var/dam_zone = pick(organs_by_name)
-	var/obj/item/organ/external/affecting = get_organ(ran_zone(dam_zone))
+	var/obj/item/organ/external/affecting = pick(organs)
+	affecting = get_organ(ran_zone(affecting.organ_tag))
+
 	var/armor_block = run_armor_check(affecting, armorcheck)
 	visible_message(SPAN("danger", "[user] has [attack_message] [src]!"))
 	admin_attack_log(user, src, "Attacked their victim", "Was attacked", "has [attack_message]")
