@@ -18,7 +18,6 @@
 	var/current_page = 1
 	use_tgui = TRUE
 
-	/// Разделитель страниц внутри loaded_data
 	var/static/const/PAGE_DELIM = "\n<---PAGE BREAK--->\n"
 
 /datum/computer_file/program/wordprocessor/proc/open_file(filename)
@@ -56,7 +55,6 @@
 	if(!length(text))
 		return list("")
 
-	// Гарантируем хотя бы 1 страницу
 	var/list/pages = splittext(text, PAGE_DELIM)
 	if(!pages || !pages.len)
 		return list("")
@@ -68,7 +66,6 @@
 		loaded_data = ""
 		return
 
-	// Склеиваем обратно в один stored_data
 	loaded_data = jointext(pages, PAGE_DELIM)
 
 /datum/computer_file/program/wordprocessor/proc/clamp_current_page()
@@ -120,7 +117,6 @@
 	set_pages(pages)
 
 /datum/computer_file/program/wordprocessor/proc/_doc_display_name()
-	// имя документа без звёздочки и UNNAMED
 	if(open_file && length(open_file))
 		return "[open_file]"
 	return "UNNAMED"
@@ -261,7 +257,6 @@
 
 	var/datum/computer_file/program/wordprocessor/PRG = program
 
-	// Форвард системных действий компьютера
 	if(action == "PC_shutdown" || action == "PC_exit" || action == "PC_minimize")
 		if(PRG?.computer)
 			SStgui.close_uis(src)

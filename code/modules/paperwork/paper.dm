@@ -721,8 +721,8 @@
 			usr,
 			"Enter what you want to write:",
 			"Write",
-			"",              // default
-			free_space,      // max_length = текущий free_space (как было в sanitize)
+			"",
+			free_space,
 			ishandwritten,
 			0
 		)

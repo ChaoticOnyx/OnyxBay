@@ -379,8 +379,6 @@
 		"ctx" = ctx_name
 	)
 
-	// Таймаут на сборку: если за 1 секунду не добрали чанки — удаляем сборку
-	// Используем think ctx вместо addtimer/deltimer
 	try_add_think_ctx(
 		ctx_name,
 		CALLBACK(src, CALLBACK(src, .proc/remove_oversized_payload), payload_id),
