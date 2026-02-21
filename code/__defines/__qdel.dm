@@ -38,3 +38,4 @@
 #define QDEL_IN_THINK(item, ttl) if(!QDELETED(item)) { item.try_add_think_ctx("QDEL_IN", CALLBACK(item, nameof(/datum.proc/qdel_self)), world.time + ttl) }
 #define QDEL_LIST_ASSOC(L) if(L) { for(var/I in L) { qdel(L[I]); qdel(I); } L.Cut(); }
 #define QDEL_LIST_ASSOC_VAL(L) if(L) { for(var/I in L) qdel(L[I]); L.Cut(); }
+#define QDEL_ALIST(L) if(L) { for(var/I in L) qdel(L[I]); L.Cut(); }

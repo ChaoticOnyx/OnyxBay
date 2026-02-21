@@ -15,7 +15,7 @@
 	var/list/_status_traits
 
 	// Thinking
-	var/list/_think_ctxs
+	var/alist/_think_ctxs
 	var/datum/think_context/_main_think_ctx
 
 #ifdef TESTING
@@ -135,7 +135,7 @@
 /// * `time` - when to call the context.
 /// * `...` - arguments to be passed to the "think" function.
 /datum/proc/add_think_ctx(name, datum/callback/clbk, time, ...)
-	LAZYINITLIST(_think_ctxs)
+	A_LAZYINITLIST(_think_ctxs)
 
 	if(!QDELETED(_think_ctxs[name]))
 		CRASH("Thinking context [name] already exists")
@@ -151,7 +151,7 @@
 ///
 /// * `name` - name of the context.
 /datum/proc/remove_think_ctx(name)
-	if(!islist(_think_ctxs))
+	if(isnull(_think_ctxs))
 		return
 
 	if(QDELETED(_think_ctxs[name]))
@@ -172,7 +172,7 @@
 /// * `time` - when to call the context.
 /// * `...` - arguments to be passed to the "think" function.
 /datum/proc/try_add_think_ctx(name, datum/callback/clbk, time, ...)
-	LAZYINITLIST(_think_ctxs)
+	A_LAZYINITLIST(_think_ctxs)
 
 	if(!QDELETED(_think_ctxs[name]))
 		set_next_think_ctx(name, time)
@@ -212,5 +212,6 @@
 /// Mainly used in `/proc/Destroy`.
 /datum/proc/clear_think()
 	set_next_think(0)
-	QDEL_LIST_ASSOC_VAL(_think_ctxs)
+	QDEL_ALIST(_think_ctxs)
+	_think_ctxs = null
 	QDEL_NULL(_main_think_ctx)
