@@ -44,7 +44,7 @@
 	..()
 	return
 
-/datum/reagent/water/touch_turf(turf/simulated/T)
+/datum/reagent/water/touch_turf(turf/simulated/T, amount)
 	if(!istype(T))
 		return
 
@@ -64,12 +64,12 @@
 		qdel(flamer)
 
 	if(environment && environment.temperature > min_temperature) // Abstracted as steam or something
-		var/removed_heat = between(0, volume * WATER_LATENT_HEAT, -environment.get_thermal_energy_change(min_temperature))
+		var/removed_heat = between(0, amount * WATER_LATENT_HEAT, -environment.get_thermal_energy_change(min_temperature))
 		environment.add_thermal_energy(-removed_heat)
 		if(prob(5))
 			T.visible_message(SPAN("warning", "The water sizzles as it lands on \the [T]!"))
 
-	else if(volume >= 100 && slippery)
+	else if(amount >= 100 && slippery)
 		var/turf/simulated/S = T
 		S.wet_floor(1, TRUE)
 
@@ -94,14 +94,10 @@
 
 /datum/reagent/water/touch_mob(mob/living/L, amount)
 	if(istype(L))
-		var/needed = L.fire_stacks * 50
-		if(amount > needed)
-			L.fire_stacks = 0
-			L.ExtinguishMob()
-			remove_self(needed)
-		else
-			L.adjust_fire_stacks(-(amount / 50))
-			remove_self(amount)
+		var/removed_amount = L.fire_stacks
+		L.adjust_fire_stacks(-1 * ceil(amount / 10))
+		removed_amount = L.fire_stacks - removed_amount
+		remove_self(removed_amount)
 
 /datum/reagent/water/affect_touch(mob/living/carbon/M, alien, removed)
 	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
@@ -263,8 +259,11 @@
 /datum/reagent/hydrazine/affect_blood(mob/living/carbon/M, alien, removed)
 	M.adjustToxLoss(4 * removed)
 
+/datum/reagent/hydrazine/touch_mob(mob/living/L, amount)
+	if(istype(L))
+		L.adjust_fire_stacks(ceil(amount / 5))
+
 /datum/reagent/hydrazine/affect_touch(mob/living/carbon/M, alien, removed) // Hydrazine is both toxic and flammable.
-	M.adjust_fire_stacks(removed / 12)
 	M.adjustToxLoss(0.2 * removed)
 
 /datum/reagent/hydrazine/touch_turf(turf/T)

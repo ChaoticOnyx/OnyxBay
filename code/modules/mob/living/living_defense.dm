@@ -317,36 +317,63 @@
 	spawn(1) updatehealth()
 	return 1
 
-/mob/living/proc/IgniteMob()
-	if(fire_stacks > 0 && !on_fire)
-		on_fire = 1
+/mob/living/proc/IgniteMob(silent = FALSE)
+	if(fire_stacks > FIRE_STACKS_LEVEL_1 && !on_fire)
+		on_fire = TRUE
 		set_light(0.6, 0.1, 4, l_color = COLOR_ORANGE)
 		update_fire()
+		if(!silent)
+			switch(get_fire_level())
+				if(3)
+					visible_message(SPAN("danger", "[src] has burst into raging flames!"))
+				if(2)
+					visible_message(SPAN("danger", "[src] has burst into flames!"))
+				if(1)
+					visible_message(SPAN("danger", "[src] has caught fire!"))
 
-/mob/living/proc/ExtinguishMob()
+/mob/living/proc/ExtinguishMob(silent = FALSE)
 	if(on_fire)
-		on_fire = 0
-		fire_stacks = 0
+		on_fire = FALSE
 		set_light(0)
 		update_fire()
+		if(!silent)
+			visible_message(SPAN("notice", "[src] has been extinguished!"))
 
 /mob/living/proc/update_fire()
 	return
 
-/mob/living/proc/adjust_fire_stacks(add_fire_stacks) //Adjusting the amount of fire_stacks we have on person
-	fire_stacks = Clamp(fire_stacks + add_fire_stacks, FIRE_MIN_STACKS, FIRE_MAX_STACKS)
+/mob/living/proc/adjust_fire_stacks(add_fire_stacks, silent = FALSE) // Adjusting the amount of fire_stacks we have on person
+	if(!on_fire)
+		fire_stacks = Clamp(fire_stacks + add_fire_stacks, FIRE_STACKS_MIN, FIRE_STACKS_MAX)
+		return
+
+	var/old_fire_level = get_fire_level()
+	fire_stacks = Clamp(fire_stacks + add_fire_stacks, FIRE_STACKS_MIN, FIRE_STACKS_MAX)
+
+	if(fire_stacks <= FIRE_STACKS_LEVEL_1)
+		ExtinguishMob(silent)
+		return
+
+	if(old_fire_level != get_fire_level())
+		update_fire()
+
+	return
 
 /mob/living/proc/handle_fire()
-	if(fire_stacks < 0)
-		fire_stacks = min(0, ++fire_stacks) //If we've doused ourselves in water to avoid fire, dry off slowly
+	if(fire_stacks < FIRE_STACKS_LEVEL_1)
+		fire_stacks = min(FIRE_STACKS_LEVEL_1, ++fire_stacks) //If we've doused ourselves in water to avoid fire, dry off slowly
 
 	if(!on_fire)
 		return 1
-	else if(fire_stacks <= 0)
+
+	if(fire_stacks <= FIRE_STACKS_LEVEL_1)
 		ExtinguishMob() //Fire's been put out.
 		return 1
 
-	fire_stacks = max(0, fire_stacks - 0.1) //I guess the fire runs out of fuel eventually
+	var/old_fire_level = get_fire_level()
+	fire_stacks = max(FIRE_STACKS_LEVEL_1, --fire_stacks) //I guess the fire runs out of fuel eventually
+	if(old_fire_level != get_fire_level())
+		update_fire()
 
 	var/datum/gas_mixture/G = loc.return_air() // Check if we're standing in an oxygenless environment
 	if(G.get_by_flag(XGM_GAS_OXIDIZER) < 1)
@@ -357,10 +384,17 @@
 	location.hotspot_expose(fire_burn_temperature(), 50, 1)
 
 /mob/living/fire_act(datum/gas_mixture/air, temperature, volume)
-	//once our fire_burn_temperature has reached the temperature of the fire that's giving fire_stacks, stop adding them.
-	//allow fire_stacks to go up to 4 for fires cooler than 700 K, since are being immersed in flame after all.
-	if(fire_stacks <= 4 || fire_burn_temperature() < temperature)
-		adjust_fire_stacks(4)
+	// once our fire_burn_temperature has reached the temperature of the fire that's giving fire_stacks, we DON'T stop adding them (but do it slower), since it's fun to assum that humans are fuel
+	// allow fire_stacks to go up to 40 for fires cooler than 700 K, since are being immersed in flame after all.
+	var/current_burn_temperature = fire_burn_temperature()
+	if(current_burn_temperature < temperature)
+		current_burn_temperature = max(current_burn_temperature, 700)
+		var/fire_stacks_burst = clamp(ceil(10 * (temperature / current_burn_temperature)), 2, 50) // We'll turn into a torch must faster in a burning inferno
+		adjust_fire_stacks(fire_stacks_burst)
+	else if(fire_stacks < 40)
+		adjust_fire_stacks(10)
+	else
+		adjust_fire_stacks(2)
 	IgniteMob()
 
 /mob/living/proc/get_cold_protection()
@@ -371,12 +405,26 @@
 
 //Finds the effective temperature that the mob is burning at.
 /mob/living/proc/fire_burn_temperature()
-	if (fire_stacks <= 0)
+	if(fire_stacks <= 0)
 		return 0
 
-	//Scale quadratically so that single digit numbers of fire stacks don't burn ridiculously hot.
-	//lower limit of 700 K, same as matches and roughly the temperature of a cool flame.
-	return max(2.25*round(FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE*(fire_stacks/FIRE_MAX_FIRESUIT_STACKS)**2), 700)
+	// Scale quadratically so that modest numbers of fire stacks don't burn ridiculously hot;
+	// lower limit of 700 K, same as matches and roughly the temperature of a cool flame;
+	// upper limit of ATMOS_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE, so that some suits are completely fire-proof.
+	return clamp(round(FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE * (fire_stacks / FIRE_STACKS_LEVEL_3)**2), 700, ATMOS_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE)
+
+/mob/living/proc/get_fire_level()
+	if(fire_stacks == FIRE_STACKS_LEVEL_1)
+		return 0
+
+	if(fire_stacks >= FIRE_STACKS_LEVEL_3)
+		return 3
+	else if(fire_stacks >= FIRE_STACKS_LEVEL_2)
+		return 2
+	else if(fire_stacks >= FIRE_STACKS_LEVEL_1)
+		return 1
+	else if(fire_stacks < FIRE_STACKS_LEVEL_1)
+		return -1
 
 /mob/living/proc/reagent_permeability()
 	return 1

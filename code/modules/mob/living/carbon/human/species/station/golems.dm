@@ -132,7 +132,7 @@
 			H.investigate_log("has been gibbed as [H] body explodes.")
 			H.gib()
 	if(H.fire_stacks < 2) //flammable
-		H.adjust_fire_stacks(0.5 * 0.1)
+		H.adjust_fire_stacks(1)
 	..()
 
 /datum/species/golem/plasma/handle_post_spawn(mob/living/carbon/human/H)
@@ -295,7 +295,7 @@
 	if(H.nutrition < STOMACH_FULLNESS_LOW + 50)
 		H.take_overall_damage(brute = 2)
 	if(H.fire_stacks < 2) //flammable
-		H.adjust_fire_stacks(0.5)
+		H.adjust_fire_stacks(1)
 
 //Radioactive puncher, hits for burn but only as hard as human, slightly more durable against brute but less against everything else
 /datum/component/golem/uranium

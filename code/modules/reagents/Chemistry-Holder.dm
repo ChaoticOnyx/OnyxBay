@@ -334,7 +334,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 //If for some reason touch effects are bypassed (e.g. injecting stuff directly into a reagent container or person),
 //call the appropriate trans_to_*() proc.
 /datum/reagents/proc/trans_to(atom/target, amount = 1, multiplier = 1, copy = 0)
-	touch(target) //First, handle mere touch effects
+	touch(target, amount) //First, handle mere touch effects
 
 	if(ismob(target))
 		return splash_mob(target, amount, copy)
@@ -377,39 +377,39 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 // This does not handle transferring reagents to things.
 // For example, splashing someone with water will get them wet and extinguish them if they are on fire,
 // even if they are wearing an impermeable suit that prevents the reagents from contacting the skin.
-/datum/reagents/proc/touch(atom/target)
+/datum/reagents/proc/touch(atom/target, amount)
 	if(ismob(target))
-		touch_mob(target)
+		touch_mob(target, amount)
 	if(isturf(target))
-		touch_turf(target)
+		touch_turf(target, amount)
 	if(isobj(target))
-		touch_obj(target)
+		touch_obj(target, amount)
 	return
 
-/datum/reagents/proc/touch_mob(mob/target)
+/datum/reagents/proc/touch_mob(mob/target, amount)
 	if(!target || !istype(target) || !target.simulated)
 		return
 
 	for(var/datum/reagent/current in reagent_list)
-		current.touch_mob(target, current.volume)
+		current.touch_mob(target, min(amount, current.volume))
 
 	update_total()
 
-/datum/reagents/proc/touch_turf(turf/target)
+/datum/reagents/proc/touch_turf(turf/target, amount)
 	if(!target || !istype(target) || !target.simulated)
 		return
 
 	for(var/datum/reagent/current in reagent_list)
-		current.touch_turf(target, current.volume)
+		current.touch_turf(target, min(amount, current.volume))
 
 	update_total()
 
-/datum/reagents/proc/touch_obj(obj/target)
+/datum/reagents/proc/touch_obj(obj/target, amount)
 	if(!target || !istype(target) || !target.simulated)
 		return
 
 	for(var/datum/reagent/current in reagent_list)
-		current.touch_obj(target, current.volume)
+		current.touch_obj(target, min(amount, current.volume))
 
 	update_total()
 
@@ -464,7 +464,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 
 	var/datum/reagents/R = new /datum/reagents(amount * multiplier, GLOB.temp_reagents_holder)
 	. = trans_to_holder(R, amount, multiplier, copy)
-	R.touch_turf(target)
+	R.touch_turf(target, amount)
 	qdel(R)
 	return
 
@@ -475,7 +475,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	if(!target.reagents)
 		var/datum/reagents/R = new /datum/reagents(amount * multiplier, GLOB.temp_reagents_holder)
 		. = trans_to_holder(R, amount, multiplier, copy)
-		R.touch_obj(target)
+		R.touch_obj(target, amount)
 		qdel(R)
 		return
 
