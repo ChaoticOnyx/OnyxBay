@@ -28,8 +28,8 @@
 
 /// Deactivates the functionality defines by the element on the given datum.
 /datum/element/proc/detach(datum/source, ...)
-	SEND_SIGNAL(source, SIGNAL_ELEMENT_DETACH, src)
 	SHOULD_CALL_PARENT(TRUE)
+	SEND_SIGNAL(source, SIGNAL_ELEMENT_DETACH, src)
 	unregister_signal(source, SIGNAL_QDELETING)
 
 /datum/element/Destroy(force)

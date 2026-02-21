@@ -28,6 +28,3 @@
 #define MOVELOOP_FAILURE 0
 #define MOVELOOP_SUCCESS 1
 #define MOVELOOP_NOT_READY 2
-
-///Returns true if the dir is diagonal, false otherwise
-#define ISDIAGONALDIR(d) (d&(d-1))
