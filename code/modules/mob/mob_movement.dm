@@ -252,7 +252,7 @@
 	if(length(grabbed_by))
 		return SPACE_MOVE_PERMITTED
 
-	var/atom/movable/footing = get_solid_footing()
+	var/atom/movable/footing = get_solid_footing(!has_magnetised_footing())
 	if(footing)
 		if(istype(footing) && allow_movement)
 			return footing
@@ -267,7 +267,7 @@
 	if(thrust && thrust.on && (allow_movement || thrust.stabilization_on) && thrust.allow_thrust(0.01, src))
 		return SPACE_MOVE_PERMITTED
 
-/mob/living/proc/get_jetpack()
+/mob/proc/get_jetpack()
 	return
 
 // space_move_result can be:
@@ -307,6 +307,9 @@
 	// General slip check.
 	if((has_gravity() || has_magnetised_footing()) && get_solid_footing())
 		return 0
+	var/obj/item/tank/jetpack/thrust = get_jetpack()
+	if(thrust && thrust.on && thrust.stabilization_on)
+		return 0 // Otherwise we are unable to slip in outer space, but still may slip while crawling along the hull.
 	if(m_intent != M_RUN)
 		prob_slip *= 0.5
 	return max(prob_slip, 0)

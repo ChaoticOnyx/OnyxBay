@@ -1151,7 +1151,7 @@
 /mob/get_mass()
 	return mob_size
 
-/mob/proc/get_solid_footing()
+/mob/proc/get_solid_footing(ignore_floors = FALSE)
 
 	if(!loc)
 		return src // this is a bit weird but we shouldn't slip in nullspace probably
@@ -1161,10 +1161,10 @@
 	if(!istype(my_turf))
 		return my_turf
 
-	if(istype(my_turf, /turf/simulated) && !my_turf.is_open())
+	if(istype(my_turf) && (!ignore_floors || my_turf.density) && !my_turf.is_open())
 		return my_turf
 
-	// Check for catwalks and lattices.
+	// Check for catwalks and lattices. Apparently, these are "grippier" than solid floors and allow one to move in space even without magboots.
 	var/atom/platform = (locate(/obj/structure/catwalk) in my_turf) || (locate(/obj/structure/lattice) in my_turf)
 	if(platform)
 		return platform
@@ -1178,7 +1178,7 @@
 	for(var/turf/neighbor in RANGE_TURFS(1, my_turf))
 		if(neighbor == my_turf)
 			continue
-		if(istype(neighbor, /turf/simulated) && !neighbor.is_open())
+		if(istype(neighbor) && (!ignore_floors || neighbor.density) && !neighbor.is_open())
 			return neighbor
 		platform = (locate(/obj/structure/catwalk) in neighbor) || (locate(/obj/structure/lattice) in neighbor)
 		if(platform)

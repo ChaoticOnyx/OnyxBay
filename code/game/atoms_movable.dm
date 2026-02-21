@@ -13,7 +13,7 @@
 	var/moving_diagonally = FALSE // Used so we don't break grabs mid-diagonal-move.
 	var/m_flag = 1
 	var/datum/thrownthing/throwing
-	var/throw_speed = 1 // Number of ticks to travel 1 tile. Values between 0 and 1 allow traveling multiple tiles per tick, though it looks ugly and ain't recommended unless totally needed.
+	var/throw_speed = 1 // Number of deciseconds per tile.
 	var/throw_range = 7
 	var/throw_spin = TRUE // Should the atom spin when thrown.
 	var/moved_recently = 0
@@ -149,6 +149,11 @@
 
 	if(pulledby)
 		pulledby.stop_pulling()
+
+	if(!range)
+		range = throw_range
+	if(!speed)
+		speed = throw_speed
 
 	var/datum/thrownthing/TT = new(src, target, range, speed, thrower, callback)
 	throwing = TT

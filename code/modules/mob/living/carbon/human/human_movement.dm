@@ -27,6 +27,9 @@
 	// General slip check.
 	if((has_gravity() || has_magnetised_footing()) && get_solid_footing())
 		return 0
+	var/obj/item/tank/jetpack/thrust = get_jetpack()
+	if(thrust && thrust.on && thrust.stabilization_on)
+		return 0 // Otherwise we are unable to slip in outer space, but still may slip while crawling along the hull.
 	if(!l_hand)
 		prob_slip -= 2
 	else if(l_hand.w_class <= ITEM_SIZE_SMALL)
