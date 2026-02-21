@@ -21,7 +21,7 @@
 
 /datum/element/preview/detach(datum/source, ...)
 	. = ..()
-	unregister_signal(source, SIGNAL_EXAMINED)
+	source.unregister_signal(src, SIGNAL_EXAMINED)
 
 /datum/element/preview/Topic(href, href_list)
 	. = ..()
