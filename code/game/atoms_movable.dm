@@ -144,7 +144,7 @@
 
 /atom/movable/proc/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, datum/callback/callback) //If this returns FALSE then callback will not be called.
 	. = TRUE
-	if(!target || speed <= 0 || QDELETED(src) || (target.z != z))
+	if(!target || QDELETED(src) || (target.z != z))
 		return FALSE
 
 	if(pulledby)
