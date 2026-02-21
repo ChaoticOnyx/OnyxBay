@@ -1,0 +1,260 @@
+.WordProcessor {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+}
+
+.WordProcessor__windowContent {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Topbar (PC header) ===== */
+
+.WordProcessor__topbar {
+  flex: 0 0 auto;
+  margin-bottom: 6px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.10);
+}
+
+.WordProcessor__topbarLeft,
+.WordProcessor__topbarRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.WordProcessor__hdrIcon {
+  width: 40px;
+  height: 22px;
+  vertical-align: middle;
+}
+
+.WordProcessor__counter {
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.14);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ===== Main section layout ===== */
+
+.WordProcessor__main {
+  flex: 1 1 auto;
+  min-height: 0; /* КЛЮЧ */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Section внутри WordProcessor должен уметь растягиваться по высоте */
+.WordProcessor__content {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.WordProcessor__content .Section__content,
+.WordProcessor__content .Section__body,
+.WordProcessor__content .Section__content > *,
+.WordProcessor__content .Section__body > * {
+  min-height: 0;
+}
+
+.WordProcessor__content .Section__content,
+.WordProcessor__content .Section__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Document toolbar (в строке заголовка Section) ===== */
+
+.WordProcessor__docBar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.WordProcessor__btn {
+  height: 22px;
+  min-width: 26px;
+  padding: 0 6px;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.WordProcessor__btnWide {
+  height: 22px;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.WordProcessor__docBarScroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding-bottom: 1px;
+  max-width: 100%;
+}
+
+/* ===== Editor columns ===== */
+
+.WordProcessor__cols {
+  flex: 1 1 auto;
+  min-height: 0; /* КЛЮЧ */
+}
+
+.WordProcessor__sidebar {
+  min-height: 0;
+}
+
+.WordProcessor__rightCol {
+  min-height: 0;
+}
+
+/* ===== Pages panel ===== */
+
+.WordProcessor__pagesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.WordProcessor__pager {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.WordProcessor__pagerText {
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.14);
+  font-size: 12px;
+}
+
+.WordProcessor__pageActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+/* Сетка страниц: под кнопки 32x32 */
+.WordProcessor__pagesGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 32px);
+  gap: 4px;
+  justify-content: start;
+}
+
+.WordProcessor__pageNumBtn {
+  width: 32px;
+  height: 32px;
+  min-width: 0;
+  padding-top: 5px;
+  justify-content: center;
+  text-align: center;
+  line-height: 24px;
+}
+
+/* ===== Preview: фикс высоты/границ ===== */
+
+/* ВАЖНО: эта обёртка должна занять всю высоту Section content */
+.WordProcessor__rightFill {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* тело справа тянется */
+.WordProcessor__rightBody {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* preview растягивается даже при пустом контенте */
+.WordProcessor__previewWrap {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+
+  overflow: auto;
+
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+
+  color: #000;
+  opacity: 1;
+}
+
+.WordProcessor__preview {
+  box-sizing: border-box;
+  padding: 8px;
+
+  border: 0;
+  background: transparent;
+
+  font: inherit;
+  line-height: 1.3;
+
+  color: #000;
+  opacity: 1;
+  text-shadow: none;
+  -webkit-text-fill-color: #000;
+
+  word-break: break-word;
+
+  /* чтобы пустая страница не схлопывала контент визуально */
+  min-height: 100%;
+}
+
+.WordProcessor__preview * {
+  opacity: 1;
+  text-shadow: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.WordProcessor__preview img,
+.WordProcessor__preview table {
+  max-width: 100%;
+}
+
+/* Таблицы ближе к DM */
+.WordProcessor__preview table {
+  border: 1px solid #000;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.WordProcessor__preview th,
+.WordProcessor__preview td {
+  border: 1px solid #000;
+  padding: 2px 4px;
+  vertical-align: top;
+}
+
+.WordProcessor__preview .SmallFont { font-size: 0.7em; }
+.WordProcessor__preview .MediumFont { font-size: 1.2em; }
+.WordProcessor__preview .LargeFont { font-size: 1.3em; }

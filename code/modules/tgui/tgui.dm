@@ -240,6 +240,7 @@
 	// Pass act type messages to ui_act
 	if(type && copytext(type, 1, 5) == "act/")
 		var/act_type = copytext(type, 5)
+
 		log_tgui(user, "Action: [act_type] [href_list["payload"]]",
 			window = window,
 			src_object = src_object)

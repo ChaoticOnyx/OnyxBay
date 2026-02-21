@@ -3142,6 +3142,7 @@
 #include "code\modules\tgui_input\color.dm"
 #include "code\modules\tgui_input\list.dm"
 #include "code\modules\tgui_input\number.dm"
+#include "code\modules\tgui_input\pencode.dm"
 #include "code\modules\tgui_input\text.dm"
 #include "code\modules\tgui_panel\audio.dm"
 #include "code\modules\tgui_panel\external.dm"

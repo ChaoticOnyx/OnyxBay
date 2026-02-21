@@ -48,8 +48,8 @@
 
 	if (F.name == "Medical Recent Records")
 
-		var/new_value = replacetext(input(user,\
-			"Enter medical record data. You may use HTML paper formatting tags:",
+		var/new_value = replacetext(tgui_input_pencode_editor(user,\
+			"Enter medical record data:",
 			"Medical Record"), "\n", "\[br\]")
 		if (!new_value)
 			return FALSE

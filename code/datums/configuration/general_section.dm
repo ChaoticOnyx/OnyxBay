@@ -16,6 +16,7 @@
 	var/tick_limit_mc_init
 	var/minute_topic_limit
 	var/second_topic_limit
+	var/tgui_max_chunk_count
 	var/wait_for_sigusr1
 
 	var/client_min_major_version
@@ -52,5 +53,6 @@
 	CONFIG_LOAD_NUM(tick_limit_mc_init, data["tick_limit_mc_init"])
 	CONFIG_LOAD_NUM(minute_topic_limit, data["minute_topic_limit"])
 	CONFIG_LOAD_NUM(second_topic_limit, data["second_topic_limit"])
+	CONFIG_LOAD_NUM(tgui_max_chunk_count, data["tgui_max_chunk_count"])
 	CONFIG_LOAD_BOOL(wait_for_sigusr1, data["wait_for_sigusr1"])
 	CONFIG_LOAD_STR(prometheus_port, data["prometheus_port"])
