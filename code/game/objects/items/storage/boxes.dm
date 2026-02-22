@@ -308,12 +308,12 @@
 	drop_sound = SFX_DROP_AMMOBOX
 	pickup_sound = SFX_PICKUP_AMMOBOX
 
-/obj/item/storage/box/stingbangshells
-	name = "box of stingbang shells"
-	desc = "A box containing 5 non-lethal stingbang grenade shells.<br> WARNING: Less-lethal munitions. May cause injury at close range."
+/obj/item/storage/box/grenade_shells_stingbang
+	name = "box of stingbang grenade shells"
+	desc = "A box containing 6 40mm stingbang grenade shells.<br> WARNING: Less-lethal munitions. May cause injury at close range."
 	icon_state = "fragshells"
 	inspect_state = "sec-open"
-	startswith = list(/obj/item/grenade/frag/stingbang/shell = 5)
+	startswith = list(/obj/item/ammo_casing/grenade/loaded/stingbang = 6)
 	drop_sound = SFX_DROP_AMMOBOX
 	pickup_sound = SFX_PICKUP_AMMOBOX
 

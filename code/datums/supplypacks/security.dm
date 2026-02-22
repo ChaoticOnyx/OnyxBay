@@ -257,12 +257,12 @@
 	containername = "\improper Stingbang grenades crate"
 	access = access_security
 
-/decl/hierarchy/supply_pack/security/stingbangshells
-	name = "Weapons - Stingbang shells"
-	contains = list(/obj/item/storage/box/stingbangshells = 2)
-	cost = 40
+/decl/hierarchy/supply_pack/security/grenade_shells_stingbang
+	name = "Ammunition - 40mm stingbang shells"
+	contains = list(/obj/item/storage/box/grenade_shells_stingbang = 2)
+	cost = 30
 	containertype = /obj/structure/closet/crate/secure/weapon
-	containername = "\improper Stingbang shells crate"
+	containername = "\improper 40mm stingbang shells crate"
 	access = access_security
 
 /decl/hierarchy/supply_pack/security/teargas

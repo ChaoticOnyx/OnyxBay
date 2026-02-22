@@ -113,8 +113,8 @@
 	explosion_size = 0
 
 /obj/item/grenade/frag/stingbang/shell
-	name = "stingbang shell"
-	desc = "A non-lethal grenade shell that disperses rubber pellets on impact. Designed to be fired from a launcher."
+	name = "stingbang grenade"
+	desc = "A light non-lethal stingbang grenade, designed to be fired from a launcher. It can still be activated and thrown by hand if necessary."
 	icon_state = "fragshell"
 
 	num_fragments = 36 //less powerful than a hand-thrown stingbang
