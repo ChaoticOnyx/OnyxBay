@@ -586,8 +586,14 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		U.interact(user)
 		return
 
-	ui_interact(user) //NanoUI requires this proc
+	tgui_interact(user) //NanoUI requires this proc
 	return
+
+/obj/item/device/pda/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "PDA")
+		ui.open()
 
 /obj/item/device/pda/Topic(href, href_list)
 	if(href_list["cartmenu"] && !QDELETED(cartridge))

@@ -59,6 +59,7 @@
 @include meta.load-css("./interfaces/PencodeEditorModal.scss");
 @include meta.load-css("./interfaces/AirAlarm.scss");
 @include meta.load-css("./interfaces/WordProcessor.scss");
+@include meta.load-css("./interfaces/PDA.scss");
 
 // Layouts
 @include meta.load-css("./layouts/Layout.scss");
