@@ -24,8 +24,12 @@
 /obj/item/flagpole/Initialize()
 	. = ..()
 	if (flag_appearance_type)
-		flag_appearance = new flag_appearance_type
-	change_flag(flag_appearance, color)
+		var/datum/flag_appearance/new_flag_appearance = GLOB.flag_appearances[flag_appearance_type]
+		if (!istype(new_flag_appearance))
+			log_debug("Failed to find '[flag_appearance_type]' in global appearance cache.", loc)
+			return INITIALIZE_HINT_QDEL
+
+		change_flag(new_flag_appearance, color)
 
 /obj/item/flagpole/examine(mob/user, infix)
 	. = ..()

@@ -29,7 +29,12 @@
 		return INITIALIZE_HINT_QDEL
 
 	if (flag_appearance_type)
-		set_flag_appearance(new flag_appearance_type, color)
+		var/datum/flag_appearance/new_flag_appearance = GLOB.flag_appearances[flag_appearance_type]
+		if (!istype(new_flag_appearance))
+			log_debug("Failed to find '[flag_appearance_type]' in global appearance cache.", loc)
+			return INITIALIZE_HINT_QDEL
+
+		set_flag_appearance(new_flag_appearance, color)
 
 /obj/item/flag/proc/set_flag_appearance(datum/flag_appearance/new_appearance, new_color)
 	flag_appearance = new_appearance
@@ -126,7 +131,12 @@
 		return INITIALIZE_HINT_QDEL
 
 	if (flag_appearance_type)
-		set_flag_appearance(new flag_appearance_type, color)
+		var/datum/flag_appearance/new_flag_appearance = GLOB.flag_appearances[flag_appearance_type]
+		if (!istype(new_flag_appearance))
+			log_debug("Failed to find '[flag_appearance_type]' in global appearance cache.", loc)
+			return INITIALIZE_HINT_QDEL
+
+		set_flag_appearance(new_flag_appearance, color)
 
 /obj/structure/sign/flag/proc/set_flag_appearance(datum/flag_appearance/new_appearance, new_color)
 	flag_appearance = new_appearance

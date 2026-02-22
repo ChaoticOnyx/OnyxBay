@@ -1,3 +1,11 @@
+GLOBAL_LIST_INIT(flag_appearances, populate_flag_appearance_list())
+
+/proc/populate_flag_appearance_list()
+	var/list/result = list()
+	for (var/typepath as anything in subtypesof(/datum/flag_appearance))
+		result[typepath] = new typepath
+	return result
+
 /datum/flag_appearance
 	var/name
 	var/desc
