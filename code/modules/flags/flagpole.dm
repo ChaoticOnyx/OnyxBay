@@ -33,7 +33,7 @@
 
 /obj/item/flagpole/examine(mob/user, infix)
 	. = ..()
-	if (isnull(flag_appearance))
+	if (flag_appearance)
 		. += flag_appearance.desc
 
 /obj/item/flagpole/on_update_icon()
