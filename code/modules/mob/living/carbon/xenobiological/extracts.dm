@@ -303,8 +303,7 @@
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			show_splash_text(user, SPAN_NOTICE("You activate [src]. You start feeling colder!"))
-			user.ExtinguishMob()
-			user.adjust_fire_stacks(-20)
+			user.adjust_fire_stacks(FIRE_STACKS_MAX * -1) // Whatever
 			user.reagents.add_reagent(/datum/reagent/frostoil,6)
 			user.reagents.add_reagent(/datum/reagent/regen_jelly,7)
 			return 100

@@ -56,8 +56,8 @@
 		var/record_field/crime_notes/crime_notes = locate() in R.fields; ASSERT(istype(crime_notes))
 		var/record_field/criminalStatus/criminal_status = locate() in R.fields; ASSERT(istype(criminal_status))
 
-		var/sentence_info = replacetext(input(user,\
-			"Enter information about sentence. You may use HTML paper formatting tags:",
+		var/sentence_info = replacetext(tgui_input_pencode_editor(user,\
+			"Enter information about sentence.",
 			"Issued sentence"), "\n", "\[br\]")
 		if (!sentence_info)
 			return FALSE

@@ -78,10 +78,16 @@
 	return ..()
 
 /mob/living/Bump(atom/movable/AM, yes)
-	if(now_pushing || !yes || !loc || moving_diagonally)
-		return FALSE
+	if(!QDELETED(throwing))
+		throwing.hit_atom(AM)
+		return
+
+	var/was_moving_diagonally = moving_diagonally // apparently it gets lost during the two spawns
 
 	spawn(0)
+		if(!yes || QDELETED(src) || QDELETED(AM) || !loc || !AM.loc)
+			return
+
 		if(!istype(AM, /mob/living/bot/mulebot))
 			now_pushing = 1
 		if (istype(AM, /mob/living))
@@ -150,6 +156,8 @@
 
 		now_pushing = 0
 		spawn(0)
+			if(QDELETED(src) || QDELETED(AM) || !loc || !AM.loc)
+				return
 			..()
 			var/saved_dir = AM.dir
 
@@ -175,7 +183,7 @@
 					src.apply_damage(5, BRUTE)
 				return
 
-			if(!now_pushing && !moving_diagonally)
+			if(!now_pushing && !was_moving_diagonally)
 				now_pushing = 1
 
 				var/t = get_dir(src, AM)
@@ -685,8 +693,7 @@
 			return set_dir(get_dir(src, pulling))
 
 /mob/living/proc/handle_pull_damage(mob/living/puller)
-	var/area/A = get_area(src)
-	if(!A.has_gravity)
+	if(!has_gravity())
 		return
 	var/turf/location = get_turf(src)
 	if(lying && prob(getBruteLoss() / 6))

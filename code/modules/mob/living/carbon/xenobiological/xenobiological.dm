@@ -141,9 +141,6 @@
 
 	return ..()
 
-/mob/living/carbon/metroid/Allow_Spacemove()
-	return 1
-
 /mob/living/carbon/metroid/Stat()
 	. = ..()
 

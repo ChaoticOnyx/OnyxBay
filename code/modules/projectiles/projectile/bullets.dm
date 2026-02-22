@@ -9,6 +9,7 @@
 	sharp = 1
 	penetration_modifier = 1.0
 	poisedamage = 5.0
+	space_knockback = TRUE
 	var/mob_passthrough_check = 0
 
 	muzzle_type = /obj/effect/projectile/muzzle/bullet

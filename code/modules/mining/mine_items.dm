@@ -495,6 +495,7 @@
 	var/fieldlimit = 4
 	var/list/fields = list()
 	var/quick_burst_mod = 0.8
+	var/cooling_time = 1.5 SECOND
 	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3)
 
 /obj/item/resonator/upgraded
@@ -506,15 +507,19 @@
 	fieldlimit = 8
 	quick_burst_mod = 1
 	burst_time = 30
+	cooling_time = 1 SECOND
 
 /obj/item/resonator/proc/CreateResonance(target, creator)
 	var/turf/T = get_turf(target)
 	var/obj/effect/resonance/R = locate(/obj/effect/resonance) in T
 	if(R)
-		R.resonance_damage *= quick_burst_mod
-		R.burst(T)
-		return
-	if(fields.len < fieldlimit)
+		THROTTLE(cooldown, cooling_time)
+		if(cooldown)
+			R.resonance_damage *= quick_burst_mod
+			R.burst(T)
+		else
+			show_splash_text(creator, "Cooling!", "\The [src] is cooling.")
+	else if(fields.len < fieldlimit)
 		playsound(src,'sound/effects/weapons/energy/resonator_fire.ogg',50,1)
 		var/obj/effect/resonance/RE = new /obj/effect/resonance(T, creator, burst_time, src)
 		fields += RE

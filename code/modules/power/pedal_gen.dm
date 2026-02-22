@@ -163,12 +163,12 @@
 				new_pixel_x = -13
 				new_pixel_y = 7
 		if(buckling)
-			animate(M, pixel_x = new_pixel_x, pixel_y = new_pixel_y, 2, 1, LINEAR_EASING)
+			animate(M, pixel_x = new_pixel_x, pixel_y = new_pixel_y, 2, 1, LINEAR_EASING, flags = ANIMATION_PARALLEL)
 		else
 			M.pixel_x = new_pixel_x
 			M.pixel_y = new_pixel_y
 	else
-		animate(M, pixel_x = 0, pixel_y = 0, 2, 1, LINEAR_EASING)
+		animate(M, pixel_x = 0, pixel_y = 0, 2, 1, LINEAR_EASING, flags = ANIMATION_PARALLEL)
 
 /obj/structure/bed/chair/pedalgen/bullet_act(obj/item/projectile/Proj)
 	if(buckled_mob)

@@ -5,6 +5,7 @@
 	damage = 20
 	check_armour = "energy"
 	poisedamage = 35.0 // well, itsa FORCE bolt right?
+	space_knockback = TRUE
 
 /obj/item/projectile/forcebolt/strong
 	name = "force bolt"

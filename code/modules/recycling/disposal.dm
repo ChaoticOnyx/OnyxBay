@@ -448,24 +448,17 @@
 		qdel(H)
 
 
-/obj/machinery/disposal/hitby(atom/movable/AM, speed, nomsg = TRUE)
+/obj/machinery/disposal/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = TRUE)
 	..()
-
-/obj/machinery/disposal/CanPass(atom/movable/mover, turf/target)
-	if(istype(mover,/obj/item) && mover.throwing)
-		var/obj/item/I = mover
-		if(istype(I, /obj/item/projectile))
-			return
-		if(prob(75))
-			I.forceMove(src)
-			for(var/mob/M in viewers(src))
-				M.show_message("\The [I] lands in \the [src].", 3)
-		else
-			for(var/mob/M in viewers(src))
-				M.show_message("\The [I] bounces off of \the [src]'s rim!", 3)
-		return 0
+	if(QDELETED(AM) || !istype(AM, /obj/item))
+		return
+	if(prob((TT.target == src) ? 90 : 25))
+		AM.forceMove(src)
+		for(var/mob/M in viewers(src))
+			M.show_message("\The [AM] lands in \the [src].", 3)
 	else
-		return ..(mover, target)
+		for(var/mob/M in viewers(src))
+			M.show_message("\The [AM] bounces off of \the [src]'s rim!", 3)
 
 // virtual disposal object
 // travels through pipes in lieu of actual items

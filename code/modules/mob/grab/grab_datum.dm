@@ -105,7 +105,7 @@
 	var/mob/living/carbon/human/affecting = G.affecting
 
 	if(can_throw)
-		animate(affecting, pixel_x = 0, pixel_y = 0, 4, 1)
+		animate(affecting, pixel_x = affecting.default_pixel_x, pixel_y = affecting.default_pixel_y, time = 4, tag = MOB_ANIM_GRAB)
 		qdel(G)
 		return affecting
 	return null
@@ -155,26 +155,29 @@
 		return
 	var/mob/living/carbon/human/affecting = G.affecting
 	var/mob/living/carbon/human/assailant = G.assailant
-	var/adir = get_dir(assailant, affecting)
+	var/direction = get_dir(assailant, affecting)
 
 	if(same_tile)
 		affecting.forceMove(assailant.loc)
-		adir = assailant.dir
+		direction = assailant.dir
 		affecting.set_dir(assailant.dir)
 
-	switch(adir)
-		if(NORTH)
-			animate(affecting, pixel_x = 0, pixel_y =-shift, 5, 1, LINEAR_EASING)
-			G.draw_affecting_under()
-		if(SOUTH)
-			animate(affecting, pixel_x = 0, pixel_y = shift, 5, 1, LINEAR_EASING)
-			G.draw_affecting_over()
-		if(WEST)
-			animate(affecting, pixel_x = shift, pixel_y = 0, 5, 1, LINEAR_EASING)
-			G.draw_affecting_under()
-		if(EAST)
-			animate(affecting, pixel_x =-shift, pixel_y = 0, 5, 1, LINEAR_EASING)
-			G.draw_affecting_under()
+	var/resulting_pixel_x = affecting.default_pixel_x
+	var/resulting_pixel_y = affecting.default_pixel_y
+	if(direction & NORTH)
+		resulting_pixel_y = -shift
+		G.draw_affecting_under()
+	else
+		if(direction & SOUTH)
+			resulting_pixel_y = shift
+		G.draw_affecting_over()
+
+	if(direction & EAST)
+		resulting_pixel_x = -shift
+	else if(direction & WEST)
+		resulting_pixel_x = shift
+
+	animate(affecting, pixel_x = resulting_pixel_x, pixel_y = resulting_pixel_y, time = 5, LINEAR_EASING, tag = MOB_ANIM_GRAB)
 
 	affecting.reset_plane_and_layer()
 
@@ -184,7 +187,7 @@
 	var/mob/living/carbon/human/affecting = G.affecting
 
 	if(!affecting.buckled)
-		animate(affecting, pixel_x = 0, pixel_y = 0, 4, 1, LINEAR_EASING)
+		animate(affecting, pixel_x = affecting.default_pixel_x, pixel_y = affecting.default_pixel_y, time = 4, LINEAR_EASING, tag = MOB_ANIM_GRAB)
 	affecting.reset_plane_and_layer()
 
 /*

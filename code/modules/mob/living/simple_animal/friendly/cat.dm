@@ -163,9 +163,9 @@
 	. = ..()
 	set_flee_target(proj.firer? proj.firer : src.loc)
 
-/mob/living/simple_animal/cat/hitby(atom/movable/AM)
-	. = ..()
-	set_flee_target(AM.thrower? AM.thrower : src.loc)
+/mob/living/simple_animal/cat/hitby(atom/movable/AM, datum/thrownthing/TT)
+	..()
+	set_flee_target(TT.thrower? TT.thrower : loc)
 
 //Basic friend AI
 /mob/living/simple_animal/cat/fluff

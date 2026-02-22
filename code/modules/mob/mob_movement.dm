@@ -152,6 +152,8 @@
 
 		if(ISCARDINALDIR(direct)) // Cardinal move
 			. = ..()
+			if(dir != direct)
+				set_dir(direct)
 		else // Diagonal move, split it into cardinal moves
 			moving_diagonally = /atom/movable::FIRST_DIAGONAL_STEP
 			var/first_step_dir
@@ -201,6 +203,10 @@
 			if(moving_diagonally == /atom/movable::SECOND_DIAGONAL_STEP)
 				if(!.)
 					set_dir(first_step_dir)
+				else if(!inertia_moving)
+					inertia_next_move = world.time + inertia_move_delay
+					space_drift(direct ? direct : last_move)
+
 			moving_diagonally = FALSE
 			return
 
@@ -211,9 +217,6 @@
 	last_move = direct
 	move_speed = world.time - src.l_move_time
 	l_move_time = world.time
-
-	if(dir != direct)
-		set_dir(direct)
 
 	// Cursed pieces of code that we need right here for reasons.
 	if(.)
@@ -226,6 +229,10 @@
 		if(opacity)
 			updateVisibility(src)
 
+		if(!inertia_moving)
+			inertia_next_move = world.time + inertia_move_delay
+			space_drift(direct ? direct : last_move)
+
 		SEND_SIGNAL(src, SIGNAL_MOVED, src, oldloc, loc)
 
 	return
@@ -237,70 +244,75 @@
 /client/Move(n, direction)
 	return mob.SelfMove(direction)
 
-// Checks whether this mob is allowed to move in space
-// Return 1 for movement, 0 for none,
-// -1 to allow movement but with a chance of slipping
-/mob/proc/Allow_Spacemove(check_drift = 0)
-	if(!Check_Dense_Object()) //Nothing to push off of so end here
-		return 0
+/mob/is_space_movement_permitted(allow_movement = FALSE)
+	. = ..()
+	if(.)
+		return
 
-	if(restrained()) //Check to see if we can do things
-		return 0
+	if(length(grabbed_by))
+		return SPACE_MOVE_PERMITTED
 
-	return -1
+	var/atom/movable/footing = get_solid_footing(!has_magnetised_footing())
+	if(footing)
+		if(istype(footing) && allow_movement)
+			return footing
+		return SPACE_MOVE_SUPPORTED
 
-//Checks if a mob has solid ground to stand on
-//If there's no gravity then there's no up or down so naturally you can't stand on anything.
-//For the same reason lattices in space don't count - those are things you grip, presumably.
-/mob/proc/check_solid_ground()
-	if(istype(loc, /turf/space))
-		return 0
+/mob/living/is_space_movement_permitted(allow_movement = FALSE)
+	. = ..()
+	if(.)
+		return
 
-	if(!lastarea)
-		lastarea = get_area(src)
-	if(!lastarea || !lastarea.has_gravity)
-		return 0
+	var/obj/item/tank/jetpack/thrust = get_jetpack()
+	if(thrust && thrust.on && (allow_movement || thrust.stabilization_on) && thrust.allow_thrust(0.01, src))
+		return SPACE_MOVE_PERMITTED
 
-	return 1
+/mob/proc/get_jetpack()
+	return
 
-/mob/proc/Check_Dense_Object() //checks for anything to push off or grip in the vicinity. also handles magboots on gravity-less floors tiles
+// space_move_result can be:
+// - SPACE_MOVE_FORBIDDEN,
+// - SPACE_MOVE_PERMITTED,
+// - SPACE_MOVE_SUPPORTED (for non-movable atoms),
+// - or an /atom/movable that provides footing.
+/mob/proc/try_space_move(space_move_result, direction)
+	if(ismovable(space_move_result))//push off things in space
+		handle_space_pushoff(space_move_result, direction)
+		space_move_result = SPACE_MOVE_SUPPORTED
+	return space_move_result != SPACE_MOVE_SUPPORTED || !handle_spaceslipping()
 
-	var/shoegrip = Check_Shoegrip()
+/mob/proc/handle_space_pushoff(atom/movable/AM, direction)
+	if(AM.anchored)
+		return
 
-	for(var/turf/simulated/T in trange(1,src)) //we only care for non-space turfs
-		if(T.density)	//walls work
-			return 1
-		else
-			var/area/A = T.loc
-			if(A.has_gravity || shoegrip)
-				return 1
+	if(ismob(AM))
+		var/mob/M = AM
+		if(!M.can_slip(magboots_only = TRUE))
+			return
 
-	for(var/obj/O in orange(1, src))
-		if(istype(O, /obj/structure/lattice))
-			return 1
-		if(O && O.density && O.anchored)
-			return 1
-
-	return 0
-
-/mob/proc/Check_Shoegrip()
-	return 0
+	AM.inertia_ignore = src
+	if(step(AM, turn(direction, 180)))
+		to_chat(src, SPAN("notice", "You push off of [AM] to propel yourself."))
+		inertia_ignore = AM
 
 //return 1 if slipped, 0 otherwise
 /mob/proc/handle_spaceslipping()
-	if(prob(slip_chance(5)) && !buckled)
+	if(!buckled && prob(get_eva_slip_prob()))
 		to_chat(src, "<span class='warning'>You slipped!</span>")
-		src.inertia_dir = src.last_move
-		step(src, src.inertia_dir)
+		step(src, turn(last_move, pick(45,-45)))
 		return 1
 	return 0
 
-/mob/proc/slip_chance(prob_slip = 5)
-	if(stat)
+/mob/proc/get_eva_slip_prob(prob_slip = 10)
+	// General slip check.
+	if((has_gravity() || has_magnetised_footing()) && get_solid_footing())
 		return 0
-	if(Check_Shoegrip())
-		return 0
-	return prob_slip
+	var/obj/item/tank/jetpack/thrust = get_jetpack()
+	if(thrust && thrust.on && thrust.stabilization_on)
+		return 0 // Otherwise we are unable to slip in outer space, but still may slip while crawling along the hull.
+	if(m_intent != M_RUN)
+		prob_slip *= 0.5
+	return max(prob_slip, 0)
 
 /mob/proc/update_gravity()
 	return

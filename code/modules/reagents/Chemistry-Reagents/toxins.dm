@@ -82,7 +82,7 @@
 
 /datum/reagent/toxin/plasma/touch_mob(mob/living/L, amount)
 	if(istype(L))
-		L.adjust_fire_stacks(amount / fire_mult)
+		L.adjust_fire_stacks(ceil(amount / fire_mult))
 
 /datum/reagent/toxin/plasma/affect_touch(mob/living/carbon/M, alien, removed)
 	M.take_organ_damage(0, removed * 0.1) //being splashed directly with plasma causes minor chemical burns
@@ -100,7 +100,7 @@
 	name = "Plasmygen"
 	description = "An exceptionally flammable molecule formed from deuterium synthesis."
 	strength = 15
-	fire_mult = 15
+	fire_mult = 2
 
 /datum/reagent/toxin/plasma/oxygen/touch_turf(turf/simulated/T)
 	if(!istype(T))

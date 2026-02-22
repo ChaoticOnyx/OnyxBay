@@ -32,7 +32,8 @@
 			offset_x = (tf_offset_x || 0),
 			offset_y = (tf_offset_y || 0) + 16 * ((tf_scale_y || 1) - 1)
 		),
-		time = 10
+		time = 10,
+		flags = ANIMATION_PARALLEL
 	)
 
 /mob/living/carbon/human/update_transform()
@@ -63,9 +64,36 @@
 			offset_x = (tf_offset_x || 0) + translate_x,
 			offset_y = (tf_offset_y || 0) + translate_y
 		),
-		time = anim_time
+		time = anim_time,
+		flags = ANIMATION_PARALLEL
 	)
 
+// TODO: Add some kind of transform source management helpers, 'cause this is disgusting.
+/mob/living/silicon/robot/update_transform()
+	var/rotate_deg = 0
+	var/translate_x = 0
+	var/translate_y = 16 * ((tf_scale_y || 1) - 1)
+
+	var/datum/robot_hull/using_hull = module_hulls[icontype]
+	if (lying && (using_hull.hull_flags & ROBOT_HULL_FLAG_TILTABLE))
+		rotate_deg += 90
+		translate_x = 1
+		translate_y = -6
+	else if (hanging)
+		rotate_deg = hanging
+
+	animate(
+		src,
+		transform = matrix().Update(
+			scale_x = (tf_scale_x || 1),
+			scale_y = (tf_scale_y || 1),
+			rotation = (tf_rotation || 0) + rotate_deg,
+			offset_x = (tf_offset_x || 0) + translate_x,
+			offset_y = (tf_offset_y || 0) + translate_y
+		),
+		time = lying ? 1 : 10,
+		flags = ANIMATION_PARALLEL
+	)
 
 /mob/living/proc/update_modifier_visuals()
 	return

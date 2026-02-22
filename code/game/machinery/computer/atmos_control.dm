@@ -26,6 +26,7 @@
 	icon_keyboard = "laptop_key"
 	icon_screen = "atmoslaptop"
 	density = 0
+	turf_height_offset = 0
 
 /obj/machinery/computer/atmoscontrol/attack_ai(mob/user as mob)
 	ui_interact(user)

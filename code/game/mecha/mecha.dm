@@ -631,7 +631,7 @@
 		log_append_to_last("Armor saved.")
 	return
 
-/obj/mecha/hitby(atom/movable/AM, speed, nomsg = TRUE)
+/obj/mecha/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = TRUE)
 	..()
 	log_message("Hit by [AM].",1)
 	if(istype(AM, /obj/item/mecha_parts/mecha_tracking))

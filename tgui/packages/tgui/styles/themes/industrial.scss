@@ -173,349 +173,350 @@
   --ind-plate-edge-lo: rgba(0,0,0,0.65);
   --ind-plate-grain: rgba(255,255,255,0.028);
 
-}
-/* =========================
- * Industrial plates & labels (utility)
- * ========================= */
 
-/* -------------------------
- * Base plate
- * ------------------------- */
-.ind-plate {
-  position: relative;
-  border-radius: var(--ind-plate-radius, 0.375rem);
-  color: var(--ind-fg, rgba(235,235,235,0.92));
-  overflow: hidden;
+  /* =========================
+   * Industrial plates & labels (utility)
+   * ========================= */
 
-  background: var(--ind-plate-metal-bg, linear-gradient(180deg, rgba(55,60,58,0.95), rgba(28,32,30,0.95)));
-  box-shadow:
-    inset 0 0.0625rem 0 var(--ind-plate-bevel-top, rgba(255,255,255,0.08)),
-    inset 0 -0.0625rem 0 var(--ind-plate-bevel-bottom, rgba(0,0,0,0.55)),
-    inset 0 0 0 0.0625rem var(--ind-plate-border, rgba(160,190,170,0.22)),
-    var(--ind-plate-shadow, 0 0.125rem 0.375rem rgba(0,0,0,0.45));
+  /* -------------------------
+   * Base plate
+   * ------------------------- */
+  .ind-plate {
+    position: relative;
+    border-radius: var(--ind-plate-radius, 0.375rem);
+    color: var(--ind-fg, rgba(235,235,235,0.92));
+    overflow: hidden;
 
-  /* Overlays controlled by modifiers */
-  --ind-plate-finish: none; /* extra finish layer (optional) */
-}
+    background: var(--ind-plate-metal-bg, linear-gradient(180deg, rgba(55,60,58,0.95), rgba(28,32,30,0.95)));
+    box-shadow:
+      inset 0 0.0625rem 0 var(--ind-plate-bevel-top, rgba(255,255,255,0.08)),
+      inset 0 -0.0625rem 0 var(--ind-plate-bevel-bottom, rgba(0,0,0,0.55)),
+      inset 0 0 0 0.0625rem var(--ind-plate-border, rgba(160,190,170,0.22)),
+      var(--ind-plate-shadow, 0 0.125rem 0.375rem rgba(0,0,0,0.45));
 
-/* ОБЪЕДИНЕНО: “шлифовка/текстура” + bevel + мягкие блики */
-.ind-plate::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
+    /* Overlays controlled by modifiers */
+    --ind-plate-finish: none; /* extra finish layer (optional) */
+  }
 
-  background:
-    /* 0) optional finish (set by modifiers) */
-    var(--ind-plate-finish),
+  /* ОБЪЕДИНЕНО: “шлифовка/текстура” + bevel + мягкие блики */
+  .ind-plate::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
 
-    /* 1) micro grain */
-    repeating-linear-gradient(
-      135deg,
-      rgba(255,255,255,0.020) 0,
-      rgba(255,255,255,0.020) 0.125rem,
-      rgba(0,0,0,0.00) 0.375rem
-    ),
+    background:
+      /* 0) optional finish (set by modifiers) */
+      var(--ind-plate-finish),
 
-    /* 2) top soft highlight */
-    radial-gradient(56.25rem 17.5rem at 25% 0%, rgba(255,255,255,0.06), rgba(0,0,0,0) 60%),
+      /* 1) micro grain */
+      repeating-linear-gradient(
+        135deg,
+        rgba(255,255,255,0.020) 0,
+        rgba(255,255,255,0.020) 0.125rem,
+        rgba(0,0,0,0.00) 0.375rem
+      ),
 
-    /* 3) bottom vignette */
-    radial-gradient(56.25rem 17.5rem at 80% 120%, rgba(0,0,0,0.30), rgba(0,0,0,0) 65%),
+      /* 2) top soft highlight */
+      radial-gradient(56.25rem 17.5rem at 25% 0%, rgba(255,255,255,0.06), rgba(0,0,0,0) 60%),
 
-    /* 4) bevel vertical */
-    linear-gradient(
-      180deg,
-      var(--ind-plate-bevel-top, rgba(255,255,255,0.08)),
-      rgba(255,255,255,0.00) 40%,
-      rgba(0,0,0,0.00) 60%,
-      var(--ind-plate-bevel-bottom, rgba(0,0,0,0.55))
-    );
+      /* 3) bottom vignette */
+      radial-gradient(56.25rem 17.5rem at 80% 120%, rgba(0,0,0,0.30), rgba(0,0,0,0) 65%),
 
-  opacity: 0.60;
-  mix-blend-mode: overlay;
-}
+      /* 4) bevel vertical */
+      linear-gradient(
+        180deg,
+        var(--ind-plate-bevel-top, rgba(255,255,255,0.08)),
+        rgba(255,255,255,0.00) 40%,
+        rgba(0,0,0,0.00) 60%,
+        var(--ind-plate-bevel-bottom, rgba(0,0,0,0.55))
+      );
 
-/* MATERIALS (только те, которые вам нравятся) */
-.ind-plate--metal   { background: var(--ind-plate-metal-bg); }
-.ind-plate--plastic { background: var(--ind-plate-plastic-bg); }
-.ind-plate--ghost   { background: var(--ind-plate-ghost-bg, rgba(0,0,0,0)); box-shadow: none; border-color: transparent; }
+    opacity: 0.60;
+    mix-blend-mode: overlay;
+  }
 
-/* OPTIONAL FINISHES (действительно разные, без “однотипности”) */
-/* 1) brushed (horizontal micro lines) */
-.ind-plate--finish-brushed {
-  --ind-plate-finish:
-    repeating-linear-gradient(
-      90deg,
-      rgba(255,255,255,0.040) 0,
-      rgba(255,255,255,0.040) 0.0625rem,
-      rgba(0,0,0,0.00) 0.3125rem
-    );
-}
+  /* MATERIALS (только те, которые вам нравятся) */
+  .ind-plate--metal   { background: var(--ind-plate-metal-bg); }
+  .ind-plate--plastic { background: var(--ind-plate-plastic-bg); }
+  .ind-plate--ghost   { background: var(--ind-plate-ghost-bg, rgba(0,0,0,0)); box-shadow: none; border-color: transparent; }
 
-/* 2) painted “orange peel” (rare subtle speckle) */
-.ind-plate--finish-painted {
-  --ind-plate-finish:
-    radial-gradient(0.125rem 0.125rem at 12% 18%, rgba(255,255,255,0.07), rgba(0,0,0,0) 65%),
-    radial-gradient(0.125rem 0.125rem at 42% 72%, rgba(255,255,255,0.06), rgba(0,0,0,0) 65%),
-    radial-gradient(0.125rem 0.125rem at 78% 34%, rgba(255,255,255,0.06), rgba(0,0,0,0) 65%),
-    radial-gradient(0.125rem 0.125rem at 66% 58%, rgba(255,255,255,0.05), rgba(0,0,0,0) 65%);
-  opacity: 0.55; /* чуть тише, иначе будет “грязь” */
-}
+  /* OPTIONAL FINISHES (действительно разные, без “однотипности”) */
+  /* 1) brushed (horizontal micro lines) */
+  .ind-plate--finish-brushed {
+    --ind-plate-finish:
+      repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.040) 0,
+        rgba(255,255,255,0.040) 0.0625rem,
+        rgba(0,0,0,0.00) 0.3125rem
+      );
+  }
 
-/* 3) carbon weave (diamond weave illusion) */
-.ind-plate--finish-carbon {
-  --ind-plate-finish:
-    linear-gradient(45deg, rgba(255,255,255,0.05) 25%, rgba(0,0,0,0.00) 25% 50%, rgba(255,255,255,0.03) 50% 75%, rgba(0,0,0,0.00) 75%) 0 0 / 0.625rem 0.625rem,
-    linear-gradient(-45deg, rgba(0,0,0,0.18) 25%, rgba(0,0,0,0.00) 25% 50%, rgba(0,0,0,0.14) 50% 75%, rgba(0,0,0,0.00) 75%) 0 0 / 0.625rem 0.625rem;
-  mix-blend-mode: overlay;
-}
+  /* 2) painted “orange peel” (rare subtle speckle) */
+  .ind-plate--finish-painted {
+    --ind-plate-finish:
+      radial-gradient(0.125rem 0.125rem at 12% 18%, rgba(255,255,255,0.07), rgba(0,0,0,0) 65%),
+      radial-gradient(0.125rem 0.125rem at 42% 72%, rgba(255,255,255,0.06), rgba(0,0,0,0) 65%),
+      radial-gradient(0.125rem 0.125rem at 78% 34%, rgba(255,255,255,0.06), rgba(0,0,0,0) 65%),
+      radial-gradient(0.125rem 0.125rem at 66% 58%, rgba(255,255,255,0.05), rgba(0,0,0,0) 65%);
+    opacity: 0.55; /* чуть тише, иначе будет “грязь” */
+  }
 
-/* 4) rubber matte (soft noise blocks, no shine) */
-.ind-plate--finish-rubber {
-  --ind-plate-finish:
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 0.125rem, rgba(0,0,0,0.00) 0.125rem 0.375rem),
-    radial-gradient(50rem 16.25rem at 30% 10%, rgba(255,255,255,0.03), rgba(0,0,0,0) 60%);
-  opacity: 0.50;
-}
+  /* 3) carbon weave (diamond weave illusion) */
+  .ind-plate--finish-carbon {
+    --ind-plate-finish:
+      linear-gradient(45deg, rgba(255,255,255,0.05) 25%, rgba(0,0,0,0.00) 25% 50%, rgba(255,255,255,0.03) 50% 75%, rgba(0,0,0,0.00) 75%) 0 0 / 0.625rem 0.625rem,
+      linear-gradient(-45deg, rgba(0,0,0,0.18) 25%, rgba(0,0,0,0.00) 25% 50%, rgba(0,0,0,0.14) 50% 75%, rgba(0,0,0,0.00) 75%) 0 0 / 0.625rem 0.625rem;
+    mix-blend-mode: overlay;
+  }
 
-/* -------------------------
- * 4 bolts (fixed, no tiling)
- * ------------------------- */
-.ind-plate--bolts4::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
+  /* 4) rubber matte (soft noise blocks, no shine) */
+  .ind-plate--finish-rubber {
+    --ind-plate-finish:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 0.125rem, rgba(0,0,0,0.00) 0.125rem 0.375rem),
+      radial-gradient(50rem 16.25rem at 30% 10%, rgba(255,255,255,0.03), rgba(0,0,0,0) 60%);
+    opacity: 0.50;
+  }
 
-  --ind-bolt-size: 0.75rem;
-  --ind-bolt-inset: 0.5rem;
+  /* -------------------------
+   * 4 bolts (fixed, no tiling)
+   * ------------------------- */
+  .ind-plate--bolts4::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
 
-  background:
-    radial-gradient(circle, rgba(255,255,255,0.26) 0 22%, rgba(0,0,0,0.60) 58%, rgba(0,0,0,0.0) 72%) 0 0 / var(--ind-bolt-size) var(--ind-bolt-size) no-repeat,
-    radial-gradient(circle, rgba(255,255,255,0.26) 0 22%, rgba(0,0,0,0.60) 58%, rgba(0,0,0,0.0) 72%) 0 0 / var(--ind-bolt-size) var(--ind-bolt-size) no-repeat,
-    radial-gradient(circle, rgba(255,255,255,0.26) 0 22%, rgba(0,0,0,0.60) 58%, rgba(0,0,0,0.0) 72%) 0 0 / var(--ind-bolt-size) var(--ind-bolt-size) no-repeat,
-    radial-gradient(circle, rgba(255,255,255,0.26) 0 22%, rgba(0,0,0,0.60) 58%, rgba(0,0,0,0.0) 72%) 0 0 / var(--ind-bolt-size) var(--ind-bolt-size) no-repeat;
+    --ind-bolt-size: 0.75rem;
+    --ind-bolt-inset: 0.5rem;
 
-  background-position:
-    var(--ind-bolt-inset) var(--ind-bolt-inset),
-    calc(100% - var(--ind-bolt-inset)) var(--ind-bolt-inset),
-    var(--ind-bolt-inset) calc(100% - var(--ind-bolt-inset)),
-    calc(100% - var(--ind-bolt-inset)) calc(100% - var(--ind-bolt-inset));
+    background:
+      radial-gradient(circle, rgba(255,255,255,0.26) 0 22%, rgba(0,0,0,0.60) 58%, rgba(0,0,0,0.0) 72%) 0 0 / var(--ind-bolt-size) var(--ind-bolt-size) no-repeat,
+      radial-gradient(circle, rgba(255,255,255,0.26) 0 22%, rgba(0,0,0,0.60) 58%, rgba(0,0,0,0.0) 72%) 0 0 / var(--ind-bolt-size) var(--ind-bolt-size) no-repeat,
+      radial-gradient(circle, rgba(255,255,255,0.26) 0 22%, rgba(0,0,0,0.60) 58%, rgba(0,0,0,0.0) 72%) 0 0 / var(--ind-bolt-size) var(--ind-bolt-size) no-repeat,
+      radial-gradient(circle, rgba(255,255,255,0.26) 0 22%, rgba(0,0,0,0.60) 58%, rgba(0,0,0,0.0) 72%) 0 0 / var(--ind-bolt-size) var(--ind-bolt-size) no-repeat;
 
-  opacity: 0.95;
-  mix-blend-mode: normal;
-}
+    background-position:
+      var(--ind-bolt-inset) var(--ind-bolt-inset),
+      calc(100% - var(--ind-bolt-inset)) var(--ind-bolt-inset),
+      var(--ind-bolt-inset) calc(100% - var(--ind-bolt-inset)),
+      calc(100% - var(--ind-bolt-inset)) calc(100% - var(--ind-bolt-inset));
 
-
-/* =========================================================
- * LABELS (стилистика, а не “ещё один пластик”)
- * ========================================================= */
-.ind-label {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.375rem 0.75rem;
-
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-
-  color: var(--ind-fg, rgba(235,235,235,0.92));
-
-  /* базовый вариант — “нейтральный шильдик” */
-  background: var(--ind-plate-plastic-bg);
-  border: 0.0625rem solid rgba(255,255,255,0.10);
-  box-shadow:
-    inset 0 0.0625rem 0 rgba(255,255,255,0.06),
-    inset 0 -0.0625rem 0 rgba(0,0,0,0.60),
-    0 0.125rem 0.375rem rgba(0,0,0,0.35);
-
-  position: relative;
-  overflow: hidden;
-}
-
-/* 0) text-only (убрать фон вообще) */
-.ind-label--textOnly {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  padding: 0;
-}
-
-/* 1) STICKER */
-.ind-label--sticker {
-  background: linear-gradient(180deg, rgba(245,245,245,0.92), rgba(210,210,210,0.88));
-  color: rgba(20,20,20,0.92);
-  border: 0.0625rem solid rgba(0,0,0,0.25);
-  box-shadow: 0 0.1875rem 0.5rem rgba(0,0,0,0.35);
-  transform: rotate(-0.3deg);
-}
-.ind-label--sticker::before {
-  content: "";
-  position: absolute;
-  inset: -0.25rem;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(90deg, rgba(0,0,0,0.00) 0 0.4375rem, rgba(0,0,0,0.10) 0.4375rem 0.5rem) top / 100% 0.1875rem no-repeat,
-    repeating-linear-gradient(90deg, rgba(0,0,0,0.00) 0 0.5625rem, rgba(0,0,0,0.10) 0.5625rem 0.625rem) bottom / 100% 0.1875rem no-repeat,
-    repeating-linear-gradient(0deg,  rgba(0,0,0,0.00) 0 0.5625rem, rgba(0,0,0,0.10) 0.5625rem 0.625rem) left / 0.1875rem 100% no-repeat,
-    repeating-linear-gradient(0deg,  rgba(0,0,0,0.00) 0 0.4375rem, rgba(0,0,0,0.10) 0.4375rem 0.5rem) right / 0.1875rem 100% no-repeat;
-  opacity: 0.35;
-  mix-blend-mode: multiply;
-}
-/* =========================================================
- * TAPE — полоска скотча ПОД текстом (слегка кривая)
- * ========================================================= */
-
-.ind-label--tape {
-  /* текст */
-  color: rgba(26,26,26,0.92);
-
-  /* отключаем “пластик” базы */
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-
-  /* чтобы кривизна не резалась (в базе overflow:hidden) */
-  overflow: visible;
-
-  /* размеры/геометрия ленты */
-  --tape-w: 8.75rem;      /* можно увеличить под слово */
-  --tape-h: 1.625rem;
-  --tape-rot: -2deg;    /* наклон */
-  --tape-y: 0.125rem;        /* смещение вниз (положительное = ниже) */
-
-  /* цвета */
-  --tape-a: rgba(255,255,220,0.70);
-  --tape-b: rgba(230,220,190,0.55);
-  --tape-edge: rgba(255,255,255,0.14);
-  --tape-shadow: rgba(0,0,0,0.34);
-}
-
-/* ВАЖНО: поднять любой контент над лентой, без доп. обёрток */
-.ind-label--tape > * {
-  position: relative;
-  z-index: 2;
-}
-
-/* сама лента */
-.ind-label--tape::before {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  z-index: 1;
-
-  width: var(--tape-w);
-  height: var(--tape-h);
-
-  left: 50%;
-  top: 50%;
-  margin-left: calc(var(--tape-w) / -2);
-  margin-top: calc(var(--tape-h) / -2);
-  /* опускаем/поднимаем */
-  top: calc(50% + var(--tape-y));
-
-  border-radius: 0.4375rem;
-
-  background:
-    /* тканевые/клеевые “полосы” */
-    repeating-linear-gradient(
-      90deg,
-      rgba(255,255,255,0.10) 0,
-      rgba(255,255,255,0.10) 0.125rem,
-      rgba(0,0,0,0.00) 0.125rem,
-      rgba(0,0,0,0.00) 0.4375rem
-    ),
-    /* мягкая грязь/виньетка */
-    radial-gradient(1.125rem 0.625rem at 14% 55%, rgba(0,0,0,0.14), rgba(0,0,0,0) 72%),
-    radial-gradient(1.125rem 0.625rem at 86% 45%, rgba(0,0,0,0.14), rgba(0,0,0,0) 72%),
-    /* базовый слой */
-    linear-gradient(180deg, var(--tape-a), var(--tape-b));
-
-  border: 0.0625rem solid var(--tape-edge);
-
-  box-shadow:
-    0.0625rem 0.0625rem 0.1875rem var(--tape-shadow),
-    inset 0 0.0625rem 0 rgba(255,255,255,0.22),
-    inset 0 -0.0625rem 0 rgba(0,0,0,0.10);
-
-  opacity: 0.98;
-
-  transform: rotate(var(--tape-rot));
-}
-
-/* торцы/обтрепанность + лёгкие “срезы” */
-.ind-label--tape::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  z-index: 1;
-
-  width: var(--tape-w);
-  height: var(--tape-h);
-
-  left: 50%;
-  top: calc(50% + var(--tape-y));
-  margin-left: calc(var(--tape-w) / -2);
-  margin-top: calc(var(--tape-h) / -2);
-
-  border-radius: 0.4375rem;
-  opacity: 0.55;
-
-  background:
-    /* “надрывы” по краям */
-    radial-gradient(0.625rem 0.5rem at 0% 30%, rgba(0,0,0,0.22), rgba(0,0,0,0) 70%),
-    radial-gradient(0.625rem 0.5rem at 0% 70%, rgba(0,0,0,0.22), rgba(0,0,0,0) 70%),
-    radial-gradient(0.625rem 0.5rem at 100% 35%, rgba(0,0,0,0.22), rgba(0,0,0,0) 70%),
-    radial-gradient(0.625rem 0.5rem at 100% 75%, rgba(0,0,0,0.22), rgba(0,0,0,0) 70%),
-    /* небольшие “срезы” по верх/низ кромке */
-    repeating-linear-gradient(
-      90deg,
-      rgba(0,0,0,0.00) 0,
-      rgba(0,0,0,0.00) 0.625rem,
-      rgba(0,0,0,0.10) 0.625rem,
-      rgba(0,0,0,0.10) 0.6875rem
-    );
-
-  transform: rotate(var(--tape-rot));
-}
+    opacity: 0.95;
+    mix-blend-mode: normal;
+  }
 
 
+  /* =========================================================
+   * LABELS (стилистика, а не “ещё один пластик”)
+   * ========================================================= */
+  .ind-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
 
-.ind-label--stencil {
-  background: transparent;
-  border: 0.0625rem dashed rgba(235,235,235,0.18);
-  box-shadow: none;
-  text-shadow: 0 0.0625rem 0 rgba(0,0,0,0.65);
-  letter-spacing: 0.14em;
-  opacity: 0.92;
-}
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
 
-/* =========================================================
- * Section title как ind-label
- * ========================================================= */
+    color: var(--ind-fg, rgba(235,235,235,0.92));
 
-.LabeledList__label{
-  font-weight: 900;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  opacity: 0.92;
-  font-size: 0.6875rem;
-}
+    /* базовый вариант — “нейтральный шильдик” */
+    background: var(--ind-plate-plastic-bg);
+    border: 0.0625rem solid rgba(255,255,255,0.10);
+    box-shadow:
+      inset 0 0.0625rem 0 rgba(255,255,255,0.06),
+      inset 0 -0.0625rem 0 rgba(0,0,0,0.60),
+      0 0.125rem 0.375rem rgba(0,0,0,0.35);
 
-.Section__titleText {
-  padding: 0.375rem 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
 
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-.Section__buttons {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
+  /* 0) text-only (убрать фон вообще) */
+  .ind-label--textOnly {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
 
-  margin-left: 0.5rem;
+  /* 1) STICKER */
+  .ind-label--sticker {
+    background: linear-gradient(180deg, rgba(245,245,245,0.92), rgba(210,210,210,0.88));
+    color: rgba(20,20,20,0.92);
+    border: 0.0625rem solid rgba(0,0,0,0.25);
+    box-shadow: 0 0.1875rem 0.5rem rgba(0,0,0,0.35);
+    transform: rotate(-0.3deg);
+  }
+  .ind-label--sticker::before {
+    content: "";
+    position: absolute;
+    inset: -0.25rem;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.00) 0 0.4375rem, rgba(0,0,0,0.10) 0.4375rem 0.5rem) top / 100% 0.1875rem no-repeat,
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.00) 0 0.5625rem, rgba(0,0,0,0.10) 0.5625rem 0.625rem) bottom / 100% 0.1875rem no-repeat,
+      repeating-linear-gradient(0deg,  rgba(0,0,0,0.00) 0 0.5625rem, rgba(0,0,0,0.10) 0.5625rem 0.625rem) left / 0.1875rem 100% no-repeat,
+      repeating-linear-gradient(0deg,  rgba(0,0,0,0.00) 0 0.4375rem, rgba(0,0,0,0.10) 0.4375rem 0.5rem) right / 0.1875rem 100% no-repeat;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+  }
+  /* =========================================================
+   * TAPE — полоска скотча ПОД текстом (слегка кривая)
+   * ========================================================= */
+
+  .ind-label--tape {
+    /* текст */
+    color: rgba(26,26,26,0.92);
+
+    /* отключаем “пластик” базы */
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+
+    /* чтобы кривизна не резалась (в базе overflow:hidden) */
+    overflow: visible;
+
+    /* размеры/геометрия ленты */
+    --tape-w: 8.75rem;      /* можно увеличить под слово */
+    --tape-h: 1.625rem;
+    --tape-rot: -2deg;    /* наклон */
+    --tape-y: 0.125rem;        /* смещение вниз (положительное = ниже) */
+
+    /* цвета */
+    --tape-a: rgba(255,255,220,0.70);
+    --tape-b: rgba(230,220,190,0.55);
+    --tape-edge: rgba(255,255,255,0.14);
+    --tape-shadow: rgba(0,0,0,0.34);
+  }
+
+  /* ВАЖНО: поднять любой контент над лентой, без доп. обёрток */
+  .ind-label--tape > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* сама лента */
+  .ind-label--tape::before {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+
+    width: var(--tape-w);
+    height: var(--tape-h);
+
+    left: 50%;
+    top: 50%;
+    margin-left: calc(var(--tape-w) / -2);
+    margin-top: calc(var(--tape-h) / -2);
+    /* опускаем/поднимаем */
+    top: calc(50% + var(--tape-y));
+
+    border-radius: 0.4375rem;
+
+    background:
+      /* тканевые/клеевые “полосы” */
+      repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.10) 0,
+        rgba(255,255,255,0.10) 0.125rem,
+        rgba(0,0,0,0.00) 0.125rem,
+        rgba(0,0,0,0.00) 0.4375rem
+      ),
+      /* мягкая грязь/виньетка */
+      radial-gradient(1.125rem 0.625rem at 14% 55%, rgba(0,0,0,0.14), rgba(0,0,0,0) 72%),
+      radial-gradient(1.125rem 0.625rem at 86% 45%, rgba(0,0,0,0.14), rgba(0,0,0,0) 72%),
+      /* базовый слой */
+      linear-gradient(180deg, var(--tape-a), var(--tape-b));
+
+    border: 0.0625rem solid var(--tape-edge);
+
+    box-shadow:
+      0.0625rem 0.0625rem 0.1875rem var(--tape-shadow),
+      inset 0 0.0625rem 0 rgba(255,255,255,0.22),
+      inset 0 -0.0625rem 0 rgba(0,0,0,0.10);
+
+    opacity: 0.98;
+
+    transform: rotate(var(--tape-rot));
+  }
+
+  /* торцы/обтрепанность + лёгкие “срезы” */
+  .ind-label--tape::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+
+    width: var(--tape-w);
+    height: var(--tape-h);
+
+    left: 50%;
+    top: calc(50% + var(--tape-y));
+    margin-left: calc(var(--tape-w) / -2);
+    margin-top: calc(var(--tape-h) / -2);
+
+    border-radius: 0.4375rem;
+    opacity: 0.55;
+
+    background:
+      /* “надрывы” по краям */
+      radial-gradient(0.625rem 0.5rem at 0% 30%, rgba(0,0,0,0.22), rgba(0,0,0,0) 70%),
+      radial-gradient(0.625rem 0.5rem at 0% 70%, rgba(0,0,0,0.22), rgba(0,0,0,0) 70%),
+      radial-gradient(0.625rem 0.5rem at 100% 35%, rgba(0,0,0,0.22), rgba(0,0,0,0) 70%),
+      radial-gradient(0.625rem 0.5rem at 100% 75%, rgba(0,0,0,0.22), rgba(0,0,0,0) 70%),
+      /* небольшие “срезы” по верх/низ кромке */
+      repeating-linear-gradient(
+        90deg,
+        rgba(0,0,0,0.00) 0,
+        rgba(0,0,0,0.00) 0.625rem,
+        rgba(0,0,0,0.10) 0.625rem,
+        rgba(0,0,0,0.10) 0.6875rem
+      );
+
+    transform: rotate(var(--tape-rot));
+  }
+
+
+
+  .ind-label--stencil {
+    background: transparent;
+    border: 0.0625rem dashed rgba(235,235,235,0.18);
+    box-shadow: none;
+    text-shadow: 0 0.0625rem 0 rgba(0,0,0,0.65);
+    letter-spacing: 0.14em;
+    opacity: 0.92;
+  }
+
+  /* =========================================================
+   * Section title как ind-label
+   * ========================================================= */
+
+  .LabeledList__label{
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    opacity: 0.92;
+    font-size: 0.6875rem;
+  }
+
+  .Section__titleText {
+    padding: 0.375rem 0.75rem;
+
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .Section__buttons {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+
+    margin-left: 0.5rem;
+  }
 }

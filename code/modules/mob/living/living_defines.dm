@@ -33,8 +33,8 @@
 
 	var/update_metroids = 1
 	var/silent = null 		// Can't talk. Value goes down every life proc.
-	var/on_fire = 0 //The "Are we on fire?" var
-	var/fire_stacks
+	var/on_fire = FALSE //The "Are we on fire?" var
+	var/fire_stacks = 0 // For how many ticks we're going to burn if ablaze.
 	var/hallucination = 0
 	var/strippingActions = 0 // count of stripping actions taking place now by this mob
 	var/crawling = FALSE

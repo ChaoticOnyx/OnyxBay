@@ -26,8 +26,8 @@ They should also be used for when you want to effect the ENTIRE mob, like having
 /obj/aura/bullet_act(obj/item/projectile/P, def_zone)
 	return 0
 
-/obj/aura/hitby(atom/movable/M, speed, nomsg)
-	return 0
+/obj/aura/hitby(atom/movable/M, datum/thrownthing/TT, nomsg)
+	SHOULD_CALL_PARENT(FALSE)
 
 /obj/aura/debug
 	var/returning = 0
@@ -44,6 +44,7 @@ They should also be used for when you want to effect the ENTIRE mob, like having
 	log_debug("Life tick")
 	return returning
 
-/obj/aura/debug/hitby(atom/movable/M, speed, nomsg)
-	log_debug("Hit By for \ref[src]: [M], [speed]")
+/obj/aura/debug/hitby(atom/movable/M, datum/thrownthing/TT, nomsg)
+	SHOULD_CALL_PARENT(FALSE)
+	log_debug("Hit By for \ref[src]: [M], [TT.speed]")
 	return returning

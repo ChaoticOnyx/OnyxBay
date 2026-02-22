@@ -171,6 +171,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	SetOverlays(overlays_to_apply)
 
 	update_transform()
+	update_floating()
 
 var/global/list/damage_icon_parts = list()
 
@@ -767,8 +768,16 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/update_fire(update_icons=1)
 	overlays_standing[HO_FIRE_LAYER] = null
 	if(on_fire)
-		var/image/standing = overlay_image('icons/mob/onfire.dmi', "Standing", RESET_COLOR)
-		overlays_standing[HO_FIRE_LAYER] = standing
+		switch(get_fire_level())
+			if(3)
+				var/image/standing = overlay_image('icons/mob/onfire.dmi', "burning3", RESET_COLOR)
+				overlays_standing[HO_FIRE_LAYER] = standing
+			if(2)
+				var/image/standing = overlay_image('icons/mob/onfire.dmi', "burning2", RESET_COLOR)
+				overlays_standing[HO_FIRE_LAYER] = standing
+			if(1)
+				var/image/standing = overlay_image('icons/mob/onfire.dmi', "burning1", RESET_COLOR)
+				overlays_standing[HO_FIRE_LAYER] = standing
 
 	if(update_icons) queue_icon_update()
 

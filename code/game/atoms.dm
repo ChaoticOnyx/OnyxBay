@@ -158,7 +158,7 @@
 /atom/proc/on_reagent_change()
 	return
 
-/atom/proc/Bumped(AM as mob|obj)
+/atom/proc/Bumped(atom/movable/AM)
 	return
 
 // Convenience proc to see if a container is open for chemistry handling
@@ -318,6 +318,9 @@ its easier to just keep the beam vertical.
 	. = list("\icon[src] That's [f_name][infix]")
 	. += desc
 
+	SEND_SIGNAL(src, SIGNAL_EXAMINED, user, .)
+	SEND_SIGNAL(user, SIGNAL_MOB_EXAMINED, src, .)
+
 	return
 
 /atom/proc/baked_examine(...)
@@ -381,9 +384,9 @@ its easier to just keep the beam vertical.
 	CAN_BE_REDEFINED(TRUE)
 	return
 
-/atom/proc/hitby(atom/movable/AM, speed = 0, nomsg = FALSE)
+/atom/proc/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = FALSE)
+	SHOULD_CALL_PARENT(TRUE)
 	if(density)
-		AM.throwing = 0
 		play_hitby_sound(AM)
 		if(!nomsg)
 			visible_message(SPAN("warning", "[src] was hit by \the [AM]."))
@@ -676,7 +679,7 @@ its easier to just keep the beam vertical.
 	var/list/valid_turfs = list()
 	for(var/dir_to_test in GLOB.cardinal)
 		var/turf/new_turf = get_step(T, dir_to_test)
-		if(!new_turf.contains_dense_objects(FALSE))
+		if(!new_turf.contains_dense_objects(check_mobs = FALSE))
 			valid_turfs |= new_turf
 
 	while(valid_turfs.len)
@@ -704,7 +707,7 @@ its easier to just keep the beam vertical.
 
 	for(var/dir_to_test in valid_dirs)
 		var/turf/new_turf = get_step(T, dir_to_test)
-		if(!new_turf.contains_dense_objects(FALSE))
+		if(!new_turf.contains_dense_objects(check_mobs = FALSE))
 			valid_turfs.Add("[dir_to_test]")
 			valid_turfs["[dir_to_test]"] = new_turf
 

@@ -189,72 +189,75 @@
 	return 1
 
 // this proc handles being hit by a thrown atom
-/mob/living/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)// Standardization and logging -Sieve
-	if(!aura_check(AURA_TYPE_THROWN, AM, speed))
+/mob/living/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = TRUE)// Standardization and logging -Sieve
+	..()
+
+	if(ishuman(src))
+		return // Humans are snowflakes
+
+	if(!aura_check(AURA_TYPE_THROWN, AM, TT.speed))
 		return
 
-	if(isobj(AM))
-		var/obj/O = AM
-		var/dtype = O.damtype
-		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
+	if(!isobj(AM))
+		return
 
-		var/miss_chance = 15
-		if(O.throw_source)
-			var/distance = get_dist(O.throw_source, loc)
-			miss_chance = max(15 * (distance - 2), 0)
+	var/obj/O = AM
+	var/dtype = O.damtype
+	var/throw_damage = O.throwforce * (TT.speed / THROWFORCE_SPEED_DIVISOR)
 
-		if(prob(miss_chance))
-			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
-			return
+	var/miss_chance = max(15 * (TT.dist_travelled - 2), 0)
 
-		visible_message(SPAN("warning", "\The [src] has been hit by \the [O]."))
-		play_hitby_sound(AM)
+	if(prob(miss_chance))
+		visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+		return
 
-		var/armor = run_armor_check(null, "melee")
-		if(armor < 100)
-			var/damage_flags = O.damage_flags()
-			if(prob(armor))
-				damage_flags &= ~(DAM_SHARP|DAM_EDGE)
-			apply_damage(throw_damage, dtype, null, armor, damage_flags, O)
+	visible_message(SPAN("warning", "\The [src] has been hit by \the [O]."))
+	play_hitby_sound(AM)
 
-		O.throwing = 0		//it hit, so stop moving
+	var/armor = run_armor_check(null, "melee")
+	if(armor < 100)
+		var/damage_flags = O.damage_flags()
+		if(prob(armor))
+			damage_flags &= ~(DAM_SHARP|DAM_EDGE)
+		apply_damage(throw_damage, dtype, null, armor, damage_flags, O)
 
-		if(ismob(O.thrower))
-			var/mob/M = O.thrower
-			var/client/assailant = M.client
-			if(assailant)
-				admin_attack_log(M, src, "Threw \an [O] at the victim.", "Had \an [O] thrown at them.", "threw \an [O] at")
+	if(TT.thrower)
+		var/client/assailant = TT.thrower.client
+		if(assailant)
+			admin_attack_log(TT.thrower, src, "Threw \an [O] at the victim.", "Had \an [O] thrown at them.", "threw \an [O] at")
 
-		// Begin BS12 momentum-transfer code.
-		var/mass = 1.5
-		if(istype(O, /obj/item))
-			var/obj/item/I = O
-			mass = I.w_class / THROWNOBJ_KNOCKBACK_DIVISOR
-		var/momentum = speed * mass
+	if(O.sharp && (throw_damage > 5*O.w_class)) //Handles embedding for non-humans and simple_animals.
+		embed(O)
 
-		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
-			var/dir = get_dir(O.throw_source, src)
+	process_momentum(AM, TT)
 
-			if(buckled)
-				return
+/mob/living/momentum_power(atom/movable/AM, datum/thrownthing/TT)
+	if(anchored || buckled)
+		return 0
 
-			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
+	. = (AM.get_mass()*TT.speed)/(get_mass()*min(AM.throw_speed,2))
+	if(!can_slip(magboots_only = TRUE))
+		. *= 0.5
 
-			if(!O || !src)
-				return
+/mob/living/momentum_do(power, datum/thrownthing/TT, atom/movable/AM)
+	if(power >= 0.75) //snowflake to enable being pinned to walls
+		var/direction = TT.init_dir
+		throw_at(get_edge_target_turf(src, direction), min((TT.maxrange - TT.dist_travelled) * power, 10), throw_speed * min(power, 1.5), callback = CALLBACK(src,/mob/living/proc/pin_to_wall,AM,direction))
+		visible_message(SPAN_DANGER("\The [src] staggers under the impact!"),SPAN_DANGER("You stagger under the impact!"))
+		return
+	. = ..()
 
-			if(O.sharp) //Projectile is suitable for pinning.
-				//Handles embedding for non-humans and simple_animals.
-				embed(O)
+/mob/living/proc/pin_to_wall(obj/O, direction)
+	if(!istype(O) || O.loc != src || !O.sharp) // Projectile is suitable for pinning.
+		return
 
-				var/turf/T = near_wall(dir, 2)
-
-				if(T)
-					forceMove(T)
-					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
-					anchored = 1
-					pinned += O
+	var/turf/T = near_wall(direction, 2)
+	if(istype(T))
+		forceMove(T)
+		visible_message(SPAN_DANGER("[src] is pinned to the wall by [O]!"),SPAN_DANGER("You are pinned to the wall by [O]!"))
+		anchored = TRUE
+		pinned += O
+	return
 
 /mob/living/play_hitby_sound(atom/movable/AM)
 	var/sound_to_play
@@ -314,36 +317,63 @@
 	spawn(1) updatehealth()
 	return 1
 
-/mob/living/proc/IgniteMob()
-	if(fire_stacks > 0 && !on_fire)
-		on_fire = 1
+/mob/living/proc/IgniteMob(silent = FALSE)
+	if(fire_stacks > FIRE_STACKS_LEVEL_1 && !on_fire)
+		on_fire = TRUE
 		set_light(0.6, 0.1, 4, l_color = COLOR_ORANGE)
 		update_fire()
+		if(!silent)
+			switch(get_fire_level())
+				if(3)
+					visible_message(SPAN("danger", "[src] has burst into raging flames!"))
+				if(2)
+					visible_message(SPAN("danger", "[src] has burst into flames!"))
+				if(1)
+					visible_message(SPAN("danger", "[src] has caught fire!"))
 
-/mob/living/proc/ExtinguishMob()
+/mob/living/proc/ExtinguishMob(silent = FALSE)
 	if(on_fire)
-		on_fire = 0
-		fire_stacks = 0
+		on_fire = FALSE
 		set_light(0)
 		update_fire()
+		if(!silent)
+			visible_message(SPAN("notice", "[src] has been extinguished!"))
 
 /mob/living/proc/update_fire()
 	return
 
-/mob/living/proc/adjust_fire_stacks(add_fire_stacks) //Adjusting the amount of fire_stacks we have on person
-	fire_stacks = Clamp(fire_stacks + add_fire_stacks, FIRE_MIN_STACKS, FIRE_MAX_STACKS)
+/mob/living/proc/adjust_fire_stacks(add_fire_stacks, silent = FALSE) // Adjusting the amount of fire_stacks we have on person
+	if(!on_fire)
+		fire_stacks = Clamp(fire_stacks + add_fire_stacks, FIRE_STACKS_MIN, FIRE_STACKS_MAX)
+		return
+
+	var/old_fire_level = get_fire_level()
+	fire_stacks = Clamp(fire_stacks + add_fire_stacks, FIRE_STACKS_MIN, FIRE_STACKS_MAX)
+
+	if(fire_stacks <= FIRE_STACKS_LEVEL_1)
+		ExtinguishMob(silent)
+		return
+
+	if(old_fire_level != get_fire_level())
+		update_fire()
+
+	return
 
 /mob/living/proc/handle_fire()
-	if(fire_stacks < 0)
-		fire_stacks = min(0, ++fire_stacks) //If we've doused ourselves in water to avoid fire, dry off slowly
+	if(fire_stacks < FIRE_STACKS_LEVEL_1)
+		fire_stacks = min(FIRE_STACKS_LEVEL_1, ++fire_stacks) //If we've doused ourselves in water to avoid fire, dry off slowly
 
 	if(!on_fire)
 		return 1
-	else if(fire_stacks <= 0)
+
+	if(fire_stacks <= FIRE_STACKS_LEVEL_1)
 		ExtinguishMob() //Fire's been put out.
 		return 1
 
-	fire_stacks = max(0, fire_stacks - 0.1) //I guess the fire runs out of fuel eventually
+	var/old_fire_level = get_fire_level()
+	fire_stacks = max(FIRE_STACKS_LEVEL_1, --fire_stacks) //I guess the fire runs out of fuel eventually
+	if(old_fire_level != get_fire_level())
+		update_fire()
 
 	var/datum/gas_mixture/G = loc.return_air() // Check if we're standing in an oxygenless environment
 	if(G.get_by_flag(XGM_GAS_OXIDIZER) < 1)
@@ -354,10 +384,17 @@
 	location.hotspot_expose(fire_burn_temperature(), 50, 1)
 
 /mob/living/fire_act(datum/gas_mixture/air, temperature, volume)
-	//once our fire_burn_temperature has reached the temperature of the fire that's giving fire_stacks, stop adding them.
-	//allow fire_stacks to go up to 4 for fires cooler than 700 K, since are being immersed in flame after all.
-	if(fire_stacks <= 4 || fire_burn_temperature() < temperature)
-		adjust_fire_stacks(4)
+	// once our fire_burn_temperature has reached the temperature of the fire that's giving fire_stacks, we DON'T stop adding them (but do it slower), since it's fun to assum that humans are fuel
+	// allow fire_stacks to go up to 40 for fires cooler than 700 K, since are being immersed in flame after all.
+	var/current_burn_temperature = fire_burn_temperature()
+	if(current_burn_temperature < temperature)
+		current_burn_temperature = max(current_burn_temperature, 700)
+		var/fire_stacks_burst = clamp(ceil(10 * (temperature / current_burn_temperature)), 2, 50) // We'll turn into a torch must faster in a burning inferno
+		adjust_fire_stacks(fire_stacks_burst)
+	else if(fire_stacks < 40)
+		adjust_fire_stacks(10)
+	else
+		adjust_fire_stacks(2)
 	IgniteMob()
 
 /mob/living/proc/get_cold_protection()
@@ -368,12 +405,26 @@
 
 //Finds the effective temperature that the mob is burning at.
 /mob/living/proc/fire_burn_temperature()
-	if (fire_stacks <= 0)
+	if(fire_stacks <= 0)
 		return 0
 
-	//Scale quadratically so that single digit numbers of fire stacks don't burn ridiculously hot.
-	//lower limit of 700 K, same as matches and roughly the temperature of a cool flame.
-	return max(2.25*round(FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE*(fire_stacks/FIRE_MAX_FIRESUIT_STACKS)**2), 700)
+	// Scale quadratically so that modest numbers of fire stacks don't burn ridiculously hot;
+	// lower limit of 700 K, same as matches and roughly the temperature of a cool flame;
+	// upper limit of ATMOS_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE, so that some suits are completely fire-proof.
+	return clamp(round(FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE * (fire_stacks / FIRE_STACKS_LEVEL_3)**2), 700, ATMOS_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE)
+
+/mob/living/proc/get_fire_level()
+	if(fire_stacks == FIRE_STACKS_LEVEL_1)
+		return 0
+
+	if(fire_stacks >= FIRE_STACKS_LEVEL_3)
+		return 3
+	else if(fire_stacks >= FIRE_STACKS_LEVEL_2)
+		return 2
+	else if(fire_stacks >= FIRE_STACKS_LEVEL_1)
+		return 1
+	else if(fire_stacks < FIRE_STACKS_LEVEL_1)
+		return -1
 
 /mob/living/proc/reagent_permeability()
 	return 1

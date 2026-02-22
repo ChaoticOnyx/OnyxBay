@@ -71,16 +71,16 @@
 	return 0
 
 /mob/living/carbon/human/can_ztravel()
-	if(Allow_Spacemove())
+	if(is_space_movement_permitted() != SPACE_MOVE_FORBIDDEN)
 		return 1
 
-	if(Check_Shoegrip())	//scaling hull with magboots
+	if(!can_slip(magboots_only = TRUE)) // scaling hull with magboots
 		for(var/turf/simulated/T in trange(1,src))
 			if(T.density)
 				return 1
 
 /mob/living/silicon/robot/can_ztravel()
-	if(Allow_Spacemove()) //Checks for active jetpack
+	if(is_space_movement_permitted() != SPACE_MOVE_FORBIDDEN) //Checks for active jetpack
 		return 1
 
 	for(var/turf/simulated/T in trange(1,src)) //Robots get "magboots"
@@ -103,8 +103,7 @@
 		return
 
 	// No gravity in space, apparently.
-	var/area/area = get_area(src)
-	if(!area.has_gravity())
+	if(!has_gravity())
 		return
 
 	if(throwing)

@@ -23,6 +23,7 @@
 	var/max_mod_capacity = 100
 	var/list/modkits = list()
 	combustion = FALSE
+	space_recoil = TRUE
 
 /obj/item/gun/energy/kinetic_accelerator/attack_self(mob/living/user as mob)
 	if(power_supply.charge < power_supply.maxcharge)

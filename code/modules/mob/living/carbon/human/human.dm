@@ -1418,10 +1418,9 @@
 	return 0
 
 /mob/living/carbon/human/slip(slipped_on, stun_duration = 8)
-	if((species.species_flags & SPECIES_FLAG_NO_SLIP) || (shoes && (shoes.item_flags & ITEM_FLAG_NOSLIP)))
-		return 0
-	damage_poise(stun_duration*5)
-	return !!(..(slipped_on, stun_duration))
+	. = ..()
+	if(.)
+		damage_poise(stun_duration*5)
 
 /mob/living/carbon/human/proc/undislocate()
 	set category = "Object"

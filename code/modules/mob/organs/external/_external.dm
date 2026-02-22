@@ -159,7 +159,6 @@
 		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
 		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
 		owner.organs -= src
-		owner.organs_by_name.Remove(organ_tag)
 		owner.organs_by_name -= organ_tag
 		while(null in owner.organs)
 			owner.organs -= null
@@ -517,7 +516,6 @@ This function completely restores a damaged organ to perfect condition.
 /obj/item/organ/external/remove_rejuv()
 	if(owner)
 		owner.organs -= src
-		owner.organs_by_name.Remove(organ_tag)
 		owner.organs_by_name -= organ_tag
 		while(null in owner.organs) owner.organs -= null
 	if(children && children.len)
@@ -1211,7 +1209,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 					if(thing.vital || BP_IS_ROBOTIC(thing))
 						continue
 					internal_organs -= thing
-					owner.internal_organs_by_name.Remove(thing.organ_tag)
 					owner.internal_organs_by_name -= thing.organ_tag
 					owner.internal_organs.Remove(thing)
 					qdel(thing)
@@ -1359,7 +1356,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	release_restraints(victim)
 	victim.organs -= src
-	victim.organs_by_name.Remove(organ_tag) // Remove from owner's vars.
 	victim.organs_by_name -= organ_tag
 
 	//Robotic limbs explode if sabotaged.

@@ -25,6 +25,7 @@
 	burst_accuracy = list(0)
 	burst = 1
 	burst_delay = 2
+	space_recoil = TRUE
 
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 5, TECH_POWER = 3)
 	matter = list(MATERIAL_STEEL = 2500)
