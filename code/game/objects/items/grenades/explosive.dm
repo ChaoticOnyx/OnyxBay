@@ -13,6 +13,15 @@
 /obj/item/projectile/bullet/pellet/fragment/strong
 	damage = 15
 
+/obj/item/projectile/bullet/pellet/fragment/rubber
+	name = "rubber pellet"
+	check_armour = "melee"
+	damage = 3
+	agony = 20
+	embed = 0
+	sharp = 0
+	poisedamage = 8.0
+
 /obj/item/grenade/frag
 	name = "fragmentation grenade"
 	desc = "A military fragmentation grenade, designed to explode in a deadly shower of fragments, while avoiding massive structural damage."
@@ -93,3 +102,19 @@
 /obj/item/grenade/frag/high_yield/on_explosion(turf/O)
 	if(explosion_size)
 		explosion(O, -1, round(explosion_size/2), explosion_size, round(explosion_size/2), 0) //has a chance to blow a hole in the floor
+
+/obj/item/grenade/frag/stingbang
+	name = "stingbang grenade"
+	desc = "A non-lethal fragmentation grenade that disperses rubber pellets. Designed for crowd control and suspect incapacitation."
+	icon_state = "frag"
+
+	fragment_types = list(/obj/item/projectile/bullet/pellet/fragment/rubber = 1)
+	num_fragments = 48
+	explosion_size = 0
+
+/obj/item/grenade/frag/stingbang/shell
+	name = "stingbang shell"
+	desc = "A non-lethal grenade shell that disperses rubber pellets on impact. Designed to be fired from a launcher."
+	icon_state = "fragshell"
+
+	num_fragments = 36 //less powerful than a hand-thrown stingbang
