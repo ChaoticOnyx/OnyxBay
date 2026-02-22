@@ -381,7 +381,7 @@
 
 	try_add_think_ctx(
 		ctx_name,
-		CALLBACK(src, CALLBACK(src, .proc/remove_oversized_payload), payload_id),
+		CALLBACK(src, nameof(.proc/remove_oversized_payload), payload_id),
 		1 SECONDS
 	)
 

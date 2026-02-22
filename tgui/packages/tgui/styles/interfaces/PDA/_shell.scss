@@ -1,0 +1,652 @@
+/* tgui/styles/interfaces/pda/_shell.scss */
+
+.PDA__window {
+  height: 100%;
+}
+
+/* Root */
+.PDA {
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  overflow: hidden;
+  position: relative;
+
+  /* Scale: ориентировано на 720p+ (1280x720) */
+  --pda-scale: clamp(0.90, (100vh / 720), 1.00);
+
+  --pda-bg: #dcd6c0;
+  --pda-border: #b0a890;
+  --pda-text: #605850;
+  --pda-accent: #b0a890;
+  --pda-bezel: #807870;
+}
+
+/* Skins */
+.PDA[data-skin="standard"] { --pda-bg:#dcd6c0; --pda-border:#b0a890; --pda-text:#605850; --pda-accent:#b0a890; --pda-bezel:#807870; }
+.PDA[data-skin="security"] { --pda-bg:#b91c1c; --pda-border:#991b1b; --pda-text:#ffffff; --pda-accent:#7f1d1d; --pda-bezel:#450a0a; }
+.PDA[data-skin="medical"] { --pda-bg:#f0f9ff; --pda-border:#bae6fd; --pda-text:#0369a1; --pda-accent:#7dd3fc; --pda-bezel:#0c4a6e; }
+.PDA[data-skin="science"] { --pda-bg:#7e22ce; --pda-border:#6b21a8; --pda-text:#ffffff; --pda-accent:#581c87; --pda-bezel:#3b0764; }
+.PDA[data-skin="engineering"] { --pda-bg:#ea580c; --pda-border:#c2410c; --pda-text:#ffffff; --pda-accent:#9a3412; --pda-bezel:#431407; }
+/* у вас captain в текущем входном SCSS жёлтый — оставляю как есть */
+.PDA[data-skin="captain"] { --pda-bg:#fffb00; --pda-border:#ffee00; --pda-text:#fbbf24; --pda-accent:#ffe600; --pda-bezel:#e5ff00; }
+
+/* Stage */
+.PDA__stage {
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+
+  position: relative;
+  background: #1a1a1a;
+}
+
+.PDA__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  opacity: 0.10;
+  background: radial-gradient(circle at center, #333 0%, transparent 70%);
+}
+
+/* Device */
+.PDA__device {
+  position: relative;
+  z-index: 2;
+
+  padding: 7px;
+  border-radius: 16px;
+  border: 4px solid var(--pda-border);
+  background: var(--pda-bg);
+
+  width: 100%;
+  max-width: 840px;
+  height: 100%;
+  min-height: 0;
+
+  display: flex;
+
+  overflow: hidden;
+  user-select: none;
+
+  /* Важное: масштабируем корпус целиком, сохраняя плотность */
+  transform: scale(var(--pda-scale));
+  transform-origin: center;
+
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.8),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+/* Texture overlay */
+.PDA__texture {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  opacity: 0.10;
+  pointer-events: none;
+  background-image: url('../assets/pda/carbon-fibre.png');
+}
+
+/* Right panel (buttons) */
+.PDA__right {
+  width: 74px;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 64px;
+
+  z-index: 2;
+}
+
+.PDA__divider {
+  margin: 8px 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+/* Center */
+.PDA__center {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 2;
+  position: relative;
+}
+
+.PDA__headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+}
+
+.PDA__headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.PDA__badge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--pda-accent);
+  color: var(--pda-text);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.PDA__title {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  opacity: 0.70;
+  color: var(--pda-text);
+}
+
+/* Header right */
+.PDA__headerRight {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* SD-like cartridge slot (top) */
+.PDA__sdSlot {
+  position: relative;
+  width: 84px;
+  height: 20px;
+  border-radius: 8px;
+
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  box-shadow:
+    inset 0 10px 18px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.08);
+
+  overflow: hidden;
+}
+
+.PDA__sdCutout {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 5px;
+  height: 5px;
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.70),
+    0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.PDA__sdTrack {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.06);
+  opacity: 0.80;
+}
+.PDA__sdTrack--l { left: 6px; }
+.PDA__sdTrack--r { right: 6px; }
+
+.PDA__sdCartridge {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform-origin: top center;
+  transform: translateX(-50%) translateY(0px) scale(0.52);
+  transition: transform 520ms ease-in-out;
+  pointer-events: none;
+}
+.PDA__sdCartridge.is-ejected {
+  transform: translateX(-50%) translateY(-46px) scale(0.52);
+}
+
+.PDA__sdSlot.is-ejected {
+  outline: 1px solid rgba(245, 158, 11, 0.35);
+  box-shadow:
+    inset 0 10px 18px rgba(0, 0, 0, 0.45),
+    0 0 10px rgba(245, 158, 11, 0.20);
+}
+
+/* Status pills */
+.PDA__statusPills {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.20);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.PDA__pill {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.40);
+}
+
+.PDA__pill.is-on { background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+.PDA__pill.is-warn { background: #fbbf24; box-shadow: 0 0 8px #fbbf24; }
+
+/* Bezel */
+.PDA__bezel {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  padding: 10px;
+  border-radius: 7px;
+  background: var(--pda-bezel);
+  position: relative;
+
+  border-top: 1px solid rgba(0, 0, 0, 0.40);
+
+  box-shadow:
+    inset 0 4px 12px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.PDA__screenFrame {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+
+  border-radius: 6px;
+  overflow: hidden;
+  background: #050707;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 1);
+}
+
+.PDA__reflection {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 10px;
+  height: 50%;
+  border-radius: 6px 6px 0 0;
+  pointer-events: none;
+  z-index: 30;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent 55%, transparent);
+}
+
+.PDA__footerMark {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.40;
+  color: var(--pda-text);
+}
+
+/* Glow */
+.PDA__glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 820px;
+  height: 420px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  filter: blur(120px);
+  opacity: 0.20;
+  pointer-events: none;
+  z-index: 0;
+  background: #fef3c7;
+}
+
+/* per skin glow (как было) */
+.PDA[data-skin="security"] .PDA__glow { background: #dc2626; }
+.PDA[data-skin="medical"] .PDA__glow { background: #60a5fa; }
+.PDA[data-skin="science"] .PDA__glow { background: #7c3aed; }
+.PDA[data-skin="engineering"] .PDA__glow { background: #f97316; }
+.PDA[data-skin="captain"] .PDA__glow { background: #1e3a8a; }
+
+/* ------------------------------ */
+/* Physical button                */
+/* ------------------------------ */
+
+.PDAButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.PDAButton__shell {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  transition: all 100ms ease-out;
+}
+.PDAButton__shell--wide {
+  width: 100%;
+  height: 40px;
+}
+
+.PDAButton__well {
+  position: absolute;
+  inset: -2px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.20);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.40);
+}
+
+.PDAButton__housing {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  transition: all 75ms ease;
+  border-top: 2px solid rgba(255, 255, 255, 0.50);
+  border-left: 2px solid rgba(255, 255, 255, 0.50);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.60);
+  border-right: 2px solid rgba(0, 0, 0, 0.60);
+
+  background: linear-gradient(135deg, #dcd6c0, #b0a890);
+
+  box-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.40),
+    0 8px 15px rgba(0, 0, 0, 0.40);
+}
+
+.PDAButton__housing:hover { filter: brightness(1.10); }
+.PDAButton__housing:active { filter: brightness(0.90); }
+
+.PDAButton__housing.is-pressed {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
+  border-top-color: rgba(0,  0, 0, 0.60);
+  border-left-color: rgba(0, 0, 0, 0.60);
+  border-bottom-color: rgba(255, 255, 255, 0.20);
+  border-right-color: rgba(255, 255, 255, 0.20);
+  background: linear-gradient(135deg, #b0a890, #807860);
+}
+
+.PDAButton__housing.is-disabled {
+  opacity: 0.60;
+  filter: grayscale(0.2);
+}
+
+.PDAButton__texture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.20;
+  pointer-events: none;
+  background-image: url('../assets/pda/brushed-alum.png');
+}
+
+.PDAButton__sheen {
+  position: absolute;
+  inset: 0;
+  opacity: 0.10;
+  pointer-events: none;
+  background: linear-gradient(45deg, rgba(0,0,0,0.85), transparent 55%, rgba(255,255,255,0.85));
+}
+
+.PDAButton__btn {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.70);
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.PDAButton__btn--wide {
+  justify-content: flex-start;
+  padding: 0 12px;
+}
+
+.PDAButton__icon { transition: transform 75ms ease; }
+.PDAButton__icon.is-pressed { transform: scale(0.95); }
+
+.PDAButton__wideLabel {
+  margin-left: 8px;
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.PDAButton__label {
+  margin-top: 4px;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: rgba(0, 0, 0, 0.60);
+}
+
+/* LED */
+.PDAButton__led {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.20);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.PDAButton__led--green { background: #052e16; }
+.PDAButton__led--red { background: #7f1d1d; }
+.PDAButton__led--blue { background: #1e3a8a; }
+
+.PDAButton__led--green.is-lit { background: #4ade80; box-shadow: 0 0 5px #4ade80; }
+.PDAButton__led--red.is-lit { background: #f87171; box-shadow: 0 0 5px #f87171; }
+.PDAButton__led--blue.is-lit { background: #60a5fa; box-shadow: 0 0 5px #60a5fa; }
+
+/* Icons */
+.PDA__btnIcon { color: rgba(0, 0, 0, 0.60); font-size: 16px; }
+.PDA__btnIcon--small { font-size: 14px; }
+
+.PDA__btnIcon--greenGlow {
+  color: #22c55e;
+  filter: drop-shadow(0 0 5px rgba(34,197,94,0.8));
+}
+
+.PDA__btnIcon--amberGlow {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 5px rgba(251,191,36,0.8));
+}
+
+/* Cartridge base */
+.PDACart {
+  position: relative;
+  width: 112px;
+  height: 144px;
+  border-radius: 3px 14px 3px 3px;
+  border: 1px solid rgba(0, 0, 0, 0.60);
+  overflow: hidden;
+  box-shadow: 0 18px 25px rgba(0, 0, 0, 0.35);
+  transition: transform 500ms ease-in-out, box-shadow 500ms ease-in-out;
+}
+
+.PDACart.is-ejected {
+  transform: translateY(-64px);
+  box-shadow: 0 26px 40px rgba(0, 0, 0, 0.45);
+  z-index: 20;
+}
+
+.PDACart--general { background: #3f3f46; }
+.PDACart--admin { background: #1e40af; }
+.PDACart--medical { background: #047857; }
+.PDACart--engineering { background: #b45309; }
+
+.PDACart__corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.20);
+  transform: rotate(-45deg) translate(16px, -16px);
+}
+
+.PDACart__topLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.20);
+}
+
+.PDACart__label {
+  position: absolute;
+  top: 16px;
+  left: 6px;
+  right: 6px;
+  bottom: 48px;
+  padding: 8px;
+
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.20);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.50);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.PDACart__label--general { background: #d4d4d8; }
+.PDACart__label--admin { background: #dbeafe; }
+.PDACart__label--medical { background: #d1fae5; }
+.PDACart__label--engineering { background: #fef3c7; }
+
+.PDACart__labelTop {
+  width: 100%;
+  text-align: center;
+  font-size: 7px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  opacity: 0.40;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.PDACart__mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.PDACart__iconBadge {
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.PDACart__icon { font-size: 16px; color: rgba(0, 0, 0, 0.70); }
+
+.PDACart__labelMain {
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  text-align: center;
+  line-height: 1.0;
+}
+
+.PDACart__bars { width: 100%; opacity: 0.30; }
+
+.PDACart__bar {
+  height: 2px;
+  background: rgba(0, 0, 0, 0.40);
+  margin-top: 2px;
+}
+.PDACart__bar--full { width: 100%; }
+.PDACart__bar--twoThird { width: 66%; }
+
+.PDACart__switch {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 6px;
+  height: 16px;
+  border-radius: 0 3px 3px 0;
+  background: #f59e0b;
+  border: 1px solid rgba(0, 0, 0, 0.30);
+}
+
+.PDACart__pins {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  height: 24px;
+
+  background: rgba(0, 0, 0, 0.40);
+  border-radius: 3px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  padding-bottom: 4px;
+}
+
+.PDACart__pin {
+  width: 6px;
+  height: 16px;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(to top, #fbbf24, #fde68a);
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.30);
+}
+
+.PDACart__bottomLine {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.60);
+}
+
+/* Breakpoints (720p+) */
+/* При 720p и выше чуть увеличиваем масштаб, чтобы устройство не выглядело мелким */
+@media (min-height: 720px) and (min-width: 1280px) {
+  .PDA {
+    --pda-scale: clamp(0.95, (100vh / 760), 1.02);
+  }
+}
+
+/* При очень больших окнах — ограничиваем рост */
+@media (min-height: 900px) {
+  .PDA {
+    --pda-scale: clamp(0.95, (100vh / 820), 1.05);
+  }
+}

@@ -1,0 +1,438 @@
+/* tgui/styles/interfaces/pda/_screen.scss */
+
+@keyframes pdaPulse {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.55; }
+}
+
+.PDAScreenOff {
+  width: 100%;
+  height: 100%;
+  background: #111;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.PDAScreenOff__line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  animation: pdaPulse 1.25s infinite;
+}
+
+.PDAScreen {
+  width: 100%;
+  height: 100%;
+  background: #0d0f0f;
+  display: flex;
+  flex-direction: column;
+  color: #4f9;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 1);
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  font-family: monospace;
+}
+
+
+.PDAScreen__scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.30;
+  background-image:
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.10) 50%),
+    linear-gradient(90deg, rgba(255,0,0,0.03), rgba(0,255,0,0.01), rgba(0,0,255,0.03));
+  background-size: 100% 3px, 3px 100%;
+}
+
+.PDAScreen__scanlines--error {
+  opacity: 1;
+  background-image:
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(90deg, rgba(255,0,0,0.06), rgba(0,255,0,0.02), rgba(0,0,255,0.06));
+  background-size: 100% 4px, 6px 100%;
+}
+
+.PDAScreen__flashlight {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.PDAScreen__flashlight::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -50%;
+  width: 200%;
+  height: 100%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, rgba(255,255,255,0.10), transparent);
+  filter: blur(48px);
+  opacity: 0.50;
+}
+
+.PDAScreen__tabs {
+  height: 36px;
+  background: #1a2020;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  border-bottom: 1px solid rgba(79, 255, 153, 0.10);
+  z-index: 10;
+}
+
+.PDAScreen__tab {
+  padding: 4px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border-right: 1px solid rgba(79, 255, 153, 0.10);
+  color: rgba(79, 255, 153, 0.40);
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.PDAScreen__tab:hover { background: rgba(79, 255, 153, 0.05); }
+
+.PDAScreen__tab.is-active {
+  background: rgba(79, 255, 153, 0.10);
+  color: #aaffff;
+}
+
+.PDAScreen__tabIcons {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: 8px;
+  color: rgba(79, 255, 153, 0.40);
+}
+
+.PDAScreen__tabIcon { font-size: 12px; }
+
+.PDAScreen__tabIcon--flash {
+  color: #fbbf24;
+  animation: pdaPulse 1.1s infinite;
+}
+
+.PDAScreen__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 10;
+}
+
+.PDAScreen__footer {
+  height: 24px;
+  background: rgba(0, 0, 0, 0.40);
+  border-top: 1px solid rgba(79, 255, 153, 0.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  z-index: 10;
+}
+
+.PDAScreen__footerText {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgba(79, 255, 153, 0.30);
+}
+
+/* Error screen (no cartridge) */
+.PDAScreenNoCart {
+  width: 100%;
+  height: 100%;
+  background: #111;
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+
+  color: #ef4444;
+  font-family: monospace;
+
+  border: 4px solid #333;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.PDAScreenNoCart__icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: pdaPulse 1.1s infinite;
+}
+
+.PDAScreenNoCart__title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.20em;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.PDAScreenNoCart__text { font-size: 12px; opacity: 0.70; text-align: center; }
+.PDAScreenNoCart__code { margin-top: 32px; font-size: 10px; opacity: 0.50; }
+
+/* App tiles */
+.PDAScreen__card {
+  border: 1px solid rgba(79, 255, 153, 0.20);
+  background: rgba(0, 0, 0, 0.40);
+  padding: 12px;
+  border-radius: 2px;
+}
+
+.PDAScreen__cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(79, 255, 153, 0.10);
+}
+
+.PDAScreen__cardK {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.20em;
+  color: rgba(79, 255, 153, 0.40);
+}
+
+.PDAScreen__cardTime {
+  font-size: 18px;
+  font-weight: 700;
+  color: #aaffff;
+  letter-spacing: -0.03em;
+}
+
+.PDAScreen__grid {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  column-gap: 8px;
+  row-gap: 2px;
+  font-size: 12px;
+}
+
+.PDAScreen__k { font-size: 9px; text-transform: uppercase; color: rgba(79, 255, 153, 0.40); }
+
+.PDAScreen__v {
+  font-weight: 700;
+  color: #aaffff;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.PDAScreen__id { font-family: monospace; font-size: 10px; color: rgba(79, 255, 153, 0.60); }
+
+.PDAScreen__h {
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.20em;
+  color: rgba(245, 158, 11, 0.70);
+  margin-bottom: 8px;
+  padding-left: 6px;
+  border-left: 2px solid rgba(245, 158, 11, 0.30);
+  margin-left: 4px;
+}
+
+.PDAScreen__apps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.PDAApp {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+
+  border: 1px solid rgba(79, 255, 153, 0.30);
+  border-radius: 2px;
+
+  background: rgba(15, 20, 20, 0.60);
+  color: #aaffff;
+
+  transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.PDAApp:hover {
+  background: rgba(79, 255, 153, 0.10);
+  border-color: rgba(79, 255, 153, 0.60);
+}
+
+.PDAApp.is-active {
+  background: rgba(79, 255, 153, 0.20);
+  border-color: #4f9;
+  box-shadow: 0 0 8px rgba(79, 255, 153, 0.30);
+}
+
+.PDAApp.is-highlight {
+  border-color: rgba(245, 158, 11, 0.50);
+  color: #fde68a;
+}
+
+.PDAApp__icon { font-size: 12px; color: rgba(79, 255, 153, 0.80); }
+.PDAApp:hover .PDAApp__icon { color: #aaffff; }
+.PDAApp.is-active .PDAApp__icon { color: #aaffff; }
+
+.PDAApp__label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.PDAApp__hover {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms ease;
+}
+
+.PDAApp:hover .PDAApp__hover { opacity: 1; }
+
+.PDAApp:disabled {
+  opacity: 0.45;
+  filter: grayscale(0.25);
+  cursor: not-allowed;
+}
+
+/* Scrollbar hide */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ========================= */
+/* CRT Scrollbar (PDAScreen) */
+/* ========================= */
+
+.PDAScreen {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79, 255, 153, 0.45) rgba(0, 0, 0, 0.25);
+}
+
+/* WebKit */
+.PDAScreen *::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.PDAScreen *::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.22);
+  border-left: 1px solid rgba(79, 255, 153, 0.10);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.PDAScreen *::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    rgba(79, 255, 153, 0.18),
+    rgba(79, 255, 153, 0.06)
+  );
+  border: 1px solid rgba(79, 255, 153, 0.25);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.35),
+    0 0 8px rgba(79, 255, 153, 0.10);
+}
+
+.PDAScreen *::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to bottom,
+    rgba(79, 255, 153, 0.26),
+    rgba(79, 255, 153, 0.10)
+  );
+  border-color: rgba(79, 255, 153, 0.35);
+}
+
+.PDAScreen *::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* ========================= */
+/* Controls inside PDAScreen */
+/* ========================= */
+
+.PDAScreen .Button,
+.PDAScreen button.Button {
+  background: rgba(15, 20, 20, 0.60);
+  border: 1px solid rgba(79, 255, 153, 0.30);
+  border-radius: 2px;
+  color: #aaffff;
+
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.PDAScreen .Button:hover,
+.PDAScreen button.Button:hover {
+  background: rgba(79, 255, 153, 0.10);
+  border-color: rgba(79, 255, 153, 0.60);
+}
+
+.PDAScreen .Button:active,
+.PDAScreen button.Button:active {
+  background: rgba(79, 255, 153, 0.16);
+  border-color: rgba(79, 255, 153, 0.70);
+  box-shadow: 0 0 10px rgba(79, 255, 153, 0.15);
+}
+
+.PDAScreen .Button:disabled,
+.PDAScreen button.Button:disabled {
+  opacity: 0.55;
+  filter: grayscale(0.25);
+}
+
+/* Inputs */
+.PDAScreen .Input,
+.PDAScreen input,
+.PDAScreen textarea {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(79, 255, 153, 0.25);
+  border-radius: 2px;
+  color: #aaffff;
+
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.PDAScreen .Input:focus,
+.PDAScreen input:focus,
+.PDAScreen textarea:focus {
+  outline: none;
+  border-color: rgba(79, 255, 153, 0.60);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.35),
+    0 0 10px rgba(79, 255, 153, 0.12);
+}
+
+/* Placeholder */
+.PDAScreen input::placeholder,
+.PDAScreen textarea::placeholder {
+  color: rgba(79, 255, 153, 0.35);
+}

@@ -2,10 +2,9 @@ import { Component } from 'inferno';
 import { Icon } from '../components';
 import { Window } from '../layouts';
 
-type SkinType = 'standard' | 'security' | 'medical' | 'science' | 'engineering' | 'captain';
-type CartridgeType = 'general' | 'admin' | 'medical' | 'engineering';
-
-const cx = (...parts: Array<string | false | null | undefined>) => parts.filter(Boolean).join(' ');
+import type { SkinType, CartridgeType, PdaProgramId, PdaProgramContext } from './PDA/types';
+import { cx } from './PDA/types';
+import { getProgram, canRunProgram } from './PDA/programs/registry';
 
 const SKIN_ORDER: SkinType[] = ['standard', 'security', 'medical', 'science', 'engineering', 'captain'];
 const CART_ORDER: CartridgeType[] = ['general', 'admin', 'medical', 'engineering'];
@@ -17,9 +16,11 @@ export class PDA extends Component<unknown> {
   private flashlightOn = false;
   private cartridgeType: CartridgeType = 'general';
   private skin: SkinType = 'standard';
-  private activeTab: 'HOME' | 'CFG' = 'HOME';
-  private nowTs = Date.now();
 
+  // навигация программ
+  private activeProgramId: PdaProgramId = 'home';
+
+  private nowTs = Date.now();
   private timer: number | null = null;
 
   componentDidMount() {
@@ -42,6 +43,7 @@ export class PDA extends Component<unknown> {
 
   private togglePower = () => {
     this.isOn = !this.isOn;
+    // при выключении — оставляем активную программу, но экран станет "off"
     this.forceUpdate();
   };
 
@@ -52,6 +54,8 @@ export class PDA extends Component<unknown> {
 
   private handleEject = () => {
     this.isEjected = true;
+    // если текущая программа требует картридж — откатываемся на home визуально корректно
+    this.ensureRunnableProgram();
     this.forceUpdate();
   };
 
@@ -60,12 +64,44 @@ export class PDA extends Component<unknown> {
     const idx = CART_ORDER.indexOf(this.cartridgeType);
     this.cartridgeType = CART_ORDER[(idx + 1) % CART_ORDER.length];
     this.isEjected = false;
+    this.ensureRunnableProgram();
+    this.forceUpdate();
+  };
+
+  private ensureRunnableProgram() {
+    const ctx = this.buildProgramContext();
+    if (!canRunProgram(this.activeProgramId, ctx)) {
+      this.activeProgramId = 'home';
+    }
+  }
+
+  private setActiveProgram = (id: PdaProgramId) => {
+    if (id === this.activeProgramId) return;
+
+    const prev = getProgram(this.activeProgramId);
+    const next = getProgram(id);
+
+    const ctxBefore = this.buildProgramContext();
+
+    // запреты по canRun
+    if (next.canRun && !next.canRun(ctxBefore)) {
+      // UI-only: тихо игнорируем, не меняем визуал
+      return;
+    }
+
+    if (prev.onClose) prev.onClose(ctxBefore);
+
+    this.activeProgramId = id;
+
+    const ctxAfter = this.buildProgramContext();
+    if (next.onOpen) next.onOpen(ctxAfter);
+
     this.forceUpdate();
   };
 
   private setTab = (t: 'HOME' | 'CFG') => {
-    this.activeTab = t;
-    this.forceUpdate();
+    // вкладки сохраняем как в исходнике
+    this.setActiveProgram(t === 'HOME' ? 'home' : 'config');
   };
 
   private formatTimeHHMM(ts: number) {
@@ -75,7 +111,22 @@ export class PDA extends Component<unknown> {
     return `${hh}:${mm}`;
   }
 
+  private buildProgramContext(): PdaProgramContext {
+    return {
+      isOn: this.isOn,
+      hasCartridge: !this.isEjected,
+      cartridgeType: this.cartridgeType,
+      flashlightOn: this.flashlightOn,
+      timeText: this.formatTimeHHMM(this.nowTs),
+
+      activeProgramId: this.activeProgramId,
+      setActiveProgram: this.setActiveProgram,
+    };
+  }
+
   render() {
+    const ctx = this.buildProgramContext();
+
     return (
       <Window width={840} height={520} theme="neutral">
         <Window.Content className="PDA__window" fitted>
@@ -89,8 +140,6 @@ export class PDA extends Component<unknown> {
             <div className="PDA__stage">
               <div className="PDA__device">
                 <div className="PDA__texture" />
-
-                
 
                 {/* Center */}
                 <div className="PDA__center">
@@ -112,7 +161,6 @@ export class PDA extends Component<unknown> {
                         <div className="PDA__sdTrack PDA__sdTrack--r" />
 
                         <div className={cx('PDA__sdCartridge', this.isEjected && 'is-ejected')}>
-                          {/* Используем тот же картридж, но он будет “обрезан” и уменьшен стилями */}
                           <PDACartridge type={this.cartridgeType} ejected={this.isEjected} />
                         </div>
                       </div>
@@ -127,13 +175,9 @@ export class PDA extends Component<unknown> {
                   <div className="PDA__bezel">
                     <div className="PDA__screenFrame">
                       <PDAScreen
-                        isOn={this.isOn}
-                        hasCartridge={!this.isEjected}
-                        cartridgeType={this.cartridgeType}
-                        flashlightOn={this.flashlightOn}
-                        activeTab={this.activeTab}
+                        ctx={ctx}
+                        activeTab={this.activeProgramId === 'config' ? 'CFG' : 'HOME'}
                         onTab={this.setTab}
-                        timeText={this.formatTimeHHMM(this.nowTs)}
                       />
                     </div>
                     <div className="PDA__reflection" />
@@ -182,6 +226,13 @@ export class PDA extends Component<unknown> {
                     icon={<Icon name="eject" className="PDA__btnIcon" />}
                   />
 
+                  <div className="PDA__divider" />
+
+                  <PDAButton
+                    label="SKIN"
+                    onClick={this.cycleSkin}
+                    icon={<Icon name="palette" className="PDA__btnIcon PDA__btnIcon--small" />}
+                  />
                 </div>
               </div>
 
@@ -297,17 +348,13 @@ function PDACartridge(props: { type: CartridgeType; ejected?: boolean }) {
 }
 
 function PDAScreen(props: {
-  isOn: boolean;
-  hasCartridge: boolean;
-  cartridgeType: CartridgeType;
-  flashlightOn: boolean;
+  ctx: PdaProgramContext;
   activeTab: 'HOME' | 'CFG';
   onTab: (t: 'HOME' | 'CFG') => void;
-  timeText: string;
 }) {
-  const { isOn, hasCartridge, cartridgeType, flashlightOn, activeTab, onTab, timeText } = props;
+  const { ctx, activeTab, onTab } = props;
 
-  if (!isOn) {
+  if (!ctx.isOn) {
     return (
       <div className="PDAScreenOff">
         <div className="PDAScreenOff__line" />
@@ -315,7 +362,7 @@ function PDAScreen(props: {
     );
   }
 
-  if (!hasCartridge) {
+  if (!ctx.hasCartridge) {
     return (
       <div className="PDAScreenNoCart">
         <div className="PDAScreen__scanlines PDAScreen__scanlines--error" />
@@ -329,18 +376,13 @@ function PDAScreen(props: {
     );
   }
 
-  const owner =
-    cartridgeType === 'admin' ? 'S. Batten, Captain'
-      : cartridgeType === 'medical' ? 'M. Solus, CMO'
-      : cartridgeType === 'engineering' ? "M. O'Brien, CE"
-      : 'J. Doe, Assistant';
-
-  const idSuffix = cartridgeType.substring(0, 2).toUpperCase();
+  const program = getProgram(ctx.activeProgramId);
+  const View = program.View;
 
   return (
     <div className="PDAScreen">
       <div className="PDAScreen__scanlines" />
-      {flashlightOn && <div className="PDAScreen__flashlight" />}
+      {ctx.flashlightOn && <div className="PDAScreen__flashlight" />}
 
       <div className="PDAScreen__tabs">
         <div className={cx('PDAScreen__tab', activeTab === 'HOME' && 'is-active')} onClick={() => onTab('HOME')}>
@@ -351,64 +393,19 @@ function PDAScreen(props: {
         </div>
 
         <div className="PDAScreen__tabIcons">
-          {flashlightOn && <Icon name="lightbulb" className="PDAScreen__tabIcon PDAScreen__tabIcon--flash" />}
+          {ctx.flashlightOn && <Icon name="lightbulb" className="PDAScreen__tabIcon PDAScreen__tabIcon--flash" />}
           <Icon name="signal" className="PDAScreen__tabIcon" />
           <Icon name="battery-half" className="PDAScreen__tabIcon" />
         </div>
       </div>
 
       <div className="PDAScreen__body scrollbar-hide">
-        <div className="PDAScreen__card">
-          <div className="PDAScreen__cardTop">
-            <div className="PDAScreen__cardK">LOCAL TIME</div>
-            <div className="PDAScreen__cardTime">{timeText}</div>
-          </div>
-
-          <div className="PDAScreen__grid">
-            <div className="PDAScreen__k">OWNER</div>
-            <div className="PDAScreen__v">{owner}</div>
-
-            <div className="PDAScreen__k">ID</div>
-            <div className="PDAScreen__id">NCC-1701-{idSuffix}</div>
-          </div>
-        </div>
-
-        <div className="PDAScreen__group">
-          <div className="PDAScreen__h">GENERAL</div>
-          <div className="PDAScreen__apps">
-            <PDAApp icon="file-lines" label="Notekeeper" />
-            <PDAApp icon="comment" label="Messenger" />
-            <PDAApp icon="users" label="Crew Manifest" />
-            <PDAApp icon="radio" label="News Feed" />
-          </div>
-        </div>
-
-        <div className="PDAScreen__group">
-          <div className="PDAScreen__h">UTILITIES</div>
-          <div className="PDAScreen__apps">
-            <PDAApp icon="wind" label="Atmos Scan" />
-            {cartridgeType === 'medical' && <PDAApp icon="heart-pulse" label="Health Scan" highlight />}
-            {cartridgeType === 'engineering' && <PDAApp icon="hard-drive" label="Engine Diag" highlight />}
-            {cartridgeType === 'admin' && <PDAApp icon="shield-halved" label="Security" highlight />}
-            <PDAApp icon="database" label="Storage" />
-          </div>
-        </div>
+        <View {...ctx} />
       </div>
 
       <div className="PDAScreen__footer">
         <div className="PDAScreen__footerText">Encryption Active • Secure Link</div>
       </div>
     </div>
-  );
-}
-
-function PDAApp(props: { icon: string; label: string; active?: boolean; highlight?: boolean }) {
-  const { icon, label, active, highlight } = props;
-  return (
-    <button className={cx('PDAApp', active && 'is-active', highlight && 'is-highlight')}>
-      <div className="PDAApp__icon"><Icon name={icon} /></div>
-      <div className="PDAApp__label">{label}</div>
-      <div className="PDAApp__hover" />
-    </button>
   );
 }

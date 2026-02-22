@@ -1,0 +1,5 @@
+/* Home program tweaks (keeping base PDAScreen* visuals) */
+
+.PDAProgram--home {
+  gap: 20px; /* соответствует текущему PDAScreen__body gap */
+}

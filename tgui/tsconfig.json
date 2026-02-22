@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es3",
+    "target": "es6",
     "noEmit": true,
     "strict": false,
     "allowJs": true,
