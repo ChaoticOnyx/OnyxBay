@@ -19,6 +19,8 @@
 		for(var/m in hearing_mobs)
 			var/mob/M = m
 			M.show_message(SPAN_DEADSAY("<B>[gg]</B>: [message_to_send]"), AUDIBLE_MESSAGE)
+			if(!M.client)
+				continue
 			if(M.get_preference_value("CHAT_RUNECHAT") == GLOB.PREF_YES)
 				M.create_chat_message(gg, message_to_send)
 
