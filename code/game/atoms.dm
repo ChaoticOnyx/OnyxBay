@@ -510,6 +510,8 @@ its easier to just keep the beam vertical.
 	for(var/m in hearing_mobs)
 		var/mob/M = m
 		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
+		if(!M.client)
+			continue
 		if(M.get_preference_value("CHAT_RUNECHAT") == GLOB.PREF_YES)
 			M.create_chat_message(src, splash_override ? splash_override : message)
 

@@ -491,11 +491,10 @@
 		holder.client.images += thing.img
 
 /datum/hallucination/item_mirage/end()
-	if(!holder.client)
-		return
-	for(var/obj/item/mirage_item/I in items)
-		holder.client.images -= I.img
-		qdel(I)
+	if(holder?.client)
+		for(var/obj/item/mirage_item/I in items)
+			holder.client.images -= I.img
+			qdel(I)
 
 // Singulo
 /obj/item/mirage_item/singulo
@@ -637,7 +636,7 @@
 		holder.client.images += things
 
 /datum/hallucination/mirage/end()
-	if(holder.client)
+	if(holder?.client)
 		holder.client.images -= things
 
 /datum/hallucination/mirage/crayon/generate_mirage()
