@@ -60,6 +60,10 @@
 		return
 
 	var/scrubber_icon = "scrubber"
+
+	if(!T.is_plating() && node && node.level == 1 && istype(node, /obj/machinery/atmospherics/pipe))
+		scrubber_icon += "h"
+
 	if(broken)
 		switch(broken)
 			if(VENT_DAMAGED_STAGE_ONE)

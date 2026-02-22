@@ -105,20 +105,17 @@
 /obj/machinery/atmospherics/unary/vent_pump/on_update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
-	if (!node)
-		update_use_power(POWER_USE_OFF)
 
 	ClearOverlays()
-
-	var/vent_icon = "vent"
 
 	var/turf/T = get_turf(src)
 	if(!istype(T))
 		return
 
+	var/vent_icon = "vent"
+
 	if(!T.is_plating() && node && node.level == 1 && istype(node, /obj/machinery/atmospherics/pipe))
 		vent_icon += "h"
-
 
 	if(broken)
 		switch(broken)
