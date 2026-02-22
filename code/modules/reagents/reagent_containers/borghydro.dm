@@ -10,33 +10,38 @@
 
 	var/mode = 1
 	var/charge_cost = 50
-	var/charge_tick = 0
-	var/recharge_time = 5 //Time it takes for shots to recharge (in seconds)
+	var/recharge_time = 5 // Time it takes for shots to recharge (in seconds)
+	var/recharge_volume = 5 // How much volume we recharge per think
 
-	var/list/reagent_ids = list(/datum/reagent/tricordrazine, /datum/reagent/inaprovaline, /datum/reagent/spaceacillin)
+	var/list/reagent_ids = list(
+		/datum/reagent/inaprovaline,
+		/datum/reagent/spaceacillin,
+		/datum/reagent/tricordrazine)
 	var/list/reagent_volumes = list()
 	var/list/reagent_names = list()
 
 /obj/item/reagent_containers/borghypo/crisis
-	reagent_ids = list(	/datum/reagent/painkiller/tramadol,
-						/datum/reagent/inaprovaline,
-						/datum/reagent/tricordrazine,
-						/datum/reagent/bicaridine,
-						/datum/reagent/dexalin)
+	reagent_ids = list(
+		/datum/reagent/bicaridine,
+		/datum/reagent/dexalin,
+		/datum/reagent/inaprovaline,
+		/datum/reagent/tricordrazine,
+		/datum/reagent/painkiller/tramadol)
 
 /obj/item/reagent_containers/borghypo/crisis_adv
-	reagent_ids = list(	/datum/reagent/inaprovaline,
-						/datum/reagent/dexalin,
-						/datum/reagent/dermaline,
-						/datum/reagent/hyronalin,
-						/datum/reagent/peridaxon,
-						/datum/reagent/spaceacillin,
-						/datum/reagent/painkiller,
-						/datum/reagent/bicaridine,
-						/datum/reagent/kelotane,
-						/datum/reagent/dexalinp,
-						/datum/reagent/dylovene,
-						/datum/reagent/nutriment/glucose)
+	reagent_ids = list(
+		/datum/reagent/bicaridine,
+		/datum/reagent/inaprovaline,
+		/datum/reagent/dexalin,
+		/datum/reagent/dermaline,
+		/datum/reagent/hyronalin,
+		/datum/reagent/peridaxon,
+		/datum/reagent/spaceacillin,
+		/datum/reagent/painkiller,
+		/datum/reagent/kelotane,
+		/datum/reagent/dexalinp,
+		/datum/reagent/dylovene,
+		/datum/reagent/nutriment/glucose)
 
 /obj/item/reagent_containers/borghypo/Initialize()
 	. = ..()
@@ -54,7 +59,7 @@
 			for(var/T in reagent_ids)
 				if(reagent_volumes[T] < volume)
 					R.cell.use(charge_cost)
-					reagent_volumes[T] = min(reagent_volumes[T] + 5, volume)
+					reagent_volumes[T] = min(reagent_volumes[T] + recharge_volume, volume)
 
 	set_next_think(world.time + recharge_time)
 
@@ -128,9 +133,37 @@
 	icon_state = "synthesizer"
 	charge_cost = 20
 	recharge_time = 3
+	recharge_volume = 50
 	volume = 60
-	possible_transfer_amounts = "5;10;20;30"
-	reagent_ids = list(/datum/reagent/ethanol/beer, /datum/reagent/ethanol/kahlua, /datum/reagent/ethanol/whiskey, /datum/reagent/ethanol/wine, /datum/reagent/ethanol/vodka, /datum/reagent/ethanol/gin, /datum/reagent/ethanol/rum, /datum/reagent/ethanol/tequilla, /datum/reagent/ethanol/vermouth, /datum/reagent/ethanol/cognac, /datum/reagent/ethanol/ale, /datum/reagent/ethanol/mead, /datum/reagent/water, /datum/reagent/sugar, /datum/reagent/drink/ice, /datum/reagent/drink/tea, /datum/reagent/drink/tea/icetea, /datum/reagent/drink/space_cola, /datum/reagent/drink/spacemountainwind, /datum/reagent/drink/dr_gibb, /datum/reagent/drink/space_up, /datum/reagent/drink/tonic, /datum/reagent/drink/sodawater, /datum/reagent/drink/lemon_lime, /datum/reagent/drink/juice/orange, /datum/reagent/drink/juice/lime, /datum/reagent/drink/juice/watermelon)
+	possible_transfer_amounts = "5;10;20;25;30;50;100;150;250;300"
+	reagent_ids = list(
+		/datum/reagent/ethanol/ale,
+		/datum/reagent/ethanol/beer,
+		/datum/reagent/ethanol/cognac,
+		/datum/reagent/ethanol/gin,
+		/datum/reagent/ethanol/kahlua,
+		/datum/reagent/ethanol/mead,
+		/datum/reagent/ethanol/rum,
+		/datum/reagent/ethanol/tequilla,
+		/datum/reagent/ethanol/vermouth,
+		/datum/reagent/ethanol/vodka,
+		/datum/reagent/ethanol/whiskey,
+		/datum/reagent/ethanol/wine,
+		/datum/reagent/water,
+		/datum/reagent/sugar,
+		/datum/reagent/drink/ice,
+		/datum/reagent/drink/space_cola,
+		/datum/reagent/drink/spacemountainwind,
+		/datum/reagent/drink/dr_gibb,
+		/datum/reagent/drink/space_up,
+		/datum/reagent/drink/tonic,
+		/datum/reagent/drink/sodawater,
+		/datum/reagent/drink/lemon_lime,
+		/datum/reagent/drink/tea,
+		/datum/reagent/drink/tea/icetea,
+		/datum/reagent/drink/juice/orange,
+		/datum/reagent/drink/juice/lime,
+		/datum/reagent/drink/juice/watermelon)
 
 /obj/item/reagent_containers/borghypo/service/attack(mob/M, mob/user)
 	return
