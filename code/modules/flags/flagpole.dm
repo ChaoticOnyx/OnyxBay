@@ -8,18 +8,30 @@
 
 	w_class = ITEM_SIZE_SMALL
 
+	force = 6.0
+	throwforce = 5.0
+	throw_range = 7
+
+	mod_handy = 0.7
+	mod_reach = 0.8
+	mod_weight = 0.6
+	mod_speed = 1.0
+
+	attack_verb = list("tapped", "poked", "smacked", "bonked")
+	hitsound = SFX_FIGHTING_SWING
+
 	item_icons = list(
 		slot_l_hand_str = 'icons/mob/onmob/items/lefthand_bannerflag.dmi',
 		slot_r_hand_str = 'icons/mob/onmob/items/righthand_bannerflag.dmi'
 	)
 
+	/// Amount of material given when deconstructed.
+	var/material_amount = 1
+
 	/// Typepath for the default flag appearance datum.
 	var/flag_appearance_type
 	/// Currently mounted flag appearance, or null if empty.
 	var/datum/flag_appearance/flag_appearance
-
-	/// Amount of material given when deconstructed.
-	var/material_amount = 1
 
 /obj/item/flagpole/Initialize()
 	. = ..()
@@ -151,7 +163,18 @@
 
 	obj_flags = OBJ_FLAG_ANCHORABLE
 
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_HUGE
+
+	force = 9.5
+	throwforce = 7.0
+	throw_range = 10
+
+	mod_handy = 0.85
+	mod_reach = 1.6
+	mod_weight = 1.2
+	mod_shield = 1.1
+
+	attack_verb = list("hit", "smashed", "whacked", "bashed", "struck")
 
 	material_amount = 3
 
