@@ -104,6 +104,12 @@
 		new /datum/stack_recipe("modular laptop frame", /obj/item/modular_computer/laptop, 10),\
 		new /datum/stack_recipe("modular tablet frame", /obj/item/modular_computer/tablet, 5),\
 	))
+
+	recipes += new /datum/stack_recipe_list("flagpoles", list( \
+		new /datum/stack_recipe("flag stand", /obj/item/flagpole/telescopic/deployed, 3), \
+		new /datum/stack_recipe("table flag stand", /obj/item/flagpole, 1), \
+	))
+
 /material/plasteel/generate_recipes()
 	..()
 	recipes += new /datum/stack_recipe("AI core", /obj/structure/AIcore, 8, time = 50, one_per_turf = 1)

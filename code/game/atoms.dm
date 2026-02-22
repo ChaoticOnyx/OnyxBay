@@ -318,6 +318,9 @@ its easier to just keep the beam vertical.
 	. = list("\icon[src] That's [f_name][infix]")
 	. += desc
 
+	SEND_SIGNAL(src, SIGNAL_EXAMINED, user, .)
+	SEND_SIGNAL(user, SIGNAL_MOB_EXAMINED, src, .)
+
 	return
 
 /atom/proc/baked_examine(...)
