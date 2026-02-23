@@ -476,8 +476,6 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			return
 		var/action = input(usr, "Select action:", "Resolve IAA jobban", "Cancel") as anything in list("Approve", "Deny", "Cancel")
 		switch(action)
-			if ("Cancel")
-				pass()
 			if ("Approve")
 				var/comment = input(usr, "Enter comment:", "IAA approval comment") as text|null
 				if (!comment)

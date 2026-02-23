@@ -102,7 +102,7 @@
 /// Called after module is installed. Override for custom behavior.
 /obj/item/organ_module/proc/post_install(obj/item/organ/E)
 	SHOULD_CALL_PARENT(FALSE)
-	pass()
+	return
 
 /obj/item/organ_module/proc/remove(obj/item/organ/E)
 	_on_remove(E)
@@ -121,13 +121,13 @@
 /// Called after module is removed. Override for custom behavior.
 /obj/item/organ_module/proc/post_removed(obj/item/organ/E)
 	SHOULD_CALL_PARENT(FALSE)
-	pass()
+	return
 
 /obj/item/organ_module/proc/organ_removed()
-	pass()
+	return
 
 /obj/item/organ_module/proc/organ_installed()
-	pass()
+	return
 
 /obj/item/organ_module/proc/is_allowed_for_job(datum/job/job)
 	if(!job)

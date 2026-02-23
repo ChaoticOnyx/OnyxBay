@@ -30,7 +30,7 @@
 /// Called from 'update_equipment_vision()', which is in turn called from 'Life()'. Override for special behavior.
 /obj/item/organ_module/active/lenses/proc/process_hud(mob/living/carbon/human/owner)
 	SHOULD_CALL_PARENT(FALSE)
-	pass()
+	return
 
 /obj/item/organ_module/active/lenses/emp_act(severity)
 	. = ..()

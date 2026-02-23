@@ -74,7 +74,7 @@
 
 
 /obj/structure/barricade/proc/Break()
-	pass()
+	return
 
 
 /obj/structure/barricade/security/CanPass(atom/movable/mover, turf/target)

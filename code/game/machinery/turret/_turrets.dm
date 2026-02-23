@@ -265,7 +265,7 @@ GLOBAL_LIST_EMPTY(all_turrets)
 
 /// Called after the gun gets instantiated or slotted in.
 /obj/machinery/turret/proc/setup_gun()
-	pass()
+	return
 
 // State machine processing steps, called by looping timer
 /obj/machinery/turret/proc/process_turning()
