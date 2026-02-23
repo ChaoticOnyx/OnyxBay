@@ -400,6 +400,8 @@
 /obj/structure/bed/roller/proc/on_move()
 	if(buckled_bodybag)
 		var/turf/body_bag_turf = get_turf(buckled_bodybag)
+		if(!istype(body_bag_turf))
+			return
 		var/turf/roller_turf = get_turf(src)
 		if(body_bag_turf != roller_turf)
 			if(body_bag_turf.z != roller_turf.z)
