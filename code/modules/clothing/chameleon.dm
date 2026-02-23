@@ -473,8 +473,14 @@
 /obj/item/clothing/glasses/chameleon/New()
 	..()
 	if(!clothing_choices)
-		var/blocked = list( // Prevent infinite loops.
-			type
+		var/blocked = list( // Prevent infinite loops and bad hats.
+			type,
+			/obj/item/clothing/mask/animal_mask,
+			/obj/item/clothing/mask/gas/vox,
+			/obj/item/clothing/mask/gas/poltergeist,
+			/obj/item/clothing/mask/smokable,
+			/obj/item/clothing/mask/smokable/cigarette/syndi_cigs,
+			/obj/item/clothing/mask/smokable/ecig
 		)
 		var/blocked_cat = list(
 			/obj/item/clothing/glasses/hud
