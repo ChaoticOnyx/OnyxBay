@@ -21,7 +21,7 @@
 
 	/// Base icon state used when in the backpack slot.
 	var/base_icon_state_back = "bannerflag_great_64"
-	flags_inv &= HIDERIG
+	flags_inv = HIDERIG
 
 /obj/item/flag/Initialize(mapload)
 	. = ..()
