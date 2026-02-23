@@ -148,7 +148,11 @@
 		return FALSE
 
 	if(pulledby)
-		pulledby.stop_pulling()
+		if(ismob(pulledby))
+			var/mob/puller = pulledby
+			puller.stop_pulling()
+		else
+			return FALSE // Something with wheelchair or something, worth investigating later.
 
 	if(!range)
 		range = throw_range
