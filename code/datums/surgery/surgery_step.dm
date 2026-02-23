@@ -285,7 +285,7 @@
  * * user - atom that fired this step.
  */
 /datum/surgery_step/proc/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	pass()
+	return
 
 /**
  * Called on step failure, override to apply effects on target and print out
@@ -299,7 +299,7 @@
  * * user - atom that fired this step.
  */
 /datum/surgery_step/proc/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	pass()
+	return
 
 /// Prints out visible message.
 /datum/surgery_step/proc/announce_preop(mob/living/user, self_message, blind_message)
