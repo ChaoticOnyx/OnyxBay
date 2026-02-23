@@ -201,7 +201,8 @@
 		/obj/item/grown,
 		/obj/item/glass_extra,
 		/obj/item/material/kitchen,
-		/obj/item/material/knife
+		/obj/item/material/knife,
+		/obj/item/organ/internal/cerebrum/brain
 		)
 
 	cant_hold = list() // understandable, have a great day

@@ -147,7 +147,7 @@
 
 	var/obj/item/clothing/ring/R = ring?.resolve()
 	if(istype(R))
-		to_chat(user, "You slip \the [src] on over \the [R].")
+		user.visible_message(SPAN("notice", "\The [user] slips \the [src] on over \the [R]."), SPAN("notice", "You slip \the [src] on over \the [R]."))
 	wearer = weakref(H)
 	return TRUE
 
