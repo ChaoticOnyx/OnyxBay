@@ -7,7 +7,7 @@
 }
 
 .PDAProgram__header {
-  border: 1px solid rgba(79, 255, 153, 0.18);
+  border: 1px solid var(--crt-border);
   background: rgba(0, 0, 0, 0.32);
   padding: 10px 12px;
 }
@@ -17,8 +17,7 @@
   font-weight: 800;
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: #aaffff;
-
+  color: var(--crt-accent);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -31,7 +30,7 @@
 }
 
 .PDAProgram__panel {
-  border: 1px solid rgba(79, 255, 153, 0.18);
+  border: 1px solid var(--crt-border);
   background: rgba(0, 0, 0, 0.28);
   padding: 10px 12px;
 }
@@ -42,7 +41,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 4px 0;
-  border-bottom: 1px solid rgba(79, 255, 153, 0.08);
+  border-bottom: 1px solid color-mix(in srgb, var(--crt-border) 55%, transparent);
 }
 
 .PDAProgram__row:last-child {
@@ -59,13 +58,13 @@
 .PDAProgram__v {
   font-size: 12px;
   font-weight: 700;
-  color: #aaffff;
+  color: var(--crt-accent);
 }
 
 .PDAProgram__listItem {
   font-size: 12px;
   padding: 4px 0;
-  border-bottom: 1px solid rgba(79, 255, 153, 0.06);
+  border-bottom: 1px solid color-mix(in srgb, var(--crt-border) 45%, transparent);
 }
 .PDAProgram__listItem:last-child { border-bottom: none; }
 

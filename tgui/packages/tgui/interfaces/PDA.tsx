@@ -5,6 +5,7 @@ import { Window } from '../layouts';
 import type { SkinType, CartridgeType, PdaProgramId, PdaProgramContext } from './PDA/types';
 import { cx } from './PDA/types';
 import { getProgram, canRunProgram } from './PDA/programs/registry';
+import { pdaThemeStore } from './PDA/themeStore';
 
 const SKIN_ORDER: SkinType[] = ['standard', 'security', 'medical', 'science', 'engineering', 'captain'];
 const CART_ORDER: CartridgeType[] = ['general', 'admin', 'medical', 'engineering'];
@@ -136,6 +137,7 @@ export class PDA extends Component<unknown> {
             data-power={this.isOn ? 'on' : 'off'}
             data-cartridge={this.isEjected ? 'ejected' : 'inserted'}
             data-flashlight={this.flashlightOn ? 'on' : 'off'}
+            data-screen-theme={pdaThemeStore.get()}
           >
             <div className="PDA__stage">
               <div className="PDA__device">

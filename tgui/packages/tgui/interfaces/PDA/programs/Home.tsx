@@ -1,4 +1,5 @@
-import { Icon } from '../../../components';
+import { Component } from 'inferno';
+import { Icon, Button } from '../../../components';
 import type { PdaProgram, PdaProgramContext, PdaProgramId } from '../types';
 import { cx } from '../types';
 
@@ -25,10 +26,6 @@ const APP_TILES: AppTile[] = [
   { id: 'signaler', icon: 'tower-broadcast', label: 'Signaler System', highlight: true, canShow: (ctx) => ctx.cartridgeType === 'admin' },
   { id: 'door_remote', icon: 'door-closed', label: 'Toggle Door', canShow: (ctx) => ctx.cartridgeType === 'admin' },
 
-  { id: 'reagent_scanner', icon: 'flask', label: 'Reagent Scanner', canShow: (ctx) => ctx.cartridgeType === 'admin' || ctx.cartridgeType === 'medical' },
-  { id: 'halogen_counter', icon: 'radiation', label: 'Halogen Counter', canShow: (ctx) => ctx.cartridgeType === 'engineering' },
-  { id: 'gas_scanner', icon: 'smog', label: 'Gas Scanner', canShow: (ctx) => ctx.cartridgeType === 'admin' || ctx.cartridgeType === 'engineering' },
-
   { id: 'power_monitor', icon: 'bolt', label: 'Power Monitor', highlight: true, canShow: (ctx) => ctx.cartridgeType === 'engineering' },
 
   { id: 'supply_records', icon: 'box', label: 'Supply Records', canShow: (ctx) => ctx.cartridgeType === 'admin' },
@@ -49,11 +46,28 @@ const computeOwner = (cartridgeType: PdaProgramContext['cartridgeType']) => {
 const computeIdSuffix = (cartridgeType: PdaProgramContext['cartridgeType']) =>
   cartridgeType.substring(0, 2).toUpperCase();
 
-export const HomeProgram: PdaProgram = {
-  id: 'home',
-  title: 'HOME',
-  icon: 'house',
-  View: (ctx) => {
+/**
+ * SCANNERS (старый UI):
+ *  - Reagent Scanner (toggle)
+ *  - Halogen Counter (toggle)
+ *  - Gas Scanner (toggle)
+ *
+ * ВАЖНО: это НЕ отдельные программы, а просто кнопки ON/OFF (mock).
+ */
+class HomeApp extends Component<{ ctx: PdaProgramContext }> {
+  private reagentOn = false;
+  private halogenOn = false;
+  private gasOn = false;
+
+  private toggle = (k: 'reagent' | 'halogen' | 'gas') => {
+    if (k === 'reagent') this.reagentOn = !this.reagentOn;
+    if (k === 'halogen') this.halogenOn = !this.halogenOn;
+    if (k === 'gas') this.gasOn = !this.gasOn;
+    this.forceUpdate();
+  };
+
+  render() {
+    const { ctx } = this.props;
     const owner = computeOwner(ctx.cartridgeType);
     const idSuffix = computeIdSuffix(ctx.cartridgeType);
 
@@ -90,10 +104,62 @@ export const HomeProgram: PdaProgram = {
               <PDAAppTile key={tile.id} tile={tile} ctx={ctx} />
             ))}
           </div>
+
+          {/* Старые scanner toggles: только ON/OFF, без “вглубь” */}
+          <div style={{ marginTop: '10px' }}>
+            <div className="PDAScreen__h" style={{ marginTop: '6px' }}>SCANNERS</div>
+
+            <div className="PDAProgram__panel">
+              <div className="PDAProgram__row">
+                <div className="PDAProgram__k">Reagent Scanner</div>
+                <div className="PDAProgram__v">{this.reagentOn ? 'ON' : 'OFF'}</div>
+              </div>
+              <Button
+                content={this.reagentOn ? 'Disable Reagent Scanner' : 'Enable Reagent Scanner'}
+                icon="flask"
+                onClick={() => this.toggle('reagent')}
+              />
+
+              <div style={{ height: '8px' }} />
+
+              <div className="PDAProgram__row">
+                <div className="PDAProgram__k">Halogen Counter</div>
+                <div className="PDAProgram__v">{this.halogenOn ? 'ON' : 'OFF'}</div>
+              </div>
+              <Button
+                content={this.halogenOn ? 'Disable Halogen Counter' : 'Enable Halogen Counter'}
+                icon="radiation"
+                onClick={() => this.toggle('halogen')}
+              />
+
+              <div style={{ height: '8px' }} />
+
+              <div className="PDAProgram__row">
+                <div className="PDAProgram__k">Gas Scanner</div>
+                <div className="PDAProgram__v">{this.gasOn ? 'ON' : 'OFF'}</div>
+              </div>
+              <Button
+                content={this.gasOn ? 'Disable Gas Scanner' : 'Enable Gas Scanner'}
+                icon="wind"
+                onClick={() => this.toggle('gas')}
+              />
+
+              <div className="PDAProgram__footerHint" style={{ marginTop: '8px' }}>
+                UI-only toggles • no deep screen (matches old behavior)
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
-  },
+  }
+}
+
+export const HomeProgram: PdaProgram = {
+  id: 'home',
+  title: 'HOME',
+  icon: 'house',
+  View: (ctx) => <HomeApp ctx={ctx} />,
 };
 
 function PDAAppTile(props: { tile: AppTile; ctx: PdaProgramContext }) {
@@ -103,7 +169,7 @@ function PDAAppTile(props: { tile: AppTile; ctx: PdaProgramContext }) {
   if (!visible) return null;
 
   const disabled = !ctx.hasCartridge || !ctx.isOn;
-  const canRun = !disabled; // UI-only сейчас (в реестре можно усилить)
+  const canRun = !disabled;
 
   return (
     <button

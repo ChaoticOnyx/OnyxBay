@@ -1,5 +1,58 @@
 /* tgui/styles/interfaces/pda/_screen.scss */
 
+/* ========================= */
+/* CRT Theme Variables       */
+/* ========================= */
+
+.PDA {
+  /* defaults (green) */
+  --crt-main: #4fff99;                 /* primary */
+  --crt-accent: #aaffff;               /* bright text */
+  --crt-dim: rgba(79, 255, 153, 0.35);
+  --crt-border: rgba(79, 255, 153, 0.18);
+
+  /* semantic */
+  --crt-warn: rgba(245, 158, 11, 0.70);
+  --crt-bad: #ef4444;
+  --crt-good: #22c55e;
+}
+
+/* themes */
+.PDA[data-screen-theme="green"] {
+  --crt-main: #4fff99;
+  --crt-accent: #aaffff;
+  --crt-dim: rgba(79, 255, 153, 0.35);
+  --crt-border: rgba(79, 255, 153, 0.18);
+}
+
+.PDA[data-screen-theme="amber"] {
+  --crt-main: #fbbf24;
+  --crt-accent: #fff7d6;
+  --crt-dim: rgba(251, 191, 36, 0.30);
+  --crt-border: rgba(251, 191, 36, 0.22);
+}
+
+.PDA[data-screen-theme="cyan"] {
+  --crt-main: #22d3ee;
+  --crt-accent: #e0fbff;
+  --crt-dim: rgba(34, 211, 238, 0.28);
+  --crt-border: rgba(34, 211, 238, 0.22);
+}
+
+.PDA[data-screen-theme="white"] {
+  --crt-main: #e5e7eb;
+  --crt-accent: #ffffff;
+  --crt-dim: rgba(229, 231, 235, 0.22);
+  --crt-border: rgba(229, 231, 235, 0.18);
+}
+
+.PDA[data-screen-theme="gray"] {
+  --crt-main: #9ca3af;
+  --crt-accent: #e5e7eb;
+  --crt-dim: rgba(156, 163, 175, 0.18);
+  --crt-border: rgba(156, 163, 175, 0.16);
+}
+
 @keyframes pdaPulse {
   0%, 100% { opacity: 0.15; }
   50% { opacity: 0.55; }
@@ -34,7 +87,7 @@
   background: #0d0f0f;
   display: flex;
   flex-direction: column;
-  color: #4f9;
+  color: var(--crt-main);
   position: relative;
   overflow: hidden;
   box-shadow: inset 0 0 50px rgba(0, 0, 0, 1);
@@ -89,7 +142,7 @@
   display: flex;
   align-items: center;
   padding: 0 8px;
-  border-bottom: 1px solid rgba(79, 255, 153, 0.10);
+  border-bottom: 1px solid color-mix(in srgb, var(--crt-border) 70%, transparent);
   z-index: 10;
 }
 
@@ -98,16 +151,18 @@
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
-  border-right: 1px solid rgba(79, 255, 153, 0.10);
-  color: rgba(79, 255, 153, 0.40);
+  border-right: 1px solid color-mix(in srgb, var(--crt-border) 70%, transparent);
+  color: color-mix(in srgb, var(--crt-main) 55%, transparent);
   transition: background 120ms ease, color 120ms ease;
 }
 
-.PDAScreen__tab:hover { background: rgba(79, 255, 153, 0.05); }
+.PDAScreen__tab:hover {
+  background: color-mix(in srgb, var(--crt-main) 10%, transparent);
+}
 
 .PDAScreen__tab.is-active {
   background: rgba(79, 255, 153, 0.10);
-  color: #aaffff;
+  color: var(--crt-accent);
 }
 
 .PDAScreen__tabIcons {
@@ -116,7 +171,7 @@
   align-items: center;
   gap: 12px;
   margin-right: 8px;
-  color: rgba(79, 255, 153, 0.40);
+  color: color-mix(in srgb, var(--crt-main) 55%, transparent);
 }
 
 .PDAScreen__tabIcon { font-size: 12px; }
@@ -139,7 +194,7 @@
 .PDAScreen__footer {
   height: 24px;
   background: rgba(0, 0, 0, 0.40);
-  border-top: 1px solid rgba(79, 255, 153, 0.10);
+  border-top: 1px solid color-mix(in srgb, var(--crt-border) 70%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +207,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  color: rgba(79, 255, 153, 0.30);
+  color: color-mix(in srgb, var(--crt-main) 40%, transparent);
 }
 
 /* Error screen (no cartridge) */
@@ -195,7 +250,7 @@
 
 /* App tiles */
 .PDAScreen__card {
-  border: 1px solid rgba(79, 255, 153, 0.20);
+  border: 1px solid var(--crt-border);
   background: rgba(0, 0, 0, 0.40);
   padding: 12px;
   border-radius: 2px;
@@ -207,20 +262,20 @@
   align-items: center;
   margin-bottom: 6px;
   padding-bottom: 6px;
-  border-bottom: 1px solid rgba(79, 255, 153, 0.10);
+  border-bottom: 1px solid color-mix(in srgb, var(--crt-border) 70%, transparent);
 }
 
 .PDAScreen__cardK {
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.20em;
-  color: rgba(79, 255, 153, 0.40);
+  color: color-mix(in srgb, var(--crt-main) 55%, transparent);
 }
 
 .PDAScreen__cardTime {
   font-size: 18px;
   font-weight: 700;
-  color: #aaffff;
+  color: var(--crt-accent);
   letter-spacing: -0.03em;
 }
 
@@ -232,28 +287,30 @@
   font-size: 12px;
 }
 
-.PDAScreen__k { font-size: 9px; text-transform: uppercase; color: rgba(79, 255, 153, 0.40); }
+.PDAScreen__k { font-size: 9px; text-transform: uppercase; 
+  color: color-mix(in srgb, var(--crt-main) 55%, transparent);}
 
 .PDAScreen__v {
   font-weight: 700;
-  color: #aaffff;
+  color: var(--crt-accent);
   letter-spacing: 0.06em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.PDAScreen__id { font-family: monospace; font-size: 10px; color: rgba(79, 255, 153, 0.60); }
+.PDAScreen__id { font-family: monospace; font-size: 10px; 
+  color: color-mix(in srgb, var(--crt-main) 75%, transparent); }
 
 .PDAScreen__h {
   font-size: 9px;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.20em;
-  color: rgba(245, 158, 11, 0.70);
+  color: var(--crt-warn);
+  border-left: 2px solid color-mix(in srgb, var(--crt-warn) 45%, transparent);
   margin-bottom: 8px;
   padding-left: 6px;
-  border-left: 2px solid rgba(245, 158, 11, 0.30);
   margin-left: 4px;
 }
 
@@ -272,24 +329,24 @@
   gap: 8px;
   padding: 8px 12px;
 
-  border: 1px solid rgba(79, 255, 153, 0.30);
+  border: 1px solid color-mix(in srgb, var(--crt-border) 90%, transparent);
   border-radius: 2px;
 
   background: rgba(15, 20, 20, 0.60);
-  color: #aaffff;
+  color: var(--crt-accent);
 
   transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
 }
 
 .PDAApp:hover {
-  background: rgba(79, 255, 153, 0.10);
-  border-color: rgba(79, 255, 153, 0.60);
+  background: color-mix(in srgb, var(--crt-main) 12%, transparent);
+  border-color: color-mix(in srgb, var(--crt-main) 55%, transparent);
 }
 
 .PDAApp.is-active {
-  background: rgba(79, 255, 153, 0.20);
-  border-color: #4f9;
-  box-shadow: 0 0 8px rgba(79, 255, 153, 0.30);
+  background: color-mix(in srgb, var(--crt-main) 22%, transparent);
+  border-color: var(--crt-main);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--crt-main) 35%, transparent);
 }
 
 .PDAApp.is-highlight {
@@ -297,9 +354,10 @@
   color: #fde68a;
 }
 
-.PDAApp__icon { font-size: 12px; color: rgba(79, 255, 153, 0.80); }
-.PDAApp:hover .PDAApp__icon { color: #aaffff; }
-.PDAApp.is-active .PDAApp__icon { color: #aaffff; }
+.PDAApp__icon { font-size: 12px; 
+  color: color-mix(in srgb, var(--crt-main) 85%, transparent); }
+.PDAApp:hover .PDAApp__icon { color: var(--crt-accent); }
+.PDAApp.is-active .PDAApp__icon { color: var(--crt-accent); }
 
 .PDAApp__label {
   font-size: 12px;
@@ -335,7 +393,7 @@
 .PDAScreen {
   /* Firefox */
   scrollbar-width: thin;
-  scrollbar-color: rgba(79, 255, 153, 0.45) rgba(0, 0, 0, 0.25);
+  scrollbar-color: color-mix(in srgb, var(--crt-main) 55%, transparent) rgba(0, 0, 0, 0.25);
 }
 
 /* WebKit */
@@ -353,22 +411,22 @@
 .PDAScreen *::-webkit-scrollbar-thumb {
   background: linear-gradient(
     to bottom,
-    rgba(79, 255, 153, 0.18),
-    rgba(79, 255, 153, 0.06)
+    color-mix(in srgb, var(--crt-main) 22%, transparent),
+    color-mix(in srgb, var(--crt-main) 10%, transparent)
   );
-  border: 1px solid rgba(79, 255, 153, 0.25);
+  border: 1px solid color-mix(in srgb, var(--crt-border) 90%, transparent);
   box-shadow:
     inset 0 0 0 1px rgba(0, 0, 0, 0.35),
-    0 0 8px rgba(79, 255, 153, 0.10);
+    0 0 8px color-mix(in srgb, var(--crt-main) 12%, transparent);
 }
 
 .PDAScreen *::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(
     to bottom,
-    rgba(79, 255, 153, 0.26),
-    rgba(79, 255, 153, 0.10)
+    color-mix(in srgb, var(--crt-main) 32%, transparent),
+    color-mix(in srgb, var(--crt-main) 16%, transparent)
   );
-  border-color: rgba(79, 255, 153, 0.35);
+  border-color: color-mix(in srgb, var(--crt-main) 45%, transparent);
 }
 
 .PDAScreen *::-webkit-scrollbar-corner {
@@ -382,9 +440,9 @@
 .PDAScreen .Button,
 .PDAScreen button.Button {
   background: rgba(15, 20, 20, 0.60);
-  border: 1px solid rgba(79, 255, 153, 0.30);
+  border: 1px solid color-mix(in srgb, var(--crt-border) 90%, transparent);
   border-radius: 2px;
-  color: #aaffff;
+  color: var(--crt-accent);
 
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
   transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
@@ -392,15 +450,15 @@
 
 .PDAScreen .Button:hover,
 .PDAScreen button.Button:hover {
-  background: rgba(79, 255, 153, 0.10);
-  border-color: rgba(79, 255, 153, 0.60);
+  background: color-mix(in srgb, var(--crt-main) 12%, transparent);
+  border-color: color-mix(in srgb, var(--crt-main) 55%, transparent);
 }
 
 .PDAScreen .Button:active,
 .PDAScreen button.Button:active {
-  background: rgba(79, 255, 153, 0.16);
-  border-color: rgba(79, 255, 153, 0.70);
-  box-shadow: 0 0 10px rgba(79, 255, 153, 0.15);
+  background: color-mix(in srgb, var(--crt-main) 20%, transparent);
+  border-color: color-mix(in srgb, var(--crt-main) 70%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--crt-main) 18%, transparent);
 }
 
 .PDAScreen .Button:disabled,
@@ -414,25 +472,122 @@
 .PDAScreen input,
 .PDAScreen textarea {
   background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(79, 255, 153, 0.25);
+  border: 1px solid color-mix(in srgb, var(--crt-border) 90%, transparent);
   border-radius: 2px;
-  color: #aaffff;
+  color: var(--crt-accent);
 
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+
+  /* FIX: нормальная ширина */
+  width: 100%;
+  min-width: 0;
+  display: block;
 }
 
 .PDAScreen .Input:focus,
 .PDAScreen input:focus,
 .PDAScreen textarea:focus {
   outline: none;
-  border-color: rgba(79, 255, 153, 0.60);
+  border-color: color-mix(in srgb, var(--crt-main) 70%, transparent);
   box-shadow:
     inset 0 0 0 1px rgba(0, 0, 0, 0.35),
-    0 0 10px rgba(79, 255, 153, 0.12);
+    0 0 10px color-mix(in srgb, var(--crt-main) 14%, transparent);
 }
 
 /* Placeholder */
 .PDAScreen input::placeholder,
 .PDAScreen textarea::placeholder {
-  color: rgba(79, 255, 153, 0.35);
+  color: color-mix(in srgb, var(--crt-main) 45%, transparent);
+}
+
+/* ========================= */
+/* Semantic text colors       */
+/* ========================= */
+
+.PDAScreen .pda-good { color: var(--crt-good); font-weight: 800; }
+.PDAScreen .pda-avg  { color: rgba(245, 158, 11, 0.85); font-weight: 800; }
+.PDAScreen .pda-bad  { color: var(--crt-bad); font-weight: 900; }
+.PDAScreen .pda-dim  { opacity: 0.65; }
+.PDAScreen .pda-accent { color: var(--crt-accent); font-weight: 800; }
+
+/* Simple CRT table */
+.PDATable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.PDATable th {
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--crt-border);
+}
+
+.PDATable td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  vertical-align: top;
+}
+
+.PDATable tr:hover td {
+  background: rgba(255,255,255,0.03);
+}
+
+/* CFG theme buttons */
+.PDAThemeGrid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.PDAThemeBtn {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+
+  border: 1px solid var(--crt-border);
+  background: rgba(0, 0, 0, 0.22);
+  color: var(--crt-accent);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.PDAThemeBtn:hover {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.18);
+}
+
+.PDAThemeBtn.is-active {
+  outline: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 0 10px rgba(255,255,255,0.06);
+}
+
+.PDAThemeBtn__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.PDAThemeBtn__label {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.PDAThemeBtn__check {
+  margin-left: auto;
+  opacity: 0.85;
+}
+
+.PDAThemeBtn__hint {
+  margin-top: 4px;
+  font-size: 10px;
+  opacity: 0.55;
+  letter-spacing: 0.06em;
 }
