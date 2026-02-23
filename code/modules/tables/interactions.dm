@@ -63,6 +63,8 @@
 
 
 /obj/structure/table/MouseDrop_T(obj/O, mob/living/user, params)
+	if(isghost(user))
+		return
 	for(var/obj/possible_blocker in get_turf(src))
 		if(possible_blocker.atom_flags & ATOM_FLAG_FULLTILE_OBJECT)
 			return

@@ -65,8 +65,8 @@
 
 	if(sheet.loc == user)
 		user.drop(sheet, src)
-	else
-		sheet.forceMove(src)
+	else if(!user.drop(sheet, src))
+		return
 
 	pages.Insert(index, sheet)
 

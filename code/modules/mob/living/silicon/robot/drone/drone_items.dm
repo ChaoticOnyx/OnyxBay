@@ -165,6 +165,7 @@
 		/obj/item/stack/cable_coil,
 		/obj/item/circuitboard,
 		/obj/item/metroid_extract,
+		/obj/item/metroidcross,
 		/obj/item/reagent_containers/vessel/beaker,
 		/obj/item/reagent_containers/vessel/bottle/chemical,
 		/obj/item/reagent_containers/food/monkeycube,
