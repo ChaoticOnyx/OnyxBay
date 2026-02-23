@@ -21,6 +21,7 @@
 
 	/// Base icon state used when in the backpack slot.
 	var/base_icon_state_back = "bannerflag_great_64"
+	flags_inv &= HIDERIG
 
 /obj/item/flag/Initialize(mapload)
 	. = ..()
@@ -53,6 +54,7 @@
 	icon_state = "[base_icon_state]_[flag_appearance.icon_state]"
 	item_state = icon_state
 	item_state_slots[slot_back_str] = "[base_icon_state_back]_[flag_appearance.icon_state]"
+	item_state_slots[slot_s_store_str] = "[base_icon_state_back]_[flag_appearance.icon_state]"
 	icon = initial(icon)
 
 	AddOverlays(overlay_image(icon, "[base_icon_state]_overlay", flags = RESET_COLOR))

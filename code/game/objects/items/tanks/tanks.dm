@@ -57,6 +57,7 @@ var/list/global/tank_gauge_cache = list()
 
 	drop_sound = SFX_DROP_GASCAN
 	pickup_sound = SFX_PICKUP_GASCAN
+	flags_inv &= HIDERIG
 
 /obj/item/tank/Initialize()
 	. = ..()
