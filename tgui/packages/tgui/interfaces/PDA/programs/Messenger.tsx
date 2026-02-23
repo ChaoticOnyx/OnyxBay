@@ -306,6 +306,10 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
 
   private showEmojiPicker = false;
 
+  // old UI toggles (UI-only)
+  private messengerOn = true;
+  private ringerOn = true;
+
   // ringtone UI (wire act() later)
   private ringtone = 'pda_beep_1';
   private showRingtone = false;
@@ -359,6 +363,7 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
   };
 
   private send = () => {
+    if (!this.messengerOn) return;
     const chat = this.getActiveChat();
     const text = (this.draft || '').trim();
     if (!chat || !text) return;
@@ -482,6 +487,35 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     // later: act('set_ringtone', { ringtone: v })
   };
 
+    private toggleMessenger = () => {
+    this.messengerOn = !this.messengerOn;
+    this.forceUpdate();
+  };
+
+  private toggleRinger = () => {
+    this.ringerOn = !this.ringerOn;
+    this.forceUpdate();
+  };
+
+  private clearAllConversations = () => {
+    // UI-only: wipe chats + messages, recreate default DM
+    this.chats = [];
+    this.messages = [];
+    this.activeChatId = null;
+    this.componentDidMount();
+    this.forceUpdate();
+  };
+
+  private clearConversation = () => {
+    const chat = this.getActiveChat();
+    if (!chat) return;
+
+    this.messages = this.messages.filter(m => m.chatId !== chat.id);
+    this.chats = this.chats.filter(c => c.id !== chat.id);
+    this.activeChatId = this.chats.length ? this.chats[0].id : null;
+    this.forceUpdate();
+  };
+
   render() {
     const chat = this.getActiveChat();
     const visibleChats = this.chats
@@ -548,12 +582,44 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
               {chat ? chat.title : 'No chat'}
             </div>
 
-            <div className="PdaMessenger__topHint">
-              {chat?.type === 'group' ? 'Group chat' : 'Direct chat'} • {this.selfCkey} • Ringtone: {this.ringtone}
+                        <div className="PdaMessenger__topHint">
+              {chat?.type === 'group' ? 'Group chat' : 'Direct chat'} • {this.selfCkey} •
+              Messenger: {this.messengerOn ? 'ON' : 'OFF'} •
+              Ringer: {this.ringerOn ? 'ON' : 'OFF'} •
+              Ringtone: {this.ringtone}
+
+              <Button
+                icon="volume-high"
+                tooltip="Toggle ringer"
+                onClick={this.toggleRinger}
+                className="PdaMessenger__ringtoneBtn"
+              />
+
+              <Button
+                icon={this.messengerOn ? 'check' : 'xmark'}
+                tooltip="Toggle messenger"
+                onClick={this.toggleMessenger}
+                className="PdaMessenger__ringtoneBtn"
+              />
+
               <Button
                 icon="music"
                 tooltip="Change ringtone"
                 onClick={this.openRingtone}
+                className="PdaMessenger__ringtoneBtn"
+              />
+
+              <Button
+                icon="trash"
+                tooltip="Delete conversation"
+                onClick={this.clearConversation}
+                className="PdaMessenger__ringtoneBtn"
+              />
+
+              <Button
+                icon="trash-can"
+                tooltip="Delete all conversations"
+                onClick={this.clearAllConversations}
                 className="PdaMessenger__ringtoneBtn"
               />
             </div>
@@ -592,8 +658,9 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
             <div className="PdaMessenger__inputWrap">
               <Input
                 value={this.draft}
-                placeholder="Message… (use :happy: or :e42:)"
+                placeholder={this.messengerOn ? 'Message… (use :happy: or :e42:)' : 'Messenger is OFF'}
                 onInput={(_, v) => this.setDraft(String(v))}
+                disabled={!this.messengerOn}
                 onKeyDown={(e: KeyboardEvent) => {
                   // @ts-ignore
                   if (e.key === 'Enter') this.send();
@@ -605,6 +672,7 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
               icon="paper-plane"
               content="Send"
               onClick={this.send}
+              disabled={!this.messengerOn}
               className="PdaMessenger__sendBtn"
             />
 

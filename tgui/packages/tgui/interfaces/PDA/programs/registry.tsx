@@ -2,32 +2,46 @@ import type { PdaProgram, PdaProgramContext, PdaProgramId } from '../types';
 
 import { HomeProgram } from './Home';
 import { ConfigProgram } from './Config';
-import { NotekeeperProgram } from './Notekeeper';
 import { MessengerProgram } from './Messenger';
+
+import { NotekeeperProgram } from './Notekeeper';
 import { CrewManifestProgram } from './CrewManifest';
 import { NewsFeedProgram } from './NewsFeed';
 import { AtmosScanProgram } from './AtmosScan';
-import { StorageProgram } from './Storage';
-import { HealthScanProgram } from './HealthScan';
-import { EngineDiagProgram } from './EngineDiag';
-import { SecurityProgram } from './Security';
+
+import { SignalerProgram } from './Signaler';
+import { StatusDisplayProgram } from './StatusDisplay';
+import { PowerMonitorProgram } from './PowerMonitor';
+import { SupplyRecordsProgram } from './SupplyRecords';
+import { MuleControlProgram } from './MuleControl';
+import { JanitorLocatorProgram } from './JanitorLocator';
+import { HonkSynthProgram } from './HonkSynth';
+import { DoorRemoteProgram } from './DoorRemote';
+import { ReagentScannerProgram, HalogenCounterProgram, GasScannerProgram } from './Scanners';
 
 export const PDA_PROGRAMS: PdaProgram[] = [
   HomeProgram,
   ConfigProgram,
+  MessengerProgram,
 
   NotekeeperProgram,
-  MessengerProgram,
   CrewManifestProgram,
   NewsFeedProgram,
   AtmosScanProgram,
-  StorageProgram,
 
-  HealthScanProgram,
-  EngineDiagProgram,
-  SecurityProgram,
+  // old PDA cartridge utilities
+  SignalerProgram,
+  StatusDisplayProgram,
+  PowerMonitorProgram,
+  SupplyRecordsProgram,
+  MuleControlProgram,
+  JanitorLocatorProgram,
+  HonkSynthProgram,
+  DoorRemoteProgram,
+  ReagentScannerProgram,
+  HalogenCounterProgram,
+  GasScannerProgram,
 ];
-
 const byId = new Map<PdaProgramId, PdaProgram>(PDA_PROGRAMS.map(p => [p.id, p]));
 
 export const getProgram = (id: PdaProgramId): PdaProgram => {

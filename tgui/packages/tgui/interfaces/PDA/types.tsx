@@ -20,10 +20,19 @@ export type PdaProgramId =
   | 'crew_manifest'
   | 'news_feed'
   | 'atmos_scan'
-  | 'storage'
-  | 'health_scan'
-  | 'engine_diag'
-  | 'security';
+
+  // cartridge utilities from old PDA
+  | 'signaler'
+  | 'status_display'
+  | 'power_monitor'
+  | 'supply_records'
+  | 'mule_control'
+  | 'janitor_locator'
+  | 'honk_synth'
+  | 'door_remote'
+  | 'reagent_scanner'
+  | 'halogen_counter'
+  | 'gas_scanner'
 
 export type PdaProgramContext = {
   // состояние оболочки (UI-only сейчас; в будущем — заменяется данными бекэнда точечно)

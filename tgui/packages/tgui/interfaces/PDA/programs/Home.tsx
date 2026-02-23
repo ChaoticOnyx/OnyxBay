@@ -11,36 +11,32 @@ type AppTile = {
 };
 
 const APP_TILES: AppTile[] = [
+  // General (старый PDA)
   { id: 'notekeeper', icon: 'file-lines', label: 'Notekeeper' },
   { id: 'messenger', icon: 'comment', label: 'Messenger' },
   { id: 'crew_manifest', icon: 'users', label: 'Crew Manifest' },
-  { id: 'news_feed', icon: 'radio', label: 'News Feed' },
+  { id: 'news_feed', icon: 'radio', label: 'News' },
 
-  { id: 'atmos_scan', icon: 'wind', label: 'Atmos Scan' },
+  // Utilities (старый PDA)
+  { id: 'atmos_scan', icon: 'wind', label: 'Atmospheric Scan' },
 
-  {
-    id: 'health_scan',
-    icon: 'heart-pulse',
-    label: 'Health Scan',
-    highlight: true,
-    canShow: (ctx) => ctx.cartridgeType === 'medical',
-  },
-  {
-    id: 'engine_diag',
-    icon: 'hard-drive',
-    label: 'Engine Diag',
-    highlight: true,
-    canShow: (ctx) => ctx.cartridgeType === 'engineering',
-  },
-  {
-    id: 'security',
-    icon: 'shield-halved',
-    label: 'Security',
-    highlight: true,
-    canShow: (ctx) => ctx.cartridgeType === 'admin',
-  },
+  // Cartridge utilities from old PDA (показываем по canShow)
+  { id: 'status_display', icon: 'display', label: 'Status Display', highlight: true, canShow: (ctx) => ctx.cartridgeType === 'admin' },
+  { id: 'signaler', icon: 'tower-broadcast', label: 'Signaler System', highlight: true, canShow: (ctx) => ctx.cartridgeType === 'admin' },
+  { id: 'door_remote', icon: 'door-closed', label: 'Toggle Door', canShow: (ctx) => ctx.cartridgeType === 'admin' },
 
-  { id: 'storage', icon: 'database', label: 'Storage' },
+  { id: 'reagent_scanner', icon: 'flask', label: 'Reagent Scanner', canShow: (ctx) => ctx.cartridgeType === 'admin' || ctx.cartridgeType === 'medical' },
+  { id: 'halogen_counter', icon: 'radiation', label: 'Halogen Counter', canShow: (ctx) => ctx.cartridgeType === 'engineering' },
+  { id: 'gas_scanner', icon: 'smog', label: 'Gas Scanner', canShow: (ctx) => ctx.cartridgeType === 'admin' || ctx.cartridgeType === 'engineering' },
+
+  { id: 'power_monitor', icon: 'bolt', label: 'Power Monitor', highlight: true, canShow: (ctx) => ctx.cartridgeType === 'engineering' },
+
+  { id: 'supply_records', icon: 'box', label: 'Supply Records', canShow: (ctx) => ctx.cartridgeType === 'admin' },
+  { id: 'mule_control', icon: 'truck', label: 'Delivery Bot Control', canShow: (ctx) => ctx.cartridgeType === 'admin' },
+
+  { id: 'janitor_locator', icon: 'broom', label: 'Custodial Locator', canShow: (ctx) => ctx.cartridgeType === 'admin' },
+
+  { id: 'honk_synth', icon: 'face-grin-squint', label: 'Honk Synthesizer', canShow: (ctx) => ctx.cartridgeType === 'admin' },
 ];
 
 const computeOwner = (cartridgeType: PdaProgramContext['cartridgeType']) => {
