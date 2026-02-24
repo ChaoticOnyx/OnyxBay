@@ -98,9 +98,7 @@
 			"max_skin_tone" = S.max_skin_tone(),
 			"no_lace" = !!(S.spawn_flags & SPECIES_NO_LACE),
 			"icobase" = "[S.icobase]",
-			"hair_key" = S.hair_key,
-			"limb_blend" = S.limb_blend,
-			"has_eyes_icon" = S.has_eyes_icon
+			"hair_key" = S.hair_key
 		))
 	data["species_list"] = species_data
 
@@ -274,8 +272,7 @@
 			"icon" = rlimb_icon,
 			"species_cannot_use" = R.species_cannot_use,
 			"restricted_to" = R.restricted_to,
-			"applies_to_part" = R.applies_to_part,
-			"max_module_size" = R.max_module_size
+			"applies_to_part" = R.applies_to_part
 		))
 	data["robolimb_brands"] = robolimb_data
 
@@ -348,19 +345,13 @@
 				"department" = J.department,
 				"color" = J.selection_color,
 				"head" = J.head_position,
-				"positions" = J.total_positions,
-				"spawn_positions" = J.spawn_positions,
-				"minimum_character_age" = J.minimum_character_age,
-				"minimal_player_age" = J.minimal_player_age,
-				"faction_restricted" = J.faction_restricted
+				"minimum_character_age" = J.minimum_character_age
 			)
-			// Alt titles
 			if(J.alt_titles)
 				var/list/alt_names = list()
 				for(var/alt_name in J.alt_titles)
 					alt_names += alt_name
 				job_entry["alt_titles"] = alt_names
-			// Availability status
 			var/banned = jobban_isbanned(user, J.title)
 			if(banned == "Whitelisted Job")
 				job_entry["status"] = "whitelist"
@@ -573,7 +564,6 @@
 	// preview_icon is no longer sent; the TGUI client renders via SpriteCompositor
 	data["preview_dir"] = preview_dir
 
-	// Identity
 	data["real_name"] = pref.real_name
 	data["gender"] = pref.gender
 	data["species"] = pref.species
@@ -613,7 +603,6 @@
 		))
 	data["body_markings"] = markings
 
-	// Equipment
 	data["all_underwear"] = pref.all_underwear
 	data["backpack"] = pref.backpack ? pref.backpack.name : "Nothing"
 	data["equip_preview_mob"] = pref.equip_preview_mob
@@ -653,10 +642,8 @@
 		))
 	data["underwear_render"] = underwear_render
 
-	// Equipment render data (loadout + job clothing overlays)
 	data["equipment_render"] = generate_equipment_render_data()
 
-	// Slot info
 	data["default_slot"] = pref.default_slot
 	data["is_guest"] = pref.is_guest
 	data["load_failed"] = pref.load_failed
@@ -681,7 +668,6 @@
 	data["currentGearSlot"] = pref.gear_slot
 	data["maxLoadoutPoints"] = pref.max_loadout_points
 
-	// Calculate used loadout points
 	var/used_lp = 0
 	if(islist(gear_items))
 		for(var/gear_name in gear_items)
@@ -690,7 +676,6 @@
 				used_lp += G.cost
 	data["usedLoadoutPoints"] = used_lp
 
-	// Selected gear detail
 	data["selectedGearHash"] = selected_gear_hash
 	if(selected_gear_hash)
 		var/datum/gear/SG = hash_to_gear[selected_gear_hash]
@@ -698,12 +683,10 @@
 			data["selectedGearDetail"] = build_gear_detail(SG, user)
 			data["selectedGearTweaks"] = build_tweak_defs(SG)
 
-	// Loadout filter state
 	data["hideUnavailable"] = hide_unavailable_gear
 	data["hideDonate"] = hide_donate_gear
 	data["slotFilter"] = slot_filter
 
-	// Patron info
 	data["patronTier"] = user.client?.donator_info?.get_full_patron_tier()
 	data["currentOpyxes"] = user.client?.donator_info ? round(user.client.donator_info.opyxes) : 0
 
@@ -726,7 +709,6 @@
 		if(!has_processor)
 			pref.organ_modules[BP_HEAD] += /obj/item/organ_module/processor
 
-	// Installed modules per organ (as path strings)
 	var/list/installed_modules = list()
 	if(islist(pref.organ_modules))
 		for(var/organ_tag in pref.organ_modules)
@@ -757,7 +739,6 @@
 	data["be_special_role"] = pref.be_special_role
 	data["may_be_special_role"] = pref.may_be_special_role
 
-	// Uplink source order (as names)
 	var/list/uplink_order = list()
 	if(islist(pref.uplink_sources))
 		for(var/entry in pref.uplink_sources)
@@ -803,8 +784,18 @@
 // Server only updates BYOND-side lobby screen preview
 // ============================================================
 /datum/character_setup_tgui/proc/mark_preview_dirty()
-	// Update the BYOND-side lobby screen preview (separate from TGUI)
+	// Updates the BYOND-side lobby screen preview separately from TGUI rendering
 	pref.update_preview_icon()
+
+/// Set one of the five pref color fields (hair/s_hair/facial/eyes/skin) from a hex string.
+/// key maps directly to pref.r_KEY / g_KEY / b_KEY variable names.
+/datum/character_setup_tgui/proc/set_pref_color(key, hex_color)
+	if(!hex_color)
+		return
+	pref.vars["r_[key]"] = hex2num(copytext(hex_color, 2, 4))
+	pref.vars["g_[key]"] = hex2num(copytext(hex_color, 4, 6))
+	pref.vars["b_[key]"] = hex2num(copytext(hex_color, 6, 8))
+	mark_preview_dirty()
 
 /// Generate equipment overlay render data for client-side rendering.
 /// Dresses a mannequin with job/loadout items, then extracts icon + icon_state + layer
@@ -1032,16 +1023,10 @@
 				pref.spawnpoint = new_sp
 			return TRUE
 
-		// === APPEARANCE ===
 		if("setHairColor")
 			if(!(current_species.species_appearance_flags & HAS_HAIR_COLOR))
 				return TRUE
-			var/new_color = params["color"]
-			if(new_color)
-				pref.r_hair = hex2num(copytext(new_color, 2, 4))
-				pref.g_hair = hex2num(copytext(new_color, 4, 6))
-				pref.b_hair = hex2num(copytext(new_color, 6, 8))
-				mark_preview_dirty()
+			set_pref_color("hair", params["color"])
 			return TRUE
 
 		if("setSecondaryHairColor")
@@ -1049,45 +1034,25 @@
 				return TRUE
 			if(current_species.species_appearance_flags & SECONDARY_HAIR_IS_SKIN)
 				return TRUE
-			var/new_color = params["color"]
-			if(new_color)
-				pref.r_s_hair = hex2num(copytext(new_color, 2, 4))
-				pref.g_s_hair = hex2num(copytext(new_color, 4, 6))
-				pref.b_s_hair = hex2num(copytext(new_color, 6, 8))
-				mark_preview_dirty()
+			set_pref_color("s_hair", params["color"])
 			return TRUE
 
 		if("setFacialColor")
 			if(!(current_species.species_appearance_flags & HAS_HAIR_COLOR))
 				return TRUE
-			var/new_color = params["color"]
-			if(new_color)
-				pref.r_facial = hex2num(copytext(new_color, 2, 4))
-				pref.g_facial = hex2num(copytext(new_color, 4, 6))
-				pref.b_facial = hex2num(copytext(new_color, 6, 8))
-				mark_preview_dirty()
+			set_pref_color("facial", params["color"])
 			return TRUE
 
 		if("setEyeColor")
 			if(!(current_species.species_appearance_flags & HAS_EYE_COLOR))
 				return TRUE
-			var/new_color = params["color"]
-			if(new_color)
-				pref.r_eyes = hex2num(copytext(new_color, 2, 4))
-				pref.g_eyes = hex2num(copytext(new_color, 4, 6))
-				pref.b_eyes = hex2num(copytext(new_color, 6, 8))
-				mark_preview_dirty()
+			set_pref_color("eyes", params["color"])
 			return TRUE
 
 		if("setSkinColor")
 			if(!(current_species.species_appearance_flags & HAS_SKIN_COLOR))
 				return TRUE
-			var/new_color = params["color"]
-			if(new_color)
-				pref.r_skin = hex2num(copytext(new_color, 2, 4))
-				pref.g_skin = hex2num(copytext(new_color, 4, 6))
-				pref.b_skin = hex2num(copytext(new_color, 6, 8))
-				mark_preview_dirty()
+			set_pref_color("skin", params["color"])
 			return TRUE
 
 		if("setSkinTone")
@@ -1220,45 +1185,13 @@
 		// === COLOR PICKERS (DM-side modal) ===
 		if("pickColor")
 			var/which = params["which"]
-			var/current_color
-			switch(which)
-				if("hair")
-					current_color = rgb(pref.r_hair, pref.g_hair, pref.b_hair)
-				if("s_hair")
-					current_color = rgb(pref.r_s_hair, pref.g_s_hair, pref.b_s_hair)
-				if("facial")
-					current_color = rgb(pref.r_facial, pref.g_facial, pref.b_facial)
-				if("eyes")
-					current_color = rgb(pref.r_eyes, pref.g_eyes, pref.b_eyes)
-				if("skin")
-					current_color = rgb(pref.r_skin, pref.g_skin, pref.b_skin)
-				else
-					return TRUE
+			if(!(which in list("hair", "s_hair", "facial", "eyes", "skin")))
+				return TRUE
+			var/current_color = rgb(pref.vars["r_[which]"], pref.vars["g_[which]"], pref.vars["b_[which]"])
 			var/new_color = tgui_color_picker(owner, "Choose color:", "Character Setup", current_color)
 			if(!new_color)
 				return TRUE
-			switch(which)
-				if("hair")
-					pref.r_hair = hex2num(copytext(new_color, 2, 4))
-					pref.g_hair = hex2num(copytext(new_color, 4, 6))
-					pref.b_hair = hex2num(copytext(new_color, 6, 8))
-				if("s_hair")
-					pref.r_s_hair = hex2num(copytext(new_color, 2, 4))
-					pref.g_s_hair = hex2num(copytext(new_color, 4, 6))
-					pref.b_s_hair = hex2num(copytext(new_color, 6, 8))
-				if("facial")
-					pref.r_facial = hex2num(copytext(new_color, 2, 4))
-					pref.g_facial = hex2num(copytext(new_color, 4, 6))
-					pref.b_facial = hex2num(copytext(new_color, 6, 8))
-				if("eyes")
-					pref.r_eyes = hex2num(copytext(new_color, 2, 4))
-					pref.g_eyes = hex2num(copytext(new_color, 4, 6))
-					pref.b_eyes = hex2num(copytext(new_color, 6, 8))
-				if("skin")
-					pref.r_skin = hex2num(copytext(new_color, 2, 4))
-					pref.g_skin = hex2num(copytext(new_color, 4, 6))
-					pref.b_skin = hex2num(copytext(new_color, 6, 8))
-			mark_preview_dirty()
+			set_pref_color(which, new_color)
 			return TRUE
 
 		if("pickMarkingColor")

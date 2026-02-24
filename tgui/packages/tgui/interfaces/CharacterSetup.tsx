@@ -15,7 +15,6 @@ import { Component } from "inferno";
 import { useBackend, useLocalState } from "../backend";
 import {
   Box,
-  ColorBox,
   Divider,
   Dropdown,
   Icon,
@@ -62,10 +61,6 @@ const getStampForJob = (job: JobInfo | null): string => {
   return DEPT_STAMP[job.department] || stampOk;
 };
 
-// ================================================================
-// Type definitions
-// ================================================================
-
 interface SpeciesInfo {
   name: string;
   blurb: string;
@@ -80,8 +75,6 @@ interface SpeciesInfo {
   no_lace: boolean;
   icobase: string;
   hair_key: string;
-  limb_blend: number;
-  has_eyes_icon: boolean;
 }
 
 interface HairStyle {
@@ -138,6 +131,7 @@ interface GearTweakDef {
   currentValue?: string;
   options?: string[];
   validColors?: string[];
+  deptEntries?: string[];
 }
 
 interface GearItem {
@@ -195,7 +189,6 @@ interface RobolimbBrand {
   species_cannot_use: string[];
   restricted_to: string[];
   applies_to_part: string[];
-  max_module_size: number;
 }
 
 interface OrganModuleDef {
@@ -225,11 +218,7 @@ interface JobInfo {
   department: string;
   color: string;
   head: boolean;
-  positions: number;
-  spawn_positions: number;
   minimum_character_age: number;
-  minimal_player_age: number;
-  faction_restricted: boolean;
   alt_titles?: string[];
   status: string;
   available_in_days?: number;
@@ -373,7 +362,6 @@ interface CharacterData {
   client_preference_categories: Record<string, ClientPreferenceDef[]>;
   keybinding_categories: Record<string, KeybindingDef[]>;
   // Dynamic data
-  preview_icon?: string;
   preview_dir: number;
   real_name: string;
   gender: string;
@@ -485,55 +473,56 @@ const SOUTH = 2;
 const EAST = 4;
 const WEST = 8;
 
-// BYOND blend mode constants
-const ICON_ADD = 1;
-
 // ================================================================
 // Sprite Compositor — build render config from character data
 // ================================================================
+
+// Marking draw target values (mirrored from DM)
+const MARKING_TARGET_SKIN = 0;
+const MARKING_TARGET_HAIR = 1;
+
+/** Resolve hair/facial DMI files and style objects from shared build+species data */
+function resolveHairInfo(
+  data: CharacterData,
+  bodyName: string,
+  hairKey: string,
+  hStyle: string,
+  fStyle: string,
+) {
+  const buildIndex = data.body_build_render?.[bodyName]?.index || "";
+  // "slim" builds use a separate hair icon set
+  const isSlim = buildIndex.indexOf("_slim") !== -1;
+
+  let hairDmiFile = data.hair_icons?.["default"]?.[hairKey] || "";
+  if (isSlim && data.hair_icons?.["slim"]?.[hairKey]) {
+    hairDmiFile = data.hair_icons["slim"][hairKey];
+  }
+
+  let facialDmiFile = data.facial_hair_icons?.["default"]?.[hairKey] || "";
+  if (isSlim && data.facial_hair_icons?.["slim"]?.[hairKey]) {
+    facialDmiFile = data.facial_hair_icons["slim"][hairKey];
+  }
+
+  const hairStyle = data.hair_styles?.find((h) => h.name === hStyle);
+  const facialStyle = data.facial_hair_styles?.find((f) => f.name === fStyle);
+
+  return { buildIndex, hairDmiFile, facialDmiFile, hairStyle, facialStyle };
+}
 
 /** Build a CharacterRenderConfig from the current preference data */
 function buildRenderConfig(data: CharacterData): CharacterRenderConfig | null {
   const speciesInfo = getSpeciesInfo(data.species_list, data.species);
   if (!speciesInfo) return null;
 
-  // Resolve body build
-  const buildName = data.body || "Default";
-  const buildData = data.body_build_render?.[buildName];
-  const buildIndex = buildData?.index || "";
+  const { buildIndex, hairDmiFile, facialDmiFile, hairStyle, facialStyle } =
+    resolveHairInfo(data, data.body || "Default", speciesInfo.hair_key, data.h_style, data.f_style);
 
-  // Determine if this is a "slim" body build for hair icon resolution
-  const isSlim = buildIndex.indexOf("_slim") !== -1;
-
-  // Resolve hair DMI file
-  const hairKey = speciesInfo.hair_key;
-  let hairDmiFile = data.hair_icons?.["default"]?.[hairKey] || "";
-  if (isSlim && data.hair_icons?.["slim"]?.[hairKey]) {
-    hairDmiFile = data.hair_icons["slim"][hairKey];
-  }
-
-  // Resolve facial hair DMI file
-  let facialDmiFile = data.facial_hair_icons?.["default"]?.[hairKey] || "";
-  if (isSlim && data.facial_hair_icons?.["slim"]?.[hairKey]) {
-    facialDmiFile = data.facial_hair_icons["slim"][hairKey];
-  }
-
-  // Resolve hair icon_state from style name
-  const hairStyle = data.hair_styles?.find(
-    (h) => h.name === data.h_style
-  );
-  const facialStyle = data.facial_hair_styles?.find(
-    (f) => f.name === data.f_style
-  );
-
-  // Resolve underwear render data
   const underwear = data.underwear_render?.map(uw => ({
     state: uw.state,
     dmiFile: uw.dmiFile,
     color: uw.color,
   }));
 
-  // Resolve equipment render data (loadout + job clothing overlays)
   const clothing = data.equipment_render?.map(eq => ({
     state: eq.state,
     dmiFile: eq.dmiFile,
@@ -541,40 +530,24 @@ function buildRenderConfig(data: CharacterData): CharacterRenderConfig | null {
     layer: eq.layer,
   }));
 
-  // Build robolimb brand → icon path mapping
   const robolimbIcons: Record<string, string> = {};
   if (data.robolimb_brands) {
     for (const brand of data.robolimb_brands) {
-      if (brand.icon) {
-        robolimbIcons[brand.company] = brand.icon;
-      }
+      if (brand.icon) robolimbIcons[brand.company] = brand.icon;
     }
   }
 
-  // Build markings render data — expand skin markings to per-organ entries
-  // Skin markings: state = "[icon_state]-[organ_tag]", drawn on body
-  // Hair markings: state = "[icon_state]", masked to hair shape
-  const MARKING_TARGET_SKIN = 0;
-  const MARKING_TARGET_HAIR = 1;
+  // Expand skin markings to per-organ entries; hair markings are drawn masked to hair shape
   const markings: { icon: string; iconState: string; organTag: string; color: string }[] = [];
   const hairMarkings: { icon: string; iconState: string; color: string }[] = [];
   if (data.body_markings) {
     for (const m of data.body_markings) {
       if (!m.icon || !m.icon_state) continue;
       if (m.draw_target === MARKING_TARGET_HAIR) {
-        hairMarkings.push({
-          icon: m.icon,
-          iconState: m.icon_state,
-          color: m.color,
-        });
+        hairMarkings.push({ icon: m.icon, iconState: m.icon_state, color: m.color });
       } else if (m.draw_target === MARKING_TARGET_SKIN && m.body_parts) {
         for (const organTag of m.body_parts) {
-          markings.push({
-            icon: m.icon,
-            iconState: `${m.icon_state}-${organTag}`,
-            organTag,
-            color: m.color,
-          });
+          markings.push({ icon: m.icon, iconState: `${m.icon_state}-${organTag}`, organTag, color: m.color });
         }
       }
     }
@@ -586,14 +559,10 @@ function buildRenderConfig(data: CharacterData): CharacterRenderConfig | null {
     bodyBuild: buildIndex,
     direction: data.preview_dir,
     skinTone: data.s_tone || 0,
-    skinColor: (speciesInfo.appearance_flags & HAS_SKIN_COLOR)
-      ? data.skin_color
-      : null,
+    skinColor: (speciesInfo.appearance_flags & HAS_SKIN_COLOR) ? data.skin_color : null,
     hairStyle: hairStyle?.icon_state || "",
     hairColor: data.hair_color,
-    secondaryHairColor: hairStyle?.has_secondary
-      ? data.s_hair_color
-      : null,
+    secondaryHairColor: hairStyle?.has_secondary ? data.s_hair_color : null,
     hairDmiFile,
     facialStyle: facialStyle?.icon_state || "",
     facialColor: data.facial_color,
@@ -617,30 +586,8 @@ function buildSlotRenderConfig(
 ): CharacterRenderConfig | null {
   if (!appearance.icobase) return null;
 
-  // Resolve body build
-  const buildName = appearance.body || "Default";
-  const buildData = data.body_build_render?.[buildName];
-  const buildIndex = buildData?.index || "";
-  const isSlim = buildIndex.indexOf("_slim") !== -1;
-
-  // Resolve hair DMI file
-  const hairKey = appearance.hair_key;
-  let hairDmiFile = data.hair_icons?.["default"]?.[hairKey] || "";
-  if (isSlim && data.hair_icons?.["slim"]?.[hairKey]) {
-    hairDmiFile = data.hair_icons["slim"][hairKey];
-  }
-
-  let facialDmiFile = data.facial_hair_icons?.["default"]?.[hairKey] || "";
-  if (isSlim && data.facial_hair_icons?.["slim"]?.[hairKey]) {
-    facialDmiFile = data.facial_hair_icons["slim"][hairKey];
-  }
-
-  const hairStyle = data.hair_styles?.find(
-    (h) => h.name === appearance.h_style
-  );
-  const facialStyle = data.facial_hair_styles?.find(
-    (f) => f.name === appearance.f_style
-  );
+  const { buildIndex, hairDmiFile, facialDmiFile, hairStyle, facialStyle } =
+    resolveHairInfo(data, appearance.body || "Default", appearance.hair_key, appearance.h_style, appearance.f_style);
 
   return {
     species: appearance.species,
@@ -648,14 +595,10 @@ function buildSlotRenderConfig(
     bodyBuild: buildIndex,
     direction: SOUTH,
     skinTone: appearance.s_tone || 0,
-    skinColor: (appearance.appearance_flags & HAS_SKIN_COLOR)
-      ? appearance.skin_color
-      : null,
+    skinColor: (appearance.appearance_flags & HAS_SKIN_COLOR) ? appearance.skin_color : null,
     hairStyle: hairStyle?.icon_state || "",
     hairColor: appearance.hair_color,
-    secondaryHairColor: hairStyle?.has_secondary
-      ? appearance.s_hair_color
-      : null,
+    secondaryHairColor: hairStyle?.has_secondary ? appearance.s_hair_color : null,
     hairDmiFile,
     facialStyle: facialStyle?.icon_state || "",
     facialColor: appearance.facial_color,
@@ -975,26 +918,20 @@ const CharacterSlotSelector = (props: {
     }
   };
 
+  const displayName = currentSlotName.length > 14
+    ? currentSlotName.slice(0, 13) + "…"
+    : currentSlotName;
+
   return (
     <Box className="CharSetup__slotSelectorWrap">
       <Box className="CharSetup__slotSelector">
-        <CsButton
-          compact
-          icon="chevron-left"
-          onClick={() => {
-            const maxSlots = data.config.character_slots;
-            const prev =
-              data.default_slot <= 1 ? maxSlots : data.default_slot - 1;
-            act("loadSlot", { slot: prev });
-          }}
-        />
         <Box
           className="CharSetup__slotName"
           onClick={handleOpenPicker}
           style={{ cursor: "pointer" }}
         >
           <Box className="CharSetup__slotNameLabel">
-            {currentSlotName}
+            {displayName}
             <Icon
               name={showPicker ? "chevron-up" : "chevron-down"}
               ml={0.5}
@@ -1005,16 +942,6 @@ const CharacterSlotSelector = (props: {
             {data.default_slot} / {data.config.character_slots}
           </Box>
         </Box>
-        <CsButton
-          compact
-          icon="chevron-right"
-          onClick={() => {
-            const maxSlots = data.config.character_slots;
-            const next =
-              data.default_slot >= maxSlots ? 1 : data.default_slot + 1;
-            act("loadSlot", { slot: next });
-          }}
-        />
         <CsButton
           compact
           icon="undo"
@@ -1585,7 +1512,6 @@ const IdentityPanel = (props: {
               <Box className="CharSetup__idCardFieldLabel">Age</Box>
               <Box className="CharSetup__ageInputWrap">
                 <NumberInput
-                  fluid
                   value={data.age}
                   minValue={speciesInfo?.min_age || 17}
                   maxValue={speciesInfo?.max_age || 85}
@@ -4026,10 +3952,6 @@ function getJobStatusText(job: JobInfo): string | null {
 
 // ================================================================
 // Personality Panel — Traits, antag roles, uplink sources
-// ================================================================
-
-// ================================================================
-// Personality Panel — Medical record styled interface
 // ================================================================
 
 // Category icons for trait groups
