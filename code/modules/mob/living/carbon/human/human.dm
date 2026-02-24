@@ -1806,21 +1806,30 @@
 		if(aim_assist_icon)
 			aim_assist_icon.icon_state = "aim_assist0"
 
-/mob/living/carbon/human/proc/toggle_twohanded_mode()
-	set name = "Toggle Twohanded Mode"
+/mob/living/carbon/human/proc/verb_toggle_twohanded_mode()
+	set name = "Toggle Two-Handed Mode"
 	set desc = "Choose whether your RMB clicks things with offhand or acts normally."
 	set category = "IC"
 
-	if(!twohanded_mode)
-		twohanded_mode = TRUE
-		to_chat(src, SPAN("notice", "Your can now use your offhand via right-clicking."))
+	toggle_twohanded_mode()
+
+/mob/living/carbon/human/proc/toggle_twohanded_mode(new_state = -1, silent = FALSE)
+	twohanded_mode = (new_state == -1) ? !twohanded_mode : new_state
+
+	if(twohanded_mode)
+		if(!silent)
+			to_chat(src, SPAN("notice", "Your can now use your offhand via right-clicking."))
 		if(twohanded_mode_icon)
 			twohanded_mode_icon.icon_state = "act_twohanded1"
 	else
-		twohanded_mode = FALSE
-		to_chat(src, SPAN("notice", "You will no longer use your offhand via right-clicking."))
+		if(!silent)
+			to_chat(src, SPAN("notice", "You will no longer use your offhand via right-clicking."))
 		if(twohanded_mode_icon)
 			twohanded_mode_icon.icon_state = "act_twohanded0"
+
+	if(my_client)
+		winset(src, "mapwindow.rightclickblocker", "is-visible=[twohanded_mode ? "true" : "false"]") // Please, forgive me for this abomination, but I can't think of a faster, mostly-client-sided way to preserve Shift, Ctrl and Alt macros' behavior.
+		winset(src, "mapwindow.map", "right-click=[twohanded_mode ? "true" : "false"]")
 
 /mob/living/carbon/human/is_deaf()
 	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]

@@ -103,7 +103,7 @@
 
 	face_atom(A) // change direction to face what you clicked on
 
-	var/obj/item/I = twohanded_rmb ? get_active_hand() : get_inactive_hand()
+	var/obj/item/I = twohanded_rmb ? get_inactive_hand() : get_active_hand()
 
 	if(!canClick(I)) // in the year 2000...
 		return
@@ -162,7 +162,7 @@
 		if(isliving(A) && !Adjacent(A) || !isliving(A))
 			var/turf/target_turf = get_step_towards(src, A)
 			if(istype(target_turf))
-				for(var/thing in A.contents)
+				for(var/thing in target_turf.contents)
 					if(thing == src || !isliving(thing) || !Adjacent(thing))
 						continue
 					var/mob/living/L = thing
@@ -172,7 +172,7 @@
 							I.afterattack(L, src, 1, params)
 					else
 						setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-						UnarmedAttack(A, 1)
+						UnarmedAttack(L, 1)
 					trigger_aiming(TARGET_CAN_CLICK)
 					return 1
 
