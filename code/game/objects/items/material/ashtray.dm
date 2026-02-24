@@ -82,7 +82,7 @@
 		V.use(1)
 		var/obj/item/hookah_coal/makeshift/HC = new (get_turf(src))
 		HC.color = color
-		if(user.get_inactive_hand() == src)
+		if(user.has_in_passive_hand(src))
 			user.drop(src)
 			user.pick_or_drop(HC)
 		qdel_self()

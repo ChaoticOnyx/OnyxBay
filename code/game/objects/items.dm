@@ -269,9 +269,9 @@
 		if(loc != H && H.IsAdvancedToolUser(TRUE) == FALSE)
 			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
 			return
-		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
+		var/obj/item/organ/external/temp = H.rightclicked ? H.organs_by_name[BP_L_HAND] : H.organs_by_name[BP_R_HAND]
 		if (user.hand)
-			temp = H.organs_by_name[BP_L_HAND]
+			temp = H.rightclicked ? H.organs_by_name[BP_R_HAND] : H.organs_by_name[BP_L_HAND]
 		if(temp && !temp.is_usable())
 			to_chat(user, SPAN("notice", "You try to move your [temp.name], but cannot!"))
 			return
@@ -306,7 +306,8 @@
 
 	pickup(user, changing_slots)
 
-	if(user.put_in_active_hand(src))
+	var/put_in_hands_result = user.put_in_clicking_hand(src)
+	if(put_in_hands_result)
 		if(isturf(old_loc))
 			var/obj/effect/temporary/item_pickup_ghost/ghost = new /obj/effect/temporary/item_pickup_ghost(old_loc, src)
 			ghost.animate_towards(user)

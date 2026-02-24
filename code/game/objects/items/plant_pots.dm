@@ -38,13 +38,13 @@
 	if(istype(loc, /obj/item/storage))
 		return ..()
 
-	if(loc == user && user.get_inactive_hand() != src)
+	if(loc == user && !user.has_in_passive_hand(src))
 		return ..()
 
 	if(!my_plant && !my_secret)
 		return ..()
 
-	if(user.a_intent == I_GRAB || user.get_inactive_hand() == src)
+	if(user.a_intent == I_GRAB || user.has_in_passive_hand(src))
 		uproot(user)
 		return
 

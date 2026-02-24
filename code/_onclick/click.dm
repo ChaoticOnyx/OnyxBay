@@ -44,7 +44,7 @@
 
 	next_click = world.time + 1
 
-	var/twohanded_rmb = FALSE
+	rightclicked = FALSE
 	var/list/modifiers = params2list(params)
 	var/dragged = modifiers["drag"]
 	if(dragged && !modifiers[dragged])
@@ -69,11 +69,11 @@
 			CtrlRightClickOn(A)
 			return 1
 		if(twohanded_mode)
-			twohanded_rmb = TRUE
+			rightclicked = TRUE
 		else
 			return
 
-	if(!twohanded_rmb)
+	if(!rightclicked)
 		if(modifiers["shift"] && modifiers["ctrl"])
 			CtrlShiftClickOn(A)
 			return 1
@@ -98,12 +98,17 @@
 			CtrlClickOn(A)
 			return 1
 
+	. = NormalClickOn(A, params)
+	rightclicked = FALSE
+	return
+
+/mob/proc/NormalClickOn(atom/A, params)
 	if(stat || paralysis || stunned || weakened)
 		return
 
 	face_atom(A) // change direction to face what you clicked on
 
-	var/obj/item/I = twohanded_rmb ? get_inactive_hand() : get_active_hand()
+	var/obj/item/I = rightclicked ? get_inactive_hand() : get_active_hand()
 
 	if(!canClick(I)) // in the year 2000...
 		return

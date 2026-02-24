@@ -322,7 +322,7 @@
 	if(target.type == /atom/movable/screen)
 		return
 
-	var/atom/movable/item = get_active_hand()
+	var/atom/movable/item = get_clicking_hand()
 
 	if(!item)
 		return

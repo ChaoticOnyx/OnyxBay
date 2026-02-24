@@ -78,6 +78,10 @@
 		return TRUE
 	if(master)
 		var/obj/item/I = usr.get_active_hand()
+		if(usr.twohanded_mode)
+			var/list/modifiers = params2list(params)
+			if(modifiers["right"])
+				I = usr.get_inactive_hand()
 		if(I)
 			usr.ClickOn(master)
 
@@ -579,7 +583,7 @@
 			return 0
 	return 1
 
-/atom/movable/screen/inventory/Click()
+/atom/movable/screen/inventory/Click(location, control, params)
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	if(!usr.canClick())
@@ -607,6 +611,11 @@
 
 				H.show_inventory?.open()
 		else
+			usr.rightclicked = FALSE
+			if(usr.twohanded_mode)
+				var/list/modifiers = params2list(params)
+				if(modifiers["right"])
+					usr.rightclicked = TRUE
 			if(usr.attack_ui(slot_id))
 				usr.update_inv_l_hand(0)
 				usr.update_inv_r_hand(0)

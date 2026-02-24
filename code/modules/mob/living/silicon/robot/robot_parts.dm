@@ -144,9 +144,9 @@
 			var/obj/item/secbot_assembly/ed209_assembly/B = new /obj/item/secbot_assembly/ed209_assembly
 			B.forceMove(get_turf(src))
 			to_chat(user, "<span class='notice'>You armed the robot frame.</span>")
-			if (user.get_inactive_hand()==src)
+			if(user.has_in_passive_hand(src))
 				user.drop(src)
-				user.put_in_inactive_hand(B)
+				user.put_in_passive_hand(B)
 			qdel(src)
 		else
 			to_chat(user, "<span class='warning'>You need one sheet of metal to arm the robot frame.</span>")

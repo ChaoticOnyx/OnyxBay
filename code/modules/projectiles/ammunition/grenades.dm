@@ -121,7 +121,7 @@
 	return ..()
 
 /obj/item/ammo_casing/grenade/loaded/attack_hand(mob/user)
-	if(opened == TRUE && grenade && user.get_inactive_hand() == src)
+	if(opened == TRUE && grenade && user.has_in_passive_hand(src))
 		to_chat(user, "You remove \the [grenade] from \the [src].")
 		user.pick_or_drop(grenade)
 		grenade = null

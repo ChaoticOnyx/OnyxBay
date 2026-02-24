@@ -624,7 +624,7 @@
 				user.visible_message("<span class='[class]'>[user] burns right through \the [src], turning it to ash. It flutters through the air before settling on the floor in a heap.</span>", \
 				"<span class='[class]'>You burn right through \the [src], turning it to ash. It flutters through the air before settling on the floor in a heap.</span>")
 
-				if(user.get_inactive_hand() == src)
+				if(user.has_in_hands(src))
 					user.drop(src)
 
 				new /obj/effect/decal/cleanable/ash(src.loc)

@@ -277,7 +277,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		return FALSE
 	if(!MayAdjust(user))
 		return FALSE
-	if(W != user.get_active_hand())
+	if(!user.has_in_hands(W))
 		return FALSE
 
 	if(!CanPhysicallyInteract(user))

@@ -58,7 +58,7 @@
 
 		var/obj/item/stack/rods/R = src
 		src = null
-		var/replace = (user.get_inactive_hand() == R)
+		var/replace = user.has_in_passive_hand(R)
 		R.use(2)
 		if(!R && replace)
 			user.pick_or_drop(new_item)

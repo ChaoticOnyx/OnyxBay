@@ -28,7 +28,7 @@
 		loaded.len--
 		if(ismob(unloader))
 			var/mob/user = unloader
-			if(user.get_inactive_hand() == src)
+			if(user.has_in_passive_hand(src))
 				user.pick_or_drop(C)
 			else
 				C.forceMove(get_turf(unloader))

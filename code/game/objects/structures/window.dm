@@ -595,7 +595,7 @@
 /obj/structure/window/reinforced/polarized/attackby(obj/item/W as obj, mob/user as mob)
 	if(isMultitool(W))
 		var/t = sanitizeSafe(input(user, "Enter the ID for the window.", src.name, null), MAX_NAME_LEN)
-		if (user.get_active_hand() != W)
+		if(!user.has_in_hands(W))
 			return
 		if (!in_range(src, user) && src.loc != user)
 			return

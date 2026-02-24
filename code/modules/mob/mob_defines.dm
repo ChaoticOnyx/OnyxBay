@@ -94,6 +94,7 @@
 	var/real_name = null
 	var/aim_assist = FALSE
 	var/twohanded_mode = FALSE
+	var/rightclicked = FALSE // Only TRUE if the last click was a "functional" RMB click, so we don't have to pass an extra argument through a massive sequence of proc calls.
 
 	var/bhunger = 0			//Carbon
 

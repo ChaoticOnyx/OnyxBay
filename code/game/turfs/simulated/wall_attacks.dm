@@ -358,7 +358,7 @@
 					to_chat(user, SPAN("notice","You struggle to pry off the outer sheath."))
 					playsound(src, 'sound/items/Crowbar.ogg', 100, 1)
 					if(!do_after(user, 100, src, luck_check_type = LUCK_CHECK_ENG) || !istype(src, /turf/simulated/wall) || !user || !W || !T )	return
-					if(user.loc == T && user.get_active_hand() == W )
+					if(user.loc == T && user.has_in_hands(W))
 						to_chat(user, SPAN("notice","You pry off the outer sheath."))
 						dismantle_wall(TRUE)
 					return

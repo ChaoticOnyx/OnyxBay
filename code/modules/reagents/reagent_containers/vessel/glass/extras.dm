@@ -25,7 +25,7 @@
 		return ..()
 
 /obj/item/reagent_containers/vessel/glass/attack_hand(mob/user as mob)
-	if(src != user.get_inactive_hand())
+	if(!user.has_in_passive_hand(src))
 		return ..()
 
 	if(!extras.len)
