@@ -687,11 +687,19 @@ meteor_act
 	var/d_mult = 1
 	if(istype(attacking_mob,/mob/living/carbon/human))
 		var/mob/living/carbon/human/attacker = attacking_mob
-		var/obj/item/weapon_def
-		if(defender.blocking_hand && defender.get_inactive_hand())
-			weapon_def = defender.get_inactive_hand()
-		else if(defender.get_active_hand())
-			weapon_def = defender.get_active_hand()
+
+		// Choosing the best shield
+		var/obj/item/weapon_def = defender.get_inactive_hand()
+		var/obj/item/weapon_def_backup = defender.get_active_hand()
+
+		var/weapon_def_score = istype(weapon_def) ? (weapon_def.mod_weight + weapon_def.mod_reach) * weapon_def.mod_shield : 0
+		var/weapon_def_backup_score = istype(weapon_def_backup) ? (weapon_def_backup.mod_weight + weapon_def_backup.mod_reach) * weapon_def_backup.mod_shield : 0
+
+		if(!weapon_def_score && !weapon_def_backup_score)
+			weapon_def = null
+		else if(weapon_def_backup_score > weapon_def_score) // Offhands get higher priority
+			weapon_def = weapon_def_backup
+
 		if(weapon_def)
 			if(!weapon_def.force)
 				defender.useblock_off()
@@ -699,7 +707,7 @@ meteor_act
 				return 0 //For the case of candles and dices lmao
 
 			if(weapon_def.mod_reach < weapon_atk.mod_reach)
-				if(((weapon_atk.mod_reach + weapon_atk.mod_weight)/2 - weapon_def.mod_reach) > 0)
+				if((weapon_atk.mod_reach + weapon_atk.mod_weight)/2 > weapon_def.mod_reach)
 					d_mult = ((weapon_atk.mod_reach + weapon_atk.mod_weight)/2 - weapon_def.mod_reach)/0.25
 			else if(weapon_def.mod_weight < weapon_atk.mod_weight)
 				d_mult = (weapon_atk.mod_weight - weapon_def.mod_weight)/0.5
@@ -738,14 +746,20 @@ meteor_act
 	var/mob/living/carbon/human/defender = src
 	if(istype(attacking_mob,/mob/living/carbon/human) || istype(attacking_mob,/mob/living/simple_animal))
 		var/mob/living/attacker = attacking_mob
-		var/obj/item/weapon_def
 
-		if(defender.blocking_hand && defender.get_inactive_hand())
-			weapon_def = defender.get_inactive_hand()
-		else if(defender.get_active_hand())
-			weapon_def = defender.get_active_hand()
+		// Choosing the best shield
+		var/obj/item/weapon_def = defender.get_inactive_hand()
+		var/obj/item/weapon_def_backup = defender.get_active_hand()
 
-		if(weapon_def)
+		var/weapon_def_score = istype(weapon_def) ? (weapon_def.mod_handy*1.5 + weapon_def.mod_weight + weapon_def.mod_reach) : 0
+		var/weapon_def_backup_score = istype(weapon_def_backup) ? (weapon_def_backup.mod_handy*1.5 + weapon_def_backup.mod_weight + weapon_def_backup.mod_reach) : 0
+
+		if(!weapon_def_score && !weapon_def_backup_score)
+			weapon_def = null
+		else if(weapon_def_backup_score > weapon_def_score) // Offhands get higher priority
+			weapon_def = weapon_def_backup
+
+		if(istype(weapon_def))
 			if(!weapon_def.force)
 				defender.useblock_off()
 				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s attack with [weapon_def]."))
@@ -919,26 +933,29 @@ meteor_act
 	var/throw_damage = O.throwforce * (TT.speed/THROWFORCE_SPEED_DIVISOR)
 
 	if(blocking)
-		var/obj/item/weapon_def
-		if(blocking_hand && get_inactive_hand())
+		// Choosing the best shield
+		var/obj/item/weapon_def = get_active_hand()
+		if(!weapon_def || !(weapon_def.w_class >= O.w_class || weapon_def.weapon_def.mod_shield > 1))
 			weapon_def = get_inactive_hand()
-		else if(get_active_hand())
-			weapon_def = get_active_hand()
+		else
+			var/obj/item/weapon_def_backup = get_inactive_hand()
+			if(weapon_def_backup && (weapon_def_backup.w_class > O.w_class || weapon_def.weapon_def.mod_shield > 1))
+				weapon_def = (weapon_def.mod_shield > weapon_def_backup.mod_shield) ? weapon_def : weapon_def_backup
 
-		if(weapon_def)
-			if(weapon_def.force && weapon_def.w_class >= O.w_class)
-				var/dir = get_dir(src,O)
-				O.throw_at(get_edge_target_turf(src, dir), 1)
+		// Checking if anything works as a shield
+		if(weapon_def && (weapon_def.w_class >= O.w_class || weapon_def.weapon_def.mod_shield > 1))
+			var/dir = get_dir(src, O)
+			O.throw_at(get_edge_target_turf(src, dir), 1)
 
-				visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
-				playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
+			visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
+			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
 
-				damage_poise(throw_damage / weapon_def.mod_shield)
-				if(poise < throw_damage / weapon_def.mod_shield)
-					visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
-					apply_effect(2, WEAKEN, 0)
-					useblock_off()
-				return
+			damage_poise(throw_damage / weapon_def.mod_shield)
+			if(poise < throw_damage / weapon_def.mod_shield)
+				visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
+				apply_effect(2, WEAKEN, 0)
+				useblock_off()
+			return
 
 
 	var/zone = BP_CHEST

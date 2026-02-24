@@ -91,6 +91,8 @@
 	var/next_move = null
 	var/hand = null
 	var/real_name = null
+	var/aim_assist = FALSE
+	var/twohanded_mode = FALSE
 
 	var/bhunger = 0			//Carbon
 

@@ -25,6 +25,7 @@
 	var/force = 0
 	var/attack_cooldown = DEFAULT_WEAPON_COOLDOWN // 0.5 second
 	var/attack_cooldown_real //Debug variable
+	var/last_attack_time = 0
 	var/mod_handy = 0.25 //Handiness modifier. i.e. 0.5 - pain in the ass to use, 1.0 - decent weapon, 1.5 - specialized for melee combat.
 	var/mod_reach = 0.25 //Length modifier. i.e. 0.35 - knives, 0.75 - toolboxes, 1.0 - crowbars, 1.25 - batons, 1.5 - spears and mops.
 	var/mod_weight = 0.25 //Weight modifier. i.e. 0.33 - knives, 0.67 - hatchets, 1.0 - crowbars and batons, 1.33 - tanks, 1.66 - toolboxes, 2.0 - axes.
@@ -1034,6 +1035,13 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	res_cd = (attack_cooldown + DEFAULT_WEAPON_COOLDOWN * (mod_weight / mod_handy)) * mod_speed // i.e. Default attack speed for the-most-generic-item is 1 hit/s
 	attack_cooldown_real = res_cd //Debug
 	return res_cd
+
+/obj/item/proc/set_cooldown()
+	last_attack_time = world.time
+	return last_attack_time
+
+/obj/item/proc/check_cooldown()
+	return (world.time > last_attack_time + update_attack_cooldown())
 
 /obj/item/proc/update_weapon_desc()
 	return

@@ -44,6 +44,7 @@
 
 	next_click = world.time + 1
 
+	var/twohanded_rmb = FALSE
 	var/list/modifiers = params2list(params)
 	var/dragged = modifiers["drag"]
 	if(dragged && !modifiers[dragged])
@@ -67,37 +68,44 @@
 		if(modifiers["ctrl"])
 			CtrlRightClickOn(A)
 			return 1
-		return
-	if(modifiers["shift"] && modifiers["ctrl"])
-		CtrlShiftClickOn(A)
-		return 1
-	if(modifiers["ctrl"] && modifiers["alt"])
-		CtrlAltClickOn(A)
-		return 1
-	if(modifiers["middle"])
-		if(modifiers["shift"])
-			ShiftMiddleClickOn(A)
-		else if(modifiers["alt"])
-			AltMiddleClickOn(A)
+		if(twohanded_mode)
+			twohanded_rmb = TRUE
 		else
-			MiddleClickOn(A)
-		return 1
-	if(modifiers["shift"])
-		ShiftClickOn(A)
-		return 0
-	if(modifiers["alt"]) // alt and alt-gr (rightalt)
-		AltClickOn(A)
-		return 1
-	if(modifiers["ctrl"])
-		CtrlClickOn(A)
-		return 1
+			return
+
+	if(!twohanded_rmb)
+		if(modifiers["shift"] && modifiers["ctrl"])
+			CtrlShiftClickOn(A)
+			return 1
+		if(modifiers["ctrl"] && modifiers["alt"])
+			CtrlAltClickOn(A)
+			return 1
+		if(modifiers["middle"])
+			if(modifiers["shift"])
+				ShiftMiddleClickOn(A)
+			else if(modifiers["alt"])
+				AltMiddleClickOn(A)
+			else
+				MiddleClickOn(A)
+			return 1
+		if(modifiers["shift"])
+			ShiftClickOn(A)
+			return 0
+		if(modifiers["alt"]) // alt and alt-gr (rightalt)
+			AltClickOn(A)
+			return 1
+		if(modifiers["ctrl"])
+			CtrlClickOn(A)
+			return 1
 
 	if(stat || paralysis || stunned || weakened)
 		return
 
 	face_atom(A) // change direction to face what you clicked on
 
-	if(!canClick()) // in the year 2000...
+	var/obj/item/I = twohanded_rmb ? get_active_hand() : get_inactive_hand()
+
+	if(!canClick(I)) // in the year 2000...
 		return
 
 	if(istype(loc, /obj/mecha))
@@ -117,8 +125,6 @@
 			trigger_aiming(TARGET_CAN_CLICK)
 			return 1
 		throw_mode_off()
-
-	var/obj/item/I = get_active_hand()
 
 	if(I == A) // Handle attack_self
 		I.attack_self(src)
@@ -151,6 +157,25 @@
 	//Atoms on turfs (not on your person)
 	// A is a turf or is on a turf, or in something on a turf (pen in a box); but not something in something on a turf (pen in a box in a backpack)
 	sdepth = A.storage_depth_turf()
+
+	if(aim_assist && (!sdepth || isturf(A) || isturf(A.loc)) && !istype(I, /obj/item/gun))
+		if(isliving(A) && !Adjacent(A) || !isliving(A))
+			var/turf/target_turf = get_step_towards(src, A)
+			if(istype(target_turf))
+				for(var/thing in A.contents)
+					if(thing == src || !isliving(thing) || !Adjacent(thing))
+						continue
+					var/mob/living/L = thing
+					if(I)
+						var/resolved = I.resolve_attackby(L, src, params)
+						if(resolved && L && I)
+							I.afterattack(L, src, 1, params)
+					else
+						setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+						UnarmedAttack(A, 1)
+					trigger_aiming(TARGET_CAN_CLICK)
+					return 1
+
 	if(isturf(A) || isturf(A.loc) || (sdepth != -1 && sdepth <= 1))
 		if(Adjacent(A)) // see adjacent.dm
 			for(var/atom/movable/AM in get_turf(A)) // Checks if A is obscured by something
@@ -182,7 +207,8 @@
 /mob/proc/setClickCooldown(timeout)
 	next_move = max(world.time + timeout, next_move)
 
-/mob/proc/canClick()
+/mob/proc/canClick(obj/item/I)
+	if(istype(I) && I.last_attack_time )
 	if(config.misc.no_click_cooldown || next_move <= world.time)
 		return 1
 	return 0

@@ -123,7 +123,6 @@
 	var/poise_pool = HUMAN_DEFAULT_POISE
 	var/poise = HUMAN_DEFAULT_POISE
 	var/poise_immune_until = 0
-	var/blocking_hand = 0 // 0 for main hand, 1 for offhand
 	var/last_block = 0
 
 	var/obj/item/grab/current_grab_type 	// What type of grab they use when they grab someone.
