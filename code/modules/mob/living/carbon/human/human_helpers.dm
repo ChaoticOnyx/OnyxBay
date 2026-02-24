@@ -525,6 +525,8 @@
 /mob/living/carbon/human/proc/update_hud_eye_glow()
 	var/obj/item/organ/internal/eyes/eyes = internal_organs_by_name[BP_EYES]
 	if(!istype(eyes))
+		eyes = internal_organs_by_name[BP_OPTICS]
+	if(!istype(eyes))
 		return
 	var/sightlights_active = FALSE
 	for(var/obj/item/organ_module/active/sightlights/S in eyes.organ_modules)

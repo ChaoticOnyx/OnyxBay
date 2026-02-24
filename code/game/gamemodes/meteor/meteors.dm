@@ -220,7 +220,11 @@
 		'sound/effects/explosions/meteor_hit4.ogg',
 		'sound/effects/explosions/meteor_hit5.ogg'
 	)
-	sound_to(world, sound(pick(hit_sounds), volume = 20))
+	var/sound/meteor_sound = sound(pick(hit_sounds), volume = 20)
+	for(var/mob/M in GLOB.player_list)
+		var/turf/T = get_turf(M)
+		if(T && T.z == src.z && !istype(M, /mob/new_player) && !isdeaf(M))
+			sound_to(M, meteor_sound)
 	if(heavy)
 		for(var/mob/M in GLOB.player_list)
 			var/turf/T = get_turf(M)

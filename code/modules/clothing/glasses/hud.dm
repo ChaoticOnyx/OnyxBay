@@ -105,6 +105,8 @@
 		"[H] carefully removed [extracted_matrix] from your eyes."
 	)
 	T.update_equipment_vision()
+	T.update_hud_eye_glow()
+	T.update_action_buttons()
 	return TRUE
 
 /obj/item/device/hudmatrix/proc/install_matrix_to_target(mob/living/carbon/human/H, mob/living/carbon/human/T, obj/item/organ_module/active/lenses/hud/hud)
@@ -438,6 +440,8 @@
 		"[extractor] carefully removed [extracted] from your eyes."
 	)
 	target.update_equipment_vision()
+	target.update_hud_eye_glow()
+	target.update_action_buttons()
 	return TRUE
 /obj/item/organ_module/active/lenses/hud/proc/get_eye_glow()
 	if(toggleable && !toggled)
