@@ -1790,21 +1790,37 @@
 		src.block_icon.icon_state = "act_block1"
 
 
-/mob/living/carbon/human/verb/blockswitch()
-	set name = "Block Hand Toggle"
-	set desc = "Choose whether to use your main hand or your off hand to block incoming attacks."
+/mob/living/carbon/human/verb/toggle_aim_assist()
+	set name = "Toggle Click Mode"
+	set desc = "Choose whether to click on anything or mobs only."
 	set category = "IC"
 
-	if(!blocking_hand)
-		blocking_hand = 1
-		to_chat(src, "<span class='notice'>You will use your off hand to block.</span>")
-		if(src.blockswitch_icon)
-			src.blockswitch_icon.icon_state = "act_blockswitch1"
+	if(!aim_assist)
+		aim_assist = TRUE
+		to_chat(src, SPAN("notice", "You will now prioritize mobs when clicking."))
+		if(aim_assist_icon)
+			aim_assist_icon.icon_state = "aim_assist1"
 	else
-		blocking_hand = 0
-		to_chat(src, "<span class='notice'>You will use your main hand to block.</span>")
-		if(src.blockswitch_icon)
-			src.blockswitch_icon.icon_state = "act_blockswitch0"
+		aim_assist = FALSE
+		to_chat(src, SPAN("notice", "You will now click on things normally."))
+		if(aim_assist_icon)
+			aim_assist_icon.icon_state = "aim_assist0"
+
+/mob/living/carbon/human/proc/toggle_twohanded_mode()
+	set name = "Toggle Twohanded Mode"
+	set desc = "Choose whether your RMB clicks things with offhand or acts normally."
+	set category = "IC"
+
+	if(!twohanded_mode)
+		twohanded_mode = TRUE
+		to_chat(src, SPAN("notice", "Your can now use your offhand via right-clicking."))
+		if(twohanded_mode_icon)
+			twohanded_mode_icon.icon_state = "act_twohanded1"
+	else
+		twohanded_mode = FALSE
+		to_chat(src, SPAN("notice", "You will no longer use your offhand via right-clicking."))
+		if(twohanded_mode_icon)
+			twohanded_mode_icon.icon_state = "act_twohanded0"
 
 /mob/living/carbon/human/is_deaf()
 	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]

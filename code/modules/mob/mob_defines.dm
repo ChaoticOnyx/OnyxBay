@@ -51,7 +51,8 @@
 	var/atom/movable/screen/pains = null
 	var/atom/movable/screen/throw_icon = null
 	var/atom/movable/screen/block_icon = null
-	var/atom/movable/screen/blockswitch_icon = null
+	var/atom/movable/screen/aim_assist_icon = null
+	var/atom/movable/screen/twohanded_mode_icon = null
 	var/atom/movable/screen/nutrition_icon = null
 	var/atom/movable/screen/hydration_icon = null
 	var/atom/movable/screen/bladder_icon = null

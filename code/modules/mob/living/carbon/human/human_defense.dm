@@ -936,15 +936,15 @@ meteor_act
 	if(blocking)
 		// Choosing the best shield
 		var/obj/item/weapon_def = get_active_hand()
-		if(!weapon_def || !(weapon_def.w_class >= O.w_class || weapon_def.weapon_def.mod_shield > 1))
+		if(!weapon_def || !(weapon_def.w_class >= O.w_class || weapon_def.mod_shield > 1))
 			weapon_def = get_inactive_hand()
 		else
 			var/obj/item/weapon_def_backup = get_inactive_hand()
-			if(weapon_def_backup && (weapon_def_backup.w_class > O.w_class || weapon_def.weapon_def.mod_shield > 1))
+			if(weapon_def_backup && (weapon_def_backup.w_class > O.w_class || weapon_def_backup.mod_shield > 1))
 				weapon_def = (weapon_def.mod_shield > weapon_def_backup.mod_shield) ? weapon_def : weapon_def_backup
 
 		// Checking if anything works as a shield
-		if(weapon_def && (weapon_def.w_class >= O.w_class || weapon_def.weapon_def.mod_shield > 1))
+		if(weapon_def && (weapon_def.w_class >= O.w_class || weapon_def.mod_shield > 1))
 			var/dir = get_dir(src, O)
 			O.throw_at(get_edge_target_turf(src, dir), 1)
 

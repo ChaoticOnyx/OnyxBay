@@ -236,6 +236,11 @@
 				var/mob/living/carbon/human/H = usr
 				H.quick_equip()
 
+		if("Twohanded Mode")
+			if(istype(usr,/mob/living/carbon/human))
+				var/mob/living/carbon/human/H = usr
+				H.toggle_twohanded_mode()
+
 		if("resist")
 			if(isliving(usr))
 				var/mob/living/L = usr
@@ -378,10 +383,10 @@
 				var/mob/living/carbon/human/H = usr
 				H.useblock()
 
-		if("blockswitch")
+		if("Click Mode")
 			if(istype(usr,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = usr
-				H.blockswitch()
+				H.toggle_aim_assist()
 
 		if("module")
 			if(isrobot(usr))

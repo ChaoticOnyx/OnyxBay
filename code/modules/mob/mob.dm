@@ -70,7 +70,8 @@
 	pains = null
 	throw_icon = null
 	block_icon = null
-	blockswitch_icon = null
+	aim_assist_icon = null
+	twohanded_mode_icon = null
 	nutrition_icon = null
 	hydration_icon = null
 	bladder_icon = null

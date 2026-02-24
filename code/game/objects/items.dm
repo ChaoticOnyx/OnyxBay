@@ -1038,7 +1038,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/proc/set_cooldown(override)
 	on_cooldown_until = world.time + (override ? override : update_attack_cooldown())
-	return last_attack_time
+	return on_cooldown_until
 
 /obj/item/proc/check_cooldown()
 	return (world.time > on_cooldown_until)
