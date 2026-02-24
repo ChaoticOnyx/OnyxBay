@@ -135,6 +135,33 @@
 		user.update_hud_eye_glow()
 		return
 
+	if(choices[choice] == "remove")
+		if(user.get_active_hand())
+			to_chat(user, SPAN("notice", "You need a free hand."))
+			return
+
+		var/obj/item/device/hudmatrix/M = matrix
+		if(!M)
+			return
+
+		matrix = null
+		overlay = null
+		vision_flags = initial(vision_flags)
+		see_invisible = initial(see_invisible)
+		darkness_view = initial(darkness_view)
+		flash_protection = initial(flash_protection)
+		sec_hud = FALSE
+		med_hud = FALSE
+		toggled = FALSE
+
+		if(!user.put_in_active_hand(M))
+			M.dropInto(get_turf(user))
+
+		to_chat(user, SPAN("notice", "You remove \the [M] from \the [src]."))
+		user.update_equipment_vision()
+		user.update_hud_eye_glow()
+		return
+
 /obj/item/organ_module/active/lenses/hud/attackby(obj/item/I, mob/user)
 	if(builtin)
 		return
