@@ -284,6 +284,29 @@
   z-index: 1;
 }
 
+.CharSetup__previewCanvas {
+  image-rendering: pixelated;
+  width: 10rem;
+  height: 10rem;
+  position: relative;
+  z-index: 1;
+}
+
+.CharSetup__slotPickerPreviewImg {
+  image-rendering: pixelated;
+  width: 4rem;
+  height: 4rem;
+}
+
+.CharSetup__compositorPreview {
+  image-rendering: pixelated;
+}
+
+.CharSetup__gearSpriteIcon {
+  image-rendering: pixelated;
+  display: block;
+}
+
 /* Loading spinner placeholder */
 .CharSetup__previewLoading {
   width: 10rem;
@@ -601,10 +624,7 @@
 .CharSetup__paperDollCenter {
   position: relative;
   width: 100%;
-  flex: 1 1 0;
-  min-height: 0;
-  max-height: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
 
   border: 0.0625rem solid rgba(100, 180, 255, 0.18);
   border-radius: 0.375rem;
@@ -679,6 +699,452 @@
   align-items: center;
   justify-content: center;
   z-index: 1;
+}
+
+/* =========================================================
+ * WARDROBE — Sims-style three-pane layout
+ * ========================================================= */
+
+/* Equipment mode: [doll column] | [item browser] */
+.CharSetup__wardrobeLayout {
+  display: flex;
+  gap: 0.5rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.CharSetup__wardrobeCenter {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.CharSetup__wardrobeRight {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Slot icon bar — 4-column grid below the doll */
+.CharSetup__slotIconBar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.25rem;
+  width: 20rem;
+}
+
+.CharSetup__slotIconBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  padding: 0.375rem 0.25rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 90ms ease, border-color 90ms ease;
+
+  &:hover {
+    background: rgba(77, 182, 172, 0.08);
+    border-color: rgba(77, 182, 172, 0.25);
+  }
+}
+
+.CharSetup__slotIconBtn--active {
+  background: rgba(77, 182, 172, 0.14);
+  border-color: rgba(77, 182, 172, 0.55);
+
+  &:hover {
+    background: rgba(77, 182, 172, 0.19);
+    border-color: rgba(77, 182, 172, 0.70);
+  }
+}
+
+.CharSetup__slotIconBtn--equipped {
+  border-color: rgba(80, 200, 120, 0.22);
+  background: rgba(80, 200, 120, 0.05);
+
+  &:hover {
+    background: rgba(80, 200, 120, 0.10);
+    border-color: rgba(80, 200, 120, 0.40);
+  }
+}
+
+.CharSetup__slotIconBtn--equipped.CharSetup__slotIconBtn--active {
+  background: rgba(80, 200, 120, 0.14);
+  border-color: rgba(80, 200, 120, 0.55);
+}
+
+.CharSetup__slotIconBtnIcon {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  opacity: 0.5;
+  image-rendering: pixelated;
+
+  .CharSetup__slotIconBtn--equipped &,
+  .CharSetup__slotIconBtn--active & {
+    opacity: 1;
+  }
+}
+
+.CharSetup__slotIconBtnLabel {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(180, 210, 255, 0.40);
+  white-space: nowrap;
+
+  .CharSetup__slotIconBtn--active & {
+    color: rgba(77, 182, 172, 0.90);
+  }
+
+  .CharSetup__slotIconBtn--equipped & {
+    color: rgba(80, 200, 120, 0.70);
+  }
+}
+
+/* Underwear + backpack row below slot bar */
+.CharSetup__dollUnderwear {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem 0.375rem;
+  width: 20rem;
+}
+
+/* Misc mode: [category list] | [item browser] */
+.CharSetup__wardrobeMiscLayout {
+  display: flex;
+  gap: 0.5rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.CharSetup__wardrobeMiscCats {
+  flex: 0 0 9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+
+/* ── Character doll container ── */
+.CharSetup__dollContainer {
+  position: relative;
+  width: 20rem;
+  height: 20rem;
+}
+
+/* ── Body-part highlight overlays — sprite silhouettes with teal tint ── */
+.CharSetup__dollPartHighlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  image-rendering: pixelated;
+  /* z-index 4 — above character sprite (1), scanlines (2), corner brackets (3) */
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 120ms ease;
+
+  &--equipped {
+    opacity: 0;
+  }
+
+  &--hovered {
+    opacity: 0.55;
+  }
+}
+
+/* Zone label — hover-only, fades when mouse leaves (driven by JS state) */
+.CharSetup__dollZoneLabel {
+  position: absolute;
+  top: 0.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  pointer-events: none;
+
+  padding: 0.1875rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  background: rgba(8, 14, 26, 0.92);
+  border: 0.0625rem solid rgba(77, 182, 172, 0.40);
+  color: rgba(77, 182, 172, 0.90);
+}
+
+/* ── Compact slot tiles (left pane) ── */
+.CharSetup__slotTile {
+  display: flex;
+  align-items: center;
+  gap: 0.4375rem;
+  padding: 0.3125rem 0.5rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  transition:
+    background 90ms ease,
+    border-color 90ms ease,
+    box-shadow 90ms ease;
+
+  &:hover {
+    background: rgba(77, 182, 172, 0.08);
+    border-color: rgba(77, 182, 172, 0.25);
+  }
+}
+
+.CharSetup__slotTile--active {
+  background: rgba(77, 182, 172, 0.14);
+  border-color: rgba(77, 182, 172, 0.55);
+  box-shadow: 0 0 0.5rem rgba(77, 182, 172, 0.10);
+
+  &:hover {
+    background: rgba(77, 182, 172, 0.19);
+    border-color: rgba(77, 182, 172, 0.70);
+  }
+}
+
+.CharSetup__slotTile--equipped {
+  border-color: rgba(80, 200, 120, 0.22);
+  background: rgba(80, 200, 120, 0.05);
+
+  &:hover {
+    background: rgba(80, 200, 120, 0.10);
+    border-color: rgba(80, 200, 120, 0.40);
+  }
+}
+
+.CharSetup__slotTile--equipped.CharSetup__slotTile--active {
+  background: rgba(80, 200, 120, 0.14);
+  border-color: rgba(80, 200, 120, 0.55);
+  box-shadow: 0 0 0.5rem rgba(80, 200, 120, 0.10);
+}
+
+.CharSetup__slotTileIcon {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  opacity: 0.45;
+  image-rendering: pixelated;
+}
+
+.CharSetup__slotTile--equipped .CharSetup__slotTileIcon,
+.CharSetup__slotTile--active .CharSetup__slotTileIcon {
+  opacity: 1;
+}
+
+.CharSetup__slotTileText {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Default: just the slot name, muted uppercase */
+.CharSetup__slotTileName {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(180, 210, 255, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.CharSetup__slotTile:hover .CharSetup__slotTileName {
+  color: rgba(180, 210, 255, 0.75);
+}
+
+.CharSetup__slotTile--active .CharSetup__slotTileName {
+  color: rgba(77, 182, 172, 0.90);
+}
+
+/* When equipped: tile name shows item name, no uppercase */
+.CharSetup__slotTile--equipped .CharSetup__slotTileName {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: rgba(80, 200, 120, 0.80);
+}
+
+/* Slot name sub-label (shown when equipped) */
+.CharSetup__slotTileSlot {
+  font-size: 0.5625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(80, 200, 120, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Right pane empty state hint */
+/* ── Loadout HUD bar (teal-themed, mirrors augHud) ── */
+@keyframes lpBarPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.65; }
+}
+
+.CharSetup__loadoutHud {
+  flex-shrink: 0;
+  padding: 0.625rem 0.75rem;
+  background:
+    linear-gradient(135deg, rgba(77, 182, 172, 0.07) 0%, rgba(77, 182, 172, 0.02) 100%),
+    rgba(0, 0, 0, 0.30);
+  border: 0.0625rem solid rgba(77, 182, 172, 0.18);
+  border-radius: 0.375rem;
+  box-shadow:
+    inset 0 0 1.5rem rgba(0, 0, 0, 0.3),
+    0 0 0.5rem rgba(77, 182, 172, 0.06);
+  margin-bottom: 0.5rem;
+}
+
+.CharSetup__loadoutHudRow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.375rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.CharSetup__loadoutHudLabel {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(77, 182, 172, 0.90);
+  text-transform: uppercase;
+  font-family: var(--cs-font-mono);
+}
+
+.CharSetup__lpBarWrap {
+  position: relative;
+  flex: 1;
+  height: 1.125rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.0625rem solid rgba(77, 182, 172, 0.20);
+  border-radius: 0.125rem;
+  overflow: hidden;
+
+  &--over {
+    border-color: rgba(244, 67, 54, 0.40);
+  }
+}
+
+.CharSetup__lpBarFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(77, 182, 172, 0.60), rgba(77, 182, 172, 0.35));
+  border-right: 0.125rem solid rgba(77, 182, 172, 0.85);
+  transition: width 200ms ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 0.25rem,
+      rgba(0, 0, 0, 0.15) 0.25rem,
+      rgba(0, 0, 0, 0.15) 0.5rem
+    );
+  }
+
+  &--over {
+    background: linear-gradient(90deg, rgba(244, 67, 54, 0.70), rgba(244, 67, 54, 0.45));
+    border-right-color: rgba(244, 67, 54, 0.90);
+    animation: lpBarPulse 1.2s ease-in-out infinite;
+  }
+}
+
+.CharSetup__lpBarText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  color: rgba(255, 255, 255, 0.90);
+  text-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.05em;
+}
+
+.CharSetup__loadoutHudSetRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.CharSetup__loadoutHudSetLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  font-family: var(--cs-font-mono);
+  color: rgba(180, 210, 255, 0.70);
+  min-width: 6rem;
+  text-align: center;
+}
+
+/* ── Underwear labelled items ── */
+.CharSetup__dollUnderwearItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.CharSetup__dollUnderwearLabel {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(180, 210, 255, 0.40);
+  padding-left: 0.125rem;
+}
+
+.CharSetup__wardrobeHint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 0.5rem;
+  color: rgba(180, 175, 160, 0.28);
+  font-size: 0.8125rem;
+  font-style: italic;
+  text-align: center;
 }
 
 /* Zoomed head preview — crops the full sprite to show only the head */
@@ -1298,6 +1764,27 @@
   gap: 0.5rem;
 }
 
+/* In-card section separator — thin rule with centred label */
+.CharSetup__idCardSectionSep {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: rgba(200, 195, 170, 0.30);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0.125rem 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
 .CharSetup__idCardFieldLabel {
   font-size: 0.75rem;
   font-weight: 700;
@@ -1305,6 +1792,21 @@
   text-transform: uppercase;
   color: rgba(200, 195, 170, 0.65);
   margin-bottom: 0.1875rem;
+}
+
+/* Slightly larger age input */
+.CharSetup__ageInputWrap {
+  .NumberInput {
+    font-size: 0.875rem;
+    font-weight: 700;
+    font-family: var(--cs-font-mono);
+  }
+
+  .NumberInput__content {
+    font-size: 0.875rem;
+    font-weight: 700;
+    font-family: var(--cs-font-mono);
+  }
 }
 
 /* Card footer */
@@ -1622,7 +2124,8 @@
   border-radius: 0.125rem;
 }
 
-.CharSetup__gearIcon .game-icon {
+.CharSetup__gearIcon .game-icon,
+.CharSetup__gearIcon .CharSetup__gearSpriteIcon {
   width: 2rem;
   height: 2rem;
   image-rendering: pixelated;
@@ -1652,7 +2155,8 @@
   image-rendering: pixelated;
 }
 
-.CharSetup__gearDetailIcon .game-icon {
+.CharSetup__gearDetailIcon .game-icon,
+.CharSetup__gearDetailIcon .CharSetup__gearSpriteIcon {
   width: 3rem;
   height: 3rem;
   image-rendering: pixelated;
@@ -1918,6 +2422,102 @@
       inset 0 0.0625rem 0 rgba(255, 255, 255, 0.06),
       0 0 0.625rem rgba(100, 200, 130, 0.12);
     filter: brightness(1.10);
+  }
+}
+
+// good / bad / average / label — TGUI semantic color aliases
+.CharSetup__btn--good,
+.CharSetup__btn--green {
+  color: rgba(130, 210, 150, 0.90);
+  border-color: rgba(100, 200, 130, 0.20);
+  background:
+    linear-gradient(180deg, rgba(30, 60, 35, 0.65) 0%, rgba(20, 45, 25, 0.70) 100%);
+
+  &:hover {
+    color: rgba(150, 230, 170, 0.95);
+    border-color: rgba(100, 200, 130, 0.40);
+    box-shadow:
+      inset 0 0.0625rem 0 rgba(255, 255, 255, 0.06),
+      0 0 0.625rem rgba(100, 200, 130, 0.12);
+    filter: brightness(1.10);
+  }
+}
+
+.CharSetup__btn--bad,
+.CharSetup__btn--red {
+  color: rgba(240, 130, 120, 0.90);
+  border-color: rgba(244, 67, 54, 0.20);
+  background:
+    linear-gradient(180deg, rgba(70, 30, 30, 0.65) 0%, rgba(50, 20, 20, 0.70) 100%);
+
+  &:hover {
+    color: rgba(255, 150, 140, 0.95);
+    border-color: rgba(244, 67, 54, 0.40);
+    box-shadow:
+      inset 0 0.0625rem 0 rgba(255, 255, 255, 0.06),
+      0 0 0.625rem rgba(244, 67, 54, 0.12);
+    filter: brightness(1.10);
+  }
+}
+
+.CharSetup__btn--average,
+.CharSetup__btn--orange {
+  color: rgba(255, 180, 80, 0.90);
+  border-color: rgba(230, 150, 40, 0.22);
+  background:
+    linear-gradient(180deg, rgba(65, 45, 15, 0.65) 0%, rgba(50, 35, 10, 0.70) 100%);
+
+  &:hover {
+    color: rgba(255, 200, 110, 0.95);
+    border-color: rgba(230, 150, 40, 0.42);
+    box-shadow:
+      inset 0 0.0625rem 0 rgba(255, 255, 255, 0.06),
+      0 0 0.625rem rgba(230, 150, 40, 0.12);
+    filter: brightness(1.10);
+  }
+}
+
+.CharSetup__btn--teal {
+  color: rgba(80, 210, 200, 0.90);
+  border-color: rgba(40, 180, 170, 0.22);
+  background:
+    linear-gradient(180deg, rgba(15, 55, 55, 0.65) 0%, rgba(10, 40, 40, 0.70) 100%);
+
+  &:hover {
+    color: rgba(110, 230, 220, 0.95);
+    border-color: rgba(40, 180, 170, 0.42);
+    box-shadow:
+      inset 0 0.0625rem 0 rgba(255, 255, 255, 0.06),
+      0 0 0.625rem rgba(40, 180, 170, 0.12);
+    filter: brightness(1.10);
+  }
+}
+
+.CharSetup__btn--gold {
+  color: rgba(255, 210, 80, 0.90);
+  border-color: rgba(220, 180, 40, 0.22);
+  background:
+    linear-gradient(180deg, rgba(65, 55, 10, 0.65) 0%, rgba(50, 42, 8, 0.70) 100%);
+
+  &:hover {
+    color: rgba(255, 225, 110, 0.95);
+    border-color: rgba(220, 180, 40, 0.42);
+    box-shadow:
+      inset 0 0.0625rem 0 rgba(255, 255, 255, 0.06),
+      0 0 0.625rem rgba(220, 180, 40, 0.12);
+    filter: brightness(1.10);
+  }
+}
+
+.CharSetup__btn--label {
+  color: rgba(180, 175, 160, 0.55);
+  border-color: rgba(180, 170, 140, 0.10);
+  background:
+    linear-gradient(180deg, rgba(30, 30, 35, 0.45) 0%, rgba(22, 22, 28, 0.50) 100%);
+
+  &:hover {
+    color: rgba(200, 195, 175, 0.70);
+    filter: brightness(1.08);
   }
 }
 
@@ -3347,6 +3947,33 @@
   scrollbar-track-color: #080c14;
   scrollbar-arrow-color: #4a8abf;
   scrollbar-shadow-color: #060a10;
+
+  &::-webkit-scrollbar {
+    width: 0.375rem;
+    height: 0.375rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(4, 8, 16, 0.60);
+    border-radius: 0.25rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(50, 80, 130, 0.55);
+    border-radius: 0.25rem;
+
+    &:hover {
+      background: rgba(74, 138, 191, 0.70);
+    }
+
+    &:active {
+      background: rgba(100, 180, 255, 0.75);
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 }
 
 // Augmentation panel uses orange-accented scrollbar
@@ -3359,4 +3986,20 @@
   scrollbar-track-color: #080808;
   scrollbar-arrow-color: #c07040;
   scrollbar-shadow-color: #060606;
+
+  &::-webkit-scrollbar-track {
+    background: rgba(8, 5, 3, 0.65);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(100, 55, 25, 0.55);
+
+    &:hover {
+      background: rgba(192, 112, 64, 0.70);
+    }
+
+    &:active {
+      background: rgba(220, 140, 90, 0.80);
+    }
+  }
 }

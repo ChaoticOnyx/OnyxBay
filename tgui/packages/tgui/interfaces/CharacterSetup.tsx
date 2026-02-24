@@ -28,8 +28,11 @@ import {
   Tabs,
   TextArea,
 } from "../components";
-import { GameIcon } from "../components/GameIcon";
 import { Window } from "../layouts";
+import {
+  CharacterRenderConfig,
+  getCompositor,
+} from "../spriteCompositor";
 
 // Stamp images for ID card
 import stampCap from "../assets/stamps/stamp-cap.png";
@@ -75,10 +78,15 @@ interface SpeciesInfo {
   default_f_style: string;
   max_skin_tone: number;
   no_lace: boolean;
+  icobase: string;
+  hair_key: string;
+  limb_blend: number;
+  has_eyes_icon: boolean;
 }
 
 interface HairStyle {
   name: string;
+  icon_state: string;
   gender: string;
   species_allowed: string[];
   has_secondary: boolean;
@@ -86,6 +94,7 @@ interface HairStyle {
 
 interface FacialHairStyle {
   name: string;
+  icon_state: string;
   gender: string;
   species_allowed: string[];
 }
@@ -103,6 +112,10 @@ interface MarkingInfo {
 interface BodyMarking {
   name: string;
   color: string;
+  icon: string;
+  icon_state: string;
+  body_parts: string[];
+  draw_target: number; // 0=SKIN, 1=HAIR, 2=HEAD
 }
 
 interface UnderwearCategory {
@@ -131,6 +144,7 @@ interface GearItem {
   name: string;
   hash: string;
   icon: string | null;
+  iconState: string | null;
   slot: number;
   slotName: string;
   subgroup: string;
@@ -160,6 +174,8 @@ interface SelectedGearDetail {
   name: string;
   hash: string;
   tweakedIcon: string | null;
+  tweakedIconState: string | null;
+  tweakedColor: string | null;
   description: string;
   slot: number;
   slotName: string;
@@ -175,6 +191,7 @@ interface SelectedGearDetail {
 interface RobolimbBrand {
   company: string;
   desc: string;
+  icon: string;
   species_cannot_use: string[];
   restricted_to: string[];
   applies_to_part: string[];
@@ -246,6 +263,30 @@ interface GhostRole {
 interface UplinkSourceDef {
   name: string;
   desc: string;
+}
+
+// Slot preview data — raw appearance fields for client-side rendering
+interface SlotAppearanceData {
+  species: string;
+  gender: string;
+  body: string;
+  h_style: string;
+  f_style: string;
+  hair_color: string;
+  s_hair_color: string;
+  facial_color: string;
+  skin_color: string;
+  eye_color: string;
+  s_tone: number;
+  icobase: string | null;
+  hair_key: string;
+  appearance_flags: number;
+}
+
+interface SlotPreviewData {
+  slot: number;
+  name: string;
+  appearance: SlotAppearanceData | null;
 }
 
 // Background types
@@ -324,11 +365,15 @@ interface CharacterData {
   species_languages: Record<string, SpeciesLanguageInfo>;
   relation_types: RelationType[];
   records_banned: boolean;
+  // Render data (for client-side sprite compositor)
+  hair_icons: Record<string, Record<string, string>>;
+  facial_hair_icons: Record<string, Record<string, string>>;
+  body_build_render: Record<string, { index: string; clothing_icons: Record<string, string> }>;
   // Settings static
   client_preference_categories: Record<string, ClientPreferenceDef[]>;
   keybinding_categories: Record<string, KeybindingDef[]>;
   // Dynamic data
-  preview_icon: string;
+  preview_icon?: string;
   preview_dir: number;
   real_name: string;
   gender: string;
@@ -352,6 +397,8 @@ interface CharacterData {
   has_cortical_stack: boolean;
   body_markings: BodyMarking[];
   all_underwear: Record<string, string>;
+  underwear_render: { state: string; dmiFile: string; color: string | null }[];
+  equipment_render: { dmiFile: string; state: string; color: string | null; layer: number }[];
   backpack: string;
   equip_preview_mob: number;
   bgstate: string;
@@ -359,7 +406,7 @@ interface CharacterData {
   is_guest: boolean;
   load_failed: string | null;
   character_slots_info: { slot: number; name: string }[];
-  slot_previews?: { slot: number; name: string; preview: string | null }[];
+  slot_previews?: SlotPreviewData[];
   // Loadout dynamic
   equippedGear: Record<string, boolean>;
   currentGearSlot: number;
@@ -437,6 +484,186 @@ const NORTH = 1;
 const SOUTH = 2;
 const EAST = 4;
 const WEST = 8;
+
+// BYOND blend mode constants
+const ICON_ADD = 1;
+
+// ================================================================
+// Sprite Compositor — build render config from character data
+// ================================================================
+
+/** Build a CharacterRenderConfig from the current preference data */
+function buildRenderConfig(data: CharacterData): CharacterRenderConfig | null {
+  const speciesInfo = getSpeciesInfo(data.species_list, data.species);
+  if (!speciesInfo) return null;
+
+  // Resolve body build
+  const buildName = data.body || "Default";
+  const buildData = data.body_build_render?.[buildName];
+  const buildIndex = buildData?.index || "";
+
+  // Determine if this is a "slim" body build for hair icon resolution
+  const isSlim = buildIndex.indexOf("_slim") !== -1;
+
+  // Resolve hair DMI file
+  const hairKey = speciesInfo.hair_key;
+  let hairDmiFile = data.hair_icons?.["default"]?.[hairKey] || "";
+  if (isSlim && data.hair_icons?.["slim"]?.[hairKey]) {
+    hairDmiFile = data.hair_icons["slim"][hairKey];
+  }
+
+  // Resolve facial hair DMI file
+  let facialDmiFile = data.facial_hair_icons?.["default"]?.[hairKey] || "";
+  if (isSlim && data.facial_hair_icons?.["slim"]?.[hairKey]) {
+    facialDmiFile = data.facial_hair_icons["slim"][hairKey];
+  }
+
+  // Resolve hair icon_state from style name
+  const hairStyle = data.hair_styles?.find(
+    (h) => h.name === data.h_style
+  );
+  const facialStyle = data.facial_hair_styles?.find(
+    (f) => f.name === data.f_style
+  );
+
+  // Resolve underwear render data
+  const underwear = data.underwear_render?.map(uw => ({
+    state: uw.state,
+    dmiFile: uw.dmiFile,
+    color: uw.color,
+  }));
+
+  // Resolve equipment render data (loadout + job clothing overlays)
+  const clothing = data.equipment_render?.map(eq => ({
+    state: eq.state,
+    dmiFile: eq.dmiFile,
+    color: eq.color,
+    layer: eq.layer,
+  }));
+
+  // Build robolimb brand → icon path mapping
+  const robolimbIcons: Record<string, string> = {};
+  if (data.robolimb_brands) {
+    for (const brand of data.robolimb_brands) {
+      if (brand.icon) {
+        robolimbIcons[brand.company] = brand.icon;
+      }
+    }
+  }
+
+  // Build markings render data — expand skin markings to per-organ entries
+  // Skin markings: state = "[icon_state]-[organ_tag]", drawn on body
+  // Hair markings: state = "[icon_state]", masked to hair shape
+  const MARKING_TARGET_SKIN = 0;
+  const MARKING_TARGET_HAIR = 1;
+  const markings: { icon: string; iconState: string; organTag: string; color: string }[] = [];
+  const hairMarkings: { icon: string; iconState: string; color: string }[] = [];
+  if (data.body_markings) {
+    for (const m of data.body_markings) {
+      if (!m.icon || !m.icon_state) continue;
+      if (m.draw_target === MARKING_TARGET_HAIR) {
+        hairMarkings.push({
+          icon: m.icon,
+          iconState: m.icon_state,
+          color: m.color,
+        });
+      } else if (m.draw_target === MARKING_TARGET_SKIN && m.body_parts) {
+        for (const organTag of m.body_parts) {
+          markings.push({
+            icon: m.icon,
+            iconState: `${m.icon_state}-${organTag}`,
+            organTag,
+            color: m.color,
+          });
+        }
+      }
+    }
+  }
+
+  return {
+    species: data.species,
+    gender: data.gender,
+    bodyBuild: buildIndex,
+    direction: data.preview_dir,
+    skinTone: data.s_tone || 0,
+    skinColor: (speciesInfo.appearance_flags & HAS_SKIN_COLOR)
+      ? data.skin_color
+      : null,
+    hairStyle: hairStyle?.icon_state || "",
+    hairColor: data.hair_color,
+    secondaryHairColor: hairStyle?.has_secondary
+      ? data.s_hair_color
+      : null,
+    hairDmiFile,
+    facialStyle: facialStyle?.icon_state || "",
+    facialColor: data.facial_color,
+    facialDmiFile,
+    eyeColor: data.eye_color,
+    bodyDmiFile: speciesInfo.icobase,
+    organData: data.organ_data,
+    rlimbData: data.rlimb_data,
+    robolimbIcons,
+    underwear,
+    clothing,
+    markings,
+    hairMarkings,
+  };
+}
+
+/** Build a render config from slot appearance data (for slot picker thumbnails) */
+function buildSlotRenderConfig(
+  appearance: SlotAppearanceData,
+  data: CharacterData,
+): CharacterRenderConfig | null {
+  if (!appearance.icobase) return null;
+
+  // Resolve body build
+  const buildName = appearance.body || "Default";
+  const buildData = data.body_build_render?.[buildName];
+  const buildIndex = buildData?.index || "";
+  const isSlim = buildIndex.indexOf("_slim") !== -1;
+
+  // Resolve hair DMI file
+  const hairKey = appearance.hair_key;
+  let hairDmiFile = data.hair_icons?.["default"]?.[hairKey] || "";
+  if (isSlim && data.hair_icons?.["slim"]?.[hairKey]) {
+    hairDmiFile = data.hair_icons["slim"][hairKey];
+  }
+
+  let facialDmiFile = data.facial_hair_icons?.["default"]?.[hairKey] || "";
+  if (isSlim && data.facial_hair_icons?.["slim"]?.[hairKey]) {
+    facialDmiFile = data.facial_hair_icons["slim"][hairKey];
+  }
+
+  const hairStyle = data.hair_styles?.find(
+    (h) => h.name === appearance.h_style
+  );
+  const facialStyle = data.facial_hair_styles?.find(
+    (f) => f.name === appearance.f_style
+  );
+
+  return {
+    species: appearance.species,
+    gender: appearance.gender,
+    bodyBuild: buildIndex,
+    direction: SOUTH,
+    skinTone: appearance.s_tone || 0,
+    skinColor: (appearance.appearance_flags & HAS_SKIN_COLOR)
+      ? appearance.skin_color
+      : null,
+    hairStyle: hairStyle?.icon_state || "",
+    hairColor: appearance.hair_color,
+    secondaryHairColor: hairStyle?.has_secondary
+      ? appearance.s_hair_color
+      : null,
+    hairDmiFile,
+    facialStyle: facialStyle?.icon_state || "",
+    facialColor: appearance.facial_color,
+    facialDmiFile,
+    eyeColor: appearance.eye_color,
+    bodyDmiFile: appearance.icobase,
+  };
+}
 
 // ================================================================
 // Custom button component — replaces default TGUI Button
@@ -802,8 +1029,8 @@ const CharacterSlotSelector = (props: {
           <Box className="CharSetup__slotPickerGrid">
             {(data.slot_previews || data.character_slots_info || []).map(
               (slotInfo: any) => {
-                const preview = slotInfo.preview || null;
-                const isEmpty = !preview;
+                const appearance = slotInfo.appearance || null;
+                const isEmpty = !appearance;
                 const isCurrent = slotInfo.slot === data.default_slot;
                 return (
                   <Box
@@ -816,8 +1043,12 @@ const CharacterSlotSelector = (props: {
                     onClick={() => handleSelectSlot(slotInfo.slot)}
                   >
                     <Box className="CharSetup__slotPickerPreview">
-                      {preview ? (
-                        <GameIcon html={preview} />
+                      {appearance ? (
+                        <SlotThumbnail
+                          appearance={appearance}
+                          data={data}
+                          size={64}
+                        />
                       ) : (
                         <Icon
                           name="user-plus"
@@ -842,6 +1073,261 @@ const CharacterSlotSelector = (props: {
   );
 };
 
+/** Generate a cache key from the render-affecting preference fields */
+function previewCacheKey(data: CharacterData): string {
+  return [
+    data.species, data.gender, data.body, data.preview_dir,
+    data.s_tone, data.skin_color, data.h_style, data.hair_color,
+    data.s_hair_color, data.f_style, data.facial_color,
+    data.eye_color, data.body_height,
+    JSON.stringify(data.organ_data),
+    JSON.stringify(data.rlimb_data),
+    JSON.stringify(data.underwear_render),
+    JSON.stringify(data.all_underwear),
+    JSON.stringify(data.equipment_render),
+    JSON.stringify(data.body_markings),
+  ].join("|");
+}
+
+/** Canvas-based character preview using the sprite compositor */
+class CharacterCanvas extends Component<
+  { data: CharacterData },
+  { ready: boolean; previewUrl: string }
+> {
+  private initPromise: Promise<void> | null = null;
+  private lastCacheKey = "";
+
+  constructor(props) {
+    super(props);
+    this.state = { ready: false, previewUrl: "" };
+  }
+
+  componentDidMount() {
+    this.initCompositor();
+  }
+
+  componentDidUpdate() {
+    if (this.state.ready) {
+      const key = previewCacheKey(this.props.data);
+      if (key !== this.lastCacheKey) {
+        this.lastCacheKey = key;
+        this.doRender();
+      }
+    }
+  }
+
+  async initCompositor() {
+    if (this.initPromise) return;
+    const compositor = getCompositor();
+    if (compositor.isReady()) {
+      this.setState({ ready: true });
+      this.lastCacheKey = previewCacheKey(this.props.data);
+      this.doRender();
+      return;
+    }
+    this.initPromise = compositor.init().then(() => {
+      this.setState({ ready: true });
+      this.lastCacheKey = previewCacheKey(this.props.data);
+      this.doRender();
+    }).catch(() => {
+      // Compositor failed to load — fall back to server preview
+    });
+  }
+
+  doRender() {
+    const compositor = getCompositor();
+    if (!compositor.isReady()) return;
+
+    const config = buildRenderConfig(this.props.data);
+    if (!config) return;
+
+    const url = compositor.renderCharacter(config, 192);
+    if (url) {
+      this.setState({ previewUrl: url });
+    }
+  }
+
+  render() {
+    const { ready, previewUrl } = this.state;
+
+    if (ready && previewUrl) {
+      return (
+        <img
+          className="CharSetup__previewCanvas"
+          src={previewUrl}
+        />
+      );
+    }
+
+    // Compositor still loading atlases
+    return (
+      <Box className="CharSetup__previewLoading">
+        <Icon name="spinner" spin size={3} />
+      </Box>
+    );
+  }
+}
+
+/** Renders a mini character thumbnail from slot appearance data */
+class SlotThumbnail extends Component<
+  { appearance: SlotAppearanceData; data: CharacterData; size?: number },
+  { url: string }
+> {
+  private lastKey = "";
+
+  constructor(props) {
+    super(props);
+    this.state = { url: "" };
+  }
+
+  componentDidMount() {
+    this.tryRender();
+  }
+
+  componentDidUpdate() {
+    const key = JSON.stringify(this.props.appearance);
+    if (key !== this.lastKey) {
+      this.lastKey = key;
+      this.tryRender();
+    }
+  }
+
+  tryRender() {
+    const compositor = getCompositor();
+    if (!compositor.isReady()) return;
+    const config = buildSlotRenderConfig(
+      this.props.appearance,
+      this.props.data,
+    );
+    if (!config) return;
+    const url = compositor.renderThumbnail(config, this.props.size || 64);
+    if (url) {
+      this.setState({ url });
+    }
+  }
+
+  render() {
+    if (this.state.url) {
+      return (
+        <img
+          className="CharSetup__slotPickerPreviewImg"
+          src={this.state.url}
+        />
+      );
+    }
+    return <Icon name="user" style={{ opacity: 0.3 }} />;
+  }
+}
+
+/** Renders a compositor-based preview at arbitrary size, using current data */
+class CompositorPreview extends Component<
+  { data: CharacterData; size?: number; className?: string },
+  { url: string }
+> {
+  private lastKey = "";
+
+  constructor(props) {
+    super(props);
+    this.state = { url: "" };
+  }
+
+  componentDidMount() {
+    this.tryRender();
+  }
+
+  componentDidUpdate() {
+    const key = previewCacheKey(this.props.data);
+    if (key !== this.lastKey) {
+      this.lastKey = key;
+      this.tryRender();
+    }
+  }
+
+  tryRender() {
+    const compositor = getCompositor();
+    if (!compositor.isReady()) return;
+    const config = buildRenderConfig(this.props.data);
+    if (!config) return;
+    const url = compositor.renderCharacter(
+      config,
+      this.props.size || 64,
+    );
+    if (url) {
+      this.setState({ url });
+    }
+  }
+
+  render() {
+    if (this.state.url) {
+      return (
+        <img
+          className={this.props.className || "CharSetup__compositorPreview"}
+          src={this.state.url}
+        />
+      );
+    }
+    return (
+      <Box className="CharSetup__previewLoading">
+        <Icon name="spinner" spin size={2} />
+      </Box>
+    );
+  }
+}
+
+/**
+ * Renders a single item icon from the sprite atlas.
+ * Used for gear list items and gear detail views.
+ */
+class GearSpriteIcon extends Component<
+  { dmiFile: string; state: string; color?: string; size?: number },
+  { url: string }
+> {
+  constructor(props) {
+    super(props);
+    this.state = { url: "" };
+  }
+
+  componentDidMount() {
+    this.tryRender();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.dmiFile !== this.props.dmiFile ||
+      prevProps.state !== this.props.state ||
+      prevProps.color !== this.props.color
+    ) {
+      this.tryRender();
+    }
+  }
+
+  tryRender() {
+    const compositor = getCompositor();
+    if (!compositor.isReady()) return;
+    const url = compositor.renderItemIcon(
+      this.props.dmiFile,
+      this.props.state,
+      this.props.size || 32,
+      this.props.color || undefined,
+    );
+    if (url) {
+      this.setState({ url });
+    }
+  }
+
+  render() {
+    if (this.state.url) {
+      return (
+        <img
+          className="CharSetup__gearSpriteIcon"
+          src={this.state.url}
+        />
+      );
+    }
+    return <Icon name="question" />;
+  }
+}
+
 const CharacterPreview = (props: {
   data: CharacterData;
   act: Function;
@@ -851,15 +1337,9 @@ const CharacterPreview = (props: {
 
   return (
     <Box className="CharSetup__preview">
-      {/* Preview sprite */}
+      {/* Preview sprite — client-side compositor with server fallback */}
       <Box className="CharSetup__previewFrame">
-        {data.preview_icon ? (
-          <GameIcon html={data.preview_icon} />
-        ) : (
-          <Box className="CharSetup__previewLoading">
-            <Icon name="spinner" spin size={3} />
-          </Box>
-        )}
+        <CharacterCanvas data={data} />
       </Box>
 
       {/* Direction controls — turn left / right */}
@@ -1007,16 +1487,11 @@ const IdentityPanel = (props: {
           {/* Headshot photo */}
           <Box className="CharSetup__idCardPhoto">
             <Box className="CharSetup__idCardPhotoInner">
-              {data.preview_icon ? (
-                <GameIcon
-                  html={data.preview_icon}
-                  className="CharSetup__idCardHeadshot"
-                />
-              ) : (
-                <Box className="CharSetup__idCardPhotoPlaceholder">
-                  <Icon name="user" size={3} />
-                </Box>
-              )}
+              <CompositorPreview
+                data={data}
+                size={64}
+                className="CharSetup__idCardHeadshot"
+              />
             </Box>
             <Box className="CharSetup__idCardPhotoLabel">
               PERSONNEL PHOTO
@@ -1088,7 +1563,7 @@ const IdentityPanel = (props: {
             )}
           </Box>
 
-          {/* Two-column row: Gender + Age */}
+          {/* Gender + Age row */}
           <Box className="CharSetup__idCardFieldRow">
             <Box className="CharSetup__idCardField" style={{ flex: "1" }}>
               <Box className="CharSetup__idCardFieldLabel">Gender</Box>
@@ -1108,13 +1583,16 @@ const IdentityPanel = (props: {
             </Box>
             <Box className="CharSetup__idCardField" style={{ flex: "1" }}>
               <Box className="CharSetup__idCardFieldLabel">Age</Box>
-              <NumberInput
-                value={data.age}
-                minValue={speciesInfo?.min_age || 17}
-                maxValue={speciesInfo?.max_age || 85}
-                step={1}
-                onChange={(e, val) => act("setAge", { age: val })}
-              />
+              <Box className="CharSetup__ageInputWrap">
+                <NumberInput
+                  fluid
+                  value={data.age}
+                  minValue={speciesInfo?.min_age || 17}
+                  maxValue={speciesInfo?.max_age || 85}
+                  step={1}
+                  onChange={(e, val) => act("setAge", { age: val })}
+                />
+              </Box>
             </Box>
           </Box>
 
@@ -1169,6 +1647,54 @@ const IdentityPanel = (props: {
               />
             </Box>
           )}
+
+          {/* Origin section */}
+          <Box className="CharSetup__idCardSectionSep">Origin</Box>
+
+          {/* Faction + Religion + Home System — three columns */}
+          <Box className="CharSetup__idCardFieldRow">
+            <Box className="CharSetup__idCardField" style={{ flex: "1" }}>
+              <Box className="CharSetup__idCardFieldLabel">Faction</Box>
+              <Dropdown
+                fluid
+                selected={data.background}
+                options={data.backgrounds || []}
+                onSelected={(val: string) =>
+                  act("setBackground", { value: val })
+                }
+              />
+            </Box>
+            <Box className="CharSetup__idCardField" style={{ flex: "1" }}>
+              <Box className="CharSetup__idCardFieldLabel">Religion</Box>
+              <Dropdown
+                fluid
+                selected={data.religion}
+                options={data.religions || []}
+                onSelected={(val: string) =>
+                  act("setReligion", { value: val })
+                }
+              />
+            </Box>
+            <Box className="CharSetup__idCardField" style={{ flex: "1" }}>
+              <Box className="CharSetup__idCardFieldLabel">
+                Home System
+                {!(data.home_systems || []).includes(data.home_system) &&
+                  data.home_system !== "Unset" && (
+                    <Box as="span" color="good" fontSize="9px" italic ml={0.5}>
+                      Custom
+                    </Box>
+                  )}
+              </Box>
+              <Dropdown
+                fluid
+                selected={data.home_system}
+                options={data.home_systems || []}
+                onSelected={(val: string) =>
+                  act("setHomeSystem", { value: val })
+                }
+              />
+            </Box>
+          </Box>
         </Box>
       </Box>
 
@@ -1504,89 +2030,332 @@ const SLOT_LABELS: SlotLabel[] = [
   { name: "Uniform", icon: "tshirt" },
   { name: "Suit", icon: "vest-patches" },
   { name: "Gloves", icon: "mitten" },
-  { name: "Back", icon: "backpack" },
   { name: "Shoes", icon: "shoe-prints" },
 ];
 
-// --- Paper-doll body selector — character sprite with hoverable hotspot overlays ---
+// --- Compact slot tile for the left pane ---
 
-const PaperDollSelector = (props: {
-  previewIcon: string | null;
-  equippedBySlot: Record<string, GearItem[]>;
-  onSelectSlot: (name: string) => void;
-  currentDir: number;
-  act: Function;
+const SlotTile = (props: {
+  slot: SlotLabel;
+  equipped: GearItem[] | undefined;
+  isActive: boolean;
+  onSelect: (name: string) => void;
 }) => {
-  const { previewIcon, equippedBySlot, onSelectSlot, currentDir, act } = props;
-
+  const { slot, equipped, isActive, onSelect } = props;
+  const hasEquipped = equipped && equipped.length > 0;
   return (
-    <Box className="CharSetup__paperDoll">
-      {/* Slot list — all slots in one column */}
-      <Box className="CharSetup__paperDollSlots">
-        {SLOT_LABELS.map((slot) => {
-          const equipped = equippedBySlot[slot.name];
-          const hasEquipped = equipped && equipped.length > 0;
-          return (
-            <Box
-              key={slot.name}
-              className={classes([
-                "CharSetup__slotLabel",
-                hasEquipped && "CharSetup__slotLabel--equipped",
-              ])}
-              onClick={() => onSelectSlot(slot.name)}
-            >
-              {hasEquipped && equipped[0].icon ? (
-                <GameIcon
-                  html={equipped[0].icon}
-                  className="CharSetup__slotLabelIcon"
-                />
-              ) : (
-                <Icon name={slot.icon} className="CharSetup__slotLabelFaIcon" />
-              )}
-              <Box className="CharSetup__slotLabelText">
-                {hasEquipped ? (
-                  <>
-                    <Box className="CharSetup__slotLabelName">
-                      {equipped.length === 1
-                        ? equipped[0].name
-                        : `${equipped.length} items`}
-                    </Box>
-                    <Box className="CharSetup__slotLabelSlot">{slot.name}</Box>
-                  </>
-                ) : (
-                  <Box className="CharSetup__slotLabelName">{slot.name}</Box>
-                )}
-              </Box>
-            </Box>
-          );
-        })}
+    <Box
+      className={classes([
+        "CharSetup__slotTile",
+        isActive && "CharSetup__slotTile--active",
+        hasEquipped && "CharSetup__slotTile--equipped",
+      ])}
+      onClick={() => onSelect(slot.name)}
+    >
+      <Box className="CharSetup__slotTileIcon">
+        {hasEquipped && equipped![0].icon && equipped![0].iconState ? (
+          <GearSpriteIcon
+            dmiFile={equipped![0].icon!}
+            state={equipped![0].iconState!}
+            size={32}
+          />
+        ) : (
+          <Icon name={slot.icon} />
+        )}
       </Box>
-
-      {/* Character sprite + rotate controls */}
-      <Box className="CharSetup__paperDollRight">
-        <Box className="CharSetup__paperDollCenter">
-          {previewIcon ? (
-            <GameIcon
-              html={previewIcon}
-              className="CharSetup__paperDollSprite"
-            />
-          ) : (
-            <Box className="CharSetup__paperDollPlaceholder">
-              <Icon name="spinner" spin size={3} />
+      <Box className="CharSetup__slotTileText">
+        {hasEquipped ? (
+          <>
+            <Box className="CharSetup__slotTileName">
+              {equipped!.length === 1
+                ? equipped![0].name
+                : `${equipped!.length} items`}
             </Box>
-          )}
-        </Box>
-        <RotateControls currentDir={currentDir} act={act} />
+            <Box className="CharSetup__slotTileSlot">{slot.name}</Box>
+          </>
+        ) : (
+          <Box className="CharSetup__slotTileName">{slot.name}</Box>
+        )}
       </Box>
     </Box>
   );
 };
 
-// Categories that map directly to body slots — these are accessible via paper-doll
+// --- Compact slot icon button (used in the icon bar below the doll) ---
+
+const SLOT_ABBR: Record<string, string> = {
+  "Head": "HEAD", "Eyes": "EYES", "Mask": "MASK", "Accessory": "ACC",
+  "Uniform": "UNIF", "Suit": "SUIT", "Gloves": "GLOV", "Shoes": "SHOE",
+};
+
+const SlotIconBtn = (props: {
+  slot: SlotLabel;
+  equipped: GearItem[] | undefined;
+  isActive: boolean;
+  onSelect: (name: string) => void;
+}) => {
+  const { slot, equipped, isActive, onSelect } = props;
+  const hasEquipped = equipped && equipped.length > 0;
+  return (
+    <Box
+      className={classes([
+        "CharSetup__slotIconBtn",
+        isActive && "CharSetup__slotIconBtn--active",
+        hasEquipped && "CharSetup__slotIconBtn--equipped",
+      ])}
+      onClick={() => onSelect(slot.name)}
+    >
+      <Box className="CharSetup__slotIconBtnIcon">
+        {hasEquipped && equipped![0].icon && equipped![0].iconState ? (
+          <GearSpriteIcon
+            dmiFile={equipped![0].icon!}
+            state={equipped![0].iconState!}
+            size={24}
+          />
+        ) : (
+          <Icon name={slot.icon} />
+        )}
+      </Box>
+      <Box className="CharSetup__slotIconBtnLabel">
+        {SLOT_ABBR[slot.name] || slot.name.substring(0, 4).toUpperCase()}
+      </Box>
+    </Box>
+  );
+};
+
+// --- Character doll — preview with body-part sprite highlight overlays ---
+
+/**
+ * Slots selectable by clicking on the doll, checked in priority order.
+ * organTags  → body-part sprite used for hit shape.
+ * clothingItem → placeholder equipment sprite used for hit shape (Eyes, Mask).
+ */
+const ZONE_SLOTS: Array<{
+  slot: string;
+  organTags?: string[];
+  clothingItem?: { dmiFile: string; state: string };
+}> = [
+  { slot: "Gloves",  organTags: ["l_hand", "r_hand"] },
+  { slot: "Shoes",   organTags: ["l_foot", "r_foot"] },
+  { slot: "Suit",    organTags: ["l_arm", "r_arm"] },
+  { slot: "Eyes",    clothingItem: { dmiFile: "icons/inv_slots/glasses/mob.dmi", state: "glasses" } },
+  { slot: "Mask",    clothingItem: { dmiFile: "icons/inv_slots/masks/mob.dmi",   state: "sterile" } },
+  { slot: "Head",    organTags: ["head"] },
+  { slot: "Uniform", organTags: ["chest", "groin"] },
+];
+
+/**
+ * Body-part based highlights for slots shown when a tile is selected.
+ * Eyes and Mask use equipment sprites (handled in buildHighlights via ZONE_SLOTS).
+ */
+const SLOT_ORGAN_TAGS: Record<string, string[]> = {
+  "Head":      ["head"],
+  "Accessory": ["chest", "groin"],
+  "Uniform":   ["chest", "groin"],
+  "Suit":      ["l_arm", "r_arm"],
+  "Gloves":    ["l_hand", "r_hand"],
+  "Shoes":     ["l_foot", "r_foot"],
+};
+
+/** Cache key for the parts of data that affect body-part silhouette rendering */
+function dollCacheKey(data: CharacterData, dir: number): string {
+  return `${data.species}|${data.gender}|${data.body || ""}|${dir}`;
+}
+
+interface CharacterDollProps {
+  data: CharacterData;
+  equippedBySlot: Record<string, GearItem[]>;
+  selectedSlotName: string | null;
+  onSelectSlot: (name: string) => void;
+  currentDir: number;
+  act: Function;
+}
+
+interface CharacterDollState {
+  hoveredSlot: string | null;
+  /** Teal silhouette data URLs for display (all slots including non-zone ones) */
+  highlightUrls: Record<string, string>;
+  /** Canvases built from data URLs for pixel-perfect hit testing (zone slots only) */
+  hitCanvases: Record<string, HTMLCanvasElement>;
+  cacheKey: string;
+}
+
+class CharacterDoll extends Component<CharacterDollProps, CharacterDollState> {
+  state: CharacterDollState = {
+    hoveredSlot: null,
+    highlightUrls: {},
+    hitCanvases: {},
+    cacheKey: "",
+  };
+
+  private containerEl: HTMLElement | null = null;
+
+  componentDidMount() {
+    this.buildHighlights();
+  }
+
+  componentDidUpdate() {
+    const key = dollCacheKey(this.props.data, this.props.currentDir);
+    if (key !== this.state.cacheKey) {
+      this.buildHighlights();
+    }
+  }
+
+  buildHighlights() {
+    const compositor = getCompositor();
+    if (!compositor.isReady()) return;
+    const config = buildRenderConfig(this.props.data);
+    if (!config) return;
+
+    const key = dollCacheKey(this.props.data, this.props.currentDir);
+    const teal = "rgba(77,182,172,1)";
+
+    // Render display highlights: body-part based slots
+    const highlightUrls: Record<string, string> = {};
+    for (const [slot, organTags] of Object.entries(SLOT_ORGAN_TAGS)) {
+      highlightUrls[slot] = compositor.renderBodyPartHighlight(config, organTags, teal, 320);
+    }
+    // Equipment-sprite based slots (Eyes, Mask) — shown on doll as actual item silhouettes
+    for (const zone of ZONE_SLOTS) {
+      if (zone.clothingItem) {
+        highlightUrls[zone.slot] = compositor.renderEquipmentHighlight(
+          config.direction, zone.clothingItem.dmiFile, zone.clothingItem.state, teal, 320,
+        );
+      }
+    }
+
+    // Build hit-test canvases from data URLs.
+    // Data URLs are same-origin — getImageData() will succeed for pixel-perfect testing.
+    const hitCanvases: Record<string, HTMLCanvasElement> = {};
+    let pending = ZONE_SLOTS.length;
+
+    const done = () => {
+      if (pending <= 0) {
+        this.setState({ highlightUrls, hitCanvases, cacheKey: key });
+      }
+    };
+
+    for (const zone of ZONE_SLOTS) {
+      const url = highlightUrls[zone.slot];
+      if (!url) { pending--; done(); continue; }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 320;
+      canvas.height = 320;
+      const ctx = canvas.getContext("2d")!;
+      const img = new Image();
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0);
+        hitCanvases[zone.slot] = canvas;
+        pending--;
+        done();
+      };
+      img.onerror = () => { pending--; done(); };
+      img.src = url;
+    }
+
+    if (ZONE_SLOTS.length === 0) done();
+  }
+
+  handleMouseMove = (e: MouseEvent) => {
+    const { hitCanvases } = this.state;
+    if (!this.containerEl) return;
+
+    const rect = this.containerEl.getBoundingClientRect();
+    const x = Math.floor(((e.clientX - rect.left) / rect.width) * 320);
+    const y = Math.floor(((e.clientY - rect.top) / rect.height) * 320);
+    if (x < 0 || y < 0 || x >= 320 || y >= 320) return;
+
+    // Check each zone in priority order — first with a non-transparent pixel wins
+    for (const { slot } of ZONE_SLOTS) {
+      const canvas = hitCanvases[slot];
+      if (!canvas) continue;
+      try {
+        const alpha = canvas.getContext("2d")!.getImageData(x, y, 1, 1).data[3];
+        if (alpha > 10) {
+          if (this.state.hoveredSlot !== slot) {
+            this.setState({ hoveredSlot: slot });
+          }
+          return;
+        }
+      } catch (_) {
+        // Canvas tainted in dev context — silently skip
+      }
+    }
+
+    if (this.state.hoveredSlot !== null) {
+      this.setState({ hoveredSlot: null });
+    }
+  };
+
+  handleMouseLeave = () => {
+    if (this.state.hoveredSlot !== null) {
+      this.setState({ hoveredSlot: null });
+    }
+  };
+
+  handleClick = () => {
+    if (this.state.hoveredSlot) {
+      this.props.onSelectSlot(this.state.hoveredSlot);
+    }
+  };
+
+  render() {
+    const { data, equippedBySlot, selectedSlotName, currentDir, act } = this.props;
+    const { hoveredSlot, highlightUrls } = this.state;
+    const activeSlot = hoveredSlot || selectedSlotName;
+
+    return (
+      <>
+        <div
+          className="CharSetup__dollContainer"
+          ref={(el: HTMLElement) => { this.containerEl = el; }}
+          onMouseMove={this.handleMouseMove}
+          onMouseLeave={this.handleMouseLeave}
+          onClick={this.handleClick}
+          style={{ cursor: hoveredSlot ? "pointer" : "default" }}
+        >
+          {/* Main character preview — highlights live inside so z-index works correctly */}
+          <Box className="CharSetup__paperDollCenter">
+            <CompositorPreview
+              data={data}
+              size={320}
+              className="CharSetup__paperDollSprite"
+            />
+            {Object.entries(highlightUrls).map(([slot, url]) => {
+              const isHovered = hoveredSlot === slot;
+              const isEquipped = equippedBySlot[slot]?.length > 0;
+              return (
+                <img
+                  key={`hl-${slot}`}
+                  src={url}
+                  className={classes([
+                    "CharSetup__dollPartHighlight",
+                    isHovered && "CharSetup__dollPartHighlight--hovered",
+                    isEquipped && !isHovered && "CharSetup__dollPartHighlight--equipped",
+                  ])}
+                />
+              );
+            })}
+          </Box>
+
+          {/* Slot name label — hover only, fades when mouse leaves */}
+          {hoveredSlot && (
+            <Box className="CharSetup__dollZoneLabel">{hoveredSlot}</Box>
+          )}
+        </div>
+
+        <RotateControls currentDir={currentDir} act={act} />
+      </>
+    );
+  }
+}
+
+// Categories that map directly to body slots
 // and hidden from the misc category browser.
 const SLOT_CATEGORIES = new Set([
   "Hats", "Glasses", "Masks", "Earwear", "Gloves", "Shoes",
-  "Suits", "Uniforms", "Clothing Pieces", "Storage",
+  "Suits", "Uniforms", "Clothing Pieces",
 ]);
 
 // --- Loadout sub-panel (unified wardrobe: underwear + paper-doll + misc) ---
@@ -1615,6 +2384,12 @@ const LoadoutSubPanel = (props: {
   // Misc categories — only categories NOT covered by body slots
   const miscCategories = (data.loadout_categories || []).filter(
     (cat) => !SLOT_CATEGORIES.has(cat.name)
+  );
+
+  const [detailOpen, setDetailOpen] = useLocalState(
+    context,
+    "loadoutDetailOpen",
+    false
   );
 
   const [selectedCategory, setSelectedCategory] = useLocalState(
@@ -1689,144 +2464,131 @@ const LoadoutSubPanel = (props: {
     );
   }
 
-  // Content area — what shows between toolbar and item list
-  let middleContent: any = null;
-  if (searchText.length > 0) {
-    // Search active — no middle content, just item list below
-    middleContent = null;
-  } else if (wardrobeView === "equipment" && !selectedSlotName) {
-    middleContent = (
-      <PaperDollSelector
-        previewIcon={data.preview_icon}
-        equippedBySlot={equippedBySlot}
-        onSelectSlot={setSelectedSlotName}
-        currentDir={data.preview_dir}
-        act={act}
-      />
-    );
-  } else if (wardrobeView === "equipment" && selectedSlotName) {
-    middleContent = (
-      <Stack align="center" mt={0.5}>
+  // Right-panel item browser (shared between equipment and misc views)
+  const itemBrowser = (
+    <Stack vertical fill>
+      <Stack.Item grow basis={0} style={{ overflow: "auto" }}>
+        {showingItems ? (
+          <LoadoutItemList
+            items={displayItems}
+            equippedGear={data.equippedGear}
+            selectedHash={data.selectedGearHash}
+            onSelectGear={() => setDetailOpen(true)}
+            act={act}
+          />
+        ) : (
+          <Box className="CharSetup__wardrobeHint">
+            <Icon name="hand-pointer" size={2} />
+            Select a slot or search
+          </Box>
+        )}
+      </Stack.Item>
+      {showingItems && detailOpen && data.selectedGearDetail && (
         <Stack.Item>
-          <CsButton
-            icon="chevron-left"
-            onClick={() => {
-              setSelectedSlotName(null);
-              act("selectGear", { hash: "" });
-            }}
-          >
-            Back
-          </CsButton>
-        </Stack.Item>
-        <Stack.Item grow>
-          <Box bold textAlign="center">
-            {selectedSlotName}
+          <Stack align="center">
+            <Stack.Item grow>
+              <Divider />
+            </Stack.Item>
+            <Stack.Item>
+              <CsButton
+                compact
+                icon="times"
+                onClick={() => {
+                  setDetailOpen(false);
+                  act("selectGear", { hash: "" });
+                }}
+              />
+            </Stack.Item>
+          </Stack>
+          <Box style={{ maxHeight: "9rem", overflowY: "auto" }}>
+            <LoadoutItemDetail
+              detail={data.selectedGearDetail}
+              tweaks={data.selectedGearTweaks}
+              act={act}
+            />
           </Box>
         </Stack.Item>
-      </Stack>
-    );
-  } else if (wardrobeView === "misc") {
-    middleContent = (
-      <Tabs mt={0.5}>
-        {miscCategories.map((cat) => (
-          <Tabs.Tab
-            key={cat.name}
-            selected={cat.name === selectedCategory}
-            onClick={() => setSelectedCategory(cat.name)}
-          >
-            {cat.name}
-          </Tabs.Tab>
-        ))}
-      </Tabs>
-    );
-  }
+      )}
+    </Stack>
+  );
+
+  const lpRatio = data.maxLoadoutPoints > 0
+    ? Math.min(data.usedLoadoutPoints / data.maxLoadoutPoints, 1)
+    : 0;
+  const lpOverBudget = data.usedLoadoutPoints > data.maxLoadoutPoints;
 
   return (
     <Stack vertical fill>
-      {/* Loadout set selector + LP counter */}
+      {/* ── Fancy HUD bar ── */}
       <Stack.Item>
-        <Stack align="center">
-          <Stack.Item>
+        <Box className="CharSetup__loadoutHud">
+          {/* LP progress row */}
+          <Box className="CharSetup__loadoutHudRow">
+            <Box className="CharSetup__loadoutHudLabel">
+              <Icon name="suitcase" mr={0.5} />
+              LOADOUT POINTS
+            </Box>
+            <Box className={classes([
+              "CharSetup__lpBarWrap",
+              lpOverBudget && "CharSetup__lpBarWrap--over",
+            ])}>
+              <Box
+                className={classes([
+                  "CharSetup__lpBarFill",
+                  lpOverBudget && "CharSetup__lpBarFill--over",
+                ])}
+                style={{ width: `${lpRatio * 100}%` }}
+              />
+              <Box className="CharSetup__lpBarText">
+                {data.usedLoadoutPoints} / {data.maxLoadoutPoints} LP
+              </Box>
+            </Box>
+            <CsButton compact icon="trash-alt" onClick={() => act("clearLoadout")} />
+          </Box>
+          {/* Backpack + set navigation row */}
+          <Box className="CharSetup__loadoutHudSetRow">
+            <Box className="CharSetup__loadoutHudLabel">
+              <Icon name="backpack" mr={0.5} />
+              BACKPACK
+            </Box>
+            <Box style={{ flex: 1 }}>
+              <Dropdown
+                fluid
+                selected={data.backpack}
+                options={data.backpack_types}
+                onSelected={(val) => act("setBackpack", { name: val })}
+              />
+            </Box>
+          </Box>
+          {/* Set navigation row */}
+          <Box className="CharSetup__loadoutHudSetRow">
             <CsButton
               compact
               icon="chevron-left"
               onClick={() =>
                 act("setGearSlot", {
-                  slot:
-                    data.currentGearSlot <= 1
-                      ? data.config.loadout_slots
-                      : data.currentGearSlot - 1,
+                  slot: data.currentGearSlot <= 1
+                    ? data.config.loadout_slots
+                    : data.currentGearSlot - 1,
                 })
               }
             />
-          </Stack.Item>
-          <Stack.Item bold mx={0.5}>
-            Set {data.currentGearSlot}
-          </Stack.Item>
-          <Stack.Item>
+            <Box className="CharSetup__loadoutHudSetLabel">
+              SET {data.currentGearSlot} / {data.config.loadout_slots}
+            </Box>
             <CsButton
               compact
               icon="chevron-right"
               onClick={() =>
                 act("setGearSlot", {
-                  slot:
-                    data.currentGearSlot >= data.config.loadout_slots
-                      ? 1
-                      : data.currentGearSlot + 1,
+                  slot: data.currentGearSlot >= data.config.loadout_slots
+                    ? 1
+                    : data.currentGearSlot + 1,
                 })
               }
             />
-          </Stack.Item>
-          <Stack.Item grow />
-          <Stack.Item>
-            <Box
-              inline
-              bold
-              color={
-                data.usedLoadoutPoints >= data.maxLoadoutPoints ? "bad" : "good"
-              }
-            >
-              {data.usedLoadoutPoints}/{data.maxLoadoutPoints} LP
-            </Box>
-          </Stack.Item>
-          <Stack.Item>
-            <CsButton
-              compact
-              icon="eraser"
-              onClick={() => act("clearLoadout")}
-            />
-          </Stack.Item>
-        </Stack>
-      </Stack.Item>
-
-      {/* Underwear + Backpack — compact row */}
-      <Stack.Item>
-        <Stack align="center" mt={0.5}>
-          {data.underwear_categories.map((cat) => (
-            <Stack.Item key={cat.name} grow basis={0}>
-              <Dropdown
-                fluid
-                selected={data.all_underwear?.[cat.name] || "None"}
-                options={cat.items}
-                onSelected={(val) =>
-                  act("setUnderwear", { category: cat.name, name: val })
-                }
-              />
-            </Stack.Item>
-          ))}
-          <Stack.Item grow basis={0}>
-            <Dropdown
-              fluid
-              selected={data.backpack}
-              options={data.backpack_types}
-              onSelected={(val) => act("setBackpack", { name: val })}
-            />
-          </Stack.Item>
-        </Stack>
-      </Stack.Item>
-
-      <Stack.Item>
-        <Divider />
+          </Box>
+        </Box>
       </Stack.Item>
 
       {/* View tabs: Equipment / Misc + search + filters */}
@@ -1841,6 +2603,8 @@ const LoadoutSubPanel = (props: {
                   setSearchText("");
                   setWardrobeView("equipment");
                   setSelectedSlotName(null);
+                  setDetailOpen(false);
+                  act("selectGear", { hash: "" });
                 }}
               >
                 Equipment
@@ -1851,6 +2615,8 @@ const LoadoutSubPanel = (props: {
                 onClick={() => {
                   setSearchText("");
                   setWardrobeView("misc");
+                  setDetailOpen(false);
+                  act("selectGear", { hash: "" });
                 }}
               >
                 Misc
@@ -1884,36 +2650,88 @@ const LoadoutSubPanel = (props: {
         </Stack>
       </Stack.Item>
 
-      {/* Middle content — paper-doll / back button / misc tabs */}
-      <Stack.Item grow={!showingItems && wardrobeView === "equipment" && !selectedSlotName} basis={!showingItems && wardrobeView === "equipment" && !selectedSlotName ? 0 : undefined}>
-        {middleContent}
-      </Stack.Item>
-
-      {/* Gear item list */}
-      <Stack.Item grow basis={0} style={{ overflow: "auto" }}>
-        {showingItems && (
-          <Box>
-            <Divider />
-            <LoadoutItemList
-              items={displayItems}
-              equippedGear={data.equippedGear}
-              selectedHash={data.selectedGearHash}
-              act={act}
-            />
+      {/* Three-pane body */}
+      <Stack.Item grow basis={0}>
+        {wardrobeView === "misc" && !searchText ? (
+          /* Misc mode: category list | item browser */
+          <Box className="CharSetup__wardrobeMiscLayout">
+            <Box className="CharSetup__wardrobeMiscCats">
+              {miscCategories.map((cat) => (
+                <Box
+                  key={cat.name}
+                  className={classes([
+                    "CharSetup__slotTile",
+                    cat.name === selectedCategory && "CharSetup__slotTile--active",
+                  ])}
+                  onClick={() => setSelectedCategory(cat.name)}
+                >
+                  <Box className="CharSetup__slotTileName">{cat.name}</Box>
+                </Box>
+              ))}
+            </Box>
+            <Box className="CharSetup__wardrobeRight">
+              {itemBrowser}
+            </Box>
           </Box>
-        )}
-      </Stack.Item>
+        ) : (
+          /* Equipment mode (or search): [doll + slot bar + underwear] | [item browser] */
+          <Box className="CharSetup__wardrobeLayout">
+            {/* Center column: doll, slot icon bar, rotate, underwear */}
+            <Box className="CharSetup__wardrobeCenter">
+              <CharacterDoll
+                data={data}
+                equippedBySlot={equippedBySlot}
+                selectedSlotName={selectedSlotName}
+                onSelectSlot={(name) => {
+                  setSelectedSlotName(name);
+                  setDetailOpen(false);
+                  act("selectGear", { hash: "" });
+                  setSearchText("");
+                }}
+                currentDir={data.preview_dir}
+                act={act}
+              />
 
-      {/* Selected gear detail — only show when viewing items, not on paper-doll */}
-      <Stack.Item>
-        {showingItems && data.selectedGearDetail && (
-          <Box>
-            <Divider />
-            <LoadoutItemDetail
-              detail={data.selectedGearDetail}
-              tweaks={data.selectedGearTweaks}
-              act={act}
-            />
+              {/* Slot icon bar — 4×2 grid below the doll */}
+              <Box className="CharSetup__slotIconBar">
+                {SLOT_LABELS.map((slot) => (
+                  <SlotIconBtn
+                    key={slot.name}
+                    slot={slot}
+                    equipped={equippedBySlot[slot.name]}
+                    isActive={selectedSlotName === slot.name}
+                    onSelect={(name) => {
+                      setSelectedSlotName(name);
+                      setDetailOpen(false);
+                      act("selectGear", { hash: "" });
+                      setSearchText("");
+                    }}
+                  />
+                ))}
+              </Box>
+
+              {/* Underwear + Backpack — compact row below slot bar */}
+              <Box className="CharSetup__dollUnderwear">
+                {data.underwear_categories.map((cat) => (
+                  <Box key={cat.name} className="CharSetup__dollUnderwearItem">
+                    <Box className="CharSetup__dollUnderwearLabel">{cat.name}</Box>
+                    <Dropdown
+                      fluid
+                      selected={data.all_underwear?.[cat.name] || "None"}
+                      options={cat.items}
+                      onSelected={(val) =>
+                        act("setUnderwear", { category: cat.name, name: val })
+                      }
+                    />
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+
+            {/* Right: item browser */}
+            <Box className="CharSetup__wardrobeRight">
+              {itemBrowser}
+            </Box>
           </Box>
         )}
       </Stack.Item>
@@ -1927,9 +2745,10 @@ const LoadoutItemList = (props: {
   items: GearItem[];
   equippedGear: Record<string, boolean>;
   selectedHash: string | null;
+  onSelectGear?: () => void;
   act: Function;
 }) => {
-  const { items, equippedGear, selectedHash, act } = props;
+  const { items, equippedGear, selectedHash, onSelectGear, act } = props;
 
   if (!items || items.length === 0) {
     return (
@@ -1966,7 +2785,8 @@ const LoadoutItemList = (props: {
         ...groups[sg].map((item) => {
           const isEquipped = equippedGear?.[item.hash];
           const isSelected = selectedHash === item.hash;
-          const isUnavailable = !item.canEquip && !item.price;
+          const isLocked = !item.allowed && !isEquipped;
+          const isUnavailable = isLocked || (!item.canEquip && !item.price);
           return (
             <Table.Row
               key={item.hash}
@@ -1980,13 +2800,20 @@ const LoadoutItemList = (props: {
               onClick={
                 isUnavailable
                   ? undefined
-                  : () => act("selectGear", { hash: item.hash })
+                  : () => {
+                      onSelectGear?.();
+                      act("selectGear", { hash: item.hash });
+                    }
               }
             >
               <Table.Cell collapsing>
-                {item.icon ? (
+                {item.icon && item.iconState ? (
                   <Box className="CharSetup__gearIcon">
-                    <GameIcon html={item.icon} />
+                    <GearSpriteIcon
+                      dmiFile={item.icon}
+                      state={item.iconState}
+                      size={32}
+                    />
                   </Box>
                 ) : (
                   <Icon name="question" />
@@ -1997,11 +2824,13 @@ const LoadoutItemList = (props: {
                 color={
                   isEquipped
                     ? "good"
-                    : item.price
-                      ? "gold"
-                      : isUnavailable
-                        ? "bad"
-                        : undefined
+                    : isLocked
+                      ? "bad"
+                      : item.price
+                        ? "gold"
+                        : isUnavailable
+                          ? "bad"
+                          : undefined
                 }
               >
                 {item.name}
@@ -2036,10 +2865,15 @@ const LoadoutItemDetail = (props: {
     <Box className="CharSetup__gearDetail">
       {/* Header with icon + name */}
       <Stack align="center" mb={1}>
-        {detail.tweakedIcon && (
+        {detail.tweakedIcon && detail.tweakedIconState && (
           <Stack.Item>
             <Box className="CharSetup__gearDetailIcon">
-              <GameIcon html={detail.tweakedIcon} />
+              <GearSpriteIcon
+                dmiFile={detail.tweakedIcon}
+                state={detail.tweakedIconState}
+                color={detail.tweakedColor || undefined}
+                size={32}
+              />
             </Box>
           </Stack.Item>
         )}
@@ -2885,6 +3719,11 @@ const CareerPanel = (props: {
 }) => {
   const { data, act, context } = props;
   const jobs = data.job_list || [];
+  const [showBankDetails, setShowBankDetails] = useLocalState(
+    context,
+    "showBankDetails",
+    false,
+  );
 
   // Group jobs by department (client-side)
   const departments: Record<string, JobInfo[]> = {};
@@ -2900,29 +3739,27 @@ const CareerPanel = (props: {
 
   return (
     <Stack vertical fill>
-      {/* Fallback option */}
+      {/* Fallback option + Reset All — single row */}
       <Stack.Item>
-        <Box bold mb={0.5}>
-          If preferences unavailable:
-        </Box>
-        <Box>
-          {(data.fallback_options || []).map((opt) => (
-            <CsButton
-              key={opt.value}
-              selected={data.alternate_option === opt.value}
-              onClick={() =>
-                act("setFallbackOption", { option: opt.value })
-              }
-            >
-              {opt.label}
-            </CsButton>
-          ))}
-        </Box>
-      </Stack.Item>
-
-      <Stack.Item>
-        <Stack>
-          <Stack.Item grow />
+        <Stack align="center">
+          <Stack.Item>
+            <Box bold mr={0.5} inline>
+              If preferences unavailable:
+            </Box>
+          </Stack.Item>
+          <Stack.Item grow>
+            {(data.fallback_options || []).map((opt) => (
+              <CsButton
+                key={opt.value}
+                selected={data.alternate_option === opt.value}
+                onClick={() =>
+                  act("setFallbackOption", { option: opt.value })
+                }
+              >
+                {opt.label}
+              </CsButton>
+            ))}
+          </Stack.Item>
           <Stack.Item>
             <CsButton
               icon="undo"
@@ -2933,6 +3770,118 @@ const CareerPanel = (props: {
             </CsButton>
           </Stack.Item>
         </Stack>
+      </Stack.Item>
+
+      <Stack.Item>
+        <Divider />
+      </Stack.Item>
+
+      {/* Company relation */}
+      <Stack.Item>
+        <Box bold mb={0.5}>
+          <Icon name="building" mr={0.5} />
+          {data.company_name} Relation
+        </Box>
+        <Stack>
+          {(data.company_alignments || []).map((alignment) => (
+            <Stack.Item key={alignment} grow basis={0}>
+              <CsButton
+                fluid
+                textAlign="center"
+                selected={data.nanotrasen_relation === alignment}
+                color={
+                  data.nanotrasen_relation === alignment
+                    ? ALIGNMENT_COLORS[alignment]
+                    : undefined
+                }
+                onClick={() => act("setRelation", { value: alignment })}
+                icon={ALIGNMENT_ICONS[alignment] || "circle"}
+              >
+                {alignment}
+              </CsButton>
+            </Stack.Item>
+          ))}
+        </Stack>
+      </Stack.Item>
+
+      {/* Bank Account */}
+      <Stack.Item>
+        <Box
+          className={classes([
+            "CharSetup__card",
+            "CharSetup__card--expandable",
+            showBankDetails && "CharSetup__card--expanded",
+          ])}
+          onClick={() => setShowBankDetails(!showBankDetails)}
+        >
+          <Stack align="center">
+            <Stack.Item>
+              <Box inline mr={1} color="gold" style={{ fontSize: "120%" }}>
+                <Icon name="university" />
+              </Box>
+            </Stack.Item>
+            <Stack.Item grow>
+              <Box bold>Bank Account</Box>
+              <Box fontSize="11px" color="label">
+                Security:{" "}
+                {(data.bank_security_options || []).find(
+                  (o) => o.value === data.bank_security,
+                )?.label || "Moderate"}{" "}
+                | PIN: {data.bank_pin === 0 ? "Random" : data.bank_pin}
+              </Box>
+            </Stack.Item>
+            <Stack.Item>
+              <Icon name={showBankDetails ? "chevron-up" : "chevron-down"} />
+            </Stack.Item>
+          </Stack>
+        </Box>
+        {showBankDetails && (
+          <Box className="CharSetup__cardBody">
+            <Box bold mb={0.5}>
+              Security Level
+            </Box>
+            <Stack mb={1}>
+              {(data.bank_security_options || []).map((opt) => (
+                <Stack.Item key={opt.value} grow basis={0}>
+                  <CsButton
+                    fluid
+                    textAlign="center"
+                    selected={data.bank_security === opt.value}
+                    onClick={() =>
+                      act("setBankSecurity", { value: opt.value })
+                    }
+                  >
+                    {opt.label}
+                  </CsButton>
+                </Stack.Item>
+              ))}
+            </Stack>
+            <Box bold mb={0.5}>
+              PIN Code
+            </Box>
+            <Stack align="center">
+              <Stack.Item>
+                <NumberInput
+                  value={data.bank_pin || 0}
+                  minValue={0}
+                  maxValue={9999}
+                  step={1}
+                  width="80px"
+                  onChange={(e, val) => act("setBankPin", { value: val })}
+                />
+              </Stack.Item>
+              <Stack.Item>
+                <CsButton
+                  icon="dice"
+                  selected={data.bank_pin === 0}
+                  onClick={() => act("setBankPin", { value: 0 })}
+                >
+                  Random
+                </CsButton>
+              </Stack.Item>
+            </Stack>
+          </Box>
+        )}
       </Stack.Item>
 
       <Stack.Item>
@@ -3755,9 +4704,8 @@ const UplinkSubPanel = (props: {
 // ================================================================
 
 const BACKGROUND_TABS = [
-  { id: "identity", label: "Origins", icon: "globe-americas" },
-  { id: "languages", label: "Languages", icon: "language" },
   { id: "records", label: "Records", icon: "file-medical" },
+  { id: "languages", label: "Languages", icon: "language" },
   { id: "flavor", label: "Description", icon: "feather-alt" },
   { id: "relations", label: "Relations", icon: "people-arrows" },
 ] as const;
@@ -3773,7 +4721,7 @@ const BackgroundPanel = (props: {
   const [tab, setTab] = useLocalState<BackgroundTabId>(
     context,
     "bgTab",
-    "identity",
+    "records",
   );
 
   return (
@@ -3799,9 +4747,6 @@ const BackgroundPanel = (props: {
         <Divider />
       </Stack.Item>
       <Stack.Item grow basis={0} overflow="auto">
-        {tab === "identity" && (
-          <BackgroundOriginsSubPanel data={data} act={act} context={context} />
-        )}
         {tab === "languages" && (
           <BackgroundLanguageSubPanel data={data} act={act} />
         )}
@@ -3839,231 +4784,6 @@ const ALIGNMENT_COLORS: Record<string, string> = {
   Neutral: "label",
   Skeptical: "orange",
   Opposed: "red",
-};
-
-const BackgroundOriginsSubPanel = (props: {
-  data: CharacterData;
-  act: Function;
-  context: any;
-}) => {
-  const { data, act, context } = props;
-  const [showBankDetails, setShowBankDetails] = useLocalState(
-    context,
-    "showBankDetails",
-    false,
-  );
-
-  return (
-    <>
-      {/* Spawn Point */}
-      <Box bold mb={0.5}>
-        <Icon name="map-marker-alt" mr={0.5} />
-        Spawn Point
-      </Box>
-      <Box mb={1.5} className="CharSetup__card">
-        <Stack align="center" px={0.5} py={0.25}>
-          <Stack.Item grow>
-            <Dropdown
-              fluid
-              selected={data.spawnpoint}
-              options={data.spawnpoints}
-              onSelected={(val) => act("setSpawnpoint", { spawnpoint: val })}
-            />
-          </Stack.Item>
-        </Stack>
-      </Box>
-
-      {/* Company relation — big horizontal button row */}
-      <Box bold mb={0.5}>
-        <Icon name="building" mr={0.5} />
-        {data.company_name} Relation
-      </Box>
-      <Stack mb={1.5}>
-        {(data.company_alignments || []).map((alignment) => (
-          <Stack.Item key={alignment} grow basis={0}>
-            <CsButton
-              fluid
-              textAlign="center"
-              selected={data.nanotrasen_relation === alignment}
-              color={
-                data.nanotrasen_relation === alignment
-                  ? ALIGNMENT_COLORS[alignment]
-                  : undefined
-              }
-              onClick={() => act("setRelation", { value: alignment })}
-              icon={ALIGNMENT_ICONS[alignment] || "circle"}
-            >
-              {alignment}
-            </CsButton>
-          </Stack.Item>
-        ))}
-      </Stack>
-
-      {/* Home System — full-width dropdown with globe icon */}
-      <Box bold mb={0.5}>
-        <Icon name="globe" mr={0.5} />
-        Home System
-      </Box>
-      <Box mb={1.5} className="CharSetup__card">
-        <Stack align="center">
-          <Stack.Item grow>
-            <Dropdown
-              fluid
-              selected={
-                (data.home_systems || []).includes(data.home_system)
-                  ? data.home_system
-                  : data.home_system
-              }
-              displayText={
-                <>
-                  <Icon name="map-marker-alt" mr={1} />
-                  {data.home_system}
-                </>
-              }
-              options={data.home_systems || []}
-              onSelected={(val: string) =>
-                act("setHomeSystem", { value: val })
-              }
-            />
-          </Stack.Item>
-          {!(data.home_systems || []).includes(data.home_system) &&
-            data.home_system !== "Unset" && (
-              <Stack.Item>
-                <Box color="good" fontSize="10px" italic>
-                  Custom
-                </Box>
-              </Stack.Item>
-            )}
-        </Stack>
-      </Box>
-
-      {/* Faction/Background */}
-      <Box bold mb={0.5}>
-        <Icon name="flag" mr={0.5} />
-        Faction
-      </Box>
-      <Box mb={1.5} className="CharSetup__card">
-        <Dropdown
-          fluid
-          selected={
-            (data.backgrounds || []).includes(data.background)
-              ? data.background
-              : data.background
-          }
-          displayText={
-            <>
-              <Icon name="shield-alt" mr={1} />
-              {data.background}
-            </>
-          }
-          options={data.backgrounds || []}
-          onSelected={(val: string) => act("setBackground", { value: val })}
-        />
-      </Box>
-
-      {/* Religion */}
-      <Box bold mb={0.5}>
-        <Icon name="pray" mr={0.5} />
-        Religion
-      </Box>
-      <Box mb={1.5} className="CharSetup__card">
-        <Dropdown
-          fluid
-          selected={
-            (data.religions || []).includes(data.religion)
-              ? data.religion
-              : data.religion
-          }
-          displayText={
-            <>
-              <Icon name="star-of-life" mr={1} />
-              {data.religion}
-            </>
-          }
-          options={data.religions || []}
-          onSelected={(val: string) => act("setReligion", { value: val })}
-        />
-      </Box>
-
-      {/* Bank Account — collapsible card */}
-      <Box
-        className={classes([
-          "CharSetup__card",
-          "CharSetup__card--expandable",
-          showBankDetails && "CharSetup__card--expanded",
-        ])}
-        onClick={() => setShowBankDetails(!showBankDetails)}
-      >
-        <Stack align="center">
-          <Stack.Item>
-            <Box inline mr={1} color="gold" style={{ fontSize: "120%" }}>
-              <Icon name="university" />
-            </Box>
-          </Stack.Item>
-          <Stack.Item grow>
-            <Box bold>Bank Account</Box>
-            <Box fontSize="11px" color="label">
-              Security:{" "}
-              {(data.bank_security_options || []).find(
-                (o) => o.value === data.bank_security,
-              )?.label || "Moderate"}{" "}
-              | PIN: {data.bank_pin === 0 ? "Random" : data.bank_pin}
-            </Box>
-          </Stack.Item>
-          <Stack.Item>
-            <Icon name={showBankDetails ? "chevron-up" : "chevron-down"} />
-          </Stack.Item>
-        </Stack>
-      </Box>
-      {showBankDetails && (
-        <Box className="CharSetup__cardBody">
-          <Box bold mb={0.5}>
-            Security Level
-          </Box>
-          <Stack mb={1}>
-            {(data.bank_security_options || []).map((opt) => (
-              <Stack.Item key={opt.value} grow basis={0}>
-                <CsButton
-                  fluid
-                  textAlign="center"
-                  selected={data.bank_security === opt.value}
-                  onClick={() =>
-                    act("setBankSecurity", { value: opt.value })
-                  }
-                >
-                  {opt.label}
-                </CsButton>
-              </Stack.Item>
-            ))}
-          </Stack>
-          <Box bold mb={0.5}>
-            PIN Code
-          </Box>
-          <Stack align="center">
-            <Stack.Item>
-              <NumberInput
-                value={data.bank_pin || 0}
-                minValue={0}
-                maxValue={9999}
-                step={1}
-                width="80px"
-                onChange={(e, val) => act("setBankPin", { value: val })}
-              />
-            </Stack.Item>
-            <Stack.Item>
-              <CsButton
-                icon="dice"
-                selected={data.bank_pin === 0}
-                onClick={() => act("setBankPin", { value: 0 })}
-              >
-                Random
-              </CsButton>
-            </Stack.Item>
-          </Stack>
-        </Box>
-      )}
-    </>
-  );
 };
 
 // --- Languages: visual badge system ---
@@ -4270,6 +4990,24 @@ const BackgroundRecordsSubPanel = (props: {
 
   return (
     <>
+      {/* Spawn Point */}
+      <Box bold mb={0.5}>
+        <Icon name="map-marker-alt" mr={0.5} />
+        Spawn Point
+      </Box>
+      <Box mb={1.5} className="CharSetup__card">
+        <Stack align="center" px={0.5} py={0.25}>
+          <Stack.Item grow>
+            <Dropdown
+              fluid
+              selected={data.spawnpoint}
+              options={data.spawnpoints}
+              onSelected={(val) => act("setSpawnpoint", { spawnpoint: val })}
+            />
+          </Stack.Item>
+        </Stack>
+      </Box>
+
       {RECORD_DEFS.map((rec) => {
         const value = RECORD_VALUES[rec.key](data);
         const isExpanded = expandedRecord === rec.key;
@@ -4844,13 +5582,7 @@ const PreferencesSubPanel = (props: {
   const { data, act, context } = props;
   const categories = data.client_preference_categories || {};
   const values = data.preference_values || {};
-  const [expandedCat, setExpandedCat] = useLocalState<string | null>(
-    context,
-    "prefExpandedCat",
-    null,
-  );
-
-  // Sort categories by display order
+  // Sort categories by display order (computed before state init so we can default to first)
   const sortedCats = PREF_CATEGORY_ORDER.filter((c) => c in categories);
   for (const cat of Object.keys(categories)) {
     if (!sortedCats.includes(cat)) {
@@ -4858,15 +5590,23 @@ const PreferencesSubPanel = (props: {
     }
   }
 
+  const visibleCats = sortedCats.filter((c) => (categories[c] || []).length > 0);
+
+  const [expandedCat, setExpandedCat] = useLocalState<string | null>(
+    context,
+    "prefExpandedCat",
+    visibleCats[0] ?? null,
+  );
+
   return (
     <>
-      {sortedCats.filter((catName) => (categories[catName] || []).length > 0).map((catName) => {
+      {visibleCats.map((catName) => {
         const prefs = categories[catName] || [];
         const meta = PREF_CATEGORY_META[catName] || {
           icon: "cog",
           color: "#999",
         };
-        const isExpanded = expandedCat === catName || expandedCat === null;
+        const isExpanded = expandedCat === catName;
 
         return (
           <Box key={catName} mb={0.5}>
@@ -4880,7 +5620,7 @@ const PreferencesSubPanel = (props: {
               ])}
               style={{ "--cs-card-accent": meta.color }}
               onClick={() =>
-                setExpandedCat(isExpanded && expandedCat !== null ? null : catName)
+                setExpandedCat(isExpanded ? null : catName)
               }
             >
               <Stack align="center">

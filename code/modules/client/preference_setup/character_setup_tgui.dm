@@ -33,9 +33,7 @@
 	var/datum/preferences/pref
 	var/mob/owner
 	var/preview_dir = SOUTH
-	var/cached_preview
-	var/preview_dirty = TRUE
-	var/list/slot_previews  // Cached character slot previews (generated on demand)
+	var/list/slot_previews  // Cached character slot appearance data (generated on demand)
 	// Loadout state
 	var/selected_gear_hash
 	var/list/selected_tweaks = list()
@@ -65,6 +63,11 @@
 		ui.set_autoupdate(FALSE)
 		ui.open()
 
+/datum/character_setup_tgui/tgui_assets(mob/user)
+	return list(
+		get_asset_datum(/datum/asset/directories/tgui_sprites)
+	)
+
 // ============================================================
 // STATIC DATA — sent once, cached on the client
 // Contains all reference data: species, hair styles, etc.
@@ -93,7 +96,11 @@
 			"default_h_style" = S.default_h_style,
 			"default_f_style" = S.default_f_style,
 			"max_skin_tone" = S.max_skin_tone(),
-			"no_lace" = !!(S.spawn_flags & SPECIES_NO_LACE)
+			"no_lace" = !!(S.spawn_flags & SPECIES_NO_LACE),
+			"icobase" = "[S.icobase]",
+			"hair_key" = S.hair_key,
+			"limb_blend" = S.limb_blend,
+			"has_eyes_icon" = S.has_eyes_icon
 		))
 	data["species_list"] = species_data
 
@@ -103,6 +110,7 @@
 		var/datum/sprite_accessory/hair/H = GLOB.hair_styles_list[style_name]
 		hair_data += list(list(
 			"name" = H.name,
+			"icon_state" = H.icon_state,
 			"gender" = H.gender,
 			"species_allowed" = H.species_allowed,
 			"has_secondary" = H.has_secondary
@@ -115,10 +123,48 @@
 		var/datum/sprite_accessory/facial_hair/F = GLOB.facial_hair_styles_list[style_name]
 		facial_data += list(list(
 			"name" = F.name,
+			"icon_state" = F.icon_state,
 			"gender" = F.gender,
 			"species_allowed" = F.species_allowed
 		))
 	data["facial_hair_styles"] = facial_data
+
+	// Hair icon DMI mappings — needed for client-side sprite compositor
+	// Maps build category ("default"/"slim") -> species hair_key -> DMI path
+	var/list/hair_icons_data = list()
+	for(var/build_cat in GLOB.hair_icons)
+		var/list/species_map = list()
+		for(var/species_key in GLOB.hair_icons[build_cat])
+			species_map[species_key] = "[GLOB.hair_icons[build_cat][species_key]]"
+		hair_icons_data[build_cat] = species_map
+	data["hair_icons"] = hair_icons_data
+
+	var/list/facial_icons_data = list()
+	for(var/build_cat in GLOB.facial_hair_icons)
+		var/list/species_map = list()
+		for(var/species_key in GLOB.facial_hair_icons[build_cat])
+			species_map[species_key] = "[GLOB.facial_hair_icons[build_cat][species_key]]"
+		facial_icons_data[build_cat] = species_map
+	data["facial_hair_icons"] = facial_icons_data
+
+	// Body build render data — maps build name to index suffix and clothing DMI paths
+	// Collect from all playable species body builds
+	var/list/build_render_data = list()
+	for(var/species_name in playable_species)
+		var/datum/species/S = all_species[species_name]
+		if(!S)
+			continue
+		for(var/datum/body_build/BB in S.body_builds)
+			if(BB.name in build_render_data)
+				continue
+			var/list/clothing_paths = list()
+			for(var/slot in BB.clothing_icons)
+				clothing_paths[slot] = "[BB.clothing_icons[slot]]"
+			build_render_data[BB.name] = list(
+				"index" = BB.index,
+				"clothing_icons" = clothing_paths
+			)
+	data["body_build_render"] = build_render_data
 
 	// Blood types
 	data["blood_types"] = valid_bloodtypes
@@ -218,9 +264,14 @@
 	var/list/robolimb_data = list()
 	for(var/company in GLOB.chargen_robolimbs)
 		var/datum/robolimb/R = GLOB.chargen_robolimbs[company]
+		// Resolve icon path — use racial_icons if species has one, else default
+		var/rlimb_icon = "[R.icon]"
+		if(R.racial_icons && R.racial_icons[pref.species])
+			rlimb_icon = "[R.racial_icons[pref.species]]"
 		robolimb_data += list(list(
 			"company" = R.company,
 			"desc" = R.desc,
+			"icon" = rlimb_icon,
 			"species_cannot_use" = R.species_cannot_use,
 			"restricted_to" = R.restricted_to,
 			"applies_to_part" = R.applies_to_part,
@@ -518,8 +569,8 @@
 /datum/character_setup_tgui/tgui_data(mob/user)
 	var/list/data = list()
 
-	// Preview (cached, only regenerated when dirty)
-	data["preview_icon"] = get_preview()
+	// Preview direction — client-side compositor handles rendering
+	// preview_icon is no longer sent; the TGUI client renders via SpriteCompositor
 	data["preview_dir"] = preview_dir
 
 	// Identity
@@ -546,12 +597,19 @@
 	data["disabilities"] = pref.disabilities
 	data["has_cortical_stack"] = pref.has_cortical_stack
 
-	// Body markings as list of {name, color}
+	// Body markings as list of {name, color, icon, icon_state, body_parts}
 	var/list/markings = list()
 	for(var/marking_name in pref.body_markings)
+		var/datum/sprite_accessory/marking/M = GLOB.body_marking_styles_list[marking_name]
+		if(!M)
+			continue
 		markings += list(list(
 			"name" = marking_name,
-			"color" = pref.body_markings[marking_name]
+			"color" = pref.body_markings[marking_name],
+			"icon" = "[M.icon]",
+			"icon_state" = M.icon_state,
+			"body_parts" = M.body_parts,
+			"draw_target" = M.draw_target
 		))
 	data["body_markings"] = markings
 
@@ -560,6 +618,43 @@
 	data["backpack"] = pref.backpack ? pref.backpack.name : "Nothing"
 	data["equip_preview_mob"] = pref.equip_preview_mob
 	data["bgstate"] = pref.bgstate
+
+	// Underwear render data — resolved icon_state + DMI path for client-side rendering
+	var/list/underwear_render = list()
+	var/datum/species/render_species = all_species[pref.species] || all_species[SPECIES_HUMAN]
+	var/datum/body_build/render_build
+	if(render_species)
+		for(var/datum/body_build/BB in render_species.body_builds)
+			if(BB.name == pref.body)
+				render_build = BB
+				break
+		if(!render_build && length(render_species.body_builds))
+			render_build = render_species.body_builds[1]
+	for(var/uw_category in pref.all_underwear)
+		var/datum/category_group/underwear/UWC = GLOB.underwear.categories_by_name[uw_category]
+		if(!UWC)
+			continue
+		var/uw_item_name = pref.all_underwear[uw_category]
+		var/datum/category_item/underwear/UWD = UWC.items_by_name[uw_item_name]
+		if(!UWD || !UWD.icon_state)
+			continue
+		var/uw_dmi = render_build ? "[render_build.clothing_icons[slot_hidden_str]]" : "icons/inv_slots/hidden/mob.dmi"
+		var/uw_color = null
+		if(UWD.has_color && pref.all_underwear_metadata && pref.all_underwear_metadata[uw_category])
+			var/list/meta = pref.all_underwear_metadata[uw_category]
+			for(var/datum/gear_tweak/gt in UWD.tweaks)
+				if(istype(gt, /datum/gear_tweak/color))
+					uw_color = meta["[gt]"]
+					break
+		underwear_render += list(list(
+			"state" = UWD.icon_state,
+			"dmiFile" = uw_dmi,
+			"color" = uw_color
+		))
+	data["underwear_render"] = underwear_render
+
+	// Equipment render data (loadout + job clothing overlays)
+	data["equipment_render"] = generate_equipment_render_data()
 
 	// Slot info
 	data["default_slot"] = pref.default_slot
@@ -704,114 +799,109 @@
 	return data
 
 // ============================================================
-// PREVIEW GENERATION — cached, regenerated on demand
+// PREVIEW — client-side rendering via SpriteCompositor
+// Server only updates BYOND-side lobby screen preview
 // ============================================================
-/datum/character_setup_tgui/proc/get_preview()
-	if(!preview_dirty && cached_preview)
-		return cached_preview
-	cached_preview = generate_new_preview()
-	preview_dirty = FALSE
-	return cached_preview
-
-/datum/character_setup_tgui/proc/generate_new_preview()
-	var/mob/living/carbon/human/dummy/mannequin/mannequin = get_mannequin(pref.client_ckey)
-	if(!mannequin)
-		return null
-	mannequin.delete_inventory(TRUE)
-	pref.dress_preview_mob(mannequin)
-	mannequin.ImmediateOverlayUpdate()
-
-	// Generate directional preview using getFlatIcon on each overlay
-	var/icon/flat = icon('icons/effects/blank.dmi')
-	for(var/I in mannequin.overlays)
-		if(isnull(I))
-			continue
-		var/image/layer_image = I
-		if(layer_image.plane != FLOAT_PLANE)
-			continue
-		if(!layer_image.icon)
-			continue
-		if(layer_image.alpha == 0)
-			continue
-		var/icon/add = getFlatIcon(image(I), preview_dir, null, null, null, FALSE, TRUE, TRUE)
-		flat.Blend(add, ICON_OVERLAY)
-
-	if(mannequin.color)
-		flat.Blend(mannequin.color, ICON_MULTIPLY)
-
-	// Apply body height scaling (anchored at feet, matching in-game update_transform behavior)
-	var/height_mult = mannequin.body_height
-	if(height_mult && height_mult != 1.0)
-		var/new_h = round(32 * height_mult)
-		flat.Scale(32, new_h)
-		// Crop/pad back to 32x32, anchored at the bottom (y=1 is feet in BYOND)
-		// Taller: crops excess from the top (head area)
-		// Shorter: pads transparent space above the head
-		flat.Crop(1, 1, 32, 32)
-
-	flat.Scale(192, 192)
-	// Use icon2base64 directly to avoid static cache collisions with dynamically generated icons
-	return "<img class='game-icon' src='data:image/png;base64,[icon2base64(flat)]'>"
-
 /datum/character_setup_tgui/proc/mark_preview_dirty()
-	preview_dirty = TRUE
-	// Also update the BYOND-side screen previews
+	// Update the BYOND-side lobby screen preview (separate from TGUI)
 	pref.update_preview_icon()
 
-/// Generate small preview thumbnails for all character slots.
-/// Uses lower-level record loading to avoid save side-effects.
+/// Generate equipment overlay render data for client-side rendering.
+/// Dresses a mannequin with job/loadout items, then extracts icon + icon_state + layer
+/// from the relevant overlays_standing slots.
+/datum/character_setup_tgui/proc/generate_equipment_render_data()
+	if(!pref.equip_preview_mob)
+		return list()
+
+	var/mob/living/carbon/human/dummy/mannequin/M = get_mannequin(pref.client_ckey)
+	if(!M)
+		return list()
+
+	M.delete_inventory(TRUE)
+	pref.dress_preview_mob(M)
+	M.ImmediateOverlayUpdate()
+
+	var/list/equipment = list()
+
+	// Extract overlays from clothing-related HO_ layers
+	var/list/clothing_layers = list(
+		list(HO_UNIFORM_LAYER, "uniform"),
+		list(HO_SHOES_LAYER, "shoes"),
+		list(HO_GLOVES_LAYER, "gloves"),
+		list(HO_BELT_LAYER, "belt"),
+		list(HO_SUIT_LAYER, "suit"),
+		list(HO_GLASSES_LAYER, "glasses"),
+		list(HO_SUIT_STORE_LAYER, "suitstore"),
+		list(HO_BACK_LAYER, "back"),
+		list(HO_EARS_LAYER, "ears"),
+		list(HO_FACEMASK_LAYER, "mask"),
+		list(HO_HEAD_LAYER, "head")
+	)
+
+	for(var/list/layer_info in clothing_layers)
+		var/ho_layer = layer_info[1]
+		var/slot_name = layer_info[2]
+		var/overlay_data = M.overlays_standing[ho_layer]
+		if(!overlay_data)
+			continue
+		var/list/overlays = islist(overlay_data) ? overlay_data : list(overlay_data)
+		for(var/image/I in overlays)
+			if(!I || !I.icon || !I.icon_state)
+				continue
+			equipment += list(list(
+				"dmiFile" = "[I.icon]",
+				"state" = I.icon_state,
+				"color" = I.color,
+				"layer" = ho_layer
+			))
+
+	return equipment
+
+/// Generate slot preview data for all character slots.
+/// Sends raw appearance data per slot so the client can render via SpriteCompositor.
 /datum/character_setup_tgui/proc/generate_slot_previews()
 	var/original_slot = pref.default_slot
 	var/list/previews = list()
-	var/mob/living/carbon/human/dummy/mannequin/mannequin = get_mannequin(pref.client_ckey)
-	if(!mannequin)
-		return list()
 
 	for(var/i = 1 to config.character_setup.character_slots)
 		var/slot_key = pref.get_slot_key(i)
 		var/slot_name = (pref.slot_names && pref.slot_names[slot_key]) || null
-		var/preview_html = null
+		var/list/appearance = null
 
 		var/datum/pref_record_reader/R = pref.load_pref_record(slot_key)
 		if(R)
-			// Temporarily load this slot's data
 			pref.player_setup.load_character(R)
 			pref.sanitize_preferences()
 			if(!slot_name)
 				slot_name = pref.real_name || "Character [i]"
 
-			// Generate mini preview
-			mannequin.delete_inventory(TRUE)
-			pref.dress_preview_mob(mannequin)
-			mannequin.ImmediateOverlayUpdate()
-
-			var/icon/flat = icon('icons/effects/blank.dmi')
-			for(var/I in mannequin.overlays)
-				if(isnull(I))
-					continue
-				var/image/layer_image = I
-				if(layer_image.plane != FLOAT_PLANE)
-					continue
-				if(!layer_image.icon)
-					continue
-				if(layer_image.alpha == 0)
-					continue
-				var/icon/add = getFlatIcon(image(I), SOUTH, null, null, null, FALSE, TRUE, TRUE)
-				flat.Blend(add, ICON_OVERLAY)
-			if(mannequin.color)
-				flat.Blend(mannequin.color, ICON_MULTIPLY)
-			flat.Scale(64, 64)
-			preview_html = "<img class='game-icon' src='data:image/png;base64,[icon2base64(flat)]'>"
+			// Send raw appearance data — client renders via SpriteCompositor
+			var/datum/species/S = all_species[pref.species ? pref.species : SPECIES_HUMAN]
+			appearance = list(
+				"species" = pref.species,
+				"gender" = pref.gender,
+				"body" = pref.body,
+				"h_style" = pref.h_style,
+				"f_style" = pref.f_style,
+				"hair_color" = rgb(pref.r_hair, pref.g_hair, pref.b_hair),
+				"s_hair_color" = rgb(pref.r_s_hair, pref.g_s_hair, pref.b_s_hair),
+				"facial_color" = rgb(pref.r_facial, pref.g_facial, pref.b_facial),
+				"skin_color" = rgb(pref.r_skin, pref.g_skin, pref.b_skin),
+				"eye_color" = rgb(pref.r_eyes, pref.g_eyes, pref.b_eyes),
+				"s_tone" = pref.s_tone,
+				"icobase" = S ? "[S.icobase]" : null,
+				"hair_key" = S ? S.hair_key : "",
+				"appearance_flags" = S ? S.species_appearance_flags : 0
+			)
 
 		if(!slot_name)
 			slot_name = "Character [i]"
 
-		previews += list(list("slot" = i, "name" = slot_name, "preview" = preview_html))
+		previews += list(list("slot" = i, "name" = slot_name, "appearance" = appearance))
 
 	// Restore original character
 	pref.load_character(original_slot)
 	pref.sanitize_preferences()
-	mark_preview_dirty()
 
 	slot_previews = previews
 	return previews
@@ -834,7 +924,6 @@
 			var/new_dir = text2num(params["dir"])
 			if(new_dir in list(NORTH, SOUTH, EAST, WEST))
 				preview_dir = new_dir
-				preview_dirty = TRUE
 			return TRUE
 
 		if("randomizeAppearance")
@@ -1186,6 +1275,9 @@
 		// === LOADOUT ACTIONS ===
 		if("selectGear")
 			var/hash = params["hash"]
+			if(!hash)
+				selected_gear_hash = null
+				return TRUE
 			var/datum/gear/G = hash_to_gear[hash]
 			if(!G)
 				return FALSE
@@ -1774,10 +1866,31 @@
 // LOADOUT HELPER PROCS
 // ============================================================
 /datum/character_setup_tgui/proc/build_gear_entry(datum/gear/G, mob/user)
+	// Send icon path + icon_state for client-side atlas rendering
+	var/gear_icon = null
+	var/gear_icon_state = null
+	if(G.path)
+		var/atom/A = G.path
+		gear_icon = "[initial(A.icon)]"
+		gear_icon_state = initial(A.icon_state)
+	// If the path has no usable icon_state (e.g. selection items whose path is a generic parent),
+	// fall back to the first concrete path offered by a path tweak.
+	if(!gear_icon_state)
+		for(var/datum/gear_tweak/tweak in G.gear_tweaks)
+			if(istype(tweak, /datum/gear_tweak/path))
+				var/datum/gear_tweak/path/path_tweak = tweak
+				if(length(path_tweak.valid_paths))
+					var/first_key = path_tweak.valid_paths[1]
+					var/first_path = path_tweak.valid_paths[first_key]
+					var/atom/B = first_path
+					gear_icon = "[initial(B.icon)]"
+					gear_icon_state = initial(B.icon_state)
+				break
 	var/list/entry = list(
 		"name" = G.display_name,
 		"hash" = G.gear_hash,
-		"icon" = G.path ? icon2base64html(G.path) : null,
+		"icon" = gear_icon,
+		"iconState" = gear_icon_state,
 		"slot" = G.slot,
 		"slotName" = G.slot ? slot_to_description(G.slot) : "",
 		"subgroup" = G.subgroup || "",
@@ -1822,7 +1935,10 @@
 	return entry
 
 /datum/character_setup_tgui/proc/build_gear_detail(datum/gear/G, mob/user)
-	var/tweaked_icon = null
+	// Resolve tweaked icon info for client-side atlas rendering
+	var/tweaked_icon_file = null
+	var/tweaked_icon_state = null
+	var/tweaked_color = null
 	if(G.path)
 		var/datum/gear_data/gd = new(G.path)
 		for(var/datum/gear_tweak/gt in G.gear_tweaks)
@@ -1830,20 +1946,18 @@
 		var/atom/movable/gear_virtual_item = new gd.path
 		for(var/datum/gear_tweak/gt in G.gear_tweaks)
 			gt.tweak_item(gear_virtual_item, selected_tweaks["[gt]"])
-		var/icon/I = icon(gear_virtual_item.icon, gear_virtual_item.icon_state)
+		tweaked_icon_file = "[gear_virtual_item.icon]"
+		tweaked_icon_state = gear_virtual_item.icon_state
 		if(gear_virtual_item.color)
-			if(islist(gear_virtual_item.color))
-				I.MapColors(arglist(gear_virtual_item.color))
-			else
-				I.Blend(gear_virtual_item.color, ICON_MULTIPLY)
-		I.Scale(I.Width() * 2, I.Height() * 2)
+			if(!islist(gear_virtual_item.color))
+				tweaked_color = gear_virtual_item.color
 		QDEL_NULL(gear_virtual_item)
-		// Use icon2base64 directly to avoid static cache collisions with dynamically generated icons
-		tweaked_icon = "<img class='game-icon' src='data:image/png;base64,[icon2base64(I)]'>"
 	return list(
 		"name" = G.display_name,
 		"hash" = G.gear_hash,
-		"tweakedIcon" = tweaked_icon,
+		"tweakedIcon" = tweaked_icon_file,
+		"tweakedIconState" = tweaked_icon_state,
+		"tweakedColor" = tweaked_color,
 		"description" = G.get_description(selected_tweaks),
 		"slot" = G.slot,
 		"slotName" = G.slot ? slot_to_description(G.slot) : "",
@@ -1982,7 +2096,7 @@
 				if(BP_R_LEG)
 					pref.organ_data[BP_R_FOOT] = null
 					pref.rlimb_data[BP_R_FOOT] = null
-				if(BP_CHEST)
+				if(BP_CHEST, BP_HEAD, BP_GROIN)
 					// Full-body reset
 					for(var/limb in BP_ALL_LIMBS)
 						pref.organ_data[limb] = null
@@ -1990,8 +2104,8 @@
 					for(var/internal in BP_INTERNAL_ORGANS)
 						pref.organ_data[internal] = null
 		if("amputated")
-			if(organ == BP_CHEST)
-				return // Can't amputate chest
+			if(organ in list(BP_CHEST, BP_HEAD, BP_GROIN))
+				return // Can't amputate chest, head or groin
 			pref.organ_data[organ] = "amputated"
 			pref.rlimb_data[organ] = null
 			// Cascade amputation
@@ -2035,7 +2149,7 @@
 				if(BP_R_LEG)
 					pref.organ_data[BP_R_FOOT] = "cyborg"
 					pref.rlimb_data[BP_R_FOOT] = action
-				if(BP_CHEST)
+				if(BP_CHEST, BP_HEAD, BP_GROIN)
 					// Full-body prosthetic
 					for(var/limb in BP_ALL_LIMBS - BP_CHEST)
 						pref.organ_data[limb] = "cyborg"
