@@ -447,7 +447,7 @@
 
 		else
 			to_chat(user, "You hit the light!")
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 
 	// attempt to remove the lightbulb out of the fixture with a crowbar

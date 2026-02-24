@@ -208,10 +208,11 @@
 	next_move = max(world.time + timeout, next_move)
 
 /mob/proc/canClick(obj/item/I)
-	if(istype(I) && I.last_attack_time )
+	if(istype(I) && !I.check_cooldown())
+		return FALSE
 	if(config.misc.no_click_cooldown || next_move <= world.time)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 // Default behavior: ignore double clicks, the second click that makes the doubleclick call already calls for a normal click
 /mob/proc/DblClickOn(atom/A, params)
@@ -330,20 +331,8 @@
 	A.AltClick(src)
 
 /atom/proc/AltClick(mob/user)
-	var/cancel = SEND_SIGNAL(src, SIGNAL_ALT_CLICKED, src, user)
-	if(cancel)
-		return
-
-	var/turf/T = get_turf(src)
-
-	if(T && user.TurfAdjacent(T))
-		if(user.listed_turf == T)
-			user.listed_turf = null
-		else
-			user.listed_turf = T
-			user.client.statpanel = "Turf"
-
-	return TRUE
+	SEND_SIGNAL(src, SIGNAL_ALT_CLICKED, src, user)
+	return
 
 /mob/proc/TurfAdjacent(turf/T)
 	return T.AdjacentQuick(src)
@@ -410,7 +399,16 @@
 	A.ShiftRightClick(src)
 
 /atom/proc/ShiftRightClick(mob/user)
-	return
+	var/turf/T = get_turf(src)
+
+	if(T && user.TurfAdjacent(T))
+		if(user.listed_turf == T)
+			user.listed_turf = null
+		else
+			user.listed_turf = T
+			user.client.statpanel = "Turf"
+
+	return TRUE
 
 /*
 	Control+Alt+Rclick

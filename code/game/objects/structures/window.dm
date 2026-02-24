@@ -299,7 +299,7 @@
 			P.state = state
 			qdel(src)
 	else
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 3)
 			visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))

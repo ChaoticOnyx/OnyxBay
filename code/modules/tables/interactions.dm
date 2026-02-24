@@ -152,7 +152,7 @@
 		return
 
 	if(user.a_intent == I_HURT && W.force)
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		obj_attack_sound(W)
 		shake_animation(stime = 1)

@@ -574,7 +574,7 @@
 		if(W.item_flags & ITEM_FLAG_NO_BLUDGEON)
 			return
 
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		if(affected)
 			if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 3)

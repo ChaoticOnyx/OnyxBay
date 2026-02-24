@@ -622,7 +622,7 @@ meteor_act
 /mob/living/carbon/human/parry_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		A.setClickCooldown(I.update_attack_cooldown()*2)
+		I.set_cooldown(I.update_attack_cooldown()*2)
 		A.parrying = 1
 		A.visible_message(SPAN("warning", "[A] attempts to parry [src]'s attack with their [I]!"))
 		//visible_message("[A] tries to parry [src]'s attack with their [I]! Parry window: [I.mod_handy*8]") //Debug message
@@ -662,7 +662,8 @@ meteor_act
 			defender.next_move = world.time+1 //Well I'd prefer to use setClickCooldown but it ain't gonna work here.
 			defender.damage_poise(2.5 + weapon_atk.mod_weight*1.5, TRUE)
 			//visible_message("Debug \[parry\]: Defender [defender] lost [2.5+(weapon_def.mod_weight*2.5)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			attacker.setClickCooldown(weapon_atk.update_attack_cooldown()*2)
+			attacker.setClickCooldown(weapon_atk.update_attack_cooldown()*2) // Also setting regular cooldown because, well, PARRIED
+			weapon_atk.set_cooldown(weapon_atk.update_attack_cooldown()*2)
 			attacker.damage_poise(17.5 + weapon_atk.mod_weight*7.5, TRUE)
 			//visible_message("Debug \[parry\]: Attacker [attacker] lost [20.0+(weapon_atk.mod_weight*5.0)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
 			visible_message(SPAN("warning", "[defender] parries [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
