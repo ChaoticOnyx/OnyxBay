@@ -14,7 +14,7 @@
   display: inline-block;
   font-family: Verdana, sans-serif;
   font-size: base.em(12px);
-  width: base.em(100px);
+  min-width: base.em(100px);
   line-height: base.em(17px);
   user-select: none;
 }
@@ -32,7 +32,7 @@
   position: absolute;
   overflow-y: auto;
   z-index: 5;
-  width: base.em(100px);
+  min-width: 100%;
   max-height: base.em(200px);
   overflow-y: scroll;
   border-radius: 0 0 base.em(2px) base.em(2px);
@@ -45,7 +45,7 @@
   position: absolute;
   overflow-y: auto;
   z-index: 5;
-  width: base.em(100px);
+  min-width: 100%;
   max-height: base.em(200px);
   border-radius: 0 0 base.em(2px) base.em(2px);
   color: #fff;
