@@ -68,6 +68,7 @@
 	bodytemp = null
 	healths = null
 	pains = null
+	resting_icon = null
 	throw_icon = null
 	block_icon = null
 	aim_assist_icon = null
@@ -822,21 +823,15 @@
 	sleeping = max(sleeping + amount,0)
 	return
 
-/mob/proc/Resting(amount)
-	facing_dir = null
-	resting = max(max(resting,amount),0)
-	return
-
-/mob/proc/SetResting(amount)
-	resting = max(amount,0)
-	return
-
-/mob/proc/AdjustResting(amount)
-	resting = max(resting + amount,0)
-	return
-
 /mob/proc/get_species()
 	return ""
+
+/mob/proc/set_resting(new_state)
+	resting = new_state
+	update_canmove()
+	if(resting_icon)
+		resting_icon.icon_state = "rest[resting]"
+	return
 
 /mob/proc/get_visible_implants(class = 0)
 	var/list/visible_implants = list()

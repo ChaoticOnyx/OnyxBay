@@ -185,7 +185,7 @@
 		C.client.perspective = EYE_PERSPECTIVE
 		C.client.eye = src
 
-	C.resting = TRUE
+	C.set_resting(TRUE)
 	C.dropInto(loc)
 	C.set_dir(SOUTH)
 	add_fingerprint(user)

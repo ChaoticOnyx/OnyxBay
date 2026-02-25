@@ -249,7 +249,7 @@
 			if(isliving(usr))
 				var/mob/living/L = usr
 				L.resist()
-		if("rest")
+		if("Rest")
 			if(isliving(usr))
 				var/mob/living/L = usr
 				L.lay_down()

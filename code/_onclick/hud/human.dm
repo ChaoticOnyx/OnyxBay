@@ -85,14 +85,14 @@
 		static_inventory += using
 
 	if(hud_data.has_rest)
-		using = new /atom/movable/screen()
-		using.SetName("rest")
-		using.icon = ui_style
-		using.icon_state = "rest"
-		using.screen_loc = ui_rest_act
-		using.color = ui_color
-		using.alpha = ui_alpha
-		static_inventory += using
+		mymob.resting_icon = new /atom/movable/screen()
+		mymob.resting_icon.SetName("Rest")
+		mymob.resting_icon.icon = ui_style
+		mymob.resting_icon.icon_state = "rest0"
+		mymob.resting_icon.screen_loc = ui_rest_act
+		mymob.resting_icon.color = ui_color
+		mymob.resting_icon.alpha = ui_alpha
+		static_inventory += mymob.resting_icon
 
 
 	if(hud_data.has_hands)

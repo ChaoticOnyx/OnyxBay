@@ -49,6 +49,7 @@
 	var/atom/movable/screen/bodytemp = null
 	var/atom/movable/screen/healths = null
 	var/atom/movable/screen/pains = null
+	var/atom/movable/screen/resting_icon = null
 	var/atom/movable/screen/throw_icon = null
 	var/atom/movable/screen/block_icon = null
 	var/atom/movable/screen/aim_assist_icon = null
@@ -104,7 +105,7 @@
 	var/druggy = 0			//Carbon
 	var/confused = 0		//Carbon
 	var/sleeping = 0		//Carbon
-	var/resting = 0			//Carbon
+	var/resting = FALSE
 	var/lying = 0
 	var/lying_prev = 0
 	var/hanging = FALSE

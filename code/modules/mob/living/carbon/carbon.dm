@@ -254,8 +254,8 @@
 								  SPAN("notice", "You shake [src], but they do not respond... Maybe they have S.S.D?"))
 			else if(lying || src.sleeping)
 				src.sleeping = max(0,src.sleeping-5)
-				if(src.sleeping == 0)
-					src.resting = 0
+				if(!sleeping)
+					set_resting(FALSE)
 				M.visible_message(SPAN("notice", "[M] shakes [src] trying to wake [t_him] up!"), \
 								  SPAN("notice", "You shake [src] trying to wake [t_him] up!"))
 			else

@@ -798,8 +798,7 @@
 
 	if(!incapacitated(INCAPACITATION_KNOCKOUT) && canClick())
 		setClickCooldown(3)
-		resting = !resting
-		update_canmove()
+		set_resting(!resting)
 		to_chat(src, SPAN("notice", "You are now [resting ? "resting" : "getting up"]."))
 
 //called when the mob receives a bright flash
