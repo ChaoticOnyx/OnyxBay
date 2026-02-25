@@ -240,7 +240,7 @@
 				var/mob/living/carbon/human/H = usr
 				H.quick_equip()
 
-		if("Twohanded Mode")
+		if("Two-Handed Mode")
 			if(istype(usr,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = usr
 				H.toggle_twohanded_mode()

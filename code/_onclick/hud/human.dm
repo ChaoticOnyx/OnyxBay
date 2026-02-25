@@ -107,7 +107,7 @@
 		static_inventory += using
 
 		mymob.twohanded_mode_icon = new /atom/movable/screen()
-		mymob.twohanded_mode_icon.SetName("Twohanded Mode")
+		mymob.twohanded_mode_icon.SetName("Two-Handed Mode")
 		mymob.twohanded_mode_icon.icon = ui_style
 		mymob.twohanded_mode_icon.icon_state = "act_twohanded0"
 		mymob.twohanded_mode_icon.screen_loc = ui_twohanded
