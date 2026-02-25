@@ -583,7 +583,7 @@ var/global/list/damage_icon_parts = list()
 
 // Back
 /mob/living/carbon/human/update_inv_back(update_icons=1)
-	var/hideback = ((s_store && s_store.flags_inv & HIDERIG) && istype(back, /obj/item/rig))
+	var/hideback = (s_store && (s_store.flags_inv & HIDERIG)) && istype(back, /obj/item/rig)
 	if(back && !hideback)
 		overlays_standing[HO_BACK_LAYER] = back.get_mob_overlay(src,slot_back_str)
 	else
