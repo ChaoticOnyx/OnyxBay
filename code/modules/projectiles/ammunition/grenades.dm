@@ -209,3 +209,9 @@
 	name = "grenade shell (NE)"
 	grenade = /obj/item/grenade/fake
 	label_text = "NE"
+
+/obj/item/ammo_casing/grenade/loaded/stingbang
+	name = "grenade shell (stingbang)"
+	grenade = /obj/item/grenade/frag/stingbang/shell
+	label_text = "STING"
+	opened = -1

@@ -249,6 +249,22 @@
 	containername = "\improper Flashbang crate"
 	access = access_security
 
+/decl/hierarchy/supply_pack/security/stingbangs
+	name = "Weapons - Stingbang grenades"
+	contains = list(/obj/item/storage/box/stingbangs = 2)
+	cost = 40
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper Stingbang grenades crate"
+	access = access_security
+
+/decl/hierarchy/supply_pack/security/grenade_shells_stingbang
+	name = "Ammunition - 40mm stingbang shells"
+	contains = list(/obj/item/storage/box/grenade_shells_stingbang = 2)
+	cost = 30
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper 40mm stingbang shells crate"
+	access = access_security
+
 /decl/hierarchy/supply_pack/security/teargas
 	name = "Weapons - Tear gas grenades"
 	contains = list(/obj/item/storage/box/teargas = 2)
