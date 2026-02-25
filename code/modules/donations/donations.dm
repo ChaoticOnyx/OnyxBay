@@ -95,17 +95,71 @@ SUBSYSTEM_DEF(donations)
 
 	var/DBQuery/query = sql_query({"
 		SELECT
-			item_path
+			store_players_items.id,
+			item_path,
+			transaction_id
 		FROM
 			store_players_items
 		WHERE
 			player = (SELECT id FROM players WHERE ckey = $ckey)
 	"}, dbcon_don, list(ckey = player.ckey))
 
+	var/list/orphaned_items = list()
 	while(query.NextRow())
-		player.donator_info.items.Add(query.item[1])
+		var/item_id = query.item[1]
+		var/item_path = query.item[2]
+		var/transaction_id = query.item[3]
+		if(text2path(item_path))
+			player.donator_info.items.Add(item_path)
+		else
+			orphaned_items += list(list("item_id" = item_id, "item_path" = item_path, "transaction_id" = transaction_id))
+
+	for(var/list/orphan in orphaned_items)
+		refund_orphaned_item(player, orphan["item_id"], orphan["item_path"], orphan["transaction_id"])
 
 	return TRUE
+
+/datum/controller/subsystem/donations/proc/refund_orphaned_item(client/player, item_id, item_path, transaction_id)
+	set waitfor = 0
+
+	if(!player)
+		return
+
+	if(!establish_don_db_connection())
+		return
+
+	var/refund_amount = 0
+	if(transaction_id && transaction_id != "NULL")
+		var/DBQuery/query = sql_query({"
+			SELECT
+				`change`
+			FROM
+				points_transactions
+			WHERE
+				id = $tid
+		"}, dbcon_don, list(tid = transaction_id))
+		if(query.NextRow())
+			refund_amount = abs(text2num(query.item[1]))
+
+	if(refund_amount > 0)
+		create_transaction(player, refund_amount, DONATIONS_TRANSACTION_TYPE_PURCHASE, "Auto-refund: [item_path] no longer exists")
+		if(!player)
+			return
+
+	sql_query({"
+		DELETE FROM
+			store_players_items
+		WHERE
+			id = $item_id
+	"}, dbcon_don, list(item_id = item_id))
+
+	log_debug("\[Donations] Auto-refund for '[player]': removed orphaned item '[item_path]', refunded [refund_amount] opyxes.")
+
+	if(player)
+		if(refund_amount > 0)
+			to_chat(player, SPAN_NOTICE("The donator item '[item_path]' no longer exists and has been removed. You have been refunded [refund_amount] opyxes."))
+		else
+			to_chat(player, SPAN_NOTICE("The donator item '[item_path]' no longer exists and has been removed."))
 
 /datum/controller/subsystem/donations/proc/create_transaction(client/player, change, type, comment)
 	if(!establish_don_db_connection())
