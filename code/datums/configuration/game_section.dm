@@ -54,6 +54,7 @@
 	var/mcu_enable
 	var/mcu_hardcap
 	var/mcu_power_scale
+	var/mcu_rad_scale
 
 /datum/configuration_section/game/load_data(list/data)
 	CONFIG_LOAD_STR(default_view, data["default_view"])
@@ -108,3 +109,4 @@
 	CONFIG_LOAD_BOOL(mcu_enable, data["mcu_enable"])
 	CONFIG_LOAD_NUM(mcu_hardcap, data["mcu_hardcap"])
 	CONFIG_LOAD_NUM(mcu_power_scale, data["mcu_power_scale"])
+	CONFIG_LOAD_NUM(mcu_rad_scale, data["mcu_rad_scale"])

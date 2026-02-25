@@ -127,9 +127,10 @@
 	if(user.Adjacent(src))
 		if(rad_dead)
 			. += SPAN_DANGER("The circuitry is burnt out from radiation. It will never function again.")
-
+		else
 			ASSERT(tid_limit != 0)
 			var/tid_ratio = accumulated_tid / tid_limit
+			
 			if(tid_ratio >= MCU_TID_DEGRADE_RATIO)
 				. += SPAN_WARNING("The board shows significant brown discoloration from radiation exposure.")
 			else if(tid_ratio >= MCU_TID_WARN_RATIO)
@@ -680,6 +681,8 @@
 			continue
 
 		total_dose += R.calc_equivalent_dose(MCU_RAD_MASS)
+
+	total_dose *= config.game.mcu_rad_scale
 
 	if(total_dose <= 0)
 		return

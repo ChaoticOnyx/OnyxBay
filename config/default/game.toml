@@ -115,3 +115,4 @@ restart_timeout = 600
 mcu_enable = true
 mcu_hardcap = 25
 mcu_power_scale = 250
+mcu_rad_scale = 0.00005
