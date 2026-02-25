@@ -152,9 +152,10 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	if(!center)
 		return
 
-	for(var/T in dview(range_, center))
-		if(T in turfs_in_range)
+	FOR_DVIEW(var/turf/T, range_, center, 0)
+		if(turfs_in_range[T])
 			. += T
+	END_FOR_DVIEW
 
 /datum/proximity_trigger/proc/acquire_relevant_turfs()
 	. = turf_selection.get_turfs(holder, range_, l_angle_, r_angle_)

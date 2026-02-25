@@ -38,7 +38,7 @@
 		var/aggressiveness = 0 //The closer somebody is to us, the more aggressive we are
 		var/list/mobs = list()
 		var/list/objs = list()
-		get_mobs_and_objs_in_view_fast(get_turf(src),5, mobs, objs, 0)
+		get_listeners_in_range(get_turf(src), 5, mobs, objs)
 		for(var/mob/living/m in mobs)
 			if((m == src) || (m in allowed_mobs) || m.faction == faction)
 				continue
