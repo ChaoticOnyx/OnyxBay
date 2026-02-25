@@ -120,7 +120,7 @@
 	return FALSE
 
 /obj/machinery/optable/MouseDrop_T(obj/O, mob/user)
-	if((!istype(O, /obj/item) || user.get_active_hand() != O) || !user.drop(O))
+	if((!istype(O, /obj/item) || !user.has_in_hands(O)) || !user.drop(O))
 		return
 
 	if(O.loc != loc)

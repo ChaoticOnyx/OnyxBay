@@ -99,7 +99,7 @@
 			spam_flag = FALSE
 			return FALSE
 
-		if(user.get_active_hand() != src)
+		if(user.has_in_hands(src))
 			spam_flag = FALSE
 			return FALSE
 

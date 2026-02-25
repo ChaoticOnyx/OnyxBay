@@ -368,7 +368,7 @@
 
 /obj/item/organ_module/active/lenses/hud/attack_hand(mob/user)
 	if(matrix)
-		if(user.get_active_hand())
+		if(user.get_clicking_hand())
 			to_chat(user, SPAN("notice", "You need a free hand."))
 			return
 		var/obj/item/device/hudmatrix/M = matrix

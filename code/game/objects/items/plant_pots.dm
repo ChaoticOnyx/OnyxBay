@@ -62,7 +62,7 @@
 		return
 
 	if(user == usr && (user.contents.Find(src) || in_range(src, user)))
-		if(!ishuman(user) || user.get_active_hand())
+		if(!ishuman(user) || user.get_clicking_hand())
 			return
 
 		var/mob/living/carbon/human/H = user
@@ -77,7 +77,7 @@
 	return
 
 /obj/item/plant_pot/proc/uproot(mob/user)
-	if(!ishuman(user) || user.get_active_hand())
+	if(!ishuman(user) || user.get_clicking_hand())
 		return
 
 	if(my_plant)

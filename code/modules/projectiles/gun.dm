@@ -169,7 +169,7 @@
 	. = TRUE
 	if(QDELETED(autofiring_at) || QDELETED(autofiring_by))
 		. = FALSE
-	else if(autofiring_by.get_active_hand() != src || autofiring_by.incapacitated())
+	else if(!autofiring_by.has_in_hands(src) || autofiring_by.incapacitated())
 		. = FALSE
 	else if(!autofiring_by.client || !(autofiring_by in view(autofiring_by.client.view, autofiring_by)))
 		. = FALSE
@@ -609,7 +609,7 @@
 /obj/item/gun/var/weapon_in_mouth = FALSE
 
 /obj/item/gun/proc/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	var/obj/item/grab/G = user.rightclicked ? user.get_active_hand() : user.get_inactive_hand()
+	var/obj/item/grab/G = user.get_passive_hand()
 	if(G?.affecting == target)
 		if(!G?.current_grab?.can_absorb)
 			to_chat(user, SPAN_NOTICE("You need a better grab for this."))

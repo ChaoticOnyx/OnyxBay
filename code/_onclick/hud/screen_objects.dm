@@ -83,7 +83,7 @@
 			if(modifiers["right"])
 				I = usr.get_inactive_hand()
 		if(I)
-			usr.ClickOn(master)
+			usr.ClickOn(master, params)
 
 		var/obj/item/storage/S = master
 		if(!S?.storage_ui)

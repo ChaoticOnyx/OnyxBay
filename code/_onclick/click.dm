@@ -108,7 +108,7 @@
 
 	face_atom(A) // change direction to face what you clicked on
 
-	var/obj/item/I = rightclicked ? get_inactive_hand() : get_active_hand()
+	var/obj/item/I = get_clicking_hand()
 
 	if(!canClick(I)) // in the year 2000...
 		return
