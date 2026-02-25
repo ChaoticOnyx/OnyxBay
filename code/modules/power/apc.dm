@@ -633,7 +633,7 @@
 			user.visible_message("<span class='danger'>The [src.name] has been hit with the [W.name] by [user.name]!</span>", \
 				"<span class='danger'>You hit the [src.name] with your [W.name]!</span>", \
 				"You hear a bang")
-			user.setClickCooldown(W.update_attack_cooldown())
+			W.set_cooldown()
 			user.do_attack_animation(src)
 			if(W.force >= 5 && W.w_class >= ITEM_SIZE_NORMAL && prob(W.force))
 				var/roulette = rand(1,100)

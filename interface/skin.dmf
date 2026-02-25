@@ -15,13 +15,13 @@ macro "default"
 		command = ".winset :map.right-click=true"
 	elem 
 		name = "ALT+UP"
-		command = ".winset :map.right-click=false"
+		command = ".winset \"mapwindow.rightclickblocker.is-visible=true?mapwindow.map.right-click=true:mapwindow.map.right-click=false\""
 	elem 
 		name = "CTRL+UP"
-		command = ".winset :map.right-click=false"
+		command = ".winset \"mapwindow.rightclickblocker.is-visible=true?mapwindow.map.right-click=true:mapwindow.map.right-click=false\""
 	elem 
 		name = "SHIFT+UP"
-		command = ".winset :map.right-click=false\n.release_shift"
+		command = ".winset \"mapwindow.rightclickblocker.is-visible=true?mapwindow.map.right-click=true:mapwindow.map.right-click=false\"\n.release_shift"
 
 
 menu "menu"
@@ -175,6 +175,15 @@ window "mapwindow"
 		saved-params = ""
 		text = ""
 		align = left
+	elem "rightclickblocker"
+		type = LABEL
+		pos = -1,-1
+		size = 1,1
+		anchor1 = -1,-1
+		anchor2 = -1,-1
+		is-visible = false
+		saved-params = ""
+		text = ""
 
 window "outputwindow"
 	elem "outputwindow"

@@ -45,7 +45,7 @@
 			if(user_buckle_mob(affecting, user))
 				qdel(W)
 	else
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		obj_attack_sound(W)
 		shake_animation(stime = 2)

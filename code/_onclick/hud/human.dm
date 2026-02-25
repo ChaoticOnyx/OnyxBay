@@ -85,14 +85,14 @@
 		static_inventory += using
 
 	if(hud_data.has_rest)
-		using = new /atom/movable/screen()
-		using.SetName("rest")
-		using.icon = ui_style
-		using.icon_state = "rest"
-		using.screen_loc = ui_rest_act
-		using.color = ui_color
-		using.alpha = ui_alpha
-		static_inventory += using
+		mymob.resting_icon = new /atom/movable/screen()
+		mymob.resting_icon.SetName("Rest")
+		mymob.resting_icon.icon = ui_style
+		mymob.resting_icon.icon_state = "rest0"
+		mymob.resting_icon.screen_loc = ui_rest_act
+		mymob.resting_icon.color = ui_color
+		mymob.resting_icon.alpha = ui_alpha
+		static_inventory += mymob.resting_icon
 
 
 	if(hud_data.has_hands)
@@ -105,6 +105,15 @@
 		using.color = ui_color
 		using.alpha = ui_alpha
 		static_inventory += using
+
+		mymob.twohanded_mode_icon = new /atom/movable/screen()
+		mymob.twohanded_mode_icon.SetName("Two-Handed Mode")
+		mymob.twohanded_mode_icon.icon = ui_style
+		mymob.twohanded_mode_icon.icon_state = "act_twohanded0"
+		mymob.twohanded_mode_icon.screen_loc = ui_twohanded
+		mymob.twohanded_mode_icon.color = ui_color
+		mymob.twohanded_mode_icon.alpha = ui_alpha
+		static_inventory += mymob.twohanded_mode_icon
 
 		inv_box = new /atom/movable/screen/inventory()
 		inv_box.SetName("Right Hand")
@@ -188,15 +197,15 @@
 		mymob.block_icon.alpha = ui_alpha
 		static_inventory += mymob.block_icon
 
-	if(hud_data.has_blockswitch)
-		mymob.blockswitch_icon = new /atom/movable/screen()
-		mymob.blockswitch_icon.icon = ui_style
-		mymob.blockswitch_icon.icon_state = "act_blockswitch0"
-		mymob.blockswitch_icon.SetName("blockswitch")
-		mymob.blockswitch_icon.screen_loc = ui_blockswitch
-		mymob.blockswitch_icon.color = ui_color
-		mymob.blockswitch_icon.alpha = ui_alpha
-		static_inventory += mymob.blockswitch_icon
+	if(hud_data.has_aim_assist)
+		mymob.aim_assist_icon = new /atom/movable/screen()
+		mymob.aim_assist_icon.icon = ui_style
+		mymob.aim_assist_icon.icon_state = "aim_assist0"
+		mymob.aim_assist_icon.SetName("Click Mode")
+		mymob.aim_assist_icon.screen_loc = ui_aim_assist
+		mymob.aim_assist_icon.color = ui_color
+		mymob.aim_assist_icon.alpha = ui_alpha
+		static_inventory += mymob.aim_assist_icon
 
 	if(hud_data.has_internals)
 		mymob.internals = new /atom/movable/screen()

@@ -30,7 +30,7 @@
 			to_chat(user, SPAN_WARNING("You need two hands to pick this up!"))
 			return
 
-	if(user.get_inactive_hand())
+	if(user.get_passive_hand())
 		to_chat(user, SPAN_WARNING("You need your other hand to be empty."))
 		return
 

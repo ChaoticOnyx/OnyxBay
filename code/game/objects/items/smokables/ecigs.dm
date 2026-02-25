@@ -201,7 +201,7 @@
 	set_next_think(world.time)
 
 /obj/item/clothing/mask/smokable/ecig/attack_hand(mob/user)// Open lid or eject cartridge
-	if(user.get_inactive_hand() == src && !istype(src, /obj/item/clothing/mask/smokable/ecig/disposable))// If being hold
+	if(user.has_in_passive_hand(src) && !istype(src, /obj/item/clothing/mask/smokable/ecig/disposable))// If being hold
 		active = FALSE
 		if(!opened)
 			opened = TRUE

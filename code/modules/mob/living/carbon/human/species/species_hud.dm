@@ -16,7 +16,7 @@
 	var/has_throw = TRUE       // Set to draw throw button.
 	var/has_resist = TRUE      // Set to draw resist button.
 	var/has_block = TRUE       // Set to draw block button.
-	var/has_blockswitch = TRUE // Set to draw blocking hand button.
+	var/has_aim_assist = TRUE  // Set to draw aim assist (click mode) button.
 	var/has_internals = TRUE   // Set to draw the internals toggle button.
 	var/has_rest = TRUE        // Set to draw the rest button.
 	var/has_poise = TRUE       // Set to draw the poise meter.

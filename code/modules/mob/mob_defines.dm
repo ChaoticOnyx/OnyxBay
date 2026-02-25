@@ -49,9 +49,11 @@
 	var/atom/movable/screen/bodytemp = null
 	var/atom/movable/screen/healths = null
 	var/atom/movable/screen/pains = null
+	var/atom/movable/screen/resting_icon = null
 	var/atom/movable/screen/throw_icon = null
 	var/atom/movable/screen/block_icon = null
-	var/atom/movable/screen/blockswitch_icon = null
+	var/atom/movable/screen/aim_assist_icon = null
+	var/atom/movable/screen/twohanded_mode_icon = null
 	var/atom/movable/screen/nutrition_icon = null
 	var/atom/movable/screen/hydration_icon = null
 	var/atom/movable/screen/bladder_icon = null
@@ -91,6 +93,9 @@
 	var/next_move = null
 	var/hand = null
 	var/real_name = null
+	var/aim_assist = FALSE
+	var/twohanded_mode = FALSE
+	var/rightclicked = FALSE // Only TRUE if the last click was a "functional" RMB click, so we don't have to pass an extra argument through a massive sequence of proc calls.
 
 	var/bhunger = 0			//Carbon
 
@@ -100,7 +105,7 @@
 	var/druggy = 0			//Carbon
 	var/confused = 0		//Carbon
 	var/sleeping = 0		//Carbon
-	var/resting = 0			//Carbon
+	var/resting = FALSE
 	var/lying = 0
 	var/lying_prev = 0
 	var/hanging = FALSE

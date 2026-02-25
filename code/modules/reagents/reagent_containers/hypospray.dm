@@ -70,7 +70,7 @@
 	reagents.maximum_volume = loaded_vial.reagents.maximum_volume
 
 /obj/item/reagent_containers/hypospray/vial/attack_hand(mob/user as mob)
-	if(user.get_inactive_hand() == src)
+	if(user.has_in_passive_hand(src))
 		if(loaded_vial)
 			reagents.trans_to_holder(loaded_vial.reagents,volume)
 			reagents.maximum_volume = 0

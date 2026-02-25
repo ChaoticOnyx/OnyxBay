@@ -132,17 +132,22 @@
 	if(!uses_charge)
 		switch(craft_tool)
 			if(1)
-				if(!user.get_active_hand() || ((!user:get_active_hand().sharp) && (!user:get_active_hand().edge)))
-					to_chat(user, "<span class='warning'>You need something sharp to construct \the [recipe.title]!</span>")
+				var/obj/item/I = user.get_active_hand()
+				if(!istype(I) || !I.edge)
+					I = user.get_inactive_hand()
+				if(!istype(I) || !I.edge)
+					to_chat(user, SPAN("warning", "You need something sharp to construct \the [recipe.title]!"))
 					return
 			if(2)
-				if(!isWelder(user.get_active_hand()))
-					to_chat(user, "<span class='warning'>You need a welding tool to construct \the [recipe.title]!</span>")
+				if(!isWelder(user.get_active_hand()) && !isWelder(user.get_inactive_hand()))
+					to_chat(user, SPAN("warning", "You need a welding tool to construct \the [recipe.title]!"))
 					return
 
 	var/obj/item/weldingtool/WT
 	if(!uses_charge && craft_tool == 2)
 		WT = user.get_active_hand()
+		if(!istype(WT))
+			WT = user.get_inactive_hand()
 
 	if (!can_use(required))
 		if (produced>1)
@@ -379,7 +384,7 @@
 	return ceil(. * amount * storage_cost_mult / max_amount)
 
 /obj/item/stack/attack_hand(mob/user as mob)
-	if((user.get_inactive_hand() == src) && splittable)
+	if(user.has_in_hands(src) && splittable)
 		var/N = input("How many stacks of [src] would you like to split off?", "Split stacks", 1) as num|null
 		if(N)
 			var/obj/item/stack/F = src.split(N)

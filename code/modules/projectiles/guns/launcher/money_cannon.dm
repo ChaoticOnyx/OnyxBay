@@ -113,7 +113,7 @@
 		to_chat(user, SPAN("notice", "You set [src] to dispense [dispensing] credits at a time."))
 
 /obj/item/gun/launcher/money/attack_hand(mob/user as mob)
-	if(user.get_inactive_hand() == src)
+	if(user.has_in_passive_hand(src))
 		unload_receptacle(user)
 	else
 		return ..()

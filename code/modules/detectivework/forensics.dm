@@ -49,7 +49,7 @@ var/const/FINGERPRINT_COMPLETE = 6
 	if(!full_print)
 		return
 
-	var/obj/item/organ/external/E = M.get_active_hand()
+	var/obj/item/organ/external/E = M.get_clicking_hand()
 	if(src != E && istype(E) && E.get_fingerprint())
 		full_print = E.get_fingerprint()
 		ignoregloves = 1

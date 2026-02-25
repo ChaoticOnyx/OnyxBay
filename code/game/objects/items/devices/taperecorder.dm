@@ -59,7 +59,7 @@
 
 
 /obj/item/device/taperecorder/attack_hand(mob/user)
-	if(user.get_inactive_hand() == src)
+	if(user.has_in_passive_hand(src))
 		if(mytape)
 			eject()
 			return

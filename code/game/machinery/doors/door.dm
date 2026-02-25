@@ -288,7 +288,7 @@
 	if(isobj(I) && density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
-			user.setClickCooldown(I.update_attack_cooldown())
+			I.set_cooldown()
 			if(I.force <= 0)
 				user.visible_message(SPAN("notice", "\The [user] smacks \the [src] with \the [I] with no visible effect."))
 				playsound(loc, hitsound, 10, 1)

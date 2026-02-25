@@ -1149,7 +1149,7 @@
 		return
 
 	if( boxes.len > 0 )
-		if( user.get_inactive_hand() != src )
+		if(!user.has_in_passive_hand(src))
 			..()
 			return
 

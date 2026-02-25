@@ -132,7 +132,7 @@
 	..()
 
 /obj/item/weldingtool/attack_hand(mob/user as mob)
-	if(tank && user.get_inactive_hand() == src)
+	if(tank && user.has_in_passive_hand(src))
 		if(!welding)
 			if(tank.can_remove)
 				user.visible_message("[user] removes \the [tank] from \the [src].", "You remove \the [tank] from \the [src].")
