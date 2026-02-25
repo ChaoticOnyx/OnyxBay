@@ -389,23 +389,35 @@
 	return P_idle + K * F_mhz * eff_util * load_penalty
 
 /// Maps raw utilization (0.0-1.0) to effective power utilization.
-/// Linear below 0.9, exponential above - punishes busy-loops hard.
 ///
-/// util <= 0.9: returns util (unchanged)
-/// util 0.95: returns ~2.0
-/// util 1.0: returns ~5.0
+/// util 0.01: returns ~0.015
+/// util 0.50: returns ~0.60
+/// util 0.90: returns ~1.2
+/// util 1.00: returns ~3.0 (busy-loop penalty)
 /obj/item/device/mcu/proc/effective_utilization(util)
-	if(util <= 0.9)
-		return util
+	if(util <= 0)
+		return 0
 
-	// Remap 0.9-1.0 -> 0.0-1.0
-	var/t = (util - 0.9) / 0.1
-	// Quadratic ramp: base linear + bonus * t²
-	return 0.9 + 0.1 * t + MCU_BUSY_POWER_BONUS * t * t
+	var/base = 0.005
+
+	if(util <= 0.9)
+		return base + util * 1.2
+
+	var/linear_part = base + 0.9 * 1.2  // ~1.085
+	var/t = (util - 0.9) / 0.1  // 0.0-1.0
+	var/penalty = MCU_BUSY_POWER_BONUS * t * t
+
+	return linear_part + 0.1 * 1.2 * t + penalty
 
 /obj/item/device/mcu/proc/power_on(mob/activator = null)
 	throttled = FALSE
 	sustained_full_ticks = 0
+
+	if(!config.game.mcu_enable || SSmcu.total_running >= config.game.mcu_hardcap)
+		if(activator)
+			to_chat(activator, SPAN_WARNING("Some indescribable force is preventing the board from starting."))
+		
+		return FALSE
 
 	if(rad_dead)
 		if(activator)
@@ -451,6 +463,7 @@
 	ASSERT(Z_MACHINE_LOAD_ELF(id, __elf_path) == TRUE)
 	Z_MACHINE_SET_STATE(id, Z_MSTATE_RUNNING)
 	Z_MACHINE_SET_SENSORS(id, CONV_KELVIN_CELSIUS(temperature), 0, temperature >= shutdown_temp, temperature >= throttle_temp)
+	SSmcu.total_running += 1
 
 	if(activator)
 		activator.visible_message("[activator] turns \the [src] on.", "You turn \the [src] on.")
@@ -471,6 +484,7 @@
 		activator.visible_message("[activator] turns \the [src] off.", "You turn \the [src] off.")
 
 	Z_MACHINE_SET_STATE(id, Z_MSTATE_STOPPED)
+	SSmcu.total_running -= 1
 
 /obj/item/device/mcu/proc/emergency_shutdown()
 	throttled = FALSE
@@ -528,7 +542,7 @@
 			// Convert W to Wh: energy = power * time
 			// Wh = W * (seconds / 3600)
 			energy_Wh = P * delta_s / 3600
-			__battery.use(energy_Wh)
+			__battery.use(energy_Wh * config.game.mcu_power_scale)
 
 			if(__battery.charge <= 0)
 				emergency_shutdown()
@@ -599,7 +613,16 @@
 		else if(throttled && temperature < (throttle_temp - MCU_THROTTLE_HYSTERESIS))
 			throttled = FALSE
 
-	Z_MACHINE_SET_SENSORS(id, CONV_KELVIN_CELSIUS(temperature), energy_Wh, temperature >= shutdown_temp, temperature >= throttle_temp)
+	// Power consumption per minute in mWh (milliwatt-hours per minute)
+	// P (watts) * (1/60) hours = Wh per minute * 1000 = mWh per minute
+	var/power_per_minute_mWh = round(P * config.game.mcu_power_scale * 1000 / 60)
+
+	Z_MACHINE_SET_SENSORS(id, \
+		CONV_KELVIN_CELSIUS(temperature), \
+		power_per_minute_mWh, \
+		temperature >= shutdown_temp, \
+		temperature >= throttle_temp \
+	)
 
 	// Apply effective frequency
 	__update_effective_frequency()
@@ -812,7 +835,7 @@
 	pci_slots = 4
 
 	P_idle = 2 WATT
-	K_power = 10
+	K_power = 6
 	rad_hardening = 0.0
 
 /obj/item/device/mcu/standard/upgraded
@@ -829,7 +852,7 @@
 	pci_slots = 8
 
 	P_idle = 3 WATT
-	K_power = 12
+	K_power = 10
 	rad_hardening = 0.0
 
 /obj/item/device/mcu/standard/pro
@@ -847,7 +870,7 @@
 
 	thermal_mass = 6.0
 	P_idle = 5 WATT
-	K_power = 15
+	K_power = 12
 	cooling_k = 0.12
 	rad_hardening = 0.05
 
@@ -867,7 +890,7 @@
 
 	thermal_mass = 2.0
 	P_idle = 0.3 WATT
-	K_power = 4
+	K_power = 3
 	cooling_k = 0.15
 	rad_hardening = 0.10
 	
@@ -891,7 +914,7 @@
 
 	thermal_mass = 2.5
 	P_idle = 0.5 WATT
-	K_power = 5
+	K_power = 4
 	cooling_k = 0.15
 	rad_hardening = 0.15
 
@@ -911,7 +934,7 @@
 
 	thermal_mass = 5.0
 	P_idle = 1 WATT
-	K_power = 6
+	K_power = 5
 	cooling_k = 0.20
 	rad_hardening = 0.50
 	tid_limit = 250
@@ -937,7 +960,7 @@
 
 	thermal_mass = 8.0
 	P_idle = 8 WATT
-	K_power = 18
+	K_power = 15
 	cooling_k = 0.08
 	rad_hardening = 0.0
 	
@@ -964,7 +987,7 @@
 
 	thermal_mass = 12.0
 	P_idle = 15 WATT
-	K_power = 22
+	K_power = 18
 	cooling_k = 0.06
 	rad_hardening = 0.0
 	
@@ -991,7 +1014,7 @@
 
 	thermal_mass = 5.0
 	P_idle = 1 WATT
-	K_power = 9
+	K_power = 7
 	cooling_k = 0.12
 	rad_hardening = 0.05
 	
@@ -1036,7 +1059,7 @@
 
 	thermal_mass = 7.0
 	P_idle = 3 WATT
-	K_power = 13
+	K_power = 11
 	cooling_k = 0.15
 
 /obj/item/device/mcu/hardened
@@ -1056,7 +1079,7 @@
 
 	thermal_mass = 10.0
 	P_idle = 4 WATT
-	K_power = 14
+	K_power = 12
 	cooling_k = 0.25
 	rad_hardening = 0.90
 	tid_limit = 1000
@@ -1079,7 +1102,7 @@
 	
 	thermal_mass = 3.0
 	P_idle = 0.2 WATT
-	K_power = 3
+	K_power = 2
 	cooling_k = 0.20
 	rad_hardening = 0.0
 	

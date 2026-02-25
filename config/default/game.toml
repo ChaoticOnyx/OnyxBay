@@ -111,3 +111,7 @@ pregame_timeleft = 1800
 
 # Time left after round end before reboot.
 restart_timeout = 600
+
+mcu_enable = true
+mcu_hardcap = 25
+mcu_power_scale = 250

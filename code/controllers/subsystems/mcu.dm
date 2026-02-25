@@ -6,6 +6,7 @@ SUBSYSTEM_DEF(mcu)
 
 	var/last_fire_time = 0
 	var/budget_percent = 10
+	var/total_running = 0
 
 /datum/controller/subsystem/mcu/Initialize()
 	last_fire_time = world.time
@@ -36,6 +37,9 @@ SUBSYSTEM_DEF(mcu)
 	..(msg)
 
 /datum/controller/subsystem/mcu/fire(resumed = 0)
+	if(!config.game.mcu_enable)
+		return
+
 	var/delta_ds = world.time - last_fire_time
 	last_fire_time = world.time
 
