@@ -526,8 +526,8 @@ var/global/list/damage_icon_parts = list()
 	else
 		overlays_standing[HO_SUIT_STORE_LAYER] = null
 
+	update_inv_back(FALSE)
 	if(update_icons) queue_icon_update()
-	update_inv_back()
 
 // Head
 /mob/living/carbon/human/update_inv_head(update_icons=1)
