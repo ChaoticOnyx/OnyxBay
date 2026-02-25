@@ -63,10 +63,6 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	// for firemode voice-triggers
 	GLOB.listening_objects += src
 
-/obj/item/gun/projectile/lawgiver/Destroy()
-	GLOB.listening_objects -= src
-	. = ..()
-
 /obj/item/gun/projectile/lawgiver/equipped(mob/M, hand)
 	update_icon()
 	return ..()

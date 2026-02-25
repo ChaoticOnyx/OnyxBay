@@ -7,15 +7,13 @@
 
 /obj/item/grenade/flashbang/detonate()
 	..()
+	for(var/obj/structure/closet/L in hear(7, get_turf(src)))
+		if(locate(/mob/living/carbon/, L))
+			for(var/mob/living/carbon/M in L)
+				bang(get_turf(src), M)
 
-	var/list/victims = list()
-	var/list/objs = list()
-	var/turf/T = get_turf(src)
-
-	get_listeners_in_range(T, 7, victims, objs)
-
-	for(var/mob/living/carbon/C in victims)
-		bang(T, C)
+	for(var/mob/living/carbon/M in hear(7, get_turf(src)))
+		bang(get_turf(src), M)
 
 	new /obj/effect/sparks(loc)
 	new /obj/effect/effect/smoke/illumination(loc, 5, range = 30, power = 1, color = "#ffffff")

@@ -180,15 +180,12 @@
 /obj/item/construction/proc/range_check(atom/target, mob/user)
 	if(target.z != user.z)
 		return
-	var/list/things = list()
-	DVIEW(things, 7, get_turf(user), INVISIBILITY_LIGHTING)
-
-	if(target in things)
-		return TRUE
-	else
+	if(!(target in dview(7, get_turf(user))))
 		show_splash_text(user, "out of range!", SPAN("warning", "Out of range!"))
 		flick("[icon_state]_empty", src)
 		return FALSE
+	else
+		return TRUE
 
 /**
  * Checks if we are allowed to interact with a radial menu

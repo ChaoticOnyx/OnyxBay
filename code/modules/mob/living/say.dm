@@ -323,7 +323,7 @@ var/list/channel_to_radio_key = new
 		message_data["italics"] = TRUE
 		message_data["sound_volume"] *= 0.5 // muffle the sound a bit, so it's like we're actually talking through contact
 
-	get_listeners_in_range(T, message_data["message_range"], message_data["listening"], message_data["listening_obj"], /datum/client_preference/ghost_ears)
+	get_mobs_and_objs_in_view_fast(T, message_data["message_range"], message_data["listening"], message_data["listening_obj"], /datum/client_preference/ghost_ears)
 
 /mob/living/proc/say_do_say(list/message_data)
 	var/mob/above = shadow
@@ -332,7 +332,7 @@ var/list/channel_to_radio_key = new
 		var/turf/ST = get_turf(above)
 		above_range = max(--above_range, 0)
 		if(ST)
-			get_listeners_in_range(ST, above_range, message_data["listening"], message_data["listening_obj"]) //No need to check for ghosts, that will hear anyway
+			get_mobs_and_objs_in_view_fast(ST, above_range, message_data["listening"], message_data["listening_obj"]) //No need to check for ghosts, that will hear anyway
 		if(!above_range)
 			break
 		above = above.shadow
@@ -359,7 +359,7 @@ var/list/channel_to_radio_key = new
 		var/eavesdroping_range = 5
 		var/list/eavesdroping = list()
 		var/list/eavesdroping_obj = list()
-		get_listeners_in_range(get_turf(src), eavesdroping_range, eavesdroping, eavesdroping_obj)
+		get_mobs_and_objs_in_view_fast(get_turf(src), eavesdroping_range, eavesdroping, eavesdroping_obj)
 		eavesdroping -= message_data["listening"]
 		eavesdroping_obj -= message_data["listening_obj"]
 		for(var/mob/M in eavesdroping)
