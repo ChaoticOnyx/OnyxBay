@@ -450,6 +450,7 @@
 	ASSERT(Z_MACHINE_RESET(id) == TRUE)
 	ASSERT(Z_MACHINE_LOAD_ELF(id, __elf_path) == TRUE)
 	Z_MACHINE_SET_STATE(id, Z_MSTATE_RUNNING)
+	Z_MACHINE_SET_SENSORS(id, CONV_KELVIN_CELSIUS(temperature), 0, temperature >= shutdown_temp, temperature >= throttle_temp)
 
 	if(activator)
 		activator.visible_message("[activator] turns \the [src] on.", "You turn \the [src] on.")
@@ -505,6 +506,7 @@
 	// Generated heat
 	var/P = 0 WATT
 	var/is_running = Z_MACHINE_GET_STATE(id) == Z_MSTATE_RUNNING
+	var/energy_Wh = 0
 
 	if(is_running)
 		if(QDELETED(__battery))
@@ -525,7 +527,7 @@
 
 			// Convert W to Wh: energy = power * time
 			// Wh = W * (seconds / 3600)
-			var/energy_Wh = P * delta_s / 3600
+			energy_Wh = P * delta_s / 3600
 			__battery.use(energy_Wh)
 
 			if(__battery.charge <= 0)
@@ -596,6 +598,8 @@
 			throttled = TRUE
 		else if(throttled && temperature < (throttle_temp - MCU_THROTTLE_HYSTERESIS))
 			throttled = FALSE
+
+	Z_MACHINE_SET_SENSORS(id, CONV_KELVIN_CELSIUS(temperature), energy_Wh, temperature >= shutdown_temp, temperature >= throttle_temp)
 
 	// Apply effective frequency
 	__update_effective_frequency()
