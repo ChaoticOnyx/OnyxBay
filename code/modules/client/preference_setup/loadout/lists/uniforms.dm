@@ -388,21 +388,35 @@
 	subgroup = "Dresses"
 	price = 10
 
-/datum/gear/uniform/dress/wedding
-	display_name = "wedding dress selection"
+/datum/gear/uniform/dress/bride_white
+	display_name = "silky wedding dress"
 	path = /obj/item/clothing/under/wedding/bride_white
 	subgroup = "Dresses"
 	price = 20
 
-/datum/gear/uniform/dress/wedding/New()
-	..()
-	var/wedding_dresses = list()
-	wedding_dresses += /obj/item/clothing/under/wedding/bride_white
-	wedding_dresses += /obj/item/clothing/under/wedding/bride_blue
-	wedding_dresses += /obj/item/clothing/under/wedding/bride_red
-	wedding_dresses += /obj/item/clothing/under/wedding/bride_purple
-	wedding_dresses += /obj/item/clothing/under/wedding/bride_orange
-	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(wedding_dresses)
+/datum/gear/uniform/dress/bride_blue
+	display_name = "blue wedding dress"
+	path = /obj/item/clothing/under/wedding/bride_blue
+	subgroup = "Dresses"
+	price = 12
+
+/datum/gear/uniform/dress/bride_red
+	display_name = "red wedding dress"
+	path = /obj/item/clothing/under/wedding/bride_red
+	subgroup = "Dresses"
+	price = 12
+
+/datum/gear/uniform/dress/bride_purple
+	display_name = "purple wedding dress"
+	path = /obj/item/clothing/under/wedding/bride_purple
+	subgroup = "Dresses"
+	price = 12
+
+/datum/gear/uniform/dress/bride_orange
+	display_name = "orange wedding dress"
+	path = /obj/item/clothing/under/wedding/bride_orange
+	subgroup = "Dresses"
+	price = 12
 
 /datum/gear/uniform/dress/long_gown
 	display_name = "silk gown"
@@ -410,22 +424,41 @@
 	subgroup = "Dresses"
 	price = 10
 
-/datum/gear/uniform/dress/donator_dress
-	display_name = "donator dress selection"
+/datum/gear/uniform/dress/black
+	display_name = "black short dress"
 	path = /obj/item/clothing/under/skirt_c/dress/black
+	subgroup = "Dresses"
+	price = 10
+
+/datum/gear/uniform/dress/long_black
+	display_name = "black maxi dress"
+	path = /obj/item/clothing/under/skirt_c/dress/long/black
 	subgroup = "Dresses"
 	price = 20
 
-/datum/gear/uniform/dress/donator_dress/New()
-	..()
-	var/donator_dresses = list()
-	donator_dresses += /obj/item/clothing/under/skirt_c/dress/black
-	donator_dresses += /obj/item/clothing/under/skirt_c/dress/mintcream
-	donator_dresses += /obj/item/clothing/under/skirt_c/dress/long
-	donator_dresses += /obj/item/clothing/under/skirt_c/dress/long/black
-	donator_dresses += /obj/item/clothing/under/skirt_c/dress/long/eggshell
-	donator_dresses += /obj/item/clothing/under/skirt_c/dress/long/mintcream
-	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(donator_dresses)
+/datum/gear/uniform/dress/long_eggshell
+	display_name = "eggshell maxi dress"
+	path = /obj/item/clothing/under/skirt_c/dress/long/eggshell
+	subgroup = "Dresses"
+	price = 8
+
+/datum/gear/uniform/dress/mintcream
+	display_name = "mint short dress"
+	path = /obj/item/clothing/under/skirt_c/dress/mintcream
+	subgroup = "Dresses"
+	price = 10
+
+/datum/gear/uniform/dress/long_mintcream
+	display_name = "mint maxi dress"
+	path = /obj/item/clothing/under/skirt_c/dress/long/mintcream
+	subgroup = "Dresses"
+	price = 10
+
+/datum/gear/uniform/dress/long
+	display_name = "maxi dress"
+	path = /obj/item/clothing/under/skirt_c/dress/long
+	subgroup = "Dresses"
+	price = 20
 
 /datum/gear/uniform/hosformal
 	display_name = "HoS's formal uniform"
@@ -458,21 +491,35 @@
 	subgroup = "Dresses"
 	price = 10
 
-/datum/gear/uniform/donator_suit
-	display_name = "suit selection"
+/datum/gear/uniform/charcoal
+	display_name = "charcoal suit"
 	path = /obj/item/clothing/under/suit_jacket/charcoal
 	subgroup = "Suits & Formal"
 	price = 10
 
-/datum/gear/uniform/donator_suit/New()
-	..()
-	var/donator_suits = list()
-	donator_suits += /obj/item/clothing/under/suit_jacket/charcoal
-	donator_suits += /obj/item/clothing/under/suit_jacket/navy
-	donator_suits += /obj/item/clothing/under/suit_jacket/burgundy
-	donator_suits += /obj/item/clothing/under/suit_jacket/checkered
-	donator_suits += /obj/item/clothing/under/suit_jacket/tan
-	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(donator_suits)
+/datum/gear/uniform/navy
+	display_name = "navy suit"
+	path = /obj/item/clothing/under/suit_jacket/navy
+	subgroup = "Suits & Formal"
+	price = 10
+
+/datum/gear/uniform/burgundy
+	display_name = "burgundy suit"
+	path = /obj/item/clothing/under/suit_jacket/burgundy
+	subgroup = "Suits & Formal"
+	price = 10
+
+/datum/gear/uniform/NAME
+	display_name = "checkered suit"
+	path = /obj/item/clothing/under/suit_jacket/checkered
+	subgroup = "Suits & Formal"
+	price = 10
+
+/datum/gear/uniform/tan
+	display_name = "tan suit"
+	path = /obj/item/clothing/under/suit_jacket/tan
+	subgroup = "Suits & Formal"
+	price = 10
 
 /datum/gear/uniform/dress/abaya
 	display_name = "abaya dress"

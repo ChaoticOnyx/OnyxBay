@@ -535,6 +535,12 @@
 		))
 	data["client_preference_categories"] = pref_categories
 
+	// UI theme list
+	var/list/theme_list = list()
+	for(var/style in GLOB.all_ui_styles)
+		theme_list += style
+	data["ui_themes"] = theme_list
+
 	// Keybinding definitions grouped by category
 	var/list/kb_categories = list()
 	for(var/name in GLOB.keybindings_by_name)
@@ -766,6 +772,9 @@
 
 	// === SETTINGS DYNAMIC DATA ===
 	data["preference_values"] = pref.preference_values
+	data["ui_style"] = pref.UI_style
+	data["ui_style_color"] = pref.UI_style_color
+	data["ui_style_alpha"] = pref.UI_style_alpha
 	// Keybindings: invert to binding_name -> list of keys
 	var/list/user_binds = list()
 	if(islist(pref.key_bindings))
@@ -831,7 +840,6 @@
 
 	for(var/list/layer_info in clothing_layers)
 		var/ho_layer = layer_info[1]
-		var/slot_name = layer_info[2]
 		var/overlay_data = M.overlays_standing[ho_layer]
 		if(!overlay_data)
 			continue
@@ -1728,6 +1736,28 @@
 			if(!pref_key || !new_value)
 				return TRUE
 			owner.set_preference(pref_key, new_value)
+			return TRUE
+
+		if("setUiStyle")
+			var/style = params["style"]
+			var/alpha = text2num(params["alpha"])
+			if(!style || !isnum(alpha))
+				return TRUE
+			if(!(style in GLOB.all_ui_styles))
+				return TRUE
+			pref.UI_style = style
+			pref.UI_style_alpha = Clamp(alpha, 0, 255)
+			if(owner.client)
+				owner.client.update_ui()
+			return TRUE
+
+		if("pickUiColor")
+			var/new_color = tgui_color_picker(owner, "Choose HUD color:", "Character Setup", pref.UI_style_color)
+			if(!new_color)
+				return TRUE
+			pref.UI_style_color = new_color
+			if(owner.client)
+				owner.client.update_ui()
 			return TRUE
 
 		if("setKeybinding")

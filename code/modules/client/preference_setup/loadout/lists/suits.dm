@@ -252,17 +252,16 @@
 	allowed_roles = list(/datum/job/chaplain)
 
 /datum/gear/suit/wizrobe_fake
-	display_name = "wizard robe selection"
+	display_name = "wizard robe"
 	path = /obj/item/clothing/suit/wizrobe/fake
 	subgroup = "Costumes"
 	price = 20
 
-/datum/gear/suit/wizrobe_fake/New()
-	..()
-	var/robes = list()
-	robes += /obj/item/clothing/suit/wizrobe/fake
-	robes += /obj/item/clothing/suit/wizrobe/marisa/fake
-	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(robes)
+/datum/gear/suit/wizrobe_marisa_fake
+	display_name = "witch robe"
+	path = /obj/item/clothing/suit/wizrobe/marisa/fake
+	subgroup = "Costumes"
+	price = 20
 
 /datum/gear/suit/ianshirt
 	display_name = "ian shirt"
@@ -270,19 +269,23 @@
 	subgroup = "Costumes"
 	price = 5
 
-/datum/gear/suit/punk_jacket
-	display_name = "punk jacket selection"
+/datum/gear/suit/punk_jacket_AC
+	display_name = "punk jacket black"
 	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_AC
 	subgroup = "Coats & Jackets"
 	price = 20
 
-/datum/gear/suit/punk_jacket/New()
-	..()
-	var/punk_jackets = list()
-	punk_jackets += /obj/item/clothing/suit/storage/toggle/punk_jacket_AC
-	punk_jackets += /obj/item/clothing/suit/storage/toggle/punk_jacket_RD
-	punk_jackets += /obj/item/clothing/suit/storage/toggle/punk_jacket_TS
-	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(punk_jackets)
+/datum/gear/suit/punk_jacket_RD
+	display_name = "punk jacket raven"
+	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_RD
+	subgroup = "Coats & Jackets"
+	price = 20
+
+/datum/gear/suit/punk_jacket_TS
+	display_name = "punk jacket brown"
+	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_TS
+	subgroup = "Coats & Jackets"
+	price = 20
 
 /datum/gear/suit/fashionable_coat
 	display_name = "fashionable coat"

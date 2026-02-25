@@ -44,6 +44,27 @@ import stampHos from "../assets/stamps/stamp-hos.png";
 import stampOk from "../assets/stamps/stamp-ok.png";
 import stampRd from "../assets/stamps/stamp-rd.png";
 
+// UI theme preview images
+import uiPreviewBg from "../assets/settings/preview.png";
+import uiPreviewItems from "../assets/settings/items.png";
+import uiGoon from "../assets/settings/ui-goon.png";
+import uiMidnight from "../assets/settings/ui-midnight.png";
+import uiMinimalist from "../assets/settings/ui-minimalist.png";
+import uiOld from "../assets/settings/ui-old.png";
+import uiOldNoborder from "../assets/settings/ui-old-noborder.png";
+import uiOrange from "../assets/settings/ui-orange.png";
+import uiWhite from "../assets/settings/ui-white.png";
+
+const UI_THEME_IMAGE: Record<string, string> = {
+  "Goon": uiGoon,
+  "Midnight": uiMidnight,
+  "Orange": uiOrange,
+  "Old": uiOld,
+  "White": uiWhite,
+  "Old-noborder": uiOldNoborder,
+  "Minimalist": uiMinimalist,
+};
+
 // Map departments → department head stamp (always use the head's stamp)
 const DEPT_STAMP: Record<string, string> = {
   "Command": stampCap,
@@ -53,6 +74,7 @@ const DEPT_STAMP: Record<string, string> = {
   "Science": stampRd,
   "Cargo": stampCargo,
   "Civilian": stampHop,
+  "Provisioning": stampHop,
   "Supply": stampCargo,
 };
 
@@ -446,6 +468,11 @@ interface CharacterData {
   // Settings dynamic
   preference_values: Record<string, string>;
   user_keybindings: Record<string, string[]>;
+  // UI theme
+  ui_themes: string[];
+  ui_style: string;
+  ui_style_color: string;
+  ui_style_alpha: number;
 }
 
 // Appearance flag constants (mirrored from DM)
@@ -935,7 +962,7 @@ const CharacterSlotSelector = (props: {
             <Icon
               name={showPicker ? "chevron-up" : "chevron-down"}
               ml={0.5}
-              style={{ fontSize: "0.625rem", opacity: 0.5 }}
+              style={{ fontSize: "0.6875rem", opacity: 0.5 }}
             />
           </Box>
           <Box className="CharSetup__slotNumber">
@@ -1606,7 +1633,7 @@ const IdentityPanel = (props: {
                 Home System
                 {!(data.home_systems || []).includes(data.home_system) &&
                   data.home_system !== "Unset" && (
-                    <Box as="span" color="good" fontSize="9px" italic ml={0.5}>
+                    <Box as="span" color="good" fontSize="11px" italic ml={0.5}>
                       Custom
                     </Box>
                   )}
@@ -3880,7 +3907,7 @@ const CareerPanel = (props: {
                         </Box>
                       )}
                       {statusText && (
-                        <Box inline ml={0.5} color="bad" fontSize="10px">
+                        <Box inline ml={0.5} color="bad" fontSize="11px">
                           [{statusText}]
                         </Box>
                       )}
@@ -4956,17 +4983,6 @@ const BackgroundRecordsSubPanel = (props: {
                 </Stack.Item>
                 <Stack.Item grow ml={0.75}>
                   <Box bold>{rec.label}</Box>
-                  {!isExpanded && (
-                    <Box
-                      className="CharSetup__cardPreview"
-                      italic={!hasContent}
-                    >
-                      {hasContent
-                        ? value.substring(0, 60) +
-                          (value.length > 60 ? "..." : "")
-                        : "Empty — click to write"}
-                    </Box>
-                  )}
                 </Stack.Item>
                 <Stack.Item>
                   {hasContent && (
@@ -5129,7 +5145,7 @@ const BackgroundFlavorSubPanel = (props: {
                   mr={0.5}
                 />
                 {FLAVOR_PARTS.find((p) => p.key === activePart)?.label}
-                <Box inline ml={1} fontSize="10px" color="label">
+                <Box inline ml={1} fontSize="11px" color="label">
                   {FLAVOR_PARTS.find((p) => p.key === activePart)?.desc}
                 </Box>
               </Box>
@@ -5271,7 +5287,7 @@ const BackgroundRelationsSubPanel = (props: {
           </Stack.Item>
           <Stack.Item grow>
             <Box bold>Public Profile</Box>
-            <Box fontSize="10px" color="label">
+            <Box fontSize="11px" color="label">
               What all connections know about you
             </Box>
           </Stack.Item>
@@ -5335,7 +5351,7 @@ const BackgroundRelationsSubPanel = (props: {
               </Stack.Item>
               <Stack.Item grow ml={0.75}>
                 <Box bold>{rel.name}</Box>
-                <Box fontSize="10px" color="label" italic>
+                <Box fontSize="11px" color="label" italic>
                   {rel.desc}
                 </Box>
               </Stack.Item>
@@ -5359,7 +5375,7 @@ const BackgroundRelationsSubPanel = (props: {
               <Box mt={0.5}>
                 <Stack align="center">
                   <Stack.Item grow>
-                    <Box fontSize="10px" color="label">
+                    <Box fontSize="11px" color="label">
                       <Icon name="comment-dots" mr={0.25} />
                       {" Personal note for this connection:"}
                     </Box>
@@ -5392,7 +5408,7 @@ const BackgroundRelationsSubPanel = (props: {
                 ) : (
                   <Box
                     italic={!relationsInfo[rel.name]}
-                    fontSize="10px"
+                    fontSize="11px"
                     color={relationsInfo[rel.name] ? "default" : "label"}
                     mt={0.25}
                   >
@@ -5494,6 +5510,153 @@ const SettingsPanel = (props: {
   );
 };
 
+// --- HUD UI preview with theme/color/alpha controls ---
+
+const UiPreviewCard = (props: {
+  data: CharacterData;
+  act: Function;
+  context: any;
+}) => {
+  const { data, act, context } = props;
+
+  const [style, setStyle] = useLocalState(context, "uiPrevStyle", data.ui_style || "Goon");
+  const [alpha, setAlpha] = useLocalState(context, "uiPrevAlpha",
+    (data.ui_style_alpha ?? 255) / 255);
+
+  const hexColor = data.ui_style_color || "#ffffff";
+  const themeImg = UI_THEME_IMAGE[style] || uiGoon;
+
+  const [hudExpanded, setHudExpanded] = useLocalState(
+    context, "hudPreviewExpanded", false);
+
+  return (
+    <Box mb={0.5}>
+      <Box
+        className={classes([
+          "CharSetup__card",
+          "CharSetup__card--expandable",
+          "CharSetup__card--accentLeft",
+          hudExpanded && "CharSetup__card--expanded",
+        ])}
+        style={{ "--cs-card-accent": "#82aaff" }}
+        onClick={() => setHudExpanded(!hudExpanded)}
+      >
+        <Stack align="center">
+          <Stack.Item>
+            <Box inline className="CharSetup__cardIcon" color="#82aaff">
+              <Icon name="desktop" />
+            </Box>
+          </Stack.Item>
+          <Stack.Item grow ml={0.5}>
+            <Box bold>HUD Customization</Box>
+          </Stack.Item>
+          <Stack.Item>
+            <Icon
+              name={hudExpanded ? "chevron-up" : "chevron-down"}
+              color="label"
+            />
+          </Stack.Item>
+        </Stack>
+      </Box>
+      {hudExpanded && (
+      <Box className="CharSetup__cardBody">
+        <Stack>
+          {/* Preview — left, fills available space */}
+          <Stack.Item grow basis={0}>
+            <Box className="CharSetup__uiPreview">
+              <img
+                className="CharSetup__uiPreviewBg"
+                src={uiPreviewBg}
+              />
+              <svg
+                className="CharSetup__uiPreviewHud"
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+              >
+                <defs>
+                  <filter id="uiColorMask">
+                    <feFlood floodColor={hexColor} result="flood" />
+                    <feComposite
+                      in="SourceGraphic"
+                      in2="flood"
+                      operator="arithmetic"
+                      k1="1"
+                      k2="0"
+                      k3="0"
+                      k4="0"
+                    />
+                  </filter>
+                </defs>
+                <image
+                  opacity={alpha}
+                  width="100%"
+                  height="100%"
+                  xlinkHref={themeImg}
+                  filter="url(#uiColorMask)"
+                />
+              </svg>
+              <img
+                className="CharSetup__uiPreviewItems"
+                src={uiPreviewItems}
+              />
+            </Box>
+          </Stack.Item>
+          {/* Controls — right sidebar */}
+          <Stack.Item ml={0.5}>
+            <Stack vertical>
+              <Stack.Item mb={0.5}>
+                <Box bold fontSize="11px" mb={0.2}>Theme</Box>
+                <Dropdown
+                  selected={style}
+                  options={data.ui_themes || []}
+                  onSelected={(v: string) => setStyle(v)}
+                  width="9rem"
+                />
+              </Stack.Item>
+              <Stack.Item mb={0.5}>
+                <Box bold fontSize="11px" mb={0.2}>Color</Box>
+                <Box
+                  className="CharSetup__colorSwatch"
+                  style={{ backgroundColor: hexColor }}
+                  onClick={() => act("pickUiColor")}
+                />
+              </Stack.Item>
+              <Stack.Item mb={0.5}>
+                <Box bold fontSize="11px" mb={0.2}>Alpha</Box>
+                <NumberInput
+                  value={alpha}
+                  minValue={0.0}
+                  maxValue={1.0}
+                  step={0.05}
+                  stepPixelSize={10}
+                  width="4rem"
+                  onDrag={(_, v) => setAlpha(v)}
+                  format={(v) => v.toFixed(2)}
+                />
+              </Stack.Item>
+              <Stack.Item>
+                <CsButton
+                  fluid
+                  icon="check"
+                  onClick={() =>
+                    act("setUiStyle", {
+                      style,
+                      alpha: Math.round(alpha * 255),
+                    })
+                  }
+                >
+                  Apply
+                </CsButton>
+              </Stack.Item>
+            </Stack>
+          </Stack.Item>
+        </Stack>
+      </Box>
+      )}
+    </Box>
+  );
+};
+
 // --- Preferences: collapsible category cards with inline toggles ---
 
 const PreferencesSubPanel = (props: {
@@ -5522,6 +5685,7 @@ const PreferencesSubPanel = (props: {
 
   return (
     <>
+      <UiPreviewCard data={data} act={act} context={context} />
       {visibleCats.map((catName) => {
         const prefs = categories[catName] || [];
         const meta = PREF_CATEGORY_META[catName] || {
@@ -5557,7 +5721,7 @@ const PreferencesSubPanel = (props: {
                 <Stack.Item>
                   <Box
                     inline
-                    fontSize="10px"
+                    fontSize="11px"
                     color="label"
                     mr={0.5}
                   >
@@ -5842,7 +6006,7 @@ class KeybindingsSubPanel extends Component<{
                     </Box>
                   </Stack.Item>
                   <Stack.Item>
-                    <Box inline fontSize="10px" color="label" mr={0.5}>
+                    <Box inline fontSize="11px" color="label" mr={0.5}>
                       {bindings.length} bindings
                     </Box>
                     <Icon
@@ -5882,7 +6046,7 @@ class KeybindingsSubPanel extends Component<{
                               {kb.full_name}
                             </Box>
                             {kb.description && (
-                              <Box fontSize="9px" color="label">
+                              <Box fontSize="11px" color="label">
                                 {kb.description}
                               </Box>
                             )}
