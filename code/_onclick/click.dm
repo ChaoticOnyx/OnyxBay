@@ -164,7 +164,9 @@
 	sdepth = A.storage_depth_turf()
 
 	if(aim_assist && (!sdepth || isturf(A) || isturf(A.loc)) && !istype(I, /obj/item/gun))
-		if(isliving(A) && !Adjacent(A) || !isliving(A))
+		var/should_scan = (!isliving(A) || (isliving(A) && !Adjacent(A))) // If the target atom is a hittable mob, skip the scan.
+		should_scan &&= !(!istype(I) && istype(A, /obj/item) && Adjacent(A)) // OR if we are trying to pick up an item with an empty hand, let us.
+		if(should_scan)
 			var/turf/target_turf = get_step_towards(src, A)
 			if(istype(target_turf))
 				for(var/thing in target_turf.contents)
@@ -180,6 +182,7 @@
 						UnarmedAttack(L, 1)
 					trigger_aiming(TARGET_CAN_CLICK)
 					return 1
+			return
 
 	if(isturf(A) || isturf(A.loc) || (sdepth != -1 && sdepth <= 1))
 		if(Adjacent(A)) // see adjacent.dm
