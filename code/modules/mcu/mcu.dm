@@ -117,6 +117,7 @@
 	..()
 
 /obj/item/device/mcu/Destroy()
+	power_off()
 	Z_MACHINE_DESTROY(id)
 
 	. = ..()
