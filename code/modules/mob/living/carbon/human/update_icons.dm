@@ -521,11 +521,12 @@ var/global/list/damage_icon_parts = list()
 
 // Suit Storage
 /mob/living/carbon/human/update_inv_s_store(update_icons=1)
-	if(s_store && !((wear_suit && wear_suit.flags_inv & HIDESUITSTORAGE)))
+	if(s_store && !((wear_suit && wear_suit.flags_inv & HIDESUITSTORAGE) || (back && back.flags_inv & HIDERIG)))
 		overlays_standing[HO_SUIT_STORE_LAYER] = s_store.get_mob_overlay(src, slot_s_store_str)
 	else
 		overlays_standing[HO_SUIT_STORE_LAYER] = null
 
+	update_inv_back(FALSE)
 	if(update_icons) queue_icon_update()
 
 // Head
@@ -582,7 +583,8 @@ var/global/list/damage_icon_parts = list()
 
 // Back
 /mob/living/carbon/human/update_inv_back(update_icons=1)
-	if(back)
+	var/hideback = (s_store && (s_store.flags_inv & HIDERIG)) && istype(back, /obj/item/rig)
+	if(back && !hideback)
 		overlays_standing[HO_BACK_LAYER] = back.get_mob_overlay(src,slot_back_str)
 	else
 		overlays_standing[HO_BACK_LAYER] = null
