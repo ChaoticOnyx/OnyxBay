@@ -1,3 +1,5 @@
+#define MCU_TMP_FOLDER "data/mcu"
+
 SUBSYSTEM_DEF(mcu)
 	name = "MCU"
 	priority = SS_PRIORITY_MCU
@@ -9,6 +11,9 @@ SUBSYSTEM_DEF(mcu)
 	var/total_running = 0
 
 /datum/controller/subsystem/mcu/Initialize()
+	for(var/F in flist("[MCU_TMP_FOLDER]/elf/"))
+		fdel("[MCU_TMP_FOLDER]/elf/[F]")
+
 	last_fire_time = world.time
 	. = ..()
 

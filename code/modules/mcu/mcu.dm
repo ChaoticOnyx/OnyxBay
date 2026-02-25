@@ -186,6 +186,10 @@
 
 /obj/item/device/mcu/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/jtag_programmer))
+		if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_STOPPED)
+			to_chat(user, SPAN_WARNING("The MCU must be powered off before programming."))
+			return ..()
+
 		if(flash_protection)
 			to_chat(user, SPAN_WARNING("The OTP fuse is burned. \The [src] cannot be reprogrammed."))
 			return ..()
@@ -199,10 +203,10 @@
 			to_chat(user, SPAN_WARNING("The file's size is too big [length(elf_file)] ([MCU_MAX_ELF_FILE_SIZE] max)"))
 			return ..()
 
-		var/tmp_file = "data/z/elf/[rand(9999999)].elf"
+		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[rand(9999999)].elf"
 
 		while(fexists(tmp_file))
-			tmp_file = "data/z/elf/[rand(9999999)].elf"
+			tmp_file = "[MCU_TMP_FOLDER]/elf/[rand(9999999)].elf"
 
 		fcopy(elf_file, tmp_file)
 
@@ -271,6 +275,16 @@
 		try_add_pci(M, user)
 
 	return ..()
+
+/obj/item/device/mcu/attack_self(mob/user as mob)
+	for(var/i = 1 to pci_slots)
+		var/obj/item/mcu_module/M = __pci_devices[i]
+
+		if(QDELETED(M))
+			continue
+
+		if(M.attack_self(user))
+			return
 
 /obj/item/device/mcu/proc/try_add_pci(obj/item/mcu_module/M, mob/activator = null)
 	ASSERT(M.device_type > 0)
@@ -455,7 +469,7 @@
 
 	// Wh
 	var/min_boot_charge = P_idle / 3600
-	if(!__battery.check_charge(min_boot_charge))
+	if(!__battery.check_charge(min_boot_charge * config.game.mcu_power_scale))
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src]'s battery is too low to start."))
 

@@ -2095,6 +2095,7 @@
 #include "code\modules\mcu\mcu.dm"
 #include "code\modules\mcu\module.dm"
 #include "code\modules\mcu\programmer.dm"
+#include "code\modules\mcu\modules\serial_terminal.dm"
 #include "code\modules\mcu\modules\tts.dm"
 #include "code\modules\merchant\merchant_guns.dm"
 #include "code\modules\merchant\merchant_machinery.dm"

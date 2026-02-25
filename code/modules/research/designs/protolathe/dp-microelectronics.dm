@@ -132,8 +132,18 @@
 	name = "Text-to-Speech Module"
 	id = "tts_module"
 	build_type = PROTOLATHE
-	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2, TECH_BIO = 2)
 	materials = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 100)
 	build_path = /obj/item/mcu_module/tts
+	sort_string = "VABCA"
+	category_items = list("Microelectronics")
+
+/datum/design/item/serial_terminal_module
+	name = "Serial Terminal module"
+	id = "serial_terminal_module"
+	build_type = PROTOLATHE
+	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+	materials = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 100)
+	build_path = /obj/item/mcu_module/serial_terminal
 	sort_string = "VABCA"
 	category_items = list("Microelectronics")

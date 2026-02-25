@@ -13,3 +13,9 @@
 
 /obj/item/mcu_module/proc/__syscall(cmd, ...)
 	return FALSE
+
+/obj/item/mcu_module/tgui_host(mob/user)
+	if(__host != null)
+		return __host.resolve()
+	
+	return src

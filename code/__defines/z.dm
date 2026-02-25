@@ -32,9 +32,13 @@ var/__z_name = null
 #define Z_MAX_PCI_DEVICES 32
 
 #define Z_DEVICE_TYPE_TTS 1
+#define Z_DEVICE_TYPE_SERIAL_TERMINAL 2
 
 #define Z_TTS_N2B_CMD_SAY 1
 #define Z_TTS_B2N_CMD_READY_STATUS 1
+
+#define Z_SERIAL_N2B_CMD_WRITE 1
+#define Z_SERIAL_B2N_CMD_WRITE 1
 
 // All machine IDs are numeric handles returned by Z_MACHINE_CREATE.
 

@@ -1,7 +1,7 @@
 #define MCU_TTS_COOLDOWN_PER_CHAR (1 SECOND)
 
 /obj/item/mcu_module/tts
-	name = "TTS module"
+	name = "Text-to-Speech Module"
 	desc = "A microcontroller unit. This one seems to be a prototype."
 	icon = 'icons/obj/assemblies/electronic_components.dmi'
 	icon_state = "speaker"
