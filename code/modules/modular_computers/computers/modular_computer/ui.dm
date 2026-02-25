@@ -95,6 +95,19 @@
 	if(.)
 		update_uis()
 
+/obj/item/modular_computer/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	switch(action)
+		if( "PC_exit" )
+			kill_program()
+			return 1
+		if( "PC_shutdown" )
+			shutdown_computer()
+			return 1
+		if( "PC_minimize" )
+			var/mob/user = usr
+			minimize_program(user)
+
 // Function used by NanoUI's to obtain data for header. All relevant entries begin with "PC_"
 /obj/item/modular_computer/proc/get_header_data()
 	var/list/data = list()

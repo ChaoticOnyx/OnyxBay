@@ -74,8 +74,8 @@
 		if(H.head && istype(H.head, /obj/item/clothing/head/cardborg))
 			H.visible_message(SPAN("danger", "[src] ignites \the [H.head], and sets [H] on fire!"), \
 							  SPAN("danger", "[src] ignites \the [H.head] on your head. You are on fire!"))
-			H.adjust_fire_stacks(1)
-			H.IgniteMob()
+			H.adjust_fire_stacks(10)
+			H.IgniteMob(TRUE)
 
 	set_next_think(world.time + 1 SECOND)
 

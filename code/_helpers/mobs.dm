@@ -145,6 +145,10 @@
 	var/user_loc = affecter.loc
 	var/target_loc = target.loc
 
+	var/drifting = FALSE
+	if(user.is_space_movement_permitted() == SPACE_MOVE_FORBIDDEN && user.inertia_dir)
+		drifting = TRUE
+
 	var/holding = affecter.get_active_item()
 
 	if(istype(user,/mob/living))
@@ -173,7 +177,11 @@
 		if(uninterruptible)
 			continue
 
-		if(!affecter || (is_mob_type && user.incapacitated(incapacitation_flags)) || affecter.loc != user_loc)
+		if(drifting && !affecter.inertia_dir)
+			drifting = FALSE
+			user_loc = affecter.loc
+
+		if(QDELETED(affecter) || (is_mob_type && user.incapacitated(incapacitation_flags)) || (!drifting && affecter.loc != user_loc))
 			. = 0
 			break
 
@@ -228,7 +236,11 @@
 
 	var/atom/original_loc = user.loc
 
-	var/holding = user.get_active_hand()
+	var/drifting = FALSE
+	if(user.is_space_movement_permitted() == SPACE_MOVE_FORBIDDEN && user.inertia_dir)
+		drifting = TRUE
+
+	var/holding = user.get_clicking_hand()
 
 	if(istype(user,/mob/living))
 		var/mob/living/L = user
@@ -244,10 +256,14 @@
 	. = 1
 	while (world.time < endtime)
 		stoplag(1)
-		if (progress)
+		if(progress)
 			progbar.update(world.time - starttime)
 
-		if(!user || user.incapacitated(incapacitation_flags) || (user.loc != original_loc && !can_move) || (same_direction && user.dir != original_dir))
+		if(drifting && !user.inertia_dir)
+			drifting = FALSE
+			original_loc = user.loc
+
+		if(QDELETED(user) || user.incapacitated(incapacitation_flags)|| (!drifting && user.loc != original_loc && !can_move) || (same_direction && user.dir != original_dir))
 			. = 0
 			break
 
@@ -256,7 +272,7 @@
 			break
 
 		if(needhand)
-			if(user.get_active_hand() != holding)
+			if(!user.has_in_hands(holding))
 				. = 0
 				break
 

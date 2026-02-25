@@ -51,9 +51,8 @@
 	if(href_list["alarm"])
 		if(ui_ref)
 			var/obj/machinery/alarm/alarm = locate(href_list["alarm"]) in (monitored_alarms.len ? monitored_alarms : GLOB.alarm_list)
-			if(alarm)
-				var/datum/topic_state/TS = generate_state(alarm)
-				alarm.ui_interact(usr, master_ui = ui_ref, state = TS)
+			if(istype(alarm))
+				alarm.tgui_interact(usr)
 		return 1
 
 /datum/nano_module/atmos_control/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, master_ui = null, datum/topic_state/state = GLOB.default_state)

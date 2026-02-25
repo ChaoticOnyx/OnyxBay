@@ -264,8 +264,7 @@
 
 	if(isliving(O))
 		var/mob/living/L = O
-		L.ExtinguishMob()
-		L.fire_stacks = -20 //Douse ourselves with water to avoid fire more easily
+		L.adjust_fire_stacks(-100) //Douse ourselves with water to avoid fire more easily
 
 	if(iscarbon(O))
 		var/mob/living/carbon/M = O
@@ -546,9 +545,12 @@
 		return
 	busy = FALSE
 
-	if(user.loc != location) return				//User has moved
-	if(!I) return 								//Item's been destroyed while washing
-	if(user.get_active_hand() != I) return		//Person has switched hands or the item in their hands
+	if(user.loc != location)
+		return
+	if(QDELETED(I))
+		return
+	if(!user.has_in_hands(I))
+		return
 
 	O.clean_blood()
 

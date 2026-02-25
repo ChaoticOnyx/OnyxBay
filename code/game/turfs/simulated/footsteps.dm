@@ -32,7 +32,7 @@
 		if(step_count % 2) //every other turf makes a sound
 			return
 
-	if(!has_gravity(src))
+	if(!has_gravity())
 		if(step_count % 3) // don't need to step as often when you hop around
 			return
 

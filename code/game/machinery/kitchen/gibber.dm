@@ -336,7 +336,7 @@
 			continue
 
 		O.dropInto(loc)
-		if(!slipshod || !throw_dir)
+		if(!slipshod)
 			continue
 
 		O.throw_at(get_edge_target_turf(src, gib_throw_dir), rand(0, 3), 0.5)

@@ -163,8 +163,9 @@ be able to influence the host through various commands.
 	return host.whisper(message)
 
 // Make the host do things
-/mob/living/parasite/meme/me_verb(message as text)
+/mob/living/parasite/meme/me_verb(message as text|null)
 	set name = "Me"
+
 	if(dormant)
 		to_chat(usr, "\red You're dormant!")
 		return

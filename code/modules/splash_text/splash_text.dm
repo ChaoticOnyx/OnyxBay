@@ -15,7 +15,7 @@
 /atom/proc/show_splash_text_to_viewers(message, self_message, vision_distance = 7, list/mob/ignored_mobs, force_skip_chat = FALSE)
 	var/list/hearers = list()
 	var/list/garbage_obj = list() // TO-DO: add more helpers to exclude searching objects.
-	get_mobs_and_objs_in_view_fast(get_turf(src), vision_distance, hearers, garbage_obj)
+	get_listeners_in_range(get_turf(src), vision_distance, hearers, garbage_obj)
 	hearers -= ignored_mobs
 
 	for(var/hearer in hearers)

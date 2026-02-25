@@ -31,4 +31,4 @@ debug_paranoid = false
 delist_when_no_admins = false
 
 # Give all the rights for the localhost player.
-promote_localhost = false
+promote_localhost = true

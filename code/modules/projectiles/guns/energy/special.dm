@@ -113,6 +113,7 @@
 	recharge_time = 5 //Time it takes for shots to recharge (in ticks)
 	charge_meter = 0
 	combustion = 0
+	space_recoil = TRUE
 
 /obj/item/gun/energy/meteorgun/pen
 	name = "meteor pen"

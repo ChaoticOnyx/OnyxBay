@@ -41,3 +41,6 @@
 #define SIGNAL_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON "atom_init_success_on"
 /// Called on 'atom/bullet_act' (/atom, obj/item/projectile)
 #define SIGNAL_BULLET_ACT "atom_bullet_act"
+
+/// Called on `/atom/proc/examine` (mob/user, list/examine_result)
+#define SIGNAL_EXAMINED "examined"

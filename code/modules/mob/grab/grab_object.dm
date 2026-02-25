@@ -96,7 +96,7 @@
 	if(!assailant)
 		return
 	var/hit_zone = assailant.zone_sel.selecting
-	if(src != assailant.get_active_hand())
+	if(src != assailant.get_clicking_hand())
 		return 0
 	if(hit_zone && hit_zone != last_target)
 		last_target = hit_zone
@@ -157,7 +157,7 @@
 		to_chat(assailant, "<span class='notice'>You can't grab yourself.</span>")
 		return 0
 
-	if(assailant.get_active_hand())
+	if(assailant.get_clicking_hand())
 		to_chat(assailant, "<span class='notice'>You can't grab someone if your hand is full.</span>")
 		return 0
 
@@ -252,7 +252,7 @@
 	if(force)
 		affecting.forceMove(assailant.loc)
 
-	if(!assailant || !affecting || !assailant.Adjacent(affecting))
+	if(!assailant || !affecting || (!assailant.Adjacent(affecting) && affecting.moving_diagonally != /atom/movable::FIRST_DIAGONAL_STEP))
 		delete_self()
 		return FALSE
 	else

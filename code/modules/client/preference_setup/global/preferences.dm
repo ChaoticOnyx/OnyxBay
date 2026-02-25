@@ -334,8 +334,9 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
-	R.GraphicsUpdate()
+	var/atom/movable/renderer/R = A_LAZYACCESS(preference_mob.renderers, GAME_RENDERER)
+	if(istype(R))
+		R.GraphicsUpdate()
 
 /datum/client_preference/glow
 	description = "Lighting: Lamp Glow"
@@ -348,8 +349,9 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[LIGHTING_LAMPS_GLOW_RENDERER]
-	R.GraphicsUpdate()
+	var/atom/movable/renderer/R = A_LAZYACCESS(preference_mob.renderers, LIGHTING_LAMPS_GLOW_RENDERER)
+	if(istype(R))
+		R.GraphicsUpdate()
 
 /datum/client_preference/glare
 	description = "Lighting: Lamp Glare"
@@ -362,8 +364,9 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[LIGHTING_LAMPS_GLARE_RENDERER]
-	R.GraphicsUpdate()
+	var/atom/movable/renderer/R = A_LAZYACCESS(preference_mob.renderers, LIGHTING_LAMPS_GLARE_RENDERER)
+	if(istype(R))
+		R.GraphicsUpdate()
 
 /datum/client_preference/exposure
 	description = "Lighting: Lamp Exposure"
@@ -376,8 +379,9 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[ADDITIVE_LIGHTING_RENDERER]
-	R.GraphicsUpdate()
+	var/atom/movable/renderer/R = A_LAZYACCESS(preference_mob.renderers, ADDITIVE_LIGHTING_RENDERER)
+	if(istype(R))
+		R.GraphicsUpdate()
 
 /datum/client_preference/graphics_quality
 	description = "Effects Quality"
@@ -390,8 +394,9 @@ var/global/list/_client_preferences_by_type
 	if(isnull(preference_mob.client))
 		return
 
-	var/atom/movable/renderer/R = preference_mob.renderers[TEMPERATURE_EFFECT_RENDERER]
-	R.GraphicsUpdate()
+	var/atom/movable/renderer/R = A_LAZYACCESS(preference_mob.renderers, TEMPERATURE_EFFECT_RENDERER)
+	if(istype(R))
+		R.GraphicsUpdate()
 
 /datum/client_preference/pixel_size
 	description = "Pixel Size"
@@ -480,12 +485,6 @@ var/global/list/_client_preferences_by_type
 /datum/client_preference/ooc_name_color/get_default_value(client/given_client)
 	ASSERT(given_client)
 	return given_client.donator_info.patron_type
-
-/datum/client_preference/default_hotkey_mode
-	description = "Default Hotkey Mode"
-	key = "DEFAULT_HOTKEY_MODE"
-	category = PREF_CATEGORY_CONTROL
-	default_value = GLOB.PREF_NO
 
 /********************
 * Ghost Preferences *

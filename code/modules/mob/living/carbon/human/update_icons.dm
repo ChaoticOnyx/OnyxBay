@@ -171,6 +171,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	SetOverlays(overlays_to_apply)
 
 	update_transform()
+	update_floating()
 
 var/global/list/damage_icon_parts = list()
 
@@ -520,11 +521,12 @@ var/global/list/damage_icon_parts = list()
 
 // Suit Storage
 /mob/living/carbon/human/update_inv_s_store(update_icons=1)
-	if(s_store && !((wear_suit && wear_suit.flags_inv & HIDESUITSTORAGE)))
+	if(s_store && !((wear_suit && wear_suit.flags_inv & HIDESUITSTORAGE) || (back && back.flags_inv & HIDERIG)))
 		overlays_standing[HO_SUIT_STORE_LAYER] = s_store.get_mob_overlay(src, slot_s_store_str)
 	else
 		overlays_standing[HO_SUIT_STORE_LAYER] = null
 
+	update_inv_back(FALSE)
 	if(update_icons) queue_icon_update()
 
 // Head
@@ -581,7 +583,8 @@ var/global/list/damage_icon_parts = list()
 
 // Back
 /mob/living/carbon/human/update_inv_back(update_icons=1)
-	if(back)
+	var/hideback = (s_store && (s_store.flags_inv & HIDERIG)) && istype(back, /obj/item/rig)
+	if(back && !hideback)
 		overlays_standing[HO_BACK_LAYER] = back.get_mob_overlay(src,slot_back_str)
 	else
 		overlays_standing[HO_BACK_LAYER] = null
@@ -767,8 +770,16 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/update_fire(update_icons=1)
 	overlays_standing[HO_FIRE_LAYER] = null
 	if(on_fire)
-		var/image/standing = overlay_image('icons/mob/onfire.dmi', "Standing", RESET_COLOR)
-		overlays_standing[HO_FIRE_LAYER] = standing
+		switch(get_fire_level())
+			if(3)
+				var/image/standing = overlay_image('icons/mob/onfire.dmi', "burning3", RESET_COLOR)
+				overlays_standing[HO_FIRE_LAYER] = standing
+			if(2)
+				var/image/standing = overlay_image('icons/mob/onfire.dmi', "burning2", RESET_COLOR)
+				overlays_standing[HO_FIRE_LAYER] = standing
+			if(1)
+				var/image/standing = overlay_image('icons/mob/onfire.dmi', "burning1", RESET_COLOR)
+				overlays_standing[HO_FIRE_LAYER] = standing
 
 	if(update_icons) queue_icon_update()
 

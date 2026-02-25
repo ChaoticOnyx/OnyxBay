@@ -67,7 +67,7 @@
 		if(possible_blocker.atom_flags & ATOM_FLAG_FULLTILE_OBJECT)
 			return
 
-	if(can_reinforce && (!user.stat) && istype(O, /obj/item/stack/material) && user.get_active_hand() == O)
+	if(can_reinforce && (!user.stat) && istype(O, /obj/item/stack/material) && user.has_in_hands(O))
 		reinforce_table(O, user)
 	else if(user.lying && !user.stat && !user.buckled && can_be_crawled_under())
 		do_crawl(user)
@@ -152,7 +152,7 @@
 		return
 
 	if(user.a_intent == I_HURT && W.force)
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		obj_attack_sound(W)
 		shake_animation(stime = 1)

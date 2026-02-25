@@ -275,12 +275,27 @@
 	if(!(new_hull.icon_state in icon_states))
 		return
 
+	// NOTE: Personally, I hate boilerplate, but I currently don't have the mental capacity to deal with emotes code.
+	var/datum/robot_hull/old_hull = module_hulls[icontype]
+	for (var/datum/emote/typepath as anything in old_hull?.default_emotes)
+		var/datum/emote/emote_to_remove = GLOB.all_emotes[typepath]
+		clear_emote(emote_to_remove.key)
+		if (!isnull(emote_to_remove.statpanel_proc))
+			verbs -= emote_to_remove.statpanel_proc
+
+	for (var/datum/emote/typepath as anything in new_hull.default_emotes)
+		var/datum/emote/emote_to_add = GLOB.all_emotes[typepath]
+		set_emote(emote_to_add.key, emote_to_add)
+		if (!isnull(emote_to_add.statpanel_proc))
+			verbs |= emote_to_add.statpanel_proc
+
 	icontype = new_icontype
 	icon = new_hull.icon
 	icon_state = new_hull.icon_state
 	footstep_sound = (new_hull.hull_flags & ROBOT_HULL_FLAG_HAS_FOOTSTEPS) ? new_hull.footstep_sound : null
 
 	update_icon()
+	update_transform()
 
 	return TRUE
 
@@ -481,16 +496,10 @@
 // this function displays jetpack pressure in the stat panel
 /mob/living/silicon/robot/proc/show_jetpack_pressure()
 	// if you have a jetpack, show the internal tank pressure
-	var/obj/item/tank/jetpack/current_jetpack = installed_jetpack()
+	var/obj/item/tank/jetpack/current_jetpack = get_jetpack()
 	if (current_jetpack)
 		stat("Internal Atmosphere Info", current_jetpack.name)
 		stat("Tank Pressure", current_jetpack.air_contents.return_pressure())
-
-// this function returns the robots jetpack, if one is installed
-/mob/living/silicon/robot/proc/installed_jetpack()
-	if(module)
-		return (locate(/obj/item/tank/jetpack) in module.modules)
-	return null
 
 // this function displays the cyborgs current cell charge in the stat panel
 /mob/living/silicon/robot/proc/show_cell_power()
@@ -812,7 +821,7 @@
 
 	ClearOverlays()
 
-	if (!is_ic_dead() && (using_hull.hull_flags & ROBOT_HULL_FLAG_HAS_EYES))
+	if (stat == CONSCIOUS && (using_hull.hull_flags & ROBOT_HULL_FLAG_HAS_EYES))
 		var/eyes_icon_state = "eyes-[using_hull.icon_state]"
 
 		AddOverlays(eyes_icon_state)

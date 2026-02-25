@@ -6,6 +6,7 @@
 	icon_dead = "faithless_dead"
 	speak_chance = 0
 	turns_per_move = 1
+	skip_spacemove = TRUE
 	response_help = "passes through"
 	response_disarm = "shoves"
 	response_harm = "hits"
@@ -27,9 +28,6 @@
 	faction = "faithless"
 	supernatural = 1
 	bodyparts = /decl/simple_animal_bodyparts/faithless
-
-/mob/living/simple_animal/hostile/faithless/Allow_Spacemove(check_drift = 0)
-	return 1
 
 /mob/living/simple_animal/hostile/faithless/find_target()
 	. = ..()

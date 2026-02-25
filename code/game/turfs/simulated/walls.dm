@@ -266,21 +266,21 @@
 	take_damage(damage)
 	return ..()
 
-/turf/simulated/wall/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR, nomsg = FALSE)
+/turf/simulated/wall/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg)
 	..()
 	play_hitby_sound(AM)
-	if(ismob(AM))
+	if(!isobj(AM))
 		return
 
-	var/tforce = AM:throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
+	var/obj/O = AM
+	var/tforce = O.throwforce * (TT.speed / THROWFORCE_SPEED_DIVISOR)
 	if(tforce < 17.5)
 		if(!nomsg)
 			visible_message("[AM] bounces off \the [src].")
-		return
-
-	if(!nomsg)
-		visible_message(SPAN("warning", "[src] was hit by [AM]."))
-	take_damage(tforce)
+	else
+		if(!nomsg)
+			visible_message(SPAN("warning", "[src] was hit by [AM]."))
+		take_damage(tforce)
 
 /turf/simulated/wall/proc/clear_plants()
 	for(var/obj/effect/overlay/wallrot/WR in src)

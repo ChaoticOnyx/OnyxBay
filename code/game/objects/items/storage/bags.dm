@@ -25,7 +25,7 @@
 		return FALSE //causes problems if the bag expands and becomes larger than src.loc can hold, so disallow it
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
-		if(!(H.get_inactive_hand() == src || H.get_active_hand() == src || H.belt == src))
+		if(!(H.has_in_hands(src) || H.belt == src))
 			if(!stop_messages)
 				to_chat(user, SPAN("notice", "Take [src] out first."))
 			return FALSE //disallowing it because people stuff bags in their pockets and store fucking guns and plasma bombs inside

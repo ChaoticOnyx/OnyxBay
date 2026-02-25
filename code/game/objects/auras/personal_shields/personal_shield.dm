@@ -24,7 +24,8 @@
 		new /obj/effect/sparks(user.loc)
 		return AURA_FALSE|AURA_CANCEL
 
-/obj/aura/personal_shield/hitby(atom/movable/M, speed, nomsg)
+/obj/aura/personal_shield/hitby(atom/movable/M, datum/thrownthing/TT, nomsg)
+	..()
 	new /obj/effect/shield_impact(user.loc)
 	playsound(user,'sound/effects/bamf.ogg',40,1)
 	new /obj/effect/sparks(user.loc)

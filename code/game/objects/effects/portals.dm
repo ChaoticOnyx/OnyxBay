@@ -191,21 +191,21 @@
 	P.redirect(P.original.x, P.original.y, linked_turf, target)
 	return TRUE
 
-/obj/effect/portal/linked/proc/on_throw_impact(atom/movable/hit_atom)
+/obj/effect/portal/linked/proc/on_throw_impact(atom/movable/hit_atom, datum/thrownthing/TT)
 	// save throw vars before "sleep"
-	var/atom/thrower = hit_atom.thrower
-	var/throw_range = hit_atom.throwed_dist
-	var/dist_travelled = get_dist(hit_atom.throw_source, src)
-	var/thrown_dir = hit_atom?.throw_dir
+	var/atom/thrower = TT.thrower
+	var/throw_range = TT.maxrange
+	var/dist_travelled = TT.dist_travelled
+	var/thrown_dir = TT.init_dir
 	var/previous_dir = hit_atom.dir
 	var/turf/loc_turf = get_turf(src)
-	var/turf/target_turf = get_turf(hit_atom?.thrown_to)
-	var/speed = hit_atom.throw_speed
+	var/turf/target_turf = TT.target_turf
+	var/speed = TT.speed
 	// sometimes the thrown object during the "momentum saving"
 	// does not meet any object to hit and falls into the portals over and over again,
 	// which causes the wildest lags, this should fix this bug
 	stoplag(1)
-	if(hit_atom.thrown_to == loc_turf || !target_turf || !loc_turf)
+	if(!target_turf || !loc_turf || target_turf == loc_turf)
 		teleport(hit_atom, TRUE)
 		return
 	var/target_dist = get_dist(loc_turf, target_turf)
@@ -214,7 +214,7 @@
 	hit_atom.dir = previous_dir
 	if(!result)
 		return
-	throw_dir = reverse_direction(throw_dir)
+	TT.init_dir = reverse_direction(TT.init_dir)
 	target_turf = get_turf(target)
 	while(!QDELING(src))
 		target_dist -= 1
@@ -223,11 +223,11 @@
 			break
 	INVOKE_ASYNC(hit_atom, nameof(/atom/movable.proc/throw_at), target_turf, throw_range-dist_travelled, speed, thrower)
 
-/obj/effect/portal/linked/teleport(atom/movable/M, ignore_checks = FALSE)
+/obj/effect/portal/linked/teleport(atom/movable/M, ignore_checks = FALSE, datum/thrownthing/TT = null)
 	if(!target)
 		return
-	if(M?.thrown_to && !ignore_checks)
-		return on_throw_impact(M)
+	if(!QDELETED(TT) && !ignore_checks)
+		return on_throw_impact(M, TT)
 	return ..()
 
 /obj/effect/portal/linked/move_all_objects()

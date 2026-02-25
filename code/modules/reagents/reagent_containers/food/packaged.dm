@@ -246,7 +246,7 @@
 /obj/item/reagent_containers/food/packaged/surstromming/proc/trigger_vomit()
 	var/list/mobs = list()
 	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), 3, mobs, objs, 0)
+	get_listeners_in_range(get_turf(src), 3, mobs, objs)
 	for(var/mob/living/carbon/human/H in mobs)
 		if(H.internals && H.internals.icon_state == "internal1")
 			continue

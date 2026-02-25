@@ -242,27 +242,38 @@
 	set category = "Object"
 	set src in usr
 
-	if(!(usr.stat || usr.restrained()))
-		var/obj/item/device/assembly_holder/holder
-		if(istype(src,/obj/item/grenade/chem_grenade))
-			var/obj/item/grenade/chem_grenade/gren = src
-			holder=gren.detonator
-		var/obj/item/device/assembly/timer/tmr = holder.a_left
-		if(!istype(tmr,/obj/item/device/assembly/timer))
-			tmr = holder.a_right
-		if(!istype(tmr,/obj/item/device/assembly/timer))
+	if(usr.stat || usr.restrained())
+		to_chat(usr, SPAN("notice", "You cannot do this while [usr.stat ? "unconscious/dead" : "restrained"]."))
+		return
+
+	var/obj/item/device/assembly_holder/holder = src
+	if(istype(src, /obj/item/grenade/chem_grenade))
+		var/obj/item/grenade/chem_grenade/CG = src
+		holder = CG.detonator
+
+	if(!istype(holder))
+		return
+
+	var/obj/item/device/assembly/timer/T = holder.a_left
+	if(!istype(T))
+		T = holder.a_right
+		if(!istype(T))
 			to_chat(usr, SPAN("notice", "This detonator has no timer."))
 			return
 
-		if(tmr.timing)
-			to_chat(usr, SPAN("notice", "Clock is ticking already."))
-		else
-			var/ntime = input("Enter desired time in seconds", "Time", "5") as num
-			if (ntime > 0 && ntime < 1000)
-				tmr.time = ntime
-				SetName(initial(name) + "([tmr.time] secs)")
-				to_chat(usr, SPAN("notice", "Timer set to [tmr.time] seconds."))
-			else
-				to_chat(usr, SPAN("notice", "Timer can't be [ntime <= 0? "negative" : "more than 1000 seconds"]."))
+	if(T.timing)
+		to_chat(usr, SPAN("notice", "Clock is ticking already."))
+		return
+
+	var/ntime = input("Set time:", "Time", "5") as num|null
+	if(isnull(ntime))
+		return
+
+	if(ntime > 0 && ntime <= 600)
+		T.time = ntime
+		if(istype(src, /obj/item/grenade/chem_grenade))
+			SetName(initial(name) + " ([T.time] sec)")
+		holder.SetName(initial(holder.name) + " ([T.time] sec)")
+		to_chat(usr, SPAN("notice", "Timer set to [T.time] second\s."))
 	else
-		to_chat(usr, SPAN("notice", "You cannot do this while [usr.stat ? "unconscious/dead" : "restrained"]."))
+		to_chat(usr, SPAN("notice", "Timer can't be [ntime <= 0? "negative" : "more than 1000 seconds"]."))

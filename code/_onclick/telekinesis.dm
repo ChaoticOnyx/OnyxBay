@@ -32,20 +32,20 @@ var/const/tk_maxrange = 15
 		return
 
 	var/obj/item/tk_grab/O = new(src)
-	user.put_in_active_hand(O)
+	user.put_in_clicking_hand(O)
 	O.host = user
 	O.focus_object(src)
 	return
 
 /obj/item/attack_tk(mob/user)
 	if(user.stat || !isturf(loc)) return
-	if((MUTATION_TK in user.mutations) && !user.get_active_hand()) // both should already be true to get here
+	if((MUTATION_TK in user.mutations) && !user.get_clicking_hand()) // both should already be true to get here
 		var/obj/item/tk_grab/O = new(src)
-		user.put_in_active_hand(O)
+		user.put_in_clicking_hand(O)
 		O.host = user
 		O.focus_object(src)
 	else
-		warning("Strange attack_tk(): TK([MUTATION_TK in user.mutations]) empty hand([!user.get_active_hand()])")
+		warning("Strange attack_tk(): TK([MUTATION_TK in user.mutations]) empty hand([!user.get_clicking_hand()])")
 	return
 
 

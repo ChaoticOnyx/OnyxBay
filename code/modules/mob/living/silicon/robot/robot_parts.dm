@@ -144,9 +144,9 @@
 			var/obj/item/secbot_assembly/ed209_assembly/B = new /obj/item/secbot_assembly/ed209_assembly
 			B.forceMove(get_turf(src))
 			to_chat(user, "<span class='notice'>You armed the robot frame.</span>")
-			if (user.get_inactive_hand()==src)
+			if(user.has_in_passive_hand(src))
 				user.drop(src)
-				user.put_in_inactive_hand(B)
+				user.put_in_passive_hand(B)
 			qdel(src)
 		else
 			to_chat(user, "<span class='warning'>You need one sheet of metal to arm the robot frame.</span>")
@@ -285,13 +285,13 @@
 			for (var/O in list(BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG))
 				var/obj/item/organ/external/organ = H.organs_by_name[O]
 				H.organs -= organ
-				H.organs_by_name.Remove(organ.organ_tag)
+				H.organs_by_name -= organ.organ_tag
 				qdel(organ)
 
 			// Remove brain (we want to put one in).
 			var/obj/item/organ/internal/cerebrum/brain = H.internal_organs_by_name[BP_BRAIN]
 			H.organs -= brain
-			H.organs_by_name.Remove(brain.organ_tag)
+			H.organs_by_name -= brain.organ_tag
 			qdel(brain)
 
 			// Robotize remaining organs: Eyes, head, and chest.

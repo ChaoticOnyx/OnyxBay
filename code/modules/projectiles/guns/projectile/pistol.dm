@@ -228,23 +228,19 @@
 	magazine_type = /obj/item/ammo_magazine/mc9mm/flash
 
 /obj/item/gun/projectile/pistol/holdout/attack_hand(mob/user as mob)
-	if(user.get_inactive_hand() == src)
-		if(silenced)
-			if(user.l_hand != src && user.r_hand != src)
-				..()
-				return
-			to_chat(user, "<span class='notice'>You unscrew [silenced] from [src].</span>")
-			user.pick_or_drop(silenced, loc)
-			silenced = initial(silenced)
-			w_class = initial(w_class)
-			fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
-			update_icon()
-			return
+	if(silenced && user.has_in_passive_hand(src))
+		to_chat(user, "<span class='notice'>You unscrew [silenced] from [src].</span>")
+		user.pick_or_drop(silenced, loc)
+		silenced = initial(silenced)
+		w_class = initial(w_class)
+		fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
+		update_icon()
+		return
 	..()
 
 /obj/item/gun/projectile/pistol/holdout/attackby(obj/item/I as obj, mob/user as mob)
 	if(istype(I, /obj/item/silencer))
-		if(user.l_hand != src && user.r_hand != src)	//if we're not in his hands
+		if(!user.has_in_hands(src))
 			to_chat(user, "<span class='notice'>You'll need [src] in your hands to do that.</span>")
 			return
 		if(!user.drop(I, src))

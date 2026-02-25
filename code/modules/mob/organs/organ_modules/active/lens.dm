@@ -30,7 +30,7 @@
 /// Called from 'update_equipment_vision()', which is in turn called from 'Life()'. Override for special behavior.
 /obj/item/organ_module/active/lenses/proc/process_hud(mob/living/carbon/human/owner)
 	SHOULD_CALL_PARENT(FALSE)
-	pass()
+	return
 
 /obj/item/organ_module/active/lenses/emp_act(severity)
 	. = ..()
@@ -132,6 +132,33 @@
 				toggled ? "<b>[user]</b>'s pupils narrow..." : "<b>[user]</b>'s pupils return to normal.",
 				range = 3
 			)
+		user.update_hud_eye_glow()
+		return
+
+	if(choices[choice] == "remove")
+		if(user.get_active_hand())
+			to_chat(user, SPAN("notice", "You need a free hand."))
+			return
+
+		var/obj/item/device/hudmatrix/M = matrix
+		if(!M)
+			return
+
+		matrix = null
+		overlay = null
+		vision_flags = initial(vision_flags)
+		see_invisible = initial(see_invisible)
+		darkness_view = initial(darkness_view)
+		flash_protection = initial(flash_protection)
+		sec_hud = FALSE
+		med_hud = FALSE
+		toggled = FALSE
+
+		if(!user.put_in_active_hand(M))
+			M.dropInto(get_turf(user))
+
+		to_chat(user, SPAN("notice", "You remove \the [M] from \the [src]."))
+		user.update_equipment_vision()
 		user.update_hud_eye_glow()
 		return
 

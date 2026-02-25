@@ -34,3 +34,4 @@ jobs:
           delete-branch: true
           title: Update Changelog
           body: Automatic changelog generation.
+          labels: ai-ignore

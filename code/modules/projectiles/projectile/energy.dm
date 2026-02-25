@@ -124,6 +124,7 @@
 	armor_penetration = 20
 	fire_sound = 'sound/effects/weapons/gun/gunshot.ogg'
 	projectile_inner_range = 0.2
+	space_knockback = TRUE
 
 /obj/item/projectile/energy/electrode/c38
 	name = "shock bullet"
@@ -135,6 +136,7 @@
 	armor_penetration = 20
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 	projectile_inner_range = 0.2
+	space_knockback = TRUE
 
 /obj/item/projectile/energy/c38
 	name = "overheated bullet"
@@ -149,6 +151,7 @@
 	projectile_brightness_color = "#ff8c3f"
 	projectile_inner_range = 0.2
 	projectile_outer_range = 1.25
+	space_knockback = TRUE
 
 /obj/item/projectile/energy/declone
 	name = "decloner beam"
@@ -183,6 +186,7 @@
 	icon_state = "cbboltl"
 	damage = 85
 	agony = 60
+	space_knockback = TRUE
 
 
 /obj/item/projectile/energy/neurotoxin
@@ -221,12 +225,12 @@
 	poisedamage = 20.0
 
 /obj/item/projectile/energy/plasmastun/proc/bang(mob/living/carbon/M)
-
+	if(!istype(M))
+		return
 	to_chat(M, "<span class='danger'>You hear a loud roar.</span>")
 	var/ear_safety = 0
-	if(iscarbon(M))
-		if(ishuman(M))
-			ear_safety = M.get_ear_protection()
+	if(ishuman(M))
+		ear_safety = M.get_ear_protection()
 	if(ear_safety == 1)
 		M.make_dizzy(120)
 	else if (ear_safety > 1)

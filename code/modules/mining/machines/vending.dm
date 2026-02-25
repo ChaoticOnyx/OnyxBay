@@ -170,7 +170,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 
 /obj/machinery/equipment_vendor/attackby(obj/item/I, mob/user, params)
 	if(istype(I,/obj/item/card/id))
-		var/obj/item/card/id/C = usr.get_active_hand()
+		var/obj/item/card/id/C = usr.get_clicking_hand()
 		if(istype(C) && !istype(inserted_id) && usr.drop(C, src))
 			inserted_id = C
 			interact(user)

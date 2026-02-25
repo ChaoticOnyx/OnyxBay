@@ -2,7 +2,6 @@
 
 	//drop && roll
 	if(on_fire && !buckled)
-		fire_stacks -= 1.2
 		Weaken(3)
 		spin(32,2)
 		visible_message(
@@ -10,12 +9,12 @@
 			"<span class='notice'>You stop, drop, and roll!</span>"
 			)
 		sleep(30)
-		if(fire_stacks <= 0)
+		adjust_fire_stacks(-25, TRUE)
+		if(!on_fire)
 			visible_message(
 				"<span class='danger'>[src] has successfully extinguished themselves!</span>",
 				"<span class='notice'>You extinguish yourself.</span>"
 				)
-			ExtinguishMob()
 		return TRUE
 
 	if(istype(buckled, /obj/effect/vine))

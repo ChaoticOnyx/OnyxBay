@@ -262,7 +262,7 @@ update_flag
 		user.visible_message(SPAN("danger", "\The [src] has been [pick(W.attack_verb)] with [W] by [user]!"))
 		src.health -= W.force
 		healthcheck()
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		playsound(src.loc, 'sound/effects/fighting/smash.ogg', 50, 1)
 		shake_animation(stime = 4)

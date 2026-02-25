@@ -60,6 +60,7 @@
 	var/far_fire_sound = null
 	var/fire_sound_text = "gunshot"
 	var/screen_shake = 0 //shouldn't be greater than 2 unless zoomed
+	var/space_recoil = FALSE // Extravehicular combat is fun
 	var/silenced = 0
 	var/accuracy = 0   //accuracy is measured in tiles. +1 accuracy means that everything is effectively one tile closer for the purpose of miss chance, -1 means the opposite. launchers are not supported, at the moment.
 	var/scoped_accuracy = null
@@ -168,7 +169,7 @@
 	. = TRUE
 	if(QDELETED(autofiring_at) || QDELETED(autofiring_by))
 		. = FALSE
-	else if(autofiring_by.get_active_hand() != src || autofiring_by.incapacitated())
+	else if(!autofiring_by.has_in_hands(src) || autofiring_by.incapacitated())
 		. = FALSE
 	else if(!autofiring_by.client || !(autofiring_by in view(autofiring_by.client.view, autofiring_by)))
 		. = FALSE
@@ -293,7 +294,7 @@
 			to_chat(firer, SPAN_WARNING("[src] is not ready to fire again!"))
 		return
 
-	// Handling heat now		
+	// Handling heat now
 	if(!heat_amount && heat_per_fire != 0 )
 		set_next_think(world.time + 1 SECOND)
 		heat_amount += heat_per_fire
@@ -316,14 +317,13 @@
 
 	//actually attempt to shoot
 	var/turf/targloc = get_turf(target) //cache this in case target gets deleted during shooting, e.g. if it was a securitron that got destroyed.
-	var/fired = FALSE
+	var/obj/projectile
 	for(var/i in 1 to burst)
-		var/obj/projectile = consume_next_projectile(firer)
+		projectile = consume_next_projectile(firer)
 		if(!projectile)
 			handle_click_empty(firer)
 			break
 
-		fired = TRUE
 		if(ismob(firer))
 			var/mob/living/A = firer
 			if(!A.aura_check(AURA_TYPE_BULLET, projectile, target_zone, firer))
@@ -352,15 +352,13 @@
 			pointblank = 0
 
 	//update timing
-	var/turf/T = get_turf(firer)
-	var/area/A = get_area(T)
 	if(ismob(firer))
 		var/mob/user = firer
-
-		if(((istype(T, /turf/space)) || (A.has_gravity == FALSE)) && fired)
-			user.inertia_dir = get_dir(target, src)
-			user.setMoveCooldown(shoot_time) //no moving while shooting either
-			step(user, user.inertia_dir) // they're in space, move em in the opposite direction
+		if(space_recoil && istype(projectile) && user.can_slip(magboots_only = TRUE))
+			var/old_dir = user.dir
+			user.inertia_ignore = projectile
+			step(user, get_dir(target, user))
+			user.set_dir(old_dir)
 
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 		user.setMoveCooldown(move_delay)
@@ -611,7 +609,7 @@
 /obj/item/gun/var/weapon_in_mouth = FALSE
 
 /obj/item/gun/proc/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	var/obj/item/grab/G = user.get_inactive_hand()
+	var/obj/item/grab/G = user.get_passive_hand()
 	if(G?.affecting == target)
 		if(!G?.current_grab?.can_absorb)
 			to_chat(user, SPAN_NOTICE("You need a better grab for this."))

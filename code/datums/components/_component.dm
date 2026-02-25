@@ -166,10 +166,10 @@
 	if(!procs[target])
 		procs[target] = list()
 
-	var/list/lookup = target.comp_lookup
+	var/alist/lookup = target.comp_lookup
 
 	if(!lookup)
-		target.comp_lookup = lookup = list()
+		target.comp_lookup = lookup = alist()
 
 	var/list/sig_types = islist(sig_type_or_types) ? sig_type_or_types : list(sig_type_or_types)
 
@@ -205,7 +205,7 @@
 /// `datum/target` - Datum to stop listening to signals from.
 /// `sig_typeor_types` - Signal string key or list of signal keys to stop listening to specifically.
 /datum/proc/unregister_signal(datum/target, sig_type_or_types)
-	var/list/lookup = target.comp_lookup
+	var/alist/lookup = target.comp_lookup
 
 	if(!signal_procs?[target] || !lookup)
 		return

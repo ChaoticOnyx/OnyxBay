@@ -28,7 +28,6 @@
 
 #define ATMOS_CANPASS_MOVABLE(ret, AM, TARG_TURF) \
 	switch (AM.can_atmos_pass) { \
-		if (ATMOS_PASS_YES) { pass() } \
 		if (ATMOS_PASS_DENSITY) { \
 			if (AM.density) { \
 				ret |= AIR_BLOCKED; \

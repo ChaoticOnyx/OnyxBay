@@ -212,7 +212,11 @@
 		return
 
 	var/list/affected_z = GetConnectedZlevels(TS.z)
-	sound_to(world, sound('sound/effects/explosions/global_supermatter_boom.ogg', volume = 100))
+	var/sound/boom_sound = sound('sound/effects/explosions/global_supermatter_boom.ogg', volume = 100)
+	for(var/mob/M in GLOB.player_list)
+		var/turf/T = get_turf(M)
+		if(T && (T.z in affected_z) && !istype(M, /mob/new_player) && !isdeaf(M))
+			sound_to(M, boom_sound)
 
 	// Effect 1: Radiation, weakening to all mobs on Z level
 	for(var/z in affected_z)
@@ -520,9 +524,9 @@
 	qdel_self()
 	return TRUE
 
-/obj/machinery/power/supermatter/throw_impact(atom/hit_atom, speed, target_zone)
-	. = ..()
-	if (hit_atom.density)
+/obj/machinery/power/supermatter/throw_impact(atom/hit_atom, datum/thrownthing/TT)
+	..()
+	if(hit_atom.density)
 		Consume(hit_atom)
 
 /obj/machinery/power/supermatter/Bumped(atom/movable/AM)

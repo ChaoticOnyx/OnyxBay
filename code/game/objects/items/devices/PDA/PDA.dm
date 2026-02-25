@@ -1206,12 +1206,12 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			remove_id()
 			return 1
 		else
-			var/obj/item/I = user.get_active_hand()
+			var/obj/item/I = user.get_clicking_hand()
 			if(istype(I, /obj/item/card/id) && user.drop(I, src))
 				id = I
 			return 1
 	else
-		var/obj/item/card/I = user.get_active_hand()
+		var/obj/item/card/I = user.get_clicking_hand()
 		if (istype(I, /obj/item/card/id) && I:registered_name && user.drop(I, src))
 			var/obj/old_id = id
 			id = I

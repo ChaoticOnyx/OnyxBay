@@ -54,7 +54,14 @@
 			completed_asset_jobs += asset_cache_job
 			return
 
-	if(config.general.minute_topic_limit)
+	// TGUI oversized payload chunking
+	var/skip_topic_limiter = FALSE
+	if(href_list["tgui"])
+		var/t = href_list["type"]
+		if(t == "oversizedPayloadRequest" || t == "payloadChunk")
+			skip_topic_limiter = TRUE
+
+	if(!skip_topic_limiter && config.general.minute_topic_limit)
 		var/minute = round(world.time, 600)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -72,7 +79,7 @@
 			to_chat(src, SPAN("danger", "[msg]"))
 			return
 
-	if(config.general.second_topic_limit)
+	if(!skip_topic_limiter && config.general.second_topic_limit)
 		var/second = round(world.time, 10)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -266,6 +273,9 @@
 
 	if(prefs && !istype(mob, world.mob))
 		prefs.apply_post_login_preferences(src)
+
+	if(SSinput.initialized)
+		set_macros()
 
 	settings = new(src)
 
@@ -508,11 +518,11 @@
 
 		winset(src, "input_alt", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton_alt", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
 
 		winset(src, "input", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle", "is-visible=false;is-disabled=true;is-default=false")
+
+		winset(src, null, "default.Tab.command=\".winset \\\"input_alt.focus=true ? mapwindow.map.focus=true : input_alt.focus=true\\\"\"")
 
 	else if(alternate && new_position == GLOB.PREF_MODERN)
 		var/list/game_size = splittext(winget(src, "mainvsplit", "size"), "x")
@@ -530,11 +540,11 @@
 
 		winset(src, "input_alt", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton_alt", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
 
 		winset(src, "input", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle", "is-visible=true;is-disabled=false;is-default=true")
+
+		winset(src, null, "default.Tab.command=\".winset \\\"input.focus=true ? mapwindow.map.focus=true : input.focus=true\\\"\"")
 
 #undef VERTICAL_INPUT_MARGIN
 
@@ -806,3 +816,57 @@
 					isnull(unbanned)
 					[isnull(config.general.server_id) ? "" : " AND server_id = $server_id"]
 				"}, dbcon, list(id = id, ckeytext = src.ckey, server_id = config.general.server_id))
+
+/client/Click(atom/A)
+	//if(!user_acted(src))
+	//	return
+
+	if(holder && holder.callproc && holder.callproc.waiting_for_click)
+		if(alert("Do you want to select \the [A] as the [holder.callproc.arguments.len+1]\th argument?",, "Yes", "No") == "Yes")
+			holder.callproc.arguments += A
+
+		holder.callproc.waiting_for_click = 0
+		verbs -= /client/proc/cancel_callproc_select
+		holder.callproc.do_args()
+		return
+
+	return ..()
+
+/**
+ * Updates the keybinds for special keys
+ *
+ * Handles adding macros for the keys that need it
+ * And adding movement keys to the clients movement_keys list
+ * At the time of writing this, communication(OOC, Say, IC) require macros
+ * Arguments:
+ * * direct_prefs - the preference we're going to get keybinds from
+ */
+/client/proc/update_special_keybinds(datum/preferences/direct_prefs)
+	var/datum/preferences/D = prefs || direct_prefs
+	if(!D?.key_bindings)
+		return
+	movement_keys = list()
+	var/list/communication_hotkeys = list()
+	for(var/key in D.key_bindings)
+		for(var/kb_name in D.key_bindings[key])
+			switch(kb_name)
+				if("North")
+					movement_keys[key] = NORTH
+				if("East")
+					movement_keys[key] = EAST
+				if("West")
+					movement_keys[key] = WEST
+				if("South")
+					movement_keys[key] = SOUTH
+				if("admin_help")
+					communication_hotkeys += key
+					winset(src, "default-\ref[key]", "parent=default;name=[key];command=adminhelp")
+				if("OOC")
+					communication_hotkeys += key
+					winset(src, "default-\ref[key]", "parent=default;name=[key];command=ooc")
+
+	// winget() does not work for F1 and F2
+	for(var/key in communication_hotkeys)
+		if(!(key in list("F1","F2")) && !winget(src, "default-\ref[key]", "command"))
+			to_chat(src, "You probably entered the game with a different keyboard layout.\n<a href='?src=\ref[src];reset_macros=1'>Please switch to the English layout and click here to fix the communication hotkeys.</a>")
+			break

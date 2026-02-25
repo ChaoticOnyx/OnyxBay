@@ -10,7 +10,7 @@
 
 		var/list/hearing_mobs = list()
 		var/list/hearing_objs = list()
-		get_mobs_and_objs_in_view_fast(get_turf(gg), world.view, hearing_mobs, hearing_objs, checkghosts = null)
+		get_listeners_in_range(get_turf(gg), world.view, hearing_mobs, hearing_objs)
 
 		for(var/o in hearing_objs)
 			var/obj/O = o
@@ -19,6 +19,8 @@
 		for(var/m in hearing_mobs)
 			var/mob/M = m
 			M.show_message(SPAN_DEADSAY("<B>[gg]</B>: [message_to_send]"), AUDIBLE_MESSAGE)
+			if(!M.client)
+				continue
 			if(M.get_preference_value("CHAT_RUNECHAT") == GLOB.PREF_YES)
 				M.create_chat_message(gg, message_to_send)
 

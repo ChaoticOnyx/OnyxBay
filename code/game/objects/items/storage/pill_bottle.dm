@@ -42,14 +42,14 @@
 		AddOverlays(OVERLAY(icon, "[icon_state]-overlay", alpha, RESET_COLOR, label_color))
 
 /obj/item/storage/pill_bottle/attack_self(mob/user)
-	if(user.get_inactive_hand())
+	if(user.get_passive_hand())
 		to_chat(user, SPAN_NOTICE("You need an empty hand to take something out."))
 		return
 	if(length(contents))
 		var/obj/item/I = contents[1]
 		if(!remove_from_storage(I, user))
 			return
-		if(user.put_in_inactive_hand(I))
+		if(user.put_in_passive_hand(I))
 			to_chat(user, SPAN_NOTICE("You take \the [I] out of \the [src]."))
 			user.swap_hand()
 		else
@@ -99,7 +99,7 @@
 			spam_flag = FALSE
 			return FALSE
 
-		if(user.get_active_hand() != src)
+		if(user.has_in_hands(src))
 			spam_flag = FALSE
 			return FALSE
 

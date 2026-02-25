@@ -622,7 +622,7 @@ meteor_act
 /mob/living/carbon/human/parry_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		A.setClickCooldown(I.update_attack_cooldown()*2)
+		I.set_cooldown(I.update_attack_cooldown()*2)
 		A.parrying = 1
 		A.visible_message(SPAN("warning", "[A] attempts to parry [src]'s attack with their [I]!"))
 		//visible_message("[A] tries to parry [src]'s attack with their [I]! Parry window: [I.mod_handy*8]") //Debug message
@@ -662,7 +662,8 @@ meteor_act
 			defender.next_move = world.time+1 //Well I'd prefer to use setClickCooldown but it ain't gonna work here.
 			defender.damage_poise(2.5 + weapon_atk.mod_weight*1.5, TRUE)
 			//visible_message("Debug \[parry\]: Defender [defender] lost [2.5+(weapon_def.mod_weight*2.5)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			attacker.setClickCooldown(weapon_atk.update_attack_cooldown()*2)
+			attacker.setClickCooldown(weapon_atk.update_attack_cooldown()*2) // Also setting regular cooldown because, well, PARRIED
+			weapon_atk.set_cooldown(weapon_atk.update_attack_cooldown()*2)
 			attacker.damage_poise(17.5 + weapon_atk.mod_weight*7.5, TRUE)
 			//visible_message("Debug \[parry\]: Attacker [attacker] lost [20.0+(weapon_atk.mod_weight*5.0)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
 			visible_message(SPAN("warning", "[defender] parries [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
@@ -687,11 +688,19 @@ meteor_act
 	var/d_mult = 1
 	if(istype(attacking_mob,/mob/living/carbon/human))
 		var/mob/living/carbon/human/attacker = attacking_mob
-		var/obj/item/weapon_def
-		if(defender.blocking_hand && defender.get_inactive_hand())
-			weapon_def = defender.get_inactive_hand()
-		else if(defender.get_active_hand())
-			weapon_def = defender.get_active_hand()
+
+		// Choosing the best shield
+		var/obj/item/weapon_def = defender.get_inactive_hand()
+		var/obj/item/weapon_def_backup = defender.get_active_hand()
+
+		var/weapon_def_score = istype(weapon_def) ? (weapon_def.mod_weight + weapon_def.mod_reach) * weapon_def.mod_shield : 0
+		var/weapon_def_backup_score = istype(weapon_def_backup) ? (weapon_def_backup.mod_weight + weapon_def_backup.mod_reach) * weapon_def_backup.mod_shield : 0
+
+		if(!weapon_def_score && !weapon_def_backup_score)
+			weapon_def = null
+		else if(weapon_def_backup_score > weapon_def_score) // Offhands get higher priority
+			weapon_def = weapon_def_backup
+
 		if(weapon_def)
 			if(!weapon_def.force)
 				defender.useblock_off()
@@ -699,7 +708,7 @@ meteor_act
 				return 0 //For the case of candles and dices lmao
 
 			if(weapon_def.mod_reach < weapon_atk.mod_reach)
-				if(((weapon_atk.mod_reach + weapon_atk.mod_weight)/2 - weapon_def.mod_reach) > 0)
+				if((weapon_atk.mod_reach + weapon_atk.mod_weight)/2 > weapon_def.mod_reach)
 					d_mult = ((weapon_atk.mod_reach + weapon_atk.mod_weight)/2 - weapon_def.mod_reach)/0.25
 			else if(weapon_def.mod_weight < weapon_atk.mod_weight)
 				d_mult = (weapon_atk.mod_weight - weapon_def.mod_weight)/0.5
@@ -738,14 +747,20 @@ meteor_act
 	var/mob/living/carbon/human/defender = src
 	if(istype(attacking_mob,/mob/living/carbon/human) || istype(attacking_mob,/mob/living/simple_animal))
 		var/mob/living/attacker = attacking_mob
-		var/obj/item/weapon_def
 
-		if(defender.blocking_hand && defender.get_inactive_hand())
-			weapon_def = defender.get_inactive_hand()
-		else if(defender.get_active_hand())
-			weapon_def = defender.get_active_hand()
+		// Choosing the best shield
+		var/obj/item/weapon_def = defender.get_inactive_hand()
+		var/obj/item/weapon_def_backup = defender.get_active_hand()
 
-		if(weapon_def)
+		var/weapon_def_score = istype(weapon_def) ? (weapon_def.mod_handy*1.5 + weapon_def.mod_weight + weapon_def.mod_reach) : 0
+		var/weapon_def_backup_score = istype(weapon_def_backup) ? (weapon_def_backup.mod_handy*1.5 + weapon_def_backup.mod_weight + weapon_def_backup.mod_reach) : 0
+
+		if(!weapon_def_score && !weapon_def_backup_score)
+			weapon_def = null
+		else if(weapon_def_backup_score > weapon_def_score) // Offhands get higher priority
+			weapon_def = weapon_def_backup
+
+		if(istype(weapon_def))
 			if(!weapon_def.force)
 				defender.useblock_off()
 				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s attack with [weapon_def]."))
@@ -899,148 +914,120 @@ meteor_act
 	return 1
 
 //this proc handles being hit by a thrown atom
-/mob/living/carbon/human/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)
-	if(!aura_check(AURA_TYPE_THROWN, AM, speed))
+/mob/living/carbon/human/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = TRUE)
+	..()
+
+	if(!aura_check(AURA_TYPE_THROWN, AM, TT.speed))
 		return
 
-	if(isobj(AM))
-		var/obj/O = AM
-		if(in_throw_mode && !get_active_hand() && speed >= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
-			if(!incapacitated() && isturf(O.loc) && put_in_active_hand(O))
-				visible_message(SPAN("warning", "[src] catches [O]!"))
-				throw_mode_off()
-				return
+	if(!isobj(AM))
+		return
 
-		var/dtype = O.damtype
-		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
-
-		if(blocking)
-			var/obj/item/weapon_def
-			if(blocking_hand && get_inactive_hand())
-				weapon_def = get_inactive_hand()
-			else if(get_active_hand())
-				weapon_def = get_active_hand()
-
-			if(weapon_def)
-				if(weapon_def.force && weapon_def.w_class >= O.w_class)
-					var/dir = get_dir(src,O)
-					O.throw_at(get_edge_target_turf(src, dir), 1)
-
-					visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
-					playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
-
-					damage_poise(throw_damage / weapon_def.mod_shield)
-					if(poise < throw_damage / weapon_def.mod_shield)
-						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
-						apply_effect(2, WEAKEN, 0)
-						useblock_off()
-					return
-
-
-		var/zone = BP_CHEST
-		if(isliving(O.thrower))
-			var/mob/living/L = O.thrower
-			if(L.zone_sel)
-				zone = check_zone(L.zone_sel.selecting)
-		else
-			zone = ran_zone(BP_CHEST, 75)	//Hits a random part of the body, geared towards the chest
-
-		//check if we hit
-		var/miss_chance = 15
-		if(O.throw_source)
-			var/distance = get_dist(O.throw_source, loc)
-			miss_chance = max(15 * (distance - 2), 0)
-		zone = get_zone_with_miss_chance(zone, src, miss_chance, ranged_attack=1)
-
-		if(zone && O.thrower != src)
-			var/shield_check = check_shields(throw_damage, O, thrower, zone, "[O]")
-			if(shield_check == PROJECTILE_FORCE_MISS)
-				zone = null
-			else if(shield_check)
-				return
-
-		if(!zone)
-			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+	var/obj/O = AM
+	if(in_throw_mode && !get_active_hand() && TT.speed >= THROWFORCE_SPEED_DIVISOR) // empty active hand and we're in throw mode
+		if(!incapacitated() && isturf(O.loc) && put_in_active_hand(O))
+			visible_message(SPAN("warning", "[src] catches [O]!"))
+			throw_mode_off()
 			return
 
-		O.throwing = 0		//it hit, so stop moving
+	var/dtype = O.damtype
+	var/throw_damage = O.throwforce * (TT.speed/THROWFORCE_SPEED_DIVISOR)
 
-		var/obj/item/organ/external/affecting = get_organ(zone)
-		if(!affecting)
-			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+	if(blocking)
+		// Choosing the best shield
+		var/obj/item/weapon_def = get_active_hand()
+		if(!weapon_def || !(weapon_def.w_class >= O.w_class || weapon_def.mod_shield > 1))
+			weapon_def = get_inactive_hand()
+		else
+			var/obj/item/weapon_def_backup = get_inactive_hand()
+			if(weapon_def_backup && (weapon_def_backup.w_class > O.w_class || weapon_def_backup.mod_shield > 1))
+				weapon_def = (weapon_def.mod_shield > weapon_def_backup.mod_shield) ? weapon_def : weapon_def_backup
+
+		// Checking if anything works as a shield
+		if(weapon_def && (weapon_def.w_class >= O.w_class || weapon_def.mod_shield > 1))
+			var/dir = get_dir(src, O)
+			O.throw_at(get_edge_target_turf(src, dir), 1)
+
+			visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
+			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
+
+			damage_poise(throw_damage / weapon_def.mod_shield)
+			if(poise < throw_damage / weapon_def.mod_shield)
+				visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
+				apply_effect(2, WEAKEN, 0)
+				useblock_off()
 			return
 
-		var/hit_area = affecting.name
-		var/datum/wound/created_wound
 
-		visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
-		play_hitby_sound(AM)
+	var/zone = BP_CHEST
+	if(TT.target_zone)
+		zone = check_zone(TT.target_zone)
+	else
+		zone = ran_zone(BP_CHEST, 75)	//Hits a random part of the body, geared towards the chest
 
-		var/armor
-		if(istype(O, /obj/item))
-			var/obj/item/I = O
-			armor = run_armor_check(affecting, I.check_armour, O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].")
-		else
-			armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+	//check if we hit
+	var/miss_chance = max(15 * (TT.dist_travelled - 2), 0)
+	zone = get_zone_with_miss_chance(zone, src, miss_chance, ranged_attack=1)
 
-		if(armor < 100)
-			var/damage_flags = O.damage_flags()
-			if(prob(armor))
-				damage_flags &= ~(DAM_SHARP|DAM_EDGE)
-			created_wound = apply_damage(throw_damage, dtype, zone, armor, damage_flags, O)
+	if(zone && TT.thrower && TT.thrower != src)
+		var/shield_check = check_shields(throw_damage, O, TT.thrower, zone, "[O]")
+		if(shield_check == PROJECTILE_FORCE_MISS)
+			zone = null
+		else if(shield_check)
+			return
 
-		if(ismob(O.thrower))
-			var/mob/M = O.thrower
-			var/client/assailant = M.client
-			if(assailant)
-				admin_attack_log(M, src, "Threw \an [O] at their victim.", "Had \an [O] thrown at them", "threw \an [O] at")
+	if(!zone)
+		visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+		return
 
-		//thrown weapon embedded object code.
-		if(dtype == BRUTE && istype(O, /obj/item))
-			var/obj/item/I = O
-			if(!is_robot_module(I))
-				var/sharp = is_sharp(I)
-				var/damage = throw_damage //the effective damage used for embedding purposes, no actual damage is dealt here
-				if(armor)
-					damage *= blocked_mult(armor)
+	var/obj/item/organ/external/affecting = get_organ(zone)
+	if(!affecting)
+		visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+		return
 
-				//blunt objects should really not be embedding in things unless a huge amount of force is involved
-				var/embed_chance = sharp? (damage / I.w_class) : (damage / (I.w_class * 3))
-				var/embed_threshold = sharp? (5 * I.w_class) : (15 * I.w_class)
+	var/hit_area = affecting.name
+	var/datum/wound/created_wound
 
-				//Sharp objects will always embed if they do enough damage.
-				//Thrown sharp objects have some momentum already and have a small chance to embed even if the damage is below the threshold
-				if((sharp && prob(damage / (10 * I.w_class) * 100)) || (damage > embed_threshold && prob(embed_chance)))
-					affecting.embed(I, supplied_wound = created_wound)
+	visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
+	play_hitby_sound(AM)
 
-		// Begin BS12 momentum-transfer code.
-		var/mass = 1.5
-		if(istype(O, /obj/item))
-			var/obj/item/I = O
-			mass = I.w_class / THROWNOBJ_KNOCKBACK_DIVISOR
-		var/momentum = (1 / speed) * mass
+	var/armor
+	if(istype(O, /obj/item))
+		var/obj/item/I = O
+		armor = run_armor_check(affecting, I.check_armour, O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].")
+	else
+		armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
 
-		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
-			var/dir = get_dir(O.throw_source, src)
+	if(armor < 100)
+		var/damage_flags = O.damage_flags()
+		if(prob(armor))
+			damage_flags &= ~(DAM_SHARP|DAM_EDGE)
+		created_wound = apply_damage(throw_damage, dtype, zone, armor, damage_flags, O)
 
-			if(buckled)
-				return
+	if(TT.thrower)
+		var/client/assailant = TT.thrower.client
+		if(assailant)
+			admin_attack_log(TT.thrower, src, "Threw \an [O] at their victim.", "Had \an [O] thrown at them", "threw \an [O] at")
 
-			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
+	//thrown weapon embedded object code.
+	if(dtype == BRUTE && istype(O, /obj/item))
+		var/obj/item/I = O
+		if(!is_robot_module(I))
+			var/sharp = is_sharp(I)
+			var/damage = throw_damage //the effective damage used for embedding purposes, no actual damage is dealt here
+			if(armor)
+				damage *= blocked_mult(armor)
 
-			if(!O || !src)
-				return
+			//blunt objects should really not be embedding in things unless a huge amount of force is involved
+			var/embed_chance = sharp? (damage / I.w_class) : (damage / (I.w_class * 3))
+			var/embed_threshold = sharp? (5 * I.w_class) : (15 * I.w_class)
 
-			if(O.loc == src && O.sharp) //Projectile is embedded and suitable for pinning.
-				embed(O, zone)
-				var/turf/T = near_wall(dir, 2)
+			//Sharp objects will always embed if they do enough damage.
+			//Thrown sharp objects have some momentum already and have a small chance to embed even if the damage is below the threshold
+			if((sharp && prob(damage / (10 * I.w_class) * 100)) || (damage > embed_threshold && prob(embed_chance)))
+				affecting.embed(I, supplied_wound = created_wound)
 
-				if(T)
-					forceMove(T)
-					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
-					anchored = 1
-					pinned += O
+	process_momentum(AM, TT)
 
 /mob/living/carbon/human/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
 	if(!def_zone) ..()

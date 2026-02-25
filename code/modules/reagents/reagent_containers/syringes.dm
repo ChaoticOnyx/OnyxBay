@@ -315,7 +315,7 @@
 	else
 		user.visible_message(SPAN_DANGER("[user] stabs [target] with [src.name]!"))
 		target.take_organ_damage(3)// 7 is the same as crowbar punch
-	user.setClickCooldown(src.update_attack_cooldown())
+	set_cooldown()
 	user.do_attack_animation(target)
 
 	var/syringestab_amount_transferred = rand(0, (reagents.total_volume - 5)) //nerfed by popular demand

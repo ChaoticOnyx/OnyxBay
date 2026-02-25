@@ -56,10 +56,10 @@
 	return FALSE
 
 /obj/item/organ_module/active/proc/activate(obj/item/organ/E, mob/living/carbon/human/H)
-	pass()
+	return
 
 /obj/item/organ_module/active/proc/deactivate(obj/item/organ/E, mob/living/carbon/human/H)
-	pass()
+	return
 
 /obj/item/organ_module/active/proc/is_cpu_active(mob/living/carbon/human/H)
 	return FALSE

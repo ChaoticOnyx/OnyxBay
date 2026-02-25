@@ -77,7 +77,7 @@
 	spawn(10)
 		if(src) qdel(src)
 
-/obj/item/energy_net/throw_impact(atom/hit_atom)
+/obj/item/energy_net/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
 
 	var/mob/living/M = hit_atom

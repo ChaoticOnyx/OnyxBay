@@ -68,9 +68,11 @@
 	bodytemp = null
 	healths = null
 	pains = null
+	resting_icon = null
 	throw_icon = null
 	block_icon = null
-	blockswitch_icon = null
+	aim_assist_icon = null
+	twohanded_mode_icon = null
 	nutrition_icon = null
 	hydration_icon = null
 	bladder_icon = null
@@ -135,7 +137,7 @@
 /mob/visible_message(message, self_message, blind_message, range = world.view, checkghosts = null, narrate = FALSE)
 	var/list/seeing_mobs = list()
 	var/list/seeing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
+	get_listeners_in_range(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
 
 	for(var/o in seeing_objs)
 		var/obj/O = o
@@ -178,7 +180,7 @@
 /mob/audible_message(message, self_message, deaf_message, hearing_distance = world.view, checkghosts = null, narrate = FALSE)
 	var/list/hearing_mobs = list()
 	var/list/hearing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
+	get_listeners_in_range(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
 
 	for(var/o in hearing_objs)
 		var/obj/O = o
@@ -821,21 +823,15 @@
 	sleeping = max(sleeping + amount,0)
 	return
 
-/mob/proc/Resting(amount)
-	facing_dir = null
-	resting = max(max(resting,amount),0)
-	return
-
-/mob/proc/SetResting(amount)
-	resting = max(amount,0)
-	return
-
-/mob/proc/AdjustResting(amount)
-	resting = max(resting + amount,0)
-	return
-
 /mob/proc/get_species()
 	return ""
+
+/mob/proc/set_resting(new_state)
+	resting = new_state
+	update_canmove()
+	if(resting_icon)
+		resting_icon.icon_state = "rest[resting]"
+	return
 
 /mob/proc/get_visible_implants(class = 0)
 	var/list/visible_implants = list()
@@ -1137,3 +1133,96 @@
 		set_sight(sight&(~SEE_BLACKNESS))
 	else
 		set_sight(sight|SEE_BLACKNESS)
+
+/// Update the mouse pointer of the attached client in this mob.
+/mob/proc/update_mouse_pointer()
+	if(!client)
+		return
+
+	client.mouse_pointer_icon = initial(client.mouse_pointer_icon)
+
+/mob/keybind_face_direction(direction)
+	facedir(direction)
+
+/mob/get_mass()
+	return mob_size
+
+/mob/proc/get_solid_footing(ignore_floors = FALSE)
+
+	if(!loc)
+		return src // this is a bit weird but we shouldn't slip in nullspace probably
+
+	// Check for dense turfs.
+	var/turf/my_turf = loc
+	if(!istype(my_turf))
+		return my_turf
+
+	if(istype(my_turf) && (!ignore_floors || my_turf.density) && !my_turf.is_open())
+		return my_turf
+
+	// Check for catwalks and lattices. Apparently, these are "grippier" than solid floors and allow one to move in space even without magboots.
+	var/atom/platform = (locate(/obj/structure/catwalk) in my_turf) || (locate(/obj/structure/lattice) in my_turf)
+	if(platform)
+		return platform
+
+	// Check for a dense object to push off of
+	var/atom/dense_object = my_turf.get_first_dense_object(exceptions = src, check_mobs = FALSE)
+	if(dense_object)
+		return dense_object
+
+	// Check for supportable nearby atoms.
+	for(var/turf/neighbor in RANGE_TURFS(1, my_turf))
+		if(neighbor == my_turf)
+			continue
+		if(istype(neighbor) && (!ignore_floors || neighbor.density) && !neighbor.is_open())
+			return neighbor
+		platform = (locate(/obj/structure/catwalk) in neighbor) || (locate(/obj/structure/lattice) in neighbor)
+		if(platform)
+			return platform
+		dense_object = neighbor.get_first_dense_object(exceptions = src, check_mobs = FALSE)
+		if(dense_object)
+			return dense_object
+
+	// Find something we are grabbing onto for support.
+	for(var/atom/movable/thing in range(1, my_turf))
+		if(thing == src || thing == inertia_ignore || !thing.simulated || thing == buckled)
+			continue
+		if(isturf(thing))
+			continue // We checked turfs when using magboots above.
+		else if(ismob(thing))
+			var/mob/victim = thing
+			if(victim.buckled)
+				continue
+		else if(thing.CanPass(src))
+			continue
+		if(thing.anchored)
+			return thing
+
+/mob/proc/can_slip(magboots_only = FALSE)
+
+	// Are we immune to everything?
+	if(status_flags & GODMODE)
+		return FALSE
+
+	// Quick basic checks.
+	if(!simulated || !isturf(loc) || buckled || (lying || resting) || throwing)
+		return FALSE
+
+	// Check footwear.
+	if(magboots_only)
+		return !((has_gravity() || has_magnetised_footing()) && get_solid_footing())
+
+	if(has_non_slip_footing())
+		return FALSE
+
+	// Slip!
+	return TRUE
+
+/mob/proc/has_non_slip_footing()
+	var/obj/item/shoes = get_equipped_item(slot_shoes)
+	return istype(shoes) && (shoes.item_flags & ITEM_FLAG_NOSLIP)
+
+/mob/proc/has_magnetised_footing()
+	var/obj/item/shoes = get_equipped_item(slot_shoes)
+	return istype(shoes) && (shoes.item_flags & ITEM_FLAG_MAGNETISED)
+

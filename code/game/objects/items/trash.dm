@@ -243,7 +243,7 @@
 			to_chat(user, SPAN("warning", "The stack is too high!"))
 
 /obj/item/trash/dish/attack_hand(mob/user)
-	if(user.get_inactive_hand() != src)
+	if(!user.has_in_passive_hand(src))
 		..()
 		return
 

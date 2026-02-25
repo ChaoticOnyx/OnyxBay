@@ -64,10 +64,7 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 	msg = pure_msg
 	return msg
 
-/client/verb/adminhelp(msg as text)
-	set category = "Admin"
-	set name = "Adminhelp"
-
+/client/proc/adminhelp(msg)
 	// handle muting and automuting
 	if(prefs.muted & MUTE_ADMINHELP)
 		to_chat(src, "<font color='red'>Error: Admin-PM: You cannot send adminhelps (Muted).</font>")
@@ -80,10 +77,9 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 
 	adminhelped = 1 // Determines if they get the message to reply by clicking the name.
 
-
 	// clean the input msg
 	if(!msg)
-		return
+		msg = input(src, "", "Adminhelp")
 	msg = sanitize(msg)
 	if(!msg)
 		return
@@ -144,4 +140,25 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 	GLOB.indigo_bot.chat_webhook(config.indigo_bot.ahelp_webhook, "**[src.ckey]:** [original_msg] *(heard by [admin_number_present] non-AFK admins)*")
 
 	feedback_add_details("admin_verb","AH") // If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	return
+
+/client/verb/adminhelp_verb()
+	set category = "Admin"
+	set name = "Adminhelp"
+
+	// Sweet copypasta, but we need it.
+	if(prefs.muted & MUTE_ADMINHELP)
+		to_chat(src, "<font color='red'>Error: Admin-PM: You cannot send adminhelps (Muted).</font>")
+		return
+
+	if(src.mob)
+		if(jobban_isbanned(src.mob, "AHELP"))
+			to_chat(src, SPAN("danger", "You have been banned from Adminhelp."))
+			return
+
+	var/klauza = input(usr, "Describe your problem:", "Admin, help!") as text|null
+	if(!klauza)
+		return
+
+	adminhelp(klauza)
 	return

@@ -228,11 +228,11 @@
 
 /decl/security_level/default/code_red/switching_up_to()
 	..()
-	sound_to(world, sound('sound/signals/red_alarm.ogg', repeat = 1, channel = SOUND_CHANNEL_RED_ALERT, volume = 50))
+	sound_to(world, sound('sound/signals/red_alarm.ogg', channel = SOUND_CHANNEL_RED_ALERT, volume = 50))
 
 /decl/security_level/default/code_red/switching_down_to()
 	..()
-	sound_to(world, sound('sound/signals/red_alarm.ogg', repeat = 1, channel = SOUND_CHANNEL_RED_ALERT, volume = 50))
+	sound_to(world, sound('sound/signals/red_alarm.ogg', channel = SOUND_CHANNEL_RED_ALERT, volume = 50))
 
 /decl/security_level/default/code_red/switching_up_from()
 	..()

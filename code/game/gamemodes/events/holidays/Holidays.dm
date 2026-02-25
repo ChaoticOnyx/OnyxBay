@@ -70,7 +70,10 @@ var/global/Holiday = null
 				if(12)							Holiday = "Owl and Pussycat Day"	//what a dumb day of observence...but we -do- have costumes already :3
 
 		if(6)	//Jun
-			pass()
+			switch(DD)
+				if(3)							Holiday = "Repeat Day Repeat Day"
+				if(6)							Holiday = "D-Day"
+				if(14)							Holiday = "Blood Donor Day"
 		if(7)	//Jul
 			switch(DD)
 				if(1)							Holiday = "Doctor's Day"

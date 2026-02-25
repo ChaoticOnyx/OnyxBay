@@ -37,7 +37,7 @@
 /obj/structure/barricade/attackby(obj/item/W, mob/user)
 	if(W.force && user.a_intent == I_HURT)
 		attack_generic(user, W.force, "")
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 
 		attack_animation(user)
 		obj_attack_sound(W)
@@ -74,7 +74,7 @@
 
 
 /obj/structure/barricade/proc/Break()
-	pass()
+	return
 
 
 /obj/structure/barricade/security/CanPass(atom/movable/mover, turf/target)

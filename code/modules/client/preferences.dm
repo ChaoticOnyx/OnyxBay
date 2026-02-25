@@ -61,6 +61,7 @@
 	gender = pick(MALE, FEMALE)
 	real_name = random_name(gender,species)
 	b_type = RANDOM_BLOOD_TYPE
+	key_bindings = deepCopyList(GLOB.hotkey_keybinding_list_by_key)
 
 	if(client)
 		if(IsGuestKey(client.key))
@@ -351,11 +352,11 @@
 		O.status = 0
 		O.model = null
 		if(status == "amputated")
-			character.organs_by_name.Remove(O.organ_tag)
+			character.organs_by_name -= O.organ_tag
 			character.organs -= O
 			if(O.children) // This might need to become recursive.
 				for(var/obj/item/organ/external/child in O.children)
-					character.organs_by_name.Remove(child.organ_tag)
+					character.organs_by_name -= child.organ_tag
 					character.organs -= child
 		else if(status == "cyborg")
 			if(rlimb_data[name])

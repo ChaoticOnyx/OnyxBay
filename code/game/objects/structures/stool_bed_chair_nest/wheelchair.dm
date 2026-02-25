@@ -175,13 +175,13 @@
 		var/mob/living/occupant = unbuckle_mob()
 
 		if (pulling && (pulling.a_intent == I_HURT))
-			occupant.throw_at(A, 3, 1, pulling)
+			occupant.throw_at(A, 3, 3, pulling)
 		else if (propelled)
-			occupant.throw_at(A, 3, 1)
+			occupant.throw_at(A, 3, 3)
 
 		var/def_zone = ran_zone()
 		var/blocked = occupant.run_armor_check(def_zone, "melee")
-		occupant.throw_at(A, 3, 1)
+		occupant.throw_at(A, 3, 3)
 		occupant.apply_effect(6, STUN, blocked)
 		occupant.apply_effect(6, WEAKEN, blocked)
 		occupant.apply_effect(6, STUTTER, blocked)

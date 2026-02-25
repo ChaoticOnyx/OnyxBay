@@ -43,7 +43,7 @@
 	/// Numeric frequency identifier, ranges between `RADIO_LOW_FREQ` and `RADIO_HIGH_FREQ`.
 	var/frequency
 	/// Associative list of key -> value, where key is a filter, value is a list of `obj`.
-	var/list/filters = list()
+	var/alist/filters = alist()
 
 /datum/frequency/New(new_frequency)
 	frequency = new_frequency
@@ -68,7 +68,7 @@
 	if(isnull(listener_ref))
 		CRASH("null, non-datum or qdeleted device")
 
-	LAZYADDASSOC(filters, filter, listener_ref)
+	A_LAZYADDASSOC(filters, filter, listener_ref)
 
 /**
  * Removes an object from all of the filters.
@@ -85,7 +85,7 @@
 		if(!length(filtered_list))
 			filters -= filter
 
-		LAZYREMOVEASSOC(filters, filter, weakref(device))
+		A_LAZYREMOVEASSOC(filters, filter, weakref(device))
 
 /**
  * Posts a signal on a frequency.
@@ -109,24 +109,24 @@
 	signal.source = source
 	signal.frequency = frequency
 
-	var/list/filter_list
-
-	if(filter)
-		filter_list = list(filter, RADIO_DEFAULT)
-	else
-		filter_list = filters
-
 	var/turf/start_point
 	if(range)
 		start_point = get_turf(source)
 		if(!start_point)
 			return
 
+	var/filter_list
+
+	if(filter)
+		filter_list = list(filter, RADIO_DEFAULT)
+	else
+		filter_list = filters
+
 	for(var/current_filter in filter_list)
 		for(var/weakref/listener_ref as anything in filters[current_filter])
 			var/obj/listener = listener_ref.resolve()
 			if(isnull(listener))
-				LAZYREMOVEASSOC(filters, current_filter, listener_ref)
+				A_LAZYREMOVEASSOC(filters, current_filter, listener_ref)
 				continue
 
 			if(listener == source)

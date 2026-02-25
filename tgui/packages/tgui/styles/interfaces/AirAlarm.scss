@@ -1,0 +1,2306 @@
+/* tgui/interfaces/AirAlarm/AirAlarm.scss
+ * AirAlarm layout + local skins.
+ * Uses theme tokens from `.theme-industrial` via CSS vars.
+ */
+
+.AirAlarm {
+  height: 100%;
+}
+
+/* ===== Layout resilience ===== */
+.AirAlarm__layout {
+  min-height: 45rem;
+}
+
+@media (max-width: 61.25rem) {
+  .AirAlarm__layout { flex-direction: column; }
+  .AirAlarm__left,
+  .AirAlarm__right { flex-basis: auto !important; }
+}
+
+/* ===== Section headers (AirAlarm only) ===== */
+.AirAlarm .Section__title {
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.88;
+  padding-bottom: 0.375rem;
+}
+
+.AirAlarm .Section__title:after {
+  content: "";
+  display: block;
+  margin-top: 0.375rem;
+  height: 0.0625rem;
+  background: linear-gradient(90deg, rgba(140,255,190,0.20), rgba(255,255,255,0.04), rgba(0,0,0,0.0));
+  opacity: 0.9;
+}
+
+/* ===== Device body ===== */
+.AirAlarm__device {
+  position: relative;
+  height: 100%;
+  padding: 0.625rem;
+  border-radius: 0.75rem;
+
+  background: var(--ind-surface-device);
+
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.07),
+    inset 0 0 4.375rem rgba(0,0,0,0.55),
+    0 0.875rem 2.375rem rgba(0,0,0,0.55);
+
+  overflow: hidden;
+}
+
+.AirAlarm__device::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.02) 0,
+      rgba(255,255,255,0.02) 0.0625rem,
+      rgba(0,0,0,0) 0.125rem,
+      rgba(0,0,0,0) 0.375rem
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,0.02) 0,
+      rgba(0,0,0,0.02) 0.0625rem,
+      rgba(0,0,0,0) 0.125rem,
+      rgba(0,0,0,0) 0.4375rem
+    );
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+}
+
+/* screws */
+.AirAlarm__screw {
+  position: absolute;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255,255,255,0.40), rgba(255,255,255,0.05) 44%, rgba(0,0,0,0.45) 72%),
+    linear-gradient(180deg, rgba(130,130,130,0.30), rgba(20,20,20,0.35));
+  box-shadow: inset 0 0 0 0.0625rem rgba(0,0,0,0.65), 0 0.125rem 0.375rem rgba(0,0,0,0.40);
+  opacity: 0.9;
+}
+.AirAlarm__screw::after {
+  content: "";
+  position: absolute;
+  left: 0.1875rem;
+  top: 0.375rem;
+  width: 0.5rem;
+  height: 0.125rem;
+  background: rgba(0,0,0,0.60);
+  border-radius: 0.0625rem;
+  opacity: 0.85;
+}
+.AirAlarm__screw--tl { left: 0.625rem; top: 0.625rem; }
+.AirAlarm__screw--tr { right: 0.625rem; top: 0.625rem; }
+.AirAlarm__screw--bl { left: 0.625rem; bottom: 0.625rem; }
+.AirAlarm__screw--br { right: 0.625rem; bottom: 0.625rem; }
+
+/* sticker */
+.AirAlarm__sticker {
+  position: absolute;
+  left: 30rem;
+  top: 0.75rem;
+  width: 11.875rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.4375rem;
+  background: linear-gradient(180deg, rgba(245,245,245,0.92), rgba(205,205,205,0.92));
+  color: rgba(0,0,0,0.86);
+  box-shadow: 0 0.625rem 1.375rem rgba(0,0,0,0.35);
+  transform: rotate(-1.3deg);
+  opacity: 0.92;
+  z-index: 6;
+}
+.AirAlarm__stickerTitle {
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  font-size: 0.6875rem;
+  margin-bottom: 0.375rem;
+}
+.AirAlarm__stickerLine {
+  font-family: var(--ind-font-mono);
+  font-size: 0.625rem;
+  opacity: 0.85;
+}
+
+/* plate */
+.AirAlarm__plate {
+  position: absolute;
+  right: 2rem;
+  top: 0.75rem;
+  padding: 0.4375rem 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--ind-surface-plate);
+  border: 0.0625rem solid rgba(255,255,255,0.10);
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  opacity: 0.90;
+  box-shadow: inset 0 0 0 0.0625rem rgba(0,0,0,0.35);
+  z-index: 6;
+}
+.AirAlarm__plateSub {
+  opacity: 0.65;
+  font-weight: 800;
+}
+/* header layout (responsive) */
+.AirAlarm__headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  margin-top: 3rem;
+  padding: 0.25rem 0.5rem;
+  flex-wrap: nowrap; /* desktop */
+}
+
+@media (max-width: 47.5rem) {
+  .AirAlarm__headerRow {
+    flex-wrap: wrap;
+    justify-content: flex-start; /* чтобы не было странных пробелов */
+  }
+
+  .AirAlarm__headerLeft {
+    flex: 1 1 100%;
+    min-width: 0; /* важно, чтобы текст/блоки могли ужиматься */
+  }
+
+  .AirAlarm__headerRight {
+    flex: 0 0 100%;
+    margin-top: 0.625rem;
+    margin-left: 0.625rem;
+    justify-content: flex-start;
+  }
+}
+
+
+.AirAlarm__label { letter-spacing: 0.06em; }
+
+/* =========================================================
+ * ANNUNCIATOR PANEL (aircraft-style warning lamps)
+ * ========================================================= */
+
+.AirAlarm__annunciators {
+  display: inline-flex;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+/* Базовая лампа */
+.AirAlarm__ann {
+  position: relative;
+  min-width: 4.375rem;
+  padding: 0.25rem 0.5rem;
+
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+
+  color: rgba(0,0,0,0.75);
+
+  border-radius: 0.375rem;
+
+  /* тёмная рамка */
+  background:
+    linear-gradient(180deg, rgba(35,35,35,0.95), rgba(10,10,10,0.95));
+
+  border: 0.0625rem solid rgba(0,0,0,0.9);
+
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.04),
+    inset 0 -0.125rem 0.375rem rgba(0,0,0,0.9),
+    0 0.1875rem 0.5rem rgba(0,0,0,0.5);
+
+  overflow: hidden;
+}
+
+/* Внутренний стеклянный блик */
+.AirAlarm__ann::before {
+  content: "";
+  position: absolute;
+  left: 0.125rem;
+  right: 0.125rem;
+  top: 0.125rem;
+  height: 45%;
+  border-radius: 0.25rem;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.20),
+    rgba(255,255,255,0.02)
+  );
+
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* === ON STATE === */
+.AirAlarm__ann--on {
+  color: rgba(0,0,0,0.9);
+}
+
+/* FIRE — красная */
+.AirAlarm__ann--fire {
+  background:
+    radial-gradient(6.25rem 3.125rem at 50% 30%, rgba(255,80,80,0.95), rgba(180,0,0,0.95)),
+    linear-gradient(180deg, rgba(255,50,50,0.95), rgba(130,0,0,0.95));
+
+  box-shadow:
+    inset 0 0 0.5rem rgba(255,0,0,0.8),
+    0 0 0.875rem rgba(255,0,0,0.55),
+    0 0.1875rem 0.5rem rgba(0,0,0,0.6);
+
+  color: rgba(0,0,0,0.85);
+}
+
+/* ATMOS — янтарная */
+.AirAlarm__ann--atmos {
+  background:
+    radial-gradient(6.25rem 3.125rem at 50% 30%, rgba(255,200,80,0.95), rgba(180,120,0,0.95)),
+    linear-gradient(180deg, rgba(255,190,60,0.95), rgba(150,90,0,0.95));
+
+  box-shadow:
+    inset 0 0 0.5rem rgba(255,180,0,0.8),
+    0 0 0.75rem rgba(255,180,0,0.45),
+    0 0.1875rem 0.5rem rgba(0,0,0,0.6);
+
+  color: rgba(0,0,0,0.85);
+}
+/* OFF state — именно затемнение, без изменения прозрачности */
+.AirAlarm__ann:not(.AirAlarm__ann--on) {
+  filter: brightness(0.55) saturate(0.75) contrast(1.05);
+}
+
+/* =========================================================
+ * MASTER STATUS (aircraft-style annunciator)
+ * ========================================================= */
+
+.AirAlarm__status {
+  margin-left: 0.625rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.25rem 0.5rem;
+  min-width: 10rem;
+
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+
+  border-radius: 0.375rem;
+
+  background:
+    linear-gradient(180deg, rgba(35,35,35,0.95), rgba(10,10,10,0.95));
+
+  border: 0.0625rem solid rgba(0,0,0,0.9);
+
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.04),
+    inset 0 -0.125rem 0.375rem rgba(0,0,0,0.9),
+    0 0.1875rem 0.5rem rgba(0,0,0,0.5);
+
+  overflow: hidden;
+}
+
+/* стеклянный блик */
+.AirAlarm__status::before {
+  content: "";
+  position: absolute;
+  left: 0.125rem;
+  right: 0.125rem;
+  top: 0.125rem;
+  height: 45%;
+  border-radius: 0.25rem;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.18),
+    rgba(255,255,255,0.02)
+  );
+
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* маленький мастер-индикатор */
+.AirAlarm__statusDot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+
+  background: rgba(60,60,60,0.8);
+
+  box-shadow:
+    inset 0 0 0.25rem rgba(0,0,0,0.9),
+    0 0 0.125rem rgba(0,0,0,0.6);
+}
+
+/* текст */
+.AirAlarm__statusText {
+  color: rgba(180,180,180,0.8);
+}
+
+.AirAlarm__statusValue {
+  margin-left: 0.25rem;
+  font-weight: 900;
+}
+
+/* =========================
+ * STATE COLORS
+ * ========================= */
+
+/* SAFE / NORMAL */
+.AirAlarm__status--safe .AirAlarm__statusDot {
+  background: radial-gradient(circle, rgba(80,255,150,0.9), rgba(0,120,60,0.9));
+  box-shadow:
+    inset 0 0 0.375rem rgba(0,255,120,0.8),
+    0 0 0.5rem rgba(0,255,120,0.4);
+}
+
+.AirAlarm__status--safe .AirAlarm__statusValue {
+  color: rgba(120,255,180,0.9);
+}
+
+/* WARNING */
+.AirAlarm__status--warning .AirAlarm__statusDot {
+  background: radial-gradient(circle, rgba(255,200,80,0.95), rgba(180,120,0,0.95));
+  box-shadow:
+    inset 0 0 0.375rem rgba(255,180,0,0.9),
+    0 0 0.625rem rgba(255,180,0,0.45);
+}
+
+.AirAlarm__status--warning .AirAlarm__statusValue {
+  color: rgba(255,210,120,0.95);
+}
+
+/* DANGER */
+.AirAlarm__status--danger .AirAlarm__statusDot {
+  background: radial-gradient(circle, rgba(255,80,80,0.95), rgba(180,0,0,0.95));
+  box-shadow:
+    inset 0 0 0.5rem rgba(255,0,0,0.9),
+    0 0 0.875rem rgba(255,0,0,0.6);
+}
+
+.AirAlarm__status--danger .AirAlarm__statusValue {
+  color: rgba(255,120,120,0.95);
+}
+
+/* OFF/UNKNOWN */
+.AirAlarm__status--unknown {
+  opacity: 0.4;
+}
+
+
+/* key */
+.AirAlarm__key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(180deg, rgba(65,65,65,0.55), rgba(20,20,20,0.65));
+  border: 0.0625rem solid rgba(255,255,255,0.08);
+  box-shadow: inset 0 0 0 0.0625rem rgba(0,0,0,0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+.AirAlarm__keyLabel { opacity: 0.75; font-weight: 900; font-size: 0.75rem; }
+.AirAlarm__keyState { font-weight: 900; font-size: 0.75rem; }
+.AirAlarm__key--locked .AirAlarm__keyState { color: var(--ind-bad); }
+.AirAlarm__key--unlocked .AirAlarm__keyState { color: var(--ind-good); }
+/* =========================
+ * RCON (label + segmented buttons)
+ * ========================= */
+
+/* Метка "RCON:" с иконкой слева */
+.AirAlarm__rconLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  color: rgba(235,235,235,0.92);
+  opacity: 0.92;
+}
+
+/* Контейнер кнопок */
+.AirAlarm__rconGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0; /* сегменты без промежутков */
+}
+
+/* RCON buttons */
+.AirAlarm__rconBtn {
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  /* визуально одинаковая высота/пэддинги */
+  padding: 0.375rem 0.75rem !important;
+  min-height: 1.875rem;
+
+  background:
+    radial-gradient(8.75rem 2.5rem at 30% 20%, rgba(255,255,255,0.10), rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, rgba(70,70,70,0.55), rgba(10,10,10,0.75)) !important;
+
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.12),
+    inset 0 -0.875rem 1.375rem rgba(0,0,0,0.45),
+    0 0.625rem 1.125rem rgba(0,0,0,0.36) !important;
+
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+}
+
+
+/* разделители между сегментами */
+.AirAlarm__rconBtn + .AirAlarm__rconBtn {
+  box-shadow:
+    inset 0.0625rem 0 0 rgba(255,255,255,0.06),
+    inset 0 0.0625rem 0 rgba(255,255,255,0.12),
+    inset 0 -0.875rem 1.375rem rgba(0,0,0,0.45),
+    0 0.625rem 1.125rem rgba(0,0,0,0.36) !important;
+}
+
+.AirAlarm__rconBtn:hover {
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.14),
+    inset 0 -1rem 1.5rem rgba(0,0,0,0.48),
+    0 0.75rem 1.375rem rgba(0,0,0,0.42) !important;
+}
+
+.AirAlarm__rconBtn:active {
+  transform: translateY(0.0625rem);
+  filter: brightness(0.98);
+}
+
+/* Selected states (цветной “индикатор” внутри) */
+.AirAlarm__rconBtn--auto.Button--selected {
+  border-radius: 0 !important;
+  border-left: 0 !important;
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(140,255,190,0.22),
+    inset 0 0 1.125rem rgba(110,255,160,0.18),
+    inset 0 -1rem 1.625rem rgba(0,0,0,0.52),
+    0 0.75rem 1.5rem rgba(0,0,0,0.44) !important;
+}
+
+.AirAlarm__rconBtn--yes.Button--selected {
+  border-radius: 0 !important;
+  border-left: 0 !important;
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(120,200,255,0.22),
+    inset 0 0 1.125rem rgba(120,200,255,0.16),
+    inset 0 -1rem 1.625rem rgba(0,0,0,0.52),
+    0 0.75rem 1.5rem rgba(0,0,0,0.44) !important;
+}
+
+.AirAlarm__rconBtn--no.Button--selected {
+  border-radius: 0 !important;
+  border-left: 0 !important;
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255,140,140,0.22),
+    inset 0 0 1.125rem rgba(255,140,140,0.12),
+    inset 0 -1rem 1.625rem rgba(0,0,0,0.52),
+    0 0.75rem 1.5rem rgba(0,0,0,0.44) !important;
+}
+
+
+/* ===== Pane switch (narrow) ===== */
+.AirAlarm__paneSwitch { border-radius: 0.75rem; }
+/* =========================================================
+ * AirAlarm: move away from CRT -> plate surfaces
+ * File: tgui/interfaces/AirAlarm/AirAlarm.scss
+ * ======================================================= */
+
+/* CRT bezel теперь просто контейнер/паддинг, материал задаём через ind-plate классами */
+.AirAlarm__crtBezel {
+  padding: 0.625rem;
+  border-radius: 0.875rem;
+}
+
+/* Сам “экран” больше не CRT — просто секция на пластине */
+.AirAlarm__crt {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+/* misc */
+.AirAlarm__mono {
+  font-family: var(--ind-font-mono);
+  letter-spacing: 0.03em;
+}
+.AirAlarm__hint { opacity: 0.70; font-size: 0.75rem; }
+
+/* ===== SegDisplay (AirAlarm-specific version) ===== */
+.AirAlarm__seg {
+  --seg-on: var(--ind-seg-on);
+  --seg-glow: var(--ind-seg-glow);
+  --seg-off: var(--ind-seg-off);
+
+  border-radius: 0.625rem;
+  padding: 0.625rem 0.625rem 0.5rem 0.625rem;
+
+  background:
+    radial-gradient(31.25rem 7.5rem at 30% 0%, rgba(255,255,255,0.05), rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, rgba(8,12,10,0.92), rgba(2,5,4,0.96));
+
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(140,255,190,0.14),
+    inset 0 0 1.875rem rgba(0,0,0,0.65);
+}
+
+.AirAlarm__seg--sm {
+  padding: 0.5rem 0.5rem 0.375rem 0.5rem;
+  border-radius: 0.5625rem;
+}
+
+.AirAlarm__segLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 900;
+  font-size: 0.6875rem;
+  opacity: 0.78;
+  margin-bottom: 0.375rem;
+}
+.AirAlarm__seg--sm .AirAlarm__segLabel { font-size: 0.625rem; margin-bottom: 0.25rem; }
+
+.AirAlarm__segBody {
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.5rem 0.375rem 0.5rem;
+  background: rgba(0,0,0,0.25);
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(140,255,190,0.10),
+    inset 0 0 1.25rem rgba(0,0,0,0.65);
+}
+
+.AirAlarm__segUnit {
+  margin-top: 0.125rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  font-size: 0.6875rem;
+}
+.AirAlarm__seg--sm .AirAlarm__segUnit { font-size: 0.625rem; }
+
+/* base tint themes */
+.AirAlarm__seg--c-green { --seg-on: var(--ind-seg-on-green); --seg-glow: var(--ind-seg-glow-green); --seg-off: var(--ind-seg-off-green); }
+.AirAlarm__seg--c-cyan  { --seg-on: var(--ind-seg-on-cyan);  --seg-glow: var(--ind-seg-glow-cyan);  --seg-off: var(--ind-seg-off-cyan); }
+.AirAlarm__seg--c-amber { --seg-on: var(--ind-seg-on-amber); --seg-glow: var(--ind-seg-glow-amber); --seg-off: var(--ind-seg-off-amber); }
+.AirAlarm__seg--c-red   { --seg-on: var(--ind-seg-on-red);   --seg-glow: var(--ind-seg-glow-red);   --seg-off: var(--ind-seg-off-red); }
+.AirAlarm__seg--c-white { --seg-on: var(--ind-seg-on-white); --seg-glow: var(--ind-seg-glow-white); --seg-off: var(--ind-seg-off-white); }
+
+/* tone overlays: danger must be readable */
+.AirAlarm__seg--average { filter: saturate(1.10) brightness(1.02); }
+.AirAlarm__seg--bad { filter: saturate(1.20) brightness(1.03); }
+
+/* digits */
+.AirAlarm__segDigits { align-items: center; }
+
+.AirAlarm__digit {
+  position: relative;
+  width: 1.5rem;
+  height: 2.75rem;
+  margin-right: 0.125rem;
+  opacity: 0.95;
+}
+
+/* ===== Small seg display: proportional segments ===== */
+.AirAlarm__seg--sm .AirAlarm__digit {
+  width: 1.125rem;
+  height: 2rem;
+  margin-right: 0.0625rem;
+}
+
+.AirAlarm__seg--sm .AirAlarm__segment--a { top: 0.0625rem; left: 0.25rem; width: 0.625rem; height: 0.1875rem; }
+.AirAlarm__seg--sm .AirAlarm__segment--b { top: 0.25rem; right: 0.0625rem; width: 0.1875rem; height: 0.75rem; }
+.AirAlarm__seg--sm .AirAlarm__segment--c { bottom: 0.25rem; right: 0.0625rem; width: 0.1875rem; height: 0.75rem; }
+.AirAlarm__seg--sm .AirAlarm__segment--d { bottom: 0.0625rem; left: 0.25rem; width: 0.625rem; height: 0.1875rem; }
+.AirAlarm__seg--sm .AirAlarm__segment--e { bottom: 0.25rem; left: 0.0625rem; width: 0.1875rem; height: 0.75rem; }
+.AirAlarm__seg--sm .AirAlarm__segment--f { top: 0.25rem; left: 0.0625rem; width: 0.1875rem; height: 0.75rem; }
+.AirAlarm__seg--sm .AirAlarm__segment--g { top: 0.875rem; left: 0.25rem; width: 0.625rem; height: 0.1875rem; }
+
+.AirAlarm__segment {
+  position: absolute;
+  background: var(--seg-off);
+  border-radius: 0.125rem;
+  transition: opacity 0.08s linear, box-shadow 0.08s linear, background 0.08s linear;
+  opacity: 0.35;
+}
+.AirAlarm__segment::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+}
+.AirAlarm__segment--on {
+  opacity: 1;
+  background: var(--seg-on);
+  box-shadow:
+    0 0 0.375rem var(--seg-glow),
+    0 0 1rem rgba(0,0,0,0.00);
+}
+
+.AirAlarm__segment--a { top: 0.125rem; left: 0.375rem; width: 0.875rem; height: 0.25rem; }
+.AirAlarm__segment--b { top: 0.375rem; right: 0.125rem; width: 0.25rem; height: 1rem; }
+.AirAlarm__segment--c { bottom: 0.375rem; right: 0.125rem; width: 0.25rem; height: 1rem; }
+.AirAlarm__segment--d { bottom: 0.125rem; left: 0.375rem; width: 0.875rem; height: 0.25rem; }
+.AirAlarm__segment--e { bottom: 0.375rem; left: 0.125rem; width: 0.25rem; height: 1rem; }
+.AirAlarm__segment--f { top: 0.375rem; left: 0.125rem; width: 0.25rem; height: 1rem; }
+.AirAlarm__segment--g { top: 1.25rem; left: 0.375rem; width: 0.875rem; height: 0.25rem; }
+.AirAlarm__segment--dp { right: 0.0625rem; bottom: 0.125rem; width: 0.3125rem; height: 0.3125rem; border-radius: 50%; clip-path: none; }
+
+@keyframes aalarmSegFlicker {
+  0%   { filter: brightness(1); }
+  25%  { filter: brightness(1.08); }
+  35%  { filter: brightness(0.95); }
+  55%  { filter: brightness(1.10); }
+  100% { filter: brightness(1); }
+}
+.AirAlarm__seg--pulse .AirAlarm__segment--on {
+  animation: aalarmSegFlicker 0.45s linear infinite;
+}
+
+/* ===== FlatGauge ===== */
+.AirAlarm__flatGauge {
+  padding: 0.5rem 0.625rem 0.625rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(180deg, rgba(10,18,12,0.40), rgba(0,0,0,0.35));
+  box-shadow: inset 0 0 0 0.0625rem rgba(140,255,190,0.10), inset 0 0 1.875rem rgba(0,0,0,0.55);
+}
+.AirAlarm__flatGaugeHead { margin-bottom: 0.5rem; }
+.AirAlarm__flatGaugeTitle {
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  font-size: 0.6875rem;
+}
+.AirAlarm__flatGaugeReadout {
+  font-family: var(--ind-font-mono);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.4375rem;
+  background: rgba(0,0,0,0.35);
+  border: 0.0625rem solid rgba(255,255,255,0.06);
+  box-shadow: inset 0 0 0 0.0625rem rgba(0,0,0,0.35);
+}
+.AirAlarm__flatGaugeReadout--good { color: var(--ind-good); }
+.AirAlarm__flatGaugeReadout--average { color: var(--ind-warn); }
+.AirAlarm__flatGaugeReadout--bad { color: var(--ind-bad); }
+.AirAlarm__flatGaugeUnit { opacity: 0.75; font-weight: 800; }
+
+.AirAlarm__flatGaugeTrack {
+  position: relative;
+  height: 1rem;
+  border-radius: 0.625rem;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(70,70,70,0.26), rgba(10,10,10,0.40));
+  box-shadow:
+    inset 0 0 0.75rem rgba(0,0,0,0.70),
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.06);
+}
+
+.AirAlarm__flatGaugeZone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  opacity: 0.95;
+  filter: saturate(1.05);
+}
+/* SAFE */
+.FlatGauge__zone--z0 { background: rgba(110,255,160,0.35); }
+
+/* WARN */
+.FlatGauge__zone--z3 { background: rgba(240,160,60,0.30); }
+
+/* DANGER */
+.FlatGauge__zone--z5 { background: rgba(255,70,70,0.32); }
+
+.FlatGauge__zone--z1 { background: rgba(70,180,120,0.28); }
+.FlatGauge__zone--z2 { background: rgba(210,200,80,0.30); }
+.FlatGauge__zone--z4 { background: rgba(255,120,90,0.30); }
+
+
+.AirAlarm__flatGaugeTicks {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(0,0,0,0.00) 0,
+      rgba(0,0,0,0.00) 1rem,
+      rgba(255,255,255,0.09) 1.0625rem);
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
+.AirAlarm__flatGaugeGloss {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.00) 55%);
+  opacity: 0.22;
+}
+
+.AirAlarm__flatGaugeNeedleWrap {
+  position: absolute;
+  top: 50%;
+  height: 0;
+  width: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.AirAlarm__flatGaugeNeedle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 0.375rem solid transparent;
+  border-right: 0.375rem solid transparent;
+  border-top: 0.5625rem solid var(--ind-fg);
+  filter: drop-shadow(0 0.1875rem 0.375rem rgba(0,0,0,0.60));
+  opacity: 0.95;
+}
+
+/* ===== Gas grid ===== */
+.AirAlarm__gasGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+.AirAlarm__gasGrid .AirAlarm__seg--sm { min-width: 0; }
+.AirAlarm__gasGrid .AirAlarm__seg--sm .AirAlarm__segBody { padding: 0.375rem 0.375rem 0.25rem 0.375rem; }
+.AirAlarm__gasGrid .AirAlarm__seg--sm .AirAlarm__segLabel { letter-spacing: 0.10em; }
+
+/* ===== Thermostat slider (car-style, Slider-based) ===== */
+.AirAlarm__thermoSlider {
+  flex: 1 1 auto;
+  min-width: 16.25rem;
+}
+
+/* Slider == ProgressBar root */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar {
+  --thermo-pct: 1%;
+
+  position: relative;
+  height: 1.875rem;
+  border-radius: 0.875rem;
+  overflow: visible; /* важно: чтобы инпут мог вылезать и быть кликабельным */
+
+  /* УБИВАЕМ всё дефолтное у ProgressBar */
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ===== Верхняя цветная шкала (всегда на всю длину) ===== */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar::before {
+  content: "";
+  position: absolute;
+  left: 0.625rem;
+  right: 0.625rem;
+  top: 0.375rem;
+  height: 0.5rem;
+  border-radius: 0.375rem;
+  pointer-events: none;
+  z-index: 1;
+
+  background:
+    var(--ind-thermo-zones),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,0.00) 0,
+      rgba(0,0,0,0.00) 1.625rem,
+      rgba(0,0,0,0.85) 1.6875rem,
+      rgba(0,0,0,0.85) 1.8125rem
+    );
+
+  opacity: 0.95;
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.10),
+    0 0 0.75rem rgba(0,0,0,0.40);
+}
+
+/* ===== Нижний “трек” (как в машине), без DOM-элемента ===== */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar::after {
+  content: "";
+  position: absolute;
+  left: 0.625rem;
+  right: 0.625rem;
+  bottom: 0.125rem;
+  height: 0.625rem;
+  border-radius: 0.5rem;
+  pointer-events: none;
+  z-index: 0;
+
+  background: linear-gradient(180deg, rgba(35,35,35,0.55), rgba(10,10,10,0.86));
+  box-shadow:
+    inset 0 0.625rem 1.125rem rgba(0,0,0,0.55),
+    inset 0 -0.625rem 1rem rgba(0,0,0,0.70),
+    0 0.375rem 0.75rem rgba(0,0,0,0.30);
+}
+
+/* ===== Убираем “первый fill” (preview) чтобы не было двоения слоёв ===== */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .ProgressBar__fill.ProgressBar__fill--animated {
+  display: none !important;
+}
+
+/* ===== Активный fill (второй .ProgressBar__fill) ===== */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .ProgressBar__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  background: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+
+  z-index: 2; /* выше базы, ниже thumb */
+}
+
+/* Активная часть верхней шкалы до текущего значения:
+   градиент должен совпасть 1:1 с фоном => background-size компенсацией */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .ProgressBar__fill::before {
+  content: "";
+  position: absolute;
+  left: 0.625rem;
+  right: 0;
+  top: 0.375rem;
+  height: 0.5rem;
+  border-radius: 0.375rem;
+  pointer-events: none;
+
+  background:
+    var(--ind-thermo-zones),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,0.00) 0,
+      rgba(0,0,0,0.00) 1.625rem,
+      rgba(0,0,0,0.85) 1.6875rem,
+      rgba(0,0,0,0.85) 1.8125rem
+    );
+
+  background-repeat: no-repeat;
+  background-position: left top;
+  /* Ключ: “растянуть” фон, чтобы при сжатии fill градиент не “съезжал” */
+  background-size: calc(100% * 100 / var(--thermo-pct)) 100%;
+
+  filter: brightness(1.35) saturate(1.15);
+  box-shadow:
+    0 0 0.875rem rgba(140,220,255,0.14),
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.12);
+}
+
+/* Лёгкая подсветка нижнего трека до текущего значения */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .ProgressBar__fill::after {
+  content: "";
+  position: absolute;
+  left: 0.625rem;
+  right: 0;
+  bottom: 0.375rem;
+  height: 0.625rem;
+  border-radius: 0.5rem;
+  pointer-events: none;
+
+  background: linear-gradient(
+    180deg,
+    rgba(140,220,255,0.10),
+    rgba(0,0,0,0.00) 60%,
+    rgba(0,0,0,0.30)
+  );
+  opacity: 0.70;
+}
+
+/* ===== Текст (не мешает кликам), но ниже инпута ===== */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .ProgressBar__content {
+  position: relative;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ===== Thumb ===== */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .Slider__cursorOffset {
+  position: absolute;
+  min-width: 1.125rem;
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* ===== Thumb (rectangular, car-style, 3D) ===== */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .Slider__cursor {
+  top: 60% !important;
+  right: 0 !important;
+  bottom: auto !important;
+
+  width: 1.125rem !important;
+  height: 2rem !important;
+  transform: translate(0, -50%) !important;
+
+  border-left: 0 !important;
+
+  /* Закругление только сверху и снизу мягкое */
+  border-radius: 0.375rem 0.375rem 0.5rem 0.5rem !important;
+
+  /* 3D корпус */
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.95) 0%,
+      rgba(210,210,210,0.95) 25%,
+      rgba(70,70,70,0.95) 70%,
+      rgba(30,30,30,1) 100%
+    ) !important;
+
+  box-shadow:
+    0 0.5rem 0.875rem rgba(0,0,0,0.55),              /* внешняя тень */
+    inset 0 0.0625rem 0 rgba(255,255,255,0.6),     /* верхний блик */
+    inset 0 -0.25rem 0.375rem rgba(0,0,0,0.6),        /* нижняя глубина */
+    inset 0 0 0 0.0625rem rgba(0,0,0,0.45) !important;
+}
+
+
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .Slider__cursor::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0.4375rem;
+  bottom: 0.4375rem;
+  width: 0.1875rem;
+  transform: translateX(-50%);
+  border-radius: 0.125rem;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.9),
+    rgba(150,150,150,0.6),
+    rgba(40,40,40,0.9)
+  );
+
+  box-shadow:
+    inset 0 0.0625rem 0.125rem rgba(0,0,0,0.6),
+    0 0 0.375rem rgba(140,220,255,0.12);
+}
+
+
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .Slider__pointer {
+  display: none !important;
+}
+
+/* ===== ВАЖНО: инпут должен быть поверх всего и кликабельным ===== */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .NumberInput {
+  position: relative;
+  z-index: 50 !important;
+  pointer-events: auto !important;
+}
+
+/* иногда мешает внутренний input/контент */
+.AirAlarm .AirAlarm__thermoSlider .Slider.ProgressBar .NumberInput__input {
+  position: relative;
+  z-index: 51 !important;
+  pointer-events: auto !important;
+}
+
+.AirAlarm__thermoSlider--disabled {
+  opacity: 0.45;
+  filter: grayscale(0.55);
+}
+.AirAlarm__thermoRow {
+  position: relative;
+  z-index: 30;
+}
+
+/* ===== Rocker switch (2-pos) ===== */
+.AirAlarm__switchRow { gap: 0.75rem; }
+.AirAlarm__switchLabel {
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  opacity: 0.92;
+  font-size: 0.6875rem;
+}
+
+.AirAlarm__rocker {
+  position: relative;
+  width: 10.625rem;
+  height: 2.25rem;
+  border-radius: 0.75rem;
+
+  background: var(--ind-rocker-surface);
+
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.16),
+    inset 0 -1.125rem 1.625rem rgba(0,0,0,0.52),
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.08),
+    0 0.625rem 1.125rem rgba(0,0,0,0.40);
+
+  overflow: hidden;
+  user-select: none;
+}
+
+.AirAlarm__rockerRail {
+  position: absolute;
+  inset: 0.4375rem 0.4375rem;
+  border-radius: 0.625rem;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.55), rgba(255,255,255,0.03));
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.06),
+    inset 0 0 1.125rem rgba(0,0,0,0.70);
+}
+
+.AirAlarm__rockerHandle {
+  position: absolute;
+  top: 0.4375rem;
+  bottom: 0.4375rem;
+  width: 3.25rem;
+  left: 0.4375rem;
+  border-radius: 0.625rem;
+
+  background:
+    radial-gradient(circle at 28% 28%, rgba(255,255,255,0.92), rgba(185,185,185,0.52) 56%, rgba(18,18,18,0.75) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.10), rgba(0,0,0,0.25));
+
+  box-shadow:
+    0 0.625rem 0.875rem rgba(0,0,0,0.55),
+    inset 0 0 0 0.0625rem rgba(0,0,0,0.42),
+    inset 0 0.625rem 0.875rem rgba(255,255,255,0.06);
+
+  transition: transform 160ms cubic-bezier(.2,.9,.2,1.1), filter 120ms ease;
+  will-change: transform;
+}
+
+/* Labels: 2 cells (ON / OFF) */
+.AirAlarm__rockerLabels--2 {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  opacity: 0.92;
+  pointer-events: none;
+}
+
+.AirAlarm__rockerLab { opacity: 0.72; }
+.AirAlarm__rocker--on  .AirAlarm__rockerLab--on  { opacity: 1; color: var(--ind-good); }
+.AirAlarm__rocker--on  .AirAlarm__rockerLab--off { opacity: 0.55; }
+.AirAlarm__rocker--off .AirAlarm__rockerLab--on  { opacity: 0.55; }
+.AirAlarm__rocker--off .AirAlarm__rockerLab--off { opacity: 1; color: var(--ind-fg); }
+
+/* Two hit zones */
+.AirAlarm__rockerHit--2 {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.AirAlarm__rockerHitZone { cursor: pointer; }
+.AirAlarm__rocker--disabled .AirAlarm__rockerHitZone { cursor: default; }
+
+/* Positions */
+.AirAlarm__rocker--on  .AirAlarm__rockerHandle { transform: translateX(0); }
+.AirAlarm__rocker--off .AirAlarm__rockerHandle { transform: translateX(6.5rem); }
+
+/* Danger styling: ON reads red */
+.AirAlarm__rocker--danger.AirAlarm__rocker--on .AirAlarm__rockerLab--on { color: var(--ind-bad); }
+.AirAlarm__rocker--disabled { opacity: 0.45; filter: grayscale(0.55); }
+.AirAlarm__rocker--anim .AirAlarm__rockerHandle { filter: brightness(1.06); }
+
+/* ===== Right panel inset ===== */
+.AirAlarm__panelInset {
+  padding: 0.75rem;
+  border-radius: 1rem;
+
+  background: var(--ind-surface-panelInset);
+
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.06),
+    inset 0 0 4.375rem rgba(0,0,0,0.68),
+    0 0.875rem 1.625rem rgba(0,0,0,0.42);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* Match the "stat panel" bezel vibe for the control panel as well */
+.AirAlarm__panelInset--crt {
+  background:
+    radial-gradient(56.25rem 32.5rem at 20% 0%, rgba(140,255,190,0.10), rgba(0,0,0,0) 55%),
+    radial-gradient(56.25rem 32.5rem at 90% 110%, rgba(140,220,255,0.08), rgba(0,0,0,0) 55%),
+    linear-gradient(180deg, rgba(24,24,24,0.90), rgba(6,6,6,0.94));
+}
+
+.AirAlarm__panelInset::before {
+  content: "";
+  position: absolute;
+  inset: -0.125rem;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(140,255,190,0.10), rgba(0,0,0,0) 35%, rgba(140,220,255,0.08) 70%, rgba(0,0,0,0)),
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.018) 0, rgba(255,255,255,0.018) 0.125rem, rgba(0,0,0,0) 0.375rem);
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
+
+.AirAlarm__panel {
+  border-radius: 0.75rem;
+  box-shadow: inset 0 0 0 0.0625rem rgba(255,255,255,0.06);
+}
+
+/* ===== Control Panel wrapper to host overlay (ALL tabs) ===== */
+.AirAlarm__panelContent {
+  position: relative;
+  min-height: 100%;
+}
+
+/* Full-cover overlay */
+.AirAlarm__lockedOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50; /* выше табов и контента */
+  border-radius: 10px; /* под вашу геометрию */
+  pointer-events: auto;
+
+  background:
+    radial-gradient(520px 220px at 50% 20%, rgba(255, 90, 90, 0.20), rgba(0, 0, 0, 0.00) 60%),
+    radial-gradient(900px 520px at 50% 120%, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.10) 55%),
+    linear-gradient(180deg, rgba(10, 10, 10, 0.62), rgba(0, 0, 0, 0.72));
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 0 50px rgba(0, 0, 0, 0.55),
+    0 14px 26px rgba(0, 0, 0, 0.35);
+
+  backdrop-filter: blur(2px) saturate(1.05);
+}
+
+/* Scanlines / subtle glare */
+.AirAlarm__lockedOverlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.55;
+
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.06) 0px,
+      rgba(255, 255, 255, 0.00) 2px,
+      rgba(0, 0, 0, 0.18) 4px
+    ),
+    radial-gradient(700px 260px at 50% 35%, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.00) 70%);
+}
+
+/* Centered label */
+.AirAlarm__lockedOverlayInner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 18px;
+}
+
+.AirAlarm__lockedTitle {
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 10px 14px;
+  border-radius: 10px;
+
+  background: linear-gradient(180deg, rgba(120, 20, 20, 0.55), rgba(40, 0, 0, 0.55));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.10),
+    0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+.AirAlarm__lockedHint {
+  opacity: 0.85;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+/* Remove default separators inside TGUI components */
+.AirAlarm .Section__header { border-bottom: 0 !important; }
+.AirAlarm .Section__title { border-bottom: 0 !important; }
+.AirAlarm .Tabs { border-bottom: 0 !important; box-shadow: none !important; }
+
+/* Tabs look like physical tabs */
+.AirAlarm__tabs,
+.AirAlarm__paneSwitch .Tabs {
+  background: linear-gradient(180deg, rgba(50,50,50,0.22), rgba(0,0,0,0.18));
+  padding: 0.375rem;
+  border-radius: 0.75rem;
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.06),
+    inset 0 0 1.25rem rgba(0,0,0,0.55);
+}
+
+.AirAlarm .Tabs__tab,
+.AirAlarm .Tabs .Button {
+  border-radius: 0.625rem !important;
+  padding: 0.5rem 0.75rem !important;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  background:
+    radial-gradient(12.5rem 2.25rem at 30% 22%, rgba(255,255,255,0.12), rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, rgba(65,65,65,0.35), rgba(8,8,8,0.55)) !important;
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.10),
+    inset 0 -0.875rem 1.25rem rgba(0,0,0,0.45),
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.06),
+    0 0.5rem 0.875rem rgba(0,0,0,0.35) !important;
+  opacity: 0.85;
+}
+
+.AirAlarm .Tabs__tab.Button--selected,
+.AirAlarm .Tabs .Button.Button--selected {
+  opacity: 1;
+  filter: brightness(1.08);
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(140,255,190,0.18),
+    inset 0 0 1.125rem rgba(110,255,160,0.10),
+    inset 0 -1rem 1.5rem rgba(0,0,0,0.52),
+    0 0.625rem 1.125rem rgba(0,0,0,0.40) !important;
+}
+
+.AirAlarm__subpanel { border-radius: 0.75rem; }
+
+.AirAlarm__modePanel {
+  padding: 0.625rem;
+  border-radius: 0.875rem;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.12));
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.05),
+    inset 0 0 1.875rem rgba(0,0,0,0.55);
+}
+
+/* ===== Main panel: area alerts (legacy parity) ===== */
+.AirAlarm__alertsPanel {
+  border-radius: 0.875rem;
+}
+
+.AirAlarm__alertsRow {
+  margin-top: 0.125rem;
+}
+
+.AirAlarm__alertKey {
+  flex: 1 1 10rem;
+  border-radius: 0.75rem !important;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  background:
+    radial-gradient(13.75rem 2.75rem at 30% 18%, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0) 58%),
+    linear-gradient(180deg, rgba(70,70,70,0.42), rgba(10,10,10,0.68)) !important;
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.10),
+    inset 0 -1.125rem 1.625rem rgba(0,0,0,0.55),
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.06),
+    0 0.625rem 1.125rem rgba(0,0,0,0.38) !important;
+}
+
+.AirAlarm__modeNow {
+  opacity: 0.78;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+.AirAlarm__modeGrid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+/* Layout A: 2x2 + POWER full width */
+.AirAlarm__modeGrid--layoutA {
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "filter replace"
+    "cycle  fill"
+    "power  power";
+}
+
+.AirAlarm__modeKey--filter { grid-area: filter; }
+.AirAlarm__modeKey--replace { grid-area: replace; }
+.AirAlarm__modeKey--cycle { grid-area: cycle; }
+.AirAlarm__modeKey--fill { grid-area: fill; }
+.AirAlarm__modeKey--power { grid-area: power; }
+
+/* POWER: чуть ниже, плотнее и “системнее” */
+.AirAlarm__modeKey--power {
+  margin-top: 0.125rem;
+  letter-spacing: 0.12em;
+}
+
+/* ===== Square panel buttons ===== */
+.AirAlarm__btn {
+  /* default glow (green) */
+  --btnTextColor: rgba(190, 255, 210, 0.96);
+  --btnGlow1: rgba(110, 255, 170, 0.26);
+  --btnGlow2: rgba(110, 255, 170, 0.12);
+
+
+  height: 2.125rem;
+  min-height: 2.125rem;
+  padding: 0 0.625rem;
+
+  border-radius: 0.375rem !important;
+
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+
+  color: rgba(255,255,255,0.90);
+  text-shadow: 0 0.0625rem 0 rgba(0,0,0,0.70);
+
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,0.030) 0,
+      rgba(255,255,255,0.030) 0.125rem,
+      rgba(0,0,0,0.016) 0.125rem,
+      rgba(0,0,0,0.016) 0.25rem
+    ),
+    linear-gradient(180deg, rgba(92,92,92,0.56), rgba(16,16,16,0.88)) !important;
+
+  border: 0.0625rem solid rgba(0,0,0,0.90) !important;
+
+  box-shadow:
+    0 0 0 0.0625rem rgba(255,255,255,0.11),
+    inset 0 0.0625rem 0 rgba(255,255,255,0.18),
+    inset 0 -1rem 1.25rem rgba(0,0,0,0.48),
+    inset 0 0 0 0.0625rem rgba(0,0,0,0.32),
+    0 0.625rem 1rem rgba(0,0,0,0.34) !important;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+
+  position: relative; /* для glow-слоя */
+  overflow: hidden;
+
+  transition:
+    transform 90ms ease,
+    box-shadow 120ms ease,
+    background 120ms ease,
+    color 120ms ease,
+    text-shadow 120ms ease;
+}
+
+/* Amber glow for POWER — работает даже если класс на родителе */
+.AirAlarm__modeKey--power.AirAlarm__btn,
+.AirAlarm__modeKey--power .AirAlarm__btn {
+  --btnTextColor: rgba(255, 205, 120, 0.98);
+
+--btnGlow1: rgba(255, 170, 0, 0.32);
+--btnGlow2: rgba(255, 170, 0, 0.14);
+
+}
+
+.AirAlarm__modeKey--cycle.AirAlarm__btn,
+.AirAlarm__modeKey--cycle .AirAlarm__btn {
+  --btnTextColor: rgba(170, 230, 255, 0.98);
+
+  --btnGlow1: rgba(80, 200, 255, 0.30);
+  --btnGlow2: rgba(80, 200, 255, 0.14);
+}
+.AirAlarm__modeKey--replace.AirAlarm__btn,
+.AirAlarm__modeKey--replace .AirAlarm__btn {
+  --btnTextColor: rgba(210, 200, 255, 0.98);
+
+  --btnGlow1: rgba(150, 130, 255, 0.28);
+  --btnGlow2: rgba(150, 130, 255, 0.14);
+}
+
+
+.AirAlarm__modeKey--filter.AirAlarm__btn,
+.AirAlarm__modeKey--filter .AirAlarm__btn {
+--btnTextColor: rgb(255, 244, 210);
+
+--btnGlow1: rgba(255, 238, 163, 0.14);
+--btnGlow2: rgba(255, 240, 173, 0.05);
+
+}
+
+.AirAlarm__btn .Icon {
+  opacity: 0.92;
+  filter: drop-shadow(0 0.0625rem 0 rgba(0,0,0,0.6));
+}
+
+.AirAlarm__btn:hover {
+  /* без filter: он убивает видимость glow в selected */
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,0.034) 0,
+      rgba(255,255,255,0.034) 0.125rem,
+      rgba(0,0,0,0.016) 0.125rem,
+      rgba(0,0,0,0.016) 0.25rem
+    ),
+    linear-gradient(180deg, rgba(102,102,102,0.58), rgba(16,16,16,0.88)) !important;
+}
+
+/* Active press */
+.AirAlarm__btn:active {
+  transform: translateY(0.0625rem);
+  box-shadow:
+    0 0 0 0.0625rem rgba(255,255,255,0.10),
+    inset 0 0.125rem 0 rgba(0,0,0,0.55),
+    inset 0 -0.625rem 0.875rem rgba(0,0,0,0.78),
+    inset 0 0 0 0.0625rem rgba(0,0,0,0.45),
+    0 0.3125rem 0.625rem rgba(0,0,0,0.22) !important;
+}
+
+/* ===== Selected (latched) ===== */
+.AirAlarm__btn.Button--selected,
+.AirAlarm__btn.Button--selected:hover {
+  transform: translateY(0.0625rem);
+
+  /* ВЖАТА: темнее материалом, а не filter'ом */
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,0.018) 0,
+      rgba(255,255,255,0.018) 0.125rem,
+      rgba(0,0,0,0.028) 0.125rem,
+      rgba(0,0,0,0.028) 0.25rem
+    ),
+    linear-gradient(180deg, rgba(44,44,44,0.54), rgba(6,6,6,0.96)) !important;
+
+  box-shadow:
+    0 0 0 0.0625rem rgba(255,255,255,0.14),
+    inset 0 0.1875rem 0 rgba(0,0,0,0.64),
+    inset 0 -0.5rem 0.75rem rgba(0,0,0,0.88),
+    inset 0 0 0 0.0625rem rgba(0,0,0,0.52),
+    0 0.25rem 0.5rem rgba(0,0,0,0.18) !important;
+
+  /* ТЕКСТ + glow (теперь не гасится filter'ом) */
+  color: var(--btnTextColor);
+  text-shadow:
+    0 0.0625rem 0 rgba(0,0,0,0.88),
+    0 0 0.5rem var(--btnGlow1),
+    0 0 1.125rem var(--btnGlow2);
+}
+
+/* Glow-слой под текстом — делает эффект заметным */
+.AirAlarm__btn.Button--selected::before {
+  content: "";
+  position: absolute;
+  inset: -0.75rem;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    radial-gradient(13.75rem 4.375rem at 50% 50%, var(--btnGlow1), rgba(0,0,0,0) 62%);
+  filter: blur(0.375rem);
+}
+
+/* Selected while active: deeper press only */
+.AirAlarm__btn.Button--selected:active {
+  transform: translateY(0.125rem);
+}
+
+/* Icon glow follows same color */
+.AirAlarm__btn.Button--selected .Icon {
+  opacity: 1;
+  filter:
+    drop-shadow(0 0.0625rem 0 rgba(0,0,0,0.85))
+    drop-shadow(0 0 0.625rem var(--btnGlow1));
+}
+
+/* =========================================================
+ * BIG RED (master alarm) — aligned with Button component
+ * ========================================================= */
+
+.AirAlarm__bigRed {
+  margin-top: 0.625rem;
+  display: flex;
+  justify-content: center;
+
+  padding: 0.625rem 0.625rem 0.5rem;
+  border-radius: 0.75rem;
+
+  background:
+    radial-gradient(26.25rem 7.5rem at 50% 0%, rgba(255,60,60,0.10), rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.16));
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.06),
+    inset 0 0 0 0.125rem rgba(0,0,0,0.55);
+}
+
+.AirAlarm__bigRedBtn {
+  position: relative;
+  overflow: hidden;
+
+  min-width: 16.25rem;
+  height: 2.875rem;
+  padding: 0 1.125rem;
+
+  border-radius: 0.5rem !important;
+
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 0.0625rem 0 rgba(0,0,0,0.75);
+
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,0.025) 0,
+      rgba(255,255,255,0.025) 0.125rem,
+      rgba(0,0,0,0.020) 0.125rem,
+      rgba(0,0,0,0.020) 0.25rem
+    ),
+    linear-gradient(180deg, rgba(85,0,0,0.95), rgba(22,0,0,0.98)) !important;
+
+  border: 0.0625rem solid rgba(0,0,0,0.92) !important;
+
+  box-shadow:
+    0 0 0 0.0625rem rgba(255,255,255,0.12),
+    inset 0 0.0625rem 0 rgba(255,255,255,0.14),
+    inset 0 -1.125rem 1.625rem rgba(0,0,0,0.58),
+    inset 0 0 0 0.0625rem rgba(0,0,0,0.42),
+    0 0 1.375rem rgba(255, 20, 20, 0.26),
+    0 0.875rem 1.375rem rgba(0,0,0,0.45),
+    0 0 0 0.125rem rgba(0,0,0,0.72),
+    0 0 0 0.1875rem rgba(255,255,255,0.06);
+}
+
+.AirAlarm__bigRedBtn .Icon {
+  opacity: 0.98;
+  filter: drop-shadow(0 0.0625rem 0 rgba(0,0,0,0.75));
+}
+
+.AirAlarm__bigRedBtn:hover {
+  filter: brightness(1.06) saturate(1.05);
+}
+
+.AirAlarm__bigRedBtn:active {
+  transform: translateY(0.125rem);
+  box-shadow:
+    0 0 0 0.0625rem rgba(255,255,255,0.12),
+    inset 0 0.125rem 0 rgba(0,0,0,0.50),
+    inset 0 -0.875rem 1.25rem rgba(0,0,0,0.70),
+    inset 0 0 0 0.0625rem rgba(0,0,0,0.48),
+    0 0.625rem 1.125rem rgba(0,0,0,0.38),
+    0 0 1.125rem rgba(255, 0, 0, 0.34) !important;
+}
+
+.AirAlarm__bigRedBtn.Button--disabled {
+  filter: brightness(0.62) saturate(0.65) contrast(1.05);
+}
+
+/* =========================================================
+ * BIG RED — SIREN MODE (selected)
+ * ========================================================= */
+
+.AirAlarm__bigRedBtn.Button--selected,
+.AirAlarm__bigRedBtn.Button--selected:hover {
+  filter: brightness(1.08) saturate(1.10);
+
+  box-shadow:
+    0 0 0 0.0625rem rgba(255,255,255,0.16),
+    inset 0 0.0625rem 0 rgba(255,255,255,0.18),
+    inset 0 -1.125rem 1.625rem rgba(0,0,0,0.52),
+    inset 0 0 0 0.0625rem rgba(0,0,0,0.40),
+    0 0 1.75rem rgba(255, 30, 30, 0.34),
+    0 0.875rem 1.375rem rgba(0,0,0,0.45) !important;
+
+  animation:
+    aalarmSirenPulse 1.2s ease-in-out infinite,
+    aalarmSirenGlow  1.2s ease-in-out infinite;
+}
+
+.AirAlarm__bigRedBtn.Button--selected::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+
+  width: 60%;
+
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.00),
+    rgba(255,80,80,0.35),
+    rgba(255,255,255,0.00)
+  );
+
+  mix-blend-mode: screen;
+  transform: translateX(-120%) skewX(-12deg);
+  pointer-events: none;
+
+  animation: aalarmSirenSweep 3.5s linear infinite;
+}
+
+.AirAlarm__bigRedBtn.Button--selected:active {
+  animation: none;
+}
+
+.AirAlarm__bigRedBtn.Button--selected:active::after {
+  animation: none;
+}
+
+
+/* devices card */
+.AirAlarm__devicePanel {
+  border-radius: 0.875rem;
+  background:
+    radial-gradient(32.5rem 7.5rem at 30% 0%, rgba(255,255,255,0.06), rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, rgba(40,40,40,0.34), rgba(8,8,8,0.40));
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.06),
+    inset 0 0 1.875rem rgba(0,0,0,0.55),
+    0 0.625rem 1.125rem rgba(0,0,0,0.30);
+}
+
+/* locked note */
+.AirAlarm__lockedNote {
+  margin-top: 0.625rem;
+  padding: 0.625rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 90, 90, 0.12);
+  border: 0.0625rem solid rgba(255, 90, 90, 0.22);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.95;
+}
+
+/* ===== Shield ===== */
+.AirAlarm__shield { align-items: stretch; }
+
+.AirAlarm__shieldList {
+  flex: 0 0 44%;
+  max-height: 23.75rem;
+  max-width: 22.5rem;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  background: linear-gradient(180deg, rgba(10,10,10,0.42), rgba(0,0,0,0.36));
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(255,255,255,0.06),
+    inset 0 0 1.875rem rgba(0,0,0,0.60),
+    0 0.625rem 1.125rem rgba(0,0,0,0.28);
+  overflow-y: scroll;
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #e6e6e6 transparent;
+
+  /* WebKit */
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  /* Полностью прозрачный трек */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Thumb — белый / ярко-серый */
+  &::-webkit-scrollbar-thumb {
+    background: #e6e6e6;
+    border-radius: 0.5rem;
+  }
+
+  /* Hover эффект (опционально, но выглядит лучше) */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #ffffff;
+  }
+
+  /* Убираем стрелки */
+  &::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+.AirAlarm__shieldRow {
+  display: grid;
+  grid-template-columns: 0.875rem 1fr auto;
+  align-items: center;
+  gap: 0.3125rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.625rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+
+  background:
+    radial-gradient(26.25rem 3.75rem at 30% 0%, rgba(255,255,255,0.05), rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, rgba(60,60,60,0.18), rgba(10,10,10,0.20));
+  box-shadow: inset 0 0 0 0.0625rem rgba(255,255,255,0.06);
+
+  transition: filter 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+.AirAlarm__shieldRow:hover { filter: brightness(1.06); }
+.AirAlarm__shieldRow:active { transform: translateY(0.0625rem); }
+
+.AirAlarm__shieldRow--sel {
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(140,255,190,0.18),
+    inset 0 0 1.125rem rgba(110,255,160,0.10);
+  background: linear-gradient(180deg, rgba(10,18,12,0.30), rgba(0,0,0,0.20));
+}
+
+.AirAlarm__shieldDot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  box-shadow: inset 0 -0.25rem 0.5rem rgba(0,0,0,0.55), 0 0 0.625rem rgba(0,0,0,0.35);
+  border: 0.0625rem solid rgba(255,255,255,0.10);
+}
+.AirAlarm__shieldDot--on {
+  background: radial-gradient(circle at 35% 35%, rgba(180,255,210,0.95), rgba(50,210,115,0.85) 55%, rgba(0,0,0,0.20));
+}
+.AirAlarm__shieldDot--off {
+  background: radial-gradient(circle at 35% 35%, rgba(230,230,230,0.45), rgba(80,80,80,0.55) 55%, rgba(0,0,0,0.20));
+  opacity: 0.75;
+}
+
+.AirAlarm__shieldName {
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  opacity: 0.92;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+}
+.AirAlarm__shieldMini {
+  font-family: var(--ind-font-mono);
+  opacity: 0.70;
+  font-weight: 900;
+}
+
+.AirAlarm__shieldCard {
+  flex: 1 1 auto;
+  min-width: 15.625rem;
+  padding-left: 0.25rem;
+}
+
+/* ===== Thresholds table (Table component) ===== */
+
+.AirAlarm__sensorCard {
+  border-radius: 0.75rem;
+}
+
+/* Таблица */
+.AirAlarm__thTable {
+  width: 100%;
+}
+
+/* Плотнее строки */
+.AirAlarm__thTable .Table__cell {
+  padding: 0.375rem 0.375rem;
+  vertical-align: middle;
+}
+
+/* Колонка имени */
+.AirAlarm__thNameHdr,
+.AirAlarm__thNameCell {
+  width: 7.5rem;
+  min-width: 7.5rem;
+  padding-left: 0;
+  padding-right: 0.625rem;
+
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+/* Header legend cells */
+.AirAlarm__thHdrCell {
+  text-align: left;
+  padding-top: 0.25rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Легенда (бейджи) */
+.AirAlarm__thLegend {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.5625rem;
+  background: rgba(0,0,0,0.22);
+  border: 0.0625rem solid rgba(255,255,255,0.06);
+
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  opacity: 0.95;
+}
+
+.AirAlarm__thLegend--c1 { color: var(--ind-good); }
+.AirAlarm__thLegend--c2 { color: rgba(255,230,140,0.95); }
+.AirAlarm__thLegend--c3 { color: rgba(255,160,90,0.95); }
+.AirAlarm__thLegend--c4 { color: var(--ind-bad); }
+
+/* Ячейки значений (td) */
+.AirAlarm__thValCell {
+  width: 3.375rem;
+  min-width: 3.375rem;
+  padding-left: 0;
+  padding-right: 0.5rem;
+}
+
+/* Кнопка-ячейка */
+.AirAlarm__thCell {
+  width: 4rem;
+  min-width: 3rem;
+  height: 1.75rem;
+  padding: 0 !important;
+
+  border-radius: 0.5rem !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+
+  font-family: var(--ind-font-mono);
+  font-weight: 900;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+
+  background:
+    linear-gradient(180deg, rgba(70,70,70,0.35), rgba(8,8,8,0.85)) !important;
+
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.08),
+    inset 0 -0.5rem 0.75rem rgba(0,0,0,0.55),
+    0 0.25rem 0.5rem rgba(0,0,0,0.28) !important;
+}
+
+.AirAlarm__thCell--c1 { box-shadow: inset 0 0 0 0.0625rem rgba(140,255,190,0.22), inset 0 -0.5rem 0.75rem rgba(0,0,0,0.55), 0 0.25rem 0.5rem rgba(0,0,0,0.28) !important; }
+.AirAlarm__thCell--c2 { box-shadow: inset 0 0 0 0.0625rem rgba(255,230,140,0.22), inset 0 -0.5rem 0.75rem rgba(0,0,0,0.55), 0 0.25rem 0.5rem rgba(0,0,0,0.28) !important; }
+.AirAlarm__thCell--c3 { box-shadow: inset 0 0 0 0.0625rem rgba(255,160,90,0.22), inset 0 -0.5rem 0.75rem rgba(0,0,0,0.55), 0 0.25rem 0.5rem rgba(0,0,0,0.28) !important; }
+.AirAlarm__thCell--c4 { box-shadow: inset 0 0 0 0.0625rem rgba(255,110,110,0.22), inset 0 -0.5rem 0.75rem rgba(0,0,0,0.55), 0 0.25rem 0.5rem rgba(0,0,0,0.28) !important; }
+
+.AirAlarm__thCell--sel {
+  filter: brightness(1.12) contrast(1.02);
+}
+
+/* Разделители строк — тонко и “панельно” */
+.AirAlarm__thTable .Table__row {
+  border-bottom: 0.0625rem solid rgba(255,255,255,0.05);
+}
+
+.AirAlarm__thTable .Table__row--header {
+  border-bottom: 0.0625rem solid rgba(255,255,255,0.07);
+}
+
+
+
+/* ===== NumberInput skin (AirAlarm only) ===== */
+.AirAlarm .NumberInput {
+  border-radius: 0.75rem !important;
+  background:
+    radial-gradient(13.75rem 3.75rem at 30% 15%, rgba(255,255,255,0.10), rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, rgba(10,18,12,0.78), rgba(0,0,0,0.82)) !important;
+
+  box-shadow:
+    inset 0 0 0 0.0625rem rgba(140,255,190,0.14),
+    inset 0 0 1.375rem rgba(0,0,0,0.70),
+    0 0.625rem 1.125rem rgba(0,0,0,0.40) !important;
+
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.AirAlarm .NumberInput__content {
+  font-family: var(--ind-font-mono) !important;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  color: var(--ind-good) !important;
+  text-shadow: 0 0 0.75rem rgba(110,255,160,0.16);
+  pointer-events: none;
+}
+
+.AirAlarm .NumberInput__barContainer { opacity: 0.10; }
+
+.AirAlarm .NumberInput__bar {
+  background: linear-gradient(180deg, rgba(110,255,160,0.55), rgba(30,160,95,0.30)) !important;
+}
+
+.AirAlarm .NumberInput__input {
+  background:
+    radial-gradient(13.75rem 3.75rem at 30% 15%, rgba(255,255,255,0.08), rgba(0,0,0,0) 60%),
+    rgba(0,0,0,0.86) !important;
+
+  color: var(--ind-good) !important;
+  border: 0.0625rem solid rgba(140,255,190,0.22) !important;
+  border-radius: 0.75rem !important;
+  outline: none !important;
+  box-shadow: inset 0 0 1.125rem rgba(0,0,0,0.75);
+  pointer-events: auto;
+}
+
+/* =========================================================
+ * AirAlarm NumberInput (industrial)
+ * ========================================================= */
+
+/* Обёртка NumberInput — это Box с className="NumberInput ..." */
+.AirAlarm__devicePanel .NumberInput {
+  /* размеры */
+  height: 1.75rem;
+  min-height: 1.75rem;
+  min-width: 3.125rem; /* соответствует width="8.75rem" */
+  border-radius: 0.5rem;
+
+  position: relative;
+  overflow: hidden;
+
+  /* читаемость */
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  /* материал панели */
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,0.020) 0,
+      rgba(255,255,255,0.020) 0.125rem,
+      rgba(0,0,0,0.020) 0.125rem,
+      rgba(0,0,0,0.020) 0.25rem
+    ),
+    linear-gradient(180deg, rgba(62,62,62,0.52), rgba(10,10,10,0.92));
+
+  border: 0.0625rem solid rgba(0,0,0,0.92);
+
+  box-shadow:
+    0 0 0 0.0625rem rgba(255,255,255,0.10),
+    inset 0 0.0625rem 0 rgba(255,255,255,0.12),
+    inset 0 -0.875rem 1.125rem rgba(0,0,0,0.62),
+    inset 0 0 0 0.0625rem rgba(0,0,0,0.42),
+    0 0.5rem 0.875rem rgba(0,0,0,0.32);
+
+  cursor: ns-resize; /* намекаем на drag */
+  user-select: none;
+}
+
+/* Полоса (вертикальная) внутри */
+.AirAlarm__devicePanel .NumberInput__barContainer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0.625rem;
+  border-right: 0.0625rem solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+}
+
+.AirAlarm__devicePanel .NumberInput__bar {
+  position: absolute;
+  left: 0.0625rem;
+  right: 0.0625rem;
+  bottom: 0.0625rem;
+  border-radius: 0.375rem;
+
+  /* “ртутный столб” */
+  background:
+    linear-gradient(180deg, rgba(200,255,220,0.92), rgba(70,220,120,0.55));
+
+  box-shadow:
+    0 0 0.625rem rgba(120,255,180,0.14),
+    inset 0 0 0 0.0625rem rgba(0,0,0,0.40);
+  opacity: 0.85;
+}
+
+/* Значение (видимый текст) */
+.AirAlarm__devicePanel .NumberInput__content {
+  position: relative;
+  z-index: 2;
+
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding-left: 0.75rem;  /* место под bar */
+  padding-right: 0.625rem;
+
+  color: rgba(235,240,245,0.96);
+  text-shadow:
+    0 0.0625rem 0 rgba(0,0,0,0.85),
+    0 0 0.625rem rgba(255,255,255,0.05);
+
+  pointer-events: none; /* чтобы drag всегда работал */
+}
+
+/* Режим редактирования: input появляется вместо текста */
+.AirAlarm__devicePanel .NumberInput__input {
+  position: absolute;
+  z-index: 3;
+
+  left: 0.75rem;          /* после bar */
+  right: 0.375rem;
+  top: 0.25rem;
+  bottom: 0.25rem;
+
+  width: auto;
+  border-radius: 0.375rem;
+
+  border: 0.0625rem solid rgba(0,0,0,0.88);
+  background: linear-gradient(180deg, rgba(10,10,10,0.72), rgba(0,0,0,0.88));
+
+  color: rgba(255,255,255,0.98);
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+
+  padding: 0 0.5rem;
+  outline: none;
+
+  box-shadow:
+    0 0 0 0.0625rem rgba(255,255,255,0.10),
+    inset 0 0.0625rem 0 rgba(255,255,255,0.10),
+    inset 0 -0.625rem 0.875rem rgba(0,0,0,0.72);
+
+  /* ввод */
+  text-align: center;
+}
+
+/* Focus — лёгкая подсветка (не неон) */
+.AirAlarm__devicePanel .NumberInput__input:focus {
+  box-shadow:
+    0 0 0 0.0625rem rgba(255,255,255,0.14),
+    0 0 0.75rem rgba(140,255,190,0.14),
+    inset 0 0.0625rem 0 rgba(255,255,255,0.12),
+    inset 0 -0.625rem 0.875rem rgba(0,0,0,0.74);
+}
+
+/* Disabled */
+.AirAlarm__devicePanel .NumberInput[aria-disabled="true"],
+.AirAlarm__devicePanel .NumberInput.NumberInput--disabled,
+.AirAlarm__devicePanel .NumberInput[disabled] {
+  cursor: not-allowed;
+  filter: brightness(0.72) saturate(0.70) contrast(1.05);
+}
+
+/* На hover слегка "оживает" */
+.AirAlarm__devicePanel .NumberInput:hover {
+  filter: brightness(1.04) contrast(1.02);
+}
+
+/* External kPa control group: reset + input <= 7.5rem */
+.AirAlarm__devicePanel .AirAlarm__kpaCtl {
+  width: 7.5rem;
+  max-width: 7.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-left: auto; /* убирает "сдвиг" влево внутри LabeledList */
+}
+
+.AirAlarm__devicePanel .AirAlarm__kpaInput {
+  flex: 0 0 auto;
+}
+
+/* Символьный RESET */
+.AirAlarm__devicePanel .AirAlarm__miniBtn--sym {
+  width: 1.75rem;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  line-height: 1.75rem;
+  text-align: center;
+
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+
+/* ===== Buttons global feel (AirAlarm scope) ===== */
+.AirAlarm .Button {
+  position: relative;
+  overflow: hidden;
+
+  /* keycap shine */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0.0625rem 0.0625rem auto 0.0625rem;
+    height: 46%;
+    border-radius: 0.5rem;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.00));
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  /* bezel rim */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 0.5625rem;
+    box-shadow: inset 0 0 0 0.0625rem rgba(0,0,0,0.55), inset 0 0 0 0.125rem rgba(255,255,255,0.03);
+    pointer-events: none;
+  }
+
+  border-radius: 0.5rem;
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.12),
+    inset 0 -0.875rem 1.375rem rgba(0,0,0,0.44),
+    0 0.625rem 1.125rem rgba(0,0,0,0.36);
+  transform: translateY(0);
+  letter-spacing: 0.04em;
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
+}
+.AirAlarm .Button:hover {
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.14),
+    inset 0 -1rem 1.5rem rgba(0,0,0,0.48),
+    0 0.75rem 1.375rem rgba(0,0,0,0.42);
+}
+.AirAlarm .Button:active {
+  transform: translateY(0.0625rem);
+  filter: brightness(0.98);
+  box-shadow:
+    inset 0 0.0625rem 0 rgba(255,255,255,0.08),
+    inset 0 -0.625rem 1rem rgba(0,0,0,0.55),
+    0 0.375rem 0.875rem rgba(0,0,0,0.42);
+}
+
+/* ===== Animations ===== */
+@keyframes aalarmDangerPulse {
+  0%   { filter: saturate(1) brightness(1); }
+  50%  { filter: saturate(1.18) brightness(1.06); }
+  100% { filter: saturate(1) brightness(1); }
+}
+.AirAlarm--dangerPulse { animation: aalarmDangerPulse 1.0s ease-in-out infinite; }
+
+@keyframes aalarmCrtBreath {
+  0%   { opacity: 0.88; }
+  50%  { opacity: 1.00; }
+  100% { opacity: 0.88; }
+}
+
+@keyframes aalarmCrtFlickerHard {
+  0%   { opacity: 0.08; }
+  2%   { opacity: 0.22; }
+  3%   { opacity: 0.06; }
+  6%   { opacity: 0.18; }
+  9%   { opacity: 0.05; }
+  14%  { opacity: 0.16; }
+  100% { opacity: 0.08; }
+}
+
+@keyframes aalarmScanSweep {
+  0%   { transform: translateY(-120%); opacity: 0.0; }
+  10%  { opacity: 0.28; }
+  35%  { opacity: 0.10; }
+  100% { transform: translateY(140%); opacity: 0.0; }
+}
+
+@keyframes aalarmNoisePop {
+  0% { opacity: 0.10; transform: translate(0,0); }
+  20% { opacity: 0.22; transform: translate(0.0625rem,-0.0625rem); }
+  40% { opacity: 0.12; transform: translate(-0.0625rem,0.0625rem); }
+  60% { opacity: 0.24; transform: translate(0.0625rem,0.0625rem); }
+  80% { opacity: 0.11; transform: translate(-0.0625rem,-0.0625rem); }
+  100% { opacity: 0.10; transform: translate(0,0); }
+}
+
+@keyframes ann-blink {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.9); }
+}
+
+.AirAlarm__ann--fire.AirAlarm__ann--on {
+  animation: ann-blink 0.6s infinite ease-in-out;
+}
+.AirAlarm__ann--atmos.AirAlarm__ann--on {
+  animation: ann-blink 0.6s infinite ease-in-out;
+}
+
+@keyframes aalarmSirenSweep {
+  0%   { transform: translateX(-120%) skewX(-12deg); opacity: 0; }
+  8%   { opacity: 0.85; }
+  15%  { opacity: 0.45; }
+  22%  { transform: translateX(120%) skewX(-12deg); opacity: 0; }
+  100% { transform: translateX(120%) skewX(-12deg); opacity: 0; }
+}
+
+@keyframes aalarmSirenPulse {
+  0%   { filter: brightness(1.00) saturate(1.00); }
+  50%  { filter: brightness(1.18) saturate(1.18); }
+  100% { filter: brightness(1.00) saturate(1.00); }
+}
+
+@keyframes aalarmSirenGlow {
+  0%   { box-shadow:
+          0 0 1.125rem rgba(255, 20, 20, 0.22),
+          0 0.875rem 1.375rem rgba(0,0,0,0.45),
+          0 0 0 0.0625rem rgba(255,255,255,0.16),
+          inset 0 0.0625rem 0 rgba(255,255,255,0.18),
+          inset 0 -1.125rem 1.625rem rgba(0,0,0,0.52),
+          inset 0 0 0 0.0625rem rgba(0,0,0,0.40);
+        }
+  50%  { box-shadow:
+          0 0 2.125rem rgba(255, 30, 30, 0.42),
+          0 0.875rem 1.375rem rgba(0,0,0,0.45),
+          0 0 0 0.0625rem rgba(255,255,255,0.20),
+          inset 0 0.0625rem 0 rgba(255,255,255,0.18),
+          inset 0 -1.125rem 1.625rem rgba(0,0,0,0.48),
+          inset 0 0 0 0.0625rem rgba(0,0,0,0.40);
+        }
+  100% { box-shadow:
+          0 0 1.125rem rgba(255, 20, 20, 0.22),
+          0 0.875rem 1.375rem rgba(0,0,0,0.45),
+          0 0 0 0.0625rem rgba(255,255,255,0.16),
+          inset 0 0.0625rem 0 rgba(255,255,255,0.18),
+          inset 0 -1.125rem 1.625rem rgba(0,0,0,0.52),
+          inset 0 0 0 0.0625rem rgba(0,0,0,0.40);
+        }
+}

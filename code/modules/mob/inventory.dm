@@ -1,6 +1,6 @@
 //This proc is called whenever someone clicks an inventory ui slot.
 /mob/proc/attack_ui(slot)
-	var/obj/item/I = get_active_hand()
+	var/obj/item/I = get_clicking_hand()
 	var/obj/item/E = get_equipped_item(slot)
 	if(ishuman(src))
 		var/mob/living/carbon/C = src
@@ -123,6 +123,34 @@ var/list/slot_equipment_priority = list( \
 /mob/proc/get_inactive_hand()
 	if(hand)	return r_hand
 	else		return l_hand
+
+// Returns TRUE if we have AM in any hand
+/mob/proc/has_in_hands(atom/movable/AM)
+	return (get_active_hand() == AM || get_inactive_hand() == AM)
+
+// Returns TRUE if we have AM in the clicking hand, in the context of the two-handed mode. Doubles as an active hand checker outside of Click-called procs.
+/mob/proc/has_in_clicking_hand(atom/movable/AM)
+	return rightclicked ? (AM == get_inactive_hand()) : (AM == get_active_hand())
+
+// Returns TRUE if we have AM in the non-clicking hand, in the context of the two-handed mode. Doubles as an inactive hand checker outside of Click-called procs.
+/mob/proc/has_in_passive_hand(atom/movable/AM)
+	return rightclicked ? (AM == get_active_hand()) : (AM == get_inactive_hand())
+
+// Returns TRUE if we have successfully put in the clicking hand, in the context of the two-handed mode. Doubles as an put_in_active_hand() outside of Click-called procs.
+/mob/proc/put_in_clicking_hand(obj/item/I)
+	return rightclicked ? put_in_inactive_hand(I) : put_in_active_hand(I)
+
+// Returns TRUE if we have successfully put in the non-clicking hand, in the context of the two-handed mode. Doubles as an put_in_inactive_hand() outside of Click-called procs.
+/mob/proc/put_in_passive_hand(obj/item/I)
+	return rightclicked ? put_in_active_hand(I) : put_in_inactive_hand(I)
+
+// Returns the item hend in the clicking hand, if any, in the context of the two-handed mode. Doubles as an get_active_hand() outside of Click-called procs.
+/mob/proc/get_clicking_hand()
+	return rightclicked ? get_inactive_hand() : get_active_hand()
+
+// Returns the item hend in the non-clicking hand, if any, in the context of the two-handed mode. Doubles as an get_inactive_hand() outside of Click-called procs.
+/mob/proc/get_passive_hand()
+	return rightclicked ? get_active_hand() : get_inactive_hand()
 
 //Puts the item into your l_hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_l_hand(obj/item/W)

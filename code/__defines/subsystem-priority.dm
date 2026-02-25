@@ -18,6 +18,8 @@
 #define SS_PRIORITY_MACHINERY      95    // Machinery + powernet ticks.
 #define SS_PRIORITY_PHYSICS  	   94
 #define SS_PRIORITY_AIR            80    // ZAS processing.
+#define SS_PRIORITY_THROWING       75  // Throwing calculation and constant checks
+#define SS_PRIORITY_SPACEDRIFT     40  // Drifting things
 #define SS_PRIORITY_ORBIT          35
 #define SS_PRIORITY_ALARM          20    // Alarm processing.
 #define SS_PRIORITY_EVENT          20    // Event processing and queue handling.
@@ -28,6 +30,7 @@
 #define SS_PRIORITY_EXPLOSION      666   // Processing explosion stuff, abnormal number for abnormal stuff
 #define SS_PRIORITY_VIRUSES        20    // Processing viruses life.
 #define SS_PRIORITY_OPEN_SPACE     20    // Open turf updates.
+#define SS_PRIORITY_INPUT          20    // Input sybsystem.
 #define SS_PRIORITY_AIRFLOW        15    // Object movement from ZAS airflow.
 #define SS_PRIORITY_VOTE           10    // Vote management.
 #define SS_PRIORITY_INACTIVITY     10    // Idle kicking.

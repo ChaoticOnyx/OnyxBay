@@ -165,7 +165,7 @@
 			if(!do_mob(user, M, time = 2 SECONDS))
 				return
 
-			if(user.get_active_hand() != src)
+			if(!user.has_in_hands(src))
 				return
 
 			if(!M.can_force_feed(user, src, check_resist = TRUE))
@@ -221,10 +221,12 @@
 
 	. += get_bitecount()
 
-/obj/item/reagent_containers/food/throw_impact(atom/hit_atom, speed, thrown_with, target_zone)
+// TODO: Launcher throwing
+/obj/item/reagent_containers/food/throw_impact(atom/hit_atom, datum/thrownthing/TT)
+	..()
 	var/mob/living/carbon/human/H = hit_atom
-	if(!istype(H) || !istype(thrown_with, /obj/item/gun/launcher) || target_zone != BP_MOUTH || !reagents.total_volume || !is_open_container() || !H.check_has_mouth() || H.check_mouth_coverage() || H.get_fullness() >= STOMACH_FULLNESS_SUPER_HIGH)
-		return ..(hit_atom, speed)
+	if(!istype(H) || !istype(TT.thrown_with, /obj/item/gun/launcher) || TT.target_zone != BP_MOUTH || !reagents.total_volume || !is_open_container() || !H.check_has_mouth() || H.check_mouth_coverage() || H.get_fullness() >= STOMACH_FULLNESS_SUPER_HIGH)
+		return ..(hit_atom, TT)
 
 	if(reagents.total_volume > bitesize * 2)
 		reagents.trans_to_mob(H, bitesize * 2, CHEM_INGEST)
@@ -234,7 +236,6 @@
 	if(bitecount != -1)
 		bitecount++
 
-	throwing = FALSE
 	update_icon()
 	On_Consume(H)
 

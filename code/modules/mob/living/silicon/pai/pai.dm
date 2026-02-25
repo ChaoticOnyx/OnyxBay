@@ -324,12 +324,12 @@
 
 	// Pass lying down or getting up to our pet human, if we're in a rig.
 	if(istype(src.loc, /obj/item/device/paicard))
-		resting = 0
+		set_resting(FALSE)
 		var/obj/item/rig/rig = get_rig()
 		if(istype(rig))
 			rig.force_rest(src)
 	else
-		resting = !resting
+		set_resting(!resting)
 		icon_state = resting ? "[chassis]_rest" : "[chassis]"
 		to_chat(src, "<span class='notice'>You are now [resting ? "resting" : "getting up"]</span>")
 
@@ -365,7 +365,7 @@
 	src.client.eye = card
 
 	//stop resting
-	resting = 0
+	set_resting(FALSE)
 
 	// If we are being held, handle removing our holder from their inv.
 	var/obj/item/holder/H = loc
@@ -378,7 +378,7 @@
 	// Move us into the card and move the card to the ground.
 	src.forceMove(card)
 	card.forceMove(get_turf(card))
-	resting = 0
+	set_resting(FALSE)
 	icon_state = "[chassis]"
 
 // No binary for pAIs.

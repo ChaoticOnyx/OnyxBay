@@ -631,7 +631,7 @@
 		log_append_to_last("Armor saved.")
 	return
 
-/obj/mecha/hitby(atom/movable/AM, speed, nomsg = TRUE)
+/obj/mecha/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = TRUE)
 	..()
 	log_message("Hit by [AM].",1)
 	if(istype(AM, /obj/item/mecha_parts/mecha_tracking))
@@ -890,7 +890,7 @@
 	else
 		src.log_message("Attacked by [W]. Attacker - [user]")
 
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		obj_attack_sound(W)
 
@@ -1329,14 +1329,14 @@
 /////////////////////////
 
 /obj/mecha/proc/operation_allowed(mob/living/carbon/human/H)
-	for(var/atom/ID in list(H.get_active_hand(), H.wear_id, H.belt))
+	for(var/atom/ID in list(H.get_active_hand(), H.get_inactive_hand(), H.wear_id, H.belt))
 		if(src.check_access(ID,src.operation_req_access))
 			return 1
 	return 0
 
 
 /obj/mecha/proc/internals_access_allowed(mob/living/carbon/human/H)
-	for(var/atom/ID in list(H.get_active_hand(), H.wear_id, H.belt))
+	for(var/atom/ID in list(H.get_active_hand(), H.get_inactive_hand(), H.wear_id, H.belt))
 		if(src.check_access(ID,src.internals_req_access))
 			return 1
 	return 0
