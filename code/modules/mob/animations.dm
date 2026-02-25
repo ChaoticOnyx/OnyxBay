@@ -172,6 +172,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 	// Scale the icon.
 	I.SetTransform(scale = 0.75)
+	I.appearance_flags |= RESET_COLOR
 	// Set the direction of the icon animation.
 	var/direction = get_dir(src, A)
 	if(direction & NORTH)
