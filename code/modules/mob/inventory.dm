@@ -134,7 +134,7 @@ var/list/slot_equipment_priority = list( \
 
 // Returns TRUE if we have AM in the non-clicking hand, in the context of the two-handed mode. Doubles as an inactive hand checker outside of Click-called procs.
 /mob/proc/has_in_passive_hand(atom/movable/AM)
-	return rightclicked ? (AM == get_active_hand()) : (get_inactive_hand())
+	return rightclicked ? (AM == get_active_hand()) : (AM == get_inactive_hand())
 
 // Returns TRUE if we have successfully put in the clicking hand, in the context of the two-handed mode. Doubles as an put_in_active_hand() outside of Click-called procs.
 /mob/proc/put_in_clicking_hand(obj/item/I)
