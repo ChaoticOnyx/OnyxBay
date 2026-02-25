@@ -1,5 +1,5 @@
 /obj/item/projectile/bullet/pellet/fragment
-	damage = 7
+	damage = 6
 	range_step = 2 //controls damage falloff with distance. projectiles lose a "pellet" each time they travel this distance. Can be a non-integer.
 
 	base_spread = 0 //causes it to be treated as a shrapnel explosion instead of cone
@@ -69,14 +69,15 @@
 
 /obj/item/grenade/frag/proc/on_explosion(turf/O)
 	if(explosion_size)
-		explosion(O, -1, -1, explosion_size, round(explosion_size/2), 0)
+		explosion(O, -1, -1, explosion_size, floor(explosion_size/2), 0)
 
 /obj/item/grenade/frag/shell
 	name = "fragmentation grenade"
 	desc = "A light fragmentation grenade, designed to be fired from a launcher. It can still be activated and thrown by hand if necessary."
 	icon_state = "fragshell"
+	explosion_size = 1 // won't create a flash
 
-	num_fragments = 50 //less powerful than a regular frag grenade
+	num_fragments = 20 //less powerful than a regular frag grenade
 
 /obj/item/grenade/frag/high_yield
 	name = "fragmentation bomb"
