@@ -171,7 +171,8 @@ var/list/global/organ_rel_size = list(
 		miss_chance = base_miss_chance[zone]
 	miss_chance = max(miss_chance + miss_chance_mod, 0)
 	if(prob(miss_chance))
-		if(prob(0))
+		// If miss_chance exceeds 100, the excess becomes the chance to miss entirely
+		if(prob(miss_chance - 100))
 			return null
 		return pick(base_miss_chance)
 	return zone
