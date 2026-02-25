@@ -2949,6 +2949,7 @@
 #include "code\modules\research\designs\protolathe\dp-device.dm"
 #include "code\modules\research\designs\protolathe\dp-engineering.dm"
 #include "code\modules\research\designs\protolathe\dp-medical.dm"
+#include "code\modules\research\designs\protolathe\dp-microelectronics.dm"
 #include "code\modules\research\designs\protolathe\dp-mining.dm"
 #include "code\modules\research\designs\protolathe\dp-misc.dm"
 #include "code\modules\research\designs\protolathe\dp-pda.dm"
