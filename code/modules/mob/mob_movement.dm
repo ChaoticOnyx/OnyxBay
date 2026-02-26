@@ -99,7 +99,7 @@
 /client/verb/attack_self()
 	set hidden = 1
 	if(mob)
-		mob.mode()
+		mob.use_attack_self()
 	return
 
 

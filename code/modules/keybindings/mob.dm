@@ -29,12 +29,23 @@
 /datum/keybinding/mob/activate_inhand
 	hotkey_keys = list("Z", "Y","Southeast") // Southeast = PAGEDOWN
 	name = "activate_inhand"
-	full_name = "Activate In-Hand"
-	description = "Uses whatever item you have inhand"
+	full_name = "Use Held Item"
+	description = "Uses whatever item you have in the active hand."
 
 /datum/keybinding/mob/activate_inhand/down(client/user)
 	var/mob/M = user.mob
-	M.mode()
+	M.use_attack_self()
+	return TRUE
+
+/datum/keybinding/mob/activate_inhand_2
+	hotkey_keys = list("ShiftZ")
+	name = "activate_inhand_2"
+	full_name = "Use Inactive Held Item"
+	description = "Uses whatever item you have in the inactive hand."
+
+/datum/keybinding/mob/activate_inhand_2/down(client/user)
+	var/mob/M = user.mob
+	M.use_attack_self(FALSE)
 	return TRUE
 
 /datum/keybinding/mob/target_head_cycle
