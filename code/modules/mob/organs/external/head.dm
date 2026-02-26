@@ -46,7 +46,7 @@
 	. = ..()
 	var/obj/item/skull/SK = new /obj/item/skull(get_turf(src))
 	if(!isturf(loc))
-		user.put_in_active_hand(SK)
+		user.put_in_clicking_hand(SK)
 
 /obj/item/organ/external/head/examine(mob/user, infix)
 	. = ..()

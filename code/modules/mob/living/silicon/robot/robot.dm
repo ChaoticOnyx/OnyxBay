@@ -951,6 +951,8 @@
 		return SS.selected_tool
 	return I
 
+/mob/living/silicon/robot/get_inactive_item()
+	return get_active_item() // Robros are not so HANDsome
 
 /mob/living/silicon/robot/Move(newloc, direct)
 	. = ..()
