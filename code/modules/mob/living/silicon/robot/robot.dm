@@ -1064,15 +1064,17 @@
 		return 1
 	return 0
 
-/mob/living/silicon/robot/mode()
+/mob/living/silicon/robot/activate_held_object()
 	set name = "Activate Held Object"
 	set category = "IC"
 	set src = usr
 
+	use_attack_self()
+	return
+
+/mob/living/silicon/robot/use_attack_self(is_active_hand = TRUE)
 	var/obj/item/I = get_active_hand()
 	I?.attack_self(src)
-
-	return
 
 /mob/living/silicon/robot/proc/choose_hull(list/module_hulls)
 	if(!length(module_hulls))
