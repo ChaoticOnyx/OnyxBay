@@ -55,6 +55,15 @@
 	build_path = /obj/item/device/mcu/lowpower/industrial
 	sort_string = "VABAF"
 
+/datum/design/item/mcu/overclock/lite
+	name = "Fury-S1 Starter"
+	id = "mcu_overclock_lite"
+	build_type = IMPRINTER
+	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 3, TECH_DATA = 2)
+	materials = list(MATERIAL_STEEL = 1100, MATERIAL_GLASS = 500, MATERIAL_GOLD = 200)
+	build_path = /obj/item/device/mcu/overclock/lite
+	sort_string = "VABAG"
+
 /datum/design/item/mcu/overclock
 	name = "Fury-X1"
 	id = "mcu_overclock"

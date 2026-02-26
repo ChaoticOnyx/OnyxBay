@@ -116,3 +116,4 @@ mcu_enable = true
 mcu_hardcap = 25
 mcu_power_scale = 250
 mcu_rad_scale = 0.00005
+mcu_max_elf_size = 2000000

@@ -19,8 +19,6 @@
 /// Sustained load penalty increment per tick above threshold.
 #define MCU_SUSTAINED_PENALTY_STEP  0.25
 #define MCU_SUSTAINED_PENALTY_CAP 5.0
-// 1MB
-#define MCU_MAX_ELF_FILE_SIZE 1000000
 #define MCU_MEMORY_CORRUPTION_FREQUENCY (1 MINUTE)
 /// Reference mass for MCU dose calculations (kg). Affects dose magnitude - tune coefficients accordingly.
 #define MCU_RAD_MASS 0.1
@@ -49,7 +47,7 @@
 	w_class = ITEM_SIZE_TINY
 
 	var/id = 0
-	var/ram_size = 32768 // 32 KB
+	var/ram_size = 65536 // 64 KB
 	/// User-set frequency. Hz
 	var/target_frequency = 1000000 // 1 MHz
 	/// Actual running frequency (target * throttle multiplier). Hz
@@ -199,8 +197,8 @@
 		if(QDELETED(src) || !elf_file || QDELETED(user) || !user.Adjacent(src))
 			return ..()
 
-		if(length(elf_file) > MCU_MAX_ELF_FILE_SIZE)
-			to_chat(user, SPAN_WARNING("The file's size is too big [length(elf_file)] ([MCU_MAX_ELF_FILE_SIZE] max)"))
+		if(length(elf_file) > config.game.mcu_max_elf_size)
+			to_chat(user, SPAN_WARNING("The file's size is too big [length(elf_file)] ([config.game.mcu_max_elf_size] max)"))
 			return ..()
 
 		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[rand(9999999)].elf"
@@ -844,7 +842,7 @@
 	desc = "A reliable general-purpose microcontroller by Nanotrasen Cybernetics. \
 		The NCR-1000 offers balanced performance for everyday automation tasks."
 	
-	ram_size = 32768 // 32 KB
+	ram_size = 65536 // 64 KB
 	target_frequency = 1000000 // 1 MHz
 	frequency = 1000000
 	min_frequency = 250000 // 250 kHz
@@ -861,7 +859,7 @@
 	desc = "An upgraded variant of the NCR-1000 with doubled memory \
 		and improved clock speeds. Popular in industrial automation."
 	
-	ram_size = 65536 // 64 KB
+	ram_size = 262144 // 256 KB
 	target_frequency = 2000000 // 2 MHz default
 	frequency = 2000000
 	min_frequency = 500000 // 500 kHz
@@ -878,7 +876,7 @@
 	desc = "The professional-grade NCR-4000 features expanded memory \
 		and high clock speeds for demanding computational tasks."
 	
-	ram_size = 131072 // 128 KB
+	ram_size = 1048576 // 1 MB
 	target_frequency = 4000000 // 4 MHz default
 	frequency = 4000000
 	min_frequency = 1000000 // 1 MHz
@@ -948,7 +946,7 @@
 	min_frequency = 250000 // 250 kHz
 	max_frequency = 2000000 // 2 MHz
 	
-	pci_slots = 8
+	pci_slots = 6
 
 	thermal_mass = 5.0
 	P_idle = 1 WATT
@@ -961,6 +959,32 @@
 	shutdown_temp = 100 CELSIUS
 	damage_temp = 110 CELSIUS
 
+/obj/item/device/mcu/overclock/lite
+    name = "Fury-S1 Starter"
+    desc = "Entry-level overclocking MCU. A taste of Cybersun performance \
+        for those not ready to commit to full thermal chaos."
+    
+    ram_size = 65536 // 64 KB
+    target_frequency = 1500000
+    frequency = 1500000
+    min_frequency = 750000
+    max_frequency = 3000000
+    
+    pci_slots = 4
+
+    thermal_mass = 6.0
+    P_idle = 5 WATT
+    K_power = 12
+    cooling_k = 0.10
+    rad_hardening = 0.0
+    
+    throttle_temp = 60 CELSIUS
+    shutdown_temp = 85 CELSIUS
+    damage_temp = 90 CELSIUS
+    
+    oc_unlocked = TRUE
+    oc_ram_protection = TRUE
+
 /obj/item/device/mcu/overclock
 	name = "Fury-X1"
 	desc = "A high-performance MCU from Cybersun Industries, \
@@ -968,11 +992,11 @@
 		multipliers and reinforced power delivery. \
 		Handle with care - thermals can be... aggressive."
 	
-	ram_size = 65536 // 64 KB
-	target_frequency = 2000000 // 2 MHz default
+	ram_size = 262144 // 256 KB
+	target_frequency = 2000000 // 2 MHz
 	frequency = 2000000
 	min_frequency = 1000000 // 1 MHz
-	max_frequency = 4000000 // 4 MHz -> 6MHz OC
+	max_frequency = 4000000 // 4 MHz -> 6 MHz OC
 	
 	pci_slots = 8
 
@@ -995,7 +1019,7 @@
 		overclocking potential with exotic cooling solutions in mind. \
 		Warning: May void warranty, sanity, and fire suppression systems."
 	
-	ram_size = 131072 // 128 KB
+	ram_size = 1048576 // 1 MB
 	target_frequency = 4000000 // 4 MHz default
 	frequency = 4000000
 	min_frequency = 2000000 // 2 MHz
@@ -1022,7 +1046,7 @@
 		Can scale from near-idle power sipping to respectable performance \
 		on demand. Perfect for variable workloads."
 	
-	ram_size = 49152 // 48 KB
+	ram_size = 65536 // 64 KB
 	target_frequency = 1000000 // 1 MHz default
 	frequency = 1000000
 	min_frequency = 100000 // 100 kHz
@@ -1046,7 +1070,7 @@
 		the frequency ceiling while maintaining the signature \
 		wide operating range. Ideal for adaptive systems."
 	
-	ram_size = 98304 // 96 KB
+	ram_size = 262144 // 256 KB
 	target_frequency = 2000000 // 2 MHz default
 	frequency = 2000000
 	min_frequency = 125000 // 125 kHz
@@ -1066,7 +1090,7 @@
 		spans from deep sleep frequencies to high-performance modes, \
 		with generous 192KB of RAM for complex applications."
 	
-	ram_size = 196608 // 192 KB
+	ram_size = 786432 // 768 KB
 	target_frequency = 2000000 // 2 MHz default
 	frequency = 2000000
 	min_frequency = 62500 // 62.5 kHz
@@ -1087,7 +1111,7 @@
 		redundancy, and silicon-on-insulator fabrication. \
 		Slower but virtually indestructible — even near a supermatter."
 	
-	ram_size = 65536 // 64 KB
+	ram_size = 131072 // 128 KB
 	target_frequency = 1000000 // 1 MHz default
 	frequency = 1000000
 	min_frequency = 500000 // 500 kHz

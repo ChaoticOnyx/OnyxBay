@@ -55,6 +55,7 @@
 	var/mcu_hardcap
 	var/mcu_power_scale
 	var/mcu_rad_scale
+	var/mcu_max_elf_size
 
 /datum/configuration_section/game/load_data(list/data)
 	CONFIG_LOAD_STR(default_view, data["default_view"])
@@ -110,3 +111,4 @@
 	CONFIG_LOAD_NUM(mcu_hardcap, data["mcu_hardcap"])
 	CONFIG_LOAD_NUM(mcu_power_scale, data["mcu_power_scale"])
 	CONFIG_LOAD_NUM(mcu_rad_scale, data["mcu_rad_scale"])
+	CONFIG_LOAD_NUM(mcu_max_elf_size, data["mcu_max_elf_size"])

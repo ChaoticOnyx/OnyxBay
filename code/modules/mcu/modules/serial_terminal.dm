@@ -1,5 +1,5 @@
-#define MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE 512
-#define MCU_SERIAL_TERMINAL_SCREEN_BUFFER_SIZE 4096
+#define MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE 1024
+#define MCU_SERIAL_TERMINAL_HISTORY_SIZE 2048
 
 /obj/item/mcu_module/serial_terminal
 	name = "Serial Terminal module"
@@ -10,10 +10,10 @@
 	device_type = Z_DEVICE_TYPE_SERIAL_TERMINAL
 
 	var/list/buffer = list()
+	var/buffer_start = 0
 
 /obj/item/mcu_module/serial_terminal/attack_self(mob/user as mob)
 	tgui_interact(user)
-
 	return TRUE
 
 /obj/item/mcu_module/serial_terminal/tgui_interact(mob/user, datum/tgui/ui)
@@ -28,6 +28,7 @@
 	var/list/data = list()
 
 	data["buffer"] = buffer
+	data["bufferStart"] = buffer_start
 	data["maxInputBytes"] = MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE
 	data["isActive"] = __host != null && Z_MACHINE_GET_STATE(__host.resolve().id) == Z_MSTATE_RUNNING
 
@@ -66,23 +67,25 @@
 
 			ASSERT(Z_MACHINE_SYSCALL(M.id, __pci_slot, Z_SERIAL_B2N_CMD_WRITE, valid_bytes) == TRUE)
 
-			buffer += valid_bytes
-
-			if(length(buffer) > MCU_SERIAL_TERMINAL_SCREEN_BUFFER_SIZE)
-				buffer.Cut(1, length(buffer) - MCU_SERIAL_TERMINAL_SCREEN_BUFFER_SIZE + 1)
+			__append_bytes(valid_bytes)
 
 			return TRUE
 
 	return FALSE
 
+/obj/item/mcu_module/serial_terminal/proc/__append_bytes(list/bytes)
+	buffer += bytes
+
+	if(length(buffer) > MCU_SERIAL_TERMINAL_HISTORY_SIZE)
+		var/to_cut = length(buffer) - MCU_SERIAL_TERMINAL_HISTORY_SIZE
+		buffer.Cut(1, to_cut + 1)
+		buffer_start += to_cut
+
 /obj/item/mcu_module/serial_terminal/__syscall(cmd, ...)
 	switch(cmd)
 		if(Z_SERIAL_N2B_CMD_WRITE)
 			var/list/bytes = args[2]
-			buffer += bytes
-
-			if(length(buffer) > MCU_SERIAL_TERMINAL_SCREEN_BUFFER_SIZE)
-				buffer.Cut(1, length(buffer) - MCU_SERIAL_TERMINAL_SCREEN_BUFFER_SIZE + 1)
+			__append_bytes(bytes)
 
 			return TRUE
 
@@ -91,6 +94,7 @@
 /obj/item/mcu_module/serial_terminal/__reset(attached)
 	if(attached)
 		buffer = list()
+		buffer_start = 0
 
 #undef MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE
-#undef MCU_SERIAL_TERMINAL_SCREEN_BUFFER_SIZE
+#undef MCU_SERIAL_TERMINAL_HISTORY_SIZE
