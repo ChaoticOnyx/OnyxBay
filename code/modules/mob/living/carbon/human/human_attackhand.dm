@@ -208,6 +208,7 @@
 										H.visible_message(SPAN("danger", "[H] shoves \his hand into [src]'s chest!"))
 										custom_pain("You can feel a hand ripping your inwards!", 50, affecting = O)
 										H.next_move = world.time + 40 //also should prevent user from triggering this repeatedly
+										var/was_rightclicked = H.rightclicked
 										if(!do_after(H, 40))
 											return 0
 										if(!(G && G.affecting == src)) //check that we still have a grab
@@ -215,8 +216,12 @@
 
 										for(var/obj/item/organ/internal/heart/I in internal_organs)
 											if(I && istype(I))
-												if(!H.put_in_active_hand(I))
-													return 0
+												if(!was_rightclicked)
+													if(!H.put_in_active_hand(I))
+														return 0
+												else
+													if(!H.put_in_inactive_hand(I))
+														return 0
 												I.cut_away(src)
 												O.implants -= I
 												H.visible_message(SPAN("danger", "[H] rips [src]'s [I.name] out!"))
