@@ -151,3 +151,16 @@
 	var/mob/M = user.mob
 	M.stop_pulling()
 	return TRUE
+
+/datum/keybinding/mob/toggle_aim_assist
+	hotkey_keys = list("ShiftC")
+	name = "toggle_aim_assist"
+	full_name = "Toggle Click Mode"
+	description = "Choose whether to click on anything or mobs only."
+
+/datum/keybinding/mob/toggle_aim_assist/down(client/user)
+	var/mob/living/carbon/human/M = user.mob // Human-only for now, TODO: Add HUD icons or something for everybody else
+	M.stop_pulling()
+	if(istype(M))
+		M.toggle_aim_assist()
+	return TRUE

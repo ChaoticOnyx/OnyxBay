@@ -10,7 +10,7 @@
 
 		var/list/hearing_mobs = list()
 		var/list/hearing_objs = list()
-		get_mobs_and_objs_in_view_fast(get_turf(gg), world.view, hearing_mobs, hearing_objs, checkghosts = null)
+		get_listeners_in_range(get_turf(gg), world.view, hearing_mobs, hearing_objs)
 
 		for(var/o in hearing_objs)
 			var/obj/O = o

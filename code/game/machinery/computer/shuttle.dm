@@ -38,7 +38,7 @@
 			return
 
 		var/choice = alert(user, text("Would you like to (un)authorize a shortened launch time? [] authorization\s are still needed. Use abort to cancel all authorizations.", auth_need - length(authorized)), "Shuttle Launch", "Authorize", "Repeal", "Abort")
-		if(evacuation_controller.is_prepared() && user.get_active_hand() != W)
+		if(evacuation_controller.is_prepared() && !user.has_in_hands(W))
 			return
 
 		switch(choice)

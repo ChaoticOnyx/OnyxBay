@@ -59,7 +59,7 @@
 		to_chat(user, "There is nothing to remove in \the [src].")
 
 /obj/item/gun/launcher/pneumatic/attack_hand(mob/user as mob)
-	if(user.get_inactive_hand() == src)
+	if(user.has_in_passive_hand(src))
 		unload_hopper(user)
 	else
 		return ..()

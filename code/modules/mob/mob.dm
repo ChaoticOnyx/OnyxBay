@@ -68,9 +68,11 @@
 	bodytemp = null
 	healths = null
 	pains = null
+	resting_icon = null
 	throw_icon = null
 	block_icon = null
-	blockswitch_icon = null
+	aim_assist_icon = null
+	twohanded_mode_icon = null
 	nutrition_icon = null
 	hydration_icon = null
 	bladder_icon = null
@@ -135,7 +137,7 @@
 /mob/visible_message(message, self_message, blind_message, range = world.view, checkghosts = null, narrate = FALSE)
 	var/list/seeing_mobs = list()
 	var/list/seeing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
+	get_listeners_in_range(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
 
 	for(var/o in seeing_objs)
 		var/obj/O = o
@@ -178,7 +180,7 @@
 /mob/audible_message(message, self_message, deaf_message, hearing_distance = world.view, checkghosts = null, narrate = FALSE)
 	var/list/hearing_mobs = list()
 	var/list/hearing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
+	get_listeners_in_range(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
 
 	for(var/o in hearing_objs)
 		var/obj/O = o
@@ -821,21 +823,15 @@
 	sleeping = max(sleeping + amount,0)
 	return
 
-/mob/proc/Resting(amount)
-	facing_dir = null
-	resting = max(max(resting,amount),0)
-	return
-
-/mob/proc/SetResting(amount)
-	resting = max(amount,0)
-	return
-
-/mob/proc/AdjustResting(amount)
-	resting = max(resting + amount,0)
-	return
-
 /mob/proc/get_species()
 	return ""
+
+/mob/proc/set_resting(new_state)
+	resting = new_state
+	update_canmove()
+	if(resting_icon)
+		resting_icon.icon_state = "rest[resting]"
+	return
 
 /mob/proc/get_visible_implants(class = 0)
 	var/list/visible_implants = list()

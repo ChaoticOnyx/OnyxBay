@@ -246,7 +246,7 @@
 	else if(W.force >= 10)
 		take_damage(W.force)
 		user.visible_message(SPAN("danger", "\The [src] has been [pick(W.attack_verb)] with [W] by [user]!"))
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		obj_attack_sound(W)
 		shake_animation(stime = 4)

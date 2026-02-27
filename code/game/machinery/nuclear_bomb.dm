@@ -513,7 +513,7 @@ var/bomb_set
 
 /obj/machinery/nuclearbomb/station/start_bomb()
 	visible_message(SPAN("warning", "Warning! The self-destruct sequence override will be disabled [self_destruct_cutoff] seconds before detonation."))
-	sound_to(world, sound(countdown_sound, repeat = 1, wait = 0, volume = countdown_volume, channel = countdown_channel))
+	play_countdown_sound(sound(countdown_sound, repeat = 1, wait = 0, volume = countdown_volume, channel = countdown_channel))
 	return ..()
 
 /obj/machinery/nuclearbomb/station/check_cutoff()
@@ -523,7 +523,7 @@ var/bomb_set
 	..()
 
 /obj/machinery/nuclearbomb/station/Destroy()
-	sound_to(world, sound(null, channel = countdown_channel))
+	play_countdown_sound(sound(null, channel = countdown_channel))
 	flash_tiles.Cut()
 	return ..()
 
@@ -554,11 +554,18 @@ var/bomb_set
 /obj/machinery/nuclearbomb/station/secure_device()
 	..()
 	announced = 0
-	sound_to(world, sound(null, channel = countdown_channel))
+	play_countdown_sound(sound(null, channel = countdown_channel))
 
 /obj/machinery/nuclearbomb/station/explode()
-	sound_to(world, sound(null, channel = countdown_channel))
+	play_countdown_sound(sound(null, channel = countdown_channel))
 	..()
+
+/obj/machinery/nuclearbomb/station/proc/play_countdown_sound(sound/S)
+	var/list/station_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
+	for(var/mob/M in GLOB.player_list)
+		var/turf/T = get_turf(M)
+		if(T && (T.z in station_z) && !istype(M, /mob/new_player) && !isdeaf(M))
+			sound_to(M, S)
 
 /obj/machinery/nuclearbomb/station/on_update_icon()
 	var/target_icon_state

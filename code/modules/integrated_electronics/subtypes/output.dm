@@ -49,7 +49,7 @@
 
 	if(isliving(assembly.loc))//this whole block just returns if the assembly is neither in a mobs hands or on the ground
 		var/mob/living/H = assembly.loc
-		if(H.get_active_hand() != assembly && H.get_inactive_hand() != assembly && istype(H))
+		if(istype(H) && !H.has_in_hands(assembly))
 			return
 	else
 		if(!isturf(assembly.loc))

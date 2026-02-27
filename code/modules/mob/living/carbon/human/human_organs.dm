@@ -226,7 +226,7 @@
 		if(((stance_d_l >= 5) && (stance_d_r >= 5)))
 			custom_emote(VISIBLE_MESSAGE, "can't stand without legs!", "AUTO_EMOTE")
 			Weaken(10)
-			resting = TRUE
+			set_resting(TRUE)
 
 		// One leg is missing and the other one is at least broken
 		else if(((stance_d_l >= 5) && (stance_d_r > 2)) || ((stance_d_l > 2) && (stance_d_r >= 5)))
@@ -235,7 +235,7 @@
 				shock_stage+=5
 			custom_emote(VISIBLE_MESSAGE, "collapses!", "AUTO_EMOTE")
 			Weaken(10)
-			resting = TRUE // Let's help the poor creature to stay down, preventing further pain.
+			set_resting(TRUE) // Let's help the poor creature to stay down, preventing further pain.
 
 		// One leg is totally wrecked and the other one is hurt
 		else if(((stance_d_l >= 4) && (stance_d_l > 0)) || ((stance_d_l > 0) && (stance_d_r >= 4)))

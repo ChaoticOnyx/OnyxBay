@@ -686,7 +686,7 @@ var/list/ai_verbs_default = list(
 	set name = "Rest"
 	set category = "IC"
 
-	resting = 0
+	set_resting(FALSE)
 	var/obj/item/rig/rig = src.get_rig()
 	if(rig)
 		rig.force_rest(src)

@@ -63,7 +63,7 @@
 				return
 			else
 				// insert cell
-				var/obj/item/cell/C = usr.get_active_hand()
+				var/obj/item/cell/C = usr.get_clicking_hand()
 				if(user.drop(C, src))
 					cell = C
 					C.add_fingerprint(user)

@@ -38,13 +38,13 @@
 	if(istype(loc, /obj/item/storage))
 		return ..()
 
-	if(loc == user && user.get_inactive_hand() != src)
+	if(loc == user && !user.has_in_passive_hand(src))
 		return ..()
 
 	if(!my_plant && !my_secret)
 		return ..()
 
-	if(user.a_intent == I_GRAB || user.get_inactive_hand() == src)
+	if(user.a_intent == I_GRAB || user.has_in_passive_hand(src))
 		uproot(user)
 		return
 
@@ -62,7 +62,7 @@
 		return
 
 	if(user == usr && (user.contents.Find(src) || in_range(src, user)))
-		if(!ishuman(user) || user.get_active_hand())
+		if(!ishuman(user) || user.get_clicking_hand())
 			return
 
 		var/mob/living/carbon/human/H = user
@@ -77,7 +77,7 @@
 	return
 
 /obj/item/plant_pot/proc/uproot(mob/user)
-	if(!ishuman(user) || user.get_active_hand())
+	if(!ishuman(user) || user.get_clicking_hand())
 		return
 
 	if(my_plant)

@@ -95,7 +95,7 @@
 	remove_fuel_tank(usr)
 
 /obj/item/gun/flamer/attack_hand(mob/user)
-	if(user.get_inactive_hand() == src)
+	if(user.has_in_hands(src))
 		remove_fuel_tank(user)
 		return
 	. = ..()

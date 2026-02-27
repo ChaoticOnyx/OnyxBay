@@ -479,7 +479,7 @@ its easier to just keep the beam vertical.
 /atom/proc/visible_message(message, blind_message, range = world.view, checkghosts = null)
 	var/list/seeing_mobs = list()
 	var/list/seeing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
+	get_listeners_in_range(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
 
 	for(var/o in seeing_objs)
 		var/obj/O = o
@@ -501,7 +501,7 @@ its easier to just keep the beam vertical.
 /atom/proc/audible_message(message, deaf_message, hearing_distance = world.view, checkghosts = null, splash_override = null)
 	var/list/hearing_mobs = list()
 	var/list/hearing_objs = list()
-	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
+	get_listeners_in_range(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
 
 	for(var/o in hearing_objs)
 		var/obj/O = o

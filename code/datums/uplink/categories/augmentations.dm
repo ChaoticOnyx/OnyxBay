@@ -15,12 +15,12 @@
 	path = /obj/item/storage/box/syndie_kit/augment_actuators
 
 /datum/uplink_item/item/augmentations/armpistol
-	name = "Embedded Pistol Augment Kit"
+	name = "Embedded Pistol Augment Kit (synth-only)"
 	item_cost = 6
 	path = /obj/item/storage/box/syndie_kit/augment_armpistol
 
 /datum/uplink_item/item/augmentations/armshield
-	name = "Embedded Shield Augment Kit"
+	name = "Embedded Shield Augment Kit (synth-only)"
 	item_cost = 10
 	path = /obj/item/storage/box/syndie_kit/augment_armshield
 
@@ -30,7 +30,7 @@
 	path = /obj/item/storage/box/syndie_kit/augment_energy_blade
 
 /datum/uplink_item/item/augmentations/popout_shotgun
-	name = "Pop-out Shotgun Augment Kit"
+	name = "Pop-out Shotgun Augment Kit (synth-only)"
 	item_cost = 6
 	path = /obj/item/storage/box/syndie_kit/augment_popout_shotgun
 

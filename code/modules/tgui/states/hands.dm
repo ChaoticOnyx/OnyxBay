@@ -20,11 +20,7 @@ GLOBAL_DATUM_INIT(tgui_hands_state, /datum/ui_state/hands_state, new)
 	return UI_CLOSE
 
 /mob/living/hands_can_use_topic(src_object)
-	if(get_active_hand() == src_object || get_inactive_hand() == src_object)
-		return UI_INTERACTIVE
-	return UI_CLOSE
+	return has_in_hands(src_object) ? UI_INTERACTIVE : UI_CLOSE
 
 /mob/living/silicon/robot/hands_can_use_topic(src_object)
-	if(activated(src_object))
-		return UI_INTERACTIVE
-	return UI_CLOSE
+	return activated(src_object) ? UI_INTERACTIVE : UI_CLOSE

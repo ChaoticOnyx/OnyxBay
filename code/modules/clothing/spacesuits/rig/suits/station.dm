@@ -9,7 +9,7 @@
 	offline_slowdown = 0
 	offline_vision_restriction = 0
 
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/briefcase, /obj/item/storage/secure/briefcase)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/briefcase, /obj/item/storage/secure/briefcase, /obj/item/flag)
 
 	req_access = list()
 	req_one_access = list()
@@ -52,7 +52,7 @@
 	boot_type = /obj/item/clothing/shoes/magboots/rig/industrial
 	glove_type = /obj/item/clothing/gloves/rig/industrial
 
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/ore,/obj/item/device/t_scanner,/obj/item/pickaxe, /obj/item/construction/rcd, /obj/item/gun/energy/kinetic_accelerator, /obj/item/shovel, /obj/item/ore_radar, /obj/item/resonator)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/ore,/obj/item/device/t_scanner,/obj/item/pickaxe, /obj/item/construction/rcd, /obj/item/gun/energy/kinetic_accelerator, /obj/item/shovel, /obj/item/ore_radar, /obj/item/resonator, /obj/item/flag)
 
 	req_access = list()
 	req_one_access = list()
@@ -97,7 +97,7 @@
 	boot_type = /obj/item/clothing/shoes/magboots/rig/eva
 	glove_type = /obj/item/clothing/gloves/rig/eva
 
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/inflatable_dispenser,/obj/item/device/t_scanner,/obj/item/construction/rcd)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/inflatable_dispenser,/obj/item/device/t_scanner,/obj/item/construction/rcd, /obj/item/flag)
 
 	req_access = list()
 	req_one_access = list()
@@ -145,7 +145,7 @@
 	boot_type =  /obj/item/clothing/shoes/magboots/rig/ce
 	glove_type = /obj/item/clothing/gloves/rig/ce
 
-	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/ore,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/inflatable_dispenser,/obj/item/device/t_scanner,/obj/item/pickaxe,/obj/item/construction/rcd)
+	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/ore,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/inflatable_dispenser,/obj/item/device/t_scanner,/obj/item/pickaxe,/obj/item/construction/rcd, /obj/item/flag)
 
 	req_access = list()
 	req_one_access = list()
@@ -198,7 +198,7 @@
 	boot_type = /obj/item/clothing/shoes/magboots/rig/hazmat
 	glove_type = /obj/item/clothing/gloves/rig/hazmat
 
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/excavation,/obj/item/pickaxe,/obj/item/device/healthanalyzer,/obj/item/device/measuring_tape,/obj/item/device/ano_scanner,/obj/item/device/depth_scanner,/obj/item/device/core_sampler,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/bluespace_beacon,/obj/item/pickaxe/archaeologist/hand,/obj/item/storage/bag/fossils)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/excavation,/obj/item/pickaxe,/obj/item/device/healthanalyzer,/obj/item/device/measuring_tape,/obj/item/device/ano_scanner,/obj/item/device/depth_scanner,/obj/item/device/core_sampler,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/bluespace_beacon, /obj/item/pickaxe/archaeologist/hand, /obj/item/storage/bag/fossils, /obj/item/flag)
 
 	req_access = list()
 	req_one_access = list()
@@ -242,7 +242,7 @@
 	boot_type = /obj/item/clothing/shoes/magboots/rig/medical
 	glove_type = /obj/item/clothing/gloves/rig/medical
 
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/firstaid,/obj/item/device/healthanalyzer,/obj/item/stack/medical,/obj/item/roller )
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/firstaid,/obj/item/device/healthanalyzer,/obj/item/stack/medical,/obj/item/roller, /obj/item/flag)
 
 	req_access = list(access_medical_equip)
 
@@ -285,7 +285,7 @@
 	boot_type = /obj/item/clothing/shoes/magboots/rig/hazard
 	glove_type = /obj/item/clothing/gloves/rig/hazard
 
-	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/handcuffs,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)
+	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/handcuffs,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton, /obj/item/flag)
 
 	req_access = list()
 	req_one_access = list()
@@ -341,7 +341,8 @@
 				   /obj/item/gun/energy/kinetic_accelerator,
 				   /obj/item/shovel,
 				   /obj/item/ore_radar,
-				   /obj/item/resonator)
+				   /obj/item/resonator,
+				   /obj/item/flag)
 
 	req_access = list()
 	req_one_access = list()

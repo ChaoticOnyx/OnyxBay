@@ -111,9 +111,30 @@
 /datum/design/item/augment/armor
 	id = "augment_armor"
 	build_path = /obj/item/organ_module/armor
-	materials = list(MATERIAL_DURANIUM = 1000, MATERIAL_PLASTEEL = 2000)
-	req_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 7)
+	materials = list(MATERIAL_STEEL = 4000, MATERIAL_PLASTIC = 6000)
+	req_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3, TECH_COMBAT = 2)
 	sort_string = "VADAM"
+
+/datum/design/item/augment/armor/mk2
+	id = "augment_armor_mk2"
+	build_path = /obj/item/organ_module/armor/mk2
+	materials = list(MATERIAL_STEEL = 4000, MATERIAL_SILVER = 4000, MATERIAL_PLASTIC = 2000)
+	req_tech = list(TECH_MATERIAL = 3, TECH_BIO = 4, TECH_COMBAT = 4)
+	sort_string = "VADAM1"
+
+/datum/design/item/augment/armor/mk3
+	id = "augment_armor_mk3"
+	build_path = /obj/item/organ_module/armor/mk3
+	materials = list(MATERIAL_PLASTEEL = 4000, MATERIAL_GOLD = 2500, MATERIAL_PLASTIC = 1500, MATERIAL_SILVER = 1000)
+	req_tech = list(TECH_MATERIAL = 5, TECH_BIO = 6, TECH_COMBAT = 5)
+	sort_string = "VADAM2"
+
+/datum/design/item/augment/armor/mk4
+	id = "augment_armor_mk4"
+	build_path = /obj/item/organ_module/armor/mk4
+	materials = list(MATERIAL_DURANIUM = 2000, MATERIAL_PLASTEEL = 2500, MATERIAL_DIAMOND = 2000, MATERIAL_PLASTIC = 1000, MATERIAL_SILVER = 500, MATERIAL_GOLD = 500)
+	req_tech = list(TECH_MATERIAL = 7, TECH_BIO = 8, TECH_COMBAT = 7)
+	sort_string = "VADAM3"
 
 /datum/design/item/augment/hud/health
 	id = "augment_med_hud"

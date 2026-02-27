@@ -92,7 +92,7 @@
 
 	startswith = list(
 		/obj/item/device/healthanalyzer,
-		/obj/item/reagent_containers/hypospray/autoinjector,
+		/obj/item/reagent_containers/hypospray/autoinjector/adrenaline,
 		/obj/item/stack/medical/advanced/bruise_pack = 2,
 		/obj/item/stack/medical/advanced/ointment = 2,
 		/obj/item/stack/medical/splint

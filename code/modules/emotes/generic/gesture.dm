@@ -265,7 +265,7 @@
 	var/datum/push_up/P = new(user)
 
 	user.dir = 4
-	user.resting = TRUE
+	user.set_resting(TRUE)
 	user.push_ups = TRUE
 	user.update_transform()
 

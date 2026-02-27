@@ -347,7 +347,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 			W.equipped(src, slot)
 			update_inv_s_store(redraw_mob)
 		if(slot_in_backpack)
-			if(get_active_hand() == W)
+			if(has_in_hands(W))
 				drop(W)
 			W.forceMove(src.back)
 		if(slot_tie)

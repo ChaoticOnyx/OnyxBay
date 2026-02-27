@@ -246,7 +246,7 @@
 		unload_ammo(user)
 
 /obj/item/gun/projectile/attack_hand(mob/user as mob)
-	if(user.get_inactive_hand() == src)
+	if(user.has_in_passive_hand(src))
 		unload_ammo(user, allow_dump=0)
 	else
 		return ..()

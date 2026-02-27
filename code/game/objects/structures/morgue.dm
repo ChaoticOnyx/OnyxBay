@@ -96,7 +96,7 @@
 /obj/structure/morgue/attackby(P as obj, mob/user as mob)
 	if(istype(P, /obj/item/pen))
 		var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
-		if(user.get_active_hand() != P)
+		if(!user.has_in_hands(P))
 			return
 		if(!in_range(src, usr) && src.loc != user)
 			return
@@ -276,7 +276,7 @@
 /obj/structure/crematorium/attackby(P as obj, mob/user as mob)
 	if(istype(P, /obj/item/pen))
 		var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
-		if(user.get_active_hand() != P)
+		if(!user.has_in_hands(P))
 			return
 		if(!in_range(src, usr) > 1 && src.loc != user)
 			return

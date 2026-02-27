@@ -222,7 +222,7 @@
 	var/cooldown = 0
 	var/busy = 0
 
-/obj/item/shockpaddles/proc/set_cooldown(delay)
+/obj/item/shockpaddles/proc/set_charge_cooldown(delay)
 	cooldown = 1
 	update_icon()
 
@@ -362,7 +362,7 @@
 
 	H.visible_message("<span class='warning'>\The [H]'s body convulses a bit.</span>")
 	playsound(src, 'sound/machines/defib_zap.ogg', 50, 1, -1)
-	set_cooldown(cooldowntime)
+	set_charge_cooldown(cooldowntime)
 
 	error = can_revive(H)
 	if(error)
@@ -412,7 +412,7 @@
 	user.visible_message("<span class='danger'><i>\The [user] shocks [H] with \the [src]!</i></span>", "<span class='warning'>You shock [H] with \the [src]!</span>")
 	playsound(src, 'sound/machines/defib_zap.ogg', 100, 1, -1)
 	playsound(loc, 'sound/weapons/Egloves.ogg', 100, 1, -1)
-	set_cooldown(cooldowntime)
+	set_charge_cooldown(cooldowntime)
 
 	H.stun_effect_act(2, 120, target_zone)
 	var/burn_damage = H.electrocute_act(burn_damage_amt*2, src, def_zone = target_zone)

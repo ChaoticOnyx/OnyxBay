@@ -121,7 +121,7 @@
 	return ..()
 
 /obj/item/ammo_casing/grenade/loaded/attack_hand(mob/user)
-	if(opened == TRUE && grenade && user.get_inactive_hand() == src)
+	if(opened == TRUE && grenade && user.has_in_passive_hand(src))
 		to_chat(user, "You remove \the [grenade] from \the [src].")
 		user.pick_or_drop(grenade)
 		grenade = null
@@ -209,3 +209,9 @@
 	name = "grenade shell (NE)"
 	grenade = /obj/item/grenade/fake
 	label_text = "NE"
+
+/obj/item/ammo_casing/grenade/loaded/stingbang
+	name = "grenade shell (stingbang)"
+	grenade = /obj/item/grenade/frag/stingbang/shell
+	label_text = "STING"
+	opened = -1

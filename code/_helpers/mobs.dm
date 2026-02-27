@@ -240,7 +240,7 @@
 	if(user.is_space_movement_permitted() == SPACE_MOVE_FORBIDDEN && user.inertia_dir)
 		drifting = TRUE
 
-	var/holding = user.get_active_hand()
+	var/holding = user.get_clicking_hand()
 
 	if(istype(user,/mob/living))
 		var/mob/living/L = user
@@ -272,7 +272,7 @@
 			break
 
 		if(needhand)
-			if(user.get_active_hand() != holding)
+			if(!user.has_in_hands(holding))
 				. = 0
 				break
 

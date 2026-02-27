@@ -42,7 +42,7 @@
 
 			pinned_target.dropInto(user.loc)
 			if(ishuman(user))
-				if(!user.get_active_hand())
+				if(!user.get_clicking_hand())
 					user.put_in_hands(pinned_target)
 					to_chat(user, "You take the target out of the stake.")
 			else

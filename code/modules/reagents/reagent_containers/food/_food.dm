@@ -165,7 +165,7 @@
 			if(!do_mob(user, M, time = 2 SECONDS))
 				return
 
-			if(user.get_active_hand() != src)
+			if(!user.has_in_hands(src))
 				return
 
 			if(!M.can_force_feed(user, src, check_resist = TRUE))
