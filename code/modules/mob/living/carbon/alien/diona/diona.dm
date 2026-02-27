@@ -76,7 +76,7 @@
 	if(D.stat != CONSCIOUS)
 		return
 	if(prob(66) && isturf(D.loc) && !D.pulledby) //won't move if being pulled
-		SelfMove(pick(GLOB.cardinal))
+		SelfMove(pick(GLOB.alldirs))
 	if(prob(3))
 		D.emote(pick("scratch","jump","chirp","tail"))
 
