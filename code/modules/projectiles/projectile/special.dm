@@ -73,6 +73,7 @@
 	nodamage = 1
 	check_armour = "bullet"
 	blockable = FALSE
+	no_miss = TRUE
 	poisedamage = 255 // slammy jammy
 	space_knockback = TRUE
 
