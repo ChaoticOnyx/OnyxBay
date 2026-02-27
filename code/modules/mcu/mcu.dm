@@ -154,18 +154,24 @@
 			else if(tid_ratio >= MCU_TID_WARN_RATIO)
 				. += SPAN_WARNING("You notice slight discoloration on the board - possibly radiation.")
 
-		if(temperature < 30 CELSIUS)
-			. += "It feels [SPAN_NOTICE("cool")] to the touch."
-		else if(temperature < 45 CELSIUS)
-			. += "It feels [SPAN_NOTICE("warm")] to the touch."
-		else if(temperature < 60 CELSIUS)
-			. += "It feels [SPAN_WARNING("hot")] to the touch."
-		else if(temperature < 80 CELSIUS)
-			. += "It feels [SPAN_WARNING("painfully hot")]! You pull your hand away."
-		else if(temperature < 100 CELSIUS)
-			. += "It is [SPAN_DANGER("searing hot")]! Touching it would burn you."
+			if(issilicon(user) || hasHUD(user, HUD_SCIENCE))
+				. += "Radiation: [accumulated_tid]/[tid_limit] TID"
+
+		if(issilicon(user) || hasHUD(user, HUD_SCIENCE))
+			. += "Temperature: [CONV_KELVIN_CELSIUS(temperature)]°C"
 		else
-			. += "It is [SPAN_DANGER("glowing with heat")]! The air around it shimmers."
+			if(temperature < 30 CELSIUS)
+				. += "It feels [SPAN_NOTICE("cool")] to the touch."
+			else if(temperature < 45 CELSIUS)
+				. += "It feels [SPAN_NOTICE("warm")] to the touch."
+			else if(temperature < 60 CELSIUS)
+				. += "It feels [SPAN_WARNING("hot")] to the touch."
+			else if(temperature < 80 CELSIUS)
+				. += "It feels [SPAN_WARNING("painfully hot")]! You pull your hand away."
+			else if(temperature < 100 CELSIUS)
+				. += "It is [SPAN_DANGER("searing hot")]! Touching it would burn you."
+			else
+				. += "It is [SPAN_DANGER("glowing with heat")]! The air around it shimmers."
 		
 		if(oc_unlocked)
 			. += "The [SPAN_WARNING("OC")] jumper is set - overclocking enabled."
