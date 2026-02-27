@@ -18,6 +18,48 @@
 	bodyparts = /decl/simple_animal_bodyparts/psychic_glitch
 
 	var/weakref/my_rift = null
+	var/static/list/glitch_states = list(
+		"carp",
+		"maneater",
+		"spider",
+		"nuker",
+		"tomato",
+		"lizard",
+		"clown",
+		"thing",
+		"metroid",
+		"flesh",
+		"ghost",
+		"roro",
+		"cephamite",
+		"monkey",
+		"god",
+		"xeno",
+		"typhon",
+		"jeff",
+		"burning",
+		"robot",
+		"chimp",
+		"husk"
+	)
+
+/mob/living/simple_animal/hostile/psychic_glitch/Initialize()
+	. = ..()
+	add_think_ctx("glitch_icon_context", CALLBACK(src, nameof(.proc/update_glitch_icon)), world.time + rand(1, 15) SECONDS)
+
+/mob/living/simple_animal/hostile/psychic_glitch/Destroy()
+	remove_think_ctx("glitch_icon_context")
+	return ..()
+
+/mob/living/simple_animal/hostile/psychic_glitch/update_icons()
+	return
+
+/mob/living/simple_animal/hostile/psychic_glitch/proc/update_glitch_icon()
+	if(prob(10))
+		icon_state = icon_living
+	else
+		icon_state = "glitch_[pick(glitch_states)]"
+	set_next_think_ctx("glitch_icon_context", world.time + rand(1, 15) SECONDS)
 
 /mob/living/simple_animal/hostile/psychic_glitch/find_target()
 	. = ..()
@@ -31,11 +73,13 @@
 		H.adjust_hallucination(30, 100)
 
 /mob/living/simple_animal/hostile/psychic_glitch/death(gibbed, deathmessage, show_dead_message)
-	..(null,"is fading!", show_dead_message)
+	..(null, "is fading!", show_dead_message)
 	var/obj/structure/psychic_rift/psychic_rift = my_rift?.resolve()
 	if(psychic_rift)
-		psychic_rift.glitches_destroyed++
+		psychic_rift.glitches_left--
 		psychic_rift.glitches_active--
+		if(prob(50))
+			psychic_rift.restoration_ticks--
 		psychic_rift.check_rift_state()
 		my_rift = null
 	for(var/a in hearers(src, 4))
@@ -44,7 +88,7 @@
 				continue
 
 			var/mob/living/carbon/human/H = a
-			to_chat(H, SPAN("warning", "As \the [src] is fading, you can feel some of your sanity fading as well."))
+			to_chat(H, SPAN("warning", "As \the [src] fades, you can feel some of your sanity fading as well."))
 			H.adjust_hallucination(15, rand(35, 85))
 	new /obj/effect/effect/psychic_glitch(loc)
 	qdel(src)
@@ -82,18 +126,18 @@
 	name = "wounded reality"
 	desc = "A crack in... Reality? <span class='danger'>You feel your sanity slipping away just by looking at it.</span>"
 	mouse_opacity = 1
-	alpha = 200
 	icon = 'icons/mob/psychic_glitch.dmi'
 	icon_state = "rift1"
-	density = FALSE
+	density = TRUE
 	anchored = TRUE
+	plane = LIGHTING_PLANE
+	layer = ABOVE_LIGHTING_LAYER
 	var/max_glitches_at_time = 10 // Max psychic_glitch'es to exist at once
-	var/max_glitches = 40 // How many glitches must be killed to close the rift
+	var/max_glitches = 15 // Total number of glitches that must be killed to close the rift
 	var/glitches_active = 0 // Currently existing psychic_glitch'es
-	var/glitches_destroyed = 0 // How many glitches have been killed so far
+	var/glitches_left = 1 // Remaining number of glitches left until the rift closes
 	var/rift_active = FALSE // Fancy shattering effect
-	var/restoration_ticks = TICKS_TO_RESTORE_GLITCH // Decreasing glitches_destroyed count once in a while
-	var/rift_state = 0
+	var/restoration_ticks = TICKS_TO_RESTORE_GLITCH // Increasing glitches_left value once in a while
 
 /obj/structure/psychic_rift/Initialize()
 	. = ..()
@@ -102,37 +146,30 @@
 	set_next_think(world.time + 15 SECONDS)
 
 /obj/structure/psychic_rift/proc/check_rift_state()
-	if(glitches_destroyed >= max_glitches)
+	if(glitches_left <= 0)
 		visible_message(SPAN("danger", "The reality's wounds seems to be mended for now. All you can do is to hope it wasn't scarred too deep."))
 		qdel(src)
 		return FALSE
-
-	var/new_rift_state = 5
-	if(glitches_destroyed < max_glitches * 0.4)
-		new_rift_state = 1
-	else if(glitches_destroyed < max_glitches * 0.6)
-		new_rift_state = 2
-	else if(glitches_destroyed < max_glitches * 0.85)
-		new_rift_state = 3
-	else if(glitches_destroyed < max_glitches * 0.95)
-		new_rift_state = 4
-
-	if(new_rift_state != rift_state)
-		rift_state = new_rift_state
-		update_icon()
-
+	update_icon()
 	return TRUE
 
 /obj/structure/psychic_rift/on_update_icon()
+	var/rift_state = 5
+	if(glitches_left < max_glitches * 0.2)
+		rift_state = 1
+	else if(glitches_left < max_glitches * 0.4)
+		rift_state = 2
+	else if(glitches_left < max_glitches * 0.6)
+		rift_state = 3
+	else if(glitches_left < max_glitches * 0.8)
+		rift_state = 4
+
 	icon_state = "rift[rift_state]"
-	ClearOverlays()
-	if(rift_state < 4)
-		AddOverlays(emissive_appearance(icon, "[icon_state]-ea"))
 
 /obj/structure/psychic_rift/proc/spawn_glitch()
 	if(glitches_active >= max_glitches_at_time)
 		return
-	if(glitches_active + glitches_destroyed >= max_glitches)
+	if(glitches_active >= glitches_left)
 		return
 	glitches_active++
 	var/mob/living/simple_animal/hostile/psychic_glitch/PG = new(loc)
@@ -149,8 +186,8 @@
 
 	spawn_glitch()
 	restoration_ticks--
-	if(restoration_ticks < 0 && glitches_destroyed > 0)
-		glitches_destroyed--
+	if(restoration_ticks < 0 && glitches_left < max_glitches)
+		glitches_left++
 		restoration_ticks = TICKS_TO_RESTORE_GLITCH
 
 	set_next_think(world.time + 3 SECONDS)
