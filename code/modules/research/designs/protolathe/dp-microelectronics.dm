@@ -137,6 +137,16 @@
 	sort_string = "VABBA"
 	category_items = list("Microelectronics")
 
+/datum/design/item/signaler_module
+	name = "Debugger Probe"
+	id = "mcu_debugger"
+	build_type = PROTOLATHE
+	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
+	materials = list(MATERIAL_STEEL = 300)
+	build_path = /obj/item/debugger
+	sort_string = "VABCA"
+	category_items = list("Microelectronics")
+
 /datum/design/item/tts_module
 	name = "Text-to-Speech Module"
 	id = "tts_module"

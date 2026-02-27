@@ -125,6 +125,8 @@ var/__z_name = null
 /// Detaches a PCI device from a machine.
 #define Z_MACHINE_TRY_DETACH_PCI(ID, SLOT) call_ext(__z_name, "byond:Z_machine_try_detach_pci")(ID, SLOT)
 
+#define Z_MACHINE_DUMP_REGISTERS(ID) call_ext(__z_name, "byond:Z_machine_dump_registers")(ID)
+
 /// Destroys a machine and frees all its resources.
 #define Z_MACHINE_DESTROY(ID) call_ext(__z_name, "byond:Z_machine_destroy")(ID)
 

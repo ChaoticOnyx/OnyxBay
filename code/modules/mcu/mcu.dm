@@ -302,7 +302,10 @@
 		if (accumulated_tid <= 0)
 			to_chat(user, SPAN_NOTICE("[src] shows no signs of radiation-induced oxide degradation."))
 			return
-		
+
+		if(!do_after(user, 1, src, TRUE))
+			return
+
 		if (!P.use(1))
 			to_chat(user, SPAN_WARNING("There isn't enough nanopaste left."))
 			return
@@ -324,6 +327,76 @@
 				SPAN_NOTICE("[user] carefully applies [W] to [src], repairing some damage."), \
 				SPAN_NOTICE("You apply [W] to [src], annealing some of the radiation-induced charge traps. Further treatment is needed.") \
 			)
+	if(istype(W, /obj/item/debugger))
+		if(!do_after(user, 1 SECOND, src, TRUE))
+			return
+
+		var/dump = Z_MACHINE_DUMP_REGISTERS(id)
+		var/list/data = json_decode(dump)
+
+		var/list/output = list()
+		output += SPAN_NOTICE("<b>═══════════ MCU Register Dump ═══════════</b>")
+		
+		// Основная информация
+		output += SPAN_NOTICE("<b>── Status ──</b>")
+		output += "  PC: [num2hex(data["pc"])] | Cycle: [data["cycle"]] | Instret: [data["instret"]]"
+		output += "  Privilege: [data["privilege"]]"
+		
+		// Общие регистры (x0-x31)
+		output += SPAN_NOTICE("<b>── Common Registers (x0-x31) ──</b>")
+		var/list/common = data["common"]
+		for(var/row = 0; row < 8; row++)
+			var/line = "  "
+			for(var/col = 0; col < 4; col++)
+				var/idx = row * 4 + col
+				var/val = common[idx + 1]
+				line += "x[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
+			output += line
+		
+		// Регистры с плавающей точкой (f0-f31)
+		output += SPAN_NOTICE("<b>── Float Registers (f0-f31) ──</b>")
+		var/list/floats = data["float"]
+		for(var/row = 0; row < 8; row++)
+			var/line = "  "
+			for(var/col = 0; col < 4; col++)
+				var/idx = row * 4 + col
+				var/val = floats[idx + 1]
+				line += "f[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
+			output += line
+		
+		// FCSR
+		var/list/fcsr = data["fcsr"]
+		output += SPAN_NOTICE("<b>── FCSR ──</b>")
+		output += "  FRM: [fcsr["frm"]] | NX: [fcsr["nx"]] | UF: [fcsr["uf"]] | OF: [fcsr["of"]] | DZ: [fcsr["dz"]] | NV: [fcsr["nv"]]"
+		
+		// Таймеры
+		output += SPAN_NOTICE("<b>── Timers ──</b>")
+		output += "  mtime: [data["mtime"]] | mtimecmp: [data["mtimecmp"]]"
+		
+		// CSR регистры
+		output += SPAN_NOTICE("<b>── CSR Registers ──</b>")
+		output += "  mscratch: [num2hex(data["mscratch"])] | mepc: [num2hex(data["mepc"])] | mtval: [num2hex(data["mtval"])]"
+		
+		var/list/mcause = data["mcause"]
+		output += "  mcause: code=[mcause["code"]], interrupt=[mcause["interrupt"]]"
+		
+		var/list/mtvec = data["mtvec"]
+		output += "  mtvec: mode=[mtvec["mode"]], base=[num2hex(mtvec["base"])]"
+		
+		// MIE/MIP
+		var/list/mie = data["mie"]
+		var/list/mip = data["mip"]
+		output += SPAN_NOTICE("<b>── Interrupts ──</b>")
+		output += "  MIE: msie=[mie["msie"]], mtie=[mie["mtie"]], meie=[mie["meie"]]"
+		output += "  MIP: msip=[mip["msip"]], mtip=[mip["mtip"]], meip=[mip["meip"]]"
+		
+		// Идентификация
+		output += SPAN_NOTICE("<b>── Identification ──</b>")
+		output += "  mvendorid: [data["mvendorid"]] | marchid: [data["marchid"]] | mimpid: [data["mimpid"]] | mhartid: [data["mhartid"]]"
+		
+		output += SPAN_NOTICE("<b>══════════════════════════════════════════</b>")
+		
+		to_chat(user, output.Join("<br>"))
 
 	return ..()
 
