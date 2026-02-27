@@ -1,0 +1,103 @@
+#define MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE 1024
+#define MCU_SERIAL_TERMINAL_HISTORY_SIZE 2048
+
+/obj/item/mcu_module/serial_terminal
+	name = "Serial Terminal module"
+	desc = "A serial terminal interface for MCU debugging and interaction."
+	icon = 'icons/obj/mcu.dmi'
+	icon_state = "serial_terminal"
+
+	device_type = Z_DEVICE_TYPE_SERIAL_TERMINAL
+
+	var/list/buffer = list()
+	var/buffer_start = 0
+
+/obj/item/mcu_module/serial_terminal/attack_self(mob/user as mob)
+	tgui_interact(user)
+	return TRUE
+
+/obj/item/mcu_module/serial_terminal/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
+	if(!ui)
+		ui = new(user, src, "SerialTerminal", name)
+		ui.open()
+		ui.set_autoupdate(TRUE)
+
+/obj/item/mcu_module/serial_terminal/tgui_data(mob/user)
+	var/list/data = list()
+
+	data["buffer"] = buffer
+	data["bufferStart"] = buffer_start
+	data["maxInputBytes"] = MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE
+	data["isActive"] = __host != null && Z_MACHINE_GET_STATE(__host.resolve().id) == Z_MSTATE_RUNNING
+
+	return data
+
+/obj/item/mcu_module/serial_terminal/tgui_act(action, params)
+	. = ..()
+
+	if(.)
+		return TRUE
+
+	switch(action)
+		if("send")
+			var/obj/item/device/mcu/M = __host?.resolve()
+			if(M == null || Z_MACHINE_GET_STATE(M.id) != Z_MSTATE_RUNNING)
+				return FALSE
+
+			var/list/bytes = params["bytes"]
+
+			if(!islist(bytes) || !length(bytes))
+				return FALSE
+
+			var/list/valid_bytes = list()
+
+			for(var/i = 1 to length(bytes))
+				var/byte = bytes[i]
+
+				if(isnum(byte) && byte >= 0 && byte <= 255)
+					valid_bytes += round(byte)
+
+			if(!length(valid_bytes))
+				return FALSE
+
+			if(length(valid_bytes) > MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE)
+				valid_bytes.Cut(MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE + 1)
+
+			ASSERT(Z_MACHINE_SYSCALL(M.id, __pci_slot, Z_SERIAL_B2N_CMD_WRITE, valid_bytes) == TRUE)
+
+			__append_bytes(valid_bytes)
+
+			return TRUE
+
+	return FALSE
+
+/obj/item/mcu_module/serial_terminal/proc/__append_bytes(list/bytes)
+	buffer += bytes
+
+	if(length(buffer) > MCU_SERIAL_TERMINAL_HISTORY_SIZE)
+		var/to_cut = length(buffer) - MCU_SERIAL_TERMINAL_HISTORY_SIZE
+		buffer.Cut(1, to_cut + 1)
+		buffer_start += to_cut
+
+/obj/item/mcu_module/serial_terminal/__syscall(cmd, ...)
+	var/obj/item/device/mcu/M = __host.resolve()
+	ASSERT(Z_MACHINE_APPEND_COUNTERS(M.id, 0, 1000, 0))
+
+	switch(cmd)
+		if(Z_SERIAL_N2B_CMD_WRITE)
+			var/list/bytes = args[2]
+			__append_bytes(bytes)
+
+			return TRUE
+
+	return FALSE
+
+/obj/item/mcu_module/serial_terminal/__reset(attached)
+	if(attached)
+		buffer = list()
+		buffer_start = 0
+
+#undef MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE
+#undef MCU_SERIAL_TERMINAL_HISTORY_SIZE
