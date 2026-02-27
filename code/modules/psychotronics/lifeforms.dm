@@ -29,7 +29,7 @@
 
 /* Diona Nymph */
 /datum/lifeform/diona_hymph
-	mob_type = /mob/living/carbon/alien/diona
+	mob_type = /mob/living/carbon/larva/diona
 	kingdom = "Animalia"
 	class = "Plantia"
 	genus = "Dionaea"
@@ -148,7 +148,7 @@
 
 /* Diona */
 /datum/lifeform/diona
-	mob_type = /mob/living/carbon/alien/diona
+	mob_type = /mob/living/carbon/larva/diona
 	kingdom = "Animalia"
 	class = "Plantia"
 	genus = "Dionaea"

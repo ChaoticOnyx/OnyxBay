@@ -1,10 +1,9 @@
-/mob/living/carbon/alien/Stat()
+/mob/living/carbon/larva/Stat()
 	. = ..()
 	if(. && statpanel("Status") && adult_form)
 		stat("Growth", "[round(amount_grown)]/[max_grown]")
 
-/mob/living/carbon/alien/verb/evolve()
-
+/mob/living/carbon/larva/verb/evolve()
 	set name = "Moult"
 	set desc = "Moult your skin and become an adult."
 	set category = "Abilities"
@@ -13,7 +12,7 @@
 		return
 
 	if(!adult_form)
-		verbs -= /mob/living/carbon/alien/verb/evolve
+		verbs -= /mob/living/carbon/larva/verb/evolve
 		return
 
 	if(handcuffed)
@@ -61,13 +60,13 @@
 		else
 			adult.fully_replace_character_name(newname)
 
-/mob/living/carbon/alien/proc/update_progression()
+/mob/living/carbon/larva/proc/update_progression()
 	if(amount_grown < max_grown)
 		amount_grown++
 	return
 
-/mob/living/carbon/alien/proc/confirm_evolution()
+/mob/living/carbon/larva/proc/confirm_evolution()
 	return
 
-/mob/living/carbon/alien/proc/show_evolution_blurb()
+/mob/living/carbon/larva/proc/show_evolution_blurb()
 	return

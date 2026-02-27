@@ -5,7 +5,7 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 	role_text = "Xenomorph"
 	role_text_plural = "Xenomorphs"
 	flags = ANTAG_RANDSPAWN | ANTAG_OVERRIDE_JOB
-	mob_path = /mob/living/carbon/alien/larva
+	mob_path = /mob/living/carbon/larva/xenomorph
 	welcome_text = "Hiss! You are a larval alien. Hide and bide your time until you are ready to evolve."
 	antag_indicator = "hudalien"
 	antaghud_indicator = "hudalien"

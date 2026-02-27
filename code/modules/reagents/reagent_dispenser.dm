@@ -389,7 +389,7 @@
 
 	var/mob/living/carbon/human/human_user = user
 	var/obj/item/reagent_containers/vessel/plastic/cup/new_cup = new(get_turf(human_user))
-	if(human_user.put_in_active_hand(new_cup))
+	if(human_user.put_in_clicking_hand(new_cup))
 		human_user.visible_message(SPAN_NOTICE("[human_user] grabs a cup from \the [src]'s stand."))
 	else
 		human_user.visible_message(SPAN_NOTICE("[human_user] grabs a cup from \the [src]'s stand but drops it clumsily!"))

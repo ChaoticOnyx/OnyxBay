@@ -621,7 +621,7 @@
 
 		if(prob(diona_spawn_chance)) //Hehehe
 			var/turf/T = get_turf(src)
-			var/mob/living/carbon/alien/diona/S = new(T)
+			var/mob/living/carbon/larva/diona/S = new(T)
 			visible_message(SPAN("notice", "\The [src] makes an odd grinding noise before coming to a halt as \a [S.name] slurmps out from the receptacle."))
 		else //Just a normal vend, then
 			R.get_product(get_turf(src), user)

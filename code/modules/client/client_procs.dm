@@ -868,3 +868,15 @@
 		if(!(key in list("F1","F2")) && !winget(src, "default-\ref[key]", "command"))
 			to_chat(src, "You probably entered the game with a different keyboard layout.\n<a href='?src=\ref[src];reset_macros=1'>Please switch to the English layout and click here to fix the communication hotkeys.</a>")
 			break
+
+/client/verb/fix_rightclick()
+	set name = "Fix Rightclick"
+	set desc = "Use if your RMB is stuck in the clicking mode."
+	set category = "OOC"
+
+	if(ishuman(mob))
+		var/mob/living/carbon/human/H = mob
+		H.toggle_twohanded_mode(FALSE, TRUE)
+	else
+		winset(src, "mapwindow.rightclickblocker", "is-visible=false")
+		winset(src, "mapwindow.map", "right-click=false")

@@ -1,0 +1,56 @@
+#define MCU_TMP_FOLDER "data/mcu"
+
+SUBSYSTEM_DEF(mcu)
+	name = "MCU"
+	priority = SS_PRIORITY_MCU
+	flags = SS_BACKGROUND
+	wait = 2
+
+	var/last_fire_time = 0
+	var/budget_percent = 10
+	var/total_running = 0
+
+/datum/controller/subsystem/mcu/Initialize()
+	for(var/F in flist("[MCU_TMP_FOLDER]/elf/"))
+		fdel("[MCU_TMP_FOLDER]/elf/[F]")
+
+	last_fire_time = world.time
+	. = ..()
+
+/datum/controller/subsystem/mcu/stat_entry()
+	var/stats = json_decode(Z_MACHINES_STATS())
+
+	// LW  - Last Wall: real host time spent in last tick (microseconds)
+	//        WARNING if consistently > LB
+	// LB  - Last Budget: max allowed host time for last tick (microseconds)
+	//        = delta_us * BUDGET_PERCENT / 100
+	// LMSR - Last Machines Served: CPUs that got execution time last tick
+	//        LOW value = starvation, some CPUs are not getting time
+	// LMST - Last Machines Starved: CPUs that were skipped due to budget exhaustion
+	//        ANY non-zero value = overloaded, consider reducing frequencies
+	// LOAD - Load Average: exponential moving average of (LW / LB)
+	//        < 0.3  = idle, plenty of headroom
+	//        0.3-0.7 = healthy
+	//        0.7-0.9 = heavy, close to saturation
+	//        > 0.9  = critical, machines are starving
+	var/msg = "LW:[stats["last_wall_us"]]us "
+	msg += "LB:[stats["last_budget_us"]]us "
+	msg += "LMSR:[stats["last_machines_served"]] "
+	msg += "LMST:[stats["last_machines_starved"]] "
+	msg += "LOAD:[stats["load_avg"]]"
+
+	..(msg)
+
+/datum/controller/subsystem/mcu/fire(resumed = 0)
+	if(!config.mcu.enable)
+		return
+
+	var/delta_ds = world.time - last_fire_time
+	last_fire_time = world.time
+
+	if(delta_ds <= 0)
+		return
+
+	Z_MACHINES_SET_BUDGET(budget_percent)
+	var/delta_us = delta_ds * 100000 
+	Z_MACHINES_TICK(delta_us)

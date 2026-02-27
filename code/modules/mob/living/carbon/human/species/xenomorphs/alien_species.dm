@@ -90,7 +90,7 @@
 	xenomorph_type = null // No larvae spawn from xenomorphs themselves
 
 /datum/species/xenos/can_understand(mob/other)
-	if(istype(other,/mob/living/carbon/alien/larva))
+	if(istype(other,/mob/living/carbon/larva/xenomorph))
 		return TRUE
 	return FALSE
 

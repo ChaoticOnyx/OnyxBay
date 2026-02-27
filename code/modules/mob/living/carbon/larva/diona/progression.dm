@@ -1,4 +1,4 @@
-/mob/living/carbon/alien/diona/confirm_evolution()
+/mob/living/carbon/larva/diona/confirm_evolution()
 
 	if(!is_species_whitelisted(src, SPECIES_DIONA))
 		to_chat(src, alert("You are currently not whitelisted to play as a full diona."))

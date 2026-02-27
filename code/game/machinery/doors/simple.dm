@@ -247,7 +247,7 @@
 	..(newloc, MATERIAL_RESIN, complexity)
 
 /obj/machinery/door/unpowered/simple/resin/allowed(mob/M)
-	if(istype(M, /mob/living/carbon/alien/larva))
+	if(istype(M, /mob/living/carbon/larva/xenomorph))
 		return TRUE
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M

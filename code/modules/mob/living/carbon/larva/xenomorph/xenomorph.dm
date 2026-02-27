@@ -1,4 +1,4 @@
-/mob/living/carbon/alien/larva
+/mob/living/carbon/larva/xenomorph
 	name = "alien larva"
 	real_name = "alien larva"
 	adult_form = /mob/living/carbon/human/xenos
@@ -13,24 +13,26 @@
 	max_grown = 180
 	see_in_dark = 8
 	mob_size = MOB_SMALL
+	ai_controller = /datum/ai_controller/basic_controller/simple_hostile
 
-/mob/living/carbon/alien/larva/Initialize()
+/mob/living/carbon/larva/xenomorph/Initialize()
 	. = ..()
 	add_language("Xenomorph") //Bonus language.
 	internal_organs |= new /obj/item/organ/internal/xenos/hivenode(src)
 	verbs += /mob/living/carbon/proc/toggle_darksight
+	ai_controller = new ai_controller(src)
 
 /obj/structure/alien/egg/CanUseTopic(mob/user)
 	return isghost(user) ? STATUS_INTERACTIVE : STATUS_CLOSE
 
-/mob/living/carbon/alien/larva/Topic(href, href_list)
+/mob/living/carbon/larva/xenomorph/Topic(href, href_list)
 	if(..())
 		return TRUE
 
 	if(href_list["occupy"])
 		attack_ghost(usr)
 
-/mob/living/carbon/alien/larva/attack_ghost(mob/observer/ghost/user)
+/mob/living/carbon/larva/xenomorph/attack_ghost(mob/observer/ghost/user)
 	if(client)
 		return ..()
 
@@ -59,14 +61,14 @@
 		if(user)
 			qdel(user) // Remove the keyless ghost if it exists.
 
-/mob/living/carbon/alien/larva/Login()
+/mob/living/carbon/larva/xenomorph/Login()
 	. = ..()
 	if(mind && !GLOB.xenomorphs.is_antagonist(mind))
 		GLOB.xenomorphs.add_antagonist(mind, 1)
 
-/mob/living/carbon/alien/larva/proc/larva_announce_to_ghosts()
+/mob/living/carbon/larva/xenomorph/proc/larva_announce_to_ghosts()
 	notify_ghosts("A new alien larva has been born!", null, source = src, action = NOTIFY_POSSES, posses_mob = TRUE)
 
-/mob/living/carbon/alien/larva/update_living_sight()
+/mob/living/carbon/larva/xenomorph/update_living_sight()
 	..()
 	set_sight(sight|SEE_MOBS)

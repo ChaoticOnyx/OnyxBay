@@ -670,7 +670,7 @@ var/global/list/all_objectives = list()
 			continue
 		captured_amount += worth
 
-	for(var/mob/living/carbon/alien/larva/M in A)//Larva are important for research.
+	for(var/mob/living/carbon/larva/xenomorph/M in A)//Larva are important for research.
 		if(M.stat==DEAD)
 			captured_amount+=0.5
 			continue

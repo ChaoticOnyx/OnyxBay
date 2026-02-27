@@ -1,5 +1,5 @@
 
-/mob/living/carbon/alien
+/mob/living/carbon/larva
 	default_emotes = list(
 		/datum/emote/scratch,
 		/datum/emote/drool,

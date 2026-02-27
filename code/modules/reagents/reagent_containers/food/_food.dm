@@ -326,7 +326,7 @@
 
 
 /obj/item/reagent_containers/food/attack_generic(mob/living/user)
-	if(!isanimal(user) && !isalien(user))
+	if(!isanimal(user) && !islarva(user))
 		return ..()
 	user.visible_message("<b>[user]</b> nibbles away at \the [src].", "You nibble away at \the [src].")
 
