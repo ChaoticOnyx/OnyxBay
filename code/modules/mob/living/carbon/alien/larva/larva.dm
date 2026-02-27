@@ -13,12 +13,14 @@
 	max_grown = 180
 	see_in_dark = 8
 	mob_size = MOB_SMALL
+	ai_controller = /datum/ai_controller/basic_controller/simple_hostile
 
 /mob/living/carbon/alien/larva/Initialize()
 	. = ..()
 	add_language("Xenomorph") //Bonus language.
 	internal_organs |= new /obj/item/organ/internal/xenos/hivenode(src)
 	verbs += /mob/living/carbon/proc/toggle_darksight
+	ai_controller = new ai_controller(src)
 
 /obj/structure/alien/egg/CanUseTopic(mob/user)
 	return isghost(user) ? STATUS_INTERACTIVE : STATUS_CLOSE
