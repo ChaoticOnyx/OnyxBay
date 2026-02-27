@@ -129,7 +129,7 @@ var/list/ventcrawl_machinery = list(
 	if(!is_physically_disabled() && pipe)
 		return pipe
 
-/mob/living/carbon/alien/ventcrawl_carry()
+/mob/living/carbon/larva/ventcrawl_carry()
 	return 1
 
 /mob/living/simple_animal/borer/ventcrawl_carry()

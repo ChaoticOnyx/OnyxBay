@@ -98,7 +98,7 @@
 	W = W.resolve()
 	if(istype(W, /mob/living/carbon/human))
 		blood_splatter(T, src, 1)
-	else if(istype(W, /mob/living/carbon/alien))
+	else if(istype(W, /mob/living/carbon/larva))
 		var/obj/effect/decal/cleanable/blood/B = blood_splatter(T, src, 1)
 		if(B)
 			B.blood_DNA["UNKNOWN DNA STRUCTURE"] = "X*"

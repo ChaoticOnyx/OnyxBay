@@ -1,4 +1,4 @@
-/mob/living/carbon/alien/diona
+/mob/living/carbon/larva/diona
 	name = "diona nymph"
 	voice_name = "diona nymph"
 	adult_form = /mob/living/carbon/human
@@ -24,10 +24,10 @@
 
 	var/obj/item/hat
 	var/obj/item/holding_item
-	var/mob/living/carbon/alien/diona/next_nymph
-	var/mob/living/carbon/alien/diona/last_nymph
+	var/mob/living/carbon/larva/diona/next_nymph
+	var/mob/living/carbon/larva/diona/last_nymph
 
-/mob/living/carbon/alien/diona/examinate(atom/to_axamine)
+/mob/living/carbon/larva/diona/examinate(atom/to_axamine)
 	. = ..()
 
 	if(holding_item)
@@ -35,44 +35,44 @@
 	if(hat)
 		. += SPAN("notice", "It is wearing \icon[hat] \a [hat].")
 
-/mob/living/carbon/alien/diona/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
+/mob/living/carbon/larva/diona/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
 	. = ..()
 	if(W == hat)
 		hat = null
 		update_icons()
-		verbs -= /mob/living/carbon/alien/diona/proc/drop_hat
+		verbs -= /mob/living/carbon/larva/diona/proc/drop_hat
 	else if(W == holding_item)
 		holding_item = null
 
-/mob/living/carbon/alien/diona/IsAdvancedToolUser()
+/mob/living/carbon/larva/diona/IsAdvancedToolUser()
 	return FALSE
 
-/mob/living/carbon/alien/diona/New()
+/mob/living/carbon/larva/diona/New()
 	..()
 	species = all_species[SPECIES_DIONA]
 	add_language(LANGUAGE_ROOTGLOBAL)
 	add_language(LANGUAGE_GALCOM)
 
-	verbs += /mob/living/carbon/alien/diona/proc/merge
-	verbs += /mob/living/carbon/alien/diona/proc/drop_holding_item
+	verbs += /mob/living/carbon/larva/diona/proc/merge
+	verbs += /mob/living/carbon/larva/diona/proc/drop_holding_item
 
-/mob/living/carbon/alien/diona/put_in_hands(obj/item/W) // No hands. Use mouth.
+/mob/living/carbon/larva/diona/put_in_hands(obj/item/W) // No hands. Use mouth.
 	if(can_collect(W))
 		collect(W)
 	else
 		W.forceMove(get_turf(src))
 	return 1
 
-/mob/living/carbon/alien/diona/proc/wear_hat(obj/item/clothing/head/new_hat)
+/mob/living/carbon/larva/diona/proc/wear_hat(obj/item/clothing/head/new_hat)
 	if(hat || !istype(new_hat))
 		return FALSE
 	hat = new_hat
 	new_hat.forceMove(src)
 	update_icons()
-	verbs += /mob/living/carbon/alien/diona/proc/drop_hat
+	verbs += /mob/living/carbon/larva/diona/proc/drop_hat
 	return TRUE
 
-/mob/living/carbon/alien/diona/proc/handle_npc(mob/living/carbon/alien/diona/D)
+/mob/living/carbon/larva/diona/proc/handle_npc(mob/living/carbon/larva/diona/D)
 	if(D.stat != CONSCIOUS)
 		return
 	if(prob(66) && isturf(D.loc) && !D.pulledby) //won't move if being pulled
@@ -80,13 +80,13 @@
 	if(prob(3))
 		D.emote(pick("scratch","jump","chirp","tail"))
 
-/mob/living/carbon/alien/diona/hotkey_drop()
+/mob/living/carbon/larva/diona/hotkey_drop()
 	if(holding_item)
 		drop_active_hand()
 	else
 		to_chat(usr, SPAN("warning", "You have nothing to regurgitate."))
 
-/mob/living/carbon/alien/diona/UnarmedAttack(atom/A)
+/mob/living/carbon/larva/diona/UnarmedAttack(atom/A)
 	if(wear_hat(A))
 		return 1
 	if(!can_collect(A))
@@ -94,10 +94,10 @@
 	collect(A)
 	return 1
 
-/mob/living/carbon/alien/diona/proc/can_collect(obj/item/collecting)
+/mob/living/carbon/larva/diona/proc/can_collect(obj/item/collecting)
 	return (!holding_item && istype(collecting) && !collecting.anchored && collecting.simulated && collecting.w_class <= ITEM_SIZE_SMALL)
 
-/mob/living/carbon/alien/diona/proc/collect(obj/item/collecting)
+/mob/living/carbon/larva/diona/proc/collect(obj/item/collecting)
 	collecting.forceMove(src)
 	holding_item = collecting
 	visible_message(SPAN("notice", "\The [src] engulfs \the [holding_item]."))
@@ -116,7 +116,7 @@
 			holding_item = new food.trash(src)
 		qdel(food)
 
-/mob/living/carbon/alien/diona/proc/drop_holding_item()
+/mob/living/carbon/larva/diona/proc/drop_holding_item()
 
 	set category = "Abilities"
 	set name = "Regurgitate"
@@ -130,7 +130,7 @@
 	else
 		to_chat(usr, SPAN("warning", "You have nothing to regurgitate."))
 
-/mob/living/carbon/alien/diona/proc/drop_hat()
+/mob/living/carbon/larva/diona/proc/drop_hat()
 
 	set category = "Abilities"
 	set name = "Drop Hat"
@@ -144,9 +144,9 @@
 		src.hat.forceMove(get_turf(src))
 		src.hat = null
 		update_icons()
-		verbs -= /mob/living/carbon/alien/diona/proc/drop_hat
+		verbs -= /mob/living/carbon/larva/diona/proc/drop_hat
 
-/mob/living/carbon/alien/diona/drop_active_hand()
+/mob/living/carbon/larva/diona/drop_active_hand()
 	if(holding_item)
 		visible_message(SPAN("notice", "\The [src] regurgitates \the [holding_item]."))
 		holding_item.forceMove(get_turf(src))

@@ -1,4 +1,4 @@
-/mob/living/carbon/alien/diona/update_icons()
+/mob/living/carbon/larva/diona/update_icons()
 
 	if(is_ooc_dead())
 		icon_state = "[initial(icon_state)]_dead"

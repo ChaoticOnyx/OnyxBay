@@ -1,8 +1,8 @@
-/mob/living/carbon/alien/regenerate_icons()
+/mob/living/carbon/larva/regenerate_icons()
 	ClearOverlays()
 	update_icons()
 
-/mob/living/carbon/alien/update_icons()
+/mob/living/carbon/larva/update_icons()
 
 	var/state = 0
 	if(amount_grown > max_grown*0.75)
