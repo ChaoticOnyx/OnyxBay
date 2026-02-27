@@ -156,3 +156,13 @@
 	build_path = /obj/item/mcu_module/serial_terminal
 	sort_string = "VABCA"
 	category_items = list("Microelectronics")
+
+/datum/design/item/signaler_module
+	name = "Signaler module"
+	id = "signaler_module"
+	build_type = PROTOLATHE
+	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+	materials = list(MATERIAL_STEEL = 500)
+	build_path = /obj/item/mcu_module/signaler
+	sort_string = "VABCA"
+	category_items = list("Microelectronics")
