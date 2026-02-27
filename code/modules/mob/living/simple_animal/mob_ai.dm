@@ -32,10 +32,10 @@
 		holder.SelfMove(d)
 
 /datum/mob_ai/proc/pick_wander_dir()
-	var/list/cardinals_to_go = GLOB.cardinal.Copy()
-	while(length(cardinals_to_go))
-		. = pick(cardinals_to_go)
-		cardinals_to_go.Remove(.)
+	var/list/dirs_to_go = GLOB.alldirs.Copy()
+	while(length(dirs_to_go))
+		. = pick(dirs_to_go)
+		dirs_to_go.Remove(.)
 		if(!safe_area) // we don't have safe_area, free moving allowed.
 			break
 		var/turf/T = get_step(holder, .)

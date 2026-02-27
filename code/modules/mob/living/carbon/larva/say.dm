@@ -1,4 +1,4 @@
-/mob/living/carbon/alien/say(message)
+/mob/living/carbon/larva/say(message)
 	var/verb = "says"
 	var/message_range = world.view
 

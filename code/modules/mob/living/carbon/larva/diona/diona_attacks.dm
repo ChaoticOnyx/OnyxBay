@@ -1,9 +1,9 @@
-/mob/living/carbon/alien/diona/get_scooped(mob/living/carbon/grabber, self_grab)
+/mob/living/carbon/larva/diona/get_scooped(mob/living/carbon/grabber, self_grab)
 	if(grabber.species && grabber.species.name == SPECIES_DIONA && do_merge(grabber))
 		return
 	else return ..()
 
-/mob/living/carbon/alien/diona/MouseDrop(atom/over_object)
+/mob/living/carbon/larva/diona/MouseDrop(atom/over_object)
 	var/mob/living/carbon/H = over_object
 
 	if(istype(H) && Adjacent(H) && (usr == H) && (H.a_intent == "grab") && hat && !(H.l_hand && H.r_hand))
@@ -15,7 +15,7 @@
 
 	return ..()
 
-/mob/living/carbon/alien/diona/attackby(obj/item/W, mob/user)
+/mob/living/carbon/larva/diona/attackby(obj/item/W, mob/user)
 	if(user.a_intent == I_HELP && istype(W, /obj/item/clothing/head))
 		if(hat)
 			to_chat(user, "<span class='warning'>\The [src] is already wearing \the [hat].</span>")

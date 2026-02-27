@@ -161,7 +161,8 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	. = turf_selection.get_turfs(holder, range_, l_angle_, r_angle_)
 	if(proximity_flags & PROXIMITY_EXCLUDE_HOLDER_TURF)
 		. -= get_turf(holder)
-
+	for(var/T in .)
+		.[T] = TRUE
 
 /obj/item/proxy_debug
 	var/image/overlay

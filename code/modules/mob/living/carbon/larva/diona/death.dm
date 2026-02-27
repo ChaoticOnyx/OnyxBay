@@ -2,18 +2,18 @@
 //list that, when the nymph dies, transfers the controler's mind
 //to the next nymph in the list.
 
-/mob/living/carbon/alien/diona/proc/set_next_nymph(mob/living/carbon/alien/diona/D)
+/mob/living/carbon/larva/diona/proc/set_next_nymph(mob/living/carbon/larva/diona/D)
 	next_nymph = D
 
-/mob/living/carbon/alien/diona/proc/set_last_nymph(mob/living/carbon/alien/diona/D)
+/mob/living/carbon/larva/diona/proc/set_last_nymph(mob/living/carbon/larva/diona/D)
 	last_nymph = D
 // When there are only two nymphs left in a list and one is to be removed,
 // call this to null it out.
-/mob/living/carbon/alien/diona/proc/null_nymphs()
+/mob/living/carbon/larva/diona/proc/null_nymphs()
 	next_nymph = null
 	last_nymph = null
 
-/mob/living/carbon/alien/diona/proc/remove_from_list()
+/mob/living/carbon/larva/diona/proc/remove_from_list()
 	// Closes over the gap that's going to be made and removes references to
 	// the nymph this is called for.
 	var/need_links_null = 0
@@ -37,11 +37,11 @@
 	// Finally, remove the current nymph's references to other nymphs.
 	null_nymphs()
 
-/mob/living/carbon/alien/diona/death(gibbed)
+/mob/living/carbon/larva/diona/death(gibbed)
 
 	if (next_nymph && next_nymph.stat == 0)
 
-		var/mob/living/carbon/alien/diona/S = next_nymph
+		var/mob/living/carbon/larva/diona/S = next_nymph
 		transfer_languages(src, S)
 
 		if(mind)
@@ -54,7 +54,7 @@
 
 	return ..(gibbed,death_msg)
 
-/mob/living/carbon/alien/diona/Destroy()
+/mob/living/carbon/larva/diona/Destroy()
 	if (last_nymph || next_nymph)
 		remove_from_list()
 

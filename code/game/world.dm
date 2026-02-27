@@ -143,6 +143,8 @@ var/server_name = "OnyxBay"
 /world/New()
 	__init_tracy()
 	__detect_rust_g()
+	__z_detect()
+
 	SetupLogs()
 
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
@@ -549,6 +551,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 /world/Reboot(reason, reboot_hardness = 0)
 	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
+	Z_DEINIT()
 
 	if(reboot_hardness == REBOOT_REALLY_HARD)
 		..(reason)

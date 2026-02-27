@@ -30,9 +30,20 @@
 	hotkey_keys = list("Q", "Northwest") // HOME
 	name = "drop_item"
 	full_name = "Drop Item"
-	description = ""
+	description = "Drop the currently held item."
 
 /datum/keybinding/living/drop_item/down(client/user)
 	var/mob/living/L = user.mob
 	L.drop_active_hand()
+	return TRUE
+
+/datum/keybinding/living/drop_inactive_item
+	hotkey_keys = list("ShiftQ")
+	name = "drop_inactive_item"
+	full_name = "Drop Inactive Item"
+	description = "Drop the item held in the inactive hand."
+
+/datum/keybinding/living/drop_inactive_item/down(client/user)
+	var/mob/living/L = user.mob
+	L.drop_inactive_hand()
 	return TRUE

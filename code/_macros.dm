@@ -12,7 +12,7 @@
 
 #define isAI(A) istype(A, /mob/living/silicon/ai)
 
-#define isalien(A) istype(A, /mob/living/carbon/alien)
+#define islarva(A) istype(A, /mob/living/carbon/larva)
 
 #define isanimal(A) istype(A, /mob/living/simple_animal)
 
@@ -76,7 +76,7 @@
 
 #define ismetroid(A) istype(A, /mob/living/carbon/metroid)
 
-#define islarva(A) istype(A, /mob/living/carbon/alien/larva)
+#define ischestburster(A) istype(A, /mob/living/carbon/larva/xenomorph)
 
 #define isunderwear(A) istype(A, /obj/item/underwear)
 

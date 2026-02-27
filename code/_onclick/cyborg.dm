@@ -12,17 +12,19 @@
 	next_click = world.time + 1
 
 	var/list/modifiers = params2list(params)
-	if(modifiers["shift"] && modifiers["ctrl"])
-		CtrlShiftClickOn(A)
+
+	if(modifiers["shift"])
+		if(modifiers["ctrl"])
+			CtrlShiftClickOn(A)
+		else if(modifiers["middle"])
+			ShiftMiddleClickOn(A)
+		else if(modifiers["right"])
+			ShiftRightClickOn(A)
+		else
+			ShiftClickOn(A)
 		return
 	if(modifiers["middle"])
-		if(modifiers["shift"])
-			ShiftMiddleClickOn(A)
-		else
-			MiddleClickOn(A)
-		return
-	if(modifiers["shift"])
-		ShiftClickOn(A)
+		MiddleClickOn(A)
 		return
 	if(modifiers["alt"]) // alt and alt-gr (rightalt)
 		AltClickOn(A)

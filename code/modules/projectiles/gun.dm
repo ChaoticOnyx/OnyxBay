@@ -303,14 +303,14 @@
 		show_splash_text(firer, "Overheat!", SPAN_DANGER("\The [src] is not ready to fire!"))
 		return
 
-	var/shoot_time = (burst - 1)* burst_delay
+	var/shoot_time = max((burst - 1) * burst_delay, 1)
 
 	var/held_twohanded = TRUE
 
 	if(ismob(firer))
 		var/mob/user = firer
-		user.setClickCooldown(shoot_time) //no clicking on things while shooting
-		user.setMoveCooldown(shoot_time) //no moving while shooting either
+		set_cooldown(shoot_time) // no beating things while shooting
+		user.setMoveCooldown(shoot_time) // no moving while shooting either
 		held_twohanded = user.can_wield_item(src) && src.is_held_twohanded(user)
 
 	next_fire_time = world.time + shoot_time
@@ -359,8 +359,6 @@
 			user.inertia_ignore = projectile
 			step(user, get_dir(target, user))
 			user.set_dir(old_dir)
-
-		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 		user.setMoveCooldown(move_delay)
 
 	if(heat_amount >= 100)

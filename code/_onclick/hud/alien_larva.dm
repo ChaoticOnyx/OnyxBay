@@ -1,4 +1,4 @@
-/mob/living/carbon/alien
+/mob/living/carbon/larva
 	bubble_icon = "alien"
 	hud_type = /datum/hud/larva
 

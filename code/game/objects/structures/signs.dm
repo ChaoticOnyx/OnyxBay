@@ -95,8 +95,8 @@
 	icon_state = "monkey_painting"
 
 /obj/structure/sign/crime
-	name = "\improper Educational poster"
-	desc = "Or does it?..."
+	name = "\improper educational sign"
+	desc = "Or does it?.."
 	icon_state = "crime"
 
 /obj/structure/sign/periodic
@@ -105,7 +105,7 @@
 	icon_state = "periodic"
 
 /obj/structure/sign/recruitment
-	name = "\improper Recruitment poster"
+	name = "\improper recruitment sign"
 	desc = "No, you don't."
 	icon_state = "you_4_nt"
 

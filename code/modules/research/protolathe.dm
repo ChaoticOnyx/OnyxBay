@@ -17,7 +17,7 @@
 	var/speed = 1
 
 	var/list/item_type = list("Stock Parts", "Bluespace", "Data", "Engineering", "Medical", "Surgery",
-	"Mining", "Robotics", "Augmentations", "Weapons", "Misc", "Device", "PDA", "RIG")
+	"Mining", "Robotics", "Augmentations", "Weapons", "Misc", "Device", "PDA", "RIG", "Microelectronics")
 
 /obj/machinery/r_n_d/protolathe/Initialize()
 	materials = default_material_composition.Copy()
