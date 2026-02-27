@@ -137,7 +137,7 @@
 	sort_string = "VABBA"
 	category_items = list("Microelectronics")
 
-/datum/design/item/signaler_module
+/datum/design/item/mcu_debugger
 	name = "Debugger Probe"
 	id = "mcu_debugger"
 	build_type = PROTOLATHE
