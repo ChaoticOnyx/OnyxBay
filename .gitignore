@@ -10,7 +10,7 @@ Thumbs.db
 *.db
 *.db-*
 *.so
-!libz.so
+!liblibz.so
 data/
 cfg/
 # ignore config, but not subdirs

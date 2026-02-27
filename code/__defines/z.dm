@@ -5,15 +5,16 @@ var/__z_name = null
 		return
 	
 	if(world.system_type == MS_WINDOWS)
-		if(fexists("z.native.dll"))
-			__z_name = "z.native.dll"
+		if(fexists("libz.native.dll"))
+			__z_name = "libz.native.dll"
 		else
-			__z_name = "z.dll"
+			__z_name = "libz.dll"
 	else
-		if(fexists("libz.native.so"))
-			__z_name = "libz.native.so"
+		// Fuck you zlib
+		if(fexists("liblibz.native.so"))
+			__z_name = "liblibz.native.so"
 		else
-			__z_name = "libz.so"
+			__z_name = "liblibz.so"
 
 #define Z_ERROR_OUT_OF_ID "OutOfId"
 #define Z_ERROR_OUT_OF_MEMORY "OutOfMemory"
