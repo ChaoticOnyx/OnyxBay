@@ -3,12 +3,15 @@
 /obj/item/mcu_module/tts
 	name = "Text-to-Speech Module"
 	desc = "A microcontroller unit. This one seems to be a prototype."
-	icon = 'icons/obj/assemblies/electronic_components.dmi'
-	icon_state = "speaker"
+	icon = 'icons/obj/mcu.dmi'
+	icon_state = "tts"
 
 	device_type = Z_DEVICE_TYPE_TTS
 
 /obj/item/mcu_module/tts/__syscall(cmd, ...)
+	var/obj/item/device/mcu/M = __host.resolve()
+	ASSERT(Z_MACHINE_APPEND_COUNTERS(M.id, 0, 1000, 0))
+
 	switch(cmd)
 		if(Z_TTS_N2B_CMD_SAY)
 			var/text = args[2]
@@ -22,9 +25,7 @@
 
 			set_next_think(world.time + (chars * MCU_TTS_COOLDOWN_PER_CHAR))
 
-			var/obj/item/device/mcu/M = __host.resolve()
 			ASSERT(Z_MACHINE_SYSCALL(M.id, __pci_slot, Z_TTS_B2N_CMD_READY_STATUS, FALSE) == TRUE)
-			ASSERT(Z_MACHINE_APPEND_COUNTERS(M.id, 1000, 0))
 		
 			return TRUE
 	

@@ -4,8 +4,8 @@
 /obj/item/mcu_module/serial_terminal
 	name = "Serial Terminal module"
 	desc = "A serial terminal interface for MCU debugging and interaction."
-	icon = 'icons/obj/assemblies/electronic_components.dmi'
-	icon_state = "textpad"
+	icon = 'icons/obj/mcu.dmi'
+	icon_state = "serial_terminal"
 
 	device_type = Z_DEVICE_TYPE_SERIAL_TERMINAL
 
@@ -82,6 +82,9 @@
 		buffer_start += to_cut
 
 /obj/item/mcu_module/serial_terminal/__syscall(cmd, ...)
+	var/obj/item/device/mcu/M = __host.resolve()
+	ASSERT(Z_MACHINE_APPEND_COUNTERS(M.id, 0, 1000, 0))
+
 	switch(cmd)
 		if(Z_SERIAL_N2B_CMD_WRITE)
 			var/list/bytes = args[2]

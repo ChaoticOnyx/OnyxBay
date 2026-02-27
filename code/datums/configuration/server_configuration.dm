@@ -32,6 +32,7 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 	var/datum/configuration_section/vote/vote = new
 	var/datum/configuration_section/whitelist/whitelist = new
 	var/datum/configuration_section/game_tips/game_tips = new
+	var/datum/configuration_section/mcu/mcu = new
 
 	/// Raw data. Stored here to avoid passing data between procs constantly
 	var/list/raw_data = list()

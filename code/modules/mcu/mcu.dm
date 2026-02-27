@@ -42,8 +42,8 @@
 /obj/item/device/mcu
 	name = "generic MCU"
 	desc = "A microcontroller unit. This one seems to be a prototype."
-	icon = 'icons/obj/assemblies/electronic_components.dmi'
-	icon_state = "template"
+	icon = 'icons/obj/mcu.dmi'
+	icon_state = "mcu"
 	w_class = ITEM_SIZE_TINY
 
 	var/id = 0
@@ -91,6 +91,12 @@
 	/// Permanently destroyed by cumulative radiation.
 	var/rad_dead = FALSE
 
+	/// The maximum severity of an EMP the board can survive.
+	var/emp_hardening = 0
+	var/emp_dead = FALSE
+	
+	var/broken = FALSE
+
 	var/pci_slots = 2
 
 	var/list/__pci_devices = null
@@ -118,12 +124,25 @@
 	power_off()
 	Z_MACHINE_DESTROY(id)
 
+	for(var/obj/item/mcu_module/M in __pci_devices)
+		if(!QDELETED(M))
+			qdel(M)
+
+	if(!QDELETED(__battery))
+		qdel(__battery)
+
 	. = ..()
 
 /obj/item/device/mcu/examine(mob/user, infix)
 	. = ..()
 
 	if(user.Adjacent(src))
+		if(broken)
+			. += SPAN_DANGER("The board is completely broken and unusable!")
+
+		if(emp_dead)
+			. += SPAN_DANGER("The circuitry is burnt out from EMP. It will never function again.")
+
 		if(rad_dead)
 			. += SPAN_DANGER("The circuitry is burnt out from radiation. It will never function again.")
 		else
@@ -197,8 +216,8 @@
 		if(QDELETED(src) || !elf_file || QDELETED(user) || !user.Adjacent(src))
 			return ..()
 
-		if(length(elf_file) > config.game.mcu_max_elf_size)
-			to_chat(user, SPAN_WARNING("The file's size is too big [length(elf_file)] ([config.game.mcu_max_elf_size] max)"))
+		if(length(elf_file) > config.mcu.max_elf_size)
+			to_chat(user, SPAN_WARNING("The file's size is too big [length(elf_file)] ([config.mcu.max_elf_size] max)"))
 			return ..()
 
 		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[rand(9999999)].elf"
@@ -291,7 +310,7 @@
 
 	var/has_slots = FALSE
 	for(var/i = 1 to pci_slots)
-		if(__pci_devices[i + 1] == null)
+		if(__pci_devices[i] == null)
 			has_slots = TRUE
 			break
 
@@ -328,6 +347,87 @@
 		)
 
 	return TRUE
+
+/obj/item/device/mcu/emp_act(severity)
+	if(!QDELETED(__battery))
+		__battery.emp_act(severity)
+
+	for(var/obj/item/mcu_module/M in __pci_devices)
+		if(QDELETED(M))
+			continue
+		
+		M.emp_act(severity)
+
+	if(emp_dead)
+		return
+
+	if(severity > emp_hardening)
+		emergency_shutdown()
+		emp_dead = TRUE
+
+/obj/item/device/mcu/bullet_act(obj/item/projectile/P, def_zone)
+	..()
+
+	destroy(TRUE)
+
+/obj/item/device/mcu/ex_act(severity)
+	if(!QDELETED(__battery))
+		__battery.ex_act(severity)
+
+	for(var/obj/item/mcu_module/M in __pci_devices)
+		if(QDELETED(M))
+			continue
+
+		M.ex_act(severity)
+
+	destroy(TRUE)
+
+/obj/item/device/mcu/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = FALSE)
+	..()
+
+	destroy(TRUE)
+
+/obj/item/device/mcu/melt()
+	..()
+
+	emergency_shutdown()
+	qdel(src)
+
+/obj/item/device/mcu/proc/destroy(complete = FALSE)
+	emergency_shutdown()
+	visible_message(SPAN_DANGER("\The [src] breaks apart!"))
+
+	var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
+	sparks.set_up(3, 1, get_turf(src))
+	sparks.start()
+
+	if(!QDELETED(__battery))
+		if(prob(50))
+			visible_message(SPAN_DANGER("\The [__battery] breaks apart!"))
+			qdel(__battery)
+		else
+			__battery.forceMove(get_turf(src))
+			__battery.throw_at_random(FALSE, 2, 1)
+
+	for(var/obj/item/mcu_module/M in __pci_devices)
+		if(QDELETED(M))
+			continue
+
+		ASSERT(try_detach_pci_module(M, null) == TRUE)
+
+		if(prob(50))
+			visible_message(SPAN_DANGER("\The [M] breaks apart!"))
+			qdel(M)
+
+			continue
+		
+		M.forceMove(get_turf(src))
+		M.throw_at_random(FALSE, 2, 1)
+
+	if(complete)
+		qdel(src)
+	else
+		broken = TRUE
 
 /obj/item/device/mcu/proc/__trap()
 	emergency_shutdown()
@@ -427,16 +527,22 @@
 	throttled = FALSE
 	sustained_full_ticks = 0
 
-	if(!config.game.mcu_enable || SSmcu.total_running >= config.game.mcu_hardcap)
-		if(activator)
-			to_chat(activator, SPAN_WARNING("Some indescribable force is preventing the board from starting."))
-		
-		return FALSE
-
-	if(rad_dead)
+	if(rad_dead || emp_dead)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src] is unresponsive - the circuitry is dead."))
 
+		return FALSE
+
+	if(broken)
+		if(activator)
+			to_chat(activator, SPAN_WARNING("\The [src] is broken and cannot be powered on."))
+
+		return FALSE
+
+	if(!config.mcu.enable || SSmcu.total_running >= config.mcu.hardcap)
+		if(activator)
+			to_chat(activator, SPAN_WARNING("Some indescribable force is preventing the board from starting."))
+		
 		return FALSE
 
 	if(temperature >= (shutdown_temp - MCU_RESTART_COOLDOWN))
@@ -467,7 +573,7 @@
 
 	// Wh
 	var/min_boot_charge = P_idle / 3600
-	if(!__battery.check_charge(min_boot_charge * config.game.mcu_power_scale))
+	if(!__battery.check_charge(min_boot_charge * config.mcu.power_scale))
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src]'s battery is too low to start."))
 
@@ -556,7 +662,7 @@
 			// Convert W to Wh: energy = power * time
 			// Wh = W * (seconds / 3600)
 			energy_Wh = P * delta_s / 3600
-			__battery.use(energy_Wh * config.game.mcu_power_scale)
+			__battery.use(energy_Wh * config.mcu.power_scale)
 
 			if(__battery.charge <= 0)
 				emergency_shutdown()
@@ -629,7 +735,7 @@
 
 	// Power consumption per minute in mWh (milliwatt-hours per minute)
 	// P (watts) * (1/60) hours = Wh per minute * 1000 = mWh per minute
-	var/power_per_minute_mWh = round(P * config.game.mcu_power_scale * 1000 / 60)
+	var/power_per_minute_mWh = round(P * config.mcu.power_scale * 1000 / 60)
 
 	Z_MACHINE_SET_SENSORS(id, \
 		CONV_KELVIN_CELSIUS(temperature), \
@@ -695,7 +801,7 @@
 
 		total_dose += R.calc_equivalent_dose(MCU_RAD_MASS)
 
-	total_dose *= config.game.mcu_rad_scale
+	total_dose *= config.mcu.rad_scale
 
 	if(total_dose <= 0)
 		return
@@ -819,23 +925,36 @@
 	var/obj/item/mcu_module/selected_module = module_names[choice]
 	if(QDELETED(selected_module))
 		return
-	
-	ASSERT(__pci_devices[selected_module.__pci_slot + 1] == selected_module)
-	__pci_devices[selected_module.__pci_slot + 1] = null
 
-	ASSERT(Z_MACHINE_TRY_DETACH_PCI(id, selected_module.__pci_slot) == TRUE)
+	ASSERT(try_detach_pci_module(selected_module, usr) == TRUE)
 
-	selected_module.__pci_slot = null
-	selected_module.__host = null
-	selected_module.__reset(FALSE)
+/obj/item/device/mcu/proc/try_detach_pci_module_at(slot, mob/activator = null)
+	try_detach_pci_module(__pci_devices[slot])
 
-	if(!usr.put_in_hands(selected_module))
-		selected_module.forceMove(get_turf(src))
-	
-	usr.visible_message(
-		"[usr] removes \the [selected_module] from \the [src].",
-		SPAN_NOTICE("You remove \the [selected_module] from \the [src].")
-	)
+/obj/item/device/mcu/proc/try_detach_pci_module(obj/item/mcu_module/M, mob/activator = null)
+	if(QDELETED(M) || M.__pci_slot == null)
+		return FALSE
+
+	__pci_devices[M.__pci_slot + 1] = null
+
+	ASSERT(Z_MACHINE_TRY_DETACH_PCI(id, M.__pci_slot) == TRUE)
+
+	M.__pci_slot = null
+	M.__host = null
+	M.__reset(FALSE)
+
+	if(activator)
+		if(!activator.put_in_hands(M))
+			M.forceMove(get_turf(src))
+		
+		activator.visible_message(
+			"[activator] removes \the [M] from \the [src].",
+			SPAN_NOTICE("You remove \the [M] from \the [src].")
+		)
+	else
+		M.forceMove(get_turf(src))
+
+	return TRUE
 
 /obj/item/device/mcu/standard
 	name = "NCR-1000 MCU"
@@ -889,6 +1008,7 @@
 	K_power = 12
 	cooling_k = 0.12
 	rad_hardening = 0.05
+	emp_hardening = 1
 
 /obj/item/device/mcu/lowpower
 	name = "Whisper-LP8"
@@ -909,6 +1029,7 @@
 	K_power = 3
 	cooling_k = 0.15
 	rad_hardening = 0.10
+	emp_hardening = 1
 	
 	throttle_temp = 70 CELSIUS
 	shutdown_temp = 95 CELSIUS
@@ -933,6 +1054,7 @@
 	K_power = 4
 	cooling_k = 0.15
 	rad_hardening = 0.15
+	emp_hardening = 1
 
 /obj/item/device/mcu/lowpower/industrial
 	name = "Whisper-LP32i"
@@ -958,32 +1080,33 @@
 	throttle_temp = 75 CELSIUS
 	shutdown_temp = 100 CELSIUS
 	damage_temp = 110 CELSIUS
+	emp_hardening = 2
 
 /obj/item/device/mcu/overclock/lite
-    name = "Fury-S1 Starter"
-    desc = "Entry-level overclocking MCU. A taste of Cybersun performance \
-        for those not ready to commit to full thermal chaos."
-    
-    ram_size = 65536 // 64 KB
-    target_frequency = 1500000
-    frequency = 1500000
-    min_frequency = 750000
-    max_frequency = 3000000
-    
-    pci_slots = 4
+	name = "Fury-S1 Starter"
+	desc = "Entry-level overclocking MCU. A taste of Cybersun performance \
+		for those not ready to commit to full thermal chaos."
+	
+	ram_size = 65536 // 64 KB
+	target_frequency = 1500000
+	frequency = 1500000
+	min_frequency = 750000
+	max_frequency = 3000000
+	
+	pci_slots = 4
 
-    thermal_mass = 6.0
-    P_idle = 5 WATT
-    K_power = 12
-    cooling_k = 0.10
-    rad_hardening = 0.0
-    
-    throttle_temp = 60 CELSIUS
-    shutdown_temp = 85 CELSIUS
-    damage_temp = 90 CELSIUS
-    
-    oc_unlocked = TRUE
-    oc_ram_protection = TRUE
+	thermal_mass = 6.0
+	P_idle = 5 WATT
+	K_power = 12
+	cooling_k = 0.10
+	rad_hardening = 0.0
+	
+	throttle_temp = 60 CELSIUS
+	shutdown_temp = 85 CELSIUS
+	damage_temp = 90 CELSIUS
+	
+	oc_unlocked = TRUE
+	oc_ram_protection = TRUE
 
 /obj/item/device/mcu/overclock
 	name = "Fury-X1"
@@ -1096,8 +1219,9 @@
 	min_frequency = 62500 // 62.5 kHz
 	max_frequency = 8000000 // 8 MHz
 	rad_hardening = 0.10
+	emp_hardening = 1
 	
-	pci_slots = 24
+	pci_slots = 18
 
 	thermal_mass = 7.0
 	P_idle = 3 WATT
@@ -1125,6 +1249,7 @@
 	cooling_k = 0.25
 	rad_hardening = 0.90
 	tid_limit = 1000
+	emp_hardening = 4
 	
 	throttle_temp = 80 CELSIUS
 	shutdown_temp = 110 CELSIUS

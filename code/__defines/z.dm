@@ -29,7 +29,7 @@ var/__z_name = null
 #define Z_MSTATE_STOPPED (1)
 #define Z_MSTATE_RUNNING (2)
 
-#define Z_MAX_PCI_DEVICES 32
+#define Z_MAX_PCI_DEVICES 18
 
 #define Z_DEVICE_TYPE_TTS 1
 #define Z_DEVICE_TYPE_SERIAL_TERMINAL 2
@@ -104,7 +104,7 @@ var/__z_name = null
 
 /// Manually adds cycles and mtime to the machine registers.
 /// Useful for simulating elapsed time or debugging.
-#define Z_MACHINE_APPEND_COUNTERS(ID, CYCLES, MTIME) call_ext(__z_name, "byond:Z_machine_append_counters")(ID, CYCLES, MTIME)
+#define Z_MACHINE_APPEND_COUNTERS(ID, CYCLES, IDLE_CYCLES, MTIME) call_ext(__z_name, "byond:Z_machine_append_counters")(ID, CYCLES, IDLE_CYCLES, MTIME)
 
 /// Loads a RISC-V ELF binary from the given file path into the machine's RAM.
 /// RAM must be allocated first via Z_MACHINE_SET_RAM_SIZE.

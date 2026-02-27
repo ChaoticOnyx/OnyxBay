@@ -42,7 +42,7 @@ SUBSYSTEM_DEF(mcu)
 	..(msg)
 
 /datum/controller/subsystem/mcu/fire(resumed = 0)
-	if(!config.game.mcu_enable)
+	if(!config.mcu.enable)
 		return
 
 	var/delta_ds = world.time - last_fire_time

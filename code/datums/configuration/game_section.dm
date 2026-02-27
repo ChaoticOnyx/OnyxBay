@@ -51,12 +51,6 @@
 	var/pregame_timeleft
 	var/restart_timeout
 
-	var/mcu_enable
-	var/mcu_hardcap
-	var/mcu_power_scale
-	var/mcu_rad_scale
-	var/mcu_max_elf_size
-
 /datum/configuration_section/game/load_data(list/data)
 	CONFIG_LOAD_STR(default_view, data["default_view"])
 	CONFIG_LOAD_STR(default_view_wide, data["default_view_wide"])
@@ -106,9 +100,3 @@
 	CONFIG_LOAD_BOOL(guests_allowed, data["guests_allowed"])
 	CONFIG_LOAD_NUM(pregame_timeleft, data["pregame_timeleft"])
 	CONFIG_LOAD_NUM(restart_timeout, data["restart_timeout"])
-
-	CONFIG_LOAD_BOOL(mcu_enable, data["mcu_enable"])
-	CONFIG_LOAD_NUM(mcu_hardcap, data["mcu_hardcap"])
-	CONFIG_LOAD_NUM(mcu_power_scale, data["mcu_power_scale"])
-	CONFIG_LOAD_NUM(mcu_rad_scale, data["mcu_rad_scale"])
-	CONFIG_LOAD_NUM(mcu_max_elf_size, data["mcu_max_elf_size"])

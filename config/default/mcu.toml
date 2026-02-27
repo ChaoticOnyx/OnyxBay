@@ -1,0 +1,6 @@
+[mcu]
+enable = true
+hardcap = 25
+power_scale = 250
+rad_scale = 0.00005
+max_elf_size = 2000000
