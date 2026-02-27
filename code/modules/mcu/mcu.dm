@@ -296,6 +296,34 @@
 		var/obj/item/mcu_module/M = W
 		
 		try_add_pci(M, user)
+	if(istype(W, /obj/item/stack/nanopaste))
+		var/obj/item/stack/nanopaste/P = W
+
+		if (accumulated_tid <= 0)
+			to_chat(user, SPAN_NOTICE("[src] shows no signs of radiation-induced oxide degradation."))
+			return
+		
+		if (!P.use(1))
+			to_chat(user, SPAN_WARNING("There isn't enough nanopaste left."))
+			return
+
+		accumulated_tid = max(0, accumulated_tid - 5)
+
+		if(accumulated_tid <= 0)
+			user.visible_message( \
+				SPAN_NOTICE("[user] finishes treating [src] with [W]. The device hums back to life."), \
+				SPAN_NOTICE("You apply [W] to [src], restoring the irradiated semiconductor lattice. The device is fully operational now.") \
+			)
+		else if(accumulated_tid > 15)
+			user.visible_message( \
+				SPAN_NOTICE("[user] applies [W] to [src], but the device still looks damaged."), \
+				SPAN_NOTICE("You apply [W] to [src], but severe radiation damage remains. The oxide layers are still degraded.") \
+			)
+		else
+			user.visible_message( \
+				SPAN_NOTICE("[user] carefully applies [W] to [src], repairing some damage."), \
+				SPAN_NOTICE("You apply [W] to [src], annealing some of the radiation-induced charge traps. Further treatment is needed.") \
+			)
 
 	return ..()
 
