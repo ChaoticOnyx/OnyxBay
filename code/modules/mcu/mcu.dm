@@ -337,12 +337,10 @@
 		var/list/output = list()
 		output += SPAN_NOTICE("<b>═══════════ MCU Register Dump ═══════════</b>")
 		
-		// Основная информация
 		output += SPAN_NOTICE("<b>── Status ──</b>")
 		output += "  PC: [num2hex(data["pc"])] | Cycle: [data["cycle"]] | Instret: [data["instret"]]"
 		output += "  Privilege: [data["privilege"]]"
 		
-		// Общие регистры (x0-x31)
 		output += SPAN_NOTICE("<b>── Common Registers (x0-x31) ──</b>")
 		var/list/common = data["common"]
 		for(var/row = 0; row < 8; row++)
@@ -353,7 +351,6 @@
 				line += "x[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
 			output += line
 		
-		// Регистры с плавающей точкой (f0-f31)
 		output += SPAN_NOTICE("<b>── Float Registers (f0-f31) ──</b>")
 		var/list/floats = data["float"]
 		for(var/row = 0; row < 8; row++)
@@ -364,16 +361,13 @@
 				line += "f[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
 			output += line
 		
-		// FCSR
 		var/list/fcsr = data["fcsr"]
 		output += SPAN_NOTICE("<b>── FCSR ──</b>")
 		output += "  FRM: [fcsr["frm"]] | NX: [fcsr["nx"]] | UF: [fcsr["uf"]] | OF: [fcsr["of"]] | DZ: [fcsr["dz"]] | NV: [fcsr["nv"]]"
 		
-		// Таймеры
 		output += SPAN_NOTICE("<b>── Timers ──</b>")
 		output += "  mtime: [data["mtime"]] | mtimecmp: [data["mtimecmp"]]"
 		
-		// CSR регистры
 		output += SPAN_NOTICE("<b>── CSR Registers ──</b>")
 		output += "  mscratch: [num2hex(data["mscratch"])] | mepc: [num2hex(data["mepc"])] | mtval: [num2hex(data["mtval"])]"
 		
@@ -383,14 +377,12 @@
 		var/list/mtvec = data["mtvec"]
 		output += "  mtvec: mode=[mtvec["mode"]], base=[num2hex(mtvec["base"])]"
 		
-		// MIE/MIP
 		var/list/mie = data["mie"]
 		var/list/mip = data["mip"]
 		output += SPAN_NOTICE("<b>── Interrupts ──</b>")
 		output += "  MIE: msie=[mie["msie"]], mtie=[mie["mtie"]], meie=[mie["meie"]]"
 		output += "  MIP: msip=[mip["msip"]], mtip=[mip["mtip"]], meip=[mip["meip"]]"
 		
-		// Идентификация
 		output += SPAN_NOTICE("<b>── Identification ──</b>")
 		output += "  mvendorid: [data["mvendorid"]] | marchid: [data["marchid"]] | mimpid: [data["mimpid"]] | mhartid: [data["mhartid"]]"
 		
