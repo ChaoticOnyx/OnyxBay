@@ -2,10 +2,10 @@
 //list that, when the nymph dies, transfers the controler's mind
 //to the next nymph in the list.
 
-/mob/living/carbon/larva/diona/proc/set_next_nymph(mob/living/carbon/alien/diona/D)
+/mob/living/carbon/larva/diona/proc/set_next_nymph(mob/living/carbon/larva/diona/D)
 	next_nymph = D
 
-/mob/living/carbon/larva/diona/proc/set_last_nymph(mob/living/carbon/alien/diona/D)
+/mob/living/carbon/larva/diona/proc/set_last_nymph(mob/living/carbon/larva/diona/D)
 	last_nymph = D
 // When there are only two nymphs left in a list and one is to be removed,
 // call this to null it out.

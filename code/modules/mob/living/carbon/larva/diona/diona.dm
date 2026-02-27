@@ -72,7 +72,7 @@
 	verbs += /mob/living/carbon/larva/diona/proc/drop_hat
 	return TRUE
 
-/mob/living/carbon/larva/diona/proc/handle_npc(mob/living/carbon/alien/diona/D)
+/mob/living/carbon/larva/diona/proc/handle_npc(mob/living/carbon/larva/diona/D)
 	if(D.stat != CONSCIOUS)
 		return
 	if(prob(66) && isturf(D.loc) && !D.pulledby) //won't move if being pulled
