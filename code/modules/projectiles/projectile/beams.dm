@@ -132,6 +132,7 @@
 	icon_state = "emitter"
 	fire_sound = 'sound/effects/weapons/energy/fire10.ogg'
 	damage = 0 // The actual damage is computed in /code/modules/power/singularity/emitter.dm
+	no_miss = TRUE
 
 	muzzle_type = /obj/effect/projectile/muzzle/emitter
 	tracer_type = /obj/effect/projectile/tracer/emitter
