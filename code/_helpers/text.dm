@@ -551,3 +551,8 @@
 	. = 0
 	while ((start = findtext(haystack, needle, start + 1)))
 		.++
+
+/proc/padleft(str, length, char = "0")
+	while(length(str) < length)
+		str = "[char][str]"
+	return str

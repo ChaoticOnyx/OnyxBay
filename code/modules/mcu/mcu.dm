@@ -154,18 +154,24 @@
 			else if(tid_ratio >= MCU_TID_WARN_RATIO)
 				. += SPAN_WARNING("You notice slight discoloration on the board - possibly radiation.")
 
-		if(temperature < 30 CELSIUS)
-			. += "It feels [SPAN_NOTICE("cool")] to the touch."
-		else if(temperature < 45 CELSIUS)
-			. += "It feels [SPAN_NOTICE("warm")] to the touch."
-		else if(temperature < 60 CELSIUS)
-			. += "It feels [SPAN_WARNING("hot")] to the touch."
-		else if(temperature < 80 CELSIUS)
-			. += "It feels [SPAN_WARNING("painfully hot")]! You pull your hand away."
-		else if(temperature < 100 CELSIUS)
-			. += "It is [SPAN_DANGER("searing hot")]! Touching it would burn you."
+			if(issilicon(user) || hasHUD(user, HUD_SCIENCE))
+				. += "Radiation: [accumulated_tid]/[tid_limit] TID"
+
+		if(issilicon(user) || hasHUD(user, HUD_SCIENCE))
+			. += "Temperature: [CONV_KELVIN_CELSIUS(temperature)]°C"
 		else
-			. += "It is [SPAN_DANGER("glowing with heat")]! The air around it shimmers."
+			if(temperature < 30 CELSIUS)
+				. += "It feels [SPAN_NOTICE("cool")] to the touch."
+			else if(temperature < 45 CELSIUS)
+				. += "It feels [SPAN_NOTICE("warm")] to the touch."
+			else if(temperature < 60 CELSIUS)
+				. += "It feels [SPAN_WARNING("hot")] to the touch."
+			else if(temperature < 80 CELSIUS)
+				. += "It feels [SPAN_WARNING("painfully hot")]! You pull your hand away."
+			else if(temperature < 100 CELSIUS)
+				. += "It is [SPAN_DANGER("searing hot")]! Touching it would burn you."
+			else
+				. += "It is [SPAN_DANGER("glowing with heat")]! The air around it shimmers."
 		
 		if(oc_unlocked)
 			. += "The [SPAN_WARNING("OC")] jumper is set - overclocking enabled."
@@ -290,6 +296,99 @@
 		var/obj/item/mcu_module/M = W
 		
 		try_add_pci(M, user)
+	if(istype(W, /obj/item/stack/nanopaste))
+		var/obj/item/stack/nanopaste/P = W
+
+		if (accumulated_tid <= 0)
+			to_chat(user, SPAN_NOTICE("[src] shows no signs of radiation-induced oxide degradation."))
+			return
+
+		if(!do_after(user, 1, src, TRUE))
+			return
+
+		if (!P.use(1))
+			to_chat(user, SPAN_WARNING("There isn't enough nanopaste left."))
+			return
+
+		accumulated_tid = max(0, accumulated_tid - 5)
+
+		if(accumulated_tid <= 0)
+			user.visible_message( \
+				SPAN_NOTICE("[user] finishes treating [src] with [W]. The device hums back to life."), \
+				SPAN_NOTICE("You apply [W] to [src], restoring the irradiated semiconductor lattice. The device is fully operational now.") \
+			)
+		else if(accumulated_tid > 15)
+			user.visible_message( \
+				SPAN_NOTICE("[user] applies [W] to [src], but the device still looks damaged."), \
+				SPAN_NOTICE("You apply [W] to [src], but severe radiation damage remains. The oxide layers are still degraded.") \
+			)
+		else
+			user.visible_message( \
+				SPAN_NOTICE("[user] carefully applies [W] to [src], repairing some damage."), \
+				SPAN_NOTICE("You apply [W] to [src], annealing some of the radiation-induced charge traps. Further treatment is needed.") \
+			)
+	if(istype(W, /obj/item/debugger))
+		if(!do_after(user, 1 SECOND, src, TRUE))
+			return
+
+		var/dump = Z_MACHINE_DUMP_REGISTERS(id)
+		var/list/data = json_decode(dump)
+
+		var/list/output = list()
+		output += SPAN_NOTICE("<b>═══════════ MCU Register Dump ═══════════</b>")
+		
+		output += SPAN_NOTICE("<b>── Status ──</b>")
+		output += "  PC: [num2hex(data["pc"])] | Cycle: [data["cycle"]] | Instret: [data["instret"]]"
+		output += "  Privilege: [data["privilege"]]"
+		
+		output += SPAN_NOTICE("<b>── Common Registers (x0-x31) ──</b>")
+		var/list/common = data["common"]
+		for(var/row = 0; row < 8; row++)
+			var/line = "  "
+			for(var/col = 0; col < 4; col++)
+				var/idx = row * 4 + col
+				var/val = common[idx + 1]
+				line += "x[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
+			output += line
+		
+		output += SPAN_NOTICE("<b>── Float Registers (f0-f31) ──</b>")
+		var/list/floats = data["float"]
+		for(var/row = 0; row < 8; row++)
+			var/line = "  "
+			for(var/col = 0; col < 4; col++)
+				var/idx = row * 4 + col
+				var/val = floats[idx + 1]
+				line += "f[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
+			output += line
+		
+		var/list/fcsr = data["fcsr"]
+		output += SPAN_NOTICE("<b>── FCSR ──</b>")
+		output += "  FRM: [fcsr["frm"]] | NX: [fcsr["nx"]] | UF: [fcsr["uf"]] | OF: [fcsr["of"]] | DZ: [fcsr["dz"]] | NV: [fcsr["nv"]]"
+		
+		output += SPAN_NOTICE("<b>── Timers ──</b>")
+		output += "  mtime: [data["mtime"]] | mtimecmp: [data["mtimecmp"]]"
+		
+		output += SPAN_NOTICE("<b>── CSR Registers ──</b>")
+		output += "  mscratch: [num2hex(data["mscratch"])] | mepc: [num2hex(data["mepc"])] | mtval: [num2hex(data["mtval"])]"
+		
+		var/list/mcause = data["mcause"]
+		output += "  mcause: code=[mcause["code"]], interrupt=[mcause["interrupt"]]"
+		
+		var/list/mtvec = data["mtvec"]
+		output += "  mtvec: mode=[mtvec["mode"]], base=[num2hex(mtvec["base"])]"
+		
+		var/list/mie = data["mie"]
+		var/list/mip = data["mip"]
+		output += SPAN_NOTICE("<b>── Interrupts ──</b>")
+		output += "  MIE: msie=[mie["msie"]], mtie=[mie["mtie"]], meie=[mie["meie"]]"
+		output += "  MIP: msip=[mip["msip"]], mtip=[mip["mtip"]], meip=[mip["meip"]]"
+		
+		output += SPAN_NOTICE("<b>── Identification ──</b>")
+		output += "  mvendorid: [data["mvendorid"]] | marchid: [data["marchid"]] | mimpid: [data["mimpid"]] | mhartid: [data["mhartid"]]"
+		
+		output += SPAN_NOTICE("<b>══════════════════════════════════════════</b>")
+		
+		to_chat(user, output.Join("<br>"))
 
 	return ..()
 
