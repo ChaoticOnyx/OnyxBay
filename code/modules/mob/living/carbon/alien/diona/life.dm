@@ -1,5 +1,5 @@
 //Dionaea regenerate health and nutrition in light.
-/mob/living/carbon/alien/diona/handle_environment(datum/gas_mixture/environment)
+/mob/living/carbon/larva/diona/handle_environment(datum/gas_mixture/environment)
 	if(is_ooc_dead())
 		return
 

@@ -1,4 +1,4 @@
-/mob/living/carbon/alien/diona
+/mob/living/carbon/larva/diona
 	bubble_icon = "default"
 	hud_type = /datum/hud/diona
 

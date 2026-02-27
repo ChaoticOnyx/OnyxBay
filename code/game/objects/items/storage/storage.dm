@@ -82,7 +82,7 @@
 	if(!canremove)
 		return
 
-	if(((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !islarva(usr)))  && !usr.incapacitated())
+	if(((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !ischestburster(usr)))  && !usr.incapacitated())
 		if(over_object == usr && Adjacent(usr)) // this must come before the screen objects only block
 			src.add_fingerprint(usr)
 			src.open(usr)
@@ -116,7 +116,7 @@
 	if(!canremove)
 		return
 
-	if((((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !islarva(usr))) && !usr.incapacitated() && Adjacent(usr)))
+	if((((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !ischestburster(usr))) && !usr.incapacitated() && Adjacent(usr)))
 		add_fingerprint(usr)
 		if(usr.s_active == src)
 			close(usr)

@@ -1,4 +1,4 @@
-/mob/living/carbon/alien/ex_act(severity)
+/mob/living/carbon/larva/ex_act(severity)
 	if(!blinded)
 		flash_eyes()
 	var/b_loss = 0
@@ -21,18 +21,18 @@
 	adjustBruteLoss(b_loss)
 	adjustFireLoss(f_loss)
 
-/mob/living/carbon/alien/adjustBruteLoss(damage)
+/mob/living/carbon/larva/adjustBruteLoss(damage)
 	..()
 	updatehealth()
 
-/mob/living/carbon/alien/adjustFireLoss(damage)
+/mob/living/carbon/larva/adjustFireLoss(damage)
 	..()
 	updatehealth()
 
-/mob/living/carbon/alien/adjustToxLoss(damage)
+/mob/living/carbon/larva/adjustToxLoss(damage)
 	..()
 	updatehealth()
 
-/mob/living/carbon/alien/adjustOxyLoss(damage)
+/mob/living/carbon/larva/adjustOxyLoss(damage)
 	..()
 	updatehealth()

@@ -6,10 +6,10 @@
 #define DESC_SENTINEL_PRIMAL "\n<B>Primal Sentinels</B> <span class='notice'> are tasked with protecting the hive and are deadly up close and at a range. They are not as physically imposing nor fast as the hunters, but regenerate faster. <B>Unathi genome slightly increases their thermal resistance and drastically improves regenerative abilities.</B></span>"
 #define DESC_DRONE_VILE "\n<B>Vile Drones</B> <span class='notice'> are the working class, offering the largest plasma storage and generation. They are the only caste which may evolve again, turning into the dreaded alien queen. <B>Skrellian genome improves their intelligence, as well as the plasma secretion rate.</B></span>"
 
-/mob/living/carbon/alien/larva/confirm_evolution()
+/mob/living/carbon/larva/xenomorph/confirm_evolution()
 	to_chat(src, DESC_EVOLVE + DESC_HUNTER + DESC_SENTINEL + DESC_DRONE)
 	var/alien_caste = alert(src, "Please choose which alien caste you shall belong to.",,"Hunter","Sentinel","Drone")
 	return alien_caste ? "Xenomorph [alien_caste]" : null
 
-/mob/living/carbon/alien/larva/show_evolution_blurb()
+/mob/living/carbon/larva/xenomorph/show_evolution_blurb()
 	return

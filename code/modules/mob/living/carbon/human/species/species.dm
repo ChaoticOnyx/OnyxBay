@@ -224,7 +224,7 @@
 	var/icon_scale = 1
 	var/y_shift = 0 // Vertically shifts the icon, mostly for monkeys.
 
-	var/xenomorph_type = /mob/living/carbon/alien/larva // What type of larva is spawned if infected with an alien embryo
+	var/xenomorph_type = /mob/living/carbon/larva/xenomorph // What type of larva is spawned if infected with an alien embryo
 /*
 These are all the things that can be adjusted for equipping stuff and
 each one can be in the NORTH, SOUTH, EAST, and WEST direction. Specify

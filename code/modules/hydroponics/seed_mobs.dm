@@ -5,7 +5,7 @@
 	var/datum/ghosttrap/plant/P = get_ghost_trap("living plant")
 	P.request_player(host, "Someone is harvesting \a [display_name].", 15 SECONDS)
 
-	if(istype(host,/mob/living/carbon/alien/diona))
+	if(istype(host,/mob/living/carbon/larva/diona))
 		spawn(15 SECONDS)
 			if(!host.ckey && !host.client)
 				host.death()  // This seems redundant, but a lot of mobs don't

@@ -37,5 +37,5 @@
 			xenospawn_turfs.Remove(T)
 			spawn_count--
 
-			var/mob/living/carbon/alien/larva/L = new /mob/living/carbon/alien/larva(T)
+			var/mob/living/carbon/larva/xenomorph/L = new /mob/living/carbon/larva/xenomorph(T)
 			L.larva_announce_to_ghosts()
