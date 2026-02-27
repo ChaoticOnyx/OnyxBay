@@ -31,4 +31,4 @@
 	if(QDELETED(M))
 		return
 	
-	ASSERT(M.try_detach_pci_module(__pci_slot) == TRUE)
+	ASSERT(M.try_detach_pci_module(src) == TRUE)
