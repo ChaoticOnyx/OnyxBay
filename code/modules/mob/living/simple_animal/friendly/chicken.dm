@@ -32,6 +32,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	attacktext = "kicked"
 	maxHealth = 3
 	health = 3
+	faction = "farm"
 	var/amount_grown = 0
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
 	mob_size = MOB_MINISCULE
@@ -76,6 +77,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	attacktext = "kicked"
 	maxHealth = 10
 	health = 10
+	faction = "farm"
 	var/eggsleft = 0
 	var/egg_chance = 0
 	var/datum/chicken_species/species = null
