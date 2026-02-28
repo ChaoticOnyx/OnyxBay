@@ -560,7 +560,7 @@
 	reload_fullscreen()
 	return
 
-/mob/living/proc/UpdateDamageIcon()
+/mob/living/proc/update_damage_overlays()
 	return
 
 

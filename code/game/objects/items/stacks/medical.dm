@@ -88,7 +88,7 @@
 			to_chat(user, SPAN("warning", "This isn't useful at all on a robotic limb."))
 			return 1
 
-		H.UpdateDamageIcon()
+		H.update_damage_overlays()
 
 	else
 
@@ -155,7 +155,7 @@
 				used++
 			affecting.update_damages()
 			if(affecting.update_damstate())
-				H.UpdateDamageIcon()
+				H.update_damage_overlays()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))
@@ -280,7 +280,7 @@
 				used++
 			affecting.update_damages()
 			if(affecting.update_damstate())
-				H.UpdateDamageIcon()
+				H.update_damage_overlays()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))
@@ -442,7 +442,7 @@
 				used++
 			affecting.update_damages()
 			if(affecting.update_damstate())
-				H.UpdateDamageIcon()
+				H.update_damage_overlays()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))

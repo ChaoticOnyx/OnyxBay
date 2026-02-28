@@ -166,7 +166,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(owner)
 		owner.updatehealth()
 		if(update_damstate())
-			owner.UpdateDamageIcon()
+			owner.update_damage_overlays()
 		else if(status & ORGAN_BLEEDING)
 			owner.update_bandages()
 
@@ -196,7 +196,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	var/should_update_damstate = update_damstate()
 	if(owner && update_damage_icon && should_update_damstate)
-		owner.UpdateDamageIcon()
+		owner.update_damage_overlays()
 
 	return should_update_damstate
 

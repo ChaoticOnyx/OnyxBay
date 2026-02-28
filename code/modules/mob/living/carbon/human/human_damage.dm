@@ -440,7 +440,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 		parts -= picked
 	updatehealth()
 	if(should_update_damage_icon)
-		UpdateDamageIcon()
+		update_damage_overlays()
 
 	BITSET(hud_updateflag, HEALTH_HUD)
 

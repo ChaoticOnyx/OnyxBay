@@ -64,7 +64,7 @@
 	E.replaced(target)
 	target.update_body()
 	target.updatehealth()
-	target.UpdateDamageIcon()
+	target.update_damage_overlays()
 
 /datum/surgery_step/limb/attach_organic/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	var/obj/item/organ/external/E = tool
@@ -123,7 +123,7 @@
 	parent_organ.update_tally()
 	target.update_body()
 	target.updatehealth()
-	target.UpdateDamageIcon()
+	target.update_damage_overlays()
 
 /datum/surgery_step/limb/connect/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(
@@ -184,7 +184,7 @@
 
 	target.update_body()
 	target.updatehealth()
-	target.UpdateDamageIcon()
+	target.update_damage_overlays()
 
 	qdel(tool)
 

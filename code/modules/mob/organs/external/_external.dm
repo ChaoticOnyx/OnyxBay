@@ -906,7 +906,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	removed(null, 0, ignore_children, (disintegrate != DROPLIMB_EDGE))
 	if(QDELETED(src))
 		victim.updatehealth()
-		victim.UpdateDamageIcon()
+		victim.update_damage_overlays()
 		victim.regenerate_icons()
 		return
 
@@ -943,7 +943,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	spawn(1) // Yes, we DO need to wait before regenerating icons since all the stuff takes a literal eternity
 		if(!QDELETED(victim)) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
 			victim.updatehealth()
-			victim.UpdateDamageIcon()
+			victim.update_damage_overlays()
 			victim.regenerate_icons()
 
 	dir = 2
