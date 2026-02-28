@@ -94,7 +94,7 @@
 	/// The maximum severity of an EMP the board can survive.
 	var/emp_hardening = 0
 	var/emp_dead = FALSE
-	
+
 	var/broken = FALSE
 
 	var/pci_slots = 2
@@ -148,7 +148,7 @@
 		else
 			ASSERT(tid_limit != 0)
 			var/tid_ratio = accumulated_tid / tid_limit
-			
+
 			if(tid_ratio >= MCU_TID_DEGRADE_RATIO)
 				. += SPAN_WARNING("The board shows significant brown discoloration from radiation exposure.")
 			else if(tid_ratio >= MCU_TID_WARN_RATIO)
@@ -172,15 +172,15 @@
 				. += "It is [SPAN_DANGER("searing hot")]! Touching it would burn you."
 			else
 				. += "It is [SPAN_DANGER("glowing with heat")]! The air around it shimmers."
-		
+
 		if(oc_unlocked)
 			. += "The [SPAN_WARNING("OC")] jumper is set - overclocking enabled."
 		else
 			. += "The OC jumper is in default position."
-		
+
 		if(flash_protection)
 			. += "The write-protect OTP fuse appears [SPAN_DANGER("burned")]."
-		
+
 		if(__battery)
 			var/charge_percent = __battery.maxcharge > 0 ? round(__battery.charge / __battery.maxcharge * 100) : 0
 			var/charge_span
@@ -244,7 +244,7 @@
 
 		if(__elf_path != null)
 			fdel(__elf_path)
-		
+
 		__elf_path = tmp_file
 	else if(isMultitool(W))
 		var/upper_bound = oc_unlocked ? round(max_frequency * MCU_MAX_OVERCLOCK_MULT) : max_frequency
@@ -261,7 +261,7 @@
 		if(flash_protection)
 			to_chat(user, SPAN_WARNING("The OTP fuse is already burned."))
 			return ..()
-		
+
 		var/obj/item/weldingtool/WT = W
 		var/confirm = alert(user, "Burn the write-protect OTP fuse? This is PERMANENT and will prevent any future reprogramming.", "Burn OTP Fuse", "Yes", "No")
 
@@ -273,7 +273,7 @@
 
 		if(QDELETED(src) || QDELETED(user) || !user.Adjacent(src))
 			return
-		
+
 		flash_protection = TRUE
 		user.visible_message( \
 			SPAN_NOTICE("[user] carefully burns the OTP fuse on \the [src]."), \
@@ -283,7 +283,7 @@
 		if(!QDELETED(__battery))
 			to_chat(user, SPAN_WARNING("There is a battery already"))
 			return ..()
-		
+
 		if(!user.drop(W, src))
 			return ..()
 
@@ -294,7 +294,7 @@
 		)
 	else if(istype(W, /obj/item/mcu_module))
 		var/obj/item/mcu_module/M = W
-		
+
 		try_add_pci(M, user)
 	if(istype(W, /obj/item/stack/nanopaste))
 		var/obj/item/stack/nanopaste/P = W
@@ -336,11 +336,11 @@
 
 		var/list/output = list()
 		output += SPAN_NOTICE("<b>═══════════ MCU Register Dump ═══════════</b>")
-		
+
 		output += SPAN_NOTICE("<b>── Status ──</b>")
 		output += "  PC: [num2hex(data["pc"], 8)] | Cycle: [data["cycle"]] | Instret: [data["instret"]]"
 		output += "  Privilege: [data["privilege"]]"
-		
+
 		output += SPAN_NOTICE("<b>── Common Registers (x0-x31) ──</b>")
 		var/list/common = data["common"]
 		for(var/row = 0; row < 8; row++)
@@ -350,7 +350,7 @@
 				var/val = common[idx + 1]
 				line += "x[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
 			output += line
-		
+
 		output += SPAN_NOTICE("<b>── Float Registers (f0-f31) ──</b>")
 		var/list/floats = data["float"]
 		for(var/row = 0; row < 8; row++)
@@ -360,34 +360,34 @@
 				var/val = floats[idx + 1]
 				line += "f[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
 			output += line
-		
+
 		var/list/fcsr = data["fcsr"]
 		output += SPAN_NOTICE("<b>── FCSR ──</b>")
 		output += "  FRM: [fcsr["frm"]] | NX: [fcsr["nx"]] | UF: [fcsr["uf"]] | OF: [fcsr["of"]] | DZ: [fcsr["dz"]] | NV: [fcsr["nv"]]"
-		
+
 		output += SPAN_NOTICE("<b>── Timers ──</b>")
 		output += "  mtime: [data["mtime"]] | mtimecmp: [data["mtimecmp"]]"
-		
+
 		output += SPAN_NOTICE("<b>── CSR Registers ──</b>")
 		output += "  mscratch: [num2hex(data["mscratch"])] | mepc: [num2hex(data["mepc"])] | mtval: [num2hex(data["mtval"])]"
-		
+
 		var/list/mcause = data["mcause"]
 		output += "  mcause: code=[mcause["code"]], interrupt=[mcause["interrupt"]]"
-		
+
 		var/list/mtvec = data["mtvec"]
 		output += "  mtvec: mode=[mtvec["mode"]], base=[num2hex(mtvec["base"])]"
-		
+
 		var/list/mie = data["mie"]
 		var/list/mip = data["mip"]
 		output += SPAN_NOTICE("<b>── Interrupts ──</b>")
 		output += "  MIE: msie=[mie["msie"]], mtie=[mie["mtie"]], meie=[mie["meie"]]"
 		output += "  MIP: msip=[mip["msip"]], mtip=[mip["mtip"]], meip=[mip["meip"]]"
-		
+
 		output += SPAN_NOTICE("<b>── Identification ──</b>")
 		output += "  mvendorid: [data["mvendorid"]] | marchid: [data["marchid"]] | mimpid: [data["mimpid"]] | mhartid: [data["mhartid"]]"
-		
+
 		output += SPAN_NOTICE("<b>══════════════════════════════════════════</b>")
-		
+
 		to_chat(user, output.Join("<br>"))
 
 	return ..()
@@ -416,7 +416,7 @@
 	if(!has_slots)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("No more PCI slots available."))
-		
+
 		return FALSE
 
 	var/slot = Z_MACHINE_TRY_ATTACH_PCI(id, M.device_type)
@@ -424,9 +424,9 @@
 	if(slot == null)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("It looks like [M] won't work here."))
-		
+
 		return FALSE
-	
+
 	if(activator && !activator.drop(M, src))
 		return FALSE
 	else
@@ -454,7 +454,7 @@
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(QDELETED(M))
 			continue
-		
+
 		M.emp_act(severity)
 
 	if(emp_dead)
@@ -519,7 +519,7 @@
 			qdel(M)
 
 			continue
-		
+
 		M.forceMove(get_turf(src))
 		M.throw_at_random(FALSE, 2, 1)
 
@@ -545,7 +545,7 @@
 			"[activator] switches a safety jumper on \the [src]", \
 			SPAN_NOTICE("You switch the safety jumper on \the [src]. Overclocking is now [oc_unlocked ? "enabled" : "disabled"].") \
 		)
-	
+
 	set_target_frequency(target_frequency)
 
 /// Set target frequency.
@@ -641,7 +641,7 @@
 	if(!config.mcu.enable || SSmcu.total_running >= config.mcu.hardcap)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("Some indescribable force is preventing the board from starting."))
-		
+
 		return FALSE
 
 	if(temperature >= (shutdown_temp - MCU_RESTART_COOLDOWN))
@@ -658,16 +658,16 @@
 
 	if(QDELETED(__battery))
 		__battery = null
-		
+
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src] has no battery to power!"))
-		
+
 		return FALSE
-	
+
 	if(__elf_path == null)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src] fails to start."))
-		
+
 		return FALSE
 
 	// Wh
@@ -698,7 +698,7 @@
 			to_chat(activator, SPAN_WARNING("The CPU is not turned on."))
 
 		return
-	
+
 	if(activator)
 		activator.visible_message("[activator] turns \the [src] off.", "You turn \the [src] off.")
 
@@ -784,7 +784,7 @@
 
 	if(M.get_total_moles() < MCU_VACUUM_MOLES_THRESHOLD)
 		effective_k *= MCU_VACUUM_COOLING_FACTOR
-	
+
 	// W
 	var/Q_dissipated = effective_k * (temperature - T_ambient)
 	// K
@@ -1015,12 +1015,12 @@
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		module_names["[counter]. [M.name]"] = M
 		counter++
-	
+
 	var/choice = input(usr, "Select a PCI module to remove:", "Remove PCI Module") as null|anything in module_names
-	
+
 	if(isnull(choice) || !usr.Adjacent(src))
 		return
-	
+
 	var/obj/item/mcu_module/selected_module = module_names[choice]
 	if(QDELETED(selected_module))
 		return
@@ -1045,7 +1045,7 @@
 	if(activator)
 		if(!activator.put_in_hands(M))
 			M.forceMove(get_turf(src))
-		
+
 		activator.visible_message(
 			"[activator] removes \the [M] from \the [src].",
 			SPAN_NOTICE("You remove \the [M] from \the [src].")
@@ -1059,13 +1059,14 @@
 	name = "NCR-1000 MCU"
 	desc = "A reliable general-purpose microcontroller by Nanotrasen Cybernetics. \
 		The NCR-1000 offers balanced performance for everyday automation tasks."
-	
+	icon_state = "green"
+
 	ram_size = 65536 // 64 KB
 	target_frequency = 1000000 // 1 MHz
 	frequency = 1000000
 	min_frequency = 250000 // 250 kHz
 	max_frequency = 2000000 // 2 MHz
-	
+
 	pci_slots = 4
 
 	P_idle = 2 WATT
@@ -1076,7 +1077,8 @@
 	name = "NCR-2000 MCU"
 	desc = "An upgraded variant of the NCR-1000 with doubled memory \
 		and improved clock speeds. Popular in industrial automation."
-	
+	icon_state = "blue"
+
 	ram_size = 262144 // 256 KB
 	target_frequency = 2000000 // 2 MHz default
 	frequency = 2000000
@@ -1093,13 +1095,14 @@
 	name = "NCR-4000 Pro"
 	desc = "The professional-grade NCR-4000 features expanded memory \
 		and high clock speeds for demanding computational tasks."
-	
+	icon_state = "black"
+
 	ram_size = 1048576 // 1 MB
 	target_frequency = 4000000 // 4 MHz default
 	frequency = 4000000
 	min_frequency = 1000000 // 1 MHz
 	max_frequency = 8000000 // 8 MHz
-	
+
 	pci_slots = 16
 
 	thermal_mass = 6.0
@@ -1114,13 +1117,14 @@
 	desc = "An ultra-efficient microcontroller designed for long-term \
 		deployment in remote sensors and monitoring equipment. \
 		Sacrifices raw performance for exceptional battery life."
-	
+	icon_state = "white"
+
 	ram_size = 32768 // 32 KB
 	target_frequency = 500000 // 500 kHz
 	frequency = 500000
 	min_frequency = 125000 // 125 kHz
 	max_frequency = 1000000 // 1 MHz
-	
+
 	pci_slots = 2
 
 	thermal_mass = 2.0
@@ -1129,7 +1133,7 @@
 	cooling_k = 0.15
 	rad_hardening = 0.10
 	emp_hardening = 1
-	
+
 	throttle_temp = 70 CELSIUS
 	shutdown_temp = 95 CELSIUS
 	damage_temp = 100 CELSIUS
@@ -1139,13 +1143,14 @@
 	desc = "An enhanced low-power MCU with additional memory. \
 		Ideal for autonomous systems requiring extended operation \
 		without frequent battery replacement."
-	
+	icon_state = "cyan"
+
 	ram_size = 65536 // 64 KB
 	target_frequency = 750000 // 750 kHz default
 	frequency = 750000
 	min_frequency = 100000 // 100 kHz
 	max_frequency = 1500000 // 1.5 MHz
-	
+
 	pci_slots = 4
 
 	thermal_mass = 2.5
@@ -1160,13 +1165,14 @@
 	desc = "Industrial-grade low-power MCU with generous memory \
 		and hardened components. Designed for harsh environments \
 		where reliability trumps performance."
-	
+	icon_state = "yellow"
+
 	ram_size = 131072 // 128 KB
 	target_frequency = 1000000 // 1 MHz default
 	frequency = 1000000
 	min_frequency = 250000 // 250 kHz
 	max_frequency = 2000000 // 2 MHz
-	
+
 	pci_slots = 6
 
 	thermal_mass = 5.0
@@ -1175,7 +1181,7 @@
 	cooling_k = 0.20
 	rad_hardening = 0.50
 	tid_limit = 250
-	
+
 	throttle_temp = 75 CELSIUS
 	shutdown_temp = 100 CELSIUS
 	damage_temp = 110 CELSIUS
@@ -1185,13 +1191,14 @@
 	name = "Fury-S1 Starter"
 	desc = "Entry-level overclocking MCU. A taste of Cybersun performance \
 		for those not ready to commit to full thermal chaos."
-	
+	icon_state = "red"
+
 	ram_size = 65536 // 64 KB
 	target_frequency = 1500000
 	frequency = 1500000
 	min_frequency = 750000
 	max_frequency = 3000000
-	
+
 	pci_slots = 4
 
 	thermal_mass = 6.0
@@ -1199,11 +1206,11 @@
 	K_power = 12
 	cooling_k = 0.10
 	rad_hardening = 0.0
-	
+
 	throttle_temp = 60 CELSIUS
 	shutdown_temp = 85 CELSIUS
 	damage_temp = 90 CELSIUS
-	
+
 	oc_unlocked = TRUE
 	oc_ram_protection = TRUE
 
@@ -1213,13 +1220,14 @@
 		engineered for extreme overclocking. Features unlocked \
 		multipliers and reinforced power delivery. \
 		Handle with care - thermals can be... aggressive."
-	
+	icon_state = "black_red"
+
 	ram_size = 262144 // 256 KB
 	target_frequency = 2000000 // 2 MHz
 	frequency = 2000000
 	min_frequency = 1000000 // 1 MHz
 	max_frequency = 4000000 // 4 MHz -> 6 MHz OC
-	
+
 	pci_slots = 8
 
 	thermal_mass = 8.0
@@ -1227,11 +1235,11 @@
 	K_power = 15
 	cooling_k = 0.08
 	rad_hardening = 0.0
-	
+
 	throttle_temp = 60 CELSIUS
 	shutdown_temp = 85 CELSIUS
 	damage_temp = 90 CELSIUS
-	
+
 	oc_unlocked = TRUE
 	oc_ram_protection = TRUE
 
@@ -1240,13 +1248,14 @@
 	desc = "The flagship of Cybersun's Fury line. Binned for maximum \
 		overclocking potential with exotic cooling solutions in mind. \
 		Warning: May void warranty, sanity, and fire suppression systems."
-	
+	icon_state = "black_copper"
+
 	ram_size = 1048576 // 1 MB
 	target_frequency = 4000000 // 4 MHz default
 	frequency = 4000000
 	min_frequency = 2000000 // 2 MHz
 	max_frequency = 8000000 // 8 MHz -> 12MHz OC
-	
+
 	pci_slots = 16
 
 	thermal_mass = 12.0
@@ -1254,11 +1263,11 @@
 	K_power = 18
 	cooling_k = 0.06
 	rad_hardening = 0.0
-	
+
 	throttle_temp = 55 CELSIUS
 	shutdown_temp = 80 CELSIUS
 	damage_temp = 85 CELSIUS
-	
+
 	oc_unlocked = TRUE
 	oc_ram_protection = TRUE
 
@@ -1267,13 +1276,14 @@
 	desc = "A versatile MCU featuring an exceptionally wide frequency range. \
 		Can scale from near-idle power sipping to respectable performance \
 		on demand. Perfect for variable workloads."
-	
+	icon_state = "purple"
+
 	ram_size = 65536 // 64 KB
 	target_frequency = 1000000 // 1 MHz default
 	frequency = 1000000
 	min_frequency = 100000 // 100 kHz
 	max_frequency = 4000000 // 4 MHz
-	
+
 	pci_slots = 6
 
 	thermal_mass = 5.0
@@ -1281,7 +1291,7 @@
 	K_power = 7
 	cooling_k = 0.12
 	rad_hardening = 0.05
-	
+
 	throttle_temp = 65 CELSIUS
 	shutdown_temp = 90 CELSIUS
 	damage_temp = 95 CELSIUS
@@ -1291,14 +1301,14 @@
 	desc = "The enhanced Flex-V2 adds more memory and extends \
 		the frequency ceiling while maintaining the signature \
 		wide operating range. Ideal for adaptive systems."
-	
+
 	ram_size = 262144 // 256 KB
 	target_frequency = 2000000 // 2 MHz default
 	frequency = 2000000
 	min_frequency = 125000 // 125 kHz
 	max_frequency = 6000000 // 6 MHz
 	rad_hardening = 0.05
-	
+
 	pci_slots = 12
 
 	thermal_mass = 6.0
@@ -1311,7 +1321,8 @@
 	desc = "The ultimate in frequency flexibility. The V3 Max \
 		spans from deep sleep frequencies to high-performance modes, \
 		with generous 192KB of RAM for complex applications."
-	
+	icon_state = "gradient"
+
 	ram_size = 786432 // 768 KB
 	target_frequency = 2000000 // 2 MHz default
 	frequency = 2000000
@@ -1319,7 +1330,7 @@
 	max_frequency = 8000000 // 8 MHz
 	rad_hardening = 0.10
 	emp_hardening = 1
-	
+
 	pci_slots = 18
 
 	thermal_mass = 7.0
@@ -1333,13 +1344,14 @@
 		extreme environments. Features ECC memory, triple modular \
 		redundancy, and silicon-on-insulator fabrication. \
 		Slower but virtually indestructible — even near a supermatter."
-	
+	icon_state = "warning"
+
 	ram_size = 131072 // 128 KB
 	target_frequency = 1000000 // 1 MHz default
 	frequency = 1000000
 	min_frequency = 500000 // 500 kHz
 	max_frequency = 2000000 // 2 MHz
-	
+
 	pci_slots = 4
 
 	thermal_mass = 10.0
@@ -1349,7 +1361,7 @@
 	rad_hardening = 0.90
 	tid_limit = 1000
 	emp_hardening = 4
-	
+
 	throttle_temp = 80 CELSIUS
 	shutdown_temp = 110 CELSIUS
 	damage_temp = 120 CELSIUS
@@ -1359,19 +1371,20 @@
 	desc = "A nostalgic recreation of ancient computing technology \
 		using modern fabrication. Beloved by hobbyists and \
 		historians alike. Extremely power-efficient but limited."
-	
+	icon_state = "brown"
+
 	ram_size = 32768 // 32 KB
 	target_frequency = 500000 // 500 kHz default
 	frequency = 500000
 	min_frequency = 250000 // 250 kHz
 	max_frequency = 750000 // 750 kHz
-	
+
 	thermal_mass = 3.0
 	P_idle = 0.2 WATT
 	K_power = 2
 	cooling_k = 0.20
 	rad_hardening = 0.0
-	
+
 	pci_slots = 2
 
 	throttle_temp = 70 CELSIUS
