@@ -16,14 +16,14 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/owner = null
 	var/default_cartridge = 0 // Access level defined by cartridge
 	var/obj/item/cartridge/cartridge = null //current cartridge
-	var/mode = 0 //Controls what menu the PDA will display. 0 is hub; the rest are either built in or based on cartridge.
+	var/mode = PDA_MODE_HOME // Controls what menu the PDA will display.
 
-	var/lastmode = 0
+	var/lastmode = PDA_MODE_HOME
 	var/ui_tick = 0
-	var/nanoUI[0]
+	var/list/tgui_cache = list()
 
 	//Secondary variables
-	var/scanmode = 0 //1 is medical scanner, 2 is forensics, 3 is reagent scanner.
+	var/scanmode = PDA_SCANMODE_NONE // 1 is medical scanner, 2 is forensics, 3 is reagent scanner.
 	var/fon = 0 //Is the flashlight function on?
 	var/f_lum = 3 //Luminosity for the flashlight function
 	var/message_silent = 0 //To beep or not to beep, that is the question
@@ -53,9 +53,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/list/feeds = list()		// The list of feeds as we last knew them
 	var/list/feed_info = list()	// The data and contents of each feed as we last knew them
 
-	var/list/cartmodes = list(40, 42, 43, 433, 44, 441, 45, 451, 46, 48, 47, 49) // If you add more cartridge modes add them to this list as well.
-	var/list/no_auto_update = list(1, 40, 43, 44, 441, 45, 451)		     // These modes we turn off autoupdate
-	var/list/update_every_five = list(3, 41, 433, 46, 47, 48, 49)			     // These we update every 5 ticks
+	var/list/cartmodes = list(PDA_MODE_SIGNALER, PDA_MODE_STATUS_DISPLAY, PDA_MODE_POWER_MONITOR, PDA_MODE_POWER_MONITOR_READING, PDA_MODE_MEDICAL_RECORDS, PDA_MODE_MEDICAL_RECORD, PDA_MODE_SECURITY_RECORDS, PDA_MODE_SECURITY_RECORD, PDA_MODE_SECURITY_BOT, PDA_MODE_MULE_CONTROL, PDA_MODE_SUPPLY_RECORDS, PDA_MODE_JANITOR_LOCATOR)
+	var/list/no_auto_update = list(PDA_MODE_NOTES, PDA_MODE_SIGNALER, PDA_MODE_POWER_MONITOR, PDA_MODE_MEDICAL_RECORDS, PDA_MODE_MEDICAL_RECORD, PDA_MODE_SECURITY_RECORDS, PDA_MODE_SECURITY_RECORD)
+	var/list/update_every_five = list(PDA_MODE_ATMOS_SCAN, PDA_MODE_CREW_MANIFEST, PDA_MODE_POWER_MONITOR_READING, PDA_MODE_SECURITY_BOT, PDA_MODE_SUPPLY_RECORDS, PDA_MODE_MULE_CONTROL, PDA_MODE_JANITOR_LOCATOR)
 
 	var/obj/item/card/id/id = null //Making it possible to slot an ID card into the PDA so it can function as both.
 	var/ownjob = null //related to above - this is assignment (potentially alt title)
@@ -300,9 +300,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/HTML = "<html><meta charset=\"utf-8\"><head><title>AI PDA Message Log</title></head><body>"
 	for(var/index in tnote)
 		if(index["sent"])
-			HTML += addtext("<i><b>&rarr; To <a href='byond://?src=\ref[src];choice=Message;notap=1;target=",index["src"],"'>", index["owner"],"</a>:</b></i><br>", index["message"], "<br>")
+			HTML += addtext("<i><b>&rarr; To ", index["owner"], ":</b></i><br>", index["message"], "<br>")
 		else
-			HTML += addtext("<i><b>&larr; From <a href='byond://?src=\ref[src];choice=Message;notap=1;target=",index["target"],"'>", index["owner"],"</a>:</b></i><br>", index["message"], "<br>")
+			HTML += addtext("<i><b>&larr; From ", index["owner"], ":</b></i><br>", index["message"], "<br>")
 	HTML +="</body></html>"
 	show_browser(usr, HTML, "window=log;size=400x444;border=1;can_resize=1;can_close=1;can_minimize=0")
 
@@ -378,61 +378,55 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	else
 		. = "\icon[src] \a [SPAN("info", "<em>[visible_name]</em>")]"
 
-/obj/item/device/pda/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/item/device/pda/proc/build_tgui_data(mob/user)
 	ui_tick++
-	var/datum/nanoui/old_ui = SSnano.get_open_ui(user, src, "main")
-	var/auto_update = 1
-	if(mode in no_auto_update)
-		auto_update = 0
-	if(old_ui && (mode == lastmode && ui_tick % 5 && (mode in update_every_five)))
-		return
+	if((mode == lastmode) && ui_tick % 5 && (mode in update_every_five))
+		return null
 
 	lastmode = mode
 
-	var/title = "Personal Data Assistant"
-
-	var/data[0]  // This is the data that will be sent to the PDA
-
-	data["owner"] = owner					// Who is your daddy...
-	data["ownjob"] = ownjob					// ...and what does he do?
-
-	data["mode"] = mode					// The current view
-	data["scanmode"] = scanmode				// Scanners
-	data["fon"] = fon					// Flashlight on?
-	data["pai"] = (isnull(pai) ? 0 : 1)			// pAI inserted?
-	data["note"] = note					// current pda notes
-	data["message_silent"] = message_silent					// does the pda make noise when it receives a message?
-	data["news_silent"] = news_silent					// does the pda make noise when it receives news?
-	data["toff"] = toff					// is the messenger function turned off?
-	data["active_conversation"] = active_conversation	// Which conversation are we following right now?
-
-
+	var/data[0]
+	data["owner"] = owner
+	data["ownjob"] = ownjob
+	data["mode"] = mode
+	data["scanmode"] = scanmode
+	data["fon"] = fon
+	data["pai"] = (isnull(pai) ? 0 : 1)
+	data["note"] = note
+	data["message_silent"] = message_silent
+	data["news_silent"] = news_silent
+	data["toff"] = toff
+	data["ttone"] = ttone
+	data["active_conversation"] = active_conversation
+	data["skinType"] = icon_state
 	data["idInserted"] = (id ? 1 : 0)
 	data["idLink"] = (id ? text("[id.registered_name], [id.assignment]") : "--------")
 
-	data["cart_loaded"] = cartridge ? 1:0
+	data["cart_loaded"] = cartridge ? 1 : 0
 	if(cartridge)
 		var/cartdata[0]
+		cartdata["icon_state"] = cartridge.icon_state
 		cartdata["access"] = list(\
-					"access_security" = cartridge.access_security,\
-					"access_engine" = cartridge.access_engine,\
-					"access_atmos" = cartridge.access_atmos,\
-					"access_medical" = cartridge.access_medical,\
-					"access_clown" = cartridge.access_clown,\
-					"access_mime" = cartridge.access_mime,\
-					"access_janitor" = cartridge.access_janitor,\
-					"access_quartermaster" = cartridge.access_quartermaster,\
-					"access_hydroponics" = cartridge.access_hydroponics,\
-					"access_reagent_scanner" = cartridge.access_reagent_scanner,\
-					"access_remote_door" = cartridge.access_remote_door,\
-					"access_status_display" = cartridge.access_status_display,\
-					"access_detonate_pda" = cartridge.access_detonate_pda\
-			)
+			"access_security" = cartridge.access_security,\
+			"access_engine" = cartridge.access_engine,\
+			"access_atmos" = cartridge.access_atmos,\
+			"access_medical" = cartridge.access_medical,\
+			"access_clown" = cartridge.access_clown,\
+			"access_mime" = cartridge.access_mime,\
+			"access_janitor" = cartridge.access_janitor,\
+			"access_quartermaster" = cartridge.access_quartermaster,\
+			"access_hydroponics" = cartridge.access_hydroponics,\
+			"access_reagent_scanner" = cartridge.access_reagent_scanner,\
+			"access_remote_door" = cartridge.access_remote_door,\
+			"access_status_display" = cartridge.access_status_display,\
+			"access_detonate_pda" = cartridge.access_detonate_pda\
+		)
+		cartdata["remote_door_id"] = cartridge.remote_door_id
 
 		if(mode in cartmodes)
-			data["records"] = cartridge.create_NanoUI_values()
+			data["records"] = cartridge.create_tgui_values(user)
 
-		if(mode == 0)
+		if(mode == PDA_MODE_HOME)
 			cartdata["name"] = cartridge.name
 			if(QDELETED(cartridge.radio))
 				cartdata["radio"] = 0
@@ -442,7 +436,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				if(istype(cartridge.radio, /obj/item/radio/integrated/signal))
 					cartdata["radio"] = 2
 
-		if(mode == 2)
+		if(mode == PDA_MODE_MESSENGER || mode == PDA_MODE_MESSENGER_CONVERSATION)
 			cartdata["charges"] = cartridge.charges ? cartridge.charges : 0
 		data["cartridge"] = cartdata
 
@@ -451,18 +445,19 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	data["new_News"] = new_news
 
 	var/datum/reception/reception = get_reception(src, do_sleep = 0)
-	var/has_reception = reception.telecomms_reception & TELECOMMS_RECEPTION_SENDER
+	var/has_reception = reception && (reception.telecomms_reception & TELECOMMS_RECEPTION_SENDER)
 	data["reception"] = has_reception
 
-	if(mode==41)
+	if(mode == PDA_MODE_CREW_MANIFEST)
 		data["crew_manifest"] = html_crew_manifest(1, 0)
 
-	if(mode==2)
+	if(mode == PDA_MODE_MESSENGER || mode == PDA_MODE_MESSENGER_CONVERSATION)
 		var/convopdas[0]
 		var/pdas[0]
 		var/count = 0
-		for (var/obj/item/device/pda/P in PDAs)
-			if (!P.owner||P.toff||P == src||P.hidden)       continue
+		for(var/obj/item/device/pda/P in PDAs)
+			if(!P.owner || P.toff || P == src || P.hidden)
+				continue
 			if(conversations.Find("\ref[P]"))
 				convopdas.Add(list(list("Name" = "[P]", "Reference" = "\ref[P]", "Detonate" = "[P.detonate]", "inconvo" = "1")))
 			else
@@ -473,7 +468,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		data["pdas"] = pdas
 		data["pda_count"] = count
 
-	if(mode==21)
+	if(mode == PDA_MODE_MESSENGER_CONVERSATION)
 		data["messagescount"] = tnote.len
 		data["messages"] = tnote
 	else
@@ -487,19 +482,18 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				data["convo_job"] = sanitize(c["job"])
 				break
 
-	if(mode==3)
+	if(mode == PDA_MODE_ATMOS_SCAN)
 		var/turf/T = get_turf(user.loc)
 		if(!isnull(T))
 			var/datum/gas_mixture/environment = T.return_air()
-
 			var/pressure = environment.return_pressure()
 			var/total_moles = environment.total_moles
 
-			if (total_moles)
-				var/o2_level = environment.gas["oxygen"]/total_moles
-				var/n2_level = environment.gas["nitrogen"]/total_moles
-				var/co2_level = environment.gas["carbon_dioxide"]/total_moles
-				var/unknown_level =  1-(o2_level+n2_level+co2_level)
+			if(total_moles)
+				var/o2_level = environment.gas["oxygen"] / total_moles
+				var/n2_level = environment.gas["nitrogen"] / total_moles
+				var/co2_level = environment.gas["carbon_dioxide"] / total_moles
+				var/unknown_level = 1 - (o2_level + n2_level + co2_level)
 				data["aircontents"] = list(\
 					"pressure" = "[round(pressure,0.1)]",\
 					"nitrogen" = "[round(n2_level*100,0.1)]",\
@@ -508,70 +502,62 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					"other" = "[round(unknown_level*100,0.01)]",\
 					"temp" = "[round(CONV_KELVIN_CELSIUS(environment.temperature),0.1)]",\
 					"reading" = 1\
-					)
+				)
 		if(isnull(data["aircontents"]))
 			data["aircontents"] = list("reading" = 0)
-	if(mode==6)
+
+	if(mode == PDA_MODE_NEWS_FEED)
 		if(has_reception)
 			feeds.Cut()
 			for(var/datum/feed_channel/channel in news_network.network_channels)
-				feeds[++feeds.len] = list("name" = channel.channel_name, "censored" = channel.censored)
+				feeds[++feeds.len] = list("name" = channel.channel_name, "censored" = channel.censored, "feed" = "\ref[channel]")
 		data["feedChannels"] = feeds
-	if(mode==61)
+
+	if(mode == PDA_MODE_NEWS_FEED_CHANNEL)
 		var/datum/feed_channel/FC
 		for(FC in news_network.network_channels)
 			if(FC.channel_name == active_feed["name"])
 				break
 
-		var/list/feed = feed_info[active_feed]
-		if(!feed)
-			feed = list()
-			feed["channel"] = FC.channel_name
-			feed["author"]	= "Unknown"
-			feed["censored"]= 0
-			feed["updated"] = -1
-			feed["views"] = 0
-			feed_info[active_feed] = feed
+		if(FC)
+			var/list/feed = feed_info[active_feed]
+			if(!feed)
+				feed = list()
+				feed["channel"] = FC.channel_name
+				feed["author"] = "Unknown"
+				feed["censored"] = 0
+				feed["updated"] = -1
+				feed["views"] = 0
+				feed_info[active_feed] = feed
 
-		if(FC.updated > feed["updated"] && has_reception)
-			feed["author"]	= FC.author
-			feed["updated"]	= FC.updated
-			feed["views"] = ++FC.views
-			feed["censored"] = FC.censored
+			if(FC.updated > feed["updated"] && has_reception)
+				feed["author"] = FC.author
+				feed["updated"] = FC.updated
+				feed["views"] = ++FC.views
+				feed["censored"] = FC.censored
 
-			var/list/messages = list()
-			if(!FC.censored)
-				var/index = 0
-				for(var/datum/feed_message/FM in FC.messages)
-					++index
-					if(FM.img)
-						ASSERT(user.client)
-						send_asset(user.client, "newscaster_photo_[FC.channel_id]_[index].png")
-					// News stories are HTML-stripped but require newline replacement to be properly displayed in NanoUI
-					var/body = replacetext(FM.body, "\n", "<br>")
-					messages[++messages.len] = list("author" = FM.author, "body" = body, "message_type" = FM.message_type, "time_stamp" = FM.time_stamp, "has_image" = (FM.img != null), "caption" = FM.caption, "index" = index)
-			feed["messages"] = messages
+				var/list/messages = list()
+				if(!FC.censored)
+					var/index = 0
+					for(var/datum/feed_message/FM in FC.messages)
+						++index
+						if(FM.img)
+							ASSERT(user.client)
+							send_asset(user.client, "newscaster_photo_[FC.channel_id]_[index].png")
+						var/body = replacetext(FM.body, "\n", "<br>")
+						messages[++messages.len] = list("author" = FM.author, "body" = body, "message_type" = FM.message_type, "time_stamp" = FM.time_stamp, "has_image" = (FM.img != null), "caption" = FM.caption, "index" = index)
+				feed["messages"] = messages
 
-		data["feed"] = feed
+			data["feed"] = feed
 
-	data["manifest"] = nano_crew_manifest()
+	return data
 
-	nanoUI = data
-	// update the ui if it exists, returns null if no ui is passed/found
-
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-
-	if (!ui)
-		// the ui does not exist, so we'll create a new() one
-	        // for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
-		ui = new(user, src, ui_key, "pda.tmpl", title, 520, 400, state = GLOB.inventory_state)
-		// when the ui is first opened this is the data it will use
-
-		ui.set_initial_data(data)
-		// open the new ui window
-		ui.open()
-	// auto update every Master Controller tick
-	ui.set_auto_update(auto_update)
+/obj/item/device/pda/tgui_data(mob/user)
+	var/list/data = build_tgui_data(user)
+	if(isnull(data))
+		return tgui_cache
+	tgui_cache = data
+	return data
 
 //NOTE: graphic resources are loaded on client login
 /obj/item/device/pda/attack_self(mob/user as mob)
@@ -586,141 +572,201 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		U.interact(user)
 		return
 
-	tgui_interact(user) //NanoUI requires this proc
+	tgui_interact(user)
 	return
 
 /obj/item/device/pda/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "PDA")
+		ui = new(user, src, "PDA", "Personal Data Assistant")
 		ui.open()
+	ui.set_autoupdate(!(mode in no_auto_update))
 
-/obj/item/device/pda/Topic(href, href_list)
-	if(href_list["cartmenu"] && !QDELETED(cartridge))
-		cartridge.Topic(href, href_list)
-		return 1
-	if(href_list["radiomenu"] && !QDELETED(cartridge) && !QDELETED(cartridge.radio))
-		cartridge.radio.Topic(href, href_list)
-		return 1
+/obj/item/device/pda/proc/mode_from_choice(choice)
+	switch(choice)
+		if("0")
+			return PDA_MODE_HOME
+		if("1")
+			return PDA_MODE_NOTES
+		if("2")
+			return PDA_MODE_MESSENGER
+		if("21")
+			return PDA_MODE_MESSENGER_CONVERSATION
+		if("3")
+			return PDA_MODE_ATMOS_SCAN
+		if("4")
+			return PDA_MODE_HOME
+		if("chatroom")
+			return PDA_MODE_CHATROOM
+		if("40")
+			return PDA_MODE_SIGNALER
+		if("41")
+			return PDA_MODE_CREW_MANIFEST
+		if("42")
+			return PDA_MODE_STATUS_DISPLAY
+		if("43")
+			return PDA_MODE_POWER_MONITOR
+		if("433")
+			return PDA_MODE_POWER_MONITOR_READING
+		if("44")
+			return PDA_MODE_MEDICAL_RECORDS
+		if("441")
+			return PDA_MODE_MEDICAL_RECORD
+		if("45")
+			return PDA_MODE_SECURITY_RECORDS
+		if("451")
+			return PDA_MODE_SECURITY_RECORD
+		if("46")
+			return PDA_MODE_SECURITY_BOT
+		if("47")
+			return PDA_MODE_SUPPLY_RECORDS
+		if("48")
+			return PDA_MODE_MULE_CONTROL
+		if("49")
+			return PDA_MODE_JANITOR_LOCATOR
+		if("6")
+			return PDA_MODE_NEWS_FEED
+		if("61")
+			return PDA_MODE_NEWS_FEED_CHANNEL
+	return null
 
+/obj/item/device/pda/proc/set_pda_mode(new_mode)
+	if(isnull(new_mode))
+		return
+	mode = new_mode
+	if(cartridge)
+		cartridge.mode = new_mode
 
-	..()
-	var/mob/user = usr
-	var/datum/nanoui/ui = SSnano.get_open_ui(user, src, "main")
+/obj/item/device/pda/proc/handle_return_mode()
+	switch(mode)
+		if(PDA_MODE_MESSENGER_CONVERSATION)
+			active_conversation = null
+			set_pda_mode(PDA_MODE_MESSENGER)
+		if(PDA_MODE_NEWS_FEED_CHANNEL)
+			set_pda_mode(PDA_MODE_NEWS_FEED)
+		if(PDA_MODE_POWER_MONITOR_READING)
+			set_pda_mode(PDA_MODE_POWER_MONITOR)
+		if(PDA_MODE_MEDICAL_RECORD)
+			set_pda_mode(PDA_MODE_MEDICAL_RECORDS)
+		if(PDA_MODE_SECURITY_RECORD)
+			set_pda_mode(PDA_MODE_SECURITY_RECORDS)
+		else
+			set_pda_mode(PDA_MODE_HOME)
+
+/obj/item/device/pda/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return TRUE
+
 	var/mob/living/U = usr
-	//Looking for master was kind of pointless since PDAs don't appear to have one.
-	//if ((src in U.contents) || ( istype(loc, /turf) && in_range(src, U) ) )
-	if (usr.is_ic_dead())
-		return 0
-	if(!can_use()) //Why reinvent the wheel? There's a proc that does exactly that.
+	if(!U)
+		return TRUE
+	if(usr.is_ic_dead())
+		return TRUE
+	if(!can_use())
 		U.unset_machine()
 		if(ui)
 			ui.close()
-		return 0
+		return TRUE
 
 	U.set_machine(src)
 
-	switch(href_list["choice"])
+	if(action == "cartridge_action" && !QDELETED(cartridge))
+		if(cartridge.tgui_handle_action(U, params["choice"], params))
+			if(ui)
+				ui.set_autoupdate(!(mode in no_auto_update))
+			return TRUE
 
-//BASIC FUNCTIONS===================================
+	if(action == "radio_action" && !QDELETED(cartridge) && !QDELETED(cartridge.radio) && istype(cartridge.radio, /obj/item/radio/integrated/beepsky))
+		if(cartridge.radio:tgui_handle_action(params["op"], params))
+			if(ui)
+				ui.set_autoupdate(!(mode in no_auto_update))
+			return TRUE
 
-		if("Close")//Self explanatory
+	var/choice = action
+	if(action == "choice")
+		choice = params["choice"]
+
+	switch(choice)
+		if("Close")
 			U.unset_machine()
-			ui.close()
-			return 0
-		if("Refresh")//Refresh, goes to the end of the proc.
-			pass()
-		if("Return")//Return
-			if(mode<=9)
-				mode = 0
-			else
-				mode = round(mode/10)
-				if(mode==2)
-					active_conversation = null
-				if(mode==4)//Fix for cartridges. Redirects to hub.
-					mode = 0
-				else if(mode >= 40 && mode <= 49)//Fix for cartridges. Redirects to refresh the menu.
-					cartridge.mode = mode
-		if ("Authenticate")//Checks for ID
+			if(ui)
+				ui.close()
+			return TRUE
+
+		if("Refresh")
+			// No-op, frontend re-renders after successful act.
+
+		if("Return")
+			handle_return_mode()
+
+		if("Authenticate")
 			id_check(U, 1)
+
 		if("UpdateInfo")
 			if(id)
 				set_rank_job(id.rank, id.assignment)
-		if("Eject")//Ejects the cart, only done from hub.
+
+		if("Eject")
 			verb_remove_cartridge()
-
-//MENU FUNCTIONS===================================
-
-		if("0")//Hub
-			mode = 0
-		if("1")//Notes
-			mode = 1
-		if("2")//Messenger
-			mode = 2
-		if("21")//Read messages
-			mode = 21
-		if("3")//Atmos scan
-			mode = 3
-		if("4")//Redirects to hub
-			mode = 0
-		if("chatroom") // chatroom hub
-			mode = 5
-		if("41") //Manifest
-			mode = 41
-
-
-//MAIN FUNCTIONS===================================
 
 		if("Light")
 			toggle_light()
+
 		if("Medical Scan")
-			if(scanmode == 1)
-				scanmode = 0
-			else if((!QDELETED(cartridge)) && (cartridge.access_medical))
-				scanmode = 1
+			if(scanmode == PDA_SCANMODE_MEDICAL)
+				scanmode = PDA_SCANMODE_NONE
+			else if((!QDELETED(cartridge)) && cartridge.access_medical)
+				scanmode = PDA_SCANMODE_MEDICAL
+
 		if("Reagent Scan")
-			if(scanmode == 3)
-				scanmode = 0
-			else if((!QDELETED(cartridge)) && (cartridge.access_reagent_scanner))
-				scanmode = 3
+			if(scanmode == PDA_SCANMODE_REAGENT)
+				scanmode = PDA_SCANMODE_NONE
+			else if((!QDELETED(cartridge)) && cartridge.access_reagent_scanner)
+				scanmode = PDA_SCANMODE_REAGENT
+
 		if("Halogen Counter")
-			if(scanmode == 4)
-				scanmode = 0
-			else if((!QDELETED(cartridge)) && (cartridge.access_engine))
-				scanmode = 4
+			if(scanmode == PDA_SCANMODE_HALOGEN)
+				scanmode = PDA_SCANMODE_NONE
+			else if((!QDELETED(cartridge)) && cartridge.access_engine)
+				scanmode = PDA_SCANMODE_HALOGEN
+
 		if("Honk")
-			if ( !(last_honk && world.time < last_honk + 20) )
+			if(!(last_honk && world.time < last_honk + 20))
 				playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
 				last_honk = world.time
+
 		if("Gas Scan")
-			if(scanmode == 5)
-				scanmode = 0
-			else if((!QDELETED(cartridge)) && (cartridge.access_atmos))
-				scanmode = 5
+			if(scanmode == PDA_SCANMODE_GAS)
+				scanmode = PDA_SCANMODE_NONE
+			else if((!QDELETED(cartridge)) && cartridge.access_atmos)
+				scanmode = PDA_SCANMODE_GAS
 
-//MESSENGER/NOTE FUNCTIONS===================================
-
-		if ("Edit")
+		if("Edit")
 			var/n = input(U, "Please enter message", html_decode(name), notehtml)
-			if (in_range(src, U) && loc == U)
-				if (mode == 1)
+			if(in_range(src, U) && loc == U)
+				if(mode == PDA_MODE_NOTES)
 					n = sanitize(n)
 					note = html_decode(n)
 					note = replacetext(note, "\n", "<br>")
 					notehtml = n
-			else
+			else if(ui)
 				ui.close()
+
 		if("Toggle Messenger")
 			toff = !toff
-		if("Toggle Ringer")//If viewing texts then erase them, if not then toggle silent status
+
+		if("Toggle Ringer")
 			message_silent = !message_silent
+
 		if("Toggle News")
 			news_silent = !news_silent
-		if("Clear")//Clears messages
-			if(href_list["option"] == "All")
+
+		if("Clear")
+			if(params["option"] == "All")
 				tnote.Cut()
 				conversations.Cut()
-			if(href_list["option"] == "Convo")
+			if(params["option"] == "Convo")
 				var/new_tnote[0]
 				for(var/i in tnote)
 					if(i["target"] != active_conversation)
@@ -729,88 +775,95 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				conversations.Remove(active_conversation)
 
 			active_conversation = null
-			if(mode==21)
-				mode=2
+			if(mode == PDA_MODE_MESSENGER_CONVERSATION)
+				set_pda_mode(PDA_MODE_MESSENGER)
 
 		if("Ringtone")
-			var/t = input(U, "Please enter new ringtone", name, ttone) as text
+			var/t
+			if(!isnull(params["ringtone"]))
+				t = params["ringtone"]
+			else
+				t = input(U, "Please enter new ringtone", name, ttone) as text
+
 			if(Adjacent(src, U) && loc == U)
 				if(t)
 					var/datum/component/uplink/uplink = get_component(/datum/component/uplink)
 					if(uplink?.unlock_code == t)
 						to_chat(U, "\The [src] beeps softly.")
 						uplink.locked = FALSE
-						ui.close()
+						if(ui)
+							ui.close()
 						uplink.interact(U)
 					else
 						t = sanitize(t, 20)
 						ttone = t
-			else
+			else if(ui)
 				ui.close()
-				return 0
-		if("Newstone")
-			var/t = input(U, "Please enter new news tone", name, newstone) as text
-			if (in_range(src, U) && loc == U)
-				if (t)
-					t = sanitize(t, 20)
-					newstone = t
-			else
-				ui.close()
-				return 0
-		if("Message")
+				return TRUE
 
-			var/obj/item/device/pda/P = locate(href_list["target"])
-			var/tap = istype(U, /mob/living/carbon)
-			src.create_message(U, P, tap)
-			if(mode == 2)
-				if(href_list["target"] in conversations)            // Need to make sure the message went through, if not welp.
-					active_conversation = href_list["target"]
-					mode = 21
+		if("Newstone")
+			var/t2 = input(U, "Please enter new news tone", name, newstone) as text
+			if(in_range(src, U) && loc == U)
+				if(t2)
+					t2 = sanitize(t2, 20)
+					newstone = t2
+			else if(ui)
+				ui.close()
+				return TRUE
+
+		if("Message")
+			var/obj/item/device/pda/P = locate(params["target"])
+			var/tap = istype(U, /mob/living/carbon) && isnull(params["message"])
+			create_message(U, P, tap, params["message"])
+			if(mode == PDA_MODE_MESSENGER)
+				if(params["target"] in conversations)
+					active_conversation = params["target"]
+					set_pda_mode(PDA_MODE_MESSENGER_CONVERSATION)
 
 		if("Select Conversation")
-			var/P = href_list["convo"]
+			var/selected = params["convo"]
 			for(var/n in conversations)
-				if(P == n)
-					active_conversation=P
-					mode=21
+				if(selected == n)
+					active_conversation = selected
+					set_pda_mode(PDA_MODE_MESSENGER_CONVERSATION)
+
 		if("Select Feed")
-			var/n = href_list["name"]
+			var/feed_name = params["name"]
 			for(var/f in feeds)
-				if(f["name"] == n)
+				if(f["name"] == feed_name)
 					active_feed = f
-					mode=61
-		if("Send Honk")//Honk virus
-			if(cartridge && cartridge.access_clown)//Cartridge checks are kind of unnecessary since everything is done through switch.
-				var/obj/item/device/pda/P = locate(href_list["target"])//Leaving it alone in case it may do something useful, I guess.
-				if(!QDELETED(P))
-					if (!P.toff && cartridge.charges > 0)
+					set_pda_mode(PDA_MODE_NEWS_FEED_CHANNEL)
+
+		if("Send Honk")
+			if(cartridge && cartridge.access_clown)
+				var/obj/item/device/pda/P_honk = locate(params["target"])
+				if(!QDELETED(P_honk))
+					if(!P_honk.toff && cartridge.charges > 0)
 						cartridge.charges--
 						U.show_message("<span class='notice'>Virus sent!</span>", 1)
-						P.honkamt = (rand(15,20))
+						P_honk.honkamt = rand(15,20)
 				else
 					to_chat(U, "PDA not found.")
-			else
+			else if(ui)
 				ui.close()
-				return 0
-		if("Send Silence")//Silent virus
+				return TRUE
+
+		if("Send Silence")
 			if(cartridge && cartridge.access_mime)
-				var/obj/item/device/pda/P = locate(href_list["target"])
-				if(!QDELETED(P))
-					if (!P.toff && cartridge.charges > 0)
+				var/obj/item/device/pda/P_silence = locate(params["target"])
+				if(!QDELETED(P_silence))
+					if(!P_silence.toff && cartridge.charges > 0)
 						cartridge.charges--
 						U.show_message("<span class='notice'>Virus sent!</span>", 1)
-						P.message_silent = 1
-						P.news_silent = 1
-						P.ttone = "silence"
-						P.newstone = "silence"
+						P_silence.message_silent = 1
+						P_silence.news_silent = 1
+						P_silence.ttone = "silence"
+						P_silence.newstone = "silence"
 				else
 					to_chat(U, "PDA not found.")
-			else
+			else if(ui)
 				ui.close()
-				return 0
-
-
-//SYNDICATE FUNCTIONS===================================
+				return TRUE
 
 		if("Toggle Door")
 			if(cartridge && cartridge.access_remote_door)
@@ -821,89 +874,88 @@ var/global/list/obj/item/device/pda/PDAs = list()
 						else
 							M.close()
 
-		if("Detonate")//Detonate PDA... maybe
+		if("Detonate")
 			if(cartridge && cartridge.access_detonate_pda)
-				var/obj/item/device/pda/P = locate(href_list["target"])
-				var/datum/reception/reception = get_reception(src, P, "", do_sleep = 0)
+				var/obj/item/device/pda/P_det = locate(params["target"])
+				var/datum/reception/reception = get_reception(src, P_det, "", do_sleep = 0)
 				if(!(reception.message_server && reception.telecomms_reception & TELECOMMS_RECEPTION_SENDER))
 					U.show_message("<span class='warning'>An error flashes on your [src]: Connection unavailable</span>", 1)
-					return
-				if(reception.telecomms_reception & TELECOMMS_RECEPTION_RECEIVER == 0) // Does our recepient have a broadcaster on their level?
+					return TRUE
+				if(reception.telecomms_reception & TELECOMMS_RECEPTION_RECEIVER == 0)
 					U.show_message("<span class='warning'>An error flashes on your [src]: Recipient unavailable</span>", 1)
-					return
-				if(!QDELETED(P))
-					if (!P.toff && cartridge.charges > 0)
+					return TRUE
+				if(!QDELETED(P_det))
+					if(!P_det.toff && cartridge.charges > 0)
 						cartridge.charges--
-
 						var/difficulty = 2
-
-						if(P.cartridge)
-							difficulty += P.cartridge.access_medical
-							difficulty += P.cartridge.access_security
-							difficulty += P.cartridge.access_engine
-							difficulty += P.cartridge.access_clown
-							difficulty += P.cartridge.access_janitor
-							var/datum/component/uplink/uplink = P.get_component(/datum/component/uplink)
+						if(P_det.cartridge)
+							difficulty += P_det.cartridge.access_medical
+							difficulty += P_det.cartridge.access_security
+							difficulty += P_det.cartridge.access_engine
+							difficulty += P_det.cartridge.access_clown
+							difficulty += P_det.cartridge.access_janitor
+							var/datum/component/uplink/uplink = P_det.get_component(/datum/component/uplink)
 							if(istype(uplink))
 								difficulty += 3
 
 						if(prob(difficulty))
 							U.show_message("<span class='warning'>An error flashes on your [src].</span>", 1)
-						else if (prob(difficulty * 7))
+						else if(prob(difficulty * 7))
 							U.show_message("<span class='warning'>Energy feeds back into your [src]!</span>", 1)
-							ui.close()
+							if(ui)
+								ui.close()
 							detonate_act(src)
-							log_admin("[key_name(U)] just attempted to blow up [P] with the Detomatix cartridge but failed, blowing themselves up")
-							message_admins("[key_name_admin(U)] just attempted to blow up [P] with the Detomatix cartridge but failed.", 1)
+							log_admin("[key_name(U)] just attempted to blow up [P_det] with the Detomatix cartridge but failed, blowing themselves up")
+							message_admins("[key_name_admin(U)] just attempted to blow up [P_det] with the Detomatix cartridge but failed.", 1)
 						else
 							U.show_message("<span class='notice'>Success!</span>", 1)
-							log_admin("[key_name(U)] just attempted to blow up [P] with the Detomatix cartridge and succeeded")
-							message_admins("[key_name_admin(U)] just attempted to blow up [P] with the Detomatix cartridge and succeeded.", 1)
-							detonate_act(P)
+							log_admin("[key_name(U)] just attempted to blow up [P_det] with the Detomatix cartridge and succeeded")
+							message_admins("[key_name_admin(U)] just attempted to blow up [P_det] with the Detomatix cartridge and succeeded.", 1)
+							detonate_act(P_det)
 					else
 						to_chat(U, "No charges left.")
 				else
 					to_chat(U, "PDA not found.")
 			else
 				U.unset_machine()
-				ui.close()
-				return 0
+				if(ui)
+					ui.close()
+				return TRUE
 
-//pAI FUNCTIONS===================================
 		if("pai")
 			if(pai)
 				if(pai.loc != src)
 					pai = null
 				else
-					switch(href_list["option"])
-						if("1")		// Configure pAI device
+					switch(params["option"])
+						if("1")
 							pai.attack_self(U)
-						if("2")		// Eject pAI device
+						if("2")
 							var/turf/T = get_turf_or_move(src.loc)
 							if(T)
 								pai.dropInto(T)
 								pai = null
 
 		else
-			mode = text2num(href_list["choice"])
-			if(cartridge)
-				cartridge.mode = mode
+			var/new_mode = mode_from_choice(choice)
+			if(!isnull(new_mode))
+				set_pda_mode(new_mode)
 
-//EXTRA FUNCTIONS===================================
-
-	if (mode == 2||mode == 21)//To clear message overlays.
+	if(mode == PDA_MODE_MESSENGER || mode == PDA_MODE_MESSENGER_CONVERSATION)
 		new_message = 0
 		update_icon()
 
-	if (mode == 6||mode == 61)//To clear news overlays.
+	if(mode == PDA_MODE_NEWS_FEED || mode == PDA_MODE_NEWS_FEED_CHANNEL)
 		new_news = 0
 		update_icon()
 
-	if ((honkamt > 0) && (prob(60)))//For clown virus.
+	if((honkamt > 0) && prob(60))
 		honkamt--
 		playsound(loc, 'sound/items/bikehorn.ogg', 30, 1)
 
-	return 1 // return 1 tells it to refresh the UI in NanoUI
+	if(ui)
+		ui.set_autoupdate(!(mode in no_auto_update))
+	return TRUE
 
 /obj/item/device/pda/on_update_icon()
 	..()
@@ -993,13 +1045,17 @@ var/global/list/obj/item/device/pda/PDAs = list()
 /obj/item/device/pda/CtrlAltClick()
 	toggle_light()
 
-/obj/item/device/pda/proc/create_message(mob/living/U = usr, obj/item/device/pda/P, tap = 1)
+/obj/item/device/pda/proc/create_message(mob/living/U = usr, obj/item/device/pda/P, tap = 1, forced_message = null)
 	if(!istype(P))
 		to_chat(U, "<span class='notice'>ERROR: This user does not accept messages.</span>")
 		return
 	if(tap)
 		U.visible_message("<span class='notice'>\The [U] taps on \his PDA's screen.</span>")
-	var/message = input(U, "Please enter message", P.name, tempmessage[P]) as text
+	var/message
+	if(isnull(forced_message))
+		message = input(U, "Please enter message", P.name, tempmessage[P]) as text
+	else
+		message = "[forced_message]"
 	message = sanitizeSafe(message, extra = 0)
 	//t = readd_quotes(t)
 	message = replace_characters(message, list("&#34;" = "\""))
@@ -1067,7 +1123,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		U.client.spellcheck(message)
 
 		P.new_message_from_pda(src, message)
-		SSnano.update_user_uis(U, src) // Update the sending user's PDA UI so that they can see the new message
+		SStgui.update_user_uis(U, src) // Update the sending user's PDA UI so that they can see the new message
 
 /obj/item/device/pda/proc/new_info(beep_silent, message_tone, reception_message)
 	if (!beep_silent)
@@ -1087,7 +1143,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(L)
 		if(reception_message)
 			to_chat(L, reception_message)
-		SSnano.update_user_uis(L, src) // Update the receiving user's PDA UI so that they can see the new message
+		SStgui.update_user_uis(L, src) // Update the receiving user's PDA UI so that they can see the new message
 
 /obj/item/device/pda/proc/new_news(message)
 	new_info(news_silent, newstone, news_silent ? "" : "\icon[src] <b>[message]</b>")
@@ -1103,7 +1159,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	new_message(sending_device, sending_device.owner, sending_device.ownjob, message)
 
 /obj/item/device/pda/proc/new_message(sending_unit, sender, sender_job, message)
-	var/reception_message = "\icon[src] <b>Message from [sender] ([sender_job]), </b>\"[message]\" (<a href='byond://?src=\ref[src];choice=Message;skiprefresh=1;target=\ref[sending_unit]'>Reply</a>)"
+	var/reception_message = "\icon[src] <b>Message from [sender] ([sender_job]), </b>\"[message]\""
 	new_info(message_silent, ttone, reception_message)
 
 	log_pda("[key_name(usr)] (PDA: [sending_unit]) sent \"[message]\" to [name]")
@@ -1118,7 +1174,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(ismob(sending_unit.loc) && isAI(loc))
 		track = "(<a href='byond://?src=\ref[loc];track=\ref[sending_unit.loc];trackname=[html_encode(sender)]'>Follow</a>)"
 
-	var/reception_message = "\icon[src] <b>Message from [sender] ([sender_job]), </b>\"[message]\" (<a href='byond://?src=\ref[src];choice=Message;skiprefresh=1;target=\ref[sending_unit]'>Reply</a>) [track]"
+	var/reception_message = "\icon[src] <b>Message from [sender] ([sender_job]), </b>\"[message]\" [track]"
 	new_info(message_silent, newstone, reception_message)
 
 	log_pda("[usr] (PDA: [sending_unit]) sent \"[message]\" to [name]")
@@ -1133,8 +1189,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		return
 
 	if(can_use(usr))
-		mode = 0
-		SSnano.update_uis(src)
+		set_pda_mode(PDA_MODE_HOME)
+		SStgui.update_uis(src)
 		to_chat(usr, "<span class='notice'>You press the reset button on \the [src].</span>")
 	else
 		to_chat(usr, "<span class='notice'>You cannot do this.</span>")
@@ -1199,8 +1255,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(ismob(loc))
 		var/mob/M = loc
 		M.pick_or_drop(cartridge)
-	mode = 0
-	scanmode = 0
+	set_pda_mode(PDA_MODE_HOME)
+	scanmode = PDA_SCANMODE_NONE
 	if(cartridge.radio)
 		cartridge.radio.hostpda = null
 	to_chat(usr, SPAN("notice", "You remove \the [cartridge] from the [name]."))
@@ -1234,7 +1290,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			return
 		cartridge = C
 		to_chat(user, "<span class='notice'>You insert [cartridge] into [src].</span>")
-		SSnano.update_uis(src) // update all UIs attached to src
+		SStgui.update_uis(src) // update all UIs attached to src
 		if(cartridge.radio)
 			cartridge.radio.hostpda = src
 
@@ -1252,15 +1308,15 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			if(((src in user.contents) && (C in user.contents)) || (istype(loc, /turf) && in_range(src, user) && (C in user.contents)) )
 				if(id_check(user, 2))
 					to_chat(user, "<span class='notice'>You put the ID into \the [src]'s slot.</span>")
-					updateSelfDialog()//Update self dialog on success.
+					SStgui.update_uis(src)
 			return	//Return in case of failed check or when successful.
-		updateSelfDialog()//For the non-input related code.
+		SStgui.update_uis(src)
 	else if(istype(C, /obj/item/device/paicard) && !src.pai)
 		if(!user.drop(C, src))
 			return
 		pai = C
 		to_chat(user, "<span class='notice'>You slot \the [C] into [src].</span>")
-		SSnano.update_uis(src) // update all UIs attached to src
+		SStgui.update_uis(src) // update all UIs attached to src
 	else if(istype(C, /obj/item/pen))
 		var/obj/item/pen/O = locate() in src
 		if(O)
@@ -1272,13 +1328,13 @@ var/global/list/obj/item/device/pda/PDAs = list()
 /obj/item/device/pda/attack(mob/living/C as mob, mob/living/user as mob)
 	if (istype(C, /mob/living/carbon))
 		switch(scanmode)
-			if(1)
+			if(PDA_SCANMODE_MEDICAL)
 
 				for (var/mob/O in viewers(C, null))
 					O.show_message("<span class='warning'>\The [user] has analyzed [C]'s vitals!</span>", 1)
 				user.show_message(medical_scan_results(C, 1))
 
-			if(2)
+			if(PDA_SCANMODE_FORENSICS)
 				if (!istype(C:dna, /datum/dna))
 					to_chat(user, "<span class='notice'>No fingerprints found on [C]</span>")
 				else
@@ -1293,7 +1349,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 						for(var/blood in C:blood_DNA)
 							to_chat(user, "<span class='notice'>Blood type: [C:blood_DNA[blood]]\nDNA: [blood]</span>")
 
-			if(4)
+			if(PDA_SCANMODE_HALOGEN)
 				for (var/mob/O in viewers(C, null))
 					O.show_message("<span class='warning'>\The [user] has analyzed [C]'s radiation levels!</span>", 1)
 
@@ -1304,7 +1360,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(!proximity) return
 	switch(scanmode)
 
-		if(3)
+		if(PDA_SCANMODE_REAGENT)
 			if(!isobj(A))
 				return
 			if(!QDELETED(A.reagents))
@@ -1318,10 +1374,10 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			else
 				to_chat(user, "<span class='notice'>No significant chemical agents found in [A].</span>")
 
-		if(5)
+		if(PDA_SCANMODE_GAS)
 			analyze_gases(A, user)
 
-	if (!scanmode && istype(A, /obj/item/paper) && owner)
+	if (scanmode == PDA_SCANMODE_NONE && istype(A, /obj/item/paper) && owner)
 		// JMO 20140705: Makes scanned document show up properly in the notes. Not pretty for formatted documents,
 		// as this will clobber the HTML, but at least it lets you scan a document. You can restore the original
 		// notes by editing the note again. (Was going to allow you to edit, but scanned documents are too long.)

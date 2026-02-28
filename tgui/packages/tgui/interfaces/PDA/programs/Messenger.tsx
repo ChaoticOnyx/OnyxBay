@@ -1,39 +1,31 @@
 import { Component } from 'inferno';
 import { Icon, Button, Input } from '../../../components';
+import { PDA_MODE } from '../programIds';
 import type { PdaProgram, PdaProgramContext } from '../types';
 import { cx } from '../types';
 
-type ChatType = 'dm' | 'group';
-
-type Chat = {
-  id: string;
-  type: ChatType;
-  title: string;
-  peerCkey?: string;
-  members?: string[];
-  unread: number;
-  lastTs: number;
+type PdaEntry = {
+  Name?: string;
+  Reference?: string;
+  Detonate?: string | number;
+  inconvo?: string | number;
 };
 
-type Message = {
-  id: string;
-  chatId: string;
-  ts: number;
-  from: string;
-  text: string;
+type BackendMessage = {
+  sent?: number | string;
+  owner?: string;
+  message?: string;
+  timestamp?: string;
+  target?: string;
 };
 
 type EmojiDef = {
-  name: string;   // token :name:
-  file: string;   // filename in assets dir
+  name: string;
+  file: string;
 };
 
 const EMOJI_RENDER_H = 32;
 
-// ============================================================================
-// GIF SUPPORT NOTE:
-//   JUST RENAME IT TO PNG
-// ============================================================================
 const emojiCtx = require.context(
   '../../../assets/pda/emoji',
   false,
@@ -167,7 +159,6 @@ const EMOJI_ALL: EmojiDef[] = [
   { name: 'silentman', file: 'silentman.png' },
   { name: 'singulo', file: 'singulo.png' },
   { name: 'skull', file: 'skull.png' },
-  { name: 'slime', file: 'slime.gif' },
   { name: 'snail', file: 'snail.png' },
   { name: 'snek', file: 'snek.png' },
   { name: 'snya', file: 'snya.png' },
@@ -201,26 +192,12 @@ const EMOJI_BY_NAME: Record<string, EmojiDef> = EMOJI_ALL.reduce((acc, e) => {
   return acc;
 }, {} as Record<string, EmojiDef>);
 
-const makeId = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+type EmojiPart = string | { emoji: EmojiDef; raw: string };
 
-function formatTime(ts: number) {
-  const d = new Date(ts);
-  const hh = String(d.getHours()).padStart(2, '0');
-  const mm = String(d.getMinutes()).padStart(2, '0');
-  return `${hh}:${mm}`;
-}
-
-type EmojiPart =
-  | string
-  | { emoji: EmojiDef; raw: string };
-
-/**
- * Supported:
- *  - :name:  (by EMOJI_BY_NAME)
- *  - :eNN:   (by EMOJI_ALL index)
- */
 function parseEmojiParts(text: string): EmojiPart[] {
-  if (!text) return [''];
+  if (!text) {
+    return [''];
+  }
 
   const out: EmojiPart[] = [];
   let i = 0;
@@ -231,7 +208,9 @@ function parseEmojiParts(text: string): EmojiPart[] {
       out.push(text.slice(i));
       break;
     }
-    if (start > i) out.push(text.slice(i, start));
+    if (start > i) {
+      out.push(text.slice(i, start));
+    }
 
     const end = text.indexOf(':', start + 1);
     if (end === -1) {
@@ -243,15 +222,14 @@ function parseEmojiParts(text: string): EmojiPart[] {
     let emoji: EmojiDef | null = null;
 
     if (token) {
-      const m = token.match(/^e(\d{1,4})$/i);
-      if (m) {
-        const n = Number(m[1]);
+      const nIndex = token.match(/^e(\d{1,4})$/i);
+      if (nIndex) {
+        const n = Number(nIndex[1]);
         if (Number.isFinite(n) && n >= 0 && n < EMOJI_ALL.length) {
           emoji = EMOJI_ALL[n];
         }
       } else {
-        const byName = EMOJI_BY_NAME[token];
-        if (byName) emoji = byName;
+        emoji = EMOJI_BY_NAME[token] || null;
       }
     }
 
@@ -268,200 +246,173 @@ function parseEmojiParts(text: string): EmojiPart[] {
 }
 
 function renderEmojiParts(parts: EmojiPart[]) {
-  return parts.map((p, k) => {
-    if (typeof p === 'string') return <span key={k}>{p}</span>;
+  return parts.map((part, index) => {
+    if (typeof part === 'string') {
+      return <span key={index}>{part}</span>;
+    }
 
-    const src = emojiUrl(p.emoji.file);
+    const src = emojiUrl(part.emoji.file);
     if (!src) {
-      // если не нашли файл — оставим raw как текст, чтобы не “пропадало”
-      return <span key={k}>{p.raw}</span>;
+      return <span key={index}>{part.raw}</span>;
     }
 
     return (
       <img
-        key={k}
+        key={index}
         className="PDAEmoji"
         src={src}
-        alt={p.raw}
-        title={p.raw}
+        alt={part.raw}
+        title={part.raw}
         style={{ height: `${EMOJI_RENDER_H}px`, width: 'auto' }}
       />
     );
   });
 }
 
+const toBool = (value: any) => {
+  if (typeof value === 'string') {
+    return value !== '0' && value.toLowerCase() !== 'false' && value !== '';
+  }
+  return !!value;
+};
+
 class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
-  private selfCkey = 'Lovla';
-  private peerCkey = 'Zert0X-Bot';
-
-  private chats: Chat[] = [];
-  private messages: Message[] = [];
-  private activeChatId: string | null = null;
-
   private draft = '';
   private filter = '';
-
-  private showCreateGroup = false;
-  private newGroupName = '';
-
   private showEmojiPicker = false;
-
-  // old UI toggles (UI-only)
-  private messengerOn = true;
-  private ringerOn = true;
-
-  // ringtone UI (wire act() later)
-  private ringtone = 'pda_beep_1';
   private showRingtone = false;
   private ringtoneDraft = '';
+  private selectedTargetRef: string | null = null;
 
-  componentDidMount() {
-    if (this.chats.length !== 0) return;
-
-    const dmId = 'dm-peer';
-    this.chats.push({
-      id: dmId,
-      type: 'dm',
-      title: this.peerCkey,
-      peerCkey: this.peerCkey,
-      unread: 0,
-      lastTs: Date.now(),
-    });
-
-    this.messages.push({
-      id: makeId(),
-      chatId: dmId,
-      ts: Date.now() - 1000 * 60 * 5,
-      from: this.peerCkey,
-      text: `Welcome to PDA Messenger, ${this.selfCkey}. Try :happy: or :e10:`,
-    });
-
-    this.activeChatId = dmId;
+  componentDidUpdate() {
+    const refs = this.allEntries.map((entry) => String(entry.Reference || ''));
+    const currentConversation = this.activeConversation;
+    if (
+      this.selectedTargetRef
+      && this.selectedTargetRef !== currentConversation
+      && !refs.includes(this.selectedTargetRef)
+    ) {
+      this.selectedTargetRef = null;
+      this.forceUpdate();
+    }
   }
 
-  private getActiveChat(): Chat | null {
-    if (!this.activeChatId) return null;
-    return this.chats.find(c => c.id === this.activeChatId) || null;
+  private get mode() {
+    return String(this.props.ctx.data?.mode || PDA_MODE.MESSENGER);
   }
 
-  private getChatMessages(chatId: string): Message[] {
-    return this.messages
-      .filter(m => m.chatId === chatId)
-      .sort((a, b) => a.ts - b.ts);
+  private get isConversationMode() {
+    return this.mode === PDA_MODE.MESSENGER_CONVERSATION;
   }
 
-  private openChat = (chatId: string) => {
-    this.activeChatId = chatId;
-    const c = this.chats.find(x => x.id === chatId);
-    if (c) c.unread = 0;
+  private get activeConversation() {
+    return String(this.props.ctx.data?.active_conversation || '');
+  }
+
+  private get conversations(): PdaEntry[] {
+    return this.props.ctx.data?.convopdas || [];
+  }
+
+  private get availablePdas(): PdaEntry[] {
+    return this.props.ctx.data?.pdas || [];
+  }
+
+  private get allEntries(): PdaEntry[] {
+    return [...this.conversations, ...this.availablePdas];
+  }
+
+  private get messages(): BackendMessage[] {
+    return this.props.ctx.data?.messages || [];
+  }
+
+  private get messengerOn() {
+    return !toBool(this.props.ctx.data?.toff);
+  }
+
+  private get ringerOn() {
+    return !toBool(this.props.ctx.data?.message_silent);
+  }
+
+  private get ringtone() {
+    return String(this.props.ctx.data?.ttone || 'beep');
+  }
+
+  private get access() {
+    return this.props.ctx.data?.cartridge?.access || {};
+  }
+
+  private get selectedTarget() {
+    const activeRef = this.activeConversation || this.selectedTargetRef || '';
+    if (!activeRef) {
+      return null;
+    }
+    return this.allEntries.find((entry) => String(entry.Reference || '') === activeRef) || null;
+  }
+
+  private get selectedTitle() {
+    if (this.isConversationMode) {
+      const convoName = String(this.props.ctx.data?.convo_name || '');
+      if (convoName) {
+        return convoName;
+      }
+    }
+    return this.selectedTarget?.Name || 'No chat';
+  }
+
+  private get charges() {
+    return Number(this.props.ctx.data?.cartridge?.charges || 0);
+  }
+
+  private setDraft = (value: string) => {
+    this.draft = value;
     this.forceUpdate();
   };
 
-  private setDraft = (v: string) => {
-    this.draft = v;
+  private setFilter = (value: string) => {
+    this.filter = value;
     this.forceUpdate();
   };
+
+  private selectConversation = (ref: string) => {
+    this.selectedTargetRef = null;
+    this.props.ctx.act('choice', { choice: 'Select Conversation', convo: ref });
+  };
+
+  private selectPeer = (ref: string) => {
+    if (this.isConversationMode) {
+      this.props.ctx.act('choice', { choice: 'Return' });
+    }
+    this.selectedTargetRef = ref;
+    this.forceUpdate();
+  };
+
+  private getActiveTargetRef() {
+    if (this.isConversationMode && this.activeConversation) {
+      return this.activeConversation;
+    }
+    if (this.selectedTargetRef) {
+      return this.selectedTargetRef;
+    }
+    return '';
+  }
 
   private send = () => {
-    if (!this.messengerOn) return;
-    const chat = this.getActiveChat();
-    const text = (this.draft || '').trim();
-    if (!chat || !text) return;
+    if (!this.messengerOn) {
+      return;
+    }
 
-    const ts = Date.now();
+    const message = (this.draft || '').trim();
+    const target = this.getActiveTargetRef();
+    if (!message || !target) {
+      return;
+    }
 
-    // my message
-    this.messages.push({
-      id: makeId(),
-      chatId: chat.id,
-      ts,
-      from: this.selfCkey,
-      text,
+    this.props.ctx.act('choice', {
+      choice: 'Message',
+      target,
+      message,
     });
-    chat.lastTs = ts;
-
-    // reply from the other side
-    const replyTs = ts + 450;
-    const replyFrom = chat.type === 'dm'
-      ? (chat.peerCkey || this.peerCkey)
-      : this.peerCkey;
-
-    this.messages.push({
-      id: makeId(),
-      chatId: chat.id,
-      ts: replyTs,
-      from: replyFrom,
-      text: this.makeAutoReply(text),
-    });
-    chat.lastTs = replyTs;
-
     this.draft = '';
-    this.forceUpdate();
-  };
-
-  private makeAutoReply(text: string) {
-    if (/^hi\b|^hello\b|привет/i.test(text)) return `Hello, ${this.selfCkey}. :happy:`;
-    if (/ringtone|рингтон/i.test(text)) return `Current ringtone: ${this.ringtone} :tada:`;
-    if (/эмодзи|emoji/i.test(text)) return `Try :tada: :joy: or :e0:.`;
-    return `Received. :ok_hand:`;
-  }
-
-  private toggleEmojiPicker = () => {
-    this.showEmojiPicker = !this.showEmojiPicker;
-    this.forceUpdate();
-  };
-
-  private insertEmojiToken = (token: string) => {
-    if (!this.draft) this.draft = token;
-    else this.draft = `${this.draft} ${token}`;
-    this.showEmojiPicker = false;
-    this.forceUpdate();
-  };
-
-  private openCreateGroup = () => {
-    this.showCreateGroup = true;
-    this.newGroupName = '';
-    this.forceUpdate();
-  };
-
-  private closeCreateGroup = () => {
-    this.showCreateGroup = false;
-    this.newGroupName = '';
-    this.forceUpdate();
-  };
-
-  private createGroup = () => {
-    const name = (this.newGroupName || '').trim();
-    if (!name) return;
-
-    const id = `grp-${makeId()}`;
-    const ts = Date.now();
-
-    this.chats.unshift({
-      id,
-      type: 'group',
-      title: name,
-      members: [this.selfCkey, this.peerCkey],
-      unread: 0,
-      lastTs: ts,
-    });
-
-    this.messages.push({
-      id: makeId(),
-      chatId: id,
-      ts,
-      from: this.peerCkey,
-      text: `Group "${name}" created. :tada:`,
-    });
-
-    this.activeChatId = id;
-    this.showCreateGroup = false;
-    this.newGroupName = '';
-    this.forceUpdate();
-  };
-
-  private setFilter = (v: string) => {
-    this.filter = v;
     this.forceUpdate();
   };
 
@@ -478,50 +429,105 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
   };
 
   private applyRingtone = () => {
-    const v = (this.ringtoneDraft || '').trim();
-    if (!v) return;
-    this.ringtone = v;
+    const ringtone = (this.ringtoneDraft || '').trim();
+    if (!ringtone) {
+      return;
+    }
+    this.props.ctx.act('choice', { choice: 'Ringtone', ringtone });
     this.showRingtone = false;
     this.ringtoneDraft = '';
     this.forceUpdate();
-    // later: act('set_ringtone', { ringtone: v })
   };
 
-    private toggleMessenger = () => {
-    this.messengerOn = !this.messengerOn;
-    this.forceUpdate();
+  private toggleMessenger = () => {
+    this.props.ctx.act('choice', { choice: 'Toggle Messenger' });
   };
 
   private toggleRinger = () => {
-    this.ringerOn = !this.ringerOn;
-    this.forceUpdate();
+    this.props.ctx.act('choice', { choice: 'Toggle Ringer' });
   };
 
   private clearAllConversations = () => {
-    // UI-only: wipe chats + messages, recreate default DM
-    this.chats = [];
-    this.messages = [];
-    this.activeChatId = null;
-    this.componentDidMount();
+    this.props.ctx.act('choice', { choice: 'Clear', option: 'All' });
+    this.selectedTargetRef = null;
+    this.draft = '';
     this.forceUpdate();
   };
 
   private clearConversation = () => {
-    const chat = this.getActiveChat();
-    if (!chat) return;
-
-    this.messages = this.messages.filter(m => m.chatId !== chat.id);
-    this.chats = this.chats.filter(c => c.id !== chat.id);
-    this.activeChatId = this.chats.length ? this.chats[0].id : null;
+    if (!this.isConversationMode || !this.activeConversation) {
+      return;
+    }
+    this.props.ctx.act('choice', { choice: 'Clear', option: 'Convo' });
+    this.draft = '';
     this.forceUpdate();
   };
 
+  private runTargetAction = (choice: string) => {
+    const target = this.getActiveTargetRef();
+    if (!target) {
+      return;
+    }
+    this.props.ctx.act('choice', { choice, target });
+  };
+
+  private toggleEmojiPicker = () => {
+    this.showEmojiPicker = !this.showEmojiPicker;
+    this.forceUpdate();
+  };
+
+  private insertEmojiToken = (token: string) => {
+    this.draft = this.draft ? `${this.draft} ${token}` : token;
+    this.showEmojiPicker = false;
+    this.forceUpdate();
+  };
+
+  private renderChargeHint() {
+    if (this.charges <= 0) {
+      return null;
+    }
+
+    const labels: string[] = [];
+    if (toBool(this.access.access_detonate_pda)) {
+      labels.push('detonation charges');
+    }
+    if (toBool(this.access.access_clown) || toBool(this.access.access_mime)) {
+      labels.push('viral files');
+    }
+
+    const label = labels.length ? labels.join(' / ') : 'charges';
+    return (
+      <div className="PDAProgram__footerHint" style={{ marginBottom: 6 }}>
+        {this.charges} {label} left.
+      </div>
+    );
+  }
+
   render() {
-    const chat = this.getActiveChat();
-    const visibleChats = this.chats
-      .slice()
-      .sort((a, b) => b.lastTs - a.lastTs)
-      .filter(c => !this.filter || c.title.toLowerCase().includes(this.filter.toLowerCase()));
+    const filter = (this.filter || '').toLowerCase();
+    const conversations = this.conversations.filter((entry) =>
+      !filter || String(entry.Name || '').toLowerCase().includes(filter)
+    );
+    const others = this.availablePdas.filter((entry) =>
+      !filter || String(entry.Name || '').toLowerCase().includes(filter)
+    );
+
+    const activeRef = this.getActiveTargetRef();
+    const targetEntry = this.selectedTarget;
+    const canDetonate = toBool(this.access.access_detonate_pda) && toBool(targetEntry?.Detonate);
+    const canHonk = toBool(this.access.access_clown);
+    const canSilence = toBool(this.access.access_mime);
+
+    const visibleMessages = this.messages.filter((message) =>
+      String(message.target || '') === this.activeConversation
+    );
+
+    const inputDisabled = !this.messengerOn || !activeRef;
+    const placeholder = !this.messengerOn
+      ? 'Messenger is OFF'
+      : !activeRef
+        ? 'Select a contact first'
+        : 'Message... (use :happy: or :e42:)';
 
     return (
       <div className="PdaMessenger">
@@ -533,9 +539,9 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
 
             <div className="PdaMessenger__sideActions">
               <Button
-                icon="users"
-                content="New Group"
-                onClick={this.openCreateGroup}
+                icon="rotate"
+                content="Refresh"
+                onClick={() => this.props.ctx.act('choice', { choice: 'Refresh' })}
                 className="PdaMessenger__actionBtn"
               />
             </div>
@@ -543,53 +549,78 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
             <div className="PdaMessenger__search">
               <Input
                 value={this.filter}
-                placeholder="Search…"
-                onInput={(_, v) => this.setFilter(String(v))}
+                placeholder="Search..."
+                onInput={(_, value) => this.setFilter(String(value))}
               />
             </div>
           </div>
 
           <div className="PdaMessenger__chatList">
-            {visibleChats.map(c => (
-              <div
-                key={c.id}
-                className={cx('PdaMessenger__chatRow', this.activeChatId === c.id && 'is-active')}
-                onClick={() => this.openChat(c.id)}
-              >
-                <div className="PdaMessenger__avatar">
-                  <Icon name={c.type === 'group' ? 'users' : 'user'} />
-                </div>
-
-                <div className="PdaMessenger__chatMeta">
-                  <div className="PdaMessenger__chatTitle">{c.title}</div>
-                  <div className="PdaMessenger__chatSub">
-                    {c.type === 'group' ? 'Group' : 'Direct'}
+            <div className="PDAProgram__footerHint" style={{ marginBottom: 4, opacity: 0.8 }}>
+              Current Conversations
+            </div>
+            {conversations.length === 0 && (
+              <div className="PDAProgram__footerHint">No conversations.</div>
+            )}
+            {conversations.map((entry, index) => {
+              const ref = String(entry.Reference || '');
+              const isActive = this.isConversationMode && this.activeConversation === ref;
+              return (
+                <div
+                  key={`${ref || 'convo'}-${index}`}
+                  className={cx('PdaMessenger__chatRow', isActive && 'is-active')}
+                  onClick={() => this.selectConversation(ref)}
+                >
+                  <div className="PdaMessenger__avatar">
+                    <Icon name="user" />
+                  </div>
+                  <div className="PdaMessenger__chatMeta">
+                    <div className="PdaMessenger__chatTitle">{entry.Name || 'Unknown PDA'}</div>
+                    <div className="PdaMessenger__chatSub">Conversation</div>
                   </div>
                 </div>
+              );
+            })}
 
-                <div className="PdaMessenger__chatRight">
-                  <div className="PdaMessenger__chatTime">{formatTime(c.lastTs)}</div>
-                  {c.unread > 0 && <div className="PdaMessenger__unread">{c.unread}</div>}
+            <div className="PDAProgram__footerHint" style={{ marginTop: 10, marginBottom: 4, opacity: 0.8 }}>
+              Other PDAs
+            </div>
+            {others.length === 0 && (
+              <div className="PDAProgram__footerHint">No other PDAs located.</div>
+            )}
+            {others.map((entry, index) => {
+              const ref = String(entry.Reference || '');
+              const isActive = !this.isConversationMode && this.selectedTargetRef === ref;
+              return (
+                <div
+                  key={`${ref || 'pda'}-${index}`}
+                  className={cx('PdaMessenger__chatRow', isActive && 'is-active')}
+                  onClick={() => this.selectPeer(ref)}
+                >
+                  <div className="PdaMessenger__avatar">
+                    <Icon name="user" />
+                  </div>
+                  <div className="PdaMessenger__chatMeta">
+                    <div className="PdaMessenger__chatTitle">{entry.Name || 'Unknown PDA'}</div>
+                    <div className="PdaMessenger__chatSub">Direct</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
         <div className="PdaMessenger__main">
           <div className="PdaMessenger__topbar">
             <div className="PdaMessenger__topTitle">
-              {chat ? chat.title : 'No chat'}
+              {this.selectedTitle}
             </div>
 
-                        <div className="PdaMessenger__topHint">
-              {chat?.type === 'group' ? 'Group chat' : 'Direct chat'} • {this.selfCkey} •
-              Messenger: {this.messengerOn ? 'ON' : 'OFF'} •
-              Ringer: {this.ringerOn ? 'ON' : 'OFF'} •
-              Ringtone: {this.ringtone}
+            <div className="PdaMessenger__topHint">
+              Messenger: {this.messengerOn ? 'ON' : 'OFF'} | Ringer: {this.ringerOn ? 'ON' : 'OFF'} | Ringtone: {this.ringtone}
 
               <Button
-                icon="volume-high"
+                icon={this.ringerOn ? 'volume-high' : 'volume-xmark'}
                 tooltip="Toggle ringer"
                 onClick={this.toggleRinger}
                 className="PdaMessenger__ringtoneBtn"
@@ -604,7 +635,7 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
 
               <Button
                 icon="music"
-                tooltip="Change ringtone"
+                tooltip="Set ringtone"
                 onClick={this.openRingtone}
                 className="PdaMessenger__ringtoneBtn"
               />
@@ -613,6 +644,7 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
                 icon="trash"
                 tooltip="Delete conversation"
                 onClick={this.clearConversation}
+                disabled={!this.isConversationMode || !this.activeConversation}
                 className="PdaMessenger__ringtoneBtn"
               />
 
@@ -626,20 +658,57 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
           </div>
 
           <div className="PdaMessenger__messages">
-            {!chat && <div className="PdaMessenger__empty">Select a chat.</div>}
-            {chat && this.getChatMessages(chat.id).map(m => {
-              const isMe = m.from === this.selfCkey;
+            {this.renderChargeHint()}
+
+            {(canDetonate || canHonk || canSilence) && !!activeRef && (
+              <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
+                {canDetonate && (
+                  <Button
+                    icon="radiation"
+                    content="Detonate"
+                    color="bad"
+                    onClick={() => this.runTargetAction('Detonate')}
+                  />
+                )}
+                {canHonk && (
+                  <Button
+                    icon="star"
+                    content="Send Honk Virus"
+                    onClick={() => this.runTargetAction('Send Honk')}
+                  />
+                )}
+                {canSilence && (
+                  <Button
+                    icon="circle-arrow-right"
+                    content="Send Silence Virus"
+                    onClick={() => this.runTargetAction('Send Silence')}
+                  />
+                )}
+              </div>
+            )}
+
+            {!this.isConversationMode && (
+              <div className="PdaMessenger__empty">
+                Select a conversation or choose a PDA and send a message.
+              </div>
+            )}
+
+            {this.isConversationMode && visibleMessages.length === 0 && (
+              <div className="PdaMessenger__empty">No messages in this conversation.</div>
+            )}
+
+            {this.isConversationMode && visibleMessages.map((message, index) => {
+              const fromMe = Number(message.sent || 0) === 1;
+              const text = String(message.message || '');
               return (
-                <div key={m.id} className={cx('PdaMessenger__msg', isMe && 'is-me')}>
+                <div key={index} className={cx('PdaMessenger__msg', fromMe && 'is-me')}>
                   <div className="PdaMessenger__bubble">
-                    <div className="PdaMessenger__from">{m.from}</div>
-
+                    <div className="PdaMessenger__from">{fromMe ? 'You' : (message.owner || 'Them')}</div>
                     <div className="PdaMessenger__text">
-                      {renderEmojiParts(parseEmojiParts(m.text))}
+                      {renderEmojiParts(parseEmojiParts(text))}
                     </div>
-
                     <div className="PdaMessenger__meta">
-                      <span className="PdaMessenger__time">{formatTime(m.ts)}</span>
+                      <span className="PdaMessenger__time">{message.timestamp || ''}</span>
                     </div>
                   </div>
                 </div>
@@ -658,12 +727,14 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
             <div className="PdaMessenger__inputWrap">
               <Input
                 value={this.draft}
-                placeholder={this.messengerOn ? 'Message… (use :happy: or :e42:)' : 'Messenger is OFF'}
-                onInput={(_, v) => this.setDraft(String(v))}
-                disabled={!this.messengerOn}
-                onKeyDown={(e: KeyboardEvent) => {
+                placeholder={placeholder}
+                onInput={(_, value) => this.setDraft(String(value))}
+                disabled={inputDisabled}
+                onKeyDown={(event: KeyboardEvent) => {
                   // @ts-ignore
-                  if (e.key === 'Enter') this.send();
+                  if (event.key === 'Enter') {
+                    this.send();
+                  }
                 }}
               />
             </div>
@@ -672,7 +743,7 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
               icon="paper-plane"
               content="Send"
               onClick={this.send}
-              disabled={!this.messengerOn}
+              disabled={inputDisabled}
               className="PdaMessenger__sendBtn"
             />
 
@@ -682,43 +753,9 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
           </div>
         </div>
 
-        {this.showCreateGroup && (
-          <div className="PdaMessengerModal" onClick={this.closeCreateGroup}>
-            <div className="PdaMessengerModal__card" onClick={(e) => e.stopPropagation()}>
-              <div className="PdaMessengerModal__title">
-                <Icon name="users" /> Create Group
-              </div>
-
-              <div className="PdaMessengerModal__body">
-                <div className="PdaMessengerModal__field">
-                  <div className="PdaMessengerModal__label">Group name</div>
-                  <Input
-                    value={this.newGroupName}
-                    placeholder="e.g. Engineering"
-                    onInput={(_, v) => { this.newGroupName = String(v); this.forceUpdate(); }}
-                    onKeyDown={(e: KeyboardEvent) => {
-                      // @ts-ignore
-                      if (e.key === 'Enter') this.createGroup();
-                    }}
-                  />
-                </div>
-
-                <div className="PdaMessengerModal__hint">
-                  Members UI will be wired later (backend). For now it’s {this.selfCkey} + {this.peerCkey}.
-                </div>
-              </div>
-
-              <div className="PdaMessengerModal__actions">
-                <Button content="Cancel" onClick={this.closeCreateGroup} />
-                <Button content="Create" icon="check" onClick={this.createGroup} />
-              </div>
-            </div>
-          </div>
-        )}
-
         {this.showRingtone && (
           <div className="PdaMessengerModal" onClick={this.closeRingtone}>
-            <div className="PdaMessengerModal__card" onClick={(e) => e.stopPropagation()}>
+            <div className="PdaMessengerModal__card" onClick={(event) => event.stopPropagation()}>
               <div className="PdaMessengerModal__title">
                 <Icon name="music" /> Change Ringtone
               </div>
@@ -729,15 +766,17 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
                   <Input
                     value={this.ringtoneDraft}
                     placeholder="e.g. pda_beep_1"
-                    onInput={(_, v) => { this.ringtoneDraft = String(v); this.forceUpdate(); }}
-                    onKeyDown={(e: KeyboardEvent) => {
+                    onInput={(_, value) => {
+                      this.ringtoneDraft = String(value);
+                      this.forceUpdate();
+                    }}
+                    onKeyDown={(event: KeyboardEvent) => {
                       // @ts-ignore
-                      if (e.key === 'Enter') this.applyRingtone();
+                      if (event.key === 'Enter') {
+                        this.applyRingtone();
+                      }
                     }}
                   />
-                  <div className="PdaMessengerModal__hint">
-                    Later: wire to backend via act(). Сейчас — только UI.
-                  </div>
                 </div>
               </div>
 
@@ -757,21 +796,21 @@ class EmojiPicker extends Component<{ onPick: (token: string) => void }> {
   private mode: 'named' | 'all' = 'named';
   private filter = '';
 
-  private setMode = (m: 'named' | 'all') => {
-    this.mode = m;
+  private setMode = (mode: 'named' | 'all') => {
+    this.mode = mode;
     this.forceUpdate();
   };
 
-  private setFilter = (v: string) => {
-    this.filter = v;
+  private setFilter = (value: string) => {
+    this.filter = value;
     this.forceUpdate();
   };
 
   render() {
     const { onPick } = this.props;
-
-    const list = EMOJI_ALL.filter(e =>
-      !this.filter || e.name.toLowerCase().includes(this.filter.toLowerCase())
+    const filter = (this.filter || '').toLowerCase();
+    const list = EMOJI_ALL.filter((emoji) =>
+      !filter || emoji.name.toLowerCase().includes(filter)
     );
 
     return (
@@ -794,59 +833,61 @@ class EmojiPicker extends Component<{ onPick: (token: string) => void }> {
         <div className="PdaEmojiPicker__named">
           <Input
             value={this.filter}
-            placeholder="Filter…"
-            onInput={(_, v) => this.setFilter(String(v))}
+            placeholder="Filter..."
+            onInput={(_, value) => this.setFilter(String(value))}
           />
         </div>
-
         {this.mode === 'named' ? (
           <div className="PdaEmojiPicker__named">
-            {list.map(e => (
-              <button
-                key={e.name}
-                className="PdaEmojiPicker__namedItem"
-                onClick={() => onPick(`:${e.name}:`)}
-                title={`:${e.name}:`}
-              >
-                {emojiUrl(e.file)
-                  ? (
-                    <img
-                      className="PDAEmoji"
-                      src={emojiUrl(e.file)}
-                      alt={e.name}
-                      style={{ height: `${EMOJI_RENDER_H}px`, width: 'auto' }}
-                    />
-                  )
-                  : (
-                    <span className="PDAEmoji">{/* fallback */}</span>
-                  )}
-                <span className="PdaEmojiPicker__namedLabel">:{e.name}:</span>
-              </button>
-            ))}
+            {list.map((emoji, index) => {
+              const token = `:${emoji.name}:`;
+              const src = emojiUrl(emoji.file);
+              return (
+                <button
+                  key={`${emoji.name}-${index}`}
+                  className="PdaEmojiPicker__namedItem"
+                  onClick={() => onPick(token)}
+                  title={`${token} (${emoji.file})`}
+                >
+                  {src
+                    ? (
+                      <img
+                        src={src}
+                        alt={token}
+                        style={{ width: 24, height: 24, objectFit: 'contain' }}
+                      />
+                    )
+                    : <span>{emoji.name}</span>}
+                  <span className="PdaEmojiPicker__namedLabel">{token}</span>
+                </button>
+              );
+            })}
           </div>
         ) : (
           <div className="PdaEmojiPicker__grid">
-            {EMOJI_ALL.map((e, idx) => (
-              <button
-                key={idx}
-                className="PdaEmojiPicker__cell"
-                onClick={() => onPick(`:e${idx}:`)}
-                title={`:e${idx}: (:${e.name}:)`}
-              >
-                {emojiUrl(e.file)
-                  ? (
-                    <img
-                      className="PDAEmoji"
-                      src={emojiUrl(e.file)}
-                      alt={e.name}
-                      style={{ height: `${EMOJI_RENDER_H}px`, width: 'auto' }}
-                    />
-                  )
-                  : (
-                    <span className="PDAEmoji">{/* fallback */}</span>
-                  )}
-              </button>
-            ))}
+            {list.map((emoji, index) => {
+              const globalIndex = EMOJI_ALL.indexOf(emoji);
+              const token = `:e${globalIndex}:`;
+              const src = emojiUrl(emoji.file);
+              return (
+                <button
+                  key={`${emoji.name}-${index}`}
+                  className="PdaEmojiPicker__cell"
+                  onClick={() => onPick(token)}
+                  title={`${token} (${emoji.file})`}
+                >
+                  {src
+                    ? (
+                      <img
+                        src={src}
+                        alt={token}
+                        style={{ width: 18, height: 18, objectFit: 'contain' }}
+                      />
+                    )
+                    : <span>{globalIndex}</span>}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
@@ -855,7 +896,7 @@ class EmojiPicker extends Component<{ onPick: (token: string) => void }> {
 }
 
 export const MessengerProgram: PdaProgram = {
-  id: 'messenger',
+  id: PDA_MODE.MESSENGER,
   title: 'Messenger',
   icon: 'comment',
   View: (ctx) => <MessengerApp ctx={ctx} />,

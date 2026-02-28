@@ -1,0 +1,31 @@
+export const PDA_MODE = {
+  HOME: 'home',
+  CONFIG: 'config',
+  NOTEKEEPER: 'notekeeper',
+  MESSENGER: 'messenger',
+  MESSENGER_CONVERSATION: 'messenger_conversation',
+  CREW_MANIFEST: 'crew_manifest',
+  NEWS_FEED: 'news_feed',
+  NEWS_FEED_CHANNEL: 'news_feed_channel',
+  ATMOS_SCAN: 'atmos_scan',
+
+  SIGNALER: 'signaler',
+  STATUS_DISPLAY: 'status_display',
+  POWER_MONITOR: 'power_monitor',
+  POWER_MONITOR_READING: 'power_monitor_reading',
+  SUPPLY_RECORDS: 'supply_records',
+  MULE_CONTROL: 'mule_control',
+  JANITOR_LOCATOR: 'janitor_locator',
+  HONK_SYNTH: 'honk_synth',
+  DOOR_REMOTE: 'door_remote',
+  MEDICAL_RECORDS: 'medical_records',
+  MEDICAL_RECORD: 'medical_record',
+  SECURITY_RECORDS: 'security_records',
+  SECURITY_RECORD: 'security_record',
+  SECURITY_BOT: 'security_bot',
+  REAGENT_SCANNER: 'reagent_scanner',
+  HALOGEN_COUNTER: 'halogen_counter',
+  GAS_SCANNER: 'gas_scanner',
+} as const;
+
+export type PdaProgramId = (typeof PDA_MODE)[keyof typeof PDA_MODE];

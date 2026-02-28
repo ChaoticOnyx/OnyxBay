@@ -1,5 +1,6 @@
 import { Component } from 'inferno';
 import { Icon, Button } from '../../../components';
+import { PDA_MODE } from '../programIds';
 import type { PdaProgram, PdaProgramContext } from '../types';
 import { cx } from '../types';
 import { pdaThemeStore, type PdaScreenTheme } from '../themeStore';
@@ -39,7 +40,7 @@ class ConfigApp extends Component<{ ctx: PdaProgramContext }> {
             <Icon name="gear" /> CONFIGURATION
           </div>
           <div className="PDAProgram__sub">
-            UI-only mock • Theme & basic shell status
+            Client settings and shell status
           </div>
         </div>
 
@@ -85,7 +86,7 @@ class ConfigApp extends Component<{ ctx: PdaProgramContext }> {
           </div>
 
           <div className="PDAProgram__footerHint">
-            Theme is UI-only (no backend). Use HOME tab to return.
+            Theme is client-side. Use HOME tab to return.
           </div>
         </div>
       </div>
@@ -94,7 +95,7 @@ class ConfigApp extends Component<{ ctx: PdaProgramContext }> {
 }
 
 export const ConfigProgram: PdaProgram = {
-  id: 'config',
+  id: PDA_MODE.CONFIG,
   title: 'CFG',
   icon: 'gear',
   View: (ctx) => <ConfigApp ctx={ctx} />,

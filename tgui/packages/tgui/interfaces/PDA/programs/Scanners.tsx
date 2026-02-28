@@ -1,100 +1,108 @@
-import { Component } from 'inferno';
 import { Icon, Button } from '../../../components';
+import { PDA_MODE } from '../programIds';
 import type { PdaProgram, PdaProgramContext } from '../types';
 
-class ToggleToolApp extends Component<{
+type ScannerProps = {
+  ctx: PdaProgramContext;
   title: string;
   icon: string;
   onLabel: string;
   offLabel: string;
-}> {
-  private enabled = false;
-  private last: string | null = null;
+  scanMode: number;
+  choice: string;
+};
 
-  private toggle = () => {
-    this.enabled = !this.enabled;
-    this.last = this.enabled ? 'Enabled.' : 'Disabled.';
-    this.forceUpdate();
-  };
+const ScannerProgramView = (props: ScannerProps) => {
+  const {
+    ctx,
+    title,
+    icon,
+    onLabel,
+    offLabel,
+    scanMode,
+    choice,
+  } = props;
 
-  render() {
-    const { title, icon, onLabel, offLabel } = this.props;
+  const currentMode = Number(ctx.data?.scanmode || 0);
+  const enabled = currentMode === scanMode;
 
-    return (
-      <div className="PDAProgram PDAProgram--generic">
-        <div className="PDAProgram__header">
-          <div className="PDAProgram__title">
-            <Icon name={icon} /> {title.toUpperCase()}
-          </div>
-          <div className="PDAProgram__sub">UI-only mock • Cartridge toggle</div>
+  return (
+    <div className="PDAProgram PDAProgram--generic">
+      <div className="PDAProgram__header">
+        <div className="PDAProgram__title">
+          <Icon name={icon} /> {title.toUpperCase()}
+        </div>
+        <div className="PDAProgram__sub">Cartridge utility</div>
+      </div>
+
+      <div className="PDAProgram__panel">
+        <div className="PDAProgram__row">
+          <div className="PDAProgram__k">State</div>
+          <div className="PDAProgram__v">{enabled ? 'ON' : 'OFF'}</div>
         </div>
 
-        <div className="PDAProgram__panel">
-          <div className="PDAProgram__row">
-            <div className="PDAProgram__k">State</div>
-            <div className="PDAProgram__v">{this.enabled ? 'ON' : 'OFF'}</div>
-          </div>
-
-          <div style={{ marginTop: 10 }}>
-            <Button
-              icon="power-off"
-              content={this.enabled ? offLabel : onLabel}
-              onClick={this.toggle}
-            />
-          </div>
-
-          {this.last && (
-            <div className="PDAProgram__footerHint" style={{ marginTop: 10, opacity: 0.8 }}>
-              {this.last}
-            </div>
-          )}
+        <div style={{ marginTop: 10 }}>
+          <Button
+            icon="power-off"
+            content={enabled ? offLabel : onLabel}
+            onClick={() => ctx.act('choice', { choice })}
+          />
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export const ReagentScannerProgram: PdaProgram = {
-  id: 'reagent_scanner',
+  id: PDA_MODE.REAGENT_SCANNER,
   title: 'Reagent Scanner',
   icon: 'flask',
-  canRun: (ctx) => ctx.cartridgeType === 'admin' || ctx.cartridgeType === 'medical',
-  View: () => (
-    <ToggleToolApp
+  canRun: (ctx) => !!ctx.data?.cartridge?.access?.access_reagent_scanner,
+  View: (ctx) => (
+    <ScannerProgramView
+      ctx={ctx}
       title="Reagent Scanner"
       icon="flask"
       onLabel="Enable Reagent Scanner"
       offLabel="Disable Reagent Scanner"
+      scanMode={3}
+      choice="Reagent Scan"
     />
   ),
 };
 
 export const HalogenCounterProgram: PdaProgram = {
-  id: 'halogen_counter',
+  id: PDA_MODE.HALOGEN_COUNTER,
   title: 'Halogen Counter',
   icon: 'radiation',
-  canRun: (ctx) => ctx.cartridgeType === 'engineering',
-  View: () => (
-    <ToggleToolApp
+  canRun: (ctx) => !!ctx.data?.cartridge?.access?.access_engine,
+  View: (ctx) => (
+    <ScannerProgramView
+      ctx={ctx}
       title="Halogen Counter"
       icon="radiation"
       onLabel="Enable Halogen Counter"
       offLabel="Disable Halogen Counter"
+      scanMode={4}
+      choice="Halogen Counter"
     />
   ),
 };
 
 export const GasScannerProgram: PdaProgram = {
-  id: 'gas_scanner',
+  id: PDA_MODE.GAS_SCANNER,
   title: 'Gas Scanner',
   icon: 'smog',
-  canRun: (ctx) => ctx.cartridgeType === 'admin' || ctx.cartridgeType === 'engineering',
-  View: () => (
-    <ToggleToolApp
+  canRun: (ctx) => !!ctx.data?.cartridge?.access?.access_atmos,
+  View: (ctx) => (
+    <ScannerProgramView
+      ctx={ctx}
       title="Gas Scanner"
       icon="smog"
       onLabel="Enable Gas Scanner"
       offLabel="Disable Gas Scanner"
+      scanMode={5}
+      choice="Gas Scan"
     />
   ),
 };

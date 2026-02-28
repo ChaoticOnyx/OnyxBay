@@ -1,66 +1,32 @@
-export type SkinType =
-  | 'standard'
-  | 'security'
-  | 'medical'
-  | 'science'
-  | 'engineering'
-  | 'captain';
+import type { PdaProgramId as ProgramId } from './programIds';
 
-export type CartridgeType =
-  | 'general'
-  | 'admin'
-  | 'medical'
-  | 'engineering';
+export type PdaProgramId = ProgramId;
 
-export type PdaProgramId =
-  | 'home'
-  | 'config'
-  | 'notekeeper'
-  | 'messenger'
-  | 'crew_manifest'
-  | 'news_feed'
-  | 'atmos_scan'
-
-  // cartridge utilities from old PDA
-  | 'signaler'
-  | 'status_display'
-  | 'power_monitor'
-  | 'supply_records'
-  | 'mule_control'
-  | 'janitor_locator'
-  | 'honk_synth'
-  | 'door_remote'
-  | 'medical_records'
-  | 'security_records'
-  | 'security_bot'
-  | 'reagent_scanner'
-  | 'halogen_counter'
-  | 'gas_scanner';
+export type SkinType = string;
+export type CartridgeType = string;
 
 export type PdaProgramContext = {
-  // состояние оболочки (UI-only сейчас; в будущем — заменяется данными бекэнда точечно)
   isOn: boolean;
   hasCartridge: boolean;
   cartridgeType: CartridgeType;
   flashlightOn: boolean;
   timeText: string;
 
-  // навигация
-  activeProgramId: PdaProgramId;
-  setActiveProgram: (id: PdaProgramId) => void;
+  activeProgramId: ProgramId;
+  setActiveProgram: (id: ProgramId) => void;
+
+  data: Record<string, any>;
+  act: (action: string, payload?: Record<string, any>) => void;
 };
 
 export type PdaProgram = {
-  id: PdaProgramId;
+  id: ProgramId;
   title: string;
-  icon?: string; // имя FontAwesome, как в исходнике через <Icon name="...">
-  // можно расширять без ломки архитектуры
+  icon?: string;
   badgeCount?: (ctx: PdaProgramContext) => number | null;
   canRun?: (ctx: PdaProgramContext) => boolean;
   onOpen?: (ctx: PdaProgramContext) => void;
   onClose?: (ctx: PdaProgramContext) => void;
-
-  // View без хуков
   View: (props: PdaProgramContext) => any;
 };
 

@@ -78,30 +78,35 @@
 
 //		if (istype(P)) P.updateSelfDialog()
 
-	Topic(href, href_list)
-		..()
-		var/obj/item/device/pda/PDA = src.hostpda
+/obj/item/radio/integrated/beepsky/proc/tgui_handle_action(op, list/params)
+	var/obj/item/device/pda/PDA = src.hostpda
 
-		switch(href_list["op"])
+	switch(op)
+		if("control")
+			active = locate(params["bot"])
+			post_signal(control_freq, "command", "bot_status", "active", active, s_filter = RADIO_SECBOT)
+			return TRUE
 
-			if("control")
-				active = locate(href_list["bot"])
-				post_signal(control_freq, "command", "bot_status", "active", active, s_filter = RADIO_SECBOT)
+		if("scanbots")		// find all bots
+			botlist = null
+			post_signal(control_freq, "command", "bot_status", s_filter = RADIO_SECBOT)
+			return TRUE
 
-			if("scanbots")		// find all bots
-				botlist = null
-				post_signal(control_freq, "command", "bot_status", s_filter = RADIO_SECBOT)
+		if("botlist")
+			active = null
+			return TRUE
 
-			if("botlist")
-				active = null
+		if("stop", "go")
+			post_signal(control_freq, "command", op, "active", active, s_filter = RADIO_SECBOT)
+			post_signal(control_freq, "command", "bot_status", "active", active, s_filter = RADIO_SECBOT)
+			return TRUE
 
-			if("stop", "go")
-				post_signal(control_freq, "command", href_list["op"], "active", active, s_filter = RADIO_SECBOT)
-				post_signal(control_freq, "command", "bot_status", "active", active, s_filter = RADIO_SECBOT)
+		if("summon")
+			post_signal(control_freq, "command", "summon", "active", active, "target", get_turf(PDA), s_filter = RADIO_SECBOT)
+			post_signal(control_freq, "command", "bot_status", "active", active, s_filter = RADIO_SECBOT)
+			return TRUE
 
-			if("summon")
-				post_signal(control_freq, "command", "summon", "active", active, "target", get_turf(PDA) , s_filter = RADIO_SECBOT)
-				post_signal(control_freq, "command", "bot_status", "active", active, s_filter = RADIO_SECBOT)
+	return FALSE
 
 
 /obj/item/radio/integrated/beepsky/Destroy()

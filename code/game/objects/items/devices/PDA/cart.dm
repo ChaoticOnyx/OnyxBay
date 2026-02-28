@@ -23,11 +23,11 @@
 	var/access_detonate_pda = 0
 	var/access_hydroponics = 0
 	var/charges = 0
-	var/mode = null
+	var/mode = PDA_MODE_HOME
 	var/menu
-	var/datum/data/record/active1 = null //General
-	var/datum/data/record/active2 = null //Medical
-	var/datum/data/record/active3 = null //Security
+	var/datum/computer_file/crew_record/active1 = null //General
+	var/datum/computer_file/crew_record/active2 = null //Medical
+	var/datum/computer_file/crew_record/active3 = null //Security
 	var/selected_sensor = null // Power Sensor
 	var/message1	// used for status_displays
 	var/message2
@@ -225,7 +225,7 @@
 
 
 /*
-	This generates the nano values of the cart menus.
+	This generates the UI values of the cart menus.
 	Because we close the UI when we insert a new cart
 	we don't have to worry about null values on items
 	the user can't access.  Well, unless they are href hacking.
@@ -233,13 +233,13 @@
 */
 
 
-/obj/item/cartridge/proc/create_NanoUI_values(mob/user as mob)
+/obj/item/cartridge/proc/create_tgui_values(mob/user as mob)
 	var/values[0]
 
 	/*		Signaler (Mode: 40)				*/
 
 
-	if(istype(radio,/obj/item/radio/integrated/signal) && (mode==40))
+	if(istype(radio,/obj/item/radio/integrated/signal) && (mode == PDA_MODE_SIGNALER))
 		var/obj/item/radio/integrated/signal/R = radio
 		values["signal_freq"] = format_frequency(R.frequency)
 		values["signal_code"] = R.code
@@ -247,7 +247,7 @@
 
 	/*		Station Display (Mode: 42)			*/
 
-	if(mode==42)
+	if(mode == PDA_MODE_STATUS_DISPLAY)
 		values["message1"] = message1 ? message1 : "(none)"
 		values["message2"] = message2 ? message2 : "(none)"
 
@@ -255,7 +255,7 @@
 
 	/*		Power Monitor (Mode: 43 / 433)			*/
 
-	if(mode==43 || mode==433)
+	if(mode == PDA_MODE_POWER_MONITOR || mode == PDA_MODE_POWER_MONITOR_READING)
 		var/list/sensors = list()
 		var/obj/machinery/power/sensor/MS = null
 
@@ -267,9 +267,99 @@
 		if(selected_sensor && MS)
 			values["sensor_reading"] = MS.return_reading_data()
 
+	/*		Medical Records (Mode: 44 / 441)		*/
+
+	if(mode == PDA_MODE_MEDICAL_RECORDS)
+		var/list/medical_records = list()
+		for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
+			medical_records[++medical_records.len] = list(
+				"name" = sanitize("[R.get_name()]"),
+				"Name" = sanitize("[R.get_name()]"),
+				"ref" = "\ref[R]"
+			)
+		if(medical_records.len)
+			medical_records = sortByKey(medical_records, "name")
+		values["medical_records"] = medical_records
+
+	if(mode == PDA_MODE_MEDICAL_RECORD)
+		if(istype(active1))
+			values["general_exists"] = 1
+			values["general"] = list(
+				"name" = sanitize("[active1.get_name()]"),
+				"sex" = sanitize("[active1.get_sex()]"),
+				"species" = sanitize("[active1.get_species()]"),
+				"age" = sanitize("[active1.get_age()]"),
+				"rank" = sanitize("[active1.get_job()]"),
+				"fingerprint" = sanitize("[active1.get_fingerprint()]"),
+				"p_stat" = sanitize("[active1.get_status_physical()]"),
+				"m_stat" = sanitize("[active1.get_status_mental()]")
+			)
+		else
+			values["general_exists"] = 0
+
+		if(istype(active2))
+			values["medical_exists"] = 1
+			values["medical"] = list(
+				"b_type" = sanitize("[active2.get_bloodtype()]"),
+				"mi_dis" = sanitize("[active2.get_minor_disabilities()]"),
+				"mi_dis_d" = sanitize("[active2.get_medical_details()]"),
+				"ma_dis" = sanitize("[active2.get_major_disabilities()]"),
+				"ma_dis_d" = sanitize("[active2.get_medical_details()]"),
+				"alg" = sanitize("[active2.get_medical_records()]"),
+				"alg_d" = sanitize("[active2.get_medical_notes()]"),
+				"cdi" = sanitize("[active2.get_current_diseases()]"),
+				"cdi_d" = sanitize("[active2.get_medical_details()]"),
+				"notes" = sanitize("[active2.get_medRecord()]")
+			)
+		else
+			values["medical_exists"] = 0
+
+	/*		Security Records (Mode: 45 / 451)		*/
+
+	if(mode == PDA_MODE_SECURITY_RECORDS)
+		var/list/security_records = list()
+		for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
+			security_records[++security_records.len] = list(
+				"name" = sanitize("[R.get_name()]"),
+				"Name" = sanitize("[R.get_name()]"),
+				"ref" = "\ref[R]"
+			)
+		if(security_records.len)
+			security_records = sortByKey(security_records, "name")
+		values["security_records"] = security_records
+
+	if(mode == PDA_MODE_SECURITY_RECORD)
+		if(istype(active1))
+			values["general_exists"] = 1
+			values["general"] = list(
+				"name" = sanitize("[active1.get_name()]"),
+				"sex" = sanitize("[active1.get_sex()]"),
+				"species" = sanitize("[active1.get_species()]"),
+				"age" = sanitize("[active1.get_age()]"),
+				"rank" = sanitize("[active1.get_job()]"),
+				"fingerprint" = sanitize("[active1.get_fingerprint()]"),
+				"p_stat" = sanitize("[active1.get_status_physical()]"),
+				"m_stat" = sanitize("[active1.get_status_mental()]")
+			)
+		else
+			values["general_exists"] = 0
+
+		if(istype(active3))
+			values["security_exists"] = 1
+			values["security"] = list(
+				"criminal" = sanitize("[active3.get_criminalStatus()]"),
+				"mi_crim" = sanitize("[active3.get_minor_crimes()]"),
+				"mi_crim_d" = sanitize("[active3.get_crime_details()]"),
+				"ma_crim" = sanitize("[active3.get_major_crimes()]"),
+				"ma_crim_d" = sanitize("[active3.get_crime_details()]"),
+				"notes" = sanitize("[active3.get_secRecord()]")
+			)
+		else
+			values["security_exists"] = 0
+
 	/*		Security Bot Control (Mode: 46)		*/
 
-	if(mode==46)
+	if(mode == PDA_MODE_SECURITY_BOT)
 		var/botsData[0]
 		var/beepskyData[0]
 		if(istype(radio,/obj/item/radio/integrated/beepsky))
@@ -306,7 +396,7 @@
 
 	/*		MULEBOT Control	(Mode: 48)		*/
 
-	if(mode==48)
+	if(mode == PDA_MODE_MULE_CONTROL)
 		var/mulebotsData[0]
 		var/count = 0
 
@@ -332,7 +422,7 @@
 
 	/*	Supply Shuttle Requests Menu (Mode: 47)		*/
 
-	if(mode==47)
+	if(mode == PDA_MODE_SUPPLY_RECORDS)
 		var/supplyData[0]
 		var/datum/shuttle/autodock/ferry/supply/shuttle = SSsupply.shuttle
 		if (shuttle)
@@ -369,7 +459,7 @@
 
 
 	/* 	Janitor Supplies Locator  (Mode: 49)      */
-	if(mode==49)
+	if(mode == PDA_MODE_JANITOR_LOCATOR)
 		var/JaniData[0]
 		var/turf/cl = get_turf(src)
 
@@ -440,56 +530,81 @@
 
 
 
-/obj/item/cartridge/Topic(href, href_list)
-	if((. = ..()))
-		usr.unset_machine()
-		close_browser(usr, "window=pda")
-		return
-
-	switch(href_list["choice"])
+/obj/item/cartridge/proc/tgui_handle_action(mob/user, action, list/params)
+	switch(action)
 		if("Send Signal")
-			spawn( 0 )
+			spawn(0)
 				radio:send_signal("ACTIVATE")
-				return
+			return TRUE
 
 		if("Signal Frequency")
-			var/new_frequency = sanitize_frequency(radio:frequency + text2num(href_list["sfreq"]))
+			var/new_frequency = sanitize_frequency(radio:frequency + text2num(params["sfreq"]))
 			radio:set_frequency(new_frequency)
+			return TRUE
 
 		if("Signal Code")
-			radio:code += text2num(href_list["scode"])
+			radio:code += text2num(params["scode"])
 			radio:code = round(radio:code)
 			radio:code = min(100, radio:code)
 			radio:code = max(1, radio:code)
+			return TRUE
 
 		if("Status")
-			switch(href_list["statdisp"])
+			switch(params["statdisp"])
 				if("message")
 					post_status("message", message1, message2)
 				if("image")
-					post_status("image", href_list["image"])
+					post_status("image", params["image"])
 				if("setmsg1")
-					message1 = reject_bad_text(sanitize(input("Line 1", "Enter Message Text", message1) as text|null, 40), 40)
-					updateSelfDialog()
+					message1 = reject_bad_text(sanitize(input(user, "Line 1", "Enter Message Text", message1) as text|null, 40), 40)
+					if(istype(loc, /obj/item/device/pda))
+						SStgui.update_uis(loc)
 				if("setmsg2")
-					message2 = reject_bad_text(sanitize(input("Line 2", "Enter Message Text", message2) as text|null, 40), 40)
-					updateSelfDialog()
+					message2 = reject_bad_text(sanitize(input(user, "Line 2", "Enter Message Text", message2) as text|null, 40), 40)
+					if(istype(loc, /obj/item/device/pda))
+						SStgui.update_uis(loc)
 				else
-					post_status(href_list["statdisp"])
+					post_status(params["statdisp"])
+			return TRUE
 
 		if("Power Select")
-			selected_sensor = href_list["target"]
-			loc:mode = 433
-			mode = 433
+			selected_sensor = params["target"]
+			if(istype(loc, /obj/item/device/pda))
+				loc:mode = PDA_MODE_POWER_MONITOR_READING
+			mode = PDA_MODE_POWER_MONITOR_READING
+			return TRUE
+
 		if("Power Clear")
 			selected_sensor = null
-			loc:mode = 43
-			mode = 43
+			if(istype(loc, /obj/item/device/pda))
+				loc:mode = PDA_MODE_POWER_MONITOR
+			mode = PDA_MODE_POWER_MONITOR
+			return TRUE
+
+		if("Medical Records")
+			var/datum/computer_file/crew_record/MR = locate(params["target"])
+			if(istype(MR))
+				active1 = MR
+				active2 = MR
+				if(istype(loc, /obj/item/device/pda))
+					loc:mode = PDA_MODE_MEDICAL_RECORD
+				mode = PDA_MODE_MEDICAL_RECORD
+			return TRUE
+
+		if("Security Records")
+			var/datum/computer_file/crew_record/SR = locate(params["target"])
+			if(istype(SR))
+				active1 = SR
+				active3 = SR
+				if(istype(loc, /obj/item/device/pda))
+					loc:mode = PDA_MODE_SECURITY_RECORD
+				mode = PDA_MODE_SECURITY_RECORD
+			return TRUE
 
 		if("MULEbot")
-			var/mob/living/bot/mulebot/M = locate(href_list["ref"])
+			var/mob/living/bot/mulebot/M = locate(params["ref"])
 			if(istype(M))
-				M.obeyCommand(href_list["command"])
+				M.obeyCommand(params["command"])
+			return TRUE
 
-
-	return 1
+	return FALSE

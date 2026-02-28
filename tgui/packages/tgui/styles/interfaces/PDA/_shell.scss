@@ -23,13 +23,11 @@
 }
 
 /* Skins */
-.PDA[data-skin="standard"] { --pda-bg:#dcd6c0; --pda-border:#b0a890; --pda-text:#605850; --pda-accent:#b0a890; --pda-bezel:#807870; }
-.PDA[data-skin="security"] { --pda-bg:#b91c1c; --pda-border:#991b1b; --pda-text:#ffffff; --pda-accent:#7f1d1d; --pda-bezel:#450a0a; }
-.PDA[data-skin="medical"] { --pda-bg:#f0f9ff; --pda-border:#bae6fd; --pda-text:#0369a1; --pda-accent:#7dd3fc; --pda-bezel:#0c4a6e; }
-.PDA[data-skin="science"] { --pda-bg:#7e22ce; --pda-border:#6b21a8; --pda-text:#ffffff; --pda-accent:#581c87; --pda-bezel:#3b0764; }
-.PDA[data-skin="engineering"] { --pda-bg:#ea580c; --pda-border:#c2410c; --pda-text:#ffffff; --pda-accent:#9a3412; --pda-bezel:#431407; }
-/* у вас captain в текущем входном SCSS жёлтый — оставляю как есть */
-.PDA[data-skin="captain"] { --pda-bg:#fffb00; --pda-border:#ffee00; --pda-text:#fbbf24; --pda-accent:#ffe600; --pda-bezel:#e5ff00; }
+.PDA[data-skin="pda-s"] { --pda-bg:#b91c1c; --pda-border:#991b1b; --pda-text:#ffffff; --pda-accent:#7f1d1d; --pda-bezel:#450a0a; }
+.PDA[data-skin="pda-m"] { --pda-bg:#f0f9ff; --pda-border:#bae6fd; --pda-text:#0369a1; --pda-accent:#7dd3fc; --pda-bezel:#0c4a6e; }
+.PDA[data-skin="pda-tox"] { --pda-bg:#7e22ce; --pda-border:#6b21a8; --pda-text:#ffffff; --pda-accent:#581c87; --pda-bezel:#3b0764; }
+.PDA[data-skin="pda-e"] { --pda-bg:#ea580c; --pda-border:#c2410c; --pda-text:#ffffff; --pda-accent:#9a3412; --pda-bezel:#431407; }
+.PDA[data-skin="pda-c"] { --pda-bg:#fffb00; --pda-border:#ffee00; --pda-text:#fbbf24; --pda-accent:#ffe600; --pda-bezel:#e5ff00; }
 
 /* Stage */
 .PDA__stage {
