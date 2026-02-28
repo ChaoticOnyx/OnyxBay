@@ -152,7 +152,7 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 				adjustFireLoss(Proj.damage)
 
 	Proj.on_hit(src,100) //wow this is a terrible hack
-	updatehealth()
+	update_health()
 	return 100
 
 /mob/living/silicon/apply_effect(effect = 0,effecttype = STUN, blocked = 0)
@@ -311,7 +311,7 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 	adjustBruteLoss(brute)
 	adjustFireLoss(burn)
 
-	updatehealth()
+	update_health()
 
 /mob/living/silicon/blob_act(damage)
 	if(is_ic_dead())
@@ -323,7 +323,7 @@ GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of 
 	brute *= protection
 	adjustBruteLoss(brute)
 
-	updatehealth()
+	update_health()
 
 /mob/living/silicon/proc/receive_alarm(datum/alarm_handler/alarm_handler, datum/alarm/alarm, was_raised)
 	if(!next_alarm_notice)

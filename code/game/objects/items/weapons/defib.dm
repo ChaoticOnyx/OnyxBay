@@ -434,7 +434,7 @@
 	M.emote("gasp")
 	M.Weaken(rand(10,25))
 	M.Stun(10)
-	M.updatehealth()
+	M.update_health()
 	apply_brain_damage(M, deadtime)
 
 /obj/item/shockpaddles/proc/apply_brain_damage(mob/living/carbon/human/H, deadtime)

@@ -23,16 +23,16 @@
 
 /mob/living/carbon/larva/adjustBruteLoss(damage)
 	..()
-	updatehealth()
+	update_health()
 
 /mob/living/carbon/larva/adjustFireLoss(damage)
 	..()
-	updatehealth()
+	update_health()
 
 /mob/living/carbon/larva/adjustToxLoss(damage)
 	..()
-	updatehealth()
+	update_health()
 
 /mob/living/carbon/larva/adjustOxyLoss(damage)
 	..()
-	updatehealth()
+	update_health()

@@ -648,8 +648,8 @@ its easier to just keep the beam vertical.
 				to_chat(H, "<span class='danger'>You land heavily!</span>")
 				H.adjustBruteLoss(damage)
 
-			H.UpdateDamageIcon()
-			H.updatehealth()
+			H.update_damage_overlays()
+			H.update_health()
 
 /atom/MouseDrop_T(atom/movable/target, mob/user)
 	var/mob/living/H = user

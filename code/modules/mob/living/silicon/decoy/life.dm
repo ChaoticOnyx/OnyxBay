@@ -7,7 +7,7 @@
 			return
 
 
-/mob/living/silicon/decoy/updatehealth()
+/mob/living/silicon/decoy/update_health()
 	var/previous_health = health
 	if(status_flags & GODMODE)
 		health = 100

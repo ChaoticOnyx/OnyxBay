@@ -293,7 +293,7 @@
 	icon_state = icon_living
 	set_density(1)
 
-/mob/living/simple_animal/updatehealth()
+/mob/living/simple_animal/update_health()
 	if(is_ooc_dead())
 		return
 	if(status_flags & GODMODE)
@@ -324,19 +324,19 @@
 
 /mob/living/simple_animal/adjustBruteLoss(damage)
 	..()
-	updatehealth()
+	update_health()
 
 /mob/living/simple_animal/adjustFireLoss(damage)
 	..()
-	updatehealth()
+	update_health()
 
 /mob/living/simple_animal/adjustToxLoss(damage)
 	..()
-	updatehealth()
+	update_health()
 
 /mob/living/simple_animal/adjustOxyLoss(damage)
 	..()
-	updatehealth()
+	update_health()
 
 /mob/living/simple_animal/proc/SA_attackable(target_mob)
 	if (isliving(target_mob))

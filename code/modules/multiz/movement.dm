@@ -212,7 +212,7 @@
 	apply_damage(rand(0, damage), BRUTE, BP_L_ARM)
 	apply_damage(rand(0, damage), BRUTE, BP_R_ARM)
 	weakened = max(weakened,2)
-	updatehealth()
+	update_health()
 
 	if (old_stat != CONSCIOUS)
 		return

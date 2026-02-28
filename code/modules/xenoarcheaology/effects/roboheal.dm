@@ -24,7 +24,7 @@
 				last_message = world.time
 			M.adjustBruteLoss(-1)
 			M.adjustFireLoss(-1)
-			M.updatehealth()
+			M.update_health()
 		return 1
 
 /datum/artifact_effect/roboheal/DoEffectPulse()
@@ -36,5 +36,5 @@
 				last_message = world.time
 			M.adjustBruteLoss(-10)
 			M.adjustFireLoss(-10)
-			M.updatehealth()
+			M.update_health()
 		return 1
