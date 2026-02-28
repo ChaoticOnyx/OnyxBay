@@ -470,7 +470,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(!ntnet_global || isnull(channel_id))
 		return null
 	var/search_id = text2num("[channel_id]")
-	if(!search_id)
+	if(isnull(search_id))
 		return null
 	for(var/datum/ntnet_conversation/channel in ntnet_global.chat_channels)
 		if(channel.id == search_id)
@@ -570,10 +570,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			if(!P.owner || P.toff || P == src || P.hidden)
 				continue
 			var/job_name = P.ownjob ? P.ownjob : "Unknown role"
+			var/display_name = P.owner ? P.owner : "[P]"
 			if(conversations.Find("\ref[P]"))
-				convopdas.Add(list(list("Name" = "[P]", "Reference" = "\ref[P]", "Job" = sanitize(job_name), "Detonate" = "[P.detonate]", "inconvo" = "1")))
+				convopdas.Add(list(list("Name" = sanitize(display_name), "Reference" = "\ref[P]", "Job" = sanitize(job_name), "Detonate" = "[P.detonate]", "inconvo" = "1")))
 			else
-				pdas.Add(list(list("Name" = "[P]", "Reference" = "\ref[P]", "Job" = sanitize(job_name), "Detonate" = "[P.detonate]", "inconvo" = "0")))
+				pdas.Add(list(list("Name" = sanitize(display_name), "Reference" = "\ref[P]", "Job" = sanitize(job_name), "Detonate" = "[P.detonate]", "inconvo" = "0")))
 			count++
 
 		data["convopdas"] = convopdas
@@ -589,77 +590,91 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				if(!channel)
 					continue
 				var/is_member = channel.is_pda_member(pda_member_key)
+				var/channel_has_password = !isnull(channel.password) && length("[channel.password]")
 				group_channels += list(list(
 					"id" = channel.id,
 					"title" = sanitize(channel.title),
 					"is_member" = is_member,
-					"locked" = !!length("[channel.password]"),
+					"locked" = channel_has_password,
 					"members" = channel.pda_members.len + channel.clients.len,
 					"pda_members" = channel.pda_members.len,
 					"client_members" = channel.clients.len
 				))
 		data["group_channels"] = group_channels
 
-		if(active_group_channel && active_group_channel.is_pda_member(pda_member_key))
+		if(active_group_channel)
+			var/group_is_member = active_group_channel.is_pda_member(pda_member_key)
+			var/group_locked = !isnull(active_group_channel.password) && length("[active_group_channel.password]")
 			var/list/group_members = list()
 			var/list/group_candidates = list()
 			var/list/group_messages = list()
 
-			if(active_group_channel.message_data.len)
-				for(var/list/msg in active_group_channel.message_data)
-					group_messages += list(msg.Copy())
-			else
-				for(var/raw_message in active_group_channel.messages)
-					group_messages += list(list(
-						"timestamp" = "",
-						"username" = "-!-",
-						"message" = sanitize("[raw_message]"),
-						"status" = 1
+			if(group_is_member || !group_locked)
+				if(active_group_channel.message_data.len)
+					for(var/list/msg in active_group_channel.message_data)
+						group_messages += list(msg.Copy())
+				else
+					for(var/raw_message in active_group_channel.messages)
+						group_messages += list(list(
+							"timestamp" = "",
+							"username" = "-!-",
+							"message" = sanitize("[raw_message]"),
+							"status" = 1
+						))
+
+			if(group_is_member)
+				for(var/member_ref in active_group_channel.pda_members)
+					var/obj/item/device/pda/member_pda = locate(member_ref)
+					var/member_name = active_group_channel.get_member_name(member_ref)
+					var/member_role = "PDA"
+					if(istype(member_pda) && member_pda.ownjob)
+						member_role = member_pda.ownjob
+					group_members += list(list(
+						"ref" = member_ref,
+						"name" = member_name,
+						"kind" = "pda",
+						"role" = member_role,
+						"is_admin" = active_group_channel.is_pda_admin(member_ref),
+						"is_operator" = 0,
+						"is_self" = (member_ref == pda_member_key)
 					))
 
-			for(var/member_ref in active_group_channel.pda_members)
-				group_members += list(list(
-					"ref" = member_ref,
-					"name" = active_group_channel.get_member_name(member_ref),
-					"kind" = "pda",
-					"role" = "PDA",
-					"is_admin" = active_group_channel.is_pda_admin(member_ref),
-					"is_operator" = 0,
-					"is_self" = (member_ref == pda_member_key)
-				))
+				for(var/datum/computer_file/program/chatclient/client in active_group_channel.clients)
+					group_members += list(list(
+						"ref" = "\ref[client]",
+						"name" = sanitize(client.username),
+						"kind" = "ntnet",
+						"role" = "NTNet Terminal",
+						"is_admin" = active_group_channel.is_client_admin(client),
+						"is_operator" = (active_group_channel.operator == client),
+						"is_self" = 0
+					))
 
-			for(var/datum/computer_file/program/chatclient/client in active_group_channel.clients)
-				group_members += list(list(
-					"ref" = "\ref[client]",
-					"name" = sanitize(client.username),
-					"kind" = "ntnet",
-					"role" = "NTNet Terminal",
-					"is_admin" = active_group_channel.is_client_admin(client),
-					"is_operator" = (active_group_channel.operator == client),
-					"is_self" = 0
-				))
-
-			for(var/obj/item/device/pda/P in PDAs)
-				if(!P.owner || P.hidden || P == src || P.toff)
-					continue
-				var/pda_ref = "\ref[P]"
-				if(active_group_channel.is_pda_member(pda_ref))
-					continue
-				group_candidates += list(list(
-					"ref" = pda_ref,
-					"name" = sanitize("[P]"),
-					"job" = sanitize(P.ownjob ? P.ownjob : "Unknown role")
-				))
+				for(var/obj/item/device/pda/P in PDAs)
+					if(!P.owner || P.hidden || P == src || P.toff)
+						continue
+					var/pda_ref = "\ref[P]"
+					if(active_group_channel.is_pda_member(pda_ref))
+						continue
+					group_candidates += list(list(
+						"ref" = pda_ref,
+						"name" = sanitize(P.owner ? P.owner : "[P]"),
+						"job" = sanitize(P.ownjob ? P.ownjob : "Unknown role")
+					))
 
 			data["group_active_id"] = active_group_channel.id
 			data["group_title"] = sanitize(active_group_channel.title)
+			data["group_locked"] = group_locked
+			data["group_is_member"] = group_is_member
 			data["group_messages"] = group_messages
 			data["group_members"] = group_members
 			data["group_candidates"] = group_candidates
-			data["group_is_admin"] = active_group_channel.is_pda_admin(pda_member_key)
+			data["group_is_admin"] = group_is_member && active_group_channel.is_pda_admin(pda_member_key)
 		else
 			data["group_active_id"] = null
 			data["group_title"] = null
+			data["group_locked"] = 0
+			data["group_is_member"] = 0
 			data["group_messages"] = list()
 			data["group_members"] = list()
 			data["group_candidates"] = list()
@@ -1020,14 +1035,14 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				ui.close()
 
 		if("Save Note")
-			if(mode == PDA_MODE_NOTES)
-				var/note_text = params["note"]
-				if(!isnull(note_text))
-					note_text = sanitize(note_text)
-					note = html_decode(note_text)
-					note = replacetext(note, "\n", "<br>")
-					notehtml = note_text
-					sync_note_slot_from_active()
+			var/note_text = params["note"]
+			if(!isnull(note_text))
+				note_text = copytext("[note_text]", 1, 8193)
+				note_text = sanitize(note_text)
+				note = html_decode(note_text)
+				note = replacetext(note, "\n", "<br>")
+				notehtml = note_text
+				sync_note_slot_from_active()
 
 		if("Select Note")
 			var/note_index = text2num(params["index"])
@@ -1081,6 +1096,13 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			if(params["option"] == "All")
 				tnote.Cut()
 				conversations.Cut()
+				active_conversation = null
+				if(ntnet_global)
+					var/member_key = get_pda_member_key()
+					for(var/datum/ntnet_conversation/channel in ntnet_global.chat_channels)
+						if(channel.is_pda_member(member_key))
+							channel.remove_pda_member(member_key)
+				active_group_channel = null
 			if(params["option"] == "Convo")
 				var/new_tnote[0]
 				for(var/i in tnote)
@@ -1172,6 +1194,12 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				if(channel && channel.is_pda_member(get_pda_member_key()))
 					active_group_channel = channel
 
+		if("Group Preview")
+			if(can_use_group_chat(U))
+				var/datum/ntnet_conversation/channel = find_group_channel(params["id"])
+				if(channel && !channel.password && !channel.is_pda_member(get_pda_member_key()))
+					active_group_channel = channel
+
 		if("Group Join")
 			if(can_use_group_chat(U))
 				var/datum/ntnet_conversation/channel = find_group_channel(params["id"])
@@ -1204,6 +1232,21 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					if(new_title)
 						active_group_channel.add_status_message("[active_group_channel.get_member_name(member_key)] changed channel title to [new_title].")
 						active_group_channel.title = new_title
+
+		if("Group Set Password")
+			if(can_use_group_chat(U) && active_group_channel)
+				var/member_key = get_pda_member_key()
+				if(active_group_channel.is_pda_admin(member_key))
+					var/new_password = params["password"]
+					if(isnull(new_password))
+						new_password = input(U, "Enter channel password (blank for no password)", "Set group password", active_group_channel.password) as text|null
+					if(!isnull(new_password))
+						new_password = sanitize(new_password, 32)
+						active_group_channel.password = new_password
+						if(length(new_password))
+							active_group_channel.add_status_message("[active_group_channel.get_member_name(member_key)] set a channel password.")
+						else
+							active_group_channel.add_status_message("[active_group_channel.get_member_name(member_key)] removed the channel password.")
 
 		if("Group Delete")
 			if(can_use_group_chat(U) && active_group_channel)

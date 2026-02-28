@@ -61,7 +61,7 @@ var/global/ntnrc_uid = 0
 	if(!istype(P))
 		return "Unknown user"
 	if(P.owner)
-		return sanitize("[P.owner][P.ownjob ? " ([P.ownjob])" : ""]")
+		return sanitize(P.owner)
 	return sanitize("[P]")
 
 /datum/ntnet_conversation/proc/is_pda_member(member_ref)

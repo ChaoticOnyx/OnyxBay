@@ -105,6 +105,8 @@ class NotekeeperApp extends Component<{ ctx: PdaProgramContext }> {
             <TextArea
               value={this.draft}
               onInput={(_, value) => this.setDraft(String(value))}
+              onChange={(_, value) => this.setDraft(String(value))}
+              onBlur={this.saveDraft}
               fluid
               height="140px"
               onKeyDown={(event: KeyboardEvent) => {

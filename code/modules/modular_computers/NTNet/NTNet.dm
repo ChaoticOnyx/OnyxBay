@@ -180,7 +180,7 @@ var/global/datum/ntnet/ntnet_global = new()
 	if(isnull(channel_id))
 		return null
 	var/search_id = text2num("[channel_id]")
-	if(!search_id)
+	if(isnull(search_id))
 		return null
 	for(var/datum/ntnet_conversation/channel in chat_channels)
 		if(channel.id == search_id)

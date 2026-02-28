@@ -308,16 +308,20 @@ const toBool = (value: any) => {
 class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
   private draft = '';
   private filter = '';
+  private listTab: 'groups' | 'pms' = 'groups';
   private showEmojiPicker = false;
   private showRingtone = false;
   private showGroupCreate = false;
   private showGroupJoin = false;
+  private showGroupMembers = false;
+  private showGroupInvite = false;
   private ringtoneDraft = '';
   private groupTitleDraft = '';
   private groupPasswordDraft = '';
   private groupJoinId = '';
   private groupJoinTitle = '';
   private groupJoinPasswordDraft = '';
+  private inviteSearch = '';
   private selectedTargetRef: string | null = null;
 
   componentDidUpdate() {
@@ -397,6 +401,14 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     return toBool(this.props.ctx.data?.group_is_admin);
   }
 
+  private get isGroupMember() {
+    return toBool(this.props.ctx.data?.group_is_member);
+  }
+
+  private get groupLocked() {
+    return toBool(this.props.ctx.data?.group_locked);
+  }
+
   private get messengerOn() {
     return !toBool(this.props.ctx.data?.toff);
   }
@@ -451,36 +463,60 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     this.forceUpdate();
   };
 
+  private setListTab = (tab: 'groups' | 'pms') => {
+    this.listTab = tab;
+    this.forceUpdate();
+  };
+
   private selectConversation = (ref: string) => {
+    this.listTab = 'pms';
     this.selectedTargetRef = null;
     if (this.hasActiveGroup) {
       this.props.ctx.act('choice', { choice: 'Group Close' });
     }
+    this.showGroupMembers = false;
+    this.showGroupInvite = false;
     this.props.ctx.act('choice', { choice: 'Select Conversation', convo: ref });
   };
 
   private selectPeer = (ref: string) => {
+    this.listTab = 'pms';
     if (this.isConversationMode) {
       this.props.ctx.act('choice', { choice: 'Return' });
     }
     if (this.hasActiveGroup) {
       this.props.ctx.act('choice', { choice: 'Group Close' });
     }
+    this.showGroupMembers = false;
+    this.showGroupInvite = false;
     this.selectedTargetRef = ref;
     this.forceUpdate();
   };
 
-  private selectGroup = (id: string) => {
-    this.selectedTargetRef = null;
-    this.props.ctx.act('choice', { choice: 'Group Open', id });
-  };
-
-  private openGroupJoin = (id: string, title: string, locked: boolean) => {
+  private selectGroupRow = (group: GroupChannelEntry) => {
+    const id = String(group.id || '');
     if (!id) {
       return;
     }
-    if (!locked) {
-      this.props.ctx.act('choice', { choice: 'Group Join', id, password: '' });
+    this.listTab = 'groups';
+    this.selectedTargetRef = null;
+    this.showGroupMembers = false;
+    this.showGroupInvite = false;
+    const isMember = toBool(group.is_member);
+    const locked = toBool(group.locked);
+    if (isMember) {
+      this.props.ctx.act('choice', { choice: 'Group Open', id });
+      return;
+    }
+    if (locked) {
+      this.openGroupJoin(id, String(group.title || 'Group Channel'));
+      return;
+    }
+    this.props.ctx.act('choice', { choice: 'Group Preview', id });
+  };
+
+  private openGroupJoin = (id: string, title: string) => {
+    if (!id) {
       return;
     }
     this.showGroupJoin = true;
@@ -510,8 +546,25 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     this.closeGroupJoin();
   };
 
+  private joinActiveGroup = () => {
+    if (!this.activeGroupId || this.isGroupMember) {
+      return;
+    }
+    if (this.groupLocked) {
+      this.openGroupJoin(this.activeGroupId, this.activeGroupTitle || 'Group Channel');
+      return;
+    }
+    this.props.ctx.act('choice', {
+      choice: 'Group Join',
+      id: this.activeGroupId,
+      password: '',
+    });
+  };
+
   private closeGroup = () => {
     this.props.ctx.act('choice', { choice: 'Group Close' });
+    this.showGroupMembers = false;
+    this.showGroupInvite = false;
   };
 
   private leaveGroup = () => {
@@ -520,6 +573,10 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
 
   private renameGroup = () => {
     this.props.ctx.act('choice', { choice: 'Group Rename' });
+  };
+
+  private setGroupPassword = () => {
+    this.props.ctx.act('choice', { choice: 'Group Set Password' });
   };
 
   private deleteGroup = () => {
@@ -539,6 +596,7 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
   };
 
   private openGroupCreate = () => {
+    this.listTab = 'groups';
     this.showGroupCreate = true;
     this.groupTitleDraft = '';
     this.groupPasswordDraft = '';
@@ -549,6 +607,39 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     this.showGroupCreate = false;
     this.groupTitleDraft = '';
     this.groupPasswordDraft = '';
+    this.forceUpdate();
+  };
+
+  private openGroupMembers = () => {
+    if (!this.hasActiveGroup || !this.isGroupMember) {
+      return;
+    }
+    this.showGroupMembers = true;
+    this.forceUpdate();
+  };
+
+  private closeGroupMembers = () => {
+    this.showGroupMembers = false;
+    this.forceUpdate();
+  };
+
+  private openGroupInvite = () => {
+    if (!this.isGroupAdmin) {
+      return;
+    }
+    this.showGroupInvite = true;
+    this.inviteSearch = '';
+    this.forceUpdate();
+  };
+
+  private closeGroupInvite = () => {
+    this.showGroupInvite = false;
+    this.inviteSearch = '';
+    this.forceUpdate();
+  };
+
+  private setInviteSearch = (value: string) => {
+    this.inviteSearch = value;
     this.forceUpdate();
   };
 
@@ -600,6 +691,9 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     }
 
     if (this.hasActiveGroup) {
+      if (!this.isGroupMember) {
+        return;
+      }
       this.props.ctx.act('choice', {
         choice: 'Group Message',
         message,
@@ -653,6 +747,8 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
   private clearAllConversations = () => {
     this.props.ctx.act('choice', { choice: 'Clear', option: 'All' });
     this.selectedTargetRef = null;
+    this.showGroupMembers = false;
+    this.showGroupInvite = false;
     this.draft = '';
     this.forceUpdate();
   };
@@ -711,8 +807,6 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     const groupChannels = this.groupChannels.filter((group) =>
       !filter || String(group.title || '').toLowerCase().includes(filter)
     );
-    const joinedGroups = groupChannels.filter((group) => toBool(group.is_member));
-    const joinableGroups = groupChannels.filter((group) => !toBool(group.is_member));
     const conversations = this.conversations.filter((entry) =>
       !filter || String(entry.Name || '').toLowerCase().includes(filter)
     );
@@ -732,14 +826,23 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     );
     const visibleGroupMessages = this.groupMessages;
 
-    const inputDisabled = !this.messengerOn || (!activeRef && !groupActive);
+    const showGroupJoinComposer = groupActive && !this.isGroupMember;
+    const inputDisabled = !this.messengerOn || (!activeRef && !groupActive) || showGroupJoinComposer;
     const placeholder = !this.messengerOn
       ? 'Messenger is OFF'
+      : showGroupJoinComposer
+        ? 'Join group to send messages'
       : groupActive
         ? 'Group message... (use :happy: or :e42:)'
         : !activeRef
           ? 'Select a contact first'
           : 'Message... (use :happy: or :e42:)';
+    const inviteFilter = this.inviteSearch.toLowerCase();
+    const inviteCandidates = this.groupCandidates.filter((candidate) => {
+      const name = String(candidate.name || '').toLowerCase();
+      const role = String(candidate.job || '').toLowerCase();
+      return !inviteFilter || name.includes(inviteFilter) || role.includes(inviteFilter);
+    });
 
     return (
       <div className="PdaMessenger">
@@ -752,16 +855,49 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
             <div className="PdaMessenger__sideActions">
               <Button
                 icon="rotate"
-                content="Refresh"
+                tooltip="Refresh"
                 onClick={() => this.props.ctx.act('choice', { choice: 'Refresh' })}
                 className="PdaMessenger__actionBtn"
               />
               <Button
                 icon="trash-can"
-                content="Delete All"
+                tooltip="Delete all PMs and leave all groups"
                 onClick={this.clearAllConversations}
                 className="PdaMessenger__actionBtn"
               />
+              <Button
+                icon={this.messengerOn ? 'check' : 'xmark'}
+                tooltip="Toggle messenger"
+                onClick={this.toggleMessenger}
+                className="PdaMessenger__actionBtn"
+              />
+              <Button
+                icon={this.ringerOn ? 'volume-high' : 'volume-xmark'}
+                tooltip="Toggle ringer"
+                onClick={this.toggleRinger}
+                className="PdaMessenger__actionBtn"
+              />
+              <Button
+                icon="music"
+                tooltip="Set ringtone"
+                onClick={this.openRingtone}
+                className="PdaMessenger__actionBtn"
+              />
+            </div>
+
+            <div className="PdaMessenger__tabs">
+              <button
+                className={cx('PdaMessenger__tabBtn', this.listTab === 'groups' && 'is-active')}
+                onClick={() => this.setListTab('groups')}
+              >
+                Groups
+              </button>
+              <button
+                className={cx('PdaMessenger__tabBtn', this.listTab === 'pms' && 'is-active')}
+                onClick={() => this.setListTab('pms')}
+              >
+                PMs
+              </button>
             </div>
 
             <div className="PdaMessenger__search">
@@ -774,152 +910,103 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
           </div>
 
           <div className="PdaMessenger__chatList">
-            <div className="PdaMessenger__listSection">
-              <Icon name="users" /> Joined Groups
-            </div>
-            {!this.groupChatAvailable && (
-              <div className="PDAProgram__footerHint">NTNet chat is currently unavailable.</div>
-            )}
-            {!!this.groupChatAvailable && (
-              <div style={{ padding: '0 10px 10px 10px' }}>
-                <Button icon="users" content="Create Group" onClick={this.openGroupCreate} fluid />
-              </div>
-            )}
-            {joinedGroups.length === 0 && this.groupChatAvailable && (
-              <div className="PDAProgram__footerHint">No group channels.</div>
-            )}
-            {joinedGroups.map((group, index) => {
-              const id = String(group.id || '');
-              const title = String(group.title || 'Group Channel');
-              const isActive = this.activeGroupId === id;
-              const members = Number(group.members || 0);
-              const clients = Number(group.client_members || 0);
-              const pdas = Number(group.pda_members || 0);
-              const locked = toBool(group.locked);
-              return (
-                <div
-                  key={`${id || 'group'}-${index}`}
-                  className={cx('PdaMessenger__chatRow', isActive && 'is-active')}
-                  onClick={() => this.selectGroup(id)}
-                >
-                  <div className="PdaMessenger__avatar">
-                    <Icon name="users" />
+            {this.listTab === 'groups' && (
+              <>
+                {!this.groupChatAvailable && (
+                  <div className="PDAProgram__footerHint">NTNet chat is currently unavailable.</div>
+                )}
+                {!!this.groupChatAvailable && (
+                  <div style={{ padding: '0 10px 10px 10px' }}>
+                    <Button icon="users" content="Create Group" onClick={this.openGroupCreate} fluid />
                   </div>
-                  <div className="PdaMessenger__chatMeta">
-                    <div className="PdaMessenger__chatTitle">{title}</div>
-                    <div className="PdaMessenger__chatSub">
-                      {locked ? 'Locked' : 'Open'} - {members} total ({pdas} PDA / {clients} NTNet)
+                )}
+                {groupChannels.length === 0 && this.groupChatAvailable && (
+                  <div className="PDAProgram__footerHint">No group channels.</div>
+                )}
+                {groupChannels.map((group, index) => {
+                  const id = String(group.id || '');
+                  const title = String(group.title || 'Group Channel');
+                  const locked = toBool(group.locked);
+                  const isMember = toBool(group.is_member);
+                  const users = Number(group.members || 0);
+                  return (
+                    <div
+                      key={`${id || 'group'}-${index}`}
+                      className={cx('PdaMessenger__chatRow', this.activeGroupId === id && 'is-active')}
+                      onClick={() => this.selectGroupRow(group)}
+                    >
+                      <div className="PdaMessenger__avatar">
+                        <Icon name={locked ? 'lock' : 'users'} />
+                      </div>
+                      <div className="PdaMessenger__chatMeta">
+                        <div className="PdaMessenger__chatTitle">{title}</div>
+                        <div className="PdaMessenger__chatSub">
+                          {users} user{users === 1 ? '' : 's'}{isMember ? ' - Joined' : ''}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="PdaMessenger__chatActions">
-                    <Button
-                      icon="right-to-bracket"
-                      content="Open"
-                      onClick={(event: any) => {
-                        event?.stopPropagation?.();
-                        this.selectGroup(id);
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-
-            <div className="PdaMessenger__listSection">
-              <Icon name="comments" /> Joinable NTNet Channels
-            </div>
-            {joinableGroups.length === 0 && this.groupChatAvailable && (
-              <div className="PDAProgram__footerHint">No joinable channels.</div>
+                  );
+                })}
+              </>
             )}
-            {joinableGroups.map((group, index) => {
-              const id = String(group.id || '');
-              const title = String(group.title || 'Group Channel');
-              const members = Number(group.members || 0);
-              const clients = Number(group.client_members || 0);
-              const pdas = Number(group.pda_members || 0);
-              const locked = toBool(group.locked);
-              return (
-                <div
-                  key={`${id || 'joinable-group'}-${index}`}
-                  className="PdaMessenger__chatRow"
-                  onClick={() => this.openGroupJoin(id, title, locked)}
-                >
-                  <div className="PdaMessenger__avatar">
-                    <Icon name={locked ? 'lock' : 'unlock'} />
-                  </div>
-                  <div className="PdaMessenger__chatMeta">
-                    <div className="PdaMessenger__chatTitle">{title}</div>
-                    <div className="PdaMessenger__chatSub">
-                      {locked ? 'Password required' : 'Open join'} - {members} total ({pdas} PDA / {clients} NTNet)
+
+            {this.listTab === 'pms' && (
+              <>
+                <div className="PdaMessenger__listSection">
+                  <Icon name="clock-rotate-left" /> Conversations
+                </div>
+                {conversations.length === 0 && (
+                  <div className="PDAProgram__footerHint">No conversations.</div>
+                )}
+                {conversations.map((entry, index) => {
+                  const ref = String(entry.Reference || '');
+                  const isActive = this.isConversationMode && this.activeConversation === ref;
+                  const job = this.getJobLabel(entry);
+                  return (
+                    <div
+                      key={`${ref || 'convo'}-${index}`}
+                      className={cx('PdaMessenger__chatRow', isActive && 'is-active')}
+                      onClick={() => this.selectConversation(ref)}
+                    >
+                      <div className="PdaMessenger__avatar">
+                        <Icon name="user" />
+                      </div>
+                      <div className="PdaMessenger__chatMeta">
+                        <div className="PdaMessenger__chatTitle">{entry.Name || 'Unknown PDA'}</div>
+                        <div className="PdaMessenger__chatSub">{job}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="PdaMessenger__chatActions">
-                    <Button
-                      icon={locked ? 'key' : 'user-plus'}
-                      content="Join"
-                      onClick={(event: any) => {
-                        event?.stopPropagation?.();
-                        this.openGroupJoin(id, title, locked);
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+                  );
+                })}
 
-            <div className="PdaMessenger__listSection">
-              <Icon name="clock-rotate-left" /> Current Conversations
-            </div>
-            {conversations.length === 0 && (
-              <div className="PDAProgram__footerHint">No conversations.</div>
-            )}
-            {conversations.map((entry, index) => {
-              const ref = String(entry.Reference || '');
-              const isActive = this.isConversationMode && this.activeConversation === ref;
-              const job = this.getJobLabel(entry);
-              return (
-                <div
-                  key={`${ref || 'convo'}-${index}`}
-                  className={cx('PdaMessenger__chatRow', isActive && 'is-active')}
-                  onClick={() => this.selectConversation(ref)}
-                >
-                  <div className="PdaMessenger__avatar">
-                    <Icon name="user" />
-                  </div>
-                  <div className="PdaMessenger__chatMeta">
-                    <div className="PdaMessenger__chatTitle">{entry.Name || 'Unknown PDA'}</div>
-                    <div className="PdaMessenger__chatSub">{job}</div>
-                  </div>
+                <div className="PdaMessenger__listSection">
+                  <Icon name="users" /> Recipients
                 </div>
-              );
-            })}
-
-            <div className="PdaMessenger__listSection">
-              <Icon name="users" /> Other PDAs
-            </div>
-            {others.length === 0 && (
-              <div className="PDAProgram__footerHint">No other PDAs located.</div>
+                {others.length === 0 && (
+                  <div className="PDAProgram__footerHint">No other PDAs located.</div>
+                )}
+                {others.map((entry, index) => {
+                  const ref = String(entry.Reference || '');
+                  const isActive = !this.isConversationMode && this.selectedTargetRef === ref;
+                  const job = this.getJobLabel(entry);
+                  return (
+                    <div
+                      key={`${ref || 'pda'}-${index}`}
+                      className={cx('PdaMessenger__chatRow', isActive && 'is-active')}
+                      onClick={() => this.selectPeer(ref)}
+                    >
+                      <div className="PdaMessenger__avatar">
+                        <Icon name="user" />
+                      </div>
+                      <div className="PdaMessenger__chatMeta">
+                        <div className="PdaMessenger__chatTitle">{entry.Name || 'Unknown PDA'}</div>
+                        <div className="PdaMessenger__chatSub">{job}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
             )}
-            {others.map((entry, index) => {
-              const ref = String(entry.Reference || '');
-              const isActive = !this.isConversationMode && this.selectedTargetRef === ref;
-              const job = this.getJobLabel(entry);
-              return (
-                <div
-                  key={`${ref || 'pda'}-${index}`}
-                  className={cx('PdaMessenger__chatRow', isActive && 'is-active')}
-                  onClick={() => this.selectPeer(ref)}
-                >
-                  <div className="PdaMessenger__avatar">
-                    <Icon name="user" />
-                  </div>
-                  <div className="PdaMessenger__chatMeta">
-                    <div className="PdaMessenger__chatTitle">{entry.Name || 'Unknown PDA'}</div>
-                    <div className="PdaMessenger__chatSub">{job}</div>
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
 
@@ -930,39 +1017,21 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
             </div>
 
             <div className="PdaMessenger__topHint">
-              Messenger: {this.messengerOn ? 'ON' : 'OFF'} | Ringer: {this.ringerOn ? 'ON' : 'OFF'} | Ringtone: {this.ringtone}
-              {groupActive && ` | Group admin: ${this.isGroupAdmin ? 'YES' : 'NO'}`}
+              {groupActive
+                ? `Group ${this.isGroupMember ? 'joined' : 'preview'}${this.groupLocked ? ' - Private' : ' - Public'}`
+                : `Messaging ${this.messengerOn ? 'enabled' : 'disabled'}`}
             </div>
 
             <div className="PdaMessenger__topActions">
-              <Button
-                icon={this.ringerOn ? 'volume-high' : 'volume-xmark'}
-                tooltip="Toggle ringer"
-                onClick={this.toggleRinger}
-                className="PdaMessenger__ringtoneBtn"
-              />
-
-              <Button
-                icon={this.messengerOn ? 'check' : 'xmark'}
-                tooltip="Toggle messenger"
-                onClick={this.toggleMessenger}
-                className="PdaMessenger__ringtoneBtn"
-              />
-
-              <Button
-                icon="music"
-                tooltip="Set ringtone"
-                onClick={this.openRingtone}
-                className="PdaMessenger__ringtoneBtn"
-              />
-
-              <Button
-                icon="trash"
-                tooltip="Delete conversation"
-                onClick={this.clearConversation}
-                disabled={!this.isConversationMode || !this.activeConversation}
-                className="PdaMessenger__ringtoneBtn"
-              />
+              {!groupActive && (
+                <Button
+                  icon="trash"
+                  tooltip="Delete conversation"
+                  onClick={this.clearConversation}
+                  disabled={!this.isConversationMode || !this.activeConversation}
+                  className="PdaMessenger__ringtoneBtn"
+                />
+              )}
 
               {groupActive && (
                 <Button
@@ -973,7 +1042,25 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
                 />
               )}
 
-              {groupActive && (
+              {groupActive && !this.isGroupMember && (
+                <Button
+                  icon="right-to-bracket"
+                  tooltip="Join group"
+                  onClick={this.joinActiveGroup}
+                  className="PdaMessenger__ringtoneBtn"
+                />
+              )}
+
+              {groupActive && this.isGroupMember && (
+                <Button
+                  icon="users"
+                  tooltip="Group members"
+                  onClick={this.openGroupMembers}
+                  className="PdaMessenger__ringtoneBtn"
+                />
+              )}
+
+              {groupActive && this.isGroupMember && (
                 <Button
                   icon="arrow-right"
                   tooltip="Leave group"
@@ -982,7 +1069,7 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
                 />
               )}
 
-              {groupActive && this.isGroupAdmin && (
+              {groupActive && this.isGroupMember && this.isGroupAdmin && (
                 <Button
                   icon="tag"
                   tooltip="Rename group"
@@ -991,7 +1078,16 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
                 />
               )}
 
-              {groupActive && this.isGroupAdmin && (
+              {groupActive && this.isGroupMember && this.isGroupAdmin && (
+                <Button
+                  icon="key"
+                  tooltip="Set/remove group password"
+                  onClick={this.setGroupPassword}
+                  className="PdaMessenger__ringtoneBtn"
+                />
+              )}
+
+              {groupActive && this.isGroupMember && this.isGroupAdmin && (
                 <Button
                   icon="trash-can"
                   tooltip="Delete group"
@@ -1032,68 +1128,12 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
               </div>
             )}
 
-            {groupActive && (
-              <div className="PdaMessenger__groupPanel">
-                <div className="PDAProgram__footerHint" style={{ marginBottom: 6 }}>
-                  Group Members
+            {showGroupJoinComposer && (
+              <div className="PdaMessenger__joinHint">
+                <div className="PDAProgram__footerHint">
+                  You are viewing this group as a guest. Join to send messages.
                 </div>
-                <div className="PdaMessenger__groupMembers">
-                  {this.groupMembers.map((member, index) => {
-                    const memberRef = String(member.ref || '');
-                    const isSelf = toBool(member.is_self);
-                    const isAdmin = toBool(member.is_admin);
-                    const isOperator = toBool(member.is_operator);
-                    const memberKind = String(member.kind || 'pda');
-                    const memberRole = String(member.role || member.job || 'Member');
-                    return (
-                      <div key={`${memberRef || 'member'}-${index}`} className="PdaMessenger__groupMember">
-                        <div className="PdaMessenger__groupMemberName">
-                          {member.name || 'Unknown PDA'} {isOperator ? '[OP]' : isAdmin ? '[ADMIN]' : ''}
-                          <div className="PdaMessenger__groupMemberRole">{memberRole}</div>
-                        </div>
-                        {this.isGroupAdmin && memberKind === 'pda' && !isSelf && (
-                          <div className="PdaMessenger__groupMemberActions">
-                            <Button
-                              icon={isAdmin ? 'user-minus' : 'user-plus'}
-                              tooltip={isAdmin ? 'Revoke admin' : 'Make admin'}
-                              onClick={() => this.setGroupAdmin(memberRef, !isAdmin)}
-                              className="PdaMessenger__ringtoneBtn"
-                            />
-                            <Button
-                              icon="times"
-                              tooltip="Remove from group"
-                              onClick={() => this.removeGroupMember(memberRef)}
-                              className="PdaMessenger__ringtoneBtn"
-                            />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {this.isGroupAdmin && (
-                  <div className="PdaMessenger__groupInvite">
-                    <div className="PDAProgram__footerHint" style={{ marginBottom: 6 }}>Invite PDA</div>
-                    <div className="PdaMessenger__groupCandidates">
-                      {this.groupCandidates.length === 0 && (
-                        <div className="PDAProgram__footerHint">No available PDAs to invite.</div>
-                      )}
-                      {this.groupCandidates.map((candidate, index) => {
-                        const ref = String(candidate.ref || '');
-                        const role = String(candidate.job || 'Unknown role');
-                        return (
-                          <Button
-                            key={`${ref || 'candidate'}-${index}`}
-                            icon="user-plus"
-                            content={`${candidate.name || 'Unknown PDA'} - ${role}`}
-                            onClick={() => this.addGroupMember(ref)}
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
+                <Button icon="right-to-bracket" content="Join Group" onClick={this.joinActiveGroup} />
               </div>
             )}
 
@@ -1150,41 +1190,43 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
             })}
           </div>
 
-          <div className="PdaMessenger__composer">
-            <Button
-              icon="face-smile"
-              tooltip="Emoji"
-              onClick={this.toggleEmojiPicker}
-              className="PdaMessenger__emojiBtn"
-            />
-
-            <div className="PdaMessenger__inputWrap">
-              <Input
-                value={this.draft}
-                placeholder={placeholder}
-                onInput={(_, value) => this.setDraft(String(value))}
-                disabled={inputDisabled}
-                onKeyDown={(event: KeyboardEvent) => {
-                  // @ts-ignore
-                  if (event.key === 'Enter') {
-                    this.send();
-                  }
-                }}
+          {!showGroupJoinComposer && (
+            <div className="PdaMessenger__composer">
+              <Button
+                icon="face-smile"
+                tooltip="Emoji"
+                onClick={this.toggleEmojiPicker}
+                className="PdaMessenger__emojiBtn"
               />
+
+              <div className="PdaMessenger__inputWrap">
+                <Input
+                  value={this.draft}
+                  placeholder={placeholder}
+                  onInput={(_, value) => this.setDraft(String(value))}
+                  disabled={inputDisabled}
+                  onKeyDown={(event: KeyboardEvent) => {
+                    // @ts-ignore
+                    if (event.key === 'Enter') {
+                      this.send();
+                    }
+                  }}
+                />
+              </div>
+
+              <Button
+                icon="paper-plane"
+                content="Send"
+                onClick={this.send}
+                disabled={inputDisabled}
+                className="PdaMessenger__sendBtn"
+              />
+
+              {this.showEmojiPicker && (
+                <EmojiPicker onPick={this.insertEmojiToken} />
+              )}
             </div>
-
-            <Button
-              icon="paper-plane"
-              content="Send"
-              onClick={this.send}
-              disabled={inputDisabled}
-              className="PdaMessenger__sendBtn"
-            />
-
-            {this.showEmojiPicker && (
-              <EmojiPicker onPick={this.insertEmojiToken} />
-            )}
-          </div>
+          )}
         </div>
 
         {this.showRingtone && (
@@ -1244,6 +1286,7 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
                 <div className="PdaMessengerModal__field">
                   <div className="PdaMessengerModal__label">Password (optional)</div>
                   <Input
+                    type="password"
                     value={this.groupPasswordDraft}
                     placeholder="Leave blank for open channel"
                     onInput={(_, value) => {
@@ -1277,6 +1320,7 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
                 <div className="PdaMessengerModal__field">
                   <div className="PdaMessengerModal__label">Password</div>
                   <Input
+                    type="password"
                     value={this.groupJoinPasswordDraft}
                     placeholder="Enter channel password"
                     onInput={(_, value) => {
@@ -1296,6 +1340,100 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
               <div className="PdaMessengerModal__actions">
                 <Button content="Cancel" onClick={this.closeGroupJoin} />
                 <Button content="Join" icon="right-to-bracket" onClick={this.submitGroupJoin} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {this.showGroupMembers && groupActive && this.isGroupMember && (
+          <div className="PdaMessengerModal" onClick={this.closeGroupMembers}>
+            <div className="PdaMessengerModal__card" onClick={(event) => event.stopPropagation()}>
+              <div className="PdaMessengerModal__title">
+                <Icon name="users" /> Group Members
+              </div>
+
+              <div className="PdaMessengerModal__body">
+                <div className="PdaMessenger__groupMembers">
+                  {this.groupMembers.map((member, index) => {
+                    const memberRef = String(member.ref || '');
+                    const isSelf = toBool(member.is_self);
+                    const isAdmin = toBool(member.is_admin);
+                    const isOperator = toBool(member.is_operator);
+                    const memberKind = String(member.kind || 'pda');
+                    const memberRole = String(member.role || member.job || 'Member');
+                    return (
+                      <div key={`${memberRef || 'member'}-${index}`} className="PdaMessenger__groupMember">
+                        <div className="PdaMessenger__groupMemberName">
+                          {member.name || 'Unknown PDA'} {isOperator ? '[OP]' : isAdmin ? '[ADMIN]' : ''}
+                          <div className="PdaMessenger__groupMemberRole">{memberRole}</div>
+                        </div>
+                        {this.isGroupAdmin && memberKind === 'pda' && !isSelf && (
+                          <div className="PdaMessenger__groupMemberActions">
+                            <Button
+                              icon={isAdmin ? 'user-minus' : 'user-plus'}
+                              tooltip={isAdmin ? 'Revoke admin' : 'Make admin'}
+                              onClick={() => this.setGroupAdmin(memberRef, !isAdmin)}
+                              className="PdaMessenger__ringtoneBtn"
+                            />
+                            <Button
+                              icon="times"
+                              tooltip="Remove from group"
+                              onClick={() => this.removeGroupMember(memberRef)}
+                              className="PdaMessenger__ringtoneBtn"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="PdaMessengerModal__actions">
+                {this.isGroupAdmin && (
+                  <Button icon="user-plus" content="Invite PDA" onClick={this.openGroupInvite} />
+                )}
+                <Button content="Close" onClick={this.closeGroupMembers} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {this.showGroupInvite && groupActive && this.isGroupMember && this.isGroupAdmin && (
+          <div className="PdaMessengerModal" onClick={this.closeGroupInvite}>
+            <div className="PdaMessengerModal__card" onClick={(event) => event.stopPropagation()}>
+              <div className="PdaMessengerModal__title">
+                <Icon name="user-plus" /> Invite PDA
+              </div>
+
+              <div className="PdaMessengerModal__body">
+                <Input
+                  value={this.inviteSearch}
+                  placeholder="Search by name or role..."
+                  onInput={(_, value) => this.setInviteSearch(String(value))}
+                />
+                <div className="PdaMessenger__inviteList">
+                  {inviteCandidates.length === 0 && (
+                    <div className="PDAProgram__footerHint">No matching PDAs found.</div>
+                  )}
+                  {inviteCandidates.map((candidate, index) => {
+                    const ref = String(candidate.ref || '');
+                    const role = String(candidate.job || 'Unknown role');
+                    return (
+                      <div key={`${ref || 'invite'}-${index}`} className="PdaMessenger__inviteRow">
+                        <div className="PdaMessenger__inviteName">
+                          {candidate.name || 'Unknown PDA'}
+                          <div className="PdaMessenger__inviteRole">{role}</div>
+                        </div>
+                        <Button icon="plus" content="Invite" onClick={() => this.addGroupMember(ref)} />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="PdaMessengerModal__actions">
+                <Button content="Close" onClick={this.closeGroupInvite} />
               </div>
             </div>
           </div>
