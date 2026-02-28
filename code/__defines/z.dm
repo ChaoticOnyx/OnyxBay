@@ -11,10 +11,11 @@ var/__z_name = null
 			__z_name = "libz.dll"
 	else
 		// Fuck you zlib
-		if(fexists("liblibz.native.so"))
-			__z_name = "liblibz.native.so"
+		// UPD: And linux too
+		if(fexists("./liblibz.native.so"))
+			__z_name = "./liblibz.native.so"
 		else
-			__z_name = "liblibz.so"
+			__z_name = "./liblibz.so"
 
 #define Z_ERROR_OUT_OF_ID "OutOfId"
 #define Z_ERROR_OUT_OF_MEMORY "OutOfMemory"
