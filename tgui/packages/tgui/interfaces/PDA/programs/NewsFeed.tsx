@@ -1,6 +1,7 @@
 import { Icon, Button } from '../../../components';
 import { PDA_MODE } from '../programIds';
 import type { PdaProgram, PdaProgramContext } from '../types';
+import { cx } from '../types';
 
 const NewsFeedApp = (props: { ctx: PdaProgramContext }) => {
   const { ctx } = props;
@@ -19,7 +20,7 @@ const NewsFeedApp = (props: { ctx: PdaProgramContext }) => {
       </div>
 
       <div className="PDAProgram__panel">
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <div className="PDAProgram__buttonGrid">
           <Button
             icon={ctx.data?.news_silent ? 'volume-xmark' : 'volume-high'}
             content={ctx.data?.news_silent ? 'Ringer: Off' : 'Ringer: On'}
@@ -37,12 +38,17 @@ const NewsFeedApp = (props: { ctx: PdaProgramContext }) => {
 
       {mode === PDA_MODE.NEWS_FEED && (
         <div className="PDAProgram__panel">
+          <div className="PDAProgram__sectionTitle">Channel Directory</div>
           {channels.length === 0 && <i>No active channels found...</i>}
           {channels.map((channel, idx) => (
-            <div key={`${channel.name}-${idx}`} style={{ marginBottom: 6 }}>
+            <div key={`${channel.name}-${idx}`} className={cx('PDAProgram__newsChannel', channel.censored && 'is-censored')}>
+              <div className="PDAProgram__newsChannelInfo">
+                <div className="PDAProgram__newsChannelTitle">{channel.name}</div>
+                <div className="PDAProgram__newsChannelMeta">{channel.censored ? 'D-Notice applied' : 'Open station feed'}</div>
+              </div>
               <Button
-                icon="circle-arrow-right"
-                content={channel.name}
+                icon="right-to-bracket"
+                content="Open"
                 color={channel.censored ? 'bad' : undefined}
                 onClick={() => ctx.act('choice', { choice: 'Select Feed', name: channel.name, feed: channel.feed })}
               />
@@ -56,9 +62,12 @@ const NewsFeedApp = (props: { ctx: PdaProgramContext }) => {
           <div style={{ marginBottom: 8 }}>
             <Button icon="arrow-left" content="Return to Channels" onClick={() => ctx.act('choice', { choice: 'Return' })} />
           </div>
-          <div style={{ fontWeight: 900 }}>{feed.channel}</div>
-          <div style={{ opacity: 0.7, marginBottom: 8 }}>
-            Created by: {feed.author} • Views: {feed.views}
+
+          <div className="PDAProgram__newsHeadCard">
+            <div className="PDAProgram__newsHeadTitle">{feed.channel}</div>
+            <div className="PDAProgram__newsHeadMeta">
+              Created by: {feed.author} - Views: {feed.views}
+            </div>
           </div>
 
           {feed.censored ? (
@@ -69,11 +78,14 @@ const NewsFeedApp = (props: { ctx: PdaProgramContext }) => {
             <>
               {(feed.messages || []).length === 0 && <i>No feed messages found in channel...</i>}
               {(feed.messages || []).map((message, idx) => (
-                <div key={idx} style={{ marginBottom: 10 }}>
-                  <div>- {message.body}</div>
-                  <div style={{ opacity: 0.65 }}>
-                    [{message.message_type} by {message.author} - {message.time_stamp}]
+                <div key={idx} className="PDAProgram__newsMessage">
+                  <div className="PDAProgram__newsMessageBody" dangerouslySetInnerHTML={{ __html: message.body }} />
+                  <div className="PDAProgram__newsMessageMeta">
+                    {message.message_type} by {message.author} - {message.time_stamp}
                   </div>
+                  {message.has_image && (
+                    <div className="PDAProgram__newsMessageImage">Image attached: {message.caption || 'Untitled image'}</div>
+                  )}
                 </div>
               ))}
             </>

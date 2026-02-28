@@ -318,6 +318,103 @@
 .PDAProgram__manifestCard.is-misc .PDAProgram__manifestHead { background: #505050; color: #f0f0f0; }
 .PDAProgram__manifestCard.is-silicon .PDAProgram__manifestHead { background: #2b6372; color: #dcf9ff; }
 
+.PDAProgram__sensorList {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 230px;
+  overflow: auto;
+}
+
+.PDAProgram__sensorRow .Button {
+  width: 100%;
+}
+
+.PDAProgram__powerTable {
+  table-layout: fixed;
+  min-width: 340px;
+}
+
+.PDAProgram__newsChannel {
+  border: 1px solid color-mix(in srgb, var(--crt-border) 88%, transparent);
+  background: rgba(0, 0, 0, 0.20);
+  padding: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.PDAProgram__newsChannel.is-censored {
+  border-color: rgba(239, 68, 68, 0.55);
+  background: rgba(120, 20, 20, 0.10);
+}
+
+.PDAProgram__newsChannelInfo {
+  min-width: 0;
+}
+
+.PDAProgram__newsChannelTitle {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--crt-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.PDAProgram__newsChannelMeta {
+  margin-top: 3px;
+  font-size: 10px;
+  opacity: 0.72;
+}
+
+.PDAProgram__newsHeadCard {
+  border: 1px solid color-mix(in srgb, var(--crt-border) 88%, transparent);
+  background: rgba(0, 0, 0, 0.20);
+  padding: 9px;
+  margin-bottom: 10px;
+}
+
+.PDAProgram__newsHeadTitle {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--crt-accent);
+}
+
+.PDAProgram__newsHeadMeta {
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.78;
+}
+
+.PDAProgram__newsMessage {
+  border: 1px solid color-mix(in srgb, var(--crt-border) 80%, transparent);
+  background: rgba(0, 0, 0, 0.18);
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.PDAProgram__newsMessageBody {
+  font-size: 12px;
+  line-height: 1.42;
+  color: var(--crt-accent);
+}
+
+.PDAProgram__newsMessageMeta {
+  margin-top: 6px;
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.PDAProgram__newsMessageImage {
+  margin-top: 5px;
+  font-size: 10px;
+  color: color-mix(in srgb, var(--crt-main) 86%, transparent);
+}
+
 @media (max-width: 780px) {
   .PDAProgram__buttonGrid,
   .PDAProgram__splitPanel,
@@ -329,5 +426,10 @@
   .PDAProgram__recordLine {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+
+  .PDAProgram__newsChannel {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

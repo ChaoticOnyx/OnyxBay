@@ -499,6 +499,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	data["fon"] = fon
 	data["pai"] = (isnull(pai) ? 0 : 1)
 	data["note"] = note
+	data["note_raw"] = notehtml
 	data["notes"] = get_note_list_for_ui()
 	data["active_note_index"] = active_note_index
 	data["message_silent"] = message_silent
@@ -568,10 +569,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		for(var/obj/item/device/pda/P in PDAs)
 			if(!P.owner || P.toff || P == src || P.hidden)
 				continue
+			var/job_name = P.ownjob ? P.ownjob : "Unknown role"
 			if(conversations.Find("\ref[P]"))
-				convopdas.Add(list(list("Name" = "[P]", "Reference" = "\ref[P]", "Detonate" = "[P.detonate]", "inconvo" = "1")))
+				convopdas.Add(list(list("Name" = "[P]", "Reference" = "\ref[P]", "Job" = sanitize(job_name), "Detonate" = "[P.detonate]", "inconvo" = "1")))
 			else
-				pdas.Add(list(list("Name" = "[P]", "Reference" = "\ref[P]", "Detonate" = "[P.detonate]", "inconvo" = "0")))
+				pdas.Add(list(list("Name" = "[P]", "Reference" = "\ref[P]", "Job" = sanitize(job_name), "Detonate" = "[P.detonate]", "inconvo" = "0")))
 			count++
 
 		data["convopdas"] = convopdas
@@ -584,12 +586,17 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		data["group_chat_available"] = group_chat_available
 		if(group_chat_available)
 			for(var/datum/ntnet_conversation/channel in ntnet_global.chat_channels)
-				if(!channel || !channel.is_pda_member(pda_member_key))
+				if(!channel)
 					continue
+				var/is_member = channel.is_pda_member(pda_member_key)
 				group_channels += list(list(
 					"id" = channel.id,
 					"title" = sanitize(channel.title),
-					"members" = channel.pda_members.len
+					"is_member" = is_member,
+					"locked" = !!length("[channel.password]"),
+					"members" = channel.pda_members.len + channel.clients.len,
+					"pda_members" = channel.pda_members.len,
+					"client_members" = channel.clients.len
 				))
 		data["group_channels"] = group_channels
 
@@ -598,15 +605,38 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			var/list/group_candidates = list()
 			var/list/group_messages = list()
 
-			for(var/list/msg in active_group_channel.message_data)
-				group_messages += list(msg.Copy())
+			if(active_group_channel.message_data.len)
+				for(var/list/msg in active_group_channel.message_data)
+					group_messages += list(msg.Copy())
+			else
+				for(var/raw_message in active_group_channel.messages)
+					group_messages += list(list(
+						"timestamp" = "",
+						"username" = "-!-",
+						"message" = sanitize("[raw_message]"),
+						"status" = 1
+					))
 
 			for(var/member_ref in active_group_channel.pda_members)
 				group_members += list(list(
 					"ref" = member_ref,
 					"name" = active_group_channel.get_member_name(member_ref),
+					"kind" = "pda",
+					"role" = "PDA",
 					"is_admin" = active_group_channel.is_pda_admin(member_ref),
+					"is_operator" = 0,
 					"is_self" = (member_ref == pda_member_key)
+				))
+
+			for(var/datum/computer_file/program/chatclient/client in active_group_channel.clients)
+				group_members += list(list(
+					"ref" = "\ref[client]",
+					"name" = sanitize(client.username),
+					"kind" = "ntnet",
+					"role" = "NTNet Terminal",
+					"is_admin" = active_group_channel.is_client_admin(client),
+					"is_operator" = (active_group_channel.operator == client),
+					"is_self" = 0
 				))
 
 			for(var/obj/item/device/pda/P in PDAs)
@@ -617,7 +647,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					continue
 				group_candidates += list(list(
 					"ref" = pda_ref,
-					"name" = sanitize("[P]")
+					"name" = sanitize("[P]"),
+					"job" = sanitize(P.ownjob ? P.ownjob : "Unknown role")
 				))
 
 			data["group_active_id"] = active_group_channel.id
@@ -988,6 +1019,16 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			else if(ui)
 				ui.close()
 
+		if("Save Note")
+			if(mode == PDA_MODE_NOTES)
+				var/note_text = params["note"]
+				if(!isnull(note_text))
+					note_text = sanitize(note_text)
+					note = html_decode(note_text)
+					note = replacetext(note, "\n", "<br>")
+					notehtml = note_text
+					sync_note_slot_from_active()
+
 		if("Select Note")
 			var/note_index = text2num(params["index"])
 			if(note_index)
@@ -1136,6 +1177,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				var/datum/ntnet_conversation/channel = find_group_channel(params["id"])
 				if(channel)
 					var/pass = params["password"]
+					if(isnull(pass))
+						pass = ""
+					pass = sanitize(pass, 32)
 					if(channel.password && channel.password != pass)
 						to_chat(U, "<span class='warning'>Invalid channel password.</span>")
 					else

@@ -40,12 +40,13 @@
 
 .PdaMessenger__sideActions {
   margin-top: 8px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 
 .PdaMessenger__actionBtn {
-  width: 100%;
+  width: auto;
 }
 
 .PdaMessenger__search {
@@ -58,12 +59,24 @@
   overflow: auto;
 }
 
+.PdaMessenger__listSection {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 10px 6px 10px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--crt-main) 82%, transparent);
+}
+
 .PdaMessenger__chatRow {
   display: flex;
   align-items: center;
   gap: 10px;
 
-  padding: 10px;
+  padding: 9px 10px;
   border-bottom: 1px solid color-mix(in srgb, var(--crt-border) 55%, transparent);
   cursor: pointer;
 
@@ -109,10 +122,13 @@
 
 .PdaMessenger__chatSub {
   margin-top: 2px;
-  font-size: 10px;
-  opacity: 0.55;
-  text-transform: uppercase;
-  letter-spacing: 0.10em;
+  font-size: 11px;
+  opacity: 0.72;
+  letter-spacing: 0.02em;
+}
+
+.PdaMessenger__chatActions {
+  flex: 0 0 auto;
 }
 
 .PdaMessenger__chatRight {
@@ -317,6 +333,13 @@
   font-weight: 700;
   color: var(--crt-accent);
   word-break: break-word;
+}
+
+.PdaMessenger__groupMemberRole {
+  margin-top: 2px;
+  opacity: 0.7;
+  font-size: 10px;
+  font-weight: 500;
 }
 
 .PdaMessenger__groupMemberActions {

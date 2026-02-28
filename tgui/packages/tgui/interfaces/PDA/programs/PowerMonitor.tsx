@@ -24,17 +24,19 @@ const PowerMonitorApp = (props: { ctx: PdaProgramContext }) => {
             <div className="PDAProgram__v">{sensors.length}</div>
           </div>
 
-          <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="PDAProgram__sensorList">
             {!sensors.length && (
               <div className="PDAProgram__footerHint">No sensors found on current network.</div>
             )}
             {sensors.map((sensor, idx) => (
-              <Button
-                key={`${sensor.name_tag}-${idx}`}
-                icon="plus"
-                content={sensor.name_tag}
-                onClick={() => ctx.act('cartridge_action', { choice: 'Power Select', target: sensor.name_tag })}
-              />
+              <div key={`${sensor.name_tag}-${idx}`} className="PDAProgram__sensorRow">
+                <Button
+                  icon="plus"
+                  content={sensor.name_tag}
+                  fluid
+                  onClick={() => ctx.act('cartridge_action', { choice: 'Power Select', target: sensor.name_tag })}
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -49,7 +51,7 @@ const PowerMonitorApp = (props: { ctx: PdaProgramContext }) => {
           ) : (
             <div style={{ marginTop: 10 }}>
               <div className="PDAProgram__tableWrap">
-                <table className="PDATable">
+                <table className="PDATable PDAProgram__powerTable">
                   <thead>
                     <tr>
                       <th>Area</th>
