@@ -253,7 +253,7 @@
 
 	return can_move_mob(tmob, 1, 0)
 
-/mob/living/proc/updatehealth()
+/mob/living/proc/update_health()
 	if(status_flags & GODMODE)
 		health = 100
 		set_stat(CONSCIOUS)
@@ -462,25 +462,25 @@
 /mob/living/proc/heal_organ_damage(brute, burn)
 	adjustBruteLoss(-brute)
 	adjustFireLoss(-burn)
-	src.updatehealth()
+	src.update_health()
 
 // damage ONE external organ, organ gets randomly selected from damaged ones.
 /mob/living/proc/take_organ_damage(brute, burn, emp=0)
 	adjustBruteLoss(brute)
 	adjustFireLoss(burn)
-	src.updatehealth()
+	src.update_health()
 
 // heal MANY external organs, in random order
 /mob/living/proc/heal_overall_damage(brute, burn)
 	adjustBruteLoss(-brute)
 	adjustFireLoss(-burn)
-	src.updatehealth()
+	src.update_health()
 
 // damage MANY external organs, in random order
 /mob/living/proc/take_overall_damage(brute, burn, used_weapon = null)
 	adjustBruteLoss(brute)
 	adjustFireLoss(burn)
-	src.updatehealth()
+	src.update_health()
 
 /mob/living/proc/restore_all_organs(ignore_prosthetic_prefs = FALSE)
 	return
@@ -547,7 +547,7 @@
 	set_stat(CONSCIOUS)
 
 	// finally update health to make everything work correctly
-	updatehealth()
+	update_health()
 
 	// make the icons look correct
 	regenerate_icons()

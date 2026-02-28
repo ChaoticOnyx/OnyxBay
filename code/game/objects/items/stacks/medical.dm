@@ -99,7 +99,7 @@
 		)
 		use(1)
 
-	M.updatehealth()
+	M.update_health()
 
 /obj/item/stack/medical/get_storage_cost()
 	return base_storage_cost(w_class)

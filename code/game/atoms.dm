@@ -649,7 +649,7 @@ its easier to just keep the beam vertical.
 				H.adjustBruteLoss(damage)
 
 			H.update_damage_overlays()
-			H.updatehealth()
+			H.update_health()
 
 /atom/MouseDrop_T(atom/movable/target, mob/user)
 	var/mob/living/H = user

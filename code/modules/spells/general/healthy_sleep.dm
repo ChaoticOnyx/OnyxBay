@@ -51,7 +51,7 @@
 			E.mend_fracture()
 			E.stage = 0
 
-	H.updatehealth()
+	H.update_health()
 	H.sleeping = 0
 	to_chat(H, SPAN("notice", "<b>You've had a good rest. Now you absolutely need to munch on something.</b>"))
 	H.remove_nutrition(H.nutrition)

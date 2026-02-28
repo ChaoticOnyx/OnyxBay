@@ -80,7 +80,7 @@
 		else
 			camera.set_status(1)
 
-	updatehealth()
+	update_health()
 
 	if(sleeping)
 		Paralyse(3)

@@ -87,9 +87,9 @@
 			adjustBruteLoss(-heal_amt)
 			adjustFireLoss(-heal_amt)
 			adjustCloneLoss(-heal_amt)
-			updatehealth()
+			update_health()
 			if(Victim)
-				Victim.updatehealth()
+				Victim.update_health()
 
 			if(invalidFeedTarget(M) && totalDrained > 40) // Drained
 				happyWithFood = 1
