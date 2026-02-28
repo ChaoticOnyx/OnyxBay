@@ -821,7 +821,8 @@
 	. += "[selected.name] is chosen to be produced."
 
 
-/obj/item/robot_item_dispenser/New()
+/obj/item/robot_item_dispenser/Initialize()
+	. = ..()
 	selected = item_types[1]
 
 /obj/item/robot_item_dispenser/attack_self(mob/user as mob)

@@ -79,7 +79,7 @@
 
 
 /obj/item/reagent_containers/food/attack(mob/M, mob/user, def_zone)
-	if(!reagents.total_volume)
+	if(!reagents?.total_volume)
 		to_chat(user, SPAN("danger", "The empty shell of [src] crumbles in your hands!"))
 		qdel(src)
 		return FALSE

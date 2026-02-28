@@ -1004,7 +1004,7 @@ meteor_act
 			damage_flags &= ~(DAM_SHARP|DAM_EDGE)
 		created_wound = apply_damage(throw_damage, dtype, zone, armor, damage_flags, O)
 
-	if(TT.thrower)
+	if(ismob(TT.thrower))
 		var/client/assailant = TT.thrower.client
 		if(assailant)
 			admin_attack_log(TT.thrower, src, "Threw \an [O] at their victim.", "Had \an [O] thrown at them", "threw \an [O] at")
