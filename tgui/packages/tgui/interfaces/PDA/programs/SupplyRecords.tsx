@@ -26,21 +26,37 @@ const SupplyRecordsApp = (props: { ctx: PdaProgramContext }) => {
           </div>
         </div>
 
-        <div style={{ marginTop: 12, fontWeight: 900 }}>CURRENT APPROVED ORDERS</div>
-        {(approved.length && supply.approved_count) ? approved.map((order, idx) => (
-          <div key={idx} style={{ marginTop: 6 }}>
-            #{order.Number} - {order.Name} approved by {order.OrderedBy}
-            {!!order.Comment && <div>{order.Comment}</div>}
+        <div className="PDAProgram__splitPanel">
+          <div>
+            <div className="PDAProgram__sectionTitle">Approved Orders</div>
+            {(approved.length && supply.approved_count) ? approved.map((order, idx) => (
+              <div key={idx} className="PDAProgram__orderCard is-approved">
+                <div className="PDAProgram__orderHead">
+                  <span>#{order.Number}</span>
+                  <span className="PDAProgram__orderBy">Approved</span>
+                </div>
+                <div className="PDAProgram__orderName">{order.Name}</div>
+                <div className="PDAProgram__orderMeta">By: {order.OrderedBy || order.ApprovedBy || 'Unknown'}</div>
+                {!!order.Comment && <div className="PDAProgram__orderComment">{order.Comment}</div>}
+              </div>
+            )) : <div className="PDAProgram__footerHint">No current approved orders.</div>}
           </div>
-        )) : <div style={{ marginTop: 6 }}>No current approved orders</div>}
 
-        <div style={{ marginTop: 12, fontWeight: 900 }}>CURRENT REQUESTED ORDERS</div>
-        {(requests.length && supply.requests_count) ? requests.map((order, idx) => (
-          <div key={idx} style={{ marginTop: 6 }}>
-            #{order.Number} - {order.Name} requested by {order.OrderedBy}
-            {!!order.Comment && <div>{order.Comment}</div>}
+          <div>
+            <div className="PDAProgram__sectionTitle">Requested Orders</div>
+            {(requests.length && supply.requests_count) ? requests.map((order, idx) => (
+              <div key={idx} className="PDAProgram__orderCard is-requested">
+                <div className="PDAProgram__orderHead">
+                  <span>#{order.Number}</span>
+                  <span className="PDAProgram__orderBy">Requested</span>
+                </div>
+                <div className="PDAProgram__orderName">{order.Name}</div>
+                <div className="PDAProgram__orderMeta">By: {order.OrderedBy || order.ApprovedBy || 'Unknown'}</div>
+                {!!order.Comment && <div className="PDAProgram__orderComment">{order.Comment}</div>}
+              </div>
+            )) : <div className="PDAProgram__footerHint">No current requested orders.</div>}
           </div>
-        )) : <div style={{ marginTop: 6 }}>No current requested orders</div>}
+        </div>
       </div>
     </div>
   );

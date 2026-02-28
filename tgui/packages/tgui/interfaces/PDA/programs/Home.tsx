@@ -38,6 +38,38 @@ const HomeApp = (props: { ctx: PdaProgramContext }) => {
   const { ctx } = props;
   const data = ctx.data || {};
   const scanmode = Number(data.scanmode || 0);
+  const scannerOptions = [
+    {
+      key: 'reagent',
+      title: 'Reagent Scanner',
+      icon: 'flask',
+      mode: 3,
+      access: hasAccess(ctx, 'access_reagent_scanner'),
+      choice: 'Reagent Scan',
+      on: 'Disable Reagent Scanner',
+      off: 'Enable Reagent Scanner',
+    },
+    {
+      key: 'halogen',
+      title: 'Halogen Counter',
+      icon: 'radiation',
+      mode: 4,
+      access: hasAccess(ctx, 'access_engine'),
+      choice: 'Halogen Counter',
+      on: 'Disable Halogen Counter',
+      off: 'Enable Halogen Counter',
+    },
+    {
+      key: 'gas',
+      title: 'Gas Scanner',
+      icon: 'wind',
+      mode: 5,
+      access: hasAccess(ctx, 'access_atmos'),
+      choice: 'Gas Scan',
+      on: 'Disable Gas Scanner',
+      off: 'Enable Gas Scanner',
+    },
+  ].filter((scanner) => scanner.access);
 
   return (
     <div className="PDAProgram PDAProgram--home">
@@ -56,11 +88,6 @@ const HomeApp = (props: { ctx: PdaProgramContext }) => {
         </div>
 
         <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <Button
-            icon="id-card"
-            content={data.idInserted ? 'Eject/Insert ID' : 'Insert ID'}
-            onClick={() => ctx.act('choice', { choice: 'Authenticate' })}
-          />
           {!!data.idInserted && (
             <Button
               icon="rotate"
@@ -88,48 +115,27 @@ const HomeApp = (props: { ctx: PdaProgramContext }) => {
           ))}
         </div>
 
-        <div style={{ marginTop: '10px' }}>
-          <div className="PDAScreen__h" style={{ marginTop: '6px' }}>SCANNERS</div>
+        {!!scannerOptions.length && (
+          <div style={{ marginTop: '14px' }}>
+            <div className="PDAScreen__h">SCANNERS</div>
 
-          <div className="PDAProgram__panel">
-            <div className="PDAProgram__row">
-              <div className="PDAProgram__k">Reagent Scanner</div>
-              <div className="PDAProgram__v">{scanmode === 3 ? 'ON' : 'OFF'}</div>
+            <div className="PDAProgram__panel">
+              {scannerOptions.map((scanner) => (
+                <div key={scanner.key} style={{ marginBottom: 10 }}>
+                  <div className="PDAProgram__row">
+                    <div className="PDAProgram__k">{scanner.title}</div>
+                    <div className="PDAProgram__v">{scanmode === scanner.mode ? 'ON' : 'OFF'}</div>
+                  </div>
+                  <Button
+                    content={scanmode === scanner.mode ? scanner.on : scanner.off}
+                    icon={scanner.icon}
+                    onClick={() => ctx.act('choice', { choice: scanner.choice })}
+                  />
+                </div>
+              ))}
             </div>
-            <Button
-              content={scanmode === 3 ? 'Disable Reagent Scanner' : 'Enable Reagent Scanner'}
-              icon="flask"
-              disabled={!hasAccess(ctx, 'access_reagent_scanner')}
-              onClick={() => ctx.act('choice', { choice: 'Reagent Scan' })}
-            />
-
-            <div style={{ height: '8px' }} />
-
-            <div className="PDAProgram__row">
-              <div className="PDAProgram__k">Halogen Counter</div>
-              <div className="PDAProgram__v">{scanmode === 4 ? 'ON' : 'OFF'}</div>
-            </div>
-            <Button
-              content={scanmode === 4 ? 'Disable Halogen Counter' : 'Enable Halogen Counter'}
-              icon="radiation"
-              disabled={!hasAccess(ctx, 'access_engine')}
-              onClick={() => ctx.act('choice', { choice: 'Halogen Counter' })}
-            />
-
-            <div style={{ height: '8px' }} />
-
-            <div className="PDAProgram__row">
-              <div className="PDAProgram__k">Gas Scanner</div>
-              <div className="PDAProgram__v">{scanmode === 5 ? 'ON' : 'OFF'}</div>
-            </div>
-            <Button
-              content={scanmode === 5 ? 'Disable Gas Scanner' : 'Enable Gas Scanner'}
-              icon="wind"
-              disabled={!hasAccess(ctx, 'access_atmos')}
-              onClick={() => ctx.act('choice', { choice: 'Gas Scan' })}
-            />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -150,7 +156,7 @@ const PDAAppTile = (props: { tile: AppTile; ctx: PdaProgramContext }) => {
     return null;
   }
 
-  const disabled = !ctx.hasCartridge || !ctx.isOn;
+  const disabled = !ctx.isOn;
   return (
     <button
       className={cx('PDAApp', tile.highlight && 'is-highlight')}

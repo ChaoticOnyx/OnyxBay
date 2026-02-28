@@ -19,6 +19,26 @@ type BackendMessage = {
   target?: string;
 };
 
+type GroupChannelEntry = {
+  id?: number | string;
+  title?: string;
+  members?: number | string;
+};
+
+type GroupChannelMember = {
+  ref?: string;
+  name?: string;
+  is_admin?: number | string;
+  is_self?: number | string;
+};
+
+type GroupChannelMessage = {
+  timestamp?: string;
+  username?: string;
+  message?: string;
+  status?: number | string;
+};
+
 type EmojiDef = {
   name: string;
   file: string;
@@ -281,7 +301,10 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
   private filter = '';
   private showEmojiPicker = false;
   private showRingtone = false;
+  private showGroupCreate = false;
   private ringtoneDraft = '';
+  private groupTitleDraft = '';
+  private groupPasswordDraft = '';
   private selectedTargetRef: string | null = null;
 
   componentDidUpdate() {
@@ -325,6 +348,42 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     return this.props.ctx.data?.messages || [];
   }
 
+  private get groupChannels(): GroupChannelEntry[] {
+    return this.props.ctx.data?.group_channels || [];
+  }
+
+  private get groupMessages(): GroupChannelMessage[] {
+    return this.props.ctx.data?.group_messages || [];
+  }
+
+  private get groupMembers(): GroupChannelMember[] {
+    return this.props.ctx.data?.group_members || [];
+  }
+
+  private get groupCandidates(): GroupChannelMember[] {
+    return this.props.ctx.data?.group_candidates || [];
+  }
+
+  private get activeGroupId() {
+    return String(this.props.ctx.data?.group_active_id || '');
+  }
+
+  private get hasActiveGroup() {
+    return !!this.activeGroupId;
+  }
+
+  private get activeGroupTitle() {
+    return String(this.props.ctx.data?.group_title || '');
+  }
+
+  private get groupChatAvailable() {
+    return toBool(this.props.ctx.data?.group_chat_available);
+  }
+
+  private get isGroupAdmin() {
+    return toBool(this.props.ctx.data?.group_is_admin);
+  }
+
   private get messengerOn() {
     return !toBool(this.props.ctx.data?.toff);
   }
@@ -342,6 +401,9 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
   }
 
   private get selectedTarget() {
+    if (this.hasActiveGroup) {
+      return null;
+    }
     const activeRef = this.activeConversation || this.selectedTargetRef || '';
     if (!activeRef) {
       return null;
@@ -350,6 +412,9 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
   }
 
   private get selectedTitle() {
+    if (this.hasActiveGroup) {
+      return this.activeGroupTitle || 'Group Chat';
+    }
     if (this.isConversationMode) {
       const convoName = String(this.props.ctx.data?.convo_name || '');
       if (convoName) {
@@ -375,6 +440,9 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
 
   private selectConversation = (ref: string) => {
     this.selectedTargetRef = null;
+    if (this.hasActiveGroup) {
+      this.props.ctx.act('choice', { choice: 'Group Close' });
+    }
     this.props.ctx.act('choice', { choice: 'Select Conversation', convo: ref });
   };
 
@@ -382,11 +450,80 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     if (this.isConversationMode) {
       this.props.ctx.act('choice', { choice: 'Return' });
     }
+    if (this.hasActiveGroup) {
+      this.props.ctx.act('choice', { choice: 'Group Close' });
+    }
     this.selectedTargetRef = ref;
     this.forceUpdate();
   };
 
+  private selectGroup = (id: string) => {
+    this.selectedTargetRef = null;
+    this.props.ctx.act('choice', { choice: 'Group Open', id });
+  };
+
+  private closeGroup = () => {
+    this.props.ctx.act('choice', { choice: 'Group Close' });
+  };
+
+  private leaveGroup = () => {
+    this.props.ctx.act('choice', { choice: 'Group Leave' });
+  };
+
+  private renameGroup = () => {
+    this.props.ctx.act('choice', { choice: 'Group Rename' });
+  };
+
+  private deleteGroup = () => {
+    this.props.ctx.act('choice', { choice: 'Group Delete' });
+  };
+
+  private addGroupMember = (target: string) => {
+    this.props.ctx.act('choice', { choice: 'Group Add Member', target });
+  };
+
+  private removeGroupMember = (target: string) => {
+    this.props.ctx.act('choice', { choice: 'Group Remove Member', target });
+  };
+
+  private setGroupAdmin = (target: string, admin: boolean) => {
+    this.props.ctx.act('choice', { choice: 'Group Set Admin', target, admin: admin ? 1 : 0 });
+  };
+
+  private openGroupCreate = () => {
+    this.showGroupCreate = true;
+    this.groupTitleDraft = '';
+    this.groupPasswordDraft = '';
+    this.forceUpdate();
+  };
+
+  private closeGroupCreate = () => {
+    this.showGroupCreate = false;
+    this.groupTitleDraft = '';
+    this.groupPasswordDraft = '';
+    this.forceUpdate();
+  };
+
+  private createGroup = () => {
+    const title = (this.groupTitleDraft || '').trim();
+    if (!title) {
+      return;
+    }
+    this.props.ctx.act('choice', {
+      choice: 'Group Create',
+      title,
+      password: (this.groupPasswordDraft || '').trim(),
+    });
+    this.showGroupCreate = false;
+    this.groupTitleDraft = '';
+    this.groupPasswordDraft = '';
+    this.forceUpdate();
+  };
+
   private getActiveTargetRef() {
+    if (this.hasActiveGroup) {
+      return '';
+    }
     if (this.isConversationMode && this.activeConversation) {
       return this.activeConversation;
     }
@@ -402,16 +539,26 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     }
 
     const message = (this.draft || '').trim();
-    const target = this.getActiveTargetRef();
-    if (!message || !target) {
+    if (!message) {
       return;
     }
 
-    this.props.ctx.act('choice', {
-      choice: 'Message',
-      target,
-      message,
-    });
+    if (this.hasActiveGroup) {
+      this.props.ctx.act('choice', {
+        choice: 'Group Message',
+        message,
+      });
+    } else {
+      const target = this.getActiveTargetRef();
+      if (!target) {
+        return;
+      }
+      this.props.ctx.act('choice', {
+        choice: 'Message',
+        target,
+        message,
+      });
+    }
     this.draft = '';
     this.forceUpdate();
   };
@@ -513,6 +660,7 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     );
 
     const activeRef = this.getActiveTargetRef();
+    const groupActive = this.hasActiveGroup;
     const targetEntry = this.selectedTarget;
     const canDetonate = toBool(this.access.access_detonate_pda) && toBool(targetEntry?.Detonate);
     const canHonk = toBool(this.access.access_clown);
@@ -521,13 +669,16 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
     const visibleMessages = this.messages.filter((message) =>
       String(message.target || '') === this.activeConversation
     );
+    const visibleGroupMessages = this.groupMessages;
 
-    const inputDisabled = !this.messengerOn || !activeRef;
+    const inputDisabled = !this.messengerOn || (!activeRef && !groupActive);
     const placeholder = !this.messengerOn
       ? 'Messenger is OFF'
-      : !activeRef
-        ? 'Select a contact first'
-        : 'Message... (use :happy: or :e42:)';
+      : groupActive
+        ? 'Group message... (use :happy: or :e42:)'
+        : !activeRef
+          ? 'Select a contact first'
+          : 'Message... (use :happy: or :e42:)';
 
     return (
       <div className="PdaMessenger">
@@ -556,6 +707,41 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
           </div>
 
           <div className="PdaMessenger__chatList">
+            <div className="PDAProgram__footerHint" style={{ marginBottom: 4, opacity: 0.8 }}>
+              Group Channels
+            </div>
+            {!this.groupChatAvailable && (
+              <div className="PDAProgram__footerHint">NTNet chat is currently unavailable.</div>
+            )}
+            {!!this.groupChatAvailable && (
+              <div style={{ padding: '0 10px 10px 10px' }}>
+                <Button icon="users" content="Create Group" onClick={this.openGroupCreate} fluid />
+              </div>
+            )}
+            {this.groupChannels.length === 0 && this.groupChatAvailable && (
+              <div className="PDAProgram__footerHint">No group channels.</div>
+            )}
+            {this.groupChannels.map((group, index) => {
+              const id = String(group.id || '');
+              const title = String(group.title || 'Group Channel');
+              const isActive = this.activeGroupId === id;
+              return (
+                <div
+                  key={`${id || 'group'}-${index}`}
+                  className={cx('PdaMessenger__chatRow', isActive && 'is-active')}
+                  onClick={() => this.selectGroup(id)}
+                >
+                  <div className="PdaMessenger__avatar">
+                    <Icon name="users" />
+                  </div>
+                  <div className="PdaMessenger__chatMeta">
+                    <div className="PdaMessenger__chatTitle">{title}</div>
+                    <div className="PdaMessenger__chatSub">Members: {group.members || 0}</div>
+                  </div>
+                </div>
+              );
+            })}
+
             <div className="PDAProgram__footerHint" style={{ marginBottom: 4, opacity: 0.8 }}>
               Current Conversations
             </div>
@@ -618,7 +804,10 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
 
             <div className="PdaMessenger__topHint">
               Messenger: {this.messengerOn ? 'ON' : 'OFF'} | Ringer: {this.ringerOn ? 'ON' : 'OFF'} | Ringtone: {this.ringtone}
+              {groupActive && ` | Group admin: ${this.isGroupAdmin ? 'YES' : 'NO'}`}
+            </div>
 
+            <div className="PdaMessenger__topActions">
               <Button
                 icon={this.ringerOn ? 'volume-high' : 'volume-xmark'}
                 tooltip="Toggle ringer"
@@ -654,13 +843,49 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
                 onClick={this.clearAllConversations}
                 className="PdaMessenger__ringtoneBtn"
               />
+
+              {groupActive && (
+                <Button
+                  icon="xmark"
+                  tooltip="Close group view"
+                  onClick={this.closeGroup}
+                  className="PdaMessenger__ringtoneBtn"
+                />
+              )}
+
+              {groupActive && (
+                <Button
+                  icon="arrow-right"
+                  tooltip="Leave group"
+                  onClick={this.leaveGroup}
+                  className="PdaMessenger__ringtoneBtn"
+                />
+              )}
+
+              {groupActive && this.isGroupAdmin && (
+                <Button
+                  icon="tag"
+                  tooltip="Rename group"
+                  onClick={this.renameGroup}
+                  className="PdaMessenger__ringtoneBtn"
+                />
+              )}
+
+              {groupActive && this.isGroupAdmin && (
+                <Button
+                  icon="trash-can"
+                  tooltip="Delete group"
+                  onClick={this.deleteGroup}
+                  className="PdaMessenger__ringtoneBtn"
+                />
+              )}
             </div>
           </div>
 
           <div className="PdaMessenger__messages">
             {this.renderChargeHint()}
 
-            {(canDetonate || canHonk || canSilence) && !!activeRef && (
+            {!groupActive && (canDetonate || canHonk || canSilence) && !!activeRef && (
               <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
                 {canDetonate && (
                   <Button
@@ -687,17 +912,101 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
               </div>
             )}
 
-            {!this.isConversationMode && (
+            {groupActive && (
+              <div className="PdaMessenger__groupPanel">
+                <div className="PDAProgram__footerHint" style={{ marginBottom: 6 }}>
+                  Group Members
+                </div>
+                <div className="PdaMessenger__groupMembers">
+                  {this.groupMembers.map((member, index) => {
+                    const memberRef = String(member.ref || '');
+                    const isSelf = toBool(member.is_self);
+                    const isAdmin = toBool(member.is_admin);
+                    return (
+                      <div key={`${memberRef || 'member'}-${index}`} className="PdaMessenger__groupMember">
+                        <div className="PdaMessenger__groupMemberName">
+                          {member.name || 'Unknown PDA'} {isAdmin ? '[ADMIN]' : ''}
+                        </div>
+                        {this.isGroupAdmin && !isSelf && (
+                          <div className="PdaMessenger__groupMemberActions">
+                            <Button
+                              icon={isAdmin ? 'user-minus' : 'user-plus'}
+                              tooltip={isAdmin ? 'Revoke admin' : 'Make admin'}
+                              onClick={() => this.setGroupAdmin(memberRef, !isAdmin)}
+                              className="PdaMessenger__ringtoneBtn"
+                            />
+                            <Button
+                              icon="times"
+                              tooltip="Remove from group"
+                              onClick={() => this.removeGroupMember(memberRef)}
+                              className="PdaMessenger__ringtoneBtn"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {this.isGroupAdmin && (
+                  <div className="PdaMessenger__groupInvite">
+                    <div className="PDAProgram__footerHint" style={{ marginBottom: 6 }}>Invite PDA</div>
+                    <div className="PdaMessenger__groupCandidates">
+                      {this.groupCandidates.length === 0 && (
+                        <div className="PDAProgram__footerHint">No available PDAs to invite.</div>
+                      )}
+                      {this.groupCandidates.map((candidate, index) => {
+                        const ref = String(candidate.ref || '');
+                        return (
+                          <Button
+                            key={`${ref || 'candidate'}-${index}`}
+                            icon="user-plus"
+                            content={candidate.name || 'Unknown PDA'}
+                            onClick={() => this.addGroupMember(ref)}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {!groupActive && !this.isConversationMode && (
               <div className="PdaMessenger__empty">
                 Select a conversation or choose a PDA and send a message.
               </div>
             )}
 
-            {this.isConversationMode && visibleMessages.length === 0 && (
+            {groupActive && visibleGroupMessages.length === 0 && (
+              <div className="PdaMessenger__empty">No messages in this group yet.</div>
+            )}
+
+            {!groupActive && this.isConversationMode && visibleMessages.length === 0 && (
               <div className="PdaMessenger__empty">No messages in this conversation.</div>
             )}
 
-            {this.isConversationMode && visibleMessages.map((message, index) => {
+            {groupActive && visibleGroupMessages.map((message, index) => {
+              const isStatus = Number(message.status || 0) === 1;
+              const senderName = String(message.username || 'Unknown');
+              const fromMe = senderName === String(this.props.ctx.data?.owner || '');
+              const text = String(message.message || '');
+              return (
+                <div key={`group-${index}`} className={cx('PdaMessenger__msg', fromMe && !isStatus && 'is-me')}>
+                  <div className={cx('PdaMessenger__bubble', isStatus && 'is-status')}>
+                    <div className="PdaMessenger__from">{isStatus ? 'System' : senderName}</div>
+                    <div className="PdaMessenger__text">
+                      {renderEmojiParts(parseEmojiParts(text))}
+                    </div>
+                    <div className="PdaMessenger__meta">
+                      <span className="PdaMessenger__time">{message.timestamp || ''}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            {!groupActive && this.isConversationMode && visibleMessages.map((message, index) => {
               const fromMe = Number(message.sent || 0) === 1;
               const text = String(message.message || '');
               return (
@@ -783,6 +1092,46 @@ class MessengerApp extends Component<{ ctx: PdaProgramContext }> {
               <div className="PdaMessengerModal__actions">
                 <Button content="Cancel" onClick={this.closeRingtone} />
                 <Button content="Apply" icon="check" onClick={this.applyRingtone} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {this.showGroupCreate && (
+          <div className="PdaMessengerModal" onClick={this.closeGroupCreate}>
+            <div className="PdaMessengerModal__card" onClick={(event) => event.stopPropagation()}>
+              <div className="PdaMessengerModal__title">
+                <Icon name="users" /> Create Group Channel
+              </div>
+
+              <div className="PdaMessengerModal__body">
+                <div className="PdaMessengerModal__field">
+                  <div className="PdaMessengerModal__label">Group Name</div>
+                  <Input
+                    value={this.groupTitleDraft}
+                    placeholder="e.g. Med Duty"
+                    onInput={(_, value) => {
+                      this.groupTitleDraft = String(value);
+                      this.forceUpdate();
+                    }}
+                  />
+                </div>
+                <div className="PdaMessengerModal__field">
+                  <div className="PdaMessengerModal__label">Password (optional)</div>
+                  <Input
+                    value={this.groupPasswordDraft}
+                    placeholder="Leave blank for open channel"
+                    onInput={(_, value) => {
+                      this.groupPasswordDraft = String(value);
+                      this.forceUpdate();
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="PdaMessengerModal__actions">
+                <Button content="Cancel" onClick={this.closeGroupCreate} />
+                <Button content="Create" icon="check" onClick={this.createGroup} />
               </div>
             </div>
           </div>

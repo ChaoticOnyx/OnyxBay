@@ -46,10 +46,32 @@
 			</div>
 		</div>
         </div>	
- 	<b>Connected Users</b><br>
+ 	<b>Connected Users</b>
+	<table>
 	{{for data.clients}}
-		{{:value.name}}<br>
+		<tr>
+			<td>
+				{{:value.name}}
+				{{if value.is_operator}}
+					<b>[OP]</b>
+				{{else value.is_admin}}
+					<b>[ADMIN]</b>
+				{{/if}}
+			</td>
+			{{if data.is_operator && !value.is_operator}}
+				<td>
+					{{if value.is_admin}}
+						{{:helper.link("Revoke admin", null, {'PRG_removeadmin' : value.ref})}}
+					{{else}}
+						{{:helper.link("Make admin", null, {'PRG_makeadmin' : value.ref})}}
+					{{/if}}
+					{{:helper.link("Make operator", null, {'PRG_setoperator' : value.ref})}}
+					{{:helper.link("Kick", null, {'PRG_kickclient' : value.ref})}}
+				</td>
+			{{/if}}
+		</tr>
 	{{/for}}
+	</table>
 {{else}}
 	<b>Controls:</b>
 	<table>

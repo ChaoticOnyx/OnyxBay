@@ -131,7 +131,7 @@
 				computer.visible_message("\The [computer] shows an \"I/O Error - Hard drive may be full. Please free some space and try again. Required space: [logfile.size]GQ\" warning.")
 	if(href_list["PRG_renamechannel"])
 		. = 1
-		if(!operator_mode || !channel)
+		if(!channel || (!channel.is_client_admin(src) && !netadmin_mode))
 			return 1
 		var/mob/living/user = usr
 		var/newname = sanitize(input(user, "Enter new channel name or leave blank to cancel:"), 64)
@@ -139,6 +139,39 @@
 			return
 		channel.add_status_message("Channel renamed from [channel.title] to [newname] by operator.")
 		channel.title = newname
+
+	if(href_list["PRG_makeadmin"])
+		. = 1
+		if(!channel || (!channel.is_client_admin(src) && !netadmin_mode))
+			return 1
+		var/datum/computer_file/program/chatclient/target_admin = locate(href_list["PRG_makeadmin"])
+		if(istype(target_admin))
+			channel.grant_client_admin(target_admin, src)
+
+	if(href_list["PRG_removeadmin"])
+		. = 1
+		if(!channel || (!channel.is_client_admin(src) && !netadmin_mode))
+			return 1
+		var/datum/computer_file/program/chatclient/target_demote = locate(href_list["PRG_removeadmin"])
+		if(istype(target_demote))
+			channel.revoke_client_admin(target_demote, src)
+
+	if(href_list["PRG_kickclient"])
+		. = 1
+		if(!channel || (!channel.is_client_admin(src) && !netadmin_mode))
+			return 1
+		var/datum/computer_file/program/chatclient/target_kick = locate(href_list["PRG_kickclient"])
+		if(istype(target_kick))
+			channel.kick_client(target_kick, src)
+
+	if(href_list["PRG_setoperator"])
+		. = 1
+		if(!channel || (!channel.is_client_admin(src) && !netadmin_mode))
+			return 1
+		var/datum/computer_file/program/chatclient/target_operator = locate(href_list["PRG_setoperator"])
+		if(istype(target_operator))
+			channel.changeop(target_operator, src)
+
 	if(href_list["PRG_deletechannel"])
 		. = 1
 		if(channel && ((channel.operator == src) || netadmin_mode))
@@ -146,12 +179,12 @@
 			channel = null
 	if(href_list["PRG_setpassword"])
 		. = 1
-		if(!channel || ((channel.operator != src) && !netadmin_mode))
+		if(!channel || (!channel.is_client_admin(src) && !netadmin_mode))
 			return 1
 
 		var/mob/living/user = usr
 		var/newpassword = sanitize(input(user, "Enter new password for this channel. Leave blank to cancel, enter 'nopassword' to remove password completely:"))
-		if(!channel || !newpassword || ((channel.operator != src) && !netadmin_mode))
+		if(!channel || !newpassword || (!channel.is_client_admin(src) && !netadmin_mode))
 			return 1
 
 		if(newpassword == "nopassword")
@@ -207,11 +240,15 @@
 		var/list/clients[0]
 		for(var/datum/computer_file/program/chatclient/cl in C.channel.clients)
 			clients.Add(list(list(
-				"name" = cl.username
+				"name" = cl.username,
+				"ref" = "\ref[cl]",
+				"is_operator" = (C.channel.operator == cl),
+				"is_admin" = C.channel.is_client_admin(cl)
 			)))
 		data["clients"] = clients
 		C.operator_mode = (C.channel.operator == C) ? 1 : 0
-		data["is_operator"] = C.operator_mode || C.netadmin_mode
+		data["is_operator"] = C.channel.is_client_admin(C) || C.netadmin_mode
+		data["is_admin"] = C.channel.is_client_admin(C) || C.netadmin_mode
 
 	else // Channel selection screen
 		var/list/all_channels[0]

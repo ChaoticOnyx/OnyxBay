@@ -175,16 +175,19 @@
   margin-top: 2px;
   font-size: 10px;
   opacity: 0.55;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
+}
 
+.PdaMessenger__topActions {
+  margin-top: 8px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .PdaMessenger__ringtoneBtn {
-  margin-left: auto;
+  margin-left: 0;
 }
 
 /* Messages */
@@ -226,6 +229,11 @@
 .PdaMessenger__msg.is-me .PdaMessenger__bubble {
   background: color-mix(in srgb, var(--crt-main) 10%, rgba(15, 20, 20, 0.58));
   border-color: color-mix(in srgb, var(--crt-main) 40%, transparent);
+}
+
+.PdaMessenger__bubble.is-status {
+  background: rgba(251, 191, 36, 0.10);
+  border-color: rgba(251, 191, 36, 0.40);
 }
 
 .PdaMessenger__from {
@@ -279,6 +287,54 @@
 
 .PdaMessenger__sendBtn {
   flex: 0 0 auto;
+}
+
+.PdaMessenger__groupPanel {
+  border: 1px solid var(--crt-border);
+  background: rgba(0, 0, 0, 0.18);
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.PdaMessenger__groupMembers {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.PdaMessenger__groupMember {
+  border: 1px solid color-mix(in srgb, var(--crt-border) 80%, transparent);
+  background: rgba(0, 0, 0, 0.18);
+  padding: 6px 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.PdaMessenger__groupMemberName {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--crt-accent);
+  word-break: break-word;
+}
+
+.PdaMessenger__groupMemberActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.PdaMessenger__groupInvite {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed color-mix(in srgb, var(--crt-border) 70%, transparent);
+}
+
+.PdaMessenger__groupCandidates {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 /* Emoji */

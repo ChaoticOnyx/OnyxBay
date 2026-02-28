@@ -31,10 +31,13 @@ type MedicalListItem = {
   ref?: string;
 };
 
-const line = (label: string, value: string | undefined) => (
-  <div style={{ marginBottom: 2 }}>
-    <span style={{ color: '#7dffb7', fontWeight: 900 }}>{label}: </span>
-    <span style={{ color: '#cffff2' }}>{value || '-'}</span>
+const line = (icon: string, label: string, value: string | undefined) => (
+  <div className="PDAProgram__recordLine">
+    <div className="PDAProgram__recordKey">
+      <Icon name={icon} />
+      <span>{label}</span>
+    </div>
+    <div className="PDAProgram__recordValue">{value || '-'}</div>
   </div>
 );
 
@@ -77,7 +80,7 @@ const MedicalRecordsApp = (props: { ctx: PdaProgramContext }) => {
             {rows.map((r, i) => (
               <Button
                 key={`${r.ref || r.Name || 'record'}-${i}`}
-                icon="circle-arrow-right"
+                icon="user"
                 content={r.Name || 'Unknown'}
                 onClick={() => cartAct('Medical Records', { target: r.ref })}
               />
@@ -95,15 +98,15 @@ const MedicalRecordsApp = (props: { ctx: PdaProgramContext }) => {
               General Record Lost!
             </div>
           ) : (
-            <div style={{ marginBottom: 12 }}>
-              {line('Name', general?.name)}
-              {line('Sex', general?.sex)}
-              {line('Species', general?.species)}
-              {line('Age', general?.age)}
-              {line('Rank', general?.rank)}
-              {line('Fingerprint', general?.fingerprint)}
-              {line('Physical Status', general?.p_stat)}
-              {line('Mental Status', general?.m_stat)}
+            <div className="PDAProgram__readableBox" style={{ marginBottom: 12 }}>
+              {line('id-card', 'Name', general?.name)}
+              {line('venus-mars', 'Sex', general?.sex)}
+              {line('paw', 'Species', general?.species)}
+              {line('hourglass', 'Age', general?.age)}
+              {line('briefcase', 'Rank', general?.rank)}
+              {line('fingerprint', 'Fingerprint', general?.fingerprint)}
+              {line('heartbeat', 'Physical Status', general?.p_stat)}
+              {line('brain', 'Mental Status', general?.m_stat)}
             </div>
           )}
 
@@ -112,20 +115,20 @@ const MedicalRecordsApp = (props: { ctx: PdaProgramContext }) => {
               Medical Record Lost!
             </div>
           ) : (
-            <div>
-              <div style={{ color: '#aaffff', fontWeight: 900, letterSpacing: '0.08em', marginBottom: 6 }}>
+            <div className="PDAProgram__readableBox is-medical">
+              <div style={{ color: '#aaffff', fontWeight: 900, letterSpacing: '0.08em', marginBottom: 10 }}>
                 MEDICAL DATA
               </div>
-              {line('Blood Type', medical?.b_type)}
-              {line('Minor Disabilities', medical?.mi_dis)}
-              {line('Details', medical?.mi_dis_d)}
-              {line('Major Disabilities', medical?.ma_dis)}
-              {line('Details', medical?.ma_dis_d)}
-              {line('Allergies', medical?.alg)}
-              {line('Details', medical?.alg_d)}
-              {line('Current Disease', medical?.cdi)}
-              {line('Details', medical?.cdi_d)}
-              {line('Important Notes', medical?.notes)}
+              {line('droplet', 'Blood Type', medical?.b_type)}
+              {line('bandage', 'Minor Disabilities', medical?.mi_dis)}
+              {line('clipboard', 'Minor Details', medical?.mi_dis_d)}
+              {line('triangle-exclamation', 'Major Disabilities', medical?.ma_dis)}
+              {line('clipboard', 'Major Details', medical?.ma_dis_d)}
+              {line('triangle-exclamation', 'Allergies', medical?.alg)}
+              {line('clipboard', 'Allergy Details', medical?.alg_d)}
+              {line('virus', 'Current Disease', medical?.cdi)}
+              {line('clipboard', 'Disease Details', medical?.cdi_d)}
+              {line('book', 'Important Notes', medical?.notes)}
             </div>
           )}
         </div>

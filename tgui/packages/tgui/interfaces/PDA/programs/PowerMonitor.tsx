@@ -25,6 +25,9 @@ const PowerMonitorApp = (props: { ctx: PdaProgramContext }) => {
           </div>
 
           <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {!sensors.length && (
+              <div className="PDAProgram__footerHint">No sensors found on current network.</div>
+            )}
             {sensors.map((sensor, idx) => (
               <Button
                 key={`${sensor.name_tag}-${idx}`}
@@ -45,28 +48,35 @@ const PowerMonitorApp = (props: { ctx: PdaProgramContext }) => {
             <div style={{ marginTop: 12 }}>Unable to contact sensor controller! Please retry.</div>
           ) : (
             <div style={{ marginTop: 10 }}>
-              <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr>
-                    <th style={{ textAlign: 'left' }}>Area</th>
-                    <th style={{ textAlign: 'right' }}>Cell %</th>
-                    <th style={{ textAlign: 'right' }}>Load</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(reading.apc_data || []).map((row, idx) => (
-                    <tr key={idx}>
-                      <td>{row.name}</td>
-                      <td style={{ textAlign: 'right' }}>{row.cell_charge}%</td>
-                      <td style={{ textAlign: 'right' }}>{row.total_load}</td>
+              <div className="PDAProgram__tableWrap">
+                <table className="PDATable">
+                  <thead>
+                    <tr>
+                      <th>Area</th>
+                      <th style={{ textAlign: 'right' }}>Cell %</th>
+                      <th style={{ textAlign: 'right' }}>Load</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div style={{ marginTop: 10 }}>
-                Available: {reading.total_avail}
-                <br />
-                Load: {reading.total_used_all}
+                  </thead>
+                  <tbody>
+                    {(reading.apc_data || []).map((row, idx) => (
+                      <tr key={idx}>
+                        <td className="PDAProgram__tableName">{row.name}</td>
+                        <td style={{ textAlign: 'right' }}>{row.cell_charge}%</td>
+                        <td style={{ textAlign: 'right' }}>{row.total_load}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="PDAProgram__summaryGrid" style={{ marginTop: 10 }}>
+                <div>
+                  <div className="PDAProgram__k">Available</div>
+                  <div className="PDAProgram__v">{reading.total_avail}</div>
+                </div>
+                <div>
+                  <div className="PDAProgram__k">Total Load</div>
+                  <div className="PDAProgram__v">{reading.total_used_all}</div>
+                </div>
               </div>
             </div>
           )}

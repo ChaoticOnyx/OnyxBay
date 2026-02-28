@@ -39,10 +39,13 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/mimeamt = 0 //How many silence left when infected with mime.exe
 	var/note = "Thank you for choosing the Thinktronic 5230 Personal Data Assistant!" //Current note in the notepad function
 	var/notehtml = ""
+	var/list/notes = list() // Multiple note slots.
+	var/active_note_index = 1
 	var/cart = "" //A place to stick cartridge menu information
 	var/detonate = 1 // Can the PDA be blown up?
 	var/hidden = 0 // Is the PDA hidden from the PDA list?
 	var/active_conversation = null // New variable that allows us to only view a single conversation.
+	var/datum/ntnet_conversation/active_group_channel = null
 	var/list/conversations = list()    // For keeping up with who we have PDA messsages from.
 	var/new_message = 0			//To remove hackish overlay check
 	var/new_news = 0
@@ -333,6 +336,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(default_cartridge)
 		cartridge = new default_cartridge(src)
 	new pen(src)
+	initialize_note_slots()
 
 /obj/item/device/pda/proc/can_use()
 
@@ -378,21 +382,125 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	else
 		. = "\icon[src] \a [SPAN("info", "<em>[visible_name]</em>")]"
 
+/obj/item/device/pda/proc/get_pda_member_key()
+	return "\ref[src]"
+
+/obj/item/device/pda/proc/initialize_note_slots()
+	if(!islist(notes))
+		notes = list()
+	if(!notes.len)
+		notes += list(list(
+			"title" = "Note 1",
+			"note" = note,
+			"notehtml" = notehtml
+		))
+	active_note_index = max(1, min(active_note_index, notes.len))
+	var/list/slot = notes[active_note_index]
+	if(!islist(slot))
+		slot = list(
+			"title" = "Note [active_note_index]",
+			"note" = "",
+			"notehtml" = ""
+		)
+		notes[active_note_index] = slot
+	note = "[slot["note"]]"
+	notehtml = "[slot["notehtml"]]"
+	if(!length(notehtml) && length(note))
+		notehtml = replacetext(note, "<br>", "\n")
+
+/obj/item/device/pda/proc/get_active_note_slot()
+	initialize_note_slots()
+	var/list/slot = notes[active_note_index]
+	if(!islist(slot))
+		slot = list()
+		notes[active_note_index] = slot
+	if(!slot["title"])
+		slot["title"] = "Note [active_note_index]"
+	if(isnull(slot["note"]))
+		slot["note"] = ""
+	if(isnull(slot["notehtml"]))
+		slot["notehtml"] = ""
+	return slot
+
+/obj/item/device/pda/proc/sync_active_note_from_slot()
+	var/list/slot = get_active_note_slot()
+	note = "[slot["note"]]"
+	notehtml = "[slot["notehtml"]]"
+	if(!length(notehtml) && length(note))
+		notehtml = replacetext(note, "<br>", "\n")
+
+/obj/item/device/pda/proc/sync_note_slot_from_active()
+	var/list/slot = get_active_note_slot()
+	slot["note"] = note
+	slot["notehtml"] = notehtml
+	if(!slot["title"] || !length("[slot["title"]]"))
+		slot["title"] = "Note [active_note_index]"
+
+/obj/item/device/pda/proc/get_note_list_for_ui()
+	initialize_note_slots()
+	sync_note_slot_from_active()
+	var/list/ui_notes = list()
+	for(var/i = 1, i <= notes.len, i++)
+		var/list/slot = notes[i]
+		var/title = islist(slot) ? sanitize("[slot["title"]]") : "Note [i]"
+		if(!title || title == "null")
+			title = "Note [i]"
+		var/preview = islist(slot) ? "[slot["notehtml"]]" : ""
+		if(!length(preview) && islist(slot))
+			preview = replacetext("[slot["note"]]", "<br>", " ")
+		preview = sanitize(html_decode(preview))
+		preview = replacetext(preview, "\n", " ")
+		if(length(preview) > 48)
+			preview = "[copytext(preview, 1, 46)]..."
+		ui_notes += list(list(
+			"index" = i,
+			"title" = title,
+			"preview" = preview
+		))
+	return ui_notes
+
+/obj/item/device/pda/proc/can_use_group_chat(mob/user)
+	if(!ntnet_global || !ntnet_global.check_function(NTNET_COMMUNICATION))
+		if(user)
+			to_chat(user, "<span class='warning'>NTNet chat service is currently unavailable.</span>")
+		return FALSE
+	return TRUE
+
+/obj/item/device/pda/proc/find_group_channel(channel_id)
+	if(!ntnet_global || isnull(channel_id))
+		return null
+	var/search_id = text2num("[channel_id]")
+	if(!search_id)
+		return null
+	for(var/datum/ntnet_conversation/channel in ntnet_global.chat_channels)
+		if(channel.id == search_id)
+			return channel
+	return null
+
+/obj/item/device/pda/proc/clear_invalid_active_group()
+	if(active_group_channel && (!ntnet_global || !(active_group_channel in ntnet_global.chat_channels)))
+		active_group_channel = null
+
 /obj/item/device/pda/proc/build_tgui_data(mob/user)
 	ui_tick++
 	if((mode == lastmode) && ui_tick % 5 && (mode in update_every_five))
 		return null
 
 	lastmode = mode
+	initialize_note_slots()
+	clear_invalid_active_group()
 
 	var/data[0]
 	data["owner"] = owner
+	data["owner_present"] = owner ? 1 : 0
 	data["ownjob"] = ownjob
 	data["mode"] = mode
 	data["scanmode"] = scanmode
 	data["fon"] = fon
 	data["pai"] = (isnull(pai) ? 0 : 1)
 	data["note"] = note
+	data["notes"] = get_note_list_for_ui()
+	data["active_note_index"] = active_note_index
 	data["message_silent"] = message_silent
 	data["news_silent"] = news_silent
 	data["toff"] = toff
@@ -401,6 +509,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	data["skinType"] = icon_state
 	data["idInserted"] = (id ? 1 : 0)
 	data["idLink"] = (id ? text("[id.registered_name], [id.assignment]") : "--------")
+	data["penInserted"] = (locate(/obj/item/pen) in src) ? 1 : 0
 
 	data["cart_loaded"] = cartridge ? 1 : 0
 	if(cartridge)
@@ -450,6 +559,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 	if(mode == PDA_MODE_CREW_MANIFEST)
 		data["crew_manifest"] = html_crew_manifest(1, 0)
+		data["crew_manifest_data"] = nano_crew_manifest()
 
 	if(mode == PDA_MODE_MESSENGER || mode == PDA_MODE_MESSENGER_CONVERSATION)
 		var/convopdas[0]
@@ -467,6 +577,62 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		data["convopdas"] = convopdas
 		data["pdas"] = pdas
 		data["pda_count"] = count
+
+		var/list/group_channels = list()
+		var/pda_member_key = get_pda_member_key()
+		var/group_chat_available = ntnet_global && ntnet_global.check_function(NTNET_COMMUNICATION)
+		data["group_chat_available"] = group_chat_available
+		if(group_chat_available)
+			for(var/datum/ntnet_conversation/channel in ntnet_global.chat_channels)
+				if(!channel || !channel.is_pda_member(pda_member_key))
+					continue
+				group_channels += list(list(
+					"id" = channel.id,
+					"title" = sanitize(channel.title),
+					"members" = channel.pda_members.len
+				))
+		data["group_channels"] = group_channels
+
+		if(active_group_channel && active_group_channel.is_pda_member(pda_member_key))
+			var/list/group_members = list()
+			var/list/group_candidates = list()
+			var/list/group_messages = list()
+
+			for(var/list/msg in active_group_channel.message_data)
+				group_messages += list(msg.Copy())
+
+			for(var/member_ref in active_group_channel.pda_members)
+				group_members += list(list(
+					"ref" = member_ref,
+					"name" = active_group_channel.get_member_name(member_ref),
+					"is_admin" = active_group_channel.is_pda_admin(member_ref),
+					"is_self" = (member_ref == pda_member_key)
+				))
+
+			for(var/obj/item/device/pda/P in PDAs)
+				if(!P.owner || P.hidden || P == src || P.toff)
+					continue
+				var/pda_ref = "\ref[P]"
+				if(active_group_channel.is_pda_member(pda_ref))
+					continue
+				group_candidates += list(list(
+					"ref" = pda_ref,
+					"name" = sanitize("[P]")
+				))
+
+			data["group_active_id"] = active_group_channel.id
+			data["group_title"] = sanitize(active_group_channel.title)
+			data["group_messages"] = group_messages
+			data["group_members"] = group_members
+			data["group_candidates"] = group_candidates
+			data["group_is_admin"] = active_group_channel.is_pda_admin(pda_member_key)
+		else
+			data["group_active_id"] = null
+			data["group_title"] = null
+			data["group_messages"] = list()
+			data["group_members"] = list()
+			data["group_candidates"] = list()
+			data["group_is_admin"] = 0
 
 	if(mode == PDA_MODE_MESSENGER_CONVERSATION)
 		data["messagescount"] = tnote.len
@@ -582,6 +748,52 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		ui.open()
 	ui.set_autoupdate(!(mode in no_auto_update))
 
+/obj/item/device/pda/proc/is_valid_mode(new_mode)
+	switch(new_mode)
+		if(PDA_MODE_HOME)
+			return TRUE
+		if(PDA_MODE_NOTES)
+			return TRUE
+		if(PDA_MODE_MESSENGER)
+			return TRUE
+		if(PDA_MODE_MESSENGER_CONVERSATION)
+			return TRUE
+		if(PDA_MODE_ATMOS_SCAN)
+			return TRUE
+		if(PDA_MODE_CHATROOM)
+			return TRUE
+		if(PDA_MODE_SIGNALER)
+			return TRUE
+		if(PDA_MODE_CREW_MANIFEST)
+			return TRUE
+		if(PDA_MODE_STATUS_DISPLAY)
+			return TRUE
+		if(PDA_MODE_POWER_MONITOR)
+			return TRUE
+		if(PDA_MODE_POWER_MONITOR_READING)
+			return TRUE
+		if(PDA_MODE_MEDICAL_RECORDS)
+			return TRUE
+		if(PDA_MODE_MEDICAL_RECORD)
+			return TRUE
+		if(PDA_MODE_SECURITY_RECORDS)
+			return TRUE
+		if(PDA_MODE_SECURITY_RECORD)
+			return TRUE
+		if(PDA_MODE_SECURITY_BOT)
+			return TRUE
+		if(PDA_MODE_SUPPLY_RECORDS)
+			return TRUE
+		if(PDA_MODE_MULE_CONTROL)
+			return TRUE
+		if(PDA_MODE_JANITOR_LOCATOR)
+			return TRUE
+		if(PDA_MODE_NEWS_FEED)
+			return TRUE
+		if(PDA_MODE_NEWS_FEED_CHANNEL)
+			return TRUE
+	return FALSE
+
 /obj/item/device/pda/proc/mode_from_choice(choice)
 	switch(choice)
 		if("0")
@@ -671,6 +883,16 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 	U.set_machine(src)
 
+	if(action == "set_mode")
+		if(!owner)
+			return TRUE
+		var/new_mode = params["mode"]
+		if(is_valid_mode(new_mode))
+			set_pda_mode(new_mode)
+		if(ui)
+			ui.set_autoupdate(!(mode in no_auto_update))
+		return TRUE
+
 	if(action == "cartridge_action" && !QDELETED(cartridge))
 		if(cartridge.tgui_handle_action(U, params["choice"], params))
 			if(ui)
@@ -686,6 +908,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/choice = action
 	if(action == "choice")
 		choice = params["choice"]
+
+	if(!owner && !(choice in list("Close", "Authenticate", "Light", "Eject", "Eject ID", "Eject Pen", "Eject Cartridge")))
+		return TRUE
 
 	switch(choice)
 		if("Close")
@@ -708,6 +933,15 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				set_rank_job(id.rank, id.assignment)
 
 		if("Eject")
+			verb_remove_cartridge()
+
+		if("Eject ID")
+			verb_remove_id()
+
+		if("Eject Pen")
+			verb_remove_pen()
+
+		if("Eject Cartridge")
 			verb_remove_cartridge()
 
 		if("Light")
@@ -750,8 +984,48 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					note = html_decode(n)
 					note = replacetext(note, "\n", "<br>")
 					notehtml = n
+					sync_note_slot_from_active()
 			else if(ui)
 				ui.close()
+
+		if("Select Note")
+			var/note_index = text2num(params["index"])
+			if(note_index)
+				initialize_note_slots()
+				sync_note_slot_from_active()
+				active_note_index = max(1, min(note_index, notes.len))
+				sync_active_note_from_slot()
+
+		if("New Note")
+			initialize_note_slots()
+			sync_note_slot_from_active()
+			notes += list(list(
+				"title" = "Note [notes.len + 1]",
+				"note" = "",
+				"notehtml" = ""
+			))
+			active_note_index = notes.len
+			sync_active_note_from_slot()
+
+		if("Delete Note")
+			initialize_note_slots()
+			if(notes.len <= 1)
+				note = ""
+				notehtml = ""
+				sync_note_slot_from_active()
+			else
+				notes.Cut(active_note_index, active_note_index + 1)
+				active_note_index = max(1, min(active_note_index, notes.len))
+				sync_active_note_from_slot()
+
+		if("Rename Note")
+			var/new_title = params["title"]
+			if(isnull(new_title))
+				new_title = input(U, "Please enter note title", html_decode(name), "Note [active_note_index]") as text|null
+			new_title = sanitize(new_title, 32)
+			if(new_title)
+				var/list/slot = get_active_note_slot()
+				slot["title"] = new_title
 
 		if("Toggle Messenger")
 			toff = !toff
@@ -812,6 +1086,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				return TRUE
 
 		if("Message")
+			active_group_channel = null
 			var/obj/item/device/pda/P = locate(params["target"])
 			var/tap = istype(U, /mob/living/carbon) && isnull(params["message"])
 			create_message(U, P, tap, params["message"])
@@ -821,11 +1096,122 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					set_pda_mode(PDA_MODE_MESSENGER_CONVERSATION)
 
 		if("Select Conversation")
+			active_group_channel = null
 			var/selected = params["convo"]
 			for(var/n in conversations)
 				if(selected == n)
 					active_conversation = selected
 					set_pda_mode(PDA_MODE_MESSENGER_CONVERSATION)
+
+		if("Group Close")
+			active_group_channel = null
+
+		if("Group Create")
+			if(can_use_group_chat(U))
+				var/title = params["title"]
+				if(isnull(title))
+					title = input(U, "Enter channel title", "Create group chat") as text|null
+				title = sanitize(title, 64)
+				if(title)
+					var/password = params["password"]
+					if(isnull(password))
+						password = ""
+					password = sanitize(password, 32)
+
+					var/datum/ntnet_conversation/new_channel = new /datum/ntnet_conversation()
+					new_channel.title = title
+					new_channel.password = password
+					new_channel.add_pda_member(get_pda_member_key())
+					new_channel.add_status_message("[sanitize(owner)] created the channel.")
+					active_group_channel = new_channel
+
+		if("Group Open")
+			if(can_use_group_chat(U))
+				var/datum/ntnet_conversation/channel = find_group_channel(params["id"])
+				if(channel && channel.is_pda_member(get_pda_member_key()))
+					active_group_channel = channel
+
+		if("Group Join")
+			if(can_use_group_chat(U))
+				var/datum/ntnet_conversation/channel = find_group_channel(params["id"])
+				if(channel)
+					var/pass = params["password"]
+					if(channel.password && channel.password != pass)
+						to_chat(U, "<span class='warning'>Invalid channel password.</span>")
+					else
+						channel.add_pda_member(get_pda_member_key())
+						active_group_channel = channel
+
+		if("Group Leave")
+			if(can_use_group_chat(U) && active_group_channel)
+				var/member_key = get_pda_member_key()
+				if(active_group_channel.is_pda_member(member_key))
+					active_group_channel.remove_pda_member(member_key)
+				active_group_channel = null
+
+		if("Group Rename")
+			if(can_use_group_chat(U) && active_group_channel)
+				var/member_key = get_pda_member_key()
+				if(active_group_channel.is_pda_admin(member_key))
+					var/new_title = params["title"]
+					if(isnull(new_title))
+						new_title = input(U, "Enter new channel title", "Rename group") as text|null
+					new_title = sanitize(new_title, 64)
+					if(new_title)
+						active_group_channel.add_status_message("[active_group_channel.get_member_name(member_key)] changed channel title to [new_title].")
+						active_group_channel.title = new_title
+
+		if("Group Delete")
+			if(can_use_group_chat(U) && active_group_channel)
+				var/member_key = get_pda_member_key()
+				if(active_group_channel.is_pda_admin(member_key))
+					qdel(active_group_channel)
+					active_group_channel = null
+
+		if("Group Message")
+			if(can_use_group_chat(U) && active_group_channel)
+				var/member_key = get_pda_member_key()
+				if(active_group_channel.is_pda_member(member_key))
+					var/message = params["message"]
+					message = sanitizeSafe(message, extra = 0)
+					message = replace_characters(message, list("&#34;" = "\""))
+					if(length(message))
+						var/sender_name = sanitize(owner ? owner : "[src]")
+						active_group_channel.add_message(message, sender_name)
+						for(var/member_ref in active_group_channel.pda_members)
+							if(member_ref == member_key)
+								continue
+							var/obj/item/device/pda/P = locate(member_ref)
+							if(!istype(P) || P.toff)
+								continue
+							var/group_alert = "\icon[P] <b>Group [active_group_channel.title] - [sender_name], </b>\"[message]\""
+							P.new_info(P.message_silent, P.ttone, group_alert)
+							P.new_message = 1
+							P.update_icon()
+
+		if("Group Add Member")
+			if(can_use_group_chat(U) && active_group_channel)
+				var/member_key = get_pda_member_key()
+				var/target_ref = params["target"]
+				if(active_group_channel.is_pda_admin(member_key) && target_ref)
+					active_group_channel.add_pda_member(target_ref, member_key)
+
+		if("Group Remove Member")
+			if(can_use_group_chat(U) && active_group_channel)
+				var/member_key = get_pda_member_key()
+				var/target_ref = params["target"]
+				if(active_group_channel.is_pda_admin(member_key) && target_ref)
+					active_group_channel.remove_pda_member(target_ref, member_key)
+					if(target_ref == member_key)
+						active_group_channel = null
+
+		if("Group Set Admin")
+			if(can_use_group_chat(U) && active_group_channel)
+				var/member_key = get_pda_member_key()
+				var/target_ref = params["target"]
+				var/make_admin = text2num(params["admin"]) ? TRUE : FALSE
+				if(target_ref && member_key != target_ref)
+					active_group_channel.set_pda_admin(target_ref, member_key, make_admin)
 
 		if("Select Feed")
 			var/feed_name = params["name"]
@@ -938,6 +1324,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 		else
 			var/new_mode = mode_from_choice(choice)
+			if(isnull(new_mode) && is_valid_mode(choice))
+				new_mode = choice
 			if(!isnull(new_mode))
 				set_pda_mode(new_mode)
 
@@ -1422,6 +1810,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		note = "Scanned Document. Edit to restore previous notes/delete scan.<br>----------<br>" + formatted_scan + "<br>"
 		// notehtml ISN'T set to allow user to get their old notes back. A better implementation would add a "scanned documents"
 		// feature to the PDA, which would better convey the availability of the feature, but this will work for now.
+		sync_note_slot_from_active()
 
 		// Inform the user
 		to_chat(user, "<span class='notice'>Paper scanned and OCRed to notekeeper.</span>")//concept of scanning paper copyright brainoblivion 2009
@@ -1439,6 +1828,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 /obj/item/device/pda/Destroy()
 	PDAs -= src
+	if(ntnet_global)
+		var/member_key = get_pda_member_key()
+		for(var/datum/ntnet_conversation/channel in ntnet_global.chat_channels)
+			if(channel.is_pda_member(member_key))
+				channel.remove_pda_member(member_key)
 	if (src.id && prob(90)) //IDs are kept in 90% of the cases
 		src.id.forceMove(get_turf(src.loc))
 	else

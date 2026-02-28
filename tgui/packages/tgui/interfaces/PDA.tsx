@@ -23,24 +23,6 @@ type PdaData = {
 const KNOWN_MODES = new Set(Object.values(PDA_MODE));
 const SKIN_ORDER: SkinType[] = ['pda', 'pda-s', 'pda-m', 'pda-tox', 'pda-e', 'pda-c'];
 
-const PROGRAM_CHOICE: Partial<Record<PdaProgramId, string>> = {
-  [PDA_MODE.HOME]: '0',
-  [PDA_MODE.NOTEKEEPER]: '1',
-  [PDA_MODE.MESSENGER]: '2',
-  [PDA_MODE.ATMOS_SCAN]: '3',
-  [PDA_MODE.NEWS_FEED]: '6',
-  [PDA_MODE.CREW_MANIFEST]: '41',
-  [PDA_MODE.SIGNALER]: '40',
-  [PDA_MODE.STATUS_DISPLAY]: '42',
-  [PDA_MODE.POWER_MONITOR]: '43',
-  [PDA_MODE.MEDICAL_RECORDS]: '44',
-  [PDA_MODE.SECURITY_RECORDS]: '45',
-  [PDA_MODE.SECURITY_BOT]: '46',
-  [PDA_MODE.SUPPLY_RECORDS]: '47',
-  [PDA_MODE.MULE_CONTROL]: '48',
-  [PDA_MODE.JANITOR_LOCATOR]: '49',
-};
-
 const PROGRAM_ACTION: Partial<Record<PdaProgramId, string>> = {
   [PDA_MODE.DOOR_REMOTE]: 'Toggle Door',
   [PDA_MODE.HONK_SYNTH]: 'Honk',
@@ -82,6 +64,9 @@ export const PDA = (props: any, context: any) => {
   const backendMode = normalizeMode(data.mode);
   const activeProgramId = (showConfig ? PDA_MODE.CONFIG : backendMode) as PdaProgramId;
   const hasCartridge = !!data.cart_loaded;
+  const hasOwnerInfo = !!data.owner_present;
+  const idInserted = !!data.idInserted;
+  const penInserted = !!data.penInserted;
   const flashlightOn = !!data.fon;
   const cartridgeIconState = String(data?.cartridge?.icon_state || '');
 
@@ -101,10 +86,8 @@ export const PDA = (props: any, context: any) => {
       doChoice(actionChoice);
       return;
     }
-
-    const modeChoice = PROGRAM_CHOICE[id];
-    if (modeChoice) {
-      doChoice(modeChoice);
+    if (KNOWN_MODES.has(id)) {
+      act('set_mode', { mode: id });
     }
   };
 
@@ -116,7 +99,7 @@ export const PDA = (props: any, context: any) => {
 
     setShowConfig(false);
     if (backendMode !== PDA_MODE.HOME) {
-      doChoice('0');
+      act('set_mode', { mode: PDA_MODE.HOME });
     }
   };
 
@@ -139,7 +122,7 @@ export const PDA = (props: any, context: any) => {
   };
 
   return (
-    <Window width={840} height={520} theme="neutral">
+    <Window width={640} height={640} theme="neutral">
       <Window.Content className="PDA__window" fitted>
         <div
           className="PDA"
@@ -178,6 +161,23 @@ export const PDA = (props: any, context: any) => {
                       <div className={cx('PDA__pill', isOn ? 'is-on' : 'is-off')} />
                       <div className={cx('PDA__pill', hasCartridge ? 'is-warn' : 'is-off')} />
                     </div>
+
+                    <div className="PDA__quickActions">
+                      <PDAButton
+                        variant="micro"
+                        title={penInserted ? 'Eject pen' : 'No pen installed'}
+                        disabled={!penInserted}
+                        onClick={() => doChoice('Eject Pen')}
+                        icon={<Icon name="pen" />}
+                      />
+                      <PDAButton
+                        variant="micro"
+                        title={hasCartridge ? 'Eject cartridge' : 'No cartridge installed'}
+                        disabled={!hasCartridge}
+                        onClick={() => doChoice('Eject Cartridge')}
+                        icon={<Icon name="eject" />}
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -185,6 +185,7 @@ export const PDA = (props: any, context: any) => {
                   <div className="PDA__screenFrame">
                     <PDAScreen
                       ctx={ctx}
+                      hasOwnerInfo={hasOwnerInfo}
                       activeTab={showConfig ? 'CFG' : 'HOME'}
                       onTab={setTab}
                     />
@@ -193,7 +194,7 @@ export const PDA = (props: any, context: any) => {
                 </div>
 
                 <div className="PDA__footerMark">
-                  FIELD UNIT • MODEL {(data.skinType || skin || '').toUpperCase()} • TGUI COMPLIANT
+                  FIELD UNIT - MODEL {(data.skinType || skin || '').toUpperCase()} - TGUI COMPLIANT
                 </div>
               </div>
 
@@ -201,7 +202,7 @@ export const PDA = (props: any, context: any) => {
                 <PDAButton
                   label="PWR"
                   onClick={() => setIsOn(!isOn)}
-                  ledColor={isOn ? 'green' : 'none'}
+                  ledColor={isOn ? 'green' : 'black'}
                   icon={
                     <Icon
                       name="power-off"
@@ -214,7 +215,7 @@ export const PDA = (props: any, context: any) => {
                   label="LIGHT"
                   onClick={() => doChoice('Light')}
                   isPressed={flashlightOn}
-                  ledColor={flashlightOn ? 'blue' : 'none'}
+                  ledColor={flashlightOn ? 'blue' : 'black'}
                   icon={
                     <Icon
                       name="bolt"
@@ -233,8 +234,9 @@ export const PDA = (props: any, context: any) => {
 
                 <PDAButton
                   label="EJECT"
-                  onClick={() => doChoice('Eject')}
-                  disabled={!hasCartridge}
+                  onClick={() => doChoice('Eject ID')}
+                  disabled={!idInserted}
+                  ledColor={idInserted ? 'red' : 'black'}
                   icon={<Icon name="eject" className="PDA__btnIcon" />}
                 />
 
@@ -258,9 +260,10 @@ export const PDA = (props: any, context: any) => {
 
 type PDAButtonProps = {
   label?: string;
+  title?: string;
   icon?: any;
-  variant?: 'normal' | 'wide';
-  ledColor?: 'green' | 'red' | 'blue' | 'none';
+  variant?: 'normal' | 'wide' | 'micro';
+  ledColor?: 'green' | 'red' | 'blue' | 'none' | 'black';
   isPressed?: boolean;
   disabled?: boolean;
   onClick?: () => void;
@@ -269,6 +272,7 @@ type PDAButtonProps = {
 const PDAButton = (props: PDAButtonProps) => {
   const {
     label,
+    title,
     icon,
     variant = 'normal',
     ledColor = 'none',
@@ -277,30 +281,45 @@ const PDAButton = (props: PDAButtonProps) => {
     onClick,
   } = props;
 
+  const isWide = variant === 'wide';
+  const isMicro = variant === 'micro';
+
   return (
-    <div className="PDAButton">
-      <div className={cx('PDAButton__shell', variant === 'wide' && 'PDAButton__shell--wide')}>
+    <div className={cx('PDAButton', isMicro && 'PDAButton--micro')}>
+      <div
+        className={cx(
+          'PDAButton__shell',
+          isWide && 'PDAButton__shell--wide',
+          isMicro && 'PDAButton__shell--micro',
+        )}
+      >
         <div className="PDAButton__well" />
         <div className={cx('PDAButton__housing', isPressed && 'is-pressed', disabled && 'is-disabled')}>
           <div className="PDAButton__texture" />
           <div className="PDAButton__sheen" />
 
           <button
-            className={cx('PDAButton__btn', variant === 'wide' && 'PDAButton__btn--wide')}
+            className={cx(
+              'PDAButton__btn',
+              isWide && 'PDAButton__btn--wide',
+              isMicro && 'PDAButton__btn--micro',
+            )}
+            title={title}
+            aria-label={title || label || 'Button'}
             disabled={disabled}
             onClick={onClick}
           >
             {icon && <div className={cx('PDAButton__icon', isPressed && 'is-pressed')}>{icon}</div>}
-            {variant === 'wide' && label && <span className="PDAButton__wideLabel">{label}</span>}
+            {isWide && label && <span className="PDAButton__wideLabel">{label}</span>}
           </button>
 
-          {ledColor !== 'none' && (
+          {!isMicro && ledColor !== 'none' && (
             <div className={cx('PDAButton__led', `PDAButton__led--${ledColor}`, isPressed && 'is-lit')} />
           )}
         </div>
       </div>
 
-      {variant !== 'wide' && label && <div className="PDAButton__label">{label}</div>}
+      {!isWide && !isMicro && label && <div className="PDAButton__label">{label}</div>}
     </div>
   );
 };
@@ -359,10 +378,11 @@ const PDACartridge = (props: { iconState: string; ejected?: boolean }) => {
 
 const PDAScreen = (props: {
   ctx: PdaProgramContext;
+  hasOwnerInfo: boolean;
   activeTab: 'HOME' | 'CFG';
   onTab: (tab: 'HOME' | 'CFG') => void;
 }) => {
-  const { ctx, activeTab, onTab } = props;
+  const { ctx, hasOwnerInfo, activeTab, onTab } = props;
 
   if (!ctx.isOn) {
     return (
@@ -372,16 +392,16 @@ const PDAScreen = (props: {
     );
   }
 
-  if (!ctx.hasCartridge) {
+  if (!hasOwnerInfo) {
     return (
       <div className="PDAScreenNoCart">
         <div className="PDAScreen__scanlines PDAScreen__scanlines--error" />
         <Icon name="circle-xmark" className="PDAScreenNoCart__icon" />
-        <div className="PDAScreenNoCart__title">NO CARTRIDGE DETECTED</div>
+        <div className="PDAScreenNoCart__title">NO OWNER INFORMATION</div>
         <div className="PDAScreenNoCart__text">
-          Please insert a compatible data cartridge to access system functions.
+          Owner data is missing. Swipe a registered ID card to initialize this PDA.
         </div>
-        <div className="PDAScreenNoCart__code">SYSTEM HALTED // ERROR_CODE: 0x004F</div>
+        <div className="PDAScreenNoCart__code">SYSTEM HALTED // ERROR_CODE: 0x0021</div>
       </div>
     );
   }
@@ -409,12 +429,12 @@ const PDAScreen = (props: {
         </div>
       </div>
 
-      <div className="PDAScreen__body scrollbar-hide">
+      <div className="PDAScreen__body">
         <View {...ctx} />
       </div>
 
       <div className="PDAScreen__footer">
-        <div className="PDAScreen__footerText">Encryption Active • Secure Link</div>
+        <div className="PDAScreen__footerText">Encryption Active - Secure Link</div>
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ const StatusDisplayApp = (props: { ctx: PdaProgramContext }) => {
       </div>
 
       <div className="PDAProgram__panel">
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <div className="PDAProgram__buttonGrid">
           <Button icon="trash" content="Clear" onClick={() => cartAct('blank')} />
           <Button icon="clock" content="Local Time" onClick={() => cartAct('time')} />
           <Button icon="shuttle-space" content="Shuttle ETA" onClick={() => cartAct('shuttle')} />
@@ -40,7 +40,7 @@ const StatusDisplayApp = (props: { ctx: PdaProgramContext }) => {
           <Button icon="pencil" content="Set line 2" onClick={() => cartAct('setmsg2')} />
         </div>
 
-        <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <div className="PDAProgram__buttonGrid" style={{ marginTop: 12 }}>
           <Button icon="circle" content="None" onClick={() => cartAct('image', { image: 'default' })} />
           <Button icon="shield" content="Red Alert" onClick={() => cartAct('redalert')} />
           <Button icon="lock" content="Lockdown" onClick={() => cartAct('image', { image: 'lockdown' })} />

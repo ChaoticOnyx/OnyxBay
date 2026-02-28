@@ -74,3 +74,260 @@
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
+
+.PDAProgram__buttonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.PDAProgram__tableWrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.PDAProgram__tableName {
+  max-width: 230px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.PDAProgram__summaryGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.PDAProgram__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 190px;
+  overflow: auto;
+}
+
+.PDAProgram__listButton {
+  text-align: left;
+  border: 1px solid var(--crt-border);
+  background: rgba(0, 0, 0, 0.24);
+  color: var(--crt-accent);
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.PDAProgram__listButton:hover {
+  background: color-mix(in srgb, var(--crt-main) 14%, transparent);
+  border-color: color-mix(in srgb, var(--crt-main) 45%, transparent);
+}
+
+.PDAProgram__listButton.is-active {
+  border-color: color-mix(in srgb, var(--crt-main) 70%, transparent);
+  background: color-mix(in srgb, var(--crt-main) 18%, transparent);
+}
+
+.PDAProgram__listTitle {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.PDAProgram__listPreview {
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.PDAProgram__readableBox {
+  border: 1px solid color-mix(in srgb, var(--crt-border) 90%, transparent);
+  background: rgba(0, 0, 0, 0.20);
+  padding: 10px;
+  line-height: 1.45;
+}
+
+.PDAProgram__readableBox.is-medical {
+  border-color: rgba(34, 211, 238, 0.40);
+  background: rgba(34, 211, 238, 0.07);
+}
+
+.PDAProgram__readableBox.is-security {
+  border-color: rgba(239, 68, 68, 0.45);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.PDAProgram__recordLine {
+  display: grid;
+  grid-template-columns: minmax(0, 220px) 1fr;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px dashed color-mix(in srgb, var(--crt-border) 65%, transparent);
+}
+
+.PDAProgram__recordLine:last-child {
+  border-bottom: none;
+}
+
+.PDAProgram__recordKey {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 900;
+  color: color-mix(in srgb, var(--crt-main) 85%, transparent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.PDAProgram__recordValue {
+  font-size: 12px;
+  color: var(--crt-accent);
+  word-break: break-word;
+}
+
+.PDAProgram__splitPanel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.PDAProgram__sectionTitle {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  margin-bottom: 8px;
+  color: color-mix(in srgb, var(--crt-main) 88%, transparent);
+}
+
+.PDAProgram__orderCard {
+  border: 1px solid var(--crt-border);
+  background: rgba(0, 0, 0, 0.20);
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.PDAProgram__orderCard.is-approved {
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.PDAProgram__orderCard.is-requested {
+  border-color: rgba(251, 191, 36, 0.48);
+}
+
+.PDAProgram__orderHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.PDAProgram__orderBy {
+  opacity: 0.78;
+}
+
+.PDAProgram__orderName {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--crt-accent);
+  word-break: break-word;
+}
+
+.PDAProgram__orderMeta {
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.78;
+}
+
+.PDAProgram__orderComment {
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.35;
+  padding-top: 6px;
+  border-top: 1px dashed color-mix(in srgb, var(--crt-border) 65%, transparent);
+}
+
+.PDAProgram__manifestGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.PDAProgram__manifestCard {
+  border: 1px solid var(--crt-border);
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.PDAProgram__manifestHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 7px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.20);
+}
+
+.PDAProgram__manifestBody {
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.PDAProgram__manifestRow {
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.16);
+}
+
+.PDAProgram__manifestRow:last-child {
+  border-bottom: none;
+}
+
+.PDAProgram__manifestName {
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.PDAProgram__manifestRank,
+.PDAProgram__manifestStatus {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.PDAProgram__manifestCard.is-command .PDAProgram__manifestHead { background: #5f5d36; color: #f9f2d0; }
+.PDAProgram__manifestCard.is-support .PDAProgram__manifestHead { background: #516f81; color: #e0f4ff; }
+.PDAProgram__manifestCard.is-research .PDAProgram__manifestHead { background: #694874; color: #f3e4ff; }
+.PDAProgram__manifestCard.is-security .PDAProgram__manifestHead { background: #7a1e24; color: #ffe6e8; }
+.PDAProgram__manifestCard.is-engineering .PDAProgram__manifestHead { background: #6f5d1b; color: #fff5d8; }
+.PDAProgram__manifestCard.is-medical .PDAProgram__manifestHead { background: #0c5e67; color: #d9fbff; }
+.PDAProgram__manifestCard.is-cargo .PDAProgram__manifestHead { background: #5e5037; color: #fdf0d4; }
+.PDAProgram__manifestCard.is-exploration .PDAProgram__manifestHead { background: #365b6f; color: #e0f5ff; }
+.PDAProgram__manifestCard.is-service .PDAProgram__manifestHead { background: #2d6234; color: #e5ffe8; }
+.PDAProgram__manifestCard.is-civilian .PDAProgram__manifestHead { background: #5e4368; color: #f7e8ff; }
+.PDAProgram__manifestCard.is-misc .PDAProgram__manifestHead { background: #505050; color: #f0f0f0; }
+.PDAProgram__manifestCard.is-silicon .PDAProgram__manifestHead { background: #2b6372; color: #dcf9ff; }
+
+@media (max-width: 780px) {
+  .PDAProgram__buttonGrid,
+  .PDAProgram__splitPanel,
+  .PDAProgram__manifestGrid,
+  .PDAProgram__summaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .PDAProgram__recordLine {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
