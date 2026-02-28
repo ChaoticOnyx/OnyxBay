@@ -338,7 +338,7 @@
 		output += SPAN_NOTICE("<b>═══════════ MCU Register Dump ═══════════</b>")
 		
 		output += SPAN_NOTICE("<b>── Status ──</b>")
-		output += "  PC: [num2hex(data["pc"])] | Cycle: [data["cycle"]] | Instret: [data["instret"]]"
+		output += "  PC: [num2hex(data["pc"], 8)] | Cycle: [data["cycle"]] | Instret: [data["instret"]]"
 		output += "  Privilege: [data["privilege"]]"
 		
 		output += SPAN_NOTICE("<b>── Common Registers (x0-x31) ──</b>")
