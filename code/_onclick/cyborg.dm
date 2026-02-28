@@ -36,10 +36,12 @@
 	if(incapacitated())
 		return
 
-	if(!canClick())
-		return
-
 	face_atom(A) // change direction to face what you clicked on
+
+	var/obj/item/I = get_active_hand()
+
+	if(!canClick(I))
+		return
 
 	if(silicon_camera.in_camera_mode)
 		silicon_camera.camera_mode_off()
@@ -55,8 +57,6 @@
 		RestrainedClickOn(A)
 		return
 	*/
-
-	var/obj/item/I = get_active_hand()
 
 	// Cyborgs have no range-checking unless there is item use
 	if(!I)
