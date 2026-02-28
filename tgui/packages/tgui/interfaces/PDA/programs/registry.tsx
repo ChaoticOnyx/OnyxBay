@@ -17,6 +17,9 @@ import { MuleControlProgram } from './MuleControl';
 import { JanitorLocatorProgram } from './JanitorLocator';
 import { HonkSynthProgram } from './HonkSynth';
 import { DoorRemoteProgram } from './DoorRemote';
+import { MedicalRecordsProgram } from './MedicalRecords';
+import { SecurityRecordsProgram } from './SecurityRecords';
+import { SecurityBotProgram } from './SecurityBot';
 import { ReagentScannerProgram, HalogenCounterProgram, GasScannerProgram } from './Scanners';
 
 export const PDA_PROGRAMS: PdaProgram[] = [
@@ -38,6 +41,9 @@ export const PDA_PROGRAMS: PdaProgram[] = [
   JanitorLocatorProgram,
   HonkSynthProgram,
   DoorRemoteProgram,
+  MedicalRecordsProgram,
+  SecurityRecordsProgram,
+  SecurityBotProgram,
   ReagentScannerProgram,
   HalogenCounterProgram,
   GasScannerProgram,

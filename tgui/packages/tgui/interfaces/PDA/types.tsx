@@ -30,9 +30,12 @@ export type PdaProgramId =
   | 'janitor_locator'
   | 'honk_synth'
   | 'door_remote'
+  | 'medical_records'
+  | 'security_records'
+  | 'security_bot'
   | 'reagent_scanner'
   | 'halogen_counter'
-  | 'gas_scanner'
+  | 'gas_scanner';
 
 export type PdaProgramContext = {
   // состояние оболочки (UI-only сейчас; в будущем — заменяется данными бекэнда точечно)

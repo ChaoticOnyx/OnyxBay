@@ -30,6 +30,9 @@ const APP_TILES: AppTile[] = [
 
   { id: 'supply_records', icon: 'box', label: 'Supply Records', canShow: (ctx) => ctx.cartridgeType === 'admin' },
   { id: 'mule_control', icon: 'truck', label: 'Delivery Bot Control', canShow: (ctx) => ctx.cartridgeType === 'admin' },
+  { id: 'medical_records', icon: 'plus', label: 'Medical Records', canShow: (ctx) => ctx.cartridgeType === 'medical' || ctx.cartridgeType === 'admin' },
+  { id: 'security_records', icon: 'alert', label: 'Security Records', canShow: (ctx) => ctx.cartridgeType === 'admin' },
+  { id: 'security_bot', icon: 'gear', label: 'Security Bot Control', canShow: (ctx) => ctx.cartridgeType === 'admin' },
 
   { id: 'janitor_locator', icon: 'broom', label: 'Custodial Locator', canShow: (ctx) => ctx.cartridgeType === 'admin' },
 
