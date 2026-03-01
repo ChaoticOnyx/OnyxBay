@@ -107,6 +107,8 @@
 	stop_ambient_sound()
 	GLOB.smes_list -= src
 	ClearOverlays()
+	for(var/datum/nano_module/rcon/R in world)
+		R.FindDevices()
 	return ..()
 
 /obj/machinery/power/smes/proc/start_ambient_sound()
