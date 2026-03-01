@@ -131,6 +131,7 @@
 	QDEL_NULL(proximity_monitor)
 	ClearOverlays()
 	underlays.Cut()
+	animate(src) // Animations can possibly cause hard-dels. TODO: Test it out to find out for sure if it's true or not (in which case this line should be removed).
 	return ..()
 
 /atom/proc/reveal_blood()
