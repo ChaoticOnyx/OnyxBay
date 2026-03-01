@@ -35,8 +35,7 @@ class NotekeeperApp extends Component<{ ctx: PdaProgramContext }> {
   };
 
   private saveDraft = () => {
-    this.props.ctx.act('choice', {
-      choice: 'Save Note',
+    this.props.ctx.act('save_note', {
       note: this.draft,
     });
   };
@@ -68,17 +67,17 @@ class NotekeeperApp extends Component<{ ctx: PdaProgramContext }> {
             <Button
               icon="plus"
               content="New Note"
-              onClick={() => ctx.act('choice', { choice: 'New Note' })}
+              onClick={() => ctx.act('new_note')}
             />
             <Button
               icon="trash"
               content="Delete Note"
-              onClick={() => ctx.act('choice', { choice: 'Delete Note' })}
+              onClick={() => ctx.act('delete_note')}
             />
             <Button
               icon="tag"
               content="Rename Note"
-              onClick={() => ctx.act('choice', { choice: 'Rename Note' })}
+              onClick={() => ctx.act('rename_note')}
             />
             <Button
               icon="save"
@@ -92,7 +91,7 @@ class NotekeeperApp extends Component<{ ctx: PdaProgramContext }> {
               <button
                 key={entry.index}
                 className={activeNoteIndex === Number(entry.index) ? 'PDAProgram__listButton is-active' : 'PDAProgram__listButton'}
-                onClick={() => ctx.act('choice', { choice: 'Select Note', index: entry.index })}
+                onClick={() => ctx.act('select_note', { index: entry.index })}
               >
                 <div className="PDAProgram__listTitle">{entry.title}</div>
                 <div className="PDAProgram__listPreview">{entry.preview || '(empty)'}</div>

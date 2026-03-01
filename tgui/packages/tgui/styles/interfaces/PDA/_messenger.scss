@@ -235,6 +235,20 @@
   margin-left: 0;
 }
 
+.PdaMessenger__offBanner {
+  margin: 10px 12px 0 12px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #ffcf9f;
+  border: 1px solid rgba(255, 159, 67, 0.50);
+  background: rgba(255, 159, 67, 0.14);
+}
+
 /* Messages */
 .PdaMessenger__messages {
   flex: 1 1 auto;

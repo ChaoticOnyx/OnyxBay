@@ -25,7 +25,7 @@ const DoorRemoteApp = (props: { ctx: PdaProgramContext }) => {
           <Button
             icon="right-left"
             content="Toggle Door Group"
-            onClick={() => ctx.act('choice', { choice: 'Toggle Door' })}
+            onClick={() => ctx.act('toggle_door')}
           />
         </div>
       </div>

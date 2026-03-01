@@ -45,7 +45,7 @@ const ScannerProgramView = (props: ScannerProps) => {
           <Button
             icon="power-off"
             content={enabled ? offLabel : onLabel}
-            onClick={() => ctx.act('choice', { choice })}
+            onClick={() => ctx.act(choice)}
           />
         </div>
       </div>
@@ -66,7 +66,7 @@ export const ReagentScannerProgram: PdaProgram = {
       onLabel="Enable Reagent Scanner"
       offLabel="Disable Reagent Scanner"
       scanMode={3}
-      choice="Reagent Scan"
+      choice="reagent_scan"
     />
   ),
 };
@@ -84,7 +84,7 @@ export const HalogenCounterProgram: PdaProgram = {
       onLabel="Enable Halogen Counter"
       offLabel="Disable Halogen Counter"
       scanMode={4}
-      choice="Halogen Counter"
+      choice="halogen_counter"
     />
   ),
 };
@@ -102,7 +102,7 @@ export const GasScannerProgram: PdaProgram = {
       onLabel="Enable Gas Scanner"
       offLabel="Disable Gas Scanner"
       scanMode={5}
-      choice="Gas Scan"
+      choice="gas_scan"
     />
   ),
 };

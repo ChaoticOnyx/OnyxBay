@@ -24,9 +24,9 @@ const NewsFeedApp = (props: { ctx: PdaProgramContext }) => {
           <Button
             icon={ctx.data?.news_silent ? 'volume-xmark' : 'volume-high'}
             content={ctx.data?.news_silent ? 'Ringer: Off' : 'Ringer: On'}
-            onClick={() => ctx.act('choice', { choice: 'Toggle News' })}
+            onClick={() => ctx.act('toggle_news')}
           />
-          <Button icon="music" content="Set news tone" onClick={() => ctx.act('choice', { choice: 'Newstone' })} />
+          <Button icon="music" content="Set news tone" onClick={() => ctx.act('newstone')} />
         </div>
 
         {!hasReception && (
@@ -50,7 +50,7 @@ const NewsFeedApp = (props: { ctx: PdaProgramContext }) => {
                 icon="right-to-bracket"
                 content="Open"
                 color={channel.censored ? 'bad' : undefined}
-                onClick={() => ctx.act('choice', { choice: 'Select Feed', name: channel.name, feed: channel.feed })}
+                onClick={() => ctx.act('select_feed', { name: channel.name, feed: channel.feed })}
               />
             </div>
           ))}
@@ -60,7 +60,7 @@ const NewsFeedApp = (props: { ctx: PdaProgramContext }) => {
       {mode === PDA_MODE.NEWS_FEED_CHANNEL && feed && (
         <div className="PDAProgram__panel">
           <div style={{ marginBottom: 8 }}>
-            <Button icon="arrow-left" content="Return to Channels" onClick={() => ctx.act('choice', { choice: 'Return' })} />
+            <Button icon="arrow-left" content="Return to Channels" onClick={() => ctx.act('return')} />
           </div>
 
           <div className="PDAProgram__newsHeadCard">

@@ -24,11 +24,11 @@ const KNOWN_MODES = new Set(Object.values(PDA_MODE));
 const SKIN_ORDER: SkinType[] = ['pda', 'pda-s', 'pda-m', 'pda-tox', 'pda-e', 'pda-c'];
 
 const PROGRAM_ACTION: Partial<Record<PdaProgramId, string>> = {
-  [PDA_MODE.DOOR_REMOTE]: 'Toggle Door',
-  [PDA_MODE.HONK_SYNTH]: 'Honk',
-  [PDA_MODE.REAGENT_SCANNER]: 'Reagent Scan',
-  [PDA_MODE.HALOGEN_COUNTER]: 'Halogen Counter',
-  [PDA_MODE.GAS_SCANNER]: 'Gas Scan',
+  [PDA_MODE.DOOR_REMOTE]: 'toggle_door',
+  [PDA_MODE.HONK_SYNTH]: 'honk',
+  [PDA_MODE.REAGENT_SCANNER]: 'reagent_scan',
+  [PDA_MODE.HALOGEN_COUNTER]: 'halogen_counter',
+  [PDA_MODE.GAS_SCANNER]: 'gas_scan',
 };
 
 const normalizeMode = (mode: string | undefined): PdaProgramId => {
@@ -70,9 +70,6 @@ export const PDA = (props: any, context: any) => {
   const flashlightOn = !!data.fon;
   const cartridgeIconState = String(data?.cartridge?.icon_state || '');
 
-  const doChoice = (choice: string, payload?: Record<string, any>) =>
-    act('choice', { choice, ...(payload || {}) });
-
   const setActiveProgram = (id: PdaProgramId) => {
     if (id === PDA_MODE.CONFIG) {
       setShowConfig(true);
@@ -83,7 +80,7 @@ export const PDA = (props: any, context: any) => {
 
     const actionChoice = PROGRAM_ACTION[id];
     if (actionChoice) {
-      doChoice(actionChoice);
+      act(actionChoice);
       return;
     }
     if (KNOWN_MODES.has(id)) {
@@ -167,14 +164,14 @@ export const PDA = (props: any, context: any) => {
                         variant="micro"
                         title={penInserted ? 'Eject pen' : 'No pen installed'}
                         disabled={!penInserted}
-                        onClick={() => doChoice('Eject Pen')}
+                        onClick={() => act('eject_pen')}
                         icon={<Icon name="pen" />}
                       />
                       <PDAButton
                         variant="micro"
                         title={hasCartridge ? 'Eject cartridge' : 'No cartridge installed'}
                         disabled={!hasCartridge}
-                        onClick={() => doChoice('Eject Cartridge')}
+                        onClick={() => act('eject_cartridge')}
                         icon={<Icon name="eject" />}
                       />
                     </div>
@@ -213,7 +210,7 @@ export const PDA = (props: any, context: any) => {
 
                 <PDAButton
                   label="LIGHT"
-                  onClick={() => doChoice('Light')}
+                  onClick={() => act('light')}
                   isPressed={flashlightOn}
                   ledColor={flashlightOn ? 'blue' : 'black'}
                   icon={
@@ -234,7 +231,7 @@ export const PDA = (props: any, context: any) => {
 
                 <PDAButton
                   label="EJECT"
-                  onClick={() => doChoice('Eject ID')}
+                  onClick={() => act('eject_id')}
                   disabled={!idInserted}
                   ledColor={idInserted ? 'red' : 'black'}
                   icon={<Icon name="eject" className="PDA__btnIcon" />}

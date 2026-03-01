@@ -57,7 +57,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/list/feed_info = list()	// The data and contents of each feed as we last knew them
 
 	var/list/cartmodes = list(PDA_MODE_SIGNALER, PDA_MODE_STATUS_DISPLAY, PDA_MODE_POWER_MONITOR, PDA_MODE_POWER_MONITOR_READING, PDA_MODE_MEDICAL_RECORDS, PDA_MODE_MEDICAL_RECORD, PDA_MODE_SECURITY_RECORDS, PDA_MODE_SECURITY_RECORD, PDA_MODE_SECURITY_BOT, PDA_MODE_MULE_CONTROL, PDA_MODE_SUPPLY_RECORDS, PDA_MODE_JANITOR_LOCATOR)
-	var/list/no_auto_update = list(PDA_MODE_NOTES, PDA_MODE_SIGNALER, PDA_MODE_POWER_MONITOR, PDA_MODE_MEDICAL_RECORDS, PDA_MODE_MEDICAL_RECORD, PDA_MODE_SECURITY_RECORDS, PDA_MODE_SECURITY_RECORD)
+	var/list/no_auto_update = list()
 	var/list/update_every_five = list(PDA_MODE_ATMOS_SCAN, PDA_MODE_CREW_MANIFEST, PDA_MODE_POWER_MONITOR_READING, PDA_MODE_SECURITY_BOT, PDA_MODE_SUPPLY_RECORDS, PDA_MODE_MULE_CONTROL, PDA_MODE_JANITOR_LOCATOR)
 
 	var/obj/item/card/id/id = null //Making it possible to slot an ID card into the PDA so it can function as both.
@@ -794,100 +794,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		ui.open()
 	ui.set_autoupdate(!(mode in no_auto_update))
 
-/obj/item/device/pda/proc/is_valid_mode(new_mode)
-	switch(new_mode)
-		if(PDA_MODE_HOME)
-			return TRUE
-		if(PDA_MODE_NOTES)
-			return TRUE
-		if(PDA_MODE_MESSENGER)
-			return TRUE
-		if(PDA_MODE_MESSENGER_CONVERSATION)
-			return TRUE
-		if(PDA_MODE_ATMOS_SCAN)
-			return TRUE
-		if(PDA_MODE_CHATROOM)
-			return TRUE
-		if(PDA_MODE_SIGNALER)
-			return TRUE
-		if(PDA_MODE_CREW_MANIFEST)
-			return TRUE
-		if(PDA_MODE_STATUS_DISPLAY)
-			return TRUE
-		if(PDA_MODE_POWER_MONITOR)
-			return TRUE
-		if(PDA_MODE_POWER_MONITOR_READING)
-			return TRUE
-		if(PDA_MODE_MEDICAL_RECORDS)
-			return TRUE
-		if(PDA_MODE_MEDICAL_RECORD)
-			return TRUE
-		if(PDA_MODE_SECURITY_RECORDS)
-			return TRUE
-		if(PDA_MODE_SECURITY_RECORD)
-			return TRUE
-		if(PDA_MODE_SECURITY_BOT)
-			return TRUE
-		if(PDA_MODE_SUPPLY_RECORDS)
-			return TRUE
-		if(PDA_MODE_MULE_CONTROL)
-			return TRUE
-		if(PDA_MODE_JANITOR_LOCATOR)
-			return TRUE
-		if(PDA_MODE_NEWS_FEED)
-			return TRUE
-		if(PDA_MODE_NEWS_FEED_CHANNEL)
-			return TRUE
-	return FALSE
-
-/obj/item/device/pda/proc/mode_from_choice(choice)
-	switch(choice)
-		if("0")
-			return PDA_MODE_HOME
-		if("1")
-			return PDA_MODE_NOTES
-		if("2")
-			return PDA_MODE_MESSENGER
-		if("21")
-			return PDA_MODE_MESSENGER_CONVERSATION
-		if("3")
-			return PDA_MODE_ATMOS_SCAN
-		if("4")
-			return PDA_MODE_HOME
-		if("chatroom")
-			return PDA_MODE_CHATROOM
-		if("40")
-			return PDA_MODE_SIGNALER
-		if("41")
-			return PDA_MODE_CREW_MANIFEST
-		if("42")
-			return PDA_MODE_STATUS_DISPLAY
-		if("43")
-			return PDA_MODE_POWER_MONITOR
-		if("433")
-			return PDA_MODE_POWER_MONITOR_READING
-		if("44")
-			return PDA_MODE_MEDICAL_RECORDS
-		if("441")
-			return PDA_MODE_MEDICAL_RECORD
-		if("45")
-			return PDA_MODE_SECURITY_RECORDS
-		if("451")
-			return PDA_MODE_SECURITY_RECORD
-		if("46")
-			return PDA_MODE_SECURITY_BOT
-		if("47")
-			return PDA_MODE_SUPPLY_RECORDS
-		if("48")
-			return PDA_MODE_MULE_CONTROL
-		if("49")
-			return PDA_MODE_JANITOR_LOCATOR
-		if("6")
-			return PDA_MODE_NEWS_FEED
-		if("61")
-			return PDA_MODE_NEWS_FEED_CHANNEL
-	return null
-
 /obj/item/device/pda/proc/set_pda_mode(new_mode)
 	if(isnull(new_mode))
 		return
@@ -933,7 +839,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if(!owner)
 			return TRUE
 		var/new_mode = params["mode"]
-		if(is_valid_mode(new_mode))
+		if(!isnull(new_mode))
 			set_pda_mode(new_mode)
 		if(ui)
 			ui.set_autoupdate(!(mode in no_auto_update))
@@ -951,14 +857,104 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				ui.set_autoupdate(!(mode in no_auto_update))
 			return TRUE
 
-	var/choice = action
-	if(action == "choice")
-		choice = params["choice"]
+	switch(action)
+		if("close")
+			action = "Close"
+		if("refresh")
+			action = "Refresh"
+		if("return")
+			action = "Return"
+		if("authenticate")
+			action = "Authenticate"
+		if("update_info")
+			action = "UpdateInfo"
+		if("eject")
+			action = "Eject"
+		if("eject_id")
+			action = "Eject ID"
+		if("eject_pen")
+			action = "Eject Pen"
+		if("eject_cartridge")
+			action = "Eject Cartridge"
+		if("light")
+			action = "Light"
+		if("medical_scan")
+			action = "Medical Scan"
+		if("reagent_scan")
+			action = "Reagent Scan"
+		if("halogen_counter")
+			action = "Halogen Counter"
+		if("honk")
+			action = "Honk"
+		if("gas_scan")
+			action = "Gas Scan"
+		if("save_note")
+			action = "Save Note"
+		if("select_note")
+			action = "Select Note"
+		if("new_note")
+			action = "New Note"
+		if("delete_note")
+			action = "Delete Note"
+		if("rename_note")
+			action = "Rename Note"
+		if("toggle_messenger")
+			action = "Toggle Messenger"
+		if("toggle_ringer")
+			action = "Toggle Ringer"
+		if("toggle_news")
+			action = "Toggle News"
+		if("clear")
+			action = "Clear"
+		if("ringtone")
+			action = "Ringtone"
+		if("newstone")
+			action = "Newstone"
+		if("message")
+			action = "Message"
+		if("select_conversation")
+			action = "Select Conversation"
+		if("group_close")
+			action = "Group Close"
+		if("group_create")
+			action = "Group Create"
+		if("group_open")
+			action = "Group Open"
+		if("group_preview")
+			action = "Group Preview"
+		if("group_join")
+			action = "Group Join"
+		if("group_leave")
+			action = "Group Leave"
+		if("group_rename")
+			action = "Group Rename"
+		if("group_set_password")
+			action = "Group Set Password"
+		if("group_delete")
+			action = "Group Delete"
+		if("group_message")
+			action = "Group Message"
+		if("group_add_member")
+			action = "Group Add Member"
+		if("group_remove_member")
+			action = "Group Remove Member"
+		if("group_set_admin")
+			action = "Group Set Admin"
+		if("select_feed")
+			action = "Select Feed"
+		if("send_honk")
+			action = "Send Honk"
+		if("send_silence")
+			action = "Send Silence"
+		if("toggle_door")
+			action = "Toggle Door"
+		if("detonate")
+			action = "Detonate"
 
-	if(!owner && !(choice in list("Close", "Authenticate", "Light", "Eject", "Eject ID", "Eject Pen", "Eject Cartridge")))
+	if(!owner && !(action in list("Close", "Authenticate", "Light", "Eject", "Eject ID", "Eject Pen", "Eject Cartridge")))
 		return TRUE
 
-	switch(choice)
+	switch(action)
 		if("Close")
 			U.unset_machine()
 			if(ui)
@@ -1024,9 +1020,13 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 		if("Edit")
 			var/n = input(U, "Please enter message", html_decode(name), notehtml)
+			if(isnull(n))
+				return
 			if(in_range(src, U) && loc == U)
 				if(mode == PDA_MODE_NOTES)
-					n = sanitize(n)
+					n = sanitize(n, 8192, trim = 0, extra = 0)
+					if(isnull(n))
+						n = ""
 					note = html_decode(n)
 					note = replacetext(note, "\n", "<br>")
 					notehtml = n
@@ -1037,8 +1037,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if("Save Note")
 			var/note_text = params["note"]
 			if(!isnull(note_text))
+				initialize_note_slots()
 				note_text = copytext("[note_text]", 1, 8193)
-				note_text = sanitize(note_text)
+				note_text = sanitize(note_text, 8192, trim = 0, extra = 0)
+				if(isnull(note_text))
+					note_text = ""
 				note = html_decode(note_text)
 				note = replacetext(note, "\n", "<br>")
 				notehtml = note_text
@@ -1093,26 +1096,34 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			news_silent = !news_silent
 
 		if("Clear")
-			if(params["option"] == "All")
+			var/clear_option = params["option"]
+			var/clear_pm_data = FALSE
+
+			if(clear_option == "All" || clear_option == "PMs")
 				tnote.Cut()
 				conversations.Cut()
 				active_conversation = null
-				if(ntnet_global)
-					var/member_key = get_pda_member_key()
-					for(var/datum/ntnet_conversation/channel in ntnet_global.chat_channels)
-						if(channel.is_pda_member(member_key))
-							channel.remove_pda_member(member_key)
-				active_group_channel = null
-			if(params["option"] == "Convo")
+				clear_pm_data = TRUE
+
+			if(clear_option == "Convo")
 				var/new_tnote[0]
 				for(var/i in tnote)
 					if(i["target"] != active_conversation)
 						new_tnote[++new_tnote.len] = i
 				tnote = new_tnote
 				conversations.Remove(active_conversation)
+				active_conversation = null
+				clear_pm_data = TRUE
 
-			active_conversation = null
-			if(mode == PDA_MODE_MESSENGER_CONVERSATION)
+			if(clear_option == "All" || clear_option == "Groups")
+				if(ntnet_global)
+					var/member_key = get_pda_member_key()
+					for(var/datum/ntnet_conversation/channel in ntnet_global.chat_channels)
+						if(channel.is_pda_member(member_key))
+							channel.remove_pda_member(member_key)
+				active_group_channel = null
+
+			if(clear_pm_data && mode == PDA_MODE_MESSENGER_CONVERSATION)
 				set_pda_mode(PDA_MODE_MESSENGER)
 
 		if("Ringtone")
@@ -1408,13 +1419,6 @@ var/global/list/obj/item/device/pda/PDAs = list()
 							if(T)
 								pai.dropInto(T)
 								pai = null
-
-		else
-			var/new_mode = mode_from_choice(choice)
-			if(isnull(new_mode) && is_valid_mode(choice))
-				new_mode = choice
-			if(!isnull(new_mode))
-				set_pda_mode(new_mode)
 
 	if(mode == PDA_MODE_MESSENGER || mode == PDA_MODE_MESSENGER_CONVERSATION)
 		new_message = 0
@@ -1736,6 +1740,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		cartridge.radio.hostpda = null
 	to_chat(usr, SPAN("notice", "You remove \the [cartridge] from the [name]."))
 	cartridge = null
+	SStgui.update_uis(src)
 
 /obj/item/device/pda/proc/id_check(mob/user as mob, choice as num)//To check for IDs; 1 for in-pda use, 2 for out of pda use.
 	if(choice == 1)

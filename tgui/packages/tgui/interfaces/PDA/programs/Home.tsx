@@ -45,7 +45,7 @@ const HomeApp = (props: { ctx: PdaProgramContext }) => {
       icon: 'flask',
       mode: 3,
       access: hasAccess(ctx, 'access_reagent_scanner'),
-      choice: 'Reagent Scan',
+      choice: 'reagent_scan',
       on: 'Disable Reagent Scanner',
       off: 'Enable Reagent Scanner',
     },
@@ -55,7 +55,7 @@ const HomeApp = (props: { ctx: PdaProgramContext }) => {
       icon: 'radiation',
       mode: 4,
       access: hasAccess(ctx, 'access_engine'),
-      choice: 'Halogen Counter',
+      choice: 'halogen_counter',
       on: 'Disable Halogen Counter',
       off: 'Enable Halogen Counter',
     },
@@ -65,7 +65,7 @@ const HomeApp = (props: { ctx: PdaProgramContext }) => {
       icon: 'wind',
       mode: 5,
       access: hasAccess(ctx, 'access_atmos'),
-      choice: 'Gas Scan',
+      choice: 'gas_scan',
       on: 'Disable Gas Scanner',
       off: 'Enable Gas Scanner',
     },
@@ -92,7 +92,7 @@ const HomeApp = (props: { ctx: PdaProgramContext }) => {
             <Button
               icon="rotate"
               content="Update PDA Info"
-              onClick={() => ctx.act('choice', { choice: 'UpdateInfo' })}
+              onClick={() => ctx.act('update_info')}
             />
           )}
         </div>
@@ -129,7 +129,7 @@ const HomeApp = (props: { ctx: PdaProgramContext }) => {
                   <Button
                     content={scanmode === scanner.mode ? scanner.on : scanner.off}
                     icon={scanner.icon}
-                    onClick={() => ctx.act('choice', { choice: scanner.choice })}
+                    onClick={() => ctx.act(scanner.choice)}
                   />
                 </div>
               ))}

@@ -86,7 +86,7 @@ const SecurityRecordsApp = (props: { ctx: PdaProgramContext }) => {
       ) : (
         <div className="PDAProgram__panel">
           <div style={{ marginBottom: 8 }}>
-            <Button icon="arrow-left" content="Return to list" onClick={() => ctx.act('choice', { choice: 'Return' })} />
+            <Button icon="arrow-left" content="Return to list" onClick={() => ctx.act('return')} />
           </div>
 
           {!generalExists ? (

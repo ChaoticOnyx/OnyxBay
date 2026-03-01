@@ -25,7 +25,7 @@ const HonkSynthApp = (props: { ctx: PdaProgramContext }) => {
           <Button
             icon="bullhorn"
             content="Play Honk"
-            onClick={() => ctx.act('choice', { choice: 'Honk' })}
+            onClick={() => ctx.act('honk')}
           />
         </div>
       </div>

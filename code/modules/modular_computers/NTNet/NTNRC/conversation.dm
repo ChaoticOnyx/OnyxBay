@@ -87,6 +87,10 @@ var/global/ntnrc_uid = 0
 		return FALSE
 	pda_members -= member_ref
 	pda_admins -= member_ref
+	var/obj/item/device/pda/member_pda = locate(member_ref)
+	if(istype(member_pda) && member_pda.active_group_channel == src)
+		member_pda.active_group_channel = null
+		SStgui.update_uis(member_pda)
 	if(actor_ref && actor_ref != member_ref)
 		add_status_message("[get_member_name(actor_ref)] removed [get_member_name(member_ref)] from the channel.")
 	else
@@ -162,9 +166,6 @@ var/global/ntnrc_uid = 0
 		return
 	clients.Add(C)
 	add_status_message("[C.username] has joined the channel.")
-	// No operator, so we assume the channel was empty. Assign this user as operator.
-	if(!operator)
-		changeop(C)
 
 /datum/ntnet_conversation/proc/remove_client(datum/computer_file/program/chatclient/C)
 	if(!istype(C) || !(C in clients))
@@ -173,24 +174,17 @@ var/global/ntnrc_uid = 0
 	client_admins.Remove(C)
 	add_status_message("[C.username] has left the channel.")
 
-	// Channel operator left, pick new operator
+	// Do not auto-promote random members. Operator/admin rights are explicit.
 	if(C == operator)
 		operator = null
-		if(clients.len)
-			var/datum/computer_file/program/chatclient/newop = null
-			for(var/datum/computer_file/program/chatclient/admin in client_admins)
-				if(admin in clients)
-					newop = admin
-					break
-			if(!newop)
-				newop = pick(clients)
-			changeop(newop)
 
 
 /datum/ntnet_conversation/proc/changeop(datum/computer_file/program/chatclient/newop, datum/computer_file/program/chatclient/actor = null)
 	if(!istype(newop) || !(newop in clients))
 		return FALSE
 	if(istype(actor) && !is_client_admin(actor))
+		return FALSE
+	if(!(newop in client_admins) && newop != operator)
 		return FALSE
 	operator = newop
 	add_status_message("Channel operator status transferred to [newop.username].")
