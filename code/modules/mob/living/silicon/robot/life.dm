@@ -162,18 +162,18 @@
 			if(MED_VISION)
 				process_med_hud(src, 1)
 
-	if(syndicate && client)
-		for(var/datum/mind/traitor_mind in GLOB.traitors.current_antagonists)
-			if(traitor_mind.current)
+		if(syndicate)
+			for(var/datum/mind/traitor_mind in GLOB.traitors.current_antagonists)
+				if(traitor_mind.current)
+					// TODO: Update to new antagonist system.
+					var/I = image('icons/mob/mob.dmi', loc = traitor_mind.current, icon_state = "traitor")
+					add_client_image(I)
+			disconnect_from_ai()
+			if(mind)
 				// TODO: Update to new antagonist system.
-				var/I = image('icons/mob/mob.dmi', loc = traitor_mind.current, icon_state = "traitor")
-				client.images += I
-		disconnect_from_ai()
-		if(mind)
-			// TODO: Update to new antagonist system.
-			if(!mind.special_role)
-				mind.special_role = "Traitor"
-				GLOB.traitors.current_antagonists |= mind
+				if(!mind.special_role)
+					mind.special_role = "Traitor"
+					GLOB.traitors.current_antagonists |= mind
 
 	if(cells)
 		if(cell)
