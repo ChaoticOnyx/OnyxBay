@@ -1301,6 +1301,7 @@
 	desc = "The enhanced Flex-V2 adds more memory and extends \
 		the frequency ceiling while maintaining the signature \
 		wide operating range. Ideal for adaptive systems."
+	icon_state = "dark_purple"
 
 	ram_size = 262144 // 256 KB
 	target_frequency = 2000000 // 2 MHz default
