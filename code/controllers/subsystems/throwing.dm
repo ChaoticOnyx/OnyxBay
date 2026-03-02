@@ -70,6 +70,7 @@ SUBSYSTEM_DEF(throwing)
 	src.maxrange = range
 	src.speed = speed
 	src.thrower = thrower
+	src.launcher = launcher
 	src.callback = callback
 	if(!QDELETED(thrower))
 		src.target_zone = thrower.zone_sel ? thrower.zone_sel.selecting : null
@@ -99,8 +100,8 @@ SUBSYSTEM_DEF(throwing)
 	thrownthing = null
 	target = null
 	thrower = null
-	callback = null
 	launcher = null
+	callback = null
 	return ..()
 
 /datum/thrownthing/proc/tick()

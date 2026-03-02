@@ -26,7 +26,6 @@
 /obj/item/arrow/post_launched()
 	..()
 	throw_spin = TRUE
-	icon = 'icons/obj/weapons.dmi'
 	icon_state = initial(icon_state)
 
 /obj/item/spike
