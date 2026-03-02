@@ -167,7 +167,7 @@
 			for(var/eye in seenby)
 				var/mob/observer/eye/m = eye
 				if(m?.owner)
-					m.owner.ad_client_image(obfuscation_image)
+					m.owner.add_client_image(obfuscation_image)
 
 	dirty = FALSE
 	updating = FALSE
