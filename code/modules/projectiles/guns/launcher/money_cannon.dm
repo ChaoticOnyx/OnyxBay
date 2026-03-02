@@ -56,11 +56,11 @@
 
 /obj/item/gun/launcher/money/update_release_force()
 	if(!emagged)
-		release_force = 0
+		release_force = 1
 		return
 
 	// Must launch at least 100 credits to incur damage.
-	release_force = dispensing / 100
+	release_force = clamp(dispensing / 100, 1, 10)
 
 /obj/item/gun/launcher/money/proc/unload_receptacle(mob/user)
 	if(receptacle_value < 1)
