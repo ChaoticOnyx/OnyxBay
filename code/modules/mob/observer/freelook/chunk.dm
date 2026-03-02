@@ -104,14 +104,14 @@
 /datum/chunk/proc/add_eye(mob/observer/eye/eye)
 	seenby += eye
 	eye.visibleChunks += src
-	if(eye.owner && eye.owner.client)
+	if(eye.owner)
 		for(var/image/I in obscured)
 			eye.owner.add_client_image(I)
 
 /datum/chunk/proc/remove_eye(mob/observer/eye/eye)
 	seenby -= eye
 	eye.visibleChunks -= src
-	if(eye.owner && eye.owner.client)
+	if(eye.owner)
 		for(var/image/I in obscured)
 			eye.owner.remove_client_image(I)
 
@@ -167,7 +167,7 @@
 			for(var/eye in seenby)
 				var/mob/observer/eye/m = eye
 				if(m?.owner)
-					m.owner.remove_client_image(obfuscation_image)
+					m.owner.ad_client_image(obfuscation_image)
 
 	dirty = FALSE
 	updating = FALSE

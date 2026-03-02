@@ -217,9 +217,9 @@ var/list/ventcrawl_machinery = list(
 
 /mob/living/proc/remove_ventcrawl()
 	is_ventcrawling = 0
+	for(var/image/current_image in pipes_shown)
+		remove_client_image(current_image)
 	if(client)
-		for(var/image/current_image in pipes_shown)
-			remove_client_image(current_image)
 		client.eye = src
 
 	pipes_shown.len = 0

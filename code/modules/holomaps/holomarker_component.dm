@@ -109,7 +109,7 @@
 		animate(holomap_base, alpha = 0, time = 5, easing = LINEAR_EASING)
 
 	for(var/image/I in holomap_images)
-		activator?.remove_client_image(holomap_images)
+		activator?.remove_client_image(I)
 	spawn(5)
 		activator?.remove_client_image(holomap_base)
 
@@ -133,7 +133,7 @@
 	handle_markers()
 
 	for(var/image/I in holomap_images)
-		activator.add_client_image(holomap_images)
+		activator.add_client_image(I)
 
 	set_next_think(world.time + 1 SECOND)
 
