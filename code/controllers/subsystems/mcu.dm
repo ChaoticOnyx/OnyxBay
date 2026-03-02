@@ -24,10 +24,6 @@ SUBSYSTEM_DEF(mcu)
 	//        WARNING if consistently > LB
 	// LB  - Last Budget: max allowed host time for last tick (microseconds)
 	//        = delta_us * BUDGET_PERCENT / 100
-	// LMSR - Last Machines Served: CPUs that got execution time last tick
-	//        LOW value = starvation, some CPUs are not getting time
-	// LMST - Last Machines Starved: CPUs that were skipped due to budget exhaustion
-	//        ANY non-zero value = overloaded, consider reducing frequencies
 	// LOAD - Load Average: exponential moving average of (LW / LB)
 	//        < 0.3  = idle, plenty of headroom
 	//        0.3-0.7 = healthy
@@ -35,8 +31,6 @@ SUBSYSTEM_DEF(mcu)
 	//        > 0.9  = critical, machines are starving
 	var/msg = "LW:[stats["last_wall_us"]]us "
 	msg += "LB:[stats["last_budget_us"]]us "
-	msg += "LMSR:[stats["last_machines_served"]] "
-	msg += "LMST:[stats["last_machines_starved"]] "
 	msg += "LOAD:[stats["load_avg"]]"
 
 	..(msg)
