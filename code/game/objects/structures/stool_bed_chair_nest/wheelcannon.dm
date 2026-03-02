@@ -196,7 +196,7 @@
 		O.dir = dir // It's dumb, but it works. Kinda.
 		var/turf/target = pick(target_turfs)
 		var/atom/target_atom = safepick(target.contents)
-		O.throw_at(istype(target_atom) ? target_atom : target, world.view, 1, usr ? usr : src, src, pick(BP_ALL_LIMBS), throwforce)
+		O.throw_at(istype(target_atom) ? target_atom : target, world.view, min(throwforce, 3), ismob(usr) ? usr : null)
 
 	var/turf/recoil_turf = get_step(get_turf(src), GLOB.flip_dir[dir])
 	if(!istype(recoil_turf))
@@ -204,7 +204,7 @@
 
 	if(pulling)
 		var/turf/pulling_recoil_turf = get_step(recoil_turf, GLOB.flip_dir[dir])
-		pulling.throw_at(istype(pulling_recoil_turf) ? pulling_recoil_turf : recoil_turf, world.view, 1, src, src)
+		pulling.throw_at(istype(pulling_recoil_turf) ? pulling_recoil_turf : recoil_turf, world.view, 1)
 		pulling.pulledby = null
 		pulling = null
 

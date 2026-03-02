@@ -35,6 +35,6 @@
 	update_release_force(projectile)
 	projectile.forceMove(get_turf(user))
 	projectile.dir = user.dir // It's dumb, but it works. Kinda.
-	projectile.throw_at(target, throw_distance, 1, user, src)
+	projectile.throw_at(target, throw_distance, release_force, user, launcher = src)
 	play_fire_sound(user,projectile)
 	return 1

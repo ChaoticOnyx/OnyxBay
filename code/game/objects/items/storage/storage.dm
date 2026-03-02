@@ -371,7 +371,7 @@
 	W.add_fingerprint(user)
 	return handle_item_insertion(W)
 
-/obj/item/storage/throw_at(atom/target, range, speed = throw_speed, atom/thrower, thrown_with, target_zone, launched_div)
+/obj/item/storage/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, obj/launcher, datum/callback/callback)
 	if(ismob(thrower))
 		close(thrower)
 	return ..()

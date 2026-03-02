@@ -59,10 +59,9 @@ SUBSYSTEM_DEF(throwing)
 	var/paused = FALSE
 	var/delayed_time = 0
 	var/last_move = 0
+	var/obj/launcher
 
-	var/thrown_with
-
-/datum/thrownthing/New(atom/movable/thrownthing, atom/target, range, speed, mob/thrower, datum/callback/callback)
+/datum/thrownthing/New(atom/movable/thrownthing, atom/target, range, speed, mob/thrower, obj/launcher, datum/callback/callback)
 	..()
 	src.thrownthing = thrownthing
 	src.target = target
@@ -101,6 +100,7 @@ SUBSYSTEM_DEF(throwing)
 	target = null
 	thrower = null
 	callback = null
+	launcher = null
 	return ..()
 
 /datum/thrownthing/proc/tick()
@@ -158,6 +158,10 @@ SUBSYSTEM_DEF(throwing)
 	//done throwing, either because it hit something or it finished moving
 	if(QDELETED(thrownthing))
 		return
+
+	if(launcher)
+		thrownthing.post_launched()
+
 	thrownthing.throwing = null
 	if (!hit)
 		for(var/thing in get_turf(thrownthing)) // looking for our target on the turf we land on.

@@ -107,7 +107,6 @@
 	w_class = ITEM_SIZE_GARGANTUAN // Jesus no
 	force = 12.5
 	throwforce = 10.0
-	throw_speed = 2
 	throw_range = 4
 	mod_weight = 1.25
 	mod_reach = 1.15

@@ -145,7 +145,7 @@
 	if(istype(hit_atom) && !QDELETED(hit_atom))
 		hit_atom.hitby(src, TT)
 
-/atom/movable/proc/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, datum/callback/callback) //If this returns FALSE then callback will not be called.
+/atom/movable/proc/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, obj/launcher, datum/callback/callback) //If this returns FALSE then callback will not be called.
 	. = TRUE
 	if(!target || QDELETED(src) || (target.z != z))
 		return FALSE
@@ -162,7 +162,10 @@
 	if(!speed)
 		speed = throw_speed
 
-	var/datum/thrownthing/TT = new(src, target, range, speed, thrower, callback)
+	if(launcher)
+		pre_launched()
+
+	var/datum/thrownthing/TT = new(src, target, range, speed, thrower, launcher, callback)
 	throwing = TT
 
 	pixel_z = 0

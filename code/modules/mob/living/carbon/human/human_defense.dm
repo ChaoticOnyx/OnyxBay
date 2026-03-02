@@ -924,14 +924,14 @@ meteor_act
 		return
 
 	var/obj/O = AM
-	if(in_throw_mode && !incapacitated() && isturf(O.loc) && TT.speed >= THROWFORCE_SPEED_DIVISOR) // we're in throw mode and have an empty hand
+	if(in_throw_mode && !incapacitated() && isturf(O.loc) && TT.speed <= THROWFORCE_SPEED_DIVISOR) // we're in throw mode and have an empty hand
 		if(put_in_active_hand(O) || put_in_inactive_hand(O))
 			visible_message(SPAN("warning", "[src] catches [O]!"))
 			throw_mode_off()
 			return
 
 	var/dtype = O.damtype
-	var/throw_damage = O.throwforce * (TT.speed/THROWFORCE_SPEED_DIVISOR)
+	var/throw_damage = O.throwforce * (TT.speed / THROWFORCE_SPEED_DIVISOR)
 
 	if(blocking)
 		// Choosing the best shield
