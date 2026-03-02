@@ -365,7 +365,7 @@
 			append_payload_chunk(payload_id, payload["chunk"])
 			send_message("acknowlegePayloadChunk", list("id" = payload_id))
 			return
-			
+
 /datum/tgui_window/proc/create_oversized_payload(payload_id, message_type, chunk_count)
 	if(oversized_payloads[payload_id])
 		CRASH("Attempted to create oversized tgui payload with duplicate ID.")
@@ -381,7 +381,7 @@
 
 	try_add_think_ctx(
 		ctx_name,
-		CALLBACK(src, CALLBACK(src, .proc/remove_oversized_payload), payload_id),
+		CALLBACK(src, CALLBACK(src, nameof(.proc/remove_oversized_payload)), payload_id),
 		1 SECONDS
 	)
 
