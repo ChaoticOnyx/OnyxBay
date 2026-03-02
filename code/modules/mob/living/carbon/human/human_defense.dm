@@ -992,11 +992,12 @@ meteor_act
 	play_hitby_sound(AM)
 
 	var/armor
+	var/effective_armor_penetration = max(O.armor_penetration, TT.speed * 10)
 	if(istype(O, /obj/item))
 		var/obj/item/I = O
-		armor = run_armor_check(affecting, I.check_armour, O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].")
+		armor = run_armor_check(affecting, I.check_armour, effective_armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].")
 	else
-		armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+		armor = run_armor_check(affecting, "melee", effective_armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
 
 	if(armor < 100)
 		var/damage_flags = O.damage_flags()
