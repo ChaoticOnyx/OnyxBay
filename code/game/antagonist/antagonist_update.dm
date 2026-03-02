@@ -21,10 +21,11 @@
 		player.set_id_info(id)
 
 /datum/antagonist/proc/clear_indicators(datum/mind/recipient)
-	if(!recipient.current || !recipient.current.client)
+	if(!recipient.current)
 		return
-	for(var/image/I in recipient.current.client.images)
+	for(var/image/I in recipient.current.client_images)
 		if(I.icon_state == antag_indicator || (faction_indicator && I.icon_state == faction_indicator))
+			recipient.current.remove_client_image(I)
 			qdel(I)
 
 /datum/antagonist/proc/get_indicator(datum/mind/recipient, datum/mind/other)
@@ -41,8 +42,8 @@
 		if(faction_invisible && (antag in faction_members))
 			continue
 		for(var/datum/mind/other_antag in current_antagonists)
-			if(antag.current && antag.current.client)
-				antag.current.client.images |= get_indicator(antag, other_antag)
+			if(antag.current)
+				antag.current.add_client_image(get_indicator(antag, other_antag))
 
 /datum/antagonist/proc/update_icons_added(datum/mind/player)
 	if(!antag_indicator || !player.current)
@@ -53,12 +54,11 @@
 		for(var/datum/mind/antag in current_antagonists)
 			if(!antag.current)
 				continue
-			if(antag.current.client)
-				antag.current.client.images |= get_indicator(antag, player)
+			antag.current.add_client_image(get_indicator(antag, player))
 			if(!give_to_player)
 				continue
-			if(player.current.client)
-				player.current.client.images |= get_indicator(player, antag)
+			if(player.current)
+				player.current.add_client_image(get_indicator(player, antag))
 
 /datum/antagonist/proc/update_icons_removed(datum/mind/player)
 	if(!antag_indicator || !player.current)
@@ -68,8 +68,9 @@
 		if(player.current && player.current.client)
 			for(var/datum/mind/antag in current_antagonists)
 				if(antag.current && antag.current.client)
-					for(var/image/I in antag.current.client.images)
+					for(var/image/I in antag.current.client_images)
 						if(I.loc == player.current)
+							antag.current.remove_client_image(I)
 							qdel(I)
 
 /datum/antagonist/proc/update_current_antag_max(datum/game_mode/mode)

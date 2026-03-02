@@ -27,8 +27,8 @@ var/decl/appearance_manager/appearance_manager = new()
 /decl/appearance_manager/proc/remove_appearance(mob/viewer, datum/appearance_data/ad, refresh_images)
 	var/datum/priority_queue/pq = appearances_[viewer]
 	pq.Remove(ad)
-	if(viewer.client)
-		viewer.client.images -= ad.images
+	for(var/image/I in ad.images)
+		viewer.remove_client_image(I)
 	if(!pq.Length())
 		unregister_signal(viewer, SIGNAL_LOGGED_IN)
 		unregister_signal(viewer, SIGNAL_QDELETING)
@@ -53,7 +53,8 @@ var/decl/appearance_manager/appearance_manager = new()
 		return
 	for(var/entry in pq.L)
 		var/datum/appearance_data/ad = entry
-		viewer.client.images -= ad.images
+		for(var/image/I in ad.images)
+			viewer.remove_client_image(I)
 
 /decl/appearance_manager/proc/apply_appearance_images(mob/viewer)
 	if(!viewer.client)
@@ -63,4 +64,5 @@ var/decl/appearance_manager/appearance_manager = new()
 		return
 	for(var/entry in pq.L)
 		var/datum/appearance_data/ad = entry
-		viewer.client.images |= ad.images
+		for(var/image/I in ad.images)
+			viewer.add_client_image(I)
