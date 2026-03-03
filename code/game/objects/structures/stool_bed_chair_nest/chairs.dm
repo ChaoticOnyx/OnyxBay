@@ -141,6 +141,17 @@
 		qdel(src)
 	..()
 
+/obj/item/foldchair/on_update_icon()
+	ClearOverlays()
+	if(!material)
+		return
+	color = material.icon_colour
+	if(padding_material)
+		var/image/I = image('icons/obj/furniture.dmi', "[icon_state]_padding")
+		I.appearance_flags |= RESET_COLOR
+		I.color = padding_material.icon_colour
+		AddOverlays(I)
+
 /obj/structure/bed/chair/MouseDrop(over_object, src_location, over_location)
 	..()
 	if(foldable && (over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
@@ -186,6 +197,7 @@
 		O.add_fingerprint(user)
 	O.material = material
 	O.padding_material = padding_material
+	O.update_icon()
 	QDEL_IN(src, 0)
 
 /* ====================================================== */
