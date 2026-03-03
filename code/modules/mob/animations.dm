@@ -156,7 +156,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 			pixel_x_diff = -8
 			pixel_y_diff = -8
 
-	animate(src, pixel_x = pixel_x_diff, pixel_y = pixel_y_diff, time = 2, tag = MOB_ANIM_ATTACK, flags = ANIMATION_RELATIVE)
+	animate(src, pixel_x = pixel_x_diff, pixel_y = pixel_y_diff, time = 2, tag = MOB_ANIM_ATTACK, flags = ANIMATION_RELATIVE|ANIMATION_END_NOW)
 	animate(pixel_x = -pixel_x_diff, pixel_y = -pixel_y_diff, time = 2, flags = ANIMATION_RELATIVE)
 
 /mob/do_attack_animation(atom/A)
@@ -166,13 +166,10 @@ note dizziness decrements automatically in the mob's Life() proc.
 	var/image/I
 	var/obj/item/W = get_clicking_hand()
 	if(istype(W)) // Attacked with item in left hand.
-		I = image(W, A, W.icon_state, A.layer + 1)
+		I = W.get_ghost_image(A)
 	else // Attacked with a fist?
 		return
 
-	// Scale the icon.
-	I.SetTransform(scale = 0.75)
-	I.appearance_flags |= RESET_COLOR
 	// Set the direction of the icon animation.
 	var/direction = get_dir(src, A)
 	if(direction & NORTH)
@@ -189,14 +186,16 @@ note dizziness decrements automatically in the mob's Life() proc.
 		I.pixel_z = 16
 
 	// Who can see the attack?
+	I.loc = A
 	var/list/viewing = list()
-	for (var/mob/M in viewers(A))
-		if (M.client)
+	for(var/mob/M in viewers(A))
+		if(M.client)
 			viewing |= M.client
 	flick_overlay(I, viewing, 5) // 5 ticks/half a second
 
 	// And animate the attack!
 	animate(I, alpha = 175, pixel_x = 0, pixel_y = 0, pixel_z = 0, time = 3)
+	animate(alpha = 0, time = 2)
 
 /mob/proc/spin(spintime, speed)
 	if(!spintime || !speed)

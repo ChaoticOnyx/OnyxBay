@@ -383,3 +383,10 @@
 
 /atom/movable/proc/get_mass()
 	return 1.5
+
+/atom/movable/proc/get_ghost_image(atom/target)
+	var/image/I = image(src, null, layer = target.layer + 1)
+	I.SetTransform(scale = 0.75)
+	I.appearance_flags |= RESET_COLOR|KEEP_APART
+	I.alpha = 128
+	return I

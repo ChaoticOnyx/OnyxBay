@@ -149,6 +149,17 @@
 		if(injoverlay)
 			AddOverlays(injoverlay)
 
+/obj/item/reagent_containers/syringe/get_ghost_image(atom/target)
+	var/rounded_vol = clamp(0, round((reagents.total_volume / reagents.maximum_volume) * STANDARD_SYRINGE_MAX_VOLUME, STANDARD_SYRINGE_MAX_VOLUME/ 3 ), STANDARD_SYRINGE_MAX_VOLUME)
+	var/image/I = image(icon, null, "[rounded_vol]", target.layer + 1)
+	I.appearance_flags |= RESET_COLOR|KEEP_APART
+	I.alpha = 128
+	if(reagents.total_volume)
+		var/image/filling = image('icons/obj/reagentfillings.dmi', src, "syringe[rounded_vol]")
+		filling.color = reagents.get_color()
+		I.overlays += filling
+	return I
+
 /obj/item/reagent_containers/syringe/proc/handleTarget(atom/target, mob/user)
 	switch(mode)
 		if(SYRINGE_DRAW)
