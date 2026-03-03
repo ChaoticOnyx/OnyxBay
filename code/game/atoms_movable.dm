@@ -385,7 +385,13 @@
 	return 1.5
 
 /atom/movable/proc/get_ghost_image(atom/target)
+	var/_pixel_x = pixel_x
+	var/_pixel_y = pixel_y
+	pixel_x = 0
+	pixel_y = 0
 	var/image/I = image(src, null, layer = target.layer + 1)
+	pixel_x = _pixel_x
+	pixel_y = _pixel_y
 	I.SetTransform(scale = 0.75)
 	I.appearance_flags |= RESET_COLOR|KEEP_APART
 	I.alpha = 128
