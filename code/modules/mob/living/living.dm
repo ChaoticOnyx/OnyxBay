@@ -82,14 +82,22 @@
 		throwing.hit_atom(AM)
 		return
 
+	if(now_pushing)
+		return
+
+	if(!yes)
+		return TRUE
+
 	var/was_moving_diagonally = moving_diagonally // apparently it gets lost during the two spawns
+
+	if(!istype(AM, /mob/living/bot/mulebot))
+		now_pushing = 1
 
 	spawn(0)
 		if(!yes || QDELETED(src) || QDELETED(AM) || !loc || !AM.loc)
+			now_pushing = 0
 			return
 
-		if(!istype(AM, /mob/living/bot/mulebot))
-			now_pushing = 1
 		if (istype(AM, /mob/living))
 			var/mob/living/tmob = AM
 
