@@ -9,6 +9,7 @@ SUBSYSTEM_DEF(mcu)
 	var/last_fire_time = 0
 	var/budget_percent = 10
 	var/total_running = 0
+	var/total_mcu = 0
 
 /datum/controller/subsystem/mcu/Initialize()
 	for(var/F in flist("[MCU_TMP_FOLDER]/elf/"))
@@ -31,7 +32,9 @@ SUBSYSTEM_DEF(mcu)
 	//        > 0.9  = critical, machines are starving
 	var/msg = "LW:[stats["last_wall_us"]]us "
 	msg += "LB:[stats["last_budget_us"]]us "
-	msg += "LOAD:[stats["load_avg"]]"
+	msg += "LOAD:[stats["load_avg"]] "
+	msg += "TR:[total_running] "
+	msg += "TM:[total_mcu]"
 
 	..(msg)
 

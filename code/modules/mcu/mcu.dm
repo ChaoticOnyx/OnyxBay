@@ -46,7 +46,7 @@
 	icon_state = "green"
 	w_class = ITEM_SIZE_TINY
 
-	var/id = 0
+	var/id = null
 	var/ram_size = 65536 // 64 KB
 	/// User-set frequency. Hz
 	var/target_frequency = 1000000 // 1 MHz
@@ -109,24 +109,13 @@
 	ASSERT(pci_slots <= Z_MAX_PCI_DEVICES)
 	ASSERT(pci_slots >= 0)
 
-	id = Z_MACHINE_CREATE(src)
-
-	if(id == null)
-		CRASH("Failed to create a MCU: [Z_GET_LAST_ERROR()]")
-
-	// TODO: add a reset proc
-	ASSERT(Z_MACHINE_SET_SHIFT_ID(id, game_id) == TRUE)
-	ASSERT(Z_MACHINE_SET_FREQUENCY(id, initial(target_frequency)) == TRUE)
-	ASSERT(Z_MACHINE_SET_RAM_SIZE(id, ram_size) == TRUE)
-	ASSERT(Z_MACHINE_SET_POST_TICK_PROC(id, nameof(.proc/__post_tick)) == TRUE)
-	ASSERT(Z_MACHINE_SET_TRAP_PROC(id, nameof(.proc/__trap)) == TRUE)
-	ASSERT(Z_MACHINE_SET_SYSCALL_PROC(id, nameof(.proc/__syscall)) == TRUE)
-
 	__pci_devices = new /list(pci_slots)
 
 /obj/item/device/mcu/Destroy()
-	power_off()
-	Z_MACHINE_DESTROY(id)
+	if(id)
+		SSmcu.total_mcu -= 1
+		power_off()
+		Z_MACHINE_DESTROY(id)
 
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(!QDELETED(M))
@@ -137,8 +126,37 @@
 
 	. = ..()
 
+/obj/item/device/mcu/proc/__try_init(mob/activator = null)
+	if(id)
+		return TRUE
+
+	if(!config.mcu.enable || SSmcu.total_mcu >= config.mcu.hardcap)
+		return FALSE
+
+	SSmcu.total_mcu += 1
+	id = Z_MACHINE_CREATE(src)
+
+	if(!id)
+		CRASH("Failed to create a MCU: [Z_GET_LAST_ERROR()]")
+
+	if(activator != null)
+		log_debug("[activator] ([activator.ckey]) triggered creation of a machine [id]")
+
+	// TODO: add a reset proc
+	ASSERT(Z_MACHINE_SET_SHIFT_ID(id, game_id) == TRUE)
+	ASSERT(Z_MACHINE_SET_FREQUENCY(id, initial(target_frequency)) == TRUE)
+	ASSERT(Z_MACHINE_SET_RAM_SIZE(id, ram_size) == TRUE)
+	ASSERT(Z_MACHINE_SET_POST_TICK_PROC(id, nameof(.proc/__post_tick)) == TRUE)
+	ASSERT(Z_MACHINE_SET_TRAP_PROC(id, nameof(.proc/__trap)) == TRUE)
+	ASSERT(Z_MACHINE_SET_SYSCALL_PROC(id, nameof(.proc/__syscall)) == TRUE)
+
+	return TRUE
+
 /obj/item/device/mcu/examine(mob/user, infix)
 	. = ..()
+
+	if(!__try_init(user))
+		return
 
 	if(user.Adjacent(src))
 		if(broken)
@@ -212,6 +230,9 @@
 			. += "A small LED is off."
 
 /obj/item/device/mcu/attackby(obj/item/W, mob/user)
+	if(!__try_init(user))
+		return ..()
+
 	if(istype(W, /obj/item/jtag_programmer))
 		if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_STOPPED)
 			to_chat(user, SPAN_WARNING("The MCU must be powered off before programming."))
@@ -397,6 +418,9 @@
 	return ..()
 
 /obj/item/device/mcu/attack_self(mob/user as mob)
+	if(!__try_init(user))
+		return ..()
+
 	for(var/i = 1 to pci_slots)
 		var/obj/item/mcu_module/M = __pci_devices[i]
 
@@ -410,6 +434,9 @@
 	ASSERT(M.device_type > 0)
 	ASSERT(M.__pci_slot == null)
 	ASSERT(M.__host == null)
+
+	if(!__try_init(activator))
+		return FALSE
 
 	var/has_slots = FALSE
 	for(var/i = 1 to pci_slots)
@@ -575,7 +602,7 @@
 /// Power calculation uses EFFECTIVE frequency (what actually runs).
 /// but OC penalty based on TARGET (what player set).
 /obj/item/device/mcu/proc/calculate_power(util)
-	if(id == 0)
+	if(!id)
 		return 0
 
 	if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
@@ -642,7 +669,7 @@
 
 		return FALSE
 
-	if(!config.mcu.enable || SSmcu.total_running >= config.mcu.hardcap)
+	if(!__try_init(activator) || !config.mcu.enable || SSmcu.total_running >= config.mcu.hardcap)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("Some indescribable force is preventing the board from starting."))
 
@@ -707,7 +734,7 @@
 	throttled = FALSE
 	sustained_full_ticks = 0
 
-	if(Z_MACHINE_GET_STATE(id) == Z_MSTATE_STOPPED)
+	if(!id || Z_MACHINE_GET_STATE(id) == Z_MSTATE_STOPPED)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("The CPU is not turned on."))
 
@@ -729,7 +756,7 @@
 	throttled = FALSE
 	sustained_full_ticks = 0
 
-	if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
+	if(!id || Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
 		return
 
 	visible_message(SPAN_WARNING("[src] shuts down!"))
@@ -1006,7 +1033,8 @@
 
 	frequency = max(frequency, min_frequency)
 
-	Z_MACHINE_SET_FREQUENCY(id, frequency)
+	if(id)
+		Z_MACHINE_SET_FREQUENCY(id, frequency)
 
 /obj/item/device/mcu/verb/turn_on()
 	set src in view(1)
@@ -1043,7 +1071,7 @@
 
 	var/choice = input(usr, "Select a PCI module to remove:", "Remove PCI Module") as null|anything in module_names
 
-	if(isnull(choice) || !usr.Adjacent(src))
+	if(!choice || !usr.Adjacent(src))
 		return
 
 	var/obj/item/mcu_module/selected_module = module_names[choice]
@@ -1056,7 +1084,7 @@
 	try_detach_pci_module(__pci_devices[slot])
 
 /obj/item/device/mcu/proc/try_detach_pci_module(obj/item/mcu_module/M, mob/activator = null)
-	if(QDELETED(M) || M.__pci_slot == null)
+	if(!id || QDELETED(M) || M.__pci_slot == null)
 		return FALSE
 
 	__pci_devices[M.__pci_slot + 1] = null
