@@ -23,6 +23,8 @@
 	pickup_sound = SFX_PICKUP_PILLBOTTLE
 	drop_sound = SFX_DROP_PILLBOTTLE
 
+	inspect_state = TRUE
+
 /obj/item/storage/pill_bottle/Initialize()
 	. = ..()
 	update_icon()

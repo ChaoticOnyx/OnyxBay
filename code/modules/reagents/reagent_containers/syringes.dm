@@ -22,7 +22,7 @@
 	var/mode = SYRINGE_DRAW
 	var/image/filling //holds a reference to the current filling overlay
 	var/visible_name = "a syringe"
-	var/time = 25
+	var/time = 2.5 SECONDS
 	var/stabby = TRUE
 	var/starting_label = null
 	var/package_state = "package"
@@ -120,7 +120,7 @@
 	SetTransform(rotation = istype(loc, /obj/item/storage) ? 90 : 0)
 
 	if(mode == SYRINGE_BROKEN)
-		icon_state = "[base_icon_state]b"
+		icon_state = "[base_icon_state]-b"
 		return
 
 	var/rounded_vol = clamp(round((reagents.total_volume / reagents.maximum_volume) * STANDARD_SYRINGE_MAX_VOLUME, STANDARD_SYRINGE_MAX_VOLUME/ 3 ), 0, STANDARD_SYRINGE_MAX_VOLUME)
@@ -129,10 +129,7 @@
 	item_state = "syringe_[rounded_vol]"
 
 	if(reagents.total_volume)
-		filling = image('icons/obj/reagentfillings.dmi', src)
-
-		filling.icon_state = "[base_icon_state][rounded_vol]"
-
+		filling = image(icon, src, "[base_icon_state]-filling[rounded_vol]")
 		filling.color = reagents.get_color()
 		AddOverlays(filling)
 
@@ -156,7 +153,7 @@
 	I.appearance_flags |= RESET_COLOR|KEEP_APART
 	I.alpha = 128
 	if(reagents.total_volume)
-		var/image/filling = image('icons/obj/reagentfillings.dmi', src, "[base_icon_state][rounded_vol]")
+		var/image/filling = image(icon, src, "[base_icon_state]-filling[rounded_vol]")
 		filling.color = reagents.get_color()
 		I.overlays += filling
 	return I
@@ -421,6 +418,41 @@
 		update_icon()
 
 ////////////////////////////////////////////////////////////////////////////////
+/// Subtypes
+////////////////////////////////////////////////////////////////////////////////
+
+/obj/item/reagent_containers/syringe/mini
+	name = "small syringe"
+	desc = "A small syringe."
+	icon_state = "mini_syringe0"
+	base_icon_state = "mini_syringe"
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10"
+	volume = 10
+	visible_name = "a small syringe"
+	time = 1.5 SECONDS
+
+////////////////////////////////////////////////////////////////////////////////
+/obj/item/reagent_containers/syringe/ld50_syringe
+	name = "Lethal Injection Syringe"
+	desc = "A syringe used for lethal injections."
+	amount_per_transfer_from_this = 60
+	mode = SYRINGE_INJECT
+	volume = 60
+	visible_name = "a giant syringe"
+	time = 30 SECONDS
+
+/obj/item/reagent_containers/syringe/ld50_syringe/syringestab(mob/living/carbon/target, mob/living/carbon/user)
+	to_chat(user, SPAN_NOTICE("This syringe is too big to stab someone with it."))
+	return // No instant injecting
+
+/obj/item/reagent_containers/syringe/ld50_syringe/drawReagents(target, mob/user)
+	if(ismob(target)) // No drawing 60 ml of blood at once
+		to_chat(user, SPAN_NOTICE("This needle isn't designed for drawing blood."))
+		return
+	..()
+
+////////////////////////////////////////////////////////////////////////////////
 /// Presets
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -488,25 +520,6 @@
 	mode = SYRINGE_PACKAGED
 
 ////////////////////////////////////////////////////////////////////////////////
-/obj/item/reagent_containers/syringe/ld50_syringe
-	name = "Lethal Injection Syringe"
-	desc = "A syringe used for lethal injections."
-	amount_per_transfer_from_this = 60
-	mode = SYRINGE_INJECT
-	volume = 60
-	visible_name = "a giant syringe"
-	time = 300
-
-/obj/item/reagent_containers/syringe/ld50_syringe/syringestab(mob/living/carbon/target, mob/living/carbon/user)
-	to_chat(user, SPAN_NOTICE("This syringe is too big to stab someone with it."))
-	return // No instant injecting
-
-/obj/item/reagent_containers/syringe/ld50_syringe/drawReagents(target, mob/user)
-	if(ismob(target)) // No drawing 60 ml of blood at once
-		to_chat(user, SPAN_NOTICE("This needle isn't designed for drawing blood."))
-		return
-	..()
-
 /obj/item/reagent_containers/syringe/ld50_syringe/choral
 	startswith = list(/datum/reagent/chloralhydrate)
 
