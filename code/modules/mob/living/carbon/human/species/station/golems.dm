@@ -483,6 +483,7 @@
 	special_names = null
 	fixed_mut_color = null
 	icobase = 'icons/mob/human_races/golems/r_cult.dmi'
+	fixed_skin_tone = null
 
 
 /datum/species/golem/runic/get_random_name(gender)
@@ -659,6 +660,7 @@
 	special_names = list("Bell")
 	info_text = "As a <span class='danger'>Bronze Golem</span>, you are very resistant to loud noises, and make loud noises if something hard hits you, however this ability does hurt your hearing."
 	icobase = 'icons/mob/human_races/golems/r_clock.dmi'
+	fixed_skin_tone = null
 
 /datum/species/golem/bronze/handle_post_spawn(mob/living/carbon/human/H)
 	. = ..()
@@ -716,6 +718,7 @@
 	prefix = "Cardboard"
 	special_names = list("Box")
 	icobase = 'icons/mob/human_races/golems/r_cardboard.dmi'
+	fixed_skin_tone = null
 	info_text = "As a <span class='danger'>Cardboard Golem</span>, you aren't very strong, but you are a bit quicker and can easily create more brethren by using cardboard on yourself. Cardboard makes a poor building material for tongues, so you'll have difficulty speaking."
 	fixed_mut_color = null
 	brute_mod = 0.85
