@@ -83,7 +83,7 @@
 
 	if(!QDELETED(throwing))
 		throwing.hit_atom(A)
-		, = TRUE
+		. = TRUE
 		if(QDELETED(A))
 			return
 

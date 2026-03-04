@@ -85,175 +85,151 @@
 	if(.) // We were thrown into something
 		return
 
+	if(!yes || now_pushing || QDELETED(src) || QDELETED(AM) || !loc || !AM.loc)
+		return
 
+	if(isliving(AM))
+		var/mob/living/pushed_mob = AM
 
-	var/was_moving_diagonally = moving_diagonally // apparently it gets lost during the two spawns
-
-	spawn(0)
-		if(!yes || now_pushing || QDELETED(src) || QDELETED(AM) || !loc || !AM.loc)
+		// Leaping mobs just land on the tile, no pushing, no anything.
+		if(status_flags & LEAPING)
+			forceMove(pushed_mob.loc)
+			status_flags &= ~LEAPING
 			return
 
-		now_pushing = 1
-
-		if(isliving(AM))
-			var/mob/living/pushed_mob = AM
-
-			// Leaping mobs just land on the tile, no pushing, no anything.
-			if(status_flags & LEAPING)
-				forceMove(pushed_mob.loc)
-				status_flags &= ~LEAPING
-				now_pushing = 0
+		// Checking for the pushed mob being restrained by somebody, or restraining somebody.
+		for(var/mob/living/M in range(pushed_mob, 1))
+			if((M.pulling == pushed_mob || LAZYISIN(pushed_mob.grabbed_by, M)) && pushed_mob.restrained() && !M.restrained() && !M.stat)
+				if(!(world.time % 5))
+					to_chat(src, SPAN("warning", "[pushed_mob] is restrained by [M], you cannot push past!"))
+				return
+			if((pushed_mob.pulling == M || LAZYISIN(M.grabbed_by, pushed_mob)) && M.restrained() && !pushed_mob.restrained() && !pushed_mob.stat)
+				if(!(world.time % 5))
+					to_chat(src, SPAN("warning", "[pushed_mob] is restraining [M], you cannot push past!"))
 				return
 
-			// Checking for the pushed mob being restrained by somebody, or restraining somebody.
-			for(var/mob/living/M in range(pushed_mob, 1))
-				if((M.pulling == pushed_mob || LAZYISIN(pushed_mob.grabbed_by, M)) && pushed_mob.restrained() && !M.restrained() && !M.stat)
-					if(!(world.time % 5))
-						to_chat(src, SPAN("warning", "[pushed_mob] is restrained by [M], you cannot push past!"))
-					now_pushing = 0
-					return
-				if((pushed_mob.pulling == M || LAZYISIN(M.grabbed_by, pushed_mob)) && M.restrained() && !pushed_mob.restrained() && !pushed_mob.stat)
-					if(!(world.time % 5))
-						to_chat(src, SPAN("warning", "[pushed_mob] is restraining [M], you cannot push past!"))
-					now_pushing = 0
-					return
+		// Trying to swap positions.
+		if(can_swap_with(pushed_mob))
+			if(moving_diagonally)
+				return
+			now_pushing = TRUE
+			var/turf/oldloc = loc
+			forceMove(pushed_mob.loc)
+			pushed_mob.forceMove(oldloc)
+			now_pushing = FALSE
+			// TODO: Handle latched metroids' movement with signals or something.
+			for(var/mob/living/carbon/metroid/metroid in view(1, pushed_mob))
+				if(metroid.Victim == pushed_mob)
+					metroid.UpdateFeed()
+			return
 
-			// Trying to swap positions.
-			if(can_swap_with(pushed_mob))
-				var/turf/oldloc = loc
-				forceMove(pushed_mob.loc)
-				pushed_mob.forceMove(oldloc)
-				now_pushing = 0
-				// TODO: Handle latched metroids' movement with signals or something.
-				for(var/mob/living/carbon/metroid/metroid in view(1, pushed_mob))
-					if(metroid.Victim == pushed_mob)
-						metroid.UpdateFeed()
+		// Checking if we can actually push the pushed mob.
+		if(!can_move_mob(pushed_mob, FALSE, FALSE))
+			return
+
+		// Can't push people around while restrained.
+		if(restrained())
+			return
+
+		// Additional prob() checks.
+		if(pushed_mob.a_intent != I_HELP)
+			// Pushing fat asses is difficult. TODO: Replace with fat bodybuild check.
+			if(ishuman(pushed_mob) && (MUTATION_FAT in pushed_mob.mutations) && !(MUTATION_FAT in mutations) && prob(40))
+				to_chat(src, SPAN("warning", "You fail to push [pushed_mob]'s fat ass out of the way."))
 				return
 
-			// Checking if we can actually push the pushed mob.
-			if(!can_move_mob(pushed_mob, FALSE, FALSE))
-				now_pushing = 0
+			// Pushing riot shields is even more difficult.
+			if((istype(pushed_mob.r_hand, /obj/item/shield/riot) || istype(pushed_mob.l_hand, /obj/item/shield/riot)) && prob(99))
 				return
 
-			// Can't push people around while restrained.
-			if(restrained())
-				now_pushing = 0
-				return
+		// Can't push the unpushable.
+		if(!(pushed_mob.status_flags & CANPUSH))
+			return
 
-			// Additional prob() checks.
-			if(pushed_mob.a_intent != I_HELP)
-				// Pushing fat asses is difficult. TODO: Replace with fat bodybuild check.
-				if(ishuman(pushed_mob) && (MUTATION_FAT in pushed_mob.mutations) && !(MUTATION_FAT in mutations) && prob(40))
-					to_chat(src, "<span class='danger'>You fail to push [pushed_mob]'s fat ass out of the way.</span>")
-					now_pushing = 0
-					return
+		// TODO: Check if we actually need this thing.
+		if(!iscarbon(src))
+			pushed_mob.LAssailant = null
+		else
+			pushed_mob.LAssailant = weakref(src)
 
-				// Pushing riot shields is even more difficult.
-				if((istype(pushed_mob.r_hand, /obj/item/shield/riot) || istype(pushed_mob.l_hand, /obj/item/shield/riot)) && prob(99))
-					now_pushing = 0
-					return
+	// Checking if the object is too big for us to move.
+	if(isobj(AM) && !AM.anchored)
+		var/obj/pushed_obj = AM
+		if(can_pull_size < pushed_obj.w_class)
+			to_chat(src, SPAN("warning", "\The [pushed_obj] won't budge!"))
+			return
 
-			// Can't push the unpushable.
-			if(!(pushed_mob.status_flags & CANPUSH))
-				now_pushing = 0
-				return
+	// Running into things.
+	if(!istype(AM, /atom/movable) || AM.anchored || AM.atom_flags & ATOM_FLAG_UNPUSHABLE)
+		if(confused && prob(50) && m_intent == M_RUN && !lying)
+			var/obj/machinery/disposal/D = AM
 
-			// TODO: Check if we actually need this thing.
-			if(!iscarbon(src))
-				pushed_mob.LAssailant = null
+			if(istype(D) && !(D.stat & BROKEN))
+				Weaken(6)
+				playsound(AM, 'sound/effects/clang.ogg', 75)
+				visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
+
+				if(client)
+					client.perspective = EYE_PERSPECTIVE
+					client.eye = src
+
+				forceMove(AM)
 			else
-				pushed_mob.LAssailant = weakref(src)
+				Weaken(2)
+				playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
+				visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
 
-		// Checking if the object is too big for us to move.
-		if(isobj(AM) && !AM.anchored)
-			var/obj/pushed_obj = AM
-			if(can_pull_size < pushed_obj.w_class)
-				to_chat(src, SPAN("warning", "\The [pushed_obj] won't budge!"))
-				now_pushing = 0
+			src.apply_damage(5, BRUTE)
+		return
+
+	// No
+	if(moving_diagonally)
+		return
+
+	var/saved_dir = AM.dir
+	var/push_dir = get_dir(src, AM)
+	now_pushing = TRUE
+
+	// Can't push identical "bordered" windows into each other.
+	if(istype(AM, /obj/structure/window))
+		var/obj/structure/window/pushed_window = AM
+		for(var/obj/structure/window/obstacle_window in get_step(AM, push_dir))
+			if(pushed_window.dir == obstacle_window.dir)
 				return
 
-		now_pushing = 0
+	// Pushing currently-pulled atoms causes them to be moved smoothly, without interrupting pulls.
+	var/pulled_pushing = (AM.pulledby == src && pulling == AM)
+	if(pulled_pushing)
+		step_glide(AM, push_dir, AM.glide_size)
+	else
+		step(AM, push_dir)
 
-		spawn(0)
-			if(QDELETED(src) || QDELETED(AM) || !loc || !AM.loc)
-				return
+	if(isliving(AM))
+		// Moving chairs, beds, etc. along with the pushed mob.
+		var/mob/living/pushed_mob = AM
+		if(istype(pushed_mob.buckled, /obj/structure/bed))
+			if(!pushed_mob.buckled.anchored)
+				step_glide(pushed_mob.buckled, push_dir, pushed_mob.buckled.glide_size)
 
-			// Calling Bumped(), emitting a signal.
-			..()
+		// Grabby stuff. TODO: Find out what the fuck.
+		if(ishuman(AM))
+			var/mob/living/carbon/human/pushed_human = AM
+			for(var/obj/item/grab/G in pushed_human.grabbed_by)
+				step(G.assailant, get_dir(G.assailant, pushed_human))
+				G.adjust_position()
 
-			var/saved_dir = AM.dir
+	// Reassigning the direction.
+	if(saved_dir)
+		AM.set_dir(saved_dir)
 
-			// Running into things.
-			if(!istype(AM, /atom/movable) || AM.anchored || AM.atom_flags & ATOM_FLAG_UNPUSHABLE)
-				if(confused && prob(50) && m_intent == M_RUN && !lying)
-					var/obj/machinery/disposal/D = AM
+	// Moving along the pull-pushed atom, and re-pulling it, unless it's on a different Z-level now.
+	if(pulled_pushing && AM.z == z)
+		step_glide(src, push_dir, glide_size)
+		if(pulling != AM)
+			start_pulling(AM, TRUE)
 
-					if(istype(D) && !(D.stat & BROKEN))
-						Weaken(6)
-						playsound(AM, 'sound/effects/clang.ogg', 75)
-						visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
-
-						if(client)
-							client.perspective = EYE_PERSPECTIVE
-							client.eye = src
-
-						forceMove(AM)
-					else
-						Weaken(2)
-						playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
-						visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
-
-					src.apply_damage(5, BRUTE)
-				return
-
-			// Finally, regular pushing.
-			if(!now_pushing && !was_moving_diagonally)
-				now_pushing = 1
-
-				var/push_dir = get_dir(src, AM)
-
-				// Can't push identical "bordered" windows into each other.
-				if(istype(AM, /obj/structure/window))
-					var/obj/structure/window/pushed_window = AM
-					for(var/obj/structure/window/obstacle_window in get_step(AM, push_dir))
-						if(pushed_window.dir == obstacle_window.dir)
-							now_pushing = 0
-							return
-
-				// Pushing currently-pulled atoms causes them to be moved smoothly, without interrupting pulls.
-				var/pulled_pushing = (AM.pulledby == src && pulling == AM)
-				if(pulled_pushing)
-					step_glide(AM, push_dir, AM.glide_size)
-				else
-					step(AM, push_dir)
-
-				if(isliving(AM))
-					// Moving chairs, beds, etc. along with the pushed mob.
-					var/mob/living/pushed_mob = AM
-					if(istype(pushed_mob.buckled, /obj/structure/bed))
-						if(!pushed_mob.buckled.anchored)
-							step_glide(pushed_mob.buckled, push_dir, pushed_mob.buckled.glide_size)
-
-					// Grabby stuff. TODO: Find out what the fuck.
-					if(ishuman(AM))
-						var/mob/living/carbon/human/pushed_human = AM
-						for(var/obj/item/grab/G in pushed_human.grabbed_by)
-							step(G.assailant, get_dir(G.assailant, pushed_human))
-							G.adjust_position()
-
-				// Reassigning the direction.
-				if(saved_dir)
-					AM.set_dir(saved_dir)
-
-				// Moving along the pull-pushed atom, and re-pulling it, unless it's on a different Z-level now.
-				if(pulled_pushing && AM.z == z)
-					step_glide(src, push_dir, glide_size)
-					if(pulling != AM)
-						start_pulling(AM, TRUE)
-
-				now_pushing = 0
-
-	return TRUE
+	now_pushing = FALSE
+	return
 
 /proc/swap_density_check(mob/swapper, mob/swapee)
 	var/turf/T = get_turf(swapper)
