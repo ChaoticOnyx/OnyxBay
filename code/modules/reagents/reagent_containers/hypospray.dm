@@ -109,7 +109,7 @@
 /obj/item/reagent_containers/hypospray/autoinjector
 	name = "autoinjector"
 	desc = "A rapid and safe way to administer small amounts of drugs by untrained or trained personnel."
-	icon_state = "blue1"
+	icon_state = "injector_blue"
 	item_state = "autoinjector"
 	amount_per_transfer_from_this = 15
 	volume = 15
@@ -117,7 +117,6 @@
 	atom_flags = null
 	startswith = list(/datum/reagent/inaprovaline)
 	var/content_desc = "Inaprovaline 15ml. Use to stabilize an injured person."
-	var/base_state = "blue"
 
 /obj/item/reagent_containers/hypospray/autoinjector/Initialize()
 	. = ..()
@@ -133,9 +132,9 @@
 
 /obj/item/reagent_containers/hypospray/autoinjector/on_update_icon()
 	if(reagents.total_volume > 0)
-		icon_state = "[base_state]1"
+		icon_state = initial(icon_state)
 	else
-		icon_state = "[base_state]0"
+		icon_state = "[initial(icon_state)]-used"
 
 /obj/item/reagent_containers/hypospray/autoinjector/examine(mob/user, infix)
 	. = ..()
@@ -146,76 +145,65 @@
 		. += SPAN_NOTICE("It is spent.")
 
 /obj/item/reagent_containers/hypospray/autoinjector/detox
-	icon_state = "green1"
+	icon_state = "injector_green"
 	content_desc = "Dylovene 15ml. Use in case of poisoning."
-	base_state = "green"
 	startswith = list(/datum/reagent/dylovene)
 
 /obj/item/reagent_containers/hypospray/autoinjector/tricordrazine
-	icon_state = "lightpurple1"
+	icon_state = "injector_lightpurple"
 	content_desc = "Tricordrazine 15ml. Use to speed up recovery from physical trauma."
-	base_state = "lightpurple"
 	startswith = list(/datum/reagent/tricordrazine)
 
 /obj/item/reagent_containers/hypospray/autoinjector/pain
-	icon_state = "purple1"
+	icon_state = "injector_purple"
 	content_desc = "Tramadol 15ml. Highly potent painkiller. Warning: Do Not Mix With Alcohol!"
-	base_state = "purple"
 	startswith = list(/datum/reagent/painkiller/tramadol)
 
 /obj/item/reagent_containers/hypospray/autoinjector/combatpain
-	icon_state = "black1"
+	icon_state = "injector_black"
 	content_desc = "Metazine 5ml. Used for immediate and temporary pain relief."
-	base_state = "black"
 	amount_per_transfer_from_this = 5
 	volume = 5
 	startswith = list(/datum/reagent/painkiller)
 
 /obj/item/reagent_containers/hypospray/autoinjector/mindbreaker
-	icon_state = "black1"
+	icon_state = "injector_black"
 	content_desc = ""
-	base_state = "black"
 	amount_per_transfer_from_this = 5
 	volume = 5
 	startswith = list(/datum/reagent/mindbreaker)
 
 /obj/item/reagent_containers/hypospray/autoinjector/antirad
-	icon_state = "orange1"
+	icon_state = "injector_orange"
 	content_desc = "Hyronalin 15ml. Use in case of radiation poisoning."
-	base_state = "orange"
 	startswith = list(/datum/reagent/hyronalin)
 
 /obj/item/reagent_containers/hypospray/autoinjector/antirad/mine
 	name = "Radfi-X"
 	desc = "A rapid way to administer a mix of radiation-purging drugs by untrained personnel. Severe radiation poisoning may require multiple doses."
 	content_desc = "#1 brand among uranium miners across the galaxy!"
-	icon_state = "mine1"
-	base_state = "mine"
+	icon_state = "injector_mine"
 	startswith = list(
 		/datum/reagent/arithrazine = 5,
 		/datum/reagent/hyronalin = 5,
 		/datum/reagent/dylovene = 5)
 
 /obj/item/reagent_containers/hypospray/autoinjector/dexalinp
-	icon_state = "darkblue1"
+	icon_state = "injector_darkblue"
 	content_desc = "Dexalin plus 15ml. Used for hypoxia. Increases oxygenation to almost 85%!"
-	base_state = "darkblue"
 	startswith = list(/datum/reagent/dexalinp)
 
 /obj/item/reagent_containers/hypospray/autoinjector/bicaridine
-	icon_state = "red1"
+	icon_state = "injector_red"
 	content_desc = "Bicaridine 15ml. Used to treat serious physical wounds."
-	base_state = "red"
 	startswith = list(/datum/reagent/bicaridine)
 
 /obj/item/reagent_containers/hypospray/autoinjector/dermaline
-	icon_state = "yellow1"
+	icon_state = "injector_yellow"
 	content_desc = "Dermaline 15ml. Used to treat burn wounds."
-	base_state = "yellow"
 	startswith = list(/datum/reagent/dermaline)
 
 /obj/item/reagent_containers/hypospray/autoinjector/adrenaline
-	icon_state = "pink1"
+	icon_state = "injector_pink"
 	content_desc = "Adrenaline 15ml. Used to treat cardiac arrest."
-	base_state = "pink"
 	startswith = list(/datum/reagent/adrenaline)
