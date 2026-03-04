@@ -21,4 +21,6 @@
 	return MOVEMENT_PROCEED
 
 /datum/movement_handler/robot/use_power/MayMove(mob/mover, is_external)
-	return (robot.lockcharge || !robot.is_component_functioning("actuator")) ? MOVEMENT_STOP : MOVEMENT_PROCEED
+	if(is_external || (!robot.lockcharge && !robot.incapacitated() && robot.is_component_functioning("actuator")))
+		return MOVEMENT_PROCEED
+	return MOVEMENT_STOP

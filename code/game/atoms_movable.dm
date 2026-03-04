@@ -73,19 +73,24 @@
 	return ..()
 
 /atom/movable/Bump(atom/A, yes)
-	if(!QDELETED(throwing))
-		throwing.hit_atom(A)
+	if(!A)
+		util_crash_with("Bump was called with no argument! Source: [src]")
 
 	if(inertia_dir)
 		inertia_dir = 0
 
-	if(A && yes)
+	. = ..()
+
+	if(!QDELETED(throwing))
+		throwing.hit_atom(A)
+		. = TRUE
+		if(QDELETED(A))
+			return
+
+	if(yes)
 		A.last_bumped = world.time
 		SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
 		INVOKE_ASYNC(A, nameof(.proc/Bumped), src) // Avoids bad actors sleeping or unexpected side effects, as the legacy behavior was to spawn here
-		return
-	..()
-	return
 
 /atom/movable/proc/get_selected_zone()
 	return

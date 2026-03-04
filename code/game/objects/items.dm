@@ -1053,11 +1053,6 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 /obj/item/proc/on_restraint_apply(mob/living/carbon/C)
 	return
 
-/obj/item/Bump(mob/M)
-	spawn()
-		..()
-	return
-
 /obj/item/proc/play_drop_sound()
 	if(!drop_sound)
 		return
