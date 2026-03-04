@@ -19,6 +19,7 @@
 	blood_color = "#515573"
 	fixed_mut_color = "#080808"
 	flesh_color = "#080808"
+	fixed_skin_tone = -80
 
 	var/info_text = "As an <span class='danger'>Iron Golem</span>, you don't have any special traits."
 	var/prefix = "Iron"
