@@ -199,12 +199,13 @@
 		unload(dir)
 	..()
 
-/mob/living/bot/mulebot/Bump(mob/living/carbon/human/M)
-	. = ..()
-	if(. && !safety && istype(M))
-		visible_message("<span class='warning'>[src] knocks over [M]!</span>")
-		M.Stun(8)
-		M.Weaken(5)
+/mob/living/bot/mulebot/Bump(atom/movable/AM, yes)
+	if(!safety && ishuman(AM))
+		var/mob/living/carbon/human/H = AM
+		visible_message("<span class='warning'>[src] knocks over [H]!</span>")
+		H.Stun(8)
+		H.Weaken(5)
+	return ..()
 
 /mob/living/bot/mulebot/proc/runOver(mob/living/carbon/human/H)
 	if(istype(H)) // No safety checks - WILL run over lying humans. Stop ERPing in the maint!

@@ -137,6 +137,9 @@
 // TODO: Dump the entire movement code, and rip a sane one from TG or something.
 //       For now, it's but a magic box that runs in an unpredictable order.
 /atom/movable/Move(newloc, direct)
+	if(!loc || !newloc)
+		return
+
 	var/oldloc = loc
 
 	var/turf/old_turf = get_turf(oldloc)
