@@ -159,7 +159,8 @@
 		qdel(src)
 		return
 
-	var/mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, CHAT_MESSAGE_WIDTH))
+	var/mheight = owned_by.MeasureText(complete_text, null, CHAT_MESSAGE_WIDTH)
+	mheight = WXH_TO_HEIGHT(mheight)
 	approx_lines = max(1, mheight / CHAT_MESSAGE_APPROX_LHEIGHT)
 
 	// Translate any existing messages upwards, apply exponential decay factors to timers

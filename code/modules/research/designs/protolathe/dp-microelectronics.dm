@@ -127,6 +127,8 @@
 	build_path = /obj/item/device/mcu/legacy
 	sort_string = "VABAM"
 
+// Tools
+
 /datum/design/item/jtag_programmer
 	name = "JTAG Programmer"
 	id = "jtag_programmer"
@@ -146,6 +148,8 @@
 	build_path = /obj/item/debugger
 	sort_string = "VABCA"
 	category_items = list("Microelectronics")
+
+// Modules
 
 /datum/design/item/tts_module
 	name = "Text-to-Speech Module"
@@ -174,5 +178,35 @@
 	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
 	materials = list(MATERIAL_STEEL = 500)
 	build_path = /obj/item/mcu_module/signaler
+	sort_string = "VABCA"
+	category_items = list("Microelectronics")
+
+/datum/design/item/gps_module
+	name = "GPS module"
+	id = "gps_module"
+	build_type = PROTOLATHE
+	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2, TECH_MAGNET = 1)
+	materials = list(MATERIAL_STEEL = 200)
+	build_path = /obj/item/mcu_module/gps
+	sort_string = "VABCA"
+	category_items = list("Microelectronics")
+
+/datum/design/item/light_module
+	name = "Light module"
+	id = "light_module"
+	build_type = PROTOLATHE
+	req_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 2)
+	materials = list(MATERIAL_STEEL = 200)
+	build_path = /obj/item/mcu_module/light
+	sort_string = "VABCA"
+	category_items = list("Microelectronics")
+
+/datum/design/item/env_sensor_module
+	name = "Environment Sensor module"
+	id = "env_sensor_module"
+	build_type = PROTOLATHE
+	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 4, TECH_BIO = 2)
+	materials = list(MATERIAL_STEEL = 800, MATERIAL_GLASS = 100)
+	build_path = /obj/item/mcu_module/env_sensor
 	sort_string = "VABCA"
 	category_items = list("Microelectronics")
