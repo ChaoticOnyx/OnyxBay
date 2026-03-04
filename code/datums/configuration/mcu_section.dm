@@ -9,6 +9,8 @@
 	var/tts_cooldown_per_char
 	var/signaler_set_cooldown
 	var/signaler_send_cooldown
+	var/light_cooldown
+	var/env_sensor_cooldown
 
 /datum/configuration_section/mcu/load_data(list/data)
 	CONFIG_LOAD_BOOL(enable, data["enable"])
@@ -19,3 +21,5 @@
 	CONFIG_LOAD_NUM(tts_cooldown_per_char, data["tts_cooldown_per_char"])
 	CONFIG_LOAD_NUM(signaler_set_cooldown, data["signaler_set_cooldown"])
 	CONFIG_LOAD_NUM(signaler_send_cooldown, data["signaler_send_cooldown"])
+	CONFIG_LOAD_NUM(light_cooldown, data["light_cooldown"])
+	CONFIG_LOAD_NUM(env_sensor_cooldown, data["env_sensor_cooldown"])

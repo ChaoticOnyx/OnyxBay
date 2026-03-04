@@ -43,10 +43,10 @@
 	name = "generic MCU"
 	desc = "A microcontroller unit. This one seems to be a prototype."
 	icon = 'icons/obj/mcu.dmi'
-	icon_state = "mcu"
+	icon_state = "green"
 	w_class = ITEM_SIZE_TINY
 
-	var/id = 0
+	var/id = null
 	var/ram_size = 65536 // 64 KB
 	/// User-set frequency. Hz
 	var/target_frequency = 1000000 // 1 MHz
@@ -103,26 +103,20 @@
 	var/obj/item/cell/__battery = null
 	var/__elf_path = null
 
-/obj/item/device/mcu/New()
+/obj/item/device/mcu/Initialize()
+	. = ..()
+
 	ASSERT(pci_slots <= Z_MAX_PCI_DEVICES)
 	ASSERT(pci_slots >= 0)
 
-	id = Z_MACHINE_CREATE()
-
-	Z_MACHINE_SET_FREQUENCY(id, initial(target_frequency))
-	Z_MACHINE_CONNECT(id, src)
-	Z_MACHINE_SET_RAM_SIZE(id, ram_size)
-	Z_MACHINE_SET_POST_TICK_PROC(id, nameof(.proc/__post_tick))
-	Z_MACHINE_SET_TRAP_PROC(id, nameof(.proc/__trap))
-	Z_MACHINE_SET_SYSCALL_PROC(id, nameof(.proc/__syscall))
-
 	__pci_devices = new /list(pci_slots)
 
-	..()
-
 /obj/item/device/mcu/Destroy()
-	power_off()
-	Z_MACHINE_DESTROY(id)
+	if(id)
+		SSmcu.total_mcu -= 1
+		power_off()
+		Z_MACHINE_DESTROY(id)
+		id = null
 
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(!QDELETED(M))
@@ -133,8 +127,38 @@
 
 	. = ..()
 
+/obj/item/device/mcu/proc/__try_init(mob/activator = null)
+	if(id)
+		return TRUE
+
+	if(!config.mcu.enable || SSmcu.total_mcu >= config.mcu.hardcap)
+		return FALSE
+
+	id = Z_MACHINE_CREATE(src)
+
+	if(!id)
+		CRASH("Failed to create a MCU: [Z_GET_LAST_ERROR()]")
+
+	SSmcu.total_mcu += 1
+
+	if(activator != null)
+		log_debug("[activator] ([activator.ckey]) triggered creation of a machine [id]")
+
+	// TODO: add a reset proc
+	ASSERT(Z_MACHINE_SET_SHIFT_ID(id, game_id) == TRUE)
+	ASSERT(Z_MACHINE_SET_FREQUENCY(id, initial(target_frequency)) == TRUE)
+	ASSERT(Z_MACHINE_SET_RAM_SIZE(id, ram_size) == TRUE)
+	ASSERT(Z_MACHINE_SET_POST_TICK_PROC(id, nameof(.proc/__post_tick)) == TRUE)
+	ASSERT(Z_MACHINE_SET_TRAP_PROC(id, nameof(.proc/__trap)) == TRUE)
+	ASSERT(Z_MACHINE_SET_SYSCALL_PROC(id, nameof(.proc/__syscall)) == TRUE)
+
+	return TRUE
+
 /obj/item/device/mcu/examine(mob/user, infix)
 	. = ..()
+
+	if(!__try_init(user))
+		return
 
 	if(user.Adjacent(src))
 		if(broken)
@@ -208,6 +232,9 @@
 			. += "A small LED is off."
 
 /obj/item/device/mcu/attackby(obj/item/W, mob/user)
+	if(!__try_init(user))
+		return ..()
+
 	if(istype(W, /obj/item/jtag_programmer))
 		if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_STOPPED)
 			to_chat(user, SPAN_WARNING("The MCU must be powered off before programming."))
@@ -219,18 +246,19 @@
 
 		var/elf_file = input(user, "Upload an ELF file", "JTAG Programmer") as file|null
 
-		if(QDELETED(src) || !elf_file || QDELETED(user) || !user.Adjacent(src))
+		if(QDELETED(src) || !elf_file || QDELETED(user) || !user.ckey || !user.Adjacent(src))
 			return ..()
 
 		if(length(elf_file) > config.mcu.max_elf_size)
 			to_chat(user, SPAN_WARNING("The file's size is too big [length(elf_file)] ([config.mcu.max_elf_size] max)"))
 			return ..()
 
-		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[rand(9999999)].elf"
+		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[user.ckey]_[rand(9999999)].elf"
 
 		while(fexists(tmp_file))
-			tmp_file = "[MCU_TMP_FOLDER]/elf/[rand(9999999)].elf"
+			tmp_file = "[MCU_TMP_FOLDER]/elf/[user.ckey]_[rand(9999999)].elf"
 
+		log_debug("[user] ([user.ckey]) uploaded an ELF file \"[tmp_file]\" ([length(elf_file)])")
 		fcopy(elf_file, tmp_file)
 
 		if(!Z_MACHINE_LOAD_ELF(id, tmp_file))
@@ -296,19 +324,19 @@
 		var/obj/item/mcu_module/M = W
 
 		try_add_pci(M, user)
-	if(istype(W, /obj/item/stack/nanopaste))
+	else if(istype(W, /obj/item/stack/nanopaste))
 		var/obj/item/stack/nanopaste/P = W
 
 		if (accumulated_tid <= 0)
 			to_chat(user, SPAN_NOTICE("[src] shows no signs of radiation-induced oxide degradation."))
-			return
+			return ..()
 
 		if(!do_after(user, 1, src, TRUE))
-			return
+			return ..()
 
 		if (!P.use(1))
 			to_chat(user, SPAN_WARNING("There isn't enough nanopaste left."))
-			return
+			return ..()
 
 		accumulated_tid = max(0, accumulated_tid - 5)
 
@@ -327,9 +355,9 @@
 				SPAN_NOTICE("[user] carefully applies [W] to [src], repairing some damage."), \
 				SPAN_NOTICE("You apply [W] to [src], annealing some of the radiation-induced charge traps. Further treatment is needed.") \
 			)
-	if(istype(W, /obj/item/debugger))
+	else if(istype(W, /obj/item/debugger))
 		if(!do_after(user, 1 SECOND, src, TRUE))
-			return
+			return ..()
 
 		var/dump = Z_MACHINE_DUMP_REGISTERS(id)
 		var/list/data = json_decode(dump)
@@ -393,6 +421,9 @@
 	return ..()
 
 /obj/item/device/mcu/attack_self(mob/user as mob)
+	if(!__try_init(user))
+		return ..()
+
 	for(var/i = 1 to pci_slots)
 		var/obj/item/mcu_module/M = __pci_devices[i]
 
@@ -406,6 +437,9 @@
 	ASSERT(M.device_type > 0)
 	ASSERT(M.__pci_slot == null)
 	ASSERT(M.__host == null)
+
+	if(!__try_init(activator))
+		return FALSE
 
 	var/has_slots = FALSE
 	for(var/i = 1 to pci_slots)
@@ -427,8 +461,10 @@
 
 		return FALSE
 
-	if(activator && !activator.drop(M, src))
-		return FALSE
+	if(activator)
+		if(!activator.drop(M, src))
+			Z_MACHINE_TRY_DETACH_PCI(id, slot)
+			return FALSE
 	else
 		M.forceMove(src)
 
@@ -507,6 +543,8 @@
 		else
 			__battery.forceMove(get_turf(src))
 			__battery.throw_at_random(FALSE, 2, 1)
+		
+		__battery = null
 
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(QDELETED(M))
@@ -532,8 +570,6 @@
 	emergency_shutdown()
 
 /obj/item/device/mcu/proc/__syscall(pci_slot, ...)
-	ASSERT(pci_slot <= pci_slots)
-
 	var/obj/item/mcu_module/M = __pci_devices[pci_slot + 1]
 	return M.__syscall(arglist(args.Copy(2)))
 
@@ -571,7 +607,7 @@
 /// Power calculation uses EFFECTIVE frequency (what actually runs).
 /// but OC penalty based on TARGET (what player set).
 /obj/item/device/mcu/proc/calculate_power(util)
-	if(id == 0)
+	if(!id)
 		return 0
 
 	if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
@@ -638,7 +674,7 @@
 
 		return FALSE
 
-	if(!config.mcu.enable || SSmcu.total_running >= config.mcu.hardcap)
+	if(!__try_init(activator) || !config.mcu.enable || SSmcu.total_running >= config.mcu.hardcap)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("Some indescribable force is preventing the board from starting."))
 
@@ -672,16 +708,26 @@
 
 	// Wh
 	var/min_boot_charge = P_idle / 3600
-	if(!__battery.check_charge(min_boot_charge * config.mcu.power_scale))
+	if(!__try_drain_power(min_boot_charge))
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src]'s battery is too low to start."))
 
 		return FALSE
 
 	ASSERT(Z_MACHINE_RESET(id) == TRUE)
+	// TODO: add a reset proc
+	ASSERT(Z_MACHINE_SET_SHIFT_ID(id, game_id) == TRUE)
+
+	for(var/obj/item/mcu_module/M in __pci_devices)
+		if(QDELETED(M))
+			continue
+
+		M.__reset(TRUE)
+
 	ASSERT(Z_MACHINE_LOAD_ELF(id, __elf_path) == TRUE)
 	Z_MACHINE_SET_STATE(id, Z_MSTATE_RUNNING)
-	Z_MACHINE_SET_SENSORS(id, CONV_KELVIN_CELSIUS(temperature), 0, temperature >= shutdown_temp, temperature >= throttle_temp)
+	Z_MACHINE_SET_SENSORS(id, CONV_KELVIN_CELSIUS(temperature), temperature >= shutdown_temp, temperature >= throttle_temp)
+	Z_MACHINE_SET_POWER(id, (QDELETED(__battery) ? 0 : __battery.charge * 1000), FALSE)
 	SSmcu.total_running += 1
 
 	if(activator)
@@ -693,7 +739,7 @@
 	throttled = FALSE
 	sustained_full_ticks = 0
 
-	if(Z_MACHINE_GET_STATE(id) == Z_MSTATE_STOPPED)
+	if(!id || Z_MACHINE_GET_STATE(id) == Z_MSTATE_STOPPED)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("The CPU is not turned on."))
 
@@ -705,11 +751,17 @@
 	Z_MACHINE_SET_STATE(id, Z_MSTATE_STOPPED)
 	SSmcu.total_running -= 1
 
+	for(var/obj/item/mcu_module/M in __pci_devices)
+		if(QDELETED(M))
+			continue
+
+		M.__power_off()
+
 /obj/item/device/mcu/proc/emergency_shutdown()
 	throttled = FALSE
 	sustained_full_ticks = 0
 
-	if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
+	if(!id || Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
 		return
 
 	visible_message(SPAN_WARNING("[src] shuts down!"))
@@ -733,6 +785,14 @@
 
 	return TRUE
 
+/obj/item/device/mcu/proc/__try_drain_power(amount)
+	if(QDELETED(__battery))
+		return FALSE
+
+	amount *= config.mcu.power_scale
+
+	return __battery.use(amount)
+
 /obj/item/device/mcu/proc/__post_tick(delta_us)
 	var/delta_s = delta_us * 1e-6
 
@@ -742,58 +802,56 @@
 	var/energy_Wh = 0
 
 	if(is_running)
-		if(QDELETED(__battery))
-			__battery = null
+		var/util = Z_MACHINE_GET_UTILIZATION(id)
+
+		// Sustained full-load tracking
+		if(util >= 0.95)
+			sustained_full_ticks++
+		else
+			sustained_full_ticks = max(0, sustained_full_ticks - 2)
+
+		P = calculate_power(util)
+
+		for(var/obj/item/mcu_module/M in __pci_devices)
+			if(QDELETED(M))
+				continue
+
+			P += M.power_usage
+
+		// Convert W to Wh: energy = power * time
+		// Wh = W * (seconds / 3600)
+		energy_Wh = P * delta_s / 3600
+		
+		if(__try_drain_power(energy_Wh) == FALSE)
 			emergency_shutdown()
 			is_running = FALSE
-			// Continue to thermal calculations - residual heat still dissipates
-		else
-			var/util = Z_MACHINE_GET_UTILIZATION(id)
+			// MCU is now off, but we still process thermal below
 
-			// Sustained full-load tracking
-			if(util >= 0.95)
-				sustained_full_ticks++
-			else
-				sustained_full_ticks = max(0, sustained_full_ticks - 2)
+	Z_MACHINE_SET_POWER(id, (QDELETED(__battery) ? 0 : __battery.charge * 1000), FALSE)
 
-			P = calculate_power(util)
+	var/datum/gas_mixture/M = return_air()
 
-			// Convert W to Wh: energy = power * time
-			// Wh = W * (seconds / 3600)
-			energy_Wh = P * delta_s / 3600
-			__battery.use(energy_Wh * config.mcu.power_scale)
+	if(M)
+		// Newton's law of cooling:
+		// dT = (P_gen - k * (T - T_amb)) * dt / C
 
-			if(__battery.charge <= 0)
-				emergency_shutdown()
-				is_running = FALSE
-				// MCU is now off, but we still process thermal below
+		// K
+		var/T_ambient = M.temperature
+		// In vacuum convective cooling is negligible - only radiation remains. W/K
+		var/effective_k = cooling_k
 
-	var/turf/T = get_turf(src)
-	var/datum/gas_mixture/M = T?.return_air()
+		if(M.get_total_moles() < MCU_VACUUM_MOLES_THRESHOLD)
+			effective_k *= MCU_VACUUM_COOLING_FACTOR
 
-	if(!T || !M)
-		return
+		// W
+		var/Q_dissipated = effective_k * (temperature - T_ambient)
+		// K
+		var/delta_T = (P - Q_dissipated) * delta_s / thermal_mass
+		temperature = max(T_ambient, temperature + delta_T)
 
-	// Newton's law of cooling:
-	// dT = (P_gen - k * (T - T_amb)) * dt / C
-
-	// K
-	var/T_ambient = M.temperature
-	// In vacuum convective cooling is negligible - only radiation remains. W/K
-	var/effective_k = cooling_k
-
-	if(M.get_total_moles() < MCU_VACUUM_MOLES_THRESHOLD)
-		effective_k *= MCU_VACUUM_COOLING_FACTOR
-
-	// W
-	var/Q_dissipated = effective_k * (temperature - T_ambient)
-	// K
-	var/delta_T = (P - Q_dissipated) * delta_s / thermal_mass
-	temperature = max(T_ambient, temperature + delta_T)
-
-	var/heat_to_env = Q_dissipated * delta_s
-	if (heat_to_env > 0 && M.get_total_moles() >= MCU_VACUUM_MOLES_THRESHOLD)
-		M.add_thermal_energy(heat_to_env)
+		var/heat_to_env = Q_dissipated * delta_s
+		if (heat_to_env > 0 && M.get_total_moles() >= MCU_VACUUM_MOLES_THRESHOLD)
+			M.add_thermal_energy(heat_to_env)
 
 	if(temperature >= damage_temp)
 		__take_thermal_damage(delta_s)
@@ -809,7 +867,7 @@
 
 	if(!oc_unlocked && temperature >= shutdown_temp)
 		var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
-		sparks.set_up(3, 1, T)
+		sparks.set_up(3, 1, get_turf(src))
 		sparks.start()
 
 		emergency_shutdown()
@@ -832,13 +890,8 @@
 		else if(throttled && temperature < (throttle_temp - MCU_THROTTLE_HYSTERESIS))
 			throttled = FALSE
 
-	// Power consumption per minute in mWh (milliwatt-hours per minute)
-	// P (watts) * (1/60) hours = Wh per minute * 1000 = mWh per minute
-	var/power_per_minute_mWh = round(P * config.mcu.power_scale * 1000 / 60)
-
 	Z_MACHINE_SET_SENSORS(id, \
 		CONV_KELVIN_CELSIUS(temperature), \
-		power_per_minute_mWh, \
 		temperature >= shutdown_temp, \
 		temperature >= throttle_temp \
 	)
@@ -985,27 +1038,32 @@
 
 	frequency = max(frequency, min_frequency)
 
-	Z_MACHINE_SET_FREQUENCY(id, frequency)
+	if(id)
+		Z_MACHINE_SET_FREQUENCY(id, frequency)
 
 /obj/item/device/mcu/verb/turn_on()
+	set src in view(1)
 	set name = "Turn On"
 	set category = "Object"
 
 	power_on(usr)
 
 /obj/item/device/mcu/verb/turn_off()
+	set src in view(1)
 	set name = "Turn Off"
 	set category = "Object"
 
 	power_off(usr)
 
 /obj/item/device/mcu/verb/eject_battery()
+	set src in view(1)
 	set name = "Eject Battery"
 	set category = "Object"
 
 	remove_battery(usr)
 
 /obj/item/device/mcu/verb/eject_module()
+	set src in view(1)
 	set name = "Eject Module"
 	set category = "Object"
 
@@ -1018,7 +1076,7 @@
 
 	var/choice = input(usr, "Select a PCI module to remove:", "Remove PCI Module") as null|anything in module_names
 
-	if(isnull(choice) || !usr.Adjacent(src))
+	if(!choice || !usr.Adjacent(src))
 		return
 
 	var/obj/item/mcu_module/selected_module = module_names[choice]
@@ -1028,10 +1086,10 @@
 	ASSERT(try_detach_pci_module(selected_module, usr) == TRUE)
 
 /obj/item/device/mcu/proc/try_detach_pci_module_at(slot, mob/activator = null)
-	try_detach_pci_module(__pci_devices[slot])
+	return try_detach_pci_module(__pci_devices[slot], activator)
 
 /obj/item/device/mcu/proc/try_detach_pci_module(obj/item/mcu_module/M, mob/activator = null)
-	if(QDELETED(M) || M.__pci_slot == null)
+	if(!id || QDELETED(M) || M.__pci_slot == null)
 		return FALSE
 
 	__pci_devices[M.__pci_slot + 1] = null
