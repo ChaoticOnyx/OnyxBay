@@ -1,6 +1,6 @@
 /obj/item/mcu_module/env_sensor
 	name = "Environment Sensor module"
-	desc = "A environment sensor module"
+	desc = "An environment sensor module"
 	icon_state = "env_sensor"
 
 	device_type = Z_DEVICE_TYPE_ENV_SENSOR
