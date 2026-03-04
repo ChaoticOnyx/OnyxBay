@@ -188,7 +188,6 @@
 
 	var/saved_dir = AM.dir
 	var/push_dir = get_dir(src, AM)
-	now_pushing = TRUE
 
 	// Can't push identical "bordered" windows into each other.
 	if(istype(AM, /obj/structure/window))
@@ -198,6 +197,7 @@
 				return
 
 	// Pushing currently-pulled atoms causes them to be moved smoothly, without interrupting pulls.
+	now_pushing = TRUE
 	var/pulled_pushing = (AM.pulledby == src && pulling == AM)
 	if(pulled_pushing)
 		step_glide(AM, push_dir, AM.glide_size)
