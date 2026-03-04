@@ -244,18 +244,19 @@
 
 		var/elf_file = input(user, "Upload an ELF file", "JTAG Programmer") as file|null
 
-		if(QDELETED(src) || !elf_file || QDELETED(user) || !user.Adjacent(src))
+		if(QDELETED(src) || !elf_file || QDELETED(user) || !user.ckey || !user.Adjacent(src))
 			return ..()
 
 		if(length(elf_file) > config.mcu.max_elf_size)
 			to_chat(user, SPAN_WARNING("The file's size is too big [length(elf_file)] ([config.mcu.max_elf_size] max)"))
 			return ..()
 
-		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[rand(9999999)].elf"
+		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[user.ckey]_[rand(9999999)].elf"
 
 		while(fexists(tmp_file))
-			tmp_file = "[MCU_TMP_FOLDER]/elf/[rand(9999999)].elf"
+			tmp_file = "[MCU_TMP_FOLDER]/elf/[user.ckey]_[rand(9999999)].elf"
 
+		log_debug("[user] ([user.ckey]) uploaded an ELF file: [tmp_file] ([length(elf_file)])")
 		fcopy(elf_file, tmp_file)
 
 		if(!Z_MACHINE_LOAD_ELF(id, tmp_file))
