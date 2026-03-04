@@ -8,6 +8,7 @@
 	icon_state = "pill_canister"
 	icon = 'icons/obj/chemical.dmi'
 	item_state = "contsolid"
+	base_icon_state = "pill_canister"
 	w_class = ITEM_SIZE_SMALL
 	max_w_class = ITEM_SIZE_TINY
 	max_storage_space = 14
@@ -41,7 +42,7 @@
 /obj/item/storage/pill_bottle/on_update_icon()
 	ClearOverlays()
 	if(label_color)
-		AddOverlays(OVERLAY(icon, "[icon_state]-overlay", alpha, RESET_COLOR, label_color))
+		AddOverlays(OVERLAY(icon, "[base_icon_state]-overlay", alpha, RESET_COLOR, label_color))
 
 /obj/item/storage/pill_bottle/attack_self(mob/user)
 	if(user.get_passive_hand())
@@ -328,6 +329,7 @@
 	name = "sugar box"
 	desc = "A small box containing some precious cubes of sweetness."
 	icon_state = "sugar_bottle"
+	base_icon_state = "sugar_bottle"
 
 	startswith = list(/obj/item/reagent_containers/pill/sugar_cube = 14)
 

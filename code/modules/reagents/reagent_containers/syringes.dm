@@ -123,7 +123,7 @@
 		icon_state = "[base_icon_state]-b"
 		return
 
-	var/rounded_vol = clamp(round((reagents.total_volume / reagents.maximum_volume) * STANDARD_SYRINGE_MAX_VOLUME, STANDARD_SYRINGE_MAX_VOLUME/ 3 ), 0, STANDARD_SYRINGE_MAX_VOLUME)
+	var/rounded_vol = clamp(round((reagents.total_volume / reagents.maximum_volume) * volume, volume / 3), 0, volume)
 
 	icon_state = "[base_icon_state][rounded_vol]"
 	item_state = "syringe_[rounded_vol]"
@@ -148,7 +148,7 @@
 			AddOverlays(injoverlay)
 
 /obj/item/reagent_containers/syringe/get_ghost_image(atom/target)
-	var/rounded_vol = clamp(round((reagents.total_volume / reagents.maximum_volume) * STANDARD_SYRINGE_MAX_VOLUME, STANDARD_SYRINGE_MAX_VOLUME/ 3 ), 0, STANDARD_SYRINGE_MAX_VOLUME)
+	var/rounded_vol = clamp(round((reagents.total_volume / reagents.maximum_volume) * volume, volume / 3), 0, volume)
 	var/image/I = image(icon, null, "[base_icon_state][rounded_vol]", target.layer + 1)
 	I.appearance_flags |= RESET_COLOR|KEEP_APART
 	I.alpha = 128
