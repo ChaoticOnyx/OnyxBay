@@ -116,6 +116,7 @@
 		SSmcu.total_mcu -= 1
 		power_off()
 		Z_MACHINE_DESTROY(id)
+		id = null
 
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(!QDELETED(M))
@@ -133,11 +134,12 @@
 	if(!config.mcu.enable || SSmcu.total_mcu >= config.mcu.hardcap)
 		return FALSE
 
-	SSmcu.total_mcu += 1
 	id = Z_MACHINE_CREATE(src)
 
 	if(!id)
 		CRASH("Failed to create a MCU: [Z_GET_LAST_ERROR()]")
+
+	SSmcu.total_mcu += 1
 
 	if(activator != null)
 		log_debug("[activator] ([activator.ckey]) triggered creation of a machine [id]")
@@ -256,7 +258,7 @@
 		while(fexists(tmp_file))
 			tmp_file = "[MCU_TMP_FOLDER]/elf/[user.ckey]_[rand(9999999)].elf"
 
-		log_debug("[user] ([user.ckey]) uploaded an ELF file: [tmp_file] ([length(elf_file)])")
+		log_debug("[user] ([user.ckey]) uploaded an ELF file \"[tmp_file]\" ([length(elf_file)])")
 		fcopy(elf_file, tmp_file)
 
 		if(!Z_MACHINE_LOAD_ELF(id, tmp_file))
@@ -322,19 +324,19 @@
 		var/obj/item/mcu_module/M = W
 
 		try_add_pci(M, user)
-	if(istype(W, /obj/item/stack/nanopaste))
+	else if(istype(W, /obj/item/stack/nanopaste))
 		var/obj/item/stack/nanopaste/P = W
 
 		if (accumulated_tid <= 0)
 			to_chat(user, SPAN_NOTICE("[src] shows no signs of radiation-induced oxide degradation."))
-			return
+			return ..()
 
 		if(!do_after(user, 1, src, TRUE))
-			return
+			return ..()
 
 		if (!P.use(1))
 			to_chat(user, SPAN_WARNING("There isn't enough nanopaste left."))
-			return
+			return ..()
 
 		accumulated_tid = max(0, accumulated_tid - 5)
 
@@ -355,7 +357,7 @@
 			)
 	else if(istype(W, /obj/item/debugger))
 		if(!do_after(user, 1 SECOND, src, TRUE))
-			return
+			return ..()
 
 		var/dump = Z_MACHINE_DUMP_REGISTERS(id)
 		var/list/data = json_decode(dump)
@@ -459,8 +461,10 @@
 
 		return FALSE
 
-	if(activator && !activator.drop(M, src))
-		return FALSE
+	if(activator)
+		if(!activator.drop(M, src))
+			Z_MACHINE_TRY_DETACH_PCI(id, slot)
+			return FALSE
 	else
 		M.forceMove(src)
 
@@ -539,6 +543,8 @@
 		else
 			__battery.forceMove(get_turf(src))
 			__battery.throw_at_random(FALSE, 2, 1)
+		
+		__battery = null
 
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(QDELETED(M))
@@ -564,8 +570,6 @@
 	emergency_shutdown()
 
 /obj/item/device/mcu/proc/__syscall(pci_slot, ...)
-	ASSERT(pci_slot <= pci_slots)
-
 	var/obj/item/mcu_module/M = __pci_devices[pci_slot + 1]
 	return M.__syscall(arglist(args.Copy(2)))
 
@@ -1082,7 +1086,7 @@
 	ASSERT(try_detach_pci_module(selected_module, usr) == TRUE)
 
 /obj/item/device/mcu/proc/try_detach_pci_module_at(slot, mob/activator = null)
-	try_detach_pci_module(__pci_devices[slot])
+	return try_detach_pci_module(__pci_devices[slot], activator)
 
 /obj/item/device/mcu/proc/try_detach_pci_module(obj/item/mcu_module/M, mob/activator = null)
 	if(!id || QDELETED(M) || M.__pci_slot == null)
