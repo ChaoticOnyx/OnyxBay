@@ -193,15 +193,11 @@ export class SpriteCompositor {
   }
 
   /** Load manifest and all atlas images. Safe to call multiple times concurrently. */
-  init(): Promise<void> {
-    if (this.loaded) return Promise.resolve();
-    if (this.loadPromise) return this.loadPromise;
-
-    this.loadPromise = (async () => {
-      // Load manifest — assets are served flat from BYOND's cache via send_rsc()
       const manifestResp = await fetch('manifest.json');
+      if (!manifestResp.ok) {
+        throw new Error(`Failed to load sprite manifest: ${manifestResp.status} ${manifestResp.statusText}. Run "npm run build-atlas" to generate sprites.`);
+      }
       this.manifest = await manifestResp.json();
-
       // Load all atlas images
       const loadPromises = this.manifest!.atlases.map((name, idx) => {
         return new Promise<void>((resolve, reject) => {
