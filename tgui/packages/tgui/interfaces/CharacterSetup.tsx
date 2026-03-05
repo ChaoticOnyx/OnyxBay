@@ -33,7 +33,6 @@ import {
   CharacterRenderConfig,
   getCompositor,
 } from "../spriteCompositor";
-
 // Stamp images for ID card
 import stampCap from "../assets/stamps/stamp-cap.png";
 import stampCargo from "../assets/stamps/stamp-cargo.png";
@@ -690,6 +689,7 @@ const CsButton = (props: {
     {props.children}
   </Box>
 );
+
 
 // ================================================================
 // Category definitions
@@ -1637,12 +1637,6 @@ const IdentityPanel = (props: {
             <Box className="CharSetup__idCardField">
               <Box className="CharSetup__idCardFieldLabel">
                 Home System
-                {!(data.home_systems || []).includes(data.home_system) &&
-                  data.home_system !== "Unset" && (
-                    <Box as="span" color="good" fontSize="11px" italic ml={0.5}>
-                      Custom
-                    </Box>
-                  )}
               </Box>
               <Dropdown
                 fluid
@@ -3164,9 +3158,9 @@ const LoadoutTweakControl = (props: {
 // Augmentation Panel — Cyberpunk organ/module interface
 // ================================================================
 
-// Icon map for body parts
+// FontAwesome icons for body parts
 const ORGAN_ICONS: Record<string, string> = {
-  head: "hat-wizard",
+  head: "skull",
   chest: "vest",
   groin: "shield-halved",
   l_arm: "hand-point-left",

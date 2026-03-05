@@ -662,7 +662,10 @@ export class SpriteCompositor {
     marking: { icon: string; iconState: string; color: string },
     dir: Direction,
   ): void {
-    const fadeLoc = this.getSprite(marking.icon, marking.iconState, dir);
+    // Fade markings often only have dirs=1 (south) — fall back to south if the
+    // requested direction doesn't exist in the atlas.
+    const fadeLoc = this.getSprite(marking.icon, marking.iconState, dir)
+      ?? this.getSprite(marking.icon, marking.iconState, 'south');
     const hairLoc = this.getSprite(hairDmiFile, hairState, dir);
     if (!fadeLoc || !hairLoc) return;
 

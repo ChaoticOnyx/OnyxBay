@@ -5,7 +5,7 @@
  */
 
 import { classes } from "common/react";
-import { Component, createPortal } from "inferno";
+import { Component } from "inferno";
 import { Box } from "./Box";
 import { Icon } from "./Icon";
 
@@ -14,18 +14,6 @@ export class Dropdown extends Component {
     super(props);
     this.state = {
       selected: props.selected,
-      open: false,
-    };
-    this.menuPos = null;
-    this.handleClick = () => {
-      if (this.state.open) {
-        this.setOpen(false);
-      }
-    };
-    this.handleScroll = () => {
-      if (this.state.open) {
-        this.setOpen(false);
-      }
     };
   }
 
@@ -35,159 +23,85 @@ export class Dropdown extends Component {
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("click", this.handleClick);
-    window.removeEventListener("scroll", this.handleScroll, true);
-  }
-
-  setOpen(open) {
-    if (open) {
-      const el = this.dropdownRef;
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        const spaceBelow = window.innerHeight - rect.bottom;
-        const flipUp = this.props.over || spaceBelow < 200;
-        this.autoOver = flipUp;
-        this.menuPos = {
-          left: rect.left,
-          // Width of the wrapper div = same as what the menu was before
-          // (position:absolute with min-width:100% of the wrapper)
-          minWidth: rect.width,
-          flipUp,
-          top: flipUp ? undefined : rect.bottom,
-          bottom: flipUp ? window.innerHeight - rect.top : undefined,
-        };
-      }
-    } else {
-      this.menuPos = null;
-    }
-    this.setState({ open });
-    if (open) {
-      setTimeout(() => {
-        window.addEventListener("click", this.handleClick);
-        window.addEventListener("scroll", this.handleScroll, true);
-      });
-    } else {
-      window.removeEventListener("click", this.handleClick);
-      window.removeEventListener("scroll", this.handleScroll, true);
-    }
-  }
-
-  setSelected(selected) {
-    this.setState({
-      selected: selected,
-    });
-    this.setOpen(false);
-    this.props.onSelected(selected);
-  }
-
-  buildMenu() {
-    const { options = [] } = this.props;
-    const ops = options.map((option) => (
-      <Box
-        key={option}
-        className="Dropdown__menuentry"
-        onClick={() => {
-          this.setSelected(option);
-        }}
-      >
-        {option}
-      </Box>
-    ));
-    return ops.length ? ops : "No Options Found";
-  }
-
   render() {
-    const { props } = this;
     const {
       icon,
       iconRotation,
       iconSpin,
       color = "default",
+      // over / noscroll retained for API compat — unused (native select handles direction/scroll)
       over,
       noscroll,
       nochevron,
       width,
       onClick,
-      selected,
+      selected: _selected,
       disabled,
       displayText,
-      // Consume fluid so it doesn't get spread onto the inner Box
-      // (which would make the control block-level, bloating the measured width)
       fluid,
+      options = [],
+      onSelected,
       ...boxProps
-    } = props;
+    } = this.props;
     const { className, ...rest } = boxProps;
 
-    const pos = this.menuPos;
-    const flipUp = pos ? pos.flipUp : (over || false);
-    const chevronUp = this.state.open ? !flipUp : flipUp;
-
-    // Render the open menu into document.body via a portal so it escapes
-    // any overflow:hidden/auto ancestor (e.g. scrollable Section panels).
-    const menu = this.state.open
-      ? createPortal(
-          <div
-            ref={(menu) => {
-              this.menuRef = menu;
-            }}
-            tabIndex="-1"
-            style={{
-              position: "fixed",
-              left: pos ? pos.left : undefined,
-              // Use minWidth (= wrapper width) so menu is at least as wide
-              // as the control, but can grow wider for long option names.
-              // Do NOT set width — the CSS min-width:100% (=100vw when fixed)
-              // is neutralised here by not applying it at all via a portal.
-              minWidth: pos ? pos.minWidth : undefined,
-              top: pos ? pos.top : undefined,
-              bottom: pos ? pos.bottom : undefined,
-              zIndex: 9999,
-            }}
-            className={classes([
-              (noscroll && "Dropdown__menu-noscroll") || "Dropdown__menu",
-            ])}
-          >
-            {this.buildMenu()}
-          </div>,
-          document.body
-        )
-      : null;
+    const currentSelected = this.state.selected || "";
+    // "Action" dropdown: displayText is a placeholder (not a real selection).
+    // After picking, the visible face reverts to displayText.
+    const isAction = displayText !== undefined && !options.includes(currentSelected);
 
     return (
-      <div className="Dropdown" ref={(el) => { this.dropdownRef = el; }}>
-        <Box
-          width={width}
+      <Box
+        className={classes(["Dropdown", className])}
+        width={fluid ? "100%" : width}
+        {...rest}
+      >
+        {/* Styled visible face — pointer-events:none so clicks reach the native select */}
+        <div
           className={classes([
             "Dropdown__control",
             "Button",
             "Button--color--" + color,
             disabled && "Button--disabled",
             fluid && "Button--fluid",
-            className,
           ])}
-          {...rest}
-          onClick={() => {
-            if (disabled && !this.state.open) {
-              return;
-            }
-            this.setOpen(!this.state.open);
-          }}
         >
           {icon && (
             <Icon name={icon} rotation={iconRotation} spin={iconSpin} mr={1} />
           )}
           <span className="Dropdown__selected-text">
-            {displayText || this.state.selected}
+            {displayText || currentSelected}
           </span>
-          {!!nochevron || (
+          {!nochevron && (
             <span className="Dropdown__arrow-button">
-              <Icon name={chevronUp ? "chevron-up" : "chevron-down"} />
+              <Icon name="chevron-down" />
             </span>
           )}
-        </Box>
-        {menu}
-      </div>
+        </div>
+        {/*
+          Invisible native select covers the entire control area.
+          The browser renders its own dropdown — no JS positioning, no clipping issues,
+          no scroll hacks. Works correctly in BYOND's embedded browser.
+        */}
+        <select
+          className="Dropdown__native"
+          disabled={!!disabled}
+          value={isAction ? "" : currentSelected}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (!val) return;
+            if (!isAction) {
+              this.setState({ selected: val });
+            }
+            onSelected && onSelected(val);
+          }}
+        >
+          {isAction && <option value="" disabled hidden />}
+          {options.map((opt) => (
+            <option key={opt} value={opt}>{opt}</option>
+          ))}
+        </select>
+      </Box>
     );
   }
 }

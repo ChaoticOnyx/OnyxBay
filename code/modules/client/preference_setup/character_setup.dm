@@ -870,6 +870,9 @@
 /// Generate slot preview data for all character slots.
 /// Sends raw appearance data per slot so the client can render via SpriteCompositor.
 /datum/character_setup/proc/generate_slot_previews()
+	// Save current unsaved changes before iterating slots so the restore
+	// at the end of this proc reloads the correct (current) character.
+	pref.save_character()
 	var/original_slot = pref.default_slot
 	var/list/previews = list()
 
@@ -1453,6 +1456,9 @@
 			if(job.title == pref.job_high)
 				pref.job_high = null
 			else if(job.title in pref.job_medium)
+				// Bump the previous High down to Medium before taking the slot
+				if(pref.job_high)
+					pref.job_medium |= pref.job_high
 				pref.job_high = job.title
 				pref.job_medium -= job.title
 			else if(job.title in pref.job_low)
