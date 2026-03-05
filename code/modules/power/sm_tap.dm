@@ -217,7 +217,7 @@
 	if(get_dist(user, src) > 3 || (stat & BROKEN))
 		return
 	. += "Sensor readings:"
-	. += "Power output: [fmt_siunit(last_power, "W/s", 3)]"
+	. += "Power output: [fmt_siunit(last_power, "W", 3)]"
 	. += "Tap level: [tap_level]/5"
 	. += "Integrity: [health]%"
 
