@@ -115,7 +115,7 @@
 		var/fullprint = H.get_full_print()
 		evidence[fullprint] = fullprint
 		var/mob/living/carbon/human/U = user
-		if(!istype(U) || (U.gloves && U.gloves.body_parts_covered & HANDS))
+		if(istype(U) && (!U.gloves || !(U.gloves.body_parts_covered & HANDS)))
 			copy_evidence(src)
 		SetName("[initial(name)] (\the [H])")
 		icon_state = "fingerprint1"
