@@ -193,6 +193,11 @@ export class SpriteCompositor {
   }
 
   /** Load manifest and all atlas images. Safe to call multiple times concurrently. */
+  init(): Promise<void> {
+    if (this.loaded) return Promise.resolve();
+    if (this.loadPromise) return this.loadPromise;
+
+    this.loadPromise = (async () => {
       const manifestResp = await fetch('manifest.json');
       if (!manifestResp.ok) {
         throw new Error(`Failed to load sprite manifest: ${manifestResp.status} ${manifestResp.statusText}. Run "npm run build-atlas" to generate sprites.`);
