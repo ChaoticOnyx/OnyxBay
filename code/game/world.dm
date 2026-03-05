@@ -163,6 +163,14 @@ var/server_name = "OnyxBay"
 
 var/world_topic_spam_protect_time = world.timeofday
 
+/proc/OnWSText(content, addr, id)
+	// A stub for now
+	return Z_WS_CODE_CLOSE
+
+/proc/OnWSBinary(list/content, addr, id)
+	// A stub for now
+	return Z_WS_CODE_CLOSE
+
 /world/Topic(T, addr, master, key)
 	log_href("\"[T]\", from:[addr], master:[master][log_end]")
 

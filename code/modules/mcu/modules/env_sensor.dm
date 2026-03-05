@@ -1,5 +1,5 @@
 /obj/item/mcu_module/env_sensor
-	name = "Environment Sensor module"
+	name = "environment sensor module"
 	desc = "An environment sensor module"
 	icon_state = "env_sensor"
 
