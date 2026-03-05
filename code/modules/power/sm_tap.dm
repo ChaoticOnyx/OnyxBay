@@ -65,7 +65,7 @@
 		if(crack_arcs_fired < 2 && prob(20))
 			crack_arcs_fired++
 			var/turf/arc_target = locate(clamp(crack_turf.x + rand(-3, 3), 1, world.maxx), clamp(crack_turf.y + rand(-3, 3), 1, world.maxy), z)
-			if(arc_target)
+			if(arc_target && can_see(C, arc_target, 4))
 				INVOKE_ASYNC(C, /atom.proc/Beam, arc_target, arc_state, 'icons/effects/beam.dmi', 4, 10)
 				for(var/turf/T in get_line(C, arc_target))
 					for(var/mob/living/carbon/M in T)
@@ -236,8 +236,10 @@
 	// Corona discharge from SM — always uses a relay to avoid source conflict with other taps' coronas
 	var/obj/effect/sm_arc_relay/relay_corona = new(get_turf(SM))
 	var/turf/corona = locate(clamp(SM.x + rand(-4, 4), 1, world.maxx), clamp(SM.y + rand(-4, 4), 1, world.maxy), z)
-	if(corona)
+	if(corona && can_see(SM, corona, 6))
 		INVOKE_ASYNC(relay_corona, /atom.proc/Beam, corona, arc_state, 'icons/effects/beam.dmi', 3, 10)
+	else
+		corona = null // null it out so the damage path below is skipped too
 	spawn(7) qdel(relay_corona)
 
 	// At tap 3+ a second corona branch fires from its own relay
@@ -245,8 +247,10 @@
 	if(tap_level >= 3)
 		var/obj/effect/sm_arc_relay/relay2 = new(get_turf(SM))
 		corona2_target = locate(clamp(SM.x + rand(-3, 3), 1, world.maxx), clamp(SM.y + rand(-3, 3), 1, world.maxy), z) // shorter than corona1
-		if(corona2_target)
+		if(corona2_target && can_see(SM, corona2_target, 5))
 			INVOKE_ASYNC(relay2, /atom.proc/Beam, corona2_target, arc_state, 'icons/effects/beam.dmi', 3, 10)
+		else
+			corona2_target = null
 		spawn(7) qdel(relay2)
 
 	spawn(7) qdel(relay)
