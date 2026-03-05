@@ -1608,23 +1608,24 @@
 			return TRUE
 
 		if("addUplinkSource")
-			var/source_name = params["name"]
-			if(!source_name)
+		if("setAllAntagPriority")
+			var/priority = params["priority"]
+			if(!priority)
 				return TRUE
-			var/bos_ul = decls_repository.get_decls_of_subtype(/decl/uplink_source)
-			for(var/ul_type in bos_ul)
-				var/decl/uplink_source/US = bos_ul[ul_type]
-				if(US.name == source_name)
-					if(!(US in pref.uplink_sources))
-						pref.uplink_sources += US
-					break
+			// Apply to all antag roles
+			for(var/antag_type in GLOB.all_antag_types_)
+				var/datum/antagonist/A = GLOB.all_antag_types_[antag_type]
+				switch(priority)
+					if("high")
+						pref.be_special_role |= A.id
+						pref.may_be_special_role -= A.id
+					if("low")
+						pref.be_special_role -= A.id
+						pref.may_be_special_role |= A.id
+					if("never")
+						pref.be_special_role -= A.id
+						pref.may_be_special_role -= A.id
 			return TRUE
-
-		if("removeUplinkSource")
-			var/source_name = params["name"]
-			if(!source_name)
-				return TRUE
-			for(var/entry in pref.uplink_sources)
 				var/decl/uplink_source/US = entry
 				if(US.name == source_name)
 					pref.uplink_sources -= US
