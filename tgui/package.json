@@ -4,8 +4,7 @@
   "version": "4.3.0",
   "scripts": {
     "dev": "node packages/tgui-dev-server/index.esm.js",
-    "build": "webpack",
-    "build-atlas": "node tools/build-atlas.js"
+    "build": "webpack"
   },
   "workspaces": [
     "packages/common",
@@ -51,7 +50,6 @@
     "webpack-cli": "4.x.x"
   },
   "devDependencies": {
-    "eslint-config-prettier": "^8.3.0",
-    "pngjs": "^7.0.0"
+    "eslint-config-prettier": "^8.3.0"
   }
 }
