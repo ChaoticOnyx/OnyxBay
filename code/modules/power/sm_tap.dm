@@ -188,8 +188,6 @@
 		if(welder.remove_fuel(1, user))
 			health = min(100, health + 25)
 			to_chat(user, SPAN_NOTICE("You repair [src]. Integrity: [health]%"))
-			if(stat & BROKEN)
-				stat &= ~BROKEN
 			update_icon()
 		return 1
 	else if(istype(W, /obj/item/screwdriver))
@@ -217,7 +215,7 @@
 	if(get_dist(user, src) > 3 || (stat & BROKEN))
 		return
 	. += "Sensor readings:"
-	. += "Power output: [fmt_siunit(last_power, "W/s", 3)]"
+	. += "Power output: [fmt_siunit(last_power, "W", 3)]"
 	. += "Tap level: [tap_level]/5"
 	. += "Integrity: [health]%"
 
