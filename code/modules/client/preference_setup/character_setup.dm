@@ -1846,6 +1846,7 @@
 			if(!pref_key || !new_value)
 				return TRUE
 			owner.set_preference(pref_key, new_value)
+			SScharacter_setup.queue_preferences_save(pref)
 			return TRUE
 
 		if("setUiStyle")
@@ -1859,6 +1860,7 @@
 			pref.UI_style_alpha = Clamp(alpha, 0, 255)
 			if(owner.client)
 				owner.client.update_ui()
+			SScharacter_setup.queue_preferences_save(pref)
 			return TRUE
 
 		if("pickUiColor")
@@ -1868,6 +1870,7 @@
 			pref.UI_style_color = new_color
 			if(owner.client)
 				owner.client.update_ui()
+			SScharacter_setup.queue_preferences_save(pref)
 			return TRUE
 
 		if("setKeybinding")
@@ -1896,6 +1899,7 @@
 				LAZYADD(pref.key_bindings[new_key], kb_name)
 				pref.key_bindings[new_key] = sortTim(pref.key_bindings[new_key], /proc/cmp_text_asc)
 			owner.client?.set_macros()
+			SScharacter_setup.queue_preferences_save(pref)
 			return TRUE
 
 		if("clearKeybinding")
@@ -1908,6 +1912,7 @@
 				if(!length(pref.key_bindings[old_key]))
 					pref.key_bindings -= old_key
 			owner.client?.set_macros()
+			SScharacter_setup.queue_preferences_save(pref)
 			return TRUE
 
 		if("resetKeybinding")
@@ -1928,11 +1933,13 @@
 				LAZYADD(pref.key_bindings[key], kb_name)
 				pref.key_bindings[key] = sortTim(pref.key_bindings[key], /proc/cmp_text_asc)
 			owner.client?.set_macros()
+			SScharacter_setup.queue_preferences_save(pref)
 			return TRUE
 
 		if("resetAllKeybindings")
 			pref.key_bindings = deepCopyList(GLOB.hotkey_keybinding_list_by_key)
 			owner.client?.set_macros()
+			SScharacter_setup.queue_preferences_save(pref)
 			return TRUE
 
 // ============================================================
