@@ -292,7 +292,7 @@
 		if(QDELETED(C))
 			continue
 		var/delay = max_dist > 0 ? round((max_dist - get_dist(src, C)) / max_dist * stagger_window) : 0
-			spawn(delay) if(!QDELETED(C)) C.start_fading()
+		spawn(delay) if(!QDELETED(C)) C.start_fading()
 	// my_cracks is cleared immediately — spawn closures hold their own C references,
 	// so clearing the list before the timers fire is intentional and not a race condition
 	my_cracks = list()
