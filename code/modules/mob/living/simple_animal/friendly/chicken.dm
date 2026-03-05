@@ -35,7 +35,6 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	var/amount_grown = 0
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
 	mob_size = MOB_MINISCULE
-	holder_type = /obj/item/holder/chicken
 	bodyparts = /decl/simple_animal_bodyparts/bird
 	var/species = null
 
