@@ -289,8 +289,6 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/list/subsystems_to_check
 	//the actual loop.
 	while (1)
-		rustg_prom_counter_inc(PROM_MASTER_ITERATIONS, null)
-
 		tickdrift = max(0, MC_AVERAGE_FAST(tickdrift, (((REALTIMEOFDAY - init_timeofday) - (world.time - init_time)) / world.tick_lag)))
 
 		var/starting_tick_usage = TICK_USAGE

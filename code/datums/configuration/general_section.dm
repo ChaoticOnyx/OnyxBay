@@ -23,7 +23,6 @@
 	var/client_min_minor_version
 	var/client_recommended_minor_version
 	var/list/client_blacklisted_minor_versions
-	var/prometheus_port
 
 /datum/configuration_section/general/load_data(list/data)
 	CONFIG_LOAD_STR(server_name, data["server_name"])
@@ -55,4 +54,3 @@
 	CONFIG_LOAD_NUM(second_topic_limit, data["second_topic_limit"])
 	CONFIG_LOAD_NUM(tgui_max_chunk_count, data["tgui_max_chunk_count"])
 	CONFIG_LOAD_BOOL(wait_for_sigusr1, data["wait_for_sigusr1"])
-	CONFIG_LOAD_STR(prometheus_port, data["prometheus_port"])
