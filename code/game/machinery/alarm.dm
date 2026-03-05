@@ -106,6 +106,7 @@
 	var/static/list/alarm_overlays
 	var/previous_controls_open = FALSE
 	var/controls_open = FALSE
+	var/list/tgui_remote_sessions = list()
 
 /obj/machinery/alarm/cold
 	target_temperature = 4 CELSIUS
@@ -128,6 +129,15 @@
 	GLOB.alarm_list -= src
 	SSradio.remove_object(src, frequency)
 	QDEL_NULL(wires)
+	if(tgui_remote_sessions)
+		for(var/user_ref in tgui_remote_sessions)
+			var/list/session = tgui_remote_sessions[user_ref]
+			if(!islist(session))
+				continue
+			var/datum/topic_state/remoter_state = session["state"]
+			if(remoter_state)
+				qdel(remoter_state)
+		tgui_remote_sessions.Cut()
 	if(alarm_area && alarm_area.master_air_alarm == src)
 		alarm_area.master_air_alarm = null
 		elect_master(exclude_self = TRUE)
@@ -519,6 +529,7 @@
 	frequency.post_signal(src, alert_signal)
 
 /obj/machinery/alarm/attack_ai(mob/user)
+	clear_remote_tgui_session(user)
 	tgui_interact(user)
 
 /obj/machinery/alarm/attack_hand(mob/user)
@@ -528,6 +539,7 @@
 	return interact(user)
 
 /obj/machinery/alarm/interact(mob/user)
+	clear_remote_tgui_session(user)
 	tgui_interact(user)
 	wires.Interact(user)
 
@@ -544,23 +556,88 @@
 	ui.open()
 
 /obj/machinery/alarm/tgui_state(mob/user)
-	return GLOB.default_state
+	return GLOB.remote_control_state
+
+/obj/machinery/alarm/proc/set_remote_tgui_session(mob/user, datum/remoter, datum/topic_state/remoter_state)
+	if(!user || !remoter || !remoter_state)
+		return FALSE
+
+	var/user_ref = "\ref[user]"
+	var/list/current_session = tgui_remote_sessions[user_ref]
+	if(islist(current_session))
+		var/datum/topic_state/current_state = current_session["state"]
+		if(current_state && current_state != remoter_state)
+			qdel(current_state)
+
+	tgui_remote_sessions[user_ref] = list(
+		"remoter" = remoter,
+		"state" = remoter_state
+	)
+	return TRUE
+
+/obj/machinery/alarm/proc/clear_remote_tgui_session(mob/user)
+	if(!user || !tgui_remote_sessions || !tgui_remote_sessions.len)
+		return
+
+	var/user_ref = "\ref[user]"
+	var/list/session = tgui_remote_sessions[user_ref]
+	if(islist(session))
+		var/datum/topic_state/remoter_state = session["state"]
+		if(remoter_state)
+			qdel(remoter_state)
+
+	tgui_remote_sessions -= user_ref
+
+/obj/machinery/alarm/proc/_get_remote_tgui_status(mob/user)
+	if(!user || !tgui_remote_sessions || !tgui_remote_sessions.len)
+		return UI_CLOSE
+
+	var/user_ref = "\ref[user]"
+	var/list/session = tgui_remote_sessions[user_ref]
+	if(!islist(session))
+		tgui_remote_sessions -= user_ref
+		return UI_CLOSE
+
+	var/datum/remoter = session["remoter"]
+	var/datum/topic_state/remoter_state = session["state"]
+	if(!remoter || !remoter_state || QDELETED(remoter) || QDELETED(remoter_state))
+		clear_remote_tgui_session(user)
+		return UI_CLOSE
+
+	var/status = remoter.CanUseTopic(user, remoter_state)
+	if(status <= UI_CLOSE)
+		clear_remote_tgui_session(user)
+		return UI_CLOSE
+
+	return status
+
+/obj/machinery/alarm/proc/tgui_remote_control_status(mob/user)
+	var/local_status = GLOB.tgui_default_state.can_use_topic(src, user)
+	var/remote_status = _get_remote_tgui_status(user)
+	return max(local_status, remote_status)
+
+/obj/machinery/alarm/ui_close(mob/user)
+	clear_remote_tgui_session(user)
+	return ..()
 
 /obj/machinery/alarm/tgui_data(mob/user)
 	var/list/data = list()
 
-	var/remote_connection = 0
-	var/remote_access = 0
+	var/remote_status = _get_remote_tgui_status(user)
+	var/remote_connection = remote_status > UI_CLOSE
+	var/remote_access = remote_status >= UI_INTERACTIVE
+	var/remote_lock_bypass = remote_access
 
 	data["remote_connection"] = remote_connection
 	data["remote_access"] = remote_access
 
-	data["locked"] = locked && !issilicon(user)
+	data["locked"] = locked && !issilicon(user) && !remote_lock_bypass
 	data["rcon"] = rcon_setting
 	data["screen"] = screen
 	data["mode"] = mode
 
-	data["can_control"] = (!data["locked"] || issilicon(user)) ? TRUE : FALSE
+	var/current_ui_status = tgui_remote_control_status(user)
+	data["can_control"] = (current_ui_status == UI_INTERACTIVE && (!locked || issilicon(user) || remote_lock_bypass)) ? TRUE : FALSE
 
 	var/list/t_sel = TLV["temperature"]
 	var/max_temperature_c = min(CONV_KELVIN_CELSIUS(t_sel[3]), MAX_TEMPERATURE)
@@ -579,7 +656,7 @@
 		return FALSE
 	if(shorted || buildstage != 2)
 		return FALSE
-	if(locked && !issilicon(user))
+	if(locked && !issilicon(user) && _get_remote_tgui_status(user) < UI_INTERACTIVE)
 		return FALSE
 	return TRUE
 

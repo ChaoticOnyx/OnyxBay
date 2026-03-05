@@ -76,7 +76,7 @@
 
 	update_icons()
 
-/mob/living/bot/updatehealth()
+/mob/living/bot/update_health()
 	if(status_flags & GODMODE)
 		health = maxHealth
 		set_stat(CONSCIOUS)
@@ -221,9 +221,9 @@
 
 	..(message, null, verb)
 
-/mob/living/bot/Bump(atom/A)
-	if(on && botcard && istype(A, /obj/machinery/door))
-		var/obj/machinery/door/D = A
+/mob/living/bot/Bump(atom/movable/AM, yes)
+	if(on && botcard && istype(AM, /obj/machinery/door))
+		var/obj/machinery/door/D = AM
 		if(!istype(D, /obj/machinery/door/firedoor) && !istype(D, /obj/machinery/door/blast) && D.check_access(botcard))
 			D.open()
 	else

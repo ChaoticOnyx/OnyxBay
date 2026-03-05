@@ -75,7 +75,7 @@
 
 //This updates the health and status of the mob (conscious, unconscious, dead)
 /mob/living/proc/handle_regular_status_updates()
-	updatehealth()
+	update_health()
 	if(!is_ic_dead())
 		if(paralysis)
 			set_stat(UNCONSCIOUS)

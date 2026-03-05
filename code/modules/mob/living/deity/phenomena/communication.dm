@@ -34,14 +34,14 @@
 			var/mob/M = mind.current
 			if((M in view) && M.client)
 				to_chat(M, "<span class='cult'>Your attention is eerily drawn to \the [a].</span>")
-				M.client.images += arrow
+				M.add_client_image(arrow)
 				register_signal(M, SIGNAL_LOGGED_OUT, nameof(/datum/phenomena/point.proc/remove_image))
 				spawn(20)
 					if(M.client)
 						remove_image(M)
 
 /datum/phenomena/point/proc/remove_image(mob/living/L)
-	L.client.images -= arrow
+	L.remove_client_image(arrow)
 	unregister_signal(L, SIGNAL_LOGGED_OUT)
 
 /datum/phenomena/punish

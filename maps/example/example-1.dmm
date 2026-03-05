@@ -37,7 +37,7 @@
 "K" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/map_ent/trigger_mob{tag = "ent_tp_trigger"; pixel_x = -7; ev_tag = "ent_tp_wv"},/obj/map_ent/func_teleport{tag = "ent_tp_src"; pixel_x = 14; ev_dest_tag = "ent_showcase_tp_dest"},/obj/map_ent/func_write_var{tag = "ent_tp_wv"; pixel_y = 9; ev_read_tag = "ent_tp_trigger"; ev_write_tag = "ent_tp_src"; ev_table = list(ev_tag="ev_triggered"); ev_activate_writer = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "L" = (/obj/machinery/atmospherics/pipe/manifold/visible,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "M" = (/obj/machinery/atmospherics/pipe/manifold/visible{dir = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"N" = (/obj/structure/table/steel,/obj/item/jtag_programmer,/obj/item/mcu_module/tts,/obj/item/mcu_module/serial_terminal,/obj/item/mcu_module/signaler,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"N" = (/obj/structure/table/steel,/obj/item/jtag_programmer,/obj/item/mcu_module/tts,/obj/item/mcu_module/serial_terminal,/obj/item/mcu_module/signaler,/obj/item/debugger,/obj/item/mcu_module/gps,/obj/item/mcu_module/light,/obj/item/mcu_module/env_sensor,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "O" = (/obj/structure/table/steel,/obj/item/cell/infinite,/obj/item/cell/standard,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "P" = (/obj/map_ent/info_maptext{ev_text = "Map entities showcase"},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "Q" = (/obj/structure/table/steel,/obj/item/device/multitool,/obj/item/screwdriver,/obj/item/weldingtool,/turf/simulated/floor/tiled,/area/engineering/toilet)

@@ -2,7 +2,6 @@
 /obj/item/mcu_module/signaler
 	name = "Signaler module"
 	desc = "A signaler module for a MCU."
-	icon = 'icons/obj/mcu.dmi'
 	icon_state = "signaler"
 
 	device_type = Z_DEVICE_TYPE_SIGNALER
@@ -50,6 +49,9 @@
 			__radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)
 			__code = code
 
+			set_next_think(world.time + config.mcu.signaler_set_cooldown)
+			ASSERT(Z_MACHINE_SYSCALL(M.id, __pci_slot, Z_SIGNALER_B2N_CMD_READY_STATUS, FALSE) == TRUE)
+
 			return TRUE
 		if(Z_SIGNALER_N2B_CMD_SEND)
 			if(__radio_connection == null)
@@ -60,8 +62,8 @@
 			var/datum/signal/signal = new(list("message" = "ACTIVATE"), encryption = __code)
 			__radio_connection.post_signal(src, signal)
 
-			set_next_think(world.time + config.mcu.signaler_send_cooldown)
 			ASSERT(Z_MACHINE_SYSCALL(M.id, __pci_slot, Z_SIGNALER_B2N_CMD_READY_STATUS, FALSE) == TRUE)
+			set_next_think(world.time + config.mcu.signaler_send_cooldown)
 
 			return TRUE
 
@@ -69,13 +71,18 @@
 
 /obj/item/mcu_module/signaler/think()
 	var/obj/item/device/mcu/M = __host.resolve()
+
+	if(QDELETED(M))
+		return
+
 	ASSERT(Z_MACHINE_SYSCALL(M.id, __pci_slot, Z_SIGNALER_B2N_CMD_READY_STATUS, TRUE) == TRUE)
 
 	return
 
 /obj/item/mcu_module/signaler/__reset(attached)
+	set_next_think(0)
+
 	if(!attached)
-		set_next_think(0)
 		return
 
 	var/obj/item/device/mcu/M = __host.resolve()

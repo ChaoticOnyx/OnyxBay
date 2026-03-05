@@ -29,7 +29,7 @@
 		if(ELECTROCUTE)
 			electrocute_act(damage, used_weapon, 1.0, def_zone)
 
-	updatehealth()
+	update_health()
 	return 1
 
 
@@ -67,7 +67,7 @@
 			eye_blurry = max(eye_blurry, effect * blocked_mult(blocked))
 		if(DROWSY)
 			drowsyness = max(drowsyness, effect * blocked_mult(blocked))
-	updatehealth()
+	update_health()
 	return 1
 
 

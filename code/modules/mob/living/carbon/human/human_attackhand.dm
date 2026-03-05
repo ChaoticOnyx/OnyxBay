@@ -341,7 +341,7 @@
 	visible_message(SPAN("danger", "[user] has [attack_message] [src]!"))
 	admin_attack_log(user, src, "Attacked their victim", "Was attacked", "has [attack_message]")
 	apply_damage(damage, damtype, affecting, armor_block)
-	updatehealth()
+	update_health()
 	return 1
 
 //Breaks all grips and pulls that the mob currently has.

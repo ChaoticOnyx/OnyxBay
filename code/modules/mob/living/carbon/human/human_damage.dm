@@ -1,5 +1,5 @@
 //Updates the mob's health from organs and mob damage variables
-/mob/living/carbon/human/updatehealth()
+/mob/living/carbon/human/update_health()
 	var/previous_health = health
 	if(status_flags & GODMODE)
 		health = maxHealth
@@ -45,7 +45,7 @@
 		var/obj/item/organ/internal/cerebrum/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			sponge.damage = min(max(amount, 0),sponge.species.total_health)
-			updatehealth()
+			update_health()
 
 /mob/living/carbon/human/getBrainLoss()
 	if(status_flags & GODMODE)
@@ -380,7 +380,7 @@
 	var/obj/item/organ/external/picked = pick(parts)
 	if(picked.heal_damage(brute,burn))
 		BITSET(hud_updateflag, HEALTH_HUD)
-	updatehealth()
+	update_health()
 
 
 //TODO reorganize damage procs so that there is a clean API for damaging living mobs
@@ -402,7 +402,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 	if(picked.take_external_damage(brute, burn, damage_flags))
 		BITSET(hud_updateflag, HEALTH_HUD)
 
-	updatehealth()
+	update_health()
 
 // damage ONE organic external organ, organ gets randomly selected from all damagable
 /mob/living/carbon/human/proc/take_organic_organ_damage(brute, burn)
@@ -418,7 +418,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 	if(damaged_organ.take_external_damage(brute, burn))
 		BITSET(hud_updateflag, HEALTH_HUD)
 
-	updatehealth()
+	update_health()
 
 //Heal MANY external organs, in random order
 /mob/living/carbon/human/heal_overall_damage(brute, burn)
@@ -438,9 +438,9 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 		burn -= (burn_was-picked.burn_dam)
 
 		parts -= picked
-	updatehealth()
+	update_health()
 	if(should_update_damage_icon)
-		UpdateDamageIcon()
+		update_damage_overlays()
 
 	BITSET(hud_updateflag, HEALTH_HUD)
 
@@ -459,7 +459,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 		if(burn_avg)
 			apply_damage(damage = burn_avg, damagetype = BURN, damage_flags = dam_flags, used_weapon = used_weapon, given_organ = E)
 
-	updatehealth()
+	update_health()
 	BITSET(hud_updateflag, HEALTH_HUD)
 
 
@@ -555,7 +555,7 @@ This function restores all organs.
 			organ.add_genetic_damage(damage)
 
 	// Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
-	updatehealth()
+	update_health()
 	species.handle_damage(src)
 	BITSET(hud_updateflag, HEALTH_HUD)
 	return created_wound

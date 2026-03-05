@@ -23,11 +23,6 @@
 		stop_pulling()
 		return 0
 
-	if(!destination.CanZPass(pulling, direction))
-		to_chat(src, "<span class='warning'>The [pulling] you were pulling bumps up against \the [destination].</span>")
-		stop_pulling()
-		return 0
-
 	for(var/atom/A in destination)
 		if(!A.CanMoveOnto(pulling, start, 1.5, direction))
 			to_chat(src, "<span class='warning'>\The [A] blocks the [pulling] you were pulling.</span>")
@@ -99,7 +94,7 @@
 		return
 
 	var/turf/T = loc
-	if(!T.CanZPass(src, DOWN) || !below.CanZPass(src, DOWN))
+	if(!T.CanZPass(src, DOWN))
 		return
 
 	// No gravity in space, apparently.
@@ -212,7 +207,7 @@
 	apply_damage(rand(0, damage), BRUTE, BP_L_ARM)
 	apply_damage(rand(0, damage), BRUTE, BP_R_ARM)
 	weakened = max(weakened,2)
-	updatehealth()
+	update_health()
 
 	if (old_stat != CONSCIOUS)
 		return

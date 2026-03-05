@@ -578,7 +578,7 @@
 
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		adjustBruteLoss(-30)
-		updatehealth()
+		update_health()
 		add_fingerprint(user)
 		for(var/mob/O in viewers(user, null))
 			O.show_message(text("<span class='warning'>[user] has fixed some of the dents on [src]!</span>"), 1)
@@ -591,7 +591,7 @@
 		if (coil.use(1))
 			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 			adjustFireLoss(-30)
-			updatehealth()
+			update_health()
 			for(var/mob/O in viewers(user, null))
 				O.show_message(text("<span class='warning'>[user] has fixed some of the burnt wires on [src]!</span>"), 1)
 

@@ -34,7 +34,7 @@
 /obj/item/gun/launcher/process_projectile(obj/item/projectile, mob/user, atom/target, target_zone, params=null, pointblank=0, reflex=0)
 	update_release_force(projectile)
 	projectile.forceMove(get_turf(user))
-	projectile.dir = user.dir // It's dumb, but it works. Kinda.
-	projectile.throw_at(target, throw_distance, 1, user, src)
-	play_fire_sound(user,projectile)
+	projectile.dir = get_dir(projectile, target)
+	projectile.throw_at(target, throw_distance, release_force, user, launcher = src)
+	play_fire_sound(user, projectile)
 	return 1

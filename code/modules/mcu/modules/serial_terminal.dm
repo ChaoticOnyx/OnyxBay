@@ -4,7 +4,6 @@
 /obj/item/mcu_module/serial_terminal
 	name = "Serial Terminal module"
 	desc = "A serial terminal interface for MCU debugging and interaction."
-	icon = 'icons/obj/mcu.dmi'
 	icon_state = "serial_terminal"
 
 	device_type = Z_DEVICE_TYPE_SERIAL_TERMINAL

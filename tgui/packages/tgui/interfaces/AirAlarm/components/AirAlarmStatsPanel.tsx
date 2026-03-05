@@ -22,7 +22,7 @@ const GasGrid = (props: { env: EnvRow[]; pulse: boolean }) => {
     <Box className="AirAlarm__gasGrid">
       <Seg7Display size="sm" label={<span>O<sub>2</sub></span>} value={fmt4(pct(o2))} unit="%" tone={tone(o2)} pulse={props.pulse} color="cyan" />
       <Seg7Display size="sm" label={<span>N<sub>2</sub></span>} value={fmt4(pct(n2))} unit="%" tone={tone(n2)} pulse={props.pulse} color="green" />
-      <Seg7Display size="sm" label={<span>CO<sub>2</sub></span>}  value={fmt4(pct(co2))} unit="%" tone={tone(co2)} pulse={props.pulse} color="amber" />
+      <Seg7Display size="sm" label={<span>CO<sub>2</sub></span>}  value={fmt4(pct(co2))} unit="%" tone={tone(co2)} pulse={props.pulse} color="white" />
       <Seg7Display size="sm" label="OTHER" value={fmt4(pct(other))} unit="%" tone={tone(other)} pulse={props.pulse} color="white" />
     </Box>
   );
@@ -158,7 +158,6 @@ export const AirAlarmStatsPanel = (props: {
                 min={toNum(data.min_temp_c)}
                 max={toNum(data.max_temp_c)}
                 step={1}
-                disabled={!can}
                 onCommit={(v) => act("set_target_temp", { temp_c: v })}
               />
             </Box>

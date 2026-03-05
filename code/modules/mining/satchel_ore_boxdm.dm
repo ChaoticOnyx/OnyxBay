@@ -19,7 +19,8 @@
 		user.drop(W, src)
 	if (istype(W, /obj/item/storage))
 		var/obj/item/storage/S = W
-		S.hide_from(usr)
+		if(istype(user))
+			S.hide_from(user)
 		for(var/obj/item/ore/O in S.contents)
 			S.remove_from_storage(O, src, 1)
 		S.finish_bulk_removal() //This will move the item to this item's contents

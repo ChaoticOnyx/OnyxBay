@@ -42,7 +42,7 @@
 					H.Stun(3)
 		if(affecting)
 			affecting.take_external_damage(1, 0)
-			H.updatehealth()
+			H.update_health()
 	else if(ismouse(target))
 		var/mob/living/simple_animal/mouse/M = target
 		visible_message(SPAN("danger", "SPLAT!"))

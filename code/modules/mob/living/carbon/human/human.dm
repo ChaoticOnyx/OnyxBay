@@ -1851,7 +1851,7 @@
 		to_chat(src, SPAN("notice", "You have given up life and succumbed to death."))
 		log_and_message_admins("has succumbed")
 		adjustBrainLoss(brain.max_damage)
-		updatehealth()
+		update_health()
 
 /mob/living/carbon/human/verb/remove_underwear()
 	set name = "Remove Underwear"

@@ -37,7 +37,8 @@ var/global/photo_count = 0
 	var/photo_size = 3
 	var/list/disfigured_mobs = list()
 
-/obj/item/photo/New()
+/obj/item/photo/Initialize()
+	. = ..()
 	id = photo_count++
 
 /obj/item/photo/attack_self(mob/user as mob)
