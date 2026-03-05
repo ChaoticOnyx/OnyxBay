@@ -180,6 +180,7 @@ export class SpriteCompositor {
   private manifest: SpriteManifest | null = null;
   private atlases: HTMLImageElement[] = [];
   private loaded = false;
+  private loadPromise: Promise<void> | null = null;
   private tempCanvas: HTMLCanvasElement;
   private tempCtx: CanvasRenderingContext2D;
 
@@ -191,29 +192,34 @@ export class SpriteCompositor {
     this.tempCtx = this.tempCanvas.getContext('2d')!;
   }
 
-  /** Load manifest and all atlas images. Call once before rendering. */
-  async init(): Promise<void> {
-    if (this.loaded) return;
+  /** Load manifest and all atlas images. Safe to call multiple times concurrently. */
+  init(): Promise<void> {
+    if (this.loaded) return Promise.resolve();
+    if (this.loadPromise) return this.loadPromise;
 
-    // Load manifest — assets are served flat from BYOND's cache via send_rsc()
-    const manifestResp = await fetch('manifest.json');
-    this.manifest = await manifestResp.json();
+    this.loadPromise = (async () => {
+      // Load manifest — assets are served flat from BYOND's cache via send_rsc()
+      const manifestResp = await fetch('manifest.json');
+      this.manifest = await manifestResp.json();
 
-    // Load all atlas images
-    const loadPromises = this.manifest!.atlases.map((name, idx) => {
-      return new Promise<void>((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => {
-          this.atlases[idx] = img;
-          resolve();
-        };
-        img.onerror = () => reject(new Error(`Failed to load atlas: ${name}`));
-        img.src = name;
+      // Load all atlas images
+      const loadPromises = this.manifest!.atlases.map((name, idx) => {
+        return new Promise<void>((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            this.atlases[idx] = img;
+            resolve();
+          };
+          img.onerror = () => reject(new Error(`Failed to load atlas: ${name}`));
+          img.src = name;
+        });
       });
-    });
 
-    await Promise.all(loadPromises);
-    this.loaded = true;
+      await Promise.all(loadPromises);
+      this.loaded = true;
+    })();
+
+    return this.loadPromise;
   }
 
   /** Check if compositor is initialized and ready to render */

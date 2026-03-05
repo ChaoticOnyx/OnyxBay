@@ -1205,7 +1205,10 @@ class CompositorPreview extends Component<
 
   tryRender() {
     const compositor = getCompositor();
-    if (!compositor.isReady()) return;
+    if (!compositor.isReady()) {
+      compositor.init().then(() => this.tryRender()).catch(() => {});
+      return;
+    }
     const config = buildRenderConfig(this.props.data);
     if (!config) return;
     const url = compositor.renderCharacter(
