@@ -1,7 +1,5 @@
 #define SM_TAP_CONVERSION_FACTOR 10000 // 10 kW produced per SM power unit drained per tick
 
-var/global/list/sm_resonance_taps = list()
-
 /obj/machinery/power/sm_resonance_tap
 	name = "Supermatter Resonance Tap"
 	desc = "A device that siphons resonance energy directly from a supermatter crystal, converting it to electrical power. Higher tap levels increase output but drain the crystal faster."
@@ -20,12 +18,7 @@ var/global/list/sm_resonance_taps = list()
 	var/melted = FALSE // permanent failure state, not repairable
 	var/list/my_cracks = list() // resonance fractures spawned by this tap
 
-/obj/machinery/power/sm_resonance_tap/New()
-	..()
-	sm_resonance_taps += src
-
 /obj/machinery/power/sm_resonance_tap/Destroy()
-	sm_resonance_taps -= src
 	. = ..()
 
 /obj/machinery/power/sm_resonance_tap/Process()
@@ -63,6 +56,7 @@ var/global/list/sm_resonance_taps = list()
 	var/crack_effects_fired = 0
 	for(var/obj/effect/decal/resonance_crack/C in my_cracks)
 		if(QDELETED(C))
+			my_cracks -= C
 			continue
 		var/turf/crack_turf = get_turf(C)
 
@@ -116,6 +110,7 @@ var/global/list/sm_resonance_taps = list()
 						frontier += F
 		if(frontier.len)
 			var/obj/effect/decal/resonance_crack/crack = new(pick(frontier))
+			crack.parent_tap = src
 			my_cracks += crack
 
 	// Gravimetric Bleed: resonance warps local gravity, flinging loose items
@@ -237,12 +232,14 @@ var/global/list/sm_resonance_taps = list()
 	INVOKE_ASYNC(src, /atom.proc/Beam, relay, arc_state, 'icons/effects/beam.dmi', 5, 30)
 	INVOKE_ASYNC(relay, /atom.proc/Beam, SM, arc_state, 'icons/effects/beam.dmi', 5, 30)
 
-	// Corona discharge from SM to a random nearby tile — SM is a third unique source
+	// Corona discharge from SM — always uses a relay to avoid source conflict with other taps' coronas
+	var/obj/effect/sm_arc_relay/relay_corona = new(get_turf(SM))
 	var/turf/corona = locate(clamp(SM.x + rand(-4, 4), 1, world.maxx), clamp(SM.y + rand(-4, 4), 1, world.maxy), z)
 	if(corona)
-		INVOKE_ASYNC(SM, /atom.proc/Beam, corona, arc_state, 'icons/effects/beam.dmi', 3, 10)
+		INVOKE_ASYNC(relay_corona, /atom.proc/Beam, corona, arc_state, 'icons/effects/beam.dmi', 3, 10)
+	spawn(7) qdel(relay_corona)
 
-	// At tap 3+ a second corona branch fires from a fresh relay near SM so it doesn't conflict
+	// At tap 3+ a second corona branch fires from its own relay
 	var/turf/corona2_target
 	if(tap_level >= 3)
 		var/obj/effect/sm_arc_relay/relay2 = new(get_turf(SM))
@@ -278,9 +275,18 @@ var/global/list/sm_resonance_taps = list()
 	update_icon()
 
 /obj/machinery/power/sm_resonance_tap/proc/fade_cracks()
+	// Farthest cracks fade first, retreating back toward the tap
+	// Stagger scales with spread: 12s at 3 tiles, up to ~2 minutes at large spreads
+	var/max_dist = 0
 	for(var/obj/effect/decal/resonance_crack/C in my_cracks)
 		if(!QDELETED(C))
-			C.start_fading()
+			max_dist = max(max_dist, get_dist(src, C))
+	var/stagger_window = max_dist > 0 ? clamp(round(max_dist / 3 * 120), 120, 1200) : 0
+	for(var/obj/effect/decal/resonance_crack/C in my_cracks)
+		if(QDELETED(C))
+			continue
+		var/delay = max_dist > 0 ? round((max_dist - get_dist(src, C)) / max_dist * stagger_window) : 0
+		spawn(delay) if(!QDELETED(C)) C.start_fading()
 	my_cracks = list()
 
 /obj/machinery/power/sm_resonance_tap/proc/tap_break()
@@ -319,7 +325,7 @@ var/global/list/sm_resonance_taps = list()
 	anchored = 1
 	mouse_opacity = 1
 	layer = DECAL_PLATING_LAYER
-	var/fade_timer = 0
+	var/obj/machinery/power/sm_resonance_tap/parent_tap
 
 /obj/effect/decal/resonance_crack/Initialize()
 	. = ..()
@@ -344,13 +350,12 @@ var/global/list/sm_resonance_taps = list()
 
 
 /obj/effect/decal/resonance_crack/proc/start_fading()
-	fade_timer = 6 // 6 ticks × 2s = ~12 seconds to disappear after tap deactivates
 	INVOKE_ASYNC(src, .proc/fade)
 
 /obj/effect/decal/resonance_crack/proc/fade()
-	while(fade_timer > 0)
-		sleep(20) // 2 seconds per tick
-		fade_timer--
+	sleep(120) // ~12 seconds after tap deactivates
+	if(parent_tap && !QDELETED(parent_tap) && parent_tap.active)
+		return // tap was re-enabled — stay alive
 	qdel(src)
 
 // Invisible relay object used as an intermediate beam source to avoid the single-source
