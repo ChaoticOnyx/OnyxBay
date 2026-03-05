@@ -865,6 +865,30 @@
 					"layer" = ho_layer
 				))
 
+	// Directly extract accessories from clothing items.
+	// Accessories are attached to the uniform (or suit) but the sub-overlay
+	// iteration above may miss them due to BYOND image.overlays quirks.
+	var/list/clothing_to_check = list()
+	if(istype(M.w_uniform, /obj/item/clothing))
+		clothing_to_check += M.w_uniform
+	if(istype(M.wear_suit, /obj/item/clothing))
+		clothing_to_check += M.wear_suit
+
+	for(var/obj/item/clothing/C in clothing_to_check)
+		if(!LAZYLEN(C.accessories))
+			continue
+		for(var/obj/item/clothing/accessory/A in C.accessories)
+			var/tmp_state = A.overlay_state ? A.overlay_state : A.icon_state
+			var/sprite_sheet = M.body_build?.get_mob_icon(slot_tie_str, tmp_state)
+			if(!sprite_sheet)
+				continue
+			equipment += list(list(
+				"dmiFile" = "[sprite_sheet]",
+				"state" = tmp_state,
+				"color" = A.color,
+				"layer" = HO_UNIFORM_LAYER
+			))
+
 	return equipment
 
 /// Generate slot preview data for all character slots.

@@ -445,8 +445,10 @@ export class SpriteCompositor {
     // === INTERLEAVED CLOTHING / FACIAL HAIR / HAIR / EYES ===
     // BYOND HO_ layers: facial hair=19, hair=26, eyes on top.
     // Clothing layers are interleaved: <19 below facial hair, 19-25 between, >=26 above hair.
+    // Facemask (29) is drawn under hair so long hair overlaps it on all views.
     const HO_FACIAL_HAIR = 19;
     const HO_HAIR = 26;
+    const HO_FACEMASK = 29; // drawn under hair
 
     const sorted = config.clothing
       ? [...config.clothing].sort((a, b) => a.layer - b.layer)
@@ -464,8 +466,11 @@ export class SpriteCompositor {
     }
 
     // Draw clothing between facial hair and hair (glasses=21, suitstore=23, back=24)
+    // Also draw facemask here so it sits under hair
     for (const item of sorted) {
-      if (item.layer < HO_FACIAL_HAIR || item.layer >= HO_HAIR) continue;
+      if (item.layer < HO_FACIAL_HAIR || item.layer >= HO_HAIR) {
+        if (item.layer !== HO_FACEMASK) continue;
+      }
       this.drawClothingItem(ctx, item, dir);
     }
 
@@ -488,9 +493,9 @@ export class SpriteCompositor {
       }
     }
 
-    // Draw clothing above hair (ears=28, facemask=29, head=30)
+    // Draw clothing above hair (ears=28, head=30) — facemask already drawn under hair
     for (const item of sorted) {
-      if (item.layer < HO_HAIR) continue;
+      if (item.layer < HO_HAIR || item.layer === HO_FACEMASK) continue;
       this.drawClothingItem(ctx, item, dir);
     }
 
