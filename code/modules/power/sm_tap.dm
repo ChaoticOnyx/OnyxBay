@@ -160,6 +160,9 @@
 
 /obj/machinery/power/sm_resonance_tap/attackby(obj/item/W, mob/user)
 	if(isWrench(W))
+		if(active)
+			to_chat(user, SPAN_WARNING("Deactivate [src] before moving it."))
+			return 1
 		for(var/obj/machinery/power/sm_resonance_tap/R in get_turf(src))
 			if(R != src)
 				to_chat(user, SPAN_WARNING("You cannot install more than one resonance tap on the same spot."))
