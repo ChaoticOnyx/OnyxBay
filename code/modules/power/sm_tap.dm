@@ -188,8 +188,6 @@
 		if(welder.remove_fuel(1, user))
 			health = min(100, health + 25)
 			to_chat(user, SPAN_NOTICE("You repair [src]. Integrity: [health]%"))
-			if(stat & BROKEN)
-				stat &= ~BROKEN
 			update_icon()
 		return 1
 	else if(istype(W, /obj/item/screwdriver))
