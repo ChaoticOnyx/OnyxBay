@@ -217,7 +217,7 @@
 
 	//roll to-hit
 	miss_modifier = max(15*(distance-2) - round(15*accuracy) + miss_modifier + target_mob.get_evasion(), 0)
-	var/hit_zone = get_zone_with_miss_chance(def_zone, target_mob, miss_modifier, ranged_attack=(distance > 1 || original != target_mob), no_true_miss=(no_miss || original == target_mob)) //clicked on mob = aimed shot, no true miss. Clicked on tile = stray, can true miss
+	var/hit_zone = get_zone_with_miss_chance(def_zone, target_mob, miss_modifier, ranged_attack=(distance > 1 || original != target_mob), no_miss=(no_miss || original == target_mob)) //clicked on mob = aimed shot, no true miss. Clicked on tile = stray, can true miss
 
 	var/result = PROJECTILE_FORCE_MISS
 	if(hit_zone)
