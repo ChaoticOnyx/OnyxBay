@@ -29,7 +29,7 @@
 				result = "software"
 	return result
 
-/datum/character_setup_tgui
+/datum/character_setup
 	var/datum/preferences/pref
 	var/mob/owner
 	var/preview_dir = SOUTH
@@ -44,26 +44,26 @@
 	var/selected_organ = BP_CHEST
 	var/cpu_preselected = FALSE
 
-/datum/character_setup_tgui/New(datum/preferences/P, mob/user)
+/datum/character_setup/New(datum/preferences/P, mob/user)
 	pref = P
 	owner = user
 
-/datum/character_setup_tgui/Destroy()
+/datum/character_setup/Destroy()
 	pref = null
 	owner = null
 	return ..()
 
-/datum/character_setup_tgui/tgui_state(mob/user)
+/datum/character_setup/tgui_state(mob/user)
 	return GLOB.tgui_always_state
 
-/datum/character_setup_tgui/tgui_interact(mob/user, datum/tgui/ui)
+/datum/character_setup/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new /datum/tgui(user, src, "CharacterSetup", "Character Setup")
 		ui.set_autoupdate(FALSE)
 		ui.open()
 
-/datum/character_setup_tgui/tgui_assets(mob/user)
+/datum/character_setup/tgui_assets(mob/user)
 	return list(
 		get_asset_datum(/datum/asset/directories/tgui_sprites)
 	)
@@ -72,7 +72,7 @@
 // STATIC DATA — sent once, cached on the client
 // Contains all reference data: species, hair styles, etc.
 // ============================================================
-/datum/character_setup_tgui/tgui_static_data(mob/user)
+/datum/character_setup/tgui_static_data(mob/user)
 	var/list/data = list()
 
 	// Species list with full metadata
@@ -563,7 +563,7 @@
 // DYNAMIC DATA — sent on every UI update
 // Contains current preference values and preview
 // ============================================================
-/datum/character_setup_tgui/tgui_data(mob/user)
+/datum/character_setup/tgui_data(mob/user)
 	var/list/data = list()
 
 	// Preview direction — client-side compositor handles rendering
@@ -792,13 +792,13 @@
 // PREVIEW — client-side rendering via SpriteCompositor
 // Server only updates BYOND-side lobby screen preview
 // ============================================================
-/datum/character_setup_tgui/proc/mark_preview_dirty()
+/datum/character_setup/proc/mark_preview_dirty()
 	// Updates the BYOND-side lobby screen preview separately from TGUI rendering
 	pref.update_preview_icon()
 
 /// Set one of the five pref color fields (hair/s_hair/facial/eyes/skin) from a hex string.
 /// key maps directly to pref.r_KEY / g_KEY / b_KEY variable names.
-/datum/character_setup_tgui/proc/set_pref_color(key, hex_color)
+/datum/character_setup/proc/set_pref_color(key, hex_color)
 	if(!hex_color)
 		return
 	pref.vars["r_[key]"] = hex2num(copytext(hex_color, 2, 4))
@@ -809,7 +809,7 @@
 /// Generate equipment overlay render data for client-side rendering.
 /// Dresses a mannequin with job/loadout items, then extracts icon + icon_state + layer
 /// from the relevant overlays_standing slots.
-/datum/character_setup_tgui/proc/generate_equipment_render_data()
+/datum/character_setup/proc/generate_equipment_render_data()
 	if(!pref.equip_preview_mob)
 		return list()
 
@@ -834,6 +834,7 @@
 		list(HO_SUIT_STORE_LAYER, "suitstore"),
 		list(HO_BACK_LAYER, "back"),
 		list(HO_EARS_LAYER, "ears"),
+		list(HO_FACEMASK_ALT_LAYER, "mask"),  // items with use_alt_layer=TRUE (scarves, sterile mask)
 		list(HO_FACEMASK_LAYER, "mask"),
 		list(HO_HEAD_LAYER, "head")
 	)
@@ -853,12 +854,22 @@
 				"color" = I.color,
 				"layer" = ho_layer
 			))
+			// Also extract child overlays (e.g. accessories attached to uniforms)
+			for(var/image/sub in I.overlays)
+				if(!sub || !sub.icon || !sub.icon_state)
+					continue
+				equipment += list(list(
+					"dmiFile" = "[sub.icon]",
+					"state" = sub.icon_state,
+					"color" = sub.color,
+					"layer" = ho_layer
+				))
 
 	return equipment
 
 /// Generate slot preview data for all character slots.
 /// Sends raw appearance data per slot so the client can render via SpriteCompositor.
-/datum/character_setup_tgui/proc/generate_slot_previews()
+/datum/character_setup/proc/generate_slot_previews()
 	var/original_slot = pref.default_slot
 	var/list/previews = list()
 
@@ -908,7 +919,7 @@
 // ============================================================
 // ACTION HANDLERS
 // ============================================================
-/datum/character_setup_tgui/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/character_setup/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return
@@ -1171,6 +1182,7 @@
 		if("loadSlot")
 			var/slot = text2num(params["slot"])
 			if(slot)
+				pref.save_character()
 				pref.load_character(slot)
 				pref.sanitize_preferences()
 				slot_previews = null  // Force re-generation on next picker open
@@ -1218,6 +1230,9 @@
 			var/hash = params["hash"]
 			if(!hash)
 				selected_gear_hash = null
+				pref.trying_on_gear = null
+				pref.trying_on_tweaks.Cut()
+				mark_preview_dirty()
 				return TRUE
 			var/datum/gear/G = hash_to_gear[hash]
 			if(!G)
@@ -1229,8 +1244,9 @@
 				selected_tweaks = list()
 				for(var/datum/gear_tweak/tweak in G.gear_tweaks)
 					selected_tweaks["[tweak]"] = tweak.get_default()
-			pref.trying_on_gear = null
-			pref.trying_on_tweaks.Cut()
+			// Preview the selected item on the doll
+			pref.trying_on_gear = G.display_name
+			pref.trying_on_tweaks = selected_tweaks.Copy()
 			mark_preview_dirty()
 			return TRUE
 
@@ -1278,6 +1294,9 @@
 					metadata = list()
 					gear_items[SG.display_name] = metadata
 				metadata["[tweak]"] = new_value
+			// Update trying-on preview with new tweaks
+			if(pref.trying_on_gear)
+				pref.trying_on_tweaks = selected_tweaks.Copy()
 			mark_preview_dirty()
 			return TRUE
 
@@ -1299,6 +1318,11 @@
 				gear.Cut()
 			selected_gear_hash = null
 			selected_tweaks = list()
+			mark_preview_dirty()
+			return TRUE
+
+		if("randomizeLoadout")
+			randomize_loadout()
 			mark_preview_dirty()
 			return TRUE
 
@@ -1671,6 +1695,43 @@
 					pref.memory = new_text
 			return TRUE
 
+		if("editRecordFancy")
+			var/record_type = params["type"]
+			if(!record_type)
+				return TRUE
+			if(jobban_isbanned(owner, "Records") && record_type != "memory")
+				return TRUE
+			var/current_value
+			switch(record_type)
+				if("medical")
+					current_value = pref.med_record
+				if("general")
+					current_value = pref.gen_record
+				if("security")
+					current_value = pref.sec_record
+				if("exploit")
+					current_value = pref.exploit_record
+				if("memory")
+					current_value = pref.memory
+				else
+					return TRUE
+			var/new_text = tgui_input_pencode_editor(owner, "Edit your [record_type] record.", "[capitalize(record_type)] Record", current_value)
+			if(isnull(new_text))
+				return TRUE
+			new_text = sanitize(new_text)
+			switch(record_type)
+				if("medical")
+					pref.med_record = new_text
+				if("general")
+					pref.gen_record = new_text
+				if("security")
+					pref.sec_record = new_text
+				if("exploit")
+					pref.exploit_record = new_text
+				if("memory")
+					pref.memory = new_text
+			return TRUE
+
 		if("setFlavorText")
 			var/part = params["part"]
 			var/new_text = sanitize(params["text"], extra = 0)
@@ -1828,14 +1889,17 @@
 // ============================================================
 // LOADOUT HELPER PROCS
 // ============================================================
-/datum/character_setup_tgui/proc/build_gear_entry(datum/gear/G, mob/user)
-	// Send icon path + icon_state for client-side atlas rendering
+/datum/character_setup/proc/build_gear_entry(datum/gear/G, mob/user)
+	// Send icon path + icon_state for client-side atlas rendering.
+	// Create a temporary instance to reliably get icon/icon_state
+	// (initial() on type path vars can fail for inherited values).
 	var/gear_icon = null
 	var/gear_icon_state = null
 	if(G.path)
-		var/atom/A = G.path
-		gear_icon = "[initial(A.icon)]"
-		gear_icon_state = initial(A.icon_state)
+		var/obj/item/temp = new G.path
+		gear_icon = "[temp.icon]"
+		gear_icon_state = temp.icon_state
+		QDEL_NULL(temp)
 	// If the path has no usable icon_state (e.g. selection items whose path is a generic parent),
 	// fall back to the first concrete path offered by a path tweak.
 	if(!gear_icon_state)
@@ -1845,9 +1909,10 @@
 				if(length(path_tweak.valid_paths))
 					var/first_key = path_tweak.valid_paths[1]
 					var/first_path = path_tweak.valid_paths[first_key]
-					var/atom/B = first_path
-					gear_icon = "[initial(B.icon)]"
-					gear_icon_state = initial(B.icon_state)
+					var/obj/item/temp2 = new first_path
+					gear_icon = "[temp2.icon]"
+					gear_icon_state = temp2.icon_state
+					QDEL_NULL(temp2)
 				break
 	var/list/entry = list(
 		"name" = G.display_name,
@@ -1897,7 +1962,7 @@
 	entry["tweaks"] = tweaks
 	return entry
 
-/datum/character_setup_tgui/proc/build_gear_detail(datum/gear/G, mob/user)
+/datum/character_setup/proc/build_gear_detail(datum/gear/G, mob/user)
 	// Resolve tweaked icon info for client-side atlas rendering
 	var/tweaked_icon_file = null
 	var/tweaked_icon_state = null
@@ -1932,7 +1997,7 @@
 		"equipped" = islist(pref.gear_list[pref.gear_slot]) && (G.display_name in pref.gear_list[pref.gear_slot])
 	)
 
-/datum/character_setup_tgui/proc/build_tweak_defs(datum/gear/G)
+/datum/character_setup/proc/build_tweak_defs(datum/gear/G)
 	// Ensure departmental tweaks have job context
 	if(G.is_departmental())
 		var/datum/job/preview_job
@@ -1983,7 +2048,7 @@
 		defs += list(def)
 	return defs
 
-/datum/character_setup_tgui/proc/get_tweak_type_name(datum/gear_tweak/tweak)
+/datum/character_setup/proc/get_tweak_type_name(datum/gear_tweak/tweak)
 	if(istype(tweak, /datum/gear_tweak/color))
 		return "color"
 	if(istype(tweak, /datum/gear_tweak/path))
@@ -1998,7 +2063,7 @@
 		return "custom"
 	return "unknown"
 
-/datum/character_setup_tgui/proc/gear_allowed_to_see(datum/gear/G)
+/datum/character_setup/proc/gear_allowed_to_see(datum/gear/G)
 	if(!G.path)
 		return FALSE
 	if(length(G.allowed_roles) && job_master)
@@ -2022,7 +2087,7 @@
 // ============================================================
 // AUGMENTATION HELPER PROCS
 // ============================================================
-/datum/character_setup_tgui/proc/update_internal_organ(organ, action)
+/datum/character_setup/proc/update_internal_organ(organ, action)
 	LAZYINITLIST(pref.organ_data)
 	switch(action)
 		if("nothing")
@@ -2038,7 +2103,7 @@
 		if("mechanical")
 			pref.organ_data[organ] = "mechanical"
 
-/datum/character_setup_tgui/proc/update_external_organ(organ, action)
+/datum/character_setup/proc/update_external_organ(organ, action)
 	LAZYINITLIST(pref.organ_data)
 	LAZYINITLIST(pref.rlimb_data)
 	switch(action)
@@ -2120,3 +2185,31 @@
 					pref.organ_data[BP_BRAIN] = "assisted"
 					for(var/internal in list(BP_HEART, BP_EYES, BP_LUNGS, BP_LIVER, BP_KIDNEYS))
 						pref.organ_data[internal] = "mechanical"
+
+// ============================================================
+// LOADOUT HELPERS
+// ============================================================
+/datum/character_setup/proc/randomize_loadout()
+	var/list/gear = pref.gear_list[pref.gear_slot]
+	gear.Cut()
+	pref.trying_on_gear = null
+	pref.trying_on_tweaks.Cut()
+	selected_gear_hash = null
+	selected_tweaks = list()
+
+	var/list/pool = list()
+	for(var/gear_name in gear_datums)
+		var/datum/gear/G = gear_datums[gear_name]
+		if(gear_allowed_to_see(G) && G.is_allowed_to_equip(owner) && G.cost <= pref.max_loadout_points)
+			pool += G
+	var/points_left = pref.max_loadout_points
+	while(points_left > 0 && length(pool))
+		var/datum/gear/chosen = pick(pool)
+		var/list/chosen_tweaks = list()
+		for(var/datum/gear_tweak/tweak in chosen.gear_tweaks)
+			chosen_tweaks["[tweak]"] = tweak.get_random()
+		gear[chosen.display_name] = chosen_tweaks.Copy()
+		points_left -= chosen.cost
+		for(var/datum/gear/G in pool)
+			if(G.cost > points_left || (G.slot && G.slot == chosen.slot))
+				pool -= G

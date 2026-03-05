@@ -158,7 +158,7 @@
 	return dat
 
 /datum/preferences
-	var/datum/character_setup_tgui/character_setup_ui
+	var/datum/character_setup/character_setup_ui
 
 /datum/preferences/proc/open_setup_window(mob/user)
 	if(!SScharacter_setup.initialized || SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
@@ -167,7 +167,7 @@
 
 	// Open the TGUI character setup window
 	if(!character_setup_ui)
-		character_setup_ui = new /datum/character_setup_tgui(src, user)
+		character_setup_ui = new /datum/character_setup(src, user)
 	character_setup_ui.tgui_interact(user)
 
 	SSwarnings.show_warning(user.client, WARNINGS_NEWCOMERS, "window=Warning;size=360x240;can_resize=0;can_minimize=0")

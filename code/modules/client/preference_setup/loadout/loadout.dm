@@ -54,7 +54,6 @@ var/list/hash_to_gear = list()
 /datum/category_item/player_setup_item/loadout
 	name = "Loadout"
 	sort_order = 1
-	var/datum/loadout_tgui/tgui_loadout
 
 
 /datum/category_item/player_setup_item/loadout/load_character(datum/pref_record_reader/R)
@@ -124,48 +123,6 @@ var/list/hash_to_gear = list()
 		var/datum/gear/G = gear_datums[gears[i]]
 		if(G)
 			. += G.cost
-
-/datum/category_item/player_setup_item/loadout/content(mob/user)
-	. = list()
-
-	if(!user.client)
-		return
-
-	// Auto-open the TGUI loadout manager
-	open_tgui_loadout(user)
-
-	var/total_cost = pref.get_lp_cost()
-	var/fcolor = "#3366cc"
-	if(total_cost < pref.max_loadout_points)
-		fcolor = "#e67300"
-
-	. += "<center>"
-	. += "<h3>Loadout Manager</h3>"
-	. += "<p>The Loadout Manager is open in a separate window.</p>"
-	if(pref.max_loadout_points < INFINITY)
-		. += "<p><font color='[fcolor]'>[total_cost]/[pref.max_loadout_points]</font> loadout points spent in Set [pref.gear_slot].</p>"
-	. += "<a href='?src=\ref[src];open_loadout=1'><b>Re-open Loadout Manager</b></a>"
-	. += "</center>"
-	. = jointext(., null)
-
-
-/datum/category_item/player_setup_item/loadout/proc/open_tgui_loadout(mob/user)
-	if(!tgui_loadout)
-		tgui_loadout = new /datum/loadout_tgui(pref, user)
-	tgui_loadout.tgui_interact(user)
-
-/datum/category_item/player_setup_item/loadout/OnTopic(href, href_list, mob/user)
-	ASSERT(istype(user))
-
-	if(href_list["open_loadout"])
-		open_tgui_loadout(user)
-		return TOPIC_NOACTION
-
-	if(href_list["get_opyxes"])
-		SSdonations.show_donations_info(user)
-		return TOPIC_NOACTION
-
-	return ..()
 
 
 /datum/gear

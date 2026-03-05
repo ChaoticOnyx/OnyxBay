@@ -15,6 +15,7 @@ import { Component } from "inferno";
 import { useBackend, useLocalState } from "../backend";
 import {
   Box,
+  Button,
   Divider,
   Dropdown,
   Icon,
@@ -820,7 +821,12 @@ export const CharacterSetup = (props, context) => {
               {/* Category navigation */}
               <CategorySidebar
                 selected={category}
-                onSelect={setCategory}
+                onSelect={(id) => {
+                  if (id !== category && category === "wardrobe") {
+                    act("selectGear", { hash: "" });
+                  }
+                  setCategory(id);
+                }}
                 context={context}
               />
             </Box>
@@ -1604,9 +1610,9 @@ const IdentityPanel = (props: {
           {/* Origin section */}
           <Box className="CharSetup__idCardSectionSep">Origin</Box>
 
-          {/* Faction + Religion + Home System — three columns */}
-          <Box className="CharSetup__idCardFieldRow">
-            <Box className="CharSetup__idCardField" style={{ flex: "1" }}>
+          {/* Faction + Religion + Home System — one row, width-capped to avoid stamp */}
+          <Box className="CharSetup__idCardFieldRow" style={{ maxWidth: "calc(100% - 9rem)" }}>
+            <Box className="CharSetup__idCardField">
               <Box className="CharSetup__idCardFieldLabel">Faction</Box>
               <Dropdown
                 fluid
@@ -1617,7 +1623,7 @@ const IdentityPanel = (props: {
                 }
               />
             </Box>
-            <Box className="CharSetup__idCardField" style={{ flex: "1" }}>
+            <Box className="CharSetup__idCardField">
               <Box className="CharSetup__idCardFieldLabel">Religion</Box>
               <Dropdown
                 fluid
@@ -1628,7 +1634,7 @@ const IdentityPanel = (props: {
                 }
               />
             </Box>
-            <Box className="CharSetup__idCardField" style={{ flex: "1" }}>
+            <Box className="CharSetup__idCardField">
               <Box className="CharSetup__idCardFieldLabel">
                 Home System
                 {!(data.home_systems || []).includes(data.home_system) &&
@@ -1909,26 +1915,28 @@ const AppearanceCardBack = (props: {
         {/* Body Markings */}
         <Box mb={0.5}>
           <Box className="CharSetup__idCardBackLabel">Body Markings</Box>
-          {data.body_markings.map((m) => (
-            <Box key={m.name} className="CharSetup__idCardMarkingRow">
-              <Box style={{ flex: "1" }}>{m.name}</Box>
-              <Box
-                className="CharSetup__idCardColorSwatch"
-                style={{ "background-color": m.color, width: "1.125rem", height: "1.125rem" }}
-              />
-              <CsButton
-                compact
-                icon="palette"
-                onClick={() => act("pickMarkingColor", { marking: m.name })}
-              />
-              <CsButton
-                compact
-                icon="times"
-                color="danger"
-                onClick={() => act("removeBodyMarking", { marking: m.name })}
-              />
-            </Box>
-          ))}
+          <Box style={{ "max-height": "6rem", "overflow-y": "auto" }}>
+            {data.body_markings.map((m) => (
+              <Box key={m.name} className="CharSetup__idCardMarkingRow">
+                <Box style={{ flex: "1" }}>{m.name}</Box>
+                <Box
+                  className="CharSetup__idCardColorSwatch"
+                  style={{ "background-color": m.color, width: "1.125rem", height: "1.125rem" }}
+                />
+                <CsButton
+                  compact
+                  icon="palette"
+                  onClick={() => act("pickMarkingColor", { marking: m.name })}
+                />
+                <CsButton
+                  compact
+                  icon="times"
+                  color="danger"
+                  onClick={() => act("removeBodyMarking", { marking: m.name })}
+                />
+              </Box>
+            ))}
+          </Box>
           {validMarkings.length > 0 && (
             <Dropdown
               fluid
@@ -2311,6 +2319,65 @@ const SLOT_CATEGORIES = new Set([
   "Suits", "Uniforms", "Clothing Pieces",
 ]);
 
+// --- Misc item browser: collapsible categories ---
+
+interface MiscCategory {
+  name: string;
+  items: GearItem[];
+}
+
+const MiscItemBrowser = (props: {
+  categories: MiscCategory[];
+  equippedGear: Record<string, boolean>;
+  selectedHash: string | null;
+  onSelectGear?: () => void;
+  act: Function;
+  context: any;
+}) => {
+  const { categories, equippedGear, selectedHash, onSelectGear, act, context } = props;
+  const [expandedCats, setExpandedCats] = useLocalState<Record<string, boolean>>(
+    context, "miscExpandedCats", {}
+  );
+
+  const isExpanded = (name: string) => expandedCats[name] !== false;
+  const toggleCat = (name: string) =>
+    setExpandedCats({ ...expandedCats, [name]: !isExpanded(name) });
+
+  if (!categories || categories.length === 0) {
+    return (
+      <Box color="label" textAlign="center" mt={2}>
+        No misc items available.
+      </Box>
+    );
+  }
+
+  return (
+    <Box>
+      {categories.map((cat) => (
+        <Box key={cat.name} mb={0.25}>
+          <Box
+            className="CharSetup__miscCatHeader"
+            onClick={() => toggleCat(cat.name)}
+          >
+            <Box className="CharSetup__miscCatHeader__label">{cat.name}</Box>
+            <Icon name={isExpanded(cat.name) ? "chevron-up" : "chevron-down"} color="label" />
+          </Box>
+          {isExpanded(cat.name) && (
+            <LoadoutItemList
+              items={cat.items}
+              equippedGear={equippedGear}
+              selectedHash={selectedHash}
+              onSelectGear={onSelectGear}
+              act={act}
+              context={context}
+            />
+          )}
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
 // --- Loadout sub-panel (unified wardrobe: underwear + paper-doll + misc) ---
 
 const LoadoutSubPanel = (props: {
@@ -2383,7 +2450,7 @@ const LoadoutSubPanel = (props: {
     return item.name + " " + item.description;
   });
 
-  // Determine display items
+  // Determine display items (equipment / search modes)
   let displayItems: GearItem[] = [];
   let showingItems = false;
   if (searchText.length > 0) {
@@ -2396,12 +2463,6 @@ const LoadoutSubPanel = (props: {
     if (slotId !== undefined) {
       displayItems = allItems.filter((item) => item.slot === slotId);
     }
-    showingItems = true;
-  } else if (wardrobeView === "misc") {
-    const currentCat = miscCategories.find(
-      (cat) => cat.name === selectedCategory
-    );
-    displayItems = currentCat?.items || [];
     showingItems = true;
   }
 
@@ -2417,17 +2478,37 @@ const LoadoutSubPanel = (props: {
     );
   }
 
-  // Right-panel item browser (shared between equipment and misc views)
+  // Filter misc categories too
+  const filteredMiscCategories = miscCategories.map((cat) => ({
+    ...cat,
+    items: cat.items.filter((item) => {
+      if (data.hideUnavailable && !item.allowed && !data.equippedGear?.[item.hash]) return false;
+      if (data.hideDonate && (item.price || item.patronTier)) return false;
+      return true;
+    }),
+  })).filter((cat) => cat.items.length > 0);
+
+  // Right-panel item browser
   const itemBrowser = (
     <Stack vertical fill>
       <Stack.Item grow basis={0} style={{ overflow: "auto" }}>
-        {showingItems ? (
+        {wardrobeView === "misc" && !searchText ? (
+          <MiscItemBrowser
+            categories={filteredMiscCategories}
+            equippedGear={data.equippedGear}
+            selectedHash={data.selectedGearHash}
+            onSelectGear={() => setDetailOpen(true)}
+            act={act}
+            context={context}
+          />
+        ) : showingItems ? (
           <LoadoutItemList
             items={displayItems}
             equippedGear={data.equippedGear}
             selectedHash={data.selectedGearHash}
             onSelectGear={() => setDetailOpen(true)}
             act={act}
+            context={context}
           />
         ) : (
           <Box className="CharSetup__wardrobeHint">
@@ -2436,7 +2517,7 @@ const LoadoutSubPanel = (props: {
           </Box>
         )}
       </Stack.Item>
-      {showingItems && detailOpen && data.selectedGearDetail && (
+      {(showingItems || (wardrobeView === "misc" && !searchText)) && detailOpen && data.selectedGearDetail && (
         <Stack.Item>
           <Stack align="center">
             <Stack.Item grow>
@@ -2496,7 +2577,19 @@ const LoadoutSubPanel = (props: {
                 {data.usedLoadoutPoints} / {data.maxLoadoutPoints} LP
               </Box>
             </Box>
-            <CsButton compact icon="trash-alt" onClick={() => act("clearLoadout")} />
+            {data.currentOpyxes > 0 && (
+              <Box
+                inline
+                fontSize="11px"
+                color="gold"
+                style={{ whiteSpace: "nowrap", alignSelf: "center", marginRight: "0.25rem" }}
+              >
+                <Icon name="coins" mr={0.25} />
+                {data.currentOpyxes}
+              </Box>
+            )}
+            <CsButton compact icon="random" onClick={() => act("randomizeLoadout")} tooltip="Random loadout" />
+            <CsButton compact icon="trash-alt" onClick={() => act("clearLoadout")} tooltip="Clear loadout" />
           </Box>
           {/* Backpack + set navigation row */}
           <Box className="CharSetup__loadoutHudSetRow">
@@ -2544,38 +2637,9 @@ const LoadoutSubPanel = (props: {
         </Box>
       </Stack.Item>
 
-      {/* View tabs: Equipment / Misc + search + filters */}
+      {/* Search + filters row */}
       <Stack.Item>
         <Stack align="center">
-          <Stack.Item>
-            <Tabs>
-              <Tabs.Tab
-                selected={wardrobeView === "equipment" && !searchText}
-                icon="user"
-                onClick={() => {
-                  setSearchText("");
-                  setWardrobeView("equipment");
-                  setSelectedSlotName(null);
-                  setDetailOpen(false);
-                  act("selectGear", { hash: "" });
-                }}
-              >
-                Equipment
-              </Tabs.Tab>
-              <Tabs.Tab
-                selected={wardrobeView === "misc" && !searchText}
-                icon="box-open"
-                onClick={() => {
-                  setSearchText("");
-                  setWardrobeView("misc");
-                  setDetailOpen(false);
-                  act("selectGear", { hash: "" });
-                }}
-              >
-                Misc
-              </Tabs.Tab>
-            </Tabs>
-          </Stack.Item>
           <Stack.Item grow>
             <Input
               fluid
@@ -2603,47 +2667,25 @@ const LoadoutSubPanel = (props: {
         </Stack>
       </Stack.Item>
 
-      {/* Three-pane body */}
+      {/* Body: [doll + slot bar + misc button + underwear] | [item browser] */}
       <Stack.Item grow basis={0}>
-        {wardrobeView === "misc" && !searchText ? (
-          /* Misc mode: category list | item browser */
-          <Box className="CharSetup__wardrobeMiscLayout">
-            <Box className="CharSetup__wardrobeMiscCats">
-              {miscCategories.map((cat) => (
-                <Box
-                  key={cat.name}
-                  className={classes([
-                    "CharSetup__slotTile",
-                    cat.name === selectedCategory && "CharSetup__slotTile--active",
-                  ])}
-                  onClick={() => setSelectedCategory(cat.name)}
-                >
-                  <Box className="CharSetup__slotTileName">{cat.name}</Box>
-                </Box>
-              ))}
-            </Box>
-            <Box className="CharSetup__wardrobeRight">
-              {itemBrowser}
-            </Box>
-          </Box>
-        ) : (
-          /* Equipment mode (or search): [doll + slot bar + underwear] | [item browser] */
-          <Box className="CharSetup__wardrobeLayout">
-            {/* Center column: doll, slot icon bar, rotate, underwear */}
-            <Box className="CharSetup__wardrobeCenter">
-              <CharacterDoll
-                data={data}
-                equippedBySlot={equippedBySlot}
-                selectedSlotName={selectedSlotName}
-                onSelectSlot={(name) => {
-                  setSelectedSlotName(name);
-                  setDetailOpen(false);
-                  act("selectGear", { hash: "" });
-                  setSearchText("");
-                }}
-                currentDir={data.preview_dir}
-                act={act}
-              />
+        <Box className="CharSetup__wardrobeLayout">
+          {/* Center column: doll, slot icon bar, misc button, underwear */}
+          <Box className="CharSetup__wardrobeCenter">
+            <CharacterDoll
+              data={data}
+              equippedBySlot={equippedBySlot}
+              selectedSlotName={selectedSlotName}
+              onSelectSlot={(name) => {
+                setSelectedSlotName(name);
+                setWardrobeView("equipment");
+                setDetailOpen(false);
+                act("selectGear", { hash: "" });
+                setSearchText("");
+              }}
+              currentDir={data.preview_dir}
+              act={act}
+            />
 
               {/* Slot icon bar — 4×2 grid below the doll */}
               <Box className="CharSetup__slotIconBar">
@@ -2652,15 +2694,36 @@ const LoadoutSubPanel = (props: {
                     key={slot.name}
                     slot={slot}
                     equipped={equippedBySlot[slot.name]}
-                    isActive={selectedSlotName === slot.name}
+                    isActive={wardrobeView === "equipment" && selectedSlotName === slot.name && !searchText}
                     onSelect={(name) => {
                       setSelectedSlotName(name);
+                      setWardrobeView("equipment");
                       setDetailOpen(false);
                       act("selectGear", { hash: "" });
                       setSearchText("");
                     }}
                   />
                 ))}
+              </Box>
+
+              {/* MISC wide button — third row below slot grid */}
+              <Box
+                className={classes([
+                  "CharSetup__miscBtn",
+                  wardrobeView === "misc" && !searchText && "CharSetup__miscBtn--active",
+                ])}
+                onClick={() => {
+                  setSearchText("");
+                  setWardrobeView("misc");
+                  setSelectedSlotName(null);
+                  setDetailOpen(false);
+                  act("selectGear", { hash: "" });
+                }}
+              >
+                <Box className="CharSetup__miscBtnIcon">
+                  <Icon name="box-open" />
+                </Box>
+                <Box className="CharSetup__miscBtnLabel">Misc</Box>
               </Box>
 
               {/* Underwear + Backpack — compact row below slot bar */}
@@ -2686,7 +2749,6 @@ const LoadoutSubPanel = (props: {
               {itemBrowser}
             </Box>
           </Box>
-        )}
       </Stack.Item>
     </Stack>
   );
@@ -2694,14 +2756,25 @@ const LoadoutSubPanel = (props: {
 
 // --- Loadout item list ---
 
+interface ContextMenuState {
+  x: number;
+  y: number;
+  item: GearItem;
+  isEquipped: boolean;
+}
+
 const LoadoutItemList = (props: {
   items: GearItem[];
   equippedGear: Record<string, boolean>;
   selectedHash: string | null;
   onSelectGear?: () => void;
   act: Function;
+  context: any;
 }) => {
-  const { items, equippedGear, selectedHash, onSelectGear, act } = props;
+  const { items, equippedGear, selectedHash, onSelectGear, act, context } = props;
+  const [ctxMenu, setCtxMenu] = useLocalState<ContextMenuState | null>(
+    context, "gearCtxMenu", null,
+  );
 
   if (!items || items.length === 0) {
     return (
@@ -2724,84 +2797,154 @@ const LoadoutItemList = (props: {
   }
 
   return (
-    <Table>
-      {groupOrder.flatMap((sg) => [
-        ...(sg
-          ? [
-              <Table.Row key={"header-" + sg}>
-                <Table.Cell colSpan={4} bold color="label" py={0.5}>
-                  {sg}
-                </Table.Cell>
-              </Table.Row>,
-            ]
-          : []),
-        ...groups[sg].map((item) => {
-          const isEquipped = equippedGear?.[item.hash];
-          const isSelected = selectedHash === item.hash;
-          const isLocked = !item.allowed && !isEquipped;
-          const isUnavailable = isLocked || (!item.canEquip && !item.price);
-          return (
-            <Table.Row
-              key={item.hash}
-              className={classes([
-                "candystripe",
-                "CharSetup__gearRow",
-                isSelected && "CharSetup__gearRow--selected",
-                isEquipped && "CharSetup__gearRow--equipped",
-                isUnavailable && "CharSetup__gearRow--unavailable",
-              ])}
-              onClick={
-                isUnavailable
-                  ? undefined
-                  : () => {
-                      onSelectGear?.();
-                      act("selectGear", { hash: item.hash });
-                    }
-              }
-            >
-              <Table.Cell collapsing>
-                {item.icon && item.iconState ? (
-                  <Box className="CharSetup__gearIcon">
-                    <GearSpriteIcon
-                      dmiFile={item.icon}
-                      state={item.iconState}
-                      size={32}
-                    />
-                  </Box>
-                ) : (
-                  <Icon name="question" />
-                )}
-              </Table.Cell>
-              <Table.Cell
-                bold={!!isEquipped}
-                color={
-                  isEquipped
-                    ? "good"
-                    : isLocked
-                      ? "bad"
-                      : item.price
-                        ? "gold"
-                        : isUnavailable
-                          ? "bad"
-                          : undefined
+    <Box>
+      {!!ctxMenu && (
+        <GearContextMenu
+          menu={ctxMenu}
+          act={act}
+          onClose={() => setCtxMenu(null)}
+        />
+      )}
+      <Table>
+        {groupOrder.flatMap((sg) => [
+          ...(sg
+            ? [
+                <Table.Row key={"header-" + sg}>
+                  <Table.Cell colSpan={4} bold color="label" py={0.5}>
+                    {sg}
+                  </Table.Cell>
+                </Table.Row>,
+              ]
+            : []),
+          ...groups[sg].map((item) => {
+            const isEquipped = equippedGear?.[item.hash];
+            const isSelected = selectedHash === item.hash;
+            const isLocked = !item.allowed && !isEquipped;
+            const isUnavailable = isLocked || (!item.canEquip && !item.price);
+            return (
+              <Table.Row
+                key={item.hash}
+                className={classes([
+                  "candystripe",
+                  "CharSetup__gearRow",
+                  isSelected && "CharSetup__gearRow--selected",
+                  isEquipped && "CharSetup__gearRow--equipped",
+                  isUnavailable && "CharSetup__gearRow--unavailable",
+                ])}
+                onClick={
+                  isUnavailable
+                    ? undefined
+                    : () => {
+                        onSelectGear?.();
+                        act("selectGear", { hash: item.hash });
+                      }
+                }
+                onContextMenu={
+                  isUnavailable
+                    ? undefined
+                    : (e: MouseEvent) => {
+                        e.preventDefault();
+                        setCtxMenu({
+                          x: e.clientX,
+                          y: e.clientY,
+                          item,
+                          isEquipped: !!isEquipped,
+                        });
+                      }
                 }
               >
-                {item.name}
-              </Table.Cell>
-              <Table.Cell collapsing color="label">
-                {item.cost > 0 ? `${item.cost}LP` : ""}
-              </Table.Cell>
-              <Table.Cell collapsing>
-                {isEquipped && <Icon name="check" color="good" />}
-                {item.price > 0 && !isEquipped && (
-                  <Icon name="coins" color="gold" />
-                )}
-              </Table.Cell>
-            </Table.Row>
-          );
-        }),
-      ])}
-    </Table>
+                <Table.Cell collapsing>
+                  {item.icon && item.iconState ? (
+                    <Box className="CharSetup__gearIcon">
+                      <GearSpriteIcon
+                        dmiFile={item.icon}
+                        state={item.iconState}
+                        size={32}
+                      />
+                    </Box>
+                  ) : (
+                    <Icon name="question" />
+                  )}
+                </Table.Cell>
+                <Table.Cell
+                  bold={!!isEquipped}
+                  color={
+                    isEquipped
+                      ? "good"
+                      : isLocked
+                        ? "bad"
+                        : item.price
+                          ? "gold"
+                          : isUnavailable
+                            ? "bad"
+                            : undefined
+                  }
+                >
+                  {item.name}
+                </Table.Cell>
+                <Table.Cell collapsing color="label">
+                  {item.cost > 0 ? `${item.cost}LP` : ""}
+                </Table.Cell>
+                <Table.Cell collapsing>
+                  {isEquipped && <Icon name="check" color="good" />}
+                  {item.price > 0 && !isEquipped && (
+                    <Icon name="coins" color="gold" />
+                  )}
+                </Table.Cell>
+              </Table.Row>
+            );
+          }),
+        ])}
+      </Table>
+    </Box>
+  );
+};
+
+/** Right-click context menu for gear items */
+const GearContextMenu = (props: {
+  menu: ContextMenuState;
+  act: Function;
+  onClose: () => void;
+}) => {
+  const { menu, act, onClose } = props;
+  const { item, isEquipped, x, y } = menu;
+
+  const doAction = (action: string) => {
+    act(action, { hash: item.hash });
+    onClose();
+  };
+
+  return (
+    <Box
+      className="CharSetup__ctxMenuBackdrop"
+      onClick={onClose}
+      onContextMenu={(e: MouseEvent) => { e.preventDefault(); onClose(); }}
+    >
+      <Box
+        className="CharSetup__ctxMenu"
+        style={{ left: `${x}px`, top: `${y}px` }}
+      >
+        <Box className="CharSetup__ctxMenuHeader">{item.name}</Box>
+        {item.canEquip && (
+          <Box
+            className="CharSetup__ctxMenuItem"
+            onClick={() => doAction("toggleGear")}
+          >
+            <Icon name={isEquipped ? "minus" : "plus"} mr={0.5} />
+            {isEquipped ? "Unequip" : "Equip"}
+          </Box>
+        )}
+        {!item.canEquip && item.price > 0 && (
+          <Box
+            className="CharSetup__ctxMenuItem"
+            onClick={() => doAction("buyGear")}
+          >
+            <Icon name="shopping-cart" mr={0.5} />
+            Buy ({item.price} opyxes)
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 };
 
@@ -2836,7 +2979,8 @@ const LoadoutItemDetail = (props: {
           </Box>
           {detail.slotName && (
             <Box color="label" fontSize="11px">
-              {detail.slotName} &middot; {detail.cost} LP
+              {detail.slotName}
+              {detail.cost > 0 && ` \u00b7 ${detail.cost} LP`}
             </Box>
           )}
         </Stack.Item>
@@ -3843,6 +3987,7 @@ const CareerPanel = (props: {
 
       {/* Job list grouped by department */}
       <Stack.Item grow basis={0} style={{ overflow: "auto" }}>
+        <Box className="CharSetup__jobList">
         {deptOrder.map((dept) => {
           const deptColor = departments[dept][0]?.color || "#888";
           return (
@@ -3875,8 +4020,14 @@ const CareerPanel = (props: {
                 return (
                   <Box
                     key={job.title}
-                    className="CharSetup__jobRow"
-                    style={{ opacity: isAvailable ? 1 : 0.5 }}
+                    className={classes([
+                      "CharSetup__jobRow",
+                      job.head && "CharSetup__jobRow--head",
+                    ])}
+                    style={{
+                      opacity: isAvailable ? 1 : 0.5,
+                      ...(job.head ? { "--dept-color-bg": deptColor.replace(")", ", 0.14)").replace("rgb(", "rgba(") } as any : {}),
+                    }}
                   >
                     {/* Job name or alt title dropdown */}
                     <Box className="CharSetup__jobName">
@@ -3951,6 +4102,7 @@ const CareerPanel = (props: {
             </Box>
           );
         })}
+        </Box>
       </Stack.Item>
     </Stack>
   );
@@ -3998,7 +4150,7 @@ const PersonalityPanel = (props: {
   const [personalityTab, setPersonalityTab] = useLocalState(
     context,
     "personalityTab",
-    "traits" as "traits" | "antag" | "uplink"
+    "traits" as "traits" | "antag"
   );
 
   const tabDefs = [
@@ -4013,12 +4165,6 @@ const PersonalityPanel = (props: {
       label: "SECURITY DOSSIER",
       icon: "shield-alt",
       color: "#e57373",
-    },
-    {
-      id: "uplink" as const,
-      label: "COMMS CONFIG",
-      icon: "satellite-dish",
-      color: "#7986cb",
     },
   ];
 
@@ -4054,10 +4200,10 @@ const PersonalityPanel = (props: {
           <TraitsSubPanel data={data} act={act} context={context} />
         )}
         {personalityTab === "antag" && (
-          <AntagSubPanel data={data} act={act} />
-        )}
-        {personalityTab === "uplink" && (
-          <UplinkSubPanel data={data} act={act} />
+          <>
+            <AntagSubPanel data={data} act={act} />
+            <UplinkSubPanel data={data} act={act} />
+          </>
         )}
       </Box>
     </Box>
@@ -4730,7 +4876,7 @@ const ALIGNMENT_ICONS: Record<string, string> = {
 const ALIGNMENT_COLORS: Record<string, string> = {
   Loyal: "green",
   Supportive: "teal",
-  Neutral: "label",
+  Neutral: "default",
   Skeptical: "orange",
   Opposed: "red",
 };
@@ -4917,11 +5063,6 @@ const BackgroundRecordsSubPanel = (props: {
   context: any;
 }) => {
   const { data, act, context } = props;
-  const [expandedRecord, setExpandedRecord] = useLocalState<string | null>(
-    context,
-    "expandedRecord",
-    null,
-  );
 
   if (data.records_banned) {
     return (
@@ -4959,22 +5100,11 @@ const BackgroundRecordsSubPanel = (props: {
 
       {RECORD_DEFS.map((rec) => {
         const value = RECORD_VALUES[rec.key](data);
-        const isExpanded = expandedRecord === rec.key;
         const hasContent = !!value;
 
         return (
           <Box key={rec.key} mb={0.5}>
-            {/* Card header */}
-            <Box
-              className={classes([
-                "CharSetup__card",
-                "CharSetup__card--expandable",
-                isExpanded && "CharSetup__card--expanded",
-              ])}
-              onClick={() =>
-                setExpandedRecord(isExpanded ? null : rec.key)
-              }
-            >
+            <Box className="CharSetup__card">
               <Stack align="center">
                 <Stack.Item>
                   <Box inline className="CharSetup__cardIcon" color={rec.color}>
@@ -4995,27 +5125,16 @@ const BackgroundRecordsSubPanel = (props: {
                       Written
                     </Box>
                   )}
-                  <Icon
-                    name={isExpanded ? "chevron-up" : "chevron-down"}
-                    color="label"
-                  />
+                  <Button
+                    icon="pen"
+                    compact
+                    onClick={() => act("editRecordFancy", { type: rec.key })}
+                  >
+                    {hasContent ? "Edit..." : "Write..."}
+                  </Button>
                 </Stack.Item>
               </Stack>
             </Box>
-            {/* Expanded editor */}
-            {isExpanded && (
-              <Box className="CharSetup__cardBody">
-                <TextArea
-                  fluid
-                  height="100px"
-                  value={value}
-                  placeholder={`Write your ${rec.label.toLowerCase()}...`}
-                  onChange={(e, val) =>
-                    act("setRecord", { type: rec.key, text: val })
-                  }
-                />
-              </Box>
-            )}
           </Box>
         );
       })}
