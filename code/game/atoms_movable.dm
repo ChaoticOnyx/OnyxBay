@@ -73,19 +73,24 @@
 	return ..()
 
 /atom/movable/Bump(atom/A, yes)
-	if(!QDELETED(throwing))
-		throwing.hit_atom(A)
+	if(!A)
+		util_crash_with("Bump was called with no argument! Source: [src]")
 
 	if(inertia_dir)
 		inertia_dir = 0
 
-	if(A && yes)
+	. = ..()
+
+	if(!QDELETED(throwing))
+		throwing.hit_atom(A)
+		. = TRUE
+		if(QDELETED(A))
+			return
+
+	if(yes)
 		A.last_bumped = world.time
 		SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
 		INVOKE_ASYNC(A, nameof(.proc/Bumped), src) // Avoids bad actors sleeping or unexpected side effects, as the legacy behavior was to spawn here
-		return
-	..()
-	return
 
 /atom/movable/proc/get_selected_zone()
 	return
@@ -145,7 +150,7 @@
 	if(istype(hit_atom) && !QDELETED(hit_atom))
 		hit_atom.hitby(src, TT)
 
-/atom/movable/proc/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, datum/callback/callback) //If this returns FALSE then callback will not be called.
+/atom/movable/proc/throw_at(atom/target, range, speed, mob/thrower, spin = TRUE, obj/launcher, datum/callback/callback) //If this returns FALSE then callback will not be called.
 	. = TRUE
 	if(!target || QDELETED(src) || (target.z != z))
 		return FALSE
@@ -162,7 +167,10 @@
 	if(!speed)
 		speed = throw_speed
 
-	var/datum/thrownthing/TT = new(src, target, range, speed, thrower, callback)
+	if(launcher)
+		pre_launched()
+
+	var/datum/thrownthing/TT = new(src, target, range, speed, thrower, launcher, callback)
 	throwing = TT
 
 	pixel_z = 0
@@ -380,3 +388,16 @@
 
 /atom/movable/proc/get_mass()
 	return 1.5
+
+/atom/movable/proc/get_ghost_image(atom/target)
+	var/_pixel_x = pixel_x
+	var/_pixel_y = pixel_y
+	pixel_x = 0
+	pixel_y = 0
+	var/image/I = image(src, null, layer = target.layer + 1)
+	pixel_x = _pixel_x
+	pixel_y = _pixel_y
+	I.SetTransform(scale = 0.75)
+	I.appearance_flags |= RESET_COLOR|KEEP_APART
+	I.alpha = 128
+	return I

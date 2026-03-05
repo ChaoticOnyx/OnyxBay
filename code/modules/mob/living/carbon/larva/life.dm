@@ -18,7 +18,7 @@
 /mob/living/carbon/larva/proc/can_progress()
 	return 1
 
-/mob/living/carbon/larva/updatehealth()
+/mob/living/carbon/larva/update_health()
 	if(is_ooc_dead())
 		return FALSE
 
@@ -55,7 +55,7 @@
 		silent = 0
 		return 1 // We are dead for good
 
-	updatehealth()
+	update_health()
 
 	if(paralysis && paralysis > 0)
 		blinded = 1

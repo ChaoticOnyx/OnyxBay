@@ -27,7 +27,7 @@
 
 /obj/machinery/power/Destroy()
 	disconnect_from_network()
-	. = ..()
+	return ..()
 
 ///////////////////////////////
 // General procedures

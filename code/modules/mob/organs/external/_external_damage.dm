@@ -44,7 +44,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 				burn = max(burn - spillover, 0)
 
 	if(owner && loc == owner)
-		owner.updatehealth() //droplimb will call updatehealth() again if it does end up being called
+		owner.update_health() //droplimb will call update_health() again if it does end up being called
 		if(!is_stump() && (limb_flags & ORGAN_FLAG_CAN_AMPUTATE) && config.health.limbs_can_break)
 			if((brute_dam + burn_dam + brute + burn + spillover) >= (max_damage * config.health.organ_health_multiplier))
 				var/force_droplimb = 0
@@ -164,9 +164,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	// sync the organ's damage with its wounds
 	update_damages()
 	if(owner)
-		owner.updatehealth()
+		owner.update_health()
 		if(update_damstate())
-			owner.UpdateDamageIcon()
+			owner.update_damage_overlays()
 		else if(status & ORGAN_BLEEDING)
 			owner.update_bandages()
 
@@ -192,11 +192,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	//Sync the organ's damage with its wounds
 	src.update_damages()
-	owner.updatehealth()
+	owner.update_health()
 
 	var/should_update_damstate = update_damstate()
 	if(owner && update_damage_icon && should_update_damstate)
-		owner.UpdateDamageIcon()
+		owner.update_damage_overlays()
 
 	return should_update_damstate
 

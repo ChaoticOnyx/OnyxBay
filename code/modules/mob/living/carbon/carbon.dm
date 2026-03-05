@@ -85,7 +85,7 @@
 			var/obj/item/organ/external/organ = H.get_organ(BP_GROIN)
 			if (istype(organ))
 				organ.take_external_damage(dmg, 0)
-			H.updatehealth()
+			H.update_health()
 		else
 			take_organ_damage(dmg)
 		user.visible_message("<span class='danger'>[user] attacks [src]'s stomach wall!</span>")

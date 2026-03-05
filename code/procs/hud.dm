@@ -20,14 +20,14 @@ the HUD updates properly! */
 			continue
 
 		if(local_scanner)
-			P.Client.images += patient.hud_list[HEALTH_HUD]
-			P.Client.images += patient.hud_list[STATUS_HUD]
+			P.Mob.add_client_image(patient.hud_list[HEALTH_HUD])
+			P.Mob.add_client_image(patient.hud_list[STATUS_HUD])
 		else
 			var/sensor_level = getsensorlevel(patient)
 			if(sensor_level >= SUIT_SENSOR_VITAL)
-				P.Client.images += patient.hud_list[HEALTH_HUD]
+				P.Mob.add_client_image(patient.hud_list[HEALTH_HUD])
 			if(sensor_level >= SUIT_SENSOR_BINARY)
-				P.Client.images += patient.hud_list[LIFE_HUD]
+				P.Mob.add_client_image(patient.hud_list[LIFE_HUD])
 
 //Security HUDs. Pass a value for the second argument to enable implant viewing or other special features.
 /proc/process_sec_hud(mob/M, advanced_mode, mob/Alt)
@@ -39,12 +39,12 @@ the HUD updates properly! */
 		if(perp.is_invisible_to(P.Mob))
 			continue
 
-		P.Client.images += perp.hud_list[ID_HUD]
+		P.Mob.add_client_image(perp.hud_list[ID_HUD])
 		if(advanced_mode)
-			P.Client.images += perp.hud_list[WANTED_HUD]
-			P.Client.images += perp.hud_list[IMPTRACK_HUD]
-			P.Client.images += perp.hud_list[IMPLOYAL_HUD]
-			P.Client.images += perp.hud_list[IMPCHEM_HUD]
+			P.Mob.add_client_image(perp.hud_list[WANTED_HUD])
+			P.Mob.add_client_image(perp.hud_list[IMPTRACK_HUD])
+			P.Mob.add_client_image(perp.hud_list[IMPLOYAL_HUD])
+			P.Mob.add_client_image(perp.hud_list[IMPCHEM_HUD])
 
 /proc/process_xeno_hud(mob/M, mob/Alt)
 	if(!can_process_hud(M))
@@ -56,7 +56,7 @@ the HUD updates properly! */
 		if(victim.is_invisible_to(P.Mob))
 			continue
 
-		P.Client.images += victim.hud_list[XENO_HUD]
+		P.Mob.add_client_image(victim.hud_list[XENO_HUD])
 
 /datum/arranged_hud_process
 	var/client/Client
@@ -82,9 +82,8 @@ the HUD updates properly! */
 
 //Deletes the current HUD images so they can be refreshed with new ones.
 /mob/proc/handle_hud_glasses() //Used in the life.dm of mobs that can use HUDs.
-	if(client)
-		for(var/image/hud_overlay/hud in client.images)
-			client.images -= hud
+	for(var/image/hud_overlay/hud in client_images)
+		remove_client_image(hud)
 
 	GLOB.med_hud_users -= src
 	GLOB.sec_hud_users -= src

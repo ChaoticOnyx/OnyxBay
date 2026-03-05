@@ -28,7 +28,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	icon_state = "radial_slice"
 
 /atom/movable/screen/radial/slice/Click(location, control, params)
-	if(usr.client == parent.current_user)
+	if(usr == parent.current_user)
 		if(next_page)
 			parent.next_page()
 		else
@@ -47,7 +47,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	icon_state = "radial_center"
 
 /atom/movable/screen/radial/center/Click(location, control, params)
-	if(usr.client == parent.current_user)
+	if(usr == parent.current_user)
 		parent.finished = TRUE
 
 /datum/radial_menu
@@ -60,7 +60,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/selected_choice
 	var/list/atom/movable/screen/elements = list()
 	var/atom/movable/screen/radial/center/close_button
-	var/client/current_user
+	var/mob/current_user
 	var/atom/anchor
 	var/image/menu_holder
 	var/finished = FALSE
@@ -257,18 +257,18 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		hide()
 	if(!M.client || !anchor)
 		return
-	current_user = M.client
+	current_user = M
 	//Blank
 	menu_holder = image(icon='icons/effects/effects.dmi', loc=anchor, icon_state="nothing", layer = HUD_ABOVE_ITEM_LAYER)
 	menu_holder.plane = HUD_PLANE
 	menu_holder.appearance_flags |= KEEP_APART
 	menu_holder.vis_contents += elements + close_button
-	current_user.images += menu_holder
+	current_user.add_client_image(menu_holder)
 
 /datum/radial_menu/proc/hide()
 	menu_holder.vis_contents = null
-	if(current_user)
-		current_user.images -= menu_holder
+	current_user?.remove_client_image(menu_holder)
+	current_user = null
 
 /datum/radial_menu/proc/wait(atom/user, atom/anchor, require_near = FALSE)
 	while (current_user && !finished && !selected_choice)
@@ -287,7 +287,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	Reset()
 	hide()
 	QDEL_NULL(close_button)
-	. = ..()
+	return ..()
 /*
 	Presents radial menu to user anchored to anchor (or user if the anchor is currently in users screen)
 	Choices should be a list where list keys are movables or text used for element names and return value

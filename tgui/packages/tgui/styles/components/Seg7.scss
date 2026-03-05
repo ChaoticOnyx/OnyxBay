@@ -57,8 +57,18 @@
 .Seg7--c-red   { --seg-on: rgba(255, 150, 150, 0.95); --seg-glow: rgba(255, 120, 120, 0.18); --seg-off: rgba(140, 70, 70, 0.18); }
 .Seg7--c-white { --seg-on: rgba(235, 235, 235, 0.92); --seg-glow: rgba(255, 255, 255, 0.12); --seg-off: rgba(120, 120, 120, 0.18); }
 
-.Seg7--average { filter: saturate(1.10) brightness(1.02); }
-.Seg7--bad { filter: saturate(1.20) brightness(1.03); }
+.Seg7--warning {
+  --seg-on: rgba(255, 210, 80, 0.98);
+  --seg-glow: rgba(255, 180, 60, 0.35);
+  animation: segPulse 1.8s ease-in-out infinite !important;
+}
+
+/* Danger = strong red */
+.Seg7--danger {
+  --seg-on: rgba(255, 60, 60, 1);
+  --seg-glow: rgba(255, 40, 40, 0.45);
+  animation: segPulse 0.8s ease-in-out infinite !important;
+}
 
 .Seg7__digit {
   position: relative;
@@ -119,4 +129,9 @@
 }
 .Seg7--pulse .Seg7__segment--on {
   animation: indSegFlicker 0.45s linear infinite;
+}
+
+@keyframes segPulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.25); }
 }

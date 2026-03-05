@@ -1,7 +1,7 @@
 /datum/event/gatecrasher
 	id = "gatecrasher"
 	name = "Gatecrasher"
-	description = "An uninvited guest get teleported aboard the station"
+	description = "An unexpected guest appears aboard the station."
 
 	mtth = 6 HOURS
 	difficulty = 60

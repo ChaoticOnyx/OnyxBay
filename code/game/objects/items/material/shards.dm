@@ -113,7 +113,7 @@
 					if(BP_IS_ROBOTIC(affecting))
 						return
 					affecting.take_external_damage(min(5 * amount, 15), 0)
-					H.updatehealth()
+					H.update_health()
 					if(affecting.can_feel_pain())
 						H.Weaken(min(3 * amount, 9))
 					return

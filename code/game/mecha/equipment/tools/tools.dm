@@ -62,7 +62,7 @@
 		if(chassis.occupant.a_intent == I_HURT)
 			M.take_overall_damage(dam_force)
 			M.adjustOxyLoss(round(dam_force/2))
-			M.updatehealth()
+			M.update_health()
 			occupant_message(SPAN("warning", "You squeeze [target] with [src.name]. Something cracks."))
 			chassis.visible_message(SPAN("warning", "[chassis] squeezes [target]."))
 			playsound(chassis, 'sound/effects/fighting/crunch5.ogg', 100, 1)

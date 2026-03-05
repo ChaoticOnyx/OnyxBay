@@ -550,7 +550,7 @@
 	if (istype(victim, /obj/machinery/power/supermatter))
 		var/obj/machinery/power/supermatter/supermatter_victim = victim
 		if (config.misc.meme_content)
-			supermatter_victim.throw_at(get_edge_target_turf(supermatter_victim, get_dir(src, supermatter_victim)), rand(SUPERMATTER_MIN_THROW_DIST, SUPERMATTER_MAX_THROW_DIST), 1)
+			supermatter_victim.throw_at(get_edge_target_turf(supermatter_victim, get_dir(src, supermatter_victim)), rand(SUPERMATTER_MIN_THROW_DIST, SUPERMATTER_MAX_THROW_DIST), TRUE)
 			supermatter_victim.visible_message(SPAN_WARNING("\The [supermatter_victim] briefly lights up and instantly starts flying in the opposite direction."))
 		else
 			power += supermatter_victim.power

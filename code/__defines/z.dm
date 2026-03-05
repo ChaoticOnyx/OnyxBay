@@ -11,10 +11,11 @@ var/__z_name = null
 			__z_name = "libz.dll"
 	else
 		// Fuck you zlib
-		if(fexists("liblibz.native.so"))
-			__z_name = "liblibz.native.so"
+		// UPD: And linux too
+		if(fexists("./liblibz.native.so"))
+			__z_name = "./liblibz.native.so"
 		else
-			__z_name = "liblibz.so"
+			__z_name = "./liblibz.so"
 
 #define Z_ERROR_OUT_OF_ID "OutOfId"
 #define Z_ERROR_OUT_OF_MEMORY "OutOfMemory"
@@ -25,6 +26,7 @@ var/__z_name = null
 #define Z_ERROR_BAD_ELF "BadElf"
 #define Z_ERROR_BAD_STATE "BadState"
 #define Z_ERROR_SLOT_NOT_FOUND "SlotNotFound"
+#define Z_ERROR_BAD_SRC "BadSrc"
 #define Z_ERROR_UNKNOWN "Unknown"
 
 #define Z_MSTATE_STOPPED (1)
@@ -35,6 +37,9 @@ var/__z_name = null
 #define Z_DEVICE_TYPE_TTS 1
 #define Z_DEVICE_TYPE_SERIAL_TERMINAL 2
 #define Z_DEVICE_TYPE_SIGNALER 3
+#define Z_DEVICE_TYPE_GPS 4
+#define Z_DEVICE_TYPE_LIGHT 5
+#define Z_DEVICE_TYPE_ENV_SENSOR 6
 
 #define Z_TTS_N2B_CMD_SAY 1
 #define Z_TTS_B2N_CMD_READY_STATUS 1
@@ -47,6 +52,13 @@ var/__z_name = null
 #define Z_SIGNALER_B2N_CMD_PULSE 1
 #define Z_SIGNALER_B2N_CMD_READY_STATUS 2
 
+#define Z_LIGHT_N2B_CMD_SET 1
+#define Z_LIGHT_B2N_CMD_READY_STATUS 1
+
+#define Z_ENV_SENSOR_N2B_CMD_UPDATE 1
+#define Z_ENV_SENSOR_B2N_CMD_READY_STATUS 1
+#define Z_ENV_SENSOR_B2N_CMD_UPDATE 2
+
 // All machine IDs are numeric handles returned by Z_MACHINE_CREATE.
 
 /// Returns the last error message from the backend, or null if no error.
@@ -54,16 +66,12 @@ var/__z_name = null
 
 /// Creates a new machine. Returns numeric machine ID.
 /// Machine starts with no RAM and default frequency (1 MHz), not yet runnable.
-#define Z_MACHINE_CREATE(...) call_ext(__z_name, "byond:Z_machine_create")()
+#define Z_MACHINE_CREATE(SRC) call_ext(__z_name, "byond:Z_machine_create")(SRC)
 
 /// Resets a machine: zeroes all CPU registers and clears RAM contents.
 /// Frequency, RAM size, and connected BYOND object are preserved.
 /// ELF must be reloaded after reset.
 #define Z_MACHINE_RESET(ID) call_ext(__z_name, "byond:Z_machine_reset")(ID)
-
-/// Binds a machine to a BYOND object for MMIO callbacks (mmio_read/mmio_write).
-/// Pass null as OBJ to disconnect.
-#define Z_MACHINE_CONNECT(ID, OBJ) call_ext(__z_name, "byond:Z_machine_connect")(ID, OBJ)
 
 /// Allocates RAM for a machine in bytes. Frees previous RAM.
 /// Machine is not runnable until RAM is set and ELF is loaded.
@@ -100,7 +108,11 @@ var/__z_name = null
 /// Returns `cycles_executed` at the previous`Z_MACHINES_TICK`, might not fit into f32
 #define Z_MACHINE_GET_EXECUTED(ID) call_ext(__z_name, "byond:Z_machine_get_executed")(ID)
 
-#define Z_MACHINE_SET_SENSORS(ID, TEMP, POWER_USAGE, OVERHEAT, THROTTLED) call_ext(__z_name, "byond:Z_machine_set_sensors")(ID, TEMP, POWER_USAGE, OVERHEAT, THROTTLED)
+#define Z_MACHINE_SET_SENSORS(ID, TEMP, OVERHEAT, THROTTLED) call_ext(__z_name, "byond:Z_machine_set_sensors")(ID, TEMP, OVERHEAT, THROTTLED)
+
+#define Z_MACHINE_SET_POWER(ID, BATTERY_CHARGE, HAS_EXTERNAL_SOURCE) call_ext(__z_name, "byond:Z_machine_set_power")(ID, BATTERY_CHARGE, HAS_EXTERNAL_SOURCE)
+
+#define Z_MACHINE_SET_SHIFT_ID(ID, SHIFT_ID) call_ext(__z_name, "byond:Z_machine_set_shift_id")(ID, SHIFT_ID)
 
 /// Sets the proc to be called after tick in Z_MACHINES_TICK.
 #define Z_MACHINE_SET_POST_TICK_PROC(ID, PROC) call_ext(__z_name, "byond:Z_machine_set_post_tick_proc")(ID, PROC)
@@ -124,6 +136,8 @@ var/__z_name = null
 
 /// Detaches a PCI device from a machine.
 #define Z_MACHINE_TRY_DETACH_PCI(ID, SLOT) call_ext(__z_name, "byond:Z_machine_try_detach_pci")(ID, SLOT)
+
+#define Z_MACHINE_DUMP_REGISTERS(ID) call_ext(__z_name, "byond:Z_machine_dump_registers")(ID)
 
 /// Destroys a machine and frees all its resources.
 #define Z_MACHINE_DESTROY(ID) call_ext(__z_name, "byond:Z_machine_destroy")(ID)

@@ -43,10 +43,10 @@
 	name = "generic MCU"
 	desc = "A microcontroller unit. This one seems to be a prototype."
 	icon = 'icons/obj/mcu.dmi'
-	icon_state = "mcu"
+	icon_state = "green"
 	w_class = ITEM_SIZE_TINY
 
-	var/id = 0
+	var/id = null
 	var/ram_size = 65536 // 64 KB
 	/// User-set frequency. Hz
 	var/target_frequency = 1000000 // 1 MHz
@@ -94,7 +94,7 @@
 	/// The maximum severity of an EMP the board can survive.
 	var/emp_hardening = 0
 	var/emp_dead = FALSE
-	
+
 	var/broken = FALSE
 
 	var/pci_slots = 2
@@ -103,26 +103,20 @@
 	var/obj/item/cell/__battery = null
 	var/__elf_path = null
 
-/obj/item/device/mcu/New()
+/obj/item/device/mcu/Initialize()
+	. = ..()
+
 	ASSERT(pci_slots <= Z_MAX_PCI_DEVICES)
 	ASSERT(pci_slots >= 0)
 
-	id = Z_MACHINE_CREATE()
-
-	Z_MACHINE_SET_FREQUENCY(id, initial(target_frequency))
-	Z_MACHINE_CONNECT(id, src)
-	Z_MACHINE_SET_RAM_SIZE(id, ram_size)
-	Z_MACHINE_SET_POST_TICK_PROC(id, nameof(.proc/__post_tick))
-	Z_MACHINE_SET_TRAP_PROC(id, nameof(.proc/__trap))
-	Z_MACHINE_SET_SYSCALL_PROC(id, nameof(.proc/__syscall))
-
 	__pci_devices = new /list(pci_slots)
 
-	..()
-
 /obj/item/device/mcu/Destroy()
-	power_off()
-	Z_MACHINE_DESTROY(id)
+	if(id)
+		SSmcu.total_mcu -= 1
+		power_off()
+		Z_MACHINE_DESTROY(id)
+		id = null
 
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(!QDELETED(M))
@@ -133,8 +127,38 @@
 
 	. = ..()
 
+/obj/item/device/mcu/proc/__try_init(mob/activator = null)
+	if(id)
+		return TRUE
+
+	if(!config.mcu.enable || SSmcu.total_mcu >= config.mcu.hardcap)
+		return FALSE
+
+	id = Z_MACHINE_CREATE(src)
+
+	if(!id)
+		CRASH("Failed to create a MCU: [Z_GET_LAST_ERROR()]")
+
+	SSmcu.total_mcu += 1
+
+	if(activator != null)
+		log_debug("[activator] ([activator.ckey]) triggered creation of a machine [id]")
+
+	// TODO: add a reset proc
+	ASSERT(Z_MACHINE_SET_SHIFT_ID(id, game_id) == TRUE)
+	ASSERT(Z_MACHINE_SET_FREQUENCY(id, initial(target_frequency)) == TRUE)
+	ASSERT(Z_MACHINE_SET_RAM_SIZE(id, ram_size) == TRUE)
+	ASSERT(Z_MACHINE_SET_POST_TICK_PROC(id, nameof(.proc/__post_tick)) == TRUE)
+	ASSERT(Z_MACHINE_SET_TRAP_PROC(id, nameof(.proc/__trap)) == TRUE)
+	ASSERT(Z_MACHINE_SET_SYSCALL_PROC(id, nameof(.proc/__syscall)) == TRUE)
+
+	return TRUE
+
 /obj/item/device/mcu/examine(mob/user, infix)
 	. = ..()
+
+	if(!__try_init(user))
+		return
 
 	if(user.Adjacent(src))
 		if(broken)
@@ -148,33 +172,39 @@
 		else
 			ASSERT(tid_limit != 0)
 			var/tid_ratio = accumulated_tid / tid_limit
-			
+
 			if(tid_ratio >= MCU_TID_DEGRADE_RATIO)
 				. += SPAN_WARNING("The board shows significant brown discoloration from radiation exposure.")
 			else if(tid_ratio >= MCU_TID_WARN_RATIO)
 				. += SPAN_WARNING("You notice slight discoloration on the board - possibly radiation.")
 
-		if(temperature < 30 CELSIUS)
-			. += "It feels [SPAN_NOTICE("cool")] to the touch."
-		else if(temperature < 45 CELSIUS)
-			. += "It feels [SPAN_NOTICE("warm")] to the touch."
-		else if(temperature < 60 CELSIUS)
-			. += "It feels [SPAN_WARNING("hot")] to the touch."
-		else if(temperature < 80 CELSIUS)
-			. += "It feels [SPAN_WARNING("painfully hot")]! You pull your hand away."
-		else if(temperature < 100 CELSIUS)
-			. += "It is [SPAN_DANGER("searing hot")]! Touching it would burn you."
+			if(issilicon(user) || hasHUD(user, HUD_SCIENCE))
+				. += "Radiation: [accumulated_tid]/[tid_limit] TID"
+
+		if(issilicon(user) || hasHUD(user, HUD_SCIENCE))
+			. += "Temperature: [CONV_KELVIN_CELSIUS(temperature)]°C"
 		else
-			. += "It is [SPAN_DANGER("glowing with heat")]! The air around it shimmers."
-		
+			if(temperature < 30 CELSIUS)
+				. += "It feels [SPAN_NOTICE("cool")] to the touch."
+			else if(temperature < 45 CELSIUS)
+				. += "It feels [SPAN_NOTICE("warm")] to the touch."
+			else if(temperature < 60 CELSIUS)
+				. += "It feels [SPAN_WARNING("hot")] to the touch."
+			else if(temperature < 80 CELSIUS)
+				. += "It feels [SPAN_WARNING("painfully hot")]! You pull your hand away."
+			else if(temperature < 100 CELSIUS)
+				. += "It is [SPAN_DANGER("searing hot")]! Touching it would burn you."
+			else
+				. += "It is [SPAN_DANGER("glowing with heat")]! The air around it shimmers."
+
 		if(oc_unlocked)
 			. += "The [SPAN_WARNING("OC")] jumper is set - overclocking enabled."
 		else
 			. += "The OC jumper is in default position."
-		
+
 		if(flash_protection)
 			. += "The write-protect OTP fuse appears [SPAN_DANGER("burned")]."
-		
+
 		if(__battery)
 			var/charge_percent = __battery.maxcharge > 0 ? round(__battery.charge / __battery.maxcharge * 100) : 0
 			var/charge_span
@@ -202,6 +232,9 @@
 			. += "A small LED is off."
 
 /obj/item/device/mcu/attackby(obj/item/W, mob/user)
+	if(!__try_init(user))
+		return ..()
+
 	if(istype(W, /obj/item/jtag_programmer))
 		if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_STOPPED)
 			to_chat(user, SPAN_WARNING("The MCU must be powered off before programming."))
@@ -213,18 +246,19 @@
 
 		var/elf_file = input(user, "Upload an ELF file", "JTAG Programmer") as file|null
 
-		if(QDELETED(src) || !elf_file || QDELETED(user) || !user.Adjacent(src))
+		if(QDELETED(src) || !elf_file || QDELETED(user) || !user.ckey || !user.Adjacent(src))
 			return ..()
 
 		if(length(elf_file) > config.mcu.max_elf_size)
 			to_chat(user, SPAN_WARNING("The file's size is too big [length(elf_file)] ([config.mcu.max_elf_size] max)"))
 			return ..()
 
-		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[rand(9999999)].elf"
+		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[user.ckey]_[rand(9999999)].elf"
 
 		while(fexists(tmp_file))
-			tmp_file = "[MCU_TMP_FOLDER]/elf/[rand(9999999)].elf"
+			tmp_file = "[MCU_TMP_FOLDER]/elf/[user.ckey]_[rand(9999999)].elf"
 
+		log_debug("[user] ([user.ckey]) uploaded an ELF file \"[tmp_file]\" ([length(elf_file)])")
 		fcopy(elf_file, tmp_file)
 
 		if(!Z_MACHINE_LOAD_ELF(id, tmp_file))
@@ -238,7 +272,7 @@
 
 		if(__elf_path != null)
 			fdel(__elf_path)
-		
+
 		__elf_path = tmp_file
 	else if(isMultitool(W))
 		var/upper_bound = oc_unlocked ? round(max_frequency * MCU_MAX_OVERCLOCK_MULT) : max_frequency
@@ -255,7 +289,7 @@
 		if(flash_protection)
 			to_chat(user, SPAN_WARNING("The OTP fuse is already burned."))
 			return ..()
-		
+
 		var/obj/item/weldingtool/WT = W
 		var/confirm = alert(user, "Burn the write-protect OTP fuse? This is PERMANENT and will prevent any future reprogramming.", "Burn OTP Fuse", "Yes", "No")
 
@@ -267,7 +301,7 @@
 
 		if(QDELETED(src) || QDELETED(user) || !user.Adjacent(src))
 			return
-		
+
 		flash_protection = TRUE
 		user.visible_message( \
 			SPAN_NOTICE("[user] carefully burns the OTP fuse on \the [src]."), \
@@ -277,7 +311,7 @@
 		if(!QDELETED(__battery))
 			to_chat(user, SPAN_WARNING("There is a battery already"))
 			return ..()
-		
+
 		if(!user.drop(W, src))
 			return ..()
 
@@ -288,12 +322,108 @@
 		)
 	else if(istype(W, /obj/item/mcu_module))
 		var/obj/item/mcu_module/M = W
-		
+
 		try_add_pci(M, user)
+	else if(istype(W, /obj/item/stack/nanopaste))
+		var/obj/item/stack/nanopaste/P = W
+
+		if (accumulated_tid <= 0)
+			to_chat(user, SPAN_NOTICE("[src] shows no signs of radiation-induced oxide degradation."))
+			return ..()
+
+		if(!do_after(user, 1, src, TRUE))
+			return ..()
+
+		if (!P.use(1))
+			to_chat(user, SPAN_WARNING("There isn't enough nanopaste left."))
+			return ..()
+
+		accumulated_tid = max(0, accumulated_tid - 5)
+
+		if(accumulated_tid <= 0)
+			user.visible_message( \
+				SPAN_NOTICE("[user] finishes treating [src] with [W]. The device hums back to life."), \
+				SPAN_NOTICE("You apply [W] to [src], restoring the irradiated semiconductor lattice. The device is fully operational now.") \
+			)
+		else if(accumulated_tid > 15)
+			user.visible_message( \
+				SPAN_NOTICE("[user] applies [W] to [src], but the device still looks damaged."), \
+				SPAN_NOTICE("You apply [W] to [src], but severe radiation damage remains. The oxide layers are still degraded.") \
+			)
+		else
+			user.visible_message( \
+				SPAN_NOTICE("[user] carefully applies [W] to [src], repairing some damage."), \
+				SPAN_NOTICE("You apply [W] to [src], annealing some of the radiation-induced charge traps. Further treatment is needed.") \
+			)
+	else if(istype(W, /obj/item/debugger))
+		if(!do_after(user, 1 SECOND, src, TRUE))
+			return ..()
+
+		var/dump = Z_MACHINE_DUMP_REGISTERS(id)
+		var/list/data = json_decode(dump)
+
+		var/list/output = list()
+		output += SPAN_NOTICE("<b>═══════════ MCU Register Dump ═══════════</b>")
+
+		output += SPAN_NOTICE("<b>── Status ──</b>")
+		output += "  PC: [num2hex(data["pc"], 8)] | Cycle: [data["cycle"]] | Instret: [data["instret"]]"
+		output += "  Privilege: [data["privilege"]]"
+
+		output += SPAN_NOTICE("<b>── Common Registers (x0-x31) ──</b>")
+		var/list/common = data["common"]
+		for(var/row = 0; row < 8; row++)
+			var/line = "  "
+			for(var/col = 0; col < 4; col++)
+				var/idx = row * 4 + col
+				var/val = common[idx + 1]
+				line += "x[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
+			output += line
+
+		output += SPAN_NOTICE("<b>── Float Registers (f0-f31) ──</b>")
+		var/list/floats = data["float"]
+		for(var/row = 0; row < 8; row++)
+			var/line = "  "
+			for(var/col = 0; col < 4; col++)
+				var/idx = row * 4 + col
+				var/val = floats[idx + 1]
+				line += "f[padleft("[idx]", 2)]: [padleft(num2hex(val), 8)] "
+			output += line
+
+		var/list/fcsr = data["fcsr"]
+		output += SPAN_NOTICE("<b>── FCSR ──</b>")
+		output += "  FRM: [fcsr["frm"]] | NX: [fcsr["nx"]] | UF: [fcsr["uf"]] | OF: [fcsr["of"]] | DZ: [fcsr["dz"]] | NV: [fcsr["nv"]]"
+
+		output += SPAN_NOTICE("<b>── Timers ──</b>")
+		output += "  mtime: [data["mtime"]] | mtimecmp: [data["mtimecmp"]]"
+
+		output += SPAN_NOTICE("<b>── CSR Registers ──</b>")
+		output += "  mscratch: [num2hex(data["mscratch"])] | mepc: [num2hex(data["mepc"])] | mtval: [num2hex(data["mtval"])]"
+
+		var/list/mcause = data["mcause"]
+		output += "  mcause: code=[mcause["code"]], interrupt=[mcause["interrupt"]]"
+
+		var/list/mtvec = data["mtvec"]
+		output += "  mtvec: mode=[mtvec["mode"]], base=[num2hex(mtvec["base"])]"
+
+		var/list/mie = data["mie"]
+		var/list/mip = data["mip"]
+		output += SPAN_NOTICE("<b>── Interrupts ──</b>")
+		output += "  MIE: msie=[mie["msie"]], mtie=[mie["mtie"]], meie=[mie["meie"]]"
+		output += "  MIP: msip=[mip["msip"]], mtip=[mip["mtip"]], meip=[mip["meip"]]"
+
+		output += SPAN_NOTICE("<b>── Identification ──</b>")
+		output += "  mvendorid: [data["mvendorid"]] | marchid: [data["marchid"]] | mimpid: [data["mimpid"]] | mhartid: [data["mhartid"]]"
+
+		output += SPAN_NOTICE("<b>══════════════════════════════════════════</b>")
+
+		to_chat(user, output.Join("<br>"))
 
 	return ..()
 
 /obj/item/device/mcu/attack_self(mob/user as mob)
+	if(!__try_init(user))
+		return ..()
+
 	for(var/i = 1 to pci_slots)
 		var/obj/item/mcu_module/M = __pci_devices[i]
 
@@ -308,6 +438,9 @@
 	ASSERT(M.__pci_slot == null)
 	ASSERT(M.__host == null)
 
+	if(!__try_init(activator))
+		return FALSE
+
 	var/has_slots = FALSE
 	for(var/i = 1 to pci_slots)
 		if(__pci_devices[i] == null)
@@ -317,7 +450,7 @@
 	if(!has_slots)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("No more PCI slots available."))
-		
+
 		return FALSE
 
 	var/slot = Z_MACHINE_TRY_ATTACH_PCI(id, M.device_type)
@@ -325,11 +458,13 @@
 	if(slot == null)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("It looks like [M] won't work here."))
-		
+
 		return FALSE
-	
-	if(activator && !activator.drop(M, src))
-		return FALSE
+
+	if(activator)
+		if(!activator.drop(M, src))
+			Z_MACHINE_TRY_DETACH_PCI(id, slot)
+			return FALSE
 	else
 		M.forceMove(src)
 
@@ -355,7 +490,7 @@
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(QDELETED(M))
 			continue
-		
+
 		M.emp_act(severity)
 
 	if(emp_dead)
@@ -408,6 +543,8 @@
 		else
 			__battery.forceMove(get_turf(src))
 			__battery.throw_at_random(FALSE, 2, 1)
+		
+		__battery = null
 
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		if(QDELETED(M))
@@ -420,7 +557,7 @@
 			qdel(M)
 
 			continue
-		
+
 		M.forceMove(get_turf(src))
 		M.throw_at_random(FALSE, 2, 1)
 
@@ -433,8 +570,6 @@
 	emergency_shutdown()
 
 /obj/item/device/mcu/proc/__syscall(pci_slot, ...)
-	ASSERT(pci_slot <= pci_slots)
-
 	var/obj/item/mcu_module/M = __pci_devices[pci_slot + 1]
 	return M.__syscall(arglist(args.Copy(2)))
 
@@ -446,7 +581,7 @@
 			"[activator] switches a safety jumper on \the [src]", \
 			SPAN_NOTICE("You switch the safety jumper on \the [src]. Overclocking is now [oc_unlocked ? "enabled" : "disabled"].") \
 		)
-	
+
 	set_target_frequency(target_frequency)
 
 /// Set target frequency.
@@ -472,7 +607,7 @@
 /// Power calculation uses EFFECTIVE frequency (what actually runs).
 /// but OC penalty based on TARGET (what player set).
 /obj/item/device/mcu/proc/calculate_power(util)
-	if(id == 0)
+	if(!id)
 		return 0
 
 	if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
@@ -539,10 +674,10 @@
 
 		return FALSE
 
-	if(!config.mcu.enable || SSmcu.total_running >= config.mcu.hardcap)
+	if(!__try_init(activator) || !config.mcu.enable || SSmcu.total_running >= config.mcu.hardcap)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("Some indescribable force is preventing the board from starting."))
-		
+
 		return FALSE
 
 	if(temperature >= (shutdown_temp - MCU_RESTART_COOLDOWN))
@@ -559,30 +694,40 @@
 
 	if(QDELETED(__battery))
 		__battery = null
-		
+
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src] has no battery to power!"))
-		
+
 		return FALSE
-	
+
 	if(__elf_path == null)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src] fails to start."))
-		
+
 		return FALSE
 
 	// Wh
 	var/min_boot_charge = P_idle / 3600
-	if(!__battery.check_charge(min_boot_charge * config.mcu.power_scale))
+	if(!__try_drain_power(min_boot_charge))
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src]'s battery is too low to start."))
 
 		return FALSE
 
 	ASSERT(Z_MACHINE_RESET(id) == TRUE)
+	// TODO: add a reset proc
+	ASSERT(Z_MACHINE_SET_SHIFT_ID(id, game_id) == TRUE)
+
+	for(var/obj/item/mcu_module/M in __pci_devices)
+		if(QDELETED(M))
+			continue
+
+		M.__reset(TRUE)
+
 	ASSERT(Z_MACHINE_LOAD_ELF(id, __elf_path) == TRUE)
 	Z_MACHINE_SET_STATE(id, Z_MSTATE_RUNNING)
-	Z_MACHINE_SET_SENSORS(id, CONV_KELVIN_CELSIUS(temperature), 0, temperature >= shutdown_temp, temperature >= throttle_temp)
+	Z_MACHINE_SET_SENSORS(id, CONV_KELVIN_CELSIUS(temperature), temperature >= shutdown_temp, temperature >= throttle_temp)
+	Z_MACHINE_SET_POWER(id, (QDELETED(__battery) ? 0 : __battery.charge * 1000), FALSE)
 	SSmcu.total_running += 1
 
 	if(activator)
@@ -594,23 +739,29 @@
 	throttled = FALSE
 	sustained_full_ticks = 0
 
-	if(Z_MACHINE_GET_STATE(id) == Z_MSTATE_STOPPED)
+	if(!id || Z_MACHINE_GET_STATE(id) == Z_MSTATE_STOPPED)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("The CPU is not turned on."))
 
 		return
-	
+
 	if(activator)
 		activator.visible_message("[activator] turns \the [src] off.", "You turn \the [src] off.")
 
 	Z_MACHINE_SET_STATE(id, Z_MSTATE_STOPPED)
 	SSmcu.total_running -= 1
 
+	for(var/obj/item/mcu_module/M in __pci_devices)
+		if(QDELETED(M))
+			continue
+
+		M.__power_off()
+
 /obj/item/device/mcu/proc/emergency_shutdown()
 	throttled = FALSE
 	sustained_full_ticks = 0
 
-	if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
+	if(!id || Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
 		return
 
 	visible_message(SPAN_WARNING("[src] shuts down!"))
@@ -634,6 +785,14 @@
 
 	return TRUE
 
+/obj/item/device/mcu/proc/__try_drain_power(amount)
+	if(QDELETED(__battery))
+		return FALSE
+
+	amount *= config.mcu.power_scale
+
+	return __battery.use(amount)
+
 /obj/item/device/mcu/proc/__post_tick(delta_us)
 	var/delta_s = delta_us * 1e-6
 
@@ -643,58 +802,56 @@
 	var/energy_Wh = 0
 
 	if(is_running)
-		if(QDELETED(__battery))
-			__battery = null
+		var/util = Z_MACHINE_GET_UTILIZATION(id)
+
+		// Sustained full-load tracking
+		if(util >= 0.95)
+			sustained_full_ticks++
+		else
+			sustained_full_ticks = max(0, sustained_full_ticks - 2)
+
+		P = calculate_power(util)
+
+		for(var/obj/item/mcu_module/M in __pci_devices)
+			if(QDELETED(M))
+				continue
+
+			P += M.power_usage
+
+		// Convert W to Wh: energy = power * time
+		// Wh = W * (seconds / 3600)
+		energy_Wh = P * delta_s / 3600
+		
+		if(__try_drain_power(energy_Wh) == FALSE)
 			emergency_shutdown()
 			is_running = FALSE
-			// Continue to thermal calculations - residual heat still dissipates
-		else
-			var/util = Z_MACHINE_GET_UTILIZATION(id)
+			// MCU is now off, but we still process thermal below
 
-			// Sustained full-load tracking
-			if(util >= 0.95)
-				sustained_full_ticks++
-			else
-				sustained_full_ticks = max(0, sustained_full_ticks - 2)
+	Z_MACHINE_SET_POWER(id, (QDELETED(__battery) ? 0 : __battery.charge * 1000), FALSE)
 
-			P = calculate_power(util)
+	var/datum/gas_mixture/M = return_air()
 
-			// Convert W to Wh: energy = power * time
-			// Wh = W * (seconds / 3600)
-			energy_Wh = P * delta_s / 3600
-			__battery.use(energy_Wh * config.mcu.power_scale)
+	if(M)
+		// Newton's law of cooling:
+		// dT = (P_gen - k * (T - T_amb)) * dt / C
 
-			if(__battery.charge <= 0)
-				emergency_shutdown()
-				is_running = FALSE
-				// MCU is now off, but we still process thermal below
+		// K
+		var/T_ambient = M.temperature
+		// In vacuum convective cooling is negligible - only radiation remains. W/K
+		var/effective_k = cooling_k
 
-	var/turf/T = get_turf(src)
-	var/datum/gas_mixture/M = T?.return_air()
+		if(M.get_total_moles() < MCU_VACUUM_MOLES_THRESHOLD)
+			effective_k *= MCU_VACUUM_COOLING_FACTOR
 
-	if(!T || !M)
-		return
+		// W
+		var/Q_dissipated = effective_k * (temperature - T_ambient)
+		// K
+		var/delta_T = (P - Q_dissipated) * delta_s / thermal_mass
+		temperature = max(T_ambient, temperature + delta_T)
 
-	// Newton's law of cooling:
-	// dT = (P_gen - k * (T - T_amb)) * dt / C
-
-	// K
-	var/T_ambient = M.temperature
-	// In vacuum convective cooling is negligible - only radiation remains. W/K
-	var/effective_k = cooling_k
-
-	if(M.get_total_moles() < MCU_VACUUM_MOLES_THRESHOLD)
-		effective_k *= MCU_VACUUM_COOLING_FACTOR
-	
-	// W
-	var/Q_dissipated = effective_k * (temperature - T_ambient)
-	// K
-	var/delta_T = (P - Q_dissipated) * delta_s / thermal_mass
-	temperature = max(T_ambient, temperature + delta_T)
-
-	var/heat_to_env = Q_dissipated * delta_s
-	if (heat_to_env > 0 && M.get_total_moles() >= MCU_VACUUM_MOLES_THRESHOLD)
-		M.add_thermal_energy(heat_to_env)
+		var/heat_to_env = Q_dissipated * delta_s
+		if (heat_to_env > 0 && M.get_total_moles() >= MCU_VACUUM_MOLES_THRESHOLD)
+			M.add_thermal_energy(heat_to_env)
 
 	if(temperature >= damage_temp)
 		__take_thermal_damage(delta_s)
@@ -710,7 +867,7 @@
 
 	if(!oc_unlocked && temperature >= shutdown_temp)
 		var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
-		sparks.set_up(3, 1, T)
+		sparks.set_up(3, 1, get_turf(src))
 		sparks.start()
 
 		emergency_shutdown()
@@ -733,13 +890,8 @@
 		else if(throttled && temperature < (throttle_temp - MCU_THROTTLE_HYSTERESIS))
 			throttled = FALSE
 
-	// Power consumption per minute in mWh (milliwatt-hours per minute)
-	// P (watts) * (1/60) hours = Wh per minute * 1000 = mWh per minute
-	var/power_per_minute_mWh = round(P * config.mcu.power_scale * 1000 / 60)
-
 	Z_MACHINE_SET_SENSORS(id, \
 		CONV_KELVIN_CELSIUS(temperature), \
-		power_per_minute_mWh, \
 		temperature >= shutdown_temp, \
 		temperature >= throttle_temp \
 	)
@@ -886,27 +1038,32 @@
 
 	frequency = max(frequency, min_frequency)
 
-	Z_MACHINE_SET_FREQUENCY(id, frequency)
+	if(id)
+		Z_MACHINE_SET_FREQUENCY(id, frequency)
 
 /obj/item/device/mcu/verb/turn_on()
+	set src in view(1)
 	set name = "Turn On"
 	set category = "Object"
 
 	power_on(usr)
 
 /obj/item/device/mcu/verb/turn_off()
+	set src in view(1)
 	set name = "Turn Off"
 	set category = "Object"
 
 	power_off(usr)
 
 /obj/item/device/mcu/verb/eject_battery()
+	set src in view(1)
 	set name = "Eject Battery"
 	set category = "Object"
 
 	remove_battery(usr)
 
 /obj/item/device/mcu/verb/eject_module()
+	set src in view(1)
 	set name = "Eject Module"
 	set category = "Object"
 
@@ -916,12 +1073,12 @@
 	for(var/obj/item/mcu_module/M in __pci_devices)
 		module_names["[counter]. [M.name]"] = M
 		counter++
-	
+
 	var/choice = input(usr, "Select a PCI module to remove:", "Remove PCI Module") as null|anything in module_names
-	
-	if(isnull(choice) || !usr.Adjacent(src))
+
+	if(!choice || !usr.Adjacent(src))
 		return
-	
+
 	var/obj/item/mcu_module/selected_module = module_names[choice]
 	if(QDELETED(selected_module))
 		return
@@ -929,10 +1086,10 @@
 	ASSERT(try_detach_pci_module(selected_module, usr) == TRUE)
 
 /obj/item/device/mcu/proc/try_detach_pci_module_at(slot, mob/activator = null)
-	try_detach_pci_module(__pci_devices[slot])
+	return try_detach_pci_module(__pci_devices[slot], activator)
 
 /obj/item/device/mcu/proc/try_detach_pci_module(obj/item/mcu_module/M, mob/activator = null)
-	if(QDELETED(M) || M.__pci_slot == null)
+	if(!id || QDELETED(M) || M.__pci_slot == null)
 		return FALSE
 
 	__pci_devices[M.__pci_slot + 1] = null
@@ -946,7 +1103,7 @@
 	if(activator)
 		if(!activator.put_in_hands(M))
 			M.forceMove(get_turf(src))
-		
+
 		activator.visible_message(
 			"[activator] removes \the [M] from \the [src].",
 			SPAN_NOTICE("You remove \the [M] from \the [src].")
@@ -960,13 +1117,14 @@
 	name = "NCR-1000 MCU"
 	desc = "A reliable general-purpose microcontroller by Nanotrasen Cybernetics. \
 		The NCR-1000 offers balanced performance for everyday automation tasks."
-	
+	icon_state = "green"
+
 	ram_size = 65536 // 64 KB
 	target_frequency = 1000000 // 1 MHz
 	frequency = 1000000
 	min_frequency = 250000 // 250 kHz
 	max_frequency = 2000000 // 2 MHz
-	
+
 	pci_slots = 4
 
 	P_idle = 2 WATT
@@ -977,7 +1135,8 @@
 	name = "NCR-2000 MCU"
 	desc = "An upgraded variant of the NCR-1000 with doubled memory \
 		and improved clock speeds. Popular in industrial automation."
-	
+	icon_state = "blue"
+
 	ram_size = 262144 // 256 KB
 	target_frequency = 2000000 // 2 MHz default
 	frequency = 2000000
@@ -994,13 +1153,14 @@
 	name = "NCR-4000 Pro"
 	desc = "The professional-grade NCR-4000 features expanded memory \
 		and high clock speeds for demanding computational tasks."
-	
+	icon_state = "black"
+
 	ram_size = 1048576 // 1 MB
 	target_frequency = 4000000 // 4 MHz default
 	frequency = 4000000
 	min_frequency = 1000000 // 1 MHz
 	max_frequency = 8000000 // 8 MHz
-	
+
 	pci_slots = 16
 
 	thermal_mass = 6.0
@@ -1015,13 +1175,14 @@
 	desc = "An ultra-efficient microcontroller designed for long-term \
 		deployment in remote sensors and monitoring equipment. \
 		Sacrifices raw performance for exceptional battery life."
-	
+	icon_state = "white"
+
 	ram_size = 32768 // 32 KB
 	target_frequency = 500000 // 500 kHz
 	frequency = 500000
 	min_frequency = 125000 // 125 kHz
 	max_frequency = 1000000 // 1 MHz
-	
+
 	pci_slots = 2
 
 	thermal_mass = 2.0
@@ -1030,7 +1191,7 @@
 	cooling_k = 0.15
 	rad_hardening = 0.10
 	emp_hardening = 1
-	
+
 	throttle_temp = 70 CELSIUS
 	shutdown_temp = 95 CELSIUS
 	damage_temp = 100 CELSIUS
@@ -1040,13 +1201,14 @@
 	desc = "An enhanced low-power MCU with additional memory. \
 		Ideal for autonomous systems requiring extended operation \
 		without frequent battery replacement."
-	
+	icon_state = "cyan"
+
 	ram_size = 65536 // 64 KB
 	target_frequency = 750000 // 750 kHz default
 	frequency = 750000
 	min_frequency = 100000 // 100 kHz
 	max_frequency = 1500000 // 1.5 MHz
-	
+
 	pci_slots = 4
 
 	thermal_mass = 2.5
@@ -1061,13 +1223,14 @@
 	desc = "Industrial-grade low-power MCU with generous memory \
 		and hardened components. Designed for harsh environments \
 		where reliability trumps performance."
-	
+	icon_state = "yellow"
+
 	ram_size = 131072 // 128 KB
 	target_frequency = 1000000 // 1 MHz default
 	frequency = 1000000
 	min_frequency = 250000 // 250 kHz
 	max_frequency = 2000000 // 2 MHz
-	
+
 	pci_slots = 6
 
 	thermal_mass = 5.0
@@ -1076,7 +1239,7 @@
 	cooling_k = 0.20
 	rad_hardening = 0.50
 	tid_limit = 250
-	
+
 	throttle_temp = 75 CELSIUS
 	shutdown_temp = 100 CELSIUS
 	damage_temp = 110 CELSIUS
@@ -1086,13 +1249,14 @@
 	name = "Fury-S1 Starter"
 	desc = "Entry-level overclocking MCU. A taste of Cybersun performance \
 		for those not ready to commit to full thermal chaos."
-	
+	icon_state = "red"
+
 	ram_size = 65536 // 64 KB
 	target_frequency = 1500000
 	frequency = 1500000
 	min_frequency = 750000
 	max_frequency = 3000000
-	
+
 	pci_slots = 4
 
 	thermal_mass = 6.0
@@ -1100,11 +1264,11 @@
 	K_power = 12
 	cooling_k = 0.10
 	rad_hardening = 0.0
-	
+
 	throttle_temp = 60 CELSIUS
 	shutdown_temp = 85 CELSIUS
 	damage_temp = 90 CELSIUS
-	
+
 	oc_unlocked = TRUE
 	oc_ram_protection = TRUE
 
@@ -1114,13 +1278,14 @@
 		engineered for extreme overclocking. Features unlocked \
 		multipliers and reinforced power delivery. \
 		Handle with care - thermals can be... aggressive."
-	
+	icon_state = "black_red"
+
 	ram_size = 262144 // 256 KB
 	target_frequency = 2000000 // 2 MHz
 	frequency = 2000000
 	min_frequency = 1000000 // 1 MHz
 	max_frequency = 4000000 // 4 MHz -> 6 MHz OC
-	
+
 	pci_slots = 8
 
 	thermal_mass = 8.0
@@ -1128,11 +1293,11 @@
 	K_power = 15
 	cooling_k = 0.08
 	rad_hardening = 0.0
-	
+
 	throttle_temp = 60 CELSIUS
 	shutdown_temp = 85 CELSIUS
 	damage_temp = 90 CELSIUS
-	
+
 	oc_unlocked = TRUE
 	oc_ram_protection = TRUE
 
@@ -1141,13 +1306,14 @@
 	desc = "The flagship of Cybersun's Fury line. Binned for maximum \
 		overclocking potential with exotic cooling solutions in mind. \
 		Warning: May void warranty, sanity, and fire suppression systems."
-	
+	icon_state = "black_copper"
+
 	ram_size = 1048576 // 1 MB
 	target_frequency = 4000000 // 4 MHz default
 	frequency = 4000000
 	min_frequency = 2000000 // 2 MHz
 	max_frequency = 8000000 // 8 MHz -> 12MHz OC
-	
+
 	pci_slots = 16
 
 	thermal_mass = 12.0
@@ -1155,11 +1321,11 @@
 	K_power = 18
 	cooling_k = 0.06
 	rad_hardening = 0.0
-	
+
 	throttle_temp = 55 CELSIUS
 	shutdown_temp = 80 CELSIUS
 	damage_temp = 85 CELSIUS
-	
+
 	oc_unlocked = TRUE
 	oc_ram_protection = TRUE
 
@@ -1168,13 +1334,14 @@
 	desc = "A versatile MCU featuring an exceptionally wide frequency range. \
 		Can scale from near-idle power sipping to respectable performance \
 		on demand. Perfect for variable workloads."
-	
+	icon_state = "purple"
+
 	ram_size = 65536 // 64 KB
 	target_frequency = 1000000 // 1 MHz default
 	frequency = 1000000
 	min_frequency = 100000 // 100 kHz
 	max_frequency = 4000000 // 4 MHz
-	
+
 	pci_slots = 6
 
 	thermal_mass = 5.0
@@ -1182,7 +1349,7 @@
 	K_power = 7
 	cooling_k = 0.12
 	rad_hardening = 0.05
-	
+
 	throttle_temp = 65 CELSIUS
 	shutdown_temp = 90 CELSIUS
 	damage_temp = 95 CELSIUS
@@ -1192,14 +1359,15 @@
 	desc = "The enhanced Flex-V2 adds more memory and extends \
 		the frequency ceiling while maintaining the signature \
 		wide operating range. Ideal for adaptive systems."
-	
+	icon_state = "dark_purple"
+
 	ram_size = 262144 // 256 KB
 	target_frequency = 2000000 // 2 MHz default
 	frequency = 2000000
 	min_frequency = 125000 // 125 kHz
 	max_frequency = 6000000 // 6 MHz
 	rad_hardening = 0.05
-	
+
 	pci_slots = 12
 
 	thermal_mass = 6.0
@@ -1212,7 +1380,8 @@
 	desc = "The ultimate in frequency flexibility. The V3 Max \
 		spans from deep sleep frequencies to high-performance modes, \
 		with generous 192KB of RAM for complex applications."
-	
+	icon_state = "gradient"
+
 	ram_size = 786432 // 768 KB
 	target_frequency = 2000000 // 2 MHz default
 	frequency = 2000000
@@ -1220,7 +1389,7 @@
 	max_frequency = 8000000 // 8 MHz
 	rad_hardening = 0.10
 	emp_hardening = 1
-	
+
 	pci_slots = 18
 
 	thermal_mass = 7.0
@@ -1234,13 +1403,14 @@
 		extreme environments. Features ECC memory, triple modular \
 		redundancy, and silicon-on-insulator fabrication. \
 		Slower but virtually indestructible — even near a supermatter."
-	
+	icon_state = "warning"
+
 	ram_size = 131072 // 128 KB
 	target_frequency = 1000000 // 1 MHz default
 	frequency = 1000000
 	min_frequency = 500000 // 500 kHz
 	max_frequency = 2000000 // 2 MHz
-	
+
 	pci_slots = 4
 
 	thermal_mass = 10.0
@@ -1250,7 +1420,7 @@
 	rad_hardening = 0.90
 	tid_limit = 1000
 	emp_hardening = 4
-	
+
 	throttle_temp = 80 CELSIUS
 	shutdown_temp = 110 CELSIUS
 	damage_temp = 120 CELSIUS
@@ -1260,19 +1430,20 @@
 	desc = "A nostalgic recreation of ancient computing technology \
 		using modern fabrication. Beloved by hobbyists and \
 		historians alike. Extremely power-efficient but limited."
-	
+	icon_state = "brown"
+
 	ram_size = 32768 // 32 KB
 	target_frequency = 500000 // 500 kHz default
 	frequency = 500000
 	min_frequency = 250000 // 250 kHz
 	max_frequency = 750000 // 750 kHz
-	
+
 	thermal_mass = 3.0
 	P_idle = 0.2 WATT
 	K_power = 2
 	cooling_k = 0.20
 	rad_hardening = 0.0
-	
+
 	pci_slots = 2
 
 	throttle_temp = 70 CELSIUS

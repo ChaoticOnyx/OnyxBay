@@ -29,7 +29,7 @@
 	if(health <= 0)
 		death(null,"gives one shrill beep before falling lifeless.")
 
-/mob/living/silicon/pai/updatehealth()
+/mob/living/silicon/pai/update_health()
 	var/previous_health = health
 	if(status_flags & GODMODE)
 		health = 100

@@ -31,7 +31,7 @@
 				C.adjustToxLoss(1 * weakness)
 				C.adjustOxyLoss(1 * weakness)
 				C.adjustBrainLoss(0.1 * weakness)
-				C.updatehealth()
+				C.update_health()
 
 /datum/artifact_effect/hurt/DoEffectPulse()
 	if(holder)
@@ -45,4 +45,4 @@
 				C.adjustToxLoss(3 * weakness)
 				C.adjustOxyLoss(3 * weakness)
 				C.adjustBrainLoss(0.1 * weakness)
-				C.updatehealth()
+				C.update_health()

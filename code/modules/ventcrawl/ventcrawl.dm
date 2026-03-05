@@ -213,13 +213,13 @@ var/list/ventcrawl_machinery = list(
 			A.pipe_image.layer = ABOVE_LIGHTING_LAYER
 			A.pipe_image.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 			pipes_shown += A.pipe_image
-			client.images += A.pipe_image
+			add_client_image(A.pipe_image)
 
 /mob/living/proc/remove_ventcrawl()
 	is_ventcrawling = 0
+	for(var/image/current_image in pipes_shown)
+		remove_client_image(current_image)
 	if(client)
-		for(var/image/current_image in pipes_shown)
-			client.images -= current_image
 		client.eye = src
 
 	pipes_shown.len = 0

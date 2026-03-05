@@ -26,5 +26,6 @@
 	for(var/t in pick_turfs)
 		var/turf/T = safepick(pick_turfs)?.resolve()
 		if(istype(T))
-			new /obj/structure/psychic_rift(T)
+			var/obj/structure/psychic_rift/PR = new(T)
+			log_debug("A psychic rift has been spawned at: x = [PR.x], y = [PR.y], z = [PR.z].")
 			break

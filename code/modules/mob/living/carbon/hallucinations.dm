@@ -143,8 +143,8 @@
 	plasma_image.plane = FLY_LAYER
 	flood_images += plasma_image
 	flood_turfs += center
-	if(holder.client)
-		holder.client.images |= flood_images
+	for(var/image/I in flood_images)
+		holder.add_client_image(I)
 	next_expand = world.time + FAKE_FLOOD_EXPAND_TIME
 	set_next_think(world.time + 1 SECOND)
 
@@ -182,14 +182,15 @@
 			flood_turfs += T
 			expanded = 1
 	radius += expanded
-	if(holder.client)
-		holder.client.images |= flood_images
+	for(var/image/I in flood_images)
+		holder.add_client_image(I)
 
 /datum/hallucination/fake_flood/end()
 	set_next_think(0)
 
-	if(holder.client)
-		holder.client.images.Remove(flood_images)
+	for(var/image/I in flood_images)
+		holder.remove_client_image(I)
+
 	QDEL_LIST(flood_images)
 	flood_turfs.Cut()
 	holder.hallucinations -= src
@@ -409,14 +410,17 @@
 
 /obj/item/mirage_item
 	var/image/img
-	var/client/client
+	var/mob/holder
 
 /obj/item/mirage_item/pickup(mob/living/carbon/human/H)
 	H.visible_message(SPAN_NOTICE("[H] tried to take something, but only grabbed air."),
 		SPAN_WARNING("Your hand seems to go right through the [name ? src : "item"]. It's like it doesn't exist."))
+	qdel_self()
 
-	client.images -= img
-	qdel(src)
+/obj/item/mirage_item/Destroy()
+	holder?.remove_client_image(img)
+	holder = null
+	return ..()
 
 /datum/hallucination/item_mirage
 	duration = 30 SECONDS
@@ -484,31 +488,29 @@
 	for(var/i = 1 to number)
 		var/turf/simulated/floor/point = pick(possible_points)
 		var/obj/item/mirage_item/thing = generate_mirage(point)
-		thing.client = holder.client
+		thing.holder = holder
 		items += thing
 		if(sound)
 			holder.playsound_local(point, sound, volume)
-		holder.client.images += thing.img
+		holder.add_client_image(thing.img)
 
 /datum/hallucination/item_mirage/end()
-	if(holder?.client)
-		for(var/obj/item/mirage_item/I in items)
-			holder.client.images -= I.img
-			qdel(I)
+	QDEL_NULL_LIST(items)
 
 // Singulo
-/obj/item/mirage_item/singulo
-	var/target
-
 /obj/item/mirage_item/singulo/Initialize()
 	. = ..()
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/mirage_item/singulo/think()
-	step_to(src, target, 1)
-	if(get_dist(src, target) < 2)
+	if(QDELETED(holder))
+		qdel_self()
+		return
+
+	step_to(src, holder, 1)
+	if(get_dist(src, holder) < 2)
 		qdel(src)
-		var/mob/living/carbon/human/H = target
+		var/mob/living/carbon/human/H = holder
 		H?.Paralyse(5)
 		H.playsound_local(get_turf(src), sound('sound/effects/bang.ogg'), 70, 1, 30)
 
@@ -521,13 +523,12 @@
 /datum/hallucination/item_mirage/singulo/generate_mirage(turf/loc)
 	var/obj/item/mirage_item/singulo/I = new(loc)
 	I.img = image('icons/effects/96x96.dmi', loc = I, icon_state = "singularity_s3")
-	I.target = holder
+	I.holder = holder
 	return I
 
 // Balloons
 
 /obj/item/mirage_item/balloon
-	var/target
 	var/mdir
 
 /obj/item/mirage_item/balloon/Initialize()
@@ -536,21 +537,25 @@
 	mdir = rand(-1, 1)
 
 /obj/item/mirage_item/balloon/think()
+	if(QDELETED(holder))
+		qdel_self()
+		return
+
 	pixel_x += sin(world.time) * 16 * mdir * rand(-1, 1)
 	pixel_y += cos(world.time) * 16 * mdir * rand(-1, 1)
 
 	if(!prob(10))
 		return
-	step_to(src, target, 1)
-	if(get_dist(src, target) < 2)
-		step_away(src, target, 5, 128)
+	step_to(src, holder, 1)
+	if(get_dist(src, holder) < 2)
+		step_away(src, holder, 5, 128)
 
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/mirage_item/balloon/pickup(mob/living/carbon/human/H)
 	H.visible_message(SPAN_NOTICE("[H] tried to take something, but only grabbed air."),
 		SPAN_WARNING("Your hand seems to go right through the [name ? src : "item"]. It's like it doesn't exist."))
-	qdel(src)
+	qdel_self()
 
 /datum/hallucination/item_mirage/balloon
 	number = 5
@@ -559,27 +564,29 @@
 /datum/hallucination/item_mirage/balloon/generate_mirage(turf/loc)
 	var/obj/item/mirage_item/balloon/I = new(loc)
 	I.img = image('icons/obj/weapons.dmi', loc = I, icon_state = pick("syndballoon", "ntballoon", "snailballoon"))
-	I.target = holder
+	I.holder = holder
 	return I
 
 // Black holes
 
 /obj/item/mirage_item/bhole
-	var/target
 	var/mdir
 
 /obj/item/mirage_item/bhole/Initialize()
 	. = ..()
 	set_next_think(world.time + 1 SECOND)
 	mdir = rand(-1, 1)
-	..(loc)
 
 /obj/item/mirage_item/bhole/think()
+	if(QDELETED(holder))
+		qdel_self()
+		return
+
 	pixel_x += sin(world.time) * 32 * mdir * rand(-1, 1)
 	pixel_y += cos(world.time) * 32 * mdir * rand(-1, 1)
 
-	if(get_dist(src, target) < 2)
-		var/mob/living/carbon/human/H = target
+	if(get_dist(src, holder) < 2)
+		var/mob/living/carbon/human/H = holder
 		if(!H)
 			return
 		H.Paralyse(1)
@@ -589,12 +596,12 @@
 	else if(prob(5))
 		step_rand(src)
 	else if(prob(6))
-		step_to(src, target)
+		step_to(src, holder)
 
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/mirage_item/bhole/pickup(mob/living/carbon/human/H)
-	qdel(src)
+	qdel_self()
 
 /datum/hallucination/item_mirage/bhole
 	number = 3
@@ -603,7 +610,7 @@
 /datum/hallucination/item_mirage/bhole/generate_mirage(turf/loc)
 	var/obj/item/mirage_item/bhole/I = new(loc)
 	I.img = image('icons/obj/objects.dmi', loc = I, icon_state = "bhole3")
-	I.target = holder
+	I.holder = holder
 	return I
 
 /datum/hallucination/mirage
@@ -615,7 +622,7 @@
 
 /datum/hallucination/mirage/Destroy()
 	end()
-	. = ..()
+	return ..()
 
 /datum/hallucination/mirage/proc/generate_mirage()
 	var/icon/T = new('icons/obj/trash.dmi')
@@ -633,11 +640,11 @@
 			thing.loc = point
 			if(sound)
 				holder.playsound_local(point, sound, volume)
-		holder.client.images += things
+			holder.add_client_image(thing)
 
 /datum/hallucination/mirage/end()
-	if(holder?.client)
-		holder.client.images -= things
+	for(var/image/thing in things)
+		holder.remove_client_image(thing)
 
 /datum/hallucination/mirage/crayon/generate_mirage()
 	var/icon/T  = new('icons/effects/crayondecal.dmi')
@@ -844,7 +851,7 @@
 		fake_look.invisibility = 0
 	if(fake.lying)
 		fake_look.SetTransform(others = fake.transform, rotation = -90)
-	holder.client.images |= fake_look
+	holder.add_client_image(fake_look)
 
 	log_misc("[holder.name] is hallucinating that [origin.name] is the [fake.name]")
 
@@ -869,8 +876,7 @@
 	if(!fake_look)
 		return // No ASSERT is needed, ending is correct
 
-	if(holder.client)
-		holder.client.images -= fake_look
+	holder?.remove_client_image(fake_look)
 
 	QDEL_NULL(fake_look)
 
@@ -974,18 +980,19 @@
 	var/chosen = rand(1, available_effects.len)
 	for(var/turf/simulated/T in room.contents)
 		effects.Add(image(icon = file(available_effects[chosen]), loc = T, icon_state = available_effects[available_effects[chosen]], layer = FLY_LAYER))
-	holder.client.images |= effects
+	for(var/image/I in effects)
+		holder.add_client_image(I)
 
 /datum/hallucination/room_effects/end()
 	if(!effects)
 		return // Already qdeleted
-	if(holder.client)
-		holder.client.images -= effects
+	for(var/image/I in effects)
+		holder.remove_client_image(I)
 	QDEL_NULL_LIST(effects)
 
 /datum/hallucination/room_effects/Destroy()
 	end()
-	. = ..()
+	return ..()
 
 /datum/hallucination/coloring
 	duration = 30 SECONDS
@@ -1005,15 +1012,15 @@
 		colored.override = 0 // This way, increasing I.plane or I.layer will reveal original icon. If you want to change this behavior, you need to make colored.override = 1, and manually change colored.plane and colored.layer along with original`s, because it's not inherited
 		colored.color = rgb(rand(60,255), rand(60,255), rand(60,255))
 		colored_images += colored
-	holder.client.images |= colored_images
+		holder.add_client_image(colored)
 
 /datum/hallucination/coloring/end()
 	if(!colored_images)
 		return // Already qdeleted
-	if(holder.client)
-		holder.client.images -= colored_images
+	for(var/image/colored in colored_images)
+		holder.remove_client_image(colored)
 	QDEL_NULL_LIST(colored_images)
 
 /datum/hallucination/coloring/Destroy()
 	end()
-	. = ..()
+	return ..()

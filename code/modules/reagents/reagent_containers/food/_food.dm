@@ -79,7 +79,7 @@
 
 
 /obj/item/reagent_containers/food/attack(mob/M, mob/user, def_zone)
-	if(!reagents.total_volume)
+	if(!reagents?.total_volume)
 		to_chat(user, SPAN("danger", "The empty shell of [src] crumbles in your hands!"))
 		qdel(src)
 		return FALSE
@@ -225,7 +225,7 @@
 /obj/item/reagent_containers/food/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
 	var/mob/living/carbon/human/H = hit_atom
-	if(!istype(H) || !istype(TT.thrown_with, /obj/item/gun/launcher) || TT.target_zone != BP_MOUTH || !reagents.total_volume || !is_open_container() || !H.check_has_mouth() || H.check_mouth_coverage() || H.get_fullness() >= STOMACH_FULLNESS_SUPER_HIGH)
+	if(!istype(H) || !TT.launcher || TT.target_zone != BP_MOUTH || !reagents.total_volume || !is_open_container() || !H.check_has_mouth() || H.check_mouth_coverage() || H.get_fullness() >= STOMACH_FULLNESS_SUPER_HIGH)
 		return ..(hit_atom, TT)
 
 	if(reagents.total_volume > bitesize * 2)
