@@ -19,6 +19,7 @@
 	var/list/my_cracks = list() // resonance fractures spawned by this tap
 
 /obj/machinery/power/sm_resonance_tap/Destroy()
+	fade_cracks() // clean up any lingering resonance cracks before the tap is gone
 	. = ..()
 
 /obj/machinery/power/sm_resonance_tap/Process()
@@ -286,7 +287,9 @@
 		if(QDELETED(C))
 			continue
 		var/delay = max_dist > 0 ? round((max_dist - get_dist(src, C)) / max_dist * stagger_window) : 0
-		spawn(delay) if(!QDELETED(C)) C.start_fading()
+			spawn(delay) if(!QDELETED(C)) C.start_fading()
+	// my_cracks is cleared immediately — spawn closures hold their own C references,
+	// so clearing the list before the timers fire is intentional and not a race condition
 	my_cracks = list()
 
 /obj/machinery/power/sm_resonance_tap/proc/tap_break()
@@ -311,9 +314,20 @@
 
 /obj/machinery/power/sm_resonance_tap/ex_act(severity)
 	switch(severity)
-		if(2, 3)
+		if(1, 2)
 			tap_break()
-	return ..()
+		if(3)
+			health -= 40
+			if(health <= 0)
+				tap_break()
+			else
+				update_icon()
+		if(4)
+			health -= 15
+			if(health <= 0)
+				tap_break()
+			else
+				update_icon()
 
 // Resonance fracture — SM energy bleeding through the floor, fades on its own
 /obj/effect/decal/resonance_crack
@@ -326,6 +340,7 @@
 	mouse_opacity = 1
 	layer = DECAL_PLATING_LAYER
 	var/obj/machinery/power/sm_resonance_tap/parent_tap
+	var/fading = FALSE
 
 /obj/effect/decal/resonance_crack/Initialize()
 	. = ..()
@@ -348,14 +363,20 @@
 			M.visible_message(SPAN_DANGER("\The [M] is seared by resonance energy!"), \
 				SPAN_DANGER("The fracture is burning through your body!"))
 
-
 /obj/effect/decal/resonance_crack/proc/start_fading()
+	if(fading) return
+	fading = TRUE
 	INVOKE_ASYNC(src, .proc/fade)
 
 /obj/effect/decal/resonance_crack/proc/fade()
+	if(QDELETED(src)) return
 	sleep(120) // ~12 seconds after tap deactivates
+	if(QDELETED(src)) return
 	if(parent_tap && !QDELETED(parent_tap) && parent_tap.active)
-		return // tap was re-enabled — stay alive
+		// tap was re-enabled — stay alive and re-register so we're tracked again
+		parent_tap.my_cracks |= src
+		fading = FALSE
+		return
 	qdel(src)
 
 // Invisible relay object used as an intermediate beam source to avoid the single-source
