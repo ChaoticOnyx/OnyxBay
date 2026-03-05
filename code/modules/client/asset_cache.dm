@@ -298,12 +298,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"tgui-panel.bundle.css" = 'tgui/public/tgui-panel.bundle.css',
 	)
 
-/datum/asset/directories/tgui_sprites
-	isTrivial = FALSE
-	dirs = list(
-		"tgui/public/sprites/",
-	)
-
 /datum/asset/directories/nanoui
 	isTrivial = FALSE
 	dirs = list(
