@@ -2874,20 +2874,20 @@ const LoadoutItemList = (props: {
         {groupOrder.flatMap((sg) => [
           ...(sg
             ? [
-                <Table.Row
-                  key={"header-" + sg}
-                  className="CharSetup__gearGroupHeader"
-                  onClick={() => toggleGroup(sg)}
-                >
-                  <Table.Cell colSpan={4} bold color="label" py={0.5}>
-                    <Icon
-                      name={collapsedGroups[sg] ? "chevron-right" : "chevron-down"}
-                      mr={0.5}
-                      style={{ fontSize: "0.7em" }}
-                    />
-                    {sg}
-                  </Table.Cell>
-                </Table.Row>,
+                <tr key={"header-" + sg}>
+                  <td colSpan={4} style={{ padding: 0 }}>
+                    <Box
+                      className="CharSetup__miscCatHeader"
+                      onClick={() => toggleGroup(sg)}
+                    >
+                      <Box className="CharSetup__miscCatHeader__label">{sg}</Box>
+                      <Icon
+                        name={collapsedGroups[sg] ? "chevron-right" : "chevron-down"}
+                        color="label"
+                      />
+                    </Box>
+                  </td>
+                </tr>,
               ]
             : []),
           ...(collapsedGroups[sg] ? [] : groups[sg].map((item) => {
