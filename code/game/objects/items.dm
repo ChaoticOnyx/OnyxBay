@@ -284,7 +284,7 @@
 		if(loc != H && !H.IsAdvancedToolUser(TRUE))
 			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
 			return
-		if(!H.is_hand_usable(certain_hand) || H.restrained())
+		if(!H.is_hand_usable(FALSE, certain_hand) || H.restrained())
 			return
 
 	var/old_loc = loc
@@ -343,7 +343,11 @@
 	if(ishuman(over) && over == usr)
 		if(!CanMouseDrop(over))
 			return FALSE
-		handle_pickup(usr)
+		if(usr.active_hand == ACTIVE_HAND_LEFT && usr.l_hand)
+			return FALSE
+		if(usr.active_hand == ACTIVE_HAND_RIGHT && usr.r_hand)
+			return FALSE
+		handle_pickup(usr, usr.active_hand)
 		return TRUE
 
 	// Trying to put us into a certain hand via mouse-dropping into a hand slot.

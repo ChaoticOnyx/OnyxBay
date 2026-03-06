@@ -583,6 +583,9 @@
 
 /mob/living/carbon/human/proc/is_hand_usable(silent = FALSE, certain_hand = -1)
 	var/_active_hand = certain_hand
+	if(_active_hand == -1)
+		_active_hand = rightclicked ? !active_hand : active_hand
+
 	var/obj/item/organ/external/temp = get_hand_organ(_active_hand)
 	if(istype(temp) && temp.is_usable())
 		return TRUE
