@@ -15,24 +15,6 @@
 	. = ..()
 	update_icon()
 
-/obj/item/clipboard/MouseDrop(obj/over_object as obj) //Quick clipboard fix. -Agouri
-	if(ishuman(usr))
-		var/mob/M = usr
-		if(!(istype(over_object, /atom/movable/screen) ))
-			return ..()
-
-		if(!M.restrained() && !M.stat)
-			switch(over_object.name)
-				if("r_hand")
-					if(M.drop(src))
-						M.put_in_r_hand(src)
-				if("l_hand")
-					if(M.drop(src))
-						M.put_in_l_hand(src)
-
-			add_fingerprint(usr)
-			return
-
 /obj/item/clipboard/on_update_icon()
 	ClearOverlays()
 	if(toppaper)

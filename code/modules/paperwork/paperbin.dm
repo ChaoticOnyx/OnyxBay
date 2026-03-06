@@ -14,19 +14,10 @@
 	drop_sound = SFX_DROP_CARDBOARD
 	pickup_sound = SFX_PICKUP_CARDBOARD
 
-/obj/item/paper_bin/MouseDrop(mob/user)
-	if((user == usr && (!( usr.restrained() ) && (!( usr.stat ) && (usr.contents.Find(src) || in_range(src, usr))))))
-		if(ishuman(usr))
-			if(!usr.get_active_hand()) //if active hand is empty
-				return
-			var/mob/living/carbon/human/H = user
-			if(!H.is_hand_usable())
-				return
-			to_chat(user, SPAN("notice", "You pick up the [src]."))
-			user.pick_or_drop(src)
-	return
-
 /obj/item/paper_bin/attack_hand(mob/user)
+	if(user.a_intent == I_GRAB)
+		return ..()
+
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(!H.is_hand_usable())

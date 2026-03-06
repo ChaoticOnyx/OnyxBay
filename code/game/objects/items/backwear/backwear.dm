@@ -116,17 +116,6 @@
 	else
 		..()
 
-/obj/item/backwear/MouseDrop()
-	if(ismob(loc))
-		if(!CanMouseDrop(src))
-			return
-		var/mob/M = loc
-		if(!M.drop(src))
-			return
-		add_fingerprint(usr)
-		M.pick_or_drop(src)
-
-
 ///// These use power cells to function
 /obj/item/backwear/powered
 	var/obj/item/cell/bcell = null

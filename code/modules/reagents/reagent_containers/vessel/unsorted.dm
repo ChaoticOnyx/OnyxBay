@@ -365,26 +365,6 @@
 	amount_per_transfer_from_this = 25
 	possible_transfer_amounts = "5;10;25;30;50;60;100;150;200;300;600;1000;1500"
 
-/obj/item/reagent_containers/vessel/shaker/MouseDrop(obj/over_object, mob/user = usr) // Braindead copypasta from obj/item/storage
-	if(!canremove)
-		return
-
-	if(iscarbon(user) || isrobot(user))
-		if(!(istype(over_object, /atom/movable/screen)))
-			return ..()
-
-		if(loc != user)
-			return
-
-		add_fingerprint(user)
-		switch(over_object.name)
-			if(BP_R_HAND)
-				if(user.drop(src))
-					user.put_in_r_hand(src)
-			if(BP_L_HAND)
-				if(user.drop(src))
-					user.put_in_l_hand(src)
-
 /obj/item/reagent_containers/vessel/teapot
 	name = "teapot"
 	desc = "An elegant teapot. It simply oozes class."

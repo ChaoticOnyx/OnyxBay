@@ -69,17 +69,6 @@
 	else
 		..()
 
-/obj/item/defibrillator/MouseDrop()
-	if(ismob(src.loc))
-		if(!CanMouseDrop(src))
-			return
-		var/mob/M = src.loc
-		if(!M.drop(src))
-			return
-		add_fingerprint(usr)
-		M.pick_or_drop(src)
-
-
 /obj/item/defibrillator/attackby(obj/item/W, mob/user, params)
 	if(W == paddles)
 		reattach_paddles(user)

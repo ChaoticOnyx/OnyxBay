@@ -57,20 +57,6 @@
 		if(I_HURT)
 			user.visible_message(SPAN("warning", "[user] slaps \the [src]!"))
 
-/obj/item/plant_pot/MouseDrop(mob/user)
-	if(!CanMouseDrop(src, usr))
-		return
-
-	if(user == usr && (user.contents.Find(src) || in_range(src, user)))
-		if(!ishuman(user) || user.get_clicking_hand())
-			return
-		var/mob/living/carbon/human/H = user
-		if(!H.is_hand_usable())
-			return
-		if(user.pick_or_drop(src, loc))
-			to_chat(user, SPAN("notice", "You pick up \the [src]."))
-	return
-
 /obj/item/plant_pot/proc/uproot(mob/user)
 	if(!ishuman(user) || user.get_clicking_hand())
 		return

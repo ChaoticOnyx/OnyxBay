@@ -275,7 +275,7 @@
 	return handle_pickup(user)
 
 // Trying to get picked up by user, via attack_hand, MouseDrop_T, etc.
-/obj/item/proc/handle_pickup(mob/user)
+/obj/item/proc/handle_pickup(mob/user, certain_hand = -1)
 	if(anchored)
 		return
 
@@ -284,7 +284,7 @@
 		if(loc != H && !H.IsAdvancedToolUser(TRUE))
 			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
 			return
-		if(!H.is_hand_usable())
+		if(!H.is_hand_usable(certain_hand))
 			return
 
 	var/old_loc = loc
@@ -314,7 +314,15 @@
 
 	pickup(user, changing_slots)
 
-	var/put_in_hands_result = user.put_in_clicking_hand(src)
+	var/put_in_hands_result
+	switch(certain_hand)
+		if(-1)
+			put_in_hands_result = user.put_in_clicking_hand(src)
+		if(ACTIVE_HAND_LEFT)
+			put_in_hands_result = user.put_in_l_hand(src)
+		if(ACTIVE_HAND_RIGHT)
+			put_in_hands_result = user.put_in_r_hand(src)
+
 	if(put_in_hands_result)
 		if(isturf(old_loc))
 			var/obj/effect/temporary/item_pickup_ghost/ghost = new /obj/effect/temporary/item_pickup_ghost(old_loc, src)
@@ -331,11 +339,23 @@
 	return
 
 /obj/item/MouseDrop(atom/over, atom/src_location, atom/over_location, src_control, over_control, params)
+	// Normal pickup, trying to put us into the active hand.
 	if(ishuman(over) && over == usr)
 		if(!CanMouseDrop(over))
 			return FALSE
-		handle_pickup(over)
+		handle_pickup(usr)
 		return TRUE
+
+	// Trying to put us into a certain hand via mouse-dropping into a hand slot.
+	if(istype(over, /atom/movable/screen/inventory))
+		var/atom/movable/screen/inventory/inv_box = over
+		if(inv_box.slot_id == slot_r_hand && !usr.r_hand)
+			handle_pickup(usr, ACTIVE_HAND_RIGHT)
+			return TRUE
+		else if(inv_box.slot_id == slot_l_hand && !usr.l_hand)
+			handle_pickup(usr, ACTIVE_HAND_LEFT)
+			return TRUE
+
 	return ..()
 
 /obj/item/attack_ai(mob/user)

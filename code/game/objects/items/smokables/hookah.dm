@@ -127,19 +127,10 @@
 		to_chat(user, SPAN("notice", "\The [src] is already in use!"))
 	return TRUE
 
-/obj/item/reagent_containers/vessel/hookah/MouseDrop(mob/user)
-	if(!CanMouseDrop(src, usr))
-		return
-	if(user == usr && (user.contents.Find(src) || in_range(src, user)))
-		if(ishuman(user) && !user.get_active_hand())
-			var/mob/living/carbon/human/H = user
-			if(!H.is_hand_usable())
-				return
-			if(user.pick_or_drop(src, loc))
-				to_chat(user, SPAN("notice", "You pick up \the [src]."))
-				reattach_hose()
-				if(has_second_hose)
-					reattach_hose(TRUE)
+/obj/item/reagent_containers/vessel/hookah/pickup(mob/user)
+	reattach_hose()
+	if(has_second_hose)
+		reattach_hose(TRUE)
 	return
 
 /obj/item/reagent_containers/vessel/hookah/attackby(obj/item/W, mob/user)

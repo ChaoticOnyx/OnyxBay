@@ -49,7 +49,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 /mob/living/carbon/human/put_in_l_hand(obj/item/W)
 	if(!..() || l_hand)
 		return 0
-	var/obj/item/organ/external/hand = organs_by_name["l_hand"]
+	var/obj/item/organ/external/hand = organs_by_name[BP_L_HAND]
 	if(!hand || !hand.is_usable())
 		return 0
 	equip_to_slot(W,slot_l_hand)
@@ -59,7 +59,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 /mob/living/carbon/human/put_in_r_hand(obj/item/W)
 	if(!..() || r_hand)
 		return 0
-	var/obj/item/organ/external/hand = organs_by_name["r_hand"]
+	var/obj/item/organ/external/hand = organs_by_name[BP_R_HAND]
 	if(!hand || !hand.is_usable())
 		return 0
 

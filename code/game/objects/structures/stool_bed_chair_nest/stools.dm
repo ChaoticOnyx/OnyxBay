@@ -67,25 +67,9 @@ var/global/list/stool_cache = list() //haha stool
 
 
 /obj/item/stool/attack_hand(mob/user)
-	if(isturf(loc))
+	if(isturf(loc) && user.a_intent != I_GRAB)
 		return
 	return ..()
-
-/obj/item/stool/MouseDrop(mob/user)
-	if(!CanMouseDrop(src, usr))
-		return
-	if(user == usr && (user.contents.Find(src) || in_range(src, user)))
-		if(ishuman(user) && !user.get_active_hand())
-			var/mob/living/carbon/human/H = user
-			var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
-			if(H.active_hand == ACTIVE_HAND_LEFT)
-				temp = H.organs_by_name[BP_L_HAND]
-			if(temp && !temp.is_usable())
-				to_chat(user, SPAN("warning", "You try to pick up \the [src] with your [temp.name], but cannot!"))
-				return
-			if(user.pick_or_drop(src, loc))
-				to_chat(user, SPAN("notice", "You pick up \the [src]."))
-	return
 
 /obj/item/stool/on_update_icon()
 	// Base icon.
