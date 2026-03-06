@@ -1,5 +1,5 @@
 /obj/item/mcu_module/light
-	name = "Light module"
+	name = "light module"
 	desc = "A light module"
 	icon_state = "light"
 

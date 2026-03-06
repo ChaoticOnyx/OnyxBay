@@ -20,9 +20,17 @@
 /obj/item/mcu_module/proc/__syscall(cmd, ...)
 	return FALSE
 
+/obj/item/mcu_module/proc/__interact(mob/user)
+	return FALSE
+
 /obj/item/mcu_module/tgui_host(mob/user)
 	if(__host != null)
-		return __host.resolve()
+		var/obj/item/device/mcu/M = __host.resolve()
+
+		if(M.__chassis != null)
+			return M.__chassis.resolve()
+
+		return M
 	
 	return src
 

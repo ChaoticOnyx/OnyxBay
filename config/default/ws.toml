@@ -1,0 +1,13 @@
+[ws]
+port = 0
+max_connections = 100
+max_connections_per_ip = 5
+handshake_timeout_ms = 5000
+idle_timeout_ms = 300000
+ping_interval_ms = 30000
+pong_timeout_ms = 10000
+max_message_size = 1048576
+max_frame_size = 1048576
+max_handshake_size = 8192
+rate_limit_messages_per_sec = 100
+rate_limit_bytes_per_sec = 1048576

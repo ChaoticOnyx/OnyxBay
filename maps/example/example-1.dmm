@@ -40,7 +40,10 @@
 "N" = (/obj/structure/table/steel,/obj/item/jtag_programmer,/obj/item/mcu_module/tts,/obj/item/mcu_module/serial_terminal,/obj/item/mcu_module/signaler,/obj/item/debugger,/obj/item/mcu_module/gps,/obj/item/mcu_module/light,/obj/item/mcu_module/env_sensor,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "O" = (/obj/structure/table/steel,/obj/item/cell/infinite,/obj/item/cell/standard,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "P" = (/obj/map_ent/info_maptext{ev_text = "Map entities showcase"},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"Q" = (/obj/structure/table/steel,/obj/item/device/multitool,/obj/item/screwdriver,/obj/item/weldingtool,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"Q" = (/obj/structure/table/steel,/obj/item/device/multitool,/obj/item/screwdriver,/obj/item/weldingtool,/obj/item/wrench,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"R" = (/obj/structure/table/steel,/obj/item/mcu_chassis/laptop,/obj/item/mcu_chassis/tablet,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"S" = (/obj/map_ent/info_maptext{ev_text = "MCU"},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"T" = (/obj/machinery/light{dir = 1},/obj/item/mcu_chassis/console,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "V" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/item/modular_computer/console/preset/security,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "X" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/effect/landmark/joinlate,/obj/machinery/alarm{pixel_y = 29},/turf/simulated/floor/tiled,/area/engineering/toilet)
 
@@ -55,9 +58,9 @@ JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcccccccccccccccccJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaaaaaaaaaaaaaaacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaeNbdbbbbbdbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaeNRTbbbbbdbbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaObbbbVgfbbbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaQbbbbfXfbbbbhacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaQbSbbfXfbbbbhacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaibbbjfffbbbbkacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcabmmmmmmmmmmbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJyyyJcabnLLLLLLLLLopacJJJJJJJJJJJJJJJ

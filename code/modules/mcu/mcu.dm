@@ -103,6 +103,8 @@
 	var/obj/item/cell/__battery = null
 	var/__elf_path = null
 
+	var/weakref/__chassis = null
+
 /obj/item/device/mcu/Initialize()
 	. = ..()
 
@@ -114,7 +116,7 @@
 /obj/item/device/mcu/Destroy()
 	if(id)
 		SSmcu.total_mcu -= 1
-		power_off()
+		power_off(null, FALSE)
 		Z_MACHINE_DESTROY(id)
 		id = null
 
@@ -157,7 +159,7 @@
 /obj/item/device/mcu/examine(mob/user, infix)
 	. = ..()
 
-	if(!__try_init(user))
+	if(!user.IsAdvancedToolUser() || !__try_init(user))
 		return
 
 	if(user.Adjacent(src))
@@ -220,7 +222,7 @@
 		else
 			. += "There is [SPAN_WARNING("no battery")] installed."
 
-	if(Z_MACHINE_GET_STATE(id) == Z_MSTATE_RUNNING)
+	if(is_on())
 		if(throttled)
 			. += "A small LED blinks [SPAN_WARNING("orange")]."
 		else
@@ -232,26 +234,26 @@
 			. += "A small LED is off."
 
 /obj/item/device/mcu/attackby(obj/item/W, mob/user)
-	if(!__try_init(user))
+	if(!user.IsAdvancedToolUser() || !__try_init(user))
 		return ..()
 
 	if(istype(W, /obj/item/jtag_programmer))
-		if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_STOPPED)
+		if(is_on())
 			to_chat(user, SPAN_WARNING("The MCU must be powered off before programming."))
-			return ..()
+			return
 
 		if(flash_protection)
 			to_chat(user, SPAN_WARNING("The OTP fuse is burned. \The [src] cannot be reprogrammed."))
-			return ..()
+			return
 
 		var/elf_file = input(user, "Upload an ELF file", "JTAG Programmer") as file|null
 
 		if(QDELETED(src) || !elf_file || QDELETED(user) || !user.ckey || !user.Adjacent(src))
-			return ..()
+			return
 
 		if(length(elf_file) > config.mcu.max_elf_size)
 			to_chat(user, SPAN_WARNING("The file's size is too big [length(elf_file)] ([config.mcu.max_elf_size] max)"))
-			return ..()
+			return
 
 		var/tmp_file = "[MCU_TMP_FOLDER]/elf/[user.ckey]_[rand(9999999)].elf"
 
@@ -274,30 +276,37 @@
 			fdel(__elf_path)
 
 		__elf_path = tmp_file
+
+		return
 	else if(isMultitool(W))
 		var/upper_bound = oc_unlocked ? round(max_frequency * MCU_MAX_OVERCLOCK_MULT) : max_frequency
 		var/new_freq = input(user, "Enter new frequency in Hz between [min_frequency] and [upper_bound]", "Multitool") as num|null
 
 		if(QDELETED(src) || QDELETED(user) || !user.Adjacent(src))
-			return ..()
+			return
 
 		if(new_freq != null)
 			set_target_frequency(new_freq, user)
+
+		return
 	else if(isScrewdriver(W))
+		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		set_oc_unlocked(!oc_unlocked, user)
-	else if(isWelder(W))
+
+		return
+	else if(istype(W, /obj/item/weldingtool))
 		if(flash_protection)
 			to_chat(user, SPAN_WARNING("The OTP fuse is already burned."))
-			return ..()
+			return
 
 		var/obj/item/weldingtool/WT = W
 		var/confirm = alert(user, "Burn the write-protect OTP fuse? This is PERMANENT and will prevent any future reprogramming.", "Burn OTP Fuse", "Yes", "No")
 
 		if(confirm != "Yes")
-			return ..()
+			return
 
 		if(!WT.use_tool(src, user, delay = 1 SECOND, amount = 1))
-			return ..()
+			return
 
 		if(QDELETED(src) || QDELETED(user) || !user.Adjacent(src))
 			return
@@ -307,36 +316,42 @@
 			SPAN_NOTICE("[user] carefully burns the OTP fuse on \the [src]."), \
 			SPAN_NOTICE("You burn the OTP fuse. The firmware is now permanently locked.") \
 		)
+
+		return
 	else if(istype(W, /obj/item/cell))
 		if(!QDELETED(__battery))
 			to_chat(user, SPAN_WARNING("There is a battery already"))
-			return ..()
+			return
 
 		if(!user.drop(W, src))
-			return ..()
+			return
 
 		__battery = W
 		user.visible_message(\
 			"[user] inserts \the [W] into \the [src].", \
 			"You insert \the [W] into \the [src]." \
 		)
+
+		return
 	else if(istype(W, /obj/item/mcu_module))
 		var/obj/item/mcu_module/M = W
 
 		try_add_pci(M, user)
+
+		return
 	else if(istype(W, /obj/item/stack/nanopaste))
 		var/obj/item/stack/nanopaste/P = W
 
 		if (accumulated_tid <= 0)
 			to_chat(user, SPAN_NOTICE("[src] shows no signs of radiation-induced oxide degradation."))
-			return ..()
+			return
 
 		if(!do_after(user, 1, src, TRUE))
-			return ..()
+			return
 
 		if (!P.use(1))
 			to_chat(user, SPAN_WARNING("There isn't enough nanopaste left."))
-			return ..()
+			return
 
 		accumulated_tid = max(0, accumulated_tid - 5)
 
@@ -355,9 +370,11 @@
 				SPAN_NOTICE("[user] carefully applies [W] to [src], repairing some damage."), \
 				SPAN_NOTICE("You apply [W] to [src], annealing some of the radiation-induced charge traps. Further treatment is needed.") \
 			)
+
+		return
 	else if(istype(W, /obj/item/debugger))
 		if(!do_after(user, 1 SECOND, src, TRUE))
-			return ..()
+			return
 
 		var/dump = Z_MACHINE_DUMP_REGISTERS(id)
 		var/list/data = json_decode(dump)
@@ -418,11 +435,13 @@
 
 		to_chat(user, output.Join("<br>"))
 
+		return
+
 	return ..()
 
-/obj/item/device/mcu/attack_self(mob/user as mob)
-	if(!__try_init(user))
-		return ..()
+/obj/item/device/mcu/proc/__interact(mob/user)
+	if(!user.IsAdvancedToolUser() || !__try_init(user))
+		return FALSE
 
 	for(var/i = 1 to pci_slots)
 		var/obj/item/mcu_module/M = __pci_devices[i]
@@ -430,8 +449,16 @@
 		if(QDELETED(M))
 			continue
 
-		if(M.attack_self(user))
-			return
+		if(M.__interact(user))
+			return TRUE
+	
+	return FALSE
+
+/obj/item/device/mcu/attack_self(mob/user)
+	if(__interact(user))
+		return
+
+	return ..()
 
 /obj/item/device/mcu/proc/try_add_pci(obj/item/mcu_module/M, mob/activator = null)
 	ASSERT(M.device_type > 0)
@@ -497,13 +524,14 @@
 		return
 
 	if(severity > emp_hardening)
-		emergency_shutdown()
+		emergency_shutdown(FALSE)
 		emp_dead = TRUE
 
 /obj/item/device/mcu/bullet_act(obj/item/projectile/P, def_zone)
 	..()
 
-	destroy(TRUE)
+	if(P.damage != 0)
+		destroy(TRUE)
 
 /obj/item/device/mcu/ex_act(severity)
 	if(!QDELETED(__battery))
@@ -517,19 +545,14 @@
 
 	destroy(TRUE)
 
-/obj/item/device/mcu/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = FALSE)
-	..()
-
-	destroy(TRUE)
-
 /obj/item/device/mcu/melt()
 	..()
 
-	emergency_shutdown()
+	emergency_shutdown(FALSE)
 	qdel(src)
 
 /obj/item/device/mcu/proc/destroy(complete = FALSE)
-	emergency_shutdown()
+	emergency_shutdown(FALSE)
 	visible_message(SPAN_DANGER("\The [src] breaks apart!"))
 
 	var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
@@ -567,7 +590,7 @@
 		broken = TRUE
 
 /obj/item/device/mcu/proc/__trap()
-	emergency_shutdown()
+	emergency_shutdown(TRUE)
 
 /obj/item/device/mcu/proc/__syscall(pci_slot, ...)
 	var/obj/item/mcu_module/M = __pci_devices[pci_slot + 1]
@@ -610,7 +633,7 @@
 	if(!id)
 		return 0
 
-	if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
+	if(!is_on())
 		return 0
 
 	// Hz -> MHz
@@ -686,7 +709,7 @@
 
 		return FALSE
 
-	if(Z_MACHINE_GET_STATE(id) == Z_MSTATE_RUNNING)
+	if(is_on())
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src] is already powered on!"))
 
@@ -708,7 +731,7 @@
 
 	// Wh
 	var/min_boot_charge = P_idle / 3600
-	if(!__try_drain_power(min_boot_charge))
+	if(!__try_drain_power(min_boot_charge, FALSE))
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src]'s battery is too low to start."))
 
@@ -727,23 +750,32 @@
 	ASSERT(Z_MACHINE_LOAD_ELF(id, __elf_path) == TRUE)
 	Z_MACHINE_SET_STATE(id, Z_MSTATE_RUNNING)
 	Z_MACHINE_SET_SENSORS(id, CONV_KELVIN_CELSIUS(temperature), temperature >= shutdown_temp, temperature >= throttle_temp)
-	Z_MACHINE_SET_POWER(id, (QDELETED(__battery) ? 0 : __battery.charge * 1000), FALSE)
+	Z_MACHINE_SET_POWER(id, (QDELETED(__battery) ? 0 : __battery.charge * 1000), __chassis != null)
 	SSmcu.total_running += 1
 
 	if(activator)
 		activator.visible_message("[activator] turns \the [src] on.", "You turn \the [src] on.")
 
+	if(__chassis != null)
+		__chassis.resolve().__on_mcu_on()
+
 	return TRUE
 
-/obj/item/device/mcu/proc/power_off(mob/activator = null)
+/obj/item/device/mcu/proc/is_on()
+	if(!id)
+		return FALSE
+
+	return Z_MACHINE_GET_STATE(id) == Z_MSTATE_RUNNING
+
+/obj/item/device/mcu/proc/power_off(mob/activator = null, is_trap = FALSE)
 	throttled = FALSE
 	sustained_full_ticks = 0
 
-	if(!id || Z_MACHINE_GET_STATE(id) == Z_MSTATE_STOPPED)
+	if(!is_on())
 		if(activator)
 			to_chat(activator, SPAN_WARNING("The CPU is not turned on."))
 
-		return
+		return FALSE
 
 	if(activator)
 		activator.visible_message("[activator] turns \the [src] off.", "You turn \the [src] off.")
@@ -756,16 +788,21 @@
 			continue
 
 		M.__power_off()
+	
+	if(__chassis != null)
+		__chassis.resolve().__on_mcu_off(is_trap)
 
-/obj/item/device/mcu/proc/emergency_shutdown()
+	return TRUE
+
+/obj/item/device/mcu/proc/emergency_shutdown(is_trap = FALSE)
 	throttled = FALSE
 	sustained_full_ticks = 0
 
-	if(!id || Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
+	if(!is_on())
 		return
 
 	visible_message(SPAN_WARNING("[src] shuts down!"))
-	power_off()
+	power_off(null, is_trap)
 
 /obj/item/device/mcu/proc/remove_battery(mob/activator = null)
 	if(QDELETED(__battery))
@@ -781,15 +818,27 @@
 		__battery.forceMove(get_turf(src))
 
 	__battery = null
-	emergency_shutdown()
+	emergency_shutdown(FALSE)
 
 	return TRUE
 
-/obj/item/device/mcu/proc/__try_drain_power(amount)
+/obj/item/device/mcu/proc/__try_drain_power(amount, recharge_battery = FALSE)
+	amount *= config.mcu.power_scale
+
+	if(__chassis != null)
+		var/obj/item/mcu_chassis/C = __chassis.resolve()
+
+		if(C.has_external_power_source && C.try_drain_power(amount))
+			if(recharge_battery && !QDELETED(__battery) && __battery.charge < __battery.maxcharge)
+				var/recharge_amount = __battery.maxcharge * config.mcu.battery_recharge_percent
+
+				if(C.try_drain_power(recharge_amount))
+					__battery.add_charge(recharge_amount)
+
+			return TRUE
+
 	if(QDELETED(__battery))
 		return FALSE
-
-	amount *= config.mcu.power_scale
 
 	return __battery.use(amount)
 
@@ -798,10 +847,9 @@
 
 	// Generated heat
 	var/P = 0 WATT
-	var/is_running = Z_MACHINE_GET_STATE(id) == Z_MSTATE_RUNNING
 	var/energy_Wh = 0
 
-	if(is_running)
+	if(is_on())
 		var/util = Z_MACHINE_GET_UTILIZATION(id)
 
 		// Sustained full-load tracking
@@ -822,12 +870,11 @@
 		// Wh = W * (seconds / 3600)
 		energy_Wh = P * delta_s / 3600
 		
-		if(__try_drain_power(energy_Wh) == FALSE)
-			emergency_shutdown()
-			is_running = FALSE
+		if(__try_drain_power(energy_Wh, TRUE) == FALSE)
+			emergency_shutdown(FALSE)
 			// MCU is now off, but we still process thermal below
 
-	Z_MACHINE_SET_POWER(id, (QDELETED(__battery) ? 0 : __battery.charge * 1000), FALSE)
+	Z_MACHINE_SET_POWER(id, (QDELETED(__battery) ? 0 : __battery.charge * 1000), __chassis != null)
 
 	var/datum/gas_mixture/M = return_air()
 
@@ -858,11 +905,8 @@
 
 	__process_radiation(delta_s)
 
-	if(!is_running)
-		return
-
 	// Radiation or TID may have shut us down since is_running was last set
-	if(rad_dead || Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
+	if(rad_dead || !is_on())
 		return
 
 	if(!oc_unlocked && temperature >= shutdown_temp)
@@ -870,7 +914,7 @@
 		sparks.set_up(3, 1, get_turf(src))
 		sparks.start()
 
-		emergency_shutdown()
+		emergency_shutdown(FALSE)
 
 		return
 
@@ -970,7 +1014,7 @@
 		return
 
 	// Active effects only when running
-	if(Z_MACHINE_GET_STATE(id) != Z_MSTATE_RUNNING)
+	if(!is_on())
 		return
 
 	THROTTLE(rad_effect_cd, MCU_RAD_TICK_INTERVAL)
@@ -1007,7 +1051,7 @@
 		sparks.set_up(4, 1, T)
 		sparks.start()
 
-		emergency_shutdown()
+		emergency_shutdown(FALSE)
 
 /// Permanent destruction from accumulated Total Ionizing Dose.
 /obj/item/device/mcu/proc/__radiation_tid_failure()
@@ -1021,8 +1065,8 @@
 		sparks.set_up(5, 1, T)
 		sparks.start()
 
-	if(Z_MACHINE_GET_STATE(id) == Z_MSTATE_RUNNING)
-		emergency_shutdown()
+	if(is_on())
+		emergency_shutdown(FALSE)
 
 	name = "burnt-out [initial(name)]"
 	desc = "[initial(desc)]\n[SPAN_DANGER("The circuitry is visibly discolored and warped. Irreparable radiation damage.")]"
@@ -1046,6 +1090,9 @@
 	set name = "Turn On"
 	set category = "Object"
 
+	if(!usr.IsAdvancedToolUser())
+		return
+
 	power_on(usr)
 
 /obj/item/device/mcu/verb/turn_off()
@@ -1053,12 +1100,18 @@
 	set name = "Turn Off"
 	set category = "Object"
 
-	power_off(usr)
+	if(!usr.IsAdvancedToolUser())
+		return
+
+	power_off(usr, FALSE)
 
 /obj/item/device/mcu/verb/eject_battery()
 	set src in view(1)
 	set name = "Eject Battery"
 	set category = "Object"
+
+	if(!usr.IsAdvancedToolUser())
+		return
 
 	remove_battery(usr)
 
@@ -1066,6 +1119,9 @@
 	set src in view(1)
 	set name = "Eject Module"
 	set category = "Object"
+
+	if(!usr.IsAdvancedToolUser())
+		return
 
 	var/list/module_names = list()
 	var/counter = 1
