@@ -393,30 +393,18 @@ export class SpriteCompositor {
   }
 
   /**
-   * Render a full character preview.
-   * Returns a data URL (PNG) suitable for <img> src.
+   * Core rendering logic — composites all character layers onto the given context.
+   * Called by both renderCharacter (data URL) and renderCharacterToCanvas (direct paint).
    */
-  renderCharacter(config: CharacterRenderConfig, outputSize = 192): string {
-    if (!this.loaded || !this.manifest) {
-      return '';
-    }
-
-    const size = this.manifest.spriteSize;
-    const dir = DIR_TO_NAME[config.direction] || 'south';
-
-    // Create render canvas at sprite resolution, scale at the end
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d')!;
-    ctx.imageSmoothingEnabled = false;
-
+  private renderLayers(
+    ctx: CanvasRenderingContext2D,
+    config: CharacterRenderConfig,
+    dir: Direction,
+  ): void {
     // === BODY LAYER ===
     this.renderBody(ctx, config, dir);
 
-    // === EYES LAYER (part of body, below clothing so glasses cover them) ===
-    // Eye sprites are white templates; color is applied via multiply (RESET_COLOR in BYOND).
-    // State includes body build suffix: "eyes", "eyes_slim", "eyes_curvy", etc.
+    // === EYES LAYER (below clothing so glasses cover them) ===
     const eyeState = 'eyes' + (config.bodyBuild || '');
     if (this.hasSprite(config.bodyDmiFile, eyeState, dir)) {
       this.drawSpriteTintedMultiply(ctx, config.bodyDmiFile, eyeState, dir, config.eyeColor);
@@ -425,7 +413,6 @@ export class SpriteCompositor {
     }
 
     // === MARKINGS LAYER (above body, below clothing) ===
-    // Markings are drawn per-organ with state "[icon_state]-[organ_tag]", tinted via ICON_ADD
     if (config.markings) {
       for (const mark of config.markings) {
         this.drawSpriteTintedAdd(ctx, mark.icon, mark.iconState, dir, mark.color);
@@ -443,19 +430,16 @@ export class SpriteCompositor {
       }
     }
 
-    // === INTERLEAVED CLOTHING / FACIAL HAIR / HAIR / EYES ===
-    // BYOND HO_ layers: facial hair=19, hair=26, eyes on top.
-    // Clothing layers are interleaved: <19 below facial hair, 19-25 between, >=26 above hair.
-    // Facemask (29) is drawn under hair so long hair overlaps it on all views.
+    // === INTERLEAVED CLOTHING / FACIAL HAIR / HAIR ===
     const HO_FACIAL_HAIR = 19;
     const HO_HAIR = 26;
-    const HO_FACEMASK = 29; // drawn under hair
+    const HO_FACEMASK = 29;
 
     const sorted = config.clothing
       ? [...config.clothing].sort((a, b) => a.layer - b.layer)
       : [];
 
-    // Draw clothing below facial hair layer (uniform=10, shoes=13, gloves=14, belt=15, suit=17)
+    // Clothing below facial hair (uniform=10, shoes=13, gloves=14, belt=15, suit=17)
     for (const item of sorted) {
       if (item.layer >= HO_FACIAL_HAIR) break;
       this.drawClothingItem(ctx, item, dir);
@@ -466,8 +450,7 @@ export class SpriteCompositor {
       this.drawSpriteTintedAdd(ctx, config.facialDmiFile, config.facialStyle, dir, config.facialColor);
     }
 
-    // Draw clothing between facial hair and hair (glasses=21, suitstore=23, back=24)
-    // Also draw facemask here so it sits under hair
+    // Clothing between facial hair and hair + facemask under hair
     for (const item of sorted) {
       if (item.layer < HO_FACIAL_HAIR || item.layer >= HO_HAIR) {
         if (item.layer !== HO_FACEMASK) continue;
@@ -479,26 +462,42 @@ export class SpriteCompositor {
     if (config.hairStyle && config.hairStyle !== 'Bald') {
       this.drawSpriteTintedAdd(ctx, config.hairDmiFile, config.hairStyle, dir, config.hairColor);
 
-      // Hair markings (fades/splits): masked to hair shape, then colored
-      // BYOND: fade.Blend(hair, ICON_AND) then fade.Blend(color, ICON_MULTIPLY)
       if (config.hairMarkings) {
         for (const hm of config.hairMarkings) {
           this.drawHairMarking(ctx, config.hairDmiFile, config.hairStyle, hm, dir);
         }
       }
 
-      // Secondary hair color
       if (config.secondaryHairColor) {
         const secondaryState = config.hairStyle + '_s';
         this.drawSpriteTintedAdd(ctx, config.hairDmiFile, secondaryState, dir, config.secondaryHairColor);
       }
     }
 
-    // Draw clothing above hair (ears=28, head=30) — facemask already drawn under hair
+    // Clothing above hair (ears=28, head=30)
     for (const item of sorted) {
       if (item.layer < HO_HAIR || item.layer === HO_FACEMASK) continue;
       this.drawClothingItem(ctx, item, dir);
     }
+  }
+
+  /**
+   * Render a full character preview.
+   * Returns a data URL (PNG) suitable for <img> src.
+   */
+  renderCharacter(config: CharacterRenderConfig, outputSize = 192): string {
+    if (!this.loaded || !this.manifest) return '';
+
+    const size = this.manifest.spriteSize;
+    const dir = DIR_TO_NAME[config.direction] || 'south';
+
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d')!;
+    ctx.imageSmoothingEnabled = false;
+
+    this.renderLayers(ctx, config, dir);
 
     // Scale to output size
     if (outputSize !== size) {
@@ -527,7 +526,6 @@ export class SpriteCompositor {
     const size = this.manifest.spriteSize;
     const outputSize = target.width;
 
-    // Render into an offscreen canvas at sprite resolution
     const src = document.createElement('canvas');
     src.width = size;
     src.height = size;
@@ -535,72 +533,7 @@ export class SpriteCompositor {
     ctx.imageSmoothingEnabled = false;
 
     const dir = DIR_TO_NAME[config.direction] || 'south';
-
-    this.renderBody(ctx, config, dir);
-
-    const eyeState = 'eyes' + (config.bodyBuild || '');
-    if (this.hasSprite(config.bodyDmiFile, eyeState, dir)) {
-      this.drawSpriteTintedMultiply(ctx, config.bodyDmiFile, eyeState, dir, config.eyeColor);
-    } else {
-      this.drawSpriteTintedMultiply(ctx, config.bodyDmiFile, 'eyes', dir, config.eyeColor);
-    }
-
-    if (config.markings) {
-      for (const mark of config.markings) {
-        this.drawSpriteTintedAdd(ctx, mark.icon, mark.iconState, dir, mark.color);
-      }
-    }
-
-    if (config.underwear) {
-      for (const uw of config.underwear) {
-        if (uw.color) {
-          this.drawSpriteTintedMultiply(ctx, uw.dmiFile, uw.state, dir, uw.color);
-        } else {
-          this.drawSprite(ctx, uw.dmiFile, uw.state, dir);
-        }
-      }
-    }
-
-    const HO_FACIAL_HAIR = 19;
-    const HO_HAIR = 26;
-    const HO_FACEMASK = 29;
-    const sorted = config.clothing
-      ? [...config.clothing].sort((a, b) => a.layer - b.layer)
-      : [];
-
-    for (const item of sorted) {
-      if (item.layer >= HO_FACIAL_HAIR) break;
-      this.drawClothingItem(ctx, item, dir);
-    }
-
-    if (config.facialStyle && config.facialStyle !== 'Shaved') {
-      this.drawSpriteTintedAdd(ctx, config.facialDmiFile, config.facialStyle, dir, config.facialColor);
-    }
-
-    for (const item of sorted) {
-      if (item.layer < HO_FACIAL_HAIR || item.layer >= HO_HAIR) {
-        if (item.layer !== HO_FACEMASK) continue;
-      }
-      this.drawClothingItem(ctx, item, dir);
-    }
-
-    if (config.hairStyle && config.hairStyle !== 'Bald') {
-      this.drawSpriteTintedAdd(ctx, config.hairDmiFile, config.hairStyle, dir, config.hairColor);
-      if (config.hairMarkings) {
-        for (const hm of config.hairMarkings) {
-          this.drawHairMarking(ctx, config.hairDmiFile, config.hairStyle, hm, dir);
-        }
-      }
-      if (config.secondaryHairColor) {
-        const secondaryState = config.hairStyle + '_s';
-        this.drawSpriteTintedAdd(ctx, config.hairDmiFile, secondaryState, dir, config.secondaryHairColor);
-      }
-    }
-
-    for (const item of sorted) {
-      if (item.layer < HO_HAIR || item.layer === HO_FACEMASK) continue;
-      this.drawClothingItem(ctx, item, dir);
-    }
+    this.renderLayers(ctx, config, dir);
 
     // Blit offscreen canvas directly to target — single synchronous paint.
     // Use 'copy' composite so transparent pixels overwrite previous frame

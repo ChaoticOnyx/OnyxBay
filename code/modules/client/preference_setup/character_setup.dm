@@ -288,41 +288,43 @@
 		))
 	data["robolimb_brands"] = robolimb_data
 
-	// Organ modules available at chargen — must instantiate to read list vars
-	var/list/module_data = list()
-	for(var/mod_type in subtypesof(/obj/item/organ_module))
-		var/obj/item/organ_module/M = mod_type
-		if(!initial(M.available_in_charsetup))
-			continue
-		if(!initial(M.name))
-			continue
-		var/obj/item/organ_module/mod = new mod_type(null)
-		var/list/role_names = list()
-		var/list/roles = mod.allowed_roles
-		if(!length(roles))
-			roles = mod.allowed_jobs
-		if(islist(roles))
-			for(var/role_type in roles)
-				if(ispath(role_type, /datum/job) && job_master)
-					var/datum/job/J = job_master.occupations_by_type[role_type]
-					if(J)
-						role_names += J.title
-		module_data += list(list(
-			"path" = "[mod_type]",
-			"name" = mod.name,
-			"desc" = mod.desc,
-			"allowed_organs" = mod.allowed_organs,
-			"module_type" = mod.module_type,
-			"module_flags" = mod.module_flags,
-			"augment_cost" = mod.augment_cost,
-			"loadout_cost" = mod.loadout_cost,
-			"cpu_power" = mod.cpu_power,
-			"cpu_load" = mod.cpu_load,
-			"w_class" = mod.w_class,
-			"allowed_roles" = role_names
-		))
-		qdel(mod)
-	data["organ_modules_available"] = module_data
+	// Organ modules available at chargen — cached to avoid repeated instantiation
+	var/static/list/cached_module_data
+	if(!cached_module_data)
+		cached_module_data = list()
+		for(var/mod_type in subtypesof(/obj/item/organ_module))
+			var/obj/item/organ_module/M = mod_type
+			if(!initial(M.available_in_charsetup))
+				continue
+			if(!initial(M.name))
+				continue
+			var/obj/item/organ_module/mod = new mod_type(null)
+			var/list/role_names = list()
+			var/list/roles = mod.allowed_roles
+			if(!length(roles))
+				roles = mod.allowed_jobs
+			if(islist(roles))
+				for(var/role_type in roles)
+					if(ispath(role_type, /datum/job) && job_master)
+						var/datum/job/J = job_master.occupations_by_type[role_type]
+						if(J)
+							role_names += J.title
+			cached_module_data += list(list(
+				"path" = "[mod_type]",
+				"name" = mod.name,
+				"desc" = mod.desc,
+				"allowed_organs" = mod.allowed_organs,
+				"module_type" = mod.module_type,
+				"module_flags" = mod.module_flags,
+				"augment_cost" = mod.augment_cost,
+				"loadout_cost" = mod.loadout_cost,
+				"cpu_power" = mod.cpu_power,
+				"cpu_load" = mod.cpu_load,
+				"w_class" = mod.w_class,
+				"allowed_roles" = role_names
+			))
+			qdel(mod)
+	data["organ_modules_available"] = cached_module_data
 
 	// Body part info for the augmentation UI
 	data["body_parts"] = list(
@@ -1297,7 +1299,7 @@
 
 		if("loadSlot")
 			var/slot = text2num(params["slot"])
-			if(slot)
+			if(slot && slot >= 1 && slot <= config.character_setup.character_slots)
 				if(slot != pref.default_slot)
 					pref.save_character()  // Save current slot before switching away
 				pref.load_character(slot)
@@ -1682,24 +1684,6 @@
 				if("never")
 					pref.be_special_role -= role_id
 					pref.may_be_special_role -= role_id
-			return TRUE
-
-		if("setAllAntagPriority")
-			var/priority = params["priority"]
-			if(!priority)
-				return TRUE
-			// Apply to all antag roles
-			for(var/antag_type in GLOB.all_antag_types_)
-				switch(priority)
-					if("high")
-						pref.be_special_role |= antag_type
-						pref.may_be_special_role -= antag_type
-					if("low")
-						pref.be_special_role -= antag_type
-						pref.may_be_special_role |= antag_type
-					if("never")
-						pref.be_special_role -= antag_type
-						pref.may_be_special_role -= antag_type
 			return TRUE
 
 		if("setAllAntagPriority")
