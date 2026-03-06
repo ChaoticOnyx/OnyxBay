@@ -146,9 +146,9 @@
 			return
 		if(H.isSynthetic())
 			return
-		var/hand_to_damage = user.hand ? BP_L_HAND : BP_R_HAND
-		var/obj/item/organ/external/E = H.get_organ(hand_to_damage)
-		if(E)
+		var/hand_to_damage = (user.active_hand == ACTIVE_HAND_LEFT) ? BP_L_HAND : BP_R_HAND
+		var/obj/item/organ/external/E = H.get_hand_organ(TRUE)
+		if(istype(E))
 			if(H.get_flat_armor(hand_to_damage, "melee") > force)
 				return
 			E.take_external_damage((force * rand(3, 7) / 10), 0, used_weapon = name)

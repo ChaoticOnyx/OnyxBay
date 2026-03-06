@@ -78,7 +78,7 @@
 		var/mob/living/carbon/human/H = user // No way it can't be human at this point.
 		var/hitzone = check_zone(H.zone_sel.selecting)
 		var/list/badzones = list(BP_HEAD)
-		if(H.hand)
+		if(H.active_hand == ACTIVE_HAND_LEFT)
 			badzones += BP_L_ARM
 			badzones += BP_L_HAND
 		else
@@ -568,3 +568,16 @@
 		set_light(0)
 	hud_eye_glow_active = FALSE
 	hud_eye_glow_color = null
+
+/mob/living/carbon/human/proc/get_hand_organ()
+	if(rightclicked )
+		return (active_hand == ACTIVE_HAND_LEFT) ? organs_by_name[BP_R_HAND] : organs_by_name[BP_L_HAND]
+	return (active_hand == ACTIVE_HAND_LEFT) ? organs_by_name[BP_L_HAND] : organs_by_name[BP_R_HAND]
+
+/mob/living/carbon/human/proc/is_hand_usable(silent = FALSE)
+	var/obj/item/organ/external/temp = get_hand_organ()
+	if(istype(temp) && temp.is_usable())
+		return TRUE
+	if(!silent)
+		to_chat(src, SPAN("notice", "You try to move your [(active_hand == ACTIVE_HAND_LEFT) ? "left" : "right"] hand, but cannot!"))
+	return FALSE

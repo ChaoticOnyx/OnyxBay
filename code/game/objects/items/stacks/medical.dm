@@ -355,8 +355,8 @@
 					                 SPAN("notice", "You start to apply \the [src] to [M]'s [limb]."), \
 								    SPAN("warning", "You hear something being wrapped."))
 		else
-			if(( !user.hand && (affecting.organ_tag in list(BP_R_ARM, BP_R_HAND)) || \
-				user.hand && (affecting.organ_tag in list(BP_L_ARM, BP_L_HAND)) ))
+			if((user.active_hand == ACTIVE_HAND_RIGHT && (affecting.organ_tag in list(BP_R_ARM, BP_R_HAND)) || \
+				user.active_hand == ACTIVE_HAND_LEFT && (affecting.organ_tag in list(BP_L_ARM, BP_L_HAND)) ))
 				to_chat(user, SPAN("warning", "You can't apply a splint to the arm you're using!"))
 				return
 			user.visible_message(SPAN("notice", "[user] starts to apply \the [src] to their [limb]."), \

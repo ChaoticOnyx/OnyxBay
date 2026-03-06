@@ -264,19 +264,27 @@
 		return
 	if(anchored)
 		return ..()
-	if(hasorgans(user))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if(loc != H && H.IsAdvancedToolUser(TRUE) == FALSE)
+		if(loc != H && !H.IsAdvancedToolUser(TRUE))
 			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
 			return
-		var/obj/item/organ/external/temp = H.rightclicked ? H.organs_by_name[BP_L_HAND] : H.organs_by_name[BP_R_HAND]
-		if (user.hand)
-			temp = H.rightclicked ? H.organs_by_name[BP_R_HAND] : H.organs_by_name[BP_L_HAND]
-		if(temp && !temp.is_usable())
-			to_chat(user, SPAN("notice", "You try to move your [temp.name], but cannot!"))
+		if(!H.is_hand_usable())
 			return
-		if(!temp)
-			to_chat(user, SPAN("notice", "You try to use your hand, but realize it is no longer attached!"))
+
+	return handle_pickup(user)
+
+// Trying to get picked up by user, via attack_hand, MouseDrop_T, etc.
+/obj/item/proc/handle_pickup(mob/user)
+	if(anchored)
+		return
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(loc != H && !H.IsAdvancedToolUser(TRUE))
+			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
+			return
+		if(!H.is_hand_usable())
 			return
 
 	var/old_loc = loc
@@ -318,7 +326,17 @@
 		else if(randpixel == 0)
 			pixel_x = 0
 			pixel_y = 0
+		return TRUE
+
 	return
+
+/obj/item/MouseDrop(atom/over, atom/src_location, atom/over_location, src_control, over_control, params)
+	if(ishuman(over) && over == usr)
+		if(!CanMouseDrop(over))
+			return FALSE
+		handle_pickup(over)
+		return TRUE
+	return ..()
 
 /obj/item/attack_ai(mob/user)
 	if (istype(src.loc, /obj/item/robot_module))
@@ -557,10 +575,10 @@ var/list/global/slot_flags_enumeration = list(
 	if(src.anchored) //Object isn't anchored
 		to_chat(usr, SPAN("warning", "You can't pick that up!"))
 		return
-	if(!usr.hand && usr.r_hand) //Right hand is not full
+	if(usr.active_hand == ACTIVE_HAND_RIGHT && usr.r_hand) //Right hand is not full
 		to_chat(usr, SPAN("warning", "Your right hand is full."))
 		return
-	if(usr.hand && usr.l_hand) //Left hand is not full
+	if(usr.active_hand == ACTIVE_HAND_LEFT && usr.l_hand) //Left hand is not full
 		to_chat(usr, SPAN("warning", "Your left hand is full."))
 		return
 	if(!istype(src.loc, /turf)) //Object is on a turf

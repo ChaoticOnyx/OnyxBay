@@ -19,7 +19,7 @@
 	if(iscultist(user) || (user.mind in GLOB.godcult.current_antagonists))
 		return ..()
 
-	var/zone = (user.hand ? BP_L_ARM : BP_R_ARM)
+	var/zone = (user.active_hand == ACTIVE_HAND_LEFT) ? BP_L_ARM : BP_R_ARM
 
 	var/obj/item/organ/external/affecting = null
 	if(ishuman(user))
