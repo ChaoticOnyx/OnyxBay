@@ -57,7 +57,7 @@
 
 /datum/character_setup/proc/push_undo_state()
 	if(undo_stack.len >= 20)
-		undo_stack.Remove(undo_stack[1])
+		undo_stack.Cut(1, 2)
 	undo_stack += list(pref.snapshot_character())
 
 
@@ -829,14 +829,26 @@
 	// Updates the BYOND-side lobby screen preview separately from TGUI rendering
 	pref.update_preview_icon()
 
-/// Set one of the five pref color fields (hair/s_hair/facial/eyes/skin) from a hex string.
-/// key maps directly to pref.r_KEY / g_KEY / b_KEY variable names.
+/datum/character_setup/proc/is_valid_hex_color(hex_color)
+	if(!istext(hex_color) || length(hex_color) != 7 || copytext(hex_color, 1, 2) != "#")
+		return FALSE
+	if(isnull(hex2num(copytext(hex_color, 2, 4))))
+		return FALSE
+	if(isnull(hex2num(copytext(hex_color, 4, 6))))
+		return FALSE
+	if(isnull(hex2num(copytext(hex_color, 6, 8))))
+		return FALSE
+	return TRUE
+
 /datum/character_setup/proc/set_pref_color(key, hex_color)
-	if(!hex_color)
+	if(!is_valid_hex_color(hex_color))
 		return
-	pref.vars["r_[key]"] = hex2num(copytext(hex_color, 2, 4))
-	pref.vars["g_[key]"] = hex2num(copytext(hex_color, 4, 6))
-	pref.vars["b_[key]"] = hex2num(copytext(hex_color, 6, 8))
+	var/r = hex2num(copytext(hex_color, 2, 4))
+	var/g = hex2num(copytext(hex_color, 4, 6))
+	var/b = hex2num(copytext(hex_color, 6, 8))
+	pref.vars["r_[key]"] = r
+	pref.vars["g_[key]"] = g
+	pref.vars["b_[key]"] = b
 	mark_preview_dirty()
 
 /// Generate equipment overlay render data for client-side rendering.
@@ -1015,7 +1027,8 @@
 		"setKeybinding",
 		"clearKeybinding",
 		"resetKeybinding",
-		"resetAllKeybindings"
+		"resetAllKeybindings",
+		"confirmResetSlot"
 	)
 	if(!(action in no_undo_actions))
 		push_undo_state()
@@ -1099,6 +1112,7 @@
 				pref.b_s_hair = 0
 			pref.body_markings.Cut()
 			mark_preview_dirty()
+			update_static_data(owner)
 			return TRUE
 
 		if("setAge")
@@ -1204,7 +1218,7 @@
 		if("setBodyMarkingColor")
 			var/marking_name = params["marking"]
 			var/new_color = params["color"]
-			if((marking_name in pref.body_markings) && new_color)
+			if((marking_name in pref.body_markings) && is_valid_hex_color(new_color))
 				pref.body_markings[marking_name] = new_color
 				mark_preview_dirty()
 			return TRUE
@@ -1404,11 +1418,11 @@
 				return FALSE
 			var/datum/gear_tweak/tweak = SG.gear_tweaks[tweak_index]
 			var/new_value
-			if(params["value"])
+			if(!isnull(params["value"]))
 				new_value = params["value"]
 			else
 				new_value = tweak.get_metadata(owner, selected_tweaks["[tweak]"], params["subtype"])
-			if(!new_value)
+			if(isnull(new_value))
 				return FALSE
 			selected_tweaks["[tweak]"] = new_value
 			if(SG.display_name in pref.gear_list[pref.gear_slot])
@@ -1454,6 +1468,8 @@
 			var/hash = params["hash"]
 			var/datum/gear/G = hash_to_gear[hash]
 			if(!G || !G.price)
+				return FALSE
+			if(!owner?.client?.donator_info)
 				return FALSE
 			if(owner.client.donator_info.has_item(G.type))
 				return FALSE
@@ -1510,8 +1526,10 @@
 			var/mod_path_text = params["module"]
 			if(!organ || !mod_path_text)
 				return TRUE
+			if(!((organ in BP_ALL_LIMBS) || (organ in BP_INTERNAL_ORGANS)))
+				return TRUE
 			var/mod_path = text2path(mod_path_text)
-			if(!mod_path)
+			if(!ispath(mod_path, /obj/item/organ_module))
 				return TRUE
 			LAZYINITLIST(pref.organ_modules)
 			LAZYINITLIST(pref.organ_modules[organ])
@@ -1872,7 +1890,7 @@
 		if("setRobotFlavorText")
 			var/module = params["module"]
 			var/new_text = sanitize(params["text"], extra = 0)
-			if(!module)
+			if(!module || (module != "Default" && !(module in GLOB.robot_module_types)))
 				return TRUE
 			pref.flavour_texts_robot[module] = new_text
 			return TRUE
@@ -1913,7 +1931,7 @@
 		if("setRelationInfo")
 			var/relation_name = params["name"]
 			var/new_info = sanitize(params["text"])
-			if(!relation_name)
+			if(!relation_name || (relation_name != "general" && !matchmaker.relation_types.Find(relation_name)))
 				return TRUE
 			pref.relations_info[relation_name] = new_info
 			return TRUE
@@ -2106,7 +2124,9 @@
 		var/datum/gear_data/gd = new(G.path)
 		for(var/datum/gear_tweak/gt in G.gear_tweaks)
 			gt.tweak_gear_data(selected_tweaks["[gt]"], gd)
-		var/atom/movable/gear_virtual_item = new gd.path
+		var/resolved_path = gd.path
+		qdel(gd)
+		var/atom/movable/gear_virtual_item = new resolved_path
 		for(var/datum/gear_tweak/gt in G.gear_tweaks)
 			gt.tweak_item(gear_virtual_item, selected_tweaks["[gt]"])
 		tweaked_icon_file = "[gear_virtual_item.icon]"
@@ -2326,9 +2346,14 @@
 // ============================================================
 /datum/character_setup/proc/randomize_loadout()
 	var/list/gear = pref.gear_list[pref.gear_slot]
-	gear.Cut()
+	if(!islist(gear))
+		gear = list()
+		pref.gear_list[pref.gear_slot] = gear
+	else
+		gear.Cut()
 	pref.trying_on_gear = null
-	pref.trying_on_tweaks.Cut()
+	if(islist(pref.trying_on_tweaks))
+		pref.trying_on_tweaks.Cut()
 	selected_gear_hash = null
 	selected_tweaks = list()
 

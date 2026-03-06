@@ -198,13 +198,13 @@
 /datum/gear/suit/hgpirate
 	display_name = "pirate captain coat"
 	path = /obj/item/clothing/suit/hgpirate
-	subgroup = "Coats & Jackets"
+	subgroup = "Jackets & Coats"
 	price = 10
 
 /datum/gear/suit/johnny_coat
 	display_name = "johnny coat"
 	path = /obj/item/clothing/suit/johnny_coat
-	subgroup = "Coats & Jackets"
+	subgroup = "Jackets & Coats"
 	price = 10
 
 /datum/gear/suit/judgerobe
@@ -228,7 +228,7 @@
 /datum/gear/suit/yuri
 	display_name = "yuri coat"
 	path = /obj/item/clothing/suit/yuri
-	subgroup = "Coats & Jackets"
+	subgroup = "Jackets & Coats"
 	price = 10
 
 /datum/gear/suit/bee
@@ -240,7 +240,7 @@
 /datum/gear/suit/hos_formal
 	display_name = "head of security's formal coat"
 	path = /obj/item/clothing/suit/hos_formal
-	subgroup = "Coats & Jackets"
+	subgroup = "Jackets & Coats"
 	price = 10
 	allowed_roles = list(/datum/job/hos)
 
@@ -272,23 +272,23 @@
 /datum/gear/suit/punk_jacket_AC
 	display_name = "punk jacket black"
 	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_AC
-	subgroup = "Coats & Jackets"
+	subgroup = "Jackets & Coats"
 	price = 20
 
 /datum/gear/suit/punk_jacket_RD
 	display_name = "punk jacket raven"
 	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_RD
-	subgroup = "Coats & Jackets"
+	subgroup = "Jackets & Coats"
 	price = 20
 
 /datum/gear/suit/punk_jacket_TS
 	display_name = "punk jacket brown"
 	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_TS
-	subgroup = "Coats & Jackets"
+	subgroup = "Jackets & Coats"
 	price = 20
 
 /datum/gear/suit/fashionable_coat
 	display_name = "fashionable coat"
 	path = /obj/item/clothing/suit/storage/fashionable_coat
-	subgroup = "Coats & Jackets"
+	subgroup = "Jackets & Coats"
 	price = 20

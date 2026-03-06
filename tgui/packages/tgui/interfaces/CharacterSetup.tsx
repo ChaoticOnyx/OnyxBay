@@ -1329,7 +1329,7 @@ const CharacterPreview = (props: {
         {data.real_name}
       </Box>
       <Box className="CharSetup__previewMeta">
-        {data.species} &middot; {data.gender === "male" ? "M" : "F"}{" "}
+        {data.species} &middot; {data.gender === "male" ? "M" : data.gender === "female" ? "F" : data.gender?.charAt(0).toUpperCase()}{" "}
         &middot; {data.age}
       </Box>
 
@@ -1565,8 +1565,8 @@ const IdentityPanel = (props: {
                     key={g}
                     compact
                     selected={data.gender === g}
-                    icon={g === "male" ? "mars" : "venus"}
-                    color={data.gender === g ? (g === "male" ? "blue" : "pink") : undefined}
+                    icon={g === "male" ? "mars" : g === "female" ? "venus" : "genderless"}
+                    color={data.gender === g ? (g === "male" ? "blue" : g === "female" ? "pink" : "grey") : undefined}
                     tooltip={g === "male" ? "Male" : g === "female" ? "Female" : g}
                     onClick={() => act("setGender", { gender: g })}
                   />
@@ -6034,10 +6034,14 @@ const BYOND_KEY_DISPLAY: Record<string, string> = {
   Southwest: "End", Southeast: "PageDown",
 };
 
+// Sorted longest-first to avoid substring collisions (e.g. "North" before "Northwest")
+const BYOND_KEY_SORTED = Object.entries(BYOND_KEY_DISPLAY).sort(
+  (a, b) => b[0].length - a[0].length,
+);
+
 const displayKey = (key: string): string => {
-  // Replace BYOND direction names with friendly names anywhere in the string
   let result = key;
-  for (const [byond, display] of Object.entries(BYOND_KEY_DISPLAY)) {
+  for (const [byond, display] of BYOND_KEY_SORTED) {
     result = result.replace(byond, display);
   }
   return result;
@@ -6075,6 +6079,7 @@ class KeybindingsSubPanel extends Component<{
   expandedKbCat: string | null;
   capturingBinding: string | null;
   capturingOldKey: string | null;
+  kbSearch: string;
 }> {
   keyHandler: ((e: KeyboardEvent) => void) | null;
 
@@ -6084,6 +6089,7 @@ class KeybindingsSubPanel extends Component<{
       expandedKbCat: null,
       capturingBinding: null,
       capturingOldKey: null,
+      kbSearch: "",
     };
     this.keyHandler = null;
   }
@@ -6139,11 +6145,11 @@ class KeybindingsSubPanel extends Component<{
 
   render() {
     const { data, act, context } = this.props;
-    const { expandedKbCat, capturingBinding } = this.state;
+    const { expandedKbCat, capturingBinding, kbSearch } = this.state;
     const kbCategories = data.keybinding_categories || {};
     const userBinds = data.user_keybindings || {};
 
-    const [kbSearch, setKbSearch] = useLocalState(context, "kbSearch", "");
+    const setKbSearch = (v: string) => this.setState({ kbSearch: v });
 
     // Sort categories
     const sortedCats = KB_CATEGORY_ORDER.filter((c) => c in kbCategories);

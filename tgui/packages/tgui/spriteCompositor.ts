@@ -203,6 +203,12 @@ export class SpriteCompositor {
         throw new Error(`Failed to load sprite manifest: ${manifestResp.status} ${manifestResp.statusText}. Run "npm run build-atlas" to generate sprites.`);
       }
       this.manifest = await manifestResp.json();
+
+      // Resize temp canvas to match actual sprite size
+      const spriteSize = this.manifest!.spriteSize;
+      this.tempCanvas.width = spriteSize;
+      this.tempCanvas.height = spriteSize;
+
       // Load all atlas images
       const loadPromises = this.manifest!.atlases.map((name, idx) => {
         return new Promise<void>((resolve, reject) => {
@@ -218,7 +224,10 @@ export class SpriteCompositor {
 
       await Promise.all(loadPromises);
       this.loaded = true;
-    })();
+    })().catch((err) => {
+      this.loadPromise = null;
+      throw err;
+    });
 
     return this.loadPromise;
   }
