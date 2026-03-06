@@ -14,35 +14,29 @@ export class Dropdown extends Component {
     super(props);
     this.state = {
       selected: props.selected,
+      open: false,
     };
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.selected !== this.props.selected) {
-      this.setState({ selected: this.props.selected });
-    }
-  }
-
   render() {
+    const { props } = this;
     const {
       icon,
       iconRotation,
       iconSpin,
       color = "default",
-      // over / noscroll retained for API compat — unused (native select handles direction/scroll)
       over,
       noscroll,
       nochevron,
       width,
       onClick,
-      selected: _selected,
+      onSelected,
+      selected,
       disabled,
       displayText,
-      fluid,
       options = [],
-      onSelected,
       ...boxProps
-    } = this.props;
+    } = props;
     const { className, ...rest } = boxProps;
 
     const currentSelected = this.state.selected || "";
@@ -55,33 +49,30 @@ export class Dropdown extends Component {
     const usesSentinel = isAction || reselectable;
 
     return (
-      <Box
-        className={classes(["Dropdown", className])}
-        width={fluid ? "100%" : width}
-        {...rest}
-      >
-        {/* Styled visible face — pointer-events:none so clicks reach the native select */}
-        <div
+      <div className="Dropdown">
+        <Box
+          width={width}
           className={classes([
             "Dropdown__control",
             "Button",
             "Button--color--" + color,
             disabled && "Button--disabled",
-            fluid && "Button--fluid",
+            className,
           ])}
+          {...rest}
         >
           {icon && (
             <Icon name={icon} rotation={iconRotation} spin={iconSpin} mr={1} />
           )}
           <span className="Dropdown__selected-text">
-            {displayText || currentSelected}
+            {displayText || this.state.selected}
           </span>
-          {!nochevron && (
+          {!!nochevron || (
             <span className="Dropdown__arrow-button">
               <Icon name="chevron-down" />
             </span>
           )}
-        </div>
+        </Box>
         {/*
           Invisible native select covers the entire control area.
           The browser renders its own dropdown — no JS positioning, no clipping issues,
@@ -105,7 +96,7 @@ export class Dropdown extends Component {
             <option key={opt} value={opt}>{opt}</option>
           ))}
         </select>
-      </Box>
+      </div>
     );
   }
 }
