@@ -1028,7 +1028,15 @@
 		"clearKeybinding",
 		"resetKeybinding",
 		"resetAllKeybindings",
-		"confirmResetSlot"
+		"confirmResetSlot",
+		// Yielding actions — undo pushed manually inside handler on success
+		"pickColor",
+		"pickMarkingColor",
+		"setGearTweak",
+		"editRecordFancy",
+		"setHomeSystem",
+		"setBackground",
+		"setReligion"
 	)
 	if(!(action in no_undo_actions))
 		push_undo_state()
@@ -1349,6 +1357,21 @@
 			var/new_color = tgui_color_picker(owner, "Choose color:", "Character Setup", current_color)
 			if(!new_color)
 				return TRUE
+			// Re-validate species flags after yield — species may have changed
+			var/datum/species/post_species = all_species[pref.species]
+			if(!post_species)
+				return TRUE
+			var/flags = post_species.species_appearance_flags
+			if(which in list("hair", "s_hair", "facial"))
+				if(!(flags & HAS_HAIR_COLOR))
+					return TRUE
+			else if(which == "eyes")
+				if(!(flags & HAS_EYE_COLOR))
+					return TRUE
+			else if(which == "skin")
+				if(!(flags & HAS_SKIN_COLOR))
+					return TRUE
+			push_undo_state()
 			set_pref_color(which, new_color)
 			return TRUE
 
@@ -1358,7 +1381,8 @@
 				return TRUE
 			var/current_color = pref.body_markings[marking_name]
 			var/new_color = tgui_color_picker(owner, "Choose marking color:", "Character Setup", current_color)
-			if(new_color)
+			if(new_color && (marking_name in pref.body_markings))
+				push_undo_state()
 				pref.body_markings[marking_name] = new_color
 				mark_preview_dirty()
 			return TRUE
@@ -1421,9 +1445,15 @@
 			if(!isnull(params["value"]))
 				new_value = params["value"]
 			else
+				var/pre_hash = selected_gear_hash
+				var/pre_slot = pref.gear_slot
 				new_value = tweak.get_metadata(owner, selected_tweaks["[tweak]"], params["subtype"])
+				// Re-validate after yield — gear selection or slot may have changed
+				if(selected_gear_hash != pre_hash || pref.gear_slot != pre_slot)
+					return FALSE
 			if(isnull(new_value))
 				return FALSE
+			push_undo_state()
 			selected_tweaks["[tweak]"] = new_value
 			if(SG.display_name in pref.gear_list[pref.gear_slot])
 				var/list/gear_items = pref.gear_list[pref.gear_slot]
@@ -1774,11 +1804,12 @@
 			if(!new_home)
 				return TRUE
 			if(new_home == "Other")
-				// Custom entry via DM input
 				var/custom = sanitize(tgui_input_text(owner, "Enter your home system:", "Home System", pref.home_system, MAX_NAME_LEN))
 				if(custom)
+					push_undo_state()
 					pref.home_system = custom
 			else
+				push_undo_state()
 				pref.home_system = new_home
 			return TRUE
 
@@ -1789,8 +1820,10 @@
 			if(new_bg == "Other")
 				var/custom = sanitize(tgui_input_text(owner, "Enter your background:", "Background", pref.background, MAX_NAME_LEN))
 				if(custom)
+					push_undo_state()
 					pref.background = custom
 			else
+				push_undo_state()
 				pref.background = new_bg
 			return TRUE
 
@@ -1801,8 +1834,10 @@
 			if(new_rel == "Other")
 				var/custom = sanitize(tgui_input_text(owner, "Enter your religion:", "Religion", pref.religion))
 				if(custom)
+					push_undo_state()
 					pref.religion = custom
 			else
+				push_undo_state()
 				pref.religion = new_rel
 			return TRUE
 
@@ -1864,6 +1899,7 @@
 			var/new_text = tgui_input_pencode_editor(owner, "Edit your [record_type] record.", "[capitalize(record_type)] Record", current_value)
 			if(isnull(new_text))
 				return TRUE
+			push_undo_state()
 			new_text = sanitize(new_text)
 			switch(record_type)
 				if("medical")
@@ -2176,12 +2212,12 @@
 	for(var/datum/gear_tweak/tweak in G.gear_tweaks)
 		tweak_index++
 		var/current_val = selected_tweaks["[tweak]"]
-		if(!current_val)
+		if(isnull(current_val))
 			current_val = tweak.get_default()
 		var/list/def = list(
 			"index" = tweak_index,
 			"type" = get_tweak_type_name(tweak),
-			"currentValue" = "[current_val]"
+			"currentValue" = islist(current_val) ? json_encode(current_val) : "[current_val]"
 		)
 		if(istype(tweak, /datum/gear_tweak/path))
 			var/datum/gear_tweak/path/pt = tweak

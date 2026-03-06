@@ -512,6 +512,14 @@ const WEST = 8;
 const MARKING_TARGET_SKIN = 0;
 const MARKING_TARGET_HAIR = 1;
 
+/** Convert a hex color like "#8e2929" to rgba with given alpha */
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16) || 0;
+  const g = parseInt(hex.slice(3, 5), 16) || 0;
+  const b = parseInt(hex.slice(5, 7), 16) || 0;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 /** Resolve hair/facial DMI files and style objects from shared build+species data */
 function resolveHairInfo(
   data: CharacterData,
@@ -1953,7 +1961,7 @@ const AppearanceCardBack = (props: {
         <Box mb={0.5}>
           <Box className="CharSetup__idCardBackLabel">Body Markings</Box>
           <Box style={{ "max-height": "6rem", "overflow-y": "auto" }}>
-            {data.body_markings.map((m) => (
+            {(data.body_markings || []).map((m) => (
               <Box key={m.name} className="CharSetup__idCardMarkingRow">
                 <Box style={{ flex: "1" }}>{m.name}</Box>
                 <Box
@@ -4081,7 +4089,7 @@ const CareerPanel = (props: {
                 className="CharSetup__deptHeader"
                 bold
                 style={{
-                  "background-color": deptColor.replace(")", ", 0.10)").replace("rgb(", "rgba("),
+                  "background-color": hexToRgba(deptColor, 0.10),
                 }}
               >
                 {dept}
@@ -4104,7 +4112,7 @@ const CareerPanel = (props: {
                     ])}
                     style={{
                       opacity: isAvailable ? 1 : 0.5,
-                      ...(job.head ? { "--dept-color-bg": deptColor.replace(")", ", 0.14)").replace("rgb(", "rgba(") } as any : {}),
+                      ...(job.head ? { "--dept-color-bg": hexToRgba(deptColor, 0.14) } as any : {}),
                     }}
                   >
                     {/* Job name or alt title dropdown */}
