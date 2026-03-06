@@ -284,7 +284,7 @@
 		if(loc != H && !H.IsAdvancedToolUser(TRUE))
 			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
 			return
-		if(!H.is_hand_usable(certain_hand))
+		if(!H.is_hand_usable(certain_hand) || H.restrained())
 			return
 
 	var/old_loc = loc

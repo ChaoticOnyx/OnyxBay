@@ -329,8 +329,21 @@
 
 /atom/movable/CtrlClick(mob/user)
 	if(Adjacent(user))
-		user.start_pulling(src)
+		return user.start_pulling(src)
 
+/obj/item/CtrlClick(mob/user)
+	if(ishuman(user) && Adjacent(user) && !user.incapacitated() && !user.restrained())
+		// Quickdrop from storages
+		if(istype(loc, /obj/item/storage))
+			var/obj/item/storage/S = loc
+			S.remove_from_storage(src)
+			return TRUE
+		// Quickdrop from self
+		if(loc == user)
+			user.drop(src)
+			return TRUE
+
+	return ..()
 /*
 	Alt click
 	Unused except for AI
