@@ -9,7 +9,6 @@
 	icon_aggro = "Sand_lurker"
 	icon_dead = "Sand_lurker_dead"
 	icon_gib = "syndicate_gib"
-	mouse_opacity = 2
 	move_to_delay = 20
 	friendly = "buzzes near"
 	vision_range = 2
