@@ -27,6 +27,7 @@ import {
   Table,
   Tabs,
   TextArea,
+  Tooltip,
 } from "../components";
 import { Window } from "../layouts";
 import {
@@ -136,6 +137,7 @@ interface BodyMarking {
 interface UnderwearCategory {
   name: string;
   items: string[];
+  colorable: string[];
 }
 
 interface ConfigInfo {
@@ -153,7 +155,7 @@ interface GearTweakDef {
   currentValue?: string;
   options?: string[];
   validColors?: string[];
-  deptEntries?: string[];
+  deptEntries?: { label: string; subtype: string }[];
 }
 
 interface GearItem {
@@ -407,11 +409,13 @@ interface CharacterData {
   has_cortical_stack: boolean;
   body_markings: BodyMarking[];
   all_underwear: Record<string, string>;
+  all_underwear_color: Record<string, string>;
   underwear_render: { state: string; dmiFile: string; color: string | null }[];
   equipment_render: { dmiFile: string; state: string; color: string | null; layer: number }[];
   backpack: string;
   equip_preview_mob: number;
   bgstate: string;
+  can_undo: boolean;
   default_slot: number;
   is_guest: boolean;
   load_failed: string | null;
@@ -656,39 +660,45 @@ const CsButton = (props: {
   ml?: number;
   mt?: number;
   mb?: number;
-}) => (
-  <Box
-    inline={!props.fluid}
-    className={classes([
-      "CharSetup__btn",
-      props.selected && "CharSetup__btn--selected",
-      props.compact && "CharSetup__btn--compact",
-      props.color && `CharSetup__btn--${props.color}`,
-      props.disabled && "CharSetup__btn--disabled",
-      props.fluid && "CharSetup__btn--fluid",
-      props.checked !== undefined && "CharSetup__btn--checkbox",
-      props.checked && "CharSetup__btn--checked",
-    ])}
-    onClick={props.disabled ? undefined : props.onClick}
-    textAlign={props.textAlign}
-    width={props.width}
-    mr={props.mr}
-    ml={props.ml}
-    mt={props.mt}
-    mb={props.mb}
-  >
-    {props.checked !== undefined && (
-      <Icon
-        name={props.checked ? "check-square-o" : "square-o"}
-        mr={props.children ? 0.5 : 0}
-      />
-    )}
-    {props.icon && (
-      <Icon name={props.icon} mr={props.children ? 0.5 : 0} />
-    )}
-    {props.children}
-  </Box>
-);
+}) => {
+  const btn = (
+    <Box
+      inline={!props.fluid}
+      className={classes([
+        "CharSetup__btn",
+        props.selected && "CharSetup__btn--selected",
+        props.compact && "CharSetup__btn--compact",
+        props.color && `CharSetup__btn--${props.color}`,
+        props.disabled && "CharSetup__btn--disabled",
+        props.fluid && "CharSetup__btn--fluid",
+        props.checked !== undefined && "CharSetup__btn--checkbox",
+        props.checked && "CharSetup__btn--checked",
+      ])}
+      onClick={props.disabled ? undefined : props.onClick}
+      textAlign={props.textAlign}
+      width={props.width}
+      mr={props.mr}
+      ml={props.ml}
+      mt={props.mt}
+      mb={props.mb}
+    >
+      {props.checked !== undefined && (
+        <Icon
+          name={props.checked ? "check-square-o" : "square-o"}
+          mr={props.children ? 0.5 : 0}
+        />
+      )}
+      {props.icon && (
+        <Icon name={props.icon} mr={props.children ? 0.5 : 0} />
+      )}
+      {props.children}
+    </Box>
+  );
+  if (props.tooltip) {
+    return <Tooltip content={props.tooltip}>{btn}</Tooltip>;
+  }
+  return btn;
+};
 
 
 // ================================================================
@@ -891,7 +901,7 @@ const CategorySidebar = (props: {
 // Character Preview (center column)
 // ================================================================
 
-const DIR_CYCLE = [SOUTH, WEST, NORTH, EAST];
+const DIR_CYCLE = [SOUTH, EAST, NORTH, WEST];
 
 const rotateDir = (currentDir: number, delta: number): number => {
   const idx = DIR_CYCLE.indexOf(currentDir);
@@ -909,11 +919,13 @@ const RotateControls = (props: {
       <CsButton
         compact
         icon="chevron-left"
+        tooltip="Rotate left"
         onClick={() => act("rotatePreview", { dir: rotateDir(currentDir, -1) })}
       />
       <CsButton
         compact
         icon="chevron-right"
+        tooltip="Rotate right"
         onClick={() => act("rotatePreview", { dir: rotateDir(currentDir, 1) })}
       />
     </Box>
@@ -946,9 +958,7 @@ const CharacterSlotSelector = (props: {
 
   const handleSelectSlot = (slot: number) => {
     setShowPicker(false);
-    if (slot !== data.default_slot) {
-      act("loadSlot", { slot });
-    }
+    act("loadSlot", { slot });
   };
 
   const displayName = currentSlotName.length > 14
@@ -979,7 +989,8 @@ const CharacterSlotSelector = (props: {
           compact
           icon="undo"
           color="bad"
-          onClick={() => act("resetSlot")}
+          tooltip="Reset character"
+          onClick={() => act("confirmResetSlot")}
         />
       </Box>
 
@@ -1052,14 +1063,20 @@ function previewCacheKey(data: CharacterData): string {
 /** Canvas-based character preview using the sprite compositor */
 class CharacterCanvas extends Component<
   { data: CharacterData },
-  { ready: boolean; previewUrl: string }
+  { ready: boolean }
 > {
   private initPromise: Promise<void> | null = null;
   private lastCacheKey = "";
+  private canvasRef: HTMLCanvasElement | null = null;
 
   constructor(props) {
     super(props);
-    this.state = { ready: false, previewUrl: "" };
+    this.state = { ready: false };
+    this.setCanvasRef = this.setCanvasRef.bind(this);
+  }
+
+  setCanvasRef(el: HTMLCanvasElement | null) {
+    this.canvasRef = el;
   }
 
   componentDidMount() {
@@ -1090,40 +1107,39 @@ class CharacterCanvas extends Component<
       this.lastCacheKey = previewCacheKey(this.props.data);
       this.doRender();
     }).catch(() => {
-      // Compositor failed to load — fall back to server preview
+      // Compositor failed to load
     });
   }
 
   doRender() {
     const compositor = getCompositor();
-    if (!compositor.isReady()) return;
+    if (!compositor.isReady() || !this.canvasRef) return;
 
     const config = buildRenderConfig(this.props.data);
     if (!config) return;
 
-    const url = compositor.renderCharacter(config, 192);
-    if (url) {
-      this.setState({ previewUrl: url });
-    }
+    // Synchronous direct-to-canvas render — no data URL, no async onload, no flicker.
+    compositor.renderCharacterToCanvas(config, this.canvasRef);
   }
 
   render() {
-    const { ready, previewUrl } = this.state;
+    const { ready } = this.state;
 
-    if (ready && previewUrl) {
-      return (
-        <img
-          className="CharSetup__previewCanvas"
-          src={previewUrl}
-        />
-      );
-    }
-
-    // Compositor still loading atlases
     return (
-      <Box className="CharSetup__previewLoading">
-        <Icon name="spinner" spin size={3} />
-      </Box>
+      <>
+        <canvas
+          ref={this.setCanvasRef}
+          className="CharSetup__previewCanvas"
+          width={192}
+          height={192}
+          style={{ display: ready ? undefined : 'none' }}
+        />
+        {!ready && (
+          <Box className="CharSetup__previewLoading">
+            <Icon name="spinner" spin size={3} />
+          </Box>
+        )}
+      </>
     );
   }
 }
@@ -1323,15 +1339,25 @@ const CharacterPreview = (props: {
           compact
           icon="dice"
           onClick={() => act("randomizeAppearance")}
+          tooltip="Randomize appearance"
+        />
+        <CsButton
+          compact
+          icon="undo"
+          disabled={!data.can_undo}
+          onClick={() => act("undo")}
+          tooltip="Undo last change"
         />
         <CsButton
           compact
           icon="save"
           onClick={() => act("saveSlot")}
+          tooltip="Save character"
         />
         <CsButton
           compact
           icon="tshirt"
+          tooltip="Toggle job gear preview"
           selected={!!(data.equip_preview_mob & EQUIP_PREVIEW_JOB)}
           onClick={() =>
             act("togglePreviewFlag", { flag: EQUIP_PREVIEW_JOB })
@@ -1340,6 +1366,7 @@ const CharacterPreview = (props: {
         <CsButton
           compact
           icon="box-open"
+          tooltip="Toggle loadout preview"
           selected={!!(data.equip_preview_mob & EQUIP_PREVIEW_LOADOUT)}
           onClick={() =>
             act("togglePreviewFlag", { flag: EQUIP_PREVIEW_LOADOUT })
@@ -1486,6 +1513,7 @@ const IdentityPanel = (props: {
                 <CsButton
                   compact
                   icon="dice"
+                  tooltip="Randomize name"
                   onClick={() => act("randomizeName")}
                 />
               </Stack.Item>
@@ -1515,6 +1543,7 @@ const IdentityPanel = (props: {
                 <CsButton
                   compact
                   icon="info-circle"
+                  tooltip={showSpeciesInfo ? "Hide species info" : "Show species info"}
                   onClick={() => setShowSpeciesInfo(!showSpeciesInfo)}
                 />
               </Stack.Item>
@@ -1537,10 +1566,10 @@ const IdentityPanel = (props: {
                     compact
                     selected={data.gender === g}
                     icon={g === "male" ? "mars" : "venus"}
+                    color={data.gender === g ? (g === "male" ? "blue" : "pink") : undefined}
+                    tooltip={g === "male" ? "Male" : g === "female" ? "Female" : g}
                     onClick={() => act("setGender", { gender: g })}
-                  >
-                    {g === "male" ? "Male" : "Female"}
-                  </CsButton>
+                  />
                 ))}
               </Box>
             </Box>
@@ -1583,18 +1612,19 @@ const IdentityPanel = (props: {
           {/* Height */}
           <Box className="CharSetup__idCardField">
             <Box className="CharSetup__idCardFieldLabel">Height</Box>
-            <Box>
-              {data.body_heights.map((h) => (
-                <CsButton
-                  key={h.value}
-                  compact
-                  selected={data.body_height === h.value}
-                  onClick={() => act("setHeight", { height: h.value })}
-                >
-                  {h.label}
-                </CsButton>
-              ))}
-            </Box>
+            <Dropdown
+              width="9rem"
+              reselectable
+              selected={
+                data.body_heights.find((h) => h.value === data.body_height)
+                  ?.label || ""
+              }
+              options={data.body_heights.map((h) => h.label)}
+              onSelected={(label: string) => {
+                const h = data.body_heights.find((h) => h.label === label);
+                if (h) act("setHeight", { height: h.value });
+              }}
+            />
           </Box>
 
           {/* OOC Notes */}
@@ -1741,14 +1771,16 @@ const AppearanceCardBack = (props: {
         {!!(flags & HAS_A_SKIN_TONE) && (
           <Box mb={0.75}>
             <Box className="CharSetup__idCardBackLabel">Skin Tone</Box>
-            <Slider
-              value={-data.s_tone + 35}
-              minValue={0}
-              maxValue={speciesInfo?.max_skin_tone || 220}
-              step={1}
-              stepPixelSize={2}
-              onChange={(e, val) => act("setSkinTone", { tone: -(val - 35) })}
-            />
+            <Box className="CharSetup__skinToneSlider">
+              <Slider
+                value={-data.s_tone + 35}
+                minValue={0}
+                maxValue={speciesInfo?.max_skin_tone || 220}
+                step={1}
+                stepPixelSize={3}
+                onChange={(e, val) => act("setSkinTone", { tone: -(val - 35) })}
+              />
+            </Box>
           </Box>
         )}
 
@@ -1788,6 +1820,7 @@ const AppearanceCardBack = (props: {
                   />
                   <Dropdown
                     fluid
+                    reselectable
                     mt={0.25}
                     selected={data.h_style}
                     options={filteredHair}
@@ -1797,6 +1830,7 @@ const AppearanceCardBack = (props: {
                     <CsButton
                       compact
                       icon="chevron-left"
+                      tooltip="Previous style"
                       onClick={() => {
                         const idx = validHairStyles.indexOf(data.h_style);
                         const prev = idx <= 0
@@ -1808,6 +1842,7 @@ const AppearanceCardBack = (props: {
                     <CsButton
                       compact
                       icon="chevron-right"
+                      tooltip="Next style"
                       ml={0.25}
                       onClick={() => {
                         const idx = validHairStyles.indexOf(data.h_style);
@@ -1830,6 +1865,7 @@ const AppearanceCardBack = (props: {
                   />
                   <Dropdown
                     fluid
+                    reselectable
                     mt={0.25}
                     selected={data.f_style}
                     options={filteredFacial}
@@ -1853,6 +1889,7 @@ const AppearanceCardBack = (props: {
                   <CsButton
                     compact
                     icon="palette"
+                    tooltip="Pick eye color"
                     onClick={() => act("pickColor", { which: "eyes" })}
                   />
                 </Box>
@@ -1869,6 +1906,7 @@ const AppearanceCardBack = (props: {
                   <CsButton
                     compact
                     icon="palette"
+                    tooltip="Pick hair color"
                     onClick={() => act("pickColor", { which: "hair" })}
                   />
                 </Box>
@@ -1885,6 +1923,7 @@ const AppearanceCardBack = (props: {
                   <CsButton
                     compact
                     icon="palette"
+                    tooltip="Pick secondary hair color"
                     onClick={() => act("pickColor", { which: "s_hair" })}
                   />
                 </Box>
@@ -1901,6 +1940,7 @@ const AppearanceCardBack = (props: {
                   <CsButton
                     compact
                     icon="palette"
+                    tooltip="Pick facial hair color"
                     onClick={() => act("pickColor", { which: "facial" })}
                   />
                 </Box>
@@ -1923,12 +1963,14 @@ const AppearanceCardBack = (props: {
                 <CsButton
                   compact
                   icon="palette"
+                  tooltip="Pick color"
                   onClick={() => act("pickMarkingColor", { marking: m.name })}
                 />
                 <CsButton
                   compact
                   icon="times"
                   color="danger"
+                  tooltip="Remove marking"
                   onClick={() => act("removeBodyMarking", { marking: m.name })}
                 />
               </Box>
@@ -2357,7 +2399,7 @@ const MiscItemBrowser = (props: {
             onClick={() => toggleCat(cat.name)}
           >
             <Box className="CharSetup__miscCatHeader__label">{cat.name}</Box>
-            <Icon name={isExpanded(cat.name) ? "chevron-up" : "chevron-down"} color="label" />
+            <Icon name={isExpanded(cat.name) ? "chevron-down" : "chevron-right"} color="label" />
           </Box>
           {isExpanded(cat.name) && (
             <LoadoutItemList
@@ -2608,6 +2650,7 @@ const LoadoutSubPanel = (props: {
             <CsButton
               compact
               icon="chevron-left"
+              tooltip="Previous gear set"
               onClick={() =>
                 act("setGearSlot", {
                   slot: data.currentGearSlot <= 1
@@ -2622,6 +2665,7 @@ const LoadoutSubPanel = (props: {
             <CsButton
               compact
               icon="chevron-right"
+              tooltip="Next gear set"
               onClick={() =>
                 act("setGearSlot", {
                   slot: data.currentGearSlot >= data.config.loadout_slots
@@ -2650,6 +2694,7 @@ const LoadoutSubPanel = (props: {
               compact
               icon={data.hideUnavailable ? "eye-slash" : "eye"}
               selected={data.hideUnavailable}
+              tooltip={data.hideUnavailable ? "Show unavailable" : "Hide unavailable"}
               onClick={() => act("toggleHideUnavailable")}
             />
           </Stack.Item>
@@ -2658,6 +2703,7 @@ const LoadoutSubPanel = (props: {
               compact
               icon="coins"
               selected={data.hideDonate}
+              tooltip={data.hideDonate ? "Show donation items" : "Hide donation items"}
               onClick={() => act("toggleHideDonate")}
             />
           </Stack.Item>
@@ -2725,19 +2771,34 @@ const LoadoutSubPanel = (props: {
 
               {/* Underwear + Backpack — compact row below slot bar */}
               <Box className="CharSetup__dollUnderwear">
-                {data.underwear_categories.map((cat) => (
-                  <Box key={cat.name} className="CharSetup__dollUnderwearItem">
-                    <Box className="CharSetup__dollUnderwearLabel">{cat.name}</Box>
-                    <Dropdown
-                      fluid
-                      selected={data.all_underwear?.[cat.name] || "None"}
-                      options={cat.items}
-                      onSelected={(val) =>
-                        act("setUnderwear", { category: cat.name, name: val })
-                      }
-                    />
-                  </Box>
-                ))}
+                {data.underwear_categories.map((cat) => {
+                  const selected = data.all_underwear?.[cat.name] || "None";
+                  const isColorable = cat.colorable?.includes(selected);
+                  const currentColor = data.all_underwear_color?.[cat.name];
+                  return (
+                    <Box key={cat.name} className="CharSetup__dollUnderwearItem">
+                      <Box className="CharSetup__dollUnderwearLabel">{cat.name}</Box>
+                      <Box className="CharSetup__dollUnderwearRow">
+                        <Dropdown
+                          fluid
+                          selected={selected}
+                          options={cat.items}
+                          onSelected={(val: string) =>
+                            act("setUnderwear", { category: cat.name, name: val })
+                          }
+                        />
+                        {isColorable && (
+                          <Box
+                            className="CharSetup__uwColorSwatch"
+                            style={{ "background-color": currentColor || "#ffffff" }}
+                            onClick={() => act("setUnderwearColor", { category: cat.name })}
+                            title="Pick color"
+                          />
+                        )}
+                      </Box>
+                    </Box>
+                  );
+                })}
               </Box>
             </Box>
 
@@ -2772,6 +2833,9 @@ const LoadoutItemList = (props: {
   const [ctxMenu, setCtxMenu] = useLocalState<ContextMenuState | null>(
     context, "gearCtxMenu", null,
   );
+  const [collapsedGroups, setCollapsedGroups] = useLocalState<Record<string, boolean>>(
+    context, "gearCollapsedGroups", {},
+  );
 
   if (!items || items.length === 0) {
     return (
@@ -2793,6 +2857,10 @@ const LoadoutItemList = (props: {
     groups[sg].push(item);
   }
 
+  const toggleGroup = (sg: string) => {
+    setCollapsedGroups({ ...collapsedGroups, [sg]: !collapsedGroups[sg] });
+  };
+
   return (
     <Box>
       {!!ctxMenu && (
@@ -2806,14 +2874,23 @@ const LoadoutItemList = (props: {
         {groupOrder.flatMap((sg) => [
           ...(sg
             ? [
-                <Table.Row key={"header-" + sg}>
+                <Table.Row
+                  key={"header-" + sg}
+                  className="CharSetup__gearGroupHeader"
+                  onClick={() => toggleGroup(sg)}
+                >
                   <Table.Cell colSpan={4} bold color="label" py={0.5}>
+                    <Icon
+                      name={collapsedGroups[sg] ? "chevron-right" : "chevron-down"}
+                      mr={0.5}
+                      style={{ fontSize: "0.7em" }}
+                    />
                     {sg}
                   </Table.Cell>
                 </Table.Row>,
               ]
             : []),
-          ...groups[sg].map((item) => {
+          ...(collapsedGroups[sg] ? [] : groups[sg].map((item) => {
             const isEquipped = equippedGear?.[item.hash];
             const isSelected = selectedHash === item.hash;
             const isLocked = !item.allowed && !isEquipped;
@@ -2882,15 +2959,19 @@ const LoadoutItemList = (props: {
                 <Table.Cell collapsing color="label">
                   {item.cost > 0 ? `${item.cost}LP` : ""}
                 </Table.Cell>
-                <Table.Cell collapsing>
-                  {isEquipped && <Icon name="check" color="good" />}
+                <Table.Cell collapsing color="gold">
                   {item.price > 0 && !isEquipped && (
-                    <Icon name="coins" color="gold" />
+                    <Box inline>
+                      <Icon name="coins" mr={0.25} />
+                      {item.discount > 0
+                        ? Math.round(item.price * item.discount)
+                        : item.price}
+                    </Box>
                   )}
                 </Table.Cell>
               </Table.Row>
             );
-          }),
+          })),
         ])}
       </Table>
     </Box>
@@ -2922,7 +3003,7 @@ const GearContextMenu = (props: {
         style={{ left: `${x}px`, top: `${y}px` }}
       >
         <Box className="CharSetup__ctxMenuHeader">{item.name}</Box>
-        {item.canEquip && (
+        {!!item.canEquip && (
           <Box
             className="CharSetup__ctxMenuItem"
             onClick={() => doAction("toggleGear")}
@@ -4290,61 +4371,60 @@ const TraitsSubPanel = (props: {
         })}
       </Box>
 
-      {/* Pre-existing conditions */}
-      <Box className="CharSetup__medSection">
-        <Box className="CharSetup__medSectionHead">
-          <Icon name="exclamation-triangle" mr={0.5} />
-          PRE-EXISTING CONDITIONS
-        </Box>
-        <Box
-          className={
-            "CharSetup__medConditionRow" +
-            (data.disabilities & NEARSIGHTED
-              ? " CharSetup__medConditionRow--active"
-              : "")
-          }
-          onClick={() => act("toggleDisability", { flag: NEARSIGHTED })}
-        >
-          <Stack align="center">
-            <Stack.Item>
-              <Box className="CharSetup__medCondCheck">
-                <Icon
-                  name={
-                    data.disabilities & NEARSIGHTED
-                      ? "check-square"
-                      : "square"
-                  }
-                />
-              </Box>
-            </Stack.Item>
-            <Stack.Item>
-              <Icon name="eye-slash" mr={0.5} />
-              <Box as="span" bold>
-                Myopia
-              </Box>
-            </Stack.Item>
-            <Stack.Item grow>
-              <Box className="CharSetup__medCondDesc">
-                Subject requires corrective lenses for standard visual
-                acuity.
-              </Box>
-            </Stack.Item>
-            {!!(data.disabilities & NEARSIGHTED) && (
-              <Stack.Item>
-                <Box className="CharSetup__medStamp">CONFIRMED</Box>
-              </Stack.Item>
-            )}
-          </Stack>
-        </Box>
-      </Box>
-
-      {/* Trait records */}
+      {/* Trait records + Myopia */}
       <Box className="CharSetup__medSection">
         <Box className="CharSetup__medSectionHead">
           <Icon name="stethoscope" mr={0.5} />
           {traitCategory.toUpperCase()} ASSESSMENT FINDINGS
         </Box>
         <Box className="CharSetup__medTraitList">
+          {/* Myopia — pinned at top of physical findings */}
+          {traitCategory === "Physical" && (
+            <Box
+              className={
+                "CharSetup__medTraitRow" +
+                (data.disabilities & NEARSIGHTED
+                  ? " CharSetup__medTraitRow--active"
+                  : "")
+              }
+              onClick={() => act("toggleDisability", { flag: NEARSIGHTED })}
+            >
+              <Stack align="flex-start">
+                <Stack.Item>
+                  <Box
+                    className={
+                      "CharSetup__medTraitCheck" +
+                      (data.disabilities & NEARSIGHTED
+                        ? " CharSetup__medTraitCheck--on"
+                        : "")
+                    }
+                  >
+                    <Icon
+                      name={
+                        data.disabilities & NEARSIGHTED
+                          ? "check-circle"
+                          : "circle"
+                      }
+                    />
+                  </Box>
+                </Stack.Item>
+                <Stack.Item grow>
+                  <Box className="CharSetup__medTraitName">
+                    <Icon name="eye-slash" mr={0.5} />
+                    Myopia
+                    {!!(data.disabilities & NEARSIGHTED) && (
+                      <Box as="span" className="CharSetup__medTraitStamp">
+                        DOCUMENTED
+                      </Box>
+                    )}
+                  </Box>
+                  <Box className="CharSetup__medTraitDesc">
+                    Subject requires corrective lenses for standard visual acuity.
+                  </Box>
+                </Stack.Item>
+              </Stack>
+            </Box>
+          )}
           {traits.map((trait) => {
             const isActive = currentTraits.includes(trait.name);
             const hasConflict =
@@ -4798,7 +4878,7 @@ const UplinkSubPanel = (props: {
 const BACKGROUND_TABS = [
   { id: "records", label: "Records", icon: "file-medical" },
   { id: "languages", label: "Languages", icon: "language" },
-  { id: "flavor", label: "Description", icon: "feather-alt" },
+  { id: "flavor", label: "Flavor", icon: "feather-alt" },
   { id: "relations", label: "Relations", icon: "people-arrows" },
 ] as const;
 
@@ -5411,6 +5491,7 @@ const BackgroundRelationsSubPanel = (props: {
             <CsButton
               icon={editingInfo === "general" ? "check" : "pen"}
               compact
+              tooltip={editingInfo === "general" ? "Save" : "Edit"}
               onClick={() =>
                 setEditingInfo(editingInfo === "general" ? null : "general")
               }
@@ -5500,6 +5581,7 @@ const BackgroundRelationsSubPanel = (props: {
                     <CsButton
                       icon={isEditingThis ? "check" : "pen"}
                       compact
+                      tooltip={isEditingThis ? "Save" : "Edit note"}
                       onClick={() =>
                         setEditingInfo(
                           isEditingThis ? null : rel.name,
@@ -5707,6 +5789,7 @@ const UiPreviewCard = (props: {
                   opacity={alpha}
                   width="100%"
                   height="100%"
+                  preserveAspectRatio="xMaxYMax slice"
                   xlinkHref={themeImg}
                   filter="url(#uiColorMask)"
                 />
@@ -6055,10 +6138,12 @@ class KeybindingsSubPanel extends Component<{
   }
 
   render() {
-    const { data, act } = this.props;
+    const { data, act, context } = this.props;
     const { expandedKbCat, capturingBinding } = this.state;
     const kbCategories = data.keybinding_categories || {};
     const userBinds = data.user_keybindings || {};
+
+    const [kbSearch, setKbSearch] = useLocalState(context, "kbSearch", "");
 
     // Sort categories
     const sortedCats = KB_CATEGORY_ORDER.filter((c) => c in kbCategories);
@@ -6069,6 +6154,7 @@ class KeybindingsSubPanel extends Component<{
     }
 
     const isCapturing = capturingBinding !== null;
+    const searchLower = kbSearch.trim().toLowerCase();
 
     return (
       <>
@@ -6092,10 +6178,26 @@ class KeybindingsSubPanel extends Component<{
           </Stack.Item>
         </Stack>
 
+        {/* Search */}
+        <Box mb={0.75}>
+          <Input
+            fluid
+            placeholder="Search keybindings..."
+            value={kbSearch}
+            onInput={(_, value) => setKbSearch(value)}
+          />
+        </Box>
+
         {sortedCats.filter((catName) => (kbCategories[catName] || []).length > 0).map((catName) => {
 
-          const bindings = kbCategories[catName] || [];
-          const isExpanded = expandedKbCat === catName;
+          const allBindings = kbCategories[catName] || [];
+          const bindings = searchLower
+            ? allBindings.filter((kb) =>
+                kb.full_name.toLowerCase().includes(searchLower)
+                || (kb.description && kb.description.toLowerCase().includes(searchLower)))
+            : allBindings;
+          if (bindings.length === 0) return null;
+          const isExpanded = expandedKbCat === catName || !!searchLower;
           const iconName = KB_CATEGORY_ICONS[catName] || "cog";
 
           return (

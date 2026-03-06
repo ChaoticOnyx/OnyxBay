@@ -43,6 +43,8 @@
 	// Augmentation state
 	var/selected_organ = BP_CHEST
 	var/cpu_preselected = FALSE
+	// Undo stack — list of assoc lists (character snapshots), most recent last
+	var/list/undo_stack = list()
 
 /datum/character_setup/New(datum/preferences/P, mob/user)
 	pref = P
@@ -52,6 +54,12 @@
 	pref = null
 	owner = null
 	return ..()
+
+/datum/character_setup/proc/push_undo_state()
+	if(undo_stack.len >= 20)
+		undo_stack.Remove(undo_stack[1])
+	undo_stack += list(pref.snapshot_character())
+
 
 /datum/character_setup/tgui_state(mob/user)
 	return GLOB.tgui_always_state
@@ -196,11 +204,15 @@
 	var/list/uw_cats = list()
 	for(var/datum/category_group/underwear/UWC in GLOB.underwear.categories)
 		var/list/items = list()
+		var/list/colorable = list()
 		for(var/datum/category_item/underwear/UWI in UWC.items)
 			items += UWI.name
+			if(UWI.has_color)
+				colorable += UWI.name
 		uw_cats += list(list(
 			"name" = UWC.name,
-			"items" = items
+			"items" = items,
+			"colorable" = colorable
 		))
 	data["underwear_categories"] = uw_cats
 
@@ -610,6 +622,24 @@
 	data["body_markings"] = markings
 
 	data["all_underwear"] = pref.all_underwear
+	// Current underwear colors (category -> hex color, only for items with has_color)
+	var/list/uw_color_map = list()
+	if(islist(pref.all_underwear_metadata))
+		for(var/uw_category in pref.all_underwear)
+			var/datum/category_group/underwear/UWC2 = GLOB.underwear.categories_by_name[uw_category]
+			if(!UWC2)
+				continue
+			var/uw_item_name2 = pref.all_underwear[uw_category]
+			var/datum/category_item/underwear/UWD2 = UWC2.items_by_name[uw_item_name2]
+			if(!UWD2 || !UWD2.has_color || !pref.all_underwear_metadata[uw_category])
+				continue
+			var/list/meta2 = pref.all_underwear_metadata[uw_category]
+			for(var/datum/gear_tweak/gt2 in UWD2.tweaks)
+				if(istype(gt2, /datum/gear_tweak/color))
+					if(meta2["[gt2]"])
+						uw_color_map[uw_category] = meta2["[gt2]"]
+					break
+	data["all_underwear_color"] = uw_color_map
 	data["backpack"] = pref.backpack ? pref.backpack.name : "Nothing"
 	data["equip_preview_mob"] = pref.equip_preview_mob
 	data["bgstate"] = pref.bgstate
@@ -650,6 +680,7 @@
 
 	data["equipment_render"] = generate_equipment_render_data()
 
+	data["can_undo"] = undo_stack.len > 0
 	data["default_slot"] = pref.default_slot
 	data["is_guest"] = pref.is_guest
 	data["load_failed"] = pref.load_failed
@@ -892,12 +923,9 @@
 	return equipment
 
 /// Generate slot preview data for all character slots.
-/// Sends raw appearance data per slot so the client can render via SpriteCompositor.
+/// Reads appearance fields directly from each slot's saved record —
+/// the current pref state is never modified.
 /datum/character_setup/proc/generate_slot_previews()
-	// Save current unsaved changes before iterating slots so the restore
-	// at the end of this proc reloads the correct (current) character.
-	pref.save_character()
-	var/original_slot = pref.default_slot
 	var/list/previews = list()
 
 	for(var/i = 1 to config.character_setup.character_slots)
@@ -907,27 +935,30 @@
 
 		var/datum/pref_record_reader/R = pref.load_pref_record(slot_key)
 		if(R)
-			pref.player_setup.load_character(R)
-			pref.sanitize_preferences()
-			if(!slot_name)
-				slot_name = pref.real_name || "Character [i]"
+			// Read appearance fields directly from the record — no pref modification
+			var/r_species = R.read("species") || SPECIES_HUMAN
+			var/r_gender  = R.read("gender")  || "male"
+			var/r_body    = R.read("body")    || ""
+			var/r_s_tone  = R.read("skin_tone") || 0
 
-			// Send raw appearance data — client renders via SpriteCompositor
-			var/datum/species/S = all_species[pref.species ? pref.species : SPECIES_HUMAN]
+			if(!slot_name)
+				slot_name = R.read("real_name") || "Character [i]"
+
+			var/datum/species/S = all_species[r_species] || all_species[SPECIES_HUMAN]
 			appearance = list(
-				"species" = pref.species,
-				"gender" = pref.gender,
-				"body" = pref.body,
-				"h_style" = pref.h_style,
-				"f_style" = pref.f_style,
-				"hair_color" = rgb(pref.r_hair, pref.g_hair, pref.b_hair),
-				"s_hair_color" = rgb(pref.r_s_hair, pref.g_s_hair, pref.b_s_hair),
-				"facial_color" = rgb(pref.r_facial, pref.g_facial, pref.b_facial),
-				"skin_color" = rgb(pref.r_skin, pref.g_skin, pref.b_skin),
-				"eye_color" = rgb(pref.r_eyes, pref.g_eyes, pref.b_eyes),
-				"s_tone" = pref.s_tone,
-				"icobase" = S ? "[S.icobase]" : null,
-				"hair_key" = S ? S.hair_key : "",
+				"species"          = r_species,
+				"gender"           = r_gender,
+				"body"             = r_body,
+				"h_style"          = R.read("hair_style_name"),
+				"f_style"          = R.read("facial_style_name"),
+				"hair_color"       = rgb(R.read("hair_red") || 0, R.read("hair_green") || 0, R.read("hair_blue") || 0),
+				"s_hair_color"     = rgb(R.read("s_hair_red") || 0, R.read("s_hair_green") || 0, R.read("s_hair_blue") || 0),
+				"facial_color"     = rgb(R.read("facial_red") || 0, R.read("facial_green") || 0, R.read("facial_blue") || 0),
+				"skin_color"       = rgb(R.read("skin_red") || 0, R.read("skin_green") || 0, R.read("skin_blue") || 0),
+				"eye_color"        = rgb(R.read("eyes_red") || 0, R.read("eyes_green") || 0, R.read("eyes_blue") || 0),
+				"s_tone"           = r_s_tone,
+				"icobase"          = S ? "[S.icobase]" : null,
+				"hair_key"         = S ? S.hair_key : "",
 				"appearance_flags" = S ? S.species_appearance_flags : 0
 			)
 
@@ -935,10 +966,6 @@
 			slot_name = "Character [i]"
 
 		previews += list(list("slot" = i, "name" = slot_name, "appearance" = appearance))
-
-	// Restore original character
-	pref.load_character(original_slot)
-	pref.sanitize_preferences()
 
 	slot_previews = previews
 	return previews
@@ -954,6 +981,42 @@
 	var/datum/species/current_species = all_species[pref.species]
 	if(!current_species)
 		current_species = all_species[SPECIES_HUMAN]
+
+	// Handle undo before pushing state
+	if(action == "undo")
+		if(undo_stack.len)
+			var/list/snapshot = undo_stack[undo_stack.len]
+			undo_stack.len--
+			pref.restore_character_snapshot(snapshot)
+			mark_preview_dirty()
+			update_static_data(owner)
+		return TRUE
+
+	// Non-modifying actions (UI state only) — skip undo push
+	var/static/list/no_undo_actions = list(
+		"rotatePreview",
+		"generateSlotPreviews",
+		"togglePreviewFlag",
+		"saveSlot",
+		// Wardrobe UI state
+		"selectGear",
+		"setGearSlot",
+		"toggleHideUnavailable",
+		"toggleHideDonate",
+		"setSlotFilter",
+		// Augments UI state
+		"selectOrgan",
+		// Settings (client preferences, not character data)
+		"setClientPreference",
+		"setUiStyle",
+		"pickUiColor",
+		"setKeybinding",
+		"clearKeybinding",
+		"resetKeybinding",
+		"resetAllKeybindings"
+	)
+	if(!(action in no_undo_actions))
+		push_undo_state()
 
 	switch(action)
 		// === PREVIEW ===
@@ -1169,6 +1232,32 @@
 				mark_preview_dirty()
 			return TRUE
 
+		if("setUnderwearColor")
+			var/uw_cat = params["category"]
+			var/datum/category_group/underwear/UWG = GLOB.underwear.categories_by_name[uw_cat]
+			if(!UWG)
+				return TRUE
+			var/uw_selected = pref.all_underwear[uw_cat]
+			var/datum/category_item/underwear/UWD = uw_selected ? UWG.items_by_name[uw_selected] : null
+			if(!UWD || !UWD.has_color)
+				return TRUE
+			for(var/datum/gear_tweak/gt in UWD.tweaks)
+				if(istype(gt, /datum/gear_tweak/color))
+					LAZYINITLIST(pref.all_underwear_metadata)
+					var/list/uw_meta = pref.all_underwear_metadata[uw_cat]
+					if(!uw_meta)
+						uw_meta = list()
+						pref.all_underwear_metadata[uw_cat] = uw_meta
+					var/existing_color = uw_meta["[gt]"]
+					if(!existing_color)
+						existing_color = gt.get_default()
+					var/new_color = gt.get_metadata(owner, existing_color)
+					if(new_color)
+						uw_meta["[gt]"] = new_color
+						mark_preview_dirty()
+					break
+			return TRUE
+
 		if("setBackpack")
 			var/bp_name = params["name"]
 			var/bos = decls_repository.get_decls_of_subtype(/decl/backpack_outfit)
@@ -1209,18 +1298,24 @@
 		if("loadSlot")
 			var/slot = text2num(params["slot"])
 			if(slot)
-				pref.save_character()
+				if(slot != pref.default_slot)
+					pref.save_character()  // Save current slot before switching away
 				pref.load_character(slot)
 				pref.sanitize_preferences()
 				slot_previews = null  // Force re-generation on next picker open
+				undo_stack.Cut()  // Slot change/reload clears undo history
 				mark_preview_dirty()
 				update_static_data(owner)
 			return TRUE
 
-		if("resetSlot")
+		if("confirmResetSlot")
+			var/confirm = tgui_alert(owner, "Are you sure you want to reset this character slot to default? This cannot be undone.", "Reset Character", list("Reset", "Cancel"))
+			if(confirm != "Reset")
+				return TRUE
 			pref.load_character(SAVE_RESET)
 			pref.sanitize_preferences()
 			slot_previews = null
+			undo_stack.Cut()  // Reset clears history
 			mark_preview_dirty()
 			update_static_data(owner)
 			return TRUE

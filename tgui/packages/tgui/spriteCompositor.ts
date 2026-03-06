@@ -515,6 +515,104 @@ export class SpriteCompositor {
   }
 
   /**
+   * Render a character directly onto an existing canvas element.
+   * Fully synchronous — no data URL round-trip, no async onload, no flicker.
+   */
+  renderCharacterToCanvas(
+    config: CharacterRenderConfig,
+    target: HTMLCanvasElement,
+  ): void {
+    if (!this.loaded || !this.manifest) return;
+
+    const size = this.manifest.spriteSize;
+    const outputSize = target.width;
+
+    // Render into an offscreen canvas at sprite resolution
+    const src = document.createElement('canvas');
+    src.width = size;
+    src.height = size;
+    const ctx = src.getContext('2d')!;
+    ctx.imageSmoothingEnabled = false;
+
+    const dir = DIR_TO_NAME[config.direction] || 'south';
+
+    this.renderBody(ctx, config, dir);
+
+    const eyeState = 'eyes' + (config.bodyBuild || '');
+    if (this.hasSprite(config.bodyDmiFile, eyeState, dir)) {
+      this.drawSpriteTintedMultiply(ctx, config.bodyDmiFile, eyeState, dir, config.eyeColor);
+    } else {
+      this.drawSpriteTintedMultiply(ctx, config.bodyDmiFile, 'eyes', dir, config.eyeColor);
+    }
+
+    if (config.markings) {
+      for (const mark of config.markings) {
+        this.drawSpriteTintedAdd(ctx, mark.icon, mark.iconState, dir, mark.color);
+      }
+    }
+
+    if (config.underwear) {
+      for (const uw of config.underwear) {
+        if (uw.color) {
+          this.drawSpriteTintedMultiply(ctx, uw.dmiFile, uw.state, dir, uw.color);
+        } else {
+          this.drawSprite(ctx, uw.dmiFile, uw.state, dir);
+        }
+      }
+    }
+
+    const HO_FACIAL_HAIR = 19;
+    const HO_HAIR = 26;
+    const HO_FACEMASK = 29;
+    const sorted = config.clothing
+      ? [...config.clothing].sort((a, b) => a.layer - b.layer)
+      : [];
+
+    for (const item of sorted) {
+      if (item.layer >= HO_FACIAL_HAIR) break;
+      this.drawClothingItem(ctx, item, dir);
+    }
+
+    if (config.facialStyle && config.facialStyle !== 'Shaved') {
+      this.drawSpriteTintedAdd(ctx, config.facialDmiFile, config.facialStyle, dir, config.facialColor);
+    }
+
+    for (const item of sorted) {
+      if (item.layer < HO_FACIAL_HAIR || item.layer >= HO_HAIR) {
+        if (item.layer !== HO_FACEMASK) continue;
+      }
+      this.drawClothingItem(ctx, item, dir);
+    }
+
+    if (config.hairStyle && config.hairStyle !== 'Bald') {
+      this.drawSpriteTintedAdd(ctx, config.hairDmiFile, config.hairStyle, dir, config.hairColor);
+      if (config.hairMarkings) {
+        for (const hm of config.hairMarkings) {
+          this.drawHairMarking(ctx, config.hairDmiFile, config.hairStyle, hm, dir);
+        }
+      }
+      if (config.secondaryHairColor) {
+        const secondaryState = config.hairStyle + '_s';
+        this.drawSpriteTintedAdd(ctx, config.hairDmiFile, secondaryState, dir, config.secondaryHairColor);
+      }
+    }
+
+    for (const item of sorted) {
+      if (item.layer < HO_HAIR || item.layer === HO_FACEMASK) continue;
+      this.drawClothingItem(ctx, item, dir);
+    }
+
+    // Blit offscreen canvas directly to target — single synchronous paint.
+    // Use 'copy' composite so transparent pixels overwrite previous frame
+    // without a visible blank-canvas flash between clearRect and drawImage.
+    const tctx = target.getContext('2d')!;
+    tctx.imageSmoothingEnabled = false;
+    tctx.globalCompositeOperation = 'copy';
+    tctx.drawImage(src, 0, 0, size, size, 0, 0, outputSize, outputSize);
+    tctx.globalCompositeOperation = 'source-over';
+  }
+
+  /**
    * Render the body layer — all limbs with skin tone/color.
    */
   private renderBody(

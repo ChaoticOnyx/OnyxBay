@@ -72,6 +72,18 @@
 
 	clear_character_previews() // Recalculate them on next show
 
+// Returns a copy of the character data as an assoc list (no disk write).
+/datum/preferences/proc/snapshot_character()
+	var/datum/pref_record_writer/json_list/W = new(PREF_SER_VERSION)
+	player_setup.save_character(W)
+	return W.data.Copy()
+
+// Restores character data from a snapshot produced by snapshot_character().
+/datum/preferences/proc/restore_character_snapshot(list/snapshot)
+	var/datum/pref_record_reader/json_list/R = new /datum/pref_record_reader/json_list(snapshot)
+	player_setup.load_character(R)
+	sanitize_preferences()
+
 /datum/preferences/proc/save_character(override_key = null)
 	var/datum/pref_record_writer/json_list/W = new(PREF_SER_VERSION)
 	player_setup.save_character(W)
