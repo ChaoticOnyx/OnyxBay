@@ -119,7 +119,7 @@
 		inv_box.SetName("Right Hand")
 		inv_box.icon = ui_style
 		inv_box.icon_state = "r_hand_inactive"
-		if(mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
+		if(mymob?.active_hand == ACTIVE_HAND_RIGHT)
 			inv_box.icon_state = "r_hand_active"
 		inv_box.screen_loc = ui_rhand
 		inv_box.slot_id = slot_r_hand
@@ -133,7 +133,7 @@
 		inv_box.SetName("Left Hand")
 		inv_box.icon = ui_style
 		inv_box.icon_state = "l_hand_inactive"
-		if(mymob && mymob.hand)	//This being 1 means the left hand is in use
+		if(mymob?.active_hand == ACTIVE_HAND_LEFT)
 			inv_box.icon_state = "l_hand_active"
 		inv_box.screen_loc = ui_lhand
 		inv_box.slot_id = slot_l_hand

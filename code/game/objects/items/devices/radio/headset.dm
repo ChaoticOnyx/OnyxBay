@@ -337,7 +337,7 @@
 	var/mob/M = usr
 	if((!istype(over_object, /atom/movable/screen)) && (src in M) && CanUseTopic(M))
 		return attack_self(M)
-	return
+	return ..()
 
 /obj/item/device/radio/headset/recalculateChannels(setDescription = 0)
 	src.channels = list()

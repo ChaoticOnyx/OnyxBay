@@ -54,10 +54,10 @@
 	. = ..()
 	if(istype(AM,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = AM
-		if((istype(H.l_hand,/obj/item/pickaxe)) && (!H.hand))
-			attackby(H.l_hand,H)
-		else if((istype(H.r_hand,/obj/item/pickaxe)) && H.hand)
-			attackby(H.r_hand,H)
+		if((istype(H.l_hand,/obj/item/pickaxe)) && H.active_hand == ACTIVE_HAND_RIGHT)
+			attackby(H.l_hand, H)
+		else if((istype(H.r_hand,/obj/item/pickaxe)) && H.active_hand == ACTIVE_HAND_LEFT)
+			attackby(H.r_hand, H)
 
 	else if(istype(AM,/mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = AM

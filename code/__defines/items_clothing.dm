@@ -209,6 +209,9 @@
 #define HUD_SECURITY 0x2
 #define HUD_MEDICAL 0x4
 
+#define ACTIVE_HAND_RIGHT 0
+#define ACTIVE_HAND_LEFT 1
+
 // Storage
 
 /*

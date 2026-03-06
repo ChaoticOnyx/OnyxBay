@@ -155,8 +155,10 @@
 		. = ..()
 
 /obj/item/forensics/sample_kit/MouseDrop(atom/over)
-	if(ismob(src.loc) && CanMouseDrop(over))
+	if(ismob(loc) && CanMouseDrop(over))
 		afterattack(over, usr, TRUE)
+		return TRUE
+	return ..()
 
 /obj/item/forensics/sample_kit/powder
 	name = "fingerprint powder"

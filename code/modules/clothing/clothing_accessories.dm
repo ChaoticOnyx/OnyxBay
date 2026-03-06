@@ -35,32 +35,6 @@
 		return
 	return ..()
 
-/obj/item/clothing/MouseDrop(obj/over_object)
-	if(!over_object || !(ishuman(usr) || issmall(usr)))
-		return
-
-	//makes sure that the clothing is equipped so that we can't drag it into our hand from miles away.
-	if(loc != usr)
-		return
-
-	if(usr.incapacitated())
-		return
-
-	if(!usr.drop(src, changing_slots = TRUE))
-		return
-
-	var/atom/movable/screen/inventory/inv_box = over_object
-	if(!istype(inv_box))
-		return
-
-	switch(inv_box.slot_id)
-		if(slot_r_hand)
-			usr.put_in_r_hand(src)
-		if(slot_l_hand)
-			usr.put_in_l_hand(src)
-
-	add_fingerprint(usr)
-
 /obj/item/clothing/examine(mob/user, infix)
 	. = ..()
 	for(var/obj/item/clothing/accessory/A in accessories)

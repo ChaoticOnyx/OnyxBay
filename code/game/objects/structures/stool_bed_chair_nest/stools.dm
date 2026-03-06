@@ -65,6 +65,12 @@ var/global/list/stool_cache = list() //haha stool
 /obj/item/stool/bar/padded/New(newloc, new_material)
 	..(newloc, MATERIAL_STEEL, MATERIAL_CARPET)
 
+
+/obj/item/stool/attack_hand(mob/user)
+	if(isturf(loc) && user.a_intent != I_GRAB)
+		return
+	return ..()
+
 /obj/item/stool/on_update_icon()
 	// Base icon.
 	var/list/noverlays = list()

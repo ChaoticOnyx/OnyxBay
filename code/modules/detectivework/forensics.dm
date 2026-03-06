@@ -160,6 +160,6 @@ var/const/FINGERPRINT_COMPLETE = 6
 	if(!..())
 		return FALSE
 
-	var/obj/item/organ/external/E = organs_by_name[hand ? BP_L_HAND : BP_R_HAND]
+	var/obj/item/organ/external/E = organs_by_name[(active_hand == ACTIVE_HAND_LEFT) ? BP_L_HAND : BP_R_HAND]
 	if(E)
 		return E.get_fingerprint()

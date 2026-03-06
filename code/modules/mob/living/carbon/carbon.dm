@@ -108,17 +108,13 @@
 	..()
 
 /mob/living/carbon/attack_hand(mob/M)
-	if(!istype(M, /mob/living/carbon)) return
-	if (ishuman(M))
+	if(!iscarbon(M))
+		return TRUE
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
-		if (H.hand)
-			temp = H.organs_by_name[BP_L_HAND]
-		if(temp && !temp.is_usable())
-			to_chat(H, "<span class='warning'>You can't use your [temp.name]</span>")
-			return
-
-	return
+		if(!H.is_hand_usable())
+			return FALSE
+	return TRUE
 
 /mob/living/carbon/attack_ghost(mob/observer/ghost/user)
 	if(HAS_TRAIT(src, TRAIT_GHOSTATTACKABLE)) //Used for wizard's spell "No remorse" which allows ghosts to attack target
@@ -188,9 +184,9 @@
 	return
 
 /mob/living/carbon/swap_hand()
-	src.hand = !( src.hand )
+	active_hand = !active_hand
 	if(hud_used.l_hand_hud_object && hud_used.r_hand_hud_object)
-		if(hand)	//This being 1 means the left hand is in use
+		if(active_hand == ACTIVE_HAND_LEFT)
 			hud_used.l_hand_hud_object.icon_state = "l_hand_active"
 			hud_used.r_hand_hud_object.icon_state = "r_hand_inactive"
 		else
@@ -204,11 +200,11 @@
 		selhand = lowertext(selhand)
 
 		if(selhand == "right" || selhand == "r")
-			selhand = 0
+			selhand = ACTIVE_HAND_RIGHT
 		if(selhand == "left" || selhand == "l")
-			selhand = 1
+			selhand = ACTIVE_HAND_LEFT
 
-	if(selhand != src.hand)
+	if(selhand != active_hand)
 		swap_hand()
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/M)

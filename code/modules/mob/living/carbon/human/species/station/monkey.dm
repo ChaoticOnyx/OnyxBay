@@ -78,7 +78,7 @@
 		H.SelfMove(pick(GLOB.cardinal))
 
 	if(prob(25))
-		H.hand = !(H.hand)
+		H.active_hand = !H.active_hand
 
 	var/obj/held = H.get_active_hand()
 	if(prob(5) && held)
