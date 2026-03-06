@@ -6,7 +6,6 @@
 	name = "hypospray"
 	desc = "The DeForest Medical Corporation, a subsidiary of Zeng-Hu Pharmaceuticals, hypospray is a sterile, air-needle autoinjector for rapid administration of drugs to patients."
 	icon = 'icons/obj/syringe.dmi'
-	item_state = "hypo"
 	icon_state = "hypo"
 	origin_tech = list(TECH_MATERIAL = 4, TECH_BIO = 5)
 	amount_per_transfer_from_this = 5
@@ -58,8 +57,7 @@
 
 /obj/item/reagent_containers/hypospray/vial
 	name = "hypospray"
-	item_state = "autoinjector"
-	desc = "The DeForest Medical Corporation, a subsidiary of Zeng-Hu Pharmaceuticals, hypospray is a sterile, air-needle autoinjector for rapid administration of drugs to patients. Uses a replacable 30u vial."
+	desc = "The DeForest Medical Corporation, a subsidiary of Zeng-Hu Pharmaceuticals, hypospray is a sterile, air-needle autoinjector for rapid administration of drugs to patients. Uses a replaceable 50 ml vial."
 	var/obj/item/reagent_containers/vessel/beaker/vial/loaded_vial
 	volume = 0
 
@@ -110,7 +108,6 @@
 	name = "autoinjector"
 	desc = "A rapid and safe way to administer small amounts of drugs by untrained or trained personnel."
 	icon_state = "injector_blue"
-	item_state = "autoinjector"
 	amount_per_transfer_from_this = 15
 	volume = 15
 	origin_tech = list(TECH_MATERIAL = 2, TECH_BIO = 2)
@@ -135,6 +132,7 @@
 		icon_state = initial(icon_state)
 	else
 		icon_state = "[initial(icon_state)]-used"
+	update_held_icon()
 
 /obj/item/reagent_containers/hypospray/autoinjector/examine(mob/user, infix)
 	. = ..()

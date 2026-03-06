@@ -1,8 +1,7 @@
 /obj/item/implanter
 	name = "implanter"
 	icon = 'icons/obj/items.dmi'
-	icon_state = "implanter0"
-	item_state = "syringe_0"
+	icon_state = "implanter"
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 1000)
@@ -15,10 +14,11 @@
 	update_icon()
 
 /obj/item/implanter/on_update_icon()
-	if (imp)
-		icon_state = "implanter1"
+	if(imp)
+		icon_state = "implanter"
 	else
-		icon_state = "implanter0"
+		icon_state = "implanter-empty"
+	update_held_icon()
 
 /obj/item/implanter/verb/remove_implant()
 	set category = "Object"

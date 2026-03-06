@@ -121,12 +121,14 @@
 
 	if(mode == SYRINGE_BROKEN)
 		icon_state = "[base_icon_state]-b"
+		update_held_icon()
 		return
 
 	var/rounded_vol = clamp(round((reagents.total_volume / reagents.maximum_volume) * volume, volume / 3), 0, volume)
 
 	icon_state = "[base_icon_state][rounded_vol]"
 	item_state = "syringe_[rounded_vol]"
+	update_held_icon()
 
 	if(reagents.total_volume)
 		filling = image(icon, src, "[base_icon_state]-filling[rounded_vol]")
