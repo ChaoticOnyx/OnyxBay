@@ -57,7 +57,7 @@
 
 /obj/item/reagent_containers/hypospray/vial
 	name = "hypospray"
-	desc = "The DeForest Medical Corporation, a subsidiary of Zeng-Hu Pharmaceuticals, hypospray is a sterile, air-needle autoinjector for rapid administration of drugs to patients. Uses a replacable 50 ml vial."
+	desc = "The DeForest Medical Corporation, a subsidiary of Zeng-Hu Pharmaceuticals, hypospray is a sterile, air-needle autoinjector for rapid administration of drugs to patients. Uses a replaceable 50 ml vial."
 	var/obj/item/reagent_containers/vessel/beaker/vial/loaded_vial
 	volume = 0
 
