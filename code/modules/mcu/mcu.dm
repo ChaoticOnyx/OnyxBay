@@ -116,7 +116,7 @@
 /obj/item/device/mcu/Destroy()
 	if(id)
 		SSmcu.total_mcu -= 1
-		power_off(FALSE)
+		power_off(null, FALSE)
 		Z_MACHINE_DESTROY(id)
 		id = null
 
@@ -829,7 +829,7 @@
 		var/obj/item/mcu_chassis/C = __chassis.resolve()
 
 		if(C.has_external_power_source && C.try_drain_power(amount))
-			if(!QDELETED(__battery) && __battery.charge < __battery.maxcharge)
+			if(recharge_battery && !QDELETED(__battery) && __battery.charge < __battery.maxcharge)
 				var/recharge_amount = __battery.maxcharge * config.mcu.battery_recharge_percent
 
 				if(C.try_drain_power(recharge_amount))
