@@ -6075,6 +6075,7 @@ class KeybindingsSubPanel extends Component<{
   expandedKbCat: string | null;
   capturingBinding: string | null;
   capturingOldKey: string | null;
+  kbSearch: string;
 }> {
   keyHandler: ((e: KeyboardEvent) => void) | null;
 
@@ -6084,6 +6085,7 @@ class KeybindingsSubPanel extends Component<{
       expandedKbCat: null,
       capturingBinding: null,
       capturingOldKey: null,
+      kbSearch: "",
     };
     this.keyHandler = null;
   }
@@ -6139,11 +6141,9 @@ class KeybindingsSubPanel extends Component<{
 
   render() {
     const { data, act, context } = this.props;
-    const { expandedKbCat, capturingBinding } = this.state;
+    const { expandedKbCat, capturingBinding, kbSearch } = this.state;
     const kbCategories = data.keybinding_categories || {};
     const userBinds = data.user_keybindings || {};
-
-    const [kbSearch, setKbSearch] = useLocalState(context, "kbSearch", "");
 
     // Sort categories
     const sortedCats = KB_CATEGORY_ORDER.filter((c) => c in kbCategories);
@@ -6184,7 +6184,7 @@ class KeybindingsSubPanel extends Component<{
             fluid
             placeholder="Search keybindings..."
             value={kbSearch}
-            onInput={(_, value) => setKbSearch(value)}
+            onInput={(_, value) => this.setState({ kbSearch: value })}
           />
         </Box>
 
