@@ -13,6 +13,7 @@
 
 /obj/item/mcu_chassis/Destroy()
 	if(!QDELETED(__mcu))
+		__mcu.__chassis = null
 		qdel(__mcu)
 		__mcu = null
 
@@ -138,6 +139,7 @@
 		M.__chassis = weakref(src)
 
 		user.visible_message("[user] inserts \the [M] into \the [src]", "You insert \the [M] into \the [src]")
+		__on_mcu_insert()
 
 		return
 	else if(istype(W, /obj/item/weldingtool))
