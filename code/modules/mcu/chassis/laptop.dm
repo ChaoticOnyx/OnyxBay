@@ -10,7 +10,7 @@
 
 /obj/item/mcu_chassis/laptop/AltClick(mob/user)
 	if(!istype(loc, /turf))
-		to_chat(usr, "\The [src] has to be on a stable surface first!")
+		to_chat(user, "\The [src] has to be on a stable surface first!")
 		return
 
 	anchored = !anchored

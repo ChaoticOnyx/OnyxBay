@@ -74,11 +74,11 @@ var/__z_name = null
 #define Z_WS_TICK(...) call_ext(__z_name, "byond:Z_ws_tick")()
 
 /// Returns a port the WebSocket server is running on.
-/// Returns null if the WebSocker server is not running.
+/// Returns null if the WebSocket server is not running.
 #define Z_WS_GET_PORT(...) call_ext(__z_name, "byond:Z_ws_get_port")()
 
 /// Returns connections count.
-/// Returns null if the WebSocker server is not running.
+/// Returns null if the WebSocket server is not running.
 #define Z_WS_CONNECTIONS(...) call_ext(__z_name, "byond:Z_ws_connections")()
 
 /// Stops the WebSocket server. Returns true if the server was running.

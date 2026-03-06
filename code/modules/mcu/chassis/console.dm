@@ -11,7 +11,7 @@
 	max_health = 80
 	has_external_power_source = TRUE
 
-/obj/item/mcu_chassis/try_drain_power(amount)
+/obj/item/mcu_chassis/console/try_drain_power(amount)
 	var/area/A = get_area(src)
 
 	if(!istype(A) || !A.powered(STATIC_EQUIP))

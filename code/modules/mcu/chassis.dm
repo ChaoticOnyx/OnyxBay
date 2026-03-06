@@ -35,7 +35,7 @@
 /obj/item/mcu_chassis/ex_act(severity)
 	destroy()
 
-/obj/itemmcu_chassis/melt()
+/obj/item/mcu_chassis/melt()
 	..()
 
 	qdel(src)

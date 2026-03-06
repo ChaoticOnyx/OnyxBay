@@ -802,7 +802,7 @@
 		return
 
 	visible_message(SPAN_WARNING("[src] shuts down!"))
-	power_off(is_trap)
+	power_off(null, is_trap)
 
 /obj/item/device/mcu/proc/remove_battery(mob/activator = null)
 	if(QDELETED(__battery))

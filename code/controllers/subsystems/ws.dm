@@ -38,6 +38,8 @@ SUBSYSTEM_DEF(ws)
 	else
 		port = Z_WS_GET_PORT()
 		log_debug("Running a WebSocket server on port: [port]")
+	
+	. = ..()
 
 /datum/controller/subsystem/ws/fire(resumed = 0)
 	if(port != null)
