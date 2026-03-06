@@ -2,7 +2,7 @@
 #define MCU_SERIAL_TERMINAL_HISTORY_SIZE 2048
 
 /obj/item/mcu_module/serial_terminal
-	name = "Serial Terminal module"
+	name = "serial terminal module"
 	desc = "A serial terminal interface for MCU debugging and interaction."
 	icon_state = "serial_terminal"
 
@@ -11,9 +11,12 @@
 	var/list/buffer = list()
 	var/buffer_start = 0
 
-/obj/item/mcu_module/serial_terminal/attack_self(mob/user as mob)
-	tgui_interact(user)
+/obj/item/mcu_module/serial_terminal/__interact(mob/user)
+	attack_self(user)
 	return TRUE
+
+/obj/item/mcu_module/serial_terminal/attack_self(mob/user)
+	tgui_interact(user)
 
 /obj/item/mcu_module/serial_terminal/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -29,7 +32,7 @@
 	data["buffer"] = buffer
 	data["bufferStart"] = buffer_start
 	data["maxInputBytes"] = MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE
-	data["isActive"] = __host != null && Z_MACHINE_GET_STATE(__host.resolve().id) == Z_MSTATE_RUNNING
+	data["isActive"] = __host != null && __host.resolve().is_on()
 
 	return data
 
@@ -42,7 +45,7 @@
 	switch(action)
 		if("send")
 			var/obj/item/device/mcu/M = __host?.resolve()
-			if(M == null || Z_MACHINE_GET_STATE(M.id) != Z_MSTATE_RUNNING)
+			if(M == null || !M.is_on())
 				return FALSE
 
 			var/list/bytes = params["bytes"]

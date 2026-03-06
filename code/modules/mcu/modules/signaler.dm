@@ -1,6 +1,6 @@
 
 /obj/item/mcu_module/signaler
-	name = "Signaler module"
+	name = "signaler module"
 	desc = "A signaler module for a MCU."
 	icon_state = "signaler"
 
