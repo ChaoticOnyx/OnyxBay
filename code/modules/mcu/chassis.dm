@@ -71,13 +71,13 @@
 
 /obj/item/mcu_chassis/proc/examine_health()
 	switch(health_percentage())
-		if(-100 to 25)
+		if(-INFINITY to 25)
 			return SPAN_DANGER("\The [src] looks seriously damaged, and probably won't last much more.")
-		if(25 to 50)
+		if(26 to 50)
 			return SPAN_NOTICE("\The [src] looks damaged.")
-		if(50 to 75)
+		if(51 to 75)
 			return "\The [src] looks slightly damaged."
-		if(75 to 99)
+		if(76 to 99)
 			return "\The [src] has few dents."
 		if(99 to INFINITY)
 			return "\The [src] is in excellent condition."

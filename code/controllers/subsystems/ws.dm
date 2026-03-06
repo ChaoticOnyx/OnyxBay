@@ -14,7 +14,7 @@ SUBSYSTEM_DEF(ws)
 	else
 		msg += "TBD "
 
-	msg += "C:[Z_WS_CONNECTIONS()]"
+	msg += "C:[port != null ? Z_WS_CONNECTIONS() : "N/A"]"
 
 	return ..(msg)
 
