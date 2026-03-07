@@ -260,7 +260,7 @@
 /mob/living/ProcessGrabs()
 	//if we are being grabbed
 	if(grabbed_by.len)
-		resist() //shortcut for resisting grabs
+		resist_grab("auto_move_process") // Uses GRAB_RESIST_CD and does not touch click cooldown.
 
 /mob/proc/ProcessGrabs()
 	return

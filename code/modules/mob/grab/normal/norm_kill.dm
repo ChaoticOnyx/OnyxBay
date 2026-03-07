@@ -13,7 +13,7 @@
 	same_tile = 1
 	force_danger = 1
 	restrains = 1
-	breakability = 1
+	breakability = 2.8
 
 	downgrade_on_action = 1
 	downgrade_on_move = 1

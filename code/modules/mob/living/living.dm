@@ -1,5 +1,6 @@
 /mob/living
 	is_poi = TRUE
+	var/next_grab_resist = 0
 
 /mob/living/Initialize()
 	. = ..()
@@ -727,7 +728,7 @@
 
 	if(!incapacitated(INCAPACITATION_KNOCKOUT) && canClick())
 		setClickCooldown(20)
-		resist_grab()
+		resist_grab("manual_verb")
 		if(!weakened)
 			process_resist()
 
@@ -792,13 +793,28 @@
 			to_chat(usr, "<span class='warning'>You can't seem to escape from \the [buckled]!</span>")
 			return
 
-/mob/living/proc/resist_grab()
-	var/resisting = 0
-	for(var/obj/item/grab/G in grabbed_by)
-		resisting++
-		G.handle_resist()
-	if(resisting)
+/mob/living/proc/resist_grab(origin = "unknown")
+	if(try_grab_resist(origin))
 		visible_message("<span class='danger'>[src] resists!</span>")
+
+/mob/living/proc/try_grab_resist(origin = "unknown")
+	if(world.time < next_grab_resist)
+		return FALSE
+
+	if(!length(grabbed_by))
+		return FALSE
+
+	var/resisting = FALSE
+	for(var/obj/item/grab/G in grabbed_by.Copy())
+		if(QDELETED(G) || G.affecting != src || !G.current_grab)
+			continue
+		resisting = TRUE
+		G.current_grab.handle_resist(G)
+
+	if(resisting)
+		next_grab_resist = world.time + GRAB_RESIST_CD
+
+	return resisting
 
 /mob/living/verb/lay_down()
 	set name = "Rest"

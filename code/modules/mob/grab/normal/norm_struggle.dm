@@ -11,10 +11,10 @@
 	can_absorb = 0
 	point_blank_mult = 1
 	same_tile = 0
-	breakability = 1
+	breakability = 1.2
 
 	grab_slowdown = 10
-	upgrade_cooldown = 20
+	upgrade_cooldown = GRAB_NORM_AGGRESSIVE_GRACE
 
 	icon_state = "reinforce"
 
@@ -22,31 +22,32 @@
 
 
 /datum/grab/normal/struggle/process_effect(obj/item/grab/G)
-	var/mob/living/carbon/human/affecting = G.affecting
-	var/mob/living/carbon/human/assailant = G.assailant
-
-	if(affecting.incapacitated() || affecting.a_intent == I_HELP)
-		affecting.visible_message("<span class='warning'>[affecting] isn't prepared to fight back as [assailant] tightens \his grip!</span>")
-		G.done_struggle = TRUE
-		G.upgrade(TRUE)
+	return
 
 /datum/grab/normal/struggle/enter_as_up(obj/item/grab/G)
 	var/mob/living/carbon/human/affecting = G.affecting
 	var/mob/living/carbon/human/assailant = G.assailant
 
-	if(affecting.incapacitated() || affecting.a_intent == I_HELP)
-		affecting.visible_message("<span class='warning'>[affecting] isn't prepared to fight back as [assailant] tightens \his grip!</span>")
-		G.done_struggle = TRUE
-		G.upgrade(TRUE)
-	else
-		affecting.visible_message("<span class='warning'>[affecting] struggles against [assailant]!</span>")
-		G.done_struggle = FALSE
-		G.set_next_think_ctx("handle_resist", 1 SECOND)
-		resolve_struggle(G)
+	if(!affecting || !assailant)
+		return
+
+	affecting.visible_message("<span class='warning'>[affecting] struggles against [assailant] as [assailant] tightens \his grip!</span>")
+	G.done_struggle = FALSE
+	G.grace_until = world.time + upgrade_cooldown
+	G.set_next_think_ctx("handle_resist", world.time + 1 SECOND)
+	resolve_struggle(G)
 
 /datum/grab/normal/struggle/proc/resolve_struggle(obj/item/grab/G)
 	set waitfor = FALSE
-	if(do_after(G.assailant, upgrade_cooldown, G, can_move = 1, luck_check_type = LUCK_CHECK_COMBAT))
+	if(!G?.assailant || !G.affecting)
+		return
+	var/success = do_after(G.assailant, upgrade_cooldown, G, can_move = 1, luck_check_type = LUCK_CHECK_COMBAT)
+
+	if(!G || QDELETED(G) || G.current_grab?.state_name != NORM_STRUGGLE)
+		return
+
+	G.grace_until = 0
+	if(success)
 		G.done_struggle = TRUE
 		G.upgrade(TRUE)
 	else
