@@ -46,12 +46,12 @@
 	if(!G || QDELETED(G) || G.current_grab?.state_name != NORM_STRUGGLE)
 		return
 
-	G.grace_until = 0
 	if(success)
 		G.done_struggle = TRUE
 		G.upgrade(TRUE)
 	else
 		G.downgrade()
+	G.grace_until = 0
 
 /datum/grab/normal/struggle/can_upgrade(obj/item/grab/G)
 	return G.done_struggle
