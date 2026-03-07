@@ -205,6 +205,10 @@
 	mod_weight = 1.0
 	mod_reach = 0.8
 	mod_handy = 1.0
+
+	fire_delay = 0.1 SECOND
+	burst_delay = 0
+
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BACK
 	caliber = "12g"
@@ -212,10 +216,9 @@
 	ammo_type = /obj/item/ammo_casing/shotgun/beanbag
 	one_hand_penalty = 2
 
-	burst_delay = 0
 	firemodes = list(
-		list(mode_name="fire one barrel at a time", burst=1),
-		list(mode_name="fire both barrels at once", burst=2),
+		list(mode_name = "fire one barrel at a time", burst = 1),
+		list(mode_name = "fire both barrels at once", burst = 2),
 		)
 
 	fire_sound = 'sound/effects/weapons/gun/fire_shotgun2.ogg'

@@ -9,16 +9,17 @@
 	mod_weight = 1.25
 	mod_reach = 1.0
 	mod_handy = 1.0
+	fire_delay = 0.2 SECONDS
 	projectile_type = /obj/item/projectile/beam/pulse/heavy
 	max_shots = 36
 	w_class = ITEM_SIZE_HUGE
-	burst_delay = 2
+	burst_delay = 0.1 SECONDS
 	accuracy = -1
 	wielded_item_state = "gun_wielded"
 
 	firemodes = list(
-		list(mode_name="semiauto",       burst=1,    fire_delay=0,    move_delay=null,    one_hand_penalty=5, burst_accuracy=null, dispersion=null),
-		list(mode_name="2-beam bursts", burst=2,    fire_delay=null, move_delay=3,    one_hand_penalty=6, burst_accuracy=list(0,-1,-1), dispersion=list(0.0, 0.6, 1.0))
+		list(mode_name = "semiauto",      burst = 1, fire_delay = 0.2 SECONDS, move_delay = null, one_hand_penalty = 5, burst_accuracy = null,          dispersion = null),
+		list(mode_name = "2-beam bursts", burst = 2, fire_delay = 0.1 SECONDS, move_delay = 3,    one_hand_penalty = 6, burst_accuracy = list(0,-1,-1), dispersion = list(0.0, 0.6, 1.0))
 		)
 
 /obj/item/gun/energy/pulse_rifle/carbine
@@ -57,7 +58,7 @@
 	name = "pulse destroyer"
 	desc = "A heavy-duty, pulse-based energy weapon. Because of its complexity and cost, it is rarely seen in use except by specialists."
 	cell_type = /obj/item/cell/super
-	fire_delay = 25
+	fire_delay = 2.5 SECONDS
 	projectile_type=/obj/item/projectile/beam/pulse/destroy
 	charge_cost= 40
 

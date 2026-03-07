@@ -7,7 +7,7 @@
 	w_class = ITEM_SIZE_LARGE
 	slot_flags = null
 	force = 5
-	fire_delay = 1
+	fire_delay = 0.3 SECONDS
 	ammo_type = /obj/item/ammo_casing/magic/bloodchill
 	fire_sound = 'sound/effects/attackblob.ogg'
 	handle_casings = CLEAR_CASINGS
