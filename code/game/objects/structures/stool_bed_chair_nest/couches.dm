@@ -7,7 +7,7 @@
 	name = "couch"
 	desc = "Made of steel, steel wool, and steeleather. At least, it's easily repairable and is comfier than sitting on the floor. Probably."
 	icon_state = "armchair_preview_old"
-	base_icon = "chair_couch-brown"
+	base_icon_state = "chair_couch-brown"
 	material_alteration = MATERIAL_ALTERATION_NONE
 	buckle_dir = 0
 	buckle_lying = 0
@@ -72,17 +72,17 @@
 /obj/structure/bed/couch/on_update_icon()
 	..()
 
-	var/cache_key = "[base_icon]-[material.name]-over"
+	var/cache_key = "[base_icon_state]-[material.name]-over"
 	if(isnull(stool_cache[cache_key]))
-		var/image/I = image('icons/obj/furniture.dmi', "[base_icon]_over")
+		var/image/I = image('icons/obj/furniture.dmi', "[base_icon_state]_over")
 		if(material_alteration & MATERIAL_ALTERATION_COLOR)
 			I.color = material.icon_colour
 		I.layer = DEPTH_OVERLAY_LAYER
 		stool_cache[cache_key] = I
 	AddOverlays(stool_cache[cache_key])
 	if(buckled_mob)
-		cache_key = "[base_icon]_armrest"
-		var/image/I = image('icons/obj/furniture.dmi', "[base_icon]_armrest")
+		cache_key = "[base_icon_state]_armrest"
+		var/image/I = image('icons/obj/furniture.dmi', "[base_icon_state]_armrest")
 		I.layer = DEPTH_OVERLAY_LAYER
 		if(material_alteration & MATERIAL_ALTERATION_COLOR)
 			I.color = padding_material.icon_colour
@@ -109,117 +109,117 @@
 /obj/structure/bed/couch/left/blue
 	name = "blue couch"
 	icon_state = "chair_couch-blue_left"
-	base_icon = "chair_couch-blue_left"
+	base_icon_state = "chair_couch-blue_left"
 
 /obj/structure/bed/couch/right/blue
 	name = "blue couch"
 	icon_state = "chair_couch-blue_right"
-	base_icon = "chair_couch-blue_right"
+	base_icon_state = "chair_couch-blue_right"
 
 /obj/structure/bed/couch/middle/blue
 	name = "blue couch"
 	icon_state = "chair_couch-blue_mid"
-	base_icon = "chair_couch-blue_mid"
+	base_icon_state = "chair_couch-blue_mid"
 
 /obj/structure/bed/couch/corner/blue
 	name = "blue couch"
 	icon_state = "chair_couch-blue_corner"
-	base_icon = "chair_couch-blue_corner"
+	base_icon_state = "chair_couch-blue_corner"
 
 /obj/structure/bed/couch/left/brown
 	name = "brown couch"
 	icon_state = "chair_couch-brown_left"
-	base_icon = "chair_couch-brown_left"
+	base_icon_state = "chair_couch-brown_left"
 
 /obj/structure/bed/couch/right/brown
 	name = "brown couch"
 	icon_state = "chair_couch-brown_right"
-	base_icon = "chair_couch-brown_right"
+	base_icon_state = "chair_couch-brown_right"
 
 /obj/structure/bed/couch/middle/brown
 	name = "brown couch"
 	icon_state = "chair_couch-brown_mid"
-	base_icon = "chair_couch-brown_mid"
+	base_icon_state = "chair_couch-brown_mid"
 
 /obj/structure/bed/couch/corner/brown
 	name = "brown couch"
 	icon_state = "chair_couch-brown_corner"
-	base_icon = "chair_couch-brown_corner"
+	base_icon_state = "chair_couch-brown_corner"
 
 /obj/structure/bed/couch/left/red
 	name = "red couch"
 	icon_state = "chair_couch-red_left"
-	base_icon = "chair_couch-red_left"
+	base_icon_state = "chair_couch-red_left"
 
 /obj/structure/bed/couch/right/red
 	name = "red couch"
 	icon_state = "chair_couch-red_right"
-	base_icon = "chair_couch-red_right"
+	base_icon_state = "chair_couch-red_right"
 
 /obj/structure/bed/couch/middle/red
 	name = "red couch"
 	icon_state = "chair_couch-red_mid"
-	base_icon = "chair_couch-red_mid"
+	base_icon_state = "chair_couch-red_mid"
 
 /obj/structure/bed/couch/corner/red
 	name = "red couch"
 	icon_state = "chair_couch-red_corner"
-	base_icon = "chair_couch-red_corner"
+	base_icon_state = "chair_couch-red_corner"
 
 /obj/structure/bed/couch/left/green
 	name = "green couch"
 	icon_state = "chair_couch-green_left"
-	base_icon = "chair_couch-green_left"
+	base_icon_state = "chair_couch-green_left"
 
 /obj/structure/bed/couch/right/green
 	name = "green couch"
 	icon_state = "chair_couch-green_right"
-	base_icon = "chair_couch-green_right"
+	base_icon_state = "chair_couch-green_right"
 
 /obj/structure/bed/couch/middle/green
 	name = "green couch"
 	icon_state = "chair_couch-green_mid"
-	base_icon = "chair_couch-green_mid"
+	base_icon_state = "chair_couch-green_mid"
 
 /obj/structure/bed/couch/corner/green
 	name = "green couch"
 	icon_state = "chair_couch-green_corner"
-	base_icon = "chair_couch-green_corner"
+	base_icon_state = "chair_couch-green_corner"
 
 /obj/structure/bed/couch/left/purple
 	name = "purple couch"
 	icon_state = "chair_couch-purple_left"
-	base_icon = "chair_couch-purple_left"
+	base_icon_state = "chair_couch-purple_left"
 
 /obj/structure/bed/couch/right/purple
 	name = "purple couch"
 	icon_state = "chair_couch-purple_right"
-	base_icon = "chair_couch-purple_right"
+	base_icon_state = "chair_couch-purple_right"
 
 /obj/structure/bed/couch/middle/purple
 	name = "purple couch"
 	icon_state = "chair_couch-purple_mid"
-	base_icon = "chair_couch-purple_mid"
+	base_icon_state = "chair_couch-purple_mid"
 
 /obj/structure/bed/couch/corner/purple
 	name = "purple couch"
 	icon_state = "chair_couch-purple_corner"
-	base_icon = "chair_couch-purple_corner"
+	base_icon_state = "chair_couch-purple_corner"
 
 /obj/structure/bed/couch/middle/sofa
 	name = "comfy sofa"
 	desc = "So lovely, uh."
 	icon_state = "sofa_middle_preview"
-	base_icon = "sofa_middle"
+	base_icon_state = "sofa_middle"
 
 /obj/structure/bed/couch/left/sofa
 	name = "comfy sofa"
 	desc = "So lovely, uh."
 	icon_state = "sofa_left_preview"
-	base_icon = "sofa_left"
+	base_icon_state = "sofa_left"
 
 /obj/structure/bed/couch/right/sofa
 	name = "comfy sofa"
 	desc = "So lovely, uh."
 	icon_state = "sofa_right_preview"
-	base_icon = "sofa_right"
+	base_icon_state = "sofa_right"

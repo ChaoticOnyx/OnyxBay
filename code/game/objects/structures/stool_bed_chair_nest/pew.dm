@@ -6,7 +6,7 @@
 	name = "pew"
 	desc = "It's like a bench, but more holy. No, not <i>holey</i>, <b>holy</b>. Like, godly, divine. That kinda thing.<br>Okay, it's actually kind of holey, too, now that you look at it closer."
 	icon_state = "armchair_preview"
-	base_icon = "chair_pewchapel"
+	base_icon_state = "chair_pewchapel"
 	material_alteration = MATERIAL_ALTERATION_NONE
 	buckle_dir = 0
 	buckle_lying = 0
@@ -74,17 +74,17 @@
 /obj/structure/bed/pew/on_update_icon()
 	..()
 
-	var/cache_key = "[base_icon]-over"
+	var/cache_key = "[base_icon_state]-over"
 	if(isnull(stool_cache[cache_key]))
-		var/image/I = image('icons/obj/furniture.dmi', "[base_icon]_over")
+		var/image/I = image('icons/obj/furniture.dmi', "[base_icon_state]_over")
 		if(material_alteration & MATERIAL_ALTERATION_COLOR)
 			I.color = material.icon_colour
 		I.layer = DEPTH_OVERLAY_LAYER
 		stool_cache[cache_key] = I
 	AddOverlays(stool_cache[cache_key])
 	if(buckled_mob)
-		cache_key = "[base_icon]_armrest"
-		var/image/I = image('icons/obj/furniture.dmi', "[base_icon]_armrest")
+		cache_key = "[base_icon_state]_armrest"
+		var/image/I = image('icons/obj/furniture.dmi', "[base_icon_state]_armrest")
 		I.layer = DEPTH_OVERLAY_LAYER
 		if(material_alteration & MATERIAL_ALTERATION_COLOR)
 			I.color = padding_material.icon_colour
@@ -96,12 +96,12 @@
 
 /obj/structure/bed/pew/pewchapel/left
 	icon_state = "chair_pewchapel_left"
-	base_icon = "chair_pewchapel_left"
+	base_icon_state = "chair_pewchapel_left"
 
 /obj/structure/bed/pew/pewchapel/right
 	icon_state = "chair_pewchapel_right"
-	base_icon = "chair_pewchapel_right"
+	base_icon_state = "chair_pewchapel_right"
 
 /obj/structure/bed/pew/pewchapel/middle
 	icon_state = "chair_pewchapel_middle"
-	base_icon = "chair_pewchapel_middle"
+	base_icon_state = "chair_pewchapel_middle"
