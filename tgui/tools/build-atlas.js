@@ -99,10 +99,14 @@ function addFile(targets, relativePath) {
   }
 }
 
+function globToRegex(pattern) {
+  return new RegExp('^' + pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*') + '$');
+}
+
 function addGlob(targets, dir, pattern) {
   const dirPath = path.join(ICONS_DIR, dir);
   if (!fs.existsSync(dirPath)) return;
-  const regex = new RegExp('^' + pattern.replace(/\*/g, '.*') + '$');
+  const regex = globToRegex(pattern);
   for (const file of fs.readdirSync(dirPath)) {
     if (regex.test(file)) {
       targets.push(path.join(dir, file).replace(/\\/g, '/'));
@@ -113,7 +117,7 @@ function addGlob(targets, dir, pattern) {
 function addGlobRecursive(targets, dir, pattern) {
   const dirPath = path.join(ICONS_DIR, dir);
   if (!fs.existsSync(dirPath)) return;
-  const regex = new RegExp('^' + pattern.replace(/\*/g, '.*') + '$');
+  const regex = globToRegex(pattern);
   function walk(currentDir, relativeBase) {
     for (const entry of fs.readdirSync(currentDir, { withFileTypes: true })) {
       if (entry.isDirectory()) {
