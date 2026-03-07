@@ -12,6 +12,7 @@
 	desc = "This is used to lie in, sleep in or strap on."
 	icon = 'icons/obj/furniture.dmi'
 	icon_state = "bed"
+	base_icon_state = "bed"
 	anchored = 1
 	can_buckle = 1
 	buckle_dir = SOUTH
@@ -20,7 +21,6 @@
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 	var/material/material
 	var/material/padding_material
-	var/base_icon = "bed"
 	var/material_alteration = MATERIAL_ALTERATION_ALL
 
 /obj/structure/bed/New(newloc, new_material, new_padding_material)
@@ -45,18 +45,18 @@
 	icon_state = ""
 	ClearOverlays()
 	// Base icon.
-	var/cache_key = "[base_icon]-[material.name]"
+	var/cache_key = "[base_icon_state]-[material.name]"
 	if(isnull(stool_cache[cache_key]))
-		var/image/I = image('icons/obj/furniture.dmi', base_icon)
+		var/image/I = image('icons/obj/furniture.dmi', base_icon_state)
 		if(material_alteration & MATERIAL_ALTERATION_COLOR)
 			I.color = material.icon_colour
 		stool_cache[cache_key] = I
 	AddOverlays(stool_cache[cache_key])
 	// Padding overlay.
 	if(padding_material)
-		var/padding_cache_key = "[base_icon]-padding-[padding_material.name]"
+		var/padding_cache_key = "[base_icon_state]-padding-[padding_material.name]"
 		if(isnull(stool_cache[padding_cache_key]))
-			var/image/I =  image(icon, "[base_icon]_padding")
+			var/image/I =  image(icon, "[base_icon_state]_padding")
 			if(material_alteration & MATERIAL_ALTERATION_COLOR)
 				I.color = padding_material.icon_colour
 			stool_cache[padding_cache_key] = I
@@ -195,7 +195,7 @@
 	name = "psychiatrist's couch"
 	desc = "For prime comfort during psychiatric evaluations."
 	icon_state = "psychbed"
-	base_icon = "psychbed"
+	base_icon_state = "psychbed"
 	buckle_pixel_shift = "x=0;y=1"
 
 /obj/structure/bed/psych/New(newloc)
@@ -447,7 +447,7 @@
 	desc = "Truly a racing bed."
 	anchored = 0
 	icon_state = "wheelbed"
-	base_icon = "wheelbed"
+	base_icon_state = "wheelbed"
 	buckle_pixel_shift = "x=0;y=3"
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
 

@@ -7,6 +7,7 @@ var/global/list/stool_cache = list() //haha stool
 	icon = 'icons/obj/furniture.dmi'
 	icon_state = "stool_preview" //set for the map
 	item_state = "stool"
+	base_icon_state = "stool"
 	randpixel = 0
 	force = 10
 	mod_reach = 0.85
@@ -18,7 +19,6 @@ var/global/list/stool_cache = list() //haha stool
 
 	rad_resist_type = /datum/rad_resist/none
 
-	var/base_icon = "stool"
 	var/material/material
 	var/material/padding_material
 
@@ -45,7 +45,7 @@ var/global/list/stool_cache = list() //haha stool
 	name = "wooden bar stool"
 	icon_state = "barstool_new_preview" //set for the map
 	item_state = "bar_stool"
-	base_icon = "barstool_new"
+	base_icon_state = "barstool_new"
 
 /obj/item/stool/bar_new/padded
 	icon_state = "barstool_new_padded_preview"
@@ -57,7 +57,7 @@ var/global/list/stool_cache = list() //haha stool
 	name = "bar stool"
 	icon_state = "bar_stool_preview" //set for the map
 	item_state = "bar_stool"
-	base_icon = "bar_stool"
+	base_icon_state = "bar_stool"
 
 /obj/item/stool/bar/padded
 	icon_state = "bar_stool_padded_preview"
@@ -74,17 +74,17 @@ var/global/list/stool_cache = list() //haha stool
 /obj/item/stool/on_update_icon()
 	// Base icon.
 	var/list/noverlays = list()
-	var/cache_key = "[base_icon]-[material.name]"
+	var/cache_key = "[base_icon_state]-[material.name]"
 	if(isnull(stool_cache[cache_key]))
-		var/image/I = image(icon, "[base_icon]_base")
+		var/image/I = image(icon, "[base_icon_state]_base")
 		I.color = material.icon_colour
 		stool_cache[cache_key] = I
 	noverlays |= stool_cache[cache_key]
 	// Padding overlay.
 	if(padding_material)
-		var/padding_cache_key = "[base_icon]-padding-[padding_material.name]"
+		var/padding_cache_key = "[base_icon_state]-padding-[padding_material.name]"
 		if(isnull(stool_cache[padding_cache_key]))
-			var/image/I =  image(icon, "[base_icon]_padding")
+			var/image/I =  image(icon, "[base_icon_state]_padding")
 			I.color = padding_material.icon_colour
 			stool_cache[padding_cache_key] = I
 		noverlays |= stool_cache[padding_cache_key]
