@@ -2,7 +2,6 @@
 	name = "chair"
 	desc = "A four-legged chair, rigid and slightly uncomfortable. Helpful when you don't want to use your legs at the moment."
 	icon_state = "chair_preview"
-	color = "#999999"
 	base_icon_state = "chair"
 	buckle_dir = 0
 	buckle_lying = 0 //force people to sit up in chairs when buckled
