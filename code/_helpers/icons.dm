@@ -883,10 +883,7 @@
 
 /proc/path2icon(path, dir = SOUTH, frame = 1, moving = FALSE)
 	var/atom/A = path
-	var/state = initial(A.icon_state)
-	if(!state)
-		state = ""
-	return icon(initial(A.icon), state, dir, frame, moving)
+	return icon(initial(A.icon), initial(A.icon_state), dir, frame, moving)
 
 /*
  *	Converts an icon to base64. Operates by putting the icon in the iconCache savefile,
