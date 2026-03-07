@@ -33,6 +33,10 @@
 	CONFIG_LOAD_STR(hosted_by, data["hosted_by"])
 	CONFIG_LOAD_NUM(player_limit, data["player_limit"])
 	CONFIG_LOAD_NUM(hard_player_limit, data["hard_player_limit"])
+
+	if(!hard_player_limit)
+		hard_player_limit = 80
+
 	CONFIG_LOAD_NUM(ticklag, data["ticklag"])
 
 	CONFIG_LOAD_NUM(client_min_major_version, data["client_min_major_version"])

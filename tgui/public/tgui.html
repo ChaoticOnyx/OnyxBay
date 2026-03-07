@@ -6,6 +6,8 @@
 
     <!-- Inlined metadata -->
     <meta id="tgui:windowId" content="[tgui:windowId]" />
+    <meta id="tgui:wsToken" content="[tgui:wsToken]" />
+    <meta id="tgui:wsAddress" content="[tgui:wsAddress]" />
 
     <!-- Early setup -->
     <script type="text/javascript">
@@ -38,6 +40,76 @@
 
         // Expose inlined metadata
         Byond.windowId = parseMetaTag("tgui:windowId");
+        Byond.wsToken = parseMetaTag("tgui:wsToken");
+
+        Byond.wsAuthenticated = false;
+        Byond.wsQueue = [];
+        const wsAddress = parseMetaTag("tgui:wsAddress");
+        const WS_RETRY_DELAY = 5000;
+        const WS_MAX_RETRIES = 60;
+        var wsRetryCount = 0;
+
+        var connectWebSocket = function () {
+          var ws = new WebSocket(wsAddress);
+          Byond.ws = ws;
+
+          ws.addEventListener('open', function () {
+            wsRetryCount = 0;
+
+            // We send the connection request first and only then everything else.
+            ws.send(JSON.stringify({
+              type: "tgui/connect",
+              token: Byond.wsToken,
+              payload: {
+                window_id: Byond.windowId,
+              },
+            }));
+
+            Byond.wsAuthenticated = true;
+
+            while (Byond.wsQueue.length > 0) {
+              ws.send(Byond.wsQueue.shift());
+            }
+          });
+
+          ws.addEventListener("message", function (event) {
+            if (window.update.queueActive) {
+              window.update.queue.push(event.data);
+              return;
+            }
+
+            var message = Byond.parseJson(event.data);
+
+            window.update.lastPayloadByType[message.type] = message.payload;
+
+            var listeners = window.update.listeners;
+            for (var i = 0; i < listeners.length; i++) {
+              listeners[i](message.type, message.payload);
+            }
+          });
+
+          ws.addEventListener('close', function () {
+            Byond.wsAuthenticated = false;
+
+            if (wsRetryCount >= WS_MAX_RETRIES) {
+              console.error(
+                'WebSocket: failed to connect after ' + WS_MAX_RETRIES + ' tries.'
+              );
+              return;
+            }
+
+            wsRetryCount++;
+            console.warn(
+              'WebSocket: failed to connect, retry after '
+              + (WS_RETRY_DELAY / 1000) + 's '
+              + '(try ' + wsRetryCount + '/' + WS_MAX_RETRIES + ')'
+            );
+
+            setTimeout(connectWebSocket, WS_RETRY_DELAY);
+          });
+        };
+
+        connectWebSocket();
 
         // Backwards compatibility
         window.__windowId__ = Byond.windowId;
@@ -152,8 +224,12 @@
           return promise;
         };
 
-        Byond.topic = function (params) {
-          return Byond.call("", params);
+        Byond.send = function (params) {
+          if (Byond.ws.readyState !== WebSocket.OPEN || !Byond.wsAuthenticated) {
+            Byond.wsQueue.push(JSON.stringify(params));
+          } else {
+            Byond.ws.send(JSON.stringify(params));
+          }
         };
 
         Byond.command = function (command) {
@@ -204,59 +280,38 @@
           }
         };
 
-        // ======================================================
-        // STEP 1: Incoming message handling MUST be defined
-        // BEFORE Byond.subscribe() / chunking logic uses it.
-        // ======================================================
-
-        // Message handler called by BYOND
-        window.update = function (rawMessage) {
-          // Push onto the queue (active during initialization)
-          if (window.update.queueActive) {
-            window.update.queue.push(rawMessage);
-            return;
-          }
-          // Parse the message
-          var message = Byond.parseJson(rawMessage);
-          // Notify listeners
-          var listeners = window.update.listeners;
-          for (var i = 0; i < listeners.length; i++) {
-            listeners[i](message.type, message.payload);
-          }
-        };
-
-        // Properties and variables of this specific handler
-        window.update.listeners = [];
-        window.update.queue = [];
-        window.update.queueActive = true;
-        window.update.flushQueue = function (listener) {
-          // Disable and clear the queue permanently on short delay
-          if (window.update.queueActive) {
-            window.update.queueActive = false;
-            if (window.setTimeout) {
-              window.setTimeout(function () {
-                window.update.queue = [];
-              }, 0);
+        window.update = {
+          listeners: [],
+          queue: [],
+          queueActive: true,
+          lastPayloadByType: {},
+          
+          flushQueue: function (listener) {
+            if (window.update.queueActive) {
+              window.update.queueActive = false;
+            }
+            
+            var queue = window.update.queue;
+            for (var i = 0; i < queue.length; i++) {
+              var message = Byond.parseJson(queue[i]);
+              listener(message.type, message.payload);
+            }
+            
+            var lastPayloads = window.update.lastPayloadByType;
+            for (var type in lastPayloads) {
+              if (Object.prototype.hasOwnProperty.call(lastPayloads, type)) {
+                listener(type, lastPayloads[type]);
+              }
             }
           }
-          // Process queued messages on provided listener
-          var queue = window.update.queue;
-          for (var i = 0; i < queue.length; i++) {
-            var message = Byond.parseJson(queue[i]);
-            listener(message.type, message.payload);
-          }
         };
-
 
         // This function exists purely for debugging, do not use it in code!
         Byond.injectMessage = function (type, payload) {
-          window.update(JSON.stringify({ type: type, payload: payload }));
-        };
-
-        // Ранняя подписка: НЕ трогает очередь и НЕ отключает queueActive.
-        // Используется только для bootstrap-слушателей (например, chunking).
-        Byond.subscribeEarly = function (listener) {
-          window.update.listeners.push(listener);
+          var listeners = window.update.listeners;
+          for (var i = 0; i < listeners.length; i++) {
+            listeners[i](type, payload);
+          }
         };
 
         // Обычная подписка: именно она должна "разом" обработать очередь.
@@ -264,6 +319,7 @@
           window.update.flushQueue(listener);
           window.update.listeners.push(listener);
         };
+
         Byond.subscribeTo = function (type, listener) {
           var _listener = function (_type, payload) {
             if (_type === type) {
@@ -274,184 +330,16 @@
           window.update.flushQueue(_listener);
         };
 
-        // ------------------------------------------------------
-        // TGUI oversized payload chunking (PR #90295)
-        // ------------------------------------------------------
-
-        var TOPIC_URL_LIMIT = 2048;
-        var CHUNK_URL_LIMIT = 1024;
-
-        Byond.__outgoingPayloadQueues__ = {}; // id -> { chunks: string[] }
-
-        function estimateTopicUrlSize(obj) {
-          var i = 0;
-          var url = "";
-          for (var key in obj) {
-            if (hasOwn.call(obj, key)) {
-              var value = obj[key];
-              if (value === null || value === undefined) value = "";
-              url +=
-                (i++ > 0 ? "&" : "?") +
-                encodeURIComponent(key) +
-                "=" +
-                encodeURIComponent(value);
-            }
-          }
-          return url.length;
-        }
-
-        function encodedLengthBinarySearch(haystackArray, targetEncodedLen) {
-          var high = haystackArray.length - 1;
-          var low = 0;
-          var mid = 0;
-
-          while (low < high) {
-            mid = Math.round((low + high) / 2);
-            var substring = haystackArray.slice(0, mid).join("");
-            var substringLen = encodeURIComponent(substring).length;
-
-            if (substringLen === targetEncodedLen) {
-              break;
-            }
-            if (substringLen < targetEncodedLen) {
-              low = mid + 1;
-            } else {
-              high = mid - 1;
-            }
-          }
-          return mid;
-        }
-
-        function splitIntoEncodedChunks(str) {
-          var chars = str.split("");
-          var length = chars.length;
-
-          var chunks = [];
-          var startIndex = 0;
-          var endIndex = CHUNK_URL_LIMIT;
-
-          while (startIndex < length) {
-            var cut = chars.slice(
-              startIndex,
-              endIndex < length ? endIndex : undefined
-            );
-            var cutString = cut.join("");
-
-            if (encodeURIComponent(cutString).length > CHUNK_URL_LIMIT) {
-              var splitIndex =
-                startIndex + encodedLengthBinarySearch(cut, CHUNK_URL_LIMIT);
-
-              chunks.push(
-                chars
-                  .slice(startIndex, splitIndex < length ? splitIndex : undefined)
-                  .join("")
-              );
-              startIndex = splitIndex;
-            } else {
-              chunks.push(cutString);
-              startIndex = endIndex;
-            }
-
-            endIndex = startIndex + CHUNK_URL_LIMIT;
-          }
-
-          return chunks;
-        }
-
-        function sendNextPayloadChunk(id) {
-          var q = Byond.__outgoingPayloadQueues__[id];
-          if (!q || !q.chunks || q.chunks.length === 0) {
-            delete Byond.__outgoingPayloadQueues__[id];
-            return;
-          }
-
-          var chunk = q.chunks[0];
-
-          Byond.topic({
-            tgui: 1,
-            window_id: Byond.windowId,
-            type: "payloadChunk",
-            payload: JSON.stringify({
-              id: id,
-              chunk: chunk,
-            }),
-          });
-        }
-
-        // Listen server replies
-        Byond.subscribeEarly(function (type, payload) {
-          if (type === "oversizePayloadResponse") {
-            if (payload && payload.allow) {
-              sendNextPayloadChunk(payload.id);
-            } else if (payload && payload.id) {
-              delete Byond.__outgoingPayloadQueues__[payload.id];
-            }
-            return;
-          }
-
-          if (type === "acknowlegePayloadChunk") {
-            var id = payload && payload.id;
-            var q = id && Byond.__outgoingPayloadQueues__[id];
-            if (!q) return;
-
-            q.chunks.shift();
-            sendNextPayloadChunk(id);
-            return;
-          }
-        });
-
-        // Override sendMessage: chunking only for act/*
         Byond.sendMessage = function (type, payload) {
           var message =
             typeof type === "string" ? { type: type, payload: payload } : type;
 
-          if (
-            typeof message.type === "string" &&
-            message.type.indexOf("act/") === 0 &&
-            !Byond.TRIDENT
-          ) {
-            var stringifiedPayload = "{}";
-            if (message.payload !== null && message.payload !== undefined) {
-              stringifiedPayload = JSON.stringify(message.payload);
-            }
-
-            var urlSize = estimateTopicUrlSize({
-              type: message.type,
-              payload: stringifiedPayload,
-              tgui: 1,
-              window_id: Byond.windowId,
-            });
-
-            if (urlSize > TOPIC_URL_LIMIT) {
-              var chunks = splitIntoEncodedChunks(stringifiedPayload);
-              var id = "" + Date.now();
-
-              Byond.__outgoingPayloadQueues__[id] = { chunks: chunks };
-
-              Byond.topic({
-                tgui: 1,
-                window_id: Byond.windowId,
-                type: "oversizedPayloadRequest",
-                payload: JSON.stringify({
-                  type: message.type,
-                  id: id,
-                  chunkCount: chunks.length,
-                }),
-              });
-
-              return;
-            }
-          }
-
-          // Normal send
-          if (message.payload !== null && message.payload !== undefined) {
-            message.payload = JSON.stringify(message.payload);
-          }
           assign(message, {
             tgui: 1,
             window_id: Byond.windowId,
           });
-          Byond.topic(message);
+
+          Byond.send(message);
         };
 
         // Asset loaders
@@ -668,7 +556,9 @@
         });
         // Short-circuit further updates
         window.__updateQueue__ = [];
-        window.update = function () {};
+        if (window.update && window.update.listeners) {
+          window.update.listeners = [];
+        }
         // Prevent default action
         return true;
       };
