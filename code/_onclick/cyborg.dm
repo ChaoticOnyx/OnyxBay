@@ -38,7 +38,13 @@
 
 	face_atom(A) // change direction to face what you clicked on
 
-	var/obj/item/I = get_active_hand()
+	// We don't use get_active_hand() here because borgs have grippers and surgical selectors, and we don't want them to go off with no cooldown.
+	// Stuff like this will bite us in the ass later if we add human-usable multitools, make borgs able to twohand, etc.
+	// Hence, we have some TODO options now:
+	// - Make all the "multitools"/"wrappers" subscribe to the contained items' set_cooldown() and make use of signals;
+	// - Get rid of get_[in]active_hand()s all over the board and replace them with get_[in]active_item()s, but this includes a lot of work and even more debugging;
+	// - Make items' set_cooldown() also set clicking cooldowns for non-humans, but this is ugly;
+	var/obj/item/I = get_active_item()
 
 	if(!canClick(I))
 		return

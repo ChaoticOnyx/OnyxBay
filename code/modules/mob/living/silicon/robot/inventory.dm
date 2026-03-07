@@ -5,6 +5,22 @@
 /mob/living/silicon/robot/get_active_hand()
 	return module_active
 
+/mob/living/silicon/robot/get_inactive_hand()
+	return module_active
+
+/mob/living/silicon/robot/get_active_item()
+	var/obj/item/I = ..()
+	var/obj/item/gripper/grip = I
+	if(istype(grip))
+		return grip.wrapped || grip
+	var/obj/item/surgical_selector/SS = I
+	if(istype(SS))
+		return SS.selected_tool
+	return I
+
+/mob/living/silicon/robot/get_inactive_item()
+	return get_active_item() // Robros are not so HANDsome
+
 /mob/living/silicon/robot/drop(obj/item/I, atom/target = null, force = FALSE, changing_slots)
 	if(!can_unequip(I))
 		return FALSE
