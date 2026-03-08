@@ -7,6 +7,7 @@
 
 .Dropdown {
   position: relative;
+  display: inline-block;
 }
 
 .Dropdown__control {
@@ -14,9 +15,10 @@
   display: inline-block;
   font-family: Verdana, sans-serif;
   font-size: base.em(12px);
-  width: base.em(100px);
+  min-width: base.em(100px);
   line-height: base.em(17px);
   user-select: none;
+  pointer-events: none; // clicks pass through to the native select beneath
 }
 
 .Dropdown__arrow-button {
@@ -28,49 +30,6 @@
   border-left: base.em(1px) solid rgba(0, 0, 0, 0.25);
 }
 
-.Dropdown__menu {
-  position: absolute;
-  overflow-y: auto;
-  z-index: 5;
-  width: base.em(100px);
-  max-height: base.em(200px);
-  overflow-y: scroll;
-  border-radius: 0 0 base.em(2px) base.em(2px);
-  color: #fff;
-  background-color: #000;
-  background-color: rgba(0, 0, 0, 0.75);
-}
-
-.Dropdown__menu-noscroll {
-  position: absolute;
-  overflow-y: auto;
-  z-index: 5;
-  width: base.em(100px);
-  max-height: base.em(200px);
-  border-radius: 0 0 base.em(2px) base.em(2px);
-  color: #fff;
-  background-color: #000;
-  background-color: rgba(0, 0, 0, 0.75);
-}
-
-.Dropdown__menuentry {
-  padding: base.em(2px) base.em(4px);
-  font-family: Verdana, sans-serif;
-  font-size: base.em(12px);
-  line-height: base.em(17px);
-  transition: background-color 100ms ease-out;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transition: background-color 0ms;
-  }
-}
-
-.Dropdown__over {
-  top: auto;
-  bottom: 100%;
-}
-
 .Dropdown__selected-text {
   display: inline-block;
   text-overflow: ellipsis;
@@ -78,4 +37,36 @@
   white-space: nowrap;
   height: base.em(17px);
   width: calc(100% - 1.2em);
+}
+
+// Invisible native <select> stacked on top of .Dropdown__control.
+// The browser handles all dropdown positioning, scrolling, and viewport clamping.
+// background-color / color here style the popup list in Chromium-based browsers.
+.Dropdown__native {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+  font-family: Verdana, sans-serif;
+  font-size: base.em(12px);
+  box-sizing: border-box;
+  background-color: #1a1c22;
+  color: #dde4f0;
+
+  &:disabled {
+    cursor: default;
+  }
+}
+
+.Dropdown__native option {
+  background-color: #1a1c22;
+  color: #dde4f0;
+}
+
+.Dropdown__native option:checked {
+  background-color: #2a3a5a;
+  color: #e8f0ff;
 }
