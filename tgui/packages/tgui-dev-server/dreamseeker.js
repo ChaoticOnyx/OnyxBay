@@ -69,6 +69,10 @@ DreamSeeker.getInstancesByPids = async (pids) => {
         if (!words || words.length === 0) {
           continue;
         }
+        // skip the WebSocket port
+        if(words[1].startsWith("0.0.0.0")) {
+          continue;
+        }
         const entry = {
           addr: words[1],
           pid: parseInt(words[4], 10),

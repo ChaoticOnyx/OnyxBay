@@ -91,7 +91,7 @@
 	var/atom/movable/pulling = null
 	var/other_mobs = null
 	var/next_move = null
-	var/hand = null
+	var/active_hand = ACTIVE_HAND_RIGHT
 	var/real_name = null
 	var/aim_assist = FALSE
 	var/twohanded_mode = FALSE

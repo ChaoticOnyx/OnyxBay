@@ -941,19 +941,6 @@
 /mob/living/silicon/robot/proc/radio_menu()
 	silicon_radio.interact(src)//Just use the radio's Topic() instead of bullshit special-snowflake code
 
-/mob/living/silicon/robot/get_active_item()
-	var/obj/item/I = ..()
-	var/obj/item/gripper/grip = I
-	if(istype(grip))
-		return grip.wrapped
-	var/obj/item/surgical_selector/SS = I
-	if(istype(SS))
-		return SS.selected_tool
-	return I
-
-/mob/living/silicon/robot/get_inactive_item()
-	return get_active_item() // Robros are not so HANDsome
-
 /mob/living/silicon/robot/Move(newloc, direct)
 	. = ..()
 	if(!.)

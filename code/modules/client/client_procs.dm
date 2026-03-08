@@ -54,14 +54,7 @@
 			completed_asset_jobs += asset_cache_job
 			return
 
-	// TGUI oversized payload chunking
-	var/skip_topic_limiter = FALSE
-	if(href_list["tgui"])
-		var/t = href_list["type"]
-		if(t == "oversizedPayloadRequest" || t == "payloadChunk")
-			skip_topic_limiter = TRUE
-
-	if(!skip_topic_limiter && config.general.minute_topic_limit)
+	if(config.general.minute_topic_limit)
 		var/minute = round(world.time, 600)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -79,7 +72,7 @@
 			to_chat(src, SPAN("danger", "[msg]"))
 			return
 
-	if(!skip_topic_limiter && config.general.second_topic_limit)
+	if(config.general.second_topic_limit)
 		var/second = round(world.time, 10)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -91,12 +84,22 @@
 			to_chat(src, SPAN("danger", "Your previous action was ignored because you've done too many in a second."))
 			return
 
+	if(href_list["type"] == "cacheReloaded")
+		if(!check_rights(R_ADMIN) || usr.client.tgui_cache_reloaded)
+			return TRUE
+		// Mark as reloaded
+		usr.client.tgui_cache_reloaded = TRUE
+		// Notify windows
+		var/list/windows = usr.client.tgui_windows
+		for(var/window_id in windows)
+			var/datum/tgui_window/window = windows[window_id]
+			if (window.status == TGUI_WINDOW_READY)
+				window.reinitialize()
+
+		return TRUE
+
 	// Logs all hrefs
 	log_href("[src] (usr:[usr]) || [hsrc ? "[hsrc] " : ""][href]")
-
-	// Tgui Topic middleware
-	if(tgui_Topic(href_list))
-		return
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
 	if(asset_cache_job && (asset_cache_job in completed_asset_jobs))
@@ -276,8 +279,6 @@
 
 	if(SSinput.initialized)
 		set_macros()
-
-	settings = new(src)
 
 	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.multiaccount.panic_server_address && TopicData != "redirect")

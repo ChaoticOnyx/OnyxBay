@@ -43,6 +43,11 @@
 
 	var/obj/item/wrapped = null // Item currently being held.
 
+/obj/item/gripper/get_ghost_image(atom/target)
+	if(!istype(wrapped))
+		return ..(target)
+	return wrapped.get_ghost_image(target)
+
 // VEEEEERY limited version for mining borgs. Basically only for swapping cells and upgrading the drills.
 /obj/item/gripper/miner
 	name = "drill maintenance gripper"

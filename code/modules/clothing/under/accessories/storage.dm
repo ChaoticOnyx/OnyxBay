@@ -29,11 +29,11 @@
 		..(user)
 
 /obj/item/clothing/accessory/storage/MouseDrop(obj/over_object as obj)
-	if (has_suit && hold)
-		return
+	if(has_suit && hold)
+		return FALSE
 
 	if(hold && hold.handle_mousedrop(usr, over_object))
-		..(over_object)
+		return ..(over_object)
 
 /obj/item/clothing/accessory/storage/attackby(obj/item/W as obj, mob/user as mob)
 	if(hold)

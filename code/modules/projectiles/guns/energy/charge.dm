@@ -21,23 +21,23 @@
 
 	one_hand_penalty = 3
 	accuracy = 1.0
-	fire_delay = null
+	fire_delay = 0.5 SECONDS
 	burst_accuracy = list(0)
 	burst = 1
-	burst_delay = 2
+	burst_delay = 0.2 SECONDS
 	space_recoil = TRUE
 
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 5, TECH_POWER = 3)
 	matter = list(MATERIAL_STEEL = 2500)
 
 	firemodes = list(
-		list(mode_name = "semiauto",       fire_delay = 1, charge_cost = 15, burst = 1),
-		list(mode_name = "2-round bursts", fire_delay = 1, charge_cost = 15, burst = 2)
+		list(mode_name = "semiauto",       fire_delay = 0.5 SECONDS, charge_cost = 15, burst = 1),
+		list(mode_name = "2-round bursts", fire_delay = 0.5 SECONDS, charge_cost = 15, burst = 2)
 	)
 
 	var/mag_insert_sound = 'sound/effects/weapons/gun/assaultrifle_magin.ogg'
 	var/mag_eject_sound = 'sound/effects/weapons/gun/assaultrifle_magout.ogg'
-	var/charge_cost = 15
+	var/charge_cost = 15 // Enough for 12 shots
 	var/charge_multiplier = 1.0
 	var/modifystate = "charge_rifle"
 	var/barrel_overlay = ""

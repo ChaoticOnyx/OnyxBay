@@ -116,13 +116,11 @@ var/list/slot_equipment_priority = list( \
 
 //Returns the thing in our active hand
 /mob/proc/get_active_hand()
-	if(hand)	return l_hand
-	else		return r_hand
+	return (active_hand == ACTIVE_HAND_LEFT) ? l_hand : r_hand
 
 //Returns the thing in our inactive hand
 /mob/proc/get_inactive_hand()
-	if(hand)	return r_hand
-	else		return l_hand
+	return (active_hand == ACTIVE_HAND_LEFT) ? r_hand : l_hand
 
 // Returns TRUE if we have AM in any hand
 /mob/proc/has_in_hands(atom/movable/AM)
@@ -249,11 +247,11 @@ var/list/slot_equipment_priority = list( \
 
 // Drops the item in our active hand.
 /mob/proc/drop_active_hand(atom/Target, force = 0)
-	return hand ? drop_l_hand(Target, force) : drop_r_hand(Target, force)
+	return (active_hand == ACTIVE_HAND_LEFT) ? drop_l_hand(Target, force) : drop_r_hand(Target, force)
 
 // Drops the item in our inactive hand.
 /mob/proc/drop_inactive_hand(atom/Target, force = 0)
-	return hand ? drop_r_hand(Target, force) : drop_l_hand(Target, force)
+	return (active_hand == ACTIVE_HAND_LEFT) ? drop_r_hand(Target, force) : drop_l_hand(Target, force)
 
 /*
 	Removes the object from any slots the mob might have, calling the appropriate icon update proc.

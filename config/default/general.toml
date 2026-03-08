@@ -27,8 +27,8 @@ server_suffix = false
 player_limit = 0
 
 ## Extra players limit. Allows to connect players who already have living mob.
-## Write 0 to toggle limit off. Must be more than PLAYER_LIMIT in order to work correctly.
-hard_player_limit = 0
+## Must be more than PLAYER_LIMIT in order to work correctly.
+hard_player_limit = 80
 
 ## Kick players that have major or minor BYOND build below this numbers.
 ## Write numbers of major and minor BYOND build. Writing numbers above existing BYOND builds will result in impossibility to join server.

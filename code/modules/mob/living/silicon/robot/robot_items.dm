@@ -209,6 +209,11 @@
 	QDEL_NULL_LIST(surgery_items)
 	return ..()
 
+/obj/item/surgical_selector/get_ghost_image(atom/target)
+	if(!istype(selected_tool))
+		return null
+	return selected_tool.get_ghost_image(target)
+
 /obj/item/surgical_selector/advanced
 	surgery_item_paths = list(
 		/obj/item/scalpel/manager,

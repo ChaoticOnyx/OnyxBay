@@ -532,7 +532,7 @@
 	var/anim_icon_state = initial(item_state)
 	if (!anim_icon_state)
 		anim_icon_state = initial(icon_state)
-	if(!user.hand)
+	if(user.active_hand == ACTIVE_HAND_RIGHT)
 		switch(user.dir)
 			if (NORTH)
 				pixOffX = 3

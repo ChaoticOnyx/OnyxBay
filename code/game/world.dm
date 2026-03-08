@@ -130,6 +130,9 @@ var/server_name = "OnyxBay"
 	// Load up the base config.toml
 	config.load_configuration()
 
+	// As early as possible
+	SSws.start_server()
+
 	if(config.general.server_port)
 		var/port = OpenPort(config.general.server_port)
 		to_world_log(port ? "Changed port to [port]" : "Failed to change port")
@@ -521,9 +524,9 @@ var/world_topic_spam_protect_time = world.timeofday
 
 /world/Reboot(reason, reboot_hardness = 0)
 	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
-	Z_DEINIT()
 
 	if(reboot_hardness == REBOOT_REALLY_HARD)
+		Z_DEINIT()
 		..(reason)
 		return
 
@@ -537,6 +540,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			send_link(C, "byond://[config.external.server]")
 
 	if(config.general.wait_for_sigusr1 && reason != 3)
+		Z_DEINIT()
 		text2file("foo", "reboot_called")
 		to_world("<span class=danger>World reboot waiting for external scripts. Please be patient.</span>")
 		return
@@ -546,6 +550,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	if(blackbox)
 		blackbox.save_all_data_to_sql()
 
+	Z_DEINIT()
 	..(reason)
 
 /world/Del()

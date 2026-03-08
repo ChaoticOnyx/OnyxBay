@@ -653,11 +653,14 @@ its easier to just keep the beam vertical.
 			H.update_health()
 
 /atom/MouseDrop_T(atom/movable/target, mob/user)
+	. = ..()
+	if(.)
+		return
+
 	var/mob/living/H = user
 	if(istype(H) && can_climb(H) && target == user)
 		do_climb(target)
-	else
-		return ..()
+		return TRUE
 
 // Called after we wrench/unwrench this object
 /obj/proc/wrenched_change()

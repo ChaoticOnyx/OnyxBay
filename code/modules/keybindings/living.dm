@@ -34,7 +34,7 @@
 
 /datum/keybinding/living/drop_item/down(client/user)
 	var/mob/living/L = user.mob
-	L.drop_active_hand()
+	L.hotkey_drop()
 	return TRUE
 
 /datum/keybinding/living/drop_inactive_item
@@ -45,5 +45,5 @@
 
 /datum/keybinding/living/drop_inactive_item/down(client/user)
 	var/mob/living/L = user.mob
-	L.drop_inactive_hand()
+	L.hotkey_drop(TRUE)
 	return TRUE

@@ -28,6 +28,89 @@ var/__z_name = null
 #define Z_ERROR_SLOT_NOT_FOUND "SlotNotFound"
 #define Z_ERROR_BAD_SRC "BadSrc"
 #define Z_ERROR_UNKNOWN "Unknown"
+#define Z_ERROR_ALREADY_RUNNING "AlreadyRunning"
+#define Z_ERROR_FAILED_TO_START "FailedToStart"
+
+// Global
+
+/// Returns the last error message from the backend, or null if no error.
+#define Z_GET_LAST_ERROR(...) call_ext(__z_name, "byond:Z_get_last_error")()
+
+/// Frees all the resources and the memory used by the library.
+#define Z_DEINIT(...) call_ext(__z_name, "byond:Z_deinit")()
+
+// WebSocket
+
+// Callback signatures:
+//   ON_TEXT_PROC(content: string, address: string, connection_index: number)
+//   ON_BINARY_PROC(content: list, address: string, connection_index: number)
+//   ON_DISCONNECT_PROC()
+// Inside of the ON_TEXT_PROC and ON_BINARY_PROC you can return any falsy value
+// to disconnect the connection. But you should not try to disconnect any other connections
+// during the callback call.
+
+/// PORT - the port to listen on, 0 for a random port.
+/// ON_TEXT_PROC - the callback to call when a text message received, may be null.
+/// ON_BINARY_PROC - the callback to call when a binary message received, may be null.
+/// CFG - a string of a JSON object with options.
+/// Options:
+/// - max_connections = 256
+/// - max_connections_per_ip = 5
+/// - handshake_timeout_ms = 5000
+/// - idle_timeout_ms = 300000
+/// - ping_interval_ms = 30000
+/// - pong_timeout_ms = 10000
+/// - max_message_size = 1 * 1024 * 1024
+/// - max_frame_size = 1 * 1024 * 1024
+/// - max_handshake_size = 8192
+/// - rate_limit_messages_per_sec = 25
+/// - rate_limit_bytes_per_sec = 1 * 1024 * 1024
+/// - initial_message_timeout_ms = 5000
+/// - afk_timeout_ms = 0
+/// - log = false (0/1)
+/// Returns false if the server failed to start (see Z_ERROR_ALREADY_RUNNING, Z_ERROR_FAILED_TO_START).
+#define Z_WS_START(PORT, ON_TEXT_PROC, ON_BINARY_PROC, CFG) call_ext(__z_name, "byond:Z_ws_start")(PORT, ON_TEXT_PROC, ON_BINARY_PROC, CFG)
+
+/// Sends a content to the connection by id.
+/// Pass a string to send a text message, or a list to send a binary message.
+/// Returns false if failed to send, or the connection not found, or the server is not running.
+#define Z_WS_SEND(IDX, CONTENT) call_ext(__z_name, "byond:Z_ws_send")(IDX, CONTENT)
+
+/// Ties the OBJ object with the connection.
+/// Returns false if the connection not found, or if the connection is already tied, or the server is not running.
+#define Z_WS_TIE(IDX, OBJ, ON_TEXT_PROC, ON_BINARY_PROC, ON_DISCONNECT_PROC) call_ext(__z_name, "byond:Z_ws_tie")(IDX, OBJ, ON_TEXT_PROC, ON_BINARY_PROC, ON_DISCONNECT_PROC)
+
+/// Returns a connection id tied to the OBJ, or null if the object is not tied.
+#define Z_WS_GET_TIED(OBJ) call_ext(__z_name, "byond:Z_ws_get_tied")(OBJ)
+
+/// Unties the connection with the tied object.
+/// Returns false if the connection was not tied, or the connection not found, or the server is not running.
+#define Z_WS_UNTIE(IDX) call_ext(__z_name, "byond:Z_ws_untie")(IDX)
+
+/// Disconnects the connection.
+/// Returns false if the connection was not found, or the server is not running.
+/// Do not call this inside of ON_*_PROC callbacks.
+#define Z_WS_DISCONNECT(IDX) call_ext(__z_name, "byond:Z_ws_disconnect")(IDX)
+
+/// Returns true if tick succeeded, false if the server was not running.
+/// Returns null on error (e.g., out of memory, see Z_ERROR_OUT_OF_MEMORY).
+#define Z_WS_TICK(...) call_ext(__z_name, "byond:Z_ws_tick")()
+
+/// Returns a port the WebSocket server is running on.
+/// Returns null if the WebSocket server is not running.
+#define Z_WS_GET_PORT(...) call_ext(__z_name, "byond:Z_ws_get_port")()
+
+/// Returns the duration of the last tick in ms.
+#define Z_WS_GET_TICK_TIME(...) call_ext(__z_name, "byond:Z_ws_get_tick_time")()
+
+/// Returns connections count.
+/// Returns null if the WebSocket server is not running.
+#define Z_WS_CONNECTIONS(...) call_ext(__z_name, "byond:Z_ws_connections")()
+
+/// Stops the WebSocket server. Returns true if the server was running.
+#define Z_WS_STOP(...) call_ext(__z_name, "byond:Z_ws_stop")()
+
+// Machines
 
 #define Z_MSTATE_STOPPED (1)
 #define Z_MSTATE_RUNNING (2)
@@ -60,9 +143,6 @@ var/__z_name = null
 #define Z_ENV_SENSOR_B2N_CMD_UPDATE 2
 
 // All machine IDs are numeric handles returned by Z_MACHINE_CREATE.
-
-/// Returns the last error message from the backend, or null if no error.
-#define Z_GET_LAST_ERROR(...) call_ext(__z_name, "byond:Z_get_last_error")()
 
 /// Creates a new machine. Returns numeric machine ID.
 /// Machine starts with no RAM and default frequency (1 MHz), not yet runnable.
@@ -157,5 +237,11 @@ var/__z_name = null
 /// Lower = more time for game logic, higher = faster emulation.
 #define Z_MACHINES_SET_BUDGET(PERCENT) call_ext(__z_name, "byond:Z_machines_set_budget")(PERCENT)
 
-/// Shuts down the emulator, destroys all machines and frees all memory.
-#define Z_DEINIT(...) call_ext(__z_name, "byond:Z_deinit")()
+// Crypto
+
+/// Generates a LEN bytes and encodes them in url-safe base64 string without padding.
+#define Z_CRYPTO_RANDOM_BASE64(LEN) call_ext(__z_name, "byond:Z_crypto_random_base64")(LEN)
+
+/// Content and key must be a string.
+/// Returns a url-safe base64 string without padding.
+#define Z_CRYPTO_HMAC_SHA256(CONTENT, KEY) call_ext(__z_name, "byond:Z_crypto_hmac_sha256")(CONTENT, KEY)

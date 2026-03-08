@@ -180,6 +180,7 @@
 	icobase = 'icons/mob/human_races/r_skrell.dmi'
 	primitive_form = "Neaera"
 	hair_key = SPECIES_SKRELL
+	default_h_style = "Short Headtails"
 	unarmed_types = list(/datum/unarmed_attack/punch)
 	blurb = "An amphibious species, Skrell come from the star system known as Qerr'Vallis, which translates to 'Star of \
 	the royals' or 'Light of the Crown'.<br/><br/>Skrell are a highly advanced and logical race who live under the rule \

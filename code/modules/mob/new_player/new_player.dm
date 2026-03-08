@@ -45,7 +45,6 @@
 	var/output = "<div align='center'>"
 	output +="<hr>"
 	output += "<p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
-	output += "<p><a href='byond://?src=\ref[src];show_settings=1'>Settings</a></p>"
 
 	if(GAME_STATE <= RUNLEVEL_LOBBY)
 		output += "<a href='byond://?src=\ref[src];predict_manifest=1'>View Crew Manifest Prediction</A><br><br>"
@@ -103,9 +102,6 @@
 		client.prefs.open_setup_window(src)
 		return 1
 
-	if(href_list["show_settings"])
-		client.settings.tgui_interact(src)
-		return 1
 
 	if(href_list["ready"])
 		if(GAME_STATE <= RUNLEVEL_LOBBY) // Make sure we don't ready up after the round has started

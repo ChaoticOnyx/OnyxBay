@@ -82,10 +82,10 @@
 
 /obj/item/storage/lockbox/MouseDrop(over_object, src_location, over_location)
 	add_fingerprint(usr)
-	if(locked)
+	if(locked && usr == over_object)
 		to_chat(usr, SPAN_WARNING("[src] is locked and cannot be opened!"))
 		return
-	. = ..()
+	return ..()
 
 /obj/item/storage/lockbox/AltClick(mob/usr)
 	if(locked)

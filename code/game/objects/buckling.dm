@@ -13,10 +13,14 @@
 	if(can_buckle && buckled_mob)
 		user_unbuckle_mob(user)
 
-/obj/MouseDrop_T(atom/movable/dropping, mob/living/user)
+/obj/MouseDrop_T(atom/movable/dropping, mob/living/user, params)
 	. = ..()
+	if(.)
+		return
+
 	if(can_buckle && isliving(dropping))
 		user_buckle_mob(dropping, user)
+		return TRUE
 
 /obj/Destroy()
 	unbuckle_mob()

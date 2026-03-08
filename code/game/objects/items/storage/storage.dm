@@ -78,39 +78,13 @@
 	QDEL_NULL(storage_ui)
 	. = ..()
 
-/obj/item/storage/MouseDrop(obj/over_object as obj)
-	if(!canremove)
-		return
-
-	if(((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !ischestburster(usr)))  && !usr.incapacitated())
-		if(over_object == usr && Adjacent(usr)) // this must come before the screen objects only block
-			src.add_fingerprint(usr)
-			src.open(usr)
+/obj/item/storage/MouseDrop(atom/over)
+	if(((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !ischestburster(usr))) && !usr.incapacitated())
+		if(over == usr && Adjacent(usr)) // this must come before the screen objects only block
+			add_fingerprint(usr)
+			open(usr)
 			return TRUE
-
-		if(!(istype(over_object, /atom/movable/screen)))
-			return ..()
-
-		//makes sure that the storage is equipped, so that we can't drag it into our hand from miles away.
-		if(loc != usr)
-			return
-
-
-		var/atom/movable/screen/inventory/inv_box = over_object
-		if(!istype(inv_box))
-			return
-
-		switch(inv_box.slot_id)
-			if(slot_r_hand)
-				if(usr.drop(src))
-					usr.put_in_r_hand(src)
-			if(slot_l_hand)
-				if(usr.drop(src))
-					usr.put_in_l_hand(src)
-			if(slot_back)
-				usr.drop(src)
-
-		add_fingerprint(usr)
+	return ..()
 
 /obj/item/storage/AltClick(mob/usr)
 	if(!canremove)

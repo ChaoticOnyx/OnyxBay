@@ -369,7 +369,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/mob/M = usr
 	if((!istype(over_object, /atom/movable/screen)) && can_use())
 		return attack_self(M)
-	return
+	return ..()
 
 /obj/item/device/pda/get_examine_line(examine_distance = 10)
 	var/visible_name = examine_distance < 3 ? name : initial(name)

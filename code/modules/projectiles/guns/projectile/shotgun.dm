@@ -205,6 +205,10 @@
 	mod_weight = 1.0
 	mod_reach = 0.8
 	mod_handy = 1.0
+
+	fire_delay = 0.1 SECOND
+	burst_delay = 0
+
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BACK
 	caliber = "12g"
@@ -212,10 +216,9 @@
 	ammo_type = /obj/item/ammo_casing/shotgun/beanbag
 	one_hand_penalty = 2
 
-	burst_delay = 0
 	firemodes = list(
-		list(mode_name="fire one barrel at a time", burst=1),
-		list(mode_name="fire both barrels at once", burst=2),
+		list(mode_name = "fire one barrel at a time", burst = 1),
+		list(mode_name = "fire both barrels at once", burst = 2),
 		)
 
 	fire_sound = 'sound/effects/weapons/gun/fire_shotgun2.ogg'
@@ -231,39 +234,48 @@
 /obj/item/gun/projectile/shotgun/doublebarrel/unload_ammo(user, allow_dump)
 	..(user, allow_dump=1)
 
+#define SET_SAWN_VAR(x) x = /obj/item/gun/projectile/shotgun/doublebarrel/sawn::##x
 //this is largely hacky and bad :(	-Pete
-/obj/item/gun/projectile/shotgun/doublebarrel/attackby(obj/item/A as obj, mob/user as mob)
-	if(w_class > 3 && (istype(A, /obj/item/circular_saw) || istype(A, /obj/item/melee/energy) || istype(A, /obj/item/gun/energy/plasmacutter)))
-		to_chat(user, "<span class='notice'>You begin to shorten the barrel of \the [src].</span>")
-		if(loaded.len)
-			for(var/i in 1 to max_shells)
-				Fire(user, user)	//will this work? //it will. we call it twice, for twice the FUN
-			user.visible_message("<span class='danger'>The shotgun goes off!</span>", "<span class='danger'>The shotgun goes off in your face!</span>")
-			return
-		if(do_after(user, 30, src, luck_check_type = LUCK_CHECK_COMBAT))	//SHIT IS STEALTHY EYYYYY
-			icon_state = "sawnshotgun"
-			item_state = "sawnshotgun"
-			wielded_item_state = null
-			w_class = ITEM_SIZE_NORMAL
-			force = 8.5
-			mod_weight = 0.7
-			mod_reach = 0.7
-			mod_handy = 0.85
-			one_hand_penalty = 0
-			slot_flags &= ~SLOT_BACK	//you can't sling it on your back
-			slot_flags |= (SLOT_BELT|SLOT_HOLSTER) //but you can wear it on your belt (poorly concealed under a trenchcoat, ideally) - or in a holster, why not.
-			SetName("sawn-off shotgun")
-			desc = "Omar's coming!"
-			fire_sound = 'sound/effects/weapons/gun/fire_shotgun3.ogg'
-			to_chat(user, "<span class='warning'>You shorten the barrel of \the [src]!</span>")
-	else
-		..()
+/obj/item/gun/projectile/shotgun/doublebarrel/attackby(obj/item/A, mob/user)
+	if(w_class <= ITEM_SIZE_NORMAL || !(istype(A, /obj/item/circular_saw) || istype(A, /obj/item/melee/energy) || istype(A, /obj/item/gun/energy/plasmacutter)))
+		return ..()
+
+	to_chat(user, SPAN("notice", "You begin to shorten the barrel of \the [src]."))
+	if(length(loaded))
+		for(var/i in 1 to max_shells)
+			Fire(user, user)	//will this work? //it will. we call it twice, for twice the FUN
+		user.visible_message(SPAN("danger", "The shotgun goes off!"),\
+							 SPAN("danger", "The shotgun goes off in your face!"))
+		return
+
+	if(do_after(user, 30, src, luck_check_type = LUCK_CHECK_COMBAT))	//SHIT IS STEALTHY EYYYYY
+		SetName(/obj/item/gun/projectile/shotgun/doublebarrel/sawn::name)
+		SET_SAWN_VAR(desc)
+		SET_SAWN_VAR(icon_state)
+		SET_SAWN_VAR(item_state)
+		SET_SAWN_VAR(base_icon_state)
+		SET_SAWN_VAR(wielded_item_state)
+		SET_SAWN_VAR(slot_flags)
+		SET_SAWN_VAR(w_class)
+		SET_SAWN_VAR(force)
+		SET_SAWN_VAR(mod_weight)
+		SET_SAWN_VAR(mod_reach)
+		SET_SAWN_VAR(mod_handy)
+		SET_SAWN_VAR(one_hand_penalty)
+		SET_SAWN_VAR(fire_sound)
+
+		item_state_slots.RemoveAll(slot_l_hand_str, slot_r_hand_str)
+		update_icon()
+		to_chat(user, SPAN("notice", "You shorten the barrel of \the [src]!"))
+
+#undef SET_SAWN_VAR
 
 /obj/item/gun/projectile/shotgun/doublebarrel/sawn
 	name = "sawn-off shotgun"
 	desc = "Omar's coming!"
 	icon_state = "sawnshotgun"
 	item_state = "sawnshotgun"
+	base_icon_state = "sawnshotgun"
 	wielded_item_state = null // It's basically a 12 Cal pistol
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	ammo_type = /obj/item/ammo_casing/shotgun/pellet

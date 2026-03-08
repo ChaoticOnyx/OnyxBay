@@ -365,7 +365,7 @@
 	if(istype(loc, /obj/mecha))
 		return
 
-	if(hand)
+	if(active_hand == ACTIVE_HAND_LEFT)
 		var/obj/item/I = is_active_hand ? l_hand : r_hand
 		if(I)
 			I.attack_self(src)

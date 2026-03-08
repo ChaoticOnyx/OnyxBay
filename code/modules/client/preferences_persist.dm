@@ -72,6 +72,33 @@
 
 	clear_character_previews() // Recalculate them on next show
 
+// Returns a deep copy of the character data as an assoc list (no disk write).
+/datum/preferences/proc/snapshot_character()
+	var/datum/pref_record_writer/json_list/W = new(PREF_SER_VERSION)
+	player_setup.save_character(W)
+	return deep_copy_assoc(W.data)
+
+// Recursively deep-copies a list including both indexed and associated values.
+/datum/preferences/proc/deep_copy_assoc(list/L)
+	if(!islist(L))
+		return L
+	var/list/copy = L.Copy()
+	// Deep-copy indexed values (handles numeric-indexed lists like gear_list)
+	for(var/i = 1 to copy.len)
+		if(islist(copy[i]))
+			copy[i] = deep_copy_assoc(copy[i])
+	// Deep-copy associated values (handles assoc lists like data["gear_list"])
+	for(var/key in copy)
+		if(istext(key) && islist(copy[key]))
+			copy[key] = deep_copy_assoc(copy[key])
+	return copy
+
+// Restores character data from a snapshot produced by snapshot_character().
+/datum/preferences/proc/restore_character_snapshot(list/snapshot)
+	var/datum/pref_record_reader/json_list/R = new /datum/pref_record_reader/json_list(snapshot)
+	player_setup.load_character(R)
+	sanitize_preferences()
+
 /datum/preferences/proc/save_character(override_key = null)
 	var/datum/pref_record_writer/json_list/W = new(PREF_SER_VERSION)
 	player_setup.save_character(W)

@@ -17,6 +17,8 @@
 
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
+		if(!H.is_hand_usable())
+			return
 		// Try to extract HUD matrix from target with empty hand
 		if(H.zone_sel && H.zone_sel.selecting == BP_EYES && H.a_intent == I_HELP && !H.get_active_hand())
 			var/obj/item/organ/internal/eyes/eyes = src.internal_organs_by_name[BP_EYES]
@@ -27,14 +29,6 @@
 					if(HM.try_extract_matrix(H, src))
 						return
 					break
-
-		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
-		if(H.hand)
-			temp = H.organs_by_name[BP_L_HAND]
-		if(!temp || !temp.is_usable())
-			to_chat(H, "<span class='warning'>You can't use your hand.</span>")
-			return
-
 	..()
 
 	// Should this all be in Touch()?

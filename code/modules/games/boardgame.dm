@@ -262,17 +262,6 @@ THAT STUPID GAME KIT
 	src.board_stat = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
 	src.selected = "CR"
 
-/obj/item/game_kit/MouseDrop_T(mob/user)
-	if (user == usr && !usr.incapacitated() && (usr.contents.Find(src) || in_range(src, usr)))
-		if (usr.hand)
-			if (!usr.l_hand)
-				spawn (0)
-					src.attack_hand(usr, 1, 1)
-		else
-			if (!usr.r_hand)
-				spawn (0)
-					src.attack_hand(usr, 0, 1)
-
 /obj/item/game_kit/proc/update()
 	var/datum/asset/assets = get_asset_datum(/datum/asset/simple/chess)
 	ASSERT(usr.client)

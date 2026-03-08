@@ -23,7 +23,6 @@
 	var/initial_inline_html
 	var/initial_inline_js
 	var/initial_inline_css
-	var/list/oversized_payloads = list()
 
 /**
  * public
@@ -80,6 +79,13 @@
 	// Generate page html
 	var/html = SStgui.basehtml
 	html = replacetextEx(html, "\[tgui:windowId]", id)
+	html = replacetextEx(html, "\[tgui:wsToken]", SSws.issue_token(client.ckey))
+	// TODO: wss://
+	if(SSws.port == null)
+		log_tgui(client, "Error: WebSocket server is not running, cannot initialize window.", context = id)
+		return
+
+	html = replacetextEx(html, "\[tgui:wsAddress]", SSws.get_address())
 	// Inject inline assets
 	var/assets_str = ""
 	for(var/datum/asset/asset in assets)
@@ -208,7 +214,7 @@
  *
  * optional can_be_suspended bool
  */
-/datum/tgui_window/proc/close(can_be_suspended = TRUE)
+/datum/tgui_window/proc/close(can_be_suspended = TRUE, close_connection = TRUE)
 	if(!client)
 		return
 	if(can_be_suspended && can_be_suspended())
@@ -224,6 +230,13 @@
 	release_lock()
 	status = TGUI_WINDOW_CLOSED
 	message_queue = null
+
+	if(close_connection)
+		var/conn_id = Z_WS_GET_TIED(src)
+
+		if(conn_id != null)
+			Z_WS_DISCONNECT(conn_id)
+
 	// Do not close the window to give user some time
 	// to read the error message.
 	if(!fatally_errored)
@@ -246,18 +259,22 @@
 	if(!force && status != TGUI_WINDOW_READY)
 		if(!message_queue)
 			message_queue = list()
+	
 		message_queue += list(message)
 		return
-	client << output(message, is_browser \
-		? "[id]:update" \
-		: "[id].browser:update")
+	
+	var/conn_id = Z_WS_GET_TIED(src)
+	ASSERT(conn_id != null)
+
+	if(!Z_WS_SEND(conn_id, message))
+		log_tgui(client, "Error: Failed to send WS message", context = id)
 
 /**
  * public
  *
  * Sends a raw payload to tgui window.
  *
- * required message string JSON+urlencoded blob to send.
+ * required message string JSON blob to send.
  * optional force bool Send regardless of the ready status.
  */
 /datum/tgui_window/proc/send_raw_message(message, force)
@@ -269,9 +286,11 @@
 			message_queue = list()
 		message_queue += list(message)
 		return
-	client << output(message, is_browser \
-		? "[id]:update" \
-		: "[id].browser:update")
+
+	var/conn_id = Z_WS_GET_TIED(src)
+	ASSERT(conn_id != null)
+	if(!Z_WS_SEND(conn_id, message))
+		log_tgui(client, "Error: Failed to send WS message", context = id)
 
 /**
  * public
@@ -297,18 +316,40 @@
 /datum/tgui_window/proc/flush_message_queue()
 	if(!client || !message_queue)
 		return
+	
+	var/conn_id = Z_WS_GET_TIED(src)
+	ASSERT(conn_id != null)
+
 	for(var/message in message_queue)
-		client << output(message, is_browser \
-			? "[id]:update" \
-			: "[id].browser:update")
+		if(!Z_WS_SEND(conn_id, message))
+			log_tgui(client, "Error: Failed to send WS message", context = id)
+
 	message_queue = null
 
-/**
- * private
- *
- * Callback for handling incoming tgui messages.
- */
-/datum/tgui_window/proc/on_message(type, payload, href_list)
+/datum/tgui_window/proc/__on_ws_text(content, addr, conn_id)
+	if(!client)
+		return FALSE
+
+	// For compatibility with code that relied on the usr set by Topic,
+	// and this is quite convenient.
+	usr = client.mob
+	var/list/C
+
+	try
+		C = json_decode(content)
+	catch
+		close(TRUE, FALSE)
+		return FALSE
+
+	if(!islist(C))
+		close(TRUE, FALSE)
+		return FALSE
+	
+	. = TRUE
+
+	var/type = C["type"]
+	var/payload = C["payload"]
+
 	// Status can be READY if user has refreshed the window.
 	if(type == "ready" && status == TGUI_WINDOW_READY)
 		// Resend the assets
@@ -316,7 +357,7 @@
 			send_asset(asset)
 	// Mark this window as fatally errored which prevents it from
 	// being suspended.
-	if(type == "log" && href_list["fatal"])
+	if(type == "log" && C["fatal"])
 		fatally_errored = TRUE
 	// Mark window as ready since we received this message from somewhere
 	if(status != TGUI_WINDOW_READY)
@@ -324,14 +365,14 @@
 		flush_message_queue()
 	// Pass message to UI that requested the lock
 	if(locked && locked_by)
-		var/prevent_default = locked_by._on_message(type, payload, href_list)
+		var/prevent_default = locked_by._on_message(type, payload, C)
 		if(prevent_default)
 			return
 	// Pass message to the subscriber
 	else if(subscriber_object)
 		var/prevent_default = call(
 			subscriber_object,
-			subscriber_delegate)(type, payload, href_list)
+			subscriber_delegate)(type, payload, C)
 		if(prevent_default)
 			return
 	// If not locked, handle these message types
@@ -339,96 +380,11 @@
 		if("ping")
 			send_message("pingReply", payload)
 		if("suspend")
-			close(can_be_suspended = TRUE)
+			close(TRUE, FALSE)
 		if("close")
-			close(can_be_suspended = FALSE)
+			close(FALSE, FALSE)
 		if("openLink")
-			client << link(href_list["url"])
-		if("cacheReloaded")
-			reinitialize()
-		if("oversizedPayloadRequest")
-			var/payload_id = payload["id"]
-			var/chunk_count = payload["chunkCount"]
+			client << link(C["url"])
 
-			var/permit_payload = chunk_count <= config.general.tgui_max_chunk_count
-			if(permit_payload)
-				create_oversized_payload(payload_id, payload["type"], chunk_count)
-
-			send_message("oversizePayloadResponse", list(
-				"allow" = permit_payload,
-				"id" = payload_id
-			))
-			return
-
-		if("payloadChunk")
-			var/payload_id = payload["id"]
-			append_payload_chunk(payload_id, payload["chunk"])
-			send_message("acknowlegePayloadChunk", list("id" = payload_id))
-			return
-
-/datum/tgui_window/proc/create_oversized_payload(payload_id, message_type, chunk_count)
-	if(oversized_payloads[payload_id])
-		CRASH("Attempted to create oversized tgui payload with duplicate ID.")
-
-	var/ctx_name = "tgui_oversize_[payload_id]"
-
-	oversized_payloads[payload_id] = list(
-		"type" = message_type,
-		"count" = chunk_count,
-		"chunks" = list(),
-		"ctx" = ctx_name
-	)
-
-	try_add_think_ctx(
-		ctx_name,
-		CALLBACK(src, nameof(.proc/remove_oversized_payload)),
-		1 SECONDS,
-		payload_id
-	)
-
-
-/datum/tgui_window/proc/append_payload_chunk(payload_id, chunk)
-	var/list/payload = oversized_payloads[payload_id]
-	if(!payload)
-		return
-
-	var/list/chunks = payload["chunks"]
-	chunks += chunk
-
-	var/ctx_name = payload["ctx"]
-	if(ctx_name)
-		set_next_think_ctx(ctx_name, 1 SECONDS)
-
-	if(length(chunks) < payload["count"])
-		return
-
-	if(ctx_name)
-		remove_think_ctx(ctx_name)
-
-	var/message_type = payload["type"]
-	var/final_payload = chunks.Join()
-
-	oversized_payloads -= payload_id
-
-	on_message(
-		message_type,
-		json_decode(final_payload),
-		list(
-			"type" = message_type,
-			"payload" = final_payload,
-			"tgui" = TRUE,
-			"window_id" = id
-		)
-	)
-
-
-/datum/tgui_window/proc/remove_oversized_payload(payload_id)
-	var/list/payload = oversized_payloads[payload_id]
-	if(!payload)
-		return
-
-	var/ctx_name = payload["ctx"]
-	if(ctx_name)
-		remove_think_ctx(ctx_name)
-
-	oversized_payloads -= payload_id
+/datum/tgui_window/proc/__on_ws_disconnected()
+	close(FALSE, FALSE)

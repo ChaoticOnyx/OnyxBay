@@ -17,8 +17,8 @@
 		..(user)
 
 /obj/item/clothing/suit/storage/MouseDrop(obj/over_object as obj)
-	if (pockets.handle_mousedrop(usr, over_object))
-		..(over_object)
+	if(pockets.handle_mousedrop(usr, over_object))
+		return ..(over_object)
 
 /obj/item/clothing/suit/storage/attackby(obj/item/W as obj, mob/user as mob)
 	..()
