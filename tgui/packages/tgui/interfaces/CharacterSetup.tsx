@@ -56,6 +56,98 @@ import uiOldNoborder from "../assets/settings/ui-old-noborder.png";
 import uiOrange from "../assets/settings/ui-orange.png";
 import uiWhite from "../assets/settings/ui-white.png";
 
+// ================================================================
+// SearchDropdown — combined search input + dropdown list
+// ================================================================
+
+interface SearchDropdownProps {
+  selected: string;
+  options: string[];
+  onSelected: (val: string) => void;
+  placeholder?: string;
+  fluid?: boolean;
+}
+
+class SearchDropdown extends Component<SearchDropdownProps, {
+  query: string;
+  open: boolean;
+}> {
+  private scrollRef: HTMLDivElement | null = null;
+
+  constructor(props) {
+    super(props);
+    this.state = { query: "", open: false };
+  }
+
+  render() {
+    const { selected, options, onSelected, placeholder, fluid } = this.props;
+    const { query, open } = this.state;
+    const filtered = query
+      ? options.filter((o) => o.toLowerCase().includes(query.toLowerCase()))
+      : options;
+
+    return (
+      <Box
+        className="SearchDropdown"
+        style={{ width: fluid ? "100%" : undefined }}
+      >
+        <Box className="SearchDropdown__inputWrap">
+          <input
+            className="SearchDropdown__input"
+            placeholder={open ? (placeholder || "Search...") : selected}
+            value={query}
+            onInput={(e: any) => this.setState({ query: e.target.value, open: true })}
+            onClick={() => this.setState({ open: true })}
+            onFocusin={() => this.setState({ open: true })}
+            onFocusout={() => {
+              // Delay so click on option fires first
+              setTimeout(() => this.setState({ open: false, query: "" }), 150);
+            }}
+          />
+          <Icon
+            name="chevron-down"
+            className="SearchDropdown__chevron"
+          />
+        </Box>
+        {open && filtered.length > 0 && (
+          <Box className="SearchDropdown__list"
+            ref={(el) => {
+              if (el && el !== this.scrollRef) {
+                this.scrollRef = el;
+                // Scroll selected into view
+                const idx = filtered.indexOf(selected);
+                if (idx > 0) {
+                  const child = el.children[idx] as HTMLElement;
+                  if (child) {
+                    child.scrollIntoView({ block: "center" });
+                  }
+                }
+              }
+            }}
+          >
+            {filtered.map((opt) => (
+              <Box
+                key={opt}
+                className={classes([
+                  "SearchDropdown__option",
+                  opt === selected && "SearchDropdown__option--selected",
+                ])}
+                onMousedown={(e) => {
+                  e.preventDefault();
+                  onSelected(opt);
+                  this.setState({ open: false, query: "" });
+                }}
+              >
+                {opt}
+              </Box>
+            ))}
+          </Box>
+        )}
+      </Box>
+    );
+  }
+}
+
 const UI_THEME_IMAGE: Record<string, string> = {
   "Goon": uiGoon,
   "Midnight": uiMidnight,
@@ -413,6 +505,7 @@ interface CharacterData {
   underwear_render: { state: string; dmiFile: string; color: string | null }[];
   equipment_render: { dmiFile: string; state: string; color: string | null; layer: number }[];
   backpack: string;
+  backpack_tweaks?: { options: string[]; current: string }[];
   equip_preview_mob: number;
   bgstate: string;
   can_undo: boolean;
@@ -715,9 +808,9 @@ const CsButton = (props: {
 
 const CATEGORIES = [
   { id: "identity", label: "Identity", icon: "user" },
-  { id: "wardrobe", label: "Wardrobe", icon: "tshirt" },
+  { id: "wardrobe", label: "Loadout", icon: "tshirt" },
   { id: "augmentations", label: "Augments", icon: "cog" },
-  { id: "career", label: "Career", icon: "briefcase" },
+  { id: "career", label: "Job", icon: "briefcase" },
   { id: "personality", label: "Persona", icon: "theater-masks" },
   { id: "background", label: "Lore", icon: "book" },
   { id: "settings", label: "Settings", icon: "sliders-h" },
@@ -1757,16 +1850,6 @@ const AppearanceCardBack = (props: {
     data.gender
   );
 
-  const [hairSearch, setHairSearch] = useLocalState(context, "hairSearch", "");
-  const [facialSearch, setFacialSearch] = useLocalState(context, "facialSearch", "");
-
-  const filteredHair = hairSearch
-    ? validHairStyles.filter((s) => s.toLowerCase().includes(hairSearch.toLowerCase()))
-    : validHairStyles;
-  const filteredFacial = facialSearch
-    ? validFacialStyles.filter((s) => s.toLowerCase().includes(facialSearch.toLowerCase()))
-    : validFacialStyles;
-
   return (
     <Box className="CharSetup__idCardBack">
       {/* Magnetic stripe */}
@@ -1820,18 +1903,11 @@ const AppearanceCardBack = (props: {
               <Box className="CharSetup__idCardBackCol">
                 <Box mb={0.75}>
                   <Box className="CharSetup__idCardBackLabel">Hair Style</Box>
-                  <Input
+                  <SearchDropdown
                     fluid
                     placeholder="Search styles..."
-                    value={hairSearch}
-                    onInput={(e, val) => setHairSearch(val)}
-                  />
-                  <Dropdown
-                    fluid
-                    reselectable
-                    mt={0.25}
                     selected={data.h_style}
-                    options={filteredHair}
+                    options={validHairStyles}
                     onSelected={(val) => act("setHairStyle", { style: val })}
                   />
                   <Box mt={0.25}>
@@ -1865,20 +1941,40 @@ const AppearanceCardBack = (props: {
 
                 <Box>
                   <Box className="CharSetup__idCardBackLabel">Facial Hair</Box>
-                  <Input
+                  <SearchDropdown
                     fluid
                     placeholder="Search styles..."
-                    value={facialSearch}
-                    onInput={(e, val) => setFacialSearch(val)}
-                  />
-                  <Dropdown
-                    fluid
-                    reselectable
-                    mt={0.25}
                     selected={data.f_style}
-                    options={filteredFacial}
+                    options={validFacialStyles}
                     onSelected={(val) => act("setFacialStyle", { style: val })}
                   />
+                  <Box mt={0.25}>
+                    <CsButton
+                      compact
+                      icon="chevron-left"
+                      tooltip="Previous style"
+                      onClick={() => {
+                        const idx = validFacialStyles.indexOf(data.f_style);
+                        const prev = idx <= 0
+                          ? validFacialStyles[validFacialStyles.length - 1]
+                          : validFacialStyles[idx - 1];
+                        act("setFacialStyle", { style: prev });
+                      }}
+                    />
+                    <CsButton
+                      compact
+                      icon="chevron-right"
+                      tooltip="Next style"
+                      ml={0.25}
+                      onClick={() => {
+                        const idx = validFacialStyles.indexOf(data.f_style);
+                        const next = idx >= validFacialStyles.length - 1
+                          ? validFacialStyles[0]
+                          : validFacialStyles[idx + 1];
+                        act("setFacialStyle", { style: next });
+                      }}
+                    />
+                  </Box>
                 </Box>
               </Box>
             )}
@@ -1953,6 +2049,12 @@ const AppearanceCardBack = (props: {
                   />
                 </Box>
               )}
+
+            </Box>
+
+            {/* THIRD COL — Languages */}
+            <Box className="CharSetup__idCardBackCol">
+              <LanguagesCompact data={data} act={act} />
             </Box>
           </Box>
         )}
@@ -2638,20 +2740,25 @@ const LoadoutSubPanel = (props: {
             <CsButton compact icon="random" onClick={() => act("randomizeLoadout")} tooltip="Random loadout" />
             <CsButton compact icon="trash-alt" onClick={() => act("clearLoadout")} tooltip="Clear loadout" />
           </Box>
-          {/* Backpack + set navigation row */}
+          {/* Backpack + type tweak row */}
           <Box className="CharSetup__loadoutHudSetRow">
             <Box className="CharSetup__loadoutHudLabel">
               <Icon name="backpack" mr={0.5} />
               BACKPACK
             </Box>
-            <Box style={{ flex: 1 }}>
+            <Dropdown
+              selected={data.backpack}
+              options={data.backpack_types}
+              onSelected={(val) => act("setBackpack", { name: val })}
+            />
+            {data.backpack_tweaks && data.backpack_tweaks.map((tweak, i) => (
               <Dropdown
-                fluid
-                selected={data.backpack}
-                options={data.backpack_types}
-                onSelected={(val) => act("setBackpack", { name: val })}
+                key={i}
+                selected={tweak.current}
+                options={tweak.options}
+                onSelected={(val) => act("setBackpackTweak", { tweakIndex: i + 1, value: val })}
               />
-            </Box>
+            ))}
           </Box>
           {/* Set navigation row */}
           <Box className="CharSetup__loadoutHudSetRow">
@@ -3635,7 +3742,7 @@ const AugmentationPanel = (props: {
                           Organic
                         </Box>
                       </Stack.Item>
-                      {selectedOrgan !== "chest" && (
+                      {selectedOrgan !== "chest" && selectedOrgan !== "head" && selectedOrgan !== "groin" && (
                         <Stack.Item>
                           <Box
                             className={
@@ -4885,7 +4992,6 @@ const UplinkSubPanel = (props: {
 
 const BACKGROUND_TABS = [
   { id: "records", label: "Records", icon: "file-medical" },
-  { id: "languages", label: "Languages", icon: "language" },
   { id: "flavor", label: "Flavor", icon: "feather-alt" },
   { id: "relations", label: "Relations", icon: "people-arrows" },
 ] as const;
@@ -4927,9 +5033,6 @@ const BackgroundPanel = (props: {
         <Divider />
       </Stack.Item>
       <Stack.Item grow basis={0} overflow="auto">
-        {tab === "languages" && (
-          <BackgroundLanguageSubPanel data={data} act={act} />
-        )}
         {tab === "records" && (
           <BackgroundRecordsSubPanel data={data} act={act} context={context} />
         )}
@@ -4966,9 +5069,9 @@ const ALIGNMENT_COLORS: Record<string, string> = {
   Opposed: "red",
 };
 
-// --- Languages: visual badge system ---
+// --- Languages: compact section for ID card back ---
 
-const BackgroundLanguageSubPanel = (props: {
+const LanguagesCompact = (props: {
   data: CharacterData;
   act: Function;
 }) => {
@@ -4977,130 +5080,58 @@ const BackgroundLanguageSubPanel = (props: {
   const altLangs = data.alternate_languages || [];
 
   return (
-    <>
-      {/* Native languages as prominent badges */}
-      <Box bold mb={0.5}>
-        <Icon name="comment-dots" mr={0.5} />
-        Native Languages
-      </Box>
-      <Stack wrap mb={1.5}>
-        {langInfo?.native && (
-          <Stack.Item>
-            <Box
-              inline
-              mr={0.5}
-              mb={0.5}
-              className="CharSetup__pill CharSetup__pill--native"
-            >
-              <Icon name="star" mr={0.5} />
-              {langInfo.native}
-            </Box>
-          </Stack.Item>
-        )}
-        {langInfo?.default &&
-          langInfo.default !== langInfo.native && (
-            <Stack.Item>
-              <Box
-                inline
-                mr={0.5}
-                mb={0.5}
-                className="CharSetup__pill CharSetup__pill--secondary"
-              >
-                <Icon name="comment" mr={0.5} />
-                {langInfo.default}
-              </Box>
-            </Stack.Item>
-          )}
-      </Stack>
+    <Box>
+      <Box className="CharSetup__idCardBackLabel">Languages</Box>
 
-      <Divider />
-
-      {/* Secondary languages */}
-      {langInfo && langInfo.max_alternates > 0 ? (
-        <>
-          <Stack align="center" mb={0.5}>
-            <Stack.Item grow>
-              <Box bold>
-                <Icon name="plus-circle" mr={0.5} />
-                Secondary Languages
-              </Box>
-            </Stack.Item>
-            <Stack.Item>
-              <Box
-                inline
-                bold
-                className={classes([
-                  "CharSetup__pill",
-                  "CharSetup__pill--count",
-                  altLangs.length >= langInfo.max_alternates && "CharSetup__pill--countFull",
-                ])}
-              >
-                {altLangs.length} / {langInfo.max_alternates}
-              </Box>
-            </Stack.Item>
-          </Stack>
-
-          {/* Active languages as removable pill badges */}
-          <Stack wrap mb={1}>
-            {altLangs.map((lang) => (
-              <Stack.Item key={lang}>
-                <Box
-                  inline
-                  mr={0.5}
-                  mb={0.5}
-                  className="CharSetup__pill CharSetup__pill--removable"
-                >
-                  {lang}
-                  <CsButton
-                    icon="times"
-                    compact
-                    ml={0.5}
-                    onClick={() =>
-                      act("removeLanguage", { language: lang })
-                    }
-                  />
-                </Box>
-              </Stack.Item>
-            ))}
-            {altLangs.length === 0 && (
-              <Stack.Item>
-                <Box color="label" italic fontSize="11px">
-                  No secondary languages selected.
-                </Box>
-              </Stack.Item>
-            )}
-          </Stack>
-
-          {/* Add language dropdown */}
-          {altLangs.length < langInfo.max_alternates && (
-            <Dropdown
-              fluid
-              displayText={
-                <>
-                  <Icon name="plus" mr={0.5} />
-                  {"Learn a new language..."}
-                </>
-              }
-              options={(langInfo.available || []).filter(
-                (l) => !altLangs.includes(l),
-              )}
-              onSelected={(val: string) =>
-                act("addLanguage", { language: val })
-              }
-            />
-          )}
-        </>
-      ) : (
-        <Box textAlign="center" mt={2} p={2} className="CharSetup__card">
-          <Box mb={1} color="label" style={{ fontSize: "200%" }}>
-            <Icon name="ban" />
-          </Box>
-          <Box color="label">
-            This species cannot choose secondary languages.
-          </Box>
+      {/* Native language row */}
+      {langInfo?.native && (
+        <Box className="CharSetup__langRow">
+          <Icon name="star" className="CharSetup__langIcon CharSetup__langIcon--native" />
+          <Box className="CharSetup__langName">{langInfo.native}</Box>
+          <Box className="CharSetup__langTag CharSetup__langTag--native">native</Box>
         </Box>
       )}
-    </>
+
+      {/* Default language row (if different from native) */}
+      {langInfo?.default && langInfo.default !== langInfo.native && (
+        <Box className="CharSetup__langRow">
+          <Icon name="comment" className="CharSetup__langIcon" />
+          <Box className="CharSetup__langName">{langInfo.default}</Box>
+          <Box className="CharSetup__langTag">default</Box>
+        </Box>
+      )}
+
+      {/* Secondary language rows */}
+      {altLangs.map((lang) => (
+        <Box key={lang} className="CharSetup__langRow">
+          <Icon name="plus" className="CharSetup__langIcon CharSetup__langIcon--alt" />
+          <Box className="CharSetup__langName">{lang}</Box>
+          <CsButton
+            icon="times"
+            compact
+            color="danger"
+            tooltip="Remove"
+            onClick={() => act("removeLanguage", { language: lang })}
+          />
+        </Box>
+      ))}
+
+      {/* Add language dropdown */}
+      {langInfo && langInfo.max_alternates > 0 &&
+        altLangs.length < langInfo.max_alternates && (
+          <Dropdown
+            fluid
+            mt={0.25}
+            displayText={`+ Add language (${altLangs.length}/${langInfo.max_alternates})`}
+            options={(langInfo.available || []).filter(
+              (l) => !altLangs.includes(l),
+            )}
+            onSelected={(val: string) =>
+              act("addLanguage", { language: val })
+            }
+          />
+        )}
+    </Box>
   );
 };
 
