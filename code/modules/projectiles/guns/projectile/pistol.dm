@@ -190,7 +190,6 @@
 	icon_state = "det-m9"
 	w_class = ITEM_SIZE_NORMAL
 	caliber = "9mm"
-	fire_delay = 1 SECOND
 	mod_weight = 0.65
 	mod_reach = 0.5
 	mod_handy = 1.0
@@ -214,7 +213,6 @@
 	w_class = ITEM_SIZE_SMALL
 	caliber = "9mm"
 	silenced = 0
-	fire_delay = 1 SECOND
 	fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
 	mod_weight = 0.65
 	mod_reach = 0.5

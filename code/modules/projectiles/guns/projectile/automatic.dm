@@ -148,7 +148,7 @@
 	mod_weight = 1.0
 	mod_reach = 0.8
 
-	fire_delay = 0.4 SECONDS
+	fire_delay = 0.35 SECONDS
 	burst_delay = 0.2 SECONDS
 
 	caliber = "a556"
