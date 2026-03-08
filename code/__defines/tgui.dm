@@ -8,9 +8,9 @@
 #define UI_CLOSE -1
 
 /// Maximum number of windows that can be suspended/reused
-#define TGUI_WINDOW_SOFT_LIMIT 5
+#define TGUI_WINDOW_SOFT_LIMIT 3
 /// Maximum number of open windows
-#define TGUI_WINDOW_HARD_LIMIT 9
+#define TGUI_WINDOW_HARD_LIMIT 5
 
 /// Maximum ping timeout allowed to detect zombie windows
 #define TGUI_PING_TIMEOUT 4 SECONDS
@@ -32,5 +32,5 @@
 // than doing it the normal way.
 // To ensure this is correct, this is unit tested in tgui_create_message.
 #define TGUI_CREATE_MESSAGE(type, payload) ( \
-	"%7b%22type%22%3a%22[type]%22%2c%22payload%22%3a[url_encode(json_encode(payload))]%7d" \
+	"{\"type\":\"[type]\",\"payload\":[json_encode(payload)]}" \
 )

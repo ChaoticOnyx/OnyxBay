@@ -41,9 +41,13 @@ var/__z_name = null
 
 // WebSocket
 
-#define Z_WS_CODE_OK 0
-/// If returned from a WS callback proc then the connection will be closed.
-#define Z_WS_CODE_CLOSE 1
+// Callback signatures:
+//   ON_TEXT_PROC(content: string, address: string, connection_index: number)
+//   ON_BINARY_PROC(content: list, address: string, connection_index: number)
+//   ON_DISCONNECT_PROC()
+// Inside of the ON_TEXT_PROC and ON_BINARY_PROC you can return any falsy value
+// to disconnect the connection. But you should not try to disconnect any other connections
+// during the callback call.
 
 /// PORT - the port to listen on, 0 for a random port.
 /// ON_TEXT_PROC - the callback to call when a text message received, may be null.
@@ -59,23 +63,45 @@ var/__z_name = null
 /// - max_message_size = 1 * 1024 * 1024
 /// - max_frame_size = 1 * 1024 * 1024
 /// - max_handshake_size = 8192
-/// - rate_limit_messages_per_sec = 100
+/// - rate_limit_messages_per_sec = 25
 /// - rate_limit_bytes_per_sec = 1 * 1024 * 1024
-/// Returns false if the server was failed to start.
+/// - initial_message_timeout_ms = 5000
+/// - afk_timeout_ms = 0
+/// - log = false (0/1)
+/// Returns false if the server failed to start (see Z_ERROR_ALREADY_RUNNING, Z_ERROR_FAILED_TO_START).
 #define Z_WS_START(PORT, ON_TEXT_PROC, ON_BINARY_PROC, CFG) call_ext(__z_name, "byond:Z_ws_start")(PORT, ON_TEXT_PROC, ON_BINARY_PROC, CFG)
 
 /// Sends a content to the connection by id.
 /// Pass a string to send a text message, or a list to send a binary message.
-/// Return false if failed to send, or the connection not found, or the server is not running.
+/// Returns false if failed to send, or the connection not found, or the server is not running.
 #define Z_WS_SEND(IDX, CONTENT) call_ext(__z_name, "byond:Z_ws_send")(IDX, CONTENT)
 
-/// Returns false if the server was not running.
-/// Returns null on error.
+/// Ties the OBJ object with the connection.
+/// Returns false if the connection not found, or if the connection is already tied, or the server is not running.
+#define Z_WS_TIE(IDX, OBJ, ON_TEXT_PROC, ON_BINARY_PROC, ON_DISCONNECT_PROC) call_ext(__z_name, "byond:Z_ws_tie")(IDX, OBJ, ON_TEXT_PROC, ON_BINARY_PROC, ON_DISCONNECT_PROC)
+
+/// Returns a connection id tied to the OBJ, or null if the object is not tied.
+#define Z_WS_GET_TIED(OBJ) call_ext(__z_name, "byond:Z_ws_get_tied")(OBJ)
+
+/// Unties the connection with the tied object.
+/// Returns false if the connection was not tied, or the connection not found, or the server is not running.
+#define Z_WS_UNTIE(IDX) call_ext(__z_name, "byond:Z_ws_untie")(IDX)
+
+/// Disconnects the connection.
+/// Returns false if the connection was not found, or the server is not running.
+/// Do not call this inside of ON_*_PROC callbacks.
+#define Z_WS_DISCONNECT(IDX) call_ext(__z_name, "byond:Z_ws_disconnect")(IDX)
+
+/// Returns true if tick succeeded, false if the server was not running.
+/// Returns null on error (e.g., out of memory, see Z_ERROR_OUT_OF_MEMORY).
 #define Z_WS_TICK(...) call_ext(__z_name, "byond:Z_ws_tick")()
 
 /// Returns a port the WebSocket server is running on.
 /// Returns null if the WebSocket server is not running.
 #define Z_WS_GET_PORT(...) call_ext(__z_name, "byond:Z_ws_get_port")()
+
+/// Returns the duration of the last tick in ms.
+#define Z_WS_GET_TICK_TIME(...) call_ext(__z_name, "byond:Z_ws_get_tick_time")()
 
 /// Returns connections count.
 /// Returns null if the WebSocket server is not running.
@@ -210,3 +236,12 @@ var/__z_name = null
 /// Sets the max percentage of delta time the emulator may use (10-80).
 /// Lower = more time for game logic, higher = faster emulation.
 #define Z_MACHINES_SET_BUDGET(PERCENT) call_ext(__z_name, "byond:Z_machines_set_budget")(PERCENT)
+
+// Crypto
+
+/// Generates a LEN bytes and encodes them in url-safe base64 string without padding.
+#define Z_CRYPTO_RANDOM_BASE64(LEN) call_ext(__z_name, "byond:Z_crypto_random_base64")(LEN)
+
+/// Content and key must be a string.
+/// Returns a url-safe base64 string without padding.
+#define Z_CRYPTO_HMAC_SHA256(CONTENT, KEY) call_ext(__z_name, "byond:Z_crypto_hmac_sha256")(CONTENT, KEY)

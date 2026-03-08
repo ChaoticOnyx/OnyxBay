@@ -34,6 +34,19 @@ type ByondType = {
    */
   windowId: string;
 
+  wsAuthenticated: boolean;
+  wsQueue: any[];
+
+  /**
+   * A WebSocket token issued by the backend.
+   */
+  wsToken: string;
+
+  /**
+   * A WebSocket stream.
+   */
+  ws: WebSocket;
+
   /**
    * True if javascript is running in BYOND.
    */
@@ -85,11 +98,9 @@ type ByondType = {
   callAsync(path: string, params: object): Promise<any>;
 
   /**
-   * Makes a Topic call.
-   *
-   * You can reference a specific object by setting the "src" parameter.
+   * Sends a data to the server.
    */
-  topic(params: object): void;
+  send(params: object): void;
 
   /**
    * Runs a command or a verb.

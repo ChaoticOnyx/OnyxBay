@@ -1,13 +1,57 @@
 [ws]
+# For secure connections (WSS), you need a domain and a reverse proxy.
+# Specify the full public address reachable by players (e.g., "example.com:3508").
+# host = "ss13.ru:3508"
+secure = false
+# Listening port for the WebSocket server.
+# If secure = true, this is the internal port (behind a proxy).
+# If secure = false, this is the public port directly accessible by players.
+# Set to 0 to let the system choose a free port.
 port = 0
-max_connections = 100
+
+# Maximum number of total simultaneous connections.
+max_connections = 256
+
+# Maximum number of simultaneous connections allowed from a single IP address.
+# Set to 0 to unlimited.
 max_connections_per_ip = 5
+
+# Time (ms) to complete the WebSocket handshake after TCP connection is accepted.
 handshake_timeout_ms = 5000
+
+# Time (ms) of inactivity (no data sent/received) before the connection is closed.
 idle_timeout_ms = 300000
+
+# Interval (ms) between sending WebSocket ping frames to keep the connection alive.
 ping_interval_ms = 30000
+
+# Time (ms) to wait for a pong response after sending a ping before closing.
 pong_timeout_ms = 10000
+
+# Maximum allowed size (bytes) of a complete WebSocket message.
 max_message_size = 1048576
+
+# Maximum allowed size (bytes) of a single WebSocket frame.
 max_frame_size = 1048576
+
+# Maximum allowed size (bytes) of the HTTP handshake request.
 max_handshake_size = 8192
-rate_limit_messages_per_sec = 100
+
+# Maximum number of messages a client can send per second.
+rate_limit_messages_per_sec = 25
+
+# Maximum bytes a client can send per second.
 rate_limit_bytes_per_sec = 1048576
+
+# Time (ms) after connection during which the client must send at least one
+# text or binary message. Connections that only ping/pong will be dropped.
+# Set to 0 to disable.
+initial_message_timeout_ms = 1000
+
+# Time (ms) of inactivity (no text/binary messages) after which the connection
+# is considered AFK and closed. Ping/pong frames do not reset this timer.
+# Set to 0 to disable.
+afk_timeout_ms = 0
+
+# Enable verbose logging of WebSocket messages and events.
+log = false
