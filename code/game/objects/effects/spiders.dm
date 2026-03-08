@@ -113,7 +113,7 @@
 	var/obj/machinery/atmospherics/unary/vent_pump/entry_vent
 	var/travelling_in_vent = 0
 	var/dormant = FALSE    // If dormant, does not add the spiderling to the process list unless it's also growing
-	var/growth_chance = 80 // % chance of beginning growth, and eventually become a beautiful death machine
+	var/growth_chance = 80 // % chance of beginning growth, and eventually becoming a beautiful death machine
 
 	var/directive = "" //Message from the mother
 	var/faction = "spiders"
