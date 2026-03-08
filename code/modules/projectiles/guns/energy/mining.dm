@@ -11,7 +11,7 @@
 	icon_state = "kineticgun"
 	item_state = "kineticgun"
 	charge_meter = 0
-	fire_delay = 16
+	fire_delay = 1.6 SECONDS
 	force = 11.5
 	mod_weight = 1.15
 	mod_reach = 0.9

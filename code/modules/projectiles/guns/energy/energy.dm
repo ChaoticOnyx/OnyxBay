@@ -4,7 +4,7 @@
 	icon_state = "tasertacticalstun100"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	max_shots = 10
-	fire_delay = 10 // To balance for the fact that it is a pistol and can be used one-handed without penalty
+	fire_delay = 1 SECOND // To balance for the fact that it is a pistol and can be used one-handed without penalty
 
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
@@ -22,7 +22,7 @@
 	icon_state = "tasertacticalstun100"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	max_shots = 10
-	fire_delay = 10 // To balance for the fact that it is a pistol and can be used one-handed without penalty
+	fire_delay = 1 SECOND // To balance for the fact that it is a pistol and can be used one-handed without penalty
 
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
@@ -121,11 +121,11 @@
 			if(ismob(loc))
 				to_chat(loc, SPAN("warning", "\The [src] feels pleasantly warm."))
 
-/obj/item/gun/energy/gun/nuclear/Fire(atom/target, mob/living/user, clickparams, pointblank = 0, reflex = 0, target_zone = BP_CHEST)
+/obj/item/gun/energy/gun/nuclear/handle_post_fire(atom/movable/firer, atom/target, pointblank = 0, reflex = 0, burstfire = 0)
 	..()
 	if(fail_counter > 35)
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-		spark_system.set_up(2, 0, user.loc)
+		spark_system.set_up(2, 0, firer.loc)
 		spark_system.start()
 		if(prob(50))
 			visible_message("\The [src]'s reactor heats up uncontrollably!")
@@ -141,7 +141,7 @@
 		fail_counter += rand(5, 12)
 		to_chat(loc, SPAN("warning", "\The [src] emits a nasty buzzing sound!"))
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-		spark_system.set_up(2, 0, user.loc)
+		spark_system.set_up(2, 0, firer.loc)
 		spark_system.start()
 	if(fail_counter > 30)
 		to_chat(loc, SPAN("warning", "\The [src] feels burning hot!"))
@@ -195,7 +195,7 @@
 	modifystate = "egunstun"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	max_shots = 10
-	fire_delay = 10 // To balance for the fact that it is a pistol and can be used one-handed without penalty
+	fire_delay = 1 SECOND // To balance for the fact that it is a pistol and can be used one-handed without penalty
 	force = 10.0
 	mod_weight = 0.8
 	mod_reach = 0.55
@@ -206,8 +206,8 @@
 	combustion = FALSE
 
 	firemodes = list(
-		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,  modifystate="egunstun"),
-		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/small, modifystate="egunkill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,  modifystate = "egunstun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/small,  modifystate = "egunkill")
 		)
 
 /obj/item/gun/energy/egun/elite
@@ -215,7 +215,7 @@
 	desc = "A high-quality energy-based gun with two settings: Stun and kill."
 	icon_state = "egunestun100"
 	modifystate = "egunestun"
-	fire_delay = 8 // Slightly better than a regular egun
+	fire_delay = 0.8 SECONDS // Slightly better than a regular egun
 	force = 8.5 // It's taser pistol sized after all
 	mod_weight = 0.7
 	mod_reach = 0.5
@@ -223,8 +223,8 @@
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 5, TECH_POWER = 3)
 
 	firemodes = list(
-		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,  modifystate="egunestun"),
-		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/lesser, modifystate="egunekill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,  modifystate = "egunestun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/lesser, modifystate = "egunekill")
 		)
 
 /obj/item/gun/energy/rifle
@@ -243,18 +243,18 @@
 	one_hand_penalty = 3
 	accuracy = 2
 	max_shots = 24
-	fire_delay = null
+	fire_delay = 0.6 SECONDS
 	burst_accuracy = list(0)
 	charge_cost = 10
 	burst = 2
-	burst_delay = 1
+	burst_delay = 0.1 SECOND
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 5, TECH_POWER = 4, TECH_MAGNET = 3)
 	matter = list(MATERIAL_STEEL = 2500)
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 
 	firemodes = list(
-		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode, fire_delay = null, charge_cost = 10, burst = 2),
-		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/mid,   fire_delay = 8,    charge_cost = 20, burst = 1)
+		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode, fire_delay = 0.6 SECONDS, charge_cost = 10, burst = 2),
+		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/mid,   fire_delay = 0.6 SECONDS, charge_cost = 20, burst = 1)
 	)
 
 /obj/item/gun/energy/rifle/on_update_icon()
@@ -282,15 +282,15 @@
 	mod_handy = 1.0
 	accuracy = 1
 	max_shots = 20
-	fire_delay = null
+	fire_delay = 0.8 SECONDS
 	charge_cost = 10
 	burst = 2
-	burst_delay = 2
+	burst_delay = 0.2 SECONDS
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 4, TECH_POWER = 3, TECH_MAGNET = 2)
 	matter = list(MATERIAL_STEEL = 2500)
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 
 	firemodes = list(
-		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode,  fire_delay = null, charge_cost = 10, burst = 2),
-		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/lesser, fire_delay = 10,   charge_cost = 20, burst = 1)
+		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode,  fire_delay = 0.8 SECONDS, charge_cost = 10, burst = 2),
+		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/lesser, fire_delay = 0.8 SECONDS, charge_cost = 20, burst = 1)
 	)

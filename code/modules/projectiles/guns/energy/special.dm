@@ -220,13 +220,13 @@
 	matter = list(MATERIAL_STEEL = 4000)
 	projectile_type = /obj/item/projectile/beam/plasmacutter
 	charge_cost = 20
-	fire_delay = 6
+	fire_delay = 1 SECOND
 	max_shots = 10
 	var/danger_attack = FALSE
 
 	firemodes = list(
-		list(mode_name="mining mode", projectile_type = /obj/item/projectile/beam/plasmacutter, charge_cost = 0, fire_delay = 10, danger_attack = FALSE),
-		list(mode_name="battle mode", projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20, fire_delay = 6, danger_attack = TRUE),
+		list(mode_name = "mining mode", projectile_type = /obj/item/projectile/beam/plasmacutter,        charge_cost = 0,  fire_delay = 1 SECOND,    danger_attack = FALSE),
+		list(mode_name = "battle mode", projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20, fire_delay = 0.6 SECONDS, danger_attack = TRUE)
 	)
 	has_safety = FALSE
 
