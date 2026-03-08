@@ -182,6 +182,7 @@
 	hair_key = SPECIES_SKRELL
 	default_h_style = "Short Headtails"
 	unarmed_types = list(/datum/unarmed_attack/punch)
+	genders = list(MALE, FEMALE, PLURAL)
 	blurb = "An amphibious species, Skrell come from the star system known as Qerr'Vallis, which translates to 'Star of \
 	the royals' or 'Light of the Crown'.<br/><br/>Skrell are a highly advanced and logical race who live under the rule \
 	of the Qerr'Katish, a caste within their society which keeps the empire of the Skrell running smoothly. Skrell are \

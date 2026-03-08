@@ -41,7 +41,6 @@
 	var/slot_filter
 	// Augmentation state
 	var/selected_organ = BP_CHEST
-	var/cpu_preselected = FALSE
 	// Undo stack — list of assoc lists (character snapshots), most recent last
 	var/list/undo_stack = list()
 
@@ -640,6 +639,25 @@
 					break
 	data["all_underwear_color"] = uw_color_map
 	data["backpack"] = pref.backpack ? pref.backpack.name : "Nothing"
+	// Backpack tweak options (e.g. pocketbook type selection)
+	var/list/bp_tweaks
+	if(pref.backpack && length(pref.backpack.tweaks))
+		bp_tweaks = list()
+		for(var/datum/backpack_tweak/selection/bt in pref.backpack.tweaks)
+			LAZYINITLIST(pref.backpack_metadata)
+			var/list/meta = pref.backpack_metadata[pref.backpack.name]
+			if(!islist(meta))
+				meta = list()
+				pref.backpack_metadata[pref.backpack.name] = meta
+			var/current = meta["[bt]"] || bt.get_default_metadata()
+			var/list/option_names = list()
+			for(var/opt_name in bt.selections)
+				option_names += opt_name
+			bp_tweaks += list(list(
+				"options" = option_names,
+				"current" = current
+			))
+	data["backpack_tweaks"] = length(bp_tweaks) ? bp_tweaks : null
 	data["equip_preview_mob"] = pref.equip_preview_mob
 	data["bgstate"] = pref.bgstate
 
@@ -730,20 +748,6 @@
 	data["organ_data"] = pref.organ_data
 	data["rlimb_data"] = pref.rlimb_data
 	data["selected_organ"] = selected_organ
-
-	// Pre-install default CPU on head once (shown under Brain in UI)
-	if(!cpu_preselected)
-		cpu_preselected = TRUE
-		LAZYINITLIST(pref.organ_modules)
-		LAZYINITLIST(pref.organ_modules[BP_HEAD])
-		var/has_processor = FALSE
-		for(var/mod_path in pref.organ_modules[BP_HEAD])
-			var/obj/item/organ_module/M = mod_path
-			if(initial(M.module_type) == OM_TYPE_PROCESSOR)
-				has_processor = TRUE
-				break
-		if(!has_processor)
-			pref.organ_modules[BP_HEAD] += /obj/item/organ_module/processor
 
 	var/list/installed_modules = list()
 	if(islist(pref.organ_modules))
@@ -1291,6 +1295,25 @@
 					break
 			return TRUE
 
+		if("setBackpackTweak")
+			if(!pref.backpack || !length(pref.backpack.tweaks))
+				return TRUE
+			var/tweak_index = text2num(params["tweakIndex"])
+			var/new_value = params["value"]
+			if(!tweak_index || tweak_index < 1 || tweak_index > length(pref.backpack.tweaks))
+				return TRUE
+			var/datum/backpack_tweak/selection/bt = pref.backpack.tweaks[tweak_index]
+			if(!istype(bt) || !(new_value in bt.selections))
+				return TRUE
+			LAZYINITLIST(pref.backpack_metadata)
+			var/list/meta = pref.backpack_metadata[pref.backpack.name]
+			if(!islist(meta))
+				meta = list()
+				pref.backpack_metadata[pref.backpack.name] = meta
+			meta["[bt]"] = new_value
+			mark_preview_dirty()
+			return TRUE
+
 		if("togglePreviewFlag")
 			var/flag = text2num(params["flag"])
 			if(flag)
@@ -1320,8 +1343,6 @@
 		if("loadSlot")
 			var/slot = text2num(params["slot"])
 			if(slot && slot >= 1 && slot <= config.character_setup.character_slots)
-				if(slot != pref.default_slot)
-					pref.save_character()  // Save current slot before switching away
 				pref.load_character(slot)
 				pref.sanitize_preferences()
 				slot_previews = null  // Force re-generation on next picker open
@@ -2101,6 +2122,7 @@
 					gear_icon_state = temp2.icon_state
 					QDEL_NULL(temp2)
 				break
+	var/owned = G.price && user.client?.donator_info?.has_item(G.type)
 	var/list/entry = list(
 		"name" = G.display_name,
 		"hash" = G.gear_hash,
@@ -2110,8 +2132,8 @@
 		"slotName" = G.slot ? slot_to_description(G.slot) : "",
 		"subgroup" = G.subgroup || "",
 		"cost" = G.cost,
-		"price" = G.price || 0,
-		"discount" = G.discount || 0,
+		"price" = owned ? 0 : (G.price || 0),
+		"discount" = owned ? 0 : (G.discount || 0),
 		"patronTier" = G.patron_tier,
 		"description" = G.description || "",
 		"allowed" = gear_allowed_to_see(G),
@@ -2169,6 +2191,7 @@
 			if(!islist(gear_virtual_item.color))
 				tweaked_color = gear_virtual_item.color
 		QDEL_NULL(gear_virtual_item)
+	var/detail_owned = G.price && user.client?.donator_info?.has_item(G.type)
 	return list(
 		"name" = G.display_name,
 		"hash" = G.gear_hash,
@@ -2179,8 +2202,8 @@
 		"slot" = G.slot,
 		"slotName" = G.slot ? slot_to_description(G.slot) : "",
 		"cost" = G.cost,
-		"price" = G.price || 0,
-		"discount" = G.discount || 0,
+		"price" = detail_owned ? 0 : (G.price || 0),
+		"discount" = detail_owned ? 0 : (G.discount || 0),
 		"patronTier" = G.patron_tier,
 		"canEquip" = G.is_allowed_to_equip(user),
 		"equipped" = islist(pref.gear_list[pref.gear_slot]) && (G.display_name in pref.gear_list[pref.gear_slot])
@@ -2254,6 +2277,8 @@
 
 /datum/character_setup/proc/gear_allowed_to_see(datum/gear/G)
 	if(!G.path)
+		return FALSE
+	if(!G.is_allowed_to_display(owner))
 		return FALSE
 	if(length(G.allowed_roles) && job_master)
 		var/list/jobs = list()
