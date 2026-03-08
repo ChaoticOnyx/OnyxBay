@@ -34,7 +34,6 @@
 	affecting.visible_message("<span class='warning'>[affecting] struggles against [assailant] as [assailant] tightens \his grip!</span>")
 	G.done_struggle = FALSE
 	G.grace_until = world.time + upgrade_cooldown
-	G.set_next_think_ctx("handle_resist", world.time + 1 SECOND)
 	resolve_struggle(G)
 
 /datum/grab/normal/struggle/proc/resolve_struggle(obj/item/grab/G)

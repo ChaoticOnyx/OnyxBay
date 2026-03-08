@@ -39,8 +39,6 @@
 
 	SetName("[name] ([O.name])")
 
-	add_think_ctx("handle_resist", CALLBACK(src, nameof(.proc/handle_resist)), 0)
-
 	if(start_grab_name)
 		current_grab = all_grabstates[start_grab_name]
 
@@ -253,7 +251,7 @@
 	affecting.try_grab_resist("auto_struggle_ctx")
 	if(QDELETED(src))
 		return
-	set_next_think_ctx("handle_resist", world.time + 1 SECOND)
+	current_grab.handle_resist(src)
 
 /obj/item/grab/proc/adjust_position(force = FALSE)
 	if(force)
