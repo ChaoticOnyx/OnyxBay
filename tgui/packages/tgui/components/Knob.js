@@ -12,11 +12,6 @@ import { DraggableControl } from "./DraggableControl";
 import { NumberInput } from "./NumberInput";
 
 export const Knob = (props) => {
-  // IE8: I don't want to support a yet another component on IE8.
-  // IE8: It also can't handle SVG.
-  if (Byond.IS_LTE_IE8) {
-    return <NumberInput {...props} />;
-  }
   const {
     // Draggable props (passthrough)
     animated,
@@ -72,7 +67,7 @@ export const Knob = (props) => {
         const scaledFillValue = scale(
           fillValue ?? displayValue,
           minValue,
-          maxValue
+          maxValue,
         );
         const scaledDisplayValue = scale(displayValue, minValue, maxValue);
         const effectiveColor =
@@ -126,7 +121,7 @@ export const Knob = (props) => {
                     ((bipolar ? 2.75 : 2.0) - scaledFillValue * 1.5) *
                       Math.PI *
                       50,
-                    0
+                    0,
                   ),
                 }}
                 cx="50"

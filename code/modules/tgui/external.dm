@@ -5,6 +5,10 @@
  * SPDX-License-Identifier: MIT
  */
 
+#define TGUI_ON_MESSAGE_OK 0
+#define TGUI_ON_MESSAGE_PREVENT 1
+#define TGUI_ON_MESSAGE_DISCONNECT 2
+
 /**
  * public
  *
@@ -205,7 +209,7 @@
 
 		return FALSE
 
-	if(!Z_WS_TIE(conn_id, window, nameof(/datum/tgui_window.proc/__on_ws_text), null, nameof(/datum/tgui_window.proc/__on_ws_disconnected)))
+	if(!Z_WS_TIE(conn_id, window, nameof(/datum/tgui_window.proc/__on_ws_text), null, null))
 		log_tgui(client, "Error: Failed to tie WS connection to window.", context = window_id)
 		return FALSE
 

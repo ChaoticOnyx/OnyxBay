@@ -8,27 +8,27 @@
  * @license MIT
  */
 
-const FPS = 60
-const FRAME_DURATION = 1000 / FPS
+const FPS = 60;
+const FRAME_DURATION = 1000 / FPS;
 
 // True if Performance API is supported
-const supportsPerf = !!window.performance?.now
+const supportsPerf = !!window.performance?.now;
 // High precision markers
-const hpMarkersByName = {}
+const hpMarkersByName = {};
 // Low precision markers
-const lpMarkersByName = {}
+const lpMarkersByName = {};
 
 /**
  * Marks a certain spot in the code for later measurements.
  */
 const mark = (name, timestamp) => {
-  if (process.env.NODE_ENV !== 'production') {
+  if (import.meta.env.DEV) {
     if (supportsPerf && !timestamp) {
-      hpMarkersByName[name] = performance.now()
+      hpMarkersByName[name] = performance.now();
     }
-    lpMarkersByName[name] = timestamp || Date.now()
+    lpMarkersByName[name] = timestamp || Date.now();
   }
-}
+};
 
 /**
  * Calculates and returns the difference between two markers as a string.
@@ -36,25 +36,30 @@ const mark = (name, timestamp) => {
  * Use logger.log() to print the measurement.
  */
 const measure = (markerNameA, markerNameB) => {
-  if (process.env.NODE_ENV !== 'production') {
-    let markerA = hpMarkersByName[markerNameA]
-    let markerB = hpMarkersByName[markerNameB]
+  if (import.meta.env.DEV) {
+    let markerA = hpMarkersByName[markerNameA];
+    let markerB = hpMarkersByName[markerNameB];
     if (!markerA || !markerB) {
-      markerA = lpMarkersByName[markerNameA]
-      markerB = lpMarkersByName[markerNameB]
+      markerA = lpMarkersByName[markerNameA];
+      markerB = lpMarkersByName[markerNameB];
     }
-    const duration = Math.abs(markerB - markerA)
-    return formatDuration(duration)
+    const duration = Math.abs(markerB - markerA);
+    return formatDuration(duration);
   }
-}
+};
 
-const formatDuration = duration => {
-  const durationInFrames = duration / FRAME_DURATION
-  return duration.toFixed(duration < 10 ? 1 : 0) + 'ms ' +
-    '(' + durationInFrames.toFixed(2) + ' frames)'
-}
+const formatDuration = (duration) => {
+  const durationInFrames = duration / FRAME_DURATION;
+  return (
+    duration.toFixed(duration < 10 ? 1 : 0) +
+    "ms " +
+    "(" +
+    durationInFrames.toFixed(2) +
+    " frames)"
+  );
+};
 
 export const perf = {
   mark,
-  measure
-}
+  measure,
+};

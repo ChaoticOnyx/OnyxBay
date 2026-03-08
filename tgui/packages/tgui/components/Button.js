@@ -44,11 +44,9 @@ export const Button = (props) => {
       "Lowercase 'onclick' is not supported on Button and lowercase" +
         " prop names are discouraged in general. Please use a camelCase" +
         "'onClick' instead and read: " +
-        "https://infernojs.org/docs/guides/event-handling"
+        "https://infernojs.org/docs/guides/event-handling",
     );
   }
-  // IE8: Use a lowercase "onclick" because synthetic events are fucked.
-  // IE8: Use an "unselectable" prop because "user-select" doesn't work.
   let buttonContent = (
     <div
       className={classes([
@@ -68,7 +66,6 @@ export const Button = (props) => {
         computeBoxClassName(rest),
       ])}
       tabIndex={!disabled && "0"}
-      unselectable={Byond.IS_LTE_IE8}
       onClick={(e) => {
         if (!disabled && onClick) {
           onClick(e);

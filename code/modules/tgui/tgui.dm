@@ -81,7 +81,6 @@
 		window.initialize(
 			fancy = user.get_preference_value(/datum/client_preference/tgui_style) == GLOB.PREF_FANCY,
 			assets = list(
-				get_asset_datum(/datum/asset/simple/tgui_common),
 				get_asset_datum(/datum/asset/simple/tgui),
 				get_asset_datum(/datum/asset/simple/fontawesome)
 			))
@@ -100,7 +99,7 @@
 /// Close the UI.
 ///
 /// optional can_be_suspended bool
-/datum/tgui/proc/close(can_be_suspended = TRUE)
+/datum/tgui/proc/close(can_be_suspended = TRUE, close_connection = TRUE)
 	if(closing)
 		return
 	closing = TRUE
@@ -111,7 +110,7 @@
 		// and we want to keep them around, to allow user to read
 		// the error message properly.
 		window.release_lock()
-		window.close(can_be_suspended)
+		window.close(can_be_suspended, close_connection)
 		src_object.ui_close(user)
 		SStgui.on_close(src)
 	state = null
@@ -247,7 +246,7 @@
 		_process_status()
 		if(src_object.tgui_act(act_type, payload, src, state))
 			SStgui.update_uis(src_object)
-		return FALSE
+		return
 	switch(type)
 		if("ready")
 			send_full_update()
@@ -255,12 +254,14 @@
 		if("pingReply")
 			initialized = TRUE
 		if("suspend")
-			close(can_be_suspended = TRUE)
+			close(TRUE, FALSE)
 		if("close")
-			close(can_be_suspended = FALSE)
+			close(FALSE, FALSE)
+			return TGUI_ON_MESSAGE_DISCONNECT
 		if("log")
 			if(href_list["fatal"])
-				close(can_be_suspended = FALSE)
+				close(FALSE, FALSE)
+				return TGUI_ON_MESSAGE_DISCONNECT
 		if("setSharedState")
 			if(status != UI_INTERACTIVE)
 				return

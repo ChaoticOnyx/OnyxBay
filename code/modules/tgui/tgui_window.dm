@@ -366,16 +366,22 @@
 		flush_message_queue()
 	// Pass message to UI that requested the lock
 	if(locked && locked_by)
-		var/prevent_default = locked_by._on_message(type, payload, C)
-		if(prevent_default)
-			return
+		var/code = locked_by._on_message(type, payload, C)
+		switch(code)
+			if(TGUI_ON_MESSAGE_PREVENT)
+				return
+			if(TGUI_ON_MESSAGE_DISCONNECT)
+				return FALSE
 	// Pass message to the subscriber
 	else if(subscriber_object)
-		var/prevent_default = call(
+		var/code = call(
 			subscriber_object,
 			subscriber_delegate)(type, payload, C)
-		if(prevent_default)
-			return
+		switch(code)
+			if(TGUI_ON_MESSAGE_PREVENT)
+				return
+			if(TGUI_ON_MESSAGE_DISCONNECT)
+				return FALSE
 	// If not locked, handle these message types
 	switch(type)
 		if("ping")
@@ -384,8 +390,6 @@
 			close(TRUE, FALSE)
 		if("close")
 			close(FALSE, FALSE)
+			return FALSE
 		if("openLink")
 			client << link(C["url"])
-
-/datum/tgui_window/proc/__on_ws_disconnected()
-	close(FALSE, FALSE)
