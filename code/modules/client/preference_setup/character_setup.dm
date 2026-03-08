@@ -31,7 +31,6 @@
 
 /datum/character_setup
 	var/datum/preferences/pref
-	var/mob/owner
 	var/preview_dir = SOUTH
 	var/list/slot_previews  // Cached character slot appearance data (generated on demand)
 	// Loadout state
@@ -46,13 +45,11 @@
 	// Undo stack — list of assoc lists (character snapshots), most recent last
 	var/list/undo_stack = list()
 
-/datum/character_setup/New(datum/preferences/P, mob/user)
+/datum/character_setup/New(datum/preferences/P)
 	pref = P
-	owner = user
 
 /datum/character_setup/Destroy()
 	pref = null
-	owner = null
 	return ..()
 
 /datum/character_setup/proc/push_undo_state()
@@ -992,6 +989,7 @@
 	if(.)
 		return
 
+	var/mob/owner = usr
 	var/datum/species/current_species = all_species[pref.species]
 	if(!current_species)
 		current_species = all_species[SPECIES_HUMAN]
@@ -1490,7 +1488,7 @@
 			return TRUE
 
 		if("randomizeLoadout")
-			randomize_loadout()
+			randomize_loadout(owner)
 			mark_preview_dirty()
 			return TRUE
 
@@ -1499,7 +1497,7 @@
 			var/datum/gear/G = hash_to_gear[hash]
 			if(!G || !G.price)
 				return FALSE
-			if(!owner?.client?.donator_info)
+			if(!owner.client?.donator_info)
 				return FALSE
 			if(owner.client.donator_info.has_item(G.type))
 				return FALSE
@@ -2380,7 +2378,7 @@
 // ============================================================
 // LOADOUT HELPERS
 // ============================================================
-/datum/character_setup/proc/randomize_loadout()
+/datum/character_setup/proc/randomize_loadout(mob/owner)
 	var/list/gear = pref.gear_list[pref.gear_slot]
 	if(!islist(gear))
 		gear = list()
