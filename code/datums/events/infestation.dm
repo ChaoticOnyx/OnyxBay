@@ -88,8 +88,6 @@
 
 			var/spawn_type = pick(spawn_types)
 			var/obj/structure/spider/spiderling/S = new spawn_type(T)
-			if(istype(S))
-				S.amount_grown = -1
 			if(istype(S, /mob/living/simple_animal/lizard))
 				var/mob/living/simple_animal/lizard/L = S
 				if(prob(50))
