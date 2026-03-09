@@ -80,12 +80,13 @@
 	var/html = SStgui.basehtml
 	html = replacetextEx(html, "\[tgui:windowId]", id)
 	html = replacetextEx(html, "\[tgui:wsToken]", SSws.issue_token(client.ckey))
-	// TODO: wss://
-	if(SSws.port == null)
+
+	var/ws_address = SSws.get_address()
+	if(ws_address == null)
 		log_tgui(client, "Error: WebSocket server is not running, cannot initialize window.", context = id)
 		return
 
-	html = replacetextEx(html, "\[tgui:wsAddress]", SSws.get_address())
+	html = replacetextEx(html, "\[tgui:wsAddress]", ws_address)
 	// Inject inline assets
 	var/assets_str = ""
 	for(var/datum/asset/asset in assets)
