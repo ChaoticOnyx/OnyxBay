@@ -3,91 +3,92 @@
  * Build Atlas — extracts sprites from BYOND .dmi files and packs them into
  * sprite atlas sheets with a JSON manifest for client-side rendering.
  *
- * Usage: node tools/build-atlas.js
- * Output: packages/tgui/assets/sprites/atlas-*.png + manifest.json
+ * Usage:
+ *   node tools/build-atlas.js            # build if sources changed
+ *   node tools/build-atlas.js --force    # always rebuild
+ *
+ * Output: public/sprites/atlas-*.png + manifest.json
  */
 
-const fs = require('fs');
-const path = require('path');
-const { PNG } = require('pngjs');
-const { parseDmi, extractSprite, isSpriteEmpty, DIR_SOUTH, DIR_NORTH, DIR_EAST, DIR_WEST } = require('./dmi-parser');
+const fs = require("fs");
+const path = require("path");
+const crypto = require("crypto");
+const { PNG } = require("pngjs");
+const {
+  parseDmi,
+  extractSprite,
+  isSpriteEmpty,
+  DIR_SOUTH,
+  DIR_NORTH,
+  DIR_EAST,
+  DIR_WEST,
+} = require("./dmi-parser");
 
 // ============================================================
 // Configuration
 // ============================================================
 
-const REPO_ROOT = path.resolve(__dirname, '../..');
-const ICONS_DIR = path.join(REPO_ROOT, 'icons');
-const OUTPUT_DIR = path.join(__dirname, '../public/sprites');
+const REPO_ROOT = path.resolve(__dirname, "../..");
+const ICONS_DIR = path.join(REPO_ROOT, "icons");
+const OUTPUT_DIR = path.join(__dirname, "../public/sprites");
+const CACHE_FILE = path.join(OUTPUT_DIR, ".atlas-cache");
 
-// Atlas dimensions (power of 2 for GPU friendliness)
 const ATLAS_SIZE = 2048;
-const SPRITE_SIZE = 32; // All character sprites are 32x32
-const SPRITES_PER_ROW = Math.floor(ATLAS_SIZE / SPRITE_SIZE); // 64
-const SPRITES_PER_ATLAS = SPRITES_PER_ROW * SPRITES_PER_ROW; // 4096
+const SPRITE_SIZE = 32;
+const SPRITES_PER_ROW = Math.floor(ATLAS_SIZE / SPRITE_SIZE);
+const SPRITES_PER_ATLAS = SPRITES_PER_ROW * SPRITES_PER_ROW;
 
-// Which directions to extract (all 4 for rotatable preview)
 const DIRECTIONS = [DIR_SOUTH, DIR_NORTH, DIR_EAST, DIR_WEST];
-const DIR_NAMES = ['south', 'north', 'east', 'west'];
+const DIR_NAMES = ["south", "north", "east", "west"];
 
-/**
- * All DMI files to include in the atlas.
- * Paths are relative to the icons/ directory.
- * We use glob patterns resolved manually.
- */
+// ============================================================
+// Target DMI files
+// ============================================================
+
 function getTargetDmiFiles() {
   const targets = [];
 
-  // Body sprites — species base bodies
-  addGlob(targets, 'mob/human_races', 'r_*.dmi');
+  addGlob(targets, "mob/human_races", "r_*.dmi");
+  addGlob(targets, "mob/human_races/face", "hair*.dmi");
+  addGlob(targets, "mob/human_races/face", "facial*.dmi");
+  addFile(targets, "mob/human_races/markings.dmi");
+  addFile(targets, "mob/human_races/hair_fade.dmi");
+  addGlob(targets, "inv_slots/hidden", "mob*.dmi");
 
-  // Hair
-  addGlob(targets, 'mob/human_races/face', 'hair*.dmi');
-
-  // Facial hair
-  addGlob(targets, 'mob/human_races/face', 'facial*.dmi');
-
-  // Markings
-  addFile(targets, 'mob/human_races/markings.dmi');
-  addFile(targets, 'mob/human_races/hair_fade.dmi');
-
-  // Underwear
-  addGlob(targets, 'inv_slots/hidden', 'mob*.dmi');
-
-  // Clothing — all on-mob .dmi files per slot
   const clothingSlots = [
-    'uniforms', 'suits', 'hats', 'shoes', 'gloves',
-    'glasses', 'masks', 'belts', 'back', 'acessories',
-    'ears', 'suitstorage', 'rig',
+    "uniforms",
+    "suits",
+    "hats",
+    "shoes",
+    "gloves",
+    "glasses",
+    "masks",
+    "belts",
+    "back",
+    "acessories",
+    "ears",
+    "suitstorage",
+    "rig",
   ];
   for (const slot of clothingSlots) {
-    addGlob(targets, `inv_slots/${slot}`, 'mob*.dmi');
+    addGlob(targets, `inv_slots/${slot}`, "mob*.dmi");
   }
 
-  // Cyberlimbs
-  addGlobRecursive(targets, 'mob/human_races/cyberlimbs', '*.dmi');
-
-  // ID overlay
-  addFile(targets, 'mob/onmob/id.dmi');
-
-  // === Inventory / world item sprites (for loadout gear icons) ===
-
-  // Clothing inventory icons
-  addGlob(targets, 'obj/clothing', '*.dmi');
-
-  // Misc item icons used by loadout gear
-  addFile(targets, 'obj/items.dmi');
-  addFile(targets, 'obj/weapons.dmi');
-  addFile(targets, 'obj/toy.dmi');
-  addFile(targets, 'obj/zippos.dmi');
-  addFile(targets, 'obj/cigarettes.dmi');
-  addFile(targets, 'obj/food.dmi');
-  addFile(targets, 'obj/chemical.dmi');
-  addFile(targets, 'obj/card.dmi');
-  addFile(targets, 'obj/device.dmi');
-  addFile(targets, 'obj/wallet.dmi');
-  addFile(targets, 'obj/welding_covers.dmi');
-  addGlob(targets, 'obj/storage', '*.dmi');
+  addGlobRecursive(targets, "mob/human_races/cyberlimbs", "*.dmi");
+  addFile(targets, "mob/onmob/id.dmi");
+  addGlob(targets, "obj/clothing", "*.dmi");
+  addFile(targets, "obj/items.dmi");
+  addFile(targets, "obj/weapons.dmi");
+  addFile(targets, "obj/toy.dmi");
+  addFile(targets, "obj/zippos.dmi");
+  addFile(targets, "obj/cigarettes.dmi");
+  addFile(targets, "obj/food.dmi");
+  addFile(targets, "obj/chemical.dmi");
+  addFile(targets, "obj/card.dmi");
+  addFile(targets, "obj/device.dmi");
+  addFile(targets, "obj/wallet.dmi");
+  addFile(targets, "obj/welding_covers.dmi");
+  addGlob(targets, "obj/storage", "*.dmi");
 
   return targets;
 }
@@ -100,7 +101,11 @@ function addFile(targets, relativePath) {
 }
 
 function globToRegex(pattern) {
-  return new RegExp('^' + pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*') + '$');
+  return new RegExp(
+    "^" +
+      pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") +
+      "$",
+  );
 }
 
 function addGlob(targets, dir, pattern) {
@@ -109,7 +114,7 @@ function addGlob(targets, dir, pattern) {
   const regex = globToRegex(pattern);
   for (const file of fs.readdirSync(dirPath)) {
     if (regex.test(file)) {
-      targets.push(path.join(dir, file).replace(/\\/g, '/'));
+      targets.push(path.join(dir, file).replace(/\\/g, "/"));
     }
   }
 }
@@ -121,9 +126,12 @@ function addGlobRecursive(targets, dir, pattern) {
   function walk(currentDir, relativeBase) {
     for (const entry of fs.readdirSync(currentDir, { withFileTypes: true })) {
       if (entry.isDirectory()) {
-        walk(path.join(currentDir, entry.name), path.join(relativeBase, entry.name));
+        walk(
+          path.join(currentDir, entry.name),
+          path.join(relativeBase, entry.name),
+        );
       } else if (regex.test(entry.name)) {
-        targets.push(path.join(relativeBase, entry.name).replace(/\\/g, '/'));
+        targets.push(path.join(relativeBase, entry.name).replace(/\\/g, "/"));
       }
     }
   }
@@ -131,10 +139,93 @@ function addGlobRecursive(targets, dir, pattern) {
 }
 
 // ============================================================
+// Cache / Lazy Rebuild
+// ============================================================
+
+/**
+ * Compute a SHA-256 hash covering:
+ *  - content of this script + dmi-parser.js (logic changes → rebuild)
+ *  - path + mtime + size of every input DMI file (data changes → rebuild)
+ */
+function computeInputHash(targetFiles) {
+  const hash = crypto.createHash("sha256");
+
+  // Hash build scripts themselves so logic changes trigger rebuild
+  const scriptFiles = [__filename, path.join(__dirname, "dmi-parser.js")];
+  for (const sf of scriptFiles) {
+    try {
+      hash.update(fs.readFileSync(sf));
+    } catch {
+      hash.update(sf + ":missing");
+    }
+  }
+
+  // Hash every input DMI by path + mtime + size (fast, no content read)
+  for (const file of targetFiles.sort()) {
+    const fullPath = path.join(ICONS_DIR, file);
+    try {
+      const stat = fs.statSync(fullPath);
+      hash.update(`${file}:${stat.mtimeMs}:${stat.size}\n`);
+    } catch {
+      hash.update(`${file}:missing\n`);
+    }
+  }
+
+  return hash.digest("hex");
+}
+
+/**
+ * Returns true if the atlas needs to be rebuilt.
+ * Checks: output exists, cache file exists, hash matches.
+ */
+function needsRebuild() {
+  // No icons directory — nothing to build
+  if (!fs.existsSync(ICONS_DIR)) {
+    return false;
+  }
+
+  // No manifest — definitely need to build
+  const manifestPath = path.join(OUTPUT_DIR, "manifest.json");
+  if (!fs.existsSync(manifestPath)) {
+    return true;
+  }
+
+  // No cache — need to build
+  if (!fs.existsSync(CACHE_FILE)) {
+    return true;
+  }
+
+  try {
+    const cachedHash = fs.readFileSync(CACHE_FILE, "utf-8").trim();
+    const targetFiles = getTargetDmiFiles();
+    const currentHash = computeInputHash(targetFiles);
+    return cachedHash !== currentHash;
+  } catch {
+    return true;
+  }
+}
+
+/**
+ * Persist the current input hash so subsequent runs can skip rebuild.
+ */
+function saveCache(targetFiles) {
+  const currentHash = computeInputHash(targetFiles);
+  fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+  fs.writeFileSync(CACHE_FILE, currentHash);
+}
+
+// ============================================================
 // Atlas Packing
 // ============================================================
 
 function buildAtlases() {
+  if (!fs.existsSync(ICONS_DIR)) {
+    console.warn(
+      `⚠️  Icons directory not found: ${ICONS_DIR}\n   Sprite atlas build skipped.`,
+    );
+    return null;
+  }
+
   const targetFiles = getTargetDmiFiles();
   console.log(`Found ${targetFiles.length} DMI files to process.`);
 
@@ -146,8 +237,7 @@ function buildAtlases() {
     sprites: {},
   };
 
-  // Collect all sprites first
-  const allSprites = []; // { dmiPath, state, dir, pixels }
+  const allSprites = [];
   let skippedEmpty = 0;
   let totalExtracted = 0;
 
@@ -161,21 +251,20 @@ function buildAtlases() {
       continue;
     }
 
-    // Normalize path for manifest key (use icons/ relative path)
-    const manifestKey = 'icons/' + dmiPath;
+    const manifestKey = "icons/" + dmiPath;
 
     for (let si = 0; si < dmi.states.length; si++) {
       const state = dmi.states[si];
       // Only extract first frame (frame 0) for each direction
       for (let di = 0; di < DIRECTIONS.length; di++) {
         const dir = DIRECTIONS[di];
-        if (dir >= state.dirs) continue; // Skip directions this state doesn't have
+        if (dir >= state.dirs) continue;
 
         let pixels;
         try {
           pixels = extractSprite(dmi, si, dir, 0);
-        } catch (e) {
-          continue; // Skip sprites that can't be extracted
+        } catch {
+          continue;
         }
 
         totalExtracted++;
@@ -195,16 +284,29 @@ function buildAtlases() {
       }
     }
 
-    process.stdout.write(`\r  Processed ${dmiPath} (${dmi.states.length} states)`);
+    process.stdout.write(
+      `\r  Processed ${dmiPath} (${dmi.states.length} states)`,
+    );
   }
-  console.log(`\nExtracted ${totalExtracted} sprite frames, skipped ${skippedEmpty} empty, packing ${allSprites.length} sprites.`);
+  console.log(
+    `\nExtracted ${totalExtracted} sprite frames, skipped ${skippedEmpty} empty, packing ${allSprites.length} sprites.`,
+  );
 
   // Pack sprites into atlas sheets
   const atlasCount = Math.ceil(allSprites.length / SPRITES_PER_ATLAS);
-  console.log(`Creating ${atlasCount} atlas sheet(s) at ${ATLAS_SIZE}x${ATLAS_SIZE}...`);
+  console.log(
+    `Creating ${atlasCount} atlas sheet(s) at ${ATLAS_SIZE}x${ATLAS_SIZE}...`,
+  );
 
   // Ensure output directory exists
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+
+  // Clean old atlas-*.png files before writing new ones
+  for (const file of fs.readdirSync(OUTPUT_DIR)) {
+    if (file.startsWith("atlas-") && file.endsWith(".png")) {
+      fs.unlinkSync(path.join(OUTPUT_DIR, file));
+    }
+  }
 
   for (let ai = 0; ai < atlasCount; ai++) {
     const atlasName = `atlas-${ai}.png`;
@@ -244,43 +346,58 @@ function buildAtlases() {
       if (!manifest.sprites[sprite.dmiPath][sprite.state]) {
         manifest.sprites[sprite.dmiPath][sprite.state] = {};
       }
-      manifest.sprites[sprite.dmiPath][sprite.state][sprite.dir] = [ai, dstX, dstY];
+      manifest.sprites[sprite.dmiPath][sprite.state][sprite.dir] = [
+        ai,
+        dstX,
+        dstY,
+      ];
     }
 
-    // Write atlas PNG
     const atlasPath = path.join(OUTPUT_DIR, atlasName);
     const buffer = PNG.sync.write(atlas, { colorType: 6, filterType: 4 });
     fs.writeFileSync(atlasPath, buffer);
     const sizeMB = (buffer.length / 1024 / 1024).toFixed(2);
-    console.log(`  Wrote ${atlasName}: ${endIdx - startIdx} sprites, ${sizeMB} MB`);
+    console.log(
+      `  Wrote ${atlasName}: ${endIdx - startIdx} sprites, ${sizeMB} MB`,
+    );
   }
 
-  // Write manifest
-  const manifestPath = path.join(OUTPUT_DIR, 'manifest.json');
+  const manifestPath = path.join(OUTPUT_DIR, "manifest.json");
   const manifestJson = JSON.stringify(manifest);
   fs.writeFileSync(manifestPath, manifestJson);
-  const manifestSizeMB = (Buffer.byteLength(manifestJson) / 1024 / 1024).toFixed(2);
-  console.log(`  Wrote manifest.json: ${Object.keys(manifest.sprites).length} DMI files, ${manifestSizeMB} MB`);
+  const manifestSizeMB = (
+    Buffer.byteLength(manifestJson) /
+    1024 /
+    1024
+  ).toFixed(2);
+  console.log(
+    `  Wrote manifest.json: ${Object.keys(manifest.sprites).length} DMI files, ${manifestSizeMB} MB`,
+  );
 
-  // Summary
-  console.log('\n=== Atlas Build Complete ===');
+  console.log("\n=== Atlas Build Complete ===");
   console.log(`  DMI files processed: ${targetFiles.length}`);
   console.log(`  Total sprites packed: ${allSprites.length}`);
   console.log(`  Atlas sheets: ${atlasCount}`);
   console.log(`  Output: ${OUTPUT_DIR}`);
 
+  // Persist cache so next build can skip if nothing changed
+  saveCache(targetFiles);
+
   return manifest;
 }
 
-// ============================================================
-// Main
-// ============================================================
-
 if (require.main === module) {
+  const force = process.argv.includes("--force");
+
+  if (!force && !needsRebuild()) {
+    console.log("🎨 Sprite atlas is up to date (use --force to rebuild).");
+    process.exit(0);
+  }
+
   const startTime = Date.now();
   buildAtlases();
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log(`  Time: ${elapsed}s`);
 }
 
-module.exports = { buildAtlases };
+module.exports = { buildAtlases, needsRebuild };

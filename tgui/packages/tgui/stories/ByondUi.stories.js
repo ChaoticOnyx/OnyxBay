@@ -36,7 +36,7 @@ const Story = (props, context) => {
           <Button
             icon="chevron-right"
             onClick={() =>
-              setImmediate(() => {
+              setTimeout(() => {
                 try {
                   // eslint-disable-next-line no-new-func
                   const result = new Function("return (" + code + ")")();
@@ -49,7 +49,7 @@ const Story = (props, context) => {
                 } catch (err) {
                   logger.log(err);
                 }
-              })
+              }, 0)
             }
           >
             Evaluate

@@ -167,7 +167,7 @@
 
 	// Open the TGUI character setup window
 	if(!character_setup_ui)
-		character_setup_ui = new /datum/character_setup(src, user)
+		character_setup_ui = new /datum/character_setup(src)
 	character_setup_ui.tgui_interact(user)
 
 	SSwarnings.show_warning(user.client, WARNINGS_NEWCOMERS, "window=Warning;size=360x240;can_resize=0;can_minimize=0")
