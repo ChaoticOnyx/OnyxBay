@@ -215,7 +215,7 @@
  *
  * optional can_be_suspended bool
  */
-/datum/tgui_window/proc/close(can_be_suspended = TRUE, close_connection = TRUE)
+/datum/tgui_window/proc/close(can_be_suspended = TRUE)
 	if(!client)
 		return
 	if(can_be_suspended && can_be_suspended())
@@ -232,11 +232,9 @@
 	status = TGUI_WINDOW_CLOSED
 	message_queue = null
 
-	if(close_connection)
-		var/conn_id = Z_WS_GET_TIED(src)
-
-		if(conn_id != null)
-			Z_WS_DISCONNECT(conn_id)
+	var/conn_id = Z_WS_GET_TIED(src)
+	if(conn_id != null)
+		Z_WS_DISCONNECT(conn_id)
 
 	// Do not close the window to give user some time
 	// to read the error message.
@@ -265,7 +263,8 @@
 		return
 	
 	var/conn_id = Z_WS_GET_TIED(src)
-	ASSERT(conn_id != null)
+	if(conn_id == null)
+		return
 
 	if(!Z_WS_SEND(conn_id, message))
 		log_tgui(client, "Error: Failed to send WS message", context = id)
@@ -289,7 +288,9 @@
 		return
 
 	var/conn_id = Z_WS_GET_TIED(src)
-	ASSERT(conn_id != null)
+	if(conn_id == null)
+		return
+
 	if(!Z_WS_SEND(conn_id, message))
 		log_tgui(client, "Error: Failed to send WS message", context = id)
 
@@ -319,7 +320,8 @@
 		return
 	
 	var/conn_id = Z_WS_GET_TIED(src)
-	ASSERT(conn_id != null)
+	if(conn_id == null)
+		return
 
 	for(var/message in message_queue)
 		if(!Z_WS_SEND(conn_id, message))
@@ -331,6 +333,20 @@
 	if(!client)
 		return FALSE
 
+	// Schedule calling of the callback on the next tick, outside of the
+	// Z_WS_TICK callstack.
+	spawn(0)
+		_on_message(content, conn_id)
+
+	return TRUE
+
+/datum/tgui_window/proc/_on_message(content, conn_id)
+	if(!client)
+		return
+
+	if(Z_WS_GET_TIED(src) != conn_id)
+		return
+
 	// For compatibility with code that relied on the usr set by Topic,
 	// and this is quite convenient.
 	usr = client.mob
@@ -339,15 +355,13 @@
 	try
 		C = json_decode(content)
 	catch
-		close(TRUE, FALSE)
-		return FALSE
+		close(FALSE)
+		return
 
 	if(!islist(C))
-		close(TRUE, FALSE)
-		return FALSE
+		close(FALSE)
+		return
 	
-	. = TRUE
-
 	var/type = C["type"]
 	var/payload = C["payload"]
 
@@ -366,30 +380,23 @@
 		flush_message_queue()
 	// Pass message to UI that requested the lock
 	if(locked && locked_by)
-		var/code = locked_by._on_message(type, payload, C)
-		switch(code)
-			if(TGUI_ON_MESSAGE_PREVENT)
-				return
-			if(TGUI_ON_MESSAGE_DISCONNECT)
-				return FALSE
+		var/prevent_default = locked_by._on_message(type, payload, C)
+		if(prevent_default)
+			return
 	// Pass message to the subscriber
 	else if(subscriber_object)
-		var/code = call(
+		var/prevent_default = call(
 			subscriber_object,
 			subscriber_delegate)(type, payload, C)
-		switch(code)
-			if(TGUI_ON_MESSAGE_PREVENT)
-				return
-			if(TGUI_ON_MESSAGE_DISCONNECT)
-				return FALSE
+		if(prevent_default)
+			return
 	// If not locked, handle these message types
 	switch(type)
 		if("ping")
 			send_message("pingReply", payload)
 		if("suspend")
-			close(TRUE, FALSE)
+			close(can_be_suspended = TRUE)
 		if("close")
-			close(FALSE, FALSE)
-			return FALSE
+			close(can_be_suspended = FALSE)
 		if("openLink")
 			client << link(C["url"])

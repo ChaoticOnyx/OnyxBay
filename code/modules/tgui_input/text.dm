@@ -78,7 +78,7 @@
 		QDEL_IN(src, timeout)
 
 /datum/tgui_input_text/Destroy(force, ...)
-	SStgui.close_uis(src)
+	SStgui.close_uis(src, FALSE)
 	return ..()
 
 /**
@@ -132,11 +132,11 @@
 					to_chat(usr, SPAN_NOTICE("Your message was clipped due to special character usage."))
 			set_entry(params["entry"])
 			closed = TRUE
-			SStgui.close_uis(src)
+			SStgui.close_uis(src, FALSE)
 			return TRUE
 		if("cancel")
 			closed = TRUE
-			SStgui.close_uis(src)
+			SStgui.close_uis(src, FALSE)
 			return TRUE
 
 /**
