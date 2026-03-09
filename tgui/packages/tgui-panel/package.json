@@ -5,9 +5,8 @@
   "dependencies": {
     "common": "4.3.0",
     "dompurify": "^3.0.11",
-    "inferno": "7.x.x",
+    "inferno": "9.x.x",
     "tgui": "4.3.0",
-    "tgui-dev-server": "4.3.0",
-    "tgui-polyfill": "4.3.0"
+    "tgui-dev-server": "4.3.0"
   }
 }
