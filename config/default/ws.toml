@@ -1,13 +1,6 @@
 [ws]
 # For secure connections (WSS), you need a domain and a reverse proxy.
-# Specify the full public address reachable by players (e.g., "example.com:3508").
-# host = "ss13.ru:3508"
-secure = false
-# Listening port for the WebSocket server.
-# If secure = true, this is the internal port (behind a proxy).
-# If secure = false, this is the public port directly accessible by players.
-# Set to 0 to let the system choose a free port.
-port = 0
+address = "ws://127.0.0.1:0"
 
 # Maximum number of total simultaneous connections.
 max_connections = 256
@@ -37,6 +30,9 @@ max_frame_size = 1048576
 # Maximum allowed size (bytes) of the HTTP handshake request.
 max_handshake_size = 8192
 
+# Maximum allowed size (bytes) of the WebSocket frame buffer.
+max_write_buffer_size = 65536
+
 # Maximum number of messages a client can send per second.
 rate_limit_messages_per_sec = 25
 
@@ -52,6 +48,9 @@ initial_message_timeout_ms = 1000
 # is considered AFK and closed. Ping/pong frames do not reset this timer.
 # Set to 0 to disable.
 afk_timeout_ms = 0
+
+# Trust the X-Real-IP header from the reverse proxy.
+trust_x_real_ip = false
 
 # Enable verbose logging of WebSocket messages and events.
 log = false

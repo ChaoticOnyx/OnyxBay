@@ -63,10 +63,12 @@ var/__z_name = null
 /// - max_message_size = 1 * 1024 * 1024
 /// - max_frame_size = 1 * 1024 * 1024
 /// - max_handshake_size = 8192
+/// - max_write_buffer_size = 64 * 1024
 /// - rate_limit_messages_per_sec = 25
 /// - rate_limit_bytes_per_sec = 1 * 1024 * 1024
 /// - initial_message_timeout_ms = 5000
 /// - afk_timeout_ms = 0
+/// - trust_x_real_ip = false
 /// - log = false (0/1)
 /// Returns false if the server failed to start (see Z_ERROR_ALREADY_RUNNING, Z_ERROR_FAILED_TO_START).
 #define Z_WS_START(PORT, ON_TEXT_PROC, ON_BINARY_PROC, CFG) call_ext(__z_name, "byond:Z_ws_start")(PORT, ON_TEXT_PROC, ON_BINARY_PROC, CFG)

@@ -8,15 +8,16 @@ SUBSYSTEM_DEF(ws)
 	wait = 1
 	flags = SS_NO_INIT | SS_NO_FIRE
 
+	var/address = null // TBD
 	var/port = null // TBD
 
 /datum/controller/subsystem/ws/stat_entry()
 	var/msg = "T:[Z_WS_GET_TICK_TIME()]ms "
 
-	if(port != null)
-		msg += "P:[port] "
+	if(address != null)
+		msg += "A:[address] "
 	else
-		msg += "P:TBD "
+		msg += "A:TBD "
 
 	msg += "C:[port != null ? Z_WS_CONNECTIONS() : "N/A"]/[config.ws.max_connections]"
 
@@ -33,23 +34,30 @@ SUBSYSTEM_DEF(ws)
 		"max_message_size" = config.ws.max_message_size,
 		"max_frame_size" = config.ws.max_frame_size,
 		"max_handshake_size" = config.ws.max_handshake_size,
+		"max_write_buffer_size" = config.ws.max_write_buffer_size,
 		"rate_limit_messages_per_sec" = config.ws.rate_limit_messages_per_sec,
 		"rate_limit_bytes_per_sec" = config.ws.rate_limit_bytes_per_sec,
 		"initial_message_timeout_ms" = config.ws.initial_message_timeout_ms,
 		"afk_timeout_ms" = config.ws.afk_timeout_ms,
+		"trust_x_real_ip" = config.ws.trust_x_real_ip,
 		"log" = config.ws.log,
 	)
 
-	if(config.ws.secure && !config.ws.host)
-		log_error("WebSocket secure connection enabled, but the host is not set")
+	var/parts = splittext(config.ws.address, ":")
 
-	if(!Z_WS_START(config.ws.port, nameof(.proc/OnWSText), null, json_encode(cfg)))
-		log_error("Failed to start a WebSocket server: [Z_GET_LAST_ERROR()]")
-	else
-		port = Z_WS_GET_PORT()
-		log_debug("Running a WebSocket server on port: [port]")
+	if(length(parts) != 3)
+		CRASH("Invalid WebSocket address: [config.ws.address]")
 
-		loop()
+	port = text2num(parts[3]) || 0
+
+	if(!Z_WS_START(port, nameof(.proc/OnWSText), null, json_encode(cfg)))
+		CRASH("Failed to start a WebSocket server: [Z_GET_LAST_ERROR()]")
+
+	port = Z_WS_GET_PORT()
+	address = "[parts[1]]:[parts[2]]:[port]"
+	log_debug("Running a WebSocket server on port: [port]")
+
+	loop()
 
 /datum/controller/subsystem/ws/proc/loop()
 	set waitfor = FALSE
@@ -68,14 +76,7 @@ SUBSYSTEM_DEF(ws)
 	. = ..()
 
 /datum/controller/subsystem/ws/proc/get_address()
-	var/address = world.internet_address || world.address
-	
-	// Secure connection requires a proxy so we should return not
-	// the actual port, but a proxied one.
-	if(config.ws.secure && config.ws.host)
-		return "wss://[config.ws.host]"
-	
-	return "ws://[address]:[port]"
+	return address
 
 /datum/controller/subsystem/ws/proc/issue_token(ckey)
 	if(GLOB.ws_secret == null)
