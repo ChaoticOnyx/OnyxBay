@@ -2,6 +2,7 @@
 	name = "ws"
 
 	var/address
+	var/proxy_port
 	var/max_connections
 	var/max_connections_per_ip
 	var/handshake_timeout_ms
@@ -21,6 +22,7 @@
 
 /datum/configuration_section/ws/load_data(list/data)
 	CONFIG_LOAD_STR(address, data["address"])
+	CONFIG_LOAD_NUM(proxy_port, data["proxy_port"])
 	CONFIG_LOAD_NUM(max_connections, data["max_connections"])
 	CONFIG_LOAD_NUM(max_connections_per_ip, data["max_connections_per_ip"])
 	CONFIG_LOAD_NUM(handshake_timeout_ms, data["handshake_timeout_ms"])

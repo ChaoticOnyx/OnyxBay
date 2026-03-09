@@ -2,6 +2,9 @@
 # For secure connections (WSS), you need a domain and a reverse proxy.
 address = "ws://127.0.0.1:0"
 
+# Set this to the port of the reverse proxy.
+# proxy_port = 0
+
 # Maximum number of total simultaneous connections.
 max_connections = 256
 

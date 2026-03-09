@@ -48,13 +48,20 @@ SUBSYSTEM_DEF(ws)
 	if(length(parts) != 3)
 		CRASH("Invalid WebSocket address: [config.ws.address]")
 
+
 	port = text2num(parts[3]) || 0
 
 	if(!Z_WS_START(port, nameof(.proc/OnWSText), null, json_encode(cfg)))
 		CRASH("Failed to start a WebSocket server: [Z_GET_LAST_ERROR()]")
 
 	port = Z_WS_GET_PORT()
-	address = "[parts[1]]:[parts[2]]:[port]"
+
+	// In case we use a proxy we should display the proxy's port, not the WebSocket's server port.
+	if(config.ws.proxy_port)
+		address = "[parts[1]]:[parts[2]]:[config.ws.proxy_port]"
+	else
+		address = "[parts[1]]:[parts[2]]:[port]"
+
 	log_debug("Running a WebSocket server on port: [port]")
 
 	loop()
