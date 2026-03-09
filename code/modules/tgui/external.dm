@@ -5,10 +5,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-#define TGUI_ON_MESSAGE_OK 0
-#define TGUI_ON_MESSAGE_PREVENT 1
-#define TGUI_ON_MESSAGE_DISCONNECT 2
-
 /**
  * public
  *

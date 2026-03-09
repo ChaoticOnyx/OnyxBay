@@ -99,7 +99,7 @@
 /// Close the UI.
 ///
 /// optional can_be_suspended bool
-/datum/tgui/proc/close(can_be_suspended = TRUE, close_connection = TRUE)
+/datum/tgui/proc/close(can_be_suspended = TRUE)
 	if(closing)
 		return
 	closing = TRUE
@@ -110,7 +110,7 @@
 		// and we want to keep them around, to allow user to read
 		// the error message properly.
 		window.release_lock()
-		window.close(can_be_suspended, close_connection)
+		window.close(can_be_suspended)
 		src_object.ui_close(user)
 		SStgui.on_close(src)
 	state = null
@@ -254,14 +254,12 @@
 		if("pingReply")
 			initialized = TRUE
 		if("suspend")
-			close(TRUE, FALSE)
+			close(TRUE)
 		if("close")
-			close(FALSE, FALSE)
-			return TGUI_ON_MESSAGE_DISCONNECT
+			close(FALSE)
 		if("log")
 			if(href_list["fatal"])
-				close(FALSE, FALSE)
-				return TGUI_ON_MESSAGE_DISCONNECT
+				close(FALSE)
 		if("setSharedState")
 			if(status != UI_INTERACTIVE)
 				return
