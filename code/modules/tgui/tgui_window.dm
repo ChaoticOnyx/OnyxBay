@@ -336,12 +336,15 @@
 	// Schedule calling of the callback on the next tick, outside of the
 	// Z_WS_TICK callstack.
 	spawn(0)
-		_on_message(content)
+		_on_message(content, conn_id)
 
 	return TRUE
 
-/datum/tgui_window/proc/_on_message(content)
+/datum/tgui_window/proc/_on_message(content, conn_id)
 	if(!client)
+		return
+
+	if(Z_WS_GET_TIED(src) != conn_id)
 		return
 
 	// For compatibility with code that relied on the usr set by Topic,
