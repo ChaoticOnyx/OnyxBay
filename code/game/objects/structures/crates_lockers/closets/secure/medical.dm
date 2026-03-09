@@ -93,7 +93,7 @@
 	    /obj/item/reagent_containers/vessel/bottle/chemical/antitoxin,
 	    /obj/item/storage/belt/medical/emt,
 	    /obj/item/clothing/mask/gas,
-	    /obj/item/clothing/suit/storage/toggle/fr_jacket,
+	    /obj/item/clothing/suit/storage/toggle/paramedic,
 	    /obj/item/clothing/suit/storage/toggle/labcoat,
 	    /obj/item/device/radio/headset/headset_med,
 	    /obj/item/cartridge/medical,
