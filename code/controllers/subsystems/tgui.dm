@@ -336,7 +336,7 @@ SUBSYSTEM_DEF(tgui)
  * return int The number of UIs closed.
  */
 /datum/controller/subsystem/tgui/proc/on_logout(mob/user)
-	close_user_uis(user)
+	close_user_uis(user, FALSE)
 
 /**
  * private
