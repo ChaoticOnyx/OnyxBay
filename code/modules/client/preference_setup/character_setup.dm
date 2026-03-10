@@ -684,7 +684,7 @@
 		var/datum/category_item/underwear/UWD = UWC.items_by_name[uw_item_name]
 		if(!UWD || !UWD.icon_state)
 			continue
-		var/uw_dmi = render_build ? "[render_build.clothing_icons[slot_hidden_str]]" : "icons/inv_slots/hidden/mob.dmi"
+		var/uw_dmi = render_build ? "[render_build.get_mob_icon(slot_hidden_str, UWD.icon_state)]" : "icons/inv_slots/hidden/mob.dmi"
 		var/uw_color = null
 		if(UWD.has_color && pref.all_underwear_metadata && pref.all_underwear_metadata[uw_category])
 			var/list/meta = pref.all_underwear_metadata[uw_category]
@@ -699,7 +699,10 @@
 		))
 	data["underwear_render"] = underwear_render
 
-	data["equipment_render"] = generate_equipment_render_data()
+	var/list/equip_result = generate_equipment_render_data()
+	data["equipment_render"] = equip_result["equipment"]
+	data["hide_hair"] = equip_result["hide_hair"]
+	data["hide_facial_hair"] = equip_result["hide_facial_hair"]
 
 	data["can_undo"] = undo_stack.len > 0
 	data["default_slot"] = pref.default_slot
@@ -861,11 +864,11 @@
 /// from the relevant overlays_standing slots.
 /datum/character_setup/proc/generate_equipment_render_data()
 	if(!pref.equip_preview_mob)
-		return list()
+		return list("equipment" = list(), "hide_hair" = FALSE, "hide_facial_hair" = FALSE)
 
 	var/mob/living/carbon/human/dummy/mannequin/M = get_mannequin(pref.client_ckey)
 	if(!M)
-		return list()
+		return list("equipment" = list(), "hide_hair" = FALSE, "hide_facial_hair" = FALSE)
 
 	M.delete_inventory(TRUE)
 	pref.dress_preview_mob(M)
@@ -939,7 +942,16 @@
 				"layer" = HO_UNIFORM_LAYER
 			))
 
-	return equipment
+	// Check if equipped head/mask items hide hair (matches update_hair/update_facial_hair)
+	var/hide_hair = FALSE
+	var/hide_facial_hair = FALSE
+	if((M.head?.flags_inv & BLOCKHAIR) || (M.wear_mask?.flags_inv & BLOCKHAIR))
+		hide_hair = TRUE
+		hide_facial_hair = TRUE
+	else if(M.head?.flags_inv & BLOCKHEADHAIR)
+		hide_hair = TRUE
+
+	return list("equipment" = equipment, "hide_hair" = hide_hair, "hide_facial_hair" = hide_facial_hair)
 
 /// Generate slot preview data for all character slots.
 /// Reads appearance fields directly from each slot's saved record —
@@ -2397,10 +2409,11 @@
 					pref.rlimb_data[BP_R_FOOT] = action
 				if(BP_CHEST, BP_HEAD, BP_GROIN)
 					// Full-body prosthetic
-					for(var/limb in BP_ALL_LIMBS - BP_CHEST)
+					for(var/limb in BP_ALL_LIMBS)
 						pref.organ_data[limb] = "cyborg"
 						pref.rlimb_data[limb] = action
-					pref.organ_data[BP_BRAIN] = "assisted"
+					if(!pref.organ_data[BP_BRAIN])
+						pref.organ_data[BP_BRAIN] = "assisted"
 					for(var/internal in list(BP_HEART, BP_EYES, BP_LUNGS, BP_LIVER, BP_KIDNEYS))
 						pref.organ_data[internal] = "mechanical"
 

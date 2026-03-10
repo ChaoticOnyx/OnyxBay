@@ -504,6 +504,8 @@ interface CharacterData {
   all_underwear_color: Record<string, string>;
   underwear_render: { state: string; dmiFile: string; color: string | null }[];
   equipment_render: { dmiFile: string; state: string; color: string | null; layer: number }[];
+  hide_hair: boolean;
+  hide_facial_hair: boolean;
   backpack: string;
   backpack_tweaks?: { tweakIndex: number; options: string[]; current: string }[];
   equip_preview_mob: number;
@@ -708,6 +710,8 @@ function buildRenderConfig(data: CharacterData): CharacterRenderConfig | null {
     clothing,
     markings,
     hairMarkings,
+    hideHair: !!data.hide_hair,
+    hideFacialHair: !!data.hide_facial_hair,
   };
 }
 
@@ -1158,6 +1162,7 @@ function previewCacheKey(data: CharacterData): string {
     JSON.stringify(data.all_underwear),
     JSON.stringify(data.equipment_render),
     JSON.stringify(data.body_markings),
+    data.hide_hair, data.hide_facial_hair,
   ].join("|");
 }
 
