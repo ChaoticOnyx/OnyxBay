@@ -12,6 +12,8 @@
 	var/const/fire_loss     = 40
 	var/base_solar_gen_rate
 	var/list/affecting_z = list()
+	var/list/scrambled_processors = list()
+	var/next_comms_disruption = 0
 
 /datum/event/solar_storm/New()
 	. = ..()
@@ -35,6 +37,7 @@
 
 /datum/event/solar_storm/think()
 	radiate()
+	disrupt_comms()
 
 	set_next_think(world.time + (2 SECONDS))
 
@@ -70,4 +73,41 @@
 	SSannounce.play_station_announce(/datum/announce/solar_storm_end)
 
 	adjust_solar_output()
+	restore_comms()
 	set_next_think(0)
+
+/// Periodically flips random telecomms processors into compress mode, garbling radio messages.
+/datum/event/solar_storm/proc/disrupt_comms()
+	if(world.time < next_comms_disruption)
+		return
+	next_comms_disruption = world.time + rand(10 SECONDS, 30 SECONDS)
+
+	// Restore any previously scrambled processors
+	restore_comms()
+
+	var/list/station_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
+	var/list/candidates = list()
+	for(var/obj/machinery/telecomms/processor/P in telecomms_list)
+		if(!(P.z in station_z))
+			continue
+		if(!P.on)
+			continue
+		if(P.process_mode == 1) // only target processors in normal (uncompress) mode
+			candidates += P
+
+	if(!candidates.len)
+		return
+
+	// Scramble 1-2 random processors
+	var/count = min(candidates.len, rand(1, 2))
+	for(var/i in 1 to count)
+		var/obj/machinery/telecomms/processor/P = pick_n_take(candidates)
+		P.process_mode = 0 // switch to compress mode — signals come out garbled
+		scrambled_processors += P
+
+/// Restores all scrambled processors to normal decompression mode.
+/datum/event/solar_storm/proc/restore_comms()
+	for(var/obj/machinery/telecomms/processor/P in scrambled_processors)
+		if(!QDELETED(P))
+			P.process_mode = 1
+	scrambled_processors.Cut()
