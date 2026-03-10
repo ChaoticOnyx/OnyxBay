@@ -8,7 +8,7 @@
 
 	options = newlist(
 		/datum/event_option/space_dust_option {
-			id = "option_mundande";
+			id = "option_mundane";
 			name = "Mundane Level";
 			weight = 80;
 			weight_ratio = EVENT_OPTION_AI_AGGRESSION_R;
@@ -54,7 +54,7 @@
 	var/severity = EVENT_LEVEL_MUNDANE
 	/// Mobs currently affected by dust visibility reduction.
 	var/list/affected_mobs = list()
-	/// Areas currently showing the dust overlay.
+	/// Areas currently showing the dust overlay. Assoc: area -> list(icon, icon_state, layer)
 	var/list/overlayed_areas = list()
 	/// World.time of next breach check.
 	var/next_breach_check = 0
@@ -142,23 +142,25 @@
 	for(var/area/A in breached_areas)
 		set_area_dust_overlay(A)
 
-/// Sets the dust overlay on an area.
+/// Sets the dust overlay on an area, saving original visuals for restoration.
 /datum/event/space_dust/proc/set_area_dust_overlay(area/A)
-	if(A in overlayed_areas)
+	if(overlayed_areas[A])
 		return
-	overlayed_areas += A
+	overlayed_areas[A] = list(A.icon, A.icon_state, A.layer)
 	A.icon = 'icons/effects/weather_effects.dmi'
 	A.layer = ABOVE_PROJECTILE_LAYER
 	A.icon_state = "dust_high"
 	if(severity >= EVENT_LEVEL_MODERATE)
 		A.set_opacity(TRUE)
 
-/// Clears the dust overlay from an area.
+/// Clears the dust overlay from an area, restoring original visuals.
 /datum/event/space_dust/proc/clear_area_dust_overlay(area/A)
+	var/list/original = overlayed_areas[A]
+	if(original)
+		A.icon = original[1]
+		A.icon_state = original[2]
+		A.layer = original[3]
 	overlayed_areas -= A
-	A.icon = 'icons/turf/areas.dmi'
-	A.icon_state = ""
-	A.layer = initial(A.layer)
 	A.set_opacity(FALSE)
 
 /// Clears dust overlays from all affected areas.

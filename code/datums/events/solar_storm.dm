@@ -12,6 +12,7 @@
 	var/const/fire_loss     = 40
 	var/base_solar_gen_rate
 	var/list/affecting_z = list()
+	/// Assoc: processor -> original process_mode value.
 	var/list/scrambled_processors = list()
 	var/next_comms_disruption = 0
 
@@ -102,12 +103,12 @@
 	var/count = min(candidates.len, rand(1, 2))
 	for(var/i in 1 to count)
 		var/obj/machinery/telecomms/processor/P = pick_n_take(candidates)
+		scrambled_processors[P] = P.process_mode // save original mode
 		P.process_mode = 0 // switch to compress mode — signals come out garbled
-		scrambled_processors += P
 
-/// Restores all scrambled processors to normal decompression mode.
+/// Restores all scrambled processors to their original mode.
 /datum/event/solar_storm/proc/restore_comms()
 	for(var/obj/machinery/telecomms/processor/P in scrambled_processors)
-		if(!QDELETED(P))
-			P.process_mode = 1
+		if(!QDELETED(P) && P.process_mode == 0) // only restore if we still own the change
+			P.process_mode = scrambled_processors[P]
 	scrambled_processors.Cut()
