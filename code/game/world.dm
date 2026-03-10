@@ -108,7 +108,7 @@ var/server_name = "OnyxBay"
 
 	var/tracy_init = call_ext(tracy_lib, "init")()
 	if(length(tracy_init) != 0 && tracy_init[1] == ".") // if first character is ., then it returned the output filename
-		return init
+		return tracy_init
 	else if("0" != tracy_init)
 		CRASH("[tracy_lib] init error: [tracy_init]")
 #else
