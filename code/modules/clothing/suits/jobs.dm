@@ -245,7 +245,7 @@
 	blood_overlay_type = "armorblood"
 	allowed = list(/obj/item/stack/medical, /obj/item/reagent_containers/dropper, /obj/item/reagent_containers/hypospray, /obj/item/reagent_containers/syringe, \
 	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/tank, /obj/item/device/geiger, /obj/item/crowbar, \
-	/obj/item/device/analyzer, , /obj/item/reagent_containers/vessel/flask, /obj/item/storage/pill_bottle)
+	/obj/item/device/analyzer, /obj/item/reagent_containers/vessel/flask, /obj/item/storage/pill_bottle)
 	body_parts_covered = UPPER_TORSO|ARMS
 	armor = list(melee = 30, bullet = 20, laser = 40, energy = 10, bomb = 0, bio = 50)
 	coverage = 0.8
