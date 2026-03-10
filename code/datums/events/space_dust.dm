@@ -176,11 +176,9 @@
 /datum/event/space_dust/proc/process_mobs()
 	for(var/mob/living/L in GLOB.living_mob_list_)
 		var/turf/T = get_turf(L)
-		if(!T || !(T.z in affecting_z))
-			continue
+		var/area/A = T ? get_area(T) : null
+		var/exposed = T && (T.z in affecting_z) && (A in overlayed_areas)
 
-		var/area/A = get_area(L)
-		var/exposed = (A in overlayed_areas)
 		if(exposed)
 			apply_dust_effect(L)
 			// Abrasion damage — dust wears on anything exposed.
@@ -195,10 +193,9 @@
 				// Reduced abrasion in breached rooms — dust seeps in but isn't as dense.
 				if(severity >= EVENT_LEVEL_MODERATE && prob(30))
 					L.adjustBruteLoss(1)
-		else
-			if(L in affected_mobs)
-				clear_dust_effect(L)
-				affected_mobs -= L
+		else if(L in affected_mobs)
+			clear_dust_effect(L)
+			affected_mobs -= L
 
 /// Applies blurry vision to a mob caught in the dust.
 /datum/event/space_dust/proc/apply_dust_effect(mob/living/L)
