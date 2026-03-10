@@ -24,7 +24,7 @@
 	explosion_block = 3
 
 	var/open_sound = 'sound/machines/blastdoor_open.ogg'
-	var/close_sound = list('sound/machines/blastdoor_close.ogg', 'sound/machines/blastdoor_close2.ogg')
+	var/close_sound = list('sound/machines/blastdoor_close.ogg')
 
 	closed_layer = BLASTDOOR_LAYER
 	var/id = 1.0
@@ -264,6 +264,7 @@
 	icon_state_closing = "old_pdoorc1"
 	icon_state = "old_pdoor1"
 	maxhealth = 300
+	close_sound = list('sound/machines/blastdoor_close2.ogg')
 
 /obj/machinery/door/blast/regular/retro/open
 	begins_closed = FALSE
