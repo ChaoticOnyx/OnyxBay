@@ -24,6 +24,17 @@
 	opacity = 1
 	density = 1
 
+/obj/machinery/door/unpowered/shuttle/close(forced = 0)
+	if(!can_close(forced))
+		return
+	playsound(loc, 'sound/machines/airlock/quiet_close.ogg', 100, 1)
+	..()
+
+/obj/machinery/door/unpowered/shuttle/open(forced = 0)
+	if(!can_open(forced))
+		return
+	playsound(loc, 'sound/machines/airlock/quiet_open.ogg', 100, 1)
+	..()
 
 /obj/machinery/door/unpowered/vent_shaft
 	name = "Vent Shaft"
