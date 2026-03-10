@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 bobbahbrown (https://github.com/bobbahbrown)

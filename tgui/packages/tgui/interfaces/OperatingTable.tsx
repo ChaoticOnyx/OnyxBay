@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-
 import { useBackend } from "../backend";
 import { Divider } from "../components/Divider";
 import { NoticeBox } from "../components/NoticeBox";
@@ -105,7 +103,6 @@ function Scan(props: MedicalData, context: any) {
             <LabeledList.Item label="Blood Volume">
               <ProgressBar
                 value={props.blood_volume / 100}
-                // eslint-disable-next-line max-len
                 content={
                   props.blood_volume_abs +
                   "/" +

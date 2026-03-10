@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
