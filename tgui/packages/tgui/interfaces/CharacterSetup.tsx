@@ -505,7 +505,7 @@ interface CharacterData {
   underwear_render: { state: string; dmiFile: string; color: string | null }[];
   equipment_render: { dmiFile: string; state: string; color: string | null; layer: number }[];
   backpack: string;
-  backpack_tweaks?: { options: string[]; current: string }[];
+  backpack_tweaks?: { tweakIndex: number; options: string[]; current: string }[];
   equip_preview_mob: number;
   bgstate: string;
   can_undo: boolean;
@@ -2756,7 +2756,7 @@ const LoadoutSubPanel = (props: {
                 key={i}
                 selected={tweak.current}
                 options={tweak.options}
-                onSelected={(val) => act("setBackpackTweak", { tweakIndex: i + 1, value: val })}
+                onSelected={(val) => act("setBackpackTweak", { tweakIndex: tweak.tweakIndex, value: val })}
               />
             ))}
           </Box>

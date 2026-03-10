@@ -643,7 +643,10 @@
 	var/list/bp_tweaks
 	if(pref.backpack && length(pref.backpack.tweaks))
 		bp_tweaks = list()
-		for(var/datum/backpack_tweak/selection/bt in pref.backpack.tweaks)
+		for(var/i = 1 to length(pref.backpack.tweaks))
+			var/datum/backpack_tweak/selection/bt = pref.backpack.tweaks[i]
+			if(!istype(bt))
+				continue
 			LAZYINITLIST(pref.backpack_metadata)
 			var/list/meta = pref.backpack_metadata[pref.backpack.name]
 			if(!islist(meta))
@@ -654,6 +657,7 @@
 			for(var/opt_name in bt.selections)
 				option_names += opt_name
 			bp_tweaks += list(list(
+				"tweakIndex" = i,
 				"options" = option_names,
 				"current" = current
 			))
