@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
@@ -67,12 +66,12 @@ export const setClientTheme = (name) => {
       "output.text-color": "#000000",
       "statwindow.background-color": "none",
       "statwindow.text-color": "#000000",
-	  "stat.background-color": "#FFFFFF",
-	  "stat.tab-background-color": "none",
-	  "stat.text-color": "#000000",
-	  "stat.tab-text-color": "#000000",
-	  "stat.prefix-color": "#000000",
-	  "stat.suffix-color": "#000000",
+      "stat.background-color": "#FFFFFF",
+      "stat.tab-background-color": "none",
+      "stat.text-color": "#000000",
+      "stat.tab-text-color": "#000000",
+      "stat.prefix-color": "#000000",
+      "stat.suffix-color": "#000000",
       "asset_cache_browser.background-color": "none",
       "asset_cache_browser.text-color": "#000000",
       // Say, OOC, me Buttons etc.
@@ -122,12 +121,12 @@ export const setClientTheme = (name) => {
       "output.text-color": COLOR_DARK_TEXT,
       "statwindow.background-color": COLOR_DARK_BG_DARKER,
       "statwindow.text-color": COLOR_DARK_TEXT,
-	  "stat.background-color": COLOR_DARK_BG_DARKER,
-	  "stat.tab-background-color": COLOR_DARK_BG,
-	  "stat.text-color": COLOR_DARK_TEXT,
-	  "stat.tab-text-color": COLOR_DARK_TEXT,
-	  "stat.prefix-color": COLOR_DARK_TEXT,
-	  "stat.suffix-color": COLOR_DARK_TEXT,
+      "stat.background-color": COLOR_DARK_BG_DARKER,
+      "stat.tab-background-color": COLOR_DARK_BG,
+      "stat.text-color": COLOR_DARK_TEXT,
+      "stat.tab-text-color": COLOR_DARK_TEXT,
+      "stat.prefix-color": COLOR_DARK_TEXT,
+      "stat.suffix-color": COLOR_DARK_TEXT,
       "asset_cache_browser.background-color": COLOR_DARK_BG,
       "asset_cache_browser.text-color": COLOR_DARK_TEXT,
       // Say, OOC, me Buttons etc.

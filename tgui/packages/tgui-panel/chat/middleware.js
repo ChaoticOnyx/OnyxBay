@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
@@ -38,7 +37,7 @@ const saveChatToStorage = async (store) => {
   const state = selectChat(store.getState());
   const fromIndex = Math.max(
     0,
-    chatRenderer.messages.length - MAX_PERSISTED_MESSAGES
+    chatRenderer.messages.length - MAX_PERSISTED_MESSAGES,
   );
   const messages = chatRenderer.messages
     .slice(fromIndex)
@@ -158,7 +157,7 @@ export const chatMiddleware = (store) => {
       try {
         chatRenderer.setHighlight(
           settings.highlightText,
-          settings.highlightColor
+          settings.highlightColor,
         );
       } catch (error) {
         store.dispatch({

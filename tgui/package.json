@@ -24,22 +24,12 @@
     "@babel/preset-typescript": "7.x.x",
     "@rollup/plugin-babel": "^7.0.0",
     "@types/node": "25.x.x",
-    "@typescript-eslint/eslint-plugin": "5.5.x",
-    "@typescript-eslint/parser": "5.5.x",
     "babel-plugin-inferno": "6.x.x",
     "babel-plugin-transform-remove-console": "6.9.x",
-    "eslint": "7.x.x",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-standard": "16.x.x",
-    "eslint-plugin-import": "2.x.x",
-    "eslint-plugin-json": "3.x.x",
-    "eslint-plugin-node": "11.x.x",
-    "eslint-plugin-promise": "5.x.x",
-    "eslint-plugin-react": "7.x.x",
     "pngjs": "^7.0.0",
     "sass": "1.97.x",
     "terser": "^5.46.0",
-    "typescript": "4.5.x",
+    "typescript": "5.x.x",
     "vite": "^7.3.1"
   }
 }

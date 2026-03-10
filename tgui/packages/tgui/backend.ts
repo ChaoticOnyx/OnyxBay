@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * This file provides a clear separation layer between backend updates
  * and what state our React app sees.
@@ -197,7 +196,7 @@ export const backendMiddleware = (store) => {
         if (import.meta.env.DEV) {
           logger.log(
             "visible in",
-            perf.measure("render/finish", "resume/finish")
+            perf.measure("render/finish", "resume/finish"),
           );
         }
       }, 0);
@@ -296,7 +295,7 @@ type StateWithSetter<T> = [T, (nextState: T) => void];
 export const useLocalState = <T>(
   context: any,
   key: string,
-  initialState: T
+  initialState: T,
 ): StateWithSetter<T> => {
   const { store } = context;
   const state = selectBackend(store.getState());
@@ -312,7 +311,7 @@ export const useLocalState = <T>(
             typeof nextState === "function"
               ? nextState(sharedState)
               : nextState,
-        })
+        }),
       );
     },
   ];
@@ -335,7 +334,7 @@ export const useLocalState = <T>(
 export const useSharedState = <T>(
   context: any,
   key: string,
-  initialState: T
+  initialState: T,
 ): StateWithSetter<T> => {
   const { store } = context;
   const state = selectBackend(store.getState());
@@ -349,7 +348,9 @@ export const useSharedState = <T>(
         key,
         value:
           JSON.stringify(
-            typeof nextState === "function" ? nextState(sharedState) : nextState
+            typeof nextState === "function"
+              ? nextState(sharedState)
+              : nextState,
           ) || "",
       });
     },

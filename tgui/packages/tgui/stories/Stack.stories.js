@@ -8,7 +8,6 @@ import { Box, Section, Stack } from "../components";
 
 export const meta = {
   title: "Stack",
-  // eslint-disable-next-line react/display-name
   render: () => <Story />,
 };
 

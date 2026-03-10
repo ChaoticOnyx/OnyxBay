@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * Various focus helpers.
  *

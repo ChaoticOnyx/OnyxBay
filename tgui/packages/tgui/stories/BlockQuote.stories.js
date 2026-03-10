@@ -9,7 +9,6 @@ import { BoxWithSampleText } from "./common";
 
 export const meta = {
   title: "BlockQuote",
-  // eslint-disable-next-line react/display-name
   render: () => <Story />,
 };
 

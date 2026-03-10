@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { useBackend } from "../backend";
 import {
   NoticeBox,
@@ -160,7 +159,6 @@ const ScanData = (props: any, context: any) => {
             <LabeledList.Item label="Blood Volume">
               <ProgressBar
                 value={data.medical_data.blood_volume / 100}
-                // eslint-disable-next-line max-len
                 content={
                   data.medical_data.blood_volume_abs +
                   "/" +

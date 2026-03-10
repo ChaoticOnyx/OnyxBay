@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
@@ -180,11 +179,7 @@ const TitleBar = (props, context) => {
         </div>
       )}
       {Boolean(fancy && canClose) && (
-        <div
-          className="TitleBar__close TitleBar__clickable"
-          // eslint-disable-next-line react/no-unknown-property
-          onclick={onClose}
-        >
+        <div className="TitleBar__close TitleBar__clickable" onclick={onClose}>
           {"×"}
         </div>
       )}

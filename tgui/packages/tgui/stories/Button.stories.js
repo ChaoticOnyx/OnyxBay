@@ -8,7 +8,6 @@ import { Box, Button, Section } from "../components";
 
 export const meta = {
   title: "Button",
-  // eslint-disable-next-line react/display-name
   render: () => <Story />,
 };
 

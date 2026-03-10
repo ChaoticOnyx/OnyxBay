@@ -19,7 +19,6 @@ import {
 
 export const meta = {
   title: "Input",
-  // eslint-disable-next-line react/display-name
   render: () => <Story />,
 };
 
