@@ -2136,7 +2136,7 @@
 		"discount" = owned ? 0 : (G.discount || 0),
 		"patronTier" = G.patron_tier,
 		"description" = G.description || "",
-		"allowed" = gear_allowed_to_see(G),
+		"allowed" = gear_allowed_to_see(G, user),
 		"canEquip" = G.is_allowed_to_equip(user)
 	)
 	if(length(G.allowed_roles))
@@ -2275,10 +2275,10 @@
 		return "custom"
 	return "unknown"
 
-/datum/character_setup/proc/gear_allowed_to_see(datum/gear/G)
+/datum/character_setup/proc/gear_allowed_to_see(datum/gear/G, mob/user)
 	if(!G.path)
 		return FALSE
-	if(!G.is_allowed_to_display(owner))
+	if(!G.is_allowed_to_display(user))
 		return FALSE
 	if(length(G.allowed_roles) && job_master)
 		var/list/jobs = list()
@@ -2419,7 +2419,7 @@
 	var/list/pool = list()
 	for(var/gear_name in gear_datums)
 		var/datum/gear/G = gear_datums[gear_name]
-		if(gear_allowed_to_see(G) && G.is_allowed_to_equip(owner) && G.cost <= pref.max_loadout_points)
+		if(gear_allowed_to_see(G, owner) && G.is_allowed_to_equip(owner) && G.cost <= pref.max_loadout_points)
 			pool += G
 	var/points_left = pref.max_loadout_points
 	while(points_left > 0 && length(pool))
