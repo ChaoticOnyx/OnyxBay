@@ -114,7 +114,11 @@
 	// Collect areas that currently have a direct zone-to-space connection.
 	var/list/breached_areas = list()
 	for(var/zone/Z in SSair.zones)
-		if(Z.invalid)
+		if(Z.invalid || !length(Z.contents))
+			continue
+		// Quick z-level check using the first turf before iterating edges.
+		var/turf/first = Z.contents[1]
+		if(!(first.z in affecting_z))
 			continue
 		var/has_space_edge = FALSE
 		for(var/connection_edge/unsimulated/E in Z.edges)
@@ -124,8 +128,6 @@
 			continue
 		// This zone is directly touching space — find which station areas its turfs belong to.
 		for(var/turf/T in Z.contents)
-			if(!(T.z in affecting_z))
-				continue
 			var/area/A = get_area(T)
 			if(!A || istype(A, /area/space))
 				continue
@@ -146,7 +148,7 @@
 /datum/event/space_dust/proc/set_area_dust_overlay(area/A)
 	if(overlayed_areas[A])
 		return
-	overlayed_areas[A] = list(A.icon, A.icon_state, A.layer)
+	overlayed_areas[A] = list(A.icon, A.icon_state, A.layer, A.opacity)
 	A.icon = 'icons/effects/weather_effects.dmi'
 	A.layer = ABOVE_PROJECTILE_LAYER
 	A.icon_state = "dust_high"
@@ -156,12 +158,13 @@
 /// Clears the dust overlay from an area, restoring original visuals.
 /datum/event/space_dust/proc/clear_area_dust_overlay(area/A)
 	var/list/original = overlayed_areas[A]
-	if(original)
-		A.icon = original[1]
-		A.icon_state = original[2]
-		A.layer = original[3]
+	if(!original)
+		return
+	A.icon = original[1]
+	A.icon_state = original[2]
+	A.layer = original[3]
+	A.set_opacity(original[4])
 	overlayed_areas -= A
-	A.set_opacity(FALSE)
 
 /// Clears dust overlays from all affected areas.
 /datum/event/space_dust/proc/clear_area_overlays()
