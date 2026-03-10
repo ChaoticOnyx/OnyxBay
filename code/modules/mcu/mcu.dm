@@ -414,7 +414,7 @@
 		output += "  mtime: [data["mtime"]] | mtimecmp: [data["mtimecmp"]]"
 
 		output += SPAN_NOTICE("<b>── CSR Registers ──</b>")
-		output += "  mscratch: [num2hex(data["mscratch"])] | mepc: [num2hex(data["mepc"])] | mtval: [num2hex(data["mtval"])]"
+		output += "  mscratch: [num2hex(data["mscratch"], 8)] | mepc: [num2hex(data["mepc"], 8)] | mtval: [num2hex(data["mtval"], 8)]"
 
 		var/list/mcause = data["mcause"]
 		output += "  mcause: code=[mcause["code"]], interrupt=[mcause["interrupt"]]"
