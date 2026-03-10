@@ -131,6 +131,7 @@ var/__z_name = null
 
 #define Z_SERIAL_N2B_CMD_WRITE 1
 #define Z_SERIAL_B2N_CMD_WRITE 1
+#define Z_SERIAL_N2B_CMD_SET_RAW_MODE 2
 
 #define Z_SIGNALER_N2B_CMD_SET 1
 #define Z_SIGNALER_N2B_CMD_SEND 2

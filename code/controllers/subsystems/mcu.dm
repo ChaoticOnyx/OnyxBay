@@ -49,5 +49,5 @@ SUBSYSTEM_DEF(mcu)
 		return
 
 	Z_MACHINES_SET_BUDGET(budget_percent)
-	var/delta_us = delta_ds * 100000 
+	var/delta_us = delta_ds * 100000
 	Z_MACHINES_TICK(delta_us)

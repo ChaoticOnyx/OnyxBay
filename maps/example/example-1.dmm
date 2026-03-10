@@ -2,7 +2,7 @@
 "b" = (/turf/simulated/floor/tiled,/area/engineering/toilet)
 "c" = (/turf/simulated/wall/r_wall,/area/space)
 "d" = (/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"e" = (/obj/structure/table/steel,/obj/item/device/mcu,/obj/item/device/mcu,/obj/item/device/mcu,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"e" = (/obj/structure/table/steel,/obj/item/device/mcu/standard,/obj/item/device/mcu/standard/upgraded,/obj/item/device/mcu/standard/pro,/obj/item/device/mcu/lowpower,/obj/item/device/mcu/lowpower/plus,/obj/item/device/mcu/lowpower/industrial,/obj/item/device/mcu/overclock,/obj/item/device/mcu/overclock/lite,/obj/item/device/mcu/overclock/extreme,/obj/item/device/mcu/legacy,/obj/item/device/mcu/hardened,/obj/item/device/mcu/flex,/obj/item/device/mcu/flex/max,/obj/item/device/mcu/flex/pro,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "f" = (/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "g" = (/turf/simulated/wall,/area/engineering/toilet)
 "h" = (/obj/machinery/light_switch{pixel_x = 25; on = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)

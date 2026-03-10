@@ -10,7 +10,7 @@ const TERM_ROWS = 24;
 const stringToUtf8Bytes = (str: string): number[] => {
   const encoder = new TextEncoder();
   const bytes = Array.from(encoder.encode(str));
-  bytes.push(10);
+  bytes.push(10); // newline terminator for line mode
   return bytes;
 };
 
@@ -23,12 +23,14 @@ type SerialTerminalData = {
   bufferStart: number;
   maxInputBytes: number;
   isActive: boolean;
+  rawMode: boolean;
 };
 
 type XTermProps = {
   buffer: number[];
   bufferStart: number;
   isActive: boolean;
+  rawMode: boolean;
   maxInputBytes: number;
   onSend: (bytes: number[]) => void;
 };
@@ -42,6 +44,8 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
   private terminal: Terminal | null = null;
   private lastBufferStart: number = 0;
   private writtenLength: number = 0;
+
+  // Line-mode input state
   private inputBuffer: string = '';
   private inputEchoActive: boolean = false;
 
@@ -50,6 +54,8 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
   };
 
   componentDidMount() {
+    const { isActive, rawMode } = this.props;
+
     this.terminal = new Terminal({
       theme: {
         background: '#141414',
@@ -81,9 +87,9 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
       fontFamily: '"Consolas", "Monaco", "Courier New", monospace',
       convertEol: true,
       disableStdin: false,
-      cursorBlink: this.props.isActive,
-      cursorStyle: 'bar',
-      scrollback: 5000,
+      cursorBlink: isActive,
+      cursorStyle: rawMode ? 'block' : 'bar',
+      scrollback: rawMode ? 0 : 5000, // No scrollback in raw mode
     });
 
     if (this.containerEl) {
@@ -102,12 +108,52 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
   }
 
   componentDidUpdate(prevProps: XTermProps) {
-    const { buffer, bufferStart, isActive } = this.props;
+    const { buffer, bufferStart, isActive, rawMode } = this.props;
 
+    // Handle active state changes
     if (prevProps.isActive !== isActive && this.terminal) {
       this.terminal.options.cursorBlink = isActive;
     }
 
+    // Handle raw mode transitions
+    if (prevProps.rawMode !== rawMode && this.terminal) {
+      if (rawMode) {
+        // Entering raw mode
+        // 1. Clear any pending line-mode echo
+        if (this.inputEchoActive) {
+          this.terminal.write('\x1b8\x1b[J');
+          this.inputEchoActive = false;
+        }
+        
+        this.inputBuffer = '';
+        
+        // 2. Reset terminal completely for clean slate
+        this.terminal.reset();
+        this.terminal.clear();
+        
+        // 3. Configure for raw mode
+        this.terminal.options.scrollback = 0;
+        this.terminal.options.cursorStyle = 'block';
+        
+        // 4. Reset tracking state
+        this.writtenLength = 0;
+        this.lastBufferStart = bufferStart;
+        
+        this.setState({ inputByteCount: 1 });
+      } else {
+        // Leaving raw mode
+        this.terminal.options.scrollback = 5000;
+        this.terminal.options.cursorStyle = 'bar';
+        
+        // Show cursor again (raw mode apps might hide it)
+        this.terminal.write('\x1b[?25h');
+      }
+      
+      // Don't process buffer changes in same update after mode switch
+      return;
+    }
+
+    // Handle buffer reset (empty buffer)
     if (!buffer || buffer.length === 0) {
       if (this.writtenLength > 0 || this.lastBufferStart !== bufferStart) {
         this.terminal?.reset();
@@ -115,7 +161,8 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
         this.lastBufferStart = bufferStart;
         this.inputEchoActive = false;
 
-        if (this.inputBuffer.length > 0 && isActive) {
+        // Re-echo pending line-mode input after reset
+        if (!rawMode && this.inputBuffer.length > 0 && isActive) {
           this.terminal?.write('\x1b7');
           this.terminal?.write(this.inputBuffer);
           this.inputEchoActive = true;
@@ -124,14 +171,17 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
       return;
     }
 
+    // Handle buffer trimming
     if (bufferStart !== this.lastBufferStart) {
       const cutAmount = bufferStart - this.lastBufferStart;
       this.writtenLength = Math.max(0, this.writtenLength - cutAmount);
       this.lastBufferStart = bufferStart;
     }
 
+    // Write new buffer bytes
     if (buffer.length > this.writtenLength) {
-      if (this.inputEchoActive) {
+      // In line mode, clear echo before writing server data
+      if (!rawMode && this.inputEchoActive) {
         this.terminal?.write('\x1b8\x1b[J');
         this.inputEchoActive = false;
       }
@@ -140,7 +190,8 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
       this.terminal?.write(new Uint8Array(newBytes));
       this.writtenLength = buffer.length;
 
-      if (this.inputBuffer.length > 0) {
+      // Re-echo pending line-mode input after server output (line mode only)
+      if (!rawMode && this.inputBuffer.length > 0) {
         this.terminal?.write('\x1b7');
         this.terminal?.write(this.inputBuffer);
         this.inputEchoActive = true;
@@ -154,16 +205,31 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
   }
 
   private handleInput(data: string) {
-    const { isActive, maxInputBytes, onSend } = this.props;
+    const { isActive, maxInputBytes, onSend, rawMode } = this.props;
 
-    if (!isActive || !this.terminal) return;
+    if (!isActive || !this.terminal) {
+      return;
+    }
 
+    // Raw mode: send every keystroke immediately, no local echo
+    if (rawMode) {
+      const encoder = new TextEncoder();
+      const bytes = Array.from(encoder.encode(data));
+
+      if (bytes.length > 0 && bytes.length <= maxInputBytes) {
+        onSend(bytes);
+      }
+      return;
+    }
+
+    // Line mode: buffer input, local echo, send on Enter
     let changed = false;
 
     for (const char of data) {
       const code = char.charCodeAt(0);
 
       if (code === 13 || code === 10) {
+        // Enter — send the buffered line
         if (this.inputBuffer.length > 0) {
           const bytes = stringToUtf8Bytes(this.inputBuffer);
 
@@ -179,6 +245,7 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
           }
         }
       } else if (code === 127 || code === 8) {
+        // Backspace
         if (this.inputBuffer.length > 0) {
           this.inputBuffer = this.inputBuffer.slice(0, -1);
 
@@ -192,6 +259,7 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
           changed = true;
         }
       } else if (code >= 32) {
+        // Printable character
         const newInput = this.inputBuffer + char;
         const newByteCount = countUtf8Bytes(newInput) + 1;
 
@@ -216,7 +284,7 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
   }
 
   render() {
-    const { isActive, maxInputBytes } = this.props;
+    const { isActive, rawMode, maxInputBytes } = this.props;
     const { inputByteCount } = this.state;
 
     return (
@@ -237,16 +305,27 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
             overflow: 'hidden',
           }}
         >
-          <span style={{ float: 'left', color: isActive ? '#4ec54e' : '#db4b4b' }}>
-            {isActive ? '● Connected' : '○ Disconnected'}
-          </span>
           <span
             style={{
-              float: 'right',
-              color: inputByteCount >= maxInputBytes ? '#db4b4b' : '#888888',
+              float: 'left',
+              color: isActive ? '#4ec54e' : '#db4b4b',
             }}
           >
-            {inputByteCount}/{maxInputBytes} bytes
+            {isActive ? '● Connected' : '○ Disconnected'}
+          </span>
+          <span style={{ float: 'right' }}>
+            {rawMode ? (
+              <span style={{ color: '#e5c07b' }}>⚡ Raw</span>
+            ) : (
+              <span
+                style={{
+                  color:
+                    inputByteCount >= maxInputBytes ? '#db4b4b' : '#888888',
+                }}
+              >
+                {inputByteCount}/{maxInputBytes} bytes
+              </span>
+            )}
           </span>
         </div>
       </div>
@@ -256,7 +335,7 @@ class XTermDisplay extends Component<XTermProps, XTermState> {
 
 export const SerialTerminal = (props: any, context: any) => {
   const { act, data } = useBackend<SerialTerminalData>(context);
-  const { buffer, bufferStart, maxInputBytes, isActive } = data;
+  const { buffer, bufferStart, maxInputBytes, isActive, rawMode } = data;
 
   return (
     <Window title="Serial Terminal" width={680} height={440}>
@@ -265,6 +344,7 @@ export const SerialTerminal = (props: any, context: any) => {
           buffer={buffer || []}
           bufferStart={bufferStart || 0}
           isActive={isActive}
+          rawMode={rawMode || false}
           maxInputBytes={maxInputBytes}
           onSend={(bytes) => act('send', { bytes })}
         />
