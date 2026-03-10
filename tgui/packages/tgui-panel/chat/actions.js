@@ -22,3 +22,7 @@ export const saveChatToDisk = createAction("chat/saveToDisk");
 export const saveSettingsToDisk = createAction("chat/saveSettingsToDisk");
 export const loadSettingsFromDisk = createAction("chat/loadSettingsFromDisk");
 export const resetSettings = createAction("chat/resetSettings");
+
+// TTS actions
+export const updateTtsSettings = createAction("chat/updateTtsSettings");
+export const stopTts = createAction("chat/stopTts");

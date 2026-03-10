@@ -50,7 +50,7 @@ let focusStolenBy = null;
 
 export const canStealFocus = (node) => {
   const tag = String(node.tagName).toLowerCase();
-  return tag === "input" || tag === "textarea";
+  return tag === "input" || tag === "textarea" || tag === "select";
 };
 
 const stealFocus = (node) => {
