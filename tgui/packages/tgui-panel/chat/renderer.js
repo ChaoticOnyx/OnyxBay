@@ -191,12 +191,7 @@ class ChatRenderer {
     const lines = String(text)
       .split(",")
       .map((str) => str.trim())
-      .filter(
-        (str) =>
-          // Must be longer than one character
-          str && str.length > 1,
-      );
-    // Nothing to match, reset highlighting
+      .filter((str) => str && str.length > 1);
     if (lines.length === 0) {
       this.highlightRegex = null;
       this.highlightColor = null;
@@ -344,6 +339,11 @@ class ChatRenderer {
       countByType[message.type] += 1;
       // TODO: Detect duplicates
       this.messages.push(message);
+
+      if (notifyListeners && !prepend) {
+        this.events.emit("messageAdded", message);
+      }
+
       if (canPageAcceptType(this.page, message.type)) {
         fragment.appendChild(node);
         this.visibleMessages.push(message);
