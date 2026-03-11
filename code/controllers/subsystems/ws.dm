@@ -73,7 +73,7 @@ SUBSYSTEM_DEF(ws)
 /datum/controller/subsystem/ws/proc/loop()
 	set waitfor = FALSE
 
-	while(src && port != null)
+	while(src != null && port != null)
 		Z_WS_TICK()
 		sleep(world.tick_lag)
 

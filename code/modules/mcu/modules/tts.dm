@@ -1,9 +1,9 @@
 /mob/living/tts
-	name = "Text-to-Speech Module"
+	name = "text-to-speech module"
 
 /obj/item/mcu_module/tts
-	name = "Text-to-Speech Module"
-	desc = "A microcontroller unit. This one seems to be a prototype."
+	name = "text-to-speech module"
+	desc = "A text-to-speech module, may synthesize speech in many languages."
 	icon_state = "tts"
 
 	device_type = Z_DEVICE_TYPE_TTS

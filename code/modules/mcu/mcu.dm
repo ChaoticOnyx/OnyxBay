@@ -1011,6 +1011,7 @@
 
 	if(accumulated_tid >= tid_limit)
 		__radiation_tid_failure()
+		
 		return
 
 	// Active effects only when running

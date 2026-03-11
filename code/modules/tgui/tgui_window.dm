@@ -211,6 +211,14 @@
 /**
  * public
  *
+ * Returns a tied connection to the window.
+ */
+/datum/tgui_window/proc/get_connection()
+	return Z_WS_GET_TIED(src)
+
+/**
+ * public
+ *
  * Close the UI.
  *
  * optional can_be_suspended bool
@@ -232,7 +240,7 @@
 	status = TGUI_WINDOW_CLOSED
 	message_queue = null
 
-	var/conn_id = Z_WS_GET_TIED(src)
+	var/conn_id = get_connection()
 	if(conn_id != null)
 		Z_WS_DISCONNECT(conn_id)
 
@@ -262,7 +270,7 @@
 		message_queue += list(message)
 		return
 	
-	var/conn_id = Z_WS_GET_TIED(src)
+	var/conn_id = get_connection()
 	if(conn_id == null)
 		return
 
@@ -287,7 +295,7 @@
 		message_queue += list(message)
 		return
 
-	var/conn_id = Z_WS_GET_TIED(src)
+	var/conn_id = get_connection()
 	if(conn_id == null)
 		return
 
@@ -319,7 +327,7 @@
 	if(!client || !message_queue)
 		return
 	
-	var/conn_id = Z_WS_GET_TIED(src)
+	var/conn_id = get_connection()
 	if(conn_id == null)
 		return
 
@@ -344,7 +352,7 @@
 	if(!client)
 		return
 
-	if(Z_WS_GET_TIED(src) != conn_id)
+	if(get_connection() != conn_id)
 		return
 
 	// For compatibility with code that relied on the usr set by Topic,

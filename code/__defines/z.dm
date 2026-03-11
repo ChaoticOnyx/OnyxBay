@@ -129,6 +129,7 @@ var/__z_name = null
 #define Z_DEVICE_TYPE_GPS 4
 #define Z_DEVICE_TYPE_LIGHT 5
 #define Z_DEVICE_TYPE_ENV_SENSOR 6
+#define Z_DEVICE_TYPE_VGA 7
 
 #define Z_TTS_N2B_CMD_SAY 1
 #define Z_TTS_B2N_CMD_READY_STATUS 1
@@ -148,6 +149,12 @@ var/__z_name = null
 #define Z_ENV_SENSOR_N2B_CMD_UPDATE 1
 #define Z_ENV_SENSOR_B2N_CMD_READY_STATUS 1
 #define Z_ENV_SENSOR_B2N_CMD_UPDATE 2
+
+#define Z_VGA_N2B_CMD_VBLANK 1
+#define Z_VGA_N2B_CMD_SET_RESOLUTION 2
+#define Z_VGA_B2N_CMD_SEND_SCREEN 1
+#define Z_VGA_B2N_CMD_KEYBOARD_EVENT 2
+#define Z_VGA_B2N_CMD_MOUSE_EVENT 3
 
 // All machine IDs are numeric handles returned by Z_MACHINE_CREATE.
 

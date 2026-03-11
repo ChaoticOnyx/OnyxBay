@@ -25,22 +25,22 @@ ping_interval_ms = 30000
 pong_timeout_ms = 10000
 
 # Maximum allowed size (bytes) of a complete WebSocket message.
-max_message_size = 1048576
+max_message_size = 524288
 
 # Maximum allowed size (bytes) of a single WebSocket frame.
-max_frame_size = 1048576
+max_frame_size = 524288
 
 # Maximum allowed size (bytes) of the HTTP handshake request.
 max_handshake_size = 8192
 
 # Maximum allowed size (bytes) of the WebSocket frame buffer.
-max_write_buffer_size = 1048576
+max_write_buffer_size = 524288
 
 # Maximum number of messages a client can send per second.
-rate_limit_messages_per_sec = 50
+rate_limit_messages_per_sec = 100
 
 # Maximum bytes a client can send per second.
-rate_limit_bytes_per_sec = 1048576
+rate_limit_bytes_per_sec = 65536
 
 # Time (ms) after connection during which the client must send at least one
 # text or binary message. Connections that only ping/pong will be dropped.
