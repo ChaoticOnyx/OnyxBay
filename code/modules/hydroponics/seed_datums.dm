@@ -1601,7 +1601,7 @@
 	seed_noun = SEED_NOUN_NODES
 	display_name = "replicant pods"
 	can_self_harvest = 1
-	has_mob_product = /mob/living/carbon/alien/diona
+	has_mob_product = /mob/living/carbon/larva/diona
 	mutants = list("maneater")
 	canonical_icon = "replicapod"
 

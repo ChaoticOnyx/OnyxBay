@@ -8,6 +8,7 @@
 
 	density = 1
 	anchored = 1.0
+	turf_height_offset = 2
 	idle_power_usage = 1 WATTS
 	active_power_usage = 5 WATTS
 	var/strapped = 0.0
@@ -119,7 +120,7 @@
 	return FALSE
 
 /obj/machinery/optable/MouseDrop_T(obj/O, mob/user)
-	if((!istype(O, /obj/item) || user.get_active_hand() != O) || !user.drop(O))
+	if((!istype(O, /obj/item) || !user.has_in_hands(O)) || !user.drop(O))
 		return
 
 	if(O.loc != loc)
@@ -184,8 +185,9 @@
 		C.client.perspective = EYE_PERSPECTIVE
 		C.client.eye = src
 
-	C.resting = TRUE
+	C.set_resting(TRUE)
 	C.dropInto(loc)
+	C.set_dir(SOUTH)
 	add_fingerprint(user)
 
 	if(ishuman(C))

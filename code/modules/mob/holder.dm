@@ -163,7 +163,8 @@ var/list/holder_mob_icon_cache = list()
 
 /obj/item/holder/attackby(obj/item/W, mob/user)
 	held_mob.attackby(W, user)
-	sync()
+	if(!QDELETED(held_mob)) // i.e. chopping up a chicken
+		sync()
 
 //Mob procs and vars for scooping up
 /mob/living/var/holder_type

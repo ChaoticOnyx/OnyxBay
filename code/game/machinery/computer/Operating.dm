@@ -50,3 +50,14 @@
 /obj/machinery/computer/operating/Destroy()
 	optable = null
 	return ..()
+
+/obj/machinery/computer/operating/small
+	name = "surgical console"
+	density = FALSE
+	anchored = 1.0
+	turf_height_offset = 0
+	icon_state = "surgery_scanner"
+	icon_keyboard = null
+	icon_screen = "surgery_scanner_active"
+	light_color = "#5284E7"
+	circuit = /obj/item/circuitboard/operating/small

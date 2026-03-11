@@ -256,7 +256,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	// Dismemberment stuff
 	if(!isnull(owner) && loc == owner && !clean)
-		owner.updatehealth()
+		owner.update_health()
 		if(try_to_dismember(brute, burn, damage_flags))
 			return
 
@@ -351,9 +351,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	update_damages()
 
 	if(owner)
-		owner.updatehealth()
+		owner.update_health()
 		if(update_damstate())
-			owner.UpdateDamageIcon()
+			owner.update_damage_overlays()
 		else if(status & ORGAN_BLEEDING)
 			owner.update_bandages() // TODO: Rework bandages
 
@@ -385,11 +385,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	var/should_update_damstate
 
 	if(owner)
-		owner.updatehealth()
+		owner.update_health()
 
 		should_update_damstate = update_damstate()
 		if(update_damage_icon && should_update_damstate)
-			owner.UpdateDamageIcon()
+			owner.update_damage_overlays()
 
 	return should_update_damstate
 

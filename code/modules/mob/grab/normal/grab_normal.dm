@@ -12,7 +12,7 @@
 	if(affecting.w_uniform)
 		affecting.w_uniform.add_fingerprint(assailant)
 
-	assailant.put_in_active_hand(src)
+	assailant.put_in_clicking_hand(src)
 	assailant.do_attack_animation(affecting)
 	playsound(affecting.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 	var/obj/O = get_targeted_organ()
@@ -24,6 +24,12 @@
 
 	if(!(affecting.a_intent == I_HELP))
 		upgrade(TRUE)
+
+/obj/item/grab/normal/get_ghost_image(atom/target)
+	var/image/I = image('icons/hud/actions.dmi', null, "grabbed", target.layer + 1)
+	I.appearance_flags |= RESET_COLOR|KEEP_APART
+	I.alpha = 128
+	return I
 
 /// For when we start choking 'em straight away
 /obj/item/grab/normal/quickchoke

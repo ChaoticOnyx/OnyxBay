@@ -51,9 +51,10 @@
 	if(href_list["alarm"])
 		if(ui_ref)
 			var/obj/machinery/alarm/alarm = locate(href_list["alarm"]) in (monitored_alarms.len ? monitored_alarms : GLOB.alarm_list)
-			if(alarm)
-				var/datum/topic_state/TS = generate_state(alarm)
-				alarm.ui_interact(usr, master_ui = ui_ref, state = TS)
+			if(istype(alarm))
+				var/datum/topic_state/air_alarm/state = generate_state(alarm)
+				alarm.set_remote_tgui_session(usr, src, state)
+				alarm.tgui_interact(usr)
 		return 1
 
 /datum/nano_module/atmos_control/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, master_ui = null, datum/topic_state/state = GLOB.default_state)
@@ -100,9 +101,15 @@
 	var/obj/machinery/alarm/air_alarm					= null
 
 /datum/topic_state/air_alarm/can_use_topic(src_object, mob/user)
-	if(has_access(user))
-		return STATUS_INTERACTIVE
-	return STATUS_UPDATE
+	if(!atmos_control)
+		return STATUS_CLOSE
+
+	var/controller_status = atmos_control.CanUseTopic(user)
+	if(controller_status <= STATUS_CLOSE)
+		return controller_status
+
+	var/access_status = has_access(user) ? STATUS_INTERACTIVE : STATUS_UPDATE
+	return min(controller_status, access_status)
 
 /datum/topic_state/air_alarm/href_list(mob/user)
 	var/list/extra_href = list()
@@ -112,4 +119,15 @@
 	return extra_href
 
 /datum/topic_state/air_alarm/proc/has_access(mob/user)
-	return user && (isAI(user) || atmos_control.access.allowed(user) || atmos_control.emagged || air_alarm.rcon_setting == RCON_YES || (air_alarm.alarm_area.atmosalm && air_alarm.rcon_setting == RCON_AUTO))
+	if(!user || !air_alarm || !atmos_control)
+		return FALSE
+
+	if(atmos_control.emagged)
+		return TRUE
+
+	// Remote control follows the alarm's computed remote state.
+	// This keeps remote UI interactivity aligned with rcon_setting + alarm danger logic.
+	if(!air_alarm.remote_control)
+		return FALSE
+
+	return isAI(user) || atmos_control.access.allowed(user)

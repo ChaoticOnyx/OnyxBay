@@ -13,7 +13,7 @@
 	one_hand_penalty = 2
 	accuracy = 2
 	max_shots = 12
-	fire_delay = 9
+	fire_delay = 0.8 SECONDS
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	matter = list(MATERIAL_STEEL = 2000)
 	projectile_type = /obj/item/projectile/beam/laser/mid
@@ -56,7 +56,7 @@
 	one_hand_penalty = 0
 	accuracy = 1.0
 	max_shots = 12
-	fire_delay = 5.5
+	fire_delay = 0.55 SECONDS
 	projectile_type = /obj/item/projectile/beam/laser/lesser
 	wielded_item_state = null
 	force = 8.5
@@ -104,7 +104,7 @@
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	w_class = ITEM_SIZE_NORMAL
 	projectile_type = /obj/item/projectile/beam/laser/lesser // Old but gold
-	fire_delay = 15 //old technology, and a pistol
+	fire_delay = 1.5 SECONDS //old technology, and a pistol
 	force = 9.0
 	mod_weight = 0.7
 	mod_reach = 0.5
@@ -122,7 +122,7 @@
 	slot_flags = SLOT_BELT //too unusually shaped to fit in a holster
 	w_class = ITEM_SIZE_NORMAL
 	projectile_type = /obj/item/projectile/beam/laser/lesser
-	fire_delay = 6
+	fire_delay = 0.6 SECONDS
 	origin_tech = null
 	max_shots = 5 //to compensate a bit for self-recharging
 	one_hand_penalty = 1 //a little bulky
@@ -142,7 +142,7 @@
 	charge_cost = 40
 	max_shots = 8
 	accuracy = 2
-	fire_delay = 20
+	fire_delay = 2 SECONDS
 	wielded_item_state = "lasercannon-wielded"
 	force = 14.0
 	mod_weight = 1.25
@@ -188,7 +188,7 @@
 	projectile_type = /obj/item/projectile/beam/xray
 	one_hand_penalty = 1
 	w_class = ITEM_SIZE_NORMAL
-	fire_delay = 10
+	fire_delay = 1 SECOND
 	wielded_item_state = null
 	force = 8.5
 	mod_weight = 0.7
@@ -207,7 +207,7 @@
 	slot_flags = SLOT_BACK
 	charge_cost = 40
 	max_shots = 4
-	fire_delay = 35
+	fire_delay = 3.5 SECONDS
 	force = 13.5
 	mod_weight = 1.1
 	mod_reach = 1.0

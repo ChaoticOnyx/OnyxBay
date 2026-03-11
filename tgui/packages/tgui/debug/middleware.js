@@ -12,6 +12,7 @@ import {
   toggleDebugLayout,
   toggleKitchenSink,
 } from "./actions";
+import * as devServer from "tgui-dev-server/link/client";
 
 const relayedTypes = ["backend/update", "chat/message"];
 
@@ -32,7 +33,7 @@ export const debugMiddleware = (store) => {
         throw new Error(
           "OOPSIE WOOPSIE!! UwU We made a fucky wucky!! A wittle" +
             " fucko boingo! The code monkeys at our headquarters are" +
-            " working VEWY HAWD to fix this!"
+            " working VEWY HAWD to fix this!",
         );
       });
     }
@@ -41,7 +42,6 @@ export const debugMiddleware = (store) => {
 };
 
 export const relayMiddleware = (store) => {
-  const devServer = require("tgui-dev-server/link/client");
   const externalBrowser = location.search === "?external";
   if (externalBrowser) {
     devServer.subscribe((msg) => {

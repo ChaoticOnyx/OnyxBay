@@ -54,7 +54,7 @@ var/hadevent    = 0
 		var/obj/vent = pick(vents)
 		var/candidate = pick(candidates)
 
-		var/mob/living/carbon/alien/larva/new_xeno = new(vent.loc)
+		var/mob/living/carbon/larva/xenomorph/new_xeno = new(vent.loc)
 		new_xeno.key = candidate
 
 		candidates -= candidate

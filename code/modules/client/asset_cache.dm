@@ -275,13 +275,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"Pelagiad.woff" = 'html/pelagiad/Pelagiad.woff'
 	)
 
-/datum/asset/simple/tgui_common
-	isTrivial = TRUE
-	verify = FALSE
-	assets = list(
-		"tgui-common.bundle.js" = 'tgui/public/tgui-common.bundle.js',
-	)
-
 /datum/asset/simple/tgui
 	isTrivial = TRUE
 	verify = FALSE
@@ -296,6 +289,12 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	assets = list(
 		"tgui-panel.bundle.js" = 'tgui/public/tgui-panel.bundle.js',
 		"tgui-panel.bundle.css" = 'tgui/public/tgui-panel.bundle.css',
+	)
+
+/datum/asset/directories/tgui_sprites
+	isTrivial = FALSE
+	dirs = list(
+		"tgui/public/sprites/",
 	)
 
 /datum/asset/directories/nanoui

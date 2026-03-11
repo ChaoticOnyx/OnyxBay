@@ -42,6 +42,11 @@
 @include meta.load-css("./components/Tabs.scss");
 @include meta.load-css("./components/TextArea.scss");
 @include meta.load-css("./components/Tooltip.scss");
+@include meta.load-css("./components/Seg7.scss");
+@include meta.load-css("./components/FlatGauge.scss");
+@include meta.load-css("./components/RockerSwitch.scss");
+@include meta.load-css("./components/ThermoSlider.scss");
+
 
 // Interfaces
 @include meta.load-css("./interfaces/ColorPicker.scss");
@@ -51,6 +56,10 @@
 @include meta.load-css("./interfaces/EventsPanel.scss");
 @include meta.load-css("./interfaces/NuclearBomb.scss");
 @include meta.load-css("./interfaces/Minesweeper.scss");
+@include meta.load-css("./interfaces/PencodeEditorModal.scss");
+@include meta.load-css("./interfaces/AirAlarm.scss");
+@include meta.load-css("./interfaces/CharacterSetup.scss");
+@include meta.load-css("./interfaces/WordProcessor.scss");
 
 // Layouts
 @include meta.load-css("./layouts/Layout.scss");
@@ -64,3 +73,9 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.flex-gap-4 > * + * { margin-left: 4px; }
+.flex-gap-6 > * + * { margin-left: 6px; }
+.flex-gap-8 > * + * { margin-left: 8px; }
+.flex-gap-10 > * + * { margin-left: 10px; }
+.flex-gap-12 > * + * { margin-left: 12px; }

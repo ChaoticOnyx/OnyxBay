@@ -23,11 +23,6 @@
 		stop_pulling()
 		return 0
 
-	if(!destination.CanZPass(pulling, direction))
-		to_chat(src, "<span class='warning'>The [pulling] you were pulling bumps up against \the [destination].</span>")
-		stop_pulling()
-		return 0
-
 	for(var/atom/A in destination)
 		if(!A.CanMoveOnto(pulling, start, 1.5, direction))
 			to_chat(src, "<span class='warning'>\The [A] blocks the [pulling] you were pulling.</span>")
@@ -71,16 +66,16 @@
 	return 0
 
 /mob/living/carbon/human/can_ztravel()
-	if(Allow_Spacemove())
+	if(is_space_movement_permitted() != SPACE_MOVE_FORBIDDEN)
 		return 1
 
-	if(Check_Shoegrip())	//scaling hull with magboots
+	if(!can_slip(magboots_only = TRUE)) // scaling hull with magboots
 		for(var/turf/simulated/T in trange(1,src))
 			if(T.density)
 				return 1
 
 /mob/living/silicon/robot/can_ztravel()
-	if(Allow_Spacemove()) //Checks for active jetpack
+	if(is_space_movement_permitted() != SPACE_MOVE_FORBIDDEN) //Checks for active jetpack
 		return 1
 
 	for(var/turf/simulated/T in trange(1,src)) //Robots get "magboots"
@@ -99,12 +94,11 @@
 		return
 
 	var/turf/T = loc
-	if(!T.CanZPass(src, DOWN) || !below.CanZPass(src, DOWN))
+	if(!T.CanZPass(src, DOWN))
 		return
 
 	// No gravity in space, apparently.
-	var/area/area = get_area(src)
-	if(!area.has_gravity())
+	if(!has_gravity())
 		return
 
 	if(throwing)
@@ -213,7 +207,7 @@
 	apply_damage(rand(0, damage), BRUTE, BP_L_ARM)
 	apply_damage(rand(0, damage), BRUTE, BP_R_ARM)
 	weakened = max(weakened,2)
-	updatehealth()
+	update_health()
 
 	if (old_stat != CONSCIOUS)
 		return

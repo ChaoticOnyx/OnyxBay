@@ -189,7 +189,7 @@
 	return 1
 
 
-/obj/structure/window/hitby(atom/movable/AM, speed, nomsg)
+/obj/structure/window/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg)
 	..()
 	var/tforce = 0
 	if(ismob(AM)) // All mobs have a multiplier and a size according to mob_defines.dm
@@ -299,7 +299,7 @@
 			P.state = state
 			qdel(src)
 	else
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 3)
 			visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
@@ -595,7 +595,7 @@
 /obj/structure/window/reinforced/polarized/attackby(obj/item/W as obj, mob/user as mob)
 	if(isMultitool(W))
 		var/t = sanitizeSafe(input(user, "Enter the ID for the window.", src.name, null), MAX_NAME_LEN)
-		if (user.get_active_hand() != W)
+		if(!user.has_in_hands(W))
 			return
 		if (!in_range(src, user) && src.loc != user)
 			return
@@ -624,6 +624,7 @@
 	return
 
 /obj/structure/window/reinforced/crescent/hitby()
+	SHOULD_CALL_PARENT(FALSE)
 	return
 
 /obj/structure/window/reinforced/crescent/take_damage()

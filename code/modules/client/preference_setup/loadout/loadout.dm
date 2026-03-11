@@ -708,6 +708,7 @@ var/list/hash_to_gear = list()
 	var/slot               //Slot to equip to.
 	var/list/allowed_roles //Roles that can spawn with this item.
 	var/whitelisted        //Term to check the whitelist for..
+	var/subgroup             //Subgroup for UI grouping within a category.
 	var/sort_category = "General"
 	var/flags              //Special tweaks in new
 	var/list/gear_tweaks = list() //List of datums which will alter the item after it has been spawned.

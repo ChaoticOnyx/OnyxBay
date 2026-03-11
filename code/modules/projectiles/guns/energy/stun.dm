@@ -58,7 +58,7 @@
 /obj/item/gun/energy/taser/mounted/cyborg
 	name = "taser gun"
 	max_shots = 6
-	fire_delay = 15
+	fire_delay = 1.5 SECONDS
 	recharge_time = 10 //Time it takes for shots to recharge (in ticks)
 
 
@@ -69,7 +69,7 @@
 	item_state = "stunrevolver"
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_POWER = 2)
 	projectile_type = /obj/item/projectile/energy/electrode/greater
-	fire_delay = 10
+	fire_delay = 1.2 SECONDS
 	max_shots = 6
 	combustion = 0
 	has_safety = FALSE
@@ -130,7 +130,7 @@
 	icon_state = "plasma_stun"
 	item_state = "plasma_stun"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_POWER = 3)
-	fire_delay = 20
+	fire_delay = 2 SECONDS
 	max_shots = 4
 	projectile_type = /obj/item/projectile/energy/plasmastun
 	combustion = 0
@@ -164,7 +164,7 @@
 	mod_weight = 0.7
 	mod_reach = 0.5
 	mod_handy = 1.0
-	burst_delay = 2
+	burst_delay = 0.2 SECONDS
 	has_safety = FALSE
 
 	var/subtype = /decl/taser_types
@@ -246,7 +246,7 @@
 	var/max_shots = 6
 	var/accuracy = 0
 	var/one_hand_penalty = 0
-	var/fire_delay = 6
+	var/fire_delay = 0.6 SECONDS
 	var/burst = 1
 	var/list/firemodes = list()
 	var/w_class = ITEM_SIZE_NORMAL
@@ -263,7 +263,7 @@
 	max_shots = 6
 	accuracy = 0
 	one_hand_penalty = 0
-	fire_delay = 6
+	fire_delay = 0.6 SECONDS
 	burst = 1
 	list/firemodes = list()
 	w_class = ITEM_SIZE_NORMAL
@@ -280,11 +280,11 @@
 	max_shots = 12
 	accuracy = 0
 	one_hand_penalty = 1
-	fire_delay = 3
+	fire_delay = 0.4 SECONDS
 	burst = 1
 	firemodes = list(
-		list(mode_name = "semiauto", fire_delay = 3,    burst = 1),
-		list(mode_name = "burst",    fire_delay = null, burst = 3)
+		list(mode_name = "semiauto", burst = 1),
+		list(mode_name = "burst",    burst = 3)
 	)
 	w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT
@@ -300,7 +300,7 @@
 	max_shots = 6
 	accuracy = 0
 	one_hand_penalty = 2
-	fire_delay = 12
+	fire_delay = 1.2 SECONDS
 	burst = 1
 	firemodes = list(
 		list(mode_name = "electrode", projectile_type = /obj/item/projectile/energy/electrode/greater),

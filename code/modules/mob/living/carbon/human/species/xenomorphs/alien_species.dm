@@ -90,7 +90,7 @@
 	xenomorph_type = null // No larvae spawn from xenomorphs themselves
 
 /datum/species/xenos/can_understand(mob/other)
-	if(istype(other,/mob/living/carbon/alien/larva))
+	if(istype(other,/mob/living/carbon/larva/xenomorph))
 		return TRUE
 	return FALSE
 
@@ -141,7 +141,7 @@
 		H.adjustToxLoss(-heal_rate)
 		if(prob(5))
 			to_chat(H, "<span class='alium'>I feel a soothing sensation come over me...</span>")
-		H.UpdateDamageIcon()
+		H.update_damage_overlays()
 		return TRUE
 
 	//next internal organs

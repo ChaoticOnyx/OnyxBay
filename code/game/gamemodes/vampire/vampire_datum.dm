@@ -77,7 +77,7 @@
 
 	if(!(vamp_status & VAMP_ISTHRALL))
 		if(my_mob.reagents.has_reagent(/datum/reagent/water/holywater) || my_mob.get_ingested_reagents().has_reagent(/datum/reagent/water/holywater))
-			my_mob.adjust_fire_stacks(0.2)
+			my_mob.adjust_fire_stacks(2)
 			my_mob.IgniteMob()
 			if(prob(20))
 				for(var/mob/V in viewers(my_mob))

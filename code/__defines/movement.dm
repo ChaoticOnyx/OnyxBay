@@ -13,3 +13,8 @@
 
 #define MOVESPEED_ID_MOB_GRAB_STATE "mob_grab_state"
 #define MOVESPEED_ID_MOB_WALK_RUN "mob_walk_run"
+
+// Enum for results of is_space_movement_permitted()
+#define SPACE_MOVE_SUPPORTED (-1)
+#define SPACE_MOVE_FORBIDDEN   0
+#define SPACE_MOVE_PERMITTED   1

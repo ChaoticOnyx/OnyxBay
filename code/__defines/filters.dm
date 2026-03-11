@@ -36,10 +36,10 @@
 
 // TODO: Find a better place to store this and above procs.
 /mob/proc/set_renderer_filter(condition, renderer_name = SCENE_GROUP_RENDERER, filter_name, priority, list/params)
-	if(isnull(renderers))
+	if(!A_LAZYLEN(renderers))
 		return FALSE
 
-	if(!(renderer_name in renderers))
+	if(!A_LAZYACCESS(renderers, renderer_name))
 		return FALSE
 
 	condition?renderers[renderer_name].add_filter(filter_name, priority, params) : renderers[renderer_name].remove_filter(filter_name)

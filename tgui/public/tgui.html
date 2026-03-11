@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -6,6 +6,8 @@
 
     <!-- Inlined metadata -->
     <meta id="tgui:windowId" content="[tgui:windowId]" />
+    <meta id="tgui:wsToken" content="[tgui:wsToken]" />
+    <meta id="tgui:wsAddress" content="[tgui:wsAddress]" />
 
     <!-- Early setup -->
     <script type="text/javascript">
@@ -38,18 +40,90 @@
 
         // Expose inlined metadata
         Byond.windowId = parseMetaTag("tgui:windowId");
+        Byond.wsToken = parseMetaTag("tgui:wsToken");
+
+        Byond.wsAuthenticated = false;
+        Byond.wsQueue = [];
+        const wsAddress = parseMetaTag("tgui:wsAddress");
+        const WS_RETRY_DELAY = 5000;
+        const WS_MAX_RETRIES = 60;
+        var wsRetryCount = 0;
+
+        var connectWebSocket = function () {
+          var ws = new WebSocket(wsAddress);
+          Byond.ws = ws;
+
+          ws.addEventListener("open", function () {
+            wsRetryCount = 0;
+
+            // We send the connection request first and only then everything else.
+            ws.send(
+              JSON.stringify({
+                type: "tgui/connect",
+                token: Byond.wsToken,
+                payload: {
+                  window_id: Byond.windowId,
+                },
+              }),
+            );
+
+            Byond.wsAuthenticated = true;
+
+            while (Byond.wsQueue.length > 0) {
+              ws.send(Byond.wsQueue.shift());
+            }
+          });
+
+          ws.addEventListener("message", function (event) {
+            if (window.update.queueActive) {
+              window.update.queue.push(event.data);
+              return;
+            }
+
+            var message = Byond.parseJson(event.data);
+
+            window.update.lastPayloadByType[message.type] = message.payload;
+
+            var listeners = window.update.listeners;
+            for (var i = 0; i < listeners.length; i++) {
+              listeners[i](message.type, message.payload);
+            }
+          });
+
+          ws.addEventListener("close", function () {
+            Byond.wsAuthenticated = false;
+
+            if (wsRetryCount >= WS_MAX_RETRIES) {
+              console.error(
+                "WebSocket: failed to connect after " +
+                  WS_MAX_RETRIES +
+                  " tries.",
+              );
+              return;
+            }
+
+            wsRetryCount++;
+            console.warn(
+              "WebSocket: failed to connect, retry after " +
+                WS_RETRY_DELAY / 1000 +
+                "s " +
+                "(try " +
+                wsRetryCount +
+                "/" +
+                WS_MAX_RETRIES +
+                ")",
+            );
+
+            setTimeout(connectWebSocket, WS_RETRY_DELAY);
+          });
+        };
+
+        connectWebSocket();
 
         // Backwards compatibility
         window.__windowId__ = Byond.windowId;
 
-        // Trident engine version
-        Byond.TRIDENT = (function () {
-          var groups = navigator.userAgent.match(/Trident\/(\d+).+?;/i);
-          var majorVersion = groups && groups[1];
-          return majorVersion ? parseInt(majorVersion, 10) : null;
-        })();
-		
-		// Blink engine version
+        // Blink engine version
         Byond.BLINK = (function () {
           var groups = navigator.userAgent.match(/Chrome\/(\d+)\./);
           var majorVersion = groups && groups[1];
@@ -58,36 +132,22 @@
 
         // Basic checks to detect whether this page runs in BYOND
         var isByond =
-          (Byond.TRIDENT !== null || Byond.BLINK !== null || window.cef_to_byond) &&
+          (Byond.BLINK !== null || window.cef_to_byond) &&
           location.hostname === "127.0.0.1" &&
           location.search !== "?external";
 
         // Version constants
         Byond.IS_BYOND = isByond;
-        Byond.IS_LTE_IE8 = Byond.TRIDENT !== null && Byond.TRIDENT <= 4;
-        Byond.IS_LTE_IE9 = Byond.TRIDENT !== null && Byond.TRIDENT <= 5;
-        Byond.IS_LTE_IE10 = Byond.TRIDENT !== null && Byond.TRIDENT <= 6;
-        Byond.IS_LTE_IE11 = Byond.TRIDENT !== null && Byond.TRIDENT <= 7;
 
         // Callbacks for asynchronous calls
         Byond.__callbacks__ = [];
 
-        // Reviver for BYOND JSON
-        // IE8: No reviver for you!
-        // See: https://stackoverflow.com/questions/1288962
-        var byondJsonReviver;
-        if (!Byond.IS_LTE_IE8) {
-          byondJsonReviver = function (key, value) {
-            if (
-              typeof value === "object" &&
-              value !== null &&
-              value.__number__
-            ) {
-              return parseFloat(value.__number__);
-            }
-            return value;
-          };
-        }
+        const byondJsonReviver = function (key, value) {
+          if (typeof value === "object" && value !== null && value.__number__) {
+            return parseFloat(value.__number__);
+          }
+          return value;
+        };
 
         // Makes a BYOND call.
         // See: https://secure.byond.com/docs/ref/skinparams.html
@@ -136,7 +196,7 @@
         Byond.callAsync = function (path, params) {
           if (!window.Promise) {
             throw new Error(
-              "Async calls require API level of ES2015 or later."
+              "Async calls require API level of ES2015 or later.",
             );
           }
           var index = Byond.__callbacks__.length;
@@ -147,13 +207,20 @@
             path,
             assign({}, params, {
               callback: "Byond.__callbacks__[" + index + "]",
-            })
+            }),
           );
           return promise;
         };
 
-        Byond.topic = function (params) {
-          return Byond.call("", params);
+        Byond.send = function (params) {
+          if (
+            Byond.ws.readyState !== WebSocket.OPEN ||
+            !Byond.wsAuthenticated
+          ) {
+            Byond.wsQueue.push(JSON.stringify(params));
+          } else {
+            Byond.ws.send(JSON.stringify(params));
+          }
         };
 
         Byond.command = function (command) {
@@ -204,39 +271,66 @@
           }
         };
 
-        Byond.sendMessage = function (type, payload) {
-          var message =
-            typeof type === "string" ? { type: type, payload: payload } : type;
-          // JSON-encode the payload
-          if (message.payload !== null && message.payload !== undefined) {
-            message.payload = JSON.stringify(message.payload);
-          }
-          // Append an identifying header
-          assign(message, {
-            tgui: 1,
-            window_id: Byond.windowId,
-          });
-          Byond.topic(message);
+        window.update = {
+          listeners: [],
+          queue: [],
+          queueActive: true,
+          lastPayloadByType: {},
+
+          flushQueue: function (listener) {
+            if (window.update.queueActive) {
+              window.update.queueActive = false;
+            }
+
+            var queue = window.update.queue;
+            for (var i = 0; i < queue.length; i++) {
+              var message = Byond.parseJson(queue[i]);
+              listener(message.type, message.payload);
+            }
+
+            var lastPayloads = window.update.lastPayloadByType;
+            for (var type in lastPayloads) {
+              if (Object.prototype.hasOwnProperty.call(lastPayloads, type)) {
+                listener(type, lastPayloads[type]);
+              }
+            }
+          },
         };
 
         // This function exists purely for debugging, do not use it in code!
         Byond.injectMessage = function (type, payload) {
-          window.update(JSON.stringify({ type: type, payload: payload }));
+          var listeners = window.update.listeners;
+          for (var i = 0; i < listeners.length; i++) {
+            listeners[i](type, payload);
+          }
         };
 
+        // Обычная подписка: именно она должна "разом" обработать очередь.
         Byond.subscribe = function (listener) {
           window.update.flushQueue(listener);
           window.update.listeners.push(listener);
         };
 
         Byond.subscribeTo = function (type, listener) {
-          _listener = function (_type, payload) {
+          var _listener = function (_type, payload) {
             if (_type === type) {
               listener(payload);
             }
           };
           window.update.listeners.push(_listener);
           window.update.flushQueue(_listener);
+        };
+
+        Byond.sendMessage = function (type, payload) {
+          var message =
+            typeof type === "string" ? { type: type, payload: payload } : type;
+
+          assign(message, {
+            tgui: 1,
+            window_id: Byond.windowId,
+          });
+
+          Byond.send(message);
         };
 
         // Asset loaders
@@ -305,20 +399,20 @@
               }
               throw new Error(errorMessage);
             }
-            setTimeout(function () {
-              loadedAssetByUrl[url] = null;
-              options.attempt += 1;
-              loadAsset(options);
-            }, RETRY_WAIT_INITIAL + attempt * RETRY_WAIT_INCREMENT);
+            setTimeout(
+              function () {
+                loadedAssetByUrl[url] = null;
+                options.attempt += 1;
+                loadAsset(options);
+              },
+              RETRY_WAIT_INITIAL + attempt * RETRY_WAIT_INCREMENT,
+            );
           };
           // JS specific code
           if (type === "js") {
             var node = document.createElement("script");
             node.type = "text/javascript";
-            // IE8: Prefer non-https protocols
-            node.src = Byond.IS_LTE_IE9
-              ? url.replace("https://", "http://")
-              : url;
+            node.src = url;
             if (sync) {
               node.defer = true;
             } else {
@@ -338,24 +432,21 @@
             var node = document.createElement("link");
             node.type = "text/css";
             node.rel = "stylesheet";
-            // IE8: Prefer non-https protocols
-            node.href = Byond.IS_LTE_IE9
-              ? url.replace("https://", "http://")
-              : url;
+            node.href = url;
             // Temporarily set media to something inapplicable
             // to ensure it'll fetch without blocking render
             if (!sync) {
               node.media = "only x";
             }
-			var removeNodeAndRetry = function () {
+            var removeNodeAndRetry = function () {
               node.parentNode.removeChild(node);
               node = null;
               retry();
-			}
-			node.onerror = function () {
+            };
+            node.onerror = function () {
               node.onerror = null;
-			  removeNodeAndRetry();
-			}
+              removeNodeAndRetry();
+            };
             node.onload = function () {
               node.onload = null;
               if (isStyleSheetLoaded(node, url)) {
@@ -379,33 +470,32 @@
           loadAsset({ url: url, sync: sync, type: "css" });
         };
       })();
-	  
-	  Byond.saveBlob = function (blob, filename, ext) {
+
+      Byond.saveBlob = function (blob, filename, ext) {
         if (window.navigator.msSaveBlob) {
-		  // IE backwards compatibility for clients using BYOND <= 515
-		  window.navigator.msSaveBlob(blob, filename)
-		} else if (window.showSaveFilePicker) {
-		  var accept = {};
-		  accept[blob.type] = [ext];
-		  var opts = {
-		    suggestedName: filename,
-			types: [
-			  {
-			    description: "SS13 chatlog",
-				accept: accept,
-              }
-            ]
-          }
+          // IE backwards compatibility for clients using BYOND <= 515
+          window.navigator.msSaveBlob(blob, filename);
+        } else if (window.showSaveFilePicker) {
+          var accept = {};
+          accept[blob.type] = [ext];
+          var opts = {
+            suggestedName: filename,
+            types: [
+              {
+                description: "SS13 chatlog",
+                accept: accept,
+              },
+            ],
+          };
           window.showSaveFilePicker(opts).then(function (fileHandle) {
-		    fileHandle.createWritable().then(function (writeableFileHandle) {
-			  writeableFileHandle.write(blob).then(function () {
-			    writeableFileHandle.close()
-			  })
-			})
-		  })
-		}
-	  };
-		 
+            fileHandle.createWritable().then(function (writeableFileHandle) {
+              writeableFileHandle.write(blob).then(function () {
+                writeableFileHandle.close();
+              });
+            });
+          });
+        }
+      };
 
       // Error handling
       // ------------------------------------------------------
@@ -432,8 +522,7 @@
           } else {
             window.onerror.__stack__ = stack;
           }
-          var textProp = Byond.IS_LTE_IE8 ? "innerText" : "textContent";
-          errorStack[textProp] = window.onerror.__stack__;
+          errorStack["textContent"] = window.onerror.__stack__;
         }
         // Set window geometry
         var setFatalErrorGeometry = function () {
@@ -454,7 +543,9 @@
         });
         // Short-circuit further updates
         window.__updateQueue__ = [];
-        window.update = function () {};
+        if (window.update && window.update.listeners) {
+          window.update.listeners = [];
+        }
         // Prevent default action
         return true;
       };
@@ -476,51 +567,10 @@
         return stack + "\nUser Agent: " + navigator.userAgent;
       };
 
-      // Incoming message handling
-      // ------------------------------------------------------
-
-      // Message handler
-      window.update = function (rawMessage) {
-        // Push onto the queue (active during initialization)
-        if (window.update.queueActive) {
-          window.update.queue.push(rawMessage);
-          return;
-        }
-        // Parse the message
-        var message = Byond.parseJson(rawMessage);
-        // Notify listeners
-        var listeners = window.update.listeners;
-        for (var i = 0; i < listeners.length; i++) {
-          listeners[i](message.type, message.payload);
-        }
-      };
-
-      // Properties and variables of this specific handler
-      window.update.listeners = [];
-      window.update.queue = [];
-      window.update.queueActive = true;
-      window.update.flushQueue = function (listener) {
-        // Disable and clear the queue permanently on short delay
-        if (window.update.queueActive) {
-          window.update.queueActive = false;
-          if (window.setTimeout) {
-            window.setTimeout(function () {
-              window.update.queue = [];
-            }, 0);
-          }
-        }
-        // Process queued messages on provided listener
-        var queue = window.update.queue;
-        for (var i = 0; i < queue.length; i++) {
-          var message = Byond.parseJson(queue[i]);
-          listener(message.type, message.payload);
-        }
-      };
-
       // Signal tgui that we're ready to receive updates
-	  document.addEventListener('DOMContentLoaded', function (event) {
-		Byond.sendMessage('ready');
-	  });
+      document.addEventListener("DOMContentLoaded", function (event) {
+        Byond.sendMessage("ready");
+      });
     </script>
 
     <style>
@@ -554,7 +604,8 @@
         margin: 16px;
         top: 0;
         left: 0;
-        animation: FatalError__rainbow 2s linear infinite alternate,
+        animation:
+          FatalError__rainbow 2s linear infinite alternate,
           FatalError__shadow 4s linear infinite alternate,
           FatalError__tfmX 3s infinite alternate,
           FatalError__tfmY 4s infinite alternate;

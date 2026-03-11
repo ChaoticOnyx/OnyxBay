@@ -79,34 +79,34 @@ note dizziness decrements automatically in the mob's Life() proc.
 	if(height_offset == new_val)
 		return FALSE
 	height_offset = new_val
-	animate(src, pixel_z = height_offset, time = 2, easing = SINE_EASING)
+	animate(src, pixel_z = height_offset, time = 2, easing = SINE_EASING, tag = MOB_ANIM_HEIGHT_OFFSET)
 	return TRUE
 
 //handles up-down floaty effect in space and zero-gravity
-/mob/var/is_floating = 0
-/mob/var/floatiness = 0
+/mob/var/is_floating = FALSE
+/mob/var/floatiness = FALSE
 
 /mob/proc/update_floating()
-
-	if(iscarbon(src))
-		var/mob/living/carbon/C = src
-		if(C?.species?.negates_gravity())
-			make_floating(0)
-			return
-
-	if(anchored || buckled || check_solid_ground())
-		make_floating(0)
+	if(anchored || buckled || has_gravity())
+		make_floating(FALSE)
 		return
 
-	if(Check_Shoegrip() && Check_Dense_Object())
-		make_floating(0)
+	if(!can_slip(magboots_only = TRUE))
+		make_floating(FALSE)
 		return
 
-	make_floating(1)
+	make_floating(TRUE)
 	return
 
-/mob/proc/make_floating(n)
-	floatiness = n
+/mob/living/carbon/update_floating()
+	if(species?.negates_gravity())
+		make_floating(FALSE)
+		return
+	..()
+	return
+
+/mob/proc/make_floating(new_val)
+	floatiness = new_val
 
 	if(floatiness && !is_floating)
 		start_floating()
@@ -115,24 +115,19 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 /mob/proc/start_floating()
 
-	is_floating = 1
+	is_floating = TRUE
 
 	var/amplitude = 2 //maximum displacement from original position
 	var/period = 36 //time taken for the mob to go up >> down >> original position, in deciseconds. Should be multiple of 4
 
-	var/top = default_pixel_y + amplitude
-	var/bottom = default_pixel_y - amplitude
-	var/half_period = period / 2
-	var/quarter_period = period / 4
-
-	animate(src, pixel_y = top, time = quarter_period, easing = SINE_EASING | EASE_OUT, loop = -1)		//up
-	animate(pixel_y = bottom, time = half_period, easing = SINE_EASING, loop = -1)						//down
-	animate(pixel_y = default_pixel_y, time = quarter_period, easing = SINE_EASING | EASE_IN, loop = -1)			//back
+	animate(src, pixel_z = amplitude, time = period/4, easing = SINE_EASING | EASE_OUT, loop = -1, tag = MOB_ANIM_FLOATING, flags = ANIMATION_RELATIVE)		//up
+	animate(pixel_z = amplitude * -2, time = period/2, easing = SINE_EASING, loop = -1, flags = ANIMATION_RELATIVE)						//down
+	animate(pixel_z = amplitude, time = period/4, easing = SINE_EASING | EASE_IN, loop = -1, flags = ANIMATION_RELATIVE)			//back
 
 /mob/proc/stop_floating()
-	animate(src, pixel_y = default_pixel_y, time = 5, easing = SINE_EASING | EASE_IN) //halt animation
+	animate(src, pixel_z = height_offset, time = 5, easing = SINE_EASING | EASE_IN, tag = MOB_ANIM_FLOATING) //halt animation
 	//reset the pixel offsets to zero
-	is_floating = 0
+	is_floating = FALSE
 
 /atom/movable/proc/do_attack_animation(atom/A)
 
@@ -161,38 +156,20 @@ note dizziness decrements automatically in the mob's Life() proc.
 			pixel_x_diff = -8
 			pixel_y_diff = -8
 
-	var/default_pixel_x = initial(pixel_x)
-	var/default_pixel_y = initial(pixel_y)
-	var/mob/mob = src
-	if(istype(mob))
-		default_pixel_x = mob.default_pixel_x
-		default_pixel_y = mob.default_pixel_y
-
-	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, time = 2)
-	animate(pixel_x = default_pixel_x, pixel_y = default_pixel_y, time = 2)
+	animate(src, pixel_x = pixel_x_diff, pixel_y = pixel_y_diff, time = 2, tag = MOB_ANIM_ATTACK, flags = ANIMATION_RELATIVE|ANIMATION_END_NOW)
+	animate(pixel_x = -pixel_x_diff, pixel_y = -pixel_y_diff, time = 2, flags = ANIMATION_RELATIVE)
 
 /mob/do_attack_animation(atom/A)
 	..()
-	is_floating = 0 // If we were without gravity, the bouncing animation got stopped, so we make sure we restart the bouncing after the next movement.
 
 	// What icon do we use for the attack?
 	var/image/I
-	if(hand && l_hand) // Attacked with item in left hand.
-		I = image(l_hand.icon, A, l_hand.icon_state, A.layer + 1)
-	else if (!hand && r_hand) // Attacked with item in right hand.
-		I = image(r_hand.icon, A, r_hand.icon_state, A.layer + 1)
+	var/obj/item/W = get_clicking_hand()
+	if(istype(W)) // Attacked with item in left hand.
+		I = W.get_ghost_image(A)
 	else // Attacked with a fist?
 		return
 
-	// Who can see the attack?
-	var/list/viewing = list()
-	for (var/mob/M in viewers(A))
-		if (M.client)
-			viewing |= M.client
-	flick_overlay(I, viewing, 5) // 5 ticks/half a second
-
-	// Scale the icon.
-	I.SetTransform(scale = 0.75)
 	// Set the direction of the icon animation.
 	var/direction = get_dir(src, A)
 	if(direction & NORTH)
@@ -208,8 +185,17 @@ note dizziness decrements automatically in the mob's Life() proc.
 	if(!direction) // Attacked self?!
 		I.pixel_z = 16
 
+	// Who can see the attack?
+	I.loc = A
+	var/list/viewing = list()
+	for(var/mob/M in viewers(A))
+		if(M.client)
+			viewing |= M.client
+	flick_overlay(I, viewing, 5) // 5 ticks/half a second
+
 	// And animate the attack!
 	animate(I, alpha = 175, pixel_x = 0, pixel_y = 0, pixel_z = 0, time = 3)
+	animate(alpha = 0, time = 2)
 
 /mob/proc/spin(spintime, speed)
 	if(!spintime || !speed)

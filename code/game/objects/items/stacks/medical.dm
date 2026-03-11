@@ -88,7 +88,7 @@
 			to_chat(user, SPAN("warning", "This isn't useful at all on a robotic limb."))
 			return 1
 
-		H.UpdateDamageIcon()
+		H.update_damage_overlays()
 
 	else
 
@@ -99,7 +99,7 @@
 		)
 		use(1)
 
-	M.updatehealth()
+	M.update_health()
 
 /obj/item/stack/medical/get_storage_cost()
 	return base_storage_cost(w_class)
@@ -129,28 +129,28 @@
 	if(affecting.is_bandaged())
 		to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been bandaged."))
 		return TRUE
-	else
-		user.visible_message(SPAN("notice", "\The [user] starts bandaging [M]'s [affecting.name]."), \
-							 SPAN("notice", "You start bandaging [M]'s [affecting.name]."))
 
-		if(!do_mob(user, M, 2.5 SECONDS))
-			to_chat(user, SPAN("warning", "You must stand still to bandage wounds."))
-			return TRUE
+	user.visible_message(SPAN("notice", "\The [user] starts bandaging [M]'s [affecting.name]."), \
+						 SPAN("notice", "You start bandaging [M]'s [affecting.name]."))
 
-		user.visible_message(SPAN("notice", "\The [user] bandages [M]'s [affecting.name]."), \
-							 SPAN("notice", "You bandage [M]'s [affecting.name]."))
+	if(!do_mob(user, M, 2.5 SECONDS))
+		to_chat(user, SPAN("warning", "You must stand still to bandage wounds."))
+		return TRUE
 
-		affecting.bandage()
-		affecting.update_damages()
+	user.visible_message(SPAN("notice", "\The [user] bandages [M]'s [affecting.name]."), \
+						 SPAN("notice", "You bandage [M]'s [affecting.name]."))
 
-		if(affecting.update_damstate())
-			H.UpdateDamageIcon()
+	affecting.bandage()
+	affecting.update_damages()
 
-		if(get_amount() == 1)
-			to_chat(user, SPAN("warning", "\The [src] is used up."))
+	if(affecting.update_damstate())
+		H.update_damage_overlays()
 
-		use(1)
-		H.update_bandages(1)
+	if(get_amount() == 1)
+		to_chat(user, SPAN("warning", "\The [src] is used up."))
+
+	use(1)
+	H.update_bandages(1)
 	return TRUE
 
 /obj/item/stack/medical/ointment
@@ -274,7 +274,7 @@
 				used++
 			affecting.update_damages()
 			if(affecting.update_damstate())
-				H.UpdateDamageIcon()
+				H.update_damage_overlays()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))
@@ -349,8 +349,8 @@
 					                 SPAN("notice", "You start to apply \the [src] to [M]'s [limb]."), \
 								    SPAN("warning", "You hear something being wrapped."))
 		else
-			if(( !user.hand && (affecting.organ_tag in list(BP_R_ARM, BP_R_HAND)) || \
-				user.hand && (affecting.organ_tag in list(BP_L_ARM, BP_L_HAND)) ))
+			if((user.active_hand == ACTIVE_HAND_RIGHT && (affecting.organ_tag in list(BP_R_ARM, BP_R_HAND)) || \
+				user.active_hand == ACTIVE_HAND_LEFT && (affecting.organ_tag in list(BP_L_ARM, BP_L_HAND)) ))
 				to_chat(user, SPAN("warning", "You can't apply a splint to the arm you're using!"))
 				return
 			user.visible_message(SPAN("notice", "[user] starts to apply \the [src] to their [limb]."), \
@@ -433,7 +433,7 @@
 
 			affecting.update_damages()
 			if(affecting.update_damstate())
-				H.UpdateDamageIcon()
+				H.update_damage_overlays()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))

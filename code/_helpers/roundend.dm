@@ -26,7 +26,7 @@ GLOBAL_LIST_EMPTY(common_report)
 
 		else
 			var/mob/observer/ghost/O = Player
-			if (!istype(Player) || !O.started_as_observer)
+			if(!istype(O) || (istype(O) && !O.started_as_observer))
 				parts += "<div class='panel redborder'>"
 				parts += "<span class='redtext'>You did not survive the events on [station_name()]...</span>"
 	else

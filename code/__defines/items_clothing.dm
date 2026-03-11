@@ -52,6 +52,9 @@
 #define HIDEEYES 0x4 // Glasses.
 #define HIDEFACE 0x8 // Dictates whether we appear as "Unknown".
 
+// Hides RIG control modules or whatever is in suit storage
+#define HIDERIG (1<<0)
+
 #define BLOCKHEADHAIR   0x20    // Hides the user's hair overlay. Leaves facial hair.
 #define BLOCKHAIR       0x40    // Hides the user's hair, facial and otherwise.
 
@@ -176,10 +179,13 @@
 #define      GLOVES_MAX_HEAT_PROTECTION_TEMPERATURE 1500  // For some gloves.
 #define        SHOE_MAX_HEAT_PROTECTION_TEMPERATURE 1500  // For shoes.
 
-// Fire.
-#define FIRE_MIN_STACKS          -20
-#define FIRE_MAX_STACKS           15
-#define FIRE_MAX_FIRESUIT_STACKS  20 // If the number of stacks goes above this firesuits won't protect you anymore. If not, you can walk around while on fire like a badass.
+// Fire. Each fire stack means one mob tick of burning.
+#define FIRE_STACKS_MIN     -150
+#define FIRE_STACKS_LEVEL_1 0
+#define FIRE_STACKS_LEVEL_2 50
+#define FIRE_STACKS_LEVEL_3 250 // At this point firesuits won't protect you anymore.
+#define FIRE_STACKS_MAX     300
+
 
 #define THROWFORCE_SPEED_DIVISOR    1  // The throwing speed value at which the throwforce multiplier is exactly 1.
 #define THROWNOBJ_KNOCKBACK_SPEED   15 // The minumum speed of a w_class 2 thrown object that will cause living mobs it hits to be knocked back. Heavier objects can cause knockback at lower speeds.
@@ -202,6 +208,9 @@
 #define HUD_SCIENCE 0x1
 #define HUD_SECURITY 0x2
 #define HUD_MEDICAL 0x4
+
+#define ACTIVE_HAND_RIGHT 0
+#define ACTIVE_HAND_LEFT 1
 
 // Storage
 

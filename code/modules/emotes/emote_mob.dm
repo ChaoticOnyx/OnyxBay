@@ -1,6 +1,6 @@
 /mob
 	var/list/default_emotes
-	var/list/current_emotes
+	var/alist/current_emotes
 
 	var/list/next_emote_use
 	var/list/next_audio_emote_produce
@@ -35,13 +35,13 @@
 			verbs -= E.statpanel_proc
 
 /mob/proc/get_emote(key)
-	return LAZYACCESS(current_emotes, key)
+	return A_LAZYACCESS(current_emotes, key)
 
 /mob/proc/set_emote(key, datum/emote/emote)
-	LAZYSET(current_emotes, key, emote)
+	A_LAZYSET(current_emotes, key, emote)
 
 /mob/proc/clear_emote(key)
-	LAZYREMOVE(current_emotes, key)
+	A_LAZYREMOVE(current_emotes, key)
 
 /mob/proc/emote(act, intentional = FALSE, target)
 	var/splitpoint = findtext_char(act, " ")

@@ -105,7 +105,7 @@
 /// Override for special behavior during resuscitation
 /obj/item/organ_module/passive/resuscitator/proc/heal(mob/living/carbon/human/owner)
 	SHOULD_CALL_PARENT(FALSE)
-	pass()
+	return
 
 /obj/item/organ_module/passive/resuscitator/theranos
 	name = "Theranos auto-resuscitator"

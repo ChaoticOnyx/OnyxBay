@@ -241,22 +241,27 @@
 var/list/mob/living/forced_ambiance_list = new
 
 /area/Entered(A)
-	if(!istype(A,/mob/living))	return
-
+	if(!isliving(A))
+		return
 	var/mob/living/L = A
-	if(!L.ckey)	return
 
 	if(!L.lastarea)
 		L.lastarea = get_area(L.loc)
-	var/area/newarea = get_area(L.loc)
-	var/area/oldarea = L.lastarea
-	if(oldarea.has_gravity != newarea.has_gravity)
-		if(newarea.has_gravity == 1 && L.m_intent == M_RUN) // Being ready when you change areas allows you to avoid falling.
-			thunk(L)
-		L.update_floating()
 
-	L.lastarea = newarea
-	play_ambience(L)
+	var/area/oldarea = L.lastarea
+	if(!oldarea || oldarea.has_gravity != has_gravity)
+		if(has_gravity == 1)
+			if(L.m_intent == M_RUN) // Being ready when you change areas allows you to avoid falling.
+				thunk(L)
+			else
+				to_chat(L, SPAN("notice", "You feel heavier as gravity suddenly appears."))
+		else
+			to_chat(L, SPAN("notice", "You momentarily feel a bit dizzy as gravity suddenly disappears."))
+
+	if(L.ckey)
+		play_ambience(L)
+
+	L.lastarea = src
 
 /area/proc/play_ambience(mob/living/L, custom_period = 1 MINUTES)
 	set waitfor = FALSE
@@ -313,29 +318,40 @@ var/list/mob/living/forced_ambiance_list = new
 		return
 
 	has_gravity = new_state
-	for(var/mob/M in src)
+	for(var/mob/living/M in src)
 		if(has_gravity)
 			thunk(M)
 		M.update_floating()
 
-/area/proc/thunk(mob)
-	if(istype(get_turf(mob), /turf/space)) // Can't fall onto nothing.
+/area/proc/thunk(mob/M)
+	if(istype(get_turf(M), /turf/space)) // Can't fall onto nothing.
 		return
 
-	if(istype(mob,/mob/living/carbon/human/))
-		var/mob/living/carbon/human/H = mob
-		if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & ITEM_FLAG_NOSLIP))
-			return
+	if(!ishuman(M))
+		return
 
-		if(istype(H.buckled, /obj/effect/dummy/immaterial_form))
-			return
+	var/mob/living/carbon/human/H = M
 
-		if(H.species?.can_overcome_gravity(H))
-			return
+	if(istype(H.buckled, /obj/effect/dummy/immaterial_form))
+		return
 
-		H.AdjustStunned(1)
-		H.AdjustWeakened(1)
-		to_chat(mob, SPAN_WARNING("The sudden appearance of gravity makes you fall to the floor!"))
+	// A huge-ass boilerplate, because we can't just use can_slip() here,
+	// since the area already has gravity upon calling this proc.
+	if(H.status_flags & GODMODE)
+		return
+
+	if(!H.simulated || !isturf(H.loc) || H.buckled || (H.lying || H.resting) || H.throwing)
+		return
+
+	if(H.has_magnetised_footing())
+		return
+
+	if(H.species?.check_no_slip(H))
+		return
+
+	H.AdjustStunned(2)
+	H.AdjustWeakened(3)
+	to_chat(M, SPAN("warning", "The sudden appearance of gravity makes you fall to the floor!"))
 
 /area/proc/prison_break()
 	var/obj/machinery/power/apc/theAPC = get_apc()
@@ -347,17 +363,24 @@ var/list/mob/living/forced_ambiance_list = new
 		for(var/obj/machinery/door/window/temp_windoor in src)
 			temp_windoor.open()
 
-/area/proc/has_gravity()
+/area/has_gravity()
 	return has_gravity
 
 /area/space/has_gravity()
-	return 0
-
-/proc/has_gravity(atom/AT)
-	var/area/A = get_area(AT)
-	if(A?.has_gravity())
-		return TRUE
 	return FALSE
+
+/atom/proc/has_gravity()
+	var/area/A = get_area(src)
+	return A?.has_gravity()
+
+/atom/movable/has_gravity()
+	if(istype(loc, /turf/space))
+		return FALSE
+	var/area/A = get_area(src)
+	return A?.has_gravity()
+
+/turf/has_gravity()
+	return loc.has_gravity()
 
 /area/proc/get_dimensions()
 	var/list/res = list("x"=1,"y"=1)

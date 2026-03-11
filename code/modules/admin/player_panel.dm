@@ -234,11 +234,11 @@
 						var/mob/living/carbon/human/H = M
 						M_job = H.job
 					else if(ismetroid(M))
-						M_job = "metroid"
+						M_job = "Metroid"
 					else if(issmall(M))
 						M_job = "Monkey"
-					else if(isalien(M))
-						M_job = "Alien"
+					else if(islarva(M))
+						M_job = "Larva"
 					else
 						M_job = "Carbon-based"
 
@@ -350,8 +350,8 @@
 			dat += "<td>Ghost</td>"
 		else if(issmall(M))
 			dat += "<td>Monkey</td>"
-		else if(isalien(M))
-			dat += "<td>Alien</td>"
+		else if(islarva(M))
+			dat += "<td>Larva</td>"
 		else
 			dat += "<td>Unknown</td>"
 

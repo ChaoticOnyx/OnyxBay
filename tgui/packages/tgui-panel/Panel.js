@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
@@ -13,18 +12,14 @@ import { useGame } from "./game";
 import { Notifications } from "./Notifications";
 import { SettingsPanel, useSettings } from "./settings";
 import { useSpellCheckerSettings, SpellCheckerSettings } from "./spellchecker";
+import { useDebug, KitchenSink } from "tgui/debug";
 
 export const Panel = (props, context) => {
-  // IE8-10: Needs special treatment due to missing Flex support
-  if (Byond.IS_LTE_IE10) {
-    return <HoboPanel />;
-  }
   const audio = useAudio(context);
   const settings = useSettings(context);
   const spellChecker = useSpellCheckerSettings(context);
   const game = useGame(context);
-  if (process.env.NODE_ENV !== "production") {
-    const { useDebug, KitchenSink } = require("tgui/debug");
+  if (import.meta.env.DEV) {
     const debug = useDebug(context);
     if (debug.kitchenSink) {
       return <KitchenSink panel />;

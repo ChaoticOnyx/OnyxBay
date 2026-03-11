@@ -57,6 +57,7 @@ var/list/global/tank_gauge_cache = list()
 
 	drop_sound = SFX_DROP_GASCAN
 	pickup_sound = SFX_PICKUP_GASCAN
+	flags_inv = HIDERIG
 
 /obj/item/tank/Initialize()
 	. = ..()
@@ -564,7 +565,7 @@ var/list/global/tank_gauge_cache = list()
 	assembly = S
 	assembly.master = src
 
-	if(user.get_active_item() != src && Adjacent(user, src))
+	if(!user.has_in_hands(src) && Adjacent(user, src))
 		user.pick_or_drop(src)  // Equips the bomb if possible, or puts it on the floor.
 
 	update_icon()

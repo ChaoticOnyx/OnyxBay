@@ -43,6 +43,7 @@
 #define ui_equip "CENTER-1:16,SOUTH+1:5"
 #define ui_swaphand1 "CENTER-1:16,SOUTH+1:5"
 #define ui_swaphand2 "CENTER:16,SOUTH+1:5"
+#define ui_twohanded "CENTER:16,SOUTH+1:5"
 #define ui_storage1 "CENTER+1:16,SOUTH:5"
 #define ui_storage2 "CENTER+2:16,SOUTH:5"
 
@@ -142,9 +143,8 @@
 #define ui_spell_master "EAST-1:16,NORTH-1:16"
 #define ui_genetic_master "EAST-1:16,NORTH-3:16"
 
-//Blocking and dashing
-#define ui_block "EAST-4:24,SOUTH:5"
-#define ui_blockswitch "EAST-4:24,SOUTH:5"
+#define ui_block "EAST-4:24,SOUTH+1:5"
+#define ui_aim_assist "EAST-4:24,SOUTH:5"
 
 // AI
 #define ui_ai_core "SOUTH:6,WEST"

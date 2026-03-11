@@ -2,6 +2,8 @@
 	mod_weight = 0.75
 	mod_reach = 0.6
 	mod_handy = 1.0
+	fire_delay = 0.3 SECONDS
+	burst_delay = 0.15 SECONDS
 	load_method = MAGAZINE
 	slot_flags = SLOT_BELT
 	w_class = ITEM_SIZE_NORMAL
@@ -9,12 +11,11 @@
 	mag_insert_sound = 'sound/effects/weapons/gun/smg_magin.ogg'
 	mag_eject_sound = 'sound/effects/weapons/gun/smg_magout.ogg'
 	multi_aim = 1
-	burst_delay = 2
 
 	firemodes = list(
-		list(mode_name="3-round bursts", burst=3, fire_delay=0, one_hand_penalty=4, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 1.6, 2.4, 2.4), autofire_enabled = 0),
-		list(mode_name="short bursts",   burst=5, fire_delay=0, one_hand_penalty=5, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(1.6, 1.6, 2.0, 2.0, 2.4), autofire_enabled = 0),
-		list(mode_name="full auto",      burst=1, fire_delay=0, burst_delay=1.5, one_hand_penalty=5, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(1.0, 1.0, 1.2, 1.4, 1.6), autofire_enabled = 1)
+		list(mode_name="3-round bursts", burst = 3, fire_delay=0, one_hand_penalty = 4, burst_accuracy = list(0,-1,-1),       dispersion = list(0.0, 1.6, 2.4, 2.4), autofire_enabled = 0),
+		list(mode_name="short bursts",   burst = 5, fire_delay=0, one_hand_penalty = 5, burst_accuracy = list(0,-1,-1,-1,-2), dispersion = list(1.6, 1.6, 2.0, 2.0, 2.4), autofire_enabled = 0),
+		list(mode_name="full auto",      burst = 1, fire_delay=0, one_hand_penalty = 5, burst_accuracy = list(0,-1,-1,-1,-2), dispersion = list(1.0, 1.0, 1.2, 1.4, 1.6), autofire_enabled = 1)
 	)
 
 /obj/item/gun/projectile/automatic/machine_pistol
@@ -31,10 +32,9 @@
 
 	//machine pistol, like SMG but easier to one-hand with
 	firemodes = list(
-		list(mode_name = "semiauto",       	burst = 1, fire_delay = 0, one_hand_penalty = 0, burst_accuracy = null,              dispersion = null),
-		list(mode_name = "3-round bursts", 	burst = 3, fire_delay = 0, one_hand_penalty = 1, burst_accuracy = list(0, -1,- 1),   dispersion = list(0.0, 0.6, 1.0), autofire_enabled = 0),
-		list(mode_name = "short bursts",   	burst = 5, fire_delay = 0, one_hand_penalty = 5, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(1.6, 1.6, 2.0, 2.0, 2.4), autofire_enabled = 0),
-		list(mode_name = "full auto",      	burst = 1, fire_delay = 0, one_hand_penalty = 5, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(1.0, 1.0, 1.2, 1.4, 1.6), burst_delay=1.5, autofire_enabled = 1)
+		list(mode_name = "semiauto",       burst = 1, one_hand_penalty = 0, burst_accuracy = null,                    dispersion = null,                          autofire_enabled = 0),
+		list(mode_name = "3-round bursts", burst = 3, one_hand_penalty = 1, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0),           autofire_enabled = 0),
+		list(mode_name = "full auto",      burst = 1, one_hand_penalty = 3, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(1.6, 1.6, 2.0, 2.0, 2.4), autofire_enabled = 1)
 		)
 
 /obj/item/gun/projectile/automatic/machine_pistol/on_update_icon()
@@ -71,9 +71,9 @@
 
 	//machine pistol, easier to one-hand with
 	firemodes = list(
-		list(mode_name = "semiauto",       burst = 1, fire_delay = 0, move_delay = 0, one_hand_penalty = 0, burst_accuracy = null,                    dispersion = null),
-		list(mode_name = "3-round bursts", burst = 3, fire_delay = 0, move_delay = 1, one_hand_penalty = 1, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0)),
-		list(mode_name = "5-round bursts", burst = 5, fire_delay = 0, move_delay = 2, one_hand_penalty = 2, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
+		list(mode_name = "semiauto",       burst = 1, move_delay = 0, one_hand_penalty = 0, burst_accuracy = null,                    dispersion = null),
+		list(mode_name = "3-round bursts", burst = 3, move_delay = 1, one_hand_penalty = 1, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0)),
+		list(mode_name = "5-round bursts", burst = 5, move_delay = 2, one_hand_penalty = 2, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
 		)
 
 /obj/item/gun/projectile/automatic/wt550
@@ -93,10 +93,9 @@
 
 	//machine pistol, like SMG but easier to one-hand with
 	firemodes = list(
-		list(mode_name = "semiauto",       burst = 1, fire_delay = 1, one_hand_penalty = 1, burst_accuracy = null,						dispersion = null, autofire_enabled = 0),
-		list(mode_name = "3-round bursts", burst = 3, fire_delay = 0, one_hand_penalty = 2, burst_accuracy = list(0, -1, -1),			dispersion = list(0.0, 0.6, 1.0), autofire_enabled = 0),
-		list(mode_name = "5-round bursts", burst = 5, fire_delay = 0, one_hand_penalty = 3, burst_accuracy = list(0, -1, -1, -1, -2),	dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2), autofire_enabled = 0),
-		list(mode_name = "full auto",      burst = 1, fire_delay = 0, one_hand_penalty = 6, burst_accuracy = list(0,-1,-2),				dispersion=list(0.4, 0.8, 1.2), burst_delay = 2, autofire_enabled = 1),
+		list(mode_name = "semiauto",       burst = 1, one_hand_penalty = 1, burst_accuracy = null,                    dispersion = null, autofire_enabled = 0),
+		list(mode_name = "3-round bursts", burst = 3, one_hand_penalty = 2, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0), autofire_enabled = 0),
+		list(mode_name = "full auto",      burst = 1, one_hand_penalty = 4, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2), autofire_enabled = 1),
 		)
 
 /obj/item/gun/projectile/automatic/wt550/on_update_icon()
@@ -127,10 +126,9 @@
 	move_delay = 0
 	//SMG
 	firemodes = list(
-		list(mode_name = "semiauto",       burst = 1, fire_delay = 0, one_hand_penalty = 2, burst_accuracy = null,						dispersion = null, autofire_enabled = 0),
-		list(mode_name = "3-round bursts", burst = 3, fire_delay = 0, one_hand_penalty = 3, burst_accuracy = list(0, -1, -1),			dispersion = list(0.0, 0.6, 1.0), autofire_enabled = 0),
-		list(mode_name = "5-round bursts", burst = 5, fire_delay = 0, one_hand_penalty = 4, burst_accuracy = list(0, -1, -1, -1, -2),	dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2), autofire_enabled = 0),
-		list(mode_name = "full auto",      burst = 1, fire_delay = 0, one_hand_penalty = 6, burst_accuracy = list(0,-1,-2),				dispersion=list(0.4, 0.8, 1.2), burst_delay = 2, autofire_enabled = 1),
+		list(mode_name = "semiauto",       burst = 1, one_hand_penalty = 2, burst_accuracy = null,                    dispersion = null,                          autofire_enabled = 0),
+		list(mode_name = "3-round bursts", burst = 3, one_hand_penalty = 3, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0),           autofire_enabled = 0),
+		list(mode_name = "full auto",      burst = 1, one_hand_penalty = 5, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2), autofire_enabled = 1),
 		)
 
 /obj/item/gun/projectile/automatic/c20r/on_update_icon()
@@ -149,6 +147,10 @@
 	force = 12.5
 	mod_weight = 1.0
 	mod_reach = 0.8
+
+	fire_delay = 0.35 SECONDS
+	burst_delay = 0.2 SECONDS
+
 	caliber = "a556"
 	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 1, TECH_ILLEGAL = 5)
 	slot_flags = SLOT_BACK
@@ -163,10 +165,9 @@
 
 	//Assault rifle, burst fire degrades quicker than SMG, worse one-handing penalty, slightly increased move delay
 	firemodes = list(
-		list(mode_name = "semiauto",       burst = 1, fire_delay = 0, one_hand_penalty = 3, burst_accuracy = null,						dispersion = null, autofire_enabled = 0),
-		list(mode_name = "3-round bursts", burst = 3, fire_delay = 0, one_hand_penalty = 5, burst_accuracy = list(0, -1, -1),			dispersion = list(0.0, 0.6, 1.0), autofire_enabled = 0),
-		list(mode_name = "5-round bursts", burst = 5, fire_delay = 0, one_hand_penalty = 6, burst_accuracy = list(0, -1, -2, -3, -3),	dispersion = list(0.6, 1.0, 1.2, 1.2, 1.5), autofire_enabled = 0),
-		list(mode_name = "full auto",      burst = 1, fire_delay = 0, one_hand_penalty = 7, burst_accuracy=list(0,-1,-1),				dispersion=list(0.2, 0.6, 1.0), burst_delay=1.5, autofire_enabled = 1)
+		list(mode_name = "semiauto",       burst = 1, one_hand_penalty = 3, burst_accuracy = null,                    dispersion = null,                          autofire_enabled = 0),
+		list(mode_name = "3-round bursts", burst = 3, one_hand_penalty = 5, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0),           autofire_enabled = 0),
+		list(mode_name = "full auto",      burst = 1, one_hand_penalty = 7, burst_accuracy = list(0, -1, -2, -3, -3), dispersion = list(0.6, 1.0, 1.2, 1.2, 1.5), autofire_enabled = 1)
 		)
 
 /obj/item/gun/projectile/automatic/as75/on_update_icon()
@@ -191,6 +192,10 @@
 	mod_weight = 1.0
 	mod_reach = 0.8
 	mod_handy = 1.0
+
+	fire_delay = 0.45 SECONDS
+	burst_delay = 0.3 SECONDS
+
 	caliber = "a762"
 	origin_tech = list(TECH_COMBAT = 8, TECH_MATERIAL = 3)
 	ammo_type = /obj/item/ammo_casing/a762
@@ -200,7 +205,6 @@
 	auto_eject = 1
 	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
 	one_hand_penalty = 5
-	burst_delay = 3
 	wielded_item_state = "z8carbine-wielded"
 	fire_sound = 'sound/effects/weapons/gun/fire_762.ogg'
 	mag_insert_sound = 'sound/effects/weapons/gun/z8_magin.ogg'
@@ -208,10 +212,10 @@
 
 	//would have one_hand_penalty=4,5 but the added weight of a grenade launcher makes one-handing even harder
 	firemodes = list(
-		list(mode_name = "semiauto",       burst = 1,	fire_delay = 0,	move_delay = 0, use_launcher = 0, one_hand_penalty = 5, burst_accuracy = null,				dispersion = null, autofire_enabled = 0),
-		list(mode_name = "3-round bursts", burst = 3,	fire_delay = 0, move_delay = 0,	use_launcher = 0, one_hand_penalty = 6, burst_accuracy = list(0, -1, -1),	dispersion = list(0.0, 0.6, 1.0), autofire_enabled = 0),
-		list(mode_name = "fire grenades",  burst = 0,	fire_delay = 0, move_delay = 0,	use_launcher = 1, one_hand_penalty = 5, burst_accuracy = null,				dispersion = null, autofire_enabled = 0),
-		list(mode_name = "full auto",      burst = 1,	fire_delay = 0, move_delay = 0,	use_launcher = 0, one_hand_penalty = 10,burst_accuracy = list(0,-1,-1),		dispersion=list(0.2, 0.6, 1.2), burst_delay=2, autofire_enabled = 1),
+		list(mode_name = "semiauto",       burst = 1, use_launcher = 0, one_hand_penalty = 5,  burst_accuracy = null,            dispersion = null,                autofire_enabled = 0),
+		list(mode_name = "3-round bursts", burst = 3, use_launcher = 0, one_hand_penalty = 6,  burst_accuracy = list(0, -1, -1), dispersion = list(0.0, 0.6, 1.0), autofire_enabled = 0),
+		list(mode_name = "full auto",      burst = 1, use_launcher = 0, one_hand_penalty = 10, burst_accuracy = list(0, -1, -1), dispersion = list(0.2, 0.6, 1.2), autofire_enabled = 1),
+		list(mode_name = "fire grenades",  burst = 0, use_launcher = 1, one_hand_penalty = 5,  burst_accuracy = null,            dispersion = null,                autofire_enabled = 0),
 		)
 
 	var/use_launcher = 0
@@ -228,7 +232,7 @@
 		..()
 
 /obj/item/gun/projectile/automatic/z8/attack_hand(mob/user)
-	if(user.get_inactive_hand() == src && use_launcher)
+	if(use_launcher && user.has_in_passive_hand(src))
 		launcher.unload(user)
 	else
 		..()
@@ -273,13 +277,16 @@
 	mod_handy = 1.0
 	slot_flags = 0
 	max_shells = 50
+
+	fire_delay = 0.1 SECONDS
+	burst_delay = 0.15 SECONDS
+
 	caliber = "a556"
 	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 1, TECH_ILLEGAL = 2)
 	slot_flags = 0 //need sprites for SLOT_BACK
 	ammo_type = /obj/item/ammo_casing/a556
 	magazine_type = /obj/item/ammo_magazine/box/a556
 	allowed_magazines = list(/obj/item/ammo_magazine/box/a556, /obj/item/ammo_magazine/c556)
-	burst_delay = 1.5
 	burst = 5
 	move_delay = 12
 	one_hand_penalty = 8
@@ -291,9 +298,9 @@
 	//LMG, better sustained fire accuracy than assault rifles (comparable to SMG), higer move delay and one-handing penalty
 	//No single-shot or 3-round-burst modes since using this weapon should come at a cost to flexibility.
 	firemodes = list(
-		list(mode_name="short bursts", burst=5, fire_delay=5, one_hand_penalty=8,  burst_accuracy = list(0,-1,-1,-2,-2),          dispersion = list(0.6, 1.0, 1.0, 1.0, 1.2), autofire_enabled = 0),
-		list(mode_name="long bursts",  burst=8, fire_delay=5, one_hand_penalty=12, burst_accuracy = list(0,-1,-1,-2,-2,-2,-3,-3), dispersion = list(1.0, 1.0, 1.0, 1.0, 1.2), autofire_enabled = 0),
-		list(mode_name="full auto",    burst=1, burst_delay=1.5, fire_delay=0, one_hand_penalty=16, burst_accuracy = list(0,-1,-1,-2,-2,-2,-3,-3), dispersion = list(1.0, 1.0, 1.0, 1.0, 1.2), autofire_enabled = 1),
+		list(mode_name="short bursts", burst = 5, one_hand_penalty = 8,  burst_accuracy = list(0, -1, -1, -2, -2),             dispersion = list(0.0, 0.2, 0.6, 0.6, 1.0), autofire_enabled = 0),
+		list(mode_name="long bursts",  burst = 8, one_hand_penalty = 12, burst_accuracy = list(0, -1, -1, -2, -2, -2, -3, -3), dispersion = list(0.2, 0.4, 0.6, 1.0, 1.2), autofire_enabled = 0),
+		list(mode_name="full auto",    burst = 1, one_hand_penalty = 16, burst_accuracy = list(0, -1, -1, -2, -2, -2, -3, -3), dispersion = list(0.2, 0.4, 0.6, 1.0, 1.2), autofire_enabled = 1),
 		)
 
 	var/cover_open = 0
@@ -326,7 +333,7 @@
 		return ..() //once closed, behave like normal
 
 /obj/item/gun/projectile/automatic/l6_saw/attack_hand(mob/user)
-	if(!cover_open && user.get_inactive_hand() == src)
+	if(!cover_open && user.has_in_passive_hand(src))
 		toggle_cover(user) //open the cover
 	else
 		return ..() //once open, behave like normal

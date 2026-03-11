@@ -175,7 +175,6 @@
 		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
 		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
 		owner.organs -= src
-		owner.organs_by_name.Remove(organ_tag)
 		owner.organs_by_name -= organ_tag
 		while(null in owner.organs)
 			owner.organs -= null
@@ -494,12 +493,11 @@ This function completely restores a damaged organ to perfect condition.
 					robotize(robodata)
 				else
 					robotize()
-		owner.updatehealth()
+		owner.update_health()
 
 /obj/item/organ/external/remove_rejuv()
 	if(owner)
 		owner.organs -= src
-		owner.organs_by_name.Remove(organ_tag)
 		owner.organs_by_name -= organ_tag
 		while(null in owner.organs) owner.organs -= null
 	if(children && children.len)
@@ -745,8 +743,8 @@ This function completely restores a damaged organ to perfect condition.
 
 	removed(null, 0, ignore_children, (disintegrate != DROPLIMB_EDGE))
 	if(QDELETED(src))
-		victim.updatehealth()
-		victim.UpdateDamageIcon()
+		victim.update_health()
+		victim.update_damage_overlays()
 		victim.regenerate_icons()
 		return
 
@@ -782,8 +780,8 @@ This function completely restores a damaged organ to perfect condition.
 
 	spawn(1) // Yes, we DO need to wait before regenerating icons since all the stuff takes a literal eternity
 		if(!QDELETED(victim)) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
-			victim.updatehealth()
-			victim.UpdateDamageIcon()
+			victim.update_health()
+			victim.update_damage_overlays()
 			victim.regenerate_icons()
 
 	dir = 2
@@ -1026,7 +1024,6 @@ This function completely restores a damaged organ to perfect condition.
 					if(thing.vital || BP_IS_ROBOTIC(thing))
 						continue
 					internal_organs -= thing
-					owner.internal_organs_by_name.Remove(thing.organ_tag)
 					owner.internal_organs_by_name -= thing.organ_tag
 					owner.internal_organs.Remove(thing)
 					qdel(thing)
@@ -1164,7 +1161,6 @@ This function completely restores a damaged organ to perfect condition.
 
 	release_restraints(victim)
 	victim.organs -= src
-	victim.organs_by_name.Remove(organ_tag) // Remove from owner's vars.
 	victim.organs_by_name -= organ_tag
 
 	//Robotic limbs explode if sabotaged.

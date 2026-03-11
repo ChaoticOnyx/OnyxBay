@@ -15,7 +15,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 			to_chat(H, "<span class='notice'>You are not holding anything to equip.</span>")
 			return
 		if(H.equip_to_appropriate_slot(I))
-			if(hand)
+			if(active_hand == ACTIVE_HAND_LEFT)
 				update_inv_l_hand(0)
 			else
 				update_inv_r_hand(0)
@@ -32,16 +32,16 @@ This saves us from having to call add_fingerprint() any time something is put in
 
 //Puts the item into our active hand if possible. returns 1 on success.
 /mob/living/carbon/human/put_in_active_hand(obj/item/W)
-	return (hand ? put_in_l_hand(W) : put_in_r_hand(W))
+	return (active_hand == ACTIVE_HAND_LEFT ? put_in_l_hand(W) : put_in_r_hand(W))
 
 //Puts the item into our inactive hand if possible. returns 1 on success.
 /mob/living/carbon/human/put_in_inactive_hand(obj/item/W)
-	return (hand ? put_in_r_hand(W) : put_in_l_hand(W))
+	return (active_hand == ACTIVE_HAND_LEFT ? put_in_r_hand(W) : put_in_l_hand(W))
 
 /mob/living/carbon/human/put_in_hands(obj/item/W)
 	if(!W)
 		return 0
-	if(put_in_active_hand(W) || put_in_inactive_hand(W))
+	if(put_in_clicking_hand(W) || put_in_passive_hand(W))
 		W.update_held_icon()
 		return 1
 	return ..()
@@ -49,7 +49,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 /mob/living/carbon/human/put_in_l_hand(obj/item/W)
 	if(!..() || l_hand)
 		return 0
-	var/obj/item/organ/external/hand = organs_by_name["l_hand"]
+	var/obj/item/organ/external/hand = organs_by_name[BP_L_HAND]
 	if(!hand || !hand.is_usable())
 		return 0
 	equip_to_slot(W,slot_l_hand)
@@ -59,7 +59,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 /mob/living/carbon/human/put_in_r_hand(obj/item/W)
 	if(!..() || r_hand)
 		return 0
-	var/obj/item/organ/external/hand = organs_by_name["r_hand"]
+	var/obj/item/organ/external/hand = organs_by_name[BP_R_HAND]
 	if(!hand || !hand.is_usable())
 		return 0
 
@@ -347,7 +347,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 			W.equipped(src, slot)
 			update_inv_s_store(redraw_mob)
 		if(slot_in_backpack)
-			if(get_active_hand() == W)
+			if(has_in_hands(W))
 				drop(W)
 			W.forceMove(src.back)
 		if(slot_tie)

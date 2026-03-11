@@ -198,7 +198,8 @@ GLOBAL_LIST_INIT(robot_modules, list(
 		"Basic" = new /datum/robot_hull/legs/robot_old,
 		"Android" = new /datum/robot_hull/spider/droid,
 		"Drone" = new /datum/robot_hull/flying/drone_standard,
-		"Doot" = new /datum/robot_hull/flying/eyebot_standard
+		"Doot" = new /datum/robot_hull/flying/eyebot_standard,
+		"Kerfur" = new /datum/robot_hull/sphere/kerfur_standart,
 	)
 
 /obj/item/robot_module/standard/New()
@@ -416,8 +417,9 @@ GLOBAL_LIST_INIT(robot_modules, list(
 		"Antique" = new /datum/robot_hull/legs/engineerrobot,
 		"Landmate" = new /datum/robot_hull/spider/landmate,
 		"Landmate - Treaded" = new /datum/robot_hull/truck/engiborg_tread,
+		"Kerfur" = new /datum/robot_hull/sphere/kerfur_engineer,
 		"Drone" = new /datum/robot_hull/flying/drone_engineer,
-		"Doot" = new /datum/robot_hull/flying/eyebot_engineering
+		"Doot" = new /datum/robot_hull/flying/eyebot_engineering,
 	)
 
 	no_slip = 1
@@ -625,9 +627,10 @@ GLOBAL_LIST_INIT(robot_modules, list(
 		"Black Knight" = new /datum/robot_hull/legs/securityrobot,
 		"Bloodhound" = new /datum/robot_hull/spider/bloodhound,
 		"Bloodhound - Treaded" = new /datum/robot_hull/truck/secborg_tread,
+		"Kerfur" = new /datum/robot_hull/sphere/kerfur_security,
 		"Drone" = new /datum/robot_hull/flying/drone_sec,
 		"Doot" = new /datum/robot_hull/flying/eyebot_security,
-		"Tridroid" = new /datum/robot_hull/flying/orb_security
+		"Tridroid" = new /datum/robot_hull/flying/orb_security,
 	)
 
 /obj/item/robot_module/security/general/New()
@@ -745,6 +748,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 /obj/item/robot_module/service/butler
 	hulls = list(
 		"Default" = new /datum/robot_hull/spider/robot_service,
+		"Kerfur" = new /datum/robot_hull/sphere/kerfur_service,
 		"Waitress" = new /datum/robot_hull/legs/service,
 		"Kent" = new /datum/robot_hull/flying/toiletbot,
 		"Bro" = new /datum/robot_hull/legs/brobot,
@@ -753,7 +757,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 		"Drone - Service" = new /datum/robot_hull/flying/drone_service,
 		"Drone - Hydro" = new /datum/robot_hull/flying/drone_hydro,
 		"Doot" = new /datum/robot_hull/flying/eyebot_standard,
-		"Robo-Maid" = new /datum/robot_hull/legs/maidbot
+		"Robo-Maid" = new /datum/robot_hull/legs/maidbot,
 	)
 
 /obj/item/robot_module/service/butler/New()
@@ -857,9 +861,10 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	networks = list(NETWORK_RESEARCH)
 	hulls = list(
 		"Default" = new /datum/robot_hull/spider/robot_science,
+		"Kerfur" = new /datum/robot_hull/sphere/kerfur_science,
 		"Droid" = new /datum/robot_hull/legs/droid_science,
 		"Drone" = new /datum/robot_hull/flying/drone_science,
-		"Doot" = new /datum/robot_hull/flying/eyebot_science
+		"Doot" = new /datum/robot_hull/flying/eyebot_science,
 	)
 
 /obj/item/robot_module/research/general/New()

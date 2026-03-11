@@ -447,7 +447,7 @@
 
 		else
 			to_chat(user, "You hit the light!")
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 
 	// attempt to remove the lightbulb out of the fixture with a crowbar
@@ -623,8 +623,8 @@
 				to_chat(user, "You try to remove the [get_fitting_name()], but it's too hot and you don't want to burn your hand.")
 			else
 				to_chat(user, "You try to remove the [get_fitting_name()], but you burn your hand on it!")
-				var/obj/item/organ/external/E = H.get_organ(user.hand ? BP_L_HAND : BP_R_HAND)
-				if(E)
+				var/obj/item/organ/external/E = H.get_hand_organ()
+				if(istype(E))
 					E.take_external_damage(0, rand(3, 7), used_weapon = "hot lightbulb")
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			return				// if burned, don't remove the light
@@ -632,7 +632,7 @@
 		to_chat(user, "You remove the [get_fitting_name()].")
 
 	// create a light tube/bulb item and put it in the user's hand
-	user.put_in_active_hand(remove_bulb())	//puts it in our active hand
+	user.put_in_clicking_hand(remove_bulb())	//puts it in our active hand
 
 /obj/machinery/light/attack_tk(mob/user)
 	if(!lightbulb)

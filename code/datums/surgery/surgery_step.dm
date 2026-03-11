@@ -62,7 +62,7 @@
  * Updates target's icon.
  *
  */
-/datum/surgery_step/proc/do_step(atom/user, mob/living/carbon/human/target, obj/item/tool, target_zone)
+/datum/surgery_step/proc/do_step(atom/user, mob/living/carbon/human/target, obj/item/tool, target_zone, rightclicked = FALSE)
 	if(!hasorgans(target))
 		return FALSE
 
@@ -82,12 +82,14 @@
 		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
 		return SURGERY_FAILURE
 
+
+
 	var/obj/item/organ/target_organ = pick_target_organ(user, target, target_zone)
 
 	// Integrated circuits can't change tool during organ picking step, but spessmen can.
 	var/mob/possible_mob = user
 	if(istype(possible_mob))
-		var/obj/item/active_item = possible_mob.get_active_item()
+		var/obj/item/active_item = rightclicked ? possible_mob.get_inactive_item() : possible_mob.get_active_item()
 		if(active_item != tool)
 			return SURGERY_FAILURE
 
@@ -97,7 +99,7 @@
 
 	// At this point we can access selected organ via `surgery_status`.
 	target.surgery_status.start_surgery(target_organ || parent_organ, parent_zone)
-	initiate(parent_organ, target_organ, target, tool, user)
+	initiate(parent_organ, target_organ, target, tool, user, rightclicked)
 	target.surgery_status.stop_surgery(parent_zone)
 
 	target.update_surgery()
@@ -204,7 +206,7 @@
  * Calls `success` or `failure` proc based on success chance.
  *
  */
-/datum/surgery_step/proc/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/proc/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user, using_inactive_item)
 	if(can_infect)
 		spread_germs_to_organ(user, target_organ)
 
@@ -222,7 +224,7 @@
 
 	var/success_chance = calc_success_chance(user, target, tool)
 	var/surgery_duration = SURGERY_DURATION_DELTA * duration * tool.surgery_speed
-	if(prob(success_chance) && do_mob(user, target, surgery_duration, can_multitask = TRUE))
+	if(prob(success_chance) && do_mob(user, target, surgery_duration, can_multitask = TRUE, rightclicked = using_inactive_item))
 		play_success_sound(user, target, target_organ, tool)
 		success(parent_organ, target_organ, target, tool, user)
 	else
@@ -285,7 +287,7 @@
  * * user - atom that fired this step.
  */
 /datum/surgery_step/proc/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	pass()
+	return
 
 /**
  * Called on step failure, override to apply effects on target and print out
@@ -299,7 +301,7 @@
  * * user - atom that fired this step.
  */
 /datum/surgery_step/proc/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	pass()
+	return
 
 /// Prints out visible message.
 /datum/surgery_step/proc/announce_preop(mob/living/user, self_message, blind_message)

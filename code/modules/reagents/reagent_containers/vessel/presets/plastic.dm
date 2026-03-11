@@ -116,7 +116,7 @@ obj/item/reagent_containers/vessel/plastic/cup/Crossed(atom/movable/AM)
 
 	crush(splash_target = get_turf(src))
 
-/obj/item/reagent_containers/vessel/plastic/cup/throw_impact(atom/hit_atom, speed)
+/obj/item/reagent_containers/vessel/plastic/cup/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
 	visible_message(SPAN_WARNING("\The [src] crumples against \the [hit_atom]!"))
 	crush(splash_target = hit_atom)

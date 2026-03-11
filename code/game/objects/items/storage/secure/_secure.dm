@@ -99,15 +99,17 @@
 	return ..()
 
 /obj/item/storage/secure/MouseDrop(over_object, src_location, over_location)
-	if(locked)
-		add_fingerprint(usr)
+	add_fingerprint(usr)
+	if(locked && usr == over_object)
+		to_chat(usr, SPAN_WARNING("[src] is locked and cannot be opened!"))
 		return
 
 	return ..()
 
 /obj/item/storage/secure/AltClick(mob/usr)
+	add_fingerprint(usr)
 	if(locked)
-		add_fingerprint(usr)
+		to_chat(usr, SPAN_WARNING("[src] is locked and cannot be opened!"))
 		return
 
 	return ..()

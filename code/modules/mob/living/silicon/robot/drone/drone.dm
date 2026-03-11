@@ -290,7 +290,7 @@ var/list/mob_hat_cache = list()
 
 //DRONE LIFE/DEATH
 //For some goddamn reason robots have this hardcoded. Redefining it for our fragile friends here.
-/mob/living/silicon/robot/drone/updatehealth()
+/mob/living/silicon/robot/drone/update_health()
 	var/previous_health = health
 	if(status_flags & GODMODE)
 		health = 35
@@ -317,10 +317,6 @@ var/list/mob_hat_cache = list()
 	timeofdeath = world.time
 	death() //Possibly redundant, having trouble making death() cooperate.
 	gib()
-
-//DRONE MOVEMENT.
-/mob/living/silicon/robot/drone/slip_chance(prob_slip)
-	return 0
 
 //CONSOLE PROCS
 /mob/living/silicon/robot/drone/proc/law_resync()

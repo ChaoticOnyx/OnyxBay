@@ -27,8 +27,8 @@ server_suffix = false
 player_limit = 0
 
 ## Extra players limit. Allows to connect players who already have living mob.
-## Write 0 to toggle limit off. Must be more than PLAYER_LIMIT in order to work correctly.
-hard_player_limit = 0
+## Must be more than PLAYER_LIMIT in order to work correctly.
+hard_player_limit = 80
 
 ## Kick players that have major or minor BYOND build below this numbers.
 ## Write numbers of major and minor BYOND build. Writing numbers above existing BYOND builds will result in impossibility to join server.
@@ -57,11 +57,9 @@ tick_limit_mc_init = 100
 ## Admins are exempt from these limits.
 ## Hitting the minute limit notifies admins.
 ## Set to 0 or comment out to disable.
-second_topic_limit = 10
-minute_topic_limit = 200
+second_topic_limit = 20
+minute_topic_limit = 350
+tgui_max_chunk_count = 64
 
 ## Set to true to make Dream Daemon refuse to reboot for any reason other than `SIGUSR1`.
 wait_for_sigusr1 = false
-
-## Uncomment to start a metrics endpoint for prometheus.
-#prometheus_port = "9080"

@@ -1,0 +1,3816 @@
+/* tgui/styles/interfaces/CharacterSetup.scss
+ * "Nanotrasen Personnel Terminal" — sci-fi corporate character creator.
+ * Holographic preview, color-coded categories, glass-morphism cards.
+ */
+
+/* =========================================================
+ * ROOT & CSS CUSTOM PROPERTIES
+ * ========================================================= */
+
+.CharSetup {
+  /* Category accent palette — unified blue theme */
+  --cs-identity:    #5b8fc4;
+  --cs-appearance:  #5b8fc4;
+  --cs-hair:        #5b8fc4;
+  --cs-wardrobe:    #5b8fc4;
+  --cs-augments:    #5b8fc4;
+  --cs-career:      #5b8fc4;
+  --cs-personality: #5b8fc4;
+  --cs-background:  #5b8fc4;
+  --cs-settings:    #5b8fc4;
+
+  /* Active accent */
+  --cs-accent: #5b8fc4;
+
+  /* Surface tokens */
+  --cs-surface-card:        rgba(255, 255, 255, 0.05);
+  --cs-surface-card-hover:  rgba(255, 255, 255, 0.08);
+  --cs-surface-card-active: rgba(255, 255, 255, 0.12);
+  --cs-surface-expanded:    rgba(0, 0, 0, 0.25);
+  --cs-surface-sidebar:     rgba(0, 0, 0, 0.30);
+
+  /* Border tokens */
+  --cs-border-subtle:  rgba(255, 255, 255, 0.08);
+  --cs-border-medium:  rgba(255, 255, 255, 0.14);
+  --cs-border-glow:    rgba(255, 255, 255, 0.22);
+
+  /* Typography */
+  --cs-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  height: 100%;
+}
+
+
+/* =========================================================
+ * LEFT PANEL — character card (preview + nav combined)
+ * ========================================================= */
+
+.CharSetup__leftPanel {
+  display: flex;
+  flex-direction: column;
+  width: 14.5rem;
+  height: 100%;
+
+  background: rgba(28, 28, 32, 0.98);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+
+  overflow: hidden;
+}
+
+/* Divider between preview and nav tabs */
+.CharSetup__navDivider {
+  height: 0.0625rem;
+  margin: 0 0.75rem;
+  flex-shrink: 0;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(130, 145, 168, 0.20) 30%,
+    rgba(130, 145, 168, 0.12) 70%,
+    transparent
+  );
+}
+
+
+/* =========================================================
+ * SIDEBAR — category navigation
+ * ========================================================= */
+
+.CharSetup__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.0625rem;
+  padding: 0.25rem 0.375rem;
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.CharSetup__tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  user-select: none;
+  -ms-user-select: none;
+
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: rgba(235, 235, 235, 0.78);
+
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    filter 90ms ease,
+    transform 90ms ease;
+}
+
+.CharSetup__tab:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(235, 235, 235, 0.80);
+}
+
+.CharSetup__tab:active {
+  transform: translateY(0.0625rem);
+}
+
+/* Selected tab */
+.CharSetup__tab--selected {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(235, 235, 235, 0.98);
+  font-weight: 700;
+}
+
+/* Glow left-border on selected tab */
+.CharSetup__tab--selected::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  width: 0.1875rem;
+  border-radius: 0 0.125rem 0.125rem 0;
+
+  background: var(--cs-tab-accent, var(--cs-identity));
+}
+
+
+/* Per-category accent colors */
+.CharSetup__tab--identity    { --cs-tab-accent: var(--cs-identity); }
+.CharSetup__tab--appearance  { --cs-tab-accent: var(--cs-appearance); }
+.CharSetup__tab--hair        { --cs-tab-accent: var(--cs-hair); }
+.CharSetup__tab--wardrobe    { --cs-tab-accent: var(--cs-wardrobe); }
+.CharSetup__tab--augmentations { --cs-tab-accent: var(--cs-augments); }
+.CharSetup__tab--career      { --cs-tab-accent: var(--cs-career); }
+.CharSetup__tab--personality { --cs-tab-accent: var(--cs-personality); }
+.CharSetup__tab--background  { --cs-tab-accent: var(--cs-background); }
+.CharSetup__tab--settings    { --cs-tab-accent: var(--cs-settings); }
+
+/* Tab icon */
+.CharSetup__tabIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  font-size: 0.875rem;
+  opacity: 0.85;
+  transition: opacity 120ms ease;
+}
+
+.CharSetup__tab--selected .CharSetup__tabIcon {
+  opacity: 1;
+}
+
+
+/* =========================================================
+ * PREVIEW FRAME — holographic character display
+ * ========================================================= */
+
+.CharSetup__preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.625rem 0.375rem 0.375rem;
+  flex-shrink: 0;
+
+  /* Radial glow behind preview */
+  background: transparent;
+}
+
+.CharSetup__previewFrame {
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  background: rgba(0, 0, 0, 0.25);
+
+  border: 0.0625rem solid rgba(130, 145, 168, 0.25);
+  border-radius: 0.375rem;
+}
+
+.CharSetup__previewFrame .game-icon {
+  image-rendering: pixelated;
+  width: 10rem;
+  height: 10rem;
+  position: relative;
+  z-index: 1;
+}
+
+.CharSetup__previewCanvas {
+  image-rendering: pixelated;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.CharSetup__slotPickerPreviewImg {
+  image-rendering: pixelated;
+  width: 4rem;
+  height: 4rem;
+}
+
+.CharSetup__compositorPreview {
+  image-rendering: pixelated;
+}
+
+.CharSetup__gearSpriteIcon {
+  image-rendering: pixelated;
+  display: block;
+}
+
+/* Loading spinner placeholder */
+.CharSetup__previewLoading {
+  width: 10rem;
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 0.375rem;
+}
+
+/* Name display below preview */
+.CharSetup__previewName {
+  margin-top: 0.375rem;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: rgba(196, 204, 220, 0.95);
+}
+
+/* Species / gender / age meta line */
+.CharSetup__previewMeta {
+  text-align: center;
+  font-size: 0.6875rem;
+  color: rgba(170, 178, 196, 0.70);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin-top: 0.0625rem;
+  font-weight: 600;
+}
+
+/* Direction buttons row */
+.CharSetup__dirControls {
+  display: flex;
+  gap: 0.125rem;
+  margin-top: 0.3125rem;
+  justify-content: center;
+}
+
+.CharSetup__dirControls .Button {
+  width: 1.75rem;
+  text-align: center;
+}
+
+/* Quick action + preview toggles row */
+.CharSetup__actionRow {
+  display: flex;
+  gap: 0.125rem;
+  margin-top: 0.25rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Character slot selector — bottom of preview column */
+/* Slot selector wrapper */
+.CharSetup__slotSelectorWrap {
+  margin-top: 0.5rem;
+}
+
+.CharSetup__slotSelector {
+  display: flex;
+  align-items: center;
+  gap: 0.1875rem;
+  padding: 0.3125rem 0.375rem;
+  background: rgba(0, 0, 0, 0.30);
+  border: 0.0625rem solid rgba(130, 145, 168, 0.10);
+  border-radius: 0.25rem;
+}
+
+.CharSetup__slotName {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  line-height: 1.2;
+
+  &:hover .CharSetup__slotNameLabel {
+    color: rgba(130, 145, 168, 0.95);
+  }
+}
+
+.CharSetup__slotNameLabel {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: rgba(210, 215, 228, 0.90);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s ease;
+}
+
+.CharSetup__slotNumber {
+  font-size: 0.6875rem;
+  color: rgba(170, 178, 200, 0.70);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Slot picker — inline expandable grid of character cards */
+.CharSetup__slotPicker {
+  margin-top: 0.25rem;
+  padding: 0.375rem;
+  max-height: 24rem;
+  overflow-y: auto;
+
+  background: rgba(0, 0, 0, 0.25);
+  border: 0.0625rem solid rgba(130, 145, 168, 0.12);
+  border-radius: 0.25rem;
+}
+
+.CharSetup__slotPickerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3125rem;
+}
+
+.CharSetup__slotPickerCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: 0.375rem 0.25rem;
+  border-radius: 0.25rem;
+  border: 0.0625rem solid rgba(130, 145, 168, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    background: rgba(130, 145, 168, 0.08);
+    border-color: rgba(130, 145, 168, 0.25);
+  }
+
+  &--active {
+    background: rgba(130, 145, 168, 0.12);
+    border-color: rgba(130, 145, 168, 0.35);
+  }
+
+  &--empty {
+    opacity: 0.5;
+  }
+}
+
+.CharSetup__slotPickerPreview {
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+
+  .game-icon {
+    image-rendering: pixelated;
+  }
+}
+
+.CharSetup__slotPickerName {
+  margin-top: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: bold;
+  color: rgba(210, 215, 228, 0.80);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+
+/* =========================================================
+ * CARD SYSTEM — glass-morphism containers
+ * ========================================================= */
+
+.CharSetup__card {
+  padding: 0.625rem;
+  background: var(--cs-surface-card);
+  border-radius: 0.25rem;
+  border: 0.0625rem solid var(--cs-border-subtle);
+
+  transition:
+    background 120ms ease,
+    box-shadow 120ms ease,
+    filter 120ms ease,
+    border-color 120ms ease;
+}
+
+.CharSetup__card:hover {
+}
+
+/* Expandable card */
+.CharSetup__card--expandable {
+  cursor: pointer;
+}
+
+.CharSetup__card--expandable:hover {
+  background: var(--cs-surface-card-hover);
+}
+
+/* Expanded state — top corners only */
+.CharSetup__card--expanded {
+  background: var(--cs-surface-card-active);
+  border-radius: 0.25rem 0.25rem 0 0;
+  border-bottom-color: transparent;
+}
+
+/* Card body — shown when expanded */
+.CharSetup__cardBody {
+  padding: 0.625rem;
+  background: var(--cs-surface-expanded);
+  border-radius: 0 0 0.25rem 0.25rem;
+  border: 0.0625rem solid var(--cs-border-subtle);
+  border-top: none;
+}
+
+/* Left accent border variant */
+.CharSetup__card--accentLeft {
+  border-left: 0.1875rem solid var(--cs-card-accent, var(--cs-accent));
+
+  /* Subtle glow from the accent border */
+}
+
+/* Blue-tinted info card */
+.CharSetup__card--info {
+  background: rgba(100, 149, 237, 0.08);
+  border-color: rgba(100, 149, 237, 0.18);
+}
+
+/* Green-tinted enabled card */
+.CharSetup__card--enabled {
+  background: rgba(80, 200, 120, 0.06);
+  border-color: rgba(80, 200, 120, 0.18);
+}
+
+/* Card icon — large colored icon in header */
+.CharSetup__cardIcon {
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+/* Card text preview — truncated single line */
+.CharSetup__cardPreview {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 14rem;
+  font-size: 0.6875rem;
+  color: rgba(235, 235, 235, 0.50);
+}
+
+
+/* =========================================================
+ * PAPER-DOLL — character sprite with holographic frame
+ * ========================================================= */
+
+/* Character preview frame */
+.CharSetup__paperDollCenter {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  border: 0.0625rem solid rgba(255, 255, 255, 0.10);
+  border-radius: 0.25rem;
+  background: rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+/* Character sprite */
+.CharSetup__paperDollSprite {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  z-index: 1;
+  object-fit: contain;
+}
+
+/* =========================================================
+ * WARDROBE
+ * ========================================================= */
+
+/* Equipment mode: [doll column] | [item browser] */
+.CharSetup__wardrobeLayout {
+  display: flex;
+  gap: 0.5rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.CharSetup__wardrobeCenter {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.CharSetup__wardrobeRight {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Slot icon bar — 4-column grid below the doll */
+.CharSetup__slotIconBar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.25rem;
+  width: 20rem;
+}
+
+.CharSetup__slotIconBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  padding: 0.375rem 0.25rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 90ms ease, border-color 90ms ease;
+
+  &:hover {
+    background: rgba(77, 182, 172, 0.08);
+    border-color: rgba(77, 182, 172, 0.25);
+  }
+}
+
+.CharSetup__slotIconBtn--active {
+  background: rgba(77, 182, 172, 0.14);
+  border-color: rgba(77, 182, 172, 0.55);
+
+  &:hover {
+    background: rgba(77, 182, 172, 0.19);
+    border-color: rgba(77, 182, 172, 0.70);
+  }
+}
+
+.CharSetup__slotIconBtn--equipped {
+  border-color: rgba(80, 200, 120, 0.22);
+  background: rgba(80, 200, 120, 0.05);
+
+  &:hover {
+    background: rgba(80, 200, 120, 0.10);
+    border-color: rgba(80, 200, 120, 0.40);
+  }
+}
+
+.CharSetup__slotIconBtn--equipped.CharSetup__slotIconBtn--active {
+  background: rgba(80, 200, 120, 0.14);
+  border-color: rgba(80, 200, 120, 0.55);
+}
+
+.CharSetup__slotIconBtnIcon {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  opacity: 0.5;
+  image-rendering: pixelated;
+
+  .CharSetup__slotIconBtn--equipped &,
+  .CharSetup__slotIconBtn--active & {
+    opacity: 1;
+  }
+}
+
+.CharSetup__slotIconBtnLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(170, 178, 196, 0.68);
+  white-space: nowrap;
+
+  .CharSetup__slotIconBtn--active & {
+    color: rgba(77, 182, 172, 0.90);
+  }
+
+  .CharSetup__slotIconBtn--equipped & {
+    color: rgba(80, 200, 120, 0.70);
+  }
+}
+
+/* Underwear + backpack row below slot bar */
+.CharSetup__dollUnderwear {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem 0.375rem;
+  width: 20rem;
+}
+
+/* Misc mode: [category list] | [item browser] */
+.CharSetup__wardrobeMiscLayout {
+  display: flex;
+  gap: 0.5rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.CharSetup__wardrobeMiscCats {
+  flex: 0 0 9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+
+/* MISC wide button below slot icon bar — matches slot icon button style */
+.CharSetup__miscBtn {
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  padding: 0.375rem 0.25rem;
+  background: var(--cs-surface-card);
+  border: 0.0625rem solid var(--cs-border-subtle);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+
+  &:hover {
+    background: rgba(77, 182, 172, 0.08);
+    border-color: rgba(77, 182, 172, 0.25);
+  }
+
+  &--active {
+    background: rgba(77, 182, 172, 0.14);
+    border-color: rgba(77, 182, 172, 0.55);
+
+    &:hover {
+      background: rgba(77, 182, 172, 0.19);
+      border-color: rgba(77, 182, 172, 0.70);
+    }
+  }
+}
+
+.CharSetup__miscBtnIcon {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  opacity: 0.5;
+
+  .CharSetup__miscBtn--active & {
+    opacity: 1;
+    color: rgba(77, 182, 172, 0.90);
+  }
+}
+
+.CharSetup__miscBtnLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(170, 178, 196, 0.68);
+
+  .CharSetup__miscBtn--active & {
+    color: rgba(77, 182, 172, 0.90);
+  }
+}
+
+/* Collapsible category header for misc item browser */
+.CharSetup__miscCatHeader {
+  display: flex;
+  align-items: center;
+  padding: 0.3125rem 0.625rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 0.125rem;
+  user-select: none;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  &__label {
+    flex: 1;
+  }
+}
+
+/* ── Character doll container ── */
+.CharSetup__dollContainer {
+  position: relative;
+  width: 20rem;
+  height: 20rem;
+}
+
+/* ── Body-part highlight overlays — sprite silhouettes with teal tint ── */
+.CharSetup__dollPartHighlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  image-rendering: pixelated;
+  /* z-index 4 — above character sprite (1), scanlines (2), corner brackets (3) */
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 120ms ease;
+
+  &--equipped {
+    opacity: 0;
+  }
+
+  &--hovered {
+    opacity: 0.55;
+  }
+}
+
+/* Zone label — hover-only, fades when mouse leaves (driven by JS state) */
+.CharSetup__dollZoneLabel {
+  position: absolute;
+  top: 0.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  pointer-events: none;
+
+  padding: 0.1875rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  background: rgba(20, 20, 24, 0.92);
+  border: 0.0625rem solid rgba(77, 182, 172, 0.40);
+  color: rgba(77, 182, 172, 0.90);
+}
+
+/* ── Compact slot tiles (left pane) ── */
+.CharSetup__slotTile {
+  display: flex;
+  align-items: center;
+  gap: 0.4375rem;
+  padding: 0.3125rem 0.5rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  transition:
+    background 90ms ease,
+    border-color 90ms ease,
+    box-shadow 90ms ease;
+
+  &:hover {
+    background: rgba(77, 182, 172, 0.08);
+    border-color: rgba(77, 182, 172, 0.25);
+  }
+}
+
+.CharSetup__slotTile--active {
+  background: rgba(77, 182, 172, 0.14);
+  border-color: rgba(77, 182, 172, 0.55);
+
+  &:hover {
+    background: rgba(77, 182, 172, 0.19);
+    border-color: rgba(77, 182, 172, 0.70);
+  }
+}
+
+.CharSetup__slotTile--equipped {
+  border-color: rgba(80, 200, 120, 0.22);
+  background: rgba(80, 200, 120, 0.05);
+
+  &:hover {
+    background: rgba(80, 200, 120, 0.10);
+    border-color: rgba(80, 200, 120, 0.40);
+  }
+}
+
+.CharSetup__slotTile--equipped.CharSetup__slotTile--active {
+  background: rgba(80, 200, 120, 0.14);
+  border-color: rgba(80, 200, 120, 0.55);
+}
+
+.CharSetup__slotTileIcon {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  opacity: 0.45;
+  image-rendering: pixelated;
+}
+
+.CharSetup__slotTile--equipped .CharSetup__slotTileIcon,
+.CharSetup__slotTile--active .CharSetup__slotTileIcon {
+  opacity: 1;
+}
+
+.CharSetup__slotTileText {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Default: just the slot name, muted uppercase */
+.CharSetup__slotTileName {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(170, 178, 196, 0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.CharSetup__slotTile:hover .CharSetup__slotTileName {
+  color: rgba(170, 178, 196, 0.95);
+}
+
+.CharSetup__slotTile--active .CharSetup__slotTileName {
+  color: rgba(77, 182, 172, 0.90);
+}
+
+/* When equipped: tile name shows item name, no uppercase */
+.CharSetup__slotTile--equipped .CharSetup__slotTileName {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: rgba(80, 200, 120, 0.80);
+}
+
+/* Slot name sub-label (shown when equipped) */
+.CharSetup__slotTileSlot {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(80, 200, 120, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Right pane empty state hint */
+/* ── Loadout HUD bar (teal-themed, mirrors augHud) ── */
+@keyframes lpBarPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.65; }
+}
+
+.CharSetup__loadoutHud {
+  flex-shrink: 0;
+  padding: 0.625rem 0.75rem;
+  background: rgba(0, 0, 0, 0.20);
+  border: 0.0625rem solid rgba(77, 182, 172, 0.18);
+  border-radius: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+.CharSetup__loadoutHudRow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.375rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.CharSetup__loadoutHudLabel {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(77, 182, 172, 0.90);
+  text-transform: uppercase;
+  font-family: var(--cs-font-mono);
+}
+
+.CharSetup__lpBarWrap {
+  position: relative;
+  flex: 1;
+  height: 1.25rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.0625rem solid rgba(77, 182, 172, 0.20);
+  border-radius: 0.125rem;
+  overflow: hidden;
+
+  &--over {
+    border-color: rgba(244, 67, 54, 0.40);
+  }
+}
+
+.CharSetup__lpBarFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(77, 182, 172, 0.60), rgba(77, 182, 172, 0.35));
+  border-right: 0.125rem solid rgba(77, 182, 172, 0.85);
+  transition: width 200ms ease;
+
+
+
+  &--over {
+    background: linear-gradient(90deg, rgba(244, 67, 54, 0.70), rgba(244, 67, 54, 0.45));
+    border-right-color: rgba(244, 67, 54, 0.90);
+  }
+}
+
+.CharSetup__lpBarText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  color: rgba(255, 255, 255, 0.90);
+  letter-spacing: 0.05em;
+}
+
+.CharSetup__loadoutHudSetRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.CharSetup__loadoutHudSetLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  font-family: var(--cs-font-mono);
+  color: rgba(170, 178, 196, 0.70);
+  min-width: 6rem;
+  text-align: center;
+}
+
+/* ── Underwear labelled items ── */
+.CharSetup__dollUnderwearItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+  overflow: hidden;
+
+  .Dropdown {
+    display: block;
+  }
+
+  .Dropdown__control {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+.CharSetup__dollUnderwearRow {
+  display: flex;
+  align-items: stretch;
+  gap: 0.1875rem;
+  min-width: 0;
+
+  .Dropdown {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+.CharSetup__uwColorSwatch {
+  flex: 0 0 1.25rem;
+  width: 1.25rem;
+  border-radius: 0.1875rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  transition: border-color 80ms ease, box-shadow 80ms ease;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 0 0 0.125rem rgba(100, 140, 200, 0.30);
+  }
+}
+
+.CharSetup__dollUnderwearLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(170, 178, 196, 0.40);
+  padding-left: 0.125rem;
+}
+
+.CharSetup__wardrobeHint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 0.5rem;
+  color: rgba(180, 175, 160, 0.28);
+  font-size: 0.8125rem;
+  font-style: italic;
+  text-align: center;
+}
+
+/* =========================================================
+ * PILL / BADGE SYSTEM
+ * ========================================================= */
+
+.CharSetup__pill {
+  display: inline-block;
+  padding: 0.3125rem 0.625rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+
+  transition:
+    filter 90ms ease,
+    box-shadow 90ms ease;
+}
+
+.CharSetup__pill:hover {
+}
+
+/* Native language — green glow */
+.CharSetup__pill--native {
+  font-size: 0.8125rem;
+  padding: 0.375rem 0.75rem;
+  background: rgba(80, 200, 120, 0.20);
+  color: #6fcf97;
+  border: 0.0625rem solid rgba(80, 200, 120, 0.35);
+}
+
+/* Secondary/default language — blue glow */
+.CharSetup__pill--secondary {
+  font-size: 0.8125rem;
+  padding: 0.375rem 0.75rem;
+  background: rgba(100, 149, 237, 0.20);
+  color: #8fb8ff;
+  border: 0.0625rem solid rgba(100, 149, 237, 0.35);
+}
+
+/* Removable alt language pill */
+.CharSetup__pill--removable {
+  font-size: 0.8125rem;
+  padding: 0.375rem 0.75rem;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(235, 235, 235, 0.80);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.12);
+}
+
+/* Status badge — small "Written" / "Equipped" */
+.CharSetup__pill--status {
+  padding: 0.125rem 0.375rem;
+  font-size: 0.6875rem;
+  border-radius: 0.5rem;
+  background: rgba(80, 200, 120, 0.18);
+  color: #6fcf97;
+  border: none;
+  letter-spacing: 0.04em;
+}
+
+/* Counter pill */
+.CharSetup__pill--count {
+  padding: 0.1875rem 0.5rem;
+  font-size: 0.6875rem;
+  border-radius: 0.625rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(235, 235, 235, 0.70);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.10);
+}
+
+/* Counter full — red warning */
+.CharSetup__pill--countFull {
+  background: rgba(255, 100, 100, 0.18);
+  color: #ff8a8a;
+  border-color: rgba(255, 100, 100, 0.25);
+}
+
+
+/* =========================================================
+ * FLAVOR TEXT — body part grid
+ * ========================================================= */
+
+.CharSetup__bodyPartGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.CharSetup__bodyPart {
+  flex: 1 1 48%;
+  min-width: 0;
+  padding: 0.5rem;
+  cursor: pointer;
+
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.0625rem solid transparent;
+  border-radius: 0.25rem;
+
+  transition:
+    background 100ms ease,
+    border-color 100ms ease,
+    box-shadow 100ms ease;
+}
+
+.CharSetup__bodyPart:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+/* Active (selected for editing) */
+.CharSetup__bodyPart--active {
+  background: rgba(100, 149, 237, 0.12);
+  border-color: rgba(100, 149, 237, 0.40);
+}
+
+/* Filled (has text content) */
+.CharSetup__bodyPart--filled {
+  background: rgba(80, 200, 120, 0.06);
+  border-color: rgba(80, 200, 120, 0.15);
+}
+
+/* Both active + filled */
+.CharSetup__bodyPart--active.CharSetup__bodyPart--filled {
+  background: rgba(100, 149, 237, 0.12);
+  border-color: rgba(100, 149, 237, 0.40);
+}
+
+
+/* =========================================================
+ * RELATION CARDS
+ * ========================================================= */
+
+.CharSetup__relation {
+  margin-bottom: 0.375rem;
+}
+
+.CharSetup__relation--enabled {
+  background: rgba(80, 200, 120, 0.06);
+  border-color: rgba(80, 200, 120, 0.20);
+}
+
+.CharSetup__relation--enabled:hover {
+  background: rgba(80, 200, 120, 0.09);
+  border-color: rgba(80, 200, 120, 0.30);
+}
+
+
+/* =========================================================
+ * PREFERENCE / SETTINGS — collapsible category cards
+ * ========================================================= */
+
+.CharSetup__prefRow {
+  padding: 0.25rem 0.5rem;
+
+  transition: background 80ms ease;
+}
+
+.CharSetup__prefRow:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Alternating stripe */
+.CharSetup__prefRow--alt {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.CharSetup__prefRow--alt:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+
+/* =========================================================
+ * HUD UI PREVIEW — theme/color/alpha preview window
+ * ========================================================= */
+
+.CharSetup__uiPreview {
+  position: relative;
+  width: 100%;
+  height: 17rem;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.CharSetup__uiPreviewBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.CharSetup__uiPreviewHud {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.CharSetup__uiPreviewItems {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right bottom;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+ * KEY BADGES — keybinding display
+ * ========================================================= */
+
+.CharSetup__keyBadge {
+  display: inline-block;
+  padding: 0.125rem 0.4375rem;
+  margin: 0.0625rem;
+
+  font-family: var(--cs-font-mono);
+  font-weight: 700;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+
+  background: rgba(255, 255, 255, 0.10);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.1875rem;
+
+  transition:
+    background 90ms ease,
+    box-shadow 90ms ease,
+    filter 90ms ease;
+}
+
+.CharSetup__keyBadge:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Unbound state */
+.CharSetup__keyBadge--unbound {
+  font-style: italic;
+  opacity: 0.45;
+  border-style: dashed;
+}
+
+.CharSetup__keyBadge--capturing {
+  border-color: rgba(77, 182, 172, 0.6);
+  background: rgba(77, 182, 172, 0.15);
+  color: rgba(77, 182, 172, 0.9);
+  animation: CharSetup__keyCapturePulse 1s ease-in-out infinite;
+}
+
+// Wrapper for key badge + remove button
+.CharSetup__keyBadgeWrap {
+  display: inline-flex;
+  align-items: stretch;
+  margin: 0.0625rem;
+}
+
+.CharSetup__keyBadgeWrap .CharSetup__keyBadge {
+  margin: 0;
+  border-radius: 0.1875rem 0 0 0.1875rem;
+}
+
+.CharSetup__keyBadgeRemove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.25rem;
+  cursor: pointer;
+
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.40);
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.18);
+  border-left: none;
+  border-radius: 0 0.1875rem 0.1875rem 0;
+
+  transition: background 90ms ease, color 90ms ease;
+
+  &:hover {
+    background: rgba(244, 67, 54, 0.25);
+    color: rgba(244, 67, 54, 0.90);
+  }
+}
+
+@keyframes CharSetup__keyCapturePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+
+/* =========================================================
+ * IDENTITY — ID CARD
+ * ========================================================= */
+
+.CharSetup__idCard {
+  position: relative;
+  border-radius: 0.625rem;
+  // No overflow:hidden — dropdown menus must escape card bounds.
+  // Stamp clipping is handled by the stamp container itself.
+
+  /* Card material — neutral dark grey */
+  background: rgba(22, 22, 26, 0.97);
+
+  border: 0.0625rem solid rgba(255, 255, 255, 0.10);
+
+  /* Consistent font-size for all controls within the card */
+  font-size: 0.8125rem;
+}
+
+/* Header stripe */
+.CharSetup__idCardStripe {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.625rem 0.625rem 0 0;
+
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.10);
+}
+
+.CharSetup__idCardStripeLogo {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.4);
+}
+
+.CharSetup__idCardStripeRight {
+  font-size: 0.75rem;
+  font-family: var(--cs-font-mono);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+/* Main card body — photo left, fields right */
+.CharSetup__idCardBody {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+}
+
+/* Left column */
+.CharSetup__idCardLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  width: 7.5rem;
+}
+
+/* Photo frame */
+.CharSetup__idCardPhoto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.CharSetup__idCardPhotoInner {
+  position: relative;
+  width: 7rem;
+  height: 7rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
+
+  background: rgba(0, 0, 0, 0.35);
+  border: 0.125rem solid rgba(255, 255, 255, 0.12);
+}
+
+.CharSetup__idCardHeadshot {
+  image-rendering: pixelated;
+  position: absolute;
+  width: 280%;
+  height: 280%;
+  top: -8%;
+  left: -90%;
+}
+
+.CharSetup__idCardPhotoLabel {
+  margin-top: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(180, 185, 195, 0.55);
+}
+
+/* Approval stamp — absolute overlay on the card, self-clipping */
+.CharSetup__idCardStamp {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 0.625rem;
+}
+
+.CharSetup__idCardStampImg {
+  position: absolute;
+  bottom: 0.75rem;
+  right: -1rem;
+  width: 18rem;
+  height: auto;
+  image-rendering: auto;
+  transform: rotate(-18deg);
+  opacity: 0.50;
+  mix-blend-mode: screen;
+}
+
+/* Barcode */
+.CharSetup__idCardBarcode {
+  font-family: var(--cs-font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: -0.05em;
+  color: rgba(255, 255, 255, 0.18);
+  white-space: nowrap;
+  overflow: hidden;
+  width: 6.5rem;
+  text-align: center;
+}
+
+/* Right column: editable fields */
+.CharSetup__idCardFields {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.CharSetup__idCardField {
+  min-width: 0;
+}
+
+.CharSetup__idCardFieldRow {
+  display: flex;
+  gap: 0.5rem;
+
+  &--wrap {
+    flex-wrap: wrap;
+  }
+}
+
+.CharSetup__idCardField {
+  &--half {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: 7rem;
+  }
+}
+
+/* In-card section separator — thin rule with centred label */
+.CharSetup__idCardSectionSep {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: rgba(160, 165, 175, 0.30);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0.125rem 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.CharSetup__idCardFieldLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(180, 185, 195, 0.65);
+  margin-bottom: 0.1875rem;
+}
+
+/* Fixed-width age input with slightly larger font */
+.CharSetup__ageInputWrap {
+  .NumberInput {
+    width: 5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--cs-font-mono);
+  }
+
+  .NumberInput__content {
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--cs-font-mono);
+  }
+}
+
+/* Card footer */
+.CharSetup__idCardFooter {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0.75rem;
+
+  font-family: var(--cs-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(160, 165, 175, 0.45);
+
+  border-top: 0.0625rem solid rgba(255, 255, 255, 0.07);
+  border-radius: 0 0 0.625rem 0.625rem;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+ * ID CARD BACK — Appearance controls on the backside
+ * ========================================================= */
+
+// Divider between front and back
+.CharSetup__idCardDivider {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin: 0.5rem 0;
+  color: rgba(160, 165, 175, 0.30);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: var(--cs-font-mono);
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 0.0625rem;
+    background: linear-gradient(90deg, transparent, rgba(200, 195, 170, 0.12), transparent);
+  }
+}
+
+.CharSetup__idCardBack {
+  position: relative;
+  border-radius: 0.625rem;
+  overflow: visible;
+  font-size: 0.8125rem;
+
+  background: rgba(22, 22, 26, 0.97);
+
+  border: 0.0625rem solid rgba(255, 255, 255, 0.10);
+
+  // Holographic sheen overlay matching front card
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      125deg,
+      transparent 30%,
+      rgba(100, 140, 200, 0.03) 40%,
+      rgba(160, 120, 200, 0.02) 50%,
+      rgba(100, 200, 200, 0.03) 60%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+// Magnetic stripe — dark horizontal band at top
+.CharSetup__idCardMagStripe {
+  height: 2rem;
+  border-radius: 0.625rem 0.625rem 0 0;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.85),
+      rgba(0, 0, 0, 0.85) 0.375rem,
+      rgba(10, 10, 10, 0.80) 0.375rem,
+      rgba(10, 10, 10, 0.80) 0.75rem
+    );
+  border-bottom: 0.0625rem solid rgba(180, 170, 140, 0.06);
+}
+
+// Content area below stripe
+.CharSetup__idCardBackContent {
+  position: relative;
+  z-index: 2;
+  padding: 0.5rem 0.75rem;
+}
+
+// Section label within back card
+.CharSetup__idCardBackLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(180, 185, 195, 0.65);
+  font-family: var(--cs-font-mono);
+  margin-bottom: 0.375rem;
+  padding-bottom: 0.1875rem;
+  border-bottom: 0.0625rem solid rgba(200, 195, 170, 0.06);
+}
+
+// Two-column layout for styles + colors
+.CharSetup__idCardBackColumns {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.CharSetup__idCardBackCol {
+  flex: 1;
+  min-width: 0;
+}
+
+// Color swatch row (eye/hair/etc)
+.CharSetup__idCardColorRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+}
+
+.CharSetup__idCardColorLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(195, 200, 215, 0.70);
+  min-width: 5rem;
+  font-family: var(--cs-font-mono);
+}
+
+.CharSetup__idCardColorSwatch {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.125rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+// Marking row
+.CharSetup__idCardMarkingRow {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.375rem;
+  margin-bottom: 0.125rem;
+  background: rgba(0, 0, 0, 0.15);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.03);
+  border-radius: 0.125rem;
+  font-size: 0.8125rem;
+  color: rgba(195, 200, 215, 0.75);
+}
+
+// Signature strip at bottom
+.CharSetup__idCardSignature {
+  margin-top: 0.75rem;
+  padding: 0.375rem 0.5rem;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(200, 195, 170, 0.03),
+      rgba(200, 195, 170, 0.03) 0.0625rem,
+      transparent 0.0625rem,
+      transparent 0.375rem
+    ),
+    rgba(200, 195, 170, 0.04);
+  border-radius: 0.125rem;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--cs-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(200, 195, 170, 0.35);
+}
+
+/* =========================================================
+ * SPECIES INFO BLURB
+ * ========================================================= */
+
+.CharSetup__infoBlurb {
+  padding: 0.625rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgba(235, 235, 235, 0.65);
+
+  background: rgba(0, 0, 0, 0.20);
+  border-radius: 0.25rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.04);
+}
+
+
+/* =========================================================
+ * COLOR SWATCH
+ * ========================================================= */
+
+.CharSetup__colorSwatch {
+  display: inline-block;
+  width: 1.125rem;
+  height: 1.125rem;
+  min-width: 1.125rem;
+  margin: 0.0625rem;
+  border-radius: 0.125rem;
+  cursor: pointer;
+
+  border: 0.0625rem solid rgba(255, 255, 255, 0.25);
+
+  transition:
+    border-color 80ms ease,
+    box-shadow 80ms ease,
+    transform 80ms ease;
+}
+
+.CharSetup__colorSwatch:hover {
+  border-color: rgba(255, 255, 255, 0.55);
+  transform: scale(1.15);
+}
+
+/* Selected swatch */
+.CharSetup__colorSwatch--selected {
+  border: 0.125rem solid white;
+}
+
+/* Small inline color preview dot */
+.CharSetup__colorDot {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.0625rem;
+  vertical-align: middle;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.40);
+}
+
+
+/* =========================================================
+ * GEAR ITEM LIST — loadout items
+ * ========================================================= */
+
+
+.CharSetup__gearRow {
+  cursor: pointer;
+  border-radius: 0.1875rem;
+  margin: 0.0625rem 0;
+  padding: 0.25rem 0.3125rem;
+  font-size: 14px;
+
+  border-left: 0.125rem solid transparent;
+
+  transition:
+    background 80ms ease,
+    border-color 100ms ease,
+    box-shadow 100ms ease;
+}
+
+.CharSetup__gearRow:hover {
+  background: rgba(130, 145, 168, 0.06);
+  border-left-color: rgba(130, 145, 168, 0.20);
+}
+
+.CharSetup__gearRow--selected {
+  background: rgba(130, 145, 168, 0.28);
+  border-left-color: rgba(130, 145, 168, 1);
+  border-left-width: 3px;
+}
+
+.CharSetup__gearRow--equipped {
+  border-left-color: rgba(80, 200, 120, 0.50);
+  background: rgba(60, 180, 100, 0.08);
+}
+
+.CharSetup__gearRow--equipped:hover {
+  border-left-color: rgba(80, 200, 120, 0.70);
+  background: rgba(60, 180, 100, 0.14);
+}
+
+.CharSetup__gearRow--unavailable {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Right-click context menu */
+.CharSetup__ctxMenuBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+.CharSetup__ctxMenu {
+  position: fixed;
+  min-width: 140px;
+  background: rgba(20, 20, 25, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.25rem;
+  z-index: 101;
+  overflow: hidden;
+}
+
+.CharSetup__ctxMenuHeader {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.CharSetup__ctxMenuItem {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 80ms ease;
+
+  &:hover {
+    background: rgba(130, 145, 168, 0.15);
+  }
+}
+
+.CharSetup__gearIcon {
+  width: 2rem;
+  height: 2rem;
+  image-rendering: pixelated;
+
+  background: radial-gradient(circle, rgba(130, 145, 168, 0.04), transparent 70%);
+  border-radius: 0.125rem;
+}
+
+.CharSetup__gearIcon .game-icon,
+.CharSetup__gearIcon .CharSetup__gearSpriteIcon {
+  width: 2rem;
+  height: 2rem;
+  image-rendering: pixelated;
+}
+
+
+/* =========================================================
+ * GEAR DETAIL — selected item panel
+ * ========================================================= */
+
+.CharSetup__gearDetail {
+  padding: 0.75rem;
+  background:
+    linear-gradient(180deg, rgba(22, 22, 26, 0.70), rgba(10, 15, 28, 0.80));
+  border-radius: 0.375rem;
+  border: 0.0625rem solid rgba(130, 145, 168, 0.10);
+  border: 0.0625rem solid var(--cs-border-subtle);
+}
+
+.CharSetup__gearDetailIcon {
+  width: 3rem;
+  height: 3rem;
+  image-rendering: pixelated;
+}
+
+.CharSetup__gearDetailIcon .game-icon,
+.CharSetup__gearDetailIcon .CharSetup__gearSpriteIcon {
+  width: 3rem;
+  height: 3rem;
+  image-rendering: pixelated;
+}
+
+
+/* =========================================================
+ * LAYOUT — overall structure overrides
+ * ========================================================= */
+
+/* Main three-column layout — frosted glass treatment */
+.CharSetup__layout {
+  height: 100%;
+}
+
+/* Override the Window.Content background for CharSetup */
+.CharSetup.Layout__content {
+  background-color: #1e1e22 !important;
+}
+
+
+/* =========================================================
+ * DIVIDER — gradient line with glow
+ * ========================================================= */
+
+.CharSetup .Divider--horizontal {
+  border-top: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  margin: 0.5rem 0;
+}
+
+.CharSetup .Divider--vertical {
+  border-left: none;
+  width: 0.0625rem;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(130, 145, 168, 0.12) 20%,
+    rgba(130, 145, 168, 0.06) 80%,
+    transparent
+  );
+  margin: 0 0.375rem;
+}
+
+
+/* =========================================================
+ * SECTION OVERRIDES — right panel
+ * ========================================================= */
+
+.CharSetup .Section {
+  background-color: rgba(12, 12, 14, 0.85);
+  border: 0.0625rem solid rgba(130, 145, 168, 0.08);
+  border-radius: 0.375rem;
+}
+
+/* Section title — bold uppercase with gradient underline */
+.CharSetup .Section__title {
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.8125rem;
+  color: rgba(170, 178, 196, 0.90);
+  padding: 0.625rem 0.75rem;
+  border-bottom: none;
+
+  background: linear-gradient(
+    180deg,
+    rgba(130, 145, 168, 0.06) 0%,
+    rgba(130, 145, 168, 0.02) 60%,
+    transparent 100%
+  );
+}
+
+.CharSetup .Section__title::after {
+  content: "";
+  display: block;
+  margin-top: 0.375rem;
+  height: 0.0625rem;
+  background: linear-gradient(
+    90deg,
+    var(--cs-accent, rgba(130, 145, 168, 0.40)),
+    rgba(130, 145, 168, 0.10) 50%,
+    transparent 100%
+  );
+}
+
+.CharSetup .Section__content {
+  padding: 0.05rem 0.75rem;
+}
+
+
+
+/* =========================================================
+ * BUTTON OVERRIDES — keep for any remaining TGUI Buttons
+ * ========================================================= */
+
+.CharSetup .Button {
+  border-radius: 0.1875rem;
+  transition:
+    background-color 80ms ease,
+    border-color 80ms ease,
+    color 80ms ease;
+}
+
+// Override default button colour to neutral grey (TGUI default is blue)
+.CharSetup .Button--color--default {
+  background-color: rgba(55, 55, 62, 0.95);
+  color: rgba(210, 215, 225, 0.90);
+
+  &:hover {
+    background-color: rgba(72, 72, 82, 0.95);
+    color: rgba(225, 230, 240, 1);
+  }
+
+  &:active {
+    background-color: rgba(42, 42, 50, 0.95);
+  }
+}
+
+// Selected state — highlight with accent colour
+.CharSetup .Button--selected {
+  background-color: rgba(56, 86, 124, 0.90) !important;
+  color: rgba(190, 210, 240, 1) !important;
+
+  &:hover {
+    background-color: rgba(68, 102, 146, 0.95) !important;
+  }
+}
+
+/* =========================================================
+ * CUSTOM BUTTONS — CsButton (CharSetup__btn)
+ * ========================================================= */
+
+.CharSetup__btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: var(--cs-font-mono);
+  letter-spacing: 0.03em;
+  color: rgba(230, 235, 245, 0.95);
+  cursor: pointer;
+  user-select: none;
+
+  background:
+    linear-gradient(180deg, rgba(56, 86, 124, 0.65) 0%, rgba(46, 72, 106, 0.70) 100%);
+  border: 0.0625rem solid rgba(130, 145, 168, 0.12);
+  border-radius: 0.1875rem;
+
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    transform 80ms ease,
+    color 120ms ease;
+
+  &:hover {
+    color: rgba(220, 230, 245, 0.95);
+    border-color: rgba(130, 145, 168, 0.28);
+    background:
+      linear-gradient(180deg, rgba(70, 104, 148, 0.72) 0%, rgba(56, 86, 124, 0.77) 100%);
+  }
+
+  &:active {
+    transform: translateY(0.0625rem);
+    background:
+      linear-gradient(180deg, rgba(42, 66, 100, 0.80) 0%, rgba(34, 54, 84, 0.85) 100%);
+  }
+
+  .Icon {
+    font-size: 0.8125rem;
+  }
+}
+
+.CharSetup__btn--selected {
+  color: rgba(100, 165, 225, 0.95);
+  border-color: rgba(130, 145, 168, 0.35);
+  background:
+    linear-gradient(180deg, rgba(50, 82, 124, 0.75) 0%, rgba(40, 66, 106, 0.80) 100%);
+}
+
+.CharSetup__btn--compact {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.CharSetup__btn--fluid {
+  display: flex;
+  width: 100%;
+}
+
+.CharSetup__btn--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  filter: grayscale(0.3);
+}
+
+.CharSetup__btn--danger {
+  color: rgba(240, 130, 120, 0.90);
+  border-color: rgba(244, 67, 54, 0.20);
+  background:
+    linear-gradient(180deg, rgba(70, 30, 30, 0.65) 0%, rgba(50, 20, 20, 0.70) 100%);
+
+  &:hover {
+    color: rgba(255, 150, 140, 0.95);
+    border-color: rgba(244, 67, 54, 0.40);
+  }
+}
+
+.CharSetup__btn--success {
+  color: rgba(130, 210, 150, 0.90);
+  border-color: rgba(100, 200, 130, 0.20);
+  background:
+    linear-gradient(180deg, rgba(30, 60, 35, 0.65) 0%, rgba(20, 45, 25, 0.70) 100%);
+
+  &:hover {
+    color: rgba(150, 230, 170, 0.95);
+    border-color: rgba(100, 200, 130, 0.40);
+  }
+}
+
+// good / bad / average / label — TGUI semantic color aliases
+.CharSetup__btn--good,
+.CharSetup__btn--green {
+  color: rgba(130, 210, 150, 0.90);
+  border-color: rgba(100, 200, 130, 0.20);
+  background:
+    linear-gradient(180deg, rgba(30, 60, 35, 0.65) 0%, rgba(20, 45, 25, 0.70) 100%);
+
+  &:hover {
+    color: rgba(150, 230, 170, 0.95);
+    border-color: rgba(100, 200, 130, 0.40);
+  }
+}
+
+.CharSetup__btn--bad,
+.CharSetup__btn--red {
+  color: rgba(240, 130, 120, 0.90);
+  border-color: rgba(244, 67, 54, 0.20);
+  background:
+    linear-gradient(180deg, rgba(70, 30, 30, 0.65) 0%, rgba(50, 20, 20, 0.70) 100%);
+
+  &:hover {
+    color: rgba(255, 150, 140, 0.95);
+    border-color: rgba(244, 67, 54, 0.40);
+  }
+}
+
+.CharSetup__btn--average,
+.CharSetup__btn--orange {
+  color: rgba(255, 180, 80, 0.90);
+  border-color: rgba(230, 150, 40, 0.22);
+  background:
+    linear-gradient(180deg, rgba(65, 45, 15, 0.65) 0%, rgba(50, 35, 10, 0.70) 100%);
+
+  &:hover {
+    color: rgba(255, 200, 110, 0.95);
+    border-color: rgba(230, 150, 40, 0.42);
+  }
+}
+
+.CharSetup__btn--teal {
+  color: rgba(80, 210, 200, 0.90);
+  border-color: rgba(40, 180, 170, 0.22);
+  background:
+    linear-gradient(180deg, rgba(15, 55, 55, 0.65) 0%, rgba(10, 40, 40, 0.70) 100%);
+
+  &:hover {
+    color: rgba(110, 230, 220, 0.95);
+    border-color: rgba(40, 180, 170, 0.42);
+  }
+}
+
+.CharSetup__btn--gold {
+  color: rgba(255, 210, 80, 0.90);
+  border-color: rgba(220, 180, 40, 0.22);
+  background:
+    linear-gradient(180deg, rgba(65, 55, 10, 0.65) 0%, rgba(50, 42, 8, 0.70) 100%);
+
+  &:hover {
+    color: rgba(255, 225, 110, 0.95);
+    border-color: rgba(220, 180, 40, 0.42);
+  }
+}
+
+.CharSetup__btn--blue {
+  color: rgba(120, 175, 245, 0.95);
+  border-color: rgba(80, 140, 220, 0.35);
+  background:
+    linear-gradient(180deg, rgba(30, 60, 110, 0.80) 0%, rgba(22, 48, 90, 0.85) 100%);
+
+  &:hover {
+    color: rgba(155, 200, 255, 1);
+    border-color: rgba(80, 140, 220, 0.55);
+  }
+}
+
+.CharSetup__btn--pink {
+  color: rgba(245, 140, 185, 0.95);
+  border-color: rgba(210, 90, 150, 0.35);
+  background:
+    linear-gradient(180deg, rgba(100, 30, 65, 0.80) 0%, rgba(80, 22, 50, 0.85) 100%);
+
+  &:hover {
+    color: rgba(255, 165, 205, 1);
+    border-color: rgba(210, 90, 150, 0.55);
+  }
+}
+
+.CharSetup__btn--label {
+  color: rgba(180, 175, 160, 0.55);
+  border-color: rgba(255, 255, 255, 0.07);
+  background:
+    linear-gradient(180deg, rgba(30, 30, 35, 0.45) 0%, rgba(22, 22, 28, 0.50) 100%);
+
+  &:hover {
+    color: rgba(200, 195, 175, 0.70);
+  }
+}
+
+.CharSetup__btn--checkbox {
+  background:
+    linear-gradient(180deg, rgba(46, 72, 108, 0.50) 0%, rgba(36, 58, 90, 0.55) 100%);
+  border-color: rgba(130, 145, 168, 0.08);
+  font-weight: 500;
+  color: rgba(195, 200, 215, 0.60);
+}
+
+.CharSetup__btn--checked {
+  color: rgba(100, 165, 225, 0.85);
+  border-color: rgba(130, 145, 168, 0.22);
+}
+
+
+/* =========================================================
+ * INPUT OVERRIDES — glowing border on focus
+ * ========================================================= */
+
+.CharSetup .Input {
+  background: rgba(0, 0, 0, 0.35);
+  border: 0.0625rem solid rgba(130, 145, 168, 0.20);
+  border-radius: 0.1875rem;
+
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.CharSetup .Input:focus-within {
+  border-color: rgba(130, 145, 168, 0.50);
+}
+
+
+/* =========================================================
+ * NUMBER INPUT — dark inset with blue accent
+ * ========================================================= */
+
+.CharSetup .NumberInput {
+  border: 0.0625rem solid rgba(130, 145, 168, 0.15);
+  border-radius: 0.1875rem;
+  background:
+    linear-gradient(180deg, rgba(10, 14, 22, 0.80) 0%, rgba(15, 20, 32, 0.75) 100%);
+  color: rgba(195, 200, 215, 0.90);
+  font-family: var(--cs-font-mono);
+
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+
+  &:hover {
+    border-color: rgba(130, 145, 168, 0.28);
+  }
+}
+
+.CharSetup .NumberInput__bar {
+  background-color: rgba(130, 145, 168, 0.50);
+  border-bottom-color: rgba(130, 145, 168, 0.70);
+}
+
+.CharSetup .NumberInput__input {
+  background: transparent;
+  color: rgba(195, 200, 215, 0.90);
+  font-family: var(--cs-font-mono);
+}
+
+
+/* =========================================================
+ * DROPDOWN OVERRIDES — dark glass with blue glow
+ * ========================================================= */
+
+.CharSetup .Dropdown__control {
+  border: 0.0625rem solid rgba(130, 145, 168, 0.12) !important;
+  border-radius: 0.1875rem !important;
+  background: linear-gradient(180deg, rgba(56, 86, 124, 0.65) 0%, rgba(46, 72, 106, 0.70) 100%) !important;
+  color: rgba(230, 235, 245, 0.95) !important;
+  font-family: var(--cs-font-mono);
+  letter-spacing: 0.02em;
+
+  transition: background 80ms ease, border-color 80ms ease !important;
+}
+
+.CharSetup .Dropdown__control:hover {
+  background: linear-gradient(180deg, rgba(70, 104, 148, 0.72) 0%, rgba(56, 86, 124, 0.77) 100%) !important;
+  border-color: rgba(130, 145, 168, 0.28) !important;
+  color: rgba(220, 228, 245, 0.95) !important;
+}
+
+// Native select popup colours — Chromium applies background-color/color to the list.
+.CharSetup .Dropdown__native {
+  background-color: #2e4a6a;
+  color: rgba(230, 235, 245, 0.95);
+  font-family: var(--cs-font-mono);
+}
+
+.CharSetup .Dropdown__native option {
+  background-color: #2e4a6a;
+  color: rgba(230, 235, 245, 0.95);
+}
+
+.CharSetup .Dropdown__native option:checked {
+  background-color: #3d618a;
+  color: rgba(220, 225, 235, 1);
+}
+
+
+
+/* =========================================================
+ * TEXTAREA OVERRIDES — dark inset
+ * ========================================================= */
+
+.CharSetup .TextArea {
+  background: rgba(0, 0, 0, 0.35);
+  border: 0.0625rem solid rgba(130, 145, 168, 0.12);
+  border-radius: 0.1875rem;
+
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.CharSetup .TextArea:focus,
+.CharSetup .TextArea:focus-within {
+  border-color: rgba(130, 145, 168, 0.35);
+}
+
+.CharSetup .TextArea__textarea {
+  color: rgba(210, 215, 228, 0.92);
+  font-size: 13px;
+  line-height: 1.45;
+  padding: 0.375rem 0.5rem;
+}
+
+
+/* =========================================================
+ * TABS OVERRIDES — glow tabs for sub-panels
+ * ========================================================= */
+
+.CharSetup .Tabs {
+  border-bottom: 0.0625rem solid rgba(130, 145, 168, 0.08);
+  margin-bottom: 0.375rem;
+}
+
+.CharSetup .Tabs .Tab {
+  border-radius: 0.1875rem 0.1875rem 0 0;
+  transition:
+    background 100ms ease,
+    color 100ms ease,
+    box-shadow 100ms ease;
+}
+
+.CharSetup .Tabs .Tab:hover {
+  background: rgba(130, 145, 168, 0.06);
+}
+
+.CharSetup .Tabs .Tab--selected {
+  background: rgba(130, 145, 168, 0.10);
+  border-bottom: 0.125rem solid rgba(130, 145, 168, 0.50);
+}
+
+
+/* =========================================================
+ * TABLE / CANDYSTRIPE OVERRIDES
+ * ========================================================= */
+
+.CharSetup .Table {
+  border-collapse: separate;
+  border-spacing: 0 0.0625rem;
+}
+
+.CharSetup .Table__row.candystripe:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.CharSetup .Table__row.candystripe:nth-child(even) {
+  background: rgba(130, 145, 168, 0.015);
+}
+
+.CharSetup .Table__row:hover {
+  background: rgba(130, 145, 168, 0.06) !important;
+}
+
+
+/* =========================================================
+ * COLORBOX OVERRIDES — softer with glow
+ * ========================================================= */
+
+.CharSetup .ColorBox {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.25);
+  border-radius: 0.125rem;
+}
+
+
+/* =========================================================
+ * SLIDER OVERRIDES — dark track with blue fill
+ * ========================================================= */
+
+.CharSetup .Slider {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.10);
+  border-radius: 0.1875rem;
+  background: rgba(55, 55, 62, 0.95);
+  color: rgba(225, 228, 238, 0.92);
+  font-family: var(--cs-font-mono);
+
+  transition: border-color 80ms ease;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+}
+
+.CharSetup .Slider .ProgressBar__fill {
+  background: rgba(91, 143, 196, 0.30);
+}
+
+.CharSetup .Slider__cursor {
+  border-left-color: rgba(220, 225, 238, 0.90);
+}
+
+.CharSetup .Slider__pointer {
+  border-bottom-color: rgba(220, 225, 238, 0.90);
+}
+
+.CharSetup .Slider__popupValue {
+  background: rgba(30, 30, 36, 0.97);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.125rem;
+  color: rgba(225, 228, 238, 0.95);
+  font-family: var(--cs-font-mono);
+}
+
+/* ── Skin Tone slider — gradient track + solid handle ── */
+
+// Track: real skin gradient derived from game formula
+// rgb(200+s_tone, 150+s_tone, 123+s_tone): lightest(s+35)→darkest(s-185)
+.CharSetup__skinToneSlider .Slider {
+  background: linear-gradient(
+    90deg,
+    #ebb99e 0%,
+    #c8967b 35%,
+    #8c5438 65%,
+    #3c1a08 100%
+  ) !important;
+  border-color: rgba(0, 0, 0, 0.30) !important;
+
+  &:hover {
+    border-color: rgba(0, 0, 0, 0.45) !important;
+  }
+}
+
+// The fill covers the left portion — hide it so the full gradient shows
+.CharSetup__skinToneSlider .Slider .ProgressBar__fill {
+  background: transparent !important;
+}
+
+// Cursor: solid rectangular handle centered on the right edge of the fill
+.CharSetup__skinToneSlider .Slider__cursor {
+  width: 0.625rem;
+  right: -0.3125rem;
+  border-left: none !important;
+  background: rgba(240, 240, 248, 0.95);
+  border-radius: 0.125rem;
+  border: 0.0625rem solid rgba(0, 0, 0, 0.35) !important;
+}
+
+.CharSetup__skinToneSlider .Slider__pointer {
+  display: none;
+}
+
+.CharSetup__skinToneSlider .Slider__popupValue {
+  background: rgba(30, 30, 36, 0.97);
+  border-color: rgba(0, 0, 0, 0.40) !important;
+}
+
+
+/* =========================================================
+ * FIELD LABELS — subtle uppercase treatment
+ * ========================================================= */
+
+.CharSetup__fieldLabel {
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(170, 178, 196, 0.65);
+  margin-bottom: 0.375rem;
+}
+
+
+/* =========================================================
+ * ANIMATIONS — keyframes
+ * ========================================================= */
+
+/* Scan line sweep on preview frame */
+@keyframes charsetupScanLine {
+  0%   { background-position: 0 -12rem; }
+  100% { background-position: 0 24rem; }
+}
+
+/* Subtle glow pulse for selected elements */
+@keyframes charsetupPulse {
+  0%, 100% { opacity: 0.65; }
+  50%      { opacity: 1; }
+}
+
+/* Slide-in for panel content transitions */
+@keyframes charsetupSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+ * PERSONALITY — Medical Record / Dossier interface
+ * ========================================================= */
+
+// Main container
+.CharSetup__medPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+// File-folder tab bar
+.CharSetup__medTabBar {
+  display: flex;
+  gap: 0.125rem;
+  flex-shrink: 0;
+  padding: 0 0.25rem;
+}
+
+.CharSetup__medTab {
+  --med-accent: #81c784;
+
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--cs-font-mono);
+  color: rgba(235, 235, 235, 0.55);
+  cursor: pointer;
+  border-radius: 0.25rem 0.25rem 0 0;
+  background: rgba(255, 255, 255, 0.02);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.04);
+  border-bottom: none;
+  transition: all 120ms ease;
+  position: relative;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(235, 235, 235, 0.80);
+  }
+}
+
+.CharSetup__medTab--active {
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--med-accent);
+  border-color: rgba(255, 255, 255, 0.08);
+
+  // Top edge glow
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0.25rem;
+    right: 0.25rem;
+    height: 0.125rem;
+    background: var(--med-accent);
+    border-radius: 0.125rem;
+  }
+}
+
+// Document body — the "paper"
+.CharSetup__medBody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.75rem;
+  background:
+    // Faint lined paper effect
+    repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 1.625rem,
+      rgba(255, 255, 255, 0.015) 1.625rem,
+      rgba(255, 255, 255, 0.015) 1.6875rem
+    ),
+    // Red left margin line
+    linear-gradient(90deg, transparent 1.5rem, rgba(200, 80, 80, 0.06) 1.5rem, rgba(200, 80, 80, 0.06) 1.5625rem, transparent 1.5625rem),
+    rgba(0, 0, 0, 0.25);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+  border-top: none;
+  border-radius: 0 0 0.375rem 0.375rem;
+}
+
+// Document header block
+.CharSetup__medDocHeader {
+  padding: 0.625rem 0.75rem;
+  margin-bottom: 0.75rem;
+  background:
+    linear-gradient(135deg, rgba(129, 199, 132, 0.08) 0%, rgba(129, 199, 132, 0.02) 100%),
+    rgba(0, 0, 0, 0.30);
+  border: 0.0625rem solid rgba(129, 199, 132, 0.18);
+  border-radius: 0.25rem;
+  border-left: 0.1875rem solid rgba(129, 199, 132, 0.50);
+}
+
+.CharSetup__medDocHeader--red {
+  background:
+    linear-gradient(135deg, rgba(229, 115, 115, 0.08) 0%, rgba(229, 115, 115, 0.02) 100%),
+    rgba(0, 0, 0, 0.30);
+  border-color: rgba(229, 115, 115, 0.18);
+  border-left-color: rgba(229, 115, 115, 0.50);
+}
+
+.CharSetup__medDocHeader--blue {
+  background:
+    linear-gradient(135deg, rgba(121, 134, 203, 0.08) 0%, rgba(121, 134, 203, 0.02) 100%),
+    rgba(0, 0, 0, 0.30);
+  border-color: rgba(121, 134, 203, 0.18);
+  border-left-color: rgba(121, 134, 203, 0.50);
+}
+
+.CharSetup__medDocIcon {
+  font-size: 1.5rem;
+  color: rgba(129, 199, 132, 0.70);
+  filter: drop-shadow(0 0 0.25rem rgba(129, 199, 132, 0.30));
+
+  .CharSetup__medDocHeader--red & {
+    color: rgba(229, 115, 115, 0.70);
+    filter: drop-shadow(0 0 0.25rem rgba(229, 115, 115, 0.30));
+  }
+
+  .CharSetup__medDocHeader--blue & {
+    color: rgba(121, 134, 203, 0.70);
+    filter: drop-shadow(0 0 0.25rem rgba(121, 134, 203, 0.30));
+  }
+}
+
+.CharSetup__medDocTitle {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(235, 235, 235, 0.90);
+  font-family: var(--cs-font-mono);
+}
+
+.CharSetup__medDocSub {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(235, 235, 235, 0.55);
+  font-family: var(--cs-font-mono);
+  text-transform: uppercase;
+}
+
+// "N NOTED" badge
+.CharSetup__medBadge {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  letter-spacing: 0.06em;
+  color: rgba(129, 199, 132, 0.85);
+  background: rgba(129, 199, 132, 0.10);
+  border: 0.0625rem solid rgba(129, 199, 132, 0.25);
+  border-radius: 0.1875rem;
+}
+
+// Category tabs (Physical/Mental/Social...)
+.CharSetup__medCatBar {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.CharSetup__medCatTab {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(235, 235, 235, 0.60);
+  cursor: pointer;
+  border-radius: 0.1875rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+  transition: all 120ms ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(235, 235, 235, 0.85);
+  }
+}
+
+.CharSetup__medCatTab--active {
+  color: #81c784;
+  background: rgba(129, 199, 132, 0.08);
+  border-color: rgba(129, 199, 132, 0.25);
+}
+
+.CharSetup__medCatCount {
+  display: inline-block;
+  margin-left: 0.375rem;
+  padding: 0 0.25rem;
+  min-width: 0.875rem;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  color: rgba(129, 199, 132, 0.90);
+  background: rgba(129, 199, 132, 0.18);
+  border-radius: 0.625rem;
+}
+
+// Section blocks
+.CharSetup__medSection {
+  margin-bottom: 0.75rem;
+}
+
+.CharSetup__medSectionHead {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(129, 199, 132, 0.80);
+  text-transform: uppercase;
+  font-family: var(--cs-font-mono);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.375rem;
+  border-bottom: 0.0625rem solid rgba(129, 199, 132, 0.10);
+}
+
+.CharSetup__medSectionHead--red {
+  color: rgba(229, 115, 115, 0.80);
+  border-bottom-color: rgba(229, 115, 115, 0.10);
+}
+
+.CharSetup__medSectionHead--blue {
+  color: rgba(121, 134, 203, 0.80);
+  border-bottom-color: rgba(121, 134, 203, 0.10);
+}
+
+// Pre-existing condition row
+.CharSetup__medConditionRow {
+  padding: 0.375rem 0.5rem;
+  border-radius: 0.1875rem;
+  cursor: pointer;
+  border: 0.0625rem solid transparent;
+  transition: all 120ms ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+.CharSetup__medConditionRow--active {
+  background: rgba(255, 193, 7, 0.05);
+  border-color: rgba(255, 193, 7, 0.15);
+}
+
+.CharSetup__medCondCheck {
+  width: 1.375rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.25);
+
+  .CharSetup__medConditionRow--active & {
+    color: rgba(255, 193, 7, 0.80);
+  }
+}
+
+.CharSetup__medCondDesc {
+  font-size: 0.875rem;
+  color: rgba(235, 235, 235, 0.55);
+  font-style: italic;
+}
+
+// "CONFIRMED" rubber stamp on conditions
+.CharSetup__medStamp {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  font-family: var(--cs-font-mono);
+  color: rgba(255, 193, 7, 0.75);
+  border: 0.0625rem solid rgba(255, 193, 7, 0.35);
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.125rem;
+  transform: rotate(-3deg);
+}
+
+// Trait list
+.CharSetup__medTraitList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+// Individual trait row
+.CharSetup__medTraitRow {
+  padding: 0.375rem 0.5rem;
+  border-radius: 0.1875rem;
+  cursor: pointer;
+  border-left: 0.125rem solid transparent;
+  transition: all 120ms ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-left-color: rgba(255, 255, 255, 0.10);
+  }
+}
+
+.CharSetup__medTraitRow--active {
+  background: rgba(129, 199, 132, 0.04);
+  border-left-color: rgba(129, 199, 132, 0.50);
+
+  &:hover {
+    background: rgba(129, 199, 132, 0.08);
+  }
+}
+
+.CharSetup__medTraitRow--conflict {
+  background: rgba(244, 67, 54, 0.04);
+  border-left-color: rgba(244, 67, 54, 0.30);
+
+  &:hover {
+    background: rgba(244, 67, 54, 0.06);
+  }
+}
+
+.CharSetup__medTraitCheck {
+  width: 1.375rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.18);
+  transition: color 120ms ease;
+}
+
+.CharSetup__medTraitCheck--on {
+  color: #81c784;
+  filter: drop-shadow(0 0 0.1875rem rgba(129, 199, 132, 0.40));
+}
+
+.CharSetup__medTraitCheck--conflict {
+  color: rgba(244, 67, 54, 0.60);
+}
+
+.CharSetup__medTraitName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(235, 235, 235, 0.85);
+}
+
+// "DOCUMENTED" inline stamp
+.CharSetup__medTraitStamp {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-family: var(--cs-font-mono);
+  color: rgba(129, 199, 132, 0.70);
+  border: 0.0625rem solid rgba(129, 199, 132, 0.30);
+  border-radius: 0.125rem;
+  vertical-align: middle;
+  transform: rotate(-2deg);
+}
+
+.CharSetup__medTraitDesc {
+  font-size: 0.9375rem;
+  color: rgba(235, 235, 235, 0.60);
+  line-height: 1.35;
+  margin-top: 0.0625rem;
+}
+
+.CharSetup__medTraitConflict {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  color: rgba(244, 67, 54, 0.75);
+  margin-top: 0.125rem;
+}
+
+// === ANTAGONIST DOSSIER styles ===
+
+.CharSetup__medBulkBtn {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  margin: 0 0.0625rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-family: var(--cs-font-mono);
+  color: rgba(235, 235, 235, 0.65);
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.125rem;
+  cursor: pointer;
+  transition: all 120ms ease;
+
+  &:hover {
+    background: rgba(229, 115, 115, 0.12);
+    color: rgba(229, 115, 115, 0.90);
+    border-color: rgba(229, 115, 115, 0.25);
+  }
+}
+
+.CharSetup__medAntagRow {
+  padding: 0.3125rem 0.5rem;
+  border-left: 0.125rem solid transparent;
+  transition: all 100ms ease;
+
+  &:nth-child(even) {
+    background: rgba(255, 255, 255, 0.015);
+  }
+}
+
+.CharSetup__medAntagRow--high {
+  border-left-color: rgba(229, 115, 115, 0.50);
+  background: rgba(229, 115, 115, 0.03);
+}
+
+.CharSetup__medAntagRow--low {
+  border-left-color: rgba(255, 183, 77, 0.40);
+  background: rgba(255, 183, 77, 0.02);
+}
+
+.CharSetup__medAntagName {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: rgba(235, 235, 235, 0.90);
+}
+
+.CharSetup__medAntagBanned {
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  letter-spacing: 0.06em;
+  color: rgba(244, 67, 54, 0.55);
+  padding: 0.125rem 0.375rem;
+  border: 0.0625rem solid rgba(244, 67, 54, 0.20);
+  border-radius: 0.125rem;
+}
+
+.CharSetup__medAntagPrio {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  margin: 0 0.0625rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  letter-spacing: 0.04em;
+  color: rgba(235, 235, 235, 0.45);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.125rem;
+  cursor: pointer;
+  transition: all 120ms ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(235, 235, 235, 0.70);
+  }
+}
+
+.CharSetup__medAntagPrio--active {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+// === UPLINK / COMMS styles ===
+
+.CharSetup__medCommsNote {
+  font-size: 0.875rem;
+  color: rgba(121, 134, 203, 0.75);
+  font-family: var(--cs-font-mono);
+  padding: 0.375rem 0.5rem;
+  margin-bottom: 0.5rem;
+  background: rgba(121, 134, 203, 0.04);
+  border: 0.0625rem solid rgba(121, 134, 203, 0.10);
+  border-radius: 0.1875rem;
+}
+
+.CharSetup__medCommsRow {
+  padding: 0.375rem 0.5rem;
+  margin-bottom: 0.125rem;
+  background: rgba(0, 0, 0, 0.15);
+  border: 0.0625rem solid rgba(121, 134, 203, 0.08);
+  border-radius: 0.1875rem;
+  transition: all 120ms ease;
+
+  &:hover {
+    border-color: rgba(121, 134, 203, 0.18);
+    background: rgba(121, 134, 203, 0.04);
+  }
+}
+
+.CharSetup__medCommsIndex {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  color: rgba(121, 134, 203, 0.65);
+  width: 1.5rem;
+  text-align: center;
+}
+
+.CharSetup__medCommsName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(235, 235, 235, 0.85);
+}
+
+.CharSetup__medCommsDesc {
+  font-size: 0.8125rem;
+  color: rgba(235, 235, 235, 0.55);
+}
+
+.CharSetup__medCommsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.8125rem;
+  color: rgba(121, 134, 203, 0.55);
+  background: rgba(121, 134, 203, 0.06);
+  border: 0.0625rem solid rgba(121, 134, 203, 0.15);
+  border-radius: 0.125rem;
+  cursor: pointer;
+  transition: all 100ms ease;
+  margin: 0 0.0625rem;
+
+  &:hover {
+    background: rgba(121, 134, 203, 0.15);
+    color: rgba(121, 134, 203, 0.90);
+  }
+}
+
+.CharSetup__medCommsBtn--danger {
+  color: rgba(244, 67, 54, 0.50);
+  background: rgba(244, 67, 54, 0.05);
+  border-color: rgba(244, 67, 54, 0.12);
+
+  &:hover {
+    background: rgba(244, 67, 54, 0.15);
+    color: rgba(244, 67, 54, 0.85);
+  }
+}
+
+.CharSetup__medCommsWarn {
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  color: rgba(244, 67, 54, 0.75);
+  padding: 0.5rem;
+  text-align: center;
+  border: 0.0625rem dashed rgba(244, 67, 54, 0.25);
+  border-radius: 0.1875rem;
+  background: rgba(244, 67, 54, 0.04);
+}
+
+/* =========================================================
+ * AUGMENTATION — Cyberpunk implant interface
+ * ========================================================= */
+
+// Main container
+.CharSetup__augPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.5rem;
+}
+
+// === TOP HUD BAR ===
+.CharSetup__augHud {
+  flex-shrink: 0;
+  padding: 0.625rem 0.75rem;
+  background: rgba(0, 0, 0, 0.20);
+  border: 0.0625rem solid rgba(255, 138, 101, 0.15);
+  border-radius: 0.375rem;
+}
+
+.CharSetup__augHudRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.375rem;
+}
+
+.CharSetup__augHudLabel {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255, 138, 101, 0.95);
+  text-transform: uppercase;
+  font-family: var(--cs-font-mono);
+}
+
+// Progress bar
+.CharSetup__augBarWrap {
+  position: relative;
+  flex: 1;
+  height: 1.25rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 0.0625rem solid rgba(255, 138, 101, 0.20);
+  border-radius: 0.125rem;
+  overflow: hidden;
+}
+
+.CharSetup__augBarFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 138, 101, 0.60), rgba(255, 138, 101, 0.35));
+  border-right: 0.125rem solid rgba(255, 138, 101, 0.80);
+  transition: width 200ms ease;
+}
+
+.CharSetup__augBarFill--over {
+  background: linear-gradient(90deg, rgba(244, 67, 54, 0.70), rgba(244, 67, 54, 0.45));
+  border-right-color: rgba(244, 67, 54, 0.90);
+}
+
+.CharSetup__augBarText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  color: rgba(255, 255, 255, 0.90);
+  letter-spacing: 0.05em;
+}
+
+// Stats row
+.CharSetup__augHudStats {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.60);
+  font-family: var(--cs-font-mono);
+  text-transform: uppercase;
+}
+
+.CharSetup__augLaceChip {
+  cursor: pointer;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.125rem;
+  background: rgba(255, 138, 101, 0.08);
+  border: 0.0625rem solid rgba(255, 138, 101, 0.15);
+  transition: background 120ms ease, border-color 120ms ease;
+
+  &:hover {
+    background: rgba(255, 138, 101, 0.15);
+    border-color: rgba(255, 138, 101, 0.30);
+  }
+}
+
+// === MAIN BODY: left selector + right detail ===
+.CharSetup__augBody {
+  flex: 1;
+  min-height: 0;
+}
+
+// LEFT — Organ selector panel
+.CharSetup__augSelector {
+  flex: 0 0 11.5rem;
+  overflow-y: auto;
+  padding-right: 0.375rem;
+  border-right: 0.0625rem solid rgba(255, 138, 101, 0.08);
+}
+
+.CharSetup__augGroupHeader {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  color: rgba(255, 138, 101, 0.85);
+  text-transform: uppercase;
+  font-family: var(--cs-font-mono);
+  padding: 0.3125rem 0.5rem 0.25rem;
+  margin-bottom: 0.0625rem;
+
+  border-bottom: 0.0625rem solid rgba(255, 138, 101, 0.08);
+}
+
+// Individual organ button
+.CharSetup__augOrganBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4375rem;
+  padding: 0.3125rem 0.4375rem;
+  border-radius: 0.1875rem;
+  cursor: pointer;
+  transition: background 100ms ease;
+  border-left: 0.125rem solid transparent;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.CharSetup__augOrganBtn--selected {
+  background: rgba(255, 138, 101, 0.08);
+  border-left-color: rgba(255, 138, 101, 0.70);
+
+  &:hover {
+    background: rgba(255, 138, 101, 0.12);
+  }
+}
+
+.CharSetup__augOrganIcon {
+  font-size: 0.875rem;
+  width: 1rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.CharSetup__augOrganInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.CharSetup__augOrganName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(235, 235, 235, 0.92);
+  line-height: 1.2;
+}
+
+.CharSetup__augOrganStatus {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-family: var(--cs-font-mono);
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+// Module count badge on organ
+.CharSetup__augModBadge {
+  flex-shrink: 0;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  color: rgba(255, 255, 255, 0.90);
+  background: rgba(255, 138, 101, 0.35);
+  border: 0.0625rem solid rgba(255, 138, 101, 0.50);
+  border-radius: 0.125rem;
+}
+
+// RIGHT — Detail panel
+.CharSetup__augDetail {
+  overflow-y: auto;
+  padding-left: 0.625rem;
+}
+
+// Detail header — organ name + status
+.CharSetup__augDetailHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  margin-bottom: 0.625rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 0.0625rem solid rgba(255, 138, 101, 0.12);
+  border-radius: 0.25rem;
+
+  // Glowing top edge
+}
+
+.CharSetup__augDetailIcon {
+  font-size: 1.5rem;
+}
+
+.CharSetup__augDetailTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: rgba(235, 235, 235, 0.95);
+  letter-spacing: 0.02em;
+}
+
+.CharSetup__augDetailStatus {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-family: var(--cs-font-mono);
+  text-transform: uppercase;
+}
+
+// Section block within detail
+.CharSetup__augSection {
+  margin-bottom: 0.75rem;
+}
+
+.CharSetup__augSectionLabel {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255, 138, 101, 0.80);
+  text-transform: uppercase;
+  font-family: var(--cs-font-mono);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.375rem;
+  border-bottom: 0.0625rem solid rgba(255, 138, 101, 0.08);
+}
+
+// Status chips (Organic / Amputated / Assisted / Synthetic)
+.CharSetup__augChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3125rem 0.625rem;
+  margin: 0.125rem;
+  border-radius: 0.1875rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: rgba(235, 235, 235, 0.70);
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  transition: all 120ms ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(235, 235, 235, 0.80);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.CharSetup__augChip--active {
+  color: #6ec87a;
+  background: rgba(110, 200, 122, 0.10);
+  border-color: rgba(110, 200, 122, 0.30);
+}
+
+.CharSetup__augChip--danger {
+  color: #f44336;
+  background: rgba(244, 67, 54, 0.10);
+  border-color: rgba(244, 67, 54, 0.30);
+}
+
+.CharSetup__augChip--teal {
+  color: #26c6da;
+  background: rgba(38, 198, 218, 0.10);
+  border-color: rgba(38, 198, 218, 0.30);
+}
+
+.CharSetup__augChip--cyber {
+  color: #4dc9f6;
+  background: rgba(77, 201, 246, 0.10);
+  border-color: rgba(77, 201, 246, 0.30);
+}
+
+// Brand grid
+.CharSetup__augBrandGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.CharSetup__augBrandCard {
+  flex: 0 0 calc(50% - 0.1875rem);
+  padding: 0.375rem 0.5rem;
+  background: rgba(0, 0, 0, 0.20);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.1875rem;
+  cursor: pointer;
+  transition: all 120ms ease;
+
+  &:hover {
+    background: rgba(77, 201, 246, 0.06);
+    border-color: rgba(77, 201, 246, 0.18);
+  }
+}
+
+.CharSetup__augBrandCard--selected {
+  background: rgba(77, 201, 246, 0.10);
+  border-color: rgba(77, 201, 246, 0.35);
+}
+
+.CharSetup__augBrandName {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: rgba(235, 235, 235, 0.92);
+  letter-spacing: 0.02em;
+}
+
+.CharSetup__augBrandDesc {
+  font-size: 0.8125rem;
+  color: rgba(235, 235, 235, 0.65);
+  line-height: 1.35;
+  margin-top: 0.125rem;
+}
+
+// === MODULE CARDS ===
+.CharSetup__augModCard {
+  padding: 0.5rem 0.625rem;
+  margin-bottom: 0.25rem;
+  background: rgba(0, 0, 0, 0.18);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.05);
+  border-left: 0.1875rem solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.1875rem;
+  cursor: pointer;
+  transition: all 120ms ease;
+
+  &:hover {
+    background: rgba(255, 138, 101, 0.05);
+    border-left-color: rgba(255, 138, 101, 0.30);
+  }
+}
+
+.CharSetup__augModCard--installed {
+  background: rgba(110, 200, 122, 0.06);
+  border-left-color: rgba(110, 200, 122, 0.60);
+
+  &:hover {
+    background: rgba(110, 200, 122, 0.10);
+    border-left-color: rgba(110, 200, 122, 0.80);
+  }
+}
+
+.CharSetup__augModToggle {
+  font-size: 1.125rem;
+  width: 1.375rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.20);
+  transition: color 120ms ease;
+}
+
+.CharSetup__augModToggle--on {
+  color: #6ec87a;
+  filter: drop-shadow(0 0 0.25rem rgba(110, 200, 122, 0.40));
+}
+
+.CharSetup__augModName {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: rgba(235, 235, 235, 0.95);
+  letter-spacing: 0.01em;
+}
+
+.CharSetup__augModType {
+  display: inline-block;
+  margin-left: 0.375rem;
+  padding: 0.0625rem 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-family: var(--cs-font-mono);
+  color: rgba(77, 201, 246, 0.85);
+  background: rgba(77, 201, 246, 0.12);
+  border: 0.0625rem solid rgba(77, 201, 246, 0.25);
+  border-radius: 0.125rem;
+  vertical-align: middle;
+}
+
+.CharSetup__augModDesc {
+  font-size: 0.9375rem;
+  color: rgba(235, 235, 235, 0.68);
+  line-height: 1.4;
+  margin-top: 0.1875rem;
+}
+
+.CharSetup__augModRoles {
+  font-size: 0.8125rem;
+  color: rgba(255, 193, 7, 0.80);
+  font-family: var(--cs-font-mono);
+  margin-top: 0.1875rem;
+}
+
+.CharSetup__augModCost {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-family: var(--cs-font-mono);
+  color: rgba(255, 138, 101, 0.92);
+  text-align: right;
+  letter-spacing: 0.04em;
+}
+
+.CharSetup__augModCpu {
+  font-size: 0.8125rem;
+  font-family: var(--cs-font-mono);
+  color: rgba(77, 201, 246, 0.80);
+  text-align: right;
+  margin-top: 0.125rem;
+}
+
+// Pulsing animation for over-budget bar
+@keyframes augBarPulse {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
+}
+
+/* =========================================================
+ * CAREER — Department boxes and job rows
+ * ========================================================= */
+
+.CharSetup__deptBox {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0.25rem;
+}
+
+.CharSetup__deptHeader {
+  padding: 0.375rem 0.625rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.CharSetup__jobRow {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  gap: 0.5rem;
+
+  &:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  &--head {
+    background-color: var(--dept-color-bg) !important;
+  }
+}
+
+.CharSetup__jobName {
+  flex: 1 1 0;
+  min-width: 0;
+
+  /* Let the inline dropdown fill naturally */
+  .Dropdown {
+    display: block;
+  }
+
+  .Dropdown__control {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+.CharSetup__jobList {
+  column-count: 2;
+  column-gap: 0.5rem;
+
+  .CharSetup__deptBox {
+    break-inside: avoid;
+  }
+}
+
+.CharSetup__jobPriority {
+  flex-shrink: 0;
+
+  .CharSetup__btn {
+    width: 4.5rem;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* =========================================================
+ * SCROLLBAR — dark sci-fi themed (IE/BYOND scrollbar props)
+ * ========================================================= */
+
+.CharSetup,
+.CharSetup * {
+  scrollbar-base-color: #111113;
+  scrollbar-face-color: #3a3a42;
+  scrollbar-3dlight-color: #252528;
+  scrollbar-highlight-color: #3a3a42;
+  scrollbar-track-color: #0c0c0e;
+  scrollbar-arrow-color: #7a8090;
+  scrollbar-shadow-color: #0a0a0c;
+
+  &::-webkit-scrollbar {
+    width: 0.375rem;
+    height: 0.375rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(8, 8, 10, 0.60);
+    border-radius: 0.25rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(80, 80, 95, 0.55);
+    border-radius: 0.25rem;
+
+    &:hover {
+      background: rgba(100, 100, 120, 0.70);
+    }
+
+    &:active {
+      background: rgba(130, 145, 168, 0.75);
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+// Augmentation panel uses orange-accented scrollbar
+.CharSetup__augSelector,
+.CharSetup__augDetail {
+  scrollbar-base-color: #0c0e10;
+  scrollbar-face-color: #3a2820;
+  scrollbar-3dlight-color: #2a1c14;
+  scrollbar-highlight-color: #4a3428;
+  scrollbar-track-color: #080808;
+  scrollbar-arrow-color: #c07040;
+  scrollbar-shadow-color: #060606;
+
+  &::-webkit-scrollbar-track {
+    background: rgba(8, 5, 3, 0.65);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(100, 55, 25, 0.55);
+
+    &:hover {
+      background: rgba(192, 112, 64, 0.70);
+    }
+
+    &:active {
+      background: rgba(220, 140, 90, 0.80);
+    }
+  }
+}
+
+/* =========================================================
+ * SearchDropdown — combined search input + dropdown
+ * ========================================================= */
+
+.SearchDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.SearchDropdown__inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.25rem;
+  height: 1.5rem;
+  overflow: hidden;
+}
+
+.SearchDropdown__input {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 0 1.5rem 0 0.375rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #dde4f0;
+  font-family: Verdana, sans-serif;
+  font-size: 0.75rem;
+
+  &::placeholder {
+    color: #dde4f0;
+    opacity: 1;
+  }
+
+  &:focus::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    opacity: 1;
+  }
+}
+
+.SearchDropdown__chevron {
+  position: absolute;
+  right: 0.375rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.625rem;
+  pointer-events: none;
+}
+
+.SearchDropdown__list {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  top: 100%;
+  max-height: 12rem;
+  overflow-y: auto;
+  background: #1a1c22;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.SearchDropdown__option {
+  padding: 0.2rem 0.375rem;
+  font-family: Verdana, sans-serif;
+  font-size: 0.75rem;
+  color: #dde4f0;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &--selected {
+    background: #2a3a5a;
+    color: #e8f0ff;
+  }
+}
+
+/* =========================================================
+ * Languages compact — row-based list for ID card back
+ * ========================================================= */
+
+.CharSetup__langRow {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 0.25rem;
+  padding: 0.125rem 0;
+}
+
+.CharSetup__langIcon {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.45);
+  width: 0.875rem;
+  text-align: center;
+  flex-shrink: 0;
+
+  &--native {
+    color: #6dba5e;
+  }
+
+  &--alt {
+    color: #5b9bd5;
+  }
+}
+
+.CharSetup__langName {
+  flex: 1;
+  font-size: 1rem;
+  color: #dde4f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.CharSetup__langTag {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.0625rem 0.3rem;
+  border-radius: 0.1875rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.45);
+  flex-shrink: 0;
+
+  &--native {
+    background: rgba(109, 186, 94, 0.15);
+    color: #6dba5e;
+  }
+}

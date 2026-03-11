@@ -3,7 +3,7 @@ SUBSYSTEM_DEF(radio)
 	flags = SS_NO_FIRE|SS_NO_INIT
 
 	/// Associative list of text -> datum, where text is a frequency string, datum is a `/datum/frequency`.
-	var/list/frequencies = list()
+	var/alist/frequencies = list()
 
 /datum/controller/subsystem/radio/stat_entry()
 	..("F:[length(frequencies)]")
@@ -27,11 +27,11 @@ SUBSYSTEM_DEF(radio)
  */
 /datum/controller/subsystem/radio/proc/add_object(obj/device, new_frequency, filter)
 	var/f_text = num2text(new_frequency)
-	var/datum/frequency/frequency = frequencies[f_text]
+	var/datum/frequency/frequency = A_LAZYACCESS(frequencies, f_text)
 
 	if(!frequency)
 		frequency = new(new_frequency)
-		LAZYSET(frequencies, f_text, frequency)
+		A_LAZYSET(frequencies, f_text, frequency)
 
 	frequency.add_listener(device, filter)
 	return frequency
@@ -50,13 +50,13 @@ SUBSYSTEM_DEF(radio)
  */
 /datum/controller/subsystem/radio/proc/remove_object(obj/device, old_frequency)
 	var/f_text = num2text(old_frequency)
-	var/datum/frequency/frequency = frequencies[f_text]
+	var/datum/frequency/frequency = A_LAZYACCESS(frequencies, f_text)
 
 	if(frequency)
 		frequency.remove_listener(device)
 
 		if(!length(frequency.filters))
-			LAZYREMOVE(frequencies, f_text)
+			A_LAZYREMOVE(frequencies, f_text)
 			qdel(frequency)
 
 /**
@@ -73,10 +73,10 @@ SUBSYSTEM_DEF(radio)
  */
 /datum/controller/subsystem/radio/proc/return_frequency(new_frequency)
 	var/f_text = num2text(new_frequency)
-	var/datum/frequency/frequency = frequencies[f_text]
+	var/datum/frequency/frequency = A_LAZYACCESS(frequencies, f_text)
 
 	if(!frequency)
 		frequency = new(new_frequency)
-		LAZYSET(frequencies, f_text, frequency)
+		A_LAZYSET(frequencies, f_text, frequency)
 
 	return frequency

@@ -30,7 +30,8 @@
       "env": {
         "MODE": "dev",
         "ONYXBAY__GENERAL__SERVER_ID": "test"
-      }
+      },
+      "dreamDaemon": true,
     },
     {
       "type": "byond",

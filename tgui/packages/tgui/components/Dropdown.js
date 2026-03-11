@@ -14,125 +14,101 @@ export class Dropdown extends Component {
     super(props);
     this.state = {
       selected: props.selected,
-      open: false,
-    };
-    this.handleClick = () => {
-      if (this.state.open) {
-        this.setOpen(false);
-      }
     };
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("click", this.handleClick);
-  }
-
-  setOpen(open) {
-    this.setState({ open: open });
-    if (open) {
-      setTimeout(() => window.addEventListener("click", this.handleClick));
-      this.menuRef.focus();
-    } else {
-      window.removeEventListener("click", this.handleClick);
+  componentDidUpdate(prevProps) {
+    if (prevProps.selected !== this.props.selected) {
+      this.setState({ selected: this.props.selected });
     }
   }
 
-  setSelected(selected) {
-    this.setState({
-      selected: selected,
-    });
-    this.setOpen(false);
-    this.props.onSelected(selected);
-  }
-
-  buildMenu() {
-    const { options = [] } = this.props;
-    const ops = options.map((option) => (
-      <Box
-        key={option}
-        className="Dropdown__menuentry"
-        onClick={() => {
-          this.setSelected(option);
-        }}
-      >
-        {option}
-      </Box>
-    ));
-    return ops.length ? ops : "No Options Found";
-  }
-
   render() {
-    const { props } = this;
     const {
       icon,
       iconRotation,
       iconSpin,
       color = "default",
+      // over / noscroll retained for API compat — unused (native select handles direction/scroll)
       over,
       noscroll,
       nochevron,
       width,
       onClick,
-      selected,
+      selected: _selected,
       disabled,
       displayText,
+      fluid,
+      options = [],
+      onSelected,
       ...boxProps
-    } = props;
+    } = this.props;
     const { className, ...rest } = boxProps;
 
-    const adjustedOpen = over ? !this.state.open : this.state.open;
-
-    const menu = this.state.open ? (
-      <div
-        ref={(menu) => {
-          this.menuRef = menu;
-        }}
-        tabIndex="-1"
-        style={{
-          width: width,
-        }}
-        className={classes([
-          (noscroll && "Dropdown__menu-noscroll") || "Dropdown__menu",
-          over && "Dropdown__over",
-        ])}
-      >
-        {this.buildMenu()}
-      </div>
-    ) : null;
+    const currentSelected = this.state.selected || "";
+    // "Action" dropdown: displayText is a placeholder (not a real selection).
+    // After picking, the visible face reverts to displayText.
+    const isAction =
+      displayText !== undefined && !options.includes(currentSelected);
+    // "Reselectable" mode: native select always sits at a sentinel value so
+    // clicking the already-selected item still fires onChange.
+    const { reselectable } = this.props;
+    const usesSentinel = isAction || reselectable;
 
     return (
-      <div className="Dropdown">
-        <Box
-          width={width}
+      <Box
+        className={classes(["Dropdown", className])}
+        width={fluid ? "100%" : width}
+        {...rest}
+      >
+        {/* Styled visible face — pointer-events:none so clicks reach the native select */}
+        <div
           className={classes([
             "Dropdown__control",
             "Button",
             "Button--color--" + color,
             disabled && "Button--disabled",
-            className,
+            fluid && "Button--fluid",
           ])}
-          {...rest}
-          onClick={() => {
-            if (disabled && !this.state.open) {
-              return;
-            }
-            this.setOpen(!this.state.open);
-          }}
         >
           {icon && (
             <Icon name={icon} rotation={iconRotation} spin={iconSpin} mr={1} />
           )}
           <span className="Dropdown__selected-text">
-            {displayText || this.state.selected}
+            {displayText || currentSelected}
           </span>
-          {!!nochevron || (
+          {!nochevron && (
             <span className="Dropdown__arrow-button">
-              <Icon name={adjustedOpen ? "chevron-up" : "chevron-down"} />
+              <Icon name="chevron-down" />
             </span>
           )}
-        </Box>
-        {menu}
-      </div>
+        </div>
+        {/*
+          Invisible native select covers the entire control area.
+          The browser renders its own dropdown — no JS positioning, no clipping issues,
+          no scroll hacks. Works correctly in BYOND's embedded browser.
+        */}
+        <select
+          className="Dropdown__native"
+          disabled={!!disabled}
+          value={usesSentinel ? "" : currentSelected}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (!val) return;
+            if (!isAction) {
+              this.setState({ selected: val });
+            }
+            onSelected && onSelected(val);
+          }}
+        >
+          {usesSentinel && <option value="" disabled hidden />}
+          {options.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+      </Box>
     );
   }
 }

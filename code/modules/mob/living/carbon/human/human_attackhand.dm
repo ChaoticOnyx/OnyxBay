@@ -17,6 +17,8 @@
 
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
+		if(!H.is_hand_usable())
+			return
 		// Try to extract HUD matrix from target with empty hand
 		if(H.zone_sel && H.zone_sel.selecting == BP_EYES && H.a_intent == I_HELP && !H.get_active_hand())
 			var/obj/item/organ/internal/eyes/eyes = src.internal_organs_by_name[BP_EYES]
@@ -27,14 +29,6 @@
 					if(HM.try_extract_matrix(H, src))
 						return
 					break
-
-		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
-		if(H.hand)
-			temp = H.organs_by_name[BP_L_HAND]
-		if(!temp || !temp.is_usable())
-			to_chat(H, "<span class='warning'>You can't use your hand.</span>")
-			return
-
 	..()
 
 	// Should this all be in Touch()?
@@ -208,6 +202,7 @@
 										H.visible_message(SPAN("danger", "[H] shoves \his hand into [src]'s chest!"))
 										custom_pain("You can feel a hand ripping your inwards!", 50, affecting = O)
 										H.next_move = world.time + 40 //also should prevent user from triggering this repeatedly
+										var/was_rightclicked = H.rightclicked
 										if(!do_after(H, 40))
 											return 0
 										if(!(G && G.affecting == src)) //check that we still have a grab
@@ -215,8 +210,12 @@
 
 										for(var/obj/item/organ/internal/heart/I in internal_organs)
 											if(I && istype(I))
-												if(!H.put_in_active_hand(I))
-													return 0
+												if(!was_rightclicked)
+													if(!H.put_in_active_hand(I))
+														return 0
+												else
+													if(!H.put_in_inactive_hand(I))
+														return 0
 												I.cut_away(src)
 												O.implants -= I
 												H.visible_message(SPAN("danger", "[H] rips [src]'s [I.name] out!"))
@@ -329,13 +328,14 @@
 		if(handle_block_normal(user, damage))
 			return 0
 
-	var/dam_zone = pick(organs_by_name)
-	var/obj/item/organ/external/affecting = get_organ(ran_zone(dam_zone))
+	var/obj/item/organ/external/affecting = pick(organs)
+	affecting = get_organ(ran_zone(affecting.organ_tag))
+
 	var/armor_block = run_armor_check(affecting, armorcheck)
 	visible_message(SPAN("danger", "[user] has [attack_message] [src]!"))
 	admin_attack_log(user, src, "Attacked their victim", "Was attacked", "has [attack_message]")
 	apply_damage(damage, damtype, affecting, armor_block)
-	updatehealth()
+	update_health()
 	return 1
 
 //Breaks all grips and pulls that the mob currently has.

@@ -104,7 +104,7 @@
 
 		for(var/limb_type in my_mob.species.has_limbs)
 			var/obj/item/organ/external/E = my_mob.organs_by_name[limb_type]
-			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable()) // Skips heads and vital bits...
+			if(E && E.organ_tag != BP_HEAD && !E.vital && !BP_IS_ROBOTIC(E) && !E.is_usable())
 				E.removed() // ...because no one wants their head to explode to make way for a new one.
 				qdel(E)
 				E = null

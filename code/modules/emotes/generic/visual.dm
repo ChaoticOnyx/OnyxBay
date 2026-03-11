@@ -89,11 +89,11 @@
 #define SHIVER_LOOP_DURATION (1 SECONDS)
 /datum/emote/shiver/do_emote(mob/user, emote_key, intentional, target, additional_params)
 	. = ..()
-	animate(user, pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
+	animate(user, pixel_x = 1, time = 0.1 SECONDS, tag = MOB_ANIM_SHIVER, flags = ANIMATION_RELATIVE)
 	for(var/i in 1 to SHIVER_LOOP_DURATION / (0.2 SECONDS))
-		animate(pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
-		animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
-	animate(pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
+		animate(pixel_x = -1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
+		animate(pixel_x = 1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(pixel_x = -1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 #undef SHIVER_LOOP_DURATION
 
 /datum/emote/drool
@@ -191,11 +191,11 @@
 
 /datum/emote/twitch/do_emote(mob/user, emote_key, intentional, target, additional_params)
 	. = ..()
-	animate(user, pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
-	animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
-	animate(time = 0.1 SECONDS)
-	animate(pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
-	animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
+	animate(user, pixel_x = -1, time = 0.1 SECONDS, tag = MOB_ANIM_TWITCH, flags = ANIMATION_RELATIVE)
+	animate(pixel_x = 1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(pixel_x = -1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(pixel_x = 1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 
 /datum/emote/twitch_violently
 	key = "twitch_v"
@@ -216,8 +216,8 @@
 
 /datum/emote/twitch_violently/do_emote(mob/user, emote_key, intentional, target, additional_params)
 	. = ..()
-	animate(user, pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
-	animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
+	animate(user, pixel_x = -1, time = 0.1 SECONDS, tag = MOB_ANIM_TWITCH_V, flags = ANIMATION_RELATIVE)
+	animate(pixel_x = 1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 
 /datum/emote/tremble
 	key = "tremble"
@@ -239,11 +239,11 @@
 #define TREMBLE_LOOP_DURATION (4.4 SECONDS)
 /datum/emote/tremble/do_emote(mob/user, emote_key, intentional, target, additional_params)
 	. = ..()
-	animate(user, pixel_x = user.pixel_x + 2, time = 0.2 SECONDS)
+	animate(user, pixel_x = 2, time = 0.2 SECONDS, tag = MOB_ANIM_TREMBLE, flags = ANIMATION_RELATIVE)
 	for(var/i in 1 to TREMBLE_LOOP_DURATION / (0.4 SECONDS))
-		animate(pixel_x = user.pixel_x - 2, time = 0.2 SECONDS)
-		animate(pixel_x = user.pixel_x + 2, time = 0.2 SECONDS)
-	animate(pixel_x = user.pixel_x - 2, time = 0.2 SECONDS)
+		animate(pixel_x = -2, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)
+		animate(pixel_x = 2, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(pixel_x = -2, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)
 #undef TREMBLE_LOOP_DURATION
 
 /datum/emote/collapse
@@ -602,11 +602,11 @@
 
 /datum/emote/sway/do_emote(mob/user, emote_key, intentional, target, additional_params)
 	. = ..()
-	animate(user, pixel_x = user.pixel_x + 2, time = 0.5 SECONDS)
+	animate(user, pixel_x = 2, time = 0.5 SECONDS, tag = MOB_ANIM_SWAY, flags = ANIMATION_RELATIVE)
 	for(var/i in 1 to 2)
-		animate(pixel_x = user.pixel_x - 4, time = 1.0 SECONDS)
-		animate(pixel_x = user.pixel_x + 4, time = 1.0 SECONDS)
-	animate(pixel_x = user.pixel_x - 2, time = 0.5 SECONDS)
+		animate(pixel_x = -4, time = 1.0 SECONDS, flags = ANIMATION_RELATIVE)
+		animate(pixel_x = 4, time = 1.0 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(pixel_x = -2, time = 0.5 SECONDS, flags = ANIMATION_RELATIVE)
 
 /datum/emote/sulk
 	key = "sulk"

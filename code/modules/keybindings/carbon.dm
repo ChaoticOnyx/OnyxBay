@@ -66,6 +66,18 @@
 	C.swap_hand()
 	return TRUE
 
+/datum/keybinding/carbon/toggle_twohanded_mode
+	hotkey_keys = list("ShiftX")
+	name = "toggle_twohanded_mode"
+	full_name = "Toggle Two-Handed Mode"
+	description = "Choose whether your RMB clicks things with offhand or acts normally."
+
+/datum/keybinding/carbon/toggle_twohanded_mode/down(client/user)
+	var/mob/living/carbon/human/H = user.mob // Human-only for now. Should save us from resetting everyone's custom hotkey once we add carbon-subtype necromorphs and other stuff.
+	if(istype(H))
+		H.toggle_twohanded_mode()
+	return TRUE
+
 
 /datum/keybinding/carbon/holster
 	hotkey_keys = list("H")

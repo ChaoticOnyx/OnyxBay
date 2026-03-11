@@ -12,7 +12,7 @@
 
 #define isAI(A) istype(A, /mob/living/silicon/ai)
 
-#define isalien(A) istype(A, /mob/living/carbon/alien)
+#define islarva(A) istype(A, /mob/living/carbon/larva)
 
 #define isanimal(A) istype(A, /mob/living/simple_animal)
 
@@ -76,7 +76,7 @@
 
 #define ismetroid(A) istype(A, /mob/living/carbon/metroid)
 
-#define islarva(A) istype(A, /mob/living/carbon/alien/larva)
+#define ischestburster(A) istype(A, /mob/living/carbon/larva/xenomorph)
 
 #define isunderwear(A) istype(A, /obj/item/underwear)
 
@@ -197,6 +197,17 @@
 #define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += list(V);
 // Removes value V and key K from associative list L
 #define LAZYREMOVEASSOC(L, K, V) if(L) { if(L[K]) { L[K] -= V; if(!length(L[K])) L -= K; } if(!length(L)) L = null; }
+
+// Ditto but for alists.
+#define A_LAZYINITLIST(AL) if (!AL) { AL = alist(); }
+#define A_LAZYACCESS(L, I) (L ? L[I] : null)
+#define A_UNSETEMPTY(AL) if(!length(AL)) { AL = null; }
+#define A_LAZYREMOVE(AL, I) if(AL) { AL -= I; A_UNSETEMPTY(AL) }
+#define A_LAZYSET(AL, A, I) if(!AL) { AL = alist(); } AL[A] = I;
+#define A_LAZYCLEARLIST(AL) if(AL) { AL.Cut(); AL = null; }
+#define A_LAZYLEN(AL) length(AL)
+#define A_LAZYADDASSOC(L, K, V) if(!L) { L = alist(); } L[K] += list(V);
+#define A_LAZYREMOVEASSOC(L, K, V) if(L) { if(L[K]) { L[K] -= V; if(!length(L[K])) L -= K; } if(!length(L)) L = null; }
 
 // Insert an object A into a sorted list using cmp_proc (/code/_helpers/cmp.dm) for comparison.
 #define ADD_SORTED(list, A, cmp_proc) if(!list.len) {list.Add(A)} else {list.Insert(FindElementIndex(A, list, cmp_proc), A)}

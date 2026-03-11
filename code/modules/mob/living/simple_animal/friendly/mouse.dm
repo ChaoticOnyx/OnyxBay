@@ -161,7 +161,7 @@
 		var/mob/M = AM
 		to_chat(M, SPAN("warning", "\icon[src] Squeek!"))
 		playsound(loc, 'sound/effects/mousesqueek.ogg', 40)
-		resting = 0
+		set_resting(FALSE)
 		icon_state = "mouse_[body_color]"
 		if(prob(50))
 			UnarmedAttack(M)

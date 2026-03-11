@@ -35,7 +35,7 @@
 /obj/item/implantcase/attackby(obj/item/I, mob/user)
 	if (istype(I, /obj/item/pen))
 		var/t = input(user, "What would you like the label to be?", src.name, null)
-		if (user.get_active_hand() != I)
+		if(!user.has_in_hands(I))
 			return
 		if((!in_range(src, usr) && loc != user))
 			return

@@ -81,7 +81,7 @@ There are several things that need to be remembered:
 
 >	There are also these special cases:
 		update_mutations()	//handles updating your appearance for certain mutations.  e.g TK head-glows
-		UpdateDamageIcon()	//handles damage overlays for brute/burn damage //(will rename this when I geta round to it)
+		update_damage_overlays()	//handles damage overlays for brute/burn damage
 		update_body()	//Handles updating your mob's icon to reflect their gender/race/complexion etc
 		update_hair()	//Handles updating your hair overlay (used to be update_face, but mouth and
 																			...eyes were merged into update_body)
@@ -171,12 +171,13 @@ Please contact me on #coderbus IRC. ~Carn x
 	SetOverlays(overlays_to_apply)
 
 	update_transform()
+	update_floating()
 
 var/global/list/damage_icon_parts = list()
 
 //DAMAGE OVERLAYS
 //constructs damage icon for each organ from mask * damage field and saves it in our overlays_ lists
-/mob/living/carbon/human/UpdateDamageIcon(update_icons = 1)
+/mob/living/carbon/human/update_damage_overlays(update_icons = 1)
 	// first check whether something actually changed about damage appearance
 	var/damage_appearance = ""
 
@@ -425,7 +426,7 @@ var/global/list/damage_icon_parts = list()
 	update_inv_pockets(0)
 	update_fire(0)
 	update_surgery(0)
-	UpdateDamageIcon()
+	update_damage_overlays()
 	queue_icon_update()
 	//Hud Stuff
 	update_hud()
@@ -520,11 +521,12 @@ var/global/list/damage_icon_parts = list()
 
 // Suit Storage
 /mob/living/carbon/human/update_inv_s_store(update_icons=1)
-	if(s_store && !((wear_suit && wear_suit.flags_inv & HIDESUITSTORAGE)))
+	if(s_store && !((wear_suit && wear_suit.flags_inv & HIDESUITSTORAGE) || (back && back.flags_inv & HIDERIG)))
 		overlays_standing[HO_SUIT_STORE_LAYER] = s_store.get_mob_overlay(src, slot_s_store_str)
 	else
 		overlays_standing[HO_SUIT_STORE_LAYER] = null
 
+	update_inv_back(FALSE)
 	if(update_icons) queue_icon_update()
 
 // Head
@@ -581,7 +583,8 @@ var/global/list/damage_icon_parts = list()
 
 // Back
 /mob/living/carbon/human/update_inv_back(update_icons=1)
-	if(back)
+	var/hideback = (s_store && (s_store.flags_inv & HIDERIG)) && istype(back, /obj/item/rig)
+	if(back && !hideback)
 		overlays_standing[HO_BACK_LAYER] = back.get_mob_overlay(src,slot_back_str)
 	else
 		overlays_standing[HO_BACK_LAYER] = null
@@ -767,8 +770,16 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/update_fire(update_icons=1)
 	overlays_standing[HO_FIRE_LAYER] = null
 	if(on_fire)
-		var/image/standing = overlay_image('icons/mob/onfire.dmi', "Standing", RESET_COLOR)
-		overlays_standing[HO_FIRE_LAYER] = standing
+		switch(get_fire_level())
+			if(3)
+				var/image/standing = overlay_image('icons/mob/onfire.dmi', "burning3", RESET_COLOR)
+				overlays_standing[HO_FIRE_LAYER] = standing
+			if(2)
+				var/image/standing = overlay_image('icons/mob/onfire.dmi', "burning2", RESET_COLOR)
+				overlays_standing[HO_FIRE_LAYER] = standing
+			if(1)
+				var/image/standing = overlay_image('icons/mob/onfire.dmi', "burning1", RESET_COLOR)
+				overlays_standing[HO_FIRE_LAYER] = standing
 
 	if(update_icons) queue_icon_update()
 

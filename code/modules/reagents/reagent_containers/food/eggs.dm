@@ -91,7 +91,7 @@
 	qdel(src)
 	return
 
-/obj/item/reagent_containers/food/egg/throw_impact(atom/hit_atom)
+/obj/item/reagent_containers/food/egg/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
 	if(QDELETED(src))
 		return // Could be happened hitby()

@@ -72,7 +72,7 @@
 		)
 	breathing_sound = 'sound/voice/lizard.ogg'
 
-	xenomorph_type = /mob/living/carbon/alien/larva/primal
+	xenomorph_type = /mob/living/carbon/larva/xenomorph/primal
 
 //	prone_overlay_offset = list(-4, -4)
 
@@ -110,10 +110,7 @@
 	if(H.nutrition <= 100)
 		return
 
-	for(var/bpart in shuffle(H.internal_organs_by_name - BP_BRAIN))
-
-		var/obj/item/organ/internal/regen_organ = H.internal_organs_by_name[bpart]
-
+	for(var/obj/item/organ/internal/regen_organ in shuffle(H.internal_organs - BP_BRAIN))
 		if(BP_IS_ROBOTIC(regen_organ))
 			continue
 		if(istype(regen_organ))

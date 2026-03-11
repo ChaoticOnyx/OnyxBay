@@ -41,6 +41,7 @@ export const serializeMessage = (message) => ({
   html: message.html,
   times: message.times,
   createdAt: message.createdAt,
+  gender: message.gender,
 });
 
 export const isSameMessage = (a, b) =>

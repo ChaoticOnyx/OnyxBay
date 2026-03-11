@@ -56,8 +56,6 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	stat.prefix-color = #000000;
 	stat.suffix-color = #000000;
 
-	hotkey_toggle.background-color = none;
-	hotkey_toggle.text-color = #000000;
 	saybutton.background-color = none;
 	saybutton.text-color = #000000;
 	asset_cache_browser.background-color = none;
@@ -65,8 +63,6 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	input.background-color = none;
 	input.text-color = #000000;
 
-	hotkey_toggle_alt.background-color = none;
-	hotkey_toggle_alt.text-color = #000000;
 	saybutton_alt.background-color = none;
 	saybutton_alt.text-color = #000000;
 	input_alt.background-color = none;
@@ -119,15 +115,11 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	saybutton.text-color = [COLOR_DARKMODE_TEXT];
 	asset_cache_browser.background-color = [COLOR_DARKMODE_BACKGROUND];
 	asset_cache_browser.text-color = [COLOR_DARKMODE_TEXT];
-	hotkey_toggle.background-color = #494949;
-	hotkey_toggle.text-color = [COLOR_DARKMODE_TEXT];
 	input.background-color = [COLOR_DARKMODE_BACKGROUND];
 	input.text-color = [COLOR_DARKMODE_TEXT];
 
 	saybutton_alt.background-color = #494949;
 	saybutton_alt.text-color = [COLOR_DARKMODE_TEXT];
-	hotkey_toggle_alt.background-color = #494949;
-	hotkey_toggle_alt.text-color = [COLOR_DARKMODE_TEXT];
 	input_alt.background-color = [COLOR_DARKMODE_BACKGROUND];
 	input_alt.text-color = [COLOR_DARKMODE_TEXT];
 	"})
@@ -178,15 +170,11 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	saybutton.text-color = [COLOR_MARINEMODE_TEXT];
 	asset_cache_browser.background-color = [COLOR_MARINEMODE_GRAYBUTTON];
 	asset_cache_browser.text-color = [COLOR_MARINEMODE_TEXT];
-	hotkey_toggle.background-color = [COLOR_MARINEMODE_GRAYBUTTON];
-	hotkey_toggle.text-color = [COLOR_MARINEMODE_TEXT];
 	input.background-color = [COLOR_MARINEMODE_BACKGROUND];
 	input.text-color = [COLOR_MARINEMODE_TEXT];
 
 	saybutton_alt.background-color = [COLOR_MARINEMODE_GRAYBUTTON];
 	saybutton_alt.text-color = [COLOR_MARINEMODE_TEXT];
-	hotkey_toggle_alt.background-color = [COLOR_MARINEMODE_GRAYBUTTON];
-	hotkey_toggle_alt.text-color = [COLOR_MARINEMODE_TEXT];
 	input_alt.background-color = [COLOR_MARINEMODE_BACKGROUND];
 	input_alt.text-color = [COLOR_MARINEMODE_TEXT];
 	"})

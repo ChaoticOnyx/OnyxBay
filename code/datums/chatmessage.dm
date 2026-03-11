@@ -148,7 +148,19 @@
 	// Approximate text height
 	var/static/regex/html_metachars = new(@"&[A-Za-z]{1,7};", "g")
 	var/complete_text = MAPTEXT("<span class='center[size ? " [size]" : ""]' style='color: [tgt_color]'>[text]</span>")
-	var/mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, CHAT_MESSAGE_WIDTH))
+
+	// The weirdest things happen when we ASYNC.
+	if(QDELETED(src))
+		return
+
+	// Apparently, regexes work slow enough to let the client slip away before we reach this point. Luckily, everything below this check seems to be quick enough to not require even more checks. ~ToTh
+	// OR we can even get deleted by this point, nullifying 'owned_by'. I have no fucking idea.
+	if(QDELETED(owner) || !owner.client || !owned_by)
+		qdel(src)
+		return
+
+	var/mheight = owned_by.MeasureText(complete_text, null, CHAT_MESSAGE_WIDTH)
+	mheight = WXH_TO_HEIGHT(mheight)
 	approx_lines = max(1, mheight / CHAT_MESSAGE_APPROX_LHEIGHT)
 
 	// Translate any existing messages upwards, apply exponential decay factors to timers

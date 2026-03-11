@@ -199,13 +199,13 @@
 			take_damage(min(damage, 100))
 
 
-/obj/machinery/door/hitby(atom/movable/AM, speed = 1, nomsg = FALSE)
+/obj/machinery/door/hitby(atom/movable/AM, datum/thrownthing/TT)
 	..()
 	var/tforce = 0
 	if(ismob(AM))
-		tforce = 15 * (speed/5)
+		tforce = 3 * TT.speed
 	else
-		tforce = AM:throwforce * (speed/5)
+		tforce = AM:throwforce * (TT.speed/THROWFORCE_SPEED_DIVISOR)
 	take_damage(tforce)
 	return
 
@@ -288,7 +288,7 @@
 	if(isobj(I) && density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
-			user.setClickCooldown(I.update_attack_cooldown())
+			I.set_cooldown()
 			if(I.force <= 0)
 				user.visible_message(SPAN("notice", "\The [user] smacks \the [src] with \the [I] with no visible effect."))
 				playsound(loc, hitsound, 10, 1)

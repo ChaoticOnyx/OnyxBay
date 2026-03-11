@@ -30,6 +30,24 @@
 	stored_paper--
 	return 1
 
+/obj/item/computer_hardware/nano_printer/proc/print_text_paper(text_to_print, paper_title = null, rawhtml = FALSE)
+	if(!stored_paper)
+		return null
+	if(!enabled)
+		return null
+	if(!check_functionality())
+		return null
+
+	// Damaged printer causes the resulting paper to be somewhat harder to read.
+	if(damage > damage_malfunction)
+		text_to_print = stars(text_to_print, 100-malfunction_probability)
+
+	var/obj/item/paper/P = new /obj/item/paper(get_turf(holder2))
+	P.set_content(text_to_print, paper_title, rawhtml)
+
+	stored_paper--
+	return P
+	
 /obj/item/computer_hardware/nano_printer/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/paper))
 		if(stored_paper >= max_paper)

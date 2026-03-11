@@ -12,17 +12,19 @@
 	next_click = world.time + 1
 
 	var/list/modifiers = params2list(params)
-	if(modifiers["shift"] && modifiers["ctrl"])
-		CtrlShiftClickOn(A)
+
+	if(modifiers["shift"])
+		if(modifiers["ctrl"])
+			CtrlShiftClickOn(A)
+		else if(modifiers["middle"])
+			ShiftMiddleClickOn(A)
+		else if(modifiers["right"])
+			ShiftRightClickOn(A)
+		else
+			ShiftClickOn(A)
 		return
 	if(modifiers["middle"])
-		if(modifiers["shift"])
-			ShiftMiddleClickOn(A)
-		else
-			MiddleClickOn(A)
-		return
-	if(modifiers["shift"])
-		ShiftClickOn(A)
+		MiddleClickOn(A)
 		return
 	if(modifiers["alt"]) // alt and alt-gr (rightalt)
 		AltClickOn(A)
@@ -34,10 +36,18 @@
 	if(incapacitated())
 		return
 
-	if(!canClick())
-		return
-
 	face_atom(A) // change direction to face what you clicked on
+
+	// We don't use get_active_hand() here because borgs have grippers and surgical selectors, and we don't want them to go off with no cooldown.
+	// Stuff like this will bite us in the ass later if we add human-usable multitools, make borgs able to twohand, etc.
+	// Hence, we have some TODO options now:
+	// - Make all the "multitools"/"wrappers" subscribe to the contained items' set_cooldown() and make use of signals;
+	// - Get rid of get_[in]active_hand()s all over the board and replace them with get_[in]active_item()s, but this includes a lot of work and even more debugging;
+	// - Make items' set_cooldown() also set clicking cooldowns for non-humans, but this is ugly;
+	var/obj/item/I = get_active_item()
+
+	if(!canClick(I))
+		return
 
 	if(silicon_camera.in_camera_mode)
 		silicon_camera.camera_mode_off()
@@ -53,8 +63,6 @@
 		RestrainedClickOn(A)
 		return
 	*/
-
-	var/obj/item/I = get_active_hand()
 
 	// Cyborgs have no range-checking unless there is item use
 	if(!I)

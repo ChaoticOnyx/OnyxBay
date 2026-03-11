@@ -49,7 +49,7 @@ var/const/FINGERPRINT_COMPLETE = 6
 	if(!full_print)
 		return
 
-	var/obj/item/organ/external/E = M.get_active_hand()
+	var/obj/item/organ/external/E = M.get_clicking_hand()
 	if(src != E && istype(E) && E.get_fingerprint())
 		full_print = E.get_fingerprint()
 		ignoregloves = 1
@@ -160,6 +160,6 @@ var/const/FINGERPRINT_COMPLETE = 6
 	if(!..())
 		return FALSE
 
-	var/obj/item/organ/external/E = organs_by_name[hand ? BP_L_HAND : BP_R_HAND]
+	var/obj/item/organ/external/E = organs_by_name[(active_hand == ACTIVE_HAND_LEFT) ? BP_L_HAND : BP_R_HAND]
 	if(E)
 		return E.get_fingerprint()

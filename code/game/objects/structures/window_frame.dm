@@ -574,7 +574,7 @@
 		if(W.item_flags & ITEM_FLAG_NO_BLUDGEON)
 			return
 
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		if(affected)
 			if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 3)
@@ -857,8 +857,8 @@
 
 	return FALSE
 
-/obj/structure/window_frame/hitby(atom/movable/AM, speed, nomsg)
-	..(AM, speed, TRUE)
+/obj/structure/window_frame/hitby(atom/movable/AM, datum/thrownthing/TT, nomsg = TRUE)
+	..()
 	var/tforce = 0
 	if(ismob(AM)) // All mobs have a multiplier and a size according to mob_defines.dm
 		var/mob/I = AM
@@ -1304,6 +1304,7 @@
 	return
 
 /obj/structure/window_frame/indestructible/hitby()
+	SHOULD_CALL_PARENT(FALSE)
 	return
 
 

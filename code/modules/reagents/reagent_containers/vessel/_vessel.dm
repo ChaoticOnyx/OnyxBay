@@ -357,12 +357,10 @@
 	return ..()
 
 //when thrown on impact, brittle containers smash and spill their contents
-/obj/item/reagent_containers/vessel/throw_impact(atom/hit_atom, speed)
+/obj/item/reagent_containers/vessel/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
-	var/mob/M = thrower
-	if(brittle && istype(M) && M.a_intent != I_HELP)
-		var/throw_dist = get_dist(throw_source, loc)
-		if(speed < throw_speed || smash_check(throw_dist)) // not as reliable as smashing directly
+	if(brittle && TT.thrower && TT.thrower.a_intent != I_HELP)
+		if(TT.speed < throw_speed || smash_check(TT.dist_travelled)) // not as reliable as smashing directly
 			if(reagents)
 				hit_atom.visible_message(SPAN("notice", "The contents of \the [src] splash all over [hit_atom]!"))
 				reagents.splash(hit_atom, reagents.total_volume)
@@ -534,7 +532,7 @@
 	var/anim_icon_state = initial(item_state)
 	if (!anim_icon_state)
 		anim_icon_state = initial(icon_state)
-	if(!user.hand)
+	if(user.active_hand == ACTIVE_HAND_RIGHT)
 		switch(user.dir)
 			if (NORTH)
 				pixOffX = 3

@@ -212,7 +212,11 @@
 		return
 
 	var/list/affected_z = GetConnectedZlevels(TS.z)
-	sound_to(world, sound('sound/effects/explosions/global_supermatter_boom.ogg', volume = 100))
+	var/sound/boom_sound = sound('sound/effects/explosions/global_supermatter_boom.ogg', volume = 100)
+	for(var/mob/M in GLOB.player_list)
+		var/turf/T = get_turf(M)
+		if(T && (T.z in affected_z) && !istype(M, /mob/new_player) && !isdeaf(M))
+			sound_to(M, boom_sound)
 
 	// Effect 1: Radiation, weakening to all mobs on Z level
 	for(var/z in affected_z)
@@ -520,9 +524,9 @@
 	qdel_self()
 	return TRUE
 
-/obj/machinery/power/supermatter/throw_impact(atom/hit_atom, speed, target_zone)
-	. = ..()
-	if (hit_atom.density)
+/obj/machinery/power/supermatter/throw_impact(atom/hit_atom, datum/thrownthing/TT)
+	..()
+	if(hit_atom.density)
 		Consume(hit_atom)
 
 /obj/machinery/power/supermatter/Bumped(atom/movable/AM)
@@ -546,7 +550,7 @@
 	if (istype(victim, /obj/machinery/power/supermatter))
 		var/obj/machinery/power/supermatter/supermatter_victim = victim
 		if (config.misc.meme_content)
-			supermatter_victim.throw_at(get_edge_target_turf(supermatter_victim, get_dir(src, supermatter_victim)), rand(SUPERMATTER_MIN_THROW_DIST, SUPERMATTER_MAX_THROW_DIST), 1)
+			supermatter_victim.throw_at(get_edge_target_turf(supermatter_victim, get_dir(src, supermatter_victim)), rand(SUPERMATTER_MIN_THROW_DIST, SUPERMATTER_MAX_THROW_DIST), TRUE)
 			supermatter_victim.visible_message(SPAN_WARNING("\The [supermatter_victim] briefly lights up and instantly starts flying in the opposite direction."))
 		else
 			power += supermatter_victim.power

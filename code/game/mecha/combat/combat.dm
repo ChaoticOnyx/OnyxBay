@@ -84,7 +84,7 @@
 		var/mob/M = target
 		M.make_dizzy(3)
 		M.adjustBruteLoss(1)
-		M.updatehealth()
+		M.update_health()
 		for (var/mob/V in viewers(src))
 			V.show_message("[src.name] shakes [M] like a rag doll.")
 	return

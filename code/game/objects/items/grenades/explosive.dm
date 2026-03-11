@@ -1,5 +1,5 @@
 /obj/item/projectile/bullet/pellet/fragment
-	damage = 7
+	damage = 6
 	range_step = 2 //controls damage falloff with distance. projectiles lose a "pellet" each time they travel this distance. Can be a non-integer.
 
 	base_spread = 0 //causes it to be treated as a shrapnel explosion instead of cone
@@ -12,6 +12,15 @@
 
 /obj/item/projectile/bullet/pellet/fragment/strong
 	damage = 15
+
+/obj/item/projectile/bullet/pellet/fragment/rubber
+	name = "rubber pellet"
+	check_armour = "melee"
+	damage = 3
+	agony = 20
+	embed = 0
+	sharp = 0
+	poisedamage = 8.0
 
 /obj/item/grenade/frag
 	name = "fragmentation grenade"
@@ -69,14 +78,15 @@
 
 /obj/item/grenade/frag/proc/on_explosion(turf/O)
 	if(explosion_size)
-		explosion(O, -1, -1, explosion_size, round(explosion_size/2), 0)
+		explosion(O, -1, -1, explosion_size, floor(explosion_size/2), 0)
 
 /obj/item/grenade/frag/shell
 	name = "fragmentation grenade"
 	desc = "A light fragmentation grenade, designed to be fired from a launcher. It can still be activated and thrown by hand if necessary."
 	icon_state = "fragshell"
+	explosion_size = 1 // won't create a flash
 
-	num_fragments = 50 //less powerful than a regular frag grenade
+	num_fragments = 20 //less powerful than a regular frag grenade
 
 /obj/item/grenade/frag/high_yield
 	name = "fragmentation bomb"
@@ -93,3 +103,19 @@
 /obj/item/grenade/frag/high_yield/on_explosion(turf/O)
 	if(explosion_size)
 		explosion(O, -1, round(explosion_size/2), explosion_size, round(explosion_size/2), 0) //has a chance to blow a hole in the floor
+
+/obj/item/grenade/frag/stingbang
+	name = "stingbang grenade"
+	desc = "A non-lethal fragmentation grenade that disperses rubber pellets. Designed for crowd control and suspect incapacitation."
+	icon_state = "frag"
+
+	fragment_types = list(/obj/item/projectile/bullet/pellet/fragment/rubber = 1)
+	num_fragments = 48
+	explosion_size = 0
+
+/obj/item/grenade/frag/stingbang/shell
+	name = "stingbang grenade"
+	desc = "A light non-lethal stingbang grenade, designed to be fired from a launcher. It can still be activated and thrown by hand if necessary."
+	icon_state = "fragshell"
+
+	num_fragments = 36 //less powerful than a hand-thrown stingbang

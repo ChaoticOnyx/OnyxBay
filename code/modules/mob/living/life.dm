@@ -75,7 +75,7 @@
 
 //This updates the health and status of the mob (conscious, unconscious, dead)
 /mob/living/proc/handle_regular_status_updates()
-	updatehealth()
+	update_health()
 	if(!is_ic_dead())
 		if(paralysis)
 			set_stat(UNCONSCIOUS)
@@ -177,49 +177,57 @@
 
 /mob/living/proc/apply_mindbreaker_effects()
 	playsound_local(src, pick('sound/effects/drugs/mindbreaker1.ogg','sound/effects/drugs/mindbreaker2.ogg'), 100, FALSE)
-	var/atom/movable/renderer/game/G = renderers[GAME_RENDERER]
-	G.add_filter("trip_ripple", 0, list(type = "ripple",x = 80, size = 50, radius = 0, falloff = 1))
-	G.add_filter("trip_blur", -1, list(type = "blur", size = 0.2))
-	G.add_filter("trip_color", 0, list(type="color", color = list(-1,0,0,0, 0,-1,0,0, 0,0,-1,0, 0,0,0,1, 1,1,1,0)))
-	G.add_filter("trip_bloom", -2, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
+	var/atom/movable/renderer/game/G = A_LAZYACCESS(renderers, GAME_RENDERER)
+	if(istype(G))
+		G.add_filter("trip_ripple", 0, list(type = "ripple",x = 80, size = 50, radius = 0, falloff = 1))
+		G.add_filter("trip_blur", -1, list(type = "blur", size = 0.2))
+		G.add_filter("trip_color", 0, list(type="color", color = list(-1,0,0,0, 0,-1,0,0, 0,0,-1,0, 0,0,0,1, 1,1,1,0)))
+		G.add_filter("trip_bloom", -2, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
 
-	var/atom/movable/renderer/turf/T = renderers[TURF_RENDERER]
-	T.add_filter("trip_ripple", 0, list(type = "ripple",x = 80, size = 50, radius = 0, falloff = 1))
-	T.add_filter("trip_blur", 0, list(type = "blur", size = 0.2))
-	T.add_filter("trip_bloom", -2, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
+	var/atom/movable/renderer/turf/T = A_LAZYACCESS(renderers, TURF_RENDERER)
+	if(istype(T))
+		T.add_filter("trip_ripple", 0, list(type = "ripple",x = 80, size = 50, radius = 0, falloff = 1))
+		T.add_filter("trip_blur", 0, list(type = "blur", size = 0.2))
+		T.add_filter("trip_bloom", -2, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
 
 /mob/living/proc/remove_mindbreaker_effects()
-	var/atom/movable/renderer/game/G = renderers[GAME_RENDERER]
-	G.remove_filter("trip_ripple")
-	G.remove_filter("trip_blur")
-	G.remove_filter("trip_color")
-	G.remove_filter("trip_bloom")
+	var/atom/movable/renderer/game/G = A_LAZYACCESS(renderers, GAME_RENDERER)
+	if(istype(G))
+		G.remove_filter("trip_ripple")
+		G.remove_filter("trip_blur")
+		G.remove_filter("trip_color")
+		G.remove_filter("trip_bloom")
 
-	var/atom/movable/renderer/turf/T = renderers[TURF_RENDERER]
-	T.remove_filter("trip_ripple")
-	T.remove_filter("trip_blur")
-	T.remove_filter("trip_bloom")
+	var/atom/movable/renderer/turf/T = A_LAZYACCESS(renderers, TURF_RENDERER)
+	if(istype(T))
+		T.remove_filter("trip_ripple")
+		T.remove_filter("trip_blur")
+		T.remove_filter("trip_bloom")
 
 /mob/living/proc/apply_psilo_effects()
 	playsound_local(src, 'sound/effects/drugs/psylocibin.ogg', 100, FALSE)
-	var/atom/movable/renderer/game/G = renderers[GAME_RENDERER]
-	G.add_filter("psilo_color", 0, list(type="color", list(0,0,1,0, 0,1,0,0, 1,0,0,0, 0,0,0,1, 0,0,0,0)))
-	G.add_filter("psilo_bloom", 0, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
+	var/atom/movable/renderer/game/G = A_LAZYACCESS(renderers, GAME_RENDERER)
+	if(istype(G))
+		G.add_filter("psilo_color", 0, list(type="color", list(0,0,1,0, 0,1,0,0, 1,0,0,0, 0,0,0,1, 0,0,0,0)))
+		G.add_filter("psilo_bloom", 0, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
 
-	var/atom/movable/renderer/turf/T = renderers[TURF_RENDERER]
-	T.add_filter("psilo_color", 0, list(type="color", list(0,0,1,0, 0,1,0,0, 1,0,0,0, 0,0,0,1, 0,0,0,0)))
-	T.add_filter("psilo_bloom", 0, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
+	var/atom/movable/renderer/turf/T = A_LAZYACCESS(renderers, TURF_RENDERER)
+	if(istype(T))
+		T.add_filter("psilo_color", 0, list(type="color", list(0,0,1,0, 0,1,0,0, 1,0,0,0, 0,0,0,1, 0,0,0,0)))
+		T.add_filter("psilo_bloom", 0, list(type = "bloom", threshold = rgb(255, 128, 255), size = 5, offset = 5))
 
 	overlay_fullscreen("psilocybin", /atom/movable/screen/fullscreen/lsd_warp)
 
 /mob/living/proc/remove_psilo_effects()
-	var/atom/movable/renderer/game/G = renderers[GAME_RENDERER]
-	G.remove_filter("psilo_color")
-	G.remove_filter("psilo_bloom")
+	var/atom/movable/renderer/game/G = A_LAZYACCESS(renderers, GAME_RENDERER)
+	if(istype(G))
+		G.remove_filter("psilo_color")
+		G.remove_filter("psilo_bloom")
 
-	var/atom/movable/renderer/turf/T = renderers[TURF_RENDERER]
-	T.remove_filter("psilo_color")
-	T.remove_filter("psilo_bloom")
+	var/atom/movable/renderer/turf/T = A_LAZYACCESS(renderers, TURF_RENDERER)
+	if(istype(T))
+		T.remove_filter("psilo_color")
+		T.remove_filter("psilo_bloom")
 
 	clear_fullscreen("psilocybin")
 

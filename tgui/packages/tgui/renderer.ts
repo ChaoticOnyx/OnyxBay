@@ -40,7 +40,7 @@ export const createRenderer: CreateRenderer =
       return;
     }
     // Report rendering time
-    if (process.env.NODE_ENV !== "production") {
+    if (import.meta.env.DEV) {
       if (initialRender === "resumed") {
         logger.log(
           "rendered in",

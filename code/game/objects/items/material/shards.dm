@@ -113,7 +113,7 @@
 					if(BP_IS_ROBOTIC(affecting))
 						return
 					affecting.take_external_damage(min(5 * amount, 15), 0)
-					H.updatehealth()
+					H.update_health()
 					if(affecting.can_feel_pain())
 						H.Weaken(min(3 * amount, 9))
 					return
@@ -146,10 +146,9 @@
 			return
 		if(H.isSynthetic())
 			return
-		var/hand_to_damage = user.hand ? BP_L_HAND : BP_R_HAND
-		var/obj/item/organ/external/E = H.get_organ(hand_to_damage)
-		if(E)
-			if(H.get_flat_armor(hand_to_damage, "melee") > force)
+		var/obj/item/organ/external/E = H.get_hand_organ()
+		if(istype(E))
+			if(H.get_flat_armor(E, "melee") > force)
 				return
 			E.take_external_damage((force * rand(3, 7) / 10), 0, used_weapon = name)
 			to_chat(user, SPAN("danger", "You cut your hand with \the [src]!"))

@@ -202,23 +202,22 @@
 	return FALSE
 
 /obj/structure/stairs/Bumped(atom/movable/A)
-	var/turf/above = GetAbove(A)
-	if(above)
-		var/turf/target = get_step(above, dir)
-		var/turf/source = A.loc
-		if(above.CanZPass(source, UP) && target.Enter(A, src))
-			A.forceMove(target)
-			if(isliving(A))
-				var/mob/living/L = A
-				if(L.pulling)
-					L.pulling.forceMove(target)
-			if(ishuman(A))
-				playsound(source, SFX_FOOTSTEP_STAIRS, 50)
-				playsound(target, SFX_FOOTSTEP_STAIRS, 50)
-		else
-			show_splash_text(A, "something blocks the path", "There's something blocking the path.")
-	else
-		show_splash_text(A, "nothing of interest in this direction", "There's nothing of interest in this direction.")
+	var/turf/myturf = get_turf(src)
+	var/turf/target = get_step(GetAbove(A), dir)
+	var/turf/source = get_turf(A)
+	if(myturf.CanZPass(A, UP) && target.Enter(A, src))
+		A.forceMove(target)
+		if(isliving(A))
+			var/mob/living/L = A
+			if(L.pulling)
+				L.pulling.forceMove(target)
+		if(ishuman(A))
+			playsound(source, SFX_FOOTSTEP_STAIRS, 50)
+			playsound(target, SFX_FOOTSTEP_STAIRS, 50)
+		return
+
+	if(isliving(A))
+		show_splash_text(A, "something blocks the path", "There's something blocking the path.")
 
 /obj/structure/stairs/proc/upperStep(turf/T)
 	return (T == loc)

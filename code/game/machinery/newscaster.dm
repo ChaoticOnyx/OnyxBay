@@ -751,7 +751,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				for (var/mob/O in hearers(5, src.loc))
 					O.show_message("<span class='warning'>[user.name] forcefully slams the [src.name] with the [I.name]!</span>" )
 				playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
-		user.setClickCooldown(I.update_attack_cooldown())
+		I.set_cooldown()
 		user.do_attack_animation(src)
 	queue_icon_update()
 
@@ -776,8 +776,8 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		photo_data = null
 		return
 
-	if(istype(user.get_active_hand(), /obj/item/photo))
-		var/obj/item/photo = user.get_active_hand()
+	if(istype(user.get_clicking_hand(), /obj/item/photo))
+		var/obj/item/photo = user.get_clicking_hand()
 		if(user.drop(photo, src))
 			photo_data = new(photo, 0)
 	else if(istype(user,/mob/living/silicon))

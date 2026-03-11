@@ -111,7 +111,7 @@
 		if(language)
 			var/nverb = null
 			if(!say_understands(speaker,language) || language.name == LANGUAGE_GALCOM) //Check to see if we can understand what the speaker is saying. If so, add the name of the language after the verb. Don't do this for Galactic Common.
-				on_hear_say("<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][language.format_message(message, verb)]</span>")
+				on_hear_say("<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][language.format_message(message, verb)]</span>", gender = speaker ? speaker.gender : null)
 			else //Check if the client WANTS to see language names.
 				switch(src.get_preference_value(/datum/client_preference/language_display))
 					if(GLOB.PREF_FULL) // Full language name
@@ -120,22 +120,22 @@
 						nverb = "[verb] ([language.shorthand])"
 					if(GLOB.PREF_OFF)//Regular output
 						nverb = verb
-				on_hear_say("<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][language.format_message(message, nverb)]</span>")
+				on_hear_say("<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][language.format_message(message, nverb)]</span>", gender = speaker ? speaker.gender : null)
 
 		else
-			on_hear_say("<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][verb], <span class='message'><span class='body'>\"[message]\"</span></span></span>")
+			on_hear_say("<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][verb], <span class='message'><span class='body'>\"[message]\"</span></span></span>", gender = speaker ? speaker.gender : null)
 		if(speech_sound && speaker && (dist_speech <= world.view && src.z == speaker.z))
 			var/turf/source = get_turf(speaker)
 			src.playsound_local(source, speech_sound, sound_vol, 1)
 		if(get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES)
 			create_chat_message(speaker, message)
 
-/mob/proc/on_hear_say(message)
-	to_chat(src, message)
+/mob/proc/on_hear_say(message, gender = null)
+	to_chat(src, message, gender = gender)
 
-/mob/living/silicon/on_hear_say(message)
+/mob/living/silicon/on_hear_say(message, gender = null)
 	var/time = say_timestamp()
-	to_chat(src, "[time] [message]")
+	to_chat(src, "[time] [message]", gender = gender)
 
 /mob/proc/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0, vname ="", loud)
 
@@ -264,34 +264,34 @@
 		if(istype(H) && H.has_headset_in_ears() && prob(20))
 			to_chat(src, SPAN("warning", "You feel your headset vibrate [loud ? "really hard " : ""]but can hear nothing from it!"))
 	else
-		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud, gender = speaker ? speaker.gender : null)
 
 /proc/say_timestamp()
 	return SPAN("say_quote", "\[[stationtime2text()]\]")
 
-/mob/proc/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+/mob/proc/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud, gender = null)
 	var/text = "[part_a][speaker_name][part_b][formatted][part_c]"
 	if(loud)
 		text = FONT_LARGE(text)
-	to_chat(src, text)
+	to_chat(src, text, gender = gender)
 
-/mob/observer/ghost/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+/mob/observer/ghost/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud, gender = null)
 	var/text = "[part_a][track][part_b][formatted][part_c]"
 	if(loud)
 		text = FONT_LARGE(text)
-	to_chat(src, text)
+	to_chat(src, text, gender = gender)
 
-/mob/living/silicon/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+/mob/living/silicon/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud, gender = null)
 	var/text = "[say_timestamp()][part_a][speaker_name][part_b][formatted][part_c]"
 	if(loud)
 		text = FONT_LARGE(text)
-	to_chat(src, text)
+	to_chat(src, text, gender = gender)
 
-/mob/living/silicon/ai/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+/mob/living/silicon/ai/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud, gender = null)
 	var/text = "[say_timestamp()][part_a][track][part_b][formatted][part_c]"
 	if(loud)
 		text = FONT_LARGE(text)
-	to_chat(src, text)
+	to_chat(src, text, gender = gender)
 
 /mob/proc/hear_signlang(message, verb = "gestures", datum/language/language, mob/speaker = null)
 	if(!client)

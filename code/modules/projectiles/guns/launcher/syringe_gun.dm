@@ -57,18 +57,18 @@
 	icon_state = icon_flight
 	underlays.Cut()
 
-/obj/item/syringe_cartridge/throw_impact(atom/hit_atom, speed)
+/obj/item/syringe_cartridge/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..() //handles embedding for us. Should have a decent chance if thrown fast enough
 	if(syringe)
 		//check speed to see if we hit hard enough to trigger the rapid injection
 		//incidentally, this means syringe_cartridges can be used with the pneumatic launcher
-		if((speed >= 10 || speed <= 0.9) && isliving(hit_atom))
+		if((TT.speed >= 2) && isliving(hit_atom))
 			var/mob/living/L = hit_atom
 			//unfortuately we don't know where the dart will actually hit, since that's done by the parent.
-			if(L.can_inject(null, ran_zone()) && syringe.reagents)
+			if(L.can_inject(null, ran_zone(TT.target_zone, 30)) && syringe.reagents)
 				var/reagent_log = syringe.reagents.get_reagents()
 				syringe.reagents.trans_to_mob(L, 15, CHEM_BLOOD)
-				admin_inject_log(thrower, L, src, reagent_log, 15, violent=1)
+				admin_inject_log(TT.thrower ? TT.thrower : null, L, src, reagent_log, 15, violent=1)
 
 		syringe.break_syringe(iscarbon(hit_atom)? hit_atom : null)
 		syringe.update_icon()
@@ -92,7 +92,7 @@
 	fire_sound = 'sound/weapons/empty.ogg'
 	fire_sound_text = "a metallic thunk"
 	screen_shake = 0
-	release_force = 0.1
+	release_force = 2
 	throw_distance = 10
 
 	var/list/darts = list()
@@ -121,7 +121,7 @@
 	add_fingerprint(user)
 
 /obj/item/gun/launcher/syringe/attack_hand(mob/living/user as mob)
-	if(user.get_inactive_hand() == src)
+	if(user.has_in_passive_hand(src))
 		if(!darts.len)
 			to_chat(user, "<span class='warning'>[src] is empty.</span>")
 			return

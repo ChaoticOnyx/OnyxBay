@@ -153,14 +153,8 @@
 /obj/item/reagent_containers/food/grown/Crossed(mob/living/M)
 	if(seed && seed.get_trait(TRAIT_JUICY) == 2)
 		if(istype(M))
-
-			if(M.buckled)
+			if(!M.can_slip())
 				return
-
-			if(istype(M,/mob/living/carbon/human))
-				var/mob/living/carbon/human/H = M
-				if(H.shoes && H.shoes.item_flags & ITEM_FLAG_NOSLIP)
-					return
 
 			M.stop_pulling()
 			to_chat(M, "<span class='notice'>You slipped on the [name]!</span>")
@@ -177,9 +171,9 @@
 		apply_hit_effect(M, user, def_zone)
 	else return ..()
 
-/obj/item/reagent_containers/food/grown/throw_impact(atom/hit_atom)
-	seed?.thrown_at(src, hit_atom)
+/obj/item/reagent_containers/food/grown/throw_impact(atom/hit_atom, datum/thrownthing/TT)
 	..()
+	seed?.thrown_at(src, hit_atom)
 
 /obj/item/reagent_containers/food/grown/attackby(obj/item/W, mob/user)
 

@@ -69,17 +69,6 @@
 	else
 		..()
 
-/obj/item/defibrillator/MouseDrop()
-	if(ismob(src.loc))
-		if(!CanMouseDrop(src))
-			return
-		var/mob/M = src.loc
-		if(!M.drop(src))
-			return
-		add_fingerprint(usr)
-		M.pick_or_drop(src)
-
-
 /obj/item/defibrillator/attackby(obj/item/W, mob/user, params)
 	if(W == paddles)
 		reattach_paddles(user)
@@ -222,7 +211,7 @@
 	var/cooldown = 0
 	var/busy = 0
 
-/obj/item/shockpaddles/proc/set_cooldown(delay)
+/obj/item/shockpaddles/proc/set_charge_cooldown(delay)
 	cooldown = 1
 	update_icon()
 
@@ -231,7 +220,7 @@
 			cooldown = 0
 			update_icon()
 
-			make_announcement("beeps, \"Unit is re-energized.\"", "notice")
+			make_announcement("beeps", "Unit is re-energized.", "notice")
 			playsound(src, 'sound/machines/defib_ready.ogg', 50, 0)
 
 /obj/item/shockpaddles/update_twohanding()
@@ -268,14 +257,14 @@
 //Checks for various conditions to see if the mob is revivable
 /obj/item/shockpaddles/proc/can_defib(mob/living/carbon/human/H) //This is checked before doing the defib operation
 	if((H.species.species_flags & SPECIES_FLAG_NO_SCAN) || H.isSynthetic())
-		return "buzzes, \"Unrecogized physiology. Operation aborted.\""
+		return "Unrecognized physiology. Operation aborted."
 
 	if(!check_contact(H))
-		return "buzzes, \"Patient's chest is obstructed. Operation aborted.\""
+		return "Patient's chest is obstructed. Operation aborted."
 
 /obj/item/shockpaddles/proc/can_revive(mob/living/carbon/human/H) //This is checked right before attempting to revive
 	if(H.is_ic_dead())
-		return "buzzes, \"Resuscitation failed - Severe neurological decay makes recovery of patient impossible. Further attempts futile.\""
+		return "Resuscitation failed - Severe neurological decay makes recovery of patient impossible. Further attempts futile."
 
 /obj/item/shockpaddles/proc/check_contact(mob/living/carbon/human/H)
 	if(!combat)
@@ -343,12 +332,12 @@
 
 	var/error = can_defib(H)
 	if(error)
-		make_announcement(error, "warning")
+		make_announcement("buzzes", error, "warning")
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, 0)
 		return
 
 	if(check_blood_level(H))
-		make_announcement("buzzes, \"Warning - Patient is in hypovolemic shock and may require a blood transfusion.\"", "warning") //also includes heart damage
+		make_announcement("buzzes", "Warning - Patient is in hypovolemic shock and may require a blood transfusion.", "warning") //also includes heart damage
 
 	//placed on chest and short delay to shock for dramatic effect, revive time is 5sec total
 	if(!do_after(user, chargetime, H, , luck_check_type = LUCK_CHECK_MED))
@@ -356,24 +345,24 @@
 
 	//deduct charge here, in case the base unit was EMPed or something during the delay time
 	if(!checked_use(chargecost))
-		make_announcement("buzzes, \"Insufficient charge.\"", "warning")
+		make_announcement("buzzes", "Insufficient charge.", "warning")
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, 0)
 		return
 
 	H.visible_message("<span class='warning'>\The [H]'s body convulses a bit.</span>")
 	playsound(src, 'sound/machines/defib_zap.ogg', 50, 1, -1)
-	set_cooldown(cooldowntime)
+	set_charge_cooldown(cooldowntime)
 
 	error = can_revive(H)
 	if(error)
-		make_announcement(error, "warning")
+		make_announcement("buzzes", error, "warning")
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, 0)
 		return
 
 	H.apply_damage(burn_damage_amt, BURN, BP_CHEST)
 
 	//set oxyloss so that the patient is just barely in crit, if possible
-	make_announcement("pings, \"Resuscitation successful.\"", "notice")
+	make_announcement("pings", "Resuscitation successful.", "notice")
 	playsound(src, 'sound/machines/defib_success.ogg', 50, 0)
 	H.resuscitate()
 	var/obj/item/organ/internal/cell/potato = H.internal_organs_by_name[BP_CELL]
@@ -405,14 +394,14 @@
 
 	//deduct charge here, in case the base unit was EMPed or something during the delay time
 	if(!checked_use(chargecost))
-		make_announcement("buzzes, \"Insufficient charge.\"", "warning")
+		make_announcement("buzzes", "Insufficient charge.", "warning")
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, 0)
 		return
 
 	user.visible_message("<span class='danger'><i>\The [user] shocks [H] with \the [src]!</i></span>", "<span class='warning'>You shock [H] with \the [src]!</span>")
 	playsound(src, 'sound/machines/defib_zap.ogg', 100, 1, -1)
 	playsound(loc, 'sound/weapons/Egloves.ogg', 100, 1, -1)
-	set_cooldown(cooldowntime)
+	set_charge_cooldown(cooldowntime)
 
 	H.stun_effect_act(2, 120, target_zone)
 	var/burn_damage = H.electrocute_act(burn_damage_amt*2, src, def_zone = target_zone)
@@ -434,7 +423,7 @@
 	M.emote("gasp")
 	M.Weaken(rand(10,25))
 	M.Stun(10)
-	M.updatehealth()
+	M.update_health()
 	apply_brain_damage(M, deadtime)
 
 /obj/item/shockpaddles/proc/apply_brain_damage(mob/living/carbon/human/H, deadtime)
@@ -448,8 +437,8 @@
 	var/brain_damage = Clamp((deadtime - DEFIB_TIME_LOSS)/(DEFIB_TIME_LIMIT - DEFIB_TIME_LOSS)*brain.max_damage, H.getBrainLoss(), brain.max_damage)
 	H.setBrainLoss(brain_damage)
 
-/obj/item/shockpaddles/proc/make_announcement(message, msg_class)
-	audible_message("<b>\The [src]</b> [message]", "\The [src] vibrates slightly.", splash_override = "[message]")
+/obj/item/shockpaddles/proc/make_announcement(verb_text, message, msg_class)
+	audible_message("<b>\The [src]</b> [verb_text], \"[message]\"", "\The [src] vibrates slightly.", splash_override = "[message]")
 
 /obj/item/shockpaddles/emag_act(uses, mob/user, obj/item/defibrillator/base)
 	if(istype(src, /obj/item/shockpaddles/linked))
@@ -476,10 +465,10 @@
 	if(safety != new_safety)
 		safety = new_safety
 		if(safety)
-			make_announcement("beeps, \"Safety protocols enabled!\"", "notice")
+			make_announcement("beeps", "Safety protocols enabled!", "notice")
 			playsound(src, 'sound/machines/defib_safetyon.ogg', 50, 0)
 		else
-			make_announcement("beeps, \"Safety protocols disabled!\"", "warning")
+			make_announcement("beeps", "Safety protocols disabled!", "warning")
 			playsound(src, 'sound/machines/defib_safetyoff.ogg', 50, 0)
 		update_icon()
 	..()
@@ -534,8 +523,8 @@
 /obj/item/shockpaddles/linked/checked_use(charge_amt)
 	return (base_unit.bcell && base_unit.bcell.checked_use(charge_amt))
 
-/obj/item/shockpaddles/linked/make_announcement(message, msg_class)
-	base_unit.audible_message("<b>\The [base_unit]</b> [message]", "\The [base_unit] vibrates slightly.", splash_override = "[message]")
+/obj/item/shockpaddles/linked/make_announcement(verb_text, message, msg_class)
+	base_unit.audible_message("<b>\The [base_unit]</b> [verb_text], \"[message]\"", "\The [base_unit] vibrates slightly.", splash_override = "[message]")
 
 /*
 	Standalone Shockpaddles

@@ -80,6 +80,11 @@
 			temp += pick(append)
 		say(temp)
 
+	// Never trust a winget() not to be late for the party
+	// YES I KNOW spawns are bad. Could care less in this particular case.
+	spawn(1)
+		remove_speech_bubble()
+
 /mob/living/carbon/human/say_understands(mob/other,datum/language/language = null)
 
 	if(has_brain_worms()) //Brain worms translate everything. Even mice and alien speak.
@@ -96,7 +101,7 @@
 
 	//These only pertain to common. Languages are handled by mob/say_understands()
 	if(!language)
-		if(istype(other, /mob/living/carbon/alien/diona))
+		if(istype(other, /mob/living/carbon/larva/diona))
 			if(other.languages.len >= 2) //They've sucked down some blood and can speak common now.
 				return TRUE
 		if(istype(other, /mob/living/silicon))

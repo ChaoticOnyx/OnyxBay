@@ -196,6 +196,9 @@
 	if(!do_after(user, 0.8 SECONDS, src, incapacitation_flags = INCAPACITATION_BUCKLED_FULLY|INCAPACITATION_STUNNED))
 		return
 
+	if(!user.lying || user.stat || user.buckled || !can_be_crawled_under())
+		return
+
 	user.hiding = TRUE
 	user.crawling = TRUE
 	user.reset_layer()
@@ -206,15 +209,25 @@
 	if(!ishuman(user))
 		return
 
-	var/bump_force = rand(3, 7)
+	var/bump_force = rand(3, 10)
+	if(MUTATION_CLUMSY in user.mutations)
+		bump_force = 10
+
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	user.apply_damage(bump_force, BRUTE, BP_HEAD)
-	to_chat(user, SPAN_WARNING("You tried to get up, but you bump your head instead!"))
-	show_splash_text_to_viewers("you hear a dull thud!", force_skip_chat = TRUE)
+	user.Stun(Ceiling(bump_force / 3))
+
+	if(bump_force == 10)
+		to_chat(user, SPAN("warning", "You tried to get up, but you <b>forcefully</b> bump your head instead!"))
+		audible_message("You hear a loud bang from under \the [src]!", splash_override = "*BANG*")
+	else
+		to_chat(user, SPAN("warning", "You tried to get up, but you bump your head instead!"))
+		audible_message("You hear a dull thud from under \the [src]!", splash_override = "*thud*")
+
 	throw_contents_around(ITEM_SIZE_LARGE, 35, FALSE)
 	shake_animation(stime = 1)
 	playsound(loc, 'sound/effects/deskslam.ogg', 50, 1)
-	take_damage(bump_force)
+	take_damage(round(bump_force * 0.5))
 	return
 
 /obj/structure/table/proc/slide_object(obj/O, mob/living/user, params)
@@ -234,7 +247,7 @@
 	var/do_slide = FALSE
 	if(O.loc == loc)
 		do_slide = TRUE // Sliding on the same time
-	else if(ishuman(user) && O == user.get_active_hand() && user.drop(O))
+	else if(ishuman(user) && user.has_in_hands(O) && user.drop(O))
 		do_slide = TRUE // Dropping from the inventory
 	else if(table_found && T.Adjacent(src, user))
 		do_slide = TRUE // Sliding across tables

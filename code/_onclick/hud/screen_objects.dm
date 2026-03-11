@@ -78,8 +78,12 @@
 		return TRUE
 	if(master)
 		var/obj/item/I = usr.get_active_hand()
+		if(usr.twohanded_mode)
+			var/list/modifiers = params2list(params)
+			if(modifiers["right"])
+				I = usr.get_inactive_hand()
 		if(I)
-			usr.ClickOn(master)
+			usr.ClickOn(master, params)
 
 		var/obj/item/storage/S = master
 		if(!S?.storage_ui)
@@ -236,11 +240,16 @@
 				var/mob/living/carbon/human/H = usr
 				H.quick_equip()
 
+		if("Two-Handed Mode")
+			if(istype(usr,/mob/living/carbon/human))
+				var/mob/living/carbon/human/H = usr
+				H.toggle_twohanded_mode()
+
 		if("resist")
 			if(isliving(usr))
 				var/mob/living/L = usr
 				L.resist()
-		if("rest")
+		if("Rest")
 			if(isliving(usr))
 				var/mob/living/L = usr
 				L.lay_down()
@@ -378,10 +387,10 @@
 				var/mob/living/carbon/human/H = usr
 				H.useblock()
 
-		if("blockswitch")
+		if("Click Mode")
 			if(istype(usr,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = usr
-				H.blockswitch()
+				H.toggle_aim_assist()
 
 		if("module")
 			if(isrobot(usr))
@@ -457,15 +466,15 @@
 		if("Show Camera List")
 			ASSERT(isAI(usr))
 			var/mob/living/silicon/ai/AI = usr
-			var/network = input(AI, "Chooce which network you want to view", "Networks") as null|anything in AI.get_camera_network_list()
+			var/network = tgui_input_list(AI, "Chooce which network you want to view", "Networks", AI.get_camera_network_list())
 			AI.ai_network_change(network)
-			var/camera = input(AI, "Choose which camera you want to view", "Cameras") as null|anything in AI.get_camera_list()
+			var/camera = tgui_input_list(AI, "Choose which camera you want to view", "Cameras", AI.get_camera_list())
 			AI.ai_camera_list(camera)
 
 		if("Track With Camera")
 			ASSERT(isAI(usr))
 			var/mob/living/silicon/ai/AI = usr
-			var/target_name = input(AI, "Choose who you want to track", "Tracking") as null|anything in AI.trackable_mobs()
+			var/target_name = tgui_input_list(AI, "Choose who you want to track", "Tracking", AI.trackable_mobs())
 			AI.ai_camera_track(target_name)
 
 		if("Toggle Camera Light")
@@ -482,13 +491,13 @@
 		if("Goto Camera Location")
 			ASSERT(isAI(usr))
 			var/mob/living/silicon/ai/AI = usr
-			var/cam_loc = input(AI, "Choose which location you want to view", "Locations") as null|anything in AI.sorted_stored_locations()
+			var/cam_loc = tgui_input_list(AI, "Choose which location you want to view", "Locations", AI.sorted_stored_locations())
 			AI.ai_goto_location(cam_loc)
 
 		if("Delete Camera Location")
 			ASSERT(isAI(usr))
 			var/mob/living/silicon/ai/AI = usr
-			var/delete = input(AI, "Choose which location you want to delete", "Locations") as null|anything in AI.sorted_stored_locations()
+			var/delete = tgui_input_list(AI, "Choose which location you want to delete", "Locations", AI.sorted_stored_locations())
 			AI.ai_remove_location(delete)
 
 		if("Crew Manifest")
@@ -574,7 +583,7 @@
 			return 0
 	return 1
 
-/atom/movable/screen/inventory/Click()
+/atom/movable/screen/inventory/Click(location, control, params)
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	if(!usr.canClick())
@@ -602,9 +611,24 @@
 
 				H.show_inventory?.open()
 		else
+			// Redirecting to the item equipped into the slot, if any
+			var/obj/item/I = usr.get_equipped_item(slot_id)
+			if(istype(I))
+				var/datum/click_handler/click_handler = usr.GetClickHandler()
+				click_handler.OnClick(I, params)
+				return 1
+
+			// The slot's empty, letting attack_ui() handle the rest
+			usr.rightclicked = FALSE
+			if(usr.twohanded_mode)
+				var/list/modifiers = params2list(params)
+				if(modifiers["right"])
+					usr.rightclicked = TRUE
 			if(usr.attack_ui(slot_id))
 				usr.update_inv_l_hand(0)
 				usr.update_inv_r_hand(0)
+			usr.rightclicked = FALSE
+
 	return 1
 
 /atom/movable/screen/holomap

@@ -311,7 +311,7 @@
 		var/aforce = I.force
 		playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		visible_message("<span class='danger'>[src] was hit by [I].</span>")
-		user.setClickCooldown(I.update_attack_cooldown())
+		I.set_cooldown()
 		user.do_attack_animation(src)
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			take_damage(aforce)

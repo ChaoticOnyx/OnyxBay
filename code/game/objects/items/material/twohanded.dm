@@ -136,7 +136,7 @@
 	..()
 
 /obj/item/material/twohanded/chainsaw/attack_hand(mob/user)
-	if(tank && user.get_inactive_hand() == src)
+	if(tank && user.has_in_passive_hand(src))
 		user.visible_message("[user] removes \the [tank] from \the [src].", "You remove \the [tank] from \the [src].")
 		user.pick_or_drop(tank)
 		tank = null

@@ -4,7 +4,7 @@
 	desc = "A beaker."
 	icon = 'icons/obj/reagent_containers/chemical.dmi'
 	icon_state = "beaker"
-	item_state = "beaker"
+	item_state = null
 	center_of_mass = "x=17;y=10"
 	force = 5.0
 	mod_weight = 0.5

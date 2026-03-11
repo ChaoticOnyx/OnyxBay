@@ -1,5 +1,5 @@
 /obj/item/gun/projectile/pistol
-	fire_delay = 5.5
+	fire_delay = 0.55 SECONDS
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	load_method = MAGAZINE
 	fire_sound = 'sound/effects/weapons/gun/fire_45.ogg'
@@ -58,7 +58,7 @@
 	desc = "The WT45 - a mass produced kinetic sidearm well-known in films and entertainment programming for being the daily carry choice issued to officers of the Sol Central Government Defense Forces. Uses .45 rounds."
 	icon_state = "usp"
 	accuracy = 0.35
-	fire_delay = 6.5
+	fire_delay = 0.65 SECONDS
 
 /obj/item/gun/projectile/pistol/colt/officer/on_update_icon()
 	..()
@@ -89,7 +89,7 @@
 	desc = "The VP78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
 	icon_state = "VP78wood"
 	accuracy = 0.35
-	fire_delay = 4.5
+	fire_delay = 0.45 SECONDS
 
 /obj/item/gun/projectile/pistol/vp78/wood/on_update_icon()
 	..()
@@ -105,7 +105,7 @@
 	magazine_type = /obj/item/ammo_magazine/c45m
 	auto_eject = 1
 	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
-	fire_delay = 6.5
+	fire_delay = 0.65 SECONDS
 
 /obj/item/gun/projectile/pistol/vp78/tactical/on_update_icon()
 	..()
@@ -147,7 +147,7 @@
 	mod_reach = 0.65
 	mod_handy = 1.0
 	caliber = ".50"
-	fire_delay = 12
+	fire_delay = 1.2 SECONDS
 	screen_shake = 2
 	magazine_type = /obj/item/ammo_magazine/a50
 	allowed_magazines = /obj/item/ammo_magazine/a50
@@ -172,7 +172,7 @@
 	origin_tech = list(TECH_COMBAT = 3)
 	ammo_type = /obj/item/ammo_casing/a75
 	magazine_type = /obj/item/ammo_magazine/a75
-	fire_delay = 25
+	fire_delay = 2.5 SECONDS
 	auto_eject = 1
 	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
 	fire_sound = 'sound/effects/weapons/gun/fire3.ogg'
@@ -190,7 +190,6 @@
 	icon_state = "det-m9"
 	w_class = ITEM_SIZE_NORMAL
 	caliber = "9mm"
-	fire_delay = 1
 	mod_weight = 0.65
 	mod_reach = 0.5
 	mod_handy = 1.0
@@ -214,7 +213,6 @@
 	w_class = ITEM_SIZE_SMALL
 	caliber = "9mm"
 	silenced = 0
-	fire_delay = 1
 	fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
 	mod_weight = 0.65
 	mod_reach = 0.5
@@ -228,23 +226,19 @@
 	magazine_type = /obj/item/ammo_magazine/mc9mm/flash
 
 /obj/item/gun/projectile/pistol/holdout/attack_hand(mob/user as mob)
-	if(user.get_inactive_hand() == src)
-		if(silenced)
-			if(user.l_hand != src && user.r_hand != src)
-				..()
-				return
-			to_chat(user, "<span class='notice'>You unscrew [silenced] from [src].</span>")
-			user.pick_or_drop(silenced, loc)
-			silenced = initial(silenced)
-			w_class = initial(w_class)
-			fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
-			update_icon()
-			return
+	if(silenced && user.has_in_passive_hand(src))
+		to_chat(user, "<span class='notice'>You unscrew [silenced] from [src].</span>")
+		user.pick_or_drop(silenced, loc)
+		silenced = initial(silenced)
+		w_class = initial(w_class)
+		fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
+		update_icon()
+		return
 	..()
 
 /obj/item/gun/projectile/pistol/holdout/attackby(obj/item/I as obj, mob/user as mob)
 	if(istype(I, /obj/item/silencer))
-		if(user.l_hand != src && user.r_hand != src)	//if we're not in his hands
+		if(!user.has_in_hands(src))
 			to_chat(user, "<span class='notice'>You'll need [src] in your hands to do that.</span>")
 			return
 		if(!user.drop(I, src))

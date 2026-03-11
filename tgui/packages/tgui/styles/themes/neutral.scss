@@ -1,3 +1,5 @@
+@use "sass:color";
+
 [class^="theme-neutral-"] {
   .Layout.Window {
     background-image: none;
@@ -96,6 +98,6 @@
   }
 
   .Table tbody tr:nth-child(even) {
-    background-color: transparentize($color: black, $amount: 0.9);
+    background-color: color.adjust($color: black, $alpha: -0.9);
   }
 }

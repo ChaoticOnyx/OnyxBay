@@ -1,22 +1,37 @@
 {
   "compilerOptions": {
-    "target": "es3",
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "noEmit": true,
+    "jsx": "preserve",
     "strict": false,
     "allowJs": true,
     "checkJs": false,
-    "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "esnext", "ScriptHost"],
-    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": false,
     "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "noUnusedParameters": false,
+    "baseUrl": ".",
+    "paths": {
+      "common/*": ["packages/common/*"],
+      "tgui/*": ["packages/tgui/*"],
+      "tgui-panel/*": ["packages/tgui-panel/*"]
+    }
   },
-  "include": ["./*.d.ts", "./packages"]
+  "include": [
+    "./*.d.ts",
+    "./packages/**/*",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -40,8 +40,9 @@
 
 	if(!include_own_turf)
 		turfs -= get_turf(src)
+
 	if(length(turfs))
-		throw_at(pick(turfs), maxrange, speed, src)
+		throw_at(pick(turfs), maxrange, speed)
 
 ///Returns the closest atom of a specific type in a list from a source
 /proc/get_closest_atom(type, list/atom_list, source)

@@ -1,0 +1,17 @@
+[mcu]
+enable = true
+hardcap = 25
+power_scale = 250
+rad_scale = 0.00005
+max_elf_size = 2000000
+# Deciseconds
+tts_cooldown_per_char = 5
+# Deciseconds
+signaler_set_cooldown = 10
+# Deciseconds
+signaler_send_cooldown = 10
+# Deciseconds
+light_cooldown = 10
+# Deciseconds
+env_sensor_cooldown = 25
+battery_recharge_percent = 0.25

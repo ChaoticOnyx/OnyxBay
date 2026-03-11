@@ -13,7 +13,7 @@
 	pickup_sound = SFX_PICKUP_FLESH
 
 /obj/item/reagent_containers/food/meat/attackby(obj/item/W, mob/user)
-	if(is_sharp(W))
+	if(has_edge(W))
 		new /obj/item/reagent_containers/food/rawcutlet(src)
 		new /obj/item/reagent_containers/food/rawcutlet(src)
 		new /obj/item/reagent_containers/food/rawcutlet(src)
@@ -81,7 +81,7 @@
 	icon_state = "pork"
 
 /obj/item/reagent_containers/food/meat/pork/attackby(obj/item/W, mob/user)
-	if(is_sharp(W))
+	if(has_edge(W))
 		new /obj/item/reagent_containers/food/bacon(src)
 		new /obj/item/reagent_containers/food/bacon(src)
 		new /obj/item/reagent_containers/food/bacon(src)

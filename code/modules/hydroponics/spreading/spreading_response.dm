@@ -82,7 +82,7 @@
 		var/mob/living/carbon/human/H = victim
 		if(H.species.species_flags & SPECIES_FLAG_NO_TANGLE)
 			return
-		if(victim.loc != loc && istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & ITEM_FLAG_NOSLIP))
+		if(victim.loc != loc && victim.can_slip())
 			visible_message(SPAN("danger", "Tendrils lash to drag \the [victim] but \the [src] can't pull them across the ground!"))
 			return
 

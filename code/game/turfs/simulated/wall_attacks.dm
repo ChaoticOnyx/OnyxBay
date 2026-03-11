@@ -358,7 +358,7 @@
 					to_chat(user, SPAN("notice","You struggle to pry off the outer sheath."))
 					playsound(src, 'sound/items/Crowbar.ogg', 100, 1)
 					if(!do_after(user, 100, src, luck_check_type = LUCK_CHECK_ENG) || !istype(src, /turf/simulated/wall) || !user || !W || !T )	return
-					if(user.loc == T && user.get_active_hand() == W )
+					if(user.loc == T && user.has_in_hands(W))
 						to_chat(user, SPAN("notice","You pry off the outer sheath."))
 						dismantle_wall(TRUE)
 					return
@@ -374,7 +374,7 @@
 		var/dam_threshhold = material.integrity
 		if(reinf_material)
 			dam_threshhold = ceil(max(dam_threshhold,reinf_material.integrity)/2)
-		user.setClickCooldown(W.update_attack_cooldown())
+		W.set_cooldown()
 		user.do_attack_animation(src)
 		var/dam_prob = min(100, material.hardness*1.5)
 		if(dam_prob < 100 && W.force > (dam_threshhold/10))

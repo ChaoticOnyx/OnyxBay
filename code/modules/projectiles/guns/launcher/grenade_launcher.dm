@@ -14,7 +14,7 @@
 	fire_sound_text = "a metallic thunk"
 	screen_shake = 0
 	throw_distance = 7
-	release_force = 5
+	release_force = 2
 	combustion = 1
 
 	var/obj/item/grenade/chambered
@@ -86,7 +86,7 @@
 		..()
 
 /obj/item/gun/launcher/grenade/attack_hand(mob/user)
-	if(user.get_inactive_hand() == src)
+	if(user.has_in_passive_hand(src))
 		unload(user)
 	else
 		..()

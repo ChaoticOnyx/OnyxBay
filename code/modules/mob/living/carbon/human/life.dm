@@ -273,7 +273,7 @@
 		if(damage)
 			damage *= full_prosthetic ? 0.5 : species.radiation_mod
 			adjustToxLoss(damage)
-			updatehealth()
+			update_health()
 
 			if(!full_prosthetic && !isundead(src) && organs.len)
 				var/obj/item/organ/external/O = pick(organs)
@@ -577,7 +577,7 @@
 		if(chem_traces[T] <= 0)
 			chem_traces.Remove(T)
 
-	updatehealth()
+	update_health()
 
 	return //TODO: DEFERRED
 
@@ -604,7 +604,7 @@
 		blinded = 1
 		silent = 0
 	else				//ALIVE. LIGHTS ARE ON
-		updatehealth()	//TODO
+		update_health()	//TODO
 
 		if(handle_death_check())
 			death()

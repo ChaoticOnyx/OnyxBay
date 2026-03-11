@@ -6,9 +6,8 @@
 		M.dropInto(loc)
 	if(pipe_image)
 		for(var/mob/living/M in GLOB.player_list)
-			if(M.client)
-				M.client.images -= pipe_image
-				M.pipes_shown -= pipe_image
+			M.remove_client_image(pipe_image)
+			M.pipes_shown -= pipe_image
 		pipe_image = null
 	return ..()
 

@@ -13,6 +13,7 @@
 	speak_chance = 0
 	turns_per_move = 3
 	move_to_delay = 3
+	skip_spacemove = TRUE
 	response_help = "pets the"
 	response_disarm = "gently pushes aside the"
 	response_harm = "hits the"
@@ -39,9 +40,6 @@
 	if(prob(40))
 		carried = new /datum/disease2/disease()
 		carried.makerandom(rand(2, 4))
-
-/mob/living/simple_animal/hostile/vagrant/Allow_Spacemove(check_drift = 0)
-	return 1
 
 /mob/living/simple_animal/hostile/vagrant/bullet_act(obj/item/projectile/Proj)
 	. = ..()

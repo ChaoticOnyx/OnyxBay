@@ -32,3 +32,5 @@
 		H.visible_message("<b>[H]</b> [action_verb] \the [F].", SPAN_NOTICE("You [self_action_verb] \the [F]."))
 		to_chat(H, SPAN_NOTICE("\The [src] reports that \the [F] tastes like: [F.reagents.generate_taste_message(H, TASTE_NORMAL)]"))
 		to_chat(H, SPAN_NOTICE("\The [src] detects: [F.reagents.get_reagents()]."))
+	else
+		to_chat(H, SPAN_NOTICE("\The [src] reports there is nothing in your hand to sample."))

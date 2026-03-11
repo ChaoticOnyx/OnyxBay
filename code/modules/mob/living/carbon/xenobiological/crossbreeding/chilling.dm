@@ -251,7 +251,7 @@ Chilling extracts:
 		user.visible_message(SPAN_DANGER("[src] chills and snaps off the front of the bone on [user]'s arm, leaving behind a strange, gun-like structure!"))
 		gun.think()
 	user.emote("scream")
-	L.apply_damage(30,BURN, L.hand ? BP_L_HAND : BP_R_HAND)
+	L.apply_damage(30,BURN, (L.active_hand == ACTIVE_HAND_LEFT) ? BP_L_HAND : BP_R_HAND)
 	..()
 
 /obj/item/metroidcross/chilling/pink

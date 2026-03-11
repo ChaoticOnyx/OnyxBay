@@ -36,7 +36,7 @@
 		return
 	oxyloss = max(0, amount)
 
-/mob/living/silicon/ai/updatehealth()
+/mob/living/silicon/ai/update_health()
 	if(status_flags & GODMODE)
 		health = maxHealth
 		set_stat(CONSCIOUS)

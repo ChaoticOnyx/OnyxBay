@@ -53,6 +53,7 @@
 	..()
 
 /datum/preferences/Destroy()
+	QDEL_NULL(character_setup_ui)
 	QDEL_NULL_LIST(char_render_holders)
 	return ..()
 
@@ -156,28 +157,18 @@
 
 	return dat
 
+/datum/preferences
+	var/datum/character_setup/character_setup_ui
+
 /datum/preferences/proc/open_setup_window(mob/user)
 	if(!SScharacter_setup.initialized || SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
 		to_chat(user, SPAN("notice", "Please, wait for the game to initialize!"))
 		return
 
-	if(!char_render_holders)
-		update_preview_icon()
-	show_character_previews()
-
-	winshow(user, "preferences_window", TRUE)
-	var/datum/browser/popup = new(user, "preferences_browser","Character Setup", 1000, 1000, src)
-	var/content = {"
-	<script type='text/javascript'>
-		function update_content(data){
-			document.getElementById('content').innerHTML = data;
-		}
-	</script>
-	<div id='content'>[get_content(user)]</div>
-	"}
-	popup.set_content(content)
-	popup.open(FALSE)
-	onclose(user, "preferences_window", src)
+	// Open the TGUI character setup window
+	if(!character_setup_ui)
+		character_setup_ui = new /datum/character_setup(src)
+	character_setup_ui.tgui_interact(user)
 
 	SSwarnings.show_warning(user.client, WARNINGS_NEWCOMERS, "window=Warning;size=360x240;can_resize=0;can_minimize=0")
 
@@ -352,11 +343,11 @@
 		O.status = 0
 		O.model = null
 		if(status == "amputated")
-			character.organs_by_name.Remove(O.organ_tag)
+			character.organs_by_name -= O.organ_tag
 			character.organs -= O
 			if(O.children) // This might need to become recursive.
 				for(var/obj/item/organ/external/child in O.children)
-					character.organs_by_name.Remove(child.organ_tag)
+					character.organs_by_name -= child.organ_tag
 					character.organs -= child
 		else if(status == "cyborg")
 			if(rlimb_data[name])

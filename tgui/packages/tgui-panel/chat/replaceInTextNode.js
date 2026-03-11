@@ -14,7 +14,6 @@ export const replaceInTextNode = (regex, createNode) => (node) => {
   let lastIndex = 0;
   let fragment;
   let n = 0;
-  // eslint-disable-next-line no-cond-assign
   while ((match = regex.exec(text))) {
     n += 1;
     // Lazy init fragment
@@ -27,7 +26,7 @@ export const replaceInTextNode = (regex, createNode) => (node) => {
     // Insert previous unmatched chunk
     if (lastIndex < matchIndex) {
       fragment.appendChild(
-        document.createTextNode(text.substring(lastIndex, matchIndex))
+        document.createTextNode(text.substring(lastIndex, matchIndex)),
       );
     }
     lastIndex = matchIndex + matchLength;
@@ -38,7 +37,7 @@ export const replaceInTextNode = (regex, createNode) => (node) => {
     // Insert the remaining unmatched chunk
     if (lastIndex < textLength) {
       fragment.appendChild(
-        document.createTextNode(text.substring(lastIndex, textLength))
+        document.createTextNode(text.substring(lastIndex, textLength)),
       );
     }
     // Commit the fragment
@@ -71,7 +70,7 @@ const createHighlightNode = (text) => {
 export const highlightNode = (
   node,
   regex,
-  createNode = createHighlightNode
+  createNode = createHighlightNode,
 ) => {
   if (!createNode) {
     createNode = createHighlightNode;

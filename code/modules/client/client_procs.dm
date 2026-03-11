@@ -84,12 +84,22 @@
 			to_chat(src, SPAN("danger", "Your previous action was ignored because you've done too many in a second."))
 			return
 
+	if(href_list["type"] == "cacheReloaded")
+		if(!check_rights(R_ADMIN) && usr.client.tgui_cache_reloaded)
+			return TRUE
+		// Mark as reloaded
+		usr.client.tgui_cache_reloaded = TRUE
+		// Notify windows
+		var/list/windows = usr.client.tgui_windows
+		for(var/window_id in windows)
+			var/datum/tgui_window/window = windows[window_id]
+			if (window.status == TGUI_WINDOW_READY)
+				window.reinitialize()
+
+		return TRUE
+
 	// Logs all hrefs
 	log_href("[src] (usr:[usr]) || [hsrc ? "[hsrc] " : ""][href]")
-
-	// Tgui Topic middleware
-	if(tgui_Topic(href_list))
-		return
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
 	if(asset_cache_job && (asset_cache_job in completed_asset_jobs))
@@ -269,8 +279,6 @@
 
 	if(SSinput.initialized)
 		set_macros()
-
-	settings = new(src)
 
 	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.multiaccount.panic_server_address && TopicData != "redirect")
@@ -511,11 +519,11 @@
 
 		winset(src, "input_alt", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton_alt", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
 
 		winset(src, "input", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle", "is-visible=false;is-disabled=true;is-default=false")
+
+		winset(src, null, "default.Tab.command=\".winset \\\"input_alt.focus=true ? mapwindow.map.focus=true : input_alt.focus=true\\\"\"")
 
 	else if(alternate && new_position == GLOB.PREF_MODERN)
 		var/list/game_size = splittext(winget(src, "mainvsplit", "size"), "x")
@@ -533,11 +541,11 @@
 
 		winset(src, "input_alt", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton_alt", "is-visible=false;is-disabled=true;is-default=false")
-		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
 
 		winset(src, "input", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton", "is-visible=true;is-disabled=false;is-default=true")
-		winset(src, "hotkey_toggle", "is-visible=true;is-disabled=false;is-default=true")
+
+		winset(src, null, "default.Tab.command=\".winset \\\"input.focus=true ? mapwindow.map.focus=true : input.focus=true\\\"\"")
 
 #undef VERTICAL_INPUT_MARGIN
 
@@ -851,18 +859,27 @@
 					movement_keys[key] = WEST
 				if("South")
 					movement_keys[key] = SOUTH
-				if("Say")
-					winset(src, "default-\ref[key]", "parent=default;name=[key];command=say")
+				if("admin_help")
 					communication_hotkeys += key
+					winset(src, "default-\ref[key]", "parent=default;name=[key];command=adminhelp")
 				if("OOC")
+					communication_hotkeys += key
 					winset(src, "default-\ref[key]", "parent=default;name=[key];command=ooc")
-					communication_hotkeys += key
-				if("Me")
-					winset(src, "default-\ref[key]", "parent=default;name=[key];command=me")
-					communication_hotkeys += key
 
 	// winget() does not work for F1 and F2
 	for(var/key in communication_hotkeys)
 		if(!(key in list("F1","F2")) && !winget(src, "default-\ref[key]", "command"))
 			to_chat(src, "You probably entered the game with a different keyboard layout.\n<a href='?src=\ref[src];reset_macros=1'>Please switch to the English layout and click here to fix the communication hotkeys.</a>")
 			break
+
+/client/verb/fix_rightclick()
+	set name = "Fix Rightclick"
+	set desc = "Use if your RMB is stuck in the clicking mode."
+	set category = "OOC"
+
+	if(ishuman(mob))
+		var/mob/living/carbon/human/H = mob
+		H.toggle_twohanded_mode(FALSE, TRUE)
+	else
+		winset(src, "mapwindow.rightclickblocker", "is-visible=false")
+		winset(src, "mapwindow.map", "right-click=false")

@@ -16,13 +16,13 @@
 	var/tick_limit_mc_init
 	var/minute_topic_limit
 	var/second_topic_limit
+	var/tgui_max_chunk_count
 	var/wait_for_sigusr1
 
 	var/client_min_major_version
 	var/client_min_minor_version
 	var/client_recommended_minor_version
 	var/list/client_blacklisted_minor_versions
-	var/prometheus_port
 
 /datum/configuration_section/general/load_data(list/data)
 	CONFIG_LOAD_STR(server_name, data["server_name"])
@@ -33,6 +33,10 @@
 	CONFIG_LOAD_STR(hosted_by, data["hosted_by"])
 	CONFIG_LOAD_NUM(player_limit, data["player_limit"])
 	CONFIG_LOAD_NUM(hard_player_limit, data["hard_player_limit"])
+
+	if(!hard_player_limit)
+		hard_player_limit = 80
+
 	CONFIG_LOAD_NUM(ticklag, data["ticklag"])
 
 	CONFIG_LOAD_NUM(client_min_major_version, data["client_min_major_version"])
@@ -52,5 +56,5 @@
 	CONFIG_LOAD_NUM(tick_limit_mc_init, data["tick_limit_mc_init"])
 	CONFIG_LOAD_NUM(minute_topic_limit, data["minute_topic_limit"])
 	CONFIG_LOAD_NUM(second_topic_limit, data["second_topic_limit"])
+	CONFIG_LOAD_NUM(tgui_max_chunk_count, data["tgui_max_chunk_count"])
 	CONFIG_LOAD_BOOL(wait_for_sigusr1, data["wait_for_sigusr1"])
-	CONFIG_LOAD_STR(prometheus_port, data["prometheus_port"])

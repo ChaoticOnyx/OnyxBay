@@ -51,6 +51,7 @@
 	var/icon/icon_template = 'icons/mob/human_races/r_template.dmi' // Used for mob icon generation for non-32x32 species.
 	var/pixel_offset_x = 0                    // Used for offsetting large icons.
 	var/pixel_offset_y = 0                    // Used for offsetting large icons.
+	var/pixel_offset_z = 0                    // Used for offsetting large icons.
 
 	var/mob_size	= MOB_MEDIUM
 	var/strength    = STR_MEDIUM
@@ -223,7 +224,7 @@
 	var/icon_scale = 1
 	var/y_shift = 0 // Vertically shifts the icon, mostly for monkeys.
 
-	var/xenomorph_type = /mob/living/carbon/alien/larva // What type of larva is spawned if infected with an alien embryo
+	var/xenomorph_type = /mob/living/carbon/larva/xenomorph // What type of larva is spawned if infected with an alien embryo
 /*
 These are all the things that can be adjusted for equipping stuff and
 each one can be in the NORTH, SOUTH, EAST, and WEST direction. Specify
@@ -318,8 +319,8 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 	H.organs = list()
 	H.internal_organs = list()
-	H.organs_by_name = list()
-	H.internal_organs_by_name = list()
+	H.organs_by_name = alist()
+	H.internal_organs_by_name = alist()
 
 	for(var/limb_type in has_limbs)
 		var/list/organ_data = has_limbs[limb_type]
@@ -765,3 +766,8 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	else
 		var/list/A = list(max(64, H.r_hair), max(64, H.g_hair), max(64, H.b_hair))
 		return A
+
+/datum/species/proc/check_no_slip(mob/living/user, magboots_only)
+	if(can_overcome_gravity(user))
+		return TRUE
+	return (species_flags & SPECIES_FLAG_NO_SLIP)

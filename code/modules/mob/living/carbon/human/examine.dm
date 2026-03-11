@@ -201,10 +201,24 @@
 					else
 						to_chat(user, SPAN("deadsay", "[T.He] [T.has] a pulse!"))
 
-	if(fire_stacks)
-		msg += "[T.He] looks flammable.\n"
-	if(on_fire)
-		msg += SPAN("warning", "[T.He] [T.is] on fire!.\n")
+	switch(get_fire_level())
+		if(3)
+			if(on_fire)
+				msg += SPAN("danger", "[T.He] [T.is] is burning bright!\n")
+			else
+				msg += SPAN("danger", "[T.He] looks extremely flammable!\n")
+		if(2)
+			if(on_fire)
+				msg += SPAN("warning", "[T.He] [T.is] covered in flames!\n")
+			else
+				msg += SPAN("warning", "[T.He] looks very flammable!\n")
+		if(1)
+			if(on_fire)
+				msg += SPAN("warning", "[T.He] [T.is] on fire!\n")
+			else
+				msg += SPAN("warning", "[T.He] looks flammable.\n")
+		if(-1)
+			msg += SPAN("notice", "[T.He] looks damp.\n")
 
 	for(var/datum/modifier/M in modifiers)
 		var/modifier_txt = M.examine()

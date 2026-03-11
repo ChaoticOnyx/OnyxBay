@@ -154,7 +154,7 @@
 
 	sexybits_location = BP_GROIN
 
-	xenomorph_type = /mob/living/carbon/alien/larva/feral
+	xenomorph_type = /mob/living/carbon/larva/xenomorph/feral
 
 /datum/species/tajaran/equip_survival_gear(mob/living/carbon/human/H)
 	..()
@@ -180,6 +180,7 @@
 	icobase = 'icons/mob/human_races/r_skrell.dmi'
 	primitive_form = "Neaera"
 	hair_key = SPECIES_SKRELL
+	default_h_style = "Short Headtails"
 	unarmed_types = list(/datum/unarmed_attack/punch)
 	blurb = "An amphibious species, Skrell come from the star system known as Qerr'Vallis, which translates to 'Star of \
 	the royals' or 'Light of the Crown'.<br/><br/>Skrell are a highly advanced and logical race who live under the rule \
@@ -252,7 +253,7 @@
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right)
 		)
 
-	xenomorph_type = /mob/living/carbon/alien/larva/vile
+	xenomorph_type = /mob/living/carbon/larva/xenomorph/vile
 
 /datum/species/diona
 	name = SPECIES_DIONA
@@ -355,7 +356,7 @@
 		return
 
 	spawn(1) // So it has time to be thrown about by the gib() proc.
-		var/mob/living/carbon/alien/diona/D = new(target)
+		var/mob/living/carbon/larva/diona/D = new(target)
 		var/datum/ghosttrap/plant/P = get_ghost_trap("living plant")
 		P.request_player(D, "A diona nymph has split off from its gestalt. ")
 		spawn(60)
@@ -376,7 +377,7 @@
 #undef DIONA_LIMB_DEATH_COUNT
 
 /datum/species/diona/can_understand(mob/other)
-	var/mob/living/carbon/alien/diona/D = other
+	var/mob/living/carbon/larva/diona/D = other
 	if(istype(D))
 		return 1
 	return 0
@@ -394,7 +395,7 @@
 /datum/species/diona/handle_death(mob/living/carbon/human/H)
 
 	if(H.isSynthetic())
-		var/mob/living/carbon/alien/diona/S = new(get_turf(H))
+		var/mob/living/carbon/larva/diona/S = new(get_turf(H))
 
 		if(H.mind)
 			H.mind.transfer_to(S)
