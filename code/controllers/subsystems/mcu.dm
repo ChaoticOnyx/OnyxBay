@@ -19,7 +19,7 @@ SUBSYSTEM_DEF(mcu)
 	. = ..()
 
 /datum/controller/subsystem/mcu/stat_entry()
-	var/stats = json_decode(Z_MACHINES_STATS())
+	var/list/stats = json_decode(Z_MACHINES_STATS())
 
 	// LW  - Last Wall: real host time spent in last tick (microseconds)
 	//        WARNING if consistently > LB

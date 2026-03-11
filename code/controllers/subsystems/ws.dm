@@ -12,7 +12,11 @@ SUBSYSTEM_DEF(ws)
 	var/port = null // TBD
 
 /datum/controller/subsystem/ws/stat_entry()
-	var/msg = "T:[Z_WS_GET_TICK_TIME()]ms "
+	var/list/stats = json_decode(Z_WS_STATS())
+
+	var/msg = "T:[stats["tick_duration_ms"]]ms "
+	msg += "S:[stats["sent_kilobytes_per_second"]]KB/s "
+	msg += "R:[stats["received_kilobytes_per_second"]]KB/s "
 
 	if(address != null)
 		msg += "A:[address] "
