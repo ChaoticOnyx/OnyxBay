@@ -22,6 +22,8 @@ else if(!istext(variable)) { CRASH("Trying to send non-text content") }
 		gender = null)
 	if(!target || (!html && !text))
 		return
+	// TODO: fix gender leaking
+	gender = gender ? "neuter" : null
 	if(target == world)
 		target = GLOB.clients
 
@@ -84,6 +86,8 @@ else if(!istext(variable)) { CRASH("Trying to send non-text content") }
 		trailing_newline = TRUE,
 		confidential = FALSE,
 		gender = null)
+	// TODO: fix gender leaking
+	gender = gender ? "neuter" : null
 	if(Master.current_runlevel == RUNLEVEL_INIT || !SSchat?.initialized)
 		to_chat_immediate(target, html, type, text, gender = gender)
 		return
