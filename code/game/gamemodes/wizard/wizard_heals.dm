@@ -13,8 +13,7 @@
 			E.status &= ~ORGAN_ARTERY_CUT
 		if(E.status & ORGAN_BLEEDING && heal.heals_external_bleeding)
 			E.status &= ~ORGAN_BLEEDING
-			for(var/datum/wound/W in E.wounds)
-				W.clamped = 1
+			E.scabbed = E.max_bleeding
 		if(E.status & ORGAN_TENDON_CUT && heal.heal_bones)
 			E.status &= ~ORGAN_TENDON_CUT
 		if(E.status & ORGAN_BROKEN && heal.heal_bones) // some calcium

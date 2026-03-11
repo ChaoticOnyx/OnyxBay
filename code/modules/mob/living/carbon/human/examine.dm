@@ -288,18 +288,17 @@
 			if(((E.status & ORGAN_BROKEN) && E.blunt_dam > E.min_broken_damage) || (E.status & ORGAN_MUTATED))
 				wound_flavor_text[E.name] += "[T.His] [E.name] is dented and swollen!<br>"
 
-		for(var/datum/wound/wound in E.wounds)
-			var/list/embedlist = wound.embedded_objects
-			if(LAZYLEN(embedlist))
-				shown_objects += embedlist
-				var/parsedembed[0]
-				for(var/obj/embedded in embedlist)
-					if(!parsedembed.len || (!parsedembed.Find(embedded.name) && !parsedembed.Find("multiple [embedded.name]")))
-						parsedembed.Add(embedded.name)
-					else if(!parsedembed.Find("multiple [embedded.name]"))
-						parsedembed.Remove(embedded.name)
-						parsedembed.Add("multiple "+embedded.name)
-				wound_flavor_text["[E.name]"] += "The [wound.desc] on [T.his] [E.name] has [english_list(parsedembed)] sticking out of it!<br>"
+		if(LAZYLEN(E.embedded_objects))
+			var/list/embedlist = E.embedded_objects
+			shown_objects += embedlist
+			var/parsedembed[0]
+			for(var/obj/embedded in embedlist)
+				if(!parsedembed.len || (!parsedembed.Find(embedded.name) && !parsedembed.Find("multiple [embedded.name]")))
+					parsedembed.Add(embedded.name)
+				else if(!parsedembed.Find("multiple [embedded.name]"))
+					parsedembed.Remove(embedded.name)
+					parsedembed.Add("multiple "+embedded.name)
+			wound_flavor_text["[E.name]"] += "[T.his] [E.name] has [english_list(parsedembed)] sticking out of it!<br>"
 
 	msg += "<span class='warning'>"
 	for(var/limb in wound_flavor_text)

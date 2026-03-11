@@ -482,7 +482,8 @@ This function restores all organs.
 
 /mob/living/carbon/human/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, blocked = 0, damage_flags = 0, obj/used_weapon = null, obj/item/organ/external/given_organ = null)
 	if(status_flags & GODMODE)
-		return 0
+		return FALSE
+
 	var/obj/item/organ/external/organ = given_organ
 	if(!organ)
 		if(isorgan(def_zone))
@@ -494,15 +495,18 @@ This function restores all organs.
 	//Handle other types of damage
 	if(!(damagetype in list(BRUTE, BURN, PAIN, CLONE)))
 		..(damage, damagetype, def_zone, blocked)
-		return 1
+		return TRUE
 
 	if(!istype(organ))
-		return 0
+		return FALSE
 
 	handle_suit_punctures(damagetype, damage, def_zone)
 
-	if(blocked >= 100)	return 0
-	if(blocked) damage *= blocked_mult(blocked)
+	if(blocked >= 100)
+		return FALSE
+
+	if(blocked)
+		damage *= blocked_mult(blocked)
 
 	damageoverlaytemp = 20
 	if(getHalLoss() < last_body_response_to_pain)

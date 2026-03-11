@@ -182,19 +182,17 @@
 	if(affecting.salved)
 		to_chat(user, SPAN("notice", "[M]'s [affecting.name] has already been salved."))
 		return TRUE
-	else
-		user.visible_message(SPAN("notice", "\The [user] starts smearing salve over [M]'s [affecting.name]."), \
-							 SPAN("notice", "You start smearing salve over [M]'s [affecting.name]."))
-		if(!do_mob(user, M, 10))
-			to_chat(user, SPAN("warning", "You must stand still to apply salve."))
-			return TRUE
 
-		user.visible_message(SPAN("notice", "[user] smears some salve over [M]'s [affecting.name]."), \
-							 SPAN("notice", "You smear some salve over [M]'s [affecting.name]."))
-		use(1)
-		affecting.salve()
-		affecting.disinfect()
+	user.visible_message(SPAN("notice", "\The [user] starts smearing salve over [M]'s [affecting.name]."), \
+						 SPAN("notice", "You start smearing salve over [M]'s [affecting.name]."))
+	if(!do_mob(user, M, 10))
+		to_chat(user, SPAN("warning", "You must stand still to apply salve."))
+		return TRUE
 
+	user.visible_message(SPAN("notice", "[user] smears some salve over [M]'s [affecting.name]."), \
+						 SPAN("notice", "You smear some salve over [M]'s [affecting.name]."))
+	use(1)
+	affecting.salve()
 	return TRUE
 
 /obj/item/stack/medical/advanced/proc/refill(amt = 1)
@@ -300,25 +298,28 @@
 	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting) //nullchecked by ..()
+	if(!ishuman(M))
+		return 1
 
-		if(affecting.is_salved())
-			to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been salved."))
-			return 1
-		else
-			user.visible_message(SPAN("notice", "\The [user] starts salving wounds on [M]'s [affecting.name]."), \
-					                      SPAN("notice", "You start salving wounds on [M]'s [affecting.name]."))
-			if(!do_mob(user, M, 10))
-				to_chat(user, SPAN("warning", "You must stand still to salve wounds."))
-				return 1
-			user.visible_message(SPAN("notice", "[user] covers wounds on [M]'s [affecting.name] with protein-renaturating gel."), \
-					                 SPAN("notice", "You cover wounds on [M]'s [affecting.name] with protein-renaturating gel."))
-			affecting.heal_damage(0,heal_burn)
-			use(1)
-			affecting.salve()
-			affecting.disinfect()
+	var/mob/living/carbon/human/H = M
+	var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting) //nullchecked by ..()
+
+	if(affecting.salved)
+		to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been salved."))
+		return 1
+
+	user.visible_message(SPAN("notice", "\The [user] starts salving wounds on [M]'s [affecting.name]."), \
+						 SPAN("notice", "You start salving wounds on [M]'s [affecting.name]."))
+	if(!do_mob(user, M, 10))
+		to_chat(user, SPAN("warning", "You must stand still to salve wounds."))
+		return 1
+
+	user.visible_message(SPAN("notice", "[user] covers wounds on [M]'s [affecting.name] with protein-renaturating gel."), \
+						 SPAN("notice", "You cover wounds on [M]'s [affecting.name] with protein-renaturating gel."))
+
+	affecting.heal_damage(0,heal_burn)
+	use(1)
+	affecting.salve()
 
 /obj/item/stack/medical/splint
 	name = "medical splints"

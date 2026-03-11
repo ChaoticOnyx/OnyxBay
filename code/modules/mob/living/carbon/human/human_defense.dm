@@ -986,7 +986,6 @@ meteor_act
 		return
 
 	var/hit_area = affecting.name
-	var/datum/wound/created_wound
 
 	visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
 	play_hitby_sound(AM)
@@ -1030,12 +1029,13 @@ meteor_act
 
 	process_momentum(AM, TT)
 
-/mob/living/carbon/human/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
-	if(!def_zone) ..()
+/mob/living/carbon/human/embed(obj/O, def_zone = null)
+	if(!def_zone)
+		..()
 
 	var/obj/item/organ/external/affecting = get_organ(def_zone)
 	if(affecting)
-		affecting.embed(O, supplied_wound = supplied_wound)
+		affecting.embed(O)
 
 /mob/living/carbon/human/proc/bloody_hands(mob/living/source, amount = 2)
 	var/obj/item/clothing/gloves/gloves = get_equipped_item(slot_gloves)

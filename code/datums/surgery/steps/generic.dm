@@ -60,10 +60,9 @@
 	return parent_organ.open()
 
 /datum/surgery_step/generic/cauterize/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	var/datum/wound/cut/W = parent_organ.get_incision()
 	announce_preop(user,
-		"[user] is beginning to cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [parent_organ] with \the [tool].",
-		"You are beginning to cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [parent_organ] with \the [tool]."
+		"[user] is beginning to cauterize \the [target]'s [parent_organ] with \the [tool].",
+		"You are beginning to cauterize \the [target]'s [parent_organ] with \the [tool]."
 		)
 	target.custom_pain(
 		"Your [parent_organ] is being burned!",
@@ -73,16 +72,17 @@
 	return ..()
 
 /datum/surgery_step/generic/cauterize/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	var/datum/wound/cut/W = parent_organ.get_incision()
 	announce_success(user,
-		"[user] cauterizes[W ? " \a [W.desc] on" : ""] \the [target]'s [parent_organ] with \the [tool].",
-		"You cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [parent_organ] with \the [tool]."
+		"[user] cauterizes \the [target]'s [parent_organ] with \the [tool].",
+		"You cauterize \the [target]'s [parent_organ] with \the [tool]."
 		)
 	if(parent_organ.clamped())
 		parent_organ.remove_clamps()
 	if(parent_organ.is_stump())
 		parent_organ.status &= ~ORGAN_ARTERY_CUT
-	W?.close()
+
+	parent_organ.scabbed = parent_organ.max_bleeing
+	parent_organ.update_damages()
 
 /datum/surgery_step/generic/cauterize/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,

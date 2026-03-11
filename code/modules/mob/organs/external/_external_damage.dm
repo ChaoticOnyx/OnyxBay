@@ -364,16 +364,16 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		return FALSE
 
 	if(burn_dam && burn)
-		heal_burn_damage(burn * burn_ratio, robo_repair, FALSE, FALSE)
+		heal_burn_damage(burn, robo_repair, FALSE, FALSE)
 
 	if(brute_dam && brute)
-		var/blunt_ratio = blunt_dam / brute_dam
-		var/sharp_ratio = 1 - blunt_ratio
+		var/blunt_heal_ratio = blunt_dam / brute_dam
+		var/sharp_heal_ratio = 1 - blunt_ratio
 
 		if(blunt_ratio)
-			heal_blunt_damage(brute * blunt_ratio, robo_repair, FALSE, FALSE)
+			heal_blunt_damage(brute * blunt_heal_ratio, robo_repair, FALSE, FALSE)
 		if(sharp_ratio)
-			heal_sharp_damage(brute * sharp_ratio, robo_repair, FALSE, FALSE)
+			heal_sharp_damage(brute * sharp_heal_ratio, robo_repair, FALSE, FALSE)
 
 		brute_dam = pierce_dam + cut_dam + blunt_dam
 

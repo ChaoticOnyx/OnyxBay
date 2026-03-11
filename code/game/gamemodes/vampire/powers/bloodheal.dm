@@ -69,10 +69,6 @@
 		CHECK_HEAL_BREAK(12)
 
 		for(var/obj/item/organ/external/current_organ in organs)
-			for(var/datum/wound/wound in current_organ.wounds)
-				LAZYCLEARLIST(wound.embedded_objects)
-
-			// remove embedded objects and drop them on the floor
 			current_organ.drop_embedded_objects()
 
 		var/organ_heal_blood = 0
