@@ -213,7 +213,7 @@
 	sort_string = "VABCA"
 
 /datum/design/item/mcu/vga_truecolor
-	name = "Monochrome Display module"
+	name = "TrueColor Display module"
 	id = "vga_truecolor"
 	build_type = PROTOLATHE
 	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 6, TECH_BIO = 4)
