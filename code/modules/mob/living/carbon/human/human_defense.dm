@@ -47,19 +47,22 @@ meteor_act
 		projectile_affect_poise(P, P.poisedamage / 3, def_zone)
 		return PROJECTILE_FORCE_ARMORBLOCK
 
+	var/blocked_multiplier = blocked_mult(blocked)
+
 	// Internal damage
 	// Some day we should make internals deal with blunt and sharp damage differently, but for now it's like this, if 'blocked' is non-zero, then the projectile's already lost its SHARP/EDGE flags and thus we cut the damage accordingly
 	if(length(organ.internal_organs))
-		var/internal_damage_prob = 70 * blocked_mult(blocked) // 70% for a naked dude/armor fail, 35% if one armor layer's succeeded, etc.
+		var/internal_damage_prob = 100 * blocked_multiplier // 100% for a naked dude/armor fail, 50% if one armor layer's succeeded, etc. The real chance is still a bit lower, though, since each organ has a chance of being damaged.
 		if(organ && P.damage_type == BRUTE)
 			internal_damage_prob *= organ.brute_mod
 
 		// If our bodypart is a pile of shredded meat then it doesn't protect organs well
-		if(organ.damage > organ.max_damage)
-			internal_damage_prob *= organ.damage / organ.max_damage * 2
+		var/organ_total_damage = organ.get_damage()
+		if(organ_total_damage > organ.max_damage)
+			internal_damage_prob *= organ_total_damage / organ.max_damage * 2
 
 		if(prob(internal_damage_prob))
-			var/penetrating_damage = P.damage * P.penetration_modifier * PROJECTILE_INTERNAL_DAMAGE_MULT * blocked_mult(blocked)
+			var/penetrating_damage = P.damage * P.penetration_modifier * PROJECTILE_INTERNAL_DAMAGE_MULT * blocked_multiplier
 			if(organ.encased && !(organ.status & ORGAN_BROKEN))
 				penetrating_damage *= 0.75 // Ribs and skulls somewhat protect
 
@@ -89,9 +92,9 @@ meteor_act
 			organ.embed(SP)
 
 	// Poise damage, the last actual harmful thing to happen
-	projectile_affect_poise(P, P.poisedamage * blocked_mult(blocked), def_zone)
+	projectile_affect_poise(P, P.poisedamage * blocked_multiplier, def_zone)
 	// Spawning blood if necessary
-	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
+	projectile_hit_bloody(P, P.damage * blocked_multiplier, def_zone)
 
 	return blocked
 

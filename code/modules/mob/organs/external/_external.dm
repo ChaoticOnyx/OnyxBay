@@ -598,29 +598,26 @@ This function completely restores a damaged organ to perfect condition.
 	if(scabbed < max_bleeding)
 		if(!clamped)
 			scabbed += (H ? H.coagulation : 1.0) * ((bandaged >= scabbed) ? 1.0 : 0.5) * wound_update_accuracy
-			return
+	else
+		heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
 
-	// Actual damage regeneration:
-	heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
-
-	// Evenly spreading regeneration between burn and brute damage if both are present
-	if(burn_dam && brute_dam)
-		heal_amt *= 0.5
-
-	if(burn_dam)
-		heal_burn_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
-
-	if(brute_dam)
-		if(blunt_dam && (pierce_dam + cut_dam))
+		// Evenly spreading regeneration between burn and brute damage if both are present
+		if(burn_dam && brute_dam)
 			heal_amt *= 0.5
 
-		 if(blunt_dam)
-		 	to_chat(H, "Trying to heal [heal_amt * (salved ? 2.5 : 1.0)] blunt_dam")
-		 	heal_blunt_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
+		if(burn_dam)
+			heal_burn_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
 
-		// Wounds won't close naturally if they are clamped
-		if(!clamped)
-			heal_sharp_damage(heal_amt, FALSE, FALSE, FALSE)
+		if(brute_dam)
+			if(blunt_dam && (pierce_dam + cut_dam))
+				heal_amt *= 0.5
+
+			if(blunt_dam)
+				heal_blunt_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
+
+			// Wounds won't close naturally if they are clamped
+			if(!clamped)
+				heal_sharp_damage(heal_amt, FALSE, FALSE, FALSE)
 
 	update_damages()
 	owner?.update_health()
@@ -1249,28 +1246,32 @@ This function completely restores a damaged organ to perfect condition.
 	var/sharp_desc = ""
 	if(cut_dam)
 		switch(round((cut_dam / max_damage) * 100))
-			if(0 to 20)
+			if(0 to 10)
+				sharp_desc = "thin"
+			if(11 to 30)
 				sharp_desc = "narrow"
-			if(21 to 45)
-				sharp_desc = ""
-			if(46 to 70)
+			if(31 to 50)
+				sharp_desc = "moderate"
+			if(51 to 70)
 				sharp_desc = "wide"
-			if(71 to 99)
+			if(71 to 90)
 				sharp_desc = "gaping"
-			if(100)
+			else
 				sharp_desc = "<b>massive</b>"
 	if(pierce_dam)
 		if(sharp_desc)
 			sharp_desc += ", "
 		switch(round((pierce_dam / max_damage) * 100))
-			if(0 to 20)
+			if(0 to 10)
+				sharp_desc += "surface"
+			if(11 to 30)
 				sharp_desc += "shallow"
-			if(21 to 45)
-				sharp_desc += ""
-			if(46 to 70)
-				sharp_desc += "deepish"
-			if(71 to 99)
-				sharp_desc += "deep"
+			if(31 to 50)
+				sharp_desc += "muscle-deep"
+			if(51 to 70)
+				sharp_desc += "bone-deep"
+			if(71 to 90)
+				sharp_desc += "extremely deep"
 			if(100)
 				sharp_desc += "<b>penetrating</b>"
 
