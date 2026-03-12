@@ -64,8 +64,8 @@
 		// Arc discharge — max 2 per shot
 		if(crack_arcs_fired < 2 && prob(20))
 			crack_arcs_fired++
-			var/turf/arc_target = locate(clamp(crack_turf.x + rand(-3, 3), 1, world.maxx), clamp(crack_turf.y + rand(-3, 3), 1, world.maxy), z)
-			if(arc_target && can_see(C, arc_target, 4))
+			var/turf/arc_target = sm_arc_endpoint(C, locate(clamp(crack_turf.x + rand(-3, 3), 1, world.maxx), clamp(crack_turf.y + rand(-3, 3), 1, world.maxy), z))
+			if(arc_target && arc_target != crack_turf)
 				INVOKE_ASYNC(C, /atom.proc/Beam, arc_target, arc_state, 'icons/effects/beam.dmi', 4, 10)
 				for(var/turf/T in get_line(C, arc_target))
 					for(var/mob/living/carbon/M in T)
@@ -232,9 +232,11 @@
 /obj/machinery/power/sm_resonance_tap/proc/do_arc_visuals(obj/machinery/power/supermatter/SM, arc_state, shock_damage)
 	// Each concurrent Beam call from the same source deletes the other's overlays every tick.
 	// Fix: use a temporary relay object as the midpoint source so every segment has a unique source.
-	var/mid_x = clamp(round((x + SM.x) / 2) + rand(-3, 3), 1, world.maxx)
-	var/mid_y = clamp(round((y + SM.y) / 2) + rand(-3, 3), 1, world.maxy)
-	var/turf/mid_turf = locate(mid_x, mid_y, z)
+	// Relay is picked from the middle third of the actual clear path between src and SM,
+	// so the two beam segments never cross a wall.
+	var/list/arc_path = get_line(src, SM)
+	var/path_len = arc_path.len
+	var/turf/mid_turf = arc_path[clamp(round(path_len * rand(30, 70) / 100), 2, max(path_len - 1, 2))]
 	var/obj/effect/sm_arc_relay/relay = new(mid_turf)
 
 	// src → relay (seg 1), relay → SM (seg 2): two segments, two unique sources, zigzag arc
@@ -243,8 +245,8 @@
 
 	// Corona discharge from SM — always uses a relay to avoid source conflict with other taps' coronas
 	var/obj/effect/sm_arc_relay/relay_corona = new(get_turf(SM))
-	var/turf/corona = locate(clamp(SM.x + rand(-4, 4), 1, world.maxx), clamp(SM.y + rand(-4, 4), 1, world.maxy), z)
-	if(corona && can_see(SM, corona, 6))
+	var/turf/corona = sm_arc_endpoint(SM, locate(clamp(SM.x + rand(-4, 4), 1, world.maxx), clamp(SM.y + rand(-4, 4), 1, world.maxy), z))
+	if(corona && corona != get_turf(SM))
 		INVOKE_ASYNC(relay_corona, /atom.proc/Beam, corona, arc_state, 'icons/effects/beam.dmi', 3, 10)
 	else
 		corona = null // null it out so the damage path below is skipped too
@@ -254,8 +256,8 @@
 	var/turf/corona2_target
 	if(tap_level >= 3)
 		var/obj/effect/sm_arc_relay/relay2 = new(get_turf(SM))
-		corona2_target = locate(clamp(SM.x + rand(-3, 3), 1, world.maxx), clamp(SM.y + rand(-3, 3), 1, world.maxy), z) // shorter than corona1
-		if(corona2_target && can_see(SM, corona2_target, 5))
+		corona2_target = sm_arc_endpoint(SM, locate(clamp(SM.x + rand(-3, 3), 1, world.maxx), clamp(SM.y + rand(-3, 3), 1, world.maxy), z)) // shorter than corona1
+		if(corona2_target && corona2_target != get_turf(SM))
 			INVOKE_ASYNC(relay2, /atom.proc/Beam, corona2_target, arc_state, 'icons/effects/beam.dmi', 3, 10)
 		else
 			corona2_target = null
@@ -265,7 +267,7 @@
 
 	// Damage anyone caught on any arc path (zigzag main arc + corona branches)
 	var/list/already_shocked = list()
-	var/list/paths = list(get_line(src, mid_turf), get_line(mid_turf, SM))
+	var/list/paths = list(arc_path) // reuse the already-computed full path src→SM
 	if(corona)
 		paths += list(get_line(SM, corona))
 	if(corona2_target)
@@ -392,6 +394,19 @@
 		fading = FALSE
 		return
 	qdel(src)
+
+// Walks the line from A toward B and returns the last unblocked turf.
+// The arc visual is clipped at the first wall/closed door rather than disappearing entirely.
+/proc/sm_arc_endpoint(atom/A, atom/B)
+	var/turf/last = get_turf(A)
+	for(var/turf/T in get_line(A, B))
+		if(T.opacity)
+			return last
+		var/obj/machinery/door/D = locate(/obj/machinery/door) in T
+		if(D && D.opacity)
+			return last
+		last = T
+	return last
 
 // Invisible relay object used as an intermediate beam source to avoid the single-source
 // cleanup conflict in /atom/proc/Beam — one relay per arc segment, deleted after ~0.7s
