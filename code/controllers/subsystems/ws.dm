@@ -50,7 +50,7 @@ SUBSYSTEM_DEF(ws)
 	var/list/parts = splittext(config.ws.address, ":")
 
 	if(length(parts) == 2) // ":<PORT>", splittext splits this into ["", "<PORT>"]
-		port = text2num(parts[1]) || 0
+		port = text2num(parts[2]) || 0
 	else if(length(parts) == 3) // "ws[s]://<IP/DOMAIN>:<PORT>"
 		port = text2num(parts[3]) || 0
 	else
