@@ -598,28 +598,29 @@ This function completely restores a damaged organ to perfect condition.
 	if(scabbed < max_bleeding)
 		if(!clamped)
 			scabbed += (H ? H.coagulation : 1.0) * ((bandaged >= scabbed) ? 1.0 : 0.5) * wound_update_accuracy
-	else
-		heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
-		to_chat(H, "RAW REGEN: [heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier]")
-		to_chat(H, "ROUNDED REGEN: [round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)]")
+			return
 
-		// Evenly spreading regeneration between burn and brute damage if both are present
-		if(burn_dam && brute_dam)
+	// Actual damage regeneration:
+	heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
+
+	// Evenly spreading regeneration between burn and brute damage if both are present
+	if(burn_dam && brute_dam)
+		heal_amt *= 0.5
+
+	if(burn_dam)
+		heal_burn_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
+
+	if(brute_dam)
+		if(blunt_dam && (pierce_dam + cut_dam))
 			heal_amt *= 0.5
 
-		if(burn_dam)
-			heal_burn_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
+		 if(blunt_dam)
+		 	to_chat(H, "Trying to heal [heal_amt * (salved ? 2.5 : 1.0)] blunt_dam")
+		 	heal_blunt_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
 
-		if(brute_dam)
-			if(blunt_dam && (pierce_dam + cut_dam))
-				heal_amt *= 0.5
-
-			 if(blunt_dam)
-			 	heal_blunt_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
-
-			// Wounds won't close naturally if they are clamped
-			if(!clamped)
-				heal_sharp_damage(heal_amt, FALSE, FALSE, FALSE)
+		// Wounds won't close naturally if they are clamped
+		if(!clamped)
+			heal_sharp_damage(heal_amt, FALSE, FALSE, FALSE)
 
 	update_damages()
 	owner?.update_health()
@@ -886,6 +887,8 @@ This function completely restores a damaged organ to perfect condition.
 /obj/item/organ/external/proc/remove_clamps()
 	. = clamped
 	clamped = FALSE
+	update_damages()
+	owner?.update_surgery()
 	return
 
 /obj/item/organ/external/proc/update_tally()
@@ -1309,17 +1312,20 @@ This function completely restores a damaged organ to perfect condition.
 	var/bandages_desc = ""
 	if(max_bleeding)
 		if(bandaged >= max_bleeding)
-			flavor_text += "bandaged "
+			flavor_text += "is bandaged"
 		else if(scabbed >= max_bleeding)
-			flavor_text += "scabbed "
+			flavor_text += "is scabbed"
 		else if(bandaged && bleeding)
-			flavor_text += "partially bandaged, bleeding "
+			flavor_text += "is partially bandaged, bleeding"
 		else
-			flavor_text += "<b>bleeding</b> "
+			flavor_text += "is <b>bleeding</b>"
 
 	// Assembling all the stuff from above into a human-readable line
 	if(blunt_desc)
-		flavor_text += "is " + blunt_desc
+		if(flavor_text)
+			flavor_text += ", is " + blunt_desc
+		else
+			flavor_text += "is " + blunt_desc
 
 	if(sharp_desc)
 		if(flavor_text)
