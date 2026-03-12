@@ -47,26 +47,36 @@ SUBSYSTEM_DEF(ws)
 		"log" = config.ws.log,
 	)
 
-	var/parts = splittext(config.ws.address, ":")
+	var/list/parts = splittext(config.ws.address, ":")
 
-	if(length(parts) != 3)
-		CRASH("Invalid WebSocket address: [config.ws.address]")
-
-
-	port = text2num(parts[3]) || 0
+	if(length(parts) == 2) // ":<PORT>", splittext splits this into ["", "<PORT>"]
+		port = text2num(parts[2]) || 0
+	else if(length(parts) == 3) // "ws[s]://<IP/DOMAIN>:<PORT>"
+		port = text2num(parts[3]) || 0
+	else
+		log_to_dd("Invalid WebSocket address: [config.ws.address]")
+		return
 
 	if(!Z_WS_START(port, nameof(.proc/OnWSText), null, json_encode(cfg)))
-		CRASH("Failed to start a WebSocket server: [Z_GET_LAST_ERROR()]")
+		log_to_dd("Failed to start a WebSocket server: [Z_GET_LAST_ERROR()]")
+		return
 
 	port = Z_WS_GET_PORT()
 
 	// In case we use a proxy we should display the proxy's port, not the WebSocket's server port.
 	if(config.ws.proxy_port)
+		if(length(parts) != 3) // Secure connection requires a domain, so format should be "ws[s]://<DOMAIN>:<PORT>"
+			log_to_dd("Invalid WebSocket address: [config.ws.address]")
+			return
+
 		address = "[parts[1]]:[parts[2]]:[config.ws.proxy_port]"
 	else
-		address = "[parts[1]]:[parts[2]]:[port]"
+		if(length(parts) == 2) // ":<PORT>"
+			address = "ws://[world.internet_address || world.address]:[port]"
+		else // Concat a user specified protocol and a domain with a real port.
+			address = "[parts[1]]:[parts[2]]:[port]"
 
-	log_debug("Running a WebSocket server on port: [port]")
+	log_debug("Running a WebSocket server on [address]")
 
 	loop()
 
@@ -82,6 +92,7 @@ SUBSYSTEM_DEF(ws)
 		Z_WS_STOP()
 	
 	port = null
+	address = null
 	GLOB.ws_secret = null
 
 	. = ..()

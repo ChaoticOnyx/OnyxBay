@@ -1,6 +1,8 @@
 [ws]
 # For secure connections (WSS), you need a domain and a reverse proxy.
-address = "ws://127.0.0.1:0"
+# Formats: "ws://<IP>:<PORT>", "wss://<DOMAIN>:<PORT>", ":<PORT>".
+# By default with the format ":<PORT>" the server will use world.internet_address or world.address as the address.
+address = ":0"
 
 # Set this to the port of the reverse proxy.
 # proxy_port = 0
