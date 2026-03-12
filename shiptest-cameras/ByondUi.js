@@ -4,13 +4,13 @@
  * @license MIT
  */
 
-import { shallowDiffers } from "common/react";
-import { debounce } from "common/timer";
-import { Component, createRef } from "inferno";
-import { createLogger } from "../logging";
-import { computeBoxProps } from "./Box";
+import { shallowDiffers } from 'common/react';
+import { debounce } from 'common/timer';
+import { Component, createRef } from 'inferno';
+import { createLogger } from '../logging';
+import { computeBoxProps } from './Box';
 
-const logger = createLogger("ByondUi");
+const logger = createLogger('ByondUi');
 
 // Stack of currently allocated BYOND UI element ids.
 const byondUiStack = [];
@@ -20,7 +20,7 @@ const createByondUiElement = (elementId) => {
   const index = byondUiStack.length;
   byondUiStack.push(null);
   // Get a unique id
-  const id = elementId || "byondui_" + index;
+  const id = elementId || 'byondui_' + index;
   logger.log(`allocated '${id}'`);
   // Return a control structure
   return {
@@ -33,21 +33,21 @@ const createByondUiElement = (elementId) => {
       logger.log(`unmounting '${id}'`);
       byondUiStack[index] = null;
       Byond.winset(id, {
-        parent: "",
+        parent: '',
       });
     },
   };
 };
 
-window.addEventListener("beforeunload", () => {
+window.addEventListener('beforeunload', () => {
   // Cleanly unmount all visible UI elements
   for (let index = 0; index < byondUiStack.length; index++) {
     const id = byondUiStack[index];
-    if (typeof id === "string") {
+    if (typeof id === 'string') {
       logger.log(`unmounting '${id}' (beforeunload)`);
       byondUiStack[index] = null;
       Byond.winset(id, {
-        parent: "",
+        parent: '',
       });
     }
   }
@@ -59,8 +59,12 @@ window.addEventListener("beforeunload", () => {
 const getBoundingBox = (element) => {
   const pixelRatio = window.devicePixelRatio ?? 1;
   const rect = element.getBoundingClientRect();
+  // prettier-ignore
   return {
-    pos: [rect.left * pixelRatio, rect.top * pixelRatio],
+    pos: [
+      rect.left * pixelRatio,
+      rect.top * pixelRatio,
+    ],
     size: [
       (rect.right - rect.left) * pixelRatio,
       (rect.bottom - rect.top) * pixelRatio,
@@ -73,7 +77,6 @@ export class ByondUi extends Component {
     super(props);
     this.containerRef = createRef();
     this.byondUiElement = createByondUiElement(props.params?.id);
-    this.resizeObserver = null;
     this.handleResize = debounce(() => {
       this.forceUpdate();
     }, 100);
@@ -89,38 +92,37 @@ export class ByondUi extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.handleResize);
-    if (window.ResizeObserver && this.containerRef.current) {
-      this.resizeObserver = new window.ResizeObserver(() => {
-        this.handleResize();
-      });
-      this.resizeObserver.observe(this.containerRef.current);
+    // IE8: It probably works, but fuck you anyway.
+    if (Byond.IS_LTE_IE10) {
+      return;
     }
+    window.addEventListener('resize', this.handleResize);
     this.componentDidUpdate();
     this.handleResize();
-    requestAnimationFrame(() => {
-      this.handleResize();
-    });
   }
 
   componentDidUpdate() {
+    // IE8: It probably works, but fuck you anyway.
+    if (Byond.IS_LTE_IE10) {
+      return;
+    }
     const { params = {} } = this.props;
     const box = getBoundingBox(this.containerRef.current);
-    logger.debug("bounding box", box);
+    logger.debug('bounding box', box);
     this.byondUiElement.render({
       parent: Byond.windowId,
       ...params,
-      pos: box.pos[0] + "," + box.pos[1],
-      size: box.size[0] + "x" + box.size[1],
+      pos: box.pos[0] + ',' + box.pos[1],
+      size: box.size[0] + 'x' + box.size[1],
     });
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.handleResize);
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect();
-      this.resizeObserver = null;
+    // IE8: It probably works, but fuck you anyway.
+    if (Byond.IS_LTE_IE10) {
+      return;
     }
+    window.removeEventListener('resize', this.handleResize);
     this.byondUiElement.unmount();
   }
 
@@ -129,7 +131,7 @@ export class ByondUi extends Component {
     return (
       <div ref={this.containerRef} {...computeBoxProps(rest)}>
         {/* Filler */}
-        <div style={{ "min-height": "22px" }} />
+        <div style={{ 'min-height': '22px' }} />
       </div>
     );
   }

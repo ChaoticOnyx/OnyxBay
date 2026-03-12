@@ -25,6 +25,7 @@
 	/// If text, uses the text or, if TRUE, uses "*AUTO-[name]"
 	var/render_target_name = TRUE
 	var/mob/owner = null
+	var/auto_create_on_mob = TRUE
 
 
 /atom/movable/renderer/Destroy()
@@ -84,11 +85,12 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 /// Creates the mob's renderers on /Login()
 /mob/proc/CreateRenderers()
 	for (var/atom/movable/renderer/renderer as anything in subtypesof(/atom/movable/renderer))
-		renderer = new renderer (null, src)
-		A_LAZYSET(renderers, renderer.name, renderer)
-		if (renderer.relay)
-			my_client.screen += renderer.relay
-		my_client.screen += renderer
+		if(renderer.auto_create_on_mob)
+			renderer = new renderer (null, src)
+			A_LAZYSET(renderers, renderer.name, renderer)
+			if (renderer.relay)
+				my_client.screen += renderer.relay
+			my_client.screen += renderer
 
 
 /// Removes the mob's renderers on /Logout()
@@ -568,3 +570,454 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	)
 	//add_filter("lamps_selfglow_bloom", 1, bloom_filter(threshold = "#aaaaaa", size = 5, offset = 3, alpha = 100))
 	//add_filter("lamps_glare", 1, radial_blur_filter(size = 0.05))
+
+
+/// Camera-local renderer duplicates for embedded map controls.
+/// Unlike regular mob renderers, these are created per viewer and per camera map.
+/// They keep the same plane/group/effect structure as player renderers,
+/// but are isolated inside assigned_map and use map-local render targets.
+
+/proc/camera_map_safe_id(value)
+	var/text = "[value]"
+	text = replacetext(text, "\[", "")
+	text = replacetext(text, "\]", "")
+	text = replacetext(text, ":", "_")
+	text = replacetext(text, "/", "_")
+	text = replacetext(text, ".", "_")
+	text = replacetext(text, "*", "")
+	text = lowertext(text)
+	return text
+
+/proc/camera_map_target(base_name, map_ref)
+	return "*cam_[camera_map_safe_id(base_name)]_[camera_map_safe_id(map_ref)]"
+
+/atom/movable/renderer/camera_map
+	auto_create_on_mob = FALSE
+	appearance_flags = PLANE_MASTER
+	screen_loc = "SCREEN_SOUTHWEST"
+	plane = LOWEST_PLANE
+	blend_mode = BLEND_OVERLAY
+
+/atom/movable/renderer/camera_map/Destroy()
+	owner = null
+	QDEL_NULL(relay)
+	return ..()
+
+/atom/movable/renderer/camera_map/proc/GetLocalRenderTargetName()
+	if(istext(render_target_name))
+		return camera_map_target(render_target_name, assigned_map)
+	if(render_target_name)
+		return camera_map_target(ckey(name), assigned_map)
+	return null
+
+/atom/movable/renderer/camera_map/proc/GetGroupTargetName(group_plane)
+	return camera_map_target("group_[group_plane]", assigned_map)
+
+/atom/movable/renderer/camera_map/GraphicsUpdate()
+	return
+
+/atom/movable/renderer/camera_map/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	assigned_map = map_ref
+	owner = viewer
+
+	if(assigned_map)
+		screen_loc = "[assigned_map]:CENTER"
+
+	var/local_target = GetLocalRenderTargetName()
+	if(local_target)
+		render_target = local_target
+
+	if(isnull(group) || group == RENDER_GROUP_NONE)
+		return
+
+	relay = new
+	relay.assigned_map = assigned_map
+	relay.del_on_map_removal = FALSE
+	relay.screen_loc = "[assigned_map]:CENTER"
+	relay.appearance_flags = PASS_MOUSE | NO_CLIENT_COLOR | KEEP_TOGETHER
+	relay.name = "[name] relay ([assigned_map])"
+	relay.mouse_opacity = mouse_opacity
+	relay.render_source = render_target
+	relay.layer = (plane + abs(LOWEST_PLANE)) * 0.5
+	relay.plane = group
+	if(isnull(relay_blend_mode))
+		relay.blend_mode = blend_mode
+	else
+		relay.blend_mode = relay_blend_mode
+
+/// ---------------------------------------------------------------------------
+/// Plane renderers
+/// ---------------------------------------------------------------------------
+
+/atom/movable/renderer/camera_map/letterbox
+	name  = "Camera Letterbox Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = BLACKNESS_PLANE
+	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
+	blend_mode = BLEND_MULTIPLY
+	color = list(null, null, null, "#0000", "#000f")
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/space
+	name  = "Camera Space Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = SPACE_PLANE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/skybox
+	name = "Camera Skybox Renderer"
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	group = RENDER_GROUP_SCENE
+	plane = SKYBOX_PLANE
+	blend_mode = BLEND_MULTIPLY
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/turf
+	name  = "Camera Turf Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = TURF_PLANE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/game
+	name  = "Camera Game Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = DEFAULT_PLANE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/game/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	GraphicsUpdate()
+
+/atom/movable/renderer/camera_map/game/GraphicsUpdate()
+	if(owner?.client && owner.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
+		add_filter("AO", 0, list(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA"))
+	else
+		remove_filter("AO")
+
+/atom/movable/renderer/camera_map/runechat
+	name  = "Camera Runechat Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = RUNECHAT_PLANE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/observers
+	name  = "Camera Observers Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = OBSERVER_PLANE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/lighting
+	name  = "Camera Lighting Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = LIGHTING_PLANE
+	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
+	relay_blend_mode = BLEND_MULTIPLY
+	color = list(
+		-1,  0,  0,  0,
+		 0, -1,  0,  0,
+		 0,  0, -1,  0,
+		 0,  0,  0,  0,
+		 1,  1,  1,  1
+	)
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	render_target_name = LIGHTING_RENDER_TARGET
+
+/atom/movable/renderer/camera_map/lighting/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	filters += filter(
+		type = "alpha",
+		render_source = camera_map_target(EMISSIVE_TARGET, assigned_map),
+		flags = MASK_INVERSE
+	)
+
+/// visual plane above darkness
+/atom/movable/renderer/camera_map/above_lighting
+	name  = "Camera Above Lighting Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/lighting_lamps_source_renderer
+	name = "Camera Lamps Source Renderer"
+	group = RENDER_GROUP_NONE
+	plane = LIGHTING_LAMPS_PLANE
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
+	render_target_name = LIGHTING_LAMPS_RENDER_TARGET
+
+/atom/movable/renderer/camera_map/lighting_lamps_source_renderer/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	if(relay)
+		relay.alpha = 0
+		relay.mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+
+/atom/movable/renderer/camera_map/lighting_lamps_selfglow_renderer
+	name = "Camera Lamps Glow Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = LIGHTING_LAMPS_GLOW_PLANE
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
+	blend_mode = BLEND_ADD
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/lighting_lamps_selfglow_renderer/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	GraphicsUpdate()
+
+/atom/movable/renderer/camera_map/lighting_lamps_selfglow_renderer/GraphicsUpdate()
+	. = ..()
+	remove_filter("add_lamps_to_selfglow")
+	remove_filter("lamps_selfglow_bloom")
+
+	if(!owner?.client)
+		return
+
+	var/level = owner.get_preference_value("LAMP_GLOW")
+	if(isnull(level) || level == GLOB.PREF_OFF)
+		return
+
+	var/bloomsize = 0
+	var/bloomoffset = 0
+	switch(level)
+		if(GLOB.PREF_LOW)
+			bloomsize = 2
+			bloomoffset = 1
+		if(GLOB.PREF_MED)
+			bloomsize = 3
+			bloomoffset = 2
+		if(GLOB.PREF_HIGH)
+			bloomsize = 5
+			bloomoffset = 3
+		else
+			return
+
+	add_filter("add_lamps_to_selfglow", 1, layering_filter(
+		render_source = camera_map_target(LIGHTING_LAMPS_RENDER_TARGET, assigned_map),
+		blend_mode = BLEND_OVERLAY
+	))
+
+	add_filter("lamps_selfglow_bloom", 1, bloom_filter(
+		threshold = "#aaaaaa",
+		size = bloomsize,
+		offset = bloomoffset,
+		alpha = 100
+	))
+
+/atom/movable/renderer/camera_map/lighting_lamps_glare_renderer
+	name = "Camera Lamps Glare Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = LIGHTING_LAMPS_GLARE_PLANE
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/lighting_lamps_glare_renderer/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	GraphicsUpdate()
+
+/atom/movable/renderer/camera_map/lighting_lamps_glare_renderer/GraphicsUpdate()
+	. = ..()
+	remove_filter("add_lamps_to_glare")
+	remove_filter("lamps_glare")
+
+	if(!owner?.client)
+		return
+
+	if(owner.get_preference_value("LAMP_GLARE") != GLOB.PREF_ENABLED)
+		return
+
+	add_filter("add_lamps_to_glare", 1, layering_filter(
+		render_source = camera_map_target(LIGHTING_LAMPS_RENDER_TARGET, assigned_map),
+		blend_mode = BLEND_OVERLAY
+	))
+
+	add_filter("lamps_glare", 1, radial_blur_filter(size = 0.05))
+
+/atom/movable/renderer/camera_map/additive_lighting
+	name  = "Camera Additive Lighting Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = LIGHTING_EXPOSURE_PLANE
+	relay_blend_mode = BLEND_ADD
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/additive_lighting/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	GraphicsUpdate()
+
+/atom/movable/renderer/camera_map/additive_lighting/GraphicsUpdate()
+	. = ..()
+	remove_filter("blur_exposure")
+	alpha = 0
+
+	if(owner?.client && owner.get_preference_value("LAMP_EXPOSURE") == GLOB.PREF_ENABLED)
+		alpha = 255
+		add_filter("blur_exposure", 1, gauss_blur_filter(20))
+
+/atom/movable/renderer/camera_map/screen_effects
+	name  = "Camera Screen Effects Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = FULLSCREEN_PLANE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/obfuscation
+	name  = "Camera Obfuscation Renderer"
+	group = RENDER_GROUP_SCENE
+	plane = OBFUSCATION_PLANE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/interface
+	name  = "Camera Interface Renderer"
+	group = RENDER_GROUP_SCREEN
+	plane = HUD_PLANE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/open_space
+	name  = "Camera Open Space Renderer"
+	group = RENDER_GROUP_NONE
+	plane = OPENSPACE_PLANE
+	render_target_name = FALSE
+
+/atom/movable/renderer/camera_map/open_space/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	add_filter("blurry", 0, list(type = "blur", size = 0.65))
+
+/atom/movable/renderer/camera_map/over_open_space
+	name  = "Camera Over Open Space Renderer"
+	group = RENDER_GROUP_NONE
+	plane = OVER_OPENSPACE_PLANE
+	render_target_name = FALSE
+
+/// ---------------------------------------------------------------------------
+/// Group renderers
+/// ---------------------------------------------------------------------------
+
+/atom/movable/renderer/camera_map/scene_group
+	name  = "Camera Scene Group Renderer"
+	group = RENDER_GROUP_FINAL
+	plane = RENDER_GROUP_SCENE
+	mouse_opacity = MOUSE_OPACITY_NORMAL
+	render_target_name = "camera_scene_group"
+	var/renderer_contrast = FALSE
+	var/val1 = 1
+	var/val2 = -0.05
+
+/atom/movable/renderer/camera_map/scene_group/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	add_filter("camera_warp", 0, list(
+		type = "displace",
+		render_source = camera_map_target("*warp", assigned_map),
+		size = 5
+	))
+	add_filter("camera_heat", 0, list(
+		type = "displace",
+		render_source = camera_map_target(TEMPERATURE_COMPOSITE_TARGET, assigned_map),
+		size = 2.5
+	))
+	GraphicsUpdate()
+
+/atom/movable/renderer/camera_map/scene_group/GraphicsUpdate()
+	if(!renderer_contrast)
+		remove_filter("fov_matrix")
+		return
+
+	add_filter("fov_matrix", 3, color_matrix_filter(list(
+		val1, val2, val2, 0,
+		val2, val1, val2, 0,
+		val2, val2, val1, 0,
+		0,    0,    0,    1,
+		0,    0,    0,    0
+	)))
+
+/atom/movable/renderer/camera_map/screen_group
+	name  = "Camera Screen Group Renderer"
+	group = RENDER_GROUP_FINAL
+	plane = RENDER_GROUP_SCREEN
+	render_target_name = "camera_screen_group"
+
+/atom/movable/renderer/camera_map/final_group
+	name  = "Camera Final Group Renderer"
+	group = RENDER_GROUP_NONE
+	plane = RENDER_GROUP_FINAL
+	render_target_name = "camera_final_group"
+
+/// ---------------------------------------------------------------------------
+/// Effect renderers
+/// ---------------------------------------------------------------------------
+
+/atom/movable/renderer/camera_map/warp
+	name  = "Camera Warp Renderer"
+	group = RENDER_GROUP_NONE
+	plane = WARP_EFFECT_PLANE
+	render_target_name = "*warp"
+
+/atom/movable/renderer/camera_map/heat
+	name = "Camera Heat Renderer"
+	group = RENDER_GROUP_NONE
+	plane = TEMPERATURE_EFFECT_PLANE
+	render_target_name = TEMPERATURE_COMPOSITE_TARGET
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+
+	var/obj/gas_heat_object = null
+	var/obj/steam_object = null
+
+/atom/movable/renderer/camera_map/heat/Destroy()
+	if(gas_heat_object)
+		vis_contents -= gas_heat_object
+		QDEL_NULL(gas_heat_object)
+	if(steam_object)
+		vis_contents -= steam_object
+		QDEL_NULL(steam_object)
+	return ..()
+
+/atom/movable/renderer/camera_map/heat/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	Setup()
+
+/atom/movable/renderer/camera_map/heat/GraphicsUpdate()
+	. = ..()
+	Setup()
+
+/atom/movable/renderer/camera_map/heat/proc/Setup()
+	if(gas_heat_object)
+		vis_contents -= gas_heat_object
+		QDEL_NULL(gas_heat_object)
+
+	if(steam_object)
+		vis_contents -= steam_object
+		QDEL_NULL(steam_object)
+
+	if(!owner?.client)
+		return
+
+	var/quality = owner.get_preference_value(/datum/client_preference/graphics_quality)
+
+	switch(quality)
+		if(GLOB.PREF_LOW)
+			gas_heat_object = new /atom/movable/heat_effect(null)
+			steam_object = new /atom/movable/steam_effect(null)
+		if(GLOB.PREF_MED)
+			gas_heat_object = new /atom/movable/particle_emitter/heat(null)
+			steam_object = new /atom/movable/particle_emitter/steam(null)
+		else
+			gas_heat_object = new /atom/movable/particle_emitter/heat/high(null)
+			steam_object = new /atom/movable/particle_emitter/steam(null)
+
+	vis_contents += gas_heat_object
+	vis_contents += steam_object
+
+/atom/movable/renderer/camera_map/emissive
+	name = "Camera Emissive Renderer"
+	group = RENDER_GROUP_NONE
+	plane = EMISSIVE_PLANE
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	render_target_name = EMISSIVE_TARGET
+
+/atom/movable/renderer/camera_map/emissive/Initialize(mapload, map_ref, mob/viewer)
+	. = ..()
+	filters += filter(
+		type = "color",
+		color = GLOB.em_mask_matrix
+	)

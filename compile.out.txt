@@ -1,0 +1,6 @@
+DM compiler version 516.1679
+loading baystation12.dme
+loading interface/skin.dmf
+saving baystation12.dmb (DEBUG mode)
+baystation12.dmb - 0 errors, 0 warnings (3/13/26 10:10 pm)
+Total time: 0:07
