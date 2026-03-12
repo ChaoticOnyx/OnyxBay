@@ -55,16 +55,19 @@ SUBSYSTEM_DEF(ws)
 		port = text2num(parts[3]) || 0
 	else
 		log_to_dd("Invalid WebSocket address: [config.ws.address]")
+		return
 
 	if(!Z_WS_START(port, nameof(.proc/OnWSText), null, json_encode(cfg)))
 		log_to_dd("Failed to start a WebSocket server: [Z_GET_LAST_ERROR()]")
+		return
 
 	port = Z_WS_GET_PORT()
 
 	// In case we use a proxy we should display the proxy's port, not the WebSocket's server port.
 	if(config.ws.proxy_port)
-		if(length(parts) != 3) // Secure connection reguires a domain, so format should be "ws[s]://<DOMAIN>:<PORT>"
+		if(length(parts) != 3) // Secure connection requires a domain, so format should be "ws[s]://<DOMAIN>:<PORT>"
 			log_to_dd("Invalid WebSocket address: [config.ws.address]")
+			return
 
 		address = "[parts[1]]:[parts[2]]:[config.ws.proxy_port]"
 	else
