@@ -45,7 +45,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		cut_dam = min(cut_dam + final_cut_damage, max_damage)
 
 	var/final_pierce_damage = min(potential_pierce_damage, max_pierce_damage)
-	if(final_cut_damage >= 2.5)
+	if(final_pierce_damage >= 2.5)
 		pierce_dam = min(pierce_dam + final_pierce_damage, max_damage)
 
 	return
@@ -408,15 +408,14 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	else
 		burn_dam = round(burn_dam, 0.05)
 
-	if(!should_update_damages)
-		return (amount - (.))
+	owner?.heal_this_tick += (.)
 
-	update_damages()
-	if(owner)
-		owner.heal_this_tick += (.)
-		owner.update_health()
-		if(update_damage_icon && update_damstate())
-			owner.update_damage_overlays()
+	if(should_update_damages)
+		update_damages()
+		if(owner)
+			owner.update_health()
+			if(update_damage_icon && update_damstate())
+				owner.update_damage_overlays()
 
 	return (amount - (.))
 
@@ -438,17 +437,14 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	else
 		blunt_dam = round(blunt_dam, 0.05)
 
-	brute_dam = pierce_dam + cut_dam + blunt_dam
+	owner?.heal_this_tick += (.)
 
-	if(!should_update_damages)
-		return (amount - (.))
-
-	update_damages()
-	if(owner)
-		owner.heal_this_tick += (.)
-		owner.update_health()
-		if(update_damage_icon && update_damstate())
-			owner.update_damage_overlays()
+	if(should_update_damages)
+		update_damages()
+		if(owner)
+			owner.update_health()
+			if(update_damage_icon && update_damstate())
+				owner.update_damage_overlays()
 
 	return (amount - (.))
 
@@ -480,17 +476,14 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	else
 		pierce_dam = round(pierce_dam, 0.05)
 
-	brute_dam = pierce_dam + cut_dam + blunt_dam
+	owner?.heal_this_tick += (cut_to_heal + pierce_to_heal)
 
-	if(!should_update_damages)
-		return (amount - (cut_to_heal + pierce_to_heal))
-
-	update_damages()
-	if(owner)
-		owner.heal_this_tick += (cut_to_heal + pierce_to_heal)
-		owner.update_health()
-		if(update_damstate() && update_damage_icon)
-			owner.update_damage_overlays()
+	if(should_update_damages)
+		update_damages()
+		if(owner)
+			owner.update_health()
+			if(update_damstate() && update_damage_icon)
+				owner.update_damage_overlays()
 
 	return (amount - (cut_to_heal + pierce_to_heal))
 

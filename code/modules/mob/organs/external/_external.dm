@@ -456,7 +456,7 @@ This function completely restores a damaged organ to perfect condition.
 	germ_level = 0
 	genetic_degradation = 0
 
-	slamped = 0
+	clamped = 0
 	salved = 0
 
 	remove_all_pain()
@@ -599,7 +599,9 @@ This function completely restores a damaged organ to perfect condition.
 		if(!clamped)
 			scabbed += (H ? H.coagulation : 1.0) * ((bandaged >= scabbed) ? 1.0 : 0.5) * wound_update_accuracy
 	else
-		heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.1)
+		heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
+		to_chat(H, "RAW REGEN: [heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier]")
+		to_chat(H, "ROUNDED REGEN: [round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)]")
 
 		// Evenly spreading regeneration between burn and brute damage if both are present
 		if(burn_dam && brute_dam)
@@ -609,7 +611,7 @@ This function completely restores a damaged organ to perfect condition.
 			heal_burn_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
 
 		if(brute_dam)
-			if(blunt_dam && (pierce_dam || cut_dam))
+			if(blunt_dam && (pierce_dam + cut_dam))
 				heal_amt *= 0.5
 
 			 if(blunt_dam)

@@ -274,7 +274,7 @@
 	if(I.singular_name != singular_name)
 		return
 
-	var/obj/item/stack/medical/advanced/O = I
+	var/obj/item/stack/medical/gel/O = I
 	if(!O.amount)
 		to_chat(user, SPAN("warning", "You are trying to refill \the [src] using an empty container."))
 		return
