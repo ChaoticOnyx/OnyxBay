@@ -320,7 +320,7 @@
 		if(QDELETED(C))
 			continue
 		var/delay = max_dist > 0 ? round((max_dist - get_dist(src, C)) / max_dist * stagger_window) : 0
-		spawn(delay) if(!QDELETED(C)) C.start_fading()
+		addtimer(CALLBACK(C, /obj/effect/decal/resonance_crack/proc/start_fading), delay)
 	// my_cracks is cleared immediately — spawn closures hold their own C references,
 	// so clearing the list before the timers fire is intentional and not a race condition
 	my_cracks = list()
@@ -384,12 +384,10 @@
 /obj/effect/decal/resonance_crack/proc/start_fading()
 	if(fading) return
 	fading = TRUE
-	INVOKE_ASYNC(src, .proc/fade)
+	addtimer(CALLBACK(src, /obj/effect/decal/resonance_crack/proc/fade), 120)
 
 /obj/effect/decal/resonance_crack/proc/fade()
-	if(QDELETED(src)) return
-	sleep(120) // ~12 seconds after tap deactivates
-	if(QDELETED(src)) return
+	if(QDELETED(src)) return // crack may have been deleted during the addtimer delay
 	if(parent_tap && !QDELETED(parent_tap) && parent_tap.active)
 		// tap was re-enabled — stay alive and re-register so we're tracked again
 		parent_tap.my_cracks |= src
