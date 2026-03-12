@@ -95,19 +95,26 @@
 	// --- Resonance side-effects, all scaled by power_drained ---
 
 	// Resonance Cracks: only at tap level 5, spread outward from the tap into adjacent floor tiles
-	if(tap_level >= 5 && prob(clamp(round(power_drained * 1.5), 1, 75)))
+	// Hard cap: at most 20 cracks per tap to bound damage_tick() loops and Process() iteration
+	if(tap_level >= 5 && my_cracks.len < 50 && prob(clamp(round(power_drained * 1.5), 1, 75)))
 		var/list/frontier = list()
-		// First priority: tiles directly adjacent to the tap
-		for(var/turf/simulated/floor/F in range(1, src))
-			if(!(locate(/obj/effect/decal/resonance_crack) in F))
+		// First priority: cardinal tiles directly adjacent to the tap (no diagonals, no wall-hopping)
+		var/turf/src_turf = get_turf(src)
+		for(var/turf/simulated/floor/F in list(locate(src_turf.x+1,src_turf.y,src_turf.z), locate(src_turf.x-1,src_turf.y,src_turf.z), locate(src_turf.x,src_turf.y+1,src_turf.z), locate(src_turf.x,src_turf.y-1,src_turf.z)))
+			if(!F || (locate(/obj/effect/decal/resonance_crack) in F))
+				continue
+			if(!F.density && !F.opacity)
 				frontier += F
-		// Once the immediate area is saturated, spread from existing crack edges
+		// Once the immediate area is saturated, spread one cardinal step from existing cracks
 		if(!frontier.len)
 			for(var/obj/effect/decal/resonance_crack/C in my_cracks)
 				if(QDELETED(C))
 					continue
-				for(var/turf/simulated/floor/F in range(1, C))
-					if(!(locate(/obj/effect/decal/resonance_crack) in F) && !(F in frontier))
+				var/turf/CT = get_turf(C)
+				for(var/turf/simulated/floor/F in list(locate(CT.x+1,CT.y,CT.z), locate(CT.x-1,CT.y,CT.z), locate(CT.x,CT.y+1,CT.z), locate(CT.x,CT.y-1,CT.z)))
+					if(!F || (locate(/obj/effect/decal/resonance_crack) in F) || (F in frontier))
+						continue
+					if(!F.density && !F.opacity)
 						frontier += F
 		if(frontier.len)
 			var/obj/effect/decal/resonance_crack/crack = new(pick(frontier))
@@ -268,6 +275,8 @@
 			for(var/mob/living/carbon/M in T)
 				if(M in already_shocked)
 					continue
+				if(!can_see(M, src, 35)) // don't shock mobs behind walls — mob LOS is reliable
+					continue
 				already_shocked += M
 				playsound(T, pick('sound/effects/electric/medium_spark1.ogg', 'sound/effects/electric/medium_spark2.ogg'), 75, 1)
 				M.visible_message(SPAN_DANGER("\The [src]'s resonance arc lashes out at [M]!"), \
@@ -342,7 +351,7 @@
 	icon_state = "rift1"
 	density = 0
 	anchored = 1
-	mouse_opacity = 1
+	mouse_opacity = 0
 	layer = DECAL_PLATING_LAYER
 	var/obj/machinery/power/sm_resonance_tap/parent_tap
 	var/fading = FALSE
