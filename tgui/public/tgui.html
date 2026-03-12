@@ -51,6 +51,7 @@
 
         var connectWebSocket = function () {
           var ws = new WebSocket(wsAddress);
+          ws.binaryType = "arraybuffer";
           Byond.ws = ws;
 
           ws.addEventListener("open", function () {
@@ -75,18 +76,30 @@
           });
 
           ws.addEventListener("message", function (event) {
-            if (window.update.queueActive) {
-              window.update.queue.push(event.data);
-              return;
-            }
+            if (typeof event.data === "string") {
+              if (window.update.queueActive) {
+                window.update.queue.push(event.data);
+                return;
+              }
 
-            var message = Byond.parseJson(event.data);
+              var message = Byond.parseJson(event.data);
 
-            window.update.lastPayloadByType[message.type] = message.payload;
+              window.update.lastPayloadByType[message.type] = message.payload;
 
-            var listeners = window.update.listeners;
-            for (var i = 0; i < listeners.length; i++) {
-              listeners[i](message.type, message.payload);
+              var listeners = window.update.listeners;
+              for (var i = 0; i < listeners.length; i++) {
+                listeners[i](message.type, message.payload);
+              }
+            } else {
+              if (window.binaryUpdate.queueActive) {
+                window.binaryUpdate.queue.push(event.data);
+                return;
+              }
+
+              var listeners = window.binaryUpdate.listeners;
+              for (var i = 0; i < listeners.length; i++) {
+                listeners[i](event.data);
+              }
             }
           });
 
@@ -297,6 +310,23 @@
           },
         };
 
+        window.binaryUpdate = {
+          listeners: [],
+          queue: [],
+          queueActive: true,
+
+          flushQueue: function (listener) {
+            if (window.binaryUpdate.queueActive) {
+              window.binaryUpdate.queueActive = false;
+            }
+
+            var queue = window.binaryUpdate.queue;
+            for (var i = 0; i < queue.length; i++) {
+              listener(queue[i]);
+            }
+          },
+        };
+
         // This function exists purely for debugging, do not use it in code!
         Byond.injectMessage = function (type, payload) {
           var listeners = window.update.listeners;
@@ -309,6 +339,11 @@
         Byond.subscribe = function (listener) {
           window.update.flushQueue(listener);
           window.update.listeners.push(listener);
+        };
+
+        Byond.binarySubscribe = function (listener) {
+          window.binaryUpdate.flushQueue(listener);
+          window.binaryUpdate.listeners.push(listener);
         };
 
         Byond.subscribeTo = function (type, listener) {

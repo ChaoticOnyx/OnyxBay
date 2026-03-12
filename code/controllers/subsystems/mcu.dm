@@ -3,11 +3,9 @@
 SUBSYSTEM_DEF(mcu)
 	name = "MCU"
 	priority = SS_PRIORITY_MCU
-	flags = SS_BACKGROUND
-	wait = 2
+	flags = SS_NO_FIRE
 
 	var/last_fire_time = 0
-	var/budget_percent = 10
 	var/total_running = 0
 	var/total_mcu = 0
 
@@ -16,6 +14,8 @@ SUBSYSTEM_DEF(mcu)
 		fdel("[MCU_TMP_FOLDER]/elf/[F]")
 
 	last_fire_time = world.time
+	loop()
+
 	. = ..()
 
 /datum/controller/subsystem/mcu/stat_entry()
@@ -38,16 +38,23 @@ SUBSYSTEM_DEF(mcu)
 
 	..(msg)
 
-/datum/controller/subsystem/mcu/fire(resumed = 0)
-	if(!config.mcu.enable)
-		return
+/datum/controller/subsystem/mcu/proc/loop()
+	set waitfor = FALSE
 
-	var/delta_ds = world.time - last_fire_time
-	last_fire_time = world.time
+	while(src != null)
+		if(!config.mcu.enable)
+			sleep(world.tick_lag)
+			continue
 
-	if(delta_ds <= 0)
-		return
+		var/delta_ds = world.time - last_fire_time
+		last_fire_time = world.time
 
-	Z_MACHINES_SET_BUDGET(budget_percent)
-	var/delta_us = delta_ds * 100000
-	Z_MACHINES_TICK(delta_us)
+		if(delta_ds <= 0)
+			sleep(world.tick_lag)
+			continue
+
+		Z_MACHINES_SET_BUDGET(config.mcu.budget_percent)
+		var/delta_us = delta_ds * 100000
+		Z_MACHINES_TICK(delta_us)
+
+		sleep(world.tick_lag)
