@@ -20,13 +20,13 @@
 
 /decl/hierarchy/supply_pack/medical/somaticgel
 	name = "Somatic gel crate"
-	contains = list(/obj/item/stack/medical/advanced/bruise_pack = 5)
+	contains = list(/obj/item/stack/medical/gel/brute = 5)
 	cost = 10
 	containername = "\improper Somatic gel crate"
 
 /decl/hierarchy/supply_pack/medical/burngel
 	name = "Burn gel crate"
-	contains = list(/obj/item/stack/medical/advanced/ointment = 5)
+	contains = list(/obj/item/stack/medical/gel/burn = 5)
 	cost = 10
 	containername = "\improper Burn gel crate"
 

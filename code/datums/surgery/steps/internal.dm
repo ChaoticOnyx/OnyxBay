@@ -474,8 +474,8 @@
 	duration = ORGAN_FIX_DURATION * 1.75
 
 	allowed_tools = list(
-		/obj/item/stack/medical/advanced/bruise_pack= 67,
-		/obj/item/stack/medical/bruise_pack = 34
+		/obj/item/stack/medical/gel/brute= 67,
+		/obj/item/stack/medical/bandage = 34
 		)
 
 /datum/surgery_step/internal/fix_organ/ghetto/check_target_organ(obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
@@ -483,10 +483,10 @@
 	if(!.)
 		return
 
-	if(!istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
+	if(!istype(tool, /obj/item/stack/medical/gel/brute))
 		return FALSE
 
-	if(!istype(tool, /obj/item/stack/medical/bruise_pack))
+	if(!istype(tool, /obj/item/stack/medical/bandage))
 		return FALSE
 
 	var/obj/item/stack/medical/M = tool
@@ -498,9 +498,9 @@
 
 /datum/surgery_step/internal/fix_organ/ghetto/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	var/tool_name = "\the [tool]"
-	if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
+	if(istype(tool, /obj/item/stack/medical/gel/brute))
 		tool_name = "regenerative membrane"
-	else if(istype(tool, /obj/item/stack/medical/bruise_pack))
+	else if(istype(tool, /obj/item/stack/medical/bandage))
 		tool_name = "the bandaid"
 
 	announce_preop(user,
@@ -516,9 +516,9 @@
 		return
 
 	var/tool_name = "\the [tool]"
-	if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
+	if(istype(tool, /obj/item/stack/medical/gel/brute))
 		tool_name = "regenerative membrane"
-	else if(istype(tool, /obj/item/stack/medical/bruise_pack))
+	else if(istype(tool, /obj/item/stack/medical/bandage))
 		tool_name = "the bandaid"
 
 	if((internal_organ.status & ORGAN_DEAD) && internal_organ.can_recover())
@@ -545,7 +545,7 @@
 		)
 
 	var/dam_amt = 2
-	if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
+	if(istype(tool, /obj/item/stack/medical/gel/brute))
 		target.adjustToxLoss(5)
 	else
 		dam_amt = 5

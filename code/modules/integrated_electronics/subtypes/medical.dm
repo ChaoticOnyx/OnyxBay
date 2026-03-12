@@ -476,7 +476,6 @@
 	if(!istype(E)) // invalid input
 		return
 	if(H in view(get_turf(src))) // Like medbot's analyzer it can be used in range..
-		var/datum/wound/cut/wound = E.get_incision()
 		var/is_surgically_open = E.is_surgically_open()
 		set_pin_data(IC_OUTPUT, 1, E.name)
 		set_pin_data(IC_OUTPUT, 2, E.damage)
@@ -561,8 +560,8 @@
 
 	if(istype(target, /obj/item/organfixer))
 		var/obj/item/organfixer/OF = target
-		if(istype(source, /obj/item/stack/medical/advanced/bruise_pack))
-			var/obj/item/stack/medical/advanced/bruise_pack/OF2 = source
+		if(istype(source, /obj/item/stack/medical/gel/brute))
+			var/obj/item/stack/medical/gel/brute/OF2 = source
 			OF.attackby(OF2, src)
 		else if(istype(source, /obj/structure/geltank))
 			var/obj/structure/geltank/G = source
@@ -570,10 +569,10 @@
 		else
 			return
 		set_pin_data(IC_OUTPUT, 1, OF.gel_amt)
-	else if(istype(target, /obj/item/stack/medical/advanced))
-		var/obj/item/stack/medical/advanced/A = target
-		if(istype(source, /obj/item/stack/medical/advanced))
-			var/obj/item/stack/medical/advanced/A2 = source
+	else if(istype(target, /obj/item/stack/medical/gel))
+		var/obj/item/stack/medical/gel/A = target
+		if(istype(source, /obj/item/stack/medical/gel))
+			var/obj/item/stack/medical/gel/A2 = source
 			A2.refill_from_same(A)
 		else if(istype(source, /obj/structure/geltank))
 			var/obj/structure/geltank/G = source

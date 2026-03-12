@@ -456,7 +456,7 @@
 		R.module.synths += medicine
 		R.module.modules += new /obj/item/device/healthanalyzer(R.module)
 		R.module.modules += new /obj/item/roller_holder(R.module)
-		var/obj/item/stack/medical/bruise_pack/B = new /obj/item/stack/medical/bruise_pack(R.module)
+		var/obj/item/stack/medical/bandage/B = new /obj/item/stack/medical/bandage(R.module)
 		B.uses_charge = 1
 		B.charge_costs = list(1000)
 		B.synths = list(medicine)

@@ -221,31 +221,27 @@
 
 /mob/living/simple_animal/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/stack/medical))
-		if(!is_ooc_dead())
-			var/obj/item/stack/medical/MED = O
-			if(!MED.animal_heal)
-				to_chat(user, "<span class='notice'>That [MED] won't help \the [src] at all!</span>")
-				return
-			if(health < maxHealth)
-				if(MED.amount >= 1)
-					adjustBruteLoss(-MED.animal_heal)
-					MED.amount -= 1
-					if(MED.amount <= 0)
-						qdel(MED)
-					for(var/mob/M in viewers(src, null))
-						if ((M.client && !( M.blinded )))
-							M.show_message("<span class='notice'>[user] applies the [MED] on [src].</span>")
-		else
-			to_chat(user, "<span class='notice'>\The [src] is dead, medical items won't bring \him back to life.</span>")
+		if(is_ooc_dead())
+			to_chat(user, SPAN("notice", "\The [src] is dead, medical items won't bring \him back to life."))
+			return
+
+		if(health >= maxHealth)
+			to_chat(user, SPAN("notice", "\The [src] doesn't seem to need medical treatment."))
+			return
+
+		O.attack(src, user, user.zone_sel.selecting)
 		return
+
 	if(meat_type && (is_ooc_dead()))	//if the animal has a meat, and if it is dead.
 		if(istype(O, /obj/item/material/knife) || istype(O, /obj/item/material/knife/butch))
 			harvest(user)
-	else
-		if(!O.force)
-			visible_message("<span class='notice'>[user] gently taps [src] with \the [O].</span>")
-		else
-			O.attack(src, user, user.zone_sel.selecting)
+			return
+
+	if(!O.force)
+		visible_message(SPAN("notice", "[user] gently taps [src] with \the [O]."))
+		return
+
+	O.attack(src, user, user.zone_sel.selecting)
 
 /mob/living/simple_animal/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)
 	visible_message(SPAN("danger", "\The [src] has been [O.attack_verb.len? pick(O.attack_verb) : "attacked"] with \the [O] by [user]!"))

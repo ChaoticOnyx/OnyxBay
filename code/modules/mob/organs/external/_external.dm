@@ -855,7 +855,10 @@ This function completely restores a damaged organ to perfect condition.
 		bandaged = min(max_bleeding, bandaged + amt)
 
 	update_damages()
-	owner?.update_surgery()
+	if(owner)
+		owner.update_surgery()
+		owner.update_bandages(TRUE)
+
 	return (max_bleeding - bandaged)
 
 /obj/item/organ/external/proc/salve()
