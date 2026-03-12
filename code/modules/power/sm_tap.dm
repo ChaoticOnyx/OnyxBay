@@ -308,7 +308,7 @@
 	my_cracks = list()
 
 /obj/machinery/power/sm_resonance_tap/proc/tap_break()
-	if(melted)
+	if(melted || (stat & BROKEN))
 		return
 	fade_cracks()
 	disconnect_from_network()
