@@ -2,8 +2,6 @@ import { Component } from "inferno";
 import { useBackend } from "../backend";
 import { Window } from "../layouts";
 
-// ─── Constants ───────────────────────────────────────────────────────
-
 const I16_MIN = -32768;
 const I16_MAX = 32767;
 const PAL_SIZE = 256 * 3;
@@ -13,8 +11,6 @@ const DEFAULT_WIDTH = 320;
 const DEFAULT_HEIGHT = 240;
 const DEFAULT_MAX_MESSAGES_PER_SEC = 60;
 const MAX_QUEUE_SIZE = 512;
-
-// ─── Scancode / button maps ─────────────────────────────────────────
 
 const SCANCODE_MAP: Record<string, number> = {
   KeyA: 0x04,
@@ -131,8 +127,6 @@ const MOUSE_BUTTON_MAP: Record<number, number> = {
   2: 2, // right
 };
 
-// ─── Helpers ────────────────────────────────────────────────────────
-
 function getModifiers(e: KeyboardEvent): number {
   let mod = 0;
   if (e.shiftKey) mod |= 1;
@@ -148,16 +142,14 @@ function clampI16(v: number): number {
   return Math.max(I16_MIN, Math.min(I16_MAX, v));
 }
 
-// ─── EventThrottle ──────────────────────────────────────────────────
-//
 // Token-bucket rate limiter with a unified ordered queue.
 //
-// • If budget is available and the queue is empty — sends immediately.
-// • Consecutive mouse_move / wheel events in the queue are merged.
-// • On overflow the oldest low-priority (move/wheel) entry is dropped;
+// * If budget is available and the queue is empty - sends immediately.
+// * Consecutive mouse_move / wheel events in the queue are merged.
+// * On overflow the oldest low-priority (move/wheel) entry is dropped;
 //   if none exist the oldest entry of any kind is dropped.
-// • flush() bypasses rate limiting (used only for cleanup on blur /
-//   pointer-lock loss — typically a handful of key-release events).
+// * flush() bypasses rate limiting (used only for cleanup on blur /
+//   pointer-lock loss - typically a handful of key-release events).
 
 type QueuedEvent =
   | { kind: "key"; params: Record<string, any> }
@@ -186,8 +178,6 @@ class EventThrottle {
     this.lastRefillTime = performance.now();
   }
 
-  // ── Token bucket ────────────────────────────────────────────────
-
   private refillTokens(): void {
     const now = performance.now();
     const elapsed = now - this.lastRefillTime;
@@ -206,8 +196,6 @@ class EventThrottle {
     }
     return false;
   }
-
-  // ── Queue management ────────────────────────────────────────────
 
   private scheduleDrain(): void {
     if (this.drainTimer !== null) {
@@ -304,8 +292,6 @@ class EventThrottle {
     this.scheduleDrain();
   }
 
-  // ── Public API ──────────────────────────────────────────────────
-
   key(params: Record<string, any>): void {
     this.enqueue({ kind: "key", params });
   }
@@ -352,8 +338,6 @@ class EventThrottle {
     this.queue.length = 0;
   }
 }
-
-// ─── VGA display component ──────────────────────────────────────────
 
 type VgaData = {
   supports_color?: number;
@@ -418,8 +402,6 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
     this.ctx = null;
     this.imageData = null;
   }
-
-  // ── Canvas setup & rendering ──────────────────────────────────
 
   private setupCanvas() {
     const canvas = document.getElementById(CANVAS_ID) as HTMLCanvasElement;
@@ -516,8 +498,6 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
     this.ctx.putImageData(this.imageData, 0, 0);
     this.setState({ lastFrameSize: raw.byteLength });
   }
-
-  // ── Input handling ────────────────────────────────────────────
 
   private isCaptured(): boolean {
     return (
@@ -731,8 +711,6 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
   }
 }
 
-// ─── Page wrapper ───────────────────────────────────────────────────
-
 type VgaPageProps = {
   data: VgaData;
   act: (action: string, params?: Record<string, any>) => void;
@@ -760,8 +738,8 @@ class VgaPage extends Component<VgaPageProps, VgaPageState> {
       (data.max_messages_per_sec || DEFAULT_MAX_MESSAGES_PER_SEC) - 20;
 
     const title = captured
-      ? "Display — Captured"
-      : "Display — Click to capture";
+      ? "Display - Captured"
+      : "Display - Click to capture";
 
     return (
       <Window
