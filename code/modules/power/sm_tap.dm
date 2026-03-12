@@ -95,7 +95,6 @@
 	// --- Resonance side-effects, all scaled by power_drained ---
 
 	// Resonance Cracks: only at tap level 5, spread outward from the tap into adjacent floor tiles
-	// Hard cap: at most 20 cracks per tap to bound damage_tick() loops and Process() iteration
 	if(tap_level >= 5 && my_cracks.len < 50 && prob(clamp(round(power_drained * 1.5), 1, 75)))
 		var/list/frontier = list()
 		// First priority: cardinal tiles directly adjacent to the tap (no diagonals, no wall-hopping)
@@ -309,6 +308,8 @@
 	my_cracks = list()
 
 /obj/machinery/power/sm_resonance_tap/proc/tap_break()
+	if(melted)
+		return
 	fade_cracks()
 	disconnect_from_network()
 	stat |= BROKEN
