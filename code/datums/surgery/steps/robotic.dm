@@ -399,7 +399,7 @@
 		if(I.surface_accessible)
 			return TRUE
 
-		if(parent_organ.open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED) || parent_organ.hatch_state == HATCH_OPENED)
+		if(parent_organ.is_surgically_open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED) || parent_organ.hatch_state == HATCH_OPENED)
 			return TRUE
 
 	return FALSE
@@ -435,7 +435,7 @@
 		)
 
 	target.adjustToxLoss(5)
-	parent_organ.createwound(CUT, 5)
+	parent_organ.take_cut_damage(10, tool)
 
 	for(var/obj/item/organ/internal/I in parent_organ.internal_organs)
 		I.take_internal_damage(rand(3, 5), 0)

@@ -9,7 +9,6 @@
 obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	take_external_damage(amount)
 
-
 // Deals blunt damage, distributes 50% of the damage between cut and pierce if there's excessive damage.
 /obj/item/organ/external/proc/_take_blunt_damage(brute)
 	if(owner && (owner.status_flags & GODMODE))
@@ -144,52 +143,8 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 /obj/item/organ/external/proc/_take_burn_damage(burn)
 	if(owner && (owner.status_flags & GODMODE))
 		return
-
-	if(burn_dam >= max_damage * 2.0)
-		return
-
 	burn_dam = min(max_damage * 2.0, burn_dam + burn)
-
 	return
-
-/obj/item/organ/external/proc/try_to_dismember(brute, burn, damage_flags)
-	if(!(limb_flags & ORGAN_FLAG_CAN_AMPUTATE) || !config.health.limbs_can_break  || is_stump())
-		return FALSE
-
-	var/sharp = (damage_flags & DAM_SHARP)
-	var/edge  = (damage_flags & DAM_EDGE)
-	var/laser = (damage_flags & DAM_LASER)
-	var/blunt = brute && !sharp && !edge
-
-	var/force_droplimb = FALSE
-	if(brute >= 5.0 && (brute_last + brute >= max_damage * 3) || burn && (burn_dam >= max_damage * 2))
-		force_droplimb = TRUE
-
-	if(burn && (burn_dam >= max_damage))
-		if(prob(burn) || force_droplimb)
-			droplimb(laser, DROPLIMB_BURN)
-			return TRUE
-
-	if(edge && (cut_dam >= max_damage))
-		if((brute >= 10.0 && prob(brute * brute_ratio)) || force_droplimb)
-			droplimb(FALSE, DROPLIMB_EDGE)
-			return TRUE
-
-	if(sharp && !edge && (pierce_dam >= max_damage))
-		if((brute >= 10.0 && prob(brute * brute_ratio)) || force_droplimb)
-			droplimb(FALSE, pick(DROPLIMB_EDGE, DROPLIMB_BLUNT))
-			return TRUE
-
-	if(blunt && (blunt_last >= max_damage) && (status & ORGAN_BROKEN))
-		if((brute >= (min_broken_damage * 0.5) && prob(brute * brute_ratio)) || force_droplimb)
-			droplimb(FALSE, DROPLIMB_BLUNT)
-			return TRUE
-
-	if(force_droplimb)
-		droplimb(FALSE, DROPLIMB_BLUNT)
-		return TRUE
-
-	return FALSE
 
 /obj/item/organ/external/proc/cache_last_damage()
 	blunt_last = blunt_dam
@@ -246,13 +201,6 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		burn_ratio = burn_dam / max_damage
 		if(laser && prob(40))
 			owner?.IgniteMob()
-
-	var/blunt_dealt = blunt_dam - blunt_last
-	var/cut_dealt = cut_dam - cut_last
-	var/pierce_dealt = pierce_dam - pierce_last
-
-	var/brute_dealt = brute_dam - brute_last
-	var/burn_dealt = burn_dam - burn_last
 
 	// Dismemberment stuff
 	if(!isnull(owner) && loc == owner && !clean)
@@ -356,8 +304,59 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 			owner.update_damage_overlays()
 		else if(status & ORGAN_BLEEDING)
 			owner.update_bandages() // TODO: Rework bandages
-
 	return
+
+// Shortcuts for damage types
+/obj/item/organ/external/proc/take_blunt_damage(amount, used_weapon = null, clean = FALSE)
+	return take_external_damage(amount, 0, 0, used_weapon, clean)
+
+/obj/item/organ/external/proc/take_pierce_damage(amount, used_weapon = null, clean = FALSE)
+	return take_external_damage(amount, 0, DAM_SHARP, used_weapon, clean)
+
+/obj/item/organ/external/proc/take_cut_damage(amount, used_weapon = null, clean = FALSE)
+	return take_external_damage(amount, 0, DAM_EDGE, used_weapon, clean)
+
+/obj/item/organ/external/proc/take_burn_damage(amount, used_weapon = null, clean = FALSE)
+	return take_external_damage(0, amount, 0, used_weapon, clean)
+
+/obj/item/organ/external/proc/try_to_dismember(brute, burn, damage_flags)
+	if(!(limb_flags & ORGAN_FLAG_CAN_AMPUTATE) || !config.health.limbs_can_break  || is_stump())
+		return FALSE
+
+	var/sharp = (damage_flags & DAM_SHARP)
+	var/edge  = (damage_flags & DAM_EDGE)
+	var/laser = (damage_flags & DAM_LASER)
+	var/blunt = brute && !sharp && !edge
+
+	var/force_droplimb = FALSE
+	if((brute >= 5.0 && (brute_last + brute >= max_damage * 3)) || (burn && (burn_dam >= max_damage * 2)))
+		force_droplimb = TRUE
+
+	if(burn && (burn_last + burn >= max_damage))
+		if(prob(burn) || force_droplimb)
+			droplimb(laser, DROPLIMB_BURN)
+			return TRUE
+
+	if(edge && (cut_last + brute >= max_damage))
+		if((brute >= 10.0 && prob(brute * brute_ratio)) || force_droplimb)
+			droplimb(FALSE, DROPLIMB_EDGE)
+			return TRUE
+
+	if(sharp && !edge && (pierce_last + brute >= max_damage))
+		if((brute >= 10.0 && prob(brute * brute_ratio)) || force_droplimb)
+			droplimb(FALSE, pick(DROPLIMB_EDGE, DROPLIMB_BLUNT))
+			return TRUE
+
+	if(blunt && (blunt_last + brute >= max_damage) && (status & ORGAN_BROKEN))
+		if((brute >= (min_broken_damage * 0.5) && prob(brute * brute_ratio)) || force_droplimb)
+			droplimb(FALSE, DROPLIMB_BLUNT)
+			return TRUE
+
+	if(force_droplimb) // Should not happen, but let's have a plan B.
+		droplimb(FALSE, DROPLIMB_BLUNT)
+		return TRUE
+
+	return FALSE
 
 /obj/item/organ/external/heal_damage(brute, burn, internal = 0, robo_repair = 0, update_damage_icon = TRUE)
 	if(BP_IS_ROBOTIC(src) && !robo_repair)
@@ -370,9 +369,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		var/blunt_heal_ratio = blunt_dam / brute_dam
 		var/sharp_heal_ratio = 1 - blunt_ratio
 
-		if(blunt_ratio)
+		if(blunt_heal_ratio)
 			heal_blunt_damage(brute * blunt_heal_ratio, robo_repair, FALSE, FALSE)
-		if(sharp_ratio)
+		if(sharp_heal_ratio)
 			heal_sharp_damage(brute * sharp_heal_ratio, robo_repair, FALSE, FALSE)
 
 		brute_dam = pierce_dam + cut_dam + blunt_dam
@@ -417,9 +416,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	update_damages()
 	if(owner)
 		owner.heal_this_tick += (.)
-		owner.updatehealth()
+		owner.update_health()
 		if(update_damage_icon && update_damstate())
-			owner.UpdateDamageIcon()
+			owner.update_damage_overlays()
 
 	return (amount - (.))
 
@@ -449,9 +448,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	update_damages()
 	if(owner)
 		owner.heal_this_tick += (.)
-		owner.updatehealth()
+		owner.update_health()
 		if(update_damage_icon && update_damstate())
-			owner.UpdateDamageIcon()
+			owner.update_damage_overlays()
 
 	return (amount - (.))
 
@@ -491,9 +490,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	update_damages()
 	if(owner)
 		owner.heal_this_tick += (cut_to_heal + pierce_to_heal)
-		owner.updatehealth()
+		owner.update_health()
 		if(update_damstate() && update_damage_icon)
-			owner.UpdateDamageIcon()
+			owner.update_damage_overlays()
 
 	return (amount - (cut_to_heal + pierce_to_heal))
 

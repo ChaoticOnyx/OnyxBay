@@ -223,8 +223,8 @@ REAGENT SCANNER
 
 			if(E.brute_dam > 0)
 				limb_damaged = TRUE
-				if(E.bruise_dam > 0)
-					limb_result = "[limb_result] \[<span class='scanner_red'><b>[get_wound_severity(E.bruise_ratio)] blunt trauma</b></span>\]"
+				if(E.blunt_dam > 0)
+					limb_result = "[limb_result] \[<span class='scanner_red'><b>[get_wound_severity(E.blunt_ratio)] blunt trauma</b></span>\]"
 				if(E.cut_dam > 0 || E.pierce_dam > 0)
 					limb_result = "[limb_result] \[<span class='scanner_red'><b>[get_wound_severity(max(E.cut_ratio, E.pierce_ratio))] penetrating trauma</b></span>\]"
 
@@ -243,14 +243,6 @@ REAGENT SCANNER
 					found_fracture = TRUE
 				else
 					found_closed_fracture = TRUE
-
-			if(E.has_infected_wound())
-				limb_damaged = TRUE
-				if(E.germ_level >= INFECTION_LEVEL_THREE)
-					limb_result = "[limb_result] \[<span class='danger'>extreme infection</span>\]"
-					found_extreme_infection = TRUE
-				else
-					limb_result = "[limb_result] \[<span class='danger'>infection</span>\]"
 
 			if(!found_bleed && (E.status & ORGAN_ARTERY_CUT))
 				found_bleed = TRUE

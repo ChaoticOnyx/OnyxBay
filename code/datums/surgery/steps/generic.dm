@@ -50,14 +50,14 @@
 	if(!.)
 		return .
 
-	if(!parent_organ.get_incision(TRUE))
-		target.show_splash_text(user, "no incisions that can be closed cleanly!", "There are no incisions that can be closed cleanly!")
+	if(parent_organ.scabbed >= parent_organ.max_bleeding)
+		target.show_splash_text(user, "nothing to cauterize", "There is nothing to cauterize!")
 		return SURGERY_FAILURE
 
 	if(parent_organ.is_stump())
 		return parent_organ.status & ORGAN_ARTERY_CUT
 
-	return parent_organ.open()
+	return .
 
 /datum/surgery_step/generic/cauterize/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
@@ -76,12 +76,12 @@
 		"[user] cauterizes \the [target]'s [parent_organ] with \the [tool].",
 		"You cauterize \the [target]'s [parent_organ] with \the [tool]."
 		)
-	if(parent_organ.clamped())
+	if(parent_organ.clamped)
 		parent_organ.remove_clamps()
 	if(parent_organ.is_stump())
 		parent_organ.status &= ~ORGAN_ARTERY_CUT
 
-	parent_organ.scabbed = parent_organ.max_bleeing
+	parent_organ.scabbed = parent_organ.max_bleeding
 	parent_organ.update_damages()
 
 /datum/surgery_step/generic/cauterize/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
@@ -89,7 +89,7 @@
 		"[user]'s hand slips, leaving a small burn on [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, leaving a small burn on [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(0, 3, used_weapon = tool)
+	parent_organ.take_burn_damage(3, tool)
 
 /**
  * Default incision creation step, does nothing.
@@ -101,7 +101,7 @@
 	failure_sound = 'sound/weapons/bladeslice.ogg'
 
 /datum/surgery_step/generic/cut/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && !parent_organ.open())
+	return (..() && !parent_organ.is_surgically_open())
 
 /**
  * Default icision with scalpel, nothing extra.
@@ -109,7 +109,7 @@
 /datum/surgery_step/generic/cut/default
 	allowed_tools = list(
 		/obj/item/scalpel = 100,
-		/obj/item/material/knife = 75,
+		/obj/item/material/knife = 85,
 		/obj/item/material/kitchen/utensil/knife = 75,
 		/obj/item/broken_bottle = 50,
 		/obj/item/material/shard = 50
@@ -132,19 +132,14 @@
 		"[user] has made an incision on [target]'s [parent_organ] with \the [tool].",
 		"You have made an incision on [target]'s [parent_organ] with \the [tool]."
 		)
-	parent_organ.createwound(CUT, parent_organ.min_broken_damage / 2, 1)
+	parent_organ.surgically_incise(tool)
 
 /datum/surgery_step/generic/cut/default/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
 		"[user]'s hand slips, slicing open [target]'s [parent_organ] in the wrong place with \the [tool]!",
 		"Your hand slips, slicing open [target]'s [parent_organ] in the wrong place with \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		10,
-		0,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
+	parent_organ.take_cut_damage(10, used_weapon = tool)
 
 /**
  * Incision made with laser scalpel, clamps bleeders.
@@ -180,21 +175,15 @@
 		"[user] has made a bloodless incision on [target]'s [parent_organ] with \the [tool].",
 		"You have made a bloodless incision on [target]'s [parent_organ] with \the [tool].",
 		)
-	parent_organ.createwound(CUT, parent_organ.min_broken_damage / 2, 1)
+	parent_organ.surgically_incise(tool)
 	parent_organ.clamp_organ()
-	spread_germs_to_organ(user, parent_organ)
 
 /datum/surgery_step/generic/cut/laser/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
 		"[user]'s hand slips as the blade sputters, searing a long gash in [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips as the blade sputters, searing a long gash in [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		15,
-		5,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
+	parent_organ.take_external_damage(15, 5, (DAM_SHARP|DAM_EDGE), tool)
 
 /**
  * Incision made using incision manager, clamps bleeders and retracts skin.
@@ -212,10 +201,10 @@
 	failure_sound = 'sound/effects/fighting/crunch2.ogg'
 
 /datum/surgery_step/generic/incision_manager/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && (parent_organ.open() == SURGERY_CLOSED || parent_organ.open() == SURGERY_OPEN))
+	return (..() && parent_organ.is_surgically_open() <= SURGERY_OPEN)
 
 /datum/surgery_step/generic/incision_manager/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	if(parent_organ.open() == SURGERY_CLOSED)
+	if(parent_organ.is_surgically_open() == SURGERY_CLOSED)
 		announce_preop(user,
 		"[user] starts to construct a prepared incision on [target]'s [parent_organ] with \the [tool].",
 		"You carefully start incision on [target]'s [parent_organ], while \the [tool] makes all the side work for you."
@@ -237,22 +226,17 @@
 		"[user] has constructed a prepared incision on [target]'s [parent_organ] with \the [tool].",
 		"You have constructed a prepared incision on [target]'s [parent_organ] with \the [tool]."
 		)
-	if(parent_organ.open() == SURGERY_CLOSED)
-		parent_organ.createwound(CUT, parent_organ.min_broken_damage / 2, 1)
+	if(parent_organ.is_surgically_open() == SURGERY_CLOSED)
+		parent_organ.surgically_incise(tool)
 	parent_organ.clamp_organ()
-	parent_organ.open_incision()
+	parent_organ.surgically_retract(tool)
 
 /datum/surgery_step/generic/incision_manager/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
 		"[user]'s hand jolts as the system sparks, ripping a gruesome hole in [target]'s [parent_organ] with \the [tool]!",
 		"Your hand jolts as the system sparks, ripping a gruesome hole in [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		20,
-		15,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
+	parent_organ.take_external_damage(20, 15, (DAM_SHARP|DAM_EDGE), tool)
 
 /**
  * Clamps bleeders.
@@ -271,7 +255,7 @@
 	failure_sound = 'sound/surgery/hatchet.ogg'
 
 /datum/surgery_step/generic/clamp_bleeders/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && parent_organ.open() && !parent_organ.clamped())
+	return (..() && (parent_organ.cut_dam + parent_organ.pierce_dam) && !parent_organ.clamped)
 
 /datum/surgery_step/generic/clamp_bleeders/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
@@ -291,7 +275,6 @@
 		"You clamp bleeders in [target]'s [parent_organ] with \the [tool]."
 		)
 	parent_organ.clamp_organ()
-	spread_germs_to_organ(user, parent_organ)
 
 /datum/surgery_step/generic/clamp_bleeders/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
@@ -324,7 +307,7 @@
 	failure_sound = 'sound/surgery/retractor2.ogg'
 
 /datum/surgery_step/generic/retract_skin/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && parent_organ.open() == SURGERY_OPEN)
+	return (..() && parent_organ.is_surgically_open() == SURGERY_OPEN)
 
 /datum/surgery_step/generic/retract_skin/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
@@ -343,7 +326,7 @@
 		"[user] keeps the incision open on [target]'s [parent_organ] with \the [tool].",
 		"You keep the incision open on [target]'s [parent_organ] with \the [tool]."
 		)
-	parent_organ.open_incision()
+	parent_organ.surgically_retract(tool)
 
 /datum/surgery_step/generic/retract_skin/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
@@ -382,7 +365,7 @@
 	failure_sound = 'sound/effects/fighting/circsawhit.ogg'
 
 /datum/surgery_step/generic/saw/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && parent_organ.open() == SURGERY_RETRACTED)
+	return (..() && parent_organ.is_surgically_open() == SURGERY_RETRACTED)
 
 /datum/surgery_step/generic/saw/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	var/bone = parent_organ.encased ? "[target]'s [parent_organ.encased]" : "bones in [target]'s [parent_organ]"

@@ -571,12 +571,12 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/item/organ/external/die()
 	for(var/obj/item/organ/external/E in children)
-		E.take_external_damage(10, 0, used_weapon = "parent organ sepsis", clean = TRUE)
+		E.take_blunt_damage(10, "parent organ sepsis", TRUE)
 	..()
 
 // Handles natural heal, internal bleedings and infections
 /obj/item/organ/external/proc/handle_regeneration()
-	if(BP_IS_ROBOTIC(src)) // Robotic limbs don't heal or get worse.
+	if(BP_IS_ROBOTIC(src)) // T-1000 would NOT be proud.
 		return
 
 	var/mob/living/carbon/human/H
@@ -591,15 +591,13 @@ This function completely restores a damaged organ to perfect condition.
 	// Organs won't autoheal until all the wounds are scabbed.
 	// Scabbing progresses faster under properly-applied bandages.
 	if(scabbed < max_bleeding)
-		scabbed += (H ? H.coagulation : 1.0) * ((bandaged >= scabbed) ? 1:0 * 0.5) * wound_update_accuracy
+		if(!clamped)
+			scabbed += (H ? H.coagulation : 1.0) * ((bandaged >= scabbed) ? 1:0 * 0.5) * wound_update_accuracy
 	else
 		heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.1)
 
 		// Evenly spreading regeneration between burn and brute damage if both are present
 		if(burn_dam && brute_dam)
-			heal_amt *= 0.5
-
-		if(bleeding)
 			heal_amt *= 0.5
 
 		if(burn_dam)
@@ -617,7 +615,7 @@ This function completely restores a damaged organ to perfect condition.
 				heal_sharp_damage(heal_amt, FALSE, FALSE, FALSE)
 
 	update_damages()
-	owner?.updatehealth()
+	owner?.update_health()
 	return update_damstate()
 
 // Updates damage ratios, bleeding status, etc.
@@ -649,7 +647,7 @@ This function completely restores a damaged organ to perfect condition.
 	// Ratios
 	burn_ratio = burn_dam / max_damage
 	brute_ratio = brute_dam / max_damage
-	bruise_ratio = bruise_dam / max_damage
+	blunt_ratio = blunt_dam / max_damage
 	cut_ratio = cut_dam / max_damage
 	pierce_ratio = pierce_dam / max_damage
 	return
@@ -757,7 +755,8 @@ This function completely restores a damaged organ to perfect condition.
 
 	if(parent_organ)
 		if(clean)
-			/// NOWOUNDS TODO: Clean cut bleeding
+			/// NOWOUNDS TODO: Better way to implement clean cut bleeding
+			parent_organ.take_cut_damage(min_broken_damage, "a limb amputation", TRUE)
 			parent_organ.update_damages()
 		else
 			var/obj/item/organ/external/stump/stump = new (victim, src)
@@ -766,7 +765,6 @@ This function completely restores a damaged organ to perfect condition.
 			stump.arterial_bleed_severity = arterial_bleed_severity
 			stump.adjust_pain(max_damage)
 
-			W.parent_organ = stump
 			victim.organs |= stump
 
 			stump.movement_tally = stumped_tally * damage_multiplier
@@ -874,26 +872,10 @@ This function completely restores a damaged organ to perfect condition.
 	owner?.update_surgery()
 	return TRUE
 
-/obj/item/organ/external/proc/clamped()
-	return clamped
-
 /obj/item/organ/external/proc/remove_clamps()
-	var/rval = 0
-	for(var/datum/wound/W in wounds)
-		rval |= W.clamped
-		W.clamped = 0
-	return rval
-
-// open incisions and expose implants
-// this is the retract step of surgery
-/obj/item/organ/external/proc/open_incision()
-	var/datum/wound/W = get_incision()
-	if(!W)	return
-	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage))
-
-	if(!encased)
-		for(var/obj/item/implant/I in implants)
-			I.exposed()
+	. = clamped
+	clamped = FALSE
+	return
 
 /obj/item/organ/external/proc/update_tally()
 	movement_tally = initial(movement_tally)
@@ -950,7 +932,7 @@ This function completely restores a damaged organ to perfect condition.
 /obj/item/organ/external/proc/mend_fracture(use_damage_check = FALSE)
 	if(BP_IS_ROBOTIC(src))
 		return FALSE // ORGAN_BROKEN doesn't have the same meaning for robot limbs
-	if(use_damage_check && (brute_dam > min_broken_damage * config.health.organ_health_multiplier))
+	if(use_damage_check && (blunt_dam >= min_broken_damage * config.health.organ_health_multiplier))
 		return FALSE // will just immediately fracture again
 
 	status &= ~ORGAN_BROKEN
@@ -1035,12 +1017,6 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/item/organ/external/proc/get_damage()	//returns total damage
 	return (brute_dam+burn_dam)	//could use max_damage?
-
-/obj/item/organ/external/proc/has_infected_wound()
-	for(var/datum/wound/W in wounds)
-		if(W.germ_level > INFECTION_LEVEL_ONE)
-			return 1
-	return 0
 
 /obj/item/organ/external/is_usable(ignore_pain = FALSE)
 	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1 && is_robotic_usable()
@@ -1196,44 +1172,38 @@ This function completely restores a damaged organ to perfect condition.
 			"<span class='danger'>You hear a sickening sizzle.</span>")
 	status |= ORGAN_DISFIGURED
 
-/obj/item/organ/external/proc/get_incision(strict)
-	var/datum/wound/cut/incision
-	for(var/datum/wound/cut/W in wounds)
-		if(W.bandaged || W.current_stage > W.max_bleeding_stage) // Shit's unusable
-			continue
-		if(strict && !W.is_surgical()) //We don't need dirty ones
-			continue
-		if(!incision)
-			incision = W
-			continue
-		var/same = W.is_surgical() == incision.is_surgical()
-		if(same) //If they're both dirty or both are surgical, just get bigger one
-			if(W.damage > incision.damage)
-				incision = W
-		else if(W.is_surgical()) //otherwise surgical one takes priority
-			incision = W
-	return incision
+// Cutting the organ deep enough to conduct surgeries.
+// This is the incision step of surgery.
+/obj/item/organ/external/proc/surgically_incise(used_weapon = null)
+	if(pierce_dam >= min_broken_damage)
+		return
+	take_pierce_damage(min_broken_damage - pierce_dam, used_weapon, TRUE)
+	owner?.update_surgery()
+	return
 
-/obj/item/organ/external/proc/open()
+// Stretching the wound to be wide enough to conduct surgeries.
+// This is the retract step of surgery.
+/obj/item/organ/external/proc/surgically_retract(used_weapon = null)
+	if(cut_dam >= min_broken_damage)
+		return // It's wider than enough already.
+	take_cut_damage(min_broken_damage - cut_dam, used_weapon, TRUE)
+	if(!encased)
+		for(var/obj/item/implant/I in implants)
+			I.exposed()
+	owner?.update_surgery()
+	return
 
-
-	/// NOWOUNDS TODO: Replace
-	var/datum/wound/cut/incision = get_incision()
-	. = 0
-	if(!incision)
-		return 0
-	var/smol_threshold = min_broken_damage * 0.4
-	var/beeg_threshold = min_broken_damage * 0.6
-	if(!incision.autoheal_cutoff == 0) //not clean incision
-		smol_threshold *= 1.5
-		beeg_threshold = max(beeg_threshold, min(beeg_threshold * 1.5, incision.damage_list[1])) //wounds can't achieve bigger
-	if(incision.damage >= smol_threshold) //smol incision
+/obj/item/organ/external/proc/is_surgically_open(check_clamps = TRUE)
+	. = SURGERY_CLOSED
+	if(check_clamps && !clamped)
+		return
+	if(pierce_dam >= min_broken_damage * 0.5)
 		. = SURGERY_OPEN
-	if(incision.damage >= beeg_threshold) //beeg incision
-		. = SURGERY_RETRACTED
-	if(. == SURGERY_RETRACTED && encased && (status & ORGAN_BROKEN))
-		. = SURGERY_ENCASED
-	//////////////////
+		if(cut_dam >= min_broken_damage * 0.5)
+			. = SURGERY_RETRACTED
+			if(encased && (status & ORGAN_BROKEN))
+				. = SURGERY_ENCASED
+	return
 
 /obj/item/organ/external/proc/jostle_bone(force)
 	if(!(status & ORGAN_BROKEN)) //intact bones stay still
@@ -1373,14 +1343,14 @@ This function completely restores a damaged organ to perfect condition.
 	if(organ_tag == BP_HEAD && deformities == 1)
 		flavor_text += "terrible scars on cheeks forming a horrifying smile"
 
-	if(open() >= (encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
+	if(is_surgically_open(FALSE) >= (encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
 		var/list/bits = list()
 		if(status & ORGAN_BROKEN)
 			bits += "broken bones"
 		for(var/obj/item/organ/organ in internal_organs)
 			bits += "[organ.damage ? "damaged " : ""][organ.name]"
 		if(bits.len)
-			wound_descriptors["[english_list(bits)] visible in the wounds"] = 1
+			flavor_text += "[english_list(bits)] visible in the wounds"
 
 	return english_list(flavor_text)
 
@@ -1418,17 +1388,21 @@ This function completely restores a damaged organ to perfect condition.
 		to_chat(user, "<span class='notice'>[owner] is missing that bodypart.</span>")
 		return
 
-	user.visible_message("<span class='notice'>[user] starts inspecting [owner]'s [name] carefully.</span>")
-	if(LAZYLEN(wounds))
-		to_chat(user, "<span class='warning'>You find [get_wounds_desc()]</span>")
-		var/list/stuff = list()
-		for(var/datum/wound/wound in wounds)
-			if(LAZYLEN(wound.embedded_objects))
-				stuff |= wound.embedded_objects
-		if(stuff.len)
-			to_chat(user, "<span class='warning'>There's [english_list(stuff)] sticking out of [owner]'s [name].</span>")
+	var/damage_description
+	if(blunt_dam)
+		damage_description = "bruised"
+	if(cut_dam || pierce_dam)
+		damage_description += damage_description ? " and cut" : "cut"
+
+	user.visible_message(SPAN("notice", "[user] starts inspecting [owner]'s [name] carefully."))
+
+	if(damage_description)
+		to_chat(user, SPAN("warning", "[owner]'s [name] is [damage_description]!"))
 	else
-		to_chat(user, "<span class='notice'>You find no visible wounds.</span>")
+		to_chat(user, SPAN("notice", "You find no visible wounds."))
+
+	if(LAZYLEN(embedded_objects))
+		to_chat(user, SPAN("warning", "There's [english_list(embedded_objects)] sticking out of [owner]'s [name]."))
 
 	to_chat(user, "<span class='notice'>Checking skin now...</span>")
 	if(!do_mob(user, owner, 10))

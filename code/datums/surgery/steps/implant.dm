@@ -14,7 +14,7 @@
 	if(BP_IS_ROBOTIC(parent_organ))
 		return parent_organ.hatch_state == HATCH_OPENED
 
-	return (parent_organ.open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
+	return (parent_organ.is_surgically_open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
 
 /datum/surgery_step/cavity/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
@@ -215,7 +215,7 @@
 	var/exposed = FALSE
 	if(BP_IS_ROBOTIC(parent_organ) && parent_organ.hatch_state == HATCH_OPENED)
 		exposed = TRUE
-	else if(parent_organ.open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
+	else if(parent_organ.is_surgically_open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
 		exposed = TRUE
 
 	var/find_prob = 0

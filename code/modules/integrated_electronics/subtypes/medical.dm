@@ -450,11 +450,11 @@
 		"damage"                = IC_PINTYPE_NUMBER,
 		"max damage"            = IC_PINTYPE_NUMBER,
 		"organ owner"           = IC_PINTYPE_REF,
-		"is wounded"            = IC_PINTYPE_BOOLEAN,
+		"surgical incision"     = IC_PINTYPE_BOOLEAN,
 		"is wound clamped"      = IC_PINTYPE_BOOLEAN,
 		"has bones"             = IC_PINTYPE_BOOLEAN,
 		"bones broken"          = IC_PINTYPE_BOOLEAN,
-		"is wound open"         = IC_PINTYPE_BOOLEAN
+		"incision retracted"    = IC_PINTYPE_BOOLEAN
 	)
 	activators = list("scan" = IC_PINTYPE_PULSE_IN, "on scanned" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_RESEARCH
@@ -477,15 +477,16 @@
 		return
 	if(H in view(get_turf(src))) // Like medbot's analyzer it can be used in range..
 		var/datum/wound/cut/wound = E.get_incision()
+		var/is_surgically_open = E.is_surgically_open()
 		set_pin_data(IC_OUTPUT, 1, E.name)
 		set_pin_data(IC_OUTPUT, 2, E.damage)
 		set_pin_data(IC_OUTPUT, 3, E.max_damage)
 		set_pin_data(IC_OUTPUT, 4, weakref(H))
-		set_pin_data(IC_OUTPUT, 5, wound?.is_surgical())
-		set_pin_data(IC_OUTPUT, 6, E.clamped())
-		set_pin_data(IC_OUTPUT, 7, E.encased != null)
-		set_pin_data(IC_OUTPUT, 8, E.open() == SURGERY_ENCASED)
-		set_pin_data(IC_OUTPUT, 9, E.open() == SURGERY_RETRACTED)
+		set_pin_data(IC_OUTPUT, 5, is_surgically_open == SURGERY_OPEN)
+		set_pin_data(IC_OUTPUT, 6, E.clamped)
+		set_pin_data(IC_OUTPUT, 7, !!E.encased)
+		set_pin_data(IC_OUTPUT, 8, (E.status & ORGAN_BROKEN))
+		set_pin_data(IC_OUTPUT, 9, is_surgically_open == SURGERY_RETRACTED)
 
 	push_data()
 	activate_pin(2)
