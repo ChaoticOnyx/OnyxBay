@@ -149,7 +149,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 /obj/item/organ/external/proc/cache_last_damage()
 	blunt_last = blunt_dam
 	cut_last = cut_dam
-	pierce_last = pierce_last
+	pierce_last = pierce_dam
 
 	brute_last = brute_dam
 	burn_last = burn_dam
@@ -367,14 +367,12 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	if(brute_dam && brute)
 		var/blunt_heal_ratio = blunt_dam / brute_dam
-		var/sharp_heal_ratio = 1 - blunt_ratio
+		var/sharp_heal_ratio = 1 - blunt_heal_ratio
 
 		if(blunt_heal_ratio)
 			heal_blunt_damage(brute * blunt_heal_ratio, robo_repair, FALSE, FALSE)
 		if(sharp_heal_ratio)
 			heal_sharp_damage(brute * sharp_heal_ratio, robo_repair, FALSE, FALSE)
-
-		brute_dam = pierce_dam + cut_dam + blunt_dam
 
 	if(internal)
 		mend_fracture(TRUE)

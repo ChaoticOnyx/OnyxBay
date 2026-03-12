@@ -456,6 +456,9 @@ This function completely restores a damaged organ to perfect condition.
 	germ_level = 0
 	genetic_degradation = 0
 
+	slamped = 0
+	salved = 0
+
 	remove_all_pain()
 
 	// handle internal organs
@@ -481,6 +484,8 @@ This function completely restores a damaged organ to perfect condition.
 			organ_modules += module
 		if(!(module in implants))
 			implants += module
+
+	update_damages()
 
 	if(owner && !ignore_prosthetic_prefs)
 		if(owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
@@ -592,7 +597,7 @@ This function completely restores a damaged organ to perfect condition.
 	// Scabbing progresses faster under properly-applied bandages.
 	if(scabbed < max_bleeding)
 		if(!clamped)
-			scabbed += (H ? H.coagulation : 1.0) * ((bandaged >= scabbed) ? 1:0 * 0.5) * wound_update_accuracy
+			scabbed += (H ? H.coagulation : 1.0) * ((bandaged >= scabbed) ? 1.0 : 0.5) * wound_update_accuracy
 	else
 		heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.1)
 
@@ -666,11 +671,12 @@ This function completely restores a damaged organ to perfect condition.
 	else
 		tburn = 3
 
-	if(!brute_dam)
+	var/highest_brute_dam = max(blunt_dam, cut_dam, pierce_dam)
+	if(!highest_brute_dam)
 		tbrute = 0
-	else if(brute_dam < max_damage * 0.25)
+	else if(highest_brute_dam < max_damage * 0.25)
 		tbrute = 1
-	else if(brute_dam < max_damage)
+	else if(highest_brute_dam < max_damage)
 		tbrute = 2
 	else
 		tbrute = 3
@@ -1227,11 +1233,11 @@ This function completely restores a damaged organ to perfect condition.
 	if(blunt_dam)
 		switch(round((blunt_dam / max_damage) * 100))
 			if(1 to 33)
-				blunt_desc = "lightly" + (is_robotic ? "dented" : "bruised")
+				blunt_desc = "lightly " + (is_robotic ? "dented" : "bruised")
 			if(34 to 66)
 				blunt_desc = (is_robotic ? "dented" : "bruised")
 			if(66 to 99)
-				blunt_desc = "severely" + (is_robotic ? "dented" : "bruised")
+				blunt_desc = "severely " + (is_robotic ? "dented" : "bruised")
 			if(100)
 				blunt_desc = "<b>crushed</b>"
 
@@ -1266,7 +1272,7 @@ This function completely restores a damaged organ to perfect condition.
 	var/burns_desc = ""
 	if(burn_dam)
 		if(!is_robotic)
-			switch(round(burn_ratio))
+			switch(round(burn_ratio * 100))
 				if(1 to 10)
 					burns_desc = "a few blisters"
 				if(11 to 20)
@@ -1282,7 +1288,7 @@ This function completely restores a damaged organ to perfect condition.
 				if(151 to 200)
 					burns_desc = "<b>horrifying charred burns</b>"
 		else
-			switch(round(burn_ratio))
+			switch(round(burn_ratio * 100))
 				if(1 to 10)
 					burns_desc = "a few burn marks"
 				if(11 to 20)

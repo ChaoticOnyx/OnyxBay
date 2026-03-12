@@ -106,7 +106,7 @@
 		/obj/item/reagent_containers/hypospray/autoinjector = 5,
 		/obj/item/reagent_containers/syringe/antitoxin/packaged = 1,
 		/obj/item/stack/medical/bandage = 3,
-		/obj/item/stack/medical/ointment =3
+		/obj/item/stack/medical/ointment = 3
 		)
 
 	illegal = list(

@@ -483,10 +483,7 @@
 	if(!.)
 		return
 
-	if(!istype(tool, /obj/item/stack/medical/gel/brute))
-		return FALSE
-
-	if(!istype(tool, /obj/item/stack/medical/bandage))
+	if(!istype(tool, /obj/item/stack/medical/gel/brute) && !istype(tool, /obj/item/stack/medical/bandage))
 		return FALSE
 
 	var/obj/item/stack/medical/M = tool

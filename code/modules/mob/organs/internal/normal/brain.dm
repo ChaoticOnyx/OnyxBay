@@ -4,6 +4,7 @@
 	name = "\improper Brain"
 	desc = "A piece of juicy meat found in a person's head."
 
+	relative_size = 50
 	food_organ_type = /obj/item/reagent_containers/food/organ/brain
 
 	var/damage_threshold_value

@@ -165,14 +165,14 @@
 				if(temp.applied_pressure)
 					if(ishuman(temp.applied_pressure))
 						var/mob/living/carbon/human/H = temp.applied_pressure
-						H.bloody_hands(src, 0)
+						H.bloody_hands(owner)
 					blood_max += temp.bleeding * 0.15 // still want a little bit to drip out, for effect
 				else
 					blood_max += temp.bleeding * 0.75
 					open_wound = TRUE
 
 			if(temp.status & ORGAN_ARTERY_CUT)
-				var/bleed_amount = Floor((owner.vessel.total_volume / (!open_wound ? 400 : 250)) * temp.arterial_bleed_severity)
+				var/bleed_amount = Floor((owner.vessel.total_volume / (open_wound ? 250 : 400)) * temp.arterial_bleed_severity)
 				if(bleed_amount)
 					if(open_wound)
 						blood_max += bleed_amount

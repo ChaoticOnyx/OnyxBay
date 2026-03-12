@@ -50,12 +50,12 @@
 	if(!.)
 		return .
 
+	if(parent_organ.is_stump())
+		return parent_organ.status & ORGAN_ARTERY_CUT
+
 	if(parent_organ.scabbed >= parent_organ.max_bleeding)
 		target.show_splash_text(user, "nothing to cauterize", "There is nothing to cauterize!")
 		return SURGERY_FAILURE
-
-	if(parent_organ.is_stump())
-		return parent_organ.status & ORGAN_ARTERY_CUT
 
 	return .
 

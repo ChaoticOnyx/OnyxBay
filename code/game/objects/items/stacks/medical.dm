@@ -140,6 +140,7 @@
 	slot_flags = SLOT_GLOVES
 	heal_brute = 7.5
 	stack_full = TRUE
+	max_amount = 20
 	amount = 20
 	var/bandaged_per_use = 20
 
@@ -564,7 +565,7 @@
 	origin_tech = list(TECH_BIO = 10)
 	amount = 1
 
-/obj/item/stack/medical/advanced/resurrection_serum/apply_on_human(mob/living/carbon/human/H, obj/item/organ/external/affecting, mob/user)
+/obj/item/stack/medical/gel/resurrection_serum/apply_on_human(mob/living/carbon/human/H, obj/item/organ/external/affecting, mob/user)
 	. = ..()
 	if(!.)
 		return 0
@@ -586,7 +587,7 @@
 	to_chat(H, (SPAN("notice", "You hear a swarm of voices. ") + SPAN("changeling", "They tell us... ") + SPAN("notice", "They tell you to come back.")))
 	return 1
 
-/obj/item/stack/medical/advanced/resurrection_serum/ten
+/obj/item/stack/medical/gel/resurrection_serum/ten
 	name = "serum injector"
 	desc = "A weird-looking injector with some sort of bloody-red serum inside. For some reason you feel like this thing is unbeliveably valuable."
 	amount = 10

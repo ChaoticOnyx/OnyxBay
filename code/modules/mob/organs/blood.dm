@@ -119,11 +119,11 @@
 	var/regen_value = 0
 	switch(hydration)
 		if(HYDRATION_SUPER to INFINITY)
-			regen_value = 7.5
-		if(HYDRATION_HIGH to HYDRATION_SUPER)
 			regen_value = 5.0
+		if(HYDRATION_HIGH to HYDRATION_SUPER)
+			regen_value = 3.5
 		if(HYDRATION_LOW to HYDRATION_HIGH)
-			regen_value = 2.5
+			regen_value = 2.0
 		if(1 to HYDRATION_LOW)
 			regen_value = 1.0
 
