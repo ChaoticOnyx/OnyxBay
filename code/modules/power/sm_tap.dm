@@ -1,4 +1,5 @@
 #define SM_TAP_CONVERSION_FACTOR 10000 // 10 kW produced per SM power unit drained per tick
+#define SM_TAP_MAX_CRACKS 50
 
 /obj/machinery/power/sm_resonance_tap
 	name = "Supermatter Resonance Tap"
@@ -17,6 +18,7 @@
 	var/health = 100  // degrades under resonance stress; repairable with welder before full failure
 	var/melted = FALSE // permanent failure state, not repairable
 	var/list/my_cracks = list() // resonance fractures spawned by this tap
+	var/last_crack_damage = 0 // world.time of last crack floor-burn pass
 
 /obj/machinery/power/sm_resonance_tap/Destroy()
 	fade_cracks() // clean up any lingering resonance cracks before the tap is gone
@@ -28,6 +30,22 @@
 
 	last_power = last_power_new
 	last_power_new = 0
+
+	// Crack floor-burn: consolidated here instead of 50 individual while-loops
+	if(my_cracks.len && world.time - last_crack_damage >= 20)
+		last_crack_damage = world.time
+		for(var/obj/effect/decal/resonance_crack/C in my_cracks)
+			if(QDELETED(C)) continue
+			var/turf/CT = get_turf(C)
+			var/list/mobs_here = list()
+			for(var/mob/living/M in CT)
+				mobs_here += M
+			if(mobs_here.len)
+				playsound(CT, 'sound/effects/weapons/energy/resonator_fire.ogg', 50, 1)
+			for(var/mob/living/M in mobs_here)
+				M.adjustFireLoss(10)
+				M.visible_message(SPAN_DANGER("\The [M] is seared by resonance energy!"), \
+					SPAN_DANGER("The fracture is burning through your body!"))
 
 	if(!active)
 		return
@@ -95,7 +113,7 @@
 	// --- Resonance side-effects, all scaled by power_drained ---
 
 	// Resonance Cracks: only at tap level 5, spread outward from the tap into adjacent floor tiles
-	if(tap_level >= 5 && my_cracks.len < 50 && prob(clamp(round(power_drained * 1.5), 1, 75)))
+	if(tap_level >= 5 && my_cracks.len < SM_TAP_MAX_CRACKS && prob(clamp(round(power_drained * 1.5), 1, 75)))
 		var/list/frontier = list()
 		// First priority: cardinal tiles directly adjacent to the tap (no diagonals, no wall-hopping)
 		var/turf/src_turf = get_turf(src)
@@ -249,7 +267,7 @@
 		INVOKE_ASYNC(relay_corona, /atom.proc/Beam, corona, arc_state, 'icons/effects/beam.dmi', 3, 10)
 	else
 		corona = null // null it out so the damage path below is skipped too
-	spawn(7) qdel(relay_corona)
+	QDEL_IN(relay_corona, 7)
 
 	// At tap 3+ a second corona branch fires from its own relay
 	var/turf/corona2_target
@@ -260,9 +278,9 @@
 			INVOKE_ASYNC(relay2, /atom.proc/Beam, corona2_target, arc_state, 'icons/effects/beam.dmi', 3, 10)
 		else
 			corona2_target = null
-		spawn(7) qdel(relay2)
+		QDEL_IN(relay2, 7)
 
-	spawn(7) qdel(relay)
+	QDEL_IN(relay, 7)
 
 	// Damage anyone caught on any arc path (zigzag main arc + corona branches)
 	var/list/already_shocked = list()
@@ -362,23 +380,6 @@
 /obj/effect/decal/resonance_crack/Initialize()
 	. = ..()
 	set_light(0.3, 0.2, 1)
-	INVOKE_ASYNC(src, .proc/damage_tick)
-
-/obj/effect/decal/resonance_crack/proc/damage_tick()
-	while(!QDELETED(src))
-		sleep(20) // every 2 seconds
-		var/turf/T = get_turf(src)
-
-		// Burn anyone standing directly on the crack
-		var/list/mobs_here = list()
-		for(var/mob/living/M in T)
-			mobs_here += M
-		if(mobs_here.len)
-			playsound(T, 'sound/effects/weapons/energy/resonator_fire.ogg', 50, 1)
-		for(var/mob/living/M in mobs_here)
-			M.adjustFireLoss(10)
-			M.visible_message(SPAN_DANGER("\The [M] is seared by resonance energy!"), \
-				SPAN_DANGER("The fracture is burning through your body!"))
 
 /obj/effect/decal/resonance_crack/proc/start_fading()
 	if(fading) return
