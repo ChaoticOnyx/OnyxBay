@@ -19,6 +19,7 @@
 	var/melted = FALSE // permanent failure state, not repairable
 	var/list/my_cracks = list() // resonance fractures spawned by this tap
 	var/last_crack_damage = 0 // world.time of last crack floor-burn pass
+	var/obj/machinery/power/supermatter/cached_SM // cached SM ref; revalidated when null or deleted
 
 /obj/machinery/power/sm_resonance_tap/Destroy()
 	fade_cracks() // clean up any lingering resonance cracks before the tap is gone
@@ -50,7 +51,9 @@
 	if(!active)
 		return
 
-	var/obj/machinery/power/supermatter/SM = locate(/obj/machinery/power/supermatter) in view(25, src)
+	if(QDELETED(cached_SM))
+		cached_SM = locate(/obj/machinery/power/supermatter) in view(25, src)
+	var/obj/machinery/power/supermatter/SM = cached_SM
 
 	if(!SM || SM.power <= 0)
 		return
@@ -73,9 +76,10 @@
 	var/crack_damage = clamp(round(shock_damage * 0.4), 20, 60)
 	var/crack_arcs_fired = 0
 	var/crack_effects_fired = 0
+	var/list/dead_cracks = list()
 	for(var/obj/effect/decal/resonance_crack/C in my_cracks)
 		if(QDELETED(C))
-			my_cracks -= C
+			dead_cracks += C
 			continue
 		var/turf/crack_turf = get_turf(C)
 
@@ -109,6 +113,9 @@
 					var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 					sparks.set_up(2, 0, C)
 					sparks.start()
+
+	if(dead_cracks.len)
+		my_cracks -= dead_cracks
 
 	// --- Resonance side-effects, all scaled by power_drained ---
 
@@ -163,7 +170,7 @@
 	// Resonance stress when SM is already damaged — scales with how hard you're draining it
 	// tap3/SM250: ~0.075/tick degradation; tap5/SM2000: ~1.0/tick (~100 ticks to failure)
 	if(SM.damage > SM.warning_point)
-		health -= power_drained * 0.02
+		health = round(health - power_drained * 0.02, 1)
 
 	if(health <= 0)
 		tap_break()
@@ -260,25 +267,25 @@
 	INVOKE_ASYNC(src, /atom.proc/Beam, relay, arc_state, 'icons/effects/beam.dmi', 5, 30)
 	INVOKE_ASYNC(relay, /atom.proc/Beam, SM, arc_state, 'icons/effects/beam.dmi', 5, 30)
 
-	// Corona discharge from SM — always uses a relay to avoid source conflict with other taps' coronas
-	var/obj/effect/sm_arc_relay/relay_corona = new(get_turf(SM))
+	// Corona discharge from SM — relay only created if the target endpoint is reachable
 	var/turf/corona = sm_arc_endpoint(SM, locate(clamp(SM.x + rand(-4, 4), 1, world.maxx), clamp(SM.y + rand(-4, 4), 1, world.maxy), z))
 	if(corona && corona != get_turf(SM))
+		var/obj/effect/sm_arc_relay/relay_corona = new(get_turf(SM))
 		INVOKE_ASYNC(relay_corona, /atom.proc/Beam, corona, arc_state, 'icons/effects/beam.dmi', 3, 10)
+		QDEL_IN(relay_corona, 7)
 	else
 		corona = null // null it out so the damage path below is skipped too
-	QDEL_IN(relay_corona, 7)
 
 	// At tap 3+ a second corona branch fires from its own relay
 	var/turf/corona2_target
 	if(tap_level >= 3)
-		var/obj/effect/sm_arc_relay/relay2 = new(get_turf(SM))
 		corona2_target = sm_arc_endpoint(SM, locate(clamp(SM.x + rand(-3, 3), 1, world.maxx), clamp(SM.y + rand(-3, 3), 1, world.maxy), z)) // shorter than corona1
 		if(corona2_target && corona2_target != get_turf(SM))
+			var/obj/effect/sm_arc_relay/relay2 = new(get_turf(SM))
 			INVOKE_ASYNC(relay2, /atom.proc/Beam, corona2_target, arc_state, 'icons/effects/beam.dmi', 3, 10)
+			QDEL_IN(relay2, 7)
 		else
 			corona2_target = null
-		QDEL_IN(relay2, 7)
 
 	QDEL_IN(relay, 7)
 
@@ -293,8 +300,6 @@
 		for(var/turf/T in path)
 			for(var/mob/living/carbon/M in T)
 				if(M in already_shocked)
-					continue
-				if(!can_see(M, src, 35)) // don't shock mobs behind walls — mob LOS is reliable
 					continue
 				already_shocked += M
 				playsound(T, pick('sound/effects/electric/medium_spark1.ogg', 'sound/effects/electric/medium_spark2.ogg'), 75, 1)
