@@ -2,7 +2,7 @@
 enable = true
 budget_percent = 10
 hardcap = 25
-power_scale = 250
+power_scale = 500
 rad_scale = 0.00005
 max_elf_size = 2000000
 # Deciseconds
@@ -16,3 +16,5 @@ light_cooldown = 10
 # Deciseconds
 env_sensor_cooldown = 25
 battery_recharge_percent = 0.25
+# Deciseconds
+prize_box_cooldown = 100

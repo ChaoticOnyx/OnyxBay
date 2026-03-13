@@ -53,6 +53,7 @@
 #define SS_PRIORITY_WIRELESS      10    // Wireless connection setup.
 #define SS_PRIORITY_PING          10    // Client ping.
 #define SS_PRIORITY_CONDUCTOR     05    // Conductor.
+#define SS_PRIORITY_MINING        00    // Mining
 
 
 // Subsystem fire priority, from lowest to highest priority
