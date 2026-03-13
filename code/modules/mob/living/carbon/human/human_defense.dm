@@ -1034,7 +1034,7 @@ meteor_act
 
 /mob/living/carbon/human/embed(obj/O, def_zone = null)
 	if(!def_zone)
-		..()
+		return ..()
 
 	var/obj/item/organ/external/affecting = get_organ(def_zone)
 	if(affecting)

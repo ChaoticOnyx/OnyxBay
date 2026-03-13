@@ -615,8 +615,8 @@ This function completely restores a damaged organ to perfect condition.
 			if(blunt_dam)
 				heal_blunt_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
 
-			// Wounds won't close naturally if they are clamped
-			if(!clamped)
+			// Wounds won't close naturally if they are clamped or there are things sticking out of them.
+			if((pierce_dam + cut_dam) && !clamped && !LAZYLEN(embedded_objects))
 				heal_sharp_damage(heal_amt, FALSE, FALSE, FALSE)
 
 	update_damages()
@@ -1251,7 +1251,7 @@ This function completely restores a damaged organ to perfect condition.
 			if(11 to 30)
 				sharp_desc = "narrow"
 			if(31 to 50)
-				sharp_desc = "moderate"
+				sharp_desc = "rather wide"
 			if(51 to 70)
 				sharp_desc = "wide"
 			if(71 to 90)
@@ -1284,7 +1284,7 @@ This function completely restores a damaged organ to perfect condition.
 				if(11 to 20)
 					burns_desc = "some blisters"
 				if(21 to 45)
-					burns_desc = "burns"
+					burns_desc = "moderate burns"
 				if(46 to 70)
 					burns_desc = "severe burns"
 				if(71 to 99)
@@ -1292,7 +1292,7 @@ This function completely restores a damaged organ to perfect condition.
 				if(100 to 150)
 					burns_desc = "<b>carbonised burns</b>"
 				if(151 to 200)
-					burns_desc = "<b>horrifying charred burns</b>"
+					burns_desc = "<b>horrifyingly charred burns</b>"
 		else
 			switch(round(burn_ratio * 100))
 				if(1 to 10)
@@ -1300,7 +1300,7 @@ This function completely restores a damaged organ to perfect condition.
 				if(11 to 20)
 					burns_desc = "some burn marks"
 				if(21 to 45)
-					burns_desc = "scorches"
+					burns_desc = "moderate scorches"
 				if(46 to 70)
 					burns_desc = "severe scorches"
 				if(71 to 99)
@@ -1313,24 +1313,21 @@ This function completely restores a damaged organ to perfect condition.
 	var/bandages_desc = ""
 	if(max_bleeding)
 		if(bandaged >= max_bleeding)
-			flavor_text += "is bandaged"
+			bandages_desc += "bandaged, "
 		else if(scabbed >= max_bleeding)
-			flavor_text += "is scabbed"
+			bandages_desc += "scabbed, "
 		else if(bandaged && bleeding)
-			flavor_text += "is partially bandaged, bleeding"
+			bandages_desc += "partially bandaged, bleeding, "
 		else
-			flavor_text += "is <b>bleeding</b>"
+			bandages_desc += "<b>bleeding</b>, "
 
 	// Assembling all the stuff from above into a human-readable line
 	if(blunt_desc)
-		if(flavor_text)
-			flavor_text += ", is " + blunt_desc
-		else
-			flavor_text += "is " + blunt_desc
+		flavor_text += "is " + blunt_desc
 
 	if(sharp_desc)
 		if(flavor_text)
-			flavor_text += ", has "
+			flavor_text += ". It has "
 		else
 			flavor_text += "has "
 		flavor_text += bandages_desc + sharp_desc + (is_robotic ? " tears" : " wounds")
@@ -1410,7 +1407,12 @@ This function completely restores a damaged organ to perfect condition.
 	if(blunt_dam)
 		damage_description = "bruised"
 	if(cut_dam || pierce_dam)
-		damage_description += damage_description ? " and cut" : "cut"
+		if(burn_dam)
+			damage_description += damage_description ? " , cut" : "cut"
+		else
+			damage_description += damage_description ? " and cut" : "cut"
+	if(burn_dam)
+		damage_description += damage_description ? " and burnt" : "burnt"
 
 	user.visible_message(SPAN("notice", "[user] starts inspecting [owner]'s [name] carefully."))
 
@@ -1515,7 +1517,11 @@ This function completely restores a damaged organ to perfect condition.
 	var/turf/my_turf = get_turf(src)
 	for(var/obj/O in embedded_objects)
 		O.forceMove(my_turf)
+		if(owner)
+			owner.embedded -= O
 	LAZYCLEARLIST(embedded_objects)
+	if(owner && length(owner.embedded))
+		owner.verbs -= /mob/proc/yank_out_object
 	return TRUE
 
 /obj/item/organ/external/proc/drop_embedded_object(obj/thing)
@@ -1526,5 +1532,9 @@ This function completely restores a damaged organ to perfect condition.
 		if(O == thing)
 			O.forceMove(my_turf)
 			LAZYREMOVE(embedded_objects, O)
+			if(owner)
+				owner.embedded -= O
+				if(!length(owner.embedded))
+					owner.verbs -= /mob/proc/yank_out_object
 			return TRUE
 	return FALSE

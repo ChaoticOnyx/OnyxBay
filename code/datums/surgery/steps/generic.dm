@@ -101,7 +101,16 @@
 	failure_sound = 'sound/weapons/bladeslice.ogg'
 
 /datum/surgery_step/generic/cut/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && !parent_organ.is_surgically_open())
+	return (..() && !parent_organ.is_surgically_open() && (parent_organ.pierce_dam < parent_organ..min_broken_damage * 0.5))
+	. = ..()
+	if(!.)
+		return
+	if(parent_organ.is_surgically_open())
+		return FALSE
+	if(parent_organ.pierce_dam >= parent_organ.min_broken_damage)
+		to_chat(user, SPAN("notice", "There's already a suitable cut on \the [parent_organ.name]."))
+		return FALSE
+	return TRUE
 
 /**
  * Default icision with scalpel, nothing extra.

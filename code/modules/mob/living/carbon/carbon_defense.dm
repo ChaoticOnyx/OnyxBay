@@ -15,22 +15,7 @@
 	if(prob(blocked)) //armour provides a chance to turn sharp/edge weapon attacks into blunt ones
 		damage_flags &= ~(DAM_SHARP|DAM_EDGE)
 
-	if(!apply_damage(effective_force, I.damtype, hit_zone, blocked, damage_flags, used_weapon=I))
-		return FALSE
+	if(apply_damage(effective_force, I.damtype, hit_zone, blocked, damage_flags, used_weapon=I))
+		return TRUE
 
-	//Melee weapon embedded object code.
-	if(I && I.damtype == BRUTE && !I.anchored && !is_robot_module(I))
-		var/weapon_sharp = (damage_flags & DAM_SHARP)
-		var/damage = effective_force //just the effective damage used for sorting out embedding, no further damage is applied here
-		if (blocked)
-			damage *= blocked_mult(blocked)
-
-		//blunt objects should really not be embedding in things unless a huge amount of force is involved
-		var/embed_chance = weapon_sharp ? (damage / I.w_class) : (damage / (I.w_class * 3))
-		var/embed_threshold = weapon_sharp ? (I.w_class * 5) : (I.w_class * 15)
-
-		//Sharp objects will always embed if they do enough damage.
-		if((weapon_sharp && damage > (I.w_class * 10)) || (damage > embed_threshold && prob(embed_chance)))
-			embed(I, hit_zone)
-
-	return TRUE
+	return FALSE

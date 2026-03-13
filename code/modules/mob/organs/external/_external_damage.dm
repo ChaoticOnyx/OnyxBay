@@ -329,7 +329,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	var/blunt = brute && !sharp && !edge
 
 	var/force_droplimb = FALSE
-	if((brute >= 5.0 && (brute_last + brute >= max_damage * 3)) || (burn && (burn_dam >= max_damage * 2)))
+	if((brute >= 5.0 && (brute_last + brute >= max_damage * 3)) || (burn && (burn_last + burn >= max_damage * 2)))
 		force_droplimb = TRUE
 
 	if(burn && (burn_last + burn >= max_damage))

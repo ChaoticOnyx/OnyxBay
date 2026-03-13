@@ -297,7 +297,7 @@
 	desc = "A container of somatic gel, manufactured by Vey-Med. A bendable nozzle makes it easy to apply. Effectively seals up even severe wounds."
 	icon_state = "brutegel"
 	item_state = "brutegel"
-	heal_brute = 15.0
+	heal_brute = 10.0
 	origin_tech = list(TECH_BIO = 2)
 
 /obj/item/stack/medical/gel/brute/apply_on_human(mob/living/carbon/human/H, obj/item/organ/external/affecting, mob/user)
@@ -317,7 +317,7 @@
 		SPAN("notice", "\The [user] starts applying somatic gel on [H]'s [affecting.name]."),\
 		SPAN("notice", "You start applying somatic gel on [H]'s [affecting.name]."))
 
-	if(!do_mob(user, H, 3 SECONDS))
+	if(!do_mob(user, H, 3.5 SECONDS))
 		to_chat(user, SPAN("warning", "You must stand still to apply somatic gel."))
 		return 0
 
@@ -347,7 +347,7 @@
 		if(!affecting.cut_dam && !affecting.pierce_dam)
 			break
 
-		if(!do_mob(user, H, 2 SECONDS))
+		if(!do_mob(user, H, 2.5 SECONDS))
 			to_chat(user, SPAN("warning", "You must stand still to apply somatic gel."))
 			break
 
@@ -364,7 +364,7 @@
 	desc = "A container of protein-renaturating gel, manufactured by Vey-Med. A bendable nozzle makes it easy to apply. It's said to renaturate proteins, effectively treating severe burns. Doesn't cause skin cancer. Probably."
 	icon_state = "burngel"
 	item_state = "burngel"
-	heal_burn = 15
+	heal_burn = 10
 	origin_tech = list(TECH_BIO = 3)
 
 /obj/item/stack/medical/gel/burn/apply_on_human(mob/living/carbon/human/H, obj/item/organ/external/affecting, mob/user)
@@ -384,7 +384,7 @@
 		SPAN("notice", "\The [user] starts applying burn gel on [H]'s [affecting.name]."),\
 		SPAN("notice", "You start applying burn gel on [H]'s [affecting.name]."))
 
-	if(!do_mob(user, H, 3 SECONDS))
+	if(!do_mob(user, H, 3.5 SECONDS))
 		to_chat(user, SPAN("warning", "You must stand still to apply burn gel."))
 		return 0
 
@@ -414,7 +414,7 @@
 		if(!affecting.burn_dam)
 			break
 
-		if(!do_mob(user, H, 2 SECONDS))
+		if(!do_mob(user, H, 2.5 SECONDS))
 			to_chat(user, SPAN("warning", "You must stand still to apply burn gel."))
 			break
 

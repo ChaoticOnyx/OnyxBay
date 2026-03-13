@@ -3,6 +3,7 @@
 /obj/item/organ/internal/cerebrum/brain
 	name = "\improper Brain"
 	desc = "A piece of juicy meat found in a person's head."
+	w_class = ITEM_SIZE_NORMAL
 
 	relative_size = 70
 	food_organ_type = /obj/item/reagent_containers/food/organ/brain

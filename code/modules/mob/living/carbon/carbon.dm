@@ -44,7 +44,8 @@
 	var/datum/reagents/R = get_ingested_reagents()
 	if(istype(R))
 		R.clear_reagents()
-	set_nutrition(300)
+	set_nutrition(STOMACH_FULLNESS_HIGH)
+	set_hydration(HYDRATION_HIGH)
 	..()
 
 /mob/living/carbon/Move(newloc, direct)

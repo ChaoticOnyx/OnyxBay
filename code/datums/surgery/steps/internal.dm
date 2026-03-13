@@ -394,7 +394,7 @@
 		return FALSE
 
 	if(!. && !organ_fixer.emagged)
-		target.show_splash_text(user, "no healing required!", "The organ doesn't require any healing!!")
+		target.show_splash_text(user, "no healing required!", "The organ doesn't require any healing!")
 		return SURGERY_FAILURE
 
 	if(organ_fixer.gel_amt == 0)
