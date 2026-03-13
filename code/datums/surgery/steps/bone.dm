@@ -2,7 +2,6 @@
  * Default bone surgery step, does nothing.
  */
 /datum/surgery_step/bone
-	can_infect = TRUE
 	blood_level = BLOODY_HANDS
 	shock_level = 20
 

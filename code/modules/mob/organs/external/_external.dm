@@ -453,11 +453,10 @@ This function completely restores a damaged organ to perfect condition.
 	pierce_dam = 0
 	blunt_dam = 0
 
-	germ_level = 0
 	genetic_degradation = 0
 
-	clamped = 0
-	salved = 0
+	clamped = FALSE
+	salved = FALSE
 
 	remove_all_pain()
 
@@ -552,10 +551,6 @@ This function completely restores a damaged organ to perfect condition.
 		return TRUE
 
 	last_dam = brute_dam + burn_dam
-
-	if(germ_level)
-		return TRUE
-
 	return FALSE
 
 /obj/item/organ/external/var/should_update_damage_icons_this_tick = FALSE
@@ -1240,13 +1235,13 @@ This function completely restores a damaged organ to perfect condition.
 	var/blunt_desc = ""
 	if(blunt_dam)
 		switch(round((blunt_dam / max_damage) * 100))
-			if(1 to 33)
+			if(0 to 30)
 				blunt_desc = "lightly " + (is_robotic ? "dented" : "bruised")
-			if(34 to 66)
+			if(31 to 60)
 				blunt_desc = (is_robotic ? "dented" : "bruised")
-			if(66 to 99)
+			if(61 to 90)
 				blunt_desc = "severely " + (is_robotic ? "dented" : "bruised")
-			if(100)
+			else
 				blunt_desc = "<b>crushed</b>"
 
 	var/sharp_desc = ""
@@ -1278,7 +1273,7 @@ This function completely restores a damaged organ to perfect condition.
 				sharp_desc += "bone-deep"
 			if(71 to 90)
 				sharp_desc += "extremely deep"
-			if(100)
+			else
 				sharp_desc += "<b>penetrating</b>"
 
 	var/burns_desc = ""
@@ -1297,7 +1292,7 @@ This function completely restores a damaged organ to perfect condition.
 					burns_desc = "massive burns"
 				if(100 to 150)
 					burns_desc = "<b>carbonised burns</b>"
-				if(151 to 200)
+				else
 					burns_desc = "<b>horrifyingly charred burns</b>"
 		else
 			switch(round(burn_ratio * 100))
@@ -1313,7 +1308,7 @@ This function completely restores a damaged organ to perfect condition.
 					burns_desc = "massive scorches"
 				if(100 to 150)
 					burns_desc = "<b>severe melting</b>"
-				if(151 to 200)
+				else
 					burns_desc = "<b>massive melting</b>"
 
 	var/bandages_desc = ""
@@ -1544,3 +1539,21 @@ This function completely restores a damaged organ to perfect condition.
 					owner.verbs -= /mob/proc/yank_out_object
 			return TRUE
 	return FALSE
+
+/obj/item/organ/external/handle_rejection()
+	. = ..()
+	if(!.)
+		return
+
+	if(rejecting % 5 == 0) //Only fire every five rejection ticks.
+		switch(rejecting)
+			if(51 to 200)
+				take_blunt_damage(rand(1, 5), "transplant rejection", TRUE)
+			if(201 to 500)
+				take_blunt_damage(rand(5, 10), "transplant rejection", TRUE)
+			if(501 to INFINITY)
+				take_blunt_damage(rand(10, 15), "transplant rejection", TRUE)
+				if(prob(rejecting / 500))
+					die()
+	return
+

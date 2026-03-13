@@ -66,7 +66,6 @@
  * Fix tendon step.
  */
 /datum/surgery_step/fix_tendon
-	can_infect = TRUE
 	delicate = TRUE
 	blood_level = BLOODY_HANDS
 	shock_level = 40
@@ -122,7 +121,6 @@
  * Fix vein inside a limb step.
  */
 /datum/surgery_step/fix_vein
-	can_infect = TRUE
 	delicate = TRUE
 	blood_level = BLOODY_HANDS
 	shock_level = 40

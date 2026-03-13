@@ -2,7 +2,6 @@
  * Default generic step, does nothing.
  */
 /datum/surgery_step/generic
-	can_infect = TRUE
 	shock_level = 10
 	/// Whether parent organ is required not to be a stump.
 	var/check_stump = TRUE

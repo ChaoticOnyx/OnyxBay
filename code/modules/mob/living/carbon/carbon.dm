@@ -68,10 +68,6 @@
 	if(m_intent == M_RUN && bodytemperature <= 360 && (MUTATION_FAT in mutations))
 		bodytemperature += 2
 
-	// Moving around increases germ_level faster
-	if(germ_level < GERM_LEVEL_MOVE_CAP && prob(8))
-		germ_level++
-
 /mob/living/carbon/relaymove(mob/living/user, direction)
 	if((user in src.stomach_contents) && istype(user))
 		THROTTLE_SHARED(cooldown, 50, user.last_special)

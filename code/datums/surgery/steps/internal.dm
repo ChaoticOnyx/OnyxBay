@@ -2,7 +2,6 @@
  * Default internal surgery step, does nothing.
  */
 /datum/surgery_step/internal
-	can_infect = FALSE
 	blood_level = BLOODY_HANDS
 	delicate = TRUE
 	shock_level = 40

@@ -30,7 +30,6 @@
 				owner.adjustToxLoss(2.0)
 		if(inflamed > 400)
 			if(prob(1))
-				germ_level += rand(2,6)
 				if (owner.nutrition > 100)
 					owner.vomit()
 				else
@@ -46,7 +45,6 @@
 
 				var/obj/item/organ/external/E = owner.get_organ(parent_organ)
 				E.sever_artery()
-				E.germ_level = max(INFECTION_LEVEL_TWO, E.germ_level)
 				owner.adjustToxLoss(125)
 				removed()
 				qdel(src)

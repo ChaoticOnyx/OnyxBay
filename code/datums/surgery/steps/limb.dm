@@ -84,7 +84,6 @@
  * Connects attached limbs to targets body.
  */
 /datum/surgery_step/limb/connect
-	can_infect = TRUE
 	duration = CLAMP_DURATION
 
 	allowed_tools = list(
@@ -199,7 +198,6 @@
  * Amputates limb.
  */
 /datum/surgery_step/amputate
-	can_infect = TRUE
 	shock_level = 10
 	duration = AMPUTATION_DURATION
 

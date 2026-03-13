@@ -211,3 +211,20 @@
 // Things we should do if we are a foreign organ. Used only by lings' biostructures for now.
 /obj/item/organ/internal/proc/handle_foreign()
 	return
+
+/obj/item/organ/internal/handle_rejection()
+	. = ..()
+	if(!.)
+		return
+
+	if(rejecting % 5 == 0) //Only fire every five rejection ticks.
+		switch(rejecting)
+			if(51 to 200)
+				take_internal_damage(rand(1, 5))
+			if(201 to 500)
+				take_internal_damage(rand(5, 10))
+			if(501 to INFINITY)
+				take_internal_damage(rand(10, 15))
+				if(prob(rejecting / 500))
+					die()
+	return

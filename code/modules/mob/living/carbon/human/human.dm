@@ -954,12 +954,6 @@
 		return NEUTER
 	return ..()
 
-/mob/living/carbon/human/proc/increase_germ_level(n)
-	if(gloves)
-		gloves.germ_level += n
-	else
-		germ_level += n
-
 /mob/living/carbon/human/revive(ignore_prosthetic_prefs = FALSE)
 	if(should_have_organ(BP_HEART))
 		vessel.add_reagent(/datum/reagent/blood, species.blood_volume - vessel.total_volume)
@@ -1018,12 +1012,10 @@
 	if(gloves)
 		if(gloves.clean_blood())
 			update_inv_gloves(0)
-		gloves.germ_level = 0
 	else
 		if(!isnull(bloody_hands))
 			bloody_hands = null
 			update_inv_gloves(0)
-		germ_level = 0
 	update_icons()	//apply the now updated overlays to the mob
 
 /mob/living/carbon/human/get_visible_implants()

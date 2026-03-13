@@ -147,7 +147,6 @@
 		"You close the hatch on [target]'s [parent_organ] with \the [tool]."
 		)
 	parent_organ.hatch_state = HATCH_UNSCREWED
-	parent_organ.germ_level = 0
 
 /datum/surgery_step/robotic/close_hatch/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,

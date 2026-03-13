@@ -408,89 +408,17 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 
 	update_health()
 
-//Heal MANY external organs, in random order
-/mob/living/carbon/human/heal_overall_damage(brute, burn)
-	var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
-	var/should_update_damage_icon = FALSE
-
-	while(parts.len && (brute>0 || burn>0) )
-		var/obj/item/organ/external/picked = pick(parts)
-
-		var/brute_was = picked.brute_dam
-		var/burn_was = picked.burn_dam
-
-		if(picked.heal_damage(brute,burn, update_damage_icon = FALSE))
-			should_update_damage_icon = TRUE
-
-		brute -= (brute_was-picked.brute_dam)
-		burn -= (burn_was-picked.burn_dam)
-
-		parts -= picked
-	update_health()
-	if(should_update_damage_icon)
-		update_damage_overlays()
-
-	BITSET(hud_updateflag, HEALTH_HUD)
-
-// damage MANY external organs, in random order
-/mob/living/carbon/human/take_overall_damage(brute, burn, sharp = 0, edge = 0, used_weapon = null)
-	if(status_flags & GODMODE)	return	//godmode
-	var/list/obj/item/organ/external/parts = get_damageable_organs()
-	if(!parts.len) return
-
-	var/dam_flags = (sharp? DAM_SHARP : 0)|(edge? DAM_EDGE : 0)
-	var/brute_avg = brute / parts.len
-	var/burn_avg = burn / parts.len
-	for(var/obj/item/organ/external/E in parts)
-		if(brute_avg)
-			apply_damage(damage = brute_avg, damagetype = BRUTE, blocked = get_organ_armor(E, "melee"), damage_flags = dam_flags, used_weapon = used_weapon, given_organ = E)
-		if(burn_avg)
-			apply_damage(damage = burn_avg, damagetype = BURN, damage_flags = dam_flags, used_weapon = used_weapon, given_organ = E)
-
-	update_health()
-	BITSET(hud_updateflag, HEALTH_HUD)
-
-
-////////////////////////////////////////////
-
-/*
-This function restores all organs.
-*/
-/mob/living/carbon/human/restore_all_organs(ignore_prosthetic_prefs = FALSE)
-	for(var/bodypart in BP_BY_DEPTH)
-		var/obj/item/organ/external/current_organ = organs_by_name[bodypart]
-		if(istype(current_organ))
-			current_organ.rejuvenate(ignore_prosthetic_prefs)
-	if(mind?.vampire)
-		var/datum/vampire/V = mind.vampire
-		V.set_up_organs()
-
-	update_organ_movespeed()
-
-/mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
-	var/obj/item/organ/external/E = get_organ(zone)
-	if(istype(E, /obj/item/organ/external))
-		if (E.heal_damage(brute, burn))
-			BITSET(hud_updateflag, HEALTH_HUD)
-	else
-		return 0
-	return
-
-
-/mob/living/carbon/human/proc/get_organ(zone)
-	return organs_by_name[check_zone(zone)]
-
-/mob/living/carbon/human/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, blocked = 0, damage_flags = 0, obj/used_weapon = null, obj/item/organ/external/given_organ = null)
+/mob/living/carbon/human/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, blocked = 0, damage_flags = 0, obj/used_weapon = null)
 	if(status_flags & GODMODE)
 		return FALSE
 
-	var/obj/item/organ/external/organ = given_organ
-	if(!organ)
-		if(isorgan(def_zone))
-			organ = def_zone
-		else
-			if(!def_zone)	def_zone = ran_zone(def_zone)
-			organ = get_organ(check_zone(def_zone))
+	var/obj/item/organ/external/organ
+	if(isorgan(def_zone))
+		organ = def_zone
+	else
+		if(!def_zone)
+			def_zone = ran_zone(def_zone)
+		organ = get_organ(check_zone(def_zone))
 
 	//Handle other types of damage
 	if(!(damagetype in list(BRUTE, BURN, PAIN, CLONE)))
@@ -550,6 +478,81 @@ This function restores all organs.
 	species.handle_damage(src)
 	BITSET(hud_updateflag, HEALTH_HUD)
 	return TRUE
+
+//Heal MANY external organs, in random order
+/mob/living/carbon/human/heal_overall_damage(brute, burn)
+	var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
+	var/should_update_damage_icon = FALSE
+
+	while(parts.len && (brute>0 || burn>0) )
+		var/obj/item/organ/external/picked = pick(parts)
+
+		var/brute_was = picked.brute_dam
+		var/burn_was = picked.burn_dam
+
+		if(picked.heal_damage(brute,burn, update_damage_icon = FALSE))
+			should_update_damage_icon = TRUE
+
+		brute -= (brute_was-picked.brute_dam)
+		burn -= (burn_was-picked.burn_dam)
+
+		parts -= picked
+	update_health()
+	if(should_update_damage_icon)
+		update_damage_overlays()
+
+	BITSET(hud_updateflag, HEALTH_HUD)
+
+// damage MANY external organs, in random order
+/mob/living/carbon/human/take_overall_damage(brute, burn, sharp = FALSE, edge = FALSE, used_weapon = null)
+	if(status_flags & GODMODE)
+		return	//godmode
+	var/list/obj/item/organ/external/parts = get_damageable_organs()
+	if(!length(parts))
+		return
+
+	var/dam_flags = (sharp? DAM_SHARP : 0)|(edge? DAM_EDGE : 0)
+	var/brute_avg = brute / parts.len
+	var/burn_avg = burn / parts.len
+
+	for(var/obj/item/organ/external/E in parts)
+		if(brute_avg)
+			apply_damage(brute_avg, BRUTE, E, get_organ_armor(E, "melee"), dam_flags, used_weapon)
+		if(burn_avg)
+			apply_damage(burn_avg, BURN, E, 0, dam_flags, used_weapon)
+
+	update_health()
+	BITSET(hud_updateflag, HEALTH_HUD)
+
+
+////////////////////////////////////////////
+
+/*
+This function restores all organs.
+*/
+/mob/living/carbon/human/restore_all_organs(ignore_prosthetic_prefs = FALSE)
+	for(var/bodypart in BP_BY_DEPTH)
+		var/obj/item/organ/external/current_organ = organs_by_name[bodypart]
+		if(istype(current_organ))
+			current_organ.rejuvenate(ignore_prosthetic_prefs)
+	if(mind?.vampire)
+		var/datum/vampire/V = mind.vampire
+		V.set_up_organs()
+
+	update_organ_movespeed()
+
+/mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
+	var/obj/item/organ/external/E = get_organ(zone)
+	if(istype(E, /obj/item/organ/external))
+		if (E.heal_damage(brute, burn))
+			BITSET(hud_updateflag, HEALTH_HUD)
+	else
+		return 0
+	return
+
+
+/mob/living/carbon/human/proc/get_organ(zone)
+	return organs_by_name[check_zone(zone)]
 
 // Find out in how much pain the mob is at the moment.
 /mob/living/carbon/human/proc/get_shock()
