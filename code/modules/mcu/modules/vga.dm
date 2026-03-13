@@ -5,6 +5,7 @@
 	icon_state = "vga"
 
 	device_type = Z_DEVICE_TYPE_VGA
+	power_usage = 5
 
 	var/supports_color = FALSE
 	var/__width = 320
@@ -114,3 +115,4 @@
 	desc = "A TrueColor display module for displaying fancy graphics, has an embedded keyboard and a mouse."
 
 	supports_color = TRUE
+	power_usage = 10

@@ -715,14 +715,6 @@
 
 		return FALSE
 
-	if(QDELETED(__battery))
-		__battery = null
-
-		if(activator)
-			to_chat(activator, SPAN_WARNING("\The [src] has no battery to power!"))
-
-		return FALSE
-
 	if(__elf_path == null)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src] fails to start."))
@@ -733,7 +725,7 @@
 	var/min_boot_charge = P_idle / 3600
 	if(!__try_drain_power(min_boot_charge, FALSE))
 		if(activator)
-			to_chat(activator, SPAN_WARNING("\The [src]'s battery is too low to start."))
+			to_chat(activator, SPAN_WARNING("There is no power to start."))
 
 		return FALSE
 
