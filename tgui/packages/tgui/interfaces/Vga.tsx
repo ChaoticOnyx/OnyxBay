@@ -7,8 +7,8 @@ const I16_MAX = 32767;
 const PAL_SIZE = 256 * 3;
 const SCALE = 2;
 const CANVAS_ID = "vga-canvas";
-const DEFAULT_WIDTH = 320;
-const DEFAULT_HEIGHT = 240;
+const DEFAULT_WIDTH = 160;
+const DEFAULT_HEIGHT = 120;
 const DEFAULT_MAX_MESSAGES_PER_SEC = 60;
 const MAX_QUEUE_SIZE = 512;
 
@@ -344,6 +344,7 @@ type VgaData = {
   width?: number;
   height?: number;
   max_messages_per_sec?: number;
+  turned_on?: number;
 };
 
 type VgaDisplayProps = {
@@ -351,6 +352,7 @@ type VgaDisplayProps = {
   height: number;
   supports_color: boolean;
   maxMessagesPerSec: number;
+  turnedOn: boolean;
   act: (action: string, params?: Record<string, any>) => void;
   onCaptureChange?: (captured: boolean) => void;
 };
@@ -368,6 +370,7 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
   private mouseSubPixelX: number = 0;
   private mouseSubPixelY: number = 0;
   private throttle: EventThrottle | null = null;
+  private pointerLockPending: boolean = false;
 
   state: VgaDisplayState = {
     lastFrameSize: 0,
@@ -386,10 +389,14 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
   }
 
   componentDidUpdate(prevProps: VgaDisplayProps) {
-    const { width, height } = this.props;
+    const { width, height, turnedOn } = this.props;
 
     if (prevProps.width !== width || prevProps.height !== height) {
       this.setupCanvas();
+    }
+
+    if (!turnedOn && this.ctx !== null) {
+      this.ctx.clearRect(0, 0, width, height);
     }
   }
 
@@ -398,6 +405,7 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
     document.removeEventListener("pointerlockchange", this.onPointerLockChange);
     this.throttle?.destroy();
     this.throttle = null;
+    this.pointerLockPending = false;
     this.canvasRef = null;
     this.ctx = null;
     this.imageData = null;
@@ -540,6 +548,7 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
   }
 
   private onPointerLockChange = () => {
+    this.pointerLockPending = false;
     const captured = this.isCaptured();
     this.props.onCaptureChange?.(captured);
 
@@ -614,7 +623,28 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
     e.preventDefault();
 
     if (!this.isCaptured()) {
-      this.canvasRef?.requestPointerLock();
+      if (!this.canvasRef || this.pointerLockPending) {
+        return;
+      }
+
+      this.pointerLockPending = true;
+
+      try {
+        const result = this.canvasRef.requestPointerLock();
+
+        if (result && typeof (result as any).then === "function") {
+          (result as Promise<void>)
+            .catch(() => {})
+            .finally(() => {
+              this.pointerLockPending = false;
+            });
+        } else {
+          this.pointerLockPending = false;
+        }
+      } catch {
+        this.pointerLockPending = false;
+      }
+
       return;
     }
 
@@ -736,6 +766,7 @@ class VgaPage extends Component<VgaPageProps, VgaPageState> {
     const supports_color = data.supports_color !== 0;
     const maxMessagesPerSec =
       (data.max_messages_per_sec || DEFAULT_MAX_MESSAGES_PER_SEC) - 20;
+    const turnedOn = (data.turned_on === 1 ? true : null) ?? false;
 
     const title = captured
       ? "Display - Captured"
@@ -754,6 +785,7 @@ class VgaPage extends Component<VgaPageProps, VgaPageState> {
             height={height}
             supports_color={supports_color}
             maxMessagesPerSec={maxMessagesPerSec}
+            turnedOn={turnedOn}
             onCaptureChange={this.handleCaptureChange}
           />
         </Window.Content>

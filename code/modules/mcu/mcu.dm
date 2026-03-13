@@ -233,6 +233,18 @@
 		else
 			. += "A small LED is off."
 
+	if(user.Adjacent(src))
+		var/list/modules = list()
+
+		for(var/obj/item/mcu_module/M in __pci_devices)
+			if(QDELETED(M))
+				continue
+
+			modules += SPAN_NOTICE("[M.name]")
+
+		if(length(modules) > 0)		
+			. += "Modules are connected to the board: [english_list(modules)]"
+
 /obj/item/device/mcu/attackby(obj/item/W, mob/user)
 	if(!user.IsAdvancedToolUser() || !__try_init(user))
 		return ..()
@@ -715,14 +727,6 @@
 
 		return FALSE
 
-	if(QDELETED(__battery))
-		__battery = null
-
-		if(activator)
-			to_chat(activator, SPAN_WARNING("\The [src] has no battery to power!"))
-
-		return FALSE
-
 	if(__elf_path == null)
 		if(activator)
 			to_chat(activator, SPAN_WARNING("\The [src] fails to start."))
@@ -733,7 +737,7 @@
 	var/min_boot_charge = P_idle / 3600
 	if(!__try_drain_power(min_boot_charge, FALSE))
 		if(activator)
-			to_chat(activator, SPAN_WARNING("\The [src]'s battery is too low to start."))
+			to_chat(activator, SPAN_WARNING("There is no power to start."))
 
 		return FALSE
 
@@ -886,6 +890,10 @@
 		var/T_ambient = M.temperature
 		// In vacuum convective cooling is negligible - only radiation remains. W/K
 		var/effective_k = cooling_k
+
+		if(__chassis != null)
+			var/obj/item/mcu_chassis/C = __chassis.resolve()
+			effective_k += C.cooling_bonus
 
 		if(M.get_total_moles() < MCU_VACUUM_MOLES_THRESHOLD)
 			effective_k *= MCU_VACUUM_COOLING_FACTOR

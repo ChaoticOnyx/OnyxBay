@@ -7,6 +7,7 @@
 	matter = list(MATERIAL_STEEL = 100, MATERIAL_GLASS = 50)
 	origin_tech = list(TECH_ENGINEERING = 1)
 	max_health = 10
+	cooling_bonus = 0.15
 
 /obj/item/mcu_chassis/tablet/__on_mcu_on()
 	ClearOverlays()

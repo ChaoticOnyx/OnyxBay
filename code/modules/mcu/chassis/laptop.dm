@@ -7,6 +7,7 @@
 	matter = list(MATERIAL_STEEL = 300, MATERIAL_GLASS = 150)
 	origin_tech = list(TECH_ENGINEERING = 1)
 	max_health = 30
+	cooling_bonus = 0.4
 
 /obj/item/mcu_chassis/laptop/AltClick(mob/user)
 	if(!istype(loc, /turf))
