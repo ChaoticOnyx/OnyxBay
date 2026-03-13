@@ -370,6 +370,7 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
   private mouseSubPixelX: number = 0;
   private mouseSubPixelY: number = 0;
   private throttle: EventThrottle | null = null;
+  private pointerLockPending: boolean = false;
 
   state: VgaDisplayState = {
     lastFrameSize: 0,
@@ -404,6 +405,7 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
     document.removeEventListener("pointerlockchange", this.onPointerLockChange);
     this.throttle?.destroy();
     this.throttle = null;
+    this.pointerLockPending = false;
     this.canvasRef = null;
     this.ctx = null;
     this.imageData = null;
@@ -546,6 +548,7 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
   }
 
   private onPointerLockChange = () => {
+    this.pointerLockPending = false;
     const captured = this.isCaptured();
     this.props.onCaptureChange?.(captured);
 
@@ -620,7 +623,28 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
     e.preventDefault();
 
     if (!this.isCaptured()) {
-      this.canvasRef?.requestPointerLock();
+      if (!this.canvasRef || this.pointerLockPending) {
+        return;
+      }
+
+      this.pointerLockPending = true;
+
+      try {
+        const result = this.canvasRef.requestPointerLock();
+
+        if (result && typeof (result as any).then === "function") {
+          (result as Promise<void>)
+            .catch(() => {})
+            .finally(() => {
+              this.pointerLockPending = false;
+            });
+        } else {
+          this.pointerLockPending = false;
+        }
+      } catch {
+        this.pointerLockPending = false;
+      }
+
       return;
     }
 
