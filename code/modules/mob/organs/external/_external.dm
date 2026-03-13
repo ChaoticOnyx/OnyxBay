@@ -588,39 +588,45 @@ This function completely restores a damaged organ to perfect condition.
 	if(ishuman(owner))
 		H = owner
 
-	var/heal_amt = H ? H.coagulation * 0.5 : 0.5
-
-	if(!heal_amt)
-		return // No autoheal
+	var/should_update_health = FALSE
+	var/regeneration = H ? H.coagulation : 1.0
+	var/already_scabbed = (scabbed >= max_bleeding)
 
 	// Organs won't autoheal until all the wounds are scabbed.
 	// Scabbing progresses faster under properly-applied bandages.
-	if(scabbed < max_bleeding)
-		if(!clamped)
-			scabbed += (H ? H.coagulation : 1.0) * ((bandaged >= scabbed) ? 1.0 : 0.5) * wound_update_accuracy
-	else
-		heal_amt = round(heal_amt * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
+	if(!already_scabbed)
+		if(!clamped && regeneration)
+			scabbed += regeneration * ((bandaged >= scabbed) ? 1.0 : 0.5) * wound_update_accuracy
+			should_update_health = TRUE
+
+	if(already_scabbed || owner.chem_effects[CE_BRUTE_REGEN] || owner.chem_effects[CE_BURN_REGEN])
+		regeneration = round(regeneration * 0.25 * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
 
 		// Evenly spreading regeneration between burn and brute damage if both are present
 		if(burn_dam && brute_dam)
-			heal_amt *= 0.5
+			regeneration *= 0.5
 
 		if(burn_dam)
-			heal_burn_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
+			heal_burn_damage(regeneration * (salved ? 2.5 : 1.0) + owner.chem_effects[CE_BURN_REGEN], FALSE, FALSE, FALSE)
+			should_update_health = TRUE
 
 		if(brute_dam)
+			var/spread_brute = 1.0
 			if(blunt_dam && (pierce_dam + cut_dam))
-				heal_amt *= 0.5
+				spread_brute = 0.5
 
 			if(blunt_dam)
-				heal_blunt_damage(heal_amt * (salved ? 2.5 : 1.0), FALSE, FALSE, FALSE)
+				heal_blunt_damage((regeneration * (salved ? 2.5 : 1.0) + owner.chem_effects[CE_BRUTE_REGEN]) * spread_brute, FALSE, FALSE, FALSE)
+				should_update_health = TRUE
 
 			// Wounds won't close naturally if they are clamped or there are things sticking out of them.
 			if((pierce_dam + cut_dam) && !clamped && !LAZYLEN(embedded_objects))
-				heal_sharp_damage(heal_amt, FALSE, FALSE, FALSE)
+				heal_sharp_damage((regeneration + owner.chem_effects[CE_BRUTE_REGEN]) * spread_brute, FALSE, FALSE, FALSE)
+				should_update_health = TRUE
 
-	update_damages()
-	owner?.update_health()
+	if(should_update_health)
+		update_damages()
+		owner?.update_health()
 	return update_damstate()
 
 // Updates damage ratios, bleeding status, etc.

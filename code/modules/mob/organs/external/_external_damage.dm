@@ -41,11 +41,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	blunt_dam = min(blunt_dam + final_blunt_damage, max_damage)
 
 	var/final_cut_damage = min(potential_cut_damage, max_cut_damage)
-	if(final_cut_damage >= 2.5)
+	if(final_cut_damage >= 1.0)
 		cut_dam = min(cut_dam + final_cut_damage, max_damage)
 
 	var/final_pierce_damage = min(potential_pierce_damage, max_pierce_damage)
-	if(final_pierce_damage >= 2.5)
+	if(final_pierce_damage >= 1.0)
 		pierce_dam = min(pierce_dam + final_pierce_damage, max_damage)
 
 	return

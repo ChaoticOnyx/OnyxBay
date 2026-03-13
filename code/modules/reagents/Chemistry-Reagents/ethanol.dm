@@ -887,7 +887,9 @@
 	if(alien == IS_DIONA)
 		return
 	M.adjustOxyLoss(-4 * removed)
-	M.heal_organ_damage(2 * removed, 2 * removed)
+	M.add_chemical_effect(CE_BRUTE_REGEN, 0.75)
+	M.add_chemical_effect(CE_BURN_REGEN, 0.75)
+
 	M.adjustToxLoss(-2 * removed)
 	if(M.dizziness)
 		M.dizziness = max(0, M.dizziness - 15)
@@ -1410,7 +1412,10 @@
 	if(alien == IS_DIONA)
 		return
 	M.adjustOxyLoss(-4 * removed)
-	M.heal_organ_damage(2 * removed, 2 * removed)
+
+	M.add_chemical_effect(CE_BRUTE_REGEN, 1.0)
+	M.add_chemical_effect(CE_BURN_REGEN, 1.0)
+
 	M.adjustToxLoss(-2 * removed)
 	if(M.dizziness)
 		M.dizziness = max(0, M.dizziness - 15)
@@ -1778,4 +1783,6 @@
 	..()
 	if(alien == IS_DIONA)
 		return
-	M.heal_organ_damage(3 * removed, 3 * removed)
+
+	M.add_chemical_effect(CE_BRUTE_REGEN, 1.0)
+	M.add_chemical_effect(CE_BURN_REGEN, 1.0)

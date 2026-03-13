@@ -441,7 +441,7 @@
 	return 0
 
 /mob/living/carbon/proc/add_chemical_effect(effect, magnitude = 1)
-	if(effect in chem_effects)
+	if(chem_effects[effect])
 		chem_effects[effect] += magnitude
 	else
 		chem_effects[effect] = magnitude
@@ -450,7 +450,7 @@
 		update_chem_slowdown(effect)
 
 /mob/living/carbon/proc/add_up_to_chemical_effect(effect, magnitude = 1)
-	if(effect in chem_effects)
+	if(chem_effects[effect])
 		chem_effects[effect] = max(magnitude, chem_effects[effect])
 	else
 		chem_effects[effect] = magnitude

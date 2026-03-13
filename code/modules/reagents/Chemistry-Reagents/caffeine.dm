@@ -134,7 +134,7 @@
 
 /datum/reagent/caffeine/coffee/cafe_latte/affect_digest(mob/living/carbon/M, alien, removed)
 	. = ..()
-	M.heal_organ_damage(0.5 * removed, 0)
+	M.add_chemical_effect(CE_BRUTE_REGEN, 0.5)
 
 /datum/reagent/caffeine/coffee/icecoffee
 	name = "Iced Coffee"
@@ -164,7 +164,7 @@
 
 /datum/reagent/caffeine/coffee/soy_latte/affect_digest(mob/living/carbon/M, alien, removed)
 	..()
-	M.heal_organ_damage(0.5 * removed, 0)
+	M.add_chemical_effect(CE_BRUTE_REGEN, 0.5)
 
 /datum/reagent/caffeine/coffee/cappuccino
 	name = "Cappuccino"
@@ -180,4 +180,4 @@
 
 /datum/reagent/caffeine/coffee/cappuccino/affect_digest(mob/living/carbon/M, alien, removed)
 	..()
-	M.heal_organ_damage(0.5 * removed, 0)
+	M.add_chemical_effect(CE_BRUTE_REGEN, 0.5)

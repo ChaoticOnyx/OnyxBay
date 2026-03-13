@@ -12,7 +12,7 @@
 	var/analgesic = 0 // when this is set, the mob isn't affected by shock or pain
 	//Active emote/pose
 	var/pose = null
-	var/list/chem_effects = list()
+	var/alist/chem_effects = alist()
 	var/list/chem_traces = list() // Long-lasting "inactive" metabolism products, mostly for analyzing and simulating chemical tolerance
 	var/list/chem_doses = list() // "Active" metabolized reagents, cleared as soon as the corresponding reagent leaves the mob's system
 	var/datum/reagents/metabolism/bloodstr = null

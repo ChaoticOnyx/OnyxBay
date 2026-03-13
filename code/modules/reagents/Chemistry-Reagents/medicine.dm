@@ -46,13 +46,14 @@
 
 /datum/reagent/bicaridine/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
+		M.add_chemical_effect(CE_BRUTE_REGEN, 2.5)
 		var/effect_mult = removed / metabolism
-		M.heal_organ_damage(6 * removed, 0)
 		M.add_chemical_effect(CE_PAINKILLER, 10 * effect_mult)
 
 /datum/reagent/bicaridine/overdose(mob/living/carbon/M, alien)
 	..()
 	if(ishuman(M))
+		M.add_chemical_effect(CE_BRUTE_REGEN, 2.5)
 		M.add_chemical_effect(CE_BLOCKAGE, (15 + volume - overdose)/100)
 		var/mob/living/carbon/human/H = M
 		for(var/obj/item/organ/external/E in H.organs)
@@ -74,7 +75,7 @@
 
 /datum/reagent/kelotane/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		M.heal_organ_damage(0, 6 * removed)
+		M.add_chemical_effect(CE_BURN_REGEN, 2.5)
 
 /datum/reagent/dermaline
 	name = "Dermaline"
@@ -92,7 +93,7 @@
 
 /datum/reagent/dermaline/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		M.adjustFireLoss(-12 * removed)
+		M.add_chemical_effect(CE_BURN_REGEN, 5.0)
 
 /datum/reagent/dylovene
 	name = "Dylovene"
@@ -204,7 +205,8 @@
 
 /datum/reagent/tricordrazine/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		M.heal_organ_damage(3 * removed, 3 * removed)
+		M.add_chemical_effect(CE_BRUTE_REGEN, 1.0)
+		M.add_chemical_effect(CE_BURN_REGEN, 1.0)
 
 /datum/reagent/cryoxadone
 	name = "Cryoxadone"
@@ -241,10 +243,9 @@
 	for(var/obj/item/organ/external/E in H.organs)
 		if(BP_IS_ROBOTIC(E))
 			continue
-		if((E.status & ORGAN_BLEEDING) && prob(50))
-			E.clamped = 1
+		if((E.status & ORGAN_BLEEDING))
+			E.scabbed += 5 * removed
 			E.update_damages()
-			H.update_surgery()
 
 	for(var/obj/item/organ/internal/I in H.internal_organs)
 		if(BP_IS_ROBOTIC(I))
@@ -290,10 +291,9 @@
 	for(var/obj/item/organ/external/E in H.organs)
 		if(BP_IS_ROBOTIC(E))
 			continue
-		if(E.status & ORGAN_BLEEDING && prob(80))
-			E.clamped = 1
+		if(E.status & ORGAN_BLEEDING)
+			E.scabbed += 10 * removed
 			E.update_damages()
-			H.update_surgery()
 		if(E.status & ORGAN_ARTERY_CUT && prob(8 * removed * H.stasis_value))
 			E.status &= ~ORGAN_ARTERY_CUT
 

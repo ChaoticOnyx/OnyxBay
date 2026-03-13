@@ -322,7 +322,7 @@
 	..()
 	if(alien == IS_DIONA)
 		return
-	M.heal_organ_damage(0, 0.1 * removed)
+	M.add_chemical_effect(CE_BURN_REGEN, 0.5)
 
 /datum/reagent/drink/juice/watermelon
 	name = "Watermelon Juice"
@@ -362,7 +362,7 @@
 	..()
 	if(alien == IS_DIONA)
 		return
-	M.heal_organ_damage(0, 0.1 * removed)
+	M.add_chemical_effect(CE_BURN_REGEN, 0.5)
 
 /datum/reagent/drink/juice/coconut
 	name = "Coconut Milk"
@@ -405,7 +405,7 @@
 	..()
 	if(alien == IS_DIONA)
 		return
-	M.heal_organ_damage(0.5 * removed, 0)
+	M.add_chemical_effect(CE_BRUTE_REGEN, 0.5)
 	holder.remove_reagent(/datum/reagent/capsaicin, 10 * removed)
 
 /datum/reagent/drink/milk/chocolate
