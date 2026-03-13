@@ -233,6 +233,18 @@
 		else
 			. += "A small LED is off."
 
+	if(user.Adjacent(src))
+		var/list/modules = list()
+
+		for(var/obj/item/mcu_module/M in __pci_devices)
+			if(QDELETED(M))
+				continue
+
+			modules += SPAN_NOTICE("[M.name]")
+
+		if(length(modules) > 0)		
+			. += "Modules are connected to the board: [english_list(modules)]"
+
 /obj/item/device/mcu/attackby(obj/item/W, mob/user)
 	if(!user.IsAdvancedToolUser() || !__try_init(user))
 		return ..()
