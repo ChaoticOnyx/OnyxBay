@@ -8,8 +8,8 @@
 	power_usage = 5
 
 	var/supports_color = FALSE
-	var/__width = 320
-	var/__height = 240
+	var/__width = Z_VGA_MIN_WIDTH
+	var/__height = Z_VGA_MIN_HEIGHT
 
 /obj/item/mcu_module/vga/__interact(mob/user)
 	attack_self(user)

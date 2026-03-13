@@ -156,6 +156,9 @@ var/__z_name = null
 #define Z_VGA_B2N_CMD_KEYBOARD_EVENT 2
 #define Z_VGA_B2N_CMD_MOUSE_EVENT 3
 
+#define Z_VGA_MIN_WIDTH 160
+#define Z_VGA_MIN_HEIGHT 120
+
 // All machine IDs are numeric handles returned by Z_MACHINE_CREATE.
 
 /// Creates a new machine. Returns numeric machine ID.

@@ -7,8 +7,8 @@ const I16_MAX = 32767;
 const PAL_SIZE = 256 * 3;
 const SCALE = 2;
 const CANVAS_ID = "vga-canvas";
-const DEFAULT_WIDTH = 320;
-const DEFAULT_HEIGHT = 240;
+const DEFAULT_WIDTH = 160;
+const DEFAULT_HEIGHT = 120;
 const DEFAULT_MAX_MESSAGES_PER_SEC = 60;
 const MAX_QUEUE_SIZE = 512;
 
