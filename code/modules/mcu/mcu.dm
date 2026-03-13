@@ -879,6 +879,10 @@
 		// In vacuum convective cooling is negligible - only radiation remains. W/K
 		var/effective_k = cooling_k
 
+		if(__chassis != null)
+			var/obj/item/mcu_chassis/C = __chassis.resolve()
+			effective_k += C.cooling_bonus
+
 		if(M.get_total_moles() < MCU_VACUUM_MOLES_THRESHOLD)
 			effective_k *= MCU_VACUUM_COOLING_FACTOR
 

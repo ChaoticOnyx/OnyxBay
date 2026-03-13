@@ -158,6 +158,9 @@ var/__z_name = null
 
 #define Z_VGA_MIN_WIDTH 160
 #define Z_VGA_MIN_HEIGHT 120
+#define Z_VGA_MAX_WIDTH 640
+#define Z_VGA_MAX_HEIGHT 480
+#define Z_VGA_MAX_PIXELS (Z_VGA_MAX_WIDTH * Z_VGA_MAX_HEIGHT)
 
 // All machine IDs are numeric handles returned by Z_MACHINE_CREATE.
 

@@ -344,6 +344,7 @@ type VgaData = {
   width?: number;
   height?: number;
   max_messages_per_sec?: number;
+  turned_on?: number;
 };
 
 type VgaDisplayProps = {
@@ -351,6 +352,7 @@ type VgaDisplayProps = {
   height: number;
   supports_color: boolean;
   maxMessagesPerSec: number;
+  turnedOn: boolean;
   act: (action: string, params?: Record<string, any>) => void;
   onCaptureChange?: (captured: boolean) => void;
 };
@@ -386,10 +388,14 @@ class VgaDisplay extends Component<VgaDisplayProps, VgaDisplayState> {
   }
 
   componentDidUpdate(prevProps: VgaDisplayProps) {
-    const { width, height } = this.props;
+    const { width, height, turnedOn } = this.props;
 
     if (prevProps.width !== width || prevProps.height !== height) {
       this.setupCanvas();
+    }
+
+    if (!turnedOn && this.ctx !== null) {
+      this.ctx.clearRect(0, 0, width, height);
     }
   }
 
@@ -736,6 +742,7 @@ class VgaPage extends Component<VgaPageProps, VgaPageState> {
     const supports_color = data.supports_color !== 0;
     const maxMessagesPerSec =
       (data.max_messages_per_sec || DEFAULT_MAX_MESSAGES_PER_SEC) - 20;
+    const turnedOn = (data.turned_on === 1 ? true : null) ?? false;
 
     const title = captured
       ? "Display - Captured"
@@ -754,6 +761,7 @@ class VgaPage extends Component<VgaPageProps, VgaPageState> {
             height={height}
             supports_color={supports_color}
             maxMessagesPerSec={maxMessagesPerSec}
+            turnedOn={turnedOn}
             onCaptureChange={this.handleCaptureChange}
           />
         </Window.Content>
