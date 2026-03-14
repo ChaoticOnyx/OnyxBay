@@ -287,6 +287,6 @@
 		/obj/item/bonegel,
 		/obj/item/FixOVein/clot,
 		/obj/item/organfixer/advanced,
-		/obj/item/stack/medical/advanced/bruise_pack,
+		/obj/item/stack/medical/gel/brute,
 		/obj/item/stack/nanopaste,
 		)

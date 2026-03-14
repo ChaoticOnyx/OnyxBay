@@ -37,7 +37,7 @@
 	// TODO: Abdominal cavity here
 	return
 
-/obj/item/organ/internal/bladder/take_internal_damage(amount, silent = FALSE)
+/obj/item/organ/internal/bladder/take_internal_damage(amount, silent = FALSE, is_traumatic = FALSE)
 	var/oldbroken = is_broken()
 	. = ..()
 	if(owner && !owner.stat)

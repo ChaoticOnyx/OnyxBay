@@ -13,8 +13,7 @@
 			E.status &= ~ORGAN_ARTERY_CUT
 		if(E.status & ORGAN_BLEEDING && heal.heals_external_bleeding)
 			E.status &= ~ORGAN_BLEEDING
-			for(var/datum/wound/W in E.wounds)
-				W.clamped = 1
+			E.scabbed = E.max_bleeding
 		if(E.status & ORGAN_TENDON_CUT && heal.heal_bones)
 			E.status &= ~ORGAN_TENDON_CUT
 		if(E.status & ORGAN_BROKEN && heal.heal_bones) // some calcium
@@ -22,16 +21,7 @@
 			E.stage = 0
 
 		if(heal.removes_embeded)
-			for(var/obj/implanted_object in E.implants)
-				implanted_object.dropInto(get_turf(loc))
-				E.implants -= implanted_object
-				if(istype(implanted_object, /obj/item/implant))
-					var/obj/item/implant/removed_implant = implanted_object
-					removed_implant.removed()
-				for(var/datum/wound/wound in E.wounds)
-					if(implanted_object in wound.embedded_objects)
-						wound.embedded_objects -= implanted_object
-						break
+			E.drop_embedded_objects()
 
 	for(var/A in internal_organs)
 		var/obj/item/organ/internal/E = A

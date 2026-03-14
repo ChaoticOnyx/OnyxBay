@@ -33,12 +33,9 @@
 			to_chat(src, "<span class='danger'>With a shower of fresh blood, a new [O.name] forms.</span>")
 			visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [src]'s [O.amputation_point], forming a new [O.name]!</span>")
 		return 1
-	else if (E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
+	else if(E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
 		E.mend_fracture()
 		E.status &= ~ORGAN_ARTERY_CUT
-		for(var/datum/wound/W in E.wounds)
-			if(W.wound_damage() == 0 && prob(50))
-				E.wounds -= W
 		return 1
 	else
 		return 0
@@ -130,12 +127,6 @@
 					else
 						drop_inactive_hand()
 					Stun(2)
-
-				//Moving makes open wounds get infected much faster
-				if(LAZYLEN(E.wounds))
-					for(var/datum/wound/W in E.wounds)
-						if(W.infection_check())
-							W.germ_level += 1
 
 	if(should_update_damage_icon)
 		update_damage_overlays()

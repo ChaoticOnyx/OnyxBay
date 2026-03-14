@@ -1,6 +1,4 @@
 /datum/surgery_step
-	/// Whether performing this step can cause infection.
-	var/can_infect = FALSE
 	/// Whether this step require not covered organ.
 	var/needs_uncovered_organ = TRUE
 	/// Whether this step can be successfully performed on any surface.
@@ -207,9 +205,6 @@
  *
  */
 /datum/surgery_step/proc/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user, using_inactive_item)
-	if(can_infect)
-		spread_germs_to_organ(user, target_organ)
-
 	if(ishuman(user) && prob(60))
 		var/mob/living/carbon/human/H = user
 		if(blood_level & BLOODY_HANDS)
@@ -230,18 +225,6 @@
 	else
 		play_failure_sound(user, target, target_organ, tool)
 		failure(parent_organ, target_organ, target, tool, user)
-
-/// Spreads germs to organ if no gloves is present.
-/datum/surgery_step/proc/spread_germs_to_organ(mob/living/carbon/human/user, obj/item/organ/external/target_organ)
-	if(!istype(user) || !istype(target_organ))
-		return
-
-	var/germ_level = user.germ_level
-	var/obj/item/clothing/gloves/G = user.gloves
-	if(istype(G) && !(G.clipped && prob(75)))
-		germ_level = G.germ_level
-
-	target_organ.germ_level = max(germ_level, target_organ.germ_level)
 
 /// Calculates success chance based on users health conditions, surface and target.
 /datum/surgery_step/proc/calc_success_chance(mob/living/user, mob/living/carbon/human/target, obj/item/tool, target_zone)

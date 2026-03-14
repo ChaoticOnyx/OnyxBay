@@ -71,7 +71,7 @@ Small, little HP, poisonous.
 	. = ..()
 	if(. && istype(src.loc, /obj/item/holder) && isliving(src.loc.loc)) //We in somebody
 		var/mob/living/L = src.loc.loc
-		if(src.loc in L.get_visible_implants(0))
+		if(src.loc in L.get_embedded_objects(0))
 			if(prob(1))
 				to_chat(L, "<span class='warning'>You feel strange as \the [src] pulses...</span>")
 			var/datum/reagents/R = L.reagents

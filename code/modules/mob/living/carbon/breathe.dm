@@ -18,7 +18,7 @@
 	var/inflict_losebreath = FALSE
 	if(nervous_system_failure()) // braian be break, breath two hard
 		inflict_losebreath = TRUE
-	else if(is_asystole() && !(CE_STABLE in chem_effects) && active_breathe) //crit aka circulatory shock
+	else if(is_asystole() && !chem_effects[CE_STABLE] && active_breathe) //crit aka circulatory shock
 		inflict_losebreath = TRUE
 
 	if(inflict_losebreath)

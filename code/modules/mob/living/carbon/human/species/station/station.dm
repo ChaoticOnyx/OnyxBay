@@ -449,10 +449,6 @@
 					to_chat(H, SPAN("notice", "Some of your nymphs split and hurry to reform your [O.name]."))
 					H.remove_nutrition(60)
 					H.update_body()
-				else
-					for(var/datum/wound/W in E.wounds)
-						if(W.wound_damage() == 0 && prob(50))
-							E.wounds -= W
 
 /datum/species/diona/is_eligible_for_antag_spawn(antag_id)
 	return FALSE

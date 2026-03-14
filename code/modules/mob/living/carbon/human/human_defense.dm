@@ -47,19 +47,22 @@ meteor_act
 		projectile_affect_poise(P, P.poisedamage / 3, def_zone)
 		return PROJECTILE_FORCE_ARMORBLOCK
 
+	var/blocked_multiplier = blocked_mult(blocked)
+
 	// Internal damage
 	// Some day we should make internals deal with blunt and sharp damage differently, but for now it's like this, if 'blocked' is non-zero, then the projectile's already lost its SHARP/EDGE flags and thus we cut the damage accordingly
 	if(length(organ.internal_organs))
-		var/internal_damage_prob = 70 * blocked_mult(blocked) // 70% for a naked dude/armor fail, 35% if one armor layer's succeeded, etc.
+		var/internal_damage_prob = 100 * blocked_multiplier // 100% for a naked dude/armor fail, 50% if one armor layer's succeeded, etc. The real chance is still a bit lower, though, since each organ has a chance of being damaged.
 		if(organ && P.damage_type == BRUTE)
 			internal_damage_prob *= organ.brute_mod
 
 		// If our bodypart is a pile of shredded meat then it doesn't protect organs well
-		if(organ.damage > organ.max_damage)
-			internal_damage_prob *= organ.damage / organ.max_damage * 2
+		var/organ_total_damage = organ.get_damage()
+		if(organ_total_damage > organ.max_damage)
+			internal_damage_prob *= organ_total_damage / organ.max_damage * 2
 
 		if(prob(internal_damage_prob))
-			var/penetrating_damage = P.damage * P.penetration_modifier * PROJECTILE_INTERNAL_DAMAGE_MULT * blocked_mult(blocked)
+			var/penetrating_damage = P.damage * P.penetration_modifier * PROJECTILE_INTERNAL_DAMAGE_MULT * blocked_multiplier
 			if(organ.encased && !(organ.status & ORGAN_BROKEN))
 				penetrating_damage *= 0.75 // Ribs and skulls somewhat protect
 
@@ -72,7 +75,7 @@ meteor_act
 
 			if(length(victims))
 				for(var/obj/item/organ/internal/victim in victims)
-					victim.take_internal_damage(penetrating_damage / victims.len)
+					victim.take_internal_damage(penetrating_damage / victims.len, is_traumatic = TRUE)
 
 	// Embed or sever artery, only happens if the projectile's successfully bypassed armor
 	if(!blocked && P.damage_type == BRUTE && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(PROJECTILE_EMBED_CHANCE))
@@ -89,9 +92,9 @@ meteor_act
 			organ.embed(SP)
 
 	// Poise damage, the last actual harmful thing to happen
-	projectile_affect_poise(P, P.poisedamage * blocked_mult(blocked), def_zone)
+	projectile_affect_poise(P, P.poisedamage * blocked_multiplier, def_zone)
 	// Spawning blood if necessary
-	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
+	projectile_hit_bloody(P, P.damage * blocked_multiplier, def_zone)
 
 	return blocked
 
@@ -986,7 +989,6 @@ meteor_act
 		return
 
 	var/hit_area = affecting.name
-	var/datum/wound/created_wound
 
 	visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
 	play_hitby_sound(AM)
@@ -1003,7 +1005,7 @@ meteor_act
 		var/damage_flags = O.damage_flags()
 		if(prob(armor))
 			damage_flags &= ~(DAM_SHARP|DAM_EDGE)
-		created_wound = apply_damage(throw_damage, dtype, zone, armor, damage_flags, O)
+		apply_damage(throw_damage, dtype, zone, armor, damage_flags, O)
 
 	if(ismob(TT.thrower))
 		var/client/assailant = TT.thrower.client
@@ -1026,16 +1028,17 @@ meteor_act
 			//Sharp objects will always embed if they do enough damage.
 			//Thrown sharp objects have some momentum already and have a small chance to embed even if the damage is below the threshold
 			if((sharp && prob(damage / (10 * I.w_class) * 100)) || (damage > embed_threshold && prob(embed_chance)))
-				affecting.embed(I, supplied_wound = created_wound)
+				affecting.embed(I)
 
 	process_momentum(AM, TT)
 
-/mob/living/carbon/human/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
-	if(!def_zone) ..()
+/mob/living/carbon/human/embed(obj/O, def_zone = null)
+	if(!def_zone)
+		return ..()
 
 	var/obj/item/organ/external/affecting = get_organ(def_zone)
 	if(affecting)
-		affecting.embed(O, supplied_wound = supplied_wound)
+		affecting.embed(O)
 
 /mob/living/carbon/human/proc/bloody_hands(mob/living/source, amount = 2)
 	var/obj/item/clothing/gloves/gloves = get_equipped_item(slot_gloves)

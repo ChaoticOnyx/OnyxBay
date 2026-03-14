@@ -75,14 +75,6 @@
 // Damage above this value must be repaired with surgery.
 #define ROBOLIMB_SELF_REPAIR_CAP 30
 
-//Germs and infections.
-#define GERM_LEVEL_AMBIENT  110 // Maximum germ level you can reach by standing still.
-#define GERM_LEVEL_MOVE_CAP 200 // Maximum germ level you can reach by running around.
-
-#define INFECTION_LEVEL_ONE   100
-#define INFECTION_LEVEL_TWO   500
-#define INFECTION_LEVEL_THREE 1000
-
 //Blood levels. These are percentages based on the species blood_volume far.
 #define BLOOD_VOLUME_SAFE    85
 #define BLOOD_VOLUME_OKAY    75

@@ -154,7 +154,7 @@
 
 	if(user.a_intent != I_HELP)
 		. = ..()
-		if (!.)	//item/attack() does it's own messaging and logs
+		if(isnull(.))	//item/attack() does it's own messaging and logs
 			return 0	// item/attack() will return 1 if they hit, 0 if they missed.
 
 		//whacking someone causes a much poorer electrical contact than deliberately prodding them.

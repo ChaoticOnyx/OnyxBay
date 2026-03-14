@@ -69,7 +69,7 @@
 	else
 		digested.metabolize(TRUE)
 
-/obj/item/organ/internal/intestines/take_internal_damage(amount, silent = FALSE)
+/obj/item/organ/internal/intestines/take_internal_damage(amount, silent = FALSE, is_traumatic = FALSE)
 	var/oldbroken = is_broken()
 	. = ..()
 	if(owner && !owner.stat)
