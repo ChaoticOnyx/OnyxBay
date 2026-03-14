@@ -255,6 +255,7 @@
 	stack_empty = MEDICAL_STACK_FILLED
 	splittable = FALSE
 	stack_full = TRUE
+	max_amount = 20
 	amount = 20
 
 /obj/item/stack/medical/gel/proc/refill(amt = 1)

@@ -303,10 +303,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				E.internal_organs.Remove(O)
 				H.internal_organs.Remove(O)
 				foreign_organs |= O
-		if(E.implants.len)
+		if(LAZYLEN(E.implants))
 			implants_from_external_organs[E.organ_tag] = list()
-		for(var/I in E.implants)
-			implants_from_external_organs[E.organ_tag] += I
+			for(var/I in E.implants)
+				implants_from_external_organs[E.organ_tag] += I
 
 	for(var/obj/item/organ/organ in H.contents)
 		if((organ in H.organs) || (organ in H.internal_organs))
