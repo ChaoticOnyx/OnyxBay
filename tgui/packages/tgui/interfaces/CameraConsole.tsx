@@ -1,5 +1,4 @@
 import { classes } from "common/react";
-import { Component } from "inferno";
 import { useBackend, useLocalState } from "../backend";
 import {
   Box,
@@ -179,7 +178,7 @@ const CameraViewport = (props: CameraViewportProps) => {
           params={{
             id: mapRef,
             type: "map",
-            "is-visible": visible && feedReady ? "true" : "false",
+            "is-visible": visible ? "true" : "false",
           }}
         />
       )}
@@ -197,85 +196,6 @@ const CameraViewport = (props: CameraViewportProps) => {
     </Box>
   );
 };
-
-type MultiSlotMountControllerProps = {
-  enabled: boolean;
-  visibleSlots: number;
-  activeSlot: number;
-  children: (mountedSlots: number[]) => any;
-};
-
-type MultiSlotMountControllerState = {
-  mountedSlots: number[];
-};
-
-class MultiSlotMountController extends Component<
-  MultiSlotMountControllerProps,
-  MultiSlotMountControllerState
-> {
-  timers: number[] = [];
-
-  state = {
-    mountedSlots: [],
-  };
-
-  componentDidMount() {
-    this.syncMountedSlots(this.props);
-  }
-
-  componentDidUpdate(prevProps: MultiSlotMountControllerProps) {
-    if (
-      prevProps.enabled !== this.props.enabled ||
-      prevProps.visibleSlots !== this.props.visibleSlots ||
-      (this.props.enabled && !prevProps.enabled)
-    ) {
-      this.syncMountedSlots(this.props);
-    }
-  }
-
-  componentWillUnmount() {
-    this.clearTimers();
-  }
-
-  clearTimers() {
-    this.timers.forEach((timer) => window.clearTimeout(timer));
-    this.timers = [];
-  }
-
-  syncMountedSlots(props: MultiSlotMountControllerProps) {
-    this.clearTimers();
-
-    if (!props.enabled) {
-      if (this.state.mountedSlots.length) {
-        this.setState({ mountedSlots: [] });
-      }
-      return;
-    }
-
-    const slotOrder = [
-      props.activeSlot,
-      ...Array.from({ length: props.visibleSlots }, (_, idx) => idx + 1).filter(
-        (slot) => slot !== props.activeSlot
-      ),
-    ];
-
-    this.setState({
-      mountedSlots: slotOrder.length ? [slotOrder[0]] : [],
-    });
-
-    this.timers = slotOrder.slice(1).map((_, index) =>
-      window.setTimeout(() => {
-        this.setState({
-          mountedSlots: slotOrder.slice(0, index + 2),
-        });
-      }, 500 * (index + 1))
-    );
-  }
-
-  render() {
-    return this.props.children(this.state.mountedSlots);
-  }
-}
 
 type CameraMapProps = {
   cameras: CameraData[];
@@ -920,108 +840,97 @@ export const CameraConsole = (props, context) => {
                       </Stack.Item>
 
                       <Stack.Item grow>
-                        <MultiSlotMountController
-                          enabled={data.view_mode === VIEW_MODE_MULTI}
-                          visibleSlots={visibleSlots}
-                          activeSlot={activeSlot}
+                        <Box
+                          className="CameraConsole__multiGrid"
+                          style={{
+                            "grid-template-columns": `repeat(${layout.cols}, minmax(0, 1fr))`,
+                            "grid-template-rows": `repeat(${layout.rows}, minmax(0, 1fr))`,
+                          }}
                         >
-                          {(mountedMultiSlots) => (
-                            <Box
-                              className="CameraConsole__multiGrid"
-                              style={{
-                                "grid-template-columns": `repeat(${layout.cols}, minmax(0, 1fr))`,
-                                "grid-template-rows": `repeat(${layout.rows}, minmax(0, 1fr))`,
-                              }}
-                            >
-                              {Array.from({ length: visibleSlots }, (_, idx) => idx + 1).map(
-                                (slot) => {
-                                  const slotData = getSlotData(data.multi_slots, slot);
-                                  const slotCamera = slotData?.camera || null;
-                                  const slotHasSignal = isCameraOnline(slotCamera);
-                                  const slotFeedReady =
-                                    slotHasSignal && Boolean(slotData?.render_ready);
-                                  const slotMapRef = getMapRef(data.map_refs, slot);
-                                  return (
-                                    <Box
-                                      key={slot}
-                                      className={classes([
-                                        "CameraConsole__slotCard",
-                                        slot === activeSlot && "is-active",
-                                      ])}
-                                      onClick={() => act("set_active_slot", { slot })}
-                                      onDblClick={() =>
-                                        slotHasSignal && act("open_slot_single", { slot })
-                                      }
-                                      onDragOver={(event: any) => event.preventDefault()}
-                                      onDrop={(event: any) => handleDropToSlot(event, slot)}
-                                    >
-                                      <Box className="CameraConsole__slotHeader">
-                                        <b>Slot {slot}</b>
-                                        <Box>
-                                          <Button
-                                            icon="xmark"
-                                            tooltip="Clear slot"
-                                            disabled={!slotCamera}
-                                            onClick={(event) => {
-                                              event.stopPropagation();
-                                              act("clear_slot", { slot });
-                                            }}
-                                          />
-                                        </Box>
-                                      </Box>
-
-                                      <Box className="CameraConsole__slotViewportWrap">
-                                        <CameraViewport
-                                          className="CameraConsole__slotViewport"
-                                          mapRef={
-                                            mountedMultiSlots.includes(slot) && slotHasSignal
-                                              ? slotMapRef
-                                              : null
-                                          }
-                                          hasSignal={slotHasSignal}
-                                          isReady={slotFeedReady}
-                                          visible={data.view_mode === VIEW_MODE_MULTI}
-                                          compact
-                                          hint={
-                                            slotCamera?.name
-                                              ? `${slotCamera.name} is offline. Pick another camera.`
-                                              : "Choose a camera on the left or drag it here."
-                                          }
-                                        />
-                                      </Box>
-
-                                      <Box className="CameraConsole__slotFooter">
-                                        {slotHasSignal ? (
-                                          <>
-                                            <span title={slotCamera.name}>{slotCamera.name}</span>
-                                            <Button
-                                              icon="up-right-from-square"
-                                              onClick={(event) => {
-                                                event.stopPropagation();
-                                                act("open_slot_single", { slot });
-                                              }}
-                                            >
-                                              Open
-                                            </Button>
-                                          </>
-                                        ) : (
-                                          <span
-                                            className="CameraConsole__muted"
-                                            title={slotCamera?.name}
-                                          >
-                                            {slotCamera
-                                              ? `${slotCamera.name} is offline. Pick another camera.`
-                                              : "Empty slot. Pick a camera on the left or drag one here."}
-                                          </span>
-                                        )}
-                                      </Box>
+                          {Array.from({ length: visibleSlots }, (_, idx) => idx + 1).map(
+                            (slot) => {
+                              const slotData = getSlotData(data.multi_slots, slot);
+                              const slotCamera = slotData?.camera || null;
+                              const slotHasSignal = isCameraOnline(slotCamera);
+                              const slotFeedReady =
+                                slotHasSignal && Boolean(slotData?.render_ready);
+                              const slotMapRef = getMapRef(data.map_refs, slot);
+                              return (
+                                <Box
+                                  key={slot}
+                                  className={classes([
+                                    "CameraConsole__slotCard",
+                                    slot === activeSlot && "is-active",
+                                  ])}
+                                  onClick={() => act("set_active_slot", { slot })}
+                                  onDblClick={() =>
+                                    slotHasSignal && act("open_slot_single", { slot })
+                                  }
+                                  onDragOver={(event: any) => event.preventDefault()}
+                                  onDrop={(event: any) => handleDropToSlot(event, slot)}
+                                >
+                                  <Box className="CameraConsole__slotHeader">
+                                    <b>Slot {slot}</b>
+                                    <Box>
+                                      <Button
+                                        icon="xmark"
+                                        tooltip="Clear slot"
+                                        disabled={!slotCamera}
+                                        onClick={(event) => {
+                                          event.stopPropagation();
+                                          act("clear_slot", { slot });
+                                        }}
+                                      />
                                     </Box>
-                                  );
-                                }
-                              )}
-                            </Box>
+                                  </Box>
+
+                                  <Box className="CameraConsole__slotViewportWrap">
+                                    <CameraViewport
+                                      className="CameraConsole__slotViewport"
+                                      mapRef={slotMapRef}
+                                      hasSignal={slotHasSignal}
+                                      isReady={slotFeedReady}
+                                      visible={data.view_mode === VIEW_MODE_MULTI}
+                                      mountWhenHidden
+                                      compact
+                                      hint={
+                                        slotCamera?.name
+                                          ? `${slotCamera.name} is offline. Pick another camera.`
+                                          : "Choose a camera on the left or drag it here."
+                                      }
+                                    />
+                                  </Box>
+
+                                  <Box className="CameraConsole__slotFooter">
+                                    {slotHasSignal ? (
+                                      <>
+                                        <span title={slotCamera.name}>{slotCamera.name}</span>
+                                        <Button
+                                          icon="up-right-from-square"
+                                          onClick={(event) => {
+                                            event.stopPropagation();
+                                            act("open_slot_single", { slot });
+                                          }}
+                                        >
+                                          Open
+                                        </Button>
+                                      </>
+                                    ) : (
+                                      <span
+                                        className="CameraConsole__muted"
+                                        title={slotCamera?.name}
+                                      >
+                                        {slotCamera
+                                          ? `${slotCamera.name} is offline. Pick another camera.`
+                                          : "Empty slot. Pick a camera on the left or drag one here."}
+                                      </span>
+                                    )}
+                                  </Box>
+                                </Box>
+                              );
+                            }
                           )}
-                        </MultiSlotMountController>
+                        </Box>
                       </Stack.Item>
                     </Stack>
                   </Box>
