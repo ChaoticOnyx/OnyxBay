@@ -71,7 +71,7 @@
 		reinforce_table(O, user)
 	else if(user.lying && !user.stat && !user.buckled && can_be_crawled_under())
 		do_crawl(user)
-	else if(!slide_object(O, user))
+	else if(!slide_object(O, user, params))
 		return ..()
 
 /obj/structure/table/attack_hand(mob/user as mob)

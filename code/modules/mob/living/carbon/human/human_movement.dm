@@ -25,6 +25,8 @@
 
 /mob/living/carbon/human/get_eva_slip_prob(prob_slip = 10)
 	// General slip check.
+	if(m_intent == M_WALK)
+		return 0
 	if((has_gravity() || has_magnetised_footing()) && get_solid_footing())
 		return 0
 	var/obj/item/tank/jetpack/thrust = get_jetpack()
@@ -38,6 +40,4 @@
 		prob_slip -= 2
 	else if(r_hand.w_class <= ITEM_SIZE_SMALL)
 		prob_slip -= 1
-	if(m_intent != M_RUN)
-		prob_slip *= 0.5
 	return max(prob_slip, 0)
