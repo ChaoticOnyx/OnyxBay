@@ -195,6 +195,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 			_take_pierce_damage(brute)
 		brute_dam = blunt_dam + cut_dam + pierce_dam
 		brute_ratio = brute_dam / max_damage
+		blunt_ratio = blunt_dam / max_damage
+		cut_ratio = cut_dam / max_damage
+		pierce_ratio = pierce_dam / max_damage
 
 	if(burn)
 		_take_burn_damage(burn)
@@ -319,6 +322,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 /obj/item/organ/external/proc/take_burn_damage(amount, used_weapon = null, clean = FALSE)
 	return take_external_damage(0, amount, 0, used_weapon, clean)
 
+#define DISMEMBER_BRUTE_TRESHOLD(x) (brute >= (max(5, x * ((3.0 - brute_ratio) / 3))))
 /obj/item/organ/external/proc/try_to_dismember(brute, burn, damage_flags)
 	if(!(limb_flags & ORGAN_FLAG_CAN_AMPUTATE) || !config.health.limbs_can_break  || is_stump())
 		return FALSE
@@ -332,24 +336,24 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if((brute >= 5.0 && (brute_last + brute >= max_damage * 3)) || (burn && (burn_last + burn >= max_damage * 2)))
 		force_droplimb = TRUE
 
-	if(burn && (burn_last + burn >= max_damage))
-		if(prob(burn) || force_droplimb)
-			droplimb(laser, DROPLIMB_BURN)
-			return TRUE
-
 	if(edge && (cut_last + brute >= max_damage))
-		if((brute >= 10.0 && prob(brute * brute_ratio)) || force_droplimb)
+		if(force_droplimb || DISMEMBER_BRUTE_TRESHOLD(min_broken_damage)) // Edged weapons are superior in dismemberment.
 			droplimb(FALSE, DROPLIMB_EDGE)
 			return TRUE
 
 	if(sharp && !edge && (pierce_last + brute >= max_damage))
-		if((brute >= 10.0 && prob(brute * brute_ratio)) || force_droplimb)
+		if(force_droplimb || DISMEMBER_BRUTE_TRESHOLD(max_damage))
 			droplimb(FALSE, pick(DROPLIMB_EDGE, DROPLIMB_BLUNT))
 			return TRUE
 
 	if(blunt && (blunt_last + brute >= max_damage) && (status & ORGAN_BROKEN))
-		if((brute >= (min_broken_damage * 0.5) && prob(brute * brute_ratio)) || force_droplimb)
+		if(force_droplimb || DISMEMBER_BRUTE_TRESHOLD(max_damage))
 			droplimb(FALSE, DROPLIMB_BLUNT)
+			return TRUE
+
+	if(burn && (burn_last + burn >= max_damage))
+		if(force_droplimb || prob(burn))
+			droplimb(laser, DROPLIMB_BURN)
 			return TRUE
 
 	if(force_droplimb) // Should not happen, but let's have a plan B.
@@ -357,6 +361,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		return TRUE
 
 	return FALSE
+#undef DISMEMBER_BRUTE_TRESHOLD
 
 /obj/item/organ/external/heal_damage(brute, burn, internal = 0, robo_repair = 0, update_damage_icon = TRUE)
 	if(BP_IS_ROBOTIC(src) && !robo_repair)
