@@ -10,6 +10,7 @@
 	randpixel = 0
 	max_health = 80
 	has_external_power_source = TRUE
+	cooling_bonus = 0.6
 
 /obj/item/mcu_chassis/console/try_drain_power(amount)
 	var/area/A = get_area(src)

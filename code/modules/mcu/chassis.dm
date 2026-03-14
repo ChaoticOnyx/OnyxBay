@@ -5,6 +5,8 @@
 	var/obj/item/device/mcu/__mcu = null
 	var/max_health = 10
 	var/has_external_power_source = FALSE
+	/// W/K
+	var/cooling_bonus = 0
 
 /obj/item/mcu_chassis/Initialize()
 	. = ..()

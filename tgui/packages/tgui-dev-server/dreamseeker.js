@@ -32,7 +32,7 @@ export class DreamSeeker {
     logger.log(
       `topic call at ${this.client.defaults.baseURL}/dummy.htm?${query}`,
     );
-    return this.client.get(`/dummy.htm?${query}`);
+    return this.client.get(`/dummy.htm?${query}`).catch(() => {});
   }
 
   /**

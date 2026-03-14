@@ -129,7 +129,7 @@
 
 // Tools
 
-/datum/design/item/jtag_programmer
+/datum/design/item/mcu/jtag_programmer
 	name = "JTAG Programmer"
 	id = "jtag_programmer"
 	build_type = PROTOLATHE
@@ -137,9 +137,8 @@
 	materials = list(MATERIAL_STEEL = 300, MATERIAL_GLASS = 100)
 	build_path = /obj/item/jtag_programmer
 	sort_string = "VABBA"
-	category_items = list("Microelectronics")
 
-/datum/design/item/mcu_debugger
+/datum/design/item/mcu/mcu_debugger
 	name = "Debugger Probe"
 	id = "mcu_debugger"
 	build_type = PROTOLATHE
@@ -147,11 +146,10 @@
 	materials = list(MATERIAL_STEEL = 300)
 	build_path = /obj/item/debugger
 	sort_string = "VABCA"
-	category_items = list("Microelectronics")
 
 // Modules
 
-/datum/design/item/tts_module
+/datum/design/item/mcu/tts_module
 	name = "Text-to-Speech Module"
 	id = "tts_module"
 	build_type = PROTOLATHE
@@ -159,9 +157,8 @@
 	materials = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 100)
 	build_path = /obj/item/mcu_module/tts
 	sort_string = "VABCA"
-	category_items = list("Microelectronics")
 
-/datum/design/item/serial_terminal_module
+/datum/design/item/mcu/serial_terminal_module
 	name = "Serial Terminal module"
 	id = "serial_terminal_module"
 	build_type = PROTOLATHE
@@ -169,9 +166,8 @@
 	materials = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 100)
 	build_path = /obj/item/mcu_module/serial_terminal
 	sort_string = "VABCA"
-	category_items = list("Microelectronics")
 
-/datum/design/item/signaler_module
+/datum/design/item/mcu/signaler_module
 	name = "Signaler module"
 	id = "signaler_module"
 	build_type = PROTOLATHE
@@ -179,9 +175,8 @@
 	materials = list(MATERIAL_STEEL = 500)
 	build_path = /obj/item/mcu_module/signaler
 	sort_string = "VABCA"
-	category_items = list("Microelectronics")
 
-/datum/design/item/gps_module
+/datum/design/item/mcu/gps_module
 	name = "GPS module"
 	id = "gps_module"
 	build_type = PROTOLATHE
@@ -189,9 +184,8 @@
 	materials = list(MATERIAL_STEEL = 200)
 	build_path = /obj/item/mcu_module/gps
 	sort_string = "VABCA"
-	category_items = list("Microelectronics")
 
-/datum/design/item/light_module
+/datum/design/item/mcu/light_module
 	name = "Light module"
 	id = "light_module"
 	build_type = PROTOLATHE
@@ -199,9 +193,8 @@
 	materials = list(MATERIAL_STEEL = 200)
 	build_path = /obj/item/mcu_module/light
 	sort_string = "VABCA"
-	category_items = list("Microelectronics")
 
-/datum/design/item/env_sensor_module
+/datum/design/item/mcu/env_sensor_module
 	name = "Environment Sensor module"
 	id = "env_sensor_module"
 	build_type = PROTOLATHE
@@ -209,4 +202,21 @@
 	materials = list(MATERIAL_STEEL = 800, MATERIAL_GLASS = 100)
 	build_path = /obj/item/mcu_module/env_sensor
 	sort_string = "VABCA"
-	category_items = list("Microelectronics")
+
+/datum/design/item/mcu/vga_monochrome
+	name = "Monochrome Display module"
+	id = "vga_monochrome"
+	build_type = PROTOLATHE
+	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 4, TECH_BIO = 2)
+	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 1000)
+	build_path = /obj/item/mcu_module/vga
+	sort_string = "VABCA"
+
+/datum/design/item/mcu/vga_truecolor
+	name = "TrueColor Display module"
+	id = "vga_truecolor"
+	build_type = PROTOLATHE
+	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 6, TECH_BIO = 4)
+	materials = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 1500)
+	build_path = /obj/item/mcu_module/vga/truecolor
+	sort_string = "VABCA"
