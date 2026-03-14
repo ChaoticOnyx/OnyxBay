@@ -56,7 +56,6 @@ export const IconStack = (props) => {
   const { className, children, ...rest } = props;
   return (
     <span
-      // eslint-disable-next-line react/no-unknown-property
       class={classes(["IconStack", className, computeBoxClassName(rest)])}
       {...computeBoxProps(rest)}
     >

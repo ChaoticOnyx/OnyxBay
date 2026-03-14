@@ -102,8 +102,12 @@ var/__z_name = null
 /// Returns null if the WebSocket server is not running.
 #define Z_WS_GET_PORT(...) call_ext(__z_name, "byond:Z_ws_get_port")()
 
-/// Returns the duration of the last tick in ms.
-#define Z_WS_GET_TICK_TIME(...) call_ext(__z_name, "byond:Z_ws_get_tick_time")()
+/// Returns a JSON string with stats:
+/// - sent_kilobytes_per_second
+/// - received_kilobytes_per_second
+/// - tick_duration_ms
+/// Returns null if the server is not running or a error was occured.
+#define Z_WS_STATS(...) call_ext(__z_name, "byond:Z_ws_stats")()
 
 /// Returns connections count.
 /// Returns null if the WebSocket server is not running.
@@ -125,12 +129,14 @@ var/__z_name = null
 #define Z_DEVICE_TYPE_GPS 4
 #define Z_DEVICE_TYPE_LIGHT 5
 #define Z_DEVICE_TYPE_ENV_SENSOR 6
+#define Z_DEVICE_TYPE_VGA 7
 
 #define Z_TTS_N2B_CMD_SAY 1
 #define Z_TTS_B2N_CMD_READY_STATUS 1
 
 #define Z_SERIAL_N2B_CMD_WRITE 1
 #define Z_SERIAL_B2N_CMD_WRITE 1
+#define Z_SERIAL_N2B_CMD_SET_RAW_MODE 2
 
 #define Z_SIGNALER_N2B_CMD_SET 1
 #define Z_SIGNALER_N2B_CMD_SEND 2
@@ -143,6 +149,18 @@ var/__z_name = null
 #define Z_ENV_SENSOR_N2B_CMD_UPDATE 1
 #define Z_ENV_SENSOR_B2N_CMD_READY_STATUS 1
 #define Z_ENV_SENSOR_B2N_CMD_UPDATE 2
+
+#define Z_VGA_N2B_CMD_VBLANK 1
+#define Z_VGA_N2B_CMD_SET_RESOLUTION 2
+#define Z_VGA_B2N_CMD_SEND_SCREEN 1
+#define Z_VGA_B2N_CMD_KEYBOARD_EVENT 2
+#define Z_VGA_B2N_CMD_MOUSE_EVENT 3
+
+#define Z_VGA_MIN_WIDTH 160
+#define Z_VGA_MIN_HEIGHT 120
+#define Z_VGA_MAX_WIDTH 640
+#define Z_VGA_MAX_HEIGHT 480
+#define Z_VGA_MAX_PIXELS (Z_VGA_MAX_WIDTH * Z_VGA_MAX_HEIGHT)
 
 // All machine IDs are numeric handles returned by Z_MACHINE_CREATE.
 

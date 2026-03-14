@@ -1,6 +1,6 @@
 # Profiling
 
-В билде есть поддержка профайлера [byond-tracy](https://github.com/mafemergency/byond-tracy) версии [cc015b63c4569929ab8e57a0dc2ab4363a77b188](https://github.com/mafemergency/byond-tracy/commit/cc015b63c4569929ab8e57a0dc2ab4363a77b188). Для его включения нужно скомпилироавть билд с `#define TRACY_PROFILER`.
+В билде есть поддержка профайлера [byond-tracy](https://github.com/ParadiseSS13/byond-tracy) версии [9eb3cdd60f56420b79e1199f077a2417de0a7695](https://github.com/ParadiseSS13/byond-tracy/commit/9eb3cdd60f56420b79e1199f077a2417de0a7695). Для его включения нужно скомпилироавть билд с `#define TRACY_PROFILER`.
 
 ## Использование
 

@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { GameIcon } from "../components/GameIcon";
 import { useBackend, useLocalState } from "../backend";
 import { Window } from "../layouts";

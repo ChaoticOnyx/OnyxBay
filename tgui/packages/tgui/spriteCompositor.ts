@@ -98,6 +98,10 @@ export interface CharacterRenderConfig {
     iconState: string;
     color: string;
   }[];
+
+  // Equipment-driven hair visibility (matches BLOCKHAIR/BLOCKHEADHAIR flags)
+  hideHair?: boolean;
+  hideFacialHair?: boolean;
 }
 
 // ================================================================
@@ -455,7 +459,7 @@ export class SpriteCompositor {
     }
 
     // === FACIAL HAIR LAYER (19) ===
-    if (config.facialStyle && config.facialStyle !== 'Shaved') {
+    if (!config.hideFacialHair && config.facialStyle && config.facialStyle !== 'Shaved') {
       this.drawSpriteTintedAdd(ctx, config.facialDmiFile, config.facialStyle, dir, config.facialColor);
     }
 
@@ -468,7 +472,7 @@ export class SpriteCompositor {
     }
 
     // === HAIR LAYER (26) ===
-    if (config.hairStyle && config.hairStyle !== 'Bald') {
+    if (!config.hideHair && config.hairStyle && config.hairStyle !== 'Bald') {
       this.drawSpriteTintedAdd(ctx, config.hairDmiFile, config.hairStyle, dir, config.hairColor);
 
       if (config.hairMarkings) {

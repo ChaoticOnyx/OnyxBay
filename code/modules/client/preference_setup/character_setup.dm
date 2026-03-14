@@ -31,7 +31,6 @@
 
 /datum/character_setup
 	var/datum/preferences/pref
-	var/mob/owner
 	var/preview_dir = SOUTH
 	var/list/slot_previews  // Cached character slot appearance data (generated on demand)
 	// Loadout state
@@ -42,17 +41,14 @@
 	var/slot_filter
 	// Augmentation state
 	var/selected_organ = BP_CHEST
-	var/cpu_preselected = FALSE
 	// Undo stack — list of assoc lists (character snapshots), most recent last
 	var/list/undo_stack = list()
 
-/datum/character_setup/New(datum/preferences/P, mob/user)
+/datum/character_setup/New(datum/preferences/P)
 	pref = P
-	owner = user
 
 /datum/character_setup/Destroy()
 	pref = null
-	owner = null
 	return ..()
 
 /datum/character_setup/proc/push_undo_state()
@@ -643,6 +639,29 @@
 					break
 	data["all_underwear_color"] = uw_color_map
 	data["backpack"] = pref.backpack ? pref.backpack.name : "Nothing"
+	// Backpack tweak options (e.g. pocketbook type selection)
+	var/list/bp_tweaks
+	if(pref.backpack && length(pref.backpack.tweaks))
+		bp_tweaks = list()
+		for(var/i = 1 to length(pref.backpack.tweaks))
+			var/datum/backpack_tweak/selection/bt = pref.backpack.tweaks[i]
+			if(!istype(bt))
+				continue
+			LAZYINITLIST(pref.backpack_metadata)
+			var/list/meta = pref.backpack_metadata[pref.backpack.name]
+			if(!islist(meta))
+				meta = list()
+				pref.backpack_metadata[pref.backpack.name] = meta
+			var/current = meta["[bt]"] || bt.get_default_metadata()
+			var/list/option_names = list()
+			for(var/opt_name in bt.selections)
+				option_names += opt_name
+			bp_tweaks += list(list(
+				"tweakIndex" = i,
+				"options" = option_names,
+				"current" = current
+			))
+	data["backpack_tweaks"] = length(bp_tweaks) ? bp_tweaks : null
 	data["equip_preview_mob"] = pref.equip_preview_mob
 	data["bgstate"] = pref.bgstate
 
@@ -665,7 +684,7 @@
 		var/datum/category_item/underwear/UWD = UWC.items_by_name[uw_item_name]
 		if(!UWD || !UWD.icon_state)
 			continue
-		var/uw_dmi = render_build ? "[render_build.clothing_icons[slot_hidden_str]]" : "icons/inv_slots/hidden/mob.dmi"
+		var/uw_dmi = render_build ? "[render_build.get_mob_icon(slot_hidden_str, UWD.icon_state)]" : "icons/inv_slots/hidden/mob.dmi"
 		var/uw_color = null
 		if(UWD.has_color && pref.all_underwear_metadata && pref.all_underwear_metadata[uw_category])
 			var/list/meta = pref.all_underwear_metadata[uw_category]
@@ -680,7 +699,10 @@
 		))
 	data["underwear_render"] = underwear_render
 
-	data["equipment_render"] = generate_equipment_render_data()
+	var/list/equip_result = generate_equipment_render_data()
+	data["equipment_render"] = equip_result["equipment"]
+	data["hide_hair"] = equip_result["hide_hair"]
+	data["hide_facial_hair"] = equip_result["hide_facial_hair"]
 
 	data["can_undo"] = undo_stack.len > 0
 	data["default_slot"] = pref.default_slot
@@ -733,20 +755,6 @@
 	data["organ_data"] = pref.organ_data
 	data["rlimb_data"] = pref.rlimb_data
 	data["selected_organ"] = selected_organ
-
-	// Pre-install default CPU on head once (shown under Brain in UI)
-	if(!cpu_preselected)
-		cpu_preselected = TRUE
-		LAZYINITLIST(pref.organ_modules)
-		LAZYINITLIST(pref.organ_modules[BP_HEAD])
-		var/has_processor = FALSE
-		for(var/mod_path in pref.organ_modules[BP_HEAD])
-			var/obj/item/organ_module/M = mod_path
-			if(initial(M.module_type) == OM_TYPE_PROCESSOR)
-				has_processor = TRUE
-				break
-		if(!has_processor)
-			pref.organ_modules[BP_HEAD] += /obj/item/organ_module/processor
 
 	var/list/installed_modules = list()
 	if(islist(pref.organ_modules))
@@ -856,11 +864,11 @@
 /// from the relevant overlays_standing slots.
 /datum/character_setup/proc/generate_equipment_render_data()
 	if(!pref.equip_preview_mob)
-		return list()
+		return list("equipment" = list(), "hide_hair" = FALSE, "hide_facial_hair" = FALSE)
 
 	var/mob/living/carbon/human/dummy/mannequin/M = get_mannequin(pref.client_ckey)
 	if(!M)
-		return list()
+		return list("equipment" = list(), "hide_hair" = FALSE, "hide_facial_hair" = FALSE)
 
 	M.delete_inventory(TRUE)
 	pref.dress_preview_mob(M)
@@ -934,7 +942,16 @@
 				"layer" = HO_UNIFORM_LAYER
 			))
 
-	return equipment
+	// Check if equipped head/mask items hide hair (matches update_hair/update_facial_hair)
+	var/hide_hair = FALSE
+	var/hide_facial_hair = FALSE
+	if((M.head?.flags_inv & BLOCKHAIR) || (M.wear_mask?.flags_inv & BLOCKHAIR))
+		hide_hair = TRUE
+		hide_facial_hair = TRUE
+	else if(M.head?.flags_inv & BLOCKHEADHAIR)
+		hide_hair = TRUE
+
+	return list("equipment" = equipment, "hide_hair" = hide_hair, "hide_facial_hair" = hide_facial_hair)
 
 /// Generate slot preview data for all character slots.
 /// Reads appearance fields directly from each slot's saved record —
@@ -992,6 +1009,7 @@
 	if(.)
 		return
 
+	var/mob/owner = usr
 	var/datum/species/current_species = all_species[pref.species]
 	if(!current_species)
 		current_species = all_species[SPECIES_HUMAN]
@@ -1293,6 +1311,25 @@
 					break
 			return TRUE
 
+		if("setBackpackTweak")
+			if(!pref.backpack || !length(pref.backpack.tweaks))
+				return TRUE
+			var/tweak_index = text2num(params["tweakIndex"])
+			var/new_value = params["value"]
+			if(!tweak_index || tweak_index < 1 || tweak_index > length(pref.backpack.tweaks))
+				return TRUE
+			var/datum/backpack_tweak/selection/bt = pref.backpack.tweaks[tweak_index]
+			if(!istype(bt) || !(new_value in bt.selections))
+				return TRUE
+			LAZYINITLIST(pref.backpack_metadata)
+			var/list/meta = pref.backpack_metadata[pref.backpack.name]
+			if(!islist(meta))
+				meta = list()
+				pref.backpack_metadata[pref.backpack.name] = meta
+			meta["[bt]"] = new_value
+			mark_preview_dirty()
+			return TRUE
+
 		if("togglePreviewFlag")
 			var/flag = text2num(params["flag"])
 			if(flag)
@@ -1322,8 +1359,6 @@
 		if("loadSlot")
 			var/slot = text2num(params["slot"])
 			if(slot && slot >= 1 && slot <= config.character_setup.character_slots)
-				if(slot != pref.default_slot)
-					pref.save_character()  // Save current slot before switching away
 				pref.load_character(slot)
 				pref.sanitize_preferences()
 				slot_previews = null  // Force re-generation on next picker open
@@ -1490,7 +1525,7 @@
 			return TRUE
 
 		if("randomizeLoadout")
-			randomize_loadout()
+			randomize_loadout(owner)
 			mark_preview_dirty()
 			return TRUE
 
@@ -1499,7 +1534,7 @@
 			var/datum/gear/G = hash_to_gear[hash]
 			if(!G || !G.price)
 				return FALSE
-			if(!owner?.client?.donator_info)
+			if(!owner.client?.donator_info)
 				return FALSE
 			if(owner.client.donator_info.has_item(G.type))
 				return FALSE
@@ -2103,6 +2138,7 @@
 					gear_icon_state = temp2.icon_state
 					QDEL_NULL(temp2)
 				break
+	var/owned = G.price && user.client?.donator_info?.has_item(G.type)
 	var/list/entry = list(
 		"name" = G.display_name,
 		"hash" = G.gear_hash,
@@ -2112,11 +2148,11 @@
 		"slotName" = G.slot ? slot_to_description(G.slot) : "",
 		"subgroup" = G.subgroup || "",
 		"cost" = G.cost,
-		"price" = G.price || 0,
-		"discount" = G.discount || 0,
+		"price" = owned ? 0 : (G.price || 0),
+		"discount" = owned ? 0 : (G.discount || 0),
 		"patronTier" = G.patron_tier,
 		"description" = G.description || "",
-		"allowed" = gear_allowed_to_see(G),
+		"allowed" = gear_allowed_to_see(G, user),
 		"canEquip" = G.is_allowed_to_equip(user)
 	)
 	if(length(G.allowed_roles))
@@ -2171,6 +2207,7 @@
 			if(!islist(gear_virtual_item.color))
 				tweaked_color = gear_virtual_item.color
 		QDEL_NULL(gear_virtual_item)
+	var/detail_owned = G.price && user.client?.donator_info?.has_item(G.type)
 	return list(
 		"name" = G.display_name,
 		"hash" = G.gear_hash,
@@ -2181,8 +2218,8 @@
 		"slot" = G.slot,
 		"slotName" = G.slot ? slot_to_description(G.slot) : "",
 		"cost" = G.cost,
-		"price" = G.price || 0,
-		"discount" = G.discount || 0,
+		"price" = detail_owned ? 0 : (G.price || 0),
+		"discount" = detail_owned ? 0 : (G.discount || 0),
 		"patronTier" = G.patron_tier,
 		"canEquip" = G.is_allowed_to_equip(user),
 		"equipped" = islist(pref.gear_list[pref.gear_slot]) && (G.display_name in pref.gear_list[pref.gear_slot])
@@ -2254,8 +2291,10 @@
 		return "custom"
 	return "unknown"
 
-/datum/character_setup/proc/gear_allowed_to_see(datum/gear/G)
+/datum/character_setup/proc/gear_allowed_to_see(datum/gear/G, mob/user)
 	if(!G.path)
+		return FALSE
+	if(!G.is_allowed_to_display(user))
 		return FALSE
 	if(length(G.allowed_roles) && job_master)
 		var/list/jobs = list()
@@ -2370,17 +2409,18 @@
 					pref.rlimb_data[BP_R_FOOT] = action
 				if(BP_CHEST, BP_HEAD, BP_GROIN)
 					// Full-body prosthetic
-					for(var/limb in BP_ALL_LIMBS - BP_CHEST)
+					for(var/limb in BP_ALL_LIMBS)
 						pref.organ_data[limb] = "cyborg"
 						pref.rlimb_data[limb] = action
-					pref.organ_data[BP_BRAIN] = "assisted"
+					if(!pref.organ_data[BP_BRAIN])
+						pref.organ_data[BP_BRAIN] = "assisted"
 					for(var/internal in list(BP_HEART, BP_EYES, BP_LUNGS, BP_LIVER, BP_KIDNEYS))
 						pref.organ_data[internal] = "mechanical"
 
 // ============================================================
 // LOADOUT HELPERS
 // ============================================================
-/datum/character_setup/proc/randomize_loadout()
+/datum/character_setup/proc/randomize_loadout(mob/owner)
 	var/list/gear = pref.gear_list[pref.gear_slot]
 	if(!islist(gear))
 		gear = list()
@@ -2396,7 +2436,7 @@
 	var/list/pool = list()
 	for(var/gear_name in gear_datums)
 		var/datum/gear/G = gear_datums[gear_name]
-		if(gear_allowed_to_see(G) && G.is_allowed_to_equip(owner) && G.cost <= pref.max_loadout_points)
+		if(gear_allowed_to_see(G, owner) && G.is_allowed_to_equip(owner) && G.cost <= pref.max_loadout_points)
 			pool += G
 	var/points_left = pref.max_loadout_points
 	while(points_left > 0 && length(pool))

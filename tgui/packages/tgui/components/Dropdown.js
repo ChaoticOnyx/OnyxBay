@@ -48,7 +48,8 @@ export class Dropdown extends Component {
     const currentSelected = this.state.selected || "";
     // "Action" dropdown: displayText is a placeholder (not a real selection).
     // After picking, the visible face reverts to displayText.
-    const isAction = displayText !== undefined && !options.includes(currentSelected);
+    const isAction =
+      displayText !== undefined && !options.includes(currentSelected);
     // "Reselectable" mode: native select always sits at a sentinel value so
     // clicking the already-selected item still fires onChange.
     const { reselectable } = this.props;
@@ -102,7 +103,9 @@ export class Dropdown extends Component {
         >
           {usesSentinel && <option value="" disabled hidden />}
           {options.map((opt) => (
-            <option key={opt} value={opt}>{opt}</option>
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
           ))}
         </select>
       </Box>

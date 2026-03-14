@@ -1,11 +1,6 @@
-/**
- * @file
- * @copyright 2021 Aleksej Komarov
- * @license MIT
- */
+/// <reference types="vite/client" />
 
-// Webpack asset modules.
-// Should match extensions used in webpack config.
+// Vite asset modules
 declare module "*.png" {
   const content: string;
   export default content;
@@ -21,12 +16,29 @@ declare module "*.svg" {
   export default content;
 }
 
+declare module "*.gif" {
+  const content: string;
+  export default content;
+}
+
+declare module "*.scss" {
+  const content: Record<string, string>;
+  export default content;
+}
+
+declare module "*.css" {
+  const content: Record<string, string>;
+  export default content;
+}
+
+// BYOND message types
 type TguiMessage = {
   type: string;
   payload?: any;
   [key: string]: any;
 };
 
+// BYOND API
 type ByondType = {
   /**
    * ID of the Byond window this script is running on.
@@ -35,7 +47,7 @@ type ByondType = {
   windowId: string;
 
   wsAuthenticated: boolean;
-  wsQueue: any[];
+  wsQueue: string[];
 
   /**
    * A WebSocket token issued by the backend.
@@ -53,34 +65,14 @@ type ByondType = {
   IS_BYOND: boolean;
 
   /**
-   * Version of Trident engine of Internet Explorer. Null if N/A.
-   */
-  TRIDENT: number | null;
-
- /**
    * Version of Blink engine of WebView2. Null if N/A.
    */
   BLINK: number | null;
 
   /**
-   * True if browser is IE8 or lower.
+   * Callbacks for asynchronous calls
    */
-  IS_LTE_IE8: boolean;
-
-  /**
-   * True if browser is IE9 or lower.
-   */
-  IS_LTE_IE9: boolean;
-
-  /**
-   * True if browser is IE10 or lower.
-   */
-  IS_LTE_IE10: boolean;
-
-  /**
-   * True if browser is IE11 or lower.
-   */
-  IS_LTE_IE11: boolean;
+  __callbacks__: Array<(value: any) => void>;
 
   /**
    * Makes a BYOND call.
@@ -90,15 +82,15 @@ type ByondType = {
    *
    * See: https://secure.byond.com/docs/ref/skinparams.html
    */
-  call(path: string, params: object): void;
+  call(path: string, params?: object): void;
 
   /**
    * Makes an asynchronous BYOND call. Returns a promise.
    */
-  callAsync(path: string, params: object): Promise<any>;
+  callAsync(path: string, params?: object): Promise<any>;
 
   /**
-   * Sends a data to the server.
+   * Sends data to the server.
    */
   send(params: object): void;
 
@@ -112,14 +104,14 @@ type ByondType = {
    *
    * Returns a promise with a key-value object containing all properties.
    */
-  winget(id: string | null): Promise<object>;
+  winget(id: string | null): Promise<Record<string, any>>;
 
   /**
    * Retrieves all properties of the BYOND skin element.
    *
    * Returns a promise with a key-value object containing all properties.
    */
-  winget(id: string | null, propName: "*"): Promise<object>;
+  winget(id: string | null, propName: "*"): Promise<Record<string, any>>;
 
   /**
    * Retrieves an exactly one property of the BYOND skin element,
@@ -135,7 +127,7 @@ type ByondType = {
    *
    * Returns a promise with a key-value object containing listed properties.
    */
-  winget(id: string | null, propNames: string[]): Promise<object>;
+  winget(id: string | null, propNames: string[]): Promise<Record<string, any>>;
 
   /**
    * Assigns properties to BYOND skin elements in bulk.
@@ -158,11 +150,11 @@ type ByondType = {
    * Uses a special encoding to preserve `Infinity` and `NaN`.
    */
   parseJson(text: string): any;
-  
+
   /**
-  * Allows user to download the specified blob via File System API.
-  * Opens a File Picker pop-up for user to specify the download destination.
-  */
+   * Allows user to download the specified blob via File System API.
+   * Opens a File Picker pop-up for user to specify the download destination.
+   */
   saveBlob(blob: Blob, filename: string, ext: string): void;
 
   /**
@@ -177,6 +169,11 @@ type ByondType = {
   subscribe(listener: (type: string, payload: any) => void): void;
 
   /**
+   * Subscribe to incoming binart messages.
+   */
+  binarySubscribe(listener: (payload: ArrayBuffer) => void): void;
+
+  /**
    * Subscribe to incoming messages *of some specific type*
    * that were sent from `/datum/tgui_window`.
    */
@@ -185,20 +182,43 @@ type ByondType = {
   /**
    * Loads a stylesheet into the document.
    */
-  loadCss(url: string): void;
+  loadCss(url: string, sync?: boolean): void;
 
   /**
    * Loads a script into the document.
    */
-  loadJs(url: string): void;
+  loadJs(url: string, sync?: boolean): void;
+
+  /**
+   * This function exists purely for debugging, do not use it in code!
+   */
+  injectMessage(type: string, payload?: any): void;
 };
 
 /**
  * Object that provides access to Byond Skin API and is available in
  * any tgui application.
  */
-const Byond: ByondType;
+declare const Byond: ByondType;
 
 interface Window {
   Byond: ByondType;
+  __windowId__: string;
+  __augmentStack__(stack: string, error?: Error): string;
+  update: {
+    listeners: Array<(type: string, payload: any) => void>;
+    queue: string[];
+    queueActive: boolean;
+    lastPayloadByType: Record<string, any>;
+    flushQueue(listener: (type: string, payload: any) => void): void;
+  };
+  binaryUpdate: {
+    listeners: Array<(payload: ArrayBuffer) => void>;
+    queue: ArrayBuffer[];
+    queueActive: boolean;
+    flushQueue(listener: (payload: ArrayBuffer) => void): void;
+  };
 }
+
+// CEF to BYOND bridge (for Chromium-based client)
+declare function cef_to_byond(url: string): void;

@@ -10,7 +10,6 @@ import { formatSiUnit } from "../format";
 
 export const meta = {
   title: "Storage",
-  // eslint-disable-next-line react/display-name
   render: () => <Story />,
 };
 

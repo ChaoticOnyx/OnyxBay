@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable camelcase */
 import { useBackend, useLocalState } from "../backend";
 import {
   Tabs,

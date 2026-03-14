@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * This file provides a clear separation layer between backend updates
  * and what state our React app sees.
@@ -154,7 +153,7 @@ export const backendMiddleware = (store) => {
       Byond.winset(Byond.windowId, {
         "is-visible": false,
       });
-      setImmediate(() => focusMap());
+      setTimeout(focusMap, 0);
     }
 
     if (type === "backend/update") {
@@ -183,7 +182,7 @@ export const backendMiddleware = (store) => {
       setupDrag();
       // We schedule this for the next tick here because resizing and unhiding
       // during the same tick will flash with a white background.
-      setImmediate(() => {
+      setTimeout(() => {
         perf.mark("resume/start");
         // Doublecheck if we are not re-suspended.
         const { suspended } = selectBackend(store.getState());
@@ -194,13 +193,13 @@ export const backendMiddleware = (store) => {
           "is-visible": true,
         });
         perf.mark("resume/finish");
-        if (process.env.NODE_ENV !== "production") {
+        if (import.meta.env.DEV) {
           logger.log(
             "visible in",
-            perf.measure("render/finish", "resume/finish")
+            perf.measure("render/finish", "resume/finish"),
           );
         }
-      });
+      }, 0);
     }
 
     return next(action);
@@ -296,7 +295,7 @@ type StateWithSetter<T> = [T, (nextState: T) => void];
 export const useLocalState = <T>(
   context: any,
   key: string,
-  initialState: T
+  initialState: T,
 ): StateWithSetter<T> => {
   const { store } = context;
   const state = selectBackend(store.getState());
@@ -312,7 +311,7 @@ export const useLocalState = <T>(
             typeof nextState === "function"
               ? nextState(sharedState)
               : nextState,
-        })
+        }),
       );
     },
   ];
@@ -335,7 +334,7 @@ export const useLocalState = <T>(
 export const useSharedState = <T>(
   context: any,
   key: string,
-  initialState: T
+  initialState: T,
 ): StateWithSetter<T> => {
   const { store } = context;
   const state = selectBackend(store.getState());
@@ -349,7 +348,9 @@ export const useSharedState = <T>(
         key,
         value:
           JSON.stringify(
-            typeof nextState === "function" ? nextState(sharedState) : nextState
+            typeof nextState === "function"
+              ? nextState(sharedState)
+              : nextState,
           ) || "",
       });
     },

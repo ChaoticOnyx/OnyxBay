@@ -235,13 +235,33 @@
 	color = "#1f1f1f"
 
 //Medical
+/obj/item/clothing/suit/storage/toggle/paramedic
+	name = "paramedic jacket"
+	desc = "A high-visibility jacket, typically worn by medical first responders. It's quite durable and provides some insulation at temperatures outside the normal range."
+	icon_state = "paramedic_open"
+	item_state = "paramedic"
+	icon_open = "paramedic_open"
+	icon_closed = "paramedic"
+	blood_overlay_type = "armorblood"
+	allowed = list(/obj/item/stack/medical, /obj/item/reagent_containers/dropper, /obj/item/reagent_containers/hypospray, /obj/item/reagent_containers/syringe, \
+	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/tank, /obj/item/device/geiger, /obj/item/crowbar, \
+	/obj/item/device/analyzer, /obj/item/reagent_containers/vessel/flask, /obj/item/storage/pill_bottle)
+	body_parts_covered = UPPER_TORSO|ARMS
+	armor = list(melee = 30, bullet = 20, laser = 40, energy = 10, bomb = 0, bio = 50)
+	coverage = 0.8
+	siemens_coefficient = 0.6
+	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
+	max_heat_protection_temperature = ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE
+	heat_protection = UPPER_TORSO | LOWER_TORSO | ARMS
+	cold_protection = UPPER_TORSO | LOWER_TORSO | ARMS
+
 /obj/item/clothing/suit/storage/toggle/fr_jacket
-	name = "first responder jacket"
-	desc = "A high-visibility jacket worn by medical first responders."
-	icon_state = "fr_jacket_open"
-	item_state = "fr_jacket"
-	icon_open = "fr_jacket_open"
-	icon_closed = "fr_jacket"
+	name = "high-visibility jacket"
+	desc = "A high-visibility, loose-fit jacket with green stripes."
+	icon_state = "hv_jacket_open"
+	item_state = "hv_jacket"
+	icon_open = "hv_jacket_open"
+	icon_closed = "hv_jacket"
 	blood_overlay_type = "armorblood"
 	allowed = list(/obj/item/stack/medical, /obj/item/reagent_containers/dropper, /obj/item/reagent_containers/hypospray, /obj/item/reagent_containers/syringe, \
 	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/tank/emergency)

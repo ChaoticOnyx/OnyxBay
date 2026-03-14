@@ -331,6 +331,8 @@
 .CharSetup__slotPicker {
   margin-top: 0.25rem;
   padding: 0.375rem;
+  max-height: 24rem;
+  overflow-y: auto;
 
   background: rgba(0, 0, 0, 0.25);
   border: 0.0625rem solid rgba(130, 145, 168, 0.12);
@@ -913,7 +915,7 @@
 
 .CharSetup__loadoutHudLabel {
   flex-shrink: 0;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: rgba(77, 182, 172, 0.90);
@@ -924,7 +926,7 @@
 .CharSetup__lpBarWrap {
   position: relative;
   flex: 1;
-  height: 1.125rem;
+  height: 1.25rem;
   background: rgba(0, 0, 0, 0.5);
   border: 0.0625rem solid rgba(77, 182, 172, 0.20);
   border-radius: 0.125rem;
@@ -958,7 +960,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.6875rem;
+  font-size: 0.875rem;
   font-weight: 700;
   font-family: var(--cs-font-mono);
   color: rgba(255, 255, 255, 0.90);
@@ -968,7 +970,7 @@
 .CharSetup__loadoutHudSetRow {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.5rem;
 }
 
@@ -1601,7 +1603,7 @@
 .CharSetup__idCardBack {
   position: relative;
   border-radius: 0.625rem;
-  overflow: hidden;
+  overflow: visible;
   font-size: 0.8125rem;
 
   background: rgba(22, 22, 26, 0.97);
@@ -1629,6 +1631,8 @@
 // Magnetic stripe — dark horizontal band at top
 .CharSetup__idCardMagStripe {
   height: 2rem;
+  border-radius: 0.625rem 0.625rem 0 0;
+  overflow: hidden;
   background:
     repeating-linear-gradient(
       90deg,
@@ -3126,7 +3130,7 @@
 
 .CharSetup__augHudLabel {
   flex-shrink: 0;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: rgba(255, 138, 101, 0.95);
@@ -3138,7 +3142,7 @@
 .CharSetup__augBarWrap {
   position: relative;
   flex: 1;
-  height: 1.125rem;
+  height: 1.25rem;
   background: rgba(0, 0, 0, 0.5);
   border: 0.0625rem solid rgba(255, 138, 101, 0.20);
   border-radius: 0.125rem;
@@ -3166,7 +3170,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 700;
   font-family: var(--cs-font-mono);
   color: rgba(255, 255, 255, 0.90);
@@ -3671,4 +3675,142 @@
   }
 }
 
+/* =========================================================
+ * SearchDropdown — combined search input + dropdown
+ * ========================================================= */
 
+.SearchDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.SearchDropdown__inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.25rem;
+  height: 1.5rem;
+  overflow: hidden;
+}
+
+.SearchDropdown__input {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 0 1.5rem 0 0.375rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #dde4f0;
+  font-family: Verdana, sans-serif;
+  font-size: 0.75rem;
+
+  &::placeholder {
+    color: #dde4f0;
+    opacity: 1;
+  }
+
+  &:focus::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    opacity: 1;
+  }
+}
+
+.SearchDropdown__chevron {
+  position: absolute;
+  right: 0.375rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.625rem;
+  pointer-events: none;
+}
+
+.SearchDropdown__list {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  top: 100%;
+  max-height: 12rem;
+  overflow-y: auto;
+  background: #1a1c22;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.SearchDropdown__option {
+  padding: 0.2rem 0.375rem;
+  font-family: Verdana, sans-serif;
+  font-size: 0.75rem;
+  color: #dde4f0;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &--selected {
+    background: #2a3a5a;
+    color: #e8f0ff;
+  }
+}
+
+/* =========================================================
+ * Languages compact — row-based list for ID card back
+ * ========================================================= */
+
+.CharSetup__langRow {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 0.25rem;
+  padding: 0.125rem 0;
+}
+
+.CharSetup__langIcon {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.45);
+  width: 0.875rem;
+  text-align: center;
+  flex-shrink: 0;
+
+  &--native {
+    color: #6dba5e;
+  }
+
+  &--alt {
+    color: #5b9bd5;
+  }
+}
+
+.CharSetup__langName {
+  flex: 1;
+  font-size: 1rem;
+  color: #dde4f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.CharSetup__langTag {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.0625rem 0.3rem;
+  border-radius: 0.1875rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.45);
+  flex-shrink: 0;
+
+  &--native {
+    background: rgba(109, 186, 94, 0.15);
+    color: #6dba5e;
+  }
+}

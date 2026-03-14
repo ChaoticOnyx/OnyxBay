@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
@@ -19,8 +18,10 @@ import {
   removeChatPage,
   saveChatToDisk,
   saveSettingsToDisk,
+  stopTts,
   toggleAcceptedType,
   updateMessageCount,
+  updateTtsSettings,
 } from "./actions";
 import {
   MAX_PERSISTED_MESSAGES,
@@ -30,6 +31,7 @@ import {
 import { createMessage, serializeMessage } from "./model";
 import { chatRenderer } from "./renderer";
 import { selectChat, selectCurrentChatPage } from "./selectors";
+import { ttsEngine, TTS_STORAGE_KEY } from "./tts";
 
 // List of blacklisted tags
 const FORBID_TAGS = ["a", "iframe", "link", "video"];
@@ -38,7 +40,7 @@ const saveChatToStorage = async (store) => {
   const state = selectChat(store.getState());
   const fromIndex = Math.max(
     0,
-    chatRenderer.messages.length - MAX_PERSISTED_MESSAGES
+    chatRenderer.messages.length - MAX_PERSISTED_MESSAGES,
   );
   const messages = chatRenderer.messages
     .slice(fromIndex)
@@ -83,6 +85,7 @@ const _saveSettingsToDisk = async () => {
     "chat-state": await storage.get("chat-state"),
     "panel-settings": await storage.get("panel-settings"),
     "spellchecker-settings": await storage.get("spellchecker-settings"),
+    [TTS_STORAGE_KEY]: await storage.get(TTS_STORAGE_KEY),
   };
 
   const rawData = JSON.stringify(data);
@@ -105,6 +108,7 @@ const _loadSettingsFromDisk = (data) => {
 export const chatMiddleware = (store) => {
   let initialized = false;
   let loaded = false;
+
   chatRenderer.events.on("batchProcessed", (countByType) => {
     // Use this flag to workaround unread messages caused by
     // loading them from storage. Side effect of that, is that
@@ -113,10 +117,19 @@ export const chatMiddleware = (store) => {
       store.dispatch(updateMessageCount(countByType));
     }
   });
+
   chatRenderer.events.on("scrollTrackingChanged", (scrollTracking) => {
     store.dispatch(changeScrollTracking(scrollTracking));
   });
+
+  chatRenderer.events.on("messageAdded", (message) => {
+    if (loaded) {
+      ttsEngine.speakMessage(message);
+    }
+  });
+
   setInterval(() => saveChatToStorage(store), MESSAGE_SAVE_INTERVAL);
+
   return (next) => (action) => {
     const { type, payload } = action;
     if (!initialized) {
@@ -158,7 +171,7 @@ export const chatMiddleware = (store) => {
       try {
         chatRenderer.setHighlight(
           settings.highlightText,
-          settings.highlightColor
+          settings.highlightColor,
         );
       } catch (error) {
         store.dispatch({
@@ -175,6 +188,7 @@ export const chatMiddleware = (store) => {
     if (type === "roundrestart") {
       // Save chat as soon as possible
       saveChatToStorage(store);
+      ttsEngine.stop();
       return next(action);
     }
     if (type === saveChatToDisk.type) {
@@ -197,7 +211,14 @@ export const chatMiddleware = (store) => {
           },
         });
       }
-
+      return;
+    }
+    if (type === updateTtsSettings.type) {
+      ttsEngine.updateSettings(payload);
+      return;
+    }
+    if (type === stopTts.type) {
+      ttsEngine.stop();
       return;
     }
     return next(action);

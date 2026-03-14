@@ -24,7 +24,6 @@ interface Payment {
   price: number;
   product: string;
   icon: string;
-  // eslint-disable-next-line camelcase
   message_err: number;
 }
 

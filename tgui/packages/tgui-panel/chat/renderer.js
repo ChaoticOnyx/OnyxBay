@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
@@ -38,9 +37,9 @@ const findNearestScrollableParent = (startingNode) => {
     // scrollWidth of the element. Might not work if element uses
     // overflow: hidden.
     if (
-	  typeof node.className === 'string' &&
-	  node.className.indexOf('Layout__content--scrollable') !== -1
-	) {
+      typeof node.className === "string" &&
+      node.className.indexOf("Layout__content--scrollable") !== -1
+    ) {
       return node;
     }
     node = node.parentNode;
@@ -154,13 +153,13 @@ class ChatRenderer {
       this.rootNode = node;
     }
 
-    setImmediate(() => {
+    setTimeout(() => {
       // Find scrollable parent
       this.scrollNode = findNearestScrollableParent(this.rootNode);
       this.scrollNode.addEventListener("scroll", this.handleScroll);
 
       this.scrollToBottom();
-    });
+    }, 0);
     // Flush the queue
     this.tryFlushQueue();
   }
@@ -192,12 +191,7 @@ class ChatRenderer {
     const lines = String(text)
       .split(",")
       .map((str) => str.trim())
-      .filter(
-        (str) =>
-          // Must be longer than one character
-          str && str.length > 1
-      );
-    // Nothing to match, reset highlighting
+      .filter((str) => str && str.length > 1);
     if (lines.length === 0) {
       this.highlightRegex = null;
       this.highlightColor = null;
@@ -309,7 +303,7 @@ class ChatRenderer {
         // Highlight text
         if (!message.avoidHighlighting && this.highlightRegex) {
           const highlighted = highlightNode(node, this.highlightRegex, (text) =>
-            createHighlightNode(text, this.highlightColor)
+            createHighlightNode(text, this.highlightColor),
           );
           if (highlighted) {
             node.className += " ChatMessage--highlighted";
@@ -333,14 +327,9 @@ class ChatRenderer {
       message.node = node;
       // Query all possible selectors to find out the message type
       if (!message.type) {
-        // IE8: Does not support querySelector on elements that
-        // are not yet in the document.
-        const typeDef =
-          !Byond.IS_LTE_IE8 &&
-          MESSAGE_TYPES.find(
-            (typeDef) =>
-              typeDef.selector && node.querySelector(typeDef.selector)
-          );
+        const typeDef = MESSAGE_TYPES.find(
+          (typeDef) => typeDef.selector && node.querySelector(typeDef.selector),
+        );
         message.type = typeDef?.type || MESSAGE_TYPE_UNKNOWN;
       }
       updateMessageBadge(message);
@@ -350,6 +339,11 @@ class ChatRenderer {
       countByType[message.type] += 1;
       // TODO: Detect duplicates
       this.messages.push(message);
+
+      if (notifyListeners && !prepend) {
+        this.events.emit("messageAdded", message);
+      }
+
       if (canPageAcceptType(this.page, message.type)) {
         fragment.appendChild(node);
         this.visibleMessages.push(message);
@@ -363,7 +357,7 @@ class ChatRenderer {
         this.rootNode.appendChild(fragment);
       }
       if (this.scrollTracking) {
-        setImmediate(() => this.scrollToBottom());
+        setTimeout(() => this.scrollToBottom(), 0);
       }
     }
     // Notify listeners that we have processed the batch
@@ -396,7 +390,7 @@ class ChatRenderer {
         }
         // Remove pruned messages from the message array
         this.messages = this.messages.filter(
-          (message) => message.node !== "pruned"
+          (message) => message.node !== "pruned",
         );
         logger.log(`pruned ${fromIndex} visible messages`);
       }
@@ -405,7 +399,7 @@ class ChatRenderer {
     {
       const fromIndex = Math.max(
         0,
-        this.messages.length - MAX_PERSISTED_MESSAGES
+        this.messages.length - MAX_PERSISTED_MESSAGES,
       );
       if (fromIndex > 0) {
         this.messages = this.messages.slice(fromIndex);
@@ -421,7 +415,7 @@ class ChatRenderer {
     // Make a copy of messages
     const fromIndex = Math.max(
       0,
-      this.messages.length - MAX_PERSISTED_MESSAGES
+      this.messages.length - MAX_PERSISTED_MESSAGES,
     );
     const messages = this.messages.slice(fromIndex);
     // Remove existing nodes
@@ -439,10 +433,6 @@ class ChatRenderer {
   }
 
   saveToDisk() {
-    // Allow only on IE11
-    if (Byond.IS_LTE_IE10) {
-      return;
-    }
     // Compile currently loaded stylesheets as CSS text
     let cssText = "";
     const styleSheets = document.styleSheets;
@@ -479,13 +469,13 @@ class ChatRenderer {
       "</body>\n" +
       "</html>\n";
     // Create and send a nice blob
-    const blob = new Blob([pageHtml], { type: 'text/plain' });
+    const blob = new Blob([pageHtml], { type: "text/plain" });
     const timestamp = new Date()
       .toISOString()
       .substring(0, 19)
       .replace(/[-:]/g, "")
       .replace("T", "-");
-    Byond.saveBlob(blob, `ss13-chatlog-${timestamp}.html`, '.html');
+    Byond.saveBlob(blob, `ss13-chatlog-${timestamp}.html`, ".html");
   }
 }
 

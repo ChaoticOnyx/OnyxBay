@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 bobbahbrown (https://github.com/bobbahbrown)
@@ -11,11 +10,6 @@ import { AnimatedNumber } from "./AnimatedNumber";
 import { Box, computeBoxClassName, computeBoxProps } from "./Box";
 
 export const RoundGauge = (props) => {
-  // Support for IE8 is for losers sorry B)
-  if (Byond.IS_LTE_IE8) {
-    return <AnimatedNumber {...props} />;
-  }
-
   const {
     value,
     minValue = 1,
@@ -87,7 +81,7 @@ export const RoundGauge = (props) => {
                   style={{
                     "stroke-dashoffset": Math.max(
                       (2.0 - (colRanges[1] - colRanges[0])) * Math.PI * 50,
-                      0
+                      0,
                     ),
                   }}
                   transform={`rotate(${180 + 180 * colRanges[0]} 50 50)`}

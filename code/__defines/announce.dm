@@ -175,11 +175,11 @@ GLOBAL_VAR_CONST(PREF_ANNOUNCER_TGSTATION, "\[Cargo\] /TG/station (Legacy)")
 	title = "%STATION_NAME% Sensor Array"
 
 /datum/announce/space_dust_start
-	text = "The %STATION_NAME% is now passing through a belt of space dust."
+	text = "The %STATION_NAME% is entering a dense space dust cloud. Exterior visibility will be severely reduced. All EVA personnel are advised to return inside immediately."
 	title = "%STATION_NAME% Sensor Array"
 
 /datum/announce/space_dust_end
-	text = "The %STATION_NAME% has now passed through the belt of space dust."
+	text = "The %STATION_NAME% has cleared the dust cloud. Exterior conditions are returning to normal."
 	title = "%STATION_NAME% Sensor Array"
 
 /datum/announce/wallrot

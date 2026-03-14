@@ -211,11 +211,19 @@
 /**
  * public
  *
+ * Returns a tied connection to the window.
+ */
+/datum/tgui_window/proc/get_connection()
+	return Z_WS_GET_TIED(src)
+
+/**
+ * public
+ *
  * Close the UI.
  *
  * optional can_be_suspended bool
  */
-/datum/tgui_window/proc/close(can_be_suspended = TRUE, close_connection = TRUE)
+/datum/tgui_window/proc/close(can_be_suspended = TRUE)
 	if(!client)
 		return
 	if(can_be_suspended && can_be_suspended())
@@ -232,11 +240,9 @@
 	status = TGUI_WINDOW_CLOSED
 	message_queue = null
 
-	if(close_connection)
-		var/conn_id = Z_WS_GET_TIED(src)
-
-		if(conn_id != null)
-			Z_WS_DISCONNECT(conn_id)
+	var/conn_id = get_connection()
+	if(conn_id != null)
+		Z_WS_DISCONNECT(conn_id)
 
 	// Do not close the window to give user some time
 	// to read the error message.
@@ -264,8 +270,9 @@
 		message_queue += list(message)
 		return
 	
-	var/conn_id = Z_WS_GET_TIED(src)
-	ASSERT(conn_id != null)
+	var/conn_id = get_connection()
+	if(conn_id == null)
+		return
 
 	if(!Z_WS_SEND(conn_id, message))
 		log_tgui(client, "Error: Failed to send WS message", context = id)
@@ -288,8 +295,10 @@
 		message_queue += list(message)
 		return
 
-	var/conn_id = Z_WS_GET_TIED(src)
-	ASSERT(conn_id != null)
+	var/conn_id = get_connection()
+	if(conn_id == null)
+		return
+
 	if(!Z_WS_SEND(conn_id, message))
 		log_tgui(client, "Error: Failed to send WS message", context = id)
 
@@ -318,8 +327,9 @@
 	if(!client || !message_queue)
 		return
 	
-	var/conn_id = Z_WS_GET_TIED(src)
-	ASSERT(conn_id != null)
+	var/conn_id = get_connection()
+	if(conn_id == null)
+		return
 
 	for(var/message in message_queue)
 		if(!Z_WS_SEND(conn_id, message))
@@ -331,6 +341,20 @@
 	if(!client)
 		return FALSE
 
+	// Schedule calling of the callback on the next tick, outside of the
+	// Z_WS_TICK callstack.
+	spawn(0)
+		_on_message(content, conn_id)
+
+	return TRUE
+
+/datum/tgui_window/proc/_on_message(content, conn_id)
+	if(!client)
+		return
+
+	if(get_connection() != conn_id)
+		return
+
 	// For compatibility with code that relied on the usr set by Topic,
 	// and this is quite convenient.
 	usr = client.mob
@@ -339,15 +363,13 @@
 	try
 		C = json_decode(content)
 	catch
-		close(TRUE, FALSE)
-		return FALSE
+		close(FALSE)
+		return
 
 	if(!islist(C))
-		close(TRUE, FALSE)
-		return FALSE
+		close(FALSE)
+		return
 	
-	. = TRUE
-
 	var/type = C["type"]
 	var/payload = C["payload"]
 
@@ -381,11 +403,8 @@
 		if("ping")
 			send_message("pingReply", payload)
 		if("suspend")
-			close(TRUE, FALSE)
+			close(can_be_suspended = TRUE)
 		if("close")
-			close(FALSE, FALSE)
+			close(can_be_suspended = FALSE)
 		if("openLink")
 			client << link(C["url"])
-
-/datum/tgui_window/proc/__on_ws_disconnected()
-	close(FALSE, FALSE)

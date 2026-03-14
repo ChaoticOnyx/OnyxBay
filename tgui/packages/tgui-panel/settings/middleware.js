@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
@@ -22,11 +21,11 @@ const setGlobalFontFamily = (fontFamily) => {
 
   document.documentElement?.style.setProperty(
     "font-family",
-    `${fontFamily}, "apple color emoji", "segoe ui emoji", "segoe ui symbol"`
+    `${fontFamily}, "apple color emoji", "segoe ui emoji", "segoe ui symbol"`,
   );
   document.body?.style.setProperty(
     "font-family",
-    `${fontFamily}, "apple color emoji", "segoe ui emoji", "segoe ui symbol"`
+    `${fontFamily}, "apple color emoji", "segoe ui emoji", "segoe ui symbol"`,
   );
 };
 
@@ -47,7 +46,7 @@ const setBackgroundImage = (background) => {
     chat.style.setProperty("background-color", "rgba(0, 0, 0, 0.0)");
     backgroundContainer.style.setProperty(
       "background-image",
-      `url("${encodeURI(url)}")`
+      `url("${encodeURI(url)}")`,
     );
     backgroundContainer.style.setProperty("opacity", opaque / 100);
     backgroundContainer.style.setProperty("background-repeat", repeat);

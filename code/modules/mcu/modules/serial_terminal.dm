@@ -1,6 +1,7 @@
 #define MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE 1024
 #define MCU_SERIAL_TERMINAL_HISTORY_SIZE 2048
 
+
 /obj/item/mcu_module/serial_terminal
 	name = "serial terminal module"
 	desc = "A serial terminal interface for MCU debugging and interaction."
@@ -10,6 +11,7 @@
 
 	var/list/buffer = list()
 	var/buffer_start = 0
+	var/raw_mode = FALSE
 
 /obj/item/mcu_module/serial_terminal/__interact(mob/user)
 	attack_self(user)
@@ -33,6 +35,7 @@
 	data["bufferStart"] = buffer_start
 	data["maxInputBytes"] = MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE
 	data["isActive"] = __host != null && __host.resolve().is_on()
+	data["rawMode"] = raw_mode
 
 	return data
 
@@ -69,7 +72,10 @@
 
 			ASSERT(Z_MACHINE_SYSCALL(M.id, __pci_slot, Z_SERIAL_B2N_CMD_WRITE, valid_bytes) == TRUE)
 
-			__append_bytes(valid_bytes)
+			// In line mode, echo the sent bytes locally.
+			// In raw mode, the application controls all output — no local echo.
+			if(!raw_mode)
+				__append_bytes(valid_bytes)
 
 			return TRUE
 
@@ -91,6 +97,12 @@
 		if(Z_SERIAL_N2B_CMD_WRITE)
 			var/list/bytes = args[2]
 			__append_bytes(bytes)
+			SStgui.update_uis(src)
+
+			return TRUE
+
+		if(Z_SERIAL_N2B_CMD_SET_RAW_MODE)
+			raw_mode = args[2]
 
 			return TRUE
 
@@ -100,6 +112,8 @@
 	if(attached)
 		buffer = list()
 		buffer_start = 0
+		raw_mode = FALSE
 
 #undef MCU_SERIAL_TERMINAL_RX_BUFFER_SIZE
 #undef MCU_SERIAL_TERMINAL_HISTORY_SIZE
+#undef Z_SERIAL_N2B_CMD_SET_RAW_MODE

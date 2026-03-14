@@ -47,8 +47,8 @@
 		"hot",
 		"cold"
 	)
-	var/open_sound = 'sound/machines/blastdoor_open.ogg'
-	var/close_sound = 'sound/machines/blastdoor_close.ogg'
+	var/open_sound = 'sound/machines/airlock/quiet_open.ogg'
+	var/close_sound = 'sound/machines/airlock/quiet_close.ogg'
 
 /obj/machinery/door/firedoor/Initialize()
 	. = ..()

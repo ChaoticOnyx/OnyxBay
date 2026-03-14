@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -51,19 +51,22 @@
 
         var connectWebSocket = function () {
           var ws = new WebSocket(wsAddress);
+          ws.binaryType = "arraybuffer";
           Byond.ws = ws;
 
-          ws.addEventListener('open', function () {
+          ws.addEventListener("open", function () {
             wsRetryCount = 0;
 
             // We send the connection request first and only then everything else.
-            ws.send(JSON.stringify({
-              type: "tgui/connect",
-              token: Byond.wsToken,
-              payload: {
-                window_id: Byond.windowId,
-              },
-            }));
+            ws.send(
+              JSON.stringify({
+                type: "tgui/connect",
+                token: Byond.wsToken,
+                payload: {
+                  window_id: Byond.windowId,
+                },
+              }),
+            );
 
             Byond.wsAuthenticated = true;
 
@@ -73,36 +76,55 @@
           });
 
           ws.addEventListener("message", function (event) {
-            if (window.update.queueActive) {
-              window.update.queue.push(event.data);
-              return;
-            }
+            if (typeof event.data === "string") {
+              if (window.update.queueActive) {
+                window.update.queue.push(event.data);
+                return;
+              }
 
-            var message = Byond.parseJson(event.data);
+              var message = Byond.parseJson(event.data);
 
-            window.update.lastPayloadByType[message.type] = message.payload;
+              window.update.lastPayloadByType[message.type] = message.payload;
 
-            var listeners = window.update.listeners;
-            for (var i = 0; i < listeners.length; i++) {
-              listeners[i](message.type, message.payload);
+              var listeners = window.update.listeners;
+              for (var i = 0; i < listeners.length; i++) {
+                listeners[i](message.type, message.payload);
+              }
+            } else {
+              if (window.binaryUpdate.queueActive) {
+                window.binaryUpdate.queue.push(event.data);
+                return;
+              }
+
+              var listeners = window.binaryUpdate.listeners;
+              for (var i = 0; i < listeners.length; i++) {
+                listeners[i](event.data);
+              }
             }
           });
 
-          ws.addEventListener('close', function () {
+          ws.addEventListener("close", function () {
             Byond.wsAuthenticated = false;
 
             if (wsRetryCount >= WS_MAX_RETRIES) {
               console.error(
-                'WebSocket: failed to connect after ' + WS_MAX_RETRIES + ' tries.'
+                "WebSocket: failed to connect after " +
+                  WS_MAX_RETRIES +
+                  " tries.",
               );
               return;
             }
 
             wsRetryCount++;
             console.warn(
-              'WebSocket: failed to connect, retry after '
-              + (WS_RETRY_DELAY / 1000) + 's '
-              + '(try ' + wsRetryCount + '/' + WS_MAX_RETRIES + ')'
+              "WebSocket: failed to connect, retry after " +
+                WS_RETRY_DELAY / 1000 +
+                "s " +
+                "(try " +
+                wsRetryCount +
+                "/" +
+                WS_MAX_RETRIES +
+                ")",
             );
 
             setTimeout(connectWebSocket, WS_RETRY_DELAY);
@@ -114,13 +136,6 @@
         // Backwards compatibility
         window.__windowId__ = Byond.windowId;
 
-        // Trident engine version
-        Byond.TRIDENT = (function () {
-          var groups = navigator.userAgent.match(/Trident\/(\d+).+?;/i);
-          var majorVersion = groups && groups[1];
-          return majorVersion ? parseInt(majorVersion, 10) : null;
-        })();
-
         // Blink engine version
         Byond.BLINK = (function () {
           var groups = navigator.userAgent.match(/Chrome\/(\d+)\./);
@@ -130,36 +145,22 @@
 
         // Basic checks to detect whether this page runs in BYOND
         var isByond =
-          (Byond.TRIDENT !== null || Byond.BLINK !== null || window.cef_to_byond) &&
+          (Byond.BLINK !== null || window.cef_to_byond) &&
           location.hostname === "127.0.0.1" &&
           location.search !== "?external";
 
         // Version constants
         Byond.IS_BYOND = isByond;
-        Byond.IS_LTE_IE8 = Byond.TRIDENT !== null && Byond.TRIDENT <= 4;
-        Byond.IS_LTE_IE9 = Byond.TRIDENT !== null && Byond.TRIDENT <= 5;
-        Byond.IS_LTE_IE10 = Byond.TRIDENT !== null && Byond.TRIDENT <= 6;
-        Byond.IS_LTE_IE11 = Byond.TRIDENT !== null && Byond.TRIDENT <= 7;
 
         // Callbacks for asynchronous calls
         Byond.__callbacks__ = [];
 
-        // Reviver for BYOND JSON
-        // IE8: No reviver for you!
-        // See: https://stackoverflow.com/questions/1288962
-        var byondJsonReviver;
-        if (!Byond.IS_LTE_IE8) {
-          byondJsonReviver = function (key, value) {
-            if (
-              typeof value === "object" &&
-              value !== null &&
-              value.__number__
-            ) {
-              return parseFloat(value.__number__);
-            }
-            return value;
-          };
-        }
+        const byondJsonReviver = function (key, value) {
+          if (typeof value === "object" && value !== null && value.__number__) {
+            return parseFloat(value.__number__);
+          }
+          return value;
+        };
 
         // Makes a BYOND call.
         // See: https://secure.byond.com/docs/ref/skinparams.html
@@ -208,7 +209,7 @@
         Byond.callAsync = function (path, params) {
           if (!window.Promise) {
             throw new Error(
-              "Async calls require API level of ES2015 or later."
+              "Async calls require API level of ES2015 or later.",
             );
           }
           var index = Byond.__callbacks__.length;
@@ -219,13 +220,16 @@
             path,
             assign({}, params, {
               callback: "Byond.__callbacks__[" + index + "]",
-            })
+            }),
           );
           return promise;
         };
 
         Byond.send = function (params) {
-          if (Byond.ws.readyState !== WebSocket.OPEN || !Byond.wsAuthenticated) {
+          if (
+            Byond.ws.readyState !== WebSocket.OPEN ||
+            !Byond.wsAuthenticated
+          ) {
             Byond.wsQueue.push(JSON.stringify(params));
           } else {
             Byond.ws.send(JSON.stringify(params));
@@ -285,25 +289,42 @@
           queue: [],
           queueActive: true,
           lastPayloadByType: {},
-          
+
           flushQueue: function (listener) {
             if (window.update.queueActive) {
               window.update.queueActive = false;
             }
-            
+
             var queue = window.update.queue;
             for (var i = 0; i < queue.length; i++) {
               var message = Byond.parseJson(queue[i]);
               listener(message.type, message.payload);
             }
-            
+
             var lastPayloads = window.update.lastPayloadByType;
             for (var type in lastPayloads) {
               if (Object.prototype.hasOwnProperty.call(lastPayloads, type)) {
                 listener(type, lastPayloads[type]);
               }
             }
-          }
+          },
+        };
+
+        window.binaryUpdate = {
+          listeners: [],
+          queue: [],
+          queueActive: true,
+
+          flushQueue: function (listener) {
+            if (window.binaryUpdate.queueActive) {
+              window.binaryUpdate.queueActive = false;
+            }
+
+            var queue = window.binaryUpdate.queue;
+            for (var i = 0; i < queue.length; i++) {
+              listener(queue[i]);
+            }
+          },
         };
 
         // This function exists purely for debugging, do not use it in code!
@@ -318,6 +339,11 @@
         Byond.subscribe = function (listener) {
           window.update.flushQueue(listener);
           window.update.listeners.push(listener);
+        };
+
+        Byond.binarySubscribe = function (listener) {
+          window.binaryUpdate.flushQueue(listener);
+          window.binaryUpdate.listeners.push(listener);
         };
 
         Byond.subscribeTo = function (type, listener) {
@@ -408,20 +434,20 @@
               }
               throw new Error(errorMessage);
             }
-            setTimeout(function () {
-              loadedAssetByUrl[url] = null;
-              options.attempt += 1;
-              loadAsset(options);
-            }, RETRY_WAIT_INITIAL + attempt * RETRY_WAIT_INCREMENT);
+            setTimeout(
+              function () {
+                loadedAssetByUrl[url] = null;
+                options.attempt += 1;
+                loadAsset(options);
+              },
+              RETRY_WAIT_INITIAL + attempt * RETRY_WAIT_INCREMENT,
+            );
           };
           // JS specific code
           if (type === "js") {
             var node = document.createElement("script");
             node.type = "text/javascript";
-            // IE8: Prefer non-https protocols
-            node.src = Byond.IS_LTE_IE9
-              ? url.replace("https://", "http://")
-              : url;
+            node.src = url;
             if (sync) {
               node.defer = true;
             } else {
@@ -441,10 +467,7 @@
             var node = document.createElement("link");
             node.type = "text/css";
             node.rel = "stylesheet";
-            // IE8: Prefer non-https protocols
-            node.href = Byond.IS_LTE_IE9
-              ? url.replace("https://", "http://")
-              : url;
+            node.href = url;
             // Temporarily set media to something inapplicable
             // to ensure it'll fetch without blocking render
             if (!sync) {
@@ -534,8 +557,7 @@
           } else {
             window.onerror.__stack__ = stack;
           }
-          var textProp = Byond.IS_LTE_IE8 ? "innerText" : "textContent";
-          errorStack[textProp] = window.onerror.__stack__;
+          errorStack["textContent"] = window.onerror.__stack__;
         }
         // Set window geometry
         var setFatalErrorGeometry = function () {
@@ -617,7 +639,8 @@
         margin: 16px;
         top: 0;
         left: 0;
-        animation: FatalError__rainbow 2s linear infinite alternate,
+        animation:
+          FatalError__rainbow 2s linear infinite alternate,
           FatalError__shadow 4s linear infinite alternate,
           FatalError__tfmX 3s infinite alternate,
           FatalError__tfmY 4s infinite alternate;

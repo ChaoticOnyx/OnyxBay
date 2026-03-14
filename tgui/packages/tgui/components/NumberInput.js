@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
@@ -41,7 +40,7 @@ export class NumberInput extends Component {
             this.setState({
               suppressingFlicker: false,
             }),
-          suppressFlicker
+          suppressFlicker,
         );
       }
     };
@@ -88,13 +87,13 @@ export class NumberInput extends Component {
           state.internalValue = clamp(
             state.internalValue + (offset * step) / stepPixelSize,
             minValue - step,
-            maxValue + step
+            maxValue + step,
           );
           // Clamp the final value
           state.value = clamp(
             state.internalValue - (state.internalValue % step) + stepOffset,
             minValue,
-            maxValue
+            maxValue,
           );
           state.origin = e.screenY;
         } else if (Math.abs(offset) > 4) {
@@ -165,9 +164,8 @@ export class NumberInput extends Component {
     if (dragging || suppressingFlicker) {
       displayValue = intermediateValue;
     }
-    // IE8: Use an "unselectable" prop because "user-select" doesn't work.
     const renderContentElement = (value) => (
-      <div className="NumberInput__content" unselectable={Byond.IS_LTE_IE8}>
+      <div className="NumberInput__content">
         {value + (unit ? " " + unit : "")}
       </div>
     );
@@ -199,7 +197,7 @@ export class NumberInput extends Component {
                 clamp(
                   ((displayValue - minValue) / (maxValue - minValue)) * 100,
                   0,
-                  100
+                  100,
                 ) + "%",
             }}
           />
@@ -242,7 +240,7 @@ export class NumberInput extends Component {
               const value = clamp(
                 parseFloat(e.target.value),
                 minValue,
-                maxValue
+                maxValue,
               );
               if (Number.isNaN(value)) {
                 this.setState({

@@ -22,13 +22,9 @@ SUBSYSTEM_DEF(tgui)
 
 /datum/controller/subsystem/tgui/PreInit()
 	basehtml = file2text('tgui/public/tgui.html')
-	// Inject inline polyfills
-	var/polyfill = file2text('tgui/public/tgui-polyfill.bundle.js')
-	polyfill = "<script>\n[polyfill]\n</script>"
-	basehtml = replacetextEx(basehtml, "<!-- tgui:inline-polyfill -->", polyfill)
 
 /datum/controller/subsystem/tgui/Shutdown()
-	close_all_uis()
+	close_all_uis(FALSE)
 
 /datum/controller/subsystem/tgui/stat_entry(msg)
 	msg = "P:[length(open_uis)]"
@@ -220,7 +216,7 @@ SUBSYSTEM_DEF(tgui)
  *
  * return int The number of UIs closed.
  */
-/datum/controller/subsystem/tgui/proc/close_uis(datum/src_object)
+/datum/controller/subsystem/tgui/proc/close_uis(datum/src_object, can_be_suspended = TRUE)
 	var/count = 0
 	var/key = "\ref[src_object]"
 	// No UIs opened for this src_object
@@ -229,7 +225,7 @@ SUBSYSTEM_DEF(tgui)
 	for(var/datum/tgui/ui in open_uis_by_src[key])
 		// Check if UI is valid.
 		if(ui?.src_object && ui.user && ui.src_object.tgui_host(ui.user))
-			ui.close()
+			ui.close(can_be_suspended)
 			count++
 	return count
 
@@ -240,13 +236,13 @@ SUBSYSTEM_DEF(tgui)
  *
  * return int The number of UIs closed.
  */
-/datum/controller/subsystem/tgui/proc/close_all_uis()
+/datum/controller/subsystem/tgui/proc/close_all_uis(can_be_suspended = TRUE)
 	var/count = 0
 	for(var/key in open_uis_by_src)
 		for(var/datum/tgui/ui in open_uis_by_src[key])
 			// Check if UI is valid.
 			if(ui?.src_object && ui.user && ui.src_object.tgui_host(ui.user))
-				ui.close()
+				ui.close(can_be_suspended)
 				count++
 	return count
 
@@ -280,13 +276,13 @@ SUBSYSTEM_DEF(tgui)
  *
  * return int The number of UIs closed.
  */
-/datum/controller/subsystem/tgui/proc/close_user_uis(mob/user, datum/src_object)
+/datum/controller/subsystem/tgui/proc/close_user_uis(mob/user, datum/src_object, can_be_suspended = TRUE)
 	var/count = 0
 	if(length(user?.tgui_open_uis) == 0)
 		return count
 	for(var/datum/tgui/ui in user.tgui_open_uis)
 		if(QDELETED(src_object) || ui.src_object == src_object)
-			ui.close()
+			ui.close(can_be_suspended)
 			count++
 	return count
 
@@ -340,7 +336,7 @@ SUBSYSTEM_DEF(tgui)
  * return int The number of UIs closed.
  */
 /datum/controller/subsystem/tgui/proc/on_logout(mob/user)
-	close_user_uis(user)
+	close_user_uis(user, FALSE)
 
 /**
  * private

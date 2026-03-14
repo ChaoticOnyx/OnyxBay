@@ -8,25 +8,22 @@ import { useLocalState } from "../backend";
 import { Flex, Section, Tabs } from "../components";
 import { Pane, Window } from "../layouts";
 
-const r = require.context("../stories", false, /\.stories\.js$/);
+const storyModules = import.meta.glob("../stories/*.stories.{js,tsx}", {
+  eager: true,
+});
 
-/**
- * @returns {{
- *   meta: {
- *     title: string,
- *     render: () => any,
- *   },
- * }[]}
- */
-const getStories = () => r.keys().map((path) => r(path));
+const getStories = () => {
+  return Object.values(storyModules);
+};
 
 export const KitchenSink = (props, context) => {
   const { panel } = props;
-  const [theme] = useLocalState(context, "kitchenSinkTheme");
+  const [theme] = useLocalState(context, "kitchenSinkTheme", null);
   const [pageIndex, setPageIndex] = useLocalState(context, "pageIndex", 0);
   const stories = getStories();
   const story = stories[pageIndex];
   const Layout = panel ? Pane : Window;
+
   return (
     <Layout title="Kitchen Sink" width={600} height={500} theme={theme}>
       <Flex height="100%">
@@ -47,7 +44,7 @@ export const KitchenSink = (props, context) => {
           </Section>
         </Flex.Item>
         <Flex.Item position="relative" grow={1}>
-          <Layout.Content scrollable>{story.meta.render()}</Layout.Content>
+          <Layout.Content scrollable>{story?.meta.render()}</Layout.Content>
         </Flex.Item>
       </Flex>
     </Layout>
