@@ -45,6 +45,46 @@
     </table>
 
     <div class="commit">
+        <div class="date"><span>14 март 2026</span></div>
+        <h3 class="author">TobyThorne updated:</h3>
+        <ul class="changes">
+            <li class="green"><i class="fas fa-wrench"></i><p>Обновлена система здоровья. Подробнее - на ГитХабе (<a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">https://github.com/ChaoticOnyx/OnyxBay/pull/13191</a>). Далее - кратно об основных изменениях.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="red"><i class="fas fa-minus"></i><p>Удалена старая беевская система ран.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Брут-урон разделён на тупой и острый (в свою очередь делится на колотый и резаный). Тупой не вызывает кровотечение. Если тупой урон достиг лимита - новый тупой урон частично наносится в виде острого, и наоборот. Тупой урон быстрее всего ломает кости, острый-колющий - повреждает органы, острый-режущий - отсекает конечности.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Кровотечение зависит не от магических чисел, а от острого урона на части тела. Постепенно проходит само, либо бинтуется, либо прижигается бёрн-уроном. Новый брут-урон постепенно переоткрывает кровотечение и уничтожает бинты, в зависимости от количества урона. Бёрн-урон уничтожает бинты, но прижигает рану.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Гиб/отсечение конечностей больше не зависит от рандома.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Регенерация работает по-новому - в первую очередь должно прекратиться кровотечение (происходит быстрее, если конечность забинтована), затем - заживает урон. Регенерация делится между типами урона на конечности. Зависит от показателя коагуляции - мёртвая печень не даст ранам заживать.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Хирургическая каутеризация больше не удаляет разрез, а прижигает кровотечение. Зато прижигать можно не только хирургические разрезы, а любые кровоточащие раны.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Хирургический зажим (hemostat) удаляет с конечности все бинты, но полностью останавливает кровотечение и не даёт ране зажить (останавливает регенерацию колотого и резаного уронов). Эффект пропадает после получения любого урона. Бикаридин больше не главный враг хирургов.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Новые возможности для гетто/полевой хирургии. Теперь скальпель и ретрактор не нужны, если на конечности есть достаточно высокий острый-колотый и острый-резаный уроны соответственно.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Мазь переработана - теперь она значительно ускоряет регенерацию тупого урона и ожогов, а также частично обезболивает конечность. Эффект пропадает после получения любого урона.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Бинты и пластыри больше не лечат, только останавливают кровотечение.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Соматический и ожоговый гели - больше не рескины бинтов и мази. Теперь они применяются намного дольше, но напрямую лечат острый (но не тупой) урон и ожоги соответственно.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Кровь теперь регенерирует быстрее.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Бикаридин, келотан, дермалин, трик и другие вещества, лечащие брут и ожоги, теперь работают по новому принципу. Вместо лечения случайной конечности каждый тик они ускоряют регенерацию.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Органы теперь намного чаще повреждаются высоким уроном. Особенно - мозг. Особенно - пулями.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13191">#13191</a></sup></li>
+            <li class="green"><i class="fas fa-bug"></i><p>Предметы и мобов снова можно закидывать в порталы и телепортеры.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13739">#13739</a></sup></li>
+            <li class="green"><i class="fas fa-bug"></i><p>Предметы снова можно двигать по столу перетягиванием.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13739">#13739</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Теперь можно защититься от соскальзываний при перемещении без гравитации, если переключиться с бега на шаг И не держать ничего в руках. Если руки заняты - шаг всё ещё снизит шанс соскользнуть, но не до нуля.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13739">#13739</a></sup></li>
+        </ul>
         <div class="date"><span>12 март 2026</span></div>
         <h3 class="author">No-Tips updated:</h3>
         <ul class="changes">
