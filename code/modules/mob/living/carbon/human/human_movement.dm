@@ -25,6 +25,8 @@
 
 /mob/living/carbon/human/get_eva_slip_prob(prob_slip = 10)
 	// General slip check.
+	if(m_intent == M_WALK && !l_hand && !r_hand)
+		return 0
 	if((has_gravity() || has_magnetised_footing()) && get_solid_footing())
 		return 0
 	var/obj/item/tank/jetpack/thrust = get_jetpack()

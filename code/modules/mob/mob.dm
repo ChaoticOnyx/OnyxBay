@@ -502,7 +502,7 @@
 			return 1
 	return 0
 
-/mob/MouseDrop(mob/M)
+/mob/MouseDrop(mob/M, ...)
 	..()
 	if(M != usr)
 		return

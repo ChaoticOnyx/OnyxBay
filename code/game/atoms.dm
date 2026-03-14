@@ -650,7 +650,7 @@ its easier to just keep the beam vertical.
 			H.update_damage_overlays()
 			H.update_health()
 
-/atom/MouseDrop_T(atom/movable/target, mob/user)
+/atom/MouseDrop_T(atom/movable/target, mob/user, params)
 	. = ..()
 	if(.)
 		return
