@@ -132,7 +132,7 @@
 
 /obj/item/melee/energy/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
 	. = ..()
-	if(!. || !ishuman(target) || user.a_intent != I_HURT)
+	if(isnull(.) || !ishuman(target) || user.a_intent != I_HURT)
 		return
 
 	var/mob/living/carbon/human/H = target
