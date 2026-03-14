@@ -268,7 +268,7 @@ class MultiSlotMountController extends Component<
         this.setState({
           mountedSlots: slotOrder.slice(0, index + 2),
         });
-      }, 24 * (index + 1))
+      }, 500 * (index + 1))
     );
   }
 
@@ -974,7 +974,7 @@ export const CameraConsole = (props, context) => {
                                         <CameraViewport
                                           className="CameraConsole__slotViewport"
                                           mapRef={
-                                            mountedMultiSlots.includes(slot)
+                                            mountedMultiSlots.includes(slot) && slotHasSignal
                                               ? slotMapRef
                                               : null
                                           }

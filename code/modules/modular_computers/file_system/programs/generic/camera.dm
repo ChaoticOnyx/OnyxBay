@@ -762,9 +762,24 @@
 	if(view_mode != CAMERA_VIEW_MODE_MULTI && !force)
 		return
 
+	// Throttle fresh (cache-miss) renders to avoid a lag spike when multi-view opens
+	// with several cameras assigned simultaneously. Cache-hit slots are always processed
+	// immediately since they only call update_slot_effects (cheap). Only one fresh
+	// render is allowed per UI tick; remaining slots are deferred to the next tick.
+	var/fresh_renders = 0
 	for(var/i = 1, i <= CAMERA_MULTI_SLOT_COUNT, i++)
-		var/obj/machinery/camera/camera_to_render = get_slot_camera(i)
-		update_slot_screen(i, camera_to_render, force)
+		var/obj/machinery/camera/C = get_slot_camera(i)
+
+		if(!force && fresh_renders >= 1 && C && C.can_use())
+			var/turf/ct = get_turf(C)
+			if(ct && (last_camera_refs[i] != ref(C) || last_camera_turfs[i] != ct))
+				continue
+
+		var/was_cached = C && C.can_use() && \
+			last_camera_refs[i] == ref(C) && last_camera_turfs[i] == get_turf(C)
+		update_slot_screen(i, C, force)
+		if(!was_cached && C && C.can_use())
+			fresh_renders++
 
 /datum/nano_module/camera_monitor/proc/update_slot_screen(slot, obj/machinery/camera/C, force = FALSE)
 	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
