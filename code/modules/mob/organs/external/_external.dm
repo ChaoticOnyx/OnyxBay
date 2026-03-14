@@ -1057,31 +1057,6 @@ This function completely restores a damaged organ to perfect condition.
 /obj/item/organ/external/proc/is_malfunctioning()
 	return (BP_IS_ROBOTIC(src) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))
 
-/obj/item/organ/external/proc/embed(obj/item/W, silent = 0, supplied_message)
-	if(!owner || loc != owner)
-		return FALSE
-	if(W.w_class > ITEM_SIZE_NORMAL)
-		return FALSE
-	if(species.species_flags & SPECIES_FLAG_NO_EMBED)
-		return FALSE
-	if(!silent)
-		if(supplied_message)
-			owner.visible_message("<span class='danger'>[supplied_message]</span>")
-		else
-			owner.visible_message("<span class='danger'>\The [W] sticks in the wound!</span>")
-
-	LAZYADD(embedded_objects, W)
-	owner.embedded_flag = 1
-	owner.verbs += /mob/proc/yank_out_object
-	W.add_blood(owner)
-	if(ismob(W.loc))
-		var/mob/living/H = W.loc
-		H.drop(W, src, force = TRUE)
-	else
-		W.forceMove(src)
-
-	return TRUE
-
 /obj/item/organ/external/removed(mob/living/user, drop_organ = 1, ignore_children = 0, detach_children_and_internals = 0)
 	if(!owner)
 		return
@@ -1314,7 +1289,9 @@ This function completely restores a damaged organ to perfect condition.
 
 	var/bandages_desc = ""
 	if(max_bleeding)
-		if(bandaged >= max_bleeding)
+		if(clamped)
+			bandages_desc = "<span class='notice'><b>clamped</b></span>, "
+		else if(bandaged >= max_bleeding)
 			bandages_desc += "<span class='notice'><b>bandaged</b></span>, "
 		else if(scabbed >= max_bleeding)
 			bandages_desc += "<span class='notice'><b>scabbed</b></span>, "
@@ -1518,6 +1495,31 @@ This function completely restores a damaged organ to perfect condition.
 	else if(BP_IS_ROBOTIC(src))
 		. += max_delay * CLAMP01(damage/max_damage)
 
+/obj/item/organ/external/proc/embed(obj/item/W, silent = 0, supplied_message)
+	if(!owner || loc != owner)
+		return FALSE
+	if(W.w_class > ITEM_SIZE_NORMAL)
+		return FALSE
+	if(species.species_flags & SPECIES_FLAG_NO_EMBED)
+		return FALSE
+	if(!silent)
+		if(supplied_message)
+			owner.visible_message(SPAN("danger", "[supplied_message]"))
+		else
+			owner.visible_message(SPAN("danger", "\The [W] sticks in the wound!"))
+
+	LAZYADD(embedded_objects, W)
+	owner.embedded_flag = 1
+	owner.verbs += /mob/proc/yank_out_object
+	W.add_blood(owner)
+	if(ismob(W.loc))
+		var/mob/living/H = W.loc
+		H.drop(W, src, force = TRUE)
+	else
+		W.forceMove(src)
+
+	return TRUE
+
 /obj/item/organ/external/proc/drop_embedded_objects()
 	if(!LAZYLEN(embedded_objects))
 		return FALSE
@@ -1527,7 +1529,7 @@ This function completely restores a damaged organ to perfect condition.
 		if(owner)
 			owner.embedded -= O
 	LAZYCLEARLIST(embedded_objects)
-	if(owner && length(owner.embedded))
+	if(owner && !owner.get_embedded_objects())
 		owner.verbs -= /mob/proc/yank_out_object
 	return TRUE
 
@@ -1539,10 +1541,8 @@ This function completely restores a damaged organ to perfect condition.
 		if(O == thing)
 			O.forceMove(my_turf)
 			LAZYREMOVE(embedded_objects, O)
-			if(owner)
-				owner.embedded -= O
-				if(!length(owner.embedded))
-					owner.verbs -= /mob/proc/yank_out_object
+			if(owner && !owner.get_embedded_objects())
+				owner.verbs -= /mob/proc/yank_out_object
 			return TRUE
 	return FALSE
 
