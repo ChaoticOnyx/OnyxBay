@@ -17,6 +17,7 @@
 	/// Should this organ be hidden on scanners?
 	var/hidden = FALSE
 	var/autoheal_value = 0.1
+	var/traumatic_damage_multiplier = 1.0 // Multiplier for incoming traumatic (getting hit/shot) damage.
 
 /obj/item/organ/internal/New(mob/living/carbon/holder)
 	if(!min_bruised_damage)
@@ -151,9 +152,12 @@
 /obj/item/organ/internal/take_general_damage(amount, silent = FALSE)
 	take_internal_damage(amount, silent)
 
-/obj/item/organ/internal/proc/take_internal_damage(amount, silent = FALSE)
+/obj/item/organ/internal/proc/take_internal_damage(amount, silent = FALSE, is_traumatic = FALSE)
 	if(owner?.status_flags & GODMODE)
 		return 0
+	if(is_traumatic)
+		amount *= traumatic_damage_multiplier
+
 	if(BP_IS_ROBOTIC(src))
 		damage = between(0, src.damage + (amount * 0.8), max_damage)
 	else

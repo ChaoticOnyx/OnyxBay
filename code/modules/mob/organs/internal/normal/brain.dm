@@ -7,6 +7,7 @@
 
 	relative_size = 70
 	food_organ_type = /obj/item/reagent_containers/food/organ/brain
+	traumatic_damage_multiplier = 2.0
 
 	var/damage_threshold_value
 	var/healed_threshold = 1

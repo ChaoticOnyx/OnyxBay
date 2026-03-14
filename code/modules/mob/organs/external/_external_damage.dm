@@ -241,7 +241,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 				if(laser)
 					burn /= 3
 				damage_amt /= 2
-				victim.take_internal_damage(damage_amt)
+				victim.take_internal_damage(damage_amt, is_traumatic = TRUE)
 
 	if(!BP_IS_ROBOTIC(src))
 		// Painful stuff

@@ -75,7 +75,7 @@ meteor_act
 
 			if(length(victims))
 				for(var/obj/item/organ/internal/victim in victims)
-					victim.take_internal_damage(penetrating_damage / victims.len)
+					victim.take_internal_damage(penetrating_damage / victims.len, is_traumatic = TRUE)
 
 	// Embed or sever artery, only happens if the projectile's successfully bypassed armor
 	if(!blocked && P.damage_type == BRUTE && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(PROJECTILE_EMBED_CHANCE))
