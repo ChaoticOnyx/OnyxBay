@@ -861,6 +861,7 @@ This function completely restores a damaged organ to perfect condition.
 	else
 		bandaged = min(max_bleeding, bandaged + amt)
 
+	clamped = FALSE
 	update_damages()
 	if(owner)
 		owner.update_surgery()
@@ -1314,9 +1315,9 @@ This function completely restores a damaged organ to perfect condition.
 	var/bandages_desc = ""
 	if(max_bleeding)
 		if(bandaged >= max_bleeding)
-			bandages_desc += "bandaged, "
+			bandages_desc += "<span class='notice'><b>bandaged</b></span>, "
 		else if(scabbed >= max_bleeding)
-			bandages_desc += "scabbed, "
+			bandages_desc += "<span class='notice'><b>scabbed</b></span>, "
 		else if(bandaged && bleeding)
 			bandages_desc += "partially bandaged, bleeding, "
 		else
@@ -1339,6 +1340,11 @@ This function completely restores a damaged organ to perfect condition.
 		else
 			flavor_text = "has "
 		flavor_text += burns_desc
+
+	if(salved)
+		if(flavor_text)
+			flavor_text += ". It "
+		flavor_text = "is <span class='notice'><b>salved</b></span>"
 
 	return flavor_text
 
