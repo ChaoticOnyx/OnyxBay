@@ -302,37 +302,29 @@
   position: relative;
   height: 100%;
   min-height: 0;
+  overflow: hidden;
 }
 
 .CameraConsole__modePanel {
+  position: absolute;
+  inset: 0;
+  display: flex;
   min-width: 0;
   min-height: 0;
 }
 
 .CameraConsole__modePanel.is-active {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  max-width: none;
-  max-height: none;
-  overflow: visible;
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
+  z-index: 1;
 }
 
 .CameraConsole__modePanel.is-parked {
-  position: fixed;
-  left: -20000px;
-  top: -20000px;
-  width: 4px;
-  max-width: 4px;
-  height: 4px;
-  max-height: 4px;
-  overflow: hidden;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
 }
 
 .CameraConsole__modePanel > * {
@@ -454,15 +446,12 @@
 .CameraConsole__mapMarker {
   position: absolute;
   transform: translate(-50%, 50%);
-  min-width: 8px;
-  width: 8px;
-  height: 8px;
+  min-width: 4px;
+  width: 4px;
+  height: 4px;
   border-radius: 999px;
   border: 1px solid rgba(75, 255, 184, 0.96);
   background: rgba(75, 255, 184, 0.3);
-  box-shadow:
-    0 0 0 4px rgba(75, 255, 184, 0.08),
-    0 0 18px rgba(75, 255, 184, 0.2);
   color: #d8fef0;
   cursor: pointer;
   padding: 0;
@@ -488,31 +477,19 @@
   z-index: 4;
 }
 
-.CameraConsole__mapMarker:hover .CameraConsole__mapMarkerLabel,
-.CameraConsole__mapMarker.is-selected .CameraConsole__mapMarkerLabel {
+.CameraConsole__mapMarker:hover .CameraConsole__mapMarkerLabel {
   opacity: 1;
 }
 
-.CameraConsole__mapMarker:hover {
-  box-shadow:
-    0 0 0 4px rgba(75, 255, 184, 0.1),
-    0 0 18px rgba(75, 255, 184, 0.24);
-}
 
 .CameraConsole__mapMarker.is-selected {
   border-color: rgba(54, 191, 255, 0.98);
   background: rgba(54, 191, 255, 0.4);
-  box-shadow:
-    0 0 0 4px rgba(54, 191, 255, 0.1),
-    0 0 18px rgba(54, 191, 255, 0.24);
 }
 
 .CameraConsole__mapMarker.is-deactivated {
   border-color: rgba(220, 88, 88, 0.95);
   background: rgba(220, 88, 88, 0.34);
-  box-shadow:
-    0 0 0 4px rgba(220, 88, 88, 0.08),
-    0 0 18px rgba(220, 88, 88, 0.16);
 }
 .CameraConsole__multiGrid {
   display: grid;

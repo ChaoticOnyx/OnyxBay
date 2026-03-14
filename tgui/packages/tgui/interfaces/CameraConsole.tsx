@@ -156,6 +156,7 @@ const CameraViewport = (props: CameraViewportProps) => {
     hint,
   } = props;
   const feedReady = hasSignal && Boolean(isReady);
+  const shouldRenderViewport = Boolean(mapRef);
   const overlayLabel = hasSignal ? "CONNECTING" : "NO SIGNAL";
   const overlayHint = hasSignal ? "Synchronizing camera feed..." : hint;
 
@@ -169,13 +170,13 @@ const CameraViewport = (props: CameraViewportProps) => {
         compact && "is-compact",
       ])}
     >
-      {!!mapRef && (
+      {shouldRenderViewport && (
         <ByondUi
           className="CameraConsole__viewportSurface"
           params={{
             id: mapRef,
             type: "map",
-            "is-visible": visible ? "true" : "false",
+            "is-visible": visible && feedReady ? "true" : "false",
           }}
         />
       )}

@@ -757,13 +757,19 @@
 	ensure_slot_lists_ready()
 	update_slot_screen(CAMERA_SINGLE_VIEW_SLOT, current_camera, force)
 
-	// Preserve multi-view buffers off-tab so switching back does not blank/recreate
-	// every viewport before the new frame is ready.
-	if(view_mode != CAMERA_VIEW_MODE_MULTI && !force)
-		return
-
 	for(var/i = 1, i <= CAMERA_MULTI_SLOT_COUNT, i++)
 		var/obj/machinery/camera/camera_to_render = get_slot_camera(i)
+
+		// Keep multi-view buffers warmed while another mode is open so switching
+		// tabs does not have to build every viewport from scratch in one frame.
+		if(view_mode != CAMERA_VIEW_MODE_MULTI && !force)
+			if(!camera_to_render)
+				continue
+			if(camera_to_render.can_use())
+				if(is_slot_feed_ready(i, camera_to_render))
+					continue
+			else if(!last_camera_refs[i] && !last_camera_turfs[i])
+				continue
 
 		update_slot_screen(i, camera_to_render, force)
 
