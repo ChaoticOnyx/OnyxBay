@@ -11,13 +11,13 @@
 //Breaths however only happen once every MOB_BREATH_DELAY life ticks. The delay between life ticks is set by the mob process.
 #define HUMAN_CRIT_MAX_OXYLOSS ( MOB_BREATH_DELAY * process_schedule_interval("mob") * (HUMAN_CRIT_HEALTH_CUSHION/HUMAN_CRIT_TIME_CUSHION) )
 
-#define HEAT_DAMAGE_LEVEL_1 2 //Amount of damage applied when your body temperature just passes the 360.15k safety point
-#define HEAT_DAMAGE_LEVEL_2 4 //Amount of damage applied when your body temperature passes the 400K point
-#define HEAT_DAMAGE_LEVEL_3 8 //Amount of damage applied when your body temperature passes the 1000K point
+#define HEAT_DAMAGE_LEVEL_1 0.5 // Amount of damage applied to each limb when your body temperature just passes the 360.15k safety point
+#define HEAT_DAMAGE_LEVEL_2 2.0 // Amount of damage applied to each limb when your body temperature passes the 400K point
+#define HEAT_DAMAGE_LEVEL_3 8.0 // Amount of damage applied to each limb when your body temperature passes the 1000K point
 
-#define COLD_DAMAGE_LEVEL_1 0.5 //Amount of damage applied when your body temperature just passes the 260.15k safety point
-#define COLD_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 200K point
-#define COLD_DAMAGE_LEVEL_3 3 //Amount of damage applied when your body temperature passes the 120K point
+#define COLD_DAMAGE_LEVEL_1 0.5 // Amount of damage applied to each limb when your body temperature just passes the 260.15k safety point
+#define COLD_DAMAGE_LEVEL_2 1.0 // Amount of damage applied to each limb when your body temperature passes the 200K point
+#define COLD_DAMAGE_LEVEL_3 2.0 // Amount of damage applied to each limb when your body temperature passes the 120K point
 
 //Note that gas heat damage is only applied once every FOUR ticks.
 #define HEAT_GAS_DAMAGE_LEVEL_1 2 //Amount of damage applied when the current breath's temperature just passes the 360.15k safety point
@@ -129,53 +129,6 @@
 			active_breaths = L.active_breathing
 		..(active_breaths)
 
-// Calculate how vulnerable the human is to under- and overpressure.
-// Returns 0 (equals 0 %) if sealed in an undamaged suit, 1 if unprotected (equals 100%).
-// Suitdamage can modifiy this in 10% steps.
-/mob/living/carbon/human/proc/get_pressure_weakness()
-
-	var/pressure_adjustment_coefficient = 1 // Assume no protection at first.
-
-	if(wear_suit && (wear_suit.item_flags & ITEM_FLAG_STOPPRESSUREDAMAGE) && head && (head.item_flags & ITEM_FLAG_STOPPRESSUREDAMAGE)) // Complete set of pressure-proof suit worn, assume fully sealed.
-		pressure_adjustment_coefficient = 0
-
-		// Handles breaches in your space suit. 10 suit damage equals a 100% loss of pressure protection.
-		if(istype(wear_suit, /obj/item/clothing/suit/space))
-			var/obj/item/clothing/suit/space/S = wear_suit
-			if(S.can_breach && S.damage)
-				pressure_adjustment_coefficient += S.damage * 0.1
-
-	pressure_adjustment_coefficient = min(1, max(pressure_adjustment_coefficient, 0)) // So it isn't less than 0 or larger than 1.
-
-	return pressure_adjustment_coefficient
-
-// Calculate how much of the enviroment pressure-difference affects the human.
-/mob/living/carbon/human/calculate_affecting_pressure(pressure)
-	var/pressure_difference
-
-	// First get the absolute pressure difference.
-	if(pressure < ONE_ATMOSPHERE) // We are in an underpressure.
-		pressure_difference = ONE_ATMOSPHERE - pressure
-
-	else //We are in an overpressure or standard atmosphere.
-		pressure_difference = pressure - ONE_ATMOSPHERE
-
-	if(pressure_difference < 5) // If the difference is small, don't bother calculating the fraction.
-		pressure_difference = 0
-
-	else
-		// Otherwise calculate how much of that absolute pressure difference affects us, can be 0 to 1 (equals 0% to 100%).
-		// This is our relative difference.
-		pressure_difference *= get_pressure_weakness()
-
-	// The difference is always positive to avoid extra calculations.
-	// Apply the relative difference on a standard atmosphere to get the final result.
-	// The return value will be the adjusted_pressure of the human that is the basis of pressure warnings and damage.
-	if(pressure < ONE_ATMOSPHERE)
-		return ONE_ATMOSPHERE - pressure_difference
-	else
-		return ONE_ATMOSPHERE + pressure_difference
-
 /mob/living/carbon/human/handle_impaired_vision()
 	..()
 	//Vision
@@ -264,7 +217,7 @@
 		if(radiation > (2 SIEVERT))
 			if(!full_prosthetic && !isundead(src))
 				if(prob(5))
-					take_overall_damage(0, damage, used_weapon = "Radiation Burns")
+					take_overall_damage(0, damage, 0, "Radiation Burns", FALSE)
 				if(prob(1))
 					to_chat(src, SPAN("warning", "You feel strange!"))
 					adjustCloneLoss(radiation * damage)
@@ -331,6 +284,41 @@
 		failed_last_breath = L.handle_breath(breath) //if breath is null or vacuum, the lungs will handle it for us
 	return !failed_last_breath
 
+
+// Calculate how vulnerable the human is to under- and overpressure.
+// Returns 0 (equals 0 %) if sealed in an undamaged suit, 1 if unprotected (equals 100%).
+// Suitdamage can modifiy this in 10% steps.
+/mob/living/carbon/human/proc/get_pressure_weakness()
+
+	var/pressure_adjustment_coefficient = 1 // Assume no protection at first.
+
+	if(wear_suit && (wear_suit.item_flags & ITEM_FLAG_STOPPRESSUREDAMAGE) && head && (head.item_flags & ITEM_FLAG_STOPPRESSUREDAMAGE)) // Complete set of pressure-proof suit worn, assume fully sealed.
+		pressure_adjustment_coefficient = 0
+
+		// Handles breaches in your space suit. 10 suit damage equals a 100% loss of pressure protection.
+		if(istype(wear_suit, /obj/item/clothing/suit/space))
+			var/obj/item/clothing/suit/space/S = wear_suit
+			if(S.can_breach && S.damage)
+				pressure_adjustment_coefficient += S.damage * 0.1
+
+	pressure_adjustment_coefficient = min(1, max(pressure_adjustment_coefficient, 0)) // So it isn't less than 0 or larger than 1.
+
+	return pressure_adjustment_coefficient
+
+// Calculate how much of the enviroment pressure-difference affects the human.
+/mob/living/carbon/human/calculate_affecting_pressure(pressure)
+	// First get the pressure difference.
+	. = abs(pressure - ONE_ATMOSPHERE)
+
+	// If the absolute difference is small, don't bother calculating the fraction.
+	if(abs(.) < 5)
+		return ONE_ATMOSPHERE
+
+	// Otherwise calculate how much of that absolute pressure difference affects us, can be 0 to 1 (equals 0% to 100%).
+	// Apply the relative difference on a standard atmosphere to get the final result.
+	// The return value will be the adjusted_pressure of the human that is the basis of pressure warnings and damage.
+	return ONE_ATMOSPHERE + (. * get_pressure_weakness())
+
 /mob/living/carbon/human/handle_environment(datum/gas_mixture/environment)
 	if(!environment)
 		return
@@ -392,7 +380,7 @@
 			burn_dam = HEAT_DAMAGE_LEVEL_2
 		else
 			burn_dam = HEAT_DAMAGE_LEVEL_3
-		take_overall_damage(burn=burn_dam, used_weapon = "High Body Temperature")
+		take_overall_damage(0, burn_dam, 0, "High Body Temperature", FALSE)
 		fire_alert = max(fire_alert, 2)
 
 	else if(bodytemperature <= getSpeciesOrSynthTemp(COLD_LEVEL_1))
@@ -409,7 +397,7 @@
 			burn_dam = COLD_DAMAGE_LEVEL_3
 		SetStasis(getCryogenicFactor(bodytemperature), STASIS_COLD)
 		if(!chem_effects[CE_CRYO])
-			take_overall_damage(burn=burn_dam, used_weapon = "Low Body Temperature")
+			take_overall_damage(0, burn_dam, 0, "Low Body Temperature", FALSE)
 			fire_alert = max(fire_alert, 1)
 
 	// Account for massive pressure differences.  Done by Polymorph
@@ -418,8 +406,8 @@
 		return 1	//godmode
 
 	if(adjusted_pressure >= species.hazard_high_pressure)
-		var/pressure_damage = min( ( (adjusted_pressure / species.hazard_high_pressure) -1 )*PRESSURE_DAMAGE_COEFFICIENT , MAX_HIGH_PRESSURE_DAMAGE)
-		take_overall_damage(brute=pressure_damage, used_weapon = "High Pressure")
+		var/pressure_damage = min(((adjusted_pressure / species.hazard_high_pressure) - 1) * PRESSURE_DAMAGE_COEFFICIENT, MAX_HIGH_PRESSURE_DAMAGE)
+		take_overall_damage(pressure_damage, 0, 0, "High Pressure", FALSE)
 		pressure_alert = 2
 	else if(adjusted_pressure >= species.warning_high_pressure)
 		pressure_alert = 1
@@ -428,7 +416,7 @@
 	else if(adjusted_pressure >= species.hazard_low_pressure)
 		pressure_alert = -1
 	else
-		take_overall_damage(brute=LOW_PRESSURE_DAMAGE, used_weapon = "Low Pressure")
+		take_overall_damage(LOW_PRESSURE_DAMAGE, 0, 0, "Low Pressure", FALSE)
 		if(getOxyLoss() < 55) // 11 OxyLoss per 4 ticks when wearing internals;    unconsciousness in 16 ticks, roughly half a minute
 			adjustOxyLoss(4)  // 16 OxyLoss per 4 ticks when no internals present; unconsciousness in 13 ticks, roughly twenty seconds
 		pressure_alert = -2

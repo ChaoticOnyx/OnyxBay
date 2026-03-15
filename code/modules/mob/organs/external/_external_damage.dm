@@ -2,10 +2,6 @@
 			   DAMAGE PROCS
 ****************************************************/
 
-/obj/item/organ/external/proc/is_damageable(additional_damage = 0)
-	//Continued damage to vital organs can kill you, and robot organs don't count towards total damage so no need to cap them.
-	return (BP_IS_ROBOTIC(src) || brute_dam + burn_dam + additional_damage < max_damage * 4)
-
 obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	take_external_damage(amount)
 
@@ -41,11 +37,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	blunt_dam = min(blunt_dam + final_blunt_damage, max_damage)
 
 	var/final_cut_damage = min(potential_cut_damage, max_cut_damage)
-	if(final_cut_damage >= 1.0)
+	if(final_cut_damage >= 1.25)
 		cut_dam = min(cut_dam + final_cut_damage, max_damage)
 
 	var/final_pierce_damage = min(potential_pierce_damage, max_pierce_damage)
-	if(final_pierce_damage >= 1.0)
+	if(final_pierce_damage >= 1.25)
 		pierce_dam = min(pierce_dam + final_pierce_damage, max_damage)
 
 	return

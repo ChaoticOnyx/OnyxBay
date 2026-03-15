@@ -485,7 +485,7 @@
 	src.update_health()
 
 // damage MANY external organs, in random order
-/mob/living/proc/take_overall_damage(brute, burn, used_weapon = null)
+/mob/living/proc/take_overall_damage(brute, burn, damage_flags = 0, used_weapon = null, spread_damage = TRUE, check_armor = null)
 	adjustBruteLoss(brute)
 	adjustFireLoss(burn)
 	src.update_health()
