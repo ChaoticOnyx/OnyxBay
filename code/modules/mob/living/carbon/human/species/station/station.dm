@@ -411,7 +411,7 @@
 	if(H.InStasis() || H.is_ic_dead())
 		return
 	if(H.nutrition < 10)
-		H.take_overall_damage(2,0)
+		H.take_overall_damage(1, 0, 0, "Cellular Collapse", FALSE)
 	else if(H.innate_heal)
 		// Heals normal damage.
 		if(H.getBruteLoss())

@@ -351,14 +351,6 @@
 			parts += O
 	return parts
 
-//Returns a list of damageable organs
-/mob/living/carbon/human/proc/get_damageable_organs()
-	var/list/obj/item/organ/external/parts = list()
-	for(var/obj/item/organ/external/O in organs)
-		if(O.is_damageable())
-			parts += O
-	return parts
-
 //Heals ONE external organ, organ gets randomly selected from damaged ones.
 //It automatically updates damage overlays if necesary
 //It automatically updates health status
@@ -380,11 +372,10 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 //It automatically updates damage overlays if necesary
 //It automatically updates health status
 /mob/living/carbon/human/take_organ_damage(brute, burn, sharp = 0, edge = 0)
-	var/list/obj/item/organ/external/parts = get_damageable_organs()
-	if(!parts.len)
+	if(!length(organs))
 		return
 
-	var/obj/item/organ/external/picked = pick(parts)
+	var/obj/item/organ/external/picked = pick(organs)
 	var/damage_flags = (sharp? DAM_SHARP : 0)|(edge? DAM_EDGE : 0)
 
 	if(picked.take_external_damage(brute, burn, damage_flags))
@@ -396,11 +387,12 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 /mob/living/carbon/human/proc/take_organic_organ_damage(brute, burn)
 	var/list/organic_organs = list()
 
-	for(var/obj/item/organ/external/organ in get_damageable_organs())
+	for(var/obj/item/organ/external/organ in organs)
 		if(!BP_IS_ROBOTIC(organ))
 			organic_organs += organ
 
-	if(organic_organs.len == 0) return
+	if(!length(organic_organs))
+		return
 
 	var/obj/item/organ/external/damaged_organ = pick(organic_organs)
 	if(damaged_organ.take_external_damage(brute, burn))
@@ -503,23 +495,32 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 
 	BITSET(hud_updateflag, HEALTH_HUD)
 
-// damage MANY external organs, in random order
-/mob/living/carbon/human/take_overall_damage(brute, burn, sharp = FALSE, edge = FALSE, used_weapon = null)
+// Deals brute and/or burn damage to all external organs.
+// 'spread_damage' defines whether to spread the damage evenly across the organs or to deal the same amount of damage to each one.
+/mob/living/carbon/human/take_overall_damage(brute, burn, damage_flags = 0, used_weapon = null, spread_damage = TRUE, check_armor = null)
 	if(status_flags & GODMODE)
-		return	//godmode
-	var/list/obj/item/organ/external/parts = get_damageable_organs()
-	if(!length(parts))
 		return
 
-	var/dam_flags = (sharp? DAM_SHARP : 0)|(edge? DAM_EDGE : 0)
-	var/brute_avg = brute / parts.len
-	var/burn_avg = burn / parts.len
+	var/organs_count = length(organs)
+	if(!organs_count)
+		return
 
-	for(var/obj/item/organ/external/E in parts)
-		if(brute_avg)
-			apply_damage(brute_avg, BRUTE, E, get_organ_armor(E, "melee"), dam_flags, used_weapon)
-		if(burn_avg)
-			apply_damage(burn_avg, BURN, E, 0, dam_flags, used_weapon)
+	var/brute_to_deal = brute
+	var/burn_to_deal = burn
+	if(spread_damage)
+		brute_to_deal /= organs_count
+		burn_to_deal /= organs_count
+
+	var/blocked = 0
+	for(var/obj/item/organ/external/E in organs)
+		if(QDELETED(E))
+			continue // A slime hand gibbed because of the damage to the arm, or something.
+		if(check_armor)
+			blocked = get_organ_armor(E, check_armor)
+		if(brute_to_deal)
+			apply_damage(brute_to_deal, BRUTE, E, blocked, damage_flags, used_weapon)
+		if(burn_to_deal)
+			apply_damage(burn_to_deal, BURN, E, blocked, damage_flags, used_weapon)
 
 	update_health()
 	BITSET(hud_updateflag, HEALTH_HUD)

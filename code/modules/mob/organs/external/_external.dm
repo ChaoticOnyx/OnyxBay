@@ -595,7 +595,7 @@ This function completely restores a damaged organ to perfect condition.
 			should_update_health = TRUE
 
 	if(already_scabbed || owner.chem_effects[CE_BRUTE_REGEN] || owner.chem_effects[CE_BURN_REGEN])
-		regeneration = round(regeneration * 0.25 * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
+		regeneration = round(regeneration * 0.2 * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
 
 		// Evenly spreading regeneration between burn and brute damage if both are present
 		if(burn_dam && brute_dam)
