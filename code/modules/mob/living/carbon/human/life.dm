@@ -308,7 +308,7 @@
 // Calculate how much of the enviroment pressure-difference affects the human.
 /mob/living/carbon/human/calculate_affecting_pressure(pressure)
 	// First get the pressure difference.
-	. = abs(pressure - ONE_ATMOSPHERE)
+	. = pressure - ONE_ATMOSPHERE
 
 	// If the absolute difference is small, don't bother calculating the fraction.
 	if(abs(.) < 5)
@@ -372,21 +372,20 @@
 	if(bodytemperature >= getSpeciesOrSynthTemp(HEAT_LEVEL_1))
 		//Body temperature is too hot.
 		fire_alert = max(fire_alert, 1)
-		if(status_flags & GODMODE)	return 1	//godmode
 		var/burn_dam = 0
+
 		if(bodytemperature < getSpeciesOrSynthTemp(HEAT_LEVEL_2))
 			burn_dam = HEAT_DAMAGE_LEVEL_1
 		else if(bodytemperature < getSpeciesOrSynthTemp(HEAT_LEVEL_3))
 			burn_dam = HEAT_DAMAGE_LEVEL_2
 		else
 			burn_dam = HEAT_DAMAGE_LEVEL_3
+
 		take_overall_damage(0, burn_dam, 0, "High Body Temperature", FALSE)
 		fire_alert = max(fire_alert, 2)
 
 	else if(bodytemperature <= getSpeciesOrSynthTemp(COLD_LEVEL_1))
 		fire_alert = max(fire_alert, 1)
-		if(status_flags & GODMODE)	return 1	//godmode
-
 		var/burn_dam = 0
 
 		if(bodytemperature > getSpeciesOrSynthTemp(COLD_LEVEL_2))
@@ -395,16 +394,13 @@
 			burn_dam = COLD_DAMAGE_LEVEL_2
 		else
 			burn_dam = COLD_DAMAGE_LEVEL_3
+
 		SetStasis(getCryogenicFactor(bodytemperature), STASIS_COLD)
 		if(!chem_effects[CE_CRYO])
 			take_overall_damage(0, burn_dam, 0, "Low Body Temperature", FALSE)
 			fire_alert = max(fire_alert, 1)
 
-	// Account for massive pressure differences.  Done by Polymorph
-	// Made it possible to actually have something that can protect against high pressure... Done by Errorage. Polymorph now has an axe sticking from his head for his previous hardcoded nonsense!
-	if(status_flags & GODMODE)
-		return 1	//godmode
-
+	// Hazardous pressure
 	if(adjusted_pressure >= species.hazard_high_pressure)
 		var/pressure_damage = min(((adjusted_pressure / species.hazard_high_pressure) - 1) * PRESSURE_DAMAGE_COEFFICIENT, MAX_HIGH_PRESSURE_DAMAGE)
 		take_overall_damage(pressure_damage, 0, 0, "High Pressure", FALSE)
