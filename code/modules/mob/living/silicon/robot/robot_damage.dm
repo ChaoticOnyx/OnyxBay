@@ -131,7 +131,7 @@
 
 	var/datum/robot_component/armour/A = get_armour()
 	if(A)
-		A.take_damage(brute, burn, (damage_flags & DAM_SHARP))
+		A.take_damage(brute, burn, (damage_flags & DAM_SHARP), (damage_flags & DAM_EDGE))
 		return
 
 	while(parts.len && (brute>0 || burn>0) )

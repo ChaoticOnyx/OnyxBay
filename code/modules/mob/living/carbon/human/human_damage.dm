@@ -514,7 +514,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 	var/blocked = 0
 	for(var/obj/item/organ/external/E in organs)
 		if(QDELETED(E))
-			return // A slime hand gibbed because of the damage to the arm, or something.
+			continue // A slime hand gibbed because of the damage to the arm, or something.
 		if(check_armor)
 			blocked = get_organ_armor(E, check_armor)
 		if(brute_to_deal)
