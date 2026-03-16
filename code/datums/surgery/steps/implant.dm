@@ -257,7 +257,7 @@
 			"[user] takes something out of incision on [target]'s [parent_organ] with \the [tool].",
 			"You take [implanted_item] out of incision on [target]'s [parent_organ]s with \the [tool]."
 			)
-		LAZYREMOVE(parent_organ.implants, implanted_item)
+		parent_organ.implants -= implanted_item
 		parent_organ.drop_embedded_object(implanted_item)
 
 		BITSET(target.hud_updateflag, IMPLOYAL_HUD)

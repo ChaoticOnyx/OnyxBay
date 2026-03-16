@@ -67,7 +67,7 @@
 
 /obj/item/implant/proc/removed()
 	imp_in = null
-	if(part)
+	if(istype(part))
 		part.implants -= src
 		part = null
 	implanted = 0
