@@ -114,7 +114,7 @@
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
 
-/obj/item/organ/external/Initialize(mapload, ...)
+/obj/item/organ/external/Initialize(mapload, mob/living/carbon/holder)
 	. = ..()
 
 	if(isnull(pain_disability_threshold))
@@ -187,8 +187,10 @@
 
 /obj/item/organ/external/afterattack(atom/A, mob/user, proximity)
 	..()
-	if(proximity && get_fingerprint())
-		A.add_partial_print(get_fingerprint())
+	if(proximity)
+		var/FP = get_fingerprint()
+		if(FP)
+			A.add_partial_print(FP)
 
 /obj/item/organ/external/set_dna(datum/dna/new_dna)
 	..()
