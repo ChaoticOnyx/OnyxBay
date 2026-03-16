@@ -45,22 +45,22 @@ var/list/organ_cache = list()
 	drop_sound = SFX_DROP_FLESH
 	pickup_sound = SFX_PICKUP_FLESH
 
-/obj/item/organ/Initialize(mapload, mob/living/carbon/holder)
-	. = ..(mapload)
+/obj/item/organ/Initialize()
+	. = ..()
 
 	if(!min_broken_damage)
 		min_broken_damage = Floor(max_damage / 2)
 
-	if(istype(holder))
-		owner = holder
-		w_class = max(w_class + mob_size_difference(holder.mob_size, MOB_MEDIUM), 1) //smaller mobs have smaller organs.
+	if(ishuman(loc))
+		owner = loc
+		w_class = max(w_class + mob_size_difference(owner.mob_size, MOB_MEDIUM), 1) //smaller mobs have smaller organs.
 
-		if(holder.dna)
-			dna = holder.dna.Clone()
+		if(owner.dna)
+			dna = owner.dna.Clone()
 			species = all_species[dna.species]
 		else
 			species = all_species[SPECIES_HUMAN]
-			log_debug("[src] spawned in [holder] without a proper DNA.")
+			log_debug("[src] spawned in [owner] without a proper DNA.")
 
 	if(dna)
 		if(!blood_DNA)

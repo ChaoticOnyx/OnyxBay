@@ -114,7 +114,7 @@
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
 
-/obj/item/organ/external/Initialize(mapload, mob/living/carbon/holder)
+/obj/item/organ/external/Initialize(mapload, ...)
 	. = ..()
 
 	if(isnull(pain_disability_threshold))

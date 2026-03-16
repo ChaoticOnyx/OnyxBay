@@ -20,6 +20,11 @@
 	if(ispath(cell))
 		cell = new cell(src)
 
+/obj/item/organ/internal/cell/Destroy()
+	if(istype(cell))
+		QDEL_NULL(cell)
+	return ..()
+
 /obj/item/organ/internal/cell/proc/percent()
 	if(!cell)
 		return 0

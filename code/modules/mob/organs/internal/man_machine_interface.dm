@@ -30,8 +30,8 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	drop_sound = SFX_DROP_DEVICE
 	pickup_sound = SFX_PICKUP_DEVICE
 
-/obj/item/organ/internal/cerebrum/mmi/Initialize(mapload, mob/living/carbon/holder, mob/living/carbon/human/old_shell)
-	. = ..(mapload, holder)
+/obj/item/organ/internal/cerebrum/mmi/Initialize(mapload, mob/living/carbon/human/old_shell)
+	. = ..(mapload)
 	if(istype(old_shell))
 		_create_brain(old_shell)
 

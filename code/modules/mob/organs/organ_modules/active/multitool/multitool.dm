@@ -35,7 +35,6 @@
 /obj/item/organ_module/active/multitool/Destroy()
 	for(var/atom/A in items)
 		unregister_signal(A, SIGNAL_QDELETING)
-		items -= A
 		qdel(A)
 	items.Cut()
 	return ..()

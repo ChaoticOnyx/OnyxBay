@@ -30,7 +30,7 @@
 		// Give them a new cell.
 		var/obj/item/organ/internal/cell/C = owner.internal_organs_by_name[BP_CELL]
 		if(!istype(C))
-			owner.internal_organs_by_name[BP_CELL] = new /obj/item/organ/internal/cell(owner,1)
+			owner.internal_organs_by_name[BP_CELL] = new /obj/item/organ/internal/cell(owner)
 
 /obj/item/organ/external/get_scan_results()
 	. = ..()

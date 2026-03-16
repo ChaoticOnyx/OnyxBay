@@ -38,7 +38,7 @@
 		return
 
 	H.visible_message(
-		SPAN_WARNING("[H] extend \his [holding.name] from \the [E]."),
+		SPAN_WARNING("[H] extends \his [holding.name] from \the [E]."),
 		SPAN_NOTICE("You extend your [holding.name] from \the [E].")
 	)
 	register_signal(holding, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/on_holding_unequipped), override = TRUE)
@@ -57,7 +57,7 @@
 			SPAN_NOTICE("You retract your [holding.name] into \the [E].")
 		)
 	holding.forceMove(src)
-	unregister_signal(H, SIGNAL_ITEM_UNEQUIPPED)
+	unregister_signal(holding, SIGNAL_ITEM_UNEQUIPPED)
 
 /obj/item/organ_module/active/simple/_on_remove(obj/item/organ/external/E)
 	var/mob/living/carbon/human/H = E?.owner
