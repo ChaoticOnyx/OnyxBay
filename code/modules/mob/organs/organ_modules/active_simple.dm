@@ -15,7 +15,7 @@
 
 /obj/item/organ_module/active/simple/proc/create_holding()
 	if(!QDELETED(holding))
-		qdel(holding)
+		QDEL_NULL(holding)
 	if(!holding_type)
 		return
 	holding = new holding_type(src)
@@ -50,10 +50,11 @@
 	if(holding.loc == src)
 		return
 
-	if(istype(H))
-		H.drop(holding, force = TRUE)
-		H.visible_message(
-			SPAN_WARNING("[H] retracts \his [holding.name] into \the [E]."),
+	if(ismob(holding.loc))
+		var/mob/M = holding.loc
+		M.drop(holding, force = TRUE)
+		M.visible_message(
+			SPAN_WARNING("[M] retracts \his [holding.name] into \the [E]."),
 			SPAN_NOTICE("You retract your [holding.name] into \the [E].")
 		)
 	holding.forceMove(src)

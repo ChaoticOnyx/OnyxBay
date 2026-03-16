@@ -163,6 +163,9 @@
 			owner.organs -= null
 		owner.bad_external_organs -= src
 
+		if(!QDELETED(owner)) // Don't waste time if we'are being deleted as a whole.
+			owner.update_organ_movespeed()
+
 	drop_embedded_objects()
 
 	if(autopsy_data)
@@ -303,8 +306,17 @@
 					if(current_child.food_organ == I)
 						continue
 
+					if(istype(I, /obj/item/organ_module))
+						var/obj/item/organ_module/module = I
+						module.remove(current_child)
+
+					if(istype(I, /obj/item/implant))
+						var/obj/item/implant/implant = I
+						implant.removed()
+
 					current_child.implants.Remove(I)
 					current_child.internal_organs.Remove(I)
+					LAZYREMOVE(current_child.embedded_objects, I)
 
 					status |= ORGAN_CUT_AWAY
 
