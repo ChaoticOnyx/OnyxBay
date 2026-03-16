@@ -71,13 +71,14 @@
 
 /mob/living/carbon/human/Destroy()
 	GLOB.human_mob_list -= src
-	worn_underwear = null
-	QDEL_NULL_LIST(organs)
-	QDEL_NULL_LIST(stance_limbs)
-	QDEL_NULL_LIST(grasp_limbs)
-	QDEL_NULL_LIST(bad_external_organs)
 
+	QDEL_NULL_LIST(worn_underwear)
 	QDEL_LIST_ASSOC(hud_list)
+
+	// carbon/Destroy() will handle qdeling the organs, let's just clear the lists.
+	stance_limbs.Cut()
+	grasp_limbs.Cut()
+	bad_external_organs.Cut()
 
 	QDEL_NULL(vessel)
 	return ..()

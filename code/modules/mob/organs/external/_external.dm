@@ -268,65 +268,75 @@
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	switch(stage)
 		if(0)
-			if(W.sharp)
-				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
-					if(children?.len)
-						var/obj/item/organ/external/external_child = pick(children)
-						status |= ORGAN_CUT_AWAY
-						children.Remove(external_child)
-						external_child.forceMove(get_turf(src))
-						external_child.SetTransform(rotation = rand(180))
-						external_child.compile_icon()
-						compile_icon()
-						user.visible_message(SPAN("danger", "<b>[user]</b> cuts [external_child] from [src] with [W]!"))
-					else
-						user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
-						stage++
+			if(W.edge)
+				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
 					return
-		if(1)
-			if(istype(W))
-				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
-					user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
-					drop_embedded_objects()
+				if(length(children))
+					var/obj/item/organ/external/external_child = pick(children)
+					status |= ORGAN_CUT_AWAY
+					children.Remove(external_child)
+					external_child.forceMove(get_turf(src))
+					external_child.SetTransform(rotation = rand(180))
+					external_child.compile_icon()
+					compile_icon()
+					user.visible_message(SPAN("danger", "<b>[user]</b> cuts [external_child] from [src] with [W]!"))
+				else
+					user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
 					stage++
+				return
+		if(1)
+			if(istype(W) && W.force >= 5.0)
+				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
 					return
+				user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
+				drop_embedded_objects()
+				stage++
+				return
 		if(2)
-			if(W.sharp || istype(W, /obj/item/hemostat) || isWirecutter(W))
-				var/list/organs = get_contents_recursive()
-				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
-					if(organs.len)
-						var/obj/item/removing = pick(organs)
-						var/obj/item/organ/external/current_child = removing.loc
+			if(W.sharp || W.edge || istype(W, /obj/item/hemostat) || isWirecutter(W))
+				var/list/stuff_to_remove = get_contents_recursive()
+				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
+					return
 
-						current_child.implants.Remove(removing)
-						current_child.internal_organs.Remove(removing)
+				for(var/obj/item/I in shuffle(stuff_to_remove))
+					var/obj/item/organ/external/current_child = I.loc
+					if(current_child.food_organ == I)
+						continue
 
-						status |= ORGAN_CUT_AWAY
+					current_child.implants.Remove(I)
+					current_child.internal_organs.Remove(I)
 
-						removing.forceMove(get_turf(src))
-						user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
+					status |= ORGAN_CUT_AWAY
+
+					I.forceMove(get_turf(src))
+					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [I] from \the [src] with \the [W]!"))
+					return
+
+				if(organ_tag == BP_HEAD && W.edge)
+					var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
+					if(!H.skull_path)
+						user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in \the [src] with \the [W]."))
+						return
+					user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with \the [W], revealing a skull."))
+					if(istype(H.loc, /turf))
+						new H.skull_path(H.loc)
+						gibs(H.loc)
 					else
-						if(organ_tag == BP_HEAD && W.sharp)
-							var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
-							if(!H.skull_path)
-								user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
-								return
-							user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with [W], revealing a skull."))
-							if(istype(H.loc, /turf))
-								new H.skull_path(H.loc)
-								gibs(H.loc)
-							else
-								new H.skull_path(user.loc)
-								gibs(user.loc)
-							H.skull_path = null // So no skulls dupe in case of lags
-							qdel(src)
-						else
-							if(src && !QDELETED(src))
-								food_organ.appearance = food_organ_type
-								food_organ.forceMove(get_turf(loc))
-								food_organ = null
-								qdel(src)
-							user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
+						new H.skull_path(user.loc)
+						gibs(user.loc)
+					H.skull_path = null // So no skulls dupe in case of lags
+					qdel(src)
+					return
+
+				if(!QDELETED(food_organ) && W.edge)
+					user.visible_message(SPAN("danger", "<b>[user]</b> chops \the [src] up with \the [W]!"))
+					food_organ.appearance = food_organ_type
+					food_organ.forceMove(get_turf(loc))
+					food_organ = null
+					qdel(src)
+					return
+
+				user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in \the [src] with \the [W]."))
 				return
 	..()
 
@@ -480,8 +490,7 @@ This function completely restores a damaged organ to perfect condition.
 		return
 
 	if(!ignore_prosthetic_prefs && owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
-		var/status = owner.client.prefs.organ_data[organ_tag]
-		switch(status)
+		switch(owner.client.prefs.organ_data[organ_tag])
 			if("amputated")
 				remove_rejuv()
 			if("cyborg")

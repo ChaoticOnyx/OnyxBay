@@ -32,6 +32,14 @@
 		items += I
 		register_signal(I, SIGNAL_QDELETING, nameof(.proc/on_holding_qdel))
 
+/obj/item/organ_module/active/multitool/Destroy()
+	for(var/atom/A in items)
+		unregister_signal(A, SIGNAL_QDELETING)
+		items -= A
+		qdel(A)
+	items.Cut()
+	return ..()
+
 /obj/item/organ_module/active/multitool/activate(obj/item/organ/external/E, mob/living/carbon/human/H)
 	var/target_hand = E.organ_tag == BP_L_ARM ? slot_l_hand : slot_r_hand
 	var/obj/I = H.get_active_hand()
