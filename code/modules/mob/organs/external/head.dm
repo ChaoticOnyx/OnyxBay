@@ -30,10 +30,6 @@
 
 	var/skull_path = /obj/item/skull
 
-/obj/item/organ/external/head/New()
-		. = ..()
-		forehead_stamps = list()
-
 /obj/item/organ/external/head/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent, drop_modules = FALSE)
 	if(BP_IS_ROBOTIC(src) && disintegrate == DROPLIMB_BURN)
 		var/obj/item/organ/internal/cerebrum/mmi/MMI = owner.internal_organs_by_name[BP_BRAIN]

@@ -13,14 +13,14 @@
 	var/datum/reagents/stored
 	var/waste_to_spawn = 0
 
+/obj/item/organ/internal/bladder/Initialize()
+	. = ..()
+	if(config.health.simulate_digestion)
+		stored = new /datum/reagents(HYDRATION_LIMIT, src)
+
 /obj/item/organ/internal/bladder/Destroy()
 	QDEL_NULL(stored)
 	. = ..()
-
-/obj/item/organ/internal/bladder/New()
-	..()
-	if(config.health.simulate_digestion)
-		stored = new /datum/reagents(HYDRATION_LIMIT, src)
 
 /obj/item/organ/internal/bladder/robotize()
 	..()

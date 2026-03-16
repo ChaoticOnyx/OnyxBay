@@ -20,8 +20,8 @@
 	QDEL_NULL(digested)
 	. = ..()
 
-/obj/item/organ/internal/intestines/New()
-	..()
+/obj/item/organ/internal/intestines/Initialize()
+	. = ..()
 	digested = new /datum/reagents/metabolism(2.4 LITERS, owner ? owner : null, CHEM_DIGEST)
 	if(!digested.my_atom)
 		digested.my_atom = src

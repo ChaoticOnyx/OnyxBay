@@ -8,17 +8,17 @@
 	parent_organ = BP_CHEST
 	vital = 1
 	override_species_icon = TRUE
+	start_robotized = TRUE
 	var/open
 	var/obj/item/cell/cell = /obj/item/cell/high
 	//at 0.8 completely depleted after 60ish minutes of constant walking or 130 minutes of standing still
 	var/servo_cost = 0.8
 
 
-/obj/item/organ/internal/cell/New()
-	robotize()
+/obj/item/organ/internal/cell/Initialize()
+	. = ..()
 	if(ispath(cell))
 		cell = new cell(src)
-	..()
 
 /obj/item/organ/internal/cell/proc/percent()
 	if(!cell)

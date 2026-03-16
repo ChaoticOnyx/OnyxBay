@@ -116,31 +116,7 @@
 
 /obj/item/organ/external/Initialize(mapload, ...)
 	. = ..()
-	if(!mapload && owner)
-		owner.update_organ_movespeed()
 
-/obj/item/organ/external/proc/get_fingerprint()
-
-	if((limb_flags & ORGAN_FLAG_FINGERPRINT) && dna && !is_stump() && !BP_IS_ROBOTIC(src))
-		return md5(dna.uni_identity)
-
-	for(var/obj/item/organ/external/E in children)
-		var/print = E.get_fingerprint()
-		if(print)
-			return print
-
-/obj/item/organ/external/organ_eaten(mob/user)
-	for(var/obj/item/organ/external/stump/stump in children)
-		qdel(stump)
-	..()
-
-/obj/item/organ/external/afterattack(atom/A, mob/user, proximity)
-	..()
-	if(proximity && get_fingerprint())
-		A.add_partial_print(get_fingerprint())
-
-/obj/item/organ/external/New(mob/living/carbon/holder)
-	..()
 	if(isnull(pain_disability_threshold))
 		pain_disability_threshold = (max_damage * 0.75)
 	if(owner)
@@ -150,6 +126,10 @@
 			max_pain = min(max_damage * 2.5, owner.species.total_health * 1.5)
 	else if(isnull(max_pain))
 		max_pain = max_damage * 1.5 // Should not ~probably~ happen
+
+	if(!mapload && owner)
+		owner.update_organ_movespeed()
+
 	get_overlays()
 
 	if(food_organ in implants)
@@ -172,22 +152,43 @@
 		QDEL_NULL(splinted)
 
 	if(owner)
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
-		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
+		if(limb_flags & ORGAN_FLAG_CAN_GRASP)
+			owner.grasp_limbs -= src
+		if(limb_flags & ORGAN_FLAG_CAN_STAND)
+			owner.stance_limbs -= src
+
 		owner.organs -= src
 		owner.organs_by_name -= organ_tag
 		while(null in owner.organs)
 			owner.organs -= null
-		owner.bad_external_organs.Remove(src)
+		owner.bad_external_organs -= src
 
 	drop_embedded_objects()
-
-	QDEL_NULL_LIST(organ_modules)
 
 	if(autopsy_data)
 		autopsy_data.Cut()
 
 	return ..()
+
+/obj/item/organ/external/proc/get_fingerprint()
+
+	if((limb_flags & ORGAN_FLAG_FINGERPRINT) && dna && !is_stump() && !BP_IS_ROBOTIC(src))
+		return md5(dna.uni_identity)
+
+	for(var/obj/item/organ/external/E in children)
+		var/print = E.get_fingerprint()
+		if(print)
+			return print
+
+/obj/item/organ/external/organ_eaten(mob/user)
+	for(var/obj/item/organ/external/stump/stump in children)
+		qdel(stump)
+	..()
+
+/obj/item/organ/external/afterattack(atom/A, mob/user, proximity)
+	..()
+	if(proximity && get_fingerprint())
+		A.add_partial_print(get_fingerprint())
 
 /obj/item/organ/external/set_dna(datum/dna/new_dna)
 	..()
@@ -439,10 +440,6 @@
 This function completely restores a damaged organ to perfect condition.
 */
 /obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs = FALSE)
-	var/list/kept_modules = list()
-	for(var/obj/item/organ_module/module in organ_modules)
-		kept_modules += module
-
 	damage_state = "00"
 
 	status = 0
@@ -467,37 +464,28 @@ This function completely restores a damaged organ to perfect condition.
 	// remove embedded objects and drop them on the floor
 	drop_embedded_objects()
 
+	// Tidy up unexpected things
 	for(var/obj/implanted_object in implants)
-		if(istype(implanted_object, /obj/item/organ_module))
-			continue
-		if(!istype(implanted_object,/obj/item/implant)) // We don't want to remove REAL implants. Just stuck things etc.
-			implanted_object.dropInto(get_turf(src))
+		if(QDELETED(implanted_object))
 			implants -= implanted_object
-
-	for(var/obj/item/organ_module/module in kept_modules)
-		if(QDELETED(module))
 			continue
-		if(module.loc != src)
-			module.forceMove(src)
-		if(!(module in organ_modules))
-			organ_modules += module
-		if(!(module in implants))
-			implants += module
+		if(implanted_object.loc != src)
+			implanted_object.forceMove(src)
 
 	update_damages()
 
-	if(owner && !ignore_prosthetic_prefs)
-		if(owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
-			var/status = owner.client.prefs.organ_data[organ_tag]
-			if(status == "amputated")
+	if(!owner)
+		return
+
+	if(!ignore_prosthetic_prefs && owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
+		var/status = owner.client.prefs.organ_data[organ_tag]
+		switch(status)
+			if("amputated")
 				remove_rejuv()
-			else if(status == "cyborg")
-				var/robodata = owner.client.prefs.rlimb_data[organ_tag]
-				if(robodata)
-					robotize(robodata)
-				else
-					robotize()
-		owner.update_health()
+			if("cyborg")
+				robotize(owner.client.prefs.rlimb_data[organ_tag])
+
+	owner.update_health()
 
 /obj/item/organ/external/remove_rejuv()
 	if(owner)

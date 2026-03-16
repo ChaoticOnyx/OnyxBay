@@ -31,6 +31,7 @@
 	icon = 'icons/mob/human_races/organs/vox.dmi'
 	icon_state = "cortical-stack"
 	invasive = 1
+	start_robotized = TRUE
 
 /obj/item/organ/internal/stack/proc/do_backup()
 	if(owner && !owner.is_ooc_dead() && !is_broken() && owner.mind)
@@ -40,10 +41,9 @@
 		if(owner.ckey)
 			ownerckey = owner.ckey
 
-/obj/item/organ/internal/stack/New()
-	..()
+/obj/item/organ/internal/stack/Initialize()
+	. = ..()
 	do_backup()
-	robotize()
 
 /obj/item/organ/internal/stack/proc/backup_inviable()
 	return 	(!istype(backup) || backup == owner.mind || (backup.current && !backup.current.is_ooc_dead()))

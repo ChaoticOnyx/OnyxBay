@@ -26,6 +26,7 @@ var/list/organ_cache = list()
 	var/rejecting                     // Is this organ already being rejected?
 
 	var/death_time
+	var/start_robotized = FALSE
 
 	var/food_organ_type				  // path of food made from organ, ex.
 	var/obj/item/reagent_containers/food/food_organ
@@ -44,41 +45,8 @@ var/list/organ_cache = list()
 	drop_sound = SFX_DROP_FLESH
 	pickup_sound = SFX_PICKUP_FLESH
 
-/obj/item/organ/return_item()
-	return food_organ
-
-/obj/item/organ/proc/organ_eaten(mob/user)
-	qdel(src)
-
-/obj/item/organ/proc/update_food_from_organ()
-	food_organ.SetName(name)
-	food_organ.appearance = src
-	reagents.trans_to(food_organ, reagents.total_volume)
-
-/obj/item/organ/Destroy()
-	if(owner)
-
-		owner = null
-	dna = null
-	QDEL_NULL(food_organ)
-
-	if(ismob(loc))
-		var/mob/M = loc
-		M.drop(src, force = TRUE, changing_slots = TRUE) // Changing_slots prevents drop_sound from playing
-
-	return ..()
-
-/obj/item/organ/proc/update_health()
-	return
-
-/obj/item/organ/proc/is_broken()
-	return (damage >= min_broken_damage || (status & ORGAN_CUT_AWAY) || (status & ORGAN_BROKEN))
-
-/obj/item/organ/New(mob/living/carbon/holder)
-	..(holder)
-
-	if(food_organ_type && !disable_food_organ)
-		food_organ = new food_organ_type(src)
+/obj/item/organ/Initialize(mapload, mob/living/carbon/holder)
+	. = ..(mapload)
 
 	if(!min_broken_damage)
 		min_broken_damage = Floor(max_damage / 2)
@@ -102,22 +70,25 @@ var/list/organ_cache = list()
 	create_reagents(50 * (w_class-1)**2)
 	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
 
-/obj/item/organ/proc/set_dna(datum/dna/new_dna)
-	if(new_dna)
-		dna = new_dna.Clone()
-		if(!blood_DNA)
-			blood_DNA = list()
-		blood_DNA.Cut()
-		blood_DNA[dna.unique_enzymes] = dna.b_type
-		species = all_species[new_dna.species]
+	if(food_organ_type && !disable_food_organ)
+		food_organ = new food_organ_type(src)
 
-/obj/item/organ/proc/die()
-	damage = max_damage
-	status |= ORGAN_DEAD
-	set_next_think(0)
-	death_time = world.time
-	if(owner && vital)
-		owner.death()
+	if(start_robotized)
+		robotize()
+
+/obj/item/organ/Destroy()
+	owner = null
+	dna = null
+
+	QDEL_NULL(food_organ)
+	QDEL_NULL_LIST(organ_modules)
+	QDEL_NULL_LIST(implants)
+
+	if(ismob(loc))
+		var/mob/M = loc
+		M.drop(src, force = TRUE, changing_slots = TRUE) // Changing_slots prevents drop_sound from playing
+
+	return ..()
 
 /obj/item/organ/think()
 	if(loc != owner)
@@ -159,6 +130,40 @@ var/list/organ_cache = list()
 	// If `think()` is called not by the owner in `handle_organs()` but on his own.
 	if(NEXT_THINK)
 		set_next_think(world.time + 1 SECOND)
+
+/obj/item/organ/return_item()
+	return food_organ
+
+/obj/item/organ/proc/organ_eaten(mob/user)
+	qdel(src)
+
+/obj/item/organ/proc/update_food_from_organ()
+	food_organ.SetName(name)
+	food_organ.appearance = src
+	reagents.trans_to(food_organ, reagents.total_volume)
+
+/obj/item/organ/proc/update_health()
+	return
+
+/obj/item/organ/proc/is_broken()
+	return (damage >= min_broken_damage || (status & ORGAN_CUT_AWAY) || (status & ORGAN_BROKEN))
+
+/obj/item/organ/proc/set_dna(datum/dna/new_dna)
+	if(new_dna)
+		dna = new_dna.Clone()
+		if(!blood_DNA)
+			blood_DNA = list()
+		blood_DNA.Cut()
+		blood_DNA[dna.unique_enzymes] = dna.b_type
+		species = all_species[new_dna.species]
+
+/obj/item/organ/proc/die()
+	damage = max_damage
+	status |= ORGAN_DEAD
+	set_next_think(0)
+	death_time = world.time
+	if(owner && vital)
+		owner.death()
 
 /obj/item/organ/proc/cook_organ()
 	die()
@@ -343,5 +348,5 @@ var/list/organ_cache = list()
 	. = list()
 
 	LAZYDISTINCTADD(., implants)
-	LAZYDISTINCTADD(., organ_modules)
+	LAZYDISTINCTADD(., organ_modules) // Should be covered by the above, but let's make sure.
 	LAZYDISTINCTADD(., contents)
