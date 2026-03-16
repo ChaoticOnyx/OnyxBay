@@ -112,7 +112,7 @@
 				if(affecting)
 					if(BP_IS_ROBOTIC(affecting))
 						return
-					affecting.take_external_damage(min(5 * amount, 15), 0)
+					affecting.take_pierce_damage(min(5 * amount, 15))
 					H.update_health()
 					if(affecting.can_feel_pain())
 						H.Weaken(min(3 * amount, 9))
@@ -150,7 +150,7 @@
 		if(istype(E))
 			if(H.get_flat_armor(E, "melee") > force)
 				return
-			E.take_external_damage((force * rand(3, 7) / 10), 0, used_weapon = name)
+			E.take_cut_damage(force * (rand(3, 7) / 10), name)
 			to_chat(user, SPAN("danger", "You cut your hand with \the [src]!"))
 
 // Preset types - left here for the code that uses them

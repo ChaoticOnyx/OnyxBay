@@ -9,67 +9,55 @@ the HUD updates properly! */
 	plane = DEFAULT_PLANE
 
 //Medical HUD outputs. Called by the Life() proc of the mob using it, usually.
-/proc/process_med_hud(mob/M, local_scanner, mob/Alt)
-	if(!can_process_hud(M))
+/proc/process_med_hud(mob/original_mob, local_scanner, mob/proxy_mob)
+	if(!can_process_hud(original_mob))
 		return
 
-	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, GLOB.med_hud_users)
-	for(var/mob/living/carbon/human/patient in P.Mob.in_view(P.Turf))
+	GLOB.med_hud_users |= original_mob
+	proxy_mob = proxy_mob || original_mob
 
-		if(patient.is_invisible_to(P.Mob))
+	for(var/mob/living/carbon/human/target in proxy_mob.in_view(get_turf(proxy_mob)))
+		if(target.is_invisible_to(proxy_mob))
 			continue
-
 		if(local_scanner)
-			P.Mob.add_client_image(patient.hud_list[HEALTH_HUD])
-			P.Mob.add_client_image(patient.hud_list[STATUS_HUD])
+			original_mob.add_client_image(target.hud_list[HEALTH_HUD])
+			original_mob.add_client_image(target.hud_list[STATUS_HUD])
 		else
-			var/sensor_level = getsensorlevel(patient)
+			var/sensor_level = getsensorlevel(target)
 			if(sensor_level >= SUIT_SENSOR_VITAL)
-				P.Mob.add_client_image(patient.hud_list[HEALTH_HUD])
+				original_mob.add_client_image(target.hud_list[HEALTH_HUD])
 			if(sensor_level >= SUIT_SENSOR_BINARY)
-				P.Mob.add_client_image(patient.hud_list[LIFE_HUD])
+				original_mob.add_client_image(target.hud_list[LIFE_HUD])
 
 //Security HUDs. Pass a value for the second argument to enable implant viewing or other special features.
-/proc/process_sec_hud(mob/M, advanced_mode, mob/Alt)
-	if(!can_process_hud(M))
+/proc/process_sec_hud(mob/original_mob, advanced_mode, mob/proxy_mob)
+	if(!can_process_hud(original_mob))
 		return
-	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, GLOB.sec_hud_users)
-	for(var/mob/living/carbon/human/perp in P.Mob.in_view(P.Turf))
 
-		if(perp.is_invisible_to(P.Mob))
+	GLOB.sec_hud_users |= original_mob
+	proxy_mob = proxy_mob || original_mob
+
+	for(var/mob/living/carbon/human/target in proxy_mob.in_view(get_turf(proxy_mob)))
+		if(target.is_invisible_to(proxy_mob))
 			continue
-
-		P.Mob.add_client_image(perp.hud_list[ID_HUD])
+		original_mob.add_client_image(target.hud_list[ID_HUD])
 		if(advanced_mode)
-			P.Mob.add_client_image(perp.hud_list[WANTED_HUD])
-			P.Mob.add_client_image(perp.hud_list[IMPTRACK_HUD])
-			P.Mob.add_client_image(perp.hud_list[IMPLOYAL_HUD])
-			P.Mob.add_client_image(perp.hud_list[IMPCHEM_HUD])
+			original_mob.add_client_image(target.hud_list[WANTED_HUD])
+			original_mob.add_client_image(target.hud_list[IMPTRACK_HUD])
+			original_mob.add_client_image(target.hud_list[IMPLOYAL_HUD])
+			original_mob.add_client_image(target.hud_list[IMPCHEM_HUD])
 
-/proc/process_xeno_hud(mob/M, mob/Alt)
-	if(!can_process_hud(M))
+/proc/process_xeno_hud(mob/original_mob, mob/proxy_mob)
+	if(!can_process_hud(original_mob))
 		return
 
-	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, GLOB.xeno_hud_users)
-	for(var/mob/living/carbon/human/victim in P.Mob.in_view(P.Turf))
+	GLOB.xeno_hud_users |= original_mob
+	proxy_mob = proxy_mob || original_mob
 
-		if(victim.is_invisible_to(P.Mob))
+	for(var/mob/living/carbon/human/target in proxy_mob.in_view(get_turf(proxy_mob)))
+		if(target.is_invisible_to(proxy_mob))
 			continue
-
-		P.Mob.add_client_image(victim.hud_list[XENO_HUD])
-
-/datum/arranged_hud_process
-	var/client/Client
-	var/mob/Mob
-	var/turf/Turf
-
-/proc/arrange_hud_process(mob/M, mob/Alt, list/hud_list)
-	hud_list |= M
-	var/datum/arranged_hud_process/P = new
-	P.Client = M.client
-	P.Mob = Alt ? Alt : M
-	P.Turf = get_turf(P.Mob)
-	return P
+		original_mob.add_client_image(target.hud_list[XENO_HUD])
 
 /proc/can_process_hud(mob/M)
 	if(!M)
