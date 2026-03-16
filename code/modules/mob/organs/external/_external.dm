@@ -116,31 +116,7 @@
 
 /obj/item/organ/external/Initialize(mapload, ...)
 	. = ..()
-	if(!mapload && owner)
-		owner.update_organ_movespeed()
 
-/obj/item/organ/external/proc/get_fingerprint()
-
-	if((limb_flags & ORGAN_FLAG_FINGERPRINT) && dna && !is_stump() && !BP_IS_ROBOTIC(src))
-		return md5(dna.uni_identity)
-
-	for(var/obj/item/organ/external/E in children)
-		var/print = E.get_fingerprint()
-		if(print)
-			return print
-
-/obj/item/organ/external/organ_eaten(mob/user)
-	for(var/obj/item/organ/external/stump/stump in children)
-		qdel(stump)
-	..()
-
-/obj/item/organ/external/afterattack(atom/A, mob/user, proximity)
-	..()
-	if(proximity && get_fingerprint())
-		A.add_partial_print(get_fingerprint())
-
-/obj/item/organ/external/New(mob/living/carbon/holder)
-	..()
 	if(isnull(pain_disability_threshold))
 		pain_disability_threshold = (max_damage * 0.75)
 	if(owner)
@@ -150,6 +126,10 @@
 			max_pain = min(max_damage * 2.5, owner.species.total_health * 1.5)
 	else if(isnull(max_pain))
 		max_pain = max_damage * 1.5 // Should not ~probably~ happen
+
+	if(!mapload && owner)
+		owner.update_organ_movespeed()
+
 	get_overlays()
 
 	if(food_organ in implants)
@@ -172,22 +152,48 @@
 		QDEL_NULL(splinted)
 
 	if(owner)
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
-		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
+		if(limb_flags & ORGAN_FLAG_CAN_GRASP)
+			owner.grasp_limbs -= src
+		if(limb_flags & ORGAN_FLAG_CAN_STAND)
+			owner.stance_limbs -= src
+
 		owner.organs -= src
 		owner.organs_by_name -= organ_tag
 		while(null in owner.organs)
 			owner.organs -= null
-		owner.bad_external_organs.Remove(src)
+		owner.bad_external_organs -= src
+
+		if(!QDELETED(owner)) // Don't waste time if we'are being deleted as a whole.
+			owner.update_organ_movespeed()
 
 	drop_embedded_objects()
-
-	QDEL_NULL_LIST(organ_modules)
 
 	if(autopsy_data)
 		autopsy_data.Cut()
 
 	return ..()
+
+/obj/item/organ/external/proc/get_fingerprint()
+
+	if((limb_flags & ORGAN_FLAG_FINGERPRINT) && dna && !is_stump() && !BP_IS_ROBOTIC(src))
+		return md5(dna.uni_identity)
+
+	for(var/obj/item/organ/external/E in children)
+		var/print = E.get_fingerprint()
+		if(print)
+			return print
+
+/obj/item/organ/external/organ_eaten(mob/user)
+	for(var/obj/item/organ/external/stump/stump in children)
+		qdel(stump)
+	..()
+
+/obj/item/organ/external/afterattack(atom/A, mob/user, proximity)
+	..()
+	if(proximity)
+		var/FP = get_fingerprint()
+		if(FP)
+			A.add_partial_print(FP)
 
 /obj/item/organ/external/set_dna(datum/dna/new_dna)
 	..()
@@ -265,65 +271,84 @@
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	switch(stage)
 		if(0)
-			if(W.sharp)
-				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
-					if(children?.len)
-						var/obj/item/organ/external/external_child = pick(children)
-						status |= ORGAN_CUT_AWAY
-						children.Remove(external_child)
-						external_child.forceMove(get_turf(src))
-						external_child.SetTransform(rotation = rand(180))
-						external_child.compile_icon()
-						compile_icon()
-						user.visible_message(SPAN("danger", "<b>[user]</b> cuts [external_child] from [src] with [W]!"))
-					else
-						user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
-						stage++
+			if(W.edge)
+				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
 					return
-		if(1)
-			if(istype(W))
-				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
-					user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
-					drop_embedded_objects()
+				if(length(children))
+					var/obj/item/organ/external/external_child = pick(children)
+					status |= ORGAN_CUT_AWAY
+					children.Remove(external_child)
+					external_child.forceMove(get_turf(src))
+					external_child.SetTransform(rotation = rand(180))
+					external_child.compile_icon()
+					compile_icon()
+					user.visible_message(SPAN("danger", "<b>[user]</b> cuts [external_child] from [src] with [W]!"))
+				else
+					user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
 					stage++
+				return
+		if(1)
+			if(istype(W) && W.force >= 5.0)
+				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
 					return
+				user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
+				drop_embedded_objects()
+				stage++
+				return
 		if(2)
-			if(W.sharp || istype(W, /obj/item/hemostat) || isWirecutter(W))
-				var/list/organs = get_contents_recursive()
-				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
-					if(organs.len)
-						var/obj/item/removing = pick(organs)
-						var/obj/item/organ/external/current_child = removing.loc
+			if(W.sharp || W.edge || istype(W, /obj/item/hemostat) || isWirecutter(W))
+				var/list/stuff_to_remove = get_contents_recursive()
+				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
+					return
 
-						current_child.implants.Remove(removing)
-						current_child.internal_organs.Remove(removing)
+				for(var/obj/item/I in shuffle(stuff_to_remove))
+					var/obj/item/organ/external/current_child = I.loc
+					if(current_child.food_organ == I)
+						continue
 
-						status |= ORGAN_CUT_AWAY
+					if(istype(I, /obj/item/organ_module))
+						var/obj/item/organ_module/module = I
+						module.remove(current_child)
 
-						removing.forceMove(get_turf(src))
-						user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
+					if(istype(I, /obj/item/implant))
+						var/obj/item/implant/implant = I
+						implant.removed()
+
+					current_child.implants.Remove(I)
+					current_child.internal_organs.Remove(I)
+					LAZYREMOVE(current_child.embedded_objects, I)
+
+					status |= ORGAN_CUT_AWAY
+
+					I.forceMove(get_turf(src))
+					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [I] from \the [src] with \the [W]!"))
+					return
+
+				if(organ_tag == BP_HEAD && W.edge)
+					var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
+					if(!H.skull_path)
+						user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in \the [src] with \the [W]."))
+						return
+					user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with \the [W], revealing a skull."))
+					if(istype(H.loc, /turf))
+						new H.skull_path(H.loc)
+						gibs(H.loc)
 					else
-						if(organ_tag == BP_HEAD && W.sharp)
-							var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
-							if(!H.skull_path)
-								user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
-								return
-							user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with [W], revealing a skull."))
-							if(istype(H.loc, /turf))
-								new H.skull_path(H.loc)
-								gibs(H.loc)
-							else
-								new H.skull_path(user.loc)
-								gibs(user.loc)
-							H.skull_path = null // So no skulls dupe in case of lags
-							qdel(src)
-						else
-							if(src && !QDELETED(src))
-								food_organ.appearance = food_organ_type
-								food_organ.forceMove(get_turf(loc))
-								food_organ = null
-								qdel(src)
-							user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
+						new H.skull_path(user.loc)
+						gibs(user.loc)
+					H.skull_path = null // So no skulls dupe in case of lags
+					qdel(src)
+					return
+
+				if(!QDELETED(food_organ) && W.edge)
+					user.visible_message(SPAN("danger", "<b>[user]</b> chops \the [src] up with \the [W]!"))
+					food_organ.appearance = food_organ_type
+					food_organ.forceMove(get_turf(loc))
+					food_organ = null
+					qdel(src)
+					return
+
+				user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in \the [src] with \the [W]."))
 				return
 	..()
 
@@ -439,10 +464,6 @@
 This function completely restores a damaged organ to perfect condition.
 */
 /obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs = FALSE)
-	var/list/kept_modules = list()
-	for(var/obj/item/organ_module/module in organ_modules)
-		kept_modules += module
-
 	damage_state = "00"
 
 	status = 0
@@ -467,37 +488,27 @@ This function completely restores a damaged organ to perfect condition.
 	// remove embedded objects and drop them on the floor
 	drop_embedded_objects()
 
+	// Tidy up unexpected things
 	for(var/obj/implanted_object in implants)
-		if(istype(implanted_object, /obj/item/organ_module))
-			continue
-		if(!istype(implanted_object,/obj/item/implant)) // We don't want to remove REAL implants. Just stuck things etc.
-			implanted_object.dropInto(get_turf(src))
+		if(QDELETED(implanted_object))
 			implants -= implanted_object
-
-	for(var/obj/item/organ_module/module in kept_modules)
-		if(QDELETED(module))
 			continue
-		if(module.loc != src)
-			module.forceMove(src)
-		if(!(module in organ_modules))
-			organ_modules += module
-		if(!(module in implants))
-			implants += module
+		if(implanted_object.loc != src)
+			implanted_object.forceMove(src)
 
 	update_damages()
 
-	if(owner && !ignore_prosthetic_prefs)
-		if(owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
-			var/status = owner.client.prefs.organ_data[organ_tag]
-			if(status == "amputated")
+	if(!owner)
+		return
+
+	if(!ignore_prosthetic_prefs && owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
+		switch(owner.client.prefs.organ_data[organ_tag])
+			if("amputated")
 				remove_rejuv()
-			else if(status == "cyborg")
-				var/robodata = owner.client.prefs.rlimb_data[organ_tag]
-				if(robodata)
-					robotize(robodata)
-				else
-					robotize()
-		owner.update_health()
+			if("cyborg")
+				robotize(owner.client.prefs.rlimb_data[organ_tag])
+
+	owner.update_health()
 
 /obj/item/organ/external/remove_rejuv()
 	if(owner)

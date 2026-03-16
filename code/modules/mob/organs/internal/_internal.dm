@@ -19,22 +19,21 @@
 	var/autoheal_value = 0.1
 	var/traumatic_damage_multiplier = 1.0 // Multiplier for incoming traumatic (getting hit/shot) damage.
 
-/obj/item/organ/internal/New(mob/living/carbon/holder)
+/obj/item/organ/internal/Initialize()
+	. = ..()
+
 	if(!min_bruised_damage)
 		min_bruised_damage = Floor(max_damage / 4)
 
-	..(holder)
+	if(owner)
+		var/obj/item/organ/external/E = owner.get_organ(parent_organ)
+		if(!E)
+			CRASH("[src] spawned in [owner] without a parent organ: [parent_organ].")
+			return INITIALIZE_HINT_QDEL
 
-	if(istype(holder))
-		holder.internal_organs |= src
-
-		var/mob/living/carbon/human/H = holder
-		if(istype(H))
-			var/obj/item/organ/external/E = H.get_organ(parent_organ)
-			if(!E)
-				CRASH("[src] spawned in [holder] without a parent organ: [parent_organ].")
-			E.internal_organs |= src
-			E.cavity_max_w_class = max(E.cavity_max_w_class, w_class)
+		E.internal_organs |= src
+		E.cavity_max_w_class = max(E.cavity_max_w_class, w_class)
+		owner.internal_organs |= src
 
 		handle_foreign()
 
@@ -42,12 +41,13 @@
 
 /obj/item/organ/internal/Destroy()
 	if(owner)
-		owner.internal_organs.Remove(src)
+		owner.internal_organs -= src
 		owner.internal_organs_by_name -= organ_tag
 		while(null in owner.internal_organs)
 			owner.internal_organs -= null
 		var/obj/item/organ/external/E = owner.organs_by_name[parent_organ]
-		if(istype(E)) E.internal_organs -= src
+		if(istype(E))
+			E.internal_organs -= src
 	return ..()
 
 /obj/item/organ/internal/think()

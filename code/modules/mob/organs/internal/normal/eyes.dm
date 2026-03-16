@@ -16,8 +16,8 @@
 	var/isRobotize = 0
 	max_module_size = 2
 
-/obj/item/organ/internal/eyes/New()
-	..()
+/obj/item/organ/internal/eyes/Initialize()
+	. = ..()
 	if(owner)
 		update_colour()
 
@@ -25,8 +25,8 @@
 	status = ORGAN_ROBOTIC
 	organ_tag = BP_OPTICS
 
-/obj/item/organ/internal/eyes/optics/New()
-	..()
+/obj/item/organ/internal/eyes/optics/Initialize()
+	. = ..()
 	robotize()
 
 /obj/item/organ/internal/eyes/robotize()
@@ -39,8 +39,8 @@
 /obj/item/organ/internal/eyes/robot
 	name = "optical sensor"
 
-/obj/item/organ/internal/eyes/robot/New()
-	..()
+/obj/item/organ/internal/eyes/robot/Initialize()
+	. = ..()
 	robotize()
 
 /obj/item/organ/internal/eyes/replaced(mob/living/carbon/human/target)

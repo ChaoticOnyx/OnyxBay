@@ -4,23 +4,26 @@
 	dislocated = -1
 	disable_food_organ = TRUE
 
-/obj/item/organ/external/stump/New(mob/living/carbon/holder, obj/item/organ/external/limb)
-	if(istype(limb))
-		organ_tag = limb.organ_tag
-		if(!BP_IS_ROBOTIC(limb)) // These nasty fucks are broken, fuck robolimbs, their dumb icons and whomever the fuck created them in their current fucking state
-			icon_name = limb.icon_name
-		body_part = limb.body_part
-		amputation_point = limb.amputation_point
-		joint = limb.joint
-		parent_organ = limb.parent_organ
-		icon_position = limb.icon_position
-		if(limb.limb_flags & ORGAN_FLAG_GENDERED_ICON)
-			limb_flags |= ORGAN_FLAG_GENDERED_ICON
-	..(holder)
-	if(istype(limb))
-		max_damage = limb.max_damage
-		if(BP_IS_ROBOTIC(limb) && (!parent || BP_IS_ROBOTIC(parent)))
-			robotize() //if both limb and the parent are robotic, the stump is robotic too
+/obj/item/organ/external/stump/Initialize(mapload, mob/living/carbon/holder, obj/item/organ/external/limb)
+	. = ..()
+
+	if(!istype(limb))
+		return .
+
+	organ_tag = limb.organ_tag
+	if(!BP_IS_ROBOTIC(limb)) // These nasty fucks are broken, fuck robolimbs, their dumb icons and whomever the fuck created them in their current fucking state
+		icon_name = limb.icon_name
+	body_part = limb.body_part
+	amputation_point = limb.amputation_point
+	joint = limb.joint
+	parent_organ = limb.parent_organ
+	icon_position = limb.icon_position
+	if(limb.limb_flags & ORGAN_FLAG_GENDERED_ICON)
+		limb_flags |= ORGAN_FLAG_GENDERED_ICON
+
+	max_damage = limb.max_damage
+	if(BP_IS_ROBOTIC(limb) && (!parent || BP_IS_ROBOTIC(parent)))
+		robotize() //if both limb and the parent are robotic, the stump is robotic too
 
 /obj/item/organ/external/stump/is_stump()
 	return 1

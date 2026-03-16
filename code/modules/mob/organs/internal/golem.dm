@@ -6,8 +6,8 @@
 	icon_state = "adamantine_resonator"
 	icon = 'icons/mob/human_races/organs/golems.dmi'
 
-/obj/item/organ/internal/adamantine_resonator/New()
-	..()
+/obj/item/organ/internal/adamantine_resonator/Initialize()
+	. = ..()
 	if(istype(owner))
 		GLOB.golems_resonator.Add(src)
 
@@ -30,8 +30,8 @@
 	parent_organ = BP_HEAD
 	var/datum/action/organ_action
 
-/obj/item/organ/internal/vocal_cords/adamantine/New()
-	..()
+/obj/item/organ/internal/vocal_cords/adamantine/Initialize()
+	. = ..()
 	if(istype(owner))
 		organ_action = new /datum/action/innate/adamantine_vocal_cords(src)
 		organ_action.Grant(owner)

@@ -13,8 +13,8 @@
 	var/coagulation = COAGULATION_NORMAL
 	var/filtering_efficiency = 3.0
 
-/obj/item/organ/internal/liver/New(mob/living/carbon/holder)
-	..(holder)
+/obj/item/organ/internal/liver/Initialize()
+	. = ..()
 	update_coagulation()
 
 /obj/item/organ/internal/liver/robotize()

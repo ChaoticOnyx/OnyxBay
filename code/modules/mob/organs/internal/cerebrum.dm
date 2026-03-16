@@ -21,9 +21,6 @@
 
 	var/mob/living/brainmob = null
 
-/obj/item/organ/internal/cerebrum/New(newLoc, mob/living/carbon/old_self)
-	return ..(newLoc)
-
 /obj/item/organ/internal/cerebrum/Destroy()
 	if(!isnull(brainmob))
 		_unregister_mob_signals()
