@@ -76,6 +76,18 @@
 		to_chat(user, SPAN("notice", "You don't have anything on \the [src].")) // if we have help intent and no food scooped up DON'T STAB OURSELVES WITH THE FORK
 		return
 
+/obj/item/material/kitchen/utensil/examine(mob/user, infix)
+	. = ..()
+
+	if(!forked_chunk)
+		return
+
+	if(get_dist(src, user) > 1)
+		return
+
+	. += " There is a [forked_chunk.name] on it."
+	return
+
 /obj/item/material/kitchen/utensil/fork
 	name = "fork"
 	desc = "It's a fork. Sure is pointy."
