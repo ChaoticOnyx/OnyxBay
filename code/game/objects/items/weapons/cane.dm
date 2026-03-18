@@ -15,13 +15,15 @@
 	attack_verb = list("bludgeoned", "whacked", "disciplined", "thrashed")
 
 /obj/item/cane/concealed
-	var/concealed_blade
+	var/obj/item/concealed_blade
 
-/obj/item/cane/concealed/New()
-	..()
-	var/obj/item/material/butterfly/switchblade/temp_blade = new(src)
-	concealed_blade = temp_blade
-	temp_blade.attack_self()
+/obj/item/cane/concealed/Initialize()
+	. = ..()
+	concealed_blade = new /obj/item/material/butterfly/switchblade/unfolded(src)
+
+/obj/item/cane/concealed/Destroy()
+	QDEL_NULL(concealed_blade)
+	return ..()
 
 /obj/item/cane/concealed/attack_self(mob/user)
 	if(concealed_blade)

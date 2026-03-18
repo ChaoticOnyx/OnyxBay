@@ -69,8 +69,8 @@
 //	log_debug("[src] has unwielded force [force_unwielded], wielded force [force_wielded] and throwforce [throwforce] when made from default material [material.name]")
 
 
-/obj/item/material/twohanded/New()
-	..()
+/obj/item/material/twohanded/Initialize()
+	. = ..()
 	update_icon()
 
 /obj/item/material/twohanded/on_update_icon()
@@ -333,17 +333,17 @@
 	material_amount = 5
 
 //Predefined materials go here.
-/obj/item/material/twohanded/baseballbat/metal/New(newloc)
-	..(newloc, MATERIAL_STEEL)
+/obj/item/material/twohanded/baseballbat/metal
+	default_material = MATERIAL_STEEL
 
-/obj/item/material/twohanded/baseballbat/uranium/New(newloc)
-	..(newloc, MATERIAL_URANIUM)
+/obj/item/material/twohanded/baseballbat/uranium
+	default_material = MATERIAL_URANIUM
 
-/obj/item/material/twohanded/baseballbat/gold/New(newloc)
-	..(newloc, MATERIAL_GOLD)
+/obj/item/material/twohanded/baseballbat/gold
+	default_material = MATERIAL_GOLD
 
-/obj/item/material/twohanded/baseballbat/platinum/New(newloc)
-	..(newloc, MATERIAL_PLATINUM)
+/obj/item/material/twohanded/baseballbat/platinum
+	default_material = MATERIAL_PLATINUM
 
-/obj/item/material/twohanded/baseballbat/diamond/New(newloc)
-	..(newloc, MATERIAL_DIAMOND)
+/obj/item/material/twohanded/baseballbat/diamond
+	default_material = MATERIAL_DIAMOND

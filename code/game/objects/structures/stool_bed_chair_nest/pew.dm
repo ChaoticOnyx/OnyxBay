@@ -11,11 +11,10 @@
 	buckle_dir = 0
 	buckle_lying = 0
 	buckle_pixel_shift = "x=0;y=0"
+	material = MATERIAL_WOOD
+
 	var/max_health = 100
 	var/health = 100
-
-/obj/structure/bed/pew/New(newloc)
-	..(newloc, MATERIAL_WOOD)
 
 /obj/structure/bed/pew/attackby(obj/item/W, mob/user)
 	if(isWrench(W))

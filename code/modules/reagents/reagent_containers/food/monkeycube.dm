@@ -36,13 +36,19 @@
 	wrapped = 0
 	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 
-/obj/item/reagent_containers/food/monkeycube/On_Consume(mob/M)
+/obj/item/reagent_containers/food/monkeycube/get_scooped(obj/item/material/kitchen/utensil/U, mob/user)
+	if(!istype(U))
+		return FALSE
+	to_chat(user, SPAN("notice", "\The [src] is so dense, you can't manage to get it onto \the [U]!"))
+	return FALSE
+
+/obj/item/reagent_containers/food/monkeycube/On_Consume(mob/M, eaten_with_fork)
 	Expand(get_turf(M))
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		H.visible_message(SPAN("warning", "A screeching creature bursts out of [H]'s chest!"))
 		var/obj/item/organ/external/organ = H.get_organ(BP_CHEST)
-		organ.take_external_damage(100, 0, 0, "Animal escaping the ribcage")
+		organ.take_pierce_damage(150, "Animal escaping the ribcage")
 	else
 		M.visible_message(\
 			SPAN("warning", "A screeching creature bursts out of [M]!"),\
