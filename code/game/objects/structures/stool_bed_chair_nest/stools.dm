@@ -24,22 +24,18 @@ var/global/list/stool_cache = list() //haha stool
 
 /obj/item/stool/padded
 	icon_state = "stool_padded_preview" //set for the map
+	material = MATERIAL_STEEL
+	padding_material = MATERIAL_CARPET
 
-/obj/item/stool/New(newloc, new_material, new_padding_material)
-	..(newloc)
-	if(!new_material)
-		new_material = MATERIAL_STEEL
-	material = get_material_by_name(new_material)
-	if(new_padding_material)
-		padding_material = get_material_by_name(new_padding_material)
-	if(!istype(material))
-		qdel(src)
-		return
+/obj/item/stool/Initialize(mapload, new_material, new_padding_material)
+	. = ..(mapload)
+	material = get_material_by_name(new_material || material || MATERIAL_STEEL)
+	padding_material = new_padding_material || padding_material
+	if(padding_material)
+		padding_material = get_material_by_name(padding_material)
+
 	force = round(material.get_blunt_damage()*0.4)
 	update_icon()
-
-/obj/item/stool/padded/New(newloc, new_material)
-	..(newloc, MATERIAL_STEEL, MATERIAL_CARPET)
 
 /obj/item/stool/bar_new
 	name = "wooden bar stool"
@@ -49,9 +45,8 @@ var/global/list/stool_cache = list() //haha stool
 
 /obj/item/stool/bar_new/padded
 	icon_state = "barstool_new_padded_preview"
-
-/obj/item/stool/bar_new/padded/New(newloc, new_material)
-	..(newloc, MATERIAL_WOOD, MATERIAL_CARPET)
+	material = MATERIAL_WOOD
+	padding_material = MATERIAL_CARPET
 
 /obj/item/stool/bar
 	name = "bar stool"
@@ -61,9 +56,8 @@ var/global/list/stool_cache = list() //haha stool
 
 /obj/item/stool/bar/padded
 	icon_state = "bar_stool_padded_preview"
-
-/obj/item/stool/bar/padded/New(newloc, new_material)
-	..(newloc, MATERIAL_STEEL, MATERIAL_CARPET)
+	material = MATERIAL_STEEL
+	padding_material = MATERIAL_CARPET
 
 
 /obj/item/stool/attack_hand(mob/user)

@@ -48,11 +48,15 @@
 	reagents.maximum_volume = min((reagents.total_volume * 2), (reagents.total_volume + 0.25 LITERS))
 	volume = reagents.maximum_volume
 
-/obj/item/reagent_containers/food/proc/On_Consume(mob/M)
+/obj/item/reagent_containers/food/proc/On_Consume(mob/M, eaten_with_fork)
 	if(reagents.total_volume)
 		return
 
-	M.visible_message(SPAN("notice", "[M] finishes eating \the [src]."), SPAN("notice", "You finish eating \the [src]."))
+	if(M)
+		if(eaten_with_fork)
+			M.visible_message(SPAN("notice", "[M] scoops up the last piece of \the [src]."), SPAN("notice", "You scoop up the last piece of \the [src]."))
+		else
+			M.visible_message(SPAN("notice", "[M] finishes eating \the [src]."), SPAN("notice", "You finish eating \the [src]."))
 
 	if(trash)
 		var/obj/item/trash_item
@@ -63,7 +67,7 @@
 
 		if(trash_item)
 			trash_item.forceMove(get_turf(src))
-			if(M.is_equipped(src))
+			if(M?.is_equipped(src))
 				M.replace_item(src, trash_item, force = TRUE)
 
 	if(istype(loc, /obj/item/organ))
@@ -109,32 +113,40 @@
 			if(complex_fullness)
 				var/obj/item/organ/internal/stomach/S = C.internal_organs_by_name[BP_STOMACH]
 				var/stomach_fullness = S.get_fullness()
+				var/hunger_stage = 3
 				if(stomach_fullness >= 200) // 200% fullness, no more physical space
-					to_chat(C, SPAN("danger", "You cannot force any more of [src] to go down your throat."))
+					hunger_stage = 0
 					return FALSE
 				else if(stomach_fullness >= 150) // 150% fullness, very likely to throw up
-					to_chat(C, SPAN("danger", "You force yourself to swallow some [src]."))
+					hunger_stage = 1
 				else if(stomach_fullness >= 100) // 100% fullness, softcap
-					to_chat(C, SPAN("notice", "You unwillingly chew a bit of [src]."))
+					hunger_stage = 2
 				else if(fullness <= STOMACH_FULLNESS_SUPER_LOW)
-					to_chat(C, SPAN("danger", "You hungrily chew out a piece of [src] and gobble it!"))
+					hunger_stage = 5
 				else if(fullness <= STOMACH_FULLNESS_LOW)
-					to_chat(C, SPAN("notice", "You hungrily begin to eat [src]."))
-				else
-					to_chat(C, SPAN("notice", "You take a bite of [src]."))
+					hunger_stage = 4
+
+				to_chat(C, get_eating_message(hunger_stage))
+				if(!hunger_stage)
+					return FALSE
 			else
-				if(fullness <= STOMACH_FULLNESS_SUPER_LOW)
-					to_chat(C, SPAN("danger", "You hungrily chew out a piece of [src] and gobble it!"))
-				if(fullness > STOMACH_FULLNESS_SUPER_LOW && fullness <= STOMACH_FULLNESS_LOW)
-					to_chat(C, SPAN("notice", "You hungrily begin to eat [src]."))
-				if(fullness > STOMACH_FULLNESS_LOW && fullness <= STOMACH_FULLNESS_MEDIUM)
-					to_chat(C, SPAN("notice", "You take a bite of [src]."))
-				if(fullness > STOMACH_FULLNESS_MEDIUM && fullness <= STOMACH_FULLNESS_HIGH)
-					to_chat(C, SPAN("notice", "You unwillingly chew a bit of [src]."))
-				if(fullness > STOMACH_FULLNESS_HIGH && fullness <= STOMACH_FULLNESS_SUPER_HIGH)
-					to_chat(C, SPAN("danger", "You force yourself to swallow some [src]."))
-				if(fullness > STOMACH_FULLNESS_SUPER_HIGH)
-					to_chat(C, SPAN("danger", "You cannot force any more of [src] to go down your throat."))
+				var/hunger_stage = 3
+				switch(fullness)
+					if(0 to STOMACH_FULLNESS_SUPER_LOW)
+						hunger_stage = 5
+					if(STOMACH_FULLNESS_SUPER_LOW to STOMACH_FULLNESS_LOW)
+						hunger_stage = 4
+					if(STOMACH_FULLNESS_LOW to STOMACH_FULLNESS_MEDIUM)
+						hunger_stage = 3
+					if(STOMACH_FULLNESS_MEDIUM to STOMACH_FULLNESS_HIGH)
+						hunger_stage = 2
+					if(STOMACH_FULLNESS_HIGH to STOMACH_FULLNESS_SUPER_HIGH)
+						hunger_stage = 1
+					if(STOMACH_FULLNESS_SUPER_HIGH to INFINITY)
+						hunger_stage = 0
+
+				to_chat(C, get_eating_message(hunger_stage))
+				if(!hunger_stage)
 					return FALSE
 		else
 			if(!M.can_force_feed(user, src))
@@ -165,7 +177,7 @@
 			if(!do_mob(user, M, time = 2 SECONDS))
 				return
 
-			if(!user.has_in_hands(src))
+			if(!(user.has_in_hands(src) || user.has_in_hands(loc)))
 				return
 
 			if(!M.can_force_feed(user, src, check_resist = TRUE))
@@ -200,6 +212,20 @@
 
 	return FALSE
 
+/obj/item/reagent_containers/food/proc/get_eating_message(hunger_stage)
+	switch(hunger_stage)
+		if(0)
+			return SPAN("danger", "You cannot force any more of [src] to go down your throat.")
+		if(1)
+			return SPAN("danger", "You force yourself to swallow some [src].")
+		if(2)
+			return SPAN("notice", "You unwillingly chew a bit of [src].")
+		if(3)
+			return SPAN("notice", "You take a bite of [src].")
+		if(4)
+			return SPAN("notice", "You hungrily begin to eat [src].")
+		else
+			return SPAN("danger", "You hungrily chew out a piece of [src] and gobble it!")
 
 /obj/item/reagent_containers/food/proc/get_bitecount()
 	switch(bitecount)
@@ -250,37 +276,8 @@
 
 	// Eating with forks
 	if(istype(W, /obj/item/material/kitchen/utensil))
-		var/obj/item/material/kitchen/utensil/U = W
-		if(U.scoop_food)
-			if(!U.reagents)
-				U.create_reagents(50)
-
-			if (U.reagents.total_volume > 0)
-				to_chat(user, SPAN("warning", "You already have something on your [U]."))
-				return
-
-			user.visible_message( \
-				"\The [user] scoops up some [src] with \the [U]!", \
-				"<span class='notice'>You scoop up some [src] with \the [U]!</span>" \
-			)
-
-			if(bitecount != -1)
-				bitecount++
-
-			// TODO: Replace with U.update_icon()
-			U.ClearOverlays()
-			U.loaded = "[src]"
-			var/image/I = new(U.icon, "loadedfood")
-			I.color = src.filling_color
-			U.AddOverlays(I)
-			// /TODO
-
-			if(!reagents)
-				CRASH("[type] doesnt has a reagent holder [W.type]! Well, it will [QDELETED(src) ? "" : "not"] be deleted.")
-
-			reagents.trans_to_obj(U, min(reagents.total_volume, 5))
-			On_Consume(user)
-			return
+		get_scooped(W, user)
+		return
 
 	if(is_sliceable())
 		//these are used to allow hiding edge items in food that is not on a table/tray
@@ -351,3 +348,25 @@
 
 /obj/item/reagent_containers/food/proc/is_sliceable()
 	return (slices_num && slice_path)
+
+/obj/item/reagent_containers/food/proc/get_scooped(obj/item/material/kitchen/utensil/U, mob/user)
+	if(!istype(U))
+		return FALSE
+
+	if(!U.scoop_food)
+		return FALSE
+
+	if(U.forked_chunk)
+		to_chat(user, SPAN("notice", "You already have a [U.forked_chunk] on your [U]."))
+		return FALSE
+
+	user.visible_message( \
+		"\The [user] scoops up some [src] with \the [U]!", \
+		"<span class='notice'>You scoop up some [src] with \the [U]!</span>" \
+	)
+
+	var/obj/item/reagent_containers/food/forked_chunk/forked_chunk = new (U)
+	forked_chunk.split_from(src, user)
+	U.forked_chunk = forked_chunk
+	U.update_icon()
+	return forked_chunk
