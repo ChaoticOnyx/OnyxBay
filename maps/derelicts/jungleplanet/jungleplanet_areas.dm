@@ -23,6 +23,7 @@
 /area/jungleplanet/jungle/central
 	name = "Colony - Central"
 	icon_state = "junglecentral"
+	dynamic_lighting = 0
 
 /area/jungleplanet/jungle/east
 	name = "Colony - East"

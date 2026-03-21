@@ -13,8 +13,8 @@
 	station_short = "Lager"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
-	company_name  = "USSR"
-	company_short = "USSR"
+	company_name  = "Nanotrasen"
+	company_short = "NT"
 
 	station_networks = list(
 		NETWORK_CIVILIAN_EAST,
