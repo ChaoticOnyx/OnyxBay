@@ -28,17 +28,12 @@
 	var/old_dir
 	var/obj/movement_target
 	bodyparts = /decl/simple_animal_bodyparts/quadruped
+	var/accessory_overlay = ""
 
-//IAN! SQUEEEEEEEEE~
-/mob/living/simple_animal/corgi/Ian
-	name = "Ian"
-	real_name = "Ian"	// Intended to hold the name without altering it.
-	gender = MALE
-	desc = "It's a corgi."
-	turns_since_scan = 0
-	response_help  = "pets"
-	response_disarm = "bops"
-	response_harm   = "kicks"
+/mob/living/simple_animal/corgi/Initialize()
+	. = ..()
+	icon_state = icon_living
+	update_hat()
 
 /mob/living/simple_animal/corgi/Move(newloc, direct)
 	. = ..()
@@ -192,9 +187,6 @@
 						wear_hat(item_to_add)
 						usr.visible_message(SPAN_WARNING("[usr] puts \the [item_to_add] on [name]."))
 
-
-
-/mob/living/simple_animal/corgi/attackby(obj/item/O as obj, mob/user as mob)  // Marker -Agouri
 /mob/living/simple_animal/corgi/attackby(obj/item/O, mob/user)  // Marker -Agouri
 	if(user.a_intent == I_HELP && istype(O, /obj/item/clothing/head)) 	// Equiping corgi with a cool hat!
 		if(istype(O, /obj/item/clothing/head/helmet)) 					// Looks too bad on corgi
@@ -244,6 +236,14 @@
 		mob_hat_cache[key] = I
 	return mob_hat_cache[key]
 
+/mob/living/simple_animal/corgi/proc/get_accessory_icon(state)
+	if(!state)
+		return
+	if(!mob_hat_cache[state])
+		var/image/I = image(icon, state)
+		mob_hat_cache[state] = I
+	return mob_hat_cache[state]
+
 /mob/living/simple_animal/corgi/proc/wear_hat(obj/item/new_hat)
 	if(hat)
 		return
@@ -252,29 +252,64 @@
 	update_hat()
 
 /mob/living/simple_animal/corgi/proc/update_hat()
-	if(!hat)
+	if(!hat && !accessory_overlay)
+		ClearOverlays()
 		return
+
 	if(is_ic_dead())
 		ClearOverlays()
-		hat.dropInto(loc)
-		hat = null
+		if(hat)
+			hat.dropInto(loc)
+			hat = null
+		if(accessory_overlay)
+			AddOverlays(get_accessory_icon("[accessory_overlay]_dead"))
 		return
+
 	if(old_dir == dir) // We do not need to update hat, if we did not change dir
 		return
-	old_dir = dir
-	var/hat_offset_x = 1 		// preseting offsets to north and south
-	var/hat_offset_y = -7
-	if(dir == 4)			// Setting offset for east and west to properly render hats
-		hat_offset_x = 8
-		hat_offset_y = -8
-	else if(dir == 8)
-		hat_offset_x = -8
-		hat_offset_y = -8
+
 	ClearOverlays()
-	AddOverlays(get_hat_icon(hat, hat_offset_x, hat_offset_y))
+
+	if(hat)
+		old_dir = dir
+		var/hat_offset_x = 0
+		var/hat_offset_y = 0
+		switch(dir)
+			if(SOUTH)
+				hat_offset_x = 0
+				hat_offset_y = -11
+			if(NORTH)
+				hat_offset_x = 0
+				hat_offset_y = -9
+			if(EAST)
+				hat_offset_x = 7
+				hat_offset_y = -10
+			if(WEST)
+				hat_offset_x = -7
+				hat_offset_y = -10
+		AddOverlays(get_hat_icon(hat, hat_offset_x, hat_offset_y))
+
+	if(accessory_overlay)
+		AddOverlays(get_accessory_icon(accessory_overlay))
+
 ///////////////////////
 // END OF HAT STUFF //
 /////////////////////
+
+//IAN! SQUEEEEEEEEE~
+/mob/living/simple_animal/corgi/Ian
+	name = "Ian"
+	real_name = "Ian"	// Intended to hold the name without altering it.
+	gender = MALE
+	desc = "It's a corgi."
+	icon_state = "ian"
+	icon_living = "corgi"
+	icon_dead = "corgi_dead"
+	turns_since_scan = 0
+	response_help  = "pets"
+	response_disarm = "bops"
+	response_harm   = "kicks"
+	accessory_overlay = "corgi_ian_collar"
 
 /mob/living/simple_animal/corgi/puppy
 	name = "\improper corgi puppy"
@@ -284,6 +319,7 @@
 	icon_living = "puppy"
 	icon_dead = "puppy_dead"
 	item_state = "puppy"
+	accessory_overlay = null
 
 //pupplies cannot wear anything.
 /mob/living/simple_animal/corgi/puppy/Topic(href, href_list)
@@ -299,13 +335,11 @@
 	gender = FEMALE
 	desc = "It's a corgi with a cute pink bow."
 	icon_state = "lisa"
-	icon_living = "lisa"
-	icon_dead = "lisa_dead"
+	icon_living = "corgi"
+	icon_dead = "corgi_dead"
 	item_state = "lisa"
-	response_help  = "pets"
-	response_disarm = "bops"
-	response_harm   = "kicks"
 	turns_since_scan = 0
+	accessory_overlay = "corgi_lisa_bow"
 	var/puppies = 0
 
 //Lisa already has a cute bow!
