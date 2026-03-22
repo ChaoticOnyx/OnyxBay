@@ -95,7 +95,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 		return
 
 	to_chat(M, SPAN_WARNING("You feel a tiny prick."))
-	M.reagents.add_reagent(poison_type, 5)
+	M.reagents.add_reagent(poison_type, poison_per_bite)
 
 /**
  * # Spider Hunter
