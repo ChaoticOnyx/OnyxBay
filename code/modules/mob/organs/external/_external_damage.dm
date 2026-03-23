@@ -218,7 +218,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		if(sharp)
 			organ_damage_threshold *= 0.5
 		if(burn_ratio >= 1.0)
-			organ_damage_threshold *= 2.0 - burn_ratio
+			organ_damage_threshold *= 2.01 - burn_ratio
 
 		var/organ_damage_prob = 6.25 * damage_amt/organ_damage_threshold //more damage, higher chance to damage
 		if(sharp)
