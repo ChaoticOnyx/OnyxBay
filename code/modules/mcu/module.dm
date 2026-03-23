@@ -11,6 +11,9 @@
 	/// Set by MCU.
 	var/weakref/__host = null
 
+/obj/item/mcu_module/proc/__power_on()
+	return
+
 /obj/item/mcu_module/proc/__power_off()
 	return
 

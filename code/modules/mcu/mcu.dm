@@ -275,19 +275,8 @@
 		log_debug("[user] ([user.ckey]) uploaded an ELF file \"[tmp_file]\" ([length(elf_file)])")
 		fcopy(elf_file, tmp_file)
 
-		if(!Z_MACHINE_LOAD_ELF(id, tmp_file))
-			switch(Z_GET_LAST_ERROR())
-				if(Z_ERROR_OUT_OF_RAM)
-					to_chat(user, "Failed to load the ELF file: does not fit into the RAM")
-				if(Z_ERROR_BAD_ELF)
-					to_chat(user, "Failed to load the ELF file: bad or unsupported ELF file")
-		else
-			to_chat(user, SPAN_NOTICE("ELF file uploaded successfully."))
-
-		if(__elf_path != null)
-			fdel(__elf_path)
-
-		__elf_path = tmp_file
+		if(!load_elf(tmp_file, user, FALSE, TRUE))
+			fdel(tmp_file)
 
 		return
 	else if(isMultitool(W))
@@ -450,6 +439,27 @@
 		return
 
 	return ..()
+
+/obj/item/device/mcu/proc/load_elf(path, mob/activator = null, ignore_flash_protection = FALSE, delete_old = FALSE)
+	if(!Z_MACHINE_LOAD_ELF(id, path))
+		switch(Z_GET_LAST_ERROR())
+			if(Z_ERROR_OUT_OF_RAM)
+				if(activator != null)
+					to_chat(activator, "Failed to load the ELF file: does not fit into the RAM")
+			if(Z_ERROR_BAD_ELF)
+				if(activator != null)
+					to_chat(activator, "Failed to load the ELF file: bad or unsupported ELF file")
+
+		return FALSE
+	else
+		if(activator != null)
+			to_chat(activator, SPAN_NOTICE("ELF file uploaded successfully."))
+
+	if(__elf_path != null && delete_old)
+		fdel(__elf_path)
+
+	__elf_path = path
+	return TRUE
 
 /obj/item/device/mcu/proc/__interact(mob/user)
 	if(!user.IsAdvancedToolUser() || !__try_init(user))
@@ -749,7 +759,7 @@
 		if(QDELETED(M))
 			continue
 
-		M.__reset(TRUE)
+		M.__power_on()
 
 	ASSERT(Z_MACHINE_LOAD_ELF(id, __elf_path) == TRUE)
 	Z_MACHINE_SET_STATE(id, Z_MSTATE_RUNNING)
