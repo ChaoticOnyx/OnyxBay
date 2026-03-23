@@ -35,6 +35,7 @@
 	shy_animal = 1
 	controllable = TRUE
 	bodyparts = /decl/simple_animal_bodyparts/quadruped
+	burnt_remains = /obj/item/remains/mouse
 	var/obj/item/holding_item = null
 	var/datum/disease2/disease/virus = null
 

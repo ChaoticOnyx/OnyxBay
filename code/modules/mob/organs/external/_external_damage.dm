@@ -207,16 +207,19 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		if(try_to_dismember(brute, burn, damage_flags))
 			return
 
-	// High brute damage or sharp objects may damage internal organs
-	if(!istype(used_weapon, /obj/item/projectile) && !clean) // Projectiles organ damage is being processed in human_defense.dm
+	// High brute damage, sharp objects or deep-frying may damage internal organs
+	if(!istype(used_weapon, /obj/item/projectile) && !clean && LAZYLEN(internal_organs)) // Projectiles organ damage is being processed in human_defense.dm
 		var/damage_amt = brute
 		var/cur_damage = brute_last
-		if(laser)
+		if(laser || (burn_last + burn >= max_damage))
 			damage_amt += burn
 			cur_damage += burn_last
 		var/organ_damage_threshold = 5
 		if(sharp)
 			organ_damage_threshold *= 0.5
+		if(burn_ratio >= 1.0)
+			organ_damage_threshold *= 2.0 - burn_ratio
+
 		var/organ_damage_prob = 6.25 * damage_amt/organ_damage_threshold //more damage, higher chance to damage
 		if(sharp)
 			organ_damage_prob *= 1.5
@@ -224,7 +227,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 			organ_damage_prob *= cur_damage/15
 		if(encased && !(status & ORGAN_BROKEN)) //ribs and skulls protect
 			organ_damage_prob *= 0.5
-		if(LAZYLEN(internal_organs) && (cur_damage + damage_amt >= max_damage || damage_amt >= organ_damage_threshold) && prob(organ_damage_prob))
+		if((cur_damage + damage_amt >= max_damage || damage_amt >= organ_damage_threshold) && prob(organ_damage_prob))
 			// Damage an internal organ
 			var/list/victims = list()
 			for(var/obj/item/organ/internal/I in internal_organs)
@@ -241,7 +244,15 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	if(!BP_IS_ROBOTIC(src))
 		// Painful stuff
-		adjust_pain(0.6 * burn + 0.4 * brute)
+		if(blunt)
+			adjust_pain(brute * (1 + (blunt_last / max_damage)))
+		else if(sharp || edge)
+			adjust_pain(brute * 0.5) // Not as painful as blunt right away, hurts a lot later.
+
+		if(laser)
+			adjust_pain(burn * 0.5)
+		else if(burn)
+			adjust_pain(burn * 0.25) // First, you don't realize what happened, next, it hurts like a bitch.
 
 		// Bones stuff
 		if(brute >= (blunt ? 5.0 : 10.0) && !clean)
@@ -329,7 +340,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	var/blunt = brute && !sharp && !edge
 
 	var/force_droplimb = FALSE
-	if((brute >= 5.0 && (brute_last + brute >= max_damage * 3)) || (burn && (burn_last + burn >= max_damage * 2)))
+	if((brute >= 5.0 && (brute_last + brute >= max_damage * 3)) || (burn >= 5.0 && (burn_last + burn >= max_damage * 2)))
 		force_droplimb = TRUE
 
 	if(edge && (cut_last + brute >= max_damage))
@@ -347,7 +358,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 			droplimb(FALSE, DROPLIMB_BLUNT)
 			return TRUE
 
-	if(burn && (burn_last + burn >= max_damage))
+	if(burn >= 5.0 && (burn_last + burn >= max_damage))
 		if(force_droplimb || prob(burn))
 			droplimb(laser, DROPLIMB_BURN)
 			return TRUE
@@ -551,12 +562,17 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		pain = max(pain, 0)
 
 	var/lasting_pain = 0
+
+	lasting_pain = max(blunt_dam * 0.5, cut_dam + pierce_dam, burn_dam)
+
 	if(is_broken())
 		lasting_pain += 10
 	else if(is_dislocated())
 		lasting_pain += 5
 
-	full_pain = min(pain, max_damage) + lasting_pain + min(max_damage, 0.7 * brute_dam + 0.8 * burn_dam) + 0.5 * get_genetic_damage()
+	lasting_pain += get_genetic_damage() * 0.5
+
+	full_pain = min(pain, max_pain) + min(lasting_pain, max_damage)
 	if(salved)
 		full_pain *= 0.5 // It gets interrupted by virtually any damage, so this can't be too OP.
 
