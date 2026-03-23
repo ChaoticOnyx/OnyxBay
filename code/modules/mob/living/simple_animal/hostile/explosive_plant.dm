@@ -73,7 +73,7 @@
 	LoseTarget()
 	booming = TRUE
 	update_booming_icon()
-	set_next_think_ctx("creeper_boom_context", world.time + 2.5 SECONDS)
+	set_next_think_ctx("creeper_boom_context", world.time + 1.5 SECONDS)
 
 /mob/living/simple_animal/hostile/explosive_plant/proc/abort_boom()
 	set_next_think_ctx("creeper_boom_context", 0)
