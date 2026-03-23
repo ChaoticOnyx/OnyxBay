@@ -68,6 +68,7 @@
 	var/damtype = BRUTE
 	var/defense = "melee"
 	var/bodyparts = /decl/simple_animal_bodyparts // Fake bodyparts that can be shown when hit by projectiles.
+	var/burnt_remains = /obj/effect/decal/cleanable/ash // What's left of us when we get burnt out of existence.
 
 	//Null rod stuff
 	var/supernatural = 0
@@ -283,6 +284,9 @@
 		density = 0
 		health = 0 //Make sure dey dead.
 		walk_to(src, 0)
+
+/mob/living/simple_animal/dust(anim = "blank", remains, supernatural = TRUE)
+	..(anim, burnt_remains, supernatural)
 
 /mob/living/simple_animal/rejuvenate()
 	..()

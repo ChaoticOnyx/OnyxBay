@@ -59,6 +59,7 @@
 	radiation_mod = 0
 
 	death_message = "becomes completely motionless..."
+	remains_type = /obj/effect/decal/cleanable/ash
 
 /datum/species/golem/get_random_name(gender)
 	var/golem_surname = pick(GLOB.golem_names)

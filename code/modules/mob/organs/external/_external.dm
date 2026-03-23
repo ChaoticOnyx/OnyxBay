@@ -688,7 +688,7 @@ This function completely restores a damaged organ to perfect condition.
 		tbrute = 0
 	else if(highest_brute_dam < max_damage * 0.25)
 		tbrute = 1
-	else if(highest_brute_dam < max_damage)
+	else if(highest_brute_dam < max_damage * 0.75)
 		tbrute = 2
 	else
 		tbrute = 3
@@ -1090,6 +1090,13 @@ This function completely restores a damaged organ to perfect condition.
 			owner.drop(owner.l_ear, force = TRUE)
 			owner.drop(owner.r_ear, force = TRUE)
 			owner.drop(owner.wear_mask, force = TRUE)
+		if(UPPER_TORSO)
+			owner.drop(owner.r_store, force = TRUE)
+			owner.drop(owner.l_store, force = TRUE)
+			owner.drop(owner.belt, force = TRUE)
+			owner.drop(owner.wear_suit, force = TRUE)
+			owner.drop(owner.w_uniform, force = TRUE)
+			owner.drop(owner.back, force = TRUE)
 
 	var/mob/living/carbon/human/victim = owner
 

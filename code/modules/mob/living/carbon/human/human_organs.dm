@@ -65,9 +65,19 @@
 
 /mob/living/carbon/human/proc/handle_organs_pain() // It's more efficient to process it separately from the actual organ processing
 	full_pain = 0
+
+	var/hurt_organs = 0
+	var/highest_pain = 0
 	for(var/obj/item/organ/external/O in organs)
 		O.update_pain()
-		full_pain += O.full_pain
+		if(O.full_pain)
+			full_pain += O.full_pain
+			hurt_organs++
+			highest_pain = max(highest_pain, O.full_pain)
+
+	if(hurt_organs)
+		// The more ouchies we have, the less each individual one affects us, i.e. we don't even notice a bruise on the shoulder if there's a gaping hole in our chest.
+		full_pain = max(highest_pain, full_pain / sqrt(hurt_organs))
 
 	if(full_pain != full_pain_lasttick)
 		update_pain_slowdown()

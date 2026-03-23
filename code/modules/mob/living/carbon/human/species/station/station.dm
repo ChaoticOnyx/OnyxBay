@@ -16,6 +16,7 @@
 	min_age = 18
 	max_age = 100
 	gluttonous = GLUT_TINY
+	remains_type = /obj/item/remains/human
 
 	body_builds = list(
 		new /datum/body_build,

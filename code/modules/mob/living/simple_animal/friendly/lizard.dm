@@ -46,6 +46,7 @@ GLOBAL_VAR_INIT(lizard_count, 0)
 	shy_animal = 1
 	controllable = TRUE
 	bodyparts = /decl/simple_animal_bodyparts/quadruped
+	burnt_remains = /obj/item/remains/lizard
 
 	can_pull_size = ITEM_SIZE_TINY
 	can_pull_mobs = MOB_PULL_SAME
