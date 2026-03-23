@@ -37,6 +37,7 @@
 /mob/living/simple_animal/hostile/explosive_plant/death(gibbed, deathmessage = "dies!", show_dead_message)
 	. = ..()
 	if(.)
+		abort_boom()
 		new /obj/effect/decal/cleanable/ash(loc)
 		QDEL_IN(src, 1 SECOND)
 
@@ -72,7 +73,7 @@
 	LoseTarget()
 	booming = TRUE
 	update_booming_icon()
-	set_next_think_ctx("creeper_boom_context", world.time + rand(1, 15) SECONDS)
+	set_next_think_ctx("creeper_boom_context", world.time + 2.5 SECONDS)
 
 /mob/living/simple_animal/hostile/explosive_plant/proc/abort_boom()
 	set_next_think_ctx("creeper_boom_context", 0)
@@ -89,10 +90,10 @@
 		return
 
 	var/list/L = list()
-	for(var/mob/M in hearers(src, 3))
+	for(var/mob/living/M in view(src, 3))
 		if(!ishuman(M) && !isrobot(M))
 			continue
-		if(M.is_ic_dead())
+		if(M.stat)
 			continue
 		L += M
 
@@ -100,6 +101,7 @@
 		abort_boom()
 		return
 
+	visible_message("<b>\The [src]</b> explodes violently!")
 	qdel_self()
 	explosion(T, -1, 1, 4, 1)
 	return
