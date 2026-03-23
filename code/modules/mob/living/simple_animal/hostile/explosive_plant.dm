@@ -37,7 +37,7 @@
 /mob/living/simple_animal/hostile/explosive_plant/death(gibbed, deathmessage = "dies!", show_dead_message)
 	. = ..()
 	if(.)
-		new obj/effect/decal/cleanable/ash(loc)
+		new /obj/effect/decal/cleanable/ash(loc)
 		QDEL_IN(src, 1 SECOND)
 
 /mob/living/simple_animal/hostile/explosive_plant/find_target()
