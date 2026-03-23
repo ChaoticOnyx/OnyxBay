@@ -285,8 +285,8 @@
 		health = 0 //Make sure dey dead.
 		walk_to(src, 0)
 
-/mob/living/simple_animal/dust(anim = "blank")
-	..(anim, burnt_remains)
+/mob/living/simple_animal/dust(anim = "blank", remains, supernatural = TRUE)
+	..(anim, burnt_remains, supernatural)
 
 /mob/living/simple_animal/rejuvenate()
 	..()

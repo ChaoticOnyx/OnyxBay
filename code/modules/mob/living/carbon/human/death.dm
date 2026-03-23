@@ -27,11 +27,11 @@
 	gibs(loc, MobDNA = dna, fleshcolor = species.get_flesh_colour(src), bloodcolor = species.get_blood_colour(src))
 	..(species.gibbed_anim, FALSE)
 
-/mob/living/carbon/human/dust(anim = null, remains = /obj/item/remains/xeno)
+/mob/living/carbon/human/dust(anim = null, remains = /obj/item/remains/xeno, supernatural = TRUE)
 	if(status_flags & GODMODE)
 		return
 	if(species)
-		..((anim || species.dusted_anim), species.remains_type)
+		..((anim || species.dusted_anim), species.remains_type, supernatural)
 	else
 		..()
 

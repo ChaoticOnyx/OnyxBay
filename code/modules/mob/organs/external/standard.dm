@@ -43,9 +43,10 @@
 		return FALSE
 
 	if(burn >= max_damage)
-		removed(owner)
+		var/mob/living/carbon/C = owner
+		removed(C)
 		qdel_self()
-		owner.dust("blank", supernatural = FALSE)
+		C?.dust("blank", supernatural = FALSE)
 		return TRUE
 
 	if(!owner || !owner.is_ooc_dead()) // Let's make changelings' life a little bit less miserable.
@@ -61,8 +62,10 @@
 
 	// Getting cremated once when we're just a chest with nothing attached..
 	if((eligible_for_cremation && (burn_dam >= max_damage * 2)) || (burn >= max_damage))
+		var/mob/living/carbon/C = owner
+		removed(C)
 		qdel_self()
-		owner.dust("blank", supernatural = FALSE)
+		C.dust("blank", supernatural = FALSE)
 		return TRUE
 
 	return FALSE
