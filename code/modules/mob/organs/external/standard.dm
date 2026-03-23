@@ -61,7 +61,7 @@
 			break
 
 	// Getting cremated once when we're just a chest with nothing attached..
-	if((eligible_for_cremation && (burn_dam >= max_damage * 2)) || (burn >= max_damage))
+	if(eligible_for_cremation && (burn_dam >= max_damage * 2))
 		var/mob/living/carbon/C = owner
 		removed(C)
 		qdel_self()
