@@ -285,7 +285,7 @@ About the new airlock wires panel:
 	if(density)
 		if(locked && lights && power_systems_on)
 			icon_state = "door_locked"
-			AddOverlays(OVERLAY(icon, "lights_bolts"))
+			AddOverlays(OVERLAY(icon, "lights_bolts", dir = src.dir))
 			AddOverlays(emissive_appearance(icon, "lights_bolts_ea"))
 			set_light(0.35, 0.9, 1.5, 3, COLOR_RED_LIGHT)
 		else
@@ -293,18 +293,18 @@ About the new airlock wires panel:
 
 		if(p_open || welded)
 			if(p_open)
-				AddOverlays(OVERLAY(icon, "panel_open"))
+				AddOverlays(OVERLAY(icon, "panel_open", dir = src.dir))
 			if(!(stat & NOPOWER))
 				if(stat & BROKEN)
-					AddOverlays(OVERLAY(icon, "sparks_broken"))
+					AddOverlays(OVERLAY(icon, "sparks_broken", dir = src.dir))
 					AddOverlays(emissive_appearance(icon, "sparks_broken_ea"))
 				else if(health < maxhealth * 0.75)
-					AddOverlays(OVERLAY(icon, "sparks_damaged"))
+					AddOverlays(OVERLAY(icon, "sparks_damaged", dir = src.dir))
 					AddOverlays(emissive_appearance(icon, "sparks_damaged_ea"))
 			if(welded)
-				AddOverlays(OVERLAY(icon, "welded"))
+				AddOverlays(OVERLAY(icon, "welded", dir = src.dir))
 		else if(health < maxhealth * 0.75 && !(stat & NOPOWER))
-			AddOverlays(OVERLAY(icon, "sparks_damaged"))
+			AddOverlays(OVERLAY(icon, "sparks_damaged", dir = src.dir))
 			AddOverlays(emissive_appearance(icon, "sparks_damaged_ea"))
 
 		if(!p_open && power_systems_on && !operating)
@@ -314,7 +314,7 @@ About the new airlock wires panel:
 		if(power_systems_on && !p_open) // Doors with opened panels have no green lights on their icons
 			set_light(0.30, 0.9, 1.5, 3, COLOR_LIME)
 		if((stat & BROKEN) && !(stat & NOPOWER))
-			AddOverlays(OVERLAY(icon, "sparks_open"))
+			AddOverlays(OVERLAY(icon, "sparks_open", dir = src.dir))
 			AddOverlays(emissive_appearance(icon, "sparks_open_ea"))
 
 	if(brace)
