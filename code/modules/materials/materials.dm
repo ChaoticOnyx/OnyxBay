@@ -995,6 +995,16 @@ var/list/name_to_material
 	conductive = 0
 	craft_tool = 1
 
+/material/cloth_red
+	name = "red"
+	display_name ="red"
+	use_name = "red cloth"
+	icon_colour = "#da020a"
+	material_flags = MATERIAL_PADDING
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
+	conductive = 0
+
 /material/cloth_teal
 	name = "teal"
 	display_name ="teal"

@@ -53,6 +53,65 @@
 	RC.update_icon()
 	RC.On_Consume(M)
 
+/obj/item/reagent_containers/food/forked_chunk
+	name = "piece of something"
+	desc = "A forked piece of food. Probably."
+	icon_state = "ingested_chunk"
+	nutriment_amt = 0
+	volume = 0.1 LITER
+	static_volume = TRUE
+	bitesize = 30
+	w_class = ITEM_SIZE_TINY
+
+/obj/item/reagent_containers/food/forked_chunk/On_Consume(mob/M)
+	return ..(null) // Hacky
+
+/obj/item/reagent_containers/food/forked_chunk/get_eating_message(hunger_stage)
+	switch(hunger_stage)
+		if(0)
+			return SPAN("danger", "You cannot force even a single [name] to go down your throat.")
+		if(1)
+			return SPAN("danger", "You force yourself to swallow a [name].")
+		if(2)
+			return SPAN("notice", "You unwillingly chew a [name].")
+		if(3)
+			return SPAN("notice", "You eat a [name].")
+		if(4)
+			return SPAN("notice", "You hungrily eat a [name].")
+		else
+			return SPAN("danger", "You hungrily gobble a [name]!")
+
+/obj/item/reagent_containers/food/forked_chunk/get_scooped(obj/item/material/kitchen/utensil/U, mob/user)
+	if(!istype(U))
+		return FALSE
+
+	if(!U.scoop_food)
+		return FALSE
+
+	if(U.forked_chunk)
+		to_chat(user, SPAN("notice", "You already have a [U.forked_chunk] on your [U]."))
+		return FALSE
+
+	forceMove(U)
+	U.forked_chunk = src
+	U.update_icon()
+	return src
+
+/obj/item/reagent_containers/food/forked_chunk/proc/split_from(obj/item/reagent_containers/food/RC, mob/M)
+	if(!RC)
+		qdel(src)
+		return
+	if(RC.reagents.total_volume > RC.bitesize)
+		RC.reagents.trans_to(src, RC.bitesize)
+	else
+		RC.reagents.trans_to(src, RC.reagents.total_volume)
+	color = RC.filling_color
+	name = "piece of [RC]"
+	desc = "A piece of [RC]. Probably."
+	RC.bitecount++
+	RC.update_icon()
+	RC.On_Consume(M, TRUE)
+
 // Mystery soup base
 /obj/item/reagent_containers/food/badrecipe
 	name = "Burned mess"
@@ -81,6 +140,10 @@
 		/datum/reagent/iron = 5,
 		/datum/reagent/nutriment/glucose = 30)
 	bitesize = 25 // 315 nutrition, 8 bites
+
+/obj/item/reagent_containers/food/liquidfood/get_scooped(obj/item/material/kitchen/utensil/U, mob/user)
+	to_chat(user, SPAN("notice", "You can't manage to scoop the contents out of \the [src]!"))
+	return FALSE
 
 // Meaty stuff
 /obj/item/reagent_containers/food/meatsteak
@@ -278,11 +341,11 @@
 	. = ..()
 	unpopped = rand(1, 10)
 
-/obj/item/reagent_containers/food/popcorn/On_Consume()
-	if(prob(unpopped))	//lol ...what's the point?
+/obj/item/reagent_containers/food/popcorn/On_Consume(mob/M, eaten_with_fork)
+	if(!eaten_with_fork && prob(unpopped)) //lol ...what's the point?
 		to_chat(usr, SPAN("warning", "You bite down on an un-popped kernel!"))
 		unpopped = max(0, unpopped - 1)
-	..()
+	return ..()
 
 // Veggies
 /obj/item/reagent_containers/food/eggplantparm

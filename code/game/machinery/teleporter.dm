@@ -115,6 +115,11 @@
 	if(is_ready())
 		teleport(AM)
 
+/obj/machinery/teleporter_gate/hitby(atom/movable/AM, datum/thrownthing/TT)
+	..()
+	if(is_ready())
+		teleport(AM)
+
 /obj/machinery/teleporter_gate/power_change()
 	. = ..()
 	update_power()

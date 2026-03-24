@@ -81,11 +81,17 @@
 	glass_type = "/glass_external"
 	airlock_type = "/external"
 
+/obj/structure/door_assembly/door_assembly_civil
+	base_icon_state = "int"
+	base_name = "Airlock"
+	glass_type = "/glass_civil"
+	airlock_type = ""
+
 /obj/structure/door_assembly/door_assembly_mai
 	base_icon_state = "mai"
 	base_name = "Maintenance Airlock"
+	glass_type = "/glass_maintenance"
 	airlock_type = "/maintenance"
-	glass = -1
 
 /obj/structure/door_assembly/door_assembly_fre
 	base_icon_state = "fre"

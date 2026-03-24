@@ -788,8 +788,8 @@ var/global/list/damage_icon_parts = list()
 	overlays_standing[HO_SURGERY_LAYER] = null
 	var/image/total = new
 	for(var/obj/item/organ/external/E in organs)
-		if(!BP_IS_ROBOTIC(E) && E.open())
-			var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.icon_name][round(E.open())]", "layer"=-HO_SURGERY_LAYER)
+		if(!BP_IS_ROBOTIC(E) && E.is_surgically_open())
+			var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.icon_name][round(E.is_surgically_open())]", "layer"=-HO_SURGERY_LAYER)
 			total.AddOverlays(I)
 	total.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	overlays_standing[HO_SURGERY_LAYER] = total

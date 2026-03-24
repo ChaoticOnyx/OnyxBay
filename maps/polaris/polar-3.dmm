@@ -2992,7 +2992,7 @@
 "bgg" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 1},/turf/simulated/floor/trim/carpet,/area/polarplanet/crew_quarters/sleep)
 "bgh" = (/turf/simulated/floor/trim/carpet,/area/polarplanet/crew_quarters/sleep)
 "bgi" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/trim/carpet,/area/polarplanet/crew_quarters/sleep)
-"bgj" = (/obj/structure/table/woodentable,/obj/item/stack/medical/bruise_pack,/obj/item/stack/medical/ointment,/turf/simulated/floor/trim/wood,/area/polarplanet/crew_quarters/sleep)
+"bgj" = (/obj/structure/table/woodentable,/obj/item/stack/medical/bandage,/obj/item/stack/medical/ointment,/turf/simulated/floor/trim/wood,/area/polarplanet/crew_quarters/sleep)
 "bgk" = (/obj/structure/bed/chair/comfy/brown{dir = 8},/obj/effect/landmark/start/crew/assistant,/turf/simulated/floor/trim/wood,/area/polarplanet/crew_quarters/sleep)
 "bgl" = (/obj/machinery/power/apc{name = "west bump"; dir = 8; pixel_x = -24},/obj/effect/floor_decal/corner/lime{dir = 9},/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6},/turf/simulated/floor/tiled/rough,/area/polarplanet/hydroponics)
 "bgm" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{icon_state = "intact-supply"; dir = 4},/turf/simulated/floor/tiled/mono,/area/polarplanet/hydroponics)

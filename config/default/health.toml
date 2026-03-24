@@ -13,11 +13,11 @@ organs_can_decay = false
 
 ## Multiplier which enables organs to take more damage before bones breaking or limbs being destroyed.
 ## 1.0 means normal, 0.5 means half.
-organ_health_multiplier = 0.9
+organ_health_multiplier = 1.0
 
-## Multiplier which influences how fast organs regenerate naturally.
-## 1.0 means normal, 0.25 means half.
-organ_regeneration_multiplier = 0.25
+## Multiplier which influences how fast organs regenerate and bleeding wounds scab naturally.
+## 1.0 means normal, 0.25 means quarter.
+organ_regeneration_multiplier = 1.0
 
 ## Multiplier which influences spillover modifier.
 ## 1.0 means normal, 0.5 means half.

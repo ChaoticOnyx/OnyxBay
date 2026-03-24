@@ -22,6 +22,7 @@
 	name_language = null
 	hunger_factor = DEFAULT_HUNGER_FACTOR * 3
 	meat_type = /obj/item/reagent_containers/food/meat/pork
+	remains_type = /obj/item/remains/human
 
 	min_age = 18
 	max_age = 80

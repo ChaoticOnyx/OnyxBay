@@ -1622,7 +1622,7 @@
 	seed_name = "man-eating plant"
 	display_name = "man-eating plant"
 	has_mob_product = /mob/living/simple_animal/hostile/maneater
-	mutants = null
+	mutants = list("explosive_plant")
 	customsprite = 1
 	fun_level = 1
 	canonical_icon = "maneater"
@@ -1634,6 +1634,23 @@
 	set_trait(TRAIT_PRODUCT_ICON, "maneater")
 	set_trait(TRAIT_PLANT_COLOUR, "#8AA97B")
 	set_trait(TRAIT_PLANT_ICON, "maneater")
+
+/datum/seed/diona/explosive_plant
+	name = "explosive_plant"
+	seed_name = "explosive plant"
+	display_name = "suspicious pods"
+	has_mob_product = /mob/living/simple_animal/hostile/explosive_plant
+	mutants = null
+	fun_level = 1
+	canonical_icon = "replicapod"
+
+/datum/seed/diona/explosive_plant/New()
+	..()
+	set_trait(TRAIT_ENDURANCE, 50)
+	set_trait(TRAIT_YIELD, 1)
+	set_trait(TRAIT_PRODUCT_ICON, "diona")
+	set_trait(TRAIT_PLANT_COLOUR, "#8AA97B")
+	set_trait(TRAIT_PLANT_ICON, "alien4")
 
 /datum/seed/shand
 	name = "shand"

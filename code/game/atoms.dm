@@ -11,7 +11,6 @@
 	var/throwpass = 0
 	var/hitby_sound = null
 	var/hitby_loudness_multiplier = 1.0
-	var/germ_level = GERM_LEVEL_AMBIENT // The higher the germ level, the more germ on the atom.
 	var/simulated = 1 //filter for actions - used by lighting overlays
 	var/fluorescent // Shows up under a UV light.
 
@@ -447,7 +446,6 @@ its easier to just keep the beam vertical.
 		return FALSE
 	is_bloodied = FALSE
 	fluorescent = 0
-	germ_level = 0
 	if(islist(blood_DNA))
 		blood_DNA.Cut()
 	blood_color = null
@@ -652,7 +650,7 @@ its easier to just keep the beam vertical.
 			H.update_damage_overlays()
 			H.update_health()
 
-/atom/MouseDrop_T(atom/movable/target, mob/user)
+/atom/MouseDrop_T(atom/movable/target, mob/user, params)
 	. = ..()
 	if(.)
 		return

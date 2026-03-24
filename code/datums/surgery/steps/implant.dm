@@ -14,7 +14,7 @@
 	if(BP_IS_ROBOTIC(parent_organ))
 		return parent_organ.hatch_state == HATCH_OPENED
 
-	return (parent_organ.open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
+	return (parent_organ.is_surgically_open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
 
 /datum/surgery_step/cavity/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
@@ -215,18 +215,16 @@
 	var/exposed = FALSE
 	if(BP_IS_ROBOTIC(parent_organ) && parent_organ.hatch_state == HATCH_OPENED)
 		exposed = TRUE
-	else if(parent_organ.open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
+	else if(parent_organ.is_surgically_open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
 		exposed = TRUE
 
 	var/find_prob = 0
 	var/list/atom/loot = list()
-	if(exposed)
-		loot = parent_organ.implants
-	else
-		for(var/datum/wound/W in parent_organ.wounds)
-			if(LAZYLEN(W.embedded_objects))
-				loot |= W.embedded_objects
-			find_prob += 50
+	if(LAZYLEN(parent_organ.embedded_objects))
+		loot |= parent_organ.embedded_objects
+		find_prob += 50
+	else if(!length(loot) && exposed && LAZYLEN(parent_organ.implants))
+		loot |= parent_organ.implants
 
 	if(!length(loot))
 		announce_success(user,
@@ -260,10 +258,7 @@
 			"You take [implanted_item] out of incision on [target]'s [parent_organ]s with \the [tool]."
 			)
 		parent_organ.implants -= implanted_item
-		for(var/datum/wound/wound in parent_organ.wounds)
-			if(implanted_item in wound.embedded_objects)
-				wound.embedded_objects -= implanted_item
-				break
+		parent_organ.drop_embedded_object(implanted_item)
 
 		BITSET(target.hud_updateflag, IMPLOYAL_HUD)
 

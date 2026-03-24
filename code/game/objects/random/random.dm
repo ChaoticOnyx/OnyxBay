@@ -190,12 +190,12 @@
 	spawn_nothing_percentage = 25
 
 /obj/random/medical/lite/spawn_choices()
-	return list(/obj/item/stack/medical/bruise_pack = 4,
+	return list(/obj/item/stack/medical/bandage = 4,
 				/obj/item/stack/medical/ointment = 4,
 				/obj/item/storage/pill_bottle/antidexafen = 2,
 				/obj/item/storage/pill_bottle/paracetamol = 2,
-				/obj/item/stack/medical/advanced/bruise_pack = 2,
-				/obj/item/stack/medical/advanced/ointment = 2,
+				/obj/item/stack/medical/gel/brute = 2,
+				/obj/item/stack/medical/gel/burn = 2,
 				/obj/item/stack/medical/splint = 1,
 				/obj/item/bodybag/cryobag = 1,
 				/obj/item/storage/pill_bottle/kelotane = 2,

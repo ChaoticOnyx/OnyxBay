@@ -304,7 +304,7 @@
 
 /mob/proc/get_eva_slip_prob(prob_slip = 10)
 	// General slip check.
-	if((has_gravity() || has_magnetised_footing()) && get_solid_footing())
+	if((has_gravity() || has_magnetised_footing()) && get_solid_footing() || m_intent == M_WALK)
 		return 0
 	var/obj/item/tank/jetpack/thrust = get_jetpack()
 	if(thrust && thrust.on && thrust.stabilization_on)

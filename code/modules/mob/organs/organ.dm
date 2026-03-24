@@ -3,7 +3,6 @@ var/list/organ_cache = list()
 /obj/item/organ
 	name = "organ"
 	icon = 'icons/mob/human_races/organs/human.dmi'
-	germ_level = 0
 	w_class = ITEM_SIZE_TINY
 	dir = SOUTH
 
@@ -27,6 +26,7 @@ var/list/organ_cache = list()
 	var/rejecting                     // Is this organ already being rejected?
 
 	var/death_time
+	var/start_robotized = FALSE
 
 	var/food_organ_type				  // path of food made from organ, ex.
 	var/obj/item/reagent_containers/food/food_organ
@@ -45,6 +45,92 @@ var/list/organ_cache = list()
 	drop_sound = SFX_DROP_FLESH
 	pickup_sound = SFX_PICKUP_FLESH
 
+/obj/item/organ/Initialize()
+	. = ..()
+
+	if(!min_broken_damage)
+		min_broken_damage = Floor(max_damage / 2)
+
+	if(ishuman(loc))
+		owner = loc
+		w_class = max(w_class + mob_size_difference(owner.mob_size, MOB_MEDIUM), 1) //smaller mobs have smaller organs.
+
+		if(owner.dna)
+			dna = owner.dna.Clone()
+			species = all_species[dna.species]
+		else
+			species = all_species[SPECIES_HUMAN]
+			log_debug("[src] spawned in [owner] without a proper DNA.")
+
+	if(dna)
+		if(!blood_DNA)
+			blood_DNA = list()
+		blood_DNA[dna.unique_enzymes] = dna.b_type
+
+	create_reagents(50 * (w_class-1)**2)
+	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
+
+	if(food_organ_type && !disable_food_organ)
+		food_organ = new food_organ_type(src)
+
+	if(start_robotized)
+		robotize()
+
+/obj/item/organ/Destroy()
+	owner = null
+	dna = null
+
+	QDEL_NULL(food_organ)
+	QDEL_NULL_LIST(organ_modules)
+	QDEL_NULL_LIST(implants)
+
+	if(ismob(loc))
+		var/mob/M = loc
+		M.drop(src, force = TRUE, changing_slots = TRUE) // Changing_slots prevents drop_sound from playing
+
+	return ..()
+
+/obj/item/organ/think()
+	if(loc != owner)
+		owner = null
+
+	//dead already, no need for more processing
+	if(status & ORGAN_DEAD)
+		return
+
+	//Process infections
+	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
+		// If `think()` is called not by the owner in `handle_organs()` but on his own.
+		if(NEXT_THINK)
+			set_next_think(world.time + 1 SECOND)
+		return
+
+	if(owner)
+		if(isundead(owner))
+			if(NEXT_THINK)
+				set_next_think(world.time + 1 SECOND)
+			return
+		if(owner.bodytemperature >= 170)
+			handle_rejection()
+	else if(reagents && !is_preserved()) // Disbloodied or frozen organs don't decay.
+		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
+		if(B && prob(40))
+			reagents.remove_reagent(/datum/reagent/blood, 0.1)
+			blood_splatter(src, B, 1)
+		if(config.health.organs_can_decay)
+			take_general_damage(rand(1, 3))
+
+	//check if we've hit max_damage
+	if(damage >= max_damage)
+		die()
+
+	if(food_organ)
+		update_food_from_organ()
+
+	// If `think()` is called not by the owner in `handle_organs()` but on his own.
+	if(NEXT_THINK)
+		set_next_think(world.time + 1 SECOND)
+
 /obj/item/organ/return_item()
 	return food_organ
 
@@ -56,52 +142,11 @@ var/list/organ_cache = list()
 	food_organ.appearance = src
 	reagents.trans_to(food_organ, reagents.total_volume)
 
-/obj/item/organ/Destroy()
-	if(owner)
-
-		owner = null
-	dna = null
-	QDEL_NULL(food_organ)
-
-	if(ismob(loc))
-		var/mob/M = loc
-		M.drop(src, force = TRUE, changing_slots = TRUE) // Changing_slots prevents drop_sound from playing
-
-	return ..()
-
 /obj/item/organ/proc/update_health()
 	return
 
 /obj/item/organ/proc/is_broken()
 	return (damage >= min_broken_damage || (status & ORGAN_CUT_AWAY) || (status & ORGAN_BROKEN))
-
-/obj/item/organ/New(mob/living/carbon/holder)
-	..(holder)
-
-	if(food_organ_type && !disable_food_organ)
-		food_organ = new food_organ_type(src)
-
-	if(!min_broken_damage)
-		min_broken_damage = Floor(max_damage / 2)
-
-	if(istype(holder))
-		owner = holder
-		w_class = max(w_class + mob_size_difference(holder.mob_size, MOB_MEDIUM), 1) //smaller mobs have smaller organs.
-
-		if(holder.dna)
-			dna = holder.dna.Clone()
-			species = all_species[dna.species]
-		else
-			species = all_species[SPECIES_HUMAN]
-			log_debug("[src] spawned in [holder] without a proper DNA.")
-
-	if(dna)
-		if(!blood_DNA)
-			blood_DNA = list()
-		blood_DNA[dna.unique_enzymes] = dna.b_type
-
-	create_reagents(50 * (w_class-1)**2)
-	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
 
 /obj/item/organ/proc/set_dna(datum/dna/new_dna)
 	if(new_dna)
@@ -119,60 +164,6 @@ var/list/organ_cache = list()
 	death_time = world.time
 	if(owner && vital)
 		owner.death()
-
-/obj/item/organ/think()
-	if(loc != owner)
-		owner = null
-
-	//dead already, no need for more processing
-	if(status & ORGAN_DEAD)
-		return
-
-	//Process infections
-	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
-		germ_level = 0
-		// If `think()` is called not by the owner in `handle_organs()` but on his own.
-		if(NEXT_THINK)
-			set_next_think(world.time + 1 SECOND)
-		return
-
-	if(owner)
-		if(isundead(owner))
-			germ_level = 0
-			if(NEXT_THINK)
-				set_next_think(world.time + 1 SECOND)
-			return
-
-	if(!owner)
-		if(reagents && !is_preserved())
-			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
-			if(B && prob(40))
-				reagents.remove_reagent(/datum/reagent/blood, 0.1)
-				blood_splatter(src, B, 1)
-			if(config.health.organs_can_decay)
-				take_general_damage(rand(1, 3))
-			germ_level += rand(2, 6)
-			if(germ_level >= INFECTION_LEVEL_TWO)
-				germ_level += rand(2, 6)
-			if(germ_level >= INFECTION_LEVEL_THREE)
-				die()
-
-	else if(owner.bodytemperature >= 170) // Cryo stops germs from moving and doing their bad stuffs
-		// Handle antibiotics and curing infections
-		handle_antibiotics()
-		handle_rejection()
-		handle_germ_effects()
-
-	//check if we've hit max_damage
-	if(damage >= max_damage)
-		die()
-
-	if(food_organ)
-		update_food_from_organ()
-
-	// If `think()` is called not by the owner in `handle_organs()` but on his own.
-	if(NEXT_THINK)
-		set_next_think(world.time + 1 SECOND)
 
 /obj/item/organ/proc/cook_organ()
 	die()
@@ -198,61 +189,27 @@ var/list/organ_cache = list()
 	if(status & ORGAN_DEAD)
 		return SPAN_NOTICE("\The [src] looks severely damaged.")
 
-/obj/item/organ/proc/handle_germ_effects()
-	//** Handle the effects of infections
-
-	var/virus_immunity = owner.virus_immunity()
-
-	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
-
-	if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(virus_immunity*0.3))
-		germ_level--
-
-	if (germ_level >= INFECTION_LEVEL_ONE/2)
-		//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes
-		if(antibiotics < 5 && prob(round(germ_level/6 * owner.immunity_weakness() * 0.01)))
-			if(virus_immunity > 0)
-				germ_level += round(1/virus_immunity, 1) // Immunity starts at 100. This doubles infection rate at 50% immunity. Rounded to nearest whole.
-			else // Will only trigger if immunity has hit zero. Once it does, 10x infection rate.
-				germ_level += 10
-
-	if(germ_level >= INFECTION_LEVEL_ONE)
-		var/fever_temperature = (owner.species.heat_level_1 - owner.species.body_temperature - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.species.body_temperature
-		owner.bodytemperature += between(0, (fever_temperature - (20 CELSIUS))/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
-
-	if (germ_level >= INFECTION_LEVEL_TWO)
-		var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
-		//spread germs
-		if (antibiotics < 5 && parent.germ_level < germ_level && ( parent.germ_level < INFECTION_LEVEL_ONE*2 || prob(owner.immunity_weakness() * 0.3) ))
-			parent.germ_level++
-
-		if (prob(3))	//about once every 30 seconds
-			take_general_damage(1,silent=prob(30))
-
 /obj/item/organ/proc/handle_rejection()
 	// Process unsuitable transplants. TODO: consider some kind of
 	// immunosuppressant that changes transplant data to make it match.
 	if(owner.virus_immunity() < 10) //for now just having shit immunity will suppress it
-		return
+		if(rejecting)
+			rejecting--
+		return FALSE
+
 	if(BP_IS_ROBOTIC(src))
-		return
-	if(dna)
-		if(!rejecting)
-			if(owner.blood_incompatible(dna.b_type, species))
-				rejecting = 1
-		else
-			rejecting++ //Rejection severity increases over time.
-			if(rejecting % 10 == 0) //Only fire every ten rejection ticks.
-				switch(rejecting)
-					if(1 to 50)
-						germ_level++
-					if(51 to 200)
-						germ_level += rand(1,2)
-					if(201 to 500)
-						germ_level += rand(2,3)
-					if(501 to INFINITY)
-						germ_level += rand(3,5)
-						owner.reagents.add_reagent(/datum/reagent/toxin, rand(1,2))
+		return FALSE
+
+	if(!dna)
+		return FALSE
+
+	if(!rejecting)
+		if(owner.blood_incompatible(dna.b_type, species))
+			rejecting = 1
+	else
+		rejecting++
+
+	return TRUE
 
 /obj/item/organ/proc/receive_chem(chemical as obj)
 	return 0
@@ -269,21 +226,6 @@ var/list/organ_cache = list()
 			mechassist()
 		else if(status == "mechanical")
 			robotize()
-
-//Germs
-/obj/item/organ/proc/handle_antibiotics()
-	if(!owner || !germ_level)
-		return
-	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
-	if (!antibiotics)
-		return
-
-	if (germ_level < INFECTION_LEVEL_ONE)
-		germ_level = 0	//cure instantly
-	else if (germ_level < INFECTION_LEVEL_TWO)
-		germ_level -= 5	//at germ_level == 500, this should cure the infection in 5 minutes
-	else
-		germ_level -= 3 //at germ_level == 1000, this will cure the infection in 10 minutes
 
 /obj/item/organ/proc/take_general_damage(amount, silent = FALSE)
 	CRASH("Not Implemented")
@@ -383,23 +325,9 @@ var/list/organ_cache = list()
 			. += "Critical"
 		else
 			. += "Destroyed"
-	switch (germ_level)
-		if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE + 200)
-			. +=  "Mild Infection"
-		if (INFECTION_LEVEL_ONE + 200 to INFECTION_LEVEL_ONE + 300)
-			. +=  "Mild Infection+"
-		if (INFECTION_LEVEL_ONE + 300 to INFECTION_LEVEL_ONE + 400)
-			. +=  "Mild Infection++"
-		if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO + 200)
-			. +=  "Acute Infection"
-		if (INFECTION_LEVEL_TWO + 200 to INFECTION_LEVEL_TWO + 300)
-			. +=  "Acute Infection+"
-		if (INFECTION_LEVEL_TWO + 300 to INFECTION_LEVEL_TWO + 400)
-			. +=  "Acute Infection++"
-		if (INFECTION_LEVEL_THREE to INFINITY)
-			. +=  "Septic"
+
 	if(rejecting)
-		. += "Genetic Rejection"
+		. += "Transplant Rejection"
 
 	if(!istype(src, /obj/item/organ/external) && length(implants))
 		var/unknown_body = 0
@@ -420,5 +348,5 @@ var/list/organ_cache = list()
 	. = list()
 
 	LAZYDISTINCTADD(., implants)
-	LAZYDISTINCTADD(., organ_modules)
+	LAZYDISTINCTADD(., organ_modules) // Should be covered by the above, but let's make sure.
 	LAZYDISTINCTADD(., contents)

@@ -502,7 +502,7 @@
 			return 1
 	return 0
 
-/mob/MouseDrop(mob/M)
+/mob/MouseDrop(mob/M, ...)
 	..()
 	if(M != usr)
 		return
@@ -843,15 +843,15 @@
 		resting_icon.icon_state = "rest[resting]"
 	return
 
-/mob/proc/get_visible_implants(class = 0)
-	var/list/visible_implants = list()
+/mob/proc/get_visible_implants()
+	return
+
+/mob/proc/get_embedded_objects(class = 0)
+	var/list/embedded_objects = list()
 	for(var/obj/item/O in embedded)
 		if(O.w_class > class)
-			visible_implants += O
-	return visible_implants
-
-/mob/proc/embedded_needs_process()
-	return (embedded.len > 0)
+			embedded_objects += O
+	return embedded_objects
 
 /mob/proc/yank_out_object()
 	set category = "Object"
@@ -879,7 +879,7 @@
 	if(S == U)
 		self = 1 // Removing object from yourself.
 
-	valid_objects = get_visible_implants(0)
+	valid_objects = get_embedded_objects(0)
 	if(!valid_objects.len)
 		if(self)
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
@@ -908,14 +908,12 @@
 		var/mob/living/carbon/human/H = src
 		var/obj/item/organ/external/affected
 
-		for(var/obj/item/organ/external/organ in H.organs) //Grab the organ holding the implant.
-			for(var/obj/item/O in organ.implants)
-				if(O == selection)
-					affected = organ
+		for(var/obj/item/organ/external/organ in H.organs) //Grab the organ holding the embedded object.
+			if(LAZYISIN(organ.embedded_objects, selection))
+				affected = organ
+				break
 
-		affected.implants -= selection
-		for(var/datum/wound/wound in affected.wounds)
-			LAZYREMOVE(wound.embedded_objects, selection)
+		affected.drop_embedded_object(selection)
 
 		H.shock_stage+=20
 		affected.take_external_damage((selection.w_class * 3), 0, DAM_EDGE, "Embedded object extraction")
@@ -943,7 +941,7 @@
 		if(!LAZYLEN(pinned))
 			anchored = 0
 
-	valid_objects = get_visible_implants(0)
+	valid_objects = get_embedded_objects(0)
 	if(!valid_objects.len)
 		src.verbs -= /mob/proc/yank_out_object
 

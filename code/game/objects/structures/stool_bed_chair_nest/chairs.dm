@@ -116,10 +116,11 @@
 	var/material/padding_material
 	var/material/material
 
-/obj/item/foldchair/New()
-	..()
+/obj/item/foldchair/Initialize()
+	. = ..()
 	if(!material)
 		material = get_material_by_name(MATERIAL_STEEL)
+	update_icon()
 
 /obj/item/foldchair/attack_self(mob/user)
 	var/obj/structure/bed/chair/O = new /obj/structure/bed/chair(user.loc)
@@ -211,60 +212,43 @@
 	base_icon_state = "comfychair"
 	foldable = FALSE
 	anchored = TRUE
+	material = MATERIAL_STEEL
 
 /obj/structure/bed/chair/comfy/brown
 	icon_state = "comfychair_brown_preview"
-
-/obj/structure/bed/chair/comfy/brown/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, MATERIAL_LEATHER)
+	padding_material = MATERIAL_LEATHER
 
 /obj/structure/bed/chair/comfy/red
 	icon_state = "comfychair_red_preview"
-
-/obj/structure/bed/chair/comfy/red/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, MATERIAL_CARPET)
+	padding_material = "red"
 
 /obj/structure/bed/chair/comfy/teal
 	icon_state = "comfychair_teal_preview"
-
-/obj/structure/bed/chair/comfy/teal/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, "teal")
+	padding_material = "teal"
 
 /obj/structure/bed/chair/comfy/black
 	icon_state = "comfychair_black_preview"
-
-/obj/structure/bed/chair/comfy/black/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, "black")
+	padding_material = "black"
 
 /obj/structure/bed/chair/comfy/green
 	icon_state = "comfychair_green_preview"
-
-/obj/structure/bed/chair/comfy/green/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, "green")
+	padding_material = "green"
 
 /obj/structure/bed/chair/comfy/purp
 	icon_state = "comfychair_purp_preview"
-
-/obj/structure/bed/chair/comfy/purp/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, "purple")
+	padding_material = "purple"
 
 /obj/structure/bed/chair/comfy/blue
 	icon_state = "comfychair_blue_preview"
-
-/obj/structure/bed/chair/comfy/blue/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, "blue")
+	padding_material = "blue"
 
 /obj/structure/bed/chair/comfy/beige
 	icon_state = "comfychair_beige_preview"
-
-/obj/structure/bed/chair/comfy/beige/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, "beige")
+	padding_material = "beige"
 
 /obj/structure/bed/chair/comfy/lime
 	icon_state = "comfychair_lime_preview"
-
-/obj/structure/bed/chair/comfy/lime/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, "lime")
+	padding_material = "lime"
 
 /obj/structure/bed/chair/comfy/captain
 	name = "captain chair"
@@ -272,9 +256,7 @@
 	icon_state = "capchair_preview"
 	base_icon_state = "capchair"
 	buckle_movable = 1
-
-/obj/structure/bed/chair/comfy/captain/New(newloc,newmaterial)
-	..(newloc, MATERIAL_STEEL, "black")
+	padding_material = "black"
 
 /* ======================================================= */
 /* -------------------- Office Chairs -------------------- */
@@ -351,14 +333,12 @@
 	icon_state = "wooden_chair_preview"
 	material_alteration = MATERIAL_ALTERATION_NAME
 	foldable = FALSE
+	material = MATERIAL_WOOD
 
 /obj/structure/bed/chair/wood/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
-
-/obj/structure/bed/chair/wood/New(newloc)
-	..(newloc, MATERIAL_WOOD)
 
 /obj/structure/bed/chair/wood/wings
 	base_icon_state = "wooden_chair_wings"
@@ -372,53 +352,50 @@
 	material_alteration = MATERIAL_ALTERATION_NONE
 	foldable = FALSE
 	anchored = TRUE
+	material = MATERIAL_PLASTIC
 
 /obj/structure/bed/chair/shuttle/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
 
-/obj/structure/bed/chair/shuttle/blue/New(newloc,newmaterial)
-	..(newloc, MATERIAL_PLASTIC,"blue")
+/obj/structure/bed/chair/shuttle/blue
+	padding_material = "blue"
 
 /obj/structure/bed/chair/shuttle/red
 	base_icon_state = "shuttle_chaired"
 	icon_state = "shuttle_chaired_preview"
-
-/obj/structure/bed/chair/shuttle/red/New(newloc, newmaterial)
-	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
+	padding_material = "red"
 
 /obj/structure/bed/chair/shuttle/black
 	base_icon_state = "shuttle_chairbl"
 	icon_state = "shuttle_chairbl_preview"
-
-/obj/structure/bed/chair/shuttle/black/New(newloc, newmaterial)
-	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
+	padding_material = "black"
 
 // Colorful chairs
-/obj/structure/bed/chair/brown/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, MATERIAL_LEATHER)
+/obj/structure/bed/chair/brown
+	padding_material = MATERIAL_LEATHER
 
-/obj/structure/bed/chair/red/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL, MATERIAL_CARPET)
+/obj/structure/bed/chair/red
+	padding_material = "red"
 
-/obj/structure/bed/chair/teal/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL,"teal")
+/obj/structure/bed/chair/teal
+	padding_material = "teal"
 
-/obj/structure/bed/chair/black/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL,"black")
+/obj/structure/bed/chair/black
+	padding_material = "black"
 
-/obj/structure/bed/chair/green/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL,"green")
+/obj/structure/bed/chair/green
+	padding_material = "green"
 
-/obj/structure/bed/chair/purp/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL,"purple")
+/obj/structure/bed/chair/purp
+	padding_material = "purple"
 
-/obj/structure/bed/chair/blue/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL,"blue")
+/obj/structure/bed/chair/blue
+	padding_material = "blue"
 
-/obj/structure/bed/chair/beige/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL,"beige")
+/obj/structure/bed/chair/beige
+	padding_material = "beige"
 
-/obj/structure/bed/chair/lime/New(newloc, newmaterial)
-	..(newloc, MATERIAL_STEEL,"lime")
+/obj/structure/bed/chair/lime
+	padding_material = "lime"

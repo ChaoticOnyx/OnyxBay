@@ -50,7 +50,7 @@
 	suffix = num2text(++amount)
 	name = "Mulebot #[suffix]"
 
-/mob/living/bot/mulebot/MouseDrop_T(atom/movable/C, mob/user)
+/mob/living/bot/mulebot/MouseDrop_T(atom/movable/C, mob/user, ...)
 	if(user.stat)
 		return
 

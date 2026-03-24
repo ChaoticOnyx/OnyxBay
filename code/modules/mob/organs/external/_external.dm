@@ -21,10 +21,32 @@
 	// Damage vars.
 	var/brute_mod = 1                  // Multiplier for incoming brute damage.
 	var/burn_mod = 1                   // As above for burn.
+
 	var/brute_dam = 0                  // Actual current brute damage.
 	var/brute_ratio = 0                // Ratio of current brute damage to max damage.
+	var/brute_last = 0
+
 	var/burn_dam = 0                   // Actual current burn damage.
 	var/burn_ratio = 0                 // Ratio of current burn damage to max damage.
+	var/burn_last = 0
+
+	var/blunt_dam = 0                  // Amount of blunt brute damage.
+	var/blunt_last = 0
+	var/blunt_ratio = 0
+	var/cut_dam = 0                    // Amount of sharp brute damage, aka "cut area".
+	var/cut_last = 0
+	var/cut_ratio = 0
+	var/pierce_dam = 0                 // Amount of pierce brute damage, aka "cut depth".
+	var/pierce_last = 0
+	var/pierce_ratio = 0
+
+	var/max_bleeding = 0               // Potential bleeding, not counting scabbing, bandages or clamps.
+	var/bleeding = 0                   // Effective bleeding severity at the moment.
+	var/bandaged = 0                   // Bandaged stage.
+	var/scabbed = 0                    // Scabbing stage.
+	var/clamped = FALSE                // Clamped state. Completely prevents bleeding, but also prevents sharp regeneration and is interrupted by any damage.
+	var/salved = FALSE                 // Salved state. Speeds up blunt regeneration and decreases pain. Interrupted by any damage.
+
 	var/last_dam = -1                  // used in healing/processing calculations.
 	var/pain = 0                       // How much the limb hurts.
 	var/full_pain = 0                  // Overall pain including damages.
@@ -59,8 +81,6 @@
 
 	// Wound and structural data.
 	var/wound_update_accuracy = 2      // how often wounds should be updated, a higher number means less often
-	var/list/wounds                    // wound datum list.
-	var/number_wounds = 0              // number of wounds, which is NOT wounds.len!
 	var/obj/item/organ/external/parent // Master-limb.
 	var/list/children                  // Sub-limbs.
 	var/list/internal_organs = list()  // Internal organs of this body part
@@ -89,14 +109,69 @@
 	var/atom/movable/applied_pressure
 	var/atom/movable/splinted
 	var/internal_organs_size = 0       // Current size cost of internal organs in this body part
+	var/list/embedded_objects
 
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
 
 /obj/item/organ/external/Initialize(mapload, ...)
 	. = ..()
+
+	if(isnull(pain_disability_threshold))
+		pain_disability_threshold = (max_damage * 0.75)
+	if(owner)
+		replaced(owner)
+		sync_colour_to_human(owner)
+		if(isnull(max_pain))
+			max_pain = min(max_damage * 2.5, owner.species.total_health * 1.5)
+	else if(isnull(max_pain))
+		max_pain = max_damage * 1.5 // Should not ~probably~ happen
+
 	if(!mapload && owner)
 		owner.update_organ_movespeed()
+
+	get_overlays()
+
+	if(food_organ in implants)
+		implants -= food_organ
+
+/obj/item/organ/external/Destroy()
+	if(parent?.children)
+		parent.children -= src
+		parent = null
+
+	QDEL_NULL_LIST(children)
+
+	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
+	BIO?.change_host(get_turf(src)) // Because we don't want biostructures to get wrecked so easily
+
+	QDEL_NULL_LIST(internal_organs)
+
+	applied_pressure = null
+	if(splinted?.loc == src)
+		QDEL_NULL(splinted)
+
+	if(owner)
+		if(limb_flags & ORGAN_FLAG_CAN_GRASP)
+			owner.grasp_limbs -= src
+		if(limb_flags & ORGAN_FLAG_CAN_STAND)
+			owner.stance_limbs -= src
+
+		owner.organs -= src
+		owner.organs_by_name -= organ_tag
+		while(null in owner.organs)
+			owner.organs -= null
+		owner.bad_external_organs -= src
+
+		if(!QDELETED(owner)) // Don't waste time if we'are being deleted as a whole.
+			owner.update_organ_movespeed()
+
+	drop_embedded_objects()
+
+	if(autopsy_data)
+		autopsy_data.Cut()
+
+	return ..()
 
 /obj/item/organ/external/proc/get_fingerprint()
 
@@ -115,61 +190,10 @@
 
 /obj/item/organ/external/afterattack(atom/A, mob/user, proximity)
 	..()
-	if(proximity && get_fingerprint())
-		A.add_partial_print(get_fingerprint())
-
-/obj/item/organ/external/New(mob/living/carbon/holder)
-	..()
-	if(isnull(pain_disability_threshold))
-		pain_disability_threshold = (max_damage * 0.75)
-	if(owner)
-		replaced(owner)
-		sync_colour_to_human(owner)
-		if(isnull(max_pain))
-			max_pain = min(max_damage * 2.5, owner.species.total_health * 1.5)
-	else if(isnull(max_pain))
-		max_pain = max_damage * 1.5 // Should not ~probably~ happen
-	get_overlays()
-
-	if(food_organ in implants)
-		implants -= food_organ
-
-/obj/item/organ/external/Destroy()
-
-	if(wounds)
-		for(var/datum/wound/wound in wounds)
-			qdel(wound)
-
-	if(parent?.children)
-		parent.children -= src
-		parent = null
-
-	QDEL_NULL_LIST(children)
-
-	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
-	BIO?.change_host(get_turf(src)) // Because we don't want biostructures to get wrecked so easily
-
-	QDEL_NULL_LIST(internal_organs)
-
-	applied_pressure = null
-	if(splinted?.loc == src)
-		QDEL_NULL(splinted)
-
-	if(owner)
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
-		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs -= src
-		owner.organs -= src
-		owner.organs_by_name -= organ_tag
-		while(null in owner.organs)
-			owner.organs -= null
-		owner.bad_external_organs.Remove(src)
-
-	QDEL_NULL_LIST(organ_modules)
-
-	if(autopsy_data)
-		autopsy_data.Cut()
-
-	return ..()
+	if(proximity)
+		var/FP = get_fingerprint()
+		if(FP)
+			A.add_partial_print(FP)
 
 /obj/item/organ/external/set_dna(datum/dna/new_dna)
 	..()
@@ -247,64 +271,84 @@
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	switch(stage)
 		if(0)
-			if(W.sharp)
-				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
-					if(children?.len)
-						var/obj/item/organ/external/external_child = pick(children)
-						status |= ORGAN_CUT_AWAY
-						children.Remove(external_child)
-						external_child.forceMove(get_turf(src))
-						external_child.SetTransform(rotation = rand(180))
-						external_child.compile_icon()
-						compile_icon()
-						user.visible_message(SPAN("danger", "<b>[user]</b> cuts [external_child] from [src] with [W]!"))
-					else
-						user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
-						stage++
+			if(W.edge)
+				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
 					return
-		if(1)
-			if(istype(W))
-				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
-					user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
+				if(length(children))
+					var/obj/item/organ/external/external_child = pick(children)
+					status |= ORGAN_CUT_AWAY
+					children.Remove(external_child)
+					external_child.forceMove(get_turf(src))
+					external_child.SetTransform(rotation = rand(180))
+					external_child.compile_icon()
+					compile_icon()
+					user.visible_message(SPAN("danger", "<b>[user]</b> cuts [external_child] from [src] with [W]!"))
+				else
+					user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
 					stage++
+				return
+		if(1)
+			if(istype(W) && W.force >= 5.0)
+				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
 					return
+				user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
+				drop_embedded_objects()
+				stage++
+				return
 		if(2)
-			if(W.sharp || istype(W, /obj/item/hemostat) || isWirecutter(W))
-				var/list/organs = get_contents_recursive()
-				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
-					if(organs.len)
-						var/obj/item/removing = pick(organs)
-						var/obj/item/organ/external/current_child = removing.loc
+			if(W.sharp || W.edge || istype(W, /obj/item/hemostat) || isWirecutter(W))
+				var/list/stuff_to_remove = get_contents_recursive()
+				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
+					return
 
-						current_child.implants.Remove(removing)
-						current_child.internal_organs.Remove(removing)
+				for(var/obj/item/I in shuffle(stuff_to_remove))
+					var/obj/item/organ/external/current_child = I.loc
+					if(current_child.food_organ == I)
+						continue
 
-						status |= ORGAN_CUT_AWAY
+					if(istype(I, /obj/item/organ_module))
+						var/obj/item/organ_module/module = I
+						module.remove(current_child)
 
-						removing.forceMove(get_turf(src))
-						user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
+					if(istype(I, /obj/item/implant))
+						var/obj/item/implant/implant = I
+						implant.removed()
+
+					current_child.implants.Remove(I)
+					current_child.internal_organs.Remove(I)
+					LAZYREMOVE(current_child.embedded_objects, I)
+
+					status |= ORGAN_CUT_AWAY
+
+					I.forceMove(get_turf(src))
+					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [I] from \the [src] with \the [W]!"))
+					return
+
+				if(organ_tag == BP_HEAD && W.edge)
+					var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
+					if(!H.skull_path)
+						user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in \the [src] with \the [W]."))
+						return
+					user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with \the [W], revealing a skull."))
+					if(istype(H.loc, /turf))
+						new H.skull_path(H.loc)
+						gibs(H.loc)
 					else
-						if(organ_tag == BP_HEAD && W.sharp)
-							var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
-							if(!H.skull_path)
-								user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
-								return
-							user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with [W], revealing a skull."))
-							if(istype(H.loc, /turf))
-								new H.skull_path(H.loc)
-								gibs(H.loc)
-							else
-								new H.skull_path(user.loc)
-								gibs(user.loc)
-							H.skull_path = null // So no skulls dupe in case of lags
-							qdel(src)
-						else
-							if(src && !QDELETED(src))
-								food_organ.appearance = food_organ_type
-								food_organ.forceMove(get_turf(loc))
-								food_organ = null
-								qdel(src)
-							user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
+						new H.skull_path(user.loc)
+						gibs(user.loc)
+					H.skull_path = null // So no skulls dupe in case of lags
+					qdel(src)
+					return
+
+				if(!QDELETED(food_organ) && W.edge)
+					user.visible_message(SPAN("danger", "<b>[user]</b> chops \the [src] up with \the [W]!"))
+					food_organ.appearance = food_organ_type
+					food_organ.forceMove(get_turf(loc))
+					food_organ = null
+					qdel(src)
+					return
+
+				user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in \the [src] with \the [W]."))
 				return
 	..()
 
@@ -317,55 +361,16 @@
 
 	all_items.Add(implants)
 	all_items.Add(internal_organs)
+	all_items.Add(embedded_objects)
 
 	for(var/obj/item/organ/external/child in children)
 		all_items.Add(child.get_contents_recursive())
 
 	return all_items
 
-/obj/item/organ/external/proc/is_dislocated()
-	if(dislocated > 0)
-		return 1
-	if(is_parent_dislocated())
-		return 1//if any parent is dislocated, we are considered dislocated as well
-	return 0
-
-/obj/item/organ/external/proc/is_parent_dislocated()
-	var/obj/item/organ/external/O = parent
-	while(O && O.dislocated != -1)
-		if(O.dislocated == 1)
-			return 1
-		O = O.parent
-	return 0
-
-
-/obj/item/organ/external/proc/dislocate()
-	if(dislocated == -1)
-		return
-
-	dislocated = 1
-	if(owner)
-		owner.verbs |= /mob/living/carbon/human/proc/undislocate
-
-/obj/item/organ/external/proc/undislocate()
-	if(dislocated == -1)
-		return
-
-	dislocated = 0
-	if(owner)
-		owner.shock_stage += 20
-
-		//check to see if we still need the verb
-		for(var/obj/item/organ/external/limb in owner.organs)
-			if(limb.dislocated == 1)
-				return
-
-		owner.verbs -= /mob/living/carbon/human/proc/undislocate
-
 /obj/item/organ/external/update_health()
 	damage = min(max_damage, (brute_dam + burn_dam))
 	return
-
 
 /obj/item/organ/external/replaced(mob/living/carbon/human/target)
 	..()
@@ -404,10 +409,7 @@
 			if(!parent.children)
 				parent.children = list()
 			parent.children.Add(src)
-			//Remove all stump wounds since limb is not missing anymore
-			for(var/datum/wound/lost_limb/W in parent.wounds)
-				qdel(W)
-				break
+			/// NOWOUNDS TODO: Stump removal
 			parent.update_damages()
 
 //Helper proc used by various tools for repairing robot limbs
@@ -462,56 +464,51 @@
 This function completely restores a damaged organ to perfect condition.
 */
 /obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs = FALSE)
-	var/list/kept_modules = list()
-	for(var/obj/item/organ_module/module in organ_modules)
-		kept_modules += module
-
 	damage_state = "00"
 
 	status = 0
-	brute_dam = 0
+
 	burn_dam = 0
-	germ_level = 0
-	remove_all_pain()
+	brute_dam = 0
+	cut_dam = 0
+	pierce_dam = 0
+	blunt_dam = 0
+
 	genetic_degradation = 0
-	for(var/datum/wound/wound in wounds)
-		qdel(wound)
-	number_wounds = 0
+
+	clamped = FALSE
+	salved = FALSE
+
+	remove_all_pain()
 
 	// handle internal organs
 	for(var/obj/item/organ/current_organ in internal_organs)
 		current_organ.rejuvenate(ignore_prosthetic_prefs)
 
 	// remove embedded objects and drop them on the floor
+	drop_embedded_objects()
+
+	// Tidy up unexpected things
 	for(var/obj/implanted_object in implants)
-		if(istype(implanted_object, /obj/item/organ_module))
-			continue
-		if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
-			implanted_object.dropInto(get_turf(src))
+		if(QDELETED(implanted_object))
 			implants -= implanted_object
-
-	for(var/obj/item/organ_module/module in kept_modules)
-		if(QDELETED(module))
 			continue
-		if(module.loc != src)
-			module.forceMove(src)
-		if(!(module in organ_modules))
-			organ_modules += module
-		if(!(module in implants))
-			implants += module
+		if(implanted_object.loc != src)
+			implanted_object.forceMove(src)
 
-	if(owner && !ignore_prosthetic_prefs)
-		if(owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
-			var/status = owner.client.prefs.organ_data[organ_tag]
-			if(status == "amputated")
+	update_damages()
+
+	if(!owner)
+		return
+
+	if(!ignore_prosthetic_prefs && owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
+		switch(owner.client.prefs.organ_data[organ_tag])
+			if("amputated")
 				remove_rejuv()
-			else if(status == "cyborg")
-				var/robodata = owner.client.prefs.rlimb_data[organ_tag]
-				if(robodata)
-					robotize(robodata)
-				else
-					robotize()
-		owner.update_health()
+			if("cyborg")
+				robotize(owner.client.prefs.rlimb_data[organ_tag])
+
+	owner.update_health()
 
 /obj/item/organ/external/remove_rejuv()
 	if(owner)
@@ -526,70 +523,6 @@ This function completely restores a damaged organ to perfect condition.
 		if(I) I.remove_rejuv()
 	..()
 
-/obj/item/organ/external/proc/createwound(type = CUT, damage, surgical)
-	if(damage <= 0)
-		return
-	//moved these before the open_wound check so that having many small wounds for example doesn't somehow protect you from taking internal damage (because of the return)
-	//Brute damage can possibly trigger an internal wound, too.
-	var/local_damage = brute_dam + burn_dam
-	if(!surgical && (type in list(CUT, PIERCE, BRUISE)) && damage > 15 && local_damage > min_broken_damage)
-		var/internal_damage
-		if(prob(ceil(damage/2)) && sever_artery())
-			internal_damage = TRUE
-		if(prob(ceil(damage/4)) && sever_tendon())
-			internal_damage = TRUE
-		if(internal_damage)
-			owner.custom_pain("You feel something rip in your [name]!", 50, affecting = src)
-
-	//Burn damage can cause fluid loss due to blistering and cook-off
-	if(owner && (type in list(BURN, LASER)) && (damage > 5 || damage + burn_dam >= 15) && !BP_IS_ROBOTIC(src))
-		var/fluid_loss_severity
-		switch(type)
-			if(BURN)  fluid_loss_severity = FLUIDLOSS_WIDE_BURN
-			if(LASER) fluid_loss_severity = FLUIDLOSS_CONC_BURN
-		var/fluid_loss = (damage/(owner.maxHealth - config.health.health_threshold_dead)) * owner.species.blood_volume * fluid_loss_severity
-		owner.remove_blood(fluid_loss)
-
-	// first check whether we can widen an existing wound
-	if(!surgical && LAZYLEN(wounds) && prob(max(50+(number_wounds-1)*10,90)))
-		if((type == CUT || type == BRUISE) && damage >= 5)
-			//we need to make sure that the wound we are going to worsen is compatible with the type of damage...
-			var/list/compatible_wounds = list()
-			for (var/datum/wound/W in wounds)
-				if (W.can_worsen(type, damage))
-					compatible_wounds += W
-
-			if(compatible_wounds.len)
-				var/datum/wound/W = pick(compatible_wounds)
-				W.open_wound(damage)
-				if(owner && prob(25))
-					if(BP_IS_ROBOTIC(src))
-						owner.visible_message("<span class='danger'>The damage to [owner.name]'s [name] worsens.</span>",\
-						"<span class='danger'>The damage to your [name] worsens.</span>",\
-						"<span class='danger'>You hear the screech of abused metal.</span>")
-					else
-						owner.visible_message("<span class='danger'>The wound on [owner.name]'s [name] widens with a nasty ripping noise.</span>",\
-						"<span class='danger'>The wound on your [name] widens with a nasty ripping noise.</span>",\
-						"<span class='danger'>You hear a nasty ripping noise, as if flesh is being torn apart.</span>")
-				return W
-
-	//Creating wound
-	var/wound_type = get_wound_type(type, damage)
-
-	if(wound_type)
-		var/datum/wound/W = new wound_type(damage, src)
-
-		//Check whether we can add the wound to an existing wound
-		if(surgical)
-			W.autoheal_cutoff = 0
-		else
-			for(var/datum/wound/other in wounds)
-				if(other.can_merge(W))
-					other.merge_wound(W)
-					return
-		LAZYADD(wounds, W)
-		return W
-
 /****************************************************
 			   PROCESSING & UPDATING
 ****************************************************/
@@ -598,22 +531,38 @@ This function completely restores a damaged organ to perfect condition.
 /obj/item/organ/external/is_broken()
 	return ((status & ORGAN_CUT_AWAY) || ((status & ORGAN_BROKEN) && !splinted))
 
+/obj/item/organ/external/proc/is_dislocated()
+	if(dislocated > 0)
+		return 1
+	if(is_parent_dislocated())
+		return 1//if any parent is dislocated, we are considered dislocated as well
+	return 0
+
+/obj/item/organ/external/proc/is_parent_dislocated()
+	var/obj/item/organ/external/O = parent
+	while(O && O.dislocated != -1)
+		if(O.dislocated == 1)
+			return 1
+		O = O.parent
+	return 0
+
 //Determines if we even need to process this organ.
 /obj/item/organ/external/proc/need_process()
 	if(get_pain())
-		return 1
+		return TRUE
+
 	if(status & (ORGAN_CUT_AWAY|ORGAN_BLEEDING|ORGAN_BROKEN|ORGAN_DEAD|ORGAN_MUTATED))
-		return 1
+		return TRUE
+
 	if((brute_dam || burn_dam) && !BP_IS_ROBOTIC(src)) //Robot limbs don't autoheal and thus don't need to process when damaged
-		return 1
+		return TRUE
+
 	if(last_dam != brute_dam + burn_dam) // Process when we are fully healed up.
 		last_dam = brute_dam + burn_dam
-		return 1
-	else
-		last_dam = brute_dam + burn_dam
-	if(germ_level)
-		return 1
-	return 0
+		return TRUE
+
+	last_dam = brute_dam + burn_dam
+	return FALSE
 
 /obj/item/organ/external/var/should_update_damage_icons_this_tick = FALSE
 
@@ -621,10 +570,7 @@ This function completely restores a damaged organ to perfect condition.
 	if(owner)
 		// Process wounds, doing healing etc. Only do this every few ticks to save processing power
 		if(owner.life_tick % wound_update_accuracy == 0)
-			should_update_damage_icons_this_tick = update_wounds()
-
-		//Infections
-		update_germs()
+			should_update_damage_icons_this_tick = handle_regeneration()
 	else
 		remove_all_pain()
 		..()
@@ -636,220 +582,121 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/item/organ/external/die()
 	for(var/obj/item/organ/external/E in children)
-		E.take_external_damage(10, 0, used_weapon = "parent organ sepsis")
+		E.take_blunt_damage(10, "parent organ sepsis", TRUE)
 	..()
 
-//Updating germ levels. Handles organ germ levels and necrosis.
-/*
-The INFECTION_LEVEL values defined in setup.dm control the time it takes to reach the different
-infection levels. Since infection growth is exponential, you can adjust the time it takes to get
-from one germ_level to another using the rough formula:
-
-desired_germ_level = initial_germ_level*e^(desired_time_in_seconds/1000)
-
-So if I wanted it to take an average of 15 minutes to get from level one (100) to level two
-I would set INFECTION_LEVEL_TWO to 100*e^(15*60/1000) = 245. Note that this is the average time,
-the actual time is dependent on RNG.
-
-INFECTION_LEVEL_ONE		below this germ level nothing happens, and the infection doesn't grow
-INFECTION_LEVEL_TWO		above this germ level the infection will start to spread to internal and adjacent organs
-INFECTION_LEVEL_THREE	above this germ level the player will take additional toxin damage per second, and will die in minutes without
-						antitox. also, above this germ level you will need to overdose on spaceacillin to reduce the germ_level.
-
-Note that amputating the affected organ does in fact remove the infection from the player's body.
-*/
-/obj/item/organ/external/proc/update_germs()
-
-	if(BP_IS_ROBOTIC(src) || (owner.species && owner.species.species_flags & SPECIES_FLAG_IS_PLANT)) //Robotic limbs shouldn't be infected, nor should nonexistant limbs.
-		germ_level = 0
+// Handles natural heal, internal bleedings and infections
+/obj/item/organ/external/proc/handle_regeneration()
+	if(BP_IS_ROBOTIC(src)) // T-1000 would NOT be proud.
 		return
-
-	if(owner.bodytemperature >= 170)	//cryo stops germs from moving and doing their bad stuffs
-		//** Syncing germ levels with external wounds
-		handle_germ_sync()
-
-		//** Handle antibiotics and curing infections
-		handle_antibiotics()
-
-		//** Handle the effects of infections
-		handle_germ_effects()
-
-/obj/item/organ/external/proc/handle_germ_sync()
-	var/antibiotics = owner.reagents.get_reagent_amount(/datum/reagent/spaceacillin)
-	for(var/datum/wound/W in wounds)
-		//Open wounds can become infected
-		if (owner.germ_level > W.germ_level && W.infection_check())
-			W.germ_level++
-
-	if (antibiotics < 5)
-		for(var/datum/wound/W in wounds)
-			//Infected wounds raise the organ's germ level
-			if (W.germ_level > germ_level)
-				germ_level++
-				break	//limit increase to a maximum of one per second
-
-/obj/item/organ/external/handle_germ_effects()
-
-	if(germ_level < INFECTION_LEVEL_TWO)
-		return ..()
-
-	var/antibiotics = owner.reagents.get_reagent_amount(/datum/reagent/spaceacillin)
-
-	if(germ_level >= INFECTION_LEVEL_TWO)
-		//spread the infection to internal organs
-		var/obj/item/organ/target_organ = null	//make internal organs become infected one at a time instead of all at once
-		for (var/obj/item/organ/I in internal_organs)
-			if (I.germ_level > 0 && I.germ_level < min(germ_level, INFECTION_LEVEL_TWO))	//once the organ reaches whatever we can give it, or level two, switch to a different one
-				if (!target_organ || I.germ_level > target_organ.germ_level)	//choose the organ with the highest germ_level
-					target_organ = I
-
-		if (!target_organ)
-			//figure out which organs we can spread germs to and pick one at random
-			var/list/candidate_organs = list()
-			for (var/obj/item/organ/I in internal_organs)
-				if (I.germ_level < germ_level)
-					candidate_organs |= I
-			if (candidate_organs.len)
-				target_organ = pick(candidate_organs)
-
-		if (target_organ)
-			target_organ.germ_level++
-
-		//spread the infection to child and parent organs
-		if (children)
-			for (var/obj/item/organ/external/child in children)
-				if (child.germ_level < germ_level && !BP_IS_ROBOTIC(child))
-					if (child.germ_level < INFECTION_LEVEL_ONE*2 || prob(30))
-						child.germ_level++
-
-		if (parent)
-			if (parent.germ_level < germ_level && !BP_IS_ROBOTIC(parent))
-				if (parent.germ_level < INFECTION_LEVEL_ONE*2 || prob(30))
-					parent.germ_level++
-
-	if(germ_level >= INFECTION_LEVEL_THREE && antibiotics < 15)	//overdosing is necessary to stop severe infections
-		if (!(status & ORGAN_DEAD))
-			status |= ORGAN_DEAD
-			to_chat(owner, "<span class='notice'>You can't feel your [name] anymore...</span>")
-			owner.update_body(1)
-
-		germ_level++
-		owner.adjustToxLoss(2.0)
-
-//Updating wounds. Handles wound natural I had some free spachealing, internal bleedings and infections
-/obj/item/organ/external/proc/update_wounds()
-
-	if(BP_IS_ROBOTIC(src)) //Robotic limbs don't heal or get worse.
-		for(var/datum/wound/W in wounds) //Repaired wounds disappear though
-			if(W.damage <= 0)  //and they disappear right away
-				qdel(W)        //TODO: robot wounds for robot limbs
-		return
-
-	for(var/datum/wound/W in wounds)
-		// wounds can disappear after 10 minutes at the earliest
-		if(W.damage <= 0 && W.created + (10 MINUTES) <= world.time)
-			qdel(W)
-			. = TRUE
-			continue
-			// let the GC handle the deletion of the wound
-
-		var/dam_type = BRUTE
-		if(W.damage_type == BURN)
-			dam_type = BURN
-		if(!owner.can_autoheal(dam_type))
-			continue
-
-		// slow healing
-		var/heal_amt = 0
-		// if damage >= 50 AFTER treatment then it's probably too severe to heal within the timeframe of a round.
-		if (!owner.chem_effects[CE_TOXIN] && W.wound_damage() && brute_ratio < 0.5 && burn_ratio < 0.5)
-			heal_amt += 0.5
-
-		//we only update wounds once in [wound_update_accuracy] ticks so have to emulate realtime
-		heal_amt = heal_amt * wound_update_accuracy
-		//configurable regen speed woo, no-regen hardcore or instaheal hugbox, choose your destiny
-		heal_amt = heal_amt * config.health.organ_regeneration_multiplier
-		// amount of healing is spread over all the wounds
-		heal_amt = heal_amt / (LAZYLEN(wounds) + 1)
-		// making it look prettier on scanners
-		heal_amt = round(heal_amt,0.1)
-
-		W.heal_damage(heal_amt)
-
-	// sync the organ's damage with its wounds
-	update_damages()
-	. = update_damstate()
-
-//Updates brute_damn and burn_damn from wound damages. Updates BLEEDING status.
-/obj/item/organ/external/proc/update_damages()
-	number_wounds = 0
-	brute_dam = 0
-	burn_dam = 0
-	status &= ~ORGAN_BLEEDING
-	var/clamped = 0
 
 	var/mob/living/carbon/human/H
-	if(istype(owner,/mob/living/carbon/human))
+	if(ishuman(owner))
 		H = owner
 
-	//update damage counts
-	for(var/datum/wound/W in wounds)
-		if(W.damage_type == BURN)
-			burn_dam += W.damage
-		else
-			brute_dam += W.damage
+	var/should_update_health = FALSE
+	var/regeneration = H ? H.coagulation : 1.0
+	var/already_scabbed = (scabbed >= max_bleeding)
 
-		if(!BP_IS_ROBOTIC(src) && W.bleeding() && (H && H.should_have_organ(BP_HEART)))
-			var/coagulation = 1.0
-			if(H)
-				coagulation = H.coagulation
-			W.bleed_timer = max(W.bleed_timer - coagulation, 0)
+	// Organs won't autoheal until all the wounds are scabbed.
+	// Scabbing progresses faster under properly-applied bandages.
+	if(!already_scabbed)
+		if(!clamped && regeneration)
+			scabbed += regeneration * ((bandaged >= scabbed) ? 1.0 : 0.5) * wound_update_accuracy
+			should_update_health = TRUE
+
+	if(already_scabbed || owner.chem_effects[CE_BRUTE_REGEN] || owner.chem_effects[CE_BURN_REGEN])
+		regeneration = round(regeneration * 0.2 * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
+
+		// Evenly spreading regeneration between burn and brute damage if both are present
+		if(burn_dam && brute_dam)
+			regeneration *= 0.5
+
+		if(burn_dam)
+			heal_burn_damage(regeneration * (salved ? 2.5 : 1.0) + owner.chem_effects[CE_BURN_REGEN], FALSE, FALSE, FALSE)
+			should_update_health = TRUE
+
+		if(brute_dam)
+			var/spread_brute = 1.0
+			if(blunt_dam && (pierce_dam + cut_dam))
+				spread_brute = 0.5
+
+			if(blunt_dam)
+				heal_blunt_damage((regeneration * (salved ? 2.5 : 1.0) + owner.chem_effects[CE_BRUTE_REGEN]) * spread_brute, FALSE, FALSE, FALSE)
+				should_update_health = TRUE
+
+			// Wounds won't close naturally if they are clamped or there are things sticking out of them.
+			if((pierce_dam + cut_dam) && !clamped && !LAZYLEN(embedded_objects))
+				heal_sharp_damage((regeneration + owner.chem_effects[CE_BRUTE_REGEN]) * spread_brute, FALSE, FALSE, FALSE)
+				should_update_health = TRUE
+
+	if(should_update_health)
+		update_damages()
+		owner?.update_health()
+	return update_damstate()
+
+// Updates damage ratios, bleeding status, etc.
+/obj/item/organ/external/proc/update_damages()
+	if(owner && (owner.status_flags & GODMODE))
+		max_bleeding = 0
+		bandaged = 0
+		scabbed = 0
+		bleeding = 0
+		brute_dam = 0
+		burn_dam = 0
+		return
+
+	// Bleeding
+	if(!BP_IS_ROBOTIC(src))
+		max_bleeding = max(cut_dam, pierce_dam)
+		bandaged = clamp(bandaged, 0, max_bleeding)
+		scabbed = clamp(scabbed, 0, max_bleeding)
+
+		bleeding = clamped ? 0 : floor(max_bleeding - max(bandaged, scabbed))
+
+		if(bleeding)
 			status |= ORGAN_BLEEDING
+		else
+			status &= ~ORGAN_BLEEDING
 
-		clamped |= W.clamped
-		number_wounds += W.amount
+	brute_dam = blunt_dam + cut_dam + pierce_dam
 
-	damage = brute_dam + burn_dam
-	update_damage_ratios()
+	// Ratios
+	burn_ratio = burn_dam / max_damage
+	brute_ratio = brute_dam / max_damage
+	blunt_ratio = blunt_dam / max_damage
+	cut_ratio = cut_dam / max_damage
+	pierce_ratio = pierce_dam / max_damage
+	return
 
-/obj/item/organ/external/proc/update_damage_ratios()
-	var/limb_loss_threshold = max_damage
-	brute_ratio = brute_dam / (limb_loss_threshold * 2)
-	burn_ratio = burn_dam / (limb_loss_threshold * 2)
-
-//Returns 1 if damage_state changed
+//Returns TRUE if damage_state changed
 /obj/item/organ/external/proc/update_damstate()
-	var/n_is = damage_state_text()
-	if (n_is != damage_state)
-		damage_state = n_is
-		return 1
-	return 0
-
-// new damage icon system
-// returns just the brute/burn damage code
-/obj/item/organ/external/proc/damage_state_text()
-
 	var/tburn = 0
 	var/tbrute = 0
 
-	if(burn_dam ==0)
-		tburn =0
-	else if (burn_dam < (max_damage * 0.25 / 2))
+	if(!burn_dam)
+		tburn = 0
+	else if(burn_dam < max_damage * 0.25)
 		tburn = 1
-	else if (burn_dam < (max_damage * 0.75 / 2))
+	else if(burn_dam < max_damage * 0.75)
 		tburn = 2
 	else
 		tburn = 3
 
-	if (brute_dam == 0)
+	var/highest_brute_dam = max(blunt_dam, cut_dam, pierce_dam)
+	if(!highest_brute_dam)
 		tbrute = 0
-	else if (brute_dam < (max_damage * 0.25 / 2))
+	else if(highest_brute_dam < max_damage * 0.25)
 		tbrute = 1
-	else if (brute_dam < (max_damage * 0.75 / 2))
+	else if(highest_brute_dam < max_damage * 0.75)
 		tbrute = 2
 	else
 		tbrute = 3
-	return "[tbrute][tburn]"
+
+	if(damage_state != "[tbrute][tburn]")
+		damage_state = "[tbrute][tburn]"
+		return TRUE
+	return FALSE
 
 /****************************************************
 			   DISMEMBERMENT
@@ -866,11 +713,18 @@ Note that amputating the affected organ does in fact remove the infection from t
 					)
 		if(DROPLIMB_BURN)
 			var/gore = "[BP_IS_ROBOTIC(src) ? "": " of burning flesh"]"
-			return list(
-				"\The [owner]'s [src.name] flashes away into ashes!",\
-				"Your [src.name] flashes away into ashes!",\
-				"You hear a crackling sound[gore]." \
-				)
+			if(clean)
+				return list(
+					"\The [owner]'s [src.name] flashes away into ashes!",\
+					"Your [src.name] flashes away into ashes!",\
+					"You hear a crackling sound[gore]." \
+					)
+			else
+				return list(
+					"\The [owner]'s [src.name] burns away into ashes!",\
+					"Your [src.name] burns away into ashes!",\
+					"You hear a crackling sound[gore]." \
+					)
 		if(DROPLIMB_BLUNT)
 			var/gore = "[BP_IS_ROBOTIC(src) ? "": " in shower of gore"]"
 			var/gore_sound = "[BP_IS_ROBOTIC(src) ? "rending sound of tortured metal" : "sickening splatter of gore"]"
@@ -918,10 +772,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 		victim.shock_stage += min_broken_damage
 
 	if(parent_organ)
-		var/datum/wound/lost_limb/W = new (src, disintegrate, clean)
 		if(clean)
-			W.parent_organ = parent_organ
-			LAZYADD(parent_organ.wounds, W)
+			/// NOWOUNDS TODO: Better way to implement clean cut bleeding
+			parent_organ.take_cut_damage(min_broken_damage, "a limb amputation", TRUE)
 			parent_organ.update_damages()
 		else
 			var/obj/item/organ/external/stump/stump = new (victim, src)
@@ -929,12 +782,13 @@ Note that amputating the affected organ does in fact remove the infection from t
 			stump.artery_name = "mangled [artery_name]"
 			stump.arterial_bleed_severity = arterial_bleed_severity
 			stump.adjust_pain(max_damage)
-			W.parent_organ = stump
-			LAZYADD(stump.wounds, W)
+
 			victim.organs |= stump
+
 			stump.movement_tally = stumped_tally * damage_multiplier
 			if(disintegrate != DROPLIMB_BURN)
 				stump.sever_artery()
+
 			stump.update_damages()
 			stump.replaced(victim)
 
@@ -1003,82 +857,49 @@ Note that amputating the affected organ does in fact remove the infection from t
 			"\The [holder.handcuffed.name] falls off you.")
 		holder.drop(holder.handcuffed, force = TRUE)
 
-// checks if all wounds on the organ are bandaged
+// Checks if the organ is fully bandaged
 /obj/item/organ/external/proc/is_bandaged()
-	for(var/datum/wound/W in wounds)
-		if(!W.bandaged)
-			return 0
-	return 1
+	return (bandaged >= max_bleeding)
 
-// checks if all wounds on the organ are salved
-/obj/item/organ/external/proc/is_salved()
-	for(var/datum/wound/W in wounds)
-		if(!W.salved)
-			return 0
-	return 1
+// Applies the amt of 'bandaged', up to 'max_bleeding'.
+// Returns the amount of bleeding left.
+/obj/item/organ/external/proc/bandage(amt = 999)
+	if(bandaged >= max_bleeding)
+		return 0 // No bandaging needed
 
-// checks if all wounds on the organ are disinfected
-/obj/item/organ/external/proc/is_disinfected()
-	for(var/datum/wound/W in wounds)
-		if(!W.disinfected)
-			return 0
-	return 1
+	if(amt == -1)
+		bandaged = max_bleeding
+	else
+		bandaged = min(max_bleeding, bandaged + amt)
 
-/obj/item/organ/external/proc/bandage()
-	var/rval = 0
-	status &= ~ORGAN_BLEEDING
-	for(var/datum/wound/W in wounds)
-		rval |= !W.bandaged
-		W.bandaged = 1
-	if(rval)
+	clamped = FALSE
+	update_damages()
+	if(owner)
 		owner.update_surgery()
-	return rval
+		owner.update_bandages(TRUE)
+
+	return (max_bleeding - bandaged)
 
 /obj/item/organ/external/proc/salve()
-	var/rval = 0
-	for(var/datum/wound/W in wounds)
-		rval |= !W.salved
-		W.salved = 1
-	return rval
-
-/obj/item/organ/external/proc/disinfect()
-	var/rval = 0
-	for(var/datum/wound/W in wounds)
-		rval |= !W.disinfected
-		W.disinfected = 1
-		W.germ_level = 0
-	return rval
+	salved = TRUE
+	return
 
 /obj/item/organ/external/proc/clamp_organ()
-	var/rval = 0
-	src.status &= ~ORGAN_BLEEDING
-	for(var/datum/wound/W in wounds)
-		rval |= !W.clamped
-		W.clamped = 1
-	return rval
+	if(clamped || !max_bleeding)
+		return FALSE
 
-/obj/item/organ/external/proc/clamped()
-	for(var/datum/wound/W in wounds)
-		if(W.clamped)
-			return 1
+	clamped = TRUE
+	bandaged = 0
+	update_damages()
+	owner?.update_surgery()
+	return TRUE
 
 /obj/item/organ/external/proc/remove_clamps()
-	var/rval = 0
-	for(var/datum/wound/W in wounds)
-		rval |= W.clamped
-		W.clamped = 0
-	return rval
-
-// open incisions and expose implants
-// this is the retract step of surgery
-/obj/item/organ/external/proc/open_incision()
-	var/datum/wound/W = get_incision()
-	if(!W)	return
-	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage))
-
-	if(!encased)
-		for(var/obj/item/implant/I in implants)
-			I.exposed()
+	. = clamped
+	clamped = FALSE
+	update_damages()
+	owner?.update_surgery()
+	return
 
 /obj/item/organ/external/proc/update_tally()
 	movement_tally = initial(movement_tally)
@@ -1116,8 +937,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 	//Kinda difficult to keep standing when your leg's gettin' wrecked, eh?
 	if(limb_flags & ORGAN_FLAG_CAN_STAND)
 		if(prob(67))
-			owner.Weaken(3)
-			owner.Stun(2)
+			owner.Weaken(5)
+			owner.Stun(3)
 
 	broken_description = pick("broken", "fracture", "hairline fracture")
 
@@ -1135,7 +956,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 /obj/item/organ/external/proc/mend_fracture(use_damage_check = FALSE)
 	if(BP_IS_ROBOTIC(src))
 		return FALSE // ORGAN_BROKEN doesn't have the same meaning for robot limbs
-	if(use_damage_check && (brute_dam > min_broken_damage * config.health.organ_health_multiplier))
+	if(use_damage_check && (blunt_dam >= min_broken_damage * config.health.organ_health_multiplier))
 		return FALSE // will just immediately fracture again
 
 	status &= ~ORGAN_BROKEN
@@ -1221,12 +1042,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 /obj/item/organ/external/proc/get_damage()	//returns total damage
 	return (brute_dam+burn_dam)	//could use max_damage?
 
-/obj/item/organ/external/proc/has_infected_wound()
-	for(var/datum/wound/W in wounds)
-		if(W.germ_level > INFECTION_LEVEL_ONE)
-			return 1
-	return 0
-
 /obj/item/organ/external/is_usable(ignore_pain = FALSE)
 	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1 && is_robotic_usable()
 
@@ -1253,41 +1068,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 /obj/item/organ/external/proc/is_malfunctioning()
 	return (BP_IS_ROBOTIC(src) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))
 
-/obj/item/organ/external/proc/embed(obj/item/W, silent = 0, supplied_message, datum/wound/supplied_wound)
-	if(!owner || loc != owner)
-		return
-	if(W.w_class > ITEM_SIZE_NORMAL)
-		return
-	if(species.species_flags & SPECIES_FLAG_NO_EMBED)
-		return
-	if(!silent)
-		if(supplied_message)
-			owner.visible_message("<span class='danger'>[supplied_message]</span>")
-		else
-			owner.visible_message("<span class='danger'>\The [W] sticks in the wound!</span>")
-
-	if(!supplied_wound)
-		for(var/datum/wound/wound in wounds)
-			if((wound.damage_type == CUT || wound.damage_type == PIERCE) && wound.damage >= W.w_class * 5)
-				supplied_wound = wound
-				break
-	if(!supplied_wound)
-		supplied_wound = createwound(PIERCE, W.w_class * 5)
-
-	if(!supplied_wound || (W in supplied_wound.embedded_objects)) // Just in case.
-		return
-
-	LAZYADD(supplied_wound.embedded_objects, W)
-	implants += W
-	owner.embedded_flag = 1
-	owner.verbs += /mob/proc/yank_out_object
-	W.add_blood(owner)
-	if(ismob(W.loc))
-		var/mob/living/H = W.loc
-		H.drop(W, owner, force = TRUE)
-	else
-		W.forceMove(owner)
-
 /obj/item/organ/external/removed(mob/living/user, drop_organ = 1, ignore_children = 0, detach_children_and_internals = 0)
 	if(!owner)
 		return
@@ -1310,6 +1090,13 @@ Note that amputating the affected organ does in fact remove the infection from t
 			owner.drop(owner.l_ear, force = TRUE)
 			owner.drop(owner.r_ear, force = TRUE)
 			owner.drop(owner.wear_mask, force = TRUE)
+		if(UPPER_TORSO)
+			owner.drop(owner.r_store, force = TRUE)
+			owner.drop(owner.l_store, force = TRUE)
+			owner.drop(owner.belt, force = TRUE)
+			owner.drop(owner.wear_suit, force = TRUE)
+			owner.drop(owner.w_uniform, force = TRUE)
+			owner.drop(owner.back, force = TRUE)
 
 	var/mob/living/carbon/human/victim = owner
 
@@ -1391,40 +1178,38 @@ Note that amputating the affected organ does in fact remove the infection from t
 			"<span class='danger'>You hear a sickening sizzle.</span>")
 	status |= ORGAN_DISFIGURED
 
-/obj/item/organ/external/proc/get_incision(strict)
-	var/datum/wound/cut/incision
-	for(var/datum/wound/cut/W in wounds)
-		if(W.bandaged || W.current_stage > W.max_bleeding_stage) // Shit's unusable
-			continue
-		if(strict && !W.is_surgical()) //We don't need dirty ones
-			continue
-		if(!incision)
-			incision = W
-			continue
-		var/same = W.is_surgical() == incision.is_surgical()
-		if(same) //If they're both dirty or both are surgical, just get bigger one
-			if(W.damage > incision.damage)
-				incision = W
-		else if(W.is_surgical()) //otherwise surgical one takes priority
-			incision = W
-	return incision
+// Cutting the organ deep enough to conduct surgeries.
+// This is the incision step of surgery.
+/obj/item/organ/external/proc/surgically_incise(used_weapon = null)
+	if(pierce_dam >= min_broken_damage)
+		return
+	take_pierce_damage(min_broken_damage - pierce_dam, used_weapon, TRUE)
+	owner?.update_surgery()
+	return
 
-/obj/item/organ/external/proc/open()
-	var/datum/wound/cut/incision = get_incision()
-	. = 0
-	if(!incision)
-		return 0
-	var/smol_threshold = min_broken_damage * 0.4
-	var/beeg_threshold = min_broken_damage * 0.6
-	if(!incision.autoheal_cutoff == 0) //not clean incision
-		smol_threshold *= 1.5
-		beeg_threshold = max(beeg_threshold, min(beeg_threshold * 1.5, incision.damage_list[1])) //wounds can't achieve bigger
-	if(incision.damage >= smol_threshold) //smol incision
+// Stretching the wound to be wide enough to conduct surgeries.
+// This is the retract step of surgery.
+/obj/item/organ/external/proc/surgically_retract(used_weapon = null)
+	if(cut_dam >= min_broken_damage)
+		return // It's wider than enough already.
+	take_cut_damage(min_broken_damage - cut_dam, used_weapon, TRUE)
+	if(!encased)
+		for(var/obj/item/implant/I in implants)
+			I.exposed()
+	owner?.update_surgery()
+	return
+
+/obj/item/organ/external/proc/is_surgically_open(check_clamps = TRUE)
+	. = SURGERY_CLOSED
+	if(check_clamps && !clamped)
+		return
+	if(pierce_dam >= min_broken_damage * 0.5)
 		. = SURGERY_OPEN
-	if(incision.damage >= beeg_threshold) //beeg incision
-		. = SURGERY_RETRACTED
-	if(. == SURGERY_RETRACTED && encased && (status & ORGAN_BROKEN))
-		. = SURGERY_ENCASED
+		if(cut_dam >= min_broken_damage * 0.5)
+			. = SURGERY_RETRACTED
+			if(encased && (status & ORGAN_BROKEN))
+				. = SURGERY_ENCASED
+	return
 
 /obj/item/organ/external/proc/jostle_bone(force)
 	if(!(status & ORGAN_BROKEN)) //intact bones stay still
@@ -1436,27 +1221,136 @@ Note that amputating the affected organ does in fact remove the infection from t
 		var/obj/item/organ/internal/I = pick(internal_organs)
 		I.take_internal_damage(rand(3,5))
 
+/obj/item/organ/external/proc/get_damages_desc()
+	var/is_robotic = BP_IS_ROBOTIC(src)
+
+	var/flavor_text = ""
+
+	var/blunt_desc = ""
+	if(blunt_dam)
+		switch(round((blunt_dam / max_damage) * 100))
+			if(0 to 30)
+				blunt_desc = "lightly " + (is_robotic ? "dented" : "bruised")
+			if(31 to 60)
+				blunt_desc = (is_robotic ? "dented" : "bruised")
+			if(61 to 90)
+				blunt_desc = "severely " + (is_robotic ? "dented" : "bruised")
+			else
+				blunt_desc = "<b>crushed</b>"
+
+	var/sharp_desc = ""
+	if(cut_dam)
+		switch(round((cut_dam / max_damage) * 100))
+			if(0 to 10)
+				sharp_desc = "thin"
+			if(11 to 30)
+				sharp_desc = "narrow"
+			if(31 to 50)
+				sharp_desc = "rather wide"
+			if(51 to 70)
+				sharp_desc = "wide"
+			if(71 to 90)
+				sharp_desc = "gaping"
+			else
+				sharp_desc = "<b>massive</b>"
+	if(pierce_dam)
+		if(sharp_desc)
+			sharp_desc += ", "
+		switch(round((pierce_dam / max_damage) * 100))
+			if(0 to 10)
+				sharp_desc += "surface"
+			if(11 to 30)
+				sharp_desc += "shallow"
+			if(31 to 50)
+				sharp_desc += "muscle-deep"
+			if(51 to 70)
+				sharp_desc += "bone-deep"
+			if(71 to 90)
+				sharp_desc += "extremely deep"
+			else
+				sharp_desc += "<b>penetrating</b>"
+
+	var/burns_desc = ""
+	if(burn_dam)
+		if(!is_robotic)
+			switch(round(burn_ratio * 100))
+				if(1 to 10)
+					burns_desc = "a few blisters"
+				if(11 to 20)
+					burns_desc = "some blisters"
+				if(21 to 45)
+					burns_desc = "moderate burns"
+				if(46 to 70)
+					burns_desc = "severe burns"
+				if(71 to 99)
+					burns_desc = "massive burns"
+				if(100 to 150)
+					burns_desc = "<b>carbonised burns</b>"
+				else
+					burns_desc = "<b>horrifyingly charred burns</b>"
+		else
+			switch(round(burn_ratio * 100))
+				if(1 to 10)
+					burns_desc = "a few burn marks"
+				if(11 to 20)
+					burns_desc = "some burn marks"
+				if(21 to 45)
+					burns_desc = "moderate scorches"
+				if(46 to 70)
+					burns_desc = "severe scorches"
+				if(71 to 99)
+					burns_desc = "massive scorches"
+				if(100 to 150)
+					burns_desc = "<b>severe melting</b>"
+				else
+					burns_desc = "<b>massive melting</b>"
+
+	var/bandages_desc = ""
+	if(max_bleeding)
+		if(clamped)
+			bandages_desc = "<span class='notice'><b>clamped</b></span>, "
+		else if(bandaged >= max_bleeding)
+			bandages_desc += "<span class='notice'><b>bandaged</b></span>, "
+		else if(scabbed >= max_bleeding)
+			bandages_desc += "<span class='notice'><b>scabbed</b></span>, "
+		else if(bandaged && bleeding)
+			bandages_desc += "partially bandaged, bleeding, "
+		else
+			bandages_desc += "<b>bleeding</b>, "
+
+	// Assembling all the stuff from above into a human-readable line
+	if(blunt_desc)
+		flavor_text += "is " + blunt_desc
+
+	if(sharp_desc)
+		if(flavor_text)
+			flavor_text += ". It has "
+		else
+			flavor_text += "has "
+		flavor_text += bandages_desc + sharp_desc + (is_robotic ? " tears" : " wounds")
+
+	if(burns_desc)
+		if(flavor_text)
+			flavor_text += ", with "
+		else
+			flavor_text = "has "
+		flavor_text += burns_desc
+
+	if(salved)
+		if(flavor_text)
+			flavor_text += ". It "
+		flavor_text = "is <span class='notice'><b>salved</b></span>"
+
+	return flavor_text
+
 /obj/item/organ/external/proc/get_wounds_desc()
 	if(BP_IS_ROBOTIC(src))
 		var/list/descriptors = list()
-		if(brute_dam)
-			switch(brute_dam)
-				if(0 to 20)
-					descriptors += "some dents"
-				if(21 to INFINITY)
-					descriptors += pick("a lot of dents","severe denting")
-		if(burn_dam)
-			switch(burn_dam)
-				if(0 to 20)
-					descriptors += "some burns"
-				if(21 to INFINITY)
-					descriptors += pick("a lot of burns","severe melting")
 		switch(hatch_state)
 			if(HATCH_UNSCREWED)
 				descriptors += "a closed but unsecured panel"
 			if(HATCH_OPENED)
 				descriptors += "an open panel"
-
 		return english_list(descriptors)
 
 	var/list/flavor_text = list()
@@ -1466,58 +1360,23 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(organ_tag == BP_HEAD && deformities == 1)
 		flavor_text += "terrible scars on cheeks forming a horrifying smile"
 
-	var/list/wound_descriptors = list()
-	for(var/datum/wound/W in wounds)
-		var/this_wound_desc = W.desc
-		if(W.damage_type == BURN && W.salved)
-			this_wound_desc = "salved [this_wound_desc]"
-
-		if(W.bleeding())
-			if(W.wound_damage() > W.bleed_threshold)
-				this_wound_desc = "<b>bleeding</b> [this_wound_desc]"
-			else
-				this_wound_desc = "bleeding [this_wound_desc]"
-		else if(W.bandaged)
-			this_wound_desc = "bandaged [this_wound_desc]"
-
-		if(W.germ_level > 600)
-			this_wound_desc = "badly infected [this_wound_desc]"
-		else if(W.germ_level > 330)
-			this_wound_desc = "lightly infected [this_wound_desc]"
-
-		if(wound_descriptors[this_wound_desc])
-			wound_descriptors[this_wound_desc] += W.amount
-		else
-			wound_descriptors[this_wound_desc] = W.amount
-
-	if(open() >= (encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
+	if(is_surgically_open(FALSE) >= (encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
 		var/list/bits = list()
 		if(status & ORGAN_BROKEN)
 			bits += "broken bones"
 		for(var/obj/item/organ/organ in internal_organs)
 			bits += "[organ.damage ? "damaged " : ""][organ.name]"
 		if(bits.len)
-			wound_descriptors["[english_list(bits)] visible in the wounds"] = 1
-
-	for(var/wound in wound_descriptors)
-		switch(wound_descriptors[wound])
-			if(1)
-				flavor_text += "a [wound]"
-			if(2)
-				flavor_text += "a pair of [wound]s"
-			if(3 to 5)
-				flavor_text += "several [wound]s"
-			if(6 to INFINITY)
-				flavor_text += "a ton of [wound]\s"
+			flavor_text += "[english_list(bits)] visible in the wounds"
 
 	return english_list(flavor_text)
 
 /obj/item/organ/external/get_scan_results()
 	. = ..()
-	for(var/datum/wound/W in wounds)
-		if (W.damage_type == CUT && W.current_stage <= W.max_bleeding_stage && !W.bandaged)
-			. += "Open wound"
-			break
+	if(blunt_dam)
+		. += "Bruised"
+	if(cut_dam || pierce_dam)
+		. += "Open wound"
 	if(status & ORGAN_ARTERY_CUT)
 		. += "[capitalize(artery_name)] ruptured"
 	if(status & ORGAN_TENDON_CUT)
@@ -1546,17 +1405,26 @@ Note that amputating the affected organ does in fact remove the infection from t
 		to_chat(user, "<span class='notice'>[owner] is missing that bodypart.</span>")
 		return
 
-	user.visible_message("<span class='notice'>[user] starts inspecting [owner]'s [name] carefully.</span>")
-	if(LAZYLEN(wounds))
-		to_chat(user, "<span class='warning'>You find [get_wounds_desc()]</span>")
-		var/list/stuff = list()
-		for(var/datum/wound/wound in wounds)
-			if(LAZYLEN(wound.embedded_objects))
-				stuff |= wound.embedded_objects
-		if(stuff.len)
-			to_chat(user, "<span class='warning'>There's [english_list(stuff)] sticking out of [owner]'s [name].</span>")
+	var/damage_description
+	if(blunt_dam)
+		damage_description = "bruised"
+	if(cut_dam || pierce_dam)
+		if(burn_dam)
+			damage_description += damage_description ? " , cut" : "cut"
+		else
+			damage_description += damage_description ? " and cut" : "cut"
+	if(burn_dam)
+		damage_description += damage_description ? " and burnt" : "burnt"
+
+	user.visible_message(SPAN("notice", "[user] starts inspecting [owner]'s [name] carefully."))
+
+	if(damage_description)
+		to_chat(user, SPAN("warning", "[owner]'s [name] is [damage_description]!"))
 	else
-		to_chat(user, "<span class='notice'>You find no visible wounds.</span>")
+		to_chat(user, SPAN("notice", "You find no visible wounds."))
+
+	if(LAZYLEN(embedded_objects))
+		to_chat(user, SPAN("warning", "There's [english_list(embedded_objects)] sticking out of [owner]'s [name]."))
 
 	to_chat(user, "<span class='notice'>Checking skin now...</span>")
 	if(!do_mob(user, owner, 10))
@@ -1644,3 +1512,72 @@ Note that amputating the affected organ does in fact remove the infection from t
 		. += max_delay * 3/8
 	else if(BP_IS_ROBOTIC(src))
 		. += max_delay * CLAMP01(damage/max_damage)
+
+/obj/item/organ/external/proc/embed(obj/item/W, silent = 0, supplied_message)
+	if(!owner || loc != owner)
+		return FALSE
+	if(W.w_class > ITEM_SIZE_NORMAL)
+		return FALSE
+	if(species.species_flags & SPECIES_FLAG_NO_EMBED)
+		return FALSE
+	if(!silent)
+		if(supplied_message)
+			owner.visible_message(SPAN("danger", "[supplied_message]"))
+		else
+			owner.visible_message(SPAN("danger", "\The [W] sticks in the wound!"))
+
+	LAZYADD(embedded_objects, W)
+	owner.embedded_flag = 1
+	owner.verbs += /mob/proc/yank_out_object
+	W.add_blood(owner)
+	if(ismob(W.loc))
+		var/mob/living/H = W.loc
+		H.drop(W, src, force = TRUE)
+	else
+		W.forceMove(src)
+
+	return TRUE
+
+/obj/item/organ/external/proc/drop_embedded_objects()
+	if(!LAZYLEN(embedded_objects))
+		return FALSE
+	var/turf/my_turf = get_turf(src)
+	for(var/obj/O in embedded_objects)
+		O.forceMove(my_turf)
+		if(owner)
+			owner.embedded -= O
+	LAZYCLEARLIST(embedded_objects)
+	if(owner && !owner.get_embedded_objects())
+		owner.verbs -= /mob/proc/yank_out_object
+	return TRUE
+
+/obj/item/organ/external/proc/drop_embedded_object(obj/thing)
+	if(!LAZYLEN(embedded_objects))
+		return FALSE
+	var/turf/my_turf = get_turf(src)
+	for(var/obj/O in embedded_objects)
+		if(O == thing)
+			O.forceMove(my_turf)
+			LAZYREMOVE(embedded_objects, O)
+			if(owner && !owner.get_embedded_objects())
+				owner.verbs -= /mob/proc/yank_out_object
+			return TRUE
+	return FALSE
+
+/obj/item/organ/external/handle_rejection()
+	. = ..()
+	if(!.)
+		return
+
+	if(rejecting % 5 == 0) //Only fire every five rejection ticks.
+		switch(rejecting)
+			if(51 to 200)
+				take_blunt_damage(rand(1, 5), "transplant rejection", TRUE)
+			if(201 to 500)
+				take_blunt_damage(rand(5, 10), "transplant rejection", TRUE)
+			if(501 to INFINITY)
+				take_blunt_damage(rand(10, 15), "transplant rejection", TRUE)
+				if(prob(rejecting / 500))
+					die()
+	return
+

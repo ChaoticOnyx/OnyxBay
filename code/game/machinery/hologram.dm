@@ -43,7 +43,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	var/power_per_hologram = 500 //per usage per hologram
 	idle_power_usage = 5 WATTS
 
-	var/list/mob/living/silicon/ai/masters = new() //List of AIs that use the holopad
+	var/list/mob/living/silicon/ai/masters = list() //List of AIs that use the holopad
 	var/last_request = 0 //to prevent request spam. ~Carn
 	var/holo_range = 5 // Change to change how far the AI can move away from the holopad before deactivating.
 
@@ -58,9 +58,22 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	var/holopadType = HOLOPAD_SHORT_RANGE //Whether the holopad is short-range or long-range.
 	var/base_icon = "holopad-B"
 
-/obj/machinery/hologram/holopad/New()
-	..()
+/obj/machinery/hologram/holopad/Initialize()
+	. = ..()
+	GLOB.listening_objects += src
 	desc += " Its ID is '[loc.loc]'"
+
+
+/obj/machinery/hologram/holopad/Destroy()
+	GLOB.listening_objects -= src
+
+	masters.Cut()
+	masters = null
+
+	caller_id = null
+	sourcepad = null
+	targetpad = null
+	return ..()
 
 /obj/machinery/hologram/holopad/attack_hand(mob/living/carbon/human/user) //Carn: Hologram requests.
 	if(!istype(user))

@@ -137,7 +137,6 @@
 	icon_state = "white"
 	siemens_coefficient = 1.1 //thin latex gloves, much more conductive than fabric gloves (basically a capacitor for AC)
 	permeability_coefficient = 0.01
-	germ_level = 0
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 95)
 
 	drop_sound = SFX_DROP_RUBBER

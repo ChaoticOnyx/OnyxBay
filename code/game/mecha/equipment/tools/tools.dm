@@ -60,7 +60,7 @@
 		if(M.stat > 1)
 			return
 		if(chassis.occupant.a_intent == I_HURT)
-			M.take_overall_damage(dam_force)
+			M.take_overall_damage(dam_force, spread_damage = FALSE, check_armor = "melee")
 			M.adjustOxyLoss(round(dam_force/2))
 			M.update_health()
 			occupant_message(SPAN("warning", "You squeeze [target] with [src.name]. Something cracks."))

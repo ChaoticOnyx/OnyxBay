@@ -10,8 +10,8 @@
 	var/health = 40
 	var/last_act = 0
 
-/obj/structure/rock/New()
-	..()
+/obj/structure/rock/Initialize()
+	. = ..()
 	icon_state = pick(iconlist)
 	add_debris_element()
 

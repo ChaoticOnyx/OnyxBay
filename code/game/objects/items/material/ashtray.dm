@@ -121,11 +121,11 @@
 		O.dropInto(loc)
 	update_icon()
 
-/obj/item/material/ashtray/plastic/New(newloc)
-	..(newloc, MATERIAL_PLASTIC)
+/obj/item/material/ashtray/plastic
+	default_material = MATERIAL_PLASTIC
 
-/obj/item/material/ashtray/bronze/New(newloc)
-	..(newloc, MATERIAL_BRONZE)
+/obj/item/material/ashtray/bronze
+	default_material = MATERIAL_BRONZE
 
-/obj/item/material/ashtray/glass/New(newloc)
-	..(newloc, MATERIAL_GLASS)
+/obj/item/material/ashtray/glass
+	default_material = MATERIAL_GLASS

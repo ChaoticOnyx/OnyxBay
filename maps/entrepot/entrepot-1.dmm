@@ -320,7 +320,7 @@
 "gh" = (/obj/structure/table/standard,/obj/item/device/camera,/obj/item/device/camera_film,/obj/item/device/camera_film,/turf/simulated/floor/tiled/rough,/area/entrepot/crew_1)
 "gi" = (/obj/machinery/vending/fashionvend,/obj/machinery/light,/turf/simulated/floor/tiled/rough,/area/entrepot/crew_1)
 "gj" = (/obj/machinery/lapvend,/turf/simulated/floor/tiled/rough,/area/entrepot/crew_1)
-"gk" = (/obj/structure/table/standard,/obj/machinery/vending/wallmed1{pixel_y = -28},/obj/item/stack/medical/bruise_pack,/obj/item/stack/medical/bruise_pack,/obj/item/stack/medical/ointment,/turf/simulated/floor/tiled/rough,/area/entrepot/crew_1)
+"gk" = (/obj/structure/table/standard,/obj/machinery/vending/wallmed1{pixel_y = -28},/obj/item/stack/medical/bandage,/obj/item/stack/medical/bandage,/obj/item/stack/medical/ointment,/turf/simulated/floor/tiled/rough,/area/entrepot/crew_1)
 "gl" = (/obj/machinery/vending/games,/turf/simulated/floor/tiled/rough,/area/entrepot/crew_1)
 "gm" = (/obj/structure/closet/lasertag/red,/obj/machinery/alarm{dir = 1; pixel_y = -24},/turf/simulated/floor/tiled/rough,/area/entrepot/crew_1)
 "gn" = (/obj/structure/bed/couch/right/brown{dir = 1},/turf/simulated/floor/tiled/rough,/area/entrepot/crew_1/dorm)

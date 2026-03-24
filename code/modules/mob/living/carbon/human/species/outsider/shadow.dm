@@ -33,7 +33,7 @@
 		var/turf/T = H.loc
 		light_amount = T.get_lumcount() * 10
 	if(light_amount > 2) //if there's enough light, start dying
-		H.take_overall_damage(1,1)
+		H.take_overall_damage(1, 1, 0, "Light Exposure", FALSE)
 	else //heal in the dark
 		H.heal_overall_damage(1,1)
 

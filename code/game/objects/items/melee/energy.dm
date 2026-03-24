@@ -130,6 +130,18 @@
 			return PROJECTILE_CONTINUE // complete projectile permutation
 	return 0
 
+/obj/item/melee/energy/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
+	. = ..()
+	if(isnull(.) || !ishuman(target) || user.a_intent != I_HURT)
+		return
+
+	var/mob/living/carbon/human/H = target
+	if(!QDELETED(H))
+		var/obj/item/organ/external/affecting = H.get_organ(hit_zone)
+		if(istype(affecting))
+			affecting.scabbed = affecting.max_bleeding // Cauterizes wounds
+	return
+
 /*
  * Energy Axe
  */
@@ -223,8 +235,8 @@
 	desc = "May the force be within you."
 	icon_state = "sword0"
 
-/obj/item/melee/energy/sword/one_hand/New()
-	..()
+/obj/item/melee/energy/sword/one_hand/Initialize()
+	. = ..()
 	var/list/colorparam = list("green" = "#68ff4d", "red" = "#ff5959", "blue" = "#4de4ff", "purple" = "#de4dff")
 	if(!blade_color)
 		blade_color = pick(colorparam)
@@ -292,8 +304,8 @@
 
 	var/wielded = FALSE
 
-/obj/item/melee/energy/sword/dualsaber/New()
-	..()
+/obj/item/melee/energy/sword/dualsaber/Initialize()
+	. = ..()
 	var/list/colorparam = list("green" = "#68ff4d", "red" = "#ff5959", "blue" = "#4de4ff", "purple" = "#de4dff")
 	if(!blade_color)
 		blade_color = pick(colorparam)
@@ -374,14 +386,11 @@
 	var/datum/effect/effect/system/spark_spread/spark_system
 	var/destroy_on_drop = TRUE
 
-/obj/item/melee/energy/blade/New()
-	..()
+/obj/item/melee/energy/blade/Initialize()
+	. = ..()
 	spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
-
-/obj/item/melee/energy/blade/Initialize()
-	. = ..()
 	set_next_think(world.time)
 
 /obj/item/melee/energy/blade/Destroy()
@@ -408,6 +417,7 @@
 			var/mob/living/carbon/human/host = loc
 			if(istype(host))
 				for(var/obj/item/organ/external/organ in host.organs)
+					organ.drop_embedded_object(src)
 					for(var/obj/item/O in organ.implants)
 						if(O == src)
 							organ.implants -= src

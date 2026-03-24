@@ -7,9 +7,9 @@
 	land_speed = 2
 	space_speed = 0
 
-/obj/vehicle/bike/thermal/snowbike/New()
+/obj/vehicle/bike/thermal/snowbike/Initialize()
+	. = ..()
 	bike_icon = "snowbike_[rand(1,3)]"
-	..()
 
 /obj/item/key/snowbike
 	name = "key"

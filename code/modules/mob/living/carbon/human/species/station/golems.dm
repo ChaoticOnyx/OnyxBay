@@ -59,6 +59,7 @@
 	radiation_mod = 0
 
 	death_message = "becomes completely motionless..."
+	remains_type = /obj/effect/decal/cleanable/ash
 
 /datum/species/golem/get_random_name(gender)
 	var/golem_surname = pick(GLOB.golem_names)
@@ -294,7 +295,7 @@
 			H.adjustOxyLoss(-0.5)
 
 	if(H.nutrition < STOMACH_FULLNESS_LOW + 50)
-		H.take_overall_damage(brute = 2)
+		H.take_overall_damage(1, 0, 0, "Cellular Collapse", FALSE)
 	if(H.fire_stacks < 2) //flammable
 		H.adjust_fire_stacks(1)
 

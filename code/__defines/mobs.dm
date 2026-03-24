@@ -24,6 +24,8 @@
 // Grab Types
 #define GRAB_NORMAL			"normal"
 #define GRAB_QUICKCHOKE     "choke"
+#define GRAB_NORM_AGGRESSIVE_GRACE (2 SECONDS)
+#define GRAB_RESIST_CD (1 SECOND)
 
 // Grab levels.
 #define NORM_PASSIVE    "normal passive"

@@ -38,5 +38,5 @@
 	name = "Resurrection Serum"
 	desc = "One-use injector filled with a substance capable of bringing corpses back to life."
 	item_cost = DEFAULT_TELECRYSTAL_AMOUNT
-	path = /obj/item/stack/medical/advanced/resurrection_serum
+	path = /obj/item/stack/medical/gel/resurrection_serum
 	antag_roles = list(MODE_NUKE)

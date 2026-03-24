@@ -307,12 +307,9 @@
 	var/pulls_left = 0
 	var/smoke_amount = 0
 
-/obj/item/hookah_coal/New()
-	..()
-	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
-
 /obj/item/hookah_coal/Initialize()
 	. = ..()
+	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 	create_reagents(chem_volume) // making the cigarrete a chemical holder with a maximum volume of [chem_volume]
 
 /obj/item/hookah_coal/on_update_icon()
