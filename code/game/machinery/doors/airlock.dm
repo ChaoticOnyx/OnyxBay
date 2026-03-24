@@ -302,7 +302,7 @@ About the new airlock wires panel:
 					AddOverlays(OVERLAY(icon, "sparks_damaged", dir = src.dir))
 					AddOverlays(emissive_appearance(icon, "sparks_damaged_ea"))
 			if(welded)
-				AddOverlays(OVERLAY(icon, "welded"))
+				AddOverlays(OVERLAY(icon, "welded", dir = src.dir))
 		else if(health < maxhealth * 0.75 && !(stat & NOPOWER))
 			AddOverlays(OVERLAY(icon, "sparks_damaged", dir = src.dir))
 			AddOverlays(emissive_appearance(icon, "sparks_damaged_ea"))
