@@ -44,7 +44,7 @@
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
 	for(var/obj/machinery/vending/V in SSmachines.machinery)
-		if(V.z in affecting_z)
+		if((V.z in affecting_z) && V.powered())
 			uninfected += V
 
 	if(!length(uninfected))
@@ -64,7 +64,7 @@
 
 /datum/event/brand_intelligence/think()
 	// Clean up destroyed or depowered machines.
-	for(var/obj/machinery/vending/V in infected)
+	for(var/obj/machinery/vending/V in infected.Copy())
 		if(QDELETED(V) || !V.powered())
 			cure_machine(V)
 
@@ -135,7 +135,7 @@
 
 	var/obj/machinery/vending/V = pick(uninfected)
 	uninfected -= V
-	if(!QDELETED(V))
+	if(!QDELETED(V) && V.powered())
 		infect_machine(V)
 
 /// Removes infection from a single machine, restoring it to normal.
@@ -294,7 +294,7 @@
 	set_next_think_ctx("announce", 0)
 	set_next_think(0)
 
-	for(var/obj/machinery/vending/V in infected)
+	for(var/obj/machinery/vending/V in infected.Copy())
 		if(V in toppled)
 			animate(V, transform = null, time = 3)
 		cure_machine(V)
