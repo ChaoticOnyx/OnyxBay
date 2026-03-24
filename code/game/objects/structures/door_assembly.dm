@@ -81,10 +81,10 @@
 	glass_type = "/glass_external"
 	airlock_type = "/external"
 
-/obj/structure/door_assembly/door_assembly_int
+/obj/structure/door_assembly/door_assembly_civil
 	base_icon_state = "int"
 	base_name = "Airlock"
-	glass_type = "/glass_int"
+	glass_type = "/glass_civil"
 	airlock_type = ""
 
 /obj/structure/door_assembly/door_assembly_mai
