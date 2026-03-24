@@ -4,11 +4,7 @@
 
 /obj/item/organ_module/active/simple/Initialize()
 	. = ..()
-	if(holding_type)
-		holding = new holding_type(src)
-		holding.canremove = FALSE
-		holding.w_class = ITEM_SIZE_NO_CONTAINER
-		holding.slot_flags = 0
+	create_holding()
 
 /obj/item/organ_module/active/simple/Destroy()
 	if(holding)
@@ -17,11 +13,21 @@
 
 	return ..()
 
+/obj/item/organ_module/active/simple/proc/create_holding()
+	if(!QDELETED(holding))
+		QDEL_NULL(holding)
+	if(!holding_type)
+		return
+	holding = new holding_type(src)
+	holding.canremove = FALSE
+	holding.force_drop = TRUE
+	holding.w_class = ITEM_SIZE_NO_CONTAINER
+	holding.slot_flags = 0
+
 /obj/item/organ_module/active/simple/proc/deploy(mob/living/carbon/human/H, obj/item/organ/external/E)
 	var/slot = null
 	if(QDELETED(holding) && holding_type)
-		holding = new holding_type(src)
-		holding.canremove = FALSE
+		create_holding()
 	if(!holding)
 		return
 	if(E.organ_tag in list(BP_L_ARM, BP_L_HAND))
@@ -32,8 +38,8 @@
 		return
 
 	H.visible_message(
-		SPAN_WARNING("[H] extend \his [holding.name] from [E]."),
-		SPAN_NOTICE("You extend your [holding.name] from [E].")
+		SPAN_WARNING("[H] extends \his [holding.name] from \the [E]."),
+		SPAN_NOTICE("You extend your [holding.name] from \the [E].")
 	)
 	register_signal(holding, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/on_holding_unequipped), override = TRUE)
 
@@ -48,11 +54,11 @@
 		var/mob/M = holding.loc
 		M.drop(holding, force = TRUE)
 		M.visible_message(
-			SPAN_WARNING("[M] retracts \his [holding.name] into [E]."),
-			SPAN_NOTICE("You retract your [holding.name] into [E].")
+			SPAN_WARNING("[M] retracts \his [holding.name] into \the [E]."),
+			SPAN_NOTICE("You retract your [holding.name] into \the [E].")
 		)
 	holding.forceMove(src)
-	unregister_signal(H, SIGNAL_ITEM_UNEQUIPPED)
+	unregister_signal(holding, SIGNAL_ITEM_UNEQUIPPED)
 
 /obj/item/organ_module/active/simple/_on_remove(obj/item/organ/external/E)
 	var/mob/living/carbon/human/H = E?.owner

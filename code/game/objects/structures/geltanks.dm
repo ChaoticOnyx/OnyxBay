@@ -30,7 +30,7 @@
 	else if(capacity <= 150)
 		icon_state = "[initial(icon_state)]-used"
 
-/obj/structure/geltank/proc/fill_gel(obj/item/stack/medical/advanced/O, mob/user)
+/obj/structure/geltank/proc/fill_gel(obj/item/stack/medical/gel/O, mob/user)
 	if(capacity <= 0)
 		to_chat(user, SPAN("warning", "\The [src] is empty!"))
 		return
@@ -48,8 +48,8 @@
 	gel_type = "somatic"
 
 /obj/structure/geltank/somatic/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/stack/medical/advanced/bruise_pack))
-		var/obj/item/stack/medical/advanced/bruise_pack/O = W
+	if(istype(W, /obj/item/stack/medical/gel/brute))
+		var/obj/item/stack/medical/gel/brute/O = W
 		fill_gel(O, user)
 		return
 	if(istype(W, /obj/item/organfixer))
@@ -77,8 +77,8 @@
 	gel_type = "burn"
 
 /obj/structure/geltank/burn/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/stack/medical/advanced/ointment))
-		var/obj/item/stack/medical/advanced/ointment/O = W
+	if(istype(W, /obj/item/stack/medical/gel/burn))
+		var/obj/item/stack/medical/gel/burn/O = W
 		fill_gel(O, user)
 		return
 	return ..()

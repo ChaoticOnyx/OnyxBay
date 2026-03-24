@@ -63,90 +63,9 @@
 		)
 
 /**
- * Limb sterialization step.
- */
-/datum/surgery_step/sterilize
-	priority = 2
-	duration = STERILIZATION_DURATION
-
-	allowed_tools = list(
-		/obj/item/reagent_containers/spray = 100,
-		/obj/item/reagent_containers/dropper = 100,
-		/obj/item/reagent_containers/vessel/bottle/chemical = 90,
-		/obj/item/reagent_containers/vessel/flask = 90,
-		/obj/item/reagent_containers/vessel/beaker = 75,
-		/obj/item/reagent_containers/vessel/bottle = 75,
-		/obj/item/reagent_containers/vessel/glass = 75,
-		/obj/item/reagent_containers/vessel/bucket = 50
-		)
-
-	success_sound = 'sound/effects/spray2.ogg'
-	failure_sound = 'sound/effects/spray3.ogg'
-
-/datum/surgery_step/sterilize/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	. = ..()
-	if(!.)
-		return
-
-	if(parent_organ.is_disinfected())
-		return FALSE
-
-	var/obj/item/reagent_containers/C = tool
-	if(!istype(C) || !C.is_open_container())
-		return FALSE
-
-	var/datum/reagent/ethanol/E = locate() in C.reagents.reagent_list
-	if(istype(E) && E.strength >= 40)
-		return FALSE
-
-	if(!istype(E) && !C.reagents.has_reagent(/datum/reagent/sterilizine))
-		return FALSE
-
-	return TRUE
-
-/datum/surgery_step/sterilize/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	announce_preop(user,
-		"[user] starts pouring [tool]'s contents on \the [target]'s [parent_organ]." , \
-		"You start pouring [tool]'s contents on \the [target]'s [parent_organ]."
-		)
-	target.custom_pain(
-		"Your [parent_organ] is on fire!",
-		50,
-		affecting = parent_organ
-		)
-	return ..()
-
-/datum/surgery_step/sterilize/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	var/obj/item/reagent_containers/C = tool
-	var/transfered = C.reagents.trans_to_mob(target, C.amount_per_transfer_from_this, CHEM_BLOOD)
-	if(!transfered)
-		return
-
-	announce_success(user,
-		"[user] rubs [target]'s [parent_organ] down with \the [tool]'s contents.",
-		"You rub [target]'s [parent_organ] down with \the [tool]'s contents."
-		)
-
-/datum/surgery_step/sterilize/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	var/obj/item/reagent_containers/C = tool
-	if(!istype(C))
-		return
-
-	var/transfered = C.reagents.trans_to_mob(target, C.amount_per_transfer_from_this, CHEM_BLOOD)
-	if(!transfered)
-		return
-
-	announce_failure(user,
-		"[user]'s hand slips, spilling \the [tool]'s contents over the [target]'s [parent_organ]!",
-		"Your hand slips, spilling \the [tool]'s contents over the [target]'s [parent_organ]!"
-		)
-	parent_organ.disinfect()
-
-/**
  * Fix tendon step.
  */
 /datum/surgery_step/fix_tendon
-	can_infect = TRUE
 	delicate = TRUE
 	blood_level = BLOODY_HANDS
 	shock_level = 40
@@ -166,7 +85,7 @@
 	if(!.)
 		return
 
-	if(parent_organ.open() < SURGERY_RETRACTED)
+	if(parent_organ.is_surgically_open() < SURGERY_RETRACTED)
 		return FALSE
 
 	return (parent_organ.status & ORGAN_TENDON_CUT)
@@ -196,13 +115,12 @@
 		"[user]'s hand slips, smearing [tool] in the incision in [target]'s [parent_organ]!",
 		"Your hand slips, smearing [tool] in the incision in [target]'s [parent_organ]!"
 		)
-	parent_organ.take_external_damage(5, used_weapon = tool)
+	parent_organ.take_blunt_damage(5, used_weapon = tool)
 
 /**
  * Fix vein inside a limb step.
  */
 /datum/surgery_step/fix_vein
-	can_infect = TRUE
 	delicate = TRUE
 	blood_level = BLOODY_HANDS
 	shock_level = 40
@@ -223,7 +141,7 @@
 	if(!.)
 		return
 
-	if(parent_organ.open() < SURGERY_RETRACTED)
+	if(parent_organ.is_surgically_open() < SURGERY_RETRACTED)
 		return FALSE
 
 	return (parent_organ.status & ORGAN_ARTERY_CUT)
@@ -253,4 +171,4 @@
 		"[user]'s hand slips, smearing [tool] in the incision in [target]'s [parent_organ]!",
 		"Your hand slips, smearing [tool] in the incision in [target]'s [parent_organ]!"
 		)
-	parent_organ.take_external_damage(5, used_weapon = tool)
+	parent_organ.take_blunt_damage(5, used_weapon = tool)

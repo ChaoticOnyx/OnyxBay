@@ -111,9 +111,9 @@
 		visible_message("[src] shatters!")
 
 	if(!(atom_flags & ATOM_FLAG_HOLOGRAM))
-		cast_new(shardtype, is_full_window ? 4 : 1, loc)
+		cast_new(shardtype, (is_full_window ? 4 : 1), loc)
 		if(reinf)
-			cast_new(/obj/item/stack/rods, is_full_window ? 4 : 1, loc)
+			cast_new(/obj/item/stack/rods, (is_full_window ? 4 : 1), loc)
 
 	qdel(src)
 	return
@@ -336,8 +336,8 @@
 	updateSilicate()
 	update_nearby_tiles(need_rebuild=1)
 
-/obj/structure/window/New(Loc, start_dir=null, constructed=0)
-	..()
+/obj/structure/window/Initialize(mapload, start_dir = null, constructed = 0)
+	. = ..(mapload)
 
 	//player-constructed windows
 	if (constructed)
@@ -477,16 +477,10 @@
 	damage_per_fire_tick = 2.0
 	glasstype = /obj/item/stack/material/glass/reinforced
 
-
-/obj/structure/window/New(Loc, constructed=0)
-	..()
-
-	//player-constructed windows
-	if (constructed)
-		state = 0
-
-/obj/structure/window/Initialize()
+/obj/structure/window/Initialize(mapload, constructed = 0)
 	. = ..()
+	if(constructed)
+		state = 0
 	// windows only block while reinforced and fulltile, so we'll use the proc
 	real_explosion_block = explosion_block
 

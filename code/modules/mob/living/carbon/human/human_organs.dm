@@ -33,12 +33,9 @@
 			to_chat(src, "<span class='danger'>With a shower of fresh blood, a new [O.name] forms.</span>")
 			visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [src]'s [O.amputation_point], forming a new [O.name]!</span>")
 		return 1
-	else if (E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
+	else if(E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
 		E.mend_fracture()
 		E.status &= ~ORGAN_ARTERY_CUT
-		for(var/datum/wound/W in E.wounds)
-			if(W.wound_damage() == 0 && prob(50))
-				E.wounds -= W
 		return 1
 	else
 		return 0
@@ -68,9 +65,19 @@
 
 /mob/living/carbon/human/proc/handle_organs_pain() // It's more efficient to process it separately from the actual organ processing
 	full_pain = 0
+
+	var/hurt_organs = 0
+	var/highest_pain = 0
 	for(var/obj/item/organ/external/O in organs)
 		O.update_pain()
-		full_pain += O.full_pain
+		if(O.full_pain)
+			full_pain += O.full_pain
+			hurt_organs++
+			highest_pain = max(highest_pain, O.full_pain)
+
+	if(hurt_organs)
+		// The more ouchies we have, the less each individual one affects us, i.e. we don't even notice a bruise on the shoulder if there's a gaping hole in our chest.
+		full_pain = max(highest_pain, full_pain / sqrt(hurt_organs))
 
 	if(full_pain != full_pain_lasttick)
 		update_pain_slowdown()
@@ -130,12 +137,6 @@
 					else
 						drop_inactive_hand()
 					Stun(2)
-
-				//Moving makes open wounds get infected much faster
-				if(LAZYLEN(E.wounds))
-					for(var/datum/wound/W in E.wounds)
-						if(W.infection_check())
-							W.germ_level += 1
 
 	if(should_update_damage_icon)
 		update_damage_overlays()

@@ -279,7 +279,7 @@
 
 	playsound(src, sound_to_play, sound_loudness, 1)
 
-/mob/living/proc/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
+/mob/living/proc/embed(obj/O, def_zone = null)
 	O.forceMove(src)
 	src.embedded += O
 	src.verbs += /mob/proc/yank_out_object

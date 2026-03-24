@@ -7,10 +7,10 @@
 	matter = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 1000)
 	var/obj/item/implant/imp = null
 
-/obj/item/implanter/New()
+/obj/item/implanter/Initialize()
+	. = ..()
 	if(ispath(imp))
 		imp = new imp(src)
-	..()
 	update_icon()
 
 /obj/item/implanter/on_update_icon()

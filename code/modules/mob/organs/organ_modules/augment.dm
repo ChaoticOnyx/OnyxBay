@@ -43,11 +43,17 @@
 		implant_action_name = action_button_name
 		action_button_name = null
 
+/obj/item/organ_module/Destroy()
+	if(istype(loc, /obj/item/organ))
+		remove(loc)
+	return ..()
+
+
 /obj/item/organ_module/proc/install(obj/item/organ/E)
 	if(!E)
 		return     /// le costil, must fix runtimes
-	E.implants += src
-	E.organ_modules += src
+	E.implants |= src
+	E.organ_modules |= src
 	E.occupied_space += augment_size
 	forceMove(E)
 	_on_install(E)
@@ -106,11 +112,14 @@
 
 /obj/item/organ_module/proc/remove(obj/item/organ/E)
 	_on_remove(E)
+
 	E.implants -= src
 	E.organ_modules -= src
 	E.occupied_space = max(0, E.occupied_space - augment_size)
+
 	if(!QDELETED(src))
 		forceMove(E.drop_location())
+
 	post_removed(E)
 
 /obj/item/organ_module/proc/_on_remove(obj/item/organ/E)

@@ -17,12 +17,9 @@
 	var/filter_trans = 0.5
 	var/smoke_effect = 0
 
-/obj/item/clothing/mask/smokable/New()
-	..()
-	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
-
 /obj/item/clothing/mask/smokable/Initialize()
 	. = ..()
+	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 	create_reagents(chem_volume) // making the cigarrete a chemical holder with a maximum volume of [chem_volume]
 
 /obj/item/clothing/mask/smokable/Destroy()

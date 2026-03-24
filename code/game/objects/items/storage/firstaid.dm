@@ -27,7 +27,7 @@
 
 	startswith = list(
 		/obj/item/device/healthanalyzer,
-		/obj/item/stack/medical/bruise_pack = 2,
+		/obj/item/stack/medical/bandage = 2,
 		/obj/item/stack/medical/ointment = 1,
 		/obj/item/reagent_containers/hypospray/autoinjector,
 		/obj/item/storage/pill_bottle/antidexafen,
@@ -43,7 +43,7 @@
 	startswith = list(
 		/obj/item/device/healthanalyzer,
 		/obj/item/reagent_containers/hypospray/autoinjector,
-		/obj/item/stack/medical/bruise_pack,
+		/obj/item/stack/medical/bandage,
 		/obj/item/stack/medical/ointment = 2,
 		/obj/item/storage/pill_bottle/kelotane,
 		/obj/item/storage/pill_bottle/paracetamol
@@ -94,8 +94,8 @@
 	startswith = list(
 		/obj/item/device/healthanalyzer,
 		/obj/item/reagent_containers/hypospray/autoinjector/adrenaline,
-		/obj/item/stack/medical/advanced/bruise_pack = 2,
-		/obj/item/stack/medical/advanced/ointment = 2,
+		/obj/item/stack/medical/gel/brute = 2,
+		/obj/item/stack/medical/gel/burn = 2,
 		/obj/item/stack/medical/splint
 		)
 
@@ -108,8 +108,8 @@
 	max_storage_space = null
 
 	startswith = list(
-		/obj/item/stack/medical/advanced/bruise_pack,
-		/obj/item/stack/medical/advanced/ointment,
+		/obj/item/stack/medical/gel/brute,
+		/obj/item/stack/medical/gel/burn,
 		/obj/item/storage/pill_bottle/bicaridine,
 		/obj/item/storage/pill_bottle/dermaline,
 		/obj/item/storage/pill_bottle/dexalin_plus,
@@ -170,7 +170,7 @@
 		/obj/item/bonegel,
 		/obj/item/FixOVein,
 		/obj/item/organfixer,
-		/obj/item/stack/medical/advanced/bruise_pack,
+		/obj/item/stack/medical/gel/brute,
 		/obj/item/stack/nanopaste
 		)
 
@@ -185,7 +185,7 @@
 		/obj/item/bonegel,
 		/obj/item/FixOVein,
 		/obj/item/organfixer/standard,
-		/obj/item/stack/medical/advanced/bruise_pack,
+		/obj/item/stack/medical/gel/brute,
 		)
 
 	drop_sound = SFX_DROP_TOOLBOX

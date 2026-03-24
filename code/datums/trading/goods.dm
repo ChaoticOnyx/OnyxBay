@@ -297,7 +297,7 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/pinpointer/radio 					= TRADER_THIS_TYPE,
 								/obj/item/device/antibody_scanner 			= TRADER_THIS_TYPE,
 								/obj/item/device/synthesized_instrument 	= TRADER_SUBTYPES_ONLY,
-								/obj/item/stack/medical/advanced 			= TRADER_BLACKLIST
+								/obj/item/stack/medical/gel 				= TRADER_BLACKLIST
 								)
 
 /datum/trader/ship/devices/New()

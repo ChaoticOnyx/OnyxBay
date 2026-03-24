@@ -2,14 +2,13 @@
  * Default bone surgery step, does nothing.
  */
 /datum/surgery_step/bone
-	can_infect = TRUE
 	blood_level = BLOODY_HANDS
 	shock_level = 20
 
 	failure_sound = 'sound/effects/bonebreak1.ogg'
 
 /datum/surgery_step/bone/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && !BP_IS_ROBOTIC(parent_organ) && parent_organ.open() >= SURGERY_RETRACTED)
+	return (..() && !BP_IS_ROBOTIC(parent_organ) && parent_organ.is_surgically_open() >= SURGERY_RETRACTED)
 
 /**
  * Bone glueing step.

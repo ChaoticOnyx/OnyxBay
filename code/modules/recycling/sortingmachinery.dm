@@ -533,11 +533,7 @@
 
 	if(prob(35))
 		for(var/mob/living/carbon/human/L in src)
-			var/list/obj/item/organ/external/crush = L.get_damageable_organs()
-			if(!crush.len)
-				return
-
-			var/obj/item/organ/external/E = pick(crush)
+			var/obj/item/organ/external/E = pick(L.organs)
 
 			E.take_external_damage(45, used_weapon = "Blunt Trauma")
 			to_chat(L, "\The [src]'s mechanisms crush your [E.name]!")

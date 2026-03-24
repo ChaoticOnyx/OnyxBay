@@ -20,8 +20,8 @@
 	QDEL_NULL(digested)
 	. = ..()
 
-/obj/item/organ/internal/intestines/New()
-	..()
+/obj/item/organ/internal/intestines/Initialize()
+	. = ..()
 	digested = new /datum/reagents/metabolism(2.4 LITERS, owner ? owner : null, CHEM_DIGEST)
 	if(!digested.my_atom)
 		digested.my_atom = src
@@ -69,7 +69,7 @@
 	else
 		digested.metabolize(TRUE)
 
-/obj/item/organ/internal/intestines/take_internal_damage(amount, silent = FALSE)
+/obj/item/organ/internal/intestines/take_internal_damage(amount, silent = FALSE, is_traumatic = FALSE)
 	var/oldbroken = is_broken()
 	. = ..()
 	if(owner && !owner.stat)

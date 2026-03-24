@@ -122,10 +122,12 @@
 	var/heat_level_2 = 500                            // Heat damage level 2 above this point.
 	var/heat_level_3 = 1000                           // Heat damage level 3 above this point.
 	var/passive_temp_gain = 0		                  // Species will gain this much temperature every second
+
 	var/hazard_high_pressure = HAZARD_HIGH_PRESSURE   // Dangerously high pressure.
 	var/warning_high_pressure = WARNING_HIGH_PRESSURE // High pressure warning.
 	var/warning_low_pressure = WARNING_LOW_PRESSURE   // Low pressure warning.
 	var/hazard_low_pressure = HAZARD_LOW_PRESSURE     // Dangerously low pressure.
+
 	var/body_temperature = 310.15	                  // Species will try to stabilize at this temperature.
 	                                                  // (also affects temperature processing)
 
@@ -303,10 +305,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				E.internal_organs.Remove(O)
 				H.internal_organs.Remove(O)
 				foreign_organs |= O
-		if(E.implants.len)
+		if(LAZYLEN(E.implants))
 			implants_from_external_organs[E.organ_tag] = list()
-		for(var/I in E.implants)
-			implants_from_external_organs[E.organ_tag] += I
+			for(var/I in E.implants)
+				implants_from_external_organs[E.organ_tag] += I
 
 	for(var/obj/item/organ/organ in H.contents)
 		if((organ in H.organs) || (organ in H.internal_organs))

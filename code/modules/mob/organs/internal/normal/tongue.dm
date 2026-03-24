@@ -14,7 +14,7 @@
 	icon_state = "voicebox"
 	dead_icon = "voicebox"
 
-/obj/item/organ/internal/tongue/take_internal_damage(amount, silent = FALSE)
+/obj/item/organ/internal/tongue/take_internal_damage(amount, silent = FALSE, is_traumatic = FALSE)
 	var/oldbroken = is_broken()
 	var/oldbruised = is_bruised()
 	. = ..()

@@ -86,14 +86,16 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	..()
 
 /mob/living/simple_animal/hostile/giant_spider/UnarmedAttack(atom/target)
-	. = ..()
-	if(!.)
+	..()
+	if(!istype(target, /mob/living))
 		return
-	if(isliving(target))
-		var/mob/living/L = .
-		if(L.reagents)
-			to_chat(L, SPAN_WARNING("You feel a tiny prick."))
-			L.reagents.add_reagent(poison_type, 5)
+
+	var/mob/living/M = target
+	if(!M.reagents)
+		return
+
+	to_chat(M, SPAN_WARNING("You feel a tiny prick."))
+	M.reagents.add_reagent(poison_type, poison_per_bite)
 
 /**
  * # Spider Hunter

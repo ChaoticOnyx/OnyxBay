@@ -649,7 +649,8 @@
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/magical_custard/affect_digest(mob/living/carbon/M, alien, removed)
-	M.heal_organ_damage(2.5 * removed, 2.5 * removed)
+	M.add_chemical_effect(CE_BRUTE_REGEN, 2.5)
+	M.add_chemical_effect(CE_BURN_REGEN, 2.5)
 	M.adjustToxLoss(-2.5 * removed)
 
 /datum/reagent/astrotame

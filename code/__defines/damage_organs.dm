@@ -28,6 +28,7 @@
 #define DAM_SHARP (1<<0)
 #define DAM_EDGE  (1<<1)
 #define DAM_LASER (1<<2)
+#define DAM_CLEAN (1<<3) // Clean damage doesn't gib limbs, cause disfigurement, etc. Mostly caused during surgeries.
 
 #define FIRE_DAMAGE_MODIFIER 0.0215 // Higher values result in more external fire damage to the skin. (default 0.0215)
 #define  AIR_DAMAGE_MODIFIER 2.025  // More means less damage from hot air scalding lungs, less = more damage. (default 2.025)
@@ -74,14 +75,6 @@
 
 // Damage above this value must be repaired with surgery.
 #define ROBOLIMB_SELF_REPAIR_CAP 30
-
-//Germs and infections.
-#define GERM_LEVEL_AMBIENT  110 // Maximum germ level you can reach by standing still.
-#define GERM_LEVEL_MOVE_CAP 200 // Maximum germ level you can reach by running around.
-
-#define INFECTION_LEVEL_ONE   100
-#define INFECTION_LEVEL_TWO   500
-#define INFECTION_LEVEL_THREE 1000
 
 //Blood levels. These are percentages based on the species blood_volume far.
 #define BLOOD_VOLUME_SAFE    85

@@ -98,7 +98,10 @@
 	return bled
 #undef BLOOD_SPRAY_DISTANCE
 
-/mob/living/carbon/human/proc/remove_blood(amt)
+/mob/living/carbon/proc/remove_blood(amt)
+	return 0
+
+/mob/living/carbon/human/remove_blood(amt)
 	if(!should_have_organ(BP_HEART)) //TODO: Make drips come from the reagents instead.
 		return 0
 	if(!amt)
@@ -116,13 +119,13 @@
 	var/regen_value = 0
 	switch(hydration)
 		if(HYDRATION_SUPER to INFINITY)
-			regen_value = 2.0
+			regen_value = 5.0
 		if(HYDRATION_HIGH to HYDRATION_SUPER)
-			regen_value = 1.5
+			regen_value = 3.5
 		if(HYDRATION_LOW to HYDRATION_HIGH)
-			regen_value = 1.0
+			regen_value = 2.0
 		if(1 to HYDRATION_LOW)
-			regen_value = 0.5
+			regen_value = 1.0
 
 	if(regen_value && regenerate_blood(regen_value + chem_effects[CE_BLOODRESTORE]))
 		remove_hydration(DEFAULT_THIRST_FACTOR * regen_value) // Regenerating blood dehydrates ya.
@@ -300,8 +303,11 @@
 	return B
 
 //Percentage of maximum blood volume.
-/mob/living/carbon/human/proc/get_blood_volume()
-	if (isfakeliving(src))
+/mob/living/carbon/proc/get_blood_volume()
+	return 100
+
+/mob/living/carbon/human/get_blood_volume()
+	if(isfakeliving(src))
 		return 100
 	return round((vessel.get_reagent_amount(/datum/reagent/blood)/species.blood_volume)*100)
 

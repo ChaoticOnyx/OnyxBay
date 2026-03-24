@@ -161,7 +161,3 @@
 					H.internal_organs_by_name[organ.organ_tag] = organ
 					organ.handle_foreign()
 				return
-			else
-				for(var/datum/wound/W in E.wounds)
-					if(W.wound_damage() == 0 && prob(50))
-						E.wounds -= W

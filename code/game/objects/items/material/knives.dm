@@ -38,20 +38,28 @@
 		armor_penetration = initial(armor_penetration)
 
 /obj/item/material/butterfly/attack_self(mob/user)
-	active = !active
-	if(active)
-		to_chat(user, "<span class='notice'>You flip out \the [src].</span>")
-		playsound(user, 'sound/weapons/flipblade.ogg', 15, 1)
-	else
-		to_chat(user, "<span class='notice'>\The [src] can now be concealed.</span>")
-	update_force()
+	switch_blade(user)
 	add_fingerprint(user)
+
+/obj/item/material/butterfly/proc/switch_blade(mob/user)
+	active = !active
+	if(user)
+		if(active)
+			to_chat(user, SPAN("notice", "You flip out \the [src]."))
+		else
+			to_chat(user, SPAN("notice", "\The [src] can now be concealed."))
+	playsound(get_turf(src), 'sound/weapons/flipblade.ogg', 15, 1)
+	update_force()
 
 /obj/item/material/butterfly/switchblade
 	name = "switchblade"
 	desc = "A classic switchblade with gold engraving. Just holding it makes you feel like a gangster."
 	icon_state = "switchblade"
 	unbreakable = 1
+
+/obj/item/material/butterfly/switchblade/unfolded/Initialize()
+	. = ..()
+	switch_blade()
 
 /*
  * Kitchen knives
@@ -210,17 +218,17 @@
 	hitsound = SFX_FIGHTING_SWING
 	w_class = ITEM_SIZE_SMALL
 
-/obj/item/material/shivgrip/wood/New(newloc)
-	..(newloc, MATERIAL_WOOD)
+/obj/item/material/shivgrip/wood
 	name = "wooden small knife grip"
 	icon_state = "shiv_wood"
 	color = null
+	default_material = MATERIAL_WOOD
 
-/obj/item/material/shivgrip/plastic/New(newloc)
-	..(newloc, MATERIAL_PLASTIC)
+/obj/item/material/shivgrip/plastic
 	name = "plastic small knife grip"
 	icon_state = "shiv_plastic"
 	color = null
+	default_material = MATERIAL_PLASTIC
 
 
 /obj/item/material/knife/butch/kitchen/syndie

@@ -403,11 +403,11 @@
 		icon_state = "[initial(icon_state)]"
 
 /obj/item/organfixer/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/stack/medical/advanced/bruise_pack))
+	if(istype(I, /obj/item/stack/medical/gel/brute))
 		if(gel_amt_max == -1)
 			to_chat(user, SPAN("notice", "\The [src] doesn't seem to be reloadable."))
 			return
-		var/obj/item/stack/medical/advanced/bruise_pack/O = I
+		var/obj/item/stack/medical/gel/brute/O = I
 		if(!O.get_amount())
 			to_chat(user, SPAN("warning", "You are trying to refill \the [src] using an empty container."))
 			return

@@ -116,32 +116,10 @@
 
 		return
 	else if(istype(W, /obj/item/device/mcu))
-		if(locked)
-			to_chat(user, SPAN_WARNING("\The [src] is locked."))
-
-			return
-		
-		if(!QDELETED(__mcu))
-			to_chat(user, SPAN_WARNING("There is already a MCU in the chassis."))
-
-			return
-		
-		var/obj/item/device/mcu/M = W
-		ASSERT(M.__chassis == null)
-
-		if(M.is_on())
-			to_chat(user, SPAN_WARNING("Turn off \the [M] before inserting it."))
-
+		if(!try_insert_mcu(W, user, FALSE))
 			return
 
-		if(!user.drop(M, src))
-			return
-
-		__mcu = M
-		M.__chassis = weakref(src)
-
-		user.visible_message("[user] inserts \the [M] into \the [src]", "You insert \the [M] into \the [src]")
-		__on_mcu_insert()
+		user.visible_message("[user] inserts \the [W] into \the [src]", "You insert \the [W] into \the [src]")
 
 		return
 	else if(istype(W, /obj/item/weldingtool))
@@ -183,6 +161,39 @@
 
 /obj/item/mcu_chassis/proc/__on_mcu_eject()
 	return
+
+/obj/item/mcu_chassis/proc/try_insert_mcu(obj/item/device/mcu/M, mob/activator = null, ignore_locked = FALSE)
+	if(!ignore_locked && locked)
+		if(activator != null)
+			to_chat(activator, SPAN_WARNING("\The [src] is locked."))
+
+		return FALSE
+	
+	if(!QDELETED(__mcu))
+		if(activator != null)
+			to_chat(activator, SPAN_WARNING("There is already a MCU in the chassis."))
+
+		return FALSE
+
+	ASSERT(M.__chassis == null)
+
+	if(M.is_on())
+		if(activator != null)
+			to_chat(activator, SPAN_WARNING("Turn off \the [M] before inserting it."))
+
+		return FALSE
+
+	if(activator)
+		if(!activator.drop(M, src))
+			return FALSE
+	else
+		M.forceMove(src)
+
+	__mcu = M
+	M.__chassis = weakref(src)
+	__on_mcu_insert()
+
+	return TRUE
 
 /obj/item/mcu_chassis/verb/eject_mcu()
 	set src in view(1)

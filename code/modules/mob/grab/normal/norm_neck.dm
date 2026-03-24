@@ -18,7 +18,7 @@
 	force_danger = 1
 	restrains = 1
 	ladder_carry = 1
-	breakability = 1
+	breakability = 2.5
 
 	icon_state = "kill"
 
