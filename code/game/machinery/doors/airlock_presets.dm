@@ -6,7 +6,7 @@
 /obj/machinery/door/airlock/civil
 	name = "Airlock"
 	icon = 'icons/obj/doors/doorint.dmi'
-	assembly_type = /obj/structure/door_assembly/door_assembly_int
+	assembly_type = /obj/structure/door_assembly/door_assembly_civil
 
 //////////////////////////////////////////
 /obj/machinery/door/airlock/command
@@ -235,7 +235,7 @@
 	maxhealth = 300
 	explosion_resistance = 5
 	opacity = 0
-	assembly_type = /obj/structure/door_assembly/door_assembly_int
+	assembly_type = /obj/structure/door_assembly/door_assembly_civil
 	glass = 1
 	open_sound_powered = 'sound/machines/airlock/glass_open.ogg'
 	close_sound_powered = 'sound/machines/airlock/glass_close.ogg'
