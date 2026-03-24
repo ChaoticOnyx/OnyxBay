@@ -207,6 +207,7 @@
 			connect_to_network()
 		else
 			disconnect_from_network()
+			cached_SM = null
 		return 1
 	else if(istype(W, /obj/item/weldingtool))
 		var/obj/item/weldingtool/welder = W
@@ -335,6 +336,7 @@
 		return
 	fade_cracks()
 	disconnect_from_network()
+	cached_SM = null
 	stat |= BROKEN
 	melted = TRUE
 	anchored = FALSE
