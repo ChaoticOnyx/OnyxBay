@@ -125,13 +125,26 @@
 
 		to_chat(usr, "<span class='notice'>You color \the [src] [clr]</span>")
 		icon_state = "egg-[clr]"
+		set_shell_color_by_variant(clr)
 	else
 		..()
+
+/obj/item/reagent_containers/food/egg/proc/set_shell_color_by_variant(clr)
+	switch(clr)
+		if("blue")    shell_color = "#CEE9FF"
+		if("green")   shell_color = "#DCFFD1"
+		if("mime")    shell_color = "#E8E8E8"
+		if("orange")  shell_color = "#FFE5D0"
+		if("purple")  shell_color = "#E9D3F8"
+		if("rainbow") shell_color = "#DCFFD1"
+		if("red")     shell_color = "#FFCFD6"
+		if("yellow")  shell_color = "#FDFFCD"
 
 /obj/item/reagent_containers/food/egg/randomcolor/Initialize()
 	. = ..()
 	var/clr = pick("blue","green","mime","orange","purple","rainbow","red","yellow")
 	icon_state = "egg-[clr]"
+	set_shell_color_by_variant(clr)
 
 /obj/item/reagent_containers/food/egg/blue
 	icon_state = "egg-blue"
