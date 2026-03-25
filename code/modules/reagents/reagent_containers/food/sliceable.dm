@@ -81,7 +81,7 @@
 	bitesize = 25 // 157.5 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/sliceable/flatdough/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/reagent_containers/food/faggot) || istype(W, /obj/item/reagent_containers/food/rawfaggot))
+	if(istype(W, /obj/item/reagent_containers/food/faggot))
 		new /obj/item/reagent_containers/food/pelmeni(src)
 		to_chat(user, "You make some pelmeni.")
 		qdel(src)

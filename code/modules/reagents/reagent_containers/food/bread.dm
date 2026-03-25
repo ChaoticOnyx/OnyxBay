@@ -13,26 +13,23 @@
 	bitesize = 25 // 195 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/bun/attackby(obj/item/W, mob/user)
-	// Bun + faggot = burger
-	if(istype(W, /obj/item/reagent_containers/food/faggot))
+	// Bun + cooked cutlet = burger
+	if(istype(W, /obj/item/reagent_containers/food/cutlet) && !istype(W, /obj/item/reagent_containers/food/cutlet/raw))
 		new /obj/item/reagent_containers/food/plainburger(src)
 		to_chat(user, "You make a burger.")
 		qdel(W)
 		qdel(src)
-
-	// Bun + cutlet = hamburger
-	else if(istype(W, /obj/item/reagent_containers/food/cutlet))
-		new /obj/item/reagent_containers/food/plainburger(src)
-		to_chat(user, "You make a burger.")
-		qdel(W)
-		qdel(src)
+		return
 
 	// Bun + sausage = hotdog
-	else if(istype(W, /obj/item/reagent_containers/food/sausage))
+	if(istype(W, /obj/item/reagent_containers/food/sausage))
 		new /obj/item/reagent_containers/food/hotdog(src)
 		to_chat(user, "You make a hotdog.")
 		qdel(W)
 		qdel(src)
+		return
+
+	return ..()
 
 /obj/item/reagent_containers/food/bunbun
 	name = "\improper Bun Bun"

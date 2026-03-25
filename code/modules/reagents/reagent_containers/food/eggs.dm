@@ -17,6 +17,7 @@
 	var/max_growth = 300 // How many seconds it takes to hatch
 	var/whos_that_pokemon = null
 	var/hatch_data = null
+	var/shell_color = "#F8F2D2"
 
 /obj/item/reagent_containers/food/egg/Initialize()
 	. = ..()
@@ -72,6 +73,7 @@
 		L.setPoison(hatch_data)
 		L.last_breed = world.time
 
+	new /obj/item/trash/eggshell(get_turf(src), shell_color)
 	qdel_self()
 	return TRUE
 
@@ -88,6 +90,8 @@
 
 	to_chat(user, "You crack \the [src] into \the [O].")
 	reagents.trans_to(O, reagents.total_volume)
+	var/obj/item/trash/eggshell/E = new(get_turf(src), shell_color)
+	user.put_in_hands(E)
 	qdel(src)
 	return
 
@@ -104,6 +108,7 @@
 	new /obj/effect/decal/cleanable/egg_smudge(src.loc)
 	src.reagents.splash(hit_atom, src.reagents.total_volume)
 	src.visible_message("<span class='warning'>\The [src] has been squashed!</span>","<span class='warning'>You hear a smack.</span>")
+	new /obj/item/trash/eggshell(get_turf(src), shell_color)
 	qdel(src)
 	return
 
@@ -128,27 +133,35 @@
 
 /obj/item/reagent_containers/food/egg/blue
 	icon_state = "egg-blue"
+	shell_color = "#CEE9FF"
 
 /obj/item/reagent_containers/food/egg/green
 	icon_state = "egg-green"
+	shell_color = "#DCFFD1"
 
 /obj/item/reagent_containers/food/egg/mime
 	icon_state = "egg-mime"
+	shell_color = "#E8E8E8"
 
 /obj/item/reagent_containers/food/egg/orange
 	icon_state = "egg-orange"
+	shell_color = "#FFE5D0"
 
 /obj/item/reagent_containers/food/egg/purple
 	icon_state = "egg-purple"
+	shell_color = "#E9D3F8"
 
 /obj/item/reagent_containers/food/egg/rainbow
 	icon_state = "egg-rainbow"
+	shell_color = "#DCFFD1"
 
 /obj/item/reagent_containers/food/egg/red
 	icon_state = "egg-red"
+	shell_color = "#FFCFD6"
 
 /obj/item/reagent_containers/food/egg/yellow
 	icon_state = "egg-yellow"
+	shell_color = "#FDFFCD"
 
 /obj/item/reagent_containers/food/egg/robot
 	name = "robot egg"
@@ -158,6 +171,7 @@
 		/datum/reagent/nanites = 1
 		)
 	colorable = FALSE
+	shell_color = "#979797"
 
 /obj/item/reagent_containers/food/egg/golden
 	name = "golden egg"
@@ -167,6 +181,7 @@
 		/datum/reagent/gold = 15
 		)
 	colorable = FALSE
+	shell_color = "#F4F394"
 
 /obj/item/reagent_containers/food/egg/plasma
 	name = "plasma egg"
@@ -175,6 +190,7 @@
 		/datum/reagent/nutriment/protein/egg = 45,
 		/datum/reagent/toxin/plasma = 15
 		)
+	shell_color = "#B683BF"
 
 /obj/item/reagent_containers/food/egg/fertile
 	whos_that_pokemon = /mob/living/simple_animal/chick
@@ -184,6 +200,7 @@
 	name = "tiny egg"
 	icon_state = "lizegg"
 	item_state = "egg"
+	center_of_mass = "x=16;y=14"
 	colorable = FALSE
 
 /obj/item/reagent_containers/food/egg/lizard/make_fertile(pokemon_type, _hatch_data = null)
@@ -224,6 +241,99 @@
 ////////////////////
 // Actual foodies //
 ////////////////////
+/obj/item/reagent_containers/food/boiledegg
+	name = "Boiled egg"
+	desc = "A hard boiled egg."
+	icon_state = "egg"
+	base_icon_state = "egg"
+	filling_color = "#ffffff"
+	center_of_mass = "x=16;y=13"
+	startswith = list(
+		/datum/reagent/nutriment/protein/cooked = 45
+		)
+	bitesize = 25 // 112.5 nutrition, 2 bites
+	atom_flags = null
+	var/cracked = FALSE
+	var/shell_color = "#ffffff"
+
+/obj/item/reagent_containers/food/boiledegg/proc/crack_shell()
+	if(cracked)
+		return
+	cracked = TRUE
+	update_icon()
+	playsound(loc, 'sound/effects/bonebreak2.ogg', 50, 1)
+
+/obj/item/reagent_containers/food/boiledegg/on_update_icon()
+	ClearOverlays()
+
+	if(is_open_container())
+		if(bitecount)
+			if(base_icon_state == "lizegg")
+				icon_state = "lizegg-clean-bitten"
+			else
+				icon_state = "egg-clean-bitten"
+			var/image/I = new(icon, "egg-clean-yolk")
+			I.appearance_flags |= RESET_COLOR
+			I.color = reagents.get_color()
+			AddOverlays(I)
+		else
+			if(base_icon_state == "lizegg")
+				icon_state = "lizegg-clean"
+			else
+				icon_state = "egg-clean"
+		return
+
+	icon_state = base_icon_state
+
+	if(cracked)
+		var/image/I = new(icon, "egg-cracks")
+		I.appearance_flags |= RESET_COLOR
+		I.blend_mode = BLEND_MULTIPLY
+		I.color = filling_color
+		AddOverlays(I)
+	return
+
+/obj/item/reagent_containers/food/boiledegg/attack_self(mob/user)
+	if(!is_open_container())
+		if(!cracked)
+			to_chat(user, SPAN("notice", "You need to crack \the [src] first!"))
+			return
+		to_chat(user, SPAN("notice", "You peel the shell off \the [src]."))
+		atom_flags |= ATOM_FLAG_OPEN_CONTAINER
+		update_icon()
+		playsound(loc, 'sound/items/shpshpsh.ogg', 50, 1)
+		var/obj/item/trash/eggshell/E = new(get_turf(src), shell_color)
+		user.put_in_hands(E)
+		return
+	return ..()
+
+/obj/item/reagent_containers/food/boiledegg/afterattack(obj/O, mob/user, proximity)
+	if(istype(O, /obj/machinery/microwave) || !istype(O) || !proximity || cracked || !O.anchored || !isturf(O.loc))
+		return ..()
+
+	if(istype(O, /obj/structure/table) && user.a_intent != I_HURT)
+		return ..()
+
+	to_chat(user, "You crack \the [src] against \the [O].")
+	crack_shell()
+	return
+
+/obj/item/reagent_containers/food/boiledegg/throw_impact(atom/hit_atom, datum/thrownthing/TT)
+	..()
+	if(QDELETED(src))
+		return // Could be happened hitby()
+
+	if(!cracked)
+		crack_shell()
+	return
+
+/obj/item/reagent_containers/food/boiledegg/attackby(obj/item/W, mob/user)
+	if(!cracked && W.force)
+		to_chat(user, "You crack \the [src] with \the [W].")
+		crack_shell()
+		return
+	return ..()
+
 /obj/item/reagent_containers/food/vegg
 	name = "vegg"
 	desc = "So... It's more like a seed, right?"
@@ -234,16 +344,6 @@
 	center_of_mass = "x=16;y=13"
 	nutriment_amt = 50
 	bitesize = 30 // 50 nutrition, 2 bites
-
-/obj/item/reagent_containers/food/boiledegg
-	name = "Boiled egg"
-	desc = "A hard boiled egg."
-	icon_state = "egg"
-	filling_color = "#ffffff"
-	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 45
-		)
-	bitesize = 25 // 112.5 nutrition, 2 bites
 
 /obj/item/reagent_containers/food/friedegg
 	name = "Fried egg"
