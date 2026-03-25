@@ -168,7 +168,7 @@
 	M.add_nutrition(nutriment_factor * removed)
 
 /datum/reagent/nutriment/protein/egg // Also bad for skrell.
-	name = "egg yolk"
+	name = "egg protein"
 
 	taste_description = "slime"
 
@@ -178,7 +178,20 @@
 	ingest_absorbability = 0.2
 	digest_absorbability = 0.75
 
-	cooked_path = /datum/reagent/nutriment/protein/cooked
+	cooked_path = /datum/reagent/nutriment/protein/egg/cooked
+
+/datum/reagent/nutriment/protein/egg/cooked
+	name = "cooked egg protein"
+
+	taste_description = "eggs"
+
+	reagent_state = SOLID
+	color = "#ffe17f"
+
+	ingest_absorbability = 0.2
+	digest_absorbability = 1.0
+
+	cooked_path = null
 
 /datum/reagent/nutriment/honey
 	name = "Honey"

@@ -3,7 +3,7 @@
 	name = "egg"
 	desc = "An egg!"
 	icon_state = "egg"
-	filling_color = "#fdffd1"
+	filling_color = "#ffffaa"
 	volume = 60
 	static_volume = TRUE
 	center_of_mass = "x=16;y=13"
@@ -48,6 +48,8 @@
 
 	set_next_think(world.time + 1 SECOND)
 	return
+
+/obj/item/reagent_containers/food/egg/On_Consume(mob/M, eaten_with_fork)
 
 /obj/item/reagent_containers/food/egg/proc/make_fertile(pokemon_type, _hatch_data = null)
 	if(!pokemon_type)
@@ -246,7 +248,7 @@
 	desc = "A hard boiled egg."
 	icon_state = "egg"
 	base_icon_state = "egg"
-	filling_color = "#ffffff"
+	filling_color = "#ffe17f"
 	center_of_mass = "x=16;y=13"
 	startswith = list(
 		/datum/reagent/nutriment/protein/cooked = 45

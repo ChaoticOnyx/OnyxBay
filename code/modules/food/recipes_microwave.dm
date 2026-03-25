@@ -40,21 +40,31 @@ I said no!
 	)
 	result = /obj/item/reagent_containers/food/boiledegg
 
-/datum/recipe/boiledegg/make_food(obj/container)
-	var/obj/item/reagent_containers/food/egg/egg
-	for(var/obj/O in container)
-		if(!istype(O, /obj/item/reagent_containers/food/egg))
+/datum/recipe/boiledegg/make_food(obj/container, result_mult = 1)
+	var/alist/eggs_list = list()
+	for(var/thing in container)
+		if(!istype(thing, /obj/item/reagent_containers/food/egg))
 			continue
-		egg = O
+		eggs_list[thing] = TRUE
 
-	var/obj/item/reagent_containers/food/boiledegg/being_cooked = ..(container)
-	being_cooked.name = "Boiled [egg.name]"
-	being_cooked.icon = egg.icon
-	being_cooked.icon_state = egg.icon_state
-	being_cooked.base_icon_state = egg.icon_state
-	being_cooked.shell_color = egg.shell_color
-	being_cooked.CopyOverlays(egg)
-	return being_cooked
+	var/list/result_objs = ..(container, result_mult, eggs_list)
+	for(var/obj/item/reagent_containers/food/boiledegg/being_cooked in result_objs)
+		var/obj/item/reagent_containers/food/egg/egg
+		for(var/thing in eggs_list)
+			if(eggs_list[thing])
+				egg = eggs_list[thing]
+		if(istype(egg))
+			being_cooked.name = "Boiled [egg.name]"
+			being_cooked.icon = egg.icon
+			being_cooked.icon_state = egg.icon_state
+			being_cooked.base_icon_state = egg.icon_state
+			being_cooked.shell_color = egg.shell_color
+			being_cooked.CopyOverlays(egg)
+			eggs_list -= egg
+			qdel(egg)
+
+	eggs_list.Cut() // Justin Case.
+	return result_objs
 
 /datum/recipe/dionaroast
 	fruit = list("apple" = 1)
@@ -212,10 +222,11 @@ I said no!
 /datum/recipe/donkpocket/proc/warm_up(obj/item/reagent_containers/food/donkpocket/being_cooked)
 	being_cooked.heat()
 
-/datum/recipe/donkpocket/make_food(obj/container)
-	var/obj/item/reagent_containers/food/donkpocket/being_cooked = ..(container)
-	warm_up(being_cooked)
-	return being_cooked
+/datum/recipe/donkpocket/make_food(obj/container, result_mult = 1)
+	var/list/result_objs = ..()
+	for(var/obj/item/reagent_containers/food/donkpocket/being_cooked in result_objs)
+		warm_up(being_cooked)
+	return result_objs
 
 /datum/recipe/donkpocket/warm
 	reagents = list() //This is necessary since this is a child object of the above recipe and we don't want donk pockets to need flour
@@ -224,11 +235,12 @@ I said no!
 	)
 	result = /obj/item/reagent_containers/food/donkpocket //SPECIAL
 
-/datum/recipe/donkpocket/warm/make_food(obj/container)
-	var/obj/item/reagent_containers/food/donkpocket/being_cooked = locate() in container
-	if(being_cooked && !being_cooked.warm)
-		warm_up(being_cooked)
-	return being_cooked
+/datum/recipe/donkpocket/warm/make_food(obj/container, result_mult = 1)
+	var/list/result_objs = ..()
+	for(var/obj/item/reagent_containers/food/donkpocket/being_cooked in result_objs)
+		if(!being_cooked.warm)
+			warm_up(being_cooked)
+	return result_objs
 
 /datum/recipe/meatbread
 	items = list(
@@ -507,13 +519,26 @@ I said no!
 	)
 	result = /obj/item/reagent_containers/food/fortunecookie
 
-/datum/recipe/fortunecookie/make_food(obj/container)
-	var/obj/item/paper/paper = locate() in container
-	paper.forceMove(null) //prevent deletion
-	var/obj/item/reagent_containers/food/fortunecookie/being_cooked = ..(container)
-	paper.forceMove(being_cooked)
-	being_cooked.trash = paper //so the paper is left behind as trash without special-snowflake(TM Nodrak) code ~carn
-	return being_cooked
+/datum/recipe/fortunecookie/make_food(obj/container, result_mult = 1)
+	var/alist/papers_list = list()
+	for(var/thing in container)
+		if(!istype(thing, /obj/item/paper))
+			continue
+		papers_list[thing] = TRUE
+
+	var/list/result_objs = ..(container, result_mult, papers_list)
+	for(var/obj/item/reagent_containers/food/fortunecookie/being_cooked in result_objs)
+		var/obj/item/paper/paper
+		for(var/thing in papers_list)
+			if(papers_list[thing])
+				paper = papers_list[thing]
+		if(istype(paper))
+			paper.forceMove(being_cooked)
+			being_cooked.trash = paper //so the paper is left behind as trash without special-snowflake(TM Nodrak) code ~carn
+			papers_list -= paper
+
+	papers_list.Cut() // Just in case
+	return result_objs
 
 /datum/recipe/fortunecookie/check_items(obj/container)
 	. = ..()
@@ -606,10 +631,11 @@ I said no!
 	reagents = list(/datum/reagent/water = 50, /datum/reagent/ethanol/vodka = 50)
 	result = /obj/item/reagent_containers/food/amanitajelly
 
-/datum/recipe/amanitajelly/make_food(obj/container)
-	var/obj/item/reagent_containers/food/amanitajelly/being_cooked = ..(container)
-	being_cooked.reagents.del_reagent(/datum/reagent/toxin/amatoxin)
-	return being_cooked
+/datum/recipe/amanitajelly/make_food(obj/container, result_mult = 1)
+	var/list/result_objs = ..()
+	for(var/obj/item/reagent_containers/food/amanitajelly/being_cooked in result_objs)
+		being_cooked.reagents.del_reagent(/datum/reagent/toxin/amatoxin)
+	return result_objs
 
 /datum/recipe/faggotsoup
 	fruit = list("carrot" = 1, "potato" = 1)
@@ -1032,10 +1058,11 @@ I said no!
 	items = list(/obj/item/reagent_containers/food/faggot)
 	result = /obj/item/reagent_containers/food/validsalad
 
-/datum/recipe/validsalad/make_food(obj/container)
-	var/obj/item/reagent_containers/food/validsalad/being_cooked = ..(container)
-	being_cooked.reagents.del_reagent(/datum/reagent/toxin)
-	return being_cooked
+/datum/recipe/validsalad/make_food(obj/container, result_mult = 1)
+	var/list/result_objs = ..()
+	for(var/obj/item/reagent_containers/food/validsalad/being_cooked in result_objs)
+		being_cooked.reagents.del_reagent(/datum/reagent/toxin)
+	return result_objs
 
 /datum/recipe/cracker
 	reagents = list(/datum/reagent/salt = 3)
