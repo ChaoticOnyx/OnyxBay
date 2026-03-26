@@ -132,7 +132,7 @@
 			for(var/thing in available_items)
 				if(!istype(thing, /obj/item/reagent_containers/food/grown))
 					continue
-				var/obj/item/reagent_containers/food/grown/G
+				var/obj/item/reagent_containers/food/grown/G = thing
 				if(G.seed.kitchen_tag != item_type)
 					continue
 				found_amount += 1
@@ -144,7 +144,7 @@
 		if(exact && found_amount > checklist[item_type])
 			return RECIPE_MISMATCH
 		// Not a multiple, i.e. we need either 3 or 6 slabs of meat and we have 5.
-		if(found_amount & checklist[item_type])
+		if(found_amount % checklist[item_type])
 			return RECIPE_MISMATCH
 		. = min(., found_amount / checklist[item_type])
 
@@ -231,14 +231,14 @@
 	return result_objs
 
 /proc/select_recipe(list/datum/recipe/avaiable_recipes, obj/O, exact)
-	var/list/datum/recipe/possible_recipes = list()
+	var/alist/possible_recipes = alist()
 
 	for(var/datum/recipe/recipe in avaiable_recipes)
 		// Exact recipes do not allow any excessive ingredients.
 		if(exact)
 			if((recipe.check_reagents(O.reagents, TRUE) != RECIPE_MATCH) || (recipe.check_items(O, TRUE) != RECIPE_MATCH))
 				continue
-			possible_recipes += list(recipe, 1)
+			possible_recipes[recipe] = 1
 			continue
 
 		// Nonexact recipes allow excessive ingredients, and will result in multiple results if there's enough of them..
@@ -248,23 +248,17 @@
 		var/check_items = recipe.check_items(O)
 		if(check_items < RECIPE_MATCH)
 			continue
-		possible_recipes += list(recipe, min(check_reagents, check_items))
+		possible_recipes[recipe] = min(check_reagents, check_items)
 
 	// Nothing
-	if(possible_recipes.len == 0)
+	if(!length(possible_recipes))
 		return null
 
-	// A single matching recipe
-	if(possible_recipes.len == 1)
-		return possible_recipes[1]
-
-	// Okay, let's select the most complicated recipe
+	// Let's select the most complicated recipe
 	var/highest_count = 0
-	. = possible_recipes[1]
-	for(var/list/possible_recipe in possible_recipes)
-		var/datum/recipe/recipe = possible_recipe[1]
+	for(var/datum/recipe/recipe in possible_recipes)
 		var/count = ((recipe.items)?(recipe.items.len):0) + ((recipe.reagents)?(recipe.reagents.len):0) + ((recipe.fruit)?(recipe.fruit.len):0)
 		if(count >= highest_count)
 			highest_count = count
-			. = possible_recipe
+			. = list(recipe, possible_recipes[recipe])
 	return .

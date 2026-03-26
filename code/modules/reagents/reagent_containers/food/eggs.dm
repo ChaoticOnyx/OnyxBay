@@ -264,7 +264,7 @@
 	filling_color = "#ffe17f"
 	center_of_mass = "x=16;y=13"
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 45
+		/datum/reagent/nutriment/protein/egg/cooked = 45
 		)
 	bitesize = 25 // 112.5 nutrition, 2 bites
 	atom_flags = null
@@ -367,7 +367,7 @@
 	filling_color = "#ffdf78"
 	center_of_mass = "x=16;y=14"
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 45,
+		/datum/reagent/nutriment/protein/egg/cooked = 45,
 		/datum/reagent/salt = 1,
 		/datum/reagent/blackpepper = 1,
 		/datum/reagent/nutriment/oil = 15
@@ -384,7 +384,8 @@
 	nutriment_desc = list("cheese" = 2, "omelette" = 3)
 	nutriment_amt = 70
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 110
+		/datum/reagent/nutriment/protein/egg/cooked = 20,
+		/datum/reagent/nutriment/protein/egg/cooked = 90
 		)
 	bitesize = 30 // 345 nutrition, 6 bites
 
@@ -398,7 +399,7 @@
 	nutriment_desc = list("eggs" = 3, "friendship" = 1)
 	nutriment_amt = 55
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 90,
+		/datum/reagent/nutriment/protein/egg/cooked = 90,
 		/datum/reagent/nutriment/soysauce = 5
 		)
 	bitesize = 30 // 280 nutrition, 5 bites
@@ -410,7 +411,7 @@
 	trash = /obj/item/trash/dish/plate
 	center_of_mass = "x=15;y=15"
 	nutriment_amt = 6
-	startswith = list(/datum/reagent/nutriment/protein = 4)
+	startswith = list(/datum/reagent/nutriment/protein/egg/cooked = 4)
 	bitesize = 4
 
 /obj/item/reagent_containers/food/eggwrap

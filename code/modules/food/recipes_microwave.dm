@@ -41,7 +41,7 @@ I said no!
 	result = /obj/item/reagent_containers/food/boiledegg
 
 /datum/recipe/boiledegg/make_food(obj/container, result_mult = 1)
-	var/alist/eggs_list = list()
+	var/alist/eggs_list = alist()
 	for(var/thing in container)
 		if(!istype(thing, /obj/item/reagent_containers/food/egg))
 			continue
@@ -51,8 +51,7 @@ I said no!
 	for(var/obj/item/reagent_containers/food/boiledegg/being_cooked in result_objs)
 		var/obj/item/reagent_containers/food/egg/egg
 		for(var/thing in eggs_list)
-			if(eggs_list[thing])
-				egg = eggs_list[thing]
+			egg = thing
 		if(istype(egg))
 			being_cooked.name = "Boiled [egg.name]"
 			being_cooked.icon = egg.icon
@@ -520,7 +519,7 @@ I said no!
 	result = /obj/item/reagent_containers/food/fortunecookie
 
 /datum/recipe/fortunecookie/make_food(obj/container, result_mult = 1)
-	var/alist/papers_list = list()
+	var/alist/papers_list = alist()
 	for(var/thing in container)
 		if(!istype(thing, /obj/item/paper))
 			continue
@@ -530,8 +529,7 @@ I said no!
 	for(var/obj/item/reagent_containers/food/fortunecookie/being_cooked in result_objs)
 		var/obj/item/paper/paper
 		for(var/thing in papers_list)
-			if(papers_list[thing])
-				paper = papers_list[thing]
+			paper = thing
 		if(istype(paper))
 			paper.forceMove(being_cooked)
 			being_cooked.trash = paper //so the paper is left behind as trash without special-snowflake(TM Nodrak) code ~carn
