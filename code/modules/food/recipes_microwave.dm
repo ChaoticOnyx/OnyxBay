@@ -538,14 +538,6 @@ I said no!
 	papers_list.Cut() // Just in case
 	return result_objs
 
-/datum/recipe/fortunecookie/check_items(obj/container)
-	. = ..()
-	if(.)
-		var/obj/item/paper/paper = locate() in container
-		if(!paper || !paper.info)
-			return 0
-	return .
-
 /datum/recipe/meatsteak
 	reagents = list(/datum/reagent/salt = 1, /datum/reagent/blackpepper = 1)
 	items = list(/obj/item/reagent_containers/food/meat)
