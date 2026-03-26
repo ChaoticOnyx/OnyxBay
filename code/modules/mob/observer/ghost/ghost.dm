@@ -49,11 +49,8 @@
 	var/datum/follow_panel/follow_panel = new()
 
 /mob/observer/ghost/Initialize()
+	. = ..()
 	see_in_dark = 100
-
-	verbs += /mob/proc/toggle_antag_pool
-	verbs += /mob/proc/join_as_actor
-	verbs += /mob/proc/join_response_team
 
 	var/turf/T
 	if(ismob(loc))
@@ -90,7 +87,9 @@
 
 	GLOB.ghost_mob_list |= src
 
-	. = ..()
+	verbs += /mob/proc/toggle_antag_pool
+	verbs += /mob/proc/join_as_actor
+	verbs += /mob/proc/join_response_team
 
 /mob/observer/ghost/Destroy()
 	GLOB.ghost_mob_list.Remove(src)
