@@ -2,7 +2,7 @@
 /obj/structure/prop
 	name = "prop"
 	desc = "A prop."
-	icon = 'maps/cs/props.dmi'
+	icon = 'maps/csgo/props.dmi'
 	icon_state = ""
 	anchored = TRUE
 	density = TRUE
