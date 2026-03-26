@@ -4,7 +4,7 @@
 	icon_state = "meat"
 	item_state = "meat"
 	health = 180
-	filling_color = "#ff1c1c"
+	filling_color = "#cd1c1c"
 	center_of_mass = "x=16;y=14"
 	startswith = list(/datum/reagent/nutriment/protein = 150)
 	bitesize = 30
@@ -12,21 +12,8 @@
 	drop_sound = SFX_DROP_FLESH
 	pickup_sound = SFX_PICKUP_FLESH
 
-/obj/item/reagent_containers/food/meat/attackby(obj/item/W, mob/user)
-	if(has_edge(W))
-		new /obj/item/reagent_containers/food/rawcutlet(src)
-		new /obj/item/reagent_containers/food/rawcutlet(src)
-		new /obj/item/reagent_containers/food/rawcutlet(src)
-		to_chat(user, "You cut the meat into thin strips.")
-		playsound(src, pick(
-				'sound/effects/slice1.ogg',
-				'sound/effects/slice2.ogg',
-				'sound/effects/slice3.ogg',
-				'sound/effects/slice4.ogg',
-			), 50, FALSE)
-		qdel(src)
-	else
-		..()
+	slices_num = 3
+	slice_path = /obj/item/reagent_containers/food/cutlet/raw
 
 /obj/item/reagent_containers/food/meat/syntiflesh
 	name = "synthetic meat"
@@ -80,19 +67,5 @@
 	desc = "It tastes... Humane."
 	icon_state = "pork"
 
-/obj/item/reagent_containers/food/meat/pork/attackby(obj/item/W, mob/user)
-	if(has_edge(W))
-		new /obj/item/reagent_containers/food/bacon(src)
-		new /obj/item/reagent_containers/food/bacon(src)
-		new /obj/item/reagent_containers/food/bacon(src)
-		to_chat(user, "You cut the meat into thin strips.")
-		playsound(src, pick(
-				'sound/effects/slice1.ogg',
-				'sound/effects/slice2.ogg',
-				'sound/effects/slice3.ogg',
-				'sound/effects/slice4.ogg',
-			), 50, FALSE)
-		qdel(src)
-		return
-	else
-		..()
+	slices_num = 3
+	slice_path = /obj/item/reagent_containers/food/bacon

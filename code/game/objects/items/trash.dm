@@ -217,6 +217,19 @@
 	name = "\improper Startrucks Cold Brew"
 	icon_state = "startrucks"
 
+/obj/item/trash/eggshell
+	name = "eggshell"
+	icon_state = "eggshell"
+
+/obj/item/trash/eggshell/Initialize(mapload, new_color)
+	. = ..(mapload)
+	if(new_color)
+		set_shell_color(new_color)
+
+/obj/item/trash/eggshell/proc/set_shell_color(new_color)
+	icon_state = "eggshell-white"
+	color = new_color
+
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return
 
