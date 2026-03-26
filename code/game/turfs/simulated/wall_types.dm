@@ -106,3 +106,66 @@
 	if(prob(explosion_resistance))
 		return
 	..()
+
+////////////////////////////////////////////////////////////
+// Indestructibles for all of the eventous needs of yours //
+//  These act like normal walls in every way              //
+//  possible, save for being unbreakable                  //
+////////////////////////////////////////////////////////////
+
+/turf/simulated/wall/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/r_wall/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/r_duranium/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/cult/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/iron/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/uranium/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/diamond/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/gold/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/silver/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/plasma/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/sandstone/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/wood/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/ironplasma/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/golddiamond/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/silvergold/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/sandstonediamond/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/voxshuttle/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/titanium/unbreakable
+	indestructible = TRUE
+
+/turf/simulated/wall/alium/unbreakable
+	indestructible = TRUE

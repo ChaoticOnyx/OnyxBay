@@ -3315,6 +3315,8 @@
 #include "maps\_map_include.dm"
 #include "maps\cache_ref.dm"
 #include "maps\levels.dm"
+#include "maps\cs\props.dm"
+#include "maps\cs\de_dust2.dmm"
 #include "maps\derelicts\bearcat\bearcat.dm"
 #include "maps\derelicts\construction_site\construction_site.dm"
 #include "maps\derelicts\derelict\derelict.dm"
