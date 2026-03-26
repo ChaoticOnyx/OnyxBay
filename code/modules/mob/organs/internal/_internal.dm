@@ -37,14 +37,15 @@
 
 		handle_foreign()
 
+	if(owner?.snowflake_organs)
+		apply_snowflake(owner.snowflake_organs)
+
 	update_icon()
 
 /obj/item/organ/internal/Destroy()
 	if(owner)
 		owner.internal_organs -= src
 		owner.internal_organs_by_name -= organ_tag
-		while(null in owner.internal_organs)
-			owner.internal_organs -= null
 		var/obj/item/organ/external/E = owner.organs_by_name[parent_organ]
 		if(istype(E))
 			E.internal_organs -= src
@@ -90,22 +91,24 @@
 /obj/item/organ/internal/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)
 
 	if(!istype(target))
-		return 0
+		return FALSE
 
 	if(status & ORGAN_CUT_AWAY)
-		return 0 //organs don't work very well in the body when they aren't properly attached
+		return FALSE //organs don't work very well in the body when they aren't properly attached
 
 	// robotic organs emulate behavior of the equivalent flesh organ of the species
 	if(BP_IS_ROBOTIC(src) || !species)
 		species = target.species
 
-	..()
+	. = ..()
+	if(!.)
+		return FALSE
 
 	set_next_think(0)
 	target.internal_organs |= src
 	affected.internal_organs |= src
 	target.internal_organs_by_name[organ_tag] = src
-	return 1
+	return TRUE
 
 /obj/item/organ/internal/die()
 	..()

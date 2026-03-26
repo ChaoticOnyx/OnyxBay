@@ -527,7 +527,6 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 
 
 ////////////////////////////////////////////
-
 /*
 This function restores all organs.
 */
@@ -536,10 +535,16 @@ This function restores all organs.
 		var/obj/item/organ/external/current_organ = organs_by_name[bodypart]
 		if(istype(current_organ))
 			current_organ.rejuvenate(ignore_prosthetic_prefs)
+
+	// And restore all internal organs...
+	for (var/obj/item/organ/internal/I in internal_organs)
+		I.rejuvenate()
+
 	if(mind?.vampire)
 		var/datum/vampire/V = mind.vampire
 		V.set_up_organs()
 
+	full_pain = 0
 	update_organ_movespeed()
 
 /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)

@@ -130,6 +130,9 @@
 	if(!mapload && owner)
 		owner.update_organ_movespeed()
 
+	if(owner?.snowflake_organs)
+		apply_snowflake(owner.snowflake_organs)
+
 	get_overlays()
 
 	if(food_organ in implants)
@@ -159,8 +162,6 @@
 
 		owner.organs -= src
 		owner.organs_by_name -= organ_tag
-		while(null in owner.organs)
-			owner.organs -= null
 		owner.bad_external_organs -= src
 
 		if(!QDELETED(owner)) // Don't waste time if we'are being deleted as a whole.
@@ -199,6 +200,11 @@
 	..()
 	s_col_blend = species.limb_blend
 	s_base = new_dna.s_base
+	if((species.species_flags & SPECIES_FLAG_NO_BLOOD) || !species.has_organ[BP_HEART])
+		limb_flags &= ~ORGAN_FLAG_HAS_ARTERY
+		max_bleeding = -1
+	if(species.species_flags & SPECIES_FLAG_NO_EMBED)
+		limb_flags &= ~ORGAN_FLAG_CAN_EMBED
 
 /obj/item/organ/external/emp_act(severity)
 	var/burn_damage = 0
@@ -373,44 +379,52 @@
 	return
 
 /obj/item/organ/external/replaced(mob/living/carbon/human/target)
-	..()
+	. = ..()
+	if(!.)
+		return FALSE
 
-	if(!QDELETED(owner))
+	if(parent_organ)
+		parent = owner.organs_by_name[parent_organ]
+		if(!parent)
+			qdel_self() // Something went very, very wrong.
+			return FALSE
 
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP && length(owner.grasp_limbs))
-			owner.grasp_limbs[src] = TRUE
-		if(limb_flags & ORGAN_FLAG_CAN_STAND && length(owner.stance_limbs))
-			owner.stance_limbs[src] = TRUE
-		owner.organs_by_name[organ_tag] = src
-		owner.organs |= src
+	if(limb_flags & ORGAN_FLAG_CAN_GRASP && length(owner.grasp_limbs))
+		owner.grasp_limbs[src] = TRUE
 
-		if(owner.mind?.vampire)
-			limb_flags &= ~ORGAN_FLAG_CAN_BREAK
+	if(limb_flags & ORGAN_FLAG_CAN_STAND && length(owner.stance_limbs))
+		owner.stance_limbs[src] = TRUE
 
-		for(var/obj/item/organ/organ in internal_organs)
-			organ.replaced(owner, src)
+	owner.organs_by_name[organ_tag] = src
+	owner.organs |= src
 
-		for(var/obj/implant in implants)
-			implant.forceMove(owner)
+	if(owner.mind?.vampire)
+		limb_flags &= ~ORGAN_FLAG_CAN_BREAK
 
-			if(istype(implant, /obj/item/implant))
-				var/obj/item/implant/imp_device = implant
+	for(var/obj/item/organ/organ in internal_organs)
+		organ.replaced(owner, src)
 
-				// we can't use implanted() here since it's often interactive
-				imp_device.imp_in = owner
-				imp_device.implanted = 1
+	for(var/obj/implant in implants)
+		implant.forceMove(owner)
 
-		for(var/obj/item/organ/external/organ in children)
-			organ.replaced(owner)
+		if(istype(implant, /obj/item/implant))
+			var/obj/item/implant/imp_device = implant
 
-	if(!parent && parent_organ)
-		parent = owner.organs_by_name[src.parent_organ]
-		if(parent)
-			if(!parent.children)
-				parent.children = list()
-			parent.children.Add(src)
-			/// NOWOUNDS TODO: Stump removal
-			parent.update_damages()
+			// we can't use implanted() here since it's often interactive
+			imp_device.imp_in = owner
+			imp_device.implanted = 1
+
+	if(parent)
+		if(!parent.children)
+			parent.children = list()
+		parent.children += src
+		/// NOWOUNDS TODO: Stump removal
+		parent.update_damages()
+
+	for(var/obj/item/organ/external/organ in children)
+		organ.replaced(owner)
+
+	return TRUE
 
 //Helper proc used by various tools for repairing robot limbs
 /obj/item/organ/external/proc/robo_repair(repair_amount, damage_type, damage_desc, obj/item/tool, mob/living/user)
@@ -514,13 +528,12 @@ This function completely restores a damaged organ to perfect condition.
 	if(owner)
 		owner.organs -= src
 		owner.organs_by_name -= organ_tag
-		while(null in owner.organs) owner.organs -= null
-	if(children && children.len)
+	if(length(children))
 		for(var/obj/item/organ/external/E in children)
-			if(E) E.remove_rejuv()
+			E.remove_rejuv()
 	children.Cut()
 	for(var/obj/item/organ/internal/I in internal_organs)
-		if(I) I.remove_rejuv()
+		I.remove_rejuv()
 	..()
 
 /****************************************************
@@ -595,18 +608,18 @@ This function completely restores a damaged organ to perfect condition.
 		H = owner
 
 	var/should_update_health = FALSE
-	var/regeneration = H ? H.coagulation : 1.0
+	var/regeneration = (H ? H.coagulation : 1.0) * config.health.organ_regeneration_multiplier * wound_update_accuracy
 	var/already_scabbed = (scabbed >= max_bleeding)
 
 	// Organs won't autoheal until all the wounds are scabbed.
-	// Scabbing progresses faster under properly-applied bandages.
+	// Scabbing progresses much faster under properly-applied bandages.
 	if(!already_scabbed)
 		if(!clamped && regeneration)
-			scabbed += regeneration * ((bandaged >= scabbed) ? 1.0 : 0.5) * wound_update_accuracy
+			scabbed += regeneration * ((bandaged >= scabbed) ? 1.0 : 0.25)
 			should_update_health = TRUE
 
 	if(already_scabbed || owner.chem_effects[CE_BRUTE_REGEN] || owner.chem_effects[CE_BURN_REGEN])
-		regeneration = round(regeneration * 0.2 * wound_update_accuracy * config.health.organ_regeneration_multiplier, 0.05)
+		regeneration = already_scabbed ? round(regeneration * 0.1, 0.01) : 0
 
 		// Evenly spreading regeneration between burn and brute damage if both are present
 		if(burn_dam && brute_dam)
@@ -625,8 +638,8 @@ This function completely restores a damaged organ to perfect condition.
 				heal_blunt_damage((regeneration * (salved ? 2.5 : 1.0) + owner.chem_effects[CE_BRUTE_REGEN]) * spread_brute, FALSE, FALSE, FALSE)
 				should_update_health = TRUE
 
-			// Wounds won't close naturally if they are clamped or there are things sticking out of them.
-			if((pierce_dam + cut_dam) && !clamped && !LAZYLEN(embedded_objects))
+			// Wounds won't close naturally if they are bleeding, clamped or there are things sticking out of them.
+			if((pierce_dam + cut_dam) && !bleeding && !clamped && !LAZYLEN(embedded_objects))
 				heal_sharp_damage((regeneration + owner.chem_effects[CE_BRUTE_REGEN]) * spread_brute, FALSE, FALSE, FALSE)
 				should_update_health = TRUE
 
@@ -647,7 +660,7 @@ This function completely restores a damaged organ to perfect condition.
 		return
 
 	// Bleeding
-	if(!BP_IS_ROBOTIC(src))
+	if(!BP_IS_ROBOTIC(src) && max_bleeding != -1)
 		max_bleeding = max(cut_dam, pierce_dam)
 		bandaged = clamp(bandaged, 0, max_bleeding)
 		scabbed = clamp(scabbed, 0, max_bleeding)
@@ -885,7 +898,7 @@ This function completely restores a damaged organ to perfect condition.
 	return
 
 /obj/item/organ/external/proc/clamp_organ()
-	if(clamped || !max_bleeding)
+	if(clamped || max_bleeding == 0)
 		return FALSE
 
 	clamped = TRUE
@@ -916,8 +929,7 @@ This function completely restores a damaged organ to perfect condition.
 /obj/item/organ/external/proc/fracture()
 	if(!config.health.bones_can_break)
 		return
-	if(BP_IS_ROBOTIC(src))
-		return	//ORGAN_BROKEN doesn't have the same meaning for robot limbs
+
 	if((status & ORGAN_BROKEN) || !(limb_flags & ORGAN_FLAG_CAN_BREAK))
 		return
 
@@ -954,8 +966,6 @@ This function completely restores a damaged organ to perfect condition.
 		suit.handle_fracture(owner, src)
 
 /obj/item/organ/external/proc/mend_fracture(use_damage_check = FALSE)
-	if(BP_IS_ROBOTIC(src))
-		return FALSE // ORGAN_BROKEN doesn't have the same meaning for robot limbs
 	if(use_damage_check && (blunt_dam >= min_broken_damage * config.health.organ_health_multiplier))
 		return FALSE // will just immediately fracture again
 
@@ -984,12 +994,9 @@ This function completely restores a damaged organ to perfect condition.
 	return 0
 
 /obj/item/organ/external/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
-
-	if(BP_IS_ROBOTIC(src))
-		return
-
-	..()
-	// TODO[V] Investigate why BEEDAUNS made robotize() obliterate all existing flags instead of just adding one
+	. = ..()
+	if(!.)
+		return FALSE
 
 	if(just_printed)
 		status |= ORGAN_CUT_AWAY
@@ -1010,34 +1017,38 @@ This function completely restores a damaged organ to perfect condition.
 		name = "robotic [initial(name)]"
 		force_icon = (species && (species.name in R.racial_icons)) ? R.racial_icons[species.name] : R.icon
 
+	limb_flags &= ~ORGAN_FLAG_CAN_BREAK
+	limb_flags &= ~ORGAN_FLAG_HAS_TENDON
+	limb_flags &= ~ORGAN_FLAG_HAS_ARTERY
 	dislocated = -1
+
 	remove_splint()
-	update_icon(1)
 	unmutate()
+
+	update_icon(1)
 	update_tally()
 
 	for(var/obj/item/organ/external/T in children)
-		T.robotize(company, 1)
+		T.robotize(company, TRUE)
 
-	if(owner)
+	if(!skip_prosthetics)
+		owner?.full_prosthetic = null // Will be rechecked next isSynthetic() call.
 
-		if(!skip_prosthetics)
-			owner.full_prosthetic = null // Will be rechecked next isSynthetic() call.
+	if(!keep_organs)
+		for(var/obj/item/organ/thing in internal_organs)
+			if(!istype(thing))
+				continue
+			if(thing.vital || BP_IS_ROBOTIC(thing))
+				continue
+			internal_organs -= thing
+			qdel(thing)
 
-		if(!keep_organs)
-			for(var/obj/item/organ/thing in internal_organs)
-				if(istype(thing))
-					if(thing.vital || BP_IS_ROBOTIC(thing))
-						continue
-					internal_organs -= thing
-					owner.internal_organs_by_name -= thing.organ_tag
-					owner.internal_organs.Remove(thing)
-					qdel(thing)
+	return TRUE
 
-		while(null in owner.internal_organs)
-			owner.internal_organs -= null
-
-	return 1
+/obj/item/organ/external/can_feel_pain()
+	if(no_pain)
+		return FALSE
+	return ..()
 
 /obj/item/organ/external/proc/get_damage()	//returns total damage
 	return (brute_dam+burn_dam)	//could use max_damage?
@@ -1306,7 +1317,7 @@ This function completely restores a damaged organ to perfect condition.
 					burns_desc = "<b>massive melting</b>"
 
 	var/bandages_desc = ""
-	if(max_bleeding)
+	if(max_bleeding > 0)
 		if(clamped)
 			bandages_desc = "<span class='notice'><b>clamped</b></span>, "
 		else if(bandaged >= max_bleeding)
@@ -1518,7 +1529,7 @@ This function completely restores a damaged organ to perfect condition.
 		return FALSE
 	if(W.w_class > ITEM_SIZE_NORMAL)
 		return FALSE
-	if(species.species_flags & SPECIES_FLAG_NO_EMBED)
+	if(!(limb_flags & ORGAN_FLAG_CAN_EMBED))
 		return FALSE
 	if(!silent)
 		if(supplied_message)
@@ -1581,3 +1592,19 @@ This function completely restores a damaged organ to perfect condition.
 					die()
 	return
 
+/obj/item/organ/external/apply_snowflake(flags)
+	..()
+	if(flags & ORGAN_SNOWFLAKE_NO_AMPUTATE)
+		limb_flags &= ~ORGAN_FLAG_CAN_AMPUTATE
+	if(flags & ORGAN_SNOWFLAKE_NO_BREAK)
+		limb_flags &= ~ORGAN_FLAG_CAN_BREAK
+	if(flags & ORGAN_SNOWFLAKE_NO_TENDON)
+		limb_flags &= ~ORGAN_FLAG_HAS_TENDON
+	if(flags & ORGAN_SNOWFLAKE_NO_ARTERY)
+		limb_flags &= ~ORGAN_FLAG_HAS_ARTERY
+	if(flags & ORGAN_SNOWFLAKE_NO_EMBED)
+		limb_flags &= ~ORGAN_FLAG_CAN_EMBED
+	if(flags & ORGAN_SNOWFLAKE_NO_DISLOCATE)
+		dislocated = -1
+	if(flags & ORGAN_SNOWFLAKE_NO_BLEEDING)
+		max_bleeding = -1
