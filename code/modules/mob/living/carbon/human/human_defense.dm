@@ -78,7 +78,8 @@ meteor_act
 					victim.take_internal_damage(penetrating_damage / victims.len, is_traumatic = TRUE)
 
 	// Embed or sever artery, only happens if the projectile's successfully bypassed armor
-	if(!blocked && P.damage_type == BRUTE && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(PROJECTILE_EMBED_CHANCE))
+	// Bomb defusal arena mode - no embedding or artery severing
+	if(!blocked && P.damage_type == BRUTE && !bombdefusal_arena_mode && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(PROJECTILE_EMBED_CHANCE))
 		// Lower cal. bullets tend to embed, while higher cal. bullets are more likely to make things bloody
 		var/embed_odds = P.damage * 1.3 * organ.brute_mod
 
