@@ -93,7 +93,7 @@
 	nutriment_desc = list("salad" = 4, "egg" = 2, "potato" = 2)
 	nutriment_amt = 125
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 45,
+		/datum/reagent/nutriment/protein/egg/cooked = 45,
 		/datum/reagent/water = 70,
 		/datum/reagent/tricordrazine = 10
 		)

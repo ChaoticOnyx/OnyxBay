@@ -331,6 +331,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 #define DISMEMBER_BRUTE_TRESHOLD(x) (brute >= (max(5, x * ((3.0 - brute_ratio) / 3))))
 /obj/item/organ/external/proc/try_to_dismember(brute, burn, damage_flags)
+	// Bomb defusal arena mode - no dismemberment
+	if(owner && ishuman(owner))
+		var/mob/living/carbon/human/H = owner
+		if(H.bombdefusal_arena_mode)
+			return FALSE
 	if(!(limb_flags & ORGAN_FLAG_CAN_AMPUTATE) || !config.health.limbs_can_break  || is_stump())
 		return FALSE
 
