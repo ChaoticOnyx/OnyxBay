@@ -845,7 +845,7 @@
 	nutriment_amt = 70
 	startswith = list(
 		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
+		/datum/reagent/nutriment/protein/egg/cooked = 15,
 		/datum/reagent/sugar = 20
 		)
 	bitesize = 25 // 147 nutrition, 30 bites

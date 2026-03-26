@@ -45,7 +45,7 @@
 /datum/recipe/proc/check_reagents(datum/reagents/available_reagents, exact)
 	// The recipe doesn't require any reagents.
 	if(!length(reagents))
-		return RECIPE_MAXRESULT
+		return exact ? RECIPE_MATCH : RECIPE_MAXRESULT
 
 	// We have more/less types than needed.
 	if(length(available_reagents.reagent_list) != reagents.len)
@@ -76,7 +76,7 @@
 /datum/recipe/proc/check_items(obj/container, exact)
 	// The recipe doesn't require any items or fruits.
 	if(!length(items) && !length(fruit))
-		return RECIPE_MAXRESULT
+		return exact ? RECIPE_MATCH : RECIPE_MAXRESULT
 
 	var/list/available_items = container.InsertedContents()
 	// We don't have any items.

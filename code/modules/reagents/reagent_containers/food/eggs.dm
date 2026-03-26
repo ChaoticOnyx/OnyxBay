@@ -50,6 +50,11 @@
 	return
 
 /obj/item/reagent_containers/food/egg/On_Consume(mob/M, eaten_with_fork)
+	var/obj/item/trash/eggshell/E = new(get_turf(src), shell_color)
+	var/was_holding = (M == loc)
+	..()
+	if(!eaten_with_fork || was_holding)
+		M.put_in_hands(E)
 
 /obj/item/reagent_containers/food/egg/proc/make_fertile(pokemon_type, _hatch_data = null)
 	if(!pokemon_type)
@@ -93,8 +98,8 @@
 	to_chat(user, "You crack \the [src] into \the [O].")
 	reagents.trans_to(O, reagents.total_volume)
 	var/obj/item/trash/eggshell/E = new(get_turf(src), shell_color)
-	user.put_in_hands(E)
 	qdel(src)
+	user.put_in_hands(E)
 	return
 
 /obj/item/reagent_containers/food/egg/throw_impact(atom/hit_atom, datum/thrownthing/TT)
@@ -384,7 +389,7 @@
 	nutriment_desc = list("cheese" = 2, "omelette" = 3)
 	nutriment_amt = 70
 	startswith = list(
-		/datum/reagent/nutriment/protein/egg/cooked = 20,
+		/datum/reagent/nutriment/protein/cooked = 20,
 		/datum/reagent/nutriment/protein/egg/cooked = 90
 		)
 	bitesize = 30 // 345 nutrition, 6 bites
