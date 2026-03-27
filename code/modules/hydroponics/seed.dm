@@ -135,7 +135,7 @@
 	var/blocked = target.run_armor_check(target_limb, "melee")
 	var/obj/item/organ/external/affecting = target.get_organ(target_limb)
 
-	if(blocked >= 100 || (affecting && !(affecting.limb_flags & ORGAN_FLAG_CAN_EMBED)) || (target.species && (target.species.species_flags & SPECIES_FLAG_NO_MINOR_CUT)))
+	if(blocked >= 100 || (target.species && (target.species.species_flags & SPECIES_FLAG_NO_MINOR_CUT)))
 		to_chat(target, "<span class='danger'>\The [fruit]'s thorns scratch against the armour on your [affecting.name]!</span>")
 		return
 

@@ -310,7 +310,7 @@ var/list/organ_cache = list()
 	target.attackby(return_item(), user)
 
 /obj/item/organ/proc/can_feel_pain()
-	return (!no_pain && owner && (!owner.no_pain || !species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
+	return (!no_pain && owner && !owner.no_pain && (!species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
 
 /obj/item/organ/proc/is_usable()
 	return (owner && !(status & (ORGAN_CUT_AWAY | ORGAN_MUTATED | ORGAN_DEAD)))

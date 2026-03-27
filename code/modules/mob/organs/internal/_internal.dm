@@ -37,8 +37,8 @@
 
 		handle_foreign()
 
-	if(owner?.snowflake_organs)
-		apply_snowflake(owner.snowflake_organs)
+		if(owner.snowflake_organs)
+			apply_snowflake(owner.snowflake_organs)
 
 	update_icon()
 
