@@ -59,7 +59,7 @@
 	var/downed_timer_id
 
 	// Original body reference for respawning with same appearance
-	var/mob/living/carbon/human/original_body
+	var/mob/living/carbon/human/bombdefusal/original_body
 	// Saved appearance data (survives gibbing/body destruction)
 	var/list/saved_appearance
 
