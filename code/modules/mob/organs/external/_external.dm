@@ -1001,21 +1001,20 @@ This function completely restores a damaged organ to perfect condition.
 	if(just_printed)
 		status |= ORGAN_CUT_AWAY
 
-	if(company)
-		var/datum/robolimb/R = GLOB.all_robolimbs[company]
-		brute_mod = R?.brute_mod
-		burn_mod = R?.burn_mod
+	var/datum/robolimb/R = GLOB.all_robolimbs[company]
+	brute_mod = R?.brute_mod
+	burn_mod = R?.burn_mod
 
-		if(!R || (species && (species.name in R.species_cannot_use)) || \
-		 (R.restricted_to.len && !(species.name in R.restricted_to)) || \
-		 (R.applies_to_part.len && !(organ_tag in R.applies_to_part)))
-			R = basic_robolimb
-		else
-			model = company
-			desc = "[R.desc] It looks like it was produced by [R.company]."
+	if(!R || (species && (species.name in R.species_cannot_use)) || \
+	 (R.restricted_to.len && !(species.name in R.restricted_to)) || \
+	 (R.applies_to_part.len && !(organ_tag in R.applies_to_part)))
+		R = basic_robolimb
+	else if(company)
+		model = company
+		desc = "[R.desc] It looks like it was produced by [R.company]."
 
-		name = "robotic [initial(name)]"
-		force_icon = (species && (species.name in R.racial_icons)) ? R.racial_icons[species.name] : R.icon
+	name = "robotic [initial(name)]"
+	force_icon = (species && (species.name in R.racial_icons)) ? R.racial_icons[species.name] : R.icon
 
 	limb_flags &= ~ORGAN_FLAG_CAN_BREAK
 	limb_flags &= ~ORGAN_FLAG_HAS_TENDON

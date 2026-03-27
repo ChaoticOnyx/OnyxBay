@@ -129,7 +129,10 @@
 	return ..() && !is_broken()
 
 /obj/item/organ/internal/robotize()
-	..()
+	. = ..()
+	if(!.)
+		return FALSE
+
 	min_bruised_damage += 5
 	min_broken_damage += 10
 
@@ -137,6 +140,7 @@
 
 	if(override_organic_icon)
 		icon = 'icons/mob/human_races/organs/cyber.dmi'
+	return TRUE
 
 /obj/item/organ/internal/proc/getToxLoss()
 	if(BP_IS_ROBOTIC(src))
