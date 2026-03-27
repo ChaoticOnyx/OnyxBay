@@ -40,16 +40,6 @@
 	if(is_ic_dead())
 		return
 
-	// Bomb defusal arena mode - notify match of death
-	if(bombdefusal_arena_mode && mind)
-		var/datum/game_mode/bombdefusal/mode = SSticker.mode
-		if(istype(mode))
-			var/datum/bombdefusal_player_data/pd = mode.get_player_data(mind)
-			if(pd && pd.match)
-				pd.match.on_player_death(src, null) // killer tracked separately
-				if(pd.is_downed)
-					return // Don't actually die - enter downed state instead
-
 	if(mind?.wizard?.lich)
 		mind.wizard.escape_to_lich(mind)
 

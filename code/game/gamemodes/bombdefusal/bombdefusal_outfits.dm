@@ -183,7 +183,7 @@
 /datum/bombdefusal_match/proc/equip_player(datum/bombdefusal_player_data/pd)
 	if(!pd.owner || !pd.owner.current)
 		return
-	var/mob/living/carbon/human/H = pd.owner.current
+	var/mob/living/carbon/human/bombdefusal/H = pd.owner.current
 	if(!istype(H))
 		return
 

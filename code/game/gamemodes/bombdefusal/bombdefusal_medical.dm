@@ -1,13 +1,32 @@
 // ========== BOMB DEFUSAL - SIMPLIFIED MEDICAL SYSTEM ==========
 
-// Arena mode flag on human mob
-/mob/living/carbon/human/var/bombdefusal_arena_mode = FALSE
-
 // Full heal proc - resets all damage for round transitions and revives
-/mob/living/carbon/human/proc/arena_full_heal()
-	if(!bombdefusal_arena_mode)
+/mob/living/carbon/human/bombdefusal
+	snowflake_organs = 0
+
+/mob/living/carbon/human/bombdefusal/simple
+	snowflake_organs = ORGAN_SNOWFLAKE_SIMPLE
+
+/mob/living/carbon/human/bombdefusal/simplest
+	snowflake_organs = ORGAN_SNOWFLAKE_SIMPLEST
+
+/mob/living/carbon/human/bombdefusal/death(gibbed, deathmessage = "seizes up and falls limp...", show_dead_message = "You have died.")
+	if(is_ic_dead())
 		return
 
+	// Bomb defusal arena mode - notify match of death
+	if(mind)
+		var/datum/game_mode/bombdefusal/mode = SSticker.mode
+		if(istype(mode))
+			var/datum/bombdefusal_player_data/pd = mode.get_player_data(mind)
+			if(pd && pd.match)
+				pd.match.on_player_death(src, null) // killer tracked separately
+				if(pd.is_downed)
+					return // Don't actually die - enter downed state instead
+
+	return ..()
+
+/mob/living/carbon/human/bombdefusal/proc/arena_full_heal()
 	// Use the built-in revive which properly handles:
 	// organ restoration, stat reset, dead->living mob list, timeofdeath,
 	// health update, icon regen, failed_last_breath, etc.
@@ -47,16 +66,20 @@
 	var/heal_amount = 60
 	var/cooldown_time = 100 // 10 seconds
 
-/obj/item/bombdefusal_medkit/attack(mob/living/carbon/human/target, mob/living/carbon/human/user)
-	if(!istype(target) || !istype(user))
+/obj/item/bombdefusal_medkit/attack(mob/living/carbon/human/bombdefusal/target, mob/living/carbon/human/bombdefusal/user)
+	if(!ismob(target))
 		return ..()
+
+	if(!istype(user))
+		to_chat(user, SPAN("warning", "This can only be used by arena participants!"))
+		return
+
+	if(!istype(target))
+		to_chat(user, SPAN("warning", "This can only be used on arena participants!"))
+		return
 
 	if(target == user)
 		to_chat(user, "<span class='warning'>You can't use this on yourself! Use an arena injector instead.</span>")
-		return
-
-	if(!target.bombdefusal_arena_mode)
-		to_chat(user, "<span class='warning'>This can only be used on arena participants!</span>")
 		return
 
 	if(charges <= 0)
@@ -105,12 +128,9 @@
 	w_class = ITEM_SIZE_TINY
 	var/heal_amount = 25
 
-/obj/item/bombdefusal_injector/attack_self(mob/living/carbon/human/user)
+/obj/item/bombdefusal_injector/attack_self(mob/living/carbon/human/bombdefusal/user)
 	if(!istype(user))
-		return
-
-	if(!user.bombdefusal_arena_mode)
-		to_chat(user, "<span class='warning'>This can only be used by arena participants!</span>")
+		to_chat(user, SPAN("warning", "This can only be used by arena participants!"))
 		return
 
 	user.heal_overall_damage(heal_amount, heal_amount)

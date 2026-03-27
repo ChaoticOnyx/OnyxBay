@@ -510,8 +510,8 @@ td:first-child { color: #a8a8a8; width: 180px; }
 
 		// ===== PLAYER STATE DEBUG =====
 		if("dbg_full_heal")
-			if(ishuman(user))
-				var/mob/living/carbon/human/H = user
+			if(istype(user, /mob/living/carbon/human/bombdefusal))
+				var/mob/living/carbon/human/bombdefusal/H = user
 				H.arena_full_heal()
 				to_chat(user, "<span class='notice'>Fully healed.</span>")
 
@@ -544,8 +544,8 @@ td:first-child { color: #a8a8a8; width: 180px; }
 			else if(my_pd.is_dead)
 				my_pd.is_dead = FALSE
 				my_pd.is_downed = FALSE
-				if(ishuman(user))
-					var/mob/living/carbon/human/H = user
+				if(istype(user, /mob/living/carbon/human/bombdefusal))
+					var/mob/living/carbon/human/bombdefusal/H = user
 					H.arena_full_heal()
 				to_chat(user, "<span class='notice'>Revived from death.</span>")
 			else
