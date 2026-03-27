@@ -157,7 +157,7 @@
 	startswith = list(
 		/datum/reagent/sugar = 10,
 		/datum/reagent/nutriment/coco = 15,
-		/datum/reagent/nutriment/protein/cooked = 45
+		/datum/reagent/nutriment/protein/egg/cooked = 45
 		)
 	bitesize = 30 // 275 nutrition, 5 bites
 

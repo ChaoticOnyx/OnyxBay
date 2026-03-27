@@ -423,7 +423,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(burn_dam <= 0.1)
 		burn_dam = 0
 	else
-		burn_dam = round(burn_dam, 0.05)
+		burn_dam = round(burn_dam, 0.01)
 
 	owner?.heal_this_tick += (.)
 
@@ -452,7 +452,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(blunt_dam <= 0.1)
 		blunt_dam = 0
 	else
-		blunt_dam = round(blunt_dam, 0.05)
+		blunt_dam = round(blunt_dam, 0.01)
 
 	owner?.heal_this_tick += (.)
 
@@ -486,12 +486,12 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(cut_dam <= 0.1)
 		cut_dam = 0
 	else
-		cut_dam = round(cut_dam, 0.05)
+		cut_dam = round(cut_dam, 0.01)
 
 	if(pierce_dam <= 0.1)
 		pierce_dam = 0
 	else
-		pierce_dam = round(pierce_dam, 0.05)
+		pierce_dam = round(pierce_dam, 0.01)
 
 	owner?.heal_this_tick += (cut_to_heal + pierce_to_heal)
 
@@ -642,18 +642,31 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	return has_genitals() ? 2 : 1
 
 /obj/item/organ/external/proc/sever_artery()
-	if(species && species.has_organ[BP_HEART])
-		var/obj/item/organ/internal/heart/O = species.has_organ[BP_HEART]
-		if(!BP_IS_ROBOTIC(src) && !(status & ORGAN_ARTERY_CUT) && !initial(O.open))
-			status |= ORGAN_ARTERY_CUT
-			return TRUE
-	return FALSE
+	if(status & ORGAN_ARTERY_CUT)
+		return FALSE
+
+	if(!(limb_flags & ORGAN_FLAG_HAS_ARTERY))
+		return FALSE
+
+	if(species && !species.has_organ[BP_HEART])
+		return FALSE
+
+	var/obj/item/organ/internal/heart/O = species.has_organ[BP_HEART]
+	if(initial(O.open))
+		return FALSE
+
+	status |= ORGAN_ARTERY_CUT
+	return TRUE
 
 /obj/item/organ/external/proc/sever_tendon()
-	if((limb_flags & ORGAN_FLAG_HAS_TENDON) && !BP_IS_ROBOTIC(src) && !(status & ORGAN_TENDON_CUT))
-		status |= ORGAN_TENDON_CUT
-		return TRUE
-	return FALSE
+	if(status & ORGAN_TENDON_CUT)
+		return FALSE
+
+	if(!(limb_flags & ORGAN_FLAG_HAS_TENDON))
+		return FALSE
+
+	status |= ORGAN_TENDON_CUT
+	return TRUE
 
 /obj/item/organ/external/proc/dislocate()
 	if(dislocated == -1)

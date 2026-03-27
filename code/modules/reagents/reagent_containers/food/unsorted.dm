@@ -283,7 +283,8 @@
 	filling_color = "#ffdefe"
 	center_of_mass = "x=16;y=13"
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 65,
+		/datum/reagent/nutriment/protein/cooked = 20,
+		/datum/reagent/nutriment/protein/egg/cooked = 45,
 		/datum/reagent/nutriment/protein/gluten/cooked = 15,
 		)
 	bitesize = 20 // 200 nutrition, 4 bites
@@ -701,7 +702,8 @@
 	nutriment_amt = 30
 	nutriment_desc = list("intelligence" = 3)
 	startswith = list(
-		/datum/reagent/nutriment/protein/cooked = 55,
+		/datum/reagent/nutriment/protein/cooked = 10,
+		/datum/reagent/nutriment/protein/egg/cooked = 45,
 		/datum/reagent/drink/juice/tomato = 10,
 		/datum/reagent/drink/juice/garlic = 5
 		)
