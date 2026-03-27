@@ -353,10 +353,3 @@
 	mymob.radio_use_icon.alpha = ui_alpha
 
 	inventory_shown = FALSE
-
-/mob/living/carbon/human/rejuvenate()
-	. = ..()
-	full_pain = 0
-	// And restore all internal organs...
-	for (var/obj/item/organ/internal/I in internal_organs)
-		I.rejuvenate()
