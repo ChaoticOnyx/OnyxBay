@@ -161,6 +161,7 @@ const CameraViewport = (props: CameraViewportProps) => {
   const shouldRenderViewport = Boolean(mapRef) && (mountWhenHidden || visible);
   const overlayLabel = hasSignal ? "CONNECTING" : "NO SIGNAL";
   const overlayHint = hasSignal ? "Synchronizing camera feed..." : hint;
+  const shouldShowViewport = visible && feedReady;
 
   return (
     <Box
@@ -175,10 +176,11 @@ const CameraViewport = (props: CameraViewportProps) => {
       {shouldRenderViewport && (
         <ByondUi
           className="CameraConsole__viewportSurface"
+          deferFirstVisiblePaint
           params={{
             id: mapRef,
             type: "map",
-            "is-visible": visible ? "true" : "false",
+            "is-visible": shouldShowViewport ? "true" : "false",
           }}
         />
       )}

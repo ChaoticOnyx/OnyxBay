@@ -78,6 +78,7 @@ export class ByondUi extends Component {
     this.resizeObserver = null;
     this.renderFrame = null;
     this.lastRenderParams = null;
+    this.visibilityPrimed = false;
     this.handleResize = this.handleResize.bind(this);
   }
 
@@ -101,7 +102,11 @@ export class ByondUi extends Component {
     this.scheduleRender();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (prevProps?.params?.id !== this.props?.params?.id) {
+      this.visibilityPrimed = false;
+      this.lastRenderParams = null;
+    }
     this.scheduleRender();
   }
 
@@ -115,6 +120,7 @@ export class ByondUi extends Component {
       cancelAnimationFrame(this.renderFrame);
       this.renderFrame = null;
     }
+    this.visibilityPrimed = false;
     this.lastRenderParams = null;
     this.byondUiElement.unmount();
   }
@@ -142,27 +148,44 @@ export class ByondUi extends Component {
     const box = getBoundingBox(element);
     logger.debug("bounding box", box);
 
-    const { params = {} } = this.props;
+    const { params = {}, deferFirstVisiblePaint = false } = this.props;
+    const requestedVisible =
+      params["is-visible"] !== false && params["is-visible"] !== "false";
     const renderParams = {
       parent: Byond.windowId,
       ...params,
       pos: box.pos[0] + "," + box.pos[1],
       size: box.size[0] + "x" + box.size[1],
     };
+    const shouldPrimeVisibility =
+      deferFirstVisiblePaint && requestedVisible && !this.visibilityPrimed;
+
+    if (shouldPrimeVisibility) {
+      renderParams["is-visible"] = "false";
+    }
 
     if (
       this.lastRenderParams &&
       !shallowDiffers(this.lastRenderParams, renderParams)
     ) {
+      if (shouldPrimeVisibility) {
+        this.visibilityPrimed = true;
+        this.scheduleRender();
+      }
       return;
     }
 
     this.lastRenderParams = renderParams;
     this.byondUiElement.render(renderParams);
+
+    if (shouldPrimeVisibility) {
+      this.visibilityPrimed = true;
+      this.scheduleRender();
+    }
   }
 
   render() {
-    const { params, ...rest } = this.props;
+    const { params, deferFirstVisiblePaint, ...rest } = this.props;
     return (
       <div ref={this.containerRef} {...computeBoxProps(rest)}>
         {/* Filler */}
