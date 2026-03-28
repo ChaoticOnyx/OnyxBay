@@ -119,11 +119,10 @@
     rgba(162, 255, 239, 0.03) 76%,
     transparent
   );
-  opacity: 0;
+  opacity: 0.08;
   mix-blend-mode: screen;
   pointer-events: none;
   z-index: 3;
-  animation: CameraConsole__interference 11s linear infinite;
 }
 
 .CameraConsole__singleViewport,
@@ -158,7 +157,7 @@
 
 .CameraConsole__viewportFx {
   z-index: 2;
-  opacity: 0.28;
+  opacity: 0.22;
   background:
     repeating-linear-gradient(
       180deg,
@@ -184,23 +183,12 @@
       0deg,
       rgba(255, 255, 255, 0.015) 0 2px,
       transparent 2px 6px
-    );
+  );
   mix-blend-mode: screen;
-  animation: CameraConsole__crtNoise 1.4s steps(2) infinite;
 }
 
 .CameraConsole__viewportSweep {
-  z-index: 3;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    rgba(179, 255, 229, 0.02) 28%,
-    rgba(179, 255, 229, 0.08) 52%,
-    transparent
-  );
-  mix-blend-mode: screen;
-  opacity: 0;
-  animation: CameraConsole__signalSweep 9.5s linear infinite;
+  display: none;
 }
 
 .CameraConsole__viewportFrame.is-offline .CameraConsole__viewportFx,
@@ -364,7 +352,7 @@
 
 .CameraConsole__liveStage.is-map-mode .CameraConsole__liveMapPane {
   display: block;
-  flex: 1 1 78%;
+  flex: 1 1 58%;
 }
 
 .CameraConsole__liveViewportPane {
@@ -372,7 +360,8 @@
 }
 
 .CameraConsole__liveStage.is-map-mode .CameraConsole__liveViewportPane {
-  flex: 0 0 22%;
+  flex: 1 1 42%;
+  min-width: 360px;
 }
 
 .CameraConsole__mapBoard {

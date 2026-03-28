@@ -5,7 +5,6 @@
  */
 
 import { shallowDiffers } from "common/react";
-import { debounce } from "common/timer";
 import { Component, createRef } from "inferno";
 import { createLogger } from "../logging";
 import { computeBoxProps } from "./Box";
@@ -60,10 +59,13 @@ const getBoundingBox = (element) => {
   const pixelRatio = window.devicePixelRatio ?? 1;
   const rect = element.getBoundingClientRect();
   return {
-    pos: [rect.left * pixelRatio, rect.top * pixelRatio],
+    pos: [
+      Math.round(rect.left * pixelRatio),
+      Math.round(rect.top * pixelRatio),
+    ],
     size: [
-      (rect.right - rect.left) * pixelRatio,
-      (rect.bottom - rect.top) * pixelRatio,
+      Math.max(1, Math.round((rect.right - rect.left) * pixelRatio)),
+      Math.max(1, Math.round((rect.bottom - rect.top) * pixelRatio)),
     ],
   };
 };
@@ -74,9 +76,9 @@ export class ByondUi extends Component {
     this.containerRef = createRef();
     this.byondUiElement = createByondUiElement(props.params?.id);
     this.resizeObserver = null;
-    this.handleResize = debounce(() => {
-      this.forceUpdate();
-    }, 100);
+    this.renderFrame = null;
+    this.lastRenderParams = null;
+    this.handleResize = this.handleResize.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -96,23 +98,11 @@ export class ByondUi extends Component {
       });
       this.resizeObserver.observe(this.containerRef.current);
     }
-    this.componentDidUpdate();
-    this.handleResize();
-    requestAnimationFrame(() => {
-      this.handleResize();
-    });
+    this.scheduleRender();
   }
 
   componentDidUpdate() {
-    const { params = {} } = this.props;
-    const box = getBoundingBox(this.containerRef.current);
-    logger.debug("bounding box", box);
-    this.byondUiElement.render({
-      parent: Byond.windowId,
-      ...params,
-      pos: box.pos[0] + "," + box.pos[1],
-      size: box.size[0] + "x" + box.size[1],
-    });
+    this.scheduleRender();
   }
 
   componentWillUnmount() {
@@ -121,7 +111,54 @@ export class ByondUi extends Component {
       this.resizeObserver.disconnect();
       this.resizeObserver = null;
     }
+    if (this.renderFrame !== null) {
+      cancelAnimationFrame(this.renderFrame);
+      this.renderFrame = null;
+    }
+    this.lastRenderParams = null;
     this.byondUiElement.unmount();
+  }
+
+  handleResize() {
+    this.scheduleRender();
+  }
+
+  scheduleRender() {
+    if (this.renderFrame !== null) {
+      return;
+    }
+    this.renderFrame = requestAnimationFrame(() => {
+      this.renderFrame = null;
+      this.updateByondUi();
+    });
+  }
+
+  updateByondUi() {
+    const element = this.containerRef.current;
+    if (!element || !element.isConnected) {
+      return;
+    }
+
+    const box = getBoundingBox(element);
+    logger.debug("bounding box", box);
+
+    const { params = {} } = this.props;
+    const renderParams = {
+      parent: Byond.windowId,
+      ...params,
+      pos: box.pos[0] + "," + box.pos[1],
+      size: box.size[0] + "x" + box.size[1],
+    };
+
+    if (
+      this.lastRenderParams &&
+      !shallowDiffers(this.lastRenderParams, renderParams)
+    ) {
+      return;
+    }
+
+    this.lastRenderParams = renderParams;
+    this.byondUiElement.render(renderParams);
   }
 
   render() {

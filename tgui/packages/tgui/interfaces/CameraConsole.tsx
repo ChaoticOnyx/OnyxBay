@@ -140,7 +140,6 @@ type CameraViewportProps = {
   hasSignal: boolean;
   isReady?: boolean;
   visible?: boolean;
-  mountWhenHidden?: boolean;
   className?: string;
   compact?: boolean;
   hint?: string;
@@ -152,13 +151,12 @@ const CameraViewport = (props: CameraViewportProps) => {
     hasSignal,
     isReady,
     visible = true,
-    mountWhenHidden = false,
     className,
     compact,
     hint,
   } = props;
   const feedReady = hasSignal && Boolean(isReady);
-  const shouldRenderViewport = Boolean(mapRef) && (mountWhenHidden || visible);
+  const shouldRenderViewport = Boolean(mapRef) && visible;
   const overlayLabel = hasSignal ? "CONNECTING" : "NO SIGNAL";
   const overlayHint = hasSignal ? "Synchronizing camera feed..." : hint;
 
@@ -446,6 +444,13 @@ export const CameraConsole = (props, context) => {
     act("open_camera_single", { camera: camera.camera });
   };
 
+  const handleOpenCurrentSingle = () => {
+    if (!currentCameraRef) {
+      return;
+    }
+    act("open_camera_single", { camera: currentCameraRef });
+  };
+
   const handleMapWheel = (event: any) => {
     event.preventDefault();
     const direction = event?.deltaY < 0 ? 1 : -1;
@@ -572,6 +577,14 @@ export const CameraConsole = (props, context) => {
           }
         />
       </Stack>
+    ) : data.view_mode === VIEW_MODE_MAP ? (
+      <Button
+        icon="up-right-from-square"
+        disabled={!currentCameraRef || !currentCameraOnline}
+        onClick={handleOpenCurrentSingle}
+      >
+        Open
+      </Button>
     ) : undefined;
 
   return (
@@ -783,7 +796,6 @@ export const CameraConsole = (props, context) => {
                             hasSignal={currentCameraOnline}
                             isReady={currentFeedReady}
                             visible={data.view_mode !== VIEW_MODE_MULTI}
-                            mountWhenHidden
                             hint={
                               data.view_mode === VIEW_MODE_MAP && currentCameraOnline
                                 ? "Pick a camera on the map or in the list."
@@ -891,7 +903,6 @@ export const CameraConsole = (props, context) => {
                                       hasSignal={slotHasSignal}
                                       isReady={slotFeedReady}
                                       visible={data.view_mode === VIEW_MODE_MULTI}
-                                      mountWhenHidden
                                       compact
                                       hint={
                                         slotCamera?.name
