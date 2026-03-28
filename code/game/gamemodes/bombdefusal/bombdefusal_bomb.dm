@@ -16,26 +16,109 @@
 // ===== LANDMARKS =====
 
 /obj/effect/landmark/bombdefusal
-	icon_state = "x2"
+	icon = 'icons/effects/csgo/landmark_icons.dmi'
+	icon_state = "site_a"
 	should_be_added = TRUE
 
 /obj/effect/landmark/bombdefusal/t_spawn
 	name = "Terrorist Spawn"
+	icon_state = "t_spawn"
 
 /obj/effect/landmark/bombdefusal/ct_spawn
 	name = "Counter-Terrorist Spawn"
+	icon_state = "ct_spawn"
+
+/obj/effect/landmark/bombdefusal/arrow_a
+	name = "Arrow to Site A"
+	icon_state = "arrow_a"
+
+/obj/effect/landmark/bombdefusal/arrow_b
+	name = "Arrow to Site B"
+	icon_state = "arrow_b"
 
 /obj/effect/landmark/bombdefusal/bombsite
 	name = "Bomb Site"
 	var/site_id = "A"
+	icon_state = "site_a"
 
 /obj/effect/landmark/bombdefusal/bombsite/a
 	site_id = "A"
 	name = "Bomb Site A"
+	icon_state = "site_a"
 
 /obj/effect/landmark/bombdefusal/bombsite/b
 	site_id = "B"
 	name = "Bomb Site B"
+	icon_state = "site_b"
+
+// ===== BOMBSITE DECALS =====
+
+/obj/effect/decal/bombdefusal
+	anchored = TRUE
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	layer = TURF_LAYER + 0.1
+
+/obj/effect/decal/bombdefusal/border
+	name = "bomb site border"
+	icon = 'icons/effects/csgo/bombsite.dmi'
+	icon_state = "border"
+
+/obj/effect/decal/bombdefusal/plant_x
+	name = "bomb plant spot"
+	icon = 'icons/effects/csgo/bombsite.dmi'
+	icon_state = "plant_x"
+
+/obj/effect/decal/bombdefusal/site_a
+	name = "bomb site A"
+	icon = 'icons/effects/csgo/site_markers.dmi'
+	icon_state = "site_a"
+
+/obj/effect/decal/bombdefusal/site_b
+	name = "bomb site B"
+	icon = 'icons/effects/csgo/site_markers.dmi'
+	icon_state = "site_b"
+
+/obj/effect/decal/bombdefusal/t_spawn
+	name = "T spawn"
+	icon = 'icons/effects/csgo/site_markers.dmi'
+	icon_state = "t_spawn"
+
+/obj/effect/decal/bombdefusal/ct_spawn
+	name = "CT spawn"
+	icon = 'icons/effects/csgo/site_markers.dmi'
+	icon_state = "ct_spawn"
+
+/obj/effect/decal/bombdefusal/arrow_a
+	name = "arrow to site A"
+	icon = 'icons/effects/csgo/arrows.dmi'
+	icon_state = "arrow_a"
+
+/obj/effect/decal/bombdefusal/arrow_b
+	name = "arrow to site B"
+	icon = 'icons/effects/csgo/arrows.dmi'
+	icon_state = "arrow_b"
+
+// Spawn corner borders + center X + site letter around a bombsite landmark
+/proc/spawn_bombsite_decals(turf/T, site_id = "A")
+	if(!T)
+		return
+	// Plant X on center
+	new /obj/effect/decal/bombdefusal/plant_x(T)
+	// Corner brackets at the 4 corners of a 5x5 zone (±2 from center)
+	// border dirs: N=top-left, S=bottom-right, E=top-right, W=bottom-left
+	var/list/corners = list(
+		list("dx"=-2, "dy"= 2, "dir"=NORTH), // top-left
+		list("dx"= 2, "dy"= 2, "dir"=EAST),  // top-right
+		list("dx"=-2, "dy"=-2, "dir"=WEST),  // bottom-left
+		list("dx"= 2, "dy"=-2, "dir"=SOUTH)  // bottom-right
+	)
+	for(var/list/c in corners)
+		var/turf/CT = locate(T.x + c["dx"], T.y + c["dy"], T.z)
+		if(!CT)
+			continue
+		var/obj/effect/decal/bombdefusal/border/B = new(CT)
+		B.dir = c["dir"]
+
 
 // ===== BOMB =====
 

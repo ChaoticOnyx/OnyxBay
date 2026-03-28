@@ -17,11 +17,15 @@
 	map_path = "maps/csgo/de_pervayaoperacionnaya.dmm"
 	description = "NSS Exodus but cool."
 
-// Add new maps here as subtypes of /datum/bombdefusal_map:
-// /datum/bombdefusal_map/de_newmap
-//     name = "de_newmap"
-//     map_path = "maps/csgo/de_newmap.dmm"
-//     description = "Description of the map."
+/datum/bombdefusal_map/de_dust2
+	name = "de_dust2"
+	map_path = "maps/csgo/de_dust2.dmm"
+	description = "Dust 2. You know the one."
+
+/datum/bombdefusal_map/de_inferno
+	name = "de_inferno"
+	map_path = "maps/csgo/de_inferno.dmm"
+	description = "A tight, smoky italian village."
 
 // ===== MAP SELECTION =====
 

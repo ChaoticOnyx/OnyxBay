@@ -85,7 +85,7 @@
 	// Play lobby music to all players
 	for(var/datum/mind/M in SSticker.minds)
 		if(M.current?.client)
-			sound_to(M.current, sound('sound/csgo/golosovanie.mp3'))
+			sound_to(M.current, sound('sound/csgo/golosovanie.mp3', volume = 40))
 
 /datum/game_mode/bombdefusal/process()
 	if(lobby_active)

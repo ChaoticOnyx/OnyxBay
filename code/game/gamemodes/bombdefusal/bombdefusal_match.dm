@@ -157,6 +157,12 @@
 
 	log_game("Bombdefusal arena loaded on z=[arena_z_level]: [t_spawns.len] T spawns, [ct_spawns.len] CT spawns, [bombsites.len] bombsites")
 
+	// Spawn bombsite decals (corner brackets + site letter + plant X)
+	for(var/obj/effect/landmark/bombdefusal/bombsite/BS in bombsites)
+		spawn_bombsite_decals(get_turf(BS), BS.site_id)
+
+
+
 	// Clear loading screen and notify players
 	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 		if(pd.owner?.current)
@@ -310,61 +316,48 @@
 	if(!pd.owner)
 		return
 
+	// Save appearance from the original station body before creating an arena mob
+	if(!pd.saved_appearance && ishuman(pd.owner.current) && !istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
+		pd.saved_appearance = save_human_appearance(pd.owner.current)
+
 	// Find or recover the player's bombdefusal human body
 	var/mob/living/carbon/human/bombdefusal/H = null
 
-	// Find the ghost if the player is ghosted
-	var/mob/observer/ghost/player_ghost
-	for(var/mob/observer/ghost/G in GLOB.player_list)
-		if(G.ckey == pd.owner.key)
-			player_ghost = G
-			break
-
-	if(istype(pd.owner.current, /mob/living/carbon/human/bombdefusal) && pd.owner.current.client)
+	if(pd.original_body && !QDELETED(pd.original_body))
+		H = pd.original_body
+	else if(istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
 		H = pd.owner.current
 	else
-		// Player is ghosted or has no client on their body - find/reclaim the body
-		if(pd.original_body && !QDELETED(pd.original_body))
-			H = pd.original_body
-		else if(istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
-			H = pd.owner.current
-		else
-			for(var/mob/living/carbon/human/bombdefusal/body in GLOB.living_mob_list_ + GLOB.dead_mob_list_)
-				if(body.mind == pd.owner || body.ckey == pd.owner.key)
-					H = body
-					break
+		for(var/mob/living/carbon/human/bombdefusal/body in GLOB.living_mob_list_ + GLOB.dead_mob_list_)
+			if(body.mind == pd.owner || body.ckey == pd.owner.key)
+				H = body
+				break
 
-		if(!H)
-			// No body found - create a new one and restore saved appearance
-			var/turf/spawn_loc = t_spawns.len ? pick(t_spawns) : locate(1, 1, arena_z_level)
-			H = new /mob/living/carbon/human/bombdefusal(spawn_loc)
-			if(pd.saved_appearance)
-				apply_saved_appearance(H, pd.saved_appearance)
-			else if(pd.owner.name)
-				H.real_name = pd.owner.name
-				H.name = pd.owner.name
+	if(!H)
+		// No body found - create a new one
+		var/turf/spawn_loc = t_spawns.len ? pick(t_spawns) : locate(1, 1, arena_z_level)
+		H = new /mob/living/carbon/human/bombdefusal(spawn_loc)
+		if(pd.saved_appearance)
+			apply_saved_appearance(H, pd.saved_appearance)
+		else if(pd.owner.name)
+			H.real_name = pd.owner.name
+			H.name = pd.owner.name
 
-		// Force the player back into the body (same as reenter_corpse)
-		if(player_ghost)
-			H.key = player_ghost.key
-			H.teleop = null
-			qdel(player_ghost)
-		else if(!H.mind || H.mind != pd.owner)
-			pd.owner.transfer_to(H)
+	// Always transfer mind into the arena body
+	if(pd.owner.current != H)
+		pd.owner.transfer_to(H)
 
 	if(!H)
 		return
 
-	// Store original body reference and save appearance on first spawn
+	// Store original body reference
 	if(!pd.original_body || QDELETED(pd.original_body))
 		pd.original_body = H
+	// Fallback: save from arena body only if we couldn't get the station body above
 	if(!pd.saved_appearance)
 		pd.saved_appearance = save_human_appearance(H)
 
-	// Track if this player died last round BEFORE reviving (needs fresh equip)
-	var/was_dead = pd.is_dead || (H.stat == DEAD)
-
-	// Revive if dead (full revive happens later in arena_full_heal)
+	// Revive if dead
 	if(H.stat == DEAD)
 		H.revive()
 
@@ -382,10 +375,11 @@
 	else
 		to_chat(H, "<span class='warning'>No spawn points found for your team!</span>")
 
-	if(was_dead || current_round_num <= 1)
-		// Dead players or first round: full re-equip with base outfit
+	if(current_round_num <= 1 || pd.needs_reequip)
+		// First round, died last round, or halftime: full outfit + fresh random look
 		equip_player(pd)
-	// Surviving players keep their purchased weapons between rounds
+		pd.needs_reequip = FALSE
+	// Surviving players keep all their purchased weapons and gear
 
 	// Full heal regardless
 	H.arena_full_heal()
@@ -537,11 +531,12 @@
 		match_state = BOMBDEFUSAL_STATE_LIVE
 		phase_end_time = world.time + mode.cfg_round_time
 		announce_to_match("<font size='4'><b>GO! GO! GO!</b></font>", "#FF4444")
-		// Unanchor all players - round is live
+		// Unanchor all players - round is live, close buy menu
 		for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 			if(pd.owner?.current)
 				pd.owner.current.anchored = FALSE
 				sound_to(pd.owner.current, sound('sound/csgo/ok-lets-go.mp3'))
+				close_browser(pd.owner.current, "window=bombdefusal_buy")
 	update_all_hud()
 
 /datum/bombdefusal_match/proc/tick_live()
@@ -659,7 +654,8 @@
 	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 		pd.money = mode.cfg_money_start
 		pd.loss_streak = 0
-		pd.is_dead = TRUE // Force re-equip on next round
+		pd.is_dead = TRUE
+		pd.needs_reequip = TRUE // Force re-equip on next round
 
 	announce_to_match("<font size='4'><b>HALFTIME - SWITCHING SIDES</b></font>", "#FFD700")
 
@@ -715,7 +711,9 @@
 	else
 		// Actual death
 		victim_pd.is_dead = TRUE
+		victim_pd.needs_reequip = TRUE
 		victim_pd.deaths++
+		strip_dead_player(victim)
 
 	// Award killer
 	if(killer_pd && killer_pd.team != victim_pd.team)
@@ -733,6 +731,7 @@
 		return
 	pd.is_downed = FALSE
 	pd.is_dead = TRUE
+	pd.needs_reequip = TRUE
 	pd.deaths++
 	pd.downed_timer_id = null
 
@@ -741,6 +740,24 @@
 		var/mob/living/L = pd.owner.current
 		if(istype(L))
 			L.death()
+			strip_dead_player(L)
+
+/datum/bombdefusal_match/proc/strip_dead_player(mob/living/victim)
+	if(!istype(victim, /mob/living/carbon/human))
+		return
+	var/mob/living/carbon/human/H = victim
+	var/list/slots = list(
+		slot_r_hand, slot_l_hand,
+		slot_belt, slot_back,
+		slot_wear_suit, slot_head,
+		slot_wear_mask, slot_gloves, slot_shoes,
+		slot_w_uniform
+	)
+	for(var/slot in slots)
+		var/obj/item/I = H.get_equipped_item(slot)
+		if(I)
+			H.drop(I)
+			qdel(I)
 
 /datum/bombdefusal_match/proc/revive_player(datum/bombdefusal_player_data/pd)
 	if(!pd || !pd.is_downed)

@@ -63,7 +63,6 @@
 	w_class = ITEM_SIZE_NORMAL
 	var/charges = 3
 	var/next_use_time = 0
-	var/heal_amount = 60
 	var/cooldown_time = 100 // 10 seconds
 
 /obj/item/bombdefusal_medkit/attack(mob/living/carbon/human/bombdefusal/target, mob/living/carbon/human/bombdefusal/user)
@@ -91,22 +90,24 @@
 		to_chat(user, "<span class='warning'>Medkit on cooldown! [time_left]s remaining.</span>")
 		return
 
-	// Heal the target
-	target.heal_overall_damage(heal_amount, heal_amount)
+	to_chat(user, "<span class='notice'>Applying medkit to [target.name]...</span>")
+	if(!do_after(user, 50, target)) // 5 second application time
+		return
 
-	// Clear bleeding and pain on external organs
-	for(var/obj/item/organ/external/E in target.organs)
-		E.status &= ~(ORGAN_BLEEDING)
-		// Remove embedded objects
-		for(var/obj/item/I in E.implants)
-			E.implants -= I
-			qdel(I)
+	// Re-check after timer
+	if(charges <= 0 || world.time < next_use_time || QDELETED(src))
+		return
+	if(!istype(target) || !istype(user))
+		return
+
+	// Full heal - same as between rounds
+	target.arena_full_heal()
 
 	charges--
 	next_use_time = world.time + cooldown_time
 
-	to_chat(user, "<span class='notice'>You heal [target.name] with the medkit. [charges] charge(s) remaining.</span>")
-	to_chat(target, "<span class='notice'>[user.name] heals you with a medkit!</span>")
+	to_chat(user, "<span class='notice'>You fully heal [target.name]. [charges] charge(s) remaining.</span>")
+	to_chat(target, "<span class='notice'>[user.name] fully heals you with a medkit!</span>")
 
 	// Check if this is a downed player revive via medkit
 	// (Defibs handle the actual revive from downed state)
@@ -124,23 +125,29 @@
 	name = "arena stimulant"
 	desc = "A single-use combat stimulant. Inject yourself for a quick heal."
 	icon = 'icons/obj/syringe.dmi'
-	icon_state = "yourinjector"
+	icon_state = "injector_green"
 	w_class = ITEM_SIZE_TINY
 	var/heal_amount = 25
 
-/obj/item/bombdefusal_injector/attack_self(mob/living/carbon/human/bombdefusal/user)
-	if(!istype(user))
-		to_chat(user, SPAN("warning", "This can only be used by arena participants!"))
-		return
+/obj/item/bombdefusal_injector/attack(mob/living/carbon/human/target, mob/living/carbon/human/user)
+	if(!istype(target, /mob/living/carbon/human))
+		return ..()
 
-	user.heal_overall_damage(heal_amount, heal_amount)
+	target.heal_overall_damage(heal_amount, heal_amount)
 
-	// Clear some pain/bleeding
-	for(var/obj/item/organ/external/E in user.organs)
+	// Clear bleeding on external organs
+	for(var/obj/item/organ/external/E in target.organs)
 		E.status &= ~(ORGAN_BLEEDING)
 
-	to_chat(user, "<span class='notice'>You inject yourself with a combat stimulant. You feel better!</span>")
+	if(target == user)
+		to_chat(user, "<span class='notice'>You inject yourself with a combat stimulant. You feel better!</span>")
+	else
+		to_chat(user, "<span class='notice'>You inject [target.name] with a combat stimulant.</span>")
+		to_chat(target, "<span class='notice'>[user.name] injects you with a combat stimulant!</span>")
 	qdel(src)
+
+/obj/item/bombdefusal_injector/attack_self(mob/user)
+	attack(user, user)
 
 // ===== DEPLOYABLE BARRICADE =====
 // Support-exclusive. Uses the syndicate energy barrier but weaker and no explosion on death.

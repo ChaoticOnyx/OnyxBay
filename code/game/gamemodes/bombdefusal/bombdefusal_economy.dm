@@ -7,17 +7,19 @@
 	var/price
 	var/item_type
 	var/required_role = null  // If set, only this role can buy it
+	var/required_side = null  // If set (BOMBDEFUSAL_TEAM_T or _CT), only that side can buy it
 	var/mag_type = null  // If set, spawn extra mags of this type with the weapon
 	var/mag_count = 2    // How many extra mags
 	var/spare_type = null // For single-casing guns: loose ammo type to spawn as spares
 	var/spare_count = 0   // How many loose rounds to spawn
 
-/datum/bombdefusal_shop_item/New(n, cat, p, itype, role = null, mags = null, mag_amt = 2, spares = null, spare_amt = 0)
+/datum/bombdefusal_shop_item/New(n, cat, p, itype, role = null, side = null, mags = null, mag_amt = 2, spares = null, spare_amt = 0)
 	name = n
 	category = cat
 	price = p
 	item_type = itype
 	required_role = role
+	required_side = side
 	mag_type = mags
 	mag_count = mag_amt
 	spare_type = spares
@@ -32,7 +34,6 @@
 	shop_catalog += new /datum/bombdefusal_shop_item("9mm Compact",          BOMBDEFUSAL_CAT_PISTOLS, 300,  /obj/item/gun/projectile/pistol/holdout, mags = /obj/item/ammo_magazine/mc9mm)
 	shop_catalog += new /datum/bombdefusal_shop_item(".38 Revolver",        BOMBDEFUSAL_CAT_PISTOLS, 300,  /obj/item/gun/projectile/revolver/detective, mags = /obj/item/ammo_magazine/c38)
 	shop_catalog += new /datum/bombdefusal_shop_item(".45 Pistol",          BOMBDEFUSAL_CAT_PISTOLS, 500,  /obj/item/gun/projectile/pistol/secgun, mags = /obj/item/ammo_magazine/c45m)
-	shop_catalog += new /datum/bombdefusal_shop_item("VP78 Burst Pistol",   BOMBDEFUSAL_CAT_PISTOLS, 600,  /obj/item/gun/projectile/pistol/vp78/tactical, mags = /obj/item/ammo_magazine/c45m)
 	shop_catalog += new /datum/bombdefusal_shop_item("Silenced Pistol",     BOMBDEFUSAL_CAT_PISTOLS, 750,  /obj/item/gun/projectile/pistol/silenced, mags = /obj/item/ammo_magazine/c45m)
 	shop_catalog += new /datum/bombdefusal_shop_item("Military .45",        BOMBDEFUSAL_CAT_PISTOLS, 700,  /obj/item/gun/projectile/pistol/colt/officer, mags = /obj/item/ammo_magazine/c45m)
 	shop_catalog += new /datum/bombdefusal_shop_item(".50 Magnum",          BOMBDEFUSAL_CAT_PISTOLS, 800,  /obj/item/gun/projectile/pistol/magnum_pistol, mags = /obj/item/ammo_magazine/a50, mag_amt = 1)
@@ -51,8 +52,10 @@
 	shop_catalog += new /datum/bombdefusal_shop_item("L6 SAW",              BOMBDEFUSAL_CAT_HEAVY,   5750, /obj/item/gun/projectile/automatic/l6_saw, role = BOMBDEFUSAL_ROLE_SUPPORT, mags = /obj/item/ammo_magazine/box/a556)
 	shop_catalog += new /datum/bombdefusal_shop_item("Energy Barrier",      BOMBDEFUSAL_CAT_HEAVY,   500,  /obj/item/device/energybarrier/arena, role = BOMBDEFUSAL_ROLE_SUPPORT)
 	// Gear - available to all roles
-	shop_catalog += new /datum/bombdefusal_shop_item("Kevlar Vest",         BOMBDEFUSAL_CAT_GEAR,    650,  /obj/item/clothing/suit/armor/vest)
-	shop_catalog += new /datum/bombdefusal_shop_item("SWAT Helmet",         BOMBDEFUSAL_CAT_GEAR,    350,  /obj/item/clothing/head/helmet/swat)
+	shop_catalog += new /datum/bombdefusal_shop_item("Ballistic Vest",      BOMBDEFUSAL_CAT_GEAR,    650,  /obj/item/clothing/suit/armor/vest/bombdefusal_t,  side = BOMBDEFUSAL_TEAM_T)
+	shop_catalog += new /datum/bombdefusal_shop_item("Ballistic Helmet",    BOMBDEFUSAL_CAT_GEAR,    350,  /obj/item/clothing/head/helmet/bombdefusal_t,       side = BOMBDEFUSAL_TEAM_T)
+	shop_catalog += new /datum/bombdefusal_shop_item("Tactical Vest",       BOMBDEFUSAL_CAT_GEAR,    650,  /obj/item/clothing/suit/armor/vest/bombdefusal_ct, side = BOMBDEFUSAL_TEAM_CT)
+	shop_catalog += new /datum/bombdefusal_shop_item("SWAT Helmet",         BOMBDEFUSAL_CAT_GEAR,    350,  /obj/item/clothing/head/helmet/bombdefusal_ct,      side = BOMBDEFUSAL_TEAM_CT)
 	shop_catalog += new /datum/bombdefusal_shop_item("Defuse Kit",          BOMBDEFUSAL_CAT_GEAR,    400,  /obj/item/wirecutters)
 	shop_catalog += new /datum/bombdefusal_shop_item("Frag Grenade",        BOMBDEFUSAL_CAT_GEAR,    300,  /obj/item/grenade/frag)
 	shop_catalog += new /datum/bombdefusal_shop_item("Extra Frag Grenade",  BOMBDEFUSAL_CAT_GEAR,    250,  /obj/item/grenade/frag, role = BOMBDEFUSAL_ROLE_SUPPORT)
@@ -138,6 +141,9 @@
 		if(item.required_role && pd.role != item.required_role)
 			can_buy = FALSE
 			reason = "[item.required_role] only"
+		if(item.required_side && pd.team.current_side != item.required_side)
+			can_buy = FALSE
+			reason = "[item.required_side] only"
 
 		html += "<div class='item'>"
 		if(can_buy)
@@ -177,6 +183,11 @@
 
 	if(item.required_role && pd.role != item.required_role)
 		to_chat(user, "<span class='warning'>This item requires [item.required_role] role!</span>")
+		show_buy_menu(user, pd)
+		return
+
+	if(item.required_side && pd.team.current_side != item.required_side)
+		to_chat(user, "<span class='warning'>This item is not available to your side!</span>")
 		show_buy_menu(user, pd)
 		return
 

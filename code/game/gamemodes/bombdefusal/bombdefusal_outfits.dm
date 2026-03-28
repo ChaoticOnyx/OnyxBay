@@ -10,14 +10,87 @@
 	name = "\improper SWAT mask"
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
+/obj/item/clothing/gloves/swat/cosmetic
+	name = "\improper SWAT gloves"
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/shoes/combat/cosmetic
+	name = "combat boots"
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+// Undersuit cosmetics
+/obj/item/clothing/under/syndicate/cosmetic
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/under/syndicate/combat/cosmetic
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/under/syndicate/tacticool/cosmetic
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/under/tactical/cosmetic
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/under/rank/security/cosmetic
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/under/ert/cosmetic
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+// Suit cosmetics
+/obj/item/clothing/suit/storage/vest/police/cosmetic
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+// Mask cosmetics
+/obj/item/clothing/mask/gas/syndicate/cosmetic
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+// ===== ARENA ARMOR (50 across all types) =====
+
+// T vest - dark military ballistic vest
+/obj/item/clothing/suit/armor/vest/bombdefusal_t
+	name = "ballistic vest"
+	desc = "A sturdy ballistic vest. Worn by terrorists."
+	icon_state = "mercwebvest"
+	item_state = "armor"
+	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
+
+// CT vest - security tactical vest
+/obj/item/clothing/suit/armor/vest/bombdefusal_ct
+	name = "tactical vest"
+	desc = "A tactical armored vest. Standard counter-terrorist issue."
+	icon_state = "ertarmor_sec"
+	item_state = "armor"
+	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
+
+// T helmet - mercenary combat helmet
+/obj/item/clothing/head/helmet/bombdefusal_t
+	name = "combat helmet"
+	desc = "A battered combat helmet favored by mercenaries."
+	icon_state = "helmet_merc"
+	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
+	body_parts_covered = HEAD
+	cold_protection = HEAD
+	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+
+// CT helmet - ERT security helmet
+/obj/item/clothing/head/helmet/bombdefusal_ct
+	name = "tactical helmet"
+	desc = "A reinforced tactical helmet worn by security response teams."
+	icon_state = "erthelmet_sec"
+	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
+	body_parts_covered = HEAD|EYES
+	cold_protection = HEAD
+	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+
 // ===== TERRORIST OUTFITS =====
 
 /decl/hierarchy/outfit/bombdefusal/terrorist
 	name = "Bomb Defusal - Terrorist (Rifleman)"
-	shoes = /obj/item/clothing/shoes/combat
-	gloves = /obj/item/clothing/gloves/swat
+	shoes = /obj/item/clothing/shoes/combat/cosmetic
+	gloves = /obj/item/clothing/gloves/swat/cosmetic
 	back = /obj/item/storage/backpack/satchel
-	l_ear = /obj/item/device/radio/headset/bombdefusal_t
+	l_ear = /obj/item/device/radio/headset/bombdefusal/bombdefusal_t
 	belt = /obj/item/storage/belt/security/tactical
 	r_hand = /obj/item/gun/projectile/pistol/secgun
 	l_hand = /obj/item/material/hatchet/tacknife
@@ -39,10 +112,10 @@
 
 /decl/hierarchy/outfit/bombdefusal/counter_terrorist
 	name = "Bomb Defusal - Counter-Terrorist (Rifleman)"
-	shoes = /obj/item/clothing/shoes/combat
-	gloves = /obj/item/clothing/gloves/swat
+	shoes = /obj/item/clothing/shoes/combat/cosmetic
+	gloves = /obj/item/clothing/gloves/swat/cosmetic
 	back = /obj/item/storage/backpack/satchel
-	l_ear = /obj/item/device/radio/headset/bombdefusal_ct
+	l_ear = /obj/item/device/radio/headset/bombdefusal/bombdefusal_ct
 	belt = /obj/item/storage/belt/security/tactical
 	r_hand = /obj/item/gun/projectile/pistol/secgun
 	l_hand = /obj/item/material/hatchet/tacknife
@@ -66,10 +139,10 @@
 /proc/randomize_t_look(mob/living/carbon/human/H)
 	// Terrorists: rugged, mixed gear, guerrilla style
 	var/list/t_uniforms = list(
-		/obj/item/clothing/under/syndicate,
-		/obj/item/clothing/under/syndicate/combat,
-		/obj/item/clothing/under/syndicate/tacticool,
-		/obj/item/clothing/under/tactical
+		/obj/item/clothing/under/syndicate/cosmetic,
+		/obj/item/clothing/under/syndicate/combat/cosmetic,
+		/obj/item/clothing/under/syndicate/tacticool/cosmetic,
+		/obj/item/clothing/under/tactical/cosmetic
 	)
 	var/list/t_suits = list(
 		null,
@@ -83,7 +156,7 @@
 		null,
 		/obj/item/clothing/mask/balaclava,
 		/obj/item/clothing/mask/balaclava/tactical,
-		/obj/item/clothing/mask/gas/syndicate,
+		/obj/item/clothing/mask/gas/syndicate/cosmetic,
 		/obj/item/clothing/mask/bandana,
 		/obj/item/clothing/mask/bandana/red,
 		/obj/item/clothing/mask/bandana/skull,
@@ -127,15 +200,15 @@
 /proc/randomize_ct_look(mob/living/carbon/human/H)
 	// Counter-Terrorists: professional, uniformed, tactical
 	var/list/ct_uniforms = list(
-		/obj/item/clothing/under/rank/security,
-		/obj/item/clothing/under/ert,
-		/obj/item/clothing/under/tactical,
-		/obj/item/clothing/under/syndicate/tacticool
+		/obj/item/clothing/under/rank/security/cosmetic,
+		/obj/item/clothing/under/ert/cosmetic,
+		/obj/item/clothing/under/tactical/cosmetic,
+		/obj/item/clothing/under/syndicate/tacticool/cosmetic
 	)
 	var/list/ct_suits = list(
 		null,
 		null,
-		/obj/item/clothing/suit/storage/vest/police,
+		/obj/item/clothing/suit/storage/vest/police/cosmetic,
 		/obj/item/clothing/suit/storage/toggle/bomber
 	)
 	var/list/ct_masks = list(
@@ -219,3 +292,38 @@
 	var/decl/hierarchy/outfit/O = outfit_by_type(outfit_path)
 	if(O)
 		O.equip(H)
+
+// Give back pistol + ammo + knife without touching clothing or armor.
+// Called when a player respawns after dying in a non-first round.
+/datum/bombdefusal_match/proc/give_basic_kit(datum/bombdefusal_player_data/pd)
+	if(!pd.owner || !pd.owner.current)
+		return
+	var/mob/living/carbon/human/H = pd.owner.current
+	if(!istype(H))
+		return
+
+	// Delete anything in hands and belt
+	for(var/slot in list(slot_r_hand, slot_l_hand))
+		var/obj/item/I = H.get_equipped_item(slot)
+		if(I)
+			H.drop(I)
+			qdel(I)
+	var/obj/item/belt = H.get_equipped_item(slot_belt)
+	if(belt)
+		H.drop(belt)
+		qdel(belt)
+
+	// Give pistol, knife, ammo belt
+	var/obj/item/gun/pistol = new /obj/item/gun/projectile/pistol/secgun(H)
+	H.equip_to_slot_if_possible(pistol, slot_r_hand, disable_warning = TRUE)
+	var/obj/item/knife = new /obj/item/material/hatchet/tacknife(H)
+	H.equip_to_slot_if_possible(knife, slot_l_hand, disable_warning = TRUE)
+	var/obj/item/new_belt = new /obj/item/storage/belt/security/tactical(H)
+	H.equip_to_slot_if_possible(new_belt, slot_belt, disable_warning = TRUE)
+
+	// Refill backpack with ammo mags
+	var/obj/item/back = H.get_equipped_item(slot_back)
+	if(istype(back, /obj/item/storage))
+		var/obj/item/storage/S = back
+		for(var/i = 1 to 3)
+			S.handle_item_insertion(new /obj/item/ammo_magazine/c45m(S), prevent_warning = TRUE)
