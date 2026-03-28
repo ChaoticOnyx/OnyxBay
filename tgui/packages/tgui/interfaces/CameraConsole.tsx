@@ -137,6 +137,7 @@ const isCameraOnline = (camera?: CameraData | null) =>
 
 type CameraViewportProps = {
   mapRef?: string | null;
+  hasSource?: boolean;
   hasSignal: boolean;
   isReady?: boolean;
   visible?: boolean;
@@ -149,6 +150,7 @@ type CameraViewportProps = {
 const CameraViewport = (props: CameraViewportProps) => {
   const {
     mapRef,
+    hasSource = true,
     hasSignal,
     isReady,
     visible = true,
@@ -158,7 +160,8 @@ const CameraViewport = (props: CameraViewportProps) => {
     hint,
   } = props;
   const feedReady = hasSignal && Boolean(isReady);
-  const shouldRenderViewport = Boolean(mapRef) && (mountWhenHidden || visible);
+  const shouldRenderViewport =
+    Boolean(mapRef) && Boolean(hasSource) && (mountWhenHidden || visible);
   const overlayLabel = hasSignal ? "CONNECTING" : "NO SIGNAL";
   const overlayHint = hasSignal ? "Synchronizing camera feed..." : hint;
   const shouldShowViewport = visible && feedReady;
@@ -797,6 +800,7 @@ export const CameraConsole = (props, context) => {
                                 : "CameraConsole__singleViewport"
                             }
                             mapRef={singleMapRef}
+                            hasSource={Boolean(currentCameraRef)}
                             hasSignal={currentCameraOnline}
                             isReady={currentFeedReady}
                             visible={data.view_mode !== VIEW_MODE_MULTI}
@@ -910,6 +914,7 @@ export const CameraConsole = (props, context) => {
                                     <CameraViewport
                                       className="CameraConsole__slotViewport"
                                       mapRef={slotMapRef}
+                                      hasSource={Boolean(slotCamera?.camera)}
                                       hasSignal={slotHasSignal}
                                       isReady={slotFeedReady}
                                       visible={
