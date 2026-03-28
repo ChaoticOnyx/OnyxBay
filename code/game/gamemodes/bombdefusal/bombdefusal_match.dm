@@ -310,8 +310,8 @@
 	if(!pd.owner)
 		return
 
-	// Find or recover the player's human body
-	var/mob/living/carbon/human/H = null
+	// Find or recover the player's bombdefusal human body
+	var/mob/living/carbon/human/bombdefusal/H = null
 
 	// Find the ghost if the player is ghosted
 	var/mob/observer/ghost/player_ghost
@@ -320,16 +320,16 @@
 			player_ghost = G
 			break
 
-	if(ishuman(pd.owner.current) && pd.owner.current.client)
+	if(istype(pd.owner.current, /mob/living/carbon/human/bombdefusal) && pd.owner.current.client)
 		H = pd.owner.current
 	else
 		// Player is ghosted or has no client on their body - find/reclaim the body
 		if(pd.original_body && !QDELETED(pd.original_body))
 			H = pd.original_body
-		else if(ishuman(pd.owner.current))
+		else if(istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
 			H = pd.owner.current
 		else
-			for(var/mob/living/carbon/human/body in GLOB.living_mob_list_ + GLOB.dead_mob_list_)
+			for(var/mob/living/carbon/human/bombdefusal/body in GLOB.living_mob_list_ + GLOB.dead_mob_list_)
 				if(body.mind == pd.owner || body.ckey == pd.owner.key)
 					H = body
 					break
@@ -337,7 +337,7 @@
 		if(!H)
 			// No body found - create a new one and restore saved appearance
 			var/turf/spawn_loc = t_spawns.len ? pick(t_spawns) : locate(1, 1, arena_z_level)
-			H = new /mob/living/carbon/human(spawn_loc)
+			H = new /mob/living/carbon/human/bombdefusal(spawn_loc)
 			if(pd.saved_appearance)
 				apply_saved_appearance(H, pd.saved_appearance)
 			else if(pd.owner.name)
@@ -367,9 +367,6 @@
 	// Revive if dead (full revive happens later in arena_full_heal)
 	if(H.stat == DEAD)
 		H.revive()
-
-	// Enable arena mode
-	H.bombdefusal_arena_mode = TRUE
 
 	// Initialize component lookup if missing (prevents signal errors on fresh/transferred mobs)
 	if(!H.comp_lookup)
@@ -705,8 +702,8 @@
 	if(has_medic && !victim_pd.is_downed)
 		// Enter downed state instead of dying
 		victim_pd.is_downed = TRUE
-		if(istype(victim, /mob/living/carbon/human))
-			var/mob/living/carbon/human/H = victim
+		if(istype(victim, /mob/living/carbon/human/bombdefusal))
+			var/mob/living/carbon/human/bombdefusal/H = victim
 			H.arena_full_heal()
 			H.SetWeakened(9999)
 			H.lying = TRUE
@@ -751,8 +748,8 @@
 	pd.is_downed = FALSE
 	pd.downed_timer_id = null // Clears the timer reference so spawn'd bleedout won't fire
 
-	if(pd.owner && pd.owner.current && istype(pd.owner.current, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = pd.owner.current
+	if(pd.owner && pd.owner.current && istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
+		var/mob/living/carbon/human/bombdefusal/H = pd.owner.current
 		H.arena_full_heal()
 		to_chat(H, "<span class='notice'><font size='4'>You have been revived!</font></span>")
 	return TRUE
