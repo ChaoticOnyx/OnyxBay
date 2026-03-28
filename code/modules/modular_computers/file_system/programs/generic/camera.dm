@@ -202,6 +202,8 @@
 	var/list/cam_skyboxes = list(null, null, null, null, null, null, null)
 	/// Per-user per-slot renderer instances: user_ref => list(slot => list(renderer...))
 	var/list/user_plane_masters = list()
+	/// Per-user registered slot map mode: "background" or "active".
+	var/list/user_map_slot_modes = list()
 	var/list/cam_backgrounds = list(null, null, null, null, null, null, null)
 	var/list/last_camera_refs = list(null, null, null, null, null, null, null)
 	var/list/last_camera_turfs = list(null, null, null, null, null, null, null)
@@ -276,6 +278,7 @@
 		qdel(cam_backgrounds[i])
 
 	user_plane_masters.Cut()
+	user_map_slot_modes.Cut()
 	concurrent_users.Cut()
 	map_refs.Cut()
 	cam_screens.Cut()
@@ -305,14 +308,13 @@
 	ensure_current_network(user, networks)
 	sanitize_active_state()
 	update_active_camera_screens()
+	register_user_maps(user)
 
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CameraConsole", "Camera Monitoring")
 		ui.set_autoupdate(TRUE)
 		ui.open()
-
-	register_user_maps(user)
 
 /datum/nano_module/camera_monitor/tgui_data(mob/user)
 	ensure_slot_lists_ready()
@@ -327,6 +329,9 @@
 	var/list/networks = get_available_networks(user)
 	ensure_current_network(user, networks)
 	sanitize_active_state()
+	update_active_camera_screens()
+	if(ref(user) in concurrent_users)
+		refresh_user_maps(user)
 
 	var/list/cameras = get_cameras_for_current_network()
 
@@ -517,6 +522,7 @@
 				qdel(map_obj)
 
 	user_plane_masters -= user_ref
+	user_map_slot_modes -= user_ref
 
 /datum/nano_module/camera_monitor/proc/register_user_maps(mob/user)
 	ensure_slot_lists_ready()
@@ -524,36 +530,12 @@
 		return
 
 	var/user_ref = ref(user)
-	if(user_ref in concurrent_users)
-		return
-
-	concurrent_users += user_ref
-
+	var/first_registration = !(user_ref in concurrent_users)
+	if(first_registration)
+		concurrent_users += user_ref
 	ensure_user_plane_masters(user)
-
-	var/list/user_slots = user_plane_masters[user_ref]
-
-	for(var/i = 1, i <= CAMERA_VIEWPORT_COUNT, i++)
-		if(i > length(cam_screens) || i > length(cam_skyboxes) || i > length(cam_backgrounds))
-			continue
-
-		var/atom/movable/screen/map_view/cam_screen = cam_screens[i]
-		var/atom/movable/screen/camera_skybox/cam_skybox = cam_skyboxes[i]
-		var/atom/movable/screen/background/cam_background = cam_backgrounds[i]
-		var/list/slot_renderers = user_slots[i]
-
-		if(cam_screen)
-			user.client.register_map_obj(cam_screen)
-
-		if(cam_skybox)
-			user.client.register_map_obj(cam_skybox)
-
-		if(islist(slot_renderers))
-			for(var/atom/movable/map_obj as anything in slot_renderers)
-				user.client.register_map_obj(map_obj)
-
-		if(cam_background)
-			user.client.register_map_obj(cam_background)
+	ensure_user_map_slot_modes(user)
+	refresh_user_maps(user, first_registration)
 
 /datum/nano_module/camera_monitor/proc/get_available_networks(mob/user)
 	var/list/all_networks = list()
@@ -755,7 +737,10 @@
 
 /datum/nano_module/camera_monitor/proc/update_active_camera_screens(force = FALSE)
 	ensure_slot_lists_ready()
-	update_slot_screen(CAMERA_SINGLE_VIEW_SLOT, current_camera, force)
+	if(force || should_slot_render_live(CAMERA_SINGLE_VIEW_SLOT))
+		update_slot_screen(CAMERA_SINGLE_VIEW_SLOT, current_camera, force)
+	else
+		show_camera_static(CAMERA_SINGLE_VIEW_SLOT)
 
 	// Preserve multi-view buffers off-tab so switching back does not blank/recreate
 	// every viewport before the new frame is ready.
@@ -768,6 +753,10 @@
 	// render is allowed per UI tick; remaining slots are deferred to the next tick.
 	var/fresh_renders = 0
 	for(var/i = 1, i <= CAMERA_MULTI_SLOT_COUNT, i++)
+		if(!force && !should_slot_render_live(i))
+			show_camera_static(i)
+			continue
+
 		var/obj/machinery/camera/C = get_slot_camera(i)
 
 		if(!force && fresh_renders >= 1 && C && C.can_use())
@@ -905,6 +894,101 @@
 	cam_screen.remove_filter("camera_soften")
 	cam_screen.color = null
 
+/datum/nano_module/camera_monitor/proc/should_slot_render_live(slot)
+	if(slot == CAMERA_SINGLE_VIEW_SLOT)
+		return view_mode != CAMERA_VIEW_MODE_MULTI && current_camera && current_camera.can_use()
+
+	if(slot < 1 || slot > CAMERA_MULTI_SLOT_COUNT)
+		return FALSE
+
+	if(view_mode != CAMERA_VIEW_MODE_MULTI)
+		return FALSE
+
+	if(slot > get_visible_slot_count())
+		return FALSE
+
+	var/obj/machinery/camera/C = get_slot_camera(slot)
+	return C && C.can_use()
+
+/datum/nano_module/camera_monitor/proc/ensure_user_map_slot_modes(mob/user)
+	if(!user)
+		return
+
+	var/user_ref = ref(user)
+	if(user_ref in user_map_slot_modes)
+		return
+
+	user_map_slot_modes[user_ref] = list(null, null, null, null, null, null, null)
+
+/datum/nano_module/camera_monitor/proc/refresh_user_maps(mob/user, force = FALSE)
+	ensure_slot_lists_ready()
+	if(!user?.client)
+		return
+
+	ensure_user_plane_masters(user)
+	ensure_user_map_slot_modes(user)
+
+	for(var/i = 1, i <= CAMERA_VIEWPORT_COUNT, i++)
+		refresh_user_map_slot(user, i, force)
+
+/datum/nano_module/camera_monitor/proc/refresh_user_map_slot(mob/user, slot, force = FALSE)
+	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
+		return
+	if(slot > length(map_refs) || slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds))
+		return
+	if(!user?.client)
+		return
+
+	var/map_ref = map_refs[slot]
+	if(!map_ref)
+		return
+
+	var/user_ref = ref(user)
+	ensure_user_plane_masters(user)
+	ensure_user_map_slot_modes(user)
+
+	var/list/user_slots = user_plane_masters[user_ref]
+	var/list/user_modes = user_map_slot_modes[user_ref]
+	var/desired_mode = should_slot_render_live(slot) ? "active" : "background"
+	var/current_mode = (slot <= length(user_modes)) ? user_modes[slot] : null
+	if(!force && current_mode == desired_mode)
+		return
+
+	user.client.clear_map(map_ref)
+
+	if(slot <= length(user_slots))
+		user_slots[slot] = null
+
+	if(desired_mode == "background")
+		show_camera_static(slot)
+		var/atom/movable/screen/background/cam_background = cam_backgrounds[slot]
+		if(cam_background)
+			user.client.register_map_obj(cam_background)
+		user_modes[slot] = desired_mode
+		return
+
+	ensure_user_slot_plane_masters(user, slot)
+
+	var/obj/machinery/camera/C = (slot == CAMERA_SINGLE_VIEW_SLOT) ? current_camera : get_slot_camera(slot)
+	update_slot_screen(slot, C, TRUE)
+
+	var/atom/movable/screen/map_view/cam_screen = cam_screens[slot]
+	var/atom/movable/screen/camera_skybox/cam_skybox = cam_skyboxes[slot]
+	var/atom/movable/screen/background/cam_background = cam_backgrounds[slot]
+	var/list/slot_renderers = (slot <= length(user_slots)) ? user_slots[slot] : null
+
+	if(cam_screen)
+		user.client.register_map_obj(cam_screen)
+	if(cam_skybox)
+		user.client.register_map_obj(cam_skybox)
+	if(islist(slot_renderers))
+		for(var/atom/movable/map_obj as anything in slot_renderers)
+			user.client.register_map_obj(map_obj)
+	if(cam_background)
+		user.client.register_map_obj(cam_background)
+
+	user_modes[slot] = desired_mode
+
 /datum/nano_module/camera_monitor/proc/ensure_user_plane_masters(mob/user)
 	ensure_slot_lists_ready()
 	if(!user)
@@ -914,13 +998,24 @@
 	if(user_ref in user_plane_masters)
 		return
 
-	var/list/user_slots = list(null, null, null, null, null, null, null)
+	user_plane_masters[user_ref] = list(null, null, null, null, null, null, null)
 
-	for(var/i = 1, i <= CAMERA_VIEWPORT_COUNT, i++)
-		var/map_ref = map_refs[i]
-		user_slots[i] = create_camera_plane_masters_for_map(map_ref, user)
+/datum/nano_module/camera_monitor/proc/ensure_user_slot_plane_masters(mob/user, slot)
+	ensure_slot_lists_ready()
+	if(!user || slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
+		return
 
-	user_plane_masters[user_ref] = user_slots
+	ensure_user_plane_masters(user)
+
+	var/user_ref = ref(user)
+	var/list/user_slots = user_plane_masters[user_ref]
+	if(slot > length(user_slots))
+		return
+	if(islist(user_slots[slot]))
+		return
+
+	var/map_ref = map_refs[slot]
+	user_slots[slot] = create_camera_plane_masters_for_map(map_ref, user)
 
 /datum/nano_module/camera_monitor/proc/create_camera_plane_masters_for_map(map_ref, mob/user)
 	var/list/renderers = list()

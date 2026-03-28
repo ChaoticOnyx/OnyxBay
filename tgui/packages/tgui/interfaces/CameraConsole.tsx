@@ -141,7 +141,6 @@ type CameraViewportProps = {
   hasSignal: boolean;
   isReady?: boolean;
   visible?: boolean;
-  mountWhenHidden?: boolean;
   className?: string;
   compact?: boolean;
   hint?: string;
@@ -154,25 +153,32 @@ const CameraViewport = (props: CameraViewportProps) => {
     hasSignal,
     isReady,
     visible = true,
-    mountWhenHidden = false,
     className,
     compact,
     hint,
   } = props;
   const feedReady = hasSignal && Boolean(isReady);
-  const shouldRenderViewport =
-    Boolean(mapRef) && Boolean(hasSource) && (mountWhenHidden || visible);
-  const overlayLabel = hasSignal ? "CONNECTING" : "NO SIGNAL";
-  const overlayHint = hasSignal ? "Synchronizing camera feed..." : hint;
-  const shouldShowViewport = visible && feedReady;
+  const shouldRenderViewport = Boolean(mapRef);
+  const shouldShowViewport = visible && Boolean(hasSource) && feedReady;
+  const shouldParkViewport = !shouldShowViewport;
+  const overlayLabel = !hasSource
+    ? "NO SIGNAL"
+    : feedReady
+      ? "INITIALIZING"
+      : "CONNECTING";
+  const overlayHint = !hasSource
+    ? hint
+    : feedReady
+      ? "Preparing viewport..."
+      : "Synchronizing camera feed...";
 
   return (
     <Box
       className={classes([
         "CameraConsole__viewportFrame",
         className,
-        feedReady && "has-signal",
-        !feedReady && "is-offline",
+        shouldShowViewport && "has-signal",
+        !shouldShowViewport && "is-offline",
         compact && "is-compact",
       ])}
     >
@@ -180,6 +186,8 @@ const CameraViewport = (props: CameraViewportProps) => {
         <ByondUi
           className="CameraConsole__viewportSurface"
           deferFirstVisiblePaint
+          eagerMount
+          parked={shouldParkViewport}
           params={{
             id: mapRef,
             type: "map",
@@ -189,7 +197,7 @@ const CameraViewport = (props: CameraViewportProps) => {
       )}
       <Box className="CameraConsole__viewportFx" />
       <Box className="CameraConsole__viewportSweep" />
-      {!feedReady && (
+      {!shouldShowViewport && (
         <Box className={classes(["CameraConsole__noSignal", hasSignal && "is-loading"])}>
           <Box className="CameraConsole__noSignalNoise" />
           <Box className="CameraConsole__noSignalLabel">{overlayLabel}</Box>
@@ -919,9 +927,6 @@ export const CameraConsole = (props, context) => {
                                       isReady={slotFeedReady}
                                       visible={
                                         data.view_mode === VIEW_MODE_MULTI && slotVisible
-                                      }
-                                      mountWhenHidden={
-                                        data.view_mode === VIEW_MODE_MULTI
                                       }
                                       compact
                                       hint={

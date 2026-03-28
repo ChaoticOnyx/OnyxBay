@@ -10,6 +10,7 @@ import { createLogger } from "../logging";
 import { computeBoxProps } from "./Box";
 
 const logger = createLogger("ByondUi");
+const PRIME_OFFSCREEN_POS = "-10000,-10000";
 
 // Stack of currently allocated BYOND UI element ids.
 const byondUiStack = [];
@@ -78,7 +79,7 @@ export class ByondUi extends Component {
     this.resizeObserver = null;
     this.renderFrame = null;
     this.lastRenderParams = null;
-    this.visibilityPrimed = false;
+    this.visibilityPrimeStage = 0;
     this.handleResize = this.handleResize.bind(this);
   }
 
@@ -99,12 +100,16 @@ export class ByondUi extends Component {
       });
       this.resizeObserver.observe(this.containerRef.current);
     }
+    if (this.props.eagerMount) {
+      this.updateByondUi();
+      return;
+    }
     this.scheduleRender();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps?.params?.id !== this.props?.params?.id) {
-      this.visibilityPrimed = false;
+      this.visibilityPrimeStage = 0;
       this.lastRenderParams = null;
     }
     this.scheduleRender();
@@ -120,7 +125,7 @@ export class ByondUi extends Component {
       cancelAnimationFrame(this.renderFrame);
       this.renderFrame = null;
     }
-    this.visibilityPrimed = false;
+    this.visibilityPrimeStage = 0;
     this.lastRenderParams = null;
     this.byondUiElement.unmount();
   }
@@ -148,20 +153,34 @@ export class ByondUi extends Component {
     const box = getBoundingBox(element);
     logger.debug("bounding box", box);
 
-    const { params = {}, deferFirstVisiblePaint = false } = this.props;
-    const requestedVisible =
-      params["is-visible"] !== false && params["is-visible"] !== "false";
+    const {
+      params = {},
+      deferFirstVisiblePaint = false,
+      parked = false,
+    } = this.props;
     const renderParams = {
       parent: Byond.windowId,
       ...params,
       pos: box.pos[0] + "," + box.pos[1],
       size: box.size[0] + "x" + box.size[1],
     };
+
+    if (parked) {
+      renderParams.pos = PRIME_OFFSCREEN_POS;
+      renderParams.size = "1x1";
+      renderParams["is-visible"] = "false";
+      this.visibilityPrimeStage = 2;
+    }
+
     const shouldPrimeVisibility =
-      deferFirstVisiblePaint && requestedVisible && !this.visibilityPrimed;
+      !parked && deferFirstVisiblePaint && this.visibilityPrimeStage < 2;
 
     if (shouldPrimeVisibility) {
       renderParams["is-visible"] = "false";
+      if (this.visibilityPrimeStage === 0) {
+        renderParams.pos = PRIME_OFFSCREEN_POS;
+        renderParams.size = "1x1";
+      }
     }
 
     if (
@@ -169,7 +188,7 @@ export class ByondUi extends Component {
       !shallowDiffers(this.lastRenderParams, renderParams)
     ) {
       if (shouldPrimeVisibility) {
-        this.visibilityPrimed = true;
+        this.visibilityPrimeStage += 1;
         this.scheduleRender();
       }
       return;
@@ -179,13 +198,15 @@ export class ByondUi extends Component {
     this.byondUiElement.render(renderParams);
 
     if (shouldPrimeVisibility) {
-      this.visibilityPrimed = true;
+      this.visibilityPrimeStage += 1;
       this.scheduleRender();
+      return;
     }
   }
 
   render() {
-    const { params, deferFirstVisiblePaint, ...rest } = this.props;
+    const { params, deferFirstVisiblePaint, eagerMount, parked, ...rest } =
+      this.props;
     return (
       <div ref={this.containerRef} {...computeBoxProps(rest)}>
         {/* Filler */}
