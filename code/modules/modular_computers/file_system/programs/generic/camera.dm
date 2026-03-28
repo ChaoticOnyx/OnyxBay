@@ -225,6 +225,7 @@
 	var/list/slot_signal_states = list(null, null, null, null, null, null, null)
 	var/list/concurrent_users = list()
 	var/list/holomap_cache = list()
+	var/holomap_static_ready = FALSE
 
 /datum/nano_module/camera_monitor/New(host, topic_manager)
 	. = ..()
@@ -363,8 +364,8 @@
 	var/list/networks = get_available_networks(user)
 	ensure_current_network(user, networks)
 	sanitize_active_state()
-	update_active_camera_screens()
 	if(ref(user) in concurrent_users)
+		update_active_camera_screens()
 		refresh_user_maps(user)
 
 	var/list/cameras = get_cameras_for_current_network()
@@ -411,11 +412,13 @@
 		"holomap_offset_y" = HOLOMAP_OFFSET_Y,
 	)
 
-	var/list/all_map_z_levels = list()
-	for(var/z_level = 1, z_level <= GLOB.using_map.map_levels.len, z_level++)
-		all_map_z_levels += z_level
+	if(holomap_static_ready || view_mode == CAMERA_VIEW_MODE_MAP)
+		holomap_static_ready = TRUE
+		var/list/all_map_z_levels = list()
+		for(var/z_level = 1, z_level <= GLOB.using_map.map_levels.len, z_level++)
+			all_map_z_levels += z_level
 
-	.["holomap_images"] = get_holomap_images(all_map_z_levels)
+		.["holomap_images"] = get_holomap_images(all_map_z_levels)
 
 /datum/nano_module/camera_monitor/tgui_act(action, params, datum/tgui/ui, datum/ui_state/state)
 	ensure_slot_lists_ready()
@@ -453,6 +456,9 @@
 			var/new_mode = params["mode"]
 			if(new_mode in list(CAMERA_VIEW_MODE_SINGLE, CAMERA_VIEW_MODE_MAP, CAMERA_VIEW_MODE_MULTI))
 				view_mode = new_mode
+				if(view_mode == CAMERA_VIEW_MODE_MAP && !holomap_static_ready)
+					holomap_static_ready = TRUE
+					update_static_data(user, ui)
 				if(view_mode == CAMERA_VIEW_MODE_MULTI)
 					ensure_active_slot_valid()
 			return TRUE
@@ -688,14 +694,16 @@
 	play_camera_switch(user)
 	return TRUE
 
-/datum/nano_module/camera_monitor/proc/clear_slot_cache(slot)
+/datum/nano_module/camera_monitor/proc/clear_slot_cache(slot, clear_visual_state = TRUE, clear_signal_state = TRUE)
 	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
 		return
 
 	last_camera_refs[slot] = null
 	last_camera_turfs[slot] = null
-	slot_visual_states[slot] = null
-	slot_signal_states[slot] = null
+	if(clear_visual_state)
+		slot_visual_states[slot] = null
+	if(clear_signal_state)
+		slot_signal_states[slot] = null
 
 /datum/nano_module/camera_monitor/proc/clear_multi_slot(slot)
 	if(slot < 1 || slot > CAMERA_MULTI_SLOT_COUNT)
@@ -916,7 +924,7 @@
 	slot_visual_states[slot] = CAMERA_SLOT_VISUAL_STATIC
 	update_slot_effects(slot, FALSE)
 
-	clear_slot_cache(slot)
+	clear_slot_cache(slot, FALSE, FALSE)
 
 /datum/nano_module/camera_monitor/check_eye(mob/user as mob)
 	// Camera view is rendered in-window via ByondUi map controls.

@@ -80,12 +80,11 @@ const sortCameras = (cameras: CameraData[]) =>
     .sort((a, b) => a.name.localeCompare(b.name));
 
 const filterCameras = (cameras: CameraData[], search: string) => {
-  const sorted = sortCameras(cameras);
   if (!search) {
-    return sorted;
+    return cameras;
   }
   const lowered = search.toLowerCase();
-  return sorted.filter((camera) => camera.name.toLowerCase().includes(lowered));
+  return cameras.filter((camera) => camera.name.toLowerCase().includes(lowered));
 };
 
 const prevNextCamera = (
@@ -155,6 +154,8 @@ type CameraViewportProps = {
   hasSignal: boolean;
   isReady?: boolean;
   visible?: boolean;
+  mountWhenHidden?: boolean;
+  warmMount?: boolean;
   className?: string;
   compact?: boolean;
   hint?: string;
@@ -167,23 +168,24 @@ const CameraViewport = (props: CameraViewportProps) => {
     hasSignal,
     isReady,
     visible = true,
+    mountWhenHidden = false,
+    warmMount = false,
     className,
     compact,
     hint,
   } = props;
-  const feedReady = hasSignal && Boolean(isReady);
-  const shouldRenderViewport = Boolean(mapRef);
-  const shouldShowViewport = visible && Boolean(hasSource) && feedReady;
-  const shouldParkViewport = !shouldShowViewport;
-  const overlayLabel = !hasSource
-    ? "NO SIGNAL"
-    : feedReady
-      ? "INITIALIZING"
-      : "CONNECTING";
-  const overlayHint = !hasSource
+  const hasCameraSource = Boolean(hasSource);
+  const hasLiveSignal = hasCameraSource && hasSignal;
+  const feedReady = hasLiveSignal && Boolean(isReady);
+  const shouldRenderViewport =
+    Boolean(mapRef) && (warmMount || hasLiveSignal) && (visible || mountWhenHidden || warmMount);
+  const shouldShowViewport = visible && feedReady;
+  const shouldParkViewport = shouldRenderViewport && !shouldShowViewport;
+  const overlayLabel = !hasLiveSignal ? "NO SIGNAL" : "CONNECTING";
+  const overlayHint = !hasCameraSource
     ? hint
-    : feedReady
-      ? "Preparing viewport..."
+    : !hasLiveSignal
+      ? hint
       : "Synchronizing camera feed...";
 
   return (
@@ -199,7 +201,7 @@ const CameraViewport = (props: CameraViewportProps) => {
         <ByondUi
           className="CameraConsole__viewportSurface"
           deferFirstVisiblePaint
-          eagerMount
+          eagerMount={shouldShowViewport}
           parked={shouldParkViewport}
           params={{
             id: mapRef,
@@ -438,7 +440,7 @@ export const CameraConsole = (props, context) => {
   const networks = data.networks || [];
   const cameras = data.cameras || [];
   const sortedCameras = sortCameras(cameras);
-  const filteredCameras = filterCameras(cameras, cameraSearch);
+  const filteredCameras = filterCameras(sortedCameras, cameraSearch);
 
   const currentCameraRef = data.current_camera?.camera || null;
   const [prevCameraRef, nextCameraRef] = prevNextCamera(
@@ -769,35 +771,37 @@ export const CameraConsole = (props, context) => {
                       ])}
                     >
                       <Box className="CameraConsole__liveMapPane">
-                        <CameraMap
-                          cameras={filteredCameras}
-                          mapZLevels={mapZLevels}
-                          mapZ={selectedMapZ}
-                          setMapZ={setMapZ}
-                          worldMaxX={Number(data.world_max_x) || 1}
-                          worldMaxY={Number(data.world_max_y) || 1}
-                          holomapImages={data.holomap_images}
-                          holomapWidth={Number(data.holomap_width) || 480}
-                          holomapHeight={Number(data.holomap_height) || 480}
-                          holomapOffsetX={Number(data.holomap_offset_x) || 0}
-                          holomapOffsetY={Number(data.holomap_offset_y) || 0}
-                          mapZoom={Number(mapZoom) || 1}
-                          mapPanX={Number(mapPanX) || 0}
-                          mapPanY={Number(mapPanY) || 0}
-                          mapDragging={!!mapDragging}
-                          onMapWheel={handleMapWheel}
-                          onMapMouseDown={handleMapMouseDown}
-                          onMapMouseMove={handleMapMouseMove}
-                          onMapMouseUp={handleMapMouseUp}
-                          onZoomIn={handleMapZoomIn}
-                          onZoomOut={handleMapZoomOut}
-                          onResetView={handleMapResetView}
-                          selectedCameraRef={currentCameraRef}
-                          title="Camera Map"
-                          onPickCamera={handlePickCamera}
-                          onDoublePickCamera={handleOpenSingle}
-                          searchActive={!!cameraSearch}
-                        />
+                        {data.view_mode === VIEW_MODE_MAP && (
+                          <CameraMap
+                            cameras={filteredCameras}
+                            mapZLevels={mapZLevels}
+                            mapZ={selectedMapZ}
+                            setMapZ={setMapZ}
+                            worldMaxX={Number(data.world_max_x) || 1}
+                            worldMaxY={Number(data.world_max_y) || 1}
+                            holomapImages={data.holomap_images}
+                            holomapWidth={Number(data.holomap_width) || 480}
+                            holomapHeight={Number(data.holomap_height) || 480}
+                            holomapOffsetX={Number(data.holomap_offset_x) || 0}
+                            holomapOffsetY={Number(data.holomap_offset_y) || 0}
+                            mapZoom={Number(mapZoom) || 1}
+                            mapPanX={Number(mapPanX) || 0}
+                            mapPanY={Number(mapPanY) || 0}
+                            mapDragging={!!mapDragging}
+                            onMapWheel={handleMapWheel}
+                            onMapMouseDown={handleMapMouseDown}
+                            onMapMouseMove={handleMapMouseMove}
+                            onMapMouseUp={handleMapMouseUp}
+                            onZoomIn={handleMapZoomIn}
+                            onZoomOut={handleMapZoomOut}
+                            onResetView={handleMapResetView}
+                            selectedCameraRef={currentCameraRef}
+                            title="Camera Map"
+                            onPickCamera={handlePickCamera}
+                            onDoublePickCamera={handleOpenSingle}
+                            searchActive={!!cameraSearch}
+                          />
+                        )}
                       </Box>
 
                       <Box className="CameraConsole__liveViewportPane">
@@ -821,6 +825,8 @@ export const CameraConsole = (props, context) => {
                             hasSignal={currentCameraOnline}
                             isReady={currentFeedReady}
                             visible={data.view_mode !== VIEW_MODE_MULTI}
+                            mountWhenHidden
+                            warmMount
                             hint={
                               data.view_mode === VIEW_MODE_MAP && currentCameraOnline
                                 ? "Pick a camera on the map or in the list."
@@ -937,6 +943,8 @@ export const CameraConsole = (props, context) => {
                                       visible={
                                         data.view_mode === VIEW_MODE_MULTI && slotVisible
                                       }
+                                      mountWhenHidden
+                                      warmMount
                                       compact
                                       hint={getSlotHint(slotCamera)}
                                     />
