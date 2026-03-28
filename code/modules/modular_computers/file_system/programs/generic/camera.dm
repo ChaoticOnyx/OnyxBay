@@ -11,6 +11,8 @@
 #define CAMERA_MULTI_SLOT_COUNT 6
 #define CAMERA_VIEWPORT_COUNT 7
 #define CAMERA_SINGLE_VIEW_SLOT 7
+#define CAMERA_SLOT_VISUAL_STATIC "static"
+#define CAMERA_SLOT_VISUAL_LIVE "live"
 
 // Returns which access is relevant to passed network. Used by the program.
 /proc/get_camera_access(network)
@@ -59,6 +61,17 @@
 	icon_state = "blank"
 	layer = DEFAULT_PLANE
 	plane = DEFAULT_PLANE
+
+/atom/movable/screen/camera_effect_overlay
+	name = "camera effect overlay"
+	icon = 'icons/hud/screen.dmi'
+	icon_state = "scanlines"
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	appearance_flags = PASS_MOUSE | NO_CLIENT_COLOR | KEEP_TOGETHER
+	layer = FULLSCREEN_LAYER
+	plane = FULLSCREEN_PLANE
+	blend_mode = BLEND_OVERLAY
+	alpha = 56
 
 /atom/movable/screen/camera_skybox
 	name = "camera skybox"
@@ -205,8 +218,11 @@
 	/// Per-user registered slot map mode: "background" or "active".
 	var/list/user_map_slot_modes = list()
 	var/list/cam_backgrounds = list(null, null, null, null, null, null, null)
+	var/list/cam_effect_overlays = list(null, null, null, null, null, null, null)
 	var/list/last_camera_refs = list(null, null, null, null, null, null, null)
 	var/list/last_camera_turfs = list(null, null, null, null, null, null, null)
+	var/list/slot_visual_states = list(null, null, null, null, null, null, null)
+	var/list/slot_signal_states = list(null, null, null, null, null, null, null)
 	var/list/concurrent_users = list()
 	var/list/holomap_cache = list()
 
@@ -219,8 +235,11 @@
 	cam_screens = list(null, null, null, null, null, null, null)
 	cam_skyboxes = list(null, null, null, null, null, null, null)
 	cam_backgrounds = list(null, null, null, null, null, null, null)
+	cam_effect_overlays = list(null, null, null, null, null, null, null)
 	last_camera_refs = list(null, null, null, null, null, null, null)
 	last_camera_turfs = list(null, null, null, null, null, null, null)
+	slot_visual_states = list(null, null, null, null, null, null, null)
+	slot_signal_states = list(null, null, null, null, null, null, null)
 
 	var/safe_ref = ref(src)
 	safe_ref = replacetext(safe_ref, "\[", "")
@@ -257,6 +276,13 @@
 		cam_background.maptext_y = 128
 		cam_backgrounds[i] = cam_background
 
+		var/atom/movable/screen/camera_effect_overlay/cam_effect_overlay = new
+		cam_effect_overlay.assigned_map = map_ref
+		cam_effect_overlay.del_on_map_removal = FALSE
+		cam_effect_overlay.fill_rect(1, 1, DEFAULT_CAMERA_MAP_SIZE, DEFAULT_CAMERA_MAP_SIZE)
+		cam_effect_overlay.alpha = 0
+		cam_effect_overlays[i] = cam_effect_overlay
+
 /datum/nano_module/camera_monitor/Destroy()
 	reset_current()
 
@@ -276,6 +302,7 @@
 		qdel(cam_screens[i])
 		qdel(cam_skyboxes[i])
 		qdel(cam_backgrounds[i])
+		qdel(cam_effect_overlays[i])
 
 	user_plane_masters.Cut()
 	user_map_slot_modes.Cut()
@@ -284,8 +311,11 @@
 	cam_screens.Cut()
 	cam_skyboxes.Cut()
 	cam_backgrounds.Cut()
+	cam_effect_overlays.Cut()
 	last_camera_refs.Cut()
 	last_camera_turfs.Cut()
+	slot_visual_states.Cut()
+	slot_signal_states.Cut()
 	multi_slots.Cut()
 	holomap_cache.Cut()
 	return ..()
@@ -307,14 +337,18 @@
 	var/list/networks = get_available_networks(user)
 	ensure_current_network(user, networks)
 	sanitize_active_state()
-	update_active_camera_screens()
-	register_user_maps(user)
 
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "CameraConsole", "Camera Monitoring")
 		ui.set_autoupdate(TRUE)
 		ui.open()
+		spawn(0)
+			if(!QDELETED(src) && user?.client)
+				register_user_maps(user)
+	else
+		update_active_camera_screens()
+		register_user_maps(user)
 
 /datum/nano_module/camera_monitor/tgui_data(mob/user)
 	ensure_slot_lists_ready()
@@ -437,19 +471,12 @@
 
 		if("switch_camera")
 			var/obj/machinery/camera/next_camera = find_camera_in_current_network(params["camera"])
-			if(next_camera)
-				set_current(next_camera)
-				if(user)
-					playsound(user, 'sound/effects/cctv_switch.ogg', 25, FALSE)
+			open_camera(next_camera, null, user)
 			return TRUE
 
 		if("open_camera_single")
 			var/obj/machinery/camera/single_camera = find_camera_in_current_network(params["camera"])
-			if(single_camera)
-				set_current(single_camera)
-				view_mode = CAMERA_VIEW_MODE_SINGLE
-				if(user)
-					playsound(user, 'sound/effects/cctv_switch.ogg', 25, FALSE)
+			open_camera(single_camera, CAMERA_VIEW_MODE_SINGLE, user)
 			return TRUE
 
 		if("pick_camera")
@@ -460,10 +487,10 @@
 			if(view_mode == CAMERA_VIEW_MODE_MULTI)
 				assign_camera_to_slot(active_slot, picked_camera)
 			else
-				set_current(picked_camera)
+				open_camera(picked_camera, null, user)
 
-			if(user)
-				playsound(user, 'sound/effects/cctv_switch.ogg', 25, FALSE)
+			if(view_mode == CAMERA_VIEW_MODE_MULTI)
+				play_camera_switch(user)
 			return TRUE
 
 		if("assign_camera")
@@ -477,26 +504,18 @@
 
 		if("clear_slot")
 			var/slot_to_clear = text2num(params["slot"])
-			if(slot_to_clear >= 1 && slot_to_clear <= CAMERA_MULTI_SLOT_COUNT)
-				multi_slots[slot_to_clear] = null
-				last_camera_refs[slot_to_clear] = null
-				last_camera_turfs[slot_to_clear] = null
+			clear_multi_slot(slot_to_clear)
 			return TRUE
 
 		if("open_slot_single")
 			var/slot_to_open = text2num(params["slot"])
 			var/obj/machinery/camera/single_camera = get_slot_camera(slot_to_open)
-			if(single_camera)
-				set_current(single_camera)
-				view_mode = CAMERA_VIEW_MODE_SINGLE
+			open_camera(single_camera, CAMERA_VIEW_MODE_SINGLE, user)
 			return TRUE
 
 		if("reset")
 			reset_current()
-			for(var/i = 1, i <= CAMERA_MULTI_SLOT_COUNT, i++)
-				multi_slots[i] = null
-				last_camera_refs[i] = null
-				last_camera_turfs[i] = null
+			clear_all_multi_slots()
 			active_slot = 1
 			view_mode = CAMERA_VIEW_MODE_SINGLE
 			return TRUE
@@ -655,12 +674,45 @@
 			current_target.tracking_cancelled()
 	current_camera = null
 
+/datum/nano_module/camera_monitor/proc/play_camera_switch(mob/user)
+	if(user)
+		playsound(user, 'sound/effects/cctv_switch.ogg', 25, FALSE)
+
+/datum/nano_module/camera_monitor/proc/open_camera(obj/machinery/camera/C, new_view_mode = null, mob/user = null)
+	if(!C)
+		return FALSE
+
+	set_current(C)
+	if(!isnull(new_view_mode))
+		view_mode = new_view_mode
+	play_camera_switch(user)
+	return TRUE
+
+/datum/nano_module/camera_monitor/proc/clear_slot_cache(slot)
+	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
+		return
+
+	last_camera_refs[slot] = null
+	last_camera_turfs[slot] = null
+	slot_visual_states[slot] = null
+	slot_signal_states[slot] = null
+
+/datum/nano_module/camera_monitor/proc/clear_multi_slot(slot)
+	if(slot < 1 || slot > CAMERA_MULTI_SLOT_COUNT)
+		return
+
+	multi_slots[slot] = null
+	clear_slot_cache(slot)
+
+/datum/nano_module/camera_monitor/proc/clear_all_multi_slots()
+	for(var/i = 1, i <= CAMERA_MULTI_SLOT_COUNT, i++)
+		clear_multi_slot(i)
+
 /datum/nano_module/camera_monitor/proc/assign_camera_to_slot(slot, obj/machinery/camera/C)
 	if(slot < 1 || slot > CAMERA_MULTI_SLOT_COUNT)
 		return
 	multi_slots[slot] = C ? ref(C) : null
-	last_camera_refs[slot] = null
-	last_camera_turfs[slot] = null
+	clear_slot_cache(slot)
 
 /datum/nano_module/camera_monitor/proc/get_slot_camera(slot)
 	if(slot < 1 || slot > CAMERA_MULTI_SLOT_COUNT)
@@ -674,7 +726,7 @@
 
 	var/obj/machinery/camera/C = locate(slot_ref) in cameranet.cameras
 	if(!istype(C))
-		multi_slots[slot] = null
+		clear_multi_slot(slot)
 		return null
 
 	return C
@@ -773,15 +825,16 @@
 /datum/nano_module/camera_monitor/proc/update_slot_screen(slot, obj/machinery/camera/C, force = FALSE)
 	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
 		return
-	if(slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds))
+	if(slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds) || slot > length(cam_effect_overlays))
 		return
-	if(slot > length(last_camera_refs) || slot > length(last_camera_turfs))
+	if(slot > length(last_camera_refs) || slot > length(last_camera_turfs) || slot > length(slot_visual_states) || slot > length(slot_signal_states))
 		return
 
 	var/atom/movable/screen/map_view/cam_screen = cam_screens[slot]
 	var/atom/movable/screen/camera_skybox/cam_skybox = cam_skyboxes[slot]
 	var/atom/movable/screen/background/cam_background = cam_backgrounds[slot]
-	if(!cam_screen || !cam_skybox || !cam_background)
+	var/atom/movable/screen/camera_effect_overlay/cam_effect_overlay = cam_effect_overlays[slot]
+	if(!cam_screen || !cam_skybox || !cam_background || !cam_effect_overlay)
 		return
 
 	if(!C || !C.can_use())
@@ -795,6 +848,7 @@
 
 	var/current_camera_ref = ref(C)
 	if(!force && last_camera_refs[slot] == current_camera_ref && last_camera_turfs[slot] == camera_turf)
+		slot_visual_states[slot] = CAMERA_SLOT_VISUAL_LIVE
 		update_slot_effects(slot, TRUE)
 		return
 
@@ -825,6 +879,8 @@
 	cam_background.alpha = 255
 	cam_background.maptext = null
 	cam_background.fill_rect(1, 1, size_x, size_y)
+	cam_effect_overlay.fill_rect(1, 1, size_x, size_y)
+	slot_visual_states[slot] = CAMERA_SLOT_VISUAL_LIVE
 	update_slot_effects(slot, TRUE)
 
 	last_camera_refs[slot] = current_camera_ref
@@ -833,15 +889,18 @@
 /datum/nano_module/camera_monitor/proc/show_camera_static(slot)
 	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
 		return
-	if(slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds))
+	if(slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds) || slot > length(cam_effect_overlays))
 		return
-	if(slot > length(last_camera_refs) || slot > length(last_camera_turfs))
+	if(slot > length(last_camera_refs) || slot > length(last_camera_turfs) || slot > length(slot_visual_states))
+		return
+	if(slot_visual_states[slot] == CAMERA_SLOT_VISUAL_STATIC)
 		return
 
 	var/atom/movable/screen/map_view/cam_screen = cam_screens[slot]
 	var/atom/movable/screen/camera_skybox/cam_skybox = cam_skyboxes[slot]
 	var/atom/movable/screen/background/cam_background = cam_backgrounds[slot]
-	if(!cam_screen || !cam_skybox || !cam_background)
+	var/atom/movable/screen/camera_effect_overlay/cam_effect_overlay = cam_effect_overlays[slot]
+	if(!cam_screen || !cam_skybox || !cam_background || !cam_effect_overlay)
 		return
 
 	cam_screen.vis_contents.Cut()
@@ -853,13 +912,11 @@
 	cam_background.color = null
 	cam_background.maptext = null
 	cam_background.fill_rect(1, 1, DEFAULT_CAMERA_MAP_SIZE, DEFAULT_CAMERA_MAP_SIZE)
+	cam_effect_overlay.fill_rect(1, 1, DEFAULT_CAMERA_MAP_SIZE, DEFAULT_CAMERA_MAP_SIZE)
+	slot_visual_states[slot] = CAMERA_SLOT_VISUAL_STATIC
 	update_slot_effects(slot, FALSE)
 
-	last_camera_refs[slot] = null
-	last_camera_turfs[slot] = null
-
-	if(!islist(user_plane_masters))
-		user_plane_masters = list()
+	clear_slot_cache(slot)
 
 /datum/nano_module/camera_monitor/check_eye(mob/user as mob)
 	// Camera view is rendered in-window via ByondUi map controls.
@@ -876,23 +933,88 @@
 		cam_skyboxes = list(null, null, null, null, null, null, null)
 	if(length(cam_backgrounds) < CAMERA_VIEWPORT_COUNT)
 		cam_backgrounds = list(null, null, null, null, null, null, null)
+	if(length(cam_effect_overlays) < CAMERA_VIEWPORT_COUNT)
+		cam_effect_overlays = list(null, null, null, null, null, null, null)
 	if(length(last_camera_refs) < CAMERA_VIEWPORT_COUNT)
 		last_camera_refs = list(null, null, null, null, null, null, null)
 	if(length(last_camera_turfs) < CAMERA_VIEWPORT_COUNT)
 		last_camera_turfs = list(null, null, null, null, null, null, null)
+	if(length(slot_visual_states) < CAMERA_VIEWPORT_COUNT)
+		slot_visual_states = list(null, null, null, null, null, null, null)
+	if(length(slot_signal_states) < CAMERA_VIEWPORT_COUNT)
+		slot_signal_states = list(null, null, null, null, null, null, null)
 
-/datum/nano_module/camera_monitor/proc/update_slot_effects(slot, has_signal)
+/datum/nano_module/camera_monitor/proc/update_slot_effects(slot, has_signal, force = FALSE)
 	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
+		return
+	if(slot > length(cam_screens) || slot > length(cam_effect_overlays) || slot > length(slot_signal_states))
+		return
+	if(!force && slot_signal_states[slot] == has_signal)
 		return
 
 	var/atom/movable/screen/map_view/cam_screen = cam_screens[slot]
-	if(!cam_screen)
+	var/atom/movable/screen/camera_effect_overlay/cam_effect_overlay = cam_effect_overlays[slot]
+	if(!cam_screen || !cam_effect_overlay)
 		return
 
-	cam_screen.remove_filter("camera_scanlines")
 	cam_screen.remove_filter("camera_interference")
 	cam_screen.remove_filter("camera_soften")
+	cam_screen.remove_filter("camera_tint")
 	cam_screen.color = null
+	cam_effect_overlay.alpha = 0
+	cam_effect_overlay.color = "#d5f0ff"
+	slot_signal_states[slot] = has_signal
+
+	if(!has_signal)
+		return
+
+	cam_screen.add_filter("camera_soften", 1, gauss_blur_filter(0.35))
+	cam_screen.add_filter("camera_interference", 2, list(
+		type = "wave",
+		x = 0,
+		y = 1,
+		size = 0.55
+	))
+	cam_screen.add_filter("camera_tint", 3, color_matrix_filter(list(
+		1.08,  0.00, -0.03, 0,
+		-0.02, 1.03,  0.00, 0,
+		0.03, -0.03,  0.93, 0,
+		0,     0,     0,    1,
+		0,     0,     0,    0
+	)))
+	cam_effect_overlay.alpha = 46
+
+/datum/nano_module/camera_monitor/proc/configure_user_slot_render_effects(mob/user, slot)
+	var/list/slot_renderers = get_user_slot_renderers(user, slot)
+	if(!islist(slot_renderers))
+		return
+
+	for(var/atom/movable/renderer/camera_map/scene_group/scene_group as anything in slot_renderers)
+		scene_group.renderer_contrast = TRUE
+		scene_group.val1 = 1.12
+		scene_group.val2 = -0.06
+		scene_group.GraphicsUpdate()
+		break
+
+	for(var/atom/movable/renderer/camera_map/final_group/final_group as anything in slot_renderers)
+		final_group.remove_filter("camera_roll")
+		final_group.remove_filter("camera_soften")
+		final_group.remove_filter("camera_tint")
+		final_group.add_filter("camera_soften", 1, gauss_blur_filter(0.2))
+		final_group.add_filter("camera_roll", 2, list(
+			type = "wave",
+			x = 0,
+			y = 1,
+			size = 0.35
+		))
+		final_group.add_filter("camera_tint", 3, color_matrix_filter(list(
+			1.04,  0.00, -0.02, 0,
+			-0.02, 1.01,  0.00, 0,
+			0.03, -0.01,  0.96, 0,
+			0,     0,     0,    1,
+			0,     0,     0,    0
+		)))
+		break
 
 /datum/nano_module/camera_monitor/proc/should_slot_render_live(slot)
 	if(slot == CAMERA_SINGLE_VIEW_SLOT)
@@ -934,7 +1056,7 @@
 /datum/nano_module/camera_monitor/proc/refresh_user_map_slot(mob/user, slot, force = FALSE)
 	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
 		return
-	if(slot > length(map_refs) || slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds))
+	if(slot > length(map_refs) || slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds) || slot > length(cam_effect_overlays))
 		return
 	if(!user?.client)
 		return
@@ -968,6 +1090,7 @@
 		return
 
 	ensure_user_slot_plane_masters(user, slot)
+	configure_user_slot_render_effects(user, slot)
 
 	var/obj/machinery/camera/C = (slot == CAMERA_SINGLE_VIEW_SLOT) ? current_camera : get_slot_camera(slot)
 	update_slot_screen(slot, C, TRUE)
@@ -975,6 +1098,7 @@
 	var/atom/movable/screen/map_view/cam_screen = cam_screens[slot]
 	var/atom/movable/screen/camera_skybox/cam_skybox = cam_skyboxes[slot]
 	var/atom/movable/screen/background/cam_background = cam_backgrounds[slot]
+	var/atom/movable/screen/camera_effect_overlay/cam_effect_overlay = cam_effect_overlays[slot]
 	var/list/slot_renderers = (slot <= length(user_slots)) ? user_slots[slot] : null
 
 	if(cam_screen)
@@ -986,6 +1110,8 @@
 			user.client.register_map_obj(map_obj)
 	if(cam_background)
 		user.client.register_map_obj(cam_background)
+	if(cam_effect_overlay)
+		user.client.register_map_obj(cam_effect_overlay)
 
 	user_modes[slot] = desired_mode
 
@@ -1016,6 +1142,20 @@
 
 	var/map_ref = map_refs[slot]
 	user_slots[slot] = create_camera_plane_masters_for_map(map_ref, user)
+
+/datum/nano_module/camera_monitor/proc/get_user_slot_renderers(mob/user, slot)
+	if(!user || slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
+		return null
+
+	var/user_ref = ref(user)
+	if(!(user_ref in user_plane_masters))
+		return null
+
+	var/list/user_slots = user_plane_masters[user_ref]
+	if(!islist(user_slots) || slot > length(user_slots))
+		return null
+
+	return user_slots[slot]
 
 /datum/nano_module/camera_monitor/proc/create_camera_plane_masters_for_map(map_ref, mob/user)
 	var/list/renderers = list()
@@ -1084,11 +1224,15 @@
 	return result
 
 /datum/nano_module/camera_monitor/proc/get_holomap_image_base64(z_level)
+	var/static/list/global_holomap_cache = list()
 	if(!z_level)
 		return null
 
 	var/cache_key = "[z_level]"
 	if(cache_key in holomap_cache)
+		return holomap_cache[cache_key]
+	if(cache_key in global_holomap_cache)
+		holomap_cache[cache_key] = global_holomap_cache[cache_key]
 		return holomap_cache[cache_key]
 
 	var/icon/map_icon = null
@@ -1105,6 +1249,7 @@
 
 	var/data_uri = "data:image/png;base64,[encoded]"
 	holomap_cache[cache_key] = data_uri
+	global_holomap_cache[cache_key] = data_uri
 	return data_uri
 
 /datum/computer_file/program/camera_monitor/ert

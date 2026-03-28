@@ -135,6 +135,20 @@ const normalizeImageSrc = (value?: string | null): string | null => {
 const isCameraOnline = (camera?: CameraData | null) =>
   !!camera && !Boolean(camera.deact);
 
+const getCameraUnavailableHint = (
+  camera?: CameraData | null,
+  emptyHint = "Select a camera from the list to establish a link."
+) =>
+  camera?.name
+    ? `${camera.name} is offline. Select another camera.`
+    : emptyHint;
+
+const getSlotHint = (camera?: CameraData | null) =>
+  getCameraUnavailableHint(
+    camera,
+    "Choose a camera on the left or drag it here."
+  );
+
 type CameraViewportProps = {
   mapRef?: string | null;
   hasSource?: boolean;
@@ -177,7 +191,6 @@ const CameraViewport = (props: CameraViewportProps) => {
       className={classes([
         "CameraConsole__viewportFrame",
         className,
-        shouldShowViewport && "has-signal",
         !shouldShowViewport && "is-offline",
         compact && "is-compact",
       ])}
@@ -195,8 +208,6 @@ const CameraViewport = (props: CameraViewportProps) => {
           }}
         />
       )}
-      <Box className="CameraConsole__viewportFx" />
-      <Box className="CameraConsole__viewportSweep" />
       {!shouldShowViewport && (
         <Box className={classes(["CameraConsole__noSignal", hasSignal && "is-loading"])}>
           <Box className="CameraConsole__noSignalNoise" />
@@ -569,9 +580,7 @@ export const CameraConsole = (props, context) => {
   };
 
   const singleMapRef = data.map_ref_single || getMapRef(data.map_refs, 1) || null;
-  const noSignalHint = data.current_camera?.name
-    ? `${data.current_camera.name} is offline. Select another camera.`
-    : "Select a camera from the list to establish a link.";
+  const noSignalHint = getCameraUnavailableHint(data.current_camera);
   const liveViewportButtons =
     data.view_mode === VIEW_MODE_SINGLE ? (
       <Stack>
@@ -929,11 +938,7 @@ export const CameraConsole = (props, context) => {
                                         data.view_mode === VIEW_MODE_MULTI && slotVisible
                                       }
                                       compact
-                                      hint={
-                                        slotCamera?.name
-                                          ? `${slotCamera.name} is offline. Pick another camera.`
-                                          : "Choose a camera on the left or drag it here."
-                                      }
+                                      hint={getSlotHint(slotCamera)}
                                     />
                                   </Box>
 
@@ -957,7 +962,7 @@ export const CameraConsole = (props, context) => {
                                         title={slotCamera?.name}
                                       >
                                         {slotCamera
-                                          ? `${slotCamera.name} is offline. Pick another camera.`
+                                          ? getSlotHint(slotCamera)
                                           : "Empty slot. Pick a camera on the left or drag one here."}
                                       </span>
                                     )}
