@@ -73,6 +73,53 @@
 	blend_mode = BLEND_OVERLAY
 	alpha = 56
 
+/atom/movable/screen/camera_fullscreen_overlay
+	name = "camera fullscreen overlay"
+	icon = 'icons/hud/screen_full.dmi'
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	appearance_flags = PASS_MOUSE | NO_CLIENT_COLOR | KEEP_TOGETHER
+	layer = FULLSCREEN_LAYER
+	plane = FULLSCREEN_PLANE
+	alpha = 0
+
+/atom/movable/screen/camera_fullscreen_overlay/proc/fit_to_map(size_x, size_y)
+	if(!assigned_map)
+		return
+
+	size_x = max(1, size_x)
+	size_y = max(1, size_y)
+	screen_loc = "[assigned_map]:CENTER"
+	transform = matrix(size_x / DEFAULT_FULLSCREEN_WIDTH, size_y / DEFAULT_FULLSCREEN_HEIGHT, MATRIX_SCALE)
+
+/atom/movable/screen/camera_fullscreen_overlay/frame
+	name = "camera frame overlay"
+	icon_state = "cam_corners"
+	layer = FULLSCREEN_LAYER + 0.2
+
+/atom/movable/screen/camera_fullscreen_overlay/noise
+	name = "camera noise overlay"
+	icon_state = "fishbed"
+	layer = FULLSCREEN_LAYER + 0.1
+	blend_mode = BLEND_OVERLAY
+
+/atom/movable/screen/camera_record_overlay
+	name = "camera recording overlay"
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "rec"
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	appearance_flags = PASS_MOUSE | NO_CLIENT_COLOR | KEEP_TOGETHER
+	layer = FULLSCREEN_LAYER + 0.3
+	plane = FULLSCREEN_PLANE
+	alpha = 0
+	color = "#ff5f79"
+
+/atom/movable/screen/camera_record_overlay/proc/fit_to_map(size_y)
+	if(!assigned_map)
+		return
+
+	size_y = max(1, size_y)
+	set_position(1, size_y, 6, -6)
+
 /atom/movable/screen/camera_skybox
 	name = "camera skybox"
 	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
@@ -219,6 +266,9 @@
 	var/list/user_map_slot_modes = list()
 	var/list/cam_backgrounds = list(null, null, null, null, null, null, null)
 	var/list/cam_effect_overlays = list(null, null, null, null, null, null, null)
+	var/list/cam_frame_overlays = list(null, null, null, null, null, null, null)
+	var/list/cam_noise_overlays = list(null, null, null, null, null, null, null)
+	var/list/cam_record_overlays = list(null, null, null, null, null, null, null)
 	var/list/last_camera_refs = list(null, null, null, null, null, null, null)
 	var/list/last_camera_turfs = list(null, null, null, null, null, null, null)
 	var/list/slot_visual_states = list(null, null, null, null, null, null, null)
@@ -237,6 +287,9 @@
 	cam_skyboxes = list(null, null, null, null, null, null, null)
 	cam_backgrounds = list(null, null, null, null, null, null, null)
 	cam_effect_overlays = list(null, null, null, null, null, null, null)
+	cam_frame_overlays = list(null, null, null, null, null, null, null)
+	cam_noise_overlays = list(null, null, null, null, null, null, null)
+	cam_record_overlays = list(null, null, null, null, null, null, null)
 	last_camera_refs = list(null, null, null, null, null, null, null)
 	last_camera_turfs = list(null, null, null, null, null, null, null)
 	slot_visual_states = list(null, null, null, null, null, null, null)
@@ -284,6 +337,24 @@
 		cam_effect_overlay.alpha = 0
 		cam_effect_overlays[i] = cam_effect_overlay
 
+		var/atom/movable/screen/camera_fullscreen_overlay/frame/cam_frame_overlay = new
+		cam_frame_overlay.assigned_map = map_ref
+		cam_frame_overlay.del_on_map_removal = FALSE
+		cam_frame_overlay.fit_to_map(DEFAULT_CAMERA_MAP_SIZE, DEFAULT_CAMERA_MAP_SIZE)
+		cam_frame_overlays[i] = cam_frame_overlay
+
+		var/atom/movable/screen/camera_fullscreen_overlay/noise/cam_noise_overlay = new
+		cam_noise_overlay.assigned_map = map_ref
+		cam_noise_overlay.del_on_map_removal = FALSE
+		cam_noise_overlay.fit_to_map(DEFAULT_CAMERA_MAP_SIZE, DEFAULT_CAMERA_MAP_SIZE)
+		cam_noise_overlays[i] = cam_noise_overlay
+
+		var/atom/movable/screen/camera_record_overlay/cam_record_overlay = new
+		cam_record_overlay.assigned_map = map_ref
+		cam_record_overlay.del_on_map_removal = FALSE
+		cam_record_overlay.fit_to_map(DEFAULT_CAMERA_MAP_SIZE)
+		cam_record_overlays[i] = cam_record_overlay
+
 /datum/nano_module/camera_monitor/Destroy()
 	reset_current()
 
@@ -304,6 +375,9 @@
 		qdel(cam_skyboxes[i])
 		qdel(cam_backgrounds[i])
 		qdel(cam_effect_overlays[i])
+		qdel(cam_frame_overlays[i])
+		qdel(cam_noise_overlays[i])
+		qdel(cam_record_overlays[i])
 
 	user_plane_masters.Cut()
 	user_map_slot_modes.Cut()
@@ -313,6 +387,9 @@
 	cam_skyboxes.Cut()
 	cam_backgrounds.Cut()
 	cam_effect_overlays.Cut()
+	cam_frame_overlays.Cut()
+	cam_noise_overlays.Cut()
+	cam_record_overlays.Cut()
 	last_camera_refs.Cut()
 	last_camera_turfs.Cut()
 	slot_visual_states.Cut()
@@ -833,7 +910,7 @@
 /datum/nano_module/camera_monitor/proc/update_slot_screen(slot, obj/machinery/camera/C, force = FALSE)
 	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
 		return
-	if(slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds) || slot > length(cam_effect_overlays))
+	if(slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds) || slot > length(cam_effect_overlays) || slot > length(cam_frame_overlays) || slot > length(cam_noise_overlays) || slot > length(cam_record_overlays))
 		return
 	if(slot > length(last_camera_refs) || slot > length(last_camera_turfs) || slot > length(slot_visual_states) || slot > length(slot_signal_states))
 		return
@@ -887,7 +964,7 @@
 	cam_background.alpha = 255
 	cam_background.maptext = null
 	cam_background.fill_rect(1, 1, size_x, size_y)
-	cam_effect_overlay.fill_rect(1, 1, size_x, size_y)
+	update_slot_vfx_layout(slot, size_x, size_y)
 	slot_visual_states[slot] = CAMERA_SLOT_VISUAL_LIVE
 	update_slot_effects(slot, TRUE)
 
@@ -897,7 +974,7 @@
 /datum/nano_module/camera_monitor/proc/show_camera_static(slot)
 	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
 		return
-	if(slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds) || slot > length(cam_effect_overlays))
+	if(slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds) || slot > length(cam_effect_overlays) || slot > length(cam_frame_overlays) || slot > length(cam_noise_overlays) || slot > length(cam_record_overlays))
 		return
 	if(slot > length(last_camera_refs) || slot > length(last_camera_turfs) || slot > length(slot_visual_states))
 		return
@@ -916,11 +993,11 @@
 	cam_background.plane = DEFAULT_PLANE
 	cam_background.icon = 'icons/hud/screen.dmi'
 	cam_background.alpha = 255
-	cam_background.icon_state = "blank"
-	cam_background.color = null
+	cam_background.icon_state = "black"
+	cam_background.color = "#07111a"
 	cam_background.maptext = null
 	cam_background.fill_rect(1, 1, DEFAULT_CAMERA_MAP_SIZE, DEFAULT_CAMERA_MAP_SIZE)
-	cam_effect_overlay.fill_rect(1, 1, DEFAULT_CAMERA_MAP_SIZE, DEFAULT_CAMERA_MAP_SIZE)
+	update_slot_vfx_layout(slot, DEFAULT_CAMERA_MAP_SIZE, DEFAULT_CAMERA_MAP_SIZE)
 	slot_visual_states[slot] = CAMERA_SLOT_VISUAL_STATIC
 	update_slot_effects(slot, FALSE)
 
@@ -943,6 +1020,12 @@
 		cam_backgrounds = list(null, null, null, null, null, null, null)
 	if(length(cam_effect_overlays) < CAMERA_VIEWPORT_COUNT)
 		cam_effect_overlays = list(null, null, null, null, null, null, null)
+	if(length(cam_frame_overlays) < CAMERA_VIEWPORT_COUNT)
+		cam_frame_overlays = list(null, null, null, null, null, null, null)
+	if(length(cam_noise_overlays) < CAMERA_VIEWPORT_COUNT)
+		cam_noise_overlays = list(null, null, null, null, null, null, null)
+	if(length(cam_record_overlays) < CAMERA_VIEWPORT_COUNT)
+		cam_record_overlays = list(null, null, null, null, null, null, null)
 	if(length(last_camera_refs) < CAMERA_VIEWPORT_COUNT)
 		last_camera_refs = list(null, null, null, null, null, null, null)
 	if(length(last_camera_turfs) < CAMERA_VIEWPORT_COUNT)
@@ -952,45 +1035,86 @@
 	if(length(slot_signal_states) < CAMERA_VIEWPORT_COUNT)
 		slot_signal_states = list(null, null, null, null, null, null, null)
 
+/datum/nano_module/camera_monitor/proc/update_slot_vfx_layout(slot, size_x, size_y)
+	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
+		return
+	if(slot > length(cam_effect_overlays) || slot > length(cam_frame_overlays) || slot > length(cam_noise_overlays) || slot > length(cam_record_overlays))
+		return
+
+	var/atom/movable/screen/camera_effect_overlay/cam_effect_overlay = cam_effect_overlays[slot]
+	var/atom/movable/screen/camera_fullscreen_overlay/frame/cam_frame_overlay = cam_frame_overlays[slot]
+	var/atom/movable/screen/camera_fullscreen_overlay/noise/cam_noise_overlay = cam_noise_overlays[slot]
+	var/atom/movable/screen/camera_record_overlay/cam_record_overlay = cam_record_overlays[slot]
+	if(!cam_effect_overlay || !cam_frame_overlay || !cam_noise_overlay || !cam_record_overlay)
+		return
+
+	size_x = max(1, size_x)
+	size_y = max(1, size_y)
+	cam_effect_overlay.fill_rect(1, 1, size_x, size_y)
+	cam_frame_overlay.fit_to_map(size_x, size_y)
+	cam_noise_overlay.fit_to_map(size_x, size_y)
+	cam_record_overlay.fit_to_map(size_y)
+
 /datum/nano_module/camera_monitor/proc/update_slot_effects(slot, has_signal, force = FALSE)
 	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
 		return
-	if(slot > length(cam_screens) || slot > length(cam_effect_overlays) || slot > length(slot_signal_states))
+	if(slot > length(cam_screens) || slot > length(cam_effect_overlays) || slot > length(cam_frame_overlays) || slot > length(cam_noise_overlays) || slot > length(cam_record_overlays) || slot > length(slot_signal_states))
 		return
 	if(!force && slot_signal_states[slot] == has_signal)
 		return
 
 	var/atom/movable/screen/map_view/cam_screen = cam_screens[slot]
 	var/atom/movable/screen/camera_effect_overlay/cam_effect_overlay = cam_effect_overlays[slot]
-	if(!cam_screen || !cam_effect_overlay)
+	var/atom/movable/screen/camera_fullscreen_overlay/frame/cam_frame_overlay = cam_frame_overlays[slot]
+	var/atom/movable/screen/camera_fullscreen_overlay/noise/cam_noise_overlay = cam_noise_overlays[slot]
+	var/atom/movable/screen/camera_record_overlay/cam_record_overlay = cam_record_overlays[slot]
+	if(!cam_screen || !cam_effect_overlay || !cam_frame_overlay || !cam_noise_overlay || !cam_record_overlay)
 		return
 
 	cam_screen.remove_filter("camera_interference")
 	cam_screen.remove_filter("camera_soften")
 	cam_screen.remove_filter("camera_tint")
+	cam_screen.remove_filter("camera_tracking")
 	cam_screen.color = null
 	cam_effect_overlay.alpha = 0
-	cam_effect_overlay.color = "#d5f0ff"
+	cam_effect_overlay.color = "#8da0ae"
+	cam_frame_overlay.alpha = 0
+	cam_frame_overlay.color = "#7f93a5"
+	cam_noise_overlay.alpha = 0
+	cam_noise_overlay.color = "#9fd7f7"
+	cam_record_overlay.alpha = 0
 	slot_signal_states[slot] = has_signal
 
 	if(!has_signal)
 		return
 
-	cam_screen.add_filter("camera_soften", 1, gauss_blur_filter(0.35))
+	cam_screen.add_filter("camera_soften", 1, gauss_blur_filter(0.52))
 	cam_screen.add_filter("camera_interference", 2, list(
 		type = "wave",
-		x = 0,
+		x = 0.18,
 		y = 1,
-		size = 0.55
+		size = 0.95
 	))
-	cam_screen.add_filter("camera_tint", 3, color_matrix_filter(list(
-		1.08,  0.00, -0.03, 0,
-		-0.02, 1.03,  0.00, 0,
-		0.03, -0.03,  0.93, 0,
+	cam_screen.add_filter("camera_tracking", 3, list(
+		type = "wave",
+		x = 1,
+		y = 0.18,
+		size = 0.2
+	))
+	cam_screen.add_filter("camera_tint", 4, color_matrix_filter(list(
+		1.2,   0.00, -0.08, 0,
+		-0.05, 1.06,  0.00, 0,
+		0.08, -0.05,  0.8,  0,
 		0,     0,     0,    1,
 		0,     0,     0,    0
 	)))
-	cam_effect_overlay.alpha = 46
+	cam_effect_overlay.alpha = 82
+	cam_effect_overlay.color = "#def4ff"
+	cam_frame_overlay.alpha = 255
+	cam_frame_overlay.color = "#eff7ff"
+	cam_noise_overlay.alpha = 42
+	cam_noise_overlay.color = "#c8ecff"
+	cam_record_overlay.alpha = 235
 
 /datum/nano_module/camera_monitor/proc/configure_user_slot_render_effects(mob/user, slot)
 	var/list/slot_renderers = get_user_slot_renderers(user, slot)
@@ -999,8 +1123,8 @@
 
 	for(var/atom/movable/renderer/camera_map/scene_group/scene_group as anything in slot_renderers)
 		scene_group.renderer_contrast = TRUE
-		scene_group.val1 = 1.12
-		scene_group.val2 = -0.06
+		scene_group.val1 = 1.24
+		scene_group.val2 = -0.12
 		scene_group.GraphicsUpdate()
 		break
 
@@ -1008,17 +1132,24 @@
 		final_group.remove_filter("camera_roll")
 		final_group.remove_filter("camera_soften")
 		final_group.remove_filter("camera_tint")
-		final_group.add_filter("camera_soften", 1, gauss_blur_filter(0.2))
+		final_group.remove_filter("camera_jitter")
+		final_group.add_filter("camera_soften", 1, gauss_blur_filter(0.38))
 		final_group.add_filter("camera_roll", 2, list(
 			type = "wave",
 			x = 0,
 			y = 1,
-			size = 0.35
+			size = 0.78
 		))
-		final_group.add_filter("camera_tint", 3, color_matrix_filter(list(
-			1.04,  0.00, -0.02, 0,
-			-0.02, 1.01,  0.00, 0,
-			0.03, -0.01,  0.96, 0,
+		final_group.add_filter("camera_jitter", 3, list(
+			type = "wave",
+			x = 1,
+			y = 0,
+			size = 0.15
+		))
+		final_group.add_filter("camera_tint", 4, color_matrix_filter(list(
+			1.12,  0.00, -0.06, 0,
+			-0.05, 1.02,  0.00, 0,
+			0.08, -0.03,  0.88, 0,
 			0,     0,     0,    1,
 			0,     0,     0,    0
 		)))
@@ -1064,7 +1195,7 @@
 /datum/nano_module/camera_monitor/proc/refresh_user_map_slot(mob/user, slot, force = FALSE)
 	if(slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
 		return
-	if(slot > length(map_refs) || slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds) || slot > length(cam_effect_overlays))
+	if(slot > length(map_refs) || slot > length(cam_screens) || slot > length(cam_skyboxes) || slot > length(cam_backgrounds) || slot > length(cam_effect_overlays) || slot > length(cam_frame_overlays) || slot > length(cam_noise_overlays) || slot > length(cam_record_overlays))
 		return
 	if(!user?.client)
 		return
@@ -1091,9 +1222,7 @@
 
 	if(desired_mode == "background")
 		show_camera_static(slot)
-		var/atom/movable/screen/background/cam_background = cam_backgrounds[slot]
-		if(cam_background)
-			user.client.register_map_obj(cam_background)
+		register_slot_background(user, slot)
 		user_modes[slot] = desired_mode
 		return
 
@@ -1105,8 +1234,6 @@
 
 	var/atom/movable/screen/map_view/cam_screen = cam_screens[slot]
 	var/atom/movable/screen/camera_skybox/cam_skybox = cam_skyboxes[slot]
-	var/atom/movable/screen/background/cam_background = cam_backgrounds[slot]
-	var/atom/movable/screen/camera_effect_overlay/cam_effect_overlay = cam_effect_overlays[slot]
 	var/list/slot_renderers = (slot <= length(user_slots)) ? user_slots[slot] : null
 
 	if(cam_screen)
@@ -1116,12 +1243,41 @@
 	if(islist(slot_renderers))
 		for(var/atom/movable/map_obj as anything in slot_renderers)
 			user.client.register_map_obj(map_obj)
-	if(cam_background)
-		user.client.register_map_obj(cam_background)
-	if(cam_effect_overlay)
-		user.client.register_map_obj(cam_effect_overlay)
+	register_slot_live_vfx(user, slot)
 
 	user_modes[slot] = desired_mode
+
+/datum/nano_module/camera_monitor/proc/register_slot_background(mob/user, slot)
+	if(!user?.client || slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
+		return
+	if(slot > length(cam_backgrounds))
+		return
+
+	var/atom/movable/screen/background/cam_background = cam_backgrounds[slot]
+	if(cam_background)
+		user.client.register_map_obj(cam_background)
+
+/datum/nano_module/camera_monitor/proc/register_slot_live_vfx(mob/user, slot)
+	if(!user?.client || slot < 1 || slot > CAMERA_VIEWPORT_COUNT)
+		return
+	if(slot > length(cam_backgrounds) || slot > length(cam_effect_overlays) || slot > length(cam_frame_overlays) || slot > length(cam_noise_overlays) || slot > length(cam_record_overlays))
+		return
+
+	register_slot_background(user, slot)
+
+	var/atom/movable/screen/camera_effect_overlay/cam_effect_overlay = cam_effect_overlays[slot]
+	var/atom/movable/screen/camera_fullscreen_overlay/frame/cam_frame_overlay = cam_frame_overlays[slot]
+	var/atom/movable/screen/camera_fullscreen_overlay/noise/cam_noise_overlay = cam_noise_overlays[slot]
+	var/atom/movable/screen/camera_record_overlay/cam_record_overlay = cam_record_overlays[slot]
+
+	if(cam_effect_overlay)
+		user.client.register_map_obj(cam_effect_overlay)
+	if(cam_noise_overlay)
+		user.client.register_map_obj(cam_noise_overlay)
+	if(cam_frame_overlay)
+		user.client.register_map_obj(cam_frame_overlay)
+	if(cam_record_overlay)
+		user.client.register_map_obj(cam_record_overlay)
 
 /datum/nano_module/camera_monitor/proc/ensure_user_plane_masters(mob/user)
 	ensure_slot_lists_ready()
