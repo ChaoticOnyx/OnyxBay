@@ -140,6 +140,7 @@ type CameraViewportProps = {
   hasSignal: boolean;
   isReady?: boolean;
   visible?: boolean;
+  mountWhenHidden?: boolean;
   className?: string;
   compact?: boolean;
   hint?: string;
@@ -151,12 +152,13 @@ const CameraViewport = (props: CameraViewportProps) => {
     hasSignal,
     isReady,
     visible = true,
+    mountWhenHidden = false,
     className,
     compact,
     hint,
   } = props;
   const feedReady = hasSignal && Boolean(isReady);
-  const shouldRenderViewport = Boolean(mapRef) && visible;
+  const shouldRenderViewport = Boolean(mapRef) && (mountWhenHidden || visible);
   const overlayLabel = hasSignal ? "CONNECTING" : "NO SIGNAL";
   const overlayHint = hasSignal ? "Synchronizing camera feed..." : hint;
 
@@ -859,8 +861,9 @@ export const CameraConsole = (props, context) => {
                             "grid-template-rows": `repeat(${layout.rows}, minmax(0, 1fr))`,
                           }}
                         >
-                          {Array.from({ length: visibleSlots }, (_, idx) => idx + 1).map(
+                          {Array.from({ length: 6 }, (_, idx) => idx + 1).map(
                             (slot) => {
+                              const slotVisible = slot <= visibleSlots;
                               const slotData = getSlotData(data.multi_slots, slot);
                               const slotCamera = slotData?.camera || null;
                               const slotHasSignal = isCameraOnline(slotCamera);
@@ -873,10 +876,15 @@ export const CameraConsole = (props, context) => {
                                   className={classes([
                                     "CameraConsole__slotCard",
                                     slot === activeSlot && "is-active",
+                                    !slotVisible && "is-hidden-slot",
                                   ])}
-                                  onClick={() => act("set_active_slot", { slot })}
+                                  onClick={() =>
+                                    slotVisible && act("set_active_slot", { slot })
+                                  }
                                   onDblClick={() =>
-                                    slotHasSignal && act("open_slot_single", { slot })
+                                    slotVisible &&
+                                    slotHasSignal &&
+                                    act("open_slot_single", { slot })
                                   }
                                   onDragOver={(event: any) => event.preventDefault()}
                                   onDrop={(event: any) => handleDropToSlot(event, slot)}
@@ -902,7 +910,12 @@ export const CameraConsole = (props, context) => {
                                       mapRef={slotMapRef}
                                       hasSignal={slotHasSignal}
                                       isReady={slotFeedReady}
-                                      visible={data.view_mode === VIEW_MODE_MULTI}
+                                      visible={
+                                        data.view_mode === VIEW_MODE_MULTI && slotVisible
+                                      }
+                                      mountWhenHidden={
+                                        data.view_mode === VIEW_MODE_MULTI
+                                      }
                                       compact
                                       hint={
                                         slotCamera?.name

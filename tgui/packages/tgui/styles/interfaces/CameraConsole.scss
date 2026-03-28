@@ -499,6 +499,10 @@
   overflow: hidden;
 }
 
+.CameraConsole__slotCard.is-hidden-slot {
+  display: none;
+}
+
 .CameraConsole__slotCard.is-active {
   border-color: rgba(85, 205, 255, 0.88);
   box-shadow:
