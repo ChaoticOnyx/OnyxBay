@@ -323,18 +323,21 @@
 	// Find or recover the player's bombdefusal human body
 	var/mob/living/carbon/human/bombdefusal/H = null
 
-	if(pd.original_body && !QDELETED(pd.original_body))
-		H = pd.original_body
-	else if(istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
-		H = pd.owner.current
-	else
-		for(var/mob/living/carbon/human/bombdefusal/body in GLOB.living_mob_list_ + GLOB.dead_mob_list_)
-			if(body.mind == pd.owner || body.ckey == pd.owner.key)
-				H = body
-				break
+	// If the player died (needs_reequip), always create a fresh body.
+	// Damaged/beheaded/gibbed bodies can't be safely revived.
+	if(!pd.needs_reequip)
+		if(pd.original_body && !QDELETED(pd.original_body))
+			H = pd.original_body
+		else if(istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
+			H = pd.owner.current
+		else
+			for(var/mob/living/carbon/human/bombdefusal/body in GLOB.living_mob_list_ + GLOB.dead_mob_list_)
+				if(body.mind == pd.owner || body.ckey == pd.owner.key)
+					H = body
+					break
 
 	if(!H)
-		// No body found - create a new one
+		// No usable body - create a fresh one
 		var/turf/spawn_loc = t_spawns.len ? pick(t_spawns) : locate(1, 1, arena_z_level)
 		H = new /mob/living/carbon/human/bombdefusal(spawn_loc)
 		if(pd.saved_appearance)
@@ -342,22 +345,33 @@
 		else if(pd.owner.name)
 			H.real_name = pd.owner.name
 			H.name = pd.owner.name
+		// Clean up the old damaged body so it doesn't linger
+		if(pd.original_body && !QDELETED(pd.original_body) && pd.original_body != H)
+			qdel(pd.original_body)
+		pd.original_body = H
 
-	// Always transfer mind into the arena body
-	if(pd.owner.current != H)
+	// Transfer mind and client into the body.
+	// transfer_to() skips the key assignment if mind.active == 0 (which happens
+	// when a player ghostizes - Logout() on the old body sets active=0).
+	// Force active=1 and also yank the key directly from whichever mob has it.
+	var/mob/old_mob = pd.owner.current
+	if(old_mob != H)
+		pd.owner.active = 1
 		pd.owner.transfer_to(H)
+	// If the client is still on the old mob (ghost), move the key over
+	if(old_mob && old_mob != H && old_mob.key)
+		H.key = old_mob.key
 
 	if(!H)
 		return
 
-	// Store original body reference
-	if(!pd.original_body || QDELETED(pd.original_body))
-		pd.original_body = H
-	// Fallback: save from arena body only if we couldn't get the station body above
+	// Store body reference and save appearance if not yet saved
+	pd.original_body = H
 	if(!pd.saved_appearance)
 		pd.saved_appearance = save_human_appearance(H)
 
-	// Revive if dead
+	// Clear lying so put_in_r/l_hand work (revive() doesn't clear it)
+	H.lying = FALSE
 	if(H.stat == DEAD)
 		H.revive()
 
