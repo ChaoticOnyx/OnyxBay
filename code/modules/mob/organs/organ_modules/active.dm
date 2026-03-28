@@ -3,6 +3,10 @@
 	var/verb_desc = "activate embedded module"
 	var/datum/action/organ_action = null
 
+/obj/item/organ_module/active/Destroy()
+	QDEL_NULL(organ_action)
+	return ..()
+
 /obj/item/organ_module/active/_on_install(obj/item/organ/external/E)
 	. = ..()
 	organ_action = new /datum/action/item_action/organ_module

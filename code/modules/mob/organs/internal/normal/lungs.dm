@@ -73,10 +73,6 @@
 	if(isundead(owner))
 		return
 
-	if (germ_level > INFECTION_LEVEL_ONE && active_breathing)
-		if(prob(5))
-			owner.emote("cough")		//respitory tract infection
-
 	if(is_bruised() && !owner.is_asystole())
 		if(prob(2))
 			if(active_breathing)

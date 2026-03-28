@@ -10,8 +10,11 @@
 */
 /mob/living/proc/apply_damage(damage = 0,damagetype = BRUTE, def_zone = null, blocked = 0, damage_flags = 0, used_weapon = null)
 	if(status_flags & GODMODE)
-		return 0
-	if(!damage || (blocked >= 100))	return 0
+		return FALSE
+
+	if(!damage || (blocked >= 100))
+		return FALSE
+
 	switch(damagetype)
 		if(BRUTE)
 			adjustBruteLoss(damage * blocked_mult(blocked))
@@ -30,7 +33,7 @@
 			electrocute_act(damage, used_weapon, 1.0, def_zone)
 
 	update_health()
-	return 1
+	return TRUE
 
 
 /mob/living/proc/apply_damages(brute = 0, burn = 0, tox = 0, oxy = 0, clone = 0, halloss = 0, def_zone = null, blocked = 0, damage_flags = 0)

@@ -81,7 +81,7 @@
 	bitesize = 25 // 157.5 nutrition, 6 bites
 
 /obj/item/reagent_containers/food/sliceable/flatdough/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/reagent_containers/food/faggot) || istype(W, /obj/item/reagent_containers/food/rawfaggot))
+	if(istype(W, /obj/item/reagent_containers/food/faggot))
 		new /obj/item/reagent_containers/food/pelmeni(src)
 		to_chat(user, "You make some pelmeni.")
 		qdel(src)
@@ -828,7 +828,7 @@
 	nutriment_amt = 420
 	startswith = list(
 		/datum/reagent/nutriment/protein/gluten/cooked = 90,
-		/datum/reagent/nutriment/protein/cooked = 90,
+		/datum/reagent/nutriment/protein/egg/cooked = 90,
 		/datum/reagent/sugar = 120
 		)
 	bitesize = 25 // 1470 nutrition, 30 bites
@@ -845,7 +845,7 @@
 	nutriment_amt = 70
 	startswith = list(
 		/datum/reagent/nutriment/protein/gluten/cooked = 15,
-		/datum/reagent/nutriment/protein/cooked = 15,
+		/datum/reagent/nutriment/protein/egg/cooked = 15,
 		/datum/reagent/sugar = 20
 		)
 	bitesize = 25 // 147 nutrition, 30 bites

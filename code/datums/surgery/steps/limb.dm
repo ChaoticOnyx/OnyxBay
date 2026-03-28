@@ -84,7 +84,6 @@
  * Connects attached limbs to targets body.
  */
 /datum/surgery_step/limb/connect
-	can_infect = TRUE
 	duration = CLAMP_DURATION
 
 	allowed_tools = list(
@@ -199,7 +198,6 @@
  * Amputates limb.
  */
 /datum/surgery_step/amputate
-	can_infect = TRUE
 	shock_level = 10
 	duration = AMPUTATION_DURATION
 
@@ -215,7 +213,7 @@
 	if(!.)
 		return
 
-	if(parent_organ.open())
+	if(parent_organ.is_surgically_open())
 		target.show_splash_text(user, "can't get a clean cut due to present incisions!", "You can't get a clean cut due to present incisions!")
 		return SURGERY_FAILURE
 
@@ -245,7 +243,7 @@
 		"[user]'s hand slips, sawing through the bone in [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, sawwing through the bone in [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(30, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
+	parent_organ.take_cut_damage(30, tool)
 	parent_organ.fracture()
 
 /datum/surgery_step/amputate/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)

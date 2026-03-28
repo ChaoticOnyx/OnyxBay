@@ -8,6 +8,7 @@
 	icon_state = "posibrain-idle"
 
 	override_organic_icon = FALSE
+	start_robotized = TRUE
 
 	vital = TRUE
 	organ_tag = BP_POSIBRAIN
@@ -27,13 +28,9 @@
 
 /obj/item/organ/internal/cerebrum/posibrain/Initialize()
 	. = ..()
-	add_think_ctx("reset_search_context", CALLBACK(src, nameof(.proc/reset_search)), 0)
-
-/obj/item/organ/internal/cerebrum/posibrain/New(newLoc, mob/living/carbon/H)
-	. = ..()
-	robotize()
 	unshackle()
 	update_icon()
+	add_think_ctx("reset_search_context", CALLBACK(src, nameof(.proc/reset_search)), 0)
 
 /obj/item/organ/internal/cerebrum/posibrain/_get_brainmob_name(mob/living/brain_self, mob/living/carbon/old_self)
 	return "[pick(POSITRONIC_NAMES)]-[random_id(type, 100, 999)]"

@@ -29,8 +29,8 @@
 			return TRUE
 	return FALSE
 
-/obj/item/implanter/installer/New()
-	..()
+/obj/item/implanter/installer/Initialize()
+	. = ..()
 	if(ispath(mod))
 		mod = new mod(src)
 		update_icon()
@@ -133,12 +133,6 @@
 	name = "cybernetic installer (disposable)"
 	desc = "A single use medical applicator of cybernetics."
 	can_reload = TRUE
-
-/obj/item/implanter/installer/disposable/New()
-	..()
-	if(ispath(mod))
-		mod = new mod(src)
-		update_icon()
 
 /obj/item/implanter/installer/disposable/attackby(obj/item/I, mob/user)
 	if(!can_reload)

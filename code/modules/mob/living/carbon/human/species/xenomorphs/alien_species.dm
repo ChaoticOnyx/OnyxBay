@@ -172,11 +172,6 @@
 				O.set_dna(H.dna)
 				H.update_body()
 				return TRUE
-			else
-				for(var/datum/wound/W in E.wounds)
-					if(W.wound_damage() == 0)
-						E.wounds -= W
-						return TRUE
 	return FALSE
 
 /datum/species/xenos/can_overcome_gravity(mob/living/carbon/human/H)

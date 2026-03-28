@@ -3,7 +3,7 @@
 		return
 	else return ..()
 
-/mob/living/carbon/larva/diona/MouseDrop(atom/over_object)
+/mob/living/carbon/larva/diona/MouseDrop(atom/over_object, ...)
 	var/mob/living/carbon/H = over_object
 
 	if(istype(H) && Adjacent(H) && (usr == H) && (H.a_intent == "grab") && hat && !(H.l_hand && H.r_hand))

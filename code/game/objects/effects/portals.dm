@@ -16,6 +16,10 @@
 	. = ..()
 	teleport(AM)
 
+/obj/effect/portal/hitby(atom/movable/AM, datum/thrownthing/TT)
+	..()
+	teleport(AM)
+
 /obj/effect/portal/attack_hand(mob/user)
 	teleport(user)
 

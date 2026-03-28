@@ -212,22 +212,30 @@ REAGENT SCANNER
 		specific_limb_data += "<span class='notice'><b>Specific limb damage:</b></span>"
 
 		for(var/obj/item/organ/external/E in H.organs)
-			var/limb_damaged	//in some cases we dont need apply this flag cause it already will be applied
+			var/limb_damaged // in some cases we dont need apply this flag cause it already will be applied
 			var/limb_result = "<b>[capitalize(E.name)][(BP_IS_ROBOTIC(E)) ? " (Cybernetic)" : ""]:</b>"
+
 			if(E.is_stump())
 				limb_damaged = TRUE
 				limb_result = "<span class='danger'><b>[capitalize(E.name)]</b></span>"
 				specific_limb_data += limb_result
 				continue
+
 			if(E.brute_dam > 0)
 				limb_damaged = TRUE
-				limb_result = "[limb_result] \[<span class='scanner_red'><b>[get_wound_severity(E.brute_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL))] physical trauma</b></span>\]"
+				if(E.blunt_dam > 0)
+					limb_result = "[limb_result] \[<span class='scanner_red'><b>[get_wound_severity(E.blunt_ratio)] blunt trauma</b></span>\]"
+				if(E.cut_dam > 0 || E.pierce_dam > 0)
+					limb_result = "[limb_result] \[<span class='scanner_red'><b>[get_wound_severity(max(E.cut_ratio, E.pierce_ratio))] penetrating trauma</b></span>\]"
+
 			if(E.burn_dam > 0)
 				limb_damaged = TRUE
 				limb_result = "[limb_result] \[<span class='scanner_yellow'><b>[get_wound_severity(E.burn_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL))] burns</b></span>\]"
+
 			if(E.status & ORGAN_BLEEDING)
 				limb_damaged = TRUE
 				limb_result = "[limb_result] \[<span class='scanner_red'>bleeding</span>\]"
+
 			if(E.status & ORGAN_BROKEN)
 				limb_damaged = TRUE
 				if(((E.organ_tag == BP_L_ARM) || (E.organ_tag == BP_R_ARM) || (E.organ_tag == BP_L_LEG) || (E.organ_tag == BP_R_LEG)) && (!E.splinted))
@@ -235,28 +243,22 @@ REAGENT SCANNER
 					found_fracture = TRUE
 				else
 					found_closed_fracture = TRUE
-			for(var/datum/wound/W in E.wounds)
-				if (W.damage_type == CUT && W.current_stage <= W.max_bleeding_stage && !W.bandaged)
-					limb_result = "[limb_result] \[<span class='danger'>open wound</span>\]"
-					break
-			if(E.has_infected_wound())
-				limb_damaged = TRUE
-				if(E.germ_level >= INFECTION_LEVEL_THREE)
-					limb_result = "[limb_result] \[<span class='danger'>extreme infection</span>\]"
-					found_extreme_infection = TRUE
-				else
-					limb_result = "[limb_result] \[<span class='danger'>infection</span>\]"
+
 			if(!found_bleed && (E.status & ORGAN_ARTERY_CUT))
 				found_bleed = TRUE
+
 			if(!found_tendon && (E.status & ORGAN_TENDON_CUT))
 				limb_damaged = TRUE
 				found_tendon = TRUE
+
 			if(!found_disloc && E.dislocated == 2)
 				limb_damaged = TRUE
 				found_disloc = TRUE
-			if (limb_damaged)
+
+			if(limb_damaged)
 				specific_limb_data += limb_result
 				found_injuries = TRUE
+
 		if (!found_injuries)
 			specific_limb_data += "No detectable limb injuries."
 
@@ -390,7 +392,7 @@ REAGENT SCANNER
 
 
 // Calculates severity based on the ratios defined external limbs.
-/proc/get_wound_severity(damage_ratio, vital = 0)
+/proc/get_wound_severity(damage_ratio)
 	var/degree
 
 	switch(damage_ratio)
@@ -405,10 +407,7 @@ REAGENT SCANNER
 		if(0.75 to 1)
 			degree = "extreme"
 		else
-			if(vital)
-				degree = "critical"
-			else
-				degree = "irreparable"
+			degree = "critical"
 
 	return degree
 

@@ -44,7 +44,8 @@
 	var/datum/reagents/R = get_ingested_reagents()
 	if(istype(R))
 		R.clear_reagents()
-	set_nutrition(300)
+	set_nutrition(STOMACH_FULLNESS_HIGH)
+	set_hydration(HYDRATION_HIGH)
 	..()
 
 /mob/living/carbon/Move(newloc, direct)
@@ -66,10 +67,6 @@
 
 	if(m_intent == M_RUN && bodytemperature <= 360 && (MUTATION_FAT in mutations))
 		bodytemperature += 2
-
-	// Moving around increases germ_level faster
-	if(germ_level < GERM_LEVEL_MOVE_CAP && prob(8))
-		germ_level++
 
 /mob/living/carbon/relaymove(mob/living/user, direction)
 	if((user in src.stomach_contents) && istype(user))
@@ -440,7 +437,7 @@
 	return 0
 
 /mob/living/carbon/proc/add_chemical_effect(effect, magnitude = 1)
-	if(effect in chem_effects)
+	if(chem_effects[effect])
 		chem_effects[effect] += magnitude
 	else
 		chem_effects[effect] = magnitude
@@ -449,7 +446,7 @@
 		update_chem_slowdown(effect)
 
 /mob/living/carbon/proc/add_up_to_chemical_effect(effect, magnitude = 1)
-	if(effect in chem_effects)
+	if(chem_effects[effect])
 		chem_effects[effect] = max(magnitude, chem_effects[effect])
 	else
 		chem_effects[effect] = magnitude

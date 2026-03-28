@@ -92,7 +92,7 @@
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/tank/emergency/oxygen = 1,
 					/obj/item/reagent_containers/hypospray/autoinjector = 1,
-					/obj/item/stack/medical/patches = 1,
+					/obj/item/stack/medical/bandaids = 1,
 					/obj/item/device/flashlight/glowstick = 1,
 					/obj/item/reagent_containers/food/packaged/nutribar = 1)
 
@@ -105,7 +105,7 @@
 	foldable = /obj/item/crowbar/emergency/vox
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/tank/emergency/nitrogen = 1,
-					/obj/item/stack/medical/patches = 1,
+					/obj/item/stack/medical/bandaids = 1,
 					/obj/item/device/flashlight/glowstick = 1,
 					/obj/item/reagent_containers/food/packaged/nutribar = 1)
 
@@ -120,7 +120,7 @@
 					/obj/item/tank/emergency/oxygen/engi = 1,
 					/obj/item/reagent_containers/hypospray/autoinjector = 1,
 					/obj/item/reagent_containers/hypospray/autoinjector/detox = 1,
-					/obj/item/stack/medical/patches = 1,
+					/obj/item/stack/medical/bandaids = 1,
 					/obj/item/device/flashlight/glowstick/orange = 1,
 					/obj/item/reagent_containers/food/packaged/nutribar = 1)
 
@@ -135,7 +135,7 @@
 					/obj/item/tank/emergency/oxygen = 1,
 					/obj/item/reagent_containers/hypospray/autoinjector = 1,
 					/obj/item/reagent_containers/hypospray/autoinjector/tricordrazine = 1,
-					/obj/item/stack/medical/patches = 1,
+					/obj/item/stack/medical/bandaids = 1,
 					/obj/item/device/flashlight/glowstick/red = 1,
 					/obj/item/reagent_containers/food/packaged/nutribar = 1)
 

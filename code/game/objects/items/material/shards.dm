@@ -93,7 +93,7 @@
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 
-			if(H.species.siemens_coefficient < 0.5 || (H.species.species_flags & (SPECIES_FLAG_NO_EMBED|SPECIES_FLAG_NO_MINOR_CUT))) //Thick skin.
+			if(H.species.siemens_coefficient < 0.5 || (H.species.species_flags & SPECIES_FLAG_NO_MINOR_CUT)) //Thick skin.
 				return
 
 			if(H.shoes || ( H.wear_suit && (H.wear_suit.body_parts_covered & FEET)))
@@ -112,7 +112,7 @@
 				if(affecting)
 					if(BP_IS_ROBOTIC(affecting))
 						return
-					affecting.take_external_damage(min(5 * amount, 15), 0)
+					affecting.take_pierce_damage(min(5 * amount, 15))
 					H.update_health()
 					if(affecting.can_feel_pain())
 						H.Weaken(min(3 * amount, 9))
@@ -142,7 +142,7 @@
 		return
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
-		if(H.species.siemens_coefficient < 0.5 || (H.species.species_flags & (SPECIES_FLAG_NO_EMBED|SPECIES_FLAG_NO_MINOR_CUT))) //Thick skin.
+		if(H.species.siemens_coefficient < 0.5 || (H.species.species_flags & SPECIES_FLAG_NO_MINOR_CUT)) //Thick skin.
 			return
 		if(H.isSynthetic())
 			return
@@ -150,20 +150,24 @@
 		if(istype(E))
 			if(H.get_flat_armor(E, "melee") > force)
 				return
-			E.take_external_damage((force * rand(3, 7) / 10), 0, used_weapon = name)
+			E.take_cut_damage(force * (rand(3, 7) / 10), name)
 			to_chat(user, SPAN("danger", "You cut your hand with \the [src]!"))
 
 // Preset types - left here for the code that uses them
 /obj/item/material/shrapnel
 	name = "shrapnel"
 	default_material = MATERIAL_STEEL
-	w_class = ITEM_SIZE_TINY	//it's real small
+	w_class = ITEM_SIZE_TINY // it's real small
 
-/obj/item/material/shard/shrapnel/New(loc)
-	..(loc, MATERIAL_STEEL)
+/obj/item/material/shard/shrapnel
 	name = "shrapnel"
+	default_material = MATERIAL_STEEL
+	w_class = ITEM_SIZE_TINY
+
+/obj/item/material/shard/shrapnel/Initialize()
+	. = ..()
 	icon_state = "shrapnel[pick("large", "medium", "small")]"
 	update_icon()
 
-/obj/item/material/shard/plasma/New(loc)
-	..(loc, MATERIAL_PLASS)
+/obj/item/material/shard/plasma
+	default_material = MATERIAL_PLASS

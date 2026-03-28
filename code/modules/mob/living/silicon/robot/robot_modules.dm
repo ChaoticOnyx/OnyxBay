@@ -219,7 +219,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(5000)
 	synths += medicine
 
-	var/obj/item/stack/medical/bruise_pack/B = new /obj/item/stack/medical/bruise_pack(src)
+	var/obj/item/stack/medical/bandage/B = new /obj/item/stack/medical/bandage(src)
 	B.uses_charge = 1
 	B.charge_costs = list(1000)
 	B.synths = list(medicine)
@@ -281,7 +281,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	synths += medicine
 
 	var/obj/item/stack/medical/ointment/O = new /obj/item/stack/medical/ointment(src)
-	var/obj/item/stack/medical/bruise_pack/B = new /obj/item/stack/medical/bruise_pack(src)
+	var/obj/item/stack/medical/bandage/B = new /obj/item/stack/medical/bandage(src)
 	var/obj/item/stack/medical/splint/S = new /obj/item/stack/medical/splint(src)
 	var/obj/item/stack/nanopaste/N = new /obj/item/stack/nanopaste(src)
 	N.uses_charge = 1
@@ -362,8 +362,8 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(25000)
 	synths += medicine
 
-	var/obj/item/stack/medical/advanced/ointment/O = new /obj/item/stack/medical/advanced/ointment(src)
-	var/obj/item/stack/medical/advanced/bruise_pack/B = new /obj/item/stack/medical/advanced/bruise_pack(src)
+	var/obj/item/stack/medical/gel/burn/O = new /obj/item/stack/medical/gel/burn(src)
+	var/obj/item/stack/medical/gel/brute/B = new /obj/item/stack/medical/gel/brute(src)
 	var/obj/item/stack/medical/splint/S = new /obj/item/stack/medical/splint(src)
 	var/obj/item/stack/nanopaste/N = new /obj/item/stack/nanopaste(src)
 	N.uses_charge = 1

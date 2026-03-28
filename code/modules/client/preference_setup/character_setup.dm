@@ -309,7 +309,7 @@
 				"path" = "[mod_type]",
 				"name" = mod.name,
 				"desc" = mod.desc,
-				"allowed_organs" = mod.allowed_organs,
+				"allowed_organs" = mod.allowed_organs.Copy(),
 				"module_type" = mod.module_type,
 				"module_flags" = mod.module_flags,
 				"augment_cost" = mod.augment_cost,

@@ -1,4 +1,3 @@
-
 /obj/item/grab
 	name = "grab"
 	canremove = FALSE
@@ -20,6 +19,7 @@
 	var/attacking = 0
 	var/target_zone
 	var/done_struggle = FALSE // Used by struggle grab datum to keep track of state.
+	var/grace_until = 0
 
 	w_class = ITEM_SIZE_NO_CONTAINER
 	throw_range = 3
@@ -38,8 +38,6 @@
 	var/obj/item/O = get_targeted_organ()
 
 	SetName("[name] ([O.name])")
-
-	add_think_ctx("handle_resist", CALLBACK(src, nameof(.proc/handle_resist)), 0)
 
 	if(start_grab_name)
 		current_grab = all_grabstates[start_grab_name]
@@ -246,6 +244,13 @@
 	return current_grab.throw_held(src)
 
 /obj/item/grab/proc/handle_resist()
+	if(!affecting)
+		return
+	if(current_grab?.state_name != NORM_STRUGGLE || done_struggle)
+		return
+	affecting.try_grab_resist("auto_struggle_ctx")
+	if(QDELETED(src))
+		return
 	current_grab.handle_resist(src)
 
 /obj/item/grab/proc/adjust_position(force = FALSE)

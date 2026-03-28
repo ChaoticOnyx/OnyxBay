@@ -1,12 +1,11 @@
 "a" = (/turf/simulated/wall/r_wall,/area/engineering/toilet)
-"b" = (/turf/simulated/floor/tiled,/area/engineering/toilet)
+"b" = (/obj/structure/table/steel,/obj/item/jtag_programmer,/obj/item/mcu_module/tts,/obj/item/mcu_module/serial_terminal,/obj/item/mcu_module/signaler,/obj/item/debugger,/obj/item/mcu_module/gps,/obj/item/mcu_module/light,/obj/item/mcu_module/env_sensor,/obj/item/mcu_module/prize_box,/obj/item/mcu_module/mining_block/cargo,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "c" = (/turf/simulated/wall/r_wall,/area/space)
 "d" = (/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "e" = (/obj/structure/table/steel,/obj/item/device/mcu/standard,/obj/item/device/mcu/standard/upgraded,/obj/item/device/mcu/standard/pro,/obj/item/device/mcu/lowpower,/obj/item/device/mcu/lowpower/plus,/obj/item/device/mcu/lowpower/industrial,/obj/item/device/mcu/overclock,/obj/item/device/mcu/overclock/lite,/obj/item/device/mcu/overclock/extreme,/obj/item/device/mcu/legacy,/obj/item/device/mcu/hardened,/obj/item/device/mcu/flex,/obj/item/device/mcu/flex/max,/obj/item/device/mcu/flex/pro,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "f" = (/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "g" = (/turf/simulated/wall,/area/engineering/toilet)
 "h" = (/obj/machinery/light_switch{pixel_x = 25; on = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"i" = (/obj/machinery/light{dir = 8},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "j" = (/obj/structure/ladder/up,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "k" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "l" = (/obj/effect/landmark/start/crew,/turf/simulated/floor/tiled,/area/engineering/toilet)
@@ -30,21 +29,22 @@
 "D" = (/obj/machinery/door/airlock/external/bolted{frequency = 1379; id_tag = "example_shuttle_port_hatch"},/turf/simulated/floor/plating,/area/shuttle/escape)
 "E" = (/obj/machinery/door/airlock/external/bolted{frequency = 1379; id_tag = "example_shuttle_starboard_hatch"},/turf/simulated/floor/plating,/area/shuttle/escape)
 "F" = (/obj/structure/cable{icon_state = "0-2"; d2 = 2},/obj/machinery/power/apc{name = "west bump"; dir = 8; pixel_x = -24},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"G" = (/obj/structure/cable{icon_state = "1-2"; d1 = 1; d2 = 2},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"G" = (/obj/structure/cable{icon_state = "1-2"; d2 = 2; d1 = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "H" = (/obj/structure/cable,/obj/machinery/power/debug_items/infinite_generator,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "I" = (/obj/machinery/light,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "J" = (/turf/space,/area/space)
 "K" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/map_ent/trigger_mob{tag = "ent_tp_trigger"; pixel_x = -7; ev_tag = "ent_tp_wv"},/obj/map_ent/func_teleport{tag = "ent_tp_src"; pixel_x = 14; ev_dest_tag = "ent_showcase_tp_dest"},/obj/map_ent/func_write_var{tag = "ent_tp_wv"; pixel_y = 9; ev_read_tag = "ent_tp_trigger"; ev_write_tag = "ent_tp_src"; ev_table = list(ev_tag="ev_triggered"); ev_activate_writer = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "L" = (/obj/machinery/atmospherics/pipe/manifold/visible,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "M" = (/obj/machinery/atmospherics/pipe/manifold/visible{dir = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"N" = (/obj/structure/table/steel,/obj/item/jtag_programmer,/obj/item/mcu_module/tts,/obj/item/mcu_module/serial_terminal,/obj/item/mcu_module/signaler,/obj/item/debugger,/obj/item/mcu_module/gps,/obj/item/mcu_module/light,/obj/item/mcu_module/env_sensor,/obj/item/mcu_module/vga,/obj/item/mcu_module/vga/truecolor,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "O" = (/obj/structure/table/steel,/obj/item/cell/infinite,/obj/item/cell/standard,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "P" = (/obj/map_ent/info_maptext{ev_text = "Map entities showcase"},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "Q" = (/obj/structure/table/steel,/obj/item/device/multitool,/obj/item/screwdriver,/obj/item/weldingtool,/obj/item/wrench,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "R" = (/obj/structure/table/steel,/obj/item/mcu_chassis/laptop,/obj/item/mcu_chassis/tablet,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "S" = (/obj/map_ent/info_maptext{ev_text = "MCU"},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"T" = (/obj/machinery/light{dir = 1},/obj/item/mcu_chassis/console,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"T" = (/obj/machinery/light{dir = 1},/obj/item/mcu_chassis/stationary/console,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"U" = (/obj/machinery/light{dir = 8},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "V" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/item/modular_computer/console/preset/security,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"W" = (/turf/simulated/floor/tiled,/area/engineering/toilet)
 "X" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/effect/landmark/joinlate,/obj/machinery/alarm{pixel_y = 29},/turf/simulated/floor/tiled,/area/engineering/toilet)
 
 (1,1,1) = {"
@@ -58,19 +58,19 @@ JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcccccccccccccccccJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaaaaaaaaaaaaaaacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaeNRTbbbbbdbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaObbbbVgfbbbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaQbSbbfXfbbbbhacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaibbbjfffbbbbkacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcabmmmmmmmmmmbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJyyyJcabnLLLLLLLLLopacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJzAzccaqbbbbbrlbbbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJzBzaaabsMMMMMMMMMotacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJDCEuvwbxxxxxxxxxxbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJyyyaaaibbbbbbbbbbbkacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJccaFbbbbbbbbbbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaGbbbbbPbbbbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaHbbIbbKbbIbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaebRTWWWWWdWWWacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaOWWWWVgfWWWWWacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaQWSWWfXfWWWWhacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaUWWWjfffWWWWkacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaWmmmmmmmmmmWWacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJyyyJcaWnLLLLLLLLLopacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJzAzccaqWWWWWrlWWWWWacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJzBzaaaWsMMMMMMMMMotacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJDCEuvwWxxxxxxxxxxWWacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJyyyaaaUWWWWWWWWWWWkacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJccaFWWWWWWWWWWWWacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaGWWWWWPWWWWWWacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaHWWIWWKWWIWWWacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaaaaaaaaaaaaaaacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcccccccccccccccccJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ

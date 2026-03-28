@@ -28,6 +28,7 @@
 #define DAM_SHARP (1<<0)
 #define DAM_EDGE  (1<<1)
 #define DAM_LASER (1<<2)
+#define DAM_CLEAN (1<<3) // Clean damage doesn't gib limbs, cause disfigurement, etc. Mostly caused during surgeries.
 
 #define FIRE_DAMAGE_MODIFIER 0.0215 // Higher values result in more external fire damage to the skin. (default 0.0215)
 #define  AIR_DAMAGE_MODIFIER 2.025  // More means less damage from hot air scalding lungs, less = more damage. (default 2.025)
@@ -54,6 +55,11 @@
 #define ORGAN_FLAG_FINGERPRINT    (1<<5) // The organ has a fingerprint.
 #define ORGAN_FLAG_GENDERED_ICON  (1<<6) // The icon state for this organ appends _m/_f.
 #define ORGAN_FLAG_HEALS_OVERKILL (1<<7) // The organ heals from overkill damage.
+#define ORGAN_FLAG_HAS_ARTERY     (1<<8) // The organ can have its artery ruptured.
+#define ORGAN_FLAG_CAN_EMBED      (1<<9) // The organ can have items embedded into it.
+
+#define ORGAN_FLAG_DEFAULT        (ORGAN_FLAG_CAN_BREAK | ORGAN_FLAG_HAS_ARTERY | ORGAN_FLAG_CAN_EMBED)
+#define ORGAN_FLAG_DEFAULT_LIMB   (ORGAN_FLAG_DEFAULT | ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_HAS_TENDON)
 
 // Droplimb types.
 #define DROPLIMB_EDGE 0
@@ -75,16 +81,21 @@
 // Damage above this value must be repaired with surgery.
 #define ROBOLIMB_SELF_REPAIR_CAP 30
 
-//Germs and infections.
-#define GERM_LEVEL_AMBIENT  110 // Maximum germ level you can reach by standing still.
-#define GERM_LEVEL_MOVE_CAP 200 // Maximum germ level you can reach by running around.
-
-#define INFECTION_LEVEL_ONE   100
-#define INFECTION_LEVEL_TWO   500
-#define INFECTION_LEVEL_THREE 1000
-
 //Blood levels. These are percentages based on the species blood_volume far.
 #define BLOOD_VOLUME_SAFE    85
 #define BLOOD_VOLUME_OKAY    75
 #define BLOOD_VOLUME_BAD     60
 #define BLOOD_VOLUME_SURVIVE 40
+
+#define ORGAN_SNOWFLAKE_NO_AMPUTATE  (1<<0)
+#define ORGAN_SNOWFLAKE_NO_BREAK     (1<<1)
+#define ORGAN_SNOWFLAKE_NO_TENDON    (1<<2)
+#define ORGAN_SNOWFLAKE_NO_ARTERY    (1<<3)
+#define ORGAN_SNOWFLAKE_NO_EMBED     (1<<4)
+#define ORGAN_SNOWFLAKE_NO_DISLOCATE (1<<5)
+#define ORGAN_SNOWFLAKE_NO_PAIN      (1<<6)
+#define ORGAN_SNOWFLAKE_NO_BLEEDING  (1<<7)
+#define ORGAN_SNOWFLAKE_ROBOTIC      (1<<8)
+
+#define ORGAN_SNOWFLAKE_SIMPLE (ORGAN_SNOWFLAKE_NO_AMPUTATE | ORGAN_SNOWFLAKE_NO_BREAK | ORGAN_SNOWFLAKE_NO_TENDON | ORGAN_SNOWFLAKE_NO_ARTERY | ORGAN_SNOWFLAKE_NO_EMBED | ORGAN_SNOWFLAKE_NO_DISLOCATE)
+#define ORGAN_SNOWFLAKE_SIMPLEST (ORGAN_SNOWFLAKE_SIMPLE | ORGAN_SNOWFLAKE_NO_PAIN | ORGAN_SNOWFLAKE_NO_BLEEDING)

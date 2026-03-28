@@ -21,8 +21,8 @@
 	icon_closed = "emergency"
 	icon_opened = "emergencyopen"
 
-/obj/structure/closet/emcloset/New()
-	..()
+/obj/structure/closet/emcloset/Initialize()
+	. = ..()
 
 	switch (util_pick_weight(list("small" = 40, "aid" = 25, "tank" = 15, "large" = 10, "both" = 10)))
 		if ("small")
@@ -57,8 +57,8 @@
 			new /obj/item/clothing/head/helmet/space/emergency(src)
 			new /obj/item/clothing/head/helmet/space/emergency(src)
 
-/obj/structure/closet/emcloset/legacy/New()
-	..()
+/obj/structure/closet/emcloset/legacy/Initialize()
+	. = ..()
 	new /obj/item/tank/oxygen(src)
 	new /obj/item/clothing/mask/gas(src)
 
@@ -72,8 +72,8 @@
 	icon_closed = "firecloset"
 	icon_opened = "fireclosetopen"
 
-/obj/structure/closet/firecloset/New()
-	..()
+/obj/structure/closet/firecloset/Initialize()
+	. = ..()
 
 	new /obj/item/clothing/suit/fire/firefighter(src)
 	new /obj/item/clothing/mask/gas(src)
@@ -82,8 +82,8 @@
 	new /obj/item/clothing/head/hardhat/red(src)
 	new /obj/item/backwear/reagent/extinguisher(src)
 
-/obj/structure/closet/firecloset/full/New()
-	..()
+/obj/structure/closet/firecloset/full/Initialize()
+	. = ..()
 
 	new /obj/item/clothing/suit/fire/firefighter(src)
 	new /obj/item/clothing/mask/gas(src)
@@ -110,8 +110,8 @@
 	icon_closed = "toolcloset"
 	icon_opened = "toolclosetopen"
 
-/obj/structure/closet/toolcloset/New()
-	..()
+/obj/structure/closet/toolcloset/Initialize()
+	. = ..()
 	if(prob(40))
 		new /obj/item/clothing/suit/storage/hazardvest(src)
 	if(prob(70))
@@ -154,8 +154,8 @@
 	icon_opened = "toolclosetopen"
 	icon_closed = "radsuitcloset"
 
-/obj/structure/closet/radiation/New()
-	..()
+/obj/structure/closet/radiation/Initialize()
+	. = ..()
 	new /obj/item/clothing/suit/radiation(src)
 	new /obj/item/clothing/head/radiation(src)
 	new /obj/item/clothing/suit/radiation(src)
@@ -173,8 +173,8 @@
 	icon_closed = "bombsuit"
 	icon_opened = "bombsuitopen"
 
-/obj/structure/closet/bombcloset/New()
-	..()
+/obj/structure/closet/bombcloset/Initialize()
+	. = ..()
 	new /obj/item/clothing/suit/bomb_suit( src )
 	new /obj/item/clothing/under/color/black( src )
 	new /obj/item/clothing/shoes/black( src )
@@ -188,8 +188,8 @@
 	icon_closed = "bombsuitsec"
 	icon_opened = "bombsuitsecopen"
 
-/obj/structure/closet/bombclosetsecurity/New()
-	..()
+/obj/structure/closet/bombclosetsecurity/Initialize()
+	. = ..()
 	new /obj/item/clothing/suit/bomb_suit/security( src )
 	new /obj/item/clothing/under/rank/security( src )
 	new /obj/item/clothing/shoes/brown( src )
@@ -212,8 +212,8 @@
 	dremovable = 0
 	intact_closet = FALSE
 
-/obj/structure/closet/hydrant/New()
-	..()
+/obj/structure/closet/hydrant/Initialize()
+	. = ..()
 	new /obj/item/inflatable/door(src)
 	new /obj/item/inflatable/door(src)
 	new /obj/item/clothing/suit/fire/firefighter(src)
@@ -289,7 +289,8 @@
 	icon_closed = "syndicate1"
 	icon_opened = "syndicate1open"
 
-/obj/structure/closet/survival/New()
+/obj/structure/closet/survival/Initialize()
+	. = ..()
 	new /obj/item/material/hatchet(src)
 	if (prob(40))
 		new /obj/item/device/flashlight(src)
@@ -304,7 +305,8 @@
 	icon_closed = "emergencyvox"
 	icon_opened = "emergencyvoxopen"
 
-/obj/structure/closet/voxn2closet/New()
+/obj/structure/closet/voxn2closet/Initialize()
+	. = ..()
 	new /obj/item/tank/emergency/nitrogen(src)
 	new /obj/item/tank/emergency/nitrogen/double(src)
 	new /obj/item/clothing/mask/gas/old(src)

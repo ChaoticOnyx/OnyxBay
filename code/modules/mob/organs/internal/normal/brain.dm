@@ -3,16 +3,22 @@
 /obj/item/organ/internal/cerebrum/brain
 	name = "\improper Brain"
 	desc = "A piece of juicy meat found in a person's head."
+	w_class = ITEM_SIZE_NORMAL
 
+	max_damage = 100
+	relative_size = 70
 	food_organ_type = /obj/item/reagent_containers/food/organ/brain
+	traumatic_damage_multiplier = 2.0
 
 	var/damage_threshold_value
 	var/healed_threshold = 1
 
-/obj/item/organ/internal/cerebrum/brain/New(newLoc, mob/living/carbon/holder)
+/obj/item/organ/internal/cerebrum/brain/Initialize()
 	. = ..()
 
-	max_damage = isnull(holder?.species) ? 100 : species.total_health
+	if(species)
+		max_damage = species.total_health
+
 	min_bruised_damage = max_damage * 0.25
 	min_broken_damage = max_damage * 0.75
 

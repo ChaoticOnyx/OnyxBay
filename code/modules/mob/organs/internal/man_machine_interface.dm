@@ -19,6 +19,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	icon_state = "mmi-empty"
 
 	override_organic_icon = FALSE
+	start_robotized = TRUE
 
 	brainmob_type = /mob/living/carbon/brain
 
@@ -29,10 +30,10 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	drop_sound = SFX_DROP_DEVICE
 	pickup_sound = SFX_PICKUP_DEVICE
 
-/obj/item/organ/internal/cerebrum/mmi/New(newLoc, mob/living/carbon/human/old_shell)
-	robotize()
-	if(istype(old_shell)) _create_brain(old_shell)
-	return ..()
+/obj/item/organ/internal/cerebrum/mmi/Initialize(mapload, mob/living/carbon/human/old_shell)
+	. = ..(mapload)
+	if(istype(old_shell))
+		_create_brain(old_shell)
 
 /obj/item/organ/internal/cerebrum/mmi/proc/_create_brain(mob/living/carbon/human/brain_owner)
 	var/obj/item/organ/internal/cerebrum/brain/new_brain = new(src)

@@ -16,6 +16,7 @@
 	min_age = 18
 	max_age = 100
 	gluttonous = GLUT_TINY
+	remains_type = /obj/item/remains/human
 
 	body_builds = list(
 		new /datum/body_build,
@@ -411,7 +412,7 @@
 	if(H.InStasis() || H.is_ic_dead())
 		return
 	if(H.nutrition < 10)
-		H.take_overall_damage(2,0)
+		H.take_overall_damage(1, 0, 0, "Cellular Collapse", FALSE)
 	else if(H.innate_heal)
 		// Heals normal damage.
 		if(H.getBruteLoss())
@@ -449,10 +450,6 @@
 					to_chat(H, SPAN("notice", "Some of your nymphs split and hurry to reform your [O.name]."))
 					H.remove_nutrition(60)
 					H.update_body()
-				else
-					for(var/datum/wound/W in E.wounds)
-						if(W.wound_damage() == 0 && prob(50))
-							E.wounds -= W
 
 /datum/species/diona/is_eligible_for_antag_spawn(antag_id)
 	return FALSE

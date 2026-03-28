@@ -46,13 +46,14 @@
 
 /datum/reagent/bicaridine/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
+		M.add_chemical_effect(CE_BRUTE_REGEN, 2.5)
 		var/effect_mult = removed / metabolism
-		M.heal_organ_damage(6 * removed, 0)
 		M.add_chemical_effect(CE_PAINKILLER, 10 * effect_mult)
 
 /datum/reagent/bicaridine/overdose(mob/living/carbon/M, alien)
 	..()
 	if(ishuman(M))
+		M.add_chemical_effect(CE_BRUTE_REGEN, 2.5)
 		M.add_chemical_effect(CE_BLOCKAGE, (15 + volume - overdose)/100)
 		var/mob/living/carbon/human/H = M
 		for(var/obj/item/organ/external/E in H.organs)
@@ -74,7 +75,7 @@
 
 /datum/reagent/kelotane/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		M.heal_organ_damage(0, 6 * removed)
+		M.add_chemical_effect(CE_BURN_REGEN, 2.5)
 
 /datum/reagent/dermaline
 	name = "Dermaline"
@@ -92,7 +93,7 @@
 
 /datum/reagent/dermaline/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		M.heal_organ_damage(0, 12 * removed)
+		M.add_chemical_effect(CE_BURN_REGEN, 5.0)
 
 /datum/reagent/dylovene
 	name = "Dylovene"
@@ -204,7 +205,8 @@
 
 /datum/reagent/tricordrazine/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		M.heal_organ_damage(3 * removed, 3 * removed)
+		M.add_chemical_effect(CE_BRUTE_REGEN, 1.0)
+		M.add_chemical_effect(CE_BURN_REGEN, 1.0)
 
 /datum/reagent/cryoxadone
 	name = "Cryoxadone"
@@ -241,11 +243,9 @@
 	for(var/obj/item/organ/external/E in H.organs)
 		if(BP_IS_ROBOTIC(E))
 			continue
-		if(E.status & ORGAN_BLEEDING && prob(50))
-			E.status &= ~ORGAN_BLEEDING
-			for(var/datum/wound/W in E.wounds)
-				W.clamped = 1
-			H.update_surgery()
+		if((E.status & ORGAN_BLEEDING))
+			E.scabbed += 5 * removed
+			E.update_damages()
 
 	for(var/obj/item/organ/internal/I in H.internal_organs)
 		if(BP_IS_ROBOTIC(I))
@@ -254,7 +254,7 @@
 			continue
 		I.damage = max(I.damage - (removed * H.stasis_value), 0)
 
-	H.heal_organ_damage((5 * removed * H.stasis_value), (7.5 * removed * H.stasis_value))
+	H.heal_overall_damage((5 * removed * H.stasis_value), (7.5 * removed * H.stasis_value))
 
 /datum/reagent/clonexadone
 	name = "Clonexadone"
@@ -291,11 +291,9 @@
 	for(var/obj/item/organ/external/E in H.organs)
 		if(BP_IS_ROBOTIC(E))
 			continue
-		if(E.status & ORGAN_BLEEDING && prob(80))
-			E.status &= ~ORGAN_BLEEDING
-			for(var/datum/wound/W in E.wounds)
-				W.clamped = 1
-			H.update_surgery()
+		if(E.status & ORGAN_BLEEDING)
+			E.scabbed += 10 * removed
+			E.update_damages()
 		if(E.status & ORGAN_ARTERY_CUT && prob(8 * removed * H.stasis_value))
 			E.status &= ~ORGAN_ARTERY_CUT
 
@@ -306,7 +304,7 @@
 			continue
 		I.damage = max(I.damage - (2 * removed * H.stasis_value), 0)
 
-	H.heal_organ_damage((10 * removed * H.stasis_value), (12.5 * removed * H.stasis_value))
+	H.heal_overall_damage((10 * removed * H.stasis_value), (12.5 * removed * H.stasis_value))
 
 /* Other medicine */
 
@@ -632,18 +630,14 @@
 	touch_met = 5
 
 /datum/reagent/sterilizine/affect_touch(mob/living/carbon/M, alien, removed)
-	if(M.germ_level < INFECTION_LEVEL_TWO) // rest and antibiotics is required to cure serious infections
-		M.germ_level -= min(removed*20, M.germ_level)
 	for(var/obj/item/I in M.contents)
 		I.was_bloodied = null
 	M.was_bloodied = null
 
 /datum/reagent/sterilizine/touch_obj(obj/O)
-	O.germ_level -= min(volume*20, O.germ_level)
 	O.was_bloodied = null
 
 /datum/reagent/sterilizine/touch_turf(turf/T)
-	T.germ_level -= min(volume*20, T.germ_level)
 	for(var/obj/item/I in T.contents)
 		I.was_bloodied = null
 	for(var/obj/effect/decal/cleanable/blood/B in T)

@@ -202,21 +202,3 @@
 	materials = list(MATERIAL_STEEL = 800, MATERIAL_GLASS = 100)
 	build_path = /obj/item/mcu_module/env_sensor
 	sort_string = "VABCA"
-
-/datum/design/item/mcu/vga_monochrome
-	name = "Monochrome Display module"
-	id = "vga_monochrome"
-	build_type = PROTOLATHE
-	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 4, TECH_BIO = 2)
-	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 1000)
-	build_path = /obj/item/mcu_module/vga
-	sort_string = "VABCA"
-
-/datum/design/item/mcu/vga_truecolor
-	name = "TrueColor Display module"
-	id = "vga_truecolor"
-	build_type = PROTOLATHE
-	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 6, TECH_BIO = 4)
-	materials = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 1500)
-	build_path = /obj/item/mcu_module/vga/truecolor
-	sort_string = "VABCA"

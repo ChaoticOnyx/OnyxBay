@@ -20,7 +20,7 @@
 	encased = "ribcage"
 	artery_name = "aorta"
 	cavity_name = "thoracic"
-	limb_flags = ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
+	limb_flags = ORGAN_FLAG_DEFAULT | ORGAN_FLAG_GENDERED_ICON
 	var/butchering_capacity = 1
 	internal_organs_size = 12 // Liver = 2, stomach = 2, heart = 2, lungs = 6
 	max_module_size = 4
@@ -30,13 +30,45 @@
 		// Give them a new cell.
 		var/obj/item/organ/internal/cell/C = owner.internal_organs_by_name[BP_CELL]
 		if(!istype(C))
-			owner.internal_organs_by_name[BP_CELL] = new /obj/item/organ/internal/cell(owner,1)
+			owner.internal_organs_by_name[BP_CELL] = new /obj/item/organ/internal/cell(owner)
 
-/obj/item/organ/external/get_scan_results()
+/obj/item/organ/external/chest/get_scan_results()
 	. = ..()
 	var/obj/item/organ/internal/lungs/L = locate() in src
-	if( L && L.is_bruised())
+	if(L?.is_bruised())
 		. += "Lung ruptured"
+
+/obj/item/organ/external/chest/try_to_dismember(brute, burn, damage_flags)
+	if(burn <= 5.0) // No cremating in slightly overheated saunas.
+		return FALSE
+
+	if(burn >= max_damage)
+		var/mob/living/carbon/C = owner
+		removed(C)
+		qdel_self()
+		C?.dust("blank", supernatural = FALSE)
+		return TRUE
+
+	if(!owner || !owner.is_ooc_dead()) // Let's make changelings' life a little bit less miserable.
+		return FALSE
+
+	var/eligible_for_cremation = TRUE
+	if(length(children))
+		for(var/obj/item/organ/external/E in children)
+			if(E.is_stump())
+				continue
+			eligible_for_cremation = FALSE
+			break
+
+	// Getting cremated once when we're just a chest with nothing attached..
+	if(eligible_for_cremation && (burn_dam >= max_damage * 2))
+		var/mob/living/carbon/C = owner
+		removed(C)
+		qdel_self()
+		C.dust("blank", supernatural = FALSE)
+		return TRUE
+
+	return FALSE
 
 /obj/item/organ/external/groin
 	name = "lower body"
@@ -52,7 +84,7 @@
 	dislocated = -1
 	artery_name = "iliac artery"
 	cavity_name = "abdominal"
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_CAN_BREAK
+	limb_flags = ORGAN_FLAG_DEFAULT | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_CAN_AMPUTATE
 	internal_organs_size = 11 // Kidneys = 2, bladder = 2, intestines = 6, appendix = 1
 
 /obj/item/organ/external/arm
@@ -70,7 +102,7 @@
 	tendon_name = "palmaris longus tendon"
 	artery_name = "basilic vein"
 	arterial_bleed_severity = 0.65
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
+	limb_flags = ORGAN_FLAG_DEFAULT_LIMB | ORGAN_FLAG_CAN_GRASP
 
 /obj/item/organ/external/arm/right
 	organ_tag = BP_R_ARM
@@ -97,7 +129,7 @@
 	tendon_name = "cruciate ligament"
 	artery_name = "femoral artery"
 	arterial_bleed_severity = 0.75
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
+	limb_flags = ORGAN_FLAG_DEFAULT_LIMB | ORGAN_FLAG_CAN_STAND
 
 /obj/item/organ/external/leg/right
 	organ_tag = BP_R_LEG
@@ -123,7 +155,7 @@
 	amputation_point = "left ankle"
 	tendon_name = "Achilles tendon"
 	arterial_bleed_severity = 0.45
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
+	limb_flags = ORGAN_FLAG_DEFAULT_LIMB | ORGAN_FLAG_CAN_STAND
 
 /obj/item/organ/external/foot/right
 	organ_tag = BP_R_FOOT
@@ -150,7 +182,7 @@
 	amputation_point = "left wrist"
 	tendon_name = "carpal ligament"
 	arterial_bleed_severity = 0.35
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP | ORGAN_FLAG_FINGERPRINT | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
+	limb_flags = ORGAN_FLAG_DEFAULT_LIMB | ORGAN_FLAG_CAN_GRASP | ORGAN_FLAG_FINGERPRINT
 
 /obj/item/organ/external/hand/right
 	organ_tag = BP_R_HAND

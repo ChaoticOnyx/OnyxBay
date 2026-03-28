@@ -226,7 +226,7 @@
 		/obj/item/stack/material/wood = SPECIES_GOLEM_WOOD,
 		/obj/item/stack/telecrystal/bluespace_crystal = SPECIES_GOLEM_BLUESPACE,
 		/obj/item/device/soulstone = SPECIES_GOLEM_CULT,
-		/obj/item/stack/medical/bruise_pack = SPECIES_GOLEM_CLOTH,
+		/obj/item/stack/medical/bandage = SPECIES_GOLEM_CLOTH,
 		/obj/item/stack/material/cloth = SPECIES_GOLEM_CLOTH,
 		/obj/item/stack/material/plastic = SPECIES_GOLEM_PLASTIC,
 		/obj/item/stack/material/cardboard = SPECIES_GOLEM_CARDBOARD,
