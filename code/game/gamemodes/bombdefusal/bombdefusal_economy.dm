@@ -200,7 +200,6 @@
 		var/obj/item/bombdefusal_medkit/mk = new_item
 		mk.charges = cfg_medkit_charges
 		mk.cooldown_time = cfg_medkit_cooldown
-		mk.heal_amount = cfg_medkit_heal
 	else if(istype(new_item, /obj/item/bombdefusal_injector))
 		var/obj/item/bombdefusal_injector/inj = new_item
 		inj.heal_amount = cfg_injector_heal
