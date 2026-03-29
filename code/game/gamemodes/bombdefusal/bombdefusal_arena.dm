@@ -11,11 +11,14 @@
 	var/name = "Unknown"
 	var/map_path = ""
 	var/description = ""
+	var/t_extra_freeze = 0  // Extra freeze time (in ticks) for T side after round start
+	var/ct_extra_freeze = 0 // Extra freeze time (in ticks) for CT side after round start
 
 /datum/bombdefusal_map/de_pervayaoperacionnaya
 	name = "de_pervayaoperacionnaya"
 	map_path = "maps/csgo/de_pervayaoperacionnaya.dmm"
 	description = "NSS Exodus but cool."
+	t_extra_freeze = 70 // 7 seconds extra freeze for T
 
 /datum/bombdefusal_map/de_dust2
 	name = "de_dust2"

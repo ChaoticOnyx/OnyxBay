@@ -56,7 +56,7 @@
 	shop_catalog += new /datum/bombdefusal_shop_item("Ballistic Helmet",    BOMBDEFUSAL_CAT_GEAR,    350,  /obj/item/clothing/head/helmet/bombdefusal_t,       side = BOMBDEFUSAL_TEAM_T)
 	shop_catalog += new /datum/bombdefusal_shop_item("Tactical Vest",       BOMBDEFUSAL_CAT_GEAR,    650,  /obj/item/clothing/suit/armor/vest/bombdefusal_ct, side = BOMBDEFUSAL_TEAM_CT)
 	shop_catalog += new /datum/bombdefusal_shop_item("SWAT Helmet",         BOMBDEFUSAL_CAT_GEAR,    350,  /obj/item/clothing/head/helmet/bombdefusal_ct,      side = BOMBDEFUSAL_TEAM_CT)
-	shop_catalog += new /datum/bombdefusal_shop_item("Defuse Kit",          BOMBDEFUSAL_CAT_GEAR,    400,  /obj/item/wirecutters)
+	shop_catalog += new /datum/bombdefusal_shop_item("Defuse Kit",          BOMBDEFUSAL_CAT_GEAR,    400,  /obj/item/wirecutters, side = BOMBDEFUSAL_TEAM_CT)
 	shop_catalog += new /datum/bombdefusal_shop_item("Frag Grenade",        BOMBDEFUSAL_CAT_GEAR,    300,  /obj/item/grenade/frag)
 	shop_catalog += new /datum/bombdefusal_shop_item("Extra Frag Grenade",  BOMBDEFUSAL_CAT_GEAR,    250,  /obj/item/grenade/frag, role = BOMBDEFUSAL_ROLE_SUPPORT)
 	shop_catalog += new /datum/bombdefusal_shop_item("Flashbang",           BOMBDEFUSAL_CAT_GEAR,    200,  /obj/item/grenade/flashbang)

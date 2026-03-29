@@ -6,43 +6,45 @@
 
 // ===== COSMETIC VARIANTS (no armor) =====
 
-/obj/item/clothing/mask/gas/swat/cosmetic
+/obj/item/clothing/mask/gas/swat/imba
 	name = "\improper SWAT mask"
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
-/obj/item/clothing/gloves/swat/cosmetic
+/obj/item/clothing/gloves/swat/imba
 	name = "\improper SWAT gloves"
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 150, bullet = 150, laser = 150, energy = 150, bomb = 150, bio = 0)
+	body_parts_covered = HANDS | ARMS
 
-/obj/item/clothing/shoes/combat/cosmetic
-	name = "combat boots"
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+/obj/item/clothing/shoes/combat/imba
+	name = "\improper SWAT boots"
+	armor = list(melee = 150, bullet = 150, laser = 150, energy = 150, bomb = 150, bio = 0)
+	body_parts_covered = FEET | LEGS
 
 // Undersuit cosmetics
-/obj/item/clothing/under/syndicate/cosmetic
+/obj/item/clothing/under/syndicate/imba
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
-/obj/item/clothing/under/syndicate/combat/cosmetic
+/obj/item/clothing/under/syndicate/combat/imba
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
-/obj/item/clothing/under/syndicate/tacticool/cosmetic
+/obj/item/clothing/under/syndicate/tacticool/imba
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
-/obj/item/clothing/under/tactical/cosmetic
+/obj/item/clothing/under/tactical/imba
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
-/obj/item/clothing/under/rank/security/cosmetic
+/obj/item/clothing/under/rank/security/imba
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
-/obj/item/clothing/under/ert/cosmetic
+/obj/item/clothing/under/ert/imba
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 // Suit cosmetics
-/obj/item/clothing/suit/storage/vest/police/cosmetic
+/obj/item/clothing/suit/storage/vest/police/imba
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 // Mask cosmetics
-/obj/item/clothing/mask/gas/syndicate/cosmetic
+/obj/item/clothing/mask/gas/syndicate/imba
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 // ===== ARENA ARMOR (50 across all types) =====
@@ -87,8 +89,8 @@
 
 /decl/hierarchy/outfit/bombdefusal/terrorist
 	name = "Bomb Defusal - Terrorist (Rifleman)"
-	shoes = /obj/item/clothing/shoes/combat/cosmetic
-	gloves = /obj/item/clothing/gloves/swat/cosmetic
+	shoes = /obj/item/clothing/shoes/combat/imba
+	gloves = /obj/item/clothing/gloves/swat/imba
 	back = /obj/item/storage/backpack/satchel
 	l_ear = /obj/item/device/radio/headset/bombdefusal/bombdefusal_t
 	belt = /obj/item/storage/belt/security/tactical
@@ -112,8 +114,8 @@
 
 /decl/hierarchy/outfit/bombdefusal/counter_terrorist
 	name = "Bomb Defusal - Counter-Terrorist (Rifleman)"
-	shoes = /obj/item/clothing/shoes/combat/cosmetic
-	gloves = /obj/item/clothing/gloves/swat/cosmetic
+	shoes = /obj/item/clothing/shoes/combat/imba
+	gloves = /obj/item/clothing/gloves/swat/imba
 	back = /obj/item/storage/backpack/satchel
 	l_ear = /obj/item/device/radio/headset/bombdefusal/bombdefusal_ct
 	belt = /obj/item/storage/belt/security/tactical
@@ -139,10 +141,10 @@
 /proc/randomize_t_look(mob/living/carbon/human/H)
 	// Terrorists: rugged, mixed gear, guerrilla style
 	var/list/t_uniforms = list(
-		/obj/item/clothing/under/syndicate/cosmetic,
-		/obj/item/clothing/under/syndicate/combat/cosmetic,
-		/obj/item/clothing/under/syndicate/tacticool/cosmetic,
-		/obj/item/clothing/under/tactical/cosmetic
+		/obj/item/clothing/under/syndicate/imba,
+		/obj/item/clothing/under/syndicate/combat/imba,
+		/obj/item/clothing/under/syndicate/tacticool/imba,
+		/obj/item/clothing/under/tactical/imba
 	)
 	var/list/t_suits = list(
 		null,
@@ -156,7 +158,7 @@
 		null,
 		/obj/item/clothing/mask/balaclava,
 		/obj/item/clothing/mask/balaclava/tactical,
-		/obj/item/clothing/mask/gas/syndicate/cosmetic,
+		/obj/item/clothing/mask/gas/syndicate/imba,
 		/obj/item/clothing/mask/bandana,
 		/obj/item/clothing/mask/bandana/red,
 		/obj/item/clothing/mask/bandana/skull,
@@ -200,22 +202,22 @@
 /proc/randomize_ct_look(mob/living/carbon/human/H)
 	// Counter-Terrorists: professional, uniformed, tactical
 	var/list/ct_uniforms = list(
-		/obj/item/clothing/under/rank/security/cosmetic,
-		/obj/item/clothing/under/ert/cosmetic,
-		/obj/item/clothing/under/tactical/cosmetic,
-		/obj/item/clothing/under/syndicate/tacticool/cosmetic
+		/obj/item/clothing/under/rank/security/imba,
+		/obj/item/clothing/under/ert/imba,
+		/obj/item/clothing/under/tactical/imba,
+		/obj/item/clothing/under/syndicate/tacticool/imba
 	)
 	var/list/ct_suits = list(
 		null,
 		null,
-		/obj/item/clothing/suit/storage/vest/police/cosmetic,
+		/obj/item/clothing/suit/storage/vest/police/imba,
 		/obj/item/clothing/suit/storage/toggle/bomber
 	)
 	var/list/ct_masks = list(
 		null,
 		null,
 		null,
-		/obj/item/clothing/mask/gas/swat/cosmetic,
+		/obj/item/clothing/mask/gas/swat/imba,
 		/obj/item/clothing/mask/gas/tactical,
 		/obj/item/clothing/mask/gas/police
 	)
