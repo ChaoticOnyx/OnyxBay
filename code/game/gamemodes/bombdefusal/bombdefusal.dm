@@ -147,42 +147,79 @@
 /datum/game_mode/bombdefusal/proc/close_lobby()
 	lobby_active = FALSE
 
-	// Auto-assign unteamed players to incomplete teams
+	// Collect in-game players who aren't on a team yet (skip ghosts/observers)
 	var/list/unassigned = list()
 	for(var/datum/mind/M in SSticker.minds)
 		if(!M.current || !M.current.client)
 			continue
+		if(!isliving(M.current))
+			continue
 		if(!get_player_data(M))
 			unassigned += M
 
+	// Fill existing incomplete teams first
 	for(var/datum/mind/M in unassigned)
-		// Find a team that isn't full
 		for(var/datum/bombdefusal_team/T in teams)
 			if(!T.is_full(cfg_team_size))
 				var/datum/bombdefusal_player_data/pd = new(M, T)
 				T.add_member(pd)
 				all_players += pd
+				unassigned -= M
 				break
 
-	// Pair teams and create matches
-	var/list/available_teams = teams.Copy()
-	while(available_teams.len >= 2)
-		var/datum/bombdefusal_team/team_a = pick_n_take(available_teams)
-		var/datum/bombdefusal_team/team_b = pick_n_take(available_teams)
+	// Create new teams for remaining unassigned players
+	var/team_num = teams.len + 1
+	while(unassigned.len)
+		var/datum/mind/captain_mind = unassigned[1]
+		var/datum/bombdefusal_team/new_team = new("Team [team_num]", captain_mind)
+		var/datum/bombdefusal_player_data/cpd = new(captain_mind, new_team)
+		new_team.add_member(cpd)
+		all_players += cpd
+		unassigned -= captain_mind
+		// Fill this team up to max
+		while(unassigned.len && !new_team.is_full(cfg_team_size))
+			var/datum/mind/M = unassigned[1]
+			var/datum/bombdefusal_player_data/pd = new(M, new_team)
+			new_team.add_member(pd)
+			all_players += pd
+			unassigned -= M
+		teams += new_team
+		team_num++
 
-		var/datum/bombdefusal_match/match = new(src, team_a, team_b)
+	// Pair teams into matches (max 1 player difference allowed)
+	// Sort teams by size so we can pair similar-sized teams together
+	var/list/available_teams = teams.Copy()
+	var/list/paired = list() // list of list(team_a, team_b)
+	while(available_teams.len >= 2)
+		var/datum/bombdefusal_team/ta = pick_n_take(available_teams)
+		// Find the best match: closest team size (max 1 diff)
+		var/datum/bombdefusal_team/best = null
+		var/best_diff = INFINITY
+		for(var/datum/bombdefusal_team/candidate in available_teams)
+			var/diff = abs(ta.members.len - candidate.members.len)
+			if(diff <= 1 && diff < best_diff)
+				best = candidate
+				best_diff = diff
+		if(best)
+			available_teams -= best
+			paired += list(list(ta, best))
+		else
+			available_teams += ta // put back, can't pair this one
+			break
+
+	for(var/list/pair in paired)
+		var/datum/bombdefusal_team/ta = pair[1]
+		var/datum/bombdefusal_team/tb = pair[2]
+		var/datum/bombdefusal_match/match = new(src, ta, tb)
 		matches += match
-		// Anchor all match players during map load to prevent movement
-		for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
+		for(var/datum/bombdefusal_player_data/pd in ta.members + tb.members)
 			if(pd.owner?.current)
 				pd.owner.current.anchored = TRUE
-
 		match.initialize_arena()
-		// Give atoms time to finish initializing before starting the match
 		spawn(5)
 			match.start_match()
 
-	// Unpaired teams / solo players become observers
+	// Unpaired teams become observers
 	for(var/datum/bombdefusal_team/T in available_teams)
 		for(var/datum/bombdefusal_player_data/pd in T.members)
 			if(pd.owner && pd.owner.current)

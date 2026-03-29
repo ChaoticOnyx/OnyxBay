@@ -161,7 +161,7 @@
 /datum/game_mode/bombdefusal/proc/handle_buy_topic(mob/user, list/href_list)
 	var/datum/bombdefusal_player_data/pd = get_player_data_by_mob(user)
 	if(!pd || !pd.match)
-		to_chat(user, "<span class='warning'>DEBUG: Buy failed - player data not found. Mind: [user.mind ? "yes" : "no"], ckey: [user.ckey]</span>")
+		log_debug("Bombdefusal buy failed - player data not found. Mind: [user.mind ? "yes" : "no"], ckey: [user.ckey]")
 		return
 
 	var/datum/bombdefusal_match/match = pd.match
@@ -172,7 +172,7 @@
 
 	var/datum/bombdefusal_shop_item/item = locate(href_list["item"])
 	if(!item)
-		to_chat(user, "<span class='warning'>DEBUG: Item ref not found: [href_list["item"]]</span>")
+		log_debug("Bombdefusal buy: Item ref not found: [href_list["item"]]")
 		return
 
 	// Validate

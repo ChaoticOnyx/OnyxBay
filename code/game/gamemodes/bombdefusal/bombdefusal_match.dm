@@ -185,14 +185,17 @@
 	b_score = 0
 	start_round()
 
-// Save window frame positions for round reset (doors are repaired in place)
+// Save window frame and barricade positions for round reset (doors are repaired in place)
 /datum/bombdefusal_match/proc/save_arena_structures()
 	saved_structures = list()
 	for(var/turf/T in block(locate(1, 1, arena_z_level), locate(world.maxx, world.maxy, arena_z_level)))
 		for(var/obj/structure/window_frame/WF in T)
-			saved_structures += list(list("type" = WF.type, "x" = T.x, "y" = T.y, "dir" = WF.dir))
-	log_game("Bombdefusal save_arena_structures: z=[arena_z_level], saved [saved_structures.len] window frames")
-	announce_to_match("<span class='debug'>DEBUG: Saved [saved_structures.len] window frames for round reset (z=[arena_z_level])</span>", "#FFAA00")
+			saved_structures += list(list("kind" = "window_frame", "type" = WF.type, "x" = T.x, "y" = T.y, "dir" = WF.dir))
+		for(var/obj/structure/barricade/material/B in T)
+			var/mat_name = B.material ? B.material.name : MATERIAL_WOOD
+			saved_structures += list(list("kind" = "barricade", "type" = B.type, "x" = T.x, "y" = T.y, "dir" = B.dir, "material" = mat_name))
+	log_game("Bombdefusal save_arena_structures: z=[arena_z_level], saved [saved_structures.len] structures")
+	log_debug("Bombdefusal: Saved [saved_structures.len] structures for round reset (z=[arena_z_level])")
 
 /datum/bombdefusal_match/proc/cleanup_arena()
 	for(var/turf/T in block(locate(1, 1, arena_z_level), locate(world.maxx, world.maxy, arena_z_level)))
@@ -211,43 +214,59 @@
 				continue
 			qdel(I)
 
-	// Replace damaged/missing window frames from snapshot
+	// Replace damaged/missing structures from snapshot
 	var/recreated = 0
 	var/skipped = 0
 	for(var/list/data in saved_structures)
 		var/turf/T = locate(data["x"], data["y"], arena_z_level)
 		if(!T)
 			continue
-		// Check if the window frame still exists and is undamaged
-		var/needs_replace = TRUE
-		for(var/obj/structure/window_frame/WF in T)
-			if(WF.frame_state == 1 /*FRAME_DESTROYED*/)
-				continue // Destroyed frame, needs replacing
-			if(WF.health < WF.max_health)
-				continue // Damaged frame, needs replacing
-			// Check if panes that should exist are missing
-			if(WF.preset_outer_pane && !WF.outer_pane)
-				continue // Missing outer pane
-			if(WF.preset_inner_pane && !WF.inner_pane)
-				continue // Missing inner pane
-			// Frame is intact
-			needs_replace = FALSE
-			break
-		if(!needs_replace)
-			skipped++
-			continue
-		// Delete any damaged remnants on the tile
-		for(var/obj/structure/window_frame/WF in T)
-			qdel(WF)
-		// Recreate fresh from snapshot
-		var/obj_type = data["type"]
-		var/obj/structure/window_frame/new_frame = new obj_type(T)
-		if(new_frame)
-			new_frame.dir = data["dir"]
-			recreated++
-		else
-			log_game("Bombdefusal cleanup: FAILED to recreate [obj_type] at [data["x"]],[data["y"]]")
-	announce_to_match("<span class='debug'>DEBUG: Window frames - [recreated] replaced, [skipped] intact (of [saved_structures.len] saved)</span>", "#FFAA00")
+
+		switch(data["kind"])
+			if("window_frame")
+				var/needs_replace = TRUE
+				for(var/obj/structure/window_frame/WF in T)
+					if(WF.frame_state == 1 /*FRAME_DESTROYED*/)
+						continue
+					if(WF.health < WF.max_health)
+						continue
+					if(WF.preset_outer_pane && !WF.outer_pane)
+						continue
+					if(WF.preset_inner_pane && !WF.inner_pane)
+						continue
+					needs_replace = FALSE
+					break
+				if(!needs_replace)
+					skipped++
+					continue
+				for(var/obj/structure/window_frame/WF in T)
+					qdel(WF)
+				var/obj_type = data["type"]
+				var/obj/structure/window_frame/new_frame = new obj_type(T)
+				if(new_frame)
+					new_frame.dir = data["dir"]
+					recreated++
+
+			if("barricade")
+				// Check if barricade still exists and is undamaged
+				var/needs_replace = TRUE
+				for(var/obj/structure/barricade/material/B in T)
+					if(B.damage <= 0)
+						needs_replace = FALSE
+						break
+				if(!needs_replace)
+					skipped++
+					continue
+				for(var/obj/structure/barricade/material/B in T)
+					qdel(B)
+				var/barricade_type = data["type"]
+				var/barricade_mat = data["material"]
+				var/obj/structure/barricade/material/new_barricade = new barricade_type(T, barricade_mat)
+				if(new_barricade)
+					new_barricade.dir = data["dir"]
+					recreated++
+
+	log_debug("Bombdefusal: Structures - [recreated] replaced, [skipped] intact (of [saved_structures.len] saved)")
 
 	// Repair doors in place (don't delete/recreate - avoids wide door crash)
 	for(var/obj/machinery/door/D in SSmachines.machinery)
