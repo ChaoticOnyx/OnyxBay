@@ -77,6 +77,14 @@
 		to_chat(user, SPAN("warning", "This can only be used on arena participants!"))
 		return
 
+	// Only medics can use medkits
+	var/datum/game_mode/bombdefusal/mode = SSticker.mode
+	if(istype(mode))
+		var/datum/bombdefusal_player_data/pd = mode.get_player_data_by_mob(user)
+		if(!pd || pd.role != BOMBDEFUSAL_ROLE_MEDIC)
+			to_chat(user, "<span class='warning'>Only medics can use the medkit!</span>")
+			return
+
 	if(target == user)
 		to_chat(user, "<span class='warning'>You can't use this on yourself! Use an arena injector instead.</span>")
 		return
@@ -165,8 +173,8 @@
 /obj/structure/energybarrier/arena
 	name = "tactical energy barrier"
 	desc = "A deployable energy barrier providing temporary cover. Won't last long under sustained fire."
-	health = 120
-	maxhealth = 120
+	health = 240
+	maxhealth = 240
 
 /obj/structure/energybarrier/arena/explode()
 	visible_message(SPAN("warning", "\The [src] fizzles out!"))

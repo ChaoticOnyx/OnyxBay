@@ -78,7 +78,7 @@
 	// Medical - Medic only
 	shop_catalog += new /datum/bombdefusal_shop_item("Arena Medkit",        BOMBDEFUSAL_CAT_MEDICAL, 1000, /obj/item/bombdefusal_medkit, role = BOMBDEFUSAL_ROLE_MEDIC)
 	shop_catalog += new /datum/bombdefusal_shop_item("Combat Defib",        BOMBDEFUSAL_CAT_MEDICAL, 2000, /obj/item/defibrillator/compact/combat/loaded, role = BOMBDEFUSAL_ROLE_MEDIC)
-	shop_catalog += new /datum/bombdefusal_shop_item("Arena Stimulant",     BOMBDEFUSAL_CAT_MEDICAL, 400,  /obj/item/bombdefusal_injector, role = BOMBDEFUSAL_ROLE_MEDIC)
+	shop_catalog += new /datum/bombdefusal_shop_item("Arena Stimulant",     BOMBDEFUSAL_CAT_MEDICAL, 400,  /obj/item/bombdefusal_injector)
 
 /datum/game_mode/bombdefusal/proc/show_buy_menu(mob/user, datum/bombdefusal_player_data/pd, force_open = FALSE)
 	if(!pd || !pd.match)

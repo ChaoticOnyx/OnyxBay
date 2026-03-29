@@ -24,6 +24,7 @@
 	name = "terrorist encryption key"
 	icon_state = "cypherkey"
 	channels = list("Syndicate" = 1)
+	syndie = 1
 
 /obj/item/device/encryptionkey/bombdefusal_ct
 	name = "counter-terrorist encryption key"
