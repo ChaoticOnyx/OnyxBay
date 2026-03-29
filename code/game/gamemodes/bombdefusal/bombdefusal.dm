@@ -72,6 +72,10 @@
 	SSstoryteller.can_fire = FALSE
 	SSevents.can_fire = FALSE
 
+	// Register team radio channels so headsets can connect
+	GLOB.radio_channels["Terrorists"] = BOMBDEFUSAL_FREQ_T
+	GLOB.radio_channels["Counter-Terrorists"] = BOMBDEFUSAL_FREQ_CT
+
 	lobby_active = TRUE
 	lobby_started = FALSE
 	// Lobby timer starts when first team is created

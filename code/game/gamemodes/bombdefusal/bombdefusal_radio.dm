@@ -19,17 +19,17 @@
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/bombdefusal_ct
 
-// Encryption keys
+// Encryption keys - use custom team channels (registered in post_setup)
+// Players use :h (department) to talk on team radio
 /obj/item/device/encryptionkey/bombdefusal_t
 	name = "terrorist encryption key"
 	icon_state = "cypherkey"
-	channels = list("Syndicate" = 1)
-	syndie = 1
+	channels = list("Terrorists" = 1)
 
 /obj/item/device/encryptionkey/bombdefusal_ct
 	name = "counter-terrorist encryption key"
 	icon_state = "cypherkey"
-	channels = list("Security" = 1)
+	channels = list("Counter-Terrorists" = 1)
 
 // Override talk_into to broadcast directly without telecomms.
 // Uses Broadcast_Message with data=null which delivers to ALL registered radios
