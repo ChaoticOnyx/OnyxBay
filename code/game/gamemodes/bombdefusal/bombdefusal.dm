@@ -75,6 +75,11 @@
 	// Register team radio channels so headsets can connect
 	GLOB.radio_channels["Terrorists"] = BOMBDEFUSAL_FREQ_T
 	GLOB.radio_channels["Counter-Terrorists"] = BOMBDEFUSAL_FREQ_CT
+	// Map :h (department) shortcut to show in headset description
+	department_radio_keys[":t"] = "Terrorists"
+	department_radio_keys[":T"] = "Terrorists"
+	department_radio_keys[":s"] = "Counter-Terrorists"
+	department_radio_keys[":S"] = "Counter-Terrorists"
 
 	lobby_active = TRUE
 	lobby_started = FALSE

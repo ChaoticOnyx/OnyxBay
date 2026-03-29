@@ -53,7 +53,7 @@
 	desc = "A sturdy ballistic vest. Worn by terrorists."
 	icon_state = "mercwebvest"
 	item_state = "armor"
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
+	armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
 
 // CT vest - security tactical vest
 /obj/item/clothing/suit/armor/vest/bombdefusal_ct
@@ -61,14 +61,14 @@
 	desc = "A tactical armored vest. Standard counter-terrorist issue."
 	icon_state = "ertarmor_sec"
 	item_state = "armor"
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
+	armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
 
 // T helmet - mercenary combat helmet
 /obj/item/clothing/head/helmet/bombdefusal_t
 	name = "combat helmet"
 	desc = "A battered combat helmet favored by mercenaries."
 	icon_state = "helmet_merc"
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
+	armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
 	body_parts_covered = HEAD
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -78,7 +78,7 @@
 	name = "tactical helmet"
 	desc = "A reinforced tactical helmet worn by security response teams."
 	icon_state = "erthelmet_sec"
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 0)
+	armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 80, bio = 0)
 	body_parts_covered = HEAD|EYES
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE

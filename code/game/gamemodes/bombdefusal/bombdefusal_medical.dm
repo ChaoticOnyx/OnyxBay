@@ -135,7 +135,7 @@
 	icon = 'icons/obj/syringe.dmi'
 	icon_state = "injector_green"
 	w_class = ITEM_SIZE_TINY
-	var/heal_amount = 25
+	var/heal_amount = 50
 
 /obj/item/bombdefusal_injector/attack(mob/living/carbon/human/target, mob/living/carbon/human/user)
 	if(!istype(target, /mob/living/carbon/human))
