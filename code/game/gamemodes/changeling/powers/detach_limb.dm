@@ -30,7 +30,7 @@
 
 	var/mob/living/carbon/human/H = my_mob
 
-	var/list/detachable_limbs = H.organs.Copy()
+	var/list/detachable_limbs = H.external_organs.Copy()
 	for(var/obj/item/organ/external/E in detachable_limbs)
 		if(E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.is_stump())
 			detachable_limbs -= E
@@ -40,7 +40,7 @@
 	if(!organ_to_remove)
 		detaching_now = FALSE
 		return
-	if(!(organ_to_remove in H.organs))
+	if(!(organ_to_remove in H.external_organs))
 		detaching_now = FALSE
 		to_chat(H, SPAN("changeling", "We don't have this limb!"))
 		return

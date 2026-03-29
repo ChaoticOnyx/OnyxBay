@@ -184,7 +184,7 @@ var/global/list/damage_icon_parts = list()
 	if(!species.damage_overlays || !body_build?.dam_mask)
 		return
 
-	for(var/obj/item/organ/external/O in organs)
+	for(var/obj/item/organ/external/O in external_organs)
 		if(O.is_stump())
 			continue
 		damage_appearance += O.damage_state
@@ -198,7 +198,7 @@ var/global/list/damage_icon_parts = list()
 	var/image/standing_image = image(species.damage_overlays, icon_state = "00")
 
 	// blend the individual damage states with our icons
-	for(var/obj/item/organ/external/O in organs)
+	for(var/obj/item/organ/external/O in external_organs)
 		O.update_damstate()
 		O.update_icon()
 		if(O.damage_state == "00")
@@ -228,7 +228,7 @@ var/global/list/damage_icon_parts = list()
 		return
 	var/image/standing_image = image(bandage_icon, icon_state = "0")
 	if(overlays_standing[HO_DAMAGE_LAYER])
-		for(var/obj/item/organ/external/O in organs)
+		for(var/obj/item/organ/external/O in external_organs)
 			if(O.is_stump())
 				continue
 			var/bandage_level = O.bandage_level()
@@ -245,7 +245,7 @@ var/global/list/damage_icon_parts = list()
 	var/list/needs_update = list()
 	var/limb_count_update = FALSE
 	for(var/organ_tag in species.has_limbs)
-		var/obj/item/organ/external/limb = organs_by_name[organ_tag]
+		var/obj/item/organ/external/limb = external_organs_by_name[organ_tag]
 		if(!QDELETED(limb))
 			var/old_key = limb_render_keys?[organ_tag] // Checks the mob's icon render key list for the bodypart
 			var/new_key = json_encode(limb.get_icon_key()) // Generates a key for the current bodypart
@@ -260,7 +260,7 @@ var/global/list/damage_icon_parts = list()
 	if(length(needs_update) || limb_count_update)
 		//GENERATE NEW LIMBS
 		var/list/new_limbs = list()
-		for(var/obj/item/organ/external/limb in organs)
+		for(var/obj/item/organ/external/limb in external_organs)
 			if(limb in needs_update)
 				var/list/limb_overlays = limb.get_overlays()
 				GLOB.limb_overlays_cache[limb_render_keys[limb.organ_tag]] = limb_overlays
@@ -787,7 +787,7 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/proc/update_surgery(update_icons=1)
 	overlays_standing[HO_SURGERY_LAYER] = null
 	var/image/total = new
-	for(var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in external_organs)
 		if(!BP_IS_ROBOTIC(E) && E.is_surgically_open())
 			var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.icon_name][round(E.is_surgically_open())]", "layer"=-HO_SURGERY_LAYER)
 			total.AddOverlays(I)

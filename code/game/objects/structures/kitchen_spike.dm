@@ -182,7 +182,7 @@
 		return
 
 	var/meat_limbs_left = 0
-	for (var/obj/item/organ/external/O in H.organs)
+	for (var/obj/item/organ/external/O in H.external_organs)
 		if (BP_IS_ROBOTIC(O) || O.is_stump())
 			continue
 		var/obj/item/organ/external/chest/OC = O

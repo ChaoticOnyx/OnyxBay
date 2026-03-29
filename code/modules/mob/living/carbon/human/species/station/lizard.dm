@@ -102,7 +102,7 @@
 		H.remove_nutrition(1)
 
 	if(prob(5) && H.nutrition > 150 && !H.getBruteLoss() && !H.getFireLoss())
-		var/obj/item/organ/external/head/D = H.organs_by_name["head"]
+		var/obj/item/organ/external/head/D = H.external_organs_by_name["head"]
 		if (D.status & ORGAN_DISFIGURED)
 			D.status &= ~ORGAN_DISFIGURED
 			H.remove_nutrition(20)
@@ -123,7 +123,7 @@
 	if(prob(2) && H.nutrition > 150)
 		for(var/limb_type in has_limbs)
 			var/list/obj/item/organ/internal/foreign_organs = list()
-			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
+			var/obj/item/organ/external/E = H.external_organs_by_name[limb_type]
 			if(E && E.organ_tag != (BP_HEAD || BP_GROIN) && !E.vital && !E.is_usable(ignore_pain = TRUE))	//Skips heads and vital bits...
 				E.removed()			//...because no one wants their head to explode to make way for a new one.
 				for(var/obj/item/organ/internal/O in E.internal_organs)
@@ -137,7 +137,7 @@
 				var/path = has_limbs[limb_type]["path"]
 				var/regenerating_limb = text2path("[path]")
 				var/parent_organ = initial(regenerating_limb["parent_organ"])
-				if(!(parent_organ in H.organs_by_name) || H.organs_by_name[parent_organ].is_stump())
+				if(!(parent_organ in H.external_organs_by_name) || H.external_organs_by_name[parent_organ].is_stump())
 					continue
 
 				var/list/organ_data = has_limbs[limb_type]

@@ -416,7 +416,7 @@
 		if(isliving(loc))
 			var/mob/living/carbon/human/host = loc
 			if(istype(host))
-				for(var/obj/item/organ/external/organ in host.organs)
+				for(var/obj/item/organ/external/organ in host.external_organs)
 					organ.drop_embedded_object(src)
 					for(var/obj/item/O in organ.implants)
 						if(O == src)

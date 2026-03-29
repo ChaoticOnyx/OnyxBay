@@ -54,7 +54,7 @@ Small, little HP, poisonous.
 	else return ..()
 
 /mob/living/simple_animal/hostile/voxslug/proc/attach(mob/living/carbon/human/H)
-	var/obj/item/organ/external/chest = H.organs_by_name["chest"]
+	var/obj/item/organ/external/chest = H.external_organs_by_name["chest"]
 	var/obj/item/holder/voxslug/holder = new(get_turf(src), src)
 	src.forceMove(holder)
 	chest.embed(holder, 0, "\The [src] latches itself onto \the [H]!")

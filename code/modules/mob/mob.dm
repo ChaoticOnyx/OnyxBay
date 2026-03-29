@@ -895,7 +895,7 @@
 		var/mob/living/carbon/human/H = src
 		var/obj/item/organ/external/affected
 
-		for(var/obj/item/organ/external/organ in H.organs) //Grab the organ holding the embedded object.
+		for(var/obj/item/organ/external/organ in H.external_organs) //Grab the organ holding the embedded object.
 			if(LAZYISIN(organ.embedded_objects, selection))
 				affected = organ
 				break

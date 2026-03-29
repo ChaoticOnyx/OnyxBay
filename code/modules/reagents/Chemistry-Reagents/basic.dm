@@ -520,7 +520,7 @@
 		if(removed && ishuman(M) && prob(100 * removed / meltdose)) // Applies disfigurement
 			var/mob/living/carbon/human/H = M
 			var/screamed
-			for(var/obj/item/organ/external/affecting in H.organs)
+			for(var/obj/item/organ/external/affecting in H.external_organs)
 				if(!screamed && affecting.can_feel_pain())
 					screamed = 1
 					H.emote("scream")

@@ -319,7 +319,7 @@
 	if(!W.edge || !W.force || W.damtype != BRUTE)
 		return 0 //unsuitable weapon
 
-	var/obj/item/organ/external/head/head = affecting.organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/head = affecting.external_organs_by_name[BP_HEAD]
 	if(head && head.deformities > 0)
 		return 0 //already smiling
 

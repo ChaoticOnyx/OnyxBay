@@ -681,7 +681,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		owner.shock_stage += 20
 
 		//check to see if we still need the verb
-		for(var/obj/item/organ/external/limb in owner.organs)
+		for(var/obj/item/organ/external/limb in owner.external_organs)
 			if(limb.dislocated == 1)
 				return
 

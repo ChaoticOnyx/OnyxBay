@@ -685,7 +685,7 @@
 		if(!charges)
 			return statuses
 	if(charges >= 15)
-		for(var/obj/item/organ/external/E in user.organs)
+		for(var/obj/item/organ/external/E in user.external_organs)
 			if(E && (E.status & ORGAN_BROKEN))
 				E.mend_fracture()
 				statuses += "bones in your [E.name] snap into place"

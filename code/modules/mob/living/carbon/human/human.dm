@@ -207,13 +207,13 @@
 	f_loss *= protection
 
 	// focus most of the blast on one organ
-	var/obj/item/organ/external/take_blast = pick(organs)
+	var/obj/item/organ/external/take_blast = pick(external_organs)
 	take_blast.take_external_damage(b_loss * 0.7, f_loss * 0.7, used_weapon = "Explosive Blast")
 
 	// distribute the remaining 30% on all limbs equally (including the one already dealt damage)
 	b_loss *= 0.3
 	f_loss *= 0.3
-	for(var/obj/item/organ/external/temp in organs)
+	for(var/obj/item/organ/external/temp in external_organs)
 		temp.take_external_damage(b_loss, f_loss, used_weapon = "Explosive Blast")
 
 /mob/living/carbon/human/blob_act(damage)
@@ -229,7 +229,7 @@
 	var/obj/item/implant/loyalty/L = new /obj/item/implant/loyalty(M)
 	L.imp_in = M
 	L.implanted = 1
-	var/obj/item/organ/external/affected = M.organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/affected = M.external_organs_by_name[BP_HEAD]
 	affected.implants += L
 	L.part = affected
 	L.implanted(src)
@@ -237,7 +237,7 @@
 /mob/living/carbon/human/proc/is_loyalty_implanted(mob/living/carbon/human/M)
 	for(var/L in M.contents)
 		if(istype(L, /obj/item/implant/loyalty))
-			for(var/obj/item/organ/external/O in M.organs)
+			for(var/obj/item/organ/external/O in M.external_organs)
 				if(L in O.implants)
 					return 1
 	return 0
@@ -460,14 +460,14 @@
 /mob/living/carbon/human/apply_shock(shock_damage, def_zone, base_siemens_coeff = 1.0)
 	var/obj/item/organ/external/initial_organ = get_organ(check_zone(def_zone))
 	if(!initial_organ)
-		initial_organ = pick(organs)
+		initial_organ = pick(external_organs)
 
 	var/obj/item/organ/external/floor_organ
 
 	if(!lying)
 		var/list/obj/item/organ/external/standing = list()
 		for(var/limb_tag in list(BP_L_FOOT, BP_R_FOOT))
-			var/obj/item/organ/external/E = organs_by_name[limb_tag]
+			var/obj/item/organ/external/E = external_organs_by_name[limb_tag]
 			if(E && E.is_usable())
 				standing[E.organ_tag] = E
 		if((def_zone == BP_L_FOOT || def_zone == BP_L_LEG) && standing[BP_L_FOOT])
@@ -478,7 +478,7 @@
 			floor_organ = standing[pick(standing)]
 
 	if(!floor_organ)
-		floor_organ = pick(organs)
+		floor_organ = pick(external_organs)
 
 	var/list/obj/item/organ/external/to_shock = trace_shock(initial_organ, floor_organ)
 
@@ -505,7 +505,7 @@
 
 	for(var/obj/item/organ/external/E in list(floor, init))
 		while(E && E.parent_organ)
-			E = organs_by_name[E.parent_organ]
+			E = external_organs_by_name[E.parent_organ]
 			traced_organs += E
 			if(E == init)
 				return traced_organs
@@ -1013,7 +1013,7 @@
 /mob/living/carbon/human/get_visible_implants()
 	var/list/visible_implants = ..()
 
-	for(var/obj/item/organ/external/organ in organs)
+	for(var/obj/item/organ/external/organ in external_organs)
 		for(var/obj/item/O in organ.implants)
 			if(!istype(O, /obj/item/organ_module))
 				continue
@@ -1027,7 +1027,7 @@
 /mob/living/carbon/human/get_embedded_objects(class = 0)
 	var/list/embedded_objects = ..()
 
-	for(var/obj/item/organ/external/organ in organs)
+	for(var/obj/item/organ/external/organ in external_organs)
 		for(var/obj/O in organ.embedded_objects)
 			if((O.w_class <= class) || istype(O,/obj/item/material/shard/shrapnel))
 				continue
@@ -1400,8 +1400,8 @@
 		self = 1 // Removing object from yourself.
 
 	var/list/limbs = list()
-	for(var/limb in organs_by_name)
-		var/obj/item/organ/external/current_limb = organs_by_name[limb]
+	for(var/limb in external_organs_by_name)
+		var/obj/item/organ/external/current_limb = external_organs_by_name[limb]
 		if(current_limb && current_limb.dislocated > 0 && !current_limb.is_parent_dislocated()) //if the parent is also dislocated you will have to relocate that first
 			limbs |= current_limb
 	var/obj/item/organ/external/current_limb = input(usr,"Which joint do you wish to relocate?") as null|anything in limbs
@@ -1426,7 +1426,7 @@
 	current_limb.undislocate()
 
 /mob/living/carbon/human/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
-	if(W in organs)
+	if(W in external_organs)
 		return
 	. = ..()
 
@@ -1548,11 +1548,11 @@
 
 	var/obj/item/organ/external/affecting
 	if(organ_check in list(BP_HEART, BP_LUNGS, BP_STOMACH, BP_LIVER))
-		affecting = organs_by_name[BP_CHEST]
+		affecting = external_organs_by_name[BP_CHEST]
 	else if(organ_check in list(BP_KIDNEYS, BP_BLADDER, BP_INTESTINES))
-		affecting = organs_by_name[BP_GROIN]
+		affecting = external_organs_by_name[BP_GROIN]
 	else if(organ_check in list(BP_EYES, BP_TONGUE))
-		affecting = organs_by_name[BP_HEAD]
+		affecting = external_organs_by_name[BP_HEAD]
 
 	if(affecting && BP_IS_ROBOTIC(affecting))
 		return 0
@@ -1565,7 +1565,7 @@
 		return
 
 	var/obj/item/organ/external/limb
-	limb = organs_by_name[limb_check]
+	limb = external_organs_by_name[limb_check]
 
 	if(limb && !limb.is_stump())
 		if(BP_IS_ROBOTIC(limb))
@@ -1579,7 +1579,7 @@
 		return
 
 	var/obj/item/organ/external/limb
-	limb = organs_by_name[limb_check]
+	limb = external_organs_by_name[limb_check]
 
 	if(limb && !limb.is_stump() && !(limb.status & ORGAN_DISFIGURED))
 		if(BP_IS_ROBOTIC(limb))
@@ -1625,7 +1625,7 @@
 			"<span class='notice'>You check yourself for injuries.</span>" \
 			)
 
-		for(var/obj/item/organ/external/org in organs)
+		for(var/obj/item/organ/external/org in external_organs)
 			var/list/status = list()
 
 			var/feels = 1 + round(org.get_pain()/100, 0.1)
@@ -1784,7 +1784,7 @@
 		winset(my_client, "mapwindow.map", "right-click=[twohanded_mode ? "true" : "false"]")
 
 /mob/living/carbon/human/is_deaf()
-	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/head = external_organs_by_name[BP_HEAD]
 	if((sdisabilities & DEAF) && istype(head))
 		var/obj/item/organ_module/cochlear/coch = locate() in head
 		if(istype(coch))

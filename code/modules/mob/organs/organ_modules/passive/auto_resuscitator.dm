@@ -79,7 +79,7 @@
 		to_chat(find_dead_player(owner.ckey, TRUE), SPAN_NOTICE("Your heart augmentetion tries to resuscitate you. Re-enter your body if you want to be revived!"))
 
 	var/cpu_name = "CPU"
-	var/obj/item/organ/external/head/head = owner.organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/head = owner.external_organs_by_name[BP_HEAD]
 	if(istype(head))
 		for(var/obj/item/organ_module/module in head.organ_modules)
 			if(initial(module.module_type) == OM_TYPE_PROCESSOR)

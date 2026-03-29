@@ -74,8 +74,8 @@
 				pain = 20
 			else
 				pain = 25
-			
-			var/pain_organ = pick(H.organs)
+
+			var/pain_organ = pick(H.external_organs)
 			var/pain_amt = round(rand(pain, 40) * (1 - relief * 0.6))
 			H.custom_pain(pick(
 				"A mild discomfort makes itself known.",\

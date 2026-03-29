@@ -36,7 +36,7 @@
 		any_effect = TRUE
 
 	if(prob(15) && !H.getBruteLoss() && !H.getFireLoss())
-		var/obj/item/organ/external/head/D = H.organs_by_name[BP_HEAD]
+		var/obj/item/organ/external/head/D = H.external_organs_by_name[BP_HEAD]
 		if(D?.status & ORGAN_DISFIGURED)
 			D.status &= ~ORGAN_DISFIGURED
 			any_effect = TRUE

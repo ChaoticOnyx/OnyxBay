@@ -68,7 +68,7 @@
 
 /datum/surgery_step/limb/attach_organic/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	var/obj/item/organ/external/E = tool
-	var/obj/item/organ/external/P = target.organs_by_name[E.parent_organ]
+	var/obj/item/organ/external/P = target.external_organs_by_name[E.parent_organ]
 	announce_failure(user,
 		"[user]'s hand slips, damaging [target]'s [E.amputation_point]!",
 		"Your hand slips, damaging [target]'s [E.amputation_point]!"
@@ -132,7 +132,7 @@
 	target.apply_damage(
 		10,
 		BRUTE,
-		target.organs_by_name[parent_organ.parent_organ],
+		target.external_organs_by_name[parent_organ.parent_organ],
 		damage_flags = DAM_SHARP
 		)
 

@@ -361,7 +361,7 @@
 	var/mob/living/carbon/human/mannequin = get_mannequin(pref.client_ckey)
 	var/obj/item/organ/O
 	if(organ in BP_ALL_LIMBS)
-		O = mannequin?.organs_by_name[organ]
+		O = mannequin?.external_organs_by_name[organ]
 	else if(organ in BP_INTERNAL_ORGANS)
 		O = mannequin?.internal_organs_by_name[organ]
 	if(!O)
@@ -396,7 +396,7 @@
 	var/mob/living/carbon/human/mannequin = get_mannequin(pref.client_ckey)
 	var/obj/item/organ/O
 	if(organ in BP_ALL_LIMBS)
-		O = mannequin?.organs_by_name[organ]
+		O = mannequin?.external_organs_by_name[organ]
 	else if(organ in BP_INTERNAL_ORGANS)
 		O = mannequin?.internal_organs_by_name[organ]
 	if(!O)

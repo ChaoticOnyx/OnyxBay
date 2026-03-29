@@ -46,7 +46,7 @@
 			return
 
 		var/mob/living/carbon/human/H = L
-		var/obj/item/organ/external/organ = pick(H.organs)
+		var/obj/item/organ/external/organ = pick(H.external_organs)
 		if(!(crossed_species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(20))
 			var/obj/item/thorn/thorn = new()
 			thorn.forceMove(organ)

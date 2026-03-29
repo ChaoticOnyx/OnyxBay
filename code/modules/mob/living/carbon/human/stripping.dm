@@ -178,7 +178,7 @@
 // Remove all splints.
 /mob/living/carbon/human/proc/remove_splints(mob/living/user)
 	var/removed_splint = 0
-	for(var/obj/item/organ/external/o in organs)
+	for(var/obj/item/organ/external/o in external_organs)
 		if (o && o.splinted)
 			var/obj/item/S = o.splinted
 			if(!istype(S) || S.loc != o) //can only remove splints that are actually worn on the organ (deals with powersuit splints)

@@ -74,7 +74,7 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	if(!istype(H))
 		return FALSE
 
-	var/obj/item/organ/external/head = H.organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head = H.external_organs_by_name[BP_HEAD]
 
 	return (head ? head : FALSE)
 

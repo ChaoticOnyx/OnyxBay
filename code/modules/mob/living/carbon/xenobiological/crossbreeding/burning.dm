@@ -302,7 +302,7 @@ Burning extracts:
 		if(!failed)
 			user.visible_message(SPAN_DANGER("[src] sublimates the flesh around [user]'s arm, transforming the bone into a gruesome blade!"))
 			user.emote("scream")
-			new /obj/item/melee/prosthetic/bio/fake_arm_blade(target, target.organs_by_name[hand])
+			new /obj/item/melee/prosthetic/bio/fake_arm_blade(target, target.external_organs_by_name[hand])
 	..()
 
 /obj/item/metroidcross/burning/pink

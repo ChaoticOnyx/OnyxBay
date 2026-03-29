@@ -56,7 +56,7 @@
 		M.add_chemical_effect(CE_BRUTE_REGEN, 2.5)
 		M.add_chemical_effect(CE_BLOCKAGE, (15 + volume - overdose)/100)
 		var/mob/living/carbon/human/H = M
-		for(var/obj/item/organ/external/E in H.organs)
+		for(var/obj/item/organ/external/E in H.external_organs)
 			if(E.status & ORGAN_ARTERY_CUT && prob(2))
 				E.status &= ~ORGAN_ARTERY_CUT
 
@@ -240,7 +240,7 @@
 	var/mob/living/carbon/human/H = M
 	H.adjustToxLoss(max(-1, -12/max(1, H.getToxLoss())) * H.stasis_value)
 
-	for(var/obj/item/organ/external/E in H.organs)
+	for(var/obj/item/organ/external/E in H.external_organs)
 		if(BP_IS_ROBOTIC(E))
 			continue
 		if((E.status & ORGAN_BLEEDING))
@@ -288,7 +288,7 @@
 	var/mob/living/carbon/human/H = M
 	H.adjustToxLoss(max(-1, -16/max(1, H.getToxLoss())) * H.stasis_value)
 
-	for(var/obj/item/organ/external/E in H.organs)
+	for(var/obj/item/organ/external/E in H.external_organs)
 		if(BP_IS_ROBOTIC(E))
 			continue
 		if(E.status & ORGAN_BLEEDING)
@@ -876,7 +876,7 @@
 	M.adjustToxLoss(-20 * removed)
 	if(M.chem_doses[type] > 3 && ishuman(M))
 		var/mob/living/carbon/human/H = M
-		for(var/obj/item/organ/external/head/h in H.organs)
+		for(var/obj/item/organ/external/head/h in H.external_organs)
 			h.status |= ORGAN_DISFIGURED //currently only matters for the head, but might as well disfigure them all. // ONLY HEAD JESUS CHRIST ONLY HEAD, IF IT'S NOT HEAD IT CAN'T BE HEALED AND IT WILL DESTROY handle_stance() WITH SANITY OF ALL PLAYERS WHO TOUCHED 0.00001337 ML OF ANY SHIT PLEASE GOD NO
 	if(M.chem_doses[type] > 10)
 		M.make_dizzy(5)

@@ -375,7 +375,7 @@
 		switch(href_list["implant"])
 			if("remove")
 				for(var/obj/item/implant/loyalty/I in H.contents)
-					for(var/obj/item/organ/external/organs in H.organs)
+					for(var/obj/item/organ/external/organs in H.external_organs)
 						if(I in organs.implants)
 							qdel(I)
 							break

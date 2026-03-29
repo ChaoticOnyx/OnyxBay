@@ -33,7 +33,7 @@
 	if(..())
 		return
 	var/list/target_list = istype(mob.get_active_hand(), /obj/item/gun) ? view(mob) : view(1, mob) //Dont put far objects in list unless we can shoot it
-	target_list -= (mob.organs + mob.internal_organs) //exclude organs from target list
+	target_list -= (mob.external_organs + mob.internal_organs) //exclude organs from target list
 	var/list/target_list_clear = list(/datum/disease2/effect/aggressive)
 	for(var/T in target_list)
 		if(istype(T, /obj) || istype(T, /turf) || istype(T, /mob)) //exclude lighting overlays and other service atoms and areas
@@ -73,13 +73,13 @@
 /datum/disease2/effect/bones/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	for(var/obj/item/organ/external/E in mob.organs)
+	for(var/obj/item/organ/external/E in mob.external_organs)
 		E.min_broken_damage = max(5, E.min_broken_damage - 30)
 
 /datum/disease2/effect/bones/deactivate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	for(var/obj/item/organ/external/E in mob.organs)
+	for(var/obj/item/organ/external/E in mob.external_organs)
 		E.min_broken_damage = initial(E.min_broken_damage)
 
 
@@ -148,7 +148,7 @@
 /datum/disease2/effect/immortal/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	for(var/obj/item/organ/external/E in mob.organs)
+	for(var/obj/item/organ/external/E in mob.external_organs)
 		if(E.status & ORGAN_BROKEN && prob(30))
 			to_chat(mob, IMMORTAL_RECOVER_EFFECT_WARNING(E.name))
 			E.status ^= ORGAN_BROKEN
@@ -181,7 +181,7 @@
 	if(..())
 		return
 	var/organ = pick(list(BP_R_ARM, BP_L_ARM, BP_R_LEG, BP_L_LEG))
-	var/obj/item/organ/external/E = mob.organs_by_name[organ]
+	var/obj/item/organ/external/E = mob.external_organs_by_name[organ]
 	if(!(E.status & ORGAN_DEAD))
 		E.status |= ORGAN_DEAD
 		to_chat(mob, ORGANS_SHUTDOWN_EFFECT_WARNING(E.name))
@@ -193,7 +193,7 @@
 /datum/disease2/effect/organs/deactivate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	for(var/obj/item/organ/external/E in mob.organs)
+	for(var/obj/item/organ/external/E in mob.external_organs)
 		E.status &= ~ORGAN_DEAD
 		for(var/obj/item/organ/external/C in E.children)
 			C.status &= ~ORGAN_DEAD
@@ -271,12 +271,12 @@
 /datum/disease2/effect/limbreject/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	var/list/detachable_limbs = mob.organs.Copy()
+	var/list/detachable_limbs = mob.external_organs.Copy()
 	for(var/obj/item/organ/external/E in detachable_limbs)
 		if(E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.organ_tag == BP_HEAD || E.is_stump())
 			detachable_limbs -= E
 	var/obj/item/organ/external/organ_to_remove = pick(detachable_limbs)
-	if(!mob.organs.Find(organ_to_remove))
+	if(!mob.external_organs.Find(organ_to_remove))
 		return 0
 
 	mob.visible_message(SPAN_WARNING("The [organ_to_remove] is ripping off from [mob]."),

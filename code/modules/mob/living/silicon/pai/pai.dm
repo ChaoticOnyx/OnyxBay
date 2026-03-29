@@ -248,7 +248,7 @@
 		var/mob/holder = card.loc
 		if(ishuman(holder))
 			var/mob/living/carbon/human/H = holder
-			for(var/obj/item/organ/external/affecting in H.organs)
+			for(var/obj/item/organ/external/affecting in H.external_organs)
 				if(card in affecting.implants)
 					affecting.take_pierce_damage(rand(30, 50))
 					affecting.implants -= card

@@ -39,7 +39,7 @@
 		var/obj/item/organ/external/external = E
 		if(!external.is_robotic_usable())
 			var/cpu_name = "CPU"
-			var/obj/item/organ/external/head/head = H?.organs_by_name[BP_HEAD]
+			var/obj/item/organ/external/head/head = H?.external_organs_by_name[BP_HEAD]
 			if(istype(head))
 				for(var/obj/item/organ_module/module in head.organ_modules)
 					if(initial(module.module_type) == OM_TYPE_PROCESSOR)
@@ -51,7 +51,7 @@
 	return TRUE
 
 /obj/item/organ_module/active/proc/has_processor(mob/living/carbon/human/H)
-	var/obj/item/organ/external/head/head = H?.organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/head = H?.external_organs_by_name[BP_HEAD]
 	if(!istype(head))
 		return FALSE
 	for(var/obj/item/organ_module/module in head.organ_modules)
