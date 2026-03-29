@@ -311,17 +311,17 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				implants_from_external_organs[E.organ_tag] += I
 
 	for(var/obj/item/organ/organ in H.contents)
-		if((organ in H.organs) || (organ in H.internal_organs))
+		if((organ in H.external_organs) || (organ in H.internal_organs))
 			qdel(organ)
 
-	if(H.organs)                  H.organs.Cut()
+	if(H.external_organs)         H.external_organs.Cut()
 	if(H.internal_organs)         H.internal_organs.Cut()
-	if(H.organs_by_name)          H.organs_by_name.Cut()
+	if(H.external_organs_by_name) H.external_organs_by_name.Cut()
 	if(H.internal_organs_by_name) H.internal_organs_by_name.Cut()
 
-	H.organs = list()
+	H.external_organs = list()
 	H.internal_organs = list()
-	H.organs_by_name = alist()
+	H.external_organs_by_name = alist()
 	H.internal_organs_by_name = alist()
 
 	for(var/limb_type in has_limbs)
@@ -337,8 +337,8 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			O.organ_tag = organ_tag
 		H.internal_organs_by_name[organ_tag] = O
 
-	for(var/name in H.organs_by_name)
-		H.organs |= H.organs_by_name[name]
+	for(var/name in H.external_organs_by_name)
+		H.external_organs |= H.external_organs_by_name[name]
 
 	for(var/name in H.internal_organs_by_name)
 		H.internal_organs |= H.internal_organs_by_name[name]
@@ -351,7 +351,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		H.internal_organs_by_name[organ.organ_tag] = organ
 		organ.handle_foreign()
 
-	for(var/obj/item/organ/O in (H.organs|H.internal_organs))
+	for(var/obj/item/organ/O in (H.external_organs|H.internal_organs))
 		O.owner = H
 
 	H.sync_organ_dna()

@@ -43,7 +43,7 @@
 
 	if(!failed)
 		H.visible_message(SPAN_DANGER("The flesh is torn around the [H.name]\'s arm!"))
-		new power_item_type(H, H.organs_by_name[hand])
+		new power_item_type(H, H.external_organs_by_name[hand])
 
 /datum/power/undead/armblade/armshield
 	name = "Bone Shield"

@@ -116,7 +116,7 @@
 /datum/disease2/effect/itch/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	var/obj/O = pick(mob.organs)
+	var/obj/O = pick(mob.external_organs)
 	to_chat(mob, ITCH_EFFECT_WARNING(O.name))
 
 

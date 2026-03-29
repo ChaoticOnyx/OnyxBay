@@ -10,7 +10,7 @@
 	stunned = 1
 	icon = null
 	set_invisibility(101)
-	for(var/t in organs)
+	for(var/t in external_organs)
 		qdel(t)
 	var/atom/movable/fake_overlay/animation = new /atom/movable/fake_overlay(loc)
 	animation.icon_state = "blank"
@@ -45,7 +45,7 @@
 /mob/living/carbon/human/AIize(move, rename) // 'move' argument needs defining here too because BYOND is dumb
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/t in organs)
+	for(var/t in external_organs)
 		qdel(t)
 	QDEL_NULL_LIST(worn_underwear)
 	return ..(move, rename)
@@ -118,7 +118,7 @@
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
-	for(var/t in organs)
+	for(var/t in external_organs)
 		qdel(t)
 
 	var/mob/living/silicon/robot/O = new /mob/living/silicon/robot( loc )
@@ -166,7 +166,7 @@
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
-	for(var/t in organs)
+	for(var/t in external_organs)
 		qdel(t)
 
 	var/mob/living/carbon/metroid/new_metroid
@@ -199,7 +199,7 @@
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
-	for(var/t in organs)	//this really should not be necessary
+	for(var/t in external_organs)	//this really should not be necessary
 		qdel(t)
 
 	var/mob/living/simple_animal/corgi/new_corgi = new /mob/living/simple_animal/corgi (loc)
@@ -230,7 +230,7 @@
 	icon = null
 	set_invisibility(101)
 
-	for(var/t in organs)
+	for(var/t in external_organs)
 		qdel(t)
 
 	var/mob/new_mob = new mobpath(src.loc)
@@ -315,7 +315,7 @@
 //This is barely a transformation but probably best file for it.
 /mob/living/carbon/human/proc/zombify()
 	RemoveHairAndFacials()
-	for(var/obj/item/organ/external/head/h in organs)
+	for(var/obj/item/organ/external/head/h in external_organs)
 		h.status |= ORGAN_DISFIGURED
 	mutations |= MUTATION_CLUMSY
 	src.visible_message("<span class='danger'>\The [src]'s skin decays before your very eyes!</span>", "<span class='danger'>Your entire body is ripe with pain as it is consumed down to flesh and bones. You ... hunger. Not only for flesh, but to spread this gift.</span>")
@@ -330,7 +330,7 @@
 	Weaken(5)
 	if (should_have_organ(BP_HEART))
 		vessel.add_reagent(/datum/reagent/blood, species.blood_volume - vessel.total_volume)
-	for (var/o in organs)
+	for (var/o in external_organs)
 		var/obj/item/organ/organ = o
 		organ.vital = 0
 		if (!BP_IS_ROBOTIC(organ))

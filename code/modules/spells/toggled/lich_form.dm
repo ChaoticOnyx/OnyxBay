@@ -18,7 +18,7 @@
 
 	H.add_mutation(MUTATION_SKELETON)
 	H.add_mutation(MUTATION_CLUMSY)
-	for(var/obj/item/organ/external/head/h in H.organs)
+	for(var/obj/item/organ/external/head/h in H.external_organs)
 		h.status |= ORGAN_DISFIGURED
 	H.update_body(TRUE)
 	return
@@ -31,7 +31,7 @@
 	var/mob/living/carbon/human/H = holder
 
 	H.remove_mutation(MUTATION_SKELETON)
-	for(var/obj/item/organ/external/head/h in H.organs)
+	for(var/obj/item/organ/external/head/h in H.external_organs)
 		h.status ^= ORGAN_DISFIGURED
 	H.update_body(TRUE)
 	return

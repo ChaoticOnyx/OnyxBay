@@ -101,7 +101,7 @@
 /datum/disease2/effect/adaptation_damage/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	for(var/obj/item/organ/external/E in mob.organs)
+	for(var/obj/item/organ/external/E in mob.external_organs)
 		var/dmg = E.get_damage()
 		if(dmg > 8*multiplier)
 			parent_disease.cure()

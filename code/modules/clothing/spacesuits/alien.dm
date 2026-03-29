@@ -378,7 +378,7 @@
 		return
 	if(nanobots)
 		for(var/mob/living/carbon/human/vox/V in range(2, H))
-			for(var/obj/item/organ/external/regen_organ in V.organs)
+			for(var/obj/item/organ/external/regen_organ in V.external_organs)
 				regen_organ.damage = max(regen_organ.damage - 2, 0)
 			if(V.getBruteLoss())
 				V.adjustBruteLoss(-5 * config.health.organ_regeneration_multiplier)	//Heal brute better than other ouchies.

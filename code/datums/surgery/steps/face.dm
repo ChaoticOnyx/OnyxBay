@@ -57,12 +57,7 @@
 		"[user]'s hand slips, slicing [target]'s throat wth \the [tool]!",
 		"Your hand slips, slicing [target]'s throat wth \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		40,
-		0,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
+	parent_organ.take_cut_damage(40, tool)
 	target.losebreath += 10
 
 /**
@@ -142,12 +137,7 @@
 		"[user]'s hand slips, tearing skin on [target]'s face with \the [tool]!",
 		"Your hand slips, tearing skin on [target]'s face with \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		10,
-		0,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
+	parent_organ.take_cut_damage(10, tool)
 
 /**
  * Facial cauterization step.
@@ -194,6 +184,6 @@
 		"[user]'s hand slips, leaving a small burn on [target]'s face with \the [tool]!",
 		"Your hand slips, leaving a small burn on [target]'s face with \the [tool]!"
 		)
-	parent_organ.take_external_damage(0, 4, used_weapon = tool)
+	parent_organ.take_burn_damage(4, tool)
 
 #undef FACE_SPEED_MOFIFIER

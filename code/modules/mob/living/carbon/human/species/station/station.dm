@@ -51,7 +51,7 @@
 	if(!H.restrained() && H.shock_stage < 40 && prob(3))
 		var/maxdam = 0
 		var/obj/item/organ/external/damaged_organ = null
-		for(var/obj/item/organ/external/E in H.organs)
+		for(var/obj/item/organ/external/E in H.external_organs)
 			if(!E.can_feel_pain()) continue
 			var/dam = E.get_damage()
 			// make the choice of the organ depend on damage,
@@ -367,10 +367,10 @@
 
 #define DIONA_LIMB_DEATH_COUNT 9
 /datum/species/diona/handle_death_check(mob/living/carbon/human/H)
-	var/lost_limb_count = has_limbs.len - H.organs.len
+	var/lost_limb_count = has_limbs.len - H.external_organs.len
 	if(lost_limb_count >= DIONA_LIMB_DEATH_COUNT)
 		return TRUE
-	for(var/thing in H.organs)
+	for(var/thing in H.external_organs)
 		var/obj/item/organ/external/E = thing
 		if(E && E.is_stump())
 			lost_limb_count++
@@ -423,7 +423,7 @@
 			H.remove_nutrition(2)
 
 		if(prob(10) && H.nutrition > 200 && !H.getBruteLoss() && !H.getFireLoss())
-			var/obj/item/organ/external/head/D = H.organs_by_name["head"]
+			var/obj/item/organ/external/head/D = H.external_organs_by_name["head"]
 			if(D.status & ORGAN_DISFIGURED)
 				D.status &= ~ORGAN_DISFIGURED
 				H.remove_nutrition(20)
@@ -437,7 +437,7 @@
 
 		if(prob(10) && H.nutrition > 70)
 			for(var/limb_type in has_limbs)
-				var/obj/item/organ/external/E = H.organs_by_name[limb_type]
+				var/obj/item/organ/external/E = H.external_organs_by_name[limb_type]
 				if(E && !E.is_usable())
 					E.removed()
 					qdel(E)

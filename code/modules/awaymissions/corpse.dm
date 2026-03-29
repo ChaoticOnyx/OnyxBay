@@ -200,7 +200,7 @@
 /obj/effect/landmark/corpse/nurse/equip_outfit(mob/living/carbon/human/M)
 	. = ..()
 
-	var/obj/item/organ/external/E = M.organs_by_name[BP_CHEST]
+	var/obj/item/organ/external/E = M.external_organs_by_name[BP_CHEST]
 	var/obj/item/card/id/ID = new /obj/item/card/id/medical(E)
 	E.implants += ID
 

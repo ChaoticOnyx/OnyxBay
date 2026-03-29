@@ -321,7 +321,7 @@
 			return
 
 		user.visible_message(SPAN_DANGER("[user] stabs [target] in \the [hit_area] with [src.name]!"))
-		affecting.take_external_damage(3)
+		affecting.take_pierce_damage(3, "syringe", TRUE)
 
 	else
 		user.visible_message(SPAN_DANGER("[user] stabs [target] with [src.name]!"))

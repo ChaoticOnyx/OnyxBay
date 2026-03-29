@@ -23,11 +23,11 @@
 	// We assume that, in case of gib, organs and whatever have already done their business escaping the body,
 	// so it's safe to just clean whatever left for reasons.
 	QDEL_NULL_LIST(internal_organs)
-	QDEL_NULL_LIST(organs)
+	QDEL_NULL_LIST(external_organs)
 	QDEL_NULL_LIST(stomach_contents)
 	QDEL_NULL_LIST(hallucinations)
 
-	QDEL_LIST_ASSOC(organs_by_name)
+	QDEL_LIST_ASSOC(external_organs_by_name)
 	QDEL_LIST_ASSOC(internal_organs_by_name)
 	stasis_sources.Cut()
 	if(loc)
@@ -80,8 +80,8 @@
 		if(istype(src, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = src
 			var/obj/item/organ/external/organ = H.get_organ(BP_GROIN)
-			if (istype(organ))
-				organ.take_external_damage(dmg, 0)
+			if(istype(organ))
+				organ.take_blunt_damage(dmg, "intra-abdominal movement")
 			H.update_health()
 		else
 			take_organ_damage(dmg)
@@ -571,7 +571,7 @@
 	. = ..()
 
 	// And restore all organs...
-	for(var/obj/item/organ/O in organs)
+	for(var/obj/item/organ/O in external_organs)
 		O.rejuvenate(ignore_prosthetic_prefs)
 
 /mob/living/carbon/proc/set_species()

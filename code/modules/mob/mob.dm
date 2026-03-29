@@ -489,19 +489,6 @@
 /mob/proc/pull_damage()
 	return 0
 
-/mob/living/carbon/human/pull_damage()
-	if(!lying || getBruteLoss() + getFireLoss() < 100)
-		return 0
-	for(var/thing in organs)
-		var/obj/item/organ/external/e = thing
-		if(!e || e.is_stump())
-			continue
-		if((e.status & ORGAN_BROKEN) && !e.splinted)
-			return 1
-		if(e.status & ORGAN_BLEEDING)
-			return 1
-	return 0
-
 /mob/MouseDrop(mob/M, ...)
 	..()
 	if(M != usr)
@@ -908,7 +895,7 @@
 		var/mob/living/carbon/human/H = src
 		var/obj/item/organ/external/affected
 
-		for(var/obj/item/organ/external/organ in H.organs) //Grab the organ holding the embedded object.
+		for(var/obj/item/organ/external/organ in H.external_organs) //Grab the organ holding the embedded object.
 			if(LAZYISIN(organ.embedded_objects, selection))
 				affected = organ
 				break
@@ -916,7 +903,7 @@
 		affected.drop_embedded_object(selection)
 
 		H.shock_stage+=20
-		affected.take_external_damage((selection.w_class * 3), 0, DAM_EDGE, "Embedded object extraction")
+		affected.take_pierce_damage((selection.w_class * 3), "Embedded object extraction")
 
 		if(prob(selection.w_class * 5) && affected.sever_artery()) //I'M SO ANEMIC I COULD JUST -DIE-.
 			H.custom_pain("Something tears wetly in your [affected] as [selection] is pulled free!", 50, affecting = affected)

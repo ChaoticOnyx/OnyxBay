@@ -67,7 +67,7 @@ meteor_act
 				penetrating_damage *= 0.75 // Ribs and skulls somewhat protect
 
 			var/list/victims = list()
-			var/list/possible_victims = shuffle(organ.internal_organs.Copy())
+			var/list/possible_victims = shuffle(organ.internal_organs)
 
 			for(var/obj/item/organ/internal/I in possible_victims)
 				if(I.damage < I.max_damage && (prob((sqrt(I.relative_size) * 10) * (1 / max(1, victims.len)))))
@@ -206,9 +206,9 @@ meteor_act
 		//If a specific bodypart is targetted, check how that bodypart is protected and return the value.
 
 	//If you don't specify a bodypart, it checks ALL your bodyparts for protection, and averages out the values
-	for(var/organ_name in organs_by_name)
+	for(var/organ_name in external_organs_by_name)
 		if(organ_name in organ_rel_size)
-			var/obj/item/organ/external/organ = organs_by_name[organ_name]
+			var/obj/item/organ/external/organ = external_organs_by_name[organ_name]
 			if(organ)
 				var/weight = organ_rel_size[organ_name]
 				armorval += (get_organ_armor(organ, type) * weight) //use plain addition here because we are calculating an average
@@ -341,7 +341,7 @@ meteor_act
 			//visible_message("Debug \[MISS\]: pyatka") // Debug Message
 
 			miss_chance = 100
-		var/obj/item/organ/external/O = H.organs_by_name[zone]
+		var/obj/item/organ/external/O = H.external_organs_by_name[zone]
 		if(prob(miss_chance))
 
 			//visible_message("Debug \[MISS\]: miss [miss_chance]") // Debug Message

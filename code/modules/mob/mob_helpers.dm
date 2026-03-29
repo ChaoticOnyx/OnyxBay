@@ -26,10 +26,10 @@
 /mob/living/carbon/human/isSynthetic()
 	if(isnull(full_prosthetic))
 		robolimb_count = 0
-		for(var/obj/item/organ/external/E in organs)
+		for(var/obj/item/organ/external/E in external_organs)
 			if(BP_IS_ROBOTIC(E))
 				robolimb_count++
-		full_prosthetic = (robolimb_count == organs.len)
+		full_prosthetic = (robolimb_count == external_organs.len)
 	return full_prosthetic
 
 /mob/living/silicon/isSynthetic()

@@ -6,7 +6,7 @@
 	radiation += heal.amt_radiation
 	regenerate_blood(heal.amt_blood)
 	adjustBrainLoss(heal.amt_brain)
-	for(var/A in organs)
+	for(var/A in external_organs)
 		var/obj/item/organ/external/E = A
 
 		if(E.status & ORGAN_ARTERY_CUT && heal.heals_internal_bleeding)

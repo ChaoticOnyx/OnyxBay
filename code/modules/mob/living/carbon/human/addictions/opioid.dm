@@ -111,7 +111,7 @@
 	if(!prob(round(65 - relief * 25)))
 		return
 
-	var/pain_organ = pick(H.organs)
+	var/pain_organ = pick(H.external_organs)
 
 	// Step-based pain with hard cap (prevents instant stunlock at large P values)
 	var/pain_amt

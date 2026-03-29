@@ -9,7 +9,7 @@
 	if(E) . = E.name
 
 /mob/living/carbon/human/proc/restore_limb(limb_type, show_message = FALSE)	//only for changling for now
-	var/obj/item/organ/external/E = organs_by_name[limb_type]
+	var/obj/item/organ/external/E = external_organs_by_name[limb_type]
 	if(E && E.organ_tag != (BP_HEAD || BP_GROIN) && !E.vital && !E.is_usable(ignore_pain = TRUE))	//Skips heads and vital bits...
 		E.removed()//...because no one wants their head to explode to make way for a new one.
 		qdel(E)
@@ -18,7 +18,7 @@
 		var/path = species.has_limbs[limb_type]["path"]
 		var/regenerating_limb = text2path("[path]")
 		var/parent_organ = initial(regenerating_limb["parent_organ"])
-		if(!(parent_organ in organs_by_name) || organs_by_name[parent_organ].is_stump())
+		if(!(parent_organ in external_organs_by_name) || external_organs_by_name[parent_organ].is_stump())
 			return 0
 
 		var/list/organ_data = species.has_limbs[limb_type]
@@ -68,7 +68,7 @@
 
 	var/hurt_organs = 0
 	var/highest_pain = 0
-	for(var/obj/item/organ/external/O in organs)
+	for(var/obj/item/organ/external/O in external_organs)
 		O.update_pain()
 		if(O.full_pain)
 			full_pain += O.full_pain
@@ -86,7 +86,7 @@
 
 /mob/living/carbon/human/proc/recheck_bad_external_organs()
 	var/damage_this_tick = getInternalLoss()
-	for(var/obj/item/organ/external/O in organs)
+	for(var/obj/item/organ/external/O in external_organs)
 		damage_this_tick += O.burn_dam + O.brute_dam
 
 	if(damage_this_tick > last_dam)
@@ -101,7 +101,7 @@
 
 	if(force_process)
 		bad_external_organs.Cut()
-		for(var/obj/item/organ/external/Ex in organs)
+		for(var/obj/item/organ/external/Ex in external_organs)
 			bad_external_organs |= Ex
 
 	//processing internal organs is pretty cheap, do that first.
@@ -161,7 +161,7 @@
 
 	var/limb_pain
 	for(var/limb_tag in list(BP_L_LEG, BP_L_FOOT))	// Left leg processing
-		var/obj/item/organ/external/E = organs_by_name[limb_tag]
+		var/obj/item/organ/external/E = external_organs_by_name[limb_tag]
 
 		if(!E || (E.status & ORGAN_DISFIGURED) || istype(E,/obj/item/organ/external/stump))
 			stance_d_l += 5
@@ -190,7 +190,7 @@
 			stance_d_l -= 1.5
 
 	for(var/limb_tag in list(BP_R_LEG, BP_R_FOOT))	// Right leg processing
-		var/obj/item/organ/external/E = organs_by_name[limb_tag]
+		var/obj/item/organ/external/E = external_organs_by_name[limb_tag]
 
 		if(!E || (E.status & ORGAN_DISFIGURED) || istype(E,/obj/item/organ/external/stump))
 			stance_d_r += 5
@@ -409,7 +409,7 @@
 			visible_message("<B>\The [src]</B> drops what they were holding in their [grasp_name]!")
 
 /mob/living/carbon/human/proc/sync_organ_dna()
-	var/list/all_bits = internal_organs|organs
+	var/list/all_bits = internal_organs|external_organs
 	for(var/obj/item/organ/O in all_bits)
 		O.set_dna(dna)
 
@@ -428,8 +428,8 @@
 	return FALSE
 
 /mob/living/carbon/human/proc/has_damaged_organ()
-	for(var/limb_type in (species.has_limbs | organs_by_name))
-		var/obj/item/organ/external/E = organs_by_name[limb_type]
+	for(var/limb_type in (species.has_limbs | external_organs_by_name))
+		var/obj/item/organ/external/E = external_organs_by_name[limb_type]
 		if((E && E.damage > 0) || !E || (E && (E.status & ORGAN_BROKEN)) || (E && (E.status &= ~ORGAN_ARTERY_CUT)))
 			return 1
 	return 0
