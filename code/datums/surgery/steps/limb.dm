@@ -251,10 +251,6 @@
 		"[user]'s hand slips, sawing through the bone in [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, sawwing through the bone in [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		30,
-		0,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
+
 	parent_organ.fracture()
+	parent_organ.take_cut_damage(30, tool)

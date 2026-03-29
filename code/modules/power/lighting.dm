@@ -625,7 +625,7 @@
 				to_chat(user, "You try to remove the [get_fitting_name()], but you burn your hand on it!")
 				var/obj/item/organ/external/E = H.get_hand_organ()
 				if(istype(E))
-					E.take_external_damage(0, rand(3, 7), used_weapon = "hot lightbulb")
+					E.take_burn_damage(rand(3, 7), "hot lightbulb")
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			return				// if burned, don't remove the light
 	else

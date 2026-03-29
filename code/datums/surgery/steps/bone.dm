@@ -97,7 +97,7 @@
 		"[user]'s hand slips, damaging [target]'s [parent_organ.name] with \the [tool]!",
 		"Your hand slips, damaging [target]'s [parent_organ.name] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(10, used_weapon = tool)
+	parent_organ.take_blunt_damage(10, tool)
 	parent_organ.status |= ORGAN_DISFIGURED
 
 /**
@@ -141,7 +141,7 @@
 		"[user]'s hand slips, damaging [target]'s face with \the [tool]!",
 		"Your hand slips, damaging [target]'s face with \the [tool]!"
 		)
-	parent_organ.take_external_damage(10, used_weapon = tool)
+	parent_organ.take_blunt_damage(10, tool)
 	parent_organ.status |= ORGAN_DISFIGURED
 
 /**
@@ -198,8 +198,8 @@
 		"[user]'s hand slips, damaging the [parent_organ.encased ? parent_organ.encased : "bones"] in [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, damaging the [parent_organ.encased ? parent_organ.encased : "bones"] in [target]'s [parent_organ] with \the [tool]!"
 		)
+	parent_organ.take_blunt_damage(5, tool)
 	parent_organ.fracture()
-	parent_organ.take_external_damage(5, used_weapon = tool)
 
 /**
  * Applies bonegel on set bone.
@@ -282,4 +282,4 @@
 		"\The [tool] in [user]'s hand skips, jabbing the bone edges into the sides of [target]'s [parent_organ]!",
 		"Your hand jolts and \the [tool] skips, jabbing the bone edges into [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(10, used_weapon = tool)
+	parent_organ.take_blunt_damage(15, tool)

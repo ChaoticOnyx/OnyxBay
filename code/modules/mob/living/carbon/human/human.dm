@@ -186,8 +186,8 @@
 				//user.throw_at(target, 200, 4)
 
 		if(2.0)
-			b_loss = 60
-			f_loss = 60
+			b_loss = 100
+			f_loss = 50
 
 			if(get_ear_protection() < 2)
 				adjustEarDamage(30, 120)
@@ -195,7 +195,7 @@
 				Paralyse(10)
 
 		if(3.0)
-			b_loss = 30
+			b_loss = 50
 			if(get_ear_protection() < 2)
 				adjustEarDamage(15, 60)
 			if(!cochlear && prob(50))
@@ -208,22 +208,13 @@
 
 	// focus most of the blast on one organ
 	var/obj/item/organ/external/take_blast = pick(organs)
-	take_blast.take_external_damage(b_loss * 0.7, f_loss * 0.7, used_weapon = "Explosive blast")
+	take_blast.take_external_damage(b_loss * 0.7, f_loss * 0.7, used_weapon = "Explosive Blast")
 
 	// distribute the remaining 30% on all limbs equally (including the one already dealt damage)
 	b_loss *= 0.3
 	f_loss *= 0.3
-
-	var/weapon_message = "Explosive Blast"
 	for(var/obj/item/organ/external/temp in organs)
-		var/loss_val
-		if(temp.organ_tag  == BP_HEAD)
-			loss_val = 0.2
-		else if(temp.organ_tag == BP_CHEST)
-			loss_val = 0.4
-		else
-			loss_val = 0.05
-		temp.take_external_damage(b_loss * loss_val, f_loss * loss_val, used_weapon = weapon_message)
+		temp.take_external_damage(b_loss, f_loss, used_weapon = "Explosive Blast")
 
 /mob/living/carbon/human/blob_act(damage)
 	if(is_ic_dead())

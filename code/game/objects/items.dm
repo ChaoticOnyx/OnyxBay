@@ -756,7 +756,7 @@ var/list/global/slot_flags_enumeration = list(
 					to_chat(M, SPAN("warning", "You go blind!"))
 
 		var/obj/item/organ/external/affecting = H.get_organ(eyes.parent_organ)
-		affecting.take_external_damage(7)
+		affecting.take_pierce_damage(7)
 	else
 		M.take_organ_damage(7)
 	M.eye_blurry += rand(3,4)

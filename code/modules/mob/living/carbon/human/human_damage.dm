@@ -571,3 +571,78 @@ This function restores all organs.
 	if(stat == UNCONSCIOUS)
 		traumatic_shock *= 0.6
 	return max(0, traumatic_shock)
+
+/mob/living/carbon/human/handle_pull_damage(mob/living/puller)
+	if(!lying)
+		return FALSE
+
+	if(species && (species.species_flags & SPECIES_FLAG_NO_MINOR_CUT))
+		return FALSE
+
+	if(!length(bad_external_organs))
+		return FALSE
+
+	if(!has_gravity())
+		return FALSE
+
+	var/has_blood = TRUE
+	if(species && (species.species_flags & SPECIES_FLAG_NO_BLOOD))
+		has_blood = FALSE
+	else if(!vessel.has_reagent(/datum/reagent/blood))
+		has_blood = FALSE
+
+	var/turf/location = get_turf(src)
+	for(var/obj/item/organ/external/E in shuffle(bad_external_organs))
+		if(E.is_stump())
+			continue
+
+		var/should_take_damage = max(E.cut_dam, E.burn_dam) >= E.min_broken_damage * (E.bleeding ? 0.5 : 1.0)
+		if(should_take_damage)
+			if(max(E.cut_ratio, E.burn_ratio) >= 0.9)
+				if(BP_IS_ROBOTIC(E))
+					visible_message(SPAN("danger", "Wounds on [src]'s [E] worsen terribly from being dragged!"))
+				else
+					visible_message(SPAN("danger", "Damage to [src]'s [E] worsens terribly from being dragged!"))
+					if(has_blood && prob(75))
+						location.add_blood(src)
+						vessel.remove_reagent(/datum/reagent/blood, 30)
+			else
+				if(BP_IS_ROBOTIC(E))
+					visible_message(SPAN("danger", "Wounds on [src]'s [E] open more from being dragged!"))
+				else
+					visible_message(SPAN("danger", "\The [src]'s [BP_IS_ROBOTIC(E) ? "state worsens": "wounds open more"] from being dragged!"))
+					if(has_blood && prob(25))
+						location.add_blood(src)
+						vessel.remove_reagent(/datum/reagent/blood, 10)
+
+			E.take_cut_damage(3, "Friction")
+			return TRUE // Let's not make floors a tiled god of death, one proc per move is more than enough.
+
+		should_take_damage = !BP_IS_ROBOTIC(E) && E.is_broken()
+		if(should_take_damage)
+			if(E.blunt_ratio >= 0.9)
+				visible_message(SPAN("danger", "Broken bones in [src]'s [E] shred through the skin from being dragged!"))
+				E.take_pierce_damage(3, "Bone Shards")
+				if(has_blood && prob(50))
+					location.add_blood(src)
+					vessel.remove_reagent(/datum/reagent/blood, 20)
+			else
+				visible_message(SPAN("danger", "Broken bones in [src]'s [E] jostle badly from being dragged!"))
+				E.take_blunt_damage(3, "Broken Bone Movement")
+
+			return TRUE
+
+	return FALSE
+
+/mob/living/carbon/human/pull_damage()
+	if(!lying || getBruteLoss() + getFireLoss() < 100)
+		return 0
+	for(var/thing in organs)
+		var/obj/item/organ/external/e = thing
+		if(!e || e.is_stump())
+			continue
+		if((e.status & ORGAN_BROKEN) && !e.splinted)
+			return 1
+		if(e.status & ORGAN_BLEEDING)
+			return 1
+	return 0

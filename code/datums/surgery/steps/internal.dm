@@ -87,7 +87,7 @@
 		"[user]'s hand slips, damaging the flesh in [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, damaging the flesh in [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(20, used_weapon = tool)
+	parent_organ.take_blunt_damage(20, tool)
 
 /**
  * Organ detachment step using any sharp object, doesn't work on sinths.
@@ -147,12 +147,7 @@
 		"[user]'s hand slips, slicing an artery inside [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, slicing an artery inside [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		rand(30, 50),
-		0,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
+	parent_organ.take_cut_damage(rand(30, 50), tool)
 
 /**
  * Removes organ from parent using any poking tool.
@@ -213,7 +208,7 @@
 		"[user]'s hand slips, damaging [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, damaging [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(20, used_weapon = tool)
+	parent_organ.take_blunt_damage(20, tool)
 
 /**
  * Puts organ inside its parent.
@@ -435,8 +430,8 @@
 			150
 			)
 		target.adjustToxLoss(30)
-		parent_organ.take_external_damage(10, 0, (DAM_SHARP|DAM_EDGE), used_weapon = organ_fixer)
-		internal_organ.take_internal_damage((parent_organ.max_damage - parent_organ.damage), 0)
+		parent_organ.take_cut_damage(10, organ_fixer)
+		internal_organ.take_internal_damage((internal_organ.max_damage - internal_organ.damage), 0)
 		return
 
 	announce_success(user,
@@ -461,7 +456,7 @@
 		)
 
 	target.adjustToxLoss(10)
-	parent_organ.take_external_damage(5, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
+	parent_organ.take_cut_damage(5, tool)
 
 	if(internal_organ.damage > 0)
 		internal_organ.take_internal_damage(5, 0)
@@ -546,7 +541,7 @@
 	else
 		dam_amt = 5
 		target.adjustToxLoss(10)
-		parent_organ.take_external_damage(dam_amt, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
+		parent_organ.take_cut_damage(dam_amt, tool)
 
 	for(var/obj/item/organ/internal/I in parent_organ.internal_organs)
 		if(I.damage > 0 && !BP_IS_ROBOTIC(I))

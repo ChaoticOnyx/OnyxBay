@@ -60,7 +60,7 @@
 				my_mob.visible_message(SPAN("danger", "[my_mob] stabs [T] with the proboscis!"), \
 					  				   SPAN("changeling", "We stab [T] with the proboscis."))
 				to_chat(T, SPAN("danger", "You feel a sharp stabbing pain!"))
-				affecting.take_external_damage(39, 0, DAM_SHARP, "large organic needle")
+				affecting.take_pierce_damage(39, "large organic needle")
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(my_mob, T, 150))

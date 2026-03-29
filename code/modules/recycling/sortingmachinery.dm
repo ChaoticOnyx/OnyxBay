@@ -535,7 +535,7 @@
 		for(var/mob/living/carbon/human/L in src)
 			var/obj/item/organ/external/E = pick(L.organs)
 
-			E.take_external_damage(45, used_weapon = "Blunt Trauma")
+			E.take_blunt_damage(45, "Blunt Trauma")
 			to_chat(L, "\The [src]'s mechanisms crush your [E.name]!")
 
 	H.init(src)	// copy the contents of disposer to holder

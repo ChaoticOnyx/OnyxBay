@@ -54,7 +54,7 @@
 			to_chat(H, SPAN_DANGER("\A [thorn] impales your [organ]!"))
 		else
 			to_chat(H, SPAN_WARNING("A thorn [pick("slices","cuts","nicks")] your [organ.name]!"))
-			organ.take_external_damage(10, 0, DAM_SHARP, src)
+			organ.take_pierce_damage(10, src)
 
 		if(H.can_feel_pain())
 			H.emote("scream")

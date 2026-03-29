@@ -156,7 +156,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 // 'damage_flags' - additional damage tags, such as DAM_SHARP, DAM_EDGE, or DAM_LASER
 // 'used_weapon' - what we'll add to the autopsy data
 // 'clean' - if TRUE, doesn't cause "extra" effects such as dismemberment or blood evaporation, used for surgical cuts and vacuum damage
-/obj/item/organ/external/proc/take_external_damage(brute, burn, damage_flags, used_weapon = null, clean = FALSE)
+/obj/item/organ/external/proc/take_external_damage(brute, burn, damage_flags = 0, used_weapon = null)
 	if(owner && (owner.status_flags & GODMODE))
 		return 0
 
@@ -166,6 +166,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(brute <= 0 && burn <= 0)
 		return 0
 
+	var/clean = (damage_flags & DAM_CLEAN)
 	var/sharp = (damage_flags & DAM_SHARP)
 	var/edge  = (damage_flags & DAM_EDGE)
 	var/laser = (damage_flags & DAM_LASER)
@@ -318,16 +319,16 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 // Shortcuts for damage types
 /obj/item/organ/external/proc/take_blunt_damage(amount, used_weapon = null, clean = FALSE)
-	return take_external_damage(amount, 0, 0, used_weapon, clean)
+	return take_external_damage(amount, 0, (clean ? DAM_CLEAN : 0), used_weapon)
 
 /obj/item/organ/external/proc/take_pierce_damage(amount, used_weapon = null, clean = FALSE)
-	return take_external_damage(amount, 0, DAM_SHARP, used_weapon, clean)
+	return take_external_damage(amount, 0, (clean ? (DAM_SHARP|DAM_CLEAN) : DAM_SHARP), used_weapon)
 
 /obj/item/organ/external/proc/take_cut_damage(amount, used_weapon = null, clean = FALSE)
-	return take_external_damage(amount, 0, DAM_EDGE, used_weapon, clean)
+	return take_external_damage(amount, 0, (clean ? (DAM_EDGE|DAM_CLEAN) : DAM_EDGE), used_weapon)
 
 /obj/item/organ/external/proc/take_burn_damage(amount, used_weapon = null, clean = FALSE)
-	return take_external_damage(0, amount, 0, used_weapon, clean)
+	return take_external_damage(0, amount, (clean ? DAM_CLEAN : 0), used_weapon, clean)
 
 #define DISMEMBER_BRUTE_TRESHOLD(x) (brute >= (max(5, x * ((3.0 - brute_ratio) / 3))))
 /obj/item/organ/external/proc/try_to_dismember(brute, burn, damage_flags)

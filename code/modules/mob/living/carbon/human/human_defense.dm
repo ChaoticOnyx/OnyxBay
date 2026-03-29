@@ -67,7 +67,7 @@ meteor_act
 				penetrating_damage *= 0.75 // Ribs and skulls somewhat protect
 
 			var/list/victims = list()
-			var/list/possible_victims = shuffle(organ.internal_organs.Copy())
+			var/list/possible_victims = shuffle(organ.internal_organs)
 
 			for(var/obj/item/organ/internal/I in possible_victims)
 				if(I.damage < I.max_damage && (prob((sqrt(I.relative_size) * 10) * (1 / max(1, victims.len)))))

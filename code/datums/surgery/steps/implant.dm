@@ -21,12 +21,7 @@
 		"[user]'s hand slips, scraping around inside [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, scraping around inside [target]'s [parent_organ] with \the [tool]!"
 		)
-	parent_organ.take_external_damage(
-		20,
-		0,
-		(DAM_SHARP|DAM_EDGE),
-		used_weapon = tool
-		)
+	parent_organ.take_cut_damage(20, tool)
 
 /**
  * Create cavity step.

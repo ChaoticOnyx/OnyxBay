@@ -80,8 +80,8 @@
 		if(istype(src, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = src
 			var/obj/item/organ/external/organ = H.get_organ(BP_GROIN)
-			if (istype(organ))
-				organ.take_external_damage(dmg, 0)
+			if(istype(organ))
+				organ.take_blunt_damage(dmg, "intra-abdominal movement")
 			H.update_health()
 		else
 			take_organ_damage(dmg)

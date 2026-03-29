@@ -114,7 +114,15 @@
 			calculated_slowdown += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
 		else
 			calculated_slowdown += O.pull_slowdown
-	else if(istype(pulled, /mob))
+	else if(ishuman(pulled))
+		var/mob/living/carbon/human/H = pulled
+		if(H.lying)
+			calculated_slowdown += max(0, H.mob_size) / MOB_MEDIUM * 2.0 * H.body_build.pull_slowdown
+		else if(H.a_intent != I_HELP)
+			calculated_slowdown += max(0, H.mob_size) / MOB_MEDIUM * H.body_build.pull_slowdown
+		else
+			calculated_slowdown += max(0, H.mob_size) / MOB_MEDIUM * 0.5
+	else if(ismob(pulled))
 		var/mob/M = pulled
 		calculated_slowdown += max(0, M.mob_size) / MOB_MEDIUM * (M.lying ? 2 : 0.5)
 	else
