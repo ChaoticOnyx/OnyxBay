@@ -36,7 +36,7 @@
 	shop_catalog += new /datum/bombdefusal_shop_item(".45 Pistol",          BOMBDEFUSAL_CAT_PISTOLS, 500,  /obj/item/gun/projectile/pistol/secgun, mags = /obj/item/ammo_magazine/c45m)
 	shop_catalog += new /datum/bombdefusal_shop_item("Silenced Pistol",     BOMBDEFUSAL_CAT_PISTOLS, 750,  /obj/item/gun/projectile/pistol/silenced, mags = /obj/item/ammo_magazine/c45m)
 	shop_catalog += new /datum/bombdefusal_shop_item("Military .45",        BOMBDEFUSAL_CAT_PISTOLS, 700,  /obj/item/gun/projectile/pistol/colt/officer, mags = /obj/item/ammo_magazine/c45m)
-	shop_catalog += new /datum/bombdefusal_shop_item(".50 Magnum",          BOMBDEFUSAL_CAT_PISTOLS, 800,  /obj/item/gun/projectile/pistol/magnum_pistol, mags = /obj/item/ammo_magazine/a50, mag_amt = 1)
+	shop_catalog += new /datum/bombdefusal_shop_item(".50 Magnum",          BOMBDEFUSAL_CAT_PISTOLS, 1000, /obj/item/gun/projectile/pistol/magnum_pistol, mags = /obj/item/ammo_magazine/a50, mag_amt = 1)
 	// SMGs - available to all roles
 	shop_catalog += new /datum/bombdefusal_shop_item(".45 Machine Pistol",  BOMBDEFUSAL_CAT_SMGS, 1050, /obj/item/gun/projectile/automatic/machine_pistol/mini_uzi, mags = /obj/item/ammo_magazine/c45uzi)
 	shop_catalog += new /datum/bombdefusal_shop_item("9mm SMG",             BOMBDEFUSAL_CAT_SMGS, 1250, /obj/item/gun/projectile/automatic/wt550, mags = /obj/item/ammo_magazine/mc9mmt)
@@ -67,7 +67,7 @@
 	shop_catalog += new /datum/bombdefusal_shop_item(".38 Speed Loader",    BOMBDEFUSAL_CAT_AMMO,    50,   /obj/item/ammo_magazine/c38)
 	shop_catalog += new /datum/bombdefusal_shop_item(".45 Magazine",        BOMBDEFUSAL_CAT_AMMO,    100,  /obj/item/ammo_magazine/c45m)
 	shop_catalog += new /datum/bombdefusal_shop_item(".45 Stick Magazine",  BOMBDEFUSAL_CAT_AMMO,    100,  /obj/item/ammo_magazine/c45uzi)
-	shop_catalog += new /datum/bombdefusal_shop_item(".50 Magazine",        BOMBDEFUSAL_CAT_AMMO,    150,  /obj/item/ammo_magazine/a50)
+	shop_catalog += new /datum/bombdefusal_shop_item(".50 Magazine",        BOMBDEFUSAL_CAT_AMMO,    800,  /obj/item/ammo_magazine/a50)
 	shop_catalog += new /datum/bombdefusal_shop_item("9mm Magazine",        BOMBDEFUSAL_CAT_AMMO,    125,  /obj/item/ammo_magazine/mc9mmt)
 	shop_catalog += new /datum/bombdefusal_shop_item("10mm Magazine",       BOMBDEFUSAL_CAT_AMMO,    150,  /obj/item/ammo_magazine/a10mm)
 	shop_catalog += new /datum/bombdefusal_shop_item("7.92mm Clip",         BOMBDEFUSAL_CAT_AMMO,    100,  /obj/item/ammo_magazine/c792, role = BOMBDEFUSAL_ROLE_RIFLEMAN)

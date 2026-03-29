@@ -371,7 +371,7 @@
 	if(!H)
 		// No usable body - create a fresh one
 		var/turf/spawn_loc = t_spawns.len ? pick(t_spawns) : locate(1, 1, arena_z_level)
-		H = new /mob/living/carbon/human/bombdefusal(spawn_loc)
+		H = new /mob/living/carbon/human/bombdefusal/simplest(spawn_loc)
 		if(pd.saved_appearance)
 			apply_saved_appearance(H, pd.saved_appearance)
 		else if(pd.owner.name)
