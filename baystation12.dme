@@ -2111,7 +2111,6 @@
 #include "code\modules\mcu\modules\serial_terminal.dm"
 #include "code\modules\mcu\modules\signaler.dm"
 #include "code\modules\mcu\modules\tts.dm"
-#include "code\modules\mcu\modules\vga.dm"
 #include "code\modules\merchant\merchant_guns.dm"
 #include "code\modules\merchant\merchant_machinery.dm"
 #include "code\modules\merchant\merchant_programs.dm"
