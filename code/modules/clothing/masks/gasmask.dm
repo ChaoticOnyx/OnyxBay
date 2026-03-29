@@ -48,7 +48,7 @@
 	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 55)
 
 /obj/item/clothing/mask/gas/secmask
-	name = "Security gas mask"
+	name = "security gas mask"
 	desc = "Security gas mask. Filters harmful gases from the air."
 	icon_state = "secmask"
 	item_state = "secmask"
