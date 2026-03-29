@@ -705,6 +705,46 @@
 		qdel(current_bomb)
 		current_bomb = null
 
+	// Return players to the station after a short delay
+	spawn(50)
+		return_players_to_station()
+
+/datum/bombdefusal_match/proc/return_players_to_station()
+	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
+		if(!pd.owner)
+			continue
+
+		// Find a spawn point on the station
+		var/turf/spawn_loc
+		if(GLOB.latejoin_cryo?.len)
+			spawn_loc = pick(GLOB.latejoin_cryo)
+		else if(GLOB.latejoin?.len)
+			spawn_loc = pick(GLOB.latejoin)
+		if(!spawn_loc)
+			continue
+
+		// Create a fresh station body with their original appearance
+		var/mob/living/carbon/human/new_body = new(spawn_loc)
+		if(pd.saved_appearance)
+			apply_saved_appearance(new_body, pd.saved_appearance)
+		else if(pd.owner.name)
+			new_body.real_name = pd.owner.name
+			new_body.name = pd.owner.name
+
+		// Transfer mind (force active so key moves too)
+		var/mob/old_mob = pd.owner.current
+		pd.owner.active = 1
+		pd.owner.transfer_to(new_body)
+		if(old_mob && old_mob != new_body && old_mob.key)
+			new_body.key = old_mob.key
+
+		// Clean up the arena body
+		if(pd.original_body && !QDELETED(pd.original_body))
+			qdel(pd.original_body)
+			pd.original_body = null
+
+		to_chat(new_body, "<span class='notice'><b>Match over!</b> You have been returned to the station.</span>")
+
 /datum/bombdefusal_match/proc/get_winner()
 	if(a_score > b_score)
 		return team_a
