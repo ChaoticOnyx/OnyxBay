@@ -149,10 +149,12 @@
 		to_chat(user, "<span class='warning'>Only terrorists can plant the bomb!</span>")
 		return
 
-	// Check if near a bomb site
+	// Check if near a bomb site (same z-level, within 2 tiles)
 	var/near_site = FALSE
+	var/turf/user_turf = get_turf(user)
 	for(var/obj/effect/landmark/bombdefusal/bombsite/BS in match.bombsites)
-		if(get_dist(user, BS) <= 2)
+		var/turf/bs_turf = get_turf(BS)
+		if(bs_turf && user_turf && bs_turf.z == user_turf.z && get_dist(user, BS) <= 2)
 			near_site = TRUE
 			break
 
@@ -224,6 +226,12 @@
 		var/datum/bombdefusal_player_data/pd = match.mode.get_player_data_by_mob(user)
 		if(pd && pd.team.current_side == BOMBDEFUSAL_TEAM_CT)
 			attackby(null, user)
+			return
+	// Only Ts can pick up the bomb
+	if(!armed && match?.mode)
+		var/datum/bombdefusal_player_data/pd = match.mode.get_player_data_by_mob(user)
+		if(!pd || pd.team.current_side != BOMBDEFUSAL_TEAM_T)
+			to_chat(user, "<span class='warning'>Only terrorists can carry the bomb!</span>")
 			return
 	..()
 

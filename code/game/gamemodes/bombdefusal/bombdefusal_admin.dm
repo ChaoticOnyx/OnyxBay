@@ -67,6 +67,77 @@
 		to_chat(user, "<span class='notice'>Solo debug match started! You are on T side. Use the debug panel for controls.</span>")
 		show_admin_panel(user)
 
+/datum/game_mode/bombdefusal/proc/bot_match_start(mob/user)
+	if(!user || !user.mind)
+		return
+
+	var/num_matches = input(user, "How many matches (team pairs)?", "Bot Match", 1) as num|null
+	if(!num_matches || num_matches < 1)
+		return
+	var/bot_count = input(user, "How many bots per team?", "Bot Match", 3) as num|null
+	if(!bot_count || bot_count < 1)
+		return
+	bot_count = min(bot_count, cfg_team_size)
+
+	lobby_active = FALSE
+
+	// First match: admin player on Team T + bots
+	var/datum/bombdefusal_team/first_t = new("Bot Team T1", user.mind)
+	var/datum/bombdefusal_player_data/admin_pd = new(user.mind, first_t)
+	first_t.add_member(admin_pd)
+	teams += first_t
+	all_players += admin_pd
+
+	for(var/i = 1 to bot_count)
+		create_bot(first_t, "t1_[i]", get_turf(user))
+
+	var/datum/bombdefusal_team/first_ct = new("Bot Team CT1", null)
+	teams += first_ct
+	for(var/i = 1 to bot_count + 1)
+		create_bot(first_ct, "ct1_[i]", get_turf(user))
+
+	var/datum/bombdefusal_match/first_match = new(src, first_t, first_ct)
+	matches += first_match
+
+	// Additional bot-only matches
+	for(var/m = 2 to num_matches)
+		var/datum/bombdefusal_team/ta = new("Bot Team T[m]", null)
+		teams += ta
+		for(var/i = 1 to bot_count)
+			create_bot(ta, "t[m]_[i]", get_turf(user))
+
+		var/datum/bombdefusal_team/tb = new("Bot Team CT[m]", null)
+		teams += tb
+		for(var/i = 1 to bot_count)
+			create_bot(tb, "ct[m]_[i]", get_turf(user))
+
+		var/datum/bombdefusal_match/match = new(src, ta, tb)
+		matches += match
+
+	to_chat(user, "<span class='notice'>Loading [matches.len] bot match(es) ([bot_count + 1]v[bot_count + 1] first, [bot_count]v[bot_count] rest)...</span>")
+	user.anchored = TRUE
+
+	for(var/datum/bombdefusal_match/match in matches)
+		match.initialize_arena()
+		match.deferred_start()
+
+	to_chat(user, "<span class='notice'>[matches.len] bot match(es) starting!</span>")
+	show_admin_panel(user)
+
+/datum/game_mode/bombdefusal/proc/create_bot(datum/bombdefusal_team/team, suffix, turf/spawn_loc)
+	var/bot_name = random_name(pick(MALE, FEMALE))
+	var/mob/living/carbon/human/bot = new(spawn_loc)
+	bot.real_name = bot_name
+	bot.name = bot_name
+	var/datum/mind/bot_mind = new("[bot_name]_bot_[suffix]")
+	bot_mind.set_current(bot)
+	bot.mind = bot_mind
+	if(!team.captain)
+		team.captain = bot_mind
+	var/datum/bombdefusal_player_data/pd = new(bot_mind, team)
+	team.add_member(pd)
+	all_players += pd
+
 // ===== MAIN ADMIN PANEL =====
 
 /datum/game_mode/bombdefusal/proc/show_admin_panel(mob/user)
@@ -131,6 +202,7 @@ td:first-child { color: #a8a8a8; width: 180px; }
 		if(lobby_active)
 			html += "<a class='btn btn-success' href='?src=\ref[src];action=admin_config;cmd=force_start'>Force Start Lobby</a>"
 		html += "<a class='btn btn-debug' href='?src=\ref[src];action=admin_config;cmd=solo_start'>Solo Test Start</a>"
+		html += "<a class='btn btn-debug' href='?src=\ref[src];action=admin_config;cmd=bot_match'>Bot Match (NvN)</a>"
 	else
 		var/datum/bombdefusal_match/match = matches[1]
 		var/state_name = get_state_name(match.match_state)
@@ -343,6 +415,10 @@ td:first-child { color: #a8a8a8; width: 180px; }
 		if("solo_start")
 			solo_debug_start(user)
 			return // solo_start shows its own panel
+
+		if("bot_match")
+			bot_match_start(user)
+			return
 
 		if("select_map")
 			if(href_list["map"] == "random")

@@ -85,6 +85,12 @@
 			qdel(obj)
 			pd.vars[varname] = null
 
+	// Clean up team markers
+	if(pd.owner?.current)
+		for(var/image/I in pd.team_marker_images)
+			pd.owner.current.remove_client_image(I)
+	pd.team_marker_images.Cut()
+
 /datum/bombdefusal_match/proc/update_player_hud(datum/bombdefusal_player_data/pd)
 	if(!pd)
 		return
@@ -111,6 +117,37 @@
 /datum/bombdefusal_match/proc/update_all_hud()
 	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 		update_player_hud(pd)
+
+// ===== TEAM MARKERS =====
+// Colored triangles above teammates' heads, visible only to same-team players
+
+/datum/bombdefusal_match/proc/update_team_markers(datum/bombdefusal_player_data/pd)
+	if(!pd.owner?.current?.client)
+		return
+
+	var/mob/viewer = pd.owner.current
+
+	// Clear old markers
+	for(var/image/I in pd.team_marker_images)
+		viewer.remove_client_image(I)
+	pd.team_marker_images.Cut()
+
+	// Determine marker icon based on the viewer's current side
+	var/marker_state = (pd.team.current_side == BOMBDEFUSAL_TEAM_T) ? "hudoperative" : "hudloyalist"
+
+	// Add markers on all living teammates (not self)
+	for(var/datum/bombdefusal_player_data/teammate in pd.team.members)
+		if(teammate == pd)
+			continue
+		if(!teammate.owner?.current || teammate.is_dead)
+			continue
+		var/image/marker = image('icons/mob/huds/antag_hud.dmi', loc = teammate.owner.current, icon_state = marker_state, layer = ABOVE_HUMAN_LAYER)
+		pd.team_marker_images += marker
+		viewer.add_client_image(marker)
+
+/datum/bombdefusal_match/proc/update_all_team_markers()
+	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
+		update_team_markers(pd)
 
 // ===== KILLFEED =====
 

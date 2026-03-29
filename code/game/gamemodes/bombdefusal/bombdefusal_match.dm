@@ -12,6 +12,7 @@
 	var/match_state = BOMBDEFUSAL_STATE_LOBBY
 
 	// Arena
+	var/datum/bombdefusal_map/arena_map
 	var/arena_z_level = 0
 	var/list/arena_atoms = list()
 	var/list/turf/t_spawns = list()
@@ -66,6 +67,7 @@
 				S.maptext = {"<div style="text-align:center;font-size:24px;color:#FFD700;font-family:'Courier New',monospace;margin-top:12px;"><b>LOADING ARENA...</b></div>"}
 
 	// Load arena map on new z-level
+	arena_map = mode.selected_map
 	var/map_path = mode.get_selected_map_path()
 	var/datum/map_template/bombdefusal_arena/arena_template = new()
 	arena_template.mappaths = list(map_path)
@@ -169,6 +171,10 @@
 			pd.owner.current.clear_fullscreen("bombdefusal_loading")
 			to_chat(pd.owner.current, "<span class='notice'><b>Arena ready!</b> [t_spawns.len] T spawns, [ct_spawns.len] CT spawns, [bombsites.len] bomb sites.</span>")
 
+/datum/bombdefusal_match/proc/deferred_start()
+	spawn(5)
+		start_match()
+
 /datum/bombdefusal_match/proc/start_match()
 	// Save snapshot of structures now that atoms are fully initialized
 	if(!saved_structures.len)
@@ -208,11 +214,11 @@
 			var/turf/simulated/wall/W = T
 			W.damage = 0
 			W.update_icon()
-		// Clean up dropped items (keep blood/casings)
+		// Clean up dropped items, blood, and casings
 		for(var/obj/item/I in T)
-			if(istype(I, /obj/item/ammo_casing))
-				continue
 			qdel(I)
+		for(var/obj/effect/decal/cleanable/C in T)
+			qdel(C)
 
 	// Replace damaged/missing structures from snapshot
 	var/recreated = 0
@@ -309,7 +315,7 @@
 	if(current_round_num > 1)
 		cleanup_arena()
 
-	// Reset players
+	// Reset and spawn players
 	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 		pd.reset_for_round()
 		spawn_player(pd)
@@ -330,6 +336,8 @@
 
 	announce_to_match("<font size='4'><b>ROUND [current_round_num]</b></font>", "#FFD700")
 	update_all_hud()
+	// Update team markers after ALL players are spawned so loc refs are correct
+	update_all_team_markers()
 
 /datum/bombdefusal_match/proc/spawn_player(datum/bombdefusal_player_data/pd)
 	if(!pd.owner)
@@ -341,19 +349,24 @@
 
 	// Find or recover the player's bombdefusal human body
 	var/mob/living/carbon/human/bombdefusal/H = null
+	var/body_is_usable = TRUE
 
-	// If the player died (needs_reequip), always create a fresh body.
-	// Damaged/beheaded/gibbed bodies can't be safely revived.
-	if(!pd.needs_reequip)
-		if(pd.original_body && !QDELETED(pd.original_body))
-			H = pd.original_body
-		else if(istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
-			H = pd.owner.current
+	// Check if existing body is alive and functional
+	if(pd.original_body && !QDELETED(pd.original_body))
+		if(pd.original_body.stat == DEAD)
+			body_is_usable = FALSE
 		else
-			for(var/mob/living/carbon/human/bombdefusal/body in GLOB.living_mob_list_ + GLOB.dead_mob_list_)
-				if(body.mind == pd.owner || body.ckey == pd.owner.key)
-					H = body
-					break
+			H = pd.original_body
+	if(!H && istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
+		if(pd.owner.current.stat == DEAD)
+			body_is_usable = FALSE
+		else
+			H = pd.owner.current
+	if(!H && body_is_usable)
+		for(var/mob/living/carbon/human/bombdefusal/body in GLOB.living_mob_list_)
+			if(body.mind == pd.owner || body.ckey == pd.owner.key)
+				H = body
+				break
 
 	if(!H)
 		// No usable body - create a fresh one
@@ -391,6 +404,7 @@
 
 	// Clear lying so put_in_r/l_hand work (revive() doesn't clear it)
 	H.lying = FALSE
+	H.last_attacker_mind = null
 	if(H.stat == DEAD)
 		H.revive()
 
@@ -564,12 +578,22 @@
 		match_state = BOMBDEFUSAL_STATE_LIVE
 		phase_end_time = world.time + mode.cfg_round_time
 		announce_to_match("<font size='4'><b>GO! GO! GO!</b></font>", "#FF4444")
-		// Unanchor all players - round is live, close buy menu
+		// Unanchor players - round is live, close buy menu
+		// Apply per-map extra freeze to one side if configured
+		var/t_extra = arena_map ? arena_map.t_extra_freeze : 0
+		var/ct_extra = arena_map ? arena_map.ct_extra_freeze : 0
 		for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 			if(pd.owner?.current)
-				pd.owner.current.anchored = FALSE
 				sound_to(pd.owner.current, sound('sound/csgo/ok-lets-go.mp3'))
 				close_browser(pd.owner.current, "window=bombdefusal_buy")
+				var/extra = (pd.team.current_side == BOMBDEFUSAL_TEAM_T) ? t_extra : ct_extra
+				if(extra > 0)
+					// Keep frozen, unfreeze after delay
+					spawn(extra)
+						if(pd.owner?.current && match_state == BOMBDEFUSAL_STATE_LIVE)
+							pd.owner.current.anchored = FALSE
+				else
+					pd.owner.current.anchored = FALSE
 	update_all_hud()
 
 /datum/bombdefusal_match/proc/tick_live()
@@ -668,8 +692,10 @@
 	if(world.time < phase_end_time)
 		return
 	halftime_done = TRUE
+	log_debug("Bombdefusal: Halftime over, starting new round [current_round_num + 1]")
 	start_round()
 	halftime_just_happened = FALSE
+	log_debug("Bombdefusal: Post-halftime round started, state=[match_state]")
 
 /datum/bombdefusal_match/proc/do_halftime()
 	match_state = BOMBDEFUSAL_STATE_HALFTIME
@@ -687,8 +713,10 @@
 	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 		pd.money = mode.cfg_money_start
 		pd.loss_streak = 0
-		pd.is_dead = TRUE
 		pd.needs_reequip = TRUE // Force re-equip on next round
+		// Strip gear from living players so they get fresh loadout
+		if(pd.owner?.current && !pd.owner.current.stat)
+			strip_dead_player(pd.owner.current)
 
 	announce_to_match("<font size='4'><b>HALFTIME - SWITCHING SIDES</b></font>", "#FFD700")
 
@@ -752,25 +780,27 @@
 		return team_b
 	return null
 
-/datum/bombdefusal_match/proc/on_player_death(mob/living/victim, mob/living/killer)
+/datum/bombdefusal_match/proc/on_player_death(mob/living/victim, datum/mind/killer_mind, gibbed = FALSE)
 	var/datum/bombdefusal_player_data/victim_pd = mode.get_player_data_by_mob(victim)
-	var/datum/bombdefusal_player_data/killer_pd = killer ? mode.get_player_data_by_mob(killer) : null
+	var/datum/bombdefusal_player_data/killer_pd = killer_mind ? mode.get_player_data(killer_mind) : null
 
 	if(!victim_pd)
 		return
 
-	// Check if team has a living medic for downed state
+	// Check if team has a living medic for downed state (gibbed = instant death, no downed)
 	var/has_medic = FALSE
-	for(var/datum/bombdefusal_player_data/pd in victim_pd.team.members)
-		if(pd == victim_pd)
-			continue
-		if(pd.role == BOMBDEFUSAL_ROLE_MEDIC && !pd.is_dead && !pd.is_downed)
-			has_medic = TRUE
-			break
+	if(!gibbed)
+		for(var/datum/bombdefusal_player_data/pd in victim_pd.team.members)
+			if(pd == victim_pd)
+				continue
+			if(pd.role == BOMBDEFUSAL_ROLE_MEDIC && !pd.is_dead && !pd.is_downed)
+				has_medic = TRUE
+				break
 
-	if(has_medic && !victim_pd.is_downed)
+	if(has_medic && !victim_pd.is_downed && !gibbed)
 		// Enter downed state instead of dying
 		victim_pd.is_downed = TRUE
+		victim_pd.downed_by = killer_mind
 		if(istype(victim, /mob/living/carbon/human/bombdefusal))
 			var/mob/living/carbon/human/bombdefusal/H = victim
 			H.arena_full_heal()
@@ -811,6 +841,19 @@
 	pd.needs_reequip = TRUE
 	pd.deaths++
 	pd.downed_timer_id = null
+
+	// Credit the kill to whoever downed them
+	if(pd.downed_by)
+		var/datum/bombdefusal_player_data/killer_pd = mode.get_player_data(pd.downed_by)
+		if(killer_pd && killer_pd.team != pd.team)
+			killer_pd.kills++
+			killer_pd.award_money(mode.cfg_money_kill, mode.cfg_money_max)
+		// Killfeed
+		var/victim_name = pd.owner ? pd.owner.name : "Unknown"
+		var/killer_name = killer_pd ? (killer_pd.owner ? killer_pd.owner.name : "Unknown") : "Unknown"
+		add_killfeed_entry(killer_name, victim_name)
+		announce_to_match("[killer_name] > [victim_name] (bled out)", "#FFFFFF")
+		pd.downed_by = null
 
 	if(pd.owner && pd.owner.current)
 		to_chat(pd.owner.current, "<span class='danger'><font size='4'>You have bled out!</font></span>")

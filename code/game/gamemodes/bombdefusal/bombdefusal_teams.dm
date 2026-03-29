@@ -58,6 +58,7 @@
 	var/is_dead = FALSE
 	var/downed_timer_id
 	var/needs_reequip = FALSE  // Set on death/halftime; cleared after equip_player
+	var/datum/mind/downed_by = null  // Who downed this player (for bleedout kill credit)
 
 	// Original body reference for respawning with same appearance
 	var/mob/living/carbon/human/bombdefusal/original_body
@@ -68,6 +69,7 @@
 	var/atom/movable/screen/bombdefusal/money_display
 	var/atom/movable/screen/bombdefusal/timer_display
 	var/atom/movable/screen/bombdefusal/killfeed_display
+	var/list/image/team_marker_images = list()  // Team markers visible to this player
 	var/atom/movable/screen/bombdefusal/announce_display
 
 /datum/bombdefusal_player_data/New(datum/mind/player_mind, datum/bombdefusal_team/player_team)
@@ -79,6 +81,7 @@
 	is_downed = FALSE
 	is_dead = FALSE
 	downed_timer_id = null
+	downed_by = null
 
 /datum/bombdefusal_player_data/proc/reset_for_match(starting_money)
 	money = starting_money

@@ -3,16 +3,18 @@
 // Full heal proc - resets all damage for round transitions and revives
 /mob/living/carbon/human/bombdefusal
 	snowflake_organs = 0
-	var/mob/living/last_attacker = null
+	var/datum/mind/last_attacker_mind = null
 
 /mob/living/carbon/human/bombdefusal/bullet_act(obj/item/projectile/P, def_zone)
 	if(P.firer && isliving(P.firer))
-		last_attacker = P.firer
+		var/mob/living/L = P.firer
+		if(L.mind)
+			last_attacker_mind = L.mind
 	return ..()
 
 /mob/living/carbon/human/bombdefusal/hit_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
-	if(user && isliving(user))
-		last_attacker = user
+	if(user && isliving(user) && user.mind)
+		last_attacker_mind = user.mind
 	return ..()
 
 /mob/living/carbon/human/bombdefusal/simple
@@ -31,8 +33,8 @@
 		if(istype(mode))
 			var/datum/bombdefusal_player_data/pd = mode.get_player_data(mind)
 			if(pd && pd.match)
-				pd.match.on_player_death(src, last_attacker)
-				if(pd.is_downed)
+				pd.match.on_player_death(src, last_attacker_mind, gibbed)
+				if(pd.is_downed && !gibbed)
 					return // Don't actually die - enter downed state instead
 
 	return ..()

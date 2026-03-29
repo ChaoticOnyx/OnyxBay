@@ -161,8 +161,8 @@
 /datum/game_mode/bombdefusal/proc/close_lobby()
 	lobby_active = FALSE
 
-	// Collect in-game players who aren't on a team yet (skip ghosts/observers)
-	var/list/unassigned = list()
+	// Step 1: Collect unassigned in-game players
+	var/list/datum/mind/unassigned = list()
 	for(var/datum/mind/M in SSticker.minds)
 		if(!M.current || !M.current.client)
 			continue
@@ -171,57 +171,70 @@
 		if(!get_player_data(M))
 			unassigned += M
 
-	// Fill existing incomplete teams first
-	for(var/datum/mind/M in unassigned)
-		for(var/datum/bombdefusal_team/T in teams)
-			if(!T.is_full(cfg_team_size))
-				var/datum/bombdefusal_player_data/pd = new(M, T)
-				T.add_member(pd)
-				all_players += pd
-				unassigned -= M
-				break
+	// Step 2: Fill existing teams up to cfg_team_size
+	for(var/datum/bombdefusal_team/T in teams)
+		while(unassigned.len && T.members.len < cfg_team_size)
+			var/datum/mind/M = pick_n_take(unassigned)
+			var/datum/bombdefusal_player_data/pd = new(M, T)
+			T.add_member(pd)
+			all_players += pd
 
-	// Create new teams for remaining unassigned players
+	// Step 3: Merge solo players (teams of 1) into other small teams
+	// Only merge teams with 1 member — deliberate teams of 2+ are kept intact
+	var/merging = TRUE
+	while(merging)
+		merging = FALSE
+		for(var/i = 1 to teams.len)
+			var/datum/bombdefusal_team/solo = teams[i]
+			if(solo.members.len != 1)
+				continue
+			for(var/j = teams.len to i + 1 step -1)
+				var/datum/bombdefusal_team/other = teams[j]
+				if(other.members.len < cfg_team_size)
+					for(var/datum/bombdefusal_player_data/pd in solo.members)
+						pd.team = other
+						other.add_member(pd)
+					solo.members.Cut()
+					teams -= solo
+					merging = TRUE
+					break
+
+	// Step 4: Create new teams for remaining unassigned players
 	var/team_num = teams.len + 1
 	while(unassigned.len)
-		var/datum/mind/captain_mind = unassigned[1]
-		var/datum/bombdefusal_team/new_team = new("Team [team_num]", captain_mind)
-		var/datum/bombdefusal_player_data/cpd = new(captain_mind, new_team)
-		new_team.add_member(cpd)
-		all_players += cpd
-		unassigned -= captain_mind
-		// Fill this team up to max
-		while(unassigned.len && !new_team.is_full(cfg_team_size))
-			var/datum/mind/M = unassigned[1]
+		var/datum/bombdefusal_team/new_team = new("Team [team_num]", null)
+		team_num++
+		while(unassigned.len && new_team.members.len < cfg_team_size)
+			var/datum/mind/M = pick_n_take(unassigned)
 			var/datum/bombdefusal_player_data/pd = new(M, new_team)
 			new_team.add_member(pd)
 			all_players += pd
-			unassigned -= M
-		teams += new_team
-		team_num++
+		if(new_team.members.len)
+			if(!new_team.captain)
+				var/datum/bombdefusal_player_data/first = new_team.members[1]
+				new_team.captain = first.owner
+			teams += new_team
 
-	// Pair teams into matches (max 1 player difference allowed)
-	// Sort teams by size so we can pair similar-sized teams together
+	// Step 5: Pair teams into matches (prefer similar sizes, max 1 diff)
 	var/list/available_teams = teams.Copy()
-	var/list/paired = list() // list of list(team_a, team_b)
+	var/list/match_pairs = list()
 	while(available_teams.len >= 2)
 		var/datum/bombdefusal_team/ta = pick_n_take(available_teams)
-		// Find the best match: closest team size (max 1 diff)
 		var/datum/bombdefusal_team/best = null
 		var/best_diff = INFINITY
 		for(var/datum/bombdefusal_team/candidate in available_teams)
 			var/diff = abs(ta.members.len - candidate.members.len)
-			if(diff <= 1 && diff < best_diff)
+			if(diff < best_diff)
 				best = candidate
 				best_diff = diff
 		if(best)
 			available_teams -= best
-			paired += list(list(ta, best))
+			match_pairs += list(list(ta, best))
 		else
-			available_teams += ta // put back, can't pair this one
 			break
 
-	for(var/list/pair in paired)
+	// Step 6: Create matches and arenas
+	for(var/list/pair in match_pairs)
 		var/datum/bombdefusal_team/ta = pair[1]
 		var/datum/bombdefusal_team/tb = pair[2]
 		var/datum/bombdefusal_match/match = new(src, ta, tb)
@@ -230,13 +243,13 @@
 			if(pd.owner?.current)
 				pd.owner.current.anchored = TRUE
 		match.initialize_arena()
-		spawn(5)
-			match.start_match()
+		// Defer start_match via the match datum itself to avoid spawn() closure bug
+		match.deferred_start()
 
 	// Unpaired teams become observers
 	for(var/datum/bombdefusal_team/T in available_teams)
 		for(var/datum/bombdefusal_player_data/pd in T.members)
-			if(pd.owner && pd.owner.current)
+			if(pd.owner?.current)
 				to_chat(pd.owner.current, "<span class='warning'>Your team could not be matched. You will spectate this event.</span>")
 
 	to_world("<h3><font color='#FFD700'>BOMB DEFUSAL</font> - [matches.len] match(es) starting!</h3>")
@@ -293,9 +306,11 @@
 	var/map_name = selected_map ? selected_map.name : "Random"
 	html += "<p>Your team: <b>[my_team_name]</b> | Team size: [cfg_team_size]v[cfg_team_size] | Map: <b>[map_name]</b></p>"
 
-	// Create team button
+	// Create team / Leave team buttons
 	if(!my_pd)
 		html += "<p><a class='btn btn-create' href='?src=\ref[src];action=create_team'>Create Team</a></p>"
+	else
+		html += "<p><a class='btn' style='background:#a00;' href='?src=\ref[src];action=leave_team'>Leave Team</a></p>"
 
 	// List existing teams
 	html += "<h3>Teams:</h3>"
@@ -339,7 +354,7 @@
 	var/action = href_list["action"]
 
 	// Allow bombdefusal actions for all players, not just admins
-	if(!(action in list("create_team", "join_team", "approve_join", "deny_join", "refresh_lobby", "buy_item", "set_role", "admin_config")))
+	if(!(action in list("create_team", "join_team", "leave_team", "approve_join", "deny_join", "refresh_lobby", "buy_item", "set_role", "admin_config")))
 		if(..())
 			return TRUE
 
@@ -436,6 +451,32 @@
 			if(requester.current)
 				to_chat(requester.current, "<span class='warning'>Your request to join <b>[target.name]</b> was denied.</span>")
 			to_chat(user, "<span class='notice'>Request denied.</span>")
+
+		if("leave_team")
+			if(!lobby_active)
+				return TRUE
+			var/datum/bombdefusal_player_data/pd = get_player_data_by_mob(user)
+			if(!pd)
+				to_chat(user, "<span class='warning'>You are not on a team!</span>")
+				show_lobby_ui(user)
+				return TRUE
+			var/datum/bombdefusal_team/old_team = pd.team
+			old_team.remove_member(pd)
+			all_players -= pd
+			to_chat(user, "<span class='notice'>You left <b>[old_team.name]</b>.</span>")
+			// If captain left, assign new captain or disband
+			if(old_team.captain == user.mind)
+				if(old_team.members.len)
+					var/datum/bombdefusal_player_data/new_cap = old_team.members[1]
+					old_team.captain = new_cap.owner
+					if(new_cap.owner?.current)
+						to_chat(new_cap.owner.current, "<span class='notice'>You are now the captain of <b>[old_team.name]</b>!</span>")
+				else
+					teams -= old_team
+			// Remove empty teams
+			else if(!old_team.members.len)
+				teams -= old_team
+			show_lobby_ui(user)
 
 		if("refresh_lobby")
 			show_lobby_ui(user)
