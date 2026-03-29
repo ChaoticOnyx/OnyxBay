@@ -17,7 +17,7 @@
 
 /obj/item/clothing/shoes/combat/imba
 	name = "\improper SWAT boots"
-	armor = list(melee = 150, bullet = 150, laser = 150, energy = 150, bomb = 150, bio = 0)
+	armor = list(melee = 40, bullet = 40, laser = 40, energy = 40, bomb = 40, bio = 0)
 	body_parts_covered = FEET | LEGS
 
 // Undersuit cosmetics
