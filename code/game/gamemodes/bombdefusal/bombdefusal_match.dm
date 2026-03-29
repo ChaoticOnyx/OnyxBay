@@ -754,10 +754,14 @@
 		killer_pd.award_money(mode.cfg_money_kill, mode.cfg_money_max)
 
 	// Killfeed
-	var/killer_name = killer_pd ? (killer_pd.owner ? killer_pd.owner.name : "Unknown") : "World"
 	var/victim_name = victim_pd.owner ? victim_pd.owner.name : "Unknown"
-	add_killfeed_entry(killer_name, victim_name)
-	announce_to_match("[killer_name] > [victim_name]", "#FFFFFF")
+	if(killer_pd && killer_pd == victim_pd)
+		add_killfeed_entry(victim_name, victim_name)
+		announce_to_match("[victim_name] killed themselves", "#FFFFFF")
+	else
+		var/killer_name = killer_pd ? (killer_pd.owner ? killer_pd.owner.name : "Unknown") : "World"
+		add_killfeed_entry(killer_name, victim_name)
+		announce_to_match("[killer_name] > [victim_name]", "#FFFFFF")
 
 /datum/bombdefusal_match/proc/bleedout_player(datum/bombdefusal_player_data/pd)
 	if(!pd || !pd.is_downed)
