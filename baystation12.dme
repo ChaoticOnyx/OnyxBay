@@ -668,7 +668,6 @@
 #include "code\game\gamemodes\bombdefusal\bombdefusal_admin.dm"
 #include "code\game\gamemodes\bombdefusal\bombdefusal_arena.dm"
 #include "code\game\gamemodes\bombdefusal\bombdefusal_bomb.dm"
-#include "code\game\gamemodes\bombdefusal\bombdefusal_defines.dm"
 #include "code\game\gamemodes\bombdefusal\bombdefusal_economy.dm"
 #include "code\game\gamemodes\bombdefusal\bombdefusal_hud.dm"
 #include "code\game\gamemodes\bombdefusal\bombdefusal_match.dm"

@@ -101,6 +101,11 @@
 		if(match.match_state != BOMBDEFUSAL_STATE_GAMEOVER)
 			match.tick()
 
+/datum/game_mode/bombdefusal/handle_latejoin(mob/living/carbon/human/character)
+	if(lobby_active && character?.client)
+		show_lobby_ui(character)
+	return ..()
+
 /datum/game_mode/bombdefusal/check_finished()
 	if(lobby_active)
 		return FALSE

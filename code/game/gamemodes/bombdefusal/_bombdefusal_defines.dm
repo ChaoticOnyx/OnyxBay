@@ -26,3 +26,7 @@
 #define BOMBDEFUSAL_CAT_AMMO     "Ammo"
 #define BOMBDEFUSAL_CAT_GEAR     "Gear"
 #define BOMBDEFUSAL_CAT_MEDICAL  "Medical"
+
+// Radio frequencies (unused range in 1200-1600)
+#define BOMBDEFUSAL_FREQ_T   1215
+#define BOMBDEFUSAL_FREQ_CT  1217
