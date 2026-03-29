@@ -157,6 +157,12 @@
 
 	log_game("Bombdefusal arena loaded on z=[arena_z_level]: [t_spawns.len] T spawns, [ct_spawns.len] CT spawns, [bombsites.len] bombsites")
 
+	// Spawn bombsite decals (corner brackets + site letter + plant X)
+	for(var/obj/effect/landmark/bombdefusal/bombsite/BS in bombsites)
+		spawn_bombsite_decals(get_turf(BS), BS.site_id)
+
+
+
 	// Clear loading screen and notify players
 	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 		if(pd.owner?.current)
@@ -179,14 +185,17 @@
 	b_score = 0
 	start_round()
 
-// Save window frame positions for round reset (doors are repaired in place)
+// Save window frame and barricade positions for round reset (doors are repaired in place)
 /datum/bombdefusal_match/proc/save_arena_structures()
 	saved_structures = list()
 	for(var/turf/T in block(locate(1, 1, arena_z_level), locate(world.maxx, world.maxy, arena_z_level)))
 		for(var/obj/structure/window_frame/WF in T)
-			saved_structures += list(list("type" = WF.type, "x" = T.x, "y" = T.y, "dir" = WF.dir))
-	log_game("Bombdefusal save_arena_structures: z=[arena_z_level], saved [saved_structures.len] window frames")
-	announce_to_match("<span class='debug'>DEBUG: Saved [saved_structures.len] window frames for round reset (z=[arena_z_level])</span>", "#FFAA00")
+			saved_structures += list(list("kind" = "window_frame", "type" = WF.type, "x" = T.x, "y" = T.y, "dir" = WF.dir))
+		for(var/obj/structure/barricade/material/B in T)
+			var/mat_name = B.material ? B.material.name : MATERIAL_WOOD
+			saved_structures += list(list("kind" = "barricade", "type" = B.type, "x" = T.x, "y" = T.y, "dir" = B.dir, "material" = mat_name))
+	log_game("Bombdefusal save_arena_structures: z=[arena_z_level], saved [saved_structures.len] structures")
+	log_debug("Bombdefusal: Saved [saved_structures.len] structures for round reset (z=[arena_z_level])")
 
 /datum/bombdefusal_match/proc/cleanup_arena()
 	for(var/turf/T in block(locate(1, 1, arena_z_level), locate(world.maxx, world.maxy, arena_z_level)))
@@ -205,43 +214,59 @@
 				continue
 			qdel(I)
 
-	// Replace damaged/missing window frames from snapshot
+	// Replace damaged/missing structures from snapshot
 	var/recreated = 0
 	var/skipped = 0
 	for(var/list/data in saved_structures)
 		var/turf/T = locate(data["x"], data["y"], arena_z_level)
 		if(!T)
 			continue
-		// Check if the window frame still exists and is undamaged
-		var/needs_replace = TRUE
-		for(var/obj/structure/window_frame/WF in T)
-			if(WF.frame_state == 1 /*FRAME_DESTROYED*/)
-				continue // Destroyed frame, needs replacing
-			if(WF.health < WF.max_health)
-				continue // Damaged frame, needs replacing
-			// Check if panes that should exist are missing
-			if(WF.preset_outer_pane && !WF.outer_pane)
-				continue // Missing outer pane
-			if(WF.preset_inner_pane && !WF.inner_pane)
-				continue // Missing inner pane
-			// Frame is intact
-			needs_replace = FALSE
-			break
-		if(!needs_replace)
-			skipped++
-			continue
-		// Delete any damaged remnants on the tile
-		for(var/obj/structure/window_frame/WF in T)
-			qdel(WF)
-		// Recreate fresh from snapshot
-		var/obj_type = data["type"]
-		var/obj/structure/window_frame/new_frame = new obj_type(T)
-		if(new_frame)
-			new_frame.dir = data["dir"]
-			recreated++
-		else
-			log_game("Bombdefusal cleanup: FAILED to recreate [obj_type] at [data["x"]],[data["y"]]")
-	announce_to_match("<span class='debug'>DEBUG: Window frames - [recreated] replaced, [skipped] intact (of [saved_structures.len] saved)</span>", "#FFAA00")
+
+		switch(data["kind"])
+			if("window_frame")
+				var/needs_replace = TRUE
+				for(var/obj/structure/window_frame/WF in T)
+					if(WF.frame_state == 1 /*FRAME_DESTROYED*/)
+						continue
+					if(WF.health < WF.max_health)
+						continue
+					if(WF.preset_outer_pane && !WF.outer_pane)
+						continue
+					if(WF.preset_inner_pane && !WF.inner_pane)
+						continue
+					needs_replace = FALSE
+					break
+				if(!needs_replace)
+					skipped++
+					continue
+				for(var/obj/structure/window_frame/WF in T)
+					qdel(WF)
+				var/obj_type = data["type"]
+				var/obj/structure/window_frame/new_frame = new obj_type(T)
+				if(new_frame)
+					new_frame.dir = data["dir"]
+					recreated++
+
+			if("barricade")
+				// Check if barricade still exists and is undamaged
+				var/needs_replace = TRUE
+				for(var/obj/structure/barricade/material/B in T)
+					if(B.damage <= 0)
+						needs_replace = FALSE
+						break
+				if(!needs_replace)
+					skipped++
+					continue
+				for(var/obj/structure/barricade/material/B in T)
+					qdel(B)
+				var/barricade_type = data["type"]
+				var/barricade_mat = data["material"]
+				var/obj/structure/barricade/material/new_barricade = new barricade_type(T, barricade_mat)
+				if(new_barricade)
+					new_barricade.dir = data["dir"]
+					recreated++
+
+	log_debug("Bombdefusal: Structures - [recreated] replaced, [skipped] intact (of [saved_structures.len] saved)")
 
 	// Repair doors in place (don't delete/recreate - avoids wide door crash)
 	for(var/obj/machinery/door/D in SSmachines.machinery)
@@ -310,20 +335,16 @@
 	if(!pd.owner)
 		return
 
+	// Save appearance from the original station body before creating an arena mob
+	if(!pd.saved_appearance && ishuman(pd.owner.current) && !istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
+		pd.saved_appearance = save_human_appearance(pd.owner.current)
+
 	// Find or recover the player's bombdefusal human body
 	var/mob/living/carbon/human/bombdefusal/H = null
 
-	// Find the ghost if the player is ghosted
-	var/mob/observer/ghost/player_ghost
-	for(var/mob/observer/ghost/G in GLOB.player_list)
-		if(G.ckey == pd.owner.key)
-			player_ghost = G
-			break
-
-	if(istype(pd.owner.current, /mob/living/carbon/human/bombdefusal) && pd.owner.current.client)
-		H = pd.owner.current
-	else
-		// Player is ghosted or has no client on their body - find/reclaim the body
+	// If the player died (needs_reequip), always create a fresh body.
+	// Damaged/beheaded/gibbed bodies can't be safely revived.
+	if(!pd.needs_reequip)
 		if(pd.original_body && !QDELETED(pd.original_body))
 			H = pd.original_body
 		else if(istype(pd.owner.current, /mob/living/carbon/human/bombdefusal))
@@ -334,37 +355,42 @@
 					H = body
 					break
 
-		if(!H)
-			// No body found - create a new one and restore saved appearance
-			var/turf/spawn_loc = t_spawns.len ? pick(t_spawns) : locate(1, 1, arena_z_level)
-			H = new /mob/living/carbon/human/bombdefusal(spawn_loc)
-			if(pd.saved_appearance)
-				apply_saved_appearance(H, pd.saved_appearance)
-			else if(pd.owner.name)
-				H.real_name = pd.owner.name
-				H.name = pd.owner.name
+	if(!H)
+		// No usable body - create a fresh one
+		var/turf/spawn_loc = t_spawns.len ? pick(t_spawns) : locate(1, 1, arena_z_level)
+		H = new /mob/living/carbon/human/bombdefusal(spawn_loc)
+		if(pd.saved_appearance)
+			apply_saved_appearance(H, pd.saved_appearance)
+		else if(pd.owner.name)
+			H.real_name = pd.owner.name
+			H.name = pd.owner.name
+		// Clean up the old damaged body so it doesn't linger
+		if(pd.original_body && !QDELETED(pd.original_body) && pd.original_body != H)
+			qdel(pd.original_body)
+		pd.original_body = H
 
-		// Force the player back into the body (same as reenter_corpse)
-		if(player_ghost)
-			H.key = player_ghost.key
-			H.teleop = null
-			qdel(player_ghost)
-		else if(!H.mind || H.mind != pd.owner)
-			pd.owner.transfer_to(H)
+	// Transfer mind and client into the body.
+	// transfer_to() skips the key assignment if mind.active == 0 (which happens
+	// when a player ghostizes - Logout() on the old body sets active=0).
+	// Force active=1 and also yank the key directly from whichever mob has it.
+	var/mob/old_mob = pd.owner.current
+	if(old_mob != H)
+		pd.owner.active = 1
+		pd.owner.transfer_to(H)
+	// If the client is still on the old mob (ghost), move the key over
+	if(old_mob && old_mob != H && old_mob.key)
+		H.key = old_mob.key
 
 	if(!H)
 		return
 
-	// Store original body reference and save appearance on first spawn
-	if(!pd.original_body || QDELETED(pd.original_body))
-		pd.original_body = H
+	// Store body reference and save appearance if not yet saved
+	pd.original_body = H
 	if(!pd.saved_appearance)
 		pd.saved_appearance = save_human_appearance(H)
 
-	// Track if this player died last round BEFORE reviving (needs fresh equip)
-	var/was_dead = pd.is_dead || (H.stat == DEAD)
-
-	// Revive if dead (full revive happens later in arena_full_heal)
+	// Clear lying so put_in_r/l_hand work (revive() doesn't clear it)
+	H.lying = FALSE
 	if(H.stat == DEAD)
 		H.revive()
 
@@ -382,10 +408,11 @@
 	else
 		to_chat(H, "<span class='warning'>No spawn points found for your team!</span>")
 
-	if(was_dead || current_round_num <= 1)
-		// Dead players or first round: full re-equip with base outfit
+	if(current_round_num <= 1 || pd.needs_reequip)
+		// First round, died last round, or halftime: full outfit + fresh random look
 		equip_player(pd)
-	// Surviving players keep their purchased weapons between rounds
+		pd.needs_reequip = FALSE
+	// Surviving players keep all their purchased weapons and gear
 
 	// Full heal regardless
 	H.arena_full_heal()
@@ -537,11 +564,12 @@
 		match_state = BOMBDEFUSAL_STATE_LIVE
 		phase_end_time = world.time + mode.cfg_round_time
 		announce_to_match("<font size='4'><b>GO! GO! GO!</b></font>", "#FF4444")
-		// Unanchor all players - round is live
+		// Unanchor all players - round is live, close buy menu
 		for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 			if(pd.owner?.current)
 				pd.owner.current.anchored = FALSE
 				sound_to(pd.owner.current, sound('sound/csgo/ok-lets-go.mp3'))
+				close_browser(pd.owner.current, "window=bombdefusal_buy")
 	update_all_hud()
 
 /datum/bombdefusal_match/proc/tick_live()
@@ -659,7 +687,8 @@
 	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 		pd.money = mode.cfg_money_start
 		pd.loss_streak = 0
-		pd.is_dead = TRUE // Force re-equip on next round
+		pd.is_dead = TRUE
+		pd.needs_reequip = TRUE // Force re-equip on next round
 
 	announce_to_match("<font size='4'><b>HALFTIME - SWITCHING SIDES</b></font>", "#FFD700")
 
@@ -715,7 +744,9 @@
 	else
 		// Actual death
 		victim_pd.is_dead = TRUE
+		victim_pd.needs_reequip = TRUE
 		victim_pd.deaths++
+		strip_dead_player(victim)
 
 	// Award killer
 	if(killer_pd && killer_pd.team != victim_pd.team)
@@ -723,16 +754,21 @@
 		killer_pd.award_money(mode.cfg_money_kill, mode.cfg_money_max)
 
 	// Killfeed
-	var/killer_name = killer_pd ? (killer_pd.owner ? killer_pd.owner.name : "Unknown") : "World"
 	var/victim_name = victim_pd.owner ? victim_pd.owner.name : "Unknown"
-	add_killfeed_entry(killer_name, victim_name)
-	announce_to_match("[killer_name] > [victim_name]", "#FFFFFF")
+	if(killer_pd && killer_pd == victim_pd)
+		add_killfeed_entry(victim_name, victim_name)
+		announce_to_match("[victim_name] killed themselves", "#FFFFFF")
+	else
+		var/killer_name = killer_pd ? (killer_pd.owner ? killer_pd.owner.name : "Unknown") : "World"
+		add_killfeed_entry(killer_name, victim_name)
+		announce_to_match("[killer_name] > [victim_name]", "#FFFFFF")
 
 /datum/bombdefusal_match/proc/bleedout_player(datum/bombdefusal_player_data/pd)
 	if(!pd || !pd.is_downed)
 		return
 	pd.is_downed = FALSE
 	pd.is_dead = TRUE
+	pd.needs_reequip = TRUE
 	pd.deaths++
 	pd.downed_timer_id = null
 
@@ -741,6 +777,24 @@
 		var/mob/living/L = pd.owner.current
 		if(istype(L))
 			L.death()
+			strip_dead_player(L)
+
+/datum/bombdefusal_match/proc/strip_dead_player(mob/living/victim)
+	if(!istype(victim, /mob/living/carbon/human))
+		return
+	var/mob/living/carbon/human/H = victim
+	var/list/slots = list(
+		slot_r_hand, slot_l_hand,
+		slot_belt, slot_back,
+		slot_wear_suit, slot_head,
+		slot_wear_mask, slot_gloves, slot_shoes,
+		slot_w_uniform
+	)
+	for(var/slot in slots)
+		var/obj/item/I = H.get_equipped_item(slot)
+		if(I)
+			H.drop(I)
+			qdel(I)
 
 /datum/bombdefusal_match/proc/revive_player(datum/bombdefusal_player_data/pd)
 	if(!pd || !pd.is_downed)

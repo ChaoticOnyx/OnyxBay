@@ -57,6 +57,7 @@
 	var/is_downed = FALSE
 	var/is_dead = FALSE
 	var/downed_timer_id
+	var/needs_reequip = FALSE  // Set on death/halftime; cleared after equip_player
 
 	// Original body reference for respawning with same appearance
 	var/mob/living/carbon/human/bombdefusal/original_body
