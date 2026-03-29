@@ -328,7 +328,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	return take_external_damage(amount, 0, (clean ? (DAM_EDGE|DAM_CLEAN) : DAM_EDGE), used_weapon)
 
 /obj/item/organ/external/proc/take_burn_damage(amount, used_weapon = null, clean = FALSE)
-	return take_external_damage(0, amount, (clean ? DAM_CLEAN : 0), used_weapon, clean)
+	return take_external_damage(0, amount, (clean ? DAM_CLEAN : 0), used_weapon)
 
 #define DISMEMBER_BRUTE_TRESHOLD(x) (brute >= (max(5, x * ((3.0 - brute_ratio) / 3))))
 /obj/item/organ/external/proc/try_to_dismember(brute, burn, damage_flags)
