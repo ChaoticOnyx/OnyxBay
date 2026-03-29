@@ -28,7 +28,7 @@
 
 	for(var/organ in targets)
 		var/obj/item/organ/external/E = H.get_organ(organ)
-		E.take_external_damage(10, "hot iron")
+		E.take_burn_damage(10, "hot iron")
 		if(E.can_feel_pain())
 			H.grasp_damage_disarm(E)
 		else
