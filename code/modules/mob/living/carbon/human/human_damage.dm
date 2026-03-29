@@ -600,17 +600,17 @@ This function restores all organs.
 		if(should_take_damage)
 			if(max(E.cut_ratio, E.burn_ratio) >= 0.9)
 				if(BP_IS_ROBOTIC(E))
-					visible_message(SPAN("danger", "Wounds on [src]'s [E] worsen terribly from being dragged!"))
-				else
 					visible_message(SPAN("danger", "Damage to [src]'s [E] worsens terribly from being dragged!"))
+				else
+					visible_message(SPAN("danger", "Wounds on [src]'s [E] worsen terribly from being dragged!"))
 					if(has_blood && prob(75))
 						location.add_blood(src)
 						vessel.remove_reagent(/datum/reagent/blood, 30)
 			else
 				if(BP_IS_ROBOTIC(E))
-					visible_message(SPAN("danger", "Wounds on [src]'s [E] open more from being dragged!"))
+					visible_message(SPAN("danger", "Damage to [src]'s [E] worsens from being dragged!"))
 				else
-					visible_message(SPAN("danger", "\The [src]'s [BP_IS_ROBOTIC(E) ? "state worsens": "wounds open more"] from being dragged!"))
+					visible_message(SPAN("danger", "Wounds on [src]'s [E] open more from being dragged!"))
 					if(has_blood && prob(25))
 						location.add_blood(src)
 						vessel.remove_reagent(/datum/reagent/blood, 10)
