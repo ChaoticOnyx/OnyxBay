@@ -49,7 +49,7 @@
 
 /obj/item/clothing/mask/gas/secmask
 	name = "security gas mask"
-	desc = "Security gas mask. Filters harmful gases from the air."
+	desc = "A security gas mask that filters harmful gases from the air."
 	icon_state = "secmask"
 	item_state = "secmask"
 
