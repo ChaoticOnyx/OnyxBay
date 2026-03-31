@@ -111,9 +111,12 @@
 	return TRUE
 
 /obj/item/organ/internal/die()
-	..()
+	. = ..()
+	if(!.)
+		return FALSE
 	if((status & ORGAN_DEAD) && dead_icon)
 		icon_state = dead_icon
+	return TRUE
 
 /obj/item/organ/internal/remove_rejuv()
 	if(owner)

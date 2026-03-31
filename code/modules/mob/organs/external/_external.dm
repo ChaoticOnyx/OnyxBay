@@ -104,7 +104,7 @@
 	// Surgery vars.
 	var/cavity_max_w_class = 0
 	var/hatch_state = 0
-	var/stage = 0
+	var/bone_stage = 0
 	var/cavity = 0
 	var/atom/movable/applied_pressure
 	var/atom/movable/splinted
@@ -275,7 +275,7 @@
 
 /obj/item/organ/external/attackby(obj/item/W, mob/user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	switch(stage)
+	switch(bone_stage)
 		if(0)
 			if(W.edge)
 				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
@@ -291,7 +291,7 @@
 					user.visible_message(SPAN("danger", "<b>[user]</b> cuts [external_child] from [src] with [W]!"))
 				else
 					user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
-					stage++
+					bone_stage++
 				return
 		if(1)
 			if(istype(W) && W.force >= 5.0)
@@ -299,7 +299,7 @@
 					return
 				user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
 				drop_embedded_objects()
-				stage++
+				bone_stage++
 				return
 		if(2)
 			if(W.sharp || W.edge || istype(W, /obj/item/hemostat) || isWirecutter(W))
@@ -373,10 +373,6 @@
 		all_items.Add(child.get_contents_recursive())
 
 	return all_items
-
-/obj/item/organ/external/update_health()
-	damage = min(max_damage, (brute_dam + burn_dam))
-	return
 
 /obj/item/organ/external/replaced(mob/living/carbon/human/target)
 	. = ..()
@@ -594,9 +590,12 @@ This function completely restores a damaged organ to perfect condition.
 		internal.cook_organ()
 
 /obj/item/organ/external/die()
+	. = ..()
+	if(!.)
+		return FALSE
 	for(var/obj/item/organ/external/E in children)
 		E.take_blunt_damage(10, "parent organ sepsis", TRUE)
-	..()
+	return TRUE
 
 // Handles natural heal, internal bleedings and infections
 /obj/item/organ/external/proc/handle_regeneration()
@@ -969,6 +968,7 @@ This function completely restores a damaged organ to perfect condition.
 	if(use_damage_check && (blunt_dam >= min_broken_damage * config.health.organ_health_multiplier))
 		return FALSE // will just immediately fracture again
 
+	bone_stage = 0 // So things don't get weird if a wizard fixes his own bone during surgery or something.
 	status &= ~ORGAN_BROKEN
 	update_tally()
 	return TRUE
