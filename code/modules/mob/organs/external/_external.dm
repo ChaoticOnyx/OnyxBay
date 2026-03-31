@@ -557,9 +557,6 @@ This function completely restores a damaged organ to perfect condition.
 
 //Determines if we even need to process this organ.
 /obj/item/organ/external/proc/need_process()
-	if(get_pain())
-		return TRUE
-
 	if(status & (ORGAN_CUT_AWAY|ORGAN_BLEEDING|ORGAN_BROKEN|ORGAN_DEAD|ORGAN_MUTATED))
 		return TRUE
 
@@ -582,7 +579,8 @@ This function completely restores a damaged organ to perfect condition.
 			should_update_damage_icons_this_tick = handle_regeneration()
 	else
 		remove_all_pain()
-		..()
+
+	..()
 
 /obj/item/organ/external/cook_organ()
 	..()
