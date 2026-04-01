@@ -52,7 +52,7 @@
 		vessel.add_reagent(/datum/reagent/blood, species.blood_volume)
 
 	// Clear embedded objects from external organs
-	for(var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in external_organs)
 		if(QDELETED(E))
 			continue
 		E.status = 0
@@ -166,7 +166,7 @@
 	target.heal_overall_damage(heal_amount, heal_amount)
 
 	// Clear bleeding on external organs
-	for(var/obj/item/organ/external/E in target.organs)
+	for(var/obj/item/organ/external/E in target.external_organs)
 		E.status &= ~(ORGAN_BLEEDING)
 
 	if(target == user)
