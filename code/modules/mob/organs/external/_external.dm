@@ -53,6 +53,9 @@
 	var/max_pain = null                // Maximum pain the limb can accumulate. The actual effect's capped at max_damage.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
 
+	var/last_pull_damage_message
+	var/last_pull_damage_time = 0
+
 	// Movement delay vars.
 	var/movement_tally    = 0          // Defines movement speed
 	var/damage_multiplier = 0.5        // Default damage multiplier
