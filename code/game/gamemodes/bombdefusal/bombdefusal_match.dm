@@ -8,7 +8,6 @@
 	var/b_score = 0
 	var/current_round_num = 0
 	var/halftime_done = FALSE
-	var/halftime_just_happened = FALSE
 	var/match_state = BOMBDEFUSAL_STATE_LOBBY
 
 	// Arena
@@ -304,12 +303,14 @@
 	phase_end_time = world.time + mode.cfg_freeze_time
 	round_start_time = world.time
 
-	// Clean up old bomb(s) - delete ALL bombdefusal bombs on the arena z-level and in player inventories
+	// Clean up old bomb(s) on this arena's z-level
 	if(current_bomb && !QDELETED(current_bomb))
 		qdel(current_bomb)
 		current_bomb = null
 	for(var/obj/item/bombdefusal_bomb/B in world)
-		qdel(B)
+		var/turf/T = get_turf(B)
+		if(T && T.z == arena_z_level)
+			qdel(B)
 
 	// Repair arena structural damage (keeps blood/casings)
 	if(current_round_num > 1)
@@ -370,7 +371,8 @@
 
 	if(!H)
 		// No usable body - create a fresh one
-		var/turf/spawn_loc = t_spawns.len ? pick(t_spawns) : locate(1, 1, arena_z_level)
+		var/list/team_spawns = (pd.team.current_side == BOMBDEFUSAL_TEAM_T) ? t_spawns : ct_spawns
+		var/turf/spawn_loc = team_spawns.len ? pick(team_spawns) : (t_spawns.len ? pick(t_spawns) : locate(1, 1, arena_z_level))
 		H = new /mob/living/carbon/human/bombdefusal/simplest(spawn_loc)
 		if(pd.saved_appearance)
 			apply_saved_appearance(H, pd.saved_appearance)
@@ -503,52 +505,11 @@
 	target.update_hair()
 	target.update_icons()
 
-/proc/copy_human_appearance(mob/living/carbon/human/source, mob/living/carbon/human/target)
-	if(!source || !target)
-		return
-	// Name
-	target.real_name = source.real_name
-	target.name = source.name
-	target.gender = source.gender
-	// Hair
-	target.h_style = source.h_style
-	target.r_hair = source.r_hair
-	target.g_hair = source.g_hair
-	target.b_hair = source.b_hair
-	target.r_s_hair = source.r_s_hair
-	target.g_s_hair = source.g_s_hair
-	target.b_s_hair = source.b_s_hair
-	// Facial hair
-	target.f_style = source.f_style
-	target.r_facial = source.r_facial
-	target.g_facial = source.g_facial
-	target.b_facial = source.b_facial
-	// Eyes
-	target.r_eyes = source.r_eyes
-	target.g_eyes = source.g_eyes
-	target.b_eyes = source.b_eyes
-	// Skin
-	target.s_tone = source.s_tone
-	target.s_base = source.s_base
-	target.r_skin = source.r_skin
-	target.g_skin = source.g_skin
-	target.b_skin = source.b_skin
-	// Body
-	target.body_build = source.body_build
-	target.body_height = source.body_height
-	target.size_multiplier = source.size_multiplier
-	// Species
-	if(source.species)
-		target.set_species(source.species.name)
-	// Lipstick
-	target.lip_style = source.lip_style
-	// Update appearance
-	target.update_body()
-	target.update_hair()
-	target.update_icons()
 
 /datum/bombdefusal_match/proc/tick()
 	switch(match_state)
+		if(BOMBDEFUSAL_STATE_WARMUP)
+			tick_warmup()
 		if(BOMBDEFUSAL_STATE_FREEZE)
 			tick_freeze()
 		if(BOMBDEFUSAL_STATE_BUY)
@@ -559,6 +520,22 @@
 			tick_roundover()
 		if(BOMBDEFUSAL_STATE_HALFTIME)
 			tick_halftime()
+
+/datum/bombdefusal_match/proc/begin_warmup()
+	match_state = BOMBDEFUSAL_STATE_WARMUP
+	phase_end_time = world.time + 300 // 30 seconds
+	announce_to_match("<font size='4'><b>MATCH STARTING IN 30 SECONDS</b></font>", "#FFD700")
+	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
+		if(pd.owner?.current)
+			sound_to(pd.owner.current, sound('sound/csgo/golosovanie.mp3', volume = 40))
+
+/datum/bombdefusal_match/proc/tick_warmup()
+	var/time_left = max(0, round((phase_end_time - world.time) / 10))
+	// Announce countdown at key intervals
+	if(time_left == 10 || time_left == 5 || time_left == 3 || time_left == 2 || time_left == 1)
+		announce_to_match("<font size='3'><b>Starting in [time_left]...</b></font>", "#FFD700")
+	if(world.time >= phase_end_time)
+		start_match()
 
 /datum/bombdefusal_match/proc/tick_freeze()
 	if(world.time >= phase_end_time)
@@ -588,10 +565,11 @@
 				close_browser(pd.owner.current, "window=bombdefusal_buy")
 				var/extra = (pd.team.current_side == BOMBDEFUSAL_TEAM_T) ? t_extra : ct_extra
 				if(extra > 0)
-					// Keep frozen, unfreeze after delay
+					// Keep frozen, unfreeze after delay via mob ref to avoid closure capture bug
+					var/mob/frozen_mob = pd.owner.current
 					spawn(extra)
-						if(pd.owner?.current && match_state == BOMBDEFUSAL_STATE_LIVE)
-							pd.owner.current.anchored = FALSE
+						if(frozen_mob && !QDELETED(frozen_mob) && match_state == BOMBDEFUSAL_STATE_LIVE)
+							frozen_mob.anchored = FALSE
 				else
 					pd.owner.current.anchored = FALSE
 	update_all_hud()
@@ -611,6 +589,11 @@
 		end_round(BOMBDEFUSAL_TEAM_CT, "Bomb defused!")
 		return
 
+	// Both teams empty (everyone disconnected) — end match
+	if(!t_has_players && !ct_has_players)
+		end_match()
+		return
+
 	// Only check elimination if the team actually has players
 	if(t_has_players && t_alive <= 0)
 		end_round(BOMBDEFUSAL_TEAM_CT, "Terrorists eliminated!")
@@ -626,6 +609,8 @@
 	if(world.time >= phase_end_time)
 		if(bomb_planted)
 			return // Bomb is still ticking, don't end yet
+		if(current_bomb && current_bomb.planting)
+			return // Bomb is being planted, don't end yet
 		end_round(BOMBDEFUSAL_TEAM_CT, "Time's up!")
 		return
 
@@ -694,13 +679,11 @@
 	halftime_done = TRUE
 	log_debug("Bombdefusal: Halftime over, starting new round [current_round_num + 1]")
 	start_round()
-	halftime_just_happened = FALSE
 	log_debug("Bombdefusal: Post-halftime round started, state=[match_state]")
 
 /datum/bombdefusal_match/proc/do_halftime()
 	match_state = BOMBDEFUSAL_STATE_HALFTIME
 	phase_end_time = world.time + mode.cfg_halftime_delay
-	halftime_just_happened = TRUE
 
 	// Swap sides
 	var/temp = current_t_team
@@ -740,6 +723,14 @@
 /datum/bombdefusal_match/proc/return_players_to_station()
 	for(var/datum/bombdefusal_player_data/pd in team_a.members + team_b.members)
 		if(!pd.owner)
+			continue
+
+		// Skip disconnected players — no client means no one to return
+		if(!pd.owner.current?.client)
+			// Just clean up the arena body
+			if(pd.original_body && !QDELETED(pd.original_body))
+				qdel(pd.original_body)
+				pd.original_body = null
 			continue
 
 		// Find a spawn point on the station

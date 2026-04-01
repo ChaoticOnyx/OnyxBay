@@ -264,7 +264,7 @@
 		if(time_left <= 0)
 			return
 		// Beep interval: starts at 2s, goes down to 0.2s in the last few seconds
-		var/fuse_total = match ? match.mode.cfg_bomb_fuse : 600
+		var/fuse_total = match ? match.mode.cfg_bomb_fuse : 400
 		var/fraction_left = clamp(time_left / fuse_total, 0, 1)
 		var/interval = max(2, fraction_left * 20) // 20 ticks (2s) down to 2 ticks (0.2s)
 		playsound(src, 'sound/machines/twobeep.ogg', 80, FALSE)

@@ -47,7 +47,6 @@
 	// Medical
 	var/cfg_medkit_charges  = 3
 	var/cfg_medkit_cooldown = 100  // 10 SECONDS
-	var/cfg_medkit_heal     = 60
 	var/cfg_injector_heal   = 25
 
 	// ===== RUNTIME STATE =====
@@ -95,6 +94,19 @@
 	for(var/datum/mind/M in SSticker.minds)
 		if(M.current?.client)
 			sound_to(M.current, sound('sound/csgo/golosovanie.mp3', volume = 40))
+
+/mob/living/verb/bombdefusal_lobby()
+	set name = "Bomb Defusal Lobby"
+	set category = "OOC"
+
+	var/datum/game_mode/bombdefusal/mode = SSticker.mode
+	if(!istype(mode))
+		to_chat(src, "<span class='warning'>Bomb Defusal is not active.</span>")
+		return
+	if(!mode.lobby_active)
+		to_chat(src, "<span class='warning'>The lobby has already closed.</span>")
+		return
+	mode.show_lobby_ui(src)
 
 /datum/game_mode/bombdefusal/process()
 	if(lobby_active)
@@ -325,7 +337,7 @@
 			// Member list
 			html += "<br>"
 			for(var/datum/bombdefusal_player_data/pd in T.members)
-				html += " - [pd.owner.name]<br>"
+				html += " - [pd.owner ? pd.owner.name : "???"]<br>"
 			// Pending requests (visible to captain)
 			if(T.pending_requests.len && user.mind == T.captain)
 				html += "<br><span style='color: #FFD700;'>Pending requests:</span><br>"
@@ -354,7 +366,7 @@
 	var/action = href_list["action"]
 
 	// Allow bombdefusal actions for all players, not just admins
-	if(!(action in list("create_team", "join_team", "leave_team", "approve_join", "deny_join", "refresh_lobby", "buy_item", "set_role", "admin_config")))
+	if(!(action in list("create_team", "join_team", "leave_team", "approve_join", "deny_join", "refresh_lobby", "buy_item", "set_role", "admin_config", "ghost_join", "ghost_join_refresh")))
 		if(..())
 			return TRUE
 
@@ -490,7 +502,150 @@
 		if("admin_config")
 			handle_admin_config_topic(user, href_list)
 
+		if("ghost_join")
+			var/datum/bombdefusal_match/match = locate(href_list["match"])
+			handle_ghost_join(user, match, href_list["side"])
+
+		if("ghost_join_refresh")
+			show_ghost_join_ui(user)
+
 	return TRUE
+
+// ===== GHOST JOIN =====
+
+/mob/observer/ghost/verb/join_bombdefusal()
+	set name = "Join Bomb Defusal"
+	set category = "Ghost"
+
+	var/datum/game_mode/bombdefusal/mode = SSticker.mode
+	if(!istype(mode))
+		to_chat(src, "<span class='warning'>Bomb Defusal is not active.</span>")
+		return
+
+	if(mode.lobby_active)
+		to_chat(src, "<span class='warning'>The lobby is still open. Wait for matches to start.</span>")
+		return
+
+	if(mode.get_player_data_by_mob(src))
+		to_chat(src, "<span class='warning'>You are already in a match!</span>")
+		return
+
+	// Show available matches
+	mode.show_ghost_join_ui(src)
+
+/datum/game_mode/bombdefusal/proc/show_ghost_join_ui(mob/user)
+	var/list/html = list()
+	html += "<html><head><meta charset='utf-8'><title>Join Match</title>"
+	html += "<style>"
+	html += "body { background: #1a1a2e; color: #eee; font-family: 'Courier New', monospace; margin: 10px; }"
+	html += "h1 { color: #FFD700; text-align: center; }"
+	html += ".match-box { background: #16213e; border: 1px solid #e94560; padding: 10px; margin: 5px 0; }"
+	html += ".btn { background: #e94560; color: white; padding: 5px 15px; border: none; cursor: pointer; font-size: 14px; margin: 2px; text-decoration: none; }"
+	html += ".btn:hover { background: #ff6b6b; }"
+	html += ".btn-create { background: #0f3460; }"
+	html += ".info { color: #a8a8a8; font-size: 12px; }"
+	html += "</style></head><body>"
+	html += "<h1>JOIN MATCH</h1>"
+
+	var/has_matches = FALSE
+	for(var/datum/bombdefusal_match/match in matches)
+		if(match.match_state == BOMBDEFUSAL_STATE_GAMEOVER)
+			continue
+		has_matches = TRUE
+		var/t_name = match.current_t_team == match.team_a ? match.team_a.name : match.team_b.name
+		var/ct_name = match.current_ct_team == match.team_a ? match.team_a.name : match.team_b.name
+		var/t_count = match.current_t_team.members.len
+		var/ct_count = match.current_ct_team.members.len
+		html += "<div class='match-box'>"
+		html += "<b>[match.team_a.name] vs [match.team_b.name]</b>"
+		if(match.match_state == BOMBDEFUSAL_STATE_LOBBY)
+			html += " — <font color='#FFD700'>Waiting for players</font>"
+		else if(match.match_state == BOMBDEFUSAL_STATE_WARMUP)
+			var/warmup_left = max(0, round((match.phase_end_time - world.time) / 10))
+			html += " — <font color='#FFD700'>Starting in [warmup_left]s</font>"
+		else
+			html += " — Round [match.current_round_num]"
+		html += "<br>"
+		html += "<font color='#ff4444'>T: [t_name] ([t_count])</font> | <font color='#4488ff'>CT: [ct_name] ([ct_count])</font><br>"
+		if(match.match_state != BOMBDEFUSAL_STATE_LOBBY)
+			html += "Score: [match.a_score] - [match.b_score]<br>"
+		if(t_count <= ct_count && t_count < cfg_team_size)
+			html += "<a class='btn' href='?src=\ref[src];action=ghost_join;match=\ref[match];side=t'>Join T ([t_count] players)</a> "
+		if(ct_count <= t_count && ct_count < cfg_team_size)
+			html += "<a class='btn' style='background:#0044cc;' href='?src=\ref[src];action=ghost_join;match=\ref[match];side=ct'>Join CT ([ct_count] players)</a> "
+		if(t_count >= cfg_team_size && ct_count >= cfg_team_size)
+			html += "<span class='info'>Teams full</span>"
+		html += "</div>"
+
+	if(!has_matches)
+		html += "<p class='info'>No active matches to join.</p>"
+
+	// Option to create a new match if there are enough unmatched ghosts
+	html += "<br><p class='info'>If no matches are available, ask an admin to start a new one.</p>"
+	html += "<a class='btn' href='?src=\ref[src];action=ghost_join_refresh'>Refresh</a>"
+	html += "</body></html>"
+	show_browser(user, html.Join(""), "window=bombdefusal_ghost_join;size=450x400")
+
+/datum/game_mode/bombdefusal/proc/handle_ghost_join(mob/user, datum/bombdefusal_match/match, side)
+	if(!user || !user.client)
+		return
+	if(!match || match.match_state == BOMBDEFUSAL_STATE_GAMEOVER)
+		to_chat(user, "<span class='warning'>That match is no longer active.</span>")
+		return
+	if(get_player_data_by_mob(user))
+		to_chat(user, "<span class='warning'>You are already in a match!</span>")
+		return
+
+	// Determine which team to join
+	var/datum/bombdefusal_team/join_team
+	if(side == "t")
+		join_team = match.current_t_team
+	else
+		join_team = match.current_ct_team
+
+	if(join_team.members.len >= cfg_team_size)
+		to_chat(user, "<span class='warning'>That team is full!</span>")
+		show_ghost_join_ui(user)
+		return
+
+	// Create a mind if the ghost doesn't have one
+	if(!user.mind)
+		user.mind = new /datum/mind(user.key)
+		user.mind.set_current(user)
+
+	// Add to team
+	var/datum/bombdefusal_player_data/pd = new(user.mind, join_team)
+	join_team.add_member(pd)
+	all_players += pd
+	pd.match = match
+	pd.money = cfg_money_start
+	pd.needs_reequip = TRUE
+
+	close_browser(user, "window=bombdefusal_ghost_join")
+
+	// If match hasn't started yet (empty arena or warmup)
+	if(match.match_state == BOMBDEFUSAL_STATE_LOBBY)
+		if(pd.owner?.current)
+			to_chat(pd.owner.current, "<span class='notice'><b>You joined [join_team.name]!</b></span>")
+		match.announce_to_match("<font color='#FFD700'>[user.name] has joined [join_team.name]!</font>", "#FFD700")
+		// Start warmup countdown when both teams have 2+ players
+		if(match.team_a.members.len >= 2 && match.team_b.members.len >= 2)
+			match.begin_warmup()
+		return
+
+	if(match.match_state == BOMBDEFUSAL_STATE_WARMUP)
+		if(pd.owner?.current)
+			to_chat(pd.owner.current, "<span class='notice'><b>You joined [join_team.name]!</b> Match starting soon...</span>")
+		match.announce_to_match("<font color='#FFD700'>[user.name] has joined [join_team.name]!</font>", "#FFD700")
+		return
+
+	// Match already running — spawn into it
+	match.spawn_player(pd)
+	match.update_all_team_markers()
+
+	if(pd.owner?.current)
+		to_chat(pd.owner.current, "<span class='notice'><b>You have joined the match!</b> You are on the <b>[join_team.name]</b> team.</span>")
+	match.announce_to_match("<font color='#FFD700'>[user.name] has joined [join_team.name]!</font>", "#FFD700")
 
 /datum/game_mode/bombdefusal/proc/force_start_lobby()
 	if(lobby_active)

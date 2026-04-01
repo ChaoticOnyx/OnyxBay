@@ -164,6 +164,10 @@
 		log_debug("Bombdefusal buy failed - player data not found. Mind: [user.mind ? "yes" : "no"], ckey: [user.ckey]")
 		return
 
+	if(pd.is_dead)
+		to_chat(user, "<span class='warning'>You can't buy while dead!</span>")
+		return
+
 	var/datum/bombdefusal_match/match = pd.match
 	var/is_admin = user.client && user.client.holder
 	if(!is_admin && match.match_state != BOMBDEFUSAL_STATE_BUY && match.match_state != BOMBDEFUSAL_STATE_FREEZE)
@@ -190,6 +194,18 @@
 		to_chat(user, "<span class='warning'>This item is not available to your side!</span>")
 		show_buy_menu(user, pd)
 		return
+
+	// Block duplicate armor/helmet purchases
+	if(istype(user, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
+		if(ispath(item.item_type, /obj/item/clothing/suit/armor) && H.wear_suit)
+			to_chat(user, "<span class='warning'>You already have a vest equipped!</span>")
+			show_buy_menu(user, pd)
+			return
+		if(ispath(item.item_type, /obj/item/clothing/head/helmet) && H.head)
+			to_chat(user, "<span class='warning'>You already have a helmet equipped!</span>")
+			show_buy_menu(user, pd)
+			return
 
 	// Purchase
 	pd.spend_money(item.price)
