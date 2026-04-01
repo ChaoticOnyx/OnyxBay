@@ -591,29 +591,39 @@ This function restores all organs.
 	else if(!vessel.has_reagent(/datum/reagent/blood))
 		has_blood = FALSE
 
+	var/damage_message = ""
 	var/turf/location = get_turf(src)
 	for(var/obj/item/organ/external/E in shuffle(bad_external_organs))
 		if(E.is_stump())
 			continue
 
-		var/should_take_damage = max(E.cut_dam, E.burn_dam) >= E.min_broken_damage * (E.bleeding ? 0.5 : 1.0)
+		var/should_take_damage = max(E.cut_dam, E.burn_dam) >= E.min_broken_damage * (E.bleeding ? 0.75 : 1.25)
 		if(should_take_damage)
 			if(max(E.cut_ratio, E.burn_ratio) >= 0.9)
 				if(BP_IS_ROBOTIC(E))
-					visible_message(SPAN("danger", "Damage to [src]'s [E] worsens terribly from being dragged!"))
+					damage_message = "Damage to [src]'s [E] worsens terribly from being dragged!"
 				else
-					visible_message(SPAN("danger", "Wounds on [src]'s [E] worsen terribly from being dragged!"))
+					damage_message = "Wounds on [src]'s [E] worsen terribly from being dragged!"
 					if(has_blood && prob(75))
-						location.add_blood(src)
+						var/obj/effect/decal/cleanable/blood/B = location.add_blood(src)
+						if(istype(B))
+							B.Crossed(src)
 						vessel.remove_reagent(/datum/reagent/blood, 30)
 			else
 				if(BP_IS_ROBOTIC(E))
-					visible_message(SPAN("danger", "Damage to [src]'s [E] worsens from being dragged!"))
+					damage_message = "Damage to [src]'s [E] worsens from being dragged!"
 				else
-					visible_message(SPAN("danger", "Wounds on [src]'s [E] open more from being dragged!"))
+					damage_message = "Wounds on [src]'s [E] open more from being dragged!"
 					if(has_blood && prob(25))
-						location.add_blood(src)
+						var/obj/effect/decal/cleanable/blood/B = location.add_blood(src)
+						if(istype(B))
+							B.Crossed(src)
 						vessel.remove_reagent(/datum/reagent/blood, 10)
+
+			if(E.last_pull_damage_time < world.time - 3 SECONDS  || E.last_pull_damage_message != damage_message)
+				visible_message(SPAN("danger", damage_message))
+				E.last_pull_damage_message = damage_message
+				E.last_pull_damage_time = world.time
 
 			E.take_cut_damage(3, "Friction")
 			return TRUE // Let's not make floors a tiled god of death, one proc per move is more than enough.
@@ -621,14 +631,21 @@ This function restores all organs.
 		should_take_damage = !BP_IS_ROBOTIC(E) && E.is_broken()
 		if(should_take_damage)
 			if(E.blunt_ratio >= 0.9)
-				visible_message(SPAN("danger", "Broken bones in [src]'s [E] shred through the skin from being dragged!"))
+				damage_message = "Broken bones in [src]'s [E] shred through the skin from being dragged!"
 				E.take_pierce_damage(3, "Bone Shards")
 				if(has_blood && prob(50))
-					location.add_blood(src)
+					var/obj/effect/decal/cleanable/blood/B = location.add_blood(src)
+					if(istype(B))
+						B.Crossed(src)
 					vessel.remove_reagent(/datum/reagent/blood, 20)
 			else
-				visible_message(SPAN("danger", "Broken bones in [src]'s [E] jostle badly from being dragged!"))
+				damage_message = "Broken bones in [src]'s [E] jostle badly from being dragged!"
 				E.take_blunt_damage(3, "Broken Bone Movement")
+
+			if(E.last_pull_damage_time < world.time - 3 SECONDS  || E.last_pull_damage_message != damage_message)
+				visible_message(SPAN("danger", damage_message))
+				E.last_pull_damage_message = damage_message
+				E.last_pull_damage_time = world.time
 
 			return TRUE
 
