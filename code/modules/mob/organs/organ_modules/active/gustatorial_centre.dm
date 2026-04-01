@@ -1,6 +1,6 @@
 /obj/item/organ_module/active/gustatorial
 	name = "gustatorial centre"
-	desc = "Small taste and chemical analyser, hidden in your finger. Dont dip it too deep!"
+	desc = "Small taste and chemical analyser, hidden in your finger. Don't dip it too deep!"
 	icon_state = "augment"
 	action_button_name = "Activate Gustatorial Centre (hand)"
 	allowed_organs = list(BP_L_HAND, BP_R_HAND)
