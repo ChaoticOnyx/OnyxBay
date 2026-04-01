@@ -89,6 +89,7 @@
 	deaths = 0
 	assists = 0
 	loss_streak = 0
+	last_role_swap_round = 0
 	reset_for_round()
 
 /datum/bombdefusal_player_data/proc/award_money(amount, max_money)

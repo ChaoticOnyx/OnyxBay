@@ -112,7 +112,7 @@
 		return
 
 	to_chat(user, "<span class='notice'>Applying medkit to [target.name]...</span>")
-	if(!do_after(user, 50, target)) // 5 second application time
+	if(!do_after(user, cooldown_time, target))
 		return
 
 	// Re-check after timer
@@ -124,14 +124,23 @@
 	// Full heal - same as between rounds
 	target.arena_full_heal()
 
+	// Revive downed players
+	var/datum/game_mode/bombdefusal/bd_mode = SSticker.mode
+	if(istype(bd_mode))
+		var/datum/bombdefusal_player_data/target_pd = bd_mode.get_player_data_by_mob(target)
+		if(target_pd?.is_downed)
+			target_pd.is_downed = FALSE
+			target_pd.downed_timer_id = null
+			target_pd.downed_by = null
+			target.SetWeakened(0)
+			target.lying = FALSE
+			target.update_canmove()
+
 	charges--
 	next_use_time = world.time + cooldown_time
 
 	to_chat(user, "<span class='notice'>You fully heal [target.name]. [charges] charge(s) remaining.</span>")
 	to_chat(target, "<span class='notice'>[user.name] fully heals you with a medkit!</span>")
-
-	// Check if this is a downed player revive via medkit
-	// (Defibs handle the actual revive from downed state)
 
 /obj/item/bombdefusal_medkit/examine(mob/user, infix)
 	. = ..()

@@ -93,7 +93,7 @@
 
 	var/datum/bombdefusal_team/first_ct = new("Bot Team CT1", null)
 	teams += first_ct
-	for(var/i = 1 to bot_count + 1)
+	for(var/i = 1 to bot_count + 1) // +1 to match admin's team (admin + bot_count T vs bot_count+1 CT)
 		create_bot(first_ct, "ct1_[i]", get_turf(user))
 
 	var/datum/bombdefusal_match/first_match = new(src, first_t, first_ct)
@@ -137,6 +137,30 @@
 	var/datum/bombdefusal_player_data/pd = new(bot_mind, team)
 	team.add_member(pd)
 	all_players += pd
+
+/datum/game_mode/bombdefusal/proc/empty_match_start(mob/user)
+	if(!user)
+		return
+
+	var/num_matches = input(user, "How many empty arenas to create?", "Empty Match", 1) as num|null
+	if(!num_matches || num_matches < 1)
+		return
+
+	lobby_active = FALSE
+
+	for(var/m = 1 to num_matches)
+		var/datum/bombdefusal_team/ta = new("Team T[m]", null)
+		teams += ta
+		var/datum/bombdefusal_team/tb = new("Team CT[m]", null)
+		teams += tb
+
+		var/datum/bombdefusal_match/match = new(src, ta, tb)
+		matches += match
+		match.initialize_arena()
+
+	to_chat(user, "<span class='notice'>[num_matches] empty arena(s) created. Ghosts can join via 'Join Bomb Defusal' verb.</span>")
+	to_world("<h3><font color='#FFD700'>BOMB DEFUSAL</font> - [num_matches] arena(s) open for ghost joining!</h3>")
+	show_admin_panel(user)
 
 // ===== MAIN ADMIN PANEL =====
 
@@ -203,6 +227,7 @@ td:first-child { color: #a8a8a8; width: 180px; }
 			html += "<a class='btn btn-success' href='?src=\ref[src];action=admin_config;cmd=force_start'>Force Start Lobby</a>"
 		html += "<a class='btn btn-debug' href='?src=\ref[src];action=admin_config;cmd=solo_start'>Solo Test Start</a>"
 		html += "<a class='btn btn-debug' href='?src=\ref[src];action=admin_config;cmd=bot_match'>Bot Match (NvN)</a>"
+		html += "<a class='btn btn-debug' href='?src=\ref[src];action=admin_config;cmd=empty_match'>Empty Match (ghost join)</a>"
 	else
 		var/datum/bombdefusal_match/match = matches[1]
 		var/state_name = get_state_name(match.match_state)
@@ -335,7 +360,6 @@ td:first-child { color: #a8a8a8; width: 180px; }
 	html += "<table>"
 	html += config_row("Medkit Charges", "cfg_medkit_charges", cfg_medkit_charges)
 	html += config_row("Medkit Cooldown (sec)", "cfg_medkit_cooldown", cfg_medkit_cooldown / 10, 10)
-	html += config_row("Medkit Heal Amount", "cfg_medkit_heal", cfg_medkit_heal)
 	html += config_row("Injector Heal Amount", "cfg_injector_heal", cfg_injector_heal)
 	html += "</table>"
 	html += "</div>"
@@ -380,6 +404,8 @@ td:first-child { color: #a8a8a8; width: 180px; }
 			return "Round Over"
 		if(BOMBDEFUSAL_STATE_HALFTIME)
 			return "Halftime"
+		if(BOMBDEFUSAL_STATE_WARMUP)
+			return "Warmup"
 		if(BOMBDEFUSAL_STATE_GAMEOVER)
 			return "Game Over"
 	return "Unknown"
@@ -395,9 +421,9 @@ td:first-child { color: #a8a8a8; width: 180px; }
 
 	var/cmd = href_list["cmd"]
 
-	// Get first match and player data for debug commands
-	var/datum/bombdefusal_match/match = matches.len ? matches[1] : null
+	// Get the admin's match if they're in one, otherwise first match
 	var/datum/bombdefusal_player_data/my_pd = get_player_data_by_mob(user)
+	var/datum/bombdefusal_match/match = my_pd?.match || (matches.len ? matches[1] : null)
 
 	switch(cmd)
 		// ===== LOBBY/MATCH CONTROL =====
@@ -418,6 +444,10 @@ td:first-child { color: #a8a8a8; width: 180px; }
 
 		if("bot_match")
 			bot_match_start(user)
+			return
+
+		if("empty_match")
+			empty_match_start(user)
 			return
 
 		if("select_map")
@@ -469,8 +499,16 @@ td:first-child { color: #a8a8a8; width: 180px; }
 		if("dbg_next_round")
 			if(!match)
 				return
-			match.start_round()
-			to_chat(user, "<span class='notice'>Started round [match.current_round_num].</span>")
+			// Go through proper flow: check game over, halftime, then start round
+			if(match.a_score >= cfg_rounds_to_win || match.b_score >= cfg_rounds_to_win)
+				match.end_match()
+				to_chat(user, "<span class='notice'>Match ended (score limit reached).</span>")
+			else if(!match.halftime_done && match.current_round_num >= cfg_rounds_per_half)
+				match.do_halftime()
+				to_chat(user, "<span class='notice'>Halftime triggered at round [match.current_round_num].</span>")
+			else
+				match.start_round()
+				to_chat(user, "<span class='notice'>Started round [match.current_round_num].</span>")
 
 		if("dbg_halftime")
 			if(!match)

@@ -1,6 +1,76 @@
 // ========== BOMB DEFUSAL - HUD SCREEN OBJECTS ==========
 // Layout: centered scoreboard at top, money top-right, killfeed right, announcements center
 
+// ===== ACTION BUTTONS =====
+
+/datum/action/innate/bombdefusal_lobby
+	name = "Bomb Defusal Lobby"
+	button_icon_state = "default"
+	check_flags = 0
+
+/datum/action/innate/bombdefusal_lobby/Activate()
+	var/datum/game_mode/bombdefusal/mode = SSticker.mode
+	if(!istype(mode) || !mode.lobby_active)
+		to_chat(owner, "<span class='warning'>The lobby is not open.</span>")
+		return
+	mode.show_lobby_ui(owner)
+
+/datum/action/innate/bombdefusal_lobby/IsAvailable()
+	var/datum/game_mode/bombdefusal/mode = SSticker.mode
+	return istype(mode) && mode.lobby_active
+
+/datum/action/innate/bombdefusal_buy
+	name = "Buy Menu"
+	button_icon_state = "default"
+	check_flags = 0
+
+/datum/action/innate/bombdefusal_buy/Activate()
+	var/datum/game_mode/bombdefusal/mode = SSticker.mode
+	if(!istype(mode))
+		return
+	var/datum/bombdefusal_player_data/pd = mode.get_player_data_by_mob(owner)
+	if(!pd?.match)
+		return
+	if(pd.match.match_state != BOMBDEFUSAL_STATE_BUY && pd.match.match_state != BOMBDEFUSAL_STATE_FREEZE)
+		to_chat(owner, "<span class='warning'>Buy phase is over!</span>")
+		return
+	mode.show_buy_menu(owner, pd)
+
+/datum/action/innate/bombdefusal_buy/IsAvailable()
+	var/datum/game_mode/bombdefusal/mode = SSticker.mode
+	if(!istype(mode))
+		return FALSE
+	var/datum/bombdefusal_player_data/pd = mode.get_player_data_by_mob(owner)
+	if(!pd?.match)
+		return FALSE
+	return pd.match.match_state == BOMBDEFUSAL_STATE_BUY || pd.match.match_state == BOMBDEFUSAL_STATE_FREEZE
+
+/datum/action/innate/bombdefusal_role
+	name = "Change Role"
+	button_icon_state = "default"
+	check_flags = 0
+
+/datum/action/innate/bombdefusal_role/Activate()
+	var/datum/game_mode/bombdefusal/mode = SSticker.mode
+	if(!istype(mode))
+		return
+	var/datum/bombdefusal_player_data/pd = mode.get_player_data_by_mob(owner)
+	if(!pd?.match)
+		return
+	if(pd.match.match_state != BOMBDEFUSAL_STATE_BUY && pd.match.match_state != BOMBDEFUSAL_STATE_FREEZE)
+		to_chat(owner, "<span class='warning'>You can only change roles during buy phase!</span>")
+		return
+	mode.show_buy_menu(owner, pd)
+
+/datum/action/innate/bombdefusal_role/IsAvailable()
+	var/datum/game_mode/bombdefusal/mode = SSticker.mode
+	if(!istype(mode))
+		return FALSE
+	var/datum/bombdefusal_player_data/pd = mode.get_player_data_by_mob(owner)
+	if(!pd?.match)
+		return FALSE
+	return pd.match.match_state == BOMBDEFUSAL_STATE_BUY || pd.match.match_state == BOMBDEFUSAL_STATE_FREEZE
+
 // Loading screen overlay
 /atom/movable/screen/fullscreen/bombdefusal_loading
 	icon = 'icons/hud/screen.dmi'
@@ -66,6 +136,20 @@
 	C.screen += pd.timer_display
 	C.screen += pd.killfeed_display
 	C.screen += pd.announce_display
+
+	// Remove lobby action, grant buy action
+	var/mob/living/M = pd.owner.current
+	if(isliving(M))
+		for(var/datum/action/innate/bombdefusal_lobby/old in M.actions)
+			old.Remove(M)
+			qdel(old)
+		// Only grant buy action once
+		var/has_buy = FALSE
+		for(var/datum/action/innate/bombdefusal_buy/existing in M.actions)
+			has_buy = TRUE
+		if(!has_buy)
+			var/datum/action/innate/bombdefusal_buy/buy_action = new()
+			buy_action.Grant(M)
 
 	update_player_hud(pd)
 
