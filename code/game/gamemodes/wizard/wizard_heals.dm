@@ -18,7 +18,6 @@
 			E.status &= ~ORGAN_TENDON_CUT
 		if(E.status & ORGAN_BROKEN && heal.heal_bones) // some calcium
 			E.mend_fracture()
-			E.stage = 0
 
 		if(heal.removes_embeded)
 			E.drop_embedded_objects()

@@ -24,7 +24,7 @@
 	success_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/bone/glue_bone/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && parent_organ.stage == 0)
+	return (..() && parent_organ.bone_stage == 0)
 
 /datum/surgery_step/bone/glue_bone/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	var/bone = parent_organ.encased ? "[target]'s [parent_organ.encased]" : "bones in [target]'s [parent_organ]"
@@ -45,7 +45,7 @@
 		"[user] applies some [tool.name] to [bone]",
 		"You apply some [tool.name] to [bone]."
 		)
-	parent_organ.stage = 1
+	parent_organ.bone_stage = 1
 
 /datum/surgery_step/glue_bone/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
@@ -73,7 +73,7 @@
 	return (..() && target_zone != BP_HEAD)
 
 /datum/surgery_step/bone/mend_bone/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && parent_organ.stage == 1)
+	return (..() && parent_organ.bone_stage == 1)
 
 /datum/surgery_step/bone/mend_bone/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	var/bone = parent_organ.encased ? "[target]'s [parent_organ.encased]" : "bones in [target]'s [parent_organ]"
@@ -90,7 +90,7 @@
 		"You set [bone] with \the [tool]."
 		)
 	parent_organ.status &= ~ORGAN_DISFIGURED
-	parent_organ.stage = 2
+	parent_organ.bone_stage = 2
 
 /datum/surgery_step/bone/mend_bone/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
@@ -120,7 +120,7 @@
 	return (..() && target_zone == BP_HEAD)
 
 /datum/surgery_step/bone/mend_skull/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && parent_organ.stage == 1)
+	return (..() && parent_organ.bone_stage == 1)
 
 /datum/surgery_step/bone/mend_skull/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
@@ -134,7 +134,7 @@
 		"[user] sets [target]'s skull with \the [tool].",
 		"You set [target]'s skull with \the [tool]."
 		)
-	parent_organ.stage = 2
+	parent_organ.bone_stage = 2
 
 /datum/surgery_step/bone/mend_skull/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
@@ -163,7 +163,7 @@
 	return (..() && target_zone != BP_HEAD)
 
 /datum/surgery_step/bone/set_bone/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && parent_organ.stage == 1)
+	return (..() && parent_organ.bone_stage == 1)
 
 /datum/surgery_step/bone/set_bone/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	var/bone = parent_organ.encased ? "[target]'s [parent_organ.encased]" : "bones in [target]'s [parent_organ]"
@@ -185,7 +185,7 @@
 			"[user] sets the [bone] in place with \the [tool].",
 			"You set the [bone] in place with \the [tool]."
 			)
-		parent_organ.stage = 2
+		parent_organ.bone_stage = 2
 	else
 		announce_success(user,
 			"[user] sets the [bone]" + SPAN("warning", " in the WRONG place with \the [tool]."),
@@ -216,7 +216,7 @@
 	success_sound = 'sound/surgery/organ1.ogg'
 
 /datum/surgery_step/bone/postset_bone/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && parent_organ.stage == 2)
+	return (..() && parent_organ.bone_stage == 2)
 
 /datum/surgery_step/bone/postset_bone/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	var/bone = parent_organ.encased ? "[target]'s [parent_organ.encased]" : "bones in [target]'s [parent_organ]"
@@ -233,7 +233,6 @@
 		"You have mended the damaged [bone] with \the [tool]."
 		)
 	parent_organ.mend_fracture()
-	parent_organ.stage = 0
 
 /datum/surgery_step/bone/postset_bone/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
@@ -255,7 +254,7 @@
 	success_sound = 'sound/surgery/organ1.ogg'
 
 /datum/surgery_step/bone/mender/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && parent_organ.stage <= 5)
+	return (..() && parent_organ.bone_stage <= 5)
 
 /datum/surgery_step/bone/mender/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
@@ -275,7 +274,6 @@
 		"You have grasped the damaged bone edges in [target]'s [parent_organ] with \the [tool]."
 		)
 	parent_organ.mend_fracture()
-	parent_organ.stage = 0
 
 /datum/surgery_step/bone/mender/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,

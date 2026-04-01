@@ -83,7 +83,6 @@
 				organ_heal_blood += 12
 			if(E.status & ORGAN_BROKEN)
 				E.mend_fracture()
-				E.stage = 0
 				organ_heal_blood += 12
 				healed = TRUE
 

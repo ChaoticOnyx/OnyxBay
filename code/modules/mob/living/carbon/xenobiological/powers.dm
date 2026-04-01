@@ -47,6 +47,7 @@
 	regenerate_icons()
 	var/happyWithFood = 0
 	var/totalDrained = 0
+	var/comboMult = 1.0 // Damage increases if we deal it continuously.
 
 	while(Victim && stat != 2)
 		if(Adjacent(M))
@@ -54,13 +55,18 @@
 
 			var/hazmat = blocked_mult(M.get_flat_armor(null, "bio")) //scale feeding rate by overall bio protection
 			if(istype(M, /mob/living/carbon))
-				Victim.adjustCloneLoss(5 * hazmat)
-				Victim.adjustToxLoss(1 * hazmat)
+				if(ishuman(M))
+					var/mob/living/carbon/human/H = M
+					if(!H.species || !(H.species.species_flags & SPECIES_FLAG_NO_BLOOD))
+						H.vessel.remove_reagent(/datum/reagent/blood, 50 * hazmat * comboMult) // Not that bad for humans, lethal for monkeys.
+
+				Victim.adjustCloneLoss(5 * hazmat * comboMult)
+				Victim.adjustToxLoss(1 * hazmat * comboMult)
 				if(Victim.health <= 0)
-					Victim.adjustToxLoss(1 * hazmat)
+					Victim.adjustToxLoss(1 * hazmat * comboMult)
 
 			else if(istype(M, /mob/living/simple_animal))
-				Victim.adjustBruteLoss(10 * hazmat)
+				Victim.adjustBruteLoss(10 * hazmat * comboMult)
 
 			else
 				to_chat(src, "<span class='warning'>[pick("This subject is incompatable", "This subject does not have a life energy", "This subject is empty", "I am not satisified", "I can not feed from this subject", "I do not feel nourished", "This subject is not food")]...</span>")
@@ -82,7 +88,7 @@
 			if(totalDrained > 200)
 				happyWithFood = 1
 
-			var/heal_amt = 10 * hazmat
+			var/heal_amt = 10 * hazmat * comboMult
 			adjustOxyLoss(-heal_amt) //Heal yourself
 			adjustBruteLoss(-heal_amt)
 			adjustFireLoss(-heal_amt)
@@ -95,6 +101,7 @@
 				happyWithFood = 1
 				break
 
+			comboMult += 0.2
 			sleep(20) // Deal damage every 2 seconds
 		else
 			break
