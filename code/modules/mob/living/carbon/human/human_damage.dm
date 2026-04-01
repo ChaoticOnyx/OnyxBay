@@ -642,7 +642,7 @@ This function restores all organs.
 				damage_message = "Broken bones in [src]'s [E] jostle badly from being dragged!"
 				E.take_blunt_damage(3, "Broken Bone Movement")
 
-			if(E.last_pull_damage_time < world.time - 2 SECONDS  || E.last_pull_damage_message != damage_message)
+			if(E.last_pull_damage_time < world.time - 3 SECONDS  || E.last_pull_damage_message != damage_message)
 				visible_message(SPAN("danger", damage_message))
 				E.last_pull_damage_message = damage_message
 				E.last_pull_damage_time = world.time
