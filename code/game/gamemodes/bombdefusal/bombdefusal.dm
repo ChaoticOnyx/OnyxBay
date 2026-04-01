@@ -88,25 +88,16 @@
 		if(!M.current || !M.current.client)
 			continue
 		show_lobby_ui(M.current)
+		// Grant lobby action button
+		if(isliving(M.current))
+			var/datum/action/innate/bombdefusal_lobby/lobby_action = new()
+			lobby_action.Grant(M.current)
 
 	to_world("<h3><font color='#FFD700'>BOMB DEFUSAL</font> - Team lobby is open! Create or join a team!</h3>")
 	// Play lobby music to all players
 	for(var/datum/mind/M in SSticker.minds)
 		if(M.current?.client)
 			sound_to(M.current, sound('sound/csgo/golosovanie.mp3', volume = 40))
-
-/mob/living/verb/bombdefusal_lobby()
-	set name = "Bomb Defusal Lobby"
-	set category = "OOC"
-
-	var/datum/game_mode/bombdefusal/mode = SSticker.mode
-	if(!istype(mode))
-		to_chat(src, "<span class='warning'>Bomb Defusal is not active.</span>")
-		return
-	if(!mode.lobby_active)
-		to_chat(src, "<span class='warning'>The lobby has already closed.</span>")
-		return
-	mode.show_lobby_ui(src)
 
 /datum/game_mode/bombdefusal/process()
 	if(lobby_active)
@@ -121,6 +112,8 @@
 /datum/game_mode/bombdefusal/handle_latejoin(mob/living/carbon/human/character)
 	if(lobby_active && character?.client)
 		show_lobby_ui(character)
+		var/datum/action/innate/bombdefusal_lobby/lobby_action = new()
+		lobby_action.Grant(character)
 	return ..()
 
 /datum/game_mode/bombdefusal/check_finished()
