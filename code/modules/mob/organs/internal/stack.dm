@@ -90,7 +90,7 @@
 	if(owner)
 		var/obj/item/organ/external/head = owner.get_organ(parent_organ)
 		owner.visible_message("<span class='danger'>\The [src] rips gaping holes in \the [owner]'s [head.name] as it is torn loose!</span>")
-		head.take_external_damage(rand(15,20))
+		head.take_cut_damage(rand(15, 20), src)
 		for(var/obj/item/organ/internal/O in head.contents)
 			O.take_internal_damage(rand(30,70))
 	..()

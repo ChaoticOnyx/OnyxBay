@@ -476,10 +476,10 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	brain = weakref(_H.internal_organs_by_name[BP_BRAIN])
 
 	var/obj/item/organ/_target
-	if(_H.organs_by_name[BP_STACK])
+	if(_H.external_organs_by_name[BP_STACK])
 		_target = _H.internal_organs_by_name[BP_STACK]
 	else
-		_target = _H.organs_by_name[BP_HEAD]
+		_target = _H.external_organs_by_name[BP_HEAD]
 	target = weakref(_target)
 
 	var/datum/gender/T = gender_datums[_H.get_gender()]

@@ -156,7 +156,7 @@
 		return FALSE // Meh, fuck it, if you'll ever need the add_blood("#abcdef") behavior - just go ahead code it yourself. ~ToTh
 	. = ..()
 	if(!.)
-		return
+		return null
 
 	var/mob/living/carbon/human/M = source
 	for(var/obj/effect/decal/cleanable/blood/B in contents)
@@ -165,8 +165,8 @@
 		if(!B.blood_DNA[M.dna.unique_enzymes])
 			B.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 			B.virus2 = virus_copylist(M.virus2)
-		return
-	blood_splatter(src, M.get_blood(M.vessel), 1)
+		return B
+	return blood_splatter(src, M.get_blood(M.vessel), 1)
 
 // Only adds blood on the floor -- Skie
 /turf/simulated/proc/add_blood_floor(mob/living/carbon/M as mob)

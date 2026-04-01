@@ -77,7 +77,7 @@ var/list/ventcrawl_machinery = list(
 	return ..()
 
 /mob/living/carbon/human/is_allowed_vent_crawl_item(obj/item/carried_item)
-	if(carried_item in organs)
+	if(carried_item in external_organs)
 		return 1
 	if(carried_item in list(w_uniform, gloves, glasses, wear_mask, l_ear, r_ear, belt, l_store, r_store))
 		return 1

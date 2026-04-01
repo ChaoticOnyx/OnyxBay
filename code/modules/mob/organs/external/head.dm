@@ -127,9 +127,9 @@
 	. = ..(company, skip_prosthetics, 1)
 	has_lips = FALSE
 
-/obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags, used_weapon = null, clean = FALSE)
+/obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags = 0, used_weapon = null)
 	. = ..()
-	if(!. || clean || (species && (species.species_flags & SPECIES_FLAG_NO_MINOR_CUT))) // Disfigured xenomorphs and golems are cringeworthy.
+	if(!. || (damage_flags & DAM_CLEAN) || (species && (species.species_flags & SPECIES_FLAG_NO_MINOR_CUT))) // Disfigured xenomorphs and golems are cringeworthy.
 		return
 	if(brute >= 5.0 && brute_ratio >= 1.0)
 		disfigure("brute")

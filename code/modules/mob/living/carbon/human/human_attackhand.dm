@@ -328,7 +328,7 @@
 		if(handle_block_normal(user, damage))
 			return 0
 
-	var/obj/item/organ/external/affecting = pick(organs)
+	var/obj/item/organ/external/affecting = pick(external_organs)
 	affecting = get_organ(ran_zone(affecting.organ_tag))
 
 	var/armor_block = run_armor_check(affecting, armorcheck)

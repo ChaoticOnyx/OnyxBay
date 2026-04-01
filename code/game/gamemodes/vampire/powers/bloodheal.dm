@@ -83,7 +83,6 @@
 				organ_heal_blood += 12
 			if(E.status & ORGAN_BROKEN)
 				E.mend_fracture()
-				E.stage = 0
 				organ_heal_blood += 12
 				healed = TRUE
 
@@ -99,7 +98,7 @@
 			V.cure(my_mob)
 
 		for(var/limb_type in my_mob.species.has_limbs)
-			var/obj/item/organ/external/E = my_mob.organs_by_name[limb_type]
+			var/obj/item/organ/external/E = my_mob.external_organs_by_name[limb_type]
 			if(E && E.organ_tag != BP_HEAD && !E.vital && !BP_IS_ROBOTIC(E) && !E.is_usable())
 				E.removed() // ...because no one wants their head to explode to make way for a new one.
 				qdel(E)

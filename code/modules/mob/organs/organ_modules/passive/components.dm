@@ -41,7 +41,7 @@
 	var/mob/living/carbon/human/H = E?.owner
 	if(!istype(H))
 		return
-	for(var/obj/item/organ/external/O in H.organs)
+	for(var/obj/item/organ/external/O in H.external_organs)
 		for(var/obj/item/organ_module/active/A in O.organ_modules)
 			if(A.organ_action)
 				A.organ_action.Grant(H)
@@ -55,7 +55,7 @@
 	var/mob/living/carbon/human/H = E?.owner
 	if(!istype(H))
 		return
-	for(var/obj/item/organ/external/O in H.organs)
+	for(var/obj/item/organ/external/O in H.external_organs)
 		for(var/obj/item/organ_module/active/A in O.organ_modules)
 			if(A.organ_action)
 				A.organ_action.Remove(H)
@@ -151,7 +151,7 @@
 					H.hud_used.action_intent.icon_state = icon_state
 			if("click")
 				var/list/target_list = istype(H.get_active_hand(), /obj/item/gun) ? view(H) : view(1, H)
-				target_list -= (H.organs + H.internal_organs)
+				target_list -= (H.external_organs + H.internal_organs)
 				var/list/target_list_clear = list()
 				for(var/T in target_list)
 					if(istype(T, /obj) || istype(T, /turf) || istype(T, /mob))

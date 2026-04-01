@@ -170,13 +170,13 @@
 	return
 
 /mob/living/carbon/human/proc/get_head_organ()
-	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/head = external_organs_by_name[BP_HEAD]
 	return istype(head) ? head : null
 
 /mob/living/carbon/human/proc/get_all_organs()
 	var/list/all_organs = list()
-	if(islist(organs))
-		all_organs += organs
+	if(islist(external_organs))
+		all_organs += external_organs
 	if(islist(internal_organs))
 		all_organs += internal_organs
 	return all_organs
@@ -479,7 +479,7 @@
 	return .
 
 /mob/living/carbon/human/proc/has_cochlear_implant()
-	var/obj/item/organ/external/head/head = organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/head = external_organs_by_name[BP_HEAD]
 	if(!istype(head))
 		return FALSE
 	if(locate(/obj/item/organ_module/cochlear) in head.organ_modules)
@@ -573,12 +573,12 @@
 	switch(certain_hand)
 		if(-1)
 			if(rightclicked)
-				return (active_hand == ACTIVE_HAND_LEFT) ? organs_by_name[BP_R_HAND] : organs_by_name[BP_L_HAND]
-			return (active_hand == ACTIVE_HAND_LEFT) ? organs_by_name[BP_L_HAND] : organs_by_name[BP_R_HAND]
+				return (active_hand == ACTIVE_HAND_LEFT) ? external_organs_by_name[BP_R_HAND] : external_organs_by_name[BP_L_HAND]
+			return (active_hand == ACTIVE_HAND_LEFT) ? external_organs_by_name[BP_L_HAND] : external_organs_by_name[BP_R_HAND]
 		if(ACTIVE_HAND_LEFT)
-			return organs_by_name[BP_L_HAND]
+			return external_organs_by_name[BP_L_HAND]
 		if(ACTIVE_HAND_RIGHT)
-			return organs_by_name[BP_R_HAND]
+			return external_organs_by_name[BP_R_HAND]
 	return null
 
 /mob/living/carbon/human/proc/is_hand_usable(silent = FALSE, certain_hand = -1)

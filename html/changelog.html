@@ -45,6 +45,30 @@
     </table>
 
     <div class="commit">
+        <div class="date"><span>01 апрель 2026</span></div>
+        <h3 class="author">TobyThorne updated:</h3>
+        <ul class="changes">
+            <li class="green"><i class="fas fa-wrench"></i><p>Переработан урон от таскания лежачих. Раньше он наносил урон по случайным конечностям, если общий урон на космонавтике был выше 100 и криво работал с протезами (неправильные сообщения и текущая от урона по протезам кровь). Теперь - урон получают непосредственно травмированные части тела. Если на части тела есть открытая рана с достаточным уроном - её состояние будет ухудшаться. Забинтованные/запёкшиеся раны имеют более высокий порог урона для ухудшения. Также урон получают сломанные конечности - сначала тупой, если его слишком много - то колотый, превращая закрытый перелом в открытый.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13810">#13810</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Взрывы стали немного опаснее для здоровья.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13810">#13810</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Жирных теперь сложнее таскать, если они лежат или выбирают интент, отличный от HELP. То же касается ксеноморфов. Макаки - наоборот, таскаются проще.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13810">#13810</a></sup></li>
+            <li class="green"><i class="fas fa-bug"></i><p>Исправлен эффект емагнутого органфиксера.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13810">#13810</a></sup></li>
+            <li class="green"><i class="fas fa-bug"></i><p>Руки в наручниках снова отгрызаются.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13810">#13810</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Метроиды теперь не только наносят генетический и токсический урон, но и иссушают кровь.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13813">#13813</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Метроиды теперь наносят всё больше урона с каждым тиком, если беспрерывно высасывают моба.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13813">#13813</a></sup></li>
+            <li class="green"><i class="fas fa-bug"></i><p>Значительно уменьшен объем крови у обезьян - с человеческих 5.6 литра до 1.2 литра (примерный объем крови у <em>крупного</em> резуса).</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13813">#13813</a></sup></li>
+            <li class="green"><i class="fas fa-bug"></i><p>Отторжение органов снова работает не только с внутренними органами, но и с конечностями, спустя много лет. Да, такой механ существует.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13813">#13813</a></sup></li>
+            <li class="green"><i class="fas fa-crown"></i><p>Людям добавлена новая переменная &quot;snowflake_organs&quot;. Через VV в ней можно выбрать флаги, вроде отключения боли, отключения переломов, отключения кровотечения и т.д. После этого необходимо использовать Revive для обновления органов. Может пригодиться для ивентов или тестов.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/13797">#13797</a></sup></li>
+        </ul>
         <div class="date"><span>26 март 2026</span></div>
         <h3 class="author">TobyThorne updated:</h3>
         <ul class="changes">

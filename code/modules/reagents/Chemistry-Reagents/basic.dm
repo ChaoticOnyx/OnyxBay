@@ -439,8 +439,8 @@
 
 	// Stomach is either missing or peforated, burning the chest
 	var/obj/item/organ/external/chest = H.get_organ(BP_CHEST)
-	if(chest)
-		chest.take_external_damage(0, removed * power * 0.5)
+	if(istype(chest))
+		chest.take_burn_damage(removed * power * 0.5, "Corrosive Chemicals")
 	return
 
 /datum/reagent/acid/affect_digest(mob/living/carbon/M, alien, removed, affecting_dose)
@@ -458,11 +458,11 @@
 
 	// Intestines are done, melting the groin and chest
 	var/obj/item/organ/external/chest = H.get_organ(BP_CHEST)
-	if(chest)
-		chest.take_external_damage(0, removed * power * 0.25)
+	if(istype(chest))
+		chest.take_burn_damage(removed * power * 0.25, "Corrosive Chemicals")
 	var/obj/item/organ/external/groin = H.get_organ(BP_GROIN)
-	if(groin)
-		groin.take_external_damage(0, removed * power * 0.5)
+	if(istype(groin))
+		groin.take_burn_damage(removed * power * 0.5, "Corrosive Chemicals")
 	return
 
 /datum/reagent/acid/affect_touch(mob/living/carbon/M, alien, removed) // This is the most interesting
@@ -520,7 +520,7 @@
 		if(removed && ishuman(M) && prob(100 * removed / meltdose)) // Applies disfigurement
 			var/mob/living/carbon/human/H = M
 			var/screamed
-			for(var/obj/item/organ/external/affecting in H.organs)
+			for(var/obj/item/organ/external/affecting in H.external_organs)
 				if(!screamed && affecting.can_feel_pain())
 					screamed = 1
 					H.emote("scream")

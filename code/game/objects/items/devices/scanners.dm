@@ -183,7 +183,7 @@ REAGENT SCANNER
 		else if(H.shock_stage > 80)
 			status_data += "<span class='warning'>Patient is at serious risk of going into shock. Pain relief recommended.</span>"
 		var/is_bleeding
-		for(var/obj/item/organ/external/E in H.organs)
+		for(var/obj/item/organ/external/E in H.external_organs)
 			if(E.status & ORGAN_BLEEDING)
 				is_bleeding = TRUE
 				break
@@ -211,7 +211,7 @@ REAGENT SCANNER
 	if(verbose)
 		specific_limb_data += "<span class='notice'><b>Specific limb damage:</b></span>"
 
-		for(var/obj/item/organ/external/E in H.organs)
+		for(var/obj/item/organ/external/E in H.external_organs)
 			var/limb_damaged // in some cases we dont need apply this flag cause it already will be applied
 			var/limb_result = "<b>[capitalize(E.name)][(BP_IS_ROBOTIC(E)) ? " (Cybernetic)" : ""]:</b>"
 

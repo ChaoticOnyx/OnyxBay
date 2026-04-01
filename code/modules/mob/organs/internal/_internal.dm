@@ -46,7 +46,7 @@
 	if(owner)
 		owner.internal_organs -= src
 		owner.internal_organs_by_name -= organ_tag
-		var/obj/item/organ/external/E = owner.organs_by_name[parent_organ]
+		var/obj/item/organ/external/E = owner.external_organs_by_name[parent_organ]
 		if(istype(E))
 			E.internal_organs -= src
 	return ..()
@@ -111,9 +111,12 @@
 	return TRUE
 
 /obj/item/organ/internal/die()
-	..()
+	. = ..()
+	if(!.)
+		return FALSE
 	if((status & ORGAN_DEAD) && dead_icon)
 		icon_state = dead_icon
+	return TRUE
 
 /obj/item/organ/internal/remove_rejuv()
 	if(owner)
@@ -121,7 +124,7 @@
 		owner.internal_organs_by_name -= organ_tag
 		while(null in owner.internal_organs)
 			owner.internal_organs -= null
-		var/obj/item/organ/external/E = owner.organs_by_name[parent_organ]
+		var/obj/item/organ/external/E = owner.external_organs_by_name[parent_organ]
 		if(istype(E)) E.internal_organs -= src
 	..()
 

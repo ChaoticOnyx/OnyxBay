@@ -276,7 +276,7 @@
 		slab_count = 0
 		slab_owner = H.real_name
 		slab_type = H.species.meat_type
-		for(var/obj/item/organ/external/O in H.organs)
+		for(var/obj/item/organ/external/O in H.external_organs)
 			if(O.is_stump())
 				continue
 

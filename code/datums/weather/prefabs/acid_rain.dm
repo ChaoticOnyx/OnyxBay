@@ -66,7 +66,7 @@
 	if(ishuman(L) && prob(10))
 		var/mob/living/carbon/human/H = L
 		var/screamed
-		for(var/obj/item/organ/external/affecting in H.organs)
+		for(var/obj/item/organ/external/affecting in H.external_organs)
 			if(!screamed && affecting.can_feel_pain())
 				screamed = 1
 				H.emote("scream")

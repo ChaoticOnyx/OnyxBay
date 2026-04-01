@@ -135,13 +135,13 @@
 
 		//Body markings
 		for(var/tag in dna.body_markings)
-			var/obj/item/organ/external/E = H.organs_by_name[tag]
+			var/obj/item/organ/external/E = H.external_organs_by_name[tag]
 			if(E)
 				var/list/marklist = dna.body_markings[tag]
 				E.markings = marklist.Copy()
 
 		//Base skin and blend
-		for(var/obj/item/organ/external/E in H.organs)
+		for(var/obj/item/organ/external/E in H.external_organs)
 			E.set_dna(E.dna)
 
 		//Hair

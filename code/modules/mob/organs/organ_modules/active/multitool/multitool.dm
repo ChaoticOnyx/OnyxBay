@@ -53,7 +53,7 @@
 			show_splash_text(H, "Drop first!", SPAN_WARNING("You must drop [I] before tool can be extend."))
 	else
 		var/obj/item = tgui_input_list(H, "Select item for deploy", "Multitool Implant", src.contents)
-		if(!item || !(src.loc in H.organs) || H.incapacitated())
+		if(!item || !(src.loc in H.external_organs) || H.incapacitated())
 			return
 
 		if(H.equip_to_slot_if_possible(item, target_hand))

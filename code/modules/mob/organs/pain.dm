@@ -50,7 +50,7 @@
 
 	var/maxdam = 0
 	var/obj/item/organ/external/damaged_organ = null
-	for(var/obj/item/organ/external/E in shuffle(organs))
+	for(var/obj/item/organ/external/E in shuffle(external_organs))
 		if(!E.can_feel_pain())
 			continue
 		var/dam = E.get_damage()

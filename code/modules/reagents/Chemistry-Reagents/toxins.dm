@@ -723,7 +723,7 @@
 /datum/reagent/toxin/hair_remover/affect_touch(mob/living/carbon/human/M, alien, removed)
 	if(alien == IS_SKRELL)	//skrell can't have hair unless you hack it in, also to prevent tentacles from falling off
 		return
-	var/obj/item/organ/external/head/head = M?.organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/head = M?.external_organs_by_name[BP_HEAD]
 	if(istype(head))
 		for(var/obj/item/organ_module/active/cyber_hair/H in head.organ_modules)
 			return

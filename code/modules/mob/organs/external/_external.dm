@@ -53,6 +53,9 @@
 	var/max_pain = null                // Maximum pain the limb can accumulate. The actual effect's capped at max_damage.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
 
+	var/last_pull_damage_message
+	var/last_pull_damage_time = 0
+
 	// Movement delay vars.
 	var/movement_tally    = 0          // Defines movement speed
 	var/damage_multiplier = 0.5        // Default damage multiplier
@@ -104,7 +107,7 @@
 	// Surgery vars.
 	var/cavity_max_w_class = 0
 	var/hatch_state = 0
-	var/stage = 0
+	var/bone_stage = 0
 	var/cavity = 0
 	var/atom/movable/applied_pressure
 	var/atom/movable/splinted
@@ -160,8 +163,8 @@
 		if(limb_flags & ORGAN_FLAG_CAN_STAND)
 			owner.stance_limbs -= src
 
-		owner.organs -= src
-		owner.organs_by_name -= organ_tag
+		owner.external_organs -= src
+		owner.external_organs_by_name -= organ_tag
 		owner.bad_external_organs -= src
 
 		if(!QDELETED(owner)) // Don't waste time if we'are being deleted as a whole.
@@ -275,7 +278,7 @@
 
 /obj/item/organ/external/attackby(obj/item/W, mob/user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	switch(stage)
+	switch(bone_stage)
 		if(0)
 			if(W.edge)
 				if(!do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
@@ -291,7 +294,7 @@
 					user.visible_message(SPAN("danger", "<b>[user]</b> cuts [external_child] from [src] with [W]!"))
 				else
 					user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
-					stage++
+					bone_stage++
 				return
 		if(1)
 			if(istype(W) && W.force >= 5.0)
@@ -299,7 +302,7 @@
 					return
 				user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
 				drop_embedded_objects()
-				stage++
+				bone_stage++
 				return
 		if(2)
 			if(W.sharp || W.edge || istype(W, /obj/item/hemostat) || isWirecutter(W))
@@ -374,17 +377,13 @@
 
 	return all_items
 
-/obj/item/organ/external/update_health()
-	damage = min(max_damage, (brute_dam + burn_dam))
-	return
-
 /obj/item/organ/external/replaced(mob/living/carbon/human/target)
 	. = ..()
 	if(!.)
 		return FALSE
 
 	if(parent_organ)
-		parent = owner.organs_by_name[parent_organ]
+		parent = owner.external_organs_by_name[parent_organ]
 		if(!parent)
 			qdel_self() // Something went very, very wrong.
 			return FALSE
@@ -395,8 +394,8 @@
 	if(limb_flags & ORGAN_FLAG_CAN_STAND && length(owner.stance_limbs))
 		owner.stance_limbs[src] = TRUE
 
-	owner.organs_by_name[organ_tag] = src
-	owner.organs |= src
+	owner.external_organs_by_name[organ_tag] = src
+	owner.external_organs |= src
 
 	if(owner.mind?.vampire)
 		limb_flags &= ~ORGAN_FLAG_CAN_BREAK
@@ -526,8 +525,8 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/item/organ/external/remove_rejuv()
 	if(owner)
-		owner.organs -= src
-		owner.organs_by_name -= organ_tag
+		owner.external_organs -= src
+		owner.external_organs_by_name -= organ_tag
 	if(length(children))
 		for(var/obj/item/organ/external/E in children)
 			E.remove_rejuv()
@@ -561,9 +560,6 @@ This function completely restores a damaged organ to perfect condition.
 
 //Determines if we even need to process this organ.
 /obj/item/organ/external/proc/need_process()
-	if(get_pain())
-		return TRUE
-
 	if(status & (ORGAN_CUT_AWAY|ORGAN_BLEEDING|ORGAN_BROKEN|ORGAN_DEAD|ORGAN_MUTATED))
 		return TRUE
 
@@ -586,7 +582,8 @@ This function completely restores a damaged organ to perfect condition.
 			should_update_damage_icons_this_tick = handle_regeneration()
 	else
 		remove_all_pain()
-		..()
+
+	..()
 
 /obj/item/organ/external/cook_organ()
 	..()
@@ -594,9 +591,12 @@ This function completely restores a damaged organ to perfect condition.
 		internal.cook_organ()
 
 /obj/item/organ/external/die()
+	. = ..()
+	if(!.)
+		return FALSE
 	for(var/obj/item/organ/external/E in children)
 		E.take_blunt_damage(10, "parent organ sepsis", TRUE)
-	..()
+	return TRUE
 
 // Handles natural heal, internal bleedings and infections
 /obj/item/organ/external/proc/handle_regeneration()
@@ -796,7 +796,7 @@ This function completely restores a damaged organ to perfect condition.
 			stump.arterial_bleed_severity = arterial_bleed_severity
 			stump.adjust_pain(max_damage)
 
-			victim.organs |= stump
+			victim.external_organs |= stump
 
 			stump.movement_tally = stumped_tally * damage_multiplier
 			if(disintegrate != DROPLIMB_BURN)
@@ -969,6 +969,7 @@ This function completely restores a damaged organ to perfect condition.
 	if(use_damage_check && (blunt_dam >= min_broken_damage * config.health.organ_health_multiplier))
 		return FALSE // will just immediately fracture again
 
+	bone_stage = 0 // So things don't get weird if a wizard fixes his own bone during surgery or something.
 	status &= ~ORGAN_BROKEN
 	update_tally()
 	return TRUE
@@ -1152,8 +1153,8 @@ This function completely restores a damaged organ to perfect condition.
 		parent = null
 
 	release_restraints(victim)
-	victim.organs -= src
-	victim.organs_by_name -= organ_tag
+	victim.external_organs -= src
+	victim.external_organs_by_name -= organ_tag
 
 	//Robotic limbs explode if sabotaged.
 	if(BP_IS_ROBOTIC(src) && (status & ORGAN_SABOTAGED))
