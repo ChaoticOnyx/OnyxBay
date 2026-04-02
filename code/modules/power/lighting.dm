@@ -493,7 +493,7 @@
 
 /obj/machinery/light/proc/has_power()
 	var/area/our_area = get_area(src)
-	return our_area.lightswitch && !(stat & NOPOWER)
+	return (!our_area || our_area.lightswitch) && !(stat & NOPOWER)
 
 /obj/machinery/light/power_change()
 	. = ..()

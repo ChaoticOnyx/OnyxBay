@@ -86,6 +86,12 @@ REAGENT SCANNER
 	var/p_name = list()
 	p_name = SPAN("notice", "<b>Scan results for \the [H]:</b>")
 
+	if(issilicon(H))
+		return (p_name + "<hr><span class='danger'>ERROR - Non-organic patient</span>")
+
+	if(!istype(H))
+		return (p_name + "<hr><span class='danger'>ERROR - Nonstandard biology</span>")
+
 	// Brain activity.
 	var/brain_data = list()
 	var/brain_result = "normal"
