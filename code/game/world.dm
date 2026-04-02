@@ -548,8 +548,9 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	game_log("World rebooted at [time_stamp()]")
 
-	if(blackbox)
-		blackbox.save_all_data_to_sql()
+	// TODO: Find out what the fuck.
+	//if(blackbox)
+	//	blackbox.save_all_data_to_sql()
 
 	Z_DEINIT()
 	..(reason)
