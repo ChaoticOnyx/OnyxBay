@@ -1,6 +1,17 @@
 [
   {
     "author": "TobyThorne",
+    "date": "2026-04-02T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Experiment",
+        "message": "Возможно, исправлены межраундовые падения сервера.",
+        "pr": 13817
+      }
+    ]
+  },
+  {
+    "author": "TobyThorne",
     "date": "2026-04-01T00:00:00+03:00",
     "changes": [
       {
