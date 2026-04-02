@@ -47,6 +47,13 @@
 
 	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 55)
 
+/obj/item/clothing/mask/gas/secmask
+	name = "security gas mask"
+	desc = "A security gas mask that filters harmful gases from the air."
+	icon_state = "secmask"
+	item_state = "secmask"
+
+	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 55)
 //Plague Dr suit can be found in clothing/suits/bio.dm
 /obj/item/clothing/mask/gas/plaguedoctor
 	name = "plague doctor mask"
