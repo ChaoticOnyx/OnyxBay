@@ -13,19 +13,16 @@
 
 	var/list/avail_dirs = list(NORTH,SOUTH,EAST,WEST,UP,DOWN)
 
-/turf/unsimulated/wall/supermatter/New()
-	..()
+/turf/unsimulated/wall/supermatter/Initialize()
+	. = ..()
 
 	// Nom.
 	for(var/atom/movable/A in src)
 		Consume(A)
 
-/turf/unsimulated/wall/supermatter/Process(wait, times_fired)
-	// Only check infrequently.
-	var/how_often = max(round(5 SECONDS/wait), 1)
-	if(times_fired % how_often)
-		return
+	set_next_think(world.time)
 
+/turf/unsimulated/wall/supermatter/think()
 	// No more available directions? Stop processing.
 	if(!avail_dirs.len)
 		return PROCESS_KILL
@@ -43,6 +40,8 @@
 			if(istype(T,type)) // In case another blob came first, don't create another blob
 				return
 			T.ChangeTurf(type)
+
+	set_next_think(world.time + 5 SECONDS)
 
 /turf/unsimulated/wall/supermatter/attack_generic(mob/user as mob)
 	if(istype(user))
