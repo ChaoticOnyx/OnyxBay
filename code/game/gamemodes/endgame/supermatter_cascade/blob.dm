@@ -99,7 +99,7 @@
 	Bumped(AM)
 
 /turf/unsimulated/wall/supermatter/proc/Consume(atom/movable/AM)
-	if(MayConsume(AM) && !istype(AM, /obj/effect/overlay/bluespacify))
+	if(MayConsume(AM))
 		qdel(AM)
 		return TRUE
 
