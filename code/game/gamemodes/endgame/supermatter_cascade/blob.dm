@@ -24,8 +24,9 @@
 
 /turf/unsimulated/wall/supermatter/think()
 	// No more available directions? Stop processing.
-	set_next_think(0)
-+	return
+	if(!avail_dirs.len)
+		set_next_think(0)
+	+	return
 
 	// Choose a direction.
 	var/pdir = pick(avail_dirs)
