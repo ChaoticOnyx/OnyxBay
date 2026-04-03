@@ -42,12 +42,15 @@
 /obj/item/melee/energy/armblade
 	name = "energy blade"
 	desc = "A lovely omni-blade that cuts through both cakes and limbs with ease."
+	atom_flags = ATOM_FLAG_NO_BLOOD
+	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	anchored = TRUE    // Never spawned outside of inventory, should be fine.
+	canremove = FALSE
+	force_drop = TRUE
 
 	sharp = FALSE
 	edge = TRUE
 	active_force = 45
-	anchored = TRUE    // Never spawned outside of inventory, should be fine.
-
 	mod_weight = 0.5
 	mod_reach = 0.3
 	mod_handy = 1.0
@@ -56,11 +59,7 @@
 	mod_reach_a = 1.25
 	mod_handy_a = 1.5
 	mod_shield_a = 2.5
-
-	atom_flags = ATOM_FLAG_NO_BLOOD
-	canremove = FALSE
-	force_drop = TRUE
-	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	block_tier_a = BLOCK_TIER_MELEE
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 
 	active_max_bright = 0.75
@@ -78,6 +77,14 @@
 	brightness_color = "#ff8c27"
 	blade_color = "orange" // The same as security energy shields, low-tier reverse-engineered energy weapons or something.
 	active_force = 35 // A bit worse than the COOL ones
+
+/obj/item/melee/energy/armblade/activate(mob/living/user)
+	..()
+	set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
+
+/obj/item/melee/energy/armblade/deactivate(mob/living/user)
+	..()
+	set_light(0)
 
 /obj/item/melee/energy/armblade/attack_self(mob/user)
 	return

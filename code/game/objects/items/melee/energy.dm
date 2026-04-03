@@ -286,7 +286,7 @@
 
 	return ..()
 
-/obj/item/melee/energy/sword/one_hand/on_update_icon()
+/obj/item/melee/energy/sword/saber/on_update_icon()
 	if(active)
 		icon_state = "[base_icon_state][blade_color]"
 	else
