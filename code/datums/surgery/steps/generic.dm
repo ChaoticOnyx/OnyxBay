@@ -159,7 +159,7 @@
 		/obj/item/scalpel/laser3 = 100,
 		/obj/item/scalpel/laser2 = 100,
 		/obj/item/scalpel/laser1 = 100,
-		/obj/item/melee/energy/sword/one_hand = 50
+		/obj/item/melee/energy = 50
 		)
 
 	preop_sound = 'sound/surgery/cautery1.ogg'
