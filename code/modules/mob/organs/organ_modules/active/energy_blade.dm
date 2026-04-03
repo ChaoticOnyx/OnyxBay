@@ -1,7 +1,7 @@
 /obj/item/organ_module/active/simple/armblade/energy_blade
 	name = "energy armblade"
 	desc = "A energy blade designed to be inserted into an arm. Gives you one hell of an advantage in a brawl."
-	action_button_name = "Deploy energyblade"
+	action_button_name = "Deploy energy blade"
 	icon_state = "energyblade"
 	mod_overlay = "installer_armblade"
 	module_flags = OM_FLAG_DEFAULT | OM_FLAG_MECHANICAL | OM_FLAG_BIOLOGICAL
@@ -40,7 +40,7 @@
 	S.deactivate(H)
 
 /obj/item/melee/energy/armblade
-	name = "energy blade"
+	name = "energy armblade"
 	desc = "A lovely omni-blade that cuts through both cakes and limbs with ease."
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
