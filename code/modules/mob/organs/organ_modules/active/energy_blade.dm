@@ -1,6 +1,6 @@
 /obj/item/organ_module/active/simple/armblade/energy_blade
 	name = "energy armblade"
-	desc = "A energy blade designed to be inserted into an arm. Gives you one hell of an advantage in a brawl."
+	desc = "An energy blade projector designed to be inserted into an arm. Gives you one hell of an advantage in a brawl."
 	action_button_name = "Deploy energy blade"
 	icon_state = "energyblade"
 	mod_overlay = "installer_armblade"
@@ -16,7 +16,7 @@
 
 /obj/item/organ_module/active/simple/armblade/energy_blade/nt
 	name = "prototype energy armblade"
-	desc = "A prototype energy blade designed to be inserted into an arm. Gives you a nice advantage in a brawl."
+	desc = "A prototype energy blade projector designed to be inserted into an arm. Gives you a nice advantage in a brawl."
 	holding_type = /obj/item/melee/energy/armblade/nt
 
 /obj/item/organ_module/active/simple/armblade/energy_blade/deploy(mob/living/carbon/human/H, obj/item/organ/external/E)

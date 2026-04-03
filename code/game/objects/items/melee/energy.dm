@@ -348,7 +348,7 @@
 	needs_blocking = FALSE
 
 /obj/item/melee/energy/sword/robot/on_update_icon()
-	icon_state = active ? "sword0" : "swordred"
+	icon_state = active ? "swordred" : "sword0"
 
 /*
  *DualSaber

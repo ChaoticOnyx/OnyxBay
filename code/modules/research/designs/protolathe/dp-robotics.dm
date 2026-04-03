@@ -193,7 +193,7 @@
 	sort_string = "VADAU"
 
 /datum/design/item/augment/energy_blade
-	id = "augment_emergy_blade"
+	id = "augment_energy_blade"
 	build_path = /obj/item/organ_module/active/simple/armblade/energy_blade/nt
 	materials = list(MATERIAL_DURANIUM = 2500, MATERIAL_GOLD = 5000, MATERIAL_URANIUM = 2500, MATERIAL_DIAMOND = 5000)
 	req_tech = list(TECH_COMBAT = 10, TECH_ENGINEERING = 3, TECH_MATERIAL = 3, TECH_MAGNET = 3, TECH_ILLEGAL = 5)
