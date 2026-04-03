@@ -90,7 +90,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	attack_verb = list("burnt", "singed")
-	var/max_fuel = 50
+	var/max_fuel = 5
 	var/flame_overlay = "cheapoverlay"
 	var/spam_flag = 0
 	var/requires_hold = TRUE
@@ -201,7 +201,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 			set_light(0)
 			spawn(4)
 				set_light(0.3, 0.5, 2, 2, "#e38f46")
-		reagents.remove_reagent(/datum/reagent/fuel, 0.05)
+		reagents.remove_reagent(/datum/reagent/fuel, 0.1)
 	else
 		shutoff()
 		return
@@ -255,6 +255,8 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		O.reagents.trans_to_obj(src, max_fuel)
 		to_chat(user, SPAN("notice", "You refuel [src] from \the [O]."))
 		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
+		return
+	return ..()
 
 /obj/item/flame/lighter/zippo/cap
 	name = "\improper Captain's lighter"
@@ -411,6 +413,33 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		if(user.l_hand == src)
 			user.apply_damage(7.5, BRUTE, BP_L_HAND)
 		else
-			user.apply_damage(7.5, BURN, BP_R_HAND)
+			user.apply_damage(7.5, BRUTE, BP_R_HAND)
 		user.visible_message(SPAN("notice", "You hear a nasty snap, as [user] shuts off [src], badly pinching their hand in the process."))
 	playsound(src.loc, 'sound/items/zippo_close.ogg', 100, 1, -4)
+
+
+/obj/item/flame/lighter/aug
+	name = "integrated lighter"
+	desc = "A fullmetal Prometheus, aren't you?"
+	icon_state = "aug"
+	item_state = "zippo"
+	flame_overlay = "augoverlay"
+	requires_hold = TRUE
+
+/obj/item/flame/lighter/aug/light_effects(mob/user)
+	user.visible_message(SPAN("rose", "[user] lights \his [src] without even twitching a muscle."))
+	playsound(src.loc, 'sound/items/zippo_open.ogg', 100, 1, -4)
+
+/obj/item/flame/lighter/aug/shutoff_effects(mob/user)
+	user.visible_message(SPAN("rose", "[user] shuts off \his [src] without even looking at it."))
+	playsound(src.loc, 'sound/items/zippo_close.ogg', 100, 1, -4)
+
+/obj/item/flame/lighter/aug/afterattack(obj/O, mob/user, proximity)
+	if(!proximity)
+		return
+	if(istype(O, /obj/structure/reagent_dispensers/fueltank) && !lit)
+		O.reagents.trans_to_obj(src, max_fuel)
+		to_chat(user, SPAN("notice", "You refuel [src] from \the [O]."))
+		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
+		return
+	return ..()

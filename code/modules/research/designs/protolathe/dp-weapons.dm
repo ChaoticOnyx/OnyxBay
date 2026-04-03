@@ -212,3 +212,11 @@
 	req_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 3)
 	build_path = /obj/item/ammo_casing/shotgun/emp
 	sort_string = "TBAAF"
+
+/datum/design/item/weapon/esword
+	id = "esword"
+	desc = "A prototype energy saber."
+	req_tech = list(TECH_COMBAT = 7, TECH_POWER = 6, TECH_MATERIAL = 3, TECH_MAGNET = 3, TECH_ILLEGAL = 4)
+	materials = list(MATERIAL_DURANIUM = 2500, MATERIAL_GOLD = 5000, MATERIAL_URANIUM = 2500, MATERIAL_DIAMOND = 5000)
+	build_path = /obj/item/melee/energy/sword/prototype
+	sort_string = "TBBAA"

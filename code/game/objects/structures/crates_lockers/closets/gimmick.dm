@@ -82,7 +82,7 @@
 /obj/structure/closet/thunderdome/tdred/WillContain()
 	return list(
 		/obj/item/clothing/suit/armor/tdome/red = 3,
-		/obj/item/melee/energy/sword/one_hand/red = 3,
+		/obj/item/melee/energy/sword/saber/red = 3,
 		/obj/item/gun/energy/laser = 3,
 		/obj/item/melee/baton = 3,
 		/obj/item/storage/box/flashbangs = 3,
@@ -98,7 +98,7 @@
 /obj/structure/closet/thunderdome/tdgreen/WillContain()
 	return list(
 		/obj/item/clothing/suit/armor/tdome/green = 3,
-		/obj/item/melee/energy/sword/one_hand/green = 3,
+		/obj/item/melee/energy/sword/saber/green = 3,
 		/obj/item/gun/energy/laser = 3,
 		/obj/item/melee/baton = 3,
 		/obj/item/storage/box/flashbangs = 3,
