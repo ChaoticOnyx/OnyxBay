@@ -69,11 +69,11 @@
 	path = /obj/item/storage/backpack/satchel/syndie_kit/revolver
 
 /datum/uplink_item/item/visible_weapons/energy_sword
-	name = "Energy Sword"
+	name = "Energy Saber"
 	desc = "One of the best melee weapons known to the mankind, it can turn a living being into something less living and less being in just a few swings. It is also capable of reflecting any projectiles. Just don't forget to turn it on."
 	item_cost = 8
 	antag_costs = list(MODE_NUKE = 6)
-	path = /obj/item/melee/energy/sword/one_hand
+	path = /obj/item/melee/energy/sword/saber/green
 
 /datum/uplink_item/item/visible_weapons/submachinegun
 	name = "Submachine Gun"
