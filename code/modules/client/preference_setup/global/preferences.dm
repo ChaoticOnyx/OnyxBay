@@ -272,7 +272,7 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
 
 /datum/client_preference/click_precision_assist
-	description = "Click Precision Assist"
+	description = "Click Precision Assist Time"
 	key = "CLICK_PRECISION_ASSIST"
 	category = PREF_CATEGORY_CONTROL
 	default_value = GLOB.PREF_CLICK_PRECISION_2DS

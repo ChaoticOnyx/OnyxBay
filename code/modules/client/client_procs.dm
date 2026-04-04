@@ -664,6 +664,23 @@
 	 */
 	mob?.reload_fullscreen()
 
+/client/Click(atom/A, location, control, params)
+	if(mouse_click_last_time == world.time)
+		return 0
+
+	mouse_click_last_time = world.time
+
+	// See code/modules/admin/callproc/callproc.dm
+	if(holder && holder.callproc && holder.callproc.waiting_for_click)
+		if(alert("Do you want to select \the [A] as the [length(holder.callproc.arguments)+1]\th argument?",, "Yes", "No") == "Yes")
+			holder.callproc.arguments += A
+
+		holder.callproc.waiting_for_click = 0
+		verbs -= /client/proc/cancel_callproc_select
+		holder.callproc.do_args()
+	else
+		return ..()
+
 /client/MouseDrag(src_object, over_object, src_location, over_location, src_control, over_control, params)
 	. = ..()
 	if(isliving(mob))

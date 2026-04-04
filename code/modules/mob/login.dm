@@ -86,6 +86,8 @@
 
 	update_mouse_pointer()
 
+	client.mouse_click_opportunity_window = get_preference_value(/datum/client_preference/click_precision_assist)
+
 	if(!skybox)
 		skybox = new(src)
 		skybox.owner = src
