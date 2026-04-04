@@ -4,11 +4,11 @@
 	dislocated = -1
 	disable_food_organ = TRUE
 
-/obj/item/organ/external/stump/Initialize(mapload, mob/living/carbon/holder, obj/item/organ/external/limb)
+/obj/item/organ/external/stump/Initialize(mapload, obj/item/organ/external/limb)
 	. = ..()
 
-	if(!istype(limb))
-		return .
+	if(!owner || !istype(limb)) // We definitely don't want these pieces of crap to be found outside of a human body.
+		return INITIALIZE_HINT_QDEL
 
 	organ_tag = limb.organ_tag
 	if(!BP_IS_ROBOTIC(limb)) // These nasty fucks are broken, fuck robolimbs, their dumb icons and whomever the fuck created them in their current fucking state
@@ -26,7 +26,13 @@
 		robotize() //if both limb and the parent are robotic, the stump is robotic too
 
 /obj/item/organ/external/stump/is_stump()
-	return 1
+	return TRUE
+
+/obj/item/organ/external/stump/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent, drop_modules = FALSE)
+	..()
+	if(!owner && !QDELETED(src))
+		qdel_self()
+	return
 
 /obj/item/organ/external/stump/rejuvenate(ignore_prosthetic_prefs)
 	. = ..()
