@@ -50,6 +50,12 @@ GLOBAL_VAR_CONST(PREF_SPLASH_CHAT, "Chat only")
 GLOBAL_VAR_CONST(PREF_SPLASH_BOTH, "Maptext and chat")
 GLOBAL_VAR_CONST(PREF_ENABLED, "Enabled")
 GLOBAL_VAR_CONST(PREF_DISABLED, "Disabled")
+GLOBAL_VAR_CONST(PREF_CLICK_PRECISION_NONE, "Disabled")
+GLOBAL_VAR_CONST(PREF_CLICK_PRECISION_1DS,  "0.1s")
+GLOBAL_VAR_CONST(PREF_CLICK_PRECISION_2DS,  "0.2s")
+GLOBAL_VAR_CONST(PREF_CLICK_PRECISION_3DS,  "0.3s")
+GLOBAL_VAR_CONST(PREF_CLICK_PRECISION_4DS,  "0.4s")
+GLOBAL_VAR_CONST(PREF_CLICK_PRECISION_5DS,  "0.5s")
 
 
 var/global/list/_client_preferences
@@ -264,6 +270,30 @@ var/global/list/_client_preferences_by_type
 	key = "SPECIAL_ABILITY"
 	category = PREF_CATEGORY_CONTROL
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
+
+/datum/client_preference/click_precision_assist
+	description = "Click Precision Assist"
+	key = "CLICK_PRECISION_ASSIST"
+	category = PREF_CATEGORY_CONTROL
+	default_value = GLOB.PREF_CLICK_PRECISION_2DS
+	options = list(GLOB.PREF_CLICK_PRECISION_NONE, GLOB.PREF_CLICK_PRECISION_1DS, GLOB.PREF_CLICK_PRECISION_2DS, GLOB.PREF_CLICK_PRECISION_3DS, GLOB.PREF_CLICK_PRECISION_4DS, GLOB.PREF_CLICK_PRECISION_5DS)
+
+/datum/client_preference/click_precision_assist/changed(mob/preference_mob, new_value)
+	if(!istype(preference_mob))
+		return
+	switch(new_value)
+		if(GLOB.PREF_CLICK_PRECISION_NONE)
+			preference_mob?.client.mouse_click_opportunity_window = 0
+		if(GLOB.PREF_CLICK_PRECISION_1DS)
+			preference_mob?.client.mouse_click_opportunity_window = 1
+		if(GLOB.PREF_CLICK_PRECISION_2DS)
+			preference_mob?.client.mouse_click_opportunity_window = 2
+		if(GLOB.PREF_CLICK_PRECISION_3DS)
+			preference_mob?.client.mouse_click_opportunity_window = 3
+		if(GLOB.PREF_CLICK_PRECISION_4DS)
+			preference_mob?.client.mouse_click_opportunity_window = 4
+		if(GLOB.PREF_CLICK_PRECISION_5DS)
+			preference_mob?.client.mouse_click_opportunity_window = 5
 
 /datum/client_preference/tgui_style
 	description = "TGUI Style"

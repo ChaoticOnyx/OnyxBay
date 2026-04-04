@@ -225,7 +225,12 @@
 		holder.callproc.waiting_for_click = 0
 		holder.callproc.do_args()
 
-/client/Click(atom/A)
+/client/Click(atom/A, location, control, params)
+	if(mouse_click_last_time == world.time)
+		return 0
+
+	mouse_click_last_time = world.time
+
 	if(holder && holder.callproc && holder.callproc.waiting_for_click)
 		if(alert("Do you want to select \the [A] as the [length(holder.callproc.arguments)+1]\th argument?",, "Yes", "No") == "Yes")
 			holder.callproc.arguments += A
