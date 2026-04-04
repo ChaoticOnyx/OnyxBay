@@ -30,6 +30,9 @@
 	if(H?.incapacitated(INCAPACITATION_KNOCKOUT))
 		show_splash_text(usr, "Can't do that!", SPAN_WARNING("You can't do that now!"))
 		return
+	if(!surgically_attached)
+		to_chat(H, SPAN_WARNING("Your [src] is not connected and does not respond."))
+		return
 
 	if(istype(E, /obj/item/organ/external))
 		var/obj/item/organ/external/external = E

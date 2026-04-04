@@ -21,3 +21,10 @@
 	I.CopyOverlays(O)
 	I.pixel_y = -5
 	return I
+
+/// Creates and "centers" augmentation image for radial surgery menus.
+/proc/adjust_augment_image(obj/item/organ_module/module)
+	var/image/I = image(icon = module.icon, icon_state = module.icon_state)
+	I.CopyOverlays(module)
+	I.pixel_y = -5
+	return I

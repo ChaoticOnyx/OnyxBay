@@ -20,6 +20,8 @@
 
 	/// If not null (see defines), will prevent installing more than one module of the same type into one prosthesis.
 	var/module_type = null
+	/// TRUE when module is connected to tissues and can function.
+	var/surgically_attached = TRUE
 
 	var/cooldown = (0.5 SECONDS)
 
@@ -46,15 +48,20 @@
 /obj/item/organ_module/proc/install(obj/item/organ/E)
 	if(!E)
 		return     /// le costil, must fix runtimes
-	E.implants += src
-	E.organ_modules += src
-	E.occupied_space += augment_size
+	var/already_installed = (src in E.organ_modules)
+	if(!(src in E.implants))
+		E.implants += src
+	if(!already_installed)
+		E.organ_modules += src
+		E.occupied_space += augment_size
 	forceMove(E)
-	_on_install(E)
-	post_install(E)
+	surgically_attached = TRUE
+	if(!already_installed)
+		_on_install(E)
+		post_install(E)
 
 /obj/item/organ_module/proc/has_duplicate_in(obj/item/organ/E)
-	for(var/obj/item/organ_module/module in E.organ_modules)
+	for(var/obj/item/organ_module/module in E.implants)
 		if(module == src)
 			continue
 		if(istype(module, src.type))
@@ -88,7 +95,12 @@
 		if(user)
 			to_chat(user, SPAN_NOTICE("You cannot install the [src] into the [affected]."))
 		return FALSE
-	if((augment_size + affected.occupied_space) > affected.max_module_size)
+	var/pending_space = 0
+	for(var/obj/item/organ_module/module in affected.implants)
+		if(module == src || (module in affected.organ_modules))
+			continue
+		pending_space += module.augment_size
+	if((augment_size + affected.occupied_space + pending_space) > affected.max_module_size)
 		if(user)
 			to_chat(user, SPAN_NOTICE("You cannot install the [src] into the [affected]."))
 		return FALSE
@@ -105,13 +117,15 @@
 	return
 
 /obj/item/organ_module/proc/remove(obj/item/organ/E)
-	_on_remove(E)
+	if(src in E.organ_modules)
+		_on_remove(E)
+		E.organ_modules -= src
+		E.occupied_space = max(0, E.occupied_space - augment_size)
+		post_removed(E)
 	E.implants -= src
-	E.organ_modules -= src
-	E.occupied_space = max(0, E.occupied_space - augment_size)
+	surgically_attached = TRUE
 	if(!QDELETED(src))
 		forceMove(E.drop_location())
-	post_removed(E)
 
 /obj/item/organ_module/proc/_on_remove(obj/item/organ/E)
 	if(organ_tally)
@@ -128,6 +142,34 @@
 
 /obj/item/organ_module/proc/organ_installed()
 	return
+
+/obj/item/organ_module/proc/surgical_insert(obj/item/organ/E)
+	if(!E)
+		return
+	if(!(src in E.implants))
+		E.implants += src
+	forceMove(E)
+	surgically_attached = FALSE
+
+/obj/item/organ_module/proc/surgical_attach(obj/item/organ/E)
+	if(!E)
+		return
+	if(surgically_attached && (src in E.organ_modules))
+		return
+	if(!(src in E.implants))
+		E.implants += src
+	install(E)
+
+/obj/item/organ_module/proc/surgical_detach(obj/item/organ/E)
+	if(!E || !(src in E.organ_modules))
+		return
+	_on_remove(E)
+	E.organ_modules -= src
+	E.occupied_space = max(0, E.occupied_space - augment_size)
+	surgically_attached = FALSE
+	if(!QDELETED(src))
+		forceMove(E)
+	post_removed(E)
 
 /obj/item/organ_module/proc/is_allowed_for_job(datum/job/job)
 	if(!job)

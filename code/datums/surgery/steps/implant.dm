@@ -188,6 +188,7 @@
  */
 /datum/surgery_step/cavity/implant_removal
 	duration = CLAMP_DURATION
+	var/list/selected_loot_by_user = list()
 
 	allowed_tools = list(
 		/obj/item/hemostat = 100,
@@ -199,19 +200,18 @@
 	success_sound = 'sound/effects/squelch1.ogg'
 	failure_sound = 'sound/surgery/organ2.ogg'
 
-/datum/surgery_step/cavity/implant_removal/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	announce_preop(user,
-		"[user] starts poking around inside [target]'s [parent_organ] with \the [tool].",
-		"You start poking around inside [target]'s [parent_organ] with \the [tool]"
-		)
-	target.custom_pain(
-		"The pain in your [parent_organ] is living hell!",
-		1,
-		affecting = parent_organ
-		)
-	return ..()
+/datum/surgery_step/cavity/implant_removal/proc/get_selection_key(atom/user, obj/item/organ/external/parent_organ)
+	if(!user || !parent_organ)
+		return null
+	return "\ref[user]:\ref[parent_organ]"
 
-/datum/surgery_step/cavity/implant_removal/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/cavity/implant_removal/proc/clear_selected_loot(atom/user, obj/item/organ/external/parent_organ)
+	var/key = get_selection_key(user, parent_organ)
+	if(!key)
+		return
+	selected_loot_by_user -= key
+
+/datum/surgery_step/cavity/implant_removal/proc/build_loot_list(obj/item/organ/external/parent_organ)
 	var/exposed = FALSE
 	if(BP_IS_ROBOTIC(parent_organ) && parent_organ.hatch_state == HATCH_OPENED)
 		exposed = TRUE
@@ -221,45 +221,156 @@
 	var/find_prob = 0
 	var/list/atom/loot = list()
 	if(exposed)
-		loot = parent_organ.implants
+		loot = parent_organ.implants.Copy()
 	else
 		for(var/datum/wound/W in parent_organ.wounds)
 			if(LAZYLEN(W.embedded_objects))
 				loot |= W.embedded_objects
 			find_prob += 50
 
+	var/attached_augmentations = 0
+	for(var/obj/item/organ_module/module in loot.Copy())
+		if(module.surgically_attached)
+			loot -= module
+			attached_augmentations++
+
+	return list(
+		"exposed" = exposed,
+		"find_prob" = find_prob,
+		"loot" = loot,
+		"attached_augmentations" = attached_augmentations
+	)
+
+/datum/surgery_step/cavity/implant_removal/proc/get_loot_find_prob(obj/item/organ/external/parent_organ, obj/item/implanted_item, base_prob)
+	. = base_prob
+	if(istype(implanted_item, /obj/item/implant))
+		var/obj/item/implant/I = implanted_item
+		. += I.islegal() ? 60 : 40
+	else if(istype(implanted_item, /obj/item/organ_module))
+		var/list/data = build_loot_list(parent_organ)
+		. += (data["exposed"] ? 100 : 50)
+	else
+		. += 50
+
+/datum/surgery_step/cavity/implant_removal/proc/get_selected_loot(atom/user, obj/item/organ/external/parent_organ)
+	if(!user || !parent_organ)
+		return null
+	var/key = get_selection_key(user, parent_organ)
+	if(!key)
+		return null
+	var/obj/item/selected = selected_loot_by_user[key]
+	if(!istype(selected) || QDELETED(selected))
+		return null
+
+	var/list/data = build_loot_list(parent_organ)
+	var/list/loot = data["loot"]
+	if(!(selected in loot))
+		return null
+	return selected
+
+/datum/surgery_step/cavity/implant_removal/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
+	var/obj/item/organ/external/parent_organ = target.get_organ(get_parent_zone(target_zone))
+	if(!istype(parent_organ))
+		return null
+	clear_selected_loot(user, parent_organ)
+
+	var/list/data = build_loot_list(parent_organ)
+	var/list/loot = data["loot"]
 	if(!length(loot))
+		return parent_organ
+
+	var/list/radial_loot_choices = list()
+	for(var/obj/item/I in loot)
+		if(istype(I, /obj/item/organ_module))
+			var/obj/item/organ_module/module = I
+			radial_loot_choices[I] = adjust_augment_image(module)
+		else
+			radial_loot_choices[I] = make_item_radial_menu_button(I)
+
+	var/obj/item/selected = null
+	if(length(radial_loot_choices) == 1)
+		for(var/obj/item/I in radial_loot_choices)
+			selected = I
+			break
+	else
+		selected = show_radial_menu(user, target, radial_loot_choices, require_near = TRUE)
+		if(!istype(selected))
+			return null
+
+	selected_loot_by_user[get_selection_key(user, parent_organ)] = selected
+	return parent_organ
+
+/datum/surgery_step/cavity/implant_removal/check_target_organ(obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	. = ..()
+	if(!.)
+		return
+
+	var/obj/item/organ/external/parent_organ = target_organ
+	if(!istype(parent_organ))
+		return FALSE
+
+	var/list/data = build_loot_list(parent_organ)
+	var/list/loot = data["loot"]
+	if(!length(loot))
+		return TRUE
+
+	var/obj/item/selected = get_selected_loot(user, parent_organ)
+	if(!selected)
+		clear_selected_loot(user, parent_organ)
+		return FALSE
+	return TRUE
+
+/datum/surgery_step/cavity/implant_removal/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/obj/item/selected = get_selected_loot(user, parent_organ)
+	if(selected)
+		announce_preop(user,
+			"[user] starts removing [selected] from [target]'s [parent_organ] with \the [tool].",
+			"You start removing [selected] from [target]'s [parent_organ] with \the [tool]."
+			)
+	else
+		announce_preop(user,
+			"[user] starts poking around inside [target]'s [parent_organ] with \the [tool].",
+			"You start poking around inside [target]'s [parent_organ] with \the [tool]"
+			)
+	target.custom_pain(
+		"The pain in your [parent_organ] is living hell!",
+		1,
+		affecting = parent_organ
+		)
+	return ..()
+
+/datum/surgery_step/cavity/implant_removal/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/list/data = build_loot_list(parent_organ)
+	var/find_prob = data["find_prob"]
+	var/list/loot = data["loot"]
+
+	if(!length(loot))
+		clear_selected_loot(user, parent_organ)
 		announce_success(user,
 			"[user] could not find anything inside [target]'s [parent_organ], and pulls \the [tool] out.",
 			"You could not find anything inside [target]'s [parent_organ]."
 			)
 		return
 
-	var/obj/item/implanted_item = null
-	var/list/armor_loot = list()
-	for(var/obj/item/organ_module/armor/A in loot)
-		armor_loot += A
-	if(length(armor_loot))
-		if(length(armor_loot) == 1)
-			implanted_item = armor_loot[1]
+	var/obj/item/implanted_item = get_selected_loot(user, parent_organ)
+	clear_selected_loot(user, parent_organ)
+	if(!implanted_item)
+		if(length(loot) == 1)
+			implanted_item = loot[1]
 		else
-			implanted_item = show_radial_menu(user, target, armor_loot, require_near = TRUE)
-			if(!istype(implanted_item))
-				return
-	else
-		implanted_item = pick(loot)
-	if(istype(implanted_item, /obj/item/implant))
-		var/obj/item/implant/I = implanted_item
-		find_prob += I.islegal() ? 60 : 40
-	else
-		find_prob += 50
+			announce_success(user,
+				"[user] removes \the [tool] from [target]'s [parent_organ].",
+				"There's something inside [target]'s [parent_organ], but you just missed it this time."
+				)
+			return
+
+	find_prob = get_loot_find_prob(parent_organ, implanted_item, find_prob)
 
 	if(prob(find_prob))
 		announce_success(user,
 			"[user] takes something out of incision on [target]'s [parent_organ] with \the [tool].",
 			"You take [implanted_item] out of incision on [target]'s [parent_organ]s with \the [tool]."
 			)
-		parent_organ.implants -= implanted_item
 		for(var/datum/wound/wound in parent_organ.wounds)
 			if(implanted_item in wound.embedded_objects)
 				wound.embedded_objects -= implanted_item
@@ -267,15 +378,19 @@
 
 		BITSET(target.hud_updateflag, IMPLOYAL_HUD)
 
-		implanted_item.dropInto(target.loc)
-		implanted_item.add_blood(target)
-		implanted_item.update_icon()
-		if(istype(implanted_item, /obj/item/implant))
-			var/obj/item/implant/I = implanted_item
-			I.removed()
 		if(istype(implanted_item, /obj/item/organ_module))
 			var/obj/item/organ_module/module = implanted_item
 			module.remove(parent_organ)
+			module.add_blood(target)
+			module.update_icon()
+		else
+			parent_organ.implants -= implanted_item
+			implanted_item.dropInto(target.loc)
+			implanted_item.add_blood(target)
+			implanted_item.update_icon()
+		if(istype(implanted_item, /obj/item/implant))
+			var/obj/item/implant/I = implanted_item
+			I.removed()
 		return
 
 	announce_success(user,
@@ -284,6 +399,7 @@
 		)
 
 /datum/surgery_step/cavity/implant_removal/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	clear_selected_loot(user, parent_organ)
 	. = ..()
 	for(var/obj/item/implant/I in parent_organ.implants)
 		if(prob(10 + 100 - get_tool_quality(tool)))
@@ -336,7 +452,288 @@
 		return
 
 	announce_success(user,
-		"[user] puts \the [tool] inside [target]'s [parent_organ].",
-		"You put \the [tool] inside [target]'s [parent_organ]."
+		"[user] puts \the [tool] inside [target]'s [parent_organ], leaving it disconnected.",
+		"You put \the [tool] inside [target]'s [parent_organ], but it still needs to be connected."
 		)
-	tool.install(parent_organ)
+	tool.surgical_insert(parent_organ)
+
+/**
+ * Attaches previously inserted organ module with FixOVein.
+ */
+/datum/surgery_step/cavity/attach_organ_module
+	duration = CONNECT_DURATION
+	priority = 3
+	var/list/selected_module_by_user = list()
+
+	allowed_tools = list(
+		/obj/item/FixOVein = 100
+	)
+
+	preop_sound = 'sound/surgery/hemostat1.ogg'
+	success_sound = 'sound/surgery/hemostat.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
+
+/datum/surgery_step/cavity/attach_organ_module/proc/get_selection_key(atom/user, obj/item/organ/external/parent_organ)
+	if(!user || !parent_organ)
+		return null
+	return "\ref[user]:\ref[parent_organ]"
+
+/datum/surgery_step/cavity/attach_organ_module/proc/clear_selected_module(atom/user, obj/item/organ/external/parent_organ)
+	var/key = get_selection_key(user, parent_organ)
+	if(!key)
+		return
+	selected_module_by_user -= key
+
+/datum/surgery_step/cavity/attach_organ_module/proc/get_attachable_modules(obj/item/organ/external/parent_organ)
+	. = list()
+	for(var/obj/item/organ_module/module in parent_organ.implants)
+		if(!module.surgically_attached)
+			. += module
+
+/datum/surgery_step/cavity/attach_organ_module/proc/get_selected_module(atom/user, obj/item/organ/external/parent_organ)
+	if(!user || !parent_organ)
+		return null
+	var/key = get_selection_key(user, parent_organ)
+	if(!key)
+		return null
+	var/obj/item/organ_module/selected = selected_module_by_user[key]
+	if(!istype(selected) || QDELETED(selected) || !(selected in parent_organ.implants) || selected.surgically_attached)
+		return null
+	return selected
+
+/datum/surgery_step/cavity/attach_organ_module/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
+	var/obj/item/organ/external/parent_organ = target.get_organ(get_parent_zone(target_zone))
+	if(!istype(parent_organ))
+		return null
+	clear_selected_module(user, parent_organ)
+
+	var/list/attachable_modules = list()
+	for(var/obj/item/organ_module/module in parent_organ.implants)
+		if(!module.surgically_attached)
+			attachable_modules[module] = adjust_augment_image(module)
+
+	for(var/obj/item/organ/O in parent_organ.implants)
+		if(O.parent_organ != get_parent_zone(target_zone))
+			continue
+		if(O.status & ORGAN_CUT_AWAY)
+			attachable_modules[O] = adjust_organ_image(O)
+
+	if(!length(attachable_modules))
+		return null
+
+	var/selected = null
+	if(length(attachable_modules) == 1)
+		for(var/obj/item/I in attachable_modules)
+			selected = I
+			break
+	else
+		selected = show_radial_menu(user, target, attachable_modules, require_near = TRUE)
+		if(istype(selected, /obj/item/organ))
+			return null
+		if(!istype(selected, /obj/item/organ_module))
+			return null
+
+	if(istype(selected, /obj/item/organ))
+		return null
+
+	selected_module_by_user[get_selection_key(user, parent_organ)] = selected
+	return parent_organ
+
+/datum/surgery_step/cavity/attach_organ_module/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	. = ..()
+	if(!.)
+		return
+
+	return length(get_attachable_modules(parent_organ))
+
+/datum/surgery_step/cavity/attach_organ_module/check_target_organ(obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	. = ..()
+	if(!.)
+		return
+
+	var/obj/item/organ/external/parent_organ = target_organ
+	if(!istype(parent_organ))
+		return FALSE
+
+	var/obj/item/organ_module/selected = get_selected_module(user, parent_organ)
+	if(!selected)
+		clear_selected_module(user, parent_organ)
+		return FALSE
+	return TRUE
+
+/datum/surgery_step/cavity/attach_organ_module/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/obj/item/organ_module/selected = get_selected_module(user, parent_organ)
+	if(!selected)
+		clear_selected_module(user, parent_organ)
+		return SURGERY_FAILURE
+
+	announce_preop(user,
+		"[user] starts connecting [selected.name] inside [target]'s [parent_organ.name] with \the [tool].",
+		"You start connecting [selected.name] inside [target]'s [parent_organ.name] with \the [tool]."
+		)
+	return ..()
+
+/datum/surgery_step/cavity/attach_organ_module/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/obj/item/organ_module/selected = get_selected_module(user, parent_organ)
+	clear_selected_module(user, parent_organ)
+	if(!selected)
+		return
+
+	selected.surgical_attach(parent_organ)
+	announce_success(user,
+		"[user] connects [selected.name] inside [target]'s [parent_organ.name] with \the [tool].",
+		"You connect [selected.name] inside [target]'s [parent_organ.name] with \the [tool]."
+		)
+
+/datum/surgery_step/cavity/attach_organ_module/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/obj/item/organ_module/selected = get_selected_module(user, parent_organ)
+	var/module_name = selected ? selected.name : "augmentation"
+	clear_selected_module(user, parent_organ)
+
+	announce_failure(user,
+		"[user]'s hand slips, damaging tissue while connecting [module_name] in [target]'s [parent_organ.name] with \the [tool]!",
+		"Your hand slips, damaging tissue while connecting [module_name] in [target]'s [parent_organ.name] with \the [tool]!"
+		)
+	parent_organ.take_external_damage(10, used_weapon = tool)
+
+/**
+ * Detaches installed augmentation before extraction.
+ */
+/datum/surgery_step/cavity/detach_organ_module
+	duration = DETACH_DURATION
+	priority = 3
+	var/list/selected_module_by_user = list()
+
+	allowed_tools = list(
+		/obj/item/scalpel = 100,
+		/obj/item/material/knife = 75,
+		/obj/item/material/kitchen/utensil/knife = 75,
+		/obj/item/material/shard = 50
+	)
+
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/scalpel2.ogg'
+	failure_sound = 'sound/surgery/organ1.ogg'
+
+/datum/surgery_step/cavity/detach_organ_module/proc/get_selection_key(atom/user, obj/item/organ/external/parent_organ)
+	if(!user || !parent_organ)
+		return null
+	return "\ref[user]:\ref[parent_organ]"
+
+/datum/surgery_step/cavity/detach_organ_module/proc/clear_selected_module(atom/user, obj/item/organ/external/parent_organ)
+	var/key = get_selection_key(user, parent_organ)
+	if(!key)
+		return
+	selected_module_by_user -= key
+
+/datum/surgery_step/cavity/detach_organ_module/proc/get_detachable_modules(obj/item/organ/external/parent_organ)
+	. = list()
+	for(var/obj/item/organ_module/module in parent_organ.organ_modules)
+		if(module.surgically_attached)
+			. += module
+
+/datum/surgery_step/cavity/detach_organ_module/proc/get_selected_module(atom/user, obj/item/organ/external/parent_organ)
+	if(!user || !parent_organ)
+		return null
+	var/key = get_selection_key(user, parent_organ)
+	if(!key)
+		return null
+	var/obj/item/organ_module/selected = selected_module_by_user[key]
+	if(!istype(selected) || QDELETED(selected) || !(selected in parent_organ.organ_modules) || !selected.surgically_attached)
+		return null
+	return selected
+
+/datum/surgery_step/cavity/detach_organ_module/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
+	var/obj/item/organ/external/parent_organ = target.get_organ(get_parent_zone(target_zone))
+	if(!istype(parent_organ))
+		return null
+	clear_selected_module(user, parent_organ)
+
+	var/list/detachable_modules = list()
+	for(var/obj/item/organ_module/module in parent_organ.organ_modules)
+		if(module.surgically_attached)
+			detachable_modules[module] = adjust_augment_image(module)
+
+	for(var/obj/item/organ/O in target.internal_organs)
+		if(O.parent_organ != get_parent_zone(target_zone))
+			continue
+		if(!(O.status & ORGAN_CUT_AWAY))
+			detachable_modules[O] = adjust_organ_image(O)
+
+	if(!length(detachable_modules))
+		return null
+
+	var/selected = null
+	if(length(detachable_modules) == 1)
+		for(var/obj/item/I in detachable_modules)
+			selected = I
+			break
+	else
+		selected = show_radial_menu(user, target, detachable_modules, require_near = TRUE)
+		if(istype(selected, /obj/item/organ))
+			return null
+		if(!istype(selected, /obj/item/organ_module))
+			return null
+
+	if(istype(selected, /obj/item/organ))
+		return null
+
+	selected_module_by_user[get_selection_key(user, parent_organ)] = selected
+	return parent_organ
+
+/datum/surgery_step/cavity/detach_organ_module/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	. = ..()
+	if(!.)
+		return
+
+	return length(get_detachable_modules(parent_organ))
+
+/datum/surgery_step/cavity/detach_organ_module/check_target_organ(obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	. = ..()
+	if(!.)
+		return
+
+	var/obj/item/organ/external/parent_organ = target_organ
+	if(!istype(parent_organ))
+		return FALSE
+
+	var/obj/item/organ_module/selected = get_selected_module(user, parent_organ)
+	if(!selected)
+		clear_selected_module(user, parent_organ)
+		return FALSE
+	return TRUE
+
+/datum/surgery_step/cavity/detach_organ_module/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/obj/item/organ_module/selected = get_selected_module(user, parent_organ)
+	if(!selected)
+		clear_selected_module(user, parent_organ)
+		return SURGERY_FAILURE
+
+	announce_preop(user,
+		"[user] starts detaching [selected.name] inside [target]'s [parent_organ.name] with \the [tool].",
+		"You start detaching [selected.name] inside [target]'s [parent_organ.name] with \the [tool]."
+		)
+	return ..()
+
+/datum/surgery_step/cavity/detach_organ_module/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/obj/item/organ_module/selected = get_selected_module(user, parent_organ)
+	clear_selected_module(user, parent_organ)
+	if(!selected)
+		return
+
+	selected.surgical_detach(parent_organ)
+	announce_success(user,
+		"[user] detaches [selected.name] inside [target]'s [parent_organ.name] with \the [tool].",
+		"You detach [selected.name] inside [target]'s [parent_organ.name] with \the [tool]."
+		)
+
+/datum/surgery_step/cavity/detach_organ_module/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/obj/item/organ_module/selected = get_selected_module(user, parent_organ)
+	var/module_name = selected ? selected.name : "augmentation"
+	clear_selected_module(user, parent_organ)
+
+	announce_failure(user,
+		"[user]'s hand slips, tearing tissue while detaching [module_name] in [target]'s [parent_organ.name] with \the [tool]!",
+		"Your hand slips, tearing tissue while detaching [module_name] in [target]'s [parent_organ.name] with \the [tool]!"
+		)
+	parent_organ.take_external_damage(20, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)

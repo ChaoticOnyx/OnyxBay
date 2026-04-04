@@ -403,12 +403,22 @@ var/list/organ_cache = list()
 
 	if(!istype(src, /obj/item/organ/external) && length(implants))
 		var/unknown_body = 0
+		var/augmentation_detected = FALSE
 		for(var/I in implants)
+			if(istype(I, /obj/item/organ_module))
+				var/obj/item/organ_module/module = I
+				if(module.surgically_attached)
+					augmentation_detected = TRUE
+				else
+					unknown_body++
+				continue
 			var/obj/item/implant/imp = I
 			if(istype(imp) && imp.known)
 				. += "[capitalize(imp.name)] implanted"
 			else
 				unknown_body++
+		if(augmentation_detected)
+			. += "Augmentation detected"
 		if(unknown_body)
 			. += "Unknown body present"
 
