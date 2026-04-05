@@ -24,5 +24,5 @@
 /mob/proc/OnMouseUp(atom/object, location, control, params)
 	var/obj/item/gun/gun = get_active_hand()
 	if(istype(gun))
-		gun.clear_autofire()
+		return gun.clear_autofire()
 	return FALSE

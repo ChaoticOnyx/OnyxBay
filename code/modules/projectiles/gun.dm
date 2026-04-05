@@ -161,6 +161,7 @@
 /obj/item/gun/proc/clear_autofire()
 	if(already_autofiring)
 		next_fire_time = world.time + fire_delay // No Arc Raiders' Kettle gameplay, please
+		. = TRUE
 
 	autofiring_at = null
 	autofiring_by = null
