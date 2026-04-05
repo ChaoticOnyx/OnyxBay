@@ -154,11 +154,15 @@
 		autofiring_by = fire_by
 		if(!already_autofiring)
 			already_autofiring = TRUE
-			set_next_think_ctx("autofire_context", world.time + burst_delay)
+			set_next_think_ctx("autofire_context", world.time + fire_delay)
 	else
 		clear_autofire()
 
 /obj/item/gun/proc/clear_autofire()
+	if(already_autofiring)
+		next_fire_time = world.time + fire_delay // No Arc Raiders' Kettle gameplay, please
+		. = TRUE
+
 	autofiring_at = null
 	autofiring_by = null
 	already_autofiring = FALSE
@@ -178,7 +182,7 @@
 	else if(can_autofire())
 		autofiring_by.set_dir(get_dir(src, autofiring_at))
 		Fire(autofiring_at, autofiring_by, null, (get_dist(autofiring_at, autofiring_by) <= 1), FALSE, FALSE, target_zone = autofiring_by.zone_sel?.selecting)
-		set_next_think_ctx("autofire_context", world.time + burst_delay)
+		set_next_think_ctx("autofire_context", world.time + fire_delay)
 
 /obj/item/gun/update_twohanding()
 	if(one_hand_penalty)
@@ -364,7 +368,8 @@
 	if(heat_amount >= 100)
 		overheat()
 
-	next_fire_time = world.time + fire_delay
+	if(!autofire_enabled) // Let the autofire handling do its thing.
+		next_fire_time = world.time + fire_delay
 
 /obj/item/gun/proc/overheat()
 	on_overheat = TRUE
