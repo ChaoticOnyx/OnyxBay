@@ -201,6 +201,9 @@
 		victim_ref = weakref(C)
 		START_PROCESSING(SSmachines, src)
 
+	if(C.pulledby)
+		C.pulledby.stop_pulling()
+
 	return TRUE
 
 /obj/machinery/optable/MouseDrop_T(mob/target, mob/user)
