@@ -87,6 +87,19 @@
 	update_mouse_pointer()
 
 	client.mouse_click_opportunity_window = get_preference_value(/datum/client_preference/click_precision_assist)
+	switch(client.mouse_click_opportunity_window)
+		if(GLOB.PREF_CLICK_PRECISION_NONE)
+			client.mouse_click_opportunity_window = 0
+		if(GLOB.PREF_CLICK_PRECISION_1DS)
+			client.mouse_click_opportunity_window = 1
+		if(GLOB.PREF_CLICK_PRECISION_2DS)
+			client.mouse_click_opportunity_window = 2
+		if(GLOB.PREF_CLICK_PRECISION_3DS)
+			client.mouse_click_opportunity_window = 3
+		if(GLOB.PREF_CLICK_PRECISION_4DS)
+			client.mouse_click_opportunity_window = 4
+		if(GLOB.PREF_CLICK_PRECISION_5DS)
+			client.mouse_click_opportunity_window = 5
 
 	if(!skybox)
 		skybox = new(src)
