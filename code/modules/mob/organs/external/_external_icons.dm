@@ -6,9 +6,19 @@ var/list/limb_icon_cache = list()
 /obj/item/organ/external/set_dir()
 	return
 
+/obj/item/organ/external/Move(newloc, direct)
+	. = ..()
+	if(!owner)
+		dir = SOUTH
+
 /obj/item/organ/external/proc/compile_icon()
 	ClearOverlays()
 	update_icon()
+	if(!owner && length(children))
+		for(var/obj/item/organ/external/E in children)
+			E.compile_icon()
+			E.ImmediateOverlayUpdate()
+			AddOverlays(E)
 
 /obj/item/organ/external/proc/sync_colour_to_human(mob/living/carbon/human/human)
 	s_tone = null
@@ -243,7 +253,7 @@ var/list/limb_icon_cache = list()
 		mob_overlays += limb_em_block
 
 	AddOverlays(mob_overlays)
-	dir = EAST
+	dir = SOUTH
 	icon = null
 
 /obj/item/organ/external/proc/update_icon_drop(mob/living/carbon/human/powner)
