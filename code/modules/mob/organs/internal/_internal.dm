@@ -75,13 +75,13 @@
 	if(istype(parent)) //TODO ensure that we don't have to check this.
 		removed(user, FALSE, TRUE)
 
-/obj/item/organ/internal/removed(mob/living/user, drop_organ = TRUE, detach = TRUE, supplied_parent_organ = null)
+/obj/item/organ/internal/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	if(owner)
 		owner.internal_organs_by_name -= organ_tag
 		owner.internal_organs -= src
 
 	if(detach)
-		var/obj/item/organ/external/affected = supplied_parent_organ || owner?.get_organ(parent_organ)
+		var/obj/item/organ/external/affected = owner?.get_organ(parent_organ)
 		if(istype(affected))
 			affected.internal_organs -= src
 			status |= ORGAN_CUT_AWAY
