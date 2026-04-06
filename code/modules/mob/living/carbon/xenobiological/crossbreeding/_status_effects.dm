@@ -466,7 +466,10 @@
 	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/orange/think()
-	var/body_temperature_difference = holder.get_species().body_temperature - holder.bodytemperature
+	var/datum/species/S = all_species[holder.get_species()]
+	if(!S)
+		return ..()
+	var/body_temperature_difference = S.body_temperature - holder.bodytemperature
 	holder.bodytemperature += body_temperature_difference<0?(max(-5, body_temperature_difference)):(min(5, body_temperature_difference))
 	return ..()
 
@@ -900,6 +903,8 @@
 
 	var/mob/living/draining = target
 	if(draining.stat == DEAD)
+		return
+	if(draining.isSynthetic())
 		return
 
 	draining_ref = weakref(draining)

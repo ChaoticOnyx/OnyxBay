@@ -94,6 +94,8 @@
 		if(!O.blinded)
 			if (istype(O,/mob/living/silicon/ai))
 				return
+			if (isbot(O))
+				return
 			if (istype(O,/mob/living/silicon/robot))
 				var/mob/living/silicon/robot/R = O
 				if (R.sensor_mode == FLASH_PROTECTION_VISION)

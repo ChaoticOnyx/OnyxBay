@@ -10,8 +10,8 @@
 	var/list/modes
 	w_class = ITEM_SIZE_SMALL
 
-/obj/item/device/cable_painter/New()
-	..()
+/obj/item/device/cable_painter/Initialize()
+	. = ..()
 	color_selection = pick(possible_cable_coil_colours)
 
 /obj/item/device/cable_painter/examine(mob/user, infix)
