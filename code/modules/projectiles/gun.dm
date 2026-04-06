@@ -259,7 +259,7 @@
 		O.emp_act(severity)
 
 /obj/item/gun/afterattack(atom/A, mob/living/user, adjacent, params)
-	if(adjacent && (ismob(A) || ismob(A.loc) || user.a_intent != I_HURT))
+	if(adjacent)
 		return //A is adjacent, is the user, or is on the user's person
 
 	if(!user.aiming)
@@ -270,6 +270,12 @@
 		return
 
 	Fire(A, user, params, target_zone = user.zone_sel?.selecting) //Otherwise, fire normally.
+
+/obj/item/gun/resolve_attackby(atom/A, mob/user, click_params)
+	if(user.a_intent != I_HURT || !user.Adjacent(A) || ismob(A) || ismob(A.loc))
+		return ..()
+	Fire(A, user, click_params, target_zone = user.zone_sel?.selecting)
+	return TRUE
 
 /obj/item/gun/attack(atom/A, mob/living/user, def_zone)
 	if(ishuman(A) && user.zone_sel.selecting == BP_MOUTH && user.a_intent != I_HURT && !weapon_in_mouth)
