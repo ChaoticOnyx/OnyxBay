@@ -154,7 +154,7 @@
 		autofiring_by = fire_by
 		if(!already_autofiring)
 			already_autofiring = TRUE
-			set_next_think_ctx("autofire_context", world.time + fire_delay)
+			set_next_think_ctx("autofire_context", world.time)
 	else
 		clear_autofire()
 
@@ -182,7 +182,7 @@
 	else if(can_autofire())
 		autofiring_by.set_dir(get_dir(src, autofiring_at))
 		Fire(autofiring_at, autofiring_by, null, (get_dist(autofiring_at, autofiring_by) <= 1), FALSE, FALSE, target_zone = autofiring_by.zone_sel?.selecting)
-		set_next_think_ctx("autofire_context", world.time + fire_delay)
+		set_next_think_ctx("autofire_context", world.time + burst_delay)
 
 /obj/item/gun/update_twohanding()
 	if(one_hand_penalty)
@@ -259,7 +259,8 @@
 		O.emp_act(severity)
 
 /obj/item/gun/afterattack(atom/A, mob/living/user, adjacent, params)
-	if(adjacent) return //A is adjacent, is the user, or is on the user's person
+	if(adjacent)
+		return //A is adjacent, is the user, or is on the user's person
 
 	if(!user.aiming)
 		user.aiming = new(user)
@@ -269,6 +270,12 @@
 		return
 
 	Fire(A, user, params, target_zone = user.zone_sel?.selecting) //Otherwise, fire normally.
+
+/obj/item/gun/resolve_attackby(atom/A, mob/user, click_params)
+	if(user.a_intent != I_HURT || !user.Adjacent(A) || ismob(A) || ismob(A.loc))
+		return ..()
+	Fire(A, user, click_params, target_zone = user.zone_sel?.selecting)
+	return TRUE
 
 /obj/item/gun/attack(atom/A, mob/living/user, def_zone)
 	if(ishuman(A) && user.zone_sel.selecting == BP_MOUTH && user.a_intent != I_HURT && !weapon_in_mouth)
