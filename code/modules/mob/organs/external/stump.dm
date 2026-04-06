@@ -5,8 +5,9 @@
 	disable_food_organ = TRUE
 
 /obj/item/organ/external/stump/Initialize(mapload, obj/item/organ/external/limb)
-	if(istype(limb))
-		organ_tag = limb.organ_tag // Let's just hope we won't break everything by pushing this in front of the entire sequence
+	if(!istype(limb))
+		return INITIALIZE_HINT_QDEL
+	organ_tag = limb.organ_tag // Let's just hope we won't break everything by pushing this in front of the entire sequence
 
 	. = ..()
 
