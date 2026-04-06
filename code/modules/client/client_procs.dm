@@ -696,6 +696,7 @@
 		var/mob/living/M = mob
 		if(M.OnMouseUp(object, location, control, params))
 			mouse_down_atom = null
+			mouse_down_last_time = 0
 			return
 
 	. = ..()

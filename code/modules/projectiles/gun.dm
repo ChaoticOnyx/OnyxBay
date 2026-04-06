@@ -154,7 +154,7 @@
 		autofiring_by = fire_by
 		if(!already_autofiring)
 			already_autofiring = TRUE
-			set_next_think_ctx("autofire_context", world.time + 1)
+			set_next_think_ctx("autofire_context", world.time)
 	else
 		clear_autofire()
 
@@ -259,7 +259,8 @@
 		O.emp_act(severity)
 
 /obj/item/gun/afterattack(atom/A, mob/living/user, adjacent, params)
-	if(adjacent) return //A is adjacent, is the user, or is on the user's person
+	if(adjacent && (ismob(A) || ismob(A.loc) || user.a_intent != I_HURT))
+		return //A is adjacent, is the user, or is on the user's person
 
 	if(!user.aiming)
 		user.aiming = new(user)

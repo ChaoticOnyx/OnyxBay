@@ -10,8 +10,8 @@
 
 	var/list/click_params = params2list(params)
 	var/obj/item/gun/gun = (twohanded_mode && click_params["right"]) ? get_inactive_hand() : get_active_hand()
-	if(istype(gun) && istype(over_object) && (isturf(over_location) || istype(src_object, /atom/movable/screen/click_catcher) || istype(over_object, /atom/movable/screen/click_catcher)) && !incapacitated() && !click_params["shift"] && !click_params["ctrl"] && !click_params["alt"] && (twohanded_mode || !click_params["right"]))
-		if(istype(src_object, /atom/movable/screen/click_catcher) || istype(over_object, /atom/movable/screen/click_catcher))
+	if(istype(gun) && istype(over_object) && (isturf(over_location) || istype(over_object, /atom/movable/screen/click_catcher)) && !incapacitated() && !click_params["shift"] && !click_params["ctrl"] && !click_params["alt"] && (twohanded_mode || !click_params["right"]))
+		if(istype(over_object, /atom/movable/screen/click_catcher))
 			over_object = parse_caught_click_modifiers(click_params, client, get_turf(src))
 		return gun.set_autofire(over_object, src)
 	return FALSE
