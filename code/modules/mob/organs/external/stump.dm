@@ -11,8 +11,9 @@
 
 	. = ..()
 
-	if(!owner || !istype(limb)) // We definitely don't want these pieces of crap to be found outside of a human body.
+	if(!owner) // We definitely don't want these pieces of crap to be found outside of a human body.
 		return INITIALIZE_HINT_QDEL
+
 	if(!BP_IS_ROBOTIC(limb)) // These nasty fucks are broken, fuck robolimbs, their dumb icons and whomever the fuck created them in their current fucking state
 		icon_name = limb.icon_name
 	body_part = limb.body_part
