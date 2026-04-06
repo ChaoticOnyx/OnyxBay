@@ -5,12 +5,15 @@
 	disable_food_organ = TRUE
 
 /obj/item/organ/external/stump/Initialize(mapload, obj/item/organ/external/limb)
+	if(!istype(limb))
+		return INITIALIZE_HINT_QDEL
+	organ_tag = limb.organ_tag // Let's just hope we won't break everything by pushing this in front of the entire sequence
+
 	. = ..()
 
-	if(!owner || !istype(limb)) // We definitely don't want these pieces of crap to be found outside of a human body.
+	if(!owner) // We definitely don't want these pieces of crap to be found outside of a human body.
 		return INITIALIZE_HINT_QDEL
 
-	organ_tag = limb.organ_tag
 	if(!BP_IS_ROBOTIC(limb)) // These nasty fucks are broken, fuck robolimbs, their dumb icons and whomever the fuck created them in their current fucking state
 		icon_name = limb.icon_name
 	body_part = limb.body_part
@@ -30,7 +33,7 @@
 
 /obj/item/organ/external/stump/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent, drop_modules = FALSE)
 	..()
-	if(!owner && !QDELETED(src))
+	if(!parent && !QDELETED(src))
 		qdel_self()
 	return
 
