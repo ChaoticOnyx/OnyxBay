@@ -70,7 +70,7 @@
 			to_chat(user, "Key: <font color='#ffa500'>Electronics</font>/<font color='red'>Brute</font>")
 			to_chat(user, SPAN_NOTICE("External prosthetics:"))
 			var/organ_found
-			for(var/obj/item/organ/external/E in H.organs)
+			for(var/obj/item/organ/external/E in H.external_organs)
 				if(!BP_IS_ROBOTIC(E))
 					continue
 				organ_found = 1
@@ -95,7 +95,7 @@
 			to_chat(user, SPAN_NOTICE("Augmentations:"))
 			to_chat(user, SPAN_NOTICE("CPU usage: [used_cpu]/[total_cpu]"))
 			var/augment_found = FALSE
-			for(var/obj/item/organ/organ in (H.organs + H.internal_organs))
+			for(var/obj/item/organ/organ in (H.external_organs + H.internal_organs))
 				if(!LAZYLEN(organ.organ_modules))
 					continue
 				var/list/modules = list()

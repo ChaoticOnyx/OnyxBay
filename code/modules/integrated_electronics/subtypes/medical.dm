@@ -221,9 +221,9 @@
 		activate_pin(3)
 		return
 	if(operation_intent == SURGERY_ORGAN_INSERT)
-		E = H.organs_by_name[O.parent_organ]
+		E = H.external_organs_by_name[O.parent_organ]
 	else
-		E = H.organs_by_name[selected_zone]
+		E = H.external_organs_by_name[selected_zone]
 	if(!istype(E))
 		activate_pin(3)
 		return
@@ -472,7 +472,7 @@
 	var/selected_zone = get_pin_data(IC_INPUT, 2)
 	if(!selected_zone)
 		return
-	var/obj/item/organ/external/E = H.organs_by_name[selected_zone]
+	var/obj/item/organ/external/E = H.external_organs_by_name[selected_zone]
 	if(!istype(E)) // invalid input
 		return
 	if(H in view(get_turf(src))) // Like medbot's analyzer it can be used in range..

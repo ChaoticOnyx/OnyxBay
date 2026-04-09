@@ -39,9 +39,7 @@
 
 /datum/genetics/side_effect/genetic_burn/finish(mob/living/carbon/human/H)
 	if(!H.reagents.has_reagent(/datum/reagent/dexalin))
-		for(var/organ_name in BP_ALL_LIMBS)
-			var/obj/item/organ/external/E = H.get_organ(organ_name)
-			E.take_external_damage(0, 5, 0)
+		H.take_overall_damage(0, 5, spread_damage = FALSE)
 
 /datum/genetics/side_effect/bone_snap
 	name = "Bone Snap"
@@ -56,7 +54,7 @@
 	if(!H.reagents.has_reagent(/datum/reagent/bicaridine))
 		var/organ_name = pick(BP_ALL_LIMBS)
 		var/obj/item/organ/external/E = H.get_organ(organ_name)
-		E.take_external_damage(20, 0, 0)
+		E.take_blunt_damage(20, "abnormal muscle contractions")
 		E.fracture()
 
 /datum/genetics/side_effect/confuse

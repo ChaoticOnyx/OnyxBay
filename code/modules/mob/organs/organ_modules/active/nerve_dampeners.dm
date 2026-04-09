@@ -56,7 +56,7 @@
 	if(!activate_cd)
 		var/cpu_name = "CPU"
 		var/mob/living/carbon/human/H = O?.owner
-		var/obj/item/organ/external/head/head = H?.organs_by_name[BP_HEAD]
+		var/obj/item/organ/external/head/head = H?.external_organs_by_name[BP_HEAD]
 		if(istype(head))
 			for(var/obj/item/organ_module/module in head.organ_modules)
 				if(initial(module.module_type) == OM_TYPE_PROCESSOR)

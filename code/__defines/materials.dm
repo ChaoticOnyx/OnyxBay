@@ -91,6 +91,8 @@
 		MATERIAL_REINFORCED_GLASS           = icon(MATERIALS_ICON, "rglass"),
 		MATERIAL_PLASS                      = icon(MATERIALS_ICON, "plass"),
 		MATERIAL_REINFORCED_PLASS           = icon(MATERIALS_ICON, "rplass"),
+		MATERIAL_BLACK_GLASS                = icon(MATERIALS_ICON, "bglass"),
+		MATERIAL_REINFORCED_BLACK_GLASS     = icon(MATERIALS_ICON, "rbglass"),
 		MATERIAL_MARBLE                     = icon(MATERIALS_ICON, "marble"),
 		MATERIAL_TITANIUM                   = icon(MATERIALS_ICON, "titanium"),
 		MATERIAL_OSMIUM_CARBIDE_PLASTEEL    = icon(MATERIALS_ICON, "plasteel"),
@@ -100,7 +102,8 @@
 		MATERIAL_DEUTERIUM                  = icon(MATERIALS_ICON, "deuterium"),
 		MATERIAL_TRITIUM                    = icon(MATERIALS_ICON, "tritium"),
 		MATERIAL_CARDBOARD                  = icon(MATERIALS_ICON, "card"),
-		MATERIAL_CLOTH                      = icon(MATERIALS_ICON, "cloth")
+		MATERIAL_CLOTH                      = icon(MATERIALS_ICON, "cloth"),
+		MATERIAL_DURANIUM                   = icon(MATERIALS_ICON, "duranium")
 	)
 
 	var/I = material_icons[material]

@@ -319,7 +319,7 @@
 	if(!W.edge || !W.force || W.damtype != BRUTE)
 		return 0 //unsuitable weapon
 
-	var/obj/item/organ/external/head/head = affecting.organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/head = affecting.external_organs_by_name[BP_HEAD]
 	if(head && head.deformities > 0)
 		return 0 //already smiling
 
@@ -427,7 +427,7 @@
 				to_chat(affecting, "<span class='warning'>You go blind!</span>")
 
 		var/obj/item/organ/external/E = affecting.get_organ(eyes.parent_organ)
-		E.take_external_damage(10)
+		E.take_pierce_damage(10)
 
 	user.visible_message("<span class='danger'>\The [user] stabs [affecting]'s eyes with \the [W]!</span>")
 	admin_attack_log(user, affecting, "Grab-stabbed the victim's eyes.", "Had their eyes grab-stabbed.", "stabbed the eyes, using a grab action, of")

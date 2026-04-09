@@ -36,7 +36,11 @@
 
 /obj/structure/sign/double/barsign/Initialize()
 	. = ..()
+	add_think_ctx("barsign_context", CALLBACK(src, nameof(.proc/pick_random_state)), world.time + 1 SECOND)
+
+/obj/structure/sign/double/barsign/proc/pick_random_state()
 	icon_state = pick(get_valid_states(initial = TRUE))
+	remove_think_ctx("barsign_context")
 
 /obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user)
 	var/obj/item/card/id/card = I.get_id_card()

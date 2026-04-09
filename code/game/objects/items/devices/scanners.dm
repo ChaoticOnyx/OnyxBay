@@ -86,6 +86,12 @@ REAGENT SCANNER
 	var/p_name = list()
 	p_name = SPAN("notice", "<b>Scan results for \the [H]:</b>")
 
+	if(issilicon(H))
+		return (p_name + "<hr><span class='danger'>ERROR - Non-organic patient</span>")
+
+	if(!istype(H))
+		return (p_name + "<hr><span class='danger'>ERROR - Nonstandard biology</span>")
+
 	// Brain activity.
 	var/brain_data = list()
 	var/brain_result = "normal"
@@ -183,7 +189,7 @@ REAGENT SCANNER
 		else if(H.shock_stage > 80)
 			status_data += "<span class='warning'>Patient is at serious risk of going into shock. Pain relief recommended.</span>"
 		var/is_bleeding
-		for(var/obj/item/organ/external/E in H.organs)
+		for(var/obj/item/organ/external/E in H.external_organs)
 			if(E.status & ORGAN_BLEEDING)
 				is_bleeding = TRUE
 				break
@@ -211,7 +217,7 @@ REAGENT SCANNER
 	if(verbose)
 		specific_limb_data += "<span class='notice'><b>Specific limb damage:</b></span>"
 
-		for(var/obj/item/organ/external/E in H.organs)
+		for(var/obj/item/organ/external/E in H.external_organs)
 			var/limb_damaged // in some cases we dont need apply this flag cause it already will be applied
 			var/limb_result = "<b>[capitalize(E.name)][(BP_IS_ROBOTIC(E)) ? " (Cybernetic)" : ""]:</b>"
 

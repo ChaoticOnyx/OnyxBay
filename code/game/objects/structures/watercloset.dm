@@ -336,7 +336,7 @@
 					H.update_inv_belt(0)
 			H.clean_blood(washshoes)
 
-			var/obj/item/organ/external/head/head = H.organs_by_name[BP_HEAD]
+			var/obj/item/organ/external/head/head = H.external_organs_by_name[BP_HEAD]
 			if(istype(head))
 				head.forehead_graffiti = null
 				head.graffiti_style = null

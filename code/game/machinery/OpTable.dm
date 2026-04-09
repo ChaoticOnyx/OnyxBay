@@ -124,6 +124,9 @@
 		return
 
 	if(O.loc != loc)
+		if(!Adjacent(O))
+			to_chat(user, SPAN("warning", "\The [O] is too far away."))
+			return
 		step(O, get_dir(O, src))
 
 /obj/machinery/optable/verb/remove_clothes()
@@ -175,7 +178,11 @@
 
 	busy = FALSE
 
-/obj/machinery/optable/proc/take_victim_ref(mob/living/carbon/C, mob/living/carbon/user as mob)
+/obj/machinery/optable/proc/take_victim_ref(mob/living/carbon/C, mob/living/carbon/user)
+	if(!Adjacent(C))
+		to_chat(user, SPAN("warning", "\The [C] is too far away."))
+		return FALSE
+
 	if(C == user)
 		user.visible_message("[user] climbs on \the [src].","You climb on \the [src].")
 	else
@@ -193,6 +200,11 @@
 	if(ishuman(C))
 		victim_ref = weakref(C)
 		START_PROCESSING(SSmachines, src)
+
+	if(C.pulledby)
+		C.pulledby.stop_pulling()
+
+	return TRUE
 
 /obj/machinery/optable/MouseDrop_T(mob/target, mob/user)
 	var/mob/living/M = user
@@ -223,8 +235,8 @@
 	if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		if(iscarbon(G.affecting) && check_table(G.affecting))
-			take_victim_ref(G.affecting, usr)
-			qdel(W)
+			if(take_victim_ref(G.affecting, usr))
+				qdel(W)
 
 /obj/machinery/optable/proc/check_table(mob/living/carbon/patient)
 	var/mob/living/carbon/human/occupant = victim_ref?.resolve()

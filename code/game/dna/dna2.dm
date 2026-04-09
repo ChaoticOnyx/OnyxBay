@@ -153,7 +153,7 @@
 	body_markings.Cut()
 	s_base = character.s_base
 	body_height = character.body_height
-	for(var/obj/item/organ/external/E in character.organs)
+	for(var/obj/item/organ/external/E in character.external_organs)
 		E.s_base = s_base
 		if(E.markings.len)
 			body_markings[E.organ_tag] = E.markings.Copy()

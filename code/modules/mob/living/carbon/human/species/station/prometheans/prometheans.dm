@@ -149,7 +149,7 @@
 	var/obj/item/organ/internal/promethean/metroid_jelly_vessel/jelly_vessel = H.internal_organs_by_name[BP_METROID]
 	var/list/missing_limbs
 	for (var/limb_type in has_limbs)
-		var/obj/item/organ/external/E = H.organs_by_name[limb_type]
+		var/obj/item/organ/external/E = H.external_organs_by_name[limb_type]
 		if (!E)
 			missing_limbs+=limb_type
 
@@ -199,7 +199,7 @@
 	var/jelly_amount = jelly_vessel.stored_jelly
 	var/jelly_volume = round((jelly_amount/H.species.blood_volume)*100)
 	for (var/limb_type in H.species.has_limbs)
-		var/obj/item/organ/external/E = H.organs_by_name[limb_type]
+		var/obj/item/organ/external/E = H.external_organs_by_name[limb_type]
 
 		if (!E)
 			limbs_to_heal.Add(limb_type)

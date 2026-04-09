@@ -327,7 +327,7 @@
 
 	// Replace any missing limbs.
 	for(var/name in BP_ALL_LIMBS)
-		var/obj/item/organ/external/O = character.organs_by_name[name]
+		var/obj/item/organ/external/O = character.external_organs_by_name[name]
 		if(!O && organ_data[name] != "amputated")
 			var/list/organ_data = character.species.has_limbs[name]
 			if(!islist(organ_data)) continue
@@ -337,18 +337,18 @@
 	// Destroy/cyborgize organs and limbs. The order is important for preserving low-level choices for robolimb sprites being overridden.
 	for(var/name in BP_BY_DEPTH)
 		var/status = organ_data[name]
-		var/obj/item/organ/external/O = character.organs_by_name[name]
+		var/obj/item/organ/external/O = character.external_organs_by_name[name]
 		if(!O)
 			continue
 		O.status = 0
 		O.model = null
 		if(status == "amputated")
-			character.organs_by_name -= O.organ_tag
-			character.organs -= O
+			character.external_organs_by_name -= O.organ_tag
+			character.external_organs -= O
 			if(O.children) // This might need to become recursive.
 				for(var/obj/item/organ/external/child in O.children)
-					character.organs_by_name -= child.organ_tag
-					character.organs -= child
+					character.external_organs_by_name -= child.organ_tag
+					character.external_organs -= child
 		else if(status == "cyborg")
 			if(rlimb_data[name])
 				O.robotize(rlimb_data[name])
@@ -378,7 +378,7 @@
 
 		var/obj/item/organ/O
 		if(tag in BP_ALL_LIMBS)
-			O = character.organs_by_name[tag]
+			O = character.external_organs_by_name[tag]
 		else
 			O = character.internal_organs_by_name[tag]
 
@@ -403,8 +403,8 @@
 
 	character.backpack_setup = new(backpack, backpack_metadata["[backpack]"])
 
-	for(var/N in character.organs_by_name)
-		var/obj/item/organ/external/O = character.organs_by_name[N]
+	for(var/N in character.external_organs_by_name)
+		var/obj/item/organ/external/O = character.external_organs_by_name[N]
 		O.markings.Cut()
 
 	for(var/M in body_markings)
@@ -412,7 +412,7 @@
 		var/mark_color = "[body_markings[M]]"
 
 		for(var/BP in mark_datum.body_parts)
-			var/obj/item/organ/external/O = character.organs_by_name[BP]
+			var/obj/item/organ/external/O = character.external_organs_by_name[BP]
 			if(O)
 				O.markings[mark_datum] = mark_color
 

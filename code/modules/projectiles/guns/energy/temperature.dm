@@ -90,4 +90,5 @@
 	if(!power_supply.checked_use(charge_cost)) return null
 	var/obj/item/projectile/temp/temp_proj = new projectile_type(src)
 	temp_proj.temperature = current_temperature
+	temp_proj.name = current_temperature > (20 CELSIUS) ? "hot beam" : "cold beam"
 	return temp_proj

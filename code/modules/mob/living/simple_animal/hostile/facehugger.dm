@@ -102,7 +102,7 @@
 
 
 /mob/living/simple_animal/hostile/facehugger/proc/is_mob_suitable_to_facefuck(mob/living/carbon/human/H)
-	return istype(H) && H.organs_by_name["chest"] && H.organs_by_name["head"]
+	return istype(H) && H.external_organs_by_name["chest"] && H.external_organs_by_name["head"]
 
 
 /mob/living/simple_animal/hostile/facehugger/proc/try_to_strip_down_human_head(mob/living/carbon/human/H, forced = FALSE)

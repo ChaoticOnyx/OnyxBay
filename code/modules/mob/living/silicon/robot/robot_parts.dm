@@ -283,15 +283,15 @@
 
 			// Remove all external organs other than chest and head..
 			for (var/O in list(BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG))
-				var/obj/item/organ/external/organ = H.organs_by_name[O]
-				H.organs -= organ
-				H.organs_by_name -= organ.organ_tag
+				var/obj/item/organ/external/organ = H.external_organs_by_name[O]
+				H.external_organs -= organ
+				H.external_organs_by_name -= organ.organ_tag
 				qdel(organ)
 
 			// Remove brain (we want to put one in).
 			var/obj/item/organ/internal/cerebrum/brain = H.internal_organs_by_name[BP_BRAIN]
-			H.organs -= brain
-			H.organs_by_name -= brain.organ_tag
+			H.external_organs -= brain
+			H.external_organs_by_name -= brain.organ_tag
 			qdel(brain)
 
 			// Robotize remaining organs: Eyes, head, and chest.
@@ -299,15 +299,15 @@
 			var/obj/item/organ/internal/eyes = H.internal_organs_by_name[BP_EYES]
 			eyes.robotize()
 
-			var/obj/item/organ/external/head = H.organs_by_name[BP_HEAD]
+			var/obj/item/organ/external/head = H.external_organs_by_name[BP_HEAD]
 			var/head_company = head_part.model_info
 			head.robotize(head_company)
 
-			var/obj/item/organ/external/chest = H.organs_by_name[BP_CHEST]
+			var/obj/item/organ/external/chest = H.external_organs_by_name[BP_CHEST]
 			var/chest_company = model_info
 			chest.robotize(chest_company)
 
-			var/obj/item/organ/external/groin = H.organs_by_name[BP_GROIN]
+			var/obj/item/organ/external/groin = H.external_organs_by_name[BP_GROIN]
 			groin.robotize(chest_company)
 
 			// Cleanup

@@ -232,7 +232,7 @@
 		else if(!client)
 			msg += SPAN("deadsay", "[T.He] [T.is] [ssd_msg].\n")
 
-	var/obj/item/organ/external/head/H = organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/head/H = external_organs_by_name[BP_HEAD]
 	if(istype(H) && H.forehead_graffiti && H.graffiti_style)
 		msg += SPAN("notice", "[T.He] [T.has] \"[H.forehead_graffiti]\" written on [T.his] [H.name] in [H.graffiti_style]!\n")
 
@@ -244,7 +244,7 @@
 
 		var/list/organ_data = species.has_limbs[organ_tag]
 		var/organ_descriptor = organ_data["descriptor"]
-		var/obj/item/organ/external/E = organs_by_name[organ_tag]
+		var/obj/item/organ/external/E = external_organs_by_name[organ_tag]
 
 		if(!E)
 			wound_flavor_text[organ_descriptor] = "<b>[T.He] [T.is] missing [T.his] [organ_descriptor].</b>\n"

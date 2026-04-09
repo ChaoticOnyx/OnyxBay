@@ -65,6 +65,11 @@
 	register_signal(src, SIGNAL_MOB_DEATH, CALLBACK(src, nameof(.proc/on_mob_death)))
 
 
+/mob/living/simple_animal/borer/UnarmedAttack(atom/A, proximity)
+	if(host)
+		return
+	return ..()
+
 /mob/living/simple_animal/borer/Life()
 
 	..()

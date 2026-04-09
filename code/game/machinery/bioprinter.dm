@@ -235,7 +235,8 @@
 	icon_state = "bioprinter"
 	var/list/amount_list = list(
 		/obj/item/reagent_containers/food/meat = 50,
-		/obj/item/reagent_containers/food/rawcutlet = 15
+		/obj/item/reagent_containers/food/cutlet/raw = 15,
+		/obj/item/reagent_containers/food/faggot/raw = 7.5
 		)
 	var/loaded_dna //Blood sample for DNA hashing.
 

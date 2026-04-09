@@ -34,6 +34,8 @@
 
 /obj/item/clothing/mask/smokable/pipe/die(nomessage = FALSE, nodestroy = FALSE)
 	..()
+	smoketime = 0
+	SetName("empty [initial(name)]")
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	if(ismob(loc))
 		var/mob/living/M = loc

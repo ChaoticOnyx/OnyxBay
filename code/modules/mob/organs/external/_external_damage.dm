@@ -156,7 +156,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 // 'damage_flags' - additional damage tags, such as DAM_SHARP, DAM_EDGE, or DAM_LASER
 // 'used_weapon' - what we'll add to the autopsy data
 // 'clean' - if TRUE, doesn't cause "extra" effects such as dismemberment or blood evaporation, used for surgical cuts and vacuum damage
-/obj/item/organ/external/proc/take_external_damage(brute, burn, damage_flags, used_weapon = null, clean = FALSE)
+/obj/item/organ/external/proc/take_external_damage(brute, burn, damage_flags = 0, used_weapon = null)
 	if(owner && (owner.status_flags & GODMODE))
 		return 0
 
@@ -166,6 +166,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(brute <= 0 && burn <= 0)
 		return 0
 
+	var/clean = (damage_flags & DAM_CLEAN)
 	var/sharp = (damage_flags & DAM_SHARP)
 	var/edge  = (damage_flags & DAM_EDGE)
 	var/laser = (damage_flags & DAM_LASER)
@@ -318,16 +319,16 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 // Shortcuts for damage types
 /obj/item/organ/external/proc/take_blunt_damage(amount, used_weapon = null, clean = FALSE)
-	return take_external_damage(amount, 0, 0, used_weapon, clean)
+	return take_external_damage(amount, 0, (clean ? DAM_CLEAN : 0), used_weapon)
 
 /obj/item/organ/external/proc/take_pierce_damage(amount, used_weapon = null, clean = FALSE)
-	return take_external_damage(amount, 0, DAM_SHARP, used_weapon, clean)
+	return take_external_damage(amount, 0, (clean ? (DAM_SHARP|DAM_CLEAN) : DAM_SHARP), used_weapon)
 
 /obj/item/organ/external/proc/take_cut_damage(amount, used_weapon = null, clean = FALSE)
-	return take_external_damage(amount, 0, DAM_EDGE, used_weapon, clean)
+	return take_external_damage(amount, 0, (clean ? (DAM_EDGE|DAM_CLEAN) : DAM_EDGE), used_weapon)
 
 /obj/item/organ/external/proc/take_burn_damage(amount, used_weapon = null, clean = FALSE)
-	return take_external_damage(0, amount, 0, used_weapon, clean)
+	return take_external_damage(0, amount, (clean ? DAM_CLEAN : 0), used_weapon)
 
 #define DISMEMBER_BRUTE_TRESHOLD(x) (brute >= (max(5, x * ((3.0 - brute_ratio) / 3))))
 /obj/item/organ/external/proc/try_to_dismember(brute, burn, damage_flags)
@@ -418,7 +419,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(burn_dam <= 0.1)
 		burn_dam = 0
 	else
-		burn_dam = round(burn_dam, 0.05)
+		burn_dam = round(burn_dam, 0.01)
 
 	owner?.heal_this_tick += (.)
 
@@ -447,7 +448,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(blunt_dam <= 0.1)
 		blunt_dam = 0
 	else
-		blunt_dam = round(blunt_dam, 0.05)
+		blunt_dam = round(blunt_dam, 0.01)
 
 	owner?.heal_this_tick += (.)
 
@@ -481,12 +482,12 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(cut_dam <= 0.1)
 		cut_dam = 0
 	else
-		cut_dam = round(cut_dam, 0.05)
+		cut_dam = round(cut_dam, 0.01)
 
 	if(pierce_dam <= 0.1)
 		pierce_dam = 0
 	else
-		pierce_dam = round(pierce_dam, 0.05)
+		pierce_dam = round(pierce_dam, 0.01)
 
 	owner?.heal_this_tick += (cut_to_heal + pierce_to_heal)
 
@@ -637,18 +638,31 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	return has_genitals() ? 2 : 1
 
 /obj/item/organ/external/proc/sever_artery()
-	if(species && species.has_organ[BP_HEART])
-		var/obj/item/organ/internal/heart/O = species.has_organ[BP_HEART]
-		if(!BP_IS_ROBOTIC(src) && !(status & ORGAN_ARTERY_CUT) && !initial(O.open))
-			status |= ORGAN_ARTERY_CUT
-			return TRUE
-	return FALSE
+	if(status & ORGAN_ARTERY_CUT)
+		return FALSE
+
+	if(!(limb_flags & ORGAN_FLAG_HAS_ARTERY))
+		return FALSE
+
+	if(species && !species.has_organ[BP_HEART])
+		return FALSE
+
+	var/obj/item/organ/internal/heart/O = species.has_organ[BP_HEART]
+	if(initial(O.open))
+		return FALSE
+
+	status |= ORGAN_ARTERY_CUT
+	return TRUE
 
 /obj/item/organ/external/proc/sever_tendon()
-	if((limb_flags & ORGAN_FLAG_HAS_TENDON) && !BP_IS_ROBOTIC(src) && !(status & ORGAN_TENDON_CUT))
-		status |= ORGAN_TENDON_CUT
-		return TRUE
-	return FALSE
+	if(status & ORGAN_TENDON_CUT)
+		return FALSE
+
+	if(!(limb_flags & ORGAN_FLAG_HAS_TENDON))
+		return FALSE
+
+	status |= ORGAN_TENDON_CUT
+	return TRUE
 
 /obj/item/organ/external/proc/dislocate()
 	if(dislocated == -1)
@@ -667,7 +681,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		owner.shock_stage += 20
 
 		//check to see if we still need the verb
-		for(var/obj/item/organ/external/limb in owner.organs)
+		for(var/obj/item/organ/external/limb in owner.external_organs)
 			if(limb.dislocated == 1)
 				return
 

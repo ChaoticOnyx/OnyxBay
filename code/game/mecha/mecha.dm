@@ -2041,3 +2041,14 @@
 */
 /obj/mecha/fall_damage()
 	return 550
+
+/obj/mecha/handle_fall_effect(turf/landing)
+	if(istype(landing, /turf/simulated/open))
+		visible_message("\The [src] falls from the deck above through \the [landing]!", "You hear a whoosh of displaced air.")
+	else
+		visible_message("\The [src] falls from the deck above and slams into \the [landing]!", "You hear a loud metallic crash.")
+		playsound(landing, pick('sound/effects/metalhit.ogg', 'sound/effects/metalhit2.ogg'), 75)
+		if(fall_damage())
+			for(var/mob/living/M in landing.contents)
+				visible_message("\The [src] hits \the [M.name]!")
+				M.take_overall_damage(fall_damage())

@@ -76,7 +76,7 @@
 		var/mob/M = A
 		if(ishuman(A) && user.a_intent == I_HELP && target_zone == BP_HEAD)
 			var/mob/living/carbon/human/H = M
-			var/obj/item/organ/external/head/head = H.organs_by_name[BP_HEAD]
+			var/obj/item/organ/external/head/head = H.external_organs_by_name[BP_HEAD]
 			if(istype(head))
 				head.write_on(user, src.color_description)
 		else

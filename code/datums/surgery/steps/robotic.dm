@@ -200,7 +200,7 @@
 		"[user]'s [tool] slips, damaging the internal structure of [target]'s [parent_organ].",
 		"Your [tool] slips, damaging the internal structure of [target]'s [parent_organ]."
 		)
-	parent_organ.take_external_damage(0, rand(5, 10), 0, used_weapon = tool)
+	parent_organ.take_burn_damage(rand(5, 10), tool)
 
 /**
  * Robotic limb burn damage repair step.

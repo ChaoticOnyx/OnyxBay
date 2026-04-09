@@ -283,7 +283,7 @@
 	// Probabilities have been tweaked to kill in ~2-3 minutes, giving 5-10 messages.
 	// Probably needs more balancing, but it's better than LOL U GIBBED NOW, especially now that viruses can potentially have no signs up until Gibbingtons.
 	mob.adjustBruteLoss(10*multiplier)
-	var/obj/item/organ/external/O = pick(mob.organs)
+	var/obj/item/organ/external/O = pick(mob.external_organs)
 	if(prob(25))
 		to_chat(mob, GIBBINGTONS_EFFECT_WARNING(O.name))
 	if(prob(10))

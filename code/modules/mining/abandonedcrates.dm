@@ -139,7 +139,7 @@
 		if(97)
 			new /obj/item/archaeological_find(src)
 		if(98)
-			new /obj/item/melee/energy/sword/one_hand(src)
+			new /obj/item/melee/energy/sword/saber(src)
 		if(99)
 			new /obj/item/storage/belt/champion(src)
 			new /obj/item/clothing/mask/luchador(src)

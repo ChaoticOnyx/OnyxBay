@@ -141,7 +141,7 @@
 	my_mob.innate_heal = 0
 	set_up_colors()
 
-	for(var/obj/item/organ/external/E in my_mob.organs)
+	for(var/obj/item/organ/external/E in my_mob.external_organs)
 		E.limb_flags &= ~ORGAN_FLAG_CAN_BREAK
 
 	for(var/datum/modifier/mod in my_mob.modifiers)
@@ -165,7 +165,7 @@
 	my_mob.innate_heal = 1
 	restore_colors()
 
-	for(var/obj/item/organ/external/E in my_mob.organs)
+	for(var/obj/item/organ/external/E in my_mob.external_organs)
 		E.limb_flags |= ORGAN_FLAG_CAN_BREAK
 
 	var/obj/item/organ/internal/heart/O = my_mob.internal_organs_by_name[BP_HEART]

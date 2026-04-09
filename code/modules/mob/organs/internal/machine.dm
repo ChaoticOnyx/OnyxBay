@@ -101,7 +101,7 @@
 	..()
 	// This is very ghetto way of rebooting an FBP. TODO better way.
 	// It's time to do it. This code doesn't allow to resurrect a organic human this way.
-	if(owner && owner.is_ic_dead() && BP_IS_ROBOTIC(owner.organs_by_name[parent_organ]))
+	if(owner && owner.is_ic_dead() && BP_IS_ROBOTIC(owner.external_organs_by_name[parent_organ]))
 		owner.set_stat(CONSCIOUS)
 		owner.visible_message(SPAN_DANGER("\The [owner] twitches visibly!"))
 

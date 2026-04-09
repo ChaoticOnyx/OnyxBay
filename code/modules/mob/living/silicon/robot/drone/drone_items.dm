@@ -170,6 +170,7 @@
 		/obj/item/stack/cable_coil,
 		/obj/item/circuitboard,
 		/obj/item/metroid_extract,
+		/obj/item/metroidcross,
 		/obj/item/reagent_containers/vessel/beaker,
 		/obj/item/reagent_containers/vessel/bottle/chemical,
 		/obj/item/reagent_containers/food/monkeycube,
@@ -206,7 +207,8 @@
 		/obj/item/grown,
 		/obj/item/glass_extra,
 		/obj/item/material/kitchen,
-		/obj/item/material/knife
+		/obj/item/material/knife,
+		/obj/item/organ/internal/cerebrum/brain
 		)
 
 	cant_hold = list() // understandable, have a great day

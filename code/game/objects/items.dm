@@ -164,7 +164,7 @@
 	//is probabilistic so we can't do that and it would be unfair to just check one.
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/hand = H.organs_by_name[check_hand]
+		var/obj/item/organ/external/hand = H.external_organs_by_name[check_hand]
 		if(istype(hand) && hand.is_usable())
 			return TRUE
 	return FALSE
@@ -756,7 +756,7 @@ var/list/global/slot_flags_enumeration = list(
 					to_chat(M, SPAN("warning", "You go blind!"))
 
 		var/obj/item/organ/external/affecting = H.get_organ(eyes.parent_organ)
-		affecting.take_external_damage(7)
+		affecting.take_pierce_damage(7)
 	else
 		M.take_organ_damage(7)
 	M.eye_blurry += rand(3,4)

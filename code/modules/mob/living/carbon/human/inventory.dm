@@ -49,7 +49,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 /mob/living/carbon/human/put_in_l_hand(obj/item/W)
 	if(!..() || l_hand)
 		return 0
-	var/obj/item/organ/external/hand = organs_by_name[BP_L_HAND]
+	var/obj/item/organ/external/hand = external_organs_by_name[BP_L_HAND]
 	if(!hand || !hand.is_usable())
 		return 0
 	equip_to_slot(W,slot_l_hand)
@@ -59,7 +59,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 /mob/living/carbon/human/put_in_r_hand(obj/item/W)
 	if(!..() || r_hand)
 		return 0
-	var/obj/item/organ/external/hand = organs_by_name[BP_R_HAND]
+	var/obj/item/organ/external/hand = external_organs_by_name[BP_R_HAND]
 	if(!hand || !hand.is_usable())
 		return 0
 
@@ -68,7 +68,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 	return 1
 
 /mob/living/carbon/human/proc/has_organ(name)
-	var/obj/item/organ/external/O = organs_by_name[name]
+	var/obj/item/organ/external/O = external_organs_by_name[name]
 	return (O && !O.is_stump())
 
 /mob/living/carbon/human/proc/has_organ_for_slot(slot)

@@ -46,7 +46,7 @@
 			return
 
 		var/mob/living/carbon/human/H = L
-		var/obj/item/organ/external/organ = pick(H.organs)
+		var/obj/item/organ/external/organ = pick(H.external_organs)
 		if(!(crossed_species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(20))
 			var/obj/item/thorn/thorn = new()
 			thorn.forceMove(organ)
@@ -54,7 +54,7 @@
 			to_chat(H, SPAN_DANGER("\A [thorn] impales your [organ]!"))
 		else
 			to_chat(H, SPAN_WARNING("A thorn [pick("slices","cuts","nicks")] your [organ.name]!"))
-			organ.take_external_damage(10, 0, DAM_SHARP, src)
+			organ.take_pierce_damage(10, src)
 
 		if(H.can_feel_pain())
 			H.emote("scream")
