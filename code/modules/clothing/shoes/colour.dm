@@ -99,7 +99,7 @@
 	if(!user.drop(cuffs, src))
 		return
 	chained = cuffs
-	slowdown_per_slot[slot_shoes] += 15
+	A_LAZYSET(slowdown_per_slot, slot_shoes, 15)
 	icon_state = "orange1"
 	item_state_slots = list(
 		slot_l_hand_str = "o_shoes1",
@@ -113,7 +113,7 @@
 	user.pick_or_drop(chained)
 	chained.add_fingerprint(user)
 
-	slowdown_per_slot[slot_shoes] -= 15
+	A_LAZYSET(slowdown_per_slot, slot_shoes, 0)
 	icon_state = "orange"
 	item_state_slots = list(
 		slot_l_hand_str = "o_shoes",

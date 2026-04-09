@@ -30,7 +30,7 @@
 
 /obj/item/clothing/suit/space/void/syndi/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 0
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 0)
 
 /obj/item/clothing/suit/space/void/syndi/prepared/New()
 	..()

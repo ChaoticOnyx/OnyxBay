@@ -160,6 +160,6 @@
 	item_state = "adamsuit"
 	flags_inv = HIDEJUMPSUIT
 
-/obj/item/clothing/suit/armor/heavy/New()
+/obj/item/clothing/suit/armor/heavy/adamantine/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 6
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 6)

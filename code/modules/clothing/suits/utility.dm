@@ -31,7 +31,7 @@
 
 /obj/item/clothing/suit/fire/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 1.0
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 1)
 
 /obj/item/clothing/suit/fire/firefighter
 	icon_state = "firesuit"
@@ -53,7 +53,7 @@
 
 /obj/item/clothing/suit/fire/heavy/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 1.5
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 1.5)
 
 /*
  * Bomb protection
@@ -91,7 +91,7 @@
 
 /obj/item/clothing/suit/bomb_suit/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 2
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 2)
 
 /obj/item/clothing/head/bomb_hood/security
 	icon_state = "bombsuitsec"
@@ -139,4 +139,4 @@
 
 /obj/item/clothing/suit/radiation/New()
 	..()
-	slowdown_per_slot[slot_shoes] = 1.5
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 1)

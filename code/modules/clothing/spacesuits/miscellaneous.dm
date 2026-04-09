@@ -15,7 +15,7 @@
 
 /obj/item/clothing/suit/space/santa/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 0
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 0)
 
 //Space pirate outfit
 /obj/item/clothing/head/helmet/pirate
@@ -41,7 +41,7 @@
 
 /obj/item/clothing/suit/space/pirate/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 0
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 0)
 
 //Orange emergency space suit
 /obj/item/clothing/head/helmet/space/emergency
@@ -65,7 +65,7 @@
 
 /obj/item/clothing/suit/space/emergency/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 3
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 3)
 
 //Alpha Goliath's tailplate
 /obj/item/clothing/head/helmet/space/goliath

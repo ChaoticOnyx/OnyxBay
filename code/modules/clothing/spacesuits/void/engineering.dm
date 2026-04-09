@@ -21,7 +21,7 @@
 
 /obj/item/clothing/suit/space/void/engineering/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 1
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 1)
 
 /obj/item/clothing/suit/space/void/engineering/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/engineering
@@ -47,7 +47,7 @@
 
 /obj/item/clothing/suit/space/void/engineering/alt/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 2
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 2)
 
 /obj/item/clothing/suit/space/void/engineering/alt/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/engineering/alt
@@ -77,7 +77,7 @@
 
 /obj/item/clothing/suit/space/void/engineering/meltdown/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 3
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 3)
 
 /obj/item/clothing/suit/space/void/engineering/meltdown/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/engineering/meltdown

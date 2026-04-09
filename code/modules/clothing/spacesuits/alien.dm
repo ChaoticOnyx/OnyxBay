@@ -52,7 +52,7 @@
 
 /obj/item/clothing/suit/space/vox/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = DEFAULT_SLOWDOWN
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, DEFAULT_SLOWDOWN)
 
 /obj/item/clothing/head/helmet/space/vox
 	armor_values = alist(melee = 60, bullet = 50, laser = 40, energy = 15, bomb = 30, bio = 100)
@@ -246,7 +246,7 @@
 
 	if(protection)
 		to_chat(H, "<span class='notice'>You activate the protection mode.</span>")
-		slowdown_per_slot[slot_wear_suit] = PROTECTION_SLOWDOWN
+		A_LAZYSET(slowdown_per_slot, slot_wear_suit, PROTECTION_SLOWDOWN)
 		armor_values = alist(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 100)
 		siemens_coefficient = 0.2
 
@@ -257,7 +257,7 @@
 		H.update_equipment_slowdown()
 	else
 		to_chat(H, "<span class='notice'>You deactivate the protection mode.</span>")
-		slowdown_per_slot[slot_wear_suit] = DEFAULT_SLOWDOWN
+		A_LAZYSET(slowdown_per_slot, slot_wear_suit, DEFAULT_SLOWDOWN)
 		armor_values = alist(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 60, bio = 100)
 		siemens_coefficient = 0.6
 
@@ -287,7 +287,7 @@
 
 /obj/item/clothing/suit/space/vox/stealth/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = NO_SLOWDOWN
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, NO_SLOWDOWN)
 
 /obj/item/clothing/suit/space/vox/stealth/attack_self(mob/user)
 	var/mob/living/carbon/human/H = user
@@ -353,12 +353,12 @@
 
 	if(nanobots)
 		to_chat(H, "<span class='notice'>Nanobots activated.</span>")
-		slowdown_per_slot[slot_wear_suit] = PROTECTION_SLOWDOWN
+		A_LAZYSET(slowdown_per_slot, slot_wear_suit, PROTECTION_SLOWDOWN)
 		set_light(0.5, 0.1, 3, 2, "#e09d37")
 		H.update_equipment_slowdown()
 	else
 		to_chat(H, "<span class='notice'>Nanobots deactivated.</span>")
-		slowdown_per_slot[slot_wear_suit] = DEFAULT_SLOWDOWN
+		A_LAZYSET(slowdown_per_slot, slot_wear_suit, DEFAULT_SLOWDOWN)
 		set_light(0)
 		H.update_equipment_slowdown()
 
@@ -446,8 +446,8 @@
 	action_button_name = "Toggle the magclaws"
 
 /obj/item/clothing/shoes/magboots/vox/attack_self(mob/user)
-	if(src.magpulse)
-		slowdown_per_slot[slot_shoes] = NO_SLOWDOWN
+	if(magpulse)
+		A_LAZYSET(slowdown_per_slot, slot_shoes, NO_SLOWDOWN)
 		item_flags &= ~ITEM_FLAG_NOSLIP
 		magpulse = 0
 		canremove = 1
@@ -462,7 +462,7 @@
 			to_chat(user, "You will have to put on the [src] before you can do that.")
 			return
 
-		slowdown_per_slot[slot_shoes] = DEFAULT_SLOWDOWN
+		A_LAZYSET(slowdown_per_slot, slot_shoes, DEFAULT_SLOWDOWN)
 		item_flags |= ITEM_FLAG_NOSLIP
 		magpulse = 1
 		canremove = 0	//kinda hard to take off magclaws when you are gripping them tightly.

@@ -216,7 +216,7 @@
 
 /obj/item/clothing/suit/armor/reactive/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 1
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 1)
 
 /obj/item/clothing/suit/armor/reactive/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	if(prob(50))
@@ -303,7 +303,7 @@
 
 /obj/item/clothing/suit/armor/heavy/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 3
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 3)
 
 /obj/item/clothing/suit/armor/tdome
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS

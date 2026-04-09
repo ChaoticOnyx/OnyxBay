@@ -26,11 +26,11 @@
 	cell = new initial_cell_type(src)
 	if (ispath(loaded))
 		loaded = new loaded
-	slowdown_per_slot[slot_l_hand] =  slowdown_held
-	slowdown_per_slot[slot_r_hand] =  slowdown_held
-	slowdown_per_slot[slot_back] =    slowdown_worn
-	slowdown_per_slot[slot_belt] =    slowdown_worn
-	slowdown_per_slot[slot_s_store] = slowdown_worn
+	A_LAZYSET(slowdown_per_slot, slot_l_hand, slowdown_held)
+	A_LAZYSET(slowdown_per_slot, slot_r_hand, slowdown_held)
+	A_LAZYSET(slowdown_per_slot, slot_back, slowdown_worn)
+	A_LAZYSET(slowdown_per_slot, slot_belt, slowdown_worn)
+	A_LAZYSET(slowdown_per_slot, slot_s_store, slowdown_worn)
 
 	. = ..()
 

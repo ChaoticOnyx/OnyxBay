@@ -85,7 +85,7 @@ else if(##equipment_var) {\
 
 /obj/item/clothing/suit/space/void/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 1
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 1)
 
 /obj/item/clothing/suit/space/void/examine(mob/user, infix)
 	. = ..()

@@ -45,7 +45,7 @@
 
 /obj/item/clothing/suit/space/void/medical/alt/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 0
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 0)
 
 /obj/item/clothing/suit/space/void/medical/alt/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/medical/alt

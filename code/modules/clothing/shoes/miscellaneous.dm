@@ -149,10 +149,6 @@
 		slot_r_hand_str = "clown_shoes",
 		)
 
-/obj/item/clothing/shoes/clown_shoes/New()
-	..()
-	slowdown_per_slot[slot_shoes]  = 0
-
 /obj/item/clothing/shoes/clown_shoes/handle_movement(turf/walking, running)
 	if(running)
 		if(footstep >= 2)
@@ -228,7 +224,7 @@
 
 /obj/item/clothing/shoes/swimmingfins/New()
 	..()
-	slowdown_per_slot[slot_shoes] = 1
+	A_LAZYSET(slowdown_per_slot, slot_shoes, 1)
 
 /obj/item/clothing/shoes/cheapboots
 	name = "budget jackboots"

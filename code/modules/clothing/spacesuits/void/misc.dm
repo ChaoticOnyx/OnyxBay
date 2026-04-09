@@ -25,7 +25,7 @@
 
 /obj/item/clothing/suit/space/void/deathsquad/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 1
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 1)
 
 /datum/rad_resist/deathsquad
 	alpha_particle_resist = 59.4 MEGA ELECTRONVOLT
@@ -177,7 +177,7 @@
 
 /obj/item/clothing/suit/space/void/optical/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 0
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 0)
 
 /obj/item/clothing/suit/space/void/optical/attack_self(mob/user)
 	var/mob/living/carbon/human/H = user
