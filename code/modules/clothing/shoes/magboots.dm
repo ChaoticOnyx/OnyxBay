@@ -36,11 +36,17 @@
 
 /obj/item/clothing/shoes/magboots/proc/set_slowdown()
 	var/slowdown = 0
-	if(isalist(shoes?.slowdown_per_slot) && shoes.slowdown_per_slot[slot_shoes])
+	if(slowdown_per_slot?[slot_shoes])
+		slowdown = slowdown_per_slot?[slot_shoes]
+	if(shoes.slowdown_per_slot?[slot_shoes])
 		slowdown = max(slowdown, shoes.slowdown_per_slot[slot_shoes]) // So you can't put on magboots to make you walk faster.
 	if(magpulse)
-		slowdown += 3
-	A_LAZYSET(slowdown_per_slot, slot_shoes, slowdown)
+		slowdown += 2
+
+	if(slowdown)
+		A_LAZYSET(slowdown_per_slot, slot_shoes, slowdown)
+	else
+		A_LAZYREMOVE(slowdown_per_slot, slot_shoes)
 
 /obj/item/clothing/shoes/magboots/attack_self(mob/user)
 	if(magpulse)

@@ -213,9 +213,15 @@
 /obj/item/rig/proc/set_slowdown_and_vision(active)
 	if(chest)
 		if(active)
-			A_LAZYSET(chest.slowdown_per_slot, slot_wear_suit, online_slowdown)
+			if(online_slowdown)
+				A_LAZYSET(chest.slowdown_per_slot, slot_wear_suit, online_slowdown)
+			else
+				A_LAZYREMOVE(chest.slowdown_per_slot, slot_wear_suit)
 		else
-			A_LAZYSET(chest.slowdown_per_slot, slot_wear_suit, offline_slowdown)
+			if(offline_slowdown)
+				A_LAZYSET(chest.slowdown_per_slot, slot_wear_suit, offline_slowdown)
+			else
+				A_LAZYREMOVE(chest.slowdown_per_slot, slot_wear_suit)
 	if(helmet)
 		helmet.tint = (active? vision_restriction : offline_vision_restriction)
 		helmet.update_vision()
