@@ -179,7 +179,7 @@
 	desc = "It's a robust DIY blindfold!"
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "tape_cross"
-	item_state_slots = alist()
+	item_state_slots = null
 	w_class = ITEM_SIZE_TINY
 
 /obj/item/clothing/glasses/sunglasses/prescription

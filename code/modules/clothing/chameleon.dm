@@ -95,7 +95,7 @@
 	name = "psychedelic"
 	desc = "Groovy!"
 	icon_state = "psyche"
-	item_state_slots[slot_w_uniform_str] = "psyche"
+	A_LAZYSET(item_state_slots, slot_w_uniform_str, "psyche")
 	update_icon()
 	update_clothing_icon()
 

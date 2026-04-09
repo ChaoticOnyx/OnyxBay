@@ -57,7 +57,7 @@
 	desc = "A gigantic shield made of interlocked bones."
 	icon_state = "bone_shield"
 	w_class = ITEM_SIZE_HUGE
-	armor_values = alist(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 70)
+	armor_values = alist(melee = 50, bullet = 50, laser = 50, energy = 0, bomb = 30, bio = 0)
 	mod_weight = 2.0
 	mod_reach = 1.5
 	mod_handy = 1.5

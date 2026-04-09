@@ -330,9 +330,9 @@
 
 					//sealed pieces become airtight, protecting against diseases
 					if(!seal_target)
-						piece.armor_values["bio"] = 100
-					else
-						piece.armor_values["bio"] = armor_values["bio"]
+						A_LAZYSET(piece.armor_values, "bio", 100)
+					else if(isalist(armor_values))
+						A_LAZYSET(piece.armor_values, "bio", armor_values["bio"])
 
 				else
 					failed_to_seal = 1

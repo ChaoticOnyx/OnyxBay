@@ -258,11 +258,11 @@
 	else
 		to_chat(H, "<span class='notice'>You deactivate the protection mode.</span>")
 		A_LAZYSET(slowdown_per_slot, slot_wear_suit, DEFAULT_SLOWDOWN)
-		armor_values = alist(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 60, bio = 100)
+		armor_values = alist(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 40, bio = 100)
 		siemens_coefficient = 0.6
 
 		if(istype(H.head, /obj/item/clothing/head/helmet/space/vox/carapace))
-			H.head.armor_values = alist(melee = 60, bullet = 50, laser = 40, energy = 40, bomb = 60, bio = 100)
+			H.head.armor_values = alist(melee = 60, bullet = 50, laser = 40, energy = 40, bomb = 30, bio = 100)
 			H.head.siemens_coefficient = 0.6
 
 		H.update_equipment_slowdown()

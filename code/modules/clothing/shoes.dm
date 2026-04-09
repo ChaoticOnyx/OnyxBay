@@ -97,8 +97,9 @@
 		return
 
 	var/obj/item/clothing/shoes/new_shoes = new trimmed_variant(loc == user ? get_turf(src) : loc)
-	new_shoes.name = "toeless [src.name]"
-	new_shoes.armor_values = armor_values
+	new_shoes.name = "toeless [name]"
+	if(isalist(armor_values))
+		new_shoes.armor_values = armor_values.Copy()
 	transfer_fingerprints_to(new_shoes)
 	if(is_bloodied)
 		new_shoes.is_bloodied = TRUE
