@@ -84,7 +84,7 @@
 	var/tmp/sprite_group = null
 
 	// Species-specific sprite sheets for inventory sprites. Used in clothing/refit_for_species() proc.
-	var/list/sprite_sheets_obj = list()
+	var/alist/sprite_sheets_obj = null
 
 	/// Played when the item is picked up
 	var/pickup_sound = SFX_PICKUP_GENERIC

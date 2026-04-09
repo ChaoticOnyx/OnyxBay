@@ -13,7 +13,7 @@
 	//Species-specific stuff.
 	species_restricted = list(SPECIES_HUMAN)
 
-	sprite_sheets_obj = list(
+	sprite_sheets_obj = alist(
 		SPECIES_UNATHI = 'icons/obj/clothing/species/unathi/hats.dmi',
 		SPECIES_TAJARA = 'icons/obj/clothing/species/tajaran/hats.dmi',
 		SPECIES_SKRELL = 'icons/obj/clothing/species/skrell/hats.dmi'
@@ -36,7 +36,7 @@
 
 	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL)
 
-	sprite_sheets_obj = list(
+	sprite_sheets_obj = alist(
 		SPECIES_UNATHI = 'icons/obj/clothing/species/unathi/suits.dmi',
 		SPECIES_TAJARA = 'icons/obj/clothing/species/tajaran/suits.dmi',
 		SPECIES_SKRELL = 'icons/obj/clothing/species/skrell/suits.dmi'

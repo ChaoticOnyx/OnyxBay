@@ -156,7 +156,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 		else
 			species_restricted = list(target_species)
 
-	if (sprite_sheets_obj && (target_species in sprite_sheets_obj))
+	if(sprite_sheets_obj?[target_species])
 		icon = sprite_sheets_obj[target_species]
 	else
 		icon = initial(icon)
@@ -174,7 +174,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 		else
 			species_restricted = list(target_species)
 
-	if (sprite_sheets_obj && (target_species in sprite_sheets_obj))
+	if(sprite_sheets_obj?[target_species])
 		icon = sprite_sheets_obj[target_species]
 	else
 		icon = initial(icon)
