@@ -38,7 +38,7 @@
 	var/slowdown = 0
 	if(slowdown_per_slot?[slot_shoes])
 		slowdown = slowdown_per_slot?[slot_shoes]
-	if(shoes.slowdown_per_slot?[slot_shoes])
+	if(shoes?.slowdown_per_slot?[slot_shoes])
 		slowdown = max(slowdown, shoes.slowdown_per_slot[slot_shoes]) // So you can't put on magboots to make you walk faster.
 	if(magpulse)
 		slowdown += 2
