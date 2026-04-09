@@ -23,7 +23,7 @@
 	desc = "Yarr."
 	icon_state = "pirate"
 	item_state = "pirate"
-	armor = list(melee = 60, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 30)
+	armor_values = alist(melee = 60, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 30)
 	flags_inv = BLOCKHAIR
 	body_parts_covered = HEAD
 	visor_body_parts_covered = NO_BODYPARTS
@@ -35,7 +35,7 @@
 	icon_state = "pirate"
 	w_class = ITEM_SIZE_NORMAL
 	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/tank/emergency)
-	armor = list(melee = 60, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 30)
+	armor_values = alist(melee = 60, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 30)
 	siemens_coefficient = 0.9
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
@@ -72,7 +72,7 @@
 	name = "goliath tailplate"
 	desc = "An old goliath's tailplate. It's exceptionally tough, yet quite soft on the inside and, surprisingly, matches a human head's size."
 	icon_state = "goliathhelm"
-	armor = list(melee = 85, bullet = 65, laser = 65, energy = 35, bomb = 65, bio = 85)
+	armor_values = alist(melee = 85, bullet = 65, laser = 65, energy = 35, bomb = 65, bio = 85)
 	siemens_coefficient = 0.5
 	flash_protection = FLASH_PROTECTION_MODERATE
 	action_button_name = null

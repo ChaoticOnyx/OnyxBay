@@ -11,7 +11,7 @@
 	siemens_coefficient = 0.7
 	body_parts_covered = FEET
 	slot_flags = SLOT_FEET
-	armor = list(melee = 40, bullet = 10, laser = 10,energy = 15, bomb = 25, bio = 20)
+	armor_values = alist(melee = 40, bullet = 10, laser = 10,energy = 15, bomb = 25, bio = 20)
 	coverage = 1.0
 
 	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
@@ -98,7 +98,7 @@
 
 	var/obj/item/clothing/shoes/new_shoes = new trimmed_variant(loc == user ? get_turf(src) : loc)
 	new_shoes.name = "toeless [src.name]"
-	new_shoes.armor = src.armor
+	new_shoes.armor_values = armor_values
 	transfer_fingerprints_to(new_shoes)
 	if(is_bloodied)
 		new_shoes.is_bloodied = TRUE

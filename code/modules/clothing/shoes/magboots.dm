@@ -16,7 +16,7 @@
 	center_of_mass = null
 	randpixel = 0
 
-	armor = list(melee = 90, bullet = 90, laser = 100, energy = 45, bomb = 50, bio = 10)
+	armor_values = alist(melee = 90, bullet = 90, laser = 100, energy = 45, bomb = 50, bio = 10)
 	siemens_coefficient = 0.3
 
 	drop_sound = SFX_DROP_BOOTS

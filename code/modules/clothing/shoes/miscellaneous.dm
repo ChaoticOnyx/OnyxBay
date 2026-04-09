@@ -9,7 +9,7 @@
 	siemens_coefficient = 0.5
 	species_restricted = null
 
-	armor = list(melee = 70, bullet = 40, laser = 40, energy = 35, bomb = 20, bio = 60)
+	armor_values = alist(melee = 70, bullet = 40, laser = 40, energy = 35, bomb = 20, bio = 60)
 
 	item_state_slots = list(
 		slot_l_hand_str = "b_shoes",
@@ -30,7 +30,7 @@
 	desc = "When you want to turn up the heat."
 	icon_state = "swat"
 	force = 3
-	armor = list(melee = 100, bullet = 90, laser = 80, energy = 25, bomb = 50, bio = 30)
+	armor_values = alist(melee = 100, bullet = 90, laser = 80, energy = 25, bomb = 50, bio = 30)
 	item_flags = ITEM_FLAG_NOSLIP
 	siemens_coefficient = 0.4
 	species_restricted = null
@@ -46,7 +46,7 @@
 	desc = "When you REALLY want to turn up the heat."
 	icon_state = "swat"
 	force = 5
-	armor = list(melee = 100, bullet = 90, laser = 80, energy = 25, bomb = 50, bio = 30)
+	armor_values = alist(melee = 100, bullet = 90, laser = 80, energy = 25, bomb = 50, bio = 30)
 	item_flags = ITEM_FLAG_NOSLIP
 	siemens_coefficient = 0.1
 	species_restricted = null
@@ -79,7 +79,7 @@
 
 	wizard_garb = 1
 
-	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 10, bio = 3)
+	armor_values = alist(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 10, bio = 3)
 
 	item_state_slots = list(
 		slot_l_hand_str = "wizshoe",
@@ -142,7 +142,7 @@
 	species_restricted = null
 	siemens_coefficient = 0.5 // these things are kinda rubberish, aint they?
 
-	armor = list(melee = 35, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 30)
+	armor_values = alist(melee = 35, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 30)
 
 	item_state_slots = list(
 		slot_l_hand_str = "clown_shoes",
@@ -184,7 +184,7 @@
 	force = 2
 	siemens_coefficient = 0.5
 
-	armor = list(melee = 90, bullet = 80, laser = 60, energy = 35, bomb = 20, bio = 40)
+	armor_values = alist(melee = 90, bullet = 80, laser = 60, energy = 35, bomb = 20, bio = 40)
 
 	cold_protection = FEET
 	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE

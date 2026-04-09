@@ -1,6 +1,6 @@
 /obj/item/clothing/proc/describe_armor(armor_type, descriptive_attack_type)
-	if(armor[armor_type])
-		switch(armor[armor_type])
+	if(armor_values?[armor_type])
+		switch(armor_values[armor_type])
 			if(1 to 9)
 				return "It barely protects against [descriptive_attack_type]."
 			if(10 to 19)
@@ -27,18 +27,19 @@
 	. += description_info + "\
 		<br>"
 
-	if(armor["melee"])
-		. += "[describe_armor("melee","blunt force")] \n"
-	if(armor["bullet"])
-		. += "[describe_armor("bullet","ballistics")] \n"
-	if(armor["laser"])
-		. += "[describe_armor("laser","lasers")] \n"
-	if(armor["energy"])
-		. += "[describe_armor("energy","energy")] \n"
-	if(armor["bomb"])
-		. += "[describe_armor("bomb","explosions")] \n"
-	if(armor["bio"])
-		. += "[describe_armor("bio","biohazards")] \n"
+	if(isalist(armor_values))
+		if(armor_values["melee"])
+			. += "[describe_armor("melee","blunt force")] \n"
+		if(armor_values["bullet"])
+			. += "[describe_armor("bullet","ballistics")] \n"
+		if(armor_values["laser"])
+			. += "[describe_armor("laser","lasers")] \n"
+		if(armor_values["energy"])
+			. += "[describe_armor("energy","energy")] \n"
+		if(armor_values["bomb"])
+			. += "[describe_armor("bomb","explosions")] \n"
+		if(armor_values["bio"])
+			. += "[describe_armor("bio","biohazards")] \n"
 
 	. += "\n"
 

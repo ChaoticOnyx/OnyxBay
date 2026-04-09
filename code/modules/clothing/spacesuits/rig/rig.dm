@@ -18,7 +18,7 @@
 	center_of_mass = null
 
 	// These values are passed on to all component pieces.
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100)
+	armor_values = alist(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100)
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.2
@@ -160,7 +160,8 @@
 			piece.siemens_coefficient = siemens_coefficient
 		piece.permeability_coefficient = permeability_coefficient
 		piece.unacidable = unacidable
-		if(islist(armor)) piece.armor = armor.Copy()
+		if(isalist(armor_values))
+			piece.armor_values = armor_values.Copy()
 
 	set_slowdown_and_vision(!offline)
 	update_icon(1)
@@ -325,10 +326,10 @@
 								helmet.update_light(wearer)
 
 					//sealed pieces become airtight, protecting against diseases
-					if (!seal_target)
-						piece.armor["bio"] = 100
+					if(!seal_target)
+						piece.armor_values["bio"] = 100
 					else
-						piece.armor["bio"] = src.armor["bio"]
+						piece.armor_values["bio"] = armor_values["bio"]
 
 				else
 					failed_to_seal = 1

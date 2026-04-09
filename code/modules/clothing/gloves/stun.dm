@@ -24,7 +24,7 @@
 		cut_fingertops()
 	wire_color = base_gloves.wire_color
 	siemens_coefficient = base_gloves.siemens_coefficient
-	armor = base_gloves.armor
+	armor_values = base_gloves.armor_values
 	base_gloves.forceMove(src)
 
 /obj/item/clothing/gloves/stun/Destroy()

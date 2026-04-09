@@ -225,12 +225,16 @@ meteor_act
 	var/protection = 0
 	var/list/protective_gear = list(head, wear_mask, wear_suit, w_uniform, gloves, shoes)
 	for(var/obj/item/clothing/gear in protective_gear)
+		if(!isalist(gear.armor_values))
+			continue
 		if(gear.body_parts_covered & def_zone.body_part)
-			protection = add_armor(protection, gear.armor[type])
+			protection = add_armor(protection, gear.armor_values[type])
 		if(LAZYLEN(gear.accessories))
 			for(var/obj/item/clothing/accessory/bling in gear.accessories)
+				if(!isalist(bling.armor_values))
+					continue
 				if(bling.body_parts_covered & def_zone.body_part)
-					protection = add_armor(protection, bling.armor[type])
+					protection = add_armor(protection, bling.armor_values[type])
 	return protection
 
 /mob/living/carbon/human/get_layered_armor(def_zone, type)

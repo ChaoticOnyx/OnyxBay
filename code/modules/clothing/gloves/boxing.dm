@@ -2,7 +2,7 @@
 	name = "boxing gloves"
 	desc = "Because you really needed another excuse to punch your crewmates."
 	icon_state = "boxing"
-	armor = list(melee = 60, bullet = 30, laser = 50, energy = 15, bomb = 0, bio = 0)
+	armor_values = alist(melee = 60, bullet = 30, laser = 50, energy = 15, bomb = 0, bio = 0)
 
 	/// Holder for boxing unarmed attacks with no real damage.
 	var/static/datum/unarmed_attack/punch/boxing/attack = /datum/unarmed_attack/punch/boxing
