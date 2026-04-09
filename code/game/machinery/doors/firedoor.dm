@@ -158,7 +158,7 @@
 		to_chat(user, SPAN("warning", "You must remain able bodied and close to \the [src] in order to use it."))
 		return
 
-	if(alarmed && density && lockdown && !allowed(user))
+	if(alarmed && density && lockdown && !check_access(user))
 		to_chat(user, "<span class='warning'>Access denied. Please wait for authorities to arrive, or for the alert to clear.</span>")
 		return
 	else

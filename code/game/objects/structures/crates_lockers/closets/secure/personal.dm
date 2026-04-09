@@ -30,12 +30,12 @@
 	return list(/obj/item/storage/backpack/satchel/grey/withwallet, /obj/item/device/radio/headset)
 
 /obj/structure/closet/secure_closet/personal/attackby(obj/item/W, mob/user)
-	if (src.opened)
-		..()
-	else if(W.get_id_card())
-		var/obj/item/card/id/I = W.get_id_card()
+	if(opened)
+		return ..()
 
-		if(!I || !I.registered_name)
+	var/obj/item/card/id/I = W.get_id_card()
+	if(istype(I))
+		if(!I.registered_name)
 			return
 		if(togglelock(user, I))
 			if(!src.registered_name)

@@ -210,7 +210,7 @@
 /obj/item/storage/secure/guncase/security/attackby(obj/item/W, mob/user)
 	var/obj/item/card/id/I = W.get_id_card()
 	if(istype(I))
-		if(!allowed(user))
+		if(!check_access(I))
 			show_splash_text(user, "access denied!", SPAN("warning", "\icon[src] Access Denied!"))
 			return
 

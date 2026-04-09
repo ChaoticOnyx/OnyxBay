@@ -12,8 +12,8 @@
 	icon = 'icons/obj/rig_modules.dmi'
 	desc = "A back-mounted powersuit deployment and control mechanism."
 	slot_flags = SLOT_BACK
-	req_one_access = list()
-	req_access = list()
+	req_one_access = null
+	req_access = null
 	w_class = ITEM_SIZE_HUGE
 	center_of_mass = null
 
@@ -112,8 +112,8 @@
 	item_state = icon_state
 	wires = new(src)
 
-	if((!req_access || !req_access.len) && (!req_one_access || !req_one_access.len))
-		locked = 0
+	if(!length(req_access) && !length(req_one_access))
+		locked = FALSE
 
 	spark_system = new()
 	spark_system.set_up(5, 0, src)
@@ -632,7 +632,7 @@
 			return 0
 		if(user.back != src)
 			return 0
-		else if(!src.allowed(user))
+		else if(!check_access(user))
 			to_chat(user, "<span class='danger'>Unauthorized user. Access denied.</span>")
 			return 0
 

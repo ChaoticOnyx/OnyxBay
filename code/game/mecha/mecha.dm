@@ -785,7 +785,7 @@
 		return
 
 	var/obj/item/card/id/id_card = W.get_id_card()
-	if(id_card)
+	if(istype(id_card))
 		if(add_req_access || maint_access)
 			if(internals_access_allowed(usr))
 				output_maintenance_dialog(id_card, user)

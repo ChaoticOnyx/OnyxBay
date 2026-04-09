@@ -513,10 +513,10 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	else if(id && istype(id, /obj/item/card/id/centcom))
 		return SAFE_PERP
 
-	if(check_access && !access_obj.allowed(src))
+	if(check_access && !access_obj.check_access(src))
 		threatcount += 4
 
-	if(auth_weapons && !access_obj.allowed(src))
+	if(auth_weapons && !access_obj.check_access(src))
 		if(istype(l_hand, /obj/item/gun) || istype(l_hand, /obj/item/melee))
 			threatcount += 4
 

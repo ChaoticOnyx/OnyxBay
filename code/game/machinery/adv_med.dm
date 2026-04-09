@@ -303,7 +303,7 @@
 	if(.)
 		return TRUE
 
-	if(!allowed(usr))
+	if(!check_access(usr))
 		to_chat(usr, SPAN("warning", "Access denied."))
 		return TRUE
 

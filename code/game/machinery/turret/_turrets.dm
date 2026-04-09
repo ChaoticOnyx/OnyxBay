@@ -221,8 +221,8 @@ GLOBAL_LIST_EMPTY(all_turrets)
 			store_ammo(I, user)
 			return
 
-	if(istype(I, /obj/item/card/id) || istype(I, /obj/item/device/pda))
-		if(allowed(user))
+	if(I?.get_id_card())
+		if(check_access(I))
 			if(emagged)
 				show_splash_text(user, "Control panel is unresponsive")
 			else

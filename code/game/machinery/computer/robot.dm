@@ -27,7 +27,7 @@
 		ui.set_auto_update(1)
 
 /obj/machinery/computer/robotics/CanUseTopic(user)
-	if(!allowed(user))
+	if(!check_access(user))
 		to_chat(user, "<span class='warning'>Access Denied</span>")
 		return STATUS_CLOSE
 	return ..()

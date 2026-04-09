@@ -112,10 +112,13 @@
 	return TRUE
 
 /obj/machinery/door/Bumped(atom/AM)
-	if(p_open || operating) return
+	if(p_open || operating)
+		return
+
 	if(ismob(AM))
 		var/mob/M = AM
-		if(world.time - M.last_bumped <= 10) return	//Can bump-open one airlock per second. This is to prevent shock spam.
+		if(world.time - M.last_bumped <= 1 SECOND)
+			return	//Can bump-open one airlock per second. This is to prevent shock spam.
 		M.last_bumped = world.time
 		if(!M.restrained() && (!issmall(M) || ishuman(M)))
 			bumpopen(M)
@@ -131,19 +134,27 @@
 	if(istype(AM, /obj/mecha))
 		var/obj/mecha/mecha = AM
 		if(density)
-			if(mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access)))
+			if(check_access(mecha.occupant) || check_access_list(mecha.operation_req_access))
 				INVOKE_ASYNC(src, nameof(.proc/open))
 			else
 				do_animate("deny")
 		return
+
 	if(istype(AM, /obj/structure/bed/chair/wheelchair))
 		var/obj/structure/bed/chair/wheelchair/wheel = AM
 		if(density)
-			if(wheel.pulling && (src.allowed(wheel.pulling)))
+			if(check_access(wheel.pulling))
 				INVOKE_ASYNC(src, nameof(.proc/open))
 			else
 				do_animate("deny")
 		return
+
+	if(isobj(AM) && density)
+		if(check_access(AM))
+			INVOKE_ASYNC(src, nameof(.proc/open))
+		else
+			do_animate("deny")
+
 	return
 
 
@@ -165,7 +176,7 @@
 		return
 	add_fingerprint(user)
 	if(density)
-		if(allowed(user))
+		if(check_access(user))
 			INVOKE_ASYNC(src, nameof(.proc/open))
 		else
 			do_animate("deny")
@@ -216,8 +227,8 @@
 	return src.attackby(user, user)
 
 /obj/machinery/door/attack_tk(mob/user)
-	if(requiresID() && !allowed(null))
-		return
+	if(requiresID() && !check_access())
+		return FALSE
 	..()
 
 /obj/machinery/door/attackby(obj/item/I, mob/user)
@@ -306,7 +317,7 @@
 
 	if(src.operating) return
 
-	if(allowed(user) && operable())
+	if(check_access(user) && operable())
 		if(density)
 			INVOKE_ASYNC(src, nameof(.proc/open))
 		else
@@ -492,10 +503,10 @@
 /obj/machinery/door/proc/requiresID()
 	return 1
 
-/obj/machinery/door/allowed(mob/M)
+/obj/machinery/door/check_access()
 	if(!requiresID())
 		return ..(null) //don't care who they are or what they have, act as if they're NOTHING
-	return ..(M)
+	return ..()
 
 /obj/machinery/door/update_nearby_tiles(need_rebuild)
 	. = ..()

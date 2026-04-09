@@ -83,7 +83,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	if(!istype(user))
 		return
 
-	if(!allowed(user))
+	if(!check_access(user))
 		show_splash_text(user, "access denied!", "\icon[src] Access Denied!")
 		return
 

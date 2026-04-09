@@ -14,7 +14,7 @@
 	idle_power_usage = 50 WATTS
 	active_power_usage = 200 WATTS
 	interact_offline = 1
-	req_access = list()
+	req_access = null
 
 	var/mob/living/carbon/human/occupant = null
 	var/obj/item/clothing/suit/space/suit = null
@@ -389,7 +389,7 @@
 	if(isbroken)
 		to_chat(user, SPAN("warning", "The unit doesn't seem to be operational."))
 		return
-	if(!allowed(user))
+	if(!check_access(user))
 		to_chat(user, FEEDBACK_ACCESS_DENIED)
 		return
 	if(occupant && safetieson)
@@ -904,7 +904,7 @@
 	departments = list("Engineering","Mining","Medical","Security","Atmos","^%###^%$")
 	emagged = 1
 	safeties = 0
-	req_access = list()
+	req_access = null
 	updateUsrDialog()
 	return 1
 
@@ -928,7 +928,7 @@
 
 	else if(locked)
 		dat += "<br><font color='red'><B>The [model_text ? "[model_text] " : ""]suit cycler is currently locked. Please contact your system administrator.</b></font>"
-		if(allowed(user))
+		if(check_access(user))
 			dat += "<br><a href='?src=\ref[src];toggle_lock=1'>\[unlock unit\]</a>"
 	else
 		dat += "<h1>Suit cycler</h1>"
@@ -997,7 +997,7 @@
 
 	else if(href_list["toggle_lock"])
 
-		if(allowed(usr))
+		if(check_access(usr))
 			locked = !locked
 			to_chat(usr, "You [locked ? "lock" : "unlock"] [src].")
 			playsound(src.loc, locked ? 'sound/effects/suitcycler/close1.ogg' : 'sound/effects/suitcycler/open1.ogg', 70, 1)

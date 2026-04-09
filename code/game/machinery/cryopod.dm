@@ -525,7 +525,7 @@
 	if(usr.stat != 0)
 		return
 
-	if(usr != occupant && !allowed(usr) && !emagged)
+	if(usr != occupant && !check_access(usr) && !emagged)
 		to_chat(usr, "<span class='warning'>Access Denied.</span>")
 		return
 

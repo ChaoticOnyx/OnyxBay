@@ -316,7 +316,7 @@
 	var/list/data = list()
 
 	data["isLocked"] = locked
-	data["canToggleSafety"] = allowed(user)
+	data["canToggleSafety"] = check_access(user)
 	data["isSafetyDisabled"] = safety_disabled
 	data["isGravityDisabled"] = gravity_disabled
 
@@ -332,7 +332,7 @@
 
 	switch(action)
 		if("toggleLock")
-			if(!allowed(usr))
+			if(!check_access(usr))
 				return
 
 			locked = !locked
@@ -342,7 +342,7 @@
 			if(locked)
 				return
 
-			if(!allowed(usr))
+			if(!check_access(usr))
 				return
 
 			toggle_safety()

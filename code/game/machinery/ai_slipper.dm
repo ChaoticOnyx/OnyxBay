@@ -35,7 +35,7 @@
 	if(istype(user, /mob/living/silicon))
 		return src.attack_hand(user)
 	else // trying to unlock the interface
-		if(src.allowed(usr))
+		if(check_access(usr))
 			locked = !locked
 			to_chat(user, "You [ locked ? "lock" : "unlock"] the device.")
 			if(locked)
