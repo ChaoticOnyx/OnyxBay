@@ -9,7 +9,7 @@
 	mod_weight = 0.5
 	mod_reach = 0.75
 	mod_handy = 0.25
-	attack_verb = list("whipped")
+	attack_verb = "whipped"
 	hitsound = 'sound/weapons/towelwhip.ogg'
 	desc = "A soft cotton towel."
 	drop_sound = SFX_DROP_CLOTH
@@ -28,4 +28,4 @@
 	desc = "The legendary Golden Fleece of Jason made real."
 	color = "#ffd700"
 	force = 1
-	attack_verb = list("smote")
+	attack_verb = "smote"

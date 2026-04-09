@@ -18,7 +18,7 @@
 	mod_reach = 0.5
 	mod_handy = 0.5
 	throw_range = 15
-	attack_verb = list("HONKED")
+	attack_verb = "HONKED"
 	var/spam_flag = 0
 
 /obj/item/bikehorn/attack_self(mob/user)
@@ -87,7 +87,7 @@
 	mod_reach = 0.5
 	mod_handy = 0.5
 	throw_range = 15
-	attack_verb = list("HONKED")
+	attack_verb = "HONKED"
 
 	var/spam_flag = FALSE
 	var/spam_cooldown = 10 SECONDS

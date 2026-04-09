@@ -407,7 +407,7 @@ meteor_act
 	// Poise damage part
 	var/poise_damage
 
-	visible_message(SPAN("danger", "[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] in the [affecting.name] with [I.name] by [user]!"))
+	visible_message(SPAN("danger", "[src] has been [pick(I.attack_verb)] in the [affecting.name] with [I.name] by [user]!"))
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		A.damage_poise(3.0 - I.mod_handy + I.mod_weight*2, TRUE)

@@ -9,7 +9,7 @@
 	coverage = 1.0
 	body_parts_covered = HANDS
 	slot_flags = SLOT_GLOVES
-	attack_verb = list("challenged")
+	attack_verb = "challenged"
 	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "bloodyhands"
 

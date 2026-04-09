@@ -234,7 +234,7 @@
 	if(active)
 		to_chat(user, SPAN("notice", "\The [src] deactivates!"))
 	..()
-	attack_verb = list()
+	attack_verb = "tapped"
 	set_light(0)
 
 /obj/item/melee/energy/sword/saber

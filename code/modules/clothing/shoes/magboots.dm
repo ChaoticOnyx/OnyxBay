@@ -37,7 +37,7 @@
 /obj/item/clothing/shoes/magboots/proc/set_slowdown()
 	var/slowdown = 0
 	if(isalist(shoes?.slowdown_per_slot) && shoes.slowdown_per_slot[slot_shoes])
-		slowdown = max(base_slowdown, shoes.slowdown_per_slot[slot_shoes]) // So you can't put on magboots to make you walk faster.
+		slowdown = max(slowdown, shoes.slowdown_per_slot[slot_shoes]) // So you can't put on magboots to make you walk faster.
 	if(magpulse)
 		slowdown += 3
 	A_LAZYSET(slowdown_per_slot, slot_shoes, slowdown)

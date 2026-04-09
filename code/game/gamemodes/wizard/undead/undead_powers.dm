@@ -64,7 +64,7 @@
 	mod_shield = 2.0
 	block_tier = BLOCK_TIER_PROJECTILE
 	force = 15.0
-	attack_verb = list("bashes", "pounds", "slams")
+	attack_verb = list("bashed", "pounded", "slammed")
 
 /datum/power/undead/heal
 	name = "Heal"
