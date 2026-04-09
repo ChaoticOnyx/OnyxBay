@@ -96,5 +96,5 @@
 	..()
 	icon_state = "eblade[blade_color]"
 	item_state = icon_state
-	item_state_slots[slot_l_hand_str] = icon_state
-	item_state_slots[slot_r_hand_str] = icon_state
+	A_LAZYSET(item_state_slots, slot_l_hand_str, icon_state)
+	A_LAZYSET(item_state_slots, slot_r_hand_str, icon_state)

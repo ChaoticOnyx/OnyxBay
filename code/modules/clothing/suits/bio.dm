@@ -2,7 +2,7 @@
 /obj/item/clothing/head/bio_hood
 	name = "bio hood"
 	icon_state = "bio"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "bio_hood",
 		slot_r_hand_str = "bio_hood",
 		)
@@ -19,7 +19,7 @@
 	name = "bio suit"
 	desc = "A suit that protects against biological contamination."
 	icon_state = "bio"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "bio_suit",
 		slot_r_hand_str = "bio_suit",
 	)

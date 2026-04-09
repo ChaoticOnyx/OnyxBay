@@ -4,7 +4,7 @@
 	name = "\improper CentComm. hat"
 	desc = "It's good to be emperor."
 	icon_state = "centcom_hat"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "centhat",
 		slot_r_hand_str = "centhat",
 		)
@@ -104,7 +104,7 @@
 /obj/item/clothing/head/syndicatefake
 	name = "red space-helmet replica"
 	desc = "A plastic replica of a bloodthirsty syndicate's space helmet, you'll look just like a real murderous criminal operative in this! This is a toy, it is not made for use in space!"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "syndicate-helm-black-red",
 		slot_r_hand_str = "syndicate-helm-black-red",
 		)
@@ -165,7 +165,7 @@
 	name = "flat cap"
 	desc = "A working man's cap."
 	icon_state = "flat_cap"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "det_hat",
 		slot_r_hand_str = "det_hat",
 		)
@@ -265,7 +265,7 @@
 	name = "chicken suit head"
 	desc = "Bkaw!"
 	icon_state = "chickenhead"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "chickensuit",
 		slot_r_hand_str = "chickensuit",
 		)
@@ -285,7 +285,7 @@
 	name = "xenos helmet"
 	desc = "A helmet made out of chitinous alien hide."
 	icon_state = "xenos"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "xenos_helm",
 		slot_r_hand_str = "xenos_helm",
 		)
@@ -299,7 +299,7 @@
 	name = "natural philosopher's wig"
 	desc = "A stylish monstrosity unearthed from Earth's Renaissance period. With this most distinguish'd wig, you'll be ready for your next soiree!"
 	icon_state = "philosopher_wig"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "pwig",
 		slot_r_hand_str = "pwig",
 		)

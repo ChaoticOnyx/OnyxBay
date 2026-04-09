@@ -105,7 +105,7 @@
 /obj/item/clothing/head/helmet/space/syndicate/black/med
 	name = "black medical space helmet"
 	icon_state = "syndicate-helm-black-med"
-	item_state_slots = list(slot_head_str = "syndicate-helm-black-med")
+	item_state_slots = alist(slot_head_str = "syndicate-helm-black-med")
 
 /obj/item/clothing/suit/space/syndicate/black/med
 	name = "black medical space suit"
@@ -116,7 +116,7 @@
 /obj/item/clothing/head/helmet/space/syndicate/black/orange
 	name = "black and orange space helmet"
 	icon_state = "syndicate-helm-black-orange"
-	item_state_slots = list(slot_head_str = "syndicate-helm-black-orange")
+	item_state_slots = alist(slot_head_str = "syndicate-helm-black-orange")
 
 /obj/item/clothing/suit/space/syndicate/black/orange
 	name = "black and orange space suit"
@@ -138,7 +138,7 @@
 /obj/item/clothing/head/helmet/space/syndicate/black/engie
 	name = "black engineering space helmet"
 	icon_state = "syndicate-helm-black-engie"
-	item_state_slots = list(slot_head_str = "syndicate-helm-black-engie")
+	item_state_slots = alist(slot_head_str = "syndicate-helm-black-engie")
 
 /obj/item/clothing/suit/space/syndicate/black/engie
 	name = "black engineering space suit"

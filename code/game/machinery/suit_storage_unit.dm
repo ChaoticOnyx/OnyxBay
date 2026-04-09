@@ -1128,7 +1128,7 @@
 			if(suit)
 				suit.SetName("engineering voidsuit")
 				suit.icon_state = "eng_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "eng_voidsuit",
 					slot_r_hand_str = "eng_voidsuit",
 				)
@@ -1140,7 +1140,7 @@
 			if(suit)
 				suit.SetName("mining voidsuit")
 				suit.icon_state = "mining_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "mining_voidsuit",
 					slot_r_hand_str = "mining_voidsuit",
 				)
@@ -1152,7 +1152,7 @@
 			if(suit)
 				suit.SetName("excavation voidsuit")
 				suit.icon_state = "excavation_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "excavation_voidsuit",
 					slot_r_hand_str = "excavation_voidsuit",
 				)
@@ -1164,7 +1164,7 @@
 			if(suit)
 				suit.SetName("medical voidsuit")
 				suit.icon_state = "medical_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "medical_voidsuit",
 					slot_r_hand_str = "medical_voidsuit",
 				)
@@ -1176,7 +1176,7 @@
 			if(suit)
 				suit.SetName("security voidsuit")
 				suit.icon_state = "sec_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "sec_voidsuit",
 					slot_r_hand_str = "sec_voidsuit",
 				)
@@ -1188,7 +1188,7 @@
 			if(suit)
 				suit.SetName("atmospherics voidsuit")
 				suit.icon_state = "atmos_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "atmos_voidsuit",
 					slot_r_hand_str = "atmos_voidsuit",
 				)
@@ -1209,7 +1209,7 @@
 			if(suit)
 				suit.SetName("blood-red voidsuit")
 				suit.icon_state = "syndie_voidsuit"
-				suit.item_state_slots = list(
+				suit.item_state_slots = alist(
 					slot_l_hand_str = "syndie_voidsuit",
 					slot_r_hand_str = "syndie_voidsuit",
 				)

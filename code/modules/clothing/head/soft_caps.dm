@@ -2,7 +2,7 @@
 	name = "cargo cap"
 	desc = "It's a peaked cap in a tasteless yellow color."
 	icon_state = "cargosoft"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "helmet", //probably a placeholder
 		slot_r_hand_str = "helmet",
 		)

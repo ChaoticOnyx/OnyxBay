@@ -2,7 +2,7 @@
 	name = "beanie"
 	desc = "It's a generic beanie hat."
 	icon_state = "bwhite"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "beanie",
 		slot_r_hand_str = "beanie",
 		)

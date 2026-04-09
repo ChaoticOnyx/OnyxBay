@@ -178,7 +178,7 @@
 	desc = "A strange helmet with a clown face on it. It looks like it was made by an unknown party."
 	icon_state = "clown_syndie"
 	item_state = "clown_syndie"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "syndie_clown",
 		slot_r_hand_str = "syndie_clown",
 	)
@@ -188,7 +188,7 @@
 	desc = "A suit that protects you against the void. It has a clown face on it."
 	icon_state = "rig-syndie-clown"
 	item_state = "rig-syndie-clown"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "syndie_clown",
 		slot_r_hand_str = "syndie_clown",
 	)

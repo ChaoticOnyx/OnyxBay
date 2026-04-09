@@ -36,7 +36,7 @@
 
 	var/image/ret = .
 
-	if(item_state_slots && item_state_slots[slot])
+	if(item_state_slots?[slot])
 		ret.icon_state = item_state_slots[slot]
 	else
 		ret.icon_state = icon_state

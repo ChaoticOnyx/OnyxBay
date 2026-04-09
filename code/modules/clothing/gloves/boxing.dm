@@ -46,7 +46,7 @@
 	desc = "These look pretty fancy."
 	icon_state = "white"
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "lgloves",
 		slot_r_hand_str = "lgloves",
 		)

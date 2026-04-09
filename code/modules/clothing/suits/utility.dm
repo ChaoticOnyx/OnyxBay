@@ -13,7 +13,7 @@
 	name = "firesuit"
 	desc = "A suit that protects against fire and heat."
 	icon_state = "fire"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "fire_suit",
 		slot_r_hand_str = "fire_suit",
 	)
@@ -35,7 +35,7 @@
 
 /obj/item/clothing/suit/fire/firefighter
 	icon_state = "firesuit"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "firefighter",
 		slot_r_hand_str = "firefighter",
 	)
@@ -45,7 +45,7 @@
 	name = "firesuit"
 	desc = "A suit that protects against extreme fire and heat."
 	//icon_state = "thermal"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "ro_suit",
 		slot_r_hand_str = "ro_suit",
 	)
@@ -118,7 +118,7 @@
 	name = "Radiation suit"
 	desc = "A suit that protects against radiation. Label: Made with lead, do not eat insulation."
 	icon_state = "rad"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "rad_suit",
 		slot_r_hand_str = "rad_suit",
 	)

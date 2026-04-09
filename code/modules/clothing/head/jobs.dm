@@ -13,7 +13,7 @@
 	name = "captain's hat"
 	desc = "It's good being the king."
 	icon_state = "captain"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "caphat",
 		slot_r_hand_str = "caphat",
 		)
@@ -207,7 +207,7 @@
 	name = "fedora"
 	desc = "A brown fedora - either the cornerstone of a detective's style or a poor attempt at looking cool, depending on the person wearing it."
 	icon_state = "detective"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "det_hat",
 		slot_r_hand_str = "det_hat",
 		)
@@ -223,7 +223,7 @@
 /obj/item/clothing/head/det/grey
 	desc = "A grey fedora - either the cornerstone of a detective's style or a poor attempt at looking cool, depending on the person wearing it."
 	icon_state = "detective2"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "det_hat_grey",
 		slot_r_hand_str = "det_hat_grey",
 		)

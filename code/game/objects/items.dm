@@ -74,7 +74,7 @@
 
 	//** These specify item/icon overrides for _slots_
 
-	var/list/item_state_slots = list(slot_wear_id_str = "id") //overrides the default item_state for particular slots.
+	var/alist/item_state_slots = null //overrides the default item_state for particular slots.
 
 	// Used to specify the icon file to be used when the item is worn. If not set the default icon for that slot will be used.
 	// If icon_override is set it will take precendence over this, assuming they apply to the slot in question.
@@ -930,16 +930,16 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	return 0 // Process Kill
 
 /obj/item/proc/get_icon_state(slot)
-	if (item_state_slots)
-		if (item_state_slots[slot])
+	if(item_state_slots)
+		if(item_state_slots[slot])
 			return item_state_slots[slot]
 
-		switch (slot)
-			if (slot_l_hand_str, slot_r_hand_str)
-				if (item_state_slots[slot_hand_str])
+		switch(slot)
+			if(slot_l_hand_str, slot_r_hand_str)
+				if(item_state_slots[slot_hand_str])
 					return item_state_slots[slot_hand_str]
-			if (slot_l_ear_str, slot_r_ear_str)
-				if (item_state_slots[slot_ear_str])
+			if(slot_l_ear_str, slot_r_ear_str)
+				if(item_state_slots[slot_ear_str])
 					return item_state_slots[slot_ear_str]
 
 	if (item_state)

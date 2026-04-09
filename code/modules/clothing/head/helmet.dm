@@ -115,7 +115,7 @@
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = NO_BODYPARTS
 	valid_accessory_slots = null
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "syndicate-helm-green",
 		slot_r_hand_str = "syndicate-helm-green",
 		)

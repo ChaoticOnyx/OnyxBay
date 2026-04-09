@@ -210,7 +210,7 @@
 	name = "black skirt"
 	desc = "A black skirt, very fancy!"
 	icon_state = "blackskirt"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_hand_str = "black"
 		)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
@@ -252,7 +252,7 @@
 	desc = "Looks stylish."
 	icon_state = "phantom"
 	item_state = "phantom"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_hand_str = "red"
 		)
 

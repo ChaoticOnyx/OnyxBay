@@ -60,7 +60,7 @@
 	drop_sound = SFX_DROP_BOOTS
 	pickup_sound = SFX_PICKUP_BOOTS
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "jackboots",
 		slot_r_hand_str = "jackboots",
 		)

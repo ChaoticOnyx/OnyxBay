@@ -131,7 +131,7 @@
 	item_state = "clown"
 	istinted = 0
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "clown_hat",
 		slot_r_hand_str = "clown_hat",
 		)
@@ -187,7 +187,7 @@
 	istinted = 0
 	siemens_coefficient = 1.0
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "owl_mask",
 		slot_r_hand_str = "owl_mask",
 		)
@@ -216,7 +216,7 @@
 	say_messages = list("Mmfph!", "Mmmf mrrfff!", "Mmmf mnnf!")
 	say_verbs = list("mumbles")
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "plasticbag",
 		slot_r_hand_str = "plasticbag",
 		)

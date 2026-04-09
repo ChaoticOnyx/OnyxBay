@@ -397,8 +397,8 @@
 	if(active && wielded)
 		new_item_state += "-wielded"
 
-	item_state_slots[slot_l_hand_str] = new_item_state
-	item_state_slots[slot_r_hand_str] = new_item_state
+	A_LAZYSET(item_state_slots, slot_l_hand_str, new_item_state)
+	A_LAZYSET(item_state_slots, slot_r_hand_str, new_item_state)
 
 /obj/item/melee/energy/sword/dualsaber/green
 	blade_color = "green"

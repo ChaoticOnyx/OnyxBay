@@ -11,7 +11,7 @@
 
 	armor_values = alist(melee = 70, bullet = 40, laser = 40, energy = 35, bomb = 20, bio = 60)
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "b_shoes",
 		slot_r_hand_str = "b_shoes",
 		)
@@ -20,7 +20,7 @@
 	name = "mime shoes"
 	icon_state = "mime"
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "w_shoes",
 		slot_r_hand_str = "w_shoes",
 		)
@@ -36,7 +36,7 @@
 	species_restricted = null
 	can_hold_knife = 1
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "jackboots",
 		slot_r_hand_str = "jackboots",
 		)
@@ -57,7 +57,7 @@
 	heat_protection = FEET
 	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "jackboots",
 		slot_r_hand_str = "jackboots",
 		)
@@ -81,7 +81,7 @@
 
 	armor_values = alist(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 10, bio = 3)
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "wizshoe",
 		slot_r_hand_str = "wizshoe",
 		)
@@ -93,7 +93,7 @@
 	body_parts_covered = FEET
 	coverage = 1.0
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "bl_shoes",
 		slot_r_hand_str = "bl_shoes",
 		)
@@ -144,7 +144,7 @@
 
 	armor_values = alist(melee = 35, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 30)
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "clown_shoes",
 		slot_r_hand_str = "clown_shoes",
 		)
@@ -253,7 +253,7 @@
 	desc = "A pair of sham work boots. These have never been designed for use in industrial settings."
 	trimmed_variant = /obj/item/clothing/shoes/cheapboots/work/toeless
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "jackboots",
 		slot_r_hand_str = "jackboots",
 		)

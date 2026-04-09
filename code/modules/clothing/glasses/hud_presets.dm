@@ -112,7 +112,7 @@
 	desc = "A set of implantable lenses designed to augment your vision."
 	icon_state = "thermalimplants"
 	item_state = "thermalimplants"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "syringe_kit",
 		slot_r_hand_str = "syringe_kit"
 		)

@@ -194,12 +194,12 @@
 		var/mob/living/M = loc
 		if(istype(M))
 			if(M.can_wield_item(src) && is_held_twohanded(M))
-				item_state_slots[slot_l_hand_str] = wielded_item_state
-				item_state_slots[slot_r_hand_str] = wielded_item_state
+				A_LAZYSET(item_state_slots, slot_l_hand_str, wielded_item_state)
+				A_LAZYSET(item_state_slots, slot_r_hand_str, wielded_item_state)
 				improper_held_icon = TRUE
 			else
-				item_state_slots[slot_l_hand_str] = base_icon_state || initial(item_state)
-				item_state_slots[slot_r_hand_str] = base_icon_state || initial(item_state)
+				A_LAZYSET(item_state_slots, slot_l_hand_str, (base_icon_state || initial(item_state)))
+				A_LAZYSET(item_state_slots, slot_r_hand_str, (base_icon_state || initial(item_state)))
 				improper_held_icon = FALSE
 	update_held_icon()
 

@@ -3,7 +3,7 @@
 	icon_state = "white"
 	armor_values = alist(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "lgloves",
 		slot_r_hand_str = "lgloves",
 		)
