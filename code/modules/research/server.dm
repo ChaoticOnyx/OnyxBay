@@ -162,7 +162,7 @@
 	var/badmin = 0
 
 /obj/machinery/computer/rdservercontrol/CanUseTopic(user)
-	if(!allowed(user) && !emagged)
+	if(!check_access(user) && !emagged)
 		to_chat(user, "<span class='warning'>You do not have the required access level</span>")
 		return STATUS_CLOSE
 	return ..()

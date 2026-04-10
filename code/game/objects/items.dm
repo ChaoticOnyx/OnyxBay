@@ -18,7 +18,7 @@
 //	causeerrorheresoifixthis
 	var/obj/item/master = null
 	var/list/origin_tech = null	//Used by R&D to determine what research bonuses it grants.
-	var/list/attack_verb = list("hit") //Used in attackby() to say how something was attacked "[x] has been [z.attack_verb] by [y] with [z]"
+	var/attack_verb = "hit" //Used in attackby() to say how something was attacked "[x] has been [z.attack_verb] by [y] with [z]". Can be a string or a list.
 	var/lock_picking_level = 0 //used to determine whether something can pick a lock, and how well.
 
 	//Totally Realistic Onyx Fighting System stuff
@@ -57,11 +57,11 @@
 	var/permeability_coefficient = 1 // for chemicals/diseases
 	var/siemens_coefficient = 1 // for electrical admittance/conductance (electrocution checks and shit)
 	var/slowdown_general = 0 // How much clothing is slowing you down. Negative values speeds you up. This is a genera##l slowdown, no matter equipment slot.
-	var/slowdown_per_slot[slot_last] // How much clothing is slowing you down. This is an associative list: item slot - slowdown
+	var/alist/slowdown_per_slot // How much clothing is slowing you down. This is an associative list: item slot - slowdown
 	var/slowdown_accessory // How much an accessory will slow you down when attached to a worn article of clothing.
 	var/canremove = 1 //Mostly for Ninja code at this point but basically will not allow the item to be removed if set to 0. /N
 	var/force_drop = FALSE // Allows the item to be manually dropped by the wielder even if canremove is set to FALSE.
-	var/list/armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	var/alist/armor_values = null
 	var/list/allowed = null //suit storage stuff.
 	var/zoomdevicename = null //name used for message when binoculars/scope is used
 	var/zoom = 0 //1 if item is actively being used to zoom. For scoped guns and binoculars.
@@ -74,7 +74,7 @@
 
 	//** These specify item/icon overrides for _slots_
 
-	var/list/item_state_slots = list(slot_wear_id_str = "id") //overrides the default item_state for particular slots.
+	var/alist/item_state_slots = null //overrides the default item_state for particular slots.
 
 	// Used to specify the icon file to be used when the item is worn. If not set the default icon for that slot will be used.
 	// If icon_override is set it will take precendence over this, assuming they apply to the slot in question.
@@ -84,7 +84,7 @@
 	var/tmp/sprite_group = null
 
 	// Species-specific sprite sheets for inventory sprites. Used in clothing/refit_for_species() proc.
-	var/list/sprite_sheets_obj = list()
+	var/alist/sprite_sheets_obj = null
 
 	/// Played when the item is picked up
 	var/pickup_sound = SFX_PICKUP_GENERIC
@@ -930,16 +930,16 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	return 0 // Process Kill
 
 /obj/item/proc/get_icon_state(slot)
-	if (item_state_slots)
-		if (item_state_slots[slot])
+	if(item_state_slots)
+		if(item_state_slots[slot])
 			return item_state_slots[slot]
 
-		switch (slot)
-			if (slot_l_hand_str, slot_r_hand_str)
-				if (item_state_slots[slot_hand_str])
+		switch(slot)
+			if(slot_l_hand_str, slot_r_hand_str)
+				if(item_state_slots[slot_hand_str])
 					return item_state_slots[slot_hand_str]
-			if (slot_l_ear_str, slot_r_ear_str)
-				if (item_state_slots[slot_ear_str])
+			if(slot_l_ear_str, slot_r_ear_str)
+				if(item_state_slots[slot_ear_str])
 					return item_state_slots[slot_ear_str]
 
 	if (item_state)

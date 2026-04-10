@@ -15,7 +15,7 @@
 	desc = "A special suit designed to be cool everytime when you wear it, this one has a strange tag 'Alex Wood', i wonder who is this?"
 	icon_state = "gorka"
 	item_state = "gorka"
-	armor = list(melee = 15, bullet = 10, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 15, bullet = 10, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/under/gorka/mob_can_equip(mob/user)
 	.=..()
@@ -29,7 +29,7 @@
 	icon_state = "rosa"
 	item_state = "rosa"
 	permeability_coefficient = 0.50
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/captain_fly
@@ -108,7 +108,7 @@
 	desc = "A short-sleeved black uniform, paired with grey digital-camo cargo pants. It looks very tactical."
 	icon_state = "ert_uniform"
 	item_state = "ert_uniform"
-	armor = list(melee = 20, bullet = 20, laser = 30, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 20, bullet = 20, laser = 30, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/space
@@ -130,7 +130,7 @@
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
-	armor = list(melee = 100, bullet = 100, laser = 100,energy = 100, bomb = 100, bio = 100)
+	armor_values = alist(melee = 100, bullet = 100, laser = 100,energy = 100, bomb = 100, bio = 100)
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0
@@ -162,7 +162,7 @@
 	icon_state = "psysuit"
 	item_state = "psysuit"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = -25, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = -25, bomb = 0, bio = 0)
 
 /obj/item/clothing/under/gentlesuit
 	name = "gentlemans suit"
@@ -210,7 +210,7 @@
 	name = "black skirt"
 	desc = "A black skirt, very fancy!"
 	icon_state = "blackskirt"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_hand_str = "black"
 		)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
@@ -252,7 +252,7 @@
 	desc = "Looks stylish."
 	icon_state = "phantom"
 	item_state = "phantom"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_hand_str = "red"
 		)
 
@@ -487,7 +487,7 @@
 	icon_state = "hazard"
 	item_state = "hazard"
 	siemens_coefficient = 0.8
-	armor = list(melee = 5, bullet = 5, laser = 10, energy = 15, bomb = 5, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 10, energy = 15, bomb = 5, bio = 0)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 
 /obj/item/clothing/under/suit_jacket/charcoal

@@ -2,13 +2,13 @@
 	name = "cargo cap"
 	desc = "It's a peaked cap in a tasteless yellow color."
 	icon_state = "cargosoft"
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "helmet", //probably a placeholder
 		slot_r_hand_str = "helmet",
 		)
 	var/flipped = 0
 	siemens_coefficient = 0.9
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/soft/New()
 	..()
@@ -83,13 +83,13 @@
 	name = "security cap"
 	desc = "It's a field cap in tasteful red color. This one seems to be extra durable."
 	icon_state = "secsoft"
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/soft/sec/fieldcap
 	name = "military cap"
 	desc = "It's a military field cap with a silver emblem on it. This one seems to be extra durable."
 	icon_state = "dalek_cap"
-	armor = list(melee = 35, bullet = 25, laser = 25,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 35, bullet = 25, laser = 25,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/soft/sec/corp
 	name = "corporate security cap"
@@ -116,4 +116,4 @@
 	desc = "One headwear to rule all of these tasteless yellow caps. This one seems to be extremely durable."
 	icon_state = "hopsoft"
 	siemens_coefficient = 0.8
-	armor = list(melee = 35, bullet = 25, laser = 25,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 35, bullet = 25, laser = 25,energy = 0, bomb = 0, bio = 0)

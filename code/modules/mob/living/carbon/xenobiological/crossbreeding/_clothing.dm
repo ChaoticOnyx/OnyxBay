@@ -6,7 +6,7 @@
 	item_state = "halfgas"
 	body_parts_covered = 0
 	w_class = ITEM_SIZE_SMALL
-	armor = alist(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, FIRE = 0, ACID = 0)
+	armor_values = alist(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 50)
 
 /obj/item/clothing/mask/nobreath/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
@@ -160,6 +160,6 @@
 	item_state = "adamsuit"
 	flags_inv = HIDEJUMPSUIT
 
-/obj/item/clothing/suit/armor/heavy/New()
+/obj/item/clothing/suit/armor/heavy/adamantine/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 6
+	A_LAZYSET(slowdown_per_slot, slot_wear_suit, 6)

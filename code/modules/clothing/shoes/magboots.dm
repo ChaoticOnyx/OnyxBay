@@ -16,13 +16,13 @@
 	center_of_mass = null
 	randpixel = 0
 
-	armor = list(melee = 90, bullet = 90, laser = 100, energy = 45, bomb = 50, bio = 10)
+	armor_values = alist(melee = 90, bullet = 90, laser = 100, energy = 45, bomb = 50, bio = 10)
 	siemens_coefficient = 0.3
 
 	drop_sound = SFX_DROP_BOOTS
 	pickup_sound = SFX_PICKUP_BOOTS
 
-	item_state_slots = list(
+	item_state_slots = alist(
 		slot_l_hand_str = "magboots",
 		slot_r_hand_str = "magboots",
 		)
@@ -35,9 +35,18 @@
 	hawking_resist = 1 ELECTRONVOLT
 
 /obj/item/clothing/shoes/magboots/proc/set_slowdown()
-	slowdown_per_slot[slot_shoes] = shoes? max(0, shoes.slowdown_per_slot[slot_shoes]): 0	//So you can't put on magboots to make you walk faster.
-	if (magpulse)
-		slowdown_per_slot[slot_shoes] += 3
+	var/slowdown = 0
+	if(slowdown_per_slot?[slot_shoes])
+		slowdown = slowdown_per_slot?[slot_shoes]
+	if(shoes?.slowdown_per_slot?[slot_shoes])
+		slowdown = max(slowdown, shoes.slowdown_per_slot[slot_shoes]) // So you can't put on magboots to make you walk faster.
+	if(magpulse)
+		slowdown += 2
+
+	if(slowdown)
+		A_LAZYSET(slowdown_per_slot, slot_shoes, slowdown)
+	else
+		A_LAZYREMOVE(slowdown_per_slot, slot_shoes)
 
 /obj/item/clothing/shoes/magboots/attack_self(mob/user)
 	if(magpulse)

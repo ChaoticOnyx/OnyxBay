@@ -26,9 +26,9 @@
 	return src.attack_hand(user)
 
 /obj/machinery/button/remote/emag_act(remaining_charges, mob/user)
-	if(req_access.len || req_one_access.len)
-		req_access = list()
-		req_one_access = list()
+	if(length(req_access) || length(req_one_access))
+		req_access = null
+		req_one_access = null
 		playsound(src.loc, SFX_SPARK, 100, 1)
 		return 1
 
@@ -39,7 +39,7 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 
-	if(!allowed(user) && (wires & 1))
+	if(!check_access(user) && (wires & 1))
 		to_chat(user, "<span class='warning'>Access Denied</span>")
 		flick("[initial(icon_state)]-denied",src)
 		return

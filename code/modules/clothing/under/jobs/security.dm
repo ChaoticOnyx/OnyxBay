@@ -13,7 +13,7 @@
 	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for robust protection."
 	icon_state = "officer_red"
 	item_state = "officer_red"
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.8
 
 /obj/item/clothing/under/rank/security/skirt
@@ -35,7 +35,7 @@
 	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for more robust protection. It has the word \"Warden\" written on the shoulders."
 	icon_state = "warden_red"
 	item_state = "warden_red"
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.8
 
 /obj/item/clothing/under/rank/warden/skirt
@@ -57,7 +57,7 @@
 	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for robust protection."
 	icon_state = "swatunder"
 	item_state = "swatunder"
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/security_pants
@@ -67,7 +67,7 @@
 	item_state = "secpants"
 	gender = PLURAL
 	body_parts_covered = LOWER_TORSO|LEGS
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/security_pants/equipped // Preequipped w/ a shirt
@@ -83,7 +83,7 @@
 	item_state = "detective"
 	gender = PLURAL
 	body_parts_covered = LOWER_TORSO|LEGS
-	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.9
 	starting_accessories = list(/obj/item/clothing/accessory/security_shirt/detective, /obj/item/clothing/accessory/blue_clip)
 
@@ -126,7 +126,7 @@
 	desc = "It's a jumpsuit worn by those few with the dedication to achieve the position of \"Head of Security\". It has additional armor to protect the wearer."
 	icon_state = "hos_red"
 	item_state = "hos_red"
-	armor = list(melee = 20, bullet = 25, laser = 25, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 20, bullet = 25, laser = 25, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.7
 
 /obj/item/clothing/under/rank/head_of_security/skirt

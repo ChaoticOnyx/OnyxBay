@@ -225,12 +225,16 @@ meteor_act
 	var/protection = 0
 	var/list/protective_gear = list(head, wear_mask, wear_suit, w_uniform, gloves, shoes)
 	for(var/obj/item/clothing/gear in protective_gear)
+		if(!isalist(gear.armor_values))
+			continue
 		if(gear.body_parts_covered & def_zone.body_part)
-			protection = add_armor(protection, gear.armor[type])
+			protection = add_armor(protection, gear.armor_values[type])
 		if(LAZYLEN(gear.accessories))
 			for(var/obj/item/clothing/accessory/bling in gear.accessories)
+				if(!isalist(bling.armor_values))
+					continue
 				if(bling.body_parts_covered & def_zone.body_part)
-					protection = add_armor(protection, bling.armor[type])
+					protection = add_armor(protection, bling.armor_values[type])
 	return protection
 
 /mob/living/carbon/human/get_layered_armor(def_zone, type)
@@ -403,7 +407,7 @@ meteor_act
 	// Poise damage part
 	var/poise_damage
 
-	visible_message(SPAN("danger", "[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] in the [affecting.name] with [I.name] by [user]!"))
+	visible_message(SPAN("danger", "[src] has been [pick(I.attack_verb)] in the [affecting.name] with [I.name] by [user]!"))
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		A.damage_poise(3.0 - I.mod_handy + I.mod_weight*2, TRUE)

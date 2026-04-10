@@ -56,7 +56,7 @@
 	..()
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	damtype = BRUTE
-	attack_verb = list()
+	attack_verb = "hit"
 	icon_state = initial(icon_state)
 	set_light(0)
 

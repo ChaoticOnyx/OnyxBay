@@ -803,18 +803,16 @@
 	return 0
 
 /mob/living/silicon/robot/proc/check_access(obj/item/card/id/I)
-	if(!istype(req_access, /list)) //something's very wrong
-		return 1
+	if(!length(req_access))
+		return TRUE
 
-	var/list/L = req_access
-	if(!L.len) //no requirements
-		return 1
-	if(!I || !istype(I, /obj/item/card/id) || !I.access) //not ID or no access
-		return 0
+	if(!istype(I) || !I.access) // Not an ID card or no access
+		return FALSE
+
 	for(var/req in req_access)
-		if(req in I.access) //have one of the required accesses
-			return 1
-	return 0
+		if(req in I.access) // We have one of the required accesses
+			return TRUE
+	return FALSE
 
 /mob/living/silicon/robot/on_update_icon()
 	var/datum/robot_hull/using_hull = module_hulls[icontype]

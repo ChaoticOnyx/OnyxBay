@@ -682,7 +682,7 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10)
+	armor_values = alist(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10)
 	action_button_name = "Toggle hood"
 	hoodtype = /obj/item/clothing/head/goatcapehood
 	siemens_coefficient = 0.6
@@ -695,7 +695,7 @@
 	cold_protection = HEAD
 	flags_inv = HIDEEARS | BLOCKHAIR
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10)
+	armor_values = alist(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10)
 
 /obj/item/clothing/suit/hos_formal
 	name = "head of security's formal coat"
@@ -722,7 +722,7 @@
 		/obj/item/reagent_containers/spray/pepper
 	)
 
-	armor = list(melee = 70, bullet = 110, laser = 100, energy = 35, bomb = 55, bio = 20)
+	armor_values = alist(melee = 70, bullet = 110, laser = 100, energy = 35, bomb = 55, bio = 20)
 	siemens_coefficient = 0.6
 
 /obj/item/clothing/suit/yuri

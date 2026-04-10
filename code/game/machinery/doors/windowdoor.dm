@@ -64,13 +64,11 @@
 	var/obj/item/airlock_electronics/ae
 	if(!electronics)
 		ae = new /obj/item/airlock_electronics(loc)
-		if(!req_access)
-			check_access()
-		if(req_access.len)
+		if(length(req_access))
 			ae.conf_access = req_access
-		else if(req_one_access.len)
+		else if(length(req_one_access))
 			ae.conf_access = req_one_access
-			ae.one_access = 1
+			ae.one_access = TRUE
 	else
 		ae = electronics
 		electronics = null
@@ -106,15 +104,14 @@
 
 	else if(istype(AM, /obj/mecha))
 		var/obj/mecha/mech = AM
-		if(mech.occupant && allowed(mech.occupant))
+		if(check_access(mech.occupant))
 			if(density)
 				INVOKE_ASYNC(src, nameof(.proc/open))
 			else
 				INVOKE_ASYNC(src, nameof(.proc/close))
 
-	else if(ismob(AM))
-		var/mob/M = AM
-		if(allowed(M))
+	else if(isobj(AM) || ismob(AM))
+		if(check_access(AM))
 			if(density)
 				INVOKE_ASYNC(src, nameof(.proc/open))
 			else
@@ -278,14 +275,13 @@
 
 			var/obj/item/airlock_electronics/ae
 			if(!electronics)
-				ae = new /obj/item/airlock_electronics( loc )
-				if(!req_access)
-					check_access()
-				if(req_access.len)
+				ae = new /obj/item/airlock_electronics(loc)
+				ae.conf_access = null
+				if(length(req_access))
 					ae.conf_access = req_access
-				else if(req_one_access.len)
+				else if(length(req_one_access))
 					ae.conf_access = req_one_access
-					ae.one_access = 1
+					ae.one_access = TRUE
 			else
 				ae = electronics
 				electronics = null
@@ -320,7 +316,7 @@
 
 	add_fingerprint(user, 0, I)
 
-	if(allowed(user))
+	if(check_access(user))
 		if(density)
 			INVOKE_ASYNC(src, nameof(.proc/open))
 		else

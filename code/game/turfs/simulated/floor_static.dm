@@ -33,7 +33,7 @@
 	desc = "This obviously wasn't made for your feet."
 	icon = 'icons/turf/flooring/alium.dmi'
 	icon_state = "voxbase"
-	initial_gas = list("nitrogen" = MOLES_N2STANDARD * 1.2)
+	initial_gas = /decl/initial_gas_mix/nitrogen
 
 /turf/simulated/floor/misc/fixed/vox/vox2
 	name = "alien plating"
@@ -68,7 +68,7 @@
 	icon_state = "[A.icon_base][(x*y) % 7]"
 
 /turf/simulated/floor/misc/fixed/alium/airless
-	initial_gas = null
+	initial_gas = /decl/initial_gas_mix/empty
 	temperature = TCMB
 
 /turf/simulated/floor/misc/fixed/alium/ex_act(severity)

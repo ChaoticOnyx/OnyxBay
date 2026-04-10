@@ -3,7 +3,7 @@
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.7
 	body_parts_covered = FACE|EYES
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_values = alist(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	rad_resist_type = /datum/rad_resist/animal_mask
 
 /datum/rad_resist/animal_mask

@@ -1012,7 +1012,7 @@
 					to_chat(user, "It does nothing")
 					return
 				else
-					if(allowed(usr) && !wires.IsIndexCut(AALARM_WIRE_IDSCAN))
+					if(check_access(usr) && !wires.IsIndexCut(AALARM_WIRE_IDSCAN))
 						playsound(src.loc, 'sound/signals/warning10.ogg', 25)
 						locked = !locked
 						to_chat(user, "<span class='notice'>You [ locked ? "lock" : "unlock"] the Air Alarm interface.</span>")

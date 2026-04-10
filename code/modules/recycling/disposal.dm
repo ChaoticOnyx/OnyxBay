@@ -1185,7 +1185,7 @@
 		..()
 
 /obj/machinery/disposal_switch/attack_hand(mob/user)
-	if(!allowed(user))
+	if(!check_access(user))
 		to_chat(user, "<span class='warning'>Access denied.</span>")
 		return
 	on = !on

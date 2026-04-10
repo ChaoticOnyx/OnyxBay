@@ -11,7 +11,7 @@
 		if(istype(I))
 			var/item_slowdown = 0
 			item_slowdown += I.slowdown_general
-			item_slowdown += I.slowdown_per_slot[slot]
+			item_slowdown += A_LAZYACCESS(I.slowdown_per_slot, slot)
 			item_slowdown += I.slowdown_accessory
 			if(item_slowdown > 0)
 				var/size_mod = 0

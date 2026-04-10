@@ -219,7 +219,7 @@
 
 /obj/item/gun/energy/sniperrifle/on_update_icon()
 	..()
-	item_state_slots[slot_back_str] = icon_state //so that the on-back overlay uses the different charged states
+	A_LAZYSET(item_state_slots, slot_back_str, icon_state) // so that the on-back overlay uses the different charged states
 
 /obj/item/gun/energy/sniperrifle/verb/scope()
 	set category = "Object"
