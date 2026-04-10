@@ -110,13 +110,13 @@
 			else
 				INVOKE_ASYNC(src, nameof(.proc/close))
 
-	else if(isobj(AM))
+	else if(isobj(AM) || ismob(AM))
 		if(check_access(AM))
 			if(density)
 				INVOKE_ASYNC(src, nameof(.proc/open))
 			else
 				INVOKE_ASYNC(src, nameof(.proc/close))
-		else if(density && ismob(AM))
+		else if(density)
 			flick(text("[]deny", base_state), src)
 
 /obj/machinery/door/window/CanPass(atom/movable/mover, turf/target)

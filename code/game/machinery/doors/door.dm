@@ -115,6 +115,13 @@
 	if(p_open || operating)
 		return
 
+	if(istype(AM, /mob/living/bot))
+		var/mob/living/bot/bot = AM
+		if(src.check_access(bot.botcard))
+			if(density)
+				INVOKE_ASYNC(src, nameof(.proc/open))
+		return
+
 	if(ismob(AM))
 		var/mob/M = AM
 		if(world.time - M.last_bumped <= 1 SECOND)
@@ -122,13 +129,6 @@
 		M.last_bumped = world.time
 		if(!M.restrained() && (!issmall(M) || ishuman(M)))
 			bumpopen(M)
-		return
-
-	if(istype(AM, /mob/living/bot))
-		var/mob/living/bot/bot = AM
-		if(src.check_access(bot.botcard))
-			if(density)
-				INVOKE_ASYNC(src, nameof(.proc/open))
 		return
 
 	if(istype(AM, /obj/mecha))
@@ -218,6 +218,8 @@
 	else
 		tforce = AM:throwforce * (TT.speed/THROWFORCE_SPEED_DIVISOR)
 	take_damage(tforce)
+
+	Bumped(AM) // A bit hacky, but it works wonders.
 	return
 
 /obj/machinery/door/attack_ai(mob/user)
