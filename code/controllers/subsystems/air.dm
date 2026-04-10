@@ -424,15 +424,12 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 
 /datum/controller/subsystem/air/proc/has_same_air(turf/A, turf/B)
 	if(!A.initial_gas || !B.initial_gas)
-		return 0
+		return FALSE
 	if(A.temperature != B.temperature)
-		return 0
-
-	for(var/g in A.initial_gas)
-		if(A.initial_gas[g] != B.initial_gas[g])
-			return 0
-
-	return 1
+		return FALSE
+	if(A.initial_gas != B.initial_gas)
+		return FALSE
+	return TRUE
 
 /datum/controller/subsystem/air/proc/remove_edge(connection_edge/E)
 	edges -= E

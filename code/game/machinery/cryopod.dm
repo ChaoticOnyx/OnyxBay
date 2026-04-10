@@ -263,8 +263,8 @@
 	. = ..()
 	airtank = new()
 	airtank.temperature = 0 CELSIUS
-	airtank.adjust_gas("oxygen", MOLES_O2STANDARD, 0)
-	airtank.adjust_gas("nitrogen", MOLES_N2STANDARD)
+	airtank.adjust_gas("oxygen", MOLES_O2_STANDARD, 0)
+	airtank.adjust_gas("nitrogen", MOLES_N2_STANDARD)
 
 /obj/machinery/cryopod/lifepod/return_air()
 	return airtank

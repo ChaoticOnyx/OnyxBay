@@ -1,3 +1,4 @@
+
 /turf/simulated
 	name = "station"
 	var/wet = 0
@@ -8,10 +9,16 @@
 	var/list/resources
 
 	var/thermite = 0
-	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	initial_gas = /decl/initial_gas_mix/air
 	var/to_be_destroyed = 0 //Used for fire, if a melting temperature was reached, it will be destroyed
 	var/max_fire_temperature_sustained = 0 //The max temperature of the fire which it was subjected to
 	var/dirt = 0
+
+/turf/simulated/Initialize()
+	. = ..()
+	if(istype(loc, /area/chapel))
+		holy = TRUE
+	levelupdate()
 
 /turf/simulated/post_change()
 	..()
@@ -49,12 +56,6 @@
 	for(var/obj/effect/decal/cleanable/blood/B in contents)
 		B.clean_blood()
 	return ..()
-
-/turf/simulated/New()
-	..()
-	if(istype(loc, /area/chapel))
-		holy = TRUE
-	levelupdate()
 
 /turf/simulated/proc/AddTracks(typepath,bloodDNA,comingdir,goingdir,bloodcolor=COLOR_BLOOD_HUMAN)
 	var/obj/effect/decal/cleanable/blood/tracks/tracks = locate(typepath) in src
