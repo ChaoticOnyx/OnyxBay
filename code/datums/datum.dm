@@ -4,11 +4,11 @@
 	var/list/active_timers  //for SStimer
 
 	/// Components attached to this datum.
-	var/list/datum_components = list()
+	var/list/datum_components
 	/// Any datum registered to receive signals from this datum is in this list.
-	var/alist/comp_lookup = list()
+	var/alist/comp_lookup
 	/// Lazy associated list of signals that are run when the datum receives that signal
-	var/list/signal_procs = list()
+	var/list/signal_procs
 	/// Used to avoid unnecessary refstring creation in Destroy().
 	var/has_state_machine = FALSE
 	/// Status traits attached to this datum. associative list of the form: list(trait name (string) = list(source1, source2, source3,...))
@@ -41,7 +41,7 @@
 	SSnano && SSnano.close_uis(src)
 
 	var/list/dc = datum_components
-	if(dc)
+	if(length(dc))
 		var/all_components = dc[/datum/component]
 		if(length(all_components))
 			QDEL_NULL_LIST(all_components)
@@ -78,8 +78,9 @@
 				comp.unregister_signal(src, sig)
 		comp_lookup = lookup = null
 
-	for(var/target in signal_procs)
-		unregister_signal(target, signal_procs[target])
+	if(length(signal_procs))
+		for(var/target in signal_procs)
+			unregister_signal(target, signal_procs[target])
 
 /datum/proc/Process()
 	set waitfor = 0

@@ -127,7 +127,7 @@
 		else
 			dc[I] = subtracted
 
-	if(!dc.len)
+	if(!length(dc))
 		P.datum_components = null
 
 	unregister_from_parent()
@@ -244,10 +244,7 @@
 			else
 				lookup[sig] -= src
 
-	signal_procs[target] -= sig_type_or_types
-
-	if(!signal_procs[target].len)
-		signal_procs -= target
+	LAZYREMOVEASSOC(signal_procs, target, sig_type_or_types)
 
 /// The same as unregister_signal but global.
 /datum/proc/unregister_global_signal(sig_type_or_types)
@@ -300,7 +297,7 @@
 ///
 /// Use the `SEND_SIGNAL` define instead.
 /datum/proc/_send_signal(sigtype, list/arguments)
-	var/target = comp_lookup[sigtype]
+	var/target = comp_lookup?[sigtype]
 
 	if(!length(target))
 		var/datum/listening_datum = target
@@ -332,7 +329,7 @@
 
 	var/list/dc = datum_components
 
-	if(!dc)
+	if(!length(dc))
 		return null
 
 	. = dc[c_type]
@@ -352,7 +349,7 @@
 
 	var/list/dc = datum_components
 
-	if(!dc)
+	if(!length(dc))
 		return null
 
 	var/datum/component/C = dc[c_type]
@@ -519,7 +516,7 @@
 /// `/datum/target` - the target to move the components to.
 /datum/proc/transfer_components(datum/target)
 	var/list/dc = datum_components
-	if(!dc)
+	if(!length(dc))
 		return
 	var/comps = dc[/datum/component]
 	if(islist(comps))
