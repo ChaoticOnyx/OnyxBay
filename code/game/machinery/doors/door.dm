@@ -150,10 +150,12 @@
 		return
 
 	if(isobj(AM) && density)
-		if(check_access(AM))
-			INVOKE_ASYNC(src, nameof(.proc/open))
-		else
-			do_animate("deny")
+		var/obj/O = AM
+		if(O.w_class >= ITEM_SIZE_NORMAL || O.get_id_card())
+			if(check_access(AM))
+				INVOKE_ASYNC(src, nameof(.proc/open))
+			else
+				do_animate("deny")
 
 	return
 
