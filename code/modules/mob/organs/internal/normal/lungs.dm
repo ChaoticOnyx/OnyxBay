@@ -284,7 +284,7 @@
 
 			if (breath.temperature >= species.heat_level_3)
 				damage = HEAT_GAS_DAMAGE_LEVEL_3
-			else if (breath.temperature >= species.heat_level_3)
+			else if (breath.temperature >= species.heat_level_2)
 				damage = HEAT_GAS_DAMAGE_LEVEL_2
 			else
 				damage = HEAT_GAS_DAMAGE_LEVEL_1
